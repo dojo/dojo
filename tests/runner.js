@@ -1,3 +1,6 @@
+// FIXME: need to add async tests
+// FIXME: need to handle URL wrapping and test registration/running from URLs
+
 // package system gunk. 
 if(this["dojo"]){
 	// Ensure we can run w/o Dojo in a Rhino or SM environment
@@ -55,27 +58,58 @@ tests._testCount = 0;
 tests._errorCount = 0;
 tests._failureCount = 0;
 tests._passedCount = 0;
+tests._currentGroup = null;
+tests._currentTest = null;
+tests._paused = true;
 
 tests._init = function(){
+	this._currentGroup = null;
+	this._currentTest = null;
 	this._errorCount = 0;
 	this._failureCount = 0;
 	this._passedCount = 0;
 }
 
-tests._urls = [];
+// tests._urls = [];
 tests._groups = {};
 
 //
 // Test Registration
 //
 
-tests.registerTestNs = function(/*Object*/ ns, /*String*/ objName){
+tests.registerTestNs = function(/*String*/ group, /*Object*/ ns){
 	// summary:
 	//		adds the passed namespace object to the list of objects to be
 	//		searched for test groups. Only "public" functions (not prefixed
 	//		with "_") will be added as tests to be run. If you'd like to use
 	//		fixtures (setUp(), tearDown(), and runTest()), please use
 	//		registerTest() or registerTests().
+	for(var x in ns){
+		if(	(x.charAt(0) == "_") &&
+			(typeof ns[x] == "function") ){
+			this.registerTest(group, ns[x]);
+		}
+	}
+}
+
+tests._testRegistered = function(group, fixture){
+	// slot to be filled in
+}
+
+tests._groupStarted = function(group){
+	// slot to be filled in
+}
+
+tests._groupFinished = function(group, success){
+	// slot to be filled in
+}
+
+tests._testStarted = function(group, fixture){
+	// slot to be filled in
+}
+
+tests._testFinished = function(group, fixture, success){
+	// slot to be filled in
 }
 
 tests.registerTest = function(/*String*/ group, /*Function or Object*/ test){
@@ -89,16 +123,26 @@ tests.registerTest = function(/*String*/ group, /*Function or Object*/ test){
 	//		*least* a "runTest" method, and may also contain "setUp" and
 	//		"tearDown" methods. These will be invoked on either side of the
 	//		"runTest" method (respectively) when the test is run.
+	if(!this._groups[group]){
+		this._groups[group] = [];
+	}
 	var tObj = test;
 	if(typeof test == "function"){
 		// if we didn't get a fixture, wrap the function
 		tObj = { "runTest": test };
-	}
-	if(!this._groups[group]){
-		this._groups[group] = [];
+		if(test["name"]){
+			tObj.name = test.name;
+		}else{
+			try{
+				tests.debug(tObj.runTest.toSource());
+			}catch(e){
+			}
+		}
+		// FIXME: try harder to get the test name here
 	}
 	this._groups[group].push(tObj);
 	this._testCount++;
+	this._testRegistered(group, tObj);
 }
 
 tests.registerTests = function(/*String*/ group, /*Array*/ testArr){
@@ -111,8 +155,10 @@ tests.registerTests = function(/*String*/ group, /*Array*/ testArr){
 	}
 }
 
-tests.registerTestUrl = function(/*String*/ url){
-	this._urls.push(url);
+tests.registerTestUrl = function(/*String*/ group, /*String*/ url){
+	this.debug("ERROR:");
+	this.debug("\tNO registerTestUrl() METHOD AVAILABLE.");
+	// this._urls.push(url);
 }
 
 tests.add = function(groupOrNs, testOrNull){
@@ -208,78 +254,121 @@ tests._isArray = function(arr){
 // Runner-Wrapper
 //
 
-tests.runGroup = function(/*String*/ groupName){
+tests._setupGroupForRun = function(/*String*/ groupName, /*Integer*/ idx){
+}
+
+tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 	// summary:
 	//		runs the specified test group
 
 	var tg = this._groups[groupName];
+	if(tg.skip === true){ return; }
 	if(this._isArray(tg)){
-		tests.debug(tests._line, "\nGROUP", "\""+groupName+"\"", "has", tg.length, "test"+((tg.length > 1) ? "s" : "")+" to run");
-		for(var y=0; y<tg.length; y++){
+		this._setupGroupForRun(groupName, idx);
+		this.debug(this._line, "\nGROUP", "\""+groupName+"\"", "has", tg.length, "test"+((tg.length > 1) ? "s" : "")+" to run");
+		for(var y=(idx||0); y<tg.length; y++){
+			if(this._paused){
+				this._currentTest = y;
+				this.debug("PAUSED at", this._currentGroup, this._currentTest);
+				return;
+			}
 			var tt = tg[y];
 			var threw = false;
 			// run it, catching exceptions and reporting them
 			try{
-				if(tt["setUp"]){ tt.setUp(tests); }
-				tt.runTest(tests);
-				if(tt["tearDown"]){ tt.tearDown(tests); }
-				tests._passedCount++;
+				if(tt["setUp"]){ tt.setUp(this); }
+				if(tt["runTest"]){ tt.runTest(this); }
+				if(tt["tearDown"]){ tt.tearDown(this); }
+				this._passedCount++;
 			}catch(e){
 				var threw = true;
-				tests.debug("FAILED test:", y);
+				this.debug("FAILED test:", y);
 				// mostly borrowed from JUM
 				var out = "";
-				if(e instanceof tests._AssertFailure){
-					tests._failureCount++;
-					if(e["fileName"]){
-						out += e.fileName + ':';
-					}
-					if(e["lineNumber"]){
-						out += e.lineNumber + ' ';
-					}
+				if(e instanceof this._AssertFailure){
+					this._failureCount++;
+					if(e["fileName"]){ out += e.fileName + ':'; }
+					if(e["lineNumber"]){ out += e.lineNumber + ' '; }
 					out += e.message;
-					tests.debug("\t_AssertFailure:", out);
+					this.debug("\t_AssertFailure:", out);
 				}else{
-					tests._errorCount++;
+					this._errorCount++;
 				}
-				// tests.debug(e);
+				// this.debug(e);
 				if(tt.runTest["toSource"]){
 					var ss = tt.runTest.toSource();
 					// var ss = tt.runTest.toSource().split("{", 2)[1];
 					// ss = ss.substr(0, ss.lastIndexOf("}"));
-					tests.debug("\tERROR IN:\n\t\t", ss);
+					this.debug("\tERROR IN:\n\t\t", ss);
 				}
 				/*
 				for(var x in e){
-					tests.debug("\t", x, ":", x[e]);
+					this.debug("\t", x, ":", x[e]);
 				}
 				throw e;
 				*/
 			}
 			if(!threw){
-				tests.debug("PASSED test:", y);
+				this.debug("PASSED test:", y);
 			}
 		}
 	}
 }
 
+tests._onEnd = function(){}
+
 tests._report = function(){
 	// summary:
 	//		a private method to be implemented/replaced by the "locally
 	//		appropriate" test runner
-	tests.debug("ERROR:");
-	tests.debug("\tNO REPORTING OUTPUT AVAILABLE.");
-	tests.debug("\tIMPLEMENT tests._report() IN YOUR TEST RUNNER");
+	this.debug("ERROR:");
+	this.debug("\tNO REPORTING OUTPUT AVAILABLE.");
+	this.debug("\tIMPLEMENT tests._report() IN YOUR TEST RUNNER");
 }
 
-tests.runAll = function(){
+tests.togglePaused = function(){
+	this[(this._paused) ? "run" : "pause"]();
+}
+
+tests.pause = function(){
 	// summary:
-	//		begins the test process. Automatically called in environments that
-	//		correctly support the addOnLoad() Dojo hook.
-	this._init();
-	for(var x in this._groups){
-		this.runGroup(x);
+	//		halt test run. Can be resumed.
+	this._paused = true;
+}
+
+tests.run = function(){
+	// summary:
+	//		begins or resumes the test process.
+	this.debug("STARTING");
+	this._paused = false;
+	var cg = this._currentGroup;
+	var ct = this._currentTest;
+	var found = false;
+	if(!cg){
+		this._init(); // we weren't paused
+		found = true;
 	}
+	this._currentGroup = null;
+	this._currentTest = null;
+
+	for(var x in this._groups){
+		if(
+			( (!found)&&(x == cg) )||( found )
+		){
+			if(this._paused){ return; }
+			this._currentGroup = x;
+			if(!found){
+				found = true;
+				this.runGroup(x, ct);
+			}else{
+				this.runGroup(x);
+			}
+		}
+	}
+	this._currentGroup = null;
+	this._currentTest = null;
+	this._paused = true;
+	this._onEnd();
 	this._report();
 }
 
@@ -289,7 +378,7 @@ if(this["dojo"]){
 		rhino: ["tests._rhinoRunner"]
 	});
 	dojo.require("tests._base");
-	dojo.addOnLoad(tests.runner, "runAll");
+	dojo.addOnLoad(tests.runner, "run");
 	// set us up for a run
 }else if(this["load"]){
 	load("_rhinoRunner.js");
@@ -300,6 +389,5 @@ if(this["dojo"]){
 	print("Copyright (c) 2007, The Dojo Foundation, All Rights Reserved");
 	print(tests._line, "\n");
 
-	tests.runAll();
+	tests.run();
 }
-

@@ -9,7 +9,7 @@ var testGlobal = this;
 
 tests.add("tests.smokeTest", 
 	[
-		function(t){
+		function sanityCheckHarness(t){
 			// sanity checks
 			t.isTrue(true);
 			t.isFalse(false);
@@ -24,20 +24,21 @@ tests.add("tests.smokeTest",
 		},
 		/*
 		// uncomment to tests exception handling
-		function(t){
+		function sanityCheckIsTrue(t){
 			// should throw an error
 			t.isTrue(false);
 		},
-		function(t){
+		function sanityCheckIsFalse(t){
 			// should throw an error
 			t.isFalse(true);
 		},
-		function(t){
+		function sanityCheckIsEq(t){
 			// should throw an error
 			t.isEq("foo", "bar");
 		},
 		*/
 		{
+			name: "eqTest",
 			// smoke test the fixture system
 			setUp: function(t){
 				this.foo = "blah";
@@ -53,8 +54,8 @@ tests.add("tests.smokeTest",
 
 tests.add("tests._base", 
 	[
-		function(t){
+		function dojoIsAvailable(t){
 			t.isTrue(testGlobal["dojo"]);
-		},
+		}
 	]
 );

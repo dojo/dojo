@@ -1,0 +1,197 @@
+<html>
+	<!--
+		NOTE: we are INTENTIONALLY in quirks mode. It makes it much easier to
+		get a "full screen" UI w/ straightforward CSS.
+	-->
+	<head>
+		<title>The Dojo Unit Test Harness, $Rev$</title>
+		<style type="text/css">
+			body {
+				margin: 0px;
+				padding: 0px;
+				font-size: 13px;
+				color: #292929;
+				font-family: Myriad, Lucida Grande, Bitstream Vera Sans, Arial, Helvetica, sans-serif;
+				*font-size: small;
+				*font: x-small;
+			}
+
+			th, td {
+				font-size: 13px;
+				color: #292929;
+				font-family: Myriad, Lucida Grande, Bitstream Vera Sans, Arial, Helvetica, sans-serif;
+				font-weight: normal;
+			}
+
+			* body {
+				line-height: 1.25em;
+			}
+			
+			table {
+				border-collapse: collapse;
+			}
+
+			#testLayout {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				border: 1px solid black;
+				border: 0px;
+			}
+
+			#testHost {
+				margin: 0px;
+				padding: 0px;
+				border: 1px solid black;
+				background-color: #DEDEDE;
+				border: 0px;
+			}
+
+			#progressOuter {
+				background:#e9e9e9 url("http://svn.dojotoolkit.org/dojo/dijit/trunk/themes/tundra/dojoTundraGradientBg.png") repeat-x 0 0;
+				/*
+				border-color: #e8e8e8;
+				*/
+			}
+
+			#progressInner {
+				background: blue url("http://svn.dojotoolkit.org/dojo/dijit/trunk/themes/tundra/bar.gif") repeat-x 0 0;
+				width: 0%;
+				position: relative;
+				left: 0px;
+				top: 0px;
+				height: 100%;
+			}
+
+			#play, #pause {
+				font-family: Webdings;
+				font-size: 2.0em;
+				border: 1px solid #DEDEDE;
+				cursor: pointer;
+				padding-right: 0.5em;
+			}
+
+			.header {
+				border: 1px solid #DEDEDE;
+			}
+
+			#testListContainer {
+				/*
+				border: 1px solid black;
+				*/
+				position: relative;
+				height: 99%;
+				width: 100%;
+				overflow: auto;
+			}
+
+			#testList {
+				border-collapse: collapse;
+				position: absolute;
+				left: 0px;
+				width: 100%;
+			}
+
+			#testList > tbody > tr > td {
+				border-bottom: 1px solid #DEDEDE;
+				border-right : 1px solid #DEDEDE;
+				padding: 3px;
+			}
+
+			#testListHeader th {
+				border-bottom: 1px solid #DEDEDE;
+				border-right : 1px solid #DEDEDE;
+				padding: 3px;
+				font-weight: bolder;
+				font-style: italic;
+			}
+
+			#toggleButtons {
+				float: left;
+				background-color: #DEDEDE;
+			}
+		</style>
+		<script type="text/javascript" src="../dojo.js"></script>
+		<script type="text/javascript" src="runner.js"></script>
+		<script type="text/javascript" src="_browserRunner.js"></script>
+		<script type="text/javascript" src="_base.js"></script>
+	</head>
+	<body>
+		<table id="testLayout" cellpadding="0" cellspacing="0">
+			<tr valign="top" height="40">
+				<td colspan="2" id="logoBar">
+					<h4 style="margin: 5px 5px 0px 5px; float: left;">D.O.H.: The Dojo Objective Harness</h4>
+					<img src="small_logo.png" height="40" style="margin: 0px 5px 0px 5px; float: right;">
+				</td>
+			</tr>
+			<!--
+			<tr valign="top" height="40">
+				<td colspan="2" id="progressOuter">
+					<div id="progressInner"></div>
+				</td>
+			</tr>
+			-->
+			<tr valign="top" height="30">
+				<td width="30%" class="header">
+					<span id="toggleButtons" onclick="tests.togglePaused();">
+						<span id="play">&#052;</span>
+						<span id="pause" style="display: none;">&#059;</span>
+					</span>
+					<span id="runningStatus">
+						<span id="pausedMsg">Stopped</span>
+						<span id="playingMsg" style="display: none;">Tests Running</span>
+					</span>
+				</td>
+				<td width="*" class="header">
+					blah
+				</td>
+			</tr>
+			<tr valign="top">
+				<td height="100%">
+					<div id="testListContainer">
+						<table cellpadding="0" cellspacing="0" border="0"
+							width="100%" id="testList">
+							<thead>
+								<tr id="testListHeader">
+									<th width="20">
+										<input type="checkbox" checked 
+											onclick="toggleRunAll();">
+									</th>
+									<th width="*" style="text-align: left;">test</th>
+									<th width="50">pass/fail</th>
+									<th width="50">time</th>
+								</tr>
+							</thead>
+							<tbody valign="top">
+								<tr id="groupTemplate" style="display: none;">
+									<td>
+										<input type="checkbox" checked>
+									</td>
+									<td>group name</td>
+									<td>pass</td>
+									<td>10ms</td>
+								</tr>
+								<tr id="testTemplate" style="display: none;">
+									<td>&nbsp;</td>
+									<td style="padding-left: 20px;">test name</td>
+									<td>pass</td>
+									<td>10ms</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</td>
+				<td>
+					<iframe id="testHost" 
+						style="height: 99%; width: 100%;"></iframe>
+					<!--
+						src="http://redesign.dojotoolkit.org"></iframe>
+					-->
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -13,6 +13,68 @@ if(this["dojo"]){
 // Utility Functions and Classes
 //
 
+tests.hitch = function(/*Object*/thisObject, /*Function|String*/method /*, ...*/){
+	var args = [];
+	for(var x=2; x<arguments.length; x++){
+		args.push(arguments[x]);
+	}
+	var fcn = ((typeof method == "string") ? thisObject[method] : method) || function(){};
+	return function(){
+		var ta = args.concat([]); // make a copy
+		for(var x=0; x<arguments.length; x++){
+			ta.push(arguments[x]);
+		}
+		return fcn.apply(thisObject, ta); // Function
+	};
+}
+
+tests._mixin = function(/*Object*/ obj, /*Object*/ props){
+	// summary:
+	//		Adds all properties and methods of props to obj. This addition is
+	//		"prototype extension safe", so that instances of objects will not
+	//		pass along prototype defaults.
+	var tobj = {};
+	for(var x in props){
+		// the "tobj" condition avoid copying properties in "props"
+		// inherited from Object.prototype.  For example, if obj has a custom
+		// toString() method, don't overwrite it with the toString() method
+		// that props inherited from Object.protoype
+		if((typeof tobj[x] == "undefined") || (tobj[x] != props[x])){
+			obj[x] = props[x];
+		}
+	}
+	// IE doesn't recognize custom toStrings in for..in
+	if(	this["document"] 
+		&& document.all
+		&& (typeof props["toString"] == "function")
+		&& (props["toString"] != obj["toString"])
+		&& (props["toString"] != tobj["toString"])
+	){
+		obj.toString = props.toString;
+	}
+	return obj; // Object
+}
+
+tests.mixin = function(/*Object*/obj, /*Object...*/props){
+	// summary:	Adds all properties and methods of props to obj. 
+	for(var i=1, l=arguments.length; i<l; i++){
+		tests._mixin(obj, arguments[i]);
+	}
+	return obj; // Object
+}
+
+tests.extend = function(/*Object*/ constructor, /*Object...*/ props){
+	// summary:
+	//		Adds all properties and methods of props to constructor's
+	//		prototype, making them available to all instances created with
+	//		constructor.
+	for(var i=1, l=arguments.length; i<l; i++){
+		tests._mixin(constructor.prototype, arguments[i]);
+	}
+	return constructor; // Object
+}
+
+
 tests._line = "------------------------------------------------------------";
 
 /*
@@ -50,6 +112,171 @@ tests._AssertFailure.prototype = new Error();
 tests._AssertFailure.prototype.constructor = tests._AssertFailure;
 tests._AssertFailure.prototype.name = "tests._AssertFailure";
 
+tests.Deferred = function(canceller){
+	this.chain = [];
+	this.id = this._nextId();
+	this.fired = -1;
+	this.paused = 0;
+	this.results = [null, null];
+	this.canceller = canceller;
+	this.silentlyCancelled = false;
+};
+
+tests.extend(tests.Deferred, {
+	getFunctionFromArgs: function(){
+		var a = arguments;
+		if((a[0])&&(!a[1])){
+			if(typeof a[0] == "function"){
+				return a[0];
+			}else if(typeof a[0] == "string"){
+				return dj_global[a[0]];
+			}
+		}else if((a[0])&&(a[1])){
+			return tests.hitch(a[0], a[1]);
+		}
+		return null;
+	},
+
+	makeCalled: function() {
+		var deferred = new tests.Deferred();
+		deferred.callback();
+		return deferred;
+	},
+
+	_nextId: (function(){
+		var n = 1;
+		return function(){ return n++; };
+	})(),
+
+	cancel: function(){
+		if(this.fired == -1){
+			if (this.canceller){
+				this.canceller(this);
+			}else{
+				this.silentlyCancelled = true;
+			}
+			if(this.fired == -1){
+				this.errback(new Error("Deferred(unfired)"));
+			}
+		}else if(	(this.fired == 0)&&
+					(this.results[0] instanceof tests.Deferred)){
+			this.results[0].cancel();
+		}
+	},
+			
+
+	_pause: function(){
+		this.paused++;
+	},
+
+	_unpause: function(){
+		this.paused--;
+		if ((this.paused == 0) && (this.fired >= 0)) {
+			this._fire();
+		}
+	},
+
+	_continue: function(res){
+		this._resback(res);
+		this._unpause();
+	},
+
+	_resback: function(res){
+		this.fired = ((res instanceof Error) ? 1 : 0);
+		this.results[this.fired] = res;
+		this._fire();
+	},
+
+	_check: function(){
+		if(this.fired != -1){
+			if(!this.silentlyCancelled){
+				tests.raise("already called!");
+			}
+			this.silentlyCancelled = false;
+			return;
+		}
+	},
+
+	callback: function(res){
+		this._check();
+		this._resback(res);
+	},
+
+	errback: function(res){
+		this._check();
+		if(!(res instanceof Error)){
+			res = new Error(res);
+		}
+		this._resback(res);
+	},
+
+	addBoth: function(cb, cbfn){
+		var enclosed = this.getFunctionFromArgs(cb, cbfn);
+		if(arguments.length > 2){
+			enclosed = tests.hitch(null, enclosed, arguments, 2);
+		}
+		return this.addCallbacks(enclosed, enclosed);
+	},
+
+	addCallback: function(cb, cbfn){
+		var enclosed = this.getFunctionFromArgs(cb, cbfn);
+		if(arguments.length > 2){
+			enclosed = tests.hitch(null, enclosed, arguments, 2);
+		}
+		return this.addCallbacks(enclosed, null);
+	},
+
+	addErrback: function(cb, cbfn){
+		var enclosed = this.getFunctionFromArgs(cb, cbfn);
+		if(arguments.length > 2){
+			enclosed = tests.hitch(null, enclosed, arguments, 2);
+		}
+		return this.addCallbacks(null, enclosed);
+	},
+
+	addCallbacks: function(cb, eb){
+		this.chain.push([cb, eb])
+		if(this.fired >= 0){
+			this._fire();
+		}
+		return this;
+	},
+
+	_fire: function(){
+		var chain = this.chain;
+		var fired = this.fired;
+		var res = this.results[fired];
+		var self = this;
+		var cb = null;
+		while (chain.length > 0 && this.paused == 0) {
+			// Array
+			var pair = chain.shift();
+			var f = pair[fired];
+			if (f == null) {
+				continue;
+			}
+			try {
+				res = f(res);
+				fired = ((res instanceof Error) ? 1 : 0);
+				if(res instanceof tests.Deferred) {
+					cb = function(res){
+						self._continue(res);
+					}
+					this._pause();
+				}
+			}catch(err){
+				fired = 1;
+				res = err;
+			}
+		}
+		this.fired = fired;
+		this.results[fired] = res;
+		if((cb)&&(this.paused)){
+			res.addBoth(cb);
+		}
+	}
+});
+
 //
 // State Keeping and Reporting
 //
@@ -57,7 +284,6 @@ tests._AssertFailure.prototype.name = "tests._AssertFailure";
 tests._testCount = 0;
 tests._errorCount = 0;
 tests._failureCount = 0;
-tests._passedCount = 0;
 tests._currentGroup = null;
 tests._currentTest = null;
 tests._paused = true;
@@ -67,7 +293,6 @@ tests._init = function(){
 	this._currentTest = null;
 	this._errorCount = 0;
 	this._failureCount = 0;
-	this._passedCount = 0;
 }
 
 // tests._urls = [];
@@ -125,6 +350,7 @@ tests.registerTest = function(/*String*/ group, /*Function or Object*/ test){
 	//		"runTest" method (respectively) when the test is run.
 	if(!this._groups[group]){
 		this._groups[group] = [];
+		this._groups[group].inFlight = 0;
 	}
 	var tObj = test;
 	if(typeof test == "function"){
@@ -255,62 +481,106 @@ tests._isArray = function(arr){
 //
 
 tests._setupGroupForRun = function(/*String*/ groupName, /*Integer*/ idx){
+	var tg = this._groups[groupName];
+	this.debug(this._line, "\nGROUP", "\""+groupName+"\"", "has", tg.length, "test"+((tg.length > 1) ? "s" : "")+" to run");
 }
 
+tests._handleFailure = function(groupName, fixture, e){
+	// this.debug("FAILED test:", fixture.name);
+	// mostly borrowed from JUM
+	this._groups[groupName].failures++;
+	var out = "";
+	if(e instanceof this._AssertFailure){
+		this._failureCount++;
+		if(e["fileName"]){ out += e.fileName + ':'; }
+		if(e["lineNumber"]){ out += e.lineNumber + ' '; }
+		out += e.message;
+		this.debug("\t_AssertFailure:", out);
+	}else{
+		this._errorCount++;
+	}
+	if(fixture.runTest["toSource"]){
+		var ss = fixture.runTest.toSource();
+		this.debug("\tERROR IN:\n\t\t", ss);
+	}
+}
+
+tests._runFixture = function(groupName, fixture){
+	var tg = this._groups[groupName];
+	this._testStarted(groupName, fixture);
+	var threw = false;
+	// run it, catching exceptions and reporting them
+	try{
+		if(fixture["setUp"]){ fixture.setUp(this); }
+		if(fixture["runTest"]){ 
+			var ret = fixture.runTest(this); 
+			// if we get a deferred back from the test runner, we know we're
+			// gonna wait for an async result. It's up to the test code to trap
+			// errors and give us an errback or callback.
+			if(ret instanceof this.Deferred){
+
+				tg.inFlight++;
+
+				ret.addErrback(function(err){
+					tests._handleFailure(groupName, fixture, err);
+				});
+
+				var retEnd = function(){
+					if(fixture["tearDown"]){ fixture.tearDown(tests); }
+					tg.inFlight--;
+					if((!tg.inFlight)&&(tg.iterated)){
+						tests._groupFinished(groupName, (!tg.failures));
+					}
+					tests._testFinished(groupName, fixture, ret.results[0]);
+				}
+
+				var timer = setTimeout(function(){
+					ret.cancel();
+					retEnd();
+				}, fixture["timeout"]||500);
+
+				ret.addBoth(function(arg){
+					clearTimeout(timer);
+					retEnd();
+				});
+				return ret;
+			}
+		}
+		if(fixture["tearDown"]){ fixture.tearDown(this); }
+	}catch(e){
+		threw = true;
+		this._handleFailure(groupName, fixture, e);
+	}
+	this._testFinished(groupName, fixture, (!threw));
+}
+
+tests._testId = 0;
 tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 	// summary:
 	//		runs the specified test group
 
+	// FIXME: we need group status and individual tests to be async-able. Would
+	// preferr, perhaps, avoiding use of the full Deferred system, but we'll
+	// see what we can get away w/.
 	var tg = this._groups[groupName];
 	if(tg.skip === true){ return; }
 	if(this._isArray(tg)){
+		tg.inFlight = 0;
+		tg.iterated = false;
+		tg.failures = 0;
+		tests._groupStarted(groupName);
 		this._setupGroupForRun(groupName, idx);
-		this.debug(this._line, "\nGROUP", "\""+groupName+"\"", "has", tg.length, "test"+((tg.length > 1) ? "s" : "")+" to run");
 		for(var y=(idx||0); y<tg.length; y++){
 			if(this._paused){
 				this._currentTest = y;
 				this.debug("PAUSED at", this._currentGroup, this._currentTest);
 				return;
 			}
-			var tt = tg[y];
-			var threw = false;
-			// run it, catching exceptions and reporting them
-			try{
-				if(tt["setUp"]){ tt.setUp(this); }
-				if(tt["runTest"]){ tt.runTest(this); }
-				if(tt["tearDown"]){ tt.tearDown(this); }
-				this._passedCount++;
-			}catch(e){
-				var threw = true;
-				this.debug("FAILED test:", y);
-				// mostly borrowed from JUM
-				var out = "";
-				if(e instanceof this._AssertFailure){
-					this._failureCount++;
-					if(e["fileName"]){ out += e.fileName + ':'; }
-					if(e["lineNumber"]){ out += e.lineNumber + ' '; }
-					out += e.message;
-					this.debug("\t_AssertFailure:", out);
-				}else{
-					this._errorCount++;
-				}
-				// this.debug(e);
-				if(tt.runTest["toSource"]){
-					var ss = tt.runTest.toSource();
-					// var ss = tt.runTest.toSource().split("{", 2)[1];
-					// ss = ss.substr(0, ss.lastIndexOf("}"));
-					this.debug("\tERROR IN:\n\t\t", ss);
-				}
-				/*
-				for(var x in e){
-					this.debug("\t", x, ":", x[e]);
-				}
-				throw e;
-				*/
-			}
-			if(!threw){
-				this.debug("PASSED test:", y);
-			}
+			tests._runFixture(groupName, tg[y]);
+		}
+		tg.iterated = true;
+		if(!tg.inFlight){
+			tests._groupFinished(groupName, (!tg.failures));
 		}
 	}
 }

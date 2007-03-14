@@ -2,6 +2,11 @@ if(this["dojo"]){
 	dojo.provide("tests._browserRunner");
 }
 
+// FIXME: need to add prompting for monkey-do testing
+// FIXME: need to implement progress bar
+// FIXME: need to implement errors in progress bar
+// FIXME: need to implement run/log tabs
+
 (function(){
 	// borrowed from Dojo, etc.
 	var byId = function(id){
@@ -63,7 +68,6 @@ if(this["dojo"]){
 		}
 		tds[1].innerHTML = group;
 		tds[2].innerHTML = "";
-		tds[3].innerHTML = "";
 
 		tb.appendChild(tg);
 		return tg;
@@ -76,7 +80,6 @@ if(this["dojo"]){
 
 		tds[1].innerHTML = fixture.name;
 		tds[2].innerHTML = "";
-		tds[3].innerHTML = "";
 
 		var nn = (cgn.__lastFixture||cgn.__groupNode).nextSibling;
 		if(nn){
@@ -88,11 +91,17 @@ if(this["dojo"]){
 	}
 
 	var getFixtureNode = function(group, fixture){
+		if(groupNodes[group]){
+			return groupNodes[group][fixture.name];
+		}
+		return null;
 	}
 
 	var getGroupNode = function(group){
 		if(groupNodes[group]){
+			return groupNodes[group].__groupNode;
 		}
+		return null;
 	}
 
 	var updateBacklog = [];
@@ -122,7 +131,25 @@ if(this["dojo"]){
 
 	tests._testRegistered = tests._updateTestList;
 
-	// FIXME: need to add prompting for monkey-do testing
+	tests._groupStarted = function(group){
+		getGroupNode(group).className = "inProgress";
+	}
+
+	tests._groupFinished = function(group, success){
+		getGroupNode(group).className = (success) ? "success" : "failure";
+	}
+
+	tests._testStarted = function(group, fixture){
+		getFixtureNode(group, fixture).className = "inProgress";
+		fixture.startTime = new Date();
+	}
+
+	tests._testFinished = function(group, fixture, success){
+		this.debug(((success) ? "PASSED" : "FAILED"), "test:", fixture.name);
+		var fn = getFixtureNode(group, fixture);
+		fn.className = (success) ? "success" : "failure";
+		fn.getElementsByTagName("td")[2].innerHTML = ((new Date())-fixture.startTime)+"ms";
+	}
 
 	// 
 	// Utility code for runner.html

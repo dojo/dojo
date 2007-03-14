@@ -52,10 +52,52 @@ tests.add("tests.smokeTest",
 	]
 );
 
-tests.add("tests._base", 
-	[
-		function dojoIsAvailable(t){
-			t.isTrue(testGlobal["dojo"]);
-		}
-	]
-);
+if(this["dojo"]){
+	tests.add("tests._base", 
+		[
+			function dojoIsAvailable(t){
+				t.isTrue(testGlobal["dojo"]);
+			}
+		]
+	);
+}
+
+if(this["setTimeout"]){
+	// a stone-stupid async test
+	tests.add("tests.async", 
+		[
+			{
+				name: "deferredSuccess",
+				runTest: function(t){
+					var d = new tests.Deferred();
+					setTimeout(function(){
+						d.callback(true);
+					}, 50);
+					return d;
+				}
+			},
+			{
+				name: "deferredFailure",
+				runTest: function(t){
+					var d = new tests.Deferred();
+					setTimeout(function(){
+						d.errback(new Error("hrm..."));
+					}, 50);
+					return d;
+				}
+			},
+			{
+				name: "timeoutFailure",
+				timeout: 50,
+				runTest: function(t){
+					// timeout of 50
+					var d = new tests.Deferred();
+					setTimeout(function(){
+						d.callback(true);
+					}, 100);
+					return d;
+				}
+			}
+		]
+	);
+}

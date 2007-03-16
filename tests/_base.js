@@ -70,9 +70,10 @@ if(this["setTimeout"]){
 				name: "deferredSuccess",
 				runTest: function(t){
 					var d = new tests.Deferred();
-					setTimeout(function(){
-						d.callback(true);
-					}, 50);
+					setTimeout(d.getTestCallback(function(){
+						t.isTrue(true);
+						t.isFalse(false);
+					}), 50);
 					return d;
 				}
 			},

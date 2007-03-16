@@ -123,6 +123,19 @@ tests.Deferred = function(canceller){
 };
 
 tests.extend(tests.Deferred, {
+	getTestCallback: function(cb, scope){
+		var _this = this;
+		return function(){
+			try{
+				cb.apply(scope||window||_this, arguments);
+			}catch(e){
+				_this.errback(e);
+				return;
+			}
+			_this.callback(true);
+		}
+	},
+
 	getFunctionFromArgs: function(){
 		var a = arguments;
 		if((a[0])&&(!a[1])){
@@ -520,6 +533,8 @@ tests._runFixture = function(groupName, fixture){
 			if(ret instanceof this.Deferred){
 
 				tg.inFlight++;
+				ret.groupName = groupName;
+				ret.fixture = fixture;
 
 				ret.addErrback(function(err){
 					tests._handleFailure(groupName, fixture, err);

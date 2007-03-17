@@ -400,7 +400,8 @@ tests.registerTestUrl = function(/*String*/ group, /*String*/ url){
 	// this._urls.push(url);
 }
 
-tests.add = function(groupOrNs, testOrNull){
+// FIXME: remove the tests.add alias SRTL.
+tests.register = tests.add = function(groupOrNs, testOrNull){
 	// summary:
 	// 		"magical" variant of registerTests, registerTest, and
 	// 		registerTestNs. Will accept the calling arguments of any of these
@@ -410,7 +411,7 @@ tests.add = function(groupOrNs, testOrNull){
 		this.registerTestUrl(groupOrNs);
 	}
 	if(arguments.length == 1){
-		this.debug("invalid args passed to tests.add():", groupOrNs, ",", testOrNull);
+		this.debug("invalid args passed to tests.register():", groupOrNs, ",", testOrNull);
 		return;
 	}
 	if(typeof testOrNull == "string"){

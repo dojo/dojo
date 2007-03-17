@@ -7,7 +7,7 @@ if(this["dojo"]){
 
 var testGlobal = this;
 
-tests.add("tests.smokeTest", 
+tests.register("tests.smokeTest", 
 	[
 		function sanityCheckHarness(t){
 			// sanity checks
@@ -53,7 +53,7 @@ tests.add("tests.smokeTest",
 );
 
 if(this["dojo"]){
-	tests.add("tests._base", 
+	tests.register("tests._base", 
 		[
 			function dojoIsAvailable(t){
 				t.isTrue(testGlobal["dojo"]);
@@ -64,7 +64,7 @@ if(this["dojo"]){
 
 if(this["setTimeout"]){
 	// a stone-stupid async test
-	tests.add("tests.async", 
+	tests.register("tests.async", 
 		[
 			{
 				name: "deferredSuccess",

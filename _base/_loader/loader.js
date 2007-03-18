@@ -22,7 +22,8 @@
 	
 		// FIXME: it should be possible to pull module prefixes in from djConfig
 		modulePrefixes_: {
-			dojo: {name: "dojo", value: "src"}
+			dojo: {name: "dojo", value: ""},
+			tests: {name: "tests", value: "tests"}
 		},
 
 		registerModulePath: function(/*String*/module, /*String*/prefix){

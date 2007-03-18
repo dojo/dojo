@@ -662,9 +662,10 @@ tests.run = function(){
 }
 
 if(this["dojo"]){
-	dojo.compoundRequire({
+	dojo.kwCompoundRequire({
 		browser: ["tests._browserRunner"],
-		rhino: ["tests._rhinoRunner"]
+		rhino: ["tests._rhinoRunner"],
+		spidermonkey: ["tests._rhinoRunner"]
 	});
 	dojo.require("tests._base");
 	dojo.addOnLoad(tests.runner, "run");

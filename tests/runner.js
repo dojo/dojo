@@ -668,7 +668,11 @@ if(this["dojo"]){
 		spidermonkey: ["tests._rhinoRunner"]
 	});
 	dojo.require("tests._base");
-	dojo.addOnLoad(tests.runner, "run");
+	dojo.addOnLoad(function(){
+		setTimeout(function(){
+			tests.run();
+		}, 100);
+	});
 	// set us up for a run
 }else if(this["load"]){
 	load("_rhinoRunner.js");

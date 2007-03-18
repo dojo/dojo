@@ -30,12 +30,16 @@ if(this["dojo"]){
 			}
 			var enclosedFunc = function(){ return funcRef.apply(scope, arguments); };
 
-			if(window["attachEvent"]){
-				window.attachEvent("on"+type, enclosedFunc);
-			}else if(window["addEventListener"]){
-				window.addEventListener(type, enclosedFunc, false);
-			}else if(document["addEventListener"]){
-				document.addEventListener(type, enclosedFunc, false);
+			if((window["dojo"])&&(type == "load")){
+				dojo.addOnLoad(enclosedFunc);
+			}else{
+				if(window["attachEvent"]){
+					window.attachEvent("on"+type, enclosedFunc);
+				}else if(window["addEventListener"]){
+					window.addEventListener(type, enclosedFunc, false);
+				}else if(document["addEventListener"]){
+					document.addEventListener(type, enclosedFunc, false);
+				}
 			}
 		};
 

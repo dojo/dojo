@@ -186,10 +186,10 @@ dojo.addOnLoad = function(/*Object?*/obj, /*String|Function*/functionName) {
 //	dojo.addOnLoad(object, "functionName")
 
 	var dh = dojo.hostenv;
-	if(arguments.length == 1) {
+	if(arguments.length == 1){
 		dh.modulesLoadedListeners.push(obj);
-	} else if(arguments.length > 1) {
-		dh.modulesLoadedListeners.push(function() {
+	}else if(arguments.length > 1){
+		dh.modulesLoadedListeners.push(function(){
 			obj[functionName]();
 		});
 	}
@@ -211,8 +211,8 @@ dojo.addOnUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
 	var dh = dojo.hostenv;
 	if(arguments.length == 1){
 		dh.unloadListeners.push(obj);
-	} else if(arguments.length > 1) {
-		dh.unloadListeners.push(function() {
+	}else if(arguments.length > 1){
+		dh.unloadListeners.push(function(){
 			obj[functionName]();
 		});
 	}
@@ -493,7 +493,9 @@ dojo.requireIf = function(/*Boolean*/ condition, /*String*/ resourceName){
 	var arg0 = arguments[0];
 	if((arg0 === true)||(arg0=="common")||(arg0 && dojo.render[arg0].capable)){
 		var args = [];
-		for (var i = 1; i < arguments.length; i++) { args.push(arguments[i]); }
+		for(var i = 1; i < arguments.length; i++){ 
+			args.push(arguments[i]);
+		}
 		dojo.require.apply(dojo, args);
 	}
 }
@@ -543,7 +545,10 @@ if(djConfig["modulePaths"]){
 	}
 }
 
-dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String?*/availableFlatLocales){
+dojo.requireLocalization = function(/*String*/ moduleName, 
+									/*String*/ bundleName, 
+									/*String?*/ locale, 
+									/*String?*/ availableFlatLocales){
 	// summary:
 	//		Declares translated resources and loads them if necessary, in the
 	//		same style as dojo.require.  Contents of the resource bundle are

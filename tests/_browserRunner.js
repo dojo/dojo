@@ -42,17 +42,49 @@ if(this["dojo"]){
 		//
 		// Over-ride or implement base runner.js-provided methods
 		//
+		var _logBacklog = [];
+		var sendToLogPane = function(args, skip){
+			var msg = "";
+			for(var x=0; x<args.length; x++){
+				msg += " "+args[x];
+			}
+			// workarounds for IE. Wheeee!!!
+			msg = msg.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+			msg = msg.replace(" ", "&nbsp;");
+			msg = msg.replace("\n", "<br>&nbsp;");
+			if(!byId("logBody")){
+				_logBacklog.push(msg);
+				return;
+			}else if((_logBacklog.length)&&(!skip)){
+				var tm;
+				while(tm=_logBacklog.shift()){
+					sendToLogPane(tm, true);
+				}
+			}
+			var tn = document.createElement("div");
+			tn.innerHTML = msg;
+			byId("logBody").appendChild(tn);
+		}
+
 		if(window["console"]){
 			if(console.info){
-				tests.debug = console.debug;
+				tests.debug = function(){
+					sendToLogPane.call(window, arguments);
+					console.debug.apply(console, arguments);
+				}
 			}else{
 				tests.debug = function(){
+					sendToLogPane.apply(window, arguments);
 					var msg = "";
 					for(var x=0; x<arguments.length; x++){
 						msg += " "+arguments[x];
 					}
 					console.log("DEBUG:"+msg);
 				}
+			}
+		}else{
+			tests.debug = function(){
+				sendToLogPane.call(window, arguments);
 			}
 		}
 
@@ -159,13 +191,23 @@ if(this["dojo"]){
 		// 
 		// Utility code for runner.html
 		//
+		// var isSafari = navigator.appVersion.indexOf("Safari") >= 0;
 		var tabzidx = 1;
+		var _showTab = function(toShow, toHide){
+			// FIXME: I don't like hiding things this way.
+			byId(toHide).style.display = "none";
+			with(byId(toShow).style){
+				display = "";
+				zIndex = ++tabzidx;
+			}
+		}
+
 		showTestPage = function(){
-			byId("testBody").style.zIndex = ++tabzidx;
+			_showTab("testBody", "logBody");
 		}
 
 		showLogPage = function(){
-			byId("logBody").style.zIndex = ++tabzidx;
+			_showTab("logBody", "testBody");
 		}
 
 		var runAll = true;

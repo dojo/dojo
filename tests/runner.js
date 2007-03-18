@@ -496,7 +496,8 @@ tests._isArray = function(arr){
 
 tests._setupGroupForRun = function(/*String*/ groupName, /*Integer*/ idx){
 	var tg = this._groups[groupName];
-	this.debug(this._line, "\nGROUP", "\""+groupName+"\"", "has", tg.length, "test"+((tg.length > 1) ? "s" : "")+" to run");
+	this.debug(this._line);
+	this.debug("GROUP", "\""+groupName+"\"", "has", tg.length, "test"+((tg.length > 1) ? "s" : "")+" to run");
 }
 
 tests._handleFailure = function(groupName, fixture, e){
@@ -516,6 +517,8 @@ tests._handleFailure = function(groupName, fixture, e){
 	if(fixture.runTest["toSource"]){
 		var ss = fixture.runTest.toSource();
 		this.debug("\tERROR IN:\n\t\t", ss);
+	}else{
+		this.debug("\tERROR IN:\n\t\t", fixture.runTest);
 	}
 }
 

@@ -11,30 +11,30 @@ tests.register("tests.smokeTest",
 	[
 		function sanityCheckHarness(t){
 			// sanity checks
-			t.isTrue(true);
-			t.isFalse(false);
-			t.isFalse(0);
-			t.isFalse(null);
+			t.assertTrue(true);
+			t.assertFalse(false);
+			t.assertFalse(0);
+			t.assertFalse(null);
 			var tObj = { w00t: false, blarg: true };
-			t.isEq(
+			t.assertEqual(
 				["thinger", "blah", tObj], 
 				["thinger", "blah", tObj]
 			);
-			t.isEq(tObj, tObj);
+			t.assertEqual(tObj, tObj);
 		},
 		/*
 		// uncomment to tests exception handling
-		function sanityCheckIsTrue(t){
+		function sanityCheckassertTrue(t){
 			// should throw an error
-			t.isTrue(false);
+			t.assertTrue(false);
 		},
-		function sanityCheckIsFalse(t){
+		function sanityCheckassertFalse(t){
 			// should throw an error
-			t.isFalse(true);
+			t.assertFalse(true);
 		},
-		function sanityCheckIsEq(t){
+		function sanityCheckassertEqual(t){
 			// should throw an error
-			t.isEq("foo", "bar");
+			t.assertEqual("foo", "bar");
 		},
 		*/
 		{
@@ -44,7 +44,7 @@ tests.register("tests.smokeTest",
 				this.foo = "blah";
 			},
 			runTest: function(t){
-				t.isEq("blah", this.foo);
+				t.assertEqual("blah", this.foo);
 			},
 			tearDown: function(t){
 			}
@@ -56,7 +56,7 @@ if(this["dojo"]){
 	tests.register("tests._base", 
 		[
 			function dojoIsAvailable(t){
-				t.isTrue(testGlobal["dojo"]);
+				t.assertTrue(testGlobal["dojo"]);
 			}
 		]
 	);
@@ -71,8 +71,8 @@ if(this["setTimeout"]){
 				runTest: function(t){
 					var d = new tests.Deferred();
 					setTimeout(d.getTestCallback(function(){
-						t.isTrue(true);
-						t.isFalse(false);
+						t.assertTrue(true);
+						t.assertFalse(false);
 					}), 50);
 					return d;
 				}

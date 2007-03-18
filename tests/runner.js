@@ -429,23 +429,23 @@ tests.register = tests.add = function(groupOrNs, testOrNull){
 // Assertions and In-Test Utilities
 //
 
-tests.isTrue = function(/*Object*/ condition){
+tests.assertTrue = function(/*Object*/ condition){
 	// summary:
 	//		is the passed item "truthy"?
 	if(!eval(condition)){
-		throw tests._AssertFailure("isTrue('" + condition + "') failed");
+		throw tests._AssertFailure("assertTrue('" + condition + "') failed");
 	}
 }
 
-tests.isFalse = function(/*Object*/ condition){
+tests.assertFalse = function(/*Object*/ condition){
 	// summary:
 	//		is the passed item "falsey"?
 	if(eval(condition)){
-		throw tests._AssertFailure("isFalse('" + condition + "') failed");
+		throw tests._AssertFailure("assertFalse('" + condition + "') failed");
 	}
 }
 
-tests.isEq = function(/*Object*/ expected, /*Object*/ actual){
+tests.assertEqual = function(/*Object*/ expected, /*Object*/ actual){
 	// summary:
 	//		are the passed expected and actual objects/values deeply
 	//		equivalent?
@@ -466,21 +466,21 @@ tests.isEq = function(/*Object*/ expected, /*Object*/ actual){
 		(this._objPropEq(expected, actual)) ){
 		return true;
 	}
-	throw new tests._AssertFailure("isEq() failed: expected |"+expected+"| but got |"+actual+"|");
+	throw new tests._AssertFailure("assertEqual() failed: expected |"+expected+"| but got |"+actual+"|");
 }
 
 tests._arrayEq = function(expected, actual){
 	if(expected.length != actual.length){ return false; }
 	// FIXME: we're not handling circular refs. Do we care?
 	for(var x=0; x<expected.length; x++){
-		if(!tests.isEq(expected[x], actual[x])){ return false; }
+		if(!tests.assertEqual(expected[x], actual[x])){ return false; }
 	}
 	return true;
 }
 
 tests._objPropEq = function(expected, actual){
 	for(var x in expected){
-		if(!tests.isEq(expected[x], actual[x])){
+		if(!tests.assertEqual(expected[x], actual[x])){
 			return false;
 		}
 	}

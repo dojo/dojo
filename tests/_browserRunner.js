@@ -10,7 +10,7 @@ if(this["dojo"]){
 // FIXME: need to implement run/log tabs
 
 (function(){
-	if(window.parent === window){
+	if(window.parent == window){
 		// we're the top-dog window.
 
 		// borrowed from Dojo, etc.

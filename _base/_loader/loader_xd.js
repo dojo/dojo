@@ -102,7 +102,7 @@ dojo.hostenv.loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/curre
 	//		xd loading requires slightly different behavior from loadPath().
 	//description: Wanted to override getText(), but it is used by
 	//		the widget code in too many, synchronous ways right now.
-	if(this.loadedUris[uri]){
+	if(this._loadedUrls[uri]){
 		return 1; //boolean
 	}
 
@@ -182,7 +182,7 @@ dojo.hostenv.loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/curre
 
 	//These steps are done in the non-xd loader version of this function.
 	//Maintain these steps to fit in with the existing system.
-	this.loadedUris[uri] = true;
+	this._loadedUrls[uri] = true;
 	return 1; //boolean
 }
 

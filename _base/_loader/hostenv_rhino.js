@@ -1,13 +1,8 @@
 /*
 * Rhino host environment
 */
-// make jsc shut up (so we can use jsc for sanity checking) 
-/*@cc_on
-@if (@_jscript_version >= 7)
-var loadClass; var print; var load; var quit; var version; var Packages; var java;
-@end
-@*/
 
+/*
 dojo.hostenv.println=function(line){
 	if(arguments.length > 0){
 		print(arguments[0]);
@@ -22,12 +17,13 @@ dojo.hostenv.println=function(line){
 		print(line);
 	}
 }
+*/
 
 dojo.locale = dojo.locale || String(java.util.Locale.getDefault().toString().replace('_','-').toLowerCase());
-dojo.render.name = dojo.hostenv.name_ = 'rhino';
-dojo.hostenv.getVersion = function() {return version();};
+dojo._name = 'rhino';
+dojo.isRhino = true;
 
-if (dj_undef("byId")) {
+if(typeof dojo["byId"] == "undefined"){
 	dojo.byId = function(id, doc){
 		if(id && (typeof id == "string" || id instanceof String)){
 			if(!doc){ doc = document; }
@@ -38,7 +34,7 @@ if (dj_undef("byId")) {
 }
 
 // see comments in spidermonkey loadUri
-dojo.hostenv.loadUri = function(uri, cb){
+dojo._loadUri = function(uri, cb){
 	try{
 		var local = (new java.io.File(uri)).exists();
 		if(!local){
@@ -52,7 +48,7 @@ dojo.hostenv.loadUri = function(uri, cb){
 				return false;
 			}
 		}
-//FIXME: Use Rhino 1.6 native readFile/readUrl if available?
+		//FIXME: Use Rhino 1.6 native readFile/readUrl if available?
 		if(cb){
 			var contents = (local ? readText : readUri)(uri, "UTF-8");
 			cb(eval('('+contents+')'));
@@ -66,7 +62,7 @@ dojo.hostenv.loadUri = function(uri, cb){
 	}
 }
 
-dojo.hostenv.exit = function(exitcode){ 
+dojo.exit = function(exitcode){ 
 	quit(exitcode);
 }
 
@@ -118,9 +114,8 @@ dojo.hostenv.exit = function(exitcode){
 // so no EvaluationException is thrown.
 
 // do it by using java java.lang.Exception
-function dj_rhino_current_script_via_java(depth) {
+dojo._rhinoCurrentScriptViaJava = function(depth){
     var optLevel = Packages.org.mozilla.javascript.Context.getCurrentContext().getOptimizationLevel();  
-   // if (optLevel == -1){ dojo.unimplemented("getCurrentScriptURI (determine current script path for rhino when interpreter mode)", ''); }
     var caw = new java.io.CharArrayWriter();
     var pw = new java.io.PrintWriter(caw);
     var exc = new java.lang.Exception();
@@ -142,23 +137,6 @@ function dj_rhino_current_script_via_java(depth) {
     //print("Rhino getCurrentScriptURI returning '" + fname + "' from: " + s); 
     return fname;
 }
-
-// UNUSED: leverage new support in native exception for getSourceName
-/*
-function dj_rhino_current_script_via_eval_exception() {
-    var exc;
-    // 'ReferenceError: "undefinedsymbol" is not defined.'
-    try {eval ("undefinedsymbol()") } catch(e) {exc = e;}
-    // 'Error: whatever'
-    // try{throw Error("whatever");} catch(e) {exc = e;}
-    // 'SyntaxError: identifier is a reserved word'
-    // try {eval ("static in return")} catch(e) { exc = e; }
-   // print("got exception: '" + exc + "' type=" + (typeof exc));
-    // print("exc.stack=" + (typeof exc.stack));
-    var sn = exc.rhinoException.getSourceName();
-    print("SourceName=" + sn);
-    return sn;
-}*/
 
 // reading a file from disk in Java is a humiliating experience by any measure.
 // Lets avoid that and just get the freaking text
@@ -196,7 +174,7 @@ function dj_readInputStream(is, encoding){
 // call this now because later we may not be on the top of the stack
 if(!djConfig.libraryScriptUri.length){
 	try{
-		djConfig.libraryScriptUri = dj_rhino_current_script_via_java(1);
+		djConfig.libraryScriptUri = dojo._rhinoCurrentScriptViaJava(1);
 	}catch(e){
 		// otherwise just fake it
 		if(djConfig["isDebug"]){

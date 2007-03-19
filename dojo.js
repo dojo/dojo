@@ -28,10 +28,8 @@ if(typeof dojo == "undefined"){
 			tmps.push("loader_xd.js");
 		}
 	
-		if((this["djConfig"])&&(djConfig["baseScriptUri"])){
-			var root = djConfig["baseScriptUri"];
-		}else if((this["djConfig"])&&(djConfig["baseRelativePath"])){
-			var root = djConfig["baseRelativePath"];
+		if((this["djConfig"])&&(djConfig["baseUrl"])){
+			var root = djConfig["baseUrl"];
 		}else{
 			var root = "./";
 			if(isSpidermonkey){
@@ -39,7 +37,7 @@ if(typeof dojo == "undefined"){
 				try{ throw new Error(""); }catch(e){ root = e.fileName.split("dojo.js")[0]; };
 			}
 			if(!this["djConfig"]){
-				djConfig = { baseRelativePath: root };
+				djConfig = { baseUrl: root };
 			}
 	
 			// attempt to figure out the path to dojo if it isn't set in the config
@@ -53,20 +51,15 @@ if(typeof dojo == "undefined"){
 					if(m){
 						root = src.substring(0, m.index);
 						if(!this["djConfig"]){ djConfig = {}; }
-						djConfig["baseScriptUri"] = djConfig["baseRelativePath"] = root;
+						djConfig["baseUrl"] = root;
 						break;
 					}
 				}
 			}
 		}
 	
-		var loaderRoot = root;
-		if((this["djConfig"])&&(djConfig["baseLoaderUri"])){
-			loaderRoot = djConfig["baseLoaderUri"];
-		}
-	
 		for(var x=0; x < tmps.length; x++){
-			var spath = loaderRoot+"_base/_loader/"+tmps[x];
+			var spath = root+"_base/_loader/"+tmps[x];
 			if(isRhino||isSpidermonkey){
 				load(spath);
 			}else{

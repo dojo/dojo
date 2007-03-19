@@ -5,7 +5,6 @@
 //		the library to override certain global settings for how dojo works.
 // description:  The variables that can be set are as follows:
 //			- isDebug: false
-//			- allowQueryConfig: false
 //			- baseScriptUri: ""
 //			- baseRelativePath: ""
 //			- libraryScriptUri: ""

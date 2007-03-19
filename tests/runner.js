@@ -662,7 +662,7 @@ tests.run = function(){
 }
 
 if(this["dojo"]){
-	dojo.kwCompoundRequire({
+	dojo.platformRequire({
 		browser: ["tests._browserRunner"],
 		rhino: ["tests._rhinoRunner"],
 		spidermonkey: ["tests._rhinoRunner"]

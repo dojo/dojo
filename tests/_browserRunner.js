@@ -1,4 +1,4 @@
-if(this["dojo"]){
+if(window["dojo"]){
 	dojo.provide("tests._browserRunner");
 }
 

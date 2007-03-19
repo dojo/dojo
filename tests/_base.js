@@ -1,6 +1,6 @@
-if(this["dojo"]){
+try{
 	dojo.provide("tests._base");
-}
+}catch(e){}
 
 // the test suite for the bootstrap. Requires hostenv and other base tests at
 // the end

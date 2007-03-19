@@ -84,7 +84,7 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
 	try{
 		return !module ? this._loadUri(uri, cb) : this._loadUriAndCheck(uri, module, cb); // Boolean
 	}catch(e){
-		dojo.debug(e);
+		console.debug(e);
 		return false; // Boolean
 	}
 }
@@ -106,11 +106,11 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 	if(this._loadedUrls[uri]){
 		return true; // Boolean
 	}
-	var contents = this.getText(uri, null, true);
+	var contents = this._getText(uri, null, true);
 	if(!contents){ return false; } // Boolean
 	this._loadedUrls[uri] = true;
 	if(cb){ contents = '('+contents+')'; }
-	var value = dj_eval(contents);
+	var value = dojo["eval"](contents);
 	if(cb){ cb(value); }
 	return true; // Boolean
 }
@@ -239,13 +239,13 @@ dojo.getModuleSymbols = function(/*String*/modulename){
 
 dojo._global_omit_module_check = false;
 
-dojo.loadModule = function(	/*String*/moduleName, 
+dojo._loadModule = function(	/*String*/moduleName, 
 									/*Boolean?*/exactOnly, 
 									/*Boolean?*/omitModuleCheck){
 	//	summary:
 	//		loads a Javascript module from the appropriate URI
 	//	description:
-	//		loadModule("A.B") first checks to see if symbol A.B is defined. If
+	//		_loadModule("A.B") first checks to see if symbol A.B is defined. If
 	//		it is, it is simply returned (nothing to do).
 	//	
 	//		If it is not defined, it will look for "A/B.js" in the script root
@@ -260,16 +260,16 @@ dojo.loadModule = function(	/*String*/moduleName,
 	//		It is presumed that the caller will take care of that. For example,
 	//		to import all symbols:
 	//	
-	//			with (dojo.loadModule("A.B")) {
+	//			with (dojo._loadModule("A.B")) {
 	//				...
 	//			}
 	//	
 	//		And to import just the leaf symbol:
 	//	
-	//			var B = dojo.loadModule("A.B");
+	//			var B = dojo._loadModule("A.B");
 	//	   		...
 	//	
-	//		dj_load is an alias for dojo.loadModule
+	//		dj_load is an alias for dojo._loadModule
 
 	omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
 	var module = this.findModule(moduleName, false);
@@ -283,6 +283,7 @@ dojo.loadModule = function(	/*String*/moduleName,
 	var nsyms = moduleName.split(".");
 	
 	var syms = this.getModuleSymbols(moduleName);
+	// console.debug(syms);
 	var startedRelative = ((syms[0].charAt(0) != '/') && !syms[0].match(/^\w+:/));
 	var last = syms[syms.length - 1];
 	var ok;
@@ -324,6 +325,8 @@ dojo.loadModule = function(	/*String*/moduleName,
 
 	return module;
 }
+
+dojo.require = dojo._loadModule;
 
 dojo.provide = function(/*String*/ packageName){
 	//	summary:
@@ -401,7 +404,7 @@ dojo.platformRequire = function(/*Object containing Arrays*/modMap){
 	//		normally called:
 	//	
 	//			dojo.platformRequire({
-	//				// an example that passes multiple args to loadModule()
+	//				// an example that passes multiple args to _loadModule()
 	//				browser: [
 	//					["foo.bar.baz", true, true], 
 	//					"foo.sample.*",
@@ -419,30 +422,13 @@ dojo.platformRequire = function(/*Object containing Arrays*/modMap){
 	for(var x=0; x<result.length; x++){
 		var curr = result[x];
 		if(curr.constructor == Array){
-			dojo.loadModule.apply(dojo, curr);
+			dojo._loadModule.apply(dojo, curr);
 		}else{
-			dojo.loadModule(curr);
+			dojo._loadModule(curr);
 		}
 	}
 }
 
-dojo.require = function(/*String*/ resourceName){
-	//	summary:
-	//		Ensure that the given resource (ie, javascript source file) has
-	//		been loaded.
-	//	description:
-	//		dojo.require() is similar to C's #include command or java's
-	//		"import" command. You call dojo.require() to pull in the resources
-	//		(ie, javascript source files) that define the functions you are
-	//		using. 
-	//
-	//		Note that in the case of a build, many resources have already been
-	//		included into dojo.js (ie, many of the javascript source files have
-	//		been compressed and concatened into dojo.js), so many
-	//		dojo.require() calls will simply return without downloading
-	//		anything.
-	dojo.loadModule.apply(dojo, arguments);
-}
 
 dojo.requireIf = function(/*Boolean*/ condition, /*String*/ resourceName){
 	// summary:
@@ -468,7 +454,7 @@ dojo.registerModulePath = function(/*String*/module, /*String*/prefix){
 	//		relative to Dojo root. For example, module acme is mapped to
 	//		../acme.  If you want to use a different module name, use
 	//		dojo.registerModulePath. 
-	this._modulePrefixes[module] = {name: module, value: prefix};
+	this._modulePrefixes[module] = { name: module, value: prefix };
 }
 
 if(djConfig["modulePaths"]){

@@ -1,18 +1,8 @@
-dojo.provide("dojo.lang.array");
+dojo.provide("dojo._base.array");
 
-dojo.require("dojo.lang.common");
-
-
-dojo.lang.mixin(dojo.lang, {
-
-	// FIXME: Is this worthless since you can do: if(name in obj)
-	// is this the right place for this?
-	has: function(/*Object*/obj, /*String*/name){
-		// summary: is there a property with the passed name in obj?
-		try{
-			return typeof obj[name] != "undefined"; // Boolean
-		}catch(e){ return false; } // Boolean
-	},
+// FIXME: implement indexOf and lastIndexOf!!
+// FIXME: what about isEmpty and toArray?
+dojo.mixin(dojo, {
 
 	isEmpty: function(/*Object*/obj){
 		// summary:
@@ -23,9 +13,9 @@ dojo.lang.mixin(dojo.lang, {
 		//		examine the iterable "surface area" to determine if any
 		//		non-prototypal properties have been assigned. This iteration is
 		//		prototype-extension safe.
-		if(dojo.lang.isArrayLike(obj) || dojo.lang.isString(obj)){
+		if(dojo.isArrayLike(obj) || dojo.isString(obj)){
 			return obj.length === 0; // Boolean
-		}else if(dojo.lang.isObject(obj)){
+		}else if(dojo.isObject(obj)){
 			var tmp = {};
 			for(var x in obj){
 				if(obj[x] && (!tmp[x])){
@@ -49,17 +39,16 @@ dojo.lang.mixin(dojo.lang, {
 		//		provided by Array instances. For details on this, see:
 		// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
 		// usage:
-		//		dojo.lang.map([1, 2, 3, 4], function(item){ return item+1 });
+		//		dojo.map([1, 2, 3, 4], function(item){ return item+1 });
 		//		// returns [2, 3, 4, 5]
-		var isString = dojo.lang.isString(arr);
-		if(isString){
+		if(typeof arr == "string"){
 			// arr: String
 			arr = arr.split("");
 		}
-		if(dojo.lang.isFunction(obj)&&(!unary_func)){
+		if(dojo.isFunction(obj)&&(!unary_func)){
 			unary_func = obj;
 			obj = dj_global;
-		}else if(dojo.lang.isFunction(obj) && unary_func){
+		}else if(dojo.isFunction(obj) && unary_func){
 			// ff 1.5 compat
 			var tmpObj = obj;
 			obj = unary_func;
@@ -89,7 +78,7 @@ dojo.lang.mixin(dojo.lang, {
 		// 		this continues until arr is exhausted. The return value is the
 		// 		last result.
 		// usage:
-		//		dojo.lang.reduce([1, 2, 3, 4], function(last, next){ return last+next});
+		//		dojo.reduce([1, 2, 3, 4], function(last, next){ return last+next});
 		//		returns 10
 
 		// FIXME: changes from 0.4.x calling syntax need to be documented in the 0.9 porting guide!!!
@@ -100,7 +89,7 @@ dojo.lang.mixin(dojo.lang, {
 		}
 
 		var ob = thisObject || dj_global;
-		dojo.lang.map(arr, 
+		dojo.map(arr, 
 			function(val){
 				reducedValue = binary_func.call(ob, reducedValue, val);
 			}
@@ -117,7 +106,7 @@ dojo.lang.mixin(dojo.lang, {
 		//		corresponds (and wraps) the JavaScript 1.6 forEach method. For
 		//		more details, see:
 		//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
-		if(dojo.lang.isString(anArray)){
+		if(typeof anArray == "string"){
 			// anArray: String
 			anArray = anArray.split(""); 
 		}
@@ -135,7 +124,7 @@ dojo.lang.mixin(dojo.lang, {
 	},
 
 	_everyOrSome: function(/*Boolean*/every, /*Array*/arr, /*Function*/callback, /*Object?*/thisObject){
-		if(dojo.lang.isString(arr)){ 
+		if(typeof arr == "string"){
 			//arr: String
 			arr = arr.split(""); 
 		}
@@ -166,9 +155,9 @@ dojo.lang.mixin(dojo.lang, {
 		//		information on this can be found here:
 		//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
 		// usage:
-		//		dojo.lang.every([1, 2, 3, 4], function(item){ return item>1; });
+		//		dojo.every([1, 2, 3, 4], function(item){ return item>1; });
 		//		// returns false
-		//		dojo.lang.every([1, 2, 3, 4], function(item){ return item>0; });
+		//		dojo.every([1, 2, 3, 4], function(item){ return item>0; });
 		//		// returns true 
 		return this._everyOrSome(true, arr, callback, thisObject); // Boolean
 	},
@@ -182,9 +171,9 @@ dojo.lang.mixin(dojo.lang, {
 		//		information on this can be found here:
 		//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
 		// examples:
-		//		dojo.lang.some([1, 2, 3, 4], function(item){ return item>1; });
+		//		dojo.some([1, 2, 3, 4], function(item){ return item>1; });
 		//		// returns true
-		//		dojo.lang.some([1, 2, 3, 4], function(item){ return item<1; });
+		//		dojo.some([1, 2, 3, 4], function(item){ return item<1; });
 		//		// returns false
 		return this._everyOrSome(false, arr, callback, thisObject); // Boolean
 	},
@@ -199,9 +188,9 @@ dojo.lang.mixin(dojo.lang, {
 		//		More information on the JS 1.6 API can be found here:
 		//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
 		// examples:
-		//		dojo.lang.some([1, 2, 3, 4], function(item){ return item>1; });
+		//		dojo.some([1, 2, 3, 4], function(item){ return item>1; });
 		//		// returns [2, 3, 4]
-		var isString = dojo.lang.isString(arr);
+		var isString = dojo.isString(arr);
 		if(isString){ /*arr: String*/arr = arr.split(""); }
 		var outArr;
 		if(Array.filter){
@@ -224,26 +213,6 @@ dojo.lang.mixin(dojo.lang, {
 		} else {
 			return outArr; // Array
 		}
-	},
-
-	unnest: function(/* ... */){
-		// summary:
-		//		Creates a 1-D array out of all the arguments passed,
-		//		unravelling any array-like objects in the process
-		// usage:
-		//		unnest(1, 2, 3) ==> [1, 2, 3]
-		//		unnest(1, [2, [3], [[[4]]]]) ==> [1, 2, 3, 4]
-
-		var out = [];
-		for(var i = 0; i < arguments.length; i++){
-			if(dojo.lang.isArrayLike(arguments[i])){
-				var add = dojo.lang.unnest.apply(this, arguments[i]);
-				out = out.concat(add);
-			}else{
-				out.push(arguments[i]);
-			}
-		}
-		return out; // Array
 	},
 
 	toArray: function(/*Object*/arrayLike, /*Number*/startOffset){

@@ -122,7 +122,7 @@ dojo._loadUriAndCheck = function(/*String (URL)*/uri, /*String*/moduleName, /*Fu
 	try{
 		ok = this._loadUri(uri, cb);
 	}catch(e){
-		dojo.debug("failed loading ", uri, " with error: ", e);
+		console.debug("failed loading ", uri, " with error: ", e);
 	}
 	return Boolean(ok && this.findModule(moduleName, false)); // Boolean
 }
@@ -196,7 +196,7 @@ dojo.addOnUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
 dojo._modulesLoaded = function(){
 	if(this._postLoad){ return; }
 	if(this._inFlightCount > 0){ 
-		dojo.debug("files still in flight!");
+		console.debug("files still in flight!");
 		return;
 	}
 	dojo._callLoaded();

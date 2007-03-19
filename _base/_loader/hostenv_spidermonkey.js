@@ -49,9 +49,6 @@ dojo._loadUri = function(uri){
 	// TODO: sigh, load() does not return a useful value. 
 	// Perhaps it is returning the value of the last thing evaluated?
 	var ok = load(uri);
-	// dojo.debug("spidermonkey load(", uri, ") returned ", ok);
+	// console.debug("spidermonkey load(", uri, ") returned ", ok);
 	return 1;
 }
-
-dojo.requireIf((djConfig["isDebug"] || djConfig["debugAtAllCosts"]), "dojo.debug");
-

@@ -148,17 +148,6 @@ dojo.exists = function(/*String*/name, /*Object*/obj){
 	return (!!dojo.getObject(name, false, obj)); // Boolean
 }
 
-//Stub functions so things don't break.
-//TODOC:  HOW TO DOC THESE?
-dojo.debug = function(){};
-dojo.debugShallow = function(obj){};
-dojo.profile = { 
-	start: function(){}, 
-	end: function(){}, 
-	stop: function(){}, 
-	dump: function(){}
-};
-
 dojo["eval"] = function(/*String*/ scriptFragment){
 	// summary: 
 	//		Perform an evaluation in the global scope.  Use this rather than
@@ -183,7 +172,7 @@ dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ 
 	var message = "DEPRECATED: " + behaviour;
 	if(extra){ message += " " + extra; }
 	if(removal){ message += " -- will be removed in version: " + removal; }
-	dojo.debug(message);
+	console.debug(message);
 }
 
 dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
@@ -205,7 +194,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	var message = "EXPERIMENTAL: " + moduleName;
 	message += " -- Not yet ready for use.  APIs subject to change without notice.";
 	if(extra){ message += " " + extra; }
-	dojo.debug(message);
+	console.debug(message);
 }
 
 dojo._getText = function(/*String*/ uri){

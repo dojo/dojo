@@ -132,7 +132,7 @@ if(typeof window != 'undefined'){
 				}else{
 					if(4==http.readyState){
 						if(isDocumentOk(http)){
-							// dojo.debug("LOADED URI: "+uri);
+							// console.debug("LOADED URI: "+uri);
 							async_cb(http.responseText);
 						}
 					}

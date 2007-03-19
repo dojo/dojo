@@ -2,6 +2,7 @@ if(typeof window != 'undefined'){
 	dojo.isBrowser = true;
 	dojo._name = "browser";
 
+
 	// attempt to figure out the path to dojo if it isn't set in the config
 	(function(){
 		var d = dojo;
@@ -51,6 +52,7 @@ if(typeof window != 'undefined'){
 		d.locale = d.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
 	})();
 
+	dojo._println = console.debug;
 
 	// These are in order of decreasing likelihood; this will change in time.
 	dojo._XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
@@ -162,8 +164,6 @@ if(typeof window != 'undefined'){
 		this._blockAsync = false;
 		return http.responseText; // String
 	}
-
-	dojo._println = console.debug;
 
 	dojo._handleNodeEvent = function(/*DomNode*/node, /*String*/evtName, /*Function*/fp){
 		// summary:

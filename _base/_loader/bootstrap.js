@@ -25,6 +25,22 @@
 		this.djConfig = {};
 	}
 
+	// firebug stubs
+	if(!this["console"]){
+		this.console = {};
+	}
+	var cn = [
+		"assert", "count", "debug", "dir", "dirxml", "error", "group",
+		"groupEnd", "info", "log", "profile", "profileEnd", "time",
+		"timeEnd", "trace", "warn"
+	];
+	var i=0, tn;
+	while(tn=cn[i++]){
+		if(!console[tn]){
+			console[tn] = function(){};
+		}
+	}
+
 	//TODOC:  HOW TO DOC THIS?
 	// dojo is the root variable of (almost all) our public symbols -- make sure it is defined.
 	if(typeof this["dojo"] == "undefined"){

@@ -1,11 +1,12 @@
+var testGlobal = this;
 try{
 	dojo.provide("tests._base");
+	testGlobal = window;
 }catch(e){}
 
 // the test suite for the bootstrap. Requires hostenv and other base tests at
 // the end
 
-var testGlobal = this;
 
 tests.register("tests.smokeTest", 
 	[
@@ -52,7 +53,7 @@ tests.register("tests.smokeTest",
 	]
 );
 
-if(this["dojo"]){
+if(testGlobal["dojo"]){
 	tests.register("tests._base", 
 		[
 			function dojoIsAvailable(t){
@@ -62,7 +63,7 @@ if(this["dojo"]){
 	);
 }
 
-if(this["setTimeout"]){
+if(testGlobal["setTimeout"]){
 	// a stone-stupid async test
 	tests.register("tests.async", 
 		[

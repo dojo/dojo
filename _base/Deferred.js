@@ -1,5 +1,5 @@
+dojo.provide("dojo._base.Deferred");
 dojo.provide("dojo.Deferred");
-dojo.require("dojo.lang.func");
 
 dojo.Deferred = function(/*Function?*/ canceller){
 	/*
@@ -101,17 +101,17 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	this.silentlyCancelled = false;
 };
 
-dojo.lang.extend(dojo.Deferred, {
+dojo.extend(dojo.Deferred, {
 	getFunctionFromArgs: function(){
 		var a = arguments;
 		if((a[0])&&(!a[1])){
-			if(dojo.lang.isFunction(a[0])){
+			if(typeof a[0] == "function"){
 				return a[0];
-			}else if(dojo.lang.isString(a[0])){
+			}else if(typeof a[0] == "string"){
 				return dj_global[a[0]];
 			}
 		}else if((a[0])&&(a[1])){
-			return dojo.lang.hitch(a[0], a[1]);
+			return dojo.hitch(a[0], a[1]);
 		}
 		return null;
 	},
@@ -134,7 +134,9 @@ dojo.lang.extend(dojo.Deferred, {
 		return 'Deferred(' + this.id + ', ' + state + ')';
 	},
 
-	toString: dojo.lang.forward("repr"),
+	toString: function(){
+		return this.repr.apply(this, arguments);
+	},
 
 	_nextId: (function(){
 		var n = 1;
@@ -229,7 +231,7 @@ dojo.lang.extend(dojo.Deferred, {
 		*/
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.lang.curryArguments(null, enclosed, arguments, 2);
+			enclosed = dojo.partial(null, enclosed, arguments, 2);
 		}
 		return this.addCallbacks(enclosed, enclosed);
 	},
@@ -238,7 +240,7 @@ dojo.lang.extend(dojo.Deferred, {
 		// summary: Add a single callback to the end of the callback sequence.
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.lang.curryArguments(null, enclosed, arguments, 2);
+			enclosed = dojo.partial(null, enclosed, arguments, 2);
 		}
 		return this.addCallbacks(enclosed, null);
 	},
@@ -247,7 +249,7 @@ dojo.lang.extend(dojo.Deferred, {
 		// summary: Add a single callback to the end of the callback sequence.
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.lang.curryArguments(null, enclosed, arguments, 2);
+			enclosed = dojo.partial(null, enclosed, arguments, 2);
 		}
 		return this.addCallbacks(null, enclosed);
 		return this.addCallbacks(null, cbfn);

@@ -1,5 +1,6 @@
 dojo.provide("dojo._base.Deferred");
-dojo.provide("dojo.Deferred");
+
+// FIXME: need to port tests in!!
 
 dojo.Deferred = function(/*Function?*/ canceller){
 	/*
@@ -231,7 +232,7 @@ dojo.extend(dojo.Deferred, {
 		*/
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.partial(null, enclosed, arguments, 2);
+			enclosed = dojo.hitch(null, enclosed, arguments, 2);
 		}
 		return this.addCallbacks(enclosed, enclosed);
 	},
@@ -240,7 +241,7 @@ dojo.extend(dojo.Deferred, {
 		// summary: Add a single callback to the end of the callback sequence.
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.partial(null, enclosed, arguments, 2);
+			enclosed = dojo.hitch(null, enclosed, arguments, 2);
 		}
 		return this.addCallbacks(enclosed, null);
 	},
@@ -249,7 +250,7 @@ dojo.extend(dojo.Deferred, {
 		// summary: Add a single callback to the end of the callback sequence.
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.partial(null, enclosed, arguments, 2);
+			enclosed = dojo.hitch(null, enclosed, arguments, 2);
 		}
 		return this.addCallbacks(null, enclosed);
 		return this.addCallbacks(null, cbfn);

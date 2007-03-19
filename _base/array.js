@@ -4,27 +4,27 @@ dojo.provide("dojo._base.array");
 // FIXME: what about isEmpty and toArray?
 dojo.mixin(dojo, {
 
-	isEmpty: function(/*Object*/obj){
-		// summary:
-		//		determines if the passed object is "empty".
-		// description:
-		//		In the case of array-like objects, the length property is
-		//		examined, but for other types of objects iteration is used to
-		//		examine the iterable "surface area" to determine if any
-		//		non-prototypal properties have been assigned. This iteration is
-		//		prototype-extension safe.
-		if(dojo.isArrayLike(obj) || dojo.isString(obj)){
-			return obj.length === 0; // Boolean
-		}else if(dojo.isObject(obj)){
-			var tmp = {};
-			for(var x in obj){
-				if(obj[x] && (!tmp[x])){
-					return false;
-				} 
-			}
-			return true; // Boolean
-		}
-	},
+	// isEmpty: function(/*Object*/obj){
+	// 	// summary:
+	// 	//		determines if the passed object is "empty".
+	// 	// description:
+	// 	//		In the case of array-like objects, the length property is
+	// 	//		examined, but for other types of objects iteration is used to
+	// 	//		examine the iterable "surface area" to determine if any
+	// 	//		non-prototypal properties have been assigned. This iteration is
+	// 	//		prototype-extension safe.
+	// 	if(typeof obj.length != "undefined"){
+	// 		return obj.length === 0; // Boolean
+	// 	}else if(obj instanceof Object){
+	// 		var tmp = {};
+	// 		for(var x in obj){
+	// 			if(obj[x] && (!tmp[x])){
+	// 				return false;
+	// 			} 
+	// 		}
+	// 		return true; // Boolean
+	// 	}
+	// },
 
 	map: function(/*Array*/arr, /*Object|Function*/obj, /*Function?*/unary_func){
 		// summary:
@@ -45,7 +45,7 @@ dojo.mixin(dojo, {
 			// arr: String
 			arr = arr.split("");
 		}
-		if(dojo.isFunction(obj)&&(!unary_func)){
+		if((typeof obj == "function")&&(!unary_func)){
 			unary_func = obj;
 			obj = dj_global;
 		}else if(dojo.isFunction(obj) && unary_func){
@@ -197,7 +197,9 @@ dojo.mixin(dojo, {
 			outArr = Array.filter(arr, callback, thisObject);
 		}else{
 			if(!thisObject){
-				if(arguments.length >= 3){ dojo.raise("thisObject doesn't exist!"); }
+				if(arguments.length >= 3){ 
+					throw new Error("thisObject doesn't exist!");
+				}
 				thisObject = dj_global;
 			}
 
@@ -213,16 +215,16 @@ dojo.mixin(dojo, {
 		} else {
 			return outArr; // Array
 		}
-	},
+	} //,
 
-	toArray: function(/*Object*/arrayLike, /*Number*/startOffset){
-		// summary:
-		//		Converts an array-like object (i.e. arguments, DOMCollection)
-		//		to an array. Returns a new Array object.
-		var array = [];
-		for(var i = startOffset||0; i < arrayLike.length; i++){
-			array.push(arrayLike[i]);
-		}
-		return array; // Array
-	}
+	// toArray: function(/*Object*/arrayLike, /*Number*/startOffset){
+	//	// summary:
+	//	//		Converts an array-like object (i.e. arguments, DOMCollection)
+	//	//		to an array. Returns a new Array object.
+	//	var array = [];
+	//	for(var i = startOffset||0; i < arrayLike.length; i++){
+	//		array.push(arrayLike[i]);
+	//	}
+	//	return array; // Array
+	//}
 });

@@ -124,7 +124,7 @@ dojo._loadUriAndCheck = function(/*String (URL)*/uri, /*String*/moduleName, /*Fu
 	}catch(e){
 		console.debug("failed loading ", uri, " with error: ", e);
 	}
-	return Boolean(ok && this.findModule(moduleName, false)); // Boolean
+	return Boolean(ok && this._loadedModules[moduleName]); // Boolean
 }
 
 dojo.loaded = function(){
@@ -272,7 +272,7 @@ dojo._loadModule = function(	/*String*/moduleName,
 	//		dj_load is an alias for dojo._loadModule
 
 	omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
-	var module = this.findModule(moduleName, false);
+	var module = this._loadedModules[moduleName];
 	if(module){
 		return module;
 	}
@@ -317,7 +317,7 @@ dojo._loadModule = function(	/*String*/moduleName,
 	// Don't bother if we're doing xdomain (asynchronous) loading.
 	if(!omitModuleCheck && !this["isXDomain"]){
 		// pass in false so we can give better error
-		module = this.findModule(moduleName, false);
+		module = this._loadedModules[moduleName];
 		if(!module){
 			throw new Error("symbol '" + moduleName + "' is not defined after loading '" + relpath + "'"); 
 		}
@@ -366,28 +366,6 @@ dojo.provide = function(/*String*/ packageName){
 	this._loadedModules[strippedPkgName] = evaledPkg;
 	
 	return evaledPkg; // Object
-}
-
-dojo.findModule = function(/*String*/moduleName, /*Boolean?*/mustExist){
-	//	summary:
-	//		Returns the Object representing the module, if it exists, otherwise
-	//		null.
-	//	moduleName: 
-	//		A fully qualified module including package name, like 'A.B'.
-	//	mustExist: 
-	//		Optional, default false. throw instead of returning null if the
-	//		module does not currently exist.
-
-	var lmn = String(moduleName);
-
-	if(this._loadedModules[lmn]){
-		return this._loadedModules[lmn]; // Object
-	}
-
-	if(mustExist){
-		dojo.raise("no loaded module named '" + moduleName + "'");
-	}
-	return null; // null
 }
 
 //Start of old bootstrap2:

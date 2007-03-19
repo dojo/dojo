@@ -75,6 +75,7 @@ if(window["dojo"]){
 				oi.apply(tests, arguments);
 				var lb = byId("logBody");
 				if(lb){
+					// clear the console before each run
 					while(lb.firstChild){
 						lb.removeChild(lb.firstChild);
 					}
@@ -290,6 +291,12 @@ if(window["dojo"]){
 					}
 				}
 				tests._onEnd = toggleRunning;
+				tests.run = (function(oldRun){
+					return function(){
+						toggleRunning();
+						return oldRun.apply(tests, arguments);
+					}
+				})(tests.run);
 				var btns = byId("toggleButtons").getElementsByTagName("span");
 				var node; var idx=0;
 				while(node=btns[idx++]){

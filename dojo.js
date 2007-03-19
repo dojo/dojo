@@ -57,17 +57,20 @@ if(typeof dojo == "undefined"){
 				}
 			}
 		}
+		for(var x=0; x < tmps.length; x++){
+			tmps[x] = root+"_base/_loader/"+tmps[x];
+		}
+		tmps.push(root+"_base.js");
 	
 		for(var x=0; x < tmps.length; x++){
-			var spath = root+"_base/_loader/"+tmps[x];
 			if(isRhino||isSpidermonkey){
-				load(spath);
+				load(tmps[x]);
 			}else{
 				try{
-					document.write("<scr"+"ipt type='text/javascript' src='"+spath+"'></scr"+"ipt>");
+					document.write("<scr"+"ipt type='text/javascript' src='"+tmps[x]+"'></scr"+"ipt>");
 				}catch(e){
 					var script = document.createElement("script");
-					script.src = spath;
+					script.src = tmps[x];
 					document.getElementsByTagName("head")[0].appendChild(script);
 				}
 			}

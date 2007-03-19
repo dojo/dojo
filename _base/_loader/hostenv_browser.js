@@ -303,23 +303,15 @@ if(typeof window != 'undefined'){
 			// doc:
 			//		optional, defaults to the current value of dojo._currentDocument.
 			//		Can be used to retreive node references from other documents.
+
 			if((id)&&((typeof id == "string")||(id instanceof String))){
-				doc = doc||dojo.doc();
-				var ele = doc.getElementById(id);
-				// workaround bug in IE and Opera 8.2 where getElementById
-				// returns wrong element
-				if(ele && (ele.id != id)){
-					ele = null;
-					// get all matching elements with this id
-					var eles = doc.all[id];
-					if(!eles.length){ return eles; }
-					// if more than 1, choose first with the correct id
-					var i=0, te;
-					while(te=eles[i++]){
-						if(te.id == id){ return te; }
-					}
+				var eles = doc.all[id];
+				if(!eles.length){ return eles; }
+				// if more than 1, choose first with the correct id
+				var i=0, te;
+				while(te=eles[i++]){
+					if(te.id == id){ return te; }
 				}
-				return ele; // DomNode
 			}
 			return id; // DomNode
 		}

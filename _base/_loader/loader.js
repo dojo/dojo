@@ -43,7 +43,7 @@
 		//WARNING: 
 		//		This variable is referenced by packages outside of bootstrap:
 		//		FloatingPane.js and undo/browser.js
-		post_load_: false,
+		_postLoad: false,
 		
 		//Egad! Lots of test files push on this directly instead of using dojo.addOnLoad.
 		_loaders: [],
@@ -129,7 +129,7 @@ dojo._loadUriAndCheck = function(/*String (URL)*/uri, /*String*/moduleName, /*Fu
 
 dojo.loaded = function(){
 	this._loadNotifying = true;
-	this.post_load_ = true;
+	this._postLoad = true;
 	var mll = this._loaders;
 	for(var x=0; x<mll.length; x++){
 		mll[x]();
@@ -173,7 +173,7 @@ dojo.addOnLoad = function(/*Object?*/obj, /*String|Function*/functionName) {
 	//indicate callbacks after doing some dojo.require() statements.
 	//In the xdomain case, if all the requires are loaded (after initial
 	//page load), then immediately call any listeners.
-	if(d.post_load_ && d._inFlightCount == 0 && !d._loadNotifying){
+	if(d._postLoad && d._inFlightCount == 0 && !d._loadNotifying){
 		d._callLoaded();
 	}
 }
@@ -194,7 +194,7 @@ dojo.addOnUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
 }
 
 dojo._modulesLoaded = function(){
-	if(this.post_load_){ return; }
+	if(this._postLoad){ return; }
 	if(this._inFlightCount > 0){ 
 		dojo.debug("files still in flight!");
 		return;

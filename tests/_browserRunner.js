@@ -70,6 +70,18 @@ if(window["dojo"]){
 			byId("logBody").appendChild(tn);
 		}
 
+		tests._init = (function(oi){
+			return function(){
+				oi.apply(tests, arguments);
+				var lb = byId("logBody");
+				if(lb){
+					while(lb.firstChild){
+						lb.removeChild(lb.firstChild);
+					}
+				}
+			}
+		})(tests._init);
+
 		if(window["console"]){
 			if(console.info){
 				tests.debug = function(){

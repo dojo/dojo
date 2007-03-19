@@ -187,9 +187,9 @@ if(typeof window != 'undefined'){
 		var type = (e && e.type) ? e.type.toLowerCase() : "load";
 		if(arguments.callee.initialized || (type!="domcontentloaded" && type!="load")){ return; }
 		arguments.callee.initialized = true;
-		if(typeof(_timer) != 'undefined'){
-			clearInterval(_timer);
-			delete _timer;
+		if(typeof dojo["_khtmlTimer"] != 'undefined'){
+			clearInterval(dojo._khtmlTimer);
+			delete dojo._khtmlTimer;
 		}
 
 		if(dojo._inFlightCount == 0){
@@ -226,7 +226,7 @@ if(typeof window != 'undefined'){
 	}
 
 	if(/(WebKit|khtml)/i.test(navigator.userAgent)){ // sniff
-		var _timer = setInterval(function(){
+		dojo._khtmlTimer = setInterval(function(){
 			if(/loaded|complete/.test(document.readyState)){
 				dojo._loadInit(); // call the onload handler
 			}

@@ -216,7 +216,7 @@ dojo._callLoaded = function(){
 	}
 }
 
-dojo.getModuleSymbols = function(/*String*/modulename){
+dojo._getModuleSymbols = function(/*String*/modulename){
 	// summary:
 	//		Converts a module name in dotted JS notation to an array
 	//		representing the path in the source tree
@@ -282,7 +282,7 @@ dojo._loadModule = function(	/*String*/moduleName,
 
 	var nsyms = moduleName.split(".");
 	
-	var syms = this.getModuleSymbols(moduleName);
+	var syms = this._getModuleSymbols(moduleName);
 	// console.debug(syms);
 	var startedRelative = ((syms[0].charAt(0) != '/') && !syms[0].match(/^\w+:/));
 	var last = syms[syms.length - 1];

@@ -157,6 +157,8 @@ dojo["eval"] = function(/*String*/ scriptFragment){
 
 	// FIXME: investigate Joseph Smarr's technique for IE:
 	//		http://josephsmarr.com/2007/01/31/fixing-eval-to-use-global-scope-in-ie/
+	//	see also:
+	// 		http://trac.dojotoolkit.org/ticket/744
 	return dojo.global().eval ? dojo.global().eval(scriptFragment) : eval(scriptFragment); 	// mixed
 }
 

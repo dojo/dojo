@@ -100,7 +100,7 @@ dojo.version = {
 	}
 }
 
-dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/obj, /*Boolean*/returnWrapper){
+dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/obj){
 	// summary: 
 	//		gets an object from a dot-separated string, such as "A.B.C"
 	//	description: 
@@ -114,9 +114,6 @@ dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/obj, /*Bo
 	//	create: 
 	//		Optional. If true, Objects will be created at any point along the
 	//		'path' that is undefined.
-	//	returnWrapper:
-	//		Optional. Returns an object with two properties, 'obj' and 'prop'.
-	//		'obj[prop]' is the reference indicated by 'name'.
 	var tprop, tobj = obj||dojo.global();
 	var parts=name.split("."), i=0, lobj, tmp, tname;
 	do{
@@ -129,9 +126,7 @@ dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/obj, /*Bo
 		tobj = tmp;
 		i++;
 	}while(i<parts.length && tobj);
-	tprop = tobj;
-	tobj = lobj;
-	return (returnWrapper) ? { obj: tobj, prop: tname } : tprop; // Object
+	return tobj; // Object
 }
 
 dojo.exists = function(/*String*/name, /*Object*/obj){

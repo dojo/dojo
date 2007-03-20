@@ -377,7 +377,7 @@ tests.registerTest = function(/*String*/ group, /*Function or Object*/ test){
 			try{
 				var fStr = "function ";
 				var ts = tObj.runTest+"";
-				if(0 == ts.indexOf(fStr)){
+				if(0 <= ts.indexOf(fStr)){
 					tObj.name = ts.split(fStr)[1].split("(", 1)[0];
 				}
 				// tests.debug(tObj.runTest.toSource());

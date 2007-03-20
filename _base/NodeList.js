@@ -2,6 +2,8 @@ dojo.provide("dojo._base.NodeList");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.array");
 
+// FIXME: need to provide a location to extend this object!!
+
 (function(){
 
 	var d = dojo;

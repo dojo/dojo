@@ -17,6 +17,19 @@ tests.register("tests._base.array",
 			t.assertTrue(dojo.indexOf(foo, bar) == 3);
 		},
 
+		function testLastIndexOf(t){
+			var foo = new Array(128, 256, 512);
+			var bar = new Array("aaa", "bbb", "aaa", "ccc");
+			
+			t.assertTrue(dojo.indexOf([45, 56, 85], 56) == 1);
+			t.assertTrue(dojo.indexOf([Number, String, Date], String) == 1);
+			t.assertTrue(dojo.lastIndexOf(foo, foo[1]) == 1);
+			t.assertTrue(dojo.lastIndexOf(foo, foo[2]) == 2);
+			t.assertTrue(dojo.lastIndexOf(bar, bar[1]) == 1);
+			t.assertTrue(dojo.lastIndexOf(bar, bar[2]) == 2);
+			t.assertTrue(dojo.lastIndexOf(bar, bar[0]) == 2);
+		},
+
 		function testForEach(t){
 			var foo = new Array(128, "bbb", 512);
 			var ok = true;

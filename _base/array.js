@@ -59,10 +59,11 @@ dojo.mixin(dojo, {
 			// arr: String
 			arr = arr.split("");
 		}
+		// FIXME: keep supporting all these call styles?
 		if((typeof obj == "function")&&(!unary_func)){
 			unary_func = obj;
-			obj = dj_global;
-		}else if(dojo.isFunction(obj) && unary_func){
+			obj = dojo.global();
+		}else if((typeof obj == "function") && unary_func){
 			// ff 1.5 compat
 			var tmpObj = obj;
 			obj = unary_func;
@@ -99,10 +100,9 @@ dojo.mixin(dojo, {
 		if(Array.forEach){
 			Array.forEach(anArray, callback, thisObject);
 		}else{
-			// FIXME: there are several ways of handilng thisObject. Is dj_global always the default context?
-			if(!thisObject){
-				thisObject=dj_global;
-			}
+			// FIXME: there are several ways of handilng thisObject. Is
+			// dojo.global()always the default context?
+			thisObject = thisObject||dojo.global();
 			for(var i=0,l=anArray.length; i<l; i++){ 
 				callback.call(thisObject, anArray[i], i, anArray);
 			}
@@ -117,9 +117,7 @@ dojo.mixin(dojo, {
 		if(Array.every){
 			return Array[ every ? "every" : "some" ](arr, callback, thisObject);
 		}else{
-			if(!thisObject){
-				thisObject = dj_global;
-			}
+			thisObject = thisObject||dojo.global();
 			for(var i=0,l=arr.length; i<l; i++){
 				var result = callback.call(thisObject, arr[i], i, arr);
 				if(every && !result){
@@ -176,7 +174,7 @@ dojo.mixin(dojo, {
 		// examples:
 		//		dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
 		//		// returns [2, 3, 4]
-		var isString = dojo.isString(arr);
+		var isString = (typeof arr == "string");
 		if(isString){ /*arr: String*/arr = arr.split(""); }
 		var outArr;
 		if(Array.filter){
@@ -186,7 +184,7 @@ dojo.mixin(dojo, {
 				if(arguments.length >= 3){ 
 					throw new Error("thisObject doesn't exist!");
 				}
-				thisObject = dj_global;
+				thisObject = dojo.global();
 			}
 
 			outArr = [];

@@ -72,7 +72,6 @@ if(window["dojo"]){
 
 		tests._init = (function(oi){
 			return function(){
-				oi.apply(tests, arguments);
 				var lb = byId("logBody");
 				if(lb){
 					// clear the console before each run
@@ -80,6 +79,7 @@ if(window["dojo"]){
 						lb.removeChild(lb.firstChild);
 					}
 				}
+				oi.apply(tests, arguments);
 			}
 		})(tests._init);
 

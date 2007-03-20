@@ -297,6 +297,7 @@ tests.extend(tests.Deferred, {
 //
 
 tests._testCount = 0;
+tests._groupCount = 0;
 tests._errorCount = 0;
 tests._failureCount = 0;
 tests._currentGroup = null;
@@ -308,6 +309,7 @@ tests._init = function(){
 	this._currentTest = null;
 	this._errorCount = 0;
 	this._failureCount = 0;
+	this.debug(this._testCount, "tests to run in", this._groupCount, "groups");
 }
 
 // tests._urls = [];
@@ -364,6 +366,7 @@ tests.registerTest = function(/*String*/ group, /*Function or Object*/ test){
 	//		"tearDown" methods. These will be invoked on either side of the
 	//		"runTest" method (respectively) when the test is run.
 	if(!this._groups[group]){
+		this._groupCount++;
 		this._groups[group] = [];
 		this._groups[group].inFlight = 0;
 	}

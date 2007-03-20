@@ -1,18 +1,10 @@
-dojo.provide("dojo.NodeList");
-dojo.require("dojo.lang.*");
-dojo.require("dojo.dom");
-dojo.require("dojo.experimental");
-dojo.experimental("dojo.NodeList");
+dojo.provide("dojo._base.NodeList");
+dojo.require("dojo._base.lang");
+dojo.require("dojo._base.array");
 
 (function(){
 
 	var d = dojo;
-	var h = d.render.html;
-
-	/*
-	dojo.NodeBox = function(elem){
-	}
-	*/
 
 	dojo.NodeList = function(){
 		// NodeList constructor...should probably call down to the superclass ctor?
@@ -29,19 +21,9 @@ dojo.experimental("dojo.NodeList");
 	}
 	dojo.NodeList.prototype = new Array;
 
-	dojo.lang.extend(dojo.NodeList,
+	dojo.extend(dojo.NodeList,
 		{
-			// http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods
-			// must implement the following JS 1.6 methods:
-			//		forEach()
-			//		every()
-			//		some()
-			//		map()
-			//		filter()
-			//		indexOf()
-			//		lastIndexOf()
-
-			box: (h.ie) ? function(){
+			box: (d.isIE) ? function(){
 				// returns a box object for the first element in a node list
 				dojo.debug("dojo.NodeList.box is unimplemented");
 			} : function(){
@@ -65,15 +47,16 @@ dojo.experimental("dojo.NodeList");
 			},
 
 			place: function(queryOrNode, position){
-				// placement always relative to the first element matched by
-				// queryOrNode
-
-				// position can be one of:
-				//		"last"||"end" (default)
-				//		"first||"start"
-				//		"before"
-				//		"after"
-				// or an offset in the childNodes property
+				// summary:
+				//		placement always relative to the first element matched
+				//		by queryOrNode
+				// position:
+				//		can be one of:
+				//			"last"||"end" (default)
+				//			"first||"start"
+				//			"before"
+				//			"after"
+				// 		or an offset in the childNodes property
 				var item = dojo.query(queryOrNode)[0];
 				position = position||"last";
 
@@ -95,15 +78,16 @@ dojo.experimental("dojo.NodeList");
 			},
 
 			adopt: function(queryOrListOrNode, position){
-				// places any/all elements in queryOrListOrNode at a position
-				// relative to the first element in this list.
-
-				// position can be one of:
-				//		"last"||"end" (default)
-				//		"first||"start"
-				//		"before"
-				//		"after"
-				// or an offset in the childNodes property
+				// summary:
+				//		places any/all elements in queryOrListOrNode at a
+				//		position relative to the first element in this list.
+				// position:
+				//		can be one of:
+				//			"last"||"end" (default)
+				//			"first||"start"
+				//			"before"
+				//			"after"
+				// 		or an offset in the childNodes property
 				var item = this[0];
 				position = position||"last";
 				var adoptees = dojo.query(queryOrListOrNode);
@@ -146,7 +130,7 @@ dojo.experimental("dojo.NodeList");
 						return items;
 					}
 				}
-				return dojo.lang.filter(items, arguments[1], arguments[2]);
+				return dojo.filter(items, arguments[1], arguments[2]);
 			},
 
 			addContent: function(content, position){
@@ -166,37 +150,43 @@ dojo.experimental("dojo.NodeList");
 	// subclassing arrays on IE
 	//		http://dean.edwards.name/weblog/2006/11/hooray/?full
 	//		http://www.hedgerwow.com/360/dhtml/js-array2.html
-	if(h.ie){
-		var dl = d.lang;
+	if(!Array.forEach){
 		// make sure that it has all the JS 1.6 things we need before we subclass
-		dl.extend(dojo.NodeList,
+		dojo.extend(dojo.NodeList,
 			{
 				// http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods
 				// must implement the following JS 1.6 methods:
 
-				// fixme: we can't use hitch here as it binds to an object,
-				// which we don't want. Time for a real partial() ?
+				// FIXME: would it be smaller if we set these w/ iteration?
+				indexOf: function(value, identity){
+					return dojo.indexOf(this, value, identity);
+				},
+
+				lastIndexOf: function(value, identity){
+					return dojo.lastIndexOf(this, value, identity);
+				},
+
 				forEach: function(callback, thisObj){
-					return dl.forEach(this, callback, thisObj);
+					return dojo.forEach(this, callback, thisObj);
 				},
 
 				every: function(callback, thisObj){
-					return dl.every(this, callback, thisObj);
+					return dojo.every(this, callback, thisObj);
 				},
 
 				some: function(callback, thisObj){
-					return dl.some(this, callback, thisObj);
+					return dojo.some(this, callback, thisObj);
 				},
 
 				map: function(obj, unary_func){
-					return dl.map(this, obj, unary_func);
+					return dojo.map(this, obj, unary_func);
 				}
 
 				// NOTE: filter() is handled in NodeList by default
 			}
 		);
-
-
+	}
+	if(dojo.isIE){
 
 		var subClassStr = function(className){
 			return (
@@ -217,36 +207,4 @@ dojo.experimental("dojo.NodeList");
 		popup.show(1, 1, 1, 1);
 
 	}
-	// look, ma, it's synchronous!
-	/*
-	var tw = window;
-	dojo.addOnLoad(function(){
-		dojo.lang.delayThese([
-			function(){
-				var tna = new dojo.NodeList("blah", "blah", "blah");
-				dojo.debug((new dojo.NodeList()).length);
-			},
-			function(){
-				var tna = new dojo.NodeList("blah", "blah", "blah");
-				dojo.debug((new dojo.NodeList()).length);
-			},
-			function(){
-				var tna = new dojo.NodeList("blah", "blah", "blah");
-				dojo.debug((new dojo.NodeList()).length);
-			},
-			function(){
-				var tna = new dojo.NodeList("blah", "blah", "blah");
-				dojo.debug((new dojo.NodeList()).length);
-				dojo.debug((new dojo.NodeList()).length);
-				new dojo.NodeList();
-				tna.push("blah");
-				tna.push("blah");
-				tna.push("blah");
-				// alert(tna.length);
-				// alert(tna.length == 6);
-			}
-		], null, 100);
-	});
-	*/
 })();
-var dnl = dojo.NodeList;

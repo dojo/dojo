@@ -1,11 +1,8 @@
-dojo.provide("dojo.query");
-dojo.require("dojo.NodeList");
-dojo.require("dojo.experimental");
-dojo.experimental("dojo.query");
+dojo.provide("dojo._base.query");
+dojo.require("dojo._base.NodeList");
 
 ;(function(){
 	var d = dojo;
-	var h = d.render.html;
 
 	////////////////////////////////////////////////////////////////////////
 	// Utility code
@@ -679,7 +676,7 @@ dojo.experimental("dojo.query");
 
 		}
 		// [ "#", ".", "[", ":" ];
-		var defaultGetter = (h.ie) ?
+		var defaultGetter = (d.isIE) ?
 			function(cond){
 				return function(elem){
 					return elem[cond];
@@ -932,7 +929,7 @@ dojo.experimental("dojo.query");
 		//		function to determine on the fly if we should stick w/ the
 		//		potentially optimized variant or if we should try something
 		//		new.
-		(document["evaluate"] && !h.safari) ? 
+		(document["evaluate"] && !d.isSafari) ? 
 		function(query){
 			// has xpath support that's faster than DOM
 			var qparts = query.split(" ");

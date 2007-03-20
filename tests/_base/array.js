@@ -1,6 +1,5 @@
 dojo.provide("tests._base.array");
 
-
 tests.register("tests._base.array", 
 	[
 		function testIndexOf(t){

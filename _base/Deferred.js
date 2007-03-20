@@ -109,7 +109,7 @@ dojo.extend(dojo.Deferred, {
 			if(typeof a[0] == "function"){
 				return a[0];
 			}else if(typeof a[0] == "string"){
-				return dj_global[a[0]];
+				return dojo.global()[a[0]];
 			}
 		}else if((a[0])&&(a[1])){
 			return dojo.hitch(a[0], a[1]);
@@ -117,7 +117,7 @@ dojo.extend(dojo.Deferred, {
 		return null;
 	},
 
-	makeCalled: function() {
+	makeCalled: function(){
 		var deferred = new dojo.Deferred();
 		deferred.callback();
 		return deferred;
@@ -129,7 +129,7 @@ dojo.extend(dojo.Deferred, {
 			state = 'unfired';
 		}else if(this.fired == 0){
 			state = 'success';
-		} else {
+		}else{
 			state = 'error';
 		}
 		return 'Deferred(' + this.id + ', ' + state + ')';
@@ -160,8 +160,9 @@ dojo.extend(dojo.Deferred, {
 			if(this.fired == -1){
 				this.errback(new Error(this.repr()));
 			}
-		}else if(	(this.fired == 0)&&
-					(this.results[0] instanceof dojo.Deferred)){
+		}else if(	(this.fired == 0) &&
+					(this.results[0] instanceof dojo.Deferred)
+		){
 			this.results[0].cancel();
 		}
 	},
@@ -176,7 +177,10 @@ dojo.extend(dojo.Deferred, {
 		// summary: Used internally to signal that it's no longer waiting on
 		// another Deferred.
 		this.paused--;
-		if ((this.paused == 0) && (this.fired >= 0)) {
+		if(
+			(this.paused == 0) && 
+			(this.fired >= 0)
+		){
 			this._fire();
 		}
 	},
@@ -197,7 +201,7 @@ dojo.extend(dojo.Deferred, {
 	_check: function(){
 		if(this.fired != -1){
 			if(!this.silentlyCancelled){
-				dojo.raise("already called!");
+				throw new Error("already called!");
 			}
 			this.silentlyCancelled = false;
 			return;
@@ -232,7 +236,7 @@ dojo.extend(dojo.Deferred, {
 		*/
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.hitch(null, enclosed, arguments, 2);
+			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
 		return this.addCallbacks(enclosed, enclosed);
 	},
@@ -241,7 +245,7 @@ dojo.extend(dojo.Deferred, {
 		// summary: Add a single callback to the end of the callback sequence.
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.hitch(null, enclosed, arguments, 2);
+			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
 		return this.addCallbacks(enclosed, null);
 	},
@@ -250,17 +254,17 @@ dojo.extend(dojo.Deferred, {
 		// summary: Add a single callback to the end of the callback sequence.
 		var enclosed = this.getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
-			enclosed = dojo.hitch(null, enclosed, arguments, 2);
+			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
 		return this.addCallbacks(null, enclosed);
 		return this.addCallbacks(null, cbfn);
 	},
 
-	addCallbacks: function (cb, eb) {
+	addCallbacks: function(cb, eb){
 		// summary: Add separate callback and errback to the end of the callback
 		// sequence.
 		this.chain.push([cb, eb])
-		if (this.fired >= 0) {
+		if(this.fired >= 0){
 			this._fire();
 		}
 		return this;
@@ -274,17 +278,20 @@ dojo.extend(dojo.Deferred, {
 		var res = this.results[fired];
 		var self = this;
 		var cb = null;
-		while (chain.length > 0 && this.paused == 0) {
+		while(
+			(chain.length > 0) &&
+			(this.paused == 0)
+		){
 			// Array
 			var pair = chain.shift();
 			var f = pair[fired];
-			if (f == null) {
+			if(f == null){
 				continue;
 			}
-			try {
+			try{
 				res = f(res);
 				fired = ((res instanceof Error) ? 1 : 0);
-				if(res instanceof dojo.Deferred) {
+				if(res instanceof dojo.Deferred){
 					cb = function(res){
 						self._continue(res);
 					}

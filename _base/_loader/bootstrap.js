@@ -159,6 +159,9 @@ dojo["eval"] = function(/*String*/ scriptFragment){
 	//	 - JSC eval() takes an optional second argument which can be 'unsafe'.
 	//	 - Mozilla/SpiderMonkey eval() takes an optional second argument which is the
 	//  	 scope object for new symbols.
+
+	// FIXME: investigate Joseph Smarr's technique for IE:
+	//		http://josephsmarr.com/2007/01/31/fixing-eval-to-use-global-scope-in-ie/
 	return dojo.global().eval ? dojo.global().eval(scriptFragment) : eval(scriptFragment); 	// mixed
 }
 

@@ -109,6 +109,7 @@ if(tests.selfTest){
 try{
 	// go grab the others
 	dojo.require("tests._base._loader.bootstrap");
+	dojo.require("tests._base.array");
 	// FIXME: add test includes for the rest of the Dojo Base groups here
 }catch(e){
 	tests.debug(e);

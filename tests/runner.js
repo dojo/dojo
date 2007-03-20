@@ -521,6 +521,7 @@ tests._handleFailure = function(groupName, fixture, e){
 	}else{
 		this._errorCount++;
 	}
+	this.debug(e);
 	if(fixture.runTest["toSource"]){
 		var ss = fixture.runTest.toSource();
 		this.debug("\tERROR IN:\n\t\t", ss);

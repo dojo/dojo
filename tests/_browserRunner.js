@@ -91,11 +91,11 @@ if(window["dojo"]){
 				}
 			}else{
 				tests.debug = function(){
-					sendToLogPane.apply(window, arguments);
 					var msg = "";
 					for(var x=0; x<arguments.length; x++){
 						msg += " "+arguments[x];
 					}
+					sendToLogPane(msg);
 					console.log("DEBUG:"+msg);
 				}
 			}

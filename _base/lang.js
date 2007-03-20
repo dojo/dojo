@@ -1,5 +1,60 @@
 dojo.provide("dojo._base.lang");
 
+// Crockford functions (ish)
+
+dojo.isString = function(/*anything*/ it){
+	// summary:	Return true if it is a String.
+	return (typeof it == "string" || it instanceof String);
+}
+
+dojo.isArray = function(/*anything*/ it){
+	// summary: Return true of it is an Array
+
+	// FIXME: should we handle dojo.NodeList for the IE case here?
+	return (it && it instanceof Array || typeof it == "array"); // Boolean
+}
+
+if(dojo.isBrowser && dojo.isSafari){
+	// only slow this down w/ gratuitious casting in Safari since it's what's b0rken
+	dojo.isFunction = function(/*anything*/ it){
+		if((typeof(it) == "function") && (it == "[object NodeList]")){ return false; }
+		return (it instanceof Function || typeof it == "function"); // Boolean
+	}
+}else{
+	dojo.isFunction = function(/*anything*/ it){
+		return (it instanceof Function || typeof it == "function"); // Boolean
+	}
+}
+
+dojo.isObject = function(/*anything*/ it){
+	if(typeof it == "undefined"){ return false; }
+	// FIXME: why true for null?
+	return (it === null || typeof it == "object" || dojo.isArray(it) || dojo.isFunction(it)); // Boolean
+}
+
+dojo.isArrayLike = function(/*anything*/ it){
+	// return:
+	//		If it walks like a duck and quicks like a duck, return true
+	var d = dojo;
+	if((!it)||(typeof it == "undefined")){ return false; }
+	if(d.isString(it)){ return false; }
+	// keep out built-in constructors (Number, String, ...) which have length
+	// properties
+	if(d.isFunction(it)){ return false; } 
+	if(d.isArray(it)){ return true; }
+	if((it.tagName)&&(it.tagName.toLowerCase()=='form')){ return false; }
+	if(isFinite(it.length)){ return true; }
+	return false; // Boolean
+}
+
+dojo.isAlien = function(/*anything*/ it){
+	// summary: 
+	//		Returns true if it is a built-in function or some other kind of
+	//		oddball that *should* report as a function but doesn't
+	if(!it){ return false; }
+	return !dojo.isFunction(it) && /\{\s*\[native code\]\s*\}/.test(String(it)); // Boolean
+}
+
 dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
 	// summary:
 	//		Adds all properties and methods of props to obj. This addition is
@@ -70,7 +125,7 @@ dojo.hitch = function(/*Object*/thisObject, /*Function|String*/method /*, ...*/)
 	for(var x=2; x<arguments.length; x++){
 		args.push(arguments[x]);
 	}
-	var fcn = ((typeof method == "string") ? (thisObject||dojo.global())[method] : method) || function(){};
+	var fcn = ((dojo.isString(method)) ? (thisObject||dojo.global())[method] : method) || function(){};
 	return function(){
 		var ta = args.concat([]); // make a copy
 		for(var x=0; x<arguments.length; x++){

@@ -1,4 +1,5 @@
 dojo.provide("dojo._base.Deferred");
+dojo.require("dojo._base.lang");
 
 // FIXME: need to port tests in!!
 
@@ -106,9 +107,9 @@ dojo.extend(dojo.Deferred, {
 	getFunctionFromArgs: function(){
 		var a = arguments;
 		if((a[0])&&(!a[1])){
-			if(typeof a[0] == "function"){
+			if(dojo.isFunction(a[0])){
 				return a[0];
-			}else if(typeof a[0] == "string"){
+			}else if(dojo.isString(a[0])){
 				return dojo.global()[a[0]];
 			}
 		}else if((a[0])&&(a[1])){

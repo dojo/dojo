@@ -110,6 +110,7 @@ try{
 	// go grab the others
 	dojo.require("tests._base._loader.bootstrap");
 	dojo.require("tests._base.array");
+	dojo.require("tests._base.lang");
 	dojo.require("tests._base.Deferred");
 	// FIXME: add test includes for the rest of the Dojo Base groups here
 }catch(e){

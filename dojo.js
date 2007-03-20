@@ -57,6 +57,8 @@ if(typeof dojo == "undefined"){
 				}
 			}
 		}
+		// FIXME: should we be adding the lang stuff here so we can count on it
+		// before the bootstrap stuff?
 		for(var x=0; x < tmps.length; x++){
 			tmps[x] = root+"_base/_loader/"+tmps[x];
 		}

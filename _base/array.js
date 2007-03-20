@@ -1,30 +1,44 @@
 dojo.provide("dojo._base.array");
 
-// FIXME: implement indexOf and lastIndexOf!!
-// FIXME: what about isEmpty and toArray?
 dojo.mixin(dojo, {
+	indexOf: function(	/*Array*/		array, 
+						/*Object*/		value,
+						/*Boolean?*/	identity,
+						/*Boolean?*/	findLast){
+		// summary:
+		//		locates the first index of the provided value in the passed
+		//		array. If the value is not found, -1 is returned.
+		// description:
+		//		For details on this method, see:
+		// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
 
-	// isEmpty: function(/*Object*/obj){
-	// 	// summary:
-	// 	//		determines if the passed object is "empty".
-	// 	// description:
-	// 	//		In the case of array-like objects, the length property is
-	// 	//		examined, but for other types of objects iteration is used to
-	// 	//		examine the iterable "surface area" to determine if any
-	// 	//		non-prototypal properties have been assigned. This iteration is
-	// 	//		prototype-extension safe.
-	// 	if(typeof obj.length != "undefined"){
-	// 		return obj.length === 0; // Boolean
-	// 	}else if(obj instanceof Object){
-	// 		var tmp = {};
-	// 		for(var x in obj){
-	// 			if(obj[x] && (!tmp[x])){
-	// 				return false;
-	// 			} 
-	// 		}
-	// 		return true; // Boolean
-	// 	}
-	// },
+		// FIXME: use built in indexOf and lastIndexOf if available.
+		if(findLast){
+			var step = -1, i = array.length - 1, end = -1;
+		}else{
+			var step = 1, i = 0, end = array.length;
+		}
+		if(identity){
+			for(; i!=end; i+=step){
+				if(array[i] === value){ return i; }
+			}
+		}else{
+			for(; i!=end; i+=step){
+				if(array[i] == value){ return i; }
+			}
+		}
+		return -1;	// number
+	},
+
+	lastIndexOf: function(/*Array*/array, /*Object*/value, /*boolean?*/identity){
+		// summary:
+		//		locates the lat index of the provided value in the passed
+		//		array. If the value is not found, -1 is returned.
+		// description:
+		//		For details on this method, see:
+		// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
+		return dojo.indexOf(array, value, identity, true); // number
+	},
 
 	map: function(/*Array*/arr, /*Object|Function*/obj, /*Function?*/unary_func){
 		// summary:
@@ -67,34 +81,6 @@ dojo.mixin(dojo, {
 		}else{
 			return outArr; // Array
 		}
-	},
-
-	reduce: function(/*Array*/arr, /*Function*/binary_func, /*mixed?*/initialValue, /*Object?*/thisObject){
-		// summary:
-		// 		similar to Python's builtin reduce() function. The result of
-		// 		the previous computation is passed as the first argument to
-		// 		binary_func along with the next value from arr. The result of
-		// 		this call is used along with the subsequent value from arr, and
-		// 		this continues until arr is exhausted. The return value is the
-		// 		last result.
-		// usage:
-		//		dojo.reduce([1, 2, 3, 4], function(last, next){ return last+next});
-		//		returns 10
-
-		// FIXME: changes from 0.4.x calling syntax need to be documented in the 0.9 porting guide!!!
-		var reducedValue = initialValue;
-		if(arguments.length == 2){
-			reducedValue = arr[0];
-			arr = arr.slice(1);
-		}
-
-		var ob = thisObject || dj_global;
-		dojo.map(arr, 
-			function(val){
-				reducedValue = binary_func.call(ob, reducedValue, val);
-			}
-		);
-		return reducedValue;
 	},
 
 	forEach: function(/*Array*/anArray, /*Function*/callback, /*Object?*/thisObject){
@@ -188,7 +174,7 @@ dojo.mixin(dojo, {
 		//		More information on the JS 1.6 API can be found here:
 		//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
 		// examples:
-		//		dojo.some([1, 2, 3, 4], function(item){ return item>1; });
+		//		dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
 		//		// returns [2, 3, 4]
 		var isString = dojo.isString(arr);
 		if(isString){ /*arr: String*/arr = arr.split(""); }
@@ -215,16 +201,5 @@ dojo.mixin(dojo, {
 		} else {
 			return outArr; // Array
 		}
-	} //,
-
-	// toArray: function(/*Object*/arrayLike, /*Number*/startOffset){
-	//	// summary:
-	//	//		Converts an array-like object (i.e. arguments, DOMCollection)
-	//	//		to an array. Returns a new Array object.
-	//	var array = [];
-	//	for(var i = startOffset||0; i < arrayLike.length; i++){
-	//		array.push(arrayLike[i]);
-	//	}
-	//	return array; // Array
-	//}
+	}
 });

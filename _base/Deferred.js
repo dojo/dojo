@@ -4,96 +4,211 @@ dojo.require("dojo._base.lang");
 // FIXME: need to port tests in!!
 
 dojo.Deferred = function(/*Function?*/ canceller){
-	/*
-	NOTE: this namespace and documentation are imported wholesale 
-		from MochiKit
+	// summary:
+	//		Encapsulates a sequence of callbacks in response to a value that
+	//		may not yet be available.  This is modeled after the Deferred class
+	//		from Twisted <http://twistedmatrix.com>.
+	// description:
+	//		JavaScript has no threads, and even if it did, threads are hard.
+	//		Deferreds are a way of abstracting non-blocking events, such as the
+	//		final response to an XMLHttpRequest. Deferreds create a promise to
+	//		return a response a some point in the future and an easy way to
+	//		register your interest in receiving that response.
+	//
+	//		The most important methods for Deffered users are:
+	//
+	//			addCallback(handler)
+	//			addErrback(handler)
+	//			callback(result)
+	//			errback(result)
+	//
+	//		In general, when a function returns a Deferred, users then "fill
+	//		in" the second half of the contract by registering callbacks and
+	//		error handlers. You may register as many callback and errback
+	//		handlers as you like and they will be executed in the order
+	//		registered when a result is provided. Usually this result is
+	//		provided as the result of an asynchronous operation. The code
+	//		"managing" the Deferred (the code that made the promise to provide
+	//		an answer later) will use the callback() and errback() methods to
+	//		communicate with registered listeners about the result of the
+	//		operation. At this time, all registered result handlers are called
+	//		*with the most recent result value*.
+	//
+	//		Deferred callback handlers are treated as a chain, and each item in
+	//		the chain is required to return a value that will be fed into
+	//		successive handlers. The most minimal callback may be registered
+	//		like this:
+	//
+	//			var d = new dojo.Deferred();
+	//			d.addCallback(function(result){ return result; });
+	//
+	//		Perhaps the most common mistake when first using Deferreds is to
+	//		forget to return a value (in most cases, the value you were
+	//		passed).
+	//
+	//		The sequence of callbacks is internally represented as a list of
+	//		2-tuples containing the callback/errback pair.  For example, the
+	//		following call sequence:
+	//		
+	//			var d = new dojo.Deferred();
+	//			d.addCallback(myCallback);
+	//			d.addErrback(myErrback);
+	//			d.addBoth(myBoth);
+	//			d.addCallbacks(myCallback, myErrback);
+	//
+	//		is translated into a Deferred with the following internal
+	//		representation:
+	//
+	//		[
+	//			[myCallback, null],
+	//			[null, myErrback],
+	//			[myBoth, myBoth],
+	//			[myCallback, myErrback]
+	//		]
+	//
+	//		The Deferred also keeps track of its current status (fired).  Its
+	//		status may be one of three things:
+	//
+	//			-1: no value yet (initial condition)
+	//			0: success
+	//			1: error
+	//	
+	//		A Deferred will be in the error state if one of the following three
+	//		conditions are met:
+	//
+	//			1. The result given to callback or errback is "instanceof" Error
+	//			2. The previous callback or errback raised an exception while
+	//			   executing
+	//			3. The previous callback or errback returned a value
+	//			   "instanceof" Error
+	//
+	//		Otherwise, the Deferred will be in the success state. The state of
+	//		the Deferred determines the next element in the callback sequence
+	//		to run.
+	//
+	//		When a callback or errback occurs with the example deferred chain,
+	//		something equivalent to the following will happen (imagine that
+	//		exceptions are caught and returned):
+	//
+	//			// d.callback(result) or d.errback(result)
+	//			if(!(result instanceof Error)){
+	//				result = myCallback(result);
+	//			}
+	//			if(result instanceof Error){
+	//				result = myErrback(result);
+	//			}
+	//			result = myBoth(result);
+	//			if(result instanceof Error){
+	//				result = myErrback(result);
+	//			}else{
+	//				result = myCallback(result);
+	//			}
+	//
+	//		The result is then stored away in case another step is added to the
+	//		callback sequence.	Since the Deferred already has a value
+	//		available, any new callbacks added will be called immediately.
+	//
+	//		There are two other "advanced" details about this implementation
+	//		that are useful:
+	//
+	//		Callbacks are allowed to return Deferred instances themselves, so
+	//		you can build complicated sequences of events with ease.
+	//
+	//		The creator of the Deferred may specify a canceller.  The canceller
+	//		is a function that will be called if Deferred.cancel is called
+	//		before the Deferred fires. You can use this to implement clean
+	//		aborting of an XMLHttpRequest, etc. Note that cancel will fire the
+	//		deferred with a CancelledError (unless your canceller returns
+	//		another kind of error), so the errbacks should be prepared to
+	//		handle that error for cancellable Deferreds.
+	// usage:
+	//		Deferred objects are often used when making code asynchronous. It
+	//		may be easiest to write functions in a synchronous manner and then
+	//		split code using a deferred to trigger a response to a long-lived
+	//		operation. For example, instead of register a callback function to
+	//		denote when a rendering operation completes, the function can
+	//		simply return a deferred:
+	//
+	//			// callback style:
+	//			function renderLotsOfData(data, callback){
+	//				var success = false
+	//				try{
+	//					for(var x in data){
+	//						renderDataitem(data[x]);
+	//					}
+	//					success = true;
+	//				}catch(e){ }
+	//				if(callback){
+	//					callback(success);
+	//				}
+	//			}
+	//
+	//			// using callback style
+	//			renderLotsOfData(someDataObj, function(success){
+	//				// handles success or failure
+	//				if(!success){
+	//					promptUserToRecover();
+	//				}
+	//			});
+	//			// NOTE: no way to add another callback here!!
+	//
+	//		Using a Deferred doesn't simplify the sending code any, but it
+	//		provides a standard interface for callers and senders alike,
+	//		providing both with a simple way to service multiple callbacks for
+	//		an operation and freeing both sides from worrying about details
+	//		such as "did this get called already?". With Deferreds, new
+	//		callbacks can be added at any time.
+	//
+	//			// Deferred style:
+	//			function renderLotsOfData(data, callback){
+	//				var d = new dojo.Deferred();
+	//				try{
+	//					for(var x in data){
+	//						renderDataitem(data[x]);
+	//					}
+	//					d.callback(true);
+	//				}catch(e){ 
+	//					d.errback(new Error("rendering failed"));
+	//				}
+	//				return d;
+	//			}
+	//
+	//			// using Deferred style
+	//			renderLotsOfData(someDataObj).addErrback(function(){
+	//				promptUserToRecover();
+	//			});
+	//			// NOTE: addErrback and addCallback both return the Deferred
+	//			// again, so we could chain adding callbacks or save the
+	//			// deferred for later should we need to be notified again.
+	//
+	//		In this example, renderLotsOfData is syncrhonous and so both
+	//		versions are pretty artificial. Putting the data display on a
+	//		timeout helps show why Deferreds rock:
+	//
+	//			// Deferred style and async func
+	//			function renderLotsOfData(data, callback){
+	//				var d = new dojo.Deferred();
+	//				setTimeout(function(){
+	//					try{
+	//						for(var x in data){
+	//							renderDataitem(data[x]);
+	//						}
+	//						d.callback(true);
+	//					}catch(e){ 
+	//						d.errback(new Error("rendering failed"));
+	//					}
+	//				}, 100);
+	//				return d;
+	//			}
+	//
+	//			// using Deferred style
+	//			renderLotsOfData(someDataObj).addErrback(function(){
+	//				promptUserToRecover();
+	//			});
+	//
+	//		Note that the caller doesn't have to change his code at all to
+	//		handle the asynchronous case.
 
-	Encapsulates a sequence of callbacks in response to a value that
-	may not yet be available.  This is modeled after the Deferred class
-	from Twisted <http://twistedmatrix.com>.
-
-	Why do we want this?  JavaScript has no threads, and even if it did,
-	threads are hard.  Deferreds are a way of abstracting non-blocking
-	events, such as the final response to an XMLHttpRequest.
-
-	The sequence of callbacks is internally represented as a list
-	of 2-tuples containing the callback/errback pair.  For example,
-	the following call sequence::
-
-		var d = new Deferred();
-		d.addCallback(myCallback);
-		d.addErrback(myErrback);
-		d.addBoth(myBoth);
-		d.addCallbacks(myCallback, myErrback);
-
-	is translated into a Deferred with the following internal
-	representation::
-
-		[
-			[myCallback, null],
-			[null, myErrback],
-			[myBoth, myBoth],
-			[myCallback, myErrback]
-		]
-
-	The Deferred also keeps track of its current status (fired).
-	Its status may be one of three things:
-
-		-1: no value yet (initial condition)
-		0: success
-		1: error
-
-	A Deferred will be in the error state if one of the following
-	three conditions are met:
-
-		1. The result given to callback or errback is "instanceof" Error
-		2. The previous callback or errback raised an exception while
-		   executing
-		3. The previous callback or errback returned a value "instanceof"
-			Error
-
-	Otherwise, the Deferred will be in the success state.  The state of
-	the Deferred determines the next element in the callback sequence to
-	run.
-
-	When a callback or errback occurs with the example deferred chain,
-	something equivalent to the following will happen (imagine that
-	exceptions are caught and returned)::
-
-		// d.callback(result) or d.errback(result)
-		if(!(result instanceof Error)){
-			result = myCallback(result);
-		}
-		if(result instanceof Error){
-			result = myErrback(result);
-		}
-		result = myBoth(result);
-		if(result instanceof Error){
-			result = myErrback(result);
-		}else{
-			result = myCallback(result);
-		}
-
-	The result is then stored away in case another step is added to the
-	callback sequence.	Since the Deferred already has a value available,
-	any new callbacks added will be called immediately.
-
-	There are two other "advanced" details about this implementation that
-	are useful:
-
-	Callbacks are allowed to return Deferred instances themselves, so you
-	can build complicated sequences of events with ease.
-
-	The creator of the Deferred may specify a canceller.  The canceller
-	is a function that will be called if Deferred.cancel is called before
-	the Deferred fires.	 You can use this to implement clean aborting of
-	an XMLHttpRequest, etc.	 Note that cancel will fire the deferred with
-	a CancelledError (unless your canceller returns another kind of
-	error), so the errbacks should be prepared to handle that error for
-	cancellable Deferreds.
-
-	*/
-	
 	this.chain = [];
 	this.id = this._nextId();
 	this.fired = -1;
@@ -104,7 +219,13 @@ dojo.Deferred = function(/*Function?*/ canceller){
 };
 
 dojo.extend(dojo.Deferred, {
-	getFunctionFromArgs: function(){
+	_getFunctionFromArgs: function(){
+		// summary:
+		//		takes one or two arguments and does type detection to determine
+		//		if they contain enough information to return a function from
+		//		them. If a scope and function name are provided a version o
+		//		that function hitched to the passed scope will be returned.
+		// usage: FIXME
 		var a = arguments;
 		if((a[0])&&(!a[1])){
 			if(dojo.isFunction(a[0])){
@@ -119,12 +240,17 @@ dojo.extend(dojo.Deferred, {
 	},
 
 	makeCalled: function(){
+		// summary:
+		//		returns a new, empty deferred, which is already in the called
+		//		state. Calling callback() or errback() on this deferred will
+		//		yeild an error and adding new handlers to it will result in
+		//		them being called immediately.
 		var deferred = new dojo.Deferred();
 		deferred.callback();
 		return deferred;
 	},
 
-	repr: function(){
+	toString: function(){
 		var state;
 		if(this.fired == -1){
 			state = 'unfired';
@@ -136,22 +262,19 @@ dojo.extend(dojo.Deferred, {
 		return 'Deferred(' + this.id + ', ' + state + ')';
 	},
 
-	toString: function(){
-		return this.repr.apply(this, arguments);
-	},
-
 	_nextId: (function(){
 		var n = 1;
 		return function(){ return n++; };
 	})(),
 
 	cancel: function(){
-		// summary:	Cancels a Deferred that has not yet received a value, or is
+		// summary:	
+		//		Cancels a Deferred that has not yet received a value, or is
 		//		waiting on another Deferred as its value.
 		// description:
 		//		If a canceller is defined, the canceller is called. If the
 		//		canceller did not return an error, or there was no canceller,
-		//		then the errback chain is started with CancelledError.
+		//		then the errback chain is started.
 		if(this.fired == -1){
 			if (this.canceller){
 				this.canceller(this);
@@ -159,7 +282,7 @@ dojo.extend(dojo.Deferred, {
 				this.silentlyCancelled = true;
 			}
 			if(this.fired == -1){
-				this.errback(new Error(this.repr()));
+				this.errback(new Error(this.toString()));
 			}
 		}else if(	(this.fired == 0) &&
 					(this.results[0] instanceof dojo.Deferred)
@@ -170,13 +293,15 @@ dojo.extend(dojo.Deferred, {
 			
 
 	_pause: function(){
-		// summary: Used internally to signal that it's waiting on another Deferred
+		// summary: 
+		//		Used internally to signal that it's waiting on another Deferred
 		this.paused++;
 	},
 
 	_unpause: function(){
-		// summary: Used internally to signal that it's no longer waiting on
-		// another Deferred.
+		// summary: 
+		//		Used internally to signal that it's no longer waiting on
+		//		another Deferred.
 		this.paused--;
 		if(
 			(this.paused == 0) && 
@@ -187,13 +312,15 @@ dojo.extend(dojo.Deferred, {
 	},
 
 	_continue: function(res){
-		// summary: Used internally when a dependent deferred fires.
+		// summary: 
+		//		Used internally when a dependent deferred fires.
 		this._resback(res);
 		this._unpause();
 	},
 
 	_resback: function(res){
-		// The primitive that means either callback or errback
+		// summary:
+		//		The private primitive that means either callback or errback
 		this.fired = ((res instanceof Error) ? 1 : 0);
 		this.results[this.fired] = res;
 		this._fire();
@@ -220,8 +347,9 @@ dojo.extend(dojo.Deferred, {
 		this._resback(res);
 	},
 
-	errback: function(res){
-		// summary: Begin the callback sequence with an error result.
+	errback: function(/*Error*/res){
+		// summary: 
+		//		Begin the callback sequence with an error result.
 		this._check();
 		if(!(res instanceof Error)){
 			res = new Error(res);
@@ -229,13 +357,12 @@ dojo.extend(dojo.Deferred, {
 		this._resback(res);
 	},
 
-	addBoth: function(cb, cbfn){
-		/* summary
-		Add the same function as both a callback and an errback as the
-		next element on the callback sequence.	This is useful for code
-		that you want to guarantee to run, e.g. a finalizer.
-		*/
-		var enclosed = this.getFunctionFromArgs(cb, cbfn);
+	addBoth: function(/*Function||Object*/cb, /*Optional, String*/cbfn){
+		// summary:
+		//		Add the same function as both a callback and an errback as the
+		//		next element on the callback sequence.	This is useful for code
+		//		that you want to guarantee to run, e.g. a finalizer.
+		var enclosed = this._getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
 			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
@@ -243,8 +370,9 @@ dojo.extend(dojo.Deferred, {
 	},
 
 	addCallback: function(cb, cbfn){
-		// summary: Add a single callback to the end of the callback sequence.
-		var enclosed = this.getFunctionFromArgs(cb, cbfn);
+		// summary: 
+		//		Add a single callback to the end of the callback sequence.
+		var enclosed = this._getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
 			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
@@ -252,8 +380,9 @@ dojo.extend(dojo.Deferred, {
 	},
 
 	addErrback: function(cb, cbfn){
-		// summary: Add a single callback to the end of the callback sequence.
-		var enclosed = this.getFunctionFromArgs(cb, cbfn);
+		// summary: 
+		//		Add a single callback to the end of the callback sequence.
+		var enclosed = this._getFunctionFromArgs(cb, cbfn);
 		if(arguments.length > 2){
 			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
@@ -262,8 +391,9 @@ dojo.extend(dojo.Deferred, {
 	},
 
 	addCallbacks: function(cb, eb){
-		// summary: Add separate callback and errback to the end of the callback
-		// sequence.
+		// summary: 
+		//		Add separate callback and errback to the end of the callback
+		//		sequence.
 		this.chain.push([cb, eb])
 		if(this.fired >= 0){
 			this._fire();
@@ -272,8 +402,9 @@ dojo.extend(dojo.Deferred, {
 	},
 
 	_fire: function(){
-		// summary: Used internally to exhaust the callback sequence when a result
-		// is available.
+		// summary: 
+		//		Used internally to exhaust the callback sequence when a result
+		//		is available.
 		var chain = this.chain;
 		var fired = this.fired;
 		var res = this.results[fired];

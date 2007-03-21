@@ -109,6 +109,7 @@ if(tests.selfTest){
 try{
 	// go grab the others
 	dojo.require("tests._base._loader.bootstrap");
+	dojo.require("tests._base._loader.loader");
 	dojo.require("tests._base.array");
 	dojo.require("tests._base.lang");
 	dojo.require("tests._base.Deferred");

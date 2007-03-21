@@ -110,6 +110,11 @@ try{
 	// go grab the others
 	dojo.require("tests._base._loader.bootstrap");
 	dojo.require("tests._base._loader.loader");
+	dojo.platformRequire({
+		browser: ["tests._base._loader.hostenv_browser"],
+		rhino: ["tests._base._loader.hostenv_rhino"],
+		spidermonkey: ["tests._base._loader.hostenv_spidermonkey"]
+	});
 	dojo.require("tests._base.array");
 	dojo.require("tests._base.lang");
 	dojo.require("tests._base.Deferred");

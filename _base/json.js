@@ -18,11 +18,24 @@ dojo.fromJson = function(/*String*/ json){
 	}
 }
 
-dojo.toJson = function(/*Object*/ o){
+dojo._escapeString = function(/*string*/str){
+	//summary:
+	//		Adds escape sequences for non-visual characters, double quote and
+	//		backslash and surrounds with double quotes to form a valid string
+	//		literal.
+	return ('"' + str.replace(/(["\\])/g, '\\$1') + '"'
+		).replace(/[\f]/g, "\\f"
+		).replace(/[\b]/g, "\\b"
+		).replace(/[\n]/g, "\\n"
+		).replace(/[\t]/g, "\\t"
+		).replace(/[\r]/g, "\\r"); // string
+}
+
+dojo.toJson = function(/*Object*/ obj){
 	// summary:
-	//		Create a JSON serialization of an object, note that this
-	//		doesn't check for infinite recursion, so don't do that!
-	// o:
+	//		Create a JSON serialization of an object, note that this doesn't
+	//		check for infinite recursion, so don't do that!
+	// obj:
 	//		an object to be serialized. Objects may define their own
 	//		serialization via a special "__json__" or "json" function
 	//		property. If a specialized serializer has been defined, it will
@@ -31,6 +44,7 @@ dojo.toJson = function(/*Object*/ o){
 	//		a String representing the serialized version of the passed
 	//		object
 
+	var o = obj;
 	var objtype = typeof(o);
 	if(objtype == "undefined"){
 		return "undefined";
@@ -39,26 +53,26 @@ dojo.toJson = function(/*Object*/ o){
 	}else if(o === null){
 		return "null";
 	}
-	if (objtype == "string") { return dojo.string.escapeString(o); }
+	if(objtype == "string"){ return dojo._escapeString(o); }
 	// recurse
 	var me = arguments.callee;
 	// short-circuit for objects that support "json" serialization
 	// if they return "self" then just pass-through...
 	var newObj;
-	if(typeof(o.__json__) == "function"){
+	if(typeof o.__json__ == "function"){
 		newObj = o.__json__();
 		if(o !== newObj){
 			return me(newObj);
 		}
 	}
-	if(typeof(o.json) == "function"){
+	if(typeof o.json == "function"){
 		newObj = o.json();
-		if (o !== newObj) {
+		if(o !== newObj){
 			return me(newObj);
 		}
 	}
 	// array
-	if(objtype != "function" && typeof(o.length) == "number"){
+	if(dojo.isArray(o)){
 		var res = [];
 		for(var i = 0; i < o.length; i++){
 			var val = me(o[i]);
@@ -69,8 +83,8 @@ dojo.toJson = function(/*Object*/ o){
 		}
 		return "[" + res.join(",") + "]";
 	}
-	// look in the registry
 	/*
+	// look in the registry
 	try {
 		window.o = o;
 		newObj = dojo.json.jsonRegistry.match(o);
@@ -85,12 +99,12 @@ dojo.toJson = function(/*Object*/ o){
 	}
 	// generic object code path
 	res = [];
-	for (var k in o){
+	for(var k in o){
 		var useKey;
-		if (typeof(k) == "number"){
+		if(typeof(k) == "number"){
 			useKey = '"' + k + '"';
-		}else if (typeof(k) == "string"){
-			useKey = dojo.string.escapeString(k);
+		}else if(typeof(k) == "string"){
+			useKey = dojo._escapeString(k);
 		}else{
 			// skip non-string or number keys
 			continue;
@@ -100,6 +114,7 @@ dojo.toJson = function(/*Object*/ o){
 			// skip non-serializable values
 			continue;
 		}
+		// FIXME: use += on Moz!!
 		res.push(useKey + ":" + val);
 	}
 	return "{" + res.join(",") + "}";

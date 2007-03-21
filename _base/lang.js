@@ -10,19 +10,18 @@ dojo.isString = function(/*anything*/ it){
 dojo.isArray = function(/*anything*/ it){
 	// summary: Return true of it is an Array
 
-	// FIXME: should we handle dojo.NodeList for the IE case here?
-	return (it && it instanceof Array || typeof it == "array"); // Boolean
+	return (it && it instanceof Array || typeof it == "array" || it instanceof dojo.NodeList); // Boolean
 }
 
 if(dojo.isBrowser && dojo.isSafari){
 	// only slow this down w/ gratuitious casting in Safari since it's what's b0rken
 	dojo.isFunction = function(/*anything*/ it){
 		if((typeof(it) == "function") && (it == "[object NodeList]")){ return false; }
-		return (it instanceof Function || typeof it == "function"); // Boolean
+		return (typeof it == "function" || it instanceof Function); // Boolean
 	}
 }else{
 	dojo.isFunction = function(/*anything*/ it){
-		return (it instanceof Function || typeof it == "function"); // Boolean
+		return (typeof it == "function" || it instanceof Function); // Boolean
 	}
 }
 

@@ -31,91 +31,105 @@ dojo._escapeString = function(/*string*/str){
 		).replace(/[\r]/g, "\\r"); // string
 }
 
-dojo.toJson = function(/*Object*/ obj){
+dojo.toJsonIndentStr = "\t";
+dojo.toJson = function(/*Object*/ it, /* Boolean */ prettyPrint, /* String */ _indentStr){
 	// summary:
-	//		Create a JSON serialization of an object, note that this doesn't
-	//		check for infinite recursion, so don't do that!
-	// obj:
+	//		Create a JSON serialization of an object. 
+	//		Note that this doesn't check for infinite recursion, so don't do that!
+	//
+	// it:
 	//		an object to be serialized. Objects may define their own
 	//		serialization via a special "__json__" or "json" function
 	//		property. If a specialized serializer has been defined, it will
 	//		be used as a fallback.
+	//
+	// prettyPrint:
+	//		if true, we indent objects and arrays to make the output prettier.
+	//		The variable dojo.toJsonIndentStr is used as the indent string 
+	//		-- to use something other than the default (tab), 
+	//		change that variable before calling dojo.toJson().
+	//
+	// _indentStr:
+	//		private variable for recursive calls when pretty printing, do not use.
+	//		
 	// return:
-	//		a String representing the serialized version of the passed
-	//		object
+	//		a String representing the serialized version of the passed object.
 
-	var o = obj;
-	var objtype = typeof(o);
+	_indentStr = _indentStr || "";
+	var nextIndent = (prettyPrint ? _indentStr + dojo.toJsonIndentStr : "");
+	var newLine = (prettyPrint ? "\n" : "");
+	var objtype = typeof(it);
 	if(objtype == "undefined"){
 		return "undefined";
 	}else if((objtype == "number")||(objtype == "boolean")){
-		return o + "";
-	}else if(o === null){
+		return it + "";
+	}else if(it === null){
 		return "null";
 	}
-	if(objtype == "string"){ return dojo._escapeString(o); }
+	if(objtype == "string"){ return dojo._escapeString(it); }
 	// recurse
-	var me = arguments.callee;
+	var recurse = arguments.callee;
 	// short-circuit for objects that support "json" serialization
 	// if they return "self" then just pass-through...
 	var newObj;
-	if(typeof o.__json__ == "function"){
-		newObj = o.__json__();
-		if(o !== newObj){
-			return me(newObj);
+	if(typeof it.__json__ == "function"){
+		newObj = it.__json__();
+		if(it !== newObj){
+			return recurse(newObj, prettyPrint, nextIndent);
 		}
 	}
-	if(typeof o.json == "function"){
-		newObj = o.json();
-		if(o !== newObj){
-			return me(newObj);
+	if(typeof it.json == "function"){
+		newObj = it.json();
+		if(it !== newObj){
+			return recurse(newObj, prettyPrint, nextIndent);
 		}
 	}
 	// array
-	if(dojo.isArray(o)){
+	if(dojo.isArray(it)){
 		var res = [];
-		for(var i = 0; i < o.length; i++){
-			var val = me(o[i]);
+		for(var i = 0; i < it.length; i++){
+			var val = recurse(it[i], prettyPrint, nextIndent);
 			if(typeof(val) != "string"){
 				val = "undefined";
 			}
-			res.push(val);
+			res.push(newLine + nextIndent + val);
 		}
-		return "[" + res.join(",") + "]";
+		return "[" + res.join(",") + newLine + _indentStr + "]";
 	}
 	/*
 	// look in the registry
 	try {
-		window.o = o;
-		newObj = dojo.json.jsonRegistry.match(o);
-		return me(newObj);
+		window.o = it;
+		newObj = dojo.json.jsonRegistry.match(it);
+		return recurse(newObj, prettyPrint, nextIndent);
 	}catch(e){
 		// console.debug(e);
 	}
-	// it's a function with no adapter, bad
+	// it's a function with no adapter, skip it
 	*/
 	if(objtype == "function"){
 		return null;
 	}
 	// generic object code path
-	res = [];
-	for(var k in o){
-		var useKey;
-		if(typeof(k) == "number"){
-			useKey = '"' + k + '"';
-		}else if(typeof(k) == "string"){
-			useKey = dojo._escapeString(k);
+	var output = [];
+	for(var key in it){
+		var keyStr;
+		if(typeof(key) == "number"){
+			keyStr = '"' + key + '"';
+		}else if(typeof(key) == "string"){
+			keyStr = dojo._escapeString(key);
 		}else{
 			// skip non-string or number keys
 			continue;
 		}
-		val = me(o[k]);
+		val = recurse(it[key], prettyPrint, nextIndent);
 		if(typeof(val) != "string"){
 			// skip non-serializable values
 			continue;
 		}
 		// FIXME: use += on Moz!!
-		res.push(useKey + ":" + val);
+		//	 MOW NOTE: using += is a pain because you have to account for the dangling comma...
+		output.push(newLine + nextIndent + keyStr + ":" + val);
 	}
-	return "{" + res.join(",") + "}";
+	return "{" + output.join(",") + newLine + _indentStr + "}";
 }

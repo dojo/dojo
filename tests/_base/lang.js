@@ -141,7 +141,6 @@ tests.register("tests._base.lang",
 			var st2 = dojo.hitch(null, thinger, "foo", "bar");
 			t.assertEqual("bar", st2()[2]);
 			var st3 = dojo.hitch(null, thinger, "foo", "bar");
-		},
-
+		}
 	]
 );

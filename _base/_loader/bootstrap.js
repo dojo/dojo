@@ -86,8 +86,6 @@
 // Override locale setting, if specified
 dojo.locale = djConfig.locale;
 
-dojo._baseUrl = "./";
-
 //TODOC:  HOW TO DOC THIS?
 dojo.version = {
 	// summary: version number of this instance of dojo.

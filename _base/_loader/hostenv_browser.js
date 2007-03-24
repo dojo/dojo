@@ -12,7 +12,7 @@ if(typeof window != 'undefined'){
 		// before we get any further with the config options, try to pick them out
 		// of the URL. Most of this code is from NW
 		if(
-			(djConfig["baseUrl"] == "") && (document && document.getElementsByTagName)
+			(!djConfig["baseUrl"]) && (document && document.getElementsByTagName)
 		){
 			var scripts = document.getElementsByTagName("script");
 			var rePkg = /(dojo|bootstrap)\.js([\?\.]|$)/i;

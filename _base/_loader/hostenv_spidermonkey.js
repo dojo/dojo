@@ -2,6 +2,12 @@
  * SpiderMonkey host environment
  */
 
+if(djConfig["baseUrl"]){
+	dojo._baseUrl = djConfig["baseUrl"];
+}else{
+	dojo._baseUrl = "./";
+}
+
 dojo._name = 'spidermonkey';
 dojo.isSpidermonkey = true;
 dojo.exit = function(exitcode){ 

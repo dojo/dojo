@@ -3,8 +3,8 @@ dojo.provide("tests._base.array");
 tests.register("tests._base.array", 
 	[
 		function testIndexOf(t){
-			var foo = new Array(128, 256, 512);
-			var bar = new Array("aaa", "bbb", "ccc");
+			var foo = [128, 256, 512];
+			var bar = ["aaa", "bbb", "ccc"];
 			
 			t.assertTrue(dojo.indexOf([45, 56, 85], 56) == 1);
 			t.assertTrue(dojo.indexOf([Number, String, Date], String) == 1);
@@ -17,9 +17,18 @@ tests.register("tests._base.array",
 			t.assertTrue(dojo.indexOf(foo, bar) == 3);
 		},
 
+		function testIndexOfFromIndex(t){
+			var foo = [128, 256, 512];
+			var bar = ["aaa", "bbb", "ccc"];
+			
+			// FIXME: what happens w/ negative indexes?
+			t.assertEqual(-1, dojo.indexOf([45, 56, 85], 56, 2));
+			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, 1));
+		},
+
 		function testLastIndexOf(t){
-			var foo = new Array(128, 256, 512);
-			var bar = new Array("aaa", "bbb", "aaa", "ccc");
+			var foo = [128, 256, 512];
+			var bar = ["aaa", "bbb", "aaa", "ccc"];
 			
 			t.assertTrue(dojo.indexOf([45, 56, 85], 56) == 1);
 			t.assertTrue(dojo.indexOf([Number, String, Date], String) == 1);
@@ -30,83 +39,207 @@ tests.register("tests._base.array",
 			t.assertTrue(dojo.lastIndexOf(bar, bar[0]) == 2);
 		},
 
+		function testLastIndexOfFromIndex(t){
+			// FIXME: what happens w/ negative indexes?
+			t.assertEqual(1, dojo.lastIndexOf([45, 56, 85], 56, 1));
+			t.assertEqual(-1, dojo.lastIndexOf([45, 56, 85], 85, 1));
+		},
+
 		function testForEach(t){
-			var foo = new Array(128, "bbb", 512);
-			var ok = true;
+			var foo = [128, "bbb", 512];
 			dojo.forEach(foo, function(elt, idx, array){
-				switch (idx) {
-					case 0: ok = (elt==128); break;
-					case 1: ok = (elt=="bbb"); break;
-					case 2: ok = (elt==512); break;
-					default: ok = false;
+				switch(idx){
+					case 0: t.assertEqual(128, elt); break;
+					case 1: t.assertEqual("bbb", elt); break;
+					case 2: t.assertEqual(512, elt); break;
+					default: t.assertTrue(false);
 				}
-				t.assertTrue(ok);
 			});
-			// FIXME: test NodeList?
+		},
+
+		function testForEach_str(t){
 			var bar = 'abc';
 			dojo.forEach(bar, function(elt, idx, array){
-				switch (idx) {
-					case 0: ok = (elt=='a'); break;
-					case 1: ok = (elt=='b'); break;
-					case 2: ok = (elt=='c'); break;
-					default: ok = false;
+				switch(idx){
+					case 0: t.assertEqual("a", elt); break;
+					case 1: t.assertEqual("b", elt); break;
+					case 2: t.assertEqual("c", elt); break;
+					default: t.assertTrue(false);
 				}
-				t.assertTrue(ok);
 			});
 		},
+		// FIXME: test forEach w/ a NodeList()?
 
 		function testEvery(t){
-			var foo = new Array(128, "bbb", 512);
-			var ok = true;
-			var result = true;
-			dojo.every(foo, function(elt, idx, array){
-				switch (idx) {
-					case 0: ok = (elt==128); result = true; break;
-					case 1: ok = (elt=="bbb"); result = false; break;
-					case 2: ok = false; break;
-					default: ok = false;
-				}
-				t.assertTrue(ok);
-				return result;
-			});
-			// FIXME: test NodeList?
-			var bar = 'abc';
-			dojo.every(bar, function(elt, idx, array){
-				switch (idx) {
-					case 0: ok = (elt=='a'); result = true; break;
-					case 1: ok = (elt=='b'); result = false; break;
-					case 2: ok = false; break;
-					default: ok = false;
-				}
-				t.assertTrue(ok);
-				return result;
-			});
+			var foo = [128, "bbb", 512];
+
+			t.assertTrue(
+				dojo.every(foo, function(elt, idx, array){
+					t.assertEqual(Array, array.constructor);
+					t.assertTrue(dojo.isArray(array));
+					t.assertTrue(typeof idx == "number");
+					if(idx == 1){ t.assertEqual("bbb" , elt); }
+					return true;
+				})
+			);
+
+			t.assertTrue(
+				dojo.every(foo, function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual(128, elt); return true;
+						case 1: t.assertEqual("bbb", elt); return true;
+						case 2: t.assertEqual(512, elt); return true;
+						default: return false;
+					}
+				})
+			);
+
+			t.assertFalse(
+				dojo.every(foo, function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual(128, elt); return true;
+						case 1: t.assertEqual("bbb", elt); return true;
+						case 2: t.assertEqual(512, elt); return false;
+						default: return true;
+					}
+				})
+			);
+
 		},
 
-		function testSome(t){
-			var foo = new Array(128, "bbb", 512);
-			var ok = true;
-			var result = false;
-			dojo.some(foo, function(elt, idx, array){
-				switch (idx) {
-					case 0: ok = (elt==128); break;
-					case 1: ok = (elt=="bbb"); return true; break;
-					case 2: ok = false; break;
-					default: ok = false;
-				}
-				t.assertTrue(ok);
-			});
-			// FIXME: test NodeList?
+		function testEvery_str(t){
 			var bar = 'abc';
-			dojo.some(bar, function(elt, idx, array){
-				switch (idx) {
-					case 0: ok = (elt=='a'); break;
-					case 1: ok = (elt=='b'); return true; break;
-					case 2: ok = false; break;
-					default: ok = false;
-				}
-				t.assertTrue(ok);
-			});
+			t.assertTrue(
+				dojo.every(bar, function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual("a", elt); return true;
+						case 1: t.assertEqual("b", elt); return true;
+						case 2: t.assertEqual("c", elt); return true;
+						default: return false;
+					}
+				})
+			);
+
+			t.assertFalse(
+				dojo.every(bar, function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual("a", elt); return true;
+						case 1: t.assertEqual("b", elt); return true;
+						case 2: t.assertEqual("c", elt); return false;
+						default: return true;
+					}
+				})
+			);
+		},
+		// FIXME: test NodeList for every()?
+
+		function testSome(t){
+			var foo = [128, "bbb", 512];
+			t.assertTrue(
+				dojo.some(foo, function(elt, idx, array){
+					t.assertEqual(3, array.length);
+					return true;
+				})
+			);
+
+			t.assertTrue(
+				dojo.some(foo, function(elt, idx, array){
+					if(idx < 1){ return true; }
+					return false;
+				})
+			);
+
+			t.assertFalse(
+				dojo.some(foo, function(elt, idx, array){
+					return false;
+				})
+			);
+
+			t.assertTrue(
+				dojo.some(foo, function(elt, idx, array){
+					t.assertEqual(Array, array.constructor);
+					t.assertTrue(dojo.isArray(array));
+					t.assertTrue(typeof idx == "number");
+					if(idx == 1){ t.assertEqual("bbb" , elt); }
+					return true;
+				})
+			);
+		},
+
+		function testSome_str(t){
+			var bar = 'abc';
+			t.assertTrue(
+				dojo.some(bar, function(elt, idx, array){
+					t.assertEqual(3, array.length);
+					switch(idx){
+						case 0: t.assertEqual("a", elt); return true;
+						case 1: t.assertEqual("b", elt); return true;
+						case 2: t.assertEqual("c", elt); return true;
+						default: return false;
+					}
+				})
+			);
+
+			t.assertTrue(
+				dojo.some(bar, function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual("a", elt); return true;
+						case 1: t.assertEqual("b", elt); return true;
+						case 2: t.assertEqual("c", elt); return false;
+						default: return true;
+					}
+				})
+			);
+
+			t.assertFalse(
+				dojo.some(bar, function(elt, idx, array){
+					return false;
+				})
+			);
+		},
+		// FIXME: need to add scoping tests for all of these!!!
+
+		function testFilter(t){
+			var foo = ["foo", "bar", 10];
+
+			t.assertEqual(["foo"],
+				dojo.filter(foo, function(elt, idx, array){
+					return idx < 1;
+				})
+			);
+
+			t.assertEqual(["foo"],
+				dojo.filter(foo, function(elt, idx, array){
+					return elt == "foo";
+				})
+			);
+
+			t.assertEqual([],
+				dojo.filter(foo, function(elt, idx, array){
+					return false;
+				})
+			);
+
+			t.assertEqual([10],
+				dojo.filter(foo, function(elt, idx, array){
+					return typeof elt == "number";
+				})
+			);
+		},
+
+		function testFilter_str(t){
+			var foo = "thinger blah blah blah";
+			t.assertEqual(["t", "h", "i"],
+				dojo.filter(foo, function(elt, idx, array){
+					return idx < 3;
+				})
+			);
+
+			t.assertEqual([],
+				dojo.filter(foo, function(elt, idx, array){
+					return false;
+				})
+			);
 		}
 	]
 );

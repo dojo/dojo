@@ -1,0 +1,4 @@
+{
+ pt: "Português",
+ hello: "Olá"
+}

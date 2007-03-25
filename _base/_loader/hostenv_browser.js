@@ -52,6 +52,9 @@ if(typeof window != 'undefined'){
 		d.locale = d.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
 	})();
 
+	dojo.locale = dojo.locale ||
+	  (dojo.isIE ? navigator.userLanguage : navigator.language).toLowerCase();
+
 	dojo._println = console.debug;
 
 	// These are in order of decreasing likelihood; this will change in time.
@@ -309,7 +312,7 @@ if(typeof window != 'undefined'){
 				if(!eles.length){ return eles; }
 				// if more than 1, choose first with the correct id
 				var i=0, te;
-				while(te=eles[i++]){
+				while((te=eles[i++])){
 					if(te.id == id){ return te; }
 				}
 			}

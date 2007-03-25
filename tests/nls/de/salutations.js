@@ -1,0 +1,4 @@
+{
+ de: "Deutsch",
+ hello: "Hallo"
+}

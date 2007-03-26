@@ -9,28 +9,32 @@ if(typeof window != 'undefined'){
 		// this is a scope protection closure. We set browser versions and grab
 		// the URL we were loaded from here.
 
-		// before we get any further with the config options, try to pick them out
-		// of the URL. Most of this code is from NW
-		if(
-			(!djConfig["baseUrl"]) && (document && document.getElementsByTagName)
-		){
+		// grab the node we were loaded from
+		if(document && document.getElementsByTagName){
 			var scripts = document.getElementsByTagName("script");
-			var rePkg = /(dojo|bootstrap)\.js([\?\.]|$)/i;
-			for(var i = 0; i < scripts.length; i++) {
+			var rePkg = /dojo\.js([\?\.]|$)/i;
+			for(var i = 0; i < scripts.length; i++){
 				var src = scripts[i].getAttribute("src");
-				if(!src) { continue; }
+				if(!src){ continue; }
 				var m = src.match(rePkg);
-				if(m) {
-					var root = src.substring(0, m.index);
-					if(src.indexOf("bootstrap") > -1) { root += "../"; }
-					d._baseUrl = root;
-					console.debug(root);
-					break;
+				if(m){
+					// find out where we came from
+					if(!djConfig["baseUrl"]){
+						djConfig["baseUrl"] = src.substring(0, m.index);
+					}
+					// and find out if we need to modify our behavior
+					var cfg = scripts[i].getAttribute("djConfig");
+					if(cfg){
+						var cfgo = eval("({ "+cfg+" })");
+						for(var x in cfgo){
+							djConfig[x] = cfgo[x];
+						}
+					}
+					break; // "first Dojo wins"
 				}
 			}
-		}else{
-			d._baseUrl = djConfig["baseUrl"];
 		}
+		d._baseUrl = djConfig["baseUrl"];
 
 		// fill in the rendering support information in dojo.render.*
 		var n = navigator;

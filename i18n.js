@@ -43,7 +43,7 @@ dojo.i18n.getLocalization = function(/*String*/packageName, /*String*/bundleName
 		}
 	}
 
-	dojo.raise("Bundle not found: " + bundleName + " in " + packageName+" , locale=" + locale);
+	throw new Error("Bundle not found: " + bundleName + " in " + packageName+" , locale=" + locale);
 };
 
 dojo.i18n.normalizeLocale = function(/*String?*/locale){

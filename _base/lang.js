@@ -4,13 +4,14 @@ dojo.provide("dojo._base.lang");
 
 dojo.isString = function(/*anything*/ it){
 	// summary:	Return true if it is a String.
+
 	return (typeof it == "string" || it instanceof String);
 }
 
 dojo.isArray = function(/*anything*/ it){
 	// summary: Return true of it is an Array
 
-	return (it && it instanceof Array || typeof it == "array" || it instanceof dojo.NodeList); // Boolean
+	return (it && it instanceof Array || typeof it == "array" || ((typeof dojo["NodeList"] != "undefined") && (it instanceof dojo.NodeList))); // Boolean
 }
 
 if(dojo.isBrowser && dojo.isSafari){

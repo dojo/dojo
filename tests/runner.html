@@ -5,6 +5,16 @@
 	-->
 	<head>
 		<title>The Dojo Unit Test Harness, $Rev$</title>
+		<script type="text/javascript" src="../dojo.js"  
+			djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			try{
+				dojo.require("tests.runner");
+			}catch(e){
+				document.write("<scr"+"ipt type='text/javascript' src='runner.js'></scr"+"ipt>");
+				document.write("<scr"+"ipt type='text/javascript' src='_browserRunner.js'></scr"+"ipt>");
+			}
+		</script>
 		<style type="text/css">
 			body {
 				margin: 0px;
@@ -147,14 +157,6 @@
 				background-color: #de827b;
 			}
 		</style>
-		<script type="text/javascript" src="../dojo.js"></script>
-		<script type="text/javascript" src="runner.js"></script>
-		<script type="text/javascript">
-			if(!this["dojo"]){
-				document.write("<scr"+"ipt type='text/javascript' src='_browserRunner.js'></scr"+"ipt>");
-				document.write("<scr"+"ipt type='text/javascript' src='_base.js'></scr"+"ipt>");
-			}
-		</script>
 	</head>
 	<body>
 		<table id="testLayout" cellpadding="0" cellspacing="0">

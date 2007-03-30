@@ -2,11 +2,12 @@
 // FIXME: need to handle URL wrapping and test registration/running from URLs
 
 // package system gunk. 
-if(this["dojo"]){
-	// Ensure we can run w/o Dojo in a Rhino or SM environment
+try{
 	dojo.provide("tests.runner");
-}else if(!this["tests"]){
-	tests = {};
+}catch(e){
+	if(!this["tests"]){
+		tests = {};
+	}
 }
 
 //
@@ -205,7 +206,7 @@ tests.extend(tests.Deferred, {
 	_check: function(){
 		if(this.fired != -1){
 			if(!this.silentlyCancelled){
-				tests.raise("already called!");
+				throw new Error("already called!");
 			}
 			this.silentlyCancelled = false;
 			return;
@@ -267,13 +268,13 @@ tests.extend(tests.Deferred, {
 			// Array
 			var pair = chain.shift();
 			var f = pair[fired];
-			if (f == null) {
+			if(f == null){
 				continue;
 			}
 			try {
 				res = f(res);
 				fired = ((res instanceof Error) ? 1 : 0);
-				if(res instanceof tests.Deferred) {
+				if(res instanceof tests.Deferred){
 					cb = function(res){
 						self._continue(res);
 					}
@@ -354,24 +355,50 @@ tests._testFinished = function(group, fixture, success){
 	// slot to be filled in
 }
 
-tests.registerTest = function(/*String*/ group, /*Function or Object*/ test){
+tests.registerGroup = function(	/*String*/ group, 
+								/*Array||Function||Object*/ tests, 
+								/*Function*/ setUp, 
+								/*Function*/ tearDown){
 	// summary:
-	//		add the provided test function or fixture object to the specified
-	//		test group.
+	//		registers an entire group of tests at once and provides a setUp and
+	//		tearDown facility for groups. If you call this method with only
+	//		setUp and tearDown parameters, they will replace previously
+	//		installed setUp or tearDown functions for the group with the new
+	//		methods.
 	// group:
-	//		string name of the group to add the test to
-	// test:
-	//		either a function or an object. If an object, it must contain at
-	//		*least* a "runTest" method, and may also contain "setUp" and
-	//		"tearDown" methods. These will be invoked on either side of the
-	//		"runTest" method (respectively) when the test is run.
-	if(!this._groups[group]){
-		this._groupCount++;
-		this._groups[group] = [];
-		this._groups[group].inFlight = 0;
+	//		string name of the group
+	// tests:
+	//		either a function or an object or an array of functions/objects. If
+	//		an object, it must contain at *least* a "runTest" method, and may
+	//		also contain "setUp" and "tearDown" methods. These will be invoked
+	//		on either side of the "runTest" method (respectively) when the test
+	//		is run. If an array, it must contain objects matching the above
+	//		description or test functions.
+	// setUp: a function for initializing the test group
+	// tearDown: a function for initializing the test group
+	if(tests){
+		this.register(group, tests);
 	}
+	if(setUp){
+		this._groups[group].setUp = setUp;
+	}
+	if(tearDown){
+		this._groups[group].tearDown = tearDown;
+	}
+}
+
+tests._getTestObj = function(group, test){
 	var tObj = test;
-	if(typeof test == "function"){
+	if(typeof test == "string"){
+		if(test.substr(0, 4)=="url:"){
+			return this.registerUrl(group, test);
+		}else{
+			tObj = {
+				name: test.replace("/\s/g", "_")
+			};
+			tObj.runTest = new Function(test);
+		}
+	}else if(typeof test == "function"){
 		// if we didn't get a fixture, wrap the function
 		tObj = { "runTest": test };
 		if(test["name"]){
@@ -389,9 +416,31 @@ tests.registerTest = function(/*String*/ group, /*Function or Object*/ test){
 		}
 		// FIXME: try harder to get the test name here
 	}
+	return tObj;
+}
+
+tests.registerTest = function(/*String*/ group, /*Function||Object*/ test){
+	// summary:
+	//		add the provided test function or fixture object to the specified
+	//		test group.
+	// group:
+	//		string name of the group to add the test to
+	// test:
+	//		either a function or an object. If an object, it must contain at
+	//		*least* a "runTest" method, and may also contain "setUp" and
+	//		"tearDown" methods. These will be invoked on either side of the
+	//		"runTest" method (respectively) when the test is run.
+	if(!this._groups[group]){
+		this._groupCount++;
+		this._groups[group] = [];
+		this._groups[group].inFlight = 0;
+	}
+	var tObj = this._getTestObj(group, test);
+	if(!tObj){ return; }
 	this._groups[group].push(tObj);
 	this._testCount++;
 	this._testRegistered(group, tObj);
+	return tObj;
 }
 
 tests.registerTests = function(/*String*/ group, /*Array*/ testArr){
@@ -404,10 +453,16 @@ tests.registerTests = function(/*String*/ group, /*Array*/ testArr){
 	}
 }
 
-tests.registerTestUrl = function(/*String*/ group, /*String*/ url){
+// FIXME: move implementation to _browserRunner?
+tests.registerUrl = function(	/*String*/ group, 
+								/*String*/ url, 
+								/*Integer*/ timeout){
 	this.debug("ERROR:");
-	this.debug("\tNO registerTestUrl() METHOD AVAILABLE.");
+	this.debug("\tNO registerUrl() METHOD AVAILABLE.");
 	// this._urls.push(url);
+}
+
+tests.registerString = function(group, str){
 }
 
 // FIXME: remove the tests.add alias SRTL.
@@ -418,14 +473,23 @@ tests.register = tests.add = function(groupOrNs, testOrNull){
 	// 		methods and will correctly guess the right one to register with.
 	if(	(arguments.length == 1)&&
 		(typeof groupOrNs == "string") ){
-		this.registerTestUrl(groupOrNs);
+		if(groupOrNs.substr(0, 4)=="url:"){
+			this.registerUrl(groupOrNs);
+		}else{
+			this.registerTest("ungrouped", groupOrNs);
+		}
 	}
 	if(arguments.length == 1){
 		this.debug("invalid args passed to tests.register():", groupOrNs, ",", testOrNull);
 		return;
 	}
 	if(typeof testOrNull == "string"){
-		this.registerTestNs(groupOrNs, testOrNull);
+		if(testOrNull.substr(0, 4)=="url:"){
+			this.registerUrl(testOrNull);
+		}else{
+			this.registerTest(groupOrNs, testOrNull);
+		}
+		// this.registerTestNs(groupOrNs, testOrNull);
 		return;
 	}
 	if(	tests._isArray(testOrNull) ){
@@ -672,27 +736,32 @@ tests.run = function(){
 	this._report();
 }
 
-if(this["dojo"]){
+try{
 	dojo.platformRequire({
 		browser: ["tests._browserRunner"],
 		rhino: ["tests._rhinoRunner"],
 		spidermonkey: ["tests._rhinoRunner"]
 	});
-	dojo.require("tests._base");
-	dojo.addOnLoad(function(){
-		setTimeout(function(){
-			tests.run();
-		}, 100);
-	});
+	var _shouldRequire = (dojo.isBrowser) ? (window == window.parent) : true;
+	if(_shouldRequire){
+		dojo.require("tests._base");
+		dojo.addOnLoad(function(){
+			setTimeout(function(){
+				tests.run();
+			}, 100);
+		});
+	}
 	// set us up for a run
-}else if(this["load"]){
-	load("_rhinoRunner.js");
-	load("_base.js");
+}catch(e){
+	if(this["load"]){
+		load("_rhinoRunner.js");
+		load("_base.js");
 
-	print("\n"+tests._line);
-	print("The Dojo Unit Test Harness, $Rev$");
-	print("Copyright (c) 2007, The Dojo Foundation, All Rights Reserved");
-	print(tests._line, "\n");
+		print("\n"+tests._line);
+		print("The Dojo Unit Test Harness, $Rev$");
+		print("Copyright (c) 2007, The Dojo Foundation, All Rights Reserved");
+		print(tests._line, "\n");
 
-	tests.run();
+		tests.run();
+	}
 }

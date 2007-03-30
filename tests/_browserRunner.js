@@ -186,23 +186,60 @@ if(window["dojo"]){
 		tests._testRegistered = tests._updateTestList;
 
 		tests._groupStarted = function(group){
+			// console.debug("_groupStarted", group);
 			getGroupNode(group).className = "inProgress";
 		}
 
 		tests._groupFinished = function(group, success){
+			// console.debug("_groupFinished", group);
 			getGroupNode(group).className = (success) ? "success" : "failure";
 		}
 
 		tests._testStarted = function(group, fixture){
+			// console.debug("_testStarted", group, fixture.name);
 			getFixtureNode(group, fixture).className = "inProgress";
 			fixture.startTime = new Date();
 		}
 
 		tests._testFinished = function(group, fixture, success){
-			this.debug(((success) ? "PASSED" : "FAILED"), "test:", fixture.name);
 			var fn = getFixtureNode(group, fixture);
-			fn.className = (success) ? "success" : "failure";
 			fn.getElementsByTagName("td")[2].innerHTML = ((new Date())-fixture.startTime)+"ms";
+			fn.className = (success) ? "success" : "failure";
+			this.debug(((success) ? "PASSED" : "FAILED"), "test:", fixture.name);
+		}
+
+		// FIXME: move implementation to _browserRunner?
+		tests.registerUrl = function(	/*String*/ group, 
+										/*String*/ url, 
+										/*Integer*/ timeout){
+			var tg = new String(group);
+			this.register(group, {
+				name: url,
+				setUp: function(){
+					tests.currentGroupName = tg;
+					tests.currentGroup = this;
+					tests.currentUrl = url;
+					this.d = new tests.Deferred();
+					tests.currentTestDeferred = this.d;
+					showTestPage();
+					byId("testBody").src = url;
+				},
+				timeout: timeout||10000, // 10s
+				// timeout: timeout||1000, // 10s
+				runTest: function(){
+					// FIXME: implement calling into the url's groups here!!
+					return this.d;
+				},
+				tearDown: function(){
+					tests.currentGroupName = null;
+					tests.currentGroup = null;
+					tests.currentTestDeferred = null;
+					tests.currentUrl = null;
+					// this.d.errback(false);
+					// byId("testBody").src = "about:blank";
+					showLogPage();
+				}
+			});
 		}
 
 		// 
@@ -257,6 +294,7 @@ if(window["dojo"]){
 		_addOnEvt("resize", setListHeight);
 		_addOnEvt("load", setListHeight);
 		_addOnEvt("load", function(){
+			if(loaded){ return; }
 			loaded = true;
 			groupTemplate = byId("groupTemplate");
 			if(!groupTemplate){ 
@@ -273,6 +311,7 @@ if(window["dojo"]){
 
 		_addOnEvt("load", 
 			function(){
+				if(loaded){ return; }
 				if(!byId("play")){ 
 					// make sure we've got an ammenable DOM structure
 					return;
@@ -306,7 +345,32 @@ if(window["dojo"]){
 		);
 	}else{
 		// we're in an iframe environment. Time to mix it up a bit.
-		tests = window.parent.tests;
+
+		_tests = window.parent.tests;
+		var _thisGroup = _tests.currentGroupName;
+		var _thisUrl = _tests.currentUrl;
+		if(_thisGroup){
+			tests._testRegistered = function(group, tObj){
+				_tests._updateTestList(_thisGroup, tObj);
+			}
+			tests._onEnd = function(){
+				_tests.currentTestDeferred.callback(true);
+			}
+			var otr = tests._getTestObj;
+			tests._getTestObj = function(){
+				var tObj = otr.apply(tests, arguments);
+				tObj.name = _thisUrl+"::"+arguments[0]+"::"+tObj.name;
+				return tObj;
+			}
+			tests.debug = tests.hitch(_tests, "debug");
+			tests.registerUrl = tests.hitch(_tests, "registerUrl");
+			tests._testStarted = function(group, fixture){
+				_tests._testStarted(_thisGroup, fixture);
+			}
+			tests._testFinished = function(g, f, s){
+				_tests._testFinished(_thisGroup, f, s);
+			}
+		}
 	}
 
 })();

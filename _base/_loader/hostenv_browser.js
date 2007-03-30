@@ -56,9 +56,6 @@ if(typeof window != 'undefined'){
 		d.locale = d.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
 	})();
 
-	dojo.locale = dojo.locale ||
-	  (dojo.isIE ? navigator.userLanguage : navigator.language).toLowerCase();
-
 	dojo._println = console.debug;
 
 	// These are in order of decreasing likelihood; this will change in time.

@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>testing dojo.query()</title>
+		<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("tests.runner");
+			// dojo.require("dojo.query");
+			dojo.addOnLoad(function(){
+				/*
+				tests.register("thinger", function blah(t){
+					t.assertTrue(true);
+				});
+				tests.register("thinger", function blah2(t){
+					t.assertTrue(false);
+				});
+				*/
+				tests.register("t", 
+					[
+						"tests.assertEqual(4, (dojo.query('#t h3')).length);",
+						"tests.assertEqual(3, (dojo.query('#t > h3')).length);"
+					]
+				);
+				tests.run();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>testing dojo.query()</h1>
+		<div id="t">
+			<h3>
+				<h4>h4</h4>
+				<h3>h3</h3>
+			</h3>
+			<h3>h3</h3>
+			<h3>h3</h3>
+		</div>
+	</body>
+</html>
+

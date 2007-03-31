@@ -18,7 +18,7 @@ dojo.fromJson = function(/*String*/ json){
 	}
 }
 
-dojo._escapeString = function(/*string*/str){
+dojo._escapeString = function(/*String*/str){
 	//summary:
 	//		Adds escape sequences for non-visual characters, double quote and
 	//		backslash and surrounds with double quotes to form a valid string
@@ -32,7 +32,7 @@ dojo._escapeString = function(/*string*/str){
 }
 
 dojo.toJsonIndentStr = "\t";
-dojo.toJson = function(/*Object*/ it, /* Boolean */ prettyPrint, /* String */ _indentStr){
+dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _indentStr){
 	// summary:
 	//		Create a JSON serialization of an object. 
 	//		Note that this doesn't check for infinite recursion, so don't do that!

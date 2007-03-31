@@ -112,6 +112,7 @@ if(window["dojo"]){
 		var groupNodes = {};
 
 		var addGroupToList = function(group){
+			if(!byId("testList")){ return; }
 			var tb = byId("testList").tBodies[0];
 			var tg = groupTemplate.cloneNode(true);
 			var tds = tg.getElementsByTagName("td");
@@ -128,6 +129,7 @@ if(window["dojo"]){
 		}
 
 		var addFixtureToList = function(group, fixture){
+			if(!testTemplate){ return; }
 			var cgn = groupNodes[group];
 			var tn = testTemplate.cloneNode(true);
 			var tds = tn.getElementsByTagName("td");
@@ -279,7 +281,7 @@ if(window["dojo"]){
 		toggleRunAll = function(){
 			// would be easier w/ query...sigh
 			runAll = (!runAll);
-			if(!dojo.byId("testList")){ return; }
+			if(!byId("testList")){ return; }
 			var tb = byId("testList").tBodies[0];
 			var inputs = tb.getElementsByTagName("input");
 			var x=0; var tn;

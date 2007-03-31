@@ -187,24 +187,35 @@ if(window["dojo"]){
 
 		tests._groupStarted = function(group){
 			// console.debug("_groupStarted", group);
-			getGroupNode(group).className = "inProgress";
+			var gn = getGroupNode(group);
+			if(gn){
+				gn.className = "inProgress";
+			}
 		}
 
 		tests._groupFinished = function(group, success){
 			// console.debug("_groupFinished", group);
-			getGroupNode(group).className = (success) ? "success" : "failure";
+			var gn = getGroupNode(group);
+			if(gn){
+				gn.className = (success) ? "success" : "failure";
+			}
 		}
 
 		tests._testStarted = function(group, fixture){
 			// console.debug("_testStarted", group, fixture.name);
-			getFixtureNode(group, fixture).className = "inProgress";
+			var fn = getFixtureNode(group, fixture);
+			if(fn){
+				fn.className = "inProgress";
+			}
 			fixture.startTime = new Date();
 		}
 
 		tests._testFinished = function(group, fixture, success){
 			var fn = getFixtureNode(group, fixture);
-			fn.getElementsByTagName("td")[2].innerHTML = ((new Date())-fixture.startTime)+"ms";
-			fn.className = (success) ? "success" : "failure";
+			if(fn){
+				fn.getElementsByTagName("td")[2].innerHTML = ((new Date())-fixture.startTime)+"ms";
+				fn.className = (success) ? "success" : "failure";
+			}
 			this.debug(((success) ? "PASSED" : "FAILED"), "test:", fixture.name);
 		}
 
@@ -268,6 +279,7 @@ if(window["dojo"]){
 		toggleRunAll = function(){
 			// would be easier w/ query...sigh
 			runAll = (!runAll);
+			if(!dojo.byId("testList")){ return; }
 			var tb = byId("testList").tBodies[0];
 			var inputs = tb.getElementsByTagName("input");
 			var x=0; var tn;

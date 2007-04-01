@@ -171,6 +171,14 @@ dojo.hostenv.loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/curre
 		if(this.isXDomain && uri.indexOf("/nls/") == -1){
 			var pkg = this.createXdPackage(contents, module, uri);
 			dj_eval(pkg);
+			//When loading local modules only, there will be no
+			//modules in flight. In that case, trigger the xd
+			//resolution right away. Otherwise, there are issues
+			//with dojo.addOnLoad() calls added after loading only
+			//local modules after the page load.
+			if(this.inFlightCount == 0){
+				this.watchInFlightXDomain();
+			}
 		}else{
 			if(cb){ contents = '('+contents+')'; }
 			var value = dj_eval(contents);

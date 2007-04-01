@@ -53,6 +53,12 @@ dojo.require("dojo._base.NodeList");
 			}
 		},
 		{
+			key: "~=",
+			match: function(attr, value){
+				return "[contains(concat(' ',@"+attr+",' '), ' "+ value +" ')]";
+			}
+		},
+		{
 			key: "^=",
 			match: function(attr, value){
 				return "[starts-with(@"+attr+", '"+ value +"')]";
@@ -85,6 +91,11 @@ dojo.require("dojo._base.NodeList");
 		}
 	];
 
+	var strip = function(val){
+		var re = /^\s+|\s+$/g;
+		return val.replace(re, "");	//	string
+	}
+
 	var handleAttrs = function(	attrList, 
 								query, 
 								getDefault, 
@@ -111,7 +122,7 @@ dojo.require("dojo._base.NodeList");
 							(value.charAt(0) == "\'")){
 							value = value.substring(1, value.length-1);
 						}
-						matcher = ta.match(attr, value);
+						matcher = ta.match(strip(attr), strip(value));
 						break;
 					}
 				}
@@ -137,16 +148,20 @@ dojo.require("dojo._base.NodeList");
 
 	var buildPath = function(query){
 		var xpath = "";
-		var qparts = query.split(" ");
+		var qparts = query.split(" "); // FIXME: this break on span[thinger = foo]
 		while(qparts.length){
 			var tqp = qparts.shift();
 			var prefix;
+			// FIXME: need to add support for ~ and +
 			if(tqp == ">"){
 				prefix = "/";
+				// prefix = "/child::node()";
 				tqp = qparts.shift();
 			}else{
 				prefix = "//";
+				// prefix = "/descendant::node()"
 			}
+
 			// get the tag name (if any)
 			var tagName = getTagName(tqp);
 
@@ -155,7 +170,7 @@ dojo.require("dojo._base.NodeList");
 			// check to see if it's got an id. Needs to come first in xpath.
 			var id = getId(tqp);
 			if(id.length){
-				xpath += "[@id='"+id+"']";
+				xpath += "[@id='"+id+"'][1]";
 			}
 
 			var cn = getClassName(tqp);
@@ -181,7 +196,6 @@ dojo.require("dojo._base.NodeList");
 
 			// FIXME: need to implement pseudo-class checks!!
 		};
-		// dojo.debug(xpath);
 		return xpath;
 	};
 
@@ -195,13 +209,19 @@ dojo.require("dojo._base.NodeList");
 		var parent = d.body(); // FIXME
 		// FIXME: don't need to memoize. The closure scope handles it for us.
 		var xpath = buildPath(path);
+		// console.debug(xpath);
 
 		var tf = function(){
 			// XPath query strings are memoized.
 			var ret = [];
-			var xpathResult = doc.evaluate(xpath, parent, null, 
-											// XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
-											XPathResult.ANY_TYPE, null);
+			try{
+				var xpathResult = doc.evaluate(xpath, parent, null, 
+												// XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+												XPathResult.ANY_TYPE, null);
+			}catch(e){
+				console.debug("failure in exprssion:", xpath, "under:", parent);
+				console.debug(e);
+			}
 			var result = xpathResult.iterateNext();
 			while(result){
 				ret.push(result);
@@ -627,8 +647,7 @@ dojo.require("dojo._base.NodeList");
 				}else if(condition.indexOf("n") == -1){
 					var ncount = pi(condition);
 					return function(elem){
-						// removeChaffNodes(elem.parentNode);
-						return (elem.parentNode.childNodes[ncount-1] === elem);
+						return (getNodeIndex(elem) == ncount);
 					}
 				}
 			}
@@ -660,6 +679,8 @@ dojo.require("dojo._base.NodeList");
 			}
 		}
 
+		var matcher;
+
 		// if there's a class in our query, generate a match function for it
 		var className = getClassName(query);
 		if(className.length){
@@ -673,28 +694,11 @@ dojo.require("dojo._base.NodeList");
 			ff = agree(ff, function(elem){
 				return re.test(elem.className);
 			});
-
 		}
-		// [ "#", ".", "[", ":" ];
-		var defaultGetter = (d.isIE) ?
-			function(cond){
-				return function(elem){
-					return elem[cond];
-				}
-			} : function(cond){
-				return function(elem){
-					return elem.hasAttribute(cond);
-				}
-			};
-		handleAttrs(attrs, query, defaultGetter,
-			function(tmatcher){
-				ff = agree(ff, tmatcher);
-			}
-		);
 
-		var matcher;
 		if(i[3]>= 0){
 			// NOTE: we count on the pseudo name being at the end
+			// FIXME: this is clearly a bug!!!
 			var pseudoName = query.substr(i[3]+1);
 			var condition = "";
 			var obi = pseudoName.indexOf("(");
@@ -722,6 +726,23 @@ dojo.require("dojo._base.NodeList");
 				ff = agree(ff, matcher);
 			}
 		}
+
+		// [ "#", ".", "[", ":" ];
+		var defaultGetter = (d.isIE) ?
+			function(cond){
+				return function(elem){
+					return elem[cond];
+				}
+			} : function(cond){
+				return function(elem){
+					return elem.hasAttribute(cond);
+				}
+			};
+		handleAttrs(attrs, query, defaultGetter,
+			function(tmatcher){
+				ff = agree(ff, tmatcher);
+			}
+		);
 		if(!ff){
 			ff = function(){ return true; };
 		}
@@ -767,50 +788,6 @@ dojo.require("dojo._base.NodeList");
 			var tret;
 			var tn = getTagName(query);
 
-			/*
-			if(-1 != i[3]){
-				var pseudoName = (0 <= i[3]) ? query.substr(i[3]+1) : "";
-				switch(pseudoName){
-					case "first":
-						retFunc = function(root){
-							// for(var x=0, te; te = tret[x]; x++){
-							var te, x=0, tret = root.getElementsByTagName(tn);
-							while(te=tret[x++]){
-								if(filterFunc(te)){
-									return [ te ];
-								}
-							}
-							return [];
-						}
-						break;
-					case "last":
-						retFunc = function(root){
-							var tret = root.getElementsByTagName(tn);
-							var te, x=tret.length-1;
-							while(te=tret[x--]){
-								if(filterFunc(te)){
-									return [ te ];
-								}
-							}
-							return [];
-						}
-						break;
-					default:
-						retFunc = function(root){
-							var ret = [];
-							var te, x=0, tret = root.getElementsByTagName(tn);
-							while(te=tret[x++]){
-								if(filterFunc(te)){
-									ret[ret.length] = te;
-									// ret.push(te);
-								}
-							}
-							return ret;
-						}
-						break;
-				}
-			}else 
-			*/
 			if(isTagOnly(query)){
 				// it's just a plain-ol elements-by-tag-name query from the root
 				retFunc = function(root){
@@ -850,8 +827,9 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		var sqf = function(root){
-			var qparts = query.split(" ");
+			var qparts = query.split(" "); // FIXME: this is an inaccurate tokenizer!
 
+			/*
 			// FIXME: need to make root popping more explicit and cache it somehow
 
 			// see if we can't pop a root off the front
@@ -867,6 +845,7 @@ dojo.require("dojo._base.NodeList");
 				if(!root){ root = lastRoot; break; }
 				partIndex++;
 			}
+			// console.debug(qparts[partIndex], root);
 			if(qparts.length == partIndex){
 				return [ root ];
 			}
@@ -883,6 +862,7 @@ dojo.require("dojo._base.NodeList");
 			// but we might still fall apart on searches like:
 			//		foo.bar span[blah="thonk"] div div span code.example
 			// in short, we need to move the look-ahead logic into _filterDown()
+			// console.debug(qparts[partIndex]);
 			if( isTagOnly(qparts[partIndex]) && 
 				(qparts[partIndex+1] != ">")
 			){
@@ -913,8 +893,11 @@ dojo.require("dojo._base.NodeList");
 					return candidates;
 				}
 			}else{
+				// console.debug(qparts);
 				candidates = getElementsFunc(qparts.shift())(root);
 			}
+			*/
+			var candidates = getElementsFunc(qparts.shift())(root);
 			return filterDown(candidates, qparts);
 		}
 		return sqf;
@@ -959,14 +942,16 @@ dojo.require("dojo._base.NodeList");
 					// use get and cache a xpath runner for this selector
 					return getXPathFunc(query);
 				}
-				// return getXPathFunc(query);
 			}
 
+			// fallthrough
 			return getStepQueryFunc(query);
 		} : getStepQueryFunc
 	);
-	// FIXME: disable XPath for testing and tuning the DOM path
+	// uncomment to disable XPath for testing and tuning the DOM path
 	// _getQueryFunc = getStepQueryFunc;
+	// uncomment to disable DOM queries for testing and tuning XPath
+	// _getQueryFunc = getXPathFunc;
 
 	var getQueryFunc = function(query){
 		if(_queryFuncCache[query]){ return _queryFuncCache[query]; }
@@ -1007,11 +992,17 @@ dojo.require("dojo._base.NodeList");
 	}
 	*/
 
+	// FIXME: 
+	//		Dean's new Base2 uses a system whereby queries themselves note if
+	//		they'll need duplicate filtering. We need to get on that plan!!
+
 	var _zipIdx = 0;
 	var _zip = function(arr){
 		var ret = new d.NodeList();
 		if(!arr){ return ret; }
-		ret.push(arr[0]);
+		if(arr[0]){
+			ret.push(arr[0]);
+		}
 		if(arr.length < 2){ return ret; }
 		_zipIdx++;
 		arr[0]["_zipIdx"] = _zipIdx;

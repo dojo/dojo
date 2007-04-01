@@ -4,20 +4,25 @@
 		<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript">
 			dojo.require("tests.runner");
-			// dojo.require("dojo.query");
 			dojo.addOnLoad(function(){
-				/*
-				tests.register("thinger", function blah(t){
-					t.assertTrue(true);
-				});
-				tests.register("thinger", function blah2(t){
-					t.assertTrue(false);
-				});
-				*/
 				tests.register("t", 
 					[
+						"tests.assertEqual(4, (dojo.query('h3')).length);",
 						"tests.assertEqual(4, (dojo.query('#t h3')).length);",
-						"tests.assertEqual(3, (dojo.query('#t > h3')).length);"
+						"tests.assertEqual(1, (dojo.query('#t div > h3')).length);",
+						"tests.assertEqual(3, (dojo.query('#t > h3')).length);",
+						"tests.assertEqual(2, (dojo.query('.foo, .bar')).length);",
+						"tests.assertEqual(2, (dojo.query('.foo')).length);",
+						"tests.assertEqual(2, (dojo.query('.baz')).length);",
+						"tests.assertEqual(1, (dojo.query('span.baz')).length);",
+						// FIXME: need to support [foo="foo bar"]. We're incorrectly tokenizing!
+						"tests.assertEqual(2, (dojo.query('[foo~=\"bar\"]')).length);",
+						"tests.assertEqual(3, (dojo.query('[foo]')).length);",
+						"tests.assertEqual(1, (dojo.query('[foo$=\"thud\"]')).length);",
+						"tests.assertEqual(1, (dojo.query('[foo|=\"bar\"]')).length);",
+						"tests.assertEqual(1, (dojo.query('[foo|=\"bar-baz\"]')).length);",
+						"tests.assertEqual(0, (dojo.query('[foo|=\"baz\"]')).length);",
+						"tests.assertEqual(dojo.byId('_foo'), dojo.query('.foo:nth-child(2)')[0]);"
 					]
 				);
 				tests.run();
@@ -27,12 +32,20 @@
 	<body>
 		<h1>testing dojo.query()</h1>
 		<div id="t">
-			<h3>
-				<h4>h4</h4>
+			<h3>h3 <span>span</span> endh3 </h3>
+			<!-- comment to throw things off -->
+			<div class="foo bar" id="_foo">
 				<h3>h3</h3>
-			</h3>
+				<span id="foo"></span>
+				<span></span>
+			</div>
 			<h3>h3</h3>
-			<h3>h3</h3>
+			<h3 class="baz">h3</h3>
+			<span class="foobar baz foo"></span>
+			<span foo="bar"></span>
+			<span foo="baz bar thud"></span>
+			<!-- FIXME: should foo="bar-baz-thud" match? [foo$=thud] ??? -->
+			<span foo="bar-baz-thudish"></span>
 		</div>
 	</body>
 </html>

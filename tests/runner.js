@@ -609,7 +609,7 @@ tests._runFixture = function(groupName, fixture){
 			// if we get a deferred back from the test runner, we know we're
 			// gonna wait for an async result. It's up to the test code to trap
 			// errors and give us an errback or callback.
-			if(ret instanceof this.Deferred){
+			if(ret instanceof tests.Deferred){
 
 				tg.inFlight++;
 				ret.groupName = groupName;
@@ -626,6 +626,10 @@ tests._runFixture = function(groupName, fixture){
 						tests._groupFinished(groupName, (!tg.failures));
 					}
 					tests._testFinished(groupName, fixture, ret.results[0]);
+					if(tests._paused){
+						// console.debug("finished deferred test group:", groupName, tests);
+						tests.run();
+					}
 				}
 
 				var timer = setTimeout(function(){
@@ -637,6 +641,7 @@ tests._runFixture = function(groupName, fixture){
 					clearTimeout(timer);
 					retEnd();
 				});
+				tests.pause();
 				return ret;
 			}
 		}
@@ -653,12 +658,15 @@ tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 	// summary:
 	//		runs the specified test group
 
-	// FIXME: we need group status and individual tests to be async-able. Would
-	// preferr, perhaps, avoiding use of the full Deferred system, but we'll
-	// see what we can get away w/.
 	var tg = this._groups[groupName];
 	if(tg.skip === true){ return; }
 	if(this._isArray(tg)){
+		if(idx<=tg.length){
+			if(!tg.inFlight){
+				tests._groupFinished(groupName, (!tg.failures));
+			}
+			return;
+		}
 		tg.inFlight = 0;
 		tg.iterated = false;
 		tg.failures = 0;
@@ -671,6 +679,14 @@ tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 				return;
 			}
 			tests._runFixture(groupName, tg[y]);
+			if(this._paused){
+				this._currentTest = y+1;
+				if(this._currentTest == tg.length){
+					tg.iterated = true;
+				}
+				this.debug("PAUSED at", this._currentGroup, this._currentTest);
+				return;
+			}
 		}
 		tg.iterated = true;
 		if(!tg.inFlight){
@@ -723,15 +739,17 @@ tests.run = function(){
 			this._currentGroup = x;
 			if(!found){
 				found = true;
+				// console.debug("starting from:", x, ct);
 				this.runGroup(x, ct);
 			}else{
 				this.runGroup(x);
 			}
+			if(this._paused){ return; }
 		}
 	}
 	this._currentGroup = null;
 	this._currentTest = null;
-	this._paused = true;
+	this._paused = false;
 	this._onEnd();
 	this._report();
 }

@@ -12,6 +12,7 @@
 				dojo.require("tests.runner");
 			}catch(e){
 				document.write("<scr"+"ipt type='text/javascript' src='runner.js'></scr"+"ipt>");
+				document.write("<scr"+"ipt type='text/javascript'>tests.selfTest = true;</scr"+"ipt>");
 				document.write("<scr"+"ipt type='text/javascript' src='_browserRunner.js'></scr"+"ipt>");
 			}
 		</script>
@@ -236,6 +237,7 @@
 				</td>
 			</tr>
 		</table>
+		<span id="hiddenAudio"></span>
 	</body>
 </html>
 

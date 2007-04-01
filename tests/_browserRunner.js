@@ -212,11 +212,19 @@ if(window["dojo"]){
 			fixture.startTime = new Date();
 		}
 
+		var _playSound = function(name){
+			byId("hiddenAudio").innerHTML = '<embed src="_sounds/'+name+'.wav" autostart="true" loop="false" hidden="true" width="1" height="1"></embed>';
+		}
+
 		tests._testFinished = function(group, fixture, success){
 			var fn = getFixtureNode(group, fixture);
 			if(fn){
 				fn.getElementsByTagName("td")[2].innerHTML = ((new Date())-fixture.startTime)+"ms";
 				fn.className = (success) ? "success" : "failure";
+
+				if(!success){
+					_playSound("doh");
+				}
 			}
 			this.debug(((success) ? "PASSED" : "FAILED"), "test:", fixture.name);
 		}
@@ -343,7 +351,14 @@ if(window["dojo"]){
 						isRunning = true;
 					}
 				}
-				tests._onEnd = toggleRunning;
+				tests._onEnd = function(){
+					toggleRunning();
+					if(tests._failureCount == 0){
+						alert("WOOHOO!!");
+						tests.debug("WOOHOO!!");
+						_playSound("woohoo");
+					}
+				}
 				tests.run = (function(oldRun){
 					return function(){
 						toggleRunning();
@@ -368,6 +383,11 @@ if(window["dojo"]){
 				_tests._updateTestList(_thisGroup, tObj);
 			}
 			tests._onEnd = function(){
+				_tests._errorCount += tests._errorCount;
+				_tests._failureCount += tests._failureCount;
+				_tests._testCount += tests._testCount;
+				// should we be really adding raw group counts?
+				_tests._groupCount += tests._groupCount;
 				_tests.currentTestDeferred.callback(true);
 			}
 			var otr = tests._getTestObj;
@@ -384,6 +404,7 @@ if(window["dojo"]){
 			tests._testFinished = function(g, f, s){
 				_tests._testFinished(_thisGroup, f, s);
 			}
+			tests._report = function(){};
 		}
 	}
 

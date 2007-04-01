@@ -488,9 +488,9 @@ dojo.require("dojo._base.NodeList");
 				//		an E element whose "hreflang" attribute has a
 				//		hyphen-separated list of values beginning (from the
 				//		left) with "en"
-				var valueDash = value+"-";
+				var valueDash = " "+value+"-";
 				return function(elem){
-					var ea = elem.getAttribute(attr, 2) || "";
+					var ea = " "+(elem.getAttribute(attr, 2) || "");
 					return (
 						(ea == value) ||
 						(ea.indexOf(valueDash)==0)
@@ -515,10 +515,22 @@ dojo.require("dojo._base.NodeList");
 			}
 		},
 		{
+			key: "~=",
+			match: function(attr, value){
+				// return "[contains(concat(' ',@"+attr+",' '), ' "+ value +" ')]";
+				var tval = " "+value+" ";
+				return function(elem){
+					var ea = " "+_getAttr(elem, attr)+" ";
+					return (ea.indexOf(tval)>=0);
+				}
+			}
+		},
+		{
 			key: "$=",
 			match: function(attr, value){
+				var tval = " "+value;
 				return function(elem){
-					var ea = _getAttr(elem, attr);
+					var ea = " "+_getAttr(elem, attr);
 					return (ea.lastIndexOf(value)==(ea.length-value.length));
 				}
 			}

@@ -396,7 +396,7 @@ tests._getTestObj = function(group, test){
 			tObj = {
 				name: test.replace("/\s/g", "_")
 			};
-			tObj.runTest = new Function(test);
+			tObj.runTest = new Function("t", test);
 		}
 	}else if(typeof test == "function"){
 		// if we didn't get a fixture, wrap the function
@@ -503,7 +503,7 @@ tests.register = tests.add = function(groupOrNs, testOrNull){
 // Assertions and In-Test Utilities
 //
 
-tests.assertTrue = function(/*Object*/ condition){
+tests.t = tests.assertTrue = function(/*Object*/ condition){
 	// summary:
 	//		is the passed item "truthy"?
 	if(!eval(condition)){
@@ -511,7 +511,7 @@ tests.assertTrue = function(/*Object*/ condition){
 	}
 }
 
-tests.assertFalse = function(/*Object*/ condition){
+tests.f = tests.assertFalse = function(/*Object*/ condition){
 	// summary:
 	//		is the passed item "falsey"?
 	if(eval(condition)){
@@ -519,7 +519,7 @@ tests.assertFalse = function(/*Object*/ condition){
 	}
 }
 
-tests.assertEqual = function(/*Object*/ expected, /*Object*/ actual){
+tests.is = tests.assertEqual = function(/*Object*/ expected, /*Object*/ actual){
 	// summary:
 	//		are the passed expected and actual objects/values deeply
 	//		equivalent?

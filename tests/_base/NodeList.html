@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>testing dojo.NodeList</title>
+		<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("tests.runner");
+			dojo.addOnLoad(function(){
+				tests.register("t", 
+					[
+						function ctor(t){
+							var nl = new dojo.NodeList();
+							nl.push(dojo.byId("c1"));
+							t.assertEqual(1, nl.length);
+						},
+						function ctorArgs(t){
+							var nl = new dojo.NodeList(4);
+							nl.push(dojo.byId("c1"));
+							t.assertEqual(5, nl.length);
+						},
+						function ctorArgs2(t){
+							var nl = new dojo.NodeList(dojo.byId("c1"), dojo.byId("t"));
+							t.assertEqual(2, nl.length);
+							t.assertEqual(dojo.byId("c1"), nl[0]);
+							t.assertEqual(dojo.byId("t"), nl[1]);
+						},
+						function forEach(t){
+							// FIXME
+						}
+					]
+				);
+				tests.run();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>testing dojo.NodeList</h1>
+		<div id="t">
+			<span id="c1">c1</span>
+		</div>
+	</body>
+</html>
+

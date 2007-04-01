@@ -32,8 +32,9 @@
 
 		_getModulePrefix: function(/*String*/module){
 			// summary: gets the prefix associated with module
+			var mp = this._modulePrefixes;
 			if(this._moduleHasPrefix(module)){
-				return this._modulePrefixes[module].value; // String
+				return mp[module].value; // String
 			}
 			return module; // String
 		},
@@ -234,14 +235,15 @@ dojo._getModuleSymbols = function(/*String*/modulename){
 			}
 		}
 	}
+	// console.debug(syms);
 	return syms; // Array
 }
 
 dojo._global_omit_module_check = false;
 
 dojo._loadModule = function(	/*String*/moduleName, 
-									/*Boolean?*/exactOnly, 
-									/*Boolean?*/omitModuleCheck){
+								/*Boolean?*/exactOnly, 
+								/*Boolean?*/omitModuleCheck){
 	//	summary:
 	//		loads a Javascript module from the appropriate URI
 	//	description:
@@ -278,44 +280,34 @@ dojo._loadModule = function(	/*String*/moduleName,
 	}
 
 	// convert periods to slashes
-	var relpath = moduleName.replace(/\./g, '/') + '.js';
-
 	var nsyms = moduleName.split(".");
-	
 	var syms = this._getModuleSymbols(moduleName);
-	// console.debug(syms);
 	var startedRelative = ((syms[0].charAt(0) != '/') && !syms[0].match(/^\w+:/));
 	var last = syms[syms.length - 1];
-	var ok;
+	var relpath;
 	// figure out if we're looking for a full package, if so, we want to do
 	// things slightly diffrently
 	if(last=="*"){
 		moduleName = nsyms.slice(0, -1).join('.');
-		while(syms.length){
-			syms.pop();
-			syms.push(this._pkgFileName);
-			relpath = syms.join("/") + '.js';
-			if(startedRelative && relpath.charAt(0)=="/"){
-				relpath = relpath.slice(1);
-			}
-			ok = this._loadPath(relpath, !omitModuleCheck ? moduleName : null);
-			if(ok){ break; }
-			syms.pop();
+		syms.pop();
+		relpath = syms.join("/") + "/" + this._pkgFileName + '.js';
+		if(startedRelative && relpath.charAt(0)=="/"){
+			relpath = relpath.slice(1);
 		}
 	}else{
 		relpath = syms.join("/") + '.js';
 		moduleName = nsyms.join('.');
-		var modArg = !omitModuleCheck ? moduleName : null;
-		ok = this._loadPath(relpath, modArg);
+	}
+	var modArg = (!omitModuleCheck) ? moduleName : null;
+	var ok = this._loadPath(relpath, modArg);
 
-		if(!ok && !omitModuleCheck){
-			throw new Error("Could not load '" + moduleName + "'; last tried '" + relpath + "'");
-		}
+	if((!ok)&&(!omitModuleCheck)){
+		throw new Error("Could not load '" + moduleName + "'; last tried '" + relpath + "'");
 	}
 
 	// check that the symbol was defined
 	// Don't bother if we're doing xdomain (asynchronous) loading.
-	if(!omitModuleCheck && !this["isXDomain"]){
+	if((!omitModuleCheck)&&(!this["isXDomain"])){
 		// pass in false so we can give better error
 		module = this._loadedModules[moduleName];
 		if(!module){
@@ -506,3 +498,132 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 	dojo.require("dojo.i18n");
 	dojo.i18n._requireLocalization.apply(dojo.hostenv, arguments);
 }
+
+dojo.Url = function(/*dojo.Url||String...*/){
+	// summary: 
+	//		Constructor to create an object representing a URL.
+	// description: 
+	//		Each argument is evaluated in order relative to the next until
+	//		a canonical uri is produced. To get an absolute Uri relative to
+	//		the current document use:
+	//      	new dojo.Url(document.baseURI, url)
+
+	// TODO: support for IPv6, see RFC 2732
+
+	// resolve uri components relative to each other
+	var n = null;
+	var _a = arguments;
+	var uri = _a[0];
+	for(var i = 1; i<_a.length; i++){
+		if(!_a[i]){ continue; }
+
+		// Safari doesn't support this.constructor so we have to be explicit
+		var relobj = new dojo.Url(_a[i]+"");
+		var uriobj = new dojo.Url(uri+"");
+
+		if(
+			(relobj.path=="")	&&
+			(!relobj.scheme)	&&
+			(!relobj.authority)	&&
+			(!relobj.query)
+		){
+			if(relobj.fragment != null){
+				uriobj.fragment = relobj.fragment;
+			}
+			relobj = uriobj;
+		}else if(relobj.scheme == null){
+			relobj.scheme = uriobj.scheme;
+
+			if(relobj.authority == null){
+				relobj.authority = uriobj.authority;
+
+				if(relobj.path.charAt(0) != "/"){
+					var path = uriobj.path.substring(0,
+						uriobj.path.lastIndexOf("/") + 1) + relobj.path;
+
+					var segs = path.split("/");
+					for(var j = 0; j < segs.length; j++){
+						if(segs[j] == "."){
+							if (j == segs.length - 1) { segs[j] = ""; }
+							else { segs.splice(j, 1); j--; }
+						}else if(j > 0 && !(j == 1 && segs[0] == "") &&
+							segs[j] == ".." && segs[j-1] != ".."){
+
+							if(j == (segs.length - 1)){
+								segs.splice(j, 1); segs[j - 1] = "";
+							}else{
+								segs.splice(j - 1, 2); j -= 2;
+							}
+						}
+					}
+					relobj.path = segs.join("/");
+				}
+			}
+		}
+
+		uri = "";
+		if(relobj.scheme != null){ 
+			uri += relobj.scheme + ":";
+		}
+		if(relobj.authority != null){
+			uri += "//" + relobj.authority;
+		}
+		uri += relobj.path;
+		if(relobj.query != null){
+			uri += "?" + relobj.query;
+		}
+		if(relobj.fragment != null){
+			uri += "#" + relobj.fragment;
+		}
+	}
+
+	this.uri = uri.toString();
+
+	// break the uri into its main components
+	var regexp = "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$";
+	var r = this.uri.match(new RegExp(regexp));
+
+	this.scheme = r[2] || (r[1] ? "" : null);
+	this.authority = r[4] || (r[3] ? "" : null);
+	this.path = r[5]; // can never be undefined
+	this.query = r[7] || (r[6] ? "" : null);
+	this.fragment  = r[9] || (r[8] ? "" : null);
+
+	if(this.authority != null){
+		// server based naming authority
+		regexp = "^((([^:]+:)?([^@]+))@)?([^:]*)(:([0-9]+))?$";
+		r = this.authority.match(new RegExp(regexp));
+
+		this.user = r[3] || null;
+		this.password = r[4] || null;
+		this.host = r[5];
+		this.port = r[7] || null;
+	}
+
+	this.toString = function(){ return this.uri; }
+}
+
+dojo.moduleUrl = function(/*String*/module, /*dojo.Url||String*/url){
+	// summary: 
+	//		returns a Url object relative to a module
+	// description: 
+	//		Examples: 
+	//			dojo.moduleUrl("dojo.widget","templates/template.html");
+	//			dojo.moduleUrl("acme","images/small.png")
+
+	var loc = dojo._getModuleSymbols(module).join('/');
+	if(!loc){ return null; }
+	if(loc.lastIndexOf("/") != loc.length-1){
+		loc += "/";
+	}
+	
+	//If the path is an absolute path (starts with a / or is on another
+	//domain/xdomain) then don't add the _baseUrl.
+	var colonIndex = loc.indexOf(":");
+	if(loc.charAt(0) != "/" && (colonIndex == -1 || colonIndex > loc.indexOf("/"))){
+		loc = dojo._baseUrl + loc;
+	}
+
+	return new dojo.Url(loc, url);
+}
+

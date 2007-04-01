@@ -701,9 +701,17 @@ tests._report = function(){
 	// summary:
 	//		a private method to be implemented/replaced by the "locally
 	//		appropriate" test runner
-	this.debug("ERROR:");
-	this.debug("\tNO REPORTING OUTPUT AVAILABLE.");
-	this.debug("\tIMPLEMENT tests._report() IN YOUR TEST RUNNER");
+
+	// this.debug("ERROR:");
+	// this.debug("\tNO REPORTING OUTPUT AVAILABLE.");
+	// this.debug("\tIMPLEMENT tests._report() IN YOUR TEST RUNNER");
+
+	this.debug(this._line);
+	this.debug("| TEST SUMMARY:");
+	this.debug(this._line);
+	this.debug("\t", this._testCount, "tests in", this._groupCount, "groups");
+	this.debug("\t", this._errorCount, "errors");
+	this.debug("\t", this._failureCount, "failures");
 }
 
 tests.togglePaused = function(){

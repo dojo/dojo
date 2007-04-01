@@ -212,8 +212,15 @@ if(window["dojo"]){
 			fixture.startTime = new Date();
 		}
 
+		var _nameTimes = {};
 		var _playSound = function(name){
-			byId("hiddenAudio").innerHTML = '<embed src="_sounds/'+name+'.wav" autostart="true" loop="false" hidden="true" width="1" height="1"></embed>';
+			var nt = _nameTimes[name];
+			if((!nt)||(((new Date)-nt) > 700)){
+				_nameTimes[name] = new Date();
+				var tc = document.createElement("span");
+				byId("hiddenAudio").appendChild(tc);
+				tc.innerHTML = '<embed src="_sounds/'+name+'.wav" autostart="true" loop="false" hidden="true" width="1" height="1"></embed>';
+			}
 		}
 
 		tests._testFinished = function(group, fixture, success){
@@ -333,7 +340,15 @@ if(window["dojo"]){
 
 		_addOnEvt("load", 
 			function(){
-				if(loaded){ return; }
+				tests._onEnd = function(){
+					if(tests._failureCount == 0){
+						tests.debug("WOOHOO!!");
+						_playSound("woohoo");
+					}else{
+						console.debug("tests._failureCount:", tests._failureCount);
+					}
+					toggleRunning();
+				}
 				if(!byId("play")){ 
 					// make sure we've got an ammenable DOM structure
 					return;
@@ -349,14 +364,6 @@ if(window["dojo"]){
 						byId("play").style.display = byId("pausedMsg").style.display = "none";
 						byId("playingMsg").style.display = byId("pause").style.display = "";
 						isRunning = true;
-					}
-				}
-				tests._onEnd = function(){
-					toggleRunning();
-					if(tests._failureCount == 0){
-						alert("WOOHOO!!");
-						tests.debug("WOOHOO!!");
-						_playSound("woohoo");
 					}
 				}
 				tests.run = (function(oldRun){

@@ -214,12 +214,14 @@ if(window["dojo"]){
 
 		var _nameTimes = {};
 		var _playSound = function(name){
-			var nt = _nameTimes[name];
-			if((!nt)||(((new Date)-nt) > 700)){
-				_nameTimes[name] = new Date();
-				var tc = document.createElement("span");
-				byId("hiddenAudio").appendChild(tc);
-				tc.innerHTML = '<embed src="_sounds/'+name+'.wav" autostart="true" loop="false" hidden="true" width="1" height="1"></embed>';
+			if(byId("hiddenAudio")){
+				var nt = _nameTimes[name];
+				if((!nt)||(((new Date)-nt) > 700)){
+					_nameTimes[name] = new Date();
+					var tc = document.createElement("span");
+					byId("hiddenAudio").appendChild(tc);
+					tc.innerHTML = '<embed src="_sounds/'+name+'.wav" autostart="true" loop="false" hidden="true" width="1" height="1"></embed>';
+				}
 			}
 		}
 
@@ -347,7 +349,9 @@ if(window["dojo"]){
 					}else{
 						console.debug("tests._failureCount:", tests._failureCount);
 					}
-					toggleRunning();
+					if(byId("play")){
+						toggleRunning();
+					}
 				}
 				if(!byId("play")){ 
 					// make sure we've got an ammenable DOM structure

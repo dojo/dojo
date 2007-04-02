@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<!--
+	we use a strict-mode DTD to ensure that the box model is the same for these
+	basic tests
+-->
+<html>
+	<head>
+		<title>testing Core HTML/DOM/CSS/Style utils</title>
+		<script type="text/javascript" 
+			src="../../dojo.js" 
+			djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("tests.runner");
+			dojo.addOnLoad(function(){
+				tests.register("t", 
+					[
+						"t.is(100, dojo.marginBox('sq100').w);",
+						"t.is(100, dojo.marginBox('sq100').h);",
+						"t.is(0, dojo.marginBox('sq100').t);",
+						"t.is(0, dojo.marginBox('sq100').l);",
+						"t.is(120, dojo.marginBox('sq100margin10').w);",
+						"t.is(120, dojo.marginBox('sq100margin10').h);",
+						"t.is(140, dojo.marginBox('sq100margin10pad10').w);",
+						"t.is(140, dojo.marginBox('sq100margin10pad10').h);",
+						"t.is(120, dojo.marginBox('sq100pad10').w);",
+						"t.is(120, dojo.marginBox('sq100pad10').h);",
+						"t.is(110, dojo.marginBox('sq100ltpad10').w);",
+						"t.is(110, dojo.marginBox('sq100ltpad10').h);",
+						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').w);",
+						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').h);",
+						"t.is(100, dojo.marginBox('sq100nopos').w);",
+						"t.is(100, dojo.marginBox('sq100nopos').h);" //,
+					]
+				);
+				tests.run();
+			});
+		</script>
+		<style type="text/css">
+			#sq100 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				padding: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#sq100margin10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 250px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				padding: 0px;
+				margin: 10px;
+				overflow: hidden;
+			}
+
+			#sq100margin10pad10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 400px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				padding: 10px;
+				margin: 10px;
+				overflow: hidden;
+			}
+
+			#sq100pad10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 250px;
+				width: 100px;
+				height: 100px;
+				padding: 10px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#sq100ltpad10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 250px;
+				top: 250px;
+				width: 100px;
+				height: 100px;
+				padding-left: 10px;
+				padding-top: 10px;
+				padding-right: 0px;
+				padding-bottom: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#sq100ltpad10rbmargin10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 250px;
+				top: 250px;
+				width: 100px;
+				height: 100px;
+				padding-left: 10px;
+				padding-top: 10px;
+				padding-right: 0px;
+				padding-bottom: 0px;
+				margin-left: 0px;
+				margin-top: 0px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+				overflow: hidden;
+			}
+
+			#sq100nopos {
+				background-color: black;
+				color: white;
+				width: 100px;
+				height: 100px;
+				padding: 0px;
+				margin: 0px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>testing Core HTML/DOM/CSS/Style utils</h1>
+		<div id="sq100">
+			100px square, abs
+		</div>
+		<div id="sq100margin10">
+			100px square, abs, 10px margin
+		</div>
+		<div id="sq100margin10pad10">
+			100px square, abs, 10px margin, 10px padding
+		</div>
+		<div id="sq100pad10">
+			100px square, abs, 10px padding
+		</div>
+		<div id="sq100ltpad10">
+			100px square, abs, 10px left and top padding
+		</div>
+		<div id="sq100ltpad10rbmargin10">
+			100px square, abs, 10px left and top padding, 10px bottom and right margin
+		</div>
+		<div id="sq100nopos">
+			100px square, no positioning
+		</div>
+	</body>
+</html>
+

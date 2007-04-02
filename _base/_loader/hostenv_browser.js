@@ -257,6 +257,18 @@ if(typeof window != 'undefined'){
 		}
 	});
 
+	/*
+	OpenAjax.subscribe("OpenAjax", "onload", function(){
+		if(dojo._inFlightCount == 0){
+			dojo._modulesLoaded();
+		}
+	});
+
+	OpenAjax.subscribe("OpenAjax", "onunload", function(){
+		dojo.unloaded();
+	});
+	*/
+
 	try{
 		if(dojo.isIE){
 			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
@@ -295,48 +307,6 @@ if(typeof window != 'undefined'){
 		return dojo.doc().body || dojo.doc().getElementsByTagName("body")[0];
 	}
 
-	if(dojo.isIE || dojo.isOpera){
-		dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
-			// summary:
-			// 		similar to other library's "$" function, takes a string
-			// 		representing a DOM id or a DomNode and returns the
-			// 		corresponding DomNode. If a Node is passed, this function is a
-			// 		no-op. Returns a single DOM node or null, working around
-			// 		several browser-specific bugs to do so.
-			// id: DOM id or DOM Node
-			// doc:
-			//		optional, defaults to the current value of dojo._currentDocument.
-			//		Can be used to retreive node references from other documents.
-
-			if((id)&&((typeof id == "string")||(id instanceof String))){
-				var eles = doc.all[id];
-				if(!eles.length){ return eles; }
-				// if more than 1, choose first with the correct id
-				var i=0, te;
-				while((te=eles[i++])){
-					if(te.id == id){ return te; }
-				}
-			}
-			return id; // DomNode
-		}
-	}else{
-		dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
-			// summary:
-			// 		similar to other library's "$" function, takes a string
-			// 		representing a DOM id or a DomNode and returns the
-			// 		corresponding DomNode. If a Node is passed, this function is a
-			// 		no-op. Returns a single DOM node or null, working around
-			// 		several browser-specific bugs to do so.
-			// id: DOM id or DOM Node
-			// doc:
-			//		optional, defaults to the current value of dojo._currentDocument.
-			//		Can be used to retreive node references from other documents.
-			if((id)&&((typeof id == "string")||(id instanceof String))){
-				return (doc||dojo.doc()).getElementById(id);
-			}
-			return id; // DomNode
-		}
-	}
 	dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocument){
 		// summary:
 		//		changes the behavior of many core Dojo functions that deal with

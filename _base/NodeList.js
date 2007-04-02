@@ -25,17 +25,17 @@ dojo.require("dojo._base.array");
 
 	dojo.extend(dojo.NodeList,
 		{
-			box: (d.isIE) ? function(){
-				// returns a box object for the first element in a node list
-				dojo.debug("dojo.NodeList.box is unimplemented");
-			} : function(){
-				dojo.debug("dojo.NodeList.box is unimplemented");
+			box: function(){
+				// summary:
+				// 		returns a box object for the first element in a node list
+				return dojo.coords(this[0]);
 			},
 
 			boxes: function(){
-				// returns the box objects all elements in a node list as an
-				// Array
-				dojo.debug("dojo.NodeList.boxes is unimplemented");
+				// summary:
+				// 		returns the box objects all elements in a
+				// 		node list as an Array
+				d.debug("dojo.NodeList.boxes is unimplemented");
 			},
 
 			style: function(prop){
@@ -59,18 +59,19 @@ dojo.require("dojo._base.array");
 				//			"before"
 				//			"after"
 				// 		or an offset in the childNodes property
-				var item = dojo.query(queryOrNode)[0];
+				var item = d.query(queryOrNode)[0];
 				position = position||"last";
 
 				for(var x=0; x<this.length; x++){
-					dojo.dom.insertAtPosition(this[x], item, position);
+					d.place(this[x], item, position);
 				}
+				return this;
 			},
 
 			orphan: function(simpleFilter){
 				// removes elements in this list that match the simple filter
 				// from their parents and returns them as a new NodeList.
-				var orphans = dojo._filterQueryResult(this, simpleFilter);
+				var orphans = d._filterQueryResult(this, simpleFilter);
 				orphans.forEach(function(item){
 					if(item["parentNode"]){
 						item.parentNode.removeChild(item);
@@ -92,11 +93,12 @@ dojo.require("dojo._base.array");
 				// 		or an offset in the childNodes property
 				var item = this[0];
 				position = position||"last";
-				var adoptees = dojo.query(queryOrListOrNode);
+				var adoptees = d.query(queryOrListOrNode);
 
 				for(var x=0; x<adoptees.length; x++){
-					dojo.dom.insertAtPosition(adoptees[x], item, position);
+					d.place(adoptees[x], item, position);
 				}
+				return adoptees;
 			},
 
 			// may have name changed to "get" if dojo.query becomes dojo.get
@@ -107,9 +109,9 @@ dojo.require("dojo._base.array");
 				// query roots.
 
 				// FIXME: probably slow
-				var ret = new dojo.NodeList();
+				var ret = new d.NodeList();
 				this.forEach(function(item){
-					dojo.query(queryStr, item).forEach(function(subItem){
+					d.query(queryStr, item).forEach(function(subItem){
 						if(typeof subItem != "undefined"){
 							ret.push(subItem);
 						}
@@ -127,12 +129,12 @@ dojo.require("dojo._base.array");
 
 				var items = this;
 				if(typeof arguments[0] == "string"){
-					items = dojo._filterQueryResult(this, arguments[0]);
+					items = d._filterQueryResult(this, arguments[0]);
 					if(arguments.length == 1){
 						return items;
 					}
 				}
-				return dojo.filter(items, arguments[1], arguments[2]);
+				return d.filter(items, arguments[1], arguments[2]);
 			},
 
 			addContent: function(content, position){
@@ -161,34 +163,34 @@ dojo.require("dojo._base.array");
 
 				// FIXME: would it be smaller if we set these w/ iteration?
 				indexOf: function(value, identity){
-					return dojo.indexOf(this, value, identity);
+					return d.indexOf(this, value, identity);
 				},
 
 				lastIndexOf: function(value, identity){
-					return dojo.lastIndexOf(this, value, identity);
+					return d.lastIndexOf(this, value, identity);
 				},
 
 				forEach: function(callback, thisObj){
-					return dojo.forEach(this, callback, thisObj);
+					return d.forEach(this, callback, thisObj);
 				},
 
 				every: function(callback, thisObj){
-					return dojo.every(this, callback, thisObj);
+					return d.every(this, callback, thisObj);
 				},
 
 				some: function(callback, thisObj){
-					return dojo.some(this, callback, thisObj);
+					return d.some(this, callback, thisObj);
 				},
 
 				map: function(obj, unary_func){
-					return dojo.map(this, obj, unary_func);
+					return d.map(this, obj, unary_func);
 				}
 
 				// NOTE: filter() is handled in NodeList by default
 			}
 		);
 	}
-	if(dojo.isIE){
+	if(d.isIE){
 
 		var subClassStr = function(className){
 			return (

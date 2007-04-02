@@ -770,11 +770,13 @@ try{
 	});
 	var _shouldRequire = (dojo.isBrowser) ? (window == window.parent) : true;
 	if(_shouldRequire){
-		dojo.require("tests._base");
 		dojo.addOnLoad(function(){
-			setTimeout(function(){
-				tests.run();
-			}, 100);
+			if(dojo.byId("testList")){
+				dojo.require("tests._base");
+				setTimeout(function(){
+					tests.run();
+				}, 100);
+			}
 		});
 	}
 	// set us up for a run

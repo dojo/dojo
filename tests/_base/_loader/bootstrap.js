@@ -33,7 +33,7 @@ tests.register("tests._base._loader.bootstrap",
 			runTest: function(t){
 				//Test for existing object using global as root path.
 				var globalVar = dojo.getObject("globalValue");
-				t.assertTrue(typeof(globalVar) == "object");
+				t.is("object", (typeof globalVar));
 				t.assertEqual("blue", globalVar.color);
 				t.assertEqual(20, globalVar.size);
 				t.assertEqual("blue", dojo.getObject("globalValue.color"));
@@ -58,8 +58,10 @@ tests.register("tests._base._loader.bootstrap",
 			tearDown: function(){
 				//Clean up global object that should not exist if
 				//the test is re-run.
-				delete dojo.global().something;
-				delete this.something;
+				try{
+					delete dojo.global().something;
+					delete this.something;
+				}catch(e){}
 			}
 		},
 		

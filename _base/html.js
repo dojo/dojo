@@ -250,15 +250,20 @@ if(dojo.isIE){ //  || dojo.isOpera){
 
 	var _sumAncestorProperties = function(node, prop){
 		if(!node){ return 0; } // FIXME: throw an error?
+		var _b = dojo.body();
 		var retVal = 0;
 		while(node){
-			if(dojo.getComputedStyle(node).position == "fixed"){
-				return 0;
-			}
+			try{
+				if(dojo.getComputedStyle(node).position == "fixed"){
+					return 0;
+				}
+			}catch(e){}
 			var val = node[prop];
 			if(val){
 				retVal += val - 0;
-				if(node==dojo.body()){ break; }// opera and khtml #body & #html has the same values, we only need one value
+				// opera and khtml #body & #html has the same values, we only
+				// need one value
+				if(node == _b){ break; }
 			}
 			node = node.parentNode;
 		}
@@ -286,7 +291,6 @@ if(dojo.isIE){ //  || dojo.isOpera){
 		};
 
 		// targetBoxType == "border-box"
-		var h = dojo.render.html;
 		var db = dojo.body();
 
 		if(dojo.isIE){
@@ -296,13 +300,17 @@ if(dojo.isIE){ //  || dojo.isOpera){
 			}
 		}else if(ownerDocument["getBoxObjectFor"]){
 			// mozilla
-			try{
+			// try{
 				var bo = ownerDocument.getBoxObjectFor(node);
+				// console.debug(bo, node);
+				// console.debug(_sumAncestorProperties(node, "scrollLeft"));
 				ret.x = bo.x - _sumAncestorProperties(node, "scrollLeft");
 				ret.y = bo.y - _sumAncestorProperties(node, "scrollTop");
-			}catch(e){
+				// console.debug(ret.y);
+			// }catch(e){
+				// console.debug(e);
 				// squelch
-			}
+			// }
 		}else{
 			if(node["offsetParent"]){
 				var endNode;
@@ -364,8 +372,8 @@ if(dojo.isIE){ //  || dojo.isOpera){
 			}
 		}
 		*/
-		ret.top = ret.y;
-		ret.left = ret.x;
+		// ret.t = ret.y;
+		// ret.l = ret.x;
 		return ret;	//	object
 	}
 
@@ -374,6 +382,10 @@ if(dojo.isIE){ //  || dojo.isOpera){
 		node = dojo.byId(node);
 		var s = dojo.getComputedStyle(node);
 		var mb = _getMarginBox(node, s);
+		var abs = _abs(node, includeScroll);
+		mb.x = abs.x;
+		mb.y = abs.y;
+		return mb;
 	}
 })();
 

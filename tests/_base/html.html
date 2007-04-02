@@ -30,13 +30,44 @@
 						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').w);",
 						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').h);",
 						"t.is(100, dojo.marginBox('sq100nopos').w);",
-						"t.is(100, dojo.marginBox('sq100nopos').h);" //,
+						"t.is(100, dojo.marginBox('sq100nopos').h);",
+						function coordsBasic(t){
+							var pos = dojo.coords("sq100", false);
+							// console.debug(pos);
+							t.is(100, pos.x);
+							t.is(100, pos.y);
+							t.is(100, pos.w);
+							t.is(100, pos.h);
+						},
+						function coordsMargin(t){
+							// coords is getting us the margin-box location, is
+							// this right?
+							var pos = dojo.coords("sq100margin10", false);
+							t.is(260, pos.x);
+							t.is(110, pos.y);
+							t.is(120, pos.w);
+							t.is(120, pos.h);
+						},
+						function sq100nopos(t){
+							var pos = dojo.coords("sq100nopos", false);
+							// console.debug(pos);
+							t.is(0, pos.x);
+							t.t(pos.y > 0);
+							t.is(100, pos.w);
+							t.is(100, pos.h);
+						}
 					]
 				);
 				tests.run();
 			});
 		</script>
 		<style type="text/css">
+			html, body {
+				padding: 0px;
+				margin: 0px;
+				border: 0px;
+			}
+
 			#sq100 {
 				background-color: black;
 				color: white;

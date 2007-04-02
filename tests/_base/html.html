@@ -17,18 +17,41 @@
 					[
 						"t.is(100, dojo.marginBox('sq100').w);",
 						"t.is(100, dojo.marginBox('sq100').h);",
-						"t.is(0, dojo.marginBox('sq100').t);",
-						"t.is(0, dojo.marginBox('sq100').l);",
+
 						"t.is(120, dojo.marginBox('sq100margin10').w);",
 						"t.is(120, dojo.marginBox('sq100margin10').h);",
+						"t.is(100, dojo.contentBox('sq100margin10').w);",
+						"t.is(100, dojo.contentBox('sq100margin10').h);",
+
 						"t.is(140, dojo.marginBox('sq100margin10pad10').w);",
 						"t.is(140, dojo.marginBox('sq100margin10pad10').h);",
+
 						"t.is(120, dojo.marginBox('sq100pad10').w);",
 						"t.is(120, dojo.marginBox('sq100pad10').h);",
+
 						"t.is(110, dojo.marginBox('sq100ltpad10').w);",
 						"t.is(110, dojo.marginBox('sq100ltpad10').h);",
+						"t.is(100, dojo.contentBox('sq100ltpad10').w);",
+						"t.is(100, dojo.contentBox('sq100ltpad10').h);",
+
 						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').w);",
 						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').h);",
+
+						"t.is(120, dojo.marginBox('sq100border10').w);",
+						"t.is(120, dojo.marginBox('sq100border10').h);",
+						"t.is(100, dojo.contentBox('sq100border10').w);",
+						"t.is(100, dojo.contentBox('sq100border10').h);",
+
+						"t.is(140, dojo.marginBox('sq100border10margin10').w);",
+						"t.is(140, dojo.marginBox('sq100border10margin10').h);",
+						"t.is(100, dojo.contentBox('sq100border10margin10').w);",
+						"t.is(100, dojo.contentBox('sq100border10margin10').h);",
+
+						"t.is(160, dojo.marginBox('sq100border10margin10pad10').w);",
+						"t.is(160, dojo.marginBox('sq100border10margin10pad10').h);",
+						"t.is(100, dojo.contentBox('sq100border10margin10pad10').w);",
+						"t.is(100, dojo.contentBox('sq100border10margin10pad10').h);",
+
 						"t.is(100, dojo.marginBox('sq100nopos').w);",
 						"t.is(100, dojo.marginBox('sq100nopos').h);",
 						function coordsBasic(t){
@@ -76,6 +99,7 @@
 				top: 100px;
 				width: 100px;
 				height: 100px;
+				border: 0px;
 				padding: 0px;
 				margin: 0px;
 				overflow: hidden;
@@ -89,6 +113,7 @@
 				top: 100px;
 				width: 100px;
 				height: 100px;
+				border: 0px;
 				padding: 0px;
 				margin: 10px;
 				overflow: hidden;
@@ -102,6 +127,7 @@
 				top: 100px;
 				width: 100px;
 				height: 100px;
+				border: 0px;
 				padding: 10px;
 				margin: 10px;
 				overflow: hidden;
@@ -115,6 +141,7 @@
 				top: 250px;
 				width: 100px;
 				height: 100px;
+				border: 0px;
 				padding: 10px;
 				margin: 0px;
 				overflow: hidden;
@@ -128,6 +155,7 @@
 				top: 250px;
 				width: 100px;
 				height: 100px;
+				border: 0px;
 				padding-left: 10px;
 				padding-top: 10px;
 				padding-right: 0px;
@@ -140,10 +168,11 @@
 				background-color: black;
 				color: white;
 				position: absolute;
-				left: 250px;
+				left: 400px;
 				top: 250px;
 				width: 100px;
 				height: 100px;
+				border: 0px;
 				padding-left: 10px;
 				padding-top: 10px;
 				padding-right: 0px;
@@ -152,6 +181,48 @@
 				margin-top: 0px;
 				margin-right: 10px;
 				margin-bottom: 10px;
+				overflow: hidden;
+			}
+
+			#sq100border10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 400px;
+				width: 100px;
+				height: 100px;
+				border: 10px solid yellow;
+				padding: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#sq100border10margin10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 250px;
+				top: 400px;
+				width: 100px;
+				height: 100px;
+				border: 10px solid yellow;
+				padding: 0px;
+				margin: 10px;
+				overflow: hidden;
+			}
+
+			#sq100border10margin10pad10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 400px;
+				top: 400px;
+				width: 100px;
+				height: 100px;
+				border: 10px solid yellow;
+				padding: 10px;
+				margin: 10px;
 				overflow: hidden;
 			}
 
@@ -185,6 +256,15 @@
 		</div>
 		<div id="sq100ltpad10rbmargin10">
 			100px square, abs, 10px left and top padding, 10px bottom and right margin
+		</div>
+		<div id="sq100border10">
+			100px square, abs, 10px yellow border
+		</div>
+		<div id="sq100border10margin10">
+			100px square, abs, 10px yellow border, 10px margin
+		</div>
+		<div id="sq100border10margin10pad10">
+			100px square, abs, 10px yellow border, 10px margin, 10px padding
 		</div>
 		<div id="sq100nopos">
 			100px square, no positioning

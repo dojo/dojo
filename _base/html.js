@@ -114,7 +114,7 @@ if(dojo.isIE){ //  || dojo.isOpera){
 		var _d = document;
 		var _toPixelValue = function(element, avalue){
 			// parseInt or parseFloat? (style values can be floats)
-			if(avalue.slice(-2) == 'px'){ return parseFloat(avalue); }
+			if(avalue.slice(-2) == "px"){ return parseFloat(avalue); }
 			with(element){
 				var sLeft = style.left;
 				var rsLeft = runtimeStyle.left;
@@ -158,10 +158,10 @@ if(dojo.isIE){ //  || dojo.isOpera){
 	}
 
 	var _setBox = function(node, o, u){
-		u = u || 'px';
+		u = u || "px";
 		with(node.style){
-			if(!isNaN(o.l)){ left = o.l + u; }
-			if(!isNaN(o.t)){ top = o.t + u; }
+			if(!isNaN(o.x)){ left = o.x + u; }
+			if(!isNaN(o.y)){ top = o.y + u; }
 			if(!isNaN(o.w)&&(o.w>=0)){ width = o.w + u; }
 			if(!isNaN(o.h)&&(o.h>=0)){ height = o.h + u; }
 		}
@@ -188,20 +188,18 @@ if(dojo.isIE){ //  || dojo.isOpera){
 		// The w/h are used for calculating boxes.
 		// Normally application code will not need to invoke this directly, and
 		// will use the ...box... functions instead.
+		var px = _getPixelizer(node);
 		var l = px(s.paddingLeft), t = px(s.paddingTop);
 		var bw = (s.borderLeftStyle != 'none' ? px(s.borderLeftWidth) : 0) + (s.borderRightStyle != 'none' ? px(s.borderRightWidth) : 0);
 		var bh = (s.borderTopStyle != 'none' ? px(s.borderTopWidth) : 0) + (s.borderBottomStyle != 'none' ? px(s.borderBottomWidth) : 0);
 		return { 
-			l: l,
-			t: t,
 			w: l + bw + px(s.paddingRight),
 			h: t + bh + px(s.paddingBottom)
 		};
 	}
 
-	var _getMarginExtents = function(node, computedStyle){
+	var _getMarginExtents = function(node, s){
 		var px = _getPixelizer(node);
-		var s = computedStyle || dojo.getComputedStyle(node);
 		return { 
 			w: px(s.marginLeft) + px(s.marginRight),
 			h: px(s.marginTop) + px(s.marginBottom)
@@ -211,8 +209,6 @@ if(dojo.isIE){ //  || dojo.isOpera){
 	var _getMarginBox = function(node, computedStyle){
 		var mb = _getMarginExtents(node, computedStyle);
 		return {
-			l:0, 
-			t:0, 
 			w: node.offsetWidth + mb.w, 
 			h: node.offsetHeight + mb.h
 		};
@@ -239,13 +235,30 @@ if(dojo.isIE){ //  || dojo.isOpera){
 		return _getMarginBox(node, s);
 	}
 
-	dojo.borderBox = function(node, boxObj){
-		node = dojo.byId(node);
-		var s = computedStyle || dojo.getComputedStyle(node);
-		if(boxObj){
-			return _setBorderBox(node, boxObj, s);
+	var _getContentBox = function(node, computedStyle){
+		var pb = _getPadBorderBounds(node, computedStyle);
+		return {
+			w: node.offsetWidth - pb.w,
+			h: node.offsetHeight- pb.h
+		};
+	}
+
+	var _setContentBox = function(node, boxObj, computedStyle){
+		if(dojo.boxModel == "border-box"){
+			var pb = _getPadBorderBounds(node, computedStyle);
+			if(!isNaN(boxObj.w)){ boxObj.w += pb.w; }
+			if(!isNaN(boxObj.h)){ boxObj.h += pb.h; }
 		}
-		return _getBorderBox(node, s);
+		_setBox(node, boxObj);
+	}
+
+	dojo.contentBox = function(node, boxObj){
+		node = dojo.byId(node);
+		var s = dojo.getComputedStyle(node);
+		if(boxObj){
+			return _setContentBox(node, boxObj, s);
+		}
+		return _getContentBox(node, s);
 	}
 
 	var _sumAncestorProperties = function(node, prop){
@@ -284,6 +297,9 @@ if(dojo.isIE){ //  || dojo.isOpera){
 		//	summary
 		//		Gets the absolute position of the passed element based on the
 		//		document itself.
+
+		// FIXME: need to decide in the brave-new-world if we're going to be
+		// margin-box or border-box.
 		var ownerDocument = dojo.doc();
 		var ret = {
 			x: 0,
@@ -359,6 +375,7 @@ if(dojo.isIE){ //  || dojo.isOpera){
 		}
 
 		/*
+		// FIXME
 		var extentFuncArray=[dojo.html.getPaddingExtent, dojo.html.getBorderExtent, dojo.html.getMarginExtent];
 		if(nativeBoxType > targetBoxType){
 			for(var i=targetBoxType;i<nativeBoxType;++i){

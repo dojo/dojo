@@ -33,22 +33,28 @@ dojo.require("dojo._base.array");
 
 			boxes: function(){
 				// summary:
-				// 		returns the box objects all elements in a
-				// 		node list as an Array
-				d.debug("dojo.NodeList.boxes is unimplemented");
+				// 		returns the box objects all elements in a node list as
+				// 		an Array
+				var ret = [];
+				this.forEach(function(item){
+					ret.push(dojo.coords(item));
+				});
+				return ret;
 			},
 
 			style: function(prop){
 				// (key, value)
 				// (props, ...)
+				// FIXME: implement!
 			},
 
 			styles: function(prop){
 				// (key, value)
 				// (props, ...)
+				// FIXME: implement!
 			},
 
-			place: function(queryOrNode, position){
+			place: function(queryOrNode, /*String*/ position){
 				// summary:
 				//		placement always relative to the first element matched
 				//		by queryOrNode
@@ -68,9 +74,12 @@ dojo.require("dojo._base.array");
 				return this;
 			},
 
-			orphan: function(simpleFilter){
-				// removes elements in this list that match the simple filter
-				// from their parents and returns them as a new NodeList.
+			orphan: function(/*String*/ simpleFilter){
+				// summary:
+				//		removes elements in this list that match the simple
+				//		filter from their parents and returns them as a new
+				//		NodeList.
+				// simpleFilter: single-expression CSS filter
 				var orphans = d._filterQueryResult(this, simpleFilter);
 				orphans.forEach(function(item){
 					if(item["parentNode"]){
@@ -80,7 +89,7 @@ dojo.require("dojo._base.array");
 				return orphans;
 			},
 
-			adopt: function(queryOrListOrNode, position){
+			adopt: function(queryOrListOrNode, /*String*/ position){
 				// summary:
 				//		places any/all elements in queryOrListOrNode at a
 				//		position relative to the first element in this list.
@@ -103,10 +112,11 @@ dojo.require("dojo._base.array");
 
 			// may have name changed to "get" if dojo.query becomes dojo.get
 			// FIXME: do we need this?
-			query: function(queryStr){
-				// returns a new NodeList. Elements of the new NodeList satisfy
-				// the passed query but use elements of the current NodeList as
-				// query roots.
+			query: function(/*String*/ queryStr){
+				// summary:
+				//		returns a new NodeList. Elements of the new NodeList
+				//		satisfy the passed query but use elements of the
+				//		current NodeList as query roots.
 
 				// FIXME: probably slow
 				var ret = new d.NodeList();
@@ -120,7 +130,7 @@ dojo.require("dojo._base.array");
 				return ret;
 			},
 
-			filter: function(simpleQuery){
+			filter: function(/*String*/ simpleQuery){
 				//			(callback, [thisObject])
 				//			(simpleQuery, callback, [thisObject])
 				// "masks" the built-in javascript filter() method to support
@@ -144,6 +154,21 @@ dojo.require("dojo._base.array");
 				//		"before"
 				//		"after"
 				// or an offset in the childNodes property
+				var ta = dojo.doc().createElement("span");
+				if(dojo.isString(content)){
+					ta.innerHTML = content;
+				}else{
+					ta.appendChild(content);
+				}
+				var ct = ((position == "first")||(position == "after")) ? "lastChild" : "firstChild";
+				this.forEach(function(item){
+					var tn = ta.cloneNode(true);
+					while(tn[ct]){
+						d.place(tn[ct], item, position);
+					}
+				});
+				// FIXME: what to return!?
+				return this;
 			}
 		}
 	);
@@ -182,8 +207,8 @@ dojo.require("dojo._base.array");
 					return d.some(this, callback, thisObj);
 				},
 
-				map: function(obj, unary_func){
-					return d.map(this, obj, unary_func);
+				map: function(unary_func, obj){
+					return d.map(this, unary_func, obj);
 				}
 
 				// NOTE: filter() is handled in NodeList by default

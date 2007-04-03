@@ -1,7 +1,7 @@
 dojo.require("dojo._base.lang");
 dojo.provide("dojo._base.html");
 
-if(dojo.isIE){ //  || dojo.isOpera){
+if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
 		// summary:
 		// 		similar to other library's "$" function, takes a
@@ -67,8 +67,7 @@ if(dojo.isIE){ //  || dojo.isOpera){
 
 	dojo.place = function(/*DOMNode*/node, /*DOMNode*/refNode, /*String*/position){
 		//	summary:
-		//		attempt to insert node in relation to ref based
-		//		on position
+		//		attempt to insert node in relation to ref based on position
 
 		// FIXME: need to write tests for this!!!!
 		if((!node)||(!refNode)||(!position)){ 
@@ -244,7 +243,7 @@ if(dojo.isIE){ //  || dojo.isOpera){
 	}
 
 	var _setContentBox = function(node, boxObj, computedStyle){
-		if(dojo.boxModel == "border-box"){
+		if(dojo.boxMode == "border-box"){
 			var pb = _getPadBorderBounds(node, computedStyle);
 			if(!isNaN(boxObj.w)){ boxObj.w += pb.w; }
 			if(!isNaN(boxObj.h)){ boxObj.h += pb.h; }
@@ -316,17 +315,9 @@ if(dojo.isIE){ //  || dojo.isOpera){
 			}
 		}else if(ownerDocument["getBoxObjectFor"]){
 			// mozilla
-			// try{
-				var bo = ownerDocument.getBoxObjectFor(node);
-				// console.debug(bo, node);
-				// console.debug(_sumAncestorProperties(node, "scrollLeft"));
-				ret.x = bo.x - _sumAncestorProperties(node, "scrollLeft");
-				ret.y = bo.y - _sumAncestorProperties(node, "scrollTop");
-				// console.debug(ret.y);
-			// }catch(e){
-				// console.debug(e);
-				// squelch
-			// }
+			var bo = ownerDocument.getBoxObjectFor(node);
+			ret.x = bo.x - _sumAncestorProperties(node, "scrollLeft");
+			ret.y = bo.y - _sumAncestorProperties(node, "scrollTop");
 		}else{
 			if(node["offsetParent"]){
 				var endNode;
@@ -334,8 +325,8 @@ if(dojo.isIE){ //  || dojo.isOpera){
 				// the body and the body has a margin the offset of the child
 				// and the body contain the body's margins, so we need to end
 				// at the body
-				if(	(dojo.isSafari)&&
-					(node.style.getPropertyValue("position") == "absolute")&&
+				if(	(dojo.isSafari) &&
+					(node.style.getPropertyValue("position") == "absolute") &&
 					(node.parentNode == db)){
 					endNode = db;
 				}else{
@@ -376,6 +367,22 @@ if(dojo.isIE){ //  || dojo.isOpera){
 
 		/*
 		// FIXME
+		var _getMarginExtents = function(node, s){
+			var px = _getPixelizer(node);
+			return { 
+				w: px(s.marginLeft) + px(s.marginRight),
+				h: px(s.marginTop) + px(s.marginBottom)
+			};
+		}
+
+		var _getMarginBox = function(node, computedStyle){
+			var mb = _getMarginExtents(node, computedStyle);
+			return {
+				w: node.offsetWidth + mb.w, 
+				h: node.offsetHeight + mb.h
+			};
+		}
+
 		var extentFuncArray=[dojo.html.getPaddingExtent, dojo.html.getBorderExtent, dojo.html.getMarginExtent];
 		if(nativeBoxType > targetBoxType){
 			for(var i=targetBoxType;i<nativeBoxType;++i){
@@ -403,6 +410,44 @@ if(dojo.isIE){ //  || dojo.isOpera){
 		mb.x = abs.x;
 		mb.y = abs.y;
 		return mb;
+	}
+
+	var _getOpacity = function(node, s){
+		if(dojo.isIE){
+			try{
+				return (node.filters.alpha.opacity / 100);
+			}catch(e){
+				return 1;
+			}
+		}
+		return _toPixelValue(node, s["opacity"]);
+	}
+
+	var _setOpacity = (dojo.isIE) ? function(node, s, opacity){
+		node.style.filter = "Alpha(Opacity="+opacity*100+")";
+		if(node.nodeName.toLowerCase == "tr"){
+			dojo.query("> td", node).forEach(function(i){
+				_setOpacity(i, null, opacity);
+			});
+		}
+	} : function(node, s, opacity){
+		node.style.opacity = opacity;
+	}
+
+	dojo.style = function(){
+		var _a = arguments;
+		var _a_l = _a.length;
+		if(_a_l == 0){ return; }
+		var node = dojo.byId(_a[0]);
+		var s = dojo.getComputedStyle(node);
+		if(_a_l == 1){ return s; }
+		var io = (_a_l[1] == "opacity");
+		if(_a_l == 2){
+			return (io) ?  _getOpacity(node, s) : _toPixelValue(node, s[_a[1]]);
+		}
+		if(_a_l == 3){
+			return (io) ?  _setOpacity(node, s, _a[2]) : node.style[_a[1]] = _a[2];
+		}
 	}
 })();
 

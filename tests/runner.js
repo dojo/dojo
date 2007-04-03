@@ -762,6 +762,7 @@ tests.run = function(){
 	this._report();
 }
 
+
 try{
 	dojo.platformRequire({
 		browser: ["tests._browserRunner"],
@@ -770,26 +771,27 @@ try{
 	});
 	var _shouldRequire = (dojo.isBrowser) ? (window == window.parent) : true;
 	if(_shouldRequire){
-		dojo.addOnLoad(function(){
-			if(dojo.byId("testList")){
-				dojo.require("tests._base");
-				setTimeout(function(){
-					tests.run();
-				}, 100);
-			}
-		});
+		if(dojo.isBrowser){
+			dojo.addOnLoad(function(){
+				if(dojo.byId("testList")){
+					dojo.require("tests._base");
+					setTimeout(function(){
+						tests.run();
+					}, 100);
+				}
+			});
+		}else{
+			dojo.require("tests._base");
+		}
 	}
-	// set us up for a run
 }catch(e){
-	if(this["load"]){
-		load("_rhinoRunner.js");
-		load("_base.js");
+	load("_rhinoRunner.js");
+	load("_base.js");
 
-		print("\n"+tests._line);
-		print("The Dojo Unit Test Harness, $Rev$");
-		print("Copyright (c) 2007, The Dojo Foundation, All Rights Reserved");
-		print(tests._line, "\n");
+	print("\n"+tests._line);
+	print("The Dojo Unit Test Harness, $Rev$");
+	print("Copyright (c) 2007, The Dojo Foundation, All Rights Reserved");
+	print(tests._line, "\n");
 
-		tests.run();
-	}
+	tests.run();
 }

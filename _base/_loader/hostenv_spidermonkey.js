@@ -14,6 +14,10 @@ dojo.exit = function(exitcode){
 	quit(exitcode); 
 }
 
+if(typeof print == "function"){
+	console.debug = print;
+}
+
 if(typeof line2pc == 'undefined'){
 	throw new Error("attempt to use SpiderMonkey host environment when no 'line2pc' global");
 }

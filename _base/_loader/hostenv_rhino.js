@@ -12,6 +12,10 @@ dojo.locale = dojo.locale || String(java.util.Locale.getDefault().toString().rep
 dojo._name = 'rhino';
 dojo.isRhino = true;
 
+if(typeof print == "function"){
+	console.debug = print;
+}
+
 if(typeof dojo["byId"] == "undefined"){
 	dojo.byId = function(id, doc){
 		if(id && (typeof id == "string" || id instanceof String)){

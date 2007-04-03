@@ -135,6 +135,17 @@ dojo.hitch = function(/*Object*/thisObject, /*Function|String*/method /*, ...*/)
 	};
 }
 
+dojo._delegate = function(obj, props){
+	// boodman/crockford delegation
+	function TMP(){};
+	TMP.prototype = obj;
+	var tmp = new TMP();
+	if(props){
+		dojo.mixin(tmp, props);
+	}
+	return tmp;
+}
+
 dojo.partial = function(/*Function|String*/method /*, ...*/){
 	// summary:
 	//		similar to hitch() except that the scope object is left to be

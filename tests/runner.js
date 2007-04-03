@@ -558,6 +558,7 @@ tests._objPropEq = function(expected, actual){
 			return false;
 		}
 	}
+	return true;
 }
 
 tests._isArray = function(arr){
@@ -603,8 +604,12 @@ tests._runFixture = function(groupName, fixture){
 	var threw = false;
 	// run it, catching exceptions and reporting them
 	try{
+		// let tests reference "this.group.thinger..." which can be set by
+		// another test or group-level setUp function
+		fixture.group = tg; 
+		// only execute the parts of the fixture we've got
 		if(fixture["setUp"]){ fixture.setUp(this); }
-		if(fixture["runTest"]){ 
+		if(fixture["runTest"]){  // should we error out of a fixture doesn't have a runTest?
 			var ret = fixture.runTest(this); 
 			// if we get a deferred back from the test runner, we know we're
 			// gonna wait for an async result. It's up to the test code to trap
@@ -627,7 +632,6 @@ tests._runFixture = function(groupName, fixture){
 					}
 					tests._testFinished(groupName, fixture, ret.results[0]);
 					if(tests._paused){
-						// console.debug("finished deferred test group:", groupName, tests);
 						tests.run();
 					}
 				}
@@ -747,7 +751,6 @@ tests.run = function(){
 			this._currentGroup = x;
 			if(!found){
 				found = true;
-				// console.debug("starting from:", x, ct);
 				this.runGroup(x, ct);
 			}else{
 				this.runGroup(x);

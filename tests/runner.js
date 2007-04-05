@@ -645,7 +645,7 @@ tests._runFixture = function(groupName, fixture){
 					clearTimeout(timer);
 					retEnd();
 				});
-				if(ret.fired <= 0){
+				if(ret.fired < 0){
 					tests.pause();
 				}
 				return ret;

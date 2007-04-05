@@ -584,7 +584,7 @@ tests._handleFailure = function(groupName, fixture, e){
 		this._failureCount++;
 		if(e["fileName"]){ out += e.fileName + ':'; }
 		if(e["lineNumber"]){ out += e.lineNumber + ' '; }
-		out += e.message;
+		out += e+": "+e.message;
 		this.debug("\t_AssertFailure:", out);
 	}else{
 		this._errorCount++;

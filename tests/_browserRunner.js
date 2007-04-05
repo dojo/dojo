@@ -83,7 +83,16 @@ if(window["dojo"]){
 			}
 		})(tests._init);
 
-		if(window["console"]){
+		if(this["opera"] && opera.postError){
+			tests.debug = function(){
+				var msg = "";
+				for(var x=0; x<arguments.length; x++){
+					msg += " "+arguments[x];
+				}
+				sendToLogPane(msg);
+				opera.postError("DEBUG:"+msg);
+			}
+		}else if(window["console"]){
 			if(console.info){
 				tests.debug = function(){
 					sendToLogPane.call(window, arguments);

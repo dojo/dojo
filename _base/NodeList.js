@@ -15,6 +15,7 @@ dojo.require("dojo._base.array");
 		// make it behave like the Array constructor
 		if((arguments.length == 1)&&(typeof arguments[0] == "number")){
 			this.length = parseInt(arguments[0]);
+		}else if((arguments.length == 1)&&(arguments[0].constructor == dojo.NodeList)){
 		}else{
 			for(var x=0; x<arguments.length; x++){
 				this.push(arguments[x]);
@@ -138,13 +139,21 @@ dojo.require("dojo._base.array");
 				// filtering function objects.
 
 				var items = this;
-				if(typeof arguments[0] == "string"){
-					items = d._filterQueryResult(this, arguments[0]);
-					if(arguments.length == 1){
+				var _a = arguments;
+				var r = new d.NodeList();
+				if(dojo.isString(simpleQuery)){
+					// console.debug("running query filter over:", this);
+					items = d._filterQueryResult(this, _a[0]);
+					if(_a.length == 1){
+						// tests.debug("items:", items);
 						return items;
 					}
+					d.forEach(d.filter(items, _a[1], _a[2]), r.push, r);
+					return r;
 				}
-				return d.filter(items, arguments[1], arguments[2]);
+				d.forEach(d.filter(items, _a[0], _a[1]), r.push, r);
+				return r;
+
 			},
 
 			addContent: function(content, position){

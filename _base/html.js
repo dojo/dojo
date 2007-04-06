@@ -412,27 +412,29 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		return mb;
 	}
 
-	var _getOpacity = function(node, s){
-		if(dojo.isIE){
-			try{
-				return (node.filters.alpha.opacity / 100);
-			}catch(e){
-				return 1;
-			}
+	// FIXME: there opacity quirks on FF that we haven't ported over. Hrm.
+
+	var _ieGetOpacity = function(node){
+		try{
+			return (node.filters.alpha.opacity / 100);
+		}catch(e){
+			return 1;
 		}
-		return _toPixelValue(node, s["opacity"]);
 	}
 
-	var _setOpacity = (dojo.isIE) ? function(node, s, opacity){
+	var _ieSetOpacity = function(node, opacity){
 		node.style.filter = "Alpha(Opacity="+opacity*100+")";
 		if(node.nodeName.toLowerCase == "tr"){
 			dojo.query("> td", node).forEach(function(i){
 				_setOpacity(i, null, opacity);
 			});
 		}
-	} : function(node, s, opacity){
-		node.style.opacity = opacity;
 	}
+
+	/*
+	var _toStyleValue = function(node, type, value){
+	}
+	*/
 
 	dojo.style = function(){
 		var _a = arguments;
@@ -441,12 +443,13 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		var node = dojo.byId(_a[0]);
 		var s = dojo.getComputedStyle(node);
 		if(_a_l == 1){ return s; }
-		var io = (_a_l[1] == "opacity");
+		var io = ((dojo.isIE)&&(_a_l[1] == "opacity"));
 		if(_a_l == 2){
-			return (io) ?  _getOpacity(node, s) : _toPixelValue(node, s[_a[1]]);
+			// FIXME: casting to a pixel value isn't always the right thing to do!!
+			return (io) ? _ieGetOpacity(node) : _toPixelValue(node, s[_a[1]]);
 		}
 		if(_a_l == 3){
-			return (io) ?  _setOpacity(node, s, _a[2]) : node.style[_a[1]] = _a[2];
+			return (io) ? _ieSetOpacity(node, _a[2]) : node.style[_a[1]] = _a[2];
 		}
 	}
 })();

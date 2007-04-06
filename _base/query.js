@@ -1035,6 +1035,9 @@ dojo.require("dojo._base.NodeList");
 		if(typeof query != "string"){
 			return new d.NodeList(query);
 		}
+		if(typeof root == "string"){
+			root = dojo.byId(root);
+		}
 
 		// FIXME: should support more methods on the return than the stock array.
 		return _zip(getQueryFunc(query)(root||document));

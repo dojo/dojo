@@ -3,6 +3,10 @@ dojo.require("dojo._base.lang");
 dojo.require("dojo._base.array");
 
 // FIXME: need to provide a location to extend this object!!
+// FIXME: need to write explicit tests for NodeList
+// FIXME: animation?
+// FIXME: what do the builtin's that we deferr to do when you concat? What gets
+// 			returned? Seems (on FF) to be an Array, not a NodeList!
 
 (function(){
 
@@ -141,17 +145,23 @@ dojo.require("dojo._base.array");
 				var items = this;
 				var _a = arguments;
 				var r = new d.NodeList();
+				var rp = function(t){ 
+					if(typeof t != "undefined"){
+						r.push(t); 
+					}
+				}
 				if(dojo.isString(simpleQuery)){
-					// console.debug("running query filter over:", this);
 					items = d._filterQueryResult(this, _a[0]);
 					if(_a.length == 1){
-						// tests.debug("items:", items);
+						// if we only got a string query, pass back the filtered results
 						return items;
 					}
-					d.forEach(d.filter(items, _a[1], _a[2]), r.push, r);
+					// if we got a callback, run it over the filtered items
+					d.forEach(d.filter(items, _a[1], _a[2]), rp);
 					return r;
 				}
-				d.forEach(d.filter(items, _a[0], _a[1]), r.push, r);
+				// handle the (callback, [thisObject]) case
+				d.forEach(d.filter(items, _a[0], _a[1]), rp);
 				return r;
 
 			},

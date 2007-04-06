@@ -47,127 +47,136 @@ if(typeof window != 'undefined'){
 		d.isSafari = (dav.indexOf("Safari") >= 0) ? tv : 0;
 		var geckoPos = dua.indexOf("Gecko");
 		d.isMozilla = d.isMoz = ((geckoPos >= 0)&&(!d.isKhtml)) ? tv : 0;
-		d.isIE = ((document.all)&&(!d.isOpera)) ? tv : 0;
+		d.isFF = 0;
+		d.isIE = 0;
+		try{
+			if(d.isMoz){
+				d.isFF = parseFloat(dua.split("Firefox/")[1].split(" ")[0]);
+			}
+			if((document.all)&&(!d.isOpera)){
+				d.isIE = parseFloat(dav.split("MSIE ")[1].split(";")[0]);
+			}
+		}catch(e){}
 
 		var cm = document["compatMode"];
 		d.isQuirks = (cm == "BackCompat")||(cm == "QuirksMode")||(d.isIE < 6);
 
 		// TODO: is the HTML LANG attribute relevant?
 		d.locale = d.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
-	})();
 
-	dojo._println = console.debug;
+		d._println = console.debug;
 
-	// These are in order of decreasing likelihood; this will change in time.
-	dojo._XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
+		// These are in order of decreasing likelihood; this will change in time.
+		d._XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
 
-	dojo._xhrObj= function(){
-		// summary: 
-		//		does the work of portably generating a new XMLHTTPRequest
-		//		object.
-		var http = null;
-		var last_e = null;
-		try{ http = new XMLHttpRequest(); }catch(e){}
-		if(!http){
-			for(var i=0; i<3; ++i){
-				var progid = dojo._XMLHTTP_PROGIDS[i];
-				try{
-					http = new ActiveXObject(progid);
-				}catch(e){
-					last_e = e;
+		d._xhrObj= function(){
+			// summary: 
+			//		does the work of portably generating a new XMLHTTPRequest
+			//		object.
+			var http = null;
+			var last_e = null;
+			try{ http = new XMLHttpRequest(); }catch(e){}
+			if(!http){
+				for(var i=0; i<3; ++i){
+					var progid = dojo._XMLHTTP_PROGIDS[i];
+					try{
+						http = new ActiveXObject(progid);
+					}catch(e){
+						last_e = e;
+					}
+
+					if(http){
+						dojo._XMLHTTP_PROGIDS = [progid];  // so faster next time
+						break;
+					}
 				}
 
-				if(http){
-					dojo._XMLHTTP_PROGIDS = [progid];  // so faster next time
-					break;
-				}
+				/*if(http && !http.toString) {
+					http.toString = function() { "[object XMLHttpRequest]"; }
+				}*/
 			}
 
-			/*if(http && !http.toString) {
-				http.toString = function() { "[object XMLHttpRequest]"; }
-			}*/
+			if(!http){
+				throw new Error("XMLHTTP not available: "+last_e);
+			}
+
+			return http; // XMLHTTPRequest instance
 		}
 
-		if(!http){
-			throw new Error("XMLHTTP not available: "+last_e);
-		}
-
-		return http; // XMLHTTPRequest instance
-	}
-
-	dojo._blockAsync = false;
-	dojo._getText = function(uri, async_cb, fail_ok){
-		// summary: Read the contents of the specified uri and return those contents.
-		// uri:
-		//		A relative or absolute uri. If absolute, it still must be in
-		//		the same "domain" as we are.
-		// async_cb:
-		//		If not specified, load synchronously. If specified, load
-		//		asynchronously, and use async_cb as the progress handler which
-		//		takes the xmlhttp object as its argument. If async_cb, this
-		//		function returns null.
-		// fail_ok:
-		//		Default false. If fail_ok and !async_cb and loading fails,
-		//		return null instead of throwing.
-
-		// need to block async callbacks from snatching this thread as the result
-		// of an async callback might call another sync XHR, this hangs khtml forever
-		// hostenv._blockAsync must also be checked in BrowserIO's watchInFlight()
-		// NOTE: must be declared before scope switches ie. this._xhrObj()
-		if(!async_cb){ this._blockAsync = true; }
-
-		var http = this._xhrObj();
-
-		function isDocumentOk(http){
+		var isDocumentOk = function(http){
 			var stat = http["status"];
 			// allow a 304 use cache, needed in konq (is this compliant with
 			// the http spec?)
 			return Boolean((!stat)||((200 <= stat)&&(300 > stat))||(stat==304));
 		}
 
-		if(async_cb){
-			var _this = this, timer = null, gbl = dojo.global();
-			http.onreadystatechange = function(){
-				if(timer){ gbl.clearTimeout(timer); timer = null; }
-				if(_this._blockAsync){
-					timer = gbl.setTimeout(function(){
-						http.onreadystatechange.apply(this);
-					}, 10);
-				}else{
-					if(4==http.readyState){
-						if(isDocumentOk(http)){
-							// console.debug("LOADED URI: "+uri);
-							async_cb(http.responseText);
+		d._blockAsync = false;
+		d._getText = function(uri, async_cb, fail_ok){
+			// summary: Read the contents of the specified uri and return those contents.
+			// uri:
+			//		A relative or absolute uri. If absolute, it still must be in
+			//		the same "domain" as we are.
+			// async_cb:
+			//		If not specified, load synchronously. If specified, load
+			//		asynchronously, and use async_cb as the progress handler which
+			//		takes the xmlhttp object as its argument. If async_cb, this
+			//		function returns null.
+			// fail_ok:
+			//		Default false. If fail_ok and !async_cb and loading fails,
+			//		return null instead of throwing.
+
+			// need to block async callbacks from snatching this thread as the result
+			// of an async callback might call another sync XHR, this hangs khtml forever
+			// hostenv._blockAsync must also be checked in BrowserIO's watchInFlight()
+			// NOTE: must be declared before scope switches ie. this._xhrObj()
+			if(!async_cb){ this._blockAsync = true; }
+
+			var http = this._xhrObj();
+
+			if(async_cb){
+				var _this = this, timer = null, gbl = dojo.global();
+				http.onreadystatechange = function(){
+					if(timer){ gbl.clearTimeout(timer); timer = null; }
+					if(_this._blockAsync){
+						timer = gbl.setTimeout(function(){
+							http.onreadystatechange.apply(this);
+						}, 10);
+					}else{
+						if(4==http.readyState){
+							if(isDocumentOk(http)){
+								// console.debug("LOADED URI: "+uri);
+								async_cb(http.responseText);
+							}
 						}
 					}
 				}
 			}
-		}
 
-		http.open('GET', uri, async_cb ? true : false);
-		try{
-			http.send(null);
-			if(async_cb){
-				return null;
+			http.open('GET', uri, async_cb ? true : false);
+			try{
+				http.send(null);
+				if(async_cb){
+					return null;
+				}
+				if(!isDocumentOk(http)){
+					var err = Error("Unable to load "+uri+" status:"+ http.status);
+					err.status = http.status;
+					err.responseText = http.responseText;
+					throw err;
+				}
+			}catch(e){
+				this._blockAsync = false;
+				if((fail_ok)&&(!async_cb)){
+					return null;
+				}else{
+					throw e;
+				}
 			}
-			if(!isDocumentOk(http)){
-				var err = Error("Unable to load "+uri+" status:"+ http.status);
-				err.status = http.status;
-				err.responseText = http.responseText;
-				throw err;
-			}
-		}catch(e){
+
 			this._blockAsync = false;
-			if((fail_ok)&&(!async_cb)){
-				return null;
-			}else{
-				throw e;
-			}
+			return http.responseText; // String
 		}
-
-		this._blockAsync = false;
-		return http.responseText; // String
-	}
+	})();
 
 	dojo._handleNodeEvent = function(/*DomNode*/node, /*String*/evtName, /*Function*/fp){
 		// summary:

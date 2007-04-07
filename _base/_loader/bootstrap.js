@@ -98,33 +98,45 @@ dojo.version = {
 	}
 }
 
-dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/obj){
+dojo._getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
+	var obj=context||dojo.global();
+	for(var i=0, p; obj&&(p=parts[i]); i++){
+		obj = (p in obj ? obj[p] : (create ? obj[p]={} : undefined));
+	}
+	return obj; // Any
+}
+
+dojo.setObject = function(/*String*/name, /*Any*/value, /*Object*/context){
 	// summary: 
-	//		gets an object from a dot-separated string, such as "A.B.C"
+	//		Set a property from a dot-separated string, such as "A.B.C"
 	//	description: 
-	//		useful for longer api chains where you have to test each object in
-	//		the chain
+	//		Useful for longer api chains where you have to test each object in
+	//		the chain, or when you have an object reference in string format.
+	//		Objects are created as needed along 'path'.
 	//	name: 	
-	//		Path to an object, in the form "A.B.C".
-	//	obj:
+	//		Path to a property, in the form "A.B.C".
+	//	context:
+	//		Optional. Object to use as root of path. Defaults to
+	//		'dojo.global()'. Null may be passed.
+	var parts=name.split("."), p=parts.pop(), obj=dojo._getProp(parts, true, context);
+	return (obj && p ? (obj[p]=value) : undefined); // Any
+}
+
+dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/context){
+	// summary: 
+	//		Get a property from a dot-separated string, such as "A.B.C"
+	//	description: 
+	//		Useful for longer api chains where you have to test each object in
+	//		the chain, or when you have an object reference in string format.
+	//	name: 	
+	//		Path to an property, in the form "A.B.C".
+	//	context:
 	//		Optional. Object to use as root of path. Defaults to
 	//		'dojo.global()'. Null may be passed.
 	//	create: 
 	//		Optional. If true, Objects will be created at any point along the
 	//		'path' that is undefined.
-	var tprop, tobj = obj||dojo.global();
-	var parts=name.split("."), i=0, lobj, tmp, tname;
-	do{
-		lobj = tobj;
-		tname = parts[i];
-		tmp = tobj[parts[i]];
-		if((create)&&(!tmp)){
-			tmp = tobj[parts[i]] = {};
-		}
-		tobj = tmp;
-		i++;
-	}while(i<parts.length && tobj);
-	return tobj; // Object
+	return dojo._getProp(name.split("."), create, context); // Any
 }
 
 dojo.exists = function(/*String*/name, /*Object*/obj){
@@ -138,7 +150,7 @@ dojo.exists = function(/*String*/name, /*Object*/obj){
 	// obj:
 	//		Optional. Object to use as root of path. Defaults to
 	//		'dojo.global()'. Null may be passed.
-	return (!!dojo.getObject(name, false, obj)); // Boolean
+	return Boolean(dojo.getObject(name, false, obj)); // Boolean
 }
 
 dojo["eval"] = function(/*String*/ scriptFragment){

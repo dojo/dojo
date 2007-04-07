@@ -118,6 +118,7 @@ try{
 	dojo.require("tests._base.array");
 	dojo.require("tests._base.lang");
 	dojo.require("tests._base.declare");
+	dojo.require("tests._base.connect");
 	dojo.require("tests._base.Deferred");
 	dojo.require("tests._base.json");
 	// FIXME: add test includes for the rest of the Dojo Base groups here

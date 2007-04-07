@@ -4,13 +4,11 @@ dojo.provide("dojo._base.lang");
 
 dojo.isString = function(/*anything*/ it){
 	// summary:	Return true if it is a String.
-
-	return (typeof it == "string" || it instanceof String);
+	return (typeof it == "string" || it instanceof String); // Boolean
 }
 
 dojo.isArray = function(/*anything*/ it){
 	// summary: Return true of it is an Array
-
 	return (it && it instanceof Array || typeof it == "array" || ((typeof dojo["NodeList"] != "undefined") && (it instanceof dojo.NodeList))); // Boolean
 }
 
@@ -71,7 +69,7 @@ dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
 		}
 	}
 	// IE doesn't recognize custom toStrings in for..in
-	if(	dojo.isIE && 
+	if(dojo.isIE && 
 		(typeof(props["toString"]) == "function") && 
 		(props["toString"] != obj["toString"]) && 
 		(props["toString"] != tobj["toString"])
@@ -100,39 +98,51 @@ dojo.extend = function(/*Object*/ constructor, /*Object...*/ props){
 	return constructor; // Object
 }
 
-dojo.hitch = function(/*Object*/thisObject, /*Function|String*/method /*, ...*/){
+dojo._hitchArgs = function(scope, method /*,...*/){
+	var pre = [];
+	for(var x=2; x<arguments.length; x++){
+		pre.push(arguments[x]);
+	}
+	var named = dojo.isString(method);
+	return function(){
+		// arrayify arguments
+		var args = [];
+		for(var x=0; x<arguments.length; x++){
+			args.push(arguments[x]);
+		}
+		// locate our method
+		var f = (named ? (scope||dojo.global())[method] : method);
+		// invoke with collected args
+		return (f)&&(f.apply(scope||this, pre.concat(args))); // Any
+ 	} // Function
+}
+
+dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	// summary: 
-	//		Returns a function that will only ever execute in the a given scope
-	//		(thisObject). This allows for easy use of object member functions
+	//		Returns a function that will only ever execute in the a given scope. 
+	// 		This allows for easy use of object member functions
 	//		in callbacks and other places in which the "this" keyword may
-	//		otherwise not reference the expected scope. Any number of default
-	//		positional arguments may be passed as parameters beyond "method".
+	//		otherwise not reference the expected scope. 
+	//		Any number of default positional arguments may be passed as parameters 
+	//		beyond "method".
 	//		Each of these values will be used to "placehold" (similar to curry)
-	//		for the hitched function. Note that the order of arguments may be
-	//		reversed in a future version.
-	// thisObject: the scope to run the method in
+	//		for the hitched function. 
+	// scope: 
+	//		The scope to run the method in
 	// method:
-	//		a function to be "bound" to thisObject or the name of the method in
-	//		thisObject to be used as the basis for the binding
+	//		A function to be hitched to scope, or the name of the method in
+	//		scope to be hitched.
 	// usage:
 	//		dojo.hitch(foo, "bar")(); // runs foo.bar() in the scope of foo
 	//		dojo.hitch(foo, myFunction); // returns a function that runs myFunction in the scope of foo
-
-	// FIXME:
-	//		should this be extended to "fixate" arguments in a manner similar
-	//		to dojo.curry, but without the default execution of curry()?
-	var args = [];
-	for(var x=2; x<arguments.length; x++){
-		args.push(arguments[x]);
+	if(arguments.length > 2){
+		return dojo._hitchArgs.apply(dojo, arguments);
+	}else if(dojo.isString(method)){
+		scope = scope || dojo.global();
+		return function(){ return scope[method].apply(scope, arguments||[]); }
+	}else{
+		return (!scope ? method : function(){ return method.apply(scope, arguments||[]); });
 	}
-	var fcn = ((dojo.isString(method)) ? (thisObject||dojo.global())[method] : method) || function(){};
-	return function(){
-		var ta = args.concat([]); // make a copy
-		for(var x=0; x<arguments.length; x++){
-			ta.push(arguments[x]);
-		}
-		return fcn.apply((thisObject||this), ta); // Function
-	};
 }
 
 dojo._delegate = function(obj, props){
@@ -151,7 +161,7 @@ dojo.partial = function(/*Function|String*/method /*, ...*/){
 	//		similar to hitch() except that the scope object is left to be
 	//		whatever the execution context eventually becomes. This is the
 	//		functional equivalent of calling:
-	//			dojo.hitch(null, funcName, ...);
+	//		dojo.hitch(null, funcName, ...);
 	var args = [ null ];
 	for(var x=0; x<arguments.length; x++){
 		args.push(arguments[x]);

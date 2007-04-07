@@ -160,7 +160,8 @@ tests.register("tests._base.declare",
 						this.inherited("bar", [arg2, arg1], arguments.callee);
 					},
 					baz: function(arg1, arg2){
-						this.inherited("bar", arguments);
+						//this.inherited("baz", arguments);
+						this.inherited("bar", arguments, tests._base.declare.tmp15.prototype.bar);
 					}
 				}
 			);

@@ -26,16 +26,13 @@ dojo.declare = function(/*String*/ className,
 	//		Create a constructor using a compact notation for inheritance and
 	//		prototype extension. 
 	//
-	//		All "superclass(es)" must be Functions (not mere Objects).
+	//		All superclasses (including mixins) must be Functions (not simple Objects).
 	//
 	//		Mixin ancestors provide a type of multiple inheritance.
-	//		The prototypical properties of mixin ancestors are copied 
-	//		to the subclass. 
+	//	
+	//		Prototypes of mixin ancestors are copied to the new class.
 	//
-	//		name of the class ("className" argument) is stored in
-	//		"declaredClass" property
-	// 
-	//		Aliased as "dojo.declare"
+	//		"className" is cached in "declaredClass" property of the new class.
 	//
 	// usage:
 	//		dojo.declare("my.classes.bar", my.classes.foo,
@@ -86,14 +83,9 @@ dojo.declare = function(/*String*/ className,
 	// keep a reference to the array of mixin classes
 	ctor.mixins = mixins;
 	// copy the mixin prototype to the new prototype
-	dojo.forEach(mixins, function(i){
-		dojo.extend(ctor, i.prototype);
-	});
-	/*
-	for(var i=0,l=mixins.length; i<l; i++){
-		dojo.extend(ctor, mixins[i].prototype);
+	for(var i=0,m;(m=mixins[i]);i++){
+		dojo.extend(ctor, m.prototype);
 	}
-	*/
 	//
 	// V. Finalize constructor
 	// alias the prototype
@@ -110,11 +102,7 @@ dojo.declare = function(/*String*/ className,
 	cp.initializer = (cp.initializer)||(init)||(function(){});
 	//
 	// VI. Create named reference
-	// with(dojo.getProp(className, true)){obj[prop] = ctor;}
-	var pcn = className.split("."); var oname = pcn.pop(); pcn = pcn.join(".");
-	var prt = (pcn.length) ? dojo.getObject(pcn, true) : dojo.global();
-	prt[oname] = ctor;
-	return ctor; // Function
+	return dojo.setObject(className, ctor); // Function
 }
 
 dojo.declare._makeConstructor = function(){
@@ -124,9 +112,9 @@ dojo.declare._makeConstructor = function(){
 		if(s){s.constructor.apply(this, arguments);}
 		// initialize any mixins
 		if(c.mixins){
-			// FIXME: why mp?
-			for(var i=0, m, mp; (m=c.mixins[i])&&(mp=m.prototype); i++){
-				(mp.initializer||m).apply(this, arguments);
+			for(var i=0, m, f; (m=c.mixins[i]); i++){
+				// avoid the constructor on 'declared' mixins
+				(f=("initializer" in m ? m.initializer : m))&&(f.apply(this, arguments));
 			}
 		}
 		// initialize ourself
@@ -139,18 +127,18 @@ dojo.declare._makeConstructor = function(){
 dojo.declare._core = {
 	_findInherited: function(name, callee){
 		var p = this.constructor.prototype;
-		var lp;
-		if(this[name] !== callee){
-			while(p && (p[name] !== callee)){ 
-				lp = p;
-				p = p.constructor.superclass;
+		if (this[name]!==callee){
+			while(p && (p[name]!==callee)){ 
+				p = p.constructor.superclass; 
 			}
-			p = lp;
 		}
-		while(p && (p[name] === callee)){ 
-			p = p.constructor.superclass;
+		if ((!p)||(p[name]!==callee)){
+			throw(this.toString() + ': name argument ("' + name + '") to inherited does not match callee (declare.js)');
 		}
-		return (p)&&(p[name]);		
+		while(p && (p[name]===callee)){ 
+			p = p.constructor.superclass; 
+		}
+		return (p)&&(p[name]);	
 	},
 	inherited: function(name, args, callee){
 	 	//	summary: 

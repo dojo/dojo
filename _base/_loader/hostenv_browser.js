@@ -99,11 +99,13 @@ if(typeof window != 'undefined'){
 			return http; // XMLHTTPRequest instance
 		}
 
-		var isDocumentOk = function(http){
+		d._isDocumentOk = function(http){
 			var stat = http["status"];
-			// allow a 304 use cache, needed in konq (is this compliant with
-			// the http spec?)
-			return Boolean((!stat)||((200 <= stat)&&(300 > stat))||(stat==304));
+			return Boolean(	((stat>=200)&&(stat<300))|| 	// allow any 2XX response code
+				(stat==304)|| 						// get it out of the cache
+				(location.protocol=="file:" && (stat==0 || stat==undefined))||
+				(location.protocol=="chrome:" && (stat==0 || stat==undefined))
+			);
 		}
 
 		d._getText = function(uri, fail_ok){
@@ -121,7 +123,7 @@ if(typeof window != 'undefined'){
 			http.open('GET', uri, false);
 			try{
 				http.send(null);
-				if(!isDocumentOk(http)){
+				if(!d._isDocumentOk(http)){
 					var err = Error("Unable to load "+uri+" status:"+ http.status);
 					err.status = http.status;
 					err.responseText = http.responseText;

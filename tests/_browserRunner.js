@@ -89,7 +89,7 @@ if(window["dojo"]){
 				for(var x=0; x<arguments.length; x++){
 					msg += " "+arguments[x];
 				}
-				sendToLogPane(msg);
+				sendToLogPane([msg]);
 				opera.postError("DEBUG:"+msg);
 			}
 		}else if(window["console"]){
@@ -104,7 +104,7 @@ if(window["dojo"]){
 					for(var x=0; x<arguments.length; x++){
 						msg += " "+arguments[x];
 					}
-					sendToLogPane(msg);
+					sendToLogPane([msg]);
 					console.log("DEBUG:"+msg);
 				}
 			}

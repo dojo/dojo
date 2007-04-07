@@ -78,7 +78,7 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
 	// cb: 
 	//		a callback function to pass the result of evaluating the script
 
-	var uri = (((relpath.charAt(0) == '/' || relpath.match(/^\w+:/))) ? "" : this._baseUrl) + relpath;
+	var uri = (((relpath.charAt(0) == '/' || relpath.match(/^\w+:/))) ? "" : this.baseUrl) + relpath;
 	if(djConfig.cacheBust && dojo.isBrowser){
 		uri += "?" + String(djConfig.cacheBust).replace(/\W+/g,"");
 	}
@@ -499,14 +499,16 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 	dojo.i18n._requireLocalization.apply(dojo.hostenv, arguments);
 }
 
-dojo.Url = function(/*dojo.Url||String...*/){
+dojo._Url = function(/*dojo._Url||String...*/){
 	// summary: 
 	//		Constructor to create an object representing a URL.
+	//		It is marked as private, since we might consider removing
+	//		or simplifying it.
 	// description: 
 	//		Each argument is evaluated in order relative to the next until
 	//		a canonical uri is produced. To get an absolute Uri relative to
 	//		the current document use:
-	//      	new dojo.Url(document.baseURI, url)
+	//      	new dojo._Url(document.baseURI, url)
 
 	// TODO: support for IPv6, see RFC 2732
 
@@ -518,8 +520,8 @@ dojo.Url = function(/*dojo.Url||String...*/){
 		if(!_a[i]){ continue; }
 
 		// Safari doesn't support this.constructor so we have to be explicit
-		var relobj = new dojo.Url(_a[i]+"");
-		var uriobj = new dojo.Url(uri+"");
+		var relobj = new dojo._Url(_a[i]+"");
+		var uriobj = new dojo._Url(uri+"");
 
 		if(
 			(relobj.path=="")	&&
@@ -603,7 +605,7 @@ dojo.Url = function(/*dojo.Url||String...*/){
 	this.toString = function(){ return this.uri; }
 }
 
-dojo.moduleUrl = function(/*String*/module, /*dojo.Url||String*/url){
+dojo.moduleUrl = function(/*String*/module, /*dojo._Url||String*/url){
 	// summary: 
 	//		returns a Url object relative to a module
 	// description: 
@@ -618,12 +620,12 @@ dojo.moduleUrl = function(/*String*/module, /*dojo.Url||String*/url){
 	}
 	
 	//If the path is an absolute path (starts with a / or is on another
-	//domain/xdomain) then don't add the _baseUrl.
+	//domain/xdomain) then don't add the baseUrl.
 	var colonIndex = loc.indexOf(":");
 	if(loc.charAt(0) != "/" && (colonIndex == -1 || colonIndex > loc.indexOf("/"))){
-		loc = dojo._baseUrl + loc;
+		loc = dojo.baseUrl + loc;
 	}
 
-	return new dojo.Url(loc, url);
+	return new dojo._Url(loc, url);
 }
 

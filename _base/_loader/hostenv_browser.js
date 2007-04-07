@@ -34,7 +34,7 @@ if(typeof window != 'undefined'){
 				}
 			}
 		}
-		d._baseUrl = djConfig["baseUrl"];
+		d.baseUrl = djConfig["baseUrl"];
 
 		// fill in the rendering support information in dojo.render.*
 		var n = navigator;

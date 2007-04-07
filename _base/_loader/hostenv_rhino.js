@@ -3,9 +3,9 @@
 */
 
 if(djConfig["baseUrl"]){
-	dojo._baseUrl = djConfig["baseUrl"];
+	dojo.baseUrl = djConfig["baseUrl"];
 }else{
-	dojo._baseUrl = "./";
+	dojo.baseUrl = "./";
 }
 
 dojo.locale = dojo.locale || String(java.util.Locale.getDefault().toString().replace('_','-').toLowerCase());

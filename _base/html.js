@@ -15,16 +15,19 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		//		optional, defaults to the current value of
 		//		dojo._currentDocument.  Can be used to retreive
 		//		node references from other documents.
+
 		if(dojo.isString(id)){
 			var eles = (doc||dojo.doc()).all[id];
+			if(!eles){ return; }
 			if(!eles.length){ return eles; }
 			// if more than 1, choose first with the correct id
 			var i=0, te;
 			while(te=eles[i++]){
 				if(te.id == id){ return te; }
 			}
+		}else{
+			return id; // DomNode
 		}
-		return id; // DomNode
 	}
 }else{
 	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
@@ -42,8 +45,9 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		//		node references from other documents.
 		if(dojo.isString(id)){
 			return (doc||dojo.doc()).getElementById(id);
+		}else{
+			return id; // DomNode
 		}
-		return id; // DomNode
 	}
 }
 

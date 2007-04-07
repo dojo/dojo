@@ -312,259 +312,265 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 	}
 );
 
-dojo._fade = function(/*DOMNode[]*/ nodes,
-							  /*Object*/values,
-							  /*int?*/ duration,
-							  /*Function?*/ easing,
-							  /*Function?*/ callback){
-	// summary:Returns an animation that will fade the "nodes" from the start to end values passed.
-	// nodes: An array of DOMNodes or one DOMNode.
-	// values: { start: Decimal?, end: Decimal? }
-	// duration: Duration of the animation in milliseconds.
-	// easing: An easing function.
-	// callback: Function to run at the end of the animation.
-	nodes = dojo._base.fx._byId(nodes);
-	var props = { property: "opacity" };
-	props.start = (typeof values.start == "undefined") ?
-		function(){ return dojo.style(nodes[0], "opacity"); } : values.start;
+(function(){
 
-	if(typeof values.end == "undefined"){
-		throw new Error("dojo._fade needs an end value");
-	}
-	props.end = values.end;
 
-	var anim = dojo.animateProperty(nodes, [props], duration, easing);
-	anim.connect("beforeBegin", function(){
-		dojo._base.fx._makeFadeable(nodes);
-	});
-	if(callback){
-		anim.connect("onEnd", function(){ callback(nodes, anim); });
-	}
-
-	return anim; // dojo._Animation
-}
-
-dojo.fadeIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
-	// summary: Returns an animation that will fade "nodes" from its current opacity to fully opaque.
-	// nodes: An array of DOMNodes or one DOMNode.
-	// duration: Duration of the animation in milliseconds.
-	// easing: An easing function.
-	// callback: Function to run at the end of the animation.
-	return dojo._fade(nodes, {end: 1}, duration, easing, callback); // dojo._Animation
-}
-
-dojo.fadeOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
-	// summary: Returns an animation that will fade "nodes" from its current opacity to fully transparent.
-	// nodes: An array of DOMNodes or one DOMNode.
-	// duration: Duration of the animation in milliseconds.
-	// easing: An easing function.
-	// callback: Function to run at the end of the animation.	
-	return dojo._fade(nodes, {end: 0}, duration, easing, callback); // dojo._Animation
-}
-
-dojo._base.fx._makeFadeable = function(nodes){
-	var makeFade = function(node){
-		if(dojo.isIE){
-			// only set the zoom if the "tickle" value would be the same as the
-			// default
-			if(node.style.zoom.length == 0 && dojo.style(node, "zoom") == "normal"){
-				// make sure the node "hasLayout"
-				// NOTE: this has been tested with larger and smaller user-set text
-				// sizes and works fine
-				node.style.zoom = "1";
-				// node.style.zoom = "normal";
-			}
-			// don't set the width to auto if it didn't already cascade that way.
-			// We don't want to f anyones designs
-			if(node.style.width.length == 0 && dojo.style(node, "width") == "auto"){
-				node.style.width = "auto";
+	var _makeFadeable = function(nodes){
+		var makeFade = function(node){
+			if(dojo.isIE){
+				// only set the zoom if the "tickle" value would be the same as the
+				// default
+				if(node.style.zoom.length == 0 && dojo.style(node, "zoom") == "normal"){
+					// make sure the node "hasLayout"
+					// NOTE: this has been tested with larger and smaller user-set text
+					// sizes and works fine
+					node.style.zoom = "1";
+					// node.style.zoom = "normal";
+				}
+				// don't set the width to auto if it didn't already cascade that way.
+				// We don't want to f anyones designs
+				if(node.style.width.length == 0 && dojo.style(node, "width") == "auto"){
+					node.style.width = "auto";
+				}
 			}
 		}
+		if(dojo.isArrayLike(nodes)){
+			dojo.forEach(nodes, makeFade);
+		}else{
+			makeFade(nodes);
+		}
 	}
-	if(dojo.isArrayLike(nodes)){
-		dojo.forEach(nodes, makeFade);
-	}else{
-		makeFade(nodes);
-	}
-}
 
-//Memoizing. Assumes that the array doesn't change. FIXME: can this go away or get folded into dojo.byId?  Talk it over with Bryan
-dojo._base.fx._byId = function(nodes){
-	if(!nodes){ return []; }
-	if(dojo.isArrayLike(nodes)){
-		if(!nodes._alreadyChecked){
+	dojo._fade = function(/*DOMNode[]*/ nodes,
+								  /*Object*/values,
+								  /*int?*/ duration,
+								  /*Function?*/ easing,
+								  /*Function?*/ callback){
+		// summary:Returns an animation that will fade the "nodes" from the start to end values passed.
+		// nodes: An array of DOMNodes or one DOMNode.
+		// values: { start: Decimal?, end: Decimal? }
+		// duration: Duration of the animation in milliseconds.
+		// easing: An easing function.
+		// callback: Function to run at the end of the animation.
+		nodes = _byId(nodes);
+		var props = { property: "opacity" };
+		props.start = (typeof values.start == "undefined") ?
+			function(){ return dojo.style(nodes[0], "opacity"); } : values.start;
+
+		if(typeof values.end == "undefined"){
+			throw new Error("dojo._fade needs an end value");
+		}
+		props.end = values.end;
+
+		var anim = dojo.animateProperty(nodes, [props], duration, easing);
+		anim.connect("beforeBegin", function(){
+			_makeFadeable(nodes);
+		});
+		if(callback){
+			anim.connect("onEnd", function(){ callback(nodes, anim); });
+		}
+
+		return anim; // dojo._Animation
+	}
+
+	dojo.fadeIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
+		// summary: Returns an animation that will fade "nodes" from its current opacity to fully opaque.
+		// nodes: An array of DOMNodes or one DOMNode.
+		// duration: Duration of the animation in milliseconds.
+		// easing: An easing function.
+		// callback: Function to run at the end of the animation.
+		return dojo._fade(nodes, {end: 1}, duration, easing, callback); // dojo._Animation
+	}
+
+	dojo.fadeOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
+		// summary: Returns an animation that will fade "nodes" from its current opacity to fully transparent.
+		// nodes: An array of DOMNodes or one DOMNode.
+		// duration: Duration of the animation in milliseconds.
+		// easing: An easing function.
+		// callback: Function to run at the end of the animation.	
+		return dojo._fade(nodes, {end: 0}, duration, easing, callback); // dojo._Animation
+	}
+
+	if(dojo.isKhtml && !dojo.isSafari){
+		// the cool kids are obviously not using konqueror...
+		// found a very wierd bug in floats constants, 1.5 evals as 1
+		// seems somebody mixed up ints and floats in 3.5.4 ??
+		// FIXME: investigate more and post a KDE bug (Fredrik)
+		dojo._defaultEasing = function(/*Decimal?*/ n){
+			//	summary: Returns the point for point n on a sin wave.
+			return parseFloat("0.5")+((Math.sin((n+parseFloat("1.5")) * Math.PI))/2); //FIXME: Does this still occur in the supported Safari version?
+		}
+	}else{
+		dojo._defaultEasing = function(/*Decimal?*/ n){
+			return 0.5+((Math.sin((n+1.5) * Math.PI))/2);
+		}
+	}
+
+	//Memoizing. Assumes that the array doesn't change. FIXME: can this go away
+	//or get folded into dojo.byId?  Talk it over with Bryan
+	var _byId = function(nodes){
+		if(!nodes){ return []; }
+		if(dojo.isArrayLike(nodes)){
+			if(!nodes._alreadyChecked){
+				var n = [];
+				dojo.forEach(nodes, function(node){
+					n.push(dojo.byId(node));
+				});
+				n._alreadyChecked = true;
+				return n;
+			}else{
+				return nodes;
+			}
+		}else{
 			var n = [];
-			dojo.forEach(nodes, function(node){
-				n.push(dojo.byId(node));
-			});
+			n.push(dojo.byId(nodes));
 			n._alreadyChecked = true;
 			return n;
-		}else{
-			return nodes;
 		}
-	}else{
-		var n = [];
-		n.push(dojo.byId(nodes));
-		n._alreadyChecked = true;
-		return n;
 	}
-}
 
-if(dojo.isKhtml && !dojo.isSafari){
-	// the cool kids are obviously not using konqueror...
-	// found a very wierd bug in floats constants, 1.5 evals as 1
-	// seems somebody mixed up ints and floats in 3.5.4 ??
-	// FIXME: investigate more and post a KDE bug (Fredrik)
-	dojo._defaultEasing = function(/*Decimal?*/ n){
-		//	summary: Returns the point for point n on a sin wave.
-		return parseFloat("0.5")+((Math.sin((n+parseFloat("1.5")) * Math.PI))/2); //FIXME: Does this still occur in the supported Safari version?
-	}
-}else{
-	dojo._defaultEasing = function(/*Decimal?*/ n){
-		return 0.5+((Math.sin((n+1.5) * Math.PI))/2);
-	}
-}
+	dojo.animateProperty = function(			/*DOMNode[]*/ nodes, 
+												/*Object[]*/ propertyMap, 
+												/*int*/ duration,
+												/*function*/ easing,
+												/*Object*/ handlers){
+		// summary: Returns an animation that will transition the properties of "nodes"
+		//			depending how they are defined in "propertyMap".
+		// nodes: An array of DOMNodes or one DOMNode.
+		// propertyMap: { property: String, start: Decimal?, end: Decimal?, units: String? }
+		//				An array of objects defining properties to change.
+		// duration: Duration of the animation in milliseconds.
+		// easing: An easing function.
+		// handlers: { handler: Function?, onstart: Function?, onstop: Function?, onanimate: Function? }
+		nodes = _byId(nodes);
 
-dojo.animateProperty = function(/*DOMNode[]*/ nodes, 
-											/*Object[]*/ propertyMap, 
-											/*int*/ duration,
-											/*function*/ easing,
-											/*Object*/ handlers){
-	// summary: Returns an animation that will transition the properties of "nodes"
-	//			depending how they are defined in "propertyMap".
-	// nodes: An array of DOMNodes or one DOMNode.
-	// propertyMap: { property: String, start: Decimal?, end: Decimal?, units: String? }
-	//				An array of objects defining properties to change.
-	// duration: Duration of the animation in milliseconds.
-	// easing: An easing function.
-	// handlers: { handler: Function?, onstart: Function?, onstop: Function?, onanimate: Function? }
-	nodes = dojo._base.fx._byId(nodes);
-
-	var targs = {
-		"propertyMap": propertyMap,
-		"nodes": nodes,
-		"duration": duration,
-		"easing": easing||dojo._defaultEasing
-	};
-	
-	var setEmUp = function(args){
-		if(args.nodes.length==1){
-			// FIXME: we're only supporting start-value filling when one node is
-			// passed
-			
-			var pm = args.propertyMap;
-			if(!dojo.isArray(args.propertyMap)){
-				// it's stupid to have to pack an array with a set of objects
-				// when you can just pass in an object list
-				var parr = [];
-				for(var pname in pm){
-					pm[pname].property = pname;
-					parr.push(pm[pname]);
-				}
-				pm = args.propertyMap = parr;
-			}
-			dojo.forEach(pm, function(prop){
-				if(typeof prop.start == "undefined"){
-					//FIXME: else clause is unecessary?  parseInt vs. parseFloat?
-					if(prop.property == "opacity"){
-						prop.start = dojo.style(args.nodes[0], prop.property);
-					}else{
-						prop.start = parseInt(dojo.getComputedStyle(args.nodes[0])[prop.property]);
+		var targs = {
+			"propertyMap": propertyMap,
+			"nodes": nodes,
+			"duration": duration,
+			"easing": easing||dojo._defaultEasing
+		};
+		
+		var setEmUp = function(args){
+			if(args.nodes.length==1){
+				// FIXME: we're only supporting start-value filling when one node is
+				// passed
+				
+				var pm = args.propertyMap;
+				if(!dojo.isArray(args.propertyMap)){
+					// it's stupid to have to pack an array with a set of objects
+					// when you can just pass in an object list
+					var parr = [];
+					for(var pname in pm){
+						pm[pname].property = pname;
+						parr.push(pm[pname]);
 					}
+					pm = args.propertyMap = parr;
 				}
-			});
-		}
-	}
-
-	var coordsAsInts = function(coords){
-		var cints = [];
-		dojo.forEach(coords, function(c){ 
-			cints.push(Math.round(c));
-		});
-		return cints;
-	}
-
-	var setStyle = function(n, style){
-		n = dojo.byId(n);
-		if(!n || !n.style){ return; }
-		for(var s in style){
-			try{
-				dojo.style(n, s, style[s]);
-			}catch(e){ //TODO: why the try/catch?
-				dojo.debug(e);
-			}
-		}
-	}
-
-	var PropLine = function(properties){
-		this._properties = properties;
-		this.diffs = [properties.length];
-		dojo.forEach(properties, function(prop, i){
-			// calculate the end - start to optimize a bit
-			if(dojo.isFunction(prop.start)){
-				prop.start = prop.start(prop, i);
-			}
-			if(dojo.isFunction(prop.end)){
-				prop.end = prop.end(prop, i);
-			}
-			if(dojo.isArray(prop.start)){
-				// don't loop through the arrays
-				this.diffs[i] = null;
-/* FIXME - gfx dependency
-			}else if(prop.start instanceof dojo.gfx.color.Color){
-				// save these so we don't have to call toRgb() every getValue() call
-				prop.startRgb = prop.start.toRgb();
-				prop.endRgb = prop.end.toRgb();
-*/
-			}else{
-				this.diffs[i] = prop.end - prop.start;
-			}
-		}, this);
-
-		this.getValue = function(n){
-			var ret = {};
-			dojo.forEach(this._properties, function(prop, i){
-				var value = null;
-				if(dojo.isArray(prop.start)){
-					// FIXME: what to do here?
-/* FIXME
-				}else if(prop.start instanceof dojo.gfx.color.Color){
-					value = (prop.units||"rgb") + "(";
-					for(var j = 0 ; j < prop.startRgb.length ; j++){
-						value += Math.round(((prop.endRgb[j] - prop.startRgb[j]) * n) + prop.startRgb[j]) + (j < prop.startRgb.length - 1 ? "," : "");
+				dojo.forEach(pm, function(prop){
+					if(typeof prop.start == "undefined"){
+						//FIXME: else clause is unecessary?  parseInt vs. parseFloat?
+						if(prop.property == "opacity"){
+							prop.start = dojo.style(args.nodes[0], prop.property);
+						}else{
+							prop.start = parseInt(dojo.getComputedStyle(args.nodes[0])[prop.property]);
+						}
 					}
-					value += ")";
-*/
-				}else{
-					value = (this.diffs[i] * n) + prop.start + (prop.property != "opacity" ? prop.units||"px" : "");
-				}
-				ret[prop.property] = value;
-//FIXME				ret[dojo.html.toCamelCase(prop.property)] = value;
-			}, this);
-			return ret;
-		}
-	}
-	
-	var anim = new dojo._Animation({
-			beforeBegin: function(){ 
-				setEmUp(targs);
-				anim.curve = new PropLine(targs.propertyMap);
-			},
-			onAnimate: function(propValues){
-				dojo.forEach(targs.nodes, function(node){
-					setStyle(node, propValues);
 				});
 			}
-		},
-		targs.duration, null, targs.easing);
+		}
 
-	if(handlers){
-		for(var x in handlers){
-			if(dojo.isFunction(handlers[x])){
-				anim.connect(x, anim, handlers[x]);
+		var coordsAsInts = function(coords){
+			var cints = [];
+			dojo.forEach(coords, function(c){ 
+				cints.push(Math.round(c));
+			});
+			return cints;
+		}
+
+		var setStyle = function(n, style){
+			n = dojo.byId(n);
+			if(!n || !n.style){ return; }
+			for(var s in style){
+				try{
+					dojo.style(n, s, style[s]);
+				}catch(e){ //TODO: why the try/catch?
+					dojo.debug(e);
+				}
 			}
 		}
+
+		var PropLine = function(properties){
+			this._properties = properties;
+			this.diffs = [properties.length];
+			dojo.forEach(properties, function(prop, i){
+				// calculate the end - start to optimize a bit
+				if(dojo.isFunction(prop.start)){
+					prop.start = prop.start(prop, i);
+				}
+				if(dojo.isFunction(prop.end)){
+					prop.end = prop.end(prop, i);
+				}
+				if(dojo.isArray(prop.start)){
+					// don't loop through the arrays
+					this.diffs[i] = null;
+	/* FIXME - gfx dependency
+				}else if(prop.start instanceof dojo.gfx.color.Color){
+					// save these so we don't have to call toRgb() every getValue() call
+					prop.startRgb = prop.start.toRgb();
+					prop.endRgb = prop.end.toRgb();
+	*/
+				}else{
+					this.diffs[i] = prop.end - prop.start;
+				}
+			}, this);
+
+			this.getValue = function(n){
+				var ret = {};
+				dojo.forEach(this._properties, function(prop, i){
+					var value = null;
+					if(dojo.isArray(prop.start)){
+						// FIXME: what to do here?
+	/* FIXME
+					}else if(prop.start instanceof dojo.gfx.color.Color){
+						value = (prop.units||"rgb") + "(";
+						for(var j = 0 ; j < prop.startRgb.length ; j++){
+							value += Math.round(((prop.endRgb[j] - prop.startRgb[j]) * n) + prop.startRgb[j]) + (j < prop.startRgb.length - 1 ? "," : "");
+						}
+						value += ")";
+	*/
+					}else{
+						value = (this.diffs[i] * n) + prop.start + (prop.property != "opacity" ? prop.units||"px" : "");
+					}
+					ret[prop.property] = value;
+	//FIXME				ret[dojo.html.toCamelCase(prop.property)] = value;
+				}, this);
+				return ret;
+			}
+		}
+		
+		var anim = new dojo._Animation({
+				beforeBegin: function(){ 
+					setEmUp(targs);
+					anim.curve = new PropLine(targs.propertyMap);
+				},
+				onAnimate: function(propValues){
+					dojo.forEach(targs.nodes, function(node){
+						setStyle(node, propValues);
+					});
+				}
+			},
+			targs.duration, null, targs.easing);
+
+		if(handlers){
+			for(var x in handlers){
+				if(dojo.isFunction(handlers[x])){
+					anim.connect(x, anim, handlers[x]);
+				}
+			}
+		}
+		
+		return anim; // dojo._Animation
 	}
-	
-	return anim; // dojo._Animation
-}
+
+})();

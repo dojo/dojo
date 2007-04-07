@@ -1,0 +1,1208 @@
+dojo.provide("tests.data.JsonItemStore");
+dojo.require("dojo.data.JsonItemStore");
+
+//FIXME:  These tests should be converted to a mix of URL file loading 
+//and in-memory JS object loading to get full API coverage.  Currently since
+//the bind() call has not been ported down for M1, the url loading in the store is
+//disabled and won't work.
+tests.register("tests.data.JsonItemStore", 
+	[
+		function testReadAPI_fetch_all(t){
+			//	summary: 
+			//		Simple test of a basic fetch on JsonItemStore.
+			//	description:
+			//		Simple test of a basic fetch on JsonItemStore.
+			
+			var request = null;
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+            
+			var d = new tests.Deferred();
+            function completedAll(items){
+				t.assertTrue((items.length === 7));
+				d.callback(true);
+			}
+			function error(errData){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+
+			//Get everything...
+			jsonItemStore.fetch({ onComplete: completedAll, onError: error});
+			return d;
+		},
+		function testReadAPI_fetch_one(t){
+			//	summary: 
+			//		Simple test of a basic fetch on JsonItemStore of a single item.
+			//	description:
+			//		Simple test of a basic fetch on JsonItemStore of a single item.
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var d = new tests.Deferred();
+			function onComplete(items, request){
+				t.assertTrue((items.length === 1));
+				d.callback(true);
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
+									onComplete: onComplete, 
+									onError: onError
+								});
+			return d;
+		},
+		function testReadAPI_fetch_all_streaming(t){
+			//	summary: 
+			//		Simple test of a basic fetch on JsonItemStore.
+			//	description:
+			//		Simple test of a basic fetch on JsonItemStore.
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var d = new tests.Deferred();
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			count = 0;
+
+			function onBegin(size, requestObj){
+				t.assertTrue(size === 7);
+			}
+			function onItem(item, requestObj){
+				t.assertTrue(jsonItemStore.isItem(item));
+				count++;
+			}
+			function onComplete(items, request){
+				t.assertTrue(count === 7);
+				t.assertTrue(items === null);
+			    d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+
+			//Get everything...
+			jsonItemStore.fetch({	onBegin: onBegin,
+									onItem: onItem, 
+									onComplete: onComplete,
+									onError: onError
+								});
+			return d;
+		},
+		function testReadAPI_fetch_paging(t){
+			 //	summary: 
+			 //		Test of multiple fetches on a single result.  Paging, if you will.
+			 //	description:
+			 //		Test of multiple fetches on a single result.  Paging, if you will.
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var d = new tests.Deferred();
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			function dumpFirstFetch(items, request){
+				t.assertTrue(items.length === 5);
+				request.start = 3;
+				request.count = 1;
+				request.onComplete = dumpSecondFetch;
+				jsonItemStore.fetch(request);
+			}
+
+			function dumpSecondFetch(items, request){
+				t.assertTrue(items.length === 1);
+				request.start = 0;
+				request.count = 5;
+				request.onComplete = dumpThirdFetch;
+				jsonItemStore.fetch(request);
+			}
+
+			function dumpThirdFetch(items, request){
+				t.assertTrue(items.length === 5);
+				request.start = 2;
+				request.count = 20;
+				request.onComplete = dumpFourthFetch;
+				jsonItemStore.fetch(request);
+			}
+
+			function dumpFourthFetch(items, request){
+				t.assertTrue(items.length === 5);
+                request.start = 9;
+				request.count = 100;
+				request.onComplete = dumpFifthFetch;
+				jsonItemStore.fetch(request);
+			}
+
+			function dumpFifthFetch(items, request){
+				t.assertTrue(items.length === 0);
+				request.start = 2;
+				request.count = 20;
+				request.onComplete = dumpSixthFetch;
+				jsonItemStore.fetch(request);
+			}
+
+			function dumpSixthFetch(items, request){
+				t.assertTrue(items.length === 5);
+			    d.callback(true);
+			}
+
+			function completed(items, request){
+				t.assertTrue(items.length === 7);
+				request.start = 1;
+				request.count = 5;
+				request.onComplete = dumpFirstFetch;
+				jsonItemStore.fetch(request);
+			}
+
+			function error(){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+			jsonItemStore.fetch({onComplete: completed, onError: error});
+			return d;
+
+		},
+		function testReadAPI_getValue(t){
+			//	summary: 
+			//		Simple test of the getValue function of the store.
+			//	description:
+			//		Simple test of the getValue function of the store.
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			var name = jsonItemStore.getValue(item,"name");
+			t.assertTrue(name === "El Salvador");
+		},
+		function testReadAPI_getValue_byattributeItem(t){
+			 //	summary: 
+			 // 		Simple test of the getValue function passing in an item as the attribute identifier.
+			 //	description:
+			 // 		Simple test of the getValue function passing in an item as the attribute identifier.
+
+			var jsonData = {};
+			jsonData.identifier="name";
+			jsonData.items= [];
+			jsonData.items.push({name:"abbr"});
+			jsonData.items.push({name:"name"});
+			jsonData.items.push({name:"capital"});
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
+			t.assertTrue(itemAttribute !== null);
+			var name = jsonItemStore.getValue(itemAttribute,"name");
+			t.assertTrue(name === "abbr");
+			var item = jsonItemStore.getItemByIdentity("Ecuador");
+			var attrValue = jsonItemStore.getValue(item,itemAttribute);
+			t.assertTrue(attrValue === "ec");
+		},
+		function testReadAPI_getValues(t){
+			//	summary: 
+			//		Simple test of the getValues function of the store.
+			//	description:
+			//		Simple test of the getValues function of the store.
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			var names = jsonItemStore.getValues(item,"name");
+            t.assertTrue(dojo.isArray(names));
+			t.assertTrue(names.length === 1);
+			t.assertTrue(names[0] === "El Salvador");
+		},
+		function testReadAPI_getValues_byattributeItem(t){
+			 //	summary: 
+			 // 		Simple test of the getValue function passing in an item as the attribute identifier.
+			 //	description:
+			 // 		Simple test of the getValue function passing in an item as the attribute identifier.
+
+			var jsonData = {};
+			jsonData.identifier="name";
+			jsonData.items= [];
+			jsonData.items.push({name:"abbr"});
+			jsonData.items.push({name:"name"});
+			jsonData.items.push({name:"capital"});
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
+			t.assertTrue(itemAttribute !== null);
+			var name = jsonItemStore.getValue(itemAttribute,"name");
+			t.assertTrue(name === "abbr");
+			var item = jsonItemStore.getItemByIdentity("Ecuador");
+			var attrValues = jsonItemStore.getValues(item,itemAttribute);
+            t.assertTrue(dojo.isArray(attrValues));
+			t.assertTrue(attrValues.length === 1);
+			t.assertTrue(attrValues[0] === "ec");
+		},
+		function testReadAPI_getItemByIdentity(t){
+			//	summary: 
+			//		Simple test of the getItemByIdentity function of the store.
+			//	description:
+			//		Simple test of the getItemByIdentity function of the store.
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			if(item !== null){
+				var name = jsonItemStore.getValue(item,"name");
+				t.assertTrue(name === "El Salvador");
+			}
+			item = jsonItemStore.getItemByIdentity("sv_not");
+			t.assertTrue(item === null);
+		},
+		function testReadAPI_isItem(t){
+			//	summary: 
+			//		Simple test of the isItem function of the store
+			//	description:
+			//		Simple test of the isItem function of the store
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			t.assertTrue(jsonItemStore.isItem(item));
+			t.assertTrue(!jsonItemStore.isItem({}));
+		},
+		function testReadAPI_hasAttribute(t){
+			 //	summary: 
+			 //		Simple test of the hasAttribute function of the store
+			 //	description:
+			 //		Simple test of the hasAttribute function of the store
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			t.assertTrue(jsonItemStore.hasAttribute(item, "abbr"));
+			t.assertTrue(!jsonItemStore.hasAttribute(item, "abbr_not"));
+
+			//Test that null attributes throw an exception
+			var passed = false;
+			try{
+				jsonItemStore.hasAttribute(item, null);
+			}catch (e){
+				passed = true;
+			}
+			t.assertTrue(passed);
+		},
+		function testReadAPI_hasAttribute_byattributeItem(t){
+			 //	summary: 
+			 // 		Simple test of the hasAttribute passing in an item as the attribute identifier.
+			 //	description:
+			 // 		Simple test of the hasAttribute passing in an item as the attribute identifier.
+
+			var jsonData = {};
+			jsonData.identifier="name";
+			jsonData.items= [];
+			jsonData.items.push({name:"abbr"});
+			jsonData.items.push({name:"name"});
+			jsonData.items.push({name:"capital"});
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			//First fine the item in the store that represents the attribute with name 'abbr'.
+			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
+			t.assertTrue(itemAttribute !== null);
+			if(itemAttribute !== null){
+				var name = jsonItemStore.getValue(itemAttribute,"name");
+				t.assertTrue(name === "abbr");
+			}
+			var item = jsonItemStore.getItemByIdentity("Ecuador");
+			t.assertTrue(jsonItemStore.hasAttribute(item,itemAttribute));
+			var attrValue = jsonItemStore.getValue(item,itemAttribute);
+			t.assertTrue(attrValue === "ec");
+		},
+		function testReadAPI_containsValue(t){
+			//	summary: 
+			//		Simple test of the containsValue function of the store
+			//	description:
+			//		Simple test of the containsValue function of the store
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			t.assertTrue(jsonItemStore.containsValue(item, "abbr", "sv"));
+			t.assertTrue(!jsonItemStore.containsValue(item, "abbr", "sv1"));
+			t.assertTrue(!jsonItemStore.containsValue(item, "abbr", null));
+
+			//Test that null attributes throw an exception
+			var passed = false;
+			try{
+				jsonItemStore.containsValue(item, null, "foo");
+			}catch (e){
+				passed = true;
+			}
+			t.assertTrue(passed);
+		},
+		function testReadAPI_containsValue_byattributeItem(t){
+			//	summary: 
+			//		Simple test of the getAttributes function of the store
+			//	description:
+			//		Simple test of the containsValue function of the store using attribute lookup.
+
+			var jsonData = {};
+			jsonData.identifier="name";
+			jsonData.items= [];
+			jsonData.items.push({name:"abbr"});
+			jsonData.items.push({name:"name"});
+			jsonData.items.push({name:"capital"});
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var attributeItem = jsonItemStore.getItemByIdentity("abbr");
+			var item          = jsonItemStore.getItemByIdentity("El Salvador");
+			t.assertTrue(item !== null);
+			t.assertTrue(attributeItem !== null);
+			t.assertTrue(jsonItemStore.containsValue(item, attributeItem, "sv"));
+			t.assertTrue(!jsonItemStore.containsValue(item, attributeItem, "sv1"));
+			t.assertTrue(!jsonItemStore.containsValue(item, attributeItem, null));
+		},
+		function testReadAPI_getAttributes(t){
+			//	summary: 
+			//		Simple test of the getAttributes function of the store
+			//	description:
+			//		Simple test of the getAttributes function of the store
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+            var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			t.assertTrue(jsonItemStore.isItem(item));
+
+			var attributes = jsonItemStore.getAttributes(item);
+			t.assertTrue(attributes.length === 3);
+			for(var i = 0; i < attributes.length; i++){
+				t.assertTrue((attributes[i] === "name" || attributes[i] === "abbr" || attributes[i] === "capital"));
+			}
+		},
+		function testReadAPI_getFeatures(t){
+			 //	summary: 
+			 //		Simple test of the getFeatures function of the store
+			 //	description:
+			 //		Simple test of the getFeatures function of the store
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var features = jsonItemStore.getFeatures(); 
+			var count = 0;
+			for(i in features){
+				t.assertTrue((i === "dojo.data.api.Read" || i === "dojo.data.api.Identity"));
+				count++;
+			}
+			t.assertTrue(count === 2);
+		},
+		function testReadAPI_fetch_patternMatch0(t){
+			//	summary: 
+			//		Function to test pattern matching of everything starting with lowercase e
+			//	description:
+			//		Function to test pattern matching of everything starting with lowercase e
+
+			var jsonData = {};
+			jsonData.identifier="abbr";
+			jsonData.items= [];
+			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+
+			var d = new tests.Deferred();
+			function completed(items, request) {
+				t.assertTrue(items.length === 5);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "abbr");
+					if(!(value === "ec" || value === "eg" || value === "er" || value === "ee" || value === "et")){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+			function error() {
+				t.assertTrue(false);
+				d.errback(false);
+			}
+			jsonItemStore.fetch({query: {abbr: "e*"}, onComplete: completed, onError: error});
+			return d;
+		},
+		function testReadAPI_fetch_patternMatch1(t){
+			//	summary: 
+			//		Function to test pattern matching of everything with $ in it.
+			//	description:
+			//		Function to test pattern matching of everything with $ in it.
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											  items: [ {uniqueId: 1, value:"foo*bar"},
+												   {uniqueId: 2, value:"bar*foo"}, 
+												   {uniqueId: 3, value:"boomBam"},
+												   {uniqueId: 4, value:"bit$Bite"},
+												   {uniqueId: 5, value:"ouagadogou"},
+												   {uniqueId: 6, value:"BaBaMaSaRa***Foo"},
+												   {uniqueId: 7, value:"squawl"},
+												   {uniqueId: 8, value:"seaweed"},
+												   {uniqueId: 9, value:"jfq4@#!$!@Rf14r14i5u"}
+												 ]
+										}
+								 });
+			
+			var d = new tests.Deferred();
+			function completed(items, request){
+				t.assertTrue(items.length === 2);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(value === "bit$Bite" || value === "jfq4@#!$!@Rf14r14i5u")){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+			function error(){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+			jsonItemStore.fetch({query: {value: "*$*"}, onComplete: completed, onError: error});
+			return d;
+		},
+		function testReadAPI_fetch_patternMatch2(t){
+			//	summary: 
+			//		Function to test exact pattern match
+			//	description:
+			//		Function to test exact pattern match
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											  items: [ {uniqueId: 1, value:"foo*bar"},
+												   {uniqueId: 2, value:"bar*foo"}, 
+												   {uniqueId: 3, value:"boomBam"},
+												   {uniqueId: 4, value:"bit$Bite"},
+												   {uniqueId: 5, value:"ouagadogou"},
+												   {uniqueId: 6, value:"BaBaMaSaRa***Foo"},
+												   {uniqueId: 7, value:"squawl"},
+												   {uniqueId: 8, value:"seaweed"},
+												   {uniqueId: 9, value:"jfq4@#!$!@Rf14r14i5u"}
+												 ]
+										}
+								 });
+
+			var d = new tests.Deferred();
+			function completed(items, request){
+				t.assertTrue(items.length === 1);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(value === "bar*foo")){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+			function error(){
+				t.assertTrue(false);
+				d.callback(false);
+			}
+			jsonItemStore.fetch({query: {value: "bar\*foo"}, onComplete: completed, onError: error});
+			return d;
+		},
+		function testReadAPI_fetch_sortNumeric(t){
+			//	summary: 
+			//		Function to test sorting numerically.
+			//	description:
+			//		Function to test sorting numerically.
+			
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											  items: [ {uniqueId: 0, value:"fo|o*b.ar"},
+												   {uniqueId: 1, value:"ba|r*foo"}, 
+												   {uniqueId: 2, value:"boomBam"},
+												   {uniqueId: 3, value:"bit$Bite"},
+												   {uniqueId: 4, value:"ouagadogou"},
+												   {uniqueId: 5, value:"jfq4@#!$!@|f1.$4r14i5u"},
+												   {uniqueId: 6, value:"BaB{aMa|SaRa***F}oo"},
+												   {uniqueId: 7, value:"squawl"},
+												   {uniqueId: 9, value:"seaweed"},
+												   {uniqueId: 10, value:"zulu"},
+												   {uniqueId: 8, value:"seaweed"}
+												 ]
+										}
+								 });
+
+			var d = new tests.Deferred();
+			function completed(items, request){
+				t.assertTrue(items.length === 11);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(jsonItemStore.getValue(items[i], "uniqueId") === i)){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+
+			function error(){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+
+			var sortAttributes = [{attribute: "uniqueId"}];
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		},
+		function testReadAPI_fetch_sortNumericDescending(t){
+			//	summary: 
+			//		Function to test sorting numerically.
+			//	description:
+			//		Function to test sorting numerically.
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											  items: [ {uniqueId: 0, value:"fo|o*b.ar"},
+												   {uniqueId: 1, value:"ba|r*foo"}, 
+												   {uniqueId: 2, value:"boomBam"},
+												   {uniqueId: 3, value:"bit$Bite"},
+												   {uniqueId: 4, value:"ouagadogou"},
+												   {uniqueId: 5, value:"jfq4@#!$!@|f1.$4r14i5u"},
+												   {uniqueId: 6, value:"BaB{aMa|SaRa***F}oo"},
+												   {uniqueId: 7, value:"squawl"},
+												   {uniqueId: 9, value:"seaweed"},
+												   {uniqueId: 10, value:"zulu"},
+												   {uniqueId: 8, value:"seaweed"}
+												 ]
+										}
+								 });
+			var d = new tests.Deferred();
+			function completed(items, request){
+				t.assertTrue(items.length === 11);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!((items.length - (jsonItemStore.getValue(items[i], "uniqueId") + 1)) === i)){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+
+			function error(){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+
+			var sortAttributes = [{attribute: "uniqueId", descending: true}];
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		},
+		function testReadAPI_fetch_sortNumericWithCount(t){
+			//	summary: 
+			//		Function to test sorting numerically in descending order, returning only a specified number of them.
+			//	description:
+			//		Function to test sorting numerically in descending order, returning only a specified number of them.
+		
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											 items: [ {uniqueId: 0, value:"fo|o*b.ar"},
+												  {uniqueId: 1, value:"ba|r*foo"}, 
+												  {uniqueId: 2, value:"boomBam"},
+												  {uniqueId: 3, value:"bit$Bite"},
+												  {uniqueId: 4, value:"ouagadogou"},
+												  {uniqueId: 5, value:"jfq4@#!$!@|f1.$4r14i5u"},
+												  {uniqueId: 6, value:"BaB{aMa|SaRa***F}oo"},
+												  {uniqueId: 7, value:"squawl"},
+												  {uniqueId: 9, value:"seaweed"},
+												  {uniqueId: 10, value:"zulu"},
+												  {uniqueId: 8, value:"seaweed"}
+												]
+									   }
+								});
+			
+			var d = new tests.Deferred();
+			function completed(items, request){
+				t.assertTrue(items.length === 5);
+				var itemId = 10;
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(jsonItemStore.getValue(items[i], "uniqueId") === itemId)){
+						passed=false;
+						break;
+					}
+					itemId--; // Decrement the item id.  We are descending sorted, so it should go 10, 9, 8, etc.
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+		
+			function error(){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+		
+			var sortAttributes = [{attribute: "uniqueId", descending: true}];
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes, count: 5});
+			return d;
+		},
+		function testReadAPI_fetch_sortAlphabetic(t){
+			//	summary: 
+			//		Function to test sorting alphabetic ordering.
+			//	description:
+			//		Function to test sorting alphabetic ordering.
+		
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											 items: [ {uniqueId: 0, value:"abc"},
+												  {uniqueId: 1, value:"bca"}, 
+												  {uniqueId: 2, value:"abcd"},
+												  {uniqueId: 3, value:"abcdefg"},
+												  {uniqueId: 4, value:"lmnop"},
+												  {uniqueId: 5, value:"foghorn"},
+												  {uniqueId: 6, value:"qberty"},
+												  {uniqueId: 7, value:"qwerty"},
+												  {uniqueId: 8, value:""},
+												  {uniqueId: 9, value:"seaweed"},
+												  {uniqueId: 10, value:"123abc"}
+		
+												]
+									   }
+								});
+			
+			var d = new tests.Deferred();
+			function completed(items, request){
+				//Output should be in this order...
+				var orderedArray = [ 	"",
+										"123abc",
+										"abc",
+										"abcd",
+										"abcdefg",
+										"bca",
+										"foghorn",
+										"lmnop",
+										"qberty",
+										"qwerty",
+										"seaweed"
+					];
+				t.assertTrue(items.length === 11);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(jsonItemStore.getValue(items[i], "value") === orderedArray[i])){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+		
+			function error() {
+				t.assertTrue(false);
+				d.errback(false);
+			}
+		
+			var sortAttributes = [{attribute: "value"}];
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		},
+		function testReadAPI_fetch_sortAlphabeticDescending(t){
+			//	summary: 
+			//		Function to test sorting alphabetic ordering in descending mode.
+			//	description:
+			//		Function to test sorting alphabetic ordering in descending mode.
+		
+			//FIXME:  Need to convert to async format when URL support comes into M1.
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											 items: [ {uniqueId: 0, value:"abc"},
+												  {uniqueId: 1, value:"bca"}, 
+												  {uniqueId: 2, value:"abcd"},
+												  {uniqueId: 3, value:"abcdefg"},
+												  {uniqueId: 4, value:"lmnop"},
+												  {uniqueId: 5, value:"foghorn"},
+												  {uniqueId: 6, value:"qberty"},
+												  {uniqueId: 7, value:"qwerty"},
+												  {uniqueId: 8, value:""},
+												  {uniqueId: 9, value:"seaweed"},
+												  {uniqueId: 10, value:"123abc"}
+		
+												]
+									   }
+								});
+			var d = new tests.Deferred();
+			function completed(items, request){
+				//Output should be in this order...
+				var orderedArray = [ 	"",
+										"123abc",
+										"abc",
+										"abcd",
+										"abcdefg",
+										"bca",
+										"foghorn",
+										"lmnop",
+										"qberty",
+										"qwerty",
+										"seaweed"
+					];
+				orderedArray = orderedArray.reverse();
+				t.assertTrue(items.length === 11);
+
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(jsonItemStore.getValue(items[i], "value") === orderedArray[i])){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+		
+			function error() {
+				t.assertTrue(false);
+				d.errback(false);
+			}
+		
+			var sortAttributes = [{attribute: "value", descending: true}];
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		},
+		function testReadAPI_fetch_sortDate(t){
+			//	summary: 
+			//		Function to test sorting date.
+			//	description:
+			//		Function to test sorting date.
+		
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											 items: [ {uniqueId: 0, value: new Date(0)},
+												  {uniqueId: 1, value: new Date(100)}, 
+												  {uniqueId: 2, value:new Date(1000)},
+												  {uniqueId: 3, value:new Date(2000)},
+												  {uniqueId: 4, value:new Date(3000)},
+												  {uniqueId: 5, value:new Date(4000)},
+												  {uniqueId: 6, value:new Date(5000)},
+												  {uniqueId: 7, value:new Date(6000)},
+												  {uniqueId: 8, value:new Date(7000)},
+												  {uniqueId: 9, value:new Date(8000)},
+												  {uniqueId: 10, value:new Date(9000)}
+		
+												]
+									   }
+								});
+			
+			var d = new tests.Deferred();
+			function completed(items,request){
+				var orderedArray =	[0,100,1000,2000,3000,4000,5000,6000,7000,8000,9000];
+				t.assertTrue(items.length === 11);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(jsonItemStore.getValue(items[i], "value").getTime() === orderedArray[i])){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+		
+			function error(){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+		
+			var sortAttributes = [{attribute: "value"}];
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		},
+		function testReadAPI_fetch_sortDateDescending(t){
+			//	summary: 
+			//		Function to test sorting date in descending order.
+			//	description:
+			//		Function to test sorting date in descending order.
+		
+			//FIXME:  Need to convert to async format when URL support comes into M1.
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											 items: [ {uniqueId: 0, value: new Date(0)},
+												  {uniqueId: 1, value: new Date(100)}, 
+												  {uniqueId: 2, value:new Date(1000)},
+												  {uniqueId: 3, value:new Date(2000)},
+												  {uniqueId: 4, value:new Date(3000)},
+												  {uniqueId: 5, value:new Date(4000)},
+												  {uniqueId: 6, value:new Date(5000)},
+												  {uniqueId: 7, value:new Date(6000)},
+												  {uniqueId: 8, value:new Date(7000)},
+												  {uniqueId: 9, value:new Date(8000)},
+												  {uniqueId: 10, value:new Date(9000)}
+		
+												]
+									   }
+								});
+		
+			var d = new tests.Deferred();
+			function completed(items,request){
+				var orderedArray =	[0,100,1000,2000,3000,4000,5000,6000,7000,8000,9000];
+				orderedArray = orderedArray.reverse();
+				t.assertTrue(items.length === 11);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(jsonItemStore.getValue(items[i], "value").getTime() === orderedArray[i])){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+		
+			function error(){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+		
+			var sortAttributes = [{attribute: "value", descending: true}];
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		},
+		function testReadAPI_fetch_sortMultiple(t){
+			//	summary: 
+			//		Function to test sorting on multiple attributes.
+			//	description:
+			//		Function to test sorting on multiple attributes.
+			
+			//FIXME:  Need to convert to async format when URL support comes into M1.
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											 items: [ {uniqueId: 1, value:"fo|o*b.ar"},
+												  {uniqueId: 2, value:"ba|r*foo"}, 
+												  {uniqueId: 3, value:"boomBam"},
+												  {uniqueId: 4, value:"bit$Bite"},
+												  {uniqueId: 5, value:"ouagadogou"},
+												  {uniqueId: 6, value:"jfq4@#!$!@|f1.$4r14i5u"},
+												  {uniqueId: 7, value:"BaB{aMa|SaRa***F}oo"},
+												  {uniqueId: 8, value:"squawl"},
+												  {uniqueId: 10, value:"seaweed"},
+												  {uniqueId: 12, value:"seaweed"},
+												  {uniqueId: 11, value:"zulu"},
+												  {uniqueId: 9, value:"seaweed"}
+												]
+									   }
+								});
+		
+			var d = new tests.Deferred();
+			function completed(items, request){
+				var orderedArray0 = [7,2,4,3,1,6,5,12,10,9,8,11];
+				var orderedArray1 = [	"BaB{aMa|SaRa***F}oo",
+										"ba|r*foo",
+										"bit$Bite",
+										"boomBam",
+										"fo|o*b.ar",
+										"jfq4@#!$!@|f1.$4r14i5u",
+										"ouagadogou",
+										"seaweed",
+										"seaweed",
+										"seaweed",
+										"squawl",
+										"zulu"
+									];
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(	(jsonItemStore.getValue(items[i], "uniqueId") === orderedArray0[i])&&
+							(jsonItemStore.getValue(items[i], "value") === orderedArray1[i]))
+						){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+		
+			function error(){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+		
+			var sortAttributes = [{ attribute: "value"}, { attribute: "uniqueId", descending: true}];
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		},
+		function testReadAPI_fetch_sortMultipleSpecialComparator(t){
+			//	summary: 
+			//		Function to test sorting on multiple attributes with a custom comparator.
+			//	description:
+			//		Function to test sorting on multiple attributes with a custom comparator.
+
+			//FIXME:  Need to convert to async format when URL support comes into M1.
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											 items: [ {uniqueId: 1, status:"CLOSED"},
+												  {uniqueId: 2,  status:"OPEN"}, 
+												  {uniqueId: 3,  status:"PENDING"},
+												  {uniqueId: 4,  status:"BLOCKED"},
+												  {uniqueId: 5,  status:"CLOSED"},
+												  {uniqueId: 6,  status:"OPEN"},
+												  {uniqueId: 7,  status:"PENDING"},
+												  {uniqueId: 8,  status:"PENDING"},
+												  {uniqueId: 10, status:"BLOCKED"},
+												  {uniqueId: 12, status:"BLOCKED"},
+												  {uniqueId: 11, status:"OPEN"},
+												  {uniqueId: 9,  status:"CLOSED"}
+												]
+									   }
+								});
+		
+		
+			jsonItemStore.comparatorMap = {};
+			jsonItemStore.comparatorMap["status"] = function(a,b) { 
+				var ret = 0;
+				// We want to map these by what the priority of these items are, not by alphabetical.
+				// So, custom comparator.
+				var enumMap = { OPEN: 3, BLOCKED: 2, PENDING: 1, CLOSED: 0};
+				if (enumMap[a] > enumMap[b]) {
+					ret = 1;
+				}
+				if (enumMap[a] < enumMap[b]) {
+					ret = -1;
+				}
+				return ret;
+			};
+		
+			var sortAttributes = [{attribute: "status", descending: true}, { attribute: "uniqueId", descending: true}];
+		
+			var d = new tests.Deferred();
+			function completed(items, findResult){
+				var orderedArray = [11,6,2,12,10,4,8,7,3,9,5,1];
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(jsonItemStore.getValue(items[i], "uniqueId") === orderedArray[i])){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(false);
+				}
+			}
+		
+			function error(errData){
+				t.assertTrue(false);
+				d.errback(false);
+			}
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		}
+
+	]
+);
+

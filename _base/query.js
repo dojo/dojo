@@ -147,7 +147,7 @@ dojo.require("dojo._base.NodeList");
 	}
 
 	var buildPath = function(query){
-		var xpath = "";
+		var xpath = ".";
 		var qparts = query.split(" "); // FIXME: this break on span[thinger = foo]
 		while(qparts.length){
 			var tqp = qparts.shift();
@@ -206,16 +206,17 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		var doc = d.doc();
-		var parent = d.body(); // FIXME
+		// var parent = d.body(); // FIXME
 		// FIXME: don't need to memoize. The closure scope handles it for us.
 		var xpath = buildPath(path);
 		// console.debug(xpath);
 
-		var tf = function(){
+		var tf = function(parent){
 			// XPath query strings are memoized.
 			var ret = [];
+			var xpathResult;
 			try{
-				var xpathResult = doc.evaluate(xpath, parent, null, 
+				xpathResult = doc.evaluate(xpath, parent, null, 
 												// XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 												XPathResult.ANY_TYPE, null);
 			}catch(e){
@@ -1040,7 +1041,7 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		// FIXME: should support more methods on the return than the stock array.
-		return _zip(getQueryFunc(query)(root||document));
+		return _zip(getQueryFunc(query)(root||dojo.doc()));
 	}
 
 	/*

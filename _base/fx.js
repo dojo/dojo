@@ -5,9 +5,9 @@ dojo.require("dojo._base.lang");
 dojo.require("dojo._base.html");
 
 /*
-	Animation package based on Dan Pupius' work: http://pupius.co.uk/js/Toolkit.Drawing.js
+	Animation losely package based on Dan Pupius' work: 
+		http://pupius.co.uk/js/Toolkit.Drawing.js
 */
-
 dojo._Line = function(/*int*/ start, /*int*/ end){
 	// summary: dojo._Line is the object used to generate values
 	//			from a start value to an end value
@@ -49,7 +49,7 @@ dojo.declare("dojo._IAnimation", null, null, {
 	duration: 1000,
 	easing: null,
 	repeatCount: 0,
-	rate: 10,
+	rate: 10, // 100 fps
 	
 	// events
 	handler: null,

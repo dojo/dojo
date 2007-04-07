@@ -168,3 +168,4 @@ dojo.partial = function(/*Function|String*/method /*, ...*/){
 	}
 	return dojo.hitch.apply(dojo, args);
 }
+

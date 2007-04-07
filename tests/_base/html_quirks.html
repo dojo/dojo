@@ -20,37 +20,9 @@
 						"t.is(100, dojo.contentBox('sq100margin10').w);",
 						"t.is(100, dojo.contentBox('sq100margin10').h);",
 
-						"t.is(140, dojo.marginBox('sq100margin10pad10').w);",
-						"t.is(140, dojo.marginBox('sq100margin10pad10').h);",
-
-						"t.is(120, dojo.marginBox('sq100pad10').w);",
-						"t.is(120, dojo.marginBox('sq100pad10').h);",
-
-						"t.is(110, dojo.marginBox('sq100ltpad10').w);",
-						"t.is(110, dojo.marginBox('sq100ltpad10').h);",
-						"t.is(100, dojo.contentBox('sq100ltpad10').w);",
-						"t.is(100, dojo.contentBox('sq100ltpad10').h);",
-
-						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').w);",
-						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').h);",
-
-						"t.is(120, dojo.marginBox('sq100border10').w);",
-						"t.is(120, dojo.marginBox('sq100border10').h);",
-						"t.is(100, dojo.contentBox('sq100border10').w);",
-						"t.is(100, dojo.contentBox('sq100border10').h);",
-
-						"t.is(140, dojo.marginBox('sq100border10margin10').w);",
-						"t.is(140, dojo.marginBox('sq100border10margin10').h);",
-						"t.is(100, dojo.contentBox('sq100border10margin10').w);",
-						"t.is(100, dojo.contentBox('sq100border10margin10').h);",
-
-						"t.is(160, dojo.marginBox('sq100border10margin10pad10').w);",
-						"t.is(160, dojo.marginBox('sq100border10margin10pad10').h);",
-						"t.is(100, dojo.contentBox('sq100border10margin10pad10').w);",
-						"t.is(100, dojo.contentBox('sq100border10margin10pad10').h);",
-
 						"t.is(100, dojo.marginBox('sq100nopos').w);",
 						"t.is(100, dojo.marginBox('sq100nopos').h);",
+
 						function coordsBasic(t){
 							var pos = dojo.coords("sq100", false);
 							// console.debug(pos);
@@ -78,6 +50,75 @@
 						}
 					]
 				);
+				if(dojo.isIE){ 
+					// IE collapses padding in quirks mode. We just report on it.
+					tests.register("t", 
+						[
+							"t.is(120, dojo.marginBox('sq100margin10pad10').w);",
+							"t.is(120, dojo.marginBox('sq100margin10pad10').h);",
+
+							"t.is(100, dojo.marginBox('sq100pad10').w);",
+							"t.is(100, dojo.marginBox('sq100pad10').h);",
+
+							"t.is(100, dojo.marginBox('sq100ltpad10').w);",
+							"t.is(100, dojo.marginBox('sq100ltpad10').h);",
+							"t.is(90, dojo.contentBox('sq100ltpad10').w);",
+							"t.is(90, dojo.contentBox('sq100ltpad10').h);",
+
+							"t.is(110, dojo.marginBox('sq100ltpad10rbmargin10').w);",
+							"t.is(110, dojo.marginBox('sq100ltpad10rbmargin10').h);",
+
+							"t.is(100, dojo.marginBox('sq100border10').w);",
+							"t.is(100, dojo.marginBox('sq100border10').h);",
+							"t.is(80, dojo.contentBox('sq100border10').w);",
+							"t.is(80, dojo.contentBox('sq100border10').h);",
+
+							"t.is(120, dojo.marginBox('sq100border10margin10').w);",
+							"t.is(120, dojo.marginBox('sq100border10margin10').h);",
+							"t.is(80, dojo.contentBox('sq100border10margin10').w);",
+							"t.is(80, dojo.contentBox('sq100border10margin10').h);",
+
+							"t.is(120, dojo.marginBox('sq100border10margin10pad10').w);",
+							"t.is(120, dojo.marginBox('sq100border10margin10pad10').h);",
+							"t.is(60, dojo.contentBox('sq100border10margin10pad10').w);",
+							"t.is(60, dojo.contentBox('sq100border10margin10pad10').h);"
+						]
+					);
+				}else{
+					tests.register("t", 
+						[
+							"t.is(140, dojo.marginBox('sq100margin10pad10').w);",
+							"t.is(140, dojo.marginBox('sq100margin10pad10').h);",
+
+							"t.is(120, dojo.marginBox('sq100pad10').w);",
+							"t.is(120, dojo.marginBox('sq100pad10').h);",
+
+							"t.is(110, dojo.marginBox('sq100ltpad10').w);",
+							"t.is(110, dojo.marginBox('sq100ltpad10').h);",
+							"t.is(100, dojo.contentBox('sq100ltpad10').w);",
+							"t.is(100, dojo.contentBox('sq100ltpad10').h);",
+
+							"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').w);",
+							"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').h);",
+
+							"t.is(120, dojo.marginBox('sq100border10').w);",
+							"t.is(120, dojo.marginBox('sq100border10').h);",
+							"t.is(100, dojo.contentBox('sq100border10').w);",
+							"t.is(100, dojo.contentBox('sq100border10').h);",
+
+							"t.is(140, dojo.marginBox('sq100border10margin10').w);",
+							"t.is(140, dojo.marginBox('sq100border10margin10').h);",
+							"t.is(100, dojo.contentBox('sq100border10margin10').w);",
+							"t.is(100, dojo.contentBox('sq100border10margin10').h);",
+
+							"t.is(160, dojo.marginBox('sq100border10margin10pad10').w);",
+							"t.is(160, dojo.marginBox('sq100border10margin10pad10').h);",
+							"t.is(100, dojo.contentBox('sq100border10margin10pad10').w);",
+							"t.is(100, dojo.contentBox('sq100border10margin10pad10').h);"
+						]
+					);
+				}
+
 				tests.run();
 			});
 		</script>

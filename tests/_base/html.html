@@ -54,6 +54,7 @@
 
 						"t.is(100, dojo.marginBox('sq100nopos').w);",
 						"t.is(100, dojo.marginBox('sq100nopos').h);",
+
 						function coordsBasic(t){
 							var pos = dojo.coords("sq100", false);
 							// console.debug(pos);
@@ -78,6 +79,14 @@
 							t.t(pos.y > 0);
 							t.is(100, pos.w);
 							t.is(100, pos.h);
+						},
+						"t.is(1, dojo.style('sq100nopos', 'opacity'));",
+						"t.is(0.1, dojo.style('sq100nopos', 'opacity', 0.1));",
+						"t.is(0.8, dojo.style('sq100nopos', 'opacity', 0.8));",
+						"t.is('static', dojo.style('sq100nopos', 'position'));",
+						function getBgcolor(t){
+							var bgc = dojo.style('sq100nopos', 'backgroundColor');
+							t.t((bgc == "rgb(0, 0, 0)")||(bgc == "black"));
 						}
 					]
 				);

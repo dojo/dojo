@@ -19,7 +19,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		if(dojo.isString(id)){
 			var _d = (doc||dojo.doc());
 			var te = _d.getElementById(id);
-			if(te.id == id){
+			if((te) && (te.id == id)){
 				return te;
 			}else{
 				var eles = _d.all[id];
@@ -302,6 +302,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		};
 	};
 
+	// IE version and quirks dependent. ugg.
+	var _d_off = ((dojo.isIE >= 7)&&(dojo.boxMode != "border-box")) ? 2 : 0; 
 	var _abs = function(/*HTMLElement*/node, /*boolean?*/includeScroll){
 		//	summary
 		//		Gets the absolute position of the passed element based on the
@@ -320,8 +322,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 
 		if(dojo.isIE){
 			with(node.getBoundingClientRect()){
-				ret.x = left-2;
-				ret.y = top-2;
+				ret.x = left-_d_off;
+				ret.y = top-_d_off;
 			}
 		}else if(ownerDocument["getBoxObjectFor"]){
 			// mozilla
@@ -439,6 +441,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 				_setOpacity(i, null, opacity);
 			});
 		}
+		return opacity;
 	}
 
 	var _t = true;
@@ -478,7 +481,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		var node = dojo.byId(_a[0]);
 		var s = dojo.getComputedStyle(node);
 		if(_a_l == 1){ return s; }
-		var io = ((dojo.isIE)&&(_a_l[1] == "opacity"));
+		var io = ((dojo.isIE)&&(_a[1] == "opacity"));
 		if(_a_l == 2){
 			return (io) ? _ieGetOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
 		}

@@ -255,8 +255,8 @@ if(typeof window != 'undefined'){
 	//    dojo.doc() returns dojo._currentDocument. Refer to dojo.doc() rather
 	//    than referring to 'window.document' to ensure your code runs
 	//    correctly in managed contexts.
-	if(this["document"]){
-		dojo._currentDocument = this.document;
+	if(window["document"]){
+		dojo._currentDocument = window.document;
 	}
 
 	dojo.doc = function(){

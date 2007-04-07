@@ -4,20 +4,20 @@ tests.register("tests._base._loader.bootstrap",
 	[
 
 		function hasConsole(t){
-			t.assertTrue("console" in dojo.global());
+			t.assertTrue("console" in dojo.global);
 			t.assertTrue("assert" in console);
 			t.assertEqual("function", typeof console.assert);
 		},
 
 		function hasDjConfig(t){
-			t.assertTrue("djConfig" in dojo.global());
+			t.assertTrue("djConfig" in dojo.global);
 		},
 
 		{
 			name: "getObject",
 			setUp: function(){
 				//Set an object in global scope.
-				dojo.global().globalValue = {
+				dojo.global.globalValue = {
 					color: "blue",
 					size: 20
 				};
@@ -59,7 +59,7 @@ tests.register("tests._base._loader.bootstrap",
 				//Clean up global object that should not exist if
 				//the test is re-run.
 				try{
-					delete dojo.global().something;
+					delete dojo.global.something;
 					delete this.something;
 				}catch(e){}
 			}

@@ -246,41 +246,33 @@ if(typeof window != 'undefined'){
 	// breaking when it's not included
 	dojo._writeIncludes = function(){}
 
-	//TODOC:  HOW TO DOC THIS?
-	// @global: dojo._currentDocument
+	// @global: dojo.doc
 	// summary:
-	//		Current document object. 'dojo._currentDocument' can be modified
-	//		for temporary context shifting.
+	//		Current document object. 'dojo.doc' can be modified
+	//		for temporary context shifting. Also see dojo.withDoc().
 	// description:
-	//    dojo.doc() returns dojo._currentDocument. Refer to dojo.doc() rather
+	//    Refer to dojo.doc rather
 	//    than referring to 'window.document' to ensure your code runs
 	//    correctly in managed contexts.
-	if(window["document"]){
-		dojo._currentDocument = window.document;
-	}
-
-	dojo.doc = function(){
-		// summary:
-		//		return the document object associated with the dojo.global()
-		return dojo._currentDocument;
-	}
+	dojo.doc = window["document"] || null;
 
 	dojo.body = function(){
 		// summary:
-		//		return the body object associated with dojo.doc()
+		//		return the body object associated with dojo.doc
 
 		// Note: document.body is not defined for a strict xhtml document
-		return dojo.doc().body || dojo.doc().getElementsByTagName("body")[0];
+		// Would like to memoize this, but dojo.doc can change vi dojo.withDoc().
+		return dojo.doc.body || dojo.doc.getElementsByTagName("body")[0];
 	}
 
 	dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocument){
 		// summary:
 		//		changes the behavior of many core Dojo functions that deal with
 		//		namespace and DOM lookup, changing them to work in a new global
-		//		context. The varibles dojo._currentContext and dojo._currentDocument
+		//		context. The varibles dojo.global and dojo.doc
 		//		are modified as a result of calling this function.
-		dojo._currentContext = globalObject;
-		dojo._currentDocument = globalDocument;
+		dojo.global = globalObject;
+		dojo.doc = globalDocument;
 	};
 
 	dojo._fireCallback = function(callback, context, cbArguments){
@@ -295,15 +287,15 @@ if(typeof window != 'undefined'){
 								/*Object?*/thisObject, 
 								/*Array?*/cbArguments){
 		// summary:
-		//		Call callback with globalObject as dojo.global() and
-		//		globalObject.document as dojo.doc(). If provided, globalObject
+		//		Call callback with globalObject as dojo.global and
+		//		globalObject.document as dojo.doc. If provided, globalObject
 		//		will be executed in the context of object thisObject
 		// description:
-		//		When callback() returns or throws an error, the dojo.global()
-		//		and dojo.doc() will be restored to its previous state.
+		//		When callback() returns or throws an error, the dojo.global
+		//		and dojo.doc will be restored to its previous state.
 		var rval;
-		var oldGlob = dojo._currentContext;
-		var oldDoc = dojo._currentDocument;
+		var oldGlob = dojo.global;
+		var oldDoc = dojo.doc;
 		try{
 			dojo.setContext(globalObject, globalObject.document);
 			rval = dojo._fireCallback(callback, thisObject, cbArguments);
@@ -318,18 +310,18 @@ if(typeof window != 'undefined'){
 								/*Object?*/thisObject, 
 								/*Array?*/cbArguments){
 		// summary:
-		//		Call callback with documentObject as dojo.doc(). If provided,
+		//		Call callback with documentObject as dojo.doc. If provided,
 		//		callback will be executed in the context of object thisObject
 		// description:
-		//		When callback() returns or throws an error, the dojo.doc() will
+		//		When callback() returns or throws an error, the dojo.doc will
 		//		be restored to its previous state.
 		var rval;
-		var oldDoc = dojo._currentDocument;
+		var oldDoc = dojo.doc;
 		try{
-			dojo._currentDocument = documentObject;
+			dojo.doc = documentObject;
 			rval = dojo._fireCallback(callback, thisObject, cbArguments);
 		}finally{
-			dojo._currentDocument = oldDoc;
+			dojo.doc = oldDoc;
 		}
 		return rval;
 	}

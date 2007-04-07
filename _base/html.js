@@ -13,11 +13,11 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		// id: DOM id or DOM Node
 		// doc:
 		//		optional, defaults to the current value of
-		//		dojo._currentDocument.  Can be used to retreive
+		//		dojo.doc.  Can be used to retreive
 		//		node references from other documents.
 
 		if(dojo.isString(id)){
-			var _d = (doc||dojo.doc());
+			var _d = (doc||dojo.doc);
 			var te = _d.getElementById(id);
 			if((te) && (te.id == id)){
 				return te;
@@ -47,10 +47,10 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		// id: DOM id or DOM Node
 		// doc:
 		//		optional, defaults to the current value of
-		//		dojo._currentDocument.  Can be used to retreive
+		//		dojo.doc.  Can be used to retreive
 		//		node references from other documents.
 		if(dojo.isString(id)){
-			return (doc||dojo.doc()).getElementById(id);
+			return (doc||dojo.doc).getElementById(id);
 		}else{
 			return id; // DomNode
 		}
@@ -294,8 +294,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 
 	var _docScroll = function(){
 		var _b = dojo.body();
-		var _w = dojo.global();
-		var de = dojo.doc().documentElement;
+		var _w = dojo.global;
+		var de = dojo.doc.documentElement;
 		return {
 			y: (_w.pageYOffset || de.scrollTop || _b.scrollTop || 0),
 			x: (_w.pageXOffset || de.scrollLeft || _b.scrollLeft || 0)
@@ -311,7 +311,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 
 		// FIXME: need to decide in the brave-new-world if we're going to be
 		// margin-box or border-box.
-		var ownerDocument = dojo.doc();
+		var ownerDocument = dojo.doc;
 		var ret = {
 			x: 0,
 			y: 0

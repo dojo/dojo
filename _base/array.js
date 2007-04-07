@@ -11,7 +11,7 @@ dojo.provide("dojo._base.array");
 		}
 	}else{
 		var _getParts = function(arr, obj){
-			return [ (d.isString(arr) ? arr.split("") : arr), (obj||d.global()) ];
+			return [ (d.isString(arr) ? arr.split("") : arr), (obj||d.global) ];
 		}
 
 		d.mixin(d, {
@@ -88,7 +88,7 @@ dojo.provide("dojo._base.array");
 				//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
 
 				// FIXME: there are several ways of handilng thisObject. Is
-				// dojo.global()always the default context?
+				// dojo.global always the default context?
 				var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
 				for(var i=0,l=arr.length; i<l; i++){ 
 					callback.call(obj, arr[i], i, arr);

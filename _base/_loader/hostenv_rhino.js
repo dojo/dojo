@@ -184,11 +184,9 @@ if(!djConfig.libraryScriptUri.length){
 	}
 }
 
-dojo.doc = function(){
-	// summary:
-	//		return the document object associated with the dojo.global()
-	return document;
-}
+// summary:
+//		return the document object associated with the dojo.global
+dojo.doc = typeof(document) != "undefined" ? document : null;
 
 dojo.body = function(){
 	return document.body;	

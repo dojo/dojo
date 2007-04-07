@@ -47,17 +47,13 @@
 		this.dojo = {};
 	}
 
-	dojo._currentContext = this;
-
-	dojo.global = function(){
-		// summary:
-		//		return the current global context object
-		//		(e.g., the window object in a browser).
-		// description:
-		//		Refer to 'dojo.global()' rather than referring to window to ensure your
-		//		code runs correctly in contexts other than web browsers (eg: Rhino on a server).
-		return this._currentContext;
-	}
+	// summary:
+	//		return the current global context object
+	//		(e.g., the window object in a browser).
+	// description:
+	//		Refer to 'dojo.global' rather than referring to window to ensure your
+	//		code runs correctly in contexts other than web browsers (eg: Rhino on a server).
+	dojo.global = this;
 
 	var _config = {
 		isDebug: false,
@@ -99,7 +95,7 @@ dojo.version = {
 }
 
 dojo._getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
-	var obj=context||dojo.global();
+	var obj=context||dojo.global;
 	for(var i=0, p; obj&&(p=parts[i]); i++){
 		obj = (p in obj ? obj[p] : (create ? obj[p]={} : undefined));
 	}
@@ -117,7 +113,7 @@ dojo.setObject = function(/*String*/name, /*Any*/value, /*Object*/context){
 	//		Path to a property, in the form "A.B.C".
 	//	context:
 	//		Optional. Object to use as root of path. Defaults to
-	//		'dojo.global()'. Null may be passed.
+	//		'dojo.global'. Null may be passed.
 	var parts=name.split("."), p=parts.pop(), obj=dojo._getProp(parts, true, context);
 	return (obj && p ? (obj[p]=value) : undefined); // Any
 }
@@ -132,7 +128,7 @@ dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/context){
 	//		Path to an property, in the form "A.B.C".
 	//	context:
 	//		Optional. Object to use as root of path. Defaults to
-	//		'dojo.global()'. Null may be passed.
+	//		'dojo.global'. Null may be passed.
 	//	create: 
 	//		Optional. If true, Objects will be created at any point along the
 	//		'path' that is undefined.
@@ -149,7 +145,7 @@ dojo.exists = function(/*String*/name, /*Object*/obj){
 	//		Path to an object, in the form "A.B.C".
 	// obj:
 	//		Optional. Object to use as root of path. Defaults to
-	//		'dojo.global()'. Null may be passed.
+	//		'dojo.global'. Null may be passed.
 	return Boolean(dojo.getObject(name, false, obj)); // Boolean
 }
 
@@ -169,7 +165,7 @@ dojo["eval"] = function(/*String*/ scriptFragment){
 	//		http://josephsmarr.com/2007/01/31/fixing-eval-to-use-global-scope-in-ie/
 	//	see also:
 	// 		http://trac.dojotoolkit.org/ticket/744
-	return dojo.global().eval ? dojo.global().eval(scriptFragment) : eval(scriptFragment); 	// mixed
+	return dojo.global.eval ? dojo.global.eval(scriptFragment) : eval(scriptFragment); 	// mixed
 }
 
 dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){

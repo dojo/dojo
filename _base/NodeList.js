@@ -173,7 +173,7 @@ dojo.require("dojo._base.array");
 				//		"before"
 				//		"after"
 				// or an offset in the childNodes property
-				var ta = dojo.doc().createElement("span");
+				var ta = dojo.doc.createElement("span");
 				if(dojo.isString(content)){
 					ta.innerHTML = content;
 				}else{

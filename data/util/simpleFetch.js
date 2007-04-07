@@ -36,7 +36,7 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 
 	var _errorHandler = function(errorData){
 		if(request.onError){
-			var scope = request.scope || dojo.global();
+			var scope = request.scope || dojo.global;
 			request.onError.call(scope, errorData);
 		}
 	};
@@ -55,7 +55,7 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 			}
 		};
 
-		var scope = requestObject.scope || dojo.global();
+		var scope = requestObject.scope || dojo.global;
 		if(!requestObject.store){
 			requestObject.store = self;
 		}

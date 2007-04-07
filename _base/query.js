@@ -205,7 +205,7 @@ dojo.require("dojo._base.NodeList");
 			return _xpathFuncCache[path];
 		}
 
-		var doc = d.doc();
+		var doc = d.doc;
 		// var parent = d.body(); // FIXME
 		// FIXME: don't need to memoize. The closure scope handles it for us.
 		var xpath = buildPath(path);
@@ -1041,7 +1041,7 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		// FIXME: should support more methods on the return than the stock array.
-		return _zip(getQueryFunc(query)(root||dojo.doc()));
+		return _zip(getQueryFunc(query)(root||dojo.doc));
 	}
 
 	/*

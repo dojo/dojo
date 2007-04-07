@@ -111,7 +111,7 @@ dojo._hitchArgs = function(scope, method /*,...*/){
 			args.push(arguments[x]);
 		}
 		// locate our method
-		var f = (named ? (scope||dojo.global())[method] : method);
+		var f = (named ? (scope||dojo.global)[method] : method);
 		// invoke with collected args
 		return (f)&&(f.apply(scope||this, pre.concat(args))); // Any
  	} // Function
@@ -138,7 +138,7 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	if(arguments.length > 2){
 		return dojo._hitchArgs.apply(dojo, arguments);
 	}else if(dojo.isString(method)){
-		scope = scope || dojo.global();
+		scope = scope || dojo.global;
 		return function(){ return scope[method].apply(scope, arguments||[]); }
 	}else{
 		return (!scope ? method : function(){ return method.apply(scope, arguments||[]); });

@@ -231,7 +231,7 @@ dojo.extend(dojo.Deferred, {
 			if(dojo.isFunction(a[0])){
 				return a[0];
 			}else if(dojo.isString(a[0])){
-				return dojo.global()[a[0]];
+				return dojo.global[a[0]];
 			}
 		}else if((a[0])&&(a[1])){
 			return dojo.hitch(a[0], a[1]);

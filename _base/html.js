@@ -17,13 +17,19 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		//		node references from other documents.
 
 		if(dojo.isString(id)){
-			var eles = (doc||dojo.doc()).all[id];
-			if(!eles){ return; }
-			if(!eles.length){ return eles; }
-			// if more than 1, choose first with the correct id
-			var i=0, te;
-			while(te=eles[i++]){
-				if(te.id == id){ return te; }
+			var _d = (doc||dojo.doc());
+			var te = _d.getElementById(id);
+			if(te.id == id){
+				return te;
+			}else{
+				var eles = _d.all[id];
+				if(!eles){ return; }
+				if(!eles.length){ return eles; }
+				// if more than 1, choose first with the correct id
+				var i=0;
+				while(te=eles[i++]){
+					if(te.id == id){ return te; }
+				}
 			}
 		}else{
 			return id; // DomNode

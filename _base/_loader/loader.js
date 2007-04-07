@@ -107,7 +107,7 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 	if(this._loadedUrls[uri]){
 		return true; // Boolean
 	}
-	var contents = this._getText(uri, null, true);
+	var contents = this._getText(uri, true);
 	if(!contents){ return false; } // Boolean
 	this._loadedUrls[uri] = true;
 	if(cb){ contents = '('+contents+')'; }

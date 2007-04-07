@@ -90,10 +90,6 @@ if(typeof window != 'undefined'){
 						break;
 					}
 				}
-
-				/*if(http && !http.toString) {
-					http.toString = function() { "[object XMLHttpRequest]"; }
-				}*/
 			}
 
 			if(!http){
@@ -110,54 +106,21 @@ if(typeof window != 'undefined'){
 			return Boolean((!stat)||((200 <= stat)&&(300 > stat))||(stat==304));
 		}
 
-		d._blockAsync = false;
-		d._getText = function(uri, async_cb, fail_ok){
+		d._getText = function(uri, fail_ok){
 			// summary: Read the contents of the specified uri and return those contents.
 			// uri:
 			//		A relative or absolute uri. If absolute, it still must be in
 			//		the same "domain" as we are.
-			// async_cb:
-			//		If not specified, load synchronously. If specified, load
-			//		asynchronously, and use async_cb as the progress handler which
-			//		takes the xmlhttp object as its argument. If async_cb, this
-			//		function returns null.
 			// fail_ok:
-			//		Default false. If fail_ok and !async_cb and loading fails,
-			//		return null instead of throwing.
+			//		Default false. If fail_ok and loading fails, return null
+			//		instead of throwing.
 
-			// need to block async callbacks from snatching this thread as the result
-			// of an async callback might call another sync XHR, this hangs khtml forever
-			// hostenv._blockAsync must also be checked in BrowserIO's watchInFlight()
 			// NOTE: must be declared before scope switches ie. this._xhrObj()
-			if(!async_cb){ this._blockAsync = true; }
-
 			var http = this._xhrObj();
 
-			if(async_cb){
-				var _this = this, timer = null, gbl = dojo.global();
-				http.onreadystatechange = function(){
-					if(timer){ gbl.clearTimeout(timer); timer = null; }
-					if(_this._blockAsync){
-						timer = gbl.setTimeout(function(){
-							http.onreadystatechange.apply(this);
-						}, 10);
-					}else{
-						if(4==http.readyState){
-							if(isDocumentOk(http)){
-								// console.debug("LOADED URI: "+uri);
-								async_cb(http.responseText);
-							}
-						}
-					}
-				}
-			}
-
-			http.open('GET', uri, async_cb ? true : false);
+			http.open('GET', uri, false);
 			try{
 				http.send(null);
-				if(async_cb){
-					return null;
-				}
 				if(!isDocumentOk(http)){
 					var err = Error("Unable to load "+uri+" status:"+ http.status);
 					err.status = http.status;
@@ -165,15 +128,9 @@ if(typeof window != 'undefined'){
 					throw err;
 				}
 			}catch(e){
-				this._blockAsync = false;
-				if((fail_ok)&&(!async_cb)){
-					return null;
-				}else{
-					throw e;
-				}
+				if(fail_ok){ return null; }
+				throw e;
 			}
-
-			this._blockAsync = false;
 			return http.responseText; // String
 		}
 	})();

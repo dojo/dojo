@@ -1,46 +1,12 @@
-/* 
- * Copyright © 2007 TurboAjax Group (http://www.turboajax.com)
- * Licensed under the Dojo Foundation Contributor License Agreement (http://dojotoolkit.org/icla.txt)
- */
-
 dojo.provide("dojo._base.connect");
 dojo.require("dojo._base.lang");
 
-(function(){
-					
-// arbitrary method delegation (knows nothing about DOM)
+// this file courtesy of the TurboAjax group, licensed under a Dojo CLA
 
-dojo.connect = function(/*Object|null*/ obj, /*String*/ event, /*Object|null*/ context, /*String|Function*/ method){
-	// support for 3 argument invocation depends on hitch
-	return dl.add(obj, event, dojo.hitch(context, method)); /*Handle*/
-}
+// FIXME: needs in-code docs in the worst way!!
 
-dojo.disconnect = function(/*Object|null*/ obj ,/*String*/ event, /*Handle*/ handle){
-	dl.remove(obj, event, handle);
-}
-
-// topic publish/subscribe
-
-dojo.topic = {
-	topics: {},
-	subscribe: function(/*String*/ topic, /*Object|null*/ context, /*String|Function*/ method){
-		// support for 3 argument invocation depends on hitch
-		return dl.add(dojo.topic.topics, topic, dojo.hitch(context, method)); /*Handle*/
-	},
-	unsubscribe: function(/*String*/ topic, /*Handle*/ handle){
-		dl.remove(dojo.topic.topics, topic, handle);
-	},
-	publish: function(/*String*/ topic, /*Array*/ args){
-		// Note that args is an array. This is more efficient vs variable length argument list.
-		// Ideally, by convention, var args are implemented via Array throughout the APIs.
-		var f = dojo.topic.topics[topic];
-		(f)&&(f.apply(this, args||[]));
-	}
-}
-
-// low-level delegation machinery
-
-dojo.listener = {
+dojo._listener = {
+	// low-level delegation machinery
 	dispatchers: [ ],
 	dispatcher: function(source, method, f) {
 		var op = Object.prototype;
@@ -55,7 +21,7 @@ dojo.listener = {
 		}
 		d.listeners = (f ? [f] : []);
 		source[method] = d;
-		dl.dispatchers.push(d);
+		dojo._listener.dispatchers.push(d);
 		return d;
 	},
 	add: function(/*Object*/ source, /*String*/ method, /*Function*/ listener){
@@ -72,7 +38,7 @@ dojo.listener = {
 		var d = source[method];
 		// Ensure a dispatcher
 		if (!d||!d.listeners) {
-			d = dl.dispatcher(source, method, d);
+			d = dojo._listener.dispatcher(source, method, d);
 		}
 		// The contract is that a 'handle' is returned that is suitable for 
 		// identifying this listener. 
@@ -92,8 +58,38 @@ dojo.listener = {
 		for (var i=0, d; (d=this.dispatchers[i]); i++){ d.clean(); }
 		this.dispatchers = [];
 	}
+};
+// arbitrary method delegation (knows nothing about DOM)
+
+dojo.connect = function(/*Object|null*/ obj, 
+						/*String*/ event, 
+						/*Object|null*/ context, 
+						/*String|Function*/ method){
+	// support for 3 argument invocation depends on hitch
+	return dojo._listener.add(obj, event, dojo.hitch(context, method)); /*Handle*/
 }
 
-var dl = dojo.listener;
+dojo.disconnect = function(	/*Object|null*/ obj,
+							/*String*/ event, 
+							/*Handle*/ handle){
+	dojo._listener.remove(obj, event, handle);
+}
 
-})();
+// topic publish/subscribe
+
+dojo._topics = {};
+dojo.subscribe = function(	/*String*/ topic, 
+							/*Object|null*/ context, 
+							/*String|Function*/ method){
+	// support for 3 argument invocation depends on hitch
+	return dojo._listener.add(dojo._topics, topic, dojo.hitch(context, method)); /*Handle*/
+}
+dojo.unsubscribe = function(/*String*/ topic, /*Handle*/ handle){
+	dojo._listener.remove(dojo._topics, topic, handle);
+}
+dojo.publish = function(/*String*/ topic, /*Array*/ args){
+	// Note that args is an array. This is more efficient vs variable length argument list.
+	// Ideally, by convention, var args are implemented via Array throughout the APIs.
+	var f = dojo._topics[topic];
+	(f)&&(f.apply(this, args||[]));
+}

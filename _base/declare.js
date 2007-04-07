@@ -166,4 +166,4 @@ dojo.declare._core = {
 			return (fn)&&(fn.apply(this, args));
 		}
 	}
-}
+};

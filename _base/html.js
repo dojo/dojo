@@ -441,10 +441,35 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		}
 	}
 
-	/*
+	var _t = true;
+	var _f = false;
+	var _pixelNamesCache = {
+		width: _t, height: _t, left: _t, top: _t
+	};
 	var _toStyleValue = function(node, type, value){
+		if(_pixelNamesCache[type] === true){
+			return _toPixelValue(node, value)
+		}else if(_pixelNamesCache[type] === false){
+			return value;
+		}else{
+			type = type.toLowerCase();
+			if(	(type.indexOf("margin") >= 0) ||
+				// (type.indexOf("border") >= 0) ||
+				(type.indexOf("padding") >= 0) ||
+				(type.indexOf("width") >= 0) ||
+				(type.indexOf("height") >= 0) ||
+				(type.indexOf("max") >= 0) ||
+				(type.indexOf("min") >= 0) ||
+				(type.indexOf("offset") >= 0)
+			){
+				_pixelNamesCache[type] = true;
+				return _toPixelValue(node, value)
+			}else{
+				_pixelNamesCache[type] = false;
+				return value;
+			}
+		}
 	}
-	*/
 
 	dojo.style = function(){
 		var _a = arguments;
@@ -455,8 +480,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		if(_a_l == 1){ return s; }
 		var io = ((dojo.isIE)&&(_a_l[1] == "opacity"));
 		if(_a_l == 2){
-			// FIXME: casting to a pixel value isn't always the right thing to do!!
-			return (io) ? _ieGetOpacity(node) : _toPixelValue(node, s[_a[1]]);
+			return (io) ? _ieGetOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
 		}
 		if(_a_l == 3){
 			return (io) ? _ieSetOpacity(node, _a[2]) : node.style[_a[1]] = _a[2];

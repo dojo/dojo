@@ -663,15 +663,14 @@ tests._testId = 0;
 tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 	// summary:
 	//		runs the specified test group
-
 	var tg = this._groups[groupName];
 	if(tg.skip === true){ return; }
 	if(this._isArray(tg)){
 		if(idx<=tg.length){
-			if(!tg.inFlight){
+			if((!tg.inFlight)&&(tg.iterated == true)){
 				tests._groupFinished(groupName, (!tg.failures));
+				return;
 			}
-			return;
 		}
 		tg.inFlight = 0;
 		tg.iterated = false;
@@ -681,16 +680,17 @@ tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 		for(var y=(idx||0); y<tg.length; y++){
 			if(this._paused){
 				this._currentTest = y;
-				this.debug("PAUSED at", this._currentGroup, this._currentTest);
+				this.debug("PAUSED at:", tg[y].name, this._currentGroup, this._currentTest);
 				return;
 			}
 			tests._runFixture(groupName, tg[y]);
 			if(this._paused){
 				this._currentTest = y+1;
+				// this._currentTest = y;
 				if(this._currentTest == tg.length){
 					tg.iterated = true;
 				}
-				this.debug("PAUSED at", this._currentGroup, this._currentTest);
+				this.debug("PAUSED at:", tg[y].name, this._currentGroup, this._currentTest);
 				return;
 			}
 		}

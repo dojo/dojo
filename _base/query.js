@@ -40,6 +40,52 @@ dojo.require("dojo._base.NodeList");
 		}
 	}
 
+	var getTagNameEnd = function(query){
+		var i = _getIndexes(query);
+		if((i[0] == 0)||(i[1] == 0)){
+			// hash or dot at the front, no tagname
+			return 0;
+		}else{
+			return _lowestFromIndex(query, 0);
+		}
+	}
+
+
+	var getTagName = function(query){
+		var tagNameEnd = getTagNameEnd(query);
+		// FIXME: should this be ">=" to account for tags like <a> ?
+		return ((tagNameEnd > 0) ? query.substr(0, tagNameEnd).toLowerCase() : "*");
+	}
+
+	var smallest = function(arr){
+		var ret = -1;
+		for(var x=0; x<arr.length; x++){
+			var ta = arr[x];
+			if(ta >= 0){
+				if((ta > ret)||(ret == -1)){
+					ret = ta;
+				}
+			}
+		}
+		return ret;
+	}
+
+	var getClassName = function(query){
+		// [ "#", ".", "[", ":" ];
+		var i = _getIndexes(query);
+		if(-1 == i[1]){ return ""; } // no class component
+		var di = i[1]+1;
+
+		var othersStart = smallest(i.slice(2));
+		if(di < othersStart){
+			return query.substring(di, othersStart);
+		}else if(-1 == othersStart){
+			return query.substr(di);
+		}else{
+			return "";
+		}
+	}
+
 	////////////////////////////////////////////////////////////////////////
 	// XPath query code
 	////////////////////////////////////////////////////////////////////////
@@ -324,23 +370,6 @@ dojo.require("dojo._base.NodeList");
 		return ret;
 	}
 
-	var getTagNameEnd = function(query){
-		var i = _getIndexes(query);
-		if((i[0] == 0)||(i[1] == 0)){
-			// hash or dot at the front, no tagname
-			return 0;
-		}else{
-			return _lowestFromIndex(query, 0);
-		}
-	}
-
-
-	var getTagName = function(query){
-		var tagNameEnd = getTagNameEnd(query);
-		// FIXME: should this be ">=" to account for tags like <a> ?
-		return ((tagNameEnd > 0) ? query.substr(0, tagNameEnd).toLowerCase() : "*");
-	}
-
 	var getFilterFunc = function(query){
 		// note: query can't have spaces!
 		if(_filtersCache[query]){
@@ -384,35 +413,6 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		return _filtersCache[query] = ff;
-	}
-
-	var smallest = function(arr){
-		var ret = -1;
-		for(var x=0; x<arr.length; x++){
-			var ta = arr[x];
-			if(ta >= 0){
-				if((ta > ret)||(ret == -1)){
-					ret = ta;
-				}
-			}
-		}
-		return ret;
-	}
-
-	var getClassName = function(query){
-		// [ "#", ".", "[", ":" ];
-		var i = _getIndexes(query);
-		if(-1 == i[1]){ return ""; } // no class component
-		var di = i[1]+1;
-
-		var othersStart = smallest(i.slice(2));
-		if(di < othersStart){
-			return query.substring(di, othersStart);
-		}else if(-1 == othersStart){
-			return query.substr(di);
-		}else{
-			return "";
-		}
 	}
 
 	var getNodeIndex = function(node){

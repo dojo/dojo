@@ -183,7 +183,7 @@
 								form: "f3"
 							});
 							td.addCallback(function(xhr){
-								console.debug(td.args.url);
+								// console.debug(td.args.url);
 								t.is("xhr.html?spaces=string%20with%20spaces", td.args.url);
 								d.callback(true);
 							});
@@ -199,7 +199,7 @@
 								content: { spaces: "blah" }
 							});
 							td.addCallback(function(xhr){
-								console.debug(td.args.url);
+								// console.debug(td.args.url);
 								t.is("xhr.html?spaces=blah", td.args.url);
 								d.callback(true);
 							});
@@ -210,10 +210,41 @@
 							var td = dojo.xhrPost({
 								url: "xhr.html" // self
 							});
-							t.t(td instanceof dojo.Deferred);
-							td.addCallback(d, "callback");
+							// t.t(td instanceof dojo.Deferred);
+							td.addBoth(function(res){
+								if(	(dojo._isDocumentOk(td.xhr))||
+									(td.xhr.status == 405)
+								){
+									d.callback(true);
+								}else{
+									d.errback(false);
+								}
+							});
 							return d;
 						},
+						function xhrPostWithContent(t){
+							var d = new tests.Deferred();
+							var td = dojo.xhrPost({
+								url: "xhr.html",
+								content: {
+									foo: [ "bar", "baz" ],
+									thud: "thonk",
+									xyzzy: 3
+								}
+							});
+							td.addBoth(function(text){
+								t.is("foo=bar&foo=baz&thud=thonk&xyzzy=3", 
+										td.args._query);
+								if(	(dojo._isDocumentOk(td.xhr))||
+									(td.xhr.status == 405)
+								){
+									d.callback(true);
+								}else{
+									d.errback(false);
+								}
+							});
+							return d;
+						}
 						// FIXME: need to add tests for rawPost
 						// FIXME: need to add tests for wrapForm
 					]

@@ -312,6 +312,8 @@ dojo._contentHandlers = {
 							//Stop the request.
 							tif.d.cancel();
 							_inFlight.splice(arrIdx, 1); // clean refs
+							console.debug("xhr error in:", tif.xhr);
+							console.debug("timeout exceeded!");
 							tif.d.errback(new Error("timeout exceeded"));
 						}
 					}
@@ -348,7 +350,7 @@ dojo._contentHandlers = {
 		ao.xhr.setRequestHeader("Content-Type", (args.contentType||_defaultContentType));
 		// FIXME: set other headers here!
 		try{
-			ao.xhr.send(null);
+			ao.xhr.send(args._query);
 		}catch(e){
 			ao.d.cancel();
 		}
@@ -356,13 +358,12 @@ dojo._contentHandlers = {
 		return ao.d;
 	}
 
+	// TODOC: FIXME!!!
+
 	dojo.xhrGet = function(/*Object*/ args){
 		if(args.form){ 
 			args = _setupFromForm(args);
 		}
-		// FIXME: 
-		//		should we pack all the extra props onto the deferred instead of
-		//		doing it this way?
 		var ao = _setupForXhr(args);
 		if(args._query.length){ args.url += "?"+args._query; args._query = null; }
 		return _doIt("GET", args, ao); // dojo.Deferred
@@ -377,6 +378,11 @@ dojo._contentHandlers = {
 	}
 
 	dojo.rawXhrPost = function(/*Object*/ args){
+		if(args.form){ 
+			args = _setupFromForm(args);
+		}
+		var ao = _setupForXhr(args);
+		args._query = args.postData;
 		return _doIt("POST", args, ao); // dojo.Deferred
 	}
 
@@ -386,5 +392,6 @@ dojo._contentHandlers = {
 		// FIXME: need to think harder about what extensions to this we might
 		// want. What should we allow folks to do w/ this? What events to
 		// set/send?
+		throw new Error("dojo.wrapForm not yet implemented");
 	}
 })();

@@ -22,9 +22,16 @@ tests.register("tests._base._loader.loader",
 			dojo.registerModulePath("mycoolmod2", "/some/path/mycoolpath2");
 			dojo.registerModulePath("mycoolmod.widget", "http://some.domain.com/another/path/mycoolpath/widget");
 
-			t.assertEqual(dojo.baseUrl + "some/path/mycoolpath/my/favorite.html",
+
+			var basePrefix = dojo.baseUrl;
+			//dojo._Uri will strip off "./" characters, so do the same here
+			if(basePrefix == "./"){
+				basePrefix = "";
+			}
+			
+			t.assertEqual(basePrefix + "some/path/mycoolpath/my/favorite.html",
 				dojo.moduleUrl("mycoolmod", "my/favorite.html").toString());
-			t.assertEqual(dojo.baseUrl + "some/path/mycoolpath/my/favorite.html",
+			t.assertEqual(basePrefix + "some/path/mycoolpath/my/favorite.html",
 				dojo.moduleUrl("mycoolmod.my", "favorite.html").toString());
 
 			t.assertEqual("/some/path/mycoolpath2/my/favorite.html",

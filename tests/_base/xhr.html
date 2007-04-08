@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>testing form and xhr utils</title>
+		<script type="text/javascript" 
+			src="../../dojo.js" 
+			djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("tests.runner");
+			dojo.addOnLoad(function(){
+				var f1fo = { blah: "blah" };
+				var f1foStr = "blah=blah";
+				var f1foJson = '{"blah":"blah"}';
+
+				var f2fo = { 
+					blah: "blah",
+					multi: [
+						"thud",
+						"thonk"
+					]
+				};
+				var f2foStr = "blah=blah&multi=thud&multi=thonk";
+				var f2foJson = '{"blah":"blah","multi":["thud","thonk"]}';
+
+				var f3fo = { 
+					spaces: "string with spaces"
+				};
+				var f3foStr = "spaces=string%20with%20spaces&";
+				var f3foJson = '{"spaces":"string with spaces"}';
+
+				tests.register("t", 
+					[
+						function formNodeToObject(t){
+							t.is(f1fo , dojo.formToObject(dojo.byId("f1")));
+						},
+						function formIdToObject(t){
+							t.is(f1fo , dojo.formToObject("f1"));
+						},
+						function formToObjectWithMultiSelect(t){
+							t.is(f2fo , dojo.formToObject("f2"));
+						},
+						function objectToQuery(t){
+							t.is(f1foStr , dojo.objectToQuery(f1fo));
+						},
+						function objectToQueryArr(t){
+							t.is(f2foStr, dojo.objectToQuery(f2fo));
+						},
+						function formToQuery(t){
+							t.is(f1foStr, dojo.formToQuery("f1"));
+						},
+						function formToQueryArr(t){
+							t.is(f2foStr, dojo.formToQuery("f2"));
+						},
+						function formToJson(t){
+							t.is(f1foJson, dojo.formToJson("f1"));
+						},
+						function formToJsonArr(t){
+							t.is(f2foJson, dojo.formToJson("f2"));
+						},
+						function queryToObject(t){
+							t.is(f1fo , dojo.queryToObject(f1foStr));
+							t.is(f2fo , dojo.queryToObject(f2foStr));
+							t.is(f3fo , dojo.queryToObject(f3foStr));
+						},
+						function textContentHandler(t){
+							t.is("foo bar baz ", 
+								dojo._contentHandlers.text({
+									responseText: "foo bar baz "
+								})
+							);
+						},
+						function jsonContentHandler(t){
+							var jsonObj = {
+								foo: "bar",
+								baz: [
+									{ thonk: "blarg" },
+									"xyzzy!"
+								]
+							};
+							t.is(jsonObj, 
+								dojo._contentHandlers.json({
+									responseText: dojo.toJson(jsonObj)
+								})
+							);
+						},
+						function jsonCFContentHandler(t){
+							var jsonObj = {
+								foo: "bar",
+								baz: [
+									{ thonk: "blarg" },
+									"xyzzy!"
+								]
+							};
+							t.is("",  // did we fail closed?
+								dojo._contentHandlers["json-comment-filtered"]({
+									responseText: dojo.toJson(jsonObj)
+								})
+							);
+							t.is(jsonObj,
+								dojo._contentHandlers["json-comment-filtered"]({
+									responseText: "\tblag\n/*"+dojo.toJson(jsonObj)+"*/\n\r\t\r"
+								})
+							);
+						},
+						function jsContentHandler(t){
+							var jsonObj = {
+								foo: "bar",
+								baz: [
+									{ thonk: "blarg" },
+									"xyzzy!"
+								]
+							};
+							t.is(jsonObj,
+								dojo._contentHandlers["javascript"]({
+									responseText: "("+dojo.toJson(jsonObj)+")"
+								})
+							);
+							t.t(dojo._contentHandlers["javascript"]({
+									responseText: "true;"
+								})
+							);
+							t.f(dojo._contentHandlers["javascript"]({
+									responseText: "false;"
+								})
+							);
+						},
+						function xmlContentHandler(t){
+							var fauxObj = {
+								foo: "bar",
+								baz: [
+									{ thonk: "blarg" },
+									"xyzzy!"
+								]
+							};
+							t.is(fauxObj,
+								dojo._contentHandlers["xml"]({ responseXML: fauxObj })
+							);
+						},
+						function xhrGet(t){
+							var d = new tests.Deferred();
+							var td = dojo.xhrGet({
+								url: "xhr.html" // self
+							});
+							t.t(td instanceof dojo.Deferred);
+							td.addCallback(d, "callback");
+							return d;
+						},
+						function xhrGet404(t){
+							var d = new tests.Deferred();
+							try{
+								var td = dojo.xhrGet({
+									url: "xhr_blarg.html" // doesn't exist
+								});
+								// td.addErrback(d, "callback");
+							}catch(e){
+								d.callback(true);
+							}
+							// return d;
+						},
+						function xhrGetContent(t){
+							var d = new tests.Deferred();
+							var td = dojo.xhrGet({
+								url: "xhr.html",
+								content: {
+									foo: [ "bar", "baz" ],
+									thud: "thonk",
+									xyzzy: 3
+								}
+							});
+							td.addCallback(function(text){
+								// console.debug(td, td.xhr, td.args);
+								t.is("xhr.html?foo=bar&foo=baz&thud=thonk&xyzzy=3", 
+										td.args.url);
+								d.callback(true);
+							});
+							return d;
+						},
+						function xhrGetForm(t){
+							var d = new tests.Deferred();
+							var td = dojo.xhrGet({
+								url: "xhr.html", // self
+								form: "f3"
+							});
+							td.addCallback(function(xhr){
+								console.debug(td.args.url);
+								t.is("xhr.html?spaces=string%20with%20spaces", td.args.url);
+								d.callback(true);
+							});
+							return d;
+						},
+						function xhrGetFormWithContent(t){
+							// ensure that stuff passed via content over-rides
+							// what's specified in the form
+							var d = new tests.Deferred();
+							var td = dojo.xhrGet({
+								url: "xhr.html", // self
+								form: "f3",
+								content: { spaces: "blah" }
+							});
+							td.addCallback(function(xhr){
+								console.debug(td.args.url);
+								t.is("xhr.html?spaces=blah", td.args.url);
+								d.callback(true);
+							});
+							return d;
+						},
+						function xhrPost(t){
+							var d = new tests.Deferred();
+							var td = dojo.xhrPost({
+								url: "xhr.html" // self
+							});
+							t.t(td instanceof dojo.Deferred);
+							td.addCallback(d, "callback");
+							return d;
+						},
+						// FIXME: need to add tests for rawPost
+						// FIXME: need to add tests for wrapForm
+					]
+				);
+				tests.run();
+			});
+		</script>
+	</head>
+	<body>
+		<form id="f1" style="border: 1px solid black;">
+			<input type="text" name="blah" value="blah">
+			<input type="text" name="no_value" value="blah" disabled>
+			<input type="button" name="no_value2" value="blah">
+		</form>
+		<form id="f2" style="border: 1px solid black;">
+			<input type="text" name="blah" value="blah">
+			<input type="text" name="no_value" value="blah" disabled>
+			<input type="button" name="no_value2" value="blah">
+			<select type="select" multiple name="multi" size="5">
+				<option value="blah">blah</option>
+				<option value="thud" selected>thud</option>
+				<option value="thonk" selected>thonk</option>
+			</select>
+		</form>
+		<form id="f3" style="border: 1px solid black;">
+			<input type="hidden" name="spaces" value="string with spaces">
+		</form>
+	</body>
+</html>
+

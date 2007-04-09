@@ -338,6 +338,7 @@ dojo._contentHandlers = {
 		if(!_inFlightIntvl){
 			_inFlightIntvl = _setIntvl(_watchInFlight, 50);
 		}
+		_watchInFlight(); // handle sync requests
 	}
 
 	var _defaultContentType = "application/x-www-form-urlencoded";

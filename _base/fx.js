@@ -1,5 +1,6 @@
 dojo.provide("dojo._base.fx");
 dojo.require("dojo._base.array");
+dojo.require("dojo._base.connect");
 dojo.require("dojo._base.declare");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.html");
@@ -66,30 +67,6 @@ dojo.declare("dojo._IAnimation", null, null, {
 	pause: null,
 	stop: null,
 
-//FIXME: Bryan says we can ditch this and just use the regular event code.  This was just a shortcut.
-	connect: function(/*Event*/ evt, /*Object*/ scope, /*Function*/ newFunc){
-		// summary: Convenience function.  Quickly connect to an event
-		//			of this object and save the old functions connected to it.
-		// evt: The name of the event to connect to.
-		// scope: the scope in which to run newFunc.
-		// newFunc: the function to run when evt is fired.
-		if(!newFunc){
-			/* scope: Function
-			   newFunc: null
-			   pId: f */
-			newFunc = scope;
-			scope = this;
-		}
-		newFunc = dojo.hitch(scope, newFunc);
-		var oldFunc = this[evt]||function(){};
-		this[evt] = function(){
-			var ret = oldFunc.apply(this, arguments);
-			newFunc.apply(this, arguments);
-			return ret;
-		}
-		return this; // dojo._IAnimation
-	},
-
 	fire: function(/*Event*/ evt, /*Array?*/ args){
 		// summary: Convenience function.  Fire event "evt" and pass it
 		//			the arguments specified in "args".
@@ -155,7 +132,7 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 					"onEnd", "onPlay", "onStop", "onAnimate"
 				], function(item){
 					if(handlers[item]){
-						this.connect(item, handlers[item]);
+						dojo.connect(this, item, this, handlers[item]);
 					}
 				}, this);
 		}
@@ -313,8 +290,6 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 );
 
 (function(){
-
-
 	var _makeFadeable = function(nodes){
 		var makeFade = function(node){
 			if(dojo.isIE){
@@ -355,7 +330,7 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 		nodes = _byId(nodes);
 		var props = { property: "opacity" };
 		props.start = (typeof values.start == "undefined") ?
-			function(){ return dojo.style(nodes[0], "opacity"); } : values.start;
+			function(){ return Number(dojo.style(nodes[0], "opacity")); } : values.start;
 
 		if(typeof values.end == "undefined"){
 			throw new Error("dojo._fade needs an end value");
@@ -363,11 +338,11 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 		props.end = values.end;
 
 		var anim = dojo.animateProperty(nodes, [props], duration, easing);
-		anim.connect("beforeBegin", function(){
+		dojo.connect(anim, "beforeBegin", anim, function(){
 			_makeFadeable(nodes);
 		});
 		if(callback){
-			anim.connect("onEnd", function(){ callback(nodes, anim); });
+			dojo.connect(anim, "onEnd", anim, function(){ callback(nodes, anim); });
 		}
 
 		return anim; // dojo._Animation
@@ -469,11 +444,11 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 				}
 				dojo.forEach(pm, function(prop){
 					if(typeof prop.start == "undefined"){
-						//FIXME: else clause is unecessary?  parseInt vs. parseFloat?
+						prop.start = dojo.style(args.nodes[0], prop.property);
 						if(prop.property == "opacity"){
-							prop.start = dojo.style(args.nodes[0], prop.property);
+							prop.start = Number(prop.start);
 						}else{
-							prop.start = parseInt(dojo.getComputedStyle(args.nodes[0])[prop.property]);
+							prop.start = parseInt(prop.start);
 						}
 					}
 				});
@@ -550,22 +525,22 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 		}
 		
 		var anim = new dojo._Animation({
-				beforeBegin: function(){ 
-					setEmUp(targs);
-					anim.curve = new PropLine(targs.propertyMap);
-				},
-				onAnimate: function(propValues){
-					dojo.forEach(targs.nodes, function(node){
-						setStyle(node, propValues);
-					});
-				}
+			beforeBegin: function(){ 
+				setEmUp(targs);
+				anim.curve = new PropLine(targs.propertyMap);
 			},
-			targs.duration, null, targs.easing);
+			onAnimate: function(propValues){
+				dojo.forEach(targs.nodes, function(node){
+					setStyle(node, propValues);
+				});
+			}
+		},
+		targs.duration, null, targs.easing);
 
 		if(handlers){
 			for(var x in handlers){
 				if(dojo.isFunction(handlers[x])){
-					anim.connect(x, anim, handlers[x]);
+					dojo.connect(anim, x, anim, handlers[x]);
 				}
 			}
 		}

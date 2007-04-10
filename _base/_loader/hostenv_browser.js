@@ -103,6 +103,7 @@ if(typeof window != 'undefined'){
 			var stat = http["status"];
 			return Boolean(	((stat>=200)&&(stat<300))|| 	// allow any 2XX response code
 				(stat==304)|| 						// get it out of the cache
+				(stat==1223)|| 						// Internet Explorer mangled the status code
 				(location.protocol=="file:" && (stat==0 || stat==undefined))||
 				(location.protocol=="chrome:" && (stat==0 || stat==undefined))
 			);

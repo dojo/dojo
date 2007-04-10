@@ -1,10 +1,6 @@
 dojo.provide("tests.data.JsonItemStore");
 dojo.require("dojo.data.JsonItemStore");
 
-//FIXME:  These tests should be converted to a mix of URL file loading 
-//and in-memory JS object loading to get full API coverage.  Currently since
-//the bind() call has not been ported down for M1, the url loading in the store is
-//disabled and won't work.
 tests.register("tests.data.JsonItemStore", 
 	[
 		function testReadAPI_fetch_all(t){
@@ -13,20 +9,23 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of a basic fetch on JsonItemStore.
 			
-			var request = null;
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
-            
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
+			
 			var d = new tests.Deferred();
             function completedAll(items){
 				t.assertTrue((items.length === 7));
@@ -47,19 +46,23 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of a basic fetch on JsonItemStore of a single item.
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
-
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
+			
 			var d = new tests.Deferred();
 			function onComplete(items, request){
 				t.assertTrue((items.length === 1));
@@ -81,19 +84,24 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of a basic fetch on JsonItemStore.
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var d = new tests.Deferred();
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
 			count = 0;
 
 			function onBegin(size, requestObj){
@@ -127,20 +135,24 @@ tests.register("tests.data.JsonItemStore",
 			 //	description:
 			 //		Test of multiple fetches on a single result.  Paging, if you will.
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
+			
 			var d = new tests.Deferred();
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
-
 			function dumpFirstFetch(items, request){
 				t.assertTrue(items.length === 5);
 				request.start = 3;
@@ -208,44 +220,52 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getValue function of the store.
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
-
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
 			var name = jsonItemStore.getValue(item,"name");
 			t.assertTrue(name === "El Salvador");
 		},
 		function testReadAPI_getValue_byattributeItem(t){
-			 //	summary: 
-			 // 		Simple test of the getValue function passing in an item as the attribute identifier.
-			 //	description:
-			 // 		Simple test of the getValue function passing in an item as the attribute identifier.
+			//	summary: 
+			// 		Simple test of the getValue function passing in an item as the attribute identifier.
+			//	description:
+			// 		Simple test of the getValue function passing in an item as the attribute identifier.
 
-			var jsonData = {};
-			jsonData.identifier="name";
-			jsonData.items= [];
-			jsonData.items.push({name:"abbr"});
-			jsonData.items.push({name:"name"});
-			jsonData.items.push({name:"capital"});
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries_withattributes.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="name";
+				jsonData.items= [];
+				jsonData.items.push({name:"abbr"});
+				jsonData.items.push({name:"name"});
+				jsonData.items.push({name:"capital"});
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
 			t.assertTrue(itemAttribute !== null);
@@ -261,18 +281,22 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getValues function of the store.
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -282,25 +306,31 @@ tests.register("tests.data.JsonItemStore",
 			t.assertTrue(names[0] === "El Salvador");
 		},
 		function testReadAPI_getValues_byattributeItem(t){
-			 //	summary: 
-			 // 		Simple test of the getValue function passing in an item as the attribute identifier.
-			 //	description:
-			 // 		Simple test of the getValue function passing in an item as the attribute identifier.
+			//	summary: 
+			// 		Simple test of the getValue function passing in an item as the attribute identifier.
+			//	description:
+			// 		Simple test of the getValue function passing in an item as the attribute identifier.
 
-			var jsonData = {};
-			jsonData.identifier="name";
-			jsonData.items= [];
-			jsonData.items.push({name:"abbr"});
-			jsonData.items.push({name:"name"});
-			jsonData.items.push({name:"capital"});
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries_withattributes.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="name";
+				jsonData.items= [];
+				jsonData.items.push({name:"abbr"});
+				jsonData.items.push({name:"name"});
+				jsonData.items.push({name:"capital"});
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
+
 
 			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
 			t.assertTrue(itemAttribute !== null);
@@ -317,21 +347,28 @@ tests.register("tests.data.JsonItemStore",
 			//		Simple test of the getItemByIdentity function of the store.
 			//	description:
 			//		Simple test of the getItemByIdentity function of the store.
-
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var item = jsonItemStore.getItemByIdentity("sv");
+			if (item === null){
+				console.debug("Item is null.");
+			}
 			t.assertTrue(item !== null);
 			if(item !== null){
 				var name = jsonItemStore.getValue(item,"name");
@@ -346,18 +383,22 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the isItem function of the store
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -365,23 +406,27 @@ tests.register("tests.data.JsonItemStore",
 			t.assertTrue(!jsonItemStore.isItem({}));
 		},
 		function testReadAPI_hasAttribute(t){
-			 //	summary: 
-			 //		Simple test of the hasAttribute function of the store
-			 //	description:
-			 //		Simple test of the hasAttribute function of the store
+			//	summary: 
+			//		Simple test of the hasAttribute function of the store
+			//	description:
+			//		Simple test of the hasAttribute function of the store
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -398,25 +443,30 @@ tests.register("tests.data.JsonItemStore",
 			t.assertTrue(passed);
 		},
 		function testReadAPI_hasAttribute_byattributeItem(t){
-			 //	summary: 
-			 // 		Simple test of the hasAttribute passing in an item as the attribute identifier.
-			 //	description:
-			 // 		Simple test of the hasAttribute passing in an item as the attribute identifier.
+			//	summary: 
+			//		Simple test of the hasAttribute passing in an item as the attribute identifier.
+			//	description:
+			//		Simple test of the hasAttribute passing in an item as the attribute identifier.
 
-			var jsonData = {};
-			jsonData.identifier="name";
-			jsonData.items= [];
-			jsonData.items.push({name:"abbr"});
-			jsonData.items.push({name:"name"});
-			jsonData.items.push({name:"capital"});
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries_withattributes.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="name";
+				jsonData.items= [];
+				jsonData.items.push({name:"abbr"});
+				jsonData.items.push({name:"name"});
+				jsonData.items.push({name:"capital"});
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			//First fine the item in the store that represents the attribute with name 'abbr'.
 			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
@@ -436,18 +486,22 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the containsValue function of the store
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -470,20 +524,25 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the containsValue function of the store using attribute lookup.
 
-			var jsonData = {};
-			jsonData.identifier="name";
-			jsonData.items= [];
-			jsonData.items.push({name:"abbr"});
-			jsonData.items.push({name:"name"});
-			jsonData.items.push({name:"capital"});
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries_withattributes.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="name";
+				jsonData.items= [];
+				jsonData.items.push({name:"abbr"});
+				jsonData.items.push({name:"name"});
+				jsonData.items.push({name:"capital"});
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var attributeItem = jsonItemStore.getItemByIdentity("abbr");
 			var item          = jsonItemStore.getItemByIdentity("El Salvador");
@@ -499,17 +558,22 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getAttributes function of the store
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-            var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -522,22 +586,27 @@ tests.register("tests.data.JsonItemStore",
 			}
 		},
 		function testReadAPI_getFeatures(t){
-			 //	summary: 
-			 //		Simple test of the getFeatures function of the store
-			 //	description:
-			 //		Simple test of the getFeatures function of the store
+			//	summary: 
+			//		Simple test of the getFeatures function of the store
+			//	description:
+			//		Simple test of the getFeatures function of the store
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var features = jsonItemStore.getFeatures(); 
 			var count = 0;
@@ -553,17 +622,22 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test pattern matching of everything starting with lowercase e
 
-			var jsonData = {};
-			jsonData.identifier="abbr";
-			jsonData.items= [];
-			jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-			jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-			jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-			jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-			jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-			jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-			jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-			var jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			var jsonItemStore = null;
+			if(dojo.isBrowser){
+				jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries.json"});            
+			}else{
+				var jsonData = {};
+				jsonData.identifier="abbr";
+				jsonData.items= [];
+				jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+				jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+				jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+				jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+				jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+				jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
+				jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+				jsonItemStore = new dojo.data.JsonItemStore({data: jsonData});
+			}
 
 			var d = new tests.Deferred();
 			function completed(items, request) {
@@ -901,7 +975,6 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting alphabetic ordering in descending mode.
 		
-			//FIXME:  Need to convert to async format when URL support comes into M1.
 			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"}, 
@@ -1019,7 +1092,6 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting date in descending order.
 		
-			//FIXME:  Need to convert to async format when URL support comes into M1.
 			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value: new Date(0)},
 												  {uniqueId: 1, value: new Date(100)}, 
@@ -1073,7 +1145,6 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting on multiple attributes.
 			
-			//FIXME:  Need to convert to async format when URL support comes into M1.
 			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 1, value:"fo|o*b.ar"},
 												  {uniqueId: 2, value:"ba|r*foo"}, 
@@ -1140,7 +1211,6 @@ tests.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting on multiple attributes with a custom comparator.
 
-			//FIXME:  Need to convert to async format when URL support comes into M1.
 			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 1, status:"CLOSED"},
 												  {uniqueId: 2,  status:"OPEN"}, 
@@ -1201,8 +1271,68 @@ tests.register("tests.data.JsonItemStore",
 			}
 			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
-		}
+		},
+		function testReadAPI_errorCondition_idCollision_inMemory(t){
+			//	summary: 
+			//		Simple test of the errors thrown when there is an id collision in the data.
+			//		Added because of tracker: #2546
+			//	description:
+			//		Simple test of the errors thrown when there is an id collision in the data.
+			//		Added because of tracker: #2546
 
+			var jsonItemStore = new dojo.data.JsonItemStore({	data: { identifier: "uniqueId", 
+																items: [{uniqueId: 12345, value:"foo"},
+																		{uniqueId: 123456, value:"bar"}, 
+																		{uniqueId: 12345, value:"boom"},
+																		{uniqueId: 123457, value:"bit"}
+																	]
+																}
+															});
+			var d = new tests.Deferred();
+			function onComplete(items, request){
+				t.assertTrue(false);
+				d.callback(false);
+			}
+		
+			function reportError(errData, request){
+				t.assertTrue(false);
+				d.callback(false);
+			}
+			try{
+				jsonItemStore.fetch({onComplete: onComplete, error: reportError});
+			}catch(e){
+				//We should fail here and callback.
+				d.callback(true);
+			}
+		},
+		function testReadAPI_errorCondition_idCollision_xhr(t){
+			//	summary: 
+			//		Simple test of the errors thrown when there is an id collision in the data.
+			//		Added because of tracker: #2546
+			//	description:
+			//		Simple test of the errors thrown when there is an id collision in the data.
+			//		Added because of tracker: #2546
+
+			if(dojo.isBrowser){
+				var jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries_idcollision.json"});
+				var d = new tests.Deferred();
+				function onComplete(items, request){
+					t.assertTrue(false);
+					d.callback(false);
+				}
+
+				function reportError(errData, request){
+					t.assertTrue(false);
+					d.callback(false);
+				}
+				try{
+					jsonItemStore.fetch({onComplete: onComplete, error: reportError});
+				}catch(e){
+					//We should fail here and callback.
+					d.callback(true);
+				}
+			}
+		}
 	]
 );
 

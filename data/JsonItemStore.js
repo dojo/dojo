@@ -2,8 +2,6 @@ dojo.provide("dojo.data.JsonItemStore");
 
 dojo.require("dojo.data.util.filter");
 dojo.require("dojo.data.util.simpleFetch");
-//FIXME: Replace with the port to the new xhr when available.
-//dojo.require("dojo.io.common");
 
 dojo.declare("dojo.data.JsonItemStore",
 	null,
@@ -186,29 +184,23 @@ dojo.declare("dojo.data.JsonItemStore",
 			}
 		};
 
-		var bindHandler = function(type, data, evt){
-			if(type == "load") {
-				self._loadFinished = true;
-				self._arrayOfAllItems = self._getItemsFromLoadedData(data);
-				filter(keywordArgs, self._arrayOfAllItems);
-			}else if(type == "error" || type == 'timeout'){
-				var errorObject = data;
-				errorCallback(errorObject);
-			}
-		};
-
 		if(this._loadFinished){
 			filter(keywordArgs, this._arrayOfAllItems);
 		}else{
 			if(this._jsonFileUrl){
-				var bindArgs ={
-					url: this._jsonFileUrl, // example: "muppets.json",
-					handle: bindHandler,
-					mimetype: "text/json"
+				var getArgs = {
+						url: self._jsonFileUrl, 
+						handleAs: "json"
 					};
-				//FIXME:  replace with new xhr when available.  May require changes to the above as well.
-				//var bindRequest = dojo.io.bind(bindArgs);
-				//keywordArgs.abort = bindRequest.abort;
+				var getHandler = dojo.xhrGet(getArgs);
+				getHandler.addCallback(function(data){
+					self._loadFinished = true;
+					self._arrayOfAllItems = self._getItemsFromLoadedData(data);
+					filter(keywordArgs, self._arrayOfAllItems);
+				});
+				getHandler.addErrback(function(error){
+					throw error;
+				});
 			}else if(this._jsonData){
 				this._loadFinished = true;
 				this._arrayOfAllItems = this._getItemsFromLoadedData(this._jsonData);
@@ -377,27 +369,22 @@ dojo.declare("dojo.data.JsonItemStore",
 	_forceLoad: function(){
 		//	summary: 
 		//		Internal function to force a load of the store if it hasn't occurred yet.  This is required
-		//		for specific functions to work properly.See dojo.data.api.Identity.findByIdentity()
-
+		//		for specific functions to work properly.  See dojo.data.api.Identity.getItemByIdentity()
 		var self = this;
-		function bindHandler(type, data, evt){
-			if(type == "load"){
+		if(this._jsonFileUrl){
+			var getArgs = {
+					url: self._jsonFileUrl, 
+					handleAs: "json",
+					sync: true
+				};
+			var getHandler = dojo.xhrGet(getArgs);
+			getHandler.addCallback(function(data){
 				self._arrayOfAllItems = self._getItemsFromLoadedData(data);
 				self._loadFinished = true;
-			}else if(type == "error" || type == 'timeout'){
-				var errorObject = data;
-				throw errorObject;
-			}
-		}
-		if (this._jsonFileUrl){
-			var bindArgs = {
-				url: self._jsonFileUrl, 
-				handle: bindHandler,
-				mimetype: "text/json",
-				sync: true
-				};
-			//FIXME:  replace with new xhr when available.  May require changes to the above as well.
-			//var bindRequest = dojo.io.bind(bindArgs);
+			});
+			getHandler.addErrback(function(error){
+				throw error;
+			});
 		}else if(this._jsonData){
 			self._arrayOfAllItems = self._getItemsFromLoadedData(self._jsonData);
 			self._jsonData = null;

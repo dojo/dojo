@@ -128,6 +128,7 @@ try{
 	dojo.requireIf(dojo.isBrowser, "tests._base.html");
 	dojo.requireIf(dojo.isBrowser, "tests._base.fx");
 	dojo.requireIf(dojo.isBrowser, "tests._base.query");
+	dojo.requireIf(dojo.isBrowser, "tests._base.xhr");
 }catch(e){
 	tests.debug(e);
 }

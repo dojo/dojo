@@ -1,4 +1,5 @@
 dojo.provide("dojo.fx");
+dojo.require("dojo._base.connect");
 dojo.require("dojo._base.declare");
 dojo.require("dojo._base.fx");
 
@@ -18,14 +19,14 @@ function(/*dojo.lfx.IAnimation...*/ animations){
 	
 	dojo.forEach(anims, function(anim){
 		this._anims.push(anim);
-		anim.connect("onEnd", dojo.hitch(this, "_onAnimsEnded"));
+		dojo.connect(anim, "onEnd", dojo.hitch(this, "_onAnimsEnded"));
 	}, this);
 }, {
 	// private members
 	_animsEnded: 0,
 	
 	// public methods
-	play: function(/*int?*/ delay, /*bool?*/ gotoStart){
+	play: function(/*int?*/ delay, /*boolean?*/ gotoStart){
 		// summary: Start the animations.
 		// delay: How many milliseconds to delay before starting.
 		// gotoStart: If true, starts the animations from the beginning; otherwise,
@@ -54,7 +55,7 @@ function(/*dojo.lfx.IAnimation...*/ animations){
 		return this; // dojo.fx.Combine
 	},
 	
-	stop: function(/*bool?*/ gotoEnd){
+	stop: function(/*boolean?*/ gotoEnd){
 		// summary: Stops the running animations.
 		// gotoEnd: If true, the animations will end.
 		this.fire("onStop");
@@ -105,9 +106,9 @@ function(/*dojo._IAnimation...*/ animations) {
 	dojo.forEach(anims, function(anim, i, anims_arr){
 		this._anims.push(anim);
 		if(i < anims_arr.length - 1){
-			anim.connect("onEnd", dojo.hitch(this, "_playNext") );
-		}else{
-			anim.connect("onEnd", dojo.hitch(this, function(){ this.fire("onEnd"); }) );
+			dojo.connect(anim, "onEnd", dojo.hitch(this,
+				(i < anims_arr.length - 1) ?
+					"_playNext": function(){ this.fire("onEnd"); }) );
 		}
 	}, this);
 },
@@ -214,7 +215,7 @@ dojo.fx.chain = function(/*dojo._IAnimation...*/ animations){
 		anims = arguments[0];
 	}
 	if(anims.length == 1){ return anims[0]; }
-	return new dojo.fx.Chain(anims); // dojo.fx.Combine
+	return new dojo.fx.Chain(anims); // dojo.fx.Chain
 }
 
 dojo.fx.slideIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
@@ -223,7 +224,7 @@ dojo.fx.slideIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/
 	// duration: Duration of the animation in milliseconds.
 	// easing: An easing function.
 	// callback: Function to run at the end of the animation.
-	nodes = dojo._base.fx._byId(nodes);
+	nodes = dojo.byId(nodes); //FIXME: use fx _byId optimization?
 	var anims = [];
 
 	dojo.forEach(nodes, function(node){
@@ -251,16 +252,15 @@ dojo.fx.slideIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/
 			duration, 
 			easing);
 	
-		anim.connect("beforeBegin", function(){
+		dojo.connect(anim, "beforeBegin", function(){
 			oprop.overflow = s.overflow;
 			oprop.height = s.height;
 			s.overflow = "hidden";
 			s.height = "1px"; // 0 causes IE to display the whole panel
-//			dojo.html.show(node);
 			dojo.style(node, 'display', '');
 		});
 		
-		anim.connect("onEnd", function(){ 
+		dojo.connect(anim, "onEnd", function(){ 
 			s.overflow = oprop.overflow;
 			s.height = oprop.height;
 			if(callback){ callback(node, anim); }
@@ -277,7 +277,7 @@ dojo.fx.slideOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*
 	// duration: Duration of the animation in milliseconds.
 	// easing: An easing function.
 	// callback: Function to run at the end of the animation.
-	nodes = dojo._base.fx._byId(nodes);
+	nodes = dojo.byId(nodes); //FIXME: use fx _byId optimization?
 	var anims = [];
 
 	dojo.forEach(nodes, function(node){
@@ -296,12 +296,10 @@ dojo.fx.slideOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*
 					oprop.overflow = s.overflow;
 					oprop.height = s.height;
 					s.overflow = "hidden";
-//					dojo.html.show(node);
 					dojo.style(node, 'display', '');
 				},
 
 				"onEnd": function(){
-//					dojo.html.hide(node);
 					dojo.style(node, 'display', 'none');
 					var s=node.style;
 					s.overflow = oprop.overflow;

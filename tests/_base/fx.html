@@ -1,0 +1,99 @@
+<html>
+	<head>
+		<title>testing Core FX</title>
+		<script type="text/javascript" 
+			src="../../dojo.js" 
+			djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("tests.runner");
+			dojo.addOnLoad(function(){
+				tests.register("t", 
+					[
+						function fadeOut(t){
+							var duration = 1000;
+							var opacity = dojo.style('foo', 'opacity');
+							t.is(1, opacity);
+							var anim = dojo.fadeOut('foo', duration);
+							var d = new tests.Deferred();
+							dojo.connect(anim, "onEnd", function(){
+								var opacity = dojo.style('foo', 'opacity');
+								var elapsed = Date() - anim._start;
+								t.is(0, opacity);
+								t.assertTrue(elapsed  >= duration);
+								d.callback(true);
+							});
+							anim._start = Date();
+							anim.play();
+							return d;
+						}
+					]
+				);
+				tests.run();
+			});
+		</script>
+		<style type="text/css">
+			body {
+				background-color: #DEDEDE;
+			}
+
+			.box {
+				font-family: Trebuchet MS, Trebuchet, Bitstream Vera Sans, Verdana, sans-serif;
+				font-size: 12px;
+				line-height: 17px;
+				color: #292929;
+				/* color: #424242; */
+				/* text-align: left; */
+				width: 300px;
+				border: 1px solid #BABABA;
+				background-color: white;
+				padding-left: 10px;
+				padding-right: 10px;
+				margin-left: 10px;
+				-o-border-radius: 10px;
+				-moz-border-radius: 12px;
+				-webkit-border-radius: 10px;
+				/* -opera-border-radius: 10px; */
+				border-radius: 10px;
+				-moz-box-sizing: border-box;
+				-opera-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				-khtml-box-sizing: border-box;
+				box-sizing: border-box;
+				/* position: absolute; */
+			}
+		</style>
+	</head>
+	<body>
+		<h1>testing Core FX</h1>
+		<form name="testForm">
+		<input type="button" onClick="dojo.fadeOut('foo', 1000).play()" value="fade out"></input>
+		<input type="button" onClick="dojo.fadeIn('foo', 1000).play()" value="fade in"></input>
+		</form>
+		<div id="foo" class="box" style="float: left;">
+			<p>
+			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
+			semper sagittis velit. Cras in mi. Duis porta mauris ut ligula.
+			Proin porta rutrum lacus. Etiam consequat scelerisque quam. Nulla
+			facilisi.  Maecenas luctus venenatis nulla. In sit amet dui non mi
+			semper iaculis.  Sed molestie tortor at ipsum. Morbi dictum rutrum
+			magna. Sed vitae risus.
+			</p>
+			<p>
+			Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
+			imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer
+			lorem nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean
+			id mi in massa bibendum suscipit. Integer eros. Nullam suscipit
+			mauris. In pellentesque. Mauris ipsum est, pharetra semper,
+			pharetra in, viverra quis, tellus. Etiam purus. Quisque egestas,
+			tortor ac cursus lacinia, felis leo adipiscing nisi, et rhoncus
+			elit dolor eget eros. Fusce ut quam. Suspendisse eleifend leo vitae
+			ligula. Nulla facilisi. Nulla rutrum, erat vitae lacinia dictum,
+			pede purus imperdiet lacus, ut semper velit ante id metus. Praesent
+			massa dolor, porttitor sed, pulvinar in, consequat ut, leo. Nullam
+			nec est. Aenean id risus blandit tortor pharetra congue.
+			Suspendisse pulvinar.
+			</p>
+		</div>
+	</body>
+</html>
+

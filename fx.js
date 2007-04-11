@@ -19,7 +19,7 @@ function(/*dojo.lfx.IAnimation...*/ animations){
 	
 	dojo.forEach(anims, function(anim){
 		this._anims.push(anim);
-		dojo.connect(anim, "onEnd", dojo.hitch(this, "_onAnimsEnded"));
+		dojo.connect(anim, "onEnd", anim, dojo.hitch(this, "_onAnimsEnded"));
 	}, this);
 }, {
 	// private members
@@ -106,7 +106,7 @@ function(/*dojo._IAnimation...*/ animations) {
 	dojo.forEach(anims, function(anim, i, anims_arr){
 		this._anims.push(anim);
 		if(i < anims_arr.length - 1){
-			dojo.connect(anim, "onEnd", dojo.hitch(this,
+			dojo.connect(anim, "onEnd", anim, dojo.hitch(this,
 				(i < anims_arr.length - 1) ?
 					"_playNext": function(){ this.fire("onEnd"); }) );
 		}
@@ -182,9 +182,9 @@ function(/*dojo._IAnimation...*/ animations) {
 	
 	// private methods
 	_playNext: function(){
-		if( this._currAnim == -1 || this._anims.length == 0 ) { return this; }
+		if(this._currAnim == -1 || this._anims.length == 0){ return this; }
 		this._currAnim++;
-		if( this._anims[this._currAnim] ){
+		if(this._anims[this._currAnim]){
 			this._anims[this._currAnim].play(null, true);
 		}
 		return this; // dojo.fx.Chain
@@ -218,7 +218,7 @@ dojo.fx.chain = function(/*dojo._IAnimation...*/ animations){
 }
 
 //FIXME: duplicate of local routine in _base.fx
-	dojo.fx._byId = function(nodes){
+dojo.fx._byId = function(nodes){
 		if(!nodes){ return []; }
 		if(dojo.isArrayLike(nodes)){
 			if(!nodes._alreadyChecked){
@@ -274,7 +274,7 @@ dojo.fx.slideIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/
 			duration, 
 			easing);
 	
-		dojo.connect(anim, "beforeBegin", function(){
+		dojo.connect(anim, "beforeBegin", anim, function(){
 			oprop.overflow = s.overflow;
 			oprop.height = s.height;
 			s.overflow = "hidden";
@@ -282,7 +282,7 @@ dojo.fx.slideIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/
 			dojo.style(node, 'display', '');
 		});
 		
-		dojo.connect(anim, "onEnd", function(){ 
+		dojo.connect(anim, "onEnd", anim, function(){ 
 			s.overflow = oprop.overflow;
 			s.height = oprop.height;
 			if(callback){ callback(node, anim); }
@@ -334,5 +334,63 @@ dojo.fx.slideOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*
 		anims.push(anim);
 	});
 
+	return dojo.fx.combine(anims); // dojo.fx.Combine
+}
+
+dojo.fx.slideTo = function(	/*DOMNode*/ nodes,
+							/*Object*/ coords,
+							/*int?*/ duration,
+							/*Function?*/ easing,
+							/*Function?*/ callback){
+	// summary: Returns an animation that will slide "nodes" from its current position to
+	//			the position defined in "coords".
+	// nodes: An array of DOMNodes or one DOMNode.
+	// coords: { top: Decimal?, left: Decimal? }
+	// duration: Duration of the animation in milliseconds.
+	// easing: An easing function.
+	// callback: Function to run at the end of the animation.
+	nodes = dojo.fx._byId(nodes);
+	var anims = [];
+	var compute = dojo.getComputedStyle;
+	
+	dojo.forEach(nodes, function(node){
+		var top = null;
+		var left = null;
+		
+		var init = (function(){
+			var innerNode = node;
+			return function(){
+				var pos = compute(innerNode).position;
+				top = (pos == 'absolute' ? node.offsetTop : parseInt(compute(node).top) || 0);
+				left = (pos == 'absolute' ? node.offsetLeft : parseInt(compute(node).left) || 0);
+
+				if (pos != 'absolute' && pos != 'relative') {
+					var ret = dojo.html.abs(innerNode, true); //FIXME: finish port
+					top = ret.y;
+					left = ret.x;
+					innerNode.style.position="absolute";
+					innerNode.style.top=top+"px";
+					innerNode.style.left=left+"px";
+				}
+			}
+		})();
+		init();
+
+		var anim = dojo.animateProperty(node, [
+				{ property: "top", start: top, end: coords.top||0 },
+				{ property: "left", start: left, end: coords.left||0 }
+			],
+			duration,
+			easing,
+			{ "beforeBegin": init }
+		);
+
+		if(callback){
+			dojo.connect(anim, "onEnd", anim, function(){ callback(nodes, anim); });
+		}
+
+		anims.push(anim);
+	});
+	
 	return dojo.fx.combine(anims); // dojo.fx.Combine
 }

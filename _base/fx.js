@@ -396,11 +396,11 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 		}
 	}
 
-	dojo.animateProperty = function(			/*DOMNode[]*/ nodes, 
-												/*Object[]*/ propertyMap, 
-												/*int*/ duration,
-												/*function*/ easing,
-												/*Object*/ handlers){
+	dojo.animateProperty = function(/*DOMNode[]*/ nodes, 
+									/*Object[]*/ propertyMap, 
+									/*int*/ duration,
+									/*function*/ easing,
+									/*Object*/ handlers){
 		// summary: Returns an animation that will transition the properties of "nodes"
 		//			depending how they are defined in "propertyMap".
 		// nodes: An array of DOMNodes or one DOMNode.
@@ -424,17 +424,14 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 				// passed
 				
 				var pm = args.propertyMap;
-				if(!dojo.isArray(args.propertyMap)){
+				//TODO: get rid of this check altogether?
+				if(!dojo.isArray(pm)){
 					throw new Error("dojo.animateProperty needs a list for propertyMap");
 				}
 				dojo.forEach(pm, function(prop){
 					if(typeof prop.start == "undefined"){
 						prop.start = dojo.style(args.nodes[0], prop.property);
-						if(prop.property == "opacity"){
-							prop.start = Number(prop.start);
-						}else{
-							prop.start = parseInt(prop.start);
-						}
+						prop.start = (prop.property == "opacity") ? Number(prop.start):parseInt(prop.start);
 					}
 				});
 			}

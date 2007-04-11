@@ -20,6 +20,7 @@ dojo.require("dojo._base.array");
 		if((arguments.length == 1)&&(typeof arguments[0] == "number")){
 			this.length = parseInt(arguments[0]);
 		}else if((arguments.length == 1)&&(arguments[0].constructor == dojo.NodeList)){
+			// FIXME: implement!
 		}else{
 			for(var x=0; x<arguments.length; x++){
 				this.push(arguments[x]);
@@ -40,6 +41,9 @@ dojo.require("dojo._base.array");
 				// summary:
 				// 		returns the box objects all elements in a node list as
 				// 		an Array
+				
+				// FIXME: should we just tack a box property onto each element
+				// instead? Also, is this really that useful anyway?
 				var ret = [];
 				this.forEach(function(item){
 					ret.push(dojo.coords(item));
@@ -50,13 +54,26 @@ dojo.require("dojo._base.array");
 			style: function(prop){
 				// (key, value)
 				// (props, ...)
-				// FIXME: implement!
+				var aa = [this[0]];
+				for(var x=0; x<arguments.length; x++){
+					aa.push(arguments[x]);
+				}
+				dojo.style.apply(dojo, aa);
+				return new dojo.NodeList(this[0]);
 			},
 
 			styles: function(prop){
 				// (key, value)
 				// (props, ...)
-				// FIXME: implement!
+				var aa = [ null ];
+				for(var x=0; x<arguments.length; x++){
+					aa.push(arguments[x]);
+				}
+				this.forEach(function(i){
+					aa[0] = i;
+					dojo.style.apply(dojo, aa);
+				});
+				return this;
 			},
 
 			place: function(queryOrNode, /*String*/ position){

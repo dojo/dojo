@@ -137,7 +137,6 @@ function(/*dojo._IAnimation...*/ animations) {
 		
 		if(currentAnimation){
 			if(this._currAnim == 0){
-				this.fire("handler", ["begin", this._currAnim]);
 				this.fire("onBegin", [this._currAnim]);
 			}
 			this.fire("onPlay", [this._currAnim]);
@@ -265,12 +264,13 @@ dojo.fx.slideIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/
 		s.visibility="";
 		s.display="none";
 
-		var anim = dojo.animateProperty(node,
-			{	"height": {
+		var anim = dojo.animateProperty(node, [
+				{
+					property: 'height',
 					start: 1, // 0 causes IE to display the whole panel
 					end: function(){ return nodeHeight; } 
 				}
-			}, 
+			], 
 			duration, 
 			easing);
 	
@@ -304,12 +304,13 @@ dojo.fx.slideOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*
 
 	dojo.forEach(nodes, function(node){
 		var oprop = {  };	// old properties of node (before we mucked w/them)
-		var anim = dojo.animateProperty(node,
-			{"height": {
+		var anim = dojo.animateProperty(node, [
+				{
+					property: 'height',
 					start: function(){ return dojo.contentBox(node).h; },
 					end: 1 // 0 causes IE to display the whole panel
 				} 
-			},
+			],
 			duration,
 			easing,
 			{

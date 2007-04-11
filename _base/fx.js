@@ -53,7 +53,6 @@ dojo.declare("dojo._IAnimation", null, null, {
 	rate: 10, // 100 fps
 	
 	// events
-	handler: null,
 	beforeBegin: null,
 	onBegin: null,
 	onAnimate: null,
@@ -128,7 +127,7 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 		if(rate){ this.rate = rate; }
 		if(handlers){
 			dojo.forEach([
-					"handler", "beforeBegin", "onBegin", 
+					"beforeBegin", "onBegin", 
 					"onEnd", "onPlay", "onStop", "onAnimate"
 				], function(item){
 					if(handlers[item]){
@@ -161,7 +160,6 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 				return this; // dojo._Animation
 			}
 
-			this.fire("handler", ["beforeBegin"]);
 			this.fire("beforeBegin");
 
 			if(delay > 0){
@@ -184,11 +182,9 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 				if(!this._startRepeatCount){
 					this._startRepeatCount = this.repeatCount;
 				}
-				this.fire("handler", ["begin", value]);
 				this.fire("onBegin", [value]);
 			}
 
-			this.fire("handler", ["play", value]);
 			this.fire("onPlay", [value]);
 
 			this._cycle();
@@ -201,7 +197,6 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 			if(!this._active){ return this; /*dojo._Animation*/}
 			this._paused = true;
 			var value = this.curve.getValue(this._percent / 100);
-			this.fire("handler", ["pause", value]);
 			this.fire("onPause", [value]);
 			return this; // dojo._Animation
 		},
@@ -227,7 +222,6 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 				step = 1;
 			}
 			var value = this.curve.getValue(step);
-			this.fire("handler", ["stop", value]);
 			this.fire("onStop", [value]);
 			this._active = false;
 			this._paused = false;
@@ -261,14 +255,12 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 				}
 
 				var value = this.curve.getValue(step);
-				this.fire("handler", ["animate", value]);
 				this.fire("onAnimate", [value]);
 
 				if(step < 1){
 					this._timer = setTimeout(dojo.hitch(this, "_cycle"), this.rate);
 				}else{
 					this._active = false;
-					this.fire("handler", ["end"]);
 					this.fire("onEnd");
 
 					if(this.repeatCount > 0){
@@ -433,14 +425,7 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 				
 				var pm = args.propertyMap;
 				if(!dojo.isArray(args.propertyMap)){
-					// it's stupid to have to pack an array with a set of objects
-					// when you can just pass in an object list
-					var parr = [];
-					for(var pname in pm){
-						pm[pname].property = pname;
-						parr.push(pm[pname]);
-					}
-					pm = args.propertyMap = parr;
+					throw new Error("dojo.animateProperty needs a list for propertyMap");
 				}
 				dojo.forEach(pm, function(prop){
 					if(typeof prop.start == "undefined"){
@@ -452,26 +437,6 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 						}
 					}
 				});
-			}
-		}
-
-		var coordsAsInts = function(coords){
-			var cints = [];
-			dojo.forEach(coords, function(c){ 
-				cints.push(Math.round(c));
-			});
-			return cints;
-		}
-
-		var setStyle = function(n, style){
-			n = dojo.byId(n);
-			if(!n || !n.style){ return; }
-			for(var s in style){
-				try{
-					dojo.style(n, s, style[s]);
-				}catch(e){ //TODO: why the try/catch?
-					dojo.debug(e);
-				}
 			}
 		}
 
@@ -531,7 +496,9 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 			},
 			onAnimate: function(propValues){
 				dojo.forEach(targs.nodes, function(node){
-					setStyle(node, propValues);
+					for (var s in propValues) {
+						dojo.style(node, s, propValues[s]);
+					}
 				});
 			}
 		},

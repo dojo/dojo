@@ -41,80 +41,14 @@ dojo._Line = function(/*int*/ start, /*int*/ end){
 	}
 }
 
-dojo.declare("dojo._IAnimation", null, null, {
-	// summary: dojo._IAnimation is an interface that implements
-	//			commonly used functions of animation objects
-
-	// public properties
-	curve: null,
-	duration: 1000,
-	easing: null,
-	repeatCount: 0,
-	rate: 10, // 100 fps
-	
-	// events
-	beforeBegin: null,
-	onBegin: null,
-	onAnimate: null,
-	onEnd: null,
-	onPlay: null,
-	onPause: null,
-	onStop: null,
-
-	// public methods
-	play: null,
-	pause: null,
-	stop: null,
-
-	fire: function(/*Event*/ evt, /*Array?*/ args){
-		// summary: Convenience function.  Fire event "evt" and pass it
-		//			the arguments specified in "args".
-		// evt: The event to fire.
-		// args: The arguments to pass to the event.
-		if(this[evt]){
-			this[evt].apply(this, args||[]);
-		}
-		return this; // dojo._IAnimation
-	},
-	
-	repeat: function(/*int*/ count){
-		// summary: Set the repeat count of this object.
-		// count: How many times to repeat the animation.
-		this.repeatCount = count;
-		return this; // dojo._IAnimation
-	},
-
-	// private properties
-	_active: false,
-	_paused: false
-});
-
 //FIXME: _Animation must be a Deferred?
-dojo.declare("dojo._Animation", dojo._IAnimation, 
+dojo.declare("dojo._Animation", null,
 	function(/*Object*/ handlers, /*int*/ duration, /*dojo._Line*/ curve, /*function*/ easing,
 		/*int*/ repeatCount, /*int*/ rate){
 		//	summary
 		//		a generic animation object that fires callbacks into it's handlers
 		//		object at various states
 		//	handlers: { handler: Function?, onstart: Function?, onstop: Function?, onanimate: Function? }
-		dojo._IAnimation.call(this);
-		if(!isNaN(handlers)||(!handlers && duration.getValue)){
-			// no handlers argument:
-			rate = repeatCount;
-			repeatCount = easing;
-			easing = curve;
-			curve = duration;
-			duration = handlers;
-			handlers = null;
-		}else if(handlers.getValue||dojo.isArray(handlers)){
-			// no handlers or duration:
-			rate = easing;
-			repeatCount = curve;
-			easing = duration;
-			curve = handlers;
-			duration = null;
-			handlers = null;
-		}
 		if(dojo.isArray(curve)){
 			/* curve: Array
 			   pId: a */
@@ -140,11 +74,65 @@ dojo.declare("dojo._Animation", dojo._IAnimation,
 		}
 	},
 	{
+		// public properties
+		curve: null,
+		duration: 1000,
+		easing: null,
+		repeatCount: 0,
+		rate: 10, // 100 fps
+		
+		// events
+		beforeBegin: null,
+		onBegin: null,
+		onAnimate: null,
+		onEnd: null,
+		onPlay: null,
+		onPause: null,
+		onStop: null,
+
+		// private properties
+		_active: false,
+		_paused: false,
 		_startTime: null,
 		_endTime: null,
 		_timer: null,
 		_percent: 0,
 		_startRepeatCount: 0,
+
+		fire: function(/*Event*/ evt, /*Array?*/ args){
+			// summary: Convenience function.  Fire event "evt" and pass it
+			//			the arguments specified in "args".
+			// evt: The event to fire.
+			// args: The arguments to pass to the event.
+			if(this[evt]){
+				this[evt].apply(this, args||[]);
+			}
+			return this; // dojo._Animation
+		},
+		
+		repeat: function(/*int*/ count){
+			// summary: Set the repeat count of this object.
+			// count: How many times to repeat the animation.
+			this.repeatCount = count;
+			return this; // dojo._Animation
+		},
+
+		chain: function(){
+			var args = (arguments.length == 1 && dojo.isArray(arguments[0])) ? arguments[0] : arguments;
+			dojo.forEach(args, function(anim, i){
+				var prev = (i==0) ? this : args[i-1];
+				dojo.connect(prev, "onEnd", anim, "play");
+			}, this);
+			return this;
+		},
+
+		combine: function(){
+			var args = (arguments.length == 1 && dojo.isArray(arguments[0])) ? arguments[0] : arguments;
+			dojo.forEach(args, function(anim){
+				dojo.connect(this, "play", anim, "play");
+			}, this);
+			return this;
+		},
 
 		play: function(/*int?*/ delay, /*boolean?*/ gotoStart){
 			// summary: Start the animation.

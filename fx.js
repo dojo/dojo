@@ -218,13 +218,35 @@ dojo.fx.chain = function(/*dojo._IAnimation...*/ animations){
 	return new dojo.fx.Chain(anims); // dojo.fx.Chain
 }
 
+//FIXME: duplicate of local routine in _base.fx
+	dojo.fx._byId = function(nodes){
+		if(!nodes){ return []; }
+		if(dojo.isArrayLike(nodes)){
+			if(!nodes._alreadyChecked){
+				var n = [];
+				dojo.forEach(nodes, function(node){
+					n.push(dojo.byId(node));
+				});
+				n._alreadyChecked = true;
+				return n;
+			}else{
+				return nodes;
+			}
+		}else{
+			var n = [];
+			n.push(dojo.byId(nodes));
+			n._alreadyChecked = true;
+			return n;
+		}
+	}
+
 dojo.fx.slideIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
 	// summary: Returns an animation that will show and wipe in "nodes".
 	// nodes: An array of DOMNodes or one DOMNode.
 	// duration: Duration of the animation in milliseconds.
 	// easing: An easing function.
 	// callback: Function to run at the end of the animation.
-	nodes = dojo.byId(nodes); //FIXME: use fx _byId optimization?
+	nodes = dojo.fx._byId(nodes);
 	var anims = [];
 
 	dojo.forEach(nodes, function(node){
@@ -277,7 +299,7 @@ dojo.fx.slideOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*
 	// duration: Duration of the animation in milliseconds.
 	// easing: An easing function.
 	// callback: Function to run at the end of the animation.
-	nodes = dojo.byId(nodes); //FIXME: use fx _byId optimization?
+	nodes = dojo.fx._byId(nodes);
 	var anims = [];
 
 	dojo.forEach(nodes, function(node){

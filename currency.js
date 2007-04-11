@@ -15,10 +15,10 @@ dojo.currency._mixInDefaults = function(options){
 	// Mixin locale-independent currency data, like # of places
 	var iso = options.currency;
 	var data = dojo.cldr.monetary.getData(iso);
-	dojo.lang.mixin(data, bundle[iso] || {});
+	dojo.mixin(data, bundle[iso] || {});
 
 	// Mixin with provided options
-	return dojo.lang.mixin(data, options);
+	return dojo.mixin(data, options);
 }
 
 dojo.currency.format = function(/*Number*/value, /*Object?*/options){

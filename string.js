@@ -1,6 +1,6 @@
 dojo.provide("dojo.string");
 
-dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean?*/end) {
+dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean?*/end){
 	// summary:
 	//	Pad a string to guarantee that it is at least 'size' length by filling with the character 'c' at either the 
 	//	start or end of the string. Pads at the start, by default.
@@ -10,14 +10,14 @@ dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean
 	// end: adds padding at the end if true, otherwise pads at start
 
 	var out = String(text);
-	if(!ch) {
+	if(!ch){
 		ch = '0';
 	}
-	while(out.length < size) {
-		if(!dir) {
-			out = ch + out;
-		} else {
+	while(out.length < size){
+		if(end){
 			out += ch;
+		}else{
+			out = ch + out;
 		}
 	}
 	return out;	// String

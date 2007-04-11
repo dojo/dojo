@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Dojo DnD container test</title>
+	<style type="text/css">
+		.container				{border: 3px solid #ccc; padding: 1em 3em; cursor: default;}
+		.dojoDndContainerOver	{border: 3px solid #888; background: #ffe;}
+		.dojoDndItemOver		{background: #feb;}
+	</style>
+	<script type="text/javascript">
+		var djConfig = {isDebug: true};
+	</script>
+	<script type="text/javascript" src="../../dojo.js"></script>
+	<script type="text/javascript" src="../../dnd/container.js"></script>
+	<script type="text/javascript">
+		//dojo.require("dojo.dnd.container");
+		var c1, c2, c3, c4, c5;
+		var init = function(){
+			c1 = new dojo.dnd.Container(dojo.byId("container1"));
+			c2 = new dojo.dnd.Container(dojo.byId("container2"));
+			c3 = new dojo.dnd.Container(dojo.byId("container3"));
+			c4 = new dojo.dnd.Container(dojo.byId("container4"));
+			c5 = new dojo.dnd.Container(dojo.byId("container5"));
+		};
+		dojo.addOnLoad(init);
+	</script>
+</head>
+<body>
+	<h1>Dojo DnD container test</h1>
+	<p>Containers have a notion of a "current container", and one element can be "current".</p>
+	<h2>DIV container</h2>
+	<div id="container1" class="container">
+		<div>Item 1</div>
+		<div>Item 2</div>
+		<div>Item 3</div>
+	</div>
+	<h2>UL container</h2>
+	<ul id="container2" class="container">
+		<li>Item 1</li>
+		<li>Item 2</li>
+		<li>Item 3</li>
+	</ul>
+	<h2>OL container</h2>
+	<ol id="container3" class="container">
+		<li>Item 1</li>
+		<li>Item 2</li>
+		<li>Item 3</li>
+	</ol>
+	<h2>TABLE container</h2>
+	<table id="container4" class="container" border="1px solid black">
+		<tr>
+			<td>A</td>
+			<td>row 1</td>
+		</tr>
+		<tr>
+			<td>B</td>
+			<td>row 2</td>
+		</tr>
+		<tr>
+			<td>C</td>
+			<td>row 3</td>
+		</tr>
+	</table>
+	<h2>P container with SPAN elements</h2>
+	<p>Elements of this container are layed out horizontally.</p>
+	<p id="container5" class="container">
+		<span>&nbsp;Item 1&nbsp;</span>
+		<span>&nbsp;Item 2&nbsp;</span>
+		<span>&nbsp;Item 3&nbsp;</span>
+	</p>
+</body>
+</html>

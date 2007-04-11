@@ -295,4 +295,7 @@ dojo.require("dojo._base.connect");
 			NUM_LOCK: 63289
 		});
 	}
+	
+	// lift up stopEvent()
+	dojo.stopEvent = de.stopEvent;
 })();

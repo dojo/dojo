@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Dojo DnD test</title>
+	<style type="text/css">
+		.container				{border: 3px solid #ccc; padding: 1em 3em; cursor: default;}
+		.dojoDndContainerOver	{border: 3px solid #888; background: #ffe;}
+		.dojoDndItemOver		{background: #feb;}
+		.dojoDndItemSelected	{background: #ccf; color: #444;}
+		.dojoDndItemAnchor		{background: #ccf; color: black;}
+		.dojoDndItemOver.dojoDndItemSelected	{background: #ec8;}
+		.dojoDndItemOver.dojoDndItemAnchor		{background: #ec8;}
+		.dojoDndItemBefore		{border-top: 3px solid red;}
+		.dojoDndItemAfter		{border-bottom: 3px solid red;}
+		.dojoDndAvatar			{font-size: 75%;}
+		.dojoDndAvatarHeader	{background: #aaa;}
+		.dojoDndAvatarItem		{background: #eee;}
+	</style>
+	<script type="text/javascript">
+		var djConfig = {isDebug: true};
+	</script>
+	<script type="text/javascript" src="../../dojo.js"></script>
+	<script type="text/javascript" src="../../_base/html.js"></script>
+	<script type="text/javascript" src="../../dnd/container.js"></script>
+	<script type="text/javascript" src="../../dnd/selector.js"></script>
+	<script type="text/javascript" src="../../dnd/source.js"></script>
+	<script type="text/javascript" src="../../dnd/avatar.js"></script>
+	<script type="text/javascript" src="../../dnd/manager.js"></script>
+	<script type="text/javascript">
+		//dojo.require("dojo.dnd.source");
+		//dojo.require("dojo.dnd.manager");
+		var c1, c2;
+		var init = function(){
+			//c1 = new dojo.dnd.Source(dojo.byId("container1"));
+			c1 = new dojo.dnd.Source("container1");
+			c1.insertNodes(false, [1, 2, 3, 4, 5, 6, [1, 2, 3], function(x){ return x + x; }]);
+			//c2 = new dojo.dnd.Source(dojo.byId("container2"));
+			c2 = new dojo.dnd.Source("container2");
+			c2.insertNodes(false, ["A", "B", "C", "D", "E", "F", {repr: function(){ return "CUSTOM!"; }}, null]);
+		};
+		dojo.addOnLoad(init);
+	</script>
+</head>
+<body>
+	<h1>Dojo DnD test</h1>
+	<p>Elements of both sources/targets were created dynamically.</p>
+	<p>Following selection modes are supported by default:</p>
+	<ul>
+		<li>Simple click &mdash; selects a single element, all other elements will be unselected.</li>
+		<li>Ctrl+click &mdash; toggles a selection state of an element (use Meta key on Mac).</li>
+		<li>Shift+click &mdash; selects a range of element from the previous anchor to the current element.</li>
+		<li>Ctrl+Shift+click &mdash; adds a range of element from the previous anchor to the current element (use Meta key on Mac).</li>
+	</ul>
+	<p>Following drop modes are supported by default:</p>
+	<ul>
+		<li>Simple drop &mdash; moves elements to the valid target removing them from the source. It can be used to reorganize elements within a single source/target.</li>
+		<li>Ctrl+drop &mdash; copies elements to the valid target (use Meta key on Mac).</li>
+	</ul>
+	<p id="container1" class="container"></p>
+	<p id="container2" class="container"></p>
+</body>
+</html>

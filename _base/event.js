@@ -37,7 +37,7 @@ dojo.require("dojo._base.connect");
 		normalizeEventName: function(/*String*/eventName){
 			// Generally, eventName should be lower case, unless it is special somehow (e.g. a Mozilla event)
 			if(eventName.slice(0,2)!="on"){ eventName = "on"+eventName; }
-			if(eventName=="onkey"){	eventName = (d.isIE ? "onkeydown" : "onkeypress");	}
+			if(eventName=="onkey"){	eventName = (dojo.isIE ? "onkeydown" : "onkeypress");	}
 			return eventName;
 		},
 		// hosts can override to fix events as needed

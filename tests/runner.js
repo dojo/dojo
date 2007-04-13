@@ -130,7 +130,7 @@ tests.extend(tests.Deferred, {
 		var _this = this;
 		return function(){
 			try{
-				cb.apply(scope||window||_this, arguments);
+				cb.apply(scope||dojo.global||_this, arguments);
 			}catch(e){
 				_this.errback(e);
 				return;
@@ -598,10 +598,19 @@ tests._handleFailure = function(groupName, fixture, e){
 	}
 }
 
+try{
+	setTimeout(function(){}, 0);
+}catch(e){
+	setTimeout = function(func){
+		return func();
+	}
+}
+
 tests._runFixture = function(groupName, fixture){
 	var tg = this._groups[groupName];
 	this._testStarted(groupName, fixture);
 	var threw = false;
+	var err = null;
 	// run it, catching exceptions and reporting them
 	try{
 		// let tests reference "this.group.thinger..." which can be set by
@@ -639,7 +648,7 @@ tests._runFixture = function(groupName, fixture){
 				var timer = setTimeout(function(){
 					ret.cancel();
 					retEnd();
-				}, fixture["timeout"]||500);
+				}, fixture["timeout"]||1000);
 
 				ret.addBoth(function(arg){
 					clearTimeout(timer);
@@ -654,15 +663,40 @@ tests._runFixture = function(groupName, fixture){
 		if(fixture["tearDown"]){ fixture.tearDown(this); }
 	}catch(e){
 		threw = true;
-		this._handleFailure(groupName, fixture, e);
+		err = e;
 	}
-	this._testFinished(groupName, fixture, (!threw));
+	var d = new tests.Deferred();
+	setTimeout(this.hitch(this, function(){
+		if(threw){
+			this._handleFailure(groupName, fixture, err);
+		}
+		this._testFinished(groupName, fixture, (!threw));
+
+		if((!tg.inFlight)&&(tg.iterated)){
+			tests._groupFinished(groupName, (!tg.failures));
+		}
+		if(tests._paused){
+			tests.run();
+		}
+	}), 30);
+	tests.pause();
+	return d;
 }
 
 tests._testId = 0;
 tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 	// summary:
 	//		runs the specified test group
+
+	// the general structure of the algorithm is to run through the group's
+	// list of tests, checking before and after each of them to see if we're in
+	// a paused state. This can be caused by the test returning a deferred or
+	// the user hitting the pause button. In either case, we want to halt
+	// execution of the test until something external to us restarts it. This
+	// means we need to pickle off enough state to pick up where we left off.
+
+	// FIXME: need to make fixture execution async!!
+
 	var tg = this._groups[groupName];
 	if(tg.skip === true){ return; }
 	if(this._isArray(tg)){
@@ -676,21 +710,22 @@ tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 		tg.iterated = false;
 		tg.failures = 0;
 		tests._groupStarted(groupName);
-		this._setupGroupForRun(groupName, idx);
+		if(!idx){
+			this._setupGroupForRun(groupName, idx);
+		}
 		for(var y=(idx||0); y<tg.length; y++){
 			if(this._paused){
 				this._currentTest = y;
-				this.debug("PAUSED at:", tg[y].name, this._currentGroup, this._currentTest);
+				// this.debug("PAUSED at:", tg[y].name, this._currentGroup, this._currentTest);
 				return;
 			}
 			tests._runFixture(groupName, tg[y]);
 			if(this._paused){
 				this._currentTest = y+1;
-				// this._currentTest = y;
 				if(this._currentTest == tg.length){
 					tg.iterated = true;
 				}
-				this.debug("PAUSED at:", tg[y].name, this._currentGroup, this._currentTest);
+				// this.debug("PAUSED at:", tg[y].name, this._currentGroup, this._currentTest);
 				return;
 			}
 		}
@@ -733,7 +768,7 @@ tests.pause = function(){
 tests.run = function(){
 	// summary:
 	//		begins or resumes the test process.
-	this.debug("STARTING");
+	// this.debug("STARTING");
 	this._paused = false;
 	var cg = this._currentGroup;
 	var ct = this._currentTest;
@@ -774,7 +809,7 @@ try{
 		rhino: ["tests._rhinoRunner"],
 		spidermonkey: ["tests._rhinoRunner"]
 	});
-	var _shouldRequire = (dojo.isBrowser) ? (window == window.parent) : true;
+	var _shouldRequire = (dojo.isBrowser) ? (dojo.global == dojo.global["parent"]) : true;
 	if(_shouldRequire){
 		if(dojo.isBrowser){
 			dojo.addOnLoad(function(){
@@ -782,7 +817,7 @@ try{
 					dojo.require("tests._base");
 					setTimeout(function(){
 						tests.run();
-					}, 100);
+					}, 500);
 				}
 			});
 		}else{

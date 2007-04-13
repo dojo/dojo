@@ -1,8 +1,8 @@
 var testGlobal = this;
 try{
 	dojo.provide("tests._base");
-	testGlobal = window;
-}catch(e){}
+	testGlobal = dojo.global;
+}catch(e){ }
 
 // the test suite for the bootstrap. Requires hostenv and other base tests at
 // the end
@@ -135,4 +135,3 @@ try{
 }catch(e){
 	tests.debug(e);
 }
-

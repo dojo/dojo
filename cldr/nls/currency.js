@@ -1,8 +1,12 @@
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
-        EUR:{displayName:"EUR", symbol:"€"},
-        GBP:{displayName:"GBP", symbol:"£"},
-        JPY:{displayName:"JPY", symbol:"¥"},
-        USD:{displayName:"USD", symbol:"$"}
+	EUR_displayName:"EUR",
+	EUR_symbol:"€",
+	GBP_displayName:"GBP",
+	GBP_symbol:"£",
+	JPY_displayName:"JPY",
+	JPY_symbol:"¥",
+	USD_displayName:"USD",
+	USD_symbol:"$"
 })
                  

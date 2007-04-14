@@ -1,5 +1,5 @@
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
-        AUD:{symbol:"$"}
+	AUD_symbol:"$"
 })
                  

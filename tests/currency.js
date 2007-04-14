@@ -12,12 +12,12 @@ tests.register("tests.currency",
 			name: "currency",
 			setUp: function(){
 				var partLocaleList = ["en-us", "en-ca"];
-
 				for(var i = 0 ; i < partLocaleList.length; i ++){
 					dojo.requireLocalization("dojo.cldr","currency",partLocaleList[i]);
 				}
 			},
 			runTest: function(t){
+				t.is("\u20ac123.45", dojo.currency.format(123.45, {currency: "EUR", locale: "en-us"}));
 				t.is("$123.45", dojo.currency.format(123.45, {currency: "USD", locale: "en-us"}));
 				t.is("US$123.45", dojo.currency.format(123.45, {currency: "USD", locale: "en-ca"}));
 				t.is("$123.45", dojo.currency.format(123.45, {currency: "CAD", locale: "en-ca"}));

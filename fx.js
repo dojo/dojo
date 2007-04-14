@@ -23,19 +23,29 @@ dojo.fx._byId = function(nodes){
 		n._alreadyChecked = true;
 		return n;
 	}
-}
+};
 
-dojo.fx.chain = function(){
-	var args = (arguments.length == 1 && dojo.isArray(arguments[0])) ? arguments[0] : dojo.mixin(arguments, {});
-	var first = args.shift();
-	return first.chain(args);
-}
+(function(){
+	var _fixArguments = function(origArgs){
+		if (origArgs.length == 1 && dojo.isArray(origArgs[0])){
+			return origArgs[0]
+		}else{
+			return dojo._toArray(origArgs);
+		}
+	}
 
-dojo.fx.combine = function(){
-	var args = (arguments.length == 1 && dojo.isArray(arguments[0])) ? arguments[0] : dojo.mixin(arguments, {});
-	var first = args.shift();
-	return first.combine(args);
-}
+	dojo.fx.chain = function(){
+		var args = _fixArguments(arguments);
+		var first = args.shift();
+		return first.chain(args);
+	}
+
+	dojo.fx.combine = function(){
+		var args = _fixArguments(arguments);
+		var first = args.shift();
+		return first.combine(args);
+	}
+})();
 
 dojo.fx.slideIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
 	// summary: Returns an animation that will show and wipe in "nodes".

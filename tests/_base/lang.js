@@ -141,6 +141,16 @@ tests.register("tests._base.lang",
 			var st2 = dojo.hitch(null, thinger, "foo", "bar");
 			t.assertEqual("bar", st2()[2]);
 			var st3 = dojo.hitch(null, thinger, "foo", "bar");
+		},
+
+		function _toArray(t){
+			var obj1 = [ 'foo', 'bar', 'spam', 'ham' ];
+
+			function thinger(){
+				return dojo._toArray(arguments);
+			}
+			var obj2 = thinger.apply(this, obj1);
+			t.assertEqual(obj1[0], obj2[0]);
 		}
 	]
 );

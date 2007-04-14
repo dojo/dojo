@@ -99,17 +99,11 @@ dojo.extend = function(/*Object*/ constructor, /*Object...*/ props){
 }
 
 dojo._hitchArgs = function(scope, method /*,...*/){
-	var pre = [];
-	for(var x=2; x<arguments.length; x++){
-		pre.push(arguments[x]);
-	}
+	var pre = dojo._toArray(arguments, 2);
 	var named = dojo.isString(method);
 	return function(){
 		// arrayify arguments
-		var args = [];
-		for(var x=0; x<arguments.length; x++){
-			args.push(arguments[x]);
-		}
+		var args = dojo._toArray(arguments);
 		// locate our method
 		var f = (named ? (scope||dojo.global)[method] : method);
 		// invoke with collected args
@@ -162,10 +156,18 @@ dojo.partial = function(/*Function|String*/method /*, ...*/){
 	//		whatever the execution context eventually becomes. This is the
 	//		functional equivalent of calling:
 	//		dojo.hitch(null, funcName, ...);
-	var args = [ null ];
-	for(var x=0; x<arguments.length; x++){
-		args.push(arguments[x]);
+	var arr = [ null ];
+	return dojo.hitch.apply(dojo, arr.concat(dojo._toArray(arguments)));
+}
+
+dojo._toArray = function(/*Object*/obj, /*Number?*/offset){
+	// summary:
+	//		Converts an array-like object (i.e. arguments, DOMCollection)
+	//		to an array. Returns a new Array object.
+	var arr = [];
+	for(var x= offset||0; x<obj.length; x++){
+		arr.push(obj[x]);
 	}
-	return dojo.hitch.apply(dojo, args);
+	return arr;
 }
 

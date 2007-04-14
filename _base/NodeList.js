@@ -54,21 +54,14 @@ dojo.require("dojo._base.array");
 			style: function(prop){
 				// (key, value)
 				// (props, ...)
-				var aa = [this[0]];
-				for(var x=0; x<arguments.length; x++){
-					aa.push(arguments[x]);
-				}
-				dojo.style.apply(dojo, aa);
+				dojo.style.apply(dojo, dojo._toArray(arguments));
 				return new dojo.NodeList(this[0]);
 			},
 
 			styles: function(prop){
 				// (key, value)
 				// (props, ...)
-				var aa = [ null ];
-				for(var x=0; x<arguments.length; x++){
-					aa.push(arguments[x]);
-				}
+				var aa = dojo._toArray(arguments);
 				this.forEach(function(i){
 					aa[0] = i;
 					dojo.style.apply(dojo, aa);

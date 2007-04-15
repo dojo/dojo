@@ -6,7 +6,12 @@
 	authors often need to set up manually.
 */
 
-/* YUI Reset, to give a baseline. Some changes have been made. */
+/*
+	License Disclaimer:
+	The following derived from YUI Reset (http://developer.yahoo.com/yui/reset/)
+	Copyright 2007, Yahoo!, Inc.  All Rights Reserved.
+	Distributed under the terms of the BSD License.
+*/
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { margin:0; padding:0; }
 table { font-size:100%; border-collapse:collapse; border-spacing:0; }
 fieldset,img { border:0; }
@@ -14,6 +19,7 @@ address,caption,cite,dfn,var { font-style:normal; font-weight:normal; }
 h1,h2,h3,h4,h5,h6 { font-size:100%; font-weight:normal; }
 q:before,q:after { content:''; }
 abbr,acronym { border:0; }
+/*	End YUI Reset. */
 
 /* 
 	Style definitions, based partially on the Tundra theme.
@@ -51,14 +57,12 @@ ol, ul{ margin:1.5em; margin-left:3em; }
 ol li, ul li { font-size:1em; line-height:1.5em; margin:0; }
 
 /* pre and code */
-pre, code {
-	font-family: Courier, "Courier New";
-	background-color:#efefef;
-	border:1px solid #ccc;
-}
-pre {
-	border-width: 1px 0;
-	padding:1.5em;
-}
+pre, code { font-family: Courier, "Courier New"; background-color:#efefef; border:1px solid #ccc; }
+pre { border-width: 1px 0; padding:1.5em; }
 
-/* others */
+/* TODO: Double-check how these definitions will interfere with Dijits */
+/* tables */
+table { border:1px solid #ccc; margin:0 1.5em; }
+table thead, table tfoot{ background-color: #efefef; border:1px solid #ccc; border-width:1px 0; }
+thead tr th, thead tr td, tbody tr td, tfoot tr td{ padding:0.25em 0.5em; }
+

@@ -7,6 +7,7 @@
 */
 
 @import "http://yui.yahooapis.com/2.2.1/build/reset/reset-min.css";
+@import "http://yui.yahooapis.com/2.2.1/build/fonts/fonts-min.css";
 
 /* 
 	Style definitions, based partially on the Tundra theme.
@@ -29,13 +30,19 @@
 	Default: 12px.
 */
 body { 
+	/*
 	font-family: Georgia, "Times New Roman", serif; 
 	font-size: 75%;
+	*/
+	font-family: Corbel, Geneva, Futura, "Gill Sans", sans-serif; 
+	font-size: 87.5%;
 }
 
+/*
 html>body { 
 	font-size:12px;
 }
+*/
 
 /* Headings */
 h1,h2,h3,h4,h5,h6 { 

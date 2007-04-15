@@ -28,30 +28,110 @@
 
 	Default: 12px.
 */
-body{ font-family:Georgia, "Times New Roman", serif; font-size:75%; }
-html>body{ font-size:12px; }
+body { 
+	font-family: Georgia, "Times New Roman", serif; 
+	font-size: 75%;
+}
+
+html>body { 
+	font-size:12px;
+}
 
 /* Headings */
-h1,h2,h3,h4,h5,h6{ font-family: "Myriad Pro", Myriad, Arial, Helvetica, sans-serif; }
-h1{ font-size:1.5em; line-height:1em; margin-top:1em; margin-bottom:0; }
-h2{ font-size:1.1667em; font-weight:bold; line-height:1.286em; margin-top:1.929em; margin-bottom:0.643em; }
-h3, h4, h5, h6{ font-size:1em; font-weight:bold; line-height:1.5em; margin-top:1.5em; margin-bottom:0; }
+h1,h2,h3,h4,h5,h6 { 
+	font-family: "Myriad Pro", Myriad, Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	font-size: 1.5em; 
+	line-height: 1em; 
+	margin-top: 1em;
+	margin-bottom:0;
+}
+
+h2 { 
+	font-size: 1.1667em; 
+	font-weight: bold; 
+	line-height: 1.286em; 
+	margin-top: 1.929em; 
+	margin-bottom:0.643em;
+}
+
+h3, h4, h5, h6 {
+	font-size: 1em; 
+	font-weight: bold; 
+	line-height: 1.5em; 
+	margin-top: 1.5em; 
+	margin-bottom: 0;
+}
 
 /* paragraphs, quotes and lists */
-p{ font-size:1em; margin-top:1.5em; margin-bottom:1.5em; line-height:1.5em; }
-blockquote { font-size:0.916em; margin-top:3.272em; margin-bottom:3.272em; line-height:1.636em; padding:1.636em; border-top:1px solid #ccc; border-bottom:1px solid #ccc; }
-ol, ul{ margin:1.5em; margin-left:3em; list-style:inherit; }
-ol{ list-style-type: decimal; }
-ol li, ul li { font-size:1em; line-height:1.5em; margin:0; }
+p { 
+	font-size: 1em; 
+	margin-top: 1.5em; 
+	margin-bottom: 1.5em; 
+	line-height: 1.5em;
+}
+
+blockquote { 
+	font-size: 0.916em; 
+	margin-top: 3.272em; 
+	margin-bottom: 3.272em; 
+	line-height: 1.636em; 
+	padding: 1.636em; 
+	border-top: 1px solid #ccc; 
+	border-bottom: 1px solid #ccc;
+}
+
+ol, ul{ 
+	margin: 1.5em; 
+	margin-left: 3em; 
+	list-style: inherit;
+}
+
+ol{ 
+	list-style-type: decimal;
+}
+ol li, ul li { 
+	font-size: 1em; 
+	line-height: 1.5em; 
+	margin: 0;
+}
 
 /* pre and code */
-pre, code { font-family: Courier, "Courier New"; background-color:#efefef; border:1px solid #ccc; }
-pre { border-width: 1px 0; padding:1.5em; }
+pre, code { 
+	font-family: Courier, "Courier New"; 
+	background-color: #efefef; 
+	border: 1px solid #ccc;
+}
+
+pre { 
+	border-width: 1px 0; 
+	padding: 1.5em;
+}
 
 /* TODO: Double-check how these definitions will interfere with Dijits */
 /* tables */
-table { font-size:100%;border-collapse:collapse; border-spacing:0; border:1px solid #ccc; margin:0 1.5em; }
-th { text-align:center; font-weight:bold; }
-table thead, table tfoot{ background-color: #efefef; border:1px solid #ccc; border-width:1px 0; }
-thead tr th, thead tr td, tbody tr td, tfoot tr td{ padding:0.25em 0.5em; }
+table { 
+	font-size: 100%;
+	border-collapse: collapse; 
+	border-spacing: 0; 
+	border: 1px solid #ccc; 
+	margin: 0 1.5em;
+}
+
+th { 
+	text-align: center; 
+	font-weight: bold;
+}
+
+table thead, table tfoot { 
+	background-color: #efefef; 
+	border: 1px solid #ccc; 
+	border-width: 1px 0; 
+}
+
+thead tr th, thead tr td, tbody tr td, tfoot tr td { 
+	padding: 0.25em 0.5em;
+}
 

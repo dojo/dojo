@@ -41,6 +41,7 @@ h3, h4, h5, h6{ font-size:1em; font-weight:bold; line-height:1.5em; margin-top:1
 p{ font-size:1em; margin-top:1.5em; margin-bottom:1.5em; line-height:1.5em; }
 blockquote { font-size:0.916em; margin-top:3.272em; margin-bottom:3.272em; line-height:1.636em; padding:1.636em; border-top:1px solid #ccc; border-bottom:1px solid #ccc; }
 ol, ul{ margin:1.5em; margin-left:3em; list-style:inherit; }
+ol{ list-style-type: decimal; }
 ol li, ul li { font-size:1em; line-height:1.5em; margin:0; }
 
 /* pre and code */

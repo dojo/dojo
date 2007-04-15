@@ -26,7 +26,7 @@
 	}
 
 	// firebug stubs
-	if(!this["console"]){
+	if((!this["console"])||(!console["firebug"])){
 		this.console = {};
 	}
 	var cn = [

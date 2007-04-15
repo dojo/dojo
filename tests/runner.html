@@ -3,6 +3,12 @@
 		NOTE: we are INTENTIONALLY in quirks mode. It makes it much easier to
 		get a "full screen" UI w/ straightforward CSS.
 	-->
+	<!--
+		// TODO: need to provide UI controls for turning audio on and off
+		// TODO: implement global scrollbarl
+		// TODO: ensure that test groups are "folded up" by default but can be opened on a click
+		// TODO: provide way to extract this system from the rest of Dojo easily
+	-->
 	<head>
 		<title>The Dojo Unit Test Harness, $Rev$</title>
 		<script type="text/javascript" src="../dojo.js"  
@@ -17,6 +23,8 @@
 			}
 		</script>
 		<style type="text/css">
+			@import "../resources/dojo.css";
+			/*
 			body {
 				margin: 0px;
 				padding: 0px;
@@ -41,6 +49,7 @@
 			table {
 				border-collapse: collapse;
 			}
+			*/
 
 			#testLayout {
 				position: absolute;
@@ -161,10 +170,10 @@
 		</style>
 	</head>
 	<body>
-		<table id="testLayout" cellpadding="0" cellspacing="0">
+		<table id="testLayout" cellpadding="0" cellspacing="0" style="margin: 0;">
 			<tr valign="top" height="40">
 				<td colspan="2" id="logoBar">
-					<h4 style="margin: 5px 5px 0px 5px; float: left;">D.O.H.: The Dojo Objective Harness</h4>
+					<h3 style="margin: 5px 5px 0px 5px; float: left;">D.O.H.: The Dojo Objective Harness</h3>
 					<img src="small_logo.png" height="40" style="margin: 0px 5px 0px 5px; float: right;">
 				</td>
 			</tr>
@@ -191,13 +200,13 @@
 					<button class="tab" onclick="showLogPage();">Log</button>
 				</td>
 			</tr>
-			<tr valign="top">
-				<td height="100%">
+			<tr valign="top" style="border: 0; padding: 0; margin: 0;">
+				<td height="100%" style="border: 0; padding: 0; margin: 0;">
 					<div id="testListContainer">
 						<table cellpadding="0" cellspacing="0" border="0"
-							width="100%" id="testList">
+							width="100%" id="testList" style="margin: 0;">
 							<thead>
-								<tr id="testListHeader">
+								<tr id="testListHeader" style="border: 0; padding: 0; margin: 0;" >
 									<th width="20">
 										<input type="checkbox" checked 
 											onclick="toggleRunAll();">

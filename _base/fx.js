@@ -296,6 +296,31 @@ dojo.declare("dojo._Animation", null,
 		}
 	}
 
+	//Memoizing. Assumes that the array doesn't change. FIXME: can this go away
+	//or get folded into dojo.byId?  Talk it over with Bryan
+	//Moving this above any functions that use it so the dojo compressor does not
+	//strip it out.
+	var _byId = function(nodes){
+		if(!nodes){ return []; }
+		if(dojo.isArrayLike(nodes)){
+			if(!nodes._alreadyChecked){
+				var n = [];
+				dojo.forEach(nodes, function(node){
+					n.push(dojo.byId(node));
+				});
+				n._alreadyChecked = true;
+				return n;
+			}else{
+				return nodes;
+			}
+		}else{
+			var n = [];
+			n.push(dojo.byId(nodes));
+			n._alreadyChecked = true;
+			return n;
+		}
+	}
+
 	dojo._fade = function(/*DOMNode[]*/ nodes,
 								  /*Object*/values,
 								  /*int?*/ duration,
@@ -358,29 +383,6 @@ dojo.declare("dojo._Animation", null,
 	}else{
 		dojo._defaultEasing = function(/*Decimal?*/ n){
 			return 0.5+((Math.sin((n+1.5) * Math.PI))/2);
-		}
-	}
-
-	//Memoizing. Assumes that the array doesn't change. FIXME: can this go away
-	//or get folded into dojo.byId?  Talk it over with Bryan
-	var _byId = function(nodes){
-		if(!nodes){ return []; }
-		if(dojo.isArrayLike(nodes)){
-			if(!nodes._alreadyChecked){
-				var n = [];
-				dojo.forEach(nodes, function(node){
-					n.push(dojo.byId(node));
-				});
-				n._alreadyChecked = true;
-				return n;
-			}else{
-				return nodes;
-			}
-		}else{
-			var n = [];
-			n.push(dojo.byId(nodes));
-			n._alreadyChecked = true;
-			return n;
 		}
 	}
 

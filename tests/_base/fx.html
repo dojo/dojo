@@ -30,7 +30,51 @@
 								anim.play();
 								return d;
 							}
-						}
+						},
+						{
+							name: "fadeIn",
+							timeout: 1500,
+							runTest: function(t){
+								var duration = 500;
+								var opacity = dojo.style('foo', 'opacity');
+								t.is(0, opacity);
+								var anim = dojo.fadeIn('foo', duration);
+								var d = new tests.Deferred();
+								dojo.connect(anim, "onEnd", null, function(){
+									var opacity = dojo.style('foo', 'opacity');
+									// console.debug(anim._start);
+									var elapsed = (new Date()) - anim._start;
+									t.is(1, opacity);
+									t.assertTrue(elapsed >= duration);
+									d.callback(true);
+								});
+								anim._start = new Date();
+								anim.play();
+								return d;
+							}
+						}/*,
+						{
+							name: "animateHeight",
+							timeout: 1500,
+							runTest: function(t){
+								var duration = 500;
+								var startHeight = dojo.style('foo', 'height');
+console.debug("Start height is "+startHeight);
+								var anim = dojo.animateProperty('foo', [{property: 'height', end: startHeight * 0.5}], duration);
+								var d = new tests.Deferred();
+								dojo.connect(anim, "onEnd", null, function(){
+									var height = dojo.style('foo', 'height');
+console.debug("End height is "+height);
+									var elapsed = (new Date()) - anim._start;
+									t.is(startHeight*5, height);
+									t.assertTrue(elapsed >= duration);
+									d.callback(true);
+								});
+								anim._start = new Date();
+								anim.play();
+								return d;
+							}
+						}*/						
 					]
 				);
 				tests.run();

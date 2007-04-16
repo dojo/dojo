@@ -123,7 +123,7 @@ dojo.declare("dojo._Animation", null,
 				var prev = (i==0) ? this : args[i-1];
 				dojo.connect(prev, "onEnd", anim, "play");
 			}, this);
-			return this;
+			return this; // dojo._Animation
 		},
 
 		combine: function(){
@@ -131,7 +131,7 @@ dojo.declare("dojo._Animation", null,
 			dojo.forEach(args, function(anim){
 				dojo.connect(this, "play", anim, "play");
 			}, this);
-			return this;
+			return this; // dojo._Animation
 		},
 
 		play: function(/*int?*/ delay, /*boolean?*/ gotoStart){
@@ -337,6 +337,7 @@ dojo.declare("dojo._Animation", null,
 		props.start = (typeof values.start == "undefined") ?
 			function(){ return Number(dojo.style(nodes[0], "opacity")); } : values.start;
 
+//FIXME: remove arg checking?  Change docs above to show that end is not optional.  Just make sure this blows up in a reliable way?
 		if(typeof values.end == "undefined"){
 			throw new Error("dojo._fade needs an end value");
 		}
@@ -501,5 +502,4 @@ dojo.declare("dojo._Animation", null,
 		
 		return anim; // dojo._Animation
 	}
-
 })();

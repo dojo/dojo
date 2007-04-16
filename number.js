@@ -306,7 +306,7 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 	}
 
 	// Transform it to something Javascript can parse as a number
-	absoluteMatch = absoluteMatch.replace(info.group, "", "g").replace(info.decimal, ".");
+	absoluteMatch = absoluteMatch.replace(new RegExp(info.group, "g"), "").replace(info.decimal, ".");
 
 	// Adjust for negative sign, percent, etc. as necessary
 	return Number(absoluteMatch) * info.factor; //Number

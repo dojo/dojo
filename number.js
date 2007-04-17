@@ -228,11 +228,11 @@ dojo.number._parseInfo = function(/*Object?*/options){
 		}
 	}
 
-	if(group == '\xa0'){group = ' ';}
+	if(group == '\xa0'){ group = ' '; }
 
 	//TODO: handle quoted escapes
 	var patternList = pattern.split(';');
-	if (patternList.length == 1){
+	if(patternList.length == 1){
 		patternList.push("-" + patternList[0]);
 	}
 
@@ -291,12 +291,19 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 	//
 	// expression: A string representation of a Number
 	//
-	// options: object {pattern: string, locale: string, strict: boolean}
-	//		pattern- override pattern with this string
-	//		type- choose a format type based on the locale from the following: decimal, scientific, percent, currency. decimal by default.
-	//		locale- override the locale used to determine formatting rules
-	//		strict- strict parsing, false by default
-	//		currency- object with currency information
+	// options: 
+	//		object {pattern: string, locale: string, strict: boolean}
+	//		pattern:
+	//			override pattern with this string
+	//		type:
+	//			choose a format type based on the locale from the following:
+	//			decimal, scientific, percent, currency. decimal by default.
+	//		locale:
+	//			override the locale used to determine formatting rules
+	//		strict: 
+	//			strict parsing, false by default
+	//		currency:
+	//			object with currency information
 
 	var info = dojo.number._parseInfo(options);
 
@@ -386,22 +393,27 @@ dojo.number._realNumberRegexp = function(/*Object?*/flags){
 };
 
 dojo.number._integerRegexp = function(/*Object?*/flags){
-	// summary: Builds a regular expression that matches an integer
-	//
-	// flags: An object
-	//    flags.signed  The leading plus-or-minus sign.  Can be true, false, or [true, false].
-	//      Default is [true, false], (i.e. will match if it is signed or unsigned).
-	//    flags.separator  The character used as the thousands separator.  Default is no separator.
-	//      For more than one symbol use an array, e.g. [",", ""], makes ',' optional.
-	//	flags.groupSize group size between separators
-	//	flags.groupSize2 second grouping (for India)
+	// summary: 
+	//		Builds a regular expression that matches an integer
+	// flags: 
+	//		An object
+	//		flags.signed :
+	//			The leading plus-or-minus sign. Can be true, false, or [true,
+	//			false]. Default is [true, false], (i.e. will match if it is
+	//			signed or unsigned).
+	//		flags.separator:
+	//			The character used as the thousands separator. Default is no
+	//			separator. For more than one symbol use an array, e.g. [",",
+	//			""], makes ',' optional.
+	//		flags.groupSize: group size between separators
+	//		flags.groupSize2: second grouping (for India)
 
 	// assign default values to missing paramters
 	flags = (typeof flags == "object") ? flags : {};
 	if(typeof flags.signed == "undefined"){ flags.signed = [true, false]; }
 	if(typeof flags.separator == "undefined"){
 		flags.separator = "";
-	} else if(typeof flags.groupSize == "undefined"){
+	}else if(typeof flags.groupSize == "undefined"){
 		flags.groupSize = 3;
 	}
 	// build sign RE

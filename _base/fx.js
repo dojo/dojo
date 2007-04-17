@@ -18,59 +18,34 @@ dojo._Line = function(/*int*/ start, /*int*/ end){
 		/* start: Array
 		   end: Array
 		   pId: a */
-		var diffs = [];
-		dojo.forEach(this.start, function(s,i){
-			diffs[i] = this.end[i] - s;
-		}, this);
-
 		this.getValue = function(/*float*/ n){
 			var res = [];
 			dojo.forEach(this.start, function(s, i){
-				res[i] = (diffs[i] * n) + s;
+				res[i] = ((this.end[i] - this.start[i]) * n) + s;
 			}, this);
 			return res; // Array
 		}
 	}else{
-		var diff = end - start;
-			
 		this.getValue = function(/*float*/ n){
 			//	summary: returns the point on the line
 			//	n: a floating point number greater than 0 and less than 1
-			return (diff * n) + this.start; // Decimal
+			return ((this.end - this.start) * n) + this.start; // Decimal
 		}
 	}
 }
 
 //FIXME: _Animation must be a Deferred?
 dojo.declare("dojo._Animation", null,
-	function(/*Object*/ handlers, /*int*/ duration, /*dojo._Line*/ curve, /*function*/ easing,
-		/*int*/ repeatCount, /*int*/ rate){
+	function(/*Object*/ args){
 		//	summary
 		//		a generic animation object that fires callbacks into it's handlers
 		//		object at various states
-		//	handlers: { handler: Function?, onstart: Function?, onstop: Function?, onanimate: Function? }
-		if(dojo.isArray(curve)){
+		//  FIXME: document args object
+		dojo.mixin(this, args);
+		if(dojo.isArray(this.curve)){
 			/* curve: Array
 			   pId: a */
-			this.curve = new dojo._Line(curve[0], curve[1]);
-		}else{
-			this.curve = curve;
-		}
-		if(duration != null && duration > 0){ this.duration = duration; }
-		if(repeatCount){ this.repeatCount = repeatCount; }
-		if(rate){ this.rate = rate; }
-		if(handlers){
-			dojo.forEach([
-					"beforeBegin", "onBegin", 
-					"onEnd", "onPlay", "onStop", "onAnimate"
-				], function(item){
-					if(handlers[item]){
-						dojo.connect(this, item, this, handlers[item]);
-					}
-				}, this);
-		}
-		if(easing && dojo.isFunction(easing)){
-			this.easing=easing;
+			this.curve = new dojo._Line(this.curve[0], this.curve[1]);
 		}
 	},
 	{
@@ -80,6 +55,7 @@ dojo.declare("dojo._Animation", null,
 		easing: null,
 		repeatCount: 0,
 		rate: 10, // 100 fps
+		delay: null,
 		
 		// events
 		beforeBegin: null,
@@ -110,25 +86,16 @@ dojo.declare("dojo._Animation", null,
 			return this; // dojo._Animation
 		},
 		
-		repeat: function(/*int*/ count){
-			// summary: Set the repeat count of this object.
-			// count: How many times to repeat the animation.
-			this.repeatCount = count;
-			return this; // dojo._Animation
-		},
-
-		chain: function(){
-			var args = (arguments.length == 1 && dojo.isArray(arguments[0])) ? arguments[0] : arguments;
-			dojo.forEach(args, function(anim, i){
-				var prev = (i==0) ? this : args[i-1];
+		chain: function(/*dojo._Animation[]*/ anims){
+			dojo.forEach(anims, function(anim, i){
+				var prev = (i==0) ? this : anims[i-1];
 				dojo.connect(prev, "onEnd", anim, "play");
 			}, this);
 			return this; // dojo._Animation
 		},
 
-		combine: function(){
-			var args = (arguments.length == 1 && dojo.isArray(arguments[0])) ? arguments[0] : arguments;
-			dojo.forEach(args, function(anim){
+		combine: function(/*dojo._Animation[]*/ anims){
+			dojo.forEach(anims, function(anim){
 				dojo.connect(this, "play", anim, "play");
 			}, this);
 			return this; // dojo._Animation
@@ -141,8 +108,7 @@ dojo.declare("dojo._Animation", null,
 			//            starts it from its current position.
 			if(gotoStart){
 				clearTimeout(this._timer);
-				this._active = false;
-				this._paused = false;
+				this._active = this._paused = false;
 				this._percent = 0;
 			}else if(this._active && !this._paused){
 				return this; // dojo._Animation
@@ -150,23 +116,23 @@ dojo.declare("dojo._Animation", null,
 
 			this.fire("beforeBegin");
 
-			if(delay > 0){
-				setTimeout(dojo.hitch(this, function(){ this.play(null, gotoStart); }), delay);
+			var d = delay||this.delay;
+			if(d > 0){
+				setTimeout(dojo.hitch(this, function(){ this.play(null, gotoStart); }), d);
 				return this; // dojo._Animation
 			}
 		
 			this._startTime = new Date().valueOf();
 			if(this._paused){
-				this._startTime -= this.duration * this._percent / 100;
+				this._startTime -= this.duration * this._percent;
 			}
 			this._endTime = this._startTime + this.duration;
 
 			this._active = true;
 			this._paused = false;
 		
-			var step = this._percent / 100;
-			var value = this.curve.getValue(step);
-			if(this._percent == 0 ){
+			var value = this.curve.getValue(this._percent);
+			if(this._percent == 0){
 				if(!this._startRepeatCount){
 					this._startRepeatCount = this.repeatCount;
 				}
@@ -184,7 +150,7 @@ dojo.declare("dojo._Animation", null,
 			clearTimeout(this._timer);
 			if(!this._active){ return this; /*dojo._Animation*/}
 			this._paused = true;
-			var value = this.curve.getValue(this._percent / 100);
+			var value = this.curve.getValue(this._percent);
 			this.fire("onPause", [value]);
 			return this; // dojo._Animation
 		},
@@ -194,9 +160,8 @@ dojo.declare("dojo._Animation", null,
 			// pct: A percentage in decimal notation (between and including 0.0 and 1.0).
 			// andPlay: If true, play the animation after setting the progress.
 			clearTimeout(this._timer);
-			this._active = true;
-			this._paused = true;
-			this._percent = pct;
+			this._active = this._paused = true;
+			this._percent = pct * 100;
 			if(andPlay){ this.play(); }
 			return this; // dojo._Animation
 		},
@@ -205,14 +170,12 @@ dojo.declare("dojo._Animation", null,
 			// summary: Stops a running animation.
 			// gotoEnd: If true, the animation will end.
 			clearTimeout(this._timer);
-			var step = this._percent / 100;
 			if(gotoEnd){
-				step = 1;
+				this._percent = 1;
 			}
-			var value = this.curve.getValue(step);
+			var value = this.curve.getValue(this._percent);
 			this.fire("onStop", [value]);
-			this._active = false;
-			this._paused = false;
+			this._active = this._paused = false;
 			return this; // dojo._Animation
 		},
 
@@ -235,10 +198,10 @@ dojo.declare("dojo._Animation", null,
 				if(step >= 1){
 					step = 1;
 				}
-				this._percent = step * 100;
+				this._percent = step;
 
 				// Perform easing
-				if(this.easing && dojo.isFunction(this.easing)){
+				if(this.easing){
 					step = this.easing(step);
 				}
 
@@ -322,18 +285,16 @@ dojo.declare("dojo._Animation", null,
 	}
 
 	dojo._fade = function(/*DOMNode[]*/ nodes,
-								  /*Object*/values,
-								  /*int?*/ duration,
-								  /*Function?*/ easing,
-								  /*Function?*/ callback){
+						  /*Object*/values,
+						  /*int?*/ duration,
+						  /*Function?*/ easing){
 		// summary:Returns an animation that will fade the "nodes" from the start to end values passed.
 		// nodes: An array of DOMNodes or one DOMNode.
 		// values: { start: Decimal?, end: Decimal? }
 		// duration: Duration of the animation in milliseconds.
 		// easing: An easing function.
-		// callback: Function to run at the end of the animation.
 		nodes = _byId(nodes);
-		var props = { property: "opacity" };
+		var props = {};
 		props.start = (typeof values.start == "undefined") ?
 			function(){ return Number(dojo.style(nodes[0], "opacity")); } : values.start;
 
@@ -343,33 +304,33 @@ dojo.declare("dojo._Animation", null,
 		}
 		props.end = values.end;
 
-		var anim = dojo.animateProperty(nodes, [props], duration, easing);
-		dojo.connect(anim, "beforeBegin", anim, function(){
+		var anim = dojo.animateProperty({
+			nodes: nodes,
+			properties: { opacity: props },
+			duration: duration,
+			easing: easing
+		});
+		dojo.connect(anim, "beforeBegin", null, function(){
 			_makeFadeable(nodes);
 		});
-		if(callback){
-			dojo.connect(anim, "onEnd", anim, function(){ callback(nodes, anim); });
-		}
 
 		return anim; // dojo._Animation
 	}
 
-	dojo.fadeIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
+	dojo.fadeIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing){
 		// summary: Returns an animation that will fade "nodes" from its current opacity to fully opaque.
 		// nodes: An array of DOMNodes or one DOMNode.
 		// duration: Duration of the animation in milliseconds.
 		// easing: An easing function.
-		// callback: Function to run at the end of the animation.
-		return dojo._fade(nodes, {end: 1}, duration, easing, callback); // dojo._Animation
+		return dojo._fade(nodes, {end: 1}, duration, easing); // dojo._Animation
 	}
 
-	dojo.fadeOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing, /*Function?*/ callback){
+	dojo.fadeOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing){
 		// summary: Returns an animation that will fade "nodes" from its current opacity to fully transparent.
 		// nodes: An array of DOMNodes or one DOMNode.
 		// duration: Duration of the animation in milliseconds.
 		// easing: An easing function.
-		// callback: Function to run at the end of the animation.	
-		return dojo._fade(nodes, {end: 0}, duration, easing, callback); // dojo._Animation
+		return dojo._fade(nodes, {end: 0}, duration, easing); // dojo._Animation
 	}
 
 	if(dojo.isKhtml && !dojo.isSafari){
@@ -387,119 +348,69 @@ dojo.declare("dojo._Animation", null,
 		}
 	}
 
-	dojo.animateProperty = function(/*DOMNode[]*/ nodes, 
-									/*Object[]*/ propertyMap, 
-									/*int*/ duration,
-									/*function*/ easing,
-									/*Object*/ handlers){
+	dojo.animateProperty = function(/*Object*/ args){
 		// summary: Returns an animation that will transition the properties of "nodes"
 		//			depending how they are defined in "propertyMap".
-		// nodes: An array of DOMNodes or one DOMNode.
-		// propertyMap: { property: String, start: Decimal?, end: Decimal?, units: String? }
-		//				An array of objects defining properties to change.
-		// duration: Duration of the animation in milliseconds.
-		// easing: An easing function.
-		// handlers: { handler: Function?, onstart: Function?, onstop: Function?, onanimate: Function? }
-		nodes = _byId(nodes);
-
-		var targs = {
-			"propertyMap": propertyMap,
-			"nodes": nodes,
-			"duration": duration,
-			"easing": easing||dojo._defaultEasing
-		};
+		args.nodes = _byId(args.nodes);
+		if (!args.easing){ args.easing = dojo._defaultEasing; }
 		
-		var setEmUp = function(args){
-			if(args.nodes.length==1){
-				// FIXME: we're only supporting start-value filling when one node is
-				// passed
-				
-				var pm = args.propertyMap;
-				//TODO: get rid of this check altogether?
-				if(!dojo.isArray(pm)){
-					throw new Error("dojo.animateProperty needs a list for propertyMap");
-				}
-				dojo.forEach(pm, function(prop){
-					if(typeof prop.start == "undefined"){
-						prop.start = dojo.style(args.nodes[0], prop.property);
-						prop.start = (prop.property == "opacity") ? Number(prop.start):parseInt(prop.start);
-					}
-				});
-			}
-		}
-
 		var PropLine = function(properties){
 			this._properties = properties;
-			this.diffs = [properties.length];
-			dojo.forEach(properties, function(prop, i){
+			for (var p in properties){
+				var prop = properties[p];
 				// calculate the end - start to optimize a bit
 				if(dojo.isFunction(prop.start)){
-					prop.start = prop.start(prop, i);
+					prop.start = prop.start(prop);
 				}
 				if(dojo.isFunction(prop.end)){
-					prop.end = prop.end(prop, i);
+					prop.end = prop.end(prop);
 				}
-				if(dojo.isArray(prop.start)){
-					// don't loop through the arrays
-					this.diffs[i] = null;
 	/* FIXME - gfx dependency
-				}else if(prop.start instanceof dojo.gfx.color.Color){
+				if(prop.start instanceof dojo.gfx.color.Color){
 					// save these so we don't have to call toRgb() every getValue() call
 					prop.startRgb = prop.start.toRgb();
 					prop.endRgb = prop.end.toRgb();
-	*/
-				}else{
-					this.diffs[i] = prop.end - prop.start;
 				}
-			}, this);
-
+	*/
+			}
 			this.getValue = function(n){
 				var ret = {};
-				dojo.forEach(this._properties, function(prop, i){
+				for (var p in this._properties) {
+					var prop = this._properties[p];
 					var value = null;
-					if(dojo.isArray(prop.start)){
-						// FIXME: what to do here?
-	/* FIXME
-					}else if(prop.start instanceof dojo.gfx.color.Color){
-						value = (prop.units||"rgb") + "(";
-						for(var j = 0 ; j < prop.startRgb.length ; j++){
-							value += Math.round(((prop.endRgb[j] - prop.startRgb[j]) * n) + prop.startRgb[j]) + (j < prop.startRgb.length - 1 ? "," : "");
-						}
-						value += ")";
-	*/
-					}else{
-						value = (this.diffs[i] * n) + prop.start + (prop.property != "opacity" ? prop.units||"px" : "");
+					if(!dojo.isArray(prop.start)){
+						value = ((prop.end - prop.start) * n) + prop.start + (p != "opacity" ? prop.units||"px" : "");
 					}
-					ret[prop.property] = value;
-	//FIXME				ret[dojo.html.toCamelCase(prop.property)] = value;
-				}, this);
+					ret[p] = value;
+				}
 				return ret;
 			}
 		}
 		
-		var anim = new dojo._Animation({
-			beforeBegin: function(){ 
-				setEmUp(targs);
-				anim.curve = new PropLine(targs.propertyMap);
-			},
-			onAnimate: function(propValues){
-				dojo.forEach(targs.nodes, function(node){
-					for (var s in propValues) {
-						dojo.style(node, s, propValues[s]);
+		var anim = new dojo._Animation(args);
+		dojo.connect(anim, "beforeBegin", anim, function(){
+			if(this.nodes.length==1){
+				// FIXME: we're only supporting start-value filling when one node is
+				// passed
+				var pm = this.properties;
+				for (var p in pm) {
+					var prop = pm[p];
+					if(typeof prop.start == "undefined"){
+						prop.start = dojo.style(anim.nodes[0], p);
+						prop.start = (p == "opacity") ? Number(prop.start) : parseInt(prop.start);
 					}
-				});
-			}
-		},
-		targs.duration, null, targs.easing);
-
-		if(handlers){
-			for(var x in handlers){
-				if(dojo.isFunction(handlers[x])){
-					dojo.connect(anim, x, anim, handlers[x]);
 				}
 			}
-		}
-		
+			this.curve = new PropLine(pm);
+		});
+		dojo.connect(anim, "onAnimate", anim, function(propValues){
+			dojo.forEach(this.nodes, function(node){
+				for (var s in propValues) {
+					dojo.style(node, s, propValues[s]);
+				}
+			});
+		});
+
 		return anim; // dojo._Animation
 	}
 })();

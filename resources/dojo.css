@@ -32,17 +32,15 @@
 body { 
 	/*
 	font-family: Georgia, "Times New Roman", serif; 
+	font-family: "Trebuchet MS", Trebuchet, "Bitstream Vera Sans", Corbel, Geneva, Futura, "Gill Sans", sans-serif; 
 	font-size: 75%;
 	*/
-	font-family: "Trebuchet MS", Trebuchet, "Bitstream Vera Sans", Corbel, Geneva, Futura, "Gill Sans", sans-serif; 
-	font-size: 85%;
+	font-family: "Myriad Pro", Myriad, Arial, Helvetica, sans-serif;
+	font-size: 75%;
 }
-
-/*
 html > body { 
 	font-size: 12px;
 }
-*/
 
 /* Headings */
 h1,h2,h3,h4,h5,h6 { 

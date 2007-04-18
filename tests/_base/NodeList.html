@@ -1,5 +1,8 @@
 <html>
 	<head>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+		</style>
 		<title>testing dojo.NodeList</title>
 		<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript">
@@ -100,6 +103,7 @@
 							t.is(dojo.byId("c1"), pnl.query("span")[0]);
 							t.is(dojo.byId("t"), dojo.query("body").query(":last-child")[0]);
 							t.is(dojo.byId("c1"), dojo.query("body").query(":last-child")[1]);
+							t.is(1, pnl.query().length);
 						},
 						function filter(t){
 							t.is(dojo.query("body :first-child").filter(":last-child")[0], dojo.byId("c1"));
@@ -110,7 +114,8 @@
 									return (n.nodeName.toLowerCase() == "span");
 								}
 							};
-							t.is(1, dojo.query("*").filter(filterObj, "filterFunc").length);
+							t.is(1, dojo.query("*").filter(filterObj.filterFunc).length);
+							t.is(1, dojo.query("*").filter(filterObj.filterFunc, filterObj).length);
 						} /*,
 
 						// layout DOM functions

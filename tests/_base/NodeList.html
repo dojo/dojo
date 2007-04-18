@@ -5,27 +5,132 @@
 		<script type="text/javascript">
 			dojo.require("tests.runner");
 			dojo.addOnLoad(function(){
+				var fourElementNL = new dojo.NodeList(
+					dojo.byId("c1"), 
+					dojo.byId("t"),
+					dojo.byId("c1"), 
+					dojo.byId("t")
+				);
 				tests.register("t", 
 					[
+						// constructor tests
 						function ctor(t){
 							var nl = new dojo.NodeList();
 							nl.push(dojo.byId("c1"));
-							t.assertEqual(1, nl.length);
+							t.is(1, nl.length);
 						},
 						function ctorArgs(t){
 							var nl = new dojo.NodeList(4);
 							nl.push(dojo.byId("c1"));
-							t.assertEqual(5, nl.length);
+							t.is(5, nl.length);
 						},
 						function ctorArgs2(t){
 							var nl = new dojo.NodeList(dojo.byId("c1"), dojo.byId("t"));
-							t.assertEqual(2, nl.length);
-							t.assertEqual(dojo.byId("c1"), nl[0]);
-							t.assertEqual(dojo.byId("t"), nl[1]);
+							t.is(2, nl.length);
+							t.is(dojo.byId("c1"), nl[0]);
+							t.is(dojo.byId("t"), nl[1]);
 						},
+
+						// iteration and array tests
 						function forEach(t){
-							// FIXME
+							var lastItem;
+							var nl = new dojo.NodeList(dojo.byId("c1"), dojo.byId("t"));
+							nl.forEach(function(i){ lastItem = i; });
+							t.is(dojo.byId("t"), lastItem);
+
+							nl.forEach(function(i, idx, arr){
+								t.t(arr instanceof dojo.NodeList);
+								t.is(2, arr.length);
+							});
+						},
+						function indexOf(t){
+							t.is(0, fourElementNL.indexOf(dojo.byId("c1")));
+							t.is(1, fourElementNL.indexOf(dojo.byId("t")));
+							t.is(-1, fourElementNL.indexOf(null));
+						},
+						function lastIndexOf(t){
+							t.is(2, fourElementNL.lastIndexOf(dojo.byId("c1")));
+							t.is(3, fourElementNL.lastIndexOf(dojo.byId("t")));
+							t.is(-1, fourElementNL.lastIndexOf(null));
+						},
+						function every(t){
+							var ctr = 0;
+							var ret = fourElementNL.every(function(){
+								ctr++;
+								return true;
+							});
+							t.is(4, ctr);
+							t.t(ret);
+
+							ctr = 0;
+							var ret = fourElementNL.every(function(){
+								ctr++;
+								return false;
+							});
+							t.is(1, ctr);
+							t.f(ret);
+						},
+						function some(t){
+							var ret = fourElementNL.some(function(){
+								return true;
+							});
+							t.t(ret);
+
+							var ret = fourElementNL.some(function(i){
+								return (i.id == "t");
+							});
+							t.t(ret);
+						},
+						function map(t){
+							var ret = fourElementNL.map(function(){
+								return true;
+							});
+							t.is(ret, [true, true, true, true]);
+							var cnt = 0;
+							var ret = fourElementNL.map(function(){
+								return cnt++;
+							});
+							t.is(ret, [0, 1, 2, 3]);
+							// FIXME: need more tests on map!!
+						},
+
+						// sub-search
+						function query(t){
+							var pnl = new dojo.NodeList(dojo.byId("t"));
+							t.is(dojo.byId("c1"), pnl.query("span")[0]);
+							t.is(dojo.byId("t"), dojo.query("body").query(":last-child")[0]);
+							t.is(dojo.byId("c1"), dojo.query("body").query(":last-child")[1]);
+						},
+						function filter(t){
+							t.is(dojo.query("body :first-child").filter(":last-child")[0], dojo.byId("c1"));
+							t.is(1, dojo.query("*").filter(function(n){ return (n.nodeName.toLowerCase() == "span"); }).length);
+
+							var filterObj = {
+								filterFunc: function(n){
+									return (n.nodeName.toLowerCase() == "span");
+								}
+							};
+							t.is(1, dojo.query("*").filter(filterObj, "filterFunc").length);
+						} /*,
+
+						// layout DOM functions
+						function box(t){
+						},
+						function boxes(t){
+						},
+						function style(t){
+						},
+						function styles(t){
+						},
+						function place(t){
+						},
+						function orphan(t){
+						},
+						function adopt(t){
+						},
+						function addContent(t){
 						}
+						*/
 					]
 				);
 				tests.run();

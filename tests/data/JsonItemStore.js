@@ -28,12 +28,12 @@ tests.register("tests.data.JsonItemStore",
 			
 			var d = new tests.Deferred();
             function completedAll(items){
-				t.assertTrue((items.length === 7));
+				t.is(7, items.length);
 				d.callback(true);
 			}
 			function error(errData){
-				t.assertTrue(false);
-				d.errback(false);
+				// t.assertTrue(false);
+				d.errback(errData);
 			}
 
 			//Get everything...

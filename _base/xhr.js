@@ -344,9 +344,12 @@ dojo._contentHandlers = {
 	var _defaultContentType = "application/x-www-form-urlencoded";
 
 	var _doIt = function(type, args, ao){
-		var ga = [type, args.url, (args.sync !== true)];
-		if(args.user){ ga.push(args.user, args.password); }
-		ao.xhr.open.apply(ao.xhr, ga);
+		// IE 6 is a steaming pile. It won't let you call apply() on the native function.
+		// var ga = [type, args.url, (args.sync !== true)];
+		// if(args.user){ ga.push(args.user, args.password); }
+		// ao.xhr.open.apply(ao.xhr, ga);
+		// workaround for IE6's apply() "issues"
+		ao.xhr.open(type, args.url, (args.sync !== true), (args.user ? args.user : undefined), (args.password ? args.password: undefined));
 		// FIXME: is this appropriate for all content types?
 		ao.xhr.setRequestHeader("Content-Type", (args.contentType||_defaultContentType));
 		// FIXME: set other headers here!

@@ -152,8 +152,10 @@ if(typeof window != 'undefined'){
 		return true;
 	}
 
+	dojo._initFired = false;
 	//	BEGIN DOMContentLoaded, from Dean Edwards (http://dean.edwards.name/weblog/2006/06/again/)
 	dojo._loadInit = function(e){
+		dojo._initFired = true;
 		// allow multiple calls, only first one will take effect
 		// A bug in khtml calls events callbacks for document for event which isnt supported
 		// for example a created contextmenu event calls DOMContentLoaded, workaround

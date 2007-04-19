@@ -54,19 +54,20 @@ dojo.require("dojo._base.array");
 			style: function(prop){
 				// (key, value)
 				// (props, ...)
-				dojo.style.apply(dojo, dojo._toArray(arguments));
-				return new dojo.NodeList(this[0]);
+				var aa = dojo._toArray(arguments);
+				aa.unshift(this[0]);
+				return dojo.style.apply(dojo, aa);
 			},
 
 			styles: function(prop){
 				// (key, value)
 				// (props, ...)
 				var aa = dojo._toArray(arguments);
-				this.forEach(function(i){
+				aa.unshift(null);
+				return this.map(function(i){
 					aa[0] = i;
-					dojo.style.apply(dojo, aa);
+					return dojo.style.apply(dojo, aa);
 				});
-				return this;
 			},
 
 			place: function(queryOrNode, /*String*/ position){
@@ -132,6 +133,8 @@ dojo.require("dojo._base.array");
 				//		returns a new NodeList. Elements of the new NodeList
 				//		satisfy the passed query but use elements of the
 				//		current NodeList as query roots.
+
+				queryStr = queryStr||"";
 
 				// FIXME: probably slow
 				var ret = new d.NodeList();

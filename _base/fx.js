@@ -14,23 +14,10 @@ dojo._Line = function(/*int*/ start, /*int*/ end){
 	//			from a start value to an end value
 	this.start = start;
 	this.end = end;
-	if(dojo.isArray(start)){
-		/* start: Array
-		   end: Array
-		   pId: a */
-		this.getValue = function(/*float*/ n){
-			var res = [];
-			dojo.forEach(this.start, function(s, i){
-				res[i] = ((this.end[i] - this.start[i]) * n) + s;
-			}, this);
-			return res; // Array
-		}
-	}else{
-		this.getValue = function(/*float*/ n){
-			//	summary: returns the point on the line
-			//	n: a floating point number greater than 0 and less than 1
-			return ((this.end - this.start) * n) + this.start; // Decimal
-		}
+	this.getValue = function(/*float*/ n){
+		//	summary: returns the point on the line
+		//	n: a floating point number greater than 0 and less than 1
+		return ((this.end - this.start) * n) + this.start; // Decimal
 	}
 }
 
@@ -53,7 +40,7 @@ dojo.declare("dojo._Animation", null,
 		curve: null,
 		duration: 1000,
 		easing: null,
-		repeatCount: 0,
+		repeat: 0,
 		rate: 10, // 100 fps
 		delay: null,
 		
@@ -134,7 +121,7 @@ dojo.declare("dojo._Animation", null,
 			var value = this.curve.getValue(this._percent);
 			if(this._percent == 0){
 				if(!this._startRepeatCount){
-					this._startRepeatCount = this.repeatCount;
+					this._startRepeatCount = this.repeat;
 				}
 				this.fire("onBegin", [value]);
 			}
@@ -150,8 +137,7 @@ dojo.declare("dojo._Animation", null,
 			clearTimeout(this._timer);
 			if(!this._active){ return this; /*dojo._Animation*/}
 			this._paused = true;
-			var value = this.curve.getValue(this._percent);
-			this.fire("onPause", [value]);
+			this.fire("onPause", [this.curve.getValue(this._percent)]);
 			return this; // dojo._Animation
 		},
 
@@ -173,8 +159,7 @@ dojo.declare("dojo._Animation", null,
 			if(gotoEnd){
 				this._percent = 1;
 			}
-			var value = this.curve.getValue(this._percent);
-			this.fire("onStop", [value]);
+			this.fire("onStop", [this.curve.getValue(this._percent)]);
 			this._active = this._paused = false;
 			return this; // dojo._Animation
 		},
@@ -205,26 +190,25 @@ dojo.declare("dojo._Animation", null,
 					step = this.easing(step);
 				}
 
-				var value = this.curve.getValue(step);
-				this.fire("onAnimate", [value]);
+				this.fire("onAnimate", [this.curve.getValue(step)]);
 
 				if(step < 1){
 					this._timer = setTimeout(dojo.hitch(this, "_cycle"), this.rate);
 				}else{
 					this._active = false;
-					this.fire("onEnd");
 
-					if(this.repeatCount > 0){
-						this.repeatCount--;
+					if(this.repeat > 0){
+						this.repeat--;
 						this.play(null, true);
-					}else if(this.repeatCount == -1){
+					}else if(this.repeat == -1){
 						this.play(null, true);
 					}else{
 						if(this._startRepeatCount){
-							this.repeatCount = this._startRepeatCount;
+							this.repeat = this._startRepeatCount;
 							this._startRepeatCount = 0;
 						}
 					}
+					this.fire("onEnd");
 				}
 			}
 			return this; // dojo._Animation
@@ -233,104 +217,61 @@ dojo.declare("dojo._Animation", null,
 );
 
 (function(){
-	var _makeFadeable = function(nodes){
-		var makeFade = function(node){
-			if(dojo.isIE){
-				// only set the zoom if the "tickle" value would be the same as the
-				// default
-				if(node.style.zoom.length == 0 && dojo.style(node, "zoom") == "normal"){
-					// make sure the node "hasLayout"
-					// NOTE: this has been tested with larger and smaller user-set text
-					// sizes and works fine
-					node.style.zoom = "1";
-					// node.style.zoom = "normal";
-				}
-				// don't set the width to auto if it didn't already cascade that way.
-				// We don't want to f anyones designs
-				if(node.style.width.length == 0 && dojo.style(node, "width") == "auto"){
-					node.style.width = "auto";
-				}
+	var _makeFadeable = function(node){
+		if(dojo.isIE){
+			// only set the zoom if the "tickle" value would be the same as the
+			// default
+			if(node.style.zoom.length == 0 && dojo.style(node, "zoom") == "normal"){
+				// make sure the node "hasLayout"
+				// NOTE: this has been tested with larger and smaller user-set text
+				// sizes and works fine
+				node.style.zoom = "1";
+				// node.style.zoom = "normal";
 			}
-		}
-		if(dojo.isArrayLike(nodes)){
-			dojo.forEach(nodes, makeFade);
-		}else{
-			makeFade(nodes);
+			// don't set the width to auto if it didn't already cascade that way.
+			// We don't want to f anyones designs
+			if(node.style.width.length == 0 && dojo.style(node, "width") == "auto"){
+				node.style.width = "auto";
+			}
 		}
 	}
 
-	//Memoizing. Assumes that the array doesn't change. FIXME: can this go away
-	//or get folded into dojo.byId?  Talk it over with Bryan
-	//Moving this above any functions that use it so the dojo compressor does not
-	//strip it out.
-	var _byId = function(nodes){
-		if(!nodes){ return []; }
-		if(dojo.isArrayLike(nodes)){
-			if(!nodes._alreadyChecked){
-				var n = [];
-				dojo.forEach(nodes, function(node){
-					n.push(dojo.byId(node));
-				});
-				n._alreadyChecked = true;
-				return n;
-			}else{
-				return nodes;
-			}
-		}else{
-			var n = [];
-			n.push(dojo.byId(nodes));
-			n._alreadyChecked = true;
-			return n;
-		}
-	}
-
-	dojo._fade = function(/*DOMNode[]*/ nodes,
-						  /*Object*/values,
-						  /*int?*/ duration,
-						  /*Function?*/ easing){
+	dojo._fade = function(/*Object*/ args){
 		// summary:Returns an animation that will fade the "nodes" from the start to end values passed.
-		// nodes: An array of DOMNodes or one DOMNode.
-		// values: { start: Decimal?, end: Decimal? }
-		// duration: Duration of the animation in milliseconds.
-		// easing: An easing function.
-		nodes = _byId(nodes);
-		var props = {};
-		props.start = (typeof values.start == "undefined") ?
-			function(){ return Number(dojo.style(nodes[0], "opacity")); } : values.start;
 
-//FIXME: remove arg checking?  Change docs above to show that end is not optional.  Just make sure this blows up in a reliable way?
-		if(typeof values.end == "undefined"){
+		//FIXME: remove arg checking?  Change docs above to show that end is not optional.  Just make sure this blows up in a reliable way?
+		if(typeof args.end == "undefined"){
 			throw new Error("dojo._fade needs an end value");
 		}
-		props.end = values.end;
+		args.node = dojo.byId(args.node);
+		var fArgs = dojo.mixin({ properties: {} }, args);
+		var props = fArgs.properties.opacity = {};
+		props.start = (typeof fArgs.start == "undefined") ?
+			function(){ return Number(dojo.style(fArgs.node, "opacity")); } : fArgs.start;
+		props.end = fArgs.end;
 
-		var anim = dojo.animateProperty({
-			nodes: nodes,
-			properties: { opacity: props },
-			duration: duration,
-			easing: easing
-		});
+		var anim = dojo.animateProperty(fArgs);
 		dojo.connect(anim, "beforeBegin", null, function(){
-			_makeFadeable(nodes);
+			_makeFadeable(fArgs.node);
 		});
 
 		return anim; // dojo._Animation
 	}
 
-	dojo.fadeIn = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing){
+	dojo.fadeIn = function(/*Object*/ args){
 		// summary: Returns an animation that will fade "nodes" from its current opacity to fully opaque.
 		// nodes: An array of DOMNodes or one DOMNode.
 		// duration: Duration of the animation in milliseconds.
 		// easing: An easing function.
-		return dojo._fade(nodes, {end: 1}, duration, easing); // dojo._Animation
+		return dojo._fade(dojo.mixin({ end: 1 }, args)); // dojo._Animation
 	}
 
-	dojo.fadeOut = function(/*DOMNode[]*/ nodes, /*int?*/ duration, /*Function?*/ easing){
+	dojo.fadeOut = function(/*Object*/ args){
 		// summary: Returns an animation that will fade "nodes" from its current opacity to fully transparent.
 		// nodes: An array of DOMNodes or one DOMNode.
 		// duration: Duration of the animation in milliseconds.
 		// easing: An easing function.
-		return dojo._fade(nodes, {end: 0}, duration, easing); // dojo._Animation
+		return dojo._fade(dojo.mixin({ end: 0 }, args)); // dojo._Animation
 	}
 
 	if(dojo.isKhtml && !dojo.isSafari){
@@ -351,7 +292,7 @@ dojo.declare("dojo._Animation", null,
 	dojo.animateProperty = function(/*Object*/ args){
 		// summary: Returns an animation that will transition the properties of "nodes"
 		//			depending how they are defined in "propertyMap".
-		args.nodes = _byId(args.nodes);
+		args.node = dojo.byId(args.node);
 		if (!args.easing){ args.easing = dojo._defaultEasing; }
 		
 		var PropLine = function(properties){
@@ -389,26 +330,20 @@ dojo.declare("dojo._Animation", null,
 		
 		var anim = new dojo._Animation(args);
 		dojo.connect(anim, "beforeBegin", anim, function(){
-			if(this.nodes.length==1){
-				// FIXME: we're only supporting start-value filling when one node is
-				// passed
-				var pm = this.properties;
-				for (var p in pm) {
-					var prop = pm[p];
-					if(typeof prop.start == "undefined"){
-						prop.start = dojo.style(anim.nodes[0], p);
-						prop.start = (p == "opacity") ? Number(prop.start) : parseInt(prop.start);
-					}
+			var pm = this.properties;
+			for (var p in pm) {
+				var prop = pm[p];
+				if(typeof prop.start == "undefined"){
+					prop.start = dojo.style(this.node, p);
+					prop.start = (p == "opacity") ? Number(prop.start) : parseInt(prop.start);
 				}
 			}
 			this.curve = new PropLine(pm);
 		});
 		dojo.connect(anim, "onAnimate", anim, function(propValues){
-			dojo.forEach(this.nodes, function(node){
-				for (var s in propValues) {
-					dojo.style(node, s, propValues[s]);
-				}
-			});
+			for (var s in propValues) {
+				dojo.style(this.node, s, propValues[s]);
+			}
 		});
 
 		return anim; // dojo._Animation

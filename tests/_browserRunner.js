@@ -2,12 +2,9 @@ if(window["dojo"]){
 	dojo.provide("tests._browserRunner");
 }
 
-// FIXME: need to "look up" to see what we should define/redefine if we're
-// loaded in the child iframe for testing.
 // FIXME: need to add prompting for monkey-do testing
 // FIXME: need to implement progress bar
 // FIXME: need to implement errors in progress bar
-// FIXME: need to implement run/log tabs
 
 (function(){
 	if(window.parent == window){
@@ -125,13 +122,31 @@ if(window["dojo"]){
 			var tb = byId("testList").tBodies[0];
 			var tg = groupTemplate.cloneNode(true);
 			var tds = tg.getElementsByTagName("td");
-			var cb = tds[0].getElementsByTagName("input")[0];
+			var rolledUp = true;
+			var toggle = tds[0];
+			toggle.onclick = function(){
+				var nodes = groupNodes[group].__items;
+				if(rolledUp){
+					rolledUp = false;
+					for(var x=0; x<nodes.length; x++){
+						nodes[x].style.display = "";
+					}
+					toggle.innerHTML = "&#054;";
+				}else{
+					rolledUp = true;
+					for(var x=0; x<nodes.length; x++){
+						nodes[x].style.display = "none";
+					}
+					toggle.innerHTML = "&#052;";
+				}
+			}
+			var cb = tds[1].getElementsByTagName("input")[0];
 			cb.group = group;
 			cb.onclick = function(evt){
 				tests._groups[group].skip = (!this.checked);
 			}
-			tds[1].innerHTML = group;
-			tds[2].innerHTML = "";
+			tds[2].innerHTML = group;
+			tds[3].innerHTML = "";
 
 			tb.appendChild(tg);
 			return tg;
@@ -140,11 +155,12 @@ if(window["dojo"]){
 		var addFixtureToList = function(group, fixture){
 			if(!testTemplate){ return; }
 			var cgn = groupNodes[group];
+			if(!cgn["__items"]){ cgn.__items = []; }
 			var tn = testTemplate.cloneNode(true);
 			var tds = tn.getElementsByTagName("td");
 
-			tds[1].innerHTML = fixture.name;
-			tds[2].innerHTML = "";
+			tds[2].innerHTML = fixture.name;
+			tds[3].innerHTML = "";
 
 			var nn = (cgn.__lastFixture||cgn.__groupNode).nextSibling;
 			if(nn){
@@ -152,6 +168,9 @@ if(window["dojo"]){
 			}else{
 				cgn.__groupNode.parentNode.appendChild(tn);
 			}
+			// FIXME: need to make group display toggleable!!
+			tn.style.display = "none";
+			cgn.__items.push(tn);
 			return cgn.__lastFixture = tn;
 		}
 
@@ -237,7 +256,7 @@ if(window["dojo"]){
 		tests._testFinished = function(group, fixture, success){
 			var fn = getFixtureNode(group, fixture);
 			if(fn){
-				fn.getElementsByTagName("td")[2].innerHTML = ((new Date())-fixture.startTime)+"ms";
+				fn.getElementsByTagName("td")[3].innerHTML = ((new Date())-fixture.startTime)+"ms";
 				fn.className = (success) ? "success" : "failure";
 
 				if(!success){

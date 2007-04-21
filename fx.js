@@ -114,8 +114,8 @@ dojo.fx.slideTo = function(/*Object?*/ args){
 			top = (pos == 'absolute' ? node.offsetTop : parseInt(compute(node).top) || 0);
 			left = (pos == 'absolute' ? node.offsetLeft : parseInt(compute(node).left) || 0);
 
-			if (pos != 'absolute' && pos != 'relative') {
-				var ret = dojo.html.abs(innerNode, true); //FIXME: finish port
+			if(pos != 'absolute' && pos != 'relative'){
+				var ret = dojo.coords(innerNode, true);
 				top = ret.y;
 				left = ret.x;
 				innerNode.style.position="absolute";

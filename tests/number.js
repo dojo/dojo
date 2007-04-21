@@ -202,12 +202,10 @@ tests.register("tests.number",
 	t.is(-1000.123, dojo.number.parse("-1000.123", {locale: "en-us"}));
 	t.is(-1234567.89, dojo.number.parse("-1,234,567.89", {locale: "en-us"}));
 	t.is(-1234567.89, dojo.number.parse("-1 234 567,89", {locale: "fr-fr"}));
-//FIXME: the following three tests fail because NaN===NaN is false, so the test harness cannot verify them
-//	t.is(NaN, dojo.number.parse("-1 234 567,89", {locale: "en-us"}));
+	t.t(isNaN(dojo.number.parse("-1 234 567,89", {locale: "en-us"})));
 
-	//invalid - NaN
-//	t.is(NaN, dojo.number.parse("10,00", {locale: "en-us"}));
-//	t.is(NaN, dojo.number.parse("1000.1", {locale: "fr-fr"}));
+	t.t(isNaN(dojo.number.parse("10,00", {locale: "en-us"})));
+	t.t(isNaN(dojo.number.parse("1000.1", {locale: "fr-fr"})));
 
 	//test whitespace
 //	t.is(-1234567, dojo.number.parse("  -1,234,567  ", {locale: "en-us"}));

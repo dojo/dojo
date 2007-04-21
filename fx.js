@@ -190,7 +190,7 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
 			height: {
-				start: function(){ return dojo.html.getContentBox(node).height; },
+				start: function(){ return dojo.contentBox(node).h; },
 				end: 1 // 0 causes IE to display the whole panel
 			}
 		}

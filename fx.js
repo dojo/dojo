@@ -1,7 +1,4 @@
 dojo.provide("dojo.fx");
-dojo.require("dojo._base.connect");
-dojo.require("dojo._base.declare");
-dojo.require("dojo._base.fx");
 
 dojo.fx.chain = function(/*Array*/ anims){
 	var first = anims.shift();
@@ -150,7 +147,7 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 	// (for FF, the node has to be (temporarily) rendered to measure height)
 	dojo.style(node, "visibility", "hidden");
 	dojo.style(node, "display", "");
-	var nodeHeight = dojo.borderBox(node).h;
+	var nodeHeight = dojo.marginBox(node).h; //PORT was getBorderBox
 	dojo.style(node, "visibility", "");
 	dojo.style(node, "display", "none");
 
@@ -163,7 +160,7 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 		}
 	}, args));
 
-	anim.connect("beforeBegin", function(){
+	dojo.connect(anim, "beforeBegin", null, function(){
 		oprop.overflow = dojo.style(node, "overflow");
 		oprop.height = dojo.style(node, "height");
 		dojo.style(node, "overflow", "hidden");
@@ -171,7 +168,7 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 		dojo.style(node, "display", "");
 	});
 	
-	anim.connect("onEnd", function(){ 
+	dojo.connect(anim, "onEnd", null, function(){ 
 		dojo.style(node, "overflow", oprop.overflow);
 		dojo.style(node, "height", oprop.height);
 	});
@@ -185,7 +182,7 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 	// duration: Duration of the animation in milliseconds.
 	// easing: An easing function.
 	var node = args.node = dojo.byId(node);
-	
+
 	var oprop = {};	// old properties of node (before we mucked w/them)
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {

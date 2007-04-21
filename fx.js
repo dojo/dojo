@@ -140,7 +140,6 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 	// duration: Duration of the animation in milliseconds.
 	// easing: An easing function.
 	var node = args.node = dojo.byId(args.node);
-
 	var oprop = {};	// old properties of node (before we mucked w/them)
 	
 	// get node height, either it's natural height or it's height specified via style or class attributes
@@ -150,12 +149,11 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 	var nodeHeight = dojo.marginBox(node).h; //PORT was getBorderBox
 	dojo.style(node, "visibility", "");
 	dojo.style(node, "display", "none");
-
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
 			height:	{
 				start: 1, // 0 causes IE to display the whole panel
-				end: function(){ return nodeHeight; }
+				end: function(){ return nodeHeight; } //FIXME: why a closure here?
 			}
 		}
 	}, args));
@@ -181,13 +179,12 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 	// nodes: An array of DOMNodes or one DOMNode.
 	// duration: Duration of the animation in milliseconds.
 	// easing: An easing function.
-	var node = args.node = dojo.byId(node);
-
+	var node = args.node = dojo.byId(args.node);
 	var oprop = {};	// old properties of node (before we mucked w/them)
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
 			height: {
-				start: function(){ return dojo.contentBox(node).h; },
+				start: function(){ return dojo.contentBox(node).h; }, //FIXME why a closure here?
 				end: 1 // 0 causes IE to display the whole panel
 			}
 		}

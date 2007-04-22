@@ -129,13 +129,19 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	// usage:
 	//		dojo.hitch(foo, "bar")(); // runs foo.bar() in the scope of foo
 	//		dojo.hitch(foo, myFunction); // returns a function that runs myFunction in the scope of foo
-	if(arguments.length > 2){
-		return dojo._hitchArgs.apply(dojo, arguments);
-	}else if(dojo.isString(method)){
+	var _a = arguments;
+	if(_a.length > 2){
+		return dojo._hitchArgs.apply(dojo, _a);
+	}
+	if(!method){
+		method = scope;
+		scope = null;
+	}
+	if(dojo.isString(method)){
 		scope = scope || dojo.global;
-		return function(){ return scope[method].apply(scope, arguments||[]); }
+		return function(){ return scope[method].apply(scope, _a||[]); }
 	}else{
-		return (!scope ? method : function(){ return method.apply(scope, arguments||[]); });
+		return (!scope ? method : function(){ return method.apply(scope, _a||[]); });
 	}
 }
 

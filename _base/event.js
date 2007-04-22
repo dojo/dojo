@@ -1,7 +1,7 @@
 dojo.provide("dojo._base.event");
 dojo.require("dojo._base.connect");
 
-// this file courtesy of the TurboAjax group, licensed under a Dojo CLA
+// this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
 (function(){
 
@@ -9,14 +9,9 @@ dojo.require("dojo._base.connect");
 	var de = {
 		addListener: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
 			if(!node){ return; } 
-			event = de.normalizeEventName(event);
-			fp = (!de._fixCallback ? fp : de._fixCallback(fp));
-			if(node.addEventListener){ 
-				node.addEventListener(event.slice(2), fp, false);
-				return fp; /*Handle*/
-			}else{
-				return dojo._listener.add(node, event, fp); /*Handle*/
-			}
+			event = de._normalizeEventName(event)
+			node.addEventListener(event, de._fixCallback(event, fp), false);
+			return fp; /*Handle*/
 		},
 		removeListener: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
 			// summary:
@@ -27,59 +22,86 @@ dojo.require("dojo._base.connect");
 			//		DOM node to attach the event to
 			// fp:
 			//		the function to register
-			event = de.normalizeEventName(event);
-			if(node.removeEventListener){
-				node.removeEventListener(event.slice(2), handle, false);
-			}else{
-				dojo.listener.remove(node, event, handle);
+			node.removeEventListener(de._normalizeEventName(event), handle, false);
+		},
+		_normalizeEventName: function(/*String*/name){
+			// Generally, name should be lower case, unless it is special
+			// somehow (e.g. a Mozilla event)
+
+			// Remove 'on'
+			return (name.slice(0,2)=="on" ? name.slice(2) : name);
+		},
+		_fixCallback: function(/*String*/name, fp){
+			//return function(e){ return fp(de._fixEvent(e, this)); };	
+			return (name!="keypress" ? fp : function(e){ return fp(de._fixEvent(e, this)); });	
+		},
+		_fixEvent: function(evt, sender){
+			// fixCallback only attaches us to keypress, but we switch on
+			// evt.type because we might be called from dojo.fixEvent
+			switch(evt.type){
+				case "keypress":
+					de._fixKey(evt);
+					break;
 			}
+			return evt;
 		},
-		normalizeEventName: function(/*String*/eventName){
-			// Generally, eventName should be lower case, unless it is special somehow (e.g. a Mozilla event)
-			if(eventName.slice(0,2)!="on"){ eventName = "on"+eventName; }
-			if(eventName=="onkey"){	eventName = (dojo.isIE ? "onkeydown" : "onkeypress");	}
-			return eventName;
-		},
-		// hosts can override to fix events as needed
-		_fixCallback: null,
-		// public fixEvent
-		fixEvent: function(/*Event*/evt, /*DOMNode*/sender){
-			// summary:
-			//		normalizes properties on the event object including event
-			//		bubbling methods, keystroke normalization, and x/y positions
-			// evt: native event object
-			// sender: node to treat as "currentTarget"
-			var f = de._fixEvent;
-			return (f ? f(evt, sender) : evt);
-		},
-		stopEvent: function(/*Event*/evt){
-			// summary:
-			//		prevents propagation and clobbers the default action of the
-			//		passed event
-			// evt: Optional for IE. The native event object.
-			evt.preventDefault();
-			evt.stopPropagation();
+		_fixKey: function(evt, charCode){
+			var c = (arguments.length > 1 ? charCode : evt.charCode);
+			evt.keyChar = (c ? String.fromCharCode(c) : '');
 		}
 	};
+	// FIXME: do we need this for debugging???
+	// dojo.event = de;
 
 	// DOM events
-	dojo.addListener = function(node, event, context, method) {
+	dojo.addListener = function(node, event, context, method){
 		return de.addListener(node, event, dojo.hitch(context, method)); // Handle
 	}
 
-	dojo.removeListener = function(node, event, handle) {
+	dojo.removeListener = function(node, event, handle){
 		de.removeListener(node, event, handle);
 	}
 
-	// prefer these remain public, but could be confusing in top level docs
+	dojo.fixEvent = function(/*Event*/evt, /*DOMNode*/sender){
+		// summary:
+		//		normalizes properties on the event object including event
+		//		bubbling methods, keystroke normalization, and x/y positions
+		// evt: native event object
+		// sender: node to treat as "currentTarget"
+		return de._fixEvent(evt, sender);
+		//return (de._fixEvent ? de._fixEvent(evt, sender) : evt);
+	}
 
-	// dojo.addConnection = dojo.connect; 
-	// dojo.removeConnection = dojo.disconnect;
+	dojo.stopEvent = function(/*Event*/evt){
+		// summary:
+		//		prevents propagation and clobbers the default action of the
+		//		passed event
+		// evt: Optional for IE. The native event object.
+		evt.preventDefault();
+		evt.stopPropagation();
+	}
+
+	// =============================================
+	// FIXME: I want to eliminate these and their
+	//        IE<7 bretheren below
+	dojo.cleanEvents = function(){
+		// self cleaning, except on IE
+		
+		// FIXME: why public?
+	}
+	dojo.cleanNodeEvents = function(inNode){
+		// self cleaning, except on IE
+		
+		// FIXME: why public?
+	}
+	// =============================================
+
+	// cache raw implementations
 
 	var dc = dojo.connect;
 	var dd = dojo.disconnect;
 
-	// unify add/removeListener with connect/disconnect
+	// Unify connect/disconnect and add/removeListener
 
 	dojo.connect = function(	/*Object*/ obj, 
 								/*String*/ event, 
@@ -92,10 +114,10 @@ dojo.require("dojo._base.connect");
 		return (!obj||isNaN(obj.nodeType) ? dd: dojo.removeListener).apply(de, arguments);
 	}											
 
-
 	// Constants
 
-	dojo._keys = {
+	// FIXME: alex: why is this public now?
+	dojo.keys = {
 		BACKSPACE: 8,
 		TAB: 9,
 		CLEAR: 12,
@@ -156,25 +178,121 @@ dojo.require("dojo._base.connect");
 		SCROLL_LOCK: 145
 	};
 
-	dojo.isAsciiPrintable = function(charCode) {
+	// NOTE: alex: can't find a public usage of this function. making it private.
+	dojo._isAsciiPrintable = function(charCode){
 		return (charCode>31&&charCode<128)||(charCode>127&&charCode<255);
 	}
 
 	// IE event normalization
 	if(dojo.isIE){ 
-		de.baseAddListener = de.addListener;
+		// by default, use the standard listener
+		var iel = dojo._listener;
+		if((dojo.isIE<7)&&(!djConfig._allow_leaks)){
+			// custom listener to handle leak protection for DOM events
+			iel = dojo._ie_listener = {
+				// support handler indirection
+				handlers: [],
+				// create a dispatcher function
+				dispatcher: function(f){
+					// handy closeables
+					var a=[], hs=iel.handlers;
+					// Note that we close over h (i.e. d holds on to the
+					// current array of handlers).  Because dispatchers hold on
+					// to their array of handlers, we have to delete handlers
+					// entries individually.  handlers=[] won't cut it.
+					var d=function(){
+						var ls = arguments.callee.listeners;
+						for(var i in ls){
+							if(!(i in a)){
+								hs[ls[i]].apply(this, arguments);
+							}
+						}
+					}
+					d.listeners = (f ? [iel.handlers.push(f) - 1] : []);
+					console.log('created a dispatcher using indirect handlers');
+					return d;
+				},
+				// add a listener to an object
+				add: function(/*Object*/ source, /*String*/ method, /*Function*/ listener){
+					source = source || dojo.global;
+					var d = source[method];
+					if(!d||!d.listeners){
+						d = source[method] = iel.dispatcher(d);
+						// =============================================
+						// FIXME: I want to eliminate this with the other 'clean' stuff
+						// We're going to pollute your node with this property, sorry.
+						// It provides support for stripping connections from this object.
+						var p = "__djdisp__";
+						(source[p] || (source[p]=[])).push(d);
+						// =============================================
+					}
+					return d.listeners.push(iel.handlers.push(listener) - 1) ; /*Handle*/
+				},
+				// remove a listener from an object
+				remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
+					var f = (source||dojo.global)[method];
+					if(f && f.listeners && handle--){	
+						delete iel.handlers[f.listeners[handle]];
+						delete f.listeners[handle]; 
+					}
+				}
+			};
+			
+			// =============================================
+			// FIXME: I want to eliminate these
+			// otherwise, all client code has to call empty 'clean' events
+			// just to be extra careful around IE < 7
+			var a = [];
+			dojo.cleanEvents = function(){
+				// memory cleanup
+				var h = iel.handlers;
+				for(var i in h){
+					if(!(i in a)){delete h[i];}
+				}
+				iel.handlers = [];
+			}
+			dojo.cleanNodeEvents = function(node){
+				// cleanup node if it has bookkeeping info
+				var h = iel.handlers, p = "__djdisp__", s = inNode[p];
+				if (!s || !s.length){return;}
+				// for each dispatcher
+				for(var di in s){
+					if(di in a){continue;}
+					var d = s[di];
+					// for each listener 
+					for(var li in d){				
+						if(li in a){continue;}
+						delete h[d[li]]
+					}
+				}
+			}
+		}
+		// =============================================
+
 		dojo.mixin(de, {
 			addListener: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
-				if(node && (event == "keypress" || event == "onkeypress")){ 
-					// FIXME: do we even have a dojo.nop?
-					de.baseAddListener(node, "onkeydown", dojo.nop);
+				if(!node){return;} // undefined
+				event = de._normalizeEventName(event);
+				// FIXME: we need a way to disconnect this extra listener
+				if(node && (event=="onkeypress")){
+					de.addListener(node, "onkeydown", de._nop);
 				}
-				return de.baseAddListener(node, event, fp);
+				return iel.add(node, event, de._fixCallback(fp));
 			},
+			removeListener: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
+				iel.remove(node, de._normalizeEventName(event), handle); 
+			},
+			_normalizeEventName: function(/*String*/eventName){
+				// Generally, eventName should be lower case, unless it is
+				// special somehow (e.g. a Mozilla event)
+
+				// ensure 'on'
+				return (eventName.slice(0,2)!="on" ? "on"+eventName : eventName);
+			},
+			_nop: function(){ },
 			_fixCallback: function(fp){
 				return function(e){ 
-					var e = de._fixEvent(e, this);
-					var r = fp(e);
+					var e = de._fixEvent(e, this), r = fp(e);
 					de._postFixEvent(e);
 					return r;
 				};
@@ -185,7 +303,10 @@ dojo.require("dojo._base.connect");
 				//   bubbling methods, keystroke normalization, and x/y positions
 				// evt: native event object
 				// sender: node to treat as "currentTarget"
-				evt = evt || window.event; 
+				if(!evt){
+					var w = (sender)&&((sender.ownerDocument || sender.document || sender).parentWindow)||window;
+					evt = w.event; 
+				}
 				evt.target = evt.srcElement; 
 				evt.currentTarget = (sender || evt.srcElement); 
 				evt.layerX = evt.offsetX;
@@ -201,52 +322,99 @@ dojo.require("dojo._base.connect");
 				var docBody = doc.documentElement;
 				evt.pageX = evt.clientX + (docBody.scrollLeft || 0);
 				evt.pageY = evt.clientY + (docBody.scrollTop || 0);
-				if(evt.type == "mouseover"){ evt.relatedTarget = evt.fromElement; }
-				if(evt.type == "mouseout"){ evt.relatedTarget = evt.toElement; }
+				if(evt.type == "mouseover"){ 
+					evt.relatedTarget = evt.fromElement;
+				}
+				if(evt.type == "mouseout"){ 
+					evt.relatedTarget = evt.toElement;
+				}
 				evt.stopPropagation = this._stopPropagation;
 				evt.preventDefault = this._preventDefault;
 				return this._fixKeys(evt);
 			},
 			_fixKeys: function(evt){
 				switch(evt.type){
-					case "keydown":
 					case "keypress":
-					case "keyup":
-						evt.charCode = evt.keyCode;
+						var c = ("charCode" in evt ? evt.charCode : evt.keyCode);
+						evt.charCode = c;
+						de._fixKey(evt);
 						break;
 				}
 				return evt;
 			},
+			// some ctrl-key combinations (mostly w/punctuation) do not emit a char code in IE
+			// we map those virtual key codes to ascii here
+			// not valid for all (non-US) keyboards, so maybe we shouldn't bother
+			_punctMap: { 
+				106:42, 
+				111:47, 
+				186:59, 
+				187:43, 
+				188:44, 
+				189:45, 
+				190:46, 
+				191:47, 
+				192:96, 
+				219:91, 
+				220:92, 
+				221:93, 
+				222:39 
+			},
 			_postFixEvent: function(evt){
-				switch (evt.type) {
+				switch(evt.type){
+					// IE doesn't fire keypress for most non-printable characters.
+					// other browsers do, we simulate it here.
 					case "keydown":
-						// IE doesn't fire keypress for non-printable characters
-						// other browsers do, we simulate it here.
-						//
-						// FIXME: cannot trap numpad keys unless numlock is down
-						// unless we can determine the state of numlock ourselves.
 						var c = evt.keyCode;
-						if((evt.ctrlKey)||(c!=32)&&(c<48||c>90)&&(c<106||c>111)&&(c<186||c>191)){
+						// These are Windows Virtual Key Codes
+						// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
+						var unprintable = (c!=32)&&(c<48||c>90)&&(c<96||c>111)&&(c<186||c>192)&&(c<219||c>222);
+						if(unprintable||evt.ctrlKey){
+							c = (unprintable ? 0 : c);
+							if(evt.ctrlKey){
+								if(c>95 && c<106){ 
+									c -= 48; // map CTRL-[numpad 0-9] to ASCII
+								}else if((!evt.shiftKey)&&(c>=65&&c<=90)){ 
+									c += 32; // map CTRL-[A-Z] to lowercase
+								}else{ 
+									c = de._punctMap[c] || c; // map other problematic CTRL combinations to ASCII
+								}
+							}
 							var faux = document.createEventObject(evt);
+							faux.charCode = c;
+							de._fixKey(faux);
+							faux.faux = true; // just for debugging
 							evt.target.fireEvent("onkeypress", faux);
+							evt.cancelBubble = faux.cancelBubble;
 							evt.returnValue = faux.returnValue;
+							try{
+								// squelch errors when keyCode is read-only
+								// (e.g. if keyCode is ctrl or shift)
+								evt.keyCode = faux.keyCode;
+							}catch(e){}; 
+						}else{
+							evt.charCode = evt.keyCode;
+							de._fixKey(evt);
 						}
 						break;
 				}
 			},
-			stopEvent: function(){
-				with(window.event){
-					cancelBubble = true;
-					returnValue = false;
-				}
-			},
+			// Called in Event scope
 			_stopPropagation: function(){
 				this.cancelBubble = true; 
 			},
 			_preventDefault: function(){
+				try{evt.keyCode = 0;}catch(e){}; // squelch errors when keyCode is read-only (e.g. if keyCode is ctrl or shift)
 				this.returnValue = false;
 			}
 		});
+				
+		// override stopEvent
+		dojo.stopEvent = function(evt){
+			evt = evt || window.event;
+			de._stopPropagation.call(evt);
+			de._preventDefault.call(evt);
+		}
 	}
 
 	// Opera event normalization
@@ -255,7 +423,16 @@ dojo.require("dojo._base.connect");
 			_fixEvent: function(evt, sender){
 				switch(evt.type){
 					case "keypress":
-						evt.charCode = evt.keyCode;
+						var c = evt.which;
+						// can't trap some keys at all, like INSERT and DELETE
+						// there is no differentiating info between DELETE and ".", or INSERT and "-"
+						c = ((c<41)&&(!evt.shiftKey) ? 0 : c);
+						if((evt.ctrlKey)&&(!evt.shiftKey)&&(c>=65)&&(c<=90)){
+							// lowercase CTRL-[A-Z] keys
+							c += 32;
+						}
+						evt.charCode = c;
+						de._fixKey(evt, c);
 						break;
 				}
 				return evt;
@@ -265,7 +442,43 @@ dojo.require("dojo._base.connect");
 
 	// Safari event normalization
 	if(dojo.isSafari){ 
-		dojo.mixin(dojo._keys, {
+		//alert("mixing in Safari event fix");
+		dojo.mixin(de, {
+			_fixEvent: function(evt, sender){
+				switch(evt.type){
+					case "keypress":
+						var c = evt.charCode, s = evt.shiftKey;
+						if(evt.keyIdentifier=="Enter"){
+							c = 0; // differentiate Enter from CTRL-m (both code 13)
+						}else if((evt.ctrlKey)&&(c>0)&&(c<27)){
+							c += 96; // map CTRL-[A-Z] codes to ASCII
+						} else if (c==dojo.keys.SHIFT_TAB) {
+							c = dojo.keys.TAB; // morph SHIFT_TAB into TAB + shiftKey: true
+							s = true;
+						} else {
+							c = (c>=32 && c<63232 ? c : 0); // avoid generating keyChar for non-printables
+						}
+						// We have to create a faux event to control shiftKey on Safari
+						var faux = { 
+							type: evt.type, 
+							shiftKey: s, 
+							ctrlKey: evt.ctrlKey, 
+							altKey: evt.altKey, 
+							keyCode: evt.keyCode, 
+							charCode: c
+						};
+						de._fixKey(faux, c);
+						// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault); 
+						// but it throws an error when preventDefault is invoked
+						// does Event.preventDefault not support "apply" on Safari?
+						faux.preventDefault = function(){ evt.preventDefault(); }; 
+						faux.stopPropagation = function(){ evt.stopPropagation(); }; 
+						return faux;
+				}
+				return evt;
+			}
+		});
+		dojo.mixin(dojo.keys, {
 			SHIFT_TAB: 25,		
 			UP_ARROW: 63232,
 			DOWN_ARROW: 63233,
@@ -295,7 +508,4 @@ dojo.require("dojo._base.connect");
 			NUM_LOCK: 63289
 		});
 	}
-	
-	// lift up stopEvent()
-	dojo.stopEvent = de.stopEvent;
 })();

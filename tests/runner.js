@@ -706,9 +706,11 @@ tests.runGroup = function(/*String*/ groupName, /*Integer*/ idx){
 				return;
 			}
 		}
-		tg.inFlight = 0;
-		tg.iterated = false;
-		tg.failures = 0;
+		if(!idx){
+			tg.inFlight = 0;
+			tg.iterated = false;
+			tg.failures = 0;
+		}
 		tests._groupStarted(groupName);
 		if(!idx){
 			this._setupGroupForRun(groupName, idx);

@@ -27,12 +27,12 @@ tests.register("tests.data.JsonItemStore",
 			}
 			
 			var d = new tests.Deferred();
-            function completedAll(items){
+            function completedAll(items, request){
 				t.is(7, items.length);
 				d.callback(true);
 			}
-			function error(errData){
-				// t.assertTrue(false);
+			function error(errData, request){
+				t.assertTrue(false);
 				d.errback(errData);
 			}
 
@@ -65,12 +65,12 @@ tests.register("tests.data.JsonItemStore",
 			
 			var d = new tests.Deferred();
 			function onComplete(items, request){
-				t.assertTrue((items.length === 1));
+				t.assertEqual(items.length, 1);
 				d.callback(true);
 			}
 			function onError(errData, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(errData);
 			}
 			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
 									onComplete: onComplete, 
@@ -105,20 +105,20 @@ tests.register("tests.data.JsonItemStore",
 			count = 0;
 
 			function onBegin(size, requestObj){
-				t.assertTrue(size === 7);
+				t.assertEqual(size, 7);
 			}
 			function onItem(item, requestObj){
 				t.assertTrue(jsonItemStore.isItem(item));
 				count++;
 			}
 			function onComplete(items, request){
-				t.assertTrue(count === 7);
+				t.assertEqual(count, 7);
 				t.assertTrue(items === null);
 			    d.callback(true);
 			}
-			function onError(errData){
+			function onError(errData, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(errData);
 			}
 
 			//Get everything...
@@ -154,7 +154,7 @@ tests.register("tests.data.JsonItemStore",
 			
 			var d = new tests.Deferred();
 			function dumpFirstFetch(items, request){
-				t.assertTrue(items.length === 5);
+				t.assertEqual(items.length, 5);
 				request.start = 3;
 				request.count = 1;
 				request.onComplete = dumpSecondFetch;
@@ -162,7 +162,7 @@ tests.register("tests.data.JsonItemStore",
 			}
 
 			function dumpSecondFetch(items, request){
-				t.assertTrue(items.length === 1);
+				t.assertEqual(items.length, 1);
 				request.start = 0;
 				request.count = 5;
 				request.onComplete = dumpThirdFetch;
@@ -170,7 +170,7 @@ tests.register("tests.data.JsonItemStore",
 			}
 
 			function dumpThirdFetch(items, request){
-				t.assertTrue(items.length === 5);
+				t.assertEqual(items.length, 5);
 				request.start = 2;
 				request.count = 20;
 				request.onComplete = dumpFourthFetch;
@@ -178,7 +178,7 @@ tests.register("tests.data.JsonItemStore",
 			}
 
 			function dumpFourthFetch(items, request){
-				t.assertTrue(items.length === 5);
+				t.assertEqual(items.length, 5);
                 request.start = 9;
 				request.count = 100;
 				request.onComplete = dumpFifthFetch;
@@ -186,7 +186,7 @@ tests.register("tests.data.JsonItemStore",
 			}
 
 			function dumpFifthFetch(items, request){
-				t.assertTrue(items.length === 0);
+				t.assertEqual(items.length, 0);
 				request.start = 2;
 				request.count = 20;
 				request.onComplete = dumpSixthFetch;
@@ -194,21 +194,21 @@ tests.register("tests.data.JsonItemStore",
 			}
 
 			function dumpSixthFetch(items, request){
-				t.assertTrue(items.length === 5);
+				t.assertEqual(items.length, 5);
 			    d.callback(true);
 			}
 
 			function completed(items, request){
-				t.assertTrue(items.length === 7);
+				t.assertEqual(items.length, 7);
 				request.start = 1;
 				request.count = 5;
 				request.onComplete = dumpFirstFetch;
 				jsonItemStore.fetch(request);
 			}
 
-			function error(){
+			function error(errData, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(errData);
 			}
 			jsonItemStore.fetch({onComplete: completed, onError: error});
 			return d;
@@ -302,8 +302,8 @@ tests.register("tests.data.JsonItemStore",
 			t.assertTrue(item !== null);
 			var names = jsonItemStore.getValues(item,"name");
             t.assertTrue(dojo.isArray(names));
-			t.assertTrue(names.length === 1);
-			t.assertTrue(names[0] === "El Salvador");
+			t.assertEqual(names.length, 1);
+			t.assertEqual(names[0], "El Salvador");
 		},
 		function testReadAPI_getValues_byattributeItem(t){
 			//	summary: 
@@ -339,8 +339,8 @@ tests.register("tests.data.JsonItemStore",
 			var item = jsonItemStore.getItemByIdentity("Ecuador");
 			var attrValues = jsonItemStore.getValues(item,itemAttribute);
             t.assertTrue(dojo.isArray(attrValues));
-			t.assertTrue(attrValues.length === 1);
-			t.assertTrue(attrValues[0] === "ec");
+			t.assertEqual(attrValues.length, 1);
+			t.assertEqual(attrValues[0], "ec");
 		},
 		function testReadAPI_getItemByIdentity(t){
 			//	summary: 
@@ -372,7 +372,7 @@ tests.register("tests.data.JsonItemStore",
 			t.assertTrue(item !== null);
 			if(item !== null){
 				var name = jsonItemStore.getValue(item,"name");
-				t.assertTrue(name === "El Salvador");
+				t.assertEqual(name, "El Salvador");
 			}
 			item = jsonItemStore.getItemByIdentity("sv_not");
 			t.assertTrue(item === null);
@@ -473,12 +473,12 @@ tests.register("tests.data.JsonItemStore",
 			t.assertTrue(itemAttribute !== null);
 			if(itemAttribute !== null){
 				var name = jsonItemStore.getValue(itemAttribute,"name");
-				t.assertTrue(name === "abbr");
+				t.assertEqual(name, "abbr");
 			}
 			var item = jsonItemStore.getItemByIdentity("Ecuador");
 			t.assertTrue(jsonItemStore.hasAttribute(item,itemAttribute));
 			var attrValue = jsonItemStore.getValue(item,itemAttribute);
-			t.assertTrue(attrValue === "ec");
+			t.assertEqual(attrValue, "ec");
 		},
 		function testReadAPI_containsValue(t){
 			//	summary: 
@@ -580,7 +580,7 @@ tests.register("tests.data.JsonItemStore",
 			t.assertTrue(jsonItemStore.isItem(item));
 
 			var attributes = jsonItemStore.getAttributes(item);
-			t.assertTrue(attributes.length === 3);
+			t.assertEqual(attributes.length, 3);
 			for(var i = 0; i < attributes.length; i++){
 				t.assertTrue((attributes[i] === "name" || attributes[i] === "abbr" || attributes[i] === "capital"));
 			}
@@ -614,7 +614,7 @@ tests.register("tests.data.JsonItemStore",
 				t.assertTrue((i === "dojo.data.api.Read" || i === "dojo.data.api.Identity"));
 				count++;
 			}
-			t.assertTrue(count === 2);
+			t.assertEqual(count, 2);
 		},
 		function testReadAPI_fetch_patternMatch0(t){
 			//	summary: 
@@ -641,7 +641,7 @@ tests.register("tests.data.JsonItemStore",
 
 			var d = new tests.Deferred();
 			function completed(items, request) {
-				t.assertTrue(items.length === 5);
+				t.assertEqual(items.length, 5);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
 					var value = jsonItemStore.getValue(items[i], "abbr");
@@ -654,12 +654,12 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected abbreviation found, match failure."));
 				}
 			}
-			function error() {
+			function error(error, request) {
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 			jsonItemStore.fetch({query: {abbr: "e*"}, onComplete: completed, onError: error});
 			return d;
@@ -686,7 +686,7 @@ tests.register("tests.data.JsonItemStore",
 			
 			var d = new tests.Deferred();
 			function completed(items, request){
-				t.assertTrue(items.length === 2);
+				t.assertEqual(items.length, 2);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
 					var value = jsonItemStore.getValue(items[i], "value");
@@ -699,12 +699,12 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected pattern matched.  Filter failure."));
 				}
 			}
-			function error(){
+			function error(error, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 			jsonItemStore.fetch({query: {value: "*$*"}, onComplete: completed, onError: error});
 			return d;
@@ -731,7 +731,7 @@ tests.register("tests.data.JsonItemStore",
 
 			var d = new tests.Deferred();
 			function completed(items, request){
-				t.assertTrue(items.length === 1);
+				t.assertEqual(items.length, 1);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
 					var value = jsonItemStore.getValue(items[i], "value");
@@ -744,12 +744,12 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected abbreviation found, match failure."));
 				}
 			}
-			function error(){
+			function error(error, request){
 				t.assertTrue(false);
-				d.callback(false);
+				d.errback(error);
 			}
 			jsonItemStore.fetch({query: {value: "bar\*foo"}, onComplete: completed, onError: error});
 			return d;
@@ -778,7 +778,7 @@ tests.register("tests.data.JsonItemStore",
 
 			var d = new tests.Deferred();
 			function completed(items, request){
-				t.assertTrue(items.length === 11);
+				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
 					var value = jsonItemStore.getValue(items[i], "value");
@@ -791,13 +791,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 
-			function error(){
+			function error(error, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 
 			var sortAttributes = [{attribute: "uniqueId"}];
@@ -827,7 +827,7 @@ tests.register("tests.data.JsonItemStore",
 								 });
 			var d = new tests.Deferred();
 			function completed(items, request){
-				t.assertTrue(items.length === 11);
+				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
 					var value = jsonItemStore.getValue(items[i], "value");
@@ -840,13 +840,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 
-			function error(){
+			function error(error, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 
 			var sortAttributes = [{attribute: "uniqueId", descending: true}];
@@ -877,7 +877,7 @@ tests.register("tests.data.JsonItemStore",
 			
 			var d = new tests.Deferred();
 			function completed(items, request){
-				t.assertTrue(items.length === 5);
+				t.assertEqual(items.length, 5);
 				var itemId = 10;
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
@@ -892,13 +892,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 		
-			function error(){
+			function error(error, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 		
 			var sortAttributes = [{attribute: "uniqueId", descending: true}];
@@ -943,7 +943,7 @@ tests.register("tests.data.JsonItemStore",
 										"qwerty",
 										"seaweed"
 					];
-				t.assertTrue(items.length === 11);
+				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
 					var value = jsonItemStore.getValue(items[i], "value");
@@ -956,13 +956,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 		
-			function error() {
+			function error(error, request) {
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 		
 			var sortAttributes = [{attribute: "value"}];
@@ -1007,7 +1007,7 @@ tests.register("tests.data.JsonItemStore",
 										"seaweed"
 					];
 				orderedArray = orderedArray.reverse();
-				t.assertTrue(items.length === 11);
+				t.assertEqual(items.length, 11);
 
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
@@ -1021,13 +1021,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 		
-			function error() {
+			function error(error, request) {
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 		
 			var sortAttributes = [{attribute: "value", descending: true}];
@@ -1060,7 +1060,7 @@ tests.register("tests.data.JsonItemStore",
 			var d = new tests.Deferred();
 			function completed(items,request){
 				var orderedArray =	[0,100,1000,2000,3000,4000,5000,6000,7000,8000,9000];
-				t.assertTrue(items.length === 11);
+				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
 					var value = jsonItemStore.getValue(items[i], "value");
@@ -1073,13 +1073,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 		
-			function error(){
+			function error(error, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 		
 			var sortAttributes = [{attribute: "value"}];
@@ -1113,7 +1113,7 @@ tests.register("tests.data.JsonItemStore",
 			function completed(items,request){
 				var orderedArray =	[0,100,1000,2000,3000,4000,5000,6000,7000,8000,9000];
 				orderedArray = orderedArray.reverse();
-				t.assertTrue(items.length === 11);
+				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
 					var value = jsonItemStore.getValue(items[i], "value");
@@ -1126,13 +1126,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 		
-			function error(){
+			function error(error, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 		
 			var sortAttributes = [{attribute: "value", descending: true}];
@@ -1192,13 +1192,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 		
-			function error(){
+			function error(error, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(error);
 			}
 		
 			var sortAttributes = [{ attribute: "value"}, { attribute: "uniqueId", descending: true}];
@@ -1261,13 +1261,13 @@ tests.register("tests.data.JsonItemStore",
 				if (passed){
 					d.callback(true);
 				}else{
-					d.errback(false);
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
 		
-			function error(errData){
+			function error(errData, request){
 				t.assertTrue(false);
-				d.errback(false);
+				d.errback(errData);
 			}
 			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
@@ -1290,20 +1290,18 @@ tests.register("tests.data.JsonItemStore",
 															});
 			var d = new tests.Deferred();
 			function onComplete(items, request){
+				//This is bad if this fires, this case should fail and not call onComplete.
 				t.assertTrue(false);
 				d.callback(false);
 			}
 		
 			function reportError(errData, request){
-				t.assertTrue(false);
-				d.callback(false);
-			}
-			try{
-				jsonItemStore.fetch({onComplete: onComplete, error: reportError});
-			}catch(e){
-				//We should fail here and callback.
+				//This is good if this fires, it is expected.
+				t.assertTrue(true);
 				d.callback(true);
 			}
+			jsonItemStore.fetch({onComplete: onComplete, onError: reportError});
+			return d;
 		},
 		function testReadAPI_errorCondition_idCollision_xhr(t){
 			//	summary: 
@@ -1317,20 +1315,18 @@ tests.register("tests.data.JsonItemStore",
 				var jsonItemStore = new dojo.data.JsonItemStore({url: "data/countries_idcollision.json"});
 				var d = new tests.Deferred();
 				function onComplete(items, request){
+					//This is bad if this fires, this case should fail and not call onComplete.
 					t.assertTrue(false);
 					d.callback(false);
 				}
 
 				function reportError(errData, request){
-					t.assertTrue(false);
-					d.callback(false);
+					//This is good if this fires, it is expected.
+					t.assertTrue(true);
+                    d.callback(true);
 				}
-				try{
-					jsonItemStore.fetch({onComplete: onComplete, error: reportError});
-				}catch(e){
-					//We should fail here and callback.
-					d.callback(true);
-				}
+				jsonItemStore.fetch({onComplete: onComplete, onError: reportError});
+				return d;
 			}
 		}
 	]

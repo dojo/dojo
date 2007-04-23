@@ -34,14 +34,14 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 	}
 	var self = this;
 
-	var _errorHandler = function(errorData){
-		if(request.onError){
-			var scope = request.scope || dojo.global;
-			request.onError.call(scope, errorData);
+	var _errorHandler = function(errorData, requestObject){
+		if(requestObject.onError){
+			var scope = requestObject.scope || dojo.global;
+			requestObject.onError.call(scope, errorData, requestObject);
 		}
 	};
 
-	var _fetchHandler = function(requestObject, items){
+	var _fetchHandler = function(items, requestObject){
 		var oldAbortFunction = requestObject.abort || null;
 		var aborted = false;
 

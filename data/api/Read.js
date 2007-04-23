@@ -127,18 +127,47 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		return false; // boolean
 	},
 
-	loadItem: function(/* item */ item){
+	loadItem: function(/* object */ keywordArgs){
 		//	summary:
 		//		Given an item, this method loads the item so that a subsequent call
 		//		to store.isItemLoaded(item) will return true.  If a call to
 		//		to isItemLoaded() returns true before loadItem() is even called,
-		//		then loadItem() need not do any work at all.  A call to loadItem()
-		//		will block until the loadItem() implementation has loaded the item.
-		if (this.isItemLoaded(item)) {
-				return item;
-		} else {
-				dojo.unimplemented('dojo.data.api.Read.loadItem');
-				return item; // item
+		//		then loadItem() need not do any work at all and will not even invoke
+		//		the callback handlers.  So, before invoking this method, check that
+		//		the item has not already been loaded..  
+		// 	keywordArgs:
+		//		An anonymous object that defines the item to load and callbacks to invoke when the 
+		//		load has completed.  The format of the object is as follows:
+		//		{
+		//			item: object,
+		//			onItem: Function,
+		//			onError: Function,
+		//			scope: object
+		//		}
+		//	The *item* parameter.
+		//		The item parameter is an object that represents the item in question that should be
+		//		contained by the store.  This attribute is required.
+		
+		//	The *onItem* parameter.
+		//		Function(item)
+		//		The onItem parameter is the callback to invoke when the item has been loaded.  It takes only one
+		//		parameter, the fully loaded item.
+		//
+		//	The *onError* parameter.
+		//		Function(error)
+		//		The onError parameter is the callback to invoke when the item load encountered an error.  It takes only one
+		//		parameter, the error object
+		//
+		//	The *scope* parameter.
+		//		If a scope object is provided, all of the callback functions (onItem, 
+		//		onItem, onError, etc) will be invoked in the context of the scope
+		//		object.  In the body of the callback function, the value of the "this"
+		//		keyword will be the scope object.   If no scope object is provided,
+		//		the callback functions will be called in the context of dojo.global().
+		//		For example, onItem.call(scope, item, request) vs. 
+		//		onItem.call(dojo.global(), item, request)
+		if (!this.isItemLoaded(keywordArgs.item)) {
+			dojo.unimplemented('dojo.data.api.Read.loadItem');
 		}
 	},
 
@@ -231,9 +260,9 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		onComplete, onError, etc) will be invoked in the context of the scope
 		//		object.  In the body of the callback function, the value of the "this"
 		//		keyword will be the scope object.   If no scope object is provided,
-		//		the callback functions will be called in the context of dj_global.  
+		//		the callback functions will be called in the context of dojo.global().  
 		//		For example, onItem.call(scope, item, request) vs. 
-		//		onItem.call(dj_global, item, request)
+		//		onItem.call(dojo.global(), item, request)
 		//
 		//	The *start* parameter.
 		//		If a start parameter is specified, this is a indication to the datastore to 

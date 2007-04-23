@@ -130,11 +130,10 @@ dojo.declare("dojo.data.JsonItemStore",
 		return this.isItem(something); //boolean
 	},
 
-	loadItem: function(/* item */ item){
+	loadItem: function(/* object */ keywordArgs){
 		//	summary: 
 		//		See dojo.data.api.Read.loadItem()
-		this._assertIsItem(item);
-		return item; //object
+		this._assertIsItem(keywordArgs.item);
 	},
 
 	getFeatures: function(){
@@ -173,14 +172,14 @@ dojo.declare("dojo.data.JsonItemStore",
 						items.push(candidateItem);
 					}
 				}
-				findCallback(resultArgs, items);
+				findCallback(items, resultArgs);
 			}else{
 				// We want a copy to pass back in case the parent wishes to sort the array.  We shouldn't allow resort 
 				// of the internal list so that multiple callers can get listsand sort without affecting each other.
 				if(self._arrayOfAllItems.length> 0){
 					items = self._arrayOfAllItems.slice(0,self._arrayOfAllItems.length); 
 				}
-				findCallback(resultArgs, items);
+				findCallback(items, resultArgs);
 			}
 		};
 
@@ -195,19 +194,28 @@ dojo.declare("dojo.data.JsonItemStore",
 				var getHandler = dojo.xhrGet(getArgs);
 				getHandler.addCallback(function(data){
 					self._loadFinished = true;
-					self._arrayOfAllItems = self._getItemsFromLoadedData(data);
-					filter(keywordArgs, self._arrayOfAllItems);
+					try{
+						self._arrayOfAllItems = self._getItemsFromLoadedData(data);
+						filter(keywordArgs, self._arrayOfAllItems);
+					}catch(e){
+						errorCallback(e, keywordArgs);
+					}
+
 				});
 				getHandler.addErrback(function(error){
-					throw error;
+					errCallback(keywordArgs, error);
 				});
 			}else if(this._jsonData){
-				this._loadFinished = true;
-				this._arrayOfAllItems = this._getItemsFromLoadedData(this._jsonData);
-				this._jsonData = null;
-				filter(keywordArgs, this._arrayOfAllItems);
+				try{
+					this._loadFinished = true;
+					this._arrayOfAllItems = this._getItemsFromLoadedData(this._jsonData);
+					this._jsonData = null;
+					filter(keywordArgs, this._arrayOfAllItems);
+				}catch(e){
+					errorCallback(e, keywordArgs);
+				}
 			}else{
-				throw new Error("dojo.data.JsonItemStore: No JSON source data was provided as either URL or a nested Javascript object.");
+				errorCallback(new Error("dojo.data.JsonItemStore: No JSON source data was provided as either URL or a nested Javascript object."), keywordArgs);
 			}
 		}
 	},

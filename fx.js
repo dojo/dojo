@@ -70,7 +70,7 @@ dojo.fx.slideOut = function(/*Object*/ args){
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
 			height: {
-				start: function(){ return dojo.contentBox(node).h; },
+				start: function(){ return dojo.contentBox(node).h; }, //FIXME: why a closure here?
 				end: 1 // 0 causes IE to display the whole panel
 			}
 		},
@@ -134,72 +134,3 @@ dojo.fx.slideTo = function(/*Object?*/ args){
 	return anim; // dojo._Animation
 }
 
-dojo.fx.wipeIn = function(/*Object*/ args){
-	// summary: Returns an animation that will show and wipe in "nodes".
-	// nodes: An array of DOMNodes or one DOMNode.
-	// duration: Duration of the animation in milliseconds.
-	// easing: An easing function.
-	var node = args.node = dojo.byId(args.node);
-	var oprop = {};	// old properties of node (before we mucked w/them)
-	
-	// get node height, either it's natural height or it's height specified via style or class attributes
-	// (for FF, the node has to be (temporarily) rendered to measure height)
-	dojo.style(node, "visibility", "hidden");
-	dojo.style(node, "display", "");
-	var nodeHeight = dojo.marginBox(node).h; //PORT was getBorderBox
-	dojo.style(node, "visibility", "");
-	dojo.style(node, "display", "none");
-	var anim = dojo.animateProperty(dojo.mixin({
-		properties: {
-			height:	{
-				start: 1, // 0 causes IE to display the whole panel
-				end: function(){ return nodeHeight; } //FIXME: why a closure here?
-			}
-		}
-	}, args));
-
-	dojo.connect(anim, "beforeBegin", null, function(){
-		oprop.overflow = dojo.style(node, "overflow");
-		oprop.height = dojo.style(node, "height");
-		dojo.style(node, "overflow", "hidden");
-		dojo.style(node, "height", "1px");
-		dojo.style(node, "display", "");
-	});
-	
-	dojo.connect(anim, "onEnd", null, function(){ 
-		dojo.style(node, "overflow", oprop.overflow);
-		dojo.style(node, "height", oprop.height);
-	});
-	
-	return anim; // dojo._Animation
-}
-
-dojo.fx.wipeOut = function(/*Object*/ args){
-	// summary: Returns an animation that will wipe out and hide "nodes".
-	// nodes: An array of DOMNodes or one DOMNode.
-	// duration: Duration of the animation in milliseconds.
-	// easing: An easing function.
-	var node = args.node = dojo.byId(args.node);
-	var oprop = {};	// old properties of node (before we mucked w/them)
-	var anim = dojo.animateProperty(dojo.mixin({
-		properties: {
-			height: {
-				start: function(){ return dojo.contentBox(node).h; }, //FIXME why a closure here?
-				end: 1 // 0 causes IE to display the whole panel
-			}
-		}
-	}, args));
-	dojo.connect(anim, "beforeBegin", null, function(){
-		oprop.overflow = dojo.style(node, "overflow");
-		oprop.height = dojo.style(node, "height");
-		dojo.style(node, "overflow", "hidden");
-		dojo.style(node, "display", "");
-	});
-	dojo.connect(anim, "onEnd", null, function(){
-		dojo.style(node, "display", "none");
-		dojo.style(node, "overflow", oprop.overflow);
-		dojo.style(node, "height", oprop.height);
-	});
-
-	return anim; // dojo._Animation
-}

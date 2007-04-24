@@ -20,7 +20,8 @@
 	
 		// FIXME: it should be possible to pull module prefixes in from djConfig
 		_modulePrefixes: {
-			dojo: {name: "dojo", value: ""},
+			dojo: {name: "dojo", value: "."},
+			doh: {name: "doh", value: "../util/doh"},
 			tests: {name: "tests", value: "tests"}
 		},
 

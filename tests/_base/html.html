@@ -14,9 +14,9 @@
 			src="../../dojo.js" 
 			djConfig="isDebug: true"></script>
 		<script type="text/javascript">
-			dojo.require("tests.runner");
+			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
-				tests.register("t", 
+				doh.register("t", 
 					[
 						"t.is(100, dojo.marginBox('sq100').w);",
 						"t.is(100, dojo.marginBox('sq100').h);",
@@ -93,7 +93,7 @@
 						}
 					]
 				);
-				tests.run();
+				doh.run();
 			});
 		</script>
 		<style type="text/css">

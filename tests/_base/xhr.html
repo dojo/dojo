@@ -9,7 +9,7 @@
 		<script type="text/javascript" 
 			src="../../dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript">
-			dojo.require("tests.runner");
+			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
 				var f1fo = { blah: "blah" };
 				var f1foStr = "blah=blah";
@@ -31,7 +31,7 @@
 				var f3foStr = "spaces=string%20with%20spaces&";
 				var f3foJson = '{"spaces":"string with spaces"}';
 
-				tests.register("t", 
+				doh.register("t", 
 					[
 						function formNodeToObject(t){
 							t.is(f1fo , dojo.formToObject(dojo.byId("f1")));
@@ -140,7 +140,7 @@
 							);
 						},
 						function xhrGet(t){
-							var d = new tests.Deferred();
+							var d = new doh.Deferred();
 							var td = dojo.xhrGet({
 								url: "xhr.html" // self
 							});
@@ -149,7 +149,7 @@
 							return d;
 						},
 						function xhrGet404(t){
-							var d = new tests.Deferred();
+							var d = new doh.Deferred();
 							try{
 								var td = dojo.xhrGet({
 									url: "xhr_blarg.html" // doesn't exist
@@ -161,7 +161,7 @@
 							// return d;
 						},
 						function xhrGetContent(t){
-							var d = new tests.Deferred();
+							var d = new doh.Deferred();
 							var td = dojo.xhrGet({
 								url: "xhr.html",
 								content: {
@@ -179,7 +179,7 @@
 							return d;
 						},
 						function xhrGetForm(t){
-							var d = new tests.Deferred();
+							var d = new doh.Deferred();
 							var td = dojo.xhrGet({
 								url: "xhr.html", // self
 								form: "f3"
@@ -194,7 +194,7 @@
 						function xhrGetFormWithContent(t){
 							// ensure that stuff passed via content over-rides
 							// what's specified in the form
-							var d = new tests.Deferred();
+							var d = new doh.Deferred();
 							var td = dojo.xhrGet({
 								url: "xhr.html", // self
 								form: "f3",
@@ -208,7 +208,7 @@
 							return d;
 						},
 						function xhrPost(t){
-							var d = new tests.Deferred();
+							var d = new doh.Deferred();
 							var td = dojo.xhrPost({
 								url: "xhr.html" // self
 							});
@@ -225,7 +225,7 @@
 							return d;
 						},
 						function xhrPostWithContent(t){
-							var d = new tests.Deferred();
+							var d = new doh.Deferred();
 							var td = dojo.xhrPost({
 								url: "xhr.html",
 								content: {
@@ -251,7 +251,7 @@
 						// FIXME: need to add tests for wrapForm
 					]
 				);
-				tests.run();
+				doh.run();
 			});
 		</script>
 	</head>

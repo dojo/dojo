@@ -11,9 +11,9 @@
 			src="../../dojo.js" 
 			djConfig="isDebug: true"></script>
 		<script type="text/javascript">
-			dojo.require("tests.runner");
+			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
-				tests.register("t", 
+				doh.register("t", 
 					[
 						"t.is(100, dojo.marginBox('sq100').w);",
 						"t.is(100, dojo.marginBox('sq100').h);",
@@ -55,7 +55,7 @@
 				);
 				if(dojo.isIE){ 
 					// IE collapses padding in quirks mode. We just report on it.
-					tests.register("t", 
+					doh.register("t", 
 						[
 							"t.is(120, dojo.marginBox('sq100margin10pad10').w);",
 							"t.is(120, dojo.marginBox('sq100margin10pad10').h);",
@@ -88,7 +88,7 @@
 						]
 					);
 				}else{
-					tests.register("t", 
+					doh.register("t", 
 						[
 							"t.is(140, dojo.marginBox('sq100margin10pad10').w);",
 							"t.is(140, dojo.marginBox('sq100margin10pad10').h);",
@@ -122,7 +122,7 @@
 					);
 				}
 
-				tests.run();
+				doh.run();
 			});
 		</script>
 		<style type="text/css">

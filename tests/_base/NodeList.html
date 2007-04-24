@@ -32,7 +32,7 @@
 		<title>testing dojo.NodeList</title>
 		<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript">
-			dojo.require("tests.runner");
+			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
 				var fourElementNL = new dojo.NodeList(
 					dojo.byId("c1"), 
@@ -40,7 +40,7 @@
 					dojo.byId("c1"), 
 					dojo.byId("t")
 				);
-				tests.register("t", 
+				doh.register("t", 
 					[
 						// constructor tests
 						function ctor(t){
@@ -182,7 +182,7 @@
 						*/
 					]
 				);
-				tests.run();
+				doh.run();
 			});
 		</script>
 	</head>

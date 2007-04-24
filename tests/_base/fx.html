@@ -9,9 +9,9 @@
 			djConfig="isDebug: true"></script>
 		<script type="text/javascript" src="../../_base/fx.js"></script>
 		<script type="text/javascript">
-			dojo.require("tests.runner");
+			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
-				tests.register("t", 
+				doh.register("t", 
 					[
 						{
 							name: "fadeOut",
@@ -21,7 +21,7 @@
 								var opacity = dojo.style('foo', 'opacity');
 								t.is(1, opacity);
 								var anim = dojo.fadeOut({ node: 'foo', duration: duration });
-								var d = new tests.Deferred();
+								var d = new doh.Deferred();
 								dojo.connect(anim, "onEnd", null, function(){
 									var opacity = dojo.style('foo', 'opacity');
 									// console.debug(anim._start);
@@ -43,7 +43,7 @@
 								var opacity = dojo.style('foo', 'opacity');
 								t.is(0, opacity);
 								var anim = dojo.fadeIn({ node: 'foo', duration: duration });
-								var d = new tests.Deferred();
+								var d = new doh.Deferred();
 								dojo.connect(anim, "onEnd", null, function(){
 									var opacity = dojo.style('foo', 'opacity');
 									// console.debug(anim._start);
@@ -70,7 +70,7 @@
 									duration: duration
 								});
 
-								var d = new tests.Deferred();
+								var d = new doh.Deferred();
 
 								dojo.connect(anim, "onEnd", anim, function(){
 									var height = dojo.style('foo', 'height');
@@ -90,7 +90,7 @@
 						}
 					]
 				);
-				tests.run();
+				doh.run();
 			});
 		</script>
 		<style type="text/css">

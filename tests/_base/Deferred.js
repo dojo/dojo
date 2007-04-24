@@ -1,13 +1,13 @@
 dojo.provide("tests._base.Deferred");
 
-tests.register("tests._base.Deferred", 
+doh.register("tests._base.Deferred", 
 	[
 
 		function callback(t){
 			var nd = new dojo.Deferred();
 			var cnt = 0;
 			nd.addCallback(function(res){
-				tests.debug("debug from dojo.Deferred callback");
+				doh.debug("debug from dojo.Deferred callback");
 				return res;
 			});
 			nd.addCallback(function(res){

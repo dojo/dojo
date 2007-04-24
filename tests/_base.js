@@ -7,9 +7,9 @@ try{
 // the test suite for the bootstrap. Requires hostenv and other base tests at
 // the end
 
-if(tests.selfTest){
+if(doh.selfTest){
 
-	tests.register("tests.smokeTest", 
+	doh.register("doh.smokeTest", 
 		[
 			function sanityCheckHarness(t){
 				// sanity checks
@@ -55,7 +55,7 @@ if(tests.selfTest){
 	);
 
 	if(testGlobal["dojo"]){
-		tests.register("tests._base", 
+		doh.register("tests._base", 
 			[
 				function dojoIsAvailable(t){
 					t.assertTrue(testGlobal["dojo"]);
@@ -66,12 +66,12 @@ if(tests.selfTest){
 
 	if(testGlobal["setTimeout"]){
 		// a stone-stupid async test
-		tests.register("tests.async", 
+		doh.register("tests.async", 
 			[
 				{
 					name: "deferredSuccess",
 					runTest: function(t){
-						var d = new tests.Deferred();
+						var d = new doh.Deferred();
 						setTimeout(d.getTestCallback(function(){
 							t.assertTrue(true);
 							t.assertFalse(false);
@@ -82,7 +82,7 @@ if(tests.selfTest){
 				{
 					name: "deferredFailure",
 					runTest: function(t){
-						var d = new tests.Deferred();
+						var d = new doh.Deferred();
 						setTimeout(function(){
 							d.errback(new Error("hrm..."));
 						}, 50);
@@ -94,7 +94,7 @@ if(tests.selfTest){
 					timeout: 50,
 					runTest: function(t){
 						// timeout of 50
-						var d = new tests.Deferred();
+						var d = new doh.Deferred();
 						setTimeout(function(){
 							d.callback(true);
 						}, 100);
@@ -127,11 +127,11 @@ try{
 	dojo.requireIf(dojo.isBrowser, "tests._base.query");
 	dojo.requireIf(dojo.isBrowser, "tests._base.xhr");
 
-//FIXME the following do not belong here in _base.js - create a separate module?
+	//FIXME the following do not belong here in _base.js - create a separate module?
 	dojo.require("tests.i18n"); 
 	dojo.require("tests.data");
 	dojo.require("tests.number");
 	dojo.require("tests.currency");
 }catch(e){
-	tests.debug(e);
+	doh.debug(e);
 }

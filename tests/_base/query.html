@@ -6,9 +6,9 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript">
-			dojo.require("tests.runner");
+			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
-				tests.register("t", 
+				doh.register("t", 
 					[
 						"t.is(4, (dojo.query('h3')).length);",
 						"t.is(4, (dojo.query('#t h3')).length);",
@@ -28,7 +28,7 @@
 						"t.is(dojo.byId('_foo'), dojo.query('.foo:nth-child(2)')[0]);"
 					]
 				);
-				tests.run();
+				doh.run();
 			});
 		</script>
 	</head>

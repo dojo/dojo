@@ -24,22 +24,14 @@
 	10px: 62.5%
 	11px: 69% (68.75)
 	12px: 75%
+	13px: 81.25%
 	14px: 87.5%
 	16px: 100%
 
-	Default: 12px.
+	Default: 13px, specified by the YUI imports, so we don't need to repeat ourselves
 */
 body { 
-	/*
-	font-family: Georgia, "Times New Roman", serif; 
-	font-family: "Trebuchet MS", Trebuchet, "Bitstream Vera Sans", Corbel, Geneva, Futura, "Gill Sans", sans-serif; 
-	font-size: 75%;
-	*/
 	font-family: "Myriad Pro", Myriad, Arial, Helvetica, sans-serif;
-	font-size: 75%;
-}
-html > body { 
-	font-size: 12px;
 }
 
 /* Headings */

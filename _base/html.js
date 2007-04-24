@@ -1,6 +1,12 @@
 dojo.require("dojo._base.lang");
 dojo.provide("dojo._base.html");
 
+try{
+	document.execCommand("BackgroundImageCache", false, true);
+}catch(e){
+	// sane browsers don't have cache "issues"
+}
+
 if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
 		// summary:
@@ -477,7 +483,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	dojo.style = function(){
 		var _a = arguments;
 		var _a_l = _a.length;
-		if(_a_l == 0){ return; }
+		if(!_a_l){ return; }
 		var node = dojo.byId(_a[0]);
 		var s = dojo.getComputedStyle(node);
 		if(_a_l == 1){ return s; }

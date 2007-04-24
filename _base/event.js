@@ -116,7 +116,9 @@ dojo.require("dojo._base.connect");
 
 	// Constants
 
-	// FIXME: alex: why is this public now?
+	// Public: client code must test
+	// keyCode against these named constants, as the
+	// actual codes can vary by browser.
 	dojo.keys = {
 		BACKSPACE: 8,
 		TAB: 9,
@@ -177,11 +179,6 @@ dojo.require("dojo._base.connect");
 		NUM_LOCK: 144,
 		SCROLL_LOCK: 145
 	};
-
-	// NOTE: alex: can't find a public usage of this function. making it private.
-	dojo._isAsciiPrintable = function(charCode){
-		return (charCode>31&&charCode<128)||(charCode>127&&charCode<255);
-	}
 
 	// IE event normalization
 	if(dojo.isIE){ 
@@ -285,7 +282,6 @@ dojo.require("dojo._base.connect");
 			_normalizeEventName: function(/*String*/eventName){
 				// Generally, eventName should be lower case, unless it is
 				// special somehow (e.g. a Mozilla event)
-
 				// ensure 'on'
 				return (eventName.slice(0,2)!="on" ? "on"+eventName : eventName);
 			},
@@ -314,12 +310,10 @@ dojo.require("dojo._base.connect");
 				// FIXME: scroll position query is duped from dojo.html to
 				// avoid dependency on that entire module. Now that HTML is in
 				// Base, we should convert back to something similar there.
-
 				var se = evt.srcElement, doc = (se && se.ownerDocument) || document;
 				// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
 				// here rather than document.body
-				//var docBody = ((dojo.render.html.ie55)||(doc["compatMode"] == "BackCompat")) ? doc.body : doc.documentElement;
-				var docBody = doc.documentElement;
+				var docBody = ((dojo.isIE<6)||(doc["compatMode"]=="BackCompat")) ? doc.body : doc.documentElement;
 				evt.pageX = evt.clientX + (docBody.scrollLeft || 0);
 				evt.pageY = evt.clientY + (docBody.scrollTop || 0);
 				if(evt.type == "mouseover"){ 
@@ -336,7 +330,13 @@ dojo.require("dojo._base.connect");
 				switch(evt.type){
 					case "keypress":
 						var c = ("charCode" in evt ? evt.charCode : evt.keyCode);
+						if (c==13||c==27){
+							c=0; // Mozilla considers ENTER and ESC non-printable
+						}else if(c==3){
+							c=99; // Mozilla maps CTRL-BREAK to CTRL-c
+						}
 						evt.charCode = c;
+						evt.keyCode = (c ? 0 : evt.keyCode);
 						de._fixKey(evt);
 						break;
 				}
@@ -368,11 +368,13 @@ dojo.require("dojo._base.connect");
 						var c = evt.keyCode;
 						// These are Windows Virtual Key Codes
 						// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
-						var unprintable = (c!=32)&&(c<48||c>90)&&(c<96||c>111)&&(c<186||c>192)&&(c<219||c>222);
+						var unprintable = (c!=13)&&(c!=32)&&(c!=27)&&(c<48||c>90)&&(c<96||c>111)&&(c<186||c>192)&&(c<219||c>222);
 						if(unprintable||evt.ctrlKey){
 							c = (unprintable ? 0 : c);
 							if(evt.ctrlKey){
-								if(c>95 && c<106){ 
+								if(evt.keyCode==3){
+									break; // IE will post CTRL-BREAK as keypress natively 									
+								}else if(c>95 && c<106){ 
 									c -= 48; // map CTRL-[numpad 0-9] to ASCII
 								}else if((!evt.shiftKey)&&(c>=65&&c<=90)){ 
 									c += 32; // map CTRL-[A-Z] to lowercase
@@ -392,9 +394,6 @@ dojo.require("dojo._base.connect");
 								// (e.g. if keyCode is ctrl or shift)
 								evt.keyCode = faux.keyCode;
 							}catch(e){}; 
-						}else{
-							evt.charCode = evt.keyCode;
-							de._fixKey(evt);
 						}
 						break;
 				}
@@ -417,6 +416,24 @@ dojo.require("dojo._base.connect");
 		}
 	}
 
+	de._synthesizeEvent = function(evt, keyCode, charCode, shiftKey) {
+			var faux = { 
+				type: evt.type, 
+				shiftKey: shiftKey, 
+				ctrlKey: evt.ctrlKey, 
+				altKey: evt.altKey, 
+				keyCode: (charCode ? 0 : keyCode), 
+				charCode: charCode
+			};
+			de._fixKey(faux, charCode);
+			// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault); 
+			// but it throws an error when preventDefault is invoked on Safari
+			// does Event.preventDefault not support "apply" on Safari?
+			faux.preventDefault = function(){ evt.preventDefault(); }; 
+			faux.stopPropagation = function(){ evt.stopPropagation(); }; 
+			return faux;
+	}
+	
 	// Opera event normalization
 	if(dojo.isOpera){
 		dojo.mixin(de, {
@@ -424,6 +441,9 @@ dojo.require("dojo._base.connect");
 				switch(evt.type){
 					case "keypress":
 						var c = evt.which;
+						if(c==3){
+							c=99; // Mozilla maps CTRL-BREAK to CTRL-c
+						}
 						// can't trap some keys at all, like INSERT and DELETE
 						// there is no differentiating info between DELETE and ".", or INSERT and "-"
 						c = ((c<41)&&(!evt.shiftKey) ? 0 : c);
@@ -431,9 +451,7 @@ dojo.require("dojo._base.connect");
 							// lowercase CTRL-[A-Z] keys
 							c += 32;
 						}
-						evt.charCode = c;
-						de._fixKey(evt, c);
-						break;
+						return de._synthesizeEvent(evt, evt.keyCode, c, evt.shiftKey);
 				}
 				return evt;
 			}
@@ -442,7 +460,6 @@ dojo.require("dojo._base.connect");
 
 	// Safari event normalization
 	if(dojo.isSafari){ 
-		//alert("mixing in Safari event fix");
 		dojo.mixin(de, {
 			_fixEvent: function(evt, sender){
 				switch(evt.type){
@@ -458,22 +475,7 @@ dojo.require("dojo._base.connect");
 						} else {
 							c = (c>=32 && c<63232 ? c : 0); // avoid generating keyChar for non-printables
 						}
-						// We have to create a faux event to control shiftKey on Safari
-						var faux = { 
-							type: evt.type, 
-							shiftKey: s, 
-							ctrlKey: evt.ctrlKey, 
-							altKey: evt.altKey, 
-							keyCode: evt.keyCode, 
-							charCode: c
-						};
-						de._fixKey(faux, c);
-						// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault); 
-						// but it throws an error when preventDefault is invoked
-						// does Event.preventDefault not support "apply" on Safari?
-						faux.preventDefault = function(){ evt.preventDefault(); }; 
-						faux.stopPropagation = function(){ evt.stopPropagation(); }; 
-						return faux;
+						return de._synthesizeEvent(evt, keyCode, c, s);
 				}
 				return evt;
 			}

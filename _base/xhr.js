@@ -244,39 +244,6 @@ dojo._contentHandlers = {
 		return args;
 	}
 
-	// it's embarassing that we have to do any of this shit. *sigh*
-	var _intvlMap = [];
-	var _intvlInc = 0;
-	var _setIntvl = (dojo.isMoz) ? function(func, time, idx){
-		// setInterval broken in mozilla x86_64 in some circumstances, see
-		// https://bugzilla.mozilla.org/show_bug.cgi?id=344439
-		// using setTimeout on that platform instead
-		idx = idx||_intvlInc++;
-		if(dojo.isString(func)){
-			func = new Function(func);
-		}
-		if(!func["_setIntvlWrapped"]){
-			var _of = func;
-			func = function(){
-				_of();
-				if(_intvlMap[idx] != "cleared"){
-					_setIntvl(func, time, idx);
-				}
-			};
-			// _of._setIntvlWrapped = true;
-			func._setIntvlWrapped = true;
-		}
-		_intvlMap[idx] = setTimeout(func, time);
-		return idx;
-	} : setInterval;
-
-	var _clearIntvl = (dojo.isMoz) ? function(idx){
-		_intvlMap[idx] = "cleared";
-	} : clearInterval;
-
-	// dojo._setIntvl = _setIntvl;
-	// dojo._clearIntvl = _clearIntvl;
-
 	// avoid setting a timer per request. It degrades performance on IE
 	// something fierece if we don't use unified loops.
 
@@ -326,7 +293,7 @@ dojo._contentHandlers = {
 		}
 
 		if(!_inFlight.length){
-			_clearIntvl(_inFlightIntvl);
+			clearInterval(_inFlightIntvl);
 			_inFlightIntvl = null;
 			return;
 		}
@@ -336,7 +303,7 @@ dojo._contentHandlers = {
 		obj.startTime = (new Date()).getTime();
 		_inFlight.push(obj);
 		if(!_inFlightIntvl){
-			_inFlightIntvl = _setIntvl(_watchInFlight, 50);
+			_inFlightIntvl = setInterval(_watchInFlight, 50);
 		}
 		_watchInFlight(); // handle sync requests
 	}

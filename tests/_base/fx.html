@@ -62,10 +62,12 @@
 							timeout: 1500,
 							runTest: function(t){
 								var duration = 500;
-								var startHeight = dojo.style('foo', 'height');
-								console.debug("Start height is "+startHeight);
+								var foo = dojo.byId("foo");
+								var startHeight = dojo.marginBox(foo).h; 
+								//console.debug("Start height is "+startHeight);
+								
 								var anim = dojo.animateProperty({
-									node: 'foo',
+									node: foo,
 									properties: { height: { end: startHeight / 2 } },
 									duration: duration
 								});
@@ -73,13 +75,13 @@
 								var d = new doh.Deferred();
 
 								dojo.connect(anim, "onEnd", anim, function(){
-									var height = dojo.style('foo', 'height');
-									console.debug("End height is "+height);
+									var height = dojo.marginBox(foo).h; 
+									//console.debug("End height is "+height);
 
 									var elapsed = (new Date().valueOf()) - anim._startTime;
 									t.assertTrue(elapsed >= duration);
 
-									console.debug("dojo.style('foo', 'height'): "+height+"\nHeight Style Property: "+dojo.byId('foo').style['height']+"\nIntended Height: "+(startHeight/2));
+									//console.debug("dojo.contentBox(foo).h): "+height+"\nIntended Height: "+(startHeight/2));
 
 									t.is(height, startHeight / 2);
 									d.callback(true);

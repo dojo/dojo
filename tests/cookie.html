@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title>testing Cookies</title>
+		<style type="text/css">
+			@import "../resources/dojo.css";
+		</style>
+		<script type="text/javascript"
+			src="../dojo.js"
+			djConfig="isDebug:true"></script>
+		<script type="text/javascript" src="../cookie.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.addOnLoad(function(){
+				doh.register("t",
+					[
+						{
+							name: "basicSet",
+							runTest: function(t){
+								// make sure the cookie is dead
+								var old = new Date(1976, 8, 15);
+								document.cookie = "dojo_test=blah; expires=" + old.toUTCString();
+								t.is(-1, document.cookie.indexOf("dojo_test="));
+								
+								// set the new one
+								var n = "dojo_test";
+								var v = "test value";
+								dojo.cookie(n, v);
+								t.t(document.cookie.indexOf(n+"=") >= 0);
+								var start = document.cookie.indexOf(n+"=") + n.length + 1;
+								var end = document.cookie.indexOf(";", start);
+								if(end == -1) end = document.cookie.length;
+								t.is(v, decodeURIComponent(document.cookie.substring(start, end)));
+							}
+						},
+						{
+							name: "basicGet",
+							runTest: function(t){
+								// set the cookie
+								var n = "dojo_test";
+								var v = "foofoo";
+								document.cookie = n + "=" + v;
+								
+								t.is(v, dojo.cookie(n));
+							}
+						}
+					]
+				);
+				doh.run();
+			})
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

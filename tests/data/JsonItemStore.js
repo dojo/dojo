@@ -288,6 +288,30 @@ doh.register("tests.data.JsonItemStore",
 			t.assertTrue(jsonItemStore.isItem(item));
 			t.assertTrue(!jsonItemStore.isItem({}));
 		},
+		function testReadAPI_isItem_multistore(t){
+			//	summary: 
+			//		Simple test of the isItem function of the store
+			//		to verify two different store instances do not accept
+			//		items from each other.
+			//	description:
+			//		Simple test of the isItem function of the store
+			//		to verify two different store instances do not accept
+			//		items from each other.
+
+			// Two different instances, even  if they read from the same URL 
+			// should not accept items between each other!
+			var jsonItemStore1 = getCountriesStore();
+			var jsonItemStore2 = getCountriesStore();
+
+			var item1 = jsonItemStore1.getItemByIdentity("sv");
+			var item2 = jsonItemStore2.getItemByIdentity("sv");
+			t.assertTrue(item1 !== null);
+			t.assertTrue(item2 !== null);
+			t.assertTrue(jsonItemStore1.isItem(item1));
+			t.assertTrue(jsonItemStore2.isItem(item2));
+			t.assertTrue(!jsonItemStore1.isItem(item2));
+			t.assertTrue(!jsonItemStore2.isItem(item1));
+		},
 		function testReadAPI_hasAttribute(t){
 			//	summary: 
 			//		Simple test of the hasAttribute function of the store

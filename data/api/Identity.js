@@ -32,15 +32,19 @@ dojo.declare("dojo.data.api.Identity",dojo.data.api.Read,null,{
 		return itemIdentityString; // string
 	},
 
-	getItemByIdentity: function(/* string */ identity){
+	getItemByIdentity: function(/* string || object */ identity){
 		//	summary:
 		//		Given the identity of an item, this method returns the item that has 
 		//		that identity.  Conforming implementations should return null if there 
-		//		is no item with the given identity.  Implementations of findByIdentity() 
+		//		is no item with the given identity.  Implementations of getItemByIdentity() 
 		//		may sometimes return an item from a local cache and may sometimes 
 		//		fetch an item from a remote server, in which case the call to 
-		//		findByIdentity() will block until the findByIdentity() implementation 
-		//		has the item to return.
+		//		getItemByIdentity() will block until the getItemByIdentity() implementation 
+		//		has the item to return.	
+		//
+		//	identity:
+		//		The identity of the object to locate.  It should be a string or an 
+		//		object that toString() can be called on (such as a dojo.uuid object).
 		//
 		//	examples:
 		//		var alaska = store.getItemByIdentity("AK");

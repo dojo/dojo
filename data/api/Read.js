@@ -103,8 +103,9 @@ dojo.declare("dojo.data.api.Read",null,null,{
 
 	isItem: function(/* anything */ something){
 		//	summary:
-		//		Returns true if *something* is an item.  Returns false if *something*
-		//		is a literal or is any object other than an item.
+		//		Returns true if *something* is an item and came from the store instance.  
+		//		Returns false if *something* is a literal, an item from another store instance, 
+		//		or is any object other than an item.
 		//
 		//	examples:
 		//		var yes = store.isItem(store.newItem());
@@ -134,7 +135,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		to isItemLoaded() returns true before loadItem() is even called,
 		//		then loadItem() need not do any work at all and will not even invoke
 		//		the callback handlers.  So, before invoking this method, check that
-		//		the item has not already been loaded..  
+		//		the item has not already been loaded.  
 		// 	keywordArgs:
 		//		An anonymous object that defines the item to load and callbacks to invoke when the 
 		//		load has completed.  The format of the object is as follows:
@@ -362,10 +363,11 @@ dojo.declare("dojo.data.api.Read",null,null,{
 
 	close: function(/*dojo.data.api.Request || keywordArgs || null */ request){
 		//	summary:
-		//		The close() method is inded for instructing the store to 'close' out 
+		//		The close() method is intended for instructing the store to 'close' out 
 		//		any information associated with a particular request.
-		//	summary:
-		//		The close() method is inded for instructing the store to 'close' out 
+		//
+		//	description:
+		//		The close() method is intended for instructing the store to 'close' out 
 		//		any information associated with a particular request.  In general, this API
 		//		expects to recieve as a parameter a request object returned from a fetch.  
 		//		It will then close out anything associated with that request, such as 
@@ -376,7 +378,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		An instance of a request for the store to use to identify what to close out.
 		//		If no request is passed, then the store should clear all internal caches (if any)
 		//		and close out all 'open' connections.  It does not render the store unusable from
-		//		there on, it merely cleans out any current data and resents the store to initial 
+		//		there on, it merely cleans out any current data and resets the store to initial 
 		//		state.
 		//
 		//	examples:

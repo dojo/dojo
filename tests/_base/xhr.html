@@ -20,10 +20,11 @@
 					multi: [
 						"thud",
 						"thonk"
-					]
+					],
+					textarea: "textarea_value"
 				};
-				var f2foStr = "blah=blah&multi=thud&multi=thonk";
-				var f2foJson = '{"blah":"blah","multi":["thud","thonk"]}';
+				var f2foStr = "blah=blah&multi=thud&multi=thonk&textarea=textarea_value";
+				var f2foJson = '{"blah":"blah","multi":["thud","thonk"],"textarea":"textarea_value"}';
 
 				var f3fo = { 
 					spaces: "string with spaces"
@@ -270,6 +271,7 @@
 				<option value="thud" selected>thud</option>
 				<option value="thonk" selected>thonk</option>
 			</select>
+			<textarea name="textarea">textarea_value</textarea>
 		</form>
 		<form id="f3" style="border: 1px solid black;">
 			<input type="hidden" name="spaces" value="string with spaces">

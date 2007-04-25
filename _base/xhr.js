@@ -37,7 +37,7 @@ dojo.formToObject = function(/*DOMNode||String*/ formNode){
 
 	// FIXME: seems that dojo.query needs negation operators!!
 	var ret = {};
-	var iq = "input[type!=file][type!=submit][type!=image][type!=reset][type!=button], select";
+	var iq = "input[type!=file][type!=submit][type!=image][type!=reset][type!=button], select, textarea";
 	dojo.query(iq, formNode).filter(function(node){
 		return (!node.disabled);
 	}).forEach(function(item){

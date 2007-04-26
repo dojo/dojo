@@ -31,27 +31,27 @@ tests.register("tests.date.local",
 
 	var date = new Date(2006, 7, 11, 0, 55, 12, 345);
 
-	t.is("Friday, August 11, 2006", dojo.date.local.format(date, {formatLength:'full',selector:'dateOnly', locale:'en-us'}));
-	t.is("vendredi 11 ao\xFBt 2006", dojo.date.local.format(date, {formatLength:'full',selector:'dateOnly', locale:'fr-fr'}));
-	t.is("Freitag, 11. August 2006", dojo.date.local.format(date, {formatLength:'full',selector:'dateOnly', locale:'de-at'}));
-	t.is("2006\u5E748\u670811\u65E5\u91D1\u66DC\u65E5", dojo.date.local.format(date, {formatLength:'full',selector:'dateOnly', locale:'ja-jp'}));
+	t.is("Friday, August 11, 2006", dojo.date.local.format(date, {formatLength:'full',selector:'date', locale:'en-us'}));
+	t.is("vendredi 11 ao\xFBt 2006", dojo.date.local.format(date, {formatLength:'full',selector:'date', locale:'fr-fr'}));
+	t.is("Freitag, 11. August 2006", dojo.date.local.format(date, {formatLength:'full',selector:'date', locale:'de-at'}));
+	t.is("2006\u5E748\u670811\u65E5\u91D1\u66DC\u65E5", dojo.date.local.format(date, {formatLength:'full',selector:'date', locale:'ja-jp'}));
 
-	t.is("8/11/06", dojo.date.local.format(date, {formatLength:'short',selector:'dateOnly', locale:'en-us'}));
-	t.is("11/08/06", dojo.date.local.format(date, {formatLength:'short',selector:'dateOnly', locale:'fr-fr'}));
-	t.is("11.08.06", dojo.date.local.format(date, {formatLength:'short',selector:'dateOnly', locale:'de-at'}));
-	t.is("06/08/11", dojo.date.local.format(date, {formatLength:'short',selector:'dateOnly', locale:'ja-jp'}));
+	t.is("8/11/06", dojo.date.local.format(date, {formatLength:'short',selector:'date', locale:'en-us'}));
+	t.is("11/08/06", dojo.date.local.format(date, {formatLength:'short',selector:'date', locale:'fr-fr'}));
+	t.is("11.08.06", dojo.date.local.format(date, {formatLength:'short',selector:'date', locale:'de-at'}));
+	t.is("06/08/11", dojo.date.local.format(date, {formatLength:'short',selector:'date', locale:'ja-jp'}));
 
-	t.is("12:55 AM", dojo.date.local.format(date, {formatLength:'short',selector:'timeOnly', locale:'en-us'}));
-	t.is("12:55:12", dojo.date.local.format(date, {timePattern:'h:m:s',selector:'timeOnly'}));
-	t.is("12:55:12.35", dojo.date.local.format(date, {timePattern:'h:m:s.SS',selector:'timeOnly'}));
-	t.is("24:55:12.35", dojo.date.local.format(date, {timePattern:'k:m:s.SS',selector:'timeOnly'}));
-	t.is("0:55:12.35", dojo.date.local.format(date, {timePattern:'H:m:s.SS',selector:'timeOnly'}));
-	t.is("0:55:12.35", dojo.date.local.format(date, {timePattern:'K:m:s.SS',selector:'timeOnly'}));
+	t.is("12:55 AM", dojo.date.local.format(date, {formatLength:'short',selector:'time', locale:'en-us'}));
+	t.is("12:55:12", dojo.date.local.format(date, {timePattern:'h:m:s',selector:'time'}));
+	t.is("12:55:12.35", dojo.date.local.format(date, {timePattern:'h:m:s.SS',selector:'time'}));
+	t.is("24:55:12.35", dojo.date.local.format(date, {timePattern:'k:m:s.SS',selector:'time'}));
+	t.is("0:55:12.35", dojo.date.local.format(date, {timePattern:'H:m:s.SS',selector:'time'}));
+	t.is("0:55:12.35", dojo.date.local.format(date, {timePattern:'K:m:s.SS',selector:'time'}));
 
-	t.is("11082006", dojo.date.local.format(date, {datePattern:"ddMMyyyy", selector:"dateOnly"}));
+	t.is("11082006", dojo.date.local.format(date, {datePattern:"ddMMyyyy", selector:"date"}));
 
 	// compare without timezone
-	t.is("\u4e0a\u534812\u65f655\u520612\u79d2", dojo.date.local.format(date, {formatLength:'full',selector:'timeOnly', locale:'zh-cn'}).split(' ')[0]);
+	t.is("\u4e0a\u534812\u65f655\u520612\u79d2", dojo.date.local.format(date, {formatLength:'full',selector:'time', locale:'zh-cn'}).split(' ')[0]);
 			}
 		},
 		{
@@ -64,79 +64,79 @@ tests.register("tests.date.local",
 
 	//en: 'short' fmt: M/d/yy
 	// Tolerate either 8 or 08 for month part.
-	t.is( aug_11_2006, dojo.date.local.parse("08/11/06", {formatLength:'short', locale:'en'}));
-	t.is( aug_11_2006, dojo.date.local.parse("8/11/06", {formatLength:'short', locale:'en'}));	
+	t.is( aug_11_2006, dojo.date.local.parse("08/11/06", {formatLength:'short', selector:'date', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("8/11/06", {formatLength:'short', selector:'date', locale:'en'}));	
 	// Tolerate yyyy input in yy part...
-	t.is( aug_11_2006, dojo.date.local.parse("8/11/2006", {formatLength:'short', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("8/11/2006", {formatLength:'short', selector:'date', locale:'en'}));
 	// ...but not in strict mode
-	t.is( null, dojo.date.local.parse("8/11/2006", {formatLength:'short', locale:'en', strict:true}));
+	t.is( null, dojo.date.local.parse("8/11/2006", {formatLength:'short', selector:'date', locale:'en', strict:true}));
 
 	//en: 'medium' fmt: MMM d, yyyy
 	// Tolerate either 8 or 08 for month part.
-	t.is( aug_11_2006, dojo.date.local.parse("Aug 11, 2006", {formatLength:'medium', locale:'en'}));
-	t.is( aug_11_2006, dojo.date.local.parse("Aug 11, 2006", {formatLength:'medium', locale:'en'}));	
+	t.is( aug_11_2006, dojo.date.local.parse("Aug 11, 2006", {formatLength:'medium', selector:'date', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("Aug 11, 2006", {formatLength:'medium', selector:'date', locale:'en'}));	
 	// Tolerate abbreviating period in month part...
-	t.is( aug_11_2006, dojo.date.local.parse("Aug. 11, 2006", {formatLength:'medium', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("Aug. 11, 2006", {formatLength:'medium', selector:'date', locale:'en'}));
 	// ...but not in strict mode
-	t.is( null, dojo.date.local.parse("Aug. 11, 2006", {formatLength:'medium', locale:'en', strict:true}));
+	t.is( null, dojo.date.local.parse("Aug. 11, 2006", {formatLength:'medium', selector:'date', locale:'en', strict:true}));
 	// Note: 06 for year part will be translated literally as the year 6 C.E.
-	t.is( aug_11_06CE, dojo.date.local.parse("Aug 11, 06", {formatLength:'medium', locale:'en'}));
+	t.is( aug_11_06CE, dojo.date.local.parse("Aug 11, 06", {formatLength:'medium', selector:'date', locale:'en'}));
 	//en: 'long' fmt: MMMM d, yyyy
-	t.is( aug_11_2006, dojo.date.local.parse("August 11, 2006", {formatLength:'long', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("August 11, 2006", {formatLength:'long', selector:'date', locale:'en'}));
 
 	//en: 'full' fmt: EEEE, MMMM d, yyyy
-	t.is( aug_11_2006, dojo.date.local.parse("Friday, August 11, 2006", {formatLength:'full', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("Friday, August 11, 2006", {formatLength:'full', selector:'date', locale:'en'}));
 	//TODO: wrong day-of-week should fail
-	//t.is( null, dojo.date.local.parse("Thursday, August 11, 2006", {formatLength:'full', locale:'en'}));
+	//t.is( null, dojo.date.local.parse("Thursday, August 11, 2006", {formatLength:'full', selector:'date', locale:'en'}));
 
 	//Whitespace tolerance
-	t.is( aug_11_2006, dojo.date.local.parse(" August 11, 2006", {formatLength:'long', locale:'en'}));
-	t.is( aug_11_2006, dojo.date.local.parse("August  11, 2006", {formatLength:'long', locale:'en'}));
-	t.is( aug_11_2006, dojo.date.local.parse("August 11 , 2006", {formatLength:'long', locale:'en'}));
-	t.is( aug_11_2006, dojo.date.local.parse("August 11,  2006", {formatLength:'long', locale:'en'}));
-	t.is( aug_11_2006, dojo.date.local.parse("August 11, 2006 ", {formatLength:'long', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse(" August 11, 2006", {formatLength:'long', selector:'date', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("August  11, 2006", {formatLength:'long', selector:'date', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("August 11 , 2006", {formatLength:'long', selector:'date', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("August 11,  2006", {formatLength:'long', selector:'date', locale:'en'}));
+	t.is( aug_11_2006, dojo.date.local.parse("August 11, 2006 ", {formatLength:'long', selector:'date', locale:'en'}));
 
 	//Simple Validation Tests
 	//catch "month" > 12 (note: month/day reversals are common when user expectation isn't met wrt european versus US formats)
-	t.is( null, dojo.date.local.parse("15/1/2005", {formatLength:'short', locale:'en'}));
+	t.is( null, dojo.date.local.parse("15/1/2005", {formatLength:'short', selector:'date', locale:'en'}));
 	//day of month typo rolls over to the next month
-	t.is( null, dojo.date.local.parse("Aug 32, 2006", {formatLength:'medium', locale:'en'}));
+	t.is( null, dojo.date.local.parse("Aug 32, 2006", {formatLength:'medium', selector:'date', locale:'en'}));
 
 	//German (de)
-	t.is( aug_11_2006, dojo.date.local.parse("11.08.06", {formatLength:'short', locale:'de'}));
-	t.is( null, dojo.date.local.parse("11.8/06", {formatLength:'short', locale:'de'}));
-	t.is( null, dojo.date.local.parse("11.8x06", {formatLength:'short', locale:'de'}));
-	t.is( null, dojo.date.local.parse("11.13.06", {formatLength:'short', locale:'de'}));
-	t.is( null, dojo.date.local.parse("11.0.06", {formatLength:'short', locale:'de'}));
-	t.is( null, dojo.date.local.parse("32.08.06", {formatLength:'short', locale:'de'}));
+	t.is( aug_11_2006, dojo.date.local.parse("11.08.06", {formatLength:'short', selector:'date', locale:'de'}));
+	t.is( null, dojo.date.local.parse("11.8/06", {formatLength:'short', selector:'date', locale:'de'}));
+	t.is( null, dojo.date.local.parse("11.8x06", {formatLength:'short', selector:'date', locale:'de'}));
+	t.is( null, dojo.date.local.parse("11.13.06", {formatLength:'short', selector:'date', locale:'de'}));
+	t.is( null, dojo.date.local.parse("11.0.06", {formatLength:'short', selector:'date', locale:'de'}));
+	t.is( null, dojo.date.local.parse("32.08.06", {formatLength:'short', selector:'date', locale:'de'}));
 
 	//Spanish (es)
 	//es: 'short' fmt: d/MM/yy
-	t.is( aug_11_2006, dojo.date.local.parse("11/08/06", {formatLength:'short', locale:'es'}));
-	t.is( aug_11_2006, dojo.date.local.parse("11/8/06", {formatLength:'short', locale:'es'}));	
+	t.is( aug_11_2006, dojo.date.local.parse("11/08/06", {formatLength:'short', selector:'date', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.local.parse("11/8/06", {formatLength:'short', selector:'date', locale:'es'}));	
 	// Tolerate yyyy input in yy part...
-	t.is( aug_11_2006, dojo.date.local.parse("11/8/2006", {formatLength:'short', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.local.parse("11/8/2006", {formatLength:'short', selector:'date', locale:'es'}));
 	// ...but not in strict mode
-	t.is( null, dojo.date.local.parse("11/8/2006", {formatLength:'short', locale:'es', strict:true}));
+	t.is( null, dojo.date.local.parse("11/8/2006", {formatLength:'short', selector:'date', locale:'es', strict:true}));
 	//es: 'medium' fmt: dd-MMM-yy
-	t.is( aug_11_2006, dojo.date.local.parse("11-ago-06", {formatLength:'medium', locale:'es'}));
-	t.is( aug_11_2006, dojo.date.local.parse("11-ago-2006", {formatLength:'medium', locale:'es'}));	
+	t.is( aug_11_2006, dojo.date.local.parse("11-ago-06", {formatLength:'medium', selector:'date', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.local.parse("11-ago-2006", {formatLength:'medium', selector:'date', locale:'es'}));	
 	// Tolerate abbreviating period in month part...
-	t.is( aug_11_2006, dojo.date.local.parse("11-ago.-2006", {formatLength:'medium', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.local.parse("11-ago.-2006", {formatLength:'medium', selector:'date', locale:'es'}));
 	// ...but not in strict mode
-	t.is( null, dojo.date.local.parse("11-ago.-2006", {formatLength:'medium', locale:'es', strict:true}));
+	t.is( null, dojo.date.local.parse("11-ago.-2006", {formatLength:'medium', selector:'date', locale:'es', strict:true}));
 	//es: 'long' fmt: d' de 'MMMM' de 'yyyy
-	t.is( aug_11_2006, dojo.date.local.parse("11 de agosto de 2006", {formatLength:'long', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.local.parse("11 de agosto de 2006", {formatLength:'long', selector:'date', locale:'es'}));
 	//case-insensitive month...
-	t.is( aug_11_2006, dojo.date.local.parse("11 de Agosto de 2006", {formatLength:'long', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.local.parse("11 de Agosto de 2006", {formatLength:'long', selector:'date', locale:'es'}));
 	//...but not in strict mode
-	t.is( null, dojo.date.local.parse("11 de Agosto de 2006", {formatLength:'long', locale:'es', strict:true}));
+	t.is( null, dojo.date.local.parse("11 de Agosto de 2006", {formatLength:'long', selector:'date', locale:'es', strict:true}));
 	//es 'full' fmt: EEEE d' de 'MMMM' de 'yyyy
-	t.is( aug_11_2006, dojo.date.local.parse("viernes 11 de agosto de 2006", {formatLength:'full', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.local.parse("viernes 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es'}));
 	//case-insensitive day-of-week...
-	t.is( aug_11_2006, dojo.date.local.parse("Viernes 11 de agosto de 2006", {formatLength:'full', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.local.parse("Viernes 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es'}));
 	//...but not in strict mode
-	t.is( null, dojo.date.local.parse("Viernes 11 de agosto de 2006", {formatLength:'full', locale:'es', strict:true}));
+	t.is( null, dojo.date.local.parse("Viernes 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es', strict:true}));
 
 	//Japanese (ja)
 	//note: to avoid garbling from non-utf8-aware editors that may touch this file, using the \uNNNN format 
@@ -148,27 +148,27 @@ tests.register("tests.date.local",
 	//zenkaku space: \u3000
 	
 	//ja: 'short' fmt: yy/MM/dd (note: the "short" fmt isn't actually defined in the CLDR data...)
-	t.is( aug_11_2006, dojo.date.local.parse("06/08/11", {formatLength:'short', locale:'ja'}));
-	t.is( aug_11_2006, dojo.date.local.parse("06/8/11", {formatLength:'short', locale:'ja'}));	
+	t.is( aug_11_2006, dojo.date.local.parse("06/08/11", {formatLength:'short', selector:'date', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse("06/8/11", {formatLength:'short', selector:'date', locale:'ja'}));	
  	// Tolerate yyyy input in yy part...
-	t.is( aug_11_2006, dojo.date.local.parse("2006/8/11", {formatLength:'short', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse("2006/8/11", {formatLength:'short', selector:'date', locale:'ja'}));
 	// ...but not in strict mode
-	t.is( null, dojo.date.local.parse("2006/8/11", {formatLength:'short', locale:'ja', strict:true}));
+	t.is( null, dojo.date.local.parse("2006/8/11", {formatLength:'short', selector:'date', locale:'ja', strict:true}));
 	//ja: 'medium' fmt: yyyy/MM/dd
-	t.is( aug_11_2006, dojo.date.local.parse("2006/08/11", {formatLength:'medium', locale:'ja'}));
-	t.is( aug_11_2006, dojo.date.local.parse("2006/8/11", {formatLength:'medium', locale:'ja'}));		
+	t.is( aug_11_2006, dojo.date.local.parse("2006/08/11", {formatLength:'medium', selector:'date', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse("2006/8/11", {formatLength:'medium', selector:'date', locale:'ja'}));		
 	//ja: 'long' fmt: yyyy'\u5e74'\u6708'd'\u65e5'
-	t.is( aug_11_2006, dojo.date.local.parse("2006\u5e748\u670811\u65e5", {formatLength:'long', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse("2006\u5e748\u670811\u65e5", {formatLength:'long', selector:'date', locale:'ja'}));
 	//ja 'full' fmt: yyyy'\u5e74'M'\u6708'd'\u65e5'EEEE
-	t.is( aug_11_2006, dojo.date.local.parse("2006\u5e748\u670811\u65e5\u91d1\u66dc\u65e5", {formatLength:'full', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse("2006\u5e748\u670811\u65e5\u91d1\u66dc\u65e5", {formatLength:'full', selector:'date', locale:'ja'}));
 
 	//Whitespace tolerance
 	//tolerate ascii space
-	t.is( aug_11_2006, dojo.date.local.parse(" 2006\u5e748\u670811\u65e5\u91d1\u66dc\u65e5 ", {formatLength:'full', locale:'ja'}));
-	t.is( aug_11_2006, dojo.date.local.parse("2006\u5e74 8\u670811\u65e5 \u91d1\u66dc\u65e5", {formatLength:'full', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse(" 2006\u5e748\u670811\u65e5\u91d1\u66dc\u65e5 ", {formatLength:'full', selector:'date', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse("2006\u5e74 8\u670811\u65e5 \u91d1\u66dc\u65e5", {formatLength:'full', selector:'date', locale:'ja'}));
 	//tolerate zenkaku space
-	t.is( aug_11_2006, dojo.date.local.parse("\u30002006\u5e748\u670811\u65e5\u91d1\u66dc\u65e5\u3000", {formatLength:'full', locale:'ja'}));
-	t.is( aug_11_2006, dojo.date.local.parse("2006\u5e74\u30008\u670811\u65e5\u3000\u91d1\u66dc\u65e5", {formatLength:'full', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse("\u30002006\u5e748\u670811\u65e5\u91d1\u66dc\u65e5\u3000", {formatLength:'full', selector:'date', locale:'ja'}));
+	t.is( aug_11_2006, dojo.date.local.parse("2006\u5e74\u30008\u670811\u65e5\u3000\u91d1\u66dc\u65e5", {formatLength:'full', selector:'date', locale:'ja'}));
 			}
 		},
 		{
@@ -181,15 +181,15 @@ tests.register("tests.date.local",
 	//en: 'short' datetime fmt: M/d/yy h:mm a
 	//note: this is concatenation of dateFormat-short and timeFormat-short, 
 	//cldr provisionally defines datetime fmts as well, but we're not using them at the moment
-	t.is( aug_11_2006_12_30_pm, dojo.date.local.parse("08/11/06 12:30 PM", {formatLength:'short', selector:'dateTime', locale:'en'}));
+	t.is( aug_11_2006_12_30_pm, dojo.date.local.parse("08/11/06 12:30 PM", {formatLength:'short', locale:'en'}));
 	//case-insensitive
-	t.is( aug_11_2006_12_30_pm, dojo.date.local.parse("08/11/06 12:30 pm", {formatLength:'short', selector:'dateTime', locale:'en'}));
+	t.is( aug_11_2006_12_30_pm, dojo.date.local.parse("08/11/06 12:30 pm", {formatLength:'short', locale:'en'}));
 	//...but not in strict mode
-	t.is( null, dojo.date.local.parse("08/11/06 12:30 pm", {formatLength:'short', selector:'dateTime', locale:'en', strict:true}));
+	t.is( null, dojo.date.local.parse("08/11/06 12:30 pm", {formatLength:'short', locale:'en', strict:true}));
 
-	t.is( aug_11_2006_12_30_am, dojo.date.local.parse("08/11/06 12:30 AM", {formatLength:'short', selector:'dateTime', locale:'en'}));
+	t.is( aug_11_2006_12_30_am, dojo.date.local.parse("08/11/06 12:30 AM", {formatLength:'short', locale:'en'}));
 
-	t.is( new Date(2006, 7, 11), dojo.date.local.parse("11082006", {datePattern:"ddMMyyyy", selector:"dateOnly"}));
+	t.is( new Date(2006, 7, 11), dojo.date.local.parse("11082006", {datePattern:"ddMMyyyy", selector:"date"}));
 
 			}
 		},
@@ -198,7 +198,7 @@ tests.register("tests.date.local",
 			runTest: function(t){
 
 	var time = new Date(2006, 7, 11, 12, 30);
-	var tformat = {selector:'timeOnly', strict:true, timePattern:"h:mm a"};
+	var tformat = {selector:'time', strict:true, timePattern:"h:mm a"};
 	
 	t.is(time.getHours(), dojo.date.local.parse("12:30 PM", tformat).getHours());
 	t.is(time.getMinutes(), dojo.date.local.parse("12:30 PM", tformat).getMinutes());
@@ -217,9 +217,9 @@ dojo_validate_isValidTime = function(str, props){
 	if(!props.pm){props.pm="p.m.";}
 	var result = false;
 	if(/[hk]/.test(props.format) && props.format.indexOf('a') == -1){
-		result = dojo.date.local.parse(str, {selector: 'timeOnly', timePattern: props.format + " a"});
+		result = dojo.date.local.parse(str, {selector: 'time', timePattern: props.format + " a"});
 	}
-	return Boolean(result || dojo.date.local.parse(str, {selector: 'timeOnly', timePattern: props.format}));
+	return Boolean(result || dojo.date.local.parse(str, {selector: 'time', timePattern: props.format}));
 }
 
 dojo_validate_is12HourTime = function(str){
@@ -231,7 +231,7 @@ dojo_validate_is24HourTime = function(str){
 }
 
 dojo_validate_isValidDate = function(str, fmt){
-	return Boolean(dojo.date.local.parse(str, {selector: 'dateOnly', datePattern: fmt}));
+	return Boolean(dojo.date.local.parse(str, {selector: 'date', datePattern: fmt}));
 }
 
 function test_validate_datetime_isValidTime(){

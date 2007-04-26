@@ -129,7 +129,12 @@ try{
 
 	//FIXME the following do not belong here in _base.js - create a separate module?
 	dojo.require("tests.i18n"); 
+	dojo.require("tests.cldr");
 	dojo.require("tests.data");
+	dojo.require("tests.date.calc");
+	dojo.require("tests.date.local");
+	dojo.require("tests.date.serial");
+	dojo.require("tests.date.util");
 	dojo.require("tests.number");
 	dojo.require("tests.currency");
 }catch(e){

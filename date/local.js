@@ -37,7 +37,7 @@ dojo.date.local.format = function(/*Date*/dateObject, /*Object?*/options){
 //		opposite is true when formatting only dates.
 //
 // options: object {selector: string, formatLength: string, datePattern: string, timePattern: string, locale: string}
-//		selector- choice of timeOnly,dateOnly (default: date and time)
+//		selector- choice of 'time','date' (default: date and time)
 //		formatLength- choice of long, short, medium or full (plus any custom additions).  Defaults to 'short'
 //		datePattern,timePattern- override pattern with this string
 //		am,pm- override strings for am/pm in times
@@ -214,7 +214,7 @@ dojo.date.local.format = function(/*Date*/dateObject, /*Object?*/options){
 	var bundle = dojo.date.local._getGregorianBundle(locale);
 	var str = [];
 	var sauce = dojo.hitch(this, formatPattern, dateObject);
-	if(options.selector == "yearOnly"){
+	if(options.selector == "year"){
 		// Special case as this is not yet driven by CLDR data
 		var year = dateObject.getFullYear();
 		if(locale.match(/^zh|^ja/)){
@@ -222,11 +222,11 @@ dojo.date.local.format = function(/*Date*/dateObject, /*Object?*/options){
 		}
 		return year;
 	}
-	if(options.selector != "timeOnly"){
+	if(options.selector != "time"){
 		var datePattern = options.datePattern || bundle["dateFormat-"+formatLength];
 		if(datePattern){str.push(_processPattern(datePattern, sauce));}
 	}
-	if(options.selector != "dateOnly"){
+	if(options.selector != "date"){
 		var timePattern = options.timePattern || bundle["timeFormat-"+formatLength];
 		if(timePattern){str.push(_processPattern(timePattern, sauce));}
 	}
@@ -240,7 +240,7 @@ dojo.date.local.regexp = function(/*Object?*/options){
 //		Builds the regular needed to parse a localized date
 //
 // options: object {selector: string, formatLength: string, datePattern: string, timePattern: string, locale: string, strict: boolean}
-//		selector- choice of timeOnly, dateOnly, dateTime (default: dateOnly)
+//		selector- choice of 'time', 'date' (default: date and time)
 //		formatLength- choice of long, short, medium or full (plus any custom additions).  Defaults to 'short'
 //		datePattern,timePattern- override pattern with this string
 //		locale- override the locale used to determine formatting rules
@@ -253,13 +253,14 @@ dojo.date.local._parseInfo = function(/*Object?*/options){
 	var locale = dojo.i18n.normalizeLocale(options.locale);
 	var bundle = dojo.date.local._getGregorianBundle(locale);
 	var formatLength = options.formatLength || 'short';
-	if(!options.selector){ options.selector = 'dateOnly'; }
 	var datePattern = options.datePattern || bundle["dateFormat-" + formatLength];
 	var timePattern = options.timePattern || bundle["timeFormat-" + formatLength];
-	var pattern = datePattern;
-	if(options.selector == 'timeOnly'){
+	var pattern;
+	if(options.selector == 'date'){
+		pattern = datePattern;
+	}else if(options.selector == 'time'){
 		pattern = timePattern;
-	}else if(options.selector == 'dateTime'){
+	}else{
 		pattern = datePattern + ' ' + timePattern; //TODO: use locale-specific pattern to assemble date + time
 	}
 
@@ -288,7 +289,7 @@ dojo.date.local.parse = function(/*String*/value, /*Object?*/options){
 //		A string representation of a date
 //
 // options: object {selector: string, formatLength: string, datePattern: string, timePattern: string, locale: string, strict: boolean}
-//		selector- choice of timeOnly, dateOnly, dateTime (default: dateOnly)
+//		selector- choice of 'time', 'date' (default: date and time)
 //		formatLength- choice of long, short, medium or full (plus any custom additions).  Defaults to 'short'
 //		datePattern,timePattern- override pattern with this string
 //		am,pm- override strings for am/pm in times

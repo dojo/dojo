@@ -126,14 +126,6 @@ try{
 	dojo.requireIf(dojo.isBrowser, "tests._base.fx");
 	dojo.requireIf(dojo.isBrowser, "tests._base.query");
 	dojo.requireIf(dojo.isBrowser, "tests._base.xhr");
-
-	//FIXME the following do not belong here in _base.js - create a separate module?
-	dojo.require("tests.i18n"); 
-	dojo.require("tests.cldr");
-	dojo.require("tests.data");
-	dojo.require("tests.date");
-	dojo.require("tests.number");
-	dojo.require("tests.currency");
 }catch(e){
 	doh.debug(e);
 }

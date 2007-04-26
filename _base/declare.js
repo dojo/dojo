@@ -109,7 +109,7 @@ dojo.declare._makeConstructor = function(){
 	return function(){ 
 		var c = arguments.callee, p = c.prototype, s = c.superclass;			
 		// superclass instantiation
-		if(s){s.constructor.apply(this, arguments);}
+		if(s&&s.constructor.apply){s.constructor.apply(this, arguments);}
 		// initialize any mixins
 		if(c.mixins){
 			for(var i=0, m, f; (m=c.mixins[i]); i++){

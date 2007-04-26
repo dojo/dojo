@@ -62,30 +62,25 @@
 							timeout: 1500,
 							runTest: function(t){
 								var duration = 500;
-								var foo = dojo.byId("foo");
-								var startHeight = dojo.marginBox(foo).h; 
-								//console.debug("Start height is "+startHeight);
+								var startHeight = dojo.marginBox("foo").h; 
+								var endHeight = Math.round(startHeight / 2);
 								
 								var anim = dojo.animateProperty({
 									node: foo,
-									properties: { height: { end: startHeight / 2 } },
+									properties: { height: { end: endHeight } },
 									duration: duration
 								});
 
 								var d = new doh.Deferred();
 
 								dojo.connect(anim, "onEnd", anim, function(){
-									var height = dojo.marginBox(foo).h; 
-									//console.debug("End height is "+height);
-
 									var elapsed = (new Date().valueOf()) - anim._startTime;
 									t.assertTrue(elapsed >= duration);
-
-									//console.debug("dojo.contentBox(foo).h): "+height+"\nIntended Height: "+(startHeight/2));
-
-									t.is(height, startHeight / 2);
+									var height = dojo.marginBox("foo").h; 
+									t.is(height, endHeight);
 									d.callback(true);
 								});
+								
 								anim.play();
 								return d;
 							}
@@ -121,6 +116,7 @@
 				-webkit-box-sizing: border-box;
 				-khtml-box-sizing: border-box;
 				box-sizing: border-box;
+				overflow: hidden;
 				/* position: absolute; */
 			}
 		</style>

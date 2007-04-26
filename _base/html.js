@@ -21,7 +21,6 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		//		optional, defaults to the current value of
 		//		dojo.doc.  Can be used to retreive
 		//		node references from other documents.
-
 		if(dojo.isString(id)){
 			var _d = (doc||dojo.doc);
 			var te = _d.getElementById(id);
@@ -161,7 +160,6 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		}
 	}else{
 		// non-IE branch
-
 		var _toPixelValue = function(element, value){
 			// parseInt or parseFloat? (style values can be floats)
 			return parseFloat(value) || 0; 
@@ -485,14 +483,14 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		var _a_l = _a.length;
 		if(!_a_l){ return; }
 		var node = dojo.byId(_a[0]);
-		var s = dojo.getComputedStyle(node);
-		if(_a_l == 1){ return s; }
 		var io = ((dojo.isIE)&&(_a[1] == "opacity"));
-		if(_a_l == 2){
-			return (io) ? _ieGetOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
-		}
 		if(_a_l == 3){
 			return (io) ? _ieSetOpacity(node, _a[2]) : node.style[_a[1]] = _a[2];
+		}
+		var s = dojo.getComputedStyle(node);
+		if(_a_l == 1){ return s; }
+		if(_a_l == 2){
+			return (io) ? _ieGetOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
 		}
 	}
 })();
@@ -500,5 +498,3 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 dojo.createElement = function(obj, parent, position){
 	// TODO: need to finish this!
 }
-
-

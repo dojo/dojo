@@ -270,14 +270,20 @@ dojo.require("dojo._base.connect");
 			addListener: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
 				if(!node){return;} // undefined
 				event = de._normalizeEventName(event);
-				// FIXME: we need a way to disconnect this extra listener
-				if(node && (event=="onkeypress")){
-					de.addListener(node, "onkeydown", de._nop);
+				var handle = iel.add(node, event, de._fixCallback(fp));
+				if(event=="onkeypress"){
+					// FIXME: we are using the knowledge that handle
+					// is an Integer, which is supposed to be private.
+					// Perhaps the listener could natively return a 
+					// Number object instead of a concrete value.
+					handle = new Number(handle);
+					handle.keydown = de.addListener(node, "onkeydown", de._nop);
 				}
-				return iel.add(node, event, de._fixCallback(fp));
+				return handle;
 			},
 			removeListener: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
 				iel.remove(node, de._normalizeEventName(event), handle); 
+				if(handle.keydown){iel.remove(node, "onkeydown", handle.keydown);} 
 			},
 			_normalizeEventName: function(/*String*/eventName){
 				// Generally, eventName should be lower case, unless it is

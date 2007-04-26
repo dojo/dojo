@@ -8,7 +8,7 @@ dojo.require("dojo._base.lang");
 // low-level delegation machinery
 dojo._listener = {
 	// create a dispatcher function
-	dispatcher: function(f){
+	dispatcher: function(){
 		// return a dispatcher function
 		return function(){
 			// iterate over our listeners
@@ -36,7 +36,7 @@ dojo._listener = {
 		var f = source[method];
 		// Ensure a dispatcher
 		if(!f||!f.listeners){
-			var d = dojo._listener.dispatcher(f);
+			var d = dojo._listener.dispatcher();
 			// dispatcher holds a list of handlers
 			d.listeners = (f ? [f] : []);
 			// put back in source			

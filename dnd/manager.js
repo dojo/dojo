@@ -104,9 +104,11 @@ dojo.extend(dojo.dnd.Manager, {
 		var a = this.avatar;
 		if(a){
 			var s = a.node.style;
-			s.left = (e.pageX + 10 + a.offX) + "px";
-			s.top  = (e.pageY + 10 + a.offY) + "px";
-			if(this.copy != dojo.dnd.multiSelectKey(e)){ this._setCopyStatus(dojo.dnd.multiSelectKey(e)); }
+			s.left = (e.pageX + 10 + (isNaN(a.offX) ? 0 : a.offX)) + "px";
+			s.top  = (e.pageY + 10 +  (isNaN(a.offY) ? 0 : a.offY)) + "px";
+			if(this.copy != dojo.dnd.multiSelectKey(e)){ 
+				this._setCopyStatus(dojo.dnd.multiSelectKey(e));
+			}
 		}
 	},
 	onMouseUp: function(e){

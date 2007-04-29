@@ -198,8 +198,8 @@ tests.register("tests.date.local",
 			runTest: function(t){
 
 	var time = new Date(2006, 7, 11, 12, 30);
-	var tformat = {selector:'time', strict:true, timePattern:"h:mm a"};
-	
+	var tformat = {selector:'time', strict:true, timePattern:"h:mm a", locale:'en'};
+
 	t.is(time.getHours(), dojo.date.local.parse("12:30 PM", tformat).getHours());
 	t.is(time.getMinutes(), dojo.date.local.parse("12:30 PM", tformat).getMinutes());
 			}

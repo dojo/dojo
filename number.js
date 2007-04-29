@@ -312,7 +312,7 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 		return NaN; //NaN
 	}
 	var absoluteMatch = results[1]; // match for the positive expression
-	if(typeof absoluteMatch == 'undefined'){
+	if(typeof absoluteMatch == 'undefined' || absoluteMatch == ""){
 		// matched the negative pattern
 		absoluteMatch = results[2];
 		info.factor *= -1;

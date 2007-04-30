@@ -10,7 +10,8 @@ dojo.require("dojo._base.connect");
 		addListener: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
 			if(!node){ return; } 
 			event = de._normalizeEventName(event)
-			node.addEventListener(event, de._fixCallback(event, fp), false);
+			fp = de._fixCallback(event, fp);
+			node.addEventListener(event, fp, false);
 			return fp; /*Handle*/
 		},
 		removeListener: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){

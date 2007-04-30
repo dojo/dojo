@@ -155,15 +155,15 @@ dojo.declare("dojo.data.JsonItemStore",
 		//	summary: 
 		//		See dojo.data.util.simpleFetch.fetch()
 		var self = this;
-		var filter = function(resultArgs, arrayOfAllItems){
+		var filter = function(requestArgs, arrayOfAllItems){
 			var items = null;
-			if(resultArgs.query) {
+			if(requestArgs.query){
 				items = [];
 				for(var i = 0; i < arrayOfAllItems.length; ++i){
 					var match = true;
 					var candidateItem = arrayOfAllItems[i];
-					for(var key in resultArgs.query) {
-						var value = resultArgs.query[key];
+					for(var key in requestArgs.query) {
+						var value = requestArgs.query[key];
 						if (!self.containsValue(candidateItem, key, value)){
 							match = false;
 						}
@@ -172,14 +172,14 @@ dojo.declare("dojo.data.JsonItemStore",
 						items.push(candidateItem);
 					}
 				}
-				findCallback(items, resultArgs);
+				findCallback(items, requestArgs);
 			}else{
 				// We want a copy to pass back in case the parent wishes to sort the array.  We shouldn't allow resort 
 				// of the internal list so that multiple callers can get listsand sort without affecting each other.
 				if(self._arrayOfAllItems.length> 0){
 					items = self._arrayOfAllItems.slice(0,self._arrayOfAllItems.length); 
 				}
-				findCallback(items, resultArgs);
+				findCallback(items, requestArgs);
 			}
 		};
 

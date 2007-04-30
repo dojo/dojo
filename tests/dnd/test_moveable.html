@@ -3,6 +3,12 @@
 <head>
 	<title>Dojo Moveable test</title>
 	<style type="text/css">
+		@import "../../resources/dojo.css";
+
+		body {
+			padding: 1em;
+		}
+
 		#moveable1 {
 			background: yellow;
 			border: 1px solid black;
@@ -26,10 +32,7 @@
 			cursor: pointer;
 		}
 	</style>
-	<script type="text/javascript">
-		var djConfig = {isDebug: true};
-	</script>
-	<script type="text/javascript" src="../../dojo.js"></script>
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 	<script type="text/javascript" src="../../dnd/move.js"></script>
 	<script type="text/javascript">
 		dojo.require("dojo.dnd.move");

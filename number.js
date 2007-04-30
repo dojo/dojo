@@ -15,10 +15,10 @@ dojo.number.format = function(/*Number*/value, /*Object?*/options){
 	//		as well as the appropriate symbols and delimiters.  See http://www.unicode.org/reports/tr35/#Number_Elements
 	//
 	// value:
-	//		the number to be formatted.
+	//		the number to be formatted.  If not a valid number, return null.
 	//
 	// options: object {pattern: String?, type: String?, places: Number?, round: Number?, currency: String?, symbol: String?, locale: String?}
-	//		pattern- override formatting pattern with this string (see dojo.number.applyPattern)
+	//		pattern- override formatting pattern with this string (see dojo.number._applyPattern)
 	//		type- choose a format type based on the locale from the following: decimal, scientific, percent, currency. decimal by default.
 	//		places- fixed number of decimal places to show.  This overrides any information in the provided pattern.
 	//		round- 5 rounds to nearest .5; 0 rounds to nearest whole (default). -1 means don't round.
@@ -31,13 +31,14 @@ dojo.number.format = function(/*Number*/value, /*Object?*/options){
 	var bundle = dojo.i18n.getLocalization("dojo.cldr", "number", locale);
 	options.customs = bundle;
 	var pattern = options.pattern || bundle[(options.type || "decimal") + "Format"];
-	return dojo.number.applyPattern(value, pattern, options); // String
+	if(isNaN(value)){ return null; } // null
+	return dojo.number._applyPattern(value, pattern, options); // String
 };
 
 //dojo.number._numberPatternRE = /(?:[#0]*,?)*[#0](?:\.0*#*)?/; // not precise, but good enough
 dojo.number._numberPatternRE = /[#0,]*[#0](?:\.0*#*)?/; // not precise, but good enough
 
-dojo.number.applyPattern = function(/*Number*/value, /*String*/pattern, /*Object?*/options){
+dojo.number._applyPattern = function(/*Number*/value, /*String*/pattern, /*Object?*/options){
 	// summary: Apply pattern to format value as a string using options. Gives no consideration to local customs.
 	// value: the number to be formatted.
 	// pattern: a pattern string as described in http://www.unicode.org/reports/tr35/#Number_Format_Patterns
@@ -75,8 +76,8 @@ dojo.number.applyPattern = function(/*Number*/value, /*String*/pattern, /*Object
 	if(!numberPattern){
 		dojo.raise("unable to find a number expression in pattern: "+pattern);
 	}
-	var output = pattern.replace(numberPatternRE, dojo.number.formatAbsolute(value, numberPattern[0], {decimal: decimal, group: group, places: options.places}));
-	return output;
+	return pattern.replace(numberPatternRE,
+		dojo.number._formatAbsolute(value, numberPattern[0], {decimal: decimal, group: group, places: options.places}));
 }
 
 dojo.number.round = function(/*Number*/value, /*Number*/places, /*Number?*/multiple){
@@ -103,7 +104,7 @@ dojo.number.round = function(/*Number*/value, /*Number*/places, /*Number?*/multi
 	return value; //Number
 }
 
-dojo.number.formatAbsolute = function(/*Number*/value, /*String*/pattern, /*Object?*/options){
+dojo.number._formatAbsolute = function(/*Number*/value, /*String*/pattern, /*Object?*/options){
 	// summary: 
 	//		Apply numeric pattern to absolute value using options. Gives no
 	//		consideration to local customs.

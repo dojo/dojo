@@ -217,6 +217,8 @@ tests.register("tests.number",
 	t.is(-123.4, dojo.number.parse("-123.4", {pattern: "#0.#"}));
 	t.is(123.4, dojo.number.parse("123.4", {pattern: "#0.#;(#0.#)"}));
 	t.is(-123.4, dojo.number.parse("(123.4)", {pattern: "#0.#;(#0.#)"}));
+
+	t.is(null, dojo.number.format("abcd", {pattern: "0000"}));
 			}
 		},
 		{

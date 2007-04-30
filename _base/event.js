@@ -341,8 +341,14 @@ dojo.require("dojo._base.connect");
 						}else if(c==3){
 							c=99; // Mozilla maps CTRL-BREAK to CTRL-c
 						}
+						try{
+							// squelch errors when keyCode is read-only
+							// (e.g. if keyCode is ctrl or shift)
+							evt.keyCode = (c ? 0 : evt.keyCode);
+						}catch(e){
+							c=0;
+						}
 						evt.charCode = c;
-						evt.keyCode = (c ? 0 : evt.keyCode);
 						de._fixKey(evt);
 						break;
 				}

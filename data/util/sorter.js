@@ -6,11 +6,12 @@ dojo.data.util.sorter.basicComparator = function(	/*anything*/ a,
 	//		Basic comparision function that compares if an item is greater or less than another item
 	//	description:  
 	//		returns 1 if a > b, -1 if a < b, 0 if equal.
+	//		undefined values are treated as larger values so that they're pushed to the end of the list.
 
 	var ret = 0;
-	if(a > b){
+	if(a > b || typeof a === "undefined"){
 		ret = 1;
-	}else if(a < b){
+	}else if(a < b || typeof b === "undefined"){
 		ret = -1;
 	}
 	return ret; //int, {-1,0,1}

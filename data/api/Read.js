@@ -286,6 +286,9 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//			attribute: attribute || attribute-name-string,
 		//			descending: true|false;   // Optional.  Default is false.
 		//		}
+		//		Note that when comparing attributes, if an item contains no value for the attribute
+		//		(undefined), then it the default ascending sort logic should push it to the bottom 
+		//		of the list.  In the descending order case, it such items should appear at the top of the list.
 		// 
 		//	returns:
 		//		The fetch() method will return a javascript object conforming to the API

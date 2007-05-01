@@ -42,6 +42,35 @@ function getCountriesAttrsStore(){
 
 doh.register("tests.data.JsonItemStore", 
 	[
+		 function testIdentityAPI_getItemByIdentity(t){
+			 //	summary: 
+			 //		Simple test of the getItemByIdentity function of the store.
+			 //	description:
+			 //		Simple test of the getItemByIdentity function of the store.
+
+			 var jsonItemStore = getCountriesStore();
+
+			 var item = jsonItemStore.getItemByIdentity("sv");
+			 t.assertTrue(item !== null);
+			 if(item !== null){
+				 var name = jsonItemStore.getValue(item,"name");
+				 t.assertEqual(name, "El Salvador");
+			 }
+			 item = jsonItemStore.getItemByIdentity("sv_not");
+			 t.assertTrue(item === null);
+		 },
+		 function testIdentityAPI_getIdentity(t){
+			 //	summary: 
+			 //		Simple test of the getIdentity function of the store.
+			 //	description:
+			 //		Simple test of the getIdentity function of the store.
+
+			 var jsonItemStore = getCountriesStore();
+
+			 var item = jsonItemStore.getItemByIdentity("sv");
+			 t.assertTrue(item !== null);
+			 t.assertTrue(jsonItemStore.getIdentity(item) === "sv");
+		 },
 		function testReadAPI_fetch_all(t){
 			//	summary: 
 			//		Simple test of a basic fetch on JsonItemStore.
@@ -254,26 +283,6 @@ doh.register("tests.data.JsonItemStore",
             t.assertTrue(dojo.isArray(attrValues));
 			t.assertEqual(attrValues.length, 1);
 			t.assertEqual(attrValues[0], "ec");
-		},
-		function testReadAPI_getItemByIdentity(t){
-			//	summary: 
-			//		Simple test of the getItemByIdentity function of the store.
-			//	description:
-			//		Simple test of the getItemByIdentity function of the store.
-
-			var jsonItemStore = getCountriesStore();
-			
-			var item = jsonItemStore.getItemByIdentity("sv");
-			if (item === null){
-				console.debug("Item is null.");
-			}
-			t.assertTrue(item !== null);
-			if(item !== null){
-				var name = jsonItemStore.getValue(item,"name");
-				t.assertEqual(name, "El Salvador");
-			}
-			item = jsonItemStore.getItemByIdentity("sv_not");
-			t.assertTrue(item === null);
 		},
 		function testReadAPI_isItem(t){
 			//	summary: 
@@ -1065,6 +1074,58 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
+			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			return d;
+		},
+		function testReadAPI_fetch_sortAlphabeticWithUndefined(t){
+			//	summary: 
+			//		Function to test sorting alphabetic ordering.
+			//	description:
+			//		Function to test sorting alphabetic ordering.
+		
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											 items: [ {uniqueId: 0, value:"abc"},
+												  {uniqueId: 1, value:"bca"}, 
+												  {uniqueId: 2, value:"abcd"},
+												  {uniqueId: 3, value:"abcdefg"},
+												  {uniqueId: 4, value:"lmnop"},
+												  {uniqueId: 5, value:"foghorn"},
+												  {uniqueId: 6, value:"qberty"},
+												  {uniqueId: 7, value:"qwerty"},
+												  {uniqueId: 8 },  //Deliberate undefined value
+												  {uniqueId: 9, value:"seaweed"},
+												  {uniqueId: 10, value:"123abc"}
+		
+												]
+									   }
+								});
+			
+			var d = new doh.Deferred();
+			function completed(items, request){
+				//Output should be in this order...
+				var orderedArray = [10,0,2,3,1,5,4,6,7,9,8];
+				t.assertEqual(items.length, 11);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					if(!(jsonItemStore.getValue(items[i], "uniqueId") === orderedArray[i])){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(new Error("Unexpected sorting order found, sort failure."));
+				}
+			}
+		
+			function error(error, request) {
+				t.assertTrue(false);
+				d.errback(error);
+			}
+		
+			var sortAttributes = [{attribute: "value"}];
 			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},

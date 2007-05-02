@@ -6,12 +6,12 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 	//		The simpleFetch mixin is designed to serve as a set of function(s) that can
 	//		be mixed into other datastore implementations to accelerate their development.  
 	//		The simpleFetch mixin should work well for any datastore that can respond to a _fetchItems() 
-	//		call by returning an array of all the found items that matched the query.  The SimpleBaseStore 
+	//		call by returning an array of all the found items that matched the query.  The simpleFetch mixin
 	//		is not designed to work for datastores that respond to a fetch() call by incrementally
 	//		loading items, or sequentially loading partial batches of the result
 	//		set.  For datastores that mixin simpleFetch, simpleFetch 
-	//		implements a fetch method that automatically handles seven of the fetch()
-	//		arguments -- onBegin, onItem, onComplete, onError, start, count, and scope
+	//		implements a fetch method that automatically handles eight of the fetch()
+	//		arguments -- onBegin, onItem, onComplete, onError, start, count, sort and scope
 	//		The class mixing in simpleFetch should not implement fetch(),
 	//		but should instead implement a _fetchItems() method.  The _fetchItems() 
 	//		method takes three arguments, the keywordArgs object that was passed 

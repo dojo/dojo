@@ -132,7 +132,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//	summary:
 		//		Given an item, this method loads the item so that a subsequent call
 		//		to store.isItemLoaded(item) will return true.  If a call to
-		//		to isItemLoaded() returns true before loadItem() is even called,
+		//		isItemLoaded() returns true before loadItem() is even called,
 		//		then loadItem() need not do any work at all and will not even invoke
 		//		the callback handlers.  So, before invoking this method, check that
 		//		the item has not already been loaded.  
@@ -161,8 +161,8 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//
 		//	The *scope* parameter.
 		//		If a scope object is provided, all of the callback functions (onItem, 
-		//		onItem, onError, etc) will be invoked in the context of the scope
-		//		object.  In the body of the callback function, the value of the "this"
+		//		onError, etc) will be invoked in the context of the scope object.
+		//		In the body of the callback function, the value of the "this"
 		//		keyword will be the scope object.   If no scope object is provided,
 		//		the callback functions will be called in the context of dojo.global().
 		//		For example, onItem.call(scope, item, request) vs. 

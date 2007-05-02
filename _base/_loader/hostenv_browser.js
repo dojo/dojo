@@ -118,8 +118,19 @@ if(typeof window != 'undefined'){
 			//		Default false. If fail_ok and loading fails, return null
 			//		instead of throwing.
 
+			// alert("_getText: " + uri);
+
 			// NOTE: must be declared before scope switches ie. this._xhrObj()
 			var http = this._xhrObj();
+
+			if(dojo._Url){
+				uri = (new dojo._Url(window.location, uri)).toString();
+			}
+			/*
+			console.debug("_getText:", uri);
+			console.debug(window.location+"");
+			alert(uri);
+			*/
 
 			http.open('GET', uri, false);
 			try{
@@ -131,6 +142,7 @@ if(typeof window != 'undefined'){
 					throw err;
 				}
 			}catch(e){
+				// console.debug(e);
 				if(fail_ok){ return null; }
 				throw e;
 			}

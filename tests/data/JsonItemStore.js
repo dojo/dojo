@@ -559,6 +559,86 @@ doh.register("tests.data.JsonItemStore",
 			jsonItemStore.fetch({query: {value: "bar\*foo"}, onComplete: completed, onError: error});
 			return d;
 		},
+		function testReadAPI_fetch_patternMatch_caseSensitive(t){
+			//	summary: 
+			//		Function to test pattern matching of a pattern case-sensitively
+			//	description:
+			//		Function to test pattern matching of a pattern case-sensitively
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											  items: [ {uniqueId: 1, value:"foo*bar"},
+												   {uniqueId: 2, value:"bar*foo"}, 
+												   {uniqueId: 3, value:"BAR*foo"},
+												   {uniqueId: 4, value:"BARBananafoo"}
+												 ]
+										}
+								 });
+			
+			var d = new doh.Deferred();
+			function completed(items, request){
+				t.assertEqual(1, items.length);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(value === "bar*foo")){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(new Error("Unexpected pattern matched.  Filter failure."));
+				}
+			}
+			function error(error, request){
+				t.assertTrue(false);
+				d.errback(error);
+			}
+			jsonItemStore.fetch({query: {value: "bar\\*foo"}, queryIgnoreCase: false, onComplete: completed, onError: error});
+			return d;
+		},
+		function testReadAPI_fetch_patternMatch_caseInsensitive(t){
+			//	summary: 
+			//		Function to test pattern matching of a pattern case-insensitively
+			//	description:
+			//		Function to test pattern matching of a pattern case-insensitively
+
+			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+											  items: [ {uniqueId: 1, value:"foo*bar"},
+												   {uniqueId: 2, value:"bar*foo"}, 
+												   {uniqueId: 3, value:"BAR*foo"},
+												   {uniqueId: 4, value:"BARBananafoo"}
+												 ]
+										}
+								 });
+			
+			var d = new doh.Deferred();
+			function completed(items, request){
+				t.assertEqual(items.length, 2);
+				var passed = true;
+				for(var i = 0; i < items.length; i++){
+					var value = jsonItemStore.getValue(items[i], "value");
+					if(!(value === "BAR*foo" || value === "bar*foo")){
+						passed=false;
+						break;
+					}
+				}
+				t.assertTrue(passed);
+				if (passed){
+					d.callback(true);
+				}else{
+					d.errback(new Error("Unexpected pattern matched.  Filter failure."));
+				}
+			}
+			function error(error, request){
+				t.assertTrue(false);
+				d.errback(error);
+			}
+			jsonItemStore.fetch({query: {value: "bar\\*foo"}, queryIgnoreCase: true, onComplete: completed, onError: error});
+			return d;
+		},
 		function testReadAPI_fetch_sortNumeric(t){
 			//	summary: 
 			//		Function to test sorting numerically.

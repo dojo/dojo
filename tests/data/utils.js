@@ -55,6 +55,16 @@ tests.register("tests.data.utils",
 			t.assertFalse(values[3].match(dojo.data.util.filter.patternToRegExp(pattern))!== null);
 			t.assertTrue(values[4].match(dojo.data.util.filter.patternToRegExp(pattern))!== null);
 		},
+		function testWildcardFilter_caseInsensitive(t){
+			var pattern = "ca*";
+			var values = ["CA", "california", "Macca", "Macca*b", "Macca\\b"];
+
+			t.assertTrue(values[0].match(dojo.data.util.filter.patternToRegExp(pattern, true))!== null);
+			t.assertTrue(values[1].match(dojo.data.util.filter.patternToRegExp(pattern, true))!== null);
+			t.assertFalse(values[2].match(dojo.data.util.filter.patternToRegExp(pattern, true))!== null);
+			t.assertFalse(values[3].match(dojo.data.util.filter.patternToRegExp(pattern, true))!== null);
+			t.assertFalse(values[4].match(dojo.data.util.filter.patternToRegExp(pattern, true))!== null);
+		},
 		function testSingleChar_1(t){
 			var pattern = "bob?le";
 			var values = ["bobble", "boble", "foo", "bobBle", "bar"];

@@ -1,6 +1,6 @@
 dojo.provide("dojo.data.util.filter");
 
-dojo.data.util.filter.patternToRegExp = function(/*String*/pattern){
+dojo.data.util.filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/ ignoreCase){
 	//	summary:  
 	//		Helper function to convert a simple pattern to a regular expression for matching.
 	//	description:
@@ -19,6 +19,10 @@ dojo.data.util.filter.patternToRegExp = function(/*String*/pattern){
 	//      	\ is an escape character.  So for example, \* means do not treat * as a match, but literal character *.
 	//				To use a \ as a character in the string, it must be escaped.  So in the pattern it should be 
 	//				represented by \\ to be treated as an ordinary \ character instead of an escape.
+	//
+	//	ignoreCase:
+	//		An optional flag to indicate if the pattern matching should be treated as case-sensitive or not when comparing
+	//		By default, it is assumed case sensitive.
 
 	var rxp = "^";
 	var c = null;
@@ -52,5 +56,10 @@ dojo.data.util.filter.patternToRegExp = function(/*String*/pattern){
 		}
 	}
 	rxp += "$";
-	return new RegExp(rxp); //RegExp
+	if(ignoreCase){
+		return new RegExp(rxp,"i"); //RegExp
+	}else{
+		return new RegExp(rxp); //RegExp
+	}
+	
 };

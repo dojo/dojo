@@ -196,6 +196,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		that may contain any of the following:
 		//		{ 
 		//			query: query-string or query-object,
+		//			queryIgnoreCase: boolean,
 		//			onBegin: Function,
 		//			onItem: Function,
 		//			onComplete: Function,
@@ -219,7 +220,16 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		In most implementations the query will probably be a string, but
 		//		in some implementations the query might be a Date, or a number,
 		//		or some complex keyword parameter object.  The dojo.data.api.Read
-		//		API is completely agnostic about what the query actually is.
+		//		API is completely agnostic about what the query actually is.  
+		//		In general for query objects that accept strings as attribute value matches, 
+		//		the store should support basic filtering capability, such as * (match any character)
+		//		and ? (match single character). 
+		//
+		//	The *queryIgnoreCase* parameter.
+		//		The queryIgnoreCase may be optional in some data store implementations.
+		//		If set, this parameter instructs the data store which does filtering
+		//		and the like in is query parameter to ignore character casing when doing a 
+		//		query match.  If this parameter is not included, it is treated as false (case sensitive). 
 		//
 		//	The *onBegin* parameter.
 		//		function(size, request);
@@ -324,6 +334,15 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//
 		//		// Locate the books written by Author King, sort it on title and publisher, then return the first 100 items from the sorted items.
 		//		var request = store.fetch({query:{author:"King"}, sort: [{ attribute: "title", descending: true}, {attribute: "publisher"}], ,start: 0, count:100, onComplete: 'showKing'});
+		//
+		//		// Fetch the first 100 books by authors starting with the name King, then call showKing when up to 100 items have been located.
+		//		var request = store.fetch({query:{author:"King*"}, start: 0, count:100, onComplete: showKing});
+		//
+		//		// Fetch the first 100 books by authors ending with 'ing', but only have one character before it (King, Bing, Ling, Sing, etc.), then call showBooks when up to 100 items have been located.
+		//		var request = store.fetch({query:{author:"?ing"}, start: 0, count:100, onComplete: showBooks});
+		//
+		//		// Fetch the first 100 books by author King, where the name may appear as King, king, KING, kInG, and so on, then call showKing when up to 100 items have been located.
+		//		var request = store.fetch({query:{author:"King"}, queryIgnoreCase: true, start: 0, count:100, onComplete: showKing});
 		//
 		//		// Paging:
 		//		var store = new dojo.data.LargeRdbmsStore({url:"jdbc:odbc:foobar"});

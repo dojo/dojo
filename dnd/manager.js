@@ -11,7 +11,7 @@ dojo.dnd.Manager = function(){
 	this.copy  = true;
 	this.target = null;
 	this.canDropFlag = false;
-	this.events = {};
+	this.events = [];
 };
 
 dojo.extend(dojo.dnd.Manager, {
@@ -50,12 +50,12 @@ dojo.extend(dojo.dnd.Manager, {
 		this.avatar = this.makeAvatar();
 		dojo.body().appendChild(this.avatar.node);
 		dojo.publish("dndStart", [source, nodes, copy]);
-		this.events = {
-			onmousemove:	dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
-			onmouseup:		dojo.connect(dojo.doc, "onmouseup",   this, "onMouseUp"),
-			onkeydown:		dojo.connect(dojo.doc, "onkeydown",   this, "onKeyDown"),
-			onkeyup:		dojo.connect(dojo.doc, "onkeyup",     this, "onKeyUp")
-		};
+		this.events = [
+			dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
+			dojo.connect(dojo.doc, "onmouseup",   this, "onMouseUp"),
+			dojo.connect(dojo.doc, "onkeydown",   this, "onKeyDown"),
+			dojo.connect(dojo.doc, "onkeyup",     this, "onKeyUp")
+		];
 		//dojo.html.addClass(dojo.body(), "dojoDnd" + (copy ? "Copy" : "Move"));
 		var c = "dojoDnd" + (copy ? "Copy" : "Move");
 		if(!new RegExp("(^|\\s+)" + c + "(\\s+|$)").test(dojo.body().className)){
@@ -77,13 +77,8 @@ dojo.extend(dojo.dnd.Manager, {
 		dojo.body().className = dojo.body().className.
 			replace(/(^|\s+)dojoDndCopy(\s+|$)/, "$1$2").
 			replace(/(^|\s+)dojoDndMove(\s+|$)/, "$1$2");
-		var t = {};
-		for(var i in this.events){
-			if(!(i in t)){
-				dojo.disconnect(dojo.doc, i, this.events[i]);
-			}
-		}
-		this.events = {};
+		dojo.forEach(this.events, dojo.disconnect);
+		this.events = [];
 		this.avatar.destroy();
 		this.avatar = null;
 		this.source = null;
@@ -127,12 +122,12 @@ dojo.extend(dojo.dnd.Manager, {
 	onKeyDown: function(e){
 		// summary: event processor for onkeydown, watching for CTRL for copy/move status
 		// e: Event: keyboard event
-		if(this.avatar && e.keyCode == dojo._keys.CTRL && !this.copy){ this._setCopyStatus(true); }
+		if(this.avatar && e.keyCode == dojo.keys.CTRL && !this.copy){ this._setCopyStatus(true); }
 	},
 	onKeyUp: function(e){
 		// summary: event processor for onkeyup, watching for CTRL for copy/move status
 		// e: Event: keyboard event
-		if(this.avatar && e.keyCode == dojo._keys.CTRL && this.copy){ this._setCopyStatus(false); }
+		if(this.avatar && e.keyCode == dojo.keys.CTRL && this.copy){ this._setCopyStatus(false); }
 	},
 	// utilities
 	_setCopyStatus: function(copy){

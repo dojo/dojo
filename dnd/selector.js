@@ -24,8 +24,9 @@ function(node, params){
 	this.anchor = null;
 	this.simpleSelection = false;
 	// set up events
-	this.events.onmousedown = dojo.connect(this.node, "onmousedown", this, "onMouseDown");
-	this.events.onmouseup   = dojo.connect(this.node, "onmouseup",   this, "onMouseUp");
+	this.events.push(
+		dojo.connect(this.node, "onmousedown", this, "onMouseDown"),
+		dojo.connect(this.node, "onmouseup",   this, "onMouseUp"));
 },
 {
 	// mouse events
@@ -155,12 +156,12 @@ function(node, params){
 	// utilities
 	onOverEvent: function(){
 		// summary: this function is called once, when mouse is over our container
-		this.events.onmousemove = dojo.connect(this.node, "onmousemove", this, "onMouseMove");
+		this.onmousemoveEvent = dojo.connect(this.node, "onmousemove", this, "onMouseMove");
 	},
 	onOutEvent: function(){
 		// summary: this function is called once, when mouse is out of our container
-		dojo.disconnect(this.node, "onmousemove", this.events.onmousemove);
-		delete this.events.onmousemove;
+		dojo.disconnect(this.onmousemoveEvent);
+		delete this.onmousemoveEvent;
 	},
 	// methods
 	destroy: function(){

@@ -38,7 +38,7 @@ markAndSweepTest = function(iterations){
 		marked = rm;				
 	} 
 	for(var m=0; m<marked.length; m++){
-		dojo.disconnect('hub', marked[m]);
+		dojo.disconnect(marked[m]);
 	}
 	// test
 	failures = 0;
@@ -118,7 +118,7 @@ tests.register("tests._base.connect",
 			t.is('baz', out);
 			//
 			dojo.connect(obj, "foo", obj, "baz");
-			dojo.disconnect(obj, "foo", foobar);
+			dojo.disconnect(foobar);
 			//
 			out = '';
 			obj.foo();
@@ -150,12 +150,12 @@ tests.register("tests._base.connect",
 			// 3 arg shorthand for globals (a)
 			var link = dojo.connect("gFoo", null, "gOk");
 			gFoo();
-			dojo.disconnect("gFoo", link);
+			dojo.disconnect(link);
 			t.is(true, ok);
 			// 3 arg shorthand for globals (b)
 			link = dojo.connect(null, "gFoo", "gOk");
 			gFoo();
-			dojo.disconnect("gFoo", link);
+			dojo.disconnect(link);
 			t.is(true, ok);
 			// verify disconnections 
 			gFoo();
@@ -169,12 +169,12 @@ tests.register("tests._base.connect",
 			// 2 arg shorthand for globals 
 			var link = dojo.connect("gFoo", "gOk");
 			gFoo();
-			dojo.disconnect("gFoo", link);
+			dojo.disconnect(link);
 			console.log('argsTest2a: ', (ok ? "ok" : "not ok"));
 			// 2 arg shorthand for globals, alternate scoping 
 			link = dojo.connect("gFoo", gOk);
 			gFoo();
-			dojo.disconnect("gFoo", link);
+			dojo.disconnect(link);
 			console.log('argsTest2b: ', (ok ? "ok" : "not ok"));
 		},
 		function scopeTest1(t){

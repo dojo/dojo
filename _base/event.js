@@ -4,7 +4,6 @@ dojo.require("dojo._base.connect");
 // this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
 (function(){
-
 	// DOM event machinery
 	var de = {
 		addListener: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
@@ -21,14 +20,13 @@ dojo.require("dojo._base.connect");
 			//		the name of the handler to remove the function from
 			// node:
 			//		DOM node to attach the event to
-			// fp:
-			//		the function to register
-			node.removeEventListener(de._normalizeEventName(event), handle, false);
+			// handle:
+			//		the handle returned from addListener
+			(node)&&(node.removeEventListener(de._normalizeEventName(event), handle, false));
 		},
 		_normalizeEventName: function(/*String*/name){
 			// Generally, name should be lower case, unless it is special
 			// somehow (e.g. a Mozilla event)
-
 			// Remove 'on'
 			return (name.slice(0,2)=="on" ? name.slice(2) : name);
 		},
@@ -51,10 +49,9 @@ dojo.require("dojo._base.connect");
 			evt.keyChar = (c ? String.fromCharCode(c) : '');
 		}
 	};
-	// FIXME: do we need this for debugging???
-	// dojo.event = de;
 
 	// DOM events
+	
 	dojo.addListener = function(node, event, context, method){
 		return de.addListener(node, event, dojo.hitch(context, method)); // Handle
 	}
@@ -82,37 +79,22 @@ dojo.require("dojo._base.connect");
 		evt.stopPropagation();
 	}
 
-	// =============================================
-	// FIXME: I want to eliminate these and their
-	//        IE<7 bretheren below
-	dojo.cleanEvents = function(){
-		// self cleaning, except on IE
-		
-		// FIXME: why public?
-	}
-	dojo.cleanNodeEvents = function(inNode){
-		// self cleaning, except on IE
-		
-		// FIXME: why public?
-	}
-	// =============================================
+	// cache baseline implementations
 
-	// cache raw implementations
-
-	var dc = dojo.connect;
-	var dd = dojo.disconnect;
+	var dc = dojo._connect;
+	var dd = dojo._disconnect;
 
 	// Unify connect/disconnect and add/removeListener
-
-	dojo.connect = function(	/*Object*/ obj, 
-								/*String*/ event, 
-								/*Object|null*/ context, 
-								/*String|Function*/ method){
-		return (!obj||isNaN(obj.nodeType) ? dc: dojo.addListener).apply(de, arguments);
+	
+	dojo._connect = function(obj, event, context, method, dontFix){
+		dontFix = !obj || !(obj.nodeType||obj.attachEvent||obj.addEventListener) || dontFix;
+		var h = (dontFix ? dc.apply(this, arguments) : [obj, event, dojo.addListener.apply(this, arguments)]);
+		h.push(dontFix);
+		return h;
 	}											
 
-	dojo.disconnect = function(/*Object*/ obj, /*String*/ event, /*Handle*/ handle){
-		return (!obj||isNaN(obj.nodeType) ? dd: dojo.removeListener).apply(de, arguments);
+	dojo._disconnect = function(obj, event, handle, dontFix){
+		(dontFix ? dd : dojo.removeListener).apply(this, arguments);
 	}											
 
 	// Constants
@@ -180,92 +162,43 @@ dojo.require("dojo._base.connect");
 		NUM_LOCK: 144,
 		SCROLL_LOCK: 145
 	};
-
+	
 	// IE event normalization
 	if(dojo.isIE){ 
+		var ap = Array.prototype;
 		// by default, use the standard listener
 		var iel = dojo._listener;
+		// dispatcher tracking property
 		if((dojo.isIE<7)&&(!djConfig._allow_leaks)){
 			// custom listener to handle leak protection for DOM events
 			iel = dojo._ie_listener = {
-				// support handler indirection
+				// support handler indirection: 
+				// all event handler functions are actually referenced 
+				// here and event dispatchers reference only indices.
 				handlers: [],
-				// create a dispatcher function
-				dispatcher: function(f){
-					// handy closeables
-					var a=[], hs=iel.handlers;
-					// Note that we close over h (i.e. d holds on to the
-					// current array of handlers).  Because dispatchers hold on
-					// to their array of handlers, we have to delete handlers
-					// entries individually.  handlers=[] won't cut it.
-					var d=function(){
-						var ls = arguments.callee.listeners;
-						for(var i in ls){
-							if(!(i in a)){
-								hs[ls[i]].apply(this, arguments);
-							}
-						}
-					}
-					d.listeners = (f ? [iel.handlers.push(f) - 1] : []);
-					console.log('created a dispatcher using indirect handlers');
-					return d;
-				},
 				// add a listener to an object
 				add: function(/*Object*/ source, /*String*/ method, /*Function*/ listener){
 					source = source || dojo.global;
-					var d = source[method];
+					var f = d = source[method];
 					if(!d||!d.listeners){
-						d = source[method] = iel.dispatcher(d);
-						// =============================================
-						// FIXME: I want to eliminate this with the other 'clean' stuff
-						// We're going to pollute your node with this property, sorry.
-						// It provides support for stripping connections from this object.
-						var p = "__djdisp__";
-						(source[p] || (source[p]=[])).push(d);
-						// =============================================
+						d = source[method] = dojo._getIeDispatcher();
+						// initialize listeners with original event code (or just empty)
+						d.listeners = (f ? [ieh.push(f) - 1] : []);
 					}
-					return d.listeners.push(iel.handlers.push(listener) - 1) ; /*Handle*/
+					return d.listeners.push(ieh.push(listener) - 1) ; /*Handle*/
 				},
 				// remove a listener from an object
 				remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
-					var f = (source||dojo.global)[method];
-					if(f && f.listeners && handle--){	
-						delete iel.handlers[f.listeners[handle]];
-						delete f.listeners[handle]; 
+					var f = (source||dojo.global)[method], l = f&&f.listeners;
+					if(f && l && handle--){	
+						delete ieh[l[handle]];
+						delete l[handle]; 
 					}
 				}
 			};
-			
-			// =============================================
-			// FIXME: I want to eliminate these
-			// otherwise, all client code has to call empty 'clean' events
-			// just to be extra careful around IE < 7
-			var a = [];
-			dojo.cleanEvents = function(){
-				// memory cleanup
-				var h = iel.handlers;
-				for(var i in h){
-					if(!(i in a)){delete h[i];}
-				}
-				iel.handlers = [];
-			}
-			dojo.cleanNodeEvents = function(node){
-				// cleanup node if it has bookkeeping info
-				var h = iel.handlers, p = "__djdisp__", s = inNode[p];
-				if (!s || !s.length){return;}
-				// for each dispatcher
-				for(var di in s){
-					if(di in a){continue;}
-					var d = s[di];
-					// for each listener 
-					for(var li in d){				
-						if(li in a){continue;}
-						delete h[d[li]]
-					}
-				}
-			}
+			// alias used above
+			var ieh = iel.handlers;
 		}
-		// =============================================
 
 		dojo.mixin(de, {
 			addListener: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
@@ -295,7 +228,8 @@ dojo.require("dojo._base.connect");
 			_nop: function(){ },
 			_fixCallback: function(fp){
 				return function(e){ 
-					var e = de._fixEvent(e, this), r = fp(e);
+					e = de._fixEvent(e, this)
+					var r = fp(e);
 					de._postFixEvent(e);
 					return r;
 				};
@@ -524,3 +458,21 @@ dojo.require("dojo._base.connect");
 		});
 	}
 })();
+
+if(dojo.isIE<7){
+	// keep this out of the closure
+	// closing over 'iel' or 'ieh' borks
+	// leak prevention
+	dojo._getIeDispatcher = function(){
+		return function(){
+			var ap=Array.prototype, ls=arguments.callee.listeners, h=dojo._ie_listener.handlers;
+			for(var i in ls){
+				// real indices won't be in Array.prototype
+				if(!(i in ap)){
+					// listener value is a hash into the master handler array
+					h[ls[i]].apply(this, arguments);
+				}
+			}
+		}
+	}
+}

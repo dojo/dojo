@@ -8,13 +8,15 @@ dojo.require("dojo._base.lang");
 // low-level delegation machinery
 dojo._listener = {
 	// create a dispatcher function
-	dispatcher: function(){
+	getDispatcher: function(){
 		// return a dispatcher function
 		return function(){
 			// iterate over our listeners
 			var ls = arguments.callee.listeners;
 			for(var i in ls){
-				// properties that are really listeners will not be in "a"
+				// indices that are really in the array will not be in Array.prototype
+				// this 'sparse array' trick keeps us safe from libs that take
+				// liberties with built-in objects
 				if(!(i in Array.prototype)){
 					// invoke the listener with our current scope
 					ls[i].apply(this, arguments);
@@ -36,7 +38,7 @@ dojo._listener = {
 		var f = source[method];
 		// Ensure a dispatcher
 		if(!f||!f.listeners){
-			var d = dojo._listener.dispatcher();
+			var d = dojo._listener.getDispatcher();
 			// dispatcher holds a list of handlers
 			d.listeners = (f ? [f] : []);
 			// put back in source			
@@ -111,7 +113,7 @@ dojo.connect = function(/*Object|null*/ obj,
 	//		// using return value for disconnect
 	//		var link = dojo.connect(obj, "onchange", ui, "update");
 	//		...
-	//		dojo.disconnect(obj, "onchange", link);
+	//		dojo.disconnect(link);
 	//
 	//		// when onglobalevent executes, watcher.handler is invoked
 	//		dojo.connect(null, "onglobalevent", watcher, "handler");
@@ -130,32 +132,41 @@ dojo.connect = function(/*Object|null*/ obj,
 	//		dojo.connect(null, "globalEvent", null, globalHandler);
 	//		dojo.connect("globalEvent", globalHandler); // same
 
-	// support for omitting context argument depends on hitch
-	if(dojo.isString(obj)){
-		return dojo._listener.add(null, obj, dojo.hitch(event, context)); /*Handle*/
+	// normalize arguments into args
+	var a=arguments, args=[], i=0;
+	if(dojo.isString(a[0])){
+		args.push(null, a[i++]); 
 	}else{
-		return dojo._listener.add(obj, event, dojo.hitch(context, method)); /*Handle*/
+		args.push(a[i++], a[i++]);
 	}
+	if(dojo.isString(a[i+1])||(dojo.isFunction(a[i+1]))){
+		args.push(a[i++], a[i++]);
+	}else{
+		args.push(null, a[i++]);
+	}
+	for (; i<arguments.length; i++){
+		args.push(arguments[i]);
+	}
+	return dojo._connect.apply(this, args); /*Handle*/
 }
 
-dojo.disconnect = function(/*Object|null*/ obj, /*String*/ event, /*Handle*/ handle){
+dojo._connect = function(obj, event, context, method){
+	var h = dojo._listener.add(obj, event, dojo.hitch(context, method)); 
+	return [obj, event, h]; /*Handle*/
+}
+
+dojo.disconnect = function(/*Handle*/ handle){
 	// summary:
 	//		Remove a link created by dojo.connect.
 	// description:
 	//		Removes the connection between event and the method referenced by handle.
-	// obj: 
-	//		The source object for the event function. 
-	//		Defaults to dojo.global if null. May be omitted.
-	// event:
-	//		String name of the event function in obj. 
-	//		I.e. identifies a property obj[event].
 	// handle:
 	// 		the return value of the dojo.connect call that created the connection.
-	if(dojo.isString(obj)){
-		dojo._listener.remove(null, obj, event);
-	}else{
-		dojo._listener.remove(obj, event, handle);
-	}
+	dojo._disconnect.apply(this, handle);
+}
+
+dojo._disconnect = function(obj, event, handle){
+	dojo._listener.remove(obj, event, handle);
 }
 
 // topic publish/subscribe

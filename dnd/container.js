@@ -56,13 +56,13 @@ function(node, params){
 		}
 	}
 	// set up events
-	this.events = {
-		onmouseover:	dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
-		onmouseout:		dojo.connect(this.node, "onmouseout",  this, "onMouseOut"),
+	this.events = [
+		dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
+		dojo.connect(this.node, "onmouseout",  this, "onMouseOut"),
 		// cancel text selection and text dragging
-		ondragstart:	dojo.connect(this.node, "ondragstart",   dojo, "stopEvent"),
-		onselectstart:	dojo.connect(this.node, "onselectstart", dojo, "stopEvent")
-	};
+		dojo.connect(this.node, "ondragstart",   dojo, "stopEvent"),
+		dojo.connect(this.node, "onselectstart", dojo, "stopEvent")
+	];
 },
 {
 	// mouse events
@@ -99,12 +99,7 @@ function(node, params){
 	// methods
 	destroy: function(){
 		// summary: prepares the object to be garbage-collected
-		var t = {};
-		for(var i in this.events){
-			if(!(i in t)){
-				dojo.disconnect(this.node, i, this.events[i]);
-			}
-		}
+		dojo.forEach(this.events, dojo.disconnect);
 		this.node = this.parent = this.current = this.map = null;
 	},
 	getAllNodes: function(){

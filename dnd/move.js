@@ -12,13 +12,13 @@ dojo.dnd.Mover = function(node, e){
 	this.posX = np.x - dojo.dnd._getOffset(this.node, "Left") - e.pageX;
 	this.posY = np.y - dojo.dnd._getOffset(this.node, "Top")  - e.pageY;
 	this.firstEvent = dojo.connect(dojo.doc, "onmousemove", this, "_makeAbsolute");
-	this.events = {
-		onmousemove:	dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
-		onmouseup:		dojo.connect(dojo.doc, "onmouseup",   this, "destroy"),
+	this.events = [
+		dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
+		dojo.connect(dojo.doc, "onmouseup",   this, "destroy"),
 		// cancel text selection and text dragging
-		ondragstart:	dojo.connect(dojo.doc, "ondragstart",   dojo, "stopEvent"),
-		onselectstart:	dojo.connect(dojo.doc, "onselectstart", dojo, "stopEvent")
-	};
+		dojo.connect(dojo.doc, "ondragstart",   dojo, "stopEvent"),
+		dojo.connect(dojo.doc, "onselectstart", dojo, "stopEvent")
+	];
 };
 
 dojo.extend(dojo.dnd.Mover, {
@@ -34,19 +34,14 @@ dojo.extend(dojo.dnd.Mover, {
 	_makeAbsolute: function(){
 		// summary: makes the node absolute; it is meant to be called only once
 		this.node.style.position = "absolute";	// enforcing the absolute mode
-		dojo.disconnect(dojo.doc, "onmousemove", this.firstEvent);
+		dojo.disconnect(this.firstEvent);
 		delete this.firstEvent;
 	},
 	destroy: function(){
 		// summary: stops the move, deletes all references, so the object can be garbage-collected
-		var t = {};
-		for(var i in this.events){
-			if(!(i in t)){
-				dojo.disconnect(dojo.doc, i, this.events[i]);
-			}
-		}
+		dojo.forEach(this.events, dojo.disconnect);
 		if(this.firstEvent){
-			dojo.disconnect(dojo.doc, "onmousemove", this.firstEvent);
+			dojo.disconnect(this.firstEvent);
 		}
 		this.node = null;
 	}
@@ -61,12 +56,12 @@ dojo.dnd.Moveable = function(node, handle){
 	this.node = dojo.byId(node);
 	this.handle = dojo.byId(handle);
 	if(!this.handle){ this.handle = this.node; }
-	this.events = {
-		onmousedown:	dojo.connect(this.handle, "onmousedown", this, "onMouseDown"),
+	this.events = [
+		dojo.connect(this.handle, "onmousedown", this, "onMouseDown"),
 		// cancel text selection and text dragging
-		ondragstart:	dojo.connect(this.handle, "ondragstart",   dojo, "stopEvent"),
-		onselectstart:	dojo.connect(this.handle, "onselectstart", dojo, "stopEvent")
-	};
+		dojo.connect(this.handle, "ondragstart",   dojo, "stopEvent"),
+		dojo.connect(this.handle, "onselectstart", dojo, "stopEvent")
+	];
 };
 
 dojo.extend(dojo.dnd.Moveable, {
@@ -80,12 +75,7 @@ dojo.extend(dojo.dnd.Moveable, {
 	// utilities
 	destroy: function(){
 		// summary: stops watching for possible move, deletes all references, so the object can be garbage-collected
-		var t = {};
-		for(var i in this.events){
-			if(!(i in t)){
-				dojo.disconnect(this.handle, i, this.events[i]);
-			}
-		}
+		dojo.forEach(this.events, dojo.disconnect);
 		this.node = this.handle = null;
 	}
 });

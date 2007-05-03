@@ -510,7 +510,7 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary
 	//	Adds the specified classes to the end of the class list on the
 	//	passed node.
-	if (!dh.hasClass(node, classStr)){
+	if (!dojo.hasClass(node, classStr)){
 		node.className = node.className + (node.className ? ' ' : '') + classStr;
 	}
 }

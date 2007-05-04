@@ -7,7 +7,7 @@ dojo.require("dojo._base.connect");
 	// DOM event machinery
 	var de = {
 		addListener: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
-			if(!node){ return; } 
+			if(!node){return;} 
 			event = de._normalizeEventName(event)
 			fp = de._fixCallback(event, fp);
 			node.addEventListener(event, fp, false);
@@ -26,36 +26,42 @@ dojo.require("dojo._base.connect");
 		},
 		_normalizeEventName: function(/*String*/name){
 			// Generally, name should be lower case, unless it is special
-			// somehow (e.g. a Mozilla event)
-			// Remove 'on'
+			// somehow (e.g. a Mozilla DOM event).
+			// Remove 'on'.
 			return (name.slice(0,2)=="on" ? name.slice(2) : name);
 		},
 		_fixCallback: function(/*String*/name, fp){
-			//return function(e){ return fp(de._fixEvent(e, this)); };	
-			return (name!="keypress" ? fp : function(e){ return fp(de._fixEvent(e, this)); });	
+			// By default, we only invoke _fixEvent for 'keypress'
+			// If code is added to _fixEvent for other events, we have
+			// to revisit this optimization.
+			// This also applies to _fixEvent overrides for Safari and Opera
+			// below.
+			return (name!="keypress" ? fp : function(e){ return fp.call(this, de._fixEvent(e, this)); });	
 		},
 		_fixEvent: function(evt, sender){
-			// fixCallback only attaches us to keypress, but we switch on
-			// evt.type because we might be called from dojo.fixEvent
+			// _fixCallback only attaches us to keypress.
+			// Switch on evt.type anyway because we might 
+			// be called directly from dojo.fixEvent.
 			switch(evt.type){
 				case "keypress":
-					de._fixKey(evt);
+					de._setKeyChar(evt);
 					break;
 			}
 			return evt;
 		},
-		_fixKey: function(evt, charCode){
-			var c = (arguments.length > 1 ? charCode : evt.charCode);
-			evt.keyChar = (c ? String.fromCharCode(c) : '');
+		_setKeyChar: function(evt){
+			evt.keyChar = (evt.charCode ? String.fromCharCode(evt.charCode) : '');
 		}
 	};
 
 	// DOM events
 	
+	// FIXME: no reason to make this public, use connect
 	dojo.addListener = function(node, event, context, method){
 		return de.addListener(node, event, dojo.hitch(context, method)); // Handle
 	}
 
+	// FIXME: no reason to make this public, use disconnect
 	dojo.removeListener = function(node, event, handle){
 		de.removeListener(node, event, handle);
 	}
@@ -67,7 +73,6 @@ dojo.require("dojo._base.connect");
 		// evt: native event object
 		// sender: node to treat as "currentTarget"
 		return de._fixEvent(evt, sender);
-		//return (de._fixEvent ? de._fixEvent(evt, sender) : evt);
 	}
 
 	dojo.stopEvent = function(/*Event*/evt){
@@ -87,13 +92,17 @@ dojo.require("dojo._base.connect");
 	// Unify connect/disconnect and add/removeListener
 	
 	dojo._connect = function(obj, event, context, method, dontFix){
-		dontFix = !obj || !(obj.nodeType||obj.attachEvent||obj.addEventListener) || dontFix;
+		// use listener code (event fixing) for nodes that look like objects, unless told not to
+		dontFix = Boolean(!obj || !(obj.nodeType||obj.attachEvent||obj.addEventListener) || dontFix);
+		// grab up the result of baseline disconnect, or construct one using addListener
 		var h = (dontFix ? dc.apply(this, arguments) : [obj, event, dojo.addListener.apply(this, arguments)]);
+		// append flag to the result identifying the kind of listener 
 		h.push(dontFix);
 		return h;
 	}											
 
 	dojo._disconnect = function(obj, event, handle, dontFix){
+		// dispatch this disconnect either to the baseline code or to removeListener
 		(dontFix ? dd : dojo.removeListener).apply(this, arguments);
 	}											
 
@@ -165,6 +174,16 @@ dojo.require("dojo._base.connect");
 	
 	// IE event normalization
 	if(dojo.isIE){ 
+		_trySetKeyCode = function(e, code){
+			try{
+				// squelch errors when keyCode is read-only
+				// (e.g. if keyCode is ctrl or shift)
+				return e.keyCode = code;
+			}catch(e){
+				return 0;
+			}
+		}
+
 		var ap = Array.prototype;
 		// by default, use the standard listener
 		var iel = dojo._listener;
@@ -204,20 +223,23 @@ dojo.require("dojo._base.connect");
 			addListener: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
 				if(!node){return;} // undefined
 				event = de._normalizeEventName(event);
-				var handle = iel.add(node, event, de._fixCallback(fp));
 				if(event=="onkeypress"){
-					// FIXME: we are using the knowledge that handle
-					// is an Integer, which is supposed to be private.
-					// Perhaps the listener could natively return a 
-					// Number object instead of a concrete value.
-					handle = new Number(handle);
-					handle.keydown = de.addListener(node, "onkeydown", de._nop);
+					// we need to listen to onkeydown to synthesize 
+					// keypress events that otherwise won't fire
+					// on IE
+					var kd = node.onkeydown;
+					if(!kd||!kd.listeners||!kd.listeners._stealthKeydown){
+						// we simply ignore this connection when disconnecting
+						// because it's harmless 
+						de.addListener(node, "onkeydown", de._stealthKeyDown);
+						// we only want one stealth listener per node
+						kd.listeners._stealthKeydown = true;
+					} 
 				}
-				return handle;
+				return iel.add(node, event, de._fixCallback(fp, node));
 			},
 			removeListener: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
 				iel.remove(node, de._normalizeEventName(event), handle); 
-				if(handle.keydown){iel.remove(node, "onkeydown", handle.keydown);} 
 			},
 			_normalizeEventName: function(/*String*/eventName){
 				// Generally, eventName should be lower case, unless it is
@@ -225,13 +247,10 @@ dojo.require("dojo._base.connect");
 				// ensure 'on'
 				return (eventName.slice(0,2)!="on" ? "on"+eventName : eventName);
 			},
-			_nop: function(){ },
-			_fixCallback: function(fp){
+			_nop: function(){},
+			_fixCallback: function(fp, sender){
 				return function(e){ 
-					e = de._fixEvent(e, this)
-					var r = fp(e);
-					de._postFixEvent(e);
-					return r;
+					return fp.call(this, de._fixEvent(e, sender));
 				};
 			},
 			_fixEvent: function(/*Event*/evt, /*DOMNode*/sender){
@@ -276,15 +295,11 @@ dojo.require("dojo._base.connect");
 						}else if(c==3){
 							c=99; // Mozilla maps CTRL-BREAK to CTRL-c
 						}
-						try{
-							// squelch errors when keyCode is read-only
-							// (e.g. if keyCode is ctrl or shift)
-							evt.keyCode = (c ? 0 : evt.keyCode);
-						}catch(e){
-							c=0;
-						}
+						// if we have a charCode, try to 0 keycode
+						// if that fails, our charCode is bogus and is set to 0
+						if(c){c = _trySetKeyCode(evt, 0);}
 						evt.charCode = c;
-						de._fixKey(evt);
+						de._setKeyChar(evt);
 						break;
 				}
 				return evt;
@@ -307,42 +322,36 @@ dojo.require("dojo._base.connect");
 				221:93, 
 				222:39 
 			},
-			_postFixEvent: function(evt){
-				switch(evt.type){
-					// IE doesn't fire keypress for most non-printable characters.
-					// other browsers do, we simulate it here.
-					case "keydown":
-						var c = evt.keyCode;
-						// These are Windows Virtual Key Codes
-						// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
-						var unprintable = (c!=13)&&(c!=32)&&(c!=27)&&(c<48||c>90)&&(c<96||c>111)&&(c<186||c>192)&&(c<219||c>222);
-						if(unprintable||evt.ctrlKey){
-							c = (unprintable ? 0 : c);
-							if(evt.ctrlKey){
-								if(evt.keyCode==3){
-									break; // IE will post CTRL-BREAK as keypress natively 									
-								}else if(c>95 && c<106){ 
-									c -= 48; // map CTRL-[numpad 0-9] to ASCII
-								}else if((!evt.shiftKey)&&(c>=65&&c<=90)){ 
-									c += 32; // map CTRL-[A-Z] to lowercase
-								}else{ 
-									c = de._punctMap[c] || c; // map other problematic CTRL combinations to ASCII
-								}
-							}
-							var faux = document.createEventObject(evt);
-							faux.charCode = c;
-							de._fixKey(faux);
-							faux.faux = true; // just for debugging
-							evt.target.fireEvent("onkeypress", faux);
-							evt.cancelBubble = faux.cancelBubble;
-							evt.returnValue = faux.returnValue;
-							try{
-								// squelch errors when keyCode is read-only
-								// (e.g. if keyCode is ctrl or shift)
-								evt.keyCode = faux.keyCode;
-							}catch(e){}; 
+			_stealthKeyDown: function(evt){
+				// IE doesn't fire keypress for most non-printable characters.
+				// other browsers do, we simulate it here.
+				var kp = evt.currentTarget.onkeypress;
+				// only works if kp exists and is a dispatcher
+				if(!kp||!kp.listeners)return;
+				// munge key/charCode
+				var c = evt.keyCode;
+				// These are Windows Virtual Key Codes
+				// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
+				var unprintable = (c!=13)&&(c!=32)&&(c!=27)&&(c<48||c>90)&&(c<96||c>111)&&(c<186||c>192)&&(c<219||c>222);
+				if(unprintable||evt.ctrlKey){
+					c = (unprintable ? 0 : c);
+					if(evt.ctrlKey){
+						if(evt.keyCode==3){
+							return; // IE will post CTRL-BREAK as keypress natively 									
+						}else if(c>95 && c<106){ 
+							c -= 48; // map CTRL-[numpad 0-9] to ASCII
+						}else if((!evt.shiftKey)&&(c>=65&&c<=90)){ 
+							c += 32; // map CTRL-[A-Z] to lowercase
+						}else{ 
+							c = de._punctMap[c] || c; // map other problematic CTRL combinations to ASCII
 						}
-						break;
+					}
+					// simulate a keypress event
+					var faux = de._synthesizeEvent(evt, {type: 'keypress', faux: true, charCode: c});
+					kp.call(evt.currentTarget, faux);
+					evt.cancelBubble = faux.cancelBubble;
+					evt.returnValue = faux.returnValue;
+					_trySetKeyCode(evt, faux.keyCode);
 				}
 			},
 			// Called in Event scope
@@ -350,12 +359,12 @@ dojo.require("dojo._base.connect");
 				this.cancelBubble = true; 
 			},
 			_preventDefault: function(){
-				try{evt.keyCode = 0;}catch(e){}; // squelch errors when keyCode is read-only (e.g. if keyCode is ctrl or shift)
+				_trySetKeyCode(this, 0);
 				this.returnValue = false;
 			}
 		});
 				
-		// override stopEvent
+		// override stopEvent for IE
 		dojo.stopEvent = function(evt){
 			evt = evt || window.event;
 			de._stopPropagation.call(evt);
@@ -363,16 +372,10 @@ dojo.require("dojo._base.connect");
 		}
 	}
 
-	de._synthesizeEvent = function(evt, keyCode, charCode, shiftKey) {
-			var faux = { 
-				type: evt.type, 
-				shiftKey: shiftKey, 
-				ctrlKey: evt.ctrlKey, 
-				altKey: evt.altKey, 
-				keyCode: (charCode ? 0 : keyCode), 
-				charCode: charCode
-			};
-			de._fixKey(faux, charCode);
+	de._synthesizeEvent = function(evt, props) {
+			var faux = dojo.mixin({}, evt, props);
+			if(faux.charCode){faux.keyCode = 0;}
+			de._setKeyChar(faux);
 			// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault); 
 			// but it throws an error when preventDefault is invoked on Safari
 			// does Event.preventDefault not support "apply" on Safari?
@@ -398,7 +401,7 @@ dojo.require("dojo._base.connect");
 							// lowercase CTRL-[A-Z] keys
 							c += 32;
 						}
-						return de._synthesizeEvent(evt, evt.keyCode, c, evt.shiftKey);
+						return de._synthesizeEvent(evt, { charCode: c });
 				}
 				return evt;
 			}
@@ -422,7 +425,7 @@ dojo.require("dojo._base.connect");
 						} else {
 							c = (c>=32 && c<63232 ? c : 0); // avoid generating keyChar for non-printables
 						}
-						return de._synthesizeEvent(evt, keyCode, c, s);
+						return de._synthesizeEvent(evt, {charCode: c, shiftKey: s});
 				}
 				return evt;
 			}
@@ -461,15 +464,13 @@ dojo.require("dojo._base.connect");
 
 if(dojo.isIE<7){
 	// keep this out of the closure
-	// closing over 'iel' or 'ieh' borks
-	// leak prevention
+	// closing over 'iel' or 'ieh' borks leak prevention
+	// ls[i] is an index into the master handler array
 	dojo._getIeDispatcher = function(){
 		return function(){
 			var ap=Array.prototype, ls=arguments.callee.listeners, h=dojo._ie_listener.handlers;
 			for(var i in ls){
-				// real indices won't be in Array.prototype
 				if(!(i in ap)){
-					// listener value is a hash into the master handler array
 					h[ls[i]].apply(this, arguments);
 				}
 			}

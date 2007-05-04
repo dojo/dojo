@@ -114,7 +114,7 @@ dojo._hitchArgs = function(scope, method /*,...*/){
 dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	// summary: 
 	//		Returns a function that will only ever execute in the a given scope. 
-	// 		This allows for easy use of object member functions
+	//		This allows for easy use of object member functions
 	//		in callbacks and other places in which the "this" keyword may
 	//		otherwise not reference the expected scope. 
 	//		Any number of default positional arguments may be passed as parameters 
@@ -122,7 +122,8 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	//		Each of these values will be used to "placehold" (similar to curry)
 	//		for the hitched function. 
 	// scope: 
-	//		The scope to run the method in
+	//		The scope to use when method executes. If method is a string, 
+	//		scope is also the object containing method.
 	// method:
 	//		A function to be hitched to scope, or the name of the method in
 	//		scope to be hitched.

@@ -9,16 +9,17 @@ dojo.require("dojo._base.lang");
 dojo._listener = {
 	// create a dispatcher function
 	getDispatcher: function(){
-		// return a dispatcher function
+		// following comments pulled out-of-line to prevent cloning them 
+		// in the returned function.
+		// - indices (i) that are really in the array of listeners (ls) will 
+		//   not be in Array.prototype. This is the 'sparse array' trick
+		//   that keeps us safe from libs that take liberties with built-in 
+		//   objects
+		// - listener is invoked with current scope (this)
 		return function(){
-			// iterate over our listeners
 			var ls = arguments.callee.listeners;
 			for(var i in ls){
-				// indices that are really in the array will not be in Array.prototype
-				// this 'sparse array' trick keeps us safe from libs that take
-				// liberties with built-in objects
 				if(!(i in Array.prototype)){
-					// invoke the listener with our current scope
 					ls[i].apply(this, arguments);
 				}
 			}
@@ -64,12 +65,19 @@ dojo._listener = {
 	}
 };
 
-// arbitrary method delegation (knows nothing about DOM)
+// Multiple delegation for arbitrary methods.
+
+// This unit knows nothing about DOM, 
+// but we include DOM aware 
+// documentation and dontFix
+// argument here to help the autodocs.
+// Actual DOM aware code is in event.js.
 
 dojo.connect = function(/*Object|null*/ obj, 
 						/*String*/ event, 
 						/*Object|null*/ context, 
-						/*String|Function*/ method){
+						/*String|Function*/ method,
+						/*Boolean*/ dontFix){
 	// summary:
 	//		Create a link that calls one function when another executes. 
 	// description:
@@ -88,6 +96,8 @@ dojo.connect = function(/*Object|null*/ obj,
 	// obj: 
 	//		The source object for the event function. 
 	//		Defaults to dojo.global if null.
+	//		If obj is a DOM node, the connection is delegated 
+	//		to the DOM event manager (unless dontFix is true).
 	// event:
 	//		String name of the event function in obj. 
 	//		I.e. identifies a property obj[event].
@@ -105,6 +115,9 @@ dojo.connect = function(/*Object|null*/ obj,
 	//		The function identified by method fires after event does. 
 	//		method receives the same arguments as the event.
 	//		See context argument comments for information on method's scope.
+	// dontFix:
+	//		If obj is a DOM node, set dontFix to true to  prevent delegation 
+	//		of this connection to the DOM event manager. 
 	// usage:
 	//		// when obj.onchange(), do ui.update()
 	//		dojo.connect(obj, "onchange", ui, "update");
@@ -132,21 +145,16 @@ dojo.connect = function(/*Object|null*/ obj,
 	//		dojo.connect(null, "globalEvent", null, globalHandler);
 	//		dojo.connect("globalEvent", globalHandler); // same
 
-	// normalize arguments into args
+	// normalize arguments
 	var a=arguments, args=[], i=0;
-	if(dojo.isString(a[0])){
-		args.push(null, a[i++]); 
-	}else{
-		args.push(a[i++], a[i++]);
-	}
-	if(dojo.isString(a[i+1])||(dojo.isFunction(a[i+1]))){
-		args.push(a[i++], a[i++]);
-	}else{
-		args.push(null, a[i++]);
-	}
-	for (; i<arguments.length; i++){
-		args.push(arguments[i]);
-	}
+	// if a[0] is a String, obj was ommited
+	args.push(dojo.isString(a[0]) ? null : a[i++], a[i++]);
+	// if the arg-after-next is a String or Function, context was NOT omitted
+	var a1 = a[i+1];
+	args.push(dojo.isString(a1)||dojo.isFunction(a1) ? a[i++] : null, a[i++]);
+	// absorb any additional arguments
+	for (var l=a.length; i<l; i++){	args.push(a[i]); }
+	// do the actual work
 	return dojo._connect.apply(this, args); /*Handle*/
 }
 
@@ -161,8 +169,13 @@ dojo.disconnect = function(/*Handle*/ handle){
 	// description:
 	//		Removes the connection between event and the method referenced by handle.
 	// handle:
-	// 		the return value of the dojo.connect call that created the connection.
+	//		the return value of the dojo.connect call that created the connection.
 	dojo._disconnect.apply(this, handle);
+	if (handle && handle[0]!=undefined){
+		dojo._disconnect.apply(this, handle);
+		// let's not keep this reference
+		delete handle[0];
+	}
 }
 
 dojo._disconnect = function(obj, event, handle){

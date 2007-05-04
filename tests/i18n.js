@@ -2,9 +2,29 @@ dojo.provide("tests.i18n");
 
 dojo.require("dojo.i18n");
 
-tests.register("tests.i18n", 
-	[
-/* needs dojo.string,
+(function(){
+	var setUp = function(locale){
+		return function(){
+			dojo.requireLocalization("tests","salutations",locale);
+		}
+	}
+
+	var getTest = function(value, locale){
+		return function(){
+			doh.assertEqual(value, dojo.i18n.getLocalization("tests", "salutations", locale).hello);
+		}
+	}
+
+	var getFixture = function(locale, value){
+		return {
+			name: "salutations-"+locale,
+			setUp: setUp(locale),
+			runTest: getTest(value, locale)
+		};
+	}
+
+	var testSet = [
+	/* needs dojo.string,
 		// This doesn't actually test anything, it just gives an impressive list of translated output to the console
 		// See the 'salutations' test for something verifyable
 		function fun(t){
@@ -32,56 +52,33 @@ tests.register("tests.i18n",
 
 			t.assertTrue(true);
 		},
-*/
+	*/
 
-		{
-			// Test on-the-fly loading of localized string bundles from different locales, and
-			// the expected inheritance behavior
+		// Test on-the-fly loading of localized string bundles from different locales, and
+		// the expected inheritance behavior
 
-			name: "salutations",
-			setUp: function(){
-				dojo.requireLocalization("tests","salutations","de");
-				dojo.requireLocalization("tests","salutations","en-au");
-				dojo.requireLocalization("tests","salutations","en-us-new_york-brooklyn");
-				dojo.requireLocalization("tests","salutations","en-us-texas");
-				dojo.requireLocalization("tests","salutations","xx");
-				dojo.requireLocalization("tests","salutations","zh-cn");
-			},
-			runTest: function(t){
-				var salutations;
-				// Locale which overrides root translation
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "de");
-				t.assertEqual("Hallo", salutations.hello);
-				// Locale which does not override root translation
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "en");
-				t.assertEqual("Hello", salutations.hello);
-				// Locale which overrides its parent
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "en-au");
-				t.assertEqual("G'day", salutations.hello);
-				// Locale which does not override its parent
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "en-us");
-				t.assertEqual("Hello", salutations.hello);
-				// 3rd level variant which overrides its parent
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "en-us-texas");
-				t.assertEqual("Howdy", salutations.hello);
-				// 3rd level variant which does not override its parent
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "en-us-new_york");
-				t.assertEqual("Hello", salutations.hello);
-				// Locale which overrides its grandparent
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "en-us-new_york-brooklyn");
-				t.assertEqual("Yo", salutations.hello);
-				// Locale which does not have any translation available
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "xx");
-				t.assertEqual("Hello", salutations.hello);
-				// A double-byte string.  Everything should be read in as UTF-8 and treated as unicode within Javascript.
-				salutations = dojo.i18n.getLocalization("tests", "salutations", "zh-cn");
-				t.assertEqual("\u4f60\u597d", salutations.hello);
-			},
-			tearDown: function(){
-				//Clean up bundles that should not exist if
-				//the test is re-run.
-				delete tests.nls.salutations;
-			}
-		}
-	]
-);
+		// Locale which overrides root translation
+		getFixture("de", "Hallo"),
+		// Locale which does not override root translation
+		getFixture("en", "Hello"),
+		// Locale which overrides its parent
+		getFixture("en-au", "G'day"),
+		// Locale which does not override its parent
+		getFixture("en-us", "Hello"),
+		// Locale which overrides its parent
+		getFixture("en-us-texas", "Howdy"),
+		// 3rd level variant which overrides its parent
+		getFixture("en-us-new_york", "Hello"),
+		// Locale which overrides its grandparent
+		getFixture("en-us-new_york-brooklyn", "Yo"),
+		// Locale which does not have any translation available
+		getFixture("xx", "Hello"),
+		// A double-byte string.  Everything should be read in as UTF-8 and treated as unicode within Javascript.
+		getFixture("zh-cn", "\u4f60\u597d")
+	];
+	testSet[testSet.length-1].tearDown = function(){
+		// Clean up bundles that should not exist if the test is re-run.
+		delete tests.nls.salutations;
+	};
+	tests.register("tests.i18n", testSet);
+})();

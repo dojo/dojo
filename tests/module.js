@@ -8,6 +8,7 @@ try{
 	dojo.require("tests.date");
 	dojo.require("tests.number");
 	dojo.require("tests.currency");
+	dojo.require("tests.AdapterRegistry");
 }catch(e){
 	doh.debug(e);
 }

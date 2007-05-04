@@ -353,3 +353,9 @@ if(typeof window != 'undefined'){
 //Builds may be looking for require/requireIf statements and processing them.
 // dojo.requireIf(djConfig["debugAtAllCosts"] && !window.widget && !djConfig["useXDomain"], "dojo.browser_debug");
 // dojo.requireIf(djConfig["debugAtAllCosts"] && !window.widget && djConfig["useXDomain"], "dojo.browser_debug_xd");
+
+if(djConfig.isDebug){
+	if(!console.firebug){
+		dojo.require("dojo._base.firebug.firebug");
+	}
+}

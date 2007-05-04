@@ -1,0 +1,9 @@
+License Disclaimer:
+
+All contents of this directory are Copyright (c) the Dojo Foundation, with the
+following exceptions:
+-------------------------------------------------------------------------------
+
+firebug.html, firebug.js, errIcon.png, infoIcon.png, warningIcon.png:
+	* Copyright (c) 2006-2007, Joe Hewitt, All rights reserved.
+	  Distributed under the terms of the BSD License

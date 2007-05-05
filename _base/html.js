@@ -1,6 +1,8 @@
 dojo.require("dojo._base.lang");
 dojo.provide("dojo._base.html");
 
+// FIXME: need to add unit tests for all the semi-public methods
+
 try{
 	document.execCommand("BackgroundImageCache", false, true);
 }catch(e){
@@ -126,7 +128,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	if(dojo.isIE){
 		// IE branch
 		var _d = document;
-		var _toPixelValue = function(element, avalue){
+		dojo._toPixelValue = function(element, avalue){
 			// parseInt or parseFloat? (style values can be floats)
 			if(avalue.slice(-2) == "px"){ return parseFloat(avalue); }
 			with(element){
@@ -150,7 +152,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 				runtimeStyle.left = rsLeft;
 			}
 			return avalue;
-		}
+		};
+
 		var _dcm = _d.compatMode;
 
 		dojo.boxMode = ((_dcm=="BackCompat")||(_dcm=="QuirksMode")) ? "border-box" : "content-box";
@@ -160,7 +163,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		}
 	}else{
 		// non-IE branch
-		var _toPixelValue = function(element, value){
+		dojo._toPixelValue = function(element, value){
 			// parseInt or parseFloat? (style values can be floats)
 			return parseFloat(value) || 0; 
 		}
@@ -187,11 +190,11 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		// inlining toPixelValue here for all other browsers. Benchmarking
 		// indicated it is not worth the extra code. 
 		return function(value){
-			return _toPixelValue(element, value);
+			return dojo._toPixelValue(element, value);
 		}
 	}
 
-	var _getPadBorderBounds = function(node, s){
+	dojo._getPadBorderBounds = function(node, s){
 		// Values returned from this function are non-intuitve, but they are
 		// specifically useful for fitting nodes.  l, t = the top and left
 		// edges as determined by padding If 'node' has position, then these
@@ -211,7 +214,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		};
 	}
 
-	var _getMarginExtents = function(node, s){
+	dojo._getMarginExtents = function(node, s){
 		var px = _getPixelizer(node);
 		return { 
 			w: px(s.marginLeft) + px(s.marginRight),
@@ -219,17 +222,17 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		};
 	}
 
-	var _getMarginBox = function(node, computedStyle){
-		var mb = _getMarginExtents(node, computedStyle);
+	dojo._getMarginBox = function(node, computedStyle){
+		var mb = dojo._getMarginExtents(node, computedStyle);
 		return {
 			w: node.offsetWidth + mb.w, 
 			h: node.offsetHeight + mb.h
 		};
 	}
 
-	var _setMarginBox = function(node, wObj, s){
-		var pb = (dojo.boxMode == "border-box" ? _nilExtents : _getPadBorderBounds(node, s));
-		var mb = _getMarginExtents(node, s);
+	dojo._setMarginBox = function(node, wObj, s){
+		var pb = (dojo.boxMode == "border-box" ? _nilExtents : dojo._getPadBorderBounds(node, s));
+		var mb = dojo._getMarginExtents(node, s);
 		if(!isNaN(wObj.w)){
 			wObj.w = Math.max(wObj.w - pb.w - mb.w, 0);
 		}
@@ -243,22 +246,22 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		node = dojo.byId(node);
 		var s = dojo.getComputedStyle(node);
 		if(boxObj){
-			return _setMarginBox(node, boxObj, s);
+			return dojo._setMarginBox(node, boxObj, s);
 		}
-		return _getMarginBox(node, s);
+		return dojo._getMarginBox(node, s);
 	}
 
-	var _getContentBox = function(node, computedStyle){
-		var pb = _getPadBorderBounds(node, computedStyle);
+	dojo._getContentBox = function(node, computedStyle){
+		var pb = dojo._getPadBorderBounds(node, computedStyle);
 		return {
 			w: node.offsetWidth - pb.w,
 			h: node.offsetHeight- pb.h
 		};
 	}
 
-	var _setContentBox = function(node, boxObj, computedStyle){
+	dojo._setContentBox = function(node, boxObj, computedStyle){
 		if(dojo.boxMode == "border-box"){
-			var pb = _getPadBorderBounds(node, computedStyle);
+			var pb = dojo._getPadBorderBounds(node, computedStyle);
 			if(!isNaN(boxObj.w)){ boxObj.w += pb.w; }
 			if(!isNaN(boxObj.h)){ boxObj.h += pb.h; }
 		}
@@ -269,9 +272,9 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		node = dojo.byId(node);
 		var s = dojo.getComputedStyle(node);
 		if(boxObj){
-			return _setContentBox(node, boxObj, s);
+			return dojo._setContentBox(node, boxObj, s);
 		}
-		return _getContentBox(node, s);
+		return dojo._getContentBox(node, s);
 	}
 
 	var _sumAncestorProperties = function(node, prop){
@@ -308,7 +311,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 
 	// IE version and quirks dependent. ugg.
 	var _d_off = ((dojo.isIE >= 7)&&(dojo.boxMode != "border-box")) ? 2 : 0; 
-	var _abs = function(/*HTMLElement*/node, /*boolean?*/includeScroll){
+	dojo._abs = function(/*HTMLElement*/node, /*boolean?*/includeScroll){
 		//	summary
 		//		Gets the absolute position of the passed element based on the
 		//		document itself.
@@ -421,8 +424,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	dojo.coords = function(node, includeScroll){
 		node = dojo.byId(node);
 		var s = dojo.getComputedStyle(node);
-		var mb = _getMarginBox(node, s);
-		var abs = _abs(node, includeScroll);
+		var mb = dojo._getMarginBox(node, s);
+		var abs = dojo._abs(node, includeScroll);
 		mb.x = abs.x;
 		mb.y = abs.y;
 		return mb;
@@ -430,23 +433,31 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 
 	// FIXME: there opacity quirks on FF that we haven't ported over. Hrm.
 
-	var _ieGetOpacity = function(node){
-		try{
-			return (node.filters.alpha.opacity / 100);
-		}catch(e){
-			return 1;
+	dojo._getOpacity = ((dojo.isIE) ?  function(node){
+			try{
+				return (node.filters.alpha.opacity / 100);
+			}catch(e){
+				return 1;
+			}
+		} : function(node){
+			// FIXME: should we get using the computedStyle of the node?
+			return node.style.opacity;
 		}
-	}
+	);
 
-	var _ieSetOpacity = function(node, opacity){
-		node.style.filter = "Alpha(Opacity="+opacity*100+")";
-		if(node.nodeName.toLowerCase == "tr"){
-			dojo.query("> td", node).forEach(function(i){
-				_setOpacity(i, null, opacity);
-			});
+	dojo._setOpacity = ((dojo.isIE) ? function(node, opacity){
+			var o = "Alpha(Opacity="+(opacity*100)+")";
+			node.style.filter = o;
+			if(node.nodeName.toLowerCase == "tr"){
+				dojo.query("> td", node).forEach(function(i){
+					i.style.filter = o;
+				});
+			}
+			return opacity;
+		} : function(node, opacity){
+			node.style.opacity = opacity;
 		}
-		return opacity;
-	}
+	);
 
 	var _t = true;
 	var _f = false;
@@ -455,7 +466,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	};
 	var _toStyleValue = function(node, type, value){
 		if(_pixelNamesCache[type] === true){
-			return _toPixelValue(node, value)
+			return dojo._toPixelValue(node, value)
 		}else if(_pixelNamesCache[type] === false){
 			return value;
 		}else{
@@ -470,7 +481,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 				(type.indexOf("offset") >= 0)
 			){
 				_pixelNamesCache[type] = true;
-				return _toPixelValue(node, value)
+				return dojo._toPixelValue(node, value)
 			}else{
 				_pixelNamesCache[type] = false;
 				return value;
@@ -485,12 +496,12 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		var node = dojo.byId(_a[0]);
 		var io = ((dojo.isIE)&&(_a[1] == "opacity"));
 		if(_a_l == 3){
-			return (io) ? _ieSetOpacity(node, _a[2]) : node.style[_a[1]] = _a[2];
+			return (io) ? dojo._setOpacity(node, _a[2]) : node.style[_a[1]] = _a[2];
 		}
 		var s = dojo.getComputedStyle(node);
 		if(_a_l == 1){ return s; }
 		if(_a_l == 2){
-			return (io) ? _ieGetOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
+			return (io) ? dojo._getOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
 		}
 	}
 })();

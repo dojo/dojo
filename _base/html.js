@@ -299,7 +299,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		return retVal;	//	integer
 	}
 
-	var _docScroll = function(){
+	dojo._docScroll = function(){
 		var _b = dojo.body();
 		var _w = dojo.global;
 		var de = dojo.doc.documentElement;
@@ -514,7 +514,8 @@ dojo.hasClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary:
 	//		Returns whether or not the specified classes are a portion of the
 	//		class list currently applied to the node. 
-	return (new RegExp('(^|\\s+)'+classStr+'(\\s+|$)')).test(node.className)	// Boolean
+	// return (new RegExp('(^|\\s+)'+classStr+'(\\s+|$)')).test(node.className)	// Boolean
+	return ((" "+node.className+" ").indexOf(" "+classStr+" ") > 0);  // Boolean
 }
 
 dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){

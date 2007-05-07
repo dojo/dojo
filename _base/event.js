@@ -228,12 +228,12 @@ dojo.require("dojo._base.connect");
 					// keypress events that otherwise won't fire
 					// on IE
 					var kd = node.onkeydown;
-					if(!kd||!kd.listeners||!kd.listeners._stealthKeydown){
+					if(!kd||!kd.listeners||!kd._stealthKeydown){
 						// we simply ignore this connection when disconnecting
 						// because it's harmless 
 						de.addListener(node, "onkeydown", de._stealthKeyDown);
 						// we only want one stealth listener per node
-						kd.listeners._stealthKeydown = true;
+						node.onkeydown._stealthKeydown = true;
 					} 
 				}
 				return iel.add(node, event, de._fixCallback(fp, node));

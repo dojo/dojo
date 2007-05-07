@@ -130,7 +130,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		var _d = document;
 		dojo._toPixelValue = function(element, avalue){
 			// parseInt or parseFloat? (style values can be floats)
-			if(avalue.slice(-2) == "px"){ return parseFloat(avalue); }
+			// if(!avalue){ return 0; }
+			if((avalue["slice"])&&(avalue.slice(-2) == "px")){ return parseFloat(avalue); }
 			with(element){
 				var sLeft = style.left;
 				var rsLeft = runtimeStyle.left;
@@ -379,7 +380,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 
 		// account for document scrolling!
 		if(includeScroll){
-			var scroll = _docScroll();
+			var scroll = dojo._docScroll();
 			ret.y += scroll.y;
 			ret.x += scroll.x;
 		}

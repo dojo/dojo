@@ -515,7 +515,7 @@ dojo.hasClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//		Returns whether or not the specified classes are a portion of the
 	//		class list currently applied to the node. 
 	// return (new RegExp('(^|\\s+)'+classStr+'(\\s+|$)')).test(node.className)	// Boolean
-	return ((" "+node.className+" ").indexOf(" "+classStr+" ") > 0);  // Boolean
+	return ((" "+node.className+" ").indexOf(" "+classStr+" ") >= 0);  // Boolean
 }
 
 dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){

@@ -35,7 +35,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*Object?*/props){
 	}else{
 		props = props || {};
 		value = encodeURIComponent(value);
-		if(typeof(props.expires) == "Number"){ 
+		if(typeof(props.expires) == "number"){ 
 			var d = new Date();
 			d.setTime(d.getTime()+(props.expires*24*60*60*1000));
 			props.expires = d;

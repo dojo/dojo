@@ -42,6 +42,19 @@
 								
 								t.is(v, dojo.cookie(n));
 							}
+						},
+						{
+							name: "daysAsNumber",
+							runTest: function(t){
+								// set a cookie with a numerical expires
+								dojo.cookie("dojo_num", "foo", { expires: 10 });
+								t.is("foo", dojo.cookie("dojo_num"));
+								
+								// remove the cookie by setting it with a negative
+								// numerical expires. value doesn't really matter here
+								dojo.cookie("dojo_num", "-deleted-", { expires: -10 });
+								t.is(null, dojo.cookie("dojo_num"));
+							}
 						}
 					]
 				);

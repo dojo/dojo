@@ -295,9 +295,8 @@ dojo.require("dojo._base.connect");
 						}else if(c==3){
 							c=99; // Mozilla maps CTRL-BREAK to CTRL-c
 						}
-						// if we have a charCode, try to 0 keycode
-						// if that fails, our charCode is bogus and is set to 0
-						if(c){c = _trySetKeyCode(evt, 0);}
+						// Mozilla sets keyCode to 0 when there is a charCode
+						// but that stops the event on IE.
 						evt.charCode = c;
 						de._setKeyChar(evt);
 						break;

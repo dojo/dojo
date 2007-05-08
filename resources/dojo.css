@@ -18,14 +18,9 @@
 	version: 2.2.1
 */
 
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+body, div, dl, dt, dd, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
 	margin: 0;
 	padding: 0;
-}
-
-table{
-	border-collapse: collapse;
-	border-spacing: 0;
 }
 
 fieldset, img {
@@ -37,21 +32,8 @@ address,caption,cite,code,dfn,em,strong,th,var{
 	font-weight: normal;
 }
 
-/*
-	alex: hate this.
-
-ol, ul {
-	list-style: none;
-}
-*/
-
 caption, th {
 	text-align: left;
-}
-
-h1, h2, h3, h4, h5, h6 {
-	font-size: 100%;
-	font-weight: normal;
 }
 
 q:before, q:after {
@@ -62,24 +44,8 @@ abbr, acronym {
 	border:0;
 }
 
-body {
-	font: 13px arial,helvetica,clean,sans-serif; 
-	*font-size: small;
-	*font: x-small;
-}
-
-table {
-	font-size: inherit;
-	font: 100%;
-}
-
 select, input, textarea {
-	font: 99% arial,helvetica,clean,sans-serif;
-}
-
-pre, code {
-	font:115% monospace;
-	*font-size:100%;
+	font-size:99%;
 }
 
 body * {
@@ -112,16 +78,15 @@ body * {
 	Default: 13px, specified by the YUI imports, so we don't need to repeat ourselves
 */
 body { 
-	font-family: "Myriad Pro", Myriad, Arial, Helvetica, sans-serif;
+	font: 13px "Myriad Pro",Myriad,Arial,Helvetica,clean,sans-serif; 
+	*font-size: small;
+	*font: x-small;
 }
 
 /* Headings */
-h1,h2,h3,h4,h5,h6 { 
-	font-family: "Myriad Pro", Myriad, Arial, Helvetica, sans-serif;
-}
-
 h1 {
 	font-size: 1.5em; 
+	font-weight: normal;
 	line-height: 1em; 
 	margin-top: 1em;
 	margin-bottom:0;
@@ -161,15 +126,6 @@ blockquote {
 	border-bottom: 1px solid #ccc;
 }
 
-ol, ul{ 
-	margin: 1.5em; 
-	margin-left: 3em; 
-	list-style: inherit;
-}
-
-ol{ 
-	list-style-type: decimal;
-}
 ol li, ul li { 
 	font-size: 1em; 
 	line-height: 1.5em; 
@@ -178,6 +134,8 @@ ol li, ul li {
 
 /* pre and code */
 pre, code { 
+	font-size:115%;
+	*font-size:100%;
 	font-family: Courier, "Courier New"; 
 	background-color: #efefef; 
 	border: 1px solid #ccc;
@@ -212,4 +170,3 @@ table thead, table tfoot {
 thead tr th, thead tr td, tbody tr td, tfoot tr td { 
 	padding: 0.25em 0.5em;
 }
-

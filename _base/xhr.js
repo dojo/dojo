@@ -196,98 +196,158 @@ dojo._contentHandlers = {
 };
 
 (function(){
-	var _setupForXhr = function(args){
-		// FIXME: need to ensure that we're not performing destructive ops on
-		// args or pulling things out of it w/o resetting. We want users to be
-		// able to reuse an args obj.
+
+	dojo._ioSetArgs = function(/*Object*/args,
+			/*Function*/canceller,
+			/*Function*/okHandler,
+			/*Function*/errHandler){
+		//summary: sets up the Deferred and ioArgs property on the Deferred so it
+		//can be used in an io call.
+		//args:
+		//		The args object passed into the public io call.
+		//canceller:
+		//		The canceller function used for the Deferred object. The function
+		//		will receive one argument, the Deferred object that is related to the
+		//		canceller.
+		//okHandler:
+		//		The first OK callback to be registered with Deferred. It has the opportunity
+		//		to transform the OK response. It will receive one argument -- the Deferred
+		//		object returned from this function.
+		//errHandler:
+		//		The first error callback to be registered with Deferred. It has the opportunity
+		//		to do cleanup on an error. It will receive two arguments: error (the 
+		//		Error object) and dfd, the Deferred object returned from this function.
+
+		var ioArgs = {};
+		ioArgs.args = args;
+
+		//Get values from form if requestd.
+		var formQuery = null;
+		if(args.form){ 
+			var form = dojo.byId(args.form);
+			ioArgs.url = args.url || form.getAttribute("action");
+			formQuery = dojo.formToQuery(form);
+		}else{
+			ioArgs.url = args.url;
+		}
 
 		// set up the query params
-		var qi = args.url.indexOf("?");
+		var qi = ioArgs.url.indexOf("?");
 		var miArgs = [{}];
 		if(qi != -1){ // url-provided params are the baseline
-			miArgs.push(dojo.queryToObject(args.url.substr(qi+1)));
-			// FIXME: destructive!!
-			args.url = args.url.substr(0, qi);
+			miArgs.push(dojo.queryToObject(ioArgs.url.substr(qi+1)));
+			ioArgs.url = ioArgs.url.substr(0, qi);
 		}
-		if(args.form){ // we assume that _setupFromForm has been run before us
+	
+		if(formQuery){
 			// potentially over-ride url-provided params w/ form values
-			miArgs.push(dojo.queryToObject(args._formQuery));
+			miArgs.push(dojo.queryToObject(formQuery));
 		}
 		if(args.content){
 			// stuff in content over-rides what's set by form
 			miArgs.push(args.content);
 		}
-		args._query = dojo.objectToQuery(dojo.mixin.apply(null, miArgs));
-
+		ioArgs.query = dojo.objectToQuery(dojo.mixin.apply(null, miArgs));
+	
 		// .. and the real work of getting the deferred in order, etc.
-		var ha = args.handleAs || "text";
-		var _xhro = dojo._xhrObj();
-		var d = new dojo.Deferred(function(td){
-			td.canceled = true;
-			_xhro.abort();
+		ioArgs.ha = args.handleAs || "text";
+		var d = new dojo.Deferred(canceller);
+		d.addCallbacks(okHandler, function(error){
+				return errHandler(error, d);
 		});
-		d.addCallback(function(value){
-			return dojo._contentHandlers[ha](_xhro);
-		});
-		d.xhr = _xhro;
-		d.args = args;
-		d.d = d;
+		
+		/*
+		//Support specifying load and error callback functions from the args.
+		//For those callbacks, the "this" object will be the args object.
+		//The load and error callback will get the deferred result value as the
+		//first argument and the ioArgs object as the second argument.
+		var ld = args.load;
+		if(ld && dojo.isFunction(ld)){
+			d.addCallback(function(value){
+				return ld.call(args, value, ioArgs);
+			});
+		}
+		var err = args.error;
+		if(err && dojo.isFunction(err)){
+			d.addErrback(function(value){
+				return err.call(args, value, ioArgs);
+			});
+		}
+		*/
+
+		d.ioArgs = ioArgs;
+	
 		// FIXME: need to wire up the xhr object's abort method to something
 		// analagous in the Deferred
 		return d;
+	
 	}
 
-	var _setupFromForm = function(args){
-		var form = dojo.byId(args.form);
-		args.url = args.url || form.getAttribute("action");
-		args._formQuery = dojo.formToQuery(form);
-		return args;
+	var _deferredCancel = function(/*Deferred*/dfd){
+		//summary: canceller function for dojo._ioSetArgs call.
+		
+		dfd.canceled = true;
+		dfd.ioArgs.xhr.abort();
+	}
+	var _deferredOk = function(/*Deferred*/dfd){
+		//summary: okHandler function for dojo._ioSetArgs call.
+		
+		return dojo._contentHandlers[dfd.ioArgs.ha](dfd.ioArgs.xhr);
+	}
+	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
+		//summary: errHandler function for dojo._ioSetArgs call.
+		
+		dfd.ioArgs.xhr.abort();
+		console.debug("xhr error in:", dfd.ioArgs.xhr);
+		console.debug(error);
+		return error;
+	}
+
+	var _makeXhrDeferred = function(/*Object*/args){
+		//summary: makes the Deferred object for this xhr request.
+		var dfd = dojo._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
+		dfd.ioArgs.xhr = dojo._xhrObj();
+		return dfd;
 	}
 
 	// avoid setting a timer per request. It degrades performance on IE
 	// something fierece if we don't use unified loops.
-
 	var _inFlightIntvl = null;
 	var _inFlight = [];
 	var _watchInFlight = function(){
 		//summary: 
 		//		internal method that checks each inflight XMLHttpRequest to see
 		//		if it has completed or if the timeout situation applies.
-
+		
 		var now = (new Date()).getTime();
 		// make sure sync calls stay thread safe, if this callback is called
 		// during a sync call and this results in another sync call before the
 		// first sync call ends the browser hangs
 		if(!dojo._blockAsync){
 			dojo.forEach(_inFlight, function(tif, arrIdx){
+				var dfd = tif.dfd;
 				try{
-					if(!tif || tif.d.canceled || !tif.xhr.readyState){
+					if(!dfd || dfd.canceled || !tif.validCheck(dfd)){
 						_inFlight.splice(arrIdx, 1); return;
 					}
-					if(4 == tif.xhr.readyState){
+					if(tif.ioCheck(dfd)){
 						_inFlight.splice(arrIdx, 1); // clean refs
-						if(dojo._isDocumentOk(tif.xhr)){
-							tif.d.callback(tif.xhr);
-						}else{
-							console.debug("xhr error in:", tif.xhr);
-							console.debug("http response code:", tif.xhr.status);
-							tif.d.errback(tif.xhr);
-						}
-					}else if(tif.startTime){
+						tif.resHandle(dfd);
+					}else if(dfd.startTime){
 						//did we timeout?
-						if(tif.startTime + (tif.timeout) < now){
+						if(dfd.startTime + (dfd.ioArgs.args.timeout||0) < now){
 							//Stop the request.
-							tif.d.cancel();
+							dfd.cancel();
 							_inFlight.splice(arrIdx, 1); // clean refs
-							console.debug("xhr error in:", tif.xhr);
-							console.debug("timeout exceeded!");
-							tif.d.errback(new Error("timeout exceeded"));
+							var err = new Error("timeout exceeded");
+							err.dojoType = "timeout";
+							dfd.errback(err);
 						}
 					}
 				}catch(e){
 					// FIXME: make sure we errback!
 					console.debug(e);
-					tif.d.errback(new Error("_watchInFlightError!"));
+					dfd.errback(new Error("_watchInFlightError!"));
 				}
 			});
 		}
@@ -299,9 +359,26 @@ dojo._contentHandlers = {
 		}
 	}
 
-	var _launch = function(obj){
-		obj.startTime = (new Date()).getTime();
-		_inFlight.push(obj);
+	dojo._ioWatch = function(/*Deferred*/dfd,
+		/*Function*/validCheck,
+		/*Function*/ioCheck,
+		/*Function*/resHandle){
+		//summary: watches the io request represented by dfd to see if it completes.
+		//dfd:
+		//		The Deferred object to watch.
+		//validCheck:
+		//		Function used to check if the IO request is still valid. Gets the dfd
+		//		object as its only argument.
+		//ioCheck:
+		//		Function used to check if basic IO call worked. Gets the dfd
+		//		object as its only argument.
+		//resHandle:
+		//		Function used to process response. Gets the dfd
+		//		object as its only argument.
+		if(dfd.ioArgs.args.timeout){
+			dfd.startTime = (new Date()).getTime();
+		}
+		_inFlight.push({dfd: dfd, validCheck: validCheck, ioCheck: ioCheck, resHandle: resHandle});
 		if(!_inFlightIntvl){
 			_inFlightIntvl = setInterval(_watchInFlight, 50);
 		}
@@ -310,51 +387,59 @@ dojo._contentHandlers = {
 
 	var _defaultContentType = "application/x-www-form-urlencoded";
 
-	var _doIt = function(type, args, ao){
-		// IE 6 is a steaming pile. It won't let you call apply() on the native function.
-		// var ga = [type, args.url, (args.sync !== true)];
-		// if(args.user){ ga.push(args.user, args.password); }
-		// ao.xhr.open.apply(ao.xhr, ga);
+	var _validCheck = function(/*Deferred*/dfd){
+		return dfd.ioArgs.xhr.readyState; //boolean
+	}
+	var _ioCheck = function(/*Deferred*/dfd){
+		return 4 == dfd.ioArgs.xhr.readyState; //boolean
+	}
+	var _resHandle = function(/*Deferred*/dfd){
+		if(dojo._isDocumentOk(dfd.ioArgs.xhr)){
+			dfd.callback(dfd);
+		}else{
+			dfd.errback(new Error("bad http response code:" + dfd.ioArgs.xhr.status));
+		}
+	}
+
+	var _doIt = function(/*String*/type, /*Deferred*/dfd){
+		// IE 6 is a steaming pile. It won't let you call apply() on the native function (xhr.open).
 		// workaround for IE6's apply() "issues"
-		ao.xhr.open(type, args.url, (args.sync !== true), (args.user ? args.user : undefined), (args.password ? args.password: undefined));
+		var ioArgs = dfd.ioArgs;
+		var args = ioArgs.args;
+		ioArgs.xhr.open(type, ioArgs.url, (args.sync !== true), (args.user ? args.user : undefined), (args.password ? args.password: undefined));
 		// FIXME: is this appropriate for all content types?
-		ao.xhr.setRequestHeader("Content-Type", (args.contentType||_defaultContentType));
+		ioArgs.xhr.setRequestHeader("Content-Type", (args.contentType||_defaultContentType));
 		// FIXME: set other headers here!
 		try{
-			ao.xhr.send(args._query);
+			ioArgs.xhr.send(ioArgs.query);
 		}catch(e){
-			ao.d.cancel();
+			ioArgs.cancel();
 		}
-		_launch(ao);
-		return ao.d;
+		dojo._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
+		return dfd; //Deferred
 	}
 
 	// TODOC: FIXME!!!
 
 	dojo.xhrGet = function(/*Object*/ args){
-		if(args.form){ 
-			args = _setupFromForm(args);
+		var dfd = _makeXhrDeferred(args);
+		var ioArgs = dfd.ioArgs;
+		if(ioArgs.query.length){
+			ioArgs.url += "?" + ioArgs.query;
+			ioArgs.query = null;
 		}
-		var ao = _setupForXhr(args);
-		if(args._query.length){ args.url += "?"+args._query; args._query = null; }
-		return _doIt("GET", args, ao); // dojo.Deferred
+		return _doIt("GET", dfd); // dojo.Deferred
 	}
 
 	dojo.xhrPost = function(/*Object*/ args){
-		if(args.form){ 
-			args = _setupFromForm(args);
-		}
-		var ao = _setupForXhr(args);
-		return _doIt("POST", args, ao); // dojo.Deferred
+		var dfd = _makeXhrDeferred(args);
+		return _doIt("POST", dfd); // dojo.Deferred
 	}
 
 	dojo.rawXhrPost = function(/*Object*/ args){
-		if(args.form){ 
-			args = _setupFromForm(args);
-		}
-		var ao = _setupForXhr(args);
-		args._query = args.postData;
-		return _doIt("POST", args, ao); // dojo.Deferred
+		var dfd = _makeXhrDeferred(args);
+		dfd.ioArgs.query = args.postData;
+		return _doIt("POST", dfd); // dojo.Deferred
 	}
 
 	dojo.wrapForm = function(formNode){

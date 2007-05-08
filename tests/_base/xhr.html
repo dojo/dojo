@@ -143,8 +143,13 @@
 						function xhrGet(t){
 							var d = new doh.Deferred();
 							var td = dojo.xhrGet({
-								url: "xhr.html" // self
-							});
+								url: "xhr.html", // self
+							}).addCallback(
+								function(text, ioArgs){
+									t.is(4, ioArgs.xhr.readyState);
+									return text; //must return a value here or the parent test deferred fails.
+								}
+							);
 							t.t(td instanceof dojo.Deferred);
 							td.addCallback(d, "callback");
 							return d;
@@ -153,8 +158,13 @@
 							var d = new doh.Deferred();
 							try{
 								var td = dojo.xhrGet({
-									url: "xhr_blarg.html" // doesn't exist
-								});
+									url: "xhr_blarg.html", // doesn't exist
+								}).addErrback(
+									function(err, ioArgs){
+										t.is(404, ioArgs.xhr.status);
+										return err; //must return a value here or the parent test deferred fails.
+									}
+								);
 								// td.addErrback(d, "callback");
 							}catch(e){
 								d.callback(true);
@@ -174,7 +184,7 @@
 							td.addCallback(function(text){
 								// console.debug(td, td.xhr, td.args);
 								t.is("xhr.html?foo=bar&foo=baz&thud=thonk&xyzzy=3", 
-										td.args.url);
+										td.ioArgs.url);
 								d.callback(true);
 							});
 							return d;
@@ -187,7 +197,7 @@
 							});
 							td.addCallback(function(xhr){
 								// console.debug(td.args.url);
-								t.is("xhr.html?spaces=string%20with%20spaces", td.args.url);
+								t.is("xhr.html?spaces=string%20with%20spaces", td.ioArgs.url);
 								d.callback(true);
 							});
 							return d;
@@ -203,7 +213,7 @@
 							});
 							td.addCallback(function(xhr){
 								// console.debug(td.args.url);
-								t.is("xhr.html?spaces=blah", td.args.url);
+								t.is("xhr.html?spaces=blah", td.ioArgs.url);
 								d.callback(true);
 							});
 							return d;
@@ -215,8 +225,8 @@
 							});
 							// t.t(td instanceof dojo.Deferred);
 							td.addBoth(function(res){
-								if(	(dojo._isDocumentOk(td.xhr))||
-									(td.xhr.status == 405)
+								if(	(dojo._isDocumentOk(td.ioArgs.xhr))||
+									(td.ioArgs.xhr.status == 405)
 								){
 									d.callback(true);
 								}else{
@@ -237,9 +247,9 @@
 							});
 							td.addBoth(function(text){
 								t.is("foo=bar&foo=baz&thud=thonk&xyzzy=3", 
-										td.args._query);
-								if(	(dojo._isDocumentOk(td.xhr))||
-									(td.xhr.status == 405)
+										td.ioArgs.query);
+								if(	(dojo._isDocumentOk(td.ioArgs.xhr))||
+									(td.ioArgs.xhr.status == 405)
 								){
 									d.callback(true);
 								}else{

@@ -9,6 +9,14 @@ try{
 	// sane browsers don't have cache "issues"
 }
 
+// =============================
+// DOM Functions
+// =============================
+
+dojo.createElement = function(obj, parent, position){
+	// TODO: need to finish this!
+}
+
 if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
 		// summary:
@@ -120,31 +128,81 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		}
 	}
 
+	// Box functions will assume this mode.
+	// On IE/Opera, BORDER_BOX will be set if the primary document is in quirks mode.
+	// Can be set to change behavior of box setters.
+	
 	// can be either:
 	//	"border-box"
 	//	"content-box" (default)
 	dojo.boxMode = "content-box"
 
-	if(dojo.isIE){
+	// We punt per-node box mode testing completely.
+	// If anybody cares, we can provide an additional (optional) unit 
+	// that overrides existing code to include per-node box sensitivity.
+
+	// Opera documentation claims that Opera 9 uses border-box in BackCompat mode.
+	// but experiments (Opera 9.10.8679 on Windows Vista) indicate that it actually continues to use content-box.
+	// IIRC, earlier versions of Opera did in fact use border-box.
+	// Opera guys, this is really confusing. Opera being broken in quirks mode is not our fault.
+
+	if(dojo.isIE /*|| dojo.isOpera*/){
+		var _dcm = document.compatMode;
+		// client code may have to adjust if compatMode varies across iframes
+		dojo.boxMode = ((_dcm=="BackCompat")||(_dcm=="QuirksMode") ? "border-box" : "content-box");
+	}
+
+	// =============================
+	// Style Functions
+	// =============================
+	
+	// getComputedStyle drives most of the style code.
+	// Wherever possible, reuse the returned object.
+	//
+	// API functions below that need to access computed styles accept an 
+	// optional computedStyle parameter.
+	//
+	// If this parameter is omitted, the functions will call getComputedStyle themselves.
+	//
+	// This way, calling code can access computedStyle once, and then pass the reference to 
+	// multiple API functions. 
+
+	if (!dojo.isIE){
+		// non-IE branch
+		dojo.getComputedStyle = function(node){
+			return document.defaultView.getComputedStyle(node, null);
+		}	
+	}else{
 		// IE branch
-		var _d = document;
+		dojo.getComputedStyle = function(node) {
+			return node.currentStyle;
+		}
+	}
+		
+	if(!dojo.isIE){
+		// non-IE branch
+		dojo._toPixelValue = function(element, value){
+			// style values can be floats, client code may want
+			// to round for integer pixels.
+			return (parseFloat(value) || 0); 
+		}
+	}else{
+		// IE branch
 		dojo._toPixelValue = function(element, avalue){
-			// parseInt or parseFloat? (style values can be floats)
-			// if(!avalue){ return 0; }
-			if((avalue["slice"])&&(avalue.slice(-2) == "px")){ return parseFloat(avalue); }
+			if(!avalue){return 0;}
+			// style values can be floats, client code may
+			// want to round this value for integer pixels.
+			if(avalue.slice&&(avalue.slice(-2)=='px')){ return parseFloat(avalue); }
 			with(element){
 				var sLeft = style.left;
 				var rsLeft = runtimeStyle.left;
 				runtimeStyle.left = currentStyle.left;
 				try{
-					// 'avalue' may be incompatible with
-					// style.left, which can cause IE to throw
-					// this has been observed for border widths
-					// using "thin", "medium", "thick" constants
-					// those particular constants could be
-					// trapped by a lookup but perhaps there are
-					// more
-					style.left = avalue || 0;
+					// 'avalue' may be incompatible with style.left, which can cause IE to throw
+					// this has been observed for border widths using "thin", "medium", "thick" constants
+					// those particular constants could be trapped by a lookup
+					// but perhaps there are more
+					style.left = avalue;
 					avalue = style.pixelLeft;
 				}catch(e){
 					avalue = 0;
@@ -153,131 +211,203 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 				runtimeStyle.left = rsLeft;
 			}
 			return avalue;
-		};
-
-		var _dcm = _d.compatMode;
-
-		dojo.boxMode = ((_dcm=="BackCompat")||(_dcm=="QuirksMode")) ? "border-box" : "content-box";
-
-		dojo.getComputedStyle = function(node){
-			return node.currentStyle;
-		}
-	}else{
-		// non-IE branch
-		dojo._toPixelValue = function(element, value){
-			// parseInt or parseFloat? (style values can be floats)
-			return parseFloat(value) || 0; 
-		}
-
-		dojo.getComputedStyle = function(node){
-			return document.defaultView.getComputedStyle(node, null);
-		}	
-	}
-
-	var _setBox = function(node, o, u){
-		u = u || "px";
-		with(node.style){
-			if(!isNaN(o.x)){ left = o.x + u; }
-			if(!isNaN(o.y)){ top = o.y + u; }
-			if(!isNaN(o.w)&&(o.w>=0)){ width = o.w + u; }
-			if(!isNaN(o.h)&&(o.h>=0)){ height = o.h + u; }
 		}
 	}
 
-	var _nilExtents = { w: 0, h: 0 };
+	// FIXME: there opacity quirks on FF that we haven't ported over. Hrm.
 
-	var _getPixelizer = function(element){
-		// Can be microscopically faster by isolating the IE version and
-		// inlining toPixelValue here for all other browsers. Benchmarking
-		// indicated it is not worth the extra code. 
-		return function(value){
-			return dojo._toPixelValue(element, value);
+	dojo._getOpacity = ((dojo.isIE) ? function(node){
+			try{
+				return (node.filters.alpha.opacity / 100);
+			}catch(e){
+				return 1;
+			}
+		} : function(node){
+			// FIXME: should we get using the computedStyle of the node?
+			return node.style.opacity;
+		}
+	);
+
+	dojo._setOpacity = ((dojo.isIE) ? function(node, opacity){
+			var o = "Alpha(Opacity="+(opacity*100)+")";
+			node.style.filter = o;
+			if(node.nodeName.toLowerCase == "tr"){
+				dojo.query("> td", node).forEach(function(i){
+					i.style.filter = o;
+				});
+			}
+			return opacity;
+		} : function(node, opacity){
+			node.style.opacity = opacity;
+		}
+	);
+
+	var _t = true;
+	var _f = false;
+	var _pixelNamesCache = {
+		width: _t, height: _t, left: _t, top: _t
+	};
+	var _toStyleValue = function(node, type, value){
+		if(_pixelNamesCache[type] === true){
+			return dojo._toPixelValue(node, value)
+		}else if(_pixelNamesCache[type] === false){
+			return value;
+		}else{
+			type = type.toLowerCase();
+			if(
+				(type.indexOf("margin") >= 0) ||
+				// (type.indexOf("border") >= 0) ||
+				(type.indexOf("padding") >= 0) ||
+				(type.indexOf("width") >= 0) ||
+				(type.indexOf("height") >= 0) ||
+				(type.indexOf("max") >= 0) ||
+				(type.indexOf("min") >= 0) ||
+				(type.indexOf("offset") >= 0)
+			){
+				_pixelNamesCache[type] = true;
+				return dojo._toPixelValue(node, value)
+			}else{
+				_pixelNamesCache[type] = false;
+				return value;
+			}
 		}
 	}
 
-	dojo._getPadBorderBounds = function(node, s){
-		// Values returned from this function are non-intuitve, but they are
-		// specifically useful for fitting nodes.  l, t = the top and left
-		// edges as determined by padding If 'node' has position, then these
-		// l/t form the origin for child nodes. 
+	// public API
+	
+	dojo.style = function(){
+		var _a = arguments;
+		var _a_l = _a.length;
+		if(!_a_l){ return; }
+		var node = dojo.byId(_a[0]);
+		var io = ((dojo.isIE)&&(_a[1] == "opacity"));
+		if(_a_l == 3){
+			return (io) ? dojo._setOpacity(node, _a[2]) : node.style[_a[1]] = _a[2];
+		}
+		var s = dojo.getComputedStyle(node);
+		if(_a_l == 1){ return s; }
+		if(_a_l == 2){
+			return (io) ? dojo._getOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
+		}
+	}
+
+	// =============================
+	// Box Functions
+	// =============================
+
+	dojo._getPadBorderBounds = function(node, computedStyle){
+		// Values returned from this function are non-intuitve,
+		// but they are specifically useful for fitting nodes.
+		// l, t = the top and left edges as determined by padding
+		// If 'node' has position, then these l/t form the origin 
+		// for child nodes. 
 		// w = the total of the right padding and left and right border
 		// h = the total of the bottom padding and top and bottom border
 		// The w/h are used for calculating boxes.
-		// Normally application code will not need to invoke this directly, and
-		// will use the ...box... functions instead.
-		var px = _getPixelizer(node);
-		var l = px(s.paddingLeft), t = px(s.paddingTop);
-		var bw = (s.borderLeftStyle != 'none' ? px(s.borderLeftWidth) : 0) + (s.borderRightStyle != 'none' ? px(s.borderRightWidth) : 0);
-		var bh = (s.borderTopStyle != 'none' ? px(s.borderTopWidth) : 0) + (s.borderBottomStyle != 'none' ? px(s.borderBottomWidth) : 0);
+		// Normally application code will not need to invoke this directly,
+		// and will use the ...box... functions instead.
+		var n=node, s=computedStyle||this.getComputedStyle(n), px=dojo._toPixelValue;
+		var l=px(n, s.paddingLeft), t=px(n, s.paddingTop);
+		var bw=(s.borderLeftStyle!='none' ? px(n, s.borderLeftWidth) : 0) + (s.borderRightStyle!='none' ? px(n, s.borderRightWidth) : 0);
+		var bh=(s.borderTopStyle!='none' ? px(n, s.borderTopWidth) : 0) + (s.borderBottomStyle!='none' ? px(n, s.borderBottomWidth) : 0);
 		return { 
-			w: l + bw + px(s.paddingRight),
-			h: t + bh + px(s.paddingBottom)
+			l: l,
+			t: t,
+			w: l+bw+px(n, s.paddingRight),
+			h: t+bh+px(n, s.paddingBottom)
 		};
 	}
 
-	dojo._getMarginExtents = function(node, s){
-		var px = _getPixelizer(node);
+	dojo._getMarginExtents = function(node, computedStyle){
+		var n=node, s = computedStyle||this.getComputedStyle(n), px=dojo._toPixelValue;
 		return { 
-			w: px(s.marginLeft) + px(s.marginRight),
-			h: px(s.marginTop) + px(s.marginBottom)
+			w: px(n, s.marginLeft)+px(n, s.marginRight),
+			h: px(n, s.marginTop)+px(n, s.marginBottom)
 		};
 	}
 
+	// Box getters work in any box context because offsetWidth is invariant wrt box context
+	//
+	// They do *not* work for display: inline objects that have padding styles
+	// because the user agent ignores padding (it's bogus styling in any case)
+	//
+	// Be careful with IMGs because they are inline or block depending on 
+	// browser and browser mode.
+		
 	dojo._getMarginBox = function(node, computedStyle){
 		var mb = dojo._getMarginExtents(node, computedStyle);
-		return {
-			w: node.offsetWidth + mb.w, 
-			h: node.offsetHeight + mb.h
-		};
+		return { l:0, t:0, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 	}
-
-	dojo._setMarginBox = function(node, wObj, s){
-		var pb = (dojo.boxMode == "border-box" ? _nilExtents : dojo._getPadBorderBounds(node, s));
-		var mb = dojo._getMarginExtents(node, s);
-		if(!isNaN(wObj.w)){
-			wObj.w = Math.max(wObj.w - pb.w - mb.w, 0);
-		}
-		if(!isNaN(wObj.h)){
-			wObj.h = Math.max(wObj.h - pb.h - mb.h, 0);
-		}
-		_setBox(node, wObj);
-	}
-
-	dojo.marginBox = function(node, boxObj){
-		node = dojo.byId(node);
-		var s = dojo.getComputedStyle(node);
-		if(boxObj){
-			return dojo._setMarginBox(node, boxObj, s);
-		}
-		return dojo._getMarginBox(node, s);
-	}
-
+	
 	dojo._getContentBox = function(node, computedStyle){
 		var pb = dojo._getPadBorderBounds(node, computedStyle);
-		return {
-			w: node.offsetWidth - pb.w,
-			h: node.offsetHeight- pb.h
-		};
+		return { l: pb.l, t: pb.t, w: node.offsetWidth - pb.w, h: node.offsetHeight- pb.h };
+	}
+	
+	dojo._setBox = function(node, l, t, w, h, u){
+		u = u || "px";
+		with(node.style){
+			if(!isNaN(l)){ left = l+u; }
+			if(!isNaN(t)){ top = t+u; }
+			if(!isNaN(w)&&(w>=0)){ width = w+u; }
+			if(!isNaN(h)&&(h>=0)){ height = h+u; }
+		}
 	}
 
-	dojo._setContentBox = function(node, boxObj, computedStyle){
-		if(dojo.boxMode == "border-box"){
-			var pb = dojo._getPadBorderBounds(node, computedStyle);
-			if(!isNaN(boxObj.w)){ boxObj.w += pb.w; }
-			if(!isNaN(boxObj.h)){ boxObj.h += pb.h; }
+	// Box setters depend on box context because interpretation of width/height styles
+	// vary wrt box context.
+	//
+	// The value of dojo.boxModel is used to determine box context.
+	// dojo.boxModel can be set directly to change behavior.
+	//
+	// Beware of display: inline objects that have padding styles
+	// because the user agent ignores padding (it's a bogus setup anyway)
+	//
+	// Be careful with IMGs because they are inline or block depending on 
+	// browser and browser mode.
+	
+	dojo._setContentBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
+		if (drh.box == dojo.box.BORDER_BOX){
+			var pb = dojo.getPadBorderBounds(node, computedStyle);
+			if(!isNaN(widthPx)){ widthPx += pb.w; }
+			if (!isNaN(heightPx)){ heightPx += pb.h; }
 		}
-		_setBox(node, boxObj);
+		dojo.setBox(node, leftPx, topPx, widthPx, heightPx);
+	}
+
+	dojo._nilExtents = { w: 0, h: 0 };
+
+	dojo._setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
+		var s = computedStyle || dojo.getComputedStyle(node);
+		var pb = (drh.box == dojo.box.BORDER_BOX ? dojo._nilExtents : dojo.getPadBorderBounds(node, s));
+		var mb = dojo.getMarginExtents(node, s);
+		if(!isNaN(widthPx)){
+			widthPx = Math.max(widthPx - pb.w - mb.w, 0);
+		}
+		if(!isNaN(heightPx)){
+			heightPx = Math.max(heightPx - pb.h - mb.h, 0);
+		}
+		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
+	}
+
+	// public API
+	
+	dojo.marginBox = function(node, boxObj){
+		node = dojo.byId(node);
+		var s = dojo.getComputedStyle(node), b=boxObj;
+		return !b ? dojo._getMarginBox(node, s) : dojo._setMarginBox(node, b.l, b.t, b.w, b.h, s);
 	}
 
 	dojo.contentBox = function(node, boxObj){
 		node = dojo.byId(node);
-		var s = dojo.getComputedStyle(node);
-		if(boxObj){
-			return dojo._setContentBox(node, boxObj, s);
-		}
-		return dojo._getContentBox(node, s);
+		var s = dojo.getComputedStyle(node), b=boxObj;
+		return !b ? dojo._getContentBox(node, s) : dojo._setContentBox(node, b.l, b.t, b.w, b.h, s);
 	}
-
+	
+	// =============================
+	// Positioning 
+	// =============================
+	
 	var _sumAncestorProperties = function(node, prop){
 		if(!node){ return 0; } // FIXME: throw an error?
 		var _b = dojo.body();
@@ -431,85 +561,11 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		mb.y = abs.y;
 		return mb;
 	}
-
-	// FIXME: there opacity quirks on FF that we haven't ported over. Hrm.
-
-	dojo._getOpacity = ((dojo.isIE) ?  function(node){
-			try{
-				return (node.filters.alpha.opacity / 100);
-			}catch(e){
-				return 1;
-			}
-		} : function(node){
-			// FIXME: should we get using the computedStyle of the node?
-			return node.style.opacity;
-		}
-	);
-
-	dojo._setOpacity = ((dojo.isIE) ? function(node, opacity){
-			var o = "Alpha(Opacity="+(opacity*100)+")";
-			node.style.filter = o;
-			if(node.nodeName.toLowerCase == "tr"){
-				dojo.query("> td", node).forEach(function(i){
-					i.style.filter = o;
-				});
-			}
-			return opacity;
-		} : function(node, opacity){
-			node.style.opacity = opacity;
-		}
-	);
-
-	var _t = true;
-	var _f = false;
-	var _pixelNamesCache = {
-		width: _t, height: _t, left: _t, top: _t
-	};
-	var _toStyleValue = function(node, type, value){
-		if(_pixelNamesCache[type] === true){
-			return dojo._toPixelValue(node, value)
-		}else if(_pixelNamesCache[type] === false){
-			return value;
-		}else{
-			type = type.toLowerCase();
-			if(	(type.indexOf("margin") >= 0) ||
-				// (type.indexOf("border") >= 0) ||
-				(type.indexOf("padding") >= 0) ||
-				(type.indexOf("width") >= 0) ||
-				(type.indexOf("height") >= 0) ||
-				(type.indexOf("max") >= 0) ||
-				(type.indexOf("min") >= 0) ||
-				(type.indexOf("offset") >= 0)
-			){
-				_pixelNamesCache[type] = true;
-				return dojo._toPixelValue(node, value)
-			}else{
-				_pixelNamesCache[type] = false;
-				return value;
-			}
-		}
-	}
-
-	dojo.style = function(){
-		var _a = arguments;
-		var _a_l = _a.length;
-		if(!_a_l){ return; }
-		var node = dojo.byId(_a[0]);
-		var io = ((dojo.isIE)&&(_a[1] == "opacity"));
-		if(_a_l == 3){
-			return (io) ? dojo._setOpacity(node, _a[2]) : node.style[_a[1]] = _a[2];
-		}
-		var s = dojo.getComputedStyle(node);
-		if(_a_l == 1){ return s; }
-		if(_a_l == 2){
-			return (io) ? dojo._getOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
-		}
-	}
 })();
 
-dojo.createElement = function(obj, parent, position){
-	// TODO: need to finish this!
-}
+// =============================
+// (CSS) Class Functions
+// =============================
 
 dojo.hasClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary:

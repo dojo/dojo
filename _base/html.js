@@ -367,8 +367,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	// browser and browser mode.
 	
 	dojo._setContentBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
-		if (drh.box == dojo.box.BORDER_BOX){
-			var pb = dojo.getPadBorderBounds(node, computedStyle);
+		if(dojo.boxMode == "border-box"){
+			var pb = dojo._getPadBorderBounds(node, computedStyle);
 			if(!isNaN(widthPx)){ widthPx += pb.w; }
 			if (!isNaN(heightPx)){ heightPx += pb.h; }
 		}
@@ -379,8 +379,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 
 	dojo._setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
 		var s = computedStyle || dojo.getComputedStyle(node);
-		var pb = (drh.box == dojo.box.BORDER_BOX ? dojo._nilExtents : dojo.getPadBorderBounds(node, s));
-		var mb = dojo.getMarginExtents(node, s);
+		var pb = ((dojo.boxMode == "border-box") ? dojo._nilExtents : dojo._getPadBorderBounds(node, s));
+		var mb = dojo._getMarginExtents(node, s);
 		if(!isNaN(widthPx)){
 			widthPx = Math.max(widthPx - pb.w - mb.w, 0);
 		}

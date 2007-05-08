@@ -131,9 +131,9 @@ dojo.declare._core = {
 			while(p && (p[name]!==callee)){ 
 				p = p.constructor.superclass; 
 			}
-		}
-		if ((!p)||(p[name]!==callee)){
-			throw(this.toString() + ': name argument ("' + name + '") to inherited does not match callee (declare.js)');
+			if ((!p)||(p[name]!==callee)){
+				throw(this.toString() + ': name argument ("' + name + '") to inherited does not match callee (declare.js)');
+			}
 		}
 		while(p && (p[name]===callee)){ 
 			p = p.constructor.superclass; 

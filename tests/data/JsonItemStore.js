@@ -1,7 +1,7 @@
 dojo.provide("tests.data.JsonItemStore");
 dojo.require("dojo.data.JsonItemStore");
 
-function getCountriesStore(){
+tests.data.JsonItemStore.getCountriesStore = function(){
 	if(dojo.isBrowser){
 		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries.json").toString() } );            
 	}else{
@@ -17,9 +17,9 @@ function getCountriesStore(){
 		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
 		return new dojo.data.JsonItemStore({data: jsonData});
 	}
-}
+};
 
-function getCountriesAttrsStore(){
+tests.data.JsonItemStore.getCountriesAttrsStore = function(){
 	if(dojo.isBrowser){
 		return new dojo.data.JsonItemStore({url:  dojo.moduleUrl("tests", "data/countries_withattributes.json").toString() } ); 
 	}else{
@@ -38,7 +38,7 @@ function getCountriesAttrsStore(){
 		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
 		return new dojo.data.JsonItemStore({data: jsonData});
 	}
-}
+};
 
 doh.register("tests.data.JsonItemStore", 
 	[
@@ -48,7 +48,7 @@ doh.register("tests.data.JsonItemStore",
 			 //	description:
 			 //		Simple test of the getItemByIdentity function of the store.
 
-			 var jsonItemStore = getCountriesStore();
+			 var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			 var item = jsonItemStore.getItemByIdentity("sv");
 			 t.assertTrue(item !== null);
@@ -65,7 +65,7 @@ doh.register("tests.data.JsonItemStore",
 			 //	description:
 			 //		Simple test of the getIdentity function of the store.
 
-			 var jsonItemStore = getCountriesStore();
+			 var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			 var item = jsonItemStore.getItemByIdentity("sv");
 			 t.assertTrue(item !== null);
@@ -77,7 +77,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of a basic fetch on JsonItemStore.
 			
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
             function completedAll(items, request){
@@ -99,7 +99,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of a basic fetch on JsonItemStore of a single item.
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
@@ -122,7 +122,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of a basic fetch on JsonItemStore.
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			count = 0;
@@ -158,7 +158,7 @@ doh.register("tests.data.JsonItemStore",
 			 //	description:
 			 //		Test of multiple fetches on a single result.  Paging, if you will.
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
 			function dumpFirstFetch(items, request){
@@ -228,7 +228,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getValue function of the store.
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -241,7 +241,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			// 		Simple test of the getValue function passing in an item as the attribute identifier.
 
-			var jsonItemStore = getCountriesAttrsStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesAttrsStore();
 
 			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
 			t.assertTrue(itemAttribute !== null);
@@ -257,7 +257,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getValues function of the store.
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -272,7 +272,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			// 		Simple test of the getValue function passing in an item as the attribute identifier.
 
-			var jsonItemStore = getCountriesAttrsStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesAttrsStore();
 
 			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
 			t.assertTrue(itemAttribute !== null);
@@ -290,7 +290,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the isItem function of the store
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -309,8 +309,8 @@ doh.register("tests.data.JsonItemStore",
 
 			// Two different instances, even  if they read from the same URL 
 			// should not accept items between each other!
-			var jsonItemStore1 = getCountriesStore();
-			var jsonItemStore2 = getCountriesStore();
+			var jsonItemStore1 = tests.data.JsonItemStore.getCountriesStore();
+			var jsonItemStore2 = tests.data.JsonItemStore.getCountriesStore();
 
 			var item1 = jsonItemStore1.getItemByIdentity("sv");
 			var item2 = jsonItemStore2.getItemByIdentity("sv");
@@ -327,7 +327,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the hasAttribute function of the store
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -349,7 +349,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the hasAttribute passing in an item as the attribute identifier.
 
-			var jsonItemStore = getCountriesAttrsStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesAttrsStore();
 
 			//First fine the item in the store that represents the attribute with name 'abbr'.
 			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
@@ -369,7 +369,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the containsValue function of the store
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -392,7 +392,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the containsValue function of the store using attribute lookup.
 
-			var jsonItemStore = getCountriesAttrsStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesAttrsStore();
 
 			var attributeItem = jsonItemStore.getItemByIdentity("abbr");
 			var item          = jsonItemStore.getItemByIdentity("El Salvador");
@@ -408,7 +408,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getAttributes function of the store
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var item = jsonItemStore.getItemByIdentity("sv");
 			t.assertTrue(item !== null);
@@ -426,7 +426,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getFeatures function of the store
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var features = jsonItemStore.getFeatures(); 
 			var count = 0;
@@ -442,7 +442,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test pattern matching of everything starting with lowercase e
 
-			var jsonItemStore = getCountriesStore();
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function completed(items, request) {

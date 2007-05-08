@@ -170,12 +170,12 @@ tests.register("tests._base.connect",
 			var link = dojo.connect("gFoo", "gOk");
 			gFoo();
 			dojo.disconnect(link);
-			console.log('argsTest2a: ', (ok ? "ok" : "not ok"));
+			t.is(true, ok);
 			// 2 arg shorthand for globals, alternate scoping 
 			link = dojo.connect("gFoo", gOk);
 			gFoo();
 			dojo.disconnect(link);
-			console.log('argsTest2b: ', (ok ? "ok" : "not ok"));
+			t.is(true, ok);
 		},
 		function scopeTest1(t){
 			var foo = { ok: true, foo: function(){this.ok=false;} };

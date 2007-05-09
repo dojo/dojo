@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.io.script</title>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+		</style>
+		<script type="text/javascript" 
+			src="../../dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.require("dojo.io.script");
+
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						function ioScriptSimple(t){
+							var d = new doh.Deferred();
+							var td = dojo.io.script.get({
+								url: "scriptSimple.js",
+								checkString: "myTasks"
+							});
+							td.addBoth(function(res){
+								if(typeof(myTasks) != "undefined"
+									&& t.is("Do dishes.", myTasks[1])){
+									d.callback(true);
+								}else{
+									d.errback(false);
+								}
+							});
+							return d;
+						}
+					]
+				);
+				doh.run();
+			});
+/*
+			dojo.addOnLoad(function(){
+				td = dojo.io.script.get({
+					url: "scriptSimple.js",
+					checkString: "myTasks"
+				});
+				td.addCallback(function(res){
+					alert(myTasks);
+					alert(myTasks[1]);
+					if(typeof(myTasks) != "undefined"
+						&& "Do dishes." == myTasks[1]){
+						alert("yeah");
+					}else{
+						alert("boo");
+					}
+				});
+			});
+*/
+		</script>
+	</head>
+	<body>
+
+	</body>
+</html>

@@ -9,6 +9,7 @@ try{
 	dojo.require("tests.number");
 	dojo.require("tests.currency");
 	dojo.require("tests.AdapterRegistry");
+	dojo.require("tests.io.script");
 }catch(e){
 	doh.debug(e);
 }

@@ -378,7 +378,6 @@ dojo.require("dojo._base.connect");
 
 	de._synthesizeEvent = function(evt, props) {
 			var faux = dojo.mixin({}, evt, props);
-			if(faux.charCode){faux.keyCode = 0;}
 			de._setKeyChar(faux);
 			// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault); 
 			// but it throws an error when preventDefault is invoked on Safari

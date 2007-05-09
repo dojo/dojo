@@ -143,13 +143,12 @@
 						function xhrGet(t){
 							var d = new doh.Deferred();
 							var td = dojo.xhrGet({
-								url: "xhr.html", // self
-							}).addCallback(
-								function(text, ioArgs){
-									t.is(4, ioArgs.xhr.readyState);
-									return text; //must return a value here or the parent test deferred fails.
-								}
-							);
+								url: "xhr.html" // self
+							});
+							td.addCallback(function(text){
+								t.is(4, td.ioArgs.xhr.readyState);
+								return text; //must return a value here or the parent test deferred fails.
+							});
 							t.t(td instanceof dojo.Deferred);
 							td.addCallback(d, "callback");
 							return d;
@@ -158,10 +157,10 @@
 							var d = new doh.Deferred();
 							try{
 								var td = dojo.xhrGet({
-									url: "xhr_blarg.html", // doesn't exist
+									url: "xhr_blarg.html" // doesn't exist
 								}).addErrback(
-									function(err, ioArgs){
-										t.is(404, ioArgs.xhr.status);
+									function(err){
+										t.is(404, td.ioArgs.xhr.status);
 										return err; //must return a value here or the parent test deferred fails.
 									}
 								);

@@ -207,6 +207,9 @@ tests.register("tests.number",
 	t.t(isNaN(dojo.number.parse("10,00", {locale: "en-us"})));
 	t.t(isNaN(dojo.number.parse("1000.1", {locale: "fr-fr"})));
 
+	t.t(isNaN(dojo.number.parse("")));
+	t.t(isNaN(dojo.number.parse("abcd")));
+
 	//test whitespace
 //	t.is(-1234567, dojo.number.parse("  -1,234,567  ", {locale: "en-us"}));
 

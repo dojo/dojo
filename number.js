@@ -15,7 +15,7 @@ dojo.number.format = function(/*Number*/value, /*Object?*/options){
 	//		as well as the appropriate symbols and delimiters.  See http://www.unicode.org/reports/tr35/#Number_Elements
 	//
 	// value:
-	//		the number to be formatted.  If not a valid number, return null.
+	//		the number to be formatted.  If not a valid JavaScript number, return null.
 	//
 	// options: object {pattern: String?, type: String?, places: Number?, round: Number?, currency: String?, symbol: String?, locale: String?}
 	//		pattern- override formatting pattern with this string (see dojo.number._applyPattern)
@@ -313,7 +313,10 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 		return NaN; //NaN
 	}
 	var absoluteMatch = results[1]; // match for the positive expression
-	if(typeof absoluteMatch == 'undefined' || absoluteMatch == ""){
+	if(!results[1]){
+		if(!results[2]){
+			return NaN; //NaN
+		}
 		// matched the negative pattern
 		absoluteMatch = results[2];
 		info.factor *= -1;

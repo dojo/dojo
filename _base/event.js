@@ -290,7 +290,11 @@ dojo.require("dojo._base.connect");
 				switch(evt.type){
 					case "keypress":
 						var c = ("charCode" in evt ? evt.charCode : evt.keyCode);
-						if (c==13||c==27){
+						if (c==10){
+							// CTRL-ENTER is CTRL-ASCII(10) on IE, but CTRL-ENTER on Mozilla
+							c=0;
+							evt.keyCode = 13;
+						}else if(c==13||c==27){
 							c=0; // Mozilla considers ENTER and ESC non-printable
 						}else if(c==3){
 							c=99; // Mozilla maps CTRL-BREAK to CTRL-c
@@ -324,19 +328,20 @@ dojo.require("dojo._base.connect");
 			_stealthKeyDown: function(evt){
 				// IE doesn't fire keypress for most non-printable characters.
 				// other browsers do, we simulate it here.
-				var kp = evt.currentTarget.onkeypress;
+				var kp=evt.currentTarget.onkeypress;
 				// only works if kp exists and is a dispatcher
 				if(!kp||!kp.listeners)return;
 				// munge key/charCode
-				var c = evt.keyCode;
+				var k=evt.keyCode;
 				// These are Windows Virtual Key Codes
 				// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
-				var unprintable = (c!=13)&&(c!=32)&&(c!=27)&&(c<48||c>90)&&(c<96||c>111)&&(c<186||c>192)&&(c<219||c>222);
+				var unprintable = (k!=13)&&(k!=32)&&(k!=27)&&(k<48||k>90)&&(k<96||k>111)&&(k<186||k>192)&&(k<219||k>222);
+				// synthesize keypress for most unprintables and CTRL-keys
 				if(unprintable||evt.ctrlKey){
-					c = (unprintable ? 0 : c);
+					var c = (unprintable ? 0 : k);
 					if(evt.ctrlKey){
-						if(evt.keyCode==3){
-							return; // IE will post CTRL-BREAK as keypress natively 									
+						if(k==3 || k==13){
+							return; // IE will post CTRL-BREAK, CTRL-ENTER as keypress natively 									
 						}else if(c>95 && c<106){ 
 							c -= 48; // map CTRL-[numpad 0-9] to ASCII
 						}else if((!evt.shiftKey)&&(c>=65&&c<=90)){ 

@@ -297,7 +297,7 @@ dojo._contentHandlers = {
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.
 		
-		dfd.ioArgs.xhr.abort();
+		// dfd.ioArgs.xhr.abort();
 		console.debug("xhr error in:", dfd.ioArgs.xhr);
 		console.debug(error);
 		return error;
@@ -325,6 +325,7 @@ dojo._contentHandlers = {
 		// first sync call ends the browser hangs
 		if(!dojo._blockAsync){
 			dojo.forEach(_inFlight, function(tif, arrIdx){
+				if(!tif){ return; }
 				var dfd = tif.dfd;
 				try{
 					if(!dfd || dfd.canceled || !tif.validCheck(dfd)){
@@ -413,6 +414,7 @@ dojo._contentHandlers = {
 		try{
 			ioArgs.xhr.send(ioArgs.query);
 		}catch(e){
+			// dfd.cancel();
 			ioArgs.cancel();
 		}
 		dojo._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
@@ -432,8 +434,7 @@ dojo._contentHandlers = {
 	}
 
 	dojo.xhrPost = function(/*Object*/ args){
-		var dfd = _makeXhrDeferred(args);
-		return _doIt("POST", dfd); // dojo.Deferred
+		return _doIt("POST", _makeXhrDeferred(args)); // dojo.Deferred
 	}
 
 	dojo.rawXhrPost = function(/*Object*/ args){

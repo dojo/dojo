@@ -910,7 +910,13 @@ dojo.require("dojo._base.NodeList");
 				candidates = getElementsFunc(qparts.shift())(root);
 			}
 			*/
-			var candidates = getElementsFunc(qparts.shift())(root);
+			var candidates;
+			if(qparts[0] == ">"){
+				candidates = [ root ];
+				root = document;
+			}else{
+				candidates = getElementsFunc(qparts.shift())(root);
+			}
 			return filterDown(candidates, qparts);
 		}
 		return sqf;
@@ -940,7 +946,9 @@ dojo.require("dojo._base.NodeList");
 			){
 				// dojo.debug(query);
 				// should we handle it?
-				var gtIdx = query.indexOf(">")
+
+				// var gtIdx = query.indexOf(">")
+
 				// kind of a lame heuristic, but it works
 				if(	
 					// a "div div div" style query
@@ -963,6 +971,9 @@ dojo.require("dojo._base.NodeList");
 	);
 	// uncomment to disable XPath for testing and tuning the DOM path
 	// _getQueryFunc = getStepQueryFunc;
+
+	// FIXME: we've got problems w/ the NodeList query()/filter() functions if we go XPath for everything
+
 	// uncomment to disable DOM queries for testing and tuning XPath
 	// _getQueryFunc = getXPathFunc;
 

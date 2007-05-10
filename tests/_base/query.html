@@ -4,7 +4,8 @@
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
-		<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../../dojo.js" 
+			djConfig="isDebug: true, noFirebugLite: true"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
@@ -14,6 +15,7 @@
 						"t.is(4, (dojo.query('#t h3')).length);",
 						"t.is(1, (dojo.query('#t div > h3')).length);",
 						"t.is(3, (dojo.query('#t > h3')).length);",
+						"t.is(3, (dojo.query('> h3', dojo.byId('t'))).length);",
 						"t.is(2, (dojo.query('.foo, .bar')).length);",
 						"t.is(2, (dojo.query('.foo')).length);",
 						"t.is(2, (dojo.query('.baz')).length);",

@@ -166,21 +166,21 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	//
 	// This way, calling code can access computedStyle once, and then pass the reference to 
 	// multiple API functions. 
-
-	if (!dojo.isIE){
-		// non-IE branch
-		dojo.getComputedStyle = function(node){
-			return document.defaultView.getComputedStyle(node, null);
-		}	
-	}else{
-		// IE branch
-		dojo.getComputedStyle = function(node) {
-			return node.currentStyle;
-		}
-	}
-		
 	if(!dojo.isIE){
 		// non-IE branch
+		var dv = document.defaultView;
+		dojo.getComputedStyle = ((dojo.isSafari) ? function(node){
+				var s = dv.getComputedStyle(node, null);
+				if(!s){ 
+					node.style.display = ""; 
+					s = dv.getComputedStyle(node, null);
+				}
+				return s;
+			} : function(node){
+				return dv.getComputedStyle(node, null);
+			}
+		);
+
 		dojo._toPixelValue = function(element, value){
 			// style values can be floats, client code may want
 			// to round for integer pixels.
@@ -188,6 +188,10 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		}
 	}else{
 		// IE branch
+		dojo.getComputedStyle = function(node){
+			return node.currentStyle;
+		}
+
 		dojo._toPixelValue = function(element, avalue){
 			if(!avalue){return 0;}
 			// style values can be floats, client code may

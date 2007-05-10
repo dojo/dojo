@@ -372,7 +372,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 			if(!isNaN(widthPx)){ widthPx += pb.w; }
 			if (!isNaN(heightPx)){ heightPx += pb.h; }
 		}
-		dojo.setBox(node, leftPx, topPx, widthPx, heightPx);
+		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
 	}
 
 	dojo._nilExtents = { w: 0, h: 0 };

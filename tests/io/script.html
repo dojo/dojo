@@ -30,11 +30,28 @@
 								}
 							});
 							return d;
+						},
+						function ioScriptJsonp(t){
+							var d = new doh.Deferred();
+							var td = dojo.io.script.get({
+								url: "scriptJsonp.js",
+								jsonpParam: "callback"
+							});
+							td.addBoth(function(res){
+								if(!(res instanceof Error) && 
+									t.is("mammal", res.animalType)){
+									d.callback(true);
+								}else{
+									d.errback(false);
+								}
+							});
+							return d;							
 						}
 					]
 				);
 				doh.run();
 			});
+
 /*
 			dojo.addOnLoad(function(){
 				td = dojo.io.script.get({
@@ -53,6 +70,7 @@
 				});
 			});
 */
+
 		</script>
 	</head>
 	<body>

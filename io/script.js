@@ -48,6 +48,14 @@ dojo.io.script = {
 
 		//Special setup for jsonp case
 		if(args.jsonpParam){
+			//Add the jsonp parameter.
+			ioArgs.query = ioArgs.query || "";
+			if(ioArgs.query.length > 0){
+				ioArgs.query += "&";
+			}
+			ioArgs.query += args.jsonpParam + "=dojo.io.script.jsonp_" + ioArgs.id + "._jsonpCallback";
+
+			//Setup the Deferred to have the jsonp callback.
 			ioArgs.canDelete = true;
 			dfd._jsonpCallback = this._jsonpCallback;
 			this["jsonp_" + ioArgs.id] = dfd;

@@ -10,6 +10,7 @@ try{
 	dojo.require("tests.currency");
 	dojo.require("tests.AdapterRegistry");
 	dojo.require("tests.io.script");
+	dojo.require("tests.rpc");
 }catch(e){
 	doh.debug(e);
 }

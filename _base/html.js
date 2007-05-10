@@ -128,14 +128,14 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		}
 	}
 
-	// Box functions will assume this mode.
+	// Box functions will assume this model.
 	// On IE/Opera, BORDER_BOX will be set if the primary document is in quirks mode.
 	// Can be set to change behavior of box setters.
 	
 	// can be either:
 	//	"border-box"
 	//	"content-box" (default)
-	dojo.boxMode = "content-box"
+	dojo.boxModel = "content-box"
 
 	// We punt per-node box mode testing completely.
 	// If anybody cares, we can provide an additional (optional) unit 
@@ -149,7 +149,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	if(dojo.isIE /*|| dojo.isOpera*/){
 		var _dcm = document.compatMode;
 		// client code may have to adjust if compatMode varies across iframes
-		dojo.boxMode = ((_dcm=="BackCompat")||(_dcm=="QuirksMode") ? "border-box" : "content-box");
+		dojo.boxModel = (_dcm=="BackCompat")||(_dcm=="QuirksMode")||(dojo.isIE<6) ? "border-box" : "content-box";
 	}
 
 	// =============================
@@ -299,38 +299,59 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	// Box Functions
 	// =============================
 
-	dojo._getPadBorderBounds = function(node, computedStyle){
-		// Values returned from this function are non-intuitve,
-		// but they are specifically useful for fitting nodes.
-		// l, t = the top and left edges as determined by padding
-		// If 'node' has position, then these l/t form the origin 
-		// for child nodes. 
-		// w = the total of the right padding and left and right border
-		// h = the total of the bottom padding and top and bottom border
+	dojo._getPadBounds = function(n, computedStyle){
+		// Returns special values specifically useful 
+		// for node fitting.
+		// l, t = left and top padding
+		// w = the total of the left and right padding 
+		// h = the total of the top and bottom padding
+		// If 'node' has position, l/t forms the origin for child nodes. 
 		// The w/h are used for calculating boxes.
 		// Normally application code will not need to invoke this directly,
 		// and will use the ...box... functions instead.
-		var n=node, s=computedStyle||this.getComputedStyle(n), px=dojo._toPixelValue;
-		var l=px(n, s.paddingLeft), t=px(n, s.paddingTop);
-		var bw=(s.borderLeftStyle!='none' ? px(n, s.borderLeftWidth) : 0) + (s.borderRightStyle!='none' ? px(n, s.borderRightWidth) : 0);
-		var bh=(s.borderTopStyle!='none' ? px(n, s.borderTopWidth) : 0) + (s.borderBottomStyle!='none' ? px(n, s.borderBottomWidth) : 0);
+		var 
+			s=computedStyle||this.getComputedStyle(n), 
+			px=dojo._toPixelValue,
+			l=px(n, s.paddingLeft), 
+			t=px(n, s.paddingTop);
 		return { 
 			l: l,
 			t: t,
-			w: l+bw+px(n, s.paddingRight),
-			h: t+bh+px(n, s.paddingBottom)
+			w: l+px(n, s.paddingRight),
+			h: t+px(n, s.paddingBottom)
+		};
+	}
+	
+	dojo._getPadBorderExtents = function(n, computedStyle){
+		// w = the total of the left/right padding and left/right border
+		// h = the total of the top/bottom padding and top/bottom border
+		// The w/h are used for calculating boxes.
+		// Normally application code will not need to invoke this directly,
+		// and will use the ...box... functions instead.
+		var 
+			s=computedStyle||this.getComputedStyle(n), 
+			px=dojo._toPixelValue, 
+			p=dojo._getPadBounds(n, s),
+			bw=(s.borderLeftStyle!='none' ? px(n, s.borderLeftWidth) : 0) + (s.borderRightStyle!='none' ? px(n, s.borderRightWidth) : 0),
+			bh=(s.borderTopStyle!='none' ? px(n, s.borderTopWidth) : 0) + (s.borderBottomStyle!='none' ? px(n, s.borderBottomWidth) : 0);
+		return { 
+			w: p.w + bw,
+			h: p.h + bh
 		};
 	}
 
-	dojo._getMarginExtents = function(node, computedStyle){
-		var n=node, s = computedStyle||this.getComputedStyle(n), px=dojo._toPixelValue;
+	dojo._getMarginExtents = function(n, computedStyle){
+		var 
+			s=computedStyle||this.getComputedStyle(n), 
+			px=dojo._toPixelValue;
 		return { 
 			w: px(n, s.marginLeft)+px(n, s.marginRight),
 			h: px(n, s.marginTop)+px(n, s.marginBottom)
 		};
 	}
 
-	// Box getters work in any box context because offsetWidth is invariant wrt box context
+	// Box getters work in any box context because offsetWidth/clientWidth
+	// are invariant wrt box context
 	//
 	// They do *not* work for display: inline objects that have padding styles
 	// because the user agent ignores padding (it's bogus styling in any case)
@@ -339,13 +360,13 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	// browser and browser mode.
 		
 	dojo._getMarginBox = function(node, computedStyle){
-		var mb = dojo._getMarginExtents(node, computedStyle);
+		var mb=dojo._getMarginExtents(node, computedStyle);
 		return { l:0, t:0, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 	}
 	
 	dojo._getContentBox = function(node, computedStyle){
-		var pb = dojo._getPadBorderBounds(node, computedStyle);
-		return { l: pb.l, t: pb.t, w: node.offsetWidth - pb.w, h: node.offsetHeight- pb.h };
+		var pb=dojo._getPadBounds(node, computedStyle);
+		return { l: pb.l, t: pb.t, w: node.clientWidth - pb.w, h: node.clientHeight - pb.h };
 	}
 	
 	dojo._setBox = function(node, l, t, w, h, u){
@@ -353,8 +374,8 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		with(node.style){
 			if(!isNaN(l)){ left = l+u; }
 			if(!isNaN(t)){ top = t+u; }
-			if(!isNaN(w)&&(w>=0)){ width = w+u; }
-			if(!isNaN(h)&&(h>=0)){ height = h+u; }
+			if(w>=0){ width = w+u; }
+			if(h>=0){ height = h+u; }
 		}
 	}
 
@@ -371,10 +392,10 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	// browser and browser mode.
 	
 	dojo._setContentBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
-		if(dojo.boxMode == "border-box"){
-			var pb = dojo._getPadBorderBounds(node, computedStyle);
-			if(!isNaN(widthPx)){ widthPx += pb.w; }
-			if (!isNaN(heightPx)){ heightPx += pb.h; }
+		if(dojo.boxModel == "border-box"){
+			var pb = dojo._getPadBorderExtents(node, computedStyle);
+			if(widthPx>=0){ widthPx += pb.w; }
+			if(heightPx>=0){ heightPx += pb.h; }
 		}
 		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
 	}
@@ -383,12 +404,12 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 
 	dojo._setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
 		var s = computedStyle || dojo.getComputedStyle(node);
-		var pb = ((dojo.boxMode == "border-box") ? dojo._nilExtents : dojo._getPadBorderBounds(node, s));
+		var pb = ((dojo.boxModel == "border-box") ? dojo._nilExtents : dojo._getPadBorderExtents(node, s));
 		var mb = dojo._getMarginExtents(node, s);
-		if(!isNaN(widthPx)){
+		if(widthPx>=0){
 			widthPx = Math.max(widthPx - pb.w - mb.w, 0);
 		}
-		if(!isNaN(heightPx)){
+		if(heightPx>=0){
 			heightPx = Math.max(heightPx - pb.h - mb.h, 0);
 		}
 		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
@@ -445,7 +466,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	};
 
 	// IE version and quirks dependent. ugg.
-	var _d_off = ((dojo.isIE >= 7)&&(dojo.boxMode != "border-box")) ? 2 : 0; 
+	var _d_off = ((dojo.isIE >= 7)&&(dojo.boxModel != "border-box")) ? 2 : 0; 
 	dojo._abs = function(/*HTMLElement*/node, /*boolean?*/includeScroll){
 		//	summary
 		//		Gets the absolute position of the passed element based on the

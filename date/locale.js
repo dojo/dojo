@@ -1,4 +1,4 @@
-dojo.provide("dojo.date.local");
+dojo.provide("dojo.date.locale");
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
 
@@ -16,7 +16,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 // Other calendars will be implemented in separate modules.
 
 (function(){
-dojo.date.local.format = function(/*Date*/dateObject, /*Object?*/options){
+dojo.date.locale.format = function(/*Date*/dateObject, /*Object?*/options){
 //
 // summary:
 //		Format a Date object as a String, using locale-specific settings.
@@ -200,7 +200,7 @@ dojo.date.local.format = function(/*Date*/dateObject, /*Object?*/options){
 					s = "?";
 					break;
 				default:
-					throw new Error("dojo.date.local.format: invalid pattern char: "+pattern);
+					throw new Error("dojo.date.locale.format: invalid pattern char: "+pattern);
 			}
 			if(pad){ s = dojo.string.pad(s, l); }
 			return s;
@@ -211,7 +211,7 @@ dojo.date.local.format = function(/*Date*/dateObject, /*Object?*/options){
 
 	var locale = dojo.i18n.normalizeLocale(options.locale);
 	var formatLength = options.formatLength || 'short';
-	var bundle = dojo.date.local._getGregorianBundle(locale);
+	var bundle = dojo.date.locale._getGregorianBundle(locale);
 	var str = [];
 	var sauce = dojo.hitch(this, formatPattern, dateObject);
 	if(options.selector == "year"){
@@ -234,7 +234,7 @@ dojo.date.local.format = function(/*Date*/dateObject, /*Object?*/options){
 	return result; /*String*/
 };
 
-dojo.date.local.regexp = function(/*Object?*/options){
+dojo.date.locale.regexp = function(/*Object?*/options){
 //
 // summary:
 //		Builds the regular needed to parse a localized date
@@ -245,13 +245,13 @@ dojo.date.local.regexp = function(/*Object?*/options){
 //		datePattern,timePattern- override pattern with this string
 //		locale- override the locale used to determine formatting rules
 
-	return dojo.date.local._parseInfo(options).regexp; // String
+	return dojo.date.locale._parseInfo(options).regexp; // String
 };
 
-dojo.date.local._parseInfo = function(/*Object?*/options){
+dojo.date.locale._parseInfo = function(/*Object?*/options){
 	options = options || {};
 	var locale = dojo.i18n.normalizeLocale(options.locale);
-	var bundle = dojo.date.local._getGregorianBundle(locale);
+	var bundle = dojo.date.locale._getGregorianBundle(locale);
 	var formatLength = options.formatLength || 'short';
 	var datePattern = options.datePattern || bundle["dateFormat-" + formatLength];
 	var timePattern = options.timePattern || bundle["timeFormat-" + formatLength];
@@ -269,7 +269,7 @@ dojo.date.local._parseInfo = function(/*Object?*/options){
 	return {regexp: re, tokens: tokens, bundle: bundle};
 }
 
-dojo.date.local.parse = function(/*String*/value, /*Object?*/options){
+dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 //
 // summary:
 //		Convert a properly formatted string to a primitive Date object,
@@ -297,7 +297,7 @@ dojo.date.local.parse = function(/*String*/value, /*Object?*/options){
 //		strict- strict parsing, off by default
 //
 
-	var info = dojo.date.local._parseInfo(options);
+	var info = dojo.date.locale._parseInfo(options);
 	var tokens = info.tokens, bundle = info.bundle;
 	var re = new RegExp("^" + info.regexp + "$");
 	var match = re.exec(value);
@@ -363,7 +363,7 @@ dojo.date.local.parse = function(/*String*/value, /*Object?*/options){
 						}
 					}
 					if(j==months.length){
-//						console.debug("dojo.date.local.parse: Could not parse month name: '" + v + "'.");
+//						console.debug("dojo.date.locale.parse: Could not parse month name: '" + v + "'.");
 						return null;
 					}
 				}else{
@@ -391,7 +391,7 @@ dojo.date.local.parse = function(/*String*/value, /*Object?*/options){
 					}
 				}
 				if(j==days.length){
-//					console.debug("dojo.date.local.parse: Could not parse weekday name: '" + v + "'.");
+//					console.debug("dojo.date.locale.parse: Could not parse weekday name: '" + v + "'.");
 					return null;
 				}
 				break;
@@ -415,7 +415,7 @@ dojo.date.local.parse = function(/*String*/value, /*Object?*/options){
 					pm = pm.replace(/\./g,'').toLowerCase();
 				}
 				if(options.strict && v != am && v != pm){
-//					console.debug("dojo.date.local.parse: Could not parse am/pm part.");
+//					console.debug("dojo.date.locale.parse: Could not parse am/pm part.");
 					return null;
 				}
 				var hours = result.getHours();
@@ -433,7 +433,7 @@ dojo.date.local.parse = function(/*String*/value, /*Object?*/options){
 			case 'k': //hour (0-11)
 				//TODO: strict bounds checking, padding
 				if(v>23){
-//					console.debug("dojo.date.local.parse: Illegal hours value");
+//					console.debug("dojo.date.locale.parse: Illegal hours value");
 					return null;
 				}
 
@@ -451,21 +451,21 @@ dojo.date.local.parse = function(/*String*/value, /*Object?*/options){
 				result.setMilliseconds(v);
 				break;
 			default:
-				dojo.unimplemented("dojo.date.local.parse: unsupported pattern char=" + token.charAt(0));
+				dojo.unimplemented("dojo.date.locale.parse: unsupported pattern char=" + token.charAt(0));
 		}
 	}
 
 	//validate parse date fields versus input date fields
 	if(expected.year && result.getFullYear() != expected.year){
-//		console.debug("dojo.date.local.parse: Parsed year: '" + result.getFullYear() + "' did not match input year: '" + expected.year + "'.");
+//		console.debug("dojo.date.locale.parse: Parsed year: '" + result.getFullYear() + "' did not match input year: '" + expected.year + "'.");
 		return null;
 	}
 	if(expected.month && result.getMonth() != expected.month){
-//		console.debug("dojo.date.local.parse: Parsed month: '" + result.getMonth() + "' did not match input month: '" + expected.month + "'.");
+//		console.debug("dojo.date.locale.parse: Parsed month: '" + result.getMonth() + "' did not match input month: '" + expected.month + "'.");
 		return null;
 	}
 	if(expected.date && result.getDate() != expected.date){
-//		console.debug("dojo.date.local.parse: Parsed day of month: '" + result.getDate() + "' did not match input day of month: '" + expected.date + "'.");
+//		console.debug("dojo.date.locale.parse: Parsed day of month: '" + result.getDate() + "' did not match input day of month: '" + expected.date + "'.");
 		return null;
 	}
 
@@ -575,7 +575,7 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 
 (function(){
 var _customFormats = [];
-dojo.date.local.addCustomFormats = function(/*String*/packageName, /*String*/bundleName){
+dojo.date.locale.addCustomFormats = function(/*String*/packageName, /*String*/bundleName){
 //
 // summary:
 //		Add a reference to a bundle containing localized custom formats to be
@@ -591,7 +591,7 @@ dojo.date.local.addCustomFormats = function(/*String*/packageName, /*String*/bun
 	_customFormats.push({pkg:packageName,name:bundleName});
 };
 
-dojo.date.local._getGregorianBundle = function(/*String*/locale){
+dojo.date.locale._getGregorianBundle = function(/*String*/locale){
 	var gregorian = {};
 	dojo.forEach(_customFormats, function(desc){
 		var bundle = dojo.i18n.getLocalization(desc.pkg, desc.name, locale);
@@ -601,9 +601,9 @@ dojo.date.local._getGregorianBundle = function(/*String*/locale){
 };
 })();
 
-dojo.date.local.addCustomFormats("dojo.cldr","gregorian");
+dojo.date.locale.addCustomFormats("dojo.cldr","gregorian");
 
-dojo.date.local.getNames = function(/*String*/item, /*String*/type, /*String?*/use, /*String?*/locale){
+dojo.date.locale.getNames = function(/*String*/item, /*String*/type, /*String?*/use, /*String?*/locale){
 //
 // summary:
 //		Used to get localized strings from dojo.cldr for day or month names.
@@ -614,7 +614,7 @@ dojo.date.local.getNames = function(/*String*/item, /*String*/type, /*String?*/u
 // locale: override locale used to find the names
 
 	var label;
-	var lookup = dojo.date.local._getGregorianBundle(locale);
+	var lookup = dojo.date.locale._getGregorianBundle(locale);
 	var props = [item, use, type];
 	if(use == 'standAlone'){
 		label = lookup[props.join('-')];

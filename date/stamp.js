@@ -1,4 +1,4 @@
-dojo.provide("dojo.date.serial");
+dojo.provide("dojo.date.stamp");
 
 // Methods to convert dates to or from a wire (string) format using well-known conventions
 
@@ -7,20 +7,20 @@ dojo.require("dojo.string");
 /* ISO 8601 Functions
  *********************/
 
-dojo.date.serial.setIso8601 = function(/*Date*/dateObject, /*String*/formattedString){
+dojo.date.stamp.setIso8601 = function(/*Date*/dateObject, /*String*/formattedString){
 	// summary: sets a Date object based on an ISO 8601 formatted string (uses date and time)
 	var comps = (formattedString.indexOf("T") == -1) ? formattedString.split(" ") : formattedString.split("T");
-	dateObject = dojo.date.serial.setIso8601Date(dateObject, comps[0]);
-	if(comps.length == 2){ dateObject = dojo.date.serial.setIso8601Time(dateObject, comps[1]); }
+	dateObject = dojo.date.stamp.setIso8601Date(dateObject, comps[0]);
+	if(comps.length == 2){ dateObject = dojo.date.stamp.setIso8601Time(dateObject, comps[1]); }
 	return dateObject; /* Date or null */
 };
 
-dojo.date.serial.fromIso8601 = function(/*String*/formattedString){
+dojo.date.stamp.fromIso8601 = function(/*String*/formattedString){
 	// summary: returns a Date object based on an ISO 8601 formatted string (uses date and time)
-	return dojo.date.serial.setIso8601(new Date(0, 0), formattedString);
+	return dojo.date.stamp.setIso8601(new Date(0, 0), formattedString);
 };
 
-dojo.date.serial.setIso8601Date = function(/*String*/dateObject, /*String*/formattedString){
+dojo.date.stamp.setIso8601Date = function(/*String*/dateObject, /*String*/formattedString){
 	// summary: sets a Date object based on an ISO 8601 formatted string (date only)
 	var regexp = "^([0-9]{4})((-?([0-9]{2})(-?([0-9]{2}))?)|" +
 			"(-?([0-9]{3}))|(-?W([0-9]{2})(-?([1-7]))?))?$";
@@ -61,12 +61,12 @@ dojo.date.serial.setIso8601Date = function(/*String*/dateObject, /*String*/forma
 	return dateObject; // Date
 };
 
-dojo.date.serial.fromIso8601Date = function(/*String*/formattedString){
+dojo.date.stamp.fromIso8601Date = function(/*String*/formattedString){
 	// summary: returns a Date object based on an ISO 8601 formatted string (date only)
-	return dojo.date.serial.setIso8601Date(new Date(0, 0), formattedString);
+	return dojo.date.stamp.setIso8601Date(new Date(0, 0), formattedString);
 };
 
-dojo.date.serial.setIso8601Time = function(/*Date*/dateObject, /*String*/formattedString){
+dojo.date.stamp.setIso8601Time = function(/*Date*/dateObject, /*String*/formattedString){
 	// summary: sets a Date object based on an ISO 8601 formatted string (time only)
 
 	// first strip timezone info from the end
@@ -106,16 +106,16 @@ dojo.date.serial.setIso8601Time = function(/*Date*/dateObject, /*String*/formatt
 	return dateObject; // Date
 };
 
-dojo.date.serial.fromIso8601Time = function(/*String*/formattedString){
+dojo.date.stamp.fromIso8601Time = function(/*String*/formattedString){
 	// summary: returns a Date object based on an ISO 8601 formatted string (date only)
-	return dojo.date.serial.setIso8601Time(new Date(0, 0), formattedString);
+	return dojo.date.stamp.setIso8601Time(new Date(0, 0), formattedString);
 };
 
 
 /* RFC-3339 Date Functions
  *************************/
 
-dojo.date.serial.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector){
+dojo.date.stamp.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector){
 //	summary:
 //		Format a JavaScript Date object as a string according to RFC 3339
 //
@@ -148,7 +148,7 @@ dojo.date.serial.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector){
 	return formattedDate.join('T'); // String
 };
 
-dojo.date.serial.fromRfc3339 = function(/*String*/rfcDate){
+dojo.date.stamp.fromRfc3339 = function(/*String*/rfcDate){
 //	summary:
 //		Create a JavaScript Date object from a string formatted according to RFC 3339
 //
@@ -159,5 +159,5 @@ dojo.date.serial.fromRfc3339 = function(/*String*/rfcDate){
 	// backwards compatible support for use of "any" instead of just not 
 	// including the time
 	rfcDate = rfcDate.replace("Tany","");
-	return dojo.date.serial.setIso8601(new Date(), rfcDate); // Date or null
+	return dojo.date.stamp.setIso8601(new Date(), rfcDate); // Date or null
 };

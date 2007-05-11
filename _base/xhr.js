@@ -247,6 +247,9 @@ dojo._contentHandlers = {
 			// stuff in content over-rides what's set by form
 			miArgs.push(args.content);
 		}
+		if(args.preventCache){
+			miArgs.push({"dojo.preventCache": new Date().valueOf()});
+		}
 		ioArgs.query = dojo.objectToQuery(dojo.mixin.apply(null, miArgs));
 	
 		// .. and the real work of getting the deferred in order, etc.

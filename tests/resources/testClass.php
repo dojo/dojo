@@ -1,4 +1,4 @@
-<?
+<?php
 class testClass {
 
 	function myecho ($somestring) {
@@ -6,11 +6,11 @@ class testClass {
 	}
 
 	function contentB () {
-		return "<P>Content B</p>";
+		return "<P>Content B</P>";
 	}
 
 	function contentC () {
-		return "<P>Content C</p>";
+		return "<P>Content C</P>";
 	}
 
 	function add($x,$y) {

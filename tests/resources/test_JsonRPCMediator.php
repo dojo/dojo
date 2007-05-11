@@ -1,4 +1,4 @@
-<?
+<?php
 	require_once("./JSON.php");
 	// NOTE: File.php is installed via Pear using:
 	//	%> sudo pear install File

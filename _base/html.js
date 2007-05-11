@@ -90,7 +90,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 		return true;	//	boolean
 	}
 
-	dojo.place = function(/*DOMNode*/node, /*DOMNode*/refNode, /*String*/position){
+	dojo.place = function(/*DOMNode*/node, /*DOMNode*/refNode, /*String|Number*/position){
 		//	summary:
 		//		attempt to insert node in relation to ref based on position
 
@@ -135,7 +135,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	// can be either:
 	//	"border-box"
 	//	"content-box" (default)
-	dojo.boxModel = "content-box"
+	dojo.boxModel = "content-box";
 
 	// We punt per-node box mode testing completely.
 	// If anybody cares, we can provide an additional (optional) unit 

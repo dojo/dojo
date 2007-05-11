@@ -2,7 +2,7 @@ dojo.provide("dojo.date.locale");
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
 
-dojo.require("dojo.date.util");
+dojo.require("dojo.date");
 dojo.require("dojo.cldr.supplemental");
 dojo.require("dojo.regexp");
 dojo.require("dojo.string");

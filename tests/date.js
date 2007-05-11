@@ -1,6 +1,6 @@
-dojo.provide("tests.date.util");
+dojo.provide("tests.date");
 
-dojo.require("dojo.date.util");
+dojo.require("dojo.date");
 
 tests.register("tests.date.util", 
 	[
@@ -607,4 +607,4 @@ function test_date_diff(t){
 );
 
 dojo.require("tests.date.locale");
-dojo.require("tests.date.record");
+dojo.require("tests.date.stamp");

@@ -4,7 +4,7 @@ dojo.require("dojo.rpc.RpcService");
 dojo.declare(
 	"dojo.rpc.JsonService", 
 	dojo.rpc.RpcService,	
-	function(args) {
+	function(args){
 		//	- just the serviceUrl (for use w/ remoteCall())
 		//	- the text of the SMD to evaluate
 		// 	- a raw SMD object
@@ -25,9 +25,9 @@ dojo.declare(
 				this.serviceUrl = args.serviceUrl;
 			}
 
-			if (args["timeout"]) {
+			if(args["timeout"]){
 				this.timeout = args.timeout;
-			} else {
+			}else{
 				this.timeout=3000;
 			}
 
@@ -46,19 +46,19 @@ dojo.declare(
 		lastSubmissionId: 0,
 
 		callRemote: function(method, params){
-			//summary
-			// call an arbitrary remote method without requiring it
-			// to be predefined with SMD
+			// summary:
+			// 		call an arbitrary remote method without requiring it to be
+			// 		predefined with SMD
 			var deferred = new dojo.Deferred();
 			this.bind(method, params, deferred);
 			return deferred;
 		},
 
 		bind: function(method, parameters, deferredRequestHandler, url){
-			//summary
-			//JSON-RPC bind method. Takes remote method, parameters, deferred,
-			//and a url, calls createRequest to make a JSON-RPC envelope and
-			//passes that off with bind.
+			//summary:
+			//		JSON-RPC bind method. Takes remote method, parameters,
+			//		deferred, and a url, calls createRequest to make a JSON-RPC
+			//		envelope and passes that off with bind.
 			var def = dojo.rawXhrPost({
 				url: url||this.serviceUrl,
 				postData: this.createRequest(method, parameters),
@@ -70,22 +70,23 @@ dojo.declare(
 		},
 
 		createRequest: function(method, params){
-			//summary
-			//create a JSON-RPC envelope for the request
-			console.debug("createRequest: Method: " + method + " Parameters: ", params);	
-			var req = { params: params, method: method, id: ++this.lastSubmissionId };
-			console.debug("createRequest js object:",req);
+			// summary:
+			//		create a JSON-RPC envelope for the request
+
+			var req = { "params": params, "method": method, "id": ++this.lastSubmissionId };
+			// console.debug("createRequest: Method: " + method + " Parameters: ", params);	
+			// console.debug("createRequest js object:",req);
 			var data = dojo.toJson(req);
-			console.debug("createRequest (json string):",data);
+			console.debug("createRequest (json string):", data);
 			return data;
 		},
 
 		parseResults: function(obj){
-			//summary
-			//parse the result envelope and pass the results back to 
-			// to the callback function
+			//summary:
+			//		parse the result envelope and pass the results back to to
+			//		the callback function
 			if(obj==null){ return; }
-			if (obj["Result"]!=null){ 
+			if(obj["Result"]!=null){ 
 				return obj["Result"]; 
 			}else if(obj["result"]!=null){ 
 				return obj["result"]; 

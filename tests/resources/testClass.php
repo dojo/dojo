@@ -2,7 +2,7 @@
 class testClass {
 
 	function myecho ($somestring) {
-		return "<P>" . $somestring . "<P>";
+		return "<P>" . $somestring . "</P>";
 	}
 
 	function contentB () {

@@ -9,7 +9,7 @@ tests.register("tests.rpc",
 		{
 			name: "JsonRPC-EchoTest",
 			timeout: 2000,
-			setUp: function() {
+			setUp: function(){
 				var testSmd = {
 					serviceURL:"../../dojo/tests/resources/test_JsonRPCMediator.php",
 					methods:[
@@ -27,17 +27,17 @@ tests.register("tests.rpc",
 			
 				this.svc = new dojo.rpc.JsonService(testSmd);
 			},
-			runTest: function() {
+			runTest: function(){
 				var d = new doh.Deferred();
 				var td = this.svc.myecho("RPC TEST");
 
 				td.addCallbacks(function(result) {
-					if(result=="<P>RPC TESTB</P>") {
+					if(result=="<P>RPC TEST</P>"){
 						return true;
-					} else {
+					}else{
 						return new Error("JsonRpc-EchoTest test failed, resultant content didn't match");
 					}
-				}, function(result) {
+				}, function(result){
 					return new Error(result);
 				});
 
@@ -51,8 +51,8 @@ tests.register("tests.rpc",
 		{
 			name: "JsonRPC-EmptyParamTest",
 			timeout: 2000,
-			setUp: function() {
-				var testSmd = {
+			setUp: function(){
+				var testSmd={
 					serviceURL:"../../dojo/tests/resources/test_JsonRPCMediator.php",
 					methods:[
 						{
@@ -63,17 +63,17 @@ tests.register("tests.rpc",
 			
 				this.svc = new dojo.rpc.JsonService(testSmd);
 			},
-			runTest: function() {
+			runTest: function(){
 				var d = new doh.Deferred();
 				var td = this.svc.contentB();
 
-				td.addCallbacks(function(result) {
-					if(result=="<P>Content B</P>") {
+				td.addCallbacks(function(result){
+					if(result=="<P>Content B</P>"){
 						return true;
-					} else {
+					}else{
 						return new Error("JsonRpc-EmpytParamTest test failed, resultant content didn't match");
 					}
-				}, function(result) {
+				}, function(result){
 					return new Error(result);
 				});
 

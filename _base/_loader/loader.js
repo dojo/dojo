@@ -28,7 +28,7 @@
 		_moduleHasPrefix: function(/*String*/module){
 			// summary: checks to see if module has been established
 			var mp = this._modulePrefixes;
-			return !!(mp[module] && mp[module].value); // Boolean
+			return Boolean(mp[module] && mp[module].value); // Boolean
 		},
 
 		_getModulePrefix: function(/*String*/module){
@@ -112,7 +112,7 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 	if(!contents){ return false; } // Boolean
 	this._loadedUrls[uri] = true;
 	if(cb){ contents = '('+contents+')'; }
-	var value = dojo["eval"]("//@ sourceURL="+uri+"\n"+contents);
+	var value = dojo["eval"](contents);
 	if(cb){ cb(value); }
 	return true; // Boolean
 }
@@ -120,13 +120,13 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 // FIXME: probably need to add logging to this method
 dojo._loadUriAndCheck = function(/*String (URL)*/uri, /*String*/moduleName, /*Function?*/cb){
 	// summary: calls loadUri then findModule and returns true if both succeed
-	var ok = true; //FIXME: shouldn't default be false?
+	var ok = true;
 	try{
 		ok = this._loadUri(uri, cb);
 	}catch(e){
 		console.debug("failed loading ", uri, " with error: ", e);
 	}
-	return !!(ok && this._loadedModules[moduleName]); // Boolean
+	return Boolean(ok && this._loadedModules[moduleName]); // Boolean
 }
 
 dojo.loaded = function(){
@@ -629,4 +629,3 @@ dojo.moduleUrl = function(/*String*/module, /*dojo._Url||String*/url){
 
 	return new dojo._Url(loc, url);
 }
-

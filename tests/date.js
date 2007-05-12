@@ -232,17 +232,17 @@ function test_date_compare(t){
 	d2.setFullYear(2005);
 	d2.setHours(12);
 	t.is(0, dojo.date.compare(d1, d1));
-	t.is(1, dojo.date.compare(d1, d2, dojo.date.types.DATE));
-	t.is(-1, dojo.date.compare(d2, d1, dojo.date.types.DATE));
-	t.is(-1, dojo.date.compare(d1, d2, dojo.date.types.TIME));
-	t.is(1, dojo.date.compare(d1, d2, dojo.date.types.DATE|dojo.date.types.TIME));
+	t.is(1, dojo.date.compare(d1, d2, "date"));
+	t.is(-1, dojo.date.compare(d2, d1, "date"));
+	t.is(-1, dojo.date.compare(d1, d2, "time"));
+	t.is(1, dojo.date.compare(d1, d2, "datetime"));
 },
 function test_date_add(t){
 	var interv = ''; // Interval (e.g., year, month)
 	var dtA = null; // Date to increment
 	var dtB = null; // Expected result date
 	
-	interv = dojo.date.parts.YEAR;
+	interv = "year";
 	dtA = new Date(2005, 11, 27);
 	dtB = new Date(2006, 11, 27);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
@@ -267,7 +267,7 @@ function test_date_add(t){
 	dtB = new Date(2030, 11, 31);
 	t.is(dtB, dojo.date.add(dtA, interv, 35));
 
-	interv = dojo.date.parts.QUARTER;
+	interv = "quarter";
 	dtA = new Date(2000, 0, 1);
 	dtB = new Date(2000, 3, 1);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
@@ -280,7 +280,7 @@ function test_date_add(t){
 	dtB = new Date(2001, 1, 28);
 	t.is(dtB, dojo.date.add(dtA, interv, 4));
 	
-	interv = dojo.date.parts.MONTH;
+	interv = "month";
 	dtA = new Date(2000, 0, 1);
 	dtB = new Date(2000, 1, 1);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
@@ -293,12 +293,12 @@ function test_date_add(t){
 	dtB = new Date(2001, 1, 28);
 	t.is(dtB, dojo.date.add(dtA, interv, 12));
 	
-	interv = dojo.date.parts.WEEK;
+	interv = "week";
 	dtA = new Date(2000, 0, 1);
 	dtB = new Date(2000, 0, 8);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
 
-	var interv = dojo.date.parts.DAY;
+	var interv = "day";
 	dtA = new Date(2000, 0, 1);
 	dtB = new Date(2000, 0, 2);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
@@ -331,7 +331,7 @@ function test_date_add(t){
 	dtB = new Date(1999, 11, 31);
 	t.is(dtB, dojo.date.add(dtA, interv, -1));
 	
-	interv = dojo.date.parts.WEEKDAY;
+	interv = "weekday";
 	// Sat, Jan 1
 	dtA = new Date(2000, 0, 1);
 	// Should be Mon, Jan 3
@@ -380,7 +380,7 @@ function test_date_add(t){
 	dtB = new Date(2000, 0, 7);
 	t.is(dtB, dojo.date.add(dtA, interv, -11));
 	
-	interv = dojo.date.parts.HOUR;
+	interv = "hour";
 	dtA = new Date(2000, 0, 1, 11);
 	dtB = new Date(2000, 0, 1, 12);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
@@ -397,7 +397,7 @@ function test_date_add(t){
 	dtB = new Date(2002, 0, 1, 0);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
 
-	interv = dojo.date.parts.MINUTE;
+	interv = "minute";
 	dtA = new Date(2000, 11, 31, 23, 59);
 	dtB = new Date(2001, 0, 1, 0, 0);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
@@ -406,7 +406,7 @@ function test_date_add(t){
 	dtB = new Date(2000, 11, 27, 13, 02);
 	t.is(dtB, dojo.date.add(dtA, interv, 60));
 	
-	interv = dojo.date.parts.SECOND;
+	interv = "second";
 	dtA = new Date(2000, 11, 31, 23, 59, 59);
 	dtB = new Date(2001, 0, 1, 0, 0, 0);
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
@@ -416,7 +416,7 @@ function test_date_add(t){
 	t.is(dtB, dojo.date.add(dtA, interv, 60));
 	
 	// Test environment JS Date doesn't support millisec?
-	//interv = dojo.date.parts.MILLISECOND;
+	//interv = "millisecond";
 	//
 	//dtA = new Date(2000, 11, 31, 23, 59, 59, 999);
 	//dtB = new Date(2001, 0, 1, 0, 0, 0, 0);
@@ -431,7 +431,7 @@ function test_date_diff(t){
 	var dtB = null; // Second date to compare
 	var interv = ''; // Interval to compare on (e.g., year, month)
 	
-	interv = dojo.date.parts.YEAR;
+	interv = "year";
 	dtA = new Date(2005, 11, 27);
 	dtB = new Date(2006, 11, 27);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
@@ -440,7 +440,7 @@ function test_date_diff(t){
 	dtB = new Date(2001, 0, 1);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.QUARTER;
+	interv = "quarter";
 	dtA = new Date(2000, 1, 29);
 	dtB = new Date(2001, 2, 1);
 	t.is(4, dojo.date.diff(dtA, dtB, interv));
@@ -449,7 +449,7 @@ function test_date_diff(t){
 	dtB = new Date(2001, 0, 1);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.MONTH;
+	interv = "month";
 	dtA = new Date(2000, 1, 29);
 	dtB = new Date(2001, 2, 1);
 	t.is(13, dojo.date.diff(dtA, dtB, interv));
@@ -458,7 +458,7 @@ function test_date_diff(t){
 	dtB = new Date(2001, 0, 1);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.WEEK;
+	interv = "week";
 	dtA = new Date(2000, 1, 1);
 	dtB = new Date(2000, 1, 8);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
@@ -471,7 +471,7 @@ function test_date_diff(t){
 	dtB = new Date(2000, 1, 28);
 	t.is(-1, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.DAY;
+	interv = "day";
 	dtA = new Date(2000, 1, 29);
 	dtB = new Date(2000, 2, 1);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
@@ -487,7 +487,7 @@ function test_date_diff(t){
 	dtB = new Date(2005, 3, 4);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.WEEKDAY;
+	interv = "weekday";
 	dtA = new Date(2006, 7, 3);
 	dtB = new Date(2006, 7, 11);
 	t.is(6, dojo.date.diff(dtA, dtB, interv));
@@ -571,7 +571,7 @@ function test_date_diff(t){
 	dtB = new Date(2006, 7, 6);
 	t.is(0, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.HOUR;
+	interv = "hour";
 	dtA = new Date(2000, 11, 31, 23);
 	dtB = new Date(2001, 0, 1, 0);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
@@ -580,7 +580,7 @@ function test_date_diff(t){
 	dtB = new Date(2001, 0, 1, 0);
 	t.is(12, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.MINUTE;
+	interv = "minute";
 	dtA = new Date(2000, 11, 31, 23, 59);
 	dtB = new Date(2001, 0, 1, 0, 0);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
@@ -589,12 +589,12 @@ function test_date_diff(t){
 	dtB = new Date(2000, 1, 29, 0, 0);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.SECOND;
+	interv = "second";
 	dtA = new Date(2000, 11, 31, 23, 59, 59);
 	dtB = new Date(2001, 0, 1, 0, 0, 0);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));
 	
-	interv = dojo.date.parts.MILLISECOND;
+	interv = "millisecond";
 	dtA = new Date(2000, 11, 31, 23, 59, 59, 999);
 	dtB = new Date(2001, 0, 1, 0, 0, 0, 0);
 	t.is(1, dojo.date.diff(dtA, dtB, interv));

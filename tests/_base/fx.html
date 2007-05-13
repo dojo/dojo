@@ -9,6 +9,7 @@
 			djConfig="isDebug: true"></script>
 		<script type="text/javascript" src="../../_base/fx.js"></script>
 		<script type="text/javascript">
+			var duration = 1000;
 			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
 				doh.register("t", 
@@ -17,7 +18,6 @@
 							name: "fadeOut",
 							timeout: 1500,
 							runTest: function(t){
-								var duration = 500;
 								var opacity = dojo.style('foo', 'opacity');
 								t.is(1, opacity);
 								var anim = dojo.fadeOut({ node: 'foo', duration: duration });
@@ -39,7 +39,6 @@
 							name: "fadeIn",
 							timeout: 1500,
 							runTest: function(t){
-								var duration = 500;
 								var opacity = dojo.style('foo', 'opacity');
 								t.is(0, opacity);
 								var anim = dojo.fadeIn({ node: 'foo', duration: duration });
@@ -58,10 +57,50 @@
 							}
 						},
 						{
+							name: "animateColor",
+							timeout: 1500,
+							runTest: function(t){
+								var d = new doh.Deferred();
+								var anim = dojo.animateProperty({ 
+									node: "foo", 
+									duration: duration,
+									properties: { 
+										color: 				{ start: "black", end: "white" },
+										backgroundColor: 	{ start: "white", end: "black" } 
+									} 
+								});
+								dojo.connect(anim, "onEnd", anim, function(){
+									d.callback(true);
+								});
+								anim.play();
+								return d;
+							}
+						},
+						{
+							name: "animateColorBack",
+							timeout: 1500,
+							runTest: function(t){
+								var d = new doh.Deferred();
+								var anim = dojo.animateProperty({ 
+									node: "foo", 
+									duration: duration,
+									properties: { 
+										color: 				{ end: "black" },
+										backgroundColor: 	{ end: "#5d81b4" }, 
+										letterSpacing: 		{ start: 0, end: 10 } 
+									} 
+								});
+								dojo.connect(anim, "onEnd", anim, function(){
+									d.callback(true);
+								});
+								anim.play();
+								return d;
+							}
+						},
+						{
 							name: "animateHeight",
 							timeout: 1500,
 							runTest: function(t){
-								var duration = 500;
 								var startHeight = dojo.marginBox("foo").h; 
 								var endHeight = Math.round(startHeight / 2);
 								

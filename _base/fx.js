@@ -21,6 +21,127 @@ dojo._Line = function(/*int*/ start, /*int*/ end){
 	}
 }
 
+dojo.Color = function(/*r, g, b, a*/){
+	this.setColor.apply(this, arguments);
+}
+
+// FIXME: there's got to be a more space-efficient way to encode or discover these!!
+dojo.Color.named = {
+	white:      [255,255,255],
+	black:      [0,0,0],
+	red:        [255,0,0],
+	green:	    [0,255,0],
+	lime:	    [0,255,0],
+	blue:       [0,0,255],
+	navy:       [0,0,128],
+	gray:       [128,128,128],
+	silver:     [192,192,192]
+};
+
+dojo.extend(dojo.Color, {
+	// FIXME: implement caching of the RGBA array generation!! It's stupid that we realloc
+	_cache: null,
+	setColor: function(/*r, g, b, a*/){
+		// summary:
+		// 		takes an r, g, b, a(lpha) value, [r, g, b, a] array, "rgb(...)"
+		// 		string, hex string (#aaa, #aaaaaa, aaaaaaa)
+
+		this._cache = [];
+		var d = dojo;
+		var a = arguments;
+		var a0 = a[0];
+		var pmap = (d.isArray(a0) ? r : (d.isString(a0) ? d.extractRgb(a0) : d._toArray(a)) );
+		d.forEach(["r", "g", "b", "a"], function(p, i){
+			this._cache[i] = this[p] = parseFloat(pmap[i]);
+		}, this);
+		this.a = this.a||1.0;
+	},
+	toRgb: function(includeAlpha){
+		return this._cache.slice(0, ((includeAlpha) ? 4 : 3));
+	},
+	toRgba: function(){
+		return this._cache.slice(0, 4);
+	},
+	toHex: function(){
+		return dojo.rgb2hex(this.toRgb());
+	},
+	toCss: function(){
+		return "rgb(" + this.toRgb().join(", ") + ")";
+	},
+	toString: function(){
+		return this.toHex(); // decent default?
+	}
+});
+
+dojo.blendColors = function(a, b, weight){
+	// summary: 
+	//		blend colors a and b (either RGB arrays or hex strings) with weight
+	//		from -1 to +1, 0 being a 50/50 blend
+	if(a[0] == "#"){ a = dojo.hex2rgb(a); }
+	if(b[0] == "#"){ b = dojo.hex2rgb(b); }
+	if(a["_cache"]){ a = a._cache; }
+	if(b["_cache"]){ b = b._cache; }
+	weight = Math.min(Math.max(-1, (weight||0)), 1);
+
+	// alex: this interface blows.
+	// map -1 to 1 to the range 0 to 1
+	weight = ((weight + 1)/2);
+	
+	var c = [];
+
+	// var stop = (1000*weight);
+	for(var x = 0; x < 3; x++){
+		// console.debug(b[x] + ((a[x] - b[x]) * weight));
+		c[x] = parseInt( b[x] + ( (a[x] - b[x]) * weight) );
+	}
+	return c;
+}
+
+// get RGB array from css-style color declarations
+dojo.extractRgb = function(color){
+	color = color.toLowerCase();
+	if(color.indexOf("rgb") == 0 ){
+		var matches = color.match(/rgba*\((\d+), *(\d+), *(\d+)/i);
+		var ret = matches.splice(1, 3);
+		return ret;
+	}else{
+		return dojo.hex2rgb(color)|| dojo.Color.named[color] || [255, 255, 255];
+	}
+}
+
+dojo.hex2rgb = function(hex){
+	var hexNum = "0123456789ABCDEF";
+	var rgb = new Array(3);
+	if( hex[0] == "#" ){ hex = hex.substring(1); }
+	hex = hex.toUpperCase();
+	if(hex.replace(new RegExp("["+hexNum+"]", "g"), "") != ""){
+		return null;
+	}
+	if( hex.length == 3 ){
+		rgb[0] = hex.charAt(0) + hex.charAt(0)
+		rgb[1] = hex.charAt(1) + hex.charAt(1)
+		rgb[2] = hex.charAt(2) + hex.charAt(2);
+	}else{
+		rgb[0] = hex.substring(0, 2);
+		rgb[1] = hex.substring(2, 4);
+		rgb[2] = hex.substring(4);
+	}
+	for(var i = 0; i < rgb.length; i++){
+		rgb[i] = hexNum.indexOf(rgb[i].charAt(0)) * 16 + hexNum.indexOf(rgb[i].charAt(1));
+	}
+	return rgb;
+}
+
+dojo.rgb2hex = function(r, g, b){
+	var ret = dojo.map(((r._cache)||((!g) ? r : [r, g, b])), function(x, i){
+		var s = (new Number(x)).toString(16);
+		while(s.length < 2){ s = "0" + s; }
+		return s;
+	});
+	ret.unshift("#");
+	return ret.join("");
+}
+
 //FIXME: _Animation must be a Deferred?
 dojo.declare("dojo._Animation", null,
 	function(/*Object*/ args){
@@ -306,20 +427,23 @@ dojo.declare("dojo._Animation", null,
 				if(dojo.isFunction(prop.end)){
 					prop.end = prop.end(prop);
 				}
-	/* FIXME - gfx dependency
-				if(prop.start instanceof dojo.gfx.color.Color){
+				/*
+				if(prop.start instanceof dojo.Color){
 					// save these so we don't have to call toRgb() every getValue() call
 					prop.startRgb = prop.start.toRgb();
 					prop.endRgb = prop.end.toRgb();
 				}
-	*/
+				*/
 			}
 			this.getValue = function(n){
 				var ret = {};
-				for (var p in this._properties) {
+				for(var p in this._properties){
 					var prop = this._properties[p];
 					var value = null;
-					if(!dojo.isArray(prop.start)){
+					if(prop.start instanceof dojo.Color){
+						value = dojo.rgb2hex(dojo.blendColors(prop.end, prop.start, n));
+						// value = "rbg("+dojo.blendColors(prop.end, prop.start, n).join(",")+")";
+					}else if(!dojo.isArray(prop.start)){
 						value = ((prop.end - prop.start) * n) + prop.start + (p != "opacity" ? prop.units||"px" : "");
 					}
 					ret[p] = value;
@@ -331,19 +455,43 @@ dojo.declare("dojo._Animation", null,
 		var anim = new dojo._Animation(args);
 		dojo.connect(anim, "beforeBegin", anim, function(){
 			var pm = this.properties;
-			for (var p in pm) {
+			for(var p in pm){
 				var prop = pm[p];
-				if(typeof prop.start == "undefined"){
+
+				if(dojo.isFunction(prop.start)){
+					prop.start = prop.start();
+				}
+				if(dojo.isFunction(prop.end)){
+					prop.end = prop.end();
+				}
+
+				var isColor = (p.toLowerCase().indexOf("color") >= 0);
+				if(typeof prop.end == "undefined"){
+					prop.end = dojo.style(this.node, p);
+				}else if(typeof prop.start == "undefined"){
 					prop.start = dojo.style(this.node, p);
+				}
+
+				if(isColor){
+					console.debug("it's a color!");
+					prop.start = new dojo.Color(prop.start);
+					prop.end = new dojo.Color(prop.end);
+				}else{
 					prop.start = (p == "opacity") ? Number(prop.start) : parseInt(prop.start);
 				}
+				console.debug("start:", prop.start);
+				console.debug("end:", prop.end);
 			}
 			this.curve = new PropLine(pm);
 		});
 		dojo.connect(anim, "onAnimate", anim, function(propValues){
-			for (var s in propValues) {
+			// try{
+			for(var s in propValues){
+				// console.debug(s, propValues[s], this.node.style[s]);
 				dojo.style(this.node, s, propValues[s]);
+				// this.node.style[s] = propValues[s];
 			}
+			// }catch(e){ console.debug(dojo.toJson(e)); }
 		});
 
 		return anim; // dojo._Animation

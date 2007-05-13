@@ -11,6 +11,7 @@ try{
 	dojo.require("tests.AdapterRegistry");
 	dojo.require("tests.io.script");
 	dojo.require("tests.rpc");
+	dojo.require("tests.string");
 }catch(e){
 	doh.debug(e);
 }

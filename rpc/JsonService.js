@@ -4,40 +4,6 @@ dojo.require("dojo.rpc.RpcService");
 dojo.declare(
 	"dojo.rpc.JsonService", 
 	dojo.rpc.RpcService,	
-	function(args){
-		//	- just the serviceUrl (for use w/ remoteCall())
-		//	- the text of the SMD to evaluate
-		// 	- a raw SMD object
-		//	- the SMD URL
-		if(args){
-			// otherwise we assume it's an arguments object with the following
-			// (optional) properties:
-			//	- serviceUrl
-			//	- strictArgChecks
-			//	- smdStr
-			//	- smdObj
-
-			if(args["smdStr"]){
-				this.processSmd(dj_eval("("+args.smdStr+")"));
-			}
-
-			if(args["serviceUrl"]){
-				this.serviceUrl = args.serviceUrl;
-			}
-
-			if(args["timeout"]){
-				this.timeout = args.timeout;
-			}else{
-				this.timeout=3000;
-			}
-
-			if(typeof args["strictArgChecks"] != "undefined"){
-				this.strictArgChecks = args.strictArgChecks;
-			}
-
-			this.processSmd(args);
-		}
-	},
 	{
 		bustCache: false,
 	

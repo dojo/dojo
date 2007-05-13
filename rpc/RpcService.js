@@ -3,11 +3,53 @@ dojo.provide("dojo.rpc.RpcService");
 dojo.declare(
 	"dojo.rpc.RpcService",
 	null, 
-	function(obj){
-		// summary:
-		//		constructor for rpc base class
-		if(obj){
-			this.processSmd(obj);
+        function(args){
+		//summary:
+		//Take a string as a url to retrieve an smd or an object that is an smd or partial smd to use
+		//as a definition for the service
+                //      - the text of the SMD to evaluate
+                //      - a raw SMD object
+                //      - the SMD URL
+                if(args){
+			//if the arg is a string, we assume it is a url to retrieve an smd definition from
+			if(dojo.isString(args)){
+				var def = dojo.xhrGet({
+					url: args,
+					handleAs: "json",
+					sync: true
+				});
+
+				def.addCallback(this, "processSmd");
+				def.addErrback(function() {
+					throw new Error("Unable to load SMD from " . args);					
+				});
+
+			}else if(args["smdStr"]){
+				this.processSmd(dj_eval("("+args.smdStr+")"));
+			}else{
+	                        // otherwise we assume it's an arguments object with the following
+				// (optional) properties:
+				//      - serviceUrl
+				//      - strictArgChecks
+				//      - smdStr
+				//      - smdObj
+
+				if(args["serviceUrl"]){
+					this.serviceUrl = args.serviceUrl;
+				}
+
+				if(args["timeout"]){
+					this.timeout = args.timeout;
+				}else{
+					this.timeout=3000;
+				}
+
+	                        if(typeof args["strictArgChecks"] != "undefined"){
+					this.strictArgChecks = args.strictArgChecks;
+				}
+
+				this.processSmd(args);
+			}
 		}
 	},
 	{

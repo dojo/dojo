@@ -81,7 +81,34 @@ tests.register("tests.rpc",
 
 				return d;
 			}
+		},
+
+		{
+			name: "JsonRPC_SMD_Loading_test",
+			timeout: 2000,
+			setUp: function(){
+				this.svc = new dojo.rpc.JsonService("../../dojo/tests/resources/testClass.smd");
+			},
+			runTest: function(){
+				var d = new doh.Deferred();
+				var td = this.svc.contentB();
+
+				td.addCallbacks(function(result){
+					if(result=="<P>Content B</P>"){
+						return true;
+					}else{
+						return new Error("JsonRpc_SMD_Loading_Test failed, resultant content didn't match");
+					}
+				}, function(result){
+					return new Error(result);
+				});
+
+				td.addBoth(d, "callback");
+
+				return d;
+			}
 		}
+
 
 	]
 );

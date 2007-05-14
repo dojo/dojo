@@ -631,3 +631,38 @@ dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 	}
 	return day >= weekend.start && day <= weekend.end; // Boolean
 };
+
+// These are used only by format and strftime.  Do they need to be public?  Which module should they go in?
+
+dojo.date.setDayOfYear = function(/*Date*/dateObject, /*Number*/dayOfYear){
+	// summary: sets dateObject according to day of the year (1..366)
+	dateObject.setMonth(0);
+	dateObject.setDate(dayOfYear);
+	return dateObject; // Date
+}
+
+dojo.date.getDayOfYear = function(/*Date*/dateObject){
+	// summary: gets the day of the year as represented by dateObject
+	var fullYear = dateObject.getFullYear();
+	var lastDayOfPrevYear = new Date(fullYear-1, 11, 31);
+	return Math.floor((dateObject.getTime() -
+		lastDayOfPrevYear.getTime()) / (24*60*60*1000)); // Number
+}
+
+dojo.date.setWeekOfYear = function(/*Date*/dateObject, /*Number*/week, /*Number*/firstDay){
+	if(arguments.length == 2){ firstDay = 0; } // Sunday
+	dojo.unimplemented("dojo.date.setWeekOfYear");
+}
+
+dojo.date.getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDay){
+	if(arguments.length == 1){ firstDay = 0; } // Sunday
+
+	// work out the first day of the year corresponding to the week
+	var firstDayOfYear = new Date(dateObject.getFullYear(), 0, 1);
+	var day = firstDayOfYear.getDay();
+	firstDayOfYear.setDate(firstDayOfYear.getDate() -
+			day + firstDay - (day > firstDay ? 7 : 0));
+
+	return Math.floor((dateObject.getTime() -
+		firstDayOfYear.getTime()) / (7*24*60*60*1000)); // Number
+}

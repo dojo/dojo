@@ -222,6 +222,19 @@ tests.register("tests.date.locale",
 	t.is(time.getHours(), dojo.date.locale.parse("12:30 PM", tformat).getHours());
 	t.is(time.getMinutes(), dojo.date.locale.parse("12:30 PM", tformat).getMinutes());
 			}
+		},
+		{
+			name: "day_week_ofYear",
+			runTest: function(t){
+
+	t.is(23, dojo.date.setDayOfYear(new Date(2006,0,1), 23).getDate());
+	t.is(1, dojo.date.getDayOfYear(new Date(2006,0,1)));
+	t.is(32, dojo.date.getDayOfYear(new Date(2006,1,1)));
+	//dojo.date.setWeekOfYear(new Date(2006,2,1), 34);
+	//dojo.date.setWeekOfYear(new Date(2006,2,1), 34, 1);
+	//dojo.date.getWeekOfYear(new Date(2006,1,1));
+	//dojo.date.getWeekOfYear(new Date(2006,1,1), 1);
+			}
 		}
 	]
 );

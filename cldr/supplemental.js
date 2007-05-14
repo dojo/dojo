@@ -68,16 +68,3 @@ dojo.cldr.supplemental.getWeekend = function(/*String?*/locale){
 	if(typeof end == 'undefined'){end=0;}
 	return {start:start, end:end}; /*Object {start,end}*/
 };
-
-dojo.cldr.supplemental.isWeekend = function(/*Date?*/dateObj, /*String?*/locale){
-// summary:
-//	Determines if the date falls on a weekend, according to local custom.
-
-	var weekend = dojo.cldr.supplemental.getWeekend(locale);
-	var day = (dateObj || new Date()).getDay();
-	if(weekend.end<weekend.start){
-		weekend.end+=7;
-		if(day<weekend.start){ day+=7; }
-	}
-	return day >= weekend.start && day <= weekend.end; // Boolean
-};

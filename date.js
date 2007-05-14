@@ -175,17 +175,17 @@ dojo.date.compare = function(/*Date|Number*/date1, /*Date|Number?*/date2, /*Stri
 	//
 	//	portion
 	//		A string indicating the "date" or "time" portion of a Date object.  Compares both "date" and "time" by default.
-	//		One of the following: {"date", "time", "datetime"}
+	//		One of the following: "date", "time", "datetime"
 
 	date1 = new Date(date1);
 	date2 = new Date(date2 || new Date());
 
-	if(typeof portion !== "undefined" && portion != "datetime"){
+	if(typeof portion !== "undefined"){
 		if(portion == "date"){
 			// Ignore times and compare dates.
 			date1.setHours(0, 0, 0, 0);
 			date2.setHours(0, 0, 0, 0);
-		}else{
+		}else if(portion == "time"){
 			// Ignore dates and compare times.
 			date1.setFullYear(0, 0, 0);
 			date2.setFullYear(0, 0, 0);
@@ -206,7 +206,7 @@ dojo.date.add = function(/*Date|Number*/date, /*String*/interval, /*int*/amount)
 	//
 	//	interval
 	//		A string representing the interval.  One of the following:
-	//		{year, month, day, hour, minute, second, millisecond, quarter, week, weekday}
+	//			"year", "month", "day", "hour", "minute", "second", "millisecond", "quarter", "week", "weekday"
 	//
 	//	amount
 	//		How much to add to the date.
@@ -285,7 +285,6 @@ dojo.date.add = function(/*Date|Number*/date, /*String*/interval, /*int*/amount)
 	}
 
 	if(property){
-console.log("property="+property);
 		sum["set"+property](sum["get"+property]()+amount);
 	}
 
@@ -298,7 +297,7 @@ console.log("property="+property);
 	return sum; // Date
 };
 
-dojo.date.diff = function(/*Date|Number*/date1, /*Date|Number*/date2, /*String?*/interval){
+dojo.date.difference = function(/*Date|Number*/date1, /*Date|Number*/date2, /*String?*/interval){
 	//	summary
 	//		Get the difference in a specific unit of time (e.g., number of months, weeks,
 	//		days, etc.) between two dates, rounded to the nearest integer.
@@ -311,7 +310,7 @@ dojo.date.diff = function(/*Date|Number*/date1, /*Date|Number*/date2, /*String?*
 	//
 	//	interval
 	//		A string representing the interval.  One of the following:
-	//		{year, month, day, hour, minute, second, millisecond, quarter, week, weekday}
+	//			"year", "month", "day", "hour", "minute", "second", "millisecond", "quarter", "week", "weekday"
 
 	// Accept timestamp input
 	date1 = new Date(date1);
@@ -332,8 +331,8 @@ dojo.date.diff = function(/*Date|Number*/date1, /*Date|Number*/date2, /*String?*
 			delta = q2 - q1;
 			break;
 		case "weekday":
-			var days = Math.round(dojo.date.diff(date1, date2, "day"));
-			var weeks = parseInt(dojo.date.diff(date1, date2, "week"));
+			var days = Math.round(dojo.date.difference(date1, date2, "day"));
+			var weeks = parseInt(dojo.date.difference(date1, date2, "week"));
 			var mod = days % 7;
 
 			// Even number of weeks
@@ -421,7 +420,7 @@ dojo.date.diff = function(/*Date|Number*/date1, /*Date|Number*/date2, /*String?*
 		case "week":
 			// Truncate instead of rounding
 			// Don't use Math.floor -- value may be negative
-			delta = parseInt(dojo.date.diff(date1, date2, "day")/7);
+			delta = parseInt(dojo.date.difference(date1, date2, "day")/7);
 			break;
 		case "day":
 			delta /= 24;

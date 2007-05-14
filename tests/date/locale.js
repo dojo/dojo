@@ -26,6 +26,25 @@ tests.register("tests.date.locale",
 			}
 		},
 		{
+			name: "isWeekend",
+			runTest: function(t){
+				var thursday = new Date(2006, 8, 21);
+				var friday = new Date(2006, 8, 22);
+				var saturday = new Date(2006, 8, 23);
+				var sunday = new Date(2006, 8, 24);
+				var monday = new Date(2006, 8, 25);
+				t.f(dojo.date.locale.isWeekend(thursday, 'en-us'));
+				t.t(dojo.date.locale.isWeekend(saturday, 'en-us'));
+				t.t(dojo.date.locale.isWeekend(sunday, 'en-us'));
+				t.f(dojo.date.locale.isWeekend(monday, 'en-us'));
+//	t.f(dojo.date.locale.isWeekend(saturday, 'en-in'));
+//	t.t(dojo.date.locale.isWeekend(sunday, 'en-in'));
+//	t.f(dojo.date.locale.isWeekend(monday, 'en-in'));
+//	t.t(dojo.date.locale.isWeekend(friday, 'he-il'));
+//	t.f(dojo.date.locale.isWeekend(sunday, 'he-il'));
+			}
+		},
+		{
 			name: "format",
 			runTest: function(t){
 

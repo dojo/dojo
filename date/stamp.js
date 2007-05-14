@@ -107,7 +107,7 @@ dojo.date.stamp.setIso8601Time = function(/*Date*/dateObject, /*String*/formatte
 };
 
 dojo.date.stamp.fromIso8601Time = function(/*String*/formattedString){
-	// summary: returns a Date object based on an ISO 8601 formatted string (date only)
+	// summary: returns a Date object based on an ISO 8601 formatted string (time only)
 	return dojo.date.stamp.setIso8601Time(new Date(0, 0), formattedString);
 };
 

@@ -434,174 +434,174 @@ function test_date_diff(t){
 	interv = "year";
 	dtA = new Date(2005, 11, 27);
 	dtB = new Date(2006, 11, 27);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 11, 31);
 	dtB = new Date(2001, 0, 1);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "quarter";
 	dtA = new Date(2000, 1, 29);
 	dtB = new Date(2001, 2, 1);
-	t.is(4, dojo.date.diff(dtA, dtB, interv));
+	t.is(4, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 11, 1);
 	dtB = new Date(2001, 0, 1);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "month";
 	dtA = new Date(2000, 1, 29);
 	dtB = new Date(2001, 2, 1);
-	t.is(13, dojo.date.diff(dtA, dtB, interv));
+	t.is(13, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 11, 1);
 	dtB = new Date(2001, 0, 1);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "week";
 	dtA = new Date(2000, 1, 1);
 	dtB = new Date(2000, 1, 8);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 1, 28);
 	dtB = new Date(2000, 2, 6);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 2, 6);
 	dtB = new Date(2000, 1, 28);
-	t.is(-1, dojo.date.diff(dtA, dtB, interv));
+	t.is(-1, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "day";
 	dtA = new Date(2000, 1, 29);
 	dtB = new Date(2000, 2, 1);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 11, 31);
 	dtB = new Date(2001, 0, 1);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	// DST leap -- check for rounding err
 	// This is dependent on US calendar, but
 	// shouldn't break in other locales
 	dtA = new Date(2005, 3, 3);
 	dtB = new Date(2005, 3, 4);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "weekday";
 	dtA = new Date(2006, 7, 3);
 	dtB = new Date(2006, 7, 11);
-	t.is(6, dojo.date.diff(dtA, dtB, interv));
+	t.is(6, dojo.date.difference(dtA, dtB, interv));
 	
 	// Positive diffs
 	dtA = new Date(2006, 7, 4);
 	dtB = new Date(2006, 7, 11);
-	t.is(5, dojo.date.diff(dtA, dtB, interv));
+	t.is(5, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 5);
 	dtB = new Date(2006, 7, 11);
-	t.is(5, dojo.date.diff(dtA, dtB, interv));
+	t.is(5, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 6);
 	dtB = new Date(2006, 7, 11);
-	t.is(5, dojo.date.diff(dtA, dtB, interv));
+	t.is(5, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 7);
 	dtB = new Date(2006, 7, 11);
-	t.is(4, dojo.date.diff(dtA, dtB, interv));
+	t.is(4, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 7);
 	dtB = new Date(2006, 7, 13);
-	t.is(4, dojo.date.diff(dtA, dtB, interv));
+	t.is(4, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 7);
 	dtB = new Date(2006, 7, 14);
-	t.is(5, dojo.date.diff(dtA, dtB, interv));
+	t.is(5, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 7);
 	dtB = new Date(2006, 7, 15);
-	t.is(6, dojo.date.diff(dtA, dtB, interv));
+	t.is(6, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 7);
 	dtB = new Date(2006, 7, 28);
-	t.is(15, dojo.date.diff(dtA, dtB, interv));
+	t.is(15, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 2, 2);
 	dtB = new Date(2006, 2, 28);
-	t.is(18, dojo.date.diff(dtA, dtB, interv));
+	t.is(18, dojo.date.difference(dtA, dtB, interv));
 	
 	// Negative diffs
 	dtA = new Date(2006, 7, 11);
 	dtB = new Date(2006, 7, 4);
-	t.is(-5, dojo.date.diff(dtA, dtB, interv));
+	t.is(-5, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 11);
 	dtB = new Date(2006, 7, 5);
-	t.is(-4, dojo.date.diff(dtA, dtB, interv));
+	t.is(-4, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 11);
 	dtB = new Date(2006, 7, 6);
-	t.is(-4, dojo.date.diff(dtA, dtB, interv));
+	t.is(-4, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 11);
 	dtB = new Date(2006, 7, 7);
-	t.is(-4, dojo.date.diff(dtA, dtB, interv));
+	t.is(-4, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 13);
 	dtB = new Date(2006, 7, 7);
-	t.is(-5, dojo.date.diff(dtA, dtB, interv));
+	t.is(-5, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 14);
 	dtB = new Date(2006, 7, 7);
-	t.is(-5, dojo.date.diff(dtA, dtB, interv));
+	t.is(-5, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 15);
 	dtB = new Date(2006, 7, 7);
-	t.is(-6, dojo.date.diff(dtA, dtB, interv));
+	t.is(-6, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 7, 28);
 	dtB = new Date(2006, 7, 7);
-	t.is(-15, dojo.date.diff(dtA, dtB, interv));
+	t.is(-15, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2006, 2, 28);
 	dtB = new Date(2006, 2, 2);
-	t.is(-18, dojo.date.diff(dtA, dtB, interv));
+	t.is(-18, dojo.date.difference(dtA, dtB, interv));
 
 	// Two days on the same weekend -- no weekday diff
 	dtA = new Date(2006, 7, 5);
 	dtB = new Date(2006, 7, 6);
-	t.is(0, dojo.date.diff(dtA, dtB, interv));
+	t.is(0, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "hour";
 	dtA = new Date(2000, 11, 31, 23);
 	dtB = new Date(2001, 0, 1, 0);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 11, 31, 12);
 	dtB = new Date(2001, 0, 1, 0);
-	t.is(12, dojo.date.diff(dtA, dtB, interv));
+	t.is(12, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "minute";
 	dtA = new Date(2000, 11, 31, 23, 59);
 	dtB = new Date(2001, 0, 1, 0, 0);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 1, 28, 23, 59);
 	dtB = new Date(2000, 1, 29, 0, 0);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "second";
 	dtA = new Date(2000, 11, 31, 23, 59, 59);
 	dtB = new Date(2001, 0, 1, 0, 0, 0);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	interv = "millisecond";
 	dtA = new Date(2000, 11, 31, 23, 59, 59, 999);
 	dtB = new Date(2001, 0, 1, 0, 0, 0, 0);
-	t.is(1, dojo.date.diff(dtA, dtB, interv));
+	t.is(1, dojo.date.difference(dtA, dtB, interv));
 	
 	dtA = new Date(2000, 11, 31, 23, 59, 59, 0);
 	dtB = new Date(2001, 0, 1, 0, 0, 0, 0);
-	t.is(1000, dojo.date.diff(dtA, dtB, interv));
+	t.is(1000, dojo.date.difference(dtA, dtB, interv));
 }
 	]
 );

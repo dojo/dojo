@@ -1,9 +1,4 @@
-dojo.provide("dojo.behavior.common");
-dojo.require("dojo.event.*");
-dojo.require("dojo.query");
-
-dojo.require("dojo.experimental");
-dojo.experimental("dojo.behavior");
+dojo.provide("dojo.behavior");
 
 dojo.behavior = new function(){
 	function arrIn(obj, name){
@@ -93,14 +88,7 @@ dojo.behavior = new function(){
 		 *	as the node matches the selector. Rules for values that follow also
 		 *	apply to the "found" key.
 		 *	
-		 *	The "on*" handlers are attached with dojo.event.connect(). If the
-		 *	value is not a function but is rather an object, it's assumed to be
-		 *	the "other half" of a dojo.event.kwConnect() argument object. It
-		 *	may contain any/all properties of such a connection modifier save
-		 *	for the sourceObj and sourceFunc properties which are filled in by
-		 *	the system automatically. If a string is instead encountered, the
-		 *	node publishes the specified event on the topic contained in the
-		 *	string value.
+		 *	The "on*" handlers are attached with dojo.connect(). 
 		 *
 		 *	If the value corresponding to the ID key is a function and not a
 		 *	list, it's treated as though it was the value of "found".
@@ -115,7 +103,7 @@ dojo.behavior = new function(){
 			}
 			var cversion = [];
 			tBehavior.push(cversion);
-			if((dojo.lang.isString(behavior))||(dojo.lang.isFunction(behavior))){
+			if((dojo.isString(behavior))||(dojo.isFunction(behavior))){
 				behavior = { found: behavior };
 			}
 			forIn(behavior, function(rule, ruleName){
@@ -125,10 +113,9 @@ dojo.behavior = new function(){
 	}
 
 	this.apply = function(){
-		dojo.profile.start("dojo.behavior.apply");
 		forIn(this.behaviors, function(tBehavior, id){
 			var elems = dojo.query(id);
-			dojo.lang.forEach(elems, 
+			dojo.forEach(elems, 
 				function(elem){
 					var runFrom = 0;
 					var bid = "_dj_behavior_"+tBehavior.id;
@@ -142,8 +129,8 @@ dojo.behavior = new function(){
 
 					for(var x=runFrom, tver; tver = tBehavior[x]; x++){
 						forIn(tver, function(ruleSet, ruleSetName){
-							if(dojo.lang.isArray(ruleSet)){
-								dojo.lang.forEach(ruleSet, function(action){
+							if(dojo.isArray(ruleSet)){
+								dojo.forEach(ruleSet, function(action){
 									dojo.behavior.applyToNode(elem, action, ruleSetName);
 								});
 							}
@@ -155,59 +142,20 @@ dojo.behavior = new function(){
 				}
 			);
 		});
-		dojo.profile.end("dojo.behavior.apply");
 	}
 
 
 	this.applyToNode = function(node, action, ruleSetName){
-		if(typeof action == "string"){
-			dojo.event.topic.registerPublisher(action, node, ruleSetName);
-		}else if(typeof action == "function"){
+		if(dojo.isString(action)){
+			// dojo.topic.registerPublisher(action, node, ruleSetName);
+		}else if(dojo.isFunction(action)){
 			if(ruleSetName == "found"){
 				action(node);
 			}else{
-				dojo.event.connect(node, ruleSetName, action);
+				dojo.connect(node, ruleSetName, action);
 			}
-		}else{
-			action.srcObj = node;
-			action.srcFunc = ruleSetName;
-			dojo.event.kwConnect(action);
 		}
 	}
-
-	/*
-	this.matchCache = {};
-
-	this.elementsById = function(id, handleRemoved){
-		var removed = [];
-		var added = [];
-		arrIn(this.matchCache, id);
-		if(handleRemoved){
-			var nodes = this.matchCache[id];
-			for(var x=0; x<nodes.length; x++){
-				if(nodes[x].id != ""){
-					removed.push(nodes[x]);
-					nodes.splice(x, 1);
-					x--;
-				}
-			}
-		}
-		var tElem = dojo.byId(id);
-		while(tElem){
-			if(!tElem["idcached"]){
-				added.push(tElem);
-			}
-			tElem.id = "";
-			tElem = dojo.byId(id);
-		}
-		this.matchCache[id] = this.matchCache[id].concat(added);
-		dojo.lang.forEach(this.matchCache[id], function(node){
-			node.id = id;
-			node.idcached = true;
-		});
-		return { "removed": removed, "added": added, "match": this.matchCache[id] };
-	}
-	*/
 }
 
 dojo.addOnLoad(dojo.behavior, "apply");

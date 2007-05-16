@@ -31,6 +31,8 @@ dojo.declare("dojo.data.JsonItemStore",
 	//		in the array of items that acts as the unique identifier for that item.
 	//
 
+	url: undefined,
+
 	_assertIsItem: function(/* item */ item){
 		//	summary:
 		//      This function tests whether the item passed in is indeed an item in the store.
@@ -215,6 +217,7 @@ dojo.declare("dojo.data.JsonItemStore",
 					};
 				var getHandler = dojo.xhrGet(getArgs);
 				getHandler.addCallback(function(data){
+					// console.debug(dojo.toJson(data));
 					self._loadFinished = true;
 					try{
 						self._arrayOfAllItems = self._getItemsFromLoadedData(data);

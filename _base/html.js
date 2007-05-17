@@ -17,7 +17,7 @@ dojo.createElement = function(obj, parent, position){
 	// TODO: need to finish this!
 }
 
-if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
+if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
 		// summary:
 		// 		similar to other library's "$" function, takes a
@@ -179,7 +179,7 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 			} : function(node){
 				return dv.getComputedStyle(node, null);
 			}
-		);
+		)
 
 		dojo._toPixelValue = function(element, value){
 			// style values can be floats, client code may want
@@ -358,10 +358,18 @@ if(dojo.isIE && (dojo.isIE < 7) ){ //  || dojo.isOpera){
 	//
 	// Be careful with IMGs because they are inline or block depending on 
 	// browser and browser mode.
-		
-	dojo._getMarginBox = function(node, computedStyle){
-		var mb=dojo._getMarginExtents(node, computedStyle);
-		return { l:0, t:0, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+
+	if (dojo.isMoz) {
+		dojo._getMarginBox = function(node, computedStyle){
+			var s = computedStyle||this.getComputedStyle(node);
+			var mb = dojo._getMarginExtents(node, s);
+			return { l:parseFloat(s.left), t:parseFloat(s.top), w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+		}
+	} else {
+		dojo._getMarginBox = function(node, computedStyle){
+			var mb=dojo._getMarginExtents(node, computedStyle);
+			return { l:node.offsetLeft, t:node.offsetTop, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+		}
 	}
 	
 	dojo._getContentBox = function(node, computedStyle){

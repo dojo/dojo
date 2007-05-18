@@ -1,3 +1,4 @@
+dojo.provide("dojo._base");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.declare");
 dojo.require("dojo._base.connect");

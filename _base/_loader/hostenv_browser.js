@@ -62,7 +62,7 @@ if(typeof window != 'undefined'){
 		d.isQuirks = (cm == "BackCompat")||(cm == "QuirksMode")||(d.isIE < 6);
 
 		// TODO: is the HTML LANG attribute relevant?
-		d.locale = d.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
+		d.locale = djConfig.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
 
 		d._println = console.debug;
 
@@ -100,13 +100,11 @@ if(typeof window != 'undefined'){
 		}
 
 		d._isDocumentOk = function(http){
-			var stat = http["status"];
-			return Boolean(	((stat>=200)&&(stat<300))|| 	// allow any 2XX response code
+			var stat = http.status || 0;
+			return ( (stat>=200)&&(stat<300))|| 	// allow any 2XX response code
 				(stat==304)|| 						// get it out of the cache
 				(stat==1223)|| 						// Internet Explorer mangled the status code
-				(location.protocol=="file:" && (stat==0 || stat==undefined))||
-				(location.protocol=="chrome:" && (stat==0 || stat==undefined))
-			);
+				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") ); // Boolean
 		}
 
 		d._getText = function(uri, fail_ok){

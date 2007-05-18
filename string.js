@@ -50,9 +50,9 @@ dojo.string.substitute = function(	/*String*/template,
 	//		namespace
 
 	return template.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g, function(match, key, format){
-		var value = dojo.getObject(key,false,map).toString();
+		var value = dojo.getObject(key,false,map);
 		if(format){ value = dojo.getObject(format,false,thisObject)(value);}
 		if(transform){ value = transform(value); }
-		return value;
+		return value.toString();
 	}); // string
 };

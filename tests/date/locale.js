@@ -227,9 +227,9 @@ tests.register("tests.date.locale",
 			name: "day_week_ofYear",
 			runTest: function(t){
 
-	t.is(23, dojo.date.setDayOfYear(new Date(2006,0,1), 23).getDate());
-	t.is(1, dojo.date.getDayOfYear(new Date(2006,0,1)));
-	t.is(32, dojo.date.getDayOfYear(new Date(2006,1,1)));
+//	t.is(23, dojo.date.setDayOfYear(new Date(2006,0,1), 23).getDate());
+	t.is(1, dojo.date.locale._getDayOfYear(new Date(2006,0,1)));
+	t.is(32, dojo.date.locale._getDayOfYear(new Date(2006,1,1)));
 	//dojo.date.setWeekOfYear(new Date(2006,2,1), 34);
 	//dojo.date.setWeekOfYear(new Date(2006,2,1), 34, 1);
 	//dojo.date.getWeekOfYear(new Date(2006,1,1));

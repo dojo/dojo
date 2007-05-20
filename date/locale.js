@@ -73,13 +73,13 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 					break;
 				case 'w':
 					var firstDay = 0;
-					s = dojo.date.getWeekOfYear(dateObject, firstDay); pad = true;
+					s = dojo.date.locale._getWeekOfYear(dateObject, firstDay); pad = true;
 					break;
 				case 'd':
 					s = dateObject.getDate(); pad = true;
 					break;
 				case 'D':
-					s = dojo.date.getDayOfYear(dateObject); pad = true;
+					s = dojo.date.locale._getDayOfYear(dateObject); pad = true;
 					break;
 				case 'E':
 				case 'e':
@@ -395,11 +395,9 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				expected.date = v;
 				break;
 			case 'D':
-				dojo.date.setDayOfYear(result, v); //FIXME: need to defer this until after the year is set for leap-year?
-				break;
-			case 'w':
-				var firstDay = 0;
-				dojo.date.setWeekOfYear(result, v, firstDay);
+				//FIXME: need to defer this until after the year is set for leap-year?
+				result.setMonth(0);
+				result.setDate(v);
 				break;
 			case 'a': //am/pm
 				var am = options.am || bundle.am;
@@ -445,6 +443,8 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 			case 'S': //milliseconds
 				result.setMilliseconds(v);
 				break;
+			case 'w':
+//				var firstDay = 0;
 			default:
 				dojo.unimplemented("dojo.date.locale.parse: unsupported pattern char=" + token.charAt(0));
 		}
@@ -634,14 +634,7 @@ dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 
 // These are used only by format and strftime.  Do they need to be public?  Which module should they go in?
 
-dojo.date.setDayOfYear = function(/*Date*/dateObject, /*Number*/dayOfYear){
-	// summary: sets dateObject according to day of the year (1..366)
-	dateObject.setMonth(0);
-	dateObject.setDate(dayOfYear);
-	return dateObject; // Date
-}
-
-dojo.date.getDayOfYear = function(/*Date*/dateObject){
+dojo.date.locale._getDayOfYear = function(/*Date*/dateObject){
 	// summary: gets the day of the year as represented by dateObject
 	var fullYear = dateObject.getFullYear();
 	var lastDayOfPrevYear = new Date(fullYear-1, 11, 31);
@@ -649,12 +642,7 @@ dojo.date.getDayOfYear = function(/*Date*/dateObject){
 		lastDayOfPrevYear.getTime()) / (24*60*60*1000)); // Number
 }
 
-dojo.date.setWeekOfYear = function(/*Date*/dateObject, /*Number*/week, /*Number*/firstDay){
-	if(arguments.length == 2){ firstDay = 0; } // Sunday
-	dojo.unimplemented("dojo.date.setWeekOfYear");
-}
-
-dojo.date.getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDay){
+dojo.date.locale._getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDay){
 	if(arguments.length == 1){ firstDay = 0; } // Sunday
 
 	// work out the first day of the year corresponding to the week

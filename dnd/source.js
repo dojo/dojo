@@ -49,23 +49,14 @@ function(node, params){
 	// states
 	this.sourceState  = "";
 	if(this.isSource){
-		//dojo.html.addClass(this.node, "dojoDndSource");
-		if(!/(^|\s+)dojoDndSource(\s+|$)/.test(this.node.className)){
-			this.node.className += " dojoDndSource";
-		}
+		dojo.addClass(this.node, "dojoDndSource");
 	}
 	this.targetState  = "";
 	if(this.accept){
-		//dojo.html.addClass(this.node, "dojoDndTarget");
-		if(!/(^|\s+)dojoDndTarget(\s+|$)/.test(this.node.className)){
-			this.node.className += " dojoDndTarget";
-		}
+		dojo.addClass(this.node, "dojoDndTarget");
 	}
 	if(this.horizontal){
-		//dojo.html.addClass(this.node, "dojoDndHorizontal");
-		if(!/(^|\s+)dojoDndHorizontal(\s+|$)/.test(this.node.className)){
-			this.node.className += " dojoDndHorizontal";
-		}
+		dojo.addClass(this.node, "dojoDndHorizontal");
 	}
 	// set up events
 	this.topics = {

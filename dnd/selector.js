@@ -107,9 +107,8 @@ function(node, params){
 							delete this.selection[this.current.id];
 						}else{
 							if(this.anchor){
-								//dojo.html.replaceClass(this.anchor, "dojoDndItemSelected", "dojoDndItemAnchor");
-								this.anchor.className = this.anchor.className.replace(
-									/(^|\s+)dojoDndItemAnchor(\s+|$)/, "$1 dojoDndItemSelected $2");
+								dojo.removeClass(this.anchor, "dojoDndItemAnchor");
+								dojo.addClass(this.anchor, "dojoDndItemSelected");
 							}
 							this.anchor = this.current;
 							this._addItemClass(this.current, "Anchor");

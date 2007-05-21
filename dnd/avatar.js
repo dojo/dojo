@@ -51,19 +51,16 @@ dojo.extend(dojo.dnd.Avatar, {
 		// summary: updates the avatar to reflect the current DnD state
 		//dojo.html[(this.manager.canDropFlag ? "add" : "remove") + "Class"](this.node, "dojoDndAvatarCanDrop");
 		if(this.manager.canDropFlag){
-			if(!/(^|\s+)dojoDndAvatarCanDrop(\s+|$)/.test(this.node.className)){
-				this.node.className += " dojoDndAvatarCanDrop";
-			}
+		  dojo.addClass(this.node, "dojoDndAvatarCanDrop");
 		}else{
-			this.node.className = this.node.className.replace(
-				/(^|\s+)dojoDndAvatarCanDrop(\s+|$)/, "$1$2");
+		  dojo.removeClass(this.node, "dojoDndAvatarCanDrop");
 		}
 		// replace text
 		var t = this.node.getElementsByTagName("td");
 		for(var i = 0; i < t.length; ++i){
 			var n = t[i];
 			//if(dojo.html.hasClass(n.parentNode, "dojoDndAvatarHeader")){
-			if(/(^|\s+)dojoDndAvatarHeader(\s+|$)/.test(n.parentNode.className)){
+			if(dojo.hasClass(n.parentNode, "dojoDndAvatarHeader")){
 				n.innerHTML = this._generateText();
 				break;
 			}

@@ -40,10 +40,7 @@ function(node, params){
 	this.current = null;
 	// states
 	this.containerState = "";
-	//dojo.html.addClass(this.node, "dojoDndContainer");
-	if(!/(^|\s+)dojoDndContainer(\s+|$)/.test(this.node.className)){
-		this.node.className += " dojoDndContainer";
-	}
+	dojo.addClass(this.node, "dojoDndContainer");
 	
 	// mark up children
 	var c = this.nodeSelector(this.node);
@@ -159,9 +156,8 @@ function(node, params){
 		var prefix = "dojoDnd" + type;
 		var state  = type.toLowerCase() + "State";
 		//dojo.html.replaceClass(this.node, prefix + newState, prefix + this[state]);
-		this.node.className = this.node.className.replace(
-			new RegExp("(^|\\s+)" + prefix + this[state] + "(\\s+|$)"), 
-			"$1 " + prefix + newState + " $2");
+		dojo.removeClass(this.node, prefix + this[state]);
+		dojo.addClass(this.node, prefix + newState);
 		this[state] = newState;
 	},
 	_addItemClass: function(node, type){
@@ -169,17 +165,14 @@ function(node, params){
 		// node: Node: a node
 		// type: String: a variable suffix for a class name
 		//dojo.html.addClass(node, "dojoDndItem" + type);
-		if(!new RegExp("(^|\\s+)dojoDndItem" + type + "(\\s+|$)").test(node.className)){
-			node.className += " dojoDndItem" + type;
-		}
+		dojo.addClass(node, "dojoDndItem" + type);
 	},
 	_removeItemClass: function(node, type){
 		// summary: removes a class with prefix "dojoDndItem"
 		// node: Node: a node
 		// type: String: a variable suffix for a class name
 		//dojo.html.removeClass(node, "dojoDndItem" + type);
-		node.className = node.className.replace(
-			new RegExp("(^|\\s+)dojoDndItem" + type + "(\\s+|$)"), "$1$2");
+		dojo.removeClass(node, "dojoDndItem" + type);
 	},
 	_getChildByEvent: function(e){
 		// summary: gets a child, which is under the mouse at the moment, or null

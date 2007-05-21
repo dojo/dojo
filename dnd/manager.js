@@ -56,11 +56,8 @@ dojo.extend(dojo.dnd.Manager, {
 			dojo.connect(dojo.doc, "onkeydown",   this, "onKeyDown"),
 			dojo.connect(dojo.doc, "onkeyup",     this, "onKeyUp")
 		];
-		//dojo.html.addClass(dojo.body(), "dojoDnd" + (copy ? "Copy" : "Move"));
 		var c = "dojoDnd" + (copy ? "Copy" : "Move");
-		if(!new RegExp("(^|\\s+)" + c + "(\\s+|$)").test(dojo.body().className)){
-			dojo.body().className += " dojoDndContainer";
-		}
+		dojo.addClass(dojo.body(), c); 
 	},
 	canDrop: function(flag){
 		// summary: called to notify if the current target can accept items
@@ -72,11 +69,8 @@ dojo.extend(dojo.dnd.Manager, {
 	},
 	stopDrag: function(){
 		// summary: stop the DnD in progress
-		//dojo.html.removeClass(dojo.body(), "dojoDndCopy");
-		//dojo.html.removeClass(dojo.body(), "dojoDndMove");
-		dojo.body().className = dojo.body().className.
-			replace(/(^|\s+)dojoDndCopy(\s+|$)/, "$1$2").
-			replace(/(^|\s+)dojoDndMove(\s+|$)/, "$1$2");
+		dojo.removeClass(dojo.body(), "dojoDndCopy");
+		dojo.removeClass(dojo.body(), "dojoDndMove");
 		dojo.forEach(this.events, dojo.disconnect);
 		this.events = [];
 		this.avatar.destroy();
@@ -136,10 +130,8 @@ dojo.extend(dojo.dnd.Manager, {
 		this.copy = copy;
 		this.source._markDndStatus(this.copy);
 		this.updateAvatar();
-		//dojo.html.replaceClass(dojo.body(), "dojoDnd" + (this.copy ? "Copy" : "Move"), "dojoDnd" + (this.copy ? "Move" : "Copy"));
-		dojo.body().className = dojo.body().className.replace(
-			new RegExp("(^|\\s+)" + "dojoDnd" + (this.copy ? "Copy" : "Move") + "(\\s+|$)"), 
-			"$1 " + "dojoDnd" + (this.copy ? "Move" : "Copy") + " $2");
+		dojo.removeClass(dojo.body(), "dojoDnd" + (this.copy ? "Move" : "Copy"));
+		dojo.addClass(dojo.body(), "dojoDnd" + (this.copy ? "Copy" : "Move"));
 	}
 });
 

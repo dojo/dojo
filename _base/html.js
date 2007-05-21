@@ -363,7 +363,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		dojo._getMarginBox = function(node, computedStyle){
 			var s = computedStyle||this.getComputedStyle(node);
 			var mb = dojo._getMarginExtents(node, s);
-			return { l:parseFloat(s.left), t:parseFloat(s.top), w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+			return { l:parseFloat(s.left)||0, t:parseFloat(s.top)||0, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 		}
 	} else {
 		dojo._getMarginBox = function(node, computedStyle){

@@ -473,14 +473,14 @@ dojo.declare("dojo._Animation", null,
 				}
 
 				if(isColor){
-					console.debug("it's a color!");
+					// console.debug("it's a color!");
 					prop.start = new dojo.Color(prop.start);
 					prop.end = new dojo.Color(prop.end);
 				}else{
 					prop.start = (p == "opacity") ? Number(prop.start) : parseInt(prop.start);
 				}
-				console.debug("start:", prop.start);
-				console.debug("end:", prop.end);
+				// console.debug("start:", prop.start);
+				// console.debug("end:", prop.end);
 			}
 			this.curve = new PropLine(pm);
 		});

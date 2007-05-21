@@ -47,123 +47,66 @@ dojo.declare = function(/*String*/ className,
 	//				}
 	//			}
 	//		);
-	 
-	// I. Munge parameters
-	// parameter juggling to support omitting init param 
-	// (also allows reordering init and props arguments)
-	if((dojo.isFunction(props))||((!props)&&(!dojo.isFunction(init)))){ 
+	
+	// argument juggling
+	if(dojo.isFunction(props)||(!props&&!dojo.isFunction(init))){ 
 		var t=props; props=init; init=t;
-	}
-	// extract mixins from 'superclass' argument, if necessary
-	var mixins = [ ];
+	}	
+	// our constructor boilerplate (this is cloned, so keep it short)
+	var ctor = function(){this._construct(arguments);}
+	// alias declare, ensure props, make mixin array, alias prototype
+	var dd=dojo.declare, p=props || {}, mixins=[];
+	// extract mixins
 	if(dojo.isArray(superclass)){
 		mixins = superclass;
 		superclass = mixins.shift();
 	}
-	// require props object
-	props = props || {};
-	//
-	// II. Make constructor
-	// construct an instance of our canonical constructor
-	var ctor = dojo.declare._makeConstructor();
-	//
-	// III. Chain superclass
-	// alias the superclass prototype (if any)
-	var scp = (superclass ? superclass.prototype : null);
-	if(scp){
-		// chain prototypes.
-		var thunk = function(){};
-		thunk.prototype = scp;
-		ctor.prototype = new thunk();
-	}
-	// keep a reference to the superclass prototype
-	ctor.superclass = scp;
-	//
-	// IV. Copy mixins
-	// keep a reference to the array of mixin classes
-	ctor.mixins = mixins;
-	// copy the mixin prototype to the new prototype
-	for(var i=0,m;(m=mixins[i]);i++){
-		dojo.extend(ctor, m.prototype);
-	}
-	//
-	// V. Finalize constructor
-	// alias the prototype
-	var cp = ctor.prototype;
-	// override any inherited initializer property
-	cp.initializer = null;
-	// keep a reference to our className
-	cp.declaredClass = className;
-	// mix props and _core into our prototype 
-	dojo.mixin(cp, props, dojo.declare._core);
-	// keep a reference to our constructor
-	cp.constructor = ctor;
-	// install the initializer
-	cp.initializer = (cp.initializer)||(init)||(function(){});
-	//
-	// VI. Create named reference
+	// chain prototypes
+	var scp = superclass ? superclass.prototype : null;
+	if(scp){ ctor.prototype = dojo._delegate(scp); }
+	// cache ancestry, attach fancy extension mechanism
+	dojo.mixin(ctor, {superclass: scp, mixins: mixins, extend: dd._extend});
+	// extend with mixin classes
+	for(var i=0,m;(m=mixins[i]);i++){dojo.extend(ctor, m.prototype);}
+	// decorate the prototype
+	dojo.extend(ctor, {declaredClass: className, _initializer:init||p.constructor, preamble: null}, p, dd._core); 
+	// do this last (doesn't work via extend anyway)
+	ctor.prototype.constructor = ctor;
+	// create named reference
 	return dojo.setObject(className, ctor); // Function
 }
 
-dojo.declare._makeConstructor = function(){
-	return function(){ 
-		var c = arguments.callee, p = c.prototype, s = c.superclass;			
-		// superclass instantiation
-		if(s&&s.constructor.apply){s.constructor.apply(this, arguments);}
-		// initialize any mixins
-		if(c.mixins){
-			for(var i=0, m, f; (m=c.mixins[i]); i++){
-				// avoid the constructor on 'declared' mixins
-				(f=("initializer" in m ? m.initializer : m))&&(f.apply(this, arguments));
-			}
-		}
-		// initialize ourself
-		if(p.initializer){
-			p.initializer.apply(this, arguments);
-		}
-	}
-}
-
-dojo.declare._core = {
-	_findInherited: function(name, callee){
-		var p = this.constructor.prototype;
-		if (this[name]!==callee){
-			while(p && (p[name]!==callee)){ 
-				p = p.constructor.superclass; 
-			}
-			if ((!p)||(p[name]!==callee)){
-				throw(this.toString() + ': name argument ("' + name + '") to inherited does not match callee (declare.js)');
-			}
-		}
-		while(p && (p[name]===callee)){ 
-			p = p.constructor.superclass; 
-		}
-		return (p)&&(p[name]);	
+dojo.mixin(dojo.declare, {
+	_extend: function(mixin, preamble) {
+		dojo.extend(this, mixin);
+		this.mixins.push(!preamble ? mixin : function() { mixin.apply(this, preamble.apply(this, arguments) || arguments); });
 	},
-	inherited: function(name, args, callee){
-	 	//	summary: 
-		//		Invoke an ancestor method
-		//	name: String
-		//		name of the method to invoke
-		//	args: Array||arguments
-		//		array of arguments, or the 'arguments' value from
-		//		the caller. Args must include a 'callee' property from
-		//		a the callers 'arguments', or 'callee' must be passed
-		//		as the third parameter.
-		//	callee: Function?
-		//		reference to the function from which to ascend the
-		//		prototype chain.
-		//	description:
-		//		Invoke an ancestor (base class) or overriden method.
-	 	//	usage:
-		//		foo: function() {
-		//			// invoke superclass 'foo'
-		//			this.inherited("foo", arguments);
-		//		}
-		var c = (callee)||((args)&&(args.callee));
-		if(c){
-			var fn = (name)&&(this._findInherited(name, c));
-			return (fn)&&(fn.apply(this, args));
+	_core: {
+		_construct: function(args) {
+			var c=args.callee, s=c.superclass, ct=s&&s.constructor, a=args, ii;
+			// call any preamble
+			if(fn=c.prototype.preamble){a = fn.apply(this, a) || a;}
+			// initialize superclass
+			if(ct&&ct.apply){ct.apply(this, a)};
+			// initialize mixins
+			for(var i=0, m; (m=c.mixins[i]); i++){if(m.apply){m.apply(this, a);}}
+			// call our own initializer
+			var ii = c.prototype._initializer;
+			if(ii){ii.apply(this, args);}
+		},
+		inherited: function(name, args, newArgs){
+			var c=args.callee, p=this.constructor.prototype, a=newArgs||args, fn;
+			// if not an instance override 
+			if (this[name]!=c || p[name]==c) {
+				// seek the prototype which contains callee
+				while(p && (p[name]!==c)){ p=p.constructor.superclass; }
+				// not found means user error
+				if(!p){ throw(this.toString() + ': name argument ("' + name + '") to inherited must match callee (declare.js)');	}
+				// find the eldest prototype which does not contain callee
+				while(p && (p[name]==c)){ p=p.constructor.superclass; }
+			}
+			// if the function exists, invoke it in our scope
+			return (fn=p&&p[name])&&(fn.apply(this, a));
 		}
 	}
-};
+});	

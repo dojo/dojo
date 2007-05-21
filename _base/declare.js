@@ -54,7 +54,7 @@ dojo.declare = function(/*String*/ className,
 	}	
 	// our constructor boilerplate (this is cloned, so keep it short)
 	var ctor = function(){this._construct(arguments);}
-	// alias declare, ensure props, make mixin array, alias prototype
+	// alias declare, ensure props, make mixin array
 	var dd=dojo.declare, p=props || {}, mixins=[];
 	// extract mixins
 	if(dojo.isArray(superclass)){
@@ -63,7 +63,7 @@ dojo.declare = function(/*String*/ className,
 	}
 	// chain prototypes
 	var scp = superclass ? superclass.prototype : null;
-	if(scp){ ctor.prototype = dojo._delegate(scp); }
+	if(scp){ctor.prototype = dojo._delegate(scp);}
 	// cache ancestry, attach fancy extension mechanism
 	dojo.mixin(ctor, {superclass: scp, mixins: mixins, extend: dd._extend});
 	// extend with mixin classes
@@ -99,11 +99,11 @@ dojo.mixin(dojo.declare, {
 			// if not an instance override 
 			if (this[name]!=c || p[name]==c) {
 				// seek the prototype which contains callee
-				while(p && (p[name]!==c)){ p=p.constructor.superclass; }
+				while(p && (p[name]!==c)){p=p.constructor.superclass;}
 				// not found means user error
 				if(!p){ throw(this.toString() + ': name argument ("' + name + '") to inherited must match callee (declare.js)');	}
 				// find the eldest prototype which does not contain callee
-				while(p && (p[name]==c)){ p=p.constructor.superclass; }
+				while(p && (p[name]==c)){p=p.constructor.superclass;}
 			}
 			// if the function exists, invoke it in our scope
 			return (fn=p&&p[name])&&(fn.apply(this, a));

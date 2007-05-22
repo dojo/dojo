@@ -112,7 +112,8 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 	if(!contents){ return false; } // Boolean
 	this._loadedUrls[uri] = true;
 	if(cb){ contents = '('+contents+')'; }
-	var value = dojo["eval"](contents);
+	// var value = dojo["eval"](contents);
+	var value = dojo["eval"]("//@ sourceURL="+uri+"\r\n"+contents);
 	if(cb){ cb(value); }
 	return true; // Boolean
 }
@@ -120,7 +121,7 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 // FIXME: probably need to add logging to this method
 dojo._loadUriAndCheck = function(/*String (URL)*/uri, /*String*/moduleName, /*Function?*/cb){
 	// summary: calls loadUri then findModule and returns true if both succeed
-	var ok = true;
+	var ok = false;
 	try{
 		ok = this._loadUri(uri, cb);
 	}catch(e){
@@ -150,18 +151,18 @@ dojo.unloaded = function(){
 	}
 }
 
-dojo.addOnLoad = function(/*Object?*/obj, /*String|Function*/functionName) {
-// summary:
-//	Registers a function to be triggered after the DOM has finished loading 
-//	and widgets declared in markup have been instantiated.  Images and CSS files
-//	may or may not have finished downloading when the specified function is called.
-//	(Note that widgets' CSS and HTML code is guaranteed to be downloaded before said
-//	widgets are instantiated.)
-//
-// usage:
-//	dojo.addOnLoad(functionPointer)
-//	dojo.addOnLoad(object, "functionName")
-
+dojo.addOnLoad = function(/*Object?*/obj, /*String|Function*/functionName){
+	// summary:
+	//		Registers a function to be triggered after the DOM has finished
+	//		loading and widgets declared in markup have been instantiated.
+	//		Images and CSS files may or may not have finished downloading when
+	//		the specified function is called.  (Note that widgets' CSS and HTML
+	//		code is guaranteed to be downloaded before said widgets are
+	//		instantiated.)
+	//
+	// usage:
+	//		dojo.addOnLoad(functionPointer);
+	//		dojo.addOnLoad(object, "functionName");
 	var d = dojo;
 	if(arguments.length == 1){
 		d._loaders.push(obj);
@@ -498,113 +499,117 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 
 	dojo.require("dojo.i18n");
 	dojo.i18n._requireLocalization.apply(dojo.hostenv, arguments);
-}
+};
 
-dojo._Url = function(/*dojo._Url||String...*/){
-	// summary: 
-	//		Constructor to create an object representing a URL.
-	//		It is marked as private, since we might consider removing
-	//		or simplifying it.
-	// description: 
-	//		Each argument is evaluated in order relative to the next until
-	//		a canonical uri is produced. To get an absolute Uri relative to
-	//		the current document use:
-	//      	new dojo._Url(document.baseURI, url)
+(function(){
 
-	// TODO: support for IPv6, see RFC 2732
+	var ore = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$");
+	var ire = new RegExp("^((([^:]+:)?([^@]+))@)?([^:]*)(:([0-9]+))?$");
 
-	// resolve uri components relative to each other
-	var n = null;
-	var _a = arguments;
-	var uri = _a[0];
-	for(var i = 1; i<_a.length; i++){
-		if(!_a[i]){ continue; }
+	dojo._Url = function(/*dojo._Url||String...*/){
+		// summary: 
+		//		Constructor to create an object representing a URL.
+		//		It is marked as private, since we might consider removing
+		//		or simplifying it.
+		// description: 
+		//		Each argument is evaluated in order relative to the next until
+		//		a canonical uri is produced. To get an absolute Uri relative to
+		//		the current document use:
+		//      	new dojo._Url(document.baseURI, url)
 
-		// Safari doesn't support this.constructor so we have to be explicit
-		var relobj = new dojo._Url(_a[i]+"");
-		var uriobj = new dojo._Url(uri+"");
+		// TODO: support for IPv6, see RFC 2732
 
-		if(
-			(relobj.path=="")	&&
-			(!relobj.scheme)	&&
-			(!relobj.authority)	&&
-			(!relobj.query)
-		){
-			if(relobj.fragment != null){
-				uriobj.fragment = relobj.fragment;
-			}
-			relobj = uriobj;
-		}else if(relobj.scheme == null){
-			relobj.scheme = uriobj.scheme;
+		// resolve uri components relative to each other
+		var n = null;
+		var _a = arguments;
+		var uri = _a[0];
+		for(var i = 1; i<_a.length; i++){
+			if(!_a[i]){ continue; }
 
-			if(relobj.authority == null){
-				relobj.authority = uriobj.authority;
+			// Safari doesn't support this.constructor so we have to be explicit
+			var relobj = new dojo._Url(_a[i]+"");
+			var uriobj = new dojo._Url(uri+"");
 
-				if(relobj.path.charAt(0) != "/"){
-					var path = uriobj.path.substring(0,
-						uriobj.path.lastIndexOf("/") + 1) + relobj.path;
+			if(
+				(relobj.path=="")	&&
+				(!relobj.scheme)	&&
+				(!relobj.authority)	&&
+				(!relobj.query)
+			){
+				if(relobj.fragment != null){
+					uriobj.fragment = relobj.fragment;
+				}
+				relobj = uriobj;
+			}else if(relobj.scheme == null){
+				relobj.scheme = uriobj.scheme;
 
-					var segs = path.split("/");
-					for(var j = 0; j < segs.length; j++){
-						if(segs[j] == "."){
-							if (j == segs.length - 1) { segs[j] = ""; }
-							else { segs.splice(j, 1); j--; }
-						}else if(j > 0 && !(j == 1 && segs[0] == "") &&
-							segs[j] == ".." && segs[j-1] != ".."){
+				if(relobj.authority == null){
+					relobj.authority = uriobj.authority;
 
-							if(j == (segs.length - 1)){
-								segs.splice(j, 1); segs[j - 1] = "";
-							}else{
-								segs.splice(j - 1, 2); j -= 2;
+					if(relobj.path.charAt(0) != "/"){
+						var path = uriobj.path.substring(0,
+							uriobj.path.lastIndexOf("/") + 1) + relobj.path;
+
+						var segs = path.split("/");
+						for(var j = 0; j < segs.length; j++){
+							if(segs[j] == "."){
+								if (j == segs.length - 1) { segs[j] = ""; }
+								else { segs.splice(j, 1); j--; }
+							}else if(j > 0 && !(j == 1 && segs[0] == "") &&
+								segs[j] == ".." && segs[j-1] != ".."){
+
+								if(j == (segs.length - 1)){
+									segs.splice(j, 1); segs[j - 1] = "";
+								}else{
+									segs.splice(j - 1, 2); j -= 2;
+								}
 							}
 						}
+						relobj.path = segs.join("/");
 					}
-					relobj.path = segs.join("/");
 				}
+			}
+
+			uri = "";
+			if(relobj.scheme != null){ 
+				uri += relobj.scheme + ":";
+			}
+			if(relobj.authority != null){
+				uri += "//" + relobj.authority;
+			}
+			uri += relobj.path;
+			if(relobj.query != null){
+				uri += "?" + relobj.query;
+			}
+			if(relobj.fragment != null){
+				uri += "#" + relobj.fragment;
 			}
 		}
 
-		uri = "";
-		if(relobj.scheme != null){ 
-			uri += relobj.scheme + ":";
-		}
-		if(relobj.authority != null){
-			uri += "//" + relobj.authority;
-		}
-		uri += relobj.path;
-		if(relobj.query != null){
-			uri += "?" + relobj.query;
-		}
-		if(relobj.fragment != null){
-			uri += "#" + relobj.fragment;
+		this.uri = uri.toString();
+
+		// break the uri into its main components
+		var r = this.uri.match(ore);
+
+		this.scheme = r[2] || (r[1] ? "" : null);
+		this.authority = r[4] || (r[3] ? "" : null);
+		this.path = r[5]; // can never be undefined
+		this.query = r[7] || (r[6] ? "" : null);
+		this.fragment  = r[9] || (r[8] ? "" : null);
+
+		if(this.authority != null){
+			// server based naming authority
+			r = this.authority.match(ire);
+
+			this.user = r[3] || null;
+			this.password = r[4] || null;
+			this.host = r[5];
+			this.port = r[7] || null;
 		}
 	}
 
-	this.uri = uri.toString();
-
-	// break the uri into its main components
-	var regexp = "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$";
-	var r = this.uri.match(new RegExp(regexp));
-
-	this.scheme = r[2] || (r[1] ? "" : null);
-	this.authority = r[4] || (r[3] ? "" : null);
-	this.path = r[5]; // can never be undefined
-	this.query = r[7] || (r[6] ? "" : null);
-	this.fragment  = r[9] || (r[8] ? "" : null);
-
-	if(this.authority != null){
-		// server based naming authority
-		regexp = "^((([^:]+:)?([^@]+))@)?([^:]*)(:([0-9]+))?$";
-		r = this.authority.match(new RegExp(regexp));
-
-		this.user = r[3] || null;
-		this.password = r[4] || null;
-		this.host = r[5];
-		this.port = r[7] || null;
-	}
-
-	this.toString = function(){ return this.uri; }
-}
+	dojo._Url.prototype.toString = function(){ return this.uri; };
+})();
 
 dojo.moduleUrl = function(/*String*/module, /*dojo._Url||String*/url){
 	// summary: 

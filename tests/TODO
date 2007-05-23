@@ -1,0 +1,12 @@
+This file lists tests that need to be implemented or expanded. See ticket #3121
+for changes related to thigns listed here.
+
+Tests to add:
+-------------
+	* xhr put/delete tests
+	* html tests need to start exercising the semi-public methods
+
+Tests to improve:
+-----------------
+	* the cldr tests aren't correctly formatted and only seem to touch dojo.cldr.suplemental functionality
+	* cookie tests don't seem to test expiry or date functions

@@ -309,8 +309,8 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 	var info = dojo.number._parseInfo(options);
 
 	var results = (new RegExp("^"+info.regexp+"$")).exec(expression);
-	if(!results){
-		return NaN; //NaN
+		if(!results){
+			return NaN; //NaN
 	}
 	var absoluteMatch = results[1]; // match for the positive expression
 	if(!results[1]){
@@ -323,7 +323,10 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 	}
 
 	// Transform it to something Javascript can parse as a number
-	absoluteMatch = absoluteMatch.replace(new RegExp(info.group, "g"), "").replace(info.decimal, ".");
+	while(absoluteMatch.indexOf(info.group) != -1){
+		absoluteMatch = absoluteMatch.replace(info.group, "");
+	}
+	absoluteMatch = absoluteMatch.replace(info.decimal, ".");
 
 	// Adjust for negative sign, percent, etc. as necessary
 	return Number(absoluteMatch) * info.factor; //Number
@@ -432,6 +435,7 @@ dojo.number._integerRegexp = function(/*Object?*/flags){
 			if(!sep){ 
 				return "(?:0|[1-9]\\d*)";
 			}
+			if(sep=="."){sep="\\.";} //FIXME: escape all special chars in sep
 			var grp = flags.groupSize, grp2 = flags.groupSize2;
 			if(grp2){
 				var grp2RE = "(?:0|[1-9]\\d{0," + (grp2-1) + "}(?:[" + sep + "]\\d{" + grp2 + "})*[" + sep + "]\\d{" + grp + "})";

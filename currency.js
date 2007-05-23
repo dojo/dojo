@@ -36,13 +36,12 @@ dojo.currency.format = function(/*Number*/value, /*Object?*/options){
 // value:
 //		the number to be formatted.
 //
-// options: object {currency: String, pattern: String?, type: String?, places: Number?, round: Number?, symbol: String?, locale: String?}
+// options: object {currency: String, pattern: String?, places: Number?, round: Number?, symbol: String?, locale: String?}
 //		currency- the ISO4217 currency code, a three letter sequence like "USD"
 //			See http://en.wikipedia.org/wiki/ISO_4217
 //		symbol- override currency symbol. Normally, will be looked up in table of supported currencies, and ISO currency code will
 //			be used if not found.  See dojo.i18n.cldr.nls->currency.js
 //		pattern- override formatting pattern with this string (see dojo.number.applyPattern)
-//		type- choose a format type based on the locale from the following: decimal, scientific, percent, currency. decimal by default.
 //		places- fixed number of decimal places to show.  Default is defined by the currency.
 //	    round- 5 rounds to nearest .5; 0 rounds to nearest whole (default). -1 means don't round.
 //		locale- override the locale used to determine formatting rules
@@ -58,13 +57,12 @@ dojo.currency.regexp = function(/*Object?*/options){
 // description:
 //		returns regular expression with positive and negative match, group and decimal separators
 //
-// options: object {pattern: String, type: String locale: String, strict: Boolean, places: mixed}
+// options: object {pattern: String, locale: String, strict: Boolean, places: mixed}
 //		currency- the ISO4217 currency code, a three letter sequence like "USD"
 //			See http://en.wikipedia.org/wiki/ISO_4217
 //		symbol- override currency symbol. Normally, will be looked up in table of supported currencies, and ISO currency code will
 //			be used if not found.  See dojo.i18n.cldr.nls->currency.js
 //		pattern- override pattern with this string
-//		type- choose a format type based on the locale from the following: decimal, scientific, percent, currency. decimal by default.
 //		locale- override the locale used to determine formatting rules
 //		strict- strict parsing, false by default
 //		places- number of decimal places to accept.  Default is defined by currency.
@@ -90,7 +88,6 @@ dojo.currency.parse = function(/*String*/expression, /*Object?*/options){
 //		symbol- override currency symbol. Normally, will be looked up in table of supported currencies, and ISO currency code will
 //			be used if not found.  See dojo.i18n.cldr.nls->currency.js
 //		pattern- override pattern with this string
-//		type- choose a format type based on the locale from the following: decimal, scientific, percent, currency. decimal by default.
 //		locale- override the locale used to determine formatting rules
 //		strict- strict parsing, false by default
 	return dojo.number.parse(expression, dojo.currency._mixInDefaults(options));

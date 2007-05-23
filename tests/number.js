@@ -137,7 +137,7 @@ tests.register("tests.number",
 
 			name: "number",
 			setUp: function(){
-				var partLocaleList = ["en-us", "fr-fr"];
+				var partLocaleList = ["en-us", "fr-fr", "de-de"];
 
 				for(var i = 0 ; i < partLocaleList.length; i ++){
 					dojo.requireLocalization("dojo.cldr","number",partLocaleList[i]);
@@ -175,6 +175,7 @@ tests.register("tests.number",
 	t.is("-1\xa0000,10", dojo.number.format(-1000.1, {places:2, locale: "fr-fr"}));
 	t.is("-1,000.10", dojo.number.format(-1000.1, {places:2, locale: "en-us"}));
 	t.is("-1\xa0000,10", dojo.number.format(-1000.1, {places:2, locale: "fr-fr"}));
+	t.is("-1.234,56", dojo.number.format(-1234.56, {places:2, locale: "de-de"}));
 	t.is("-1,000.10", dojo.number.format(-1000.1, {places:2, locale: "en-us"}));
 	t.is("123.46%", dojo.number.format(1.23456, {places:2, locale: "en-us", type: "percent"}));
 

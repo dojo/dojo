@@ -112,19 +112,19 @@ dojo.extractRgb = function(color){
 dojo.hex2rgb = function(hex){
 	var hexNum = "0123456789ABCDEF";
 	var rgb = new Array(3);
-	if( hex[0] == "#" ){ hex = hex.substring(1); }
+	if( hex.charAt(0) == "#" ){ hex = hex.substr(1); }
 	hex = hex.toUpperCase();
 	if(hex.replace(new RegExp("["+hexNum+"]", "g"), "") != ""){
 		return null;
 	}
 	if( hex.length == 3 ){
-		rgb[0] = hex.charAt(0) + hex.charAt(0)
-		rgb[1] = hex.charAt(1) + hex.charAt(1)
+		rgb[0] = hex.charAt(0) + hex.charAt(0);
+		rgb[1] = hex.charAt(1) + hex.charAt(1);
 		rgb[2] = hex.charAt(2) + hex.charAt(2);
 	}else{
-		rgb[0] = hex.substring(0, 2);
-		rgb[1] = hex.substring(2, 4);
-		rgb[2] = hex.substring(4);
+		rgb[0] = hex.substr(0, 2);
+		rgb[1] = hex.substr(2, 2);
+		rgb[2] = hex.substr(4);
 	}
 	for(var i = 0; i < rgb.length; i++){
 		rgb[i] = hexNum.indexOf(rgb[i].charAt(0)) * 16 + hexNum.indexOf(rgb[i].charAt(1));

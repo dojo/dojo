@@ -139,6 +139,7 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	}
 	if(dojo.isString(method)){
 		scope = scope || dojo.global;
+		if (!scope[method]) throw(['dojo.hitch: scope["', method, '"] is null (scope="', scope, '")'].join(''))
 		return function(){ return scope[method].apply(scope, arguments||[]); }
 	}else{
 		return (!scope ? method : function(){ return method.apply(scope, arguments||[]); });

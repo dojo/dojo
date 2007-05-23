@@ -50,7 +50,7 @@ dojo.extend(dojo.Color, {
 		var d = dojo;
 		var a = arguments;
 		var a0 = a[0];
-		var pmap = (d.isArray(a0) ? r : (d.isString(a0) ? d.extractRgb(a0) : d._toArray(a)) );
+		var pmap = (d.isArray(a0) ? a0 : (d.isString(a0) ? d.extractRgb(a0) : d._toArray(a)) );
 		d.forEach(["r", "g", "b", "a"], function(p, i){
 			this._cache[i] = this[p] = parseFloat(pmap[i]);
 		}, this);

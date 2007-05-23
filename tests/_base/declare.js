@@ -157,11 +157,10 @@ tests.register("tests._base.declare",
 					this.foo = "blah";
 				},{
 					bar: function(arg1, arg2){
-						this.inherited("bar", [arg2, arg1], arguments.callee);
+						this.inherited("bar", arguments, [arg2, arg1]);
 					},
 					baz: function(arg1, arg2){
-						//this.inherited("baz", arguments);
-						this.inherited("bar", arguments, tests._base.declare.tmp15.prototype.bar);
+						tests._base.declare.tmp15.superclass.bar.apply(this, arguments);
 					}
 				}
 			);

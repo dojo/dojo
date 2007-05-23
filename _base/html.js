@@ -310,7 +310,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		// Normally application code will not need to invoke this directly,
 		// and will use the ...box... functions instead.
 		var 
-			s=computedStyle||this.getComputedStyle(n), 
+			s=computedStyle||dojo.getComputedStyle(n), 
 			px=dojo._toPixelValue,
 			l=px(n, s.paddingLeft), 
 			t=px(n, s.paddingTop);
@@ -329,7 +329,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		// Normally application code will not need to invoke this directly,
 		// and will use the ...box... functions instead.
 		var 
-			s=computedStyle||this.getComputedStyle(n), 
+			s=computedStyle||dojo.getComputedStyle(n), 
 			px=dojo._toPixelValue, 
 			p=dojo._getPadBounds(n, s),
 			bw=(s.borderLeftStyle!='none' ? px(n, s.borderLeftWidth) : 0) + (s.borderRightStyle!='none' ? px(n, s.borderRightWidth) : 0),
@@ -342,7 +342,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 
 	dojo._getMarginExtents = function(n, computedStyle){
 		var 
-			s=computedStyle||this.getComputedStyle(n), 
+			s=computedStyle||dojo.getComputedStyle(n), 
 			px=dojo._toPixelValue;
 		return { 
 			w: px(n, s.marginLeft)+px(n, s.marginRight),
@@ -361,7 +361,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 
 	if (dojo.isMoz) {
 		dojo._getMarginBox = function(node, computedStyle){
-			var s = computedStyle||this.getComputedStyle(node);
+			var s = computedStyle||dojo.getComputedStyle(node);
 			var mb = dojo._getMarginExtents(node, s);
 			return { l:parseFloat(s.left)||0, t:parseFloat(s.top)||0, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 		}

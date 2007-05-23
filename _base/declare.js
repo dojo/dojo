@@ -55,7 +55,7 @@ dojo.declare = function(/*String*/ className,
 	// our constructor boilerplate (this is cloned, so keep it short)
 	var ctor = function(){this._construct(arguments);}
 	// alias declare, ensure props, make mixin array
-	var dd=dojo.declare, p=props || {}, mixins=[];
+	var dd=dojo.declare, p=props || {}, mixins=[], pc;
 	// extract mixins
 	if(dojo.isArray(superclass)){
 		mixins = superclass;
@@ -68,8 +68,10 @@ dojo.declare = function(/*String*/ className,
 	dojo.mixin(ctor, {superclass: scp, mixins: mixins, extend: dd._extend});
 	// extend with mixin classes
 	for(var i=0,m;(m=mixins[i]);i++){dojo.extend(ctor, m.prototype);}
+	// locate initializer
+	init = init || (pc=p.constructor)&&(pc!=Object)&&pc || null;
 	// decorate the prototype
-	dojo.extend(ctor, {declaredClass: className, _initializer:init||p.constructor, preamble: null}, p, dd._core); 
+	dojo.extend(ctor, {declaredClass: className, _initializer: init, preamble: null}, p, dd._core); 
 	// do this last (doesn't work via extend anyway)
 	ctor.prototype.constructor = ctor;
 	// create named reference

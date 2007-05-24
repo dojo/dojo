@@ -111,7 +111,7 @@ dojo.extractRgb = function(color){
 	color = color.toLowerCase();
 	if(color.indexOf("rgb") == 0 ){
 		var matches = color.match(/rgba*\((\d+), *(\d+), *(\d+)/i);
-		var ret = dojo.map(matches.splice(1, 3), function(n){ return parseFloat(n); });
+		var ret = dojo.map(matches.splice(1, 3), parseFloat);
 		return ret;
 	}else{
 		return dojo.hex2rgb(color) || dojo.Color.named[color] || [255, 255, 255];

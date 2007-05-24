@@ -126,10 +126,7 @@ dojo.date.stamp.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector){
 //		"date" or "time" to format selected portions of the Date object.
 //		Date and time will be formatted by default.
 
-//FIXME: tolerate Number, string input?
-	if(!dateObject){
-		dateObject = new Date();
-	}
+	dateObject = dateObject || new Date();
 
 	var _ = dojo.string.pad;
 	var formattedDate = [];

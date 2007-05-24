@@ -194,13 +194,18 @@ if(
 		consoleFrame.setAttribute("src", dojo.moduleUrl("dojo", "_base/firebug/firebug.html"));
 		consoleFrame.setAttribute("frameBorder", "0");
 		with(consoleFrame.style){
+			margin = padding = border = "0px";
 			visibility = (frameVisible ? "visible" : "hidden");	  
-			zIndex = "2147483647";
+			// zIndex = "2147483647";
+			zIndex = 10000;
 			position = "fixed";
 			width = "100%";
 			left = "0";
-			bottom = "0";
+			bottom = "3";
 			height = "200px";
+			khtmlBoxSizing = "border-box";
+			mozBoxSizing = "border-box";
+			boxSizing = "border-box";
 		}
 		document.body.appendChild(consoleFrame);
 	}

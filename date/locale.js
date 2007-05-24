@@ -296,17 +296,17 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 	var tokens = info.tokens, bundle = info.bundle;
 	var re = new RegExp("^" + info.regexp + "$");
 	var match = re.exec(value);
-	if(!match){ return null;} // null
+	if(!match){ return null; } // null
 
 	var widthList = ['abbr', 'wide', 'narrow'];
 	//1972 is a leap year.  We want to avoid Feb 29 rolling over into Mar 1,
 	//in the cases where the year is parsed after the month and day.
 	var result = new Date(1972, 0);
 	var expected = {};
-	for(var i=1; i<match.length; i++){
+	dojo.forEach(match, function(v, i){
+		if(!i){return;}
 		var token=tokens[i-1];
 		var l=token.length;
-		var v=match[i];
 		switch(token.charAt(0)){
 			case 'y':
 				if(l != 2){
@@ -338,57 +338,43 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				}
 				break;
 			case 'M':
-				if (l>2) {
+				if(l>2){
+					var months = bundle['months-format-' + widthList[l-3]].concat();
 					if(!options.strict){
 						//Tolerate abbreviating period in month part
-						v = v.replace(/\./g,'');
-						//Case-insensitive
-						v = v.toLowerCase();
+						//Case-insensitive comparison
+						v = v.replace(".","").toLowerCase();
+						months = dojo.map(months, function(s){ return s.replace(".","").toLowerCase(); } );
 					}
-					var months = bundle['months-format-' + widthList[l-3]].concat();
-					for (var j=0; j<months.length; j++){
-						if(!options.strict){
-							//Case-insensitive
-							months[j] = months[j].toLowerCase();
-						}
-						if(v == months[j]){
-							result.setMonth(j);
-							expected.month = j;
-							break;
-						}
-					}
-					if(j==months.length){
+					v = dojo.indexOf(months, v);
+					if(v == -1){
 //						console.debug("dojo.date.locale.parse: Could not parse month name: '" + v + "'.");
 						return null;
 					}
 				}else{
-					result.setMonth(v-1);
-					expected.month = v-1;
+					v--;
 				}
+				result.setMonth(v);
+				expected.month = v;
 				break;
 			case 'E':
 			case 'e':
-				if(!options.strict){
-					//Case-insensitive
-					v = v.toLowerCase();
-				}
 				var days = bundle['days-format-' + widthList[l-3]].concat();
-				for (var j=0; j<days.length; j++){
-					if(!options.strict){
-						//Case-insensitive
-						days[j] = days[j].toLowerCase();
-					}
-					if(v == days[j]){
-						//TODO: not sure what to actually do with this input,
-						//in terms of setting something on the Date obj...?
-						//without more context, can't affect the actual date
-						break;
-					}
+				if(!options.strict){
+					//Case-insensitive comparison
+					v = v.toLowerCase();
+					days = dojo.map(days, String.toLowerCase);
 				}
-				if(j==days.length){
+				v = dojo.indexOf(days, v);
+				if(v == -1){
 //					console.debug("dojo.date.locale.parse: Could not parse weekday name: '" + v + "'.");
 					return null;
 				}
+
+				//TODO: not sure what to actually do with this input,
+				//in terms of setting something on the Date obj...?
+				//without more context, can't affect the actual date
+				//TODO: just validate?
 				break;
 			case 'd':
 				result.setDate(v);
@@ -403,9 +389,10 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				var am = options.am || bundle.am;
 				var pm = options.pm || bundle.pm;
 				if(!options.strict){
-					v = v.replace(/\./g,'').toLowerCase();
-					am = am.replace(/\./g,'').toLowerCase();
-					pm = pm.replace(/\./g,'').toLowerCase();
+					var period = /\./g;
+					v = v.replace(period,'').toLowerCase();
+					am = am.replace(period,'').toLowerCase();
+					pm = pm.replace(period,'').toLowerCase();
 				}
 				if(options.strict && v != am && v != pm){
 //					console.debug("dojo.date.locale.parse: Could not parse am/pm part.");
@@ -448,7 +435,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 			default:
 				dojo.unimplemented("dojo.date.locale.parse: unsupported pattern char=" + token.charAt(0));
 		}
-	}
+	});
 
 	//validate parse date fields versus input date fields
 	if(expected.year && result.getFullYear() != expected.year){
@@ -483,14 +470,14 @@ function _processPattern(pattern, applyPattern, applyLiteral, applyAll){
 	var chunks = pattern.match(/(''|[^'])+/g); 
 	var literal = false;
 
-	for(var i=0; i<chunks.length; i++){
-		if(!chunks[i]){
+	dojo.forEach(chunks, function(chunk, i){
+		if(!chunk){
 			chunks[i]='';
-		} else {
-			chunks[i]=(literal ? applyLiteral : applyPattern)(chunks[i]);
+		}else{
+			chunks[i]=(literal ? applyLiteral : applyPattern)(chunk);
 			literal = !literal;
 		}
-	}
+	});
 	return applyAll(chunks.join(''));
 }
 

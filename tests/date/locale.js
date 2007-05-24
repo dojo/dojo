@@ -188,6 +188,14 @@ tests.register("tests.date.locale",
 	//tolerate zenkaku space
 	t.is( aug_11_2006, dojo.date.locale.parse("\u30002006\u5e748\u670811\u65e5\u91d1\u66dc\u65e5\u3000", {formatLength:'full', selector:'date', locale:'ja'}));
 	t.is( aug_11_2006, dojo.date.locale.parse("2006\u5e74\u30008\u670811\u65e5\u3000\u91d1\u66dc\u65e5", {formatLength:'full', selector:'date', locale:'ja'}));
+
+	var apr_11_2006 = new Date(2006, 3, 11, 0);
+	//Roundtrip
+	var options={formatLength:'medium',selector:'date', locale:'fr-fr'};
+	t.is(0, dojo.date.compare(apr_11_2006, dojo.date.locale.parse(dojo.date.locale.format(apr_11_2006, options), options)));
+
+	//Tolerance for abbreviations
+	t.is(0, dojo.date.compare(apr_11_2006, dojo.date.locale.parse("11 avr 06", options)));
 			}
 		},
 		{

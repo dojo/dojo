@@ -26,16 +26,25 @@ dojo.Color = function(/*r, g, b, a*/){
 }
 
 // FIXME: there's got to be a more space-efficient way to encode or discover these!!
+// eugene: let's support at least HTML4 colors (a standard subset of CSS3 color module),
+// we can add the rest later (with compact representation, of course)
 dojo.Color.named = {
-	white:      [255,255,255],
 	black:      [0,0,0],
-	red:        [255,0,0],
-	green:	    [0,255,0],
-	lime:	    [0,255,0],
-	blue:       [0,0,255],
-	navy:       [0,0,128],
+	silver:     [192,192,192],
 	gray:       [128,128,128],
-	silver:     [192,192,192]
+	white:      [255,255,255],
+	maroon:		[128,0,0],
+	red:        [255,0,0],
+	purple:		[128,0,128],
+	fuchsia:	[255,0,255],
+	green:	    [0,128,0],
+	lime:	    [0,255,0],
+	olive:		[128,128,0],
+	yellow:		[255,255,0],
+	navy:       [0,0,128],
+	blue:       [0,0,255],
+	teal:		[0,128,128],
+	aqua:		[0,255,255]
 };
 
 dojo.extend(dojo.Color, {
@@ -75,10 +84,10 @@ dojo.extend(dojo.Color, {
 
 dojo.blendColors = function(a, b, weight){
 	// summary: 
-	//		blend colors a and b (either RGB arrays or hex strings) with weight
+	//		blend colors a and b with weight
 	//		from -1 to +1, 0 being a 50/50 blend
-	if(a[0] == "#"){ a = dojo.hex2rgb(a); }
-	if(b[0] == "#"){ b = dojo.hex2rgb(b); }
+	if(typeof a == "string"){ a = dojo.extractRgb(a); }
+	if(typeof b == "string"){ b = dojo.extractRgb(b); }
 	if(a["_cache"]){ a = a._cache; }
 	if(b["_cache"]){ b = b._cache; }
 	weight = Math.min(Math.max(-1, (weight||0)), 1);
@@ -105,15 +114,15 @@ dojo.extractRgb = function(color){
 		var ret = matches.splice(1, 3);
 		return ret;
 	}else{
-		return dojo.hex2rgb(color)|| dojo.Color.named[color] || [255, 255, 255];
+		return dojo.hex2rgb(color) || dojo.Color.named[color] || [255, 255, 255];
 	}
 }
 
 dojo.hex2rgb = function(hex){
-	var hexNum = "0123456789ABCDEF";
+	var hexNum = "0123456789abcdef";
 	var rgb = new Array(3);
 	if( hex.charAt(0) == "#" ){ hex = hex.substr(1); }
-	hex = hex.toUpperCase();
+	hex = hex.toLowerCase();
 	if(hex.replace(new RegExp("["+hexNum+"]", "g"), "") != ""){
 		return null;
 	}

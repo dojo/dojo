@@ -63,7 +63,7 @@ dojo.extend(dojo.Color, {
 		d.forEach(["r", "g", "b", "a"], function(p, i){
 			this._cache[i] = this[p] = parseFloat(pmap[i]);
 		}, this);
-		this.a = this.a||1.0;
+		this._cache[3] = this.a = this.a || 1.0;
 	},
 	toRgb: function(includeAlpha){
 		return this._cache.slice(0, ((includeAlpha) ? 4 : 3));

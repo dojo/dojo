@@ -184,8 +184,8 @@ dojo.addOnLoad = function(/*Object?*/obj, /*String|Function*/functionName){
 dojo.addOnUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
 	// summary: registers a function to be triggered when the page unloads
 	// usage:
-	//		dojo.addOnLoad(functionPointer)
-	//		dojo.addOnLoad(object, "functionName")
+	//		dojo.addOnUnload(functionPointer)
+	//		dojo.addOnUnload(object, "functionName")
 	var d = dojo;
 	if(arguments.length == 1){
 		d._unloaders.push(obj);

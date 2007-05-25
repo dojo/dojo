@@ -266,11 +266,18 @@ dojo.number._parseInfo = function(/*Object?*/options){
 	}, true);
 
 	if(isCurrency){
-		re = re.replace(/\u00a4{1,3}/g, function(match){
-			var prop = ["symbol", "currency", "displayName"][match.length-1];
+		// substitute the currency symbol for the placeholder in the pattern
+		re = re.replace(/(\s*)(\u00a4{1,3})(\s*)/g, function(match, before, target, after){
+			var prop = ["symbol", "currency", "displayName"][target.length-1];
 			var symbol = dojo.regexp.escapeString(options[prop] || options.currency || "");
-			if(!options.strict){ symbol = "(?:"+symbol+")?"; }
-			return symbol;
+			before = before ? "\\s" : "";
+			after = after ? "\\s" : "";
+			if(!options.strict){
+				if(before){before += "*";}
+				if(after){after += "*";}
+				return "(?:"+before+symbol+after+")?";
+			}
+			return before+symbol+after;
 		});
 	}
 
@@ -435,7 +442,7 @@ dojo.number._integerRegexp = function(/*Object?*/flags){
 			if(!sep){ 
 				return "(?:0|[1-9]\\d*)";
 			}
-			if(sep=="."){sep="\\.";} //FIXME: escape all special chars in sep
+			sep = dojo.regexp.escapeString(sep);
 			var grp = flags.groupSize, grp2 = flags.groupSize2;
 			if(grp2){
 				var grp2RE = "(?:0|[1-9]\\d{0," + (grp2-1) + "}(?:[" + sep + "]\\d{" + grp2 + "})*[" + sep + "]\\d{" + grp + "})";

@@ -363,7 +363,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				if(!options.strict){
 					//Case-insensitive comparison
 					v = v.toLowerCase();
-					days = dojo.map(days, String.toLowerCase);
+					days = dojo.map(days, "".toLowerCase);
 				}
 				v = dojo.indexOf(days, v);
 				if(v == -1){

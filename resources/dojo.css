@@ -27,7 +27,7 @@ fieldset, img {
 	border: 0;
 }
 
-address,caption,cite,code,dfn,em,strong,th,var{
+address, caption, cite, code, dfn, th, var /*, em, strong*/ {
 	font-style: normal; 
 	font-weight: normal;
 }
@@ -37,7 +37,7 @@ caption, th {
 }
 
 q:before, q:after {
-	content:'';
+	content:"";
 }
 
 abbr, acronym {

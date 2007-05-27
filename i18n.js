@@ -208,9 +208,14 @@ dojo.i18n._searchLocalePath = function(/*String*/locale, /*Boolean*/down, /*Func
 	}
 };
 
-//These two functions are placed outside of preloadLocalizations
+//These properties/functions are placed outside of _preloadLocalizations
 //So that the xd loading can use/override them.
 dojo.i18n._localesGenerated /***BUILD:localesGenerated***/; // value will be inserted here at build time, if necessary
+dojo.i18n.registerNlsPath = function(){
+	//summary; registers nls path. Defined as a function so xd loading
+	//can redefine it.
+	dojo.registerModulePath("nls","nls");		
+}
 
 dojo.i18n._preloadLocalizations = function(){
 	// summary:
@@ -219,7 +224,7 @@ dojo.i18n._preloadLocalizations = function(){
 	//		no-op unless there is a build.
 
 	if(dojo.i18n._localesGenerated){
-		dojo.registerModulePath("nls","nls");	
+		dojo.i18n.registerNlsPath();	
 
 		function preload(locale){
 			locale = dojo.i18n.normalizeLocale(locale);

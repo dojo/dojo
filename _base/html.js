@@ -95,7 +95,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		//		attempt to insert node in relation to ref based on position
 
 		// FIXME: need to write tests for this!!!!
-		if((!node)||(!refNode)||(!position)){ 
+		if((!node)||(!refNode)||(typeof position == "undefined")){ 
 			return false;	//	boolean 
 		}
 		if(typeof position == "number"){
@@ -246,10 +246,8 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		}
 	);
 
-	var _t = true;
-	var _f = false;
 	var _pixelNamesCache = {
-		width: _t, height: _t, left: _t, top: _t
+		width: true, height: true, left: true, top: true
 	};
 	var _toStyleValue = function(node, type, value){
 		if(_pixelNamesCache[type] === true){

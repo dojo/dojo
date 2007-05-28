@@ -1,4 +1,4 @@
-dojo.provide("dojo._base.firebug.firebug");
+dojo.provide("dojo._firebug.firebug");
 if(
 	(
 		(!("console" in window)) || 
@@ -191,7 +191,7 @@ if(
 		}
 
 		consoleFrame = document.createElement("iframe");
-		consoleFrame.setAttribute("src", dojo.moduleUrl("dojo", "_base/firebug/firebug.html"));
+		consoleFrame.setAttribute("src", dojo.moduleUrl("dojo._firebug", "firebug.html"));
 		consoleFrame.setAttribute("frameBorder", "0");
 		with(consoleFrame.style){
 			margin = padding = border = "0px";

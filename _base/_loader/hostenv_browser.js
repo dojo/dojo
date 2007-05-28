@@ -354,6 +354,6 @@ if(typeof window != 'undefined'){
 
 if(djConfig.isDebug){
 	if(!console.firebug){
-		dojo.require("dojo._base.firebug.firebug");
+		dojo.require("dojo._firebug.firebug");
 	}
 }

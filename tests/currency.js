@@ -33,6 +33,10 @@ tests.register("tests.currency",
 				t.is(123.45, dojo.currency.parse("123,45 \u20ac", {currency: "EUR", locale: "de-de"}));
 				t.is(1234.56, dojo.currency.parse("1.234,56 \u20ac", {currency: "EUR", locale: "de-de"}));
 				t.is(1234.56, dojo.currency.parse("1.234,56\u20ac", {currency: "EUR", locale: "de-de"}));
+
+				t.is(1234, dojo.currency.parse("$1,234", {currency: "USD", locale: "en-us"}));
+				t.is(1234, dojo.currency.parse("$1,234", {currency: "USD", fractional: false, locale: "en-us"}));
+				t.t(isNaN(dojo.currency.parse("$1,234", {currency: "USD", fractional: true, locale: "en-us"})));
 			},
 			tearDown: function(){
 				//Clean up bundles that should not exist if

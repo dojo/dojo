@@ -20,6 +20,8 @@ dojo.currency._mixInDefaults = function(options){
 		data[prop] = bundle[iso+"_"+prop];
 	});
 
+	data.fractional = [true, false];
+
 	// Mixin with provided options
 	return dojo.mixin(data, options);
 }
@@ -90,5 +92,8 @@ dojo.currency.parse = function(/*String*/expression, /*Object?*/options){
 //		pattern- override pattern with this string
 //		locale- override the locale used to determine formatting rules
 //		strict- strict parsing, false by default
+//		places- number of decimal places to accept.  Default is defined by currency.
+//		fractional- where places are implied by pattern or explicit 'places' parameter, whether to include the fractional portion.
+//			By default for currencies, it the fractional portion is optional.
 	return dojo.number.parse(expression, dojo.currency._mixInDefaults(options));
 }

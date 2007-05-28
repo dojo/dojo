@@ -243,6 +243,7 @@ dojo.number._parseInfo = function(/*Object?*/options){
 			var flags = {
 				signed: false,
 				separator: options.strict ? group : [group,""],
+				fractional: options.fractional,
 				decimal: decimal,
 				exponent: false};
 			var parts = format.split('.');
@@ -250,7 +251,7 @@ dojo.number._parseInfo = function(/*Object?*/options){
 			if(parts.length == 1 || places === 0){flags.fractional = false;}
 			else{
 				if(typeof places == "undefined"){ places = parts[1].lastIndexOf('0')+1; }
-				if(places){flags.fractional = true;} // required fraction
+				if(places && options.fractional == undefined){flags.fractional = true;} // required fractional, unless otherwise specified
 				if(!options.places && (places < parts[1].length)){ places += "," + parts[1].length; }
 				flags.places = places;
 			}

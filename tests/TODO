@@ -9,3 +9,4 @@ Tests to add:
 Tests to improve:
 -----------------
 	* cookie tests don't seem to test expiry or date functions
+	* NodeList isn't testing several of its public methods (place, orphan, adopt, etc.)

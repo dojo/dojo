@@ -8,5 +8,4 @@ Tests to add:
 
 Tests to improve:
 -----------------
-	* the cldr tests aren't correctly formatted and only seem to touch dojo.cldr.suplemental functionality
 	* cookie tests don't seem to test expiry or date functions

@@ -196,7 +196,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		that may contain any of the following:
 		//		{ 
 		//			query: query-string or query-object,
-		//			queryIgnoreCase: boolean,
+		//			queryOptions: object,
 		//			onBegin: Function,
 		//			onItem: Function,
 		//			onComplete: Function,
@@ -225,11 +225,16 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		the store should support basic filtering capability, such as * (match any character)
 		//		and ? (match single character). 
 		//
-		//	The *queryIgnoreCase* parameter.
-		//		The queryIgnoreCase may be optional in some data store implementations.
-		//		If set, this parameter instructs the data store which does filtering
-		//		and the like in is query parameter to ignore character casing when doing a 
-		//		query match.  If this parameter is not included, it is treated as false (case sensitive). 
+		//	The *queryOptions* parameter
+		//		The queryOptions parameter is an optional parameter used to specify optiosn that may modify
+		//		the query in some fashion, such as doing a case insensitive search, or doing a deep search
+		//		where all items in a hierarchical representation of data are scanned instead of just the root 
+		//		items.  It currently defines two options that all datastores should attempt to honor if possible:
+		//		{
+		//			ignoreCase: boolean, //Whether or not the query should match case sensitively or not.  Default behaviour is false.
+		//			deep: boolean 	//Whether or not a fetch should do a deep search of items and all child 
+		//							//items instead of just root-level items in a datastore.  Default is false.
+		//		}
 		//
 		//	The *onBegin* parameter.
 		//		function(size, request);
@@ -342,7 +347,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		var request = store.fetch({query:{author:"?ing"}, start: 0, count:100, onComplete: showBooks});
 		//
 		//		// Fetch the first 100 books by author King, where the name may appear as King, king, KING, kInG, and so on, then call showKing when up to 100 items have been located.
-		//		var request = store.fetch({query:{author:"King"}, queryIgnoreCase: true, start: 0, count:100, onComplete: showKing});
+		//		var request = store.fetch({query:{author:"King"}, queryOptions:(ignoreCase: true}, start: 0, count:100, onComplete: showKing});
 		//
 		//		// Paging:
 		//		var store = new dojo.data.LargeRdbmsStore({url:"jdbc:odbc:foobar"});

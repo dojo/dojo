@@ -182,13 +182,14 @@ dojo.declare("dojo.data.JsonItemStore",
 		var filter = function(requestArgs, arrayOfAllItems){
 			var items = null;
 			if(requestArgs.query){
+				var ignoreCase = requestArgs.queryOptions ? requestArgs.queryOptions.ignoreCase : false; 
 				items = [];
 				for(var i = 0; i < arrayOfAllItems.length; ++i){
 					var match = true;
 					var candidateItem = arrayOfAllItems[i];
 					for(var key in requestArgs.query) {
 						var value = requestArgs.query[key];
-						if (!self._containsValue(candidateItem, key, value, requestArgs.queryIgnoreCase)){
+						if (!self._containsValue(candidateItem, key, value, ignoreCase)){
 							match = false;
 						}
 					}

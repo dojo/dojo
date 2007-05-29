@@ -599,7 +599,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(error);
 			}
-			jsonItemStore.fetch({query: {value: "bar\\*foo"}, queryIgnoreCase: false, onComplete: completed, onError: error});
+			jsonItemStore.fetch({query: {value: "bar\\*foo"}, queryOptions: {ignoreCase: false} , onComplete: completed, onError: error});
 			return d;
 		},
 		function testReadAPI_fetch_patternMatch_caseInsensitive(t){
@@ -639,7 +639,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(error);
 			}
-			jsonItemStore.fetch({query: {value: "bar\\*foo"}, queryIgnoreCase: true, onComplete: completed, onError: error});
+			jsonItemStore.fetch({query: {value: "bar\\*foo"}, queryOptions: {ignoreCase: true}, onComplete: completed, onError: error});
 			return d;
 		},
 		function testReadAPI_fetch_sortNumeric(t){

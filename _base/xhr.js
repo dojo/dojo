@@ -172,6 +172,18 @@ dojo._contentHandlers = {
 		console.debug("please consider using a mimetype of text/json-comment-filtered to avoid potential security issues with JSON endpoints");
 		return dojo.fromJson(xhr.responseText);
 	},
+	"json-comment-optional": function(xhr){ 
+		// NOTE: we provide the json-comment-filtered option as one solution to
+		// the "JavaScript Hijacking" issue noted by Fortify and others. It is
+		// not appropriate for all circumstances.
+		var value = xhr.responseText;
+		var cStartIdx = value.indexOf("\/*");
+		var cEndIdx = value.lastIndexOf("*\/");
+		if((cStartIdx == -1)||(cEndIdx == -1)){
+			return dojo.fromJson(xhr.responseText);
+		}
+		return dojo.fromJson(value.substring(cStartIdx+2, cEndIdx));
+	},
 	"json-comment-filtered": function(xhr){ 
 		// NOTE: we provide the json-comment-filtered option as one solution to
 		// the "JavaScript Hijacking" issue noted by Fortify and others. It is

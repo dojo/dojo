@@ -87,6 +87,9 @@ dojo.provide("dojo._base.array");
 				//		more details, see:
 				//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
 
+				// match the behavior of the built-in forEach WRT empty arrs
+				if((!arr)||(!arr.length)){ return; }
+
 				// FIXME: there are several ways of handilng thisObject. Is
 				// dojo.global always the default context?
 				var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];

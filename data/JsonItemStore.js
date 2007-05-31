@@ -214,7 +214,7 @@ dojo.declare("dojo.data.JsonItemStore",
 			if(this._jsonFileUrl){
 				var getArgs = {
 						url: self._jsonFileUrl, 
-						handleAs: "json"
+						handleAs: "json-comment-optional"
 					};
 				var getHandler = dojo.xhrGet(getArgs);
 				getHandler.addCallback(function(data){
@@ -229,7 +229,7 @@ dojo.declare("dojo.data.JsonItemStore",
 
 				});
 				getHandler.addErrback(function(error){
-					errCallback(keywordArgs, error);
+					errorCallback(error, keywordArgs);
 				});
 			}else if(this._jsonData){
 				try{
@@ -408,7 +408,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		if(this._jsonFileUrl){
 			var getArgs = {
 					url: self._jsonFileUrl, 
-					handleAs: "json",
+					handleAs: "json-comment-optional",
 					sync: true
 				};
 			var getHandler = dojo.xhrGet(getArgs);

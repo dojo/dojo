@@ -45,35 +45,54 @@ tests.data.JsonItemStore.getCountriesAttrsStore = function(){
 
 doh.register("tests.data.JsonItemStore", 
 	[
-		 function testIdentityAPI_getItemByIdentity(t){
-			 //	summary: 
-			 //		Simple test of the getItemByIdentity function of the store.
-			 //	description:
-			 //		Simple test of the getItemByIdentity function of the store.
+		function testIdentityAPI_getItemByIdentity(t){
+			//	summary: 
+			//		Simple test of the getItemByIdentity function of the store.
+			//	description:
+			//		Simple test of the getItemByIdentity function of the store.
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			 var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			if(item !== null){
+				var name = jsonItemStore.getValue(item,"name");
+				t.assertEqual(name, "El Salvador");
+			}
+			item = jsonItemStore.getItemByIdentity("sv_not");
+			t.assertTrue(item === null);
+		},
+		function testIdentityAPI_getItemByIdentity_commentFilteredJson(t){
+			//	summary: 
+			//		Simple test of the getItemByIdentity function of the store.
+			//	description:
+			//		Simple test of the getItemByIdentity function of the store.
+			//		This tests loading a comment-filtered json file so that people using secure
+			//		data with this store can bypass the JavaSceipt hijack noted in Fortify's
+			//		paper.
 
-			 var item = jsonItemStore.getItemByIdentity("sv");
-			 t.assertTrue(item !== null);
-			 if(item !== null){
-				 var name = jsonItemStore.getValue(item,"name");
-				 t.assertEqual(name, "El Salvador");
-			 }
-			 item = jsonItemStore.getItemByIdentity("sv_not");
-			 t.assertTrue(item === null);
-		 },
-		 function testIdentityAPI_getIdentity(t){
-			 //	summary: 
-			 //		Simple test of the getIdentity function of the store.
-			 //	description:
-			 //		Simple test of the getIdentity function of the store.
+			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
-			 var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			if(item !== null){
+				var name = jsonItemStore.getValue(item,"name");
+				t.assertEqual(name, "El Salvador");
+			}
+			item = jsonItemStore.getItemByIdentity("sv_not");
+			t.assertTrue(item === null);
+		},
+		function testIdentityAPI_getIdentity(t){
+			//	summary: 
+			//		Simple test of the getIdentity function of the store.
+			//	description:
+			//		Simple test of the getIdentity function of the store.
 
-			 var item = jsonItemStore.getItemByIdentity("sv");
-			 t.assertTrue(item !== null);
-			 t.assertTrue(jsonItemStore.getIdentity(item) === "sv");
-		 },
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			t.assertTrue(jsonItemStore.getIdentity(item) === "sv");
+		},
 		function testReadAPI_fetch_all(t){
 			//	summary: 
 			//		Simple test of a basic fetch on JsonItemStore.
@@ -103,6 +122,31 @@ doh.register("tests.data.JsonItemStore",
 			//		Simple test of a basic fetch on JsonItemStore of a single item.
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				t.assertEqual(items.length, 1);
+				d.callback(true);
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
+									onComplete: onComplete, 
+									onError: onError
+								});
+			return d;
+		},
+		function testReadAPI_fetch_one_commentFilteredJson(t){
+			//	summary: 
+			//		Simple test of a basic fetch on JsonItemStore of a single item.
+			//	description:
+			//		Simple test of a basic fetch on JsonItemStore of a single item.
+			//		This tests loading a comment-filtered json file so that people using secure
+			//		data with this store can bypass the JavaSceipt hijack noted in Fortify's
+			//		paper.
+			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){

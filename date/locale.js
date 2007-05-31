@@ -26,7 +26,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 			var widthList = ["abbr", "wide", "narrow"];
 			switch(c){
 				case 'G':
-					if(l>3){dojo.unimplemented("Era format not implemented");}
+//					if(l>3){/*unimplemented*/}
 					s = bundle.eras[dateObject.getFullYear() < 0 ? 1 : 0];
 					break;
 				case 'y':
@@ -44,14 +44,12 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 				case 'Q':
 				case 'q':
 					s = Math.ceil((dateObject.getMonth()+1)/3);
-					switch(l){
-						case 1: case 2:
+//					switch(l){
+//						case 1: case 2:
 							pad = true;
-							break;
-						case 3:
-						case 4:
-							dojo.unimplemented("Quarter format not implemented");
-					}
+//							break;
+//						case 3: case 4: // unimplemented
+//					}
 					break;
 				case 'M':
 				case 'L':
@@ -162,15 +160,8 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 					}
 					s = tz.join("");
 					break;
-				case 'Y':
-				case 'u':
-				case 'W':
-				case 'F':
-				case 'g':
-				case 'A':
-//					console.debug(match+" modifier not yet implemented");
-					s = "?";
-					break;
+//				case 'Y': case 'u': case 'W': case 'F': case 'g': case 'A':
+//					console.debug(match+" modifier unimplemented");
 				default:
 					throw new Error("dojo.date.locale.format: invalid pattern char: "+pattern);
 			}
@@ -433,7 +424,8 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 			case 'w':
 //				var firstDay = 0;
 			default:
-				dojo.unimplemented("dojo.date.locale.parse: unsupported pattern char=" + token.charAt(0));
+//TODO: throw?
+//				console.debug("dojo.date.locale.parse: unsupported pattern char=" + token.charAt(0));
 		}
 	});
 
@@ -543,8 +535,8 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 					if(pm != pm.toLowerCase()){ s += '|' + pm.toLowerCase(); }
 				}
 				break;
-			default:
-				dojo.unimplemented("parse of date format, pattern=" + pattern);
+//			default:
+//				console.debug("parse of date format, pattern=" + pattern);
 		}
 
 		if(tokens){ tokens.push(match); }

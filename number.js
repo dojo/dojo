@@ -67,14 +67,14 @@ dojo.number._applyPattern = function(/*Number*/value, /*String*/pattern, /*Objec
 			return options[prop] || options.currency || "";
 		});
 	}else if(pattern.indexOf('E') != -1){
-		dojo.unimplemented("exponential notation not supported");
+		throw new Error("exponential notation not supported");
 	}
 	
 //TODO: support @ sig figs?
 	var numberPatternRE = dojo.number._numberPatternRE;
 	var numberPattern = positivePattern.match(numberPatternRE);
 	if(!numberPattern){
-		dojo.raise("unable to find a number expression in pattern: "+pattern);
+		throw new Error("unable to find a number expression in pattern: "+pattern);
 	}
 	return pattern.replace(numberPatternRE,
 		dojo.number._formatAbsolute(value, numberPattern[0], {decimal: decimal, group: group, places: options.places}));

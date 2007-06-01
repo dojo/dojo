@@ -78,8 +78,63 @@ doh.register("tests.data.JsonItemStore",
 				var name = jsonItemStore.getValue(item,"name");
 				t.assertEqual(name, "El Salvador");
 			}
-			item = jsonItemStore.getItemByIdentity("sv_not");
-			t.assertTrue(item === null);
+		},
+		function testIdentityAPI_getItemByIdentity_nullValue(t){
+			//	summary: 
+			//		Simple test of the getItemByIdentity function of the store, checling a null value.
+			//	description:
+			//		Simple test of the getItemByIdentity function of the store, checking a null value.
+			//		This tests handling attributes in json that were defined as null properly.
+			//		Introduced because of tracker: #3153
+
+			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString()});
+
+			var item = jsonItemStore.getItemByIdentity("ec");
+			t.assertTrue(item !== null);
+			if(item !== null){
+				var name = jsonItemStore.getValue(item,"name");
+				t.assertEqual(name, null);
+			}
+
+			item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			if(item !== null){
+				var name = jsonItemStore.getValue(item,"name");
+				t.assertEqual(name, "El Salvador");
+			}
+		},
+		function testIdentityAPI_getItemByIdentity_booleanValue(t){
+			//	summary: 
+			//		Simple test of the getItemByIdentity function of the store, checking a boolean value.
+			//	description:
+			//		Simple test of the getItemByIdentity function of the store, checking a boolean value.
+
+			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString()});
+
+			try{
+				var item = jsonItemStore.getItemByIdentity("sv");
+				t.assertTrue(item !== null);
+				if(item !== null){
+				    var name = jsonItemStore.getValue(item,"name");
+					t.assertEqual(name, "El Salvador");
+					var real = jsonItemStore.getValue(item,"real");
+					t.assertEqual(real, true);
+				}
+
+				item = jsonItemStore.getItemByIdentity("ut");
+				t.assertTrue(item !== null);
+				if(item !== null){
+					var name = jsonItemStore.getValue(item,"name");
+					t.assertEqual(name, "Utopia");
+					var real = jsonItemStore.getValue(item,"real");
+					t.assertEqual(real, false);
+				}
+			}catch(e){
+				for(i in e){
+					console.log("I is: [" + i + "] with value: [" +e[i] + "]");
+				}
+				throw e;
+			}
 		},
 		function testIdentityAPI_getIdentity(t){
 			//	summary: 
@@ -158,6 +213,30 @@ doh.register("tests.data.JsonItemStore",
 				d.errback(errData);
 			}
 			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
+									onComplete: onComplete, 
+									onError: onError
+								});
+			return d;
+		},
+		function testReadAPI_fetch_withNull(t){
+			//	summary: 
+			//		Simple test of a basic fetch on JsonItemStore of a single item where some attributes are null.
+			//	description:
+			//		Simple test of a basic fetch on JsonItemStore of a single item where some attributes are null.
+			//		Introduced because of tracker: #3153
+
+			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString()});
+			
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				t.assertEqual(4, items.length);
+				d.callback(true);
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetch({ 	query: {name: "E*"}, 
 									onComplete: onComplete, 
 									onError: onError
 								});

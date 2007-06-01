@@ -122,6 +122,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		//		The value to match, strings may contain wildcard items like * and ?.
 		//	ignoreCase:
 		//		Flag to denote that if items are a string type, should case be used for comparison or not.
+
 		var values = this.getValues(item, attribute);
 		for(var i = 0; i < values.length; ++i){
 			var possibleValue = values[i];
@@ -270,7 +271,7 @@ dojo.declare("dojo.data.JsonItemStore",
 
 		// We need to do some transformations to convert the data structure
 		// that we read from the file into a format that will be convenient
-		// to work with in memory..
+		// to work with in memory.
 
 		// Step 1: We walk through all the attribute values of all the items, 
 		// and replace single values with arrays.  For example, we change this:
@@ -283,8 +284,13 @@ dojo.declare("dojo.data.JsonItemStore",
 			item = arrayOfItems[i];
             for(var key in item){
 				var value = item[key];
-				if(!dojo.isArray(value)){
-					item[key] = [value];
+
+				if(value !== null){
+					if(!dojo.isArray(value)){
+						item[key] = [value];
+					}
+				}else{
+					item[key] = [null];
 				}
 				attrNames[key]=key;
 			}
@@ -341,9 +347,9 @@ dojo.declare("dojo.data.JsonItemStore",
 			this._itemMap.lastItem = i;
 			for(key in item){
 				arrayOfValues = item[key]; // example: [{reference:{name:'Miss Piggy'}}]
-				for(var j = 0; j < arrayOfItems.length; ++j) {
+				for(var j = 0; j < arrayOfValues.length; ++j) {
 					value = arrayOfValues[j]; // example: {reference:{name:'Miss Piggy'}}
-					if(typeof value == "object" && value.reference){
+					if(value !== null && typeof value == "object" && value.reference){
 						var referenceDescription = value.reference; // example: {name:'Miss Piggy'}
 						if(dojo.isString(referenceDescription)){
 							// example: 'Miss Piggy'
@@ -413,8 +419,13 @@ dojo.declare("dojo.data.JsonItemStore",
 				};
 			var getHandler = dojo.xhrGet(getArgs);
 			getHandler.addCallback(function(data){
-				self._arrayOfAllItems = self._getItemsFromLoadedData(data);
-				self._loadFinished = true;
+				try{
+					self._arrayOfAllItems = self._getItemsFromLoadedData(data);
+					self._loadFinished = true;
+				}catch(e){
+					console.log(e);
+					throw e;
+				}
 			});
 			getHandler.addErrback(function(error){
 				throw error;

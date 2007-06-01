@@ -618,5 +618,17 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 
 dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary: Removes classes from node.
-	node.className = node.className.replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2");
+	var cls = node.className;
+	if (cls && cls.indexOf(classStr) > -1) {
+		node.className = cls.replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2");
+	}
+}
+dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*/condition){
+	//	summary: 	Adds a class to node if not present, or removes if present.
+	//				Pass a boolean condition if you want to explicitly add or remove.
+	//	condition:	If passed, true means to add the class, false means to remove.
+	if (condition === undefined) {
+		condition = !this.hasClass(node, classStr);
+	}
+	dojo[condition ? "addClass" : "removeClass"](node, classStr);
 }

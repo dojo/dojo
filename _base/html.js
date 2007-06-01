@@ -618,5 +618,5 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 
 dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary: Removes classes from node.
-	node.setAttribute("className", node.className.replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2"));
+	node.setAttribute("className", node.getAttribute("className").replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2"));
 }

@@ -603,20 +603,20 @@ dojo.hasClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//		Returns whether or not the specified classes are a portion of the
 	//		class list currently applied to the node. 
 	// return (new RegExp('(^|\\s+)'+classStr+'(\\s+|$)')).test(node.className)	// Boolean
-	return ((" "+node.getAttribute("className")+" ").indexOf(" "+classStr+" ") >= 0);  // Boolean
+	return ((" "+node.className+" ").indexOf(" "+classStr+" ") >= 0);  // Boolean
 }
 
 dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary:
 	//		Adds the specified classes to the end of the class list on the
 	//		passed node.
-	var cls = node.getAttribute("className");
+	var cls = node.className;
 	if((" "+cls+" ").indexOf(" "+classStr+" ") < 0){
-		node.setAttribute("className", cls + (cls ? ' ' : '') + classStr);
+		node.className = cls + (cls ? ' ' : '') + classStr;
 	}
 }
 
 dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary: Removes classes from node.
-	node.setAttribute("className", node.getAttribute("className").replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2"));
+	node.className = node.className.replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2");
 }

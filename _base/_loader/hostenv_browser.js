@@ -204,7 +204,7 @@ if(typeof window != 'undefined'){
 	// 	changed because the build process strips all comments -- including
 	// 	conditional ones.
 	if(dojo.isIE){
-		document.write('<scr'+'ipt defer src="//:" '
+		document.write('<scr'+'ipt defer src="/'+'/:" '
 			+ 'onreadystatechange="if(this.readyState==\'complete\'){dojo._loadInit();}">'
 			+ '</scr'+'ipt>'
 		);

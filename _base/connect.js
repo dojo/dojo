@@ -25,9 +25,11 @@ dojo._listener = {
 			}
 		}
 	},
-	// add a listener to an object
 	add: function(/*Object*/ source, /*String*/ method, /*Function*/ listener){
-		// Whenever 'method' is invoked, 'listener' will have the same scope.
+		// summary:
+		// Add a listener to an object -- 
+		// whenever 'method' is invoked, 'listener' will have the same scope.
+		// description:
 		// Trying to supporting a context object for the listener led to 
 		// complexity. 
 		// Non trivial to provide 'once' functionality here
@@ -55,8 +57,8 @@ dojo._listener = {
 		// Could implement 'before' with a flag and unshift.
 		return f.listeners.push(listener) ; /*Handle*/
 	},
-	// remove a listener from an object
 	remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
+		// summary: remove a listener from an object
 		var f = (source||dojo.global)[method];
 		// remember that handle is the index+1 (0 is not a valid handle)
 		if(f && f.listeners && handle--){	

@@ -170,7 +170,6 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		// non-IE branch
 		var dv = document.defaultView;
 		dojo.getComputedStyle = ((dojo.isSafari) ? function(node){
-				if (!node) return null;
 				var s = dv.getComputedStyle(node, null);
 				if(!s){ 
 					node.style.display = ""; 
@@ -190,7 +189,6 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	}else{
 		// IE branch
 		dojo.getComputedStyle = function(node){
-			if (!node) return null;
 			return node.currentStyle;
 		}
 
@@ -621,14 +619,4 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary: Removes classes from node.
 	node.setAttribute("className", node.getAttribute("className").replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2"));
-}
-
-dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*/condition){
-	//	summary: 	Adds a class to node if not present, or removes if present.
-	//				Pass a boolean condition if you want to explicitly add or remove.
-	//	condition:	If passed, true means to add the class, false means to remove.
-	if (condition === undefined) {
-		condition = !this.hasClass(node, classStr);
-	}
-	dojo[condition ? "addClass" : "removeClass"](node, classStr);
 }

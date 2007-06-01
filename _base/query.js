@@ -204,7 +204,7 @@ dojo.require("dojo._base.NodeList");
 				// prefix = "/child::node()";
 				tqp = qparts.shift();
 			}else{
-				prefix = "/"+"/";
+				prefix = "//";
 				// prefix = "/descendant::node()"
 			}
 

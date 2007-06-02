@@ -72,7 +72,7 @@ dojo.provide("dojo._base.array");
 				var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
 				var outArr = [];
 				for(var i=0;i<arr.length;++i){
-					outArr.push(func.call(obj, arr[i]));
+					outArr.push(func.call(obj, arr[i], i, arr));
 				}
 				return outArr; // Array
 			},

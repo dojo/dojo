@@ -21,7 +21,7 @@ dojo.declare(
 			//summary
 			var def = dojo.io.script.get({
 				url: url||this.serviceUrl,
-				jsonpParam: this.jsonParam||"callback",
+				callbackParamName: this.callbackParamName||"callback",
 				content: this.createRequest(parameters),
 				handleAs: "json",	
 				preventCache: true

@@ -47,13 +47,13 @@ dojo.io.script = {
 		ioArgs.canDelete = false;
 
 		//Special setup for jsonp case
-		if(args.jsonpParam){
+		if(args.callbackParamName){
 			//Add the jsonp parameter.
 			ioArgs.query = ioArgs.query || "";
 			if(ioArgs.query.length > 0){
 				ioArgs.query += "&";
 			}
-			ioArgs.query += args.jsonpParam + "=dojo.io.script.jsonp_" + ioArgs.id + "._jsonpCallback";
+			ioArgs.query += args.callbackParamName + "=dojo.io.script.jsonp_" + ioArgs.id + "._jsonpCallback";
 
 			//Setup the Deferred to have the jsonp callback.
 			ioArgs.canDelete = true;

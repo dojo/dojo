@@ -35,7 +35,7 @@
 							var d = new doh.Deferred();
 							var td = dojo.io.script.get({
 								url: "scriptJsonp.js",
-								jsonpParam: "callback"
+								callbackParamName: "callback"
 							});
 							td.addBoth(function(res){
 								if(!(res instanceof Error) && 

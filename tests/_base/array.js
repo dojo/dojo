@@ -248,6 +248,18 @@ tests.register("tests._base.array",
 					return false;
 				})
 			);
+		},
+
+		function testMap(t){
+			t.assertEqual([],
+				dojo.map([], function(){ return true; })
+			);
+
+			t.assertEqual([1, 2, 3],
+				dojo.map(["cat", "dog", "mouse"], function(elt, idx, array){
+					return idx+1;
+				})
+			);
 		}
 	]
 );

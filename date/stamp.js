@@ -8,10 +8,9 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number*/de
 	//
 	//	description:
 	//		Accepts a string formatted according to a profile of ISO8601 as defined by
-	//		RFC3339 (http://www.ietf.org/rfc/rfc3339.txt), except that partial input is allowed.
+	//		RFC3339 (http://www.ietf.org/rfc/rfc3339.txt).  Additionally, partial input is allowed.
 	//		The following combinations are valid:
 	//			yyyy-MM-dd
-	//			THH:mm:ss
 	//			THH:mm:ss
 	//			yyyy-MM-ddTHH:mm:ss
 	//			THH:mm:ssTZD
@@ -28,6 +27,8 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number*/de
 	//		Used for defaults for fields omitted in the formattedString.  If omitted,
 	//		uses 1970-01-01T00:00:00.0Z for default.
 
+//TODO: this is frustratingly close to http://www.w3.org/TR/NOTE-datetime.  We could match this by making MM dd and TZD
+//	optional, and the date mandatory.
 //TODO: can a regexp be crafted to do this as efficiently?  Is it worth providing validation?
 	var result = new Date(defaultTime || 0);
 	var segments = formattedString.split("T");
@@ -69,14 +70,14 @@ dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*Object*/options){
 	//		Format a Date object as a string according a subset of the ISO-8601 standard
 	//
 	//	description:
+	//		When selector option is omitted, output follows RFC3339 ((http://www.ietf.org/rfc/rfc3339.txt)
 	//		Times are formatted using the local time zone.  Does not check bounds.
-	//		Invalid dates such as March 32 will be handled the according to the Date() constructor.
 	//
 	//	dateObject:
 	//		A Date object
 	//
 	//	object {selector: string, zulu: boolean}
-	//		selector- "date" or "time" to format selected portions of the Date object.
+	//		selector- "date" or "time" for partial formatting of the Date object.
 	//			Both date and time will be formatted by default.
 	//		zulu- if true, UTC/GMT is used for a timezone
 

@@ -156,7 +156,7 @@ function(node, params){
 					return oldCreator(source.map[n.id].data);
 				};
 			}else{
-				if(this.current.id in this.selection){ break; }
+				if(this.current && this.current.id in this.selection){ break; }
 				this.nodeCreator = function(n){
 					var t = source.map[n.id]; return {node: n, data: t.data, types: t.types};
 				};

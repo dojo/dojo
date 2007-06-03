@@ -4,9 +4,9 @@ dojo.require("dojo.date.stamp");
 
 tests.register("tests.date.stamp", 
 	[
-function test_date_rfc3339(t){
+function test_date_iso(t){
 	var rfc  = "2005-06-29T08:05:00-07:00";
-	var date = dojo.date.stamp.fromRfc3339(rfc);
+	var date = dojo.date.stamp.fromISOString(rfc);
 	t.is(2005,date.getFullYear());
 	t.is(5,date.getMonth());
 	t.is(29,date.getDate());
@@ -14,14 +14,14 @@ function test_date_rfc3339(t){
 	t.is(5,date.getMinutes());
 	t.is(0,date.getSeconds());
 
-	rfc  = "2004-02-29Tany";
-	date = dojo.date.stamp.fromRfc3339(rfc);
+	rfc  = "2004-02-29";
+	date = dojo.date.stamp.fromISOString(rfc);
 	t.is(2004,date.getFullYear());
 	t.is(1,date.getMonth());
 	t.is(29,date.getDate());
 
 	date = new Date(2005,5,29,8,5,0);
-	rfc = dojo.date.stamp.toRfc3339(date);
+	rfc = dojo.date.stamp.toISOString(date);
 	//truncate for comparison
 	t.is("2005-06",rfc.substring(0,7));
 },

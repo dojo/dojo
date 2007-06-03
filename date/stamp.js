@@ -2,159 +2,108 @@ dojo.provide("dojo.date.stamp");
 
 // Methods to convert dates to or from a wire (string) format using well-known conventions
 
-dojo.require("dojo.string");
+dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number*/defaultTime){
+	//	summary:
+	//		Returns a Date object given a string formatted according to a subset of the ISO-8601 standard
+	//
+	//	description:
+	//		Accepts a string formatted according to a profile of ISO8601 as defined by
+	//		RFC3339 (http://www.ietf.org/rfc/rfc3339.txt), except that partial input is allowed.
+	//		The following combinations are valid:
+	//			yyyy-MM-dd
+	//			THH:mm:ss
+	//			THH:mm:ss
+	//			yyyy-MM-ddTHH:mm:ss
+	//			THH:mm:ssTZD
+	//			yyyy-MM-ddTHH:mm:ssTZD
+	//		where TZD is Z or +/- followed by a time expression HH:mm
+	//		Assumes the local time zone if not specified.  Does not validate.  Improperly formatted
+	//		input may return an invalid date object.  Arguments which are out of bounds will be handled
+	// 		by the Date constructor (e.g. January 32nd typically gets resolved to February 1st)
+	//
+  	//	formattedString:
+	//		A string such as 2005-06-30T08:05:00-07:00 or 2005-06-30 or T08:05:00
+	//
+	//	defaultTime:
+	//		Used for defaults for fields omitted in the formattedString.  If omitted,
+	//		uses 1970-01-01T00:00:00.0Z for default.
 
-/* ISO 8601 Functions
- *********************/
-
-dojo.date.stamp.setIso8601 = function(/*Date*/dateObject, /*String*/formattedString){
-	// summary: sets a Date object based on an ISO 8601 formatted string (uses date and time)
-	var comps = (formattedString.indexOf("T") == -1) ? formattedString.split(" ") : formattedString.split("T");
-	dateObject = dojo.date.stamp.setIso8601Date(dateObject, comps[0]);
-	if(comps.length == 2){ dateObject = dojo.date.stamp.setIso8601Time(dateObject, comps[1]); }
-	return dateObject; /* Date or null */
-};
-
-dojo.date.stamp.fromIso8601 = function(/*String*/formattedString){
-	// summary: returns a Date object based on an ISO 8601 formatted string (uses date and time)
-	return dojo.date.stamp.setIso8601(new Date(0, 0), formattedString);
-};
-
-dojo.date.stamp.setIso8601Date = function(/*String*/dateObject, /*String*/formattedString){
-	// summary: sets a Date object based on an ISO 8601 formatted string (date only)
-	var regexp = "^([0-9]{4})((-?([0-9]{2})(-?([0-9]{2}))?)|" +
-			"(-?([0-9]{3}))|(-?W([0-9]{2})(-?([1-7]))?))?$";
-	var d = formattedString.match(new RegExp(regexp));
-	if(!d){
-		console.debug("invalid date string: " + formattedString);
-		return null; // null
+//TODO: can a regexp be crafted to do this as efficiently?  Is it worth providing validation?
+	var result = new Date(defaultTime || 0);
+	var segments = formattedString.split("T");
+	if(segments[0]){
+		var dateSegments = segments[0].split("-");
+		result.setFullYear(dateSegments[0]);
+		result.setMonth(0); // need to do this so the date doesn't wrap around; reconsider defaultTime arg?
+		result.setDate(dateSegments[2]);
+		result.setMonth(dateSegments[1]-1);
 	}
-	var year = d[1];
-	var month = d[4];
-	var date = d[6];
-	var dayofyear = d[8];
-	var week = d[10];
-	var dayofweek = d[12] || 1;
-
-	dateObject.setFullYear(year);
-
-	if(dayofyear){
-		dateObject.setMonth(0);
-		dateObject.setDate(Number(dayofyear));
-	}
-	else if(week){
-		dateObject.setMonth(0);
-		dateObject.setDate(1);
-		var day = dateObject.getDay() || 7;
-		var offset = Number(dayofweek) + (7 * Number(week));
-	
-		if(day <= 4){ dateObject.setDate(offset + 1 - day); }
-		else{ dateObject.setDate(offset + 8 - day); }
-	} else{
-		if(month){
-			dateObject.setDate(1);
-			dateObject.setMonth(month - 1); 
+	if(segments[1]){
+		var timeSegments = segments[1].substring(0, 8).split(":");
+		result.setHours(timeSegments[0]);
+		result.setMinutes(timeSegments[1]);
+		result.setSeconds(timeSegments[2]);
+		var remainder = segments[1].substring(8);
+		if(remainder[0] === "."){
+			//TODO: millis?
 		}
-		if(date){ dateObject.setDate(date); }
-	}
-
-	return dateObject; // Date
-};
-
-dojo.date.stamp.fromIso8601Date = function(/*String*/formattedString){
-	// summary: returns a Date object based on an ISO 8601 formatted string (date only)
-	return dojo.date.stamp.setIso8601Date(new Date(0, 0), formattedString);
-};
-
-dojo.date.stamp.setIso8601Time = function(/*Date*/dateObject, /*String*/formattedString){
-	// summary: sets a Date object based on an ISO 8601 formatted string (time only)
-
-	// first strip timezone info from the end
-	var timezone = "Z|(([-+])([0-9]{2})(:?([0-9]{2}))?)$";
-	var d = formattedString.match(new RegExp(timezone));
-
-	var offset = 0; // local time if no tz info
-	if(d){
-		if(d[0] != 'Z'){
-			offset = (Number(d[3]) * 60) + Number(d[5] || 0);
-			if(d[2] != '-'){ offset *= -1; }
+		if(remainder){
+			var offset = 0;
+			if(remainder[0] != 'Z'){
+				var gmtOffset = remainder.substring(1).split(":");
+				offset = (gmtOffset[0] * 60) + (Number(gmtOffset[1]) || 0);
+				if(remainder[0] != '-'){ offset *= -1; }
+			}
+			offset -= result.getTimezoneOffset();
+			if(offset){
+				result.setTime(result.getTime() + offset * 60000);
+			}
 		}
-		offset -= dateObject.getTimezoneOffset();
-		formattedString = formattedString.substr(0, formattedString.length - d[0].length);
 	}
 
-	// then work out the time
-	var regexp = "^([0-9]{2})(:?([0-9]{2})(:?([0-9]{2})(\.([0-9]+))?)?)?$";
-	d = formattedString.match(new RegExp(regexp));
-	if(!d){
-		console.debug("invalid time string: " + formattedString);
-		return null; // null
-	}
-	var hours = d[1];
-	var mins = Number(d[3] || 0);
-	var secs = d[5] || 0;
-	var ms = d[7] ? (Number("0." + d[7]) * 1000) : 0;
+	return result;
+}
 
-	dateObject.setHours(hours);
-	dateObject.setMinutes(mins);
-	dateObject.setSeconds(secs);
-	dateObject.setMilliseconds(ms);
+dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*Object*/options){
+	//	summary:
+	//		Format a Date object as a string according a subset of the ISO-8601 standard
+	//
+	//	description:
+	//		Times are formatted using the local time zone.  Does not check bounds.
+	//		Invalid dates such as March 32 will be handled the according to the Date() constructor.
+	//
+	//	dateObject:
+	//		A Date object
+	//
+	//	object {selector: string, zulu: boolean}
+	//		selector- "date" or "time" to format selected portions of the Date object.
+	//			Both date and time will be formatted by default.
+	//		zulu- if true, UTC/GMT is used for a timezone
 
-	if(offset !== 0){
-		dateObject.setTime(dateObject.getTime() + offset * 60000);
-	}	
-	return dateObject; // Date
-};
-
-dojo.date.stamp.fromIso8601Time = function(/*String*/formattedString){
-	// summary: returns a Date object based on an ISO 8601 formatted string (time only)
-	return dojo.date.stamp.setIso8601Time(new Date(0, 0), formattedString);
-};
-
-
-/* RFC-3339 Date Functions
- *************************/
-
-dojo.date.stamp.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector){
-//	summary:
-//		Format a JavaScript Date object as a string according to RFC 3339
-//
-//	dateObject:
-//		A JavaScript date, or the current date and time, by default
-//
-//	selector:
-//		"date" or "time" to format selected portions of the Date object.
-//		Date and time will be formatted by default.
-
-	dateObject = dateObject || new Date();
-
-	var _ = dojo.string.pad;
+	var _ = function(n){ return (n < 10) ? "0" + n : n; }
+	options = options || {};
 	var formattedDate = [];
-	if(selector != "time"){
-		var date = [_(dateObject.getFullYear(),4), _(dateObject.getMonth()+1,2), _(dateObject.getDate(),2)].join('-');
-		formattedDate.push(date);
+	var getter = options.zulu ? "getUTC" : "get";
+	var date = "";
+	if(options.selector != "time"){
+		date = [dateObject[getter+"FullYear"](), _(dateObject[getter+"Month"]()+1), _(dateObject[getter+"Date"]())].join('-');
 	}
-	if(selector != "date"){
-		var time = [_(dateObject.getHours(),2), _(dateObject.getMinutes(),2), _(dateObject.getSeconds(),2)].join(':');
-		var timezoneOffset = dateObject.getTimezoneOffset();
-		time += (timezoneOffset > 0 ? "-" : "+") + 
-					_(Math.floor(Math.abs(timezoneOffset)/60),2) + ":" +
-					_(Math.abs(timezoneOffset)%60,2);
+	formattedDate.push(date);
+	if(options.selector != "date"){
+		var time = [_(dateObject[getter+"Hours"]()), _(dateObject[getter+"Minutes"]()), _(dateObject[getter+"Seconds"]())].join(':');
+//		var millis = dateObject[getter+"Milliseconds"]();
+//		if(options.milliseconds){
+//			time += "."+millis;
+//		}
+		if(options.zulu){
+			time += "Z";
+		}else{
+			var timezoneOffset = dateObject.getTimezoneOffset();
+			var absOffset = Math.abs(timezoneOffset);
+			time += (timezoneOffset > 0 ? "-" : "+") + 
+				_(Math.floor(absOffset/60)) + ":" + _(absOffset%60);
+		}
 		formattedDate.push(time);
 	}
 	return formattedDate.join('T'); // String
-};
-
-dojo.date.stamp.fromRfc3339 = function(/*String*/rfcDate){
-//	summary:
-//		Create a JavaScript Date object from a string formatted according to RFC 3339
-//
-//	rfcDate:
-//		A string such as 2005-06-30T08:05:00-07:00
-//		"any" is also supported in place of a time.
-
-	// backwards compatible support for use of "any" instead of just not 
-	// including the time
-	rfcDate = rfcDate.replace("Tany","");
-	return dojo.date.stamp.setIso8601(new Date(), rfcDate); // Date or null
-};
+}

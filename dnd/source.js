@@ -97,7 +97,10 @@ function(node, params){
 			}
 		}else{
 			if(this.mouseDown && this.isSource){
-				m.startDrag(this, this.getSelectedNodes(), dojo.dnd.multiSelectKey(e));
+				var nodes = this.getSelectedNodes();
+				if(nodes.length){
+					m.startDrag(this, nodes, dojo.dnd.multiSelectKey(e));
+				}
 			}
 		}
 	},

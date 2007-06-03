@@ -20,8 +20,8 @@ dojo.dnd._getOffset = function(node, side){
 	// side: String: a side of a box ("Left", "Right", "Top", or "Bottom")
 	var t = dojo.style(node, "margin" + side) + dojo.style(node, "padding" + side);
 	// FIXME: border is not processed properly
-	var b = dojo.style(node, "border" + side);
-	if(b == ""){ b = 0; }
+	var b = dojo.style(node, "border" + side + "Width");
+	if(typeof b != "string" || b == ""){ b = 0; }
 	return t + b;
 };
 

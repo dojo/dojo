@@ -9,8 +9,9 @@ dojo.dnd.Mover = function(node, e){
 	//	only pageX and pageY properties are used
 	this.node = dojo.byId(node);
 	var np = dojo.coords(this.node, true);
-	this.posX = np.x - dojo.dnd._getOffset(this.node, "Left") - e.pageX;
-	this.posY = np.y - dojo.dnd._getOffset(this.node, "Top")  - e.pageY;
+	var off = dojo.dnd._getOffset(this.node);
+	this.posX = np.x - off.l - e.pageX;
+	this.posY = np.y - off.t  - e.pageY;
 	this.firstEvent = dojo.connect(dojo.doc, "onmousemove", this, "_makeAbsolute");
 	this.events = [
 		dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),

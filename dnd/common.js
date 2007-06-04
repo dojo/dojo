@@ -14,15 +14,16 @@ if(navigator.appVersion.indexOf("Macintosh") < 0){
 	};
 }
 
-dojo.dnd._getOffset = function(node, side){
-	// summary: calculates an offset for a content box
+dojo.dnd._getOffset = function(node){
+	// summary: calculates the left and top offset for a content box
 	// node: Node: a node
-	// side: String: a side of a box ("Left", "Right", "Top", or "Bottom")
-	var t = dojo.style(node, "margin" + side) + dojo.style(node, "padding" + side);
-	// FIXME: border is not processed properly
-	var b = dojo.style(node, "border" + side + "Width");
-	if(typeof b != "string" || b == ""){ b = 0; }
-	return t + b;
+	var 
+		s=dojo.getComputedStyle(node), 
+		px=dojo._toPixelValue;
+	return{
+		l:px(node, s.marginLeft)+px(node, s.paddingLeft)+(s.borderLeftStyle!='none' ? px(node, s.borderLeftWidth) : 0),
+		t:px(node, s.marginTop)+px(node, s.paddingTop)+(s.borderTopStyle!='none' ? px(node, s.borderTopWidth) : 0)
+	};
 };
 
 dojo.dnd._uniqueId = 0;

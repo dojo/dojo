@@ -8,8 +8,9 @@ dojo.dnd.Avatar = function(manager){
 	this.manager = manager;
 	this.construct();
 	// calculate various offsets
-	this.offX = dojo.dnd._getOffset(this.node, "Left");
-	this.offY = dojo.dnd._getOffset(this.node, "Top");
+	var off = dojo.dnd._getOffset(this.node);
+	this.offX =  off.l;
+	this.offY = off.t;
 };
 
 dojo.extend(dojo.dnd.Avatar, {

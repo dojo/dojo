@@ -56,16 +56,6 @@ dojo.require("dojo._base.connect");
 
 	// DOM events
 	
-	// FIXME: no reason to make this public, use connect
-	dojo.addListener = function(node, event, context, method){
-		return de.addListener(node, event, dojo.hitch(context, method)); // Handle
-	}
-
-	// FIXME: no reason to make this public, use disconnect
-	dojo.removeListener = function(node, event, handle){
-		de.removeListener(node, event, handle);
-	}
-
 	dojo.fixEvent = function(/*Event*/evt, /*DOMNode*/sender){
 		// summary:
 		//		normalizes properties on the event object including event
@@ -84,6 +74,14 @@ dojo.require("dojo._base.connect");
 		evt.stopPropagation();
 	}
 
+	addListener = function(node, event, context, method){
+		return de.addListener(node, event, dojo.hitch(context, method)); // Handle
+	}
+
+	removeListener = function(node, event, handle){
+		de.removeListener(node, event, handle);
+	}
+
 	// cache baseline implementations
 
 	var dc = dojo._connect;
@@ -95,7 +93,7 @@ dojo.require("dojo._base.connect");
 		// use listener code (event fixing) for nodes that look like objects, unless told not to
 		dontFix = Boolean(!obj || !(obj.nodeType||obj.attachEvent||obj.addEventListener) || dontFix);
 		// grab up the result of baseline disconnect, or construct one using addListener
-		var h = (dontFix ? dc.apply(this, arguments) : [obj, event, dojo.addListener.apply(this, arguments)]);
+		var h = (dontFix ? dc.apply(this, arguments) : [obj, event, addListener.apply(this, arguments)]);
 		// append flag to the result identifying the kind of listener 
 		h.push(dontFix);
 		return h;
@@ -103,7 +101,7 @@ dojo.require("dojo._base.connect");
 
 	dojo._disconnect = function(obj, event, handle, dontFix){
 		// dispatch this disconnect either to the baseline code or to removeListener
-		(dontFix ? dd : dojo.removeListener).apply(this, arguments);
+		(dontFix ? dd : removeListener).apply(this, arguments);
 	}											
 
 	// Constants

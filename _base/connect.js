@@ -187,15 +187,48 @@ dojo._disconnect = function(obj, event, handle){
 dojo._topics = {};
 
 dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Function*/ method){
+	// summary:
+	//		Attach a listener to a named topic. The listener function is invoked whenever the named
+	//      topic is published (see: dojo.publish).
+	//		Returns a handle which is needed to unsubscribe this listener.
+	// context:
+	//		Scope in which method will be invoked, or null for default scope.
+	// method:
+	//		The name of a function in context, or a function reference. This is the function that
+	//		is invoked when topic is published.
+	// usage:
+	//		dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
+	//      dojo.publish("alerts", [ "read this", "hello world" ]);																	
+	
 	// support for 3 argument invocation depends on hitch
-	return dojo._listener.add(dojo._topics, topic, dojo.hitch(context, method)); /*Handle*/
+	return [topic, dojo._listener.add(dojo._topics, topic, dojo.hitch(context, method))]; /*Handle*/
 }
 
-dojo.unsubscribe = function(/*String*/ topic, /*Handle*/ handle){
-	dojo._listener.remove(dojo._topics, topic, handle);
+dojo.unsubscribe = function(/*Handle*/ handle){
+	// summary:
+	//		Remove a topic listener. 
+	// handle:
+	//		The handle returned from a call to subscribe.
+	// usage:
+	//		var alerter = dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
+	//		...
+	//		dojo.unsubscribe(alerter);
+	
+	dojo._listener.remove(dojo._topics, handle[0], handle[1]);
 }
 
 dojo.publish = function(/*String*/ topic, /*Array*/ args){
+	// summary:
+	//		Invoke all listener method subscribed to topic.
+	// topic:
+	//		The name of the topic to publish.
+	// args:
+	//		An array of arguments. The arguments will be applied 
+	//		to each topic subscriber (as first class parameters, via apply).
+	// usage:
+	//		dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
+	//      dojo.publish("alerts", [ "read this", "hello world" ]);																	
+	
 	// Note that args is an array. This is more efficient vs variable length argument list.
 	// Ideally, by convention, var args are implemented via Array throughout the APIs.
 	var f = dojo._topics[topic];

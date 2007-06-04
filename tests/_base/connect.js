@@ -69,7 +69,7 @@ markAndSweepSubscribersTest = function(iterations){
 		marked = rm;				
 	} 
 	for(var m=0; m<marked.length; m++){
-		dojo.unsubscribe(topic, marked[m]);
+		dojo.unsubscribe(marked[m]);
 	}
 	// test
 	failures = 0;

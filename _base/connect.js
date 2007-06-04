@@ -200,7 +200,7 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 	//		dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
 	//      dojo.publish("alerts", [ "read this", "hello world" ]);																	
 	
-	// support for 3 argument invocation depends on hitch
+	// support for 2 argument invocation (omitting context) depends on hitch
 	return [topic, dojo._listener.add(dojo._topics, topic, dojo.hitch(context, method))]; /*Handle*/
 }
 

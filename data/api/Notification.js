@@ -63,7 +63,7 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 		//
 		//	returns:
 		//		Nothing.
-		dojo.unimplemented('dojo.data.api.Notification.onSet');
+		throw new Error('Unimplemented API: dojo.data.api.Notification.onSet');
 	},
 
 	onNew: function(/* item */ newItem){
@@ -79,7 +79,7 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 		//
 		//	returns:
 		//		Nothing.
-		dojo.unimplemented('dojo.data.api.Notification.onNew');
+		throw new Error('Unimplemented API: dojo.data.api.Notification.onNew');
 	},
 
 	onDelete: function(/* item */ deletedItem){
@@ -95,6 +95,6 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 		//
 		//	returns:
 		//		Nothing.
-		dojo.unimplemented('dojo.data.api.Notification.onDelete');
+		throw new Error('Unimplemented API: dojo.data.api.Notification.onDelete');
 	}
 });

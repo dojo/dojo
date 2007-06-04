@@ -31,7 +31,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		var kermit = store.newItem({name: "Kermit", color:[blue, green]});
 
 		var newItem;
-		dojo.unimplemented('dojo.data.api.Write.newItem');
+		throw new Error('Unimplemented API: dojo.data.api.Write.newItem');
 		return newItem; // item
 	},
 
@@ -44,7 +44,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		(if store.isItem(item) returns false).
 		//	examples:
 		//		var success = store.deleteItem(kermit);
-		dojo.unimplemented('dojo.data.api.Write.deleteItem');
+		throw new Error('Unimplemented API: dojo.data.api.Write.deleteItem');
 		return false; // boolean
 	},
 
@@ -61,7 +61,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		Throws an exception if *value* is undefined.
 		//	examples:
 		//		var success = store.set(kermit, "color", "green");
-		dojo.unimplemented('dojo.data.api.Write.setValue');
+		throw new Error('Unimplemented API: dojo.data.api.Write.setValue');
 		return false; // boolean
 	},
 
@@ -82,7 +82,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		var success = store.setValues(kermit, "color", ["green", "aqua"]);
 		//		success = store.setValues(kermit, "color", []);
 		//		if (success) {assert(!store.hasAttribute(kermit, "color"));}
-		dojo.unimplemented('dojo.data.api.Write.setValues');
+		throw new Error('Unimplemented API: dojo.data.api.Write.setValues');
 		return false; // boolean
 	},
 
@@ -97,7 +97,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	examples:
 		//		var success = store.unsetAttribute(kermit, "color");
 		//		if (success) {assert(!store.hasAttribute(kermit, "color"));}
-		dojo.unimplemented('dojo.data.api.Write.clear');
+		throw new Error('Unimplemented API: dojo.data.api.Write.clear');
 		return false; // boolean
 	},
 
@@ -145,7 +145,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	examples:
 		//		store.save({onComplete: onSave});
 		//		store.save({scope: fooObj, onComplete: onSave, onError: saveFailed});
-		dojo.unimplemented('dojo.data.api.Write.save');
+		throw new Error('Unimplemented API: dojo.data.api.Write.save');
 	},
 
 	revert: function(){
@@ -156,7 +156,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//
 		//	examples:
 		//		var success = store.revert();
-		dojo.unimplemented('dojo.data.api.Write.revert');
+		throw new Error('Unimplemented API: dojo.data.api.Write.revert');
 		return false; // boolean
 	},
 
@@ -173,7 +173,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	examples:
 		//		var trueOrFalse = store.isDirty(kermit); // true if kermit is dirty
 		//		var trueOrFalse = store.isDirty();       // true if any item is dirty
-		dojo.unimplemented('dojo.data.api.Write.isDirty');
+		throw new Error('Unimplemented API: dojo.data.api.Write.isDirty');
 		return false; // boolean
 	}
 });

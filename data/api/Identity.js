@@ -27,7 +27,7 @@ dojo.declare("dojo.data.api.Identity",dojo.data.api.Read,null,{
 		//	examples:
 		//		var itemId = store.getIdentity(kermit);
 		//		assert(kermit === store.findByIdentity(store.getIdentity(kermit)));
-		dojo.unimplemented('dojo.data.api.Identity.getIdentity');
+		throw new Error('Unimplemented API: dojo.data.api.Identity.getIdentity');
 		var itemIdentityString = null;
 		return itemIdentityString; // string
 	},
@@ -49,7 +49,7 @@ dojo.declare("dojo.data.api.Identity",dojo.data.api.Read,null,{
 		//	examples:
 		//		var alaska = store.getItemByIdentity("AK");
 		//		assert("AK" == store.getItemByIdentity(store.getItemByIdentity("AK")));
-		dojo.unimplemented('dojo.data.api.Identity.getItemByIdentity');
+		throw new Error('Unimplemented API: dojo.data.api.Identity.getItemByIdentity');
 		var item = null;
 		return item; // item
 	}

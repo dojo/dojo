@@ -23,6 +23,6 @@ dojo.declare("dojo.data.api.Request",null,null,{
 		//		This function is a hook point for stores to provide as a way for 
 		//		a fetch to be halted mid-processing.  For more details on the fetch() api,
 		//		please see dojo.data.api.Read.fetch().
-		dojo.unimplemented('dojo.data.api.Request.abort');
+		throw new Error('Unimplemented API: dojo.data.api.Request.abort');
 	}
 });

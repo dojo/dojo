@@ -30,8 +30,8 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		an item, or *attribute* is neither an attribute object or a string.
 		//	examples:
 		//		var darthVader = store.getValue(lukeSkywalker, "father");
-		dojo.unimplemented('dojo.data.api.Read.getValue');
 		var attributeValue = null;
+		throw new Error('Unimplemented API: dojo.data.api.Read.getValue');
 		return attributeValue; // a literal, an item, null, or undefined (never an array)
 	},
 
@@ -51,8 +51,8 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		attribute object or a string.
 		//	examples:
 		//		var friendsOfLuke = store.getValues(lukeSkywalker, "friends");
-		dojo.unimplemented('dojo.data.api.Read.getValues');
 		var array = [];
+		throw new Error('Unimplemented API: dojo.data.api.Read.getValues');
 		return array; // an array that may contain literals and items
 	},
 
@@ -66,8 +66,8 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		Throws an exception if *item* is not an item. 
 		//	examples:
 		//		var array = store.getAttributes(kermit);
-		dojo.unimplemented('dojo.data.api.Read.getAttributes');
 		var array = [];
+		throw new Error('Unimplemented API: dojo.data.api.Read.getAttributes');
 		return array; // array
 	},
 
@@ -81,7 +81,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		attribute object or a string.
 		//	examples:
 		//		var trueOrFalse = store.hasAttribute(kermit, "color");
-		dojo.unimplemented('dojo.data.api.Read.hasAttribute');
+		throw new Error('Unimplemented API: dojo.data.api.Read.hasAttribute');
 		return false; // boolean
 	},
 
@@ -97,7 +97,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		attribute object or a string.
 		//	examples:
 		//		var trueOrFalse = store.containsValue(kermit, "color", "green");
-		dojo.unimplemented('dojo.data.api.Read.containsValue');
+		throw new Error('Unimplemented API: dojo.data.api.Read.containsValue');
 		return false; // boolean
 	},
 
@@ -110,7 +110,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//	examples:
 		//		var yes = store.isItem(store.newItem());
 		//		var no  = store.isItem("green");
-		dojo.unimplemented('dojo.data.api.Read.isItem');
+		throw new Error('Unimplemented API: dojo.data.api.Read.isItem');
 		return false; // boolean
 	},
 
@@ -124,7 +124,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//	examples:
 		//		var yes = store.isItemLoaded(store.newItem());
 		//		var no  = store.isItemLoaded("green");
-		dojo.unimplemented('dojo.data.api.Read.isItemLoaded');
+		throw new Error('Unimplemented API: dojo.data.api.Read.isItemLoaded');
 		return false; // boolean
 	},
 
@@ -168,7 +168,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		For example, onItem.call(scope, item, request) vs. 
 		//		onItem.call(dojo.global(), item, request)
 		if (!this.isItemLoaded(keywordArgs.item)) {
-			dojo.unimplemented('dojo.data.api.Read.loadItem');
+			throw new Error('Unimplemented API: dojo.data.api.Read.loadItem');
 		}
 	},
 
@@ -367,8 +367,8 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		// and then when the user presses the "Next Page" button...
 		//		fetchArgs.start += 20;
 		//		store.fetch(fetchArgs);  // get the next 20 items
-		dojo.unimplemented('dojo.data.api.Read.fetch');
 		var request = null; 
+		throw new Error('Unimplemented API: dojo.data.api.Read.fetch');
 		return request; // an object conforming to the dojo.data.api.Request API
 	},
 
@@ -412,6 +412,6 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		var request = store.fetch({onComplete: doSomething});
 		//		...
 		//		store.close(request);
-		dojo.unimplemented('dojo.data.api.Read.close');
+		throw new Error('Unimplemented API: dojo.data.api.Read.close');
 	}
 });

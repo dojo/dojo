@@ -213,7 +213,15 @@ dojo.declare("dojo._Animation", null,
 
 		combine: function(/*dojo._Animation[]*/ anims){
 			dojo.forEach(anims, function(anim){
-				dojo.connect(this, "play", anim, "play");
+				dojo.forEach([ 
+					"beforeBegin", "onBegin", "onAnimate", "onEnd", 
+					"onPlay", "onPause", "onStop", "play" 
+				], function(evt){
+					if(anim[evt]){
+						// if(!this[evt]){ this[evt] = function(){}; }
+						dojo.connect(this, evt, anim, evt);
+					}
+				}, this);
 			}, this);
 			return this; // dojo._Animation
 		},
@@ -338,6 +346,7 @@ dojo.declare("dojo._Animation", null,
 							this._startRepeatCount = 0;
 						}
 					}
+					this._percent = 0;
 					this.fire("onEnd");
 				}
 			}

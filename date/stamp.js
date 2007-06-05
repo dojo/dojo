@@ -45,15 +45,15 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number*/de
 		result.setMinutes(timeSegments[1]);
 		result.setSeconds(timeSegments[2]);
 		var remainder = segments[1].substring(8);
-		if(remainder[0] === "."){
+		if(remainder.charAt(0) === "."){
 			//TODO: millis?
 		}
 		if(remainder){
 			var offset = 0;
-			if(remainder[0] != 'Z'){
+			if(remainder.charAt(0) != 'Z'){
 				var gmtOffset = remainder.substring(1).split(":");
 				offset = (gmtOffset[0] * 60) + (Number(gmtOffset[1]) || 0);
-				if(remainder[0] != '-'){ offset *= -1; }
+				if(remainder.charAt(0) != '-'){ offset *= -1; }
 			}
 			offset -= result.getTimezoneOffset();
 			if(offset){

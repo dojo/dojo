@@ -27,7 +27,7 @@ fieldset, img {
 	border: 0;
 }
 
-address, caption, cite, code, dfn, th, var /*, em, strong*/ {
+address, caption, cite, code, dfn, th, var {
 	font-style: normal; 
 	font-weight: normal;
 }
@@ -44,13 +44,6 @@ abbr, acronym {
 	border:0;
 }
 
-select, input, textarea {
-	font-size:99%;
-}
-
-body * {
-	line-height:1.22em;
-}
 
 /* 
 

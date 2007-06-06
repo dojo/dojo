@@ -61,6 +61,22 @@ doh.register("tests.data.JsonItemStore",
 			item = jsonItemStore.getItemByIdentity("sv_not");
 			t.assertTrue(item === null);
 		},
+		function testIdentityAPI_getIdentityAttributes(t){
+			//	summary: 
+			//		Simple test of the getIdentityAttributes function.
+			//	description:
+			//		Simple test of the getIdentityAttributes function.
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+
+			var item = jsonItemStore.getItemByIdentity("sv");
+			t.assertTrue(item !== null);
+			if(item !== null){
+				var identifiers = jsonItemStore.getIdentityAttributes(item);
+                t.assertTrue(dojo.isArray(identifiers));
+				t.assertEqual(1, identifiers.length);
+				t.assertEqual("abbr", identifiers[0]);
+			}
+		},
 		function testIdentityAPI_getItemByIdentity_commentFilteredJson(t){
 			//	summary: 
 			//		Simple test of the getItemByIdentity function of the store.

@@ -419,6 +419,17 @@ dojo.declare("dojo.data.JsonItemStore",
 		return null; //null
 	},
 
+	getIdentityAttributes: function(/* item */ item){
+		 //	summary: 
+		 //		See dojo.data.api.Identity.getIdentifierAttributes()
+		 
+		 var identifier = this._features['dojo.data.api.Identity'];
+		 if(identifier){
+			 return [identifier];
+		 }
+		 return null;
+	},
+
 	_forceLoad: function(){
 		//	summary: 
 		//		Internal function to force a load of the store if it hasn't occurred yet.  This is required

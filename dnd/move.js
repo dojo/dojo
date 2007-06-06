@@ -33,7 +33,6 @@ dojo.extend(dojo.dnd.Mover, {
 	_makeAbsolute: function(){
 		// summary: makes the node absolute; it is meant to be called only once
 		this.node.style.position = "absolute";	// enforcing the absolute mode
-		dojo.body().appendChild(this.node);
 		dojo.disconnect(this.firstEvent);
 		delete this.firstEvent;
 	},

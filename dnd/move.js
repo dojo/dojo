@@ -8,16 +8,16 @@ dojo.dnd.Mover = function(node, e){
 	// e: Event: a mouse event, which started the move;
 	//	only pageX and pageY properties are used
 	this.node = dojo.byId(node);
-	var m = this.margin = dojo.marginBox(this.node);
+	var m = this.margin = dojo.marginBox(this.node), d = node.ownerDocument;
 	m.l -= e.pageX;
 	m.t -= e.pageY;
-	this.firstEvent = dojo.connect(dojo.doc, "onmousemove", this, "_makeAbsolute");
+		this.firstEvent = dojo.connect(d, "onmousemove", this, "_makeAbsolute");
 	this.events = [
-		dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
-		dojo.connect(dojo.doc, "onmouseup",   this, "destroy"),
+		dojo.connect(d, "onmousemove", this, "onMouseMove"),
+		dojo.connect(d, "onmouseup",   this, "destroy"),
 		// cancel text selection and text dragging
-		dojo.connect(dojo.doc, "ondragstart",   dojo, "stopEvent"),
-		dojo.connect(dojo.doc, "onselectstart", dojo, "stopEvent")
+		dojo.connect(d, "ondragstart",   dojo, "stopEvent"),
+		dojo.connect(d, "onselectstart", dojo, "stopEvent")
 	];
 };
 

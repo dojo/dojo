@@ -504,7 +504,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 
 		// FIXME: need to decide in the brave-new-world if we're going to be
 		// margin-box or border-box.
-		var ownerDocument = dojo.doc;
+		var ownerDocument = node.ownerDocument;
 		var ret = {
 			x: 0,
 			y: 0

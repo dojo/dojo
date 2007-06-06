@@ -15,6 +15,8 @@ dojo.dnd.Manager = function(){
 };
 
 dojo.extend(dojo.dnd.Manager, {
+	OFFSET_X: 10,
+	OFFSET_Y: 10,
 	// methods
 	overSource: function(source){
 		// summary: called when a source detected a mouse-over conditiion
@@ -92,9 +94,7 @@ dojo.extend(dojo.dnd.Manager, {
 		// e: Event: mouse event
 		var a = this.avatar;
 		if(a){
-			var s = a.node.style;
-			s.left = (e.pageX + 10 + (isNaN(a.offX) ? 0 : a.offX)) + "px";
-			s.top  = (e.pageY + 10 +  (isNaN(a.offY) ? 0 : a.offY)) + "px";
+			dojo.marginBox(a.node, {l: e.pageX + this.OFFSET_X, t: e.pageY + this.OFFSET_Y});
 			if(this.copy != dojo.dnd.multiSelectKey(e)){ 
 				this._setCopyStatus(dojo.dnd.multiSelectKey(e));
 			}

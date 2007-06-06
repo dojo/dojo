@@ -7,10 +7,6 @@ dojo.dnd.Avatar = function(manager){
 	// manager: Object: a DnD manager object
 	this.manager = manager;
 	this.construct();
-	// calculate various offsets
-	var off = dojo.dnd._getOffset(this.node);
-	this.offX =  off.l;
-	this.offY = off.t;
 };
 
 dojo.extend(dojo.dnd.Avatar, {
@@ -21,6 +17,7 @@ dojo.extend(dojo.dnd.Avatar, {
 		a.className = "dojoDndAvatar";
 		a.style.position = "absolute";
 		a.style.zIndex = 999;
+		a.style.margin = "0px"; // to avoid dojo.marginBox() problems with table's margins
 		var b = dojo.doc.createElement("tbody");
 		var tr = dojo.doc.createElement("tr");
 		tr.className = "dojoDndAvatarHeader";

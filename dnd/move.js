@@ -8,10 +8,9 @@ dojo.dnd.Mover = function(node, e){
 	// e: Event: a mouse event, which started the move;
 	//	only pageX and pageY properties are used
 	this.node = dojo.byId(node);
-	var np = dojo.coords(this.node, true);
-	var off = dojo.dnd._getOffset(this.node);
-	this.posX = np.x - off.l - e.pageX;
-	this.posY = np.y - off.t  - e.pageY;
+	var m = this.margin = dojo.marginBox(this.node);
+	m.l -= e.pageX;
+	m.t -= e.pageY;
 	this.firstEvent = dojo.connect(dojo.doc, "onmousemove", this, "_makeAbsolute");
 	this.events = [
 		dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
@@ -27,9 +26,8 @@ dojo.extend(dojo.dnd.Mover, {
 	onMouseMove: function(e){
 		// summary: event processor for onmousemove
 		// e: Event: mouse event
-		var s = this.node.style;
-		s.left = (e.pageX + this.posX) + "px";
-		s.top  = (e.pageY + this.posY) + "px";
+		var m = this.margin;
+		dojo.marginBox(this.node, {l: m.l + e.pageX, t: m.t + e.pageY});
 	},
 	// utilities
 	_makeAbsolute: function(){

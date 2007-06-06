@@ -136,7 +136,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	//	"border-box"
 	//	"content-box" (default)
 	dojo.boxModel = "content-box";
-
+	
 	// We punt per-node box mode testing completely.
 	// If anybody cares, we can provide an additional (optional) unit 
 	// that overrides existing code to include per-node box sensitivity.
@@ -250,12 +250,12 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		width: true, height: true, left: true, top: true
 	};
 	var _toStyleValue = function(node, type, value){
+		type = type.toLowerCase();
 		if(_pixelNamesCache[type] === true){
 			return dojo._toPixelValue(node, value)
 		}else if(_pixelNamesCache[type] === false){
 			return value;
 		}else{
-			type = type.toLowerCase();
 			if(
 				(type.indexOf("margin") >= 0) ||
 				// (type.indexOf("border") >= 0) ||
@@ -300,7 +300,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	dojo._getPadBounds = function(n, computedStyle){
 		// Returns special values specifically useful 
 		// for node fitting.
-		// l, t = left and top padding
+		// l/t = left/top padding (respectively)
 		// w = the total of the left and right padding 
 		// h = the total of the top and bottom padding
 		// If 'node' has position, l/t forms the origin for child nodes. 
@@ -321,8 +321,9 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	}
 	
 	dojo._getPadBorderExtents = function(n, computedStyle){
-		// w = the total of the left/right padding and left/right border
-		// h = the total of the top/bottom padding and top/bottom border
+		// l/t = the sum of left/top padding and left/top border (respectively)
+		// w = the sum of the left and right padding and border
+		// h = the sum of the top and bottom padding and border
 		// The w/h are used for calculating boxes.
 		// Normally application code will not need to invoke this directly,
 		// and will use the ...box... functions instead.
@@ -330,21 +331,27 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			s=computedStyle||dojo.getComputedStyle(n), 
 			px=dojo._toPixelValue, 
 			p=dojo._getPadBounds(n, s),
-			bw=(s.borderLeftStyle!='none' ? px(n, s.borderLeftWidth) : 0) + (s.borderRightStyle!='none' ? px(n, s.borderRightWidth) : 0),
-			bh=(s.borderTopStyle!='none' ? px(n, s.borderTopWidth) : 0) + (s.borderBottomStyle!='none' ? px(n, s.borderBottomWidth) : 0);
+			bl=(s.borderLeftStyle!='none' ? px(n, s.borderLeftWidth) : 0),
+			bt=(s.borderTopStyle!='none' ? px(n, s.borderTopWidth) : 0);
 		return { 
-			w: p.w + bw,
-			h: p.h + bh
+			l: p.l + bl,
+			t: p.t + bt,
+			w: p.w + bl + (s.borderRightStyle!='none' ? px(n, s.borderRightWidth) : 0),
+			h: p.h + bt + (s.borderBottomStyle!='none' ? px(n, s.borderBottomWidth) : 0)
 		};
 	}
 
 	dojo._getMarginExtents = function(n, computedStyle){
 		var 
 			s=computedStyle||dojo.getComputedStyle(n), 
-			px=dojo._toPixelValue;
+			px=dojo._toPixelValue,
+			l=px(n, s.marginLeft),
+			t=px(n, s.marginTop);
 		return { 
-			w: px(n, s.marginLeft)+px(n, s.marginRight),
-			h: px(n, s.marginTop)+px(n, s.marginBottom)
+			l: l,
+			t: t,
+			w: l+px(n, s.marginRight),
+			h: t+px(n, s.marginBottom)
 		};
 	}
 
@@ -357,15 +364,17 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	// Be careful with IMGs because they are inline or block depending on 
 	// browser and browser mode.
 
-	if (dojo.isMoz) {
+	if(dojo.isMoz){
 		dojo._getMarginBox = function(node, computedStyle){
 			var s = computedStyle||dojo.getComputedStyle(node);
 			var mb = dojo._getMarginExtents(node, s);
-			return { l:parseFloat(s.left)||0, t:parseFloat(s.top)||0, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+			// Mozilla has unexplained negative l/t offsets in some cases (e.g. positioned & parents with border)
+			// the computed l/t styles are generally more correct
+			return { l:parseFloat(s.left)||node.offsetLeft, t:parseFloat(s.top)||node.offsetTop, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 		}
 	} else {
 		dojo._getMarginBox = function(node, computedStyle){
-			var mb=dojo._getMarginExtents(node, computedStyle);
+			var mb = dojo._getMarginExtents(node, computedStyle);
 			return { l:node.offsetLeft, t:node.offsetTop, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 		}
 	}
@@ -396,6 +405,11 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	//
 	// Be careful with IMGs because they are inline or block depending on 
 	// browser and browser mode.
+	// 
+	// Elements other than DIV may have special quirks, like built-in
+	// margins or padding, or values not detectable via computedStyle.
+	// In particular, margins on TABLE do not seems to appear 
+	// at all in computedStyle on Mozilla.
 	
 	dojo._setContentBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
 		if(dojo.boxModel == "border-box"){
@@ -410,8 +424,18 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 
 	dojo._setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
 		var s = computedStyle || dojo.getComputedStyle(node);
-		var pb = ((dojo.boxModel == "border-box") ? dojo._nilExtents : dojo._getPadBorderExtents(node, s));
+		// Some elements have special padding, margin, and box-model settings. 
+		// To use box functions with some elements you may need to set padding, margin explicitly.
+		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
+		// TABLE and BUTTON come up regularly, so we include tests for them here. 
+		var tn = node.tagName, pb = ((dojo.boxModel == "border-box") || (tn=="TABLE") || (tn=="BUTTON") ? dojo._nilExtents : dojo._getPadBorderExtents(node, s));
 		var mb = dojo._getMarginExtents(node, s);
+		// On non-Mozilla, offsetLeft/Top and style.left/top differ by left/top margin.
+		// We normalize on mozilla coordinate, mostly arbitrarily, but the values seem more natural.
+		if (!dojo.isMoz) {
+			leftPx -= mb.l;
+			topPx -= mb.t;
+		}
 		if(widthPx>=0){
 			widthPx = Math.max(widthPx - pb.w - mb.w, 0);
 		}
@@ -623,9 +647,11 @@ dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
 	}
 }
 dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*/condition){
-	//	summary: 	Adds a class to node if not present, or removes if present.
-	//				Pass a boolean condition if you want to explicitly add or remove.
-	//	condition:	If passed, true means to add the class, false means to remove.
+	//	summary: 	
+	//		Adds a class to node if not present, or removes if present.
+	//		Pass a boolean condition if you want to explicitly add or remove.
+	//	condition:
+	//		If passed, true means to add the class, false means to remove.
 	if(typeof condition == "undefined"){
 		condition = !dojo.hasClass(node, classStr);
 	}

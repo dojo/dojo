@@ -9,7 +9,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 	//		please visit: http://www.dojotoolkit.org/node/98
 
 	getValue: function(	/* item */ item, 
-						/* attribute || attribute-name-string */ attribute, 
+						/* attribute-name-string */ attribute, 
 						/* value? */ defaultValue){
 		//	summary:
 		//		Returns a single attribute value.
@@ -25,9 +25,15 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		If store.hasAttribute(item, attribute) returns false, then
 		//		store.getValue(item, attribute) will return undefined.
 		//
+		//	item:
+		//		The item to access values on.
+		//	attribute:
+		//		The attribute to access represented as a string.
+		//	defaultValue:
+		//		Optional.  A default value to use for the getValue return in the attribute does not exist or has no value.
+		//
 		//	exceptions:
-		//		Conforming implementations should throw an exception if *item* is not
-		//		an item, or *attribute* is neither an attribute object or a string.
+		//		Throws an exception if *item* is not an item, or *attribute* is not a string
 		//	examples:
 		//		var darthVader = store.getValue(lukeSkywalker, "father");
 		var attributeValue = null;
@@ -36,7 +42,7 @@ dojo.declare("dojo.data.api.Read",null,null,{
 	},
 
 	getValues: function(/* item */ item,
-						/* attribute || attribute-name-string */ attribute){
+						/* attribute-name-string */ attribute){
 		//	summary:
 		// 		This getValues() method works just like the getValue() method, but getValues()
 		//		always returns an array rather than a single attribute value.  The array
@@ -45,10 +51,14 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		If the item does not have a value for the given attribute, then getValues()
 		//		will return an empty array: [].  (So, if store.hasAttribute(item, attribute)
 		//		returns false, then store.getValues(item, attribute) will return [].)
-
+		//
+		//	item:
+		//		The item to access values on.
+		//	attribute:
+		//		The attribute to access represented as a string.
+		//
 		//	exceptions:
-		//		Throws an exception if *item* is not an item, or *attribute* is neither an 
-		//		attribute object or a string.
+		//		Throws an exception if *item* is not an item, or *attribute* is not a string
 		//	examples:
 		//		var friendsOfLuke = store.getValues(lukeSkywalker, "friends");
 		var array = [];
@@ -62,8 +72,11 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		method will always return an array; if the item has no attributes
 		//		at all, getAttributes() will return an empty array: [].
 		//
+		//	item:
+		//		The item to access attributes on.
+		//
 		//	exceptions:
-		//		Throws an exception if *item* is not an item. 
+		//		Throws an exception if *item* is not an item, or *attribute* is not a string
 		//	examples:
 		//		var array = store.getAttributes(kermit);
 		var array = [];
@@ -72,13 +85,17 @@ dojo.declare("dojo.data.api.Read",null,null,{
 	},
 
 	hasAttribute: function(	/* item */ item,
-							/* attribute || attribute-name-string */ attribute){
+							/* attribute-name-string */ attribute){
 		//	summary:
 		//		Returns true if the given *item* has a value for the given *attribute*.
 		//
+		//	item:
+		//		The item to access attributes on.
+		//	attribute:
+		//		The attribute to access represented as a string.
+		//
 		//	exceptions:
-		//		Throws an exception if *item* is not an item, or *attribute* is neither an 
-		//		attribute object or a string.
+		//		Throws an exception if *item* is not an item, or *attribute* is not a string
 		//	examples:
 		//		var trueOrFalse = store.hasAttribute(kermit, "color");
 		throw new Error('Unimplemented API: dojo.data.api.Read.hasAttribute');
@@ -86,15 +103,21 @@ dojo.declare("dojo.data.api.Read",null,null,{
 	},
 
 	containsValue: function(/* item */ item,
-							/* attribute || attribute-name-string */ attribute, 
+							/* attribute-name-string */ attribute, 
 							/* anything */ value){
 		//	summary:
 		//		Returns true if the given *value* is one of the values that getValues()
 		//		would return.
 		//
+		//	item:
+		//		The item to access values on.
+		//	attribute:
+		//		The attribute to access represented as a string.
+		//	value:
+		//		The value to match as a value for the attribute.
+		//
 		//	exceptions:
-		//		Throws an exception if *item* is not an item, or *attribute* is neither an 
-		//		attribute object or a string.
+		//		Throws an exception if *item* is not an item, or *attribute* is not a string
 		//	examples:
 		//		var trueOrFalse = store.containsValue(kermit, "color", "green");
 		throw new Error('Unimplemented API: dojo.data.api.Read.containsValue');
@@ -106,6 +129,9 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		Returns true if *something* is an item and came from the store instance.  
 		//		Returns false if *something* is a literal, an item from another store instance, 
 		//		or is any object other than an item.
+		//
+		//	something:
+		//		Can be anything.
 		//
 		//	examples:
 		//		var yes = store.isItem(store.newItem());
@@ -120,6 +146,9 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		if isItem(something) is true but the the item is not yet loaded
 		//		in local memory (for example, if the item has not yet been read
 		//		from the server).
+		//
+		//	something:
+		//		Can be anything.
 		//
 		//	examples:
 		//		var yes = store.isItemLoaded(store.newItem());

@@ -48,8 +48,8 @@ dojo.declare("dojo.data.JsonItemStore",
 		//      This function tests whether the item passed in is indeed a valid 'attribute' like type for the store.
 		//	attribute: 
 		//		The attribute to test for being contained by the store.
-		if(!this.isItem(attribute)){ 
-			throw new Error("dojo.data.JsonItemStore: a function was passed an attribute argument that was not an attribute object nor an attribute name string");
+		if(typeof attribute !== "string"){ 
+			throw new Error("dojo.data.JsonItemStore: a function was passed an attribute argument that was not an attribute name string");
 		}
 	},
 
@@ -66,11 +66,9 @@ dojo.declare("dojo.data.JsonItemStore",
 						/* attribute || attribute-name-string */ attribute){
 		//	summary: 
 		//		See dojo.data.api.Read.getValues()
-		if(typeof attribute !== "string"){
-			this._assertIsAttribute(attribute);
-			attribute = this.getIdentity(attribute);
-		}
+
 		this._assertIsItem(item);
+		this._assertIsAttribute(attribute);
 		return item[attribute] || []; //Array
 	},
 

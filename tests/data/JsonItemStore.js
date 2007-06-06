@@ -361,22 +361,6 @@ doh.register("tests.data.JsonItemStore",
 			var name = jsonItemStore.getValue(item,"name");
 			t.assertTrue(name === "El Salvador");
 		},
-		function testReadAPI_getValue_byattributeItem(t){
-			//	summary: 
-			// 		Simple test of the getValue function passing in an item as the attribute identifier.
-			//	description:
-			// 		Simple test of the getValue function passing in an item as the attribute identifier.
-
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesAttrsStore();
-
-			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
-			t.assertTrue(itemAttribute !== null);
-			var name = jsonItemStore.getValue(itemAttribute,"name");
-			t.assertTrue(name === "abbr");
-			var item = jsonItemStore.getItemByIdentity("Ecuador");
-			var attrValue = jsonItemStore.getValue(item,itemAttribute);
-			t.assertTrue(attrValue === "ec");
-		},
 		function testReadAPI_getValues(t){
 			//	summary: 
 			//		Simple test of the getValues function of the store.
@@ -391,24 +375,6 @@ doh.register("tests.data.JsonItemStore",
             t.assertTrue(dojo.isArray(names));
 			t.assertEqual(names.length, 1);
 			t.assertEqual(names[0], "El Salvador");
-		},
-		function testReadAPI_getValues_byattributeItem(t){
-			//	summary: 
-			// 		Simple test of the getValue function passing in an item as the attribute identifier.
-			//	description:
-			// 		Simple test of the getValue function passing in an item as the attribute identifier.
-
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesAttrsStore();
-
-			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
-			t.assertTrue(itemAttribute !== null);
-			var name = jsonItemStore.getValue(itemAttribute,"name");
-			t.assertTrue(name === "abbr");
-			var item = jsonItemStore.getItemByIdentity("Ecuador");
-			var attrValues = jsonItemStore.getValues(item,itemAttribute);
-            t.assertTrue(dojo.isArray(attrValues));
-			t.assertEqual(attrValues.length, 1);
-			t.assertEqual(attrValues[0], "ec");
 		},
 		function testReadAPI_isItem(t){
 			//	summary: 
@@ -469,26 +435,6 @@ doh.register("tests.data.JsonItemStore",
 			}
 			t.assertTrue(passed);
 		},
-		function testReadAPI_hasAttribute_byattributeItem(t){
-			//	summary: 
-			//		Simple test of the hasAttribute passing in an item as the attribute identifier.
-			//	description:
-			//		Simple test of the hasAttribute passing in an item as the attribute identifier.
-
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesAttrsStore();
-
-			//First fine the item in the store that represents the attribute with name 'abbr'.
-			var itemAttribute = jsonItemStore.getItemByIdentity("abbr");
-			t.assertTrue(itemAttribute !== null);
-			if(itemAttribute !== null){
-				var name = jsonItemStore.getValue(itemAttribute,"name");
-				t.assertEqual(name, "abbr");
-			}
-			var item = jsonItemStore.getItemByIdentity("Ecuador");
-			t.assertTrue(jsonItemStore.hasAttribute(item,itemAttribute));
-			var attrValue = jsonItemStore.getValue(item,itemAttribute);
-			t.assertEqual(attrValue, "ec");
-		},
 		function testReadAPI_containsValue(t){
 			//	summary: 
 			//		Simple test of the containsValue function of the store
@@ -511,22 +457,6 @@ doh.register("tests.data.JsonItemStore",
 				passed = true;
 			}
 			t.assertTrue(passed);
-		},
-		function testReadAPI_containsValue_byattributeItem(t){
-			//	summary: 
-			//		Simple test of the getAttributes function of the store
-			//	description:
-			//		Simple test of the containsValue function of the store using attribute lookup.
-
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesAttrsStore();
-
-			var attributeItem = jsonItemStore.getItemByIdentity("abbr");
-			var item          = jsonItemStore.getItemByIdentity("El Salvador");
-			t.assertTrue(item !== null);
-			t.assertTrue(attributeItem !== null);
-			t.assertTrue(jsonItemStore.containsValue(item, attributeItem, "sv"));
-			t.assertTrue(!jsonItemStore.containsValue(item, attributeItem, "sv1"));
-			t.assertTrue(!jsonItemStore.containsValue(item, attributeItem, null));
 		},
 		function testReadAPI_getAttributes(t){
 			//	summary: 

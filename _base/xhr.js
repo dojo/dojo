@@ -271,11 +271,10 @@ dojo._contentHandlers = {
 		d.addCallbacks(okHandler, function(error){
 				return errHandler(error, d);
 		});
-		
-		/*
-		//Support specifying load and error callback functions from the args.
+
+		//Support specifying load, error and handle callback functions from the args.
 		//For those callbacks, the "this" object will be the args object.
-		//The load and error callback will get the deferred result value as the
+		//The callbacks will get the deferred result value as the
 		//first argument and the ioArgs object as the second argument.
 		var ld = args.load;
 		if(ld && dojo.isFunction(ld)){
@@ -289,8 +288,13 @@ dojo._contentHandlers = {
 				return err.call(args, value, ioArgs);
 			});
 		}
-		*/
-
+		var handle = args.handle;
+		if(handle && dojo.isFunction(handle)){
+			d.addBoth(function(value){
+				return handle.call(args, value, ioArgs);
+			});
+		}
+		
 		d.ioArgs = ioArgs;
 	
 		// FIXME: need to wire up the xhr object's abort method to something

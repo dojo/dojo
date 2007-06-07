@@ -213,19 +213,20 @@ dojo._contentHandlers = {
 			/*Function*/canceller,
 			/*Function*/okHandler,
 			/*Function*/errHandler){
-		//summary: sets up the Deferred and ioArgs property on the Deferred so it
-		//can be used in an io call.
-		//args:
+		//	summary: 
+		//		sets up the Deferred and ioArgs property on the Deferred so it
+		//		can be used in an io call.
+		//	args:
 		//		The args object passed into the public io call.
-		//canceller:
+		//	canceller:
 		//		The canceller function used for the Deferred object. The function
 		//		will receive one argument, the Deferred object that is related to the
 		//		canceller.
-		//okHandler:
+		//	okHandler:
 		//		The first OK callback to be registered with Deferred. It has the opportunity
 		//		to transform the OK response. It will receive one argument -- the Deferred
 		//		object returned from this function.
-		//errHandler:
+		//	errHandler:
 		//		The first error callback to be registered with Deferred. It has the opportunity
 		//		to do cleanup on an error. It will receive two arguments: error (the 
 		//		Error object) and dfd, the Deferred object returned from this function.
@@ -423,6 +424,15 @@ dojo._contentHandlers = {
 		var ioArgs = dfd.ioArgs;
 		var args = ioArgs.args;
 		ioArgs.xhr.open(type, ioArgs.url, (args.sync !== true), (args.user ? args.user : undefined), (args.password ? args.password: undefined));
+		if(args.headers){
+			for(var hdr in args.headers){
+				if(hdr.toLowerCase() === "content-type" && !args.contentType){
+					args.contentType = args.headers[hdr];
+				}else{
+					ioArgs.xhr.setRequestHeader(hdr, args.headers[hdr]);
+				}
+			}
+		}
 		// FIXME: is this appropriate for all content types?
 		ioArgs.xhr.setRequestHeader("Content-Type", (args.contentType||_defaultContentType));
 		// FIXME: set other headers here!
@@ -458,9 +468,32 @@ dojo._contentHandlers = {
 		return _doIt("POST", dfd); // dojo.Deferred
 	}
 
+	dojo.xhrPut = function(/*Object*/ args){
+		return _doIt("PUT", _makeXhrDeferred(args)); // dojo.Deferred
+	}
+
+	dojo.rawXhrPut = function(/*Object*/ args){
+		var dfd = _makeXhrDeferred(args);
+		var ioArgs = dfd.ioArgs;
+		if(args["putData"]){
+			ioArgs.query = args.putData;
+			args.putData = null;
+		}
+		return _doIt("PUT", dfd); // dojo.Deferred
+	}
+
+	dojo.xhrDelete = function(/*Object*/ args){
+		var dfd = _makeXhrDeferred(args);
+		var ioArgs = dfd.ioArgs;
+		if(ioArgs.query.length){
+			ioArgs.url += "?" + ioArgs.query;
+			ioArgs.query = null;
+		}
+		return _doIt("DELETE", dfd); // dojo.Deferred
+	}
+
 	dojo.wrapForm = function(formNode){
 		// was FormBind
-		// FIXME: waiting on connect
 		// FIXME: need to think harder about what extensions to this we might
 		// want. What should we allow folks to do w/ this? What events to
 		// set/send?

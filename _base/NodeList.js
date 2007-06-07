@@ -90,6 +90,13 @@ dojo.require("dojo._base.array");
 				return this;
 			},
 
+			connect: function(methodName, objOrFunc, funcName){
+				this.forEach(function(item){
+					dojo.connect(item, methodName, objOrFunc, funcName);
+				});
+				return this;
+			},
+
 			orphan: function(/*String*/ simpleFilter){
 				// summary:
 				//		removes elements in this list that match the simple

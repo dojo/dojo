@@ -326,7 +326,8 @@ dojo.require("dojo._base.NodeList");
 			var isFinal = (queryParts.length == nidx);
 
 			var tf = getFilterFunc(queryParts[idx+1]);
-			for(var x=ecn.length-1, te; x>=0, te=ecn[x]; x--){
+			// for(var x=ecn.length-1, te; x>=0, te=ecn[x]; x--){
+			for(var x=0, te; x<ecn.length, te=ecn[x]; x++){
 				if(tf(te)){
 					if(isFinal){
 						matchArr.push(te);
@@ -334,9 +335,11 @@ dojo.require("dojo._base.NodeList");
 						_filterDown(te, queryParts, matchArr, nidx);
 					}
 				}
+				/*
 				if(x==0){
 					break;
 				}
+				*/
 			}
 		}
 
@@ -748,7 +751,7 @@ dojo.require("dojo._base.NodeList");
 				}
 			} : function(cond){
 				return function(elem){
-					return elem.hasAttribute(cond);
+					return (elem && elem.getAttribute && elem.hasAttribute(cond));
 				}
 			};
 		handleAttrs(attrs, query, defaultGetter,

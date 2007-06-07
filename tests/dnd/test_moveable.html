@@ -38,9 +38,7 @@
 		dojo.require("dojo.dnd.move");
 		var m1, m2;
 		var init = function(){
-			//m1 = new dojo.dnd.Moveable(dojo.byId("moveable1"), dojo.byId("handle1"));
-			//m2 = new dojo.dnd.Moveable(dojo.byId("moveable2"));
-			m1 = new dojo.dnd.Moveable("moveable1", "handle1");
+			m1 = new dojo.dnd.Moveable("moveable1", {handle: "handle1"});
 			m2 = new dojo.dnd.Moveable("moveable2");
 		};
 		dojo.addOnLoad(init);

@@ -176,6 +176,24 @@ dojo.declare("dojo.data.JsonItemStore",
 		return this._features; //Object
 	},
 
+	getLabel: function(/* item */ item){
+		//	summary: 
+		//		See dojo.data.api.Read.getLabel()
+		if(this._labelAttr && this.isItem(item)){
+			return this.getValue(item,this._labelAttr); //String
+		}
+		return undefined; //undefined
+	},
+
+	getLabelAttributes: function(/* item */ item){
+		//	summary: 
+		//		See dojo.data.api.Read.getLabelAttributes()
+		if(this._labelAttr){
+			return [this._labelAttr]; //array
+		}
+		return null; //null
+	},
+
 	_fetchItems: function(	/* Object */ keywordArgs, 
 							/* Function */ findCallback, 
 							/* Function */ errorCallback){
@@ -281,7 +299,8 @@ dojo.declare("dojo.data.JsonItemStore",
 		var i;
 		var item;
 		var attrNames = {};
-
+		this._labelAttr = dataObject.label;
+        
 		// We need to do some transformations to convert the data structure
 		// that we read from the file into a format that will be convenient
 		// to work with in memory.
@@ -425,9 +444,9 @@ dojo.declare("dojo.data.JsonItemStore",
 		 
 		 var identifier = this._features['dojo.data.api.Identity'];
 		 if(identifier){
-			 return [identifier];
+			 return [identifier]; //array
 		 }
-		 return null;
+		 return null; //null
 	},
 
 	_forceLoad: function(){

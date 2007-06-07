@@ -442,5 +442,54 @@ dojo.declare("dojo.data.api.Read",null,null,{
 		//		...
 		//		store.close(request);
 		throw new Error('Unimplemented API: dojo.data.api.Read.close');
+	},
+
+	getLabel: function(/* item */ item){
+		//	summary:
+		//		Method to inspect the item and return a user-readable 'label' for the item
+		//		that provides a general/adequate description of what the item is. 
+		//
+		//	description:
+		//		Method to inspect the item and return a user-readable 'label' for the item
+		//		that provides a general/adequate description of what the item is.  In general
+		//		most labels will be a specific attribute value or collection of the attribute
+		//		values that combine to label the item in some manner.  For example for an item
+		//		that represents a person it may return the label as:  "firstname lastlame" where
+		//		the firstname and lastname are attributes on the item.  If the store is unable 
+		//		to determine an adequate human readable label, it should return undefined.  Users that wish
+		//		to customize how a store instance labels items should replace the getLabel() function on 
+		//		their instance of the store, or extend the store and replace the function in 
+		//		the extension class.
+		//
+		//	item:
+	   	//		The item to return the label for.
+		//
+		//	returns: 
+		//		A user-readable string representing the item or undefined if no user-readable label can 
+		//		be generated.
+		throw new Error('Unimplemented API: dojo.data.api.Read.getLabel');
+		return undefined;
+	},
+
+	getLabelAttributes: function(/* item */ item){
+		//	summary:
+		//		Method to inspect the item and return an array of what attributes of the item were used 
+		//		to generate its label, if any.
+		//
+		//	description:
+		//		Method to inspect the item and return an array of what attributes of the item were used 
+		//		to generate its label, if any.  This function is to assist UI developers in knowing what
+		//		attributes can be ignored out of the attributes an item has when displaying it, in cases
+		//		where the UI is using the label as an overall identifer should they wish to hide 
+		//		redundant information.
+		//
+		//	item:
+	   	//		The item to return the list of label attributes for.
+		//
+		//	returns: 
+		//		An array of attribute names that were used to generate the label, or null if public attributes 
+		//		were not used to generate the label.
+		throw new Error('Unimplemented API: dojo.data.api.Read.getLabelAttributes');
+		return null;
 	}
 });

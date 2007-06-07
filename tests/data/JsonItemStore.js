@@ -364,6 +364,58 @@ doh.register("tests.data.JsonItemStore",
 			return d;
 
 		},
+		function testReadAPI_getLabel(t){
+			//	summary: 
+			//		Simple test of the getLabel function against a store set that has a label defined.
+			//	description:
+			//		Simple test of the getLabel function against a store set that has a label defined.
+
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				t.assertEqual(items.length, 1);
+				var label = jsonItemStore.getLabel(items[0]);
+				t.assertTrue(label !== null);
+				t.assertEqual("Ecuador", label);
+				d.callback(true);
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
+									onComplete: onComplete, 
+									onError: onError
+								});
+			return d;
+		},
+		function testReadAPI_getLabelAttributes(t){
+			//	summary: 
+			//		Simple test of the getLabelAttributes function against a store set that has a label defined.
+			//	description:
+			//		Simple test of the getLabelAttributes function against a store set that has a label defined.
+
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				t.assertEqual(items.length, 1);
+				var labelList = jsonItemStore.getLabelAttributes(items[0]);
+				t.assertTrue(dojo.isArray(labelList));
+				t.assertEqual("name", labelList[0]);
+				d.callback(true);
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
+									onComplete: onComplete, 
+									onError: onError
+								});
+			return d;
+		},
 		function testReadAPI_getValue(t){
 			//	summary: 
 			//		Simple test of the getValue function of the store.

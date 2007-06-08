@@ -59,12 +59,12 @@ function(node, params){
 		dojo.addClass(this.node, "dojoDndHorizontal");
 	}
 	// set up events
-	this.topics = {
-		dndSourceOver:	dojo.subscribe("dndSourceOver", this, "onDndSourceOver"),
-		dndStart:		dojo.subscribe("dndStart",  this, "onDndStart"),
-		dndDrop:		dojo.subscribe("dndDrop",   this, "onDndDrop"),
-		dndCnacel:		dojo.subscribe("dndCancel", this, "onDndCancel")
-	};
+	this.topics = [
+		dojo.subscribe("dndSourceOver", this, "onDndSourceOver"),
+		dojo.subscribe("dndStart",  this, "onDndStart"),
+		dojo.subscribe("dndDrop",   this, "onDndDrop"),
+		dojo.subscribe("dndCancel", this, "onDndCancel")
+	];
 },
 {
 	// mouse event processors
@@ -198,12 +198,7 @@ function(node, params){
 	destroy: function(){
 		// summary: prepares the object to be garbage-collected
 		dojo.dnd.Source.superclass.destroy.call(this);
-		var t = {};
-		for(var i in this.topics){
-			if(!(i in t)){
-				dojo.unsubscribe(i, this.topics[i]);
-			}
-		}
+		dojo.forEach(this.topics, dojo.unsubscribe);
 		this.targetAnchor = null;
 	},
 	checkAcceptance: function(source, nodes){

@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html>
+<head>
+	<title>Sort Flickr images by tags</title>
+	<style type="text/css">
+		/* application-specific settings */
+		#status					{font-weight: bold;}
+		.container				{padding: 5px; cursor: default; background: #f8f8ff;}
+		.wrap1					{float: left; width: 275px; height: 600px; overflow: auto; margin-right: 1em;}
+		.wrap2					{position: relative; width: 350px; height: 170px; overflow: auto;}
+		#container1 .name		{font-weight: bold; padding-right: 4px;}
+		#container1 .image		{padding: 5px;}
+		body.dojoDndCopy, body.dojoDndMove	{color: #888;}
+		.dojoDndCopy .container, .dojoDndMove .container	{background: #ddf;}
+		/* container-specific settings */
+		.dojoDndContainer		{border: 1px solid white; color: black;}
+		.dojoDndContainerOver	{border: 1px solid black; color: black;}
+		.container.dojoDndTargetDisabled	{background: #ccc; color: #888;}
+		/* item-specific settings */
+		.dojoDndItemOver		{background: #feb;}
+		.dojoDndItemSelected	{background: #ccf; color: #444;}
+		.dojoDndItemAnchor		{background: #ccf; color: black;}
+		.dojoDndItemOver.dojoDndItemSelected	{background: #ec8;}
+		.dojoDndItemOver.dojoDndItemAnchor		{background: #ec8;}
+		.dojoDndItemBefore		{border-top:    3px solid red;}
+		.dojoDndItemAfter		{border-bottom: 3px solid red;}
+		.dojoDndHorizontal .dojoDndItemBefore		{border-top:    none;}
+		.dojoDndHorizontal .dojoDndItemAfter		{border-bottom: none;}
+		.dojoDndHorizontal .dojoDndItemBefore img	{border-left:  3px solid red;}
+		.dojoDndHorizontal .dojoDndItemAfter img	{border-right: 3px solid red;}
+		/* avatar-specific settings */
+		.dojoDndAvatar			{font-size: 75%; color: black;}
+		.dojoDndAvatar td		{padding-left: 20px; padding-right: 4px;}
+		.dojoDndAvatarHeader	{background: #ccc; background-repeat: no-repeat;}
+		.dojoDndAvatarItem		{background: #eee;}
+		.dojoDndMove .dojoDndAvatarHeader	{background-image: url(images/set2_stop.png);}
+		.dojoDndCopy .dojoDndAvatarHeader	{background-image: url(images/set2_stop.png);}
+		.dojoDndMove .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/set2_copy.png);}
+		.dojoDndCopy .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/set2_allow.png);}
+	</style>
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+	<script type="text/javascript" src="../../dnd/container.js"></script>
+	<script type="text/javascript" src="../../dnd/selector.js"></script>
+	<script type="text/javascript" src="../../dnd/source.js"></script>
+	<script type="text/javascript" src="../../dnd/avatar.js"></script>
+	<script type="text/javascript" src="../../dnd/manager.js"></script>
+	<script type="text/javascript">
+		dojo.require("dojo.dnd.source");
+		dojo.require("dojo.dnd.manager");
+		
+		dojo.require("dojo.io.script");
+		
+		// missing unique
+		var dom = {
+			_uniqueId: 0,
+			_getUniqueId: function(){
+				// summary: returns a unique string for use with any DOM element
+				var id;
+				do{
+					id = "domUnique" + (++dom._uniqueId);
+				}while(dojo.byId(id));
+				return id;
+			}
+		};
+		
+		// our 3 image containers
+		var c1 = null, c2 = null, c3 = null;
+		
+		// The main image container creator
+		var main_creator = function(data, hint){
+			var types = [];
+			if(data.tags.search(/animal/i) >= 0){ types.push("animal"); }
+			if(data.tags.search(/tree/i) >= 0){ types.push("tree"); }
+			var node;
+			if(hint == "avatar"){
+				node = dojo.doc.createElement("span");
+				node.innerHTML = "<img src='" + data.media.m.replace(/_m\./, "_s.") + "'/>";
+			}else{
+				var t = ["<table border='0' cellpadding='0' cellspacing='0' width='250'>"];
+				t.push("<tr><td colspan='2' class='image' align='center' width='250'><img src='" + data.media.m + "'/></td></tr>");
+				t.push("<tr><td class='name' valign='top'>Title:</td><td class='value'><a href='" + data.link + "' target='_blank'>" + data.title + "</a></td></tr>");
+				t.push("<tr><td class='name' valign='top'>Author:</td><td class='value'>" + data.author + "</td></tr>");
+				t.push("<tr><td class='name' valign='top'>Tags:</td><td class='value'>" + data.tags + "</td></tr>");
+				t.push("</table>");
+				node = dojo.doc.createElement("div");
+				node.innerHTML = t.join("");
+			}
+			node.id = dom._getUniqueId();
+			return {node: node, data: data, types: types};
+		};
+		
+		// The band image container creator
+		var band_creator = function(data, hint){
+			var types = [];
+			if(data.tags.search(/animal/i) >= 0){ types.push("animal"); }
+			if(data.tags.search(/tree/i) >= 0){ types.push("tree"); }
+			var src = data.media.m.replace(/_m\./, "_s.");
+			var node = dojo.doc.createElement("span");
+			node.innerHTML = "<img src='" + src + "'/>";
+			node.id = dom._getUniqueId();
+			return {node: node, data: data, types: types};
+		};
+		
+		// Flickr's JSONP function
+		var jsonFlickrFeed = function(data){
+			if(!data.items || !data.items.length){
+				dojo.byId("status").innerHTML = "Flickr didn't return any images";
+				return;
+			}
+			dojo.byId("status").innerHTML = data.items.length + " images were retrieved";
+			// initialize sources
+			if(c1){
+				c1.selectAll().deleteSelectedNodes();
+			}else{
+				c1 = new dojo.dnd.Source("container1", {creator: main_creator, accept: ["animal", "tree", "dojo"]});
+			}
+			if(c2){
+				c2.selectAll().deleteSelectedNodes();
+			}else{
+				c2 = new dojo.dnd.Source("container2", {creator: band_creator, accept: ["animal"], horizontal: true});
+			}
+			if(c3){
+				c3.selectAll().deleteSelectedNodes();
+			}else{
+				c3 = new dojo.dnd.Source("container3", {creator: band_creator, accept: ["tree"], horizontal: true});
+			}
+			// populate the main source
+			c1.insertNodes(false, data.items);
+		};
+		
+		var init = function(){
+			// ask Flickr for images
+			var td = dojo.io.script.get({
+				url: "http://api.flickr.com/services/feeds/photos_public.gne",
+				content: {tags: "animal,tree,dojo", tagmode: "any", format: "json"},
+				handleAs: "text/javascript",
+				preventCache: true
+			});
+			td.addErrback(function(){
+				dojo.byId("status").innerHTML = "Flickr failed to return images";
+			});
+		};
+		
+		dojo.addOnLoad(init);
+	</script>
+</head>
+<body>
+	<h1>Sort Flickr images by tags</h1>
+	<p>This simple web application retrieves public images from Flickr that were tagged either as "animal", "tree", or "dojo".
+	You can copy/move images in different containers according to their tags.</p>
+	<p>Following selection modes are supported by default:</p>
+	<ul>
+		<li>Simple click &mdash; selects a single element, all other elements will be unselected.</li>
+		<li>Ctrl+click &mdash; toggles a selection state of an element (use Meta key on Mac).</li>
+		<li>Shift+click &mdash; selects a range of element from the previous anchor to the current element.</li>
+		<li>Ctrl+Shift+click &mdash; adds a range of element from the previous anchor to the current element (use Meta key on Mac).</li>
+	</ul>
+	<p>Following drop modes are supported by default:</p>
+	<ul>
+		<li>Simple drop &mdash; moves elements to the valid target removing them from the source. It can be used to reorganize elements within a single source/target.</li>
+		<li>Ctrl+drop &mdash; copies elements to the valid target (use Meta key on Mac).</li>
+	</ul>
+	<p>Now scroll down and start dragging and dropping!</p>
+	<p>Status: <span id="status">retrieving a list of Flickr images...</span></p>
+	<div class="wrap1"><div id="container1" class="container"></div></div>
+	<p>Tag: animal</p>
+	<div class="wrap2"><div id="container2" class="container"></div></div>
+	<p>Tag: tree</p>
+	<div class="wrap2"><div id="container3" class="container"></div></div>
+</body>
+</html>

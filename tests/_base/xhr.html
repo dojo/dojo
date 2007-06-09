@@ -13,7 +13,7 @@
 			dojo.addOnLoad(function(){
 				var f1fo = { blah: "blah" };
 				var f1foStr = "blah=blah";
-				var f1foJson = '{"blah":"blah"}';
+				var f1foJson = '{"blah": "blah"}';
 
 				var f2fo = { 
 					blah: "blah",
@@ -24,13 +24,13 @@
 					textarea: "textarea_value"
 				};
 				var f2foStr = "blah=blah&multi=thud&multi=thonk&textarea=textarea_value";
-				var f2foJson = '{"blah":"blah","multi":["thud","thonk"],"textarea":"textarea_value"}';
+				var f2foJson = '{"blah": "blah", "multi": ["thud", "thonk"], "textarea": "textarea_value"}';
 
 				var f3fo = { 
 					spaces: "string with spaces"
 				};
 				var f3foStr = "spaces=string%20with%20spaces&";
-				var f3foJson = '{"spaces":"string with spaces"}';
+				var f3foJson = '{"spaces": "string with spaces"}';
 
 				doh.register("t", 
 					[

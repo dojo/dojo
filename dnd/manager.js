@@ -15,8 +15,9 @@ dojo.dnd.Manager = function(){
 };
 
 dojo.extend(dojo.dnd.Manager, {
-	OFFSET_X: 10,
-	OFFSET_Y: 10,
+	// avatar's offset from the mouse
+	OFFSET_X: 16,
+	OFFSET_Y: 16,
 	// methods
 	overSource: function(source){
 		// summary: called when a source detected a mouse-over conditiion

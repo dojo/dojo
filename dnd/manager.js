@@ -115,9 +115,20 @@ dojo.extend(dojo.dnd.Manager, {
 	},
 	// keyboard event processors
 	onKeyDown: function(e){
-		// summary: event processor for onkeydown, watching for CTRL for copy/move status
+		// summary: event processor for onkeydown:
+		//	watching for CTRL for copy/move status, watching for ESCAPE to cancel the drag
 		// e: Event: keyboard event
-		if(this.avatar && e.keyCode == dojo.keys.CTRL && !this.copy){ this._setCopyStatus(true); }
+		if(this.avatar){
+			switch(e.keyCode){
+				case dojo.keys.CTRL:
+					if(!this.copy){ this._setCopyStatus(true); }
+					break;
+				case dojo.keys.ESCAPE:
+					dojo.publish("dndCancel");
+					this.stopDrag();
+					break;
+			}
+		}
 	},
 	onKeyUp: function(e){
 		// summary: event processor for onkeyup, watching for CTRL for copy/move status

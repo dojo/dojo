@@ -180,6 +180,7 @@ function(node, params){
 		}
 		this.before = true;
 		this.isDragging = false;
+		this.mouseDown = false;
 		this._changeState("Source", "");
 		this._changeState("Target", "");
 	},

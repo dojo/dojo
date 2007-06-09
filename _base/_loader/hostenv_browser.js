@@ -102,7 +102,7 @@ if(typeof window != 'undefined'){
 		// and in the Google standard 'google.gears' global object
 		var gearsObj = d._gearsObject();
 		if(gearsObj){
-			d.isGears = parseFloat(gearsObj.factory.getBuildInfo());
+			d.isGears = true;
 		}
 
 		var cm = document["compatMode"];

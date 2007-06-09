@@ -1,13 +1,16 @@
-dojo.provide("dojo.rpc.JsonPService");
+dojo.provide("dojo.rpc.JsonpService");
 dojo.require("dojo.rpc.RpcService");
 dojo.require("dojo.io.script");
 
 dojo.declare(
-	"dojo.rpc.JsonPService",
+	"dojo.rpc.JsonpService",
 	dojo.rpc.RpcService,
 	function(args, requiredArgs){
-		if(this.required && requiredArgs){
-			dojo.mixin(this.required, requiredArgs);
+		if(this.required) {
+ 			if (requiredArgs){
+				dojo.mixin(this.required, requiredArgs);
+			}
+
 			dojo.forEach(this.required, function(req){
 				if(req=="" || req==undefined){
 					throw new Error("Required Service Argument not found: "+req); 
@@ -19,6 +22,7 @@ dojo.declare(
 		strictArgChecks: false,
 		bind: function(method, parameters, deferredRequestHandler, url){
 			//summary
+
 			var def = dojo.io.script.get({
 				url: url||this.serviceUrl,
 				callbackParamName: this.callbackParamName||"callback",

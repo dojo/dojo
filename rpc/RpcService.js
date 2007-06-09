@@ -81,6 +81,7 @@ dojo.declare(
 					if(obj["error"]!=null){
 						var err = new Error(obj.error);
 						err.id = obj.id;
+						err.errorObject = obj;
 						deferredRequestHandler.errback(err);
 					}else{
 						var results = this.parseResults(obj);
@@ -123,13 +124,15 @@ dojo.declare(
 											m.parameters, 
 											m["url"]||m["serviceUrl"]||m["serviceURL"]);
 						if(!dojo.isFunction(this[m.name])){
-							console.debug("RpcService: Failed to create", m.name, "()");
+							throw new Error("RpcService: Failed to create" + m.name + "()");
+							/*console.debug("RpcService: Failed to create", m.name, "()");*/
 						}
 					}
 				}, this);
 			}
 
 			this.serviceUrl = object.serviceUrl||object.serviceURL;
+			this.required = object.required;
 		}
 	}
 );

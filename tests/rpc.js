@@ -2,7 +2,7 @@ dojo.provide("tests.rpc");
 
 dojo.require("dojo.rpc.RpcService");
 dojo.require("dojo.rpc.JsonService");
-dojo.require("dojo.rpc.JsonPService");
+dojo.require("dojo.rpc.JsonpService");
 
 tests.register("tests.rpc", 
 	[ 
@@ -114,16 +114,15 @@ tests.register("tests.rpc",
 			name: "JsonP_test",
 			timeout: 2000,
 			setUp: function(){
-				this.svc = new dojo.rpc.JsonPService("../../dojox/rpc/yahoo.smd", {appId: "foo"});
+				this.svc = new dojo.rpc.JsonpService("../../dojox/rpc/yahoo.smd", {appid: "foo"});
 			},
 			runTest: function(){
 				var d = new doh.Deferred();
 				var td = this.svc.webSearch({query:"dojotoolkit"});
 
 				td.addCallbacks(function(result){
-					console.debug(result);
 					return true;
-					if(result=="<P>Content B</P>"){
+					if (result["ResultSet"]["Result"][0]["DisplayUrl"]=="dojotoolkit.org/") {
 						return true;
 					}else{
 						return new Error("JsonRpc_SMD_Loading_Test failed, resultant content didn't match");

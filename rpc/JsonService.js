@@ -30,20 +30,16 @@ dojo.declare(
 				postData: this.createRequest(method, parameters),
 				contentType: this.contentType,
 				timeout: this.timeout, 
-				handleAs: "json",
+				handleAs: "json"
 			});
 			def.addCallbacks(this.resultCallback(deferredRequestHandler), this.errorCallback(deferredRequestHandler));
 		},
 
 		createRequest: function(method, params){
 			// summary:
-			//		create a JSON-RPC envelope for the request
-
+			//	create a JSON-RPC envelope for the request
 			var req = { "params": params, "method": method, "id": ++this.lastSubmissionId };
-			// console.debug("createRequest: Method: " + method + " Parameters: ", params);	
-			// console.debug("createRequest js object:",req);
 			var data = dojo.toJson(req);
-			console.debug("createRequest (json string):", data);
 			return data;
 		},
 

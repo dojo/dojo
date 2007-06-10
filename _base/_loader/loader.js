@@ -17,7 +17,8 @@
 		// for recursion protection
 		_loadedModules: {},
 		_inFlightCount: 0,
-	
+		_hasResource: {},
+
 		// FIXME: it should be possible to pull module prefixes in from djConfig
 		_modulePrefixes: {
 			dojo: {name: "dojo", value: "."},

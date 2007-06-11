@@ -18,9 +18,11 @@ dojo.declare("dojo.data.api.Identity",dojo.data.api.Read,null,{
 
 	getIdentity: function(/* item */ item){
 		//	summary:
-		//		Returns a unique identifer for an item.  The return value will be
+		//		Returns a unique identifier for an item.  The return value will be
 		//		either a string or something that has a toString() method (such as,
 		//		for example, a dojo.uuid.Uuid object).
+		//	item:
+		//		The item from the store from which to obtain its identifier.
 		//	exceptions:
 		//		Conforming implementations may throw an exception or return null if
 		//		item is not an item.
@@ -39,8 +41,12 @@ dojo.declare("dojo.data.api.Identity",dojo.data.api.Read,null,{
 		//		such as RDB backed stores that use compound (multi-attribute) identifiers
 		//		it can be more than one.  If the identity is not composed of attributes
 		//		on the item, it will return null.  This function is intended to identify
-		//		the attributes so that during display of all attributes if the UI wishes to hide
-		//		the indentity information, it knows which attributes to exclude from display.
+		//		the attributes that comprise the identity so that so that during a render
+		//		of all attributes, the UI can hide the the identity information if it 
+		//		chooses.
+		//	item:
+		//		The item from the store from which to obtain the array of public attributes that 
+		//		compose the identifier, if any.
 		//	examples:
 		//		var itemId = store.getIdentity(kermit);
 		//		var identifiers = store.getIdentityAttributes(itemId);

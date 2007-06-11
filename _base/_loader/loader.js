@@ -12,7 +12,8 @@
 ;(function(){
 	//Additional properties for dojo
 	var _add = {
-		_pkgFileName: "__package__",
+		// FIXME: we're not populting djConfig from markup before we hit this!!
+		_pkgFileName: djConfig["packageFileName"]||"__package__",
 	
 		// for recursion protection
 		_loadedModules: {},
@@ -112,6 +113,7 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 	var contents = this._getText(uri, true);
 	if(!contents){ return false; } // Boolean
 	this._loadedUrls[uri] = true;
+	this._loadedUrls.push(uri);
 	if(cb){ contents = '('+contents+')'; }
 	// var value = dojo["eval"](contents);
 	var value = dojo["eval"]("//@ sourceURL="+uri+"\r\n"+contents);

@@ -28,7 +28,10 @@
 						"t.is(1, (dojo.query('[foo|=\"bar\"]')).length);",
 						"t.is(1, (dojo.query('[foo|=\"bar-baz\"]')).length);",
 						"t.is(0, (dojo.query('[foo|=\"baz\"]')).length);",
-						"t.is(dojo.byId('_foo'), dojo.query('.foo:nth-child(2)')[0]);"
+						"t.is(dojo.byId('_foo'), dojo.query('.foo:nth-child(2)')[0]);",
+						"t.is(2, dojo.query('> [qux]', dojo.byId('container')).length);",
+						"t.is('child1', dojo.query('> [qux]', dojo.byId('container'))[0].id);",
+						"t.is('child3', dojo.query('> [qux]', dojo.byId('container'))[1].id);"
 					]
 				);
 				doh.run();
@@ -52,6 +55,12 @@
 			<span foo="baz bar thud"></span>
 			<!-- FIXME: should foo="bar-baz-thud" match? [foo$=thud] ??? -->
 			<span foo="bar-baz-thudish"></span>
+			<div id="container">
+				<div id="child1" qux="true"></div>
+				<div id="child2"></div>
+				<div id="child3" qux="true"></div>
+			</div>
+			<div qux="true"></div>
 		</div>
 	</body>
 </html>

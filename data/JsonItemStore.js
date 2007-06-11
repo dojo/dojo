@@ -43,7 +43,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		}
 	},
 
-	_assertIsAttribute: function(/* item || String */ attribute){
+	_assertIsAttribute: function(/* attribute-name-string */ attribute){
 		//	summary:
 		//      This function tests whether the item passed in is indeed a valid 'attribute' like type for the store.
 		//	attribute: 
@@ -54,7 +54,7 @@ dojo.declare("dojo.data.JsonItemStore",
 	},
 
 	getValue: function(	/* item */ item, 
-						/* attribute || attribute-name-string */ attribute, 
+						/* attribute-name-string */ attribute, 
 						/* value? */ defaultValue){
 		//	summary: 
 		//      See dojo.data.api.Read.getValue()
@@ -63,7 +63,7 @@ dojo.declare("dojo.data.JsonItemStore",
 	},
 
 	getValues: function(/* item */ item, 
-						/* attribute || attribute-name-string */ attribute){
+						/* attribute-name-string */ attribute){
 		//	summary: 
 		//		See dojo.data.api.Read.getValues()
 
@@ -87,20 +87,20 @@ dojo.declare("dojo.data.JsonItemStore",
 	},
 
 	hasAttribute: function(	/* item */ item,
-							/* attribute || attribute-name-string */ attribute) {
+							/* attribute-name-string */ attribute) {
 		//	summary: 
 		//		See dojo.data.api.Read.hasAttribute()
 		return this.getValues(item, attribute).length > 0;
 	},
 
 	containsValue: function(/* item */ item, 
-							/* attribute || attribute-name-string */ attribute, 
+							/* attribute-name-string */ attribute, 
 							/* anything */ value){
 		//	summary: 
 		//		See dojo.data.api.Read.containsValue()
 		var regexp = undefined;
 		if(typeof value === "string"){
-		   regexp = dojo.data.util.filter.patternToRegExp(value, false);
+			regexp = dojo.data.util.filter.patternToRegExp(value, false);
 		}
 		return this._containsValue(item, attribute, value, regexp); //boolean.
 	},
@@ -300,7 +300,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		var item;
 		var attrNames = {};
 		this._labelAttr = dataObject.label;
-        
+
 		// We need to do some transformations to convert the data structure
 		// that we read from the file into a format that will be convenient
 		// to work with in memory.
@@ -314,7 +314,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		// id special properties for the O(1) isItem
 		for(i = 0; i < arrayOfItems.length; ++i){
 			item = arrayOfItems[i];
-            for(var key in item){
+			for(var key in item){
 				var value = item[key];
 
 				if(value !== null){
@@ -372,7 +372,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		// (where miss_piggy is the object representing the 'Miss Piggy' item).
 		// Also generate the associate map for all items for the O(1) isItem function.
 		for(i = 0; i < arrayOfItems.length; ++i){
-            item = arrayOfItems[i]; // example: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
+			item = arrayOfItems[i]; // example: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
 			item[this._storeRef] = this;
 			item[this._itemId] = i;
 			this._itemMap[i] = item;

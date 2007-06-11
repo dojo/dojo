@@ -12,7 +12,7 @@ if(typeof window != 'undefined'){
 		// grab the node we were loaded from
 		if(document && document.getElementsByTagName){
 			var scripts = document.getElementsByTagName("script");
-			var rePkg = /dojo\.js([\?\.]|$)/i;
+			var rePkg = /dojo(\.xd)?\.js([\?\.]|$)/i;
 			for(var i = 0; i < scripts.length; i++){
 				var src = scripts[i].getAttribute("src");
 				if(!src){ continue; }

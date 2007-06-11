@@ -21,16 +21,24 @@ dojo._xdReset = function(){
 //Call reset immediately to set the state.
 dojo._xdReset();
 
-dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*String=*/resourcePath){
+dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*String*/resourcePath){
 	//summary: Internal xd loader function. Creates an xd module source given an
 	//non-xd module contents.
 
 	//Find dependencies.
 	var deps = [];
-    var depRegExp = /dojo.(require|requireIf|provide|requireAfterIf|platformRequire)\(([\w\W]*?)\)/mg;
+    var depRegExp = /dojo.(require|requireIf|provide|requireAfterIf|platformRequire|requireLocalization)\(([\w\W]*?)\)/mg;
     var match;
 	while((match = depRegExp.exec(contents)) != null){
-		deps.push("\"" + match[1] + "\", " + match[2]);
+		//In xd case, need to load dojo.i18n up front in order for requireLocalization
+		//calls to work.
+		//FIXME: There is a whole in this scheme: if a local module tries to do
+		//a dojo.requireLocalization on an xd i18n bundle.
+		if(match[1] == "requireLocalization"){
+			deps.push('"require", "dojo.i18n"');
+		}else{
+			deps.push('"' + match[1] + '", ' + match[2]);
+		}
 	}
 
 	//Create resource object and the call to _xdResourceLoaded.
@@ -123,7 +131,7 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 
 			//Increment inFlightCount
 			//This will stop the modulesLoaded from firing all the way.
-			this.inFlightCount++;
+			this._inFlightCount++;
 		}
 
 		//Start timer
@@ -150,19 +158,19 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 		element.type = "text/javascript";
 		element.src = xdUri;
 		if(!this.headElement){
-			this.headElement = document.getElementsByTagName("head")[0];
+			this._headElement = document.getElementsByTagName("head")[0];
 
 			//Head element may not exist, particularly in html
 			//html 4 or tag soup cases where the page does not
 			//have a head tag in it. Use html element, since that will exist.
 			//Seems to be an issue mostly with Opera 9 and to lesser extent Safari 2
-			if(!this.headElement){
-				this.headElement = document.getElementsByTagName("html")[0];
+			if(!this._headElement){
+				this._headElement = document.getElementsByTagName("html")[0];
 			}
 		}
-		this.headElement.appendChild(element);
+		this._headElement.appendChild(element);
 	}else{
-		var contents = this.getText(uri, null, true);
+		var contents = this._getText(uri, null, true);
 		if(contents == null){ return 0; /*boolean*/}
 		
 		//If this is not xdomain, or if loading a i18n resource bundle, then send it down
@@ -274,11 +282,20 @@ dojo._xdLoadFlattenedBundle = function(/*String*/moduleName, /*String*/bundleNam
 
 dojo._xdBundleMap = {};
 
+//FIXME: since the i18n functions are not part of base, we need to store up
+//the xdRequireLocalization calls until it is loaded. Put the dojo.i18n loading
+//on a fast path load (eval it as soon as we get the _xdResourceLoaded call).
+//This will be OK since dojo.i18n does not depend on any other modules.
+//What about local modules that are loaded via eval? they want dojo.i18n to be
+//available right away? No, we still do dependency resolution on them before
+//evaling them.
 dojo.xdRequireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String*/availableFlatLocales){
 	//summary: Internal xd loader function. The xd version of dojo.requireLocalization.
 	var locales = availableFlatLocales.split(",");
 	
 	//Find the best-match locale to load.
+	//FIXME: this call will likely fail since dojo.i18n is not loaded by default.
+	//hold on to the calls until dojo.i18n is loaded.
 	var jsLoc = dojo.i18n.normalizeLocale(locale);
 
 	var bestLocale = "";
@@ -537,8 +554,8 @@ dojo._xdWatchInFlight = function(){
 
 dojo._xdNotifyLoaded = function(){
 	//Clear inflight count so we will finally do finish work.
-	this.inFlightCount = 0; 
-	this.callLoaded();
+	this._inFlightCount = 0; 
+	this._callLoaded();
 }
 
 dojo._xdHasCalledPreload = false;

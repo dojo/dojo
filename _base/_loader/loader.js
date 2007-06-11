@@ -310,7 +310,7 @@ dojo._loadModule = function(	/*String*/moduleName,
 
 	// check that the symbol was defined
 	// Don't bother if we're doing xdomain (asynchronous) loading.
-	if((!omitModuleCheck)&&(!this["isXDomain"])){
+	if((!omitModuleCheck)&&(!this["_isXDomain"])){
 		// pass in false so we can give better error
 		module = this._loadedModules[moduleName];
 		if(!module){

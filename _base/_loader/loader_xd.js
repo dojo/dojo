@@ -283,20 +283,14 @@ dojo._xdLoadFlattenedBundle = function(/*String*/moduleName, /*String*/bundleNam
 
 dojo._xdBundleMap = {};
 
-//FIXME: since the i18n functions are not part of base, we need to store up
-//the xdRequireLocalization calls until it is loaded. Put the dojo.i18n loading
-//on a fast path load (eval it as soon as we get the _xdResourceLoaded call).
-//This will be OK since dojo.i18n does not depend on any other modules.
-//What about local modules that are loaded via eval? they want dojo.i18n to be
-//available right away? No, we still do dependency resolution on them before
-//evaling them.
+
 dojo.xdRequireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String*/availableFlatLocales){
 	//summary: Internal xd loader function. The xd version of dojo.requireLocalization.
 	var locales = availableFlatLocales.split(",");
 	
 	//Find the best-match locale to load.
-	//FIXME: this call will likely fail since dojo.i18n is not loaded by default.
-	//hold on to the calls until dojo.i18n is loaded.
+	//Assumes dojo.i18n has already been loaded. This is true for xdomain builds,
+	//since it is included in dojo.xd.js.
 	var jsLoc = dojo.i18n.normalizeLocale(locale);
 
 	var bestLocale = "";

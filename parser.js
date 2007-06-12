@@ -101,7 +101,7 @@ dojo.parser = new function(){
 		// FIXME: support specifying arg names?
 		var nf = dojo.hitch(instance, (new Function(preamble+script.innerHTML+suffix)));
 		// if there's a destination, connect it to that, otherwise run it now
-		var source = script.getAttribute("source");
+		var source = script.getAttribute("event");
 		if(source){
 			var replace = script.getAttribute("replace");
 			if(replace && (replace == "true")){

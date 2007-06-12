@@ -20,11 +20,11 @@
 			<script type="dojo/connect">
 				console.debug(this.domNode.innerHTML);
 			</script>
-			<script type="dojo/connect" source="onClick">
+			<script type="dojo/connect" event="onClick">
 				alert("we shouldn't see this, it'll be replaced by the next handler");
 				console.debug(this.domNode.innerHTML);
 			</script>
-			<script type="dojo/connect" source="onClick" replace="true">
+			<script type="dojo/connect" event="onClick" replace="true">
 				console.debug(this.domNode.innerHTML.length);
 			</script>
 		</span>

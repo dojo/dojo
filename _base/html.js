@@ -380,8 +380,9 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	}
 	
 	dojo._getContentBox = function(node, computedStyle){
-		var pb=dojo._getPadBounds(node, computedStyle);
-		return { l: pb.l, t: pb.t, w: node.clientWidth - pb.w, h: node.clientHeight - pb.h };
+		var pb=dojo._getPadBorderExtents(node, computedStyle); 
+		// use offsetWidth/Height since clientWidth/Height sometimes = 0 [#3378]
+		return { l: pb.l, t: pb.t, w: node.offsetWidth - pb.w, h: node.offsetHeight - pb.h };
 	}
 	
 	dojo._setBox = function(node, l, t, w, h, u){

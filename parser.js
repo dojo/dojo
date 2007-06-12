@@ -51,12 +51,12 @@ dojo.parser = new function(){
 		}
 	}
 
-	var widgetClasses = {
+	var instanceClasses = {
 		// map from fully qualified name (like "dijit.Button") to structure like
 		// { cls: dijit.Button, params: {caption: "string", disabled: "boolean"} }
 	};
 	
-	function getWidgetClassInfo(/*String*/ className){
+	function getClassInfo(/*String*/ className){
 		// className:
 		//		fully qualified name (like "dijit.Button")
 		// returns:
@@ -66,7 +66,7 @@ dojo.parser = new function(){
 		//				params: { caption: "string", disabled: "boolean"}
 		//			}
 
-		if(!widgetClasses[className]){
+		if(!instanceClasses[className]){
 			// get pointer to widget class
 			var cls = dojo.getObject(className);
 			if(!dojo.isFunction(cls)){
@@ -83,21 +83,22 @@ dojo.parser = new function(){
 				params[name]=val2type(defVal);
 			}
 
-			widgetClasses[className] = { cls: cls, params: params };
+			instanceClasses[className] = { cls: cls, params: params };
 		}
-		return widgetClasses[className];
+		return instanceClasses[className];
 	}
 	
 	this.instantiate = function(nodes){
 		// summary:
-		//		Takes array of nodes, and turns them into widgets Calls their
-		//		layout method to allow them to connect with any children		
+		//		Takes array of nodes, and turns them into class instances and
+		//		potentially calls a layout method to allow them to connect with
+		//		any children		
 		var thelist = [];
 		dojo.forEach(nodes, function(node){
 			if(!node){ return; }
 			var type = node.getAttribute('dojoType');
 			if((!type)||(!type.length)){ return; }
-			var clsInfo = getWidgetClassInfo(type);
+			var clsInfo = getClassInfo(type);
 			var params = {};
 			for(var attrName in clsInfo.params){
 				var attrValue = node.getAttribute(attrName);

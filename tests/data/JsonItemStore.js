@@ -10,6 +10,7 @@ tests.data.JsonItemStore.getCountriesStore = function(){
 	}else{
 		var jsonData = {};
 		jsonData.identifier="abbr";
+		jsonData.label="name";
 		jsonData.items= [];
 		jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
 		jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
@@ -18,6 +19,43 @@ tests.data.JsonItemStore.getCountriesStore = function(){
 		jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
 		jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
 		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+		return new dojo.data.JsonItemStore({data: jsonData});
+	}
+};
+
+tests.data.JsonItemStore.getCountriesStoreWithNull = function(){
+	if(dojo.isBrowser){
+		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString() } );            
+	}else{
+		var jsonData = {};
+		jsonData.identifier="abbr";
+		jsonData.items= [];
+		jsonData.items.push({abbr:"ec",name:null,capital:"Quito"});
+		jsonData.items.push({abbr:'eg',name:null,capital:'Cairo'});
+		jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+		jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+		jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
+		jsonData.items.push({abbr:'ee',name:null,capital:'Tallinn' });
+		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+		return new dojo.data.JsonItemStore({data: jsonData});
+	}
+};
+
+tests.data.JsonItemStore.getCountriesStoreWithBoolean = function(){
+	if(dojo.isBrowser){
+		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString() } );            
+	}else{
+		var jsonData = {};
+		jsonData.identifier="abbr";
+		jsonData.items= [];
+		jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito",real:true});
+		jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo',real:true});
+		jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador',real:true});
+		jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo',real:true});
+		jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara',real:true});
+		jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn',real:true});
+		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa',real:true});
+		jsonData.items.push({abbr:'ut',name:'Utopia',capital:'Paradise',real:false});
 		return new dojo.data.JsonItemStore({data: jsonData});
 	}
 };
@@ -65,13 +103,15 @@ doh.register("tests.data.JsonItemStore",
 			//		data with this store can bypass the JavaSceipt hijack noted in Fortify's
 			//		paper.
 
-			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
+			if(dojo.isBrowser){
+				var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			if(item !== null){
-				var name = jsonItemStore.getValue(item,"name");
-				t.assertEqual(name, "El Salvador");
+				var item = jsonItemStore.getItemByIdentity("sv");
+				t.assertTrue(item !== null);
+				if(item !== null){
+					var name = jsonItemStore.getValue(item,"name");
+					t.assertEqual(name, "El Salvador");
+				}
 			}
 		},
 		function testIdentityAPI_getItemByIdentity_nullValue(t){
@@ -82,7 +122,7 @@ doh.register("tests.data.JsonItemStore",
 			//		This tests handling attributes in json that were defined as null properly.
 			//		Introduced because of tracker: #3153
 
-			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString()});
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithNull();
 
 			var item = jsonItemStore.getItemByIdentity("ec");
 			t.assertTrue(item !== null);
@@ -104,7 +144,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getItemByIdentity function of the store, checking a boolean value.
 
-			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString()});
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithBoolean();
 
 			try{
 				var item = jsonItemStore.getItemByIdentity("sv");
@@ -196,22 +236,25 @@ doh.register("tests.data.JsonItemStore",
 			//		This tests loading a comment-filtered json file so that people using secure
 			//		data with this store can bypass the JavaSceipt hijack noted in Fortify's
 			//		paper.
-			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
-			
-			var d = new doh.Deferred();
-			function onComplete(items, request){
-				t.assertEqual(items.length, 1);
-				d.callback(true);
+
+			if(dojo.isBrowser){
+				var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
+
+				var d = new doh.Deferred();
+				function onComplete(items, request){
+					t.assertEqual(items.length, 1);
+					d.callback(true);
+				}
+				function onError(errData, request){
+					t.assertTrue(false);
+					d.errback(errData);
+				}
+				jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
+										onComplete: onComplete, 
+										onError: onError
+									});
+				return d;
 			}
-			function onError(errData, request){
-				t.assertTrue(false);
-				d.errback(errData);
-			}
-			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
-									onComplete: onComplete, 
-									onError: onError
-								});
-			return d;
 		},
 		function testReadAPI_fetch_withNull(t){
 			//	summary: 
@@ -220,7 +263,7 @@ doh.register("tests.data.JsonItemStore",
 			//		Simple test of a basic fetch on JsonItemStore of a single item where some attributes are null.
 			//		Introduced because of tracker: #3153
 
-			var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString()});
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithNull();
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){

@@ -44,7 +44,7 @@ dojo.declare("dojo.data.JsonItemStore",
 
 	_assertIsAttribute: function(/* attribute-name-string */ attribute){
 		//	summary:
-		//      This function tests whether the item passed in is indeed a valid 'attribute' like type for the store.
+		//		This function tests whether the item passed in is indeed a valid 'attribute' like type for the store.
 		//	attribute: 
 		//		The attribute to test for being contained by the store.
 		if(typeof attribute !== "string"){ 
@@ -436,14 +436,14 @@ dojo.declare("dojo.data.JsonItemStore",
 	},
 
 	getIdentityAttributes: function(/* item */ item){
-		 //	summary: 
-		 //		See dojo.data.api.Identity.getIdentifierAttributes()
+		//	summary: 
+		//		See dojo.data.api.Identity.getIdentifierAttributes()
 		 
-		 var identifier = this._features['dojo.data.api.Identity'];
-		 if(identifier){
-			 return [identifier]; //array
-		 }
-		 return null; //null
+		var identifier = this._features['dojo.data.api.Identity'];
+		if(identifier){
+			return [identifier]; //array
+		}
+		return null; //null
 	},
 
 	_forceLoad: function(){

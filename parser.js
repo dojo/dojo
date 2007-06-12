@@ -1,9 +1,7 @@
-dojo.provide("dijit.util.parser");
-
-dojo.require("dijit.util.manager");
+dojo.provide("dojo.parser");
 dojo.require("dojo.date.stamp");
 
-dijit.util.parser = new function(){
+dojo.parser = new function(){
 
 	function val2type(/*Object*/ value){
 		// summary:
@@ -36,7 +34,7 @@ dijit.util.parser = new function(){
 				try{
 					if(value.search(/[^\w\.]+/i) != -1){
 						// TODO: "this" here won't work
-						value = dijit.util.parser._nameAnonFunc(new Function(value), this);
+						value = dojo.parser._nameAnonFunc(new Function(value), this);
 					}
 					return dojo.getObject(value, false);
 				}catch(e){ return new Function(); }
@@ -140,18 +138,18 @@ dijit.util.parser = new function(){
 
 //Register the parser callback. It should be the first callback
 //after the a11y test.
-if(dijit.util["wai"]
-	&& dijit.util.wai["onload"]
-	&& dijit.util.wai.onload === dojo._loaders[0]){
-	dojo._loaders.splice(1, 0, function(){ dijit.util.parser.parse(); });
+
+// FIXME: need to clobber cross-dependency!!
+if(dojo.exists("dijit.util.wai.onload") && (dijit.util.wai.onload === dojo._loaders[0])){
+	dojo._loaders.splice(1, 0, function(){ dojo.parser.parse(); });
 }else{
-	dojo._loaders.unshift(function(){ dijit.util.parser.parse(); });
+	dojo._loaders.unshift(function(){ dojo.parser.parse(); });
 }
 
 //TODO: ported from 0.4.x Dojo.  Can we reduce this?
-dijit.util.parser._anonCtr = 0;
-dijit.util.parser._anon = {}; // why is this property required?
-dijit.util.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj, /*Boolean*/searchForNames){
+dojo.parser._anonCtr = 0;
+dojo.parser._anon = {}; // why is this property required?
+dojo.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj, /*Boolean*/searchForNames){
 	// summary:
 	//		Creates a reference to anonFuncPtr in thisObj with a completely
 	//		unique name. The new name is returned as a String.  If
@@ -160,7 +158,7 @@ dijit.util.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/th
 	//		the existing name will be returned instead. The default is for
 	//		searchForNames to be false.
 	var jpn = "$joinpoint";
-	var nso = (thisObj|| dijit.util.parser._anon);
+	var nso = (thisObj|| dojo.parser._anon);
 	if(dojo.isIE){
 		var cn = anonFuncPtr["__dojoNameCache"];
 		if(cn && nso[cn] === anonFuncPtr){
@@ -173,9 +171,9 @@ dijit.util.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/th
 			}
 		}
 	}
-	var ret = "__"+dijit.util.parser._anonCtr++;
+	var ret = "__"+dojo.parser._anonCtr++;
 	while(typeof nso[ret] != "undefined"){
-		ret = "__"+dijit.util.parser._anonCtr++;
+		ret = "__"+dojo.parser._anonCtr++;
 	}
 	nso[ret] = anonFuncPtr;
 	return ret; // String

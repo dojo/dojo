@@ -985,7 +985,8 @@ dojo.require("dojo._base.NodeList");
 		if(0 > query.indexOf(",")){
 			return _queryFuncCache[query] = _getQueryFunc(query);
 		}else{
-			var parts = query.split(", ");
+			// var parts = query.split(", ");
+			var parts = query.split(/\s*,\s*/)
 			var tf = function(root){
 				var pindex = 0; // avoid array alloc for every invocation
 				var ret = [];

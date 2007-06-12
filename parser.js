@@ -87,7 +87,34 @@ dojo.parser = new function(){
 		}
 		return instanceClasses[className];
 	}
-	
+
+	function wireUpConnect(instance, script){
+		var withStr = script.getAttribute("with");
+		var preamble = "";
+		var suffix = "";
+		if(withStr && withStr.length){
+			dojo.forEach(withStr.split(/\s*,\s*/), function(part){
+				preamble += "with("+part+"){";
+				suffic += "}";
+			});
+		}
+		// FIXME: support specifying arg names?
+		var nf = dojo.hitch(instance, (new Function(preamble+script.innerHTML+suffix)));
+		// if there's a destination, connect it to that, otherwise run it now
+		var source = script.getAttribute("source");
+		if(source){
+			var replace = script.getAttribute("replace");
+			if(replace && (replace == "true")){
+				instance[source] = nf;
+			}else{
+				// FIXME: need to implement EL here!!
+				dojo.connect(instance, source, nf);
+			}
+		}else{
+			nf();
+		}
+	}
+
 	this.instantiate = function(nodes){
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
@@ -96,7 +123,7 @@ dojo.parser = new function(){
 		var thelist = [];
 		dojo.forEach(nodes, function(node){
 			if(!node){ return; }
-			var type = node.getAttribute('dojoType');
+			var type = node.getAttribute("dojoType");
 			if((!type)||(!type.length)){ return; }
 			var clsInfo = getClassInfo(type);
 			var params = {};
@@ -110,11 +137,24 @@ dojo.parser = new function(){
 					}
 				}
 			}
-			thelist.push(new clsInfo.cls(params, node));
-			var jsname = node.getAttribute('jsId');
+
+			var scripts = dojo.query("> script[type='dojo/connect']", node).orphan();
+			// console.debug(scripts);
+
+			// create the instance
+			var instance = new clsInfo.cls(params, node)
+			thelist.push(instance);
+
+			// map it to the JS namespace if that makes sense
+			var jsname = node.getAttribute("jsId");
 			if(jsname){
-				dojo.setObject(jsname, thelist[thelist.length-1]);
+				dojo.setObject(jsname, instance);
 			}
+
+			// check to see if we need to hook up events
+			scripts.forEach(function(script){
+				wireUpConnect(instance, script);
+			});
 		});
 
 		// Call startup on each top level widget.  Parent widgets will
@@ -133,7 +173,18 @@ dojo.parser = new function(){
 		//		and instantiate them Searches for
 		//		dojoType="qualified.class.name"
 		var list = dojo.query('[dojoType]', rootNode);
-		return this.instantiate(list);
+		// go build the object instances
+		var instances = this.instantiate(list);
+
+		// FIXME: clean up any dangling scripts that we may need to run
+		/*
+		var scripts = dojo.query("script[type='dojo/connect']", rootNode).orphan();
+		scripts.forEach(function(script){
+			wireUpConnect(instance, script);
+		});
+		*/
+
+		return instances;
 	};
 }();
 

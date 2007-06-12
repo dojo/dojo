@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.behavior</title>
+		<style type="text/css">
+			@import "../resources/dojo.css";
+			@import "../../dijit/themes/tundra/tundra.css";
+		</style>
+		<script type="text/javascript" 
+			src="../dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("dojo.parser");
+			dojo.require("dijit.form.Button");
+		</script>
+	</head>
+	<body class="tundra">
+		<span dojoType="dijit.form.Button">
+			blah
+			<script type="dojo/connect">
+				console.debug(this.domNode.innerHTML);
+			</script>
+			<script type="dojo/connect" source="onClick">
+				alert("we shouldn't see this, it'll be replaced by the next handler");
+				console.debug(this.domNode.innerHTML);
+			</script>
+			<script type="dojo/connect" source="onClick" replace="true">
+				console.debug(this.domNode.innerHTML.length);
+			</script>
+		</span>
+	</body>
+</html>

@@ -22,27 +22,6 @@ tests.data.JsonItemStore.getCountriesStore = function(){
 	}
 };
 
-tests.data.JsonItemStore.getCountriesAttrsStore = function(){
-	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url:  dojo.moduleUrl("tests", "data/countries_withattributes.json").toString() } ); 
-	}else{
-		var jsonData = {};
-		jsonData.identifier="name";
-		jsonData.items= [];
-		jsonData.items.push({name:"abbr"});
-		jsonData.items.push({name:"name"});
-		jsonData.items.push({name:"capital"});
-		jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
-		jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
-		jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
-		jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
-		jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
-		jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
-		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-		return new dojo.data.JsonItemStore({data: jsonData});
-	}
-};
-
 doh.register("tests.data.JsonItemStore", 
 	[
 		function testIdentityAPI_getItemByIdentity(t){

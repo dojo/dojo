@@ -190,6 +190,7 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 	//These steps are done in the non-xd loader version of this function.
 	//Maintain these steps to fit in with the existing system.
 	this._loadedUrls[uri] = true;
+	this._loadedUrls.push(uri);
 	return true; //Boolean
 }
 

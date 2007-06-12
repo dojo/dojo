@@ -15,7 +15,6 @@ dojo.declare("dojo.data.JsonItemStore",
 		this._jsonData = keywordParameters.data;
 		this._features = { 'dojo.data.api.Read': true};
 		this._itemsByIdentity = null;
-		this._itemMap = {}; // Simple associative map for making an O(1) isItem.
 		this._storeRef = "_S";  //Default name for the store reference to attach to every item.
 		this._itemId = "_0"; //Default Item Id for isItem to attach to every item.
 	},{
@@ -144,7 +143,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		//	summary: 
 		//		See dojo.data.api.Read.isItem()
 		if(something && something[this._storeRef] === this){
-			if(this._itemMap[something[this._itemId]] === something){
+			if(this._arrayOfAllItems[something[this._itemId]] === something){
 				return true;
 			}
 		}
@@ -375,8 +374,6 @@ dojo.declare("dojo.data.JsonItemStore",
 			item = arrayOfItems[i]; // example: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
 			item[this._storeRef] = this;
 			item[this._itemId] = i;
-			this._itemMap[i] = item;
-			this._itemMap.lastItem = i;
 			for(key in item){
 				arrayOfValues = item[key]; // example: [{reference:{name:'Miss Piggy'}}]
 				for(var j = 0; j < arrayOfValues.length; ++j) {

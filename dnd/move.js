@@ -12,7 +12,7 @@ dojo.dnd.Mover = function(node, e){
 	var m = this.marginBox = dojo.marginBox(this.node), d = node.ownerDocument;
 	m.l -= e.pageX;
 	m.t -= e.pageY;
-	var firstEvent = dojo.connect(d, "onmousemove", this, "_makeAbsolute");
+	var firstEvent = dojo.connect(d, "onmousemove", this, "onFirstMove");
 	this.events = [
 		dojo.connect(d, "onmousemove", this, "onMouseMove"),
 		dojo.connect(d, "onmouseup",   this, "destroy"),
@@ -32,7 +32,7 @@ dojo.extend(dojo.dnd.Mover, {
 		dojo.marginBox(this.node, {l: m.l + e.pageX, t: m.t + e.pageY});
 	},
 	// utilities
-	_makeAbsolute: function(){
+	onFirstMove: function(){
 		// summary: makes the node absolute; it is meant to be called only once
 		this.node.style.position = "absolute";	// enforcing the absolute mode
 		dojo.disconnect(this.events.pop());
@@ -94,6 +94,8 @@ dojo.extend(dojo.dnd.Moveable, {
 		dojo.stopEvent(e);
 	},
 	onMouseMove: function(e){
+		// summary: event processor for onmousemove, used only for delayed drags
+		// e: Event: mouse event
 		if(Math.abs(e.pageX - this._lastX) > this.delay || Math.abs(e.pageY - this._lastY) > this.delay){
 			this.onMouseUp(e);
 			new this.mover(this.node, e);
@@ -101,6 +103,8 @@ dojo.extend(dojo.dnd.Moveable, {
 		dojo.stopEvent(e);
 	},
 	onMouseUp: function(e){
+		// summary: event processor for onmouseup, used only for delayed delayed drags
+		// e: Event: mouse event
 		dojo.disconnect(this.events.pop());
 		dojo.disconnect(this.events.pop());
 	},
@@ -113,6 +117,12 @@ dojo.extend(dojo.dnd.Moveable, {
 });
 
 dojo.dnd.constrainedMover = function(fun, within){
+	// summary: returns a constrained version of dojo.dnd.Mover
+	// description: this function produces n object, which will put a constraint on 
+	//	the margin box of dragged object in absolute coordinates
+	// fun: Function: called on drag, and returns a constraint box
+	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
+	//	otherwise the constraint is applied to the left-top corner
 	var mover = function(node, e){
 		dojo.dnd.Mover.call(this, node, e);
 		var c = this.constraintBox = fun.call(this), m = this.marginBox;
@@ -131,20 +141,43 @@ dojo.dnd.constrainedMover = function(fun, within){
 			dojo.marginBox(this.node, {l: l, t: t});
 		}
 	});
-	return mover;
+	return mover;	// Object
 };
 
 dojo.dnd.boxConstrainedMover = function(box, within){
-	return dojo.dnd.constrainedMover(function(){ return box; }, within);
+	// summary: a specialization of dojo.dnd.constrainedMover, which constrains to the specified box
+	// box: Object: a constraint box (l, t, w, h)
+	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
+	//	otherwise the constraint is applied to the left-top corner
+	return dojo.dnd.constrainedMover(function(){ return box; }, within);	// Object
 };
 
-dojo.dnd.parentConstrainedMover = function(within){
+dojo.dnd.parentConstrainedMover = function(area, within){
+	// summary: a specialization of dojo.dnd.constrainedMover, which constrains to the parent node
+	// area: String: "margin" to constrain within the parent's margin box, "border" for the border box,
+	//	"padding" for the padding box, and "content" for the content box; "padding" is the default value.
+	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
+	//	otherwise the constraint is applied to the left-top corner
 	var fun = function(){
-		var n = this.node.parentNode,
-			s = dojo.getComputedStyle(n),
-			c = dojo._getContentBox(n, s),
-			p = dojo._getPadBounds(n, s);
-		return {l: 0, t: 0, w: c.w + p.w, h: c.h + p.h};
+		var n = this.node.parentNode, 
+			s = dojo.getComputedStyle(n), 
+			mb = dojo._getMarginBox(n, s);
+		if(area == "margin"){
+			return mb;	// Object
+		}
+		var m = dojo._getMarginExtents(n, s);
+		mb.l += m.l, mb.t += m.t, mb.w -= m.w, mb.h -= m.h;
+		if(area == "border"){
+			return mb;	// Object
+		}
+		var pb = dojo._getPadBorderExtents(n, s);
+		mb.l += pb.l, mb.t += pb.t, mb.w -= pb.w, mb.h -= pb.h;
+		if(area == "content"){
+			return mb;	// Object
+		}
+		var p = dojo._getPadBounds(n, s);
+		mb.l -= p.l, mb.t -= p.t, mb.w += p.w, mb.h += p.h;
+		return mb;	// Object
 	};
-	return dojo.dnd.constrainedMover(fun, within);
+	return dojo.dnd.constrainedMover(fun, within);	// Object
 };

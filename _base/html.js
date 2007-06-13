@@ -380,10 +380,16 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	}
 	
 	dojo._getContentBox = function(node, computedStyle){
-		var pb=dojo._getPadBorderExtents(node, computedStyle); 
 		// clientWidth/Height are important since the automatically account for scrollbars
 		// fallback to offsetWidth/Height for special cases (see #3378)
-		return { l: pb.l, t: pb.t, w: node.clientWidth||node.offsetWidth - pb.w, h: node.clientHeight||node.offsetHeight - pb.h };
+		var w = node.clientWidth, h, pb;
+		if (!w) {
+			w = node.offsetWidth, h=node.offsetHeight, gpb= dojo._getPadBorderExtents; 
+		} else {
+			h=node.clientHeight, gpb = dojo._getPadBounds; 
+		}
+		var pb=gpb(node, computedStyle); 
+		return { l: pb.l, t: pb.t, w: w-pb.w, h: h-pb.h };
 	}
 	
 	dojo._setBox = function(node, l, t, w, h, u){

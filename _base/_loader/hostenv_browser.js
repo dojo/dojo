@@ -73,7 +73,9 @@ if(typeof window != 'undefined'){
 				factory = new GearsFactory();
 			}else{
 				try{ // IE?
-					factory = new ActiveXObject("Gears.Factory");
+					if(d.isIE){
+						factory = new ActiveXObject("Gears.Factory");
+					}
 				}catch(exp){
 					// Safari?
 					if(navigator.mimeTypes["application/x-googlegears"]){

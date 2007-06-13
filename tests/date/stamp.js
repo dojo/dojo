@@ -20,6 +20,14 @@ function test_date_iso(t){
 	t.is(1,date.getMonth());
 	t.is(29,date.getDate());
 
+	// No TZ info means local time
+	rfc  = "2004-02-29T01:23:45";
+	date = dojo.date.stamp.fromISOString(rfc);
+	t.is(2004,date.getFullYear());
+	t.is(1,date.getMonth());
+	t.is(29,date.getDate());
+	t.is(1,date.getHours());
+
 	date = new Date(2005,5,29,8,5,0);
 	rfc = dojo.date.stamp.toISOString(date);
 	//truncate for comparison

@@ -57,16 +57,17 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 				}
 			});
 		}
-
 		result = new Date(match[0]||1970, match[1]||0, match[2]||0, match[3]||0, match[4]||0, match[5]||0, match[6]||0);
 
 		var offset = 0;
 		var zoneSign = match[7] && match[7].charAt(0);
 		if(zoneSign != 'Z'){
-			offset = (match[8] * 60) + (Number(match[9]) || 0);
+			offset = ((match[8] || 0) * 60) + (Number(match[9]) || 0);
 			if(zoneSign != '-'){ offset *= -1; }
 		}
-		offset -= result.getTimezoneOffset();
+		if(zoneSign){
+			offset -= result.getTimezoneOffset();
+		}
 		if(offset){
 			result.setTime(result.getTime() + offset * 60000);
 		}

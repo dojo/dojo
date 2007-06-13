@@ -148,7 +148,7 @@ if(
 	function toggleConsole(forceOpen){
 		frameVisible = forceOpen || !frameVisible;
 		if(consoleFrame){
-			consoleFrame.style.visibility = frameVisible ? "visible" : "hidden";
+			consoleFrame.style.display = frameVisible ? "block" : "none";
 		}else{
 			waitForBody();
 		}
@@ -174,40 +174,54 @@ if(
 			return;
 		}
 		
-		window.onFirebugReady = function(doc){
-			window.onFirebugReady = null;
-
-			var toolbar = doc.getElementById("toolbar");
-			toolbar.onmousedown = onSplitterMouseDown;
-
-			commandLine = doc.getElementById("commandLine");
-			addEvent(commandLine, "keydown", onCommandLineKeyDown);
-
-			addEvent(doc, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
-			
-			consoleBody = doc.getElementById("log");
-			layout();
-			flush();
+		var doc = document;
+		
+		var styleElement = doc.createElement("link");
+		styleElement.href = dojo.moduleUrl("dojo._firebug", "firebug.css");
+		styleElement.rel = "stylesheet";
+		styleElement.type = "text/css";
+		var styleParent = doc.getElementsByTagName("head");
+		if(styleParent){
+			styleParent = styleParent[0];
 		}
-
-		consoleFrame = document.createElement("iframe");
-		consoleFrame.setAttribute("src", dojo.moduleUrl("dojo._firebug", "firebug.html"));
-		consoleFrame.setAttribute("frameBorder", "0");
-		with(consoleFrame.style){
-			margin = padding = border = "0px";
-			visibility = (frameVisible ? "visible" : "hidden");	  
-			// zIndex = "2147483647";
-			zIndex = 10000;
-			position = "fixed";
-			width = "100%";
-			left = "0";
-			bottom = "3";
-			height = "200px";
-			khtmlBoxSizing = "border-box";
-			mozBoxSizing = "border-box";
-			boxSizing = "border-box";
+		if(!styleParent){
+			styleParent = doc.getElementsByTagName("html")[0];
 		}
-		document.body.appendChild(consoleFrame);
+		styleParent.appendChild(styleElement);
+
+		if(typeof djConfig != "undefined" && djConfig["debugContainerId"]){
+			consoleFrame = doc.getElementById(djConfig.debugContainerId);
+		}
+		if(!consoleFrame){
+			consoleFrame = doc.createElement("div");
+			doc.body.appendChild(consoleFrame);
+		}
+		consoleFrame.className += " firebug";
+		consoleFrame.style.height = "200px";
+		consoleFrame.style.display = (frameVisible ? "block" : "none");	  
+		
+		consoleFrame.innerHTML = 
+			  '<div id="firebugToolbar">'
+			+ '  <a href="#" onclick="console.clear(); return false;">Clear</a>'
+			+ '  <span class="firebugToolbarRight">'
+			+ '    <a href="#" onclick="console.close(); return false;">Close</a>'
+			+ '  </span>'
+			+ '</div>'
+			+ '<input type="text" id="firebugCommandLine">'
+			+ '<div id="firebugLog"></div>';
+
+
+		var toolbar = doc.getElementById("firebugToolbar");
+		toolbar.onmousedown = onSplitterMouseDown;
+
+		commandLine = doc.getElementById("firebugCommandLine");
+		addEvent(commandLine, "keydown", onCommandLineKeyDown);
+
+		addEvent(doc, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
+		
+		consoleBody = doc.getElementById("firebugLog");
+		layout();
+		flush();
 	}
 	
 	function evalCommandLine(){
@@ -227,7 +241,7 @@ if(
 	}
 	
 	function layout(){
-		var toolbar = consoleBody.ownerDocument.getElementById("toolbar");
+		var toolbar = consoleBody.ownerDocument.getElementById("firebugToolbar");
 		var height = consoleFrame.offsetHeight - (toolbar.offsetHeight + commandLine.offsetHeight);
 		consoleBody.style.top = toolbar.offsetHeight + "px";
 		consoleBody.style.height = height + "px";
@@ -530,16 +544,27 @@ if(
 		logRow(html, "error");
 	};
 
+
+	//After converting to div instead of iframe, now getting two keydowns right away in IE 6.
+	//Make sure there is a little bit of delay.
+	onKeyDownTime = (new Date()).getTime();
+
 	function onKeyDown(event){
-		if(event.keyCode == 123){
-			toggleConsole();
-		}else if((event.keyCode == 108 || event.keyCode == 76) && event.shiftKey
-				 && (event.metaKey || event.ctrlKey)){
-			focusCommandLine();
-		}else{ return; }
-		
-		cancelEvent(event);
+		var timestamp = (new Date()).getTime();
+		if(timestamp > onKeyDownTime + 200){
+			onKeyDownTime = timestamp;
+			if(event.keyCode == 123){
+				toggleConsole();
+			}else if((event.keyCode == 108 || event.keyCode == 76) && event.shiftKey
+				&& (event.metaKey || event.ctrlKey)){
+				focusCommandLine();
+			}else{
+				return;
+			}
+			cancelEvent(event);
+		}
 	}
+
 
 	function onSplitterMouseDown(event){
 		if(dojo.isSafari || dojo.isOpera){

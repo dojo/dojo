@@ -281,11 +281,43 @@ dojo._xdLoadFlattenedBundle = function(/*String*/moduleName, /*String*/bundleNam
 };
 
 
-dojo._xdBundleMap = {};
+dojo._xdInitExtraLocales = function(){
+	// Simulate the extra locale work that dojo.requireLocalization does.
 
+	var extra = djConfig.extraLocale;
+	if(extra){
+		if(!extra instanceof Array){
+			extra = [extra];
+		}
+
+		dojo._xdReqLoc = dojo.xdRequireLocalization;
+		dojo.xdRequireLocalization = function(m, b, locale, fLocales){
+			dojo._xdReqLoc(m,b,locale, fLocales);
+			if(locale){return;}
+			for(var i=0; i<extra.length; i++){
+				dojo._xdReqLoc(m,b,extra[i], fLocales);
+			}
+		};
+	}
+}
+
+dojo._xdBundleMap = {};
 
 dojo.xdRequireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String*/availableFlatLocales){
 	//summary: Internal xd loader function. The xd version of dojo.requireLocalization.
+	
+
+	//Account for allowing multiple extra locales. Do this here inside the function
+	//since dojo._xdInitExtraLocales() depends on djConfig being set up, but that only
+	//happens after hostenv_browser runs. loader_xd has to come before hostenv_browser
+	//though since hostenv_browser can do a dojo.require for the debug module.
+	if(dojo._xdInitExtraLocales){
+		dojo._xdInitExtraLocales();
+		dojo._xdInitExtraLocales = null;
+		dojo.xdRequireLocalization.apply(dojo, arguments);
+		return;
+	}
+
 	var locales = availableFlatLocales.split(",");
 	
 	//Find the best-match locale to load.
@@ -323,26 +355,6 @@ dojo.xdRequireLocalization = function(/*String*/moduleName, /*String*/bundleName
 		dojo.require(moduleName + ".nls" + (bestLocale ? "." + bestLocale : "") + "." + bundleName);
 	}
 }
-
-;(function(){
-	// Simulate the extra locale work that dojo.requireLocalization does.
-
-	var extra = djConfig.extraLocale;
-	if(extra){
-		if(!extra instanceof Array){
-			extra = [extra];
-		}
-
-		dojo._xdReqLoc = dojo.xdRequireLocalization;
-		dojo.xdRequireLocalization = function(m, b, locale, fLocales){
-			dojo._xdReqLoc(m,b,locale, fLocales);
-			if(locale){return;}
-			for(var i=0; i<extra.length; i++){
-				dojo._xdReqLoc(m,b,extra[i], fLocales);
-			}
-		};
-	}
-})();
 
 
 //This is a bit brittle: it has to know about the dojo methods that deal with dependencies

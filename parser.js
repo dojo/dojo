@@ -95,7 +95,7 @@ dojo.parser = new function(){
 		if(withStr && withStr.length){
 			dojo.forEach(withStr.split(/\s*,\s*/), function(part){
 				preamble += "with("+part+"){";
-				suffic += "}";
+				suffix += "}";
 			});
 		}
 		// FIXME: support specifying arg names?

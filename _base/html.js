@@ -171,11 +171,11 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		var dv = document.defaultView;
 		dojo.getComputedStyle = ((dojo.isSafari) ? function(node){
 				var s = dv.getComputedStyle(node, null);
-				if(!s){ 
+				if(!s && node.style){ 
 					node.style.display = ""; 
 					s = dv.getComputedStyle(node, null);
 				}
-				return s;
+				return s || {};
 			} : function(node){
 				return dv.getComputedStyle(node, null);
 			}
@@ -370,19 +370,20 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			var mb = dojo._getMarginExtents(node, s);
 			// Mozilla has unexplained negative l/t offsets in some cases (e.g. positioned & parents with border)
 			// the computed l/t styles are generally more correct
-			return { l:parseFloat(s.left)||node.offsetLeft, t:parseFloat(s.top)||node.offsetTop, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+			return { l:parseFloat(s.left)||node.offsetLeft - mb.l, t:parseFloat(s.top)||node.offsetTop - mb.t, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 		}
 	} else {
 		dojo._getMarginBox = function(node, computedStyle){
 			var mb = dojo._getMarginExtents(node, computedStyle);
-			return { l:node.offsetLeft, t:node.offsetTop, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+			return { l:node.offsetLeft - mb.l, t:node.offsetTop - mb.t, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 		}
 	}
 	
 	dojo._getContentBox = function(node, computedStyle){
 		var pb=dojo._getPadBorderExtents(node, computedStyle); 
-		// use offsetWidth/Height since clientWidth/Height sometimes = 0 [#3378]
-		return { l: pb.l, t: pb.t, w: node.offsetWidth - pb.w, h: node.offsetHeight - pb.h };
+		// clientWidth/Height are important since the automatically account for scrollbars
+		// fallback to offsetWidth/Height for special cases (see #3378)
+		return { l: pb.l, t: pb.t, w: node.clientWidth||node.offsetWidth - pb.w, h: node.clientHeight||node.offsetHeight - pb.h };
 	}
 	
 	dojo._setBox = function(node, l, t, w, h, u){
@@ -413,7 +414,8 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	// at all in computedStyle on Mozilla.
 	
 	dojo._setContentBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
-		if(dojo.boxModel == "border-box"){
+		var tn = node.tagName, bb = (dojo.boxModel == "border-box")||(tn=="TABLE")||(tn=="BUTTON");
+		if(bb){
 			var pb = dojo._getPadBorderExtents(node, computedStyle);
 			if(widthPx>=0){ widthPx += pb.w; }
 			if(heightPx>=0){ heightPx += pb.h; }
@@ -429,14 +431,8 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		// To use box functions with some elements you may need to set padding, margin explicitly.
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
 		// TABLE and BUTTON come up regularly, so we include tests for them here. 
-		var tn = node.tagName, pb = ((dojo.boxModel == "border-box") || (tn=="TABLE") || (tn=="BUTTON") ? dojo._nilExtents : dojo._getPadBorderExtents(node, s));
+		var tn = node.tagName, pb = ((dojo.boxModel == "border-box")||(tn=="TABLE")||(tn=="BUTTON") ? dojo._nilExtents : dojo._getPadBorderExtents(node, s));
 		var mb = dojo._getMarginExtents(node, s);
-		// On non-Mozilla, offsetLeft/Top and style.left/top differ by left/top margin.
-		// We normalize on mozilla coordinate, mostly arbitrarily, but the values seem more natural.
-		if (!dojo.isMoz) {
-			leftPx -= mb.l;
-			topPx -= mb.t;
-		}
 		if(widthPx>=0){
 			widthPx = Math.max(widthPx - pb.w - mb.w, 0);
 		}

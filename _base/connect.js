@@ -3,8 +3,6 @@ dojo.require("dojo._base.lang");
 
 // this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
-// FIXME: needs in-code docs in the worst way!!
-
 // low-level delegation machinery
 dojo._listener = {
 	// create a dispatcher function
@@ -158,10 +156,13 @@ dojo.connect = function(/*Object|null*/ obj,
 	return dojo._connect.apply(this, args); /*Handle*/
 }
 
+// never used in _base, always overriden by event.js, left here for completeness
+/*
 dojo._connect = function(obj, event, context, method){
-	var h = dojo._listener.add(obj, event, dojo.hitch(context, method)); 
-	return [obj, event, h]; /*Handle*/
+	var l=dojo._listener, h=l.add(obj, event, dojo.hitch(context, method)); 
+	return [obj, event, h, l]; // Handle
 }
+*/
 
 dojo.disconnect = function(/*Handle*/ handle){
 	// summary:
@@ -170,16 +171,15 @@ dojo.disconnect = function(/*Handle*/ handle){
 	//		Removes the connection between event and the method referenced by handle.
 	// handle:
 	//		the return value of the dojo.connect call that created the connection.
-	dojo._disconnect.apply(this, handle);
-	if (handle && handle[0]!=undefined){
+	if (handle && handle[0] !== undefined){
 		dojo._disconnect.apply(this, handle);
 		// let's not keep this reference
 		delete handle[0];
 	}
 }
 
-dojo._disconnect = function(obj, event, handle){
-	dojo._listener.remove(obj, event, handle);
+dojo._disconnect = function(obj, event, handle, listener){
+	listener.remove(obj, event, handle);
 }
 
 // topic publish/subscribe
@@ -189,7 +189,7 @@ dojo._topics = {};
 dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Function*/ method){
 	// summary:
 	//		Attach a listener to a named topic. The listener function is invoked whenever the named
-	//      topic is published (see: dojo.publish).
+	//		topic is published (see: dojo.publish).
 	//		Returns a handle which is needed to unsubscribe this listener.
 	// context:
 	//		Scope in which method will be invoked, or null for default scope.
@@ -198,7 +198,7 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 	//		is invoked when topic is published.
 	// usage:
 	//		dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
-	//      dojo.publish("alerts", [ "read this", "hello world" ]);																	
+	//		dojo.publish("alerts", [ "read this", "hello world" ]);																	
 	
 	// support for 2 argument invocation (omitting context) depends on hitch
 	return [topic, dojo._listener.add(dojo._topics, topic, dojo.hitch(context, method))]; /*Handle*/
@@ -227,10 +227,10 @@ dojo.publish = function(/*String*/ topic, /*Array*/ args){
 	//		to each topic subscriber (as first class parameters, via apply).
 	// usage:
 	//		dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
-	//      dojo.publish("alerts", [ "read this", "hello world" ]);																	
+	//		dojo.publish("alerts", [ "read this", "hello world" ]);																	
 	
-	// Note that args is an array. This is more efficient vs variable length argument list.
-	// Ideally, by convention, var args are implemented via Array throughout the APIs.
+	// Note that args is an array, which is more efficient vs variable length argument list.
+	// Ideally, var args would be implemented via Array throughout the APIs.
 	var f = dojo._topics[topic];
 	(f)&&(f.apply(this, args||[]));
 }

@@ -72,23 +72,24 @@ if(typeof window != 'undefined'){
 			if(typeof GearsFactory != "undefined"){ // Firefox
 				factory = new GearsFactory();
 			}else{
-				try{ // IE?
-					if(d.isIE){
+				if(d.isIE){
+					// IE
+					try{
 						factory = new ActiveXObject("Gears.Factory");
+					}catch(e){
+						//eat the exception.
 					}
-				}catch(exp){
+				}else if(navigator.mimeTypes["application/x-googlegears"]){
 					// Safari?
-					if(navigator.mimeTypes["application/x-googlegears"]){
-						factory = document.createElement("object");
-						factory.setAttribute("type", "application/x-googlegears");
-						factory.setAttribute("width", 0);
-						factory.setAttribute("height", 0);
-						factory.style.display = "none";
-						document.documentElement.appendChild(factory);
-					}
+					factory = document.createElement("object");
+					factory.setAttribute("type", "application/x-googlegears");
+					factory.setAttribute("width", 0);
+					factory.setAttribute("height", 0);
+					factory.style.display = "none";
+					document.documentElement.appendChild(factory);
 				}
 			}
-			
+
 			// still nothing?
 			if(!factory){ return null; }
 			

@@ -370,7 +370,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			var mb = dojo._getMarginExtents(node, s);
 			// Mozilla has unexplained negative l/t offsets in some cases (e.g. positioned & parents with border)
 			// the computed l/t styles are generally more correct
-			return { l:parseFloat(s.left)||node.offsetLeft - mb.l, t:parseFloat(s.top)||node.offsetTop - mb.t, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+			return { l:(parseFloat(s.left)||node.offsetLeft) - mb.l, t:(parseFloat(s.top)||node.offsetTop) - mb.t, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
 		}
 	} else {
 		dojo._getMarginBox = function(node, computedStyle){

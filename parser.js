@@ -88,7 +88,7 @@ dojo.parser = new function(){
 		return instanceClasses[className];
 	}
 
-	function wireUpConnect(instance, script){
+	this._wireUpConnect = function(instance, script){
 		var withStr = script.getAttribute("with");
 		var preamble = "";
 		var suffix = "";
@@ -153,7 +153,7 @@ dojo.parser = new function(){
 
 			// check to see if we need to hook up events
 			scripts.forEach(function(script){
-				wireUpConnect(instance, script);
+				dojo.parser._wireUpConnect(instance, script);
 			});
 		});
 

@@ -382,7 +382,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	dojo._getContentBox = function(node, computedStyle){
 		// clientWidth/Height are important since the automatically account for scrollbars
 		// fallback to offsetWidth/Height for special cases (see #3378)
-		var w = node.clientWidth, h, pb;
+		var w = node.clientWidth, h, gpb;
 		if (!w) {
 			w = node.offsetWidth, h=node.offsetHeight, gpb= dojo._getPadBorderExtents; 
 		} else {

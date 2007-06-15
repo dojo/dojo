@@ -142,7 +142,7 @@ dojo.parser = new function(){
 			// console.debug(scripts);
 
 			// create the instance
-			var instance = new clsInfo.cls(params, node)
+			var instance = new clsInfo.cls(params, node);
 			thelist.push(instance);
 
 			// map it to the JS namespace if that makes sense
@@ -175,7 +175,7 @@ dojo.parser = new function(){
 		var list = dojo.query('[dojoType]', rootNode);
 		// go build the object instances
 		var instances = this.instantiate(list);
-
+		
 		// FIXME: clean up any dangling scripts that we may need to run
 		/*
 		var scripts = dojo.query("script[type='dojo/connect']", rootNode).orphan();

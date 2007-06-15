@@ -85,8 +85,7 @@ dojo.io.iframe = {
 				}
 			}
 		}catch(e){ 
-			console.debug(e); 
-			console.debug("dojo.io.iframe.setSrc: "+e); 
+			console.debug("dojo.io.iframe.setSrc: ", e); 
 		}
 	},
 

@@ -32,6 +32,26 @@
 								}
 							});
 							return d;							
+						},
+
+						function ioIframeGetHtml(t){
+							var d = new doh.Deferred();
+							var td = dojo.io.iframe.send({
+								url: "iframeResponse.html",
+								method: "GET",
+								timeoutSeconds: 5,
+								preventCache: true,
+								handleAs: "text/html",
+								handle: function(res, ioArgs){
+									if(!(res instanceof Error) && 
+										t.is("SUCCESSFUL HTML response", res.getElementsByTagName("h1")[0].innerHTML)){
+										d.callback(true);
+									}else{
+										d.errback(false);
+									}								
+								}
+							});
+							return d;							
 						}
 					]
 				);

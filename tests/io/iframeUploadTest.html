@@ -5,12 +5,12 @@
 		</style>
 		<script type="text/javascript"
 			djConfig="isDebug: true, dojoIframeHistoryUrl: '../../resource/blank.html'"
-			src="../../dojo.js" "></script>
+			src="../../dojo.js"></script>
 
 		<script type="text/javascript">
 			dojo.require("dojo.io.iframe");
 
-			var counter = 0;
+			var callCount = 0;
 			var ioResponse;
 
 			function sendIt(){
@@ -18,7 +18,7 @@
 					form: dojo.byId("uploadForm"),
 					handleAs: "application/json",
 					content: {
-						increment: counter++,
+						increment: callCount++,
 						fileFields: "ul1"
 					},
 					handle: function(response, ioArgs){
@@ -43,7 +43,7 @@
 			method="POST"  enctype="multipart/form-data">
 			<input type="text" name="foo" value="bar">
 			<input type="file" name="ul1">
-			<input type="button" onclick="sendIt();" value="send it!">
+			<input type="button" onclick="sendIt(); return false;" value="send it!">
 		</form>
 	</body>
 </html>

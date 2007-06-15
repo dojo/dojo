@@ -2,7 +2,7 @@
 	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title>Testing dojo.io.script</title>
+		<title>Testing dojo.io.iframe</title>
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
@@ -17,8 +17,9 @@
 					[
 						function ioIframeGetText(t){
 							var d = new doh.Deferred();
-							var td = dojo.io.iframe.get({
+							var td = dojo.io.iframe.send({
 								url: "iframeResponse.text.html",
+								method: "GET",
 								timeoutSeconds: 5,
 								preventCache: true,
 								handle: function(res, ioArgs){

@@ -1,12 +1,9 @@
 dojo.provide("dojo.io.iframe");
 
-// FIXME: is it possible to use the Google htmlfile hack to prevent the
-// background click with this transport?
-
 dojo.io.iframe = {
 	create: function(/*String*/fname, /*String*/onloadstr, /*String?*/uri){
 		//summary: Creates a hidden iframe in the page. Used mostly for IO transports.
-		//		You do not need to call this to start a dojo.io.iframe request. Just call get() or post().
+		//		You do not need to call this to start a dojo.io.iframe request. Just call send().
 		//fname: String
 		//		The name of the iframe. Used for the name attribute on the iframe.
 		//onloadstr: String
@@ -106,38 +103,34 @@ dojo.io.iframe = {
 		return doc;
 	},
 
-	get: function(/*Object*/args){
-		//summary: Sends an HTTP GET request to the server. See the notes for post()
-		//for more information.
-		return this._send("GET", args);	
-	},
-
-	post: function(/*Object*/args){
-		//summary: Sends an HTTP POST request to the server. 
-
-		//This transport can only process one send() request at a time, so if post() is called
+	send: function(/*Object*/args){
+		//summary: function that sends the request to the server.
+		//This transport can only process one send() request at a time, so if send() is called
 		//multiple times, it will queue up the calls and only process one at a time.
 		//The following are acceptable properties in args:
-		//url: String: URL the server URL to use for the request.
-		//formNode: DOMNode: a form element node. The form elements' names and values will be used in
+		//url:
+		//		String: URL the server URL to use for the request.
+		//method:
+		//		The HTTP method to use. "GET" or "POST" are the only supported values.
+		//		It will try to read the value from the form node's method, then try this
+		//		argument. If neither one exists, then it defaults to POST.
+		//form:
+		//		DOMNode: a form element node. The form elements' names and values will be used in
 		//		the request. This makes it possible to upload files using this transport.
-		//handleAs: Specifies what format the result data should be given to the load/handle callback. Valid values are:
+		//handleAs:
+		//		Specifies what format the result data should be given to the load/handle callback. Valid values are:
 		//		text/plain, text/html, text/javascript, text/json, application/json. IMPORTANT: For all values EXCEPT text/html,
 		//		The server response should be an HTML file with a textarea element. The response data should be inside the textarea
 		//		element. Using an HTML document the only reliable, cross-browser way this transport can know
 		//		when the response has loaded. For the text/html mimetype, just return a normal HTML document.
 		//		NOTE: text/xml or any other XML type is NOT supported by this transport.
-		//content: Object: If a formNode is one of the other args properties, then the content
+		//content:
+		//		Object: If "form" is one of the other args properties, then the content
 		//		object properties become hidden form form elements. For instance, a content
 		//		object of {name1 : "value1"} is converted to a hidden form element with a name
-		//		of "name1" and a value of "value1". If there is not a formNode property, then
+		//		of "name1" and a value of "value1". If there is not a "form" property, then
 		//		the content object is converted into a name=value&name=value string, by
 		//		using dojo.objectToQuery().
-		return this._send("POST", args);	
-	},
-
-	_send: function(/*String*/method, /*Object*/args){
-		//summary: function that sends the request to the server.
 
 		if(!this["_frame"]){
 			this._frame = this.create(this._iframeName, "dojo.io.iframe._iframeOnload();");
@@ -153,22 +146,27 @@ dojo.io.iframe = {
 			},
 			function(/*Deferred*/dfd){
 				//summary: okHandler function for dojo._ioSetArgs call.
-				var ioArgs = dfd.ioArgs;
-				var dii = dojo.io.iframe;
-				var ifd = dii.doc(dii._frame);
-				var cmt = ioArgs.handleAs;
 				var value = null;
-				if((cmt == "text/javascript")||(cmt == "text/json")||(cmt == "application/json")){
-					//Pull some evalulable text from a textarea.
-					var js = ifd.getElementsByTagName("textarea")[0].value;
-					if(cmt == "text/json" || cmt == "application/json") { js = "(" + js + ")"; }
-					value = dj_eval(js);
-				}else if(cmt == "text/html"){
-					value = ifd;
-				}else{ // text/plain
-					value = ifd.getElementsByTagName("textarea")[0].value;
+				try{
+					var ioArgs = dfd.ioArgs;
+					var dii = dojo.io.iframe;
+					var ifd = dii.doc(dii._frame);
+					var cmt = ioArgs.handleAs;
+					if((cmt == "text/javascript")||(cmt == "text/json")||(cmt == "application/json")){
+						//Pull some evalulable text from a textarea.
+						var js = ifd.getElementsByTagName("textarea")[0].value;
+						if(cmt == "text/json" || cmt == "application/json") { js = "(" + js + ")"; }
+						value = dojo.eval(js);
+					}else if(cmt == "text/html"){
+						value = ifd;
+					}else{ // text/plain
+						value = ifd.getElementsByTagName("textarea")[0].value;
+					}
+				}catch(e){
+					value = e;
+				}finally{
+					ioArgs._callNext();				
 				}
-				ioArgs._callNext();
 				return value;
 			},
 			function(/*Error*/error, /*Deferred*/dfd){
@@ -188,7 +186,6 @@ dojo.io.iframe = {
 				dojo.io.iframe._fireNextRequest();
 			}
 		}
-		dfd.ioArgs.method = method;
 
 		this._dfdQueue.push(dfd);
 		this._fireNextRequest();
@@ -230,7 +227,7 @@ dojo.io.iframe = {
 			var args = ioArgs.args;
 
 			ioArgs._contentToClean = [];
-			var fn = args["formNode"];
+			var fn = args["form"];
 			var content = args["content"] || {};
 			if(fn){
 				if(content){
@@ -260,7 +257,7 @@ dojo.io.iframe = {
 					fn.setAttribute("action", args.url);
 				}
 				if(!fn.getAttribute("method")){
-					fn.setAttribute("method", (ioArgs["method"]) ? ioArgs["method"] : "post");
+					fn.setAttribute("method", (args["method"]) ? args["method"] : "post");
 				}
 				ioArgs._originalTarget = fn.getAttribute("target");
 				fn.setAttribute("target", this._iframeName);
@@ -286,7 +283,7 @@ dojo.io.iframe = {
 
 		var ioArgs = dfd.ioArgs;
 		var args = ioArgs.args;
-		var fNode = args.formNode;
+		var fNode = args.form;
 	
 		if(fNode){
 			// remove all the hidden content inputs
@@ -294,7 +291,7 @@ dojo.io.iframe = {
 			for(var i = 0; i < toClean.length; i++) {
 				var key = toClean[i];
 				if(dojo.isSafari){
-					//In Safari (at least 2.0.3), can't use formNode[key] syntax to find the node,
+					//In Safari (at least 2.0.3), can't use form[key] syntax to find the node,
 					//for nodes that were dynamically added.
 					for(var j = 0; j < fNode.childNodes.length; j++){
 						var chNode = fNode.childNodes[j];

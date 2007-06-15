@@ -153,10 +153,11 @@ dojo.io.iframe = {
 			},
 			function(/*Deferred*/dfd){
 				//summary: okHandler function for dojo._ioSetArgs call.
+				var ioArgs = dfd.ioArgs;
 				var dii = dojo.io.iframe;
 				var ifd = dii.doc(dii._frame);
-				var cmt = req.handleAs;
-				var value = dfd.ioArgs.handleAs;
+				var cmt = ioArgs.handleAs;
+				var value = null;
 				if((cmt == "text/javascript")||(cmt == "text/json")||(cmt == "application/json")){
 					//Pull some evalulable text from a textarea.
 					var js = ifd.getElementsByTagName("textarea")[0].value;
@@ -167,7 +168,7 @@ dojo.io.iframe = {
 				}else{ // text/plain
 					value = ifd.getElementsByTagName("textarea")[0].value;
 				}
-				dfd.ioArgs._callNext();
+				ioArgs._callNext();
 				return value;
 			},
 			function(/*Error*/error, /*Deferred*/dfd){
@@ -197,7 +198,7 @@ dojo.io.iframe = {
 			dfd,
 			function(/*Deferred*/dfd){
 				//validCheck
-				return !!dfd.ioArgs["_hasError"];
+				return !dfd.ioArgs["_hasError"];
 			},
 			function(dfd){
 				//ioCheck
@@ -225,9 +226,12 @@ dojo.io.iframe = {
 		try{
 			if((this._currentDfd)||(this._dfdQueue.length == 0)){ return; }
 			var dfd = this._currentDfd = this._dfdQueue.shift();
-			dfd.ioArgs._contentToClean = [];
-			var fn = dfd.args["formNode"];
-			var content = dfd.args["content"] || {};
+			var ioArgs = dfd.ioArgs;
+			var args = ioArgs.args;
+
+			ioArgs._contentToClean = [];
+			var fn = args["formNode"];
+			var content = args["content"] || {};
 			if(fn){
 				if(content){
 					// if we have things in content, we need to add them to the form
@@ -245,28 +249,27 @@ dojo.io.iframe = {
 								tn.name = x;
 								tn.value = content[x];
 							}
-							dfd.ioArgs._contentToClean.push(x);
+							ioArgs._contentToClean.push(x);
 						}else{
 							fn[x].value = content[x];
 						}
 					}
 				}
-				if(dfd.args["url"]){
-					dfd.ioArgs._originalAction = fn.getAttribute("action");
-					fn.setAttribute("action", dfd.args.url);
+				if(args["url"]){
+					ioArgs._originalAction = fn.getAttribute("action");
+					fn.setAttribute("action", args.url);
 				}
 				if(!fn.getAttribute("method")){
-					fn.setAttribute("method", (dfd.ioArgs["method"]) ? dfd.ioArgs["method"] : "post");
+					fn.setAttribute("method", (ioArgs["method"]) ? ioArgs["method"] : "post");
 				}
-				dfd.ioArgs._originalTarget = fn.getAttribute("target");
+				ioArgs._originalTarget = fn.getAttribute("target");
 				fn.setAttribute("target", this._iframeName);
 				fn.target = this._iframeName;
 				fn.submit();
 			}else{
 				// otherwise we post a GET string by changing URL location for the
 				// iframe
-				var query = dojo.objectToQuery(this._currentDfd.content);
-				var tmpUrl = dfd.args.url + (dfd.args.url.indexOf("?") > -1 ? "&" : "?") + query;
+				var tmpUrl = args.url + (args.url.indexOf("?") > -1 ? "&" : "?") + ioArgs.query;
 				this.setSrc(this._frame, tmpUrl, true);
 			}
 		}catch(e){
@@ -274,8 +277,13 @@ dojo.io.iframe = {
 		}
 	},
 
-	_iframeOnload: function(/*Object*/errorObject){
+	_iframeOnload: function(){
 		var dfd = this._currentDfd;
+		if(!dfd){
+			this._fireNextRequest();
+			return;
+		}
+
 		var ioArgs = dfd.ioArgs;
 		var args = ioArgs.args;
 		var fNode = args.formNode;

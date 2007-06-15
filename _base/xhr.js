@@ -266,7 +266,7 @@ dojo._contentHandlers = {
 		ioArgs.query = dojo.objectToQuery(dojo.mixin.apply(null, miArgs));
 	
 		// .. and the real work of getting the deferred in order, etc.
-		ioArgs.ha = args.handleAs || "text";
+		ioArgs.handleAs = args.handleAs || "text";
 		var d = new dojo.Deferred(canceller);
 		d.addCallbacks(okHandler, function(error){
 				return errHandler(error, d);
@@ -307,17 +307,19 @@ dojo._contentHandlers = {
 		//summary: canceller function for dojo._ioSetArgs call.
 		
 		dfd.canceled = true;
-		dfd.ioArgs.xhr.abort();
+		var xhr = dfd.ioArgs.xhr;
+		if(typeof xhr.abort == "function"){
+			xhr.abort();
+		}
 	}
 	var _deferredOk = function(/*Deferred*/dfd){
 		//summary: okHandler function for dojo._ioSetArgs call.
 		
-		return dojo._contentHandlers[dfd.ioArgs.ha](dfd.ioArgs.xhr);
+		return dojo._contentHandlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
 	}
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.
 		
-		// dfd.ioArgs.xhr.abort();
 		console.debug("xhr error in:", dfd.ioArgs.xhr);
 		console.debug(error);
 		return error;

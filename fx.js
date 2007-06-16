@@ -1,20 +1,22 @@
 dojo.provide("dojo.fx");
 
 dojo.fx.chain = function(/*Array*/ anims){
+	// summary: Chains an array of _Animations using internal chain 
+	// method of first array element.
 	var first = anims.shift();
-	return first.chain(anims);
+	return first.chain(anims); // dojo._Animation
 }
 
 dojo.fx.combine = function(/*Array*/ anims){
+	// summary: Combines an an array of _Animations using internal
+	// combine method of first array element.
 	var first = anims.shift();
-	return first.combine(anims);
+	return first.combine(anims); // dojo._Animation
 }
 
 dojo.fx.slideIn = function(/*Object*/ args){
-	// summary: Returns an animation that will show and wipe in "nodes".
-	// nodes: An array of DOMNodes or one DOMNode.
-	// duration: Duration of the animation in milliseconds.
-	// easing: An easing function.
+	// summary: Returns an animation that will show and wipe in 
+	// node defined in 'args' object. 
 	args.node = dojo.byId(args.node);
 
 	// get node height, either it's natural height or it's height specified via style or class attributes
@@ -60,10 +62,8 @@ dojo.fx.slideIn = function(/*Object*/ args){
 }
 
 dojo.fx.slideOut = function(/*Object*/ args){
-	// summary: Returns an animation that will wipe out and hide "nodes".
-	// nodes: An array of DOMNodes or one DOMNode.
-	// duration: Duration of the animation in milliseconds.
-	// easing: An easing function.
+	// summary: Returns an animation that will wipe out and hide 
+	// node defined in args Object
 	var node = args.node = dojo.byId(args.node);
 
 	var oprop = {};	// old properties of node (before we mucked w/them)
@@ -94,10 +94,13 @@ dojo.fx.slideOut = function(/*Object*/ args){
 }
 
 dojo.fx.slideTo = function(/*Object?*/ args){
-	// summary: Returns an animation that will slide "nodes" from its current position to
-	//			the position defined in "coords".
-	// nodes: An array of DOMNodes or one DOMNode.
+	// summary: Returns an animation that will slide "node" 
+	// defined in args Object from its current position to
+	// the position defined in args.coords.
+	// 
+	// addition mixin args needed: 
 	// coords: { top: Decimal?, left: Decimal? }
+
 	var node = args.node = dojo.byId(args.node);
 	var compute = dojo.getComputedStyle;
 	

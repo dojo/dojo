@@ -142,13 +142,14 @@ dojo.hex2rgb = function(hex){
 }
 
 dojo.rgb2hex = function(r, g, b){
+	// summary: converts an RGB numbers set to hex color code
 	var ret = dojo.map(((r._cache)||((!g) ? r : [r, g, b])), function(x, i){
 		var s = (new Number(x)).toString(16);
 		while(s.length < 2){ s = "0" + s; }
 		return s;
 	});
 	ret.unshift("#");
-	return ret.join("");
+	return ret.join("");  // String
 }
 
 //FIXME: _Animation must be a Deferred?
@@ -204,6 +205,8 @@ dojo.declare("dojo._Animation", null,
 		},
 		
 		chain: function(/*dojo._Animation[]*/ anims){
+			// summary: Chain an array of _Animations to 
+			// 'this' Animation to run in sequence
 			dojo.forEach(anims, function(anim, i){
 				var prev = (i==0) ? this : anims[i-1];
 				dojo.connect(prev, "onEnd", anim, "play");
@@ -212,6 +215,8 @@ dojo.declare("dojo._Animation", null,
 		},
 
 		combine: function(/*dojo._Animation[]*/ anims){
+			// summary: Combine an array of _Animations to
+			// 'this' Animation to run in parallel
 			dojo.forEach(anims, function(anim){
 				dojo.forEach([ 
 					"beforeBegin", "onBegin", "onAnimate", "onEnd", 
@@ -398,16 +403,21 @@ dojo.declare("dojo._Animation", null,
 	}
 
 	dojo.fadeIn = function(/*Object*/ args){
-		// summary: Returns an animation that will fade "nodes" from its current opacity to fully opaque.
-		// nodes: An array of DOMNodes or one DOMNode.
-		// duration: Duration of the animation in milliseconds.
-		// easing: An easing function.
+		// summary: Returns an animation that will fade node
+		// defined in 'args' from its current opacity to fully 
+		// opaque.
+		// 
+		// mixins:
+		// args.duration: Duration of the animation in milliseconds.
+		// args.easing: An easing function.
 		return dojo._fade(dojo.mixin({ end: 1 }, args)); // dojo._Animation
 	}
 
 	dojo.fadeOut = function(/*Object*/ args){
-		// summary: Returns an animation that will fade "nodes" from its current opacity to fully transparent.
-		// nodes: An array of DOMNodes or one DOMNode.
+		// summary: Returns an animation that will fade node
+		// defined in 'args'  from its current opacity to fully 
+		// transparent.
+		// mixins:
 		// duration: Duration of the animation in milliseconds.
 		// easing: An easing function.
 		return dojo._fade(dojo.mixin({ end: 0 }, args)); // dojo._Animation
@@ -429,8 +439,9 @@ dojo.declare("dojo._Animation", null,
 	}
 
 	dojo.animateProperty = function(/*Object*/ args){
-		// summary: Returns an animation that will transition the properties of "nodes"
-		//			depending how they are defined in "propertyMap".
+		// summary: Returns an animation that will transition the properties of node
+		// defined in 'args' depending how they are defined in 'args.properties'
+
 		args.node = dojo.byId(args.node);
 		if (!args.easing){ args.easing = dojo._defaultEasing; }
 		

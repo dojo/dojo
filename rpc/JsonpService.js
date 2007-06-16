@@ -35,6 +35,8 @@ dojo.declare(
 		createRequest: function(parameters){
 			if(dojo.isArrayLike(parameters)&&(parameters.length==1)){
 				var params = parameters[0];
+			}else{
+				params = {};
 			}
 			dojo.mixin(params,this.required);
 			return params;

@@ -129,7 +129,7 @@ dojo.parser = new function(){
 			var params = {};
 			for(var attrName in clsInfo.params){
 				var attrValue = node.getAttribute(attrName);
-				if(attrValue != null){
+				if(attrValue != null && !dojo.isAlien(attrValue)){ // see bug#3074; ignore builtin attributes
 					var attrType = clsInfo.params[attrName];
 					var val = str2obj(attrValue, attrType);
 					if(val != null){

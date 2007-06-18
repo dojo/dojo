@@ -133,6 +133,7 @@ dojo.declare(
 
 			this.serviceUrl = object.serviceUrl||object.serviceURL;
 			this.required = object.required;
+			this.smd = object;
 		}
 	}
 );

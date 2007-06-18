@@ -746,8 +746,9 @@ dojo.require("dojo._base.NodeList");
 		// [ "#", ".", "[", ":" ];
 		var defaultGetter = (d.isIE) ?
 			function(cond){
+				var clc = cond.toLowerCase();
 				return function(elem){
-					return elem[cond];
+					return elem[cond]||elem[clc];
 				}
 			} : function(cond){
 				return function(elem){

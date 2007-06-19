@@ -234,7 +234,7 @@ dojo.require("dojo._base.array");
 				return this._anim("fadeOut", args);
 			},
 
-			animateProperty: function(){
+			animateProperty: function(args){
 				return this._anim("animateProperty", args);
 			}
 

@@ -4,8 +4,8 @@ dojo.require("dojo.data.api.Read");
 dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 	//	summary:
 	//		This is an abstract API that data provider implementations conform to.  
-	//		This file defines methods signatures and intentionally leaves all the
-	//		methods unimplemented.
+	//		This file defines function signatures and intentionally leaves all the
+	//		functionss unimplemented.
 
 	getFeatures: function(){
 		//	summary: 
@@ -24,6 +24,9 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		the attribute values in keywordArgs, they become the values of the attributes
 		//		in the new item.
 		//
+		//	keywordArgs:
+		//		A javascript object defining the initial content of the item as a set of JavaScript 'property name: value' pairs.
+		//
 		//	exceptions:
 		//		Throws an exception if *keywordArgs* is a string or a number or
 		//		anything other than a simple anonymous object.
@@ -39,6 +42,9 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	summary:
 		//		Deletes an item from the store.
 		//
+		//	item: 
+		//		The item to delete.
+		//
 		//	exceptions:
 		//		Throws an exception if the argument *item* is not an item 
 		//		(if store.isItem(item) returns false).
@@ -49,11 +55,18 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 	},
 
 	setValue: function(	/* item */ item, 
-						/* attribute || string */ attribute,
+						/* string */ attribute,
 						/* almost anything */ value){
 		//	summary:
 		//		Sets the value of an attribute on an item.
 		//		Replaces any previous value or values.
+		//
+		//	item:
+		//		The item to modify.
+		//	attribute:
+		//		The attribute of the item to change represented as a string name.
+		//	value:
+		//		The value to assign to the item.
 		//
 		//	exceptions:
 		//		Throws an exception if *item* is not an item, or if *attribute*
@@ -66,14 +79,21 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 	},
 
 	setValues: function(/* item */ item,
-						/* attribute || string */ attribute, 
+						/* string */ attribute, 
 						/* array */ values){
 		//	summary:
 		//		Adds each value in the *values* array as a value of the given
 		//		attribute on the given item.
 		//		Replaces any previous value or values.
 		//		Calling store.setValues(x, y, []) (with *values* as an empty array) has
-		//		the same effect as calling store.clear(x, y).
+		//		the same effect as calling store.unsetAttribute(x, y).
+		//
+		//	item:
+		//		The item to modify.
+		//	attribute:
+		//		The attribute of the item to change represented as a string name.
+		//	values:
+		//		An array of values to assign to the attribute..
 		//
 		//	exceptions:
 		//		Throws an exception if *values* is not an array, if *item* is not an
@@ -87,9 +107,14 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 	},
 
 	unsetAttribute: function(	/* item */ item, 
-								/* attribute || string */ attribute){
+								/* string */ attribute){
 		//	summary:
 		//		Deletes all the values of an attribute on an item.
+		//
+		//	item:
+		//		The item to modify.
+		//	attribute:
+		//		The attribute of the item to unset represented as a string.
 		//
 		//	exceptions:
 		//		Throws an exception if *item* is not an item, or if *attribute*
@@ -135,9 +160,9 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		onComplete, onError, etc) will be invoked in the context of the scope
 		//		object.  In the body of the callback function, the value of the "this"
 		//		keyword will be the scope object.   If no scope object is provided,
-		//		the callback functions will be called in the context of dj_global.  
+		//		the callback functions will be called in the context of dojo.global.  
 		//		For example, onComplete.call(scope) vs. 
-		//		onComplete.call(dj_global)
+		//		onComplete.call(dojo.global)
 		//
 		//	returns:
 		//		Nothing.  Since the saves are generally asynchronous, there is 
@@ -164,8 +189,11 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	summary:
 		//		Given an item, isDirty() returns true if the item has been modified 
 		//		since the last save().  If isDirty() is called with no *item* argument,  
-		//		then this method returns true if any item has been modified since
+		//		then this function returns true if any item has been modified since
 		//		the last save().
+		//
+		//	item:
+		//		The item to check.
 		//
 		//	exceptions:
 		//		Throws an exception if isDirty() is passed an argument and the

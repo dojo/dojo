@@ -187,6 +187,8 @@ dojo.require("dojo._base.array");
 			},
 
 			addContent: function(content, position){
+				// summary:
+				//		add a node or some HTML as a string to every item in the 
 				// position can be one of:
 				//		"last"||"end" (default)
 				//		"first||"start"
@@ -208,7 +210,34 @@ dojo.require("dojo._base.array");
 				});
 				// FIXME: what to return!?
 				return this;
+			},
+
+
+			_anim: function(method, args){
+				var anims = [];
+				args = args||{};
+				this.forEach(function(item){
+					var tmpArgs = { node: item };
+					dojo.mixin(tmpArgs, args);
+					anims.push(dojo[method](tmpArgs));
+				});
+				var first = anims.shift();
+				return first.combine(anims); // dojo._Animation
+			},
+
+			// FIXME:
+			fadeIn: function(args){
+				return this._anim("fadeIn", args);
+			},
+
+			fadeOut: function(args){
+				return this._anim("fadeOut", args);
+			},
+
+			animateProperty: function(){
+				return this._anim("animateProperty", args);
 			}
+
 		}
 	);
 

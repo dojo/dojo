@@ -4,15 +4,15 @@ dojo.require("dojo.data.api.Read");
 dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 	//	summary:
 	//		This is an abstract API that data provider implementations conform to.
-	//		This file defines methods signatures and intentionally leaves all the
-	//		methods unimplemented.
+	//		This file defines functions signatures and intentionally leaves all the
+	//		functions unimplemented.
 	//
 	//	description:
 	//		This API defines a set of APIs that all datastores that conform to the
 	//		Notifications API must implement.  In general, most stores will implement 
 	//		these APIs as no-op functions for users who wish to monitor them to be able
 	//		to connect to then via dojo.connect().  For non-users of dojo.connect, 
-	//		they should be able to just replace the method on the store to obtain
+	//		they should be able to just replace the function on the store to obtain
 	//		 notifications.  Both read-only and read-write stores may implement
 	//		this feature.  In the case of a read-only store, this feature makes sense if 
 	//		the store itself does internal polling to a back-end server and periodically updates
@@ -24,7 +24,7 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 	//			//Do something with the information...
 	//		};
 	//		var store = new some.newStore();
-	//		dojo.connect(store, "onSet", onUpdate);
+	//		dojo.connect(store, "onSet", onSet);
 
 	getFeatures: function(){
 		//	summary: 
@@ -40,18 +40,17 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 					/* object | array */ oldValue,
 					/* object | array */ newValue){
 		//	summary:
-		//		This method is called any time an item is modified via setValue, setValues, unsetAttribute, etc.  
+		//		This function is called any time an item is modified via setValue, setValues, unsetAttribute, etc.  
 		//	description:
-		//		This method is called any time an item is modified via setValue, setValues, unsetAttribute, etc.  
+		//		This function is called any time an item is modified via setValue, setValues, unsetAttribute, etc.  
 		//		Its purpose is to provide a hook point for those who wish to monitor actions on items in the store 
 		//		in a simple manner.  The general expected usage is to dojo.connect() to the store's 
-		//		implementation and be called after the store method is called.
+		//		implementation and be called after the store function is called.
 		//
 		//	item:
 		//		The item being modified.
 		//	attribute:
-		//		The attrubite being changed.  It may be either a string name of the attribute, or an item that represents
-		//		that attribute.
+		//		The attribute being changed represented as a string name.
 		//	oldValue:
 		//		The old value of the attribute.  In the case of single value calls, such as setValue, unsetAttribute, etc,
 		//		this value will be generally be an atomic value of some sort (string, int, etc, object).  In the case of 
@@ -68,10 +67,10 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 
 	onNew: function(/* item */ newItem){
 		//	summary:
-		//		This method is called any time a new item is created in the store.
+		//		This function is called any time a new item is created in the store.
 		//		It is called immediately after the store newItem processing has completed.
 		//	description:
-		//		This method is called any time a new item is created in the store.
+		//		This function is called any time a new item is created in the store.
 		//		It is called immediately after the store newItem processing has completed.
 		//
 		//	newItem:
@@ -84,10 +83,10 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 
 	onDelete: function(/* item */ deletedItem){
 		//	summary:
-		//		This method is called any time an item is deleted from the store.
+		//		This function is called any time an item is deleted from the store.
 		//		It is called immediately after the store deleteItem processing has completed.
 		//	description:
-		//		This method is called any time an item is deleted from the store.
+		//		This function is called any time an item is deleted from the store.
 		//		It is called immediately after the store deleteItem processing has completed.
 		//
 		//	deletedItem:

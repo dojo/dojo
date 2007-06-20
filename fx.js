@@ -1,18 +1,33 @@
 dojo.provide("dojo.fx");
 
-dojo.fx.chain = function(/*Array*/ anims){
-	// summary: Chains an array of _Animations using internal chain 
-	// method of first array element.
-	var first = anims.shift();
-	return first.chain(anims); // dojo._Animation
-}
+dojo.fx.chain = function(/*dojo._Animation[]*/ animations){
+	// summary: Chain a list of _Animations to run in sequence
+	var first = animations.shift();
+	var previous = first;
+	dojo.forEach(animations, function(current){
+		dojo.connect(previous, "onEnd", current, "play");
+		previous = current;
+	});
+	return first; // dojo._Animation
+};
 
-dojo.fx.combine = function(/*Array*/ anims){
-	// summary: Combines an an array of _Animations using internal
-	// combine method of first array element.
-	var first = anims.shift();
-	return first.combine(anims); // dojo._Animation
-}
+dojo.fx.combine = function(/*dojo._Animation[]*/ animations){
+	// summary: Combine a list of _Animations to run in parallel
+
+	var first = animations.shift();
+	dojo.forEach(animations, function(current){
+		dojo.forEach([
+//FIXME: onEnd gets fired multiple times for each animation, not once for the combined animation
+//	should we return to a "container" with its own unique events?
+			"play", "pause", "stop"
+		], function(event){
+			if(current[event]){
+				dojo.connect(first, event, current, event);
+			}
+		}, this);
+	});
+	return first; // dojo._Animation
+};
 
 dojo.fx.slideIn = function(/*Object*/ args){
 	// summary: Returns an animation that will show and wipe in 

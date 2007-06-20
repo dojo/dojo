@@ -152,7 +152,6 @@ dojo.rgb2hex = function(r, g, b){
 	return ret.join("");  // String
 }
 
-//FIXME: _Animation must be a Deferred?
 dojo.declare("dojo._Animation", null,
 	function(/*Object*/ args){
 		//	summary
@@ -201,33 +200,6 @@ dojo.declare("dojo._Animation", null,
 			if(this[evt]){
 				this[evt].apply(this, args||[]);
 			}
-			return this; // dojo._Animation
-		},
-		
-		chain: function(/*dojo._Animation[]*/ anims){
-			// summary: Chain an array of _Animations to 
-			// 'this' Animation to run in sequence
-			dojo.forEach(anims, function(anim, i){
-				var prev = (i==0) ? this : anims[i-1];
-				dojo.connect(prev, "onEnd", anim, "play");
-			}, this);
-			return this; // dojo._Animation
-		},
-
-		combine: function(/*dojo._Animation[]*/ anims){
-			// summary: Combine an array of _Animations to
-			// 'this' Animation to run in parallel
-			dojo.forEach(anims, function(anim){
-				dojo.forEach([ 
-					"beforeBegin", "onBegin", "onAnimate", "onEnd", 
-					"onPlay", "onPause", "onStop", "play" 
-				], function(evt){
-					if(anim[evt]){
-						// if(!this[evt]){ this[evt] = function(){}; }
-						dojo.connect(this, evt, anim, evt);
-					}
-				}, this);
-			}, this);
 			return this; // dojo._Animation
 		},
 
@@ -308,15 +280,14 @@ dojo.declare("dojo._Animation", null,
 		},
 
 		status: function(){
-			// summary: Returns a string representation of the status of
-			//			the animation.
+			// summary: Returns a string token representation of the status of
+			//			the animation, one of: "paused", "playing", "stopped"
 			if(this._active){
 				return this._paused ? "paused" : "playing"; // String
 			}
 			return "stopped"; // String
 		},
 
-		// "private" methods
 		_cycle: function(){
 			clearTimeout(this._timer);
 			if(this._active){
@@ -365,7 +336,7 @@ dojo.declare("dojo._Animation", null,
 		if(dojo.isIE){
 			// only set the zoom if the "tickle" value would be the same as the
 			// default
-			if(node.style.zoom.length == 0 && dojo.style(node, "zoom") == "normal"){
+			if(!node.style.zoom.length && dojo.style(node, "zoom") == "normal"){
 				// make sure the node "hasLayout"
 				// NOTE: this has been tested with larger and smaller user-set text
 				// sizes and works fine
@@ -374,7 +345,7 @@ dojo.declare("dojo._Animation", null,
 			}
 			// don't set the width to auto if it didn't already cascade that way.
 			// We don't want to f anyones designs
-			if(node.style.width.length == 0 && dojo.style(node, "width") == "auto"){
+			if(!node.style.width.length && dojo.style(node, "width") == "auto"){
 				node.style.width = "auto";
 			}
 		}
@@ -389,7 +360,7 @@ dojo.declare("dojo._Animation", null,
 		}
 		args.node = dojo.byId(args.node);
 		var fArgs = dojo.mixin({ properties: {} }, args);
-		var props = fArgs.properties.opacity = {};
+		var props = (fArgs.properties.opacity = {});
 		props.start = (typeof fArgs.start == "undefined") ?
 			function(){ return Number(dojo.style(fArgs.node, "opacity")); } : fArgs.start;
 		props.end = fArgs.end;

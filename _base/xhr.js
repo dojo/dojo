@@ -445,8 +445,7 @@ dojo._contentHandlers = {
 		try{
 			ioArgs.xhr.send(ioArgs.query);
 		}catch(e){
-			// dfd.cancel();
-			ioArgs.cancel();
+			dfd.cancel();
 		}
 		dojo._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
 		return dfd; //Deferred

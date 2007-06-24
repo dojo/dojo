@@ -46,6 +46,27 @@
 								}
 							});
 							return d;							
+						},
+						function ioScriptJsonpTimeout(t){
+							var d = new doh.Deferred();
+							var td = dojo.io.script.get({
+								url: "../_base/timeout.php",
+								callbackParamName: "callback",
+								content: {Foo: 'Bar'},
+								timeout: 500,
+								handleAs: "json",
+								preventCache: true,
+								handle: function(response, ioArgs){
+									if(response instanceof Error && response.dojoType == "timeout"){
+										console.debug("FOO OK TEST");
+										d.callback(true);
+									}else{
+										console.debug("FOO FAIL TEST");
+										d.errback(false);
+									}
+								}
+							});
+							return d;
 						}
 					]
 				);

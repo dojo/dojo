@@ -359,12 +359,12 @@ dojo._contentHandlers = {
 					}else if(dfd.startTime){
 						//did we timeout?
 						if(dfd.startTime + (dfd.ioArgs.args.timeout||0) < now){
-							//Stop the request.
-							dfd.cancel();
 							_inFlight.splice(arrIdx, 1); // clean refs
 							var err = new Error("timeout exceeded");
 							err.dojoType = "timeout";
 							dfd.errback(err);
+							//Cancel the request so the io module can do appropriate cleanup.
+							dfd.cancel();
 						}
 					}
 				}catch(e){

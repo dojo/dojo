@@ -63,13 +63,13 @@ dojo.io.script = {
 		return dfd;
 	},
 	
-	_deferredCancel: function(/*Deferred*/td){
+	_deferredCancel: function(/*Deferred*/dfd){
 		//summary: canceller function for dojo._ioSetArgs call.
 
 		//DO NOT use "this" and expect it to be dojo.io.script.
-		td.canceled = true;
-		if(td.ioArgs.canDelete){
-			dojo.io.script._deadScripts.push(td.ioArgs.id);
+		dfd.canceled = true;
+		if(dfd.ioArgs.canDelete){
+			dojo.io.script._deadScripts.push(dfd.ioArgs.id);
 		}
 	},
 
@@ -94,8 +94,8 @@ dojo.io.script = {
 		//summary: errHandler function for dojo._ioSetArgs call.
 
 		//DO NOT use "this" and expect it to be dojo.io.script.
-		if(td.ioArgs.canDelete){
-			dojo.io.script._deadScripts.push(td.ioArgs.id);
+		if(dfd.ioArgs.canDelete){
+			dojo.io.script._deadScripts.push(dfd.ioArgs.id);
 		}
 		console.debug("dojo.io.script error", error);
 		return error;

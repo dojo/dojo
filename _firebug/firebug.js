@@ -149,8 +149,6 @@ if(
 		frameVisible = forceOpen || !frameVisible;
 		if(consoleFrame){
 			consoleFrame.style.display = frameVisible ? "block" : "none";
-		}else{
-			waitForBody();
 		}
 	}
 
@@ -160,14 +158,6 @@ if(
 			commandLine.focus();
 		}
 	}
-
-	function waitForBody(){
-		if(document.body){
-			createFrame();
-		}else{
-			setTimeout(waitForBody, 200);
-		}
-	}	 
 
 	function createFrame(){
 		if(consoleFrame){
@@ -223,7 +213,9 @@ if(
 		layout();
 		flush();
 	}
-	
+
+	dojo.addOnLoad(createFrame);
+
 	function evalCommandLine(){
 		var text = commandLine.value;
 		commandLine.value = "";
@@ -254,7 +246,6 @@ if(
 			writeMessage(message, className, handler);
 		}else{
 			messageQueue.push([message, className, handler]);
-			waitForBody();
 		}
 	}
 	

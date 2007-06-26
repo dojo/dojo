@@ -13,8 +13,8 @@ try{
 	dojo.require("tests.io.iframe");
 	dojo.require("tests.rpc");
 	dojo.require("tests.string");
+	dojo.require("tests.behavior");
+	dojo.require("tests.parser");
 }catch(e){
 	doh.debug(e);
 }
-
-

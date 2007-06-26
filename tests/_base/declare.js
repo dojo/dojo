@@ -173,6 +173,12 @@ tests.register("tests._base.declare",
 			tmp.bar("trousers", "squiggle");
 			t.is("squiggle", tmp.foo);
 			t.is("trousers", foo);
+		},
+		function mixinPreamble(t){
+			var passed = false;
+			dojo.declare("tests._base.declare.tmp16");
+			new tests._base.declare.tmp16({ preamble: function(){ passed = true; } });
+			t.t(passed);
 		}
 		// FIXME: there are still some permeutations to test like:
 		//	- ctor arguments

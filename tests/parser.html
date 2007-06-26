@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<title>testing Cookies</title>
+		<style type="text/css">
+			@import "../resources/dojo.css";
+		</style>
+		<script type="text/javascript"
+			src="../dojo.js"
+			djConfig="isDebug:true"></script>
+		<script type="text/javascript">
+			dojo.require("dojo.parser");
+			dojo.require("doh.runner");
+
+			dojo.declare("tests.parser.Class1", null, 
+				function(args, node){ dojo.mixin(this, args); }, 
+				{
+					preambleTestProp: 1,
+					preamble: function(){
+						this.preambleTestProp++;
+					},
+					intProp: 1,
+					callCount: 0, // for connect testing
+					callInc: function(){ this.callCount++; },
+					callCount2: 0, // for assignment testing
+					strProp: "",
+					arrProp: [],
+					boolProp: false,
+					funcProp: function(){
+					}
+					// FIXME: have to test dates!!
+					// FIXME: need to test the args property!!
+				}
+			);
+
+			deepTestProp = {
+				blah: {
+					thinger: 1
+				}
+			};
+
+			dojo.addOnLoad(function(){
+				doh.register("t",
+					[
+						function testJsId(t){
+							console.debug(obj);
+							t.t(typeof obj == "object");
+						},
+						function testStrProp(t){
+							t.t(dojo.isString(obj.strProp));
+							t.is("3", obj.strProp);
+						},
+						function testIntProp(t){
+							t.is("number", (typeof obj.intProp));
+							t.is(5, obj.intProp);
+						},
+						function testArrProp(t){
+							t.is(3, obj.arrProp.length);
+							t.is(3, obj.arrProp[1].length);
+							t.is(["foo", "bar", "baz"], obj.arrProp);
+						},
+						"t.t(obj.boolProp);",
+						"t.is(4, obj.preambleTestProp);",
+						"t.is(deepTestProp, obj.deepProp);",
+						function testConnect(t){
+							obj.callInc();
+							t.is(2, obj.callCount);
+						},
+						function testFunctionAssignment(t){
+							obj.callInc2();
+							t.is(1, obj.callCount2);
+						},
+						function testSubNodeParse(t){
+							t.f(dojo.exists("obj2"));
+							var toParse = dojo.byId("toParse");
+							toParse.setAttribute("dojoType", toParse.getAttribute("type"));
+							dojo.parser.parse(toParse.parentNode);
+							t.t(dojo.exists("obj2"));
+							t.is("tests.parser.Class1", obj2.declaredClass);
+						}
+					]
+				);
+				doh.run();
+			})
+		</script>
+	</head>
+	<body>
+		<div dojoType="tests.parser.Class1" jsId="obj" 
+			strProp="3" intProp="5" arrProp="foo; bar; baz" boolProp="true">
+			<script type="dojo/method" event="preamble">
+				this.preambleTestProp = 3;
+			</script>
+			<script type="dojo/method">
+				// this should be run immediately
+				this.deepProp = deepTestProp;
+			</script>
+			<script type="dojo/method" mode="connect" event="callInc">
+				this.callCount++;
+			</script>
+			<script type="dojo/method" event="callInc2">
+				this.callCount2++;
+			</script>
+		</div>
+		<div>
+			<div type="tests.parser.Class1" jsId="obj2" id="toParse">
+			</div>
+		</div>
+	</body>
+</html>

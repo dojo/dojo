@@ -77,6 +77,7 @@ if(typeof window != 'undefined'){
 					try{
 						factory = new ActiveXObject("Gears.Factory");
 					}catch(e){
+						console.debug(e);
 						//eat the exception.
 					}
 				}else if(navigator.mimeTypes["application/x-googlegears"]){
@@ -190,8 +191,8 @@ if(typeof window != 'undefined'){
 					throw err;
 				}
 			}catch(e){
-				// console.debug(e);
 				if(fail_ok){ return null; }
+				console.debug(e);
 				throw e;
 			}
 			return http.responseText; // String

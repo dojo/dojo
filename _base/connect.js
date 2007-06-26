@@ -156,13 +156,11 @@ dojo.connect = function(/*Object|null*/ obj,
 	return dojo._connect.apply(this, args); /*Handle*/
 }
 
-// never used in _base, always overriden by event.js, left here for completeness
-/*
+// used by non-browser hostenvs. always overriden by event.js
 dojo._connect = function(obj, event, context, method){
 	var l=dojo._listener, h=l.add(obj, event, dojo.hitch(context, method)); 
 	return [obj, event, h, l]; // Handle
 }
-*/
 
 dojo.disconnect = function(/*Handle*/ handle){
 	// summary:

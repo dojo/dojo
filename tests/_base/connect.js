@@ -82,9 +82,10 @@ tests.register("tests._base.connect",
 	[
 		function smokeTest(t){
 			// foo sets ok to false
-			var ok, foo = { foo: function(){ok=false} };
+			var ok = false;
+			var foo = { "foo": function(){ ok=false; } };
 			// connected function sets ok to true
-			dojo.connect(foo, "foo", null, function(){ok=true});
+			dojo.connect(foo, "foo", null, function(){ ok=true; });
 			foo.foo();
 			t.is(true, ok);
 		},

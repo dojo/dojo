@@ -79,14 +79,26 @@ dojo.declare = function(/*String*/ className,
 }
 
 dojo.mixin(dojo.declare, {
-	_extend: function(mixin, preamble) {
+	_extend: function(mixin, preamble){
 		dojo.extend(this, mixin);
-		this.mixins.push(!preamble ? mixin : function() { mixin.apply(this, preamble.apply(this, arguments) || arguments); });
+		this.mixins.push(!preamble ? mixin : function(){ 
+			mixin.apply(this, preamble.apply(this, arguments) || arguments); 
+		});
 	},
 	_core: {
-		_construct: function(args) {
-			var c=args.callee, s=c.superclass, ct=s&&s.constructor, a=args, ii;
+		_construct: function(args){
+			var c=args.callee, s=c.superclass, ct=s&&s.constructor, a=args, ii, fn;
 			// call any preamble
+			if(a[0]){ 
+				// allow any first argument w/ a "preamble" property to act as a
+				// class preamble (not exclusive of the prototype preamble)
+				fn = a[0]["preamble"]; 
+				if(fn && dojo.isFunction(fn)){ 
+					a = fn.apply(this, a) || a; 
+					fn=null; 
+				}
+			} 
+			// prototype preamble
 			if(fn=c.prototype.preamble){a = fn.apply(this, a) || a;}
 			// initialize superclass
 			if(ct&&ct.apply){ct.apply(this, a)};

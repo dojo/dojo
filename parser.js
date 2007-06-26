@@ -39,7 +39,8 @@ dojo.parser = new function(){
 					return dojo.getObject(value, false);
 				}catch(e){ return new Function(); }
 			case "array":
-				return value.split(";");
+				// FIXME: should we split on "," instead?
+				return value.split(/\s*;\s*/);
 			case "date":
 				return dojo.date.stamp.fromISOString(value);
 			case "url":
@@ -70,7 +71,7 @@ dojo.parser = new function(){
 			// get pointer to widget class
 			var cls = dojo.getObject(className);
 			if(!dojo.isFunction(cls)){
-				throw new Error("Could not load widget '" + className +
+				throw new Error("Could not load class '" + className +
 					"'. Did you spell the name correctly and use a full path, like 'dijit.form.Button'?");
 			}
 			var proto = cls.prototype;
@@ -88,30 +89,39 @@ dojo.parser = new function(){
 		return instanceClasses[className];
 	}
 
-	this._wireUpConnect = function(instance, script){
-		var withStr = script.getAttribute("with");
+	this._functionFromScript = function(script){
 		var preamble = "";
 		var suffix = "";
+		var argsStr = script.getAttribute("args");
+		if(argsStr){
+			dojo.forEach(argsStr.split(/\s*,\s*/), function(part, idx){
+				preamble += "var "+part+" = arguments["+idx+"]; ";
+			});
+		}
+		var withStr = script.getAttribute("with");
 		if(withStr && withStr.length){
 			dojo.forEach(withStr.split(/\s*,\s*/), function(part){
 				preamble += "with("+part+"){";
 				suffix += "}";
 			});
 		}
-		// FIXME: support specifying arg names?
-		var nf = dojo.hitch(instance, (new Function(preamble+script.innerHTML+suffix)));
+		return new Function(preamble+script.innerHTML+suffix);
+	}
+
+	this._wireUpMethod = function(instance, script){
+		var nf = this._functionFromScript(script);
 		// if there's a destination, connect it to that, otherwise run it now
 		var source = script.getAttribute("event");
 		if(source){
-			var replace = script.getAttribute("replace");
-			if(replace && (replace == "true")){
-				instance[source] = nf;
-			}else{
+			var mode = script.getAttribute("mode");
+			if(mode && (mode == "connect")){
 				// FIXME: need to implement EL here!!
-				dojo.connect(instance, source, nf);
+				dojo.connect(instance, source, instance, nf);
+			}else{
+				instance[source] = nf;
 			}
 		}else{
-			nf();
+			nf.call(instance);
 		}
 	}
 
@@ -129,20 +139,41 @@ dojo.parser = new function(){
 			var params = {};
 			for(var attrName in clsInfo.params){
 				var attrValue = node.getAttribute(attrName);
-				if(attrValue != null && !dojo.isAlien(attrValue)){ // see bug#3074; ignore builtin attributes
+				if(attrValue && !dojo.isAlien(attrValue)){ // see bug#3074; ignore builtin attributes
 					var attrType = clsInfo.params[attrName];
 					var val = str2obj(attrValue, attrType);
+					// console.debug(attrName, attrValue, val, (typeof val));
 					if(val != null){
 						params[attrName] = val;
 					}
 				}
 			}
+			// FIXME (perf): making two iterations of the DOM to find the
+			// <script> elements feels dirty. Still need a separate iteration
+			// if we do it another way, though, so we should probably benchmark
+			// the various approaches at some point.
 
-			var scripts = dojo.query("> script[type='dojo/connect']", node).orphan();
-			// console.debug(scripts);
+			// preambles are magic. Handle it.
+			var preambles = dojo.query("> script[type='dojo/method'][event='preamble']", node).orphan();
+			if(preambles.length){
+				// we only support one preamble. So be it.
+				params.preamble = dojo.parser._functionFromScript(preambles[0]);
+			}
 
+			// grab the rest of the scripts for processing later
+			var scripts = dojo.query("> script[type='dojo/method']", node).orphan();
+
+			var markupFactory = clsInfo.cls["markupFactory"];
+			if((!markupFactory) && (clsInfo.cls["prototype"])){
+				markupFactory = clsInfo.cls.prototype["markupFactory"];
+			}
 			// create the instance
-			var instance = new clsInfo.cls(params, node);
+			var instance;
+			if(markupFactory){
+				instance = markupFactory(params, node);
+			}else{
+				instance = new clsInfo.cls(params, node);
+			}
 			thelist.push(instance);
 
 			// map it to the JS namespace if that makes sense
@@ -151,17 +182,21 @@ dojo.parser = new function(){
 				dojo.setObject(jsname, instance);
 			}
 
-			// check to see if we need to hook up events
+			// check to see if we need to hook up events for non-declare()-built classes
 			scripts.forEach(function(script){
-				dojo.parser._wireUpConnect(instance, script);
+				dojo.parser._wireUpMethod(instance, script);
 			});
 		});
 
-		// Call startup on each top level widget.  Parent widgets will
-		// recursively call startup on their (non-top level) children
-		dojo.forEach(thelist, function(widget){
-			if(widget && widget.startup && (!widget.getParent || widget.getParent()==null)){
-				widget.startup();
+		// Call startup on each top level instance if it makes sense (as for
+		// widgets).  Parent widgets will recursively call startup on their
+		// (non-top level) children
+		dojo.forEach(thelist, function(instance){
+			if(	instance  && 
+				(instance.startup) && 
+				((!instance.getParent) || (!instance.getParent()))
+			){
+				instance.startup();
 			}
 		});
 		return thelist;
@@ -169,7 +204,7 @@ dojo.parser = new function(){
 
 	this.parse = function(/*DomNode?*/ rootNode){
 		// summary:
-		//		Search specified node (or root node) recursively for widgets,
+		//		Search specified node (or root node) recursively for class instances,
 		//		and instantiate them Searches for
 		//		dojoType="qualified.class.name"
 		var list = dojo.query('[dojoType]', rootNode);
@@ -178,9 +213,9 @@ dojo.parser = new function(){
 		
 		// FIXME: clean up any dangling scripts that we may need to run
 		/*
-		var scripts = dojo.query("script[type='dojo/connect']", rootNode).orphan();
+		var scripts = dojo.query("script[type='dojo/method']", rootNode).orphan();
 		scripts.forEach(function(script){
-			wireUpConnect(instance, script);
+			wireUpMethod(instance, script);
 		});
 		*/
 
@@ -201,26 +236,16 @@ if(dojo.exists("dijit.util.wai.onload") && (dijit.util.wai.onload === dojo._load
 //TODO: ported from 0.4.x Dojo.  Can we reduce this?
 dojo.parser._anonCtr = 0;
 dojo.parser._anon = {}; // why is this property required?
-dojo.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj, /*Boolean*/searchForNames){
+dojo.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
 	// summary:
 	//		Creates a reference to anonFuncPtr in thisObj with a completely
-	//		unique name. The new name is returned as a String.  If
-	//		searchForNames is true, an effort will be made to locate an
-	//		existing reference to anonFuncPtr in thisObj, and if one is found,
-	//		the existing name will be returned instead. The default is for
-	//		searchForNames to be false.
+	//		unique name. The new name is returned as a String. 
 	var jpn = "$joinpoint";
 	var nso = (thisObj|| dojo.parser._anon);
 	if(dojo.isIE){
 		var cn = anonFuncPtr["__dojoNameCache"];
 		if(cn && nso[cn] === anonFuncPtr){
 			return anonFuncPtr["__dojoNameCache"];
-		}else if(cn){
-			// hack to see if we've been event-system mangled
-			var tindex = cn.indexOf(jpn);
-			if(tindex != -1){
-				return cn.substring(0, tindex);
-			}
 		}
 	}
 	var ret = "__"+dojo.parser._anonCtr++;

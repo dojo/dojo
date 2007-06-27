@@ -30,7 +30,7 @@ dojo.declare("dojo.data.JsonItemStore",
 	//		in the array of items that acts as the unique identifier for that item.
 	//
 
-	url: undefined,
+	url: "",	// use "" rather than undefined for the benefit of the parser (#3539)
 
 	_assertIsItem: function(/* item */ item){
 		//	summary:

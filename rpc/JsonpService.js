@@ -27,6 +27,7 @@ dojo.declare(
 				url: url||this.serviceUrl,
 				callbackParamName: this.callbackParamName||"callback",
 				content: this.createRequest(parameters),
+				timeout: this.timeout,
 				handleAs: "json",	
 				preventCache: true
 			});

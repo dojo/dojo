@@ -32,6 +32,20 @@
 				}
 			);
 
+			dojo.declare("tests.parser.Class2", null, 
+				function(){
+					this.fromMarkup = false;
+				}, 
+				{
+					fromMarkup: false,
+					markupFactory: function(args, node){
+						var i = new tests.parser.Class2();
+						i.fromMarkup = true;
+						return i;
+					}
+				}
+			);
+
 			deepTestProp = {
 				blah: {
 					thinger: 1
@@ -76,6 +90,10 @@
 							dojo.parser.parse(toParse.parentNode);
 							t.t(dojo.exists("obj2"));
 							t.is("tests.parser.Class1", obj2.declaredClass);
+						},
+						function testMarkupFactory(t){
+							t.t(dojo.exists("obj3"));
+							t.t(obj3.fromMarkup);
 						}
 					]
 				);
@@ -103,6 +121,8 @@
 		<div>
 			<div type="tests.parser.Class1" jsId="obj2" id="toParse">
 			</div>
+		</div>
+		<div dojoType="tests.parser.Class2" jsId="obj3">
 		</div>
 	</body>
 </html>

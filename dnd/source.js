@@ -101,7 +101,7 @@ function(node, params){
 			if(this.mouseDown && this.isSource){
 				var nodes = this.getSelectedNodes();
 				if(nodes.length){
-					m.startDrag(this, nodes, this.copyState(dojo.dnd.multiSelectKey(e)));
+					m.startDrag(this, nodes, this.copyState(dojo.dnd.getCopyKeyState(e)));
 				}
 			}
 		}
@@ -234,7 +234,7 @@ function(node, params){
 	copyState: function(keyPressed){
 		// summary: Returns true, if we need to copy items, false to move.
 		//		It is separate to be overwritten dynamically, if needed.
-		// keyPressed: Boolean: the "multiSelectKey" was pressed
+		// keyPressed: Boolean: the "copy" was pressed
 		return this.copyOnly || keyPressed;	// Boolean
 	},
 	_markTargetAnchor: function(before){

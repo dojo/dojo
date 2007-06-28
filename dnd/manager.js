@@ -49,7 +49,7 @@ dojo.extend(dojo.dnd.Manager, {
 		// copy: Boolean: copy items, if true, move items otherwise
 		this.source = source;
 		this.nodes  = nodes;
-		this.copy   = copy && true || false; // normalizing to true boolean
+		this.copy   = Boolean(copy); // normalizing to true boolean
 		this.avatar = this.makeAvatar();
 		dojo.body().appendChild(this.avatar.node);
 		dojo.publish("dndStart", [source, nodes, this.copy]);
@@ -96,7 +96,7 @@ dojo.extend(dojo.dnd.Manager, {
 		var a = this.avatar;
 		if(a){
 			dojo.marginBox(a.node, {l: e.pageX + this.OFFSET_X, t: e.pageY + this.OFFSET_Y});
-			var copy = this.source.copyState(dojo.dnd.multiSelectKey(e)) && true || false;
+			var copy = Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e)));
 			if(this.copy != copy){ 
 				this._setCopyStatus(copy);
 			}
@@ -107,7 +107,7 @@ dojo.extend(dojo.dnd.Manager, {
 		// e: Event: mouse event
 		if(this.avatar){
 			if(this.target && this.canDropFlag){
-				dojo.publish("dndDrop", [this.source, this.nodes, this.source.copyState(dojo.dnd.multiSelectKey(e)) && true || false]);
+				dojo.publish("dndDrop", [this.source, this.nodes, Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e)))]);
 			}else{
 				dojo.publish("dndCancel");
 			}
@@ -122,7 +122,7 @@ dojo.extend(dojo.dnd.Manager, {
 		if(this.avatar){
 			switch(e.keyCode){
 				case dojo.keys.CTRL:
-					var copy = this.source.copyState(true) && true || false;
+					var copy = Boolean(this.source.copyState(true));
 					if(this.copy != copy){ 
 						this._setCopyStatus(copy);
 					}
@@ -138,7 +138,7 @@ dojo.extend(dojo.dnd.Manager, {
 		// summary: event processor for onkeyup, watching for CTRL for copy/move status
 		// e: Event: keyboard event
 		if(this.avatar && e.keyCode == dojo.keys.CTRL){
-			var copy = this.source.copyState(true) && true || false;
+			var copy = Boolean(this.source.copyState(false));
 			if(this.copy != copy){ 
 				this._setCopyStatus(copy);
 			}

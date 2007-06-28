@@ -34,13 +34,13 @@ function(node, params){
 		// summary: event processor for onmousedown
 		// e: Event: mouse event
 		if(!this.current){ return; }
-		if(!this.singular && !dojo.dnd.multiSelectKey(e) && !e.shiftKey && (this.current.id in this.selection)){
+		if(!this.singular && !dojo.dnd.getCopyKeyState(e) && !e.shiftKey && (this.current.id in this.selection)){
 			this.simpleSelection = true;
 			dojo.stopEvent(e);
 			return;
 		}
 		if(!this.singular && e.shiftKey){
-			if(!dojo.dnd.multiSelectKey(e)){
+			if(!dojo.dnd.getCopyKeyState(e)){
 				var empty = {};
 				for(var i in this.selection){
 					if(!(i in empty)){
@@ -81,7 +81,7 @@ function(node, params){
 		}else{
 			if(this.singular){
 				if(this.anchor == this.current){
-					if(dojo.dnd.multiSelectKey(e)){
+					if(dojo.dnd.getCopyKeyState(e)){
 						this._removeItemClass(this.anchor, "Anchor");
 						this.anchor = null;
 						this.selection = {};
@@ -96,7 +96,7 @@ function(node, params){
 					this.selection[this.current.id] = 1;
 				}
 			}else{
-				if(dojo.dnd.multiSelectKey(e)){
+				if(dojo.dnd.getCopyKeyState(e)){
 					if(this.anchor == this.current){
 						this._removeItemClass(this.anchor, "Anchor");
 						delete this.selection[this.anchor.id];

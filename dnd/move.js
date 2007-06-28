@@ -9,10 +9,8 @@ dojo.dnd.Mover = function(node, e){
 	// e: Event: a mouse event, which started the move;
 	//	only pageX and pageY properties are used
 	this.node = dojo.byId(node);
-	var m = this.marginBox = dojo.marginBox(this.node), d = node.ownerDocument;
-	m.l -= e.pageX;
-	m.t -= e.pageY;
-	var firstEvent = dojo.connect(d, "onmousemove", this, "onFirstMove");
+	this.marginBox = {l: e.pageX, t: e.pageY};
+	var d = node.ownerDocument, firstEvent = dojo.connect(d, "onmousemove", this, "onFirstMove");
 	this.events = [
 		dojo.connect(d, "onmousemove", this, "onMouseMove"),
 		dojo.connect(d, "onmouseup",   this, "destroy"),
@@ -35,6 +33,10 @@ dojo.extend(dojo.dnd.Mover, {
 	onFirstMove: function(){
 		// summary: makes the node absolute; it is meant to be called only once
 		this.node.style.position = "absolute";	// enforcing the absolute mode
+		var m = dojo.marginBox(this.node);
+		m.l -= this.marginBox.l;
+		m.t -= this.marginBox.t;
+		this.marginBox = m;
 		dojo.disconnect(this.events.pop());
 	},
 	destroy: function(){
@@ -125,9 +127,6 @@ dojo.dnd.constrainedMover = function(fun, within){
 	//	otherwise the constraint is applied to the left-top corner
 	var mover = function(node, e){
 		dojo.dnd.Mover.call(this, node, e);
-		var c = this.constraintBox = fun.call(this), m = this.marginBox;
-		c.r = c.l + c.w - (within ? m.w : 0);
-		c.b = c.t + c.h - (within ? m.h : 0);
 	};
 	dojo.extend(mover, dojo.dnd.Mover.prototype);
 	dojo.extend(mover, {
@@ -139,6 +138,13 @@ dojo.dnd.constrainedMover = function(fun, within){
 			l = l < c.l ? c.l : c.r < l ? c.r : l;
 			t = t < c.t ? c.t : c.b < t ? c.b : t;
 			dojo.marginBox(this.node, {l: l, t: t});
+		},
+		onFirstMove: function(){
+			// summary: called once to initialize things; it is meant to be called only once
+			dojo.dnd.Mover.prototype.onFirstMove.call(this);
+			var c = this.constraintBox = fun.call(this), m = this.marginBox;
+			c.r = c.l + c.w - (within ? m.w : 0);
+			c.b = c.t + c.h - (within ? m.h : 0);
 		}
 	});
 	return mover;	// Object

@@ -270,24 +270,22 @@ if(typeof window != 'undefined'){
 	}
 	//	END DOMContentLoaded
 
-	// IE WebControl hosted in an application can fire "beforeunload" and "unload"
-	// events when control visibility changes, causing Dojo to unload too soon. The
-	// following code fixes the problem
-	// Reference: http://support.microsoft.com/default.aspx?scid=kb;en-us;199155
 	if(dojo.isIE){
+		// IE WebControl hosted in an application can fire "beforeunload" and "unload"
+		// events when control visibility changes, causing Dojo to unload too soon. The
+		// following code fixes the problem
+		// Reference: http://support.microsoft.com/default.aspx?scid=kb;en-us;199155
 		dojo._handleNodeEvent(window, "beforeunload", function(){
 			dojo._unloading = true;
-			window.setTimeout(function() {
-				dojo._unloading = false;
-			}, 0);
+			window.setTimeout(function(){ dojo._unloading = false; }, 0);
 		});
+		dojo._handleNodeEvent(window, "unload", function(){
+			if(dojo._unloading){ dojo.unloaded();	}
+		});
+	}else{
+		// FIXME: dojo.unloaded requires dojo scope
+		dojo._handleNodeEvent(window, "beforeunload", function() { dojo.unloaded(); });
 	}
-
-	dojo._handleNodeEvent(window, "unload", function(){
-		if((!dojo.isIE)||(dojo.isIE && dojo._unloading)){
-			dojo.unloaded();
-		}
-	});
 
 	/*
 	OpenAjax.subscribe("OpenAjax", "onload", function(){

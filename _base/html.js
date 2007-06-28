@@ -227,8 +227,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 				return 1;
 			}
 		} : function(node){
-			// FIXME: should we get using the computedStyle of the node?
-			return node.style.opacity;
+			return dojo.getComputedStyle(node).opacity;
 		}
 	);
 
@@ -242,7 +241,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			}
 			return opacity;
 		} : function(node, opacity){
-			node.style.opacity = opacity;
+			return node.style.opacity = opacity;
 		}
 	);
 
@@ -277,27 +276,25 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 
 	// public API
 	
-	dojo.style = function(){
-		var _a = arguments;
-		var _a_l = _a.length;
-		if(!_a_l){ return; }
-		var node = dojo.byId(_a[0]);
-		var io = ((dojo.isIE)&&(_a[1] == "opacity"));
-		if(_a_l == 3){
-			return (io) ? dojo._setOpacity(node, _a[2]) : node.style[_a[1]] = _a[2];
+	dojo.style = function(node /*HTMLElement*/, style/*String*/, value/*String?*/){
+		var n=dojo.byId(node), args=arguments.length, op=(style=="opacity");
+		if(args==3){
+			return op ? dojo._setOpacity(n, value) : n.style[style] = value; /*Number*/
 		}
-		var s = dojo.getComputedStyle(node);
-		if(_a_l == 1){ return s; }
-		if(_a_l == 2){
-			return (io) ? dojo._getOpacity(node) : _toStyleValue(node, _a[1], s[_a[1]]);
+		if (args==2 && op){
+			return dojo._getOpacity(n);
 		}
+		var s = dojo.getComputedStyle(n);
+		return (args == 1) ? s : _toStyleValue(n, style, s[style]); /* CSS2Properties||String||Number */
 	}
 
 	// =============================
 	// Box Functions
 	// =============================
 
-	dojo._getPadBounds = function(n, computedStyle){
+	var gcs = dojo.getComputedStyle;
+	
+	dojo._getPadExtents = function(n, computedStyle){
 		// Returns special values specifically useful 
 		// for node fitting.
 		// l/t = left/top padding (respectively)
@@ -308,7 +305,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		// Normally application code will not need to invoke this directly,
 		// and will use the ...box... functions instead.
 		var 
-			s=computedStyle||dojo.getComputedStyle(n), 
+			s=computedStyle||gcs(n), 
 			px=dojo._toPixelValue,
 			l=px(n, s.paddingLeft), 
 			t=px(n, s.paddingTop);
@@ -319,7 +316,28 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			h: t+px(n, s.paddingBottom)
 		};
 	}
-	
+
+	dojo._getBorderExtents = function(n, computedStyle){
+		// l/t = the sum of left/top border (respectively)
+		// w = the sum of the left and right border
+		// h = the sum of the top and bottom border
+		// The w/h are used for calculating boxes.
+		// Normally application code will not need to invoke this directly,
+		// and will use the ...box... functions instead.
+		var 
+			ne='none',
+			px=dojo._toPixelValue, 
+			s=computedStyle||gcs(n), 
+			bl=(s.borderLeftStyle!=ne ? px(n, s.borderLeftWidth) : 0),
+			bt=(s.borderTopStyle!=ne ? px(n, s.borderTopWidth) : 0);
+		return { 
+			l: bl,
+			t: bt,
+			w: bl + (s.borderRightStyle!=ne ? px(n, s.borderRightWidth) : 0),
+			h: bt + (s.borderBottomStyle!=ne ? px(n, s.borderBottomWidth) : 0)
+		};
+	}
+
 	dojo._getPadBorderExtents = function(n, computedStyle){
 		// l/t = the sum of left/top padding and left/top border (respectively)
 		// w = the sum of the left and right padding and border
@@ -328,29 +346,37 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		// Normally application code will not need to invoke this directly,
 		// and will use the ...box... functions instead.
 		var 
-			s=computedStyle||dojo.getComputedStyle(n), 
-			px=dojo._toPixelValue, 
-			p=dojo._getPadBounds(n, s),
-			bl=(s.borderLeftStyle!='none' ? px(n, s.borderLeftWidth) : 0),
-			bt=(s.borderTopStyle!='none' ? px(n, s.borderTopWidth) : 0);
+			s=computedStyle||gcs(n), 
+			p=dojo._getPadExtents(n, s),
+			b=dojo._getBorderExtents(n, s);
 		return { 
-			l: p.l + bl,
-			t: p.t + bt,
-			w: p.w + bl + (s.borderRightStyle!='none' ? px(n, s.borderRightWidth) : 0),
-			h: p.h + bt + (s.borderBottomStyle!='none' ? px(n, s.borderBottomWidth) : 0)
+			l: p.l + b.l,
+			t: p.t + b.t,
+			w: p.w + b.w,
+			h: p.h + b.h
 		};
 	}
 
 	dojo._getMarginExtents = function(n, computedStyle){
 		var 
-			s=computedStyle||dojo.getComputedStyle(n), 
+			s=computedStyle||gcs(n), 
 			px=dojo._toPixelValue,
 			l=px(n, s.marginLeft),
-			t=px(n, s.marginTop);
+			t=px(n, s.marginTop),
+			r=px(n, s.marginRight);
+		if (dojo.isSafari){
+			// FIXME: Safari's version of the computed right margin
+			// is the space between our right edge and the right edge 
+			// of our offsetParent. 
+			// What we are looking for is the actual margin value as 
+			// determined by CSS.
+			// Hack solution is to assume left/right margins are the same.
+			r = l;
+		}
 		return { 
 			l: l,
 			t: t,
-			w: l+px(n, s.marginRight),
+			w: l+r,
 			h: t+px(n, s.marginBottom)
 		};
 	}
@@ -364,42 +390,80 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	// Be careful with IMGs because they are inline or block depending on 
 	// browser and browser mode.
 
-	if(dojo.isMoz){
-		dojo._getMarginBox = function(node, computedStyle){
-			var s = computedStyle||dojo.getComputedStyle(node);
-			var mb = dojo._getMarginExtents(node, s);
-			// Mozilla has unexplained negative l/t offsets in some cases (e.g. positioned & parents with border)
-			// the computed l/t styles are generally more correct
-			return { l:(parseFloat(s.left)||node.offsetLeft) - mb.l, t:(parseFloat(s.top)||node.offsetTop) - mb.t, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+	// Although it would be easier to read, there are not separate versions of 
+	// _getMarginBox for each browser because:
+	// 1. the branching is not expensive
+	// 2. factoring the shared code wastes cycles (function call overhead)
+	// 3. duplicating the shared code wastes bytes
+	
+	dojo._getMarginBox = function(node, computedStyle){
+		var s = computedStyle||gcs(node), me = dojo._getMarginExtents(node, s);
+		var	l = node.offsetLeft - me.l,	t = node.offsetTop - me.t; 
+		if(dojo.isMoz){
+			// Mozilla:
+			// If offsetParent has a computed overflow != visible, the offsetLeft is decreased
+			// by the parent's border.
+			// We don't want to compute the parent's style, so instead we examine node's
+			// computed left/top which is more stable.
+			var sl = parseFloat(s.left), st = parseFloat(s.top);
+			if (!isNaN(sl) && !isNaN(st)) {
+				l = sl, t = st;
+			} else {
+				// If child's computed left/top are not parseable as a number (e.g. "auto"), we
+				// have no choice but to examine the parent's computed style.
+				var p = node.parentNode;
+				if (p) {
+					var pcs = gcs(p);
+					if (pcs.overflow != "visible"){
+						var be = dojo._getBorderExtents(p, pcs);
+						l += be.l, t += be.t;
+					}
+				}
+			}
 		}
-	} else {
-		dojo._getMarginBox = function(node, computedStyle){
-			var mb = dojo._getMarginExtents(node, computedStyle);
-			return { l:node.offsetLeft - mb.l, t:node.offsetTop - mb.t, w: node.offsetWidth + mb.w, h: node.offsetHeight + mb.h };
+		// On Opera, offsetLeft includes the parent's border
+		else if(dojo.isOpera){
+			var p = node.parentNode;
+			if(p){
+				var be = dojo._getBorderExtents(p);
+				l += be.l, t += be.t;
+			}
 		}
+		return { 
+			l: l, 
+			t: t, 
+			w: node.offsetWidth + me.w, 
+			h: node.offsetHeight + me.h 
+		};
 	}
 	
 	dojo._getContentBox = function(node, computedStyle){
 		// clientWidth/Height are important since the automatically account for scrollbars
 		// fallback to offsetWidth/Height for special cases (see #3378)
-		var w = node.clientWidth, h, gpb;
+		var s=computedStyle||gcs(node), pe=dojo._getPadExtents(node, s), be=dojo._getBorderExtents(node, s), w=node.clientWidth, h;
 		if (!w) {
-			w = node.offsetWidth, h=node.offsetHeight, gpb= dojo._getPadBorderExtents; 
+			w=node.offsetWidth, h=node.offsetHeight;
 		} else {
-			h=node.clientHeight, gpb = dojo._getPadBounds; 
+			h=node.clientHeight, be.w = be.h = 0; 
 		}
-		var pb=gpb(node, computedStyle); 
-		return { l: pb.l, t: pb.t, w: w-pb.w, h: h-pb.h };
+		// On Opera, offsetLeft includes the parent's border
+		if(dojo.isOpera){ pe.l += be.l; pe.t += be.t; };
+		return { 
+			l: pe.l, 
+			t: pe.t, 
+			w: w - pe.w - be.w, 
+			h: h - pe.h - be.h
+		};
 	}
-	
-	dojo._setBox = function(node, l, t, w, h, u){
-		u = u || "px";
-		with(node.style){
-			if(!isNaN(l)){ left = l+u; }
-			if(!isNaN(t)){ top = t+u; }
-			if(w>=0){ width = w+u; }
-			if(h>=0){ height = h+u; }
-		}
+
+	dojo._getBorderBox = function(node, computedStyle){
+		var s=computedStyle||gcs(node), pe=dojo._getPadExtents(node, s), cb=dojo._getContentBox(node, s);
+		return { 
+			l: cb.l - pe.l, 
+			t: cb.t - pe.t, 
+			w: cb.w + pe.w, 
+			h: cb.h + pe.h
+		};
 	}
 
 	// Box setters depend on box context because interpretation of width/height styles
@@ -419,47 +483,61 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	// In particular, margins on TABLE do not seems to appear 
 	// at all in computedStyle on Mozilla.
 	
-	dojo._setContentBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
-		var tn = node.tagName, bb = (dojo.boxModel == "border-box")||(tn=="TABLE")||(tn=="BUTTON");
+	dojo._setBox = function(node, l, t, w, h, u){
+		u = u || "px";
+		with(node.style){
+			if(!isNaN(l)){ left = l+u; }
+			if(!isNaN(t)){ top = t+u; }
+			if(w>=0){ width = w+u; }
+			if(h>=0){ height = h+u; }
+		}
+	}
+
+	dojo._usesBorderBox = function(node){
+		// We could test the computed style of node to see if a particular box
+		// has been specified, but there are details and we choose not to bother.
+		var n = node.tagName;
+		// For whatever reason, TABLE and BUTTON are always border-box by default.
+		// If you have assigned a different box to either one via CSS then
+		// box functions will break.
+		return (dojo.boxModel=="border-box")||(n=="TABLE")||(n=="BUTTON");
+	}
+
+	dojo._setContentSize = function(node, widthPx, heightPx, computedStyle){
+		var bb = dojo._usesBorderBox(node);
 		if(bb){
 			var pb = dojo._getPadBorderExtents(node, computedStyle);
 			if(widthPx>=0){ widthPx += pb.w; }
 			if(heightPx>=0){ heightPx += pb.h; }
 		}
-		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
+		dojo._setBox(node, NaN, NaN, widthPx, heightPx);
 	}
-
-	dojo._nilExtents = { w: 0, h: 0 };
 
 	dojo._setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
 		var s = computedStyle || dojo.getComputedStyle(node);
 		// Some elements have special padding, margin, and box-model settings. 
-		// To use box functions with some elements you may need to set padding, margin explicitly.
+		// To use box functions you may need to set padding, margin explicitly.
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
-		// TABLE and BUTTON come up regularly, so we include tests for them here. 
-		var tn = node.tagName, pb = ((dojo.boxModel == "border-box")||(tn=="TABLE")||(tn=="BUTTON") ? dojo._nilExtents : dojo._getPadBorderExtents(node, s));
-		var mb = dojo._getMarginExtents(node, s);
-		if(widthPx>=0){
-			widthPx = Math.max(widthPx - pb.w - mb.w, 0);
-		}
-		if(heightPx>=0){
-			heightPx = Math.max(heightPx - pb.h - mb.h, 0);
-		}
+		var bb=dojo._usesBorderBox(node),
+				pb=bb ? _nilExtents : dojo._getPadBorderExtents(node, s),
+				mb=dojo._getMarginExtents(node, s);
+		if(widthPx>=0){	widthPx = Math.max(widthPx - pb.w - mb.w, 0);	}
+		if(heightPx>=0){ heightPx = Math.max(heightPx - pb.h - mb.h, 0); }
 		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
 	}
+	
+	var _nilExtents = { l:0, t:0, w:0, h:0 };
 
 	// public API
 	
-	dojo.marginBox = function(node, boxObj){
-		node = dojo.byId(node);
-		var s = dojo.getComputedStyle(node), b=boxObj;
-		return !b ? dojo._getMarginBox(node, s) : dojo._setMarginBox(node, b.l, b.t, b.w, b.h, s);
+	dojo.marginBox = function(node, box){
+		var n=dojo.byId(node), s=gcs(n), b=box;
+		return !b ? dojo._getMarginBox(n, s) : dojo._setMarginBox(n, b.l, b.t, b.w, b.h, s);
 	}
 
-	dojo.contentBox = function(node, boxObj){
-		node = dojo.byId(node);
-		var s = dojo.getComputedStyle(node), b=boxObj;
-		return !b ? dojo._getContentBox(node, s) : dojo._setContentBox(node, b.l, b.t, b.w, b.h, s);
+	dojo.contentBox = function(node, box){
+		var n=dojo.byId(node), s=gcs(n), b=box;
+		return !b ? dojo._getContentBox(n, s) : dojo._setContentSize(n, b.w, b.h, s);
 	}
 	
 	// =============================
@@ -472,7 +550,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		var retVal = 0;
 		while(node){
 			try{
-				if(dojo.getComputedStyle(node).position == "fixed"){
+				if(gcs(node).position == "fixed"){
 					return 0;
 				}
 			}catch(e){}
@@ -611,10 +689,8 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 
 	// FIXME: need a setter for coords or a moveTo!!
 	dojo.coords = function(node, includeScroll){
-		node = dojo.byId(node);
-		var s = dojo.getComputedStyle(node);
-		var mb = dojo._getMarginBox(node, s);
-		var abs = dojo._abs(node, includeScroll);
+		var n=dojo.byId(node), s=gcs(n), mb=dojo._getMarginBox(n, s);
+		var abs = dojo._abs(n, includeScroll);
 		mb.x = abs.x;
 		mb.y = abs.y;
 		return mb;

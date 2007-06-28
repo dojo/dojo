@@ -15,12 +15,17 @@ dojo._listener = {
 		//   objects
 		// - listener is invoked with current scope (this)
 		return function(){
-			var ls = arguments.callee.listeners;
+			var ap=Array.prototype, c=arguments.callee, ls=c._listeners, t=c.target;
+			// return value comes from original target function
+			var r=t && t.apply(this, arguments);
+			// invoke listeners after target function
 			for(var i in ls){
-				if(!(i in Array.prototype)){
+				if(!(i in ap)){
 					ls[i].apply(this, arguments);
 				}
 			}
+			// return value comes from original target function
+			return r;
 		}
 	},
 	// add a listener to an object
@@ -36,11 +41,13 @@ dojo._listener = {
 		// The source method is either null, a dispatcher, or some other function
 		var f = source[method];
 		// Ensure a dispatcher
-		if(!f||!f.listeners){
+		if(!f||!f._listeners){
 			var d = dojo._listener.getDispatcher();
-			// dispatcher holds a list of handlers
-			d.listeners = (f ? [f] : []);
-			// put back in source			
+			// original target function is special
+			d.target = f;
+			// dispatcher holds a list of listeners
+			d._listeners = []; 
+			// redirect source to dispatcher
 			f = source[method] = d;
 		}
 		// The contract is that a handle is returned that can 
@@ -50,15 +57,15 @@ dojo._listener = {
 		// DOM event code has this same contract but handle is Function 
 		// in non-IE browsers.
 		//
-		// Could implement 'before' with a flag and unshift.
-		return f.listeners.push(listener) ; /*Handle*/
+		// We could have separate lists of before and after listeners.
+		return f._listeners.push(listener) ; /*Handle*/
 	},
 	// remove a listener from an object
 	remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
 		var f = (source||dojo.global)[method];
 		// remember that handle is the index+1 (0 is not a valid handle)
-		if(f && f.listeners && handle--){	
-			delete f.listeners[handle]; 
+		if(f && f._listeners && handle--){	
+			delete f._listeners[handle]; 
 		}
 	}
 };
@@ -211,8 +218,9 @@ dojo.unsubscribe = function(/*Handle*/ handle){
 	//		var alerter = dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
 	//		...
 	//		dojo.unsubscribe(alerter);
-	
-	dojo._listener.remove(dojo._topics, handle[0], handle[1]);
+	if(handle){
+		dojo._listener.remove(dojo._topics, handle[0], handle[1]);
+	}
 }
 
 dojo.publish = function(/*String*/ topic, /*Array*/ args){

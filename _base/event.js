@@ -183,17 +183,21 @@ dojo.require("dojo._base.connect");
 				// add a listener to an object
 				add: function(/*Object*/ source, /*String*/ method, /*Function*/ listener){
 					source = source || dojo.global;
-					var f = d = source[method];
-					if(!d||!d.listeners){
-						d = source[method] = dojo._getIeDispatcher();
-						// initialize listeners with original event code (or just empty)
-						d.listeners = (f ? [ieh.push(f) - 1] : []);
+					var f = source[method];
+					if(!f||!f._listeners){
+						var d = dojo._getIeDispatcher();
+						// original target function is special
+						d.target = f && (ieh.push(f) - 1);
+						// dispatcher holds a list of indices into handlers table
+						d._listeners = [];
+						// redirect source to dispatcher
+						f = source[method] = d;
 					}
-					return d.listeners.push(ieh.push(listener) - 1) ; /*Handle*/
+					return f._listeners.push(ieh.push(listener) - 1) ; /*Handle*/
 				},
 				// remove a listener from an object
 				remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
-					var f = (source||dojo.global)[method], l = f&&f.listeners;
+					var f = (source||dojo.global)[method], l = f&&f._listeners;
 					if(f && l && handle--){	
 						delete ieh[l[handle]];
 						delete l[handle]; 
@@ -213,7 +217,7 @@ dojo.require("dojo._base.connect");
 					// keypress events that otherwise won't fire
 					// on IE
 					var kd = node.onkeydown;
-					if(!kd||!kd.listeners||!kd._stealthKeydown){
+					if(!kd||!kd._listeners||!kd._stealthKeydown){
 						// we simply ignore this connection when disconnecting
 						// because it's harmless 
 						del.add(node, "onkeydown", del._stealthKeyDown);
@@ -316,7 +320,7 @@ dojo.require("dojo._base.connect");
 				// other browsers do, we simulate it here.
 				var kp=evt.currentTarget.onkeypress;
 				// only works if kp exists and is a dispatcher
-				if(!kp||!kp.listeners)return;
+				if(!kp||!kp._listeners)return;
 				// munge key/charCode
 				var k=evt.keyCode;
 				// These are Windows Virtual Key Codes
@@ -454,16 +458,20 @@ dojo.require("dojo._base.connect");
 
 if(dojo.isIE<7){
 	// keep this out of the closure
-	// closing over 'iel' or 'ieh' borks leak prevention
+	// closing over 'iel' or 'ieh' b0rks leak prevention
 	// ls[i] is an index into the master handler array
 	dojo._getIeDispatcher = function(){
 		return function(){
-			var ap=Array.prototype, ls=arguments.callee.listeners, h=dojo._ie_listener.handlers;
+			var ap=Array.prototype, h=dojo._ie_listener.handlers, c=arguments.callee, ls=c._listeners, t=h[c.target];
+			// return value comes from original target function
+			var r = t && t.apply(this, arguments);
+			// invoke listeners after target function
 			for(var i in ls){
 				if(!(i in ap)){
 					h[ls[i]].apply(this, arguments);
 				}
 			}
+			return r;
 		}
 	}
 }

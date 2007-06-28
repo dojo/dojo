@@ -19,7 +19,6 @@
 		}
 
 		.parent {
-			position: absolute;
 			background: #BFECFF;
 			border: 10px solid lightblue;
 			width: 500px;
@@ -35,8 +34,8 @@
 		dojo.require("dojo.dnd.move");
 		var m7, m8;
 		var init = function(){
-			m7 = new dojo.dnd.Moveable("moveable7", {mover: dojo.dnd.parentConstrainedMover()});
-			m8 = new dojo.dnd.Moveable("moveable8", {mover: dojo.dnd.parentConstrainedMover(true)});
+			m7 = new dojo.dnd.Moveable("moveable7", {mover: dojo.dnd.parentConstrainedMover("margin")});
+			m8 = new dojo.dnd.Moveable("moveable8", {mover: dojo.dnd.parentConstrainedMover("margin", true)});
 		};
 		dojo.addOnLoad(init);
 	</script>

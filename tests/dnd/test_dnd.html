@@ -38,7 +38,7 @@
 			c1.insertNodes(false, [1, 2, 3, 4, 5, 6, [1, 2, 3], function(x){ return x + x; }]);
 			//c2 = new dojo.dnd.Source(dojo.byId("container2"));
 			c2 = new dojo.dnd.Source("container2");
-			c2.insertNodes(false, ["A", "B", "C", "D", "E", "F", {repr: function(){ return "CUSTOM!"; }}, null]);
+			c2.insertNodes(false, ["A", "B", "C", "D", "E", "F", {toString: function(){ return "CUSTOM!"; }}, null]);
 		};
 		dojo.addOnLoad(init);
 	</script>

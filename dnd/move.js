@@ -155,7 +155,7 @@ dojo.dnd.boxConstrainedMover = function(box, within){
 dojo.dnd.parentConstrainedMover = function(area, within){
 	// summary: a specialization of dojo.dnd.constrainedMover, which constrains to the parent node
 	// area: String: "margin" to constrain within the parent's margin box, "border" for the border box,
-	//	"padding" for the padding box, and "content" for the content box; "padding" is the default value.
+	//	"padding" for the padding box, and "content" for the content box; "content" is the default value.
 	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
 	//	otherwise the constraint is applied to the left-top corner
 	var fun = function(){
@@ -165,18 +165,18 @@ dojo.dnd.parentConstrainedMover = function(area, within){
 		if(area == "margin"){
 			return mb;	// Object
 		}
-		var m = dojo._getMarginExtents(n, s);
-		mb.l += m.l, mb.t += m.t, mb.w -= m.w, mb.h -= m.h;
+		var t = dojo._getMarginExtents(n, s);
+		mb.l += t.l, mb.t += t.t, mb.w -= t.w, mb.h -= t.h;
 		if(area == "border"){
 			return mb;	// Object
 		}
-		var pb = dojo._getPadBorderExtents(n, s);
-		mb.l += pb.l, mb.t += pb.t, mb.w -= pb.w, mb.h -= pb.h;
-		if(area == "content"){
+		t = dojo._getBorderExtents(n, s);
+		mb.l += t.l, mb.t += t.t, mb.w -= t.w, mb.h -= t.h;
+		if(area == "padding"){
 			return mb;	// Object
 		}
-		var p = dojo._getPadBounds(n, s);
-		mb.l -= p.l, mb.t -= p.t, mb.w += p.w, mb.h += p.h;
+		t = dojo._getPadExtents(n, s);
+		mb.l += t.l, mb.t += t.t, mb.w -= t.w, mb.h -= t.h;
 		return mb;	// Object
 	};
 	return dojo.dnd.constrainedMover(fun, within);	// Object

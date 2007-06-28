@@ -19,6 +19,10 @@ dojo.dnd.Mover = function(node, e){
 		dojo.connect(d, "onselectstart", dojo, "stopEvent"),
 		firstEvent
 	];
+	// set globals to indicate that move has started
+	dojo.publish("dndMoveStart", [this.node]);
+	dojo.addClass(dojo.body(), "dojoMove"); 
+	dojo.addClass(this.node, "dojoMoveItem"); 
 };
 
 dojo.extend(dojo.dnd.Mover, {
@@ -42,6 +46,11 @@ dojo.extend(dojo.dnd.Mover, {
 	destroy: function(){
 		// summary: stops the move, deletes all references, so the object can be garbage-collected
 		dojo.forEach(this.events, dojo.disconnect);
+		// undo global settings
+		dojo.publish("dndMoveStop", [this.node]);
+		dojo.removeClass(dojo.body(), "dojoMove");
+		dojo.removeClass(this.node, "dojoMoveItem");
+		// destroy objects
 		this.events = this.node = null;
 	}
 });

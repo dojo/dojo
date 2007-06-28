@@ -28,6 +28,7 @@ function(node, params){
 	//	isSource: Boolean: can be used as a DnD source, if true; assumed to be "true" if omitted
 	//	accept: Array: list of accepted types (text strings) for a target; assumed to be ["text"] if omitted
 	//	horizontal: Boolean: a horizontal container, if true, vertical otherwise or when omitted
+	//	copyOnly: Boolean: always copy items, if true, use a state of Ctrl key otherwise
 	//	the rest of parameters are passed to the selector
 	if(!params){ params = {}; }
 	this.isSource = typeof params.isSource == "undefined" ? true : params.isSource;
@@ -40,6 +41,7 @@ function(node, params){
 		}
 	}
 	this.horizontal = params.horizontal;
+	this.copyOnly = params.copyOnly;
 	// class-specific variables
 	this.isDragging = false;
 	this.mouseDown = false;
@@ -99,7 +101,7 @@ function(node, params){
 			if(this.mouseDown && this.isSource){
 				var nodes = this.getSelectedNodes();
 				if(nodes.length){
-					m.startDrag(this, nodes, dojo.dnd.multiSelectKey(e));
+					m.startDrag(this, nodes, this.copyState(dojo.dnd.multiSelectKey(e)));
 				}
 			}
 		}
@@ -228,6 +230,12 @@ function(node, params){
 			if(!accepted){ break; }
 		}
 		return accepted;	// Boolean
+	},
+	copyState: function(keyPressed){
+		// summary: Returns true, if we need to copy items, false to move.
+		//		It is separate to be overwritten dynamically, if needed.
+		// keyPressed: Boolean: the "multiSelectKey" was pressed
+		return this.copyOnly || keyPressed;	// Boolean
 	},
 	_markTargetAnchor: function(before){
 		// summary: assigns a class to the current target anchor based on "before" status

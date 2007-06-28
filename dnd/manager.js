@@ -49,10 +49,10 @@ dojo.extend(dojo.dnd.Manager, {
 		// copy: Boolean: copy items, if true, move items otherwise
 		this.source = source;
 		this.nodes  = nodes;
-		this.copy   = copy;
+		this.copy   = copy && true || false; // normalizing to true boolean
 		this.avatar = this.makeAvatar();
 		dojo.body().appendChild(this.avatar.node);
-		dojo.publish("dndStart", [source, nodes, copy]);
+		dojo.publish("dndStart", [source, nodes, this.copy]);
 		this.events = [
 			dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
 			dojo.connect(dojo.doc, "onmouseup",   this, "onMouseUp"),
@@ -96,8 +96,9 @@ dojo.extend(dojo.dnd.Manager, {
 		var a = this.avatar;
 		if(a){
 			dojo.marginBox(a.node, {l: e.pageX + this.OFFSET_X, t: e.pageY + this.OFFSET_Y});
-			if(this.copy != dojo.dnd.multiSelectKey(e)){ 
-				this._setCopyStatus(dojo.dnd.multiSelectKey(e));
+			var copy = this.source.copyState(dojo.dnd.multiSelectKey(e)) && true || false;
+			if(this.copy != copy){ 
+				this._setCopyStatus(copy);
 			}
 		}
 	},
@@ -106,7 +107,7 @@ dojo.extend(dojo.dnd.Manager, {
 		// e: Event: mouse event
 		if(this.avatar){
 			if(this.target && this.canDropFlag){
-				dojo.publish("dndDrop", [this.source, this.nodes, dojo.dnd.multiSelectKey(e)]);
+				dojo.publish("dndDrop", [this.source, this.nodes, this.source.copyState(dojo.dnd.multiSelectKey(e)) && true || false]);
 			}else{
 				dojo.publish("dndCancel");
 			}
@@ -121,7 +122,10 @@ dojo.extend(dojo.dnd.Manager, {
 		if(this.avatar){
 			switch(e.keyCode){
 				case dojo.keys.CTRL:
-					if(!this.copy){ this._setCopyStatus(true); }
+					var copy = this.source.copyState(true) && true || false;
+					if(this.copy != copy){ 
+						this._setCopyStatus(copy);
+					}
 					break;
 				case dojo.keys.ESCAPE:
 					dojo.publish("dndCancel");
@@ -133,7 +137,12 @@ dojo.extend(dojo.dnd.Manager, {
 	onKeyUp: function(e){
 		// summary: event processor for onkeyup, watching for CTRL for copy/move status
 		// e: Event: keyboard event
-		if(this.avatar && e.keyCode == dojo.keys.CTRL && this.copy){ this._setCopyStatus(false); }
+		if(this.avatar && e.keyCode == dojo.keys.CTRL){
+			var copy = this.source.copyState(true) && true || false;
+			if(this.copy != copy){ 
+				this._setCopyStatus(copy);
+			}
+		}
 	},
 	// utilities
 	_setCopyStatus: function(copy){

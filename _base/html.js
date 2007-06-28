@@ -363,8 +363,9 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			px=dojo._toPixelValue,
 			l=px(n, s.marginLeft),
 			t=px(n, s.marginTop),
-			r=px(n, s.marginRight);
-		if (dojo.isSafari){
+			r=px(n, s.marginRight),
+			b=px(n, s.marginBottom);
+		if (dojo.isSafari && (s.position != "absolute")){
 			// FIXME: Safari's version of the computed right margin
 			// is the space between our right edge and the right edge 
 			// of our offsetParent. 
@@ -377,7 +378,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			l: l,
 			t: t,
 			w: l+r,
-			h: t+px(n, s.marginBottom)
+			h: t+b
 		};
 	}
 
@@ -426,7 +427,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			var p = node.parentNode;
 			if(p){
 				var be = dojo._getBorderExtents(p);
-				l += be.l, t += be.t;
+				l -= be.l, t -= be.t;
 			}
 		}
 		return { 

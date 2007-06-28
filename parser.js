@@ -54,7 +54,7 @@ dojo.parser = new function(){
 
 	var instanceClasses = {
 		// map from fully qualified name (like "dijit.Button") to structure like
-		// { cls: dijit.Button, params: {caption: "string", disabled: "boolean"} }
+		// { cls: dijit.Button, params: {label: "string", disabled: "boolean"} }
 	};
 	
 	function getClassInfo(/*String*/ className){
@@ -64,7 +64,7 @@ dojo.parser = new function(){
 		//		structure like
 		//			{ 
 		//				cls: dijit.Button, 
-		//				params: { caption: "string", disabled: "boolean"}
+		//				params: { label: "string", disabled: "boolean"}
 		//			}
 
 		if(!instanceClasses[className]){

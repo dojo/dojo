@@ -418,21 +418,72 @@ dojo.declare("dojo.data.JsonItemStore",
 		return null; //null
 	},
 
-	getItemByIdentity: function(/* String */ identity){
+	fetchItemByIdentity: function(/* Object */ keywordArgs){
 		//	summary: 
-		//		See dojo.data.api.Identity.getItemByIdentity()
+		//		See dojo.data.api.Identity.fetchItemByIdentity()
 
-		// Force a sync'ed load if it hasn't occurred yet
+		//Hasn't loaded yet, we have to trigger the load.
 		if(!this._loadFinished){
-			this._forceLoad();
-		}
-		if(this._itemsByIdentity){
-			var item = this._itemsByIdentity[identity];
-			if(item !== undefined){
-				return item; //Object
+			var self = this;
+			if(this._jsonFileUrl){
+				var getArgs = {
+						url: self._jsonFileUrl, 
+						handleAs: "json-comment-optional"
+					};
+				var getHandler = dojo.xhrGet(getArgs);
+				getHandler.addCallback(function(data){
+					var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+					try{
+						self._arrayOfAllItems = self._getItemsFromLoadedData(data);
+						self._loadFinished = true;
+						var item = self._getItemByIdentity(keywordArgs.identity);
+						if(keywordArgs.onItem){
+							keywordArgs.onItem.call(scope, item);
+						}
+					}catch(error){
+						if(keywordArgs.onError){
+							keywordArgs.onError.call(scope, error);
+						}
+					}
+				});
+				getHandler.addErrback(function(error){
+					if(keywordArgs.onError){
+						var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+						keywordArgs.onError.call(scope, error);
+					}
+				});
+			}else if(this._jsonData){
+				//Passe din data, no need to xhr.
+				self._arrayOfAllItems = self._getItemsFromLoadedData(self._jsonData);
+				self._jsonData = null;
+				self._loadFinished = true;
+				var item = self._getItemByIdentity(keywordArgs.identity);
+				if(keywordArgs.onItem){
+					var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+					keywordArgs.onItem.call(scope, item);
+				}
+			} 
+		}else{
+			//Already loaded.  We can just look it up and call back.
+			var item = this._getItemByIdentity(keywordArgs.identity);
+			if(keywordArgs.onItem){
+				var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+				keywordArgs.onItem.call(scope, item);
 			}
 		}
-		return null; //null
+	},
+
+	_getItemByIdentity: function(/* Object */ identity){
+		//	summary:
+		//		Internal function to look an item up by its identity map.
+		var item = null;
+		if(this._itemsByIdentity){
+			item = this._itemsByIdentity[identity];
+			if(item === undefined){
+				item = null;
+			}
+		}
+		return item; // Object
 	},
 
 	getIdentityAttributes: function(/* item */ item){

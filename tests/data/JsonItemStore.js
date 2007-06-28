@@ -62,22 +62,50 @@ tests.data.JsonItemStore.getCountriesStoreWithBoolean = function(){
 
 doh.register("tests.data.JsonItemStore", 
 	[
-		function testIdentityAPI_getItemByIdentity(t){
+		function testIdentityAPI_fetchItemByIdentity(t){
 			//	summary: 
-			//		Simple test of the getItemByIdentity function of the store.
+			//		Simple test of the fetchItemByIdentity function of the store.
 			//	description:
-			//		Simple test of the getItemByIdentity function of the store.
+			//		Simple test of the fetchItemByIdentity function of the store.
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			if(item !== null){
-				var name = jsonItemStore.getValue(item,"name");
-				t.assertEqual(name, "El Salvador");
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				if(item !== null){
+					var name = jsonItemStore.getValue(item,"name");
+					t.assertEqual(name, "El Salvador");
+				}
+				d.callback(true);
 			}
-			item = jsonItemStore.getItemByIdentity("sv_not");
-			t.assertTrue(item === null);
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
+
+		function testIdentityAPI_fetchItemByIdentity_notFound(t){
+			//	summary: 
+			//		Simple test of the fetchItemByIdentity function of the store.
+			//	description:
+			//		Simple test of the fetchItemByIdentity function of the store.
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item === null);
+				d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv_not", onItem: onItem, onError: onError});
+			return d // Deferred
+		},
+
 		function testIdentityAPI_getIdentityAttributes(t){
 			//	summary: 
 			//		Simple test of the getIdentityAttributes function.
@@ -85,20 +113,27 @@ doh.register("tests.data.JsonItemStore",
 			//		Simple test of the getIdentityAttributes function.
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			if(item !== null){
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null)
 				var identifiers = jsonItemStore.getIdentityAttributes(item);
                 t.assertTrue(dojo.isArray(identifiers));
 				t.assertEqual(1, identifiers.length);
 				t.assertEqual("abbr", identifiers[0]);
+				d.callback(true);
 			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
-		function testIdentityAPI_getItemByIdentity_commentFilteredJson(t){
+		function testIdentityAPI_fetchItemByIdentity_commentFilteredJson(t){
 			//	summary: 
-			//		Simple test of the getItemByIdentity function of the store.
+			//		Simple test of the fetchItemByIdentity function of the store.
 			//	description:
-			//		Simple test of the getItemByIdentity function of the store.
+			//		Simple test of the fetchItemByIdentity function of the store.
 			//		This tests loading a comment-filtered json file so that people using secure
 			//		data with this store can bypass the JavaSceipt hijack noted in Fortify's
 			//		paper.
@@ -106,70 +141,68 @@ doh.register("tests.data.JsonItemStore",
 			if(dojo.isBrowser){
 				var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
-				var item = jsonItemStore.getItemByIdentity("sv");
-				t.assertTrue(item !== null);
-				if(item !== null){
+				var d = new doh.Deferred();
+				function onItem(item){
+					t.assertTrue(item !== null);
 					var name = jsonItemStore.getValue(item,"name");
 					t.assertEqual(name, "El Salvador");
+                    d.callback(true);
 				}
+				function onError(errData){
+					t.assertTrue(false);
+					d.errback(errData);
+				}
+				jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+				return d // Deferred
 			}
 		},
-		function testIdentityAPI_getItemByIdentity_nullValue(t){
+		function testIdentityAPI_fetchItemByIdentity_nullValue(t){
 			//	summary: 
-			//		Simple test of the getItemByIdentity function of the store, checling a null value.
+			//		Simple test of the fetchItemByIdentity function of the store, checling a null value.
 			//	description:
-			//		Simple test of the getItemByIdentity function of the store, checking a null value.
+			//		Simple test of the fetchItemByIdentity function of the store, checking a null value.
 			//		This tests handling attributes in json that were defined as null properly.
 			//		Introduced because of tracker: #3153
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithNull();
 
-			var item = jsonItemStore.getItemByIdentity("ec");
-			t.assertTrue(item !== null);
-			if(item !== null){
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
 				var name = jsonItemStore.getValue(item,"name");
 				t.assertEqual(name, null);
+				d.callback(true);
 			}
-
-			item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			if(item !== null){
-				var name = jsonItemStore.getValue(item,"name");
-				t.assertEqual(name, "El Salvador");
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
 			}
+			jsonItemStore.fetchItemByIdentity({identity: "ec", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
-		function testIdentityAPI_getItemByIdentity_booleanValue(t){
+		function testIdentityAPI_fetchItemByIdentity_booleanValue(t){
 			//	summary: 
-			//		Simple test of the getItemByIdentity function of the store, checking a boolean value.
+			//		Simple test of the fetchItemByIdentity function of the store, checking a boolean value.
 			//	description:
-			//		Simple test of the getItemByIdentity function of the store, checking a boolean value.
+			//		Simple test of the fetchItemByIdentity function of the store, checking a boolean value.
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithBoolean();
 
-			try{
-				var item = jsonItemStore.getItemByIdentity("sv");
+			var d = new doh.Deferred();
+			function onItem(item){
 				t.assertTrue(item !== null);
-				if(item !== null){
-				    var name = jsonItemStore.getValue(item,"name");
-					t.assertEqual(name, "El Salvador");
-					var real = jsonItemStore.getValue(item,"real");
-					t.assertEqual(real, true);
-				}
-
-				item = jsonItemStore.getItemByIdentity("ut");
-				t.assertTrue(item !== null);
-				if(item !== null){
-					var name = jsonItemStore.getValue(item,"name");
-					t.assertEqual(name, "Utopia");
-					var real = jsonItemStore.getValue(item,"real");
-					t.assertEqual(real, false);
-				}
-			}catch(e){
-				for(i in e){
-					console.log("I is: [" + i + "] with value: [" +e[i] + "]");
-				}
-				throw e;
+				var name = jsonItemStore.getValue(item,"name");
+				t.assertEqual(name, "Utopia");
+				var real = jsonItemStore.getValue(item,"real");
+				t.assertEqual(real, false);
+                d.callback(true);
 			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "ut", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
 		function testIdentityAPI_getIdentity(t){
 			//	summary: 
@@ -179,9 +212,18 @@ doh.register("tests.data.JsonItemStore",
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			t.assertTrue(jsonItemStore.getIdentity(item) === "sv");
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				t.assertTrue(jsonItemStore.getIdentity(item) === "sv");
+                d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
 		function testReadAPI_fetch_all(t){
 			//	summary: 
@@ -446,10 +488,19 @@ doh.register("tests.data.JsonItemStore",
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			var name = jsonItemStore.getValue(item,"name");
-			t.assertTrue(name === "El Salvador");
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var name = jsonItemStore.getValue(item,"name");
+				t.assertTrue(name === "El Salvador");
+				d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
 		function testReadAPI_getValues(t){
 			//	summary: 
@@ -459,12 +510,21 @@ doh.register("tests.data.JsonItemStore",
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			var names = jsonItemStore.getValues(item,"name");
-            t.assertTrue(dojo.isArray(names));
-			t.assertEqual(names.length, 1);
-			t.assertEqual(names[0], "El Salvador");
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var names = jsonItemStore.getValues(item,"name");
+				t.assertTrue(dojo.isArray(names));
+				t.assertEqual(names.length, 1);
+				t.assertEqual(names[0], "El Salvador");
+				d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
 		function testReadAPI_isItem(t){
 			//	summary: 
@@ -474,10 +534,19 @@ doh.register("tests.data.JsonItemStore",
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			t.assertTrue(jsonItemStore.isItem(item));
-			t.assertTrue(!jsonItemStore.isItem({}));
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				t.assertTrue(jsonItemStore.isItem(item));
+				t.assertTrue(!jsonItemStore.isItem({}));
+				d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
 		function testReadAPI_isItem_multistore(t){
 			//	summary: 
@@ -494,14 +563,28 @@ doh.register("tests.data.JsonItemStore",
 			var jsonItemStore1 = tests.data.JsonItemStore.getCountriesStore();
 			var jsonItemStore2 = tests.data.JsonItemStore.getCountriesStore();
 
-			var item1 = jsonItemStore1.getItemByIdentity("sv");
-			var item2 = jsonItemStore2.getItemByIdentity("sv");
-			t.assertTrue(item1 !== null);
-			t.assertTrue(item2 !== null);
-			t.assertTrue(jsonItemStore1.isItem(item1));
-			t.assertTrue(jsonItemStore2.isItem(item2));
-			t.assertTrue(!jsonItemStore1.isItem(item2));
-			t.assertTrue(!jsonItemStore2.isItem(item1));
+			var d = new doh.Deferred();
+			function onItem1(item1){
+				t.assertTrue(item1 !== null);
+				
+				function onItem2(item2){
+					t.assertTrue(item1 !== null);
+					t.assertTrue(item2 !== null);
+					t.assertTrue(jsonItemStore1.isItem(item1));
+					t.assertTrue(jsonItemStore2.isItem(item2));
+					t.assertTrue(!jsonItemStore1.isItem(item2));
+					t.assertTrue(!jsonItemStore2.isItem(item1));
+					d.callback(true);
+				}
+				jsonItemStore2.fetchItemByIdentity({identity: "sv", onItem: onItem2, onError: onError});
+
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore1.fetchItemByIdentity({identity: "sv", onItem: onItem1, onError: onError});
+			return d // Deferred
 		},
 		function testReadAPI_hasAttribute(t){
 			//	summary: 
@@ -511,19 +594,28 @@ doh.register("tests.data.JsonItemStore",
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			t.assertTrue(jsonItemStore.hasAttribute(item, "abbr"));
-			t.assertTrue(!jsonItemStore.hasAttribute(item, "abbr_not"));
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				t.assertTrue(jsonItemStore.hasAttribute(item, "abbr"));
+				t.assertTrue(!jsonItemStore.hasAttribute(item, "abbr_not"));
 
-			//Test that null attributes throw an exception
-			var passed = false;
-			try{
-				jsonItemStore.hasAttribute(item, null);
-			}catch (e){
-				passed = true;
+				//Test that null attributes throw an exception
+				var passed = false;
+				try{
+					jsonItemStore.hasAttribute(item, null);
+				}catch (e){
+					passed = true;
+				}
+				t.assertTrue(passed);
+				d.callback(true);
 			}
-			t.assertTrue(passed);
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
 		function testReadAPI_containsValue(t){
 			//	summary: 
@@ -533,20 +625,29 @@ doh.register("tests.data.JsonItemStore",
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			t.assertTrue(jsonItemStore.containsValue(item, "abbr", "sv"));
-			t.assertTrue(!jsonItemStore.containsValue(item, "abbr", "sv1"));
-			t.assertTrue(!jsonItemStore.containsValue(item, "abbr", null));
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				t.assertTrue(jsonItemStore.containsValue(item, "abbr", "sv"));
+				t.assertTrue(!jsonItemStore.containsValue(item, "abbr", "sv1"));
+				t.assertTrue(!jsonItemStore.containsValue(item, "abbr", null));
 
-			//Test that null attributes throw an exception
-			var passed = false;
-			try{
-				jsonItemStore.containsValue(item, null, "foo");
-			}catch (e){
-				passed = true;
+				//Test that null attributes throw an exception
+				var passed = false;
+				try{
+					jsonItemStore.containsValue(item, null, "foo");
+				}catch (e){
+					passed = true;
+				}
+				t.assertTrue(passed);
+				d.callback(true);
 			}
-			t.assertTrue(passed);
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
 		function testReadAPI_getAttributes(t){
 			//	summary: 
@@ -556,15 +657,24 @@ doh.register("tests.data.JsonItemStore",
 
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 
-			var item = jsonItemStore.getItemByIdentity("sv");
-			t.assertTrue(item !== null);
-			t.assertTrue(jsonItemStore.isItem(item));
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				t.assertTrue(jsonItemStore.isItem(item));
 
-			var attributes = jsonItemStore.getAttributes(item);
-			t.assertEqual(attributes.length, 3);
-			for(var i = 0; i < attributes.length; i++){
-				t.assertTrue((attributes[i] === "name" || attributes[i] === "abbr" || attributes[i] === "capital"));
+				var attributes = jsonItemStore.getAttributes(item);
+				t.assertEqual(attributes.length, 3);
+				for(var i = 0; i < attributes.length; i++){
+					t.assertTrue((attributes[i] === "name" || attributes[i] === "abbr" || attributes[i] === "capital"));
+				}
+				d.callback(true);
 			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d // Deferred
 		},
 		function testReadAPI_getFeatures(t){
 			//	summary: 

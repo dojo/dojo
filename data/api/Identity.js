@@ -20,7 +20,7 @@ dojo.declare("dojo.data.api.Identity",dojo.data.api.Read,null,{
 		//	summary:
 		//		Returns a unique identifier for an item.  The return value will be
 		//		either a string or something that has a toString() method (such as,
-		//		for example, a dojo.uuid.Uuid object).
+		//		for example, a dojox.uuid.Uuid object).
 		//	item:
 		//		The item from the store from which to obtain its identifier.
 		//	exceptions:
@@ -55,25 +55,49 @@ dojo.declare("dojo.data.api.Identity",dojo.data.api.Read,null,{
 		return null; // string
 	},
 
-	getItemByIdentity: function(/* string || object */ identity){
+
+	fetchItemByIdentity: function(/* object */ keywordArgs){
 		//	summary:
 		//		Given the identity of an item, this method returns the item that has 
-		//		that identity.  Conforming implementations should return null if there 
-		//		is no item with the given identity.  Implementations of getItemByIdentity() 
-		//		may sometimes return an item from a local cache and may sometimes 
-		//		fetch an item from a remote server, in which case the call to 
-		//		getItemByIdentity() will block until the getItemByIdentity() implementation 
-		//		has the item to return.	
+		//		that identity through the onItem callback.  Conforming implementations 
+		//		should return null if there is no item with the given identity.  
+		//		Implementations of fetchItemByIdentity() may sometimes return an item 
+		//		from a local cache and may sometimes fetch an item from a remote server, 
 		//
-		//	identity:
-		//		The identity of the object to locate.  It should be a string or an 
-		//		object that toString() can be called on (such as a dojo.uuid object).
+		// 	keywordArgs:
+		//		An anonymous object that defines the item to locate and callbacks to invoke when the 
+		//		item has been located and load has completed.  The format of the object is as follows:
+		//		{
+		//			identity: string|object,
+		//			onItem: Function,
+		//			onError: Function,
+		//			scope: object
+		//		}
+		//	The *identity* parameter.
+		//		The identity parameter is the identity of the item you wish to locate and load
+		//		This attribute is required.  It should be a string or an object that toString() 
+		//		can be called on.
+		//		
+		//	The *onItem* parameter.
+		//		Function(item)
+		//		The onItem parameter is the callback to invoke when the item has been loaded.  It takes only one
+		//		parameter, the item located, or null if none found.
 		//
-		//	examples:
-		//		var alaska = store.getItemByIdentity("AK");
-		//		assert("AK" == store.getItemByIdentity(store.getItemByIdentity("AK")));
-		throw new Error('Unimplemented API: dojo.data.api.Identity.getItemByIdentity');
-		var item = null;
-		return item; // item
+		//	The *onError* parameter.
+		//		Function(error)
+		//		The onError parameter is the callback to invoke when the item load encountered an error.  It takes only one
+		//		parameter, the error object
+		//
+		//	The *scope* parameter.
+		//		If a scope object is provided, all of the callback functions (onItem, 
+		//		onError, etc) will be invoked in the context of the scope object.
+		//		In the body of the callback function, the value of the "this"
+		//		keyword will be the scope object.   If no scope object is provided,
+		//		the callback functions will be called in the context of dojo.global.
+		//		For example, onItem.call(scope, item, request) vs. 
+		//		onItem.call(dojo.global, item, request)
+		if (!this.isItemLoaded(keywordArgs.item)) {
+			throw new Error('Unimplemented API: dojo.data.api.Identity.fetchItemByIdentity');
+		}
 	}
 });

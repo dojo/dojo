@@ -134,7 +134,7 @@ tests.register("tests._base.connect",
 			t.is('baz', out);
 		},
 		function hubConnectDisconnect1000(t){
-			t.is(markAndSweepTest(1000), 0);
+			t.is(0, markAndSweepTest(1000));
 		},
 		function args4Test(t){
 			// standard 4 args test

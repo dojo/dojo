@@ -77,8 +77,7 @@ if(typeof window != 'undefined'){
 					try{
 						factory = new ActiveXObject("Gears.Factory");
 					}catch(e){
-						console.debug(e);
-						//eat the exception.
+						// ok to squelch; there's no gears factory.  move on.
 					}
 				}else if(navigator.mimeTypes["application/x-googlegears"]){
 					// Safari?
@@ -191,8 +190,8 @@ if(typeof window != 'undefined'){
 					throw err;
 				}
 			}catch(e){
-				if(fail_ok){ return null; }
-				console.debug(e);
+				if(fail_ok){ return null; } // null
+				// rethrow the exception
 				throw e;
 			}
 			return http.responseText; // String
@@ -299,12 +298,12 @@ if(typeof window != 'undefined'){
 	});
 	*/
 
-	try{
-		if(dojo.isIE){
+	if(dojo.isIE){
+		try{
 			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
 			document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
-		}
-	}catch(e){ }
+		}catch(e){}
+	}
 
 	// stub, over-ridden by debugging code. This will at least keep us from
 	// breaking when it's not included

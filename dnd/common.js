@@ -1,19 +1,5 @@
 dojo.provide("dojo.dnd.common");
 
-if(navigator.appVersion.indexOf("Macintosh") < 0){
-	dojo.dnd.multiSelectKey = function(e) {
-		// summary: abstracts away the difference between selection on Mac and PC
-		// e: Event: mouse event
-		return e.ctrlKey;	// Boolean
-	};
-}else{
-	dojo.dnd.multiSelectKey = function(e) {
-		// summary: abstracts away the difference between selection on Mac and PC
-		// e: Event: mouse event
-		return e.metaKey;	// Boolean
-	};
-}
-
 dojo.dnd._copyKey = navigator.appVersion.indexOf("Macintosh") < 0 ? "ctrlKey" : "metaKey";
 
 dojo.dnd.getCopyKeyState = function(e) {

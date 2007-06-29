@@ -270,4 +270,5 @@ dojo.declare("dojo.dnd.Target", dojo.dnd.Source,
 function(node, params){
 	// summary: a constructor of the Target --- see the Source constructor for details
 	this.isSource = false;
+	dojo.removeClass(this.node, "dojoDndSource");
 });

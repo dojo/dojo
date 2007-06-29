@@ -4,23 +4,28 @@
 	<title>Dojo Moveable test</title>
 	<style type="text/css">
 		@import "../../resources/dojo.css";
+		@import "dndDefault.css"; 
 
 		body {
 			padding: 1em;
+			color:#666; 
+			background-color:#dedede;
 		}
 
 		#moveable1 {
-			background: yellow;
+			background: #fff;
 			border: 1px solid black;
+			padding:8px; 
 		}
 		#handle1 {
-			background: blue;
-			color: white;
+			background: #333;
+			color: #fff;
+			font-weight:bold; 
 			cursor: pointer;
 			border: 1px solid black;
 		}
 		#moveable2 {
-			background: yellow;
+			background: #fff;
 			position: absolute;
 			width:  200px;
 			height: 200px;
@@ -30,6 +35,8 @@
 			margin: 10px 20px;
 			border: 10px solid black;
 			cursor: pointer;
+			radius:8pt;
+			-moz-border-radius:8pt 8pt; 
 		}
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
@@ -40,6 +47,22 @@
 		var init = function(){
 			m1 = new dojo.dnd.Moveable("moveable1", {handle: "handle1"});
 			m2 = new dojo.dnd.Moveable("moveable2");
+
+			dojo.subscribe("dndMoveStart", function(message){ 
+					console.debug(message); 	
+			});
+
+			dojo.subscribe("dndMove", function(message){ 
+					console.debug(message); 	
+			});
+
+
+			dojo.subscribe("dndMoveStop", function(message){ 
+					console.debug(message); 	
+			});
+
+
+
 		};
 		dojo.addOnLoad(init);
 	</script>

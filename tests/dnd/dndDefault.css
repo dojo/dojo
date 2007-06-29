@@ -1,0 +1,68 @@
+/*
+
+	there are basically all the classes you can set 
+	for the various dojo.dnd states and elements in
+	their simplest form. hacking welcome. 
+
+*/
+.container {
+	border:3px solid #ccc; 
+	padding: 1em 3em; 
+	cursor: default;
+	radius:8pt;
+	background:#fff;
+	-moz-border-radius:8pt 8pt;
+}
+
+.dojoDndContainerOver {
+	/* cursor:pointer; */
+}
+
+.dojoDndItem { 
+	padding:3px; 
+}
+
+.dojoDndItemOver {
+	background: #ededed;
+	cursor:pointer;
+}
+
+.dojoDndItemSelected {
+	background: #ccf; color: #444;
+}
+
+.dojoDndItemAnchor {
+	background: #ccf; color: black;
+}
+
+.dojoDndItemOver .dojoDndItemSelected {
+	background: #ededed;
+}
+
+.dojoDndItemOver .dojoDndItemAnchor {
+	background: #ededed;
+}
+
+.dojoDndItemBefore {
+	border-top: 2px solid #369;
+}
+
+.dojoDndItemAfter {
+	border-bottom: 2px solid #369;
+}
+
+.dojoDndAvatar {
+	border:2px solid #ccc;
+	font-size: 75%;
+	-moz-border-radius:8pt 8pt;
+	radius:8pt;
+}
+	
+.dojoDndAvatarHeader {
+	background: #aaa;
+}
+
+.dojoDndAvatarItem {
+	background: #fff;
+	border-bottom:1px solid #666;
+}

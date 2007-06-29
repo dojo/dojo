@@ -24,7 +24,7 @@ dojo.formToObject = function(/*DOMNode||String*/ formNode){
 	//				</select>
 	//			</form>
 	//
-	//		yeilds this object structure as the result of a call to
+	//		yields this object structure as the result of a call to
 	//		formToObject():
 	//
 	//			{ 

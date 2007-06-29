@@ -116,6 +116,7 @@ try{
 		spidermonkey: ["tests._base._loader.hostenv_spidermonkey"]
 	});
 	dojo.require("tests._base.array");
+	dojo.require("tests._base.Color");
 	dojo.require("tests._base.lang");
 	dojo.require("tests._base.declare");
 	dojo.require("tests._base.connect");

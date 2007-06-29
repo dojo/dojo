@@ -18,3 +18,39 @@ dojo.dnd.getUniqueId = function(){
 	}while(dojo.byId(id));
 	return id;
 };
+
+dojo.dnd.getViewport = function(){
+	// summary: returns a viewport size (visible part of the window)
+	var d = dojo.doc, dd = d.documentElement, w = window, b = dojo.body();
+	if(dojo.isMozilla){
+		return {w: dd.clientWidth, h: w.innerHeight};	// Object
+	}else if(!dojo.isOpera && w.innerWidth){
+		return {w: w.innerWidth, h: w.innerHeight};		// Object
+	}else if (!dojo.isOpera && dd && dd.clientWidth){
+		return {w: dd.clientWidth, h: dd.clientHeight};	// Object
+	}else if (b.clientWidth){
+		return {w: b.clientWidth, h: b.clientHeight};	// Object
+	}
+	return null;	// Object
+};
+
+dojo.dnd.V_TRIGGER_AUTOSCROLL = 32;
+dojo.dnd.H_TRIGGER_AUTOSCROLL = 32;
+
+dojo.dnd.V_AUTOSCROLL_VALUE = 16;
+dojo.dnd.H_AUTOSCROLL_VALUE = 16;
+
+dojo.dnd.autoScroll = function(e){
+	var v = dojo.dnd.getViewport(), dx = 0, dy = 0;
+	if(e.clientX < dojo.dnd.H_TRIGGER_AUTOSCROLL){
+		dx = -dojo.dnd.H_AUTOSCROLL_VALUE;
+	}else if(e.clientX > v.w - dojo.dnd.H_TRIGGER_AUTOSCROLL){
+		dx = dojo.dnd.H_AUTOSCROLL_VALUE;
+	}
+	if(e.clientY < dojo.dnd.V_TRIGGER_AUTOSCROLL){
+		dy = -dojo.dnd.V_AUTOSCROLL_VALUE;
+	}else if(e.clientY > v.h - dojo.dnd.V_TRIGGER_AUTOSCROLL){
+		dy = dojo.dnd.V_AUTOSCROLL_VALUE;
+	}
+	window.scrollBy(dx, dy);
+};

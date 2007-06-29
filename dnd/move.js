@@ -30,6 +30,7 @@ dojo.extend(dojo.dnd.Mover, {
 	onMouseMove: function(e){
 		// summary: event processor for onmousemove
 		// e: Event: mouse event
+		dojo.dnd.autoScroll(e);
 		var m = this.marginBox;
 		dojo.marginBox(this.node, {l: m.l + e.pageX, t: m.t + e.pageY});
 	},

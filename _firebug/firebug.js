@@ -538,7 +538,7 @@ if(
 
 	//After converting to div instead of iframe, now getting two keydowns right away in IE 6.
 	//Make sure there is a little bit of delay.
-	onKeyDownTime = (new Date()).getTime();
+	var onKeyDownTime = (new Date()).getTime();
 
 	function onKeyDown(event){
 		var timestamp = (new Date()).getTime();

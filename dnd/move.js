@@ -1,6 +1,7 @@
 dojo.provide("dojo.dnd.move");
 
 dojo.require("dojo.dnd.common");
+dojo.require("dojo.dnd.autoscroll");
 
 dojo.dnd.Mover = function(node, e){
 	// summary: an object, which makes a node follow the mouse, 

@@ -1,6 +1,7 @@
 dojo.provide("dojo.dnd.manager");
 
 dojo.require("dojo.dnd.common");
+dojo.require("dojo.dnd.autoscroll");
 dojo.require("dojo.dnd.avatar");
 
 dojo.dnd.Manager = function(){
@@ -95,6 +96,7 @@ dojo.extend(dojo.dnd.Manager, {
 		// e: Event: mouse event
 		var a = this.avatar;
 		if(a){
+			//dojo.dnd.autoScrollNodes(e);
 			dojo.dnd.autoScroll(e);
 			dojo.marginBox(a.node, {l: e.pageX + this.OFFSET_X, t: e.pageY + this.OFFSET_Y});
 			var copy = Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e)));

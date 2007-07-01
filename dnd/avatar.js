@@ -47,17 +47,11 @@ dojo.extend(dojo.dnd.Avatar, {
 	},
 	update: function(){
 		// summary: updates the avatar to reflect the current DnD state
-		//dojo.html[(this.manager.canDropFlag ? "add" : "remove") + "Class"](this.node, "dojoDndAvatarCanDrop");
-		if(this.manager.canDropFlag){
-		  dojo.addClass(this.node, "dojoDndAvatarCanDrop");
-		}else{
-		  dojo.removeClass(this.node, "dojoDndAvatarCanDrop");
-		}
+		dojo[(this.manager.canDropFlag ? "add" : "remove") + "Class"](this.node, "dojoDndAvatarCanDrop");
 		// replace text
 		var t = this.node.getElementsByTagName("td");
 		for(var i = 0; i < t.length; ++i){
 			var n = t[i];
-			//if(dojo.html.hasClass(n.parentNode, "dojoDndAvatarHeader")){
 			if(dojo.hasClass(n.parentNode, "dojoDndAvatarHeader")){
 				n.innerHTML = this._generateText();
 				break;

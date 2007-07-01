@@ -13,10 +13,6 @@ try{
 // DOM Functions
 // =============================
 
-dojo.createElement = function(obj, parent, position){
-	// TODO: need to finish this!
-}
-
 if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
 		// summary:
@@ -73,6 +69,34 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 }
 
 (function(){
+	/*
+	dojo.createElement = function(obj, parent, position){
+		// TODO: need to finish this!
+	}
+	*/
+
+	var _destroyContainer = null;
+	dojo._destroyElement = function(/*String||DomNode*/node){
+		// summary:
+		//		An ID of a node or a reference to a DOM node which should be
+		//		removed from its parent and it and all of its sub-nodes will be
+		//		destroyed
+		//	node:
+		//		the element to be destroyed, either as an ID or a reference
+
+		node = dojo.byId(node);
+		try{
+			if(!_destroyContainer){
+				_destroyContainer = document.createElement("div");
+			}
+			_destroyContainer.appendChild(node.parentNode.removeChild(node));
+			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
+			_destroyContainer.innerHTML = ""; 
+		}catch(e){
+			/* squelch */
+		}
+	}
+
 	var _insertBefore = function(/*Node*/node, /*Node*/ref){
 		ref.parentNode.insertBefore(node, ref);
 		return true;	//	boolean
@@ -726,6 +750,7 @@ dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
 		node.className = cls.replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2");
 	}
 }
+
 dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*/condition){
 	//	summary: 	
 	//		Adds a class to node if not present, or removes if present.

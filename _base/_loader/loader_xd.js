@@ -372,7 +372,7 @@ dojo._xdUnpackDependency = function(dep){
 		case "requireIf":
 		case "requireAfterIf":
 			//First arg (dep[1]) is the test. Depedency is dep[2].
-			if((dep[1] === true)||(dep[1]=="common")||(dep[1] && dojo.render[dep[1]].capable)){
+			if(dep[1] === true){
 				newDeps = [{name: dep[2], content: null}];
 			}
 			break;

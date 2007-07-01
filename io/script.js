@@ -6,9 +6,7 @@ dojo.io.script = {
 		//TODOC: valid arguments.
 		var dfd = this._makeScriptDeferred(args);
 		var ioArgs = dfd.ioArgs;
-		if(ioArgs.query.length){
-			ioArgs.url += "?" + ioArgs.query;
-		}
+		dojo._ioAddQueryToUrl(ioArgs);
 
 		this.attach(ioArgs.id, ioArgs.url);
 		dojo._ioWatch(dfd, this._validCheck, this._ioCheck, this._resHandle);

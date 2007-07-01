@@ -245,12 +245,7 @@ dojo._contentHandlers = {
 		}
 
 		// set up the query params
-		var qi = ioArgs.url.indexOf("?");
 		var miArgs = [{}];
-		if(qi != -1){ // url-provided params are the baseline
-			miArgs.push(dojo.queryToObject(ioArgs.url.substr(qi+1)));
-			ioArgs.url = ioArgs.url.substr(0, qi);
-		}
 	
 		if(formQuery){
 			// potentially over-ride url-provided params w/ form values
@@ -451,15 +446,20 @@ dojo._contentHandlers = {
 		return dfd; //Deferred
 	}
 
+	dojo._ioAddQueryToUrl = function(/*Object*/ioArgs){
+		//summary: Adds query params discovered by the io deferred construction to the URL.
+		//Only use this for operations which are fundamentally GET-type operations.
+		if(ioArgs.query.length){
+			ioArgs.url += (ioArgs.url.indexOf("?") == -1 ? "?" : "&") + ioArgs.query;
+			ioArgs.query = null;
+		}		
+	}
+
 	// TODOC: FIXME!!!
 
 	dojo.xhrGet = function(/*Object*/ args){
 		var dfd = _makeXhrDeferred(args);
-		var ioArgs = dfd.ioArgs;
-		if(ioArgs.query.length){
-			ioArgs.url += "?" + ioArgs.query;
-			ioArgs.query = null;
-		}
+		dojo._ioAddQueryToUrl(dfd.ioArgs);
 		return _doIt("GET", dfd); // dojo.Deferred
 	}
 
@@ -489,11 +489,7 @@ dojo._contentHandlers = {
 
 	dojo.xhrDelete = function(/*Object*/ args){
 		var dfd = _makeXhrDeferred(args);
-		var ioArgs = dfd.ioArgs;
-		if(ioArgs.query.length){
-			ioArgs.url += "?" + ioArgs.query;
-			ioArgs.query = null;
-		}
+		dojo._ioAddQueryToUrl(dfd.ioArgs);
 		return _doIt("DELETE", dfd); // dojo.Deferred
 	}
 

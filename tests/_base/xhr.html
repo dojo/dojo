@@ -173,7 +173,7 @@
 						function xhrGetContent(t){
 							var d = new doh.Deferred();
 							var td = dojo.xhrGet({
-								url: "xhr.html",
+								url: "xhr.html?color=blue",
 								content: {
 									foo: [ "bar", "baz" ],
 									thud: "thonk",
@@ -182,7 +182,7 @@
 							});
 							td.addCallback(function(text){
 								// console.debug(td, td.xhr, td.args);
-								t.is("xhr.html?foo=bar&foo=baz&thud=thonk&xyzzy=3", 
+								t.is("xhr.html?color=blue&foo=bar&foo=baz&thud=thonk&xyzzy=3", 
 										td.ioArgs.url);
 								d.callback(true);
 							});
@@ -220,7 +220,8 @@
 						function xhrPost(t){
 							var d = new doh.Deferred();
 							var td = dojo.xhrPost({
-								url: "xhr.html", // self
+								url: "xhr.html?foo=bar", // self
+								content: { color: "blue"},
 								handle: function(res, ioArgs){
 									if((dojo._isDocumentOk(ioArgs.xhr))||
 										(ioArgs.xhr.status == 405)

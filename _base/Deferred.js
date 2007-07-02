@@ -282,7 +282,9 @@ dojo.extend(dojo.Deferred, {
 				this.silentlyCancelled = true;
 			}
 			if(this.fired == -1){
-				this.errback(new Error("Deferred Cancelled"));
+				var err = new Error("Deferred Cancelled");
+				err.dojoType = "cancel";
+				this.errback(err);
 			}
 		}else if(	(this.fired == 0) &&
 					(this.results[0] instanceof dojo.Deferred)

@@ -257,7 +257,24 @@
 								}
 							});
 							return d;
-						}
+						},
+						function xhrCancel(t){
+							var d = new doh.Deferred();
+							var td = dojo.xhrPost({
+								url: "xhr.html", // self
+								handle: function(res, ioArgs){
+									if(res instanceof Error && res.dojoType == "cancel"){
+										d.callback(true);
+									}else{
+										d.errback(false);
+									}								
+								}
+							});
+							td.cancel();
+							// t.t(td instanceof dojo.Deferred);
+							return d;
+						},
+
 						// FIXME: need to add tests for rawPost
 						// FIXME: need to add tests for wrapForm
 					]

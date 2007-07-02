@@ -43,14 +43,7 @@ dojo.io.script = {
 
 	remove: function(/*String*/id){
 		//summary: removes the script element with the given id.
-		//FIXME: Convert to destroyNode function if/when it exists?
-		var node = dojo.byId(id);
-		if(node && node.parentNode){
-			node.parentNode.removeChild(node);
-		}
-		if(dojo.isIE){
-			node.outerHTML=''; //prevent ugly IE mem leak associated with Node.removeChild (ticket #1727)
-		}
+		dojo._destroyElement(dojo.byId(id));
 	},
 
 	_makeScriptDeferred: function(/*Object*/args){

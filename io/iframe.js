@@ -291,14 +291,12 @@ dojo.io.iframe = {
 					for(var j = 0; j < fNode.childNodes.length; j++){
 						var chNode = fNode.childNodes[j];
 						if(chNode.name == key){
-							var pNode = chNode.parentNode;
-							pNode.removeChild(chNode);
+							dojo._destroyElement(chNode);
 							break;
 						}
 					}
 				}else{
-					var input = fNode[key];
-					fNode.removeChild(input);
+					dojo._destroyElement(fNode[key]);
 					fNode[key] = null;
 				}
 			}

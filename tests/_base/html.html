@@ -93,7 +93,26 @@
 							var bgc = dojo.style('sq100nopos', 'backgroundColor');
 							t.t((bgc == "rgb(0, 0, 0)")||(bgc == "black")||(bgc == "#000000"));
 						},
-						
+						function isDescendant(t){
+							t.t(dojo.isDescendant("sq100", dojo.body()));
+							t.t(dojo.isDescendant("sq100", dojo.doc));
+							t.t(dojo.isDescendant("sq100", "sq100"));
+							t.t(dojo.isDescendant(dojo.byId("sq100"), "sq100"));
+							t.f(dojo.isDescendant("sq100", dojo.byId("sq100").firstChild));
+							t.t(dojo.isDescendant(dojo.byId("sq100").firstChild, "sq100"));
+						},
+						function isDescendantIframe(t){
+							var bif = dojo.byId("blah");
+							bif.contentDocument.write("<html><body><div id='subDiv'></div></body></html>");
+							bif.contentDocument.close();
+							// this test barely makes sense. disabling it for now.
+							// t.t(dojo.isDescendant(bif.contentDocument.getElementById("subDiv"), bif.parentNode));
+							var subDiv = bif.contentDocument.getElementById("subDiv");
+							t.t(dojo.isDescendant(subDiv, subDiv));
+							t.t(dojo.isDescendant(subDiv, subDiv.parentNode));
+							t.f(dojo.isDescendant(subDiv.parentNode, subDiv));
+
+						},
 						function testClassFunctions(t){
 							var node = dojo.byId("sq100");
 							dojo.addClass(node, "a");
@@ -311,6 +330,7 @@
 		<div id="sq100nopos">
 			100px square, no positioning
 		</div>
+		<iframe id="blah"></iframe>
 	</body>
 </html>
 

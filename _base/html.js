@@ -78,9 +78,8 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	var _destroyContainer = null;
 	dojo._destroyElement = function(/*String||DomNode*/node){
 		// summary:
-		//		An ID of a node or a reference to a DOM node which should be
-		//		removed from its parent and it and all of its sub-nodes will be
-		//		destroyed
+		//		removes node from its parent, clobbers it and all of its
+		//		children.
 		//	node:
 		//		the element to be destroyed, either as an ID or a reference
 
@@ -95,7 +94,38 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		}catch(e){
 			/* squelch */
 		}
-	}
+	};
+
+	dojo.isDescendant = function(/*Node|String*/node, /*Node|String*/ancestor){
+		//	summary:
+		//		Returns true if node is a descendant of ancestor
+		//	node: id or node reference to test
+		//	ancestor: id or node reference of potential parent to test against
+		try{
+			node = dojo.byId(node);
+			ancestor = dojo.byId(ancestor);
+			while(node){
+				if(node === ancestor){
+					return true; // Boolean
+				}
+				node = node.parentNode;
+			}
+		}catch(e){ /* squelch */ }
+		return false; // Boolean
+	};
+
+	dojo.setSelectable = function(/*Node|String*/node, /*Boolean*/selectable){
+		// summary: enable or disable selection on a node
+		node = dojo.byId(node);
+		if(dojo.isMozilla){
+			node.style.MozUserSelect = (selectable) ? "normal" : "none";
+		}else if(dojo.isKhtml){
+			node.style.KhtmlUserSelect = (selectable) ? "auto" : "none";
+		}else if(dojo.isIE){
+			node.unselectable = (selectable) ? "" : "on";
+		}
+		//FIXME: else?  Opera?
+	};
 
 	var _insertBefore = function(/*Node*/node, /*Node*/ref){
 		ref.parentNode.insertBefore(node, ref);

@@ -903,7 +903,7 @@ dojo.hasClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//		Returns whether or not the specified classes are a portion of the
 	//		class list currently applied to the node. 
 	return ((" "+node.className+" ").indexOf(" "+classStr+" ") >= 0);  // Boolean
-}
+};
 
 dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary:
@@ -913,15 +913,23 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 	if((" "+cls+" ").indexOf(" "+classStr+" ") < 0){
 		node.className = cls + (cls ? ' ' : '') + classStr;
 	}
-}
+};
 
-dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
-	//	summary: Removes classes from node.
-	var cls = node.className;
-	if(cls && cls.indexOf(classStr) >= 0){
-		node.className = cls.replace(new RegExp('(^|\\s+)'+classStr+'(\\s+|$)'), "$1$2");
-	}
-}
+(function(){
+	// FIXME: can be generally useful for trimming strings
+	var _trimRegEx = /^\s*([^\s]|[^\s].*[^\s])\s*$/;
+	var _trim = function(s){
+		// summary: trims spaces from left and right of the string
+		// s: String: a string to be trimmed
+		var t = _trimRegEx.exec(s);
+		return t ? t[1] : "";	// String
+	};
+	
+	dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
+		// summary: Removes classes from node.
+		node.className = _trim((" " + node.className + " ").replace(" " + classStr + " ", " "));
+	};
+})();
 
 dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*/condition){
 	//	summary: 	
@@ -933,4 +941,4 @@ dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*
 		condition = !dojo.hasClass(node, classStr);
 	}
 	dojo[condition ? "addClass" : "removeClass"](node, classStr);
-}
+};

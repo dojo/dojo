@@ -117,6 +117,8 @@
 							var node = dojo.byId("sq100");
 							dojo.addClass(node, "a");
 							t.is("a", node.className);
+							dojo.removeClass(node, "c");
+							t.is("a", node.className);
 							t.assertTrue(dojo.hasClass(node, "a"));
 							t.assertFalse(dojo.hasClass(node, "b"));
 							dojo.addClass(node, "b");
@@ -139,6 +141,8 @@
 							t.is("", node.className);
 							t.assertFalse(dojo.hasClass(node, "a"));
 							t.assertFalse(dojo.hasClass(node, "b"));
+							dojo.removeClass(node, "c");
+							t.assertTrue(!node.className);
 						}
 					]
 				);

@@ -1,9 +1,8 @@
 This file lists tests that need to be implemented or expanded. See ticket #3121
-for changes related to thigns listed here.
+for changes related to things listed here.
 
 Tests to add:
 -------------
-	* xhr put/delete tests
 	* html tests need to start exercising the semi-public methods
 
 Tests to improve:

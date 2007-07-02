@@ -3,7 +3,24 @@ dojo.provide("dojo.io.script");
 dojo.io.script = {
 	get: function(/*Object*/args){
 		//summary: sends a get request using a dynamically created script tag.
-		//TODOC: valid arguments.
+		//See dojo._ioArgs() in _base/xhr.js for a list of commonly accepted 
+		//properties on the args argument. Additional properties
+		//that apply to all of the dojo.xhr* methods:
+		//callbackParamName:
+		//		String. The URL parameter name that indicates the JSONP callback string.
+		//		For instance, when using Yahoo JSONP calls it is normally, 
+		//		callbackParamName: "callback". For AOL JSONP calls it is normally 
+		//		callbackParamName: "c".
+		//checkString: 
+		//		String. A string of JavaScript that when evaluated like so: 
+		//		"typeof(" + checkString + ") != 'undefined'"
+		//		being true means that the script fetched has been loaded. 
+		//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
+		//"handleAs" is NOT applicable to dojo.io.script.get() calls, since it is
+		//implied by the usage of "callbackParamName" (response will be a JSONP call
+		//returning JSON) or "checkString" (response is pure JavaScript defined in
+		//the body of the script that was attached).
+
 		var dfd = this._makeScriptDeferred(args);
 		var ioArgs = dfd.ioArgs;
 		dojo._ioAddQueryToUrl(ioArgs);

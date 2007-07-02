@@ -106,16 +106,12 @@ dojo.io.iframe = {
 		//summary: function that sends the request to the server.
 		//This transport can only process one send() request at a time, so if send() is called
 		//multiple times, it will queue up the calls and only process one at a time.
-		//The following are acceptable properties in args:
-		//url:
-		//		String: URL the server URL to use for the request.
+		//See dojo._ioArgs() in _base/xhr.js for a list of commonly accepted 
+		//properties on the args argument. Additional properties accepted by send():
 		//method:
 		//		The HTTP method to use. "GET" or "POST" are the only supported values.
 		//		It will try to read the value from the form node's method, then try this
 		//		argument. If neither one exists, then it defaults to POST.
-		//form:
-		//		DOMNode: a form element node. The form elements' names and values will be used in
-		//		the request. This makes it possible to upload files using this transport.
 		//handleAs:
 		//		Specifies what format the result data should be given to the load/handle callback. Valid values are:
 		//		text/plain, text/html, text/javascript, text/json, application/json. IMPORTANT: For all values EXCEPT text/html,

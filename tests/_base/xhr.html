@@ -258,6 +258,42 @@
 							});
 							return d;
 						},
+						function xhrPut(t){
+							var d = new doh.Deferred();
+							var td = dojo.xhrPut({
+								url: "xhr.html?foo=bar", // self
+								content: { color: "blue"},
+								handle: function(res, ioArgs){
+									if((dojo._isDocumentOk(ioArgs.xhr))||
+										(ioArgs.xhr.status == 403)
+									){
+										d.callback(true);
+									}else{
+										d.errback(false);
+									}								
+								}
+							});
+							// t.t(td instanceof dojo.Deferred);
+							return d;
+						},
+						function xhrDelete(t){
+							var d = new doh.Deferred();
+							var td = dojo.xhrDelete({
+								url: "xhr.html", // self
+								preventCache: true,
+								handle: function(res, ioArgs){
+									if((dojo._isDocumentOk(ioArgs.xhr))||
+										(ioArgs.xhr.status == 403)
+									){
+										d.callback(true);
+									}else{
+										d.errback(false);
+									}								
+								}
+							});
+							// t.t(td instanceof dojo.Deferred);
+							return d;
+						},
 						function xhrCancel(t){
 							var d = new doh.Deferred();
 							var td = dojo.xhrPost({
@@ -273,7 +309,7 @@
 							td.cancel();
 							// t.t(td instanceof dojo.Deferred);
 							return d;
-						},
+						}
 
 						// FIXME: need to add tests for rawPost
 						// FIXME: need to add tests for wrapForm

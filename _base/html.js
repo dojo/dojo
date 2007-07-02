@@ -89,7 +89,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			if(!_destroyContainer){
 				_destroyContainer = document.createElement("div");
 			}
-			_destroyContainer.appendChild(node.parentNode.removeChild(node));
+			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
 			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
 			_destroyContainer.innerHTML = ""; 
 		}catch(e){

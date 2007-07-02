@@ -92,6 +92,34 @@
 						function getBgcolor(t){
 							var bgc = dojo.style('sq100nopos', 'backgroundColor');
 							t.t((bgc == "rgb(0, 0, 0)")||(bgc == "black")||(bgc == "#000000"));
+						},
+						
+						function testClassFunctions(t){
+							var node = dojo.byId("sq100");
+							dojo.addClass(node, "a");
+							t.is("a", node.className);
+							t.assertTrue(dojo.hasClass(node, "a"));
+							t.assertFalse(dojo.hasClass(node, "b"));
+							dojo.addClass(node, "b");
+							t.is("a b", node.className);
+							t.assertTrue(dojo.hasClass(node, "a"));
+							t.assertTrue(dojo.hasClass(node, "b"));
+							dojo.removeClass(node, "a");
+							t.is("b", node.className);
+							t.assertFalse(dojo.hasClass(node, "a"));
+							t.assertTrue(dojo.hasClass(node, "b"));
+							dojo.toggleClass(node, "a");
+							t.is("b a", node.className);
+							t.assertTrue(dojo.hasClass(node, "a"));
+							t.assertTrue(dojo.hasClass(node, "b"));
+							dojo.toggleClass(node, "a");
+							t.is("b", node.className);
+							t.assertFalse(dojo.hasClass(node, "a"));
+							t.assertTrue(dojo.hasClass(node, "b"));
+							dojo.toggleClass(node, "b");
+							t.is("", node.className);
+							t.assertFalse(dojo.hasClass(node, "a"));
+							t.assertFalse(dojo.hasClass(node, "b"));
 						}
 					]
 				);

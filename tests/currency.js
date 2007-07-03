@@ -14,6 +14,7 @@ tests.register("tests.currency",
 				var partLocaleList = ["en-us", "en-ca", "de-de"];
 				for(var i = 0 ; i < partLocaleList.length; i ++){
 					dojo.requireLocalization("dojo.cldr","currency",partLocaleList[i]);
+					dojo.requireLocalization("dojo.cldr","number",partLocaleList[i]);
 				}
 			},
 			runTest: function(t){

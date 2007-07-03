@@ -1,6 +1,10 @@
 This file lists tests that need to be implemented or expanded. See ticket #3121
 for changes related to things listed here.
 
+Tests to add:
+-------------
+	* add tests for dojo.place()
+
 Tests to improve:
 -----------------
 	* cookie tests don't seem to test expiry or date functions

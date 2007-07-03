@@ -217,7 +217,7 @@ function(node, params){
 			if(!(i in empty)){
 				var n = dojo.byId(i);
 				delete this.map[i];
-				n.parentNode.removeChild(n);
+				dojo._destroyElement(n);
 			}
 		}
 		this.anchor = null;

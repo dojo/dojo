@@ -42,7 +42,7 @@ dojo.extend(dojo.dnd.Avatar, {
 	},
 	destroy: function(){
 		// summary: a desctructor for the avatar, called to remove all references so it can be garbage-collected
-		this.node.parentNode.removeChild(this.node);
+		dojo._destroyElement(this.node);
 		this.node = false;
 	},
 	update: function(){

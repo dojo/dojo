@@ -58,6 +58,26 @@
 						// FIXME: the 'correct' w is not 100 on Safari WebKit (2.0.4 [419.3]), the right-margin extends to the document edge
 						// "t.is(100, dojo.marginBox('sq100nopos').w);", 
 						"t.is(100, dojo.marginBox('sq100nopos').h);",
+						
+						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
+						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
+						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
+						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).h);",
+
+						"t.is(0, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
+						"t.is(0, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
+						"t.is(10, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
+						"t.is(10, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).h);",
+
+						"t.is(10, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).l);",
+						"t.is(10, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).t);",
+						"t.is(20, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
+						"t.is(20, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
+
+						"t.is(20, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).l);",
+						"t.is(20, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).t);",
+						"t.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
+						"t.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
 
 						function coordsBasic(t){
 							var pos = dojo.coords("sq100", false);

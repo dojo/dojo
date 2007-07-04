@@ -540,7 +540,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 				// If child's computed left/top are not parseable as a number (e.g. "auto"), we
 				// have no choice but to examine the parent's computed style.
 				var p = node.parentNode;
-				if(p){
+				if(p && p.style){
 					var pcs = gcs(p);
 					if(pcs.overflow != "visible"){
 						var be = dojo._getBorderExtents(p, pcs);
@@ -734,12 +734,10 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		if(!node){ return 0; } // FIXME: throw an error?
 		var _b = dojo.body();
 		var retVal = 0;
-		while(node){
-			try{
-				if(gcs(node).position == "fixed"){
-					return 0;
-				}
-			}catch(e){}
+		while(node && node.style){
+			if(gcs(node).position == "fixed"){
+				return 0;
+			}
 			var val = node[prop];
 			if(val){
 				retVal += val - 0;

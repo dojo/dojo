@@ -3,10 +3,9 @@ dojo.require("dojo.data.JsonItemStore");
 dojo.require("dojo.data.api.Read");
 dojo.require("dojo.data.api.Identity");
 
-
 tests.data.JsonItemStore.getCountriesStore = function(){
 	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries.json").toString() } );            
+		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries.json").toString() } );
 	}else{
 		var jsonData = {};
 		jsonData.identifier="abbr";
@@ -25,7 +24,7 @@ tests.data.JsonItemStore.getCountriesStore = function(){
 
 tests.data.JsonItemStore.getCountriesStoreWithNull = function(){
 	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString() } );            
+		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString() } );
 	}else{
 		var jsonData = {};
 		jsonData.identifier="abbr";
@@ -43,7 +42,7 @@ tests.data.JsonItemStore.getCountriesStoreWithNull = function(){
 
 tests.data.JsonItemStore.getCountriesStoreWithBoolean = function(){
 	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString() } );            
+		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString() } );
 	}else{
 		var jsonData = {};
 		jsonData.identifier="abbr";
@@ -56,6 +55,43 @@ tests.data.JsonItemStore.getCountriesStoreWithBoolean = function(){
 		jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn',real:true});
 		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa',real:true});
 		jsonData.items.push({abbr:'ut',name:'Utopia',capital:'Paradise',real:false});
+		return new dojo.data.JsonItemStore({data: jsonData});
+	}
+};
+
+tests.data.JsonItemStore.getCountriesStoreWithDates = function(){
+	if(dojo.isBrowser){
+		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withDates.json").toString() } );
+	}else{
+		var jsonData = {};
+		jsonData.identifier="abbr";
+		jsonData.items= [];
+		jsonData.items.push({abbr:"ec",name:"Ecuador",capital:"Quito"});
+		jsonData.items.push({abbr:'eg',name:'Egypt',capital:'Cairo'});
+		jsonData.items.push({abbr:'sv',name:'El Salvador',capital:'San Salvador'});
+		jsonData.items.push({abbr:'gq',name:'Equatorial Guinea',capital:'Malabo'});
+		jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara',independence:{_type:'Date', _value:738226800000}}); // May 24, 1993
+		jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn',independence:{_type:'Date', _value:682671600000}}); // August 20, 1991
+		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
+		return new dojo.data.JsonItemStore({data: jsonData});
+	}
+};
+
+tests.data.JsonItemStore.getGeographyHierarchy = function(){
+	if(dojo.isBrowser){
+		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/geography_hierarchy_small.json").toString() } );
+	}else{
+		var jsonData = { 
+			items:[
+				{ name:'Africa', countries:[
+					{ name:'Egypt', capital:'Cairo' },
+					{ name:'Kenya', capital:'Nairobi' },
+					{ name:'Sudan', capital:'Khartoum' }]},
+				{ name:'Australia', capital:'Canberra' },
+				{ name:'North America', countries:[
+					{ name:'Canada', population:'33 million', cities:[
+						{ name:'Toronto', population:'2.5 million' }]}]}
+			]};
 		return new dojo.data.JsonItemStore({data: jsonData});
 	}
 };
@@ -85,7 +121,6 @@ doh.register("tests.data.JsonItemStore",
 			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
-
 		function testIdentityAPI_fetchItemByIdentity_notFound(t){
 			//	summary: 
 			//		Simple test of the fetchItemByIdentity function of the store.
@@ -105,7 +140,6 @@ doh.register("tests.data.JsonItemStore",
 			jsonItemStore.fetchItemByIdentity({identity: "sv_not", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
-
 		function testIdentityAPI_getIdentityAttributes(t){
 			//	summary: 
 			//		Simple test of the getIdentityAttributes function.
@@ -117,7 +151,7 @@ doh.register("tests.data.JsonItemStore",
 			function onItem(item){
 				t.assertTrue(item !== null)
 				var identifiers = jsonItemStore.getIdentityAttributes(item);
-                t.assertTrue(dojo.isArray(identifiers));
+				t.assertTrue(dojo.isArray(identifiers));
 				t.assertEqual(1, identifiers.length);
 				t.assertEqual("abbr", identifiers[0]);
 				d.callback(true);
@@ -146,7 +180,7 @@ doh.register("tests.data.JsonItemStore",
 					t.assertTrue(item !== null);
 					var name = jsonItemStore.getValue(item,"name");
 					t.assertEqual(name, "El Salvador");
-                    d.callback(true);
+					d.callback(true);
 				}
 				function onError(errData){
 					t.assertTrue(false);
@@ -195,7 +229,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(name, "Utopia");
 				var real = jsonItemStore.getValue(item,"real");
 				t.assertEqual(real, false);
-                d.callback(true);
+				d.callback(true);
 			}
 			function onError(errData){
 				t.assertTrue(false);
@@ -216,7 +250,7 @@ doh.register("tests.data.JsonItemStore",
 			function onItem(item){
 				t.assertTrue(item !== null);
 				t.assertTrue(jsonItemStore.getIdentity(item) === "sv");
-                d.callback(true);
+				d.callback(true);
 			}
 			function onError(errData){
 				t.assertTrue(false);
@@ -234,7 +268,7 @@ doh.register("tests.data.JsonItemStore",
 			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
-            function completedAll(items, request){
+			function completedAll(items, request){
 				t.is(7, items.length);
 				d.callback(true);
 			}
@@ -343,7 +377,7 @@ doh.register("tests.data.JsonItemStore",
 			function onComplete(items, request){
 				t.assertEqual(count, 7);
 				t.assertTrue(items === null);
-			    d.callback(true);
+				d.callback(true);
 			}
 			function onError(errData, request){
 				t.assertTrue(false);
@@ -393,7 +427,7 @@ doh.register("tests.data.JsonItemStore",
 
 			function dumpFourthFetch(items, request){
 				t.assertEqual(items.length, 5);
-                request.start = 9;
+				request.start = 9;
 				request.count = 100;
 				request.onComplete = dumpFifthFetch;
 				jsonItemStore.fetch(request);
@@ -409,7 +443,7 @@ doh.register("tests.data.JsonItemStore",
 
 			function dumpSixthFetch(items, request){
 				t.assertEqual(items.length, 5);
-			    d.callback(true);
+				d.callback(true);
 			}
 
 			function completed(items, request){
@@ -1516,11 +1550,82 @@ doh.register("tests.data.JsonItemStore",
 				function reportError(errData, request){
 					//This is good if this fires, it is expected.
 					t.assertTrue(true);
-                    d.callback(true);
+					d.callback(true);
 				}
 				jsonItemStore.fetch({onComplete: onComplete, onError: reportError});
 				return d;
 			}
+		},
+		function testReadAPI_Date_datatype(t){
+			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithDates();
+			
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var independenceDate = jsonItemStore.getValue(item, "independence");
+				t.assertTrue(independenceDate instanceof Date);
+				t.assertTrue(independenceDate.valueOf() == 738226800000);
+				t.assertTrue((new Date('May 24, 1993')).valueOf() == independenceDate.valueOf());
+				d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity:"er", onItem:onItem, onError:onError});
+			return d // Deferred
+		},
+		function testReadAPI_custom_datatype_Color(t){
+			//	summary: 
+			//		Function to test using literal values with custom datatypes
+			var dataset = {
+				identifier:'name',
+				items: [
+					{ name:'Kermit', species:'frog', color:{_type:'Color', _value:'green'} },
+					{ name:'Beaker', hairColor:{_type:'Color', _value:'red'} }
+				]
+			};
+			var jsonItemStore = new dojo.data.JsonItemStore({
+				data:dataset,
+				typeMap:{'Color':dojo.Color}
+			});
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var beaker = item;
+				var hairColor = jsonItemStore.getValue(beaker, "hairColor");
+				t.assertTrue(hairColor instanceof dojo.Color);
+				t.assertTrue(hairColor.toHex() == "#ff0000")
+				d.callback(true);
+			}
+			function onError(errData){
+				d.errback(errData);
+			}
+			jsonItemStore.fetchItemByIdentity({identity:"Beaker", onItem:onItem, onError:onError});
+			return d // Deferred
+		},
+		function testReadAPI_hierarchical_data(t){
+			var jsonItemStore = tests.data.JsonItemStore.getGeographyHierarchy();
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				t.assertEqual(items.length, 1);
+				var northAmerica = items[0];
+				var canada = jsonItemStore.getValue(northAmerica, "countries");
+				var toronto = jsonItemStore.getValue(canada, "cities");
+				t.assertEqual(jsonItemStore.getValue(canada, "name"), "Canada");
+				t.assertEqual(jsonItemStore.getValue(toronto, "name"), "Toronto");
+				d.callback(true);
+			}
+			function onError(errData){
+				d.errback(errData);
+			}
+			jsonItemStore.fetch({
+				query: {name: "North America"},
+				onComplete: onComplete,
+				onError: onError
+			});
+			
+			return d // Deferred
 		},
 		function testReadAPI_functionConformance(t){
 			//	summary: 

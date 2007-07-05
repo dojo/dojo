@@ -13,7 +13,9 @@ dojo.declare("dojo.data.JsonItemStore",
 		this._loadFinished = false;
 		this._jsonFileUrl = keywordParameters.url;
 		this._jsonData = keywordParameters.data;
-		this._features = { 'dojo.data.api.Read': true};
+		this._datatypeMap = keywordParameters.typeMap || {};
+		this._datatypeMap['Date'] = Date;
+		this._features = {'dojo.data.api.Read': true};
 		this._itemsByIdentity = null;
 		this._storeRef = "_S";  //Default name for the store reference to attach to every item.
 		this._itemId = "_0"; //Default Item Id for isItem to attach to every item.
@@ -293,29 +295,90 @@ dojo.declare("dojo.data.JsonItemStore",
 		//
 		// 	returns: array
 		//		Array of items in store item format.
+		
+		// First, we define a couple little utility functions...
+		
+		function valueIsAnItem(/* anything */ aValue){
+			// summary:
+			//		Given any sort of value that could be in the raw json data,
+			//		return true if we should interpret the value as being an
+			//		item itself, rather than a literal value or a reference.
+			// examples:
+			// 		false == valueIsAnItem("Kermit");
+			// 		false == valueIsAnItem(42);
+			// 		false == valueIsAnItem(new Date());
+			// 		false == valueIsAnItem({_type:'Date', _value:'May 14, 1802'});
+			// 		false == valueIsAnItem({_reference:'Kermit'});
+			// 		true == valueIsAnItem({name:'Kermit', color:'green'});
+			// 		true == valueIsAnItem({iggy:'pop'});
+			// 		true == valueIsAnItem({foo:42});
+			var isItem = (
+				(aValue != null) &&
+				(typeof aValue == "object") &&
+				(!dojo.isArray(aValue)) &&
+				(!dojo.isFunction(aValue)) &&
+				(aValue.constructor == Object) &&
+				(typeof aValue._reference == "undefined") && 
+				(typeof aValue._type == "undefined") && 
+				(typeof aValue._value == "undefined")
+			);
+			return isItem;
+		}
+		
+		function addItemAndSubItemsToArrayOfAllItems(/* Item */ anItem){
+			arrayOfAllItems.push(anItem);
+			for(var attribute in anItem){
+				var valueForAttribute = anItem[attribute];
+				if(valueForAttribute){
+					if(dojo.isArray(valueForAttribute)){
+						var valueArray = valueForAttribute;
+						for(var k = 0; k < valueArray.length; ++k){
+							singleValue = valueArray[k];
+							if(valueIsAnItem(singleValue)){
+								addItemAndSubItemsToArrayOfAllItems(singleValue);
+							}
+						}
+					}else{
+						if(valueIsAnItem(valueForAttribute)){
+							addItemAndSubItemsToArrayOfAllItems(valueForAttribute);
+						}
+					}
+				}
+			}
+		}
 
-		var arrayOfItems = dataObject.items;
-		var i;
-		var item;
-		var attrNames = {};
 		this._labelAttr = dataObject.label;
 
 		// We need to do some transformations to convert the data structure
 		// that we read from the file into a format that will be convenient
 		// to work with in memory.
 
-		// Step 1: We walk through all the attribute values of all the items, 
+		// Step 1: Walk through the object hierarchy and build a list of all items
+		var i;
+		var item;
+		var arrayOfAllItems = [];
+		var arrayOfTopLevelItems = dataObject.items;
+
+		for(i = 0; i < arrayOfTopLevelItems.length; ++i){
+			item = arrayOfTopLevelItems[i];
+			addItemAndSubItemsToArrayOfAllItems(item);
+		}
+
+		// Step 2: Walk through all the attribute values of all the items, 
 		// and replace single values with arrays.  For example, we change this:
 		//		{ name:'Miss Piggy', pets:'Foo-Foo'}
 		// into this:
 		//		{ name:['Miss Piggy'], pets:['Foo-Foo']}
-		// Also store off the keys so we can validate our store reference and item 
-		// id special properties for the O(1) isItem
-		for(i = 0; i < arrayOfItems.length; ++i){
-			item = arrayOfItems[i];
-			for(var key in item){
-				var value = item[key];
+		// 
+		// We also store the attribute names so we can validate our store  
+		// reference and item id special properties for the O(1) isItem
+		var attrNames = {};
+		var key;
 
+		for(i = 0; i < arrayOfAllItems.length; ++i){
+			item = arrayOfAllItems[i];
+			for(key in item){
+				var value = item[key];
 				if(value !== null){
 					if(!dojo.isArray(value)){
 						item[key] = [value];
@@ -327,9 +390,8 @@ dojo.declare("dojo.data.JsonItemStore",
 			}
 		}
 
-		//Build unique keys for id and store ref.
-		//This should go really fast, it will generally
-		// never even run the loop..
+		// Step 3: Build unique property names to use for the _storeRef and _itemId
+		// This should go really fast, it will generally never even run the loop.
 		while(attrNames[this._storeRef]){
 			this._storeRef += "_";
 		}
@@ -337,19 +399,20 @@ dojo.declare("dojo.data.JsonItemStore",
 			this._itemId += "_";
 		}
 
-		// Step 2: Some data files specify an optional 'identifier', which is 
+		// Step 4: Some data files specify an optional 'identifier', which is 
 		// the name of an attribute that holds the identity of each item.  If 
 		// this data file specified an identifier attribute, then build an 
 		// hash table of items keyed by the identity of the items.
+		var arrayOfValues;
+
 		var identifier = dataObject.identifier;
-		var arrayOfValues = null;
 		if(identifier){
 			this._features['dojo.data.api.Identity'] = identifier;
 			this._itemsByIdentity = {};
-			for(var i = 0; i < arrayOfItems.length; ++i){
-				item = arrayOfItems[i];
+			for(i = 0; i < arrayOfAllItems.length; ++i){
+				item = arrayOfAllItems[i];
 				arrayOfValues = item[identifier];
-				identity = arrayOfValues[0];
+				var identity = arrayOfValues[0];
 				if(!this._itemsByIdentity[identity]){
 					this._itemsByIdentity[identity] = item;
 				}else{
@@ -359,44 +422,67 @@ dojo.declare("dojo.data.JsonItemStore",
 						throw new Error("dojo.data.JsonItemStore:  The json data provided by the creation arguments is malformed.  Items within the list have identifier: [" + identifier + "].  Value collided: [" + identity + "]");
 					}
 				}
-
 			}
 		}
 
-		// Step 3: We walk through all the attribute values of all the items,
-		// and replace references with pointers to items.  For example, we change:
+		// Step 5: Walk through all the items, and set each item's properties 
+		// for _storeRef and _itemId, so that store.isItem() will return true.
+		for(i = 0; i < arrayOfAllItems.length; ++i){
+			item = arrayOfAllItems[i];
+			item[this._storeRef] = this;
+			item[this._itemId] = i;
+		}
+
+		// Step 6: We walk through all the attribute values of all the items,
+		// looking for type/value literals and item-references.
+		//
+		// We replace item-references with pointers to items.  For example, we change:
 		//		{ name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
 		// into this:
 		//		{ name:['Kermit'], friends:[miss_piggy] } 
 		// (where miss_piggy is the object representing the 'Miss Piggy' item).
-		// Also generate the associate map for all items for the O(1) isItem function.
-		for(i = 0; i < arrayOfItems.length; ++i){
-			item = arrayOfItems[i]; // example: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
-			item[this._storeRef] = this;
-			item[this._itemId] = i;
+		//
+		// We replace type/value pairs with typed-literals.  For example, we change:
+		//		{ name:['Nelson Mandela'], born:[{_type:'Date', _value:'July 18, 1918'}] }
+		// into this:
+		//		{ name:['Kermit'], born:(new Date('July 18, 1918')) } 
+		//
+		// We also generate the associate map for all items for the O(1) isItem function.
+		for(i = 0; i < arrayOfAllItems.length; ++i){
+			item = arrayOfAllItems[i]; // example: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
 			for(key in item){
 				arrayOfValues = item[key]; // example: [{reference:{name:'Miss Piggy'}}]
 				for(var j = 0; j < arrayOfValues.length; ++j) {
 					value = arrayOfValues[j]; // example: {reference:{name:'Miss Piggy'}}
-					if(value !== null && typeof value == "object" && value.reference){
-						var referenceDescription = value.reference; // example: {name:'Miss Piggy'}
-						if(dojo.isString(referenceDescription)){
-							// example: 'Miss Piggy'
-							// from an item like: { name:['Kermit'], friends:[{reference:'Miss Piggy'}]}
-							arrayOfValues[j] = this._itemsByIdentity[referenceDescription];
-						}else{
-							// example: {name:'Miss Piggy'}
-							// from an item like: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
-							for(var k = 0; k < arrayOfItems.length; ++k){
-								var candidateItem = arrayOfItems[k];
-								var found = true;
-								for(var refKey in referenceDescription){
-									if(candidateItem[refKey] != referenceDescription[refKey]){ 
-										found = false; 
+					if(value !== null && typeof value == "object"){
+						if(value._type && value._value){
+							var type = value._type; // examples: 'Date', 'Color', or 'ComplexNumber'
+							var classToUse = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber
+							if(!classToUse){ 
+								throw new Error("dojo.data.JsonItemStore: in the typeMap constructor arg, no object class was specified for the datatype '" + type + "'");
+							}
+							arrayOfValues[j] = new classToUse(value._value);
+						}
+						if(value.reference){
+							var referenceDescription = value.reference; // example: {name:'Miss Piggy'}
+							if(dojo.isString(referenceDescription)){
+								// example: 'Miss Piggy'
+								// from an item like: { name:['Kermit'], friends:[{reference:'Miss Piggy'}]}
+								arrayOfValues[j] = this._itemsByIdentity[referenceDescription];
+							}else{
+								// example: {name:'Miss Piggy'}
+								// from an item like: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
+								for(var k = 0; k < arrayOfAllItems.length; ++k){
+									var candidateItem = arrayOfAllItems[k];
+									var found = true;
+									for(var refKey in referenceDescription){
+										if(candidateItem[refKey] != referenceDescription[refKey]){ 
+											found = false; 
+										}
 									}
-								}
-								if(found){ 
-									arrayOfValues[j] = candidateItem; 
+									if(found){ 
+										arrayOfValues[j] = candidateItem; 
+									}
 								}
 							}
 						}
@@ -404,7 +490,7 @@ dojo.declare("dojo.data.JsonItemStore",
 				}
 			}
 		}
-		return arrayOfItems; //Array
+		return arrayOfAllItems; //Array
 	},
 
 	getIdentity: function(/* item */ item){

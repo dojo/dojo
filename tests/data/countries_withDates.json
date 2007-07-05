@@ -1,0 +1,21 @@
+{ identifier: 'abbr', 
+  label: 'name',
+  items: [
+	{ abbr:'ec', name:'Ecuador',           capital:'Quito' },
+	{ abbr:'eg', name:'Egypt',             capital:'Cairo' },
+	{ abbr:'sv', name:'El Salvador',       capital:'San Salvador' },
+	{ abbr:'gq', name:'Equatorial Guinea', capital:'Malabo' },
+	{ abbr:'er',
+	  name:'Eritrea',
+	  capital:'Asmara',
+	  independence:{_type:'Date', _value:738226800000} // May 24, 1993
+	  },
+	{ abbr:'ee',
+	  name:'Estonia',
+	  capital:'Tallinn',
+	  independence:{_type:'Date', _value:682671600000} // August 20, 1991
+	  },
+	{ abbr:'et',
+	  name:'Ethiopia',
+	  capital:'Addis Ababa' }
+]}

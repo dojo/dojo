@@ -1,0 +1,11 @@
+{ items:[
+	{ name:'Africa', countries:[
+		{ name:'Egypt', capital:'Cairo' },
+		{ name:'Kenya', capital:'Nairobi' },
+		{ name:'Sudan', capital:'Khartoum' }]},
+	{ name:'Australia', capital:'Canberra' },
+	{ name:'North America', countries:[
+		{ name:'Canada', population:'33 million', cities:[
+			{ name:'Toronto', population:'2.5 million' }]}]}
+]}
+

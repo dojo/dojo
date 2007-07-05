@@ -1,11 +1,17 @@
-dojo.provide("tests.data.JsonItemStore");
-dojo.require("dojo.data.JsonItemStore");
+dojo.provide("tests.data.ItemFileWriteStore");
+dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dojo.data.api.Read");
 dojo.require("dojo.data.api.Identity");
+dojo.require("dojo.data.api.Write");
+dojo.require("dojo.data.api.Notification");
 
-tests.data.JsonItemStore.getCountriesStore = function(){
+///////////////////////////////////////////////////////////////////////////////
+// SKIP TO LINE 1625 to see tests specific to ItemFileWriteStore 
+///////////////////////////////////////////////////////////////////////////////
+
+tests.data.ItemFileWriteStore.getCountriesStore = function(){
 	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries.json").toString() } );
+		return new dojo.data.ItemFileWriteStore({url: dojo.moduleUrl("tests", "data/countries.json").toString() } );            
 	}else{
 		var jsonData = {};
 		jsonData.identifier="abbr";
@@ -18,13 +24,13 @@ tests.data.JsonItemStore.getCountriesStore = function(){
 		jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
 		jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn' });
 		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-		return new dojo.data.JsonItemStore({data: jsonData});
+		return new dojo.data.ItemFileWriteStore({data: jsonData});
 	}
 };
 
-tests.data.JsonItemStore.getCountriesStoreWithNull = function(){
+tests.data.ItemFileWriteStore.getCountriesStoreWithNull = function(){
 	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString() } );
+		return new dojo.data.ItemFileWriteStore({url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString() } );            
 	}else{
 		var jsonData = {};
 		jsonData.identifier="abbr";
@@ -36,13 +42,13 @@ tests.data.JsonItemStore.getCountriesStoreWithNull = function(){
 		jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara'});
 		jsonData.items.push({abbr:'ee',name:null,capital:'Tallinn' });
 		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-		return new dojo.data.JsonItemStore({data: jsonData});
+		return new dojo.data.ItemFileWriteStore({data: jsonData});
 	}
 };
 
-tests.data.JsonItemStore.getCountriesStoreWithBoolean = function(){
+tests.data.ItemFileWriteStore.getCountriesStoreWithBoolean = function(){
 	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString() } );
+		return new dojo.data.ItemFileWriteStore({url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString() } );            
 	}else{
 		var jsonData = {};
 		jsonData.identifier="abbr";
@@ -55,13 +61,13 @@ tests.data.JsonItemStore.getCountriesStoreWithBoolean = function(){
 		jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn',real:true});
 		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa',real:true});
 		jsonData.items.push({abbr:'ut',name:'Utopia',capital:'Paradise',real:false});
-		return new dojo.data.JsonItemStore({data: jsonData});
+		return new dojo.data.ItemFileWriteStore({data: jsonData});
 	}
 };
 
-tests.data.JsonItemStore.getCountriesStoreWithDates = function(){
+tests.data.ItemFileWriteStore.getCountriesStoreWithDates = function(){
 	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_withDates.json").toString() } );
+		return new dojo.data.ItemFileWriteStore({url: dojo.moduleUrl("tests", "data/countries_withDates.json").toString() } );            
 	}else{
 		var jsonData = {};
 		jsonData.identifier="abbr";
@@ -73,43 +79,24 @@ tests.data.JsonItemStore.getCountriesStoreWithDates = function(){
 		jsonData.items.push({abbr:'er',name:'Eritrea',capital:'Asmara',independence:{_type:'Date', _value:738226800000}}); // May 24, 1993
 		jsonData.items.push({abbr:'ee',name:'Estonia',capital:'Tallinn',independence:{_type:'Date', _value:682671600000}}); // August 20, 1991
 		jsonData.items.push({abbr:'et',name:'Ethiopia',capital:'Addis Ababa'});
-		return new dojo.data.JsonItemStore({data: jsonData});
+		return new dojo.data.ItemFileWriteStore({data: jsonData});
 	}
 };
 
-tests.data.JsonItemStore.getGeographyHierarchy = function(){
-	if(dojo.isBrowser){
-		return new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/geography_hierarchy_small.json").toString() } );
-	}else{
-		var jsonData = { 
-			items:[
-				{ name:'Africa', countries:[
-					{ name:'Egypt', capital:'Cairo' },
-					{ name:'Kenya', capital:'Nairobi' },
-					{ name:'Sudan', capital:'Khartoum' }]},
-				{ name:'Australia', capital:'Canberra' },
-				{ name:'North America', countries:[
-					{ name:'Canada', population:'33 million', cities:[
-						{ name:'Toronto', population:'2.5 million' }]}]}
-			]};
-		return new dojo.data.JsonItemStore({data: jsonData});
-	}
-};
-
-doh.register("tests.data.JsonItemStore", 
+doh.register("tests.data.ItemFileWriteStore", 
 	[
 		function testIdentityAPI_fetchItemByIdentity(t){
 			//	summary: 
 			//		Simple test of the fetchItemByIdentity function of the store.
 			//	description:
 			//		Simple test of the fetchItemByIdentity function of the store.
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
 				if(item !== null){
-					var name = jsonItemStore.getValue(item,"name");
+					var name = store.getValue(item,"name");
 					t.assertEqual(name, "El Salvador");
 				}
 				d.callback(true);
@@ -118,15 +105,16 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
+
 		function testIdentityAPI_fetchItemByIdentity_notFound(t){
 			//	summary: 
 			//		Simple test of the fetchItemByIdentity function of the store.
 			//	description:
 			//		Simple test of the fetchItemByIdentity function of the store.
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -137,21 +125,22 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv_not", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv_not", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
+
 		function testIdentityAPI_getIdentityAttributes(t){
 			//	summary: 
 			//		Simple test of the getIdentityAttributes function.
 			//	description:
 			//		Simple test of the getIdentityAttributes function.
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null)
-				var identifiers = jsonItemStore.getIdentityAttributes(item);
-				t.assertTrue(dojo.isArray(identifiers));
+				var identifiers = store.getIdentityAttributes(item);
+                t.assertTrue(dojo.isArray(identifiers));
 				t.assertEqual(1, identifiers.length);
 				t.assertEqual("abbr", identifiers[0]);
 				d.callback(true);
@@ -160,7 +149,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testIdentityAPI_fetchItemByIdentity_commentFilteredJson(t){
@@ -173,20 +162,20 @@ doh.register("tests.data.JsonItemStore",
 			//		paper.
 
 			if(dojo.isBrowser){
-				var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
+				var store = new dojo.data.ItemFileWriteStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
 				var d = new doh.Deferred();
 				function onItem(item){
 					t.assertTrue(item !== null);
-					var name = jsonItemStore.getValue(item,"name");
+					var name = store.getValue(item,"name");
 					t.assertEqual(name, "El Salvador");
-					d.callback(true);
+                    d.callback(true);
 				}
 				function onError(errData){
 					t.assertTrue(false);
 					d.errback(errData);
 				}
-				jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+				store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 				return d // Deferred
 			}
 		},
@@ -198,12 +187,12 @@ doh.register("tests.data.JsonItemStore",
 			//		This tests handling attributes in json that were defined as null properly.
 			//		Introduced because of tracker: #3153
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithNull();
+			var store = tests.data.ItemFileWriteStore.getCountriesStoreWithNull();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				var name = jsonItemStore.getValue(item,"name");
+				var name = store.getValue(item,"name");
 				t.assertEqual(name, null);
 				d.callback(true);
 			}
@@ -211,7 +200,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "ec", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "ec", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testIdentityAPI_fetchItemByIdentity_booleanValue(t){
@@ -220,22 +209,22 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the fetchItemByIdentity function of the store, checking a boolean value.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithBoolean();
+			var store = tests.data.ItemFileWriteStore.getCountriesStoreWithBoolean();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				var name = jsonItemStore.getValue(item,"name");
+				var name = store.getValue(item,"name");
 				t.assertEqual(name, "Utopia");
-				var real = jsonItemStore.getValue(item,"real");
+				var real = store.getValue(item,"real");
 				t.assertEqual(real, false);
-				d.callback(true);
+                d.callback(true);
 			}
 			function onError(errData){
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "ut", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "ut", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testIdentityAPI_getIdentity(t){
@@ -244,31 +233,31 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getIdentity function of the store.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				t.assertTrue(jsonItemStore.getIdentity(item) === "sv");
-				d.callback(true);
+				t.assertTrue(store.getIdentity(item) === "sv");
+                d.callback(true);
 			}
 			function onError(errData){
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testReadAPI_fetch_all(t){
 			//	summary: 
-			//		Simple test of a basic fetch on JsonItemStore.
+			//		Simple test of a basic fetch on ItemFileWriteStore.
 			//	description:
-			//		Simple test of a basic fetch on JsonItemStore.
+			//		Simple test of a basic fetch on ItemFileWriteStore.
 			
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
-			function completedAll(items, request){
+            function completedAll(items, request){
 				t.is(7, items.length);
 				d.callback(true);
 			}
@@ -278,16 +267,16 @@ doh.register("tests.data.JsonItemStore",
 			}
 
 			//Get everything...
-			jsonItemStore.fetch({ onComplete: completedAll, onError: error});
+			store.fetch({ onComplete: completedAll, onError: error});
 			return d;
 		},
 		function testReadAPI_fetch_one(t){
 			//	summary: 
-			//		Simple test of a basic fetch on JsonItemStore of a single item.
+			//		Simple test of a basic fetch on ItemFileWriteStore of a single item.
 			//	description:
-			//		Simple test of a basic fetch on JsonItemStore of a single item.
+			//		Simple test of a basic fetch on ItemFileWriteStore of a single item.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
@@ -298,7 +287,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
+			store.fetch({ 	query: {abbr: "ec"}, 
 									onComplete: onComplete, 
 									onError: onError
 								});
@@ -306,15 +295,15 @@ doh.register("tests.data.JsonItemStore",
 		},
 		function testReadAPI_fetch_one_commentFilteredJson(t){
 			//	summary: 
-			//		Simple test of a basic fetch on JsonItemStore of a single item.
+			//		Simple test of a basic fetch on ItemFileWriteStore of a single item.
 			//	description:
-			//		Simple test of a basic fetch on JsonItemStore of a single item.
+			//		Simple test of a basic fetch on ItemFileWriteStore of a single item.
 			//		This tests loading a comment-filtered json file so that people using secure
 			//		data with this store can bypass the JavaSceipt hijack noted in Fortify's
 			//		paper.
 
 			if(dojo.isBrowser){
-				var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
+				var store = new dojo.data.ItemFileWriteStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
 				var d = new doh.Deferred();
 				function onComplete(items, request){
@@ -325,7 +314,7 @@ doh.register("tests.data.JsonItemStore",
 					t.assertTrue(false);
 					d.errback(errData);
 				}
-				jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
+				store.fetch({ 	query: {abbr: "ec"}, 
 										onComplete: onComplete, 
 										onError: onError
 									});
@@ -334,12 +323,12 @@ doh.register("tests.data.JsonItemStore",
 		},
 		function testReadAPI_fetch_withNull(t){
 			//	summary: 
-			//		Simple test of a basic fetch on JsonItemStore of a single item where some attributes are null.
+			//		Simple test of a basic fetch on ItemFileWriteStore of a single item where some attributes are null.
 			//	description:
-			//		Simple test of a basic fetch on JsonItemStore of a single item where some attributes are null.
+			//		Simple test of a basic fetch on ItemFileWriteStore of a single item where some attributes are null.
 			//		Introduced because of tracker: #3153
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithNull();
+			var store = tests.data.ItemFileWriteStore.getCountriesStoreWithNull();
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
@@ -350,7 +339,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetch({ 	query: {name: "E*"}, 
+			store.fetch({ 	query: {name: "E*"}, 
 									onComplete: onComplete, 
 									onError: onError
 								});
@@ -358,11 +347,11 @@ doh.register("tests.data.JsonItemStore",
 		},
 		function testReadAPI_fetch_all_streaming(t){
 			//	summary: 
-			//		Simple test of a basic fetch on JsonItemStore.
+			//		Simple test of a basic fetch on ItemFileWriteStore.
 			//	description:
-			//		Simple test of a basic fetch on JsonItemStore.
+			//		Simple test of a basic fetch on ItemFileWriteStore.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			count = 0;
@@ -371,13 +360,13 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(size, 7);
 			}
 			function onItem(item, requestObj){
-				t.assertTrue(jsonItemStore.isItem(item));
+				t.assertTrue(store.isItem(item));
 				count++;
 			}
 			function onComplete(items, request){
 				t.assertEqual(count, 7);
 				t.assertTrue(items === null);
-				d.callback(true);
+			    d.callback(true);
 			}
 			function onError(errData, request){
 				t.assertTrue(false);
@@ -385,11 +374,11 @@ doh.register("tests.data.JsonItemStore",
 			}
 
 			//Get everything...
-			jsonItemStore.fetch({	onBegin: onBegin,
-									onItem: onItem, 
-									onComplete: onComplete,
-									onError: onError
-								});
+			store.fetch({	onBegin: onBegin,
+							onItem: onItem, 
+							onComplete: onComplete,
+							onError: onError
+						});
 			return d;
 		},
 		function testReadAPI_fetch_paging(t){
@@ -398,7 +387,7 @@ doh.register("tests.data.JsonItemStore",
 			 //	description:
 			 //		Test of multiple fetches on a single result.  Paging, if you will.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
 			function dumpFirstFetch(items, request){
@@ -406,7 +395,7 @@ doh.register("tests.data.JsonItemStore",
 				request.start = 3;
 				request.count = 1;
 				request.onComplete = dumpSecondFetch;
-				jsonItemStore.fetch(request);
+				store.fetch(request);
 			}
 
 			function dumpSecondFetch(items, request){
@@ -414,7 +403,7 @@ doh.register("tests.data.JsonItemStore",
 				request.start = 0;
 				request.count = 5;
 				request.onComplete = dumpThirdFetch;
-				jsonItemStore.fetch(request);
+				store.fetch(request);
 			}
 
 			function dumpThirdFetch(items, request){
@@ -422,15 +411,15 @@ doh.register("tests.data.JsonItemStore",
 				request.start = 2;
 				request.count = 20;
 				request.onComplete = dumpFourthFetch;
-				jsonItemStore.fetch(request);
+				store.fetch(request);
 			}
 
 			function dumpFourthFetch(items, request){
 				t.assertEqual(items.length, 5);
-				request.start = 9;
+                request.start = 9;
 				request.count = 100;
 				request.onComplete = dumpFifthFetch;
-				jsonItemStore.fetch(request);
+				store.fetch(request);
 			}
 
 			function dumpFifthFetch(items, request){
@@ -438,12 +427,12 @@ doh.register("tests.data.JsonItemStore",
 				request.start = 2;
 				request.count = 20;
 				request.onComplete = dumpSixthFetch;
-				jsonItemStore.fetch(request);
+				store.fetch(request);
 			}
 
 			function dumpSixthFetch(items, request){
 				t.assertEqual(items.length, 5);
-				d.callback(true);
+			    d.callback(true);
 			}
 
 			function completed(items, request){
@@ -451,14 +440,14 @@ doh.register("tests.data.JsonItemStore",
 				request.start = 1;
 				request.count = 5;
 				request.onComplete = dumpFirstFetch;
-				jsonItemStore.fetch(request);
+				store.fetch(request);
 			}
 
 			function error(errData, request){
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetch({onComplete: completed, onError: error});
+			store.fetch({onComplete: completed, onError: error});
 			return d;
 
 		},
@@ -468,12 +457,12 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getLabel function against a store set that has a label defined.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(items.length, 1);
-				var label = jsonItemStore.getLabel(items[0]);
+				var label = store.getLabel(items[0]);
 				t.assertTrue(label !== null);
 				t.assertEqual("Ecuador", label);
 				d.callback(true);
@@ -482,10 +471,10 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
-									onComplete: onComplete, 
-									onError: onError
-								});
+			store.fetch({ 	query: {abbr: "ec"}, 
+							onComplete: onComplete, 
+							onError: onError
+						});
 			return d;
 		},
 		function testReadAPI_getLabelAttributes(t){
@@ -494,12 +483,12 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getLabelAttributes function against a store set that has a label defined.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(items.length, 1);
-				var labelList = jsonItemStore.getLabelAttributes(items[0]);
+				var labelList = store.getLabelAttributes(items[0]);
 				t.assertTrue(dojo.isArray(labelList));
 				t.assertEqual("name", labelList[0]);
 				d.callback(true);
@@ -508,10 +497,10 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetch({ 	query: {abbr: "ec"}, 
-									onComplete: onComplete, 
-									onError: onError
-								});
+			store.fetch({ 	query: {abbr: "ec"}, 
+							onComplete: onComplete, 
+							onError: onError
+						});
 			return d;
 		},
 		function testReadAPI_getValue(t){
@@ -520,12 +509,12 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getValue function of the store.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				var name = jsonItemStore.getValue(item,"name");
+				var name = store.getValue(item,"name");
 				t.assertTrue(name === "El Salvador");
 				d.callback(true);
 			}
@@ -533,7 +522,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testReadAPI_getValues(t){
@@ -542,12 +531,12 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getValues function of the store.
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				var names = jsonItemStore.getValues(item,"name");
+				var names = store.getValues(item,"name");
 				t.assertTrue(dojo.isArray(names));
 				t.assertEqual(names.length, 1);
 				t.assertEqual(names[0], "El Salvador");
@@ -557,7 +546,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testReadAPI_isItem(t){
@@ -566,20 +555,20 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the isItem function of the store
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				t.assertTrue(jsonItemStore.isItem(item));
-				t.assertTrue(!jsonItemStore.isItem({}));
+				t.assertTrue(store.isItem(item));
+				t.assertTrue(!store.isItem({}));
 				d.callback(true);
 			}
 			function onError(errData){
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testReadAPI_isItem_multistore(t){
@@ -594,8 +583,8 @@ doh.register("tests.data.JsonItemStore",
 
 			// Two different instances, even  if they read from the same URL 
 			// should not accept items between each other!
-			var jsonItemStore1 = tests.data.JsonItemStore.getCountriesStore();
-			var jsonItemStore2 = tests.data.JsonItemStore.getCountriesStore();
+			var store1 = tests.data.ItemFileWriteStore.getCountriesStore();
+			var store2 = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem1(item1){
@@ -604,20 +593,20 @@ doh.register("tests.data.JsonItemStore",
 				function onItem2(item2){
 					t.assertTrue(item1 !== null);
 					t.assertTrue(item2 !== null);
-					t.assertTrue(jsonItemStore1.isItem(item1));
-					t.assertTrue(jsonItemStore2.isItem(item2));
-					t.assertTrue(!jsonItemStore1.isItem(item2));
-					t.assertTrue(!jsonItemStore2.isItem(item1));
+					t.assertTrue(store1.isItem(item1));
+					t.assertTrue(store2.isItem(item2));
+					t.assertTrue(!store1.isItem(item2));
+					t.assertTrue(!store2.isItem(item1));
 					d.callback(true);
 				}
-				jsonItemStore2.fetchItemByIdentity({identity: "sv", onItem: onItem2, onError: onError});
+				store2.fetchItemByIdentity({identity: "sv", onItem: onItem2, onError: onError});
 
 			}
 			function onError(errData){
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore1.fetchItemByIdentity({identity: "sv", onItem: onItem1, onError: onError});
+			store1.fetchItemByIdentity({identity: "sv", onItem: onItem1, onError: onError});
 			return d // Deferred
 		},
 		function testReadAPI_hasAttribute(t){
@@ -626,18 +615,18 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the hasAttribute function of the store
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				t.assertTrue(jsonItemStore.hasAttribute(item, "abbr"));
-				t.assertTrue(!jsonItemStore.hasAttribute(item, "abbr_not"));
+				t.assertTrue(store.hasAttribute(item, "abbr"));
+				t.assertTrue(!store.hasAttribute(item, "abbr_not"));
 
 				//Test that null attributes throw an exception
 				var passed = false;
 				try{
-					jsonItemStore.hasAttribute(item, null);
+					store.hasAttribute(item, null);
 				}catch (e){
 					passed = true;
 				}
@@ -648,7 +637,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testReadAPI_containsValue(t){
@@ -657,19 +646,19 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the containsValue function of the store
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				t.assertTrue(jsonItemStore.containsValue(item, "abbr", "sv"));
-				t.assertTrue(!jsonItemStore.containsValue(item, "abbr", "sv1"));
-				t.assertTrue(!jsonItemStore.containsValue(item, "abbr", null));
+				t.assertTrue(store.containsValue(item, "abbr", "sv"));
+				t.assertTrue(!store.containsValue(item, "abbr", "sv1"));
+				t.assertTrue(!store.containsValue(item, "abbr", null));
 
 				//Test that null attributes throw an exception
 				var passed = false;
 				try{
-					jsonItemStore.containsValue(item, null, "foo");
+					store.containsValue(item, null, "foo");
 				}catch (e){
 					passed = true;
 				}
@@ -680,7 +669,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
 		function testReadAPI_getAttributes(t){
@@ -689,14 +678,14 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test of the getAttributes function of the store
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
-				t.assertTrue(jsonItemStore.isItem(item));
+				t.assertTrue(store.isItem(item));
 
-				var attributes = jsonItemStore.getAttributes(item);
+				var attributes = store.getAttributes(item);
 				t.assertEqual(attributes.length, 3);
 				for(var i = 0; i < attributes.length; i++){
 					t.assertTrue((attributes[i] === "name" || attributes[i] === "abbr" || attributes[i] === "capital"));
@@ -707,18 +696,19 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d // Deferred
 		},
+/* REPLACED WITH NEW test_getFeatures TEST, BELOW
 		function testReadAPI_getFeatures(t){
 			//	summary: 
 			//		Simple test of the getFeatures function of the store
 			//	description:
 			//		Simple test of the getFeatures function of the store
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
-			var features = jsonItemStore.getFeatures(); 
+			var features = store.getFeatures(); 
 			var count = 0;
 			for(i in features){
 				t.assertTrue((i === "dojo.data.api.Read" || i === "dojo.data.api.Identity"));
@@ -726,20 +716,21 @@ doh.register("tests.data.JsonItemStore",
 			}
 			t.assertEqual(count, 2);
 		},
+*/
 		function testReadAPI_fetch_patternMatch0(t){
 			//	summary: 
 			//		Function to test pattern matching of everything starting with lowercase e
 			//	description:
 			//		Function to test pattern matching of everything starting with lowercase e
 
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStore();
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
 
 			var d = new doh.Deferred();
 			function completed(items, request) {
 				t.assertEqual(items.length, 5);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "abbr");
+					var value = store.getValue(items[i], "abbr");
 					if(!(value === "ec" || value === "eg" || value === "er" || value === "ee" || value === "et")){
 						passed=false;
 						break;
@@ -756,7 +747,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(error);
 			}
-			jsonItemStore.fetch({query: {abbr: "e*"}, onComplete: completed, onError: error});
+			store.fetch({query: {abbr: "e*"}, onComplete: completed, onError: error});
 			return d;
 		},
 		function testReadAPI_fetch_patternMatch1(t){
@@ -765,7 +756,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test pattern matching of everything with $ in it.
 
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 1, value:"foo*bar"},
 												   {uniqueId: 2, value:"bar*foo"}, 
 												   {uniqueId: 3, value:"boomBam"},
@@ -784,7 +775,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 2);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
+					var value = store.getValue(items[i], "value");
 					if(!(value === "bit$Bite" || value === "jfq4@#!$!@Rf14r14i5u")){
 						passed=false;
 						break;
@@ -801,7 +792,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(error);
 			}
-			jsonItemStore.fetch({query: {value: "*$*"}, onComplete: completed, onError: error});
+			store.fetch({query: {value: "*$*"}, onComplete: completed, onError: error});
 			return d;
 		},
 		function testReadAPI_fetch_patternMatch2(t){
@@ -810,7 +801,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test exact pattern match
 
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 1, value:"foo*bar"},
 												   {uniqueId: 2, value:"bar*foo"}, 
 												   {uniqueId: 3, value:"boomBam"},
@@ -829,7 +820,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 1);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
+					var value = store.getValue(items[i], "value");
 					if(!(value === "bar*foo")){
 						passed=false;
 						break;
@@ -846,7 +837,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(error);
 			}
-			jsonItemStore.fetch({query: {value: "bar\*foo"}, onComplete: completed, onError: error});
+			store.fetch({query: {value: "bar\*foo"}, onComplete: completed, onError: error});
 			return d;
 		},
 		function testReadAPI_fetch_patternMatch_caseSensitive(t){
@@ -855,7 +846,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test pattern matching of a pattern case-sensitively
 
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 1, value:"foo*bar"},
 												   {uniqueId: 2, value:"bar*foo"}, 
 												   {uniqueId: 3, value:"BAR*foo"},
@@ -869,7 +860,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(1, items.length);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
+					var value = store.getValue(items[i], "value");
 					if(!(value === "bar*foo")){
 						passed=false;
 						break;
@@ -886,7 +877,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(error);
 			}
-			jsonItemStore.fetch({query: {value: "bar\\*foo"}, queryOptions: {ignoreCase: false} , onComplete: completed, onError: error});
+			store.fetch({query: {value: "bar\\*foo"}, queryOptions: {ignoreCase: false} , onComplete: completed, onError: error});
 			return d;
 		},
 		function testReadAPI_fetch_patternMatch_caseInsensitive(t){
@@ -895,7 +886,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test pattern matching of a pattern case-insensitively
 
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 1, value:"foo*bar"},
 												   {uniqueId: 2, value:"bar*foo"}, 
 												   {uniqueId: 3, value:"BAR*foo"},
@@ -909,7 +900,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 2);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
+					var value = store.getValue(items[i], "value");
 					if(!(value === "BAR*foo" || value === "bar*foo")){
 						passed=false;
 						break;
@@ -926,8 +917,28 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(error);
 			}
-			jsonItemStore.fetch({query: {value: "bar\\*foo"}, queryOptions: {ignoreCase: true}, onComplete: completed, onError: error});
+			store.fetch({query: {value: "bar\\*foo"}, queryOptions: {ignoreCase: true}, onComplete: completed, onError: error});
 			return d;
+		},
+		function test_datatypes_Dates(t){
+			var store = tests.data.ItemFileWriteStore.getCountriesStoreWithDates();
+			
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var independenceDate = store.getValue(item, "independence");
+				t.assertTrue(independenceDate instanceof Date);
+				t.assertTrue(independenceDate.valueOf() == 738226800000);
+				t.assertTrue((new Date('May 24, 1993')).valueOf() == independenceDate.valueOf());
+				d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity:"er", onItem:onItem, onError:onError});
+			return d // Deferred
+
 		},
 		function testReadAPI_fetch_sortNumeric(t){
 			//	summary: 
@@ -935,7 +946,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting numerically.
 			
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 0, value:"fo|o*b.ar"},
 												   {uniqueId: 1, value:"ba|r*foo"}, 
 												   {uniqueId: 2, value:"boomBam"},
@@ -956,8 +967,8 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!(jsonItemStore.getValue(items[i], "uniqueId") === i)){
+					var value = store.getValue(items[i], "value");
+					if(!(store.getValue(items[i], "uniqueId") === i)){
 						passed=false;
 						break;
 					}
@@ -976,7 +987,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 
 			var sortAttributes = [{attribute: "uniqueId"}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_fetch_sortNumericDescending(t){
@@ -985,7 +996,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting numerically.
 
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 0, value:"fo|o*b.ar"},
 												   {uniqueId: 1, value:"ba|r*foo"}, 
 												   {uniqueId: 2, value:"boomBam"},
@@ -1005,8 +1016,8 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!((items.length - (jsonItemStore.getValue(items[i], "uniqueId") + 1)) === i)){
+					var value = store.getValue(items[i], "value");
+					if(!((items.length - (store.getValue(items[i], "uniqueId") + 1)) === i)){
 						passed=false;
 						break;
 					}
@@ -1025,7 +1036,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 
 			var sortAttributes = [{attribute: "uniqueId", descending: true}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_fetch_sortNumericWithCount(t){
@@ -1034,7 +1045,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting numerically in descending order, returning only a specified number of them.
 		
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"fo|o*b.ar"},
 												  {uniqueId: 1, value:"ba|r*foo"}, 
 												  {uniqueId: 2, value:"boomBam"},
@@ -1056,8 +1067,8 @@ doh.register("tests.data.JsonItemStore",
 				var itemId = 10;
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!(jsonItemStore.getValue(items[i], "uniqueId") === itemId)){
+					var value = store.getValue(items[i], "value");
+					if(!(store.getValue(items[i], "uniqueId") === itemId)){
 						passed=false;
 						break;
 					}
@@ -1077,7 +1088,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 		
 			var sortAttributes = [{attribute: "uniqueId", descending: true}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes, count: 5});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes, count: 5});
 			return d;
 		},
 		function testReadAPI_fetch_sortAlphabetic(t){
@@ -1086,7 +1097,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting alphabetic ordering.
 		
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"}, 
 												  {uniqueId: 2, value:"abcd"},
@@ -1121,8 +1132,8 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!(jsonItemStore.getValue(items[i], "value") === orderedArray[i])){
+					var value = store.getValue(items[i], "value");
+					if(!(store.getValue(items[i], "value") === orderedArray[i])){
 						passed=false;
 						break;
 					}
@@ -1141,7 +1152,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 		
 			var sortAttributes = [{attribute: "value"}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_fetch_sortAlphabeticDescending(t){
@@ -1150,7 +1161,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting alphabetic ordering in descending mode.
 		
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"}, 
 												  {uniqueId: 2, value:"abcd"},
@@ -1186,8 +1197,8 @@ doh.register("tests.data.JsonItemStore",
 
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!(jsonItemStore.getValue(items[i], "value") === orderedArray[i])){
+					var value = store.getValue(items[i], "value");
+					if(!(store.getValue(items[i], "value") === orderedArray[i])){
 						passed=false;
 						break;
 					}
@@ -1206,7 +1217,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 		
 			var sortAttributes = [{attribute: "value", descending: true}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_fetch_sortDate(t){
@@ -1215,7 +1226,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting date.
 		
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value: new Date(0)},
 												  {uniqueId: 1, value: new Date(100)}, 
 												  {uniqueId: 2, value:new Date(1000)},
@@ -1238,8 +1249,8 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!(jsonItemStore.getValue(items[i], "value").getTime() === orderedArray[i])){
+					var value = store.getValue(items[i], "value");
+					if(!(store.getValue(items[i], "value").getTime() === orderedArray[i])){
 						passed=false;
 						break;
 					}
@@ -1258,7 +1269,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 		
 			var sortAttributes = [{attribute: "value"}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_fetch_sortDateDescending(t){
@@ -1267,7 +1278,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting date in descending order.
 		
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value: new Date(0)},
 												  {uniqueId: 1, value: new Date(100)}, 
 												  {uniqueId: 2, value:new Date(1000)},
@@ -1291,8 +1302,8 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!(jsonItemStore.getValue(items[i], "value").getTime() === orderedArray[i])){
+					var value = store.getValue(items[i], "value");
+					if(!(store.getValue(items[i], "value").getTime() === orderedArray[i])){
 						passed=false;
 						break;
 					}
@@ -1311,7 +1322,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 		
 			var sortAttributes = [{attribute: "value", descending: true}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_fetch_sortMultiple(t){
@@ -1320,7 +1331,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting on multiple attributes.
 			
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 1, value:"fo|o*b.ar"},
 												  {uniqueId: 2, value:"ba|r*foo"}, 
 												  {uniqueId: 3, value:"boomBam"},
@@ -1355,9 +1366,9 @@ doh.register("tests.data.JsonItemStore",
 									];
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!(	(jsonItemStore.getValue(items[i], "uniqueId") === orderedArray0[i])&&
-							(jsonItemStore.getValue(items[i], "value") === orderedArray1[i]))
+					var value = store.getValue(items[i], "value");
+					if(!(	(store.getValue(items[i], "uniqueId") === orderedArray0[i])&&
+							(store.getValue(items[i], "value") === orderedArray1[i]))
 						){
 						passed=false;
 						break;
@@ -1377,7 +1388,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 		
 			var sortAttributes = [{ attribute: "value"}, { attribute: "uniqueId", descending: true}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_fetch_sortMultipleSpecialComparator(t){
@@ -1386,7 +1397,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting on multiple attributes with a custom comparator.
 
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 1, status:"CLOSED"},
 												  {uniqueId: 2,  status:"OPEN"}, 
 												  {uniqueId: 3,  status:"PENDING"},
@@ -1404,8 +1415,8 @@ doh.register("tests.data.JsonItemStore",
 								});
 		
 		
-			jsonItemStore.comparatorMap = {};
-			jsonItemStore.comparatorMap["status"] = function(a,b) { 
+			store.comparatorMap = {};
+			store.comparatorMap["status"] = function(a,b) { 
 				var ret = 0;
 				// We want to map these by what the priority of these items are, not by alphabetical.
 				// So, custom comparator.
@@ -1426,8 +1437,8 @@ doh.register("tests.data.JsonItemStore",
 				var orderedArray = [11,6,2,12,10,4,8,7,3,9,5,1];
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					var value = jsonItemStore.getValue(items[i], "value");
-					if(!(jsonItemStore.getValue(items[i], "uniqueId") === orderedArray[i])){
+					var value = store.getValue(items[i], "value");
+					if(!(store.getValue(items[i], "uniqueId") === orderedArray[i])){
 						passed=false;
 						break;
 					}
@@ -1444,7 +1455,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_fetch_sortAlphabeticWithUndefined(t){
@@ -1453,7 +1464,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Function to test sorting alphabetic ordering.
 		
-			var jsonItemStore = new dojo.data.JsonItemStore({data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"}, 
 												  {uniqueId: 2, value:"abcd"},
@@ -1477,7 +1488,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertEqual(items.length, 11);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
-					if(!(jsonItemStore.getValue(items[i], "uniqueId") === orderedArray[i])){
+					if(!(store.getValue(items[i], "uniqueId") === orderedArray[i])){
 						passed=false;
 						break;
 					}
@@ -1496,7 +1507,7 @@ doh.register("tests.data.JsonItemStore",
 			}
 		
 			var sortAttributes = [{attribute: "value"}];
-			jsonItemStore.fetch({onComplete: completed, onError: error, sort: sortAttributes});
+			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
 		},
 		function testReadAPI_errorCondition_idCollision_inMemory(t){
@@ -1507,7 +1518,7 @@ doh.register("tests.data.JsonItemStore",
 			//		Simple test of the errors thrown when there is an id collision in the data.
 			//		Added because of tracker: #2546
 
-			var jsonItemStore = new dojo.data.JsonItemStore({	data: { identifier: "uniqueId", 
+			var store = new dojo.data.ItemFileWriteStore({	data: { identifier: "uniqueId", 
 																items: [{uniqueId: 12345, value:"foo"},
 																		{uniqueId: 123456, value:"bar"}, 
 																		{uniqueId: 12345, value:"boom"},
@@ -1527,7 +1538,7 @@ doh.register("tests.data.JsonItemStore",
 				t.assertTrue(true);
 				d.callback(true);
 			}
-			jsonItemStore.fetch({onComplete: onComplete, onError: reportError});
+			store.fetch({onComplete: onComplete, onError: reportError});
 			return d;
 		},
 		function testReadAPI_errorCondition_idCollision_xhr(t){
@@ -1539,7 +1550,7 @@ doh.register("tests.data.JsonItemStore",
 			//		Added because of tracker: #2546
 
 			if(dojo.isBrowser){
-				var jsonItemStore = new dojo.data.JsonItemStore({url: dojo.moduleUrl("tests", "data/countries_idcollision.json").toString() });
+				var store = new dojo.data.ItemFileWriteStore({url: dojo.moduleUrl("tests", "data/countries_idcollision.json").toString() });
 				var d = new doh.Deferred();
 				function onComplete(items, request){
 					//This is bad if this fires, this case should fail and not call onComplete.
@@ -1550,82 +1561,11 @@ doh.register("tests.data.JsonItemStore",
 				function reportError(errData, request){
 					//This is good if this fires, it is expected.
 					t.assertTrue(true);
-					d.callback(true);
+                    d.callback(true);
 				}
-				jsonItemStore.fetch({onComplete: onComplete, onError: reportError});
+				store.fetch({onComplete: onComplete, onError: reportError});
 				return d;
 			}
-		},
-		function testReadAPI_Date_datatype(t){
-			var jsonItemStore = tests.data.JsonItemStore.getCountriesStoreWithDates();
-			
-			var d = new doh.Deferred();
-			function onItem(item){
-				t.assertTrue(item !== null);
-				var independenceDate = jsonItemStore.getValue(item, "independence");
-				t.assertTrue(independenceDate instanceof Date);
-				t.assertTrue(independenceDate.valueOf() == 738226800000);
-				t.assertTrue((new Date('May 24, 1993')).valueOf() == independenceDate.valueOf());
-				d.callback(true);
-			}
-			function onError(errData){
-				t.assertTrue(false);
-				d.errback(errData);
-			}
-			jsonItemStore.fetchItemByIdentity({identity:"er", onItem:onItem, onError:onError});
-			return d // Deferred
-		},
-		function testReadAPI_custom_datatype_Color(t){
-			//	summary: 
-			//		Function to test using literal values with custom datatypes
-			var dataset = {
-				identifier:'name',
-				items: [
-					{ name:'Kermit', species:'frog', color:{_type:'Color', _value:'green'} },
-					{ name:'Beaker', hairColor:{_type:'Color', _value:'red'} }
-				]
-			};
-			var jsonItemStore = new dojo.data.JsonItemStore({
-				data:dataset,
-				typeMap:{'Color':dojo.Color}
-			});
-			var d = new doh.Deferred();
-			function onItem(item){
-				t.assertTrue(item !== null);
-				var beaker = item;
-				var hairColor = jsonItemStore.getValue(beaker, "hairColor");
-				t.assertTrue(hairColor instanceof dojo.Color);
-				t.assertTrue(hairColor.toHex() == "#ff0000")
-				d.callback(true);
-			}
-			function onError(errData){
-				d.errback(errData);
-			}
-			jsonItemStore.fetchItemByIdentity({identity:"Beaker", onItem:onItem, onError:onError});
-			return d // Deferred
-		},
-		function testReadAPI_hierarchical_data(t){
-			var jsonItemStore = tests.data.JsonItemStore.getGeographyHierarchy();
-			var d = new doh.Deferred();
-			function onComplete(items, request){
-				t.assertEqual(items.length, 1);
-				var northAmerica = items[0];
-				var canada = jsonItemStore.getValue(northAmerica, "countries");
-				var toronto = jsonItemStore.getValue(canada, "cities");
-				t.assertEqual(jsonItemStore.getValue(canada, "name"), "Canada");
-				t.assertEqual(jsonItemStore.getValue(toronto, "name"), "Toronto");
-				d.callback(true);
-			}
-			function onError(errData){
-				d.errback(errData);
-			}
-			jsonItemStore.fetch({
-				query: {name: "North America"},
-				onComplete: onComplete,
-				onError: onError
-			});
-			
-			return d // Deferred
 		},
 		function testReadAPI_functionConformance(t){
 			//	summary: 
@@ -1633,7 +1573,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test read API conformance.  Checks to see all declared functions are actual functions on the instances.
 
-			var testStore = tests.data.JsonItemStore.getCountriesStore();
+			var testStore = tests.data.ItemFileWriteStore.getCountriesStore();
 			var readApi = new dojo.data.api.Read();
 			var passed = true;
 
@@ -1659,7 +1599,7 @@ doh.register("tests.data.JsonItemStore",
 			//	description:
 			//		Simple test identity API conformance.  Checks to see all declared functions are actual functions on the instances.
 
-			var testStore = tests.data.JsonItemStore.getCountriesStore();
+			var testStore = tests.data.ItemFileWriteStore.getCountriesStore();
 			var identityApi = new dojo.data.api.Identity();
 			var passed = true;
 
@@ -1679,7 +1619,450 @@ doh.register("tests.data.JsonItemStore",
 				}
 			}
 			t.assertTrue(passed);
+		},
+///////////////////////////////////////////////////////////////////////////////
+// above this line, all tests are just copied from tests/data/ItemFileReadStore\
+// (someday we should re-factor this, so that we don't copy 1400 lines!)
+//-----------------------------------------------------------------------------
+// below this line, the tests are specific to ItemFileWriteStore
+///////////////////////////////////////////////////////////////////////////////
+
+		function test_getFeatures(){
+			//	summary: 
+			//		Simple test of the getFeatures function of the store
+			//	description:
+			//		Simple test of the getFeatures function of the store
+
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var features = store.getFeatures(); 
+
+			// make sure we have the expected features:
+			doh.assertTrue(features["dojo.data.api.Read"] != null);
+			doh.assertTrue(features["dojo.data.api.Identity"] != null);
+			doh.assertTrue(features["dojo.data.api.Write"] != null);
+			doh.assertTrue(features["dojo.data.api.Notification"] != null);
+			doh.assertFalse(features["iggy"]);
+			
+			// and only the expected features:
+			var count = 0;
+			for(var i in features){
+				doh.assertTrue((i === "dojo.data.api.Read" || 
+					i === "dojo.data.api.Identity" || 
+					i === "dojo.data.api.Write" || 
+					i === "dojo.data.api.Notification"));
+				count++;
+			}
+			doh.assertEqual(count, 4);
+		},
+		function testWriteAPI_setValue(){
+			//	summary: 
+			//		Simple test of the setValue API
+			//	description:
+			//		Simple test of the setValue API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onComplete(items, request){
+				doh.assertEqual(1, items.length);
+				var item = items[0];
+				doh.assertTrue(store.containsValue(item, "capital", "Cairo"));
+				
+				// FIXME:  
+				//    Okay, so this seems very odd.  Maybe I'm just being dense.
+				//    These tests works:
+				doh.assertEqual(store.isDirty(item), false);
+				doh.assertTrue(store.isDirty(item) == false);
+				//    But these seemingly equivalent tests will not work:
+				// doh.assertFalse(store.isDirty(item));
+				// doh.assertTrue(!(store.isDirty(item)));
+				//   
+				//    All of which seems especially weird, given that this *does* work:
+				doh.assertFalse(store.isDirty());
+				
+				
+				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(!store.isDirty());
+				store.setValue(item, "capital", "New Cairo");
+				doh.assertTrue(store.isDirty(item));
+				doh.assertTrue(store.isDirty());
+				doh.assertEqual(store.getValue(item, "capital").toString(), "New Cairo");
+				deferred.callback(true);
+			}
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_setValues(){
+			//	summary: 
+			//		Simple test of the setValues API
+			//	description:
+			//		Simple test of the setValues API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onComplete(items, request){
+				doh.assertEqual(1, items.length);
+				var item = items[0];
+				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
+				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(!store.isDirty());
+				store.setValues(item, "name", ["Egypt 1", "Egypt 2"]);
+				doh.assertTrue(store.isDirty(item));
+				doh.assertTrue(store.isDirty());
+				var values = store.getValues(item, "name");
+				doh.assertTrue(values[0] == "Egypt 1");
+				doh.assertTrue(values[1] == "Egypt 2");
+				deferred.callback(true);
+			}
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_unsetAttribute(){
+			//	summary: 
+			//		Simple test of the unsetAttribute API
+			//	description:
+			//		Simple test of the unsetAttribute API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onComplete(items, request) {
+				doh.assertEqual(1, items.length);
+				var item = items[0];
+				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
+				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(!store.isDirty());
+				store.unsetAttribute(item, "name");
+				doh.assertTrue(store.isDirty(item));
+				doh.assertTrue(store.isDirty());
+				doh.assertTrue(!store.hasAttribute(item, "name"));
+				deferred.callback(true);
+			}
+			function onError(error, request) {
+				deferred.errback(error);
+			}
+			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_newItem(){
+			//	summary: 
+			//		Simple test of the newItem API
+			//	description:
+			//		Simple test of the newItem API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			doh.assertTrue(!store.isDirty());
+			var canada = store.newItem({name: "Canada", abbr:"ca", capital:"Ottawa"});
+			doh.assertTrue(store.isDirty(canada));
+			doh.assertTrue(store.isDirty());
+			doh.assertTrue(store.getValues(canada, "name") == "Canada");
+			function onComplete(items, request){
+				doh.assertEqual(1, items.length);
+				var item = items[0];
+				doh.assertTrue(store.containsValue(item, "name", "Canada"));
+				deferred.callback(true);
+			}
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			store.fetch({query:{name:"Canada"}, onComplete: onComplete, onError: onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_deleteItem(){
+			//	summary: 
+			//		Simple test of the deleteItem API
+			//	description:
+			//		Simple test of the deleteItem API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onComplete(items, request){
+				doh.assertEqual(1, items.length);
+				var item = items[0];
+				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
+				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(!store.isDirty());
+				store.deleteItem(item);
+				doh.assertTrue(store.isDirty(item));
+				doh.assertTrue(store.isDirty());
+				function onCompleteToo(itemsToo, requestToo) {
+					doh.assertEqual(0, itemsToo.length);
+					deferred.callback(true);
+				}
+				store.fetch({query:{name:"Egypt"}, onComplete: onCompleteToo, onError: onError});
+			}
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_isDirty(){
+			//	summary: 
+			//		Simple test of the isDirty API
+			//	description:
+			//		Simple test of the isDirty API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onComplete(items, request) {
+				doh.assertEqual(1, items.length);
+				var item = items[0];
+				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
+				store.setValue(item, "name", "Egypt 2");
+				doh.assertTrue(store.getValue(item, "name") == "Egypt 2");
+				doh.assertTrue(store.isDirty(item));
+				deferred.callback(true);
+			}
+			function onError(error, request) {
+				deferred.errback(error);
+			}
+			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_revert(){
+			//	summary: 
+			//		Simple test of the revert API
+			//	description:
+			//		Simple test of the revert API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onComplete(items, request) {
+				doh.assertEqual(1, items.length);
+				var item = items[0];
+				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
+				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(!store.isDirty());
+				store.setValue(item, "name", "Egypt 2");
+				doh.assertTrue(store.getValue(item, "name") == "Egypt 2");
+				doh.assertTrue(store.isDirty(item));
+				doh.assertTrue(store.isDirty());
+				store.revert();
+				
+				//Fetch again to see if it reset the state.
+				function onCompleteToo(itemsToo, requestToo){
+					doh.assertEqual(1, itemsToo.length);
+					var itemToo = itemsToo[0];
+					doh.assertTrue(store.containsValue(itemToo, "name", "Egypt"));
+					deferred.callback(true);
+				}
+				store.fetch({query:{name:"Egypt"}, onComplete: onCompleteToo, onError: onError});
+			}
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_save(){
+			//	summary: 
+			//		Simple test of the save API
+			//	description:
+			//		Simple test of the save API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onError(error){
+				deferred.errback(error);
+			}
+			function onItem(item){
+				store.setValue(item, "capital", "New Cairo");
+				function onComplete() {
+					deferred.callback(true);
+				}
+				store.save({onComplete:onComplete, onError:onError});
+			}
+			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_saveEverything(){
+			//	summary: 
+			//		Simple test of the save API
+			//	description:
+			//		Simple test of the save API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+			var egypt;
+			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
+				var struct = dojo.fromJson(newFileContentString);
+				doh.assertEqual(struct.identifier, store.getIdentityAttributes(egypt)[0]);
+				doh.assertEqual(struct.label, store.getLabelAttributes(egypt)[0]);
+				doh.assertEqual(struct.items.length, 7);
+				
+				var cloneStore = tests.data.ItemFileWriteStore.getCountriesStore({data:newFileContentString});
+				function onItemClone(itemClone){
+					var egyptClone = itemClone;
+					doh.assertEqual(store.getIdentityAttributes(egypt)[0], cloneStore.getIdentityAttributes(egyptClone)[0]);
+					doh.assertEqual(store.getLabelAttributes(egypt)[0], cloneStore.getLabelAttributes(egyptClone)[0]);
+					doh.assertEqual(store.getValue(egypt, "name"), cloneStore.getValue(egyptClone, "name"));
+				}
+				cloneStore.fetchItemByIdentity({identity:"eg", onItem:onItemClone, onError:onError});
+				
+				saveCompleteCallback();
+			};
+
+			var deferred = new doh.Deferred();
+			function onError(error){
+				deferred.errback(error);
+			}
+			function onItem(item){
+				egypt = item;
+				function onComplete() {
+					deferred.callback(true);
+				}
+				store.setValue(egypt, "capital", "New Cairo");
+				store.save({onComplete:onComplete, onError:onError});
+			}
+			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
+			return deferred; //Object
+		},
+		function testNotificationAPI_onSet(){
+			//	summary: 
+			//		Simple test of the onSet API
+			//	description:
+			//		Simple test of the onSet API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onError(error){
+				deferred.errback(error);
+			}
+			function onItem(fetchedItem){
+				var egypt = fetchedItem;
+				var connectHandle = null;
+				function setValueHandler(item, attribute, oldValue, newValue){
+					doh.assertTrue(store.isItem(item));
+					doh.assertTrue(item == egypt);
+					doh.assertTrue(attribute == "capital");
+					doh.assertTrue(oldValue == "Cairo");
+					doh.assertTrue(newValue == "New Cairo");
+					deferred.callback(true);
+					dojo.disconnect(connectHandle);
+				}
+				connectHandle = dojo.connect(store, "onSet", setValueHandler);
+				store.setValue(egypt, "capital", "New Cairo");
+			}
+			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
+		},
+		function testNotificationAPI_onNew(){
+			//	summary: 
+			//		Simple test of the onNew API
+			//	description:
+			//		Simple test of the onNew API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			var connectHandle = null;
+			function newItemHandler(item){
+				doh.assertTrue(store.isItem(item));
+				doh.assertTrue(store.getValue(item, "name") == "Canada");
+				deferred.callback(true);
+				dojo.disconnect(connectHandle);
+			}
+			connectHandle = dojo.connect(store, "onNew", newItemHandler);
+			var canada = store.newItem({name:"Canada", abbr:"ca", capital:"Ottawa"});
+		},
+		function testNotificationAPI_onDelete(){
+			//	summary: 
+			//		Simple test of the onDelete API
+			//	description:
+			//		Simple test of the onDelete API
+			var store = tests.data.ItemFileWriteStore.getCountriesStore();
+
+			var deferred = new doh.Deferred();
+			function onError(error){
+				deferred.errback(error);
+			}
+			function onItem(fetchedItem){
+				var egypt = fetchedItem;
+				var connectHandle = null;
+				function deleteItemHandler(item){
+					doh.assertTrue(store.isItem(item) == false);
+					doh.assertTrue(item == egypt);
+					deferred.callback(true);
+					dojo.disconnect(connectHandle);
+				}
+				connectHandle = dojo.connect(store, "onDelete", deleteItemHandler);
+				store.deleteItem(egypt);
+			}
+			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
+		},
+		function testReadAPI_functionConformanceToo(){
+			//	summary: 
+			//		Simple test read API conformance.  Checks to see all declared functions are actual functions on the instances.
+			//	description:
+			//		Simple test read API conformance.  Checks to see all declared functions are actual functions on the instances.
+
+			var testStore = tests.data.ItemFileWriteStore.getCountriesStore();
+			var readApi = new dojo.data.api.Read();
+			var passed = true;
+
+			for(var functionName in readApi){
+				var member = readApi[functionName];
+				//Check that all the 'Read' defined functions exist on the test store.
+				if(typeof member === "function"){
+					var testStoreMember = testStore[functionName];
+					if(!(typeof testStoreMember === "function")){
+						passed = false;
+						break;
+					}
+				}
+			}
+			doh.assertTrue(passed);
+		},
+		function testWriteAPI_functionConformance(){
+			//	summary: 
+			//		Simple test write API conformance.  Checks to see all declared functions are actual functions on the instances.
+			//	description:
+			//		Simple test write API conformance.  Checks to see all declared functions are actual functions on the instances.
+
+			var testStore = tests.data.ItemFileWriteStore.getCountriesStore();
+			var writeApi = new dojo.data.api.Write();
+			var passed = true;
+
+			for(var functionName in writeApi){
+				var member = writeApi[functionName];
+				//Check that all the 'Write' defined functions exist on the test store.
+				if(typeof member === "function"){
+					var testStoreMember = testStore[functionName];
+					if(!(typeof testStoreMember === "function")){
+						passed = false;
+						break;
+					}
+				}
+			}
+			doh.assertTrue(passed);
+		},
+		function testNotificationAPI_functionConformance(){
+			//	summary: 
+			//		Simple test Notification API conformance.  Checks to see all declared functions are actual functions on the instances.
+			//	description:
+			//		Simple test Notification API conformance.  Checks to see all declared functions are actual functions on the instances.
+
+			var testStore = tests.data.ItemFileWriteStore.getCountriesStore();
+			var api = new dojo.data.api.Notification();
+			var passed = true;
+
+			for(var functionName in api){
+				var member = api[functionName];
+				//Check that all the 'Write' defined functions exist on the test store.
+				if(typeof member === "function"){
+					var testStoreMember = testStore[functionName];
+					if(!(typeof testStoreMember === "function")){
+						passed = false;
+						break;
+					}
+				}
+			}
+			doh.assertTrue(passed);
 		}
 	]
 );
+
 

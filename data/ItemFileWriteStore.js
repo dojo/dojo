@@ -1,10 +1,10 @@
-dojo.provide("dojo.data.JsonItemWriteStore");
-dojo.require("dojo.data.JsonItemStore");
+dojo.provide("dojo.data.ItemFileWriteStore");
+dojo.require("dojo.data.ItemFileReadStore");
 
-dojo.declare("dojo.data.JsonItemWriteStore", 
-	dojo.data.JsonItemStore, 
+dojo.declare("dojo.data.ItemFileWriteStore", 
+	dojo.data.ItemFileReadStore, 
 	function(/* object */ keywordParameters){
-		// JsonItemWriteStore extends JsonItemStore to implement these additional dojo.data APIs
+		// ItemFileWriteStore extends ItemFileReadStore to implement these additional dojo.data APIs
 		this._features['dojo.data.api.Write'] = true;
 		this._features['dojo.data.api.Notification'] = true;
 		
@@ -21,13 +21,13 @@ dojo.declare("dojo.data.JsonItemWriteStore",
 
 	_assert: function(/* boolean */ condition){
 		if(!condition) {
-			throw new Error("assertion failed in JsonItemWriteStore");
+			throw new Error("assertion failed in ItemFileWriteStore");
 		}
 	},
 
 	_getIdentifierAttribute: function(){
 		var identifierAttribute = this.getFeatures()['dojo.data.api.Identity'];
-		this._assert(identifierAttribute); // JsonItemWriteStore only works with data files that specify an identifier attribute
+		this._assert(identifierAttribute); // ItemFileWriteStore only works with data files that specify an identifier attribute
 		return identifierAttribute;
 	},
 	
@@ -74,7 +74,7 @@ dojo.declare("dojo.data.JsonItemWriteStore",
 			if(key === this._storeRef || key === this._itemId){
 				// Bummer, the user is trying to do something like
 				// newItem({_S:"foo"}).  Unfortunately, our superclass,
-				// JsonItemStore, is already using _S in each of our items
+				// ItemFileReadStore, is already using _S in each of our items
 				// to hold private info.  To avoid a naming collision, we 
 				// need to move all our private info to some other property 
 				// of all the items/objects.  So, we need to iterate over all
@@ -84,7 +84,7 @@ dojo.declare("dojo.data.JsonItemWriteStore",
 				// But first we have to make sure the new "__S" variable is 
 				// not in use, which means we have to iterate over all the 
 				// items checking for that.
-				throw new Error("encountered bug in JsonItemWriteStore.newItem");
+				throw new Error("encountered bug in ItemFileWriteStore.newItem");
 			}
 			var value = keywordArgs[key];
 			if(!dojo.isArray(value)){
@@ -151,7 +151,7 @@ dojo.declare("dojo.data.JsonItemWriteStore",
 		// Make sure the user isn't trying to change the item's identity
 		var identifierAttribute = this._getIdentifierAttribute();
 		if(attribute == identifierAttribute){
-			throw new Error("JsonItemWriteStore does not have support for changing the value of an item's identifier.");
+			throw new Error("ItemFileWriteStore does not have support for changing the value of an item's identifier.");
 		}
 
 		// To implement the Notification API, we need to make a note of what

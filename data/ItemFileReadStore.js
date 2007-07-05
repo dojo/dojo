@@ -1,9 +1,9 @@
-dojo.provide("dojo.data.JsonItemStore");
+dojo.provide("dojo.data.ItemFileReadStore");
 
 dojo.require("dojo.data.util.filter");
 dojo.require("dojo.data.util.simpleFetch");
 
-dojo.declare("dojo.data.JsonItemStore",
+dojo.declare("dojo.data.ItemFileReadStore",
 	null,
 	function(/* Object */ keywordParameters){
 		// summary: initializer
@@ -21,7 +21,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		this._itemId = "_0"; //Default Item Id for isItem to attach to every item.
 	},{
 	//	summary:
-	//		The JsonItemStore implements the dojo.data.api.Read API and reads
+	//		The ItemFileReadStore implements the dojo.data.api.Read API and reads
 	//		data from JSON files that have contents in this format --
 	//		{ items: [
 	//			{ name:'Kermit', color:'green', age:12, friends:['Gonzo', {_reference:{name:'Fozzie Bear'}}]},
@@ -40,7 +40,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		//	item: 
 		//		The item to test for being contained by the store.
 		if(!this.isItem(item)){ 
-			throw new Error("dojo.data.JsonItemStore: a function was passed an item argument that was not an item");
+			throw new Error("dojo.data.ItemFileReadStore: a function was passed an item argument that was not an item");
 		}
 	},
 
@@ -50,7 +50,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		//	attribute: 
 		//		The attribute to test for being contained by the store.
 		if(typeof attribute !== "string"){ 
-			throw new Error("dojo.data.JsonItemStore: a function was passed an attribute argument that was not an attribute name string");
+			throw new Error("dojo.data.ItemFileReadStore: a function was passed an attribute argument that was not an attribute name string");
 		}
 	},
 
@@ -107,7 +107,7 @@ dojo.declare("dojo.data.JsonItemStore",
 	},
 
 	_containsValue: function(	/* item */ item, 
-								/* attribute || attribute-name-string */ attribute, 
+								/* attribute-name-string */ attribute, 
 								/* anything */ value,
 								/* RegExp?*/ regexp){
 		//	summary: 
@@ -274,7 +274,7 @@ dojo.declare("dojo.data.JsonItemStore",
 					errorCallback(e, keywordArgs);
 				}
 			}else{
-				errorCallback(new Error("dojo.data.JsonItemStore: No JSON source data was provided as either URL or a nested Javascript object."), keywordArgs);
+				errorCallback(new Error("dojo.data.ItemFileReadStore: No JSON source data was provided as either URL or a nested Javascript object."), keywordArgs);
 			}
 		}
 	},
@@ -417,9 +417,9 @@ dojo.declare("dojo.data.JsonItemStore",
 					this._itemsByIdentity[identity] = item;
 				}else{
 					if(this._jsonFileUrl){
-						throw new Error("dojo.data.JsonItemStore:  The json data as specified by: [" + this._jsonFileUrl + "] is malformed.  Items within the list have identifier: [" + identifier + "].  Value collided: [" + identity + "]");
+						throw new Error("dojo.data.ItemFileReadStore:  The json data as specified by: [" + this._jsonFileUrl + "] is malformed.  Items within the list have identifier: [" + identifier + "].  Value collided: [" + identity + "]");
 					}else if(this._jsonData){
-						throw new Error("dojo.data.JsonItemStore:  The json data provided by the creation arguments is malformed.  Items within the list have identifier: [" + identifier + "].  Value collided: [" + identity + "]");
+						throw new Error("dojo.data.ItemFileReadStore:  The json data provided by the creation arguments is malformed.  Items within the list have identifier: [" + identifier + "].  Value collided: [" + identity + "]");
 					}
 				}
 			}
@@ -459,7 +459,7 @@ dojo.declare("dojo.data.JsonItemStore",
 							var type = value._type; // examples: 'Date', 'Color', or 'ComplexNumber'
 							var classToUse = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber
 							if(!classToUse){ 
-								throw new Error("dojo.data.JsonItemStore: in the typeMap constructor arg, no object class was specified for the datatype '" + type + "'");
+								throw new Error("dojo.data.ItemFileReadStore: in the typeMap constructor arg, no object class was specified for the datatype '" + type + "'");
 							}
 							arrayOfValues[j] = new classToUse(value._value);
 						}
@@ -615,4 +615,4 @@ dojo.declare("dojo.data.JsonItemStore",
 	}
 });
 //Mix in the simple fetch implementation to this class.
-dojo.extend(dojo.data.JsonItemStore,dojo.data.util.simpleFetch);
+dojo.extend(dojo.data.ItemFileReadStore,dojo.data.util.simpleFetch);

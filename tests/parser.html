@@ -46,6 +46,14 @@
 				}
 			);
 
+			dojo.declare("tests.parser.inputClass", null, null,
+				{
+					// these attributes are special in HTML, they don't have a value specified
+					disabled: false,
+					checked: false
+				}
+			);
+
 			deepTestProp = {
 				blah: {
 					thinger: 1
@@ -94,7 +102,15 @@
 						function testMarkupFactory(t){
 							t.t(dojo.exists("obj3"));
 							t.t(obj3.fromMarkup);
-						}
+						},
+						function testDisabledFlag(t){
+							t.t(disabledObj.disabled);
+							t.f(disabledObj.checked);
+						},
+						function testCheckedFlag(t){
+							t.f(checkedObj.disabled);
+							t.t(checkedObj.checked);
+						}						
 					]
 				);
 				doh.run();
@@ -124,5 +140,7 @@
 		</div>
 		<div dojoType="tests.parser.Class2" jsId="obj3">
 		</div>
+		<input dojoType="tests.parser.inputClass" jsId="checkedObj" checked>
+		<button dojoType="tests.parser.inputClass" jsId="disabledObj" disabled>hi</button>
 	</body>
 </html>

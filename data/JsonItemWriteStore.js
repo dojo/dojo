@@ -239,9 +239,9 @@ dojo.declare("dojo.data.JsonItemWriteStore",
 			// For example, given kermit:
 			//    var kermit = store.newItem({id:2, name:"Kermit"});
 			// we want to return
-			//    {reference:2}
+			//    {_reference:2}
 			var identity = this.getIdentity(item);
-			var referenceObject = {reference: identity};
+			var referenceObject = {_reference: identity};
 			return referenceObject;
 		}else{
 			return value;

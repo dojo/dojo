@@ -24,7 +24,7 @@ dojo.declare("dojo.data.JsonItemStore",
 	//		The JsonItemStore implements the dojo.data.api.Read API and reads
 	//		data from JSON files that have contents in this format --
 	//		{ items: [
-	//			{ name:'Kermit', color:'green', age:12, friends:['Gonzo', {reference:{name:'Fozzie Bear'}}]},
+	//			{ name:'Kermit', color:'green', age:12, friends:['Gonzo', {_reference:{name:'Fozzie Bear'}}]},
 	//			{ name:'Fozzie Bear', wears:['hat', 'tie']},
 	//			{ name:'Miss Piggy', pets:'Foo-Foo'}
 	//		]}
@@ -437,7 +437,7 @@ dojo.declare("dojo.data.JsonItemStore",
 		// looking for type/value literals and item-references.
 		//
 		// We replace item-references with pointers to items.  For example, we change:
-		//		{ name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
+		//		{ name:['Kermit'], friends:[{_reference:{name:'Miss Piggy'}}] }
 		// into this:
 		//		{ name:['Kermit'], friends:[miss_piggy] } 
 		// (where miss_piggy is the object representing the 'Miss Piggy' item).
@@ -449,11 +449,11 @@ dojo.declare("dojo.data.JsonItemStore",
 		//
 		// We also generate the associate map for all items for the O(1) isItem function.
 		for(i = 0; i < arrayOfAllItems.length; ++i){
-			item = arrayOfAllItems[i]; // example: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
+			item = arrayOfAllItems[i]; // example: { name:['Kermit'], friends:[{_reference:{name:'Miss Piggy'}}] }
 			for(key in item){
-				arrayOfValues = item[key]; // example: [{reference:{name:'Miss Piggy'}}]
+				arrayOfValues = item[key]; // example: [{_reference:{name:'Miss Piggy'}}]
 				for(var j = 0; j < arrayOfValues.length; ++j) {
-					value = arrayOfValues[j]; // example: {reference:{name:'Miss Piggy'}}
+					value = arrayOfValues[j]; // example: {_reference:{name:'Miss Piggy'}}
 					if(value !== null && typeof value == "object"){
 						if(value._type && value._value){
 							var type = value._type; // examples: 'Date', 'Color', or 'ComplexNumber'
@@ -463,15 +463,15 @@ dojo.declare("dojo.data.JsonItemStore",
 							}
 							arrayOfValues[j] = new classToUse(value._value);
 						}
-						if(value.reference){
-							var referenceDescription = value.reference; // example: {name:'Miss Piggy'}
+						if(value._reference){
+							var referenceDescription = value._reference; // example: {name:'Miss Piggy'}
 							if(dojo.isString(referenceDescription)){
 								// example: 'Miss Piggy'
-								// from an item like: { name:['Kermit'], friends:[{reference:'Miss Piggy'}]}
+								// from an item like: { name:['Kermit'], friends:[{_reference:'Miss Piggy'}]}
 								arrayOfValues[j] = this._itemsByIdentity[referenceDescription];
 							}else{
 								// example: {name:'Miss Piggy'}
-								// from an item like: { name:['Kermit'], friends:[{reference:{name:'Miss Piggy'}}] }
+								// from an item like: { name:['Kermit'], friends:[{_reference:{name:'Miss Piggy'}}] }
 								for(var k = 0; k < arrayOfAllItems.length; ++k){
 									var candidateItem = arrayOfAllItems[k];
 									var found = true;

@@ -39,8 +39,7 @@ dojo.parser = new function(){
 					return dojo.getObject(value, false);
 				}catch(e){ return new Function(); }
 			case "array":
-				// FIXME: should we split on "," instead?
-				return value.split(/\s*;\s*/);
+				return value.split(/\s*,\s*/);
 			case "date":
 				return dojo.date.stamp.fromISOString(value);
 			case "url":

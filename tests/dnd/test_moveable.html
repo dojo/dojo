@@ -48,21 +48,13 @@
 			m1 = new dojo.dnd.Moveable("moveable1", {handle: "handle1"});
 			m2 = new dojo.dnd.Moveable("moveable2");
 
-			dojo.subscribe("dndMoveStart", function(message){ 
-					console.debug(message); 	
+			dojo.subscribe("/dnd/move/start", function(message){ 
+				console.debug(message); 	
 			});
 
-			dojo.subscribe("dndMove", function(message){ 
-					console.debug(message); 	
+			dojo.subscribe("/dnd/move/stop", function(message){ 
+				console.debug(message); 	
 			});
-
-
-			dojo.subscribe("dndMoveStop", function(message){ 
-					console.debug(message); 	
-			});
-
-
-
 		};
 		dojo.addOnLoad(init);
 	</script>

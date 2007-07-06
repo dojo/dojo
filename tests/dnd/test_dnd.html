@@ -40,7 +40,7 @@
 			c2.insertNodes(false, ["A", "B", "C", "D", "E", "F", {toString: function(){ return "CUSTOM!"; }}, null]);
 
 			// example subscribe to events
-			dojo.subscribe("dndStart",function(foo){
+			dojo.subscribe("/dnd/start",function(foo){
 				console.debug(foo);
 			});
 

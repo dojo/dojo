@@ -62,10 +62,10 @@ function(node, params){
 	}
 	// set up events
 	this.topics = [
-		dojo.subscribe("dndSourceOver", this, "onDndSourceOver"),
-		dojo.subscribe("dndStart",  this, "onDndStart"),
-		dojo.subscribe("dndDrop",   this, "onDndDrop"),
-		dojo.subscribe("dndCancel", this, "onDndCancel")
+		dojo.subscribe("/dnd/source/over", this, "onDndSourceOver"),
+		dojo.subscribe("/dnd/start",  this, "onDndStart"),
+		dojo.subscribe("/dnd/drop",   this, "onDndDrop"),
+		dojo.subscribe("/dnd/cancel", this, "onDndCancel")
 	];
 },
 {

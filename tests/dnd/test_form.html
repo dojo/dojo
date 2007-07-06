@@ -37,7 +37,7 @@
 			c2 = new dojo.dnd.Target("container2", {accept: ["money"]});
 
 			// example subscribe to events
-			dojo.subscribe("dndStart",function(foo){
+			dojo.subscribe("/dnd/start",function(foo){
 				console.debug(foo);
 			});
 

@@ -30,47 +30,37 @@ dojo.fx.combine = function(/*dojo._Animation[]*/ animations){
 };
 
 dojo.fx.slideIn = function(/*Object*/ args){
-	// summary: Returns an animation that will show and wipe in 
-	// node defined in 'args' object. 
+	// summary:
+	//	Returns an animation that will show and wipe in 
+	//	node defined in 'args' object.
+	//	Wipes in the object to it's natural height (with no scrollbar).
 	args.node = dojo.byId(args.node);
 
-	// get node height, either it's natural height or it's height specified via style or class attributes
-	// (for FF, the node has to be (temporarily) rendered to measure height)
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
 			height: {
 				start: 1 // 0 causes IE to display the whole panel
 			}
-		},
-		oprop: {}
+		}
 	}, args));
+
 	dojo.connect(anim, "beforeBegin", anim, function(){
-		var node = this.node;
 		var s = this.node.style;
-		s.visibility="hidden";
-		s.display="";
+		if(s.visibility=="hidden"||s.display=="none"){
+			s.height = "1px"; // 0 causes IE to display the whole panel
+			s.display="";
+			s.visibility="";
+		}
+		s.overflow="hidden";
 
-		//		var nodeHeight = dojo.html.getBorderBox(node).height;
-		//FIXME: ok to use contentbox?
-		var nodeHeight = dojo.contentBox(node).h;
-
-		s.visibility="";
-		s.display="none";
-		this.properties.height.end = nodeHeight;
-
-		var oprop = this.oprop;
-		oprop.overflow = s.overflow;
-		oprop.height = s.height;
-		s.overflow = "hidden";
-		s.height = "1px"; // 0 causes IE to display the whole panel
-		dojo.style(this.node, 'display', '');
+		// The node's height may have been set via a previous slideOut operation, but ignore it.
+		// We want to expand the node to it's full natural height.
+		this.properties.height.end = this.node.scrollHeight;
 	});
 	
 	dojo.connect(anim, "onEnd", anim, function(){ 
 		var s = this.node.style;
-		var oprop = this.oprop;
-		s.overflow = oprop.overflow;
-		s.height = oprop.height;
+		s.height = "auto";
 	});
 
 	return anim; // dojo._Animation
@@ -81,28 +71,25 @@ dojo.fx.slideOut = function(/*Object*/ args){
 	// node defined in args Object
 	var node = args.node = dojo.byId(args.node);
 
-	var oprop = {};	// old properties of node (before we mucked w/them)
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
 			height: {
-				start: function(){ return dojo.contentBox(node).h; }, //FIXME: why a closure here?
 				end: 1 // 0 causes IE to display the whole panel
 			}
-		},
-		oprop: oprop
+		}
 	}, args));
+
 	dojo.connect(anim, "beforeBegin", anim, function(){
 		var s=node.style;
-		oprop.overflow = s.overflow;
-		oprop.height = s.height;
 		s.overflow = "hidden";
-		dojo.style(node, 'display', '');
+		s.display = "";
+		this.properties.height.start = dojo.contentBox(node).h;
+
 	});
 	dojo.connect(anim, "onEnd", anim, function(){
-		dojo.style(this.node, 'display', 'none');
 		var s=this.node.style;
-		s.overflow = oprop.overflow;
-		s.height = oprop.height;
+		s.height = "auto";
+		s.display = "none";
 	});
 
 	return anim; // dojo._Animation

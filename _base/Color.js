@@ -6,9 +6,7 @@ dojo.Color = function(/*r, g, b, a*/){
 	this.setColor.apply(this, arguments);
 }
 
-// FIXME: there's got to be a more space-efficient way to encode or discover these!!
-// eugene: let's support at least HTML4 colors (a standard subset of CSS3 color module),
-// we can add the rest later (with compact representation, of course)
+// FIXME: there's got to be a more space-efficient way to encode or discover these!!  Use hex?
 dojo.Color.named = {
 	black:      [0,0,0],
 	silver:     [192,192,192],

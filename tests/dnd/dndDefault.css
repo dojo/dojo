@@ -6,7 +6,7 @@
 
 */
 .container {
-	border:3px solid #ccc; 
+	border:3px solid #ccc;
 	padding: 1em 3em; 
 	cursor: default;
 	radius:8pt;
@@ -16,6 +16,7 @@
 
 .dojoDndContainerOver {
 	/* cursor:pointer; */
+	border:3px solid #aaa; 
 }
 
 .dojoDndItem { 

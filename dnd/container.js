@@ -24,7 +24,8 @@ function(node, params){
 	//	_skipStartup: Boolean: skip startup(), which collects children, for deferred initialization
 	//		(this is used in the markup mode)
 	this.node = dojo.byId(node);
-	this.creator  = (params && params.creator) ? params.creator : dojo.dnd._defaultCreator(this.node);
+	this.creator = params && params.creator || null;
+	this.defaultCreator = dojo.dnd._defaultCreator(this.node);
 
 	// class-specific variables
 	this.map = {};
@@ -208,7 +209,7 @@ function(node, params){
 	},
 	_normalizedCreator: function(item, hint){
 		// summary: adds all necessary data to the output of the user-supplied creator function
-		var t = this.creator(item, hint);
+		var t = (this.creator ? this.creator : this.defaultCreator)(item, hint);
 		if(!dojo.isArray(t.type)){ t.type = ["text"]; }
 		if(!t.node.id){ t.node.id = dojo.dnd.getUniqueId(); }
 		dojo.addClass(t.node, "dndItem");
@@ -254,7 +255,7 @@ dojo.dnd._defaultCreator = function(node){
 	// node: Node: a container node
 	var tag = node.tagName.toLowerCase();
 	var c = tag == "table" ? dojo.dnd._createTrTd : dojo.dnd._createNode(dojo.dnd._defaultCreatorNodes[tag]);
-	var r = (dojo.lang && dojo.lang.repr) ? dojo.lang.repr : function(o){ return o + ""; };
+	var r = (dojo.lang && dojo.lang.repr) ? dojo.lang.repr : function(o){ return String(o); };
 	return function(item, hint){	// Function
 		var isObj = dojo.isObject(item) && item;
 		var data = (isObj && item.data) ? item.data : item;

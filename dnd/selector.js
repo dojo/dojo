@@ -78,18 +78,27 @@ function(node, params){
 		// data: Array: a list of data items, which should be processed by the creator function
 		// before: Boolean: insert before the anchor, if true, and after the anchot otherwise
 		// anchor: Node: the anchor node to be used as a point of insertion
-		var oldCreator = this.creator;
-		if(addSelected){
-			var me = this;
-			this.creator = function(d){
-				var t = oldCreator(d);
-				me._addItemClass(t.node, "Selected");
-				me.selection[t.node.id] = 1;
-				return t;
-			};
-		}
+		var oldCreator = this._normalizedCreator;
+		this._normalizedCreator = function(item, hint){
+			var t = oldCreator.call(this, item, hint);
+			if(addSelected){
+				if(!this.anchor){
+					this.anchor = t.node;
+					this._removeItemClass(t.node, "Selected");
+					this._addItemClass(this.anchor, "Anchor");
+				}else if(this.anchor != t.node){
+					this._removeItemClass(t.node, "Anchor");
+					this._addItemClass(t.node, "Selected");
+				}
+				this.selection[t.node.id] = 1;
+			}else{
+				this._removeItemClass(t.node, "Selected");
+				this._removeItemClass(t.node, "Anchor");
+			}
+			return t;
+		};
 		dojo.dnd.Selector.superclass.insertNodes.call(this, data, before, anchor);
-		this.creator = oldCreator;
+		this._normalizedCreator = oldCreator;
 		return this;	// self
 	},
 	destroy: function(){
@@ -173,10 +182,12 @@ function(node, params){
 						}
 					}
 				}else{
-					this.selectNone();
-					this.anchor = this.current;
-					this._addItemClass(this.current, "Anchor");
-					this.selection[this.current.id] = 1;
+					if(!(this.current.id in this.selection)){
+						this.selectNone();
+						this.anchor = this.current;
+						this._addItemClass(this.current, "Anchor");
+						this.selection[this.current.id] = 1;
+					}
 				}
 			}
 		}
@@ -215,7 +226,8 @@ function(node, params){
 		var empty = {};
 		for(var i in this.selection){
 			if(!(i in empty)){
-				this._removeItemClass(dojo.byId(i), "Selected");
+				var node = dojo.byId(i);
+				if(node){ this._removeItemClass(node, "Selected"); }
 			}
 		}
 		this.selection = {};

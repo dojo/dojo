@@ -119,7 +119,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testIdentityAPI_fetchItemByIdentity_notFound(t){
 			//	summary: 
@@ -138,7 +138,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv_not", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testIdentityAPI_getIdentityAttributes(t){
 			//	summary: 
@@ -161,7 +161,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testIdentityAPI_fetchItemByIdentity_commentFilteredJson(t){
 			//	summary: 
@@ -187,7 +187,7 @@ doh.register("tests.data.ItemFileReadStore",
 					d.errback(errData);
 				}
 				store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-				return d // Deferred
+				return d; // Deferred
 			}
 		},
 		function testIdentityAPI_fetchItemByIdentity_nullValue(t){
@@ -212,7 +212,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "ec", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testIdentityAPI_fetchItemByIdentity_booleanValue(t){
 			//	summary: 
@@ -236,7 +236,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "ut", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testIdentityAPI_getIdentity(t){
 			//	summary: 
@@ -257,7 +257,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_fetch_all(t){
 			//	summary: 
@@ -534,7 +534,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_getValues(t){
 			//	summary: 
@@ -558,7 +558,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_isItem(t){
 			//	summary: 
@@ -580,7 +580,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_isItem_multistore(t){
 			//	summary: 
@@ -618,7 +618,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store1.fetchItemByIdentity({identity: "sv", onItem: onItem1, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_hasAttribute(t){
 			//	summary: 
@@ -649,7 +649,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_containsValue(t){
 			//	summary: 
@@ -681,7 +681,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_getAttributes(t){
 			//	summary: 
@@ -708,7 +708,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_getFeatures(t){
 			//	summary: 
@@ -1573,7 +1573,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity:"er", onItem:onItem, onError:onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_custom_datatype_Color(t){
 			//	summary: 
@@ -1602,7 +1602,7 @@ doh.register("tests.data.ItemFileReadStore",
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity:"Beaker", onItem:onItem, onError:onError});
-			return d // Deferred
+			return d; // Deferred
 		},
 		function testReadAPI_hierarchical_data(t){
 			var store = tests.data.ItemFileReadStore.getGeographyHierarchy();
@@ -1625,7 +1625,58 @@ doh.register("tests.data.ItemFileReadStore",
 				onError: onError
 			});
 			
-			return d // Deferred
+			return d; // Deferred
+		},
+		function testIdentityAPI_no_identifier_specified(t){
+			var arrayOfItems = [
+				{name:"Kermit", color:"green"},
+				{name:"Miss Piggy", likes:"Kermit"}, 
+				{name:"Beaker", hairColor:"red"}
+			];
+			var store = new dojo.data.ItemFileReadStore({data:{items:arrayOfItems}});
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				var features = store.getFeatures();
+				var hasIdenityFeature = Boolean(features['dojo.data.api.Identity']);
+				t.assertTrue(hasIdenityFeature);
+				for(var i = 0; i < items.length; ++i){
+					var item = items[i];
+					var identifier = store.getIdentityAttributes(item);
+					t.assertTrue(identifier === null);
+					var identity = store.getIdentity(item);
+					t.assertTrue(typeof identity == "number");
+					// console.log("Item id: " + identity);
+				}
+				d.callback(true);
+			}
+			function reportError(errData, request){
+				d.errback(true);
+			}
+			store.fetch({onComplete: onComplete, onError: reportError});
+			return d; // Deferred
+		},
+		function testIdentityAPI_hierarchical_data(t){
+			var store = tests.data.ItemFileReadStore.getGeographyHierarchy();
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				var features = store.getFeatures();
+				var hasIdenityFeature = Boolean(features['dojo.data.api.Identity']);
+				t.assertTrue(hasIdenityFeature);
+				for(var i = 0; i < items.length; ++i){
+					var item = items[i];
+					var identifier = store.getIdentityAttributes(item);
+					t.assertTrue(identifier === null);
+					var identity = store.getIdentity(item);
+					t.assertTrue(typeof identity == "number");
+					console.log("Item id: " + identity);
+				}
+				d.callback(true);
+			}
+			function reportError(errData, request){
+				d.errback(true);
+			}
+			store.fetch({onComplete: onComplete, onError: reportError});
+			return d; // Deferred
 		},
 		function testReadAPI_functionConformance(t){
 			//	summary: 

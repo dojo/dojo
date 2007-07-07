@@ -27,7 +27,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 
 	_getIdentifierAttribute: function(){
 		var identifierAttribute = this.getFeatures()['dojo.data.api.Identity'];
-		this._assert(identifierAttribute); // ItemFileWriteStore only works with data files that specify an identifier attribute
+		// this._assert((identifierAttribute === Number) || (dojo.isString(identifierAttribute)));
 		return identifierAttribute;
 	},
 	
@@ -48,13 +48,18 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		if(typeof keywordArgs != "object" && typeof keywordArgs != "undefined"){
 			throw new Error("newItem() was passed something other than an object");
 		}
+		var newIdentity = null;
 		var identifierAttribute = this._getIdentifierAttribute();
-		var newIdentity = keywordArgs[identifierAttribute];
-		if (typeof newIdentity === "undefined"){
-			throw new Error("newItem() was not passed an identify for the new item");
-		}
-		if (dojo.isArray(newIdentity)){
-			throw new Error("newItem() was not passed an single-valued identity");
+		if(identifierAttribute === Number){
+			newIdentity = this._arrayOfAllItems.length;
+		}else{
+			newIdentity = keywordArgs[identifierAttribute];
+			if (typeof newIdentity === "undefined"){
+				throw new Error("newItem() was not passed an identify for the new item");
+			}
+			if (dojo.isArray(newIdentity)){
+				throw new Error("newItem() was not passed an single-valued identity");
+			}
 		}
 		
 		// make sure this identity is not already in use by another item
@@ -63,15 +68,15 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		this._assert(typeof this._pending._deletedItems[newIdentity] === "undefined");
 		
 		var newItem = {};
-		newItem[this._storeRef] = this;		
-		newItem[this._itemId] = this._arrayOfAllItems.length;
+		newItem[this._storeRefPropName] = this;		
+		newItem[this._itemNumPropName] = this._arrayOfAllItems.length;
 		
 		this._itemsByIdentity[newIdentity] = newItem;
 		this._arrayOfAllItems.push(newItem);
 		this._pending._newItems[newIdentity] = newItem;
 		
 		for(var key in keywordArgs){
-			if(key === this._storeRef || key === this._itemId){
+			if(key === this._storeRefPropName || key === this._itemNumPropName){
 				// Bummer, the user is trying to do something like
 				// newItem({_S:"foo"}).  Unfortunately, our superclass,
 				// ItemFileReadStore, is already using _S in each of our items
@@ -113,7 +118,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		var found = this._removeArrayElement(this._arrayOfAllItems, item);
 		if(found){
 			var identity = this.getIdentity(item);
-			item[this._storeRef] = null;
+			item[this._storeRefPropName] = null;
 			delete this._itemsByIdentity[identity];
 			this._pending._deletedItems[identity] = item;
 			this._updateItemIdIndexValues();
@@ -168,7 +173,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			// have a record of the original state.
 			var copyOfItemState = {};
 			for(var key in item){
-				if((key === this._storeRef) || (key === this._itemId)){
+				if((key === this._storeRefPropName) || (key === this._itemNumPropName)){
 					copyOfItemState[key] = item[key];
 				}else{
 					var valueArray = item[key];
@@ -253,9 +258,12 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		//		Generate a string that can be saved to a file.
 		//		The result should look similar to:
 		//		http://trac.dojotoolkit.org/browser/dojo/trunk/tests/data/countries.json
-		var serializableStructure = {
-			identifier: this._getIdentifierAttribute()
-		};
+		var serializableStructure = {};
+		
+		var identifierAttribute = this._getIdentifierAttribute();
+		if(identifierAttribute !== Number){
+			serializableStructure.identifier = identifierAttribute;
+		}
 		if(this._labelAttr){
 			serializableStructure.label = this._labelAttr;
 		}
@@ -264,7 +272,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			var item = this._arrayOfAllItems[i];
 			serializableItem = {};
 			for(var key in item){
-				if(key !== this._storeRef && key !== this._itemId){
+				if(key !== this._storeRefPropName && key !== this._itemNumPropName){
 					var attribute = key;
 					var valueArray = this.getValues(item, attribute);
 					if(valueArray.length == 1){
@@ -333,7 +341,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		var identity;
 		for(identity in this._pending._newItems){
 			var newItem = this._pending._newItems[identity];
-			newItem[this._storeRef] = null;
+			newItem[this._storeRefPropName] = null;
 			this._removeArrayElement(this._arrayOfAllItems, newItem);
 			delete this._itemsByIdentity[identity];
 		}
@@ -343,9 +351,9 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			var modifiedItem = this._itemsByIdentity[identity];
 			
 			// make the original item into a full-fledged item again
-			originalItem[this._storeRef] = this;
-			//originalItem[this._itemId] = identity; // WRONG! this should be a number N, the index into this._arrayOfAllItems
-			modifiedItem[this._storeRef] = null;
+			originalItem[this._storeRefPropName] = this;
+			//originalItem[this._itemNumPropName] = identity; // WRONG! this should be a number N, the index into this._arrayOfAllItems
+			modifiedItem[this._storeRefPropName] = null;
 
 			// replace the modified item with the original one
 			this._removeArrayElement(this._arrayOfAllItems, modifiedItem);
@@ -354,7 +362,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		}
 		for(identity in this._pending._deletedItems){
 			var deletedItem = this._pending._deletedItems[identity];
-			deletedItem[this._storeRef] = this;
+			deletedItem[this._storeRefPropName] = this;
 			this._itemsByIdentity[identity] = deletedItem;
 			this._arrayOfAllItems.push(deletedItem);
 		}
@@ -370,7 +378,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 	_updateItemIdIndexValues: function(){
 		for(var i = 0; i < this._arrayOfAllItems.length; ++i){
 			var item = this._arrayOfAllItems[i];
-			item[this._itemId] = i;
+			item[this._itemNumPropName] = i;
 		}
 	},
 	

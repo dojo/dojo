@@ -10,15 +10,16 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		// keywordParameters: {url: String}
 		// keywordParameters: {data: jsonObject}
 		this._arrayOfAllItems = [];
+		this._arrayOfTopLevelItems = [];
 		this._loadFinished = false;
 		this._jsonFileUrl = keywordParameters.url;
 		this._jsonData = keywordParameters.data;
 		this._datatypeMap = keywordParameters.typeMap || {};
 		this._datatypeMap['Date'] = Date;
-		this._features = {'dojo.data.api.Read': true};
+		this._features = {'dojo.data.api.Read':true, 'dojo.data.api.Identity':true};
 		this._itemsByIdentity = null;
-		this._storeRef = "_S";  //Default name for the store reference to attach to every item.
-		this._itemId = "_0"; //Default Item Id for isItem to attach to every item.
+		this._storeRefPropName = "_S";  // Default name for the store reference to attach to every item.
+		this._itemNumPropName = "_0"; // Default Item Id for isItem to attach to every item.
 	},{
 	//	summary:
 	//		The ItemFileReadStore implements the dojo.data.api.Read API and reads
@@ -60,7 +61,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		//	summary: 
 		//      See dojo.data.api.Read.getValue()
 		var values = this.getValues(item, attribute);
-		return (values.length > 0)?values[0]:defaultValue; //Object || int || Boolean
+		return (values.length > 0)?values[0]:defaultValue; // Anything
 	},
 
 	getValues: function(/* item */ item, 
@@ -70,7 +71,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 
 		this._assertIsItem(item);
 		this._assertIsAttribute(attribute);
-		return item[attribute] || []; //Array
+		return item[attribute] || []; // Array
 	},
 
 	getAttributes: function(/* item */ item){
@@ -79,12 +80,12 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		this._assertIsItem(item);
 		var attributes = [];
 		for(var key in item){
-			//Save off only the real item attributes, not the special id marks for O(1) isItem.
-			if((key !== this._storeRef) && (key !== this._itemId)){
+			// Save off only the real item attributes, not the special id marks for O(1) isItem.
+			if((key !== this._storeRefPropName) && (key !== this._itemNumPropName)){
 				attributes.push(key);
 			}
 		}
-		return attributes; //Array
+		return attributes; // Array
 	},
 
 	hasAttribute: function(	/* item */ item,
@@ -144,8 +145,8 @@ dojo.declare("dojo.data.ItemFileReadStore",
 	isItem: function(/* anything */ something){
 		//	summary: 
 		//		See dojo.data.api.Read.isItem()
-		if(something && something[this._storeRef] === this){
-			if(this._arrayOfAllItems[something[this._itemId]] === something){
+		if(something && something[this._storeRefPropName] === this){
+			if(this._arrayOfAllItems[something[this._itemNumPropName]] === something){
 				return true;
 			}
 		}
@@ -168,10 +169,10 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		//	summary: 
 		//		See dojo.data.api.Read.getFeatures()
 		if (!this._loadFinished){
-			// This has to happen to meet the property that the identity functions are
-			// denoted to work only if the store has been loaded and it had an identifier 
-			// property in the JSON.  So, for the feature to be found, the load had to have 
-			// happened.
+			// We need to load the data first, because the data set may specify
+			// what attribute is used as the identifier, and we include that
+			// identifier-attribute info in the property value we return for the
+			// 'dojo.data.api.Identity' feature.
 			this._forceLoad();
 		}
 		return this._features; //Object
@@ -254,7 +255,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					// console.debug(dojo.toJson(data));
 					self._loadFinished = true;
 					try{
-						self._arrayOfAllItems = self._getItemsFromLoadedData(data);
+						self._getItemsFromLoadedData(data);
 						filter(keywordArgs, self._arrayOfAllItems);
 					}catch(e){
 						errorCallback(e, keywordArgs);
@@ -267,7 +268,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 			}else if(this._jsonData){
 				try{
 					this._loadFinished = true;
-					this._arrayOfAllItems = this._getItemsFromLoadedData(this._jsonData);
+					this._getItemsFromLoadedData(this._jsonData);
 					this._jsonData = null;
 					filter(keywordArgs, this._arrayOfAllItems);
 				}catch(e){
@@ -325,8 +326,9 @@ dojo.declare("dojo.data.ItemFileReadStore",
 			return isItem;
 		}
 		
+		var self = this;
 		function addItemAndSubItemsToArrayOfAllItems(/* Item */ anItem){
-			arrayOfAllItems.push(anItem);
+			self._arrayOfAllItems.push(anItem);
 			for(var attribute in anItem){
 				var valueForAttribute = anItem[attribute];
 				if(valueForAttribute){
@@ -356,11 +358,11 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		// Step 1: Walk through the object hierarchy and build a list of all items
 		var i;
 		var item;
-		var arrayOfAllItems = [];
-		var arrayOfTopLevelItems = dataObject.items;
+		this._arrayOfAllItems = [];
+		this._arrayOfTopLevelItems = dataObject.items;
 
-		for(i = 0; i < arrayOfTopLevelItems.length; ++i){
-			item = arrayOfTopLevelItems[i];
+		for(i = 0; i < this._arrayOfTopLevelItems.length; ++i){
+			item = this._arrayOfTopLevelItems[i];
 			addItemAndSubItemsToArrayOfAllItems(item);
 		}
 
@@ -372,11 +374,11 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		// 
 		// We also store the attribute names so we can validate our store  
 		// reference and item id special properties for the O(1) isItem
-		var attrNames = {};
+		var allAttributeNames = {};
 		var key;
 
-		for(i = 0; i < arrayOfAllItems.length; ++i){
-			item = arrayOfAllItems[i];
+		for(i = 0; i < this._arrayOfAllItems.length; ++i){
+			item = this._arrayOfAllItems[i];
 			for(key in item){
 				var value = item[key];
 				if(value !== null){
@@ -386,22 +388,22 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				}else{
 					item[key] = [null];
 				}
-				attrNames[key]=key;
+				allAttributeNames[key]=key;
 			}
 		}
 
-		// Step 3: Build unique property names to use for the _storeRef and _itemId
+		// Step 3: Build unique property names to use for the _storeRefPropName and _itemNumPropName
 		// This should go really fast, it will generally never even run the loop.
-		while(attrNames[this._storeRef]){
-			this._storeRef += "_";
+		while(allAttributeNames[this._storeRefPropName]){
+			this._storeRefPropName += "_";
 		}
-		while(attrNames[this._itemId]){
-			this._itemId += "_";
+		while(allAttributeNames[this._itemNumPropName]){
+			this._itemNumPropName += "_";
 		}
 
 		// Step 4: Some data files specify an optional 'identifier', which is 
-		// the name of an attribute that holds the identity of each item.  If 
-		// this data file specified an identifier attribute, then build an 
+		// the name of an attribute that holds the identity of each item. 
+		// If this data file specified an identifier attribute, then build a 
 		// hash table of items keyed by the identity of the items.
 		var arrayOfValues;
 
@@ -409,8 +411,8 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		if(identifier){
 			this._features['dojo.data.api.Identity'] = identifier;
 			this._itemsByIdentity = {};
-			for(i = 0; i < arrayOfAllItems.length; ++i){
-				item = arrayOfAllItems[i];
+			for(i = 0; i < this._arrayOfAllItems.length; ++i){
+				item = this._arrayOfAllItems[i];
 				arrayOfValues = item[identifier];
 				var identity = arrayOfValues[0];
 				if(!this._itemsByIdentity[identity]){
@@ -423,14 +425,16 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					}
 				}
 			}
+		}else{
+			this._features['dojo.data.api.Identity'] = Number;
 		}
 
 		// Step 5: Walk through all the items, and set each item's properties 
-		// for _storeRef and _itemId, so that store.isItem() will return true.
-		for(i = 0; i < arrayOfAllItems.length; ++i){
-			item = arrayOfAllItems[i];
-			item[this._storeRef] = this;
-			item[this._itemId] = i;
+		// for _storeRefPropName and _itemNumPropName, so that store.isItem() will return true.
+		for(i = 0; i < this._arrayOfAllItems.length; ++i){
+			item = this._arrayOfAllItems[i];
+			item[this._storeRefPropName] = this;
+			item[this._itemNumPropName] = i;
 		}
 
 		// Step 6: We walk through all the attribute values of all the items,
@@ -448,8 +452,8 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		//		{ name:['Kermit'], born:(new Date('July 18, 1918')) } 
 		//
 		// We also generate the associate map for all items for the O(1) isItem function.
-		for(i = 0; i < arrayOfAllItems.length; ++i){
-			item = arrayOfAllItems[i]; // example: { name:['Kermit'], friends:[{_reference:{name:'Miss Piggy'}}] }
+		for(i = 0; i < this._arrayOfAllItems.length; ++i){
+			item = this._arrayOfAllItems[i]; // example: { name:['Kermit'], friends:[{_reference:{name:'Miss Piggy'}}] }
 			for(key in item){
 				arrayOfValues = item[key]; // example: [{_reference:{name:'Miss Piggy'}}]
 				for(var j = 0; j < arrayOfValues.length; ++j) {
@@ -472,8 +476,8 @@ dojo.declare("dojo.data.ItemFileReadStore",
 							}else{
 								// example: {name:'Miss Piggy'}
 								// from an item like: { name:['Kermit'], friends:[{_reference:{name:'Miss Piggy'}}] }
-								for(var k = 0; k < arrayOfAllItems.length; ++k){
-									var candidateItem = arrayOfAllItems[k];
+								for(var k = 0; k < this._arrayOfAllItems.length; ++k){
+									var candidateItem = this._arrayOfAllItems[k];
 									var found = true;
 									for(var refKey in referenceDescription){
 										if(candidateItem[refKey] != referenceDescription[refKey]){ 
@@ -490,25 +494,28 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				}
 			}
 		}
-		return arrayOfAllItems; //Array
 	},
 
 	getIdentity: function(/* item */ item){
 		//	summary: 
 		//		See dojo.data.api.Identity.getIdentity()
 		var identifier = this._features['dojo.data.api.Identity'];
-		var arrayOfValues = item[identifier];
-		if(arrayOfValues){
-			return arrayOfValues[0]; //Object || String
+		if(identifier === Number){
+			return item[this._itemNumPropName]; // Number
+		}else{
+			var arrayOfValues = item[identifier];
+			if(arrayOfValues){
+				return arrayOfValues[0]; // Object || String
+			}
 		}
-		return null; //null
+		return null; // null
 	},
 
 	fetchItemByIdentity: function(/* Object */ keywordArgs){
 		//	summary: 
 		//		See dojo.data.api.Identity.fetchItemByIdentity()
 
-		//Hasn't loaded yet, we have to trigger the load.
+		// Hasn't loaded yet, we have to trigger the load.
 		if(!this._loadFinished){
 			var self = this;
 			if(this._jsonFileUrl){
@@ -520,7 +527,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				getHandler.addCallback(function(data){
 					var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
 					try{
-						self._arrayOfAllItems = self._getItemsFromLoadedData(data);
+						self._getItemsFromLoadedData(data);
 						self._loadFinished = true;
 						var item = self._getItemByIdentity(keywordArgs.identity);
 						if(keywordArgs.onItem){
@@ -539,8 +546,8 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					}
 				});
 			}else if(this._jsonData){
-				//Passe din data, no need to xhr.
-				self._arrayOfAllItems = self._getItemsFromLoadedData(self._jsonData);
+				// Passed in data, no need to xhr.
+				self._getItemsFromLoadedData(self._jsonData);
 				self._jsonData = null;
 				self._loadFinished = true;
 				var item = self._getItemByIdentity(keywordArgs.identity);
@@ -550,7 +557,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				}
 			} 
 		}else{
-			//Already loaded.  We can just look it up and call back.
+			// Already loaded.  We can just look it up and call back.
 			var item = this._getItemByIdentity(keywordArgs.identity);
 			if(keywordArgs.onItem){
 				var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
@@ -568,6 +575,8 @@ dojo.declare("dojo.data.ItemFileReadStore",
 			if(item === undefined){
 				item = null;
 			}
+		}else{
+			this._arrayOfAllItems[identity];
 		}
 		return item; // Object
 	},
@@ -577,10 +586,15 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		//		See dojo.data.api.Identity.getIdentifierAttributes()
 		 
 		var identifier = this._features['dojo.data.api.Identity'];
-		if(identifier){
-			return [identifier]; //array
+		if(identifier === Number){
+			// If (identifier === Number) it means getIdentity() just returns
+			// an integer item-number for each item.  The dojo.data.api.Identity
+			// spec says we need to return null if the identity is not composed 
+			// of attributes 
+			return null; // null
+		}else{
+			return [identifier]; // Array
 		}
-		return null; //null
 	},
 
 	_forceLoad: function(){
@@ -597,7 +611,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 			var getHandler = dojo.xhrGet(getArgs);
 			getHandler.addCallback(function(data){
 				try{
-					self._arrayOfAllItems = self._getItemsFromLoadedData(data);
+					self._getItemsFromLoadedData(data);
 					self._loadFinished = true;
 				}catch(e){
 					console.log(e);
@@ -608,7 +622,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				throw error;
 			});
 		}else if(this._jsonData){
-			self._arrayOfAllItems = self._getItemsFromLoadedData(self._jsonData);
+			self._getItemsFromLoadedData(self._jsonData);
 			self._jsonData = null;
 			self._loadFinished = true;
 		} 

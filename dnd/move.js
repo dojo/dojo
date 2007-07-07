@@ -57,10 +57,10 @@ dojo.extend(dojo.dnd.Mover, {
 	}
 });
 
-dojo.dnd.Moveable = function(node, opt){
+dojo.dnd.Moveable = function(node, params){
 	// summary: an object, which makes a node moveable
 	// node: Node: a node (or node's id) to be moved
-	// opt: Object: an optional object with additional parameters;
+	// params: Object: an optional object with additional parameters;
 	//	following parameters are recognized:
 	//		handle: Node: a node (or node's id), which is used as a mouse handle
 	//			if omitted, the node itself is used as a handle
@@ -68,11 +68,11 @@ dojo.dnd.Moveable = function(node, opt){
 	//		skip: Boolean: skip move of form elements
 	//		mover: Object: a constructor of custom Mover
 	this.node = dojo.byId(node);
-	this.handle = (opt && opt.handle) ? dojo.byId(opt.handle) : null;
+	this.handle = (params && params.handle) ? dojo.byId(params.handle) : null;
 	if(!this.handle){ this.handle = this.node; }
-	this.delay = (opt && opt.delay > 0) ? opt.delay : 0;
-	this.skip  = opt && opt.skip;
-	this.mover = (opt && opt.mover) ? opt.mover : dojo.dnd.Mover;
+	this.delay = (params && params.delay > 0) ? params.delay : 0;
+	this.skip  = params && params.skip;
+	this.mover = (params && params.mover) ? params.mover : dojo.dnd.Mover;
 	this.events = [
 		dojo.connect(this.handle, "onmousedown", this, "onMouseDown"),
 		// cancel text selection and text dragging
@@ -82,6 +82,23 @@ dojo.dnd.Moveable = function(node, opt){
 };
 
 dojo.extend(dojo.dnd.Moveable, {
+	// object attributes (for markup)
+	handle: "",
+	delay: 0,
+	skip: false,
+	
+	// markup methods
+	markupFactory: function(params, node){
+		return new dojo.dnd.Moveable(node, params);
+	},
+
+	// methods
+	destroy: function(){
+		// summary: stops watching for possible move, deletes all references, so the object can be garbage-collected
+		dojo.forEach(this.events, dojo.disconnect);
+		this.events = this.node = this.handle = null;
+	},
+	
 	// mouse event processors
 	onMouseDown: function(e){
 		// summary: event processor for onmousedown, creates a Mover for the node
@@ -120,12 +137,6 @@ dojo.extend(dojo.dnd.Moveable, {
 		// e: Event: mouse event
 		dojo.disconnect(this.events.pop());
 		dojo.disconnect(this.events.pop());
-	},
-	// utilities
-	destroy: function(){
-		// summary: stops watching for possible move, deletes all references, so the object can be garbage-collected
-		dojo.forEach(this.events, dojo.disconnect);
-		this.events = this.node = this.handle = null;
 	}
 });
 

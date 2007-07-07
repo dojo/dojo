@@ -18,9 +18,10 @@
 			cursor: pointer;
 		}
 	</style>
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 	<script type="text/javascript" src="../../dnd/move.js"></script>
 	<script type="text/javascript">
+		dojo.require("dojo.parser");
 		dojo.require("dojo.dnd.move");
 		var m5, m6;
 		var init = function(){
@@ -34,5 +35,11 @@
 	<h1>Dojo box constraint test</h1>
 	<p class="moveable" id="moveable5"><strong>Paragraph restricted to (100,100:500,500) box:</strong> Donec ac odio sed pede aliquet auctor. Donec et lectus. Praesent feugiat ultrices enim. Morbi lectus. Donec vestibulum posuere libero. Donec quam enim, nonummy a, auctor vitae, placerat id, massa. Vivamus vulputate luctus nibh. Donec dolor orci, sagittis ac, pretium sed, ornare sit amet, pede. Vestibulum leo justo, pellentesque sit amet, tristique sed, tempor eu, felis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam scelerisque velit vel sem. Curabitur vulputate. Morbi pretium porta dui.</p>
 	<p class="moveable" id="moveable6"><strong>Paragraph restricted to (100,100:500,500) box, it cannot go outside of this box:</strong> In hac habitasse platea dictumst. Etiam rhoncus, leo quis hendrerit vestibulum, ipsum felis porta massa, vitae posuere nunc lorem ac enim. Nam neque turpis, aliquet quis, sollicitudin sit amet, dapibus sed, eros. Duis volutpat porttitor velit. Vivamus nibh metus, iaculis eget, malesuada eget, facilisis id, lorem. Sed turpis. Vestibulum aliquam mauris. Integer malesuada tellus vel neque. In hac habitasse platea dictumst. Aliquam at lectus. Maecenas nonummy cursus nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi imperdiet purus eu ipsum. Curabitur sapien felis, euismod eu, dapibus vel, tempor vitae, pede. Suspendisse blandit. Nulla imperdiet. Duis placerat nulla ultricies sem. In in mi nec ipsum molestie tempor. Sed scelerisque.</p>
+	<p class="moveable" dojoType="dojo.dnd.Moveable"><strong>Marked up paragraph restricted to (100,100:500,500) box:</strong> Donec ac odio sed pede aliquet auctor. Donec et lectus. Praesent feugiat ultrices enim. Morbi lectus. Donec vestibulum posuere libero. Donec quam enim, nonummy a, auctor vitae, placerat id, massa. Vivamus vulputate luctus nibh. Donec dolor orci, sagittis ac, pretium sed, ornare sit amet, pede. Vestibulum leo justo, pellentesque sit amet, tristique sed, tempor eu, felis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam scelerisque velit vel sem. Curabitur vulputate. Morbi pretium porta dui.
+		<script type="dojo/method">this.mover = dojo.dnd.boxConstrainedMover({l: 100, t: 100, w: 500, h: 500});</script>
+	</p>
+	<p class="moveable" dojoType="dojo.dnd.Moveable"><strong>Marked up paragraph restricted to (100,100:500,500) box, it cannot go outside of this box:</strong> In hac habitasse platea dictumst. Etiam rhoncus, leo quis hendrerit vestibulum, ipsum felis porta massa, vitae posuere nunc lorem ac enim. Nam neque turpis, aliquet quis, sollicitudin sit amet, dapibus sed, eros. Duis volutpat porttitor velit. Vivamus nibh metus, iaculis eget, malesuada eget, facilisis id, lorem. Sed turpis. Vestibulum aliquam mauris. Integer malesuada tellus vel neque. In hac habitasse platea dictumst. Aliquam at lectus. Maecenas nonummy cursus nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi imperdiet purus eu ipsum. Curabitur sapien felis, euismod eu, dapibus vel, tempor vitae, pede. Suspendisse blandit. Nulla imperdiet. Duis placerat nulla ultricies sem. In in mi nec ipsum molestie tempor. Sed scelerisque.
+		<script type="dojo/method">this.mover = dojo.dnd.boxConstrainedMover({l: 100, t: 100, w: 500, h: 500}, true);</script>
+	</p>
 </body>
 </html>

@@ -75,16 +75,14 @@ function(node, params){
 		}
 		if(anchor){
 			for(var i = 0; i < data.length; ++i){
-				var t = this.creator(data[i]);
+				var t = this._normalizedCreator(data[i]);
 				this.map[t.node.id] = {data: t.data, type: t.type};
-				dojo.addClass(t.node, "dndItem");
 				this.parent.insertBefore(t.node, anchor);
 			}
 		}else{
 			for(var i = 0; i < data.length; ++i){
-				var t = this.creator(data[i]);
+				var t = this._normalizedCreator(data[i]);
 				this.map[t.node.id] = {data: t.data, type: t.type};
-				dojo.addClass(t.node, "dndItem");
 				this.parent.appendChild(t.node);
 			}
 		}
@@ -207,6 +205,14 @@ function(node, params){
 			}
 		}
 		return null;
+	},
+	_normalizedCreator: function(item, hint){
+		// summary: adds all necessary data to the output of the user-supplied creator function
+		var t = this.creator(item, hint);
+		if(!dojo.isArray(t.type)){ t.type = ["text"]; }
+		if(!t.node.id){ t.node.id = dojo.dnd.getUniqueId(); }
+		dojo.addClass(t.node, "dndItem");
+		return t;
 	}
 });
 

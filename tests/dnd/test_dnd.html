@@ -6,17 +6,13 @@
 		@import "../../resources/dojo.css";
 		@import "dndDefault.css";
 
-		body {
-			padding: 1em;
-			background:#ededed;
-		}
+		body { padding: 1em; background: #ededed; }
 
-		#container1,#container2 { width:300px; display:block; }
-		.clear { clear:both; } 
-
+		.container { width: 100px; display: block; }
+		.clear { clear: both; } 
 	</style>
 
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 
 	<script type="text/javascript" src="../../dnd/container.js"></script>
 	<script type="text/javascript" src="../../dnd/selector.js"></script>
@@ -25,26 +21,27 @@
 	<script type="text/javascript" src="../../dnd/manager.js"></script>
 
 	<script type="text/javascript">
-		//dojo.require("dojo.dnd.source");
-		//dojo.require("dojo.dnd.manager");
+		dojo.require("dojo.parser");
+		dojo.require("dojo.dnd.source");
 	
-		var c1, c2;
+		var c1;
 	
 		function init(){
-
-			//c1 = new dojo.dnd.Source(dojo.byId("container1"));
 			c1 = new dojo.dnd.Source("container1");
-			c1.insertNodes(false, [1, 2, 3, 4, 5, 6, [1, 2, 3], function(x){ return x + x; }]);
-			//c2 = new dojo.dnd.Source(dojo.byId("container2"));
-			c2 = new dojo.dnd.Source("container2");
-			c2.insertNodes(false, ["A", "B", "C", "D", "E", "F", {toString: function(){ return "CUSTOM!"; }}, null]);
+			c1.insertNodes(false, [1, "A", [1, 2, 3], 
+				function(x){ return x + x; }, 
+				{toString: function(){ return "CUSTOM!"; }}, 
+				null]);
 
 			// example subscribe to events
-			dojo.subscribe("/dnd/start",function(foo){
-				console.debug(foo);
+			dojo.subscribe("/dnd/start", function(source){
+				console.debug(source);
 			});
-
+			dojo.connect(c4, "onDndDrop", function(source, nodes, copy){
+				console.debug(copy ? "Copying from" : "Moving from", source);
+			});
 		};
+		
 		dojo.addOnLoad(init);
 	</script>
 </head>
@@ -66,17 +63,43 @@
 	</ul>
 
 	<div id="dragLists">
-	
 		<div style="float:left; margin:5px; ">
-			<h3>Target 1</h3>
-			<p id="container1" class="container"></p>
+			<h3>Source 1</h3>
+			<div id="container1" class="container"></div>
 		</div>
-
 		<div style="float:left; margin:5px; ">
-			<h3>Target 2</h3>
-			<p id="container2" class="container"></p>
+			<h3>Source 2</h3>
+			<div dojoType="dojo.dnd.Source" jsId="c2" class="container">
+				<div class="dndItem">Item X</div>
+				<div class="dndItem">Item Y</div>
+				<div class="dndItem">Item Z</div>
+			</div>
 		</div>
-	<div class="clear"></div>
+		<div style="float:left; margin:5px; ">
+			<h3>Source 3</h3>
+			<div dojoType="dojo.dnd.Source" jsId="c3" class="container">
+				<script type="dojo/method" event="creator" args="item, hint">
+					// this is custom creator, which changes the avatar representation
+					var node = dojo.doc.createElement("div"), s = String(item);
+					node.id = dojo.dnd.getUniqueId();
+					node.className = "dndItem";
+					node.innerHTML = (hint != "avatar" || s.indexOf("Item") < 0) ? 
+						s : "<strong style='color: darkred'>Special</strong> " + s;
+					return {node: node, data: item, type: ["text"]};
+				</script>
+				<div class="dndItem">Item Alpha</div>
+				<div class="dndItem">Item Beta</div>
+				<div class="dndItem">Item Gamma</div>
+				<div class="dndItem">Item Delta</div>
+			</div>
+		</div>
+		<div style="float:left; margin:5px; ">
+			<h3>Target 4</h3>
+			<div dojoType="dojo.dnd.Target" jsId="c4" class="container">
+				<div class="dndItem">One item</div>
+			</div>
+		</div>
+		<div class="clear"></div>
 	</div>
 
 	<p>HTML after</p>

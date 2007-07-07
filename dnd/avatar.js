@@ -31,7 +31,7 @@ dojo.extend(dojo.dnd.Avatar, {
 			tr = dojo.doc.createElement("tr");
 			tr.className = "dojoDndAvatarItem";
 			td = dojo.doc.createElement("td");
-			var t = this.manager.source.nodeCreator(this.manager.source.map[this.manager.nodes[i].id].data, "avatar");
+			var t = this.manager.source.creator(this.manager.source.map[this.manager.nodes[i].id].data, "avatar");
 			td.appendChild(t.node);
 			tr.appendChild(td);
 			dojo.style(tr, "opacity", (6 - i) / 10);

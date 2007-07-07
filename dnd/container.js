@@ -1,6 +1,7 @@
 dojo.provide("dojo.dnd.container");
 
 dojo.require("dojo.dnd.common");
+dojo.require("dojo.parser");
 
 /*
 	Container states:
@@ -18,40 +19,26 @@ function(node, params){
 	// summary: a constructor of the Container
 	// node: Node: node or node's id to build the container on
 	// params: Object: a dict of parameters, recognized parameters are:
-	//	filter: Function: a filter function, which is used to filter out children of the container
 	//	creator: Function: a creator function, which takes a data item, and returns an object like that:
-	//		{node: newNode, data: usedData, types: arrayOfStrings}
-	//	selector: Function: a selector function, which selects all relevant nodes of a container; 
-	//		should be used in pair with the filter function; returns an object like that:
-	//		{parent: parentNode, nodes: arrayOf childNodes}
+	//		{node: newNode, data: usedData, type: arrayOfStrings}
+	//	_skipStartup: Boolean: skip startup(), which collects children, for deferred initialization
+	//		(this is used in the markup mode)
 	this.node = dojo.byId(node);
-	var me = this;
-	this.nodeFilter = (params && params.filter) ?
-		params.filter :
-		function(n){ return n.parentNode == me.parent && n.nodeType == 1; };
-	this.nodeCreator  = (params && params.creator) ?
-		params.creator :
-		dojo.dnd._defaultCreator(this.node);
-	this.nodeSelector = (params && params.selector) ?
-		params.selector :
-		dojo.dnd._defaultSelector;
+	this.creator  = (params && params.creator) ? params.creator : dojo.dnd._defaultCreator(this.node);
+
 	// class-specific variables
 	this.map = {};
 	this.current = null;
+
 	// states
 	this.containerState = "";
 	dojo.addClass(this.node, "dojoDndContainer");
 	
 	// mark up children
-	var c = this.nodeSelector(this.node);
-	this.parent = c.parent;
-	c = c.nodes;
-	for(var i = 0; i < c.length; ++i){
-		var n = c[i];
-		if(this.nodeFilter(n) && !n.id){
-			n.id = dojo.dnd.getUniqueId();
-		}
+	if(!(params && params._skipStartup)){
+		this.startup();
 	}
+
 	// set up events
 	this.events = [
 		dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
@@ -62,6 +49,80 @@ function(node, params){
 	];
 },
 {
+	// object attributes (for markup)
+	creator: function(){},	// creator function, dummy at the moment
+	
+	// methods
+	getAllNodes: function(){
+		// summary: returns a list (an array) of all valid child nodes
+		return dojo.query("> .dndItem", this.parent);	// NodeList
+	},
+	insertNodes: function(data, before, anchor){
+		// summary: inserts an array of new nodes before/after an anchor node
+		// data: Array: a list of data items, which should be processed by the creator function
+		// before: Boolean: insert before the anchor, if true, and after the anchor otherwise
+		// anchor: Node: the anchor node to be used as a point of insertion
+		if(!this.parent.firstChild){
+			anchor = null;
+		}else if(before){
+			if(!anchor){
+				anchor = this.parent.firstChild;
+			}
+		}else{
+			if(anchor){
+				anchor = anchor.nextSibling;
+			}
+		}
+		if(anchor){
+			for(var i = 0; i < data.length; ++i){
+				var t = this.creator(data[i]);
+				this.map[t.node.id] = {data: t.data, type: t.type};
+				dojo.addClass(t.node, "dndItem");
+				this.parent.insertBefore(t.node, anchor);
+			}
+		}else{
+			for(var i = 0; i < data.length; ++i){
+				var t = this.creator(data[i]);
+				this.map[t.node.id] = {data: t.data, type: t.type};
+				dojo.addClass(t.node, "dndItem");
+				this.parent.appendChild(t.node);
+			}
+		}
+		return this;	// self
+	},
+	destroy: function(){
+		// summary: prepares the object to be garbage-collected
+		dojo.forEach(this.events, dojo.disconnect);
+		this.node = this.parent = this.current = this.map = null;
+	},
+
+	// markup methods
+	markupFactory: function(params, node){
+		params._skipStartup = true;
+		return new dojo.dnd.Container(node, params);
+	},
+	startup: function(){
+		// summary: collects valid child items and populate the map
+		
+		// set up the real parent node
+		this.parent = this.node;
+		if(this.parent.tagName.toLowerCase() == "table"){
+			var c = this.parent.getElementsByTagName("tbody");
+			if(c && c.length){ this.parent = c[0]; }
+		}
+
+		// process specially marked children
+		dojo.query("> .dndItem", this.parent).forEach(function(node){
+			if(!node.id){ node.id = dojo.dnd.getUniqueId(); }
+			var type = node.getAttribute("dndType"),
+				data = node.getAttribute("dndData");
+			this.map[node.id] = {
+				data: data ? data : node.innerHTML,
+				type: type ? type.split(/\s*,\s*/) : ["text"]
+			};
+		}, this);
+	},
+
 	// mouse events
 	onMouseOver: function(e){
 		// summary: event processor for onmouseover
@@ -103,55 +164,7 @@ function(node, params){
 		this._changeState("Container", "");
 		this.onOutEvent();
 	},
-	// methods
-	destroy: function(){
-		// summary: prepares the object to be garbage-collected
-		dojo.forEach(this.events, dojo.disconnect);
-		this.node = this.parent = this.current = this.map = null;
-	},
-	getAllNodes: function(){
-		// summary: returns a list (an array) of all valid child nodes
-		var t = [];
-		var c = this.nodeSelector(this.node).nodes;
-		for(var i = 0; i < c.length; ++i){
-			var n = c[i];
-			if(this.nodeFilter(n)){
-				t.push(n);
-			}
-		}
-		return t;	// Array
-	},
-	insertNodes: function(data, before, anchor){
-		// summary: inserts an array of new nodes before/after an anchor node
-		// data: Array: a list of data items, which should be processed by the creator function
-		// before: Boolean: insert before the anchor, if true, and after the anchor otherwise
-		// anchor: Node: the anchor node to be used as a point of insertion
-		if(!this.parent.firstChild){
-			anchor = null;
-		}else if(before){
-			if(!anchor){
-				anchor = this.parent.firstChild;
-			}
-		}else{
-			if(anchor){
-				anchor = anchor.nextSibling;
-			}
-		}
-		if(anchor){
-			for(var i = 0; i < data.length; ++i){
-				var t = this.nodeCreator(data[i]);
-				this.map[t.node.id] = {data: t.data, types: t.types};
-				this.parent.insertBefore(t.node, anchor);
-			}
-		}else{
-			for(var i = 0; i < data.length; ++i){
-				var t = this.nodeCreator(data[i]);
-				this.map[t.node.id] = {data: t.data, types: t.types};
-				this.parent.appendChild(t.node);
-			}
-		}
-		return this;	// self
-	},
+	
 	// utilities
 	onOverEvent: function(){
 		// summary: this function is called once, when mouse is over our container
@@ -188,15 +201,12 @@ function(node, params){
 		// summary: gets a child, which is under the mouse at the moment, or null
 		// e: Event: a mouse event
 		var node = e.target;
-		if(node == this.node){ return null; }
-		if(this.nodeFilter(node)) return node;
-		var parent = node.parentNode;
-		while(parent && parent != this.parent && node != this.node){
-			node = parent;
-			parent = node.parentNode;
-			if(this.nodeFilter(node)) return node;
+		if(node){
+			for(var parent = node.parentNode; parent; node = parent, parent = node.parentNode){
+				if(parent == this.parent && dojo.hasClass(node, "dndItem")){ return node; }
+			}
 		}
-		return (parent && this.nodeFilter(node)) ? node : null;	// Node
+		return null;
 	}
 });
 
@@ -239,26 +249,12 @@ dojo.dnd._defaultCreator = function(node){
 	var tag = node.tagName.toLowerCase();
 	var c = tag == "table" ? dojo.dnd._createTrTd : dojo.dnd._createNode(dojo.dnd._defaultCreatorNodes[tag]);
 	var r = (dojo.lang && dojo.lang.repr) ? dojo.lang.repr : function(o){ return o + ""; };
-	return function(data, hint){	// Function
-		var t = r(data);
-		var n = (hint == "avatar" ? dojo.dnd._createSpan : c)(t);
+	return function(item, hint){	// Function
+		var isObj = dojo.isObject(item) && item;
+		var data = (isObj && item.data) ? item.data : item;
+		var type = (isObj && item.type) ? item.type : ["text"];
+		var t = r(data), n = (hint == "avatar" ? dojo.dnd._createSpan : c)(t);
 		n.id = dojo.dnd.getUniqueId();
-		return {node: n, data: data, types: ["text"]};
+		return {node: n, data: data, type: type};
 	};
-};
-
-dojo.dnd._defaultSelector = function(node) {
-	// summary: takes a container node, and returns a parent, and a list of children
-	// node: Node: a container node
-	var ret = {parent: node, nodes: []};
-	if(node.tagName.toLowerCase() == "table"){
-		var c = node.getElementsByTagName("tbody");
-		if(c && c.length){
-			ret.parent = c[0];
-		}
-		ret.nodes = ret.parent.getElementsByTagName("tr");
-	}else{
-		ret.nodes = node.childNodes;
-	}
-	return ret;	// Object
 };

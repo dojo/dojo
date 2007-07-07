@@ -13,8 +13,8 @@
 		.container				{padding: 5px; cursor: default; background: #f8f8ff;}
 		.wrap1					{float: left; width: 275px; height: 600px; overflow: auto; margin-right: 1em;}
 		.wrap2					{width: 350px; height: 170px; overflow: auto;}
-		#container1 .name		{font-weight: bold; padding-right: 4px;}
-		#container1 .image		{padding: 5px;}
+		.container .name		{font-weight: bold; padding-right: 4px;}
+		.container .image		{padding: 5px;}
 		body.dojoDndCopy, body.dojoDndMove	{color: #888;}
 		.dojoDndCopy .container, .dojoDndMove .container	{background: #ddf;}
 		/* container-specific settings */
@@ -43,7 +43,7 @@
 		.dojoDndMove .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/set2_copy.png);}
 		.dojoDndCopy .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/set2_allow.png);}
 	</style>
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 	<script type="text/javascript" src="../../dnd/common.js"></script>
 	<script type="text/javascript" src="../../dnd/autoscroll.js"></script>
 	<script type="text/javascript" src="../../dnd/container.js"></script>
@@ -52,60 +52,48 @@
 	<script type="text/javascript" src="../../dnd/avatar.js"></script>
 	<script type="text/javascript" src="../../dnd/manager.js"></script>
 	<script type="text/javascript">
-		dojo.require("dojo.dnd.source");
-		dojo.require("dojo.dnd.manager");
-		
+		dojo.require("dojo.parser");
 		dojo.require("dojo.io.script");
-		
-		// missing unique
-		var dom = {
-			_uniqueId: 0,
-			_getUniqueId: function(){
-				// summary: returns a unique string for use with any DOM element
-				var id;
-				do{
-					id = "domUnique" + (++dom._uniqueId);
-				}while(dojo.byId(id));
-				return id;
-			}
-		};
-		
-		// our 3 image containers
-		var c1 = null, c2 = null, c3 = null;
+		dojo.require("dojo.dnd.source");
 		
 		// The main image container creator
-		var main_creator = function(data, hint){
-			var types = [];
-			if(data.tags.search(/animal/i) >= 0){ types.push("animal"); }
-			if(data.tags.search(/tree/i) >= 0){ types.push("tree"); }
+		var main_creator = function(item, hint){
+			var type = [];
+			if(item.tags.search(/animal/i) >= 0){ type.push("animal"); }
+			if(item.tags.search(/tree/i) >= 0){ type.push("tree"); }
 			var node;
 			if(hint == "avatar"){
 				node = dojo.doc.createElement("span");
-				node.innerHTML = "<img src='" + data.media.m.replace(/_m\./, "_s.") + "'/>";
+				node.innerHTML = "<img src='" + item.media.m.replace(/_m\./, "_s.") + "'/>";
 			}else{
 				var t = ["<table border='0' cellpadding='0' cellspacing='0' width='250'>"];
-				t.push("<tr><td colspan='2' class='image' align='center' width='250'><img src='" + data.media.m + "'/></td></tr>");
-				t.push("<tr><td class='name' valign='top'>Title:</td><td class='value'><a href='" + data.link + "' target='_blank'>" + data.title + "</a></td></tr>");
-				t.push("<tr><td class='name' valign='top'>Author:</td><td class='value'>" + data.author + "</td></tr>");
-				t.push("<tr><td class='name' valign='top'>Tags:</td><td class='value'>" + data.tags + "</td></tr>");
+				t.push("<tr><td colspan='2' class='image' align='center' width='250'><img src='" + 
+					item.media.m + "'/></td></tr>");
+				t.push("<tr><td class='name' valign='top'>Title:</td><td class='value'><a href='" + 
+					item.link + "' target='_blank'>" + 
+					(item.title ? item.title : "<em>untitled</em>") + "</a></td></tr>");
+				t.push("<tr><td class='name' valign='top'>Author:</td><td class='value'>" + 
+					item.author + "</td></tr>");
+				t.push("<tr><td class='name' valign='top'>Tags:</td><td class='value'>" + 
+					item.tags + "</td></tr>");
 				t.push("</table>");
 				node = dojo.doc.createElement("div");
 				node.innerHTML = t.join("");
 			}
-			node.id = dom._getUniqueId();
-			return {node: node, data: data, types: types};
+			node.id = dojo.dnd.getUniqueId();
+			return {node: node, data: item, type: type};
 		};
 		
 		// The band image container creator
-		var band_creator = function(data, hint){
-			var types = [];
-			if(data.tags.search(/animal/i) >= 0){ types.push("animal"); }
-			if(data.tags.search(/tree/i) >= 0){ types.push("tree"); }
-			var src = data.media.m.replace(/_m\./, "_s.");
+		var band_creator = function(item, hint){
+			var type = [];
+			if(item.tags.search(/animal/i) >= 0){ type.push("animal"); }
+			if(item.tags.search(/tree/i) >= 0){ type.push("tree"); }
+			var src = item.media.m.replace(/_m\./, "_s.");
 			var node = dojo.doc.createElement("span");
 			node.innerHTML = "<img src='" + src + "'/>";
-			node.id = dom._getUniqueId();
-			return {node: node, data: data, types: types};
+			node.id = dojo.dnd.getUniqueId();
+			return {node: node, data: item, type: type};
 		};
 		
 		// Flickr's JSONP function
@@ -116,21 +104,9 @@
 			}
 			dojo.byId("status").innerHTML = data.items.length + " images were retrieved";
 			// initialize sources
-			if(c1){
-				c1.selectAll().deleteSelectedNodes();
-			}else{
-				c1 = new dojo.dnd.Source("container1", {creator: main_creator, accept: ["animal", "tree", "dojo"]});
-			}
-			if(c2){
-				c2.selectAll().deleteSelectedNodes();
-			}else{
-				c2 = new dojo.dnd.Source("container2", {creator: band_creator, accept: ["animal"], horizontal: true});
-			}
-			if(c3){
-				c3.selectAll().deleteSelectedNodes();
-			}else{
-				c3 = new dojo.dnd.Source("container3", {creator: band_creator, accept: ["tree"], horizontal: true});
-			}
+			c1.selectAll().deleteSelectedNodes();
+			c2.selectAll().deleteSelectedNodes();
+			c3.selectAll().deleteSelectedNodes();
 			// populate the main source
 			c1.insertNodes(false, data.items);
 		};
@@ -167,12 +143,24 @@
 		<li>Simple drop &mdash; moves elements to the valid target removing them from the source. It can be used to reorganize elements within a single source/target.</li>
 		<li>Ctrl+drop &mdash; copies elements to the valid target (use Meta key on Mac).</li>
 	</ul>
-	<p>Now scroll down and start dragging and dropping!</p>
+	<p>Now scroll down and start dragging and dropping, rearrange images using DnD, copy and move them back!</p>
 	<p>Status: <span id="status">retrieving a list of Flickr images...</span></p>
-	<div class="wrap1"><div id="container1" class="container"></div></div>
+	<div class="wrap1">
+		<div dojoType="dojo.dnd.Source" jsId="c1" accept="animal, tree, dojo" class="container">
+			<script type="dojo/method" event="creator" args="item, hint">return main_creator(item, hint);</script>
+		</div>
+	</div>
 	<p>Tag: animal</p>
-	<div class="wrap2"><div id="container2" class="container"></div></div>
+	<div class="wrap2">
+		<div dojoType="dojo.dnd.Source" jsId="c2" accept="animal" horizontal="true" class="container">
+			<script type="dojo/method" event="creator" args="item, hint">return band_creator(item, hint);</script>
+		</div>
+	</div>
 	<p>Tag: tree</p>
-	<div class="wrap2"><div id="container3" class="container"></div></div>
+	<div class="wrap2">
+		<div dojoType="dojo.dnd.Source" jsId="c3" accept="tree" horizontal="true" class="container">
+			<script type="dojo/method" event="creator" args="item, hint">return band_creator(item, hint);</script>
+		</div>
+	</div>
 </body>
 </html>

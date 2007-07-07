@@ -32,12 +32,12 @@ function(node, params){
 	//	the rest of parameters are passed to the selector
 	if(!params){ params = {}; }
 	this.isSource = typeof params.isSource == "undefined" ? true : params.isSource;
-	var types = params.accept instanceof Array ? params.accept : ["text"];
+	var type = params.accept instanceof Array ? params.accept : ["text"];
 	this.accept = null;
-	if(types.length){
+	if(type.length){
 		this.accept = {};
-		for(var i = 0; i < types.length; ++i){
-			this.accept[types[i]] = 1;
+		for(var i = 0; i < type.length; ++i){
+			this.accept[type[i]] = 1;
 		}
 	}
 	this.horizontal = params.horizontal;
@@ -69,6 +69,59 @@ function(node, params){
 	];
 },
 {
+	// object attributes (for markup)
+	isSource: true,
+	horizontal: false,
+	copyOnly: false,
+	accept: ["text"],
+	
+	// methods
+	checkAcceptance: function(source, nodes){
+		// summary: checks, if the target can accept nodes from this source
+		// source: Object: the source which provides items
+		// nodes: Array: the list of transferred items
+		if(this == source){ return true; }
+		var accepted = true;
+		for(var i = 0; i < nodes.length; ++i){
+			var type = source.map[nodes[i].id].type;
+			if(type instanceof Array){
+				var flag = false;
+				for(var j = 0; j < type.length; ++j){
+					if(type[j] in this.accept){
+						flag = true;
+						break;
+					}
+				}
+				if(!flag){
+					accepted = false;
+					break;
+				}
+			}else{
+				accepted = false;
+			}
+			if(!accepted){ break; }
+		}
+		return accepted;	// Boolean
+	},
+	copyState: function(keyPressed){
+		// summary: Returns true, if we need to copy items, false to move.
+		//		It is separate to be overwritten dynamically, if needed.
+		// keyPressed: Boolean: the "copy" was pressed
+		return this.copyOnly || keyPressed;	// Boolean
+	},
+	destroy: function(){
+		// summary: prepares the object to be garbage-collected
+		dojo.dnd.Source.superclass.destroy.call(this);
+		dojo.forEach(this.topics, dojo.unsubscribe);
+		this.targetAnchor = null;
+	},
+
+	// markup methods
+	markupFactory: function(params, node){
+		params._skipStartup = true;
+		return new dojo.dnd.Source(node, params);
+	},
+
 	// mouse event processors
 	onMouseMove: function(e){
 		// summary: event processor for onmousemove
@@ -118,6 +171,7 @@ function(node, params){
 		this.mouseDown = false;
 		dojo.dnd.Source.superclass.onMouseUp.call(this, e);
 	},
+	
 	// topic event processors
 	onDndSourceOver: function(source){
 		// summary: topic event processor for ondndsourceover, called when detected a current source
@@ -154,20 +208,20 @@ function(node, params){
 		// copy: Boolean: copy items, if true, move items otherwise
 		do{ //break box
 			if(this.containerState != "Over"){ break; }
-			var oldCreator = this.nodeCreator;
+			var oldCreator = this.creator;
 			if(this != source || copy){
 				this.selectNone();
-				this.nodeCreator = function(n){
+				this.creator = function(n){
 					return oldCreator(source.map[n.id].data);
 				};
 			}else{
 				if(this.current && this.current.id in this.selection){ break; }
-				this.nodeCreator = function(n){
-					var t = source.map[n.id]; return {node: n, data: t.data, types: t.types};
+				this.creator = function(n){
+					var t = source.map[n.id]; return {node: n, data: t.data, type: t.type};
 				};
 			}
 			this.insertNodes(true, nodes, this.before, this.current);
-			this.nodeCreator = oldCreator;
+			this.creator = oldCreator;
 			if(this != source && !copy){
 				source.deleteSelectedNodes();
 			}
@@ -186,6 +240,7 @@ function(node, params){
 		this._changeState("Source", "");
 		this._changeState("Target", "");
 	},
+	
 	// utilities
 	onOverEvent: function(){
 		// summary: this function is called once, when mouse is over our container
@@ -196,46 +251,6 @@ function(node, params){
 		// summary: this function is called once, when mouse is out of our container
 		dojo.dnd.Source.superclass.onOutEvent.call(this);
 		dojo.dnd.manager().outSource(this);
-	},
-	// methods
-	destroy: function(){
-		// summary: prepares the object to be garbage-collected
-		dojo.dnd.Source.superclass.destroy.call(this);
-		dojo.forEach(this.topics, dojo.unsubscribe);
-		this.targetAnchor = null;
-	},
-	checkAcceptance: function(source, nodes){
-		// summary: checks, if the target can accept nodes from this source
-		// source: Object: the source which provides items
-		// nodes: Array: the list of transferred items
-		if(this == source){ return true; }
-		var accepted = true;
-		for(var i = 0; i < nodes.length; ++i){
-			var types = source.map[nodes[i].id].types;
-			if(types instanceof Array){
-				var flag = false;
-				for(var j = 0; j < types.length; ++j){
-					if(types[j] in this.accept){
-						flag = true;
-						break;
-					}
-				}
-				if(!flag){
-					accepted = false;
-					break;
-				}
-			}else{
-				accepted = false;
-			}
-			if(!accepted){ break; }
-		}
-		return accepted;	// Boolean
-	},
-	copyState: function(keyPressed){
-		// summary: Returns true, if we need to copy items, false to move.
-		//		It is separate to be overwritten dynamically, if needed.
-		// keyPressed: Boolean: the "copy" was pressed
-		return this.copyOnly || keyPressed;	// Boolean
 	},
 	_markTargetAnchor: function(before){
 		// summary: assigns a class to the current target anchor based on "before" status
@@ -271,4 +286,11 @@ function(node, params){
 	// summary: a constructor of the Target --- see the Source constructor for details
 	this.isSource = false;
 	dojo.removeClass(this.node, "dojoDndSource");
+},
+{
+	// markup methods
+	markupFactory: function(params, node){
+		params._skipStartup = true;
+		return new dojo.dnd.Target(node, params);
+	}
 });

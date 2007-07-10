@@ -46,7 +46,8 @@
 				}
 			);
 
-			dojo.declare("tests.parser.inputClass", null, null,
+			dojo.declare("tests.parser.inputClass", null, 
+				function(args, node){ dojo.mixin(this, args); },
 				{
 					// these attributes are special in HTML, they don't have a value specified
 					disabled: false,
@@ -140,7 +141,7 @@
 		</div>
 		<div dojoType="tests.parser.Class2" jsId="obj3">
 		</div>
-		<input dojoType="tests.parser.inputClass" jsId="checkedObj" checked>
+		<input dojoType="tests.parser.inputClass" jsId="checkedObj" checked type="checkbox">
 		<button dojoType="tests.parser.inputClass" jsId="disabledObj" disabled>hi</button>
 	</body>
 </html>

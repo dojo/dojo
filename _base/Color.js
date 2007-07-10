@@ -29,7 +29,7 @@ dojo.Color.named = {
 dojo.extend(dojo.Color, {
 	// FIXME: implement caching of the RGBA array generation!! It's stupid that we realloc
 	_cache: null,
-	setColor: function(/*r, g, b, a*/){
+	setColor: function(/*Array|(r, g, b, a)*/){
 		// summary:
 		// 		takes an r, g, b, a(lpha) value, [r, g, b, a] array, "rgb(...)"
 		// 		string, hex string (#aaa, #aaaaaa, aaaaaaa)

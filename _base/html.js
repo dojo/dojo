@@ -756,12 +756,55 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		var de = dojo.doc.documentElement;
 		return {
 			y: (_w.pageYOffset || de.scrollTop || _b.scrollTop || 0),
-			x: (_w.pageXOffset || de.scrollLeft || _b.scrollLeft || 0)
+			x: (_w.pageXOffset || dojo._fixIeBiDiScrollLeft(de.scrollLeft) || _b.scrollLeft || 0)
 		};
 	};
-
-	// IE version and quirks dependent. ugg.
-	var _d_off = ((dojo.isIE >= 7)&&(dojo.boxModel != "border-box")) ? 2 : 0; 
+	
+	dojo._isBodyLtr = function(){
+		//FIXME: could check html and body tags directly instead of computed style?  need to ignore case, accept empty values
+		return typeof dojo._bodyLtr == "undefined" ? 
+				(dojo._bodyLtr = dojo.getComputedStyle(dojo.body()).direction == "ltr") :
+				dojo._bodyLtr; // Boolean 
+	}
+	
+	dojo._getIeDocumentElementOffset = function(){
+		// summary
+		// The following values in IE contain an offset:
+		//     event.clientX 
+		//     event.clientY 
+		//     node.getBoundingClientRect().left
+		//     node.getBoundingClientRect().top
+		// But other position related values do not contain this offset, such as
+		// node.offsetLeft, node.offsetTop, node.style.left and node.style.top.
+		// The offset is always (2, 2) in LTR direction. When the body is in RTL
+		// direction, the offset counts the width of left scroll bar's width.
+		// This function computes the actual offset.
+		if(!dojo.isIE){
+			return {x: 0, y: 0}; // Object
+		}
+		var de = dojo.doc.documentElement;
+		if(dojo.isIE >= 7){
+			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top}; // Object
+		}else{
+			// IE 6.0
+			return {x: dojo._isBodyLtr() || window.parent != window ?
+				de.offsetWidth - de.clientWidth - de.clientLeft : de.clientLeft, 
+				y: de.clientTop}; // Object
+		}
+	};
+	
+	dojo._fixIeBiDiScrollLeft = function(/*Integer*/ scrollLeft){
+		// In RTL direction, scrollLeft should be a negative value, but IE 
+		// returns a positive one. All codes using documentElement.scrollLeft
+		// must call this function to fix this error, otherwise the position
+		// will offset to right when there is a horizonal scrollbar.
+		if(dojo.isIE && !dojo._isBodyLtr()){
+			var de = dojo.doc.documentElement;
+			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
+		}
+		return scrollLeft; // Integer
+	}
+	
 	dojo._abs = function(/*HTMLElement*/node, /*Boolean?*/includeScroll){
 		//	summary:
 		//		Gets the absolute position of the passed element based on the
@@ -783,10 +826,10 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		var db = dojo.body();
 
 		if(dojo.isIE){
-			with(node.getBoundingClientRect()){
-				ret.x = left-_d_off;
-				ret.y = top-_d_off;
-			}
+			var client = node.getBoundingClientRect();
+			var offset = dojo._getIeDocumentElementOffset();
+			ret.x = client.left - offset.x;
+			ret.y = client.top - offset.y;
 		}else if(ownerDocument["getBoxObjectFor"]){
 			// mozilla
 			var bo = ownerDocument.getBoxObjectFor(node);

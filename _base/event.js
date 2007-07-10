@@ -264,8 +264,9 @@ dojo.require("dojo._base.connect");
 				// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
 				// here rather than document.body
 				var docBody = ((dojo.isIE<6)||(doc["compatMode"]=="BackCompat")) ? doc.body : doc.documentElement;
-				evt.pageX = evt.clientX + (docBody.scrollLeft || 0);
-				evt.pageY = evt.clientY + (docBody.scrollTop || 0);
+				var offset = dojo._getIeDocumentElementOffset();
+				evt.pageX = evt.clientX + dojo._fixIeBiDiScrollLeft(docBody.scrollLeft || 0) - offset.x;
+				evt.pageY = evt.clientY + (docBody.scrollTop || 0) - offset.y;
 				if(evt.type == "mouseover"){ 
 					evt.relatedTarget = evt.fromElement;
 				}

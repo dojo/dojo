@@ -74,7 +74,7 @@ dojo.blendColors = function(/*String|Array|dojo.Color*/a, /*String|Array|dojo.Co
 	b = b._cache || b;
 	weight = Math.min(Math.max(-1, weight||0), 1);
 
-	// alex: this interface blows.
+	// Alex: this interface blows.
 	// map -1 to 1 to the range 0 to 1
 	weight = (weight + 1)/2;
 

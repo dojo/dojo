@@ -30,12 +30,10 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
     var depRegExp = /dojo.(require|requireIf|provide|requireAfterIf|platformRequire|requireLocalization)\(([\w\W]*?)\)/mg;
     var match;
 	while((match = depRegExp.exec(contents)) != null){
-		//In xd case, need to load dojo.i18n up front in order for requireLocalization
-		//calls to work.
-		//FIXME: There is a whole in this scheme: if a local module tries to do
-		//a dojo.requireLocalization on an xd i18n bundle.
 		if(match[1] == "requireLocalization"){
-			deps.push('"require", "dojo.i18n"');
+			//Need to load the local bundles asap, since they are not
+			//part of the list of modules watched for loading.
+			eval(match[0]);
 		}else{
 			deps.push('"' + match[1] + '", ' + match[2]);
 		}

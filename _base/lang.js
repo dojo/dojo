@@ -63,7 +63,7 @@ dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
 		// the "tobj" condition avoid copying properties in "props"
 		// inherited from Object.prototype.  For example, if obj has a custom
 		// toString() method, don't overwrite it with the toString() method
-		// that props inherited from Object.protoype
+		// that props inherited from Object.prototype
 		if((typeof tobj[x] == "undefined") || (tobj[x] != props[x])){
 			obj[x] = props[x];
 		}

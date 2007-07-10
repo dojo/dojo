@@ -45,87 +45,82 @@ dojo.extend(dojo.Color, {
 		this._cache[3] = this.a = this.a || 1.0;
 	},
 	toRgb: function(includeAlpha){
-		return this._cache.slice(0, (includeAlpha ? 4 : 3));
+		return this._cache.slice(0, (includeAlpha ? 4 : 3)); // Array
 	},
+//FIXME: redundant?
 	toRgba: function(){
-		return this._cache.slice(0, 4);
+		return this._cache.slice(0, 4); // Array
 	},
+//FIXME: toHex is redundant.  Just use toString?
 	toHex: function(){
-		return dojo.rgb2hex(this.toRgb());
+		return dojo.rgb2hex(this.toRgb()); // String
 	},
 	toCss: function(){
-		return "rgb(" + this.toRgb().join(", ") + ")";
+		return "rgb(" + this.toRgb().join(", ") + ")"; // String
 	},
 	toString: function(){
-		return this.toHex(); // decent default?
+		//TODO: decent default?
+		return this.toHex(); // String
 	}
 });
 
-dojo.blendColors = function(a, b, weight){
+dojo.blendColors = function(/*String|Array|dojo.Color*/a, /*String|Array|dojo.Color*/b, /*Number?*/weight){
 	// summary: 
 	//		blend colors a and b with weight
 	//		from -1 to +1, 0 being a 50/50 blend
 	if(typeof a == "string"){ a = dojo.extractRgb(a); }
 	if(typeof b == "string"){ b = dojo.extractRgb(b); }
-	if(a["_cache"]){ a = a._cache; }
-	if(b["_cache"]){ b = b._cache; }
-	weight = Math.min(Math.max(-1, (weight||0)), 1);
+	a = a._cache || a;
+	b = b._cache || b;
+	weight = Math.min(Math.max(-1, weight||0), 1);
 
 	// alex: this interface blows.
 	// map -1 to 1 to the range 0 to 1
 	weight = (weight + 1)/2;
-	
-	var c = [];
 
-	// var stop = (1000*weight);
-	for(var x = 0; x < 3; x++){
-		// console.debug(b[x] + ((a[x] - b[x]) * weight));
-		c[x] = parseInt( b[x] + ( (a[x] - b[x]) * weight) );
-	}
-	return c;
+	return dojo.map(dojo._toArray(b), function(x, i){
+		return parseInt(x + ((a[i] - x) * weight));
+	}); // Array
 }
 
 // get RGB array from css-style color declarations
-dojo.extractRgb = function(color){
+dojo.extractRgb = function(/*String*/color){
 	color = color.toLowerCase();
 	if(!color.indexOf("rgb")){
 		var matches = color.match(/rgba*\((\d+), *(\d+), *(\d+)/i);
-		return dojo.map(matches.splice(1, 3), parseFloat);
+		return dojo.map(matches.splice(1, 3), parseFloat); // Array
 	}else{
-		return dojo.hex2rgb(color) || dojo.Color.named[color] || [255, 255, 255];
+		return dojo.hex2rgb(color) || dojo.Color.named[color] || [255, 255, 255]; // Array
 	}
 }
 
-dojo.hex2rgb = function(hex){
-	var hexNum = "0123456789abcdef";
-	var rgb = new Array(3);
-	if(hex.charAt(0) == "#"){ hex = hex.substr(1); }
-	hex = hex.toLowerCase();
-	if(hex.replace(new RegExp("["+hexNum+"]", "g"), "") != ""){
-		return null;
+dojo.hex2rgb = function(/*String*/value){
+	// summary: converts a hex string with an optional '#' prefix to an 3-element rgb array.  Supports 12-bit #rgb shorthand.
+
+	if(value.charAt(0) == "#"){ value = value.substr(1); }
+	var bits = (value.length == 3) ? 4 : 8;
+	var mask = (1 << bits) - 1;
+	value = Number("0x"+value);
+	if(isNaN(value)){
+		return null; // null
 	}
-	if(hex.length == 3){
-		rgb[0] = hex.charAt(0) + hex.charAt(0);
-		rgb[1] = hex.charAt(1) + hex.charAt(1);
-		rgb[2] = hex.charAt(2) + hex.charAt(2);
-	}else{
-		rgb[0] = hex.substr(0, 2);
-		rgb[1] = hex.substr(2, 2);
-		rgb[2] = hex.substr(4);
+	var rgb = [];
+	for(var i = 3; i; i--){
+		var x = value & mask;
+		if(bits == 4){ x *= 17; }
+		rgb[i-1] = x;
+		value >>= bits;
 	}
-	for(var i = 0; i < rgb.length; i++){
-		rgb[i] = hexNum.indexOf(rgb[i].charAt(0)) * 16 + hexNum.indexOf(rgb[i].charAt(1));
-	}
-	return rgb;
+	return rgb; // Array
 }
 
-dojo.rgb2hex = function(r, g, b){
-	// summary: converts an RGB numbers set to hex color code
-	var ret = dojo.map(((r._cache)||((!g) ? r : [r, g, b])), function(x, i){
+dojo.rgb2hex = function(/*Array|dojo.Color*/rgb){
+	// summary: converts a dojo.Color or an Array containing RGB values to a CSS-style hex string.
+
+	var arr = dojo.map(rgb._cache || rgb, function(x){
 		var s = (new Number(x)).toString(16);
 		while(s.length < 2){ s = "0" + s; }
 		return s;
 	});
-	ret.unshift("#");
-	return ret.join("");  // String
+	return "#" + arr.join(""); // String
 }

@@ -17,7 +17,7 @@ dojo.provide("dojo._base.array");
 		d.mixin(d, {
 			indexOf: function(	/*Array*/		array, 
 								/*Object*/		value,
-								/*Integer*/		fromIndex,
+								/*Integer?*/	fromIndex,
 								/*Boolean?*/	findLast){
 				// summary:
 				//		locates the first index of the provided value in the passed
@@ -44,9 +44,9 @@ dojo.provide("dojo._base.array");
 				return -1;	// number
 			},
 
-			lastIndexOf: function(/*Array*/array, /*Object*/value, /*boolean?*/identity){
+			lastIndexOf: function(/*Array*/array, /*Object*/value, /*Integer?*/fromIndex){
 				// summary:
-				//		locates the lat index of the provided value in the passed
+				//		locates the last index of the provided value in the passed
 				//		array. If the value is not found, -1 is returned.
 				// description:
 				//		For details on this method, see:

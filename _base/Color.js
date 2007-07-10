@@ -122,5 +122,6 @@ dojo.rgb2hex = function(/*Array|dojo.Color*/rgb){
 		while(s.length < 2){ s = "0" + s; }
 		return s;
 	});
+
 	return "#" + arr.join(""); // String
 }

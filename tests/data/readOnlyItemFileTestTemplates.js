@@ -205,7 +205,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		paper.
 
 			if(dojo.isBrowser){
-				var store = new dojo.data.ItemFileReadStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
+				var store = new datastore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
 				var d = new doh.Deferred();
 				function onItem(item){
@@ -364,7 +364,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		paper.
 
 			if(dojo.isBrowser){
-				var store = new dojo.data.ItemFileReadStore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
+				var store = new datastore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
 				var d = new doh.Deferred();
 				function onComplete(items, request){
@@ -855,7 +855,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test pattern matching of everything with $ in it.
 
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 1, value:"foo*bar"},
 												   {uniqueId: 2, value:"bar*foo"}, 
 												   {uniqueId: 3, value:"boomBam"},
@@ -903,7 +903,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test exact pattern match
 
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 1, value:"foo*bar"},
 												   {uniqueId: 2, value:"bar*foo"}, 
 												   {uniqueId: 3, value:"boomBam"},
@@ -951,7 +951,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test pattern matching of a pattern case-sensitively
 
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 1, value:"foo*bar"},
 												   {uniqueId: 2, value:"bar*foo"}, 
 												   {uniqueId: 3, value:"BAR*foo"},
@@ -994,7 +994,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test pattern matching of a pattern case-insensitively
 
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 1, value:"foo*bar"},
 												   {uniqueId: 2, value:"bar*foo"}, 
 												   {uniqueId: 3, value:"BAR*foo"},
@@ -1037,7 +1037,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting numerically.
 			
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 0, value:"fo|o*b.ar"},
 												   {uniqueId: 1, value:"ba|r*foo"}, 
 												   {uniqueId: 2, value:"boomBam"},
@@ -1090,7 +1090,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting numerically.
 
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											  items: [ {uniqueId: 0, value:"fo|o*b.ar"},
 												   {uniqueId: 1, value:"ba|r*foo"}, 
 												   {uniqueId: 2, value:"boomBam"},
@@ -1142,7 +1142,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting numerically in descending order, returning only a specified number of them.
 		
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"fo|o*b.ar"},
 												  {uniqueId: 1, value:"ba|r*foo"}, 
 												  {uniqueId: 2, value:"boomBam"},
@@ -1197,7 +1197,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting alphabetic ordering.
 		
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"}, 
 												  {uniqueId: 2, value:"abcd"},
@@ -1264,7 +1264,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting alphabetic ordering in descending mode.
 		
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"}, 
 												  {uniqueId: 2, value:"abcd"},
@@ -1332,7 +1332,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting date.
 		
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value: new Date(0)},
 												  {uniqueId: 1, value: new Date(100)}, 
 												  {uniqueId: 2, value:new Date(1000)},
@@ -1387,7 +1387,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting date in descending order.
 		
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value: new Date(0)},
 												  {uniqueId: 1, value: new Date(100)}, 
 												  {uniqueId: 2, value:new Date(1000)},
@@ -1443,7 +1443,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting on multiple attributes.
 			
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 1, value:"fo|o*b.ar"},
 												  {uniqueId: 2, value:"ba|r*foo"}, 
 												  {uniqueId: 3, value:"boomBam"},
@@ -1512,7 +1512,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting on multiple attributes with a custom comparator.
 
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 1, status:"CLOSED"},
 												  {uniqueId: 2,  status:"OPEN"}, 
 												  {uniqueId: 3,  status:"PENDING"},
@@ -1582,7 +1582,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Function to test sorting alphabetic ordering.
 		
-			var store = new dojo.data.ItemFileReadStore({data: { identifier: "uniqueId", 
+			var store = new datastore({data: { identifier: "uniqueId", 
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"}, 
 												  {uniqueId: 2, value:"abcd"},
@@ -1639,7 +1639,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the errors thrown when there is an id collision in the data.
 			//		Added because of tracker: #2546
 
-			var store = new dojo.data.ItemFileReadStore({	data: { identifier: "uniqueId", 
+			var store = new datastore({	data: { identifier: "uniqueId", 
 																items: [{uniqueId: 12345, value:"foo"},
 																		{uniqueId: 123456, value:"bar"}, 
 																		{uniqueId: 12345, value:"boom"},
@@ -1674,7 +1674,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Added because of tracker: #2546
 
 			if(dojo.isBrowser){
-				var store = new dojo.data.ItemFileReadStore({url: dojo.moduleUrl("tests", "data/countries_idcollision.json").toString() });
+				var store = new datastore({url: dojo.moduleUrl("tests", "data/countries_idcollision.json").toString() });
 				var d = new doh.Deferred();
 				function onComplete(items, request){
 					//This is bad if this fires, this case should fail and not call onComplete.
@@ -1726,7 +1726,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					{ name:'Beaker', hairColor:{_type:'Color', _value:'red'} }
 				]
 			};
-			var store = new dojo.data.ItemFileReadStore({
+			var store = new datastore({
 				data:dataset,
 				typeMap:{'Color':dojo.Color}
 			});
@@ -1780,7 +1780,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				{name:"Miss Piggy", likes:"Kermit"}, 
 				{name:"Beaker", hairColor:"red"}
 			];
-			var store = new dojo.data.ItemFileReadStore({data:{items:arrayOfItems}});
+			var store = new datastore({data:{items:arrayOfItems}});
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				var features = store.getFeatures();
@@ -1792,7 +1792,6 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					t.assertTrue(identifier === null);
 					var identity = store.getIdentity(item);
 					t.assertTrue(typeof identity == "number");
-					// console.log("Item id: " + identity);
 				}
 				d.callback(true);
 			}
@@ -1818,7 +1817,6 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					t.assertTrue(identifier === null);
 					var identity = store.getIdentity(item);
 					t.assertTrue(typeof identity == "number");
-					console.log("Item id: " + identity);
 				}
 				d.callback(true);
 			}

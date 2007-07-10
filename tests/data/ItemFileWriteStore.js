@@ -279,7 +279,6 @@ doh.register("tests.data.ItemFileWriteStore",
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
 			var egypt;
 			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
-				console.log(newFileContentString);
 				var struct = dojo.fromJson(newFileContentString);
 				doh.assertEqual(struct.identifier, store.getIdentityAttributes(egypt)[0]);
 				doh.assertEqual(struct.label, store.getLabelAttributes(egypt)[0]);

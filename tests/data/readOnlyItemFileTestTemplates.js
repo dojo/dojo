@@ -12,7 +12,7 @@ tests.data.readOnlyItemFileTestTemplates.registerTestsForDatastore = function(/*
 	var testTemplates = tests.data.readOnlyItemFileTestTemplates.testTemplates;
 	var testsForDatastore = [];
 	var makeNewTestFunction = function(template){
-		return function(t){template.runTest(datastoreClass, t);};
+		return function(t){return template.runTest(datastoreClass, t);};
 	};
 	for(var i = 0; i < testTemplates.length; ++i) {
 		var testTemplate = testTemplates[i];

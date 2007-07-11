@@ -2,6 +2,7 @@ dojo.provide("dojo.data.ItemFileReadStore");
 
 dojo.require("dojo.data.util.filter");
 dojo.require("dojo.data.util.simpleFetch");
+dojo.require("dojo.date.stamp");
 
 dojo.declare("dojo.data.ItemFileReadStore",
 	null,
@@ -15,7 +16,17 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		this._jsonFileUrl = keywordParameters.url;
 		this._jsonData = keywordParameters.data;
 		this._datatypeMap = keywordParameters.typeMap || {};
-		this._datatypeMap['Date'] = Date;
+		if(!this._datatypeMap['Date']){
+			//If no default mapping for dates, then set this as default.
+			//We use the dojo.date.stamp here because the ISO format is the 'dojo way'
+			//of generically representing dates.
+			this._datatypeMap['Date'] = {
+											type: Date,
+											deserialize: function(value){
+												return dojo.date.stamp.fromISOString(value);
+											}
+										};
+		}
 		this._features = {'dojo.data.api.Read':true, 'dojo.data.api.Identity':true};
 		this._itemsByIdentity = null;
 		this._storeRefPropName = "_S";  // Default name for the store reference to attach to every item.
@@ -461,11 +472,11 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					if(value !== null && typeof value == "object"){
 						if(value._type && value._value){
 							var type = value._type; // examples: 'Date', 'Color', or 'ComplexNumber'
-							var classToUse = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber
-							if(!classToUse){ 
+							var mapping = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber
+							if(!mapping || !mapping.deserialize){ 
 								throw new Error("dojo.data.ItemFileReadStore: in the typeMap constructor arg, no object class was specified for the datatype '" + type + "'");
 							}
-							arrayOfValues[j] = new classToUse(value._value);
+							arrayOfValues[j] = mapping.deserialize(value._value);
 						}
 						if(value._reference){
 							var referenceDescription = value._reference; // example: {name:'Miss Piggy'}

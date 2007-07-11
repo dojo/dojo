@@ -1,6 +1,9 @@
 dojo.provide("tests.data.readOnlyItemFileTestTemplates");
 dojo.require("dojo.data.api.Read");
 dojo.require("dojo.data.api.Identity");
+dojo.require("dojo.date");
+dojo.require("dojo.date.stamp");
+
 
 tests.data.readOnlyItemFileTestTemplates.registerTestsForDatastore = function(/* String */ datastoreClassName){
 	// summary:
@@ -93,8 +96,8 @@ if(dojo.isBrowser){
 			{abbr:'eg', name:'Egypt', capital:'Cairo'},
 			{abbr:'sv', name:'El Salvador', capital:'San Salvador'},
 			{abbr:'gq', name:'Equatorial Guinea', capital:'Malabo'},
-			{abbr:'er', name:'Eritrea', capital:'Asmara', independence:{_type:'Date', _value:738226800000}}, // May 24, 1993},
-			{abbr:'ee', name:'Estonia', capital:'Tallinn', independence:{_type:'Date', _value:682671600000}}, // August 20, 1991
+			{abbr:'er', name:'Eritrea', capital:'Asmara', independence:{_type:'Date', _value:"1993-05-24T00:00:00Z"}}, // May 24, 1993,
+			{abbr:'ee', name:'Estonia', capital:'Tallinn', independence:{_type:'Date', _value:"1991-08-20T00:00:00Z"}}, // August 20, 1991
 			{abbr:'et', name:'Ethiopia', capital:'Addis Ababa'}
 		]
 	} };
@@ -1702,8 +1705,9 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				t.assertTrue(item !== null);
 				var independenceDate = store.getValue(item, "independence");
 				t.assertTrue(independenceDate instanceof Date);
-				t.assertTrue(independenceDate.valueOf() == 738226800000);
-				t.assertTrue((new Date('May 24, 1993')).valueOf() == independenceDate.valueOf());
+				//Check to see if the value was deserialized properly.  Since the store stores in UTC/GMT, it 
+				//should also be compared in the UTC/GMT mode
+				t.assertTrue(dojo.date.stamp.toISOString(independenceDate, {zulu:true}) === "1993-05-24T00:00:00Z");
 				d.callback(true);
 			}
 			function onError(errData){
@@ -1727,8 +1731,14 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				]
 			};
 			var store = new datastore({
-				data:dataset,
-				typeMap:{'Color':dojo.Color}
+					data:dataset,
+					typeMap:{'Color': 	{	
+											type: dojo.Color,
+											deserialize: function(value){
+												return new dojo.Color(value);
+											}
+										}
+							}
 			});
 			var d = new doh.Deferred();
 			function onItem(item){

@@ -14,6 +14,12 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			_modifiedItems:{}, 
 			_deletedItems:{}
 		};
+
+		if(!this._datatypeMap['Date'].serialize){
+			this._datatypeMap['Date'].serialize = function(obj){
+				return dojo.date.stamp.toISOString(obj, {zulu:true});
+			}
+		}
 		
 		// this._saveInProgress is set to true, briefly, from when save() is first called to when it completes
 		this._saveInProgress = false;
@@ -249,6 +255,17 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			var referenceObject = {_reference: identity};
 			return referenceObject;
 		}else{
+			if(typeof value === "object"){
+				for(type in this._datatypeMap){
+					typeMap = this._datatypeMap[type];
+					if(value instanceof typeMap.type){
+						if(!typeMap.serialize){
+							throw new Error("ItemFileWriteStore:  No serializer defined for type mapping: [" + type + "]");
+						}
+						return {_type: type, _value: typeMap.serialize(value)};
+					}
+				}
+			}
 			return value;
 		}
 	},

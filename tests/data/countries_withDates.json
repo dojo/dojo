@@ -8,12 +8,12 @@
 	{ abbr:'er',
 	  name:'Eritrea',
 	  capital:'Asmara',
-	  independence:{_type:'Date', _value:738226800000} // May 24, 1993
-	  },
+	  independence:{_type:'Date', _value:"1993-05-24T00:00:00Z"} // May 24, 1993 in ISO-8601 standard  
+          },
 	{ abbr:'ee',
 	  name:'Estonia',
 	  capital:'Tallinn',
-	  independence:{_type:'Date', _value:682671600000} // August 20, 1991
+	  independence:{_type:'Date', _value:"1991-08-20T00:00:00Z"} // August 20, 1991 in ISO-8601 standard
 	  },
 	{ abbr:'et',
 	  name:'Ethiopia',

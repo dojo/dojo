@@ -55,6 +55,7 @@ dojo.extend(dojo.Color, {
 	toHex: function(){
 		return dojo.rgb2hex(this.toRgb()); // String
 	},
+//FIXME: support rgba() to provide CSS3 colors w/alpha?
 	toCss: function(){
 		return "rgb(" + this.toRgb().join(", ") + ")"; // String
 	},
@@ -122,5 +123,6 @@ dojo.rgb2hex = function(/*Array|dojo.Color*/rgb){
 		while(s.length < 2){ s = "0" + s; }
 		return s;
 	});
-	return "#" + arr.join(""); // String
+	//NOTE: trims off alpha value for valid CSS hex string.  For alpha, use rgba(...)
+	return "#" + arr.slice(0,3).join(""); // String
 }

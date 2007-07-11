@@ -304,16 +304,15 @@ dojo.declare("dojo._Animation", null,
 				}
 				*/
 			}
-			this.getValue = function(n){
+			this.getValue = function(r){
 				var ret = {};
 				for(var p in this._properties){
 					var prop = this._properties[p];
 					var value = null;
 					if(prop.start instanceof dojo.Color){
-						value = dojo.rgb2hex(dojo.blendColors(prop.end, prop.start, n));
-						// value = "rbg("+dojo.blendColors(prop.end, prop.start, n).join(",")+")";
+						value = new dojo.Color(dojo.blendColors(prop.end, prop.start, r*2-1)).toCss();
 					}else if(!dojo.isArray(prop.start)){
-						value = ((prop.end - prop.start) * n) + prop.start + (p != "opacity" ? prop.units||"px" : "");
+						value = ((prop.end - prop.start) * r) + prop.start + (p != "opacity" ? prop.units||"px" : "");
 					}
 					ret[p] = value;
 				}

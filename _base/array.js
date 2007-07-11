@@ -51,7 +51,7 @@ dojo.provide("dojo._base.array");
 				// description:
 				//		For details on this method, see:
 				// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
-				return d.indexOf(array, value, identity, true); // number
+				return d.indexOf(array, value, fromIndex, true); // number
 			},
 
 			map: function(/*Array*/arr, /*Function*/func, /*Function?*/obj){

@@ -22,7 +22,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//	description:
 			//		Simple test of the getFeatures function of the store
 
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var features = store.getFeatures(); 
 
@@ -49,7 +50,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the setValue API
 			//	description:
 			//		Simple test of the setValue API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onComplete(items, request){
@@ -89,7 +91,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the setValues API
 			//	description:
 			//		Simple test of the setValues API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onComplete(items, request){
@@ -117,7 +120,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the unsetAttribute API
 			//	description:
 			//		Simple test of the unsetAttribute API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onComplete(items, request) {
@@ -143,7 +147,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the newItem API
 			//	description:
 			//		Simple test of the newItem API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			doh.assertTrue(!store.isDirty());
@@ -168,7 +173,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the deleteItem API
 			//	description:
 			//		Simple test of the deleteItem API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onComplete(items, request){
@@ -197,7 +203,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the isDirty API
 			//	description:
 			//		Simple test of the isDirty API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onComplete(items, request) {
@@ -220,7 +227,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the revert API
 			//	description:
 			//		Simple test of the revert API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onComplete(items, request) {
@@ -255,7 +263,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the save API
 			//	description:
 			//		Simple test of the save API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onError(error){
@@ -276,7 +285,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the save API
 			//	description:
 			//		Simple test of the save API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var egypt;
 			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
 				var struct = dojo.fromJson(newFileContentString);
@@ -317,7 +327,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the save API	with a non-atomic type (Date) that has a type mapping.
 			//	description:
 			//		Simple test of the save API	with a non-atomic type (Date) that has a type mapping.
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
 				//console.log(newFileContentString);
 
@@ -420,7 +431,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the onSet API
 			//	description:
 			//		Simple test of the onSet API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onError(error){
@@ -448,7 +460,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the onNew API
 			//	description:
 			//		Simple test of the onNew API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			var connectHandle = null;
@@ -466,7 +479,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the onDelete API
 			//	description:
 			//		Simple test of the onDelete API
-			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
 			function onError(error){
@@ -492,7 +506,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//	description:
 			//		Simple test read API conformance.  Checks to see all declared functions are actual functions on the instances.
 
-			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var readApi = new dojo.data.api.Read();
 			var passed = true;
 
@@ -515,7 +530,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//	description:
 			//		Simple test write API conformance.  Checks to see all declared functions are actual functions on the instances.
 
-			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var writeApi = new dojo.data.api.Write();
 			var passed = true;
 
@@ -538,7 +554,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//	description:
 			//		Simple test Notification API conformance.  Checks to see all declared functions are actual functions on the instances.
 
-			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var api = new dojo.data.api.Notification();
 			var passed = true;
 

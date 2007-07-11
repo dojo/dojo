@@ -29,10 +29,8 @@ tests.data.readOnlyItemFileTestTemplates.registerTestsForDatastore = function(/*
 };
 
 
-//-----------------------------------------------------
-// testFile data-sets
+/* Adam peller wanted this to stay because it causes Rhino grief for some reason.  He wants to figure out why...
 tests.data.readOnlyItemFileTestTemplates.testFile = {};
-
 if(dojo.isBrowser){
 	tests.data.readOnlyItemFileTestTemplates.testFile["countries"] = {url: dojo.moduleUrl("tests", "data/countries.json").toString() };
 }else{
@@ -119,6 +117,103 @@ if(dojo.isBrowser){
 		]
 	} };
 }
+*/
+
+//-----------------------------------------------------
+// testFile data-sets
+tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
+	var data = null;
+	if (name === "countries") {
+		if(dojo.isBrowser){
+			data = {url: dojo.moduleUrl("tests", "data/countries.json").toString() };
+		}else{
+			data = {data: { 
+				identifier:"abbr",
+				label:"name",
+				items:[
+					{abbr:"ec", name:"Ecuador", capital:"Quito"},
+					{abbr:'eg', name:'Egypt', capital:'Cairo'},
+					{abbr:'sv', name:'El Salvador', capital:'San Salvador'},
+					{abbr:'gq', name:'Equatorial Guinea', capital:'Malabo'},
+					{abbr:'er', name:'Eritrea', capital:'Asmara'},
+					{abbr:'ee', name:'Estonia', capital:'Tallinn'},
+					{abbr:'et', name:'Ethiopia', capital:'Addis Ababa'}
+				]
+			} };
+		}	
+	}else if(name === "countries_withNull"){
+		if(dojo.isBrowser){
+			data = {url: dojo.moduleUrl("tests", "data/countries_withNull.json").toString() };
+		}else{
+			data = {data: { 
+				identifier:"abbr",
+				items:[
+					{abbr:"ec", name:null, capital:"Quito"},
+					{abbr:'eg', name:null, capital:'Cairo'},
+					{abbr:'sv', name:'El Salvador', capital:'San Salvador'},
+					{abbr:'gq', name:'Equatorial Guinea', capital:'Malabo'},
+					{abbr:'er', name:'Eritrea', capital:'Asmara'},
+					{abbr:'ee', name:null, capital:'Tallinn'},
+					{abbr:'et', name:'Ethiopia', capital:'Addis Ababa'}
+				]
+			} };
+		}
+	}else if (name === "countries_withBoolean"){
+		if(dojo.isBrowser){
+			data = {url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString() };
+		}else{
+			data = {data: { 
+				identifier:"abbr",
+				items:[
+					{abbr:"ec", name:"Ecuador", capital:"Quito", real:true},
+					{abbr:'eg', name:'Egypt', capital:'Cairo', real:true},
+					{abbr:'sv', name:'El Salvador', capital:'San Salvador', real:true},
+					{abbr:'gq', name:'Equatorial Guinea', capital:'Malabo', real:true},
+					{abbr:'er', name:'Eritrea', capital:'Asmara', real:true},
+					{abbr:'ee', name:'Estonia', capital:'Tallinn', real:true},
+					{abbr:'et', name:'Ethiopia', capital:'Addis Ababa', real:true},
+					{abbr:'ut', name:'Utopia', capital:'Paradise', real:false}
+				]
+			} };
+		}
+	}else if (name === "countries_withDates") {
+		if(dojo.isBrowser){
+			data = {url: dojo.moduleUrl("tests", "data/countries_withDates.json").toString() };
+		}else{
+			data = {data: { 
+				identifier:"abbr",
+				items:[
+					{abbr:"ec", name:"Ecuador", capital:"Quito"},
+					{abbr:'eg', name:'Egypt', capital:'Cairo'},
+					{abbr:'sv', name:'El Salvador', capital:'San Salvador'},
+					{abbr:'gq', name:'Equatorial Guinea', capital:'Malabo'},
+					{abbr:'er', name:'Eritrea', capital:'Asmara', independence:{_type:'Date', _value:"1993-05-24T00:00:00Z"}}, // May 24, 1993,
+					{abbr:'ee', name:'Estonia', capital:'Tallinn', independence:{_type:'Date', _value:"1991-08-20T00:00:00Z"}}, // August 20, 1991
+					{abbr:'et', name:'Ethiopia', capital:'Addis Ababa'}
+				]
+			} };
+		}
+	}else if (name === "geography_hierarchy_small") {
+		if(dojo.isBrowser){
+			data = {url: dojo.moduleUrl("tests", "data/geography_hierarchy_small.json").toString() };
+		}else{
+			data = {data: { 
+				items:[
+					{ name:'Africa', countries:[
+						{ name:'Egypt', capital:'Cairo' },
+						{ name:'Kenya', capital:'Nairobi' },
+						{ name:'Sudan', capital:'Khartoum' }]},
+					{ name:'Australia', capital:'Canberra' },
+					{ name:'North America', countries:[
+						{ name:'Canada', population:'33 million', cities:[
+							{ name:'Toronto', population:'2.5 million' }]}]}
+				]
+			} };
+		}
+	}
+	return data;
+};
+
 
 
 //-----------------------------------------------------
@@ -129,7 +224,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		runTest: function(datastore, t){
 			//	summary: 
 			//		Simple test of the fetchItemByIdentity function of the store.
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -155,7 +251,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the fetchItemByIdentity function of the store.
 			//	description:
 			//		Simple test of the fetchItemByIdentity function of the store.
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -177,7 +274,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the getIdentityAttributes function.
 			//	description:
 			//		Simple test of the getIdentityAttributes function.
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -208,7 +306,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		paper.
 
 			if(dojo.isBrowser){
-				var store = new datastore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
+                var store = new datastore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
 				var d = new doh.Deferred();
 				function onItem(item){
@@ -235,8 +333,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the fetchItemByIdentity function of the store, checking a null value.
 			//		This tests handling attributes in json that were defined as null properly.
 			//		Introduced because of tracker: #3153
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withNull"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withNull"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withNull"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -261,7 +359,9 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of the fetchItemByIdentity function of the store, checking a boolean value.
 
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withBoolean"]);
+
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withBoolean"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withBoolean"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -287,8 +387,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the getIdentity function of the store.
 			//	description:
 			//		Simple test of the getIdentity function of the store.
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -311,8 +411,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of a basic fetch on ItemFileReadStore.
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore.
-			
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			
 			var d = new doh.Deferred();
 			function completedAll(items, request){
@@ -337,7 +437,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore of a single item.
 
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
@@ -367,7 +468,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		paper.
 
 			if(dojo.isBrowser){
-				var store = new datastore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
+                var store = new datastore({url: dojo.moduleUrl("tests", "data/countries_commentFiltered.json").toString()});
 
 				var d = new doh.Deferred();
 				function onComplete(items, request){
@@ -394,8 +495,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore of a single item where some attributes are null.
 			//		Introduced because of tracker: #3153
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withNull"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withNull"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withNull"));
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
@@ -421,7 +522,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore.
 
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			count = 0;
@@ -455,12 +557,13 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 	{
 		name: "Read API: fetch() paging",
  		runTest: function(datastore, t){
-			 //	summary: 
-			 //		Test of multiple fetches on a single result.  Paging, if you will.
-			 //	description:
-			 //		Test of multiple fetches on a single result.  Paging, if you will.
+			//	summary: 
+			//		Test of multiple fetches on a single result.  Paging, if you will.
+			//	description:
+			//		Test of multiple fetches on a single result.  Paging, if you will.
 
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			
 			var d = new doh.Deferred();
 			function dumpFirstFetch(items, request){
@@ -531,8 +634,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the getLabel function against a store set that has a label defined.
 			//	description:
 			//		Simple test of the getLabel function against a store set that has a label defined.
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
@@ -561,7 +664,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of the getLabelAttributes function against a store set that has a label defined.
 
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			
 			var d = new doh.Deferred();
 			function onComplete(items, request){
@@ -590,7 +694,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of the getValue function of the store.
 
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -615,7 +720,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of the getValues function of the store.
 
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -642,7 +748,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of the isItem function of the store
 
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -673,8 +780,10 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 
 			// Two different instances, even  if they read from the same URL 
 			// should not accept items between each other!
-			var store1 = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
-			var store2 = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store1 = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store2 = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store1 = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+			var store2 = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem1(item1){
@@ -707,8 +816,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the hasAttribute function of the store
 			//	description:
 			//		Simple test of the hasAttribute function of the store
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -741,8 +850,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the containsValue function of the store
 			//	description:
 			//		Simple test of the containsValue function of the store
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -776,8 +885,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the getAttributes function of the store
 			//	description:
 			//		Simple test of the getAttributes function of the store
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -806,8 +915,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of the getFeatures function of the store
 			//	description:
 			//		Simple test of the getFeatures function of the store
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var features = store.getFeatures();
 			t.assertTrue(features["dojo.data.api.Read"] != null);
@@ -821,8 +930,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test pattern matching of everything starting with lowercase e
 			//	description:
 			//		Function to test pattern matching of everything starting with lowercase e
-
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
 			function completed(items, request) {
@@ -1698,7 +1807,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 	{
 		name: "Read API: Date_datatype",
  		runTest: function(datastore, t){
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withDates"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withDates"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withDates"));
 			
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -1759,7 +1869,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 	{
 		name: "Read API: hierarchical_data",
  		runTest: function(datastore, t){
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["geography_hierarchy_small"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["geography_hierarchy_small"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(items.length, 1);
@@ -1815,7 +1926,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 	{
 		name: "Identity API: hierarchical_data",
  		runTest: function(datastore, t){
-			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["geography_hierarchy_small"]);
+			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["geography_hierarchy_small"]);
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				var features = store.getFeatures();
@@ -1845,7 +1957,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test read API conformance.  Checks to see all declared functions are actual functions on the instances.
 
-			var testStore = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var testStore = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var testStore = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var readApi = new dojo.data.api.Read();
 			var passed = true;
 
@@ -1874,7 +1987,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test identity API conformance.  Checks to see all declared functions are actual functions on the instances.
 
-			var testStore = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			//var testStore = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries"]);
+			var testStore = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var identityApi = new dojo.data.api.Identity();
 			var passed = true;
 

@@ -3,11 +3,21 @@ dojo.provide("dojo._base.array");
 
 (function(){
 	var d = dojo;
+	var tn = ["indexOf", "lastIndexOf", "every", "some", "forEach", "filter", "map"];
+	var makeCall = function(fn){
+		return function(a){
+			a[fn].apply(a, Array.prototype.slice.call(arguments, 1));
+		}
+	};
 	if(Array.forEach){
 		// fast, if we can
-		var tn = ["indexOf", "lastIndexOf", "every", "some", "forEach", "filter", "map"];
 		for(var x=0; x<tn.length; x++){
 			d[tn[x]] = Array[tn[x]];
+		}
+	}else if(Array.prototype.forEach){
+		// safari3 only exposes the fast methods on the prototype
+		for(var x=0; x<tn.length; x++) {
+			d[tn[x]] = makeCall(tn[x]);  // have to do this to bind the looped var
 		}
 	}else{
 		var _getParts = function(arr, obj){

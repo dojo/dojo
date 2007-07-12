@@ -16,7 +16,7 @@ dojo.provide("dojo._base.array");
 		}
 	}else if(Array.prototype.forEach){
 		// safari3 only exposes the fast methods on the prototype
-		for(var x=0; x<tn.length; x++) {
+		for(var x=0; x<tn.length; x++){
 			d[tn[x]] = makeCall(tn[x]);  // have to do this to bind the looped var
 		}
 	}else{

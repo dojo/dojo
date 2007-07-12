@@ -779,16 +779,16 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		// The offset is always (2, 2) in LTR direction. When the body is in RTL
 		// direction, the offset counts the width of left scroll bar's width.
 		// This function computes the actual offset.
-		if(!dojo.isIE){
-			return {x: 0, y: 0}; // Object
-		}
+
+		//NOTE: assumes we're being called in an IE browser
+
 		var de = dojo.doc.documentElement;
 		if(dojo.isIE >= 7){
 			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top}; // Object
 		}else{
 			// IE 6.0
-			return {x: dojo._isBodyLtr() || window.parent != window ?
-				de.offsetWidth - de.clientWidth - de.clientLeft : de.clientLeft, 
+			return {x: dojo._isBodyLtr() || window.parent == window ?
+				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
 				y: de.clientTop}; // Object
 		}
 	};

@@ -15,6 +15,20 @@
 			djConfig="isDebug: true"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
+
+			function getIframeDocument(/*DOMNode*/iframeNode){
+				//summary: Returns the document object associated with the iframe DOM Node argument.
+				var doc = iframeNode.contentDocument || // W3
+					(
+						(iframeNode.contentWindow)&&(iframeNode.contentWindow.document)
+					) ||  // IE
+					(
+						(iframeNode.name)&&(document.frames[iframeNode.name])&&
+						(document.frames[iframeNode.name].document)
+					) || null;
+				return doc;
+			}
+
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
@@ -123,11 +137,11 @@
 						},
 						function isDescendantIframe(t){
 							var bif = dojo.byId("blah");
-							bif.contentDocument.write("<html><body><div id='subDiv'></div></body></html>");
-							bif.contentDocument.close();
+							getIframeDocument(bif).write("<html><body><div id='subDiv'></div></body></html>");
+							getIframeDocument(bif).close();
 							// this test barely makes sense. disabling it for now.
 							// t.t(dojo.isDescendant(bif.contentDocument.getElementById("subDiv"), bif.parentNode));
-							var subDiv = bif.contentDocument.getElementById("subDiv");
+							var subDiv = getIframeDocument(bif).getElementById("subDiv");
 							t.t(dojo.isDescendant(subDiv, subDiv));
 							t.t(dojo.isDescendant(subDiv, subDiv.parentNode));
 							t.f(dojo.isDescendant(subDiv.parentNode, subDiv));

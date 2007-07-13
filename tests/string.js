@@ -13,6 +13,13 @@ tests.register("tests.string",
 		function test_string_substitute(t){
 			t.is("File 'foo.html' is not found in directory '/temp'.", dojo.string.substitute("File '${0}' is not found in directory '${1}'.", ["foo.html","/temp"]));
 			t.is("File 'foo.html' is not found in directory '/temp'.", dojo.string.substitute("File '${name}' is not found in directory '${info.dir}'.", {name: "foo.html", info: {dir: "/temp"}}));
+		},
+		
+		function test_string_trim(t){
+			t.is("astoria", dojo.string.trim("   \f\n\r\t\v    astoria           "));
+			t.is("astoria", dojo.string.trim("astoria                            "));
+			t.is("astoria", dojo.string.trim("                            astoria"));
+			t.is("astoria", dojo.string.trim("astoria"));
 		}
 	]
 );

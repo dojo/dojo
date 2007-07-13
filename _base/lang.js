@@ -178,3 +178,42 @@ dojo._toArray = function(/*Object*/obj, /*Number?*/offset){
 	return arr;
 }
 
+// FIXME: this is unreviewed dojo.clone() function, 
+// which can clone any objects including HTML nodes
+
+//dojo.clone = function(/*anything*/ o){
+//	// summary:
+//	//		Clones objects (including DOM nodes) and all children.
+//	//		Warning: do not clone cyclic structures.
+//	if(!o){ return o; }
+//	if(dojo.isArray(o)){
+//		var r = [];
+//		for(var i = 0; i < o.length; ++i){
+//			r.push(dojo.clone(o[i]));
+//		}
+//		return r;
+//	}else if(dojo.isObject(o)){
+//		if(o.nodeType && o.cloneNode){ // isNode
+//			return o.cloneNode(true);
+//		}else{
+//			var r = new o.constructor();
+//			for(var i in o){
+//				if(!(i in r) || r[i] != o[i]){
+//					r[i] = dojo.clone(o[i]);
+//				}
+//			}
+//			return r;
+//		}
+//	}
+//	return o;
+//}
+
+dojo.trim = function(/*String*/ str){
+	// summary: trims whitespaces from both sides of the string
+	// description:
+	//	This version of trim() was selected for inclusion into the base
+	//	due to its compact size and relatively good performance (see Steven Levithan's blog: 
+	//	http://blog.stevenlevithan.com/archives/faster-trim-javascript).
+	//	The fastest but longest version of this function is going to be placed in dojo.string.
+	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');	// String
+}

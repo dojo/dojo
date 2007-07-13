@@ -956,21 +956,10 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 	}
 };
 
-(function(){
-	// FIXME: can be generally useful for trimming strings
-	var _trimRegEx = /^\s*([^\s]|[^\s].*[^\s])\s*$/;
-	var _trim = function(s){
-		// summary: trims spaces from left and right of the string
-		// s: String: a string to be trimmed
-		var t = _trimRegEx.exec(s);
-		return t ? t[1] : "";	// String
-	};
-	
-	dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
-		// summary: Removes classes from node.
-		node.className = _trim((" " + node.className + " ").replace(" " + classStr + " ", " "));
-	};
-})();
+dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
+	// summary: Removes classes from node.
+	node.className = dojo.trim((" " + node.className + " ").replace(" " + classStr + " ", " "));
+};
 
 dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*/condition){
 	//	summary: 	

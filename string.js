@@ -22,7 +22,7 @@ dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean
 		}
 	}
 	return out;	// String
-}
+};
 
 dojo.string.substitute = function(	/*String*/template, 
 									/*Object or Array*/map, 
@@ -55,4 +55,21 @@ dojo.string.substitute = function(	/*String*/template,
 		if(transform){ value = transform(value, key); }
 		return value.toString();
 	}); // string
+};
+
+dojo.string.trim = function(/*String*/ str){
+	// summary: trims whitespaces from both sides of the string
+	// description:
+	//	This version of trim() was taken from Steven Levithan's blog: 
+	//	http://blog.stevenlevithan.com/archives/faster-trim-javascript.
+	//	The short yet good-performing version of this function is 
+	//	dojo.trim(), which is part of the base.
+	str = str.replace(/^\s+/, '');
+	for(var i = str.length - 1; i > 0; i--){
+		if(/\S/.test(str.charAt(i))){
+			str = str.substring(0, i + 1);
+			break;
+		}
+	}
+	return str;	// String
 };

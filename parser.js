@@ -29,7 +29,11 @@ dojo.parser = new function(){
 				return typeof value == "boolean" ? value : !(value.toLowerCase()=="false");
 			case "function":
 				if(dojo.isFunction(value)){
-					return value;
+					// IE gives us a function, even when we say something like onClick="foo"
+					// (in which case it gives us an invalid function "function(){ foo }"). 
+					//  Therefore, convert to string
+					value=value.toString();
+					value=dojo.trim(value.substring(value.indexOf('{')+1, value.length-1));
 				}
 				try{
 					if(value.search(/[^\w\.]+/i) != -1){

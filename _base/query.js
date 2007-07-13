@@ -137,11 +137,6 @@ dojo.require("dojo._base.NodeList");
 		}
 	];
 
-	var strip = function(val){
-		var re = /^\s+|\s+$/g;
-		return val.replace(re, "");	//	string
-	}
-
 	var handleAttrs = function(	attrList, 
 								query, 
 								getDefault, 
@@ -168,7 +163,7 @@ dojo.require("dojo._base.NodeList");
 							(value.charAt(0) == "\'")){
 							value = value.substring(1, value.length-1);
 						}
-						matcher = ta.match(strip(attr), strip(value));
+						matcher = ta.match(d.trim(attr), d.trim(value));
 						break;
 					}
 				}
@@ -1053,11 +1048,11 @@ dojo.require("dojo._base.NodeList");
 			return new d.NodeList(query);
 		}
 		if(typeof root == "string"){
-			root = dojo.byId(root);
+			root = d.byId(root);
 		}
 
 		// FIXME: should support more methods on the return than the stock array.
-		return _zip(getQueryFunc(query)(root||dojo.doc));
+		return _zip(getQueryFunc(query)(root||d.doc));
 	}
 
 	/*

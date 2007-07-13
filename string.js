@@ -52,7 +52,7 @@ dojo.string.substitute = function(	/*String*/template,
 	return template.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g, function(match, key, format){
 		var value = dojo.getObject(key,false,map);
 		if(format){ value = dojo.getObject(format,false,thisObject)(value);}
-		if(transform){ value = transform(value); }
+		if(transform){ value = transform(value, key); }
 		return value.toString();
 	}); // string
 };

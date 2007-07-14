@@ -384,9 +384,11 @@ doh.register("tests.data.ItemFileWriteStore",
 			var customTypeMap = {'Color': 	{	
 												type: dojo.Color,
 												deserialize: function(value){
+													console.debug("DESERIALIZE:", value, new dojo.Color(value));
 													return new dojo.Color(value);
 												},
 												serialize: function(obj){
+													console.debug("SERIALIZE:", obj, obj.toString());
 													return obj.toString();
 												}
 											}
@@ -403,7 +405,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				function gotItem(item){
 					var hairColor = newStore.getValue(item,"hairColor"); 
 					doh.assertTrue(hairColor instanceof dojo.Color);
-					doh.assertEqual("#ffff00", hairColor.toString());
+					doh.assertEqual("rgba(255, 255, 0, 1)", hairColor.toString());
 					saveCompleteCallback();
 				}
 				function failed(error, request){

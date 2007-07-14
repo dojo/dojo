@@ -25,7 +25,8 @@ dojo.provide("tests._base.Color");
 			function testColor12(t){ verifyColor(t, [1, 2, 3], [1, 2, 3, 1]); },
 			function testColor13(t){ verifyColor(t, [1, 2, 3, 4], [1, 2, 3, 1]); },
 			function testColor14(t){ verifyColor(t, [1000, 2000, 3000, 4000], white); },
-			function testColor15(t){ verifyColor(t, [-1, -2, -3, -4], [0, 0, 0, 0]); }
+			function testColor15(t){ verifyColor(t, [-1, -2, -3, -4], [0, 0, 0, 0]); },
+			function testColor16(t){ verifyColor(t, {r: 1, g: 2, b: 3, a: 4}, [1, 2, 3, 1]); }
 		]
 	);
 })();

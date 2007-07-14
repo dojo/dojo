@@ -1,8 +1,8 @@
 dojo.provide("tests._base.Color");
 
 (function(){
-	var white = [255, 255, 255, 1];
-	var maroon = [128, 0, 0, 1];
+	var white  = dojo.colorFromString("white").toRgba();
+	var maroon = dojo.colorFromString("maroon").toRgba();
 	var verifyColor = function(t, source, expected){
 		var color = new dojo.Color(source);
 		t.is(expected, color.toRgba());

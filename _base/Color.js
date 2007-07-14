@@ -105,9 +105,8 @@ dojo.blendColors = function(
 	/*dojo.Color?*/ obj
 ){
 	// summary: 
-	//		blend colors end and start with weight
-	//		from -1 to +1, 0 being a 50/50 blend,
-	//		can reuse the same dojo.Color object for the result
+	//		blend colors end and start with weight from -1 to +1, 0 being a 50/50 blend,
+	//		can reuse a previously allocated dojo.Color object for the result
 	var d = dojo, t = obj ? obj : new dojo.Color();
 	if(!(end instanceof d.Color)){ end = new dojo.Color(end); }
 	if(!(start instanceof d.Color)){ start = new dojo.Color(start); }
@@ -126,15 +125,13 @@ dojo.blendColors = function(
 
 dojo.colorFromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
 	// summary: get rgb(a) array from css-style color declarations
-	color = color.toLowerCase();
-	var m = color.match(/^(rgba?)\(([\s\.,0-9]+)\)/i);
+	var m = color.toLowerCase().match(/^(rgba?)\(([\s\.,0-9]+)\)/);
 	if(m){
 		var c = m[2].split(/\s*,\s*/);
 		if((m[1] == "rgb" && c.length == 3) || (m[1] == "rgba" && c.length == 4)){
 			return dojo.colorFromArray(c, obj);	// dojo.Color
 		}
 	}
-	// else return the default color (white)
 	return null;	// dojo.Color
 };
 
@@ -148,7 +145,7 @@ dojo.colorFromHex = function(/*String*/ color, /*dojo.Color?*/ obj){
 	if(isNaN(color)){
 		return null; // dojo.Color
 	}
-	var rgb = [];
+	var rgb = new Array(3);
 	for(var i = 3; i; i--){
 		var x = color & mask;
 		if(bits == 4){ x *= 17; }

@@ -15,6 +15,7 @@ try{
 	dojo.require("tests.string");
 	dojo.require("tests.behavior");
 	dojo.require("tests.parser");
+	dojo.require("tests.colors");
 }catch(e){
 	doh.debug(e);
 }

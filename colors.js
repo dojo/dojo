@@ -1,5 +1,56 @@
 dojo.provide("dojo.colors");
 
+(function(){
+	// this is a standard convertion prescribed by the CSS3 Color Module
+	var hue2rgb = function(m1, m2, h){
+		if(h < 0){ ++h; }
+		if(h > 1){ --h; }
+		var h6 = 6 * h;
+		if(h6 < 1){ return m1 + (m2 - m1) * h6; }
+		if(2 * h < 1){ return m2; }
+		if(3 * h < 2){ return m1 + (m2 - m1) * (2 / 3 - h) * 6; }
+		return m1;
+	};
+	
+	dojo.colorFromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
+		// summary: get rgb(a) array from css-style color declarations
+		// description: this function can handle all 4 CSS3 Color Module formats:
+		//	rgb, rgba, hsl, hsla, including rgb(a) with percentage values.
+		var m = color.toLowerCase().match(/^(rgba?|hsla?)\(([\s\.\-,%0-9]+)\)/);
+		if(m){
+			var c = m[2].split(/\s*,\s*/), l = c.length, t = m[1];
+			if((t == "rgb" && l == 3) || (t == "rgba" && l == 4)){
+				var r = c[0];
+				if(r.charAt(r.length - 1) == "%"){
+					// 3 rgb percentage values
+					var a = dojo.map(c, function(x){
+						return parseFloat(x) * 2.56;
+					});
+					if(l == 4){ a[3] = c[3]; }
+					return dojo.colorFromArray(a, obj);	// dojo.Color
+				}
+				return dojo.colorFromArray(c, obj);	// dojo.Color
+			}
+			if((t == "hsl" && l == 3) || (t == "hsla" && l == 4)){
+				// normalize hsl values
+				var H = ((parseFloat(c[0]) % 360) + 360) % 360 / 360,
+					S = parseFloat(c[1]) / 100,
+					L = parseFloat(c[2]) / 100,
+					// calculate rgb according to the algorithm 
+					// recommended by the CSS3 Color Module 
+					m2 = L <= 0.5 ? L * (S + 1) : L + S - L * S, 
+					m1 = 2 * L - m2,
+					a = [hue2rgb(m1, m2, H + 1 / 3) * 256,
+						hue2rgb(m1, m2, H) * 256, hue2rgb(m1, m2, H - 1 / 3) * 256, 1];
+				if(l == 4){ a[3] = c[3]; }
+				return dojo.colorFromArray(a, obj);	// dojo.Color
+			}
+		}
+		return null;	// dojo.Color
+	};
+})();
+
+
 // mixin all CSS3 named colors not already in _base, along with SVG 1.0 variant spellings
 dojo.Color.named = dojo.mixin({
 aliceblue:	[240,248,255],
@@ -128,6 +179,7 @@ steelblue:	[70,130,180],
 tan:	[210,180,140],
 thistle:	[216,191,216],
 tomato:	[255,99,71],
+transparent: [0, 0, 0, 0],
 turquoise:	[64,224,208],
 violet:	[238,130,238],
 wheat:	[245,222,179],

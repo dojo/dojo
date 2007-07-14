@@ -296,13 +296,10 @@ dojo.declare("dojo._Animation", null,
 				if(dojo.isFunction(prop.end)){
 					prop.end = prop.end(prop);
 				}
-				/*
 				if(prop.start instanceof dojo.Color){
-					// save these so we don't have to call toRgb() every getValue() call
-					prop.startRgb = prop.start.toRgb();
-					prop.endRgb = prop.end.toRgb();
+					// create a reusable temp color object to keep intermediate results
+					prop.tempColor = new dojo.Color();
 				}
-				*/
 			}
 			this.getValue = function(r){
 				var ret = {};
@@ -310,7 +307,7 @@ dojo.declare("dojo._Animation", null,
 					var prop = this._properties[p];
 					var value = null;
 					if(prop.start instanceof dojo.Color){
-						value = new dojo.Color(dojo.blendColors(prop.end, prop.start, r*2-1)).toCss();
+						value = dojo.blendColors(prop.end, prop.start, r * 2 - 1, prop.tempColor).toCss();
 					}else if(!dojo.isArray(prop.start)){
 						value = ((prop.end - prop.start) * r) + prop.start + (p != "opacity" ? prop.units||"px" : "");
 					}

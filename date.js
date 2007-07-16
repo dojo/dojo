@@ -4,7 +4,7 @@ dojo.date.getDaysInMonth = function(/*Date*/dateObject){
 	// summary: returns the number of days in the month used by dateObject
 	var month = dateObject.getMonth();
 	var days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-	if (month == 1 && dojo.date.isLeapYear(dateObject)){ return 29; } // Number
+	if(month == 1 && dojo.date.isLeapYear(dateObject)){ return 29; } // Number
 	return days[month]; // Number
 }
 
@@ -132,10 +132,7 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 		case "weekday":
 			//i18n FIXME: assumes Saturday/Sunday weekend, but even this is not standard.  There are CLDR entries to localize this.
 			var dayOfMonth = date.getDate();
-			var weeks = 0;
-			var days = 0;
-			var strt = 0;
-			var trgt = 0;
+			var days, weeks;
 			var adj = 0;
 			// Divide the increment time span into weekspans plus leftover days
 			// e.g., 8 days is one 5-day weekspan / and two leftover days
@@ -150,7 +147,7 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 				weeks = parseInt(amount/5);
 			}
 			// Get weekday value for orig date param
-			strt = date.getDay();
+			var strt = date.getDay();
 			// Orig date is Sat / positive incrementer
 			// Jump over Sun
 			if(strt == 6 && amount > 0){
@@ -161,14 +158,14 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 				adj = -1;
 			}
 			// Get weekday val for the new date
-			trgt = strt + days;
+			var trgt = strt + days;
 			// New date is on Sat or Sun
 			if(trgt == 0 || trgt == 6){
 				adj = (amount > 0) ? 2 : -2;
 			}
 			// Increment by number of weeks plus leftover days plus
 			// weekend adjustments
-			amount = dayOfMonth + 7*weeks + days + adj;
+			amount = dayOfMonth + 7 * weeks + days + adj;
 			break;
 		case "year":
 			property = "FullYear";
@@ -281,13 +278,9 @@ dojo.date.difference = function(/*Date*/date1, /*Date?*/date2, /*String?*/interv
 						// Range contains weekend
 						case (dayMark + mod) > 5:
 							adj = -2;
-							break;
-						default:
-							// Do nothing
-							break;
 					}
 				}else if(days < 0){
-					switch (true){
+					switch(true){
 						// Range starts on Sat
 						case aDay == 6:
 							adj = 0;
@@ -307,10 +300,6 @@ dojo.date.difference = function(/*Date*/date1, /*Date?*/date2, /*String?*/interv
 						// Range contains weekend
 						case (dayMark + mod) < 0:
 							adj = 2;
-							break;
-						default:
-							// Do nothing
-							break;
 					}
 				}
 				days += adj;

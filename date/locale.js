@@ -403,7 +403,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 			case 'H': //hour (0-23)
 			case 'k': //hour (0-11)
 				//TODO: strict bounds checking, padding
-				if(v>23){
+				if(v > 23){
 //					console.debug("dojo.date.locale.parse: Illegal hours value");
 					return null;
 				}
@@ -422,7 +422,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				result.setMilliseconds(v);
 				break;
 			case 'w':
-//				var firstDay = 0;
+//TODO				var firstDay = 0;
 			default:
 //TODO: throw?
 //				console.debug("dojo.date.locale.parse: unsupported pattern char=" + token.charAt(0));
@@ -604,9 +604,9 @@ dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 
 	var weekend = dojo.cldr.supplemental.getWeekend(locale);
 	var day = (dateObject || new Date()).getDay();
-	if(weekend.end<weekend.start){
-		weekend.end+=7;
-		if(day<weekend.start){ day+=7; }
+	if(weekend.end < weekend.start){
+		weekend.end += 7;
+		if(day < weekend.start){ day += 7; }
 	}
 	return day >= weekend.start && day <= weekend.end; // Boolean
 };
@@ -615,21 +615,23 @@ dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 
 dojo.date.locale._getDayOfYear = function(/*Date*/dateObject){
 	// summary: gets the day of the year as represented by dateObject
-	var fullYear = dateObject.getFullYear();
-	var lastDayOfPrevYear = new Date(fullYear-1, 11, 31);
-	return Math.floor((dateObject.getTime() -
-		lastDayOfPrevYear.getTime()) / (24*60*60*1000)); // Number
-}
+	var day = dateObject.getDate();
+	while(dateObject.getMonth()){
+		dateObject = new Date(dateObject.getFullYear(), dateObject.getMonth() - 1);
+		day += dojo.date.getDaysInMonth(dateObject);
+	}
+	return day; // Number
+};
 
-dojo.date.locale._getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDay){
-	if(arguments.length == 1){ firstDay = 0; } // Sunday
+dojo.date.locale._getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDayOfWeek){
+	if(arguments.length == 1){ firstDayOfWeek = 0; } // Sunday
 
-	// work out the first day of the year corresponding to the week
-	var firstDayOfYear = new Date(dateObject.getFullYear(), 0, 1);
-	var day = firstDayOfYear.getDay();
-	firstDayOfYear.setDate(firstDayOfYear.getDate() -
-			day + firstDay - (day > firstDay ? 7 : 0));
+	var firstDayOfYear = new Date(dateObject.getFullYear(), 0, 1).getDay();
+	var adj = (firstDayOfYear - firstDayOfWeek + 7) % 7;
+	var week = Math.floor((dojo.date.locale._getDayOfYear(dateObject) + adj - 1) / 7);
 
-	return Math.floor((dateObject.getTime() -
-		firstDayOfYear.getTime()) / (7*24*60*60*1000)); // Number
-}
+	// if year starts on the specified day, start counting weeks at 1
+	if(firstDayOfYear == firstDayOfWeek){ week++; }
+
+	return week; // Number
+};

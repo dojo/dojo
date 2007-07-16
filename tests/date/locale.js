@@ -232,16 +232,26 @@ tests.register("tests.date.locale",
 			}
 		},
 		{
-			name: "day_week_ofYear",
+			name: "day_of_year",
 			runTest: function(t){
 
-//	t.is(23, dojo.date.setDayOfYear(new Date(2006,0,1), 23).getDate());
-	t.is(1, dojo.date.locale._getDayOfYear(new Date(2006,0,1)));
-	t.is(32, dojo.date.locale._getDayOfYear(new Date(2006,1,1)));
-	//dojo.date.setWeekOfYear(new Date(2006,2,1), 34);
-	//dojo.date.setWeekOfYear(new Date(2006,2,1), 34, 1);
-	//dojo.date.getWeekOfYear(new Date(2006,1,1));
-	//dojo.date.getWeekOfYear(new Date(2006,1,1), 1);
+//				t.is(23, dojo.date.setDayOfYear(new Date(2006,0,1), 23).getDate());
+				t.is(1, dojo.date.locale._getDayOfYear(new Date(2006,0,1)));
+				t.is(32, dojo.date.locale._getDayOfYear(new Date(2006,1,1)));
+				t.is(72, dojo.date.locale._getDayOfYear(new Date(2007,2,13,0,13)));
+				t.is(72, dojo.date.locale._getDayOfYear(new Date(2007,2,13,1,13)));
+			}
+		},
+		{
+			name: "week_of_year",
+			runTest: function(t){
+				t.is(0, dojo.date.locale._getWeekOfYear(new Date(2000,0,1)));
+				t.is(1, dojo.date.locale._getWeekOfYear(new Date(2000,0,2)));
+				t.is(0, dojo.date.locale._getWeekOfYear(new Date(2000,0,2), 1));
+				t.is(0, dojo.date.locale._getWeekOfYear(new Date(2007,0,1)));
+				t.is(1, dojo.date.locale._getWeekOfYear(new Date(2007,0,1), 1));
+				t.is(27, dojo.date.locale._getWeekOfYear(new Date(2007,6,14)));
+				t.is(28, dojo.date.locale._getWeekOfYear(new Date(2007,6,14), 1));
 			}
 		}
 	]

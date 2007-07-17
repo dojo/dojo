@@ -253,9 +253,10 @@ dojo.date.locale._parseInfo = function(/*Object?*/options){
 	}
 
 	var tokens = [];
-	var re = _processPattern(pattern, dojo.hitch(this, _buildDateTimeRE, tokens, bundle, options));
+	var re = _processPattern(pattern, dojo.hitch(this, _buildDateTimeRE, tokens, bundle, options)).
+		replace(/\xA0/g, "[\u00A0 ]");
 	return {regexp: re, tokens: tokens, bundle: bundle};
-}
+};
 
 dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 	// summary:

@@ -25,7 +25,7 @@ dojo.declare(
 				});
 
 			}else if(args["smdStr"]){
-				this.processSmd(dj_eval("("+args.smdStr+")"));
+				this.processSmd(dojo.eval("("+args.smdStr+")"));
 			}else{
 	                        // otherwise we assume it's an arguments object with the following
 				// (optional) properties:

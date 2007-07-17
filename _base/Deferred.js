@@ -160,7 +160,7 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		callbacks can be added at any time.
 	//
 	//			// Deferred style:
-	//			function renderLotsOfData(data, callback){
+	//			function renderLotsOfData(data){
 	//				var d = new dojo.Deferred();
 	//				try{
 	//					for(var x in data){
@@ -186,7 +186,7 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		timeout helps show why Deferreds rock:
 	//
 	//			// Deferred style and async func
-	//			function renderLotsOfData(data, callback){
+	//			function renderLotsOfData(data){
 	//				var d = new dojo.Deferred();
 	//				setTimeout(function(){
 	//					try{

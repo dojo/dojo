@@ -253,8 +253,7 @@ dojo.date.locale._parseInfo = function(/*Object?*/options){
 	}
 
 	var tokens = [];
-	var re = _processPattern(pattern, dojo.hitch(this, _buildDateTimeRE, tokens, bundle, options)).
-		replace(/\xA0/g, "[\u00A0 ]");
+	var re = _processPattern(pattern, dojo.hitch(this, _buildDateTimeRE, tokens, bundle, options));
 	return {regexp: re, tokens: tokens, bundle: bundle};
 };
 
@@ -536,16 +535,18 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 					if(pm != pm.toLowerCase()){ s += '|' + pm.toLowerCase(); }
 				}
 				break;
-//			default:
+			default:
+			// case 'v':
+			// case 'z':
+			// case 'Z':
+				s = ".*";
 //				console.debug("parse of date format, pattern=" + pattern);
 		}
 
 		if(tokens){ tokens.push(match); }
 
-//FIXME: replace whitespace within final regexp with more flexible whitespace match instead?
-		//tolerate whitespace
-		return '\\s*(' + s + ')\\s*';
-	});
+		return "(" + s + ")"; // add capture
+	}).replace(/[\xa0 ]/g, "\\s"); // normalize whitespace
 }
 })();
 

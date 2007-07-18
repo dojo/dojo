@@ -229,8 +229,6 @@ dojo.number._parseInfo = function(/*Object?*/options){
 		}
 	}
 
-	if(group == '\xa0'){ group = ' '; }
-
 	//TODO: handle quoted escapes
 	var patternList = pattern.split(';');
 	if(patternList.length == 1){
@@ -284,7 +282,8 @@ dojo.number._parseInfo = function(/*Object?*/options){
 
 //TODO: substitute localized sign/percent/permille/etc.?
 
-	return {regexp: re, group: group, decimal: decimal, factor: factor}; // Object
+	// normalize whitespace and return
+	return {regexp: re.replace(/[\xa0 ]/g, "\\s"), group: group, decimal: decimal, factor: factor}; // Object
 }
 
 dojo.number.parse = function(/*String*/expression, /*Object?*/options){
@@ -315,10 +314,9 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 	//			object with currency information
 
 	var info = dojo.number._parseInfo(options);
-
 	var results = (new RegExp("^"+info.regexp+"$")).exec(expression);
-		if(!results){
-			return NaN; //NaN
+	if(!results){
+		return NaN; //NaN
 	}
 	var absoluteMatch = results[1]; // match for the positive expression
 	if(!results[1]){
@@ -326,16 +324,15 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 			return NaN; //NaN
 		}
 		// matched the negative pattern
-		absoluteMatch = results[2];
+		absoluteMatch =results[2];
 		info.factor *= -1;
 	}
 
-	// Transform it to something Javascript can parse as a number
-	while(absoluteMatch.indexOf(info.group) != -1){
-		absoluteMatch = absoluteMatch.replace(info.group, "");
-	}
-	absoluteMatch = absoluteMatch.replace(info.decimal, ".");
-
+	// Transform it to something Javascript can parse as a number.  Normalize
+	// decimal point and strip out group separators or alternate forms of whitespace
+	absoluteMatch = absoluteMatch.
+		replace(new RegExp("["+info.group + "\\s"+"]", "g"), "").
+		replace(info.decimal, ".");
 	// Adjust for negative sign, percent, etc. as necessary
 	return Number(absoluteMatch) * info.factor; //Number
 };
@@ -365,7 +362,7 @@ dojo.number._realNumberRegexp = function(/*Object?*/flags){
 	//			can be applied.
 
 	// assign default values to missing paramters
-	flags = (typeof flags == "object") ? flags : {};
+	flags = flags || {};
 	if(typeof flags.places == "undefined"){ flags.places = Infinity; }
 	if(typeof flags.decimal != "string"){ flags.decimal = "."; }
 	if(typeof flags.fractional == "undefined"){ flags.fractional = [true, false]; }
@@ -424,7 +421,7 @@ dojo.number._integerRegexp = function(/*Object?*/flags){
 	//		flags.groupSize2: second grouping (for India)
 
 	// assign default values to missing paramters
-	flags = (typeof flags == "object") ? flags : {};
+	flags = flags || {};
 	if(typeof flags.signed == "undefined"){ flags.signed = [true, false]; }
 	if(typeof flags.separator == "undefined"){
 		flags.separator = "";
@@ -439,8 +436,8 @@ dojo.number._integerRegexp = function(/*Object?*/flags){
 
 	// number RE
 	var numberRE = dojo.regexp.buildGroupRE(flags.separator,
-		function(sep){ 
-			if(!sep){ 
+		function(sep){
+			if(!sep){
 				return "(?:0|[1-9]\\d*)";
 			}
 			sep = dojo.regexp.escapeString(sep);

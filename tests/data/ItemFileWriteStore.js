@@ -337,7 +337,6 @@ doh.register("tests.data.ItemFileWriteStore",
 				var newStore = new dojo.data.ItemFileWriteStore({data: dataset});
 
 				function gotItem(item){
-					console.log("Item is " + item);
 					var independenceDate = newStore.getValue(item,"independence"); 
 					doh.assertTrue(independenceDate instanceof Date);
 					doh.assertTrue(dojo.date.compare(new Date(1993,04,24), independenceDate, "date") === 0);
@@ -364,7 +363,62 @@ doh.register("tests.data.ItemFileWriteStore",
 			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
 			return deferred; //Object
 		},
-		function testWriteAPI_saveEverything_withCustomColorType(){
+		function testWriteAPI_saveEverything_withCustomColorTypeSimple(){
+			//	summary: 
+			//		Simple test of the save API	with a non-atomic type (dojo.Color) that has a type mapping.
+			//	description:
+			//		Simple test of the save API	with a non-atomic type (dojo.Color) that has a type mapping.
+
+			//Set up the store basics:  What data it has, and what to do when save is called for saveEverything
+			//And how to map the 'Color' type in and out of the format.
+			//(Test of saving all to a some location...)
+			var dataset = {
+				identifier:'name',
+				items: [
+					{ name:'Kermit', species:'frog', color:{_type:'Color', _value:'green'} },
+					{ name:'Beaker', hairColor:{_type:'Color', _value:'red'} }
+				]
+			};
+
+			var customTypeMap = {'Color': dojo.Color };
+
+			var store = new dojo.data.ItemFileWriteStore({
+					data:dataset,
+					typeMap: customTypeMap
+			});
+			
+			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
+				//Now load the new data into a datastore and validate that it stored the Color right.
+				var dataset = dojo.fromJson(newFileContentString);
+				var newStore = new dojo.data.ItemFileWriteStore({data: dataset, typeMap: customTypeMap});
+
+				function gotItem(item){
+					var hairColor = newStore.getValue(item,"hairColor"); 
+					doh.assertTrue(hairColor instanceof dojo.Color);
+					doh.assertEqual("rgba(255, 255, 0, 1)", hairColor.toString());
+					saveCompleteCallback();
+				}
+				function failed(error, request){
+					deferred.errback(error);
+					saveFailedCallback();
+				}
+				newStore.fetchItemByIdentity({identity:"Animal", onItem:gotItem, onError:failed});
+			};
+
+			//Add a new item with a color type, then save it.
+			var deferred = new doh.Deferred();
+			function onError(error){
+				deferred.errback(error);
+			}
+			function onComplete() {
+				deferred.callback(true);
+			}
+
+			var animal = store.newItem({name: "Animal", hairColor: new dojo.Color("yellow")});
+			store.save({onComplete:onComplete, onError:onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_saveEverything_withCustomColorTypeGeneral(){
 			//	summary: 
 			//		Simple test of the save API	with a non-atomic type (dojo.Color) that has a type mapping.
 			//	description:
@@ -384,11 +438,9 @@ doh.register("tests.data.ItemFileWriteStore",
 			var customTypeMap = {'Color': 	{	
 												type: dojo.Color,
 												deserialize: function(value){
-													console.debug("DESERIALIZE:", value, new dojo.Color(value));
 													return new dojo.Color(value);
 												},
 												serialize: function(obj){
-													console.debug("SERIALIZE:", obj, obj.toString());
 													return obj.toString();
 												}
 											}

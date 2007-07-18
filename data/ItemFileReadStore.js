@@ -7,9 +7,25 @@ dojo.require("dojo.date.stamp");
 dojo.declare("dojo.data.ItemFileReadStore",
 	null,
 	function(/* Object */ keywordParameters){
-		// summary: initializer
-		// keywordParameters: {url: String}
-		// keywordParameters: {data: jsonObject}
+		// 	summary: initializer
+		// 	keywordParameters: {url: String}
+		// 	keywordParameters: {data: jsonObject}
+		// 	keywordParameters: {typeMap: object)
+		//		The structure of the typeMap object is as follows:
+		//		{
+		//			type0: function || object,
+		//			type1: function || object,
+		//			...
+		//			typeN: function || object
+		//		}
+		//		Where if it is a function, it is assumed to be an object constructor that takes the 
+		//		value of _value as the initialization parameters.  If it is an object, then it is assumed
+		//		to be an object of general form:
+		//		{
+		//			type: function, //constructor.
+		//			deserialize:	function(value) //The function that parses the value and constructs the object defined by type appropriately.
+		//		}
+	
 		this._arrayOfAllItems = [];
 		this._arrayOfTopLevelItems = [];
 		this._loadFinished = false;
@@ -42,6 +58,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 	//		]}
 	//		Note that it can also contain an 'identifer' property that specified which attribute on the items 
 	//		in the array of items that acts as the unique identifier for that item.
+	//
 	//
 
 	url: "",	// use "" rather than undefined for the benefit of the parser (#3539)
@@ -472,11 +489,16 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					if(value !== null && typeof value == "object"){
 						if(value._type && value._value){
 							var type = value._type; // examples: 'Date', 'Color', or 'ComplexNumber'
-							var mapping = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber
-							if(!mapping || !mapping.deserialize){ 
+							var mappingObj = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber, {type: dojo.Color, deserialize(value){ return new dojo.Color(value)}}
+							if(!mappingObj){ 
 								throw new Error("dojo.data.ItemFileReadStore: in the typeMap constructor arg, no object class was specified for the datatype '" + type + "'");
+							}else if(dojo.isFunction(mappingObj)){
+								arrayOfValues[j] = new mappingObj(value._value);
+							}else if(dojo.isFunction(mappingObj.deserialize)){
+								arrayOfValues[j] = mappingObj.deserialize(value._value);
+							}else{
+								throw new Error("dojo.data.ItemFileReadStore: Value provided in typeMap was neither a constructor, nor a an object with a deserialize function");
 							}
-							arrayOfValues[j] = mapping.deserialize(value._value);
 						}
 						if(value._reference){
 							var referenceDescription = value._reference; // example: {name:'Miss Piggy'}

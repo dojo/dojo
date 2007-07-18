@@ -1829,7 +1829,39 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
-		name: "Read API: custom_datatype_Color",
+		name: "Read API: custom_datatype_Color_SimpleMapping",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test using literal values with custom datatypes
+			var dataset = {
+				identifier:'name',
+				items: [
+					{ name:'Kermit', species:'frog', color:{_type:'Color', _value:'green'} },
+					{ name:'Beaker', hairColor:{_type:'Color', _value:'red'} }
+				]
+			};
+			var store = new datastore({
+					data:dataset,
+					typeMap:{'Color': dojo.Color}
+			});
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var beaker = item;
+				var hairColor = store.getValue(beaker, "hairColor");
+				t.assertTrue(hairColor instanceof dojo.Color);
+				t.assertTrue(hairColor.toHex() == "#ff0000");
+				d.callback(true);
+			}
+			function onError(errData){
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity:"Beaker", onItem:onItem, onError:onError});
+			return d; // Deferred
+		}
+	},
+	{
+		name: "Read API: custom_datatype_Color_GeneralMapping",
  		runTest: function(datastore, t){
 			//	summary: 
 			//		Function to test using literal values with custom datatypes
@@ -1856,7 +1888,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				var beaker = item;
 				var hairColor = store.getValue(beaker, "hairColor");
 				t.assertTrue(hairColor instanceof dojo.Color);
-				t.assertTrue(hairColor.toHex() == "#ff0000")
+				t.assertTrue(hairColor.toHex() == "#ff0000");
 				d.callback(true);
 			}
 			function onError(errData){

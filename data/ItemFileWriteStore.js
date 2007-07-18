@@ -4,6 +4,24 @@ dojo.require("dojo.data.ItemFileReadStore");
 dojo.declare("dojo.data.ItemFileWriteStore", 
 	dojo.data.ItemFileReadStore, 
 	function(/* object */ keywordParameters){
+		// 	keywordParameters: {typeMap: object)
+		//		The structure of the typeMap object is as follows:
+		//		{
+		//			type0: function || object,
+		//			type1: function || object,
+		//			...
+		//			typeN: function || object
+		//		}
+		//		Where if it is a function, it is assumed to be an object constructor that takes the 
+		//		value of _value as the initialization parameters.  It is serialized assuming object.toString()
+		//		serialization.  If it is an object, then it is assumed
+		//		to be an object of general form:
+		//		{
+		//			type: function, //constructor.
+		//			deserialize:	function(value) //The function that parses the value and constructs the object defined by type appropriately.
+		//			serialize:	function(object) //The function that converts the object back into the proper file format form.
+		//		}
+
 		// ItemFileWriteStore extends ItemFileReadStore to implement these additional dojo.data APIs
 		this._features['dojo.data.api.Write'] = true;
 		this._features['dojo.data.api.Notification'] = true;
@@ -258,11 +276,16 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			if(typeof value === "object"){
 				for(type in this._datatypeMap){
 					typeMap = this._datatypeMap[type];
-					if(value instanceof typeMap.type){
-						if(!typeMap.serialize){
-							throw new Error("ItemFileWriteStore:  No serializer defined for type mapping: [" + type + "]");
+					if (dojo.isObject(typeMap) && !dojo.isFunction(typeMap)){
+						if(value instanceof typeMap.type){
+							if(!typeMap.serialize){
+								throw new Error("ItemFileWriteStore:  No serializer defined for type mapping: [" + type + "]");
+							}
+							return {_type: type, _value: typeMap.serialize(value)};
 						}
-						return {_type: type, _value: typeMap.serialize(value)};
+					} else if(value instanceof typeMap){
+						//SImple mapping, therefore, return as a toString serialization.
+						return {_type: type, _value: value.toString()};
 					}
 				}
 			}

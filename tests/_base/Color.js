@@ -20,13 +20,9 @@ dojo.provide("tests._base.Color");
 			function testColor7(t){ verifyColor(t, "rgb(128, 0, 0)", maroon); },
 			function testColor8(t){ verifyColor(t, "rgba(128, 0, 0, 0.5)", [128, 0, 0, 0.5]); },
 			function testColor9(t){ verifyColor(t, maroon, maroon); },
-			function testColor10(t){ verifyColor(t, [1], [1, 1, 1, 1]); },
-			function testColor11(t){ verifyColor(t, [1, 0.5], [1, 1, 1, 0.5]); },
-			function testColor12(t){ verifyColor(t, [1, 2, 3], [1, 2, 3, 1]); },
-			function testColor13(t){ verifyColor(t, [1, 2, 3, 4], [1, 2, 3, 1]); },
-			function testColor14(t){ verifyColor(t, [1000, 2000, 3000, 4000], white); },
-			function testColor15(t){ verifyColor(t, [-1, -2, -3, -4], [0, 0, 0, 0]); },
-			function testColor16(t){ verifyColor(t, {r: 1, g: 2, b: 3, a: 4}, [1, 2, 3, 1]); }
+			function testColor10(t){ verifyColor(t, [1, 2, 3], [1, 2, 3, 1]); },
+			function testColor11(t){ verifyColor(t, [1, 2, 3, 0.5], [1, 2, 3, 0.5]); },
+			function testColor12(t){ verifyColor(t, dojo.blendColors(new dojo.Color("black"), new dojo.Color("white"), 0.5), [128, 128, 128, 1]); }
 		]
 	);
 })();

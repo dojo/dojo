@@ -307,7 +307,7 @@ dojo.declare("dojo._Animation", null,
 					var prop = this._properties[p];
 					var value = null;
 					if(prop.start instanceof dojo.Color){
-						value = dojo.blendColors(prop.end, prop.start, r * 2 - 1, prop.tempColor).toCss();
+						value = dojo.blendColors(prop.start, prop.end, r, prop.tempColor).toCss();
 					}else if(!dojo.isArray(prop.start)){
 						value = ((prop.end - prop.start) * r) + prop.start + (p != "opacity" ? prop.units||"px" : "");
 					}

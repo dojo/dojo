@@ -48,7 +48,31 @@ dojo.provide("dojo.colors");
 		}
 		return null;	// dojo.Color
 	};
+	
+	var confine = function(c, low, high){
+		// summary:
+		//		sanitize a color component by making sure it is a number,
+		//		and clamping it to valid values
+		c = Number(c);
+		return isNaN(c) ? high : c < low ? low : c > high ? high : c;	// Number
+	};
+	
+	dojo.Color.prototype.sanitize = function(){
+		// summary: makes sure that the object has correct attributes
+		var t = this;
+		t.r = Math.round(confine(t.r, 0, 255));
+		t.g = Math.round(confine(t.g, 0, 255));
+		t.b = Math.round(confine(t.b, 0, 255));
+		t.a = confine(t.a, 0, 1);
+		return this;	// dojo.Color
+	};
 })();
+
+
+dojo.colors.makeGrey = function(/*Number*/ g, /*Number?*/ a){
+	// summary: creates a greyscale color with an optional alpha
+	return dojo.colorFromArray([g, g, g, a]);
+};
 
 
 // mixin all CSS3 named colors not already in _base, along with SVG 1.0 variant spellings

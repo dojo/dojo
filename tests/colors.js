@@ -9,9 +9,9 @@ dojo.require("dojo.colors");
 		dojo.forEach(source.toRgba(), function(n){ t.is("number", typeof(n)); });
 	}
 
-	// all tests are taken from #4.2 of the CSS3 Color Module
 	doh.register("tests.colors", 
 		[
+			// all tests below are taken from #4.2 of the CSS3 Color Module
 			function testColorEx01(t){ verifyColor(t, "black", [0, 0, 0]); },
 			function testColorEx02(t){ verifyColor(t, "white", [255, 255, 255]); },
 			function testColorEx03(t){ verifyColor(t, "maroon", [128, 0, 0]); },
@@ -35,7 +35,10 @@ dojo.require("dojo.colors");
 			function testColorEx21(t){ verifyColor(t, "hsla(120, 100%, 50%, 1)", "lime"); },
 			function testColorEx22(t){ verifyColor(t, "hsla(240, 100%, 50%, 0.5)", [0, 0, 255, 0.5]); },
 			function testColorEx23(t){ verifyColor(t, "hsla(30, 100%, 50%, 0.1)", [255, 128, 0, 0.1]); },
-			function testColorEx24(t){ verifyColor(t, "transparent", [0, 0, 0, 0]); }
+			function testColorEx24(t){ verifyColor(t, "transparent", [0, 0, 0, 0]); },
+			// all tests below test greyscale colors
+			function testColorEx25(t){ verifyColor(t, dojo.colors.makeGrey(5), [5, 5, 5, 1]); },
+			function testColorEx26(t){ verifyColor(t, dojo.colors.makeGrey(2, 0.3), [2, 2, 2, 0.3]); }
 		]
 	);
 })();

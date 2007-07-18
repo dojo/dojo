@@ -47,11 +47,9 @@ dojo.parser = new function(){
 			case "date":
 				return dojo.date.stamp.fromISOString(value);
 			case "url":
-//PORT FIXME: is value absolute or relative?  Need to join with "/"?
 				return dojo.baseUrl + value;
 			default:
-				try{ eval("var tmp = "+value); return tmp; }
-				catch(e){ return value; }
+				return dojo.fromJson(value);
 		}
 	}
 
@@ -146,7 +144,7 @@ dojo.parser = new function(){
 					var attrType = clsInfo.params[attrName];
 					var val = str2obj(attrValue, attrType);
 					// console.debug(attrName, attrValue, val, (typeof val));
-					if(val != null){
+					if(val){
 						params[attrName] = val;
 					}
 				}
@@ -166,17 +164,13 @@ dojo.parser = new function(){
 			// grab the rest of the scripts for processing later
 			var scripts = dojo.query("> script[type='dojo/method']", node).orphan();
 
-			var markupFactory = clsInfo.cls["markupFactory"];
-			if((!markupFactory) && (clsInfo.cls["prototype"])){
-				markupFactory = clsInfo.cls.prototype["markupFactory"];
+			var clazz = clsInfo.cls;
+			var markupFactory = clazz["markupFactory"];
+			if(!markupFactory && clazz["prototype"]){
+				markupFactory = clazz.prototype["markupFactory"];
 			}
 			// create the instance
-			var instance;
-			if(markupFactory){
-				instance = markupFactory(params, node);
-			}else{
-				instance = new clsInfo.cls(params, node);
-			}
+			var instance = markupFactory ? markupFactory(params, node) : new clazz(params, node);
 			thelist.push(instance);
 
 			// map it to the JS namespace if that makes sense

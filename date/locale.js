@@ -546,7 +546,7 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 		if(tokens){ tokens.push(match); }
 
 		return "(" + s + ")"; // add capture
-	}).replace(/[\xa0 ]/g, "\\s"); // normalize whitespace
+	}).replace(/[\xa0 ]/g, "[\\s\\xa0]"); // normalize whitespace.  Need explicit handling of \xa0 for IE.
 }
 })();
 

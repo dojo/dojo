@@ -283,7 +283,7 @@ dojo.number._parseInfo = function(/*Object?*/options){
 //TODO: substitute localized sign/percent/permille/etc.?
 
 	// normalize whitespace and return
-	return {regexp: re.replace(/[\xa0 ]/g, "\\s"), group: group, decimal: decimal, factor: factor}; // Object
+	return {regexp: re.replace(/[\xa0 ]/g, "[\\s\\xa0]"), group: group, decimal: decimal, factor: factor}; // Object
 }
 
 dojo.number.parse = function(/*String*/expression, /*Object?*/options){
@@ -331,7 +331,7 @@ dojo.number.parse = function(/*String*/expression, /*Object?*/options){
 	// Transform it to something Javascript can parse as a number.  Normalize
 	// decimal point and strip out group separators or alternate forms of whitespace
 	absoluteMatch = absoluteMatch.
-		replace(new RegExp("["+info.group + "\\s"+"]", "g"), "").
+		replace(new RegExp("["+info.group + "\\s\\xa0"+"]", "g"), "").
 		replace(info.decimal, ".");
 	// Adjust for negative sign, percent, etc. as necessary
 	return Number(absoluteMatch) * info.factor; //Number
@@ -440,7 +440,13 @@ dojo.number._integerRegexp = function(/*Object?*/flags){
 			if(!sep){
 				return "(?:0|[1-9]\\d*)";
 			}
+
 			sep = dojo.regexp.escapeString(sep);
+			if(dojo.isIE){
+				if(sep == " "){ sep = "\\s"; }
+				else if(sep == "\xa0"){ sep = "\\s\\xa0"; }
+			}
+
 			var grp = flags.groupSize, grp2 = flags.groupSize2;
 			if(grp2){
 				var grp2RE = "(?:0|[1-9]\\d{0," + (grp2-1) + "}(?:[" + sep + "]\\d{" + grp2 + "})*[" + sep + "]\\d{" + grp + "})";

@@ -128,7 +128,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 				if(loc != "ROOT"){module.push(loc);}
 				module.push(bundleName);
 				var filespec = module.join("/") + '.js';
-				loaded = dojo._loadPath(filespec, bundlePackage, function(hash){
+				loaded = dojo._loadPath(filespec, null, function(hash){
 					// Use singleton with prototype to point to parent bundle, then mix-in result from loadPath
 					var clazz = function(){};
 					clazz.prototype = parent;

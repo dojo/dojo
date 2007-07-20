@@ -67,30 +67,43 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	return output.join(""); //String
 }
 
+dojo.xdIsXDomainPath = function(/*string*/relpath) {
+    //summary: Figure out whether the path is local or x-domain
+	//If there is a colon before the first / then, we have a URL with a protocol.
+    
+	var colonIndex = relpath.indexOf(":");
+	var slashIndex = relpath.indexOf("/");
+
+	if(colonIndex > 0 && colonIndex < slashIndex){
+		return true;
+	}else{
+		//Is ithe base script URI-based URL a cross domain URL?
+		colonIndex = this.baseUrl.indexOf(":");
+		slashIndex = this.baseUrl.indexOf("/");
+		if(colonIndex > 0 && colonIndex < slashIndex && (!location.host || uri.indexOf("http://" + location.host) != 0)){
+			return true;
+		}
+	}
+    return false;     
+}
+
 dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb){
 	//summary: Internal xd loader function. Overrides loadPath() from loader.js.
 	//xd loading requires slightly different behavior from loadPath().
 
+	var currentIsXDomain = this.xdIsXDomainPath(relpath);
+    this._isXDomain |= currentIsXDomain;
 
-	//Only do getBaseScriptUri if path does not start with a URL with a protocol.
-	//If there is a colon before the first / then, we have a URL with a protocol.
-	var colonIndex = relpath.indexOf(":");
-	var slashIndex = relpath.indexOf("/");
-	var uri;
-	var currentIsXDomain = false;
-	if(colonIndex > 0 && colonIndex < slashIndex){
-		uri = relpath;
-		this._isXDomain = currentIsXDomain = true;
-	}else{
-		uri = this.baseUrl + relpath;
-
-		//Is ithe base script URI-based URL a cross domain URL?
-		colonIndex = uri.indexOf(":");
-		slashIndex = uri.indexOf("/");
-		if(colonIndex > 0 && colonIndex < slashIndex && (!location.host || uri.indexOf("http://" + location.host) != 0)){
-			this._isXDomain = currentIsXDomain = true;
-		}
-	}
+	var uri = this.baseUrl + relpath;
+	if(currentIsXDomain){
+        // check whether the relpath is an absolute URL itself. If so, we 
+        // ignore baseUrl
+    	var colonIndex = relpath.indexOf(":");
+    	var slashIndex = relpath.indexOf("/");
+        if(colonIndex > 0 && colonIndex < slashIndex){ 
+		    uri = relpath;
+    	}
+    }
 
 	if(djConfig.cacheBust && dojo.isBrowser) { uri += "?" + String(djConfig.cacheBust).replace(/\W+/g,""); }
 	try{
@@ -354,6 +367,21 @@ dojo.xdRequireLocalization = function(/*String*/moduleName, /*String*/bundleName
 	}
 }
 
+// Replace dojo.requireLocalization with a wrapper
+dojo._xdRealRequireLocalization = dojo.requireLocalization;
+dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String*/availableFlatLocales){
+    // summary: loads a bundle intelligently based on whether the module is 
+    // local or xd. Overrides the local-case implementation.
+    
+    var modulePath = this.moduleUrl(moduleName).toString();
+    if (this.xdIsXDomainPath(modulePath)) {
+        // call cross-domain loader
+        return dojo.xdRequireLocalization.apply(dojo, arguments);
+    } else {
+        // call local-loader
+        return dojo._xdRealRequireLocalization.apply(dojo, arguments);
+    }
+}
 
 //This is a bit brittle: it has to know about the dojo methods that deal with dependencies
 //It would be ideal to intercept the actual methods and do something fancy at that point,

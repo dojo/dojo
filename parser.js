@@ -231,7 +231,7 @@ dojo.parser = new function(){
 	};
 
 	// FIXME: need to clobber cross-dependency!!
-	if(dojo.exists("dijit.util.wai.onload") && (dijit.util.wai.onload === dojo._loaders[0])){
+	if(dojo.exists("dijit.wai.onload") && (dijit.wai.onload === dojo._loaders[0])){
 		dojo._loaders.splice(1, 0, parseRunner);
 	}else{
 		dojo._loaders.unshift(parseRunner);

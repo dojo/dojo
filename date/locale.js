@@ -294,6 +294,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 	//in the cases where the year is parsed after the month and day.
 	var result = new Date(1972, 0);
 	var expected = {};
+	var amPm = "";
 	dojo.forEach(match, function(v, i){
 		if(!i){return;}
 		var token=tokens[i-1];
@@ -389,12 +390,9 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 //					console.debug("dojo.date.locale.parse: Could not parse am/pm part.");
 					return null;
 				}
-				var hours = result.getHours();
-				if(v == pm && hours < 12){
-					result.setHours(hours + 12); //e.g., 3pm -> 15
-				} else if(v == am && hours == 12){
-					result.setHours(0); //12am -> 0
-				}
+
+				// we might not have seen the hours field yet, so store the state and apply hour change later
+				amPm = (v == pm) ? 'p' : (v == am) ? 'a' : '';
 				break;
 			case 'K': //hour (1-24)
 				if(v==24){v=0;}
@@ -409,7 +407,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				}
 
 				//in the 12-hour case, adjusting for am/pm requires the 'a' part
-				//which for now we will assume always comes after the 'h' part
+				//which could come before or after the hour, so we will adjust later
 				result.setHours(v);
 				break;
 			case 'm': //minutes
@@ -420,14 +418,21 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				break;
 			case 'S': //milliseconds
 				result.setMilliseconds(v);
-				break;
-			case 'w':
+//				break;
+//			case 'w':
 //TODO				var firstDay = 0;
-			default:
+//			default:
 //TODO: throw?
 //				console.debug("dojo.date.locale.parse: unsupported pattern char=" + token.charAt(0));
 		}
 	});
+
+	var hours = result.getHours();
+	if(amPm === 'p' && hours < 12){
+		result.setHours(hours + 12); //e.g., 3pm -> 15
+	}else if(amPm === 'a' && hours == 12){
+		result.setHours(0); //12am -> 0
+	}
 
 	//validate parse date fields versus input date fields
 	if(expected.year && result.getFullYear() != expected.year){

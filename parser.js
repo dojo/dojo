@@ -144,7 +144,7 @@ dojo.parser = new function(){
 					var attrType = clsInfo.params[attrName];
 					var val = str2obj(attrValue, attrType);
 					// console.debug(attrName, attrValue, val, (typeof val));
-					if(val){
+					if(val !== undefined){
 						params[attrName] = val;
 					}
 				}

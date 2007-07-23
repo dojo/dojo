@@ -442,10 +442,8 @@ dojo.number._integerRegexp = function(/*Object?*/flags){
 			}
 
 			sep = dojo.regexp.escapeString(sep);
-			if(dojo.isIE){
-				if(sep == " "){ sep = "\\s"; }
-				else if(sep == "\xa0"){ sep = "\\s\\xa0"; }
-			}
+			if(sep == " "){ sep = "\\s"; }
+			else if(sep == "\xa0"){ sep = "\\s\\xa0"; }
 
 			var grp = flags.groupSize, grp2 = flags.groupSize2;
 			if(grp2){

@@ -275,7 +275,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		}else{
 			if(typeof value === "object"){
 				for(type in this._datatypeMap){
-					typeMap = this._datatypeMap[type];
+					var typeMap = this._datatypeMap[type];
 					if (dojo.isObject(typeMap) && !dojo.isFunction(typeMap)){
 						if(value instanceof typeMap.type){
 							if(!typeMap.serialize){

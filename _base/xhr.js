@@ -274,7 +274,10 @@ dojo._contentHandlers = {
 		var formQuery = null;
 		if(args.form){ 
 			var form = dojo.byId(args.form);
-			ioArgs.url = args.url || form.getAttribute("action");
+			//IE requires going through getAttributeNode instead of just getAttribute in some form cases, 
+			//so use it for all.  See #2844
+			var actnNode = form.getAttributeNode("action");
+			ioArgs.url = args.url || (actnNode ? actnNode.value : null); 
 			formQuery = dojo.formToQuery(form);
 		}else{
 			ioArgs.url = args.url;

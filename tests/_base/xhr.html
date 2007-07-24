@@ -258,6 +258,24 @@
 							});
 							return d;
 						},
+						function xhrPostForm(t){
+							var d = new doh.Deferred();
+							var form = dojo.byId("f4");
+
+							//Make sure we can send a form to its 
+							//action URL.   See trac: #2844.
+							var td = dojo.xhrPost({
+								form: form
+							});
+							td.addCallback(function(){
+								d.callback(true);
+							});
+							td.addErrback(function(error){
+								d.callback(error);
+							});
+							// t.t(td instanceof dojo.Deferred);
+							return d;
+						},
 						function rawXhrPost(t){
 							var d = new doh.Deferred();
 							var td = dojo.rawXhrPost({
@@ -328,7 +346,6 @@
 							// t.t(td instanceof dojo.Deferred);
 							return d;
 						}
-
 						// FIXME: need to add tests for wrapForm
 					]
 				);
@@ -355,6 +372,9 @@
 		</form>
 		<form id="f3" style="border: 1px solid black;">
 			<input type="hidden" name="spaces" value="string with spaces">
+		</form>
+		<form id="f4" style="border: 1px solid black;" action="xhr.html">
+			<input type="hidden" name="action" value="Form with input named action">
 		</form>
 	</body>
 </html>

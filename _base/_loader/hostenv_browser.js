@@ -59,6 +59,12 @@ if(typeof window != 'undefined'){
 			}
 		}catch(e){}
 
+		//Workaround to get local file loads of dojo to work on IE 7
+		//by forcing to not use native xhr.
+		if(dojo.isIE && (window.location.protocol === "file:")){
+			djConfig.ieForceActiveXXhr=true;
+		}
+
 		d._gearsObject = function(){
 			// summary: 
 			//		factory method to get a Google Gears plugin instance to
@@ -125,7 +131,9 @@ if(typeof window != 'undefined'){
 			//		object.
 			var http = null;
 			var last_e = null;
-			try{ http = new XMLHttpRequest(); }catch(e){}
+			if(!dojo.isIE || !djConfig.ieForceActiveXXhr){
+				try{ http = new XMLHttpRequest(); }catch(e){}
+			}
 			if(!http){
 				for(var i=0; i<3; ++i){
 					var progid = dojo._XMLHTTP_PROGIDS[i];

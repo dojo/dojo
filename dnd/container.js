@@ -56,7 +56,7 @@ function(node, params){
 	// methods
 	getAllNodes: function(){
 		// summary: returns a list (an array) of all valid child nodes
-		return dojo.query("> .dndItem", this.parent);	// NodeList
+		return dojo.query("> .dojoDndItem", this.parent);	// NodeList
 	},
 	insertNodes: function(data, before, anchor){
 		// summary: inserts an array of new nodes before/after an anchor node
@@ -111,7 +111,7 @@ function(node, params){
 		}
 
 		// process specially marked children
-		dojo.query("> .dndItem", this.parent).forEach(function(node){
+		dojo.query("> .dojoDndItem", this.parent).forEach(function(node){
 			if(!node.id){ node.id = dojo.dnd.getUniqueId(); }
 			var type = node.getAttribute("dndType"),
 				data = node.getAttribute("dndData");
@@ -202,7 +202,7 @@ function(node, params){
 		var node = e.target;
 		if(node){
 			for(var parent = node.parentNode; parent; node = parent, parent = node.parentNode){
-				if(parent == this.parent && dojo.hasClass(node, "dndItem")){ return node; }
+				if(parent == this.parent && dojo.hasClass(node, "dojoDndItem")){ return node; }
 			}
 		}
 		return null;
@@ -212,7 +212,7 @@ function(node, params){
 		var t = (this.creator ? this.creator : this.defaultCreator)(item, hint);
 		if(!dojo.isArray(t.type)){ t.type = ["text"]; }
 		if(!t.node.id){ t.node.id = dojo.dnd.getUniqueId(); }
-		dojo.addClass(t.node, "dndItem");
+		dojo.addClass(t.node, "dojoDndItem");
 		return t;
 	}
 });

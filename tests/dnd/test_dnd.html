@@ -70,9 +70,9 @@
 		<div style="float:left; margin:5px; ">
 			<h3>Source 2</h3>
 			<div dojoType="dojo.dnd.Source" jsId="c2" class="container">
-				<div class="dndItem">Item <strong>X</strong></div>
-				<div class="dndItem">Item <strong>Y</strong></div>
-				<div class="dndItem">Item <strong>Z</strong></div>
+				<div class="dojoDndItem">Item <strong>X</strong></div>
+				<div class="dojoDndItem">Item <strong>Y</strong></div>
+				<div class="dojoDndItem">Item <strong>Z</strong></div>
 			</div>
 		</div>
 		<div style="float:left; margin:5px; ">
@@ -82,21 +82,21 @@
 					// this is custom creator, which changes the avatar representation
 					var node = dojo.doc.createElement("div"), s = String(item);
 					node.id = dojo.dnd.getUniqueId();
-					node.className = "dndItem";
+					node.className = "dojoDndItem";
 					node.innerHTML = (hint != "avatar" || s.indexOf("Item") < 0) ? 
 						s : "<strong style='color: darkred'>Special</strong> " + s;
 					return {node: node, data: item, type: ["text"]};
 				</script>
-				<div class="dndItem">Item <strong>Alpha</strong></div>
-				<div class="dndItem">Item <strong>Beta</strong></div>
-				<div class="dndItem">Item <strong>Gamma</strong></div>
-				<div class="dndItem">Item <strong>Delta</strong></div>
+				<div class="dojoDndItem">Item <strong>Alpha</strong></div>
+				<div class="dojoDndItem">Item <strong>Beta</strong></div>
+				<div class="dojoDndItem">Item <strong>Gamma</strong></div>
+				<div class="dojoDndItem">Item <strong>Delta</strong></div>
 			</div>
 		</div>
 		<div style="float:left; margin:5px; ">
 			<h3>Pure Target 4</h3>
 			<div dojoType="dojo.dnd.Target" jsId="c4" class="container">
-				<div class="dndItem">One item</div>
+				<div class="dojoDndItem">One item</div>
 			</div>
 		</div>
 		<div class="clear"></div>

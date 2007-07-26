@@ -58,7 +58,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 	
 /* dojo.data.api.Write */
 
-	newItem: function(/* Object? */ keywordArgs){
+	newItem: function(/* Object? */ keywordArgs, /* Object? */ parentInfo){
 		// summary: See dojo.data.api.Write.newItem()
 
 		this._assert(!this._saveInProgress);
@@ -94,11 +94,47 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		var newItem = {};
 		newItem[this._storeRefPropName] = this;		
 		newItem[this._itemNumPropName] = this._arrayOfAllItems.length;
-		
 		this._itemsByIdentity[newIdentity] = newItem;
 		this._arrayOfAllItems.push(newItem);
+
+		//We need to construct some data for the onNew call too...
+		var pInfo = null;
+		
+		// Now we need to check to see where we want to assign this thingm if any.
+		if(parentInfo && parentInfo.parent && parentInfo.attribute){
+			pInfo = {
+				item: parentInfo.parent,
+				attribute: parentInfo.attribute,
+				oldValue: undefined
+			};
+
+			//See if it is multi-valued or not and handle appropriately
+			//Generally, all attributes are multi-valued for this store
+			//So, we only need to append if there are already values present.
+			var values = this.getValues(parentInfo.parent, parentInfo.attribute);
+			if(values && values.length > 0){
+				var tempValues = values.slice(0, values.length);
+				if(values.length === 1){
+					pInfo.oldValue = values[0];
+				}else{
+					pInfo.oldValue = values.slice(0, values.length);
+				}
+				tempValues.push(newItem);
+				this._setValueOrValues(parentInfo.parent, parentInfo.attribute, tempValues, false);
+                pInfo.newValue  = this.getValues(parentInfo.parent, parentInfo.attribute);
+            }else{
+				this._setValueOrValues(parentInfo.parent, parentInfo.attribute, newItem, false);
+				pInfo.newValue  = newItem;
+			}
+		}else{
+			//Toplevel item, add to both top list as well as all list.
+			newItem[this._rootItemPropName]=true;
+			this._arrayOfTopLevelItems.push(newItem);
+		}
+		
 		this._pending._newItems[newIdentity] = newItem;
 		
+		//Clone over the properties to the new item
 		for(var key in keywordArgs){
 			if(key === this._storeRefPropName || key === this._itemNumPropName){
 				// Bummer, the user is trying to do something like
@@ -121,8 +157,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			}
 			newItem[key] = value;
 		}
-		
-		this.onNew(newItem); // dojo.data.api.Notification call
+		this.onNew(newItem, pInfo); // dojo.data.api.Notification call
 		return newItem; // item
 	},
 	
@@ -138,6 +173,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 	deleteItem: function(/* item */ item){
 		// summary: See dojo.data.api.Write.deleteItem()
 		this._assert(!this._saveInProgress);
+		this._assertIsItem(item);
 
 		var found = this._removeArrayElement(this._arrayOfAllItems, item);
 		if(found){
@@ -147,29 +183,32 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			this._pending._deletedItems[identity] = item;
 			this._updateItemIdIndexValues();
 			this.onDelete(item); // dojo.data.api.Notification call
+			
+			//Remove from the toplevel items, if necessary...
+			if(item[this._rootItemPropName]){
+				this._removeArrayElement(this._arrayOfTopLevelItems, item);
+			}
 			return true;
 		}
-		
-		this._assertIsItem(item);
 		return false; // boolean
 	},
 
 	setValue: function(/* item */ item, /* attribute-name-string */ attribute, /* almost anything */ value){
 		// summary: See dojo.data.api.Write.set()
-		return this._setValueOrValues(item, attribute, value); // boolean
+		return this._setValueOrValues(item, attribute, value, true); // boolean
 	},
 	
 	setValues: function(/* item */ item, /* attribute-name-string */ attribute, /* array */ values){
 		// summary: See dojo.data.api.Write.setValues()
-		return this._setValueOrValues(item, attribute, values); // boolean
+		return this._setValueOrValues(item, attribute, values, true); // boolean
 	},
 	
 	unsetAttribute: function(/* item */ item, /* attribute-name-string */ attribute){
 		// summary: See dojo.data.api.Write.unsetAttribute()
-		return this._setValueOrValues(item, attribute, []);
+		return this._setValueOrValues(item, attribute, [], true);
 	},
 	
-	_setValueOrValues: function(/* item */ item, /* attribute-name-string */ attribute, /* anything */ newValueOrValues){
+	_setValueOrValues: function(/* item */ item, /* attribute-name-string */ attribute, /* anything */ newValueOrValues, /*boolean?*/ callOnSet){
 		this._assert(!this._saveInProgress);
 		
 		// Check for valid arguments
@@ -197,7 +236,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			// have a record of the original state.
 			var copyOfItemState = {};
 			for(var key in item){
-				if((key === this._storeRefPropName) || (key === this._itemNumPropName)){
+				if((key === this._storeRefPropName) || (key === this._itemNumPropName) || (key === this._rootItemPropName)){
 					copyOfItemState[key] = item[key];
 				}else{
 					var valueArray = item[key];
@@ -242,8 +281,9 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		}
 
 		// Now we make the dojo.data.api.Notification call
-		this.onSet(item, attribute, oldValueOrValues, newValueOrValues); 
-		
+		if(callOnSet){
+			this.onSet(item, attribute, oldValueOrValues, newValueOrValues); 
+		}
 		return success; // boolean
 	},
 
@@ -383,6 +423,9 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			var newItem = this._pending._newItems[identity];
 			newItem[this._storeRefPropName] = null;
 			this._removeArrayElement(this._arrayOfAllItems, newItem);
+			if(newItem[this._rootItemPropName]){
+				this._removeArrayElement(this._arrayOfTopLevelItems, newItem);
+			}
 			delete this._itemsByIdentity[identity];
 		}
 		for(identity in this._pending._modifiedItems){
@@ -398,6 +441,10 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			// replace the modified item with the original one
 			this._removeArrayElement(this._arrayOfAllItems, modifiedItem);
 			this._arrayOfAllItems.push(originalItem);
+			if(modifiedItem[this._rootItemPropName]){
+				this._removeArrayElement(this._arrayOfTopLevelItems, modifiedItem);
+				this._arrayOfTopLevelItems.push(originalItem);
+			}
 			this._itemsByIdentity[identity] = originalItem;
 		}
 		for(identity in this._pending._deletedItems){
@@ -405,6 +452,9 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			deletedItem[this._storeRefPropName] = this;
 			this._itemsByIdentity[identity] = deletedItem;
 			this._arrayOfAllItems.push(deletedItem);
+			if(deletedItem[this._rootItemPropName]){
+				this._arrayOfTopLevelItems.push(deletedItem);
+			}
 		}
 		this._pending = {
 			_newItems:{}, 
@@ -459,7 +509,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		// client code can connect observers to it. 
 	},
 
-	onNew: function(/* item */ newItem){
+	onNew: function(/* item */ newItem, /*object?*/ parentInfo){
 		// summary: See dojo.data.api.Notification.onNew()
 		
 		// No need to do anything. This method is here just so that the 

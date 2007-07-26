@@ -65,7 +65,7 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 		throw new Error('Unimplemented API: dojo.data.api.Notification.onSet');
 	},
 
-	onNew: function(/* item */ newItem){
+	onNew: function(/* item */ newItem, /*object?*/ parentInfo){
 		//	summary:
 		//		This function is called any time a new item is created in the store.
 		//		It is called immediately after the store newItem processing has completed.
@@ -74,7 +74,20 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 		//		It is called immediately after the store newItem processing has completed.
 		//
 		//	newItem:
-		//		The item created..
+		//		The item created.
+		//	parentInfo:
+		//		An optional javascript object that is passed when the item created was placed in the store
+		//		hierarchy as a value f another item's attribute, instead of a root level item.  Note that if this
+		//		function is invoked with a value for parentInfo, then onSet is not invoked stating the attribute of
+		//		the parent item was modified.  This is to avoid getting two notification  events occurring when a new item
+		//		with a parent is created.  The structure passed in is as follows:
+		//		{
+		//			item: someItem,							//The parent item
+		//			attribute:	"attribute-name-string",	//The attribute the new item was assigned to.
+		//			oldValue: something  //Whatever was the previous value for the attribute.  
+		//								 //If it is a single-value attribute only, then this value will be a single value.
+		//								 //If it was a multi-valued attribute, then this will be an array of all the values minues the new one.
+		//		}
 		//
 		//	returns:
 		//		Nothing.

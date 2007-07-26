@@ -16,20 +16,35 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		};
 	},
 
-	newItem: function(/* Object? */ keywordArgs){
+	newItem: function(/* Object? */ keywordArgs, /*Object?*/ parentInfo){
 		//	summary:
 		//		Returns a newly created item.  Sets the attributes of the new
 		//		item based on the *keywordArgs* provided.  In general, the attribute
 		//		names in the keywords become the attributes in the new item and as for
 		//		the attribute values in keywordArgs, they become the values of the attributes
-		//		in the new item.
+		//		in the new item.  In addition, for stores that support hierarchical item 
+		//		creation, an optional second parameter is accepted that defines what item is the parent
+		//		of the new item and what attribute of that item should the new item be assigned to.
+		//		In general, this will assume that the attribute targetted is multi-valued and a new item
+		//		is appended onto the list of values for that attribute.  
 		//
 		//	keywordArgs:
 		//		A javascript object defining the initial content of the item as a set of JavaScript 'property name: value' pairs.
+		//	parentInfo:
+		//		An optional javascript object defining what item is the parent of this item (in a hierarchical store.  Not all stores do hierarchical items), 
+		//		and what attribute of that parent to assign the new item to.  If this is present, and the attribute specified
+		//		is a multi-valued attribute, it will append this item into the array of values for that attribute.  The structure
+		//		of the object is as follows:
+		//		{
+		//			parent: someItem,
+		//			attribute: "attribute-name-string"
+		//		}
 		//
 		//	exceptions:
 		//		Throws an exception if *keywordArgs* is a string or a number or
-		//		anything other than a simple anonymous object.
+		//		anything other than a simple anonymous object.  
+		//		Throws an exception if the item in parentInfo is not an item from the store
+		//		or if the attribute isn't an attribute name string.
 		//	examples:
 		//		var kermit = store.newItem({name: "Kermit", color:[blue, green]});
 

@@ -47,6 +47,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		this._itemsByIdentity = null;
 		this._storeRefPropName = "_S";  // Default name for the store reference to attach to every item.
 		this._itemNumPropName = "_0"; // Default Item Id for isItem to attach to every item.
+		this._rootItemPropName = "_RI"; // Default Item Id for isItem to attach to every item.
 	},{
 	//	summary:
 	//		The ItemFileReadStore implements the dojo.data.api.Read API and reads
@@ -109,7 +110,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		var attributes = [];
 		for(var key in item){
 			// Save off only the real item attributes, not the special id marks for O(1) isItem.
-			if((key !== this._storeRefPropName) && (key !== this._itemNumPropName)){
+			if((key !== this._storeRefPropName) && (key !== this._itemNumPropName) && (key !== this._rootItemPropName)){
 				attributes.push(key);
 			}
 		}
@@ -230,8 +231,9 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		//	summary: 
 		//		See dojo.data.util.simpleFetch.fetch()
 		var self = this;
-		var filter = function(requestArgs, arrayOfAllItems){
+		var filter = function(requestArgs, arrayOfItems){
 			var items = null;
+
 			if(requestArgs.query){
 				var ignoreCase = requestArgs.queryOptions ? requestArgs.queryOptions.ignoreCase : false; 
 				items = [];
@@ -246,9 +248,9 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					}
 				}
 
-				for(var i = 0; i < arrayOfAllItems.length; ++i){
+				for(var i = 0; i < arrayOfItems.length; ++i){
 					var match = true;
-					var candidateItem = arrayOfAllItems[i];
+					var candidateItem = arrayOfItems[i];
 					for(var key in requestArgs.query) {
 						var value = requestArgs.query[key];
 						if (!self._containsValue(candidateItem, key, value, regexpList[key])){
@@ -262,17 +264,18 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				findCallback(items, requestArgs);
 			}else{
 				// We want a copy to pass back in case the parent wishes to sort the array.  We shouldn't allow resort 
-				// of the internal list so that multiple callers can get listsand sort without affecting each other.
-				if(self._arrayOfAllItems.length> 0){
-					items = self._arrayOfAllItems.slice(0,self._arrayOfAllItems.length); 
+				// of the internal list so that multiple callers can get lists and sort without affecting each other.
+				if(arrayOfItems.length> 0){
+					items = arrayOfItems.slice(0,arrayOfItems.length); 
 				}
 				findCallback(items, requestArgs);
 			}
 		};
 
 		if(this._loadFinished){
-			filter(keywordArgs, this._arrayOfAllItems);
+			filter(keywordArgs, this._getItemsArray(keywordArgs.queryOptions));
 		}else{
+
 			if(this._jsonFileUrl){
 				var getArgs = {
 						url: self._jsonFileUrl, 
@@ -284,7 +287,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					self._loadFinished = true;
 					try{
 						self._getItemsFromLoadedData(data);
-						filter(keywordArgs, self._arrayOfAllItems);
+						filter(keywordArgs, self._getItemsArray(keywordArgs.queryOptions));
 					}catch(e){
 						errorCallback(e, keywordArgs);
 					}
@@ -298,7 +301,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					this._loadFinished = true;
 					this._getItemsFromLoadedData(this._jsonData);
 					this._jsonData = null;
-					filter(keywordArgs, this._arrayOfAllItems);
+					filter(keywordArgs, this._getItemsArray(keywordArgs.queryOptions));
 				}catch(e){
 					errorCallback(e, keywordArgs);
 				}
@@ -306,6 +309,16 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				errorCallback(new Error("dojo.data.ItemFileReadStore: No JSON source data was provided as either URL or a nested Javascript object."), keywordArgs);
 			}
 		}
+	},
+
+	_getItemsArray: function(/*object?*/queryOptions){
+		//	summary: 
+		//		Internal function to determine which list of items to search over.
+		//	queryOptions: The query options parameter, if any.
+		if(queryOptions && queryOptions.deep) {
+			return this._arrayOfAllItems; 
+		}
+		return this._arrayOfTopLevelItems;
 	},
 
 	close: function(/*dojo.data.api.Request || keywordArgs || null */ request){
@@ -392,6 +405,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		for(i = 0; i < this._arrayOfTopLevelItems.length; ++i){
 			item = this._arrayOfTopLevelItems[i];
 			addItemAndSubItemsToArrayOfAllItems(item);
+			item[this._rootItemPropName]=true;
 		}
 
 		// Step 2: Walk through all the attribute values of all the items, 
@@ -408,13 +422,16 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		for(i = 0; i < this._arrayOfAllItems.length; ++i){
 			item = this._arrayOfAllItems[i];
 			for(key in item){
-				var value = item[key];
-				if(value !== null){
-					if(!dojo.isArray(value)){
-						item[key] = [value];
+				if (key !== this._rootItemPropName)
+				{
+					var value = item[key];
+					if(value !== null){
+						if(!dojo.isArray(value)){
+							item[key] = [value];
+						}
+					}else{
+						item[key] = [null];
 					}
-				}else{
-					item[key] = [null];
 				}
 				allAttributeNames[key]=key;
 			}

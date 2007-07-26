@@ -84,9 +84,12 @@ dojo.declare("dojo.data.api.Notification",dojo.data.api.Read,null,{
 		//		{
 		//			item: someItem,							//The parent item
 		//			attribute:	"attribute-name-string",	//The attribute the new item was assigned to.
-		//			oldValue: something  //Whatever was the previous value for the attribute.  
-		//								 //If it is a single-value attribute only, then this value will be a single value.
-		//								 //If it was a multi-valued attribute, then this will be an array of all the values minues the new one.
+		//			oldValue: something	//Whatever was the previous value for the attribute.  
+		//						//If it is a single-value attribute only, then this value will be a single value.
+		//						//If it was a multi-valued attribute, then this will be an array of all the values minues the new one.
+		//			newValue: something	//The new value of the attribute.  In the case of single value calls, such as setValue, this value will be
+		//						//generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes,
+		//						//it will be an array.  
 		//		}
 		//
 		//	returns:

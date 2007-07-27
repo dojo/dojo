@@ -8,7 +8,7 @@ dojo.require("dojo._base.connect");
 	var del = {
 		add: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
 			if(!node){return;} 
-			event = del._normalizeEventName(event)
+			event = del._normalizeEventName(event);
 			fp = del._fixCallback(event, fp);
 			node.addEventListener(event, fp, false);
 			return fp; /*Handle*/
@@ -16,10 +16,10 @@ dojo.require("dojo._base.connect");
 		remove: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
 			// summary:
 			//		clobbers the listener from the node
-			// evtName:
-			//		the name of the handler to remove the function from
 			// node:
 			//		DOM node to attach the event to
+			// event:
+			//		the name of the handler to remove the function from
 			// handle:
 			//		the handle returned from add
 			(node)&&(node.removeEventListener(del._normalizeEventName(event), handle, false));
@@ -72,7 +72,7 @@ dojo.require("dojo._base.connect");
 		//		prevents propagation and clobbers the default action of the
 		//		passed event
 		// evt: Event
-		//		The event object. If ommitted, window.event is used on IE.
+		//		The event object. If omitted, window.event is used on IE.
 		evt.preventDefault();
 		evt.stopPropagation();
 		// NOTE: below, this method is overridden for IE
@@ -83,7 +83,7 @@ dojo.require("dojo._base.connect");
 	
 	// Unify connect and event listeners
 	
-	dojo._connect = function(obj, event, context, method, dontFix) {
+	dojo._connect = function(obj, event, context, method, dontFix){
 		// FIXME: need a more strict test
 		var isNode = obj && (obj.nodeType||obj.attachEvent||obj.addEventListener);
 		// choose one of three listener options: raw (connect.js), DOM event on a Node, custom event on a Node
@@ -167,7 +167,7 @@ dojo.require("dojo._base.connect");
 			try{
 				// squelch errors when keyCode is read-only
 				// (e.g. if keyCode is ctrl or shift)
-				return e.keyCode = code;
+				return (e.keyCode = code);
 			}catch(e){
 				return 0;
 			}
@@ -371,7 +371,7 @@ dojo.require("dojo._base.connect");
 		}
 	}
 
-	del._synthesizeEvent = function(evt, props) {
+	del._synthesizeEvent = function(evt, props){
 			var faux = dojo.mixin({}, evt, props);
 			del._setKeyChar(faux);
 			// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault); 

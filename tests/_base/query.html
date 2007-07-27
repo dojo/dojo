@@ -32,7 +32,8 @@
 						"t.is(dojo.query('style')[0], dojo.query(':nth-child(2)')[0]);",
 						"t.is(2, dojo.query('> [qux]', dojo.byId('container')).length);",
 						"t.is('child1', dojo.query('> [qux]', dojo.byId('container'))[0].id);",
-						"t.is('child3', dojo.query('> [qux]', dojo.byId('container'))[1].id);"
+						"t.is('child3', dojo.query('> [qux]', dojo.byId('container'))[1].id);",
+						"t.is('passed', dojo.query('#bug')[0].value);"
 					]
 				);
 				doh.run();
@@ -62,6 +63,8 @@
 				<div id="child3" qux="true"></div>
 			</div>
 			<div qux="true"></div>
+			<input name="bug" type="hidden" value="failed" /> 
+			<input id="bug" type="hidden" value="passed" /> 
 		</div>
 	</body>
 </html>

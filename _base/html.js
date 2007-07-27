@@ -30,7 +30,9 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		if(dojo.isString(id)){
 			var _d = (doc||dojo.doc);
 			var te = _d.getElementById(id);
-			if((te) && (te.id == id)){
+			// attributes.id.value is better than just id in case the 
+			// user has a name=id inside a form
+			if((te) && (te.attributes.id.value == id)){
 				return te;
 			}else{
 				var eles = _d.all[id];
@@ -39,7 +41,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 				// if more than 1, choose first with the correct id
 				var i=0;
 				while(te=eles[i++]){
-					if(te.id == id){ return te; }
+					if(te.attributes.id.value == id){ return te; }
 				}
 			}
 		}else{

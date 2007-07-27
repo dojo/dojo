@@ -76,7 +76,7 @@ function(node, params){
 		// summary: inserts new data items (see Container's insertNodes method for details)
 		// addSelected: Boolean: all new nodes will be added to selected items, if true, no selection change otherwise
 		// data: Array: a list of data items, which should be processed by the creator function
-		// before: Boolean: insert before the anchor, if true, and after the anchot otherwise
+		// before: Boolean: insert before the anchor, if true, and after the anchor otherwise
 		// anchor: Node: the anchor node to be used as a point of insertion
 		var oldCreator = this._normalizedCreator;
 		this._normalizedCreator = function(item, hint){

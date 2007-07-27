@@ -16,7 +16,7 @@ dojo.extend(dojo.dnd.Avatar, {
 		var a = dojo.doc.createElement("table");
 		a.className = "dojoDndAvatar";
 		a.style.position = "absolute";
-		a.style.zIndex = 999;
+		a.style.zIndex = 1999;
 		a.style.margin = "0px"; // to avoid dojo.marginBox() problems with table's margins
 		var b = dojo.doc.createElement("tbody");
 		var tr = dojo.doc.createElement("tr");

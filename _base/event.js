@@ -60,8 +60,10 @@ dojo.require("dojo._base.connect");
 		// summary:
 		//		normalizes properties on the event object including event
 		//		bubbling methods, keystroke normalization, and x/y positions
-		// evt: native event object
-		// sender: node to treat as "currentTarget"
+		// evt: Event
+		//		native event object
+		// sender: DOMNode
+		//		node to treat as "currentTarget"
 		return del._fixEvent(evt, sender);
 	}
 
@@ -69,7 +71,8 @@ dojo.require("dojo._base.connect");
 		// summary:
 		//		prevents propagation and clobbers the default action of the
 		//		passed event
-		// evt: Optional for IE. The native event object.
+		// evt: Event
+		//		The native event object.
 		evt.preventDefault();
 		evt.stopPropagation();
 	}

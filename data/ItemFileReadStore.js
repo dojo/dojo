@@ -232,11 +232,9 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		//		See dojo.data.util.simpleFetch.fetch()
 		var self = this;
 		var filter = function(requestArgs, arrayOfItems){
-			var items = null;
-
+			var items = [];
 			if(requestArgs.query){
 				var ignoreCase = requestArgs.queryOptions ? requestArgs.queryOptions.ignoreCase : false; 
-				items = [];
 
 				//See if there are any string values that can be regexp parsed first to avoid multiple regexp gens on the
 				//same value for each item examined.  Much more efficient.
@@ -251,10 +249,14 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				for(var i = 0; i < arrayOfItems.length; ++i){
 					var match = true;
 					var candidateItem = arrayOfItems[i];
-					for(var key in requestArgs.query) {
-						var value = requestArgs.query[key];
-						if (!self._containsValue(candidateItem, key, value, regexpList[key])){
-							match = false;
+					if(candidateItem === null){
+						match = false;
+					}else{
+						for(var key in requestArgs.query) {
+							var value = requestArgs.query[key];
+							if (!self._containsValue(candidateItem, key, value, regexpList[key])){
+								match = false;
+							}
 						}
 					}
 					if(match){
@@ -263,10 +265,16 @@ dojo.declare("dojo.data.ItemFileReadStore",
 				}
 				findCallback(items, requestArgs);
 			}else{
-				// We want a copy to pass back in case the parent wishes to sort the array.  We shouldn't allow resort 
-				// of the internal list so that multiple callers can get lists and sort without affecting each other.
-				if(arrayOfItems.length> 0){
-					items = arrayOfItems.slice(0,arrayOfItems.length); 
+				// We want a copy to pass back in case the parent wishes to sort the array. 
+				// We shouldn't allow resort of the internal list, so that multiple callers 
+				// can get lists and sort without affecting each other.  We also need to
+				// filter out any null values that have been left as a result of deleteItem()
+				// calls in ItemFileWriteStore.
+				for(var i = 0; i < arrayOfItems.length; ++i){
+					var item = arrayOfItems[i];
+					if(item !== null){
+						items.push(item);
+					}
 				}
 				findCallback(items, requestArgs);
 			}
@@ -453,9 +461,9 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		var arrayOfValues;
 
 		var identifier = dataObject.identifier;
+		this._itemsByIdentity = {};
 		if(identifier){
 			this._features['dojo.data.api.Identity'] = identifier;
-			this._itemsByIdentity = {};
 			for(i = 0; i < this._arrayOfAllItems.length; ++i){
 				item = this._arrayOfAllItems[i];
 				arrayOfValues = item[identifier];

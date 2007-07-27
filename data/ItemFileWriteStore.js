@@ -175,22 +175,23 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		this._assert(!this._saveInProgress);
 		this._assertIsItem(item);
 
-		var found = this._removeArrayElement(this._arrayOfAllItems, item);
-		if(found){
-			var identity = this.getIdentity(item);
-			item[this._storeRefPropName] = null;
-			delete this._itemsByIdentity[identity];
-			this._pending._deletedItems[identity] = item;
-			this._updateItemIdIndexValues();
-			this.onDelete(item); // dojo.data.api.Notification call
-			
-			//Remove from the toplevel items, if necessary...
-			if(item[this._rootItemPropName]){
-				this._removeArrayElement(this._arrayOfTopLevelItems, item);
-			}
-			return true;
+		// remove this item from the _arrayOfAllItems, but leave a null value in place
+		// of the item, so as not to change the length of the array, so that in newItem() 
+		// we can still safely do: newIdentity = this._arrayOfAllItems.length;
+		var indexInArrayOfAllItems = item[this._itemNumPropName];
+		this._arrayOfAllItems[indexInArrayOfAllItems] = null;
+		
+		var identity = this.getIdentity(item);
+		item[this._storeRefPropName] = null;
+		delete this._itemsByIdentity[identity];
+		this._pending._deletedItems[identity] = item;
+		
+		//Remove from the toplevel items, if necessary...
+		if(item[this._rootItemPropName]){
+			this._removeArrayElement(this._arrayOfTopLevelItems, item);
 		}
-		return false; // boolean
+		this.onDelete(item); // dojo.data.api.Notification call
+		return true;
 	},
 
 	setValue: function(/* item */ item, /* attribute-name-string */ attribute, /* almost anything */ value){
@@ -350,23 +351,25 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		serializableStructure.items = [];
 		for(var i = 0; i < this._arrayOfAllItems.length; ++i){
 			var item = this._arrayOfAllItems[i];
-			serializableItem = {};
-			for(var key in item){
-				if(key !== this._storeRefPropName && key !== this._itemNumPropName){
-					var attribute = key;
-					var valueArray = this.getValues(item, attribute);
-					if(valueArray.length == 1){
-						serializableItem[attribute] = this._flatten(valueArray[0]);
-					}else{
-						var serializableArray = [];
-						for(var j = 0; j < valueArray.length; ++j){
-							serializableArray.push(this._flatten(valueArray[j]));
-							serializableItem[attribute] = serializableArray;
+			if(item !== null){
+				serializableItem = {};
+				for(var key in item){
+					if(key !== this._storeRefPropName && key !== this._itemNumPropName){
+						var attribute = key;
+						var valueArray = this.getValues(item, attribute);
+						if(valueArray.length == 1){
+							serializableItem[attribute] = this._flatten(valueArray[0]);
+						}else{
+							var serializableArray = [];
+							for(var j = 0; j < valueArray.length; ++j){
+								serializableArray.push(this._flatten(valueArray[j]));
+								serializableItem[attribute] = serializableArray;
+							}
 						}
 					}
 				}
+				serializableStructure.items.push(serializableItem);
 			}
-			serializableStructure.items.push(serializableItem);
 		}
 		var prettyPrint = true;
 		return dojo.toJson(serializableStructure, prettyPrint);
@@ -435,15 +438,15 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			
 			// make the original item into a full-fledged item again
 			originalItem[this._storeRefPropName] = this;
-			//originalItem[this._itemNumPropName] = identity; // WRONG! this should be a number N, the index into this._arrayOfAllItems
 			modifiedItem[this._storeRefPropName] = null;
 
 			// replace the modified item with the original one
-			this._removeArrayElement(this._arrayOfAllItems, modifiedItem);
-			this._arrayOfAllItems.push(originalItem);
+			var arrayIndex = modifiedItem[this._itemNumPropName];
+			this._arrayOfAllItems[arrayIndex] = originalItem;
+			
 			if(modifiedItem[this._rootItemPropName]){
-				this._removeArrayElement(this._arrayOfTopLevelItems, modifiedItem);
-				this._arrayOfTopLevelItems.push(originalItem);
+				arrayIndex = modifiedItem[this._itemNumPropName];
+				this._arrayOfTopLevelItems[arrayIndex] = originalItem;
 			}
 			this._itemsByIdentity[identity] = originalItem;
 		}
@@ -451,7 +454,8 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			var deletedItem = this._pending._deletedItems[identity];
 			deletedItem[this._storeRefPropName] = this;
 			this._itemsByIdentity[identity] = deletedItem;
-			this._arrayOfAllItems.push(deletedItem);
+			var index = deletedItem[this._itemNumPropName];
+			this._arrayOfAllItems[index] = deletedItem;
 			if(deletedItem[this._rootItemPropName]){
 				this._arrayOfTopLevelItems.push(deletedItem);
 			}
@@ -461,15 +465,7 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 			_modifiedItems:{}, 
 			_deletedItems:{}
 		};
-		this._updateItemIdIndexValues();
 		return true; // boolean
-	},
-	
-	_updateItemIdIndexValues: function(){
-		for(var i = 0; i < this._arrayOfAllItems.length; ++i){
-			var item = this._arrayOfAllItems[i];
-			item[this._itemNumPropName] = i;
-		}
 	},
 	
 	isDirty: function(/* item? */ item){

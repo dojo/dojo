@@ -72,9 +72,10 @@ dojo.require("dojo._base.connect");
 		//		prevents propagation and clobbers the default action of the
 		//		passed event
 		// evt: Event
-		//		The native event object.
+		//		The event object. If ommitted, window.event is used on IE.
 		evt.preventDefault();
 		evt.stopPropagation();
+		// NOTE: below, this method is overridden for IE
 	}
 
 	// the default listener to use on dontFix nodes, overriden for IE<7

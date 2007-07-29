@@ -289,13 +289,6 @@ dojo.declare("dojo._Animation", null,
 			this._properties = properties;
 			for (var p in properties){
 				var prop = properties[p];
-				// calculate the end - start to optimize a bit
-				if(dojo.isFunction(prop.start)){
-					prop.start = prop.start(prop);
-				}
-				if(dojo.isFunction(prop.end)){
-					prop.end = prop.end(prop);
-				}
 				if(prop.start instanceof dojo.Color){
 					// create a reusable temp color object to keep intermediate results
 					prop.tempColor = new dojo.Color();
@@ -319,9 +312,12 @@ dojo.declare("dojo._Animation", null,
 		
 		var anim = new dojo._Animation(args);
 		dojo.connect(anim, "beforeBegin", anim, function(){
-			var pm = this.properties;
-			for(var p in pm){
-				var prop = pm[p];
+			var pm = {};
+			for(var p in this.properties){
+				// Make shallow copy of properties into pm because we overwrite some values below.
+				// In particular if start/end are functions we don't want to overwrite them or
+				// the functions won't be called if the animation is reused.
+				var prop = pm[p] = dojo.mixin({}, this.properties[p]);
 
 				if(dojo.isFunction(prop.start)){
 					prop.start = prop.start();

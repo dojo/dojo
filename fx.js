@@ -30,36 +30,40 @@ dojo.fx.combine = function(/*dojo._Animation[]*/ animations){
 };
 
 dojo.fx.slideIn = function(/*Object*/ args){
-	// summary:
-	//	Returns an animation that will show and wipe in 
-	//	node defined in 'args' object.
-	//	Wipes in the object to it's natural height (with no scrollbar).
+	// summary
+	//		Returns an animation that will expand the
+	//		node defined in 'args' object from it's current height to
+	//		it's natural height (with no scrollbar).
+	//		Node must have no margin/border/padding.
 	args.node = dojo.byId(args.node);
+	var node = args.node, s = node.style;
 
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
 			height: {
-				start: 1 // 0 causes IE to display the whole panel
+				// wrapped in functions so we wait till the last second to query (in case value has changed)
+				start: function(){
+					// start at current [computed] height, but use 1px rather than 0
+					// because 0 causes IE to display the whole panel
+					s.overflow="hidden";
+					if(s.visibility=="hidden"||s.display=="none"){
+						s.height="1px";
+						s.display="";
+						s.visibility="";
+						return 1;
+					}else{
+						var height = dojo.style(node, "height");
+						return Math.max(height, 1);
+					}
+				},
+				end: function(){
+					return node.scrollHeight;
+				}
 			}
 		}
 	}, args));
 
-	dojo.connect(anim, "beforeBegin", anim, function(){
-		var s = this.node.style;
-		if(s.visibility=="hidden"||s.display=="none"){
-			s.height = "1px"; // 0 causes IE to display the whole panel
-			s.display="";
-			s.visibility="";
-		}
-		s.overflow="hidden";
-
-		// The node's height may have been set via a previous slideOut operation, but ignore it.
-		// We want to expand the node to it's full natural height.
-		this.properties.height.end = this.node.scrollHeight;
-	});
-	
 	dojo.connect(anim, "onEnd", anim, function(){ 
-		var s = this.node.style;
 		s.height = "auto";
 	});
 
@@ -67,8 +71,9 @@ dojo.fx.slideIn = function(/*Object*/ args){
 }
 
 dojo.fx.slideOut = function(/*Object*/ args){
-	// summary: Returns an animation that will wipe out and hide 
-	// node defined in args Object
+	// summary
+	//		Returns an animation that will shrink node defined in "args"
+	//		from it's current height to 1px, and then hide it.
 	var node = args.node = dojo.byId(args.node);
 
 	var anim = dojo.animateProperty(dojo.mixin({
@@ -83,8 +88,6 @@ dojo.fx.slideOut = function(/*Object*/ args){
 		var s=node.style;
 		s.overflow = "hidden";
 		s.display = "";
-		this.properties.height.start = dojo.contentBox(node).h;
-
 	});
 	dojo.connect(anim, "onEnd", anim, function(){
 		var s=this.node.style;

@@ -115,8 +115,7 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 	this._loadedUrls[uri] = true;
 	this._loadedUrls.push(uri);
 	if(cb){ contents = '('+contents+')'; }
-	// var value = dojo["eval"](contents);
-	var value = dojo["eval"]("//@ sourceURL="+uri+"\r\n"+contents);
+	var value = dojo["eval"](contents+"\r\n//@ sourceURL="+uri);
 	if(cb){ cb(value); }
 	return true; // Boolean
 }

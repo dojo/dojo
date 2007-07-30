@@ -327,10 +327,19 @@ dojo.declare("dojo._Animation", null,
 				}
 
 				var isColor = (p.toLowerCase().indexOf("color") >= 0);
+				function getStyle(node, p){
+					// dojo.style(node, "height") can return "auto" or "" on IE; this is more reliable:
+					switch(p){
+						case "height": return node.offsetHeight;
+						case "width": return node.offsetWidth;
+					}
+					var v = dojo.style(node, p);
+					return (p=="opacity") ? Number(v) : parseInt(v);
+				}
 				if(typeof prop.end == "undefined"){
-					prop.end = dojo.style(this.node, p);
+					prop.end = getStyle(this.node, p);
 				}else if(typeof prop.start == "undefined"){
-					prop.start = dojo.style(this.node, p);
+					prop.start = getStyle(this.node, p);
 				}
 
 				if(isColor){

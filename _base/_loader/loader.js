@@ -12,9 +12,6 @@
 ;(function(){
 	//Additional properties for dojo
 	var _add = {
-		// FIXME: we're not populting djConfig from markup before we hit this!!
-		_pkgFileName: djConfig["packageFileName"]||"__package__",
-	
 		// for recursion protection
 		_loadedModules: {},
 		_inFlightCount: 0,
@@ -294,7 +291,7 @@ dojo._loadModule = function(	/*String*/moduleName,
 	if(last=="*"){
 		moduleName = nsyms.slice(0, -1).join('.');
 		syms.pop();
-		relpath = syms.join("/") + "/" + this._pkgFileName + '.js';
+		relpath = syms.join("/") + "/" + (djConfig["packageFileName"]||"__package__") + '.js';
 		if(startedRelative && relpath.charAt(0)=="/"){
 			relpath = relpath.slice(1);
 		}

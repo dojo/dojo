@@ -79,7 +79,13 @@ dojo.declare(
 			var tf = dojo.hitch(this, 
 				function(obj){
 					if(obj["error"]!=null){
-						var err = new Error(obj.error);
+						if(typeof obj.error == 'object'){
+							var err = new Error(obj.error.message);
+							err.code = obj.error.code;
+							err.error = obj.error.error;
+						}else{
+							var err = new Error(obj.error);
+						}
 						err.id = obj.id;
 						err.errorObject = obj;
 						deferredRequestHandler.errback(err);

@@ -28,7 +28,7 @@ dojo.provide("dojo.back");
 		if(!last && historyStack.length == 0){
 			last = initialState;
 		}
-		if (last){
+		if(last){
 			if(last.kwArgs["back"]){
 				last.kwArgs["back"]();
 			}else if(last.kwArgs["backButton"]){
@@ -86,19 +86,19 @@ dojo.provide("dojo.back");
 			return i >= 0 ? href.substring(i+1) : null;
 		};
 	}else{
-		getHash = function() { return window.location.hash; };
+		getHash = function(){ return window.location.hash; };
 	}
 
-	function setHash(h) {
+	function setHash(h){
 		if(!h) { h = "" };
-		if(h.charAt(0) == "#") { h = h.substring(1); }
+		if(h.charAt(0) == "#"){ h = h.substring(1); }
 		window.location.hash = h;
 		historyCounter = history.length;
 	}
 	
 	function loadIframeHistory(){
 		//summary: private method. Do not call this directly.
-		var url = (djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?" + (new Date()).getTime();
+		var url = (djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?domain="+encodeURIComponent(document.domain) + "&" + (new Date()).getTime();
 		moveForward = true;
         if (historyIframe) {
 		    (dojo.isSafari) ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
@@ -108,7 +108,7 @@ dojo.provide("dojo.back");
 		return url; //String
 	}
 
-	function checkLocation() {
+	function checkLocation(){
 		console.debug("checking url");
 		if(!changingUrl){
 			var hsl = historyStack.length;
@@ -149,6 +149,8 @@ dojo.provide("dojo.back");
 	back.init = function(){
 		//summary: Initializes the undo stack. This must be called from a <script> 
 		//         block that lives inside the <body> tag to prevent bugs on IE.
+
+		// FIXME: should this function prevent re-init?
 		var src = djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html");
 		document.write('<iframe style="border:0;width:1px;height:1px;position:absolute;visibility:hidden;bottom:0;right:0;" name="dj_history" id="dj_history" src="' + src + '"></iframe>');
 	};
@@ -162,6 +164,7 @@ dojo.provide("dojo.back");
 		initialState = createState(initialHref, args, initialHash);
 	};
 
+	// FIXME: it looks like the doc comments are old, inaccurate, or both
 	//FIXME: Would like to support arbitrary back/forward jumps. Have to rework iframeLoaded among other things.
 	//FIXME: is there a slight race condition in moz using change URL with the timer check and when
 	//       the hash gets set? I think I have seen a back/forward call in quick succession, but not consistent.
@@ -183,11 +186,11 @@ dojo.provide("dojo.back");
 		//		not evaluate to false, that value will be used as the fragment identifier. For example,
 		//		if changeUrl: 'page1', then the URL will look like: http://some.domain.com/path#page1
 	 	//		Full example:
-		//		dojo.undo.browser.addToHistory({
-		//		  back: function() { alert('back pressed'); },
-		//		  forward: function() { alert('forward pressed'); },
-		//		  changeUrl: true
-		//		});
+		//			dojo.undo.browser.addToHistory({
+		//				back: function() { alert('back pressed'); },
+		//				forward: function() { alert('forward pressed'); },
+		//				changeUrl: true
+		//			});
 		//
 		//	BROWSER NOTES:
 		//  Safari 1.2: 

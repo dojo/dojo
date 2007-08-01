@@ -178,35 +178,32 @@ dojo._toArray = function(/*Object*/obj, /*Number?*/offset){
 	return arr;
 }
 
-// FIXME: this is unreviewed dojo.clone() function, 
-// which can clone any objects including HTML nodes
-
-//dojo.clone = function(/*anything*/ o){
-//	// summary:
-//	//		Clones objects (including DOM nodes) and all children.
-//	//		Warning: do not clone cyclic structures.
-//	if(!o){ return o; }
-//	if(dojo.isArray(o)){
-//		var r = [];
-//		for(var i = 0; i < o.length; ++i){
-//			r.push(dojo.clone(o[i]));
-//		}
-//		return r;
-//	}else if(dojo.isObject(o)){
-//		if(o.nodeType && o.cloneNode){ // isNode
-//			return o.cloneNode(true);
-//		}else{
-//			var r = new o.constructor();
-//			for(var i in o){
-//				if(!(i in r) || r[i] != o[i]){
-//					r[i] = dojo.clone(o[i]);
-//				}
-//			}
-//			return r;
-//		}
-//	}
-//	return o;
-//}
+dojo.clone = function(/*anything*/ o){
+	// summary:
+	//		Clones objects (including DOM nodes) and all children.
+	//		Warning: do not clone cyclic structures.
+	if(!o){ return o; }
+	if(dojo.isArray(o)){
+		var r = [];
+		for(var i = 0; i < o.length; ++i){
+			r.push(dojo.clone(o[i]));
+		}
+		return r;
+	}else if(dojo.isObject(o)){
+		if(o.nodeType && o.cloneNode){ // isNode
+			return o.cloneNode(true);
+		}else{
+			var r = new o.constructor(); // specific to dojo.declare()'d classes!
+			for(var i in o){
+				if(!(i in r) || r[i] != o[i]){
+					r[i] = dojo.clone(o[i]);
+				}
+			}
+			return r;
+		}
+	}
+	return o;
+}
 
 dojo.trim = function(/*String*/ str){
 	// summary: trims whitespaces from both sides of the string

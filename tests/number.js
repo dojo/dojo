@@ -562,7 +562,7 @@ function test_number_format_pad(){
 //	t.is(0,result);
 
 	/**************************************** tolerant parse *****************************************
-	 * refers to ICU4J's NumberFormatTest.TestStrictParse()??
+	 * refere to ICU4J's NumberFormatTest.TestStrictParse()£»
 	 * TODO: Seems dojo.number parses string in a tolerant way.  
 	 */
 	 var options = {locale:"en"};

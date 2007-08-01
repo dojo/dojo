@@ -203,7 +203,18 @@ dojo._contentHandlers = {
 		return dojo.eval(xhr.responseText);
 	},
 	"xml": function(xhr){ 
-		return xhr.responseXML;
+		if(dojo.isIE && !xhr.responseXML){
+			dojo.forEach(["MSXML2", "Microsoft", "MSXML", "MSXML3"], function(i){
+				try{
+					var doc = new ActiveXObject(prefixes[i]+".XMLDOM");
+					doc.async = false;
+					doc.loadXML(xhr.responseText);
+					return doc;	//	DOMDocument
+				}catch(e){ /* squelch */ };
+			});
+		}else{
+			return xhr.responseXML;
+		}
 	}
 };
 
@@ -354,7 +365,7 @@ dojo._contentHandlers = {
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.
 		
-		console.debug("xhr error in:", dfd.ioArgs.xhr);
+		// console.debug("xhr error in:", dfd.ioArgs.xhr);
 		console.debug(error);
 		return error;
 	}
@@ -414,6 +425,8 @@ dojo._contentHandlers = {
 			_inFlightIntvl = null;
 			return;
 		}
+
+		// FIXME: need to kill things on unload for #2357
 	}
 
 	dojo._ioWatch = function(/*Deferred*/dfd,

@@ -99,12 +99,10 @@ dojo.fx.slideOut = function(/*Object*/ args){
 }
 
 dojo.fx.slideTo = function(/*Object?*/ args){
-	// summary: Returns an animation that will slide "node" 
-	// defined in args Object from its current position to
-	// the position defined in args.coords.
-	// 
-	// addition mixin args needed: 
-	// coords: { top: Decimal?, left: Decimal? }
+	// summary
+	//		Returns an animation that will slide "node" 
+	//		defined in args Object from its current position to
+	//		the position defined by (args.left, args.top).
 
 	var node = args.node = dojo.byId(args.node);
 	var compute = dojo.getComputedStyle;

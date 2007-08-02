@@ -139,6 +139,7 @@ dojo.declare("dojo._Animation", null,
 		stop: function(/*boolean?*/ gotoEnd){
 			// summary: Stops a running animation.
 			// gotoEnd: If true, the animation will end.
+			if(!this._timer){ return; }
 			clearTimeout(this._timer);
 			if(gotoEnd){
 				this._percent = 1;
@@ -278,37 +279,37 @@ dojo.declare("dojo._Animation", null,
 		}
 	}
 
+	var PropLine = function(properties){
+		this._properties = properties;
+		for(var p in properties){
+			var prop = properties[p];
+			if(prop.start instanceof dojo.Color){
+				// create a reusable temp color object to keep intermediate results
+				prop.tempColor = new dojo.Color();
+			}
+		}
+		this.getValue = function(r){
+			var ret = {};
+			for(var p in this._properties){
+				var prop = this._properties[p];
+				var value = null;
+				if(prop.start instanceof dojo.Color){
+					value = dojo.blendColors(prop.start, prop.end, r, prop.tempColor).toCss();
+				}else if(!dojo.isArray(prop.start)){
+					value = ((prop.end - prop.start) * r) + prop.start + (p != "opacity" ? prop.units||"px" : "");
+				}
+				ret[p] = value;
+			}
+			return ret;
+		}
+	}
+
 	dojo.animateProperty = function(/*Object*/ args){
 		// summary: Returns an animation that will transition the properties of node
 		// defined in 'args' depending how they are defined in 'args.properties'
 
 		args.node = dojo.byId(args.node);
 		if (!args.easing){ args.easing = dojo._defaultEasing; }
-		
-		var PropLine = function(properties){
-			this._properties = properties;
-			for (var p in properties){
-				var prop = properties[p];
-				if(prop.start instanceof dojo.Color){
-					// create a reusable temp color object to keep intermediate results
-					prop.tempColor = new dojo.Color();
-				}
-			}
-			this.getValue = function(r){
-				var ret = {};
-				for(var p in this._properties){
-					var prop = this._properties[p];
-					var value = null;
-					if(prop.start instanceof dojo.Color){
-						value = dojo.blendColors(prop.start, prop.end, r, prop.tempColor).toCss();
-					}else if(!dojo.isArray(prop.start)){
-						value = ((prop.end - prop.start) * r) + prop.start + (p != "opacity" ? prop.units||"px" : "");
-					}
-					ret[p] = value;
-				}
-				return ret;
-			}
-		}
 		
 		var anim = new dojo._Animation(args);
 		dojo.connect(anim, "beforeBegin", anim, function(){

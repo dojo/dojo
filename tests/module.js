@@ -16,6 +16,7 @@ try{
 	dojo.require("tests.behavior");
 	dojo.require("tests.parser");
 	dojo.require("tests.colors");
+	dojo.require("tests.fx");
 }catch(e){
 	doh.debug(e);
 }

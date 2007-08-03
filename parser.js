@@ -3,17 +3,19 @@ dojo.require("dojo.date.stamp");
 
 dojo.parser = new function(){
 
+	var d = dojo;
+
 	function val2type(/*Object*/ value){
 		// summary:
 		//		Returns name of type of given value.
 
-		if(dojo.isString(value)){ return "string"; }
+		if(d.isString(value)){ return "string"; }
 		if(typeof value == "number"){ return "number"; }
 		if(typeof value == "boolean"){ return "boolean"; }
-		if(dojo.isFunction(value)){ return "function"; }
-		if(dojo.isArray(value)){ return "array"; } // typeof [] == "object"
+		if(d.isFunction(value)){ return "function"; }
+		if(d.isArray(value)){ return "array"; } // typeof [] == "object"
 		if(value instanceof Date) { return "date"; } // assume timestamp
-		if(value instanceof dojo._Url){ return "url"; }
+		if(value instanceof d._Url){ return "url"; }
 		return "object";
 	}
 
@@ -28,28 +30,28 @@ dojo.parser = new function(){
 			case "boolean":
 				return typeof value == "boolean" ? value : !(value.toLowerCase()=="false");
 			case "function":
-				if(dojo.isFunction(value)){
+				if(d.isFunction(value)){
 					// IE gives us a function, even when we say something like onClick="foo"
 					// (in which case it gives us an invalid function "function(){ foo }"). 
 					//  Therefore, convert to string
 					value=value.toString();
-					value=dojo.trim(value.substring(value.indexOf('{')+1, value.length-1));
+					value=d.trim(value.substring(value.indexOf('{')+1, value.length-1));
 				}
 				try{
 					if(value.search(/[^\w\.]+/i) != -1){
 						// TODO: "this" here won't work
-						value = dojo.parser._nameAnonFunc(new Function(value), this);
+						value = d.parser._nameAnonFunc(new Function(value), this);
 					}
-					return dojo.getObject(value, false);
+					return d.getObject(value, false);
 				}catch(e){ return new Function(); }
 			case "array":
 				return value.split(/\s*,\s*/);
 			case "date":
-				return dojo.date.stamp.fromISOString(value);
+				return d.date.stamp.fromISOString(value);
 			case "url":
-				return dojo.baseUrl + value;
+				return d.baseUrl + value;
 			default:
-				return dojo.fromJson(value);
+				return d.fromJson(value);
 		}
 	}
 
@@ -70,8 +72,8 @@ dojo.parser = new function(){
 
 		if(!instanceClasses[className]){
 			// get pointer to widget class
-			var cls = dojo.getObject(className);
-			if(!dojo.isFunction(cls)){
+			var cls = d.getObject(className);
+			if(!d.isFunction(cls)){
 				throw new Error("Could not load class '" + className +
 					"'. Did you spell the name correctly and use a full path, like 'dijit.form.Button'?");
 			}
@@ -95,13 +97,13 @@ dojo.parser = new function(){
 		var suffix = "";
 		var argsStr = script.getAttribute("args");
 		if(argsStr){
-			dojo.forEach(argsStr.split(/\s*,\s*/), function(part, idx){
+			d.forEach(argsStr.split(/\s*,\s*/), function(part, idx){
 				preamble += "var "+part+" = arguments["+idx+"]; ";
 			});
 		}
 		var withStr = script.getAttribute("with");
 		if(withStr && withStr.length){
-			dojo.forEach(withStr.split(/\s*,\s*/), function(part){
+			d.forEach(withStr.split(/\s*,\s*/), function(part){
 				preamble += "with("+part+"){";
 				suffix += "}";
 			});
@@ -117,7 +119,7 @@ dojo.parser = new function(){
 			var mode = script.getAttribute("mode");
 			if(mode && (mode == "connect")){
 				// FIXME: need to implement EL here!!
-				dojo.connect(instance, source, instance, nf);
+				d.connect(instance, source, instance, nf);
 			}else{
 				instance[source] = nf;
 			}
@@ -132,7 +134,7 @@ dojo.parser = new function(){
 		//		potentially calls a layout method to allow them to connect with
 		//		any children		
 		var thelist = [];
-		dojo.forEach(nodes, function(node){
+		d.forEach(nodes, function(node){
 			if(!node){ return; }
 			var type = node.getAttribute("dojoType");
 			if((!type)||(!type.length)){ return; }
@@ -140,7 +142,7 @@ dojo.parser = new function(){
 			var params = {};
 			for(var attrName in clsInfo.params){
 				var attrValue = node.getAttribute(attrName);
-				if(attrValue && !dojo.isAlien(attrValue)){ // see bug#3074; ignore builtin attributes
+				if(attrValue && !d.isAlien(attrValue)){ // see bug#3074; ignore builtin attributes
 					var attrType = clsInfo.params[attrName];
 					var val = str2obj(attrValue, attrType);
 					// console.debug(attrName, attrValue, val, (typeof val));
@@ -155,14 +157,14 @@ dojo.parser = new function(){
 			// the various approaches at some point.
 
 			// preambles are magic. Handle it.
-			var preambles = dojo.query("> script[type='dojo/method'][event='preamble']", node).orphan();
+			var preambles = d.query("> script[type='dojo/method'][event='preamble']", node).orphan();
 			if(preambles.length){
 				// we only support one preamble. So be it.
-				params.preamble = dojo.parser._functionFromScript(preambles[0]);
+				params.preamble = d.parser._functionFromScript(preambles[0]);
 			}
 
 			// grab the rest of the scripts for processing later
-			var scripts = dojo.query("> script[type='dojo/method']", node).orphan();
+			var scripts = d.query("> script[type='dojo/method']", node).orphan();
 
 			var clazz = clsInfo.cls;
 			var markupFactory = clazz["markupFactory"];
@@ -176,19 +178,19 @@ dojo.parser = new function(){
 			// map it to the JS namespace if that makes sense
 			var jsname = node.getAttribute("jsId");
 			if(jsname){
-				dojo.setObject(jsname, instance);
+				d.setObject(jsname, instance);
 			}
 
 			// check to see if we need to hook up events for non-declare()-built classes
 			scripts.forEach(function(script){
-				dojo.parser._wireUpMethod(instance, script);
+				d.parser._wireUpMethod(instance, script);
 			});
 		});
 
 		// Call startup on each top level instance if it makes sense (as for
 		// widgets).  Parent widgets will recursively call startup on their
 		// (non-top level) children
-		dojo.forEach(thelist, function(instance){
+		d.forEach(thelist, function(instance){
 			if(	instance  && 
 				(instance.startup) && 
 				((!instance.getParent) || (!instance.getParent()))
@@ -204,13 +206,13 @@ dojo.parser = new function(){
 		//		Search specified node (or root node) recursively for class instances,
 		//		and instantiate them Searches for
 		//		dojoType="qualified.class.name"
-		var list = dojo.query('[dojoType]', rootNode);
+		var list = d.query('[dojoType]', rootNode);
 		// go build the object instances
 		var instances = this.instantiate(list);
 		
 		// FIXME: clean up any dangling scripts that we may need to run
 		/*
-		var scripts = dojo.query("script[type='dojo/method']", rootNode).orphan();
+		var scripts = d.query("script[type='dojo/method']", rootNode).orphan();
 		scripts.forEach(function(script){
 			wireUpMethod(instance, script);
 		});

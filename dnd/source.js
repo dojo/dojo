@@ -81,31 +81,25 @@ function(node, params){
 		// source: Object: the source which provides items
 		// nodes: Array: the list of transferred items
 		if(this == source){ return true; }
-		var accepted = true;
 		for(var i = 0; i < nodes.length; ++i){
 			var type = source.map[nodes[i].id].type;
-			if(type instanceof Array){
-				var flag = false;
-				for(var j = 0; j < type.length; ++j){
-					if(type[j] in this.accept){
-						flag = true;
-						break;
-					}
-				}
-				if(!flag){
-					accepted = false;
+			// type instanceof Array
+			var flag = false;
+			for(var j = 0; j < type.length; ++j){
+				if(type[j] in this.accept){
+					flag = true;
 					break;
 				}
-			}else{
-				accepted = false;
 			}
-			if(!accepted){ break; }
+			if(!flag){
+				return false;	// Boolean
+			}
 		}
-		return accepted;	// Boolean
+		return true;	// Boolean
 	},
 	copyState: function(keyPressed){
 		// summary: Returns true, if we need to copy items, false to move.
-		//		It is separate to be overwritten dynamically, if needed.
+		//		It is separated to be overwritten dynamically, if needed.
 		// keyPressed: Boolean: the "copy" was pressed
 		return this.copyOnly || keyPressed;	// Boolean
 	},
@@ -174,7 +168,7 @@ function(node, params){
 	
 	// topic event processors
 	onDndSourceOver: function(source){
-		// summary: topic event processor for ondndsourceover, called when detected a current source
+		// summary: topic event processor for /dnd/source/over, called when detected a current source
 		// source: Object: the source which has the mouse over it
 		if(this != source){
 			this.mouseDown = false;
@@ -187,7 +181,7 @@ function(node, params){
 		}
 	},
 	onDndStart: function(source, nodes, copy){
-		// summary: topic event processor for ondndstart, called to initiate the DnD operation
+		// summary: topic event processor for /dnd/start, called to initiate the DnD operation
 		// source: Object: the source which provides items
 		// nodes: Array: the list of transferred items
 		// copy: Boolean: copy items, if true, move items otherwise
@@ -202,7 +196,7 @@ function(node, params){
 		this.isDragging = true;
 	},
 	onDndDrop: function(source, nodes, copy){
-		// summary: topic event processor for ondnddrop, called to finish the DnD operation
+		// summary: topic event processor for /dnd/drop, called to finish the DnD operation
 		// source: Object: the source which provides items
 		// nodes: Array: the list of transferred items
 		// copy: Boolean: copy items, if true, move items otherwise
@@ -287,7 +281,7 @@ function(node, params){
 		this.onDndCancel();
 	},
 	onDndCancel: function(){
-		// summary: topic event processor for ondndcancel, called to cancel the DnD operation
+		// summary: topic event processor for /dnd/cancel, called to cancel the DnD operation
 		if(this.targetAnchor){
 			this._unmarkTargetAnchor();
 			this.targetAnchor = null;

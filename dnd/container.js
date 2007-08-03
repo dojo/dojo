@@ -177,7 +177,7 @@ function(node, params){
 		// newState: String: new state
 		var prefix = "dojoDnd" + type;
 		var state  = type.toLowerCase() + "State";
-		//dojo.html.replaceClass(this.node, prefix + newState, prefix + this[state]);
+		//dojo.replaceClass(this.node, prefix + newState, prefix + this[state]);
 		dojo.removeClass(this.node, prefix + this[state]);
 		dojo.addClass(this.node, prefix + newState);
 		this[state] = newState;
@@ -186,14 +186,12 @@ function(node, params){
 		// summary: adds a class with prefix "dojoDndItem"
 		// node: Node: a node
 		// type: String: a variable suffix for a class name
-		//dojo.html.addClass(node, "dojoDndItem" + type);
 		dojo.addClass(node, "dojoDndItem" + type);
 	},
 	_removeItemClass: function(node, type){
 		// summary: removes a class with prefix "dojoDndItem"
 		// node: Node: a node
 		// type: String: a variable suffix for a class name
-		//dojo.html.removeClass(node, "dojoDndItem" + type);
 		dojo.removeClass(node, "dojoDndItem" + type);
 	},
 	_getChildByEvent: function(e){

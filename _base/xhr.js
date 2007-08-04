@@ -61,6 +61,25 @@ dojo.formToObject = function(/*DOMNode||String*/ formNode){
 }
 
 dojo.objectToQuery = function(/*Object*/ map){
+	//	summary:
+	//		takes a key/value mapping object and returns a string representing
+	//		a URL-encoded version of that object.
+	//	examples:
+	//		this object:
+	//
+	//			{ 
+	//				blah: "blah",
+	//				multi: [
+	//					"thud",
+	//					"thonk"
+	//				]
+	//			};
+	//
+	//		yeilds the following query string:
+	//	
+	//			"blah=blah&multi=thud&multi=thonk"
+
+
 	// FIXME: need to implement encodeAscii!!
 	var ec = encodeURIComponent;
 	var ret = "";
@@ -233,38 +252,68 @@ dojo._contentHandlers = {
 		//		url:
 		//				String URL to server endpoint.
 		//		content:
-		//				Object containing properties with string values. These properties will be serialized as name1=value2 and passed in the request.
+		//				Object containing properties with string values. These
+		//				properties will be serialized as name1=value2 and
+		//				passed in the request.
 		//		timeout:
-		//				Milliseconds to wait for the response. If this time passes, the then error callbacks are called.
+		//				Milliseconds to wait for the response. If this time
+		//				passes, the then error callbacks are called.
 		//		form:
-		//				DOM node for a form. Used to extract the form values and send to the server.
+		//				DOM node for a form. Used to extract the form values
+		//				and send to the server.
 		//		preventCache:
-		//				Boolean. Default is false. If true, then a "dojo.preventCache" parameter is sent in the request with a value that changes with each request (timestamp). Useful only with GET-type requests.
+		//				Boolean. Default is false. If true, then a
+		//				"dojo.preventCache" parameter is sent in the request
+		//				with a value that changes with each request
+		//				(timestamp). Useful only with GET-type requests.
 		//		handleAs:
-		//				String. Acceptable values depend on the type of IO transport (see below).
+		//				String. Acceptable values depend on the type of IO
+		//				transport (see below).
 		//		load:
-		//				function(response, ioArgs){}. The load function will be called on a successful response.
+		//				function(response, ioArgs){}. The load function will be
+		//				called on a successful response.
 		//		error:
-		//				function(response, ioArgs){}. The error function will be called in an error case. 
+		//				function(response, ioArgs){}. The error function will
+		//				be called in an error case. 
 		//		handle
-		//				function(response, ioArgs){}. The handle function will be called in either the successful or error case.
-		//				For the load, error and handle functions, the ioArgs object will contain the following properties:
+		//				function(response, ioArgs){}. The handle function will
+		//				be called in either the successful or error case.  For
+		//				the load, error and handle functions, the ioArgs object
+		//				will contain the following properties: 
+		//
 		//				args:
-		//				the original object argument to the IO call.
+		//						the original object argument to the IO call.
 		//				xhr:
-		//						For XMLHttpRequest calls only, the XMLHttpRequest object that was used for the request.
+		//						For XMLHttpRequest calls only, the
+		//						XMLHttpRequest object that was used for the
+		//						request.
 		//				url:
-		//						The final URL used for the call. Many times it will be different than the original args.url value.
+		//						The final URL used for the call. Many times it
+		//						will be different than the original args.url
+		//						value.
 		//				query:
-		//						For non-GET requests, the name1=value1&name2=value2 parameters sent up in the request.
+		//						For non-GET requests, the
+		//						name1=value1&name2=value2 parameters sent up in
+		//						the request.
 		//				handleAs:
-		//						The final indicator on how the response will be handled.
+		//						The final indicator on how the response will be
+		//						handled.
 		//				id:
-		//						For dojo.io.script calls only, the internal script ID used for the request.
+		//						For dojo.io.script calls only, the internal
+		//						script ID used for the request.
 		//				canDelete:
-		//						For dojo.io.script calls only, indicates whether the script tag that represents the request can be deleted after callbacks have been called. Used internally to know when cleanup can happen on JSONP-type requests.
+		//						For dojo.io.script calls only, indicates
+		//						whether the script tag that represents the
+		//						request can be deleted after callbacks have
+		//						been called. Used internally to know when
+		//						cleanup can happen on JSONP-type requests.
 		//				json:
-		//						For dojo.io.script calls only: holds the JSON response for JSONP-type requests. Used internally to hold on to the JSON responses. You should not need to access it directly -- the same object should be passed to the success callbacks directly.
+		//						For dojo.io.script calls only: holds the JSON
+		//						response for JSONP-type requests. Used
+		//						internally to hold on to the JSON responses.
+		//						You should not need to access it directly --
+		//						the same object should be passed to the success
+		//						callbacks directly.
 		//	canceller:
 		//		The canceller function used for the Deferred object. The function
 		//		will receive one argument, the Deferred object that is related to the
@@ -510,14 +559,23 @@ dojo._contentHandlers = {
 	// TODOC: FIXME!!!
 
 	dojo.xhrGet = function(/*Object*/ args){
-		//summary: Sends an HTTP GET request to the server. See dojo._ioSetArgs in this file
-		//for a list of commonly accepted properties on the args argument. Additional properties
-		//that apply to all of the dojo.xhr* methods:
-		//handleAs: 
-		//		String. Acceptable values are "text" (default), "json", "json-comment-optional", "json-comment-filtered", "javascript", "xml"
-		//sync:
-		//		Boolean. false is default. Indicates whether the request should be a synchronous (blocking) request.
-		//headers:
+		//	summary: 
+		//		Sends an HTTP GET request to the server. See dojo._ioSetArgs in
+		//		this file for a list of commonly accepted properties on the
+		//		args argument. Additional properties that apply to all of the
+		//		dojo.xhr* methods:
+		//	handleAs: 
+		//		String. Acceptable values are:
+		//			"text" (default)
+		//			"json"
+		//			"json-comment-optional"
+		//			"json-comment-filtered"
+		//			"javascript"
+		//			"xml"
+		//	sync:
+		//		Boolean. false is default. Indicates whether the request should
+		//		be a synchronous (blocking) request.
+		//	headers:
 		//		Object. Additional HTTP headers to send in the request.
 		var dfd = _makeXhrDeferred(args);
 		dojo._ioAddQueryToUrl(dfd.ioArgs);
@@ -525,16 +583,19 @@ dojo._contentHandlers = {
 	}
 
 	dojo.xhrPost = function(/*Object*/ args){
-		//summary: Sends an HTTP POST request to the server. See dojo.xhrGet in this file
-		//for a list of commonly accepted properties on the args argument.
+		//summary: 
+		//		Sends an HTTP POST request to the server. See dojo.xhrGet() for
+		//		a list of commonly accepted properties on args.
 		return _doIt("POST", _makeXhrDeferred(args)); // dojo.Deferred
 	}
 
 	dojo.rawXhrPost = function(/*Object*/ args){
-		//summary: Sends an HTTP POST request to the server. See dojo.xhrGet in this file
-		//for a list of commonly accepted properties on the args argument. Additional properties
-		//that apply only to this function:
-		//postData:
+		//	summary:
+		//		Sends an HTTP POST request to the server. See dojo.xhrGet in
+		//		this file for a list of commonly accepted properties on the
+		//		args argument. Additional properties that apply only to this
+		//		function:
+		//	postData:
 		//		String. The raw data to send in the body of the POST request.
 		var dfd = _makeXhrDeferred(args);
 		dfd.ioArgs.query = args.postData;
@@ -542,16 +603,18 @@ dojo._contentHandlers = {
 	}
 
 	dojo.xhrPut = function(/*Object*/ args){
-		//summary: Sends an HTTP PUT request to the server. See dojo.xhrGet in this file
-		//for a list of commonly accepted properties on the args argument.
+		//	summary:
+		//		Sends an HTTP PUT request to the server. See dojo.xhrGet() for
+		//		a list of commonly accepted properties on args.
 		return _doIt("PUT", _makeXhrDeferred(args)); // dojo.Deferred
 	}
 
 	dojo.rawXhrPut = function(/*Object*/ args){
-		//summary: Sends an HTTP PUT request to the server. See dojo.xhrGet in this file
-		//for a list of commonly accepted properties on the args argument. Additional properties
-		//that apply only to this function:
-		//putData:
+		//	summary:
+		//		Sends an HTTP PUT request to the server. See dojo.xhrGet() for
+		//		a list of commonly accepted properties on args. Additional
+		//		properties that apply only to this function:
+		//	putData:
 		//		String. The raw data to send in the body of the PUT request.
 		var dfd = _makeXhrDeferred(args);
 		var ioArgs = dfd.ioArgs;
@@ -563,16 +626,18 @@ dojo._contentHandlers = {
 	}
 
 	dojo.xhrDelete = function(/*Object*/ args){
-		//summary: Sends an HTTP DELETE request to the server. See dojo.xhrGet in this file
-		//for a list of commonly accepted properties on the args argument.
+		//	summary:
+		//		Sends an HTTP DELETE request to the server. See dojo.xhrGet()
+		//		for a list of commonly accepted properties on args.
 		var dfd = _makeXhrDeferred(args);
 		dojo._ioAddQueryToUrl(dfd.ioArgs);
 		return _doIt("DELETE", dfd); // dojo.Deferred
 	}
 
 	dojo.wrapForm = function(formNode){
-		//summary: A replacement for FormBind, but not implemented yet.
-		// was FormBind
+		//summary:
+		//		A replacement for FormBind, but not implemented yet.
+
 		// FIXME: need to think harder about what extensions to this we might
 		// want. What should we allow folks to do w/ this? What events to
 		// set/send?

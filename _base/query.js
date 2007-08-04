@@ -1,13 +1,52 @@
 dojo.provide("dojo._base.query");
 dojo.require("dojo._base.NodeList");
 
+/*
+	dojo.query() architectural overview:
+
+		dojo.query is a relatively full-featured CSS3 query library. It is
+		designed to take any valid CSS3 selector and return the nodes matching
+		the selector. To do this quickly, it processes queries in several
+		steps, applying caching where profitable.
+		
+		The steps (roughly in reverse order of the way they appear in the code):
+			1.) check to see if we already have a "query dispatcher"
+				- if so, use that with the given parameterization. Skip to step 4.
+			2.) attempt to determine which branch to dispatch the query to:
+				- JS (optimized DOM iteration)
+				- xpath (for browsers that support it and where it's fast)
+				- native (not available in any browser yet)
+			3.) tokenize and convert to executable "query dispatcher"
+				- this is where the lion's share of the complexity in the
+				  system lies. In the DOM version, the query dispatcher is
+				  assembled as a chain of "yes/no" test functions pertaining to
+				  a section of a simple query statement (".blah:nth-child(odd)"
+				  but not "div div", which is 2 simple statements). Individual
+				  statement dispatchers are cached (to prevent re-definition)
+				  as are entire dispatch chains (to make re-execution of the
+				  same query fast)
+				- in the xpath path, tokenization yeilds a concatenation of
+				  parameterized xpath selectors. As with the DOM version, both
+				  simple selector blocks and overall evaluators are cached to
+				  prevent re-defintion
+			4.) the resulting query dispatcher is called in the passed scope (by default the top-level document)
+				- for DOM queries, this results in a recursive, top-down
+				  evaluation of nodes based on each simple query section
+				- xpath queries can, thankfully, be executed in one shot
+			5.) matched nodes are pruned to ensure they are unique
+*/
+
 ;(function(){
+	// define everything in a closure for compressability reasons. "d" is an
+	// alias to "dojo" since it's so frequently used. This seems a
+	// transformation that the build system could perform on a per-file basis.
 	var d = dojo;
 
 	////////////////////////////////////////////////////////////////////////
 	// Utility code
 	////////////////////////////////////////////////////////////////////////
 
+	// for tokenizing simple query sections. The results are often reused
 	var _getIndexes = function(q){
 		return [ q.indexOf("#"), q.indexOf("."), q.indexOf("["), q.indexOf(":") ];
 	}
@@ -27,10 +66,12 @@ dojo.require("dojo._base.NodeList");
 		return (end < 0) ? ql : end;
 	}
 
+	// utility for "getId"
 	var getIdEnd = function(query){
 		return _lowestFromIndex(query, 1);
 	}
 
+	// returns the "#thinger" section of a longer simple query like "#thinger.blah[selected]"
 	var getId = function(query){
 		var i = _getIndexes(query);
 		if(i[0] != -1){
@@ -40,6 +81,7 @@ dojo.require("dojo._base.NodeList");
 		}
 	}
 
+	// utility for getTagName
 	var getTagNameEnd = function(query){
 		var i = _getIndexes(query);
 		if((i[0] == 0)||(i[1] == 0)){
@@ -51,12 +93,14 @@ dojo.require("dojo._base.NodeList");
 	}
 
 
+	// returns only the tag name component of a simple query
 	var getTagName = function(query){
 		var tagNameEnd = getTagNameEnd(query);
 		// FIXME: should this be ">=" to account for tags like <a> ?
 		return ((tagNameEnd > 0) ? query.substr(0, tagNameEnd).toLowerCase() : "*");
 	}
 
+	// like Math.min
 	var smallest = function(arr){
 		var ret = -1;
 		for(var x=0; x<arr.length; x++){
@@ -70,6 +114,7 @@ dojo.require("dojo._base.NodeList");
 		return ret;
 	}
 
+	// returns only the class name component (".whatever") of a simple query
 	var getClassName = function(query){
 		// [ "#", ".", "[", ":" ];
 		var i = _getIndexes(query);
@@ -90,6 +135,9 @@ dojo.require("dojo._base.NodeList");
 	// XPath query code
 	////////////////////////////////////////////////////////////////////////
 
+	// this array is a lookup used to generate an attribute matching function.
+	// There is a similar lookup/generator list for the DOM branch with similar
+	// calling semantics.
 	var xPathAttrs = [
 		// FIXME: need to re-order in order of likelyness to be used in matches
 		{
@@ -137,6 +185,11 @@ dojo.require("dojo._base.NodeList");
 		}
 	];
 
+	// takes a list of attribute searches, the overall query, a function to
+	// generate a default matcher, and a closure-bound method for providing a
+	// matching function that generates whatever type of yes/no distinguisher
+	// the query method needs. The method is a bit tortured and hard to read
+	// because it needs to be used in both the XPath and DOM branches.
 	var handleAttrs = function(	attrList, 
 								query, 
 								getDefault, 
@@ -292,6 +345,9 @@ dojo.require("dojo._base.NodeList");
 	var _filtersCache = {};
 	var _simpleFiltersCache = {};
 
+	// the basic building block of the yes/no chaining system. agree(f1, f2)
+	// generates a new function which returns the boolean results of both of
+	// the passed functions to a single logical-anded result.
 	var agree = function(first, second){
 		if(!first){
 			return second;
@@ -832,12 +888,17 @@ dojo.require("dojo._base.NodeList");
 	// the query runner
 	////////////////////////////////////////////////////////////////////////
 
+	// this is the second level of spliting, from full-length queries (e.g.,
+	// "div.foo .bar") into simple query expressions (e.g., ["div.foo",
+	// ".bar"])
 	var _queryFuncCache = {};
 	var getStepQueryFunc = function(query){
+		// if it's trivial, get a fast-path dispatcher
 		if(0 > query.indexOf(" ")){
 			return getElementsFunc(query);
 		}
 
+		// otherwise, break it up and return a runner that iterates over the parts recursively
 		var sqf = function(root){
 			var qparts = query.split(" "); // FIXME: this is an inaccurate tokenizer!
 
@@ -921,6 +982,8 @@ dojo.require("dojo._base.NodeList");
 		return sqf;
 	}
 
+	// a specialized method that implements our primoridal "query optimizer".
+	// This allows us to dispatch queries to the fastest subsystem we can get.
 	var _getQueryFunc = (
 		// NOTE: 
 		//		XPath on the Webkit nighlies is slower than it's DOM iteration
@@ -976,13 +1039,21 @@ dojo.require("dojo._base.NodeList");
 	// uncomment to disable DOM queries for testing and tuning XPath
 	// _getQueryFunc = getXPathFunc;
 
+	// this is the primary caching for full-query results. The query dispatcher
+	// functions are generated here and then pickled for hash lookup in the
+	// future
 	var getQueryFunc = function(query){
+		// return a cached version if one is available
 		if(_queryFuncCache[query]){ return _queryFuncCache[query]; }
 		if(0 > query.indexOf(",")){
+			// if it's not a compound query (e.g., ".foo, .bar"), cache and return a dispatcher
 			return _queryFuncCache[query] = _getQueryFunc(query);
 		}else{
+			// if it's a complex query, break it up into it's constituent parts
+			// and return a dispatcher that will merge the parts when run
+
 			// var parts = query.split(", ");
-			var parts = query.split(/\s*,\s*/)
+			var parts = query.split(/\s*,\s*/);
 			var tf = function(root){
 				var pindex = 0; // avoid array alloc for every invocation
 				var ret = [];
@@ -992,6 +1063,7 @@ dojo.require("dojo._base.NodeList");
 				}
 				return ret;
 			}
+			// ...cache and return
 			return _queryFuncCache[query] = tf;
 		}
 	}
@@ -1020,6 +1092,8 @@ dojo.require("dojo._base.NodeList");
 	//		Dean's new Base2 uses a system whereby queries themselves note if
 	//		they'll need duplicate filtering. We need to get on that plan!!
 
+	// attempt to efficiently determine if an item in a list is a dupe,
+	// returning a list of "uniques", hopefully in doucment order
 	var _zipIdx = 0;
 	var _zip = function(arr){
 		var ret = new d.NodeList();
@@ -1040,6 +1114,7 @@ dojo.require("dojo._base.NodeList");
 		return ret;
 	}
 
+	// the main exectuor
 	d.query = function(query, root){
 		// return is always an array
 		// NOTE: elementsById is not currently supported
@@ -1061,6 +1136,7 @@ dojo.require("dojo._base.NodeList");
 	d.query.pseudos = pseudos;
 	*/
 
+	// one-off function for filtering a NodeList based on a simple selector
 	d._filterQueryResult = function(nodeList, simpleFilter){
 		var tnl = new d.NodeList();
 		var ff = (simpleFilter) ? getFilterFunc(simpleFilter) : function(){ return true; };

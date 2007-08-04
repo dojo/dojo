@@ -478,6 +478,16 @@ dojo._contentHandlers = {
 		// FIXME: need to kill things on unload for #2357
 	}
 
+	if(dojo.isIE){
+		dojo.addOnUnload(function(){
+			try{
+				dojo.forEach(_inFlight, function(i){
+					i.dfd.cancel();
+				});
+			}catch(e){/*squelch*/}
+		});
+	}
+
 	dojo._ioWatch = function(/*Deferred*/dfd,
 		/*Function*/validCheck,
 		/*Function*/ioCheck,

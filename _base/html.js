@@ -125,6 +125,9 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			node.style.KhtmlUserSelect = (selectable) ? "auto" : "none";
 		}else if(dojo.isIE){
 			node.unselectable = (selectable) ? "" : "on";
+			dojo.query("*", node).forEach(function(descendant){
+				descendant.unselectable = (selectable) ? "" : "on";
+			});
 		}
 		//FIXME: else?  Opera?
 	};

@@ -330,8 +330,13 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 			//		ID string for performance reasons.
 			//	opacity:
 			//		Number between 0 and 1. 0 specifies transparent.
-			var o = "Alpha(Opacity="+(opacity*100)+")";
-			node.style.filter = o;
+			if(opacity == 1){
+				// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so remove it altogether (bug #2661)
+				node.style.cssText = node.style.cssText.replace(/FILTER:[^;]*;/i, "");
+			}else{
+				var o = "Alpha(Opacity="+(opacity*100)+")";
+				node.style.filter = o;
+			}
 			if(node.nodeName.toLowerCase == "tr"){
 				dojo.query("> td", node).forEach(function(i){
 					i.style.filter = o;

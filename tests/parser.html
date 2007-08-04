@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>testing Cookies</title>
+		<title>Parser Unit Test</title>
 		<style type="text/css">
 			@import "../resources/dojo.css";
 		</style>
@@ -22,11 +22,20 @@
 					callCount: 0, // for connect testing
 					callInc: function(){ this.callCount++; },
 					callCount2: 0, // for assignment testing
-					strProp: "",
+					strProp1: "original1",
+					strProp2: "original2",
 					arrProp: [],
-					boolProp: false,
-					funcProp: function(){
-					}
+					boolProp1: false,
+					boolProp2: true,
+					boolProp3: false,
+					boolProp4: true,
+					dateProp1: dojo.date.stamp.fromISOString('2007-01-01'),
+					dateProp2: dojo.date.stamp.fromISOString('2007-01-01'),
+					dateProp3: dojo.date.stamp.fromISOString('2007-01-01'),
+					funcProp: function(){},
+					funcProp2: function(){},
+					funcProp3: function(){},
+					onclick: function(){ this.prototypeOnclick=true; }
 					// FIXME: have to test dates!!
 					// FIXME: need to test the args property!!
 				}
@@ -68,9 +77,16 @@
 							console.debug(obj);
 							t.t(typeof obj == "object");
 						},
+
+						// Attribute parsing tests
 						function testStrProp(t){
-							t.t(dojo.isString(obj.strProp));
-							t.is("3", obj.strProp);
+							// normal string parameter
+							t.t(dojo.isString(obj.strProp1));
+							t.is("text", obj.strProp1);
+							
+							// make sure that you override a string value like "foo" to a blank value
+							t.t(dojo.isString(obj.strProp2));
+							t.is("", obj.strProp2);
 						},
 						function testIntProp(t){
 							t.is("number", (typeof obj.intProp));
@@ -81,7 +97,63 @@
 							t.is(3, obj.arrProp[1].length);
 							t.is(["foo", "bar", "baz"], obj.arrProp);
 						},
-						"t.t(obj.boolProp);",
+						function testBoolProp(t){
+							// make sure that both true and false get read correctly,
+							// and that unspecified attributes' values don't change
+							
+							// boolProp1 specified at true
+							t.is("boolean", (typeof obj.boolProp1));
+							t.t(obj.boolProp1);
+							
+							// boolProp2 specified as false
+							t.is("boolean", (typeof obj.boolProp2));
+							t.f(obj.boolProp2);
+							
+							// boolProp3 not specified (prototype says false)
+							t.is("boolean", (typeof obj.boolProp3));
+							t.f(obj.boolProp3);
+							
+							// boolProp4 not specified (prototype says true)
+							t.is("boolean", (typeof obj.boolProp4));
+							t.t(obj.boolProp4);
+						},
+						function testDateProp(t){
+							// dateProp1 specified as 2006-1-1
+							t.is("2006-01-01", dojo.date.stamp.toISOString(obj.dateProp1, {selector: 'date'}));
+							
+							// dateProp2="", should map to NaN (a blank value on DateTextBox)
+							t.t(isNaN(obj.dateProp2));
+							
+							// dateProp3="now", should map to current date
+							t.is(dojo.date.stamp.toISOString(new Date(), {selector: 'date'}),
+								dojo.date.stamp.toISOString(obj.dateProp3, {selector: 'date'}));
+						},
+						function testDisabledFlag(t){
+							t.is("boolean", (typeof disabledObj.disabled));
+							t.t(disabledObj.disabled);
+							t.f(disabledObj.checked);
+						},
+						function testCheckedFlag(t){
+							t.is("boolean", (typeof checkedObj.checked));
+							t.f(checkedObj.disabled);
+							t.t(checkedObj.checked);
+						},
+						function testFunctionProp(t){
+							// make sure that unspecified functions (even with common names)
+							// don't get overridden (bug #3074)
+							obj.onclick();
+							t.t(obj.prototypeOnclick);
+							
+							// funcProp2="foo"
+							obj.funcProp2();
+							t.t(obj.fooCalled);
+							
+							// funcProp3="this.func3Called=true;"
+							obj.funcProp3();
+							t.t(obj.func3Called);
+						},
+
+						// test <script> tags inside innerHTML of source node
 						"t.is(4, obj.preambleTestProp);",
 						"t.is(deepTestProp, obj.deepProp);",
 						function testConnect(t){
@@ -103,15 +175,7 @@
 						function testMarkupFactory(t){
 							t.t(dojo.exists("obj3"));
 							t.t(obj3.fromMarkup);
-						},
-						function testDisabledFlag(t){
-							t.t(disabledObj.disabled);
-							t.f(disabledObj.checked);
-						},
-						function testCheckedFlag(t){
-							t.f(checkedObj.disabled);
-							t.t(checkedObj.checked);
-						}						
+						}					
 					]
 				);
 				doh.run();
@@ -119,8 +183,18 @@
 		</script>
 	</head>
 	<body>
+		<h1>Parser Unit Test</h1>
+		<script>
+			function foo(){ this.fooCalled=true; }
+		</script>
 		<div dojoType="tests.parser.Class1" jsId="obj" 
-			strProp="3" intProp="5" arrProp="foo, bar, baz" boolProp="true">
+			strProp1="text" strProp2=""
+			intProp="5"
+			arrProp="foo, bar, baz"
+			boolProp1="true" boolProp2="false"
+			dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+			funcProp2="foo" funcProp3="this.func3Called=true;"
+		>
 			<script type="dojo/method" event="preamble">
 				this.preambleTestProp = 3;
 			</script>

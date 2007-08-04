@@ -28,6 +28,7 @@ dojo.parser = new function(){
 			case "number":
 				return value.length ? Number(value) : null;
 			case "boolean":
+				// for checked/disabled value might be "" or "checked".  interpret as true.
 				return typeof value == "boolean" ? value : !(value.toLowerCase()=="false");
 			case "function":
 				if(d.isFunction(value)){
@@ -47,7 +48,11 @@ dojo.parser = new function(){
 			case "array":
 				return value.split(/\s*,\s*/);
 			case "date":
-				return d.date.stamp.fromISOString(value);
+				switch(value){
+					case "": return new Date("");	// the NaN of dates
+					case "now": return new Date();	// current date
+					default: return d.date.stamp.fromISOString(value);
+				}
 			case "url":
 				return d.baseUrl + value;
 			default:
@@ -139,18 +144,18 @@ dojo.parser = new function(){
 			var type = node.getAttribute("dojoType");
 			if((!type)||(!type.length)){ return; }
 			var clsInfo = getClassInfo(type);
+
+			// read parameters (ie, attributes).
+			// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
 			var params = {};
-			for(var attrName in clsInfo.params){
-				var attrValue = node.getAttribute(attrName);
-				if(attrValue && !d.isAlien(attrValue)){ // see bug#3074; ignore builtin attributes
-					var attrType = clsInfo.params[attrName];
-					var val = str2obj(attrValue, attrType);
-					// console.debug(attrName, attrValue, val, (typeof val));
-					if(val !== undefined){
-						params[attrName] = val;
-					}
-				}
+			var attributes = node.attributes;
+			for(var name in clsInfo.params){
+				var item = attributes.getNamedItem(name);
+				if(!item || !item.specified){ continue; }
+				var _type = clsInfo.params[name];
+				params[name] = str2obj(item.value, _type);
 			}
+
 			// FIXME (perf): making two iterations of the DOM to find the
 			// <script> elements feels dirty. Still need a separate iteration
 			// if we do it another way, though, so we should probably benchmark

@@ -35,7 +35,7 @@
 		<script type="text/javascript">
 			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
-				var fourElementNL = new dojo.NodeList(
+				fourElementNL = new dojo.NodeList(
 					dojo.byId("c1"), 
 					dojo.byId("t"),
 					dojo.byId("c1"), 
@@ -68,21 +68,26 @@
 							nl.forEach(function(i){ lastItem = i; });
 							t.is(dojo.byId("t"), lastItem);
 
-							nl.forEach(function(i, idx, arr){
+							var r = nl.forEach(function(i, idx, arr){
 								t.t(arr instanceof dojo.NodeList);
 								t.is(2, arr.length);
 							});
+							t.t(r instanceof dojo.NodeList);
+							t.is(r, nl);
 						},
+						
 						function indexOf(t){
 							t.is(0, fourElementNL.indexOf(dojo.byId("c1")));
 							t.is(1, fourElementNL.indexOf(dojo.byId("t")));
 							t.is(-1, fourElementNL.indexOf(null));
 						},
+						
 						function lastIndexOf(t){
 							t.is(2, fourElementNL.lastIndexOf(dojo.byId("c1")));
 							t.is(3, fourElementNL.lastIndexOf(dojo.byId("t")));
 							t.is(-1, fourElementNL.lastIndexOf(null));
 						},
+						
 						function every(t){
 							var ctr = 0;
 							var ret = fourElementNL.every(function(){
@@ -100,6 +105,7 @@
 							t.is(1, ctr);
 							t.f(ret);
 						},
+						
 						function some(t){
 							var ret = fourElementNL.some(function(){
 								return true;
@@ -111,16 +117,20 @@
 							});
 							t.t(ret);
 						},
+						
 						function map(t){
 							var ret = fourElementNL.map(function(){
 								return true;
 							});
+
 							t.is(ret, [true, true, true, true]);
 							var cnt = 0;
 							var ret = fourElementNL.map(function(){
 								return cnt++;
 							});
 							t.is(ret, [0, 1, 2, 3]);
+
+							t.t(ret instanceof dojo.NodeList);
 							// FIXME: need more tests on map!!
 						},
 
@@ -132,6 +142,7 @@
 							t.is(dojo.byId("c1"), dojo.query("body").query(":last-child")[1]);
 							t.is(1, pnl.query().length);
 						},
+						
 						function filter(t){
 							t.is(dojo.query("body :first-child").filter(":last-child")[0], dojo.byId("c1"));
 							t.is(1, dojo.query("*").filter(function(n){ return (n.nodeName.toLowerCase() == "span"); }).length);
@@ -146,17 +157,13 @@
 						},
 
 						// layout DOM functions
-						function box(t){
+						function coords(t){
 							var tnl = new dojo.NodeList(dojo.byId('sq100'))
-							t.is(100, tnl.box().w);
-							t.is(100, tnl.box().h);
+							t.is(100, tnl.coords()[0].w);
+							t.is(100, tnl.coords()[0].h);
+							t.is(document.body.getElementsByTagName("*").length, dojo.query("body *").coords().length);
 						},
-						function boxes(t){
-							var tnl = new dojo.NodeList(dojo.byId('sq100'))
-							t.is(100, tnl.boxes()[0].w);
-							t.is(100, tnl.boxes()[0].h);
-							t.is(document.body.getElementsByTagName("*").length, dojo.query("body *").boxes().length);
-						},
+						
 						function style(t){
 							var sq100 = dojo.byId("sq100")
 							var tnl = new dojo.NodeList(sq100)
@@ -165,22 +172,81 @@
 							dojo.style(dojo.byId("t"), "opacity", 0.5);
 							t.is(1, tnl.style("opacity"));
 						},
+						
 						function styles(t){
 							var tnl = new dojo.NodeList(dojo.byId("sq100"));
 							t.is(1, tnl.styles("opacity")[0]);
 							tnl.push(dojo.byId("t"));
 							dojo.style(dojo.byId("t"), "opacity", 0.5);
 							t.is(0.5, tnl.styles("opacity")[1]);
-						}/*,
+						},
+						
 						function place(t){
+							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+							var nl = dojo.query("b", tn).place(tn, "first");
+							t.t(nl instanceof dojo.NodeList);
+							t.is(1, nl.length);
+							t.is("b", nl[0].nodeName.toLowerCase());
+							t.is(tn, nl[0].parentNode);
+							t.is(tn.firstChild, nl[0]);
 						},
+						
 						function orphan(t){
+							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+							var nl = dojo.query("span", tn).orphan();
+							t.t(nl instanceof dojo.NodeList);
+
+							t.is(2, nl.length);
+							t.is(1, tn.getElementsByTagName("*").length);
+
+							tn.innerHTML = ih;
+							var nl = dojo.query("*", tn).orphan("b");
+							t.is(1, nl.length);
+							t.is("blah", nl[0].innerHTML);
 						},
+
+						/*						
 						function adopt(t){
 						},
+						
 						function addContent(t){
-						}
+						},
+						
+						function fadeIn(t){
+						},
+						
+						function fadeOut(t){
+						},
+						
+						function animateProperty(t){
+						},
 						*/
+						
+						function connect(t){
+							var ih = "<div><span></span></div><span class='thud'><button>blah</button></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+
+							var ctr = 0;
+							var nl = dojo.query("button", tn).connect("onclick", function(){
+								ctr++;
+							});
+							nl[0].click();
+							t.is(1, ctr);
+							nl[0].click();
+							nl[0].click();
+							t.is(3, ctr);
+						}
 					]
 				);
 				doh.run();

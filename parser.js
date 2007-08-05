@@ -151,7 +151,7 @@ dojo.parser = new function(){
 			var attributes = node.attributes;
 			for(var name in clsInfo.params){
 				var item = attributes.getNamedItem(name);
-				if(!item || !item.specified){ continue; }
+				if(!item || (!item.specified && (!dojo.isIE || name.toLowerCase()!="value"))){ continue; }
 				var _type = clsInfo.params[name];
 				params[name] = str2obj(item.value, _type);
 			}

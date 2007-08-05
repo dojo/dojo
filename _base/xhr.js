@@ -477,12 +477,6 @@ dojo._contentHandlers = {
 
 	}
 
-	//Automatically call cancel all io calls on unload
-	//in IE for trac issue #2357.
-	if(dojo.isIE){
-		dojo.addOnUnload(dojo._ioCancelAll);
-	}
-
 	dojo._ioCancelAll = function(){
 		//summary: Cancels all pending IO requests, regardless of IO type
 		//(xhr, script, iframe).
@@ -491,6 +485,12 @@ dojo._contentHandlers = {
 				i.dfd.cancel();
 			});
 		}catch(e){/*squelch*/}
+	}
+
+	//Automatically call cancel all io calls on unload
+	//in IE for trac issue #2357.
+	if(dojo.isIE){
+		dojo.addOnUnload(dojo._ioCancelAll);
 	}
 
 	dojo._ioWatch = function(/*Deferred*/dfd,

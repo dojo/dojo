@@ -133,14 +133,23 @@ dojo.loaded = function(){
 	this._loadNotifying = true;
 	this._postLoad = true;
 	var mll = this._loaders;
+	
+	//Clear listeners so new ones can be added
+	//For other xdomain package loads after the initial load.
+	this._loaders = [];
+
 	for(var x=0; x<mll.length; x++){
 		mll[x]();
 	}
 
-	//Clear listeners so new ones can be added
-	//For other xdomain package loads after the initial load.
-	this._loaders = [];
 	this._loadNotifying = false;
+	
+	//Make sure nothing else got added to the onload queue
+	//after this first run. If something did, and we are not waiting for any
+	//more inflight resources, run again.
+	if(dojo._postLoad && dojo._inFlightCount == 0 && this._loaders.length > 0){
+		dojo._callLoaded();
+	}
 }
 
 dojo.unloaded = function(){

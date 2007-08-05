@@ -297,7 +297,7 @@
 						function xhrPut(t){
 							var d = new doh.Deferred();
 							var td = dojo.xhrPut({
-								url: "xhr.html?foo=bar", // self
+								url: "xhrDummyMethod.php?foo=bar", // self
 								content: { color: "blue"},
 								handle: function(res, ioArgs){
 									if((dojo._isDocumentOk(ioArgs.xhr))||
@@ -315,7 +315,7 @@
 						function xhrDelete(t){
 							var d = new doh.Deferred();
 							var td = dojo.xhrDelete({
-								url: "xhr.html", // self
+								url: "xhrDummyMethod.php", // self
 								preventCache: true,
 								handle: function(res, ioArgs){
 									if((dojo._isDocumentOk(ioArgs.xhr))||
@@ -333,7 +333,7 @@
 						function xhrCancel(t){
 							var d = new doh.Deferred();
 							var td = dojo.xhrPost({
-								url: "xhr.html", // self
+								url: "xhrDummyMethod.php", // self
 								handle: function(res, ioArgs){
 									if(res instanceof Error && res.dojoType == "cancel"){
 										d.callback(true);
@@ -373,7 +373,7 @@
 		<form id="f3" style="border: 1px solid black;">
 			<input type="hidden" name="spaces" value="string with spaces">
 		</form>
-		<form id="f4" style="border: 1px solid black;" action="xhr.html">
+		<form id="f4" style="border: 1px solid black;" action="xhrDummyMethod.php">
 			<input type="hidden" name="action" value="Form with input named action">
 		</form>
 	</body>

@@ -2,6 +2,6 @@
 
 $callbackName = $_REQUEST["callback"];
 sleep(5);
-print "{$callbackName}({Status: 'good'});";
+print "SuperXFooBarVariable = 'Oh no! SuperXFooBarVariable is defined (should not be for timeout case).'; {$callbackName}({Status: 'good'});";
 
 ?>

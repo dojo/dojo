@@ -44,6 +44,11 @@ dojo.io.script = {
 	remove: function(/*String*/id){
 		//summary: removes the script element with the given id.
 		dojo._destroyElement(dojo.byId(id));
+		
+		//Remove the jsonp callback on dojo.io.script, if it exists.
+		if(this["jsonp_" + id]){
+			delete this["jsonp_" + id];
+		}
 	},
 
 	_makeScriptDeferred: function(/*Object*/args){
@@ -101,9 +106,15 @@ dojo.io.script = {
 	_deferredError: function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.
 
-		//DO NOT use "this" and expect it to be dojo.io.script.
 		if(dfd.ioArgs.canDelete){
-			dojo.io.script._deadScripts.push(dfd.ioArgs.id);
+			//DO NOT use "this" and expect it to be dojo.io.script.
+			if(error.dojoType == "timeout"){
+				//For timeouts, remove the script element immediately to
+				//avoid a response from it coming back later and causing trouble.
+				dojo.io.script.remove(dfd.ioArgs.id);
+			}else{
+				dojo.io.script._deadScripts.push(dfd.ioArgs.id);
+			}
 		}
 		console.debug("dojo.io.script error", error);
 		return error;
@@ -125,11 +136,6 @@ dojo.io.script = {
 			for(var i = 0; i < deadScripts.length; i++){
 				//Remove the script tag
 				_self.remove(deadScripts[i]);
-				
-				//Remove the jsonp callback on dojo.io.script
-				if(_self["jsonp_" + deadScripts[i]]){
-					delete _self["jsonp_" + deadScripts[i]];
-				}
 			}
 			dojo.io.script._deadScripts = [];
 		}

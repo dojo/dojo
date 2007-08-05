@@ -34,11 +34,11 @@ dojo.io.script = {
 		//Attaches the script element to the DOM.
 		//Use this method if you just want to attach a script to the
 		//DOM and do not care when or if it loads.
-		var element = document.createElement("script");
+		var element = dojo.doc.createElement("script");
 		element.type = "text/javascript";
 		element.src = url;
 		element.id = id;
-		document.getElementsByTagName("head")[0].appendChild(element);
+		dojo.doc.getElementsByTagName("head")[0].appendChild(element);
 	},
 
 	remove: function(/*String*/id){

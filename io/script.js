@@ -90,6 +90,12 @@ dojo.io.script = {
 		//summary: okHandler function for dojo._ioSetArgs call.
 
 		//DO NOT use "this" and expect it to be dojo.io.script.
+
+		//Add script to list of things that can be removed.		
+		if(dfd.ioArgs.canDelete){
+			dojo.io.script._deadScripts.push(dfd.ioArgs.id);
+		}
+
 		if(dfd.ioArgs.json){
 			//Make sure to *not* remove the json property from the
 			//Deferred, so that the Deferred can still function correctly

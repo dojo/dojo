@@ -31,9 +31,9 @@ dojo.require("dojo._base.array");
 		if((args.length == 1)&&(typeof farg == "number")){
 			this.length = parseInt(farg);
 		}else{
-			var l = ((args.length == 1)&&(d.isArray(farg))) ? farg : args;
-			for(var x=0; x<l.length; x++){
-				this.push(l[x]);
+			// var l = ((args.length == 1)&&(d.isArray(farg))) ? farg : args;
+			for(var x=0; x<args.length; x++){
+				this.push(args[x]);
 			}
 		}
 	}
@@ -132,14 +132,19 @@ dojo.require("dojo._base.array");
 			return this; // non-standard return to allow easier chaining
 		},
 
-		map: function(/*Function*/ unary_func, /*Function?*/ obj){
+		map: function(/*Function*/ func, /*Function?*/ obj){
 			//	summary:
 			//		see dojo.map(). The primary difference is that the acted-on 
 			//		array is implicitly this NodeList and the return is a 
 			//		dojo.NodeList (a subclass of Array)
-			
-			// note that the return value should be a NodeList for chaining purposes
-			return new d.NodeList(d.map(this, unary_func, obj)); // dojo.NodeList
+
+			// implementation copied from array.js, only replacing NodeList for [] for speed.			
+			obj = obj||dojo.global;
+			var outArr = new d.NodeList();
+			for(var i=0;i<this.length;++i){
+				outArr.push(func.call(obj, this[i], i, this));
+			}
+			return outArr; // dojo.NodeList
 		},
 
 		// custom methods

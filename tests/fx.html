@@ -11,9 +11,9 @@
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
-						function slideOut(t){
+						function wipeOut(t){
 							dojo.byId("foo").style.height = "";
-							var s = dojo.fx.slideOut({node: "foo", duration: 500 });
+							var s = dojo.fx.wipeOut({node: "foo", duration: 500 });
 							var d = new doh.Deferred();
 							dojo.connect(s, "onEnd", function(){
 								d.callback();
@@ -22,9 +22,9 @@
 							return d;
 						},
 						
-						function slideIn(t){
+						function wipeIn(t){
 							dojo.byId("foo").style.height = "0px";
-							var s = dojo.fx.slideIn({node: "foo", duration: 500 }).play();
+							var s = dojo.fx.wipeIn({node: "foo", duration: 500 }).play();
 							var d = new doh.Deferred();
 							dojo.connect(s, "onEnd", function(){
 								doh.t(dojo.style("foo", "height") != 0);
@@ -59,8 +59,8 @@
 							var t = new dojo.fx.Toggler({
 							    node: "foo",
 							    hideDuration: 1000,
-								hideFunc: dojo.fx.slideOut,
-								showFunc: dojo.fx.slideIn 
+								hideFunc: dojo.fx.wipeOut,
+								showFunc: dojo.fx.wipeIn 
 							});
 							t.hide();
 							setTimeout(function(){

@@ -44,7 +44,7 @@ dojo.declare(
 		//			node: "nodeId",
 		//			showDuration: 500,
 		//			// hideDuration will default to "200"
-		//			showFunc: dojo.slideIn, 
+		//			showFunc: dojo.wipeIn, 
 		//			// hideFunc will default to "fadeOut"
 		//		});
 		//		t.show(100); // delay showing for 100ms
@@ -58,7 +58,7 @@ dojo.declare(
 		var _t = this;
 
 		dojo.mixin(_t, args);
-		_t.node = args["node"];
+		_t.node = args.node;
 		_t._showArgs = dojo.mixin({}, args);
 		_t._showArgs.node = _t.node;
 		_t._showArgs.duration = _t.showDuration;
@@ -101,7 +101,7 @@ dojo.declare(
 	}
 );
 
-dojo.fx.slideIn = function(/*Object*/ args){
+dojo.fx.wipeIn = function(/*Object*/ args){
 	// summary
 	//		Returns an animation that will expand the
 	//		node defined in 'args' object from it's current height to
@@ -142,11 +142,11 @@ dojo.fx.slideIn = function(/*Object*/ args){
 	return anim; // dojo._Animation
 }
 
-dojo.fx.slideOut = function(/*Object*/ args){
+dojo.fx.wipeOut = function(/*Object*/ args){
 	// summary
 	//		Returns an animation that will shrink node defined in "args"
 	//		from it's current height to 1px, and then hide it.
-	var node = args.node = dojo.byId(args.node);
+	var node = (args.node = dojo.byId(args.node));
 
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {

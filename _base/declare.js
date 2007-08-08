@@ -70,7 +70,9 @@ dojo.declare = function(/*String*/ className, /*Function||Array*/ superclass, /*
 	// name methods (experimental)
 	for(var i in props){if(dojo.isFunction(fn=props[i])&&(!0[i])){fn.nom=i;}}
 	// decorate prototype
-	dojo.extend(ctor, {declaredClass: className, _constructor: init, preamble: null}, props||0, {constructor: ctor}); 
+	dojo.extend(ctor, {declaredClass: className, _constructor: init, preamble: null}, props||0); 
+	// special help for IE
+	ctor.prototype.constructor = ctor;
 	// create named reference
 	return dojo.setObject(className, ctor); // Function
 }
@@ -129,14 +131,14 @@ dojo.mixin(dojo.declare, {
 		},
 		_findMethod: function(name, method, ptype, has){
 			// consciously trading readability for bytes and speed in this low-level method
-			var p=ptype, c, m;
+			var p=ptype, c, m, f;
 			do{
 				c = p.constructor;
 				m = c.mixin;
 				// find method by name in our mixin ancestor
 				if(m && (m=this._findMethod(name, method, m, has))){return m};
 				// if we found a named method that either exactly-is or exactly-is-not 'method'
-				if(has == (p[name] == method)){return p};
+				if((f=p[name])&&(has==(f==method))){return p};
 				// ascend chain
 				p = c.superclass;
 			}while(p);
@@ -148,7 +150,7 @@ dojo.mixin(dojo.declare, {
 			var a = arguments;
 			if(!dojo.isString(a[0])){newArgs=args; args=name; name=args.callee.nom;}
 			var c=args.callee, p=this.constructor.prototype, a=newArgs||args, fn, mp;
-			// if an instance override 
+			// if not an instance override 
 			if(this[name]!=c || p[name]==c){
 				mp = this._findMethod(name, c, p, true);
 				if(!mp){throw(this.declaredClass + ': name argument ("' + name + '") to inherited must match callee (declare.js)');}

@@ -79,7 +79,7 @@ dojo.mixin(dojo.declare, {
 	_delegate: function(base, mixin) {
 		var bp = (base||0).prototype, mp = (mixin||0).prototype;
 		// fresh constructor, fresh prototype
-		var ctor = function(){this._construct(arguments);}
+		var ctor = dojo.declare._makeCtor();
 		// cache ancestry
 		dojo.mixin(ctor, {superclass: bp, mixin: mp});
 		// chain prototypes
@@ -92,6 +92,10 @@ dojo.mixin(dojo.declare, {
 		ctor.prototype.declaredClass = (bp||0).declaredClass + '_' + (mp||0).declaredClass;
 		dojo.setObject(ctor.prototype.declaredClass, ctor); // Function
 		return ctor;
+	},
+	_makeCtor: function() {
+		// we have to make a function, but don't want to close over anything
+		return function(){this._construct(arguments);}
 	},
 	_core: { 
 		_construct: function(args){

@@ -69,12 +69,14 @@ dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
 		}
 	}
 	// IE doesn't recognize custom toStrings in for..in
-	if(dojo.isIE && 
-		(typeof(props["toString"]) == "function") && 
-		(props["toString"] != obj["toString"]) && 
-		(props["toString"] != tobj["toString"])
-	){
-		obj.toString = props.toString;
+	if(dojo.isIE){
+		var p = props.toString;
+		if((typeof(p) == "function") 
+			&& (p != obj.toString) 
+			&& (p != tobj.toString) 
+			&& (p != "\nfunction toString() {\n    [native code]\n}\n")){
+				obj.toString = props.toString;
+		}
 	}
 	return obj; // Object
 }

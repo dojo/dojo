@@ -215,4 +215,13 @@ function setTimeout(func, delay){
 	thread.start();
 }
 
+//Register any module paths set up in djConfig. Need to do this
+//in the hostenvs since hostenv_browser can read djConfig from a
+//script tag's attribute.
+if(djConfig["modulePaths"]){
+	for(var param in djConfig["modulePaths"]){
+		dojo.registerModulePath(param, djConfig["modulePaths"][param]);
+	}
+}
+
 dojo.requireIf((djConfig["isDebug"] || djConfig["debugAtAllCosts"]), "dojo.debug");

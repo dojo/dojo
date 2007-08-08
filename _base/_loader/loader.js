@@ -437,12 +437,6 @@ dojo.registerModulePath = function(/*String*/module, /*String*/prefix){
 	this._modulePrefixes[module] = { name: module, value: prefix };
 }
 
-if(djConfig["modulePaths"]){
-	for(var param in djConfig["modulePaths"]){
-		dojo.registerModulePath(param, djConfig["modulePaths"][param]);
-	}
-}
-
 dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String?*/availableFlatLocales){
 	// summary:
 	//		Declares translated resources and loads them if necessary, in the

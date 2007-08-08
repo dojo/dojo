@@ -26,7 +26,7 @@ dojo.parser = new function(){
 			case "string":
 				return value;
 			case "number":
-				return value.length ? Number(value) : null;
+				return value.length ? Number(value) : NaN;
 			case "boolean":
 				// for checked/disabled value might be "" or "checked".  interpret as true.
 				return typeof value == "boolean" ? value : !(value.toLowerCase()=="false");

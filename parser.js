@@ -121,11 +121,13 @@ dojo.parser = new function(){
 		// if there's a destination, connect it to that, otherwise run it now
 		var source = script.getAttribute("event");
 		if(source){
-			var mode = script.getAttribute("mode");
-			if(mode && (mode == "connect")){
+			var mode = script.getAttribute("type");
+			if(mode && (mode == "dojo/connect")){
 				// FIXME: need to implement EL here!!
 				d.connect(instance, source, instance, nf);
-			}else{
+			}else{ 
+				// otherwise we assume it's type "dojo/method", and therefore a
+				// replacement
 				instance[source] = nf;
 			}
 		}else{
@@ -169,7 +171,7 @@ dojo.parser = new function(){
 			}
 
 			// grab the rest of the scripts for processing later
-			var scripts = d.query("> script[type='dojo/method']", node).orphan();
+			var scripts = d.query("> script[type^='dojo/']", node).orphan();
 
 			var clazz = clsInfo.cls;
 			var markupFactory = clazz["markupFactory"];
@@ -177,7 +179,7 @@ dojo.parser = new function(){
 				markupFactory = clazz.prototype["markupFactory"];
 			}
 			// create the instance
-			var instance = markupFactory ? markupFactory(params, node) : new clazz(params, node);
+			var instance = markupFactory ? markupFactory(params, node, clazz) : new clazz(params, node);
 			thelist.push(instance);
 
 			// map it to the JS namespace if that makes sense

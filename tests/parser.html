@@ -47,7 +47,7 @@
 				}, 
 				{
 					fromMarkup: false,
-					markupFactory: function(args, node){
+					markupFactory: function(args, node, classCtor){
 						var i = new tests.parser.Class2();
 						i.fromMarkup = true;
 						return i;
@@ -55,6 +55,18 @@
 				}
 			);
 
+
+			dojo.declare("tests.parser.Class3", [ tests.parser.Class2 ], null, 
+				{
+					fromMarkup: false,
+					markupFactory: function(args, node, classCtor){
+						var i = new classCtor();
+						i.classCtor = classCtor;
+						return i;
+					}
+				}
+			);
+			
 			dojo.declare("tests.parser.inputClass", null, 
 				function(args, node){ dojo.mixin(this, args); },
 				{
@@ -74,7 +86,7 @@
 				doh.register("t",
 					[
 						function testJsId(t){
-							console.debug(obj);
+							// console.debug(obj);
 							t.t(typeof obj == "object");
 						},
 
@@ -175,7 +187,21 @@
 						function testMarkupFactory(t){
 							t.t(dojo.exists("obj3"));
 							t.t(obj3.fromMarkup);
-						}					
+						},
+						function testMarkupFactoryClass(t){
+							t.t(dojo.exists("obj4"));
+							t.is(obj4.classCtor, tests.parser.Class3);
+							t.t(obj4 instanceof tests.parser.Class3);
+							t.t(obj4 instanceof tests.parser.Class2);
+						},
+						function testDisabledFlag(t){
+							t.t(disabledObj.disabled);
+							t.f(disabledObj.checked);
+						},
+						function testCheckedFlag(t){
+							t.f(checkedObj.disabled);
+							t.t(checkedObj.checked);
+						}						
 					]
 				);
 				doh.run();
@@ -202,7 +228,7 @@
 				// this should be run immediately
 				this.deepProp = deepTestProp;
 			</script>
-			<script type="dojo/method" mode="connect" event="callInc">
+			<script type="dojo/connect" event="callInc">
 				this.callCount++;
 			</script>
 			<script type="dojo/method" event="callInc2">
@@ -214,6 +240,8 @@
 			</div>
 		</div>
 		<div dojoType="tests.parser.Class2" jsId="obj3">
+		</div>
+		<div dojoType="tests.parser.Class3" jsId="obj4">
 		</div>
 		<input dojoType="tests.parser.inputClass" jsId="checkedObj" checked type="checkbox">
 		<button dojoType="tests.parser.inputClass" jsId="disabledObj" disabled>hi</button>

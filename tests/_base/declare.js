@@ -40,17 +40,6 @@ tests.register("tests._base.declare",
 			var tmp = new tests._base.declare.fooBar2();
 			t.is("thonk", tmp.foo);
 		},
-		function smokeTestWithSwappedArgs(t){
-			dojo.declare("tests._base.declare.fooBar3", null, 
-				{
-					foo: "thonk"
-				}, function(){
-					this.foo = "blah";
-				} 
-			);
-			var tmp = new tests._base.declare.fooBar3();
-			t.is("blah", tmp.foo);
-		},
 		function subclass(t){
 			dojo.declare("tests._base.declare.tmp3", null, {
 					foo: "thonk"
@@ -174,13 +163,46 @@ tests.register("tests._base.declare",
 			t.is("squiggle", tmp.foo);
 			t.is("trousers", foo);
 		},
+		function inheritedMixinCalls(t){
+			dojo.declare("tests._base.declare.tmp16", null, {
+					foo: "",
+					bar: function(){
+						this.foo += "tmp16";
+					}
+				}
+			);
+			dojo.declare("tests._base.declare.mixin16", null, {
+					bar: function(){
+						this.inherited(arguments);
+						this.foo += ".mixin16";
+					}
+				}
+			);
+			dojo.declare("tests._base.declare.mixin17", tests._base.declare.mixin16, {
+					bar: function(){
+						this.inherited(arguments);
+						this.foo += ".mixin17";
+					}
+				}
+			);
+			dojo.declare("tests._base.declare.tmp17", [tests._base.declare.tmp16, tests._base.declare.mixin17], {
+					bar: function(){
+						this.inherited(arguments);
+						this.foo += ".tmp17";
+					}
+				}
+			);
+			var tmp = new tests._base.declare.tmp17();
+			tmp.bar();
+			t.is("tmp16.mixin16.mixin17.tmp17", tmp.foo);
+		},
 		function mixinPreamble(t){
 			var passed = false;
 			dojo.declare("tests._base.declare.tmp16");
 			new tests._base.declare.tmp16({ preamble: function(){ passed = true; } });
 			t.t(passed);
 		}
-		// FIXME: there are still some permeutations to test like:
+		// FIXME: there are still some permutations to test like:
 		//	- ctor arguments
 		//	- multi-level inheritance + L/R conflict checks
 	]

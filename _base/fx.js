@@ -21,20 +21,20 @@ dojo._Line = function(/*int*/ start, /*int*/ end){
 	}
 }
 
-dojo.declare("dojo._Animation", null,
-	function(/*Object*/ args){
+dojo.declare("dojo._Animation", null, {
 		//	summary
 		//		a generic animation object that fires callbacks into it's handlers
 		//		object at various states
-		//  FIXME: document args object
-		dojo.mixin(this, args);
-		if(dojo.isArray(this.curve)){
-			/* curve: Array
-			   pId: a */
-			this.curve = new dojo._Line(this.curve[0], this.curve[1]);
-		}
-	},
-	{
+		//	FIXME: document args object
+		constructor: function(/*Object*/ args){
+			dojo.mixin(this, args);
+			if(dojo.isArray(this.curve)){
+				/* curve: Array
+					pId: a */
+				this.curve = new dojo._Line(this.curve[0], this.curve[1]);
+			}
+		},
+		
 		// public properties
 		curve: null,
 		duration: 1000,

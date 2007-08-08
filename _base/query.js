@@ -413,12 +413,12 @@ dojo.require("dojo._base.NodeList");
 	}
 
 	var filterDown = function(elements, queryParts){
-		ret = [];
+		var ret = [];
 
 		// for every root, get the elements that match the descendant selector
 		// for(var x=elements.length-1, te; x>=0, te=elements[x]; x--){
-		var x=elements.length-1, te;
-		while(te=elements[x--]){
+		var x = elements.length - 1, te;
+		while(te = elements[x--]){
 			_filterDown(te, queryParts, ret, 0);
 		}
 		return ret;

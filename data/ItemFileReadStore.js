@@ -384,7 +384,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 					if(dojo.isArray(valueForAttribute)){
 						var valueArray = valueForAttribute;
 						for(var k = 0; k < valueArray.length; ++k){
-							singleValue = valueArray[k];
+							var singleValue = valueArray[k];
 							if(valueIsAnItem(singleValue)){
 								addItemAndSubItemsToArrayOfAllItems(singleValue);
 							}

@@ -93,7 +93,7 @@ dojo.require("dojo._base.connect");
 		var h = l.add(obj, event, dojo.hitch(context, method));
 		// return disconnect package
 		return [ obj, event, h, l ];
-	}											
+	}
 
 	// Constants
 
@@ -336,7 +336,7 @@ dojo.require("dojo._base.connect");
 					var c = (unprintable ? 0 : k);
 					if(evt.ctrlKey){
 						if(k==3 || k==13){
-							return; // IE will post CTRL-BREAK, CTRL-ENTER as keypress natively 									
+							return; // IE will post CTRL-BREAK, CTRL-ENTER as keypress natively 
 						}else if(c>95 && c<106){ 
 							c -= 48; // map CTRL-[numpad 0-9] to ASCII
 						}else if((!evt.shiftKey)&&(c>=65&&c<=90)){ 
@@ -358,7 +358,14 @@ dojo.require("dojo._base.connect");
 				this.cancelBubble = true; 
 			},
 			_preventDefault: function(){
-				_trySetKeyCode(this, 0);
+				// Setting keyCode to 0 is the only way to prevent certain keypresses (namely
+				// ctrl-combinations that correspond to menu accelerator keys).
+				// Otoh, it prevents upstream listeners from getting this information
+				// Try to split the difference here by clobbering keyCode only for ctrl 
+				// combinations. If you still need to access the key upstream, bubbledKeyCode is
+				// provided as a workaround.
+				this.bubbledKeyCode = this.keyCode;
+				if(this.ctrlKey){_trySetKeyCode(this, 0);}
 				this.returnValue = false;
 			}
 		});

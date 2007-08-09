@@ -387,6 +387,95 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: fetch() Multiple",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Tests that multiple fetches at the same time queue up properly and do not clobber each other on initial load.
+			//	description:
+			//		Tests that multiple fetches at the same time queue up properly and do not clobber each other on initial load.
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
+			
+			var d = new doh.Deferred();
+			var done = [false, false];
+
+			function onCompleteOne(items, request){
+				done[0] = true;
+				t.assertEqual(items.length, 2);
+				if(done[0] && done[1]){
+					d.callback(true);
+				}
+			}
+			function onCompleteTwo(items, request){
+				done[1] = true;
+				if(done[0] && done[1]){
+					d.callback(true);
+				}
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			//Find all items starting with A, only toplevel (root) items.
+			store.fetch({ 	query: {name: "A*"}, 
+									onComplete: onCompleteOne, 
+									onError: onError
+								});
+
+			//Find all items starting with A, only toplevel (root) items.
+			store.fetch({ 	query: {name: "N*"}, 
+									onComplete: onCompleteTwo, 
+									onError: onError
+								});
+
+			return d;
+		}
+	},
+	{
+		name: "Read API: fetch() MultipleMixedFetch",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Tests that multiple fetches at the same time queue up properly and do not clobber each other on initial load.
+			//	description:
+			//		Tests that multiple fetches at the same time queue up properly and do not clobber each other on initial load.
+			//		Tests an item fetch and an identity fetch.
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+			
+			var d = new doh.Deferred();
+			var done = [false, false];
+
+			function onComplete(items, request){
+				done[0] = true;
+				t.assertEqual(items.length, 1);
+				if(done[0] && done[1]){
+					d.callback(true);
+				}
+			}
+			function onItem(item){
+				done[1] = true;
+				t.assertTrue(item !== null);
+				var name = store.getValue(item,"name");
+				t.assertEqual(name, "El Salvador");
+				
+				if(done[0] && done[1]){
+					d.callback(true);
+				}
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			
+			//Find all items starting with A, only toplevel (root) items.
+			store.fetch({ 	query: {name: "El*"}, 
+									onComplete: onComplete, 
+									onError: onError
+								});
+			
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d;
+		}
+	},
+	{
 		name: "Read API: fetch() deep",
  		runTest: function(datastore, t){
 			//	summary: 

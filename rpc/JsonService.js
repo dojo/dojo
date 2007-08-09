@@ -1,14 +1,9 @@
 dojo.provide("dojo.rpc.JsonService");
 dojo.require("dojo.rpc.RpcService");
 
-dojo.declare(
-	"dojo.rpc.JsonService", 
-	dojo.rpc.RpcService,	
-	{
+dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 		bustCache: false,
-	
 		contentType: "application/json-rpc",
-
 		lastSubmissionId: 0,
 
 		callRemote: function(method, params){

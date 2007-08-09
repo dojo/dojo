@@ -1,10 +1,9 @@
 dojo.provide("dojo.data.ItemFileWriteStore");
 dojo.require("dojo.data.ItemFileReadStore");
 
-dojo.declare("dojo.data.ItemFileWriteStore", 
-	dojo.data.ItemFileReadStore, 
-	function(/* object */ keywordParameters){
-		// 	keywordParameters: {typeMap: object)
+dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
+	constructor: function(/* object */ keywordParameters){
+		//	keywordParameters: {typeMap: object)
 		//		The structure of the typeMap object is as follows:
 		//		{
 		//			type0: function || object,
@@ -41,8 +40,8 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 		
 		// this._saveInProgress is set to true, briefly, from when save() is first called to when it completes
 		this._saveInProgress = false;
-	}, {
-
+	}, 
+	
 	_assert: function(/* boolean */ condition){
 		if(!condition) {
 			throw new Error("assertion failed in ItemFileWriteStore");
@@ -121,10 +120,10 @@ dojo.declare("dojo.data.ItemFileWriteStore",
 				}
 				tempValues.push(newItem);
 				this._setValueOrValues(parentInfo.parent, parentInfo.attribute, tempValues, false);
-                pInfo.newValue  = this.getValues(parentInfo.parent, parentInfo.attribute);
-            }else{
+				pInfo.newValue = this.getValues(parentInfo.parent, parentInfo.attribute);
+			}else{
 				this._setValueOrValues(parentInfo.parent, parentInfo.attribute, newItem, false);
-				pInfo.newValue  = newItem;
+				pInfo.newValue = newItem;
 			}
 		}else{
 			//Toplevel item, add to both top list as well as all list.

@@ -21,6 +21,54 @@ dojo.require("dojo.dnd.manager");
 
 dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	// summary: a Source object, which can be used as a DnD source, or a DnD target
+	
+	constructor: function(node, params){
+		// summary: a constructor of the Source
+		// node: Node: node or node's id to build the source on
+		// params: Object: a dict of parameters, recognized parameters are:
+		//	isSource: Boolean: can be used as a DnD source, if true; assumed to be "true" if omitted
+		//	accept: Array: list of accepted types (text strings) for a target; assumed to be ["text"] if omitted
+		//	horizontal: Boolean: a horizontal container, if true, vertical otherwise or when omitted
+		//	copyOnly: Boolean: always copy items, if true, use a state of Ctrl key otherwise
+		//	the rest of parameters are passed to the selector
+		if(!params){ params = {}; }
+		this.isSource = typeof params.isSource == "undefined" ? true : params.isSource;
+		var type = params.accept instanceof Array ? params.accept : ["text"];
+		this.accept = null;
+		if(type.length){
+			this.accept = {};
+			for(var i = 0; i < type.length; ++i){
+				this.accept[type[i]] = 1;
+			}
+		}
+		this.horizontal = params.horizontal;
+		this.copyOnly = params.copyOnly;
+		// class-specific variables
+		this.isDragging = false;
+		this.mouseDown = false;
+		this.targetAnchor = null;
+		this.targetBox = null;
+		this.before = true;
+		// states
+		this.sourceState  = "";
+		if(this.isSource){
+			dojo.addClass(this.node, "dojoDndSource");
+		}
+		this.targetState  = "";
+		if(this.accept){
+			dojo.addClass(this.node, "dojoDndTarget");
+		}
+		if(this.horizontal){
+			dojo.addClass(this.node, "dojoDndHorizontal");
+		}
+		// set up events
+		this.topics = [
+			dojo.subscribe("/dnd/source/over", this, "onDndSourceOver"),
+			dojo.subscribe("/dnd/start",  this, "onDndStart"),
+			dojo.subscribe("/dnd/drop",   this, "onDndDrop"),
+			dojo.subscribe("/dnd/cancel", this, "onDndCancel")
+		];
+	},
 
 	// object attributes (for markup)
 	isSource: true,
@@ -340,14 +388,15 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	}
 });
 
-dojo.declare("dojo.dnd.Target", dojo.dnd.Source,
+dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
 	// summary: a Target object, which can be used as a DnD target
-function(node, params){
-	// summary: a constructor of the Target --- see the Source constructor for details
-	this.isSource = false;
-	dojo.removeClass(this.node, "dojoDndSource");
-},
-{
+	
+	constructor: function(node, params){
+		// summary: a constructor of the Target --- see the Source constructor for details
+		this.isSource = false;
+		dojo.removeClass(this.node, "dojoDndSource");
+	},
+
 	// markup methods
 	markupFactory: function(params, node){
 		params._skipStartup = true;

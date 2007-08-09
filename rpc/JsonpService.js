@@ -2,12 +2,10 @@ dojo.provide("dojo.rpc.JsonpService");
 dojo.require("dojo.rpc.RpcService");
 dojo.require("dojo.io.script");
 
-dojo.declare(
-	"dojo.rpc.JsonpService",
-	dojo.rpc.RpcService,
-	function(args, requiredArgs){
+dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
+	constructor: function(args, requiredArgs){
 		if(this.required) {
- 			if (requiredArgs){
+			if (requiredArgs){
 				dojo.mixin(this.required, requiredArgs);
 			}
 
@@ -18,29 +16,27 @@ dojo.declare(
 			});
 		}		
 	},
-	{
-		strictArgChecks: false,
-		bind: function(method, parameters, deferredRequestHandler, url){
-			//summary
+	strictArgChecks: false,
+	bind: function(method, parameters, deferredRequestHandler, url){
+		//summary
 
-			var def = dojo.io.script.get({
-				url: url||this.serviceUrl,
-				callbackParamName: this.callbackParamName||"callback",
-				content: this.createRequest(parameters),
-				timeout: this.timeout,
-				handleAs: "json",	
-				preventCache: true
-			});
-			def.addCallbacks(this.resultCallback(deferredRequestHandler), this.errorCallback(deferredRequestHandler));
-		},
-		createRequest: function(parameters){
-			if(dojo.isArrayLike(parameters)&&(parameters.length==1)){
-				var params = parameters[0];
-			}else{
-				params = {};
-			}
-			dojo.mixin(params,this.required);
-			return params;
+		var def = dojo.io.script.get({
+			url: url||this.serviceUrl,
+			callbackParamName: this.callbackParamName||"callback",
+			content: this.createRequest(parameters),
+			timeout: this.timeout,
+			handleAs: "json",	
+			preventCache: true
+		});
+		def.addCallbacks(this.resultCallback(deferredRequestHandler), this.errorCallback(deferredRequestHandler));
+	},
+	createRequest: function(parameters){
+		if(dojo.isArrayLike(parameters)&&(parameters.length==1)){
+			var params = parameters[0];
+		}else{
+			params = {};
 		}
+		dojo.mixin(params,this.required);
+		return params;
 	}
-);
+});

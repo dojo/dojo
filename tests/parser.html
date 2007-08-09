@@ -11,70 +11,62 @@
 			dojo.require("dojo.parser");
 			dojo.require("doh.runner");
 
-			dojo.declare("tests.parser.Class1", null, 
-				function(args, node){ dojo.mixin(this, args); }, 
-				{
-					preambleTestProp: 1,
-					preamble: function(){
-						this.preambleTestProp++;
-					},
-					intProp: 1,
-					callCount: 0, // for connect testing
-					callInc: function(){ this.callCount++; },
-					callCount2: 0, // for assignment testing
-					strProp1: "original1",
-					strProp2: "original2",
-					arrProp: [],
-					boolProp1: false,
-					boolProp2: true,
-					boolProp3: false,
-					boolProp4: true,
-					dateProp1: dojo.date.stamp.fromISOString('2007-01-01'),
-					dateProp2: dojo.date.stamp.fromISOString('2007-01-01'),
-					dateProp3: dojo.date.stamp.fromISOString('2007-01-01'),
-					funcProp: function(){},
-					funcProp2: function(){},
-					funcProp3: function(){},
-					onclick: function(){ this.prototypeOnclick=true; }
-					// FIXME: have to test dates!!
-					// FIXME: need to test the args property!!
-				}
-			);
+			dojo.declare("tests.parser.Class1", null, {
+				constructor: function(args, node){ dojo.mixin(this, args); }, 
+				preambleTestProp: 1,
+				preamble: function(){
+					this.preambleTestProp++;
+				},
+				intProp: 1,
+				callCount: 0, // for connect testing
+				callInc: function(){ this.callCount++; },
+				callCount2: 0, // for assignment testing
+				strProp1: "original1",
+				strProp2: "original2",
+				arrProp: [],
+				boolProp1: false,
+				boolProp2: true,
+				boolProp3: false,
+				boolProp4: true,
+				dateProp1: dojo.date.stamp.fromISOString('2007-01-01'),
+				dateProp2: dojo.date.stamp.fromISOString('2007-01-01'),
+				dateProp3: dojo.date.stamp.fromISOString('2007-01-01'),
+				funcProp: function(){},
+				funcProp2: function(){},
+				funcProp3: function(){},
+				onclick: function(){ this.prototypeOnclick=true; }
+				// FIXME: have to test dates!!
+				// FIXME: need to test the args property!!
+			});
 
-			dojo.declare("tests.parser.Class2", null, 
-				function(){
+			dojo.declare("tests.parser.Class2", null, {
+				constructor: function(){
 					this.fromMarkup = false;
 				}, 
-				{
-					fromMarkup: false,
-					markupFactory: function(args, node, classCtor){
-						var i = new tests.parser.Class2();
-						i.fromMarkup = true;
-						return i;
-					}
+				fromMarkup: false,
+				markupFactory: function(args, node, classCtor){
+					var i = new tests.parser.Class2();
+					i.fromMarkup = true;
+					return i;
 				}
-			);
+			});
 
 
-			dojo.declare("tests.parser.Class3", [ tests.parser.Class2 ], null, 
-				{
-					fromMarkup: false,
-					markupFactory: function(args, node, classCtor){
-						var i = new classCtor();
-						i.classCtor = classCtor;
-						return i;
-					}
+			dojo.declare("tests.parser.Class3", tests.parser.Class2, {
+				fromMarkup: false,
+				markupFactory: function(args, node, classCtor){
+					var i = new classCtor();
+					i.classCtor = classCtor;
+					return i;
 				}
-			);
+			});
 			
-			dojo.declare("tests.parser.inputClass", null, 
-				function(args, node){ dojo.mixin(this, args); },
-				{
-					// these attributes are special in HTML, they don't have a value specified
-					disabled: false,
-					checked: false
-				}
-			);
+			dojo.declare("tests.parser.inputClass", null, {
+				constructor: function(args, node){ dojo.mixin(this, args); },
+				// these attributes are special in HTML, they don't have a value specified
+				disabled: false,
+				checked: false
+			});
 
 			deepTestProp = {
 				blah: {

@@ -32,9 +32,8 @@ dojo.fx.combine = function(/*dojo._Animation[]*/ animations){
 	return first; // dojo._Animation
 };
 
-dojo.declare(
-	"dojo.fx.Toggler", null,
-	function(args){
+dojo.declare("dojo.fx.Toggler", null, {
+	constructor: function(args){
 		// summary:
 		//		class constructor for an animation toggler. It accepts a packed
 		//		set of arguments about what type of animation to use in each
@@ -71,35 +70,34 @@ dojo.declare(
 
 		dojo.connect(_t.showAnim, "beforeBegin", dojo.hitch(_t.hideAnim, "stop", true));
 		dojo.connect(_t.hideAnim, "beforeBegin", dojo.hitch(_t.showAnim, "stop", true));
+	},
+	
+	node: null,
+	showFunc: dojo.fadeIn,
+	hideFunc: dojo.fadeOut,
 
-	},{
-		node: null,
-		showFunc: dojo.fadeIn,
-		hideFunc: dojo.fadeOut,
+	showDuration: 200,
+	hideDuration: 200,
 
-		showDuration: 200,
-		hideDuration: 200,
+	_showArgs: null,
+	_showAnim: null,
 
-		_showArgs: null,
-		_showAnim: null,
+	_hideArgs: null,
+	_hideAnim: null,
 
-		_hideArgs: null,
-		_hideAnim: null,
+	_isShowing: false,
+	_isHiding: false,
 
-		_isShowing: false,
-		_isHiding: false,
+	show: function(delay){
+		delay = delay||0;
+		return this.showAnim.play(delay);
+	},
 
-		show: function(delay){
-			delay = delay||0;
-			return this.showAnim.play(delay);
-		},
-
-		hide: function(delay){
-			delay = delay||0;
-			return this.hideAnim.play(delay);
-		}
+	hide: function(delay){
+		delay = delay||0;
+		return this.hideAnim.play(delay);
 	}
-);
+});
 
 dojo.fx.wipeIn = function(/*Object*/ args){
 	// summary
@@ -211,4 +209,3 @@ dojo.fx.slideTo = function(/*Object?*/ args){
 
 	return anim; // dojo._Animation
 }
-

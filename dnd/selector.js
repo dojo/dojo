@@ -12,6 +12,23 @@ dojo.require("dojo.dnd.container");
 
 dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 	// summary: a Selector object, which knows how to select its children
+	
+	constructor: function(node, params){
+		// summary: a constructor of the Selector
+		// node: Node: node or node's id to build the selector on
+		// params: Object: a dict of parameters, recognized parameters are:
+		//	singular: Boolean: allows selection of only one element, if true
+		//	the rest of parameters are passed to the container
+		this.singular = params && params.singular;
+		// class-specific variables
+		this.selection = {};
+		this.anchor = null;
+		this.simpleSelection = false;
+		// set up events
+		this.events.push(
+			dojo.connect(this.node, "onmousedown", this, "onMouseDown"),
+			dojo.connect(this.node, "onmouseup",   this, "onMouseUp"));
+	},
 
 	// object attributes (for markup)
 	singular: false,	// is singular property

@@ -15,7 +15,42 @@ dojo.require("dojo.parser");
 dojo.declare("dojo.dnd.Container", null, {
 	// summary: a Container object, which knows when mouse hovers over it, 
 	//	and know over which element it hovers
+	
+	constructor: function(node, params){
+		// summary: a constructor of the Container
+		// node: Node: node or node's id to build the container on
+		// params: Object: a dict of parameters, recognized parameters are:
+		//	creator: Function: a creator function, which takes a data item, and returns an object like that:
+		//		{node: newNode, data: usedData, type: arrayOfStrings}
+		//	_skipStartup: Boolean: skip startup(), which collects children, for deferred initialization
+		//		(this is used in the markup mode)
+		this.node = dojo.byId(node);
+		this.creator = params && params.creator || null;
+		this.defaultCreator = dojo.dnd._defaultCreator(this.node);
 
+		// class-specific variables
+		this.map = {};
+		this.current = null;
+
+		// states
+		this.containerState = "";
+		dojo.addClass(this.node, "dojoDndContainer");
+		
+		// mark up children
+		if(!(params && params._skipStartup)){
+			this.startup();
+		}
+
+		// set up events
+		this.events = [
+			dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
+			dojo.connect(this.node, "onmouseout",  this, "onMouseOut"),
+			// cancel text selection and text dragging
+			dojo.connect(this.node, "ondragstart",   dojo, "stopEvent"),
+			dojo.connect(this.node, "onselectstart", dojo, "stopEvent")
+		];
+	},
+	
 	// object attributes (for markup)
 	creator: function(){},	// creator function, dummy at the moment
 	

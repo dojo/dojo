@@ -1,7 +1,7 @@
 dojo.provide("dojo.data.api.Read");
 dojo.require("dojo.data.api.Request");
 
-dojo.declare("dojo.data.api.Read",null,null,{
+dojo.declare("dojo.data.api.Read", null, {
 	//	summary:
 	//		This is an abstract API that data provider implementations conform to.  
 	//		This file defines methods signatures and intentionally leaves all the

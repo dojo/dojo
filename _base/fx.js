@@ -22,184 +22,183 @@ dojo._Line = function(/*int*/ start, /*int*/ end){
 }
 
 dojo.declare("dojo._Animation", null, {
-		//	summary
-		//		a generic animation object that fires callbacks into it's handlers
-		//		object at various states
-		//	FIXME: document args object
-		constructor: function(/*Object*/ args){
-			dojo.mixin(this, args);
-			if(dojo.isArray(this.curve)){
-				/* curve: Array
-					pId: a */
-				this.curve = new dojo._Line(this.curve[0], this.curve[1]);
-			}
-		},
-		
-		// public properties
-		curve: null,
-		duration: 1000,
-		easing: null,
-		repeat: 0,
-		rate: 10, // 100 fps
-		delay: null,
-		
-		// events
-		beforeBegin: null,
-		onBegin: null,
-		onAnimate: null,
-		onEnd: null,
-		onPlay: null,
-		onPause: null,
-		onStop: null,
+	//	summary
+	//		a generic animation object that fires callbacks into it's handlers
+	//		object at various states
+	//	FIXME: document args object
+	constructor: function(/*Object*/ args){
+		dojo.mixin(this, args);
+		if(dojo.isArray(this.curve)){
+			/* curve: Array
+				pId: a */
+			this.curve = new dojo._Line(this.curve[0], this.curve[1]);
+		}
+	},
+	
+	// public properties
+	curve: null,
+	duration: 1000,
+	easing: null,
+	repeat: 0,
+	rate: 10, // 100 fps
+	delay: null,
+	
+	// events
+	beforeBegin: null,
+	onBegin: null,
+	onAnimate: null,
+	onEnd: null,
+	onPlay: null,
+	onPause: null,
+	onStop: null,
 
-		// private properties
-		_active: false,
-		_paused: false,
-		_startTime: null,
-		_endTime: null,
-		_timer: null,
-		_percent: 0,
-		_startRepeatCount: 0,
+	// private properties
+	_active: false,
+	_paused: false,
+	_startTime: null,
+	_endTime: null,
+	_timer: null,
+	_percent: 0,
+	_startRepeatCount: 0,
 
-		fire: function(/*Event*/ evt, /*Array?*/ args){
-			// summary: Convenience function.  Fire event "evt" and pass it
-			//			the arguments specified in "args".
-			// evt: The event to fire.
-			// args: The arguments to pass to the event.
-			if(this[evt]){
-				this[evt].apply(this, args||[]);
-			}
-			return this; // dojo._Animation
-		},
+	fire: function(/*Event*/ evt, /*Array?*/ args){
+		// summary: Convenience function.  Fire event "evt" and pass it
+		//			the arguments specified in "args".
+		// evt: The event to fire.
+		// args: The arguments to pass to the event.
+		if(this[evt]){
+			this[evt].apply(this, args||[]);
+		}
+		return this; // dojo._Animation
+	},
 
-		play: function(/*int?*/ delay, /*boolean?*/ gotoStart){
-			// summary: Start the animation.
-			// delay: How many milliseconds to delay before starting.
-			// gotoStart: If true, starts the animation from the beginning; otherwise,
-			//            starts it from its current position.
-			if(gotoStart){
-				clearTimeout(this._timer);
-				this._active = this._paused = false;
-				this._percent = 0;
-			}else if(this._active && !this._paused){
-				return this; // dojo._Animation
-			}
-
-			this.fire("beforeBegin");
-
-			var d = delay||this.delay;
-			if(d > 0){
-				setTimeout(dojo.hitch(this, function(){ this.play(null, gotoStart); }), d);
-				return this; // dojo._Animation
-			}
-		
-			this._startTime = new Date().valueOf();
-			if(this._paused){
-				this._startTime -= this.duration * this._percent;
-			}
-			this._endTime = this._startTime + this.duration;
-
-			this._active = true;
-			this._paused = false;
-
-			var value = this.curve.getValue(this._percent);
-			if(!this._percent){
-				if(!this._startRepeatCount){
-					this._startRepeatCount = this.repeat;
-				}
-				this.fire("onBegin", [value]);
-			}
-
-			this.fire("onPlay", [value]);
-
-			this._cycle();
-			return this; // dojo._Animation
-		},
-
-		pause: function(){
-			// summary: Pauses a running animation.
+	play: function(/*int?*/ delay, /*boolean?*/ gotoStart){
+		// summary: Start the animation.
+		// delay: How many milliseconds to delay before starting.
+		// gotoStart: If true, starts the animation from the beginning; otherwise,
+		//            starts it from its current position.
+		if(gotoStart){
 			clearTimeout(this._timer);
-			if(!this._active){ return this; /*dojo._Animation*/}
-			this._paused = true;
-			this.fire("onPause", [this.curve.getValue(this._percent)]);
-			return this; // dojo._Animation
-		},
-
-		gotoPercent: function(/*Decimal*/ pct, /*boolean?*/ andPlay){
-			// summary: Sets the progress of the animation.
-			// pct: A percentage in decimal notation (between and including 0.0 and 1.0).
-			// andPlay: If true, play the animation after setting the progress.
-			clearTimeout(this._timer);
-			this._active = this._paused = true;
-			this._percent = pct * 100;
-			if(andPlay){ this.play(); }
-			return this; // dojo._Animation
-		},
-
-		stop: function(/*boolean?*/ gotoEnd){
-			// summary: Stops a running animation.
-			// gotoEnd: If true, the animation will end.
-			if(!this._timer){ return; }
-			clearTimeout(this._timer);
-			if(gotoEnd){
-				this._percent = 1;
-			}
-			this.fire("onStop", [this.curve.getValue(this._percent)]);
 			this._active = this._paused = false;
-			return this; // dojo._Animation
-		},
-
-		status: function(){
-			// summary: Returns a string token representation of the status of
-			//			the animation, one of: "paused", "playing", "stopped"
-			if(this._active){
-				return this._paused ? "paused" : "playing"; // String
-			}
-			return "stopped"; // String
-		},
-
-		_cycle: function(){
-			clearTimeout(this._timer);
-			if(this._active){
-				var curr = new Date().valueOf();
-				var step = (curr - this._startTime) / (this._endTime - this._startTime);
-
-				if(step >= 1){
-					step = 1;
-				}
-				this._percent = step;
-
-				// Perform easing
-				if(this.easing){
-					step = this.easing(step);
-				}
-
-				this.fire("onAnimate", [this.curve.getValue(step)]);
-
-				if(step < 1){
-					this._timer = setTimeout(dojo.hitch(this, "_cycle"), this.rate);
-				}else{
-					this._active = false;
-
-					if(this.repeat > 0){
-						this.repeat--;
-						this.play(null, true);
-					}else if(this.repeat == -1){
-						this.play(null, true);
-					}else{
-						if(this._startRepeatCount){
-							this.repeat = this._startRepeatCount;
-							this._startRepeatCount = 0;
-						}
-					}
-					this._percent = 0;
-					this.fire("onEnd");
-				}
-			}
+			this._percent = 0;
+		}else if(this._active && !this._paused){
 			return this; // dojo._Animation
 		}
+
+		this.fire("beforeBegin");
+
+		var d = delay||this.delay;
+		if(d > 0){
+			setTimeout(dojo.hitch(this, function(){ this.play(null, gotoStart); }), d);
+			return this; // dojo._Animation
+		}
+	
+		this._startTime = new Date().valueOf();
+		if(this._paused){
+			this._startTime -= this.duration * this._percent;
+		}
+		this._endTime = this._startTime + this.duration;
+
+		this._active = true;
+		this._paused = false;
+
+		var value = this.curve.getValue(this._percent);
+		if(!this._percent){
+			if(!this._startRepeatCount){
+				this._startRepeatCount = this.repeat;
+			}
+			this.fire("onBegin", [value]);
+		}
+
+		this.fire("onPlay", [value]);
+
+		this._cycle();
+		return this; // dojo._Animation
+	},
+
+	pause: function(){
+		// summary: Pauses a running animation.
+		clearTimeout(this._timer);
+		if(!this._active){ return this; /*dojo._Animation*/}
+		this._paused = true;
+		this.fire("onPause", [this.curve.getValue(this._percent)]);
+		return this; // dojo._Animation
+	},
+
+	gotoPercent: function(/*Decimal*/ pct, /*boolean?*/ andPlay){
+		// summary: Sets the progress of the animation.
+		// pct: A percentage in decimal notation (between and including 0.0 and 1.0).
+		// andPlay: If true, play the animation after setting the progress.
+		clearTimeout(this._timer);
+		this._active = this._paused = true;
+		this._percent = pct * 100;
+		if(andPlay){ this.play(); }
+		return this; // dojo._Animation
+	},
+
+	stop: function(/*boolean?*/ gotoEnd){
+		// summary: Stops a running animation.
+		// gotoEnd: If true, the animation will end.
+		if(!this._timer){ return; }
+		clearTimeout(this._timer);
+		if(gotoEnd){
+			this._percent = 1;
+		}
+		this.fire("onStop", [this.curve.getValue(this._percent)]);
+		this._active = this._paused = false;
+		return this; // dojo._Animation
+	},
+
+	status: function(){
+		// summary: Returns a string token representation of the status of
+		//			the animation, one of: "paused", "playing", "stopped"
+		if(this._active){
+			return this._paused ? "paused" : "playing"; // String
+		}
+		return "stopped"; // String
+	},
+
+	_cycle: function(){
+		clearTimeout(this._timer);
+		if(this._active){
+			var curr = new Date().valueOf();
+			var step = (curr - this._startTime) / (this._endTime - this._startTime);
+
+			if(step >= 1){
+				step = 1;
+			}
+			this._percent = step;
+
+			// Perform easing
+			if(this.easing){
+				step = this.easing(step);
+			}
+
+			this.fire("onAnimate", [this.curve.getValue(step)]);
+
+			if(step < 1){
+				this._timer = setTimeout(dojo.hitch(this, "_cycle"), this.rate);
+			}else{
+				this._active = false;
+
+				if(this.repeat > 0){
+					this.repeat--;
+					this.play(null, true);
+				}else if(this.repeat == -1){
+					this.play(null, true);
+				}else{
+					if(this._startRepeatCount){
+						this.repeat = this._startRepeatCount;
+						this._startRepeatCount = 0;
+					}
+				}
+				this._percent = 0;
+				this.fire("onEnd");
+			}
+		}
+		return this; // dojo._Animation
 	}
-);
+});
 
 (function(){
 	var _makeFadeable = function(node){

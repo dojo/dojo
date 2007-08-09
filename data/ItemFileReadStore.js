@@ -4,13 +4,23 @@ dojo.require("dojo.data.util.filter");
 dojo.require("dojo.data.util.simpleFetch");
 dojo.require("dojo.date.stamp");
 
-dojo.declare("dojo.data.ItemFileReadStore",
-	null,
-	function(/* Object */ keywordParameters){
-		// 	summary: initializer
-		// 	keywordParameters: {url: String}
-		// 	keywordParameters: {data: jsonObject}
-		// 	keywordParameters: {typeMap: object)
+dojo.declare("dojo.data.ItemFileReadStore", null,{
+	//	summary:
+	//		The ItemFileReadStore implements the dojo.data.api.Read API and reads
+	//		data from JSON files that have contents in this format --
+	//		{ items: [
+	//			{ name:'Kermit', color:'green', age:12, friends:['Gonzo', {_reference:{name:'Fozzie Bear'}}]},
+	//			{ name:'Fozzie Bear', wears:['hat', 'tie']},
+	//			{ name:'Miss Piggy', pets:'Foo-Foo'}
+	//		]}
+	//		Note that it can also contain an 'identifer' property that specified which attribute on the items 
+	//		in the array of items that acts as the unique identifier for that item.
+	//
+	constructor: function(/* Object */ keywordParameters){
+		//	summary: constructor
+		//	keywordParameters: {url: String}
+		//	keywordParameters: {data: jsonObject}
+		//	keywordParameters: {typeMap: object)
 		//		The structure of the typeMap object is as follows:
 		//		{
 		//			type0: function || object,
@@ -48,25 +58,13 @@ dojo.declare("dojo.data.ItemFileReadStore",
 		this._storeRefPropName = "_S";  // Default name for the store reference to attach to every item.
 		this._itemNumPropName = "_0"; // Default Item Id for isItem to attach to every item.
 		this._rootItemPropName = "_RI"; // Default Item Id for isItem to attach to every item.
-	},{
-	//	summary:
-	//		The ItemFileReadStore implements the dojo.data.api.Read API and reads
-	//		data from JSON files that have contents in this format --
-	//		{ items: [
-	//			{ name:'Kermit', color:'green', age:12, friends:['Gonzo', {_reference:{name:'Fozzie Bear'}}]},
-	//			{ name:'Fozzie Bear', wears:['hat', 'tie']},
-	//			{ name:'Miss Piggy', pets:'Foo-Foo'}
-	//		]}
-	//		Note that it can also contain an 'identifer' property that specified which attribute on the items 
-	//		in the array of items that acts as the unique identifier for that item.
-	//
-	//
-
+	},
+	
 	url: "",	// use "" rather than undefined for the benefit of the parser (#3539)
 
 	_assertIsItem: function(/* item */ item){
 		//	summary:
-		//      This function tests whether the item passed in is indeed an item in the store.
+		//		This function tests whether the item passed in is indeed an item in the store.
 		//	item: 
 		//		The item to test for being contained by the store.
 		if(!this.isItem(item)){ 
@@ -88,7 +86,7 @@ dojo.declare("dojo.data.ItemFileReadStore",
 						/* attribute-name-string */ attribute, 
 						/* value? */ defaultValue){
 		//	summary: 
-		//      See dojo.data.api.Read.getValue()
+		//		See dojo.data.api.Read.getValue()
 		var values = this.getValues(item, attribute);
 		return (values.length > 0)?values[0]:defaultValue; // Anything
 	},

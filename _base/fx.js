@@ -6,7 +6,7 @@ dojo.require("dojo._base.lang");
 dojo.require("dojo._base.html");
 
 /*
-	Animation losely package based on Dan Pupius' work: 
+	Animation losely package based on Dan Pupius' work, contributed under CLA: 
 		http://pupius.co.uk/js/Toolkit.Drawing.js
 */
 dojo._Line = function(/*int*/ start, /*int*/ end){
@@ -206,17 +206,18 @@ dojo.declare("dojo._Animation", null, {
 		if(dojo.isIE){
 			// only set the zoom if the "tickle" value would be the same as the
 			// default
-			if(!node.style.zoom.length && dojo.style(node, "zoom") == "normal"){
+			var ns = node.style;
+			if(!ns.zoom.length && dojo.style(node, "zoom") == "normal"){
 				// make sure the node "hasLayout"
 				// NOTE: this has been tested with larger and smaller user-set text
 				// sizes and works fine
-				node.style.zoom = "1";
+				ns.zoom = "1";
 				// node.style.zoom = "normal";
 			}
 			// don't set the width to auto if it didn't already cascade that way.
 			// We don't want to f anyones designs
-			if(!node.style.width.length && dojo.style(node, "width") == "auto"){
-				node.style.width = "auto";
+			if(!ns.width.length && dojo.style(node, "width") == "auto"){
+				ns.width = "auto";
 			}
 		}
 	}
@@ -335,7 +336,7 @@ dojo.declare("dojo._Animation", null, {
 						case "width": return node.offsetWidth;
 					}
 					var v = dojo.style(node, p);
-					return (p=="opacity") ? Number(v) : parseInt(v);
+					return (p=="opacity") ? Number(v) : parseFloat(v);
 				}
 				if(typeof prop.end == "undefined"){
 					prop.end = getStyle(this.node, p);
@@ -348,7 +349,7 @@ dojo.declare("dojo._Animation", null, {
 					prop.start = new dojo.Color(prop.start);
 					prop.end = new dojo.Color(prop.end);
 				}else{
-					prop.start = (p == "opacity") ? Number(prop.start) : parseInt(prop.start);
+					prop.start = (p == "opacity") ? Number(prop.start) : parseFloat(prop.start);
 				}
 				// console.debug("start:", prop.start);
 				// console.debug("end:", prop.end);

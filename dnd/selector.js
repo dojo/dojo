@@ -37,11 +37,10 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 	getSelectedNodes: function(){
 		// summary: returns a list (an array) of selected nodes
 		var t = new dojo.NodeList();
-		var empty = {};
+		var e = dojo.dnd._empty;
 		for(var i in this.selection){
-			if(!(i in empty)){
-				t.push(dojo.byId(i));
-			}
+			if(i in e){ continue; }
+			t.push(dojo.byId(i));
 		}
 		return t;	// Array
 	},
@@ -221,12 +220,11 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 	},
 	_removeSelection: function(){
 		// summary: unselects all items
-		var empty = {};
+		var e = dojo.dnd._empty;
 		for(var i in this.selection){
-			if(!(i in empty)){
-				var node = dojo.byId(i);
-				if(node){ this._removeItemClass(node, "Selected"); }
-			}
+			if(i in e){ continue; }
+			var node = dojo.byId(i);
+			if(node){ this._removeItemClass(node, "Selected"); }
 		}
 		this.selection = {};
 		return this;	// self

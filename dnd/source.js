@@ -26,6 +26,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	isSource: true,
 	horizontal: false,
 	copyOnly: false,
+	skipForm: false,
 	accept: ["text"],
 	
 	constructor: function(node, params){
@@ -36,6 +37,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//	accept: Array: list of accepted types (text strings) for a target; assumed to be ["text"] if omitted
 		//	horizontal: Boolean: a horizontal container, if true, vertical otherwise or when omitted
 		//	copyOnly: Boolean: always copy items, if true, use a state of Ctrl key otherwise
+		//	skipForm: Boolean: don't start the drag operation, if clicked on form elements
 		//	the rest of parameters are passed to the selector
 		if(!params){ params = {}; }
 		this.isSource = typeof params.isSource == "undefined" ? true : params.isSource;
@@ -49,6 +51,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		}
 		this.horizontal = params.horizontal;
 		this.copyOnly = params.copyOnly;
+		this.skipForm = params.skipForm;
 		// class-specific variables
 		this.isDragging = false;
 		this.mouseDown = false;
@@ -157,14 +160,18 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	onMouseDown: function(e){
 		// summary: event processor for onmousedown
 		// e: Event: mouse event
-		this.mouseDown = true;
-		dojo.dnd.Source.superclass.onMouseDown.call(this, e);
+		if(!this.skipForm || !dojo.dnd.isFormElement(e)){
+			this.mouseDown = true;
+			dojo.dnd.Source.superclass.onMouseDown.call(this, e);
+		}
 	},
 	onMouseUp: function(e){
 		// summary: event processor for onmouseup
 		// e: Event: mouse event
-		this.mouseDown = false;
-		dojo.dnd.Source.superclass.onMouseUp.call(this, e);
+		if(this.mouseDown){
+			this.mouseDown = false;
+			dojo.dnd.Source.superclass.onMouseUp.call(this, e);
+		}
 	},
 	
 	// topic event processors

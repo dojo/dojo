@@ -16,7 +16,7 @@
 
 	</style>
 
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 
 	<script type="text/javascript" src="../../dnd/container.js"></script>
 	<script type="text/javascript" src="../../dnd/selector.js"></script>
@@ -25,6 +25,7 @@
 	<script type="text/javascript" src="../../dnd/manager.js"></script>
 
 	<script type="text/javascript">
+		dojo.require("dojo.parser");
 		//dojo.require("dojo.dnd.source");
 		//dojo.require("dojo.dnd.manager");
 	
@@ -74,7 +75,25 @@
 				Textarea: <textarea cols="20" rows="3">Some text.</textarea>
 			</form>
 		</div>
-	<div class="clear"></div>
+		<div class="clear"></div>
+	</div>
+	
+	<p>&nbsp;</p>
+	
+	<div dojoType="dojo.dnd.Source" class="container">
+		<div>Source with <strong>skipForm = false</strong> (by default)</div>
+		<div class="dojoDndItem">Item <strong>X</strong>: <input type="text" value="1" /></div>
+		<div class="dojoDndItem">Item <strong>Y</strong>: <input type="text" value="2" /></div>
+		<div class="dojoDndItem">Item <strong>Z</strong>: <input type="text" value="3" /></div>
+	</div>
+
+	<p>&nbsp;</p>
+	
+	<div dojoType="dojo.dnd.Source" class="container" skipForm="true">
+		<div>Source with <strong>skipForm = true</strong></div>
+		<div class="dojoDndItem">Item <strong>A</strong>: <input type="text" value="a" /></div>
+		<div class="dojoDndItem">Item <strong>B</strong>: <input type="text" value="b" /></div>
+		<div class="dojoDndItem">Item <strong>C</strong>: <input type="text" value="c" /></div>
 	</div>
 
 	<p>HTML after</p>

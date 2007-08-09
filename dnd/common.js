@@ -18,3 +18,5 @@ dojo.dnd.getUniqueId = function(){
 	}while(dojo.byId(id));
 	return id;
 };
+
+dojo.dnd._empty = {};

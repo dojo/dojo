@@ -34,7 +34,7 @@ dojo.extend(dojo.dnd.Avatar, {
 			td = dojo.doc.createElement("td");
 			var node = source.creator ?
 				// create an avatar representation of the node
-				node = source._normalizedCreator(source.map[this.manager.nodes[i].id].data, "avatar").node :
+				node = source._normalizedCreator(source.getItem(this.manager.nodes[i].id).data, "avatar").node :
 				// or just clone the node and hope it works
 				node = this.manager.nodes[i].cloneNode(true);
 			node.id = "";

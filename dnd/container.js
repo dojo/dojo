@@ -12,46 +12,75 @@ dojo.require("dojo.parser");
 		"Over"	- mouse over a container item
 */
 
-dojo.declare("dojo.dnd.Container", null, 
+dojo.declare("dojo.dnd.Container", null, {
 	// summary: a Container object, which knows when mouse hovers over it, 
 	//	and know over which element it hovers
-function(node, params){
-	// summary: a constructor of the Container
-	// node: Node: node or node's id to build the container on
-	// params: Object: a dict of parameters, recognized parameters are:
-	//	creator: Function: a creator function, which takes a data item, and returns an object like that:
-	//		{node: newNode, data: usedData, type: arrayOfStrings}
-	//	_skipStartup: Boolean: skip startup(), which collects children, for deferred initialization
-	//		(this is used in the markup mode)
-	this.node = dojo.byId(node);
-	this.creator = params && params.creator || null;
-	this.defaultCreator = dojo.dnd._defaultCreator(this.node);
 
-	// class-specific variables
-	this.map = {};
-	this.current = null;
-
-	// states
-	this.containerState = "";
-	dojo.addClass(this.node, "dojoDndContainer");
-	
-	// mark up children
-	if(!(params && params._skipStartup)){
-		this.startup();
-	}
-
-	// set up events
-	this.events = [
-		dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
-		dojo.connect(this.node, "onmouseout",  this, "onMouseOut"),
-		// cancel text selection and text dragging
-		dojo.connect(this.node, "ondragstart",   dojo, "stopEvent"),
-		dojo.connect(this.node, "onselectstart", dojo, "stopEvent")
-	];
-},
-{
 	// object attributes (for markup)
 	creator: function(){},	// creator function, dummy at the moment
+	
+	constructor: function(node, params){
+		// summary: a constructor of the Container
+		// node: Node: node or node's id to build the container on
+		// params: Object: a dict of parameters, recognized parameters are:
+		//	creator: Function: a creator function, which takes a data item, and returns an object like that:
+		//		{node: newNode, data: usedData, type: arrayOfStrings}
+		//	_skipStartup: Boolean: skip startup(), which collects children, for deferred initialization
+		//		(this is used in the markup mode)
+		this.node = dojo.byId(node);
+		this.creator = params && params.creator || null;
+		this.defaultCreator = dojo.dnd._defaultCreator(this.node);
+
+		// class-specific variables
+		this.map = {};
+		this.current = null;
+
+		// states
+		this.containerState = "";
+		dojo.addClass(this.node, "dojoDndContainer");
+		
+		// mark up children
+		if(!(params && params._skipStartup)){
+			this.startup();
+		}
+
+		// set up events
+		this.events = [
+			dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
+			dojo.connect(this.node, "onmouseout",  this, "onMouseOut"),
+			// cancel text selection and text dragging
+			dojo.connect(this.node, "ondragstart",   dojo, "stopEvent"),
+			dojo.connect(this.node, "onselectstart", dojo, "stopEvent")
+		];
+	},
+
+	// abstract access to the map
+	getItem: function(/*String*/ key){
+		// summary: returns a data item by its key (id)
+		return this.map[key];	// Object
+	},
+	setItem: function(/*String*/ key, /*Object*/ data){
+		// summary: associates a data item with its key (id)
+		this.map[key] = data;
+	},
+	delItem: function(/*String*/ key){
+		// summary: removes a data item from the map by its key (id)
+		delete this.map[key];
+	},
+	forInItems: function(/*Function*/ f, /*Object?*/ o){
+		// summary: iterates over a data map skipping members, which 
+		//	are present in the empty object (IE and/or 3rd-party libraries).
+		o = o || dojo.global;
+		var m = this.map, e = dojo.dnd._empty;
+		for(var i in this.map){
+			if(i in e){ continue; }
+			f.call(o, m[i], i, m);
+		}
+	},
+	clearItems: function(){
+		// summary: removes all data items from the map
+		this.map = {};
+	},
 	
 	// methods
 	getAllNodes: function(){
@@ -77,13 +106,13 @@ function(node, params){
 		if(anchor){
 			for(var i = 0; i < data.length; ++i){
 				var t = this._normalizedCreator(data[i]);
-				this.map[t.node.id] = {data: t.data, type: t.type};
+				this.setItem(t.node.id, {data: t.data, type: t.type});
 				this.parent.insertBefore(t.node, anchor);
 			}
 		}else{
 			for(var i = 0; i < data.length; ++i){
 				var t = this._normalizedCreator(data[i]);
-				this.map[t.node.id] = {data: t.data, type: t.type};
+				this.setItem(t.node.id, {data: t.data, type: t.type});
 				this.parent.appendChild(t.node);
 			}
 		}
@@ -92,7 +121,8 @@ function(node, params){
 	destroy: function(){
 		// summary: prepares the object to be garbage-collected
 		dojo.forEach(this.events, dojo.disconnect);
-		this.node = this.parent = this.current = this.map = null;
+		this.clearItems();
+		this.node = this.parent = this.current;
 	},
 
 	// markup methods
@@ -115,10 +145,10 @@ function(node, params){
 			if(!node.id){ node.id = dojo.dnd.getUniqueId(); }
 			var type = node.getAttribute("dndType"),
 				data = node.getAttribute("dndData");
-			this.map[node.id] = {
+			this.setItem(node.id, {
 				data: data ? data : node.innerHTML,
 				type: type ? type.split(/\s*,\s*/) : ["text"]
-			};
+			});
 		}, this);
 	},
 

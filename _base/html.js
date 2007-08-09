@@ -307,7 +307,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 
 	// FIXME: there opacity quirks on FF that we haven't ported over. Hrm.
 
-	dojo._getOpacity = ((dojo.isIE) ? function(/*DomNode*/node){
+	dojo._getOpacity = (dojo.isIE ? function(/*DomNode*/node){
 			//	summary:
 			//		returns the current opacity of the passed node as a
 			//		floating-point value between 0 and 1.
@@ -324,7 +324,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		}
 	);
 
-	dojo._setOpacity = ((dojo.isIE) ? function(/*DomNode*/node, /*Number*/opacity){
+	dojo._setOpacity = (dojo.isIE ? function(/*DomNode*/node, /*Number*/opacity){
 			//	summary:
 			//		set the opacity of the passed node portably. Returns the
 			//		new opacity of the node.
@@ -536,7 +536,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 		//		returns an object that encodes the width, height, left and top
 		//		positions of the node's margin box.
 		var s = computedStyle||gcs(node), me = dojo._getMarginExtents(node, s);
-		var	l = node.offsetLeft - me.l,	t = node.offsetTop - me.t; 
+		var	l = node.offsetLeft - me.l,	t = node.offsetTop - me.t;
 		if(dojo.isMoz){
 			// Mozilla:
 			// If offsetParent has a computed overflow != visible, the offsetLeft is decreased
@@ -559,7 +559,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 				}
 			}
 		}else if(dojo.isOpera){
-		// On Opera, offsetLeft includes the parent's border
+			// On Opera, offsetLeft includes the parent's border
 			var p = node.parentNode;
 			if(p){
 				var be = dojo._getBorderExtents(p);
@@ -646,8 +646,7 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 
 	dojo._usesBorderBox = function(/*DomNode*/node){
 		//	summary: 
-		//		returns a boolean noting wether or not the node uses the
-		//		border-box layout method.
+		//		True if the node uses border-box layout.
 
 		// We could test the computed style of node to see if a particular box
 		// has been specified, but there are details and we choose not to bother.
@@ -741,14 +740,13 @@ if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 	// =============================
 	
 	var _sumAncestorProperties = function(node, prop){
-		if(!node){ return 0; } // FIXME: throw an error?
-		var _b = dojo.body();
-		var retVal = 0;
+		if(!(node = (node||0).parentNode)){return 0};
+		var val, retVal = 0, _b = dojo.body();
 		while(node && node.style){
 			if(gcs(node).position == "fixed"){
 				return 0;
 			}
-			var val = node[prop];
+			val = node[prop];
 			if(val){
 				retVal += val - 0;
 				// opera and khtml #body & #html has the same values, we only

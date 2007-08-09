@@ -119,6 +119,23 @@
 							// t.is(100, pos.w);
 							t.is(100, pos.h);
 						},
+						function coordsScrolled(t) {
+							var s = document.createElement('div');
+							var c = document.createElement('div');
+							document.body.appendChild(s);
+							s.appendChild(c);
+							var x=257, y= 285;
+							with (s.style) {
+								position = 'absolute';
+								overflow = 'scroll';
+							}	
+							dojo._setMarginBox(s, x, y, 100, 100);
+							dojo._setMarginBox(c, 0, 0, 500, 500);
+							s.scrollTop = 200;
+							var pos = dojo.coords(s, true);
+							t.is(x, pos.x);
+							t.is(y, pos.y);
+						},
 						"t.is(1, dojo.style('sq100nopos', 'opacity'));",
 						"t.is(0.1, dojo.style('sq100nopos', 'opacity', 0.1));",
 						"t.is(0.8, dojo.style('sq100nopos', 'opacity', 0.8));",

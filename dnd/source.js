@@ -69,7 +69,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			dojo.subscribe("/dnd/cancel", this, "onDndCancel")
 		];
 	},
-
+	
 	// object attributes (for markup)
 	isSource: true,
 	horizontal: false,
@@ -77,56 +77,6 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	skipForm: false,
 	accept: ["text"],
 	
-	constructor: function(node, params){
-		// summary: a constructor of the Source
-		// node: Node: node or node's id to build the source on
-		// params: Object: a dict of parameters, recognized parameters are:
-		//	isSource: Boolean: can be used as a DnD source, if true; assumed to be "true" if omitted
-		//	accept: Array: list of accepted types (text strings) for a target; assumed to be ["text"] if omitted
-		//	horizontal: Boolean: a horizontal container, if true, vertical otherwise or when omitted
-		//	copyOnly: Boolean: always copy items, if true, use a state of Ctrl key otherwise
-		//	skipForm: Boolean: don't start the drag operation, if clicked on form elements
-		//	the rest of parameters are passed to the selector
-		if(!params){ params = {}; }
-		this.isSource = typeof params.isSource == "undefined" ? true : params.isSource;
-		var type = params.accept instanceof Array ? params.accept : ["text"];
-		this.accept = null;
-		if(type.length){
-			this.accept = {};
-			for(var i = 0; i < type.length; ++i){
-				this.accept[type[i]] = 1;
-			}
-		}
-		this.horizontal = params.horizontal;
-		this.copyOnly = params.copyOnly;
-		this.skipForm = params.skipForm;
-		// class-specific variables
-		this.isDragging = false;
-		this.mouseDown = false;
-		this.targetAnchor = null;
-		this.targetBox = null;
-		this.before = true;
-		// states
-		this.sourceState  = "";
-		if(this.isSource){
-			dojo.addClass(this.node, "dojoDndSource");
-		}
-		this.targetState  = "";
-		if(this.accept){
-			dojo.addClass(this.node, "dojoDndTarget");
-		}
-		if(this.horizontal){
-			dojo.addClass(this.node, "dojoDndHorizontal");
-		}
-		// set up events
-		this.topics = [
-			dojo.subscribe("/dnd/source/over", this, "onDndSourceOver"),
-			dojo.subscribe("/dnd/start",  this, "onDndStart"),
-			dojo.subscribe("/dnd/drop",   this, "onDndDrop"),
-			dojo.subscribe("/dnd/cancel", this, "onDndCancel")
-		];
-	},
-
 	// methods
 	checkAcceptance: function(source, nodes){
 		// summary: checks, if the target can accept nodes from this source

@@ -22,6 +22,13 @@ dojo.require("dojo.dnd.manager");
 dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	// summary: a Source object, which can be used as a DnD source, or a DnD target
 	
+	// object attributes (for markup)
+	isSource: true,
+	horizontal: false,
+	copyOnly: false,
+	skipForm: false,
+	accept: ["text"],
+	
 	constructor: function(node, params){
 		// summary: a constructor of the Source
 		// node: Node: node or node's id to build the source on
@@ -30,6 +37,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//	accept: Array: list of accepted types (text strings) for a target; assumed to be ["text"] if omitted
 		//	horizontal: Boolean: a horizontal container, if true, vertical otherwise or when omitted
 		//	copyOnly: Boolean: always copy items, if true, use a state of Ctrl key otherwise
+		//	skipForm: Boolean: don't start the drag operation, if clicked on form elements
 		//	the rest of parameters are passed to the selector
 		if(!params){ params = {}; }
 		this.isSource = typeof params.isSource == "undefined" ? true : params.isSource;
@@ -43,6 +51,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		}
 		this.horizontal = params.horizontal;
 		this.copyOnly = params.copyOnly;
+		this.skipForm = params.skipForm;
 		// class-specific variables
 		this.isDragging = false;
 		this.mouseDown = false;
@@ -69,13 +78,6 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			dojo.subscribe("/dnd/cancel", this, "onDndCancel")
 		];
 	},
-	
-	// object attributes (for markup)
-	isSource: true,
-	horizontal: false,
-	copyOnly: false,
-	skipForm: false,
-	accept: ["text"],
 	
 	// methods
 	checkAcceptance: function(source, nodes){

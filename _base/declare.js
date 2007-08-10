@@ -52,7 +52,8 @@ dojo.declare = function(/*String*/ className, /*Function||Array*/ superclass, /*
 		props.constructor = c;
 	}
 	// process superclass argument
-	var dd=dojo.declare, mixins=null;
+	// var dd=dojo.declare, mixins=null;
+	var dd=arguments.callee, mixins=null;
 	if(dojo.isArray(superclass)){
 		mixins = superclass;
 		superclass = mixins.shift();
@@ -104,6 +105,13 @@ dojo.mixin(dojo.declare, {
 			var c=args.callee, s=c.superclass, ct=s&&s.constructor, m=c.mixin, mct=m&&m.constructor, a=args, ii, fn;
 			// side-effect of = used on purpose here, lint may complain, don't try this at home
 			if(a[0]){ 
+				// FIXME: preambles for each mixin should be allowed
+				// FIXME: 
+				//		should we allow the preamble here NOT to modify the
+				//		default args, but instead to act on each mixin
+				//		independently of the class instance being constructed
+				//		(for impdedence matching)?
+
 				// allow any first argument w/ a "preamble" property to act as a
 				// class preamble (not exclusive of the prototype preamble)
 				if(/*dojo.isFunction*/(fn = a[0]["preamble"])){ 
@@ -112,6 +120,9 @@ dojo.mixin(dojo.declare, {
 			} 
 			// prototype preamble
 			if(fn=c.prototype.preamble){a = fn.apply(this, a) || a;}
+			// FIXME: 
+			//		need to provide an optional prototype-settable
+			//		"_explicitSuper" property which disables this
 			// initialize superclass
 			if(ct&&ct.apply){ct.apply(this, a)};
 			// initialize mixin

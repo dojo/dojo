@@ -15,7 +15,6 @@ dojo.i18n.getLocalization = function(/*String*/packageName, /*String*/bundleName
 //	locale: the variant to load (optional).  By default, the locale defined by the
 //		host environment: dojo.locale
 
-	dojo.i18n._preloadLocalizations();
 	locale = dojo.i18n.normalizeLocale(locale);
 
 	// look for nearest locale match
@@ -69,7 +68,6 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 	// description:
 	//  Called by the bootstrap, but factored out so that it is only included in the build when needed.
 
-	dojo.i18n._preloadLocalizations();
 	var targetLocale = dojo.i18n.normalizeLocale(locale);
  	var bundlePackage = [moduleName, "nls", bundleName].join(".");
 	// NOTE: 
@@ -208,41 +206,26 @@ dojo.i18n._searchLocalePath = function(/*String*/locale, /*Boolean*/down, /*Func
 	}
 };
 
-//These properties/functions are placed outside of _preloadLocalizations
-//So that the xd loading can use/override them.
-dojo.i18n._localesGenerated /***BUILD:localesGenerated***/; // value will be inserted here at build time, if necessary
-dojo.i18n.registerNlsPath = function(){
-	//summary; registers nls path. Defined as a function so xd loading
-	//can redefine it.
-	dojo.registerModulePath("nls","nls");		
-}
-
-dojo.i18n._preloadLocalizations = function(){
+dojo.i18n._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated){
 	// summary:
 	//		Load built, flattened resource bundles, if available for all
-	//		locales used in the page. Execute only once. Note that this is a
-	//		no-op unless there is a build.
+	//		locales used in the page. Only called by built layer files.
 
-	if(dojo.i18n._localesGenerated){
-		dojo.i18n.registerNlsPath();	
-
-		function preload(locale){
-			locale = dojo.i18n.normalizeLocale(locale);
-			dojo.i18n._searchLocalePath(locale, true, function(loc){
-				for(var i=0; i<dojo.i18n._localesGenerated.length;i++){
-					if(dojo.i18n._localesGenerated[i] == loc){
-						dojo["require"]("nls.dojo_"+loc);
-						return true; // Boolean
-					}
+	function preload(locale){
+		locale = dojo.i18n.normalizeLocale(locale);
+		dojo.i18n._searchLocalePath(locale, true, function(loc){
+			for(var i=0; i<localesGenerated.length;i++){
+				if(localesGenerated[i] == loc){
+					dojo["require"](bundlePrefix+"_"+loc);
+					return true; // Boolean
 				}
-				return false; // Boolean
-			});
-		}
-		preload();
-		var extra = djConfig.extraLocale||[];
-		for(var i=0; i<extra.length; i++){
-			preload(extra[i]);
-		}
+			}
+			return false; // Boolean
+		});
 	}
-	dojo.i18n._preloadLocalizations = function(){};
+	preload();
+	var extra = djConfig.extraLocale||[];
+	for(var i=0; i<extra.length; i++){
+		preload(extra[i]);
+	}
 };

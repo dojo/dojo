@@ -124,8 +124,11 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 	}
 
 	//Add the module (resource) to the list of modules.
-	if(this._isXDomain){
-		//If this is a __package__.js file, then this must be
+	//Only do this work if we have a modlue name. Otherwise, 
+	//it is a non-xd i18n bundle, which can load immediately and does not 
+	//need to be tracked. 
+	if(this._isXDomain && module){
+ 		//If this is a __package__.js file, then this must be
 		//a package.* request (since xdomain can only work with the first
 		//path in a package search list. However, .* module names are not
 		//passed to this function, so do an adjustment here.
@@ -240,7 +243,8 @@ dojo._xdResourceLoaded = function(/*Object*/res){
 			}
 
 			//Call the dependency indicator to allow for the normal dojo setup.
-			//Only allow for one dot reference, for the hostenv.* type calls.
+			//Only allow for one dot reference, for the i18n._preloadLocalizations calls
+			//(and maybe future, one-dot things).
 			var depType = dep[0];
 			var objPath = depType.split(".");
 			if(objPath.length == 2){
@@ -387,7 +391,7 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 //It would be ideal to intercept the actual methods and do something fancy at that point,
 //but I have concern about knowing which provide to match to the dependency in that case,
 //since scripts can load whenever they want, and trigger new calls to dojo._xdResourceLoaded().
-dojo._xdUnpackDependency = function(dep){
+dojo._xdUnpackDependency = function(/*Array*/dep){
 	//summary: Internal xd loader function. Determines what to do with a dependency
 	//that was listed in an xd version of a module contents.
 
@@ -422,6 +426,14 @@ dojo._xdUnpackDependency = function(dep){
 		case "require":
 			//Just worry about dep[1]
 			newDeps = [{name: dep[1], content: null}];
+			break;
+		case "i18n._preloadLocalizations":
+			//We can eval these immediately, since they load i18n bundles.
+			//Since i18n bundles have no dependencies, whenever they are loaded
+			//in a script tag, they are evaluated immediately, so we do not have to
+			//treat them has an explicit dependency for the dependency mapping.
+			//We can call it immediately since dojo.i18n is part of dojo.xd.js.
+			dojo.i18n._preloadLocalizations.apply(dojo.i18n._preloadLocalizations, dep.slice(1));
 			break;
 	}
 
@@ -557,7 +569,7 @@ dojo._xdWatchInFlight = function(){
 		}else{
 			//Evaluate the resource to bring it into being.
 			//Pass dojo in so that later, to support multiple versions of dojo
-			//in a page, we can pass which version of dojo to use.			
+			//in a page, we can pass which version of dojo to use.	
 			content(dojo);
 		}
 	}
@@ -588,35 +600,9 @@ dojo._xdWatchInFlight = function(){
 dojo._xdNotifyLoaded = function(){
 	//Clear inflight count so we will finally do finish work.
 	this._inFlightCount = 0; 
-	this._callLoaded();
-}
-
-dojo._xdHasCalledPreload = false;
-dojo._xdRealCallLoaded = dojo._callLoaded;
-dojo._callLoaded = function(){
-	//summary: Internal xd loader function. Overrides _callLoaded() from loader.js
-	//description: The method is overridden because xd loading needs to preload 
-	//any flattened i18n bundles before dojo starts executing code, 
-	//since xd loading cannot do it synchronously, as the i18n code normally expects.
-
-	//If _getModulePrefix for dojo returns something with a colon in it, that means
-	//there is an xdomain path registered for dojo.
-	if(this._xdHasCalledPreload
-		|| dojo._getModulePrefix("dojo").indexOf(":") != -1
-		|| !dojo["i18n"]
-		|| !dojo.i18n._localesGenerated){
-		this._xdRealCallLoaded();
-		this._xdHasCalledPreload = true;
-	}else{
-		if(dojo.i18n._localesGenerated){
-			dojo.i18n.registerNlsPath = function(){
-				//Need to set the nls prefix to be the xd location.
-				//FIXME: can we just get away with using the line below in dojo.i18n
-				//and forget the registerNlsPath overriding? Need to test with non-xd cases first.
-				dojo.registerModulePath("nls", dojo._getModulePrefix("dojo") + "/nls");	
-			};
-			dojo.i18n.preloadLocalizations();
-		}
-		this._xdHasCalledPreload = true;
+	
+	//Only trigger call loaded if dj_load_init has run. 
+	if(this._initFired && !this._loadNotifying){ 
+		this._callLoaded();
 	}
 }

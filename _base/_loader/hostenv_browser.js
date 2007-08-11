@@ -165,6 +165,17 @@ if(typeof window != 'undefined'){
 				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") ); // Boolean
 		}
 
+		//See if base tag is in use.
+		//This is to fix http://trac.dojotoolkit.org/ticket/3973,
+		//but really, we need to find out how to get rid of the dojo._Url reference
+		//below and still have DOH work with the dojo.i18n test following some other
+		//test that uses the test frame to load a document (trac #2757).
+		//Opera still has problems, but perhaps a larger issue of base tag support
+		//with XHR requests (hasBase is true, but the request is still made to document
+		//path, not base path).
+		var base = document.getElementsByTagName("base");
+		var hasBase = (base && base.length > 0);
+
 		d._getText = function(uri, fail_ok){
 			// summary: Read the contents of the specified uri and return those contents.
 			// uri:
@@ -179,7 +190,7 @@ if(typeof window != 'undefined'){
 			// NOTE: must be declared before scope switches ie. this._xhrObj()
 			var http = this._xhrObj();
 
-			if(dojo._Url){
+			if(!hasBase && dojo._Url){
 				uri = (new dojo._Url(window.location, uri)).toString();
 			}
 			/*

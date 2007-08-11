@@ -199,11 +199,11 @@ dojo.number.regexp = function(/*Object?*/options){
 	//		and decimal separators
 	//
 	// options: object {pattern: String, type: String locale: String, strict: Boolean, places: mixed}
-	//		pattern- override pattern with this string
+	//		pattern- override pattern with this string.  Default is provided based on locale.
 	//		type- choose a format type based on the locale from the following: decimal, scientific, percent, currency. decimal by default.
 	//		locale- override the locale used to determine formatting rules
 	//		strict- strict parsing, false by default
-	//		places- number of decimal places to accept: Infinity, a positive number, or a range "n,m"
+	//		places- number of decimal places to accept: Infinity, a positive number, or a range "n,m".  By default, defined by pattern.
 	return dojo.number._parseInfo(options).regexp; // String
 }
 
@@ -365,7 +365,7 @@ dojo.number._realNumberRegexp = function(/*Object?*/flags){
 	flags = flags || {};
 	if(typeof flags.places == "undefined"){ flags.places = Infinity; }
 	if(typeof flags.decimal != "string"){ flags.decimal = "."; }
-	if(typeof flags.fractional == "undefined"){ flags.fractional = [true, false]; }
+	if(typeof flags.fractional == "undefined" || /^0/.test(flags.places)){ flags.fractional = [true, false]; }
 	if(typeof flags.exponent == "undefined"){ flags.exponent = [true, false]; }
 	if(typeof flags.eSigned == "undefined"){ flags.eSigned = [true, false]; }
 

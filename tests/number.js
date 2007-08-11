@@ -218,6 +218,12 @@ tests.register("tests.number",
 	t.is(-123.4, dojo.number.parse("(123.4)", {pattern: "#0.#;(#0.#)"}));
 
 	t.is(null, dojo.number.format("abcd", {pattern: "0000"}));
+	
+	t.is(123, dojo.number.parse("123", {places:0}));
+	t.is(123, dojo.number.parse("123", {places:'0'}));
+	t.is(123.4, dojo.number.parse("123.4", {places:1}));
+	t.is(123.45, dojo.number.parse("123.45", {places:'1,3'}));
+	t.is(123.45, dojo.number.parse("123.45", {places:'0,2'}));
 			}
 		},
 		{

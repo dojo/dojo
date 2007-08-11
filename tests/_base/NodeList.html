@@ -130,7 +130,11 @@
 							// t.is(ret, [0, 1, 2, 3]);
 
 							t.t(ret instanceof dojo.NodeList);
-							// FIXME: need more tests on map!!
+
+							// make sure that map() returns a NodeList
+							var sum = 0;
+							fourElementNL.map(function(){ return 2; }).forEach( function(x){ sum += x; } );
+							t.is(sum, 8);
 						},
 
 						// sub-search

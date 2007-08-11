@@ -13,7 +13,8 @@ try{
 // DOM Functions
 // =============================
 
-if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
+// if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
+if(dojo.isIE || dojo.isOpera){
 	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
 		// summary:
 		// 		similar to other library's "$" function, takes a

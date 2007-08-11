@@ -66,36 +66,26 @@ dojo.require("dojo._base.NodeList");
 		return (end < 0) ? ql : end;
 	}
 
-	// utility for "getId"
-	var getIdEnd = function(query){
-		return _lowestFromIndex(query, 1);
-	}
-
 	// returns the "#thinger" section of a longer simple query like "#thinger.blah[selected]"
 	var getId = function(query){
 		var i = _getIndexes(query);
 		if(i[0] != -1){
-			return query.substring(i[0]+1, getIdEnd(query));
+			return query.substring(i[0]+1, _lowestFromIndex(query, 1));
 		}else{
 			return "";
 		}
 	}
 
-	// utility for getTagName
-	var getTagNameEnd = function(query){
+	// returns only the tag name component of a simple query
+	var getTagName = function(query){
+		var tagNameEnd;
 		var i = _getIndexes(query);
 		if((i[0] == 0)||(i[1] == 0)){
 			// hash or dot at the front, no tagname
-			return 0;
+			tagNameEnd = 0;
 		}else{
-			return _lowestFromIndex(query, 0);
+			tagNameEnd =  _lowestFromIndex(query, 0);
 		}
-	}
-
-
-	// returns only the tag name component of a simple query
-	var getTagName = function(query){
-		var tagNameEnd = getTagNameEnd(query);
 		// FIXME: should this be ">=" to account for tags like <a> ?
 		return ((tagNameEnd > 0) ? query.substr(0, tagNameEnd).toLowerCase() : "*");
 	}
@@ -130,6 +120,12 @@ dojo.require("dojo._base.NodeList");
 			return "";
 		}
 	}
+
+	/*
+	var isTagOnly = function(query){
+		return (Math.max.apply(this, _getIndexes(query)) == -1);
+	}
+	*/
 
 	////////////////////////////////////////////////////////////////////////
 	// XPath query code
@@ -737,7 +733,7 @@ dojo.require("dojo._base.NodeList");
 		var i = _getIndexes(query);
 
 		// the only case where we'll need the tag name is if we came from an ID query
-		if(i[0] >= 0){
+		if(i[0] >= 0){ // do we have an ID component?
 			var tn = getTagName(query);
 			if(tn != "*"){
 				ff = agree(ff, function(elem){
@@ -750,7 +746,7 @@ dojo.require("dojo._base.NodeList");
 
 		// if there's a class in our query, generate a match function for it
 		var className = getClassName(query);
-		if(className.length){
+		if(className.length){ // do we have a class name component?
 			// get the class name
 			var isWildcard = className.charAt(className.length-1) == "*";
 			if(isWildcard){
@@ -763,7 +759,7 @@ dojo.require("dojo._base.NodeList");
 			});
 		}
 
-		if(i[3]>= 0){
+		if(i[3]>= 0){ // do we have a pseudo-selector component?
 			// NOTE: we count on the pseudo name being at the end
 			// FIXME: this is clearly a bug!!!
 			var pseudoName = query.substr(i[3]+1);
@@ -817,10 +813,6 @@ dojo.require("dojo._base.NodeList");
 		return _simpleFiltersCache[query] = ff;
 	}
 
-	var isTagOnly = function(query){
-		return (Math.max.apply(this, _getIndexes(query)) == -1);
-	}
-
 	var _getElementsFuncCache = {};
 
 	var getElementsFunc = function(query, root){
@@ -856,7 +848,8 @@ dojo.require("dojo._base.NodeList");
 			var tret;
 			var tn = getTagName(query);
 
-			if(isTagOnly(query)){
+			if(Math.max.apply(this, _getIndexes(query)) == -1){
+				// if(isTagOnly(query)){
 				// it's just a plain-ol elements-by-tag-name query from the root
 				retFunc = function(root){
 					var ret = [];

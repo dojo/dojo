@@ -34,6 +34,47 @@
 							return d;							
 						},
 
+						function ioIframeGetJson(t){
+							var d = new doh.Deferred();
+							var td = dojo.io.iframe.send({
+								url: "iframeResponse.json.html",
+								method: "GET",
+								timeoutSeconds: 5,
+								preventCache: true,
+								handleAs: "json",
+								handle: function(res, ioArgs){
+									if(!(res instanceof Error) && 
+										t.is("blue", res.color)){
+										d.callback(true);
+									}else{
+										d.errback(false);
+									}								
+								}
+							});
+							return d;							
+						},
+
+						function ioIframeGetJavascript(t){
+							var d = new doh.Deferred();
+							var td = dojo.io.iframe.send({
+								url: "iframeResponse.js.html",
+								method: "GET",
+								timeoutSeconds: 5,
+								preventCache: true,
+								handleAs: "javascript",
+								handle: function(res, ioArgs){
+									console.log("RES: ", res);
+									if(!(res instanceof Error) && 
+										t.is(42, window.iframeTestingFunction())){
+										d.callback(true);
+									}else{
+										d.errback(false);
+									}								
+								}
+							});
+							return d;							
+						},
+
 						function ioIframeGetHtml(t){
 							var d = new doh.Deferred();
 							var td = dojo.io.iframe.send({
@@ -41,7 +82,7 @@
 								method: "GET",
 								timeoutSeconds: 5,
 								preventCache: true,
-								handleAs: "text/html",
+								handleAs: "html",
 								handle: function(res, ioArgs){
 									if(!(res instanceof Error) && 
 										t.is("SUCCESSFUL HTML response", res.getElementsByTagName("h1")[0].innerHTML)){

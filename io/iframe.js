@@ -114,11 +114,11 @@ dojo.io.iframe = {
 		//		argument. If neither one exists, then it defaults to POST.
 		//handleAs:
 		//		Specifies what format the result data should be given to the load/handle callback. Valid values are:
-		//		text/plain, text/html, text/javascript, text/json, application/json. IMPORTANT: For all values EXCEPT text/html,
+		//		text, html, javascript, json. IMPORTANT: For all values EXCEPT html,
 		//		The server response should be an HTML file with a textarea element. The response data should be inside the textarea
 		//		element. Using an HTML document the only reliable, cross-browser way this transport can know
-		//		when the response has loaded. For the text/html mimetype, just return a normal HTML document.
-		//		NOTE: text/xml or any other XML type is NOT supported by this transport.
+		//		when the response has loaded. For the html handleAs value, just return a normal HTML document.
+		//		NOTE: xml or any other XML type is NOT supported by this transport.
 		//content:
 		//		Object: If "form" is one of the other args properties, then the content
 		//		object properties become hidden form form elements. For instance, a content
@@ -146,16 +146,17 @@ dojo.io.iframe = {
 					var ioArgs = dfd.ioArgs;
 					var dii = dojo.io.iframe;
 					var ifd = dii.doc(dii._frame);
-					var cmt = ioArgs.handleAs;
-					if((cmt == "text/javascript")||(cmt == "text/json")||(cmt == "application/json")){
-						//Pull some evalulable text from a textarea.
-						var js = ifd.getElementsByTagName("textarea")[0].value;
-						if(cmt == "text/json" || cmt == "application/json") { js = "(" + js + ")"; }
-						value = dojo.eval(js);
-					}else if(cmt == "text/html"){
-						value = ifd;
-					}else{ // text/plain
-						value = ifd.getElementsByTagName("textarea")[0].value;
+					var handleAs = ioArgs.handleAs;
+
+					//Assign correct value based on handleAs value.
+					value = ifd; //html
+					if(handleAs != "html"){
+						value = ifd.getElementsByTagName("textarea")[0].value; //text
+						if(handleAs == "json"){
+							value = dojo.fromJson("(" + value + ")"); //json
+						}else if(handleAs == "javascript"){
+							value = dojo.eval(value); //javascript
+						}
 					}
 				}catch(e){
 					value = e;

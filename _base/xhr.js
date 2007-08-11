@@ -187,8 +187,12 @@ dojo._blockAsync = false;
 
 dojo._contentHandlers = {
 	"text": function(xhr){ return xhr.responseText; },
-	"json": function(xhr){ 
-		console.debug("please consider using a mimetype of text/json-comment-filtered to avoid potential security issues with JSON endpoints");
+	"json": function(xhr){
+		if(!djConfig.usePlainJson){
+			console.debug("please consider using a mimetype of text/json-comment-filtered"
+				+ " to avoid potential security issues with JSON endpoints"
+				+ " (use djConfig.usePlainJson=true to turn off this message)");
+		}
 		return dojo.fromJson(xhr.responseText);
 	},
 	"json-comment-optional": function(xhr){ 

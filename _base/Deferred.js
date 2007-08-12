@@ -1,8 +1,6 @@
 dojo.provide("dojo._base.Deferred");
 dojo.require("dojo._base.lang");
 
-// FIXME: need to port tests in!!
-
 dojo.Deferred = function(/*Function?*/ canceller){
 	// summary:
 	//		Encapsulates a sequence of callbacks in response to a value that
@@ -219,6 +217,7 @@ dojo.Deferred = function(/*Function?*/ canceller){
 };
 
 dojo.extend(dojo.Deferred, {
+	/*
 	makeCalled: function(){
 		// summary:
 		//		returns a new, empty deferred, which is already in the called
@@ -229,15 +228,14 @@ dojo.extend(dojo.Deferred, {
 		deferred.callback();
 		return deferred;
 	},
+	*/
 
 	toString: function(){
 		var state;
 		if(this.fired == -1){
 			state = 'unfired';
-		}else if(this.fired == 0){
-			state = 'success';
 		}else{
-			state = 'error';
+			state = this.fired ? 'success' : 'error';
 		}
 		return 'Deferred(' + this.id + ', ' + state + ')';
 	},
@@ -256,7 +254,7 @@ dojo.extend(dojo.Deferred, {
 		//		canceller did not return an error, or there was no canceller,
 		//		then the errback chain is started.
 		if(this.fired == -1){
-			if (this.canceller){
+			if(this.canceller){
 				this.canceller(this);
 			}else{
 				this.silentlyCancelled = true;

@@ -219,26 +219,6 @@ dojo.Deferred = function(/*Function?*/ canceller){
 };
 
 dojo.extend(dojo.Deferred, {
-	_getFunctionFromArgs: function(){
-		// summary:
-		//		takes one or two arguments and does type detection to determine
-		//		if they contain enough information to return a function from
-		//		them. If a scope and function name are provided a version o
-		//		that function hitched to the passed scope will be returned.
-		// usage: FIXME
-		var a = arguments;
-		if((a[0])&&(!a[1])){
-			if(dojo.isFunction(a[0])){
-				return a[0];
-			}else if(dojo.isString(a[0])){
-				return dojo.global[a[0]];
-			}
-		}else if((a[0])&&(a[1])){
-			return dojo.hitch(a[0], a[1]);
-		}
-		return null;
-	},
-
 	makeCalled: function(){
 		// summary:
 		//		returns a new, empty deferred, which is already in the called
@@ -364,7 +344,7 @@ dojo.extend(dojo.Deferred, {
 		//		Add the same function as both a callback and an errback as the
 		//		next element on the callback sequence.	This is useful for code
 		//		that you want to guarantee to run, e.g. a finalizer.
-		var enclosed = this._getFunctionFromArgs(cb, cbfn);
+		var enclosed = dojo.hitch(cb, cbfn);
 		if(arguments.length > 2){
 			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
@@ -374,7 +354,7 @@ dojo.extend(dojo.Deferred, {
 	addCallback: function(cb, cbfn){
 		// summary: 
 		//		Add a single callback to the end of the callback sequence.
-		var enclosed = this._getFunctionFromArgs(cb, cbfn);
+		var enclosed = dojo.hitch(cb, cbfn);
 		if(arguments.length > 2){
 			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
@@ -384,12 +364,11 @@ dojo.extend(dojo.Deferred, {
 	addErrback: function(cb, cbfn){
 		// summary: 
 		//		Add a single callback to the end of the callback sequence.
-		var enclosed = this._getFunctionFromArgs(cb, cbfn);
+		var enclosed = dojo.hitch(cb, cbfn);
 		if(arguments.length > 2){
 			enclosed = dojo.partial(enclosed, arguments, 2);
 		}
 		return this.addCallbacks(null, enclosed);
-		return this.addCallbacks(null, cbfn);
 	},
 
 	addCallbacks: function(cb, eb){

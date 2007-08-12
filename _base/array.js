@@ -2,6 +2,10 @@ dojo.require("dojo._base.lang");
 dojo.provide("dojo._base.array");
 
 (function(){
+	var _getParts = function(arr, obj){
+		return [ (d.isString(arr) ? arr.split("") : arr), (obj||d.global) ];
+	}
+
 	var d = dojo;
 	if(Array.forEach){
 		// fast, if we can
@@ -10,10 +14,6 @@ dojo.provide("dojo._base.array");
 			d[tn[x]] = Array[tn[x]];
 		}
 	}else{
-		var _getParts = function(arr, obj){
-			return [ (d.isString(arr) ? arr.split("") : arr), (obj||d.global) ];
-		}
-
 		d.mixin(d, {
 			indexOf: function(	/*Array*/		array, 
 								/*Object*/		value,
@@ -52,29 +52,6 @@ dojo.provide("dojo._base.array");
 				//		For details on this method, see:
 				// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
 				return d.indexOf(array, value, fromIndex, true); // number
-			},
-
-			map: function(/*Array*/arr, /*Function*/func, /*Function?*/obj){
-				// summary:
-				//		applies a function to each element of an Array and creates
-				//		an Array with the results
-				// description:
-				//		returns a new array constituted from the return values of
-				//		passing each element of arr into unary_func. The obj parameter
-				//		may be passed to enable the passed function to be called in
-				//		that scope.  In environments that support JavaScript 1.6, this
-				//		function is a passthrough to the built-in map() function
-				//		provided by Array instances. For details on this, see:
-				// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
-				// usage:
-				//		dojo.map([1, 2, 3, 4], function(item){ return item+1 });
-				//		// returns [2, 3, 4, 5]
-				var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
-				var outArr = [];
-				for(var i=0;i<arr.length;++i){
-					outArr.push(func.call(obj, arr[i], i, arr));
-				}
-				return outArr; // Array
 			},
 
 			forEach: function(/*Array*/arr, /*Function*/callback, /*Object?*/obj){
@@ -167,4 +144,27 @@ dojo.provide("dojo._base.array");
 			}
 		});
 	}
+
+	dojo.map = function(/*Array*/arr, /*Function*/func, /*Function?*/obj){
+		// summary:
+		//		applies a function to each element of an Array and creates
+		//		an Array with the results
+		// description:
+		//		returns a new array constituted from the return values of
+		//		passing each element of arr into unary_func. The obj parameter
+		//		may be passed to enable the passed function to be called in
+		//		that scope.  In environments that support JavaScript 1.6, this
+		//		function is a passthrough to the built-in map() function
+		//		provided by Array instances. For details on this, see:
+		// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
+		// usage:
+		//		dojo.map([1, 2, 3, 4], function(item){ return item+1 });
+		//		// returns [2, 3, 4, 5]
+		var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
+		var outArr = ((arguments[3]) ? (new arguments[3]()) : []);
+		for(var i=0;i<arr.length;++i){
+			outArr.push(func.call(obj, arr[i], i, arr));
+		}
+		return outArr; // Array
+	};
 })();

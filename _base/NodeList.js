@@ -10,7 +10,6 @@ dojo.require("dojo._base.array");
 (function(){
 
 	var d = dojo;
-
 	dojo.NodeList = function(){
 		//	summary:
 		//		dojo.NodeList is as subclass of Array which adds syntactic 
@@ -21,20 +20,13 @@ dojo.require("dojo._base.array");
 		//		// create a node list from a node
 		//		new dojo.NodeList(dojo.byId("foo"));
 
-		// NodeList constructor...should probably call down to the superclass ctor?
-		// Array.apply(this, arguments);
-		
 		var args = arguments;
-		var farg = args[0];
 
 		// make it behave like the Array constructor
-		if((args.length == 1)&&(typeof farg == "number")){
-			this.length = parseInt(farg);
-		}else{
-			// var l = ((args.length == 1)&&(d.isArray(farg))) ? farg : args;
-			for(var x=0; x<args.length; x++){
-				this.push(args[x]);
-			}
+		if((args.length == 1)&&(typeof args[0] == "number")){
+			this.length = parseInt(args[0]);
+		}else if(args.length){
+			d.forEach(args, function(i){ this.push(i); }, this);
 		}
 	}
 
@@ -129,22 +121,16 @@ dojo.require("dojo._base.array");
 			//		see dojo.forEach(). The primary difference is that the acted-on 
 			//		array is implicitly this NodeList
 			d.forEach(this, callback, thisObj);
-			return this; // non-standard return to allow easier chaining
+			return this; // dojo.NodeList non-standard return to allow easier chaining
 		},
 
 		map: function(/*Function*/ func, /*Function?*/ obj){
 			//	summary:
-			//		see dojo.map(). The primary difference is that the acted-on 
-			//		array is implicitly this NodeList and the return is a 
+			//		see dojo.map(). The primary difference is that the acted-on
+			//		array is implicitly this NodeList and the return is a
 			//		dojo.NodeList (a subclass of Array)
 
-			// implementation copied from array.js, only replacing NodeList for [] for speed.			
-			obj = obj||dojo.global;
-			var outArr = new d.NodeList();
-			for(var i=0;i<this.length;++i){
-				outArr.push(func.call(obj, this[i], i, this));
-			}
-			return outArr; // dojo.NodeList
+			return d.map(this, func, obj, d.NodeList); // dojo.NodeList
 		},
 
 		// custom methods
@@ -154,12 +140,7 @@ dojo.require("dojo._base.array");
 			// 		returns the box objects all elements in a node list as
 			// 		an Array (*not* a NodeList)
 			
-			var ret = [];
-			// we're not using dojo.map here because we don't want to pass more than 1 arg to dojo.coords()
-			this.forEach(function(item){
-				ret.push(d.coords(item));
-			});
-			return ret; // Array
+			return d.map(this, d.coords);
 		},
 
 		style: function(/*String*/ property, /*String?*/ value){
@@ -284,13 +265,7 @@ dojo.require("dojo._base.array");
 			//			"after"
 			// 		or an offset in the childNodes property
 			var item = this[0];
-			position = position||"last";
-			var adoptees = d.query(queryOrListOrNode);
-
-			for(var x=0; x<adoptees.length; x++){
-				d.place(adoptees[x], item, position);
-			}
-			return adoptees; // dojo.NodeList
+			return d.query(queryOrListOrNode).forEach(function(ai){ d.place(ai, item, (position||"last")); }); // dojo.NodeList
 		},
 
 		// FIXME: do we need this?

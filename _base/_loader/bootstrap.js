@@ -146,7 +146,7 @@ dojo.exists = function(/*String*/name, /*Object*/obj){
 	// obj:
 	//		Optional. Object to use as root of path. Defaults to
 	//		'dojo.global'. Null may be passed.
-	return Boolean(dojo.getObject(name, false, obj)); // Boolean
+	return !!dojo.getObject(name, false, obj); // Boolean
 }
 
 dojo["eval"] = function(/*String*/ scriptFragment){
@@ -197,15 +197,18 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	// examples:
 	//		dojo.experimental("dojo.data.Result");
 	//		dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
-	var message = "EXPERIMENTAL: " + moduleName;
-	message += " -- Not yet ready for use.  APIs subject to change without notice.";
+	var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
 	if(extra){ message += " " + extra; }
 	console.debug(message);
 }
 
-dojo._getText = function(/*String*/ uri){
+/*=====
+dojo._getText = function(uri){ // String
 	//	summary:	
-	//		Read the plain/text contents at the specified 'uri'.
+	//		Read the plain/text contents at the specified 'uri'. Returns the
+	//		contents from that URL synchronously as a string.
+	//	uri: String
+	//		the URL to get the string from
 	//	description:
 	//		If 'getText()' is not implemented, then it is necessary to
 	//		override 'loadUri()' with an implementation that doesn't
@@ -213,5 +216,6 @@ dojo._getText = function(/*String*/ uri){
 
 	// NOTE: platform specializations need to implement this
 }
+=====*/
 
-// vim:ai:ts=4:noet:textwidth=80
+// vim:ai:ts=4:noet

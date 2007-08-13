@@ -369,9 +369,8 @@ dojo.require("dojo._base.NodeList");
 				return;
 			}
 			nidx++;
+			isFinal = (queryParts.length == nidx);
 			// kinda janky, too much array alloc
-			var isFinal = (queryParts.length == nidx);
-
 			var tf = getFilterFunc(queryParts[idx+1]);
 			// for(var x=ecn.length-1, te; x>=0, te=ecn[x]; x--){
 			for(var x=0, te; x<ecn.length, te=ecn[x]; x++){
@@ -433,11 +432,11 @@ dojo.require("dojo._base.NodeList");
 			// tag name match
 			ff = agree(ff, 
 				function(elem){
-					var isTn = (
+					return (
 						(elem.nodeType == 1) &&
 						(tagName == elem.tagName.toLowerCase())
 					);
-					return isTn;
+					// return isTn;
 				}
 			);
 		}
@@ -813,7 +812,7 @@ dojo.require("dojo._base.NodeList");
 		return _simpleFiltersCache[query] = ff;
 	}
 
-	var _getElementsFuncCache = {};
+	var _getElementsFuncCache = { };
 
 	var getElementsFunc = function(query, root){
 		var fHit = _getElementsFuncCache[query];
@@ -884,7 +883,16 @@ dojo.require("dojo._base.NodeList");
 	// this is the second level of spliting, from full-length queries (e.g.,
 	// "div.foo .bar") into simple query expressions (e.g., ["div.foo",
 	// ".bar"])
-	var _queryFuncCache = {};
+	var _queryFuncCache = {
+		">": function(root){
+			var ret = [];
+			var te, x=0, tret = root.childNodes;
+			while(te=tret[x++]){
+				if(te.nodeType == 1){ ret.push(te); }
+			}
+			return ret;
+		}
+	};
 	var getStepQueryFunc = function(query){
 		// if it's trivial, get a fast-path dispatcher
 		if(0 > query.indexOf(" ")){
@@ -966,7 +974,7 @@ dojo.require("dojo._base.NodeList");
 			var candidates;
 			if(qparts[0] == ">"){
 				candidates = [ root ];
-				root = document;
+				// root = document;
 			}else{
 				candidates = getElementsFunc(qparts.shift())(root);
 			}

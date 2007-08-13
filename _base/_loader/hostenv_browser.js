@@ -217,20 +217,6 @@ if(typeof window != 'undefined'){
 		}
 	})();
 
-	dojo._handleNodeEvent = function(/*DomNode*/node, /*String*/evtName, /*Function*/fp){
-		// summary:
-		//		non-destructively adds the specified function to the node's
-		//		evtName handler.
-		// node: the DomNode to add the handler to
-		// evtName: should be in the form "click" for "onclick" handlers
-		var oldHandler = node["on"+evtName] || function(){};
-		node["on"+evtName] = function(){
-			fp.apply(node, arguments);
-			oldHandler.apply(node, arguments);
-		}
-		return true;
-	}
-
 	dojo._initFired = false;
 	//	BEGIN DOMContentLoaded, from Dean Edwards (http://dean.edwards.name/weblog/2006/06/again/)
 	dojo._loadInit = function(e){
@@ -267,18 +253,6 @@ if(typeof window != 'undefined'){
 		window.addEventListener("load", dojo._loadInit, null);
 	}
 
-	// 	for Internet Explorer. readyState will not be achieved on init call,
-	// 	but dojo doesn't need it however, we'll include it because we don't
-	// 	know if there are other functions added that might.  Note that this has
-	// 	changed because the build process strips all comments -- including
-	// 	conditional ones.
-	if(dojo.isIE){
-		document.write('<scr'+'ipt defer src="//:" '
-			+ 'onreadystatechange="if(this.readyState==\'complete\'){dojo._loadInit();}">'
-			+ '</scr'+'ipt>'
-		);
-	}
-
 	if(/(WebKit|khtml)/i.test(navigator.userAgent)){ // sniff
 		dojo._khtmlTimer = setInterval(function(){
 			if(/loaded|complete/.test(document.readyState)){
@@ -288,22 +262,55 @@ if(typeof window != 'undefined'){
 	}
 	//	END DOMContentLoaded
 
-	if(dojo.isIE){
-		// IE WebControl hosted in an application can fire "beforeunload" and "unload"
-		// events when control visibility changes, causing Dojo to unload too soon. The
-		// following code fixes the problem
-		// Reference: http://support.microsoft.com/default.aspx?scid=kb;en-us;199155
-		dojo._handleNodeEvent(window, "beforeunload", function(){
-			dojo._unloading = true;
-			window.setTimeout(function(){ dojo._unloading = false; }, 0);
-		});
-		dojo._handleNodeEvent(window, "unload", function(){
-			if(dojo._unloading){ dojo.unloaded();	}
-		});
-	}else{
-		// FIXME: dojo.unloaded requires dojo scope
-		dojo._handleNodeEvent(window, "beforeunload", function() { dojo.unloaded(); });
-	}
+	(function(){
+
+		var _w = window;
+		var _handleNodeEvent = function(/*String*/evtName, /*Function*/fp){
+			// summary:
+			//		non-destructively adds the specified function to the node's
+			//		evtName handler.
+			// evtName: should be in the form "click" for "onclick" handlers
+			var oldHandler = _w[evtName] || function(){};
+			_w[evtName] = function(){
+				fp.apply(_w, arguments);
+				oldHandler.apply(_w, arguments);
+			}
+		}
+
+		if(dojo.isIE){
+			// 	for Internet Explorer. readyState will not be achieved on init
+			// 	call, but dojo doesn't need it however, we'll include it
+			// 	because we don't know if there are other functions added that
+			// 	might.  Note that this has changed because the build process
+			// 	strips all comments -- including conditional ones.
+
+			document.write('<scr'+'ipt defer src="//:" '
+				+ 'onreadystatechange="if(this.readyState==\'complete\'){dojo._loadInit();}">'
+				+ '</scr'+'ipt>'
+			);
+
+			// IE WebControl hosted in an application can fire "beforeunload" and "unload"
+			// events when control visibility changes, causing Dojo to unload too soon. The
+			// following code fixes the problem
+			// Reference: http://support.microsoft.com/default.aspx?scid=kb;en-us;199155
+			var _unloading = true;
+			_handleNodeEvent("onbeforeunload", function(){
+				_w.setTimeout(function(){ _unloading = false; }, 0);
+			});
+			_handleNodeEvent("onunload", function(){
+				if(_unloading){ dojo.unloaded(); }
+			});
+
+			try{
+				document.namespaces.add("v","urn:schemas-microsoft-com:vml");
+				document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
+			}catch(e){}
+		}else{
+			// FIXME: dojo.unloaded requires dojo scope
+			_handleNodeEvent("beforeunload", dojo.unloaded);
+		}
+
+	})();
 
 	/*
 	OpenAjax.subscribe("OpenAjax", "onload", function(){
@@ -316,13 +323,6 @@ if(typeof window != 'undefined'){
 		dojo.unloaded();
 	});
 	*/
-
-	if(dojo.isIE){
-		try{
-			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
-			document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
-		}catch(e){}
-	}
 
 	// stub, over-ridden by debugging code. This will at least keep us from
 	// breaking when it's not included
@@ -358,6 +358,7 @@ if(typeof window != 'undefined'){
 	};
 
 	dojo._fireCallback = function(callback, context, cbArguments){
+		// FIXME: should migrate to using "dojo.isString"!
 		if((context)&&((typeof callback == "string")||(callback instanceof String))){
 			callback = context[callback];
 		}

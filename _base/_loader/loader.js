@@ -355,7 +355,7 @@ dojo.provide = function(/*String*/ packageName){
 	//		dojo.provide() calls, to note that it includes multiple resources.
 
 	//Make sure we have a string.
-	var fullPkgName = String(packageName);
+	var fullPkgName = packageName+"";
 	var strippedPkgName = fullPkgName;
 
 	var syms = packageName.split(/\./);
@@ -529,6 +529,8 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 			if(!_a[i]){ continue; }
 
 			// Safari doesn't support this.constructor so we have to be explicit
+			// FIXME: Tracked (and fixed) in Webkit bug 3537.
+			//		http://bugs.webkit.org/show_bug.cgi?id=3537
 			var relobj = new dojo._Url(_a[i]+"");
 			var uriobj = new dojo._Url(uri+"");
 
@@ -538,14 +540,14 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 				(!relobj.authority)	&&
 				(!relobj.query)
 			){
-				if(relobj.fragment != null){
+				if(relobj.fragment != n){
 					uriobj.fragment = relobj.fragment;
 				}
 				relobj = uriobj;
-			}else if(relobj.scheme == null){
+			}else if(!relobj.scheme){
 				relobj.scheme = uriobj.scheme;
 
-				if(relobj.authority == null){
+				if(!relobj.authority){
 					relobj.authority = uriobj.authority;
 
 					if(relobj.path.charAt(0) != "/"){
@@ -555,15 +557,21 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 						var segs = path.split("/");
 						for(var j = 0; j < segs.length; j++){
 							if(segs[j] == "."){
-								if (j == segs.length - 1) { segs[j] = ""; }
-								else { segs.splice(j, 1); j--; }
+								if(j == segs.length - 1){
+									segs[j] = "";
+								}else{
+									segs.splice(j, 1);
+									j--;
+								}
 							}else if(j > 0 && !(j == 1 && segs[0] == "") &&
 								segs[j] == ".." && segs[j-1] != ".."){
 
 								if(j == (segs.length - 1)){
-									segs.splice(j, 1); segs[j - 1] = "";
+									segs.splice(j, 1);
+									segs[j - 1] = "";
 								}else{
-									segs.splice(j - 1, 2); j -= 2;
+									segs.splice(j - 1, 2);
+									j -= 2;
 								}
 							}
 						}
@@ -573,17 +581,17 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 			}
 
 			uri = "";
-			if(relobj.scheme != null){ 
+			if(relobj.scheme){ 
 				uri += relobj.scheme + ":";
 			}
-			if(relobj.authority != null){
+			if(relobj.authority){
 				uri += "//" + relobj.authority;
 			}
 			uri += relobj.path;
-			if(relobj.query != null){
+			if(relobj.query){
 				uri += "?" + relobj.query;
 			}
-			if(relobj.fragment != null){
+			if(relobj.fragment){
 				uri += "#" + relobj.fragment;
 			}
 		}
@@ -593,20 +601,20 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 		// break the uri into its main components
 		var r = this.uri.match(ore);
 
-		this.scheme = r[2] || (r[1] ? "" : null);
-		this.authority = r[4] || (r[3] ? "" : null);
+		this.scheme = r[2] || (r[1] ? "" : n);
+		this.authority = r[4] || (r[3] ? "" : n);
 		this.path = r[5]; // can never be undefined
-		this.query = r[7] || (r[6] ? "" : null);
-		this.fragment  = r[9] || (r[8] ? "" : null);
+		this.query = r[7] || (r[6] ? "" : n);
+		this.fragment  = r[9] || (r[8] ? "" : n);
 
-		if(this.authority != null){
+		if(this.authority != n){
 			// server based naming authority
 			r = this.authority.match(ire);
 
-			this.user = r[3] || null;
-			this.password = r[4] || null;
+			this.user = r[3] || n;
+			this.password = r[4] || n;
 			this.host = r[5];
-			this.port = r[7] || null;
+			this.port = r[7] || n;
 		}
 	}
 

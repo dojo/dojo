@@ -967,7 +967,8 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 
 dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
 	// summary: Removes classes from node.
-	node.className = dojo.trim((" " + node.className + " ").replace(" " + classStr + " ", " "));
+	var t = dojo.trim((" " + node.className + " ").replace(" " + classStr + " ", " "));
+	if(node.className != t){ node.className = t; }
 };
 
 dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*/condition){

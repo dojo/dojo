@@ -177,8 +177,12 @@ if(
 		if(!styleParent){
 			styleParent = doc.getElementsByTagName("html")[0];
 		}
-		styleParent.appendChild(styleElement);
-
+		if(dojo.isIE){
+			window.setTimeout(function(){ styleParent.appendChild(styleElement); }, 0);
+		}else{
+			styleParent.appendChild(styleElement);
+		}
+		
 		if(typeof djConfig != "undefined" && djConfig["debugContainerId"]){
 			consoleFrame = doc.getElementById(djConfig.debugContainerId);
 		}

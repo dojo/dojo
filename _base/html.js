@@ -13,7 +13,6 @@ try{
 // DOM Functions
 // =============================
 
-// if(dojo.isIE && (dojo.isIE<7)){ // || dojo.isOpera){
 if(dojo.isIE || dojo.isOpera){
 	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
 		// summary:
@@ -241,50 +240,62 @@ if(dojo.isIE || dojo.isOpera){
 	//
 	// This way, calling code can access computedStyle once, and then pass the reference to 
 	// multiple API functions. 
-	if(!dojo.isIE){
-		// non-IE branch
-		var dv = document.defaultView;
-		dojo.getComputedStyle = ((dojo.isSafari) ? function(/*DomNode*/node){
-				//	summary:
-				//		returns a "computed style" object which can be used to
-				//		gather information about the current state of the
-				//		rendered node. Note that this may behave differently on
-				//		different browsers. Values may have different formats
-				//		and value encodings across browsers. Use the
-				//		dojo.style() method for more consistent (pixelized)
-				//		return values.
-				//	node:
-				//		a reference to a DOM node. Does NOT support taking an
-				//		ID string for speed reasons.
-				//	usage:
-				//		dojo.getComputedStyle(dojo.byId('foo')).borderWidth;
-				var s = dv.getComputedStyle(node, null);
-				if(!s && node.style){ 
-					node.style.display = ""; 
-					s = dv.getComputedStyle(node, null);
-				}
-				return s || {};
-			} : function(node){
-				return dv.getComputedStyle(node, null);
+	//
+	// This is a faux declaration to take pity on the doc tool
+	
+	dojo.getComputedStyle = function(/*DomNode*/node){
+		//	summary:
+		//		returns a "computed style" object which can be used to
+		//		gather information about the current state of the
+		//		rendered node. 
+		//		Note that this may behave differently on different 
+		//		browsers. Values may have different formats and value 
+		//		encodings across browsers. 
+		//		Use the dojo.style() method for more consistent (pixelized)
+		//		return values.
+		//	node:
+		//		a reference to a DOM node. Does NOT support taking an
+		//		ID string for speed reasons.
+		//	usage:
+		//		dojo.getComputedStyle(dojo.byId('foo')).borderWidth;
+		return; // CSS2Properties
+	}
+		
+	var gcs, dv = document.defaultView;
+	if(dojo.isSafari){
+		gcs = function(/*DomNode*/node){
+			var s = dv.getComputedStyle(node, null);
+			if(!s && node.style){ 
+				node.style.display = ""; 
+				s = dv.getComputedStyle(node, null);
 			}
-		)
-
+			return s || {};
+		} 
+	}else if(dojo.isIE){
+		gcs = function(node){
+			return node.currentStyle;
+		}
+	}else{
+		gcs = function(node){
+			return dv.getComputedStyle(node, null);
+		}
+	}
+	dojo.getComputedStyle = gcs;
+		
+	if(!dojo.isIE){
 		dojo._toPixelValue = function(element, value){
 			// style values can be floats, client code may want
 			// to round for integer pixels.
 			return (parseFloat(value) || 0); 
 		}
 	}else{
-		// IE branch
-		dojo.getComputedStyle = function(node){
-			return node.currentStyle;
-		}
-
 		dojo._toPixelValue = function(element, avalue){
 			if(!avalue){return 0;}
+			// on IE7, medium is usually 4 pixels
+			if(avalue=="medium"){return 4;};
 			// style values can be floats, client code may
 			// want to round this value for integer pixels.
-			if(avalue.slice&&(avalue.slice(-2)=='px')){ return parseFloat(avalue); }
+			if(avalue.slice && (avalue.slice(-2)=='px')){ return parseFloat(avalue); }
 			with(element){
 				var sLeft = style.left;
 				var rsLeft = runtimeStyle.left;
@@ -411,8 +422,6 @@ if(dojo.isIE || dojo.isOpera){
 	// Box Functions
 	// =============================
 
-	var gcs = dojo.getComputedStyle;
-	
 	dojo._getPadExtents = function(/*DomNode*/n, /*Object*/computedStyle){
 		//	summary:
 		// 		Returns object with special values specifically useful for node
@@ -830,10 +839,10 @@ if(dojo.isIE || dojo.isOpera){
 			x: 0,
 			y: 0
 		};
+		var hasScroll = false;
 
 		// targetBoxType == "border-box"
 		var db = dojo.body();
-
 		if(dojo.isIE){
 			var client = node.getBoundingClientRect();
 			var offset = dojo._getIeDocumentElementOffset();
@@ -846,19 +855,21 @@ if(dojo.isIE || dojo.isOpera){
 			ret.y = bo.y - _sumAncestorProperties(node, "scrollTop");
 		}else{
 			if(node["offsetParent"]){
+				hasScroll = true;
 				var endNode;
 				// in Safari, if the node is an absolutely positioned child of
 				// the body and the body has a margin the offset of the child
 				// and the body contain the body's margins, so we need to end
 				// at the body
-				if(	(dojo.isSafari) &&
-					(node.style.getPropertyValue("position") == "absolute") &&
+				// FIXME: getting contrary results to the above in latest WebKit.
+				if(dojo.isSafari &&
+					//(node.style.getPropertyValue("position") == "absolute") &&
+					(gcs(node).position == "absolute") &&
 					(node.parentNode == db)){
 					endNode = db;
 				}else{
 					endNode = db.parentNode;
 				}
-
 				if(node.parentNode != db){
 					var nd = node;
 					if(dojo.isOpera){ nd = db; }
@@ -883,48 +894,17 @@ if(dojo.isIE || dojo.isOpera){
 				ret.y += isNaN(node.y) ? 0 : node.y;
 			}
 		}
-
-		// account for document scrolling!
-		if(includeScroll){
+		// account for document scrolling
+		// if offsetParent is used, ret value already includes scroll position
+		// so we may have to actually remove that value if !includeScroll
+		if(hasScroll || includeScroll){
 			var scroll = dojo._docScroll();
-			ret.y += scroll.y;
-			ret.x += scroll.x;
+			var m = hasScroll ? (!includeScroll ? -1 : 0) : 1;
+			ret.y += m*scroll.y;
+			ret.x += m*scroll.x;
 		}
 
-		/*
-		// FIXME
-		var _getMarginExtents = function(node, s){
-			var px = _getPixelizer(node);
-			return { 
-				w: px(s.marginLeft) + px(s.marginRight),
-				h: px(s.marginTop) + px(s.marginBottom)
-			};
-		}
-
-		var _getMarginBox = function(node, computedStyle){
-			var mb = _getMarginExtents(node, computedStyle);
-			return {
-				w: node.offsetWidth + mb.w, 
-				h: node.offsetHeight + mb.h
-			};
-		}
-
-		var extentFuncArray=[dojo.html.getPaddingExtent, dojo.html.getBorderExtent, dojo.html.getMarginExtent];
-		if(nativeBoxType > targetBoxType){
-			for(var i=targetBoxType;i<nativeBoxType;++i){
-				ret.y += extentFuncArray[i](node, 'top');
-				ret.x += extentFuncArray[i](node, 'left');
-			}
-		}else if(nativeBoxType < targetBoxType){
-			for(var i=targetBoxType;i>nativeBoxType;--i){
-				ret.y -= extentFuncArray[i-1](node, 'top');
-				ret.x -= extentFuncArray[i-1](node, 'left');
-			}
-		}
-		*/
-		// ret.t = ret.y;
-		// ret.l = ret.x;
-		return ret;	//	object
+		return ret; // object
 	}
 
 	// FIXME: need a setter for coords or a moveTo!!

@@ -5,7 +5,7 @@ dojo.require("dojo._base.connect");
 
 (function(){
 	// DOM event listener machinery
-	var del = {
+	var del = dojo._event_listener = {
 		add: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
 			if(!node){return;} 
 			event = del._normalizeEventName(event);
@@ -78,26 +78,33 @@ dojo.require("dojo._base.connect");
 		// NOTE: below, this method is overridden for IE
 	}
 
-	// the default listener to use on dontFix nodes, overriden for IE<7
+	// the default listener to use on dontFix nodes, overriden for IE
 	var node_listener = dojo._listener;
 	
 	// Unify connect and event listeners
-	
 	dojo._connect = function(obj, event, context, method, dontFix){
 		// FIXME: need a more strict test
 		var isNode = obj && (obj.nodeType||obj.attachEvent||obj.addEventListener);
 		// choose one of three listener options: raw (connect.js), DOM event on a Node, custom event on a Node
-		// we need the third option to provide leak prevention on broken browsers (IE<7)
-		var l = (!isNode ? dojo._listener : (!dontFix ? del : node_listener));
+		// we need the third option to provide leak prevention on broken browsers (IE)
+		var lid = !isNode ? 0 : (!dontFix ? 1 : 2), l = [dojo._listener, del, node_listener][lid];
 		// create a listener
 		var h = l.add(obj, event, dojo.hitch(context, method));
+		// formerly, the disconnect package contained "l" directly, but if client code
+		// leaks the disconnect package (by connecting it to a node), referencing "l" 
+		// compounds the problem.
+		// instead we return a listener id, which requires custom _disconnect below.
 		// return disconnect package
-		return [ obj, event, h, l ];
+		return [ obj, event, h, lid ];
+	}
+
+	dojo._disconnect = function(obj, event, handle, listener){
+		([dojo._listener, del, node_listener][listener]).remove(obj, event, handle);
 	}
 
 	// Constants
 
-	// Public: client code must test
+	// Public: client code should test
 	// keyCode against these named constants, as the
 	// actual codes can vary by browser.
 	dojo.keys = {
@@ -173,16 +180,14 @@ dojo.require("dojo._base.connect");
 			}
 		}
 
-		var ap = Array.prototype;
 		// by default, use the standard listener
 		var iel = dojo._listener;
 		// dispatcher tracking property
-		if((dojo.isIE<7)&&(!djConfig._allow_leaks)){
-			// custom listener that handle leak protection for DOM events
+		if(!djConfig._allow_leaks){
+			// custom listener that handles leak protection for DOM events
 			node_listener = iel = dojo._ie_listener = {
-				// support handler indirection: 
-				// all event handler functions are actually referenced 
-				// here and event dispatchers reference only indices.
+				// support handler indirection: event handler functions are 
+				// referenced here. Event dispatchers hold only indices.
 				handlers: [],
 				// add a listener to an object
 				add: function(/*Object*/ source, /*String*/ method, /*Function*/ listener){
@@ -202,7 +207,7 @@ dojo.require("dojo._base.connect");
 				// remove a listener from an object
 				remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
 					var f = (source||dojo.global)[method], l = f&&f._listeners;
-					if(f && l && handle--){	
+					if(f && l && handle--){
 						delete ieh[l[handle]];
 						delete l[handle]; 
 					}
@@ -223,13 +228,13 @@ dojo.require("dojo._base.connect");
 					var kd = node.onkeydown;
 					if(!kd||!kd._listeners||!kd._stealthKeydown){
 						// we simply ignore this connection when disconnecting
-						// because it's harmless 
+						// because it's side-effects are harmless 
 						del.add(node, "onkeydown", del._stealthKeyDown);
 						// we only want one stealth listener per node
 						node.onkeydown._stealthKeydown = true;
 					} 
 				}
-				return iel.add(node, event, del._fixCallback(fp, node));
+				return iel.add(node, event, del._fixCallback(fp));
 			},
 			remove: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
 				iel.remove(node, del._normalizeEventName(event), handle); 
@@ -241,15 +246,10 @@ dojo.require("dojo._base.connect");
 				return (eventName.slice(0,2)!="on" ? "on"+eventName : eventName);
 			},
 			_nop: function(){},
-			_fixCallback: function(fp, sender){
-				return function(e){ 
-					return fp.call(this, del._fixEvent(e, sender));
-				};
-			},
 			_fixEvent: function(/*Event*/evt, /*DOMNode*/sender){
 				// summary:
-				//   normalizes properties on the event object including event
-				//   bubbling methods, keystroke normalization, and x/y positions
+				//		normalizes properties on the event object including event
+				//		bubbling methods, keystroke normalization, and x/y positions
 				// evt: native event object
 				// sender: node to treat as "currentTarget"
 				if(!evt){
@@ -279,7 +279,7 @@ dojo.require("dojo._base.connect");
 				}
 				evt.stopPropagation = this._stopPropagation;
 				evt.preventDefault = this._preventDefault;
-				return this._fixKeys(evt);
+				return del._fixKeys(evt);
 			},
 			_fixKeys: function(evt){
 				switch(evt.type){
@@ -414,13 +414,15 @@ dojo.require("dojo._base.connect");
 	}
 
 	// Safari event normalization
-	if(dojo.isSafari){ 
+	if(dojo.isSafari){
 		dojo.mixin(del, {
 			_fixEvent: function(evt, sender){
 				switch(evt.type){
 					case "keypress":
-						//console.log(evt.target.tagname, evt.target.id, evt.charCode);
-						var c = evt.charCode, s = evt.shiftKey;
+						var c = evt.charCode, s = evt.shiftKey, k = evt.keyCode;
+						// FIXME: This is a hack, suggest we rethink keyboard strategy.
+						// Arrow and page keys have 0 "keyCode" in keypress events.on Safari for Windows
+						k = k || identifierMap[evt.keyIdentifier] || 0;
 						if(evt.keyIdentifier=="Enter"){
 							c = 0; // differentiate Enter from CTRL-m (both code 13)
 						}else if((evt.ctrlKey)&&(c>0)&&(c<27)){
@@ -431,13 +433,14 @@ dojo.require("dojo._base.connect");
 						} else {
 							c = (c>=32 && c<63232 ? c : 0); // avoid generating keyChar for non-printables
 						}
-						return del._synthesizeEvent(evt, {charCode: c, shiftKey: s});
+						return del._synthesizeEvent(evt, {charCode: c, shiftKey: s, keyCode: k});
 				}
 				return evt;
 			}
 		});
+		
 		dojo.mixin(dojo.keys, {
-			SHIFT_TAB: 25,		
+			SHIFT_TAB: 25,
 			UP_ARROW: 63232,
 			DOWN_ARROW: 63233,
 			LEFT_ARROW: 63234,
@@ -465,10 +468,11 @@ dojo.require("dojo._base.connect");
 			SCROLL_LOCK: 63249,
 			NUM_LOCK: 63289
 		});
+		var dk = dojo.keys, identifierMap = { "Up": dk.UP_ARROW, "Down": dk.DOWN_ARROW, "Left": dk.LEFT_ARROW, "Right": dk.RIGHT_ARROW, "PageUp": dk.PAGE_UP, "PageDown": dk.PAGE_DOWN }; 
 	}
 })();
 
-if(dojo.isIE<7){
+if(dojo.isIE){
 	// keep this out of the closure
 	// closing over 'iel' or 'ieh' b0rks leak prevention
 	// ls[i] is an index into the master handler array
@@ -485,5 +489,10 @@ if(dojo.isIE<7){
 			}
 			return r;
 		}
+	}
+	// keep this out of the closure to reduce RAM allocation
+	dojo._event_listener._fixCallback = function(fp){
+		var f = dojo._event_listener._fixEvent;
+		return function(e){ return fp.call(this, f(e, this)); };
 	}
 }

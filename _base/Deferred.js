@@ -228,7 +228,6 @@ dojo.extend(dojo.Deferred, {
 		deferred.callback();
 		return deferred;
 	},
-	*/
 
 	toString: function(){
 		var state;
@@ -239,6 +238,7 @@ dojo.extend(dojo.Deferred, {
 		}
 		return 'Deferred(' + this.id + ', ' + state + ')';
 	},
+	*/
 
 	_nextId: (function(){
 		var n = 1;
@@ -271,32 +271,6 @@ dojo.extend(dojo.Deferred, {
 		}
 	},
 			
-
-	_pause: function(){
-		// summary: 
-		//		Used internally to signal that it's waiting on another Deferred
-		this.paused++;
-	},
-
-	_unpause: function(){
-		// summary: 
-		//		Used internally to signal that it's no longer waiting on
-		//		another Deferred.
-		this.paused--;
-		if(
-			(this.paused == 0) && 
-			(this.fired >= 0)
-		){
-			this._fire();
-		}
-	},
-
-	_continue: function(res){
-		// summary: 
-		//		Used internally when a dependent deferred fires.
-		this._resback(res);
-		this._unpause();
-	},
 
 	_resback: function(res){
 		// summary:
@@ -394,19 +368,25 @@ dojo.extend(dojo.Deferred, {
 			(this.paused == 0)
 		){
 			// Array
-			var pair = chain.shift();
-			var f = pair[fired];
-			if(f == null){
-				continue;
-			}
+			var f = chain.shift()[fired];
+			if(!f){ continue; }
 			try{
 				res = f(res);
 				fired = ((res instanceof Error) ? 1 : 0);
 				if(res instanceof dojo.Deferred){
 					cb = function(res){
-						self._continue(res);
+						self._resback(res);
+						// inlined from _pause()
+						self.paused--;
+						if(
+							(self.paused == 0) && 
+							(self.fired >= 0)
+						){
+							self._fire();
+						}
 					}
-					this._pause();
+					// inlined from _unpause
+					this.paused++;
 				}
 			}catch(err){
 				console.debug(err);

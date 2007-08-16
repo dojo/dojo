@@ -142,7 +142,7 @@ dojo.queryToObject = function(/*String*/ str){
 	dojo.forEach(qp, function(item){
 		if(item.length){
 			var parts = item.split("=");
-			var name = parts.shift();
+			var name = dc(parts.shift());
 			var val = dc(parts.join("="));
 			if(dojo.isString(ret[name])){
 				ret[name] = [ret[name]];
@@ -335,14 +335,14 @@ dojo._contentHandlers = {
 		ioArgs.args = args;
 
 		//Get values from form if requestd.
-		var formQuery = null;
+		var formObject = null;
 		if(args.form){ 
 			var form = dojo.byId(args.form);
 			//IE requires going through getAttributeNode instead of just getAttribute in some form cases, 
 			//so use it for all.  See #2844
 			var actnNode = form.getAttributeNode("action");
 			ioArgs.url = args.url || (actnNode ? actnNode.value : null); 
-			formQuery = dojo.formToQuery(form);
+			formObject = dojo.formToObject(form);
 		}else{
 			ioArgs.url = args.url;
 		}
@@ -350,9 +350,9 @@ dojo._contentHandlers = {
 		// set up the query params
 		var miArgs = [{}];
 	
-		if(formQuery){
+		if(formObject){
 			// potentially over-ride url-provided params w/ form values
-			miArgs.push(dojo.queryToObject(formQuery));
+			miArgs.push(formObject);
 		}
 		if(args.content){
 			// stuff in content over-rides what's set by form

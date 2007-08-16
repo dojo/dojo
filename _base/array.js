@@ -18,13 +18,12 @@ dojo.provide("dojo._base.array");
 			//		For details on this method, see:
 			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
 
-			var step;
+			var i = 0, step = 1, end = array.length;
 			if(findLast){
-				step = -1, i = (fromIndex||array.length - 1), end = -1;
-			}else{
-				step = 1, i = (fromIndex||0), end = array.length;
+				i = end - 1;
+				step = end = -1;
 			}
-			for(; i!=end; i+=step){
+			for(i = fromIndex || i; i != end; i += step){
 				if(array[i] == value){ return i; }
 			}
 			return -1;	// number
@@ -51,7 +50,7 @@ dojo.provide("dojo._base.array");
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
 
 			// match the behavior of the built-in forEach WRT empty arrs
-			if((!arr)||(!arr.length)){ return; }
+			if(!arr || !arr.length){ return; }
 
 			// FIXME: there are several ways of handilng thisObject. Is
 			// dojo.global always the default context?
@@ -63,15 +62,13 @@ dojo.provide("dojo._base.array");
 
 		_everyOrSome: function(/*Boolean*/every, /*Array*/arr, /*Function*/callback, /*Object?*/obj){
 			var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
-			for(var i=0,l=arr.length; i<l; i++){
-				var result = callback.call(obj, arr[i], i, arr);
-				if(every && !result){
-					return false; // Boolean
-				}else if((!every)&&(result)){
-					return true; // Boolean
+			for(var i = 0, l = arr.length; i < l; i++){
+				var result = !!callback.call(obj, arr[i], i, arr);
+				if(every ^ result){
+					return result; // Boolean
 				}
 			}
-			return (!!every); // Boolean
+			return every; // Boolean
 		},
 
 		every: function(/*Array*/arr, /*Function*/callback, /*Object?*/thisObject){

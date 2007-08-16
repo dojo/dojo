@@ -244,7 +244,7 @@ if(dojo.isIE || dojo.isOpera){
 	// This is a faux declaration to take pity on the doc tool
 
 /*=====
-	dojo.getComputedStyle = function(DomNodenode){ //DomNode
+	dojo.getComputedStyle = function(node){ //DomNode
 		//	summary:
 		//		returns a "computed style" object which can be used to
 		//		gather information about the current state of the

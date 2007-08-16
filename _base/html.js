@@ -242,8 +242,9 @@ if(dojo.isIE || dojo.isOpera){
 	// multiple API functions. 
 	//
 	// This is a faux declaration to take pity on the doc tool
-	
-	dojo.getComputedStyle = function(/*DomNode*/node){
+
+/*=====
+	dojo.getComputedStyle = function(DomNodenode){ //DomNode
 		//	summary:
 		//		returns a "computed style" object which can be used to
 		//		gather information about the current state of the
@@ -260,7 +261,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		dojo.getComputedStyle(dojo.byId('foo')).borderWidth;
 		return; // CSS2Properties
 	}
-		
+=====*/
+
 	var gcs, dv = document.defaultView;
 	if(dojo.isSafari){
 		gcs = function(/*DomNode*/node){
@@ -281,12 +283,12 @@ if(dojo.isIE || dojo.isOpera){
 		}
 	}
 	dojo.getComputedStyle = gcs;
-		
+
 	if(!dojo.isIE){
 		dojo._toPixelValue = function(element, value){
 			// style values can be floats, client code may want
 			// to round for integer pixels.
-			return (parseFloat(value) || 0); 
+			return parseFloat(value) || 0; 
 		}
 	}else{
 		dojo._toPixelValue = function(element, avalue){
@@ -411,7 +413,7 @@ if(dojo.isIE || dojo.isOpera){
 		if(args==3){
 			return op ? dojo._setOpacity(n, value) : n.style[style] = value; /*Number*/
 		}
-		if (args==2 && op){
+		if(args==2 && op){
 			return dojo._getOpacity(n);
 		}
 		var s = dojo.getComputedStyle(n);
@@ -593,9 +595,9 @@ if(dojo.isIE || dojo.isOpera){
 		// clientWidth/Height are important since the automatically account for scrollbars
 		// fallback to offsetWidth/Height for special cases (see #3378)
 		var s=computedStyle||gcs(node), pe=dojo._getPadExtents(node, s), be=dojo._getBorderExtents(node, s), w=node.clientWidth, h;
-		if (!w) {
+		if(!w){
 			w=node.offsetWidth, h=node.offsetHeight;
-		} else {
+		}else{
 			h=node.clientHeight, be.w = be.h = 0; 
 		}
 		// On Opera, offsetLeft includes the parent's border
@@ -696,7 +698,7 @@ if(dojo.isIE || dojo.isOpera){
 		var bb=dojo._usesBorderBox(node),
 				pb=bb ? _nilExtents : dojo._getPadBorderExtents(node, s),
 				mb=dojo._getMarginExtents(node, s);
-		if(widthPx>=0){	widthPx = Math.max(widthPx - pb.w - mb.w, 0);	}
+		if(widthPx>=0){	widthPx = Math.max(widthPx - pb.w - mb.w, 0); }
 		if(heightPx>=0){ heightPx = Math.max(heightPx - pb.h - mb.h, 0); }
 		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
 	}
@@ -888,7 +890,7 @@ if(dojo.isIE || dojo.isOpera){
 					var m = curnode["offsetTop"];
 					ret.y += isNaN(m) ? 0 : m;
 					curnode = curnode.offsetParent;
-				}while((curnode != endNode)&&(curnode != null));
+				}while((curnode != endNode)&&curnode);
 			}else if(node["x"]&&node["y"]){
 				ret.x += isNaN(node.x) ? 0 : node.x;
 				ret.y += isNaN(node.y) ? 0 : node.y;

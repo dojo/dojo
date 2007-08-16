@@ -55,8 +55,7 @@ if(!window["OpenAjax"]){
 		h._subIndex = 0;
 		h._pubDepth = 0;
 
-		h.subscribe = function(name, callback, scope, subscriberData, filter)			
-		{
+		h.subscribe = function(name, callback, scope, subscriberData, filter){
 			if(!scope){
 				scope = window;
 			}
@@ -67,59 +66,58 @@ if(!window["OpenAjax"]){
 			return handle;
 		}
 
-		h.publish = function(name, message)		
-		{
+		h.publish = function(name, message){
 			var path = name.split(".");
 			this._pubDepth++;
 			this._publish(this._subscriptions, path, 0, name, message);
 			this._pubDepth--;
-			if((this._cleanup.length > 0) && (this._pubDepth == 0)) {
-				for(var i = 0; i < this._cleanup.length; i++) 
+			if((this._cleanup.length > 0) && (this._pubDepth == 0)){
+				for(var i = 0; i < this._cleanup.length; i++){ 
 					this.unsubscribe(this._cleanup[i].hdl);
+				}
 				delete(this._cleanup);
 				this._cleanup = [];
 			}
 		}
 
-		h.unsubscribe = function(sub) 
-		{
+		h.unsubscribe = function(sub){
 			var path = sub.split(".");
 			var sid = path.pop();
 			this._unsubscribe(this._subscriptions, path, 0, sid);
 		}
 		
-		h._subscribe = function(tree, path, index, sub) 
-		{
+		h._subscribe = function(tree, path, index, sub){
 			var token = path[index];
-			if(index == path.length) 	
+			if(index == path.length){
 				tree.s.push(sub);
-			else { 
-				if(typeof tree.c == "undefined")
+			}else{ 
+				if(typeof tree.c == "undefined"){
 					 tree.c = {};
-				if(typeof tree.c[token] == "undefined") {
+				}
+				if(typeof tree.c[token] == "undefined"){
 					tree.c[token] = { c: {}, s: [] }; 
 					this._subscribe(tree.c[token], path, index + 1, sub);
-				}
-				else 
+				}else{
 					this._subscribe( tree.c[token], path, index + 1, sub);
+				}
 			}
 		}
 
-		h._publish = function(tree, path, index, name, msg) {
-			if(typeof tree != "undefined") {
+		h._publish = function(tree, path, index, name, msg){
+			if(typeof tree != "undefined"){
 				var node;
 				if(index == path.length) {
 					node = tree;
-				} else {
+				}else{
 					this._publish(tree.c[path[index]], path, index + 1, name, msg);
 					this._publish(tree.c["*"], path, index + 1, name, msg);			
 					node = tree.c["**"];
 				}
-				if(typeof node != "undefined") {
+				if(typeof node != "undefined"){
 					var callbacks = node.s;
 					var max = callbacks.length;
-					for(var i = 0; i < max; i++) {
-						if(callbacks[i].cb) {
+					for(var i = 0; i < max; i++){
+						if(callbacks[i].cb){
 							var sc = callbacks[i].scope;
 							var cb = callbacks[i].cb;
 							var fcb = callbacks[i].fcb;

@@ -4,6 +4,7 @@
 	<title>Sort Flickr images by tags</title>
 	<style type="text/css">
 		@import "../../resources/dojo.css";
+		@import "../../resources/dnd.css";
 		body {
 			padding: 1em;
 		}
@@ -12,7 +13,7 @@
 		#status					{font-weight: bold;}
 		.container				{padding: 5px; cursor: default; background: #f8f8ff;}
 		.wrap1					{float: left; width: 275px; height: 600px; overflow: auto; margin-right: 1em;}
-		.wrap2					{width: 350px; height: 170px; overflow: auto;}
+		.wrap2 div				{width: 350px; height: 170px; min-height: 170px; overflow: auto;}
 		.container .name		{font-weight: bold; padding-right: 4px;}
 		.container .image		{padding: 5px;}
 		body.dojoDndCopy, body.dojoDndMove	{color: #888;}
@@ -33,15 +34,6 @@
 		.dojoDndHorizontal .dojoDndItemAfter		{border-bottom: none;}
 		.dojoDndHorizontal .dojoDndItemBefore img	{border-left:  3px solid red;}
 		.dojoDndHorizontal .dojoDndItemAfter img	{border-right: 3px solid red;}
-		/* avatar-specific settings */
-		.dojoDndAvatar			{font-size: 75%; color: black;}
-		.dojoDndAvatar td		{padding-left: 20px; padding-right: 4px;}
-		.dojoDndAvatarHeader	{background: #ccc; background-repeat: no-repeat;}
-		.dojoDndAvatarItem		{background: #eee;}
-		.dojoDndMove .dojoDndAvatarHeader	{background-image: url(images/dndNoMove.png);}
-		.dojoDndCopy .dojoDndAvatarHeader	{background-image: url(images/dndNoCopy.png);}
-		.dojoDndMove .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/dndMove.png);}
-		.dojoDndCopy .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/dndCopy.png);}
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 	<script type="text/javascript" src="../../dnd/common.js"></script>
@@ -59,8 +51,8 @@
 		// The main image container creator
 		var main_creator = function(item, hint){
 			var type = [];
-			if(item.tags.search(/animal/i) >= 0){ type.push("animal"); }
-			if(item.tags.search(/tree/i) >= 0){ type.push("tree"); }
+			if(item.tags.search(/cat/i) >= 0){ type.push("cat"); }
+			if(item.tags.search(/dog/i) >= 0){ type.push("dog"); }
 			var node;
 			if(hint == "avatar"){
 				node = dojo.doc.createElement("span");
@@ -87,8 +79,8 @@
 		// The band image container creator
 		var band_creator = function(item, hint){
 			var type = [];
-			if(item.tags.search(/animal/i) >= 0){ type.push("animal"); }
-			if(item.tags.search(/tree/i) >= 0){ type.push("tree"); }
+			if(item.tags.search(/cat/i) >= 0){ type.push("cat"); }
+			if(item.tags.search(/dog/i) >= 0){ type.push("dog"); }
 			var src = item.media.m.replace(/_m\./, "_s.");
 			var node = dojo.doc.createElement("span");
 			node.innerHTML = "<img src='" + src + "'/>";
@@ -115,7 +107,7 @@
 			// ask Flickr for images
 			var td = dojo.io.script.get({
 				url: "http://api.flickr.com/services/feeds/photos_public.gne",
-				content: {tags: "animal,tree,dojo", tagmode: "any", format: "json"},
+				content: {tags: "cat,dog,cow", tagmode: "any", format: "json"},
 				handleAs: "text/javascript",
 				preventCache: true
 			});
@@ -129,7 +121,7 @@
 </head>
 <body>
 	<h1>Sort Flickr images by tags</h1>
-	<p>This simple web application retrieves public images from Flickr that were tagged either as "animal", "tree", or "dojo".
+	<p>This simple web application retrieves public images from Flickr that were tagged either as "cat", "dog", or "cow".
 	You can copy/move images in different containers according to their tags.</p>
 	<p>Following selection modes are supported by default:</p>
 	<ul>
@@ -146,19 +138,19 @@
 	<p>Now scroll down and start dragging and dropping, rearrange images using DnD, copy and move them back!</p>
 	<p>Status: <span id="status">retrieving a list of Flickr images...</span></p>
 	<div class="wrap1">
-		<div dojoType="dojo.dnd.Source" jsId="c1" accept="animal, tree, dojo" class="container">
+		<div dojoType="dojo.dnd.Source" jsId="c1" accept="cat, dog, cow" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return main_creator(item, hint);</script>
 		</div>
 	</div>
-	<p>Tag: animal</p>
+	<p>Tag: cat</p>
 	<div class="wrap2">
-		<div dojoType="dojo.dnd.Source" jsId="c2" accept="animal" horizontal="true" class="container">
+		<div dojoType="dojo.dnd.Source" jsId="c2" accept="cat" horizontal="true" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return band_creator(item, hint);</script>
 		</div>
 	</div>
-	<p>Tag: tree</p>
+	<p>Tag: dog</p>
 	<div class="wrap2">
-		<div dojoType="dojo.dnd.Source" jsId="c3" accept="tree" horizontal="true" class="container">
+		<div dojoType="dojo.dnd.Source" jsId="c3" accept="dog" horizontal="true" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return band_creator(item, hint);</script>
 		</div>
 	</div>

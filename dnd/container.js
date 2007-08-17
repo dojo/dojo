@@ -283,12 +283,11 @@ dojo.dnd._defaultCreator = function(node){
 	// node: Node: a container node
 	var tag = node.tagName.toLowerCase();
 	var c = tag == "table" ? dojo.dnd._createTrTd : dojo.dnd._createNode(dojo.dnd._defaultCreatorNodes[tag]);
-	var r = (dojo.lang && dojo.lang.repr) ? dojo.lang.repr : function(o){ return String(o); };
 	return function(item, hint){	// Function
 		var isObj = dojo.isObject(item) && item;
 		var data = (isObj && item.data) ? item.data : item;
 		var type = (isObj && item.type) ? item.type : ["text"];
-		var t = r(data), n = (hint == "avatar" ? dojo.dnd._createSpan : c)(t);
+		var t = String(data), n = (hint == "avatar" ? dojo.dnd._createSpan : c)(t);
 		n.id = dojo.dnd.getUniqueId();
 		return {node: n, data: data, type: type};
 	};

@@ -146,6 +146,8 @@ dojo.parser = new function(){
 			var type = node.getAttribute("dojoType");
 			if((!type)||(!type.length)){ return; }
 			var clsInfo = getClassInfo(type);
+			var clazz = clsInfo.cls;
+			var ps = clazz._noScript||clazz.prototype._noScript;
 
 			// read parameters (ie, attributes).
 			// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
@@ -163,17 +165,18 @@ dojo.parser = new function(){
 			// if we do it another way, though, so we should probably benchmark
 			// the various approaches at some point.
 
-			// preambles are magic. Handle it.
-			var preambles = d.query("> script[type='dojo/method'][event='preamble']", node).orphan();
-			if(preambles.length){
-				// we only support one preamble. So be it.
-				params.preamble = d.parser._functionFromScript(preambles[0]);
+			if(!ps){
+				// preambles are magic. Handle it.
+				var preambles = d.query("> script[type='dojo/method'][event='preamble']", node).orphan();
+				if(preambles.length){
+					// we only support one preamble. So be it.
+					params.preamble = d.parser._functionFromScript(preambles[0]);
+				}
+
+				// grab the rest of the scripts for processing later
+				var scripts = d.query("> script[type^='dojo/']", node).orphan();
 			}
 
-			// grab the rest of the scripts for processing later
-			var scripts = d.query("> script[type^='dojo/']", node).orphan();
-
-			var clazz = clsInfo.cls;
 			var markupFactory = clazz["markupFactory"];
 			if(!markupFactory && clazz["prototype"]){
 				markupFactory = clazz.prototype["markupFactory"];
@@ -189,9 +192,11 @@ dojo.parser = new function(){
 			}
 
 			// check to see if we need to hook up events for non-declare()-built classes
-			scripts.forEach(function(script){
-				d.parser._wireUpMethod(instance, script);
-			});
+			if(!ps){
+				scripts.forEach(function(script){
+					d.parser._wireUpMethod(instance, script);
+				});
+			}
 		});
 
 		// Call startup on each top level instance if it makes sense (as for

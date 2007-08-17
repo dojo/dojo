@@ -66,6 +66,6 @@ dojo.extend(dojo.dnd.Avatar, {
 	},
 	_generateText: function(){
 		// summary: generates a proper text to reflect copying or moving of items
-		return (this.manager.copy ? "copy" : "mov") + "ing " + this.manager.nodes.length + " item" + (this.manager.nodes.length != 1 ? "s" : "");	
+		return this.manager.nodes.length.toString();
 	}
 });

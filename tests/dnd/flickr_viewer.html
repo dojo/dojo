@@ -108,6 +108,12 @@
 		};
 		
 		var init = function(){
+			// replace the avatar string to make it more human readable
+			dojo.dnd.Avatar.prototype._generateText = function(){
+				return (this.manager.copy ? "copy" : "mov") + 
+					"ing " + this.manager.nodes.length + " item" + 
+					(this.manager.nodes.length != 1 ? "s" : "");
+			};
 			// ask Flickr for images
 			var td = dojo.io.script.get({
 				url: "http://api.flickr.com/services/feeds/photos_public.gne",

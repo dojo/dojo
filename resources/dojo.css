@@ -1,10 +1,30 @@
 /*
-	This is the baseline page-level CSS file for use with Dojo applications.
+	dojo.css
+	Baseline CSS file for general usage.
 
+	This file is intended to be a "quick and dirty" stylesheet you can use to give
+	a straight-up web page some basic styling without having to do the dirty work
+	yourself.  It includes a modified version of YUI's reset.css (we pulled some
+	of the list reset definitions, among other things), and then provides some very
+	basic style rules to be applied to general HTML elements.
+
+	This stylesheet is NOT intended to serve as the foundation for more complex things--
+	including the use of a TABLE for layout purposes.  The table definitions in this
+	file make the assumption that you will be using tables for thier declared purpose:
+	displaying tabular data.
+
+	If you are looking for a baseline stylesheet using tables for grid layout, you will
+	need to supply your own layout rules to override the ones in this stylesheet.
+	
 	Applications using Dojo will function correctly without including this
 	file, but it should provide sane defaults for many common things that page
 	authors often need to set up manually.
+
+	The Dojo Core uses this stylesheet to quickly style HTML-based tests and demos.  Feel
+	free to use it as you will.
 */
+
+/*****************************************************************************************/
 
 /*
 	The below are borrowed from YUI's reset style sheets for pages and fonts.
@@ -43,14 +63,14 @@ q:before, q:after {
 abbr, acronym {
 	border:0;
 }
+/* End YUI imported code. */
 
+/*****************************************************************************************/
 
 /* 
-
-	End YUI imported code.
 	Begin Dojo additions.
 
-	Style definitions, based partially on the Tundra theme.
+	Style definitions, based loosely on the Dijit Tundra theme.
 	Relative unit calculations based on "Compose to a Vertical Rhythm",
 	by Richard Rutter (http://24ways.org/2006/compose-to-a-vertical-rhythm)
 
@@ -58,7 +78,7 @@ abbr, acronym {
 	percent and px (% for IE, px for everything else). 
 	% value based on default size of 16px (in most browsers).
 	So if you want the default size to be 14px, set the 
-	% to 87% (14/16 = 0.875).
+	% to 87% (14 / 16 = 0.875).
 
 	Typical values:
 	10px: 62.5%
@@ -68,7 +88,7 @@ abbr, acronym {
 	14px: 87.5%
 	16px: 100%
 
-	Default: 13px, specified by the YUI imports, so we don't need to repeat ourselves
+	Default: 13px, specified by the YUI imports.
 */
 body { 
 	font: 13px "Myriad Pro",Myriad,Arial,Helvetica,clean,sans-serif; 
@@ -139,8 +159,17 @@ pre {
 	padding: 1.5em;
 }
 
-/* TODO: Double-check how these definitions will interfere with Dijits */
-/* tables */
+/*
+	Tables
+
+	Note that these table definitions make the assumption that you are using tables
+	to display tabular data, and NOT using tables as layout mechanisms.  If you are
+	using tables for layout, you will probably want to override these rules with
+	more specific ones.
+
+	These definitions make tabular data look presentable, particularly when presented
+	inline with paragraphs.
+*/
 table { 
 	font-size: 100%;
 	border-collapse: collapse; 

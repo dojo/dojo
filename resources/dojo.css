@@ -44,7 +44,7 @@ body, div, dl, dt, dd, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, t
 }
 
 fieldset, img {
-	border: 0;
+	border: 0 none;
 }
 
 address, caption, cite, code, dfn, th, var {
@@ -170,25 +170,29 @@ pre {
 	These definitions make tabular data look presentable, particularly when presented
 	inline with paragraphs.
 */
-table { 
-	font-size: 100%;
+table {  font-size:100%; }
+
+table.dojoTabular { 
 	border-collapse: collapse; 
 	border-spacing: 0; 
 	border: 1px solid #ccc; 
 	margin: 0 1.5em;
 }
 
-th { 
+.dojoTabular th { 
 	text-align: center; 
 	font-weight: bold;
 }
 
-table thead, table tfoot { 
+table.dojoTabular thead, table.dojoTabular tfoot { 
 	background-color: #efefef; 
 	border: 1px solid #ccc; 
 	border-width: 1px 0; 
 }
 
-thead tr th, thead tr td, tbody tr td, tfoot tr td { 
+table.dojoTabular thead tr th,
+table.dojoTabular thead tr td,
+table.dojoTabular tbody tr td,
+table.dojoTabular tfoot tr td { 
 	padding: 0.25em 0.5em;
 }

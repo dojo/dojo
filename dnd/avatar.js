@@ -40,7 +40,7 @@ dojo.extend(dojo.dnd.Avatar, {
 			node.id = "";
 			td.appendChild(node);
 			tr.appendChild(td);
-			dojo.style(tr, "opacity", (6 - i) / 10);
+			dojo.style(tr, "opacity", (9 - i) / 10);
 			b.appendChild(tr);
 		}
 		a.appendChild(b);

@@ -2,8 +2,13 @@ dojo.require("dojo._base.lang");
 dojo.provide("dojo._base.array");
 
 (function(){
-	var _getParts = function(arr, obj){
-		return [ (dojo.isString(arr) ? arr.split("") : arr), (obj||dojo.global) ];
+	var _getParts = function(arr, obj, cb){
+		return [ 
+			(dojo.isString(arr) ? arr.split("") : arr), 
+			(obj||dojo.global),
+			// FIXME: cache the anonymous functions we create here?
+			(dojo.isString(cb) ? (new Function("item", "index", "array", cb)) : cb)
+		];
 	}
 
 	dojo.mixin(dojo, {
@@ -54,16 +59,16 @@ dojo.provide("dojo._base.array");
 
 			// FIXME: there are several ways of handilng thisObject. Is
 			// dojo.global always the default context?
-			var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
-			for(var i=0,l=arr.length; i<l; i++){ 
-				callback.call(obj, arr[i], i, arr);
+			var _p = _getParts(arr, obj, callback); arr = _p[0];
+			for(var i=0,l=_p[0].length; i<l; i++){ 
+				_p[2].call(_p[1], arr[i], i, arr);
 			}
 		},
 
 		_everyOrSome: function(/*Boolean*/every, /*Array*/arr, /*Function*/callback, /*Object?*/obj){
-			var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
+			var _p = _getParts(arr, obj, callback); arr = _p[0];
 			for(var i = 0, l = arr.length; i < l; i++){
-				var result = !!callback.call(obj, arr[i], i, arr);
+				var result = !!_p[2].call(_p[1], arr[i], i, arr);
 				if(every ^ result){
 					return result; // Boolean
 				}
@@ -118,10 +123,10 @@ dojo.provide("dojo._base.array");
 			// usage:
 			//		dojo.map([1, 2, 3, 4], function(item){ return item+1 });
 			//		// returns [2, 3, 4, 5]
-			var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
+			var _p = _getParts(arr, obj, func); arr = _p[0];
 			var outArr = ((arguments[3]) ? (new arguments[3]()) : []);
 			for(var i=0;i<arr.length;++i){
-				outArr.push(func.call(obj, arr[i], i, arr));
+				outArr.push(_p[2].call(_p[1], arr[i], i, arr));
 			}
 			return outArr; // Array
 		},
@@ -139,10 +144,10 @@ dojo.provide("dojo._base.array");
 			//		dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
 			//		// returns [2, 3, 4]
 
-			var _p = _getParts(arr, obj); arr = _p[0]; obj = _p[1];
+			var _p = _getParts(arr, obj, callback); arr = _p[0];
 			var outArr = [];
 			for(var i = 0; i < arr.length; i++){
-				if(callback.call(obj, arr[i], i, arr)){
+				if(_p[2].call(_p[1], arr[i], i, arr)){
 					outArr.push(arr[i]);
 				}
 			}

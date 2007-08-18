@@ -269,7 +269,8 @@ if(typeof window != 'undefined'){
 			// summary:
 			//		non-destructively adds the specified function to the node's
 			//		evtName handler.
-			// evtName: should be in the form "click" for "onclick" handlers
+			// evtName: should be in the form "onclick" for "onclick" handlers.
+			// Make sure you pass in the "on" part.
 			var oldHandler = _w[evtName] || function(){};
 			_w[evtName] = function(){
 				fp.apply(_w, arguments);
@@ -306,8 +307,8 @@ if(typeof window != 'undefined'){
 				document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
 			}catch(e){}
 		}else{
-			// FIXME: dojo.unloaded requires dojo scope
-			_handleNodeEvent("beforeunload", dojo.unloaded);
+			// FIXME: dojo.unloaded requires dojo scope, so using anon function wrapper.
+			_handleNodeEvent("onbeforeunload", function() { dojo.unloaded(); });
 		}
 
 	})();

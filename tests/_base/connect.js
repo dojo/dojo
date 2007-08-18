@@ -196,6 +196,24 @@ tests.register("tests._base.connect",
 			t.is(true, foo.ok);
 			t.is(false, bar.ok);
 		},
+		function connectPublisher(t){
+			var foo = { inc: 0, foo: function(){ this.inc++; } };
+			var bar = { inc: 0, bar: function(){ this.inc++; } };
+			var c1h = dojo.connectPublisher("/blah", foo, "foo");
+			var c2h = dojo.connectPublisher("/blah", foo, "foo");
+			dojo.subscribe("/blah", bar, "bar");
+			foo.foo();
+			t.is(1, foo.inc);
+			t.is(2, bar.inc);
+			dojo.disconnect(c1h);
+			foo.foo();
+			t.is(2, foo.inc);
+			t.is(3, bar.inc);
+			dojo.disconnect(c2h);
+			foo.foo();
+			t.is(3, foo.inc);
+			t.is(3, bar.inc);
+		},
 		function publishSubscribe1000(t){
 			t.is(markAndSweepSubscribersTest(1000), 0);
 		}

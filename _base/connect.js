@@ -158,7 +158,7 @@ dojo.connect = function(/*Object|null*/ obj,
 	var a1 = a[i+1];
 	args.push(dojo.isString(a1)||dojo.isFunction(a1) ? a[i++] : null, a[i++]);
 	// absorb any additional arguments
-	for (var l=a.length; i<l; i++){	args.push(a[i]); }
+	for(var l=a.length; i<l; i++){	args.push(a[i]); }
 	// do the actual work
 	return dojo._connect.apply(this, args); /*Handle*/
 }
@@ -176,7 +176,7 @@ dojo.disconnect = function(/*Handle*/ handle){
 	//		Removes the connection between event and the method referenced by handle.
 	// handle:
 	//		the return value of the dojo.connect call that created the connection.
-	if (handle && handle[0] !== undefined){
+	if(handle && handle[0] !== undefined){
 		dojo._disconnect.apply(this, handle);
 		// let's not keep this reference
 		delete handle[0];
@@ -233,10 +233,33 @@ dojo.publish = function(/*String*/ topic, /*Array*/ args){
 	//		to each topic subscriber (as first class parameters, via apply).
 	// usage:
 	//		dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
-	//		dojo.publish("alerts", [ "read this", "hello world" ]);																	
+	//		dojo.publish("alerts", [ "read this", "hello world" ]);	
 	
-	// Note that args is an array, which is more efficient vs variable length argument list.
-	// Ideally, var args would be implemented via Array throughout the APIs.
+	// Note that args is an array, which is more efficient vs variable length
+	// argument list.  Ideally, var args would be implemented via Array
+	// throughout the APIs.
 	var f = dojo._topics[topic];
 	(f)&&(f.apply(this, args||[]));
 }
+
+dojo.connectPublisher = function(	/*String*/ topic, 
+									/*Object|null*/ obj, 
+									/*String*/ event){
+	// summary:
+	//		Ensure that everytime obj.event() is called, a message is published
+	//		on the topic. Returns a handle which can be passed to
+	//		dojo.disconnect() to disable subsequent automatic publication on
+	//		the topic.
+	// topic:
+	//		The name of the topic to publish.
+	// obj: 
+	//		The source object for the event function. Defaults to dojo.global
+	//		if null.
+	// event:
+	//		String name of the event function in obj. 
+	//		I.e. identifies a property obj[event].
+	// usage:
+	//		dojo.connectPublisher("/ajax/start", dojo, "xhrGet"};
+	var pf = function(){ dojo.publish(topic, arguments); }
+	return (event) ? dojo.connect(obj, event, pf) : dojo.connect(obj, pf);
+};

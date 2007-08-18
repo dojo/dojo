@@ -178,6 +178,16 @@ dojo.require("dojo._base.array");
 			return (arguments.length > 1) ? this : s; // String||dojo.NodeList
 		},
 
+		addClass: function(/*String*/ className){
+			return this.forEach(function(i){ dojo.addClass(i, className); });
+		},
+
+		removeClass: function(/*String*/ className){
+			return this.forEach(function(i){ dojo.removeClass(i, className); });
+		},
+
+		// FIXME: toggleClass()? connectPublisher()? connectRunOnce()?
+
 		place: function(/*String||Node*/ queryOrNode, /*String*/ position){
 			//	summary:
 			//		places elements of this node list relative to the first element matched
@@ -417,4 +427,38 @@ dojo.require("dojo._base.array");
 		}
 
 	});
+
+	// syntactic sugar for DOM events
+	dojo.forEach([
+		"mouseover", "click", "mouseout", "mousemove", "blur", "mousedown",
+		"mouseup", "mousemove", "keydown", "keyup", "keypress"
+		], function(evt){
+			var _oe = "on"+evt;
+			dojo.NodeList.prototype[_oe] = function(a, b){
+				return this.connect(_oe, a, b);
+			}
+				// FIXME: should these events trigger publishes?
+				/*
+				return (a ? this.connect(_oe, a, b) : 
+							this.forEach(function(n){  
+								// FIXME:
+								//		listeners get buried by
+								//		addEventListener and can't be dug back
+								//		out to be triggered externally.
+								// see:
+								//		http://developer.mozilla.org/en/docs/DOM:element
+
+								console.debug(n, evt, _oe);
+
+								// FIXME: need synthetic event support!
+								var _e = { target: n, faux: true, type: evt };
+								// dojo._event_listener._synthesizeEvent({}, { target: n, faux: true, type: evt });
+								try{ n[evt](_e); }catch(e){ console.debug(e); }
+								try{ n[_oe](_e); }catch(e){ console.debug(e); }
+							})
+				);
+			}
+			*/
+		}
+	);
 })();

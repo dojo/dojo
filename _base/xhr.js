@@ -426,8 +426,8 @@ dojo._contentHandlers = {
 	var _makeXhrDeferred = function(/*Object*/args){
 		//summary: makes the Deferred object for this xhr request.
 		var dfd = dojo._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
-		//Pass the url to _xhrObj, to allow xhr iframe proxy interceptions.
-		dfd.ioArgs.xhr = dojo._xhrObj(dfd.ioArgs.url);
+		//Pass the args to _xhrObj, to allow xhr iframe proxy interceptions.
+		dfd.ioArgs.xhr = dojo._xhrObj(dfd.ioArgs.args);
 		return dfd;
 	}
 

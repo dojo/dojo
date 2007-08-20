@@ -162,7 +162,7 @@
 						// layout DOM functions
 						function coords(t){
 							var tnl = new dojo.NodeList(dojo.byId('sq100'))
-							t.t(tnl instanceof Array);
+							t.t(dojo.isArray(tnl));
 							t.is(100, tnl.coords()[0].w);
 							t.is(100, tnl.coords()[0].h);
 							t.is(document.body.getElementsByTagName("*").length, dojo.query("body *").coords().length);

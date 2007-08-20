@@ -277,8 +277,8 @@ dojo.require("dojo._base.connect");
 				if(evt.type == "mouseout"){ 
 					evt.relatedTarget = evt.toElement;
 				}
-				evt.stopPropagation = this._stopPropagation;
-				evt.preventDefault = this._preventDefault;
+				evt.stopPropagation = del._stopPropagation;
+				evt.preventDefault = del._preventDefault;
 				return del._fixKeys(evt);
 			},
 			_fixKeys: function(evt){

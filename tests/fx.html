@@ -11,29 +11,6 @@
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
-						function wipeOut(t){
-							dojo.byId("foo").style.height = "";
-							var s = dojo.fx.wipeOut({node: "foo", duration: 500 });
-							var d = new doh.Deferred();
-							dojo.connect(s, "onEnd", function(){
-								d.callback();
-							});
-							s.play();
-							return d;
-						},
-						
-						function wipeIn(t){
-							dojo.byId("foo").style.height = "0px";
-							var s = dojo.fx.wipeIn({node: "foo", duration: 500 }).play();
-							var d = new doh.Deferred();
-							dojo.connect(s, "onEnd", function(){
-								doh.t(dojo.style("foo", "height") != 0);
-								d.callback();
-							});
-							s.play();
-							return d;
-						},
-						
 						function slideTo(t){
 							var s = dojo.fx.slideTo({
 								node: "foo",
@@ -45,14 +22,43 @@
 							dojo.connect(s, "onEnd", function(){
 								doh.is(dojo.style("foo", "left"), 500);
 								doh.is(dojo.style("foo", "top"), 50);
-								d.callback();
 								with(dojo.byId("foo").style){
 									position = left = top = "";
 								}
+								d.callback(true);
 							});
 							s.play();
 							return d;
 						},
+
+						function wipeOut(t){
+							dojo.byId("foo").style.height = "";
+							var d = new doh.Deferred();
+							var s = dojo.fx.wipeOut({
+								node: "foo",
+								duration: 500,
+								onEnd: function(){
+									doh.t(dojo.style("foo", "height") < 5);
+									d.callback(true);
+								}
+							}).play();
+							return d;
+						},
+						
+						function wipeIn(t){
+							dojo.byId("foo").style.height = "0px";
+							var d = new doh.Deferred();
+							dojo.fx.wipeIn({
+								node: "foo", 
+								duration: 500,
+								onEnd: function(){
+									doh.t(dojo.style("foo", "height") != 0);
+									d.callback(true);
+								}
+							}).play();
+							return d;
+						},
+						
 						
 						function Toggler(){
 							var d = new doh.Deferred();
@@ -65,10 +71,10 @@
 							t.hide();
 							setTimeout(function(){
 								var sa = t.show();
-								dojo.connect(sa, "onEnd", d, "callback");
+								dojo.connect(sa, "onEnd", dojo.hitch(d, "callback", true));
 							}, 500);
 							return d;
-						},
+						}/*,
 						
 						function chain(t){
 							doh.t(false);
@@ -77,6 +83,7 @@
 						function combine(t){
 							doh.t(false);
 						}
+						*/
 					]
 				);
 				doh.run();

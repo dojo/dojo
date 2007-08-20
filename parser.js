@@ -124,7 +124,7 @@ dojo.parser = new function(){
 			var mode = script.getAttribute("type");
 			if(mode && (mode == "dojo/connect")){
 				// FIXME: need to implement EL here!!
-				d.connect(instance, source, instance, nf);
+				d.connect(instance, source, null, nf);
 			}else{ 
 				// otherwise we assume it's type "dojo/method", and therefore a
 				// replacement

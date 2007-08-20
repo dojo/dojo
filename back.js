@@ -98,7 +98,7 @@ dojo.provide("dojo.back");
 	
 	function loadIframeHistory(){
 		//summary: private method. Do not call this directly.
-		var url = (djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?domain="+encodeURIComponent(document.domain) + "&" + (new Date()).getTime();
+		var url = (djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
         if (historyIframe) {
 		    (dojo.isSafari) ? historyIframe.location = url : window.frames[historyIframe.name].location = url;

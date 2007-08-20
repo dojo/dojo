@@ -8,8 +8,6 @@
 	<script type="text/javascript">
 	// <!--
 	var noInit = false;
-	var domain = "";
-	// document.domain = "localhost";
 	
 	function defineParams(sparams){
 		if(sparams){
@@ -48,9 +46,6 @@
 		defineParams(frag);
 
 		if(noInit){ return; }
-		if(domain.length > 0){
-			document.domain = domain;
-		}
 		var hasParentDojo = false;
 		try{
 			hasParentDojo = window.parent != window && window.parent["dojo"];

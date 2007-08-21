@@ -179,11 +179,13 @@ dojo.require("dojo._base.array");
 		},
 
 		addClass: function(/*String*/ className){
-			return this.forEach(function(i){ dojo.addClass(i, className); });
+			this.forEach(function(i){ dojo.addClass(i, className); });
+			return this;
 		},
 
 		removeClass: function(/*String*/ className){
-			return this.forEach(function(i){ dojo.removeClass(i, className); });
+			this.forEach(function(i){ dojo.removeClass(i, className); });
+			return this;
 		},
 
 		// FIXME: toggleClass()? connectPublisher()? connectRunOnce()?

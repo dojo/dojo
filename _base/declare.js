@@ -124,11 +124,13 @@ dojo.mixin(dojo.declare, {
 			//		need to provide an optional prototype-settable
 			//		"_explicitSuper" property which disables this
 			// initialize superclass
-			if(ct&&ct.apply){ct.apply(this, a)};
+			if(ct&&ct.apply){ct.apply(this, a);}
 			// initialize mixin
-			if(mct&&mct.apply){mct.apply(this, a)};
+			if(mct&&mct.apply){mct.apply(this, a);}
 			// initialize self
 			if(ii=c.prototype._constructor){ii.apply(this, args);}
+			// post construction
+			if(this.constructor.prototype==c.prototype && (ct=this.postscript)){ct.apply(this, args)};
 		},
 		_findMixin: function(mixin){
 			var c = this.constructor, p, m;

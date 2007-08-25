@@ -67,7 +67,7 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	return output.join(""); //String
 }
 
-dojo.xdIsXDomainPath = function(/*string*/relpath) {
+dojo._xdIsXDomainPath = function(/*string*/relpath) {
     //summary: Figure out whether the path is local or x-domain
 	//If there is a colon before the first / then, we have a URL with a protocol.
     
@@ -77,10 +77,16 @@ dojo.xdIsXDomainPath = function(/*string*/relpath) {
 	if(colonIndex > 0 && colonIndex < slashIndex){
 		return true;
 	}else{
-		//Is ithe base script URI-based URL a cross domain URL?
-		colonIndex = this.baseUrl.indexOf(":");
-		slashIndex = this.baseUrl.indexOf("/");
-		if(colonIndex > 0 && colonIndex < slashIndex && (!location.host || uri.indexOf("http://" + location.host) != 0)){
+		//Is the base script URI-based URL a cross domain URL?
+		//If so, then the relpath will be evaluated relative to
+		//baseUrl, and therefore qualify as xdomain.
+		//Only treat it as xdomain if the page does not have a
+		//host (file:// url) or if the baseUrl does not match the
+		//current window's domain.
+		var url = this.baseUrl;
+		colonIndex = url.indexOf(":");
+		slashIndex = url.indexOf("/");
+		if(colonIndex > 0 && colonIndex < slashIndex && (!location.host || url.indexOf("http://" + location.host) != 0)){
 			return true;
 		}
 	}
@@ -91,7 +97,7 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
 	//summary: Internal xd loader function. Overrides loadPath() from loader.js.
 	//xd loading requires slightly different behavior from loadPath().
 
-	var currentIsXDomain = this.xdIsXDomainPath(relpath);
+	var currentIsXDomain = this._xdIsXDomainPath(relpath);
     this._isXDomain |= currentIsXDomain;
 
 	var uri = this.baseUrl + relpath;
@@ -378,7 +384,7 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
     // local or xd. Overrides the local-case implementation.
     
     var modulePath = this.moduleUrl(moduleName).toString();
-    if (this.xdIsXDomainPath(modulePath)) {
+    if (this._xdIsXDomainPath(modulePath)) {
         // call cross-domain loader
         return dojo.xdRequireLocalization.apply(dojo, arguments);
     } else {

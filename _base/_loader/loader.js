@@ -58,6 +58,7 @@
 	}
 })();
 
+//>>excludeStart("xdomainExclude", fileName.indexOf("dojo.xd.js") != -1 && kwArgs.loader == "xdomain");
 dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb){
 	// 	summary:
 	//		Load a Javascript module given a relative path
@@ -116,6 +117,7 @@ dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
 	if(cb){ cb(value); }
 	return true; // Boolean
 }
+//>>excludeEnd("xdomainExclude");
 
 // FIXME: probably need to add logging to this method
 dojo._loadUriAndCheck = function(/*String (URL)*/uri, /*String*/moduleName, /*Function?*/cb){

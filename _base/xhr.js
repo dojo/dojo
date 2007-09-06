@@ -445,20 +445,20 @@ dojo._contentHandlers = {
 		// during a sync call and this results in another sync call before the
 		// first sync call ends the browser hangs
 		if(!dojo._blockAsync){
-			dojo.forEach(_inFlight, function(tif, arrIdx){
-				if(!tif){ return; }
+			// we need manual loop because we often modify _inFlight (and therefore 'i') while iterating
+			// note: the second clause is an assigment on purpose, lint may complain
+			for (var i=0,tif; (i<_inFlight.length)&&(tif=_inFlight[i]); i++){
 				var dfd = tif.dfd;
 				try{
 					if(!dfd || dfd.canceled || !tif.validCheck(dfd)){
-						_inFlight.splice(arrIdx, 1); return;
-					}
-					if(tif.ioCheck(dfd)){
-						_inFlight.splice(arrIdx, 1); // clean refs
+						_inFlight.splice(i--, 1); 
+					}else if(tif.ioCheck(dfd)){
+						_inFlight.splice(i--, 1);
 						tif.resHandle(dfd);
 					}else if(dfd.startTime){
 						//did we timeout?
 						if(dfd.startTime + (dfd.ioArgs.args.timeout||0) < now){
-							_inFlight.splice(arrIdx, 1); // clean refs
+							_inFlight.splice(i--, 1);
 							var err = new Error("timeout exceeded");
 							err.dojoType = "timeout";
 							dfd.errback(err);
@@ -471,7 +471,7 @@ dojo._contentHandlers = {
 					console.debug(e);
 					dfd.errback(new Error("_watchInFlightError!"));
 				}
-			});
+			}
 		}
 
 		if(!_inFlight.length){

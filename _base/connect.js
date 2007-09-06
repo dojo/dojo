@@ -64,7 +64,7 @@ dojo._listener = {
 	remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
 		var f = (source||dojo.global)[method];
 		// remember that handle is the index+1 (0 is not a valid handle)
-		if(f && f._listeners && handle--){	
+		if(f && f._listeners && handle--){
 			delete f._listeners[handle]; 
 		}
 	}

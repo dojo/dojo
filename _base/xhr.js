@@ -447,7 +447,7 @@ dojo._contentHandlers = {
 		if(!dojo._blockAsync){
 			// we need manual loop because we often modify _inFlight (and therefore 'i') while iterating
 			// note: the second clause is an assigment on purpose, lint may complain
-			for (var i=0,tif; (i<_inFlight.length)&&(tif=_inFlight[i]); i++){
+			for(var i=0, tif; (i<_inFlight.length)&&(tif=_inFlight[i]); i++){
 				var dfd = tif.dfd;
 				try{
 					if(!dfd || dfd.canceled || !tif.validCheck(dfd)){

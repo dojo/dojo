@@ -1,4 +1,39 @@
 dojo.provide("dojo._firebug.firebug");
+
+dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
+	// summary: 
+	//		Log a debug message to indicate that a behavior has been
+	//		deprecated.
+	// extra: Text to append to the message.
+	// removal: 
+	//		Text to indicate when in the future the behavior will be removed.
+	var message = "DEPRECATED: " + behaviour;
+	if(extra){ message += " " + extra; }
+	if(removal){ message += " -- will be removed in version: " + removal; }
+	console.debug(message);
+}
+
+dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
+	// summary: Marks code as experimental.
+	// description: 
+	//		This can be used to mark a function, file, or module as
+	//		experimental.  Experimental code is not ready to be used, and the
+	//		APIs are subject to change without notice.  Experimental code may be
+	//		completed deleted without going through the normal deprecation
+	//		process.
+	// moduleName: 
+	//		The name of a module, or the name of a module file or a specific
+	//		function
+	// extra: 
+	//		some additional message for the user
+	// examples:
+	//		dojo.experimental("dojo.data.Result");
+	//		dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
+	var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
+	if(extra){ message += " " + extra; }
+	console.debug(message);
+}
+
 if(
 	(
 		(!("console" in window)) || 

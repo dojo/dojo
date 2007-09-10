@@ -4,61 +4,80 @@ dojo.require("dojo._base.json");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.query");
 
-dojo.formToObject = function(/*DOMNode||String*/ formNode){
-	// summary:
-	//		dojo.formToObject returns the values encoded in an HTML form as
-	//		string properties in an object which it then returns. Disabled form
-	//		elements, buttons, and other non-value form elements are skipped.
-	//		Multi-select elements are returned as an array of string values.
-	// description:
-	//		This form:
-	//
-	//			<form id="test_form">
-	//				<input type="text" name="blah" value="blah">
-	//				<input type="text" name="no_value" value="blah" disabled>
-	//				<input type="button" name="no_value2" value="blah">
-	//				<select type="select" multiple name="multi" size="5">
-	//					<option value="blah">blah</option>
-	//					<option value="thud" selected>thud</option>
-	//					<option value="thonk" selected>thonk</option>
-	//				</select>
-	//			</form>
-	//
-	//		yields this object structure as the result of a call to
-	//		formToObject():
-	//
-	//			{ 
-	//				blah: "blah",
-	//				multi: [
-	//					"thud",
-	//					"thonk"
-	//				]
-	//			};
-
-	// FIXME: seems that dojo.query needs negation operators!!
-	var ret = {};
-	var iq = "input[type!=file][type!=submit][type!=image][type!=reset][type!=button], select, textarea";
-	dojo.query(iq, formNode).filter(function(node){
-		return (!node.disabled);
-	}).forEach(function(item){
-		var _in = item.name;
-		var type = (item.type||"").toLowerCase();
-		if((type == "radio")||(type == "checkbox")){
-			if(item.checked){ ret[_in] = item.value; }
-		}else if(item.multiple){
-			var ria = ret[_in] = [];
-			dojo.query("option[selected]", item).forEach(function(opt){
-				ria.push(opt.value);
-			});
-		}else{ 
-			ret[_in] = item.value;
-			if(type == "image"){
-				ret[_in+".x"] = ret[_in+".y"] = ret[_in].x = ret[_in].y = 0;
-			}
+(function(){
+	function setValue(/*Object*/obj, /*String*/name, /*String*/value){
+		//summary:
+		//		For the nameed property in object, set the value. If a value
+		//		already exists and it is a string, convert the value to be an
+		//		array of values.
+		var val = obj[name];
+		if(dojo.isString(val)){
+			obj[name] = [val, value];
+		}else if(dojo.isArray(val)){
+			val.push(value);
+		}else{
+			obj[name] = value;
 		}
-	});
-	return ret;
-}
+	}
+
+	dojo.formToObject = function(/*DOMNode||String*/ formNode){
+		// summary:
+		//		dojo.formToObject returns the values encoded in an HTML form as
+		//		string properties in an object which it then returns. Disabled form
+		//		elements, buttons, and other non-value form elements are skipped.
+		//		Multi-select elements are returned as an array of string values.
+		// description:
+		//		This form:
+		//
+		//			<form id="test_form">
+		//				<input type="text" name="blah" value="blah">
+		//				<input type="text" name="no_value" value="blah" disabled>
+		//				<input type="button" name="no_value2" value="blah">
+		//				<select type="select" multiple name="multi" size="5">
+		//					<option value="blah">blah</option>
+		//					<option value="thud" selected>thud</option>
+		//					<option value="thonk" selected>thonk</option>
+		//				</select>
+		//			</form>
+		//
+		//		yields this object structure as the result of a call to
+		//		formToObject():
+		//
+		//			{ 
+		//				blah: "blah",
+		//				multi: [
+		//					"thud",
+		//					"thonk"
+		//				]
+		//			};
+	
+		// FIXME: seems that dojo.query needs negation operators!!
+		var ret = {};
+		var iq = "input[type!=file][type!=submit][type!=image][type!=reset][type!=button], select, textarea";
+		dojo.query(iq, formNode).filter(function(node){
+			return (!node.disabled);
+		}).forEach(function(item){
+			var _in = item.name;
+			var type = (item.type||"").toLowerCase();
+			if((type == "radio")||(type == "checkbox")){
+				if(item.checked){ setValue(ret, _in, item.value); }
+			}else if(item.multiple){
+				ret[_in] = [];
+				dojo.query("option", item).forEach(function(opt){
+					if(opt.selected){
+						setValue(ret, _in, opt.value);
+					}
+				});
+			}else{ 
+				setValue(ret, _in, item.value);
+				if(type == "image"){
+					ret[_in+".x"] = ret[_in+".y"] = ret[_in].x = ret[_in].y = 0;
+				}
+			}
+		});
+		return ret;
+	}
+})();
 
 dojo.objectToQuery = function(/*Object*/ map){
 	//	summary:

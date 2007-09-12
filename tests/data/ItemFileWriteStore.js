@@ -401,6 +401,30 @@ doh.register("tests.data.ItemFileWriteStore",
 			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
 			return deferred; //Object
 		},
+		function testWriteAPI_saveVerifyState(){
+			//	summary: 
+			//		Simple test of the save API
+			//	description:
+			//		Simple test of the save API
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+
+			var deferred = new doh.Deferred();
+			function onError(error){
+				deferred.errback(error);
+			}
+			function onItem(item){
+				store.setValue(item, "capital", "New Cairo");
+				function onComplete() {
+					//Check internal state.  Note:  Users should NOT do this, this is a UT verification
+					//of internals in this case.  Ref tracker: #4394
+					doh.assertTrue(!store._saveInProgress);
+					deferred.callback(true);
+				}
+				store.save({onComplete:onComplete, onError:onError});
+			}
+			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
+			return deferred; //Object
+		},
 		function testWriteAPI_saveEverything(){
 			//	summary: 
 			//		Simple test of the save API

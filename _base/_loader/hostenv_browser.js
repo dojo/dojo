@@ -288,3 +288,10 @@ if(typeof window != 'undefined'){
 if(djConfig.isDebug){
 		dojo.require("dojo._firebug.firebug");
 }
+
+if(djConfig.debugAtAllCosts){
+	djConfig.useXDomain = true;
+	dojo.require("dojo._base._loader.loader_xd");
+	dojo.require("dojo._base._loader.loader_debug");
+	dojo.require("dojo.i18n");
+}

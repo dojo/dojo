@@ -1,4 +1,5 @@
 //Cross-domain resource loader.
+dojo.provide("dojo._base._loader.loader_xd");
 
 dojo._xdReset = function(){
 	//summary: Internal xd loader function. Resets the xd state.
@@ -25,11 +26,27 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	//summary: Internal xd loader function. Creates an xd module source given an
 	//non-xd module contents.
 
+	//Remove comments.
+	//Get rid of multiline comments.
+	var depContents = contents;
+	var startIndex = -1;
+	while((startIndex = depContents.indexOf("/*")) != -1){
+		var endIndex = depContents.indexOf("*/", startIndex + 2);
+		if(endIndex == -1){
+			throw "Improper comment in file: " + resourcePath;
+		}
+		depContents = depContents.substring(0, startIndex) + depContents.substring(endIndex + 2, depContents.length);
+	}
+
+	//Get rid of single line comments.
+	depContents = depContents.replace(/\/\/(.*)$/mg , "");
+
+
 	//Find dependencies.
 	var deps = [];
     var depRegExp = /dojo.(require|requireIf|provide|requireAfterIf|platformRequire|requireLocalization)\(([\w\W]*?)\)/mg;
     var match;
-	while((match = depRegExp.exec(contents)) != null){
+	while((match = depRegExp.exec(depContents)) != null){
 		if(match[1] == "requireLocalization"){
 			//Need to load the local bundles asap, since they are not
 			//part of the list of modules watched for loading.
@@ -59,7 +76,14 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	//Pass in dojo as an argument to the function to help with
 	//allowing multiple versions of dojo in a page.
 	output.push("\ndefineResource: function(dojo){");
-	output.push(contents);
+	
+	//Don't put in the contents in the debugAtAllCosts case
+	//since the contents may have syntax errors. Let those
+	//get pushed up when the script tags are added to the page
+	//in the debugAtAllCosts case.
+	if(!djConfig["debugAtAllCosts"] || resourceName == "dojo._base._loader.loader_debug"){
+		output.push(contents);
+	}
 	//Add isLocal property so we know if we have to do something different
 	//in debugAtAllCosts situations.
 	output.push("\n}, resourceName: '" + resourceName + "', resourcePath: '" + resourcePath + "'});");
@@ -132,8 +156,9 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 	//Add the module (resource) to the list of modules.
 	//Only do this work if we have a modlue name. Otherwise, 
 	//it is a non-xd i18n bundle, which can load immediately and does not 
-	//need to be tracked. 
-	if(this._isXDomain && module){
+	//need to be tracked. Also, don't track dojo.i18n, since it is a prerequisite
+	//and will be loaded correctly if we load it right away: it has no dependencies.
+	if(this._isXDomain && module && module != "dojo.i18n"){
  		//If this is a __package__.js file, then this must be
 		//a package.* request (since xdomain can only work with the first
 		//path in a package search list. However, .* module names are not
@@ -195,7 +220,9 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 		
 		//If this is not xdomain, or if loading a i18n resource bundle, then send it down
 		//the normal eval/callback path.
-		if(this._isXDomain && uri.indexOf("/nls/") == -1){
+		if(this._isXDomain
+			&& uri.indexOf("/nls/") == -1
+			&& module != "dojo.i18n"){
 			var res = this._xdCreateResource(contents, module, uri);
 			dojo.eval(res);
 		}else{
@@ -260,17 +287,24 @@ dojo._xdResourceLoaded = function(/*Object*/res){
 			}
 		}
 
-		//Save off the resource contents for definition later.
-		var contentIndex = this._xdContents.push({
-				content: res.defineResource,
-				resourceName: res["resourceName"],
-				resourcePath: res["resourcePath"],
-				isDefined: false
-			}) - 1;
 
-		//Add provide/requires to dependency map.
-		for(var i = 0; i < provideList.length; i++){
-			this._xdDepMap[provideList[i]] = { requires: requireList, requiresAfter: requireAfterList, contentIndex: contentIndex };
+		//If loading the debugAtAllCosts module, eval it right away since we need
+		//its functions to properly load the other modules.
+		if(provideList.length == 1 && provideList[0] == "dojo._base._loader.loader_debug"){
+			res.defineResource(dojo);
+		}else{
+			//Save off the resource contents for definition later.
+			var contentIndex = this._xdContents.push({
+					content: res.defineResource,
+					resourceName: res["resourceName"],
+					resourcePath: res["resourcePath"],
+					isDefined: false
+				}) - 1;
+	
+			//Add provide/requires to dependency map.
+			for(var i = 0; i < provideList.length; i++){
+				this._xdDepMap[provideList[i]] = { requires: requireList, requiresAfter: requireAfterList, contentIndex: contentIndex };
+			}
 		}
 
 		//Now update the inflight status for any provided resources in this loaded resource.
@@ -597,7 +631,7 @@ dojo._xdWatchInFlight = function(){
 	this._xdReset();
 
 	if(this["_xdDebugQueue"] && this._xdDebugQueue.length > 0){
-		this.xdDebugFileLoaded();
+		this._xdDebugFileLoaded();
 	}else{
 		this._xdNotifyLoaded();
 	}

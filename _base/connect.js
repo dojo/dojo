@@ -239,7 +239,9 @@ dojo.publish = function(/*String*/ topic, /*Array*/ args){
 	// argument list.  Ideally, var args would be implemented via Array
 	// throughout the APIs.
 	var f = dojo._topics[topic];
-	(f)&&(f.apply(this, args||[]));
+	if(f){
+		f.apply(this, args||[]);
+	}
 }
 
 dojo.connectPublisher = function(	/*String*/ topic, 

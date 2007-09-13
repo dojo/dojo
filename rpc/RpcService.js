@@ -19,7 +19,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 
 				def.addCallback(this, "processSmd");
 				def.addErrback(function() {
-					throw new Error("Unable to load SMD from " . args);					
+					throw new Error("Unable to load SMD from " + args);
 				});
 
 			}else if(args["smdStr"]){

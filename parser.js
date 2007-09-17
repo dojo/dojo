@@ -137,8 +137,17 @@ dojo.parser = new function(){
 			for(var name in clsInfo.params){
 				var item = attributes.getNamedItem(name);
 				if(!item || (!item.specified && (!dojo.isIE || name.toLowerCase()!="value"))){ continue; }
+				var value = item.value;
+				// Deal with IE quirks for 'class' and 'style'
+				switch(name){
+				case "class":
+					value = node.className;
+					break;
+				case "style":
+					value = node.style && node.style.cssText; // FIXME: Opera?
+				}
 				var _type = clsInfo.params[name];
-				params[name] = str2obj(item.value, _type);
+				params[name] = str2obj(value, _type);
 			}
 
 			// Process <script type="dojo/*"> script tags

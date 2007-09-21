@@ -67,7 +67,7 @@ dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
 		}
 	}
 	// IE doesn't recognize custom toStrings in for..in
-	if(dojo.isIE){
+	if(dojo.isIE && props){
 		var p = props.toString;
 		if(typeof p == "function" && p != obj.toString && p != tobj.toString &&
 			p != "\nfunction toString() {\n    [native code]\n}\n"){

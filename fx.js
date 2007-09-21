@@ -89,13 +89,11 @@ dojo.declare("dojo.fx.Toggler", null, {
 	_isHiding: false,
 
 	show: function(delay){
-		delay = delay||0;
-		return this.showAnim.play(delay);
+		return this.showAnim.play(delay || 0);
 	},
 
 	hide: function(delay){
-		delay = delay||0;
-		return this.hideAnim.play(delay);
+		return this.hideAnim.play(delay || 0);
 	}
 });
 
@@ -174,7 +172,7 @@ dojo.fx.slideTo = function(/*Object?*/ args){
 	//		defined in args Object from its current position to
 	//		the position defined by (args.left, args.top).
 
-	var node = args.node = dojo.byId(args.node);
+	var node = (args.node = dojo.byId(args.node));
 	var compute = dojo.getComputedStyle;
 	
 	var top = null;
@@ -195,7 +193,7 @@ dojo.fx.slideTo = function(/*Object?*/ args){
 				innerNode.style.top=top+"px";
 				innerNode.style.left=left+"px";
 			}
-		}
+		};
 	})();
 	init();
 

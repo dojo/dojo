@@ -9,7 +9,8 @@ dojo.isString = function(/*anything*/ it){
 
 dojo.isArray = function(/*anything*/ it){
 	// summary: Return true of it is an Array
-	return it && it instanceof Array || typeof it == "array" || ((typeof dojo.NodeList != "undefined") && (it instanceof dojo.NodeList)); // Boolean
+	return it && it instanceof Array || typeof it == "array" ||
+		((typeof dojo.NodeList != "undefined") && (it instanceof dojo.NodeList)); // Boolean
 }
 
 if(dojo.isBrowser && dojo.isSafari){
@@ -35,13 +36,12 @@ dojo.isArrayLike = function(/*anything*/ it){
 	// return:
 	//		If it walks like a duck and quicks like a duck, return true
 	var d = dojo;
-	// keep out built-in constructors (Number, String, ...) which have length
-	// properties
-	if(!it || typeof it == "undefined" || d.isString(it) || d.isFunction(it)){ return false; } 
-	if(d.isArray(it)){ return true; }
-	if(it.tagName && it.tagName.toLowerCase() == 'form'){ return false; }
-	if(isFinite(it.length)){ return true; }
-	return false; // Boolean
+	return it && typeof it != "undefined" &&
+		// keep out built-in constructors (Number, String, ...) which have length
+		// properties
+		!d.isString(it) && !d.isFunction(it) &&
+		!(it.tagName && it.tagName.toLowerCase() == 'form') &&
+		(d.isArray(it) || isFinite(it.length)); // Boolean
 }
 
 dojo.isAlien = function(/*anything*/ it){
@@ -129,7 +129,7 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	//		dojo.hitch(foo, "bar")(); // runs foo.bar() in the scope of foo
 	//		dojo.hitch(foo, myFunction); // returns a function that runs myFunction in the scope of foo
 	if(arguments.length > 2){
-		return dojo._hitchArgs.apply(dojo, arguments);
+		return dojo._hitchArgs.apply(dojo, arguments); // Function
 	}
 	if(!method){
 		method = scope;
@@ -138,10 +138,9 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	if(dojo.isString(method)){
 		scope = scope || dojo.global;
 		if(!scope[method]){ throw(['dojo.hitch: scope["', method, '"] is null (scope="', scope, '")'].join('')); }
-		return function(){ return scope[method].apply(scope, arguments||[]); }
-	}else{
-		return !scope ? method : function(){ return method.apply(scope, arguments||[]); };
+		return function(){ return scope[method].apply(scope, arguments || []); }; // Function
 	}
+	return !scope ? method : function(){ return method.apply(scope, arguments || []); }; // Function
 }
 
 dojo._delegate = function(obj, props){
@@ -152,7 +151,7 @@ dojo._delegate = function(obj, props){
 	if(props){
 		dojo.mixin(tmp, props);
 	}
-	return tmp;
+	return tmp; // Object
 }
 
 dojo.partial = function(/*Function|String*/method /*, ...*/){
@@ -162,7 +161,7 @@ dojo.partial = function(/*Function|String*/method /*, ...*/){
 	//		functional equivalent of calling:
 	//		dojo.hitch(null, funcName, ...);
 	var arr = [ null ];
-	return dojo.hitch.apply(dojo, arr.concat(dojo._toArray(arguments)));
+	return dojo.hitch.apply(dojo, arr.concat(dojo._toArray(arguments))); // Function
 }
 
 dojo._toArray = function(/*Object*/obj, /*Number?*/offset){
@@ -170,10 +169,10 @@ dojo._toArray = function(/*Object*/obj, /*Number?*/offset){
 	//		Converts an array-like object (i.e. arguments, DOMCollection)
 	//		to an array. Returns a new Array object.
 	var arr = [];
-	for(var x= offset || 0; x < obj.length; x++){
+	for(var x = offset || 0; x < obj.length; x++){
 		arr.push(obj[x]);
 	}
-	return arr;
+	return arr; // Array
 }
 
 dojo.clone = function(/*anything*/ o){
@@ -186,10 +185,10 @@ dojo.clone = function(/*anything*/ o){
 		for(var i = 0; i < o.length; ++i){
 			r.push(dojo.clone(o[i]));
 		}
-		return r;
+		return r; // Array
 	}else if(dojo.isObject(o)){
 		if(o.nodeType && o.cloneNode){ // isNode
-			return o.cloneNode(true);
+			return o.cloneNode(true); // Node
 		}else{
 			var r = new o.constructor(); // specific to dojo.declare()'d classes!
 			for(var i in o){
@@ -197,10 +196,10 @@ dojo.clone = function(/*anything*/ o){
 					r[i] = dojo.clone(o[i]);
 				}
 			}
-			return r;
+			return r; // Object
 		}
 	}
-	return o;
+	return o; /*anything*/
 }
 
 dojo.trim = function(/*String*/ str){

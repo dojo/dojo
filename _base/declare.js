@@ -59,13 +59,13 @@ dojo.declare = function(/*String*/ className, /*Function||Array*/ superclass, /*
 		superclass = mixins.shift();
 	}
 	// construct intermediate classes for mixins
-	if (mixins) {
-		for (var i=0, m; i<mixins.length; i++){
+	if(mixins){
+		for(var i=0, m; i<mixins.length; i++){
 			m = mixins[i];
 			if(!m){throw("Mixin #" + i + " to declaration of " + className + " is null. It's likely a required module is not loaded.")};
 			superclass = dd._delegate(superclass, m);
 		}
-	}	
+	}
 	// prepare values
 	var init=(props||0).constructor, ctor=dd._delegate(superclass), fn;
 	// name methods (experimental)
@@ -86,7 +86,7 @@ dojo.mixin(dojo.declare, {
 		// cache ancestry
 		dojo.mixin(ctor, {superclass: bp, mixin: mp, extend: dojo.declare._extend});
 		// chain prototypes
-		if(base){ctor.prototype = dojo._delegate(bp);};
+		if(base){ctor.prototype = dojo._delegate(bp);}
 		// add mixin and core
 		dojo.extend(ctor, dojo.declare._core, mp||0, {_constructor: null, preamble: null});
 		// special help for IE
@@ -138,7 +138,7 @@ dojo.mixin(dojo.declare, {
 		},
 		_findMixin: function(mixin){
 			var c = this.constructor, p, m;
-			while(c) {
+			while(c){
 				p = c.superclass;
 				m = c.mixin;
 				if(m==mixin || (m instanceof mixin.constructor)){return p;}

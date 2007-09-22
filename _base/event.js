@@ -6,11 +6,29 @@ dojo.require("dojo._base.connect");
 (function(){
 	// DOM event listener machinery
 	var del = dojo._event_listener = {
-		add: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
+		add: function(/*DOMNode*/node, /*String*/name, /*Function*/fp){
 			if(!node){return;} 
-			event = del._normalizeEventName(event);
-			fp = del._fixCallback(event, fp);
-			node.addEventListener(event, fp, false);
+			name = del._normalizeEventName(name);
+			fp = del._fixCallback(name, fp);
+
+			if((!dojo.isIE)&&((name == "mouseenter")||(name == "mouseleave"))){
+				var oname = name;
+				var ofp = fp;
+				name = (name == "mouseenter") ? "mouseover" : "mouseout";
+				fp = function(e){
+					// thanks ben!
+					var n = e.relatedTarget;
+					while(n && n != node){
+						n = n.parentNode;
+					}
+					if(!n){
+						// e.type = oname; // FIXME: doesn't take?
+						return ofp.call(this, e);
+					}
+				}
+			}
+
+			node.addEventListener(name, fp, false);
 			return fp; /*Handle*/
 		},
 		remove: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){

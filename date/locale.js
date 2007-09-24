@@ -26,8 +26,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 			var widthList = ["abbr", "wide", "narrow"];
 			switch(c){
 				case 'G':
-//					if(l>3){/*unimplemented*/}
-					s = bundle.eras[dateObject.getFullYear() < 0 ? 1 : 0];
+					s = bundle[(l < 4) ? "eraAbbr" : "eraNames"][dateObject.getFullYear() < 0 ? 0 : 1];
 					break;
 				case 'y':
 					s = dateObject.getFullYear();

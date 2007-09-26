@@ -395,7 +395,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			}
 		};
 		var saveFailedCallback = function(){
-			this._saveInProgress = false;
+			self._saveInProgress = false;
 			if(keywordArgs && keywordArgs.onError){
 				var scope = keywordArgs.scope || dojo.global;
 				keywordArgs.onError.call(scope);

@@ -120,7 +120,7 @@ if(dojo.isIE || dojo.isOpera){
 		// summary: enable or disable selection on a node
 		node = dojo.byId(node);
 		if(dojo.isMozilla){
-			node.style.MozUserSelect = (selectable) ? "normal" : "none";
+			node.style.MozUserSelect = (selectable) ? "" : "none";
 		}else if(dojo.isKhtml){
 			node.style.KhtmlUserSelect = (selectable) ? "auto" : "none";
 		}else if(dojo.isIE){

@@ -89,6 +89,7 @@ dojo.declare("dojo._Animation", null, {
 
 		var d = delay||this.delay;
 		if(d > 0){
+			this.delay = 0;
 			setTimeout(dojo.hitch(this, function(){ this.play(null, gotoStart); }), d);
 			return this; // dojo._Animation
 		}

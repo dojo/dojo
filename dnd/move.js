@@ -1,137 +1,9 @@
 dojo.provide("dojo.dnd.move");
 
-dojo.require("dojo.dnd.common");
-dojo.require("dojo.dnd.autoscroll");
+dojo.require("dojo.dnd.Mover");
+dojo.require("dojo.dnd.Moveable");
 
-dojo.dnd.Mover = function(node, e){
-	// summary: an object, which makes a node follow the mouse, 
-	//	used as a default mover, and as a base class for custom movers
-	// node: Node: a node (or node's id) to be moved
-	// e: Event: a mouse event, which started the move;
-	//	only pageX and pageY properties are used
-	this.node = dojo.byId(node);
-	this.marginBox = {l: e.pageX, t: e.pageY};
-	var d = node.ownerDocument, firstEvent = dojo.connect(d, "onmousemove", this, "onFirstMove");
-	this.events = [
-		dojo.connect(d, "onmousemove", this, "onMouseMove"),
-		dojo.connect(d, "onmouseup",   this, "destroy"),
-		// cancel text selection and text dragging
-		dojo.connect(d, "ondragstart",   dojo, "stopEvent"),
-		dojo.connect(d, "onselectstart", dojo, "stopEvent"),
-		firstEvent
-	];
-	// set globals to indicate that move has started
-	dojo.publish("/dnd/move/start", [this]);
-	dojo.addClass(dojo.body(), "dojoMove"); 
-	dojo.addClass(this.node, "dojoMoveItem"); 
-};
-
-dojo.extend(dojo.dnd.Mover, {
-	// mouse event processors
-	onMouseMove: function(e){
-		// summary: event processor for onmousemove
-		// e: Event: mouse event
-		dojo.dnd.autoScroll(e);
-		var m = this.marginBox;
-		dojo.marginBox(this.node, {l: m.l + e.pageX, t: m.t + e.pageY});
-	},
-	// utilities
-	onFirstMove: function(){
-		// summary: makes the node absolute; it is meant to be called only once
-		this.node.style.position = "absolute";	// enforcing the absolute mode
-		var m = dojo.marginBox(this.node);
-		m.l -= this.marginBox.l;
-		m.t -= this.marginBox.t;
-		this.marginBox = m;
-		dojo.disconnect(this.events.pop());
-	},
-	destroy: function(){
-		// summary: stops the move, deletes all references, so the object can be garbage-collected
-		dojo.forEach(this.events, dojo.disconnect);
-		// undo global settings
-		dojo.publish("/dnd/move/stop", [this]);
-		dojo.removeClass(dojo.body(), "dojoMove");
-		dojo.removeClass(this.node, "dojoMoveItem");
-		// destroy objects
-		this.events = this.node = null;
-	}
-});
-
-dojo.dnd.Moveable = function(node, params){
-	// summary: an object, which makes a node moveable
-	// node: Node: a node (or node's id) to be moved
-	// params: Object: an optional object with additional parameters;
-	//	following parameters are recognized:
-	//		handle: Node: a node (or node's id), which is used as a mouse handle
-	//			if omitted, the node itself is used as a handle
-	//		delay: Number: delay move by this number of pixels
-	//		skip: Boolean: skip move of form elements
-	//		mover: Object: a constructor of custom Mover
-	this.node = dojo.byId(node);
-	this.handle = (params && params.handle) ? dojo.byId(params.handle) : null;
-	if(!this.handle){ this.handle = this.node; }
-	this.delay = (params && params.delay > 0) ? params.delay : 0;
-	this.skip  = params && params.skip;
-	this.mover = (params && params.mover) ? params.mover : dojo.dnd.Mover;
-	this.events = [
-		dojo.connect(this.handle, "onmousedown", this, "onMouseDown"),
-		// cancel text selection and text dragging
-		dojo.connect(this.handle, "ondragstart",   dojo, "stopEvent"),
-		dojo.connect(this.handle, "onselectstart", dojo, "stopEvent")
-	];
-};
-
-dojo.extend(dojo.dnd.Moveable, {
-	// object attributes (for markup)
-	handle: "",
-	delay: 0,
-	skip: false,
-	
-	// markup methods
-	markupFactory: function(params, node){
-		return new dojo.dnd.Moveable(node, params);
-	},
-
-	// methods
-	destroy: function(){
-		// summary: stops watching for possible move, deletes all references, so the object can be garbage-collected
-		dojo.forEach(this.events, dojo.disconnect);
-		this.events = this.node = this.handle = null;
-	},
-	
-	// mouse event processors
-	onMouseDown: function(e){
-		// summary: event processor for onmousedown, creates a Mover for the node
-		// e: Event: mouse event
-		if(this.skip && dojo.dnd.isFormElement(e)){ return; }
-		if(this.delay){
-			this.events.push(dojo.connect(this.handle, "onmousemove", this, "onMouseMove"));
-			this.events.push(dojo.connect(this.handle, "onmouseup", this, "onMouseUp"));
-			this._lastX = e.pageX;
-			this._lastY = e.pageY;
-		}else{
-			new this.mover(this.node, e);
-		}
-		dojo.stopEvent(e);
-	},
-	onMouseMove: function(e){
-		// summary: event processor for onmousemove, used only for delayed drags
-		// e: Event: mouse event
-		if(Math.abs(e.pageX - this._lastX) > this.delay || Math.abs(e.pageY - this._lastY) > this.delay){
-			this.onMouseUp(e);
-			new this.mover(this.node, e);
-		}
-		dojo.stopEvent(e);
-	},
-	onMouseUp: function(e){
-		// summary: event processor for onmouseup, used only for delayed delayed drags
-		// e: Event: mouse event
-		dojo.disconnect(this.events.pop());
-		dojo.disconnect(this.events.pop());
-	}
-});
-
-dojo.dnd.constrainedMover = function(fun, within){
+dojo.dnd.move.constrainedMover = function(fun, within){
 	// summary: returns a constrained version of dojo.dnd.Mover
 	// description: this function produces n object, which will put a constraint on 
 	//	the margin box of dragged object in absolute coordinates
@@ -163,15 +35,15 @@ dojo.dnd.constrainedMover = function(fun, within){
 	return mover;	// Object
 };
 
-dojo.dnd.boxConstrainedMover = function(box, within){
+dojo.dnd.move.boxConstrainedMover = function(box, within){
 	// summary: a specialization of dojo.dnd.constrainedMover, which constrains to the specified box
 	// box: Object: a constraint box (l, t, w, h)
 	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
 	//	otherwise the constraint is applied to the left-top corner
-	return dojo.dnd.constrainedMover(function(){ return box; }, within);	// Object
+	return dojo.dnd.move.constrainedMover(function(){ return box; }, within);	// Object
 };
 
-dojo.dnd.parentConstrainedMover = function(area, within){
+dojo.dnd.move.parentConstrainedMover = function(area, within){
 	// summary: a specialization of dojo.dnd.constrainedMover, which constrains to the parent node
 	// area: String: "margin" to constrain within the parent's margin box, "border" for the border box,
 	//	"padding" for the padding box, and "content" for the content box; "content" is the default value.
@@ -198,5 +70,11 @@ dojo.dnd.parentConstrainedMover = function(area, within){
 		mb.l += t.l, mb.t += t.t, mb.w -= t.w, mb.h -= t.h;
 		return mb;	// Object
 	};
-	return dojo.dnd.constrainedMover(fun, within);	// Object
+	return dojo.dnd.move.constrainedMover(fun, within);	// Object
 };
+
+// patching functions one level up for compatibility
+
+dojo.dnd.constrainedMover = dojo.dnd.move.constrainedMover;
+dojo.dnd.boxConstrainedMover = dojo.dnd.move.boxConstrainedMover;
+dojo.dnd.parentConstrainedMover = dojo.dnd.move.parentConstrainedMover;

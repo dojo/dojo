@@ -24,7 +24,6 @@ dojo.declare("dojo.dnd.Mover", null, {
 			firstEvent
 		];
 		// set globals to indicate that move has started
-		dojo.publish("/dnd/move/start", [this]);
 		if(n && n.onDndMoveStart){
 			n.onDndMoveStart(this);
 		}
@@ -53,7 +52,6 @@ dojo.declare("dojo.dnd.Mover", null, {
 		// summary: stops the move, deletes all references, so the object can be garbage-collected
 		dojo.forEach(this.events, dojo.disconnect);
 		// undo global settings
-		dojo.publish("/dnd/move/stop", [this]);
 		var n = this.notifier;
 		if(n && n.onDndMoveStop){
 			n.onDndMoveStop(this);

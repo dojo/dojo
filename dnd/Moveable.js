@@ -77,7 +77,9 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	
 	// local events
 	onDndMoveStart: function(/* dojo.dnd.Mover */ mover){
+		dojo.publish("/dnd/move/start", [mover]);
 	},
 	onDndMoveStop: function(/* dojo.dnd.Mover */ mover){
+		dojo.publish("/dnd/move/stop", [mover]);
 	}
 });

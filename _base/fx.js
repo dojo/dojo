@@ -36,13 +36,15 @@ dojo.declare("dojo._Animation", null, {
 	},
 	
 	// public properties
-	curve: null,
+//	curve: null,
 	duration: 1000,
-	easing: null,
+//	easing: null,
 	repeat: 0,
 	rate: 10, // 100 fps
+
+/*=====
 	delay: null,
-	
+
 	// events
 	beforeBegin: null,
 	onBegin: null,
@@ -51,13 +53,8 @@ dojo.declare("dojo._Animation", null, {
 	onPlay: null,
 	onPause: null,
 	onStop: null,
+=====*/
 
-	// private properties
-	_active: false,
-	_paused: false,
-	_startTime: null,
-	_endTime: null,
-	_timer: null,
 	_percent: 0,
 	_startRepeatCount: 0,
 
@@ -126,13 +123,13 @@ dojo.declare("dojo._Animation", null, {
 		return this; // dojo._Animation
 	},
 
-	gotoPercent: function(/*Decimal*/ pct, /*boolean?*/ andPlay){
+	gotoPercent: function(/*Decimal*/ percent, /*boolean?*/ andPlay){
 		// summary: Sets the progress of the animation.
-		// pct: A percentage in decimal notation (between and including 0.0 and 1.0).
+		// percent: A percentage in decimal notation (between and including 0.0 and 1.0).
 		// andPlay: If true, play the animation after setting the progress.
 		clearTimeout(this._timer);
 		this._active = this._paused = true;
-		this._percent = pct * 100;
+		this._percent = percent * 100;
 		if(andPlay){ this.play(); }
 		return this; // dojo._Animation
 	},
@@ -223,16 +220,12 @@ dojo.declare("dojo._Animation", null, {
 	}
 
 	dojo._fade = function(/*Object*/ args){
-		// summary:Returns an animation that will fade the "nodes" from the start to end values passed.
+		// summary: Returns an animation that will fade the "nodes" from the start to end values passed (end is mandatory)
 
-		//FIXME: remove arg checking?  Change docs above to show that end is not optional.  Just make sure this blows up in a reliable way?
-		if(typeof args.end == "undefined"){
-			throw new Error("dojo._fade needs an end value");
-		}
 		args.node = dojo.byId(args.node);
 		var fArgs = dojo.mixin({ properties: {} }, args);
 		var props = (fArgs.properties.opacity = {});
-		props.start = (typeof fArgs.start == "undefined") ?
+		props.start = !("start" in fArgs) ?
 			function(){ return Number(dojo.style(fArgs.node, "opacity")); } : fArgs.start;
 		props.end = fArgs.end;
 
@@ -265,19 +258,8 @@ dojo.declare("dojo._Animation", null, {
 		return dojo._fade(dojo.mixin({ end: 0 }, args)); // dojo._Animation
 	}
 
-	if(dojo.isKhtml && !dojo.isSafari){
-		// the cool kids are obviously not using konqueror...
-		// found a very wierd bug in floats constants, 1.5 evals as 1
-		// seems somebody mixed up ints and floats in 3.5.4 ??
-		// FIXME: investigate more and post a KDE bug (Fredrik)
-		dojo._defaultEasing = function(/*Decimal?*/ n){
-			//	summary: Returns the point for point n on a sin wave.
-			return parseFloat("0.5")+((Math.sin((n+parseFloat("1.5")) * Math.PI))/2); //FIXME: Does this still occur in the supported Safari version?
-		}
-	}else{
-		dojo._defaultEasing = function(/*Decimal?*/ n){
-			return 0.5+((Math.sin((n+1.5) * Math.PI))/2);
-		}
+	dojo._defaultEasing = function(/*Decimal?*/ n){
+		return 0.5 + ((Math.sin((n + 1.5) * Math.PI))/2);
 	}
 
 	var PropLine = function(properties){
@@ -293,13 +275,12 @@ dojo.declare("dojo._Animation", null, {
 			var ret = {};
 			for(var p in this._properties){
 				var prop = this._properties[p];
-				var value = null;
-				if(prop.start instanceof dojo.Color){
-					value = dojo.blendColors(prop.start, prop.end, r, prop.tempColor).toCss();
-				}else if(!dojo.isArray(prop.start)){
-					value = ((prop.end - prop.start) * r) + prop.start + (p != "opacity" ? prop.units||"px" : "");
+				var start = prop.start;
+				if(start instanceof dojo.Color){
+					ret[p] = dojo.blendColors(start, prop.end, r, prop.tempColor).toCss();
+				}else if(!dojo.isArray(start)){
+					ret[p] = ((prop.end - start) * r) + start + (p != "opacity" ? prop.units||"px" : "");
 				}
-				ret[p] = value;
 			}
 			return ret;
 		}
@@ -310,8 +291,8 @@ dojo.declare("dojo._Animation", null, {
 		// defined in 'args' depending how they are defined in 'args.properties'
 
 		args.node = dojo.byId(args.node);
-		if (!args.easing){ args.easing = dojo._defaultEasing; }
-		
+		if(!args.easing){ args.easing = dojo._defaultEasing; }
+
 		var anim = new dojo._Animation(args);
 		dojo.connect(anim, "beforeBegin", anim, function(){
 			var pm = {};
@@ -319,7 +300,7 @@ dojo.declare("dojo._Animation", null, {
 				// Make shallow copy of properties into pm because we overwrite some values below.
 				// In particular if start/end are functions we don't want to overwrite them or
 				// the functions won't be called if the animation is reused.
-				var prop = pm[p] = dojo.mixin({}, this.properties[p]);
+				var prop = (pm[p] = dojo.mixin({}, this.properties[p]));
 
 				if(dojo.isFunction(prop.start)){
 					prop.start = prop.start();
@@ -331,16 +312,14 @@ dojo.declare("dojo._Animation", null, {
 				var isColor = (p.toLowerCase().indexOf("color") >= 0);
 				function getStyle(node, p){
 					// dojo.style(node, "height") can return "auto" or "" on IE; this is more reliable:
-					switch(p){
-						case "height": return node.offsetHeight;
-						case "width": return node.offsetWidth;
-					}
-					var v = dojo.style(node, p);
+					var v = ({height: node.offsetHeight, width: node.offsetWidth})[p];
+					if(v !== undefined){ return v; }
+					v = dojo.style(node, p);
 					return (p=="opacity") ? Number(v) : parseFloat(v);
 				}
-				if(typeof prop.end == "undefined"){
+				if(!("end" in prop)){
 					prop.end = getStyle(this.node, p);
-				}else if(typeof prop.start == "undefined"){
+				}else if(!("start" in prop)){
 					prop.start = getStyle(this.node, p);
 				}
 

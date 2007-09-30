@@ -1,34 +1,42 @@
 dojo.provide("dojo._base.lang");
 
-// Crockford functions (ish)
+// Crockford (ish) functions
 
 dojo.isString = function(/*anything*/ it){
-	// summary:	Return true if it is a String.
+	// summary:	Return true if it is a String
 	return typeof it == "string" || it instanceof String; // Boolean
 }
 
 dojo.isArray = function(/*anything*/ it){
-	// summary: Return true of it is an Array
+	// summary: Return true if it is an Array
 	return it && it instanceof Array || typeof it == "array" ||
-		((typeof dojo.NodeList != "undefined") && (it instanceof dojo.NodeList)); // Boolean
+		(dojo.NodeList && it instanceof dojo.NodeList); // Boolean
 }
 
-if(dojo.isBrowser && dojo.isSafari){
-	// only slow this down w/ gratuitious casting in Safari since it's what's b0rken
-	dojo.isFunction = function(/*anything*/ it){
-		if(typeof it == "function" && it == "[object NodeList]"){ return false; }
-		return typeof it == "function" || it instanceof Function; // Boolean
-	}
-}else{
-	dojo.isFunction = function(/*anything*/ it){
-		return typeof it == "function" || it instanceof Function; // Boolean
-	}
+/*=====
+dojo.isFunction = function(it){
+	// summary: Return true if it is a Function
+	// it: anything
 }
+=====*/
+
+dojo.isFunction = (function(){
+	var _isFunction = function(/*anything*/ it){
+		return typeof it == "function" || it instanceof Function; // Boolean
+	};
+
+	return dojo.isSafari ?
+		// only slow this down w/ gratuitious casting in Safari since it's what's b0rken
+		function(/*anything*/ it){
+			if(typeof it == "function" && it == "[object NodeList]"){ return false; }
+			return _isFunction(it); // Boolean
+		} : _isFunction;
+})();
 
 dojo.isObject = function(/*anything*/ it){
 	// summary: 
 	//		Returns true if it is a JavaScript object (or an Array, a Function or null)
-	return typeof it != "undefined" &&
+	return it !== undefined &&
 		(it === null || typeof it == "object" || dojo.isArray(it) || dojo.isFunction(it)); // Boolean
 }
 
@@ -36,7 +44,7 @@ dojo.isArrayLike = function(/*anything*/ it){
 	// return:
 	//		If it walks like a duck and quicks like a duck, return true
 	var d = dojo;
-	return it && typeof it != "undefined" &&
+	return it && it !== undefined &&
 		// keep out built-in constructors (Number, String, ...) which have length
 		// properties
 		!d.isString(it) && !d.isFunction(it) &&
@@ -62,7 +70,7 @@ dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
 		// inherited from Object.prototype.  For example, if obj has a custom
 		// toString() method, don't overwrite it with the toString() method
 		// that props inherited from Object.prototype
-		if((typeof tobj[x] == "undefined") || (tobj[x] != props[x])){
+		if(tobj[x] === undefined || tobj[x] != props[x]){
 			obj[x] = props[x];
 		}
 	}
@@ -103,7 +111,7 @@ dojo._hitchArgs = function(scope, method /*,...*/){
 		// arrayify arguments
 		var args = dojo._toArray(arguments);
 		// locate our method
-		var f = (named ? (scope||dojo.global)[method] : method);
+		var f = named ? (scope||dojo.global)[method] : method;
 		// invoke with collected args
 		return f && f.apply(scope || this, pre.concat(args)); // Any
  	} // Function

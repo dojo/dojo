@@ -78,8 +78,12 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	// local events
 	onDndMoveStart: function(/* dojo.dnd.Mover */ mover){
 		dojo.publish("/dnd/move/start", [mover]);
+		dojo.addClass(dojo.body(), "dojoMove"); 
+		dojo.addClass(this.node, "dojoMoveItem"); 
 	},
 	onDndMoveStop: function(/* dojo.dnd.Mover */ mover){
 		dojo.publish("/dnd/move/stop", [mover]);
+		dojo.removeClass(dojo.body(), "dojoMove");
+		dojo.removeClass(this.node, "dojoMoveItem");
 	}
 });

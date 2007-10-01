@@ -23,12 +23,10 @@ dojo.declare("dojo.dnd.Mover", null, {
 			dojo.connect(d, "onselectstart", dojo, "stopEvent"),
 			firstEvent
 		];
-		// set globals to indicate that move has started
+		// notify that the move has started
 		if(n && n.onDndMoveStart){
 			n.onDndMoveStart(this);
 		}
-		dojo.addClass(dojo.body(), "dojoMove"); 
-		dojo.addClass(this.node, "dojoMoveItem"); 
 	},
 	// mouse event processors
 	onMouseMove: function(e){
@@ -56,8 +54,6 @@ dojo.declare("dojo.dnd.Mover", null, {
 		if(n && n.onDndMoveStop){
 			n.onDndMoveStop(this);
 		}
-		dojo.removeClass(dojo.body(), "dojoMove");
-		dojo.removeClass(this.node, "dojoMoveItem");
 		// destroy objects
 		this.events = this.node = null;
 	}

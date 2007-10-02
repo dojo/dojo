@@ -336,7 +336,7 @@ dojo.provide = function(/*String*/ packageName){
 	//	summary:
 	//		Each javascript source file must have (exactly) one dojo.provide()
 	//		call at the top of the file, corresponding to the file name.  For
-	//		example, dojo/src/foo.js must have dojo.provide("dojo.foo"); at the
+	//		example, js/dojo/foo.js must have dojo.provide("dojo.foo"); at the
 	//		top of the file.
 	//	description:
 	//		Each javascript source file is called a resource.  When a resource
@@ -625,11 +625,11 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
 
 dojo.moduleUrl = function(/*String*/module, /*dojo._Url||String*/url){
 	// summary: 
-	//		returns a Url object relative to a module
-	// description: 
-	//		Examples: 
-	//			dojo.moduleUrl("dojo.widget","templates/template.html");
-	//			dojo.moduleUrl("acme","images/small.png")
+	//		Returns a Url object relative to a module
+	//		
+	// examples: 
+	//		dojo.moduleUrl("dojo.widget","templates/template.html");
+	//		dojo.moduleUrl("acme","images/small.png")
 
 	var loc = dojo._getModuleSymbols(module).join('/');
 	if(!loc){ return null; }
@@ -644,5 +644,5 @@ dojo.moduleUrl = function(/*String*/module, /*dojo._Url||String*/url){
 		loc = dojo.baseUrl + loc;
 	}
 
-	return new dojo._Url(loc, url);
+	return new dojo._Url(loc, url); // String
 }

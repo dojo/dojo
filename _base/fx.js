@@ -12,6 +12,11 @@ dojo.require("dojo._base.html");
 dojo._Line = function(/*int*/ start, /*int*/ end){
 	// summary: dojo._Line is the object used to generate values
 	//			from a start value to an end value
+	// start: 
+	//	Beginning value for range
+	//	
+	// end:
+	//	Ending value for range
 	this.start = start;
 	this.end = end;
 	this.getValue = function(/*float*/ n){
@@ -23,9 +28,9 @@ dojo._Line = function(/*int*/ start, /*int*/ end){
 
 dojo.declare("dojo._Animation", null, {
 	//	summary
-	//		a generic animation object that fires callbacks into it's handlers
+	//		A generic animation object that fires callbacks into it's handlers
 	//		object at various states
-	//	FIXME: document args object
+	//
 	constructor: function(/*Object*/ args){
 		dojo.mixin(this, args);
 		if(dojo.isArray(this.curve)){
@@ -35,24 +40,63 @@ dojo.declare("dojo._Animation", null, {
 		}
 	},
 	
-	// public properties
-//	curve: null,
+	// duration: Integer
+	//	The time in milliseonds the animation will take to run
 	duration: 1000,
+
+	// curve: dojo._Line||Array
+	//	A two element array of start and end values, or a dojo._Line instance to be
+	//	used in the Animation. 
+//	curve: null,
+
+	// easing: Function
+	//	A Function to adjust the acceleration (or deceleration) of the progress 
+	//	across a dojo._Line
 //	easing: null,
+
+	// repeat: Integer
+	//	The number of times to loop the animation
 	repeat: 0,
+
+	// rate: Integer
+	//	the time in milliseconds to wait before advancing to next frame 
+	//	(used as a fps timer: rate/1000 = fps)
 	rate: 10, // 100 fps
 
-/*=====
+/*===== 
+	// delay: Integer
+	// 	The time in milliseconds to wait before starting animation after it has been .play()'ed
 	delay: null,
 
 	// events
+
+	// beforeBeing: Event
+	//	Synthetic event fired before a dojo._Animation begins playing (synhcronous)
 	beforeBegin: null,
+
+	// onBegin: Event
+	//	Synthetic event fired as a dojo._Animation begins playing (useful?)
 	onBegin: null,
+
+	// onAnimate: Event
+	//	Synthetic event fired at each interval of a dojo._Animation
 	onAnimate: null,
+
+	// onEnd: Event
+	//	Synthetic event fired after the final frame of a dojo._Animation
 	onEnd: null,
+
+	// ???
 	onPlay: null,
+
+	// onPause: Event
+	//	Synthetic event fired when a dojo._Animation is paused
 	onPause: null,
+
+	// onStop: Event
+	//	Synthetic event fires when a dojo._Animation is stopped
 	onStop: null,
+
 =====*/
 
 	_percent: 0,
@@ -220,7 +264,9 @@ dojo.declare("dojo._Animation", null, {
 	}
 
 	dojo._fade = function(/*Object*/ args){
-		// summary: Returns an animation that will fade the "nodes" from the start to end values passed (end is mandatory)
+		// summary: 
+		//	Returns an animation that will fade the node defined by args.node from the start 
+		//	to end values passed (args.start args.end) (end is mandatory, start is optional)
 
 		args.node = dojo.byId(args.node);
 		var fArgs = dojo.mixin({ properties: {} }, args);
@@ -259,6 +305,7 @@ dojo.declare("dojo._Animation", null, {
 	}
 
 	dojo._defaultEasing = function(/*Decimal?*/ n){
+		// summary: The default easing function for dojo._Animation(s)
 		return 0.5 + ((Math.sin((n + 1.5) * Math.PI))/2);
 	}
 
@@ -287,8 +334,26 @@ dojo.declare("dojo._Animation", null, {
 	}
 
 	dojo.animateProperty = function(/*Object*/ args){
-		// summary: Returns an animation that will transition the properties of node
-		// defined in 'args' depending how they are defined in 'args.properties'
+		// summary: 
+		//	Returns an animation that will transition the properties of node
+		// 	defined in 'args' depending how they are defined in 'args.properties'
+		//
+		// description:
+		//	The foundation of most dojo.fx animations, dojo.AnimateProperty will
+		//	take an object of "properties" corresponding to style properties, and 
+		//	animate them in parallel over a set duration.
+		//	
+		//	args.node can be a String or a DomNode reference
+		//	
+		// examples:
+		//	dojo.animateProperty({ node: node, duration:2000,
+		//		properties: {
+		//			width: { start: '200', end: '400', unit:"px" },
+		//			height: { start:'200', end: '400', unit:"px" },
+		//			paddingTop: { start:'5', end:'50', unit:"px" } 
+		//		}
+		//	}).play();
+		//
 
 		args.node = dojo.byId(args.node);
 		if(!args.easing){ args.easing = dojo._defaultEasing; }
@@ -344,7 +409,6 @@ dojo.declare("dojo._Animation", null, {
 			}
 			// }catch(e){ console.debug(dojo.toJson(e)); }
 		});
-
 		return anim; // dojo._Animation
 	}
 })();

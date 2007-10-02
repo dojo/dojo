@@ -202,27 +202,26 @@ dojo.fx.slideTo = function(/*Object?*/ args){
 	//		
 
 	var node = (args.node = dojo.byId(args.node));
-	var compute = dojo.getComputedStyle;
 	
 	var top = null;
 	var left = null;
 	
-	var init = (function(){
-		var innerNode = node;
+	var init = (function(n){
 		return function(){
-			var pos = compute(innerNode).position;
-			top = (pos == 'absolute' ? node.offsetTop : parseInt(compute(node).top) || 0);
-			left = (pos == 'absolute' ? node.offsetLeft : parseInt(compute(node).left) || 0);
+			var cs = dojo.getComputedStyle(n);
+			var pos = cs.position;
+			top = (pos == 'absolute' ? n.offsetTop : parseInt(cs.top) || 0);
+			left = (pos == 'absolute' ? n.offsetLeft : parseInt(cs.left) || 0);
 			if(pos != 'absolute' && pos != 'relative'){
-				var ret = dojo.coords(innerNode, true);
+				var ret = dojo.coords(n, true);
 				top = ret.y;
 				left = ret.x;
-				innerNode.style.position="absolute";
-				innerNode.style.top=top+"px";
-				innerNode.style.left=left+"px";
+				n.style.position="absolute";
+				n.style.top=top+"px";
+				n.style.left=left+"px";
 			}
 		};
-	})();
+	})(node);
 	init();
 
 	var anim = dojo.animateProperty(dojo.mixin({

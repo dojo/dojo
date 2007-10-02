@@ -9,6 +9,11 @@ dojo.require("dojo._base.connect");
 		add: function(/*DOMNode*/node, /*String*/name, /*Function*/fp){
 			if(!node){return;} 
 			name = del._normalizeEventName(name);
+
+			// disable onmouseenter and onmouseleave until bug #4307 is fixed on FF
+			if(name == "mouseenter"){ name="mouseover"; }
+			else if(name == "mouseleave"){ name="mouseout"; }
+
 			fp = del._fixCallback(name, fp);
 
 			if((!dojo.isIE)&&((name == "mouseenter")||(name == "mouseleave"))){

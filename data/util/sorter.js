@@ -9,9 +9,9 @@ dojo.data.util.sorter.basicComparator = function(	/*anything*/ a,
 	//		undefined values are treated as larger values so that they're pushed to the end of the list.
 
 	var ret = 0;
-	if(a > b || typeof a === "undefined"){
+	if(a > b || typeof a === "undefined" || a === null){
 		ret = 1;
-	}else if(a < b || typeof b === "undefined"){
+	}else if(a < b || typeof b === "undefined" || b === null){
 		ret = -1;
 	}
 	return ret; //int, {-1,0,1}

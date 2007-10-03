@@ -33,7 +33,7 @@
 		"timeEnd", "trace", "warn"
 	];
 	var i=0, tn;
-	while(tn=cn[i++]){
+	while((tn=cn[i++])){
 		if(!console[tn]){
 			console[tn] = function(){};
 		}

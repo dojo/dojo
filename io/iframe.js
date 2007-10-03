@@ -233,15 +233,14 @@ dojo.io.iframe = {
 						if(!fn[x]){
 							var tn;
 							if(dojo.isIE){
-								tn = dojo.doc.createElement("<input type='hidden' name='"+x+"' value='"+content[x]+"'>");
-								fn.appendChild(tn);
+								tn = dojo.doc.createElement("<input type='hidden' name='"+x+"'>");
 							}else{
 								tn = dojo.doc.createElement("input");
-								fn.appendChild(tn);
 								tn.type = "hidden";
 								tn.name = x;
-								tn.value = content[x];
 							}
+							tn.value = content[x];
+							fn.appendChild(tn);
 							ioArgs._contentToClean.push(x);
 						}else{
 							fn[x].value = content[x];

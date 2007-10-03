@@ -70,7 +70,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//	item: 
 		//		The item to test for being contained by the store.
 		if(!this.isItem(item)){ 
-			throw new Error("dojo.data.ItemFileReadStore: a function was passed an item argument that was not an item");
+			throw new Error("dojo.data.ItemFileReadStore: Invalid item argument.");
 		}
 	},
 
@@ -80,7 +80,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//	attribute: 
 		//		The attribute to test for being contained by the store.
 		if(typeof attribute !== "string"){ 
-			throw new Error("dojo.data.ItemFileReadStore: a function was passed an attribute argument that was not an attribute name string");
+			throw new Error("dojo.data.ItemFileReadStore: Invalid attribute argument.");
 		}
 	},
 

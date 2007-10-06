@@ -1,6 +1,6 @@
 .firebug {
 	margin: 0;
-	background: #FFFFD7;
+	background:#fff;
 	font-family: Lucida Grande, Tahoma, sans-serif;
 	font-size: 11px;
 	overflow: hidden;
@@ -15,7 +15,9 @@
 .firebug a:hover {
 	text-decoration: underline;
 }
-
+.firebug a:visited{
+	color:#0000FF;
+}
 .firebug #firebugToolbar {
 	height: 14px;
 	border-top: 1px solid ThreeDHighlight;
@@ -30,13 +32,16 @@
 	right: 6px;
 }
 
-.firebug #firebugLog {
+.firebug #firebugLog, .firebug #objectLog {
 	overflow: auto;
 	position: absolute;
 	left: 0;
 	width: 100%;
 }
-
+#objectLog{
+	overflow:scroll;
+	height:258px;
+}
 .firebug #firebugCommandLine {
 	position: absolute;
 	bottom: 0;
@@ -92,24 +97,31 @@
 
 .firebug .logRow-info,
 .firebug .logRow-error,
-.firebug .logRow-warning {
-	background: #FFFFFF no-repeat 2px 2px;
+.firebug .logRow-warning
+ {
+	background: #00FFFF no-repeat 2px 2px;
 	padding-left: 20px;
 	padding-bottom: 3px;
 }
 
 .firebug .logRow-info {
-	background-image: url(infoIcon.png);
+	background: #FFF url(infoIcon.png) no-repeat 2px 2px;
+	padding-left: 20px;
+	padding-bottom: 3px;
 }
 
 .firebug .logRow-warning {
-	background-color: cyan;
-	background-image: url(warningIcon.png);
+	
+	background: #00FFFF url(warningIcon.png) no-repeat 2px 2px;
+	padding-left: 20px;
+	padding-bottom: 3px;
 }
 
 .firebug .logRow-error {
-	background-color: LightYellow;
-	background-image: url(errorIcon.png);
+
+	background: LightYellow url(errorIcon.png) no-repeat 2px 2px;
+	padding-left: 20px;
+	padding-bottom: 3px;
 }
 
 .firebug .errorMessage {

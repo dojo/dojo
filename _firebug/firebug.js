@@ -246,8 +246,8 @@ if(
 	
 	// using global objects so they can be accessed
 	// most of the objects in this script are run anonomously
-	var _firebugDoc ;
-	var _firebugWin ;
+	var _firebugDoc = document;
+	var _firebugWin = window;
 	var __consoleAnchorId__ = 0;
 	
 	var consoleFrame = null;
@@ -512,6 +512,7 @@ if(
 		// Now that the row is inserted in the DOM, loop through all of the links that were just created
 		for(var i=0; i<ids.length; i++){
 			var btn = _firebugDoc.getElementById(ids[i]);
+			if(!btn){ continue; }
 	
 			// store the object in the dom btn for reference later
 			// avoid parsing these objects unless necessary

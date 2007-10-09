@@ -91,7 +91,7 @@ abbr, acronym {
 	Default: 13px, specified by the YUI imports.
 */
 body { 
-	font: 13px "Myriad Pro",Myriad,Arial,Helvetica,clean,sans-serif; 
+	font: 13px Myriad,Arial,Helvetica,clean,sans-serif; 
 	*font-size: small;
 	*font: x-small;
 }

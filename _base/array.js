@@ -36,8 +36,8 @@ dojo.provide("dojo._base.array");
 
 		lastIndexOf: function(/*Array*/array, /*Object*/value, /*Integer?*/fromIndex){
 			// summary:
-			//		locates the last index of the provided value in the passed
-			//		array. If the value is not found, -1 is returned.
+			//		locates the last index of the provided value in the passed array. 
+			//		If the value is not found, -1 is returned.
 			// description:
 			//		For details on this method, see:
 			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
@@ -113,7 +113,7 @@ dojo.provide("dojo._base.array");
 			//		applies a function to each element of an Array and creates
 			//		an Array with the results
 			// description:
-			//		returns a new array constituted from the return values of
+			//		Returns a new array constituted from the return values of
 			//		passing each element of arr into unary_func. The obj parameter
 			//		may be passed to enable the passed function to be called in
 			//		that scope.  In environments that support JavaScript 1.6, this

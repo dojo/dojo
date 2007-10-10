@@ -1,7 +1,7 @@
 dojo.provide("dojo.date");
 
 dojo.date.getDaysInMonth = function(/*Date*/dateObject){
-	// summary: returns the number of days in the month used by dateObject
+	// summary: Returns the number of days in the month used by dateObject
 	var month = dateObject.getMonth();
 	var days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	if(month == 1 && dojo.date.isLeapYear(dateObject)){ return 29; } // Number
@@ -71,10 +71,10 @@ dojo.date.getTimezoneName = function(/*Date*/dateObject){
 // Utility methods to do arithmetic calculations with Dates
 
 dojo.date.compare = function(/*Date*/date1, /*Date?*/date2, /*String?*/portion){
-	//	summary
+	// summary:
 	//		Compare two date objects by date, time, or both.
 	//
-	//  description
+	// description:
 	//  	Returns 0 if equal, positive if a > b, else negative.
 	//
 	//	date1
@@ -109,17 +109,16 @@ dojo.date.compare = function(/*Date*/date1, /*Date?*/date2, /*String?*/portion){
 };
 
 dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
-	//	summary
+	// summary:
 	//		Add to a Date in intervals of different size, from milliseconds to years
-	//
-	//	date
+	// date: Date
 	//		Date object to start with
 	//
-	//	interval
+	// interval:
 	//		A string representing the interval.  One of the following:
 	//			"year", "month", "day", "hour", "minute", "second", "millisecond", "quarter", "week", "weekday"
 	//
-	//	amount
+	// amount:
 	//		How much to add to the date.
 
 	var sum = new Date(Number(date)); // convert to Number before copying to accomodate IE (#3112)
@@ -203,17 +202,17 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 };
 
 dojo.date.difference = function(/*Date*/date1, /*Date?*/date2, /*String?*/interval){
-	//	summary
+	// summary:
 	//		Get the difference in a specific unit of time (e.g., number of months, weeks,
 	//		days, etc.) between two dates, rounded to the nearest integer.
 	//
-	//	date1
+	// date1:
 	//		Date object
 	//
-	//	date2
+	// date2:
 	//		Date object.  If not specified, the current Date is used.
 	//
-	//	interval
+	// interval:
 	//		A string representing the interval.  One of the following:
 	//			"year", "month", "day", "hour", "minute", "second", "millisecond", "quarter", "week", "weekday"
 	//		Defaults to "day".

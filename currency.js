@@ -57,7 +57,7 @@ dojo.currency.regexp = function(/*Object?*/options){
 //		Builds the regular needed to parse a number
 //
 // description:
-//		returns regular expression with positive and negative match, group and decimal separators
+//		Returns regular expression with positive and negative match, group and decimal separators
 //
 // options: object {pattern: String, locale: String, strict: Boolean, places: mixed}
 //		currency- the ISO4217 currency code, a three letter sequence like "USD"

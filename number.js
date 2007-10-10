@@ -195,7 +195,7 @@ dojo.number.regexp = function(/*Object?*/options){
 	//		Builds the regular needed to parse a number
 	//
 	// description:
-	//		returns regular expression with positive and negative match, group
+	//		Returns regular expression with positive and negative match, group
 	//		and decimal separators
 	//
 	// options: object {pattern: String, type: String locale: String, strict: Boolean, places: mixed}

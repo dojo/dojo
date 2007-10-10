@@ -17,8 +17,8 @@ dojo.provide("dojo._base.array");
 							/*Integer?*/	fromIndex,
 							/*Boolean?*/	findLast){
 			// summary:
-			//		locates the first index of the provided value in the passed
-			//		array. If the value is not found, -1 is returned.
+			//		locates the first index of the provided value in the
+			//		passed array. If the value is not found, -1 is returned.
 			// description:
 			//		For details on this method, see:
 			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf

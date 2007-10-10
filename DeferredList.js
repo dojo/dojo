@@ -26,9 +26,8 @@ dojo.declare("dojo.DeferredList", dojo.Deferred, {
 
 		dojo.forEach(this.list, function(d) {
 			var _index = index;
-			//console.log("add cb/errb index "+_index);
-			d.addCallback(function(r) { this._cbDeferred(_index, true, r) });
-			d.addErrback(function(r) { this._cbDeferred(_index, false, r) });
+			d.addCallback(this, function(r) { this._cbDeferred(_index, true, r) });
+			d.addErrback(this, function(r) { this._cbDeferred(_index, false, r) });
 			index++;
 		},this);
 	},

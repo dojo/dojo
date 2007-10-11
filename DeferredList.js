@@ -24,13 +24,13 @@ dojo.declare("dojo.DeferredList", dojo.Deferred, {
 
 		var index = 0;
 
-		dojo.forEach(this.list, function(d) {
-			var _index = index;
-			d.addCallback(this, function(r) { this._cbDeferred(_index, true, r) });
-			d.addErrback(this, function(r) { this._cbDeferred(_index, false, r) });
+		dojo.forEach(this.list, function(d, index) {
+			d.addCallback(this, function(r) { this._cbDeferred(index, true, r); return r; });
+			d.addErrback(this, function(r) { this._cbDeferred(index, false, r); return r; });
 			index++;
 		},this);
 	},
+
 	_cbDeferred: function (index, succeeded, result) {
 		//dojo.debug("Fire "+index+" succ "+succeeded+" res "+result);
 		this.resultList[index] = [succeeded, result]; this.finishedCount += 1;

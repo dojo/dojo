@@ -26,21 +26,8 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	//summary: Internal xd loader function. Creates an xd module source given an
 	//non-xd module contents.
 
-	//Remove comments.
-	//Get rid of multiline comments.
-	var depContents = contents;
-	var startIndex = -1;
-	while((startIndex = depContents.indexOf("/*")) != -1){
-		var endIndex = depContents.indexOf("*/", startIndex + 2);
-		if(endIndex == -1){
-			throw "Improper comment in file: " + resourcePath;
-		}
-		depContents = depContents.substring(0, startIndex) + depContents.substring(endIndex + 2, depContents.length);
-	}
-
-	//Get rid of single line comments.
-	depContents = depContents.replace(/\/\/(.*)$/mg , "");
-
+	//Remove comments. Not perfect, but good enough for dependency resolution.
+	var depContents = contents.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg , "");
 
 	//Find dependencies.
 	var deps = [];

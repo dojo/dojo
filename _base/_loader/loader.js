@@ -126,7 +126,7 @@ dojo._loadUriAndCheck = function(/*String (URL)*/uri, /*String*/moduleName, /*Fu
 	try{
 		ok = this._loadUri(uri, cb);
 	}catch(e){
-		console.debug("failed loading ", uri, " with error: ", e);
+		console.debug("failed loading " + uri + " with error: " + e);
 	}
 	return Boolean(ok && this._loadedModules[moduleName]); // Boolean
 }

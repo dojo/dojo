@@ -485,8 +485,8 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		var arrayOfValues;
 
 		var identifier = dataObject.identifier;
-		this._itemsByIdentity = {};
 		if(identifier){
+			this._itemsByIdentity = {};
 			this._features['dojo.data.api.Identity'] = identifier;
 			for(i = 0; i < this._arrayOfAllItems.length; ++i){
 				item = this._arrayOfAllItems[i];
@@ -664,11 +664,11 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		var item = null;
 		if(this._itemsByIdentity){
 			item = this._itemsByIdentity[identity];
-			if(item === undefined){
-				item = null;
-			}
 		}else{
-			this._arrayOfAllItems[identity];
+			item = this._arrayOfAllItems[identity];
+		}
+		if(item === undefined){
+			item = null;
 		}
 		return item; // Object
 	},

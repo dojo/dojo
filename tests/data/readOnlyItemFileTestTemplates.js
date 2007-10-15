@@ -68,6 +68,23 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 				]
 			} };
 		}
+	}else if(name === "countries_withoutid"){
+		if(dojo.isBrowser){
+			data = {url: dojo.moduleUrl("tests", "data/countries_withoutid.json").toString() };
+		}else{
+			data = {data: { 
+				label: "name",
+				items:[
+					{abbr:"ec", name:null, capital:"Quito"},
+					{abbr:'eg', name:null, capital:'Cairo'},
+					{abbr:'sv', name:'El Salvador', capital:'San Salvador'},
+					{abbr:'gq', name:'Equatorial Guinea', capital:'Malabo'},
+					{abbr:'er', name:'Eritrea', capital:'Asmara'},
+					{abbr:'ee', name:null, capital:'Tallinn'},
+					{abbr:'et', name:'Ethiopia', capital:'Addis Ababa'}
+				]
+			} };
+		}
 	}else if (name === "countries_withBoolean"){
 		if(dojo.isBrowser){
 			data = {url: dojo.moduleUrl("tests", "data/countries_withBoolean.json").toString() };
@@ -289,6 +306,30 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Identity API: fetchItemByIdentity() withoutSpecifiedIdInData",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of bug #4691, looking up something by assigned id, not one specified in the JSON data.
+			//	description:
+			//		Simple test of bug #4691, looking up something by assigned id, not one specified in the JSON data.
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withoutid"));
+
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var name = store.getValue(item,"name");
+				t.assertEqual(name, "El Salvador");
+				d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity: "2", onItem: onItem, onError: onError});
+			return d; // Deferred
+		}
+	},
+	{
 		name: "Identity API: getIdentity()",
  		runTest: function(datastore, t){
 			//	summary: 
@@ -308,6 +349,29 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				d.errback(errData);
 			}
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d; // Deferred
+		}
+	},
+	{
+		name: "Identity API: getIdentity() withoutSpecifiedId",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of the #4691 bug
+			//	description:
+			//		Simple test of the #4691 bug
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withoutid"));
+
+			var d = new doh.Deferred();
+			function onItem(item, request){
+				t.assertTrue(item !== null);
+				t.assertTrue(store.getIdentity(item) === 2);
+				d.callback(true);
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			store.fetch({ query:{abbr: "sv"}, onItem: onItem, onError: onError});
 			return d; // Deferred
 		}
 	},

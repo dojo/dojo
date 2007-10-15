@@ -28,11 +28,11 @@ if(dojo.isIE || dojo.isOpera){
 		//		dojo.doc.  Can be used to retreive
 		//		node references from other documents.
 		if(dojo.isString(id)){
-			var _d = (doc||dojo.doc);
+			var _d = doc || dojo.doc;
 			var te = _d.getElementById(id);
 			// attributes.id.value is better than just id in case the 
 			// user has a name=id inside a form
-			if((te) && (te.attributes.id.value == id)){
+			if(te && te.attributes.id.value == id){
 				return te;
 			}else{
 				var eles = _d.all[id];
@@ -40,7 +40,7 @@ if(dojo.isIE || dojo.isOpera){
 				if(!eles.length){ return eles; }
 				// if more than 1, choose first with the correct id
 				var i=0;
-				while(te=eles[i++]){
+				while((te=eles[i++])){
 					if(te.attributes.id.value == id){ return te; }
 				}
 			}
@@ -63,7 +63,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		dojo.doc.  Can be used to retreive
 		//		node references from other documents.
 		if(dojo.isString(id)){
-			return (doc||dojo.doc).getElementById(id);
+			return (doc || dojo.doc).getElementById(id);
 		}else{
 			return id; // DomNode
 		}
@@ -120,13 +120,13 @@ if(dojo.isIE || dojo.isOpera){
 		// summary: enable or disable selection on a node
 		node = dojo.byId(node);
 		if(dojo.isMozilla){
-			node.style.MozUserSelect = (selectable) ? "" : "none";
+			node.style.MozUserSelect = selectable ? "" : "none";
 		}else if(dojo.isKhtml){
-			node.style.KhtmlUserSelect = (selectable) ? "auto" : "none";
+			node.style.KhtmlUserSelect = selectable ? "auto" : "none";
 		}else if(dojo.isIE){
-			node.unselectable = (selectable) ? "" : "on";
+			node.unselectable = selectable ? "" : "on";
 			dojo.query("*", node).forEach(function(descendant){
-				descendant.unselectable = (selectable) ? "" : "on";
+				descendant.unselectable = selectable ? "" : "on";
 			});
 		}
 		//FIXME: else?  Opera?
@@ -167,15 +167,15 @@ if(dojo.isIE || dojo.isOpera){
 		//		"first" and "last" indicate positions as children of refNode.
 
 		// FIXME: need to write tests for this!!!!
-		if((!node)||(!refNode)||(typeof position == "undefined")){ 
+		if(!node || !refNode || position === undefined){ 
 			return false;	//	boolean 
 		}
 		node = dojo.byId(node);
 		refNode = dojo.byId(refNode);
 		if(typeof position == "number"){
 			var cn = refNode.childNodes;
-			if(((position == 0)&&(cn.length == 0)) ||
-				(cn.length == position)){
+			if((position == 0 && cn.length == 0) ||
+				cn.length == position){
 				refNode.appendChild(node); return true;
 			}
 			if(position == 0){
@@ -272,15 +272,15 @@ if(dojo.isIE || dojo.isOpera){
 				s = dv.getComputedStyle(node, null);
 			}
 			return s || {};
-		} 
+		}; 
 	}else if(dojo.isIE){
 		gcs = function(node){
 			return node.currentStyle;
-		}
+		};
 	}else{
 		gcs = function(node){
 			return dv.getComputedStyle(node, null);
-		}
+		};
 	}
 	dojo.getComputedStyle = gcs;
 
@@ -292,9 +292,9 @@ if(dojo.isIE || dojo.isOpera){
 		}
 	}else{
 		dojo._toPixelValue = function(element, avalue){
-			if(!avalue){return 0;}
+			if(!avalue){ return 0; }
 			// on IE7, medium is usually 4 pixels
-			if(avalue=="medium"){return 4;};
+			if(avalue=="medium"){ return 4; }
 			// style values can be floats, client code may
 			// want to round this value for integer pixels.
 			if(avalue.slice && (avalue.slice(-2)=='px')){ return parseFloat(avalue); }
@@ -671,7 +671,7 @@ if(dojo.isIE || dojo.isOpera){
 		// For whatever reason, TABLE and BUTTON are always border-box by default.
 		// If you have assigned a different box to either one via CSS then
 		// box functions will break.
-		return (dojo.boxModel=="border-box")||(n=="TABLE")||(n=="BUTTON"); // boolean
+		return dojo.boxModel=="border-box" || n=="TABLE" || n=="BUTTON"; // boolean
 	}
 
 	dojo._setContentSize = function(/*DomNode*/node, /*Number*/widthPx, /*Number*/heightPx, /*Object*/computedStyle){
@@ -787,9 +787,9 @@ if(dojo.isIE || dojo.isOpera){
 	
 	dojo._isBodyLtr = function(){
 		//FIXME: could check html and body tags directly instead of computed style?  need to ignore case, accept empty values
-		return typeof dojo._bodyLtr == "undefined" ? 
-				(dojo._bodyLtr = dojo.getComputedStyle(dojo.body()).direction == "ltr") :
-				dojo._bodyLtr; // Boolean 
+		return !("_bodyLtr" in dojo) ? 
+			dojo._bodyLtr = dojo.getComputedStyle(dojo.body()).direction == "ltr" :
+			dojo._bodyLtr; // Boolean 
 	}
 	
 	dojo._getIeDocumentElementOffset = function(){
@@ -964,7 +964,7 @@ dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*
 	//		Pass a boolean condition if you want to explicitly add or remove.
 	//	condition:
 	//		If passed, true means to add the class, false means to remove.
-	if(typeof condition == "undefined"){
+	if(condition === undefined){
 		condition = !dojo.hasClass(node, classStr);
 	}
 	dojo[condition ? "addClass" : "removeClass"](node, classStr);

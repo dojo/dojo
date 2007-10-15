@@ -59,7 +59,7 @@ dojo.require("dojo._base.query");
 		}).forEach(function(item){
 			var _in = item.name;
 			var type = (item.type||"").toLowerCase();
-			if((type == "radio")||(type == "checkbox")){
+			if(type == "radio" || type == "checkbox"){
 				if(item.checked){ setValue(ret, _in, item.value); }
 			}else if(item.multiple){
 				ret[_in] = [];
@@ -75,7 +75,7 @@ dojo.require("dojo._base.query");
 				}
 			}
 		});
-		return ret;
+		return ret; // Object
 	}
 })();
 
@@ -114,24 +114,24 @@ dojo.objectToQuery = function(/*Object*/ map){
 			}
 		}
 	}
-	if((ret.length)&&(ret.charAt(ret.length-1)== "&")){
+	if(ret.length && ret.charAt(ret.length-1) == "&"){
 		ret = ret.substr(0, ret.length-1);
 	}
-	return ret; // string
+	return ret; // String
 }
 
 dojo.formToQuery = function(/*DOMNode||String*/ formNode){
 	// summary:
 	//		return URL-encoded string representing the form passed as either a
 	//		node or string ID identifying the form to serialize
-	return dojo.objectToQuery(dojo.formToObject(formNode)); // string
+	return dojo.objectToQuery(dojo.formToObject(formNode)); // String
 }
 
 dojo.formToJson = function(/*DOMNode||String*/ formNode){
 	// summary:
 	//		return a serialized JSON string from a form node or string
 	//		ID identifying the form to serialize
-	return dojo.toJson(dojo.formToObject(formNode)); // string
+	return dojo.toJson(dojo.formToObject(formNode)); // String
 }
 
 dojo.queryToObject = function(/*String*/ str){
@@ -173,7 +173,7 @@ dojo.queryToObject = function(/*String*/ str){
 			}
 		}
 	});
-	return ret;
+	return ret; // Object
 }
 
 /*
@@ -208,37 +208,21 @@ dojo._contentHandlers = {
 	"text": function(xhr){ return xhr.responseText; },
 	"json": function(xhr){
 		if(!djConfig.usePlainJson){
-			console.debug("please consider using a mimetype of text/json-comment-filtered"
+			console.debug("consider using a mimetype of text/json-comment-filtered"
 				+ " to avoid potential security issues with JSON endpoints"
 				+ " (use djConfig.usePlainJson=true to turn off this message)");
 		}
 		return dojo.fromJson(xhr.responseText);
 	},
-	"json-comment-optional": function(xhr){ 
-		// NOTE: we provide the json-comment-filtered option as one solution to
-		// the "JavaScript Hijacking" issue noted by Fortify and others. It is
-		// not appropriate for all circumstances.
-		var value = xhr.responseText;
-		var cStartIdx = value.indexOf("\/*");
-		var cEndIdx = value.lastIndexOf("*\/");
-		if((cStartIdx == -1)||(cEndIdx == -1)){
-			return dojo.fromJson(xhr.responseText);
-		}
-		return dojo.fromJson(value.substring(cStartIdx+2, cEndIdx));
-	},
 	"json-comment-filtered": function(xhr){ 
 		// NOTE: we provide the json-comment-filtered option as one solution to
 		// the "JavaScript Hijacking" issue noted by Fortify and others. It is
 		// not appropriate for all circumstances.
-		var value = xhr.responseText;
-		var cStartIdx = value.indexOf("\/*");
-		var cEndIdx = value.lastIndexOf("*\/");
-		if((cStartIdx == -1)||(cEndIdx == -1)){
-			// FIXME: throw exception instead?
-			console.debug("your JSON wasn't comment filtered!"); 
-			return "";
+		var match = xhr.responseText.match(/\/\*(.*)\*\//);
+		if(!match){
+			throw new Error("your JSON wasn't comment filtered!");
 		}
-		return dojo.fromJson(value.substring(cStartIdx+2, cEndIdx));
+		return dojo.fromJson(match[1]);
 	},
 	"javascript": function(xhr){ 
 		// FIXME: try Moz and IE specific eval variants?
@@ -257,6 +241,15 @@ dojo._contentHandlers = {
 		}else{
 			return xhr.responseXML;
 		}
+	}
+};
+
+dojo._contentHandlers["json-comment-optional"] = function(xhr){
+	var handlers = dojo._contentHandlers;
+	try{
+		return handlers["json-comment-filtered"](xhr);
+	}catch(e){
+		return handlers["json"](xhr);
 	}
 };
 
@@ -350,8 +343,7 @@ dojo._contentHandlers = {
 		//		to do cleanup on an error. It will receive two arguments: error (the 
 		//		Error object) and dfd, the Deferred object returned from this function.
 
-		var ioArgs = {};
-		ioArgs.args = args;
+		var ioArgs = {args: args, url: args.url};
 
 		//Get values from form if requestd.
 		var formObject = null;
@@ -360,10 +352,8 @@ dojo._contentHandlers = {
 			//IE requires going through getAttributeNode instead of just getAttribute in some form cases, 
 			//so use it for all.  See #2844
 			var actnNode = form.getAttributeNode("action");
-			ioArgs.url = args.url || (actnNode ? actnNode.value : null); 
+			ioArgs.url = ioArgs.url || (actnNode ? actnNode.value : null); 
 			formObject = dojo.formToObject(form);
-		}else{
-			ioArgs.url = args.url;
 		}
 
 		// set up the query params
@@ -386,7 +376,7 @@ dojo._contentHandlers = {
 		ioArgs.handleAs = args.handleAs || "text";
 		var d = new dojo.Deferred(canceller);
 		d.addCallbacks(okHandler, function(error){
-				return errHandler(error, d);
+			return errHandler(error, d);
 		});
 
 		//Support specifying load, error and handle callback functions from the args.
@@ -417,7 +407,6 @@ dojo._contentHandlers = {
 		// FIXME: need to wire up the xhr object's abort method to something
 		// analagous in the Deferred
 		return d;
-	
 	}
 
 	var _deferredCancel = function(/*Deferred*/dfd){
@@ -431,7 +420,7 @@ dojo._contentHandlers = {
 	}
 	var _deferredOk = function(/*Deferred*/dfd){
 		//summary: okHandler function for dojo._ioSetArgs call.
-		
+
 		return dojo._contentHandlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
 	}
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
@@ -564,7 +553,7 @@ dojo._contentHandlers = {
 		// workaround for IE6's apply() "issues"
 		var ioArgs = dfd.ioArgs;
 		var args = ioArgs.args;
-		ioArgs.xhr.open(type, ioArgs.url, (args.sync !== true), (args.user ? args.user : undefined), (args.password ? args.password: undefined));
+		ioArgs.xhr.open(type, ioArgs.url, args.sync !== true, args.user || undefined, args.password || undefined);
 		if(args.headers){
 			for(var hdr in args.headers){
 				if(hdr.toLowerCase() === "content-type" && !args.contentType){
@@ -594,8 +583,6 @@ dojo._contentHandlers = {
 			ioArgs.query = null;
 		}		
 	}
-
-	// TODOC: FIXME!!!
 
 	dojo.xhrGet = function(/*Object*/ args){
 		//	summary: 

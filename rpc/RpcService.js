@@ -22,7 +22,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 					throw new Error("Unable to load SMD from " + args);
 				});
 
-			}else if(args["smdStr"]){
+			}else if(args.smdStr){
 				this.processSmd(dojo.eval("("+args.smdStr+")"));
 			}else{
 				// otherwise we assume it's an arguments object with the following
@@ -32,17 +32,13 @@ dojo.declare("dojo.rpc.RpcService", null, {
 				//      - smdStr
 				//      - smdObj
 
-				if(args["serviceUrl"]){
+				if(args.serviceUrl){
 					this.serviceUrl = args.serviceUrl;
 				}
 
-				if(args["timeout"]){
-					this.timeout = args.timeout;
-				}else{
-					this.timeout=3000;
-				}
+				this.timeout = args.timeout || 3000;
 
-				if(typeof args["strictArgChecks"] != "undefined"){
+				if("strictArgChecks" in args){
 					this.strictArgChecks = args.strictArgChecks;
 				}
 

@@ -5,7 +5,7 @@ dojo.require("dojo.io.script");
 dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
 	constructor: function(args, requiredArgs){
 		if(this.required) {
-			if (requiredArgs){
+			if(requiredArgs){
 				dojo.mixin(this.required, requiredArgs);
 			}
 
@@ -31,11 +31,8 @@ dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
 		def.addCallbacks(this.resultCallback(deferredRequestHandler), this.errorCallback(deferredRequestHandler));
 	},
 	createRequest: function(parameters){
-		if(dojo.isArrayLike(parameters)&&(parameters.length==1)){
-			var params = parameters[0];
-		}else{
-			params = {};
-		}
+		var params = (dojo.isArrayLike(parameters) && parameters.length==1) ?
+				parameters[0] : {};
 		dojo.mixin(params,this.required);
 		return params;
 	}

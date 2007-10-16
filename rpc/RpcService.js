@@ -63,7 +63,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		//		create callback that calls the Deferres errback method
 		return function(data){
 			deferredRequestHandler.errback(new Error(data.message));
-		}
+		};
 	},
 
 	resultCallback: function(/* dojo.Deferred */ deferredRequestHandler){
@@ -71,20 +71,20 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		// 		create callback that calls the Deferred's callback method
 		var tf = dojo.hitch(this, 
 			function(obj){
-				if(obj["error"]!=null){
+				if(obj.error!=null){
+					var err;
 					if(typeof obj.error == 'object'){
-						var err = new Error(obj.error.message);
+						err = new Error(obj.error.message);
 						err.code = obj.error.code;
 						err.error = obj.error.error;
 					}else{
-						var err = new Error(obj.error);
+						err = new Error(obj.error);
 					}
 					err.id = obj.id;
 					err.errorObject = obj;
 					deferredRequestHandler.errback(err);
 				}else{
-					var results = this.parseResults(obj);
-					deferredRequestHandler.callback(results); 
+					deferredRequestHandler.callback(this.parseResults(obj)); 
 				}
 			}
 		);
@@ -118,10 +118,10 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		// 		and generate functions based on the description
 		if(object.methods){
 			dojo.forEach(object.methods, function(m){
-				if(m && m["name"]){
+				if(m && m.name){
 					this[m.name] = this.generateMethod(	m.name,
 										m.parameters, 
-										m["url"]||m["serviceUrl"]||m["serviceURL"]);
+										m.url||m.serviceUrl||m.serviceURL);
 					if(!dojo.isFunction(this[m.name])){
 						throw new Error("RpcService: Failed to create" + m.name + "()");
 						/*console.debug("RpcService: Failed to create", m.name, "()");*/

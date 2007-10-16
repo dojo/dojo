@@ -38,11 +38,11 @@ dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 			return data;
 		},
 
-		parseResults: function(obj){
+		parseResults: function(/*anything*/obj){
 			//summary:
-			//		parse the result envelope and pass the results back to to
+			//		parse the result envelope and pass the results back to
 			//		the callback function
-			if(!obj){ return; }
+			if(obj === null){ return null; }
 			return obj.Result || obj.result || obj.ResultSet || obj;
 		}
 	}

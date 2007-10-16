@@ -89,6 +89,11 @@ dojo.version = {
 	}
 }
 
+// Register with the OpenAjax hub
+if(typeof OpenAjax != "undefined"){
+	OpenAjax.hub.registerLibrary("dojo", "http://dojotoolkit.org", dojo.version.toString());
+}
+
 dojo._getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
 	var obj=context||dojo.global;
 	for(var i=0, p; obj&&(p=parts[i]); i++){

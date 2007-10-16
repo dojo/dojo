@@ -558,30 +558,28 @@ dojo._xdWatchInFlight = function(){
 	//summary: Internal xd loader function.
 	//Monitors in-flight requests for xd module resources.
 
-	//Make sure we haven't waited timed out.
+	var noLoads = "";
 	var waitInterval = (djConfig.xdWaitSeconds || 15) * 1000;
+	var expired = (this._xdStartTime + waitInterval) < (new Date()).getTime();
 
-	if(this._xdStartTime + waitInterval < (new Date()).getTime()){
-		this._xdClearInterval();
-		var noLoads = "";
-		for(var param in this._xdInFlight){
-			if(this._xdInFlight[param]){
+	//If any xdInFlight are true, then still waiting for something to load.
+	//Come back later. If we timed out, report the things that did not load.
+	for(var param in this._xdInFlight){
+		if(this._xdInFlight[param] === true){
+			if(expired){
 				noLoads += param + " ";
+			}else{
+				return;
 			}
 		}
+	}
+
+	//All done. Clean up and notify.
+	this._xdClearInterval();
+
+	if(expired){
 		throw "Could not load cross-domain resources: " + noLoads;
 	}
-
-	//If any are true, then still waiting.
-	//Come back later.	
-	for(var param in this._xdInFlight){
-		if(this._xdInFlight[param]){
-			return;
-		}
-	}
-
-	//All done loading. Clean up and notify that we are loaded.
-	this._xdClearInterval();
 
 	this._xdWalkReqs();
 	

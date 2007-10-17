@@ -43,13 +43,13 @@ dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 			//		parse the result envelope and pass the results back to
 			//		the callback function
 			if(dojo.isObject(obj)){
-				if(obj.result !== undefined){
+				if("result" in obj){
 					return obj.result;
 				}
-				if(obj.Result !== undefined){
+				if("Result" in obj){
 					return obj.Result;
 				}
-				if(obj.ResultSet !== undefined){
+				if("ResultSet" in obj){
 					return obj.ResultSet;
 				}
 			}

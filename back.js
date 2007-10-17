@@ -316,7 +316,7 @@ dojo.provide("dojo.back");
 			}else if(!dojo.isIE){
 				// start the timer
 				if(!locationTimer){
-					locationTimer = setInterval(checkLocation, 5000);
+					locationTimer = setInterval(checkLocation, 200);
 				}
 				
 			}

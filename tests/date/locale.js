@@ -199,6 +199,13 @@ tests.register("tests.date.locale",
 			}
 		},
 		{
+			name: "parse_dates_neg",
+			runTest: function(t){
+	t.is(null, dojo.date.locale.parse("2/29/2007", {formatLength: 'short', selector: 'date', locale: 'en'}));
+	t.is(null, dojo.date.locale.parse("4/31/2007", {formatLength: 'short', selector: 'date', locale: 'en'}));
+			}
+		},
+		{
 			name: "parse_datetimes",
 			runTest: function(t){
 

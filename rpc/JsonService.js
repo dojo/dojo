@@ -42,8 +42,18 @@ dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 			//summary:
 			//		parse the result envelope and pass the results back to
 			//		the callback function
-			if(obj === null){ return null; }
-			return obj.Result || obj.result || obj.ResultSet || obj;
+			if(dojo.isObject(obj)){
+				if(obj.result !== undefined){
+					return obj.result;
+				}
+				if(obj.Result !== undefined){
+					return obj.Result;
+				}
+				if(obj.ResultSet !== undefined){
+					return obj.ResultSet;
+				}
+			}
+			return obj;
 		}
 	}
 );

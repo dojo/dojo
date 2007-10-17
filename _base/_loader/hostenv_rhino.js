@@ -50,7 +50,7 @@ dojo._loadUri = function(uri, cb){
 		}
 		return true;
 	}catch(e){
-		dojo.debug("rhino load('" + uri + "') failed. Exception: " + e);
+		console.debug("rhino load('" + uri + "') failed. Exception: " + e);
 		return false;
 	}
 }
@@ -192,6 +192,13 @@ dojo.body = function(){
 	return document.body;	
 }
 
+dojo._timeouts = [];
+
+function clearTimeout(idx){
+	if(!dojo._timeouts[idx]){ return; }
+	dojo._timeouts[idx].stop();
+}
+
 function setTimeout(func, delay){
 	// summary: provides timed callbacks using Java threads
 
@@ -200,19 +207,22 @@ function setTimeout(func, delay){
 		hasSlept:false,
 		
 		run:function(){
-			if (!this.hasSlept){
+			if(!this.hasSlept){
 				this.hasSlept=true;
 				java.lang.Thread.currentThread().sleep(this.sleepTime);
 			}
-			try {
+			try{
 				func();
-			} catch(e){dojo.debug("Error running setTimeout thread:" + e);}
+			}catch(e){
+				console.debug("Error running setTimeout thread:" + e);
+			}
 		}
 	};
 	
-	var runnable=new java.lang.Runnable(def);
-	var thread=new java.lang.Thread(runnable);
+	var runnable = new java.lang.Runnable(def);
+	var thread = new java.lang.Thread(runnable);
 	thread.start();
+	return dojo._timeouts.push(thread)-1;
 }
 
 //Register any module paths set up in djConfig. Need to do this
@@ -223,5 +233,3 @@ if(djConfig["modulePaths"]){
 		dojo.registerModulePath(param, djConfig["modulePaths"][param]);
 	}
 }
-
-dojo.requireIf((djConfig["isDebug"] || djConfig["debugAtAllCosts"]), "dojo.debug");

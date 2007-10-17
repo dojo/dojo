@@ -40,6 +40,9 @@
 		
 		var data = {
 			link0: "This is the initial state (page first loaded)",
+			"link with spaces": "This is data for a state with spaces",
+			"link%20with%20encoded": "This is data for a state with encoded bits",
+			"link+with+pluses": "This is data for a state with pluses",
 			link1: "This is data for link 1",
 			link2: "This is data for link 2",
 			link3: "This is data for link 3",
@@ -87,7 +90,9 @@
 	</div>
 	<div style="float:left; padding: 20px">
 		<button onclick="goNav('link1')">Link 1</button><br />
-		<button onclick="goNav('link2')">Link 2</button><br />
+		<button onclick="goNav('link with spaces')">Link with Spaces</button><br />
+		<button onclick="goNav('link%20with%20encoded')">Link with Encoded</button><br />
+		<button onclick="goNav('link+with+pluses')">Link with Pluses</button><br />
 		<button onclick="goNav('link3')">Link 3</button><br />
 		<button onclick="goNav('link4')">Link 4</button><br />
 		<button onclick="goNav('link5')">Link 5</button><br />

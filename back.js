@@ -21,7 +21,7 @@ dojo.provide("dojo.back");
 		//summary: private method. Do not call this directly.
 
 		//The "current" page is always at the top of the history stack.
-		console.debug("handlingBackButton");
+		//console.debug("handlingBackButton");
 		var current = historyStack.pop();
 		if(!current){ return; }
 		var last = historyStack[historyStack.length-1];
@@ -38,14 +38,14 @@ dojo.provide("dojo.back");
 			}
 		}
 		forwardStack.push(current);
-		console.debug("done handling back");
+		//console.debug("done handling back");
 	}
 
 	back.goBack = handleBackButton;
 
 	function handleForwardButton(){
 		//summary: private method. Do not call this directly.
-		console.debug("handling forward");
+		//console.debug("handling forward");
 		var last = forwardStack.pop();
 		if(!last){ return; }
 		if(last.kwArgs["forward"]){
@@ -56,7 +56,7 @@ dojo.provide("dojo.back");
 			last.kwArgs.handle("forward");
 		}
 		historyStack.push(last);
-		console.debug("done handling forward");
+		//console.debug("done handling forward");
 	}
 
 	back.goForward = handleForwardButton;
@@ -103,13 +103,13 @@ dojo.provide("dojo.back");
         if (historyIframe) {
 		    (dojo.isSafari) ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
         } else {
-            console.warn("dojo.back: Not initialised. You need to call dojo.back.init() from a <script> block that lives inside the <body> tag.");
+            //console.warn("dojo.back: Not initialised. You need to call dojo.back.init() from a <script> block that lives inside the <body> tag.");
         }
 		return url; //String
 	}
 
 	function checkLocation(){
-		console.debug("checking url");
+		//console.debug("checking url");
 		if(!changingUrl){
 			var hsl = historyStack.length;
 
@@ -143,7 +143,7 @@ dojo.provide("dojo.back");
 			else if(hisLen < historyCounter) handleBackButton();
 			historyCounter = hisLen;
 		}
-		console.debug("done checking");
+		//console.debug("done checking");
 	};
 	
 	back.init = function(){

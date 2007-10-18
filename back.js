@@ -77,23 +77,24 @@ dojo.provide("dojo.back");
 		}
 	}
 
-	var getHash;
-	if(dojo.isOpera){
-		getHash = function(){
-			// work 
-			var href = window.top.location.href;
-			var i = href.indexOf("#");
-			return i >= 0 ? href.substring(i+1) : null;
-		};
-	}else{
-		getHash = function(){ return window.location.hash; };
+	// everyone deals with encoding the hash slightly differently
+	
+	function getHash(){ 
+		var h = window.location.hash;
+		if(h.charAt(0) == "#") { h = h.substring(1); }
+		return dojo.isMozilla ? h : decodeURIComponent(h); 
 	}
-
+	
 	function setHash(h){
 		if(!h) { h = "" };
-		if(h.charAt(0) == "#"){ h = h.substring(1); }
-		window.location.hash = h;
+		window.location.hash = encodeURIComponent(h);
 		historyCounter = history.length;
+	}
+	
+	// if we're in the test for these methods, expose them on dojo.back. ok'd with alex.
+	if(dojo.exists("tests.back-hash")){
+		back.getHash = getHash;
+		back.setHash = setHash;		
 	}
 	
 	function loadIframeHistory(){
@@ -240,7 +241,7 @@ dojo.provide("dojo.back");
 			bookmarkAnchor.style.display = "none";
 		}
 		if(args["changeUrl"]){
-			hash = "#"+ ((args["changeUrl"]!==true) ? args["changeUrl"] : (new Date()).getTime());
+			hash = ""+ ((args["changeUrl"]!==true) ? args["changeUrl"] : (new Date()).getTime());
 			
 			//If the current hash matches the new one, just replace the history object with
 			//this new one. It doesn't make sense to track different state objects for the same

@@ -4,8 +4,28 @@ dojo.provide("dojo.back");
 	
 	var back = dojo.back;
 	
+	// everyone deals with encoding the hash slightly differently
+	
+	function getHash(){ 
+		var h = window.location.hash;
+		if(h.charAt(0) == "#") { h = h.substring(1); }
+		return dojo.isMozilla ? h : decodeURIComponent(h); 
+	}
+	
+	function setHash(h){
+		if(!h) { h = "" };
+		window.location.hash = encodeURIComponent(h);
+		historyCounter = history.length;
+	}
+	
+	// if we're in the test for these methods, expose them on dojo.back. ok'd with alex.
+	if(dojo.exists("tests.back-hash")){
+		back.getHash = getHash;
+		back.setHash = setHash;		
+	}
+	
 	var initialHref = (typeof(window) !== "undefined") ? window.location.href : "";
-	var initialHash = (typeof(window) !== "undefined") ? window.location.hash : "";
+	var initialHash = (typeof(window) !== "undefined") ? getHash() : "";
 	var initialState = null;
 
 	var locationTimer = null;
@@ -76,26 +96,6 @@ dojo.provide("dojo.back");
 			return segments[1]; //String
 		}
 	}
-
-	// everyone deals with encoding the hash slightly differently
-	
-	function getHash(){ 
-		var h = window.location.hash;
-		if(h.charAt(0) == "#") { h = h.substring(1); }
-		return dojo.isMozilla ? h : decodeURIComponent(h); 
-	}
-	
-	function setHash(h){
-		if(!h) { h = "" };
-		window.location.hash = encodeURIComponent(h);
-		historyCounter = history.length;
-	}
-	
-	// if we're in the test for these methods, expose them on dojo.back. ok'd with alex.
-	if(dojo.exists("tests.back-hash")){
-		back.getHash = getHash;
-		back.setHash = setHash;		
-	}
 	
 	function loadIframeHistory(){
 		//summary: private method. Do not call this directly.
@@ -113,8 +113,10 @@ dojo.provide("dojo.back");
 		//console.debug("checking url");
 		if(!changingUrl){
 			var hsl = historyStack.length;
+			
+			var hash = getHash();
 
-			if((getHash() == initialHash||window.location.href == initialHref)&&(hsl == 1)){
+			if((hash === initialHash||window.location.href == initialHref)&&(hsl == 1)){
 				// FIXME: could this ever be a forward button?
 				// we can't clear it because we still need to check for forwards. Ugg.
 				// clearInterval(this.locationTimer);
@@ -125,7 +127,7 @@ dojo.provide("dojo.back");
 			// first check to see if we could have gone forward. We always halt on
 			// a no-hash item.
 			if(forwardStack.length > 0){
-				if(forwardStack[forwardStack.length-1].urlHash == getHash()){
+				if(forwardStack[forwardStack.length-1].urlHash === hash){
 					handleForwardButton();
 					return;
 				}
@@ -133,16 +135,18 @@ dojo.provide("dojo.back");
 	
 			// ok, that didn't work, try someplace back in the history stack
 			if((hsl >= 2)&&(historyStack[hsl-2])){
-				if(historyStack[hsl-2].urlHash==getHash()){
+				if(historyStack[hsl-2].urlHash === hash){
 					handleBackButton();
 					return;
 				}
 			}
-
-			var hisLen = history.length;
-			if(hisLen > historyCounter) handleForwardButton();
-			else if(hisLen < historyCounter) handleBackButton();
-			historyCounter = hisLen;
+			
+			if(dojo.isSafari && dojo.isSafari < 3){
+				var hisLen = history.length;
+				if(hisLen > historyCounter) handleForwardButton();
+				else if(hisLen < historyCounter) handleBackButton();
+			  historyCounter = hisLen;
+			}
 		}
 		//console.debug("done checking");
 	};

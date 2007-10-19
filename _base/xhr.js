@@ -414,7 +414,8 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		
 		dfd.canceled = true;
 		var xhr = dfd.ioArgs.xhr;
-		if(typeof xhr.abort == "function"){
+		var _at = (typeof xhr.abort);
+		if((_at == "function")||(_at == "unknown")){
 			xhr.abort();
 		}
 		var err = new Error("xhr cancelled");

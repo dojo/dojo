@@ -112,7 +112,7 @@ if(dojo.isIE || dojo.isOpera){
 				}
 				node = node.parentNode;
 			}
-		}catch(e){ /* squelch */ }
+		}catch(e){ return -1; /* squelch */ }
 		return false; // Boolean
 	};
 
@@ -380,6 +380,9 @@ if(dojo.isIE || dojo.isOpera){
 		}else if(_pixelNamesCache[type] === false){
 			return value;
 		}else{
+			if(dojo.isOpera && type == "cssText"){
+				// FIXME: add workaround for #2855 here
+			}
 			if(
 				(type.indexOf("margin") >= 0) ||
 				// (type.indexOf("border") >= 0) ||

@@ -417,6 +417,9 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		if(typeof xhr.abort == "function"){
 			xhr.abort();
 		}
+		var err = new Error("xhr cancelled");
+		err.dojoType = "cancel";
+		return err;
 	}
 	var _deferredOk = function(/*Deferred*/dfd){
 		//summary: okHandler function for dojo._ioSetArgs call.

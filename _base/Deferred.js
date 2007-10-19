@@ -253,15 +253,20 @@ dojo.extend(dojo.Deferred, {
 		//		If a canceller is defined, the canceller is called. If the
 		//		canceller did not return an error, or there was no canceller,
 		//		then the errback chain is started.
+		var err;
 		if(this.fired == -1){
 			if(this.canceller){
-				this.canceller(this);
+				err = this.canceller(this);
 			}else{
 				this.silentlyCancelled = true;
 			}
 			if(this.fired == -1){
-				var err = new Error("Deferred Cancelled");
-				err.dojoType = "cancel";
+				if(!(err instanceof Error)){
+					var res = err;
+					err = new Error("Deferred Cancelled");
+					err.dojoType = "cancel";
+					err.cancelResult = res;
+				}
 				this.errback(err);
 			}
 		}else if(	(this.fired == 0) &&

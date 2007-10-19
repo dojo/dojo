@@ -95,11 +95,17 @@
 									"xyzzy!"
 								]
 							};
-							t.is("",  // did we fail closed?
+							var e;
+							try{
 								dojo._contentHandlers["json-comment-filtered"]({
 									responseText: dojo.toJson(jsonObj)
 								})
-							);
+							}catch(ex){
+								e = ex;
+							}finally{
+								// did we fail closed?
+								t.is((typeof e), "object");
+							}
 							t.is(jsonObj,
 								dojo._contentHandlers["json-comment-filtered"]({
 									responseText: "\tblag\n/*"+dojo.toJson(jsonObj)+"*/\n\r\t\r"

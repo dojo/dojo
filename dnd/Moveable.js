@@ -55,7 +55,7 @@ dojo.declare("dojo.dnd.Moveable", null, {
 			this._lastX = e.pageX;
 			this._lastY = e.pageY;
 		}else{
-			new this.mover(this.node, e);
+			new this.mover(this.node, e, this);
 		}
 		dojo.stopEvent(e);
 	},
@@ -64,7 +64,7 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		// e: Event: mouse event
 		if(Math.abs(e.pageX - this._lastX) > this.delay || Math.abs(e.pageY - this._lastY) > this.delay){
 			this.onMouseUp(e);
-			new this.mover(this.node, e);
+			new this.mover(this.node, e, this);
 		}
 		dojo.stopEvent(e);
 	},

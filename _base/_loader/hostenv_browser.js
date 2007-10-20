@@ -123,6 +123,7 @@ if(typeof window != 'undefined'){
 		//Opera still has problems, but perhaps a larger issue of base tag support
 		//with XHR requests (hasBase is true, but the request is still made to document
 		//path, not base path).
+		var owloc = window.location+"";
 		var base = document.getElementsByTagName("base");
 		var hasBase = (base && base.length > 0);
 
@@ -141,7 +142,7 @@ if(typeof window != 'undefined'){
 			var http = this._xhrObj();
 
 			if(!hasBase && dojo._Url){
-				uri = (new dojo._Url(window.location, uri)).toString();
+				uri = (new dojo._Url(owloc, uri)).toString();
 			}
 			/*
 			console.debug("_getText:", uri);
@@ -152,6 +153,7 @@ if(typeof window != 'undefined'){
 			http.open('GET', uri, false);
 			try{
 				http.send(null);
+				// alert(http);
 				if(!d._isDocumentOk(http)){
 					var err = Error("Unable to load "+uri+" status:"+ http.status);
 					err.status = http.status;

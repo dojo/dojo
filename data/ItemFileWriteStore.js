@@ -78,7 +78,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}else{
 			newIdentity = keywordArgs[identifierAttribute];
 			if (typeof newIdentity === "undefined"){
-				throw new Error("newItem() was not passed an identify for the new item");
+				throw new Error("newItem() was not passed an identity for the new item");
 			}
 			if (dojo.isArray(newIdentity)){
 				throw new Error("newItem() was not passed an single-valued identity");

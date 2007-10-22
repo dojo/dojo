@@ -571,7 +571,7 @@ function test_number_format_pad(){
 	 * refers to ICU4J's NumberFormatTest.TestStrictParse()??
 	 * TODO: Seems dojo.number parses string in a tolerant way.  
 	 */
-	 var options = {locale:"en"};
+	 var options = {locale:"en-us"};
 	/*
 	 * TODO: !!Failed case,Should all pass,
 	 * but the following elements failed (all parsed to NaN):

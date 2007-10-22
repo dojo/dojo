@@ -208,7 +208,7 @@ dojo._contentHandlers = {
 	"text": function(xhr){ return xhr.responseText; },
 	"json": function(xhr){
 		if(!djConfig.usePlainJson){
-			console.debug("consider using a mimetype of text/json-comment-filtered"
+			console.debug("Consider using mimetype:text/json-comment-filtered"
 				+ " to avoid potential security issues with JSON endpoints"
 				+ " (use djConfig.usePlainJson=true to turn off this message)");
 		}
@@ -218,9 +218,11 @@ dojo._contentHandlers = {
 		// NOTE: we provide the json-comment-filtered option as one solution to
 		// the "JavaScript Hijacking" issue noted by Fortify and others. It is
 		// not appropriate for all circumstances.
-		var match = xhr.responseText.match(/\/\*(.*)\*\//);
+
+		//FIXME: is this precise enough?  This might do a partial match on the multiline string.
+		var match = xhr.responseText.match(/\/\*([\s\S]*)\*\//m);
 		if(!match){
-			throw new Error("your JSON wasn't comment filtered!");
+			throw new Error("JSON was not comment filtered");
 		}
 		return dojo.fromJson(match[1]);
 	},

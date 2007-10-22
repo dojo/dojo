@@ -863,9 +863,11 @@ if(
 				}
 				nm+="]";
 
+			}if((!dojo.isObject(obj))||dojo.isString(obj)){
+				nm = obj+"";
 			}else{
 				nm = "{";
-				for ( var i in obj){
+				for(var i in obj){
 					cnt++
 					if(cnt > obCnt) break;
 					nm += i+"="+obj[i]+"  ";

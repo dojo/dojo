@@ -37,6 +37,10 @@
 						"t.is('child3', dojo.query('> [qux]', dojo.byId('container'))[1].id);",
 						"t.is(3, dojo.query('>', dojo.byId('container')).length);",
 						"t.is('passed', dojo.query('#bug')[0].value);",
+						function NodeList_identity(t){
+							var foo = new dojo.NodeList([dojo.byId("container")]);
+							t.is(foo, dojo.query(foo));
+						},
 						function xml(t){
 							try{
 								dojo.require("dojox.data.dom");

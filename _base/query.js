@@ -1120,12 +1120,16 @@ dojo.require("dojo._base.NodeList");
 		// return is always an array
 		// NOTE: elementsById is not currently supported
 		// NOTE: ignores xpath-ish queries for now
+		if(query.constructor == d.NodeList){
+			return query;
+		}
 		if(typeof query != "string"){
 			return new d.NodeList(query);
 		}
 		if(typeof root == "string"){
 			root = d.byId(root);
 		}
+		// console.debug("root:", root);
 
 		// FIXME: should support more methods on the return than the stock array.
 		return _zip(getQueryFunc(query)(root||d.doc));

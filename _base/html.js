@@ -942,13 +942,14 @@ dojo.hasClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary:
 	//		Returns whether or not the specified classes are a portion of the
 	//		class list currently applied to the node. 
-	return ((" "+node.className+" ").indexOf(" "+classStr+" ") >= 0);  // Boolean
+	return ((" "+dojo.byId(node).className+" ").indexOf(" "+classStr+" ") >= 0);  // Boolean
 };
 
 dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 	//	summary:
 	//		Adds the specified classes to the end of the class list on the
 	//		passed node.
+	node = dojo.byId(node);
 	var cls = node.className;
 	if((" "+cls+" ").indexOf(" "+classStr+" ") < 0){
 		node.className = cls + (cls ? ' ' : '') + classStr;
@@ -956,7 +957,8 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 };
 
 dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
-	// summary: Removes classes from node.
+	// summary: Removes the specified classes from node.
+	node = dojo.byId(node);
 	var t = dojo.trim((" " + node.className + " ").replace(" " + classStr + " ", " "));
 	if(node.className != t){ node.className = t; }
 };

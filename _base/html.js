@@ -833,7 +833,7 @@ if(dojo.isIE || dojo.isOpera){
 		return scrollLeft; // Integer
 	}
 	
-	dojo._abs = function(/*HTMLElement*/node, /*Boolean?*/includeScroll){
+	dojo._abs = function(/*DomNode*/node, /*Boolean?*/includeScroll){
 		//	summary:
 		//		Gets the absolute position of the passed element based on the
 		//		document itself. Returns an object of the form:
@@ -918,7 +918,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	// FIXME: need a setter for coords or a moveTo!!
-	dojo.coords = function(/*HTMLElement*/node, /*Boolean?*/includeScroll){
+	dojo.coords = function(/*DomNode|String*/node, /*Boolean?*/includeScroll){
 		//	summary:
 		//		returns an object that measures margin box width/height and
 		//		absolute positioning data from dojo._abs(). Return value will
@@ -938,14 +938,14 @@ if(dojo.isIE || dojo.isOpera){
 // (CSS) Class Functions
 // =============================
 
-dojo.hasClass = function(/*HTMLElement*/node, /*String*/classStr){
+dojo.hasClass = function(/*DomNode|String*/node, /*String*/classStr){
 	//	summary:
 	//		Returns whether or not the specified classes are a portion of the
 	//		class list currently applied to the node. 
 	return ((" "+dojo.byId(node).className+" ").indexOf(" "+classStr+" ") >= 0);  // Boolean
 };
 
-dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
+dojo.addClass = function(/*DomNode|String*/node, /*String*/classStr){
 	//	summary:
 	//		Adds the specified classes to the end of the class list on the
 	//		passed node.
@@ -956,14 +956,14 @@ dojo.addClass = function(/*HTMLElement*/node, /*String*/classStr){
 	}
 };
 
-dojo.removeClass = function(/*HTMLElement*/node, /*String*/classStr){
+dojo.removeClass = function(/*DomNode|String*/node, /*String*/classStr){
 	// summary: Removes the specified classes from node.
 	node = dojo.byId(node);
 	var t = dojo.trim((" " + node.className + " ").replace(" " + classStr + " ", " "));
 	if(node.className != t){ node.className = t; }
 };
 
-dojo.toggleClass = function(/*HTMLElement*/node, /*String*/classStr, /*Boolean?*/condition){
+dojo.toggleClass = function(/*DomNode|String*/node, /*String*/classStr, /*Boolean?*/condition){
 	//	summary: 	
 	//		Adds a class to node if not present, or removes if present.
 	//		Pass a boolean condition if you want to explicitly add or remove.

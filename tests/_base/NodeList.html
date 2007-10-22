@@ -68,10 +68,10 @@
 							t.is(dojo.byId("t"), lastItem);
 
 							var r = nl.forEach(function(i, idx, arr){
-								t.t(arr instanceof dojo.NodeList);
+								t.t(arr.constructor == dojo.NodeList);
 								t.is(2, arr.length);
 							});
-							t.t(r instanceof dojo.NodeList);
+							t.t(r.constructor == dojo.NodeList);
 							t.is(r, nl);
 						},
 						
@@ -129,7 +129,7 @@
 							});
 							// t.is(ret, [0, 1, 2, 3]);
 
-							t.t(ret instanceof dojo.NodeList);
+							t.t(ret.constructor == dojo.NodeList);
 
 							// make sure that map() returns a NodeList
 							var sum = 0;
@@ -185,15 +185,19 @@
 							t.is(0.5, tnl.styles("opacity")[1]);
 						},
 
-						/*
 						function concat(t){
 							var s = dojo.query("span");
 							var d = dojo.query("div");
-							t.t(s.concat(d) instanceof dojo.NodeList);
+							console.debug(s.concat(d));
+							t.is(s.concat(d).constructor, dojo.NodeList);
 							t.is((d.length + s.length), s.concat(d).length);
-							t.t(s.concat([]) instanceof dojo.NodeList);
 						},
-						*/
+
+						function concat2(t){
+							var s = dojo.query("span");
+							var d = dojo.query("div");
+							t.is(s.concat([]).constructor, dojo.NodeList);
+						},
 						
 						function place(t){
 							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
@@ -202,7 +206,7 @@
 							tn.innerHTML = ih;
 							dojo.body().appendChild(tn);
 							var nl = dojo.query("b", tn).place(tn, "first");
-							t.t(nl instanceof dojo.NodeList);
+							t.t(nl.constructor == dojo.NodeList);
 							t.is(1, nl.length);
 							t.is("b", nl[0].nodeName.toLowerCase());
 							t.is(tn, nl[0].parentNode);
@@ -216,7 +220,7 @@
 							tn.innerHTML = ih;
 							dojo.body().appendChild(tn);
 							var nl = dojo.query("span", tn).orphan();
-							t.t(nl instanceof dojo.NodeList);
+							t.t(nl.constructor == dojo.NodeList);
 
 							t.is(2, nl.length);
 							t.is(1, tn.getElementsByTagName("*").length);

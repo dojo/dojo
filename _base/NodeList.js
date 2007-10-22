@@ -2,14 +2,15 @@ dojo.provide("dojo._base.NodeList");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.array");
 
-// FIXME: need to provide a location to extend this object!!
-// FIXME: need to write explicit tests for NodeList
-// FIXME: what do the builtin's that we deferr to do when you concat? What gets
-// 			returned? Seems (on FF) to be an Array, not a NodeList!
-
 (function(){
 
 	var d = dojo;
+	var tnl = function(a){
+		a.constructor = dojo.NodeList;
+		dojo._mixin(a, dojo.NodeList.prototype);
+		return a;
+	}
+
 	dojo.NodeList = function(){
 		//	summary:
 		//		dojo.NodeList is as subclass of Array which adds syntactic 
@@ -20,53 +21,21 @@ dojo.require("dojo._base.array");
 		//		// create a node list from a node
 		//		new dojo.NodeList(dojo.byId("foo"));
 
+		var i = [];
+		// i.prototype = dojo.NodeList.prototype;
 		var args = arguments;
 
 		// make it behave like the Array constructor
 		if((args.length == 1)&&(typeof args[0] == "number")){
-			this.length = parseInt(args[0]);
+			i.length = parseInt(args[0]);
 		}else if(args.length){
-			d.forEach(args, function(i){ this.push(i); }, this);
+			d.forEach(args, function(item){ i.push(item); });
 		}
+		return tnl(i);
 	}
 
-	// prototyping subclass for sane browsers
-	dojo.NodeList.prototype = new Array;
-
-	// now, make sure it's an array subclass on IE:
-	// 
-	// huge thanks to Dean Edwards and Hedger Wang for a solution to
-	// subclassing arrays on IE
-	//		http://dean.edwards.name/weblog/2006/11/hooray/?full
-	//		http://www.hedgerwow.com/360/dhtml/js-array2.html
-	// if(!Array.forEach){
-	// make sure that it has all the JS 1.6 things we need before we subclass
-	if(d.isIE){
-
-		var subClassStr = function(className){
-			return (
-				// "parent.dojo.debug('setting it up...'); " +
-				"var a2 = parent."+className+"; " +
-				"var ap = Array.prototype; " +
-				"var a2p = a2.prototype; " +
-				"for(var x in a2p){ ap[x] = a2p[x]; } " +
-				"parent."+className+" = Array; "
-			);
-		}
-		var scs = subClassStr("dojo.NodeList");
-		// Hedger's excellent invention
-		var popup = window.createPopup()
-		popup.document.write("<script>"+scs+"</script>");
-		// our fix to ensure that we don't hit strange scoping/timing issues
-		// insisde of setTimeout() blocks
-		popup.show(1, 1, 1, 1);
-	}
-
-
-	dojo.extend(dojo.NodeList,	{
+	dojo.extend(dojo.NodeList, {
 		// http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods
-
-		// FIXME: would it be smaller if we set these w/ iteration?
 
 		// FIXME: handle return values for #3244
 		//		http://trac.dojotoolkit.org/ticket/3244
@@ -75,10 +44,15 @@ dojo.require("dojo._base.array");
 		//		need to wrap or implement:
 		//			slice
 		//			splice
-		//			concat
 		//			join (perhaps w/ innerHTML/outerHTML overload for toString() of items?)
 		//			reduce
 		//			reduceRight
+
+		concat: function(){
+			var a = dojo._toArray(arguments);
+			a.unshift(this);
+			return tnl(a.concat.apply([], a));
+		},
 		
 		indexOf: function(/*Object*/ value, /*Integer?*/ fromIndex){
 			//	summary:
@@ -290,7 +264,7 @@ dojo.require("dojo._base.array");
 			queryStr = queryStr||"";
 
 			// FIXME: probably slow
-			var ret = new d.NodeList();
+			var ret = d.NodeList();
 			this.forEach(function(item){
 				d.query(queryStr, item).forEach(function(subItem){
 					if(typeof subItem != "undefined"){
@@ -318,7 +292,7 @@ dojo.require("dojo._base.array");
 
 			var items = this;
 			var _a = arguments;
-			var r = new d.NodeList();
+			var r = d.NodeList();
 			var rp = function(t){ 
 				if(typeof t != "undefined"){
 					r.push(t); 
@@ -427,11 +401,10 @@ dojo.require("dojo._base.array");
 			//		}).play();
 			return this._anim("animateProperty", args); // dojo._Animation
 		}
-
 	});
 
 	// syntactic sugar for DOM events
-	dojo.forEach([
+	d.forEach([
 		"mouseover", "click", "mouseout", "mousemove", "blur", "mousedown",
 		"mouseup", "mousemove", "keydown", "keyup", "keypress", "mouseenter",
 		"mouseleave"
@@ -464,4 +437,5 @@ dojo.require("dojo._base.array");
 			*/
 		}
 	);
+
 })();

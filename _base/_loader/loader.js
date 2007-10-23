@@ -253,9 +253,7 @@ dojo._getModuleSymbols = function(/*String*/modulename){
 
 dojo._global_omit_module_check = false;
 
-dojo._loadModule = function(	/*String*/moduleName, 
-								/*Boolean?*/exactOnly, 
-								/*Boolean?*/omitModuleCheck){
+dojo._loadModule = function(/*String*/moduleName, /*Boolean?*/omitModuleCheck){
 	//	summary:
 	//		loads a Javascript module from the appropriate URI
 	//	description:
@@ -263,7 +261,7 @@ dojo._loadModule = function(	/*String*/moduleName,
 	//		it is, it is simply returned (nothing to do).
 	//	
 	//		If it is not defined, it will look for "A/B.js" in the script root
-	//		directory, followed by "A.js".
+	//		directory.
 	//	
 	//		It throws if it cannot find a file to load, or if the symbol A.B is
 	//		not defined after loading.
@@ -282,8 +280,6 @@ dojo._loadModule = function(	/*String*/moduleName,
 	//	
 	//			var B = dojo._loadModule("A.B");
 	//	   		...
-	//	
-	//		dj_load is an alias for dojo._loadModule
 
 	omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
 	var module = this._loadedModules[moduleName];

@@ -1,6 +1,5 @@
 dojo.provide("dojo._base.window");
 
-dojo.isGears = 0;
 
 dojo._gearsObject = function(){
 	// summary: 
@@ -41,15 +40,12 @@ dojo._gearsObject = function(){
 	// dev roadmap for the future
 	dojo.setObject("google.gears.factory", factory);
 	return dojo.getObject("google.gears");
-}
+};
 
 // see if we have Google Gears installed, and if
 // so, make it available in the runtime environment
 // and in the Google standard 'google.gears' global object
-var gearsObj = dojo._gearsObject();
-if(gearsObj){
-	dojo.isGears = true;
-}
+dojo.isGears = (!!dojo._gearsObject())||0;
 
 // @global: dojo.doc
 // summary:

@@ -12,12 +12,13 @@ dojo.declare("dojo.dnd.Mover", null, {
 		//	only pageX and pageY properties are used
 		// notifier: Object?: object which defines local events (onDndMoveStart and onDndMoveStop)
 		this.node = dojo.byId(node);
-		var n = this.notifier = notifier;
 		this.marginBox = {l: e.pageX, t: e.pageY};
-		var d = node.ownerDocument, firstEvent = dojo.connect(d, "onmousemove", this, "onFirstMove");
+		this.mouseButton = e.button;
+		var n = this.notifier = notifier, d = node.ownerDocument, 
+			firstEvent = dojo.connect(d, "onmousemove", this, "onFirstMove");
 		this.events = [
 			dojo.connect(d, "onmousemove", this, "onMouseMove"),
-			dojo.connect(d, "onmouseup",   this, "destroy"),
+			dojo.connect(d, "onmouseup",   this, "onMouseUp"),
 			// cancel text selection and text dragging
 			dojo.connect(d, "ondragstart",   dojo, "stopEvent"),
 			dojo.connect(d, "onselectstart", dojo, "stopEvent"),
@@ -35,6 +36,11 @@ dojo.declare("dojo.dnd.Mover", null, {
 		dojo.dnd.autoScroll(e);
 		var m = this.marginBox;
 		dojo.marginBox(this.node, {l: m.l + e.pageX, t: m.t + e.pageY});
+	},
+	onMouseUp: function(e){
+		if(this.mouseButton == e.button){
+			this.destroy();
+		}
 	},
 	// utilities
 	onFirstMove: function(){

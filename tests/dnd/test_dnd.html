@@ -36,7 +36,7 @@
 
 			// example subscribe to events
 			dojo.subscribe("/dnd/start", function(source){
-				console.debug(source);
+				console.debug("Starting the drop", source);
 			});
 			dojo.connect(c4, "onDndDrop", function(source, nodes, copy){
 				console.debug(copy ? "Copying from" : "Moving from", source);

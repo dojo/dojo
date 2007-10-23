@@ -251,6 +251,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 						};
 					}else{
 						// move nodes
+						if(!this.current){ break; }
 						this._normalizedCreator = function(node, hint){
 							var t = source.getItem(node.id);
 							return {node: node, data: t.data, type: t.type};
@@ -268,6 +269,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 						};
 					}else{
 						// move nodes
+						if(!this.current){ break; }
 						this._normalizedCreator = function(node, hint){
 							var t = source.getItem(node.id);
 							return {node: node, data: t.data, type: t.type};

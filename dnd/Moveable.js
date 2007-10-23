@@ -19,16 +19,17 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		//		skip: Boolean: skip move of form elements
 		//		mover: Object: a constructor of custom Mover
 		this.node = dojo.byId(node);
-		this.handle = (params && params.handle) ? dojo.byId(params.handle) : null;
+		if(!params){ params = {}; }
+		this.handle = params.handle ? dojo.byId(params.handle) : null;
 		if(!this.handle){ this.handle = this.node; }
-		this.delay = (params && params.delay > 0) ? params.delay : 0;
-		this.skip  = params && params.skip;
-		this.mover = (params && params.mover) ? params.mover : dojo.dnd.Mover;
+		this.delay = params.delay > 0 ? params.delay : 0;
+		this.skip  = params.skip;
+		this.mover = params.mover ? params.mover : dojo.dnd.Mover;
 		this.events = [
 			dojo.connect(this.handle, "onmousedown", this, "onMouseDown"),
 			// cancel text selection and text dragging
-			dojo.connect(this.handle, "ondragstart",   dojo, "stopEvent"),
-			dojo.connect(this.handle, "onselectstart", dojo, "stopEvent")
+			dojo.connect(this.node, "ondragstart",   this, "onSelectStart"),
+			dojo.connect(this.node, "onselectstart", this, "onSelectStart")
 		];
 	},
 
@@ -73,6 +74,13 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		// e: Event: mouse event
 		dojo.disconnect(this.events.pop());
 		dojo.disconnect(this.events.pop());
+	},
+	onSelectStart: function(e){
+		// summary: event processor for onselectevent and ondragevent
+		// e: Event: mouse event
+		if(!this.skip || !dojo.dnd.isFormElement(e)){
+			dojo.stopEvent(e);
+		}
 	},
 	
 	// local events

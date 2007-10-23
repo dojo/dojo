@@ -10,8 +10,8 @@ dojo.dnd.move.constrainedMover = function(fun, within){
 	// fun: Function: called on drag, and returns a constraint box
 	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
 	//	otherwise the constraint is applied to the left-top corner
-	var mover = function(node, e){
-		dojo.dnd.Mover.call(this, node, e);
+	var mover = function(node, e, notifier){
+		dojo.dnd.Mover.call(this, node, e, notifier);
 	};
 	dojo.extend(mover, dojo.dnd.Mover.prototype);
 	dojo.extend(mover, {

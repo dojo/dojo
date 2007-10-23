@@ -25,21 +25,19 @@ dojo.fx.combine = function(/*dojo._Animation[]*/ animations){
 	//		dojo.fadeIn({ node:node }),
 	//		dojo.fadeOut({ node:otherNode })
 	//	]).play();
-	var first = animations.shift();
+	var ctr = new dojo._Animation({ curve: [0, 1] });
+	// animations.sort(function(a, b){ return a.duration-b.duration; });
+	ctr.duration = animations[0].duration;
 	dojo.forEach(animations, function(current){
-		dojo.forEach([
-
-//FIXME: onEnd gets fired multiple times for each animation, not once for the combined animation
-//	should we return to a "container" with its own unique events?
-
-			"play", "pause", "stop"
-		], function(event){
-			if(current[event]){
-				dojo.connect(first, event, current, event);
+		dojo.forEach([ "play", "pause", "stop" ],
+			function(e){
+				if(current[e]){
+					dojo.connect(ctr, e, current, e);
+				}
 			}
-		}, this);
+		);
 	});
-	return first; // dojo._Animation
+	return ctr; // dojo._Animation
 };
 
 dojo.declare("dojo.fx.Toggler", null, {
@@ -103,6 +101,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 	//	Time in milliseconds to run the hide Animation
 	hideDuration: 200,
 
+	/*=====
 	_showArgs: null,
 	_showAnim: null,
 
@@ -111,6 +110,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 
 	_isShowing: false,
 	_isHiding: false,
+	=====*/
 
 	show: function(delay){
 		// summary: Toggle the node to showing
@@ -157,7 +157,7 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 		}
 	}, args));
 
-	dojo.connect(anim, "onEnd", anim, function(){ 
+	dojo.connect(anim, "onEnd", function(){ 
 		s.height = "auto";
 	});
 
@@ -168,7 +168,8 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 	// summary
 	//		Returns an animation that will shrink node defined in "args"
 	//		from it's current height to 1px, and then hide it.
-	var node = (args.node = dojo.byId(args.node));
+	var node = args.node = dojo.byId(args.node);
+	var s = node.style;
 
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
@@ -178,13 +179,11 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 		}
 	}, args));
 
-	dojo.connect(anim, "beforeBegin", anim, function(){
-		var s=node.style;
+	dojo.connect(anim, "beforeBegin", function(){
 		s.overflow = "hidden";
 		s.display = "";
 	});
-	dojo.connect(anim, "onEnd", anim, function(){
-		var s=this.node.style;
+	dojo.connect(anim, "onEnd", function(){
 		s.height = "auto";
 		s.display = "none";
 	});

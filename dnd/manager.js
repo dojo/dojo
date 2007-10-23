@@ -108,7 +108,7 @@ dojo.extend(dojo.dnd.Manager, {
 	onMouseUp: function(e){
 		// summary: event processor for onmouseup
 		// e: Event: mouse event
-		if(this.avatar){
+		if(this.avatar && this.source.mouseButton == e.button){
 			if(this.target && this.canDropFlag){
 				dojo.publish("/dnd/drop", [this.source, this.nodes, Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e)))]);
 			}else{

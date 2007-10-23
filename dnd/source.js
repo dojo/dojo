@@ -162,6 +162,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// e: Event: mouse event
 		if(!this.skipForm || !dojo.dnd.isFormElement(e)){
 			this.mouseDown = true;
+			this.mouseButton = e.button;
 			dojo.dnd.Source.superclass.onMouseDown.call(this, e);
 		}
 	},

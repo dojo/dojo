@@ -19,7 +19,8 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		// params: Object: a dict of parameters, recognized parameters are:
 		//	singular: Boolean: allows selection of only one element, if true
 		//	the rest of parameters are passed to the container
-		this.singular = params && params.singular;
+		if(!params){ params = {}; }
+		this.singular = params.singular;
 		// class-specific variables
 		this.selection = {};
 		this.anchor = null;

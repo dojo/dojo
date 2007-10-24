@@ -102,9 +102,23 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		
 		// default implementation does nothing
 	},
-	onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ point){
+	onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
 		// summary: called during every move notification,
 		//	should actually move the node, can be overwritten.
-		dojo.marginBox(mover.node, point);
+		this.onMoving(mover, leftTop);
+		dojo.marginBox(mover.node, leftTop);
+		this.onMoved(mover, leftTop);
+	},
+	onMoving: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
+		// summary: called before every incremental move,
+		//	can be overwritten.
+		
+		// default implementation does nothing
+	},
+	onMoved: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
+		// summary: called after every incremental move,
+		//	can be overwritten.
+		
+		// default implementation does nothing
 	}
 });

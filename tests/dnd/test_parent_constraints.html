@@ -32,10 +32,10 @@
 		dojo.require("dojo.dnd.move");
 		var m1, m2, m3, m4;
 		var init = function(){
-			m1 = new dojo.dnd.Moveable("moveable1", {mover: dojo.dnd.parentConstrainedMover("margin", true)});
-			m2 = new dojo.dnd.Moveable("moveable2", {mover: dojo.dnd.parentConstrainedMover("border", true)});
-			m3 = new dojo.dnd.Moveable("moveable3", {mover: dojo.dnd.parentConstrainedMover("padding", true)});
-			m4 = new dojo.dnd.Moveable("moveable4", {mover: dojo.dnd.parentConstrainedMover("content", true)});
+			m1 = new dojo.dnd.move.parentConstrainedMoveable("moveable1", {area: "margin", within: true});
+			m2 = new dojo.dnd.move.parentConstrainedMoveable("moveable2", {area: "border", within: true});
+			m3 = new dojo.dnd.move.parentConstrainedMoveable("moveable3", {area: "padding", within: true});
+			m4 = new dojo.dnd.move.parentConstrainedMoveable("moveable4", {area: "content", within: true});
 		};
 		dojo.addOnLoad(init);
 	</script>

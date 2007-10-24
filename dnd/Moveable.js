@@ -84,14 +84,27 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	},
 	
 	// local events
-	onDndMoveStart: function(/* dojo.dnd.Mover */ mover){
+	onMoveStart: function(/* dojo.dnd.Mover */ mover){
+		// summary: called before every move operation
 		dojo.publish("/dnd/move/start", [mover]);
 		dojo.addClass(dojo.body(), "dojoMove"); 
 		dojo.addClass(this.node, "dojoMoveItem"); 
 	},
-	onDndMoveStop: function(/* dojo.dnd.Mover */ mover){
+	onMoveStop: function(/* dojo.dnd.Mover */ mover){
+		// summary: called after every move operation
 		dojo.publish("/dnd/move/stop", [mover]);
 		dojo.removeClass(dojo.body(), "dojoMove");
 		dojo.removeClass(this.node, "dojoMoveItem");
+	},
+	onFirstMove: function(/* dojo.dnd.Mover */ mover){
+		// summary: called during the very first move notification,
+		//	can be used to initialize coordinates, can be overwritten.
+		
+		// default implementation does nothing
+	},
+	onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ point){
+		// summary: called during every move notification,
+		//	should actually move the node, can be overwritten.
+		dojo.marginBox(mover.node, point);
 	}
 });

@@ -18,11 +18,12 @@ dojo.dnd.move.constrainedMover = function(fun, within){
 		onMouseMove: function(e){
 			// summary: event processor for onmousemove
 			// e: Event: mouse event
+			dojo.dnd.autoScroll(e);
 			var m = this.marginBox, c = this.constraintBox,
 				l = m.l + e.pageX, t = m.t + e.pageY;
 			l = l < c.l ? c.l : c.r < l ? c.r : l;
 			t = t < c.t ? c.t : c.b < t ? c.b : t;
-			dojo.marginBox(this.node, {l: l, t: t});
+			this.host.onMove(this, {l: l, t: t});
 		},
 		onFirstMove: function(){
 			// summary: called once to initialize things; it is meant to be called only once

@@ -33,7 +33,7 @@
 				var c = {l: m.l + e.pageX, t: m.t + e.pageY};
 				c.l -= c.l % STEP;
 				c.t -= c.t % STEP;
-				dojo.marginBox(this.node, c);
+				this.host.onMove(this, c);
 			}
 		});
 		

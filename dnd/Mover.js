@@ -4,17 +4,18 @@ dojo.require("dojo.dnd.common");
 dojo.require("dojo.dnd.autoscroll");
 
 dojo.declare("dojo.dnd.Mover", null, {
-	constructor: function(node, e, notifier){
+	constructor: function(node, e, host){
 		// summary: an object, which makes a node follow the mouse, 
 		//	used as a default mover, and as a base class for custom movers
 		// node: Node: a node (or node's id) to be moved
 		// e: Event: a mouse event, which started the move;
 		//	only pageX and pageY properties are used
-		// notifier: Object?: object which defines local events (onDndMoveStart and onDndMoveStop)
+		// host: Object?: object which implements the functionality of the move,
+		//	 and defines proper events (onMoveStart and onMoveStop)
 		this.node = dojo.byId(node);
 		this.marginBox = {l: e.pageX, t: e.pageY};
 		this.mouseButton = e.button;
-		var n = this.notifier = notifier, d = node.ownerDocument, 
+		var h = this.host = host, d = node.ownerDocument, 
 			firstEvent = dojo.connect(d, "onmousemove", this, "onFirstMove");
 		this.events = [
 			dojo.connect(d, "onmousemove", this, "onMouseMove"),
@@ -25,8 +26,8 @@ dojo.declare("dojo.dnd.Mover", null, {
 			firstEvent
 		];
 		// notify that the move has started
-		if(n && n.onDndMoveStart){
-			n.onDndMoveStart(this);
+		if(h && h.onMoveStart){
+			h.onMoveStart(this);
 		}
 	},
 	// mouse event processors
@@ -35,7 +36,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		// e: Event: mouse event
 		dojo.dnd.autoScroll(e);
 		var m = this.marginBox;
-		dojo.marginBox(this.node, {l: m.l + e.pageX, t: m.t + e.pageY});
+		this.host.onMove(this, {l: m.l + e.pageX, t: m.t + e.pageY});
 	},
 	onMouseUp: function(e){
 		if(this.mouseButton == e.button){
@@ -50,15 +51,16 @@ dojo.declare("dojo.dnd.Mover", null, {
 		m.l -= this.marginBox.l;
 		m.t -= this.marginBox.t;
 		this.marginBox = m;
+		this.host.onFirstMove(this);
 		dojo.disconnect(this.events.pop());
 	},
 	destroy: function(){
 		// summary: stops the move, deletes all references, so the object can be garbage-collected
 		dojo.forEach(this.events, dojo.disconnect);
 		// undo global settings
-		var n = this.notifier;
-		if(n && n.onDndMoveStop){
-			n.onDndMoveStop(this);
+		var h = this.host;
+		if(h && h.onMoveStop){
+			h.onMoveStop(this);
 		}
 		// destroy objects
 		this.events = this.node = null;

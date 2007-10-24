@@ -50,12 +50,18 @@
 			m1 = new dojo.dnd.Moveable("moveable1", {handle: "handle1"});
 			m2 = new dojo.dnd.Moveable("moveable2");
 
-			dojo.subscribe("/dnd/move/start", function(node){ 
-				console.debug("Start move", node); 	
+			dojo.subscribe("/dnd/move/start", function(mover){ 
+				console.debug("Start move", mover); 	
 			});
-
-			dojo.subscribe("/dnd/move/stop", function(node){ 
-				console.debug("Stop move", node); 	
+			dojo.subscribe("/dnd/move/stop", function(mover){ 
+				console.debug("Stop move", mover); 	
+			});
+			
+			dojo.connect(m1, "onMoveStart", function(mover){
+				console.debug("Start moving m1", mover); 	
+			});
+			dojo.connect(m1, "onMoveStop", function(mover){
+				console.debug("Stop moving m1", mover); 	
 			});
 		};
 		dojo.addOnLoad(init);

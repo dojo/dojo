@@ -9,8 +9,7 @@ dojo.isString = function(/*anything*/ it){
 
 dojo.isArray = function(/*anything*/ it){
 	// summary: Return true if it is an Array
-	return it && it instanceof Array || typeof it == "array" ||
-		(dojo.NodeList && it instanceof dojo.NodeList); // Boolean
+	return it && it instanceof Array || typeof it == "array"; // Boolean
 }
 
 /*=====
@@ -133,7 +132,7 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	// method:
 	//		A function to be hitched to scope, or the name of the method in
 	//		scope to be hitched.
-	// usage:
+	// examples:
 	//		dojo.hitch(foo, "bar")(); // runs foo.bar() in the scope of foo
 	//		dojo.hitch(foo, myFunction); // returns a function that runs myFunction in the scope of foo
 	if(arguments.length > 2){

@@ -257,7 +257,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	node:
 		//		a reference to a DOM node. Does NOT support taking an
 		//		ID string for speed reasons.
-		//	usage:
+		//	examples:
 		//		dojo.getComputedStyle(dojo.byId('foo')).borderWidth;
 		return; // CSS2Properties
 	}
@@ -882,7 +882,7 @@ if(dojo.isIE || dojo.isOpera){
 				}
 				if(node.parentNode != db){
 					var nd = node;
-					if(dojo.isOpera){ nd = db; }
+					if(dojo.isOpera || (dojo.isSafari >= 5)){ nd = db; }
 					ret.x -= _sumAncestorProperties(nd, "scrollLeft");
 					ret.y -= _sumAncestorProperties(nd, "scrollTop");
 				}

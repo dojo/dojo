@@ -596,7 +596,7 @@ if(dojo.isIE || dojo.isOpera){
 	
 	dojo._getContentBox = function(node, computedStyle){
 		// summary:
-		//		returns an object that encodes the width, height, left and top
+		//		Returns an object that encodes the width, height, left and top
 		//		positions of the node's content box, irrespective of the
 		//		current box model.
 
@@ -679,7 +679,7 @@ if(dojo.isIE || dojo.isOpera){
 
 	dojo._setContentSize = function(/*DomNode*/node, /*Number*/widthPx, /*Number*/heightPx, /*Object*/computedStyle){
 		//	summary:
-		//		sets the size of the node's contents, irrespective of margins,
+		//		Sets the size of the node's contents, irrespective of margins,
 		//		padding, or borders.
 		var bb = dojo._usesBorderBox(node);
 		if(bb){
@@ -717,9 +717,10 @@ if(dojo.isIE || dojo.isOpera){
 	
 	dojo.marginBox = function(/*DomNode|String*/node, /*Object?*/box){
 		//	summary:
-		//		getter/setter for the margin-box of node. Returns an object in
-		//		the expected format of box (regardless if box is passed). The
-		//		object might look like:
+		//		getter/setter for the margin-box of node.
+		//	description: 
+		//		Returns an object in the expected format of box (regardless
+		//		if box is passed). The object might look like:
 		//			{ l: 50, t: 200, w: 300: h: 150 }
 		//		for a node offset from its parent 50px to the left, 200px from
 		//		the top with a margin width of 300px and a margin-height of
@@ -736,9 +737,10 @@ if(dojo.isIE || dojo.isOpera){
 
 	dojo.contentBox = function(/*DomNode|String*/node, /*Object?*/box){
 		//	summary:
-		//		getter/setter for the content-box of node. Returns an object in
-		//		the expected format of box (regardless if box is passed). The
-		//		object might look like:
+		//		getter/setter for the content-box of node.
+		//	description:
+		//		Returns an object in the expected format of box (regardless if box is passed).
+		//		The object might look like:
 		//			{ l: 50, t: 200, w: 300: h: 150 }
 		//		for a node offset from its parent 50px to the left, 200px from
 		//		the top with a content width of 300px and a content-height of
@@ -920,7 +922,7 @@ if(dojo.isIE || dojo.isOpera){
 	// FIXME: need a setter for coords or a moveTo!!
 	dojo.coords = function(/*DomNode|String*/node, /*Boolean?*/includeScroll){
 		//	summary:
-		//		returns an object that measures margin box width/height and
+		//		Returns an object that measures margin box width/height and
 		//		absolute positioning data from dojo._abs(). Return value will
 		//		be in the form:
 		//			{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }

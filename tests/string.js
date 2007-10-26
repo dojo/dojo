@@ -13,6 +13,8 @@ tests.register("tests.string",
 		function test_string_substitute(t){
 			t.is("File 'foo.html' is not found in directory '/temp'.", dojo.string.substitute("File '${0}' is not found in directory '${1}'.", ["foo.html","/temp"]));
 			t.is("File 'foo.html' is not found in directory '/temp'.", dojo.string.substitute("File '${name}' is not found in directory '${info.dir}'.", {name: "foo.html", info: {dir: "/temp"}}));
+			// Verify that an error is thrown!
+			t.assertError(Error, dojo.string, "substitute", ["${x}", {y:1}]);
 		},
 		
 		function test_string_trim(t){

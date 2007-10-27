@@ -51,9 +51,11 @@ dojo.extend(dojo.Color, {
 		return this;	// dojo.Color
 	},
 	sanitize: function(){
-		// summary: makes sure that the object has correct attributes
-		// description: the default implementation does nothing, 
-		//	include dojo.colors to augment it to real checks
+		// summary:
+		//		makes sure that the object has correct attributes
+		// description: 
+		//		the default implementation does nothing, include dojo.colors to
+		//		augment it to real checks
 		return this;	// dojo.Color
 	},
 	toRgb: function(){
@@ -136,6 +138,15 @@ dojo.colorFromArray = function(/*Array*/ a, /*dojo.Color?*/ obj){
 };
 
 dojo.colorFromString = function(/*String*/ str, /*dojo.Color?*/ obj){
+	//	summary:
+	//		parses str for a color value.
+	//	description:
+	//		Acceptable input values for str may include arrays of any form
+	//		accepted by dojo.colorFromArray, hex strings such as "#aaaaaa", or
+	//		rgb or rgba strings such as "rgb(133, 200, 16)" or "rgba(10, 10,
+	//		10, 50)"
+	//	returns:
+	//		a dojo.Color object. If obj is passed, it will be the return value.
 	var a = dojo.Color.named[str];
 	return a && dojo.colorFromArray(a, obj) || dojo.colorFromRgb(str, obj) || dojo.colorFromHex(str, obj);
 };

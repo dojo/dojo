@@ -32,24 +32,89 @@ dojo.require("dojo._base.array");
 		
 		// FIXME:
 		//		need to wrap or implement:
-		//			splice
 		//			join (perhaps w/ innerHTML/outerHTML overload for toString() of items?)
 		//			reduce
 		//			reduceRight
 
+		/*=====
+		slice: function(begin, end){
+			// summary:
+			//		returns a new NodeList, maintaining this one in place
+			// description:
+			//		This method behaves exactly like the Array.slice method
+			//		with the caveat that it returns a dojo.NodeList and not a
+			//		raw Array. For more details, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:slice
+			// begin: Integer
+			//		begin can be a positive or negative integer, with positive
+			//		integers noting the offset to begin at, and negative
+			//		integers denoting an offset from the end (i.e., to the left
+			//		of the end)
+			// end: Integer?
+			//		Optional parameter to describe what position relative to
+			//		the NodeList's zero index to end the slice at. Like begin,
+			//		can be positive or negative.
+			var a = dojo._toArray(arguments);
+			return tnl(a.slice.apply(this, a));
+		},
+		=====*/
 		slice: function(){
 			var a = dojo._toArray(arguments);
 			return tnl(a.slice.apply(this, a));
 		},
 
+		// FIXME: Not sure how to doc varargs here!
+		/*=====
+		splice: function(index, howmany, item){
+			// summary:
+			//		returns a new NodeList, manipulating this NodeList based on
+			//		the arguments passed, potentially splicing in new elements
+			//		at an offset, optionally deleting elements
+			// description:
+			//		This method behaves exactly like the Array.splice method
+			//		with the caveat that it returns a dojo.NodeList and not a
+			//		raw Array. For more details, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:splice
+			// index: Integer
+			//		begin can be a positive or negative integer, with positive
+			//		integers noting the offset to begin at, and negative
+			//		integers denoting an offset from the end (i.e., to the left
+			//		of the end)
+			// howmany: Integer?
+			//		Optional parameter to describe what position relative to
+			//		the NodeList's zero index to end the slice at. Like begin,
+			//		can be positive or negative.
+			// item: Object...?
+			//		Any number of optional parameters may be passed in to be
+			//		spliced into the NodeList
+			// returns:
+			//		dojo.NodeList
+		},
+		=====*/
 		splice: function(){
 			var a = dojo._toArray(arguments);
 			return tnl(a.splice.apply(this, a));
 		},
 
+		/*=====
+		concat: function(item){
+			// summary:
+			//		returns a new NodeList comprised of items in this NodeList
+			//		as well as items passed in as parameters
+			// description:
+			//		This method behaves exactly like the Array.concat method
+			//		with the caveat that it returns a dojo.NodeList and not a
+			//		raw Array. For more details, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:concat
+			// item: Object...?
+			//		Any number of optional parameters may be passed in to be
+			//		spliced into the NodeList
+			// returns:
+			//		dojo.NodeList
+		},
+		=====*/
 		concat: function(){
-			var a = dojo._toArray(arguments);
-			a.unshift(this);
+			var a = dojo._toArray(arguments, 0, [this]);
 			return tnl(a.concat.apply([], a));
 		},
 		
@@ -57,16 +122,36 @@ dojo.require("dojo._base.array");
 			//	summary:
 			//		see dojo.indexOf(). The primary difference is that the acted-on 
 			//		array is implicitly this NodeList
+			// value: Object
+			//		The value to search for.
+			// fromIndex: Integer?
+			//		The loction to start searching from. Optional. Defaults to 0.
+			//	description:
+			//		For more details on the behavior of indexOf, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
+			//	returns:
+			//		Positive Integer or 0 for a match, -1 of not found.
 			return d.indexOf(this, value, fromIndex);
 		},
 
-		lastIndexOf: function(/*Object*/ value, /*Integer?*/ fromIndex){
-			//	summary:
-			//		see dojo.lastIndexOf(). The primary difference is that the 
+		/*=====
+		lastIndexOf: function(value, fromIndex){
+			// summary:
+			//		see dojo.lastIndexOf(). The primary difference is that the
 			//		acted-on array is implicitly this NodeList
-			var aa = d._toArray(arguments);
-			aa.unshift(this);
-			return d.lastIndexOf.apply(d, aa);
+			//	description:
+			//		For more details on the behavior of lastIndexOf, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
+			// value: Object
+			//		The value to search for.
+			// fromIndex: Integer?
+			//		The loction to start searching from. Optional. Defaults to 0.
+			// returns:
+			//		Positive Integer or 0 for a match, -1 of not found.
+		},
+		=====*/
+		lastIndexOf: function(){
+			return d.lastIndexOf.apply(d, d._toArray(arguments, 0, [this]));
 		},
 
 		every: function(/*Function*/callback, /*Object?*/thisObject){
@@ -102,6 +187,7 @@ dojo.require("dojo._base.array");
 			//	summary:
 			//		see dojo.forEach(). The primary difference is that the acted-on 
 			//		array is implicitly this NodeList
+
 			d.forEach(this, callback, thisObj);
 			return this; // dojo.NodeList non-standard return to allow easier chaining
 		},
@@ -116,19 +202,22 @@ dojo.require("dojo._base.array");
 			return d.map(this, d.coords);
 		},
 
-		style: function(/*String*/ property, /*String?*/ value){
+		/*=====
+		style: function(property, value){
 			//	summary:
 			//		gets or sets the CSS property for every element in the NodeList
-			//	property:
+			//	property: String
 			//		the CSS property to get/set, in JavaScript notation
 			//		("lineHieght" instead of "line-height") 
-			//	value:
+			//	value: String?
 			//		optional. The value to set the property to
 			//	return:
 			//		if no value is passed, the result is an array of strings.
 			//		If a value is passed, the return is this NodeList
-			var aa = d._toArray(arguments);
-			aa.unshift(null);
+		},
+		=====*/
+		style: function(){
+			var aa = d._toArray(arguments, 0, [null]);
 			var s = this.map(function(i){
 				aa[0] = i;
 				return d.style.apply(d, aa);
@@ -136,9 +225,23 @@ dojo.require("dojo._base.array");
 			return (arguments.length > 1) ? this : s; // String||dojo.NodeList
 		},
 
-		styles: function(/*String*/ property, /*String?*/ value){
-			// summary:
-			//		deprecated. Use dojo.style instead.
+		/*=====
+		style: function(property, value){
+			//	summary:
+			//		Deprecated. Use NodeList.style instead. Will be removed in
+			//		Dojo 1.1. Gets or sets the CSS property for every element
+			//		in the NodeList
+			//	property: String
+			//		the CSS property to get/set, in JavaScript notation
+			//		("lineHieght" instead of "line-height") 
+			//	value: String?
+			//		optional. The value to set the property to
+			//	return:
+			//		if no value is passed, the result is an array of strings.
+			//		If a value is passed, the return is this NodeList
+		},
+		=====*/
+		styles: function(){
 			d.deprecated("NodeList.styles", "use NodeList.style instead", "1.1");
 			return this.style.apply(this, arguments);
 		},

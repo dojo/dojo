@@ -167,18 +167,29 @@ dojo._delegate = function(obj, props){
 dojo.partial = function(/*Function|String*/method /*, ...*/){
 	// summary:
 	//		similar to hitch() except that the scope object is left to be
-	//		whatever the execution context eventually becomes. This is the
-	//		functional equivalent of calling:
-	//		dojo.hitch(null, funcName, ...);
+	//		whatever the execution context eventually becomes.
+	//	description:
+	//		Calling dojo.partial is the functional equivalent of calling:
+	//		|	dojo.hitch(null, funcName, ...);
 	var arr = [ null ];
 	return dojo.hitch.apply(dojo, arr.concat(dojo._toArray(arguments))); // Function
 }
 
-dojo._toArray = function(/*Object*/obj, /*Number?*/offset){
+dojo._toArray = function(/*Object*/obj, /*Number?*/offset, /*Array?*/ startWith){
 	// summary:
 	//		Converts an array-like object (i.e. arguments, DOMCollection)
 	//		to an array. Returns a new Array object.
-	var arr = [];
+	// obj:
+	//		the object to "arrayify". We expect the object to have, at a
+	//		minimum, a length property which corresponds to integer-indexed
+	//		properties.
+	// offset:
+	//		the location in obj to start iterating from. Defaults to 0. Optional.
+	// startWith:
+	//		An array to pack with the properties of obj. If provided,
+	//		properties in obj are appended at the end of startWith and
+	//		startWith is the returned array.
+	var arr = startWith||[];
 	for(var x = offset || 0; x < obj.length; x++){
 		arr.push(obj[x]);
 	}
@@ -213,11 +224,14 @@ dojo.clone = function(/*anything*/ o){
 }
 
 dojo.trim = function(/*String*/ str){
-	// summary: trims whitespaces from both sides of the string
+	// summary: 
+	//		trims whitespaces from both sides of the string
 	// description:
-	//	This version of trim() was selected for inclusion into the base
-	//	due to its compact size and relatively good performance (see Steven Levithan's blog: 
-	//	http://blog.stevenlevithan.com/archives/faster-trim-javascript).
-	//	The fastest but longest version of this function is going to be placed in dojo.string.
+	//		This version of trim() was selected for inclusion into the base due
+	//		to its compact size and relatively good performance (see Steven
+	//		Levithan's blog:
+	//		http://blog.stevenlevithan.com/archives/faster-trim-javascript).
+	//		The fastest but longest version of this function is going to be
+	//		placed in dojo.string.
 	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');	// String
 }

@@ -21,17 +21,7 @@ dojo.require("dojo._base.array");
 		//		create a node list from a node
 		//		|	new dojo.NodeList(dojo.byId("foo"));
 
-		var i = [];
-		// i.prototype = dojo.NodeList.prototype;
-		var args = arguments;
-
-		// make it behave like the Array constructor
-		if((args.length == 1)&&(typeof args[0] == "number")){
-			i.length = parseInt(args[0]);
-		}else if(args.length){
-			d.forEach(args, function(item){ i.push(item); });
-		}
-		return tnl(i);
+		return tnl(Array.apply(null, arguments));
 	}
 
 	dojo.extend(dojo.NodeList, {
@@ -42,11 +32,20 @@ dojo.require("dojo._base.array");
 		
 		// FIXME:
 		//		need to wrap or implement:
-		//			slice
 		//			splice
 		//			join (perhaps w/ innerHTML/outerHTML overload for toString() of items?)
 		//			reduce
 		//			reduceRight
+
+		slice: function(){
+			var a = dojo._toArray(arguments);
+			return tnl(a.slice.apply(this, a));
+		},
+
+		splice: function(){
+			var a = dojo._toArray(arguments);
+			return tnl(a.splice.apply(this, a));
+		},
 
 		concat: function(){
 			var a = dojo._toArray(arguments);
@@ -90,14 +89,6 @@ dojo.require("dojo._base.array");
 			return d.some(this, callback, thisObject); // Boolean
 		},
 
-		forEach: function(callback, thisObj){
-			//	summary:
-			//		see dojo.forEach(). The primary difference is that the acted-on 
-			//		array is implicitly this NodeList
-			d.forEach(this, callback, thisObj);
-			return this; // dojo.NodeList non-standard return to allow easier chaining
-		},
-
 		map: function(/*Function*/ func, /*Function?*/ obj){
 			//	summary:
 			//		see dojo.map(). The primary difference is that the acted-on
@@ -105,6 +96,14 @@ dojo.require("dojo._base.array");
 			//		dojo.NodeList (a subclass of Array)
 
 			return d.map(this, func, obj, d.NodeList); // dojo.NodeList
+		},
+
+		forEach: function(callback, thisObj){
+			//	summary:
+			//		see dojo.forEach(). The primary difference is that the acted-on 
+			//		array is implicitly this NodeList
+			d.forEach(this, callback, thisObj);
+			return this; // dojo.NodeList non-standard return to allow easier chaining
 		},
 
 		// custom methods
@@ -119,30 +118,15 @@ dojo.require("dojo._base.array");
 
 		style: function(/*String*/ property, /*String?*/ value){
 			//	summary:
-			//		gets or sets the value of the CSS property
-			//	property:
-			//		the CSS property to get/set, in JavaScript notation ("lineHieght" instead of "line-height") 
-			//	value:
-			//		optional. The value to set the property to
-			//	return:
-			//		if no value is passed, the result is a string. If a value is passed, the return is this NodeList
-
-			// FIXME: need to add examples!
-			var aa = d._toArray(arguments);
-			aa.unshift(this[0]);
-			var s = d.style.apply(d, aa);
-			return (arguments.length > 1) ? this : s; // String||dojo.NodeList
-		},
-
-		styles: function(/*String*/ property, /*String?*/ value){
-			//	summary:
 			//		gets or sets the CSS property for every element in the NodeList
 			//	property:
-			//		the CSS property to get/set, in JavaScript notation ("lineHieght" instead of "line-height") 
+			//		the CSS property to get/set, in JavaScript notation
+			//		("lineHieght" instead of "line-height") 
 			//	value:
 			//		optional. The value to set the property to
 			//	return:
-			//		if no value is passed, the result is an array of strings. If a value is passed, the return is this NodeList
+			//		if no value is passed, the result is an array of strings.
+			//		If a value is passed, the return is this NodeList
 			var aa = d._toArray(arguments);
 			aa.unshift(null);
 			var s = this.map(function(i){
@@ -152,13 +136,23 @@ dojo.require("dojo._base.array");
 			return (arguments.length > 1) ? this : s; // String||dojo.NodeList
 		},
 
+		styles: function(/*String*/ property, /*String?*/ value){
+			// summary:
+			//		deprecated. Use dojo.style instead.
+			d.deprecated("NodeList.styles", "use NodeList.style instead", "1.1");
+			return this.style.apply(this, arguments);
+		},
+
 		addClass: function(/*String*/ className){
-			this.forEach(function(i){ dojo.addClass(i, className); });
+			// summary:
+			//		adds the specified class to every node in the list
+			//
+			this.forEach(function(i){ d.addClass(i, className); });
 			return this;
 		},
 
 		removeClass: function(/*String*/ className){
-			this.forEach(function(i){ dojo.removeClass(i, className); });
+			this.forEach(function(i){ d.removeClass(i, className); });
 			return this;
 		},
 
@@ -350,56 +344,6 @@ dojo.require("dojo._base.array");
 				}
 			});
 			return this; // dojo.NodeList
-		},
-
-		_anim: function(method, args){
-			var anims = [];
-			args = args||{};
-			this.forEach(function(item){
-				var tmpArgs = { node: item };
-				d.mixin(tmpArgs, args);
-				anims.push(d[method](tmpArgs));
-			});
-			// FIXME: combine isn't in Base!!
-			return d.fx.combine(anims); // dojo._Animation
-		},
-
-		fadeIn: function(args){
-			//	summary:
-			//		fade in all elements of this NodeList. Returns an instance of dojo._Animation
-			//	example:
-			//		fade in all tables with class "blah"
-			//		|	dojo.query("table.blah").fadeIn().play();
-			return this._anim("fadeIn", args); // dojo._Animation
-		},
-
-		fadeOut: function(args){
-			//	summary:
-			//		fade out all elements of this NodeList. Returns an instance of dojo._Animation
-			//	example:
-			//		fade out all elements with class "zork"
-			//		|	dojo.query(".zork").fadeOut().play();
-			//	example:
-			//		fade them on a delay and do something at the end
-			//		|	var fo = dojo.query(".zork").fadeOut();
-			//		|	dojo.connect(fo, "onEnd", function(){ /*...*/ });
-			//		|	fo.play();
-			return this._anim("fadeOut", args); // dojo._Animation
-		},
-
-		animateProperty: function(args){
-			//	summary:
-			//		see dojo.animateProperty(). Animate all elements of this
-			//		NodeList across the properties specified.
-			//	example:
-			//	|	dojo.query(".zork").animateProperty({
-			//	|		duration: 500,
-			//	|		properties: { 
-			//	|			color:		{ start: "black", end: "white" },
-			//	|			left:		{ end: 300 } 
-			//	|		} 
-			//	|	}).play();
-			return this._anim("animateProperty", args); // dojo._Animation
 		}
 	});
 

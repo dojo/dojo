@@ -18,8 +18,8 @@ dojo.require("dojo._base.array");
 		//		and node manipulation. NodeLists are most often returned as
 		//		the result of dojo.query() calls.
 		//	example:
-		//		// create a node list from a node
-		//		new dojo.NodeList(dojo.byId("foo"));
+		//		create a node list from a node
+		//		|	new dojo.NodeList(dojo.byId("foo"));
 
 		var i = [];
 		// i.prototype = dojo.NodeList.prototype;
@@ -205,13 +205,13 @@ dojo.require("dojo._base.array");
 			//		optional. A string naming the function in objOrFunc to bind to the
 			//		event. May also be a function reference.
 			//	example:
-			//		// add an onclick handler to every button on the page
-			//		dojo.query("onclick", function(e){
-			//			console.debug("clicked!");
-			//		});
-			//
-			//		// attach foo.bar() to every odd div's onmouseover
-			//		dojo.query("div:nth-child(odd)").onclick("onmouseover", foo, "bar");
+			//		add an onclick handler to every button on the page
+			//		|	dojo.query("onclick", function(e){
+			//		|		console.debug("clicked!");
+			//		|	});
+			// example:
+			//		attach foo.bar() to every odd div's onmouseover
+			//		|	dojo.query("div:nth-child(odd)").onclick("onmouseover", foo, "bar");
 			this.forEach(function(item){
 				d.connect(item, methodName, objOrFunc, funcName);
 			});
@@ -281,14 +281,14 @@ dojo.require("dojo._base.array");
 			//		passing a simple string filter in addition to supporting
 			//		filtering function objects.
 			//	example:
-			//		// "regular" JS filter syntax as exposed in dojo.filter:
-			//		dojo.query("*").filter(function(item){
-			//			// highlight every paragraph
-			//			return (item.nodeName == "p");
-			//		}).styles("backgroundColor", "yellow");
-			//
-			//		// the same filtering using a CSS selector
-			//		dojo.query("*").filter("p").styles("backgroundColor", "yellow");
+			//		"regular" JS filter syntax as exposed in dojo.filter:
+			//		|	dojo.query("*").filter(function(item){
+			//		|		// highlight every paragraph
+			//		|		return (item.nodeName == "p");
+			//		|	}).styles("backgroundColor", "yellow");
+			// example:
+			//		the same filtering using a CSS selector
+			//		|	dojo.query("*").filter("p").styles("backgroundColor", "yellow");
 
 			var items = this;
 			var _a = arguments;
@@ -368,8 +368,8 @@ dojo.require("dojo._base.array");
 			//	summary:
 			//		fade in all elements of this NodeList. Returns an instance of dojo._Animation
 			//	example:
-			//		// fade in all tables with class "blah"
-			//		dojo.query("table.blah").fadeIn().play();
+			//		fade in all tables with class "blah"
+			//		|	dojo.query("table.blah").fadeIn().play();
 			return this._anim("fadeIn", args); // dojo._Animation
 		},
 
@@ -377,13 +377,13 @@ dojo.require("dojo._base.array");
 			//	summary:
 			//		fade out all elements of this NodeList. Returns an instance of dojo._Animation
 			//	example:
-			//		// fade out all elements with class "zork"
-			//		dojo.query(".zork").fadeOut().play();
-			//
-			//		// fade them on a delay and do something at the end
-			//		var fo = dojo.query(".zork").fadeOut();
-			//		dojo.connect(fo, "onEnd", function(){ /*...*/ });
-			//		fo.play();
+			//		fade out all elements with class "zork"
+			//		|	dojo.query(".zork").fadeOut().play();
+			//	example:
+			//		fade them on a delay and do something at the end
+			//		|	var fo = dojo.query(".zork").fadeOut();
+			//		|	dojo.connect(fo, "onEnd", function(){ /*...*/ });
+			//		|	fo.play();
 			return this._anim("fadeOut", args); // dojo._Animation
 		},
 
@@ -392,13 +392,13 @@ dojo.require("dojo._base.array");
 			//		see dojo.animateProperty(). Animate all elements of this
 			//		NodeList across the properties specified.
 			//	example:
-			//		dojo.query(".zork").animateProperty({
-			//			duration: 500,
-			//			properties: { 
-			//				color:		{ start: "black", end: "white" },
-			//				left:		{ end: 300 } 
-			//			} 
-			//		}).play();
+			//	|	dojo.query(".zork").animateProperty({
+			//	|		duration: 500,
+			//	|		properties: { 
+			//	|			color:		{ start: "black", end: "white" },
+			//	|			left:		{ end: 300 } 
+			//	|		} 
+			//	|	}).play();
 			return this._anim("animateProperty", args); // dojo._Animation
 		}
 	});

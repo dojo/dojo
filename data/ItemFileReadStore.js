@@ -377,15 +377,15 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 			//		Given any sort of value that could be in the raw json data,
 			//		return true if we should interpret the value as being an
 			//		item itself, rather than a literal value or a reference.
-			// examples:
-			// 		false == valueIsAnItem("Kermit");
-			// 		false == valueIsAnItem(42);
-			// 		false == valueIsAnItem(new Date());
-			// 		false == valueIsAnItem({_type:'Date', _value:'May 14, 1802'});
-			// 		false == valueIsAnItem({_reference:'Kermit'});
-			// 		true == valueIsAnItem({name:'Kermit', color:'green'});
-			// 		true == valueIsAnItem({iggy:'pop'});
-			// 		true == valueIsAnItem({foo:42});
+			// example:
+			// 	|	false == valueIsAnItem("Kermit");
+			// 	|	false == valueIsAnItem(42);
+			// 	|	false == valueIsAnItem(new Date());
+			// 	|	false == valueIsAnItem({_type:'Date', _value:'May 14, 1802'});
+			// 	|	false == valueIsAnItem({_reference:'Kermit'});
+			// 	|	true == valueIsAnItem({name:'Kermit', color:'green'});
+			// 	|	true == valueIsAnItem({iggy:'pop'});
+			// 	|	true == valueIsAnItem({foo:42});
 			var isItem = (
 				(aValue != null) &&
 				(typeof aValue == "object") &&

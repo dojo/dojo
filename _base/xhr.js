@@ -83,20 +83,20 @@ dojo.objectToQuery = function(/*Object*/ map){
 	//	summary:
 	//		takes a key/value mapping object and returns a string representing
 	//		a URL-encoded version of that object.
-	//	examples:
+	//	example:
 	//		this object:
 	//
-	//			{ 
-	//				blah: "blah",
-	//				multi: [
-	//					"thud",
-	//					"thonk"
-	//				]
-	//			};
+	//		|	{ 
+	//		|		blah: "blah",
+	//		|		multi: [
+	//		|			"thud",
+	//		|			"thonk"
+	//		|		]
+	//		|	};
 	//
-	//		yeilds the following query string:
+	//	yeilds the following query string:
 	//	
-	//			"blah=blah&multi=thud&multi=thonk"
+	//	|	"blah=blah&multi=thud&multi=thonk"
 
 
 	// FIXME: need to implement encodeAscii!!

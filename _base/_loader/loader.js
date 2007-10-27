@@ -272,14 +272,14 @@ dojo._loadModule = function(/*String*/moduleName, /*Boolean?*/omitModuleCheck){
 	//		It is presumed that the caller will take care of that. For example,
 	//		to import all symbols:
 	//	
-	//			with (dojo._loadModule("A.B")) {
-	//				...
-	//			}
+	//		|	with (dojo._loadModule("A.B")) {
+	//		|		...
+	//		|	}
 	//	
 	//		And to import just the leaf symbol:
 	//	
-	//			var B = dojo._loadModule("A.B");
-	//	   		...
+	//		|	var B = dojo._loadModule("A.B");
+	//	   	|	...
 
 	omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
 	var module = this._loadedModules[moduleName];
@@ -331,8 +331,8 @@ dojo.require = dojo._loadModule;
 dojo.provide = function(/*String*/ packageName){
 	//	summary:
 	//		Each javascript source file must have (exactly) one dojo.provide()
-	//		call at the top of the file, corresponding to the file name.  For
-	//		example, js/dojo/foo.js must have dojo.provide("dojo.foo"); at the
+	//		call at the top of the file, corresponding to the file name.
+	//		For example, js/dojo/foo.js must have dojo.provide("dojo.foo"); at the
 	//		top of the file.
 	//	description:
 	//		Each javascript source file is called a resource.  When a resource
@@ -381,16 +381,16 @@ dojo.platformRequire = function(/*Object containing Arrays*/modMap){
 	//		be loaded, regardless of which list is chosen.  Here's how it's
 	//		normally called:
 	//	
-	//			dojo.platformRequire({
-	//				// an example that passes multiple args to _loadModule()
-	//				browser: [
-	//					["foo.bar.baz", true, true], 
-	//					"foo.sample.*",
-	//					"foo.test,
-	//				],
-	//				default: [ "foo.sample.*" ],
-	//				common: [ "really.important.module.*" ]
-	//			});
+	//		|	dojo.platformRequire({
+	//		|		// an example that passes multiple args to _loadModule()
+	//		|		browser: [
+	//		|			["foo.bar.baz", true, true], 
+	//		|			"foo.sample.*",
+	//		|			"foo.test,
+	//		|		],
+	//		|		default: [ "foo.sample.*" ],
+	//		|		common: [ "really.important.module.*" ]
+	//		|	});
 
 	// FIXME: dojo.name_ no longer works!!
 
@@ -623,9 +623,10 @@ dojo.moduleUrl = function(/*String*/module, /*dojo._Url||String*/url){
 	// summary: 
 	//		Returns a Url object relative to a module
 	//		
-	// examples: 
-	//		dojo.moduleUrl("dojo.widget","templates/template.html");
-	//		dojo.moduleUrl("acme","images/small.png")
+	// example: 
+	//	|	dojo.moduleUrl("dojo.widget","templates/template.html");
+	// example:
+	//	|	dojo.moduleUrl("acme","images/small.png")
 
 	var loc = dojo._getModuleSymbols(module).join('/');
 	if(!loc){ return null; }

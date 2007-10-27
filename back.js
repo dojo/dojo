@@ -191,11 +191,11 @@ dojo.provide("dojo.back");
 		//		not evaluate to false, that value will be used as the fragment identifier. For example,
 		//		if changeUrl: 'page1', then the URL will look like: http://some.domain.com/path#page1
 	 	//		Full example:
-		//			dojo.undo.browser.addToHistory({
-		//				back: function() { alert('back pressed'); },
-		//				forward: function() { alert('forward pressed'); },
-		//				changeUrl: true
-		//			});
+		//		|	dojo.undo.browser.addToHistory({
+		//		|		back: function() { alert('back pressed'); },
+		//		|		forward: function() { alert('forward pressed'); },
+		//		|		changeUrl: true
+		//		|	});
 		//
 		//	BROWSER NOTES:
 		//  Safari 1.2: 

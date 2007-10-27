@@ -15,10 +15,10 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//
 	//		The most important methods for Deffered users are:
 	//
-	//			addCallback(handler)
-	//			addErrback(handler)
-	//			callback(result)
-	//			errback(result)
+	//			* addCallback(handler)
+	//			* addErrback(handler)
+	//			* callback(result)
+	//			* errback(result)
 	//
 	//		In general, when a function returns a Deferred, users then "fill
 	//		in" the second half of the contract by registering callbacks and
@@ -37,8 +37,8 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		successive handlers. The most minimal callback may be registered
 	//		like this:
 	//
-	//			var d = new dojo.Deferred();
-	//			d.addCallback(function(result){ return result; });
+	//		|	var d = new dojo.Deferred();
+	//		|	d.addCallback(function(result){ return result; });
 	//
 	//		Perhaps the most common mistake when first using Deferreds is to
 	//		forget to return a value (in most cases, the value you were
@@ -48,28 +48,28 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		2-tuples containing the callback/errback pair.  For example, the
 	//		following call sequence:
 	//		
-	//			var d = new dojo.Deferred();
-	//			d.addCallback(myCallback);
-	//			d.addErrback(myErrback);
-	//			d.addBoth(myBoth);
-	//			d.addCallbacks(myCallback, myErrback);
+	//		|	var d = new dojo.Deferred();
+	//		|	d.addCallback(myCallback);
+	//		|	d.addErrback(myErrback);
+	//		|	d.addBoth(myBoth);
+	//		|	d.addCallbacks(myCallback, myErrback);
 	//
 	//		is translated into a Deferred with the following internal
 	//		representation:
 	//
-	//		[
-	//			[myCallback, null],
-	//			[null, myErrback],
-	//			[myBoth, myBoth],
-	//			[myCallback, myErrback]
-	//		]
+	//		|	[
+	//		|		[myCallback, null],
+	//		|		[null, myErrback],
+	//		|		[myBoth, myBoth],
+	//		|		[myCallback, myErrback]
+	//		|	]
 	//
 	//		The Deferred also keeps track of its current status (fired).  Its
 	//		status may be one of three things:
 	//
-	//			-1: no value yet (initial condition)
-	//			0: success
-	//			1: error
+	//			* -1: no value yet (initial condition)
+	//			* 0: success
+	//			* 1: error
 	//	
 	//		A Deferred will be in the error state if one of the following three
 	//		conditions are met:
@@ -85,22 +85,22 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		to run.
 	//
 	//		When a callback or errback occurs with the example deferred chain,
-	//		something equivalent to the following will happen (imagine that
-	//		exceptions are caught and returned):
+	//		something equivalent to the following will happen (imagine
+	//		that exceptions are caught and returned):
 	//
-	//			// d.callback(result) or d.errback(result)
-	//			if(!(result instanceof Error)){
-	//				result = myCallback(result);
-	//			}
-	//			if(result instanceof Error){
-	//				result = myErrback(result);
-	//			}
-	//			result = myBoth(result);
-	//			if(result instanceof Error){
-	//				result = myErrback(result);
-	//			}else{
-	//				result = myCallback(result);
-	//			}
+	//		|	// d.callback(result) or d.errback(result)
+	//		|	if(!(result instanceof Error)){
+	//		|		result = myCallback(result);
+	//		|	}
+	//		|	if(result instanceof Error){
+	//		|		result = myErrback(result);
+	//		|	}
+	//		|	result = myBoth(result);
+	//		|	if(result instanceof Error){
+	//		|		result = myErrback(result);
+	//		|	}else{
+	//		|		result = myCallback(result);
+	//		|	}
 	//
 	//		The result is then stored away in case another step is added to the
 	//		callback sequence.	Since the Deferred already has a value
@@ -119,7 +119,7 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		deferred with a CancelledError (unless your canceller returns
 	//		another kind of error), so the errbacks should be prepared to
 	//		handle that error for cancellable Deferreds.
-	// usage:
+	// example:
 	//		Deferred objects are often used when making code asynchronous. It
 	//		may be easiest to write functions in a synchronous manner and then
 	//		split code using a deferred to trigger a response to a long-lived
@@ -127,28 +127,28 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		denote when a rendering operation completes, the function can
 	//		simply return a deferred:
 	//
-	//			// callback style:
-	//			function renderLotsOfData(data, callback){
-	//				var success = false
-	//				try{
-	//					for(var x in data){
-	//						renderDataitem(data[x]);
-	//					}
-	//					success = true;
-	//				}catch(e){ }
-	//				if(callback){
-	//					callback(success);
-	//				}
-	//			}
+	//		|	// callback style:
+	//		|	function renderLotsOfData(data, callback){
+	//		|		var success = false
+	//		|		try{
+	//		|			for(var x in data){
+	//		|				renderDataitem(data[x]);
+	//		|			}
+	//		|			success = true;
+	//		|		}catch(e){ }
+	//		|		if(callback){
+	//		|			callback(success);
+	//		|		}
+	//		|	}
 	//
-	//			// using callback style
-	//			renderLotsOfData(someDataObj, function(success){
-	//				// handles success or failure
-	//				if(!success){
-	//					promptUserToRecover();
-	//				}
-	//			});
-	//			// NOTE: no way to add another callback here!!
+	//		|	// using callback style
+	//		|	renderLotsOfData(someDataObj, function(success){
+	//		|		// handles success or failure
+	//		|		if(!success){
+	//		|			promptUserToRecover();
+	//		|		}
+	//		|	});
+	//		|	// NOTE: no way to add another callback here!!
 	//
 	//		Using a Deferred doesn't simplify the sending code any, but it
 	//		provides a standard interface for callers and senders alike,
@@ -157,52 +157,52 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		such as "did this get called already?". With Deferreds, new
 	//		callbacks can be added at any time.
 	//
-	//			// Deferred style:
-	//			function renderLotsOfData(data){
-	//				var d = new dojo.Deferred();
-	//				try{
-	//					for(var x in data){
-	//						renderDataitem(data[x]);
-	//					}
-	//					d.callback(true);
-	//				}catch(e){ 
-	//					d.errback(new Error("rendering failed"));
-	//				}
-	//				return d;
-	//			}
+	//		|	// Deferred style:
+	//		|	function renderLotsOfData(data){
+	//		|		var d = new dojo.Deferred();
+	//		|		try{
+	//		|			for(var x in data){
+	//		|				renderDataitem(data[x]);
+	//		|			}
+	//		|			d.callback(true);
+	//		|		}catch(e){ 
+	//		|			d.errback(new Error("rendering failed"));
+	//		|		}
+	//		|		return d;
+	//		|	}
 	//
-	//			// using Deferred style
-	//			renderLotsOfData(someDataObj).addErrback(function(){
-	//				promptUserToRecover();
-	//			});
-	//			// NOTE: addErrback and addCallback both return the Deferred
-	//			// again, so we could chain adding callbacks or save the
-	//			// deferred for later should we need to be notified again.
+	//		|	// using Deferred style
+	//		|	renderLotsOfData(someDataObj).addErrback(function(){
+	//		|		promptUserToRecover();
+	//		|	});
+	//		|	// NOTE: addErrback and addCallback both return the Deferred
+	//		|	// again, so we could chain adding callbacks or save the
+	//		|	// deferred for later should we need to be notified again.
 	//
 	//		In this example, renderLotsOfData is syncrhonous and so both
 	//		versions are pretty artificial. Putting the data display on a
 	//		timeout helps show why Deferreds rock:
 	//
-	//			// Deferred style and async func
-	//			function renderLotsOfData(data){
-	//				var d = new dojo.Deferred();
-	//				setTimeout(function(){
-	//					try{
-	//						for(var x in data){
-	//							renderDataitem(data[x]);
-	//						}
-	//						d.callback(true);
-	//					}catch(e){ 
-	//						d.errback(new Error("rendering failed"));
-	//					}
-	//				}, 100);
-	//				return d;
-	//			}
+	//		|	// Deferred style and async func
+	//		|	function renderLotsOfData(data){
+	//		|		var d = new dojo.Deferred();
+	//		|		setTimeout(function(){
+	//		|			try{
+	//		|				for(var x in data){
+	//		|					renderDataitem(data[x]);
+	//		|				}
+	//		|				d.callback(true);
+	//		|			}catch(e){ 
+	//		|				d.errback(new Error("rendering failed"));
+	//		|			}
+	//		|		}, 100);
+	//		|		return d;
+	//		|	}
 	//
-	//			// using Deferred style
-	//			renderLotsOfData(someDataObj).addErrback(function(){
-	//				promptUserToRecover();
-	//			});
+	//		|	// using Deferred style
+	//		|	renderLotsOfData(someDataObj).addErrback(function(){
+	//		|		promptUserToRecover();
+	//		|	});
 	//
 	//		Note that the caller doesn't have to change his code at all to
 	//		handle the asynchronous case.

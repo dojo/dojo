@@ -26,9 +26,9 @@ dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 		//	exceptions:
 		//		Conforming implementations may throw an exception or return null if
 		//		item is not an item.
-		//	examples:
-		//		var itemId = store.getIdentity(kermit);
-		//		assert(kermit === store.findByIdentity(store.getIdentity(kermit)));
+		//	example:
+		//	|	var itemId = store.getIdentity(kermit);
+		//	|	assert(kermit === store.findByIdentity(store.getIdentity(kermit)));
 		throw new Error('Unimplemented API: dojo.data.api.Identity.getIdentity');
 		var itemIdentityString = null;
 		return itemIdentityString; // string
@@ -47,10 +47,10 @@ dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 		//	item:
 		//		The item from the store from which to obtain the array of public attributes that 
 		//		compose the identifier, if any.
-		//	examples:
-		//		var itemId = store.getIdentity(kermit);
-		//		var identifiers = store.getIdentityAttributes(itemId);
-		//		assert(typeof identifiers === "array" || identifiers === null);
+		//	example:
+		//	|	var itemId = store.getIdentity(kermit);
+		//	|	var identifiers = store.getIdentityAttributes(itemId);
+		//	|	assert(typeof identifiers === "array" || identifiers === null);
 		throw new Error('Unimplemented API: dojo.data.api.Identity.getIdentityAttributes');
 		return null; // string
 	},

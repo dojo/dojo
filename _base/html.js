@@ -257,8 +257,8 @@ if(dojo.isIE || dojo.isOpera){
 		//	node:
 		//		a reference to a DOM node. Does NOT support taking an
 		//		ID string for speed reasons.
-		//	examples:
-		//		dojo.getComputedStyle(dojo.byId('foo')).borderWidth;
+		//	example:
+		//	|	dojo.getComputedStyle(dojo.byId('foo')).borderWidth;
 		return; // CSS2Properties
 	}
 =====*/

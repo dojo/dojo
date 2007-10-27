@@ -132,9 +132,12 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	// method:
 	//		A function to be hitched to scope, or the name of the method in
 	//		scope to be hitched.
-	// examples:
-	//		dojo.hitch(foo, "bar")(); // runs foo.bar() in the scope of foo
-	//		dojo.hitch(foo, myFunction); // returns a function that runs myFunction in the scope of foo
+	// example:
+	//	|	dojo.hitch(foo, "bar")(); 
+	//		runs foo.bar() in the scope of foo
+	// example:
+	//	|	dojo.hitch(foo, myFunction);
+	//		returns a function that runs myFunction in the scope of foo
 	if(arguments.length > 2){
 		return dojo._hitchArgs.apply(dojo, arguments); // Function
 	}

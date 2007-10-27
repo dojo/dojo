@@ -34,8 +34,8 @@ dojo.declare("dojo.data.api.Read", null, {
 		//
 		//	exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	examples:
-		//		var darthVader = store.getValue(lukeSkywalker, "father");
+		//	example:
+		//	|	var darthVader = store.getValue(lukeSkywalker, "father");
 		var attributeValue = null;
 		throw new Error('Unimplemented API: dojo.data.api.Read.getValue');
 		return attributeValue; // a literal, an item, null, or undefined (never an array)
@@ -59,8 +59,8 @@ dojo.declare("dojo.data.api.Read", null, {
 		//
 		//	exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	examples:
-		//		var friendsOfLuke = store.getValues(lukeSkywalker, "friends");
+		//	example:
+		//	|	var friendsOfLuke = store.getValues(lukeSkywalker, "friends");
 		var array = [];
 		throw new Error('Unimplemented API: dojo.data.api.Read.getValues');
 		return array; // an array that may contain literals and items
@@ -77,8 +77,8 @@ dojo.declare("dojo.data.api.Read", null, {
 		//
 		//	exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	examples:
-		//		var array = store.getAttributes(kermit);
+		//	example:
+		//	|	var array = store.getAttributes(kermit);
 		var array = [];
 		throw new Error('Unimplemented API: dojo.data.api.Read.getAttributes');
 		return array; // array
@@ -96,8 +96,8 @@ dojo.declare("dojo.data.api.Read", null, {
 		//
 		//	exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	examples:
-		//		var trueOrFalse = store.hasAttribute(kermit, "color");
+		//	example:
+		//	|	var trueOrFalse = store.hasAttribute(kermit, "color");
 		throw new Error('Unimplemented API: dojo.data.api.Read.hasAttribute');
 		return false; // boolean
 	},
@@ -118,8 +118,8 @@ dojo.declare("dojo.data.api.Read", null, {
 		//
 		//	exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	examples:
-		//		var trueOrFalse = store.containsValue(kermit, "color", "green");
+		//	example:
+		//	|	var trueOrFalse = store.containsValue(kermit, "color", "green");
 		throw new Error('Unimplemented API: dojo.data.api.Read.containsValue');
 		return false; // boolean
 	},
@@ -133,9 +133,9 @@ dojo.declare("dojo.data.api.Read", null, {
 		//	something:
 		//		Can be anything.
 		//
-		//	examples:
-		//		var yes = store.isItem(store.newItem());
-		//		var no  = store.isItem("green");
+		//	example:
+		//	|	var yes = store.isItem(store.newItem());
+		//	|	var no  = store.isItem("green");
 		throw new Error('Unimplemented API: dojo.data.api.Read.isItem');
 		return false; // boolean
 	},
@@ -150,9 +150,9 @@ dojo.declare("dojo.data.api.Read", null, {
 		//	something:
 		//		Can be anything.
 		//
-		//	examples:
-		//		var yes = store.isItemLoaded(store.newItem());
-		//		var no  = store.isItemLoaded("green");
+		//	example:
+		//	|	var yes = store.isItemLoaded(store.newItem());
+		//	|	var no  = store.isItemLoaded("green");
 		throw new Error('Unimplemented API: dojo.data.api.Read.isItemLoaded');
 		return false; // boolean
 	},
@@ -349,53 +349,53 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		Throws an exception if the query is not valid, or if the query
 		//		is required but was not supplied.
 		//
-		//	examples:
-		//		// Fetch all books identified by the query and call 'showBooks' when complete
-		//		var request = store.fetch({query:"all books", onComplete: showBooks});
-		//
-		//		// Fetch all items in the story and call 'showEverything' when complete.
-		//		var request = store.fetch(onComplete: showEverything);
-		//
-		//		// Fetch only 10 books that match the query 'all books', starting at the fifth book found during the search.
-		//		// This demonstrates how paging can be done for specific queries.  
-		//		var request = store.fetch({query:"all books", start: 4, count: 10, onComplete: showBooks});
-		//
-		//		// Fetch all items that match the query, calling 'callback' each time an item is located.
-		//		var request = store.fetch({query:"foo/bar", onItem:callback});
-		//
-		//		// Fetch the first 100 books by author King, call showKing when up to 100 items have been located.
-		//		var request = store.fetch({query:{author:"King"}, start: 0, count:100, onComplete: showKing});
-		//
-		//		// Locate the books written by Author King, sort it on title and publisher, then return the first 100 items from the sorted items.
-		//		var request = store.fetch({query:{author:"King"}, sort: [{ attribute: "title", descending: true}, {attribute: "publisher"}], ,start: 0, count:100, onComplete: 'showKing'});
-		//
-		//		// Fetch the first 100 books by authors starting with the name King, then call showKing when up to 100 items have been located.
-		//		var request = store.fetch({query:{author:"King*"}, start: 0, count:100, onComplete: showKing});
-		//
-		//		// Fetch the first 100 books by authors ending with 'ing', but only have one character before it (King, Bing, Ling, Sing, etc.), then call showBooks when up to 100 items have been located.
-		//		var request = store.fetch({query:{author:"?ing"}, start: 0, count:100, onComplete: showBooks});
-		//
-		//		// Fetch the first 100 books by author King, where the name may appear as King, king, KING, kInG, and so on, then call showKing when up to 100 items have been located.
-		//		var request = store.fetch({query:{author:"King"}, queryOptions:(ignoreCase: true}, start: 0, count:100, onComplete: showKing});
-		//
-		//		// Paging:
-		//		var store = new dojo.data.LargeRdbmsStore({url:"jdbc:odbc:foobar"});
-		//		var fetchArgs = {
-		//			query: {type:"employees", name:"Hillary *"}, // string matching
-		//			sort: [{attribute:"department", descending:true}],
-		//			start: 0,
-		//			count: 20,
-		//			scope: displayer,
-		//			onBegin: showThrobber,
-		//			onItem: displayItem,
-		//			onComplete: stopThrobber,
-		//			onError: handleFetchError,
-		//		};
-		//		store.fetch(fetchArgs);
-		//		...
-		//		// and then when the user presses the "Next Page" button...
-		//		fetchArgs.start += 20;
-		//		store.fetch(fetchArgs);  // get the next 20 items
+		//	example:
+		//		Fetch all books identified by the query and call 'showBooks' when complete
+		//		|	var request = store.fetch({query:"all books", onComplete: showBooks});
+		//	example:
+		//		Fetch all items in the story and call 'showEverything' when complete.
+		//		|	var request = store.fetch(onComplete: showEverything);
+		//	example:
+		//		Fetch only 10 books that match the query 'all books', starting at the fifth book found during the search.
+		//		This demonstrates how paging can be done for specific queries.  
+		//		|	var request = store.fetch({query:"all books", start: 4, count: 10, onComplete: showBooks});
+		//	example:
+		//		Fetch all items that match the query, calling 'callback' each time an item is located.
+		//		|	var request = store.fetch({query:"foo/bar", onItem:callback});
+		//	example:
+		//		Fetch the first 100 books by author King, call showKing when up to 100 items have been located.
+		//		|	var request = store.fetch({query:{author:"King"}, start: 0, count:100, onComplete: showKing});
+		//	example:
+		//		Locate the books written by Author King, sort it on title and publisher, then return the first 100 items from the sorted items.
+		//		|	var request = store.fetch({query:{author:"King"}, sort: [{ attribute: "title", descending: true}, {attribute: "publisher"}], ,start: 0, count:100, onComplete: 'showKing'});
+		//	example:
+		//		Fetch the first 100 books by authors starting with the name King, then call showKing when up to 100 items have been located.
+		//		|	var request = store.fetch({query:{author:"King*"}, start: 0, count:100, onComplete: showKing});
+		//	example:
+		//		Fetch the first 100 books by authors ending with 'ing', but only have one character before it (King, Bing, Ling, Sing, etc.), then call showBooks when up to 100 items have been located.
+		//		|	var request = store.fetch({query:{author:"?ing"}, start: 0, count:100, onComplete: showBooks});
+		//	example:
+		//		Fetch the first 100 books by author King, where the name may appear as King, king, KING, kInG, and so on, then call showKing when up to 100 items have been located.
+		//		|	var request = store.fetch({query:{author:"King"}, queryOptions:(ignoreCase: true}, start: 0, count:100, onComplete: showKing});
+		//	example:
+		//		Paging
+		//		|	var store = new dojo.data.LargeRdbmsStore({url:"jdbc:odbc:foobar"});
+		//		|	var fetchArgs = {
+		//		|		query: {type:"employees", name:"Hillary *"}, // string matching
+		//		|		sort: [{attribute:"department", descending:true}],
+		//		|		start: 0,
+		//		|		count: 20,
+		//		|		scope: displayer,
+		//		|		onBegin: showThrobber,
+		//		|		onItem: displayItem,
+		//		|		onComplete: stopThrobber,
+		//		|		onError: handleFetchError,
+		//		|	};
+		//		|	store.fetch(fetchArgs);
+		//		|	...
+		//		and then when the user presses the "Next Page" button...
+		//		|	fetchArgs.start += 20;
+		//		|	store.fetch(fetchArgs);  // get the next 20 items
 		var request = null; 
 		throw new Error('Unimplemented API: dojo.data.api.Read.fetch');
 		return request; // an object conforming to the dojo.data.api.Request API

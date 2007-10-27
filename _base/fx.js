@@ -376,14 +376,14 @@ dojo.declare("dojo._Animation", null, {
 		//	
 		//	args.node can be a String or a DomNode reference
 		//	
-		// examples:
-		//	dojo.animateProperty({ node: node, duration:2000,
-		//		properties: {
-		//			width: { start: '200', end: '400', unit:"px" },
-		//			height: { start:'200', end: '400', unit:"px" },
-		//			paddingTop: { start:'5', end:'50', unit:"px" } 
-		//		}
-		//	}).play();
+		// example:
+		//	|	dojo.animateProperty({ node: node, duration:2000,
+		//	|		properties: {
+		//	|			width: { start: '200', end: '400', unit:"px" },
+		//	|			height: { start:'200', end: '400', unit:"px" },
+		//	|			paddingTop: { start:'5', end:'50', unit:"px" } 
+		//	|		}
+		//	|	}).play();
 		//
 
 		args.node = d.byId(args.node);

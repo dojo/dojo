@@ -18,13 +18,13 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 	//		the store itself does internal polling to a back-end server and periodically updates
 	//		its cache of items (deletes, adds, and updates).
 	//
-	//	examples:
+	//	example:
 	//
-	//		function onSet(item, attribute, oldValue, newValue) {
-	//			//Do something with the information...
-	//		};
-	//		var store = new some.newStore();
-	//		dojo.connect(store, "onSet", onSet);
+	//	|	function onSet(item, attribute, oldValue, newValue) {
+	//	|		//Do something with the information...
+	//	|	};
+	//	|	var store = new some.newStore();
+	//	|	dojo.connect(store, "onSet", onSet);
 
 	getFeatures: function(){
 		//	summary: 

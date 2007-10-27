@@ -100,11 +100,12 @@ dojo.provide("dojo._base.array");
 			//		from the JavaScript 1.6 Array.some() function. More
 			//		information on this can be found here:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
-			// examples:
-			//		dojo.some([1, 2, 3, 4], function(item){ return item>1; });
-			//		// returns true
-			//		dojo.some([1, 2, 3, 4], function(item){ return item<1; });
-			//		// returns false
+			// example:
+			//	|	dojo.some([1, 2, 3, 4], function(item){ return item>1; });
+			//		returns true
+			// example:
+			//	|	dojo.some([1, 2, 3, 4], function(item){ return item<1; });
+			//		returns false
 			return this._everyOrSome(false, arr, callback, thisObject); // Boolean
 		},
 
@@ -140,9 +141,9 @@ dojo.provide("dojo._base.array");
 			//
 			//		More information on the JS 1.6 API can be found here:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
-			// examples:
-			//		dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
-			//		// returns [2, 3, 4]
+			// example:
+			//	|	dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
+			//		returns [2, 3, 4]
 
 			var _p = _getParts(arr, obj, callback); arr = _p[0];
 			var outArr = [];

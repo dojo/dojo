@@ -26,9 +26,10 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		function
 	// extra: 
 	//		some additional message for the user
-	// examples:
-	//		dojo.experimental("dojo.data.Result");
-	//		dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
+	// example:
+	//	|	dojo.experimental("dojo.data.Result");
+	// example:
+	//	|	dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
 	var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
 	if(extra){ message += " " + extra; }
 	console.debug(message);
@@ -39,18 +40,6 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	// description:
 	//		Opens a console for logging, debugging, and error messages.
 	//		Contains partial functionality to Firebug. See function list below.
-	//
-	// 	Added functionality:
-	//		Supports inline objects in object inspector window (only simple trace of dom nodes, however)
-	//			example:
-	//			console.log("my object", {foo:"bar"})
-	//		Option for console to open in popup window
-	//			example:
-	//			var djConfig = {isDebug: true, popup:true };
-	//		Option for console height (ignored for popup)
-	//			example:
-	//			var djConfig = {isDebug: true, debugHeight:100 };
-	//
 	//	NOTE: 
 	//			Firebug is a Firefox extension created by Joe Hewitt (see license). You do not need Dojo to run Firebug.
 	//			Firebug Lite is included in Dojo by permission from Joe Hewitt
@@ -58,6 +47,16 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//				functionality by reading the function comments below or visiting http://www.getfirebug.com/docs.html
 	//	NOTE:
 	//		To test Firebug Lite in Firefox, set console = null;
+	//
+	// example:
+	//		Supports inline objects in object inspector window (only simple trace of dom nodes, however)
+	//		|	console.log("my object", {foo:"bar"})
+	// example:
+	//		Option for console to open in popup window
+	//		|	var djConfig = {isDebug: true, popup:true };
+	// example:
+	//		Option for console height (ignored for popup)
+	//		|	var djConfig = {isDebug: true, debugHeight:100 };
 	
 if(
 	(
@@ -177,10 +176,10 @@ if(
 			// summary: 
 			//		Starts timers assigned to name given in argument. Timer stops and displays on timeEnd(title);
 			//	example:
-			//		console.time("load");
-			//		console.time("myFunction");
-			//		console.timeEnd("load");
-			//		console.timeEnd("myFunction");
+			//	|	console.time("load");
+			//	|	console.time("myFunction");
+			//	|	console.timeEnd("load");
+			//	|	console.timeEnd("myFunction");
 			timeMap[name] = (new Date()).getTime();
 		},
 		

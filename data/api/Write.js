@@ -45,8 +45,8 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		anything other than a simple anonymous object.  
 		//		Throws an exception if the item in parentInfo is not an item from the store
 		//		or if the attribute isn't an attribute name string.
-		//	examples:
-		//		var kermit = store.newItem({name: "Kermit", color:[blue, green]});
+		//	example:
+		//	|	var kermit = store.newItem({name: "Kermit", color:[blue, green]});
 
 		var newItem;
 		throw new Error('Unimplemented API: dojo.data.api.Write.newItem');
@@ -63,8 +63,8 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	exceptions:
 		//		Throws an exception if the argument *item* is not an item 
 		//		(if store.isItem(item) returns false).
-		//	examples:
-		//		var success = store.deleteItem(kermit);
+		//	example:
+		//	|	var success = store.deleteItem(kermit);
 		throw new Error('Unimplemented API: dojo.data.api.Write.deleteItem');
 		return false; // boolean
 	},
@@ -87,8 +87,8 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		Throws an exception if *item* is not an item, or if *attribute*
 		//		is neither an attribute object or a string.
 		//		Throws an exception if *value* is undefined.
-		//	examples:
-		//		var success = store.set(kermit, "color", "green");
+		//	example:
+		//	|	var success = store.set(kermit, "color", "green");
 		throw new Error('Unimplemented API: dojo.data.api.Write.setValue');
 		return false; // boolean
 	},
@@ -113,10 +113,10 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	exceptions:
 		//		Throws an exception if *values* is not an array, if *item* is not an
 		//		item, or if *attribute* is neither an attribute object or a string.
-		//	examples:
-		//		var success = store.setValues(kermit, "color", ["green", "aqua"]);
-		//		success = store.setValues(kermit, "color", []);
-		//		if (success) {assert(!store.hasAttribute(kermit, "color"));}
+		//	example:
+		//	|	var success = store.setValues(kermit, "color", ["green", "aqua"]);
+		//	|	success = store.setValues(kermit, "color", []);
+		//	|	if (success) {assert(!store.hasAttribute(kermit, "color"));}
 		throw new Error('Unimplemented API: dojo.data.api.Write.setValues');
 		return false; // boolean
 	},
@@ -134,9 +134,9 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	exceptions:
 		//		Throws an exception if *item* is not an item, or if *attribute*
 		//		is neither an attribute object or a string.
-		//	examples:
-		//		var success = store.unsetAttribute(kermit, "color");
-		//		if (success) {assert(!store.hasAttribute(kermit, "color"));}
+		//	example:
+		//	|	var success = store.unsetAttribute(kermit, "color");
+		//	|	if (success) {assert(!store.hasAttribute(kermit, "color"));}
 		throw new Error('Unimplemented API: dojo.data.api.Write.clear');
 		return false; // boolean
 	},
@@ -182,9 +182,9 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	returns:
 		//		Nothing.  Since the saves are generally asynchronous, there is 
 		//		no need to return anything.  All results are passed via callbacks.
-		//	examples:
-		//		store.save({onComplete: onSave});
-		//		store.save({scope: fooObj, onComplete: onSave, onError: saveFailed});
+		//	example:
+		//	|	store.save({onComplete: onSave});
+		//	|	store.save({scope: fooObj, onComplete: onSave, onError: saveFailed});
 		throw new Error('Unimplemented API: dojo.data.api.Write.save');
 	},
 
@@ -194,8 +194,8 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	description:
 		//		Discards any unsaved changes.
 		//
-		//	examples:
-		//		var success = store.revert();
+		//	example:
+		//	|	var success = store.revert();
 		throw new Error('Unimplemented API: dojo.data.api.Write.revert');
 		return false; // boolean
 	},
@@ -213,9 +213,9 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	exceptions:
 		//		Throws an exception if isDirty() is passed an argument and the
 		//		argument is not an item.
-		//	examples:
-		//		var trueOrFalse = store.isDirty(kermit); // true if kermit is dirty
-		//		var trueOrFalse = store.isDirty();       // true if any item is dirty
+		//	example:
+		//	|	var trueOrFalse = store.isDirty(kermit); // true if kermit is dirty
+		//	|	var trueOrFalse = store.isDirty();       // true if any item is dirty
 		throw new Error('Unimplemented API: dojo.data.api.Write.isDirty');
 		return false; // boolean
 	}

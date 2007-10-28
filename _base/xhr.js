@@ -219,12 +219,13 @@ dojo._contentHandlers = {
 		// the "JavaScript Hijacking" issue noted by Fortify and others. It is
 		// not appropriate for all circumstances.
 
-		//FIXME: is this precise enough?  This might do a partial match on the multiline string.
-		var match = xhr.responseText.match(/\/\*([\s\S]*)\*\//m);
-		if(!match){
+		var value = xhr.responseText;
+		var cStartIdx = value.indexOf("\/*");
+		var cEndIdx = value.lastIndexOf("*\/");
+		if(cStartIdx == -1 || cEndIdx == -1){
 			throw new Error("JSON was not comment filtered");
 		}
-		return dojo.fromJson(match[1]);
+		return dojo.fromJson(value.substring(cStartIdx+2, cEndIdx));
 	},
 	"javascript": function(xhr){ 
 		// FIXME: try Moz and IE specific eval variants?

@@ -69,7 +69,13 @@ if(
 ){
 (function(){
 	// don't build a firebug frame in iframes
-	if(window != window.parent){ return; }
+	if(window != window.parent){ 
+		// but if we've got a parent logger, connect to it
+		if(window.parent["console"]){
+			window.console = window.parent.console;
+		}
+		return; 
+	}
 
 	window.console = {
 		log: function(){
@@ -742,11 +748,17 @@ if(
 	function onKeyDown(event){
 		var timestamp = (new Date()).getTime();
 		if(timestamp > onKeyDownTime + 200){
+			var event = dojo.fixEvent(event);
+			var keys = dojo.keys;
+			var ekc = event.keyCode;
 			onKeyDownTime = timestamp;
-			if(event.keyCode == 123){
+			if(ekc == keys.F12){
 				toggleConsole();
-			}else if((event.keyCode == 108 || event.keyCode == 76) && event.shiftKey
-				&& (event.metaKey || event.ctrlKey)){
+			}else if(
+				(ekc == keys.NUMPAD_ENTER || ekc == 76) &&
+				event.shiftKey && 
+				(event.metaKey || event.ctrlKey)
+			){
 				focusCommandLine();
 			}else{
 				return;
@@ -807,75 +819,77 @@ if(
 	//***************************************************************************************************
 	// Print Object Helpers
 	getAtts = function(o){
-			//Get amount of items in an object
-			if(dojo.isArray(o)) { 
-				return "[array with " + o.length + " slots]"; 
-			}else{
-				var i = 0;
-				for(var nm in o){
-					i++;
-				}
-				return "{object with " + i + " items}";
-			}
-		}
-		printObject = function(o, i, txt){
-			
-			// Recursively trace object, indenting to represent depth for display in object inspector
-			// TODO: counter to prevent overly complex or looped objects (will probably help with dom nodes)
-			var br = "\n"; // using a <pre>... otherwise we'd need a <br />
-			var ind = "  ";
-			txt = (txt) ? txt : "";
-			i = (i) ? i : ind;
+		//Get amount of items in an object
+		if(dojo.isArray(o)) { 
+			return "[array with " + o.length + " slots]"; 
+		}else{
+			var i = 0;
 			for(var nm in o){
-				if(typeof(o[nm]) == "object"){
-					txt += i+nm +" -> " + getAtts(o[nm]) + br;
-					txt += printObject(o[nm], i+ind);
-				}else{
-					txt += i+nm +" : "+o[nm] + br;
-				}
+				i++;
 			}
-			return txt;
+			return "{object with " + i + " items}";
 		}
-		
-		
-		getObjectAbbr = function(obj){
-			// Gets an abbreviation of an object for display in log
-			// X items in object, including id
-			// X items in an array
-			// TODO: Firebug Sr. actually goes by char count
-			var nm = obj.id || obj.name || obj.ObjectID || obj.widgetId;
-			if(nm){ return "{"+nm+"}";	}
+	}
 
-			var obCnt = 2;
-			var arCnt = 4;
-			var cnt = 0;
-			
-			
-			if(dojo.isArray(obj)){
-				nm ="[";
-				for(var i=0;i<obj.length;i++){
-					nm+=obj[i]+","
-					if(i>arCnt){
-						nm+=" ... ("+obj.length+" items)";
-						break;
-					}
-				}
-				nm+="]";
-
-			}if((!dojo.isObject(obj))||dojo.isString(obj)){
-				nm = obj+"";
+	printObject = function(o, i, txt){
+		
+		// Recursively trace object, indenting to represent depth for display in object inspector
+		// TODO: counter to prevent overly complex or looped objects (will probably help with dom nodes)
+		var br = "\n"; // using a <pre>... otherwise we'd need a <br />
+		var ind = "  ";
+		txt = (txt) ? txt : "";
+		i = (i) ? i : ind;
+		for(var nm in o){
+			if(typeof(o[nm]) == "object"){
+				txt += i+nm +" -> " + getAtts(o[nm]) + br;
+				txt += printObject(o[nm], i+ind);
 			}else{
-				nm = "{";
-				for(var i in obj){
-					cnt++
-					if(cnt > obCnt) break;
-					nm += i+"="+obj[i]+"  ";
-				}
-				nm+="}"
+				txt += i+nm +" : "+o[nm] + br;
 			}
-			
-			return nm;
 		}
+		return txt;
+	}
+		
+		
+	getObjectAbbr = function(obj){
+		// Gets an abbreviation of an object for display in log
+		// X items in object, including id
+		// X items in an array
+		// TODO: Firebug Sr. actually goes by char count
+		var isError = (obj instanceof Error);
+		var nm = obj.id || obj.name || obj.ObjectID || obj.widgetId;
+		if(!isError && nm){ return "{"+nm+"}";	}
+
+		var obCnt = 2;
+		var arCnt = 4;
+		var cnt = 0;
+
+		if(isError){
+			nm = "[ Error: "+(obj["message"]||obj["description"]||obj)+" ]";
+		}else if(dojo.isArray(obj)){
+			nm ="[";
+			for(var i=0;i<obj.length;i++){
+				nm+=obj[i]+","
+				if(i>arCnt){
+					nm+=" ... ("+obj.length+" items)";
+					break;
+				}
+			}
+			nm+="]";
+		}else if((!dojo.isObject(obj))||dojo.isString(obj)){
+			nm = obj+"";
+		}else{
+			nm = "{";
+			for(var i in obj){
+				cnt++
+				if(cnt > obCnt) break;
+				nm += i+"="+obj[i]+"  ";
+			}
+			nm+="}"
+		}
+		
+		return nm;
+	}
 		
 	//*************************************************************************************
 	

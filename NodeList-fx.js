@@ -1,4 +1,4 @@
-dojo.provide("dojo.NodeList-ext");
+dojo.provide("dojo.NodeList-fx");
 dojo.require("dojo.fx");
 
 dojo.extend(dojo.NodeList, {
@@ -10,7 +10,6 @@ dojo.extend(dojo.NodeList, {
 			dojo.mixin(tmpArgs, args);
 			anims.push(obj[method](tmpArgs));
 		});
-		// FIXME: combine isn't in Base!!
 		return dojo.fx.combine(anims); // dojo._Animation
 	},
 

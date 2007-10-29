@@ -129,7 +129,10 @@ dojo.query = function(query, root){
 
 	var getQueryParts = function(query){
 		// summary: state machine for query tokenization
-		query = query+" "; // ensure that we terminate the state machine
+		if(query.charAt(query.length-1) == ">"){
+			query += " *"
+		}
+		query += " "; // ensure that we terminate the state machine
 
 		// the overall data graph of the full query, as represented by queryPart objects
 		var qparts = []; 

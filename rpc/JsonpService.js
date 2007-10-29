@@ -25,7 +25,7 @@ dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
 			callbackParamName: this.callbackParamName||"callback",
 			content: this.createRequest(parameters),
 			timeout: this.timeout,
-			handleAs: "json-comment-optional",	
+			handleAs: "json",	
 			preventCache: true
 		});
 		def.addCallbacks(this.resultCallback(deferredRequestHandler), this.errorCallback(deferredRequestHandler));

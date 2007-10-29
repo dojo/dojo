@@ -13,7 +13,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 			if(dojo.isString(args)){
 				var def = dojo.xhrGet({
 					url: args,
-					handleAs: "json",
+					handleAs: "json-comment-optional",
 					sync: true
 				});
 

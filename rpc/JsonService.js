@@ -25,7 +25,7 @@ dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 				postData: this.createRequest(method, parameters),
 				contentType: this.contentType,
 				timeout: this.timeout, 
-				handleAs: "json"
+				handleAs: "json-comment-optional"
 			});
 			def.addCallbacks(this.resultCallback(deferredRequestHandler), this.errorCallback(deferredRequestHandler));
 		},

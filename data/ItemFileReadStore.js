@@ -156,19 +156,6 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//	regexp:
 		//		Optional regular expression generated off value if value was of string type to handle wildcarding.
 		//		If present and attribute values are string, then it can be used for comparison instead of 'value'
-/*
-		var values = this.getValues(item, attribute);
-		for(var i = 0; i < values.length; ++i){
-			var possibleValue = values[i];
-			if(possibleValue !== null && !dojo.isObject(possibleValue) && regexp){
-				return possibleValue.toString().match(regexp);
-			}else{
-				if(value === possibleValue){
-					return true; // Boolean
-				}
-			}
-		}
-*/
 		return dojo.some(this.getValues(item, attribute), function(possibleValue){
 			if(possibleValue !== null && !dojo.isObject(possibleValue) && regexp){
 				if(possibleValue.toString().match(regexp)){

@@ -71,8 +71,8 @@ dojo.declare("dojo._Animation", null, {
 	delay: null,
 
 	// events
-
-	// beforeBeing: Event
+	//
+	// beforeBegin: Event
 	//	Synthetic event fired before a dojo._Animation begins playing (synhcronous)
 	beforeBegin: null,
 

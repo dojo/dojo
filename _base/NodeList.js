@@ -5,10 +5,11 @@ dojo.require("dojo._base.array");
 (function(){
 
 	var d = dojo;
-	var tnl = function(a){
-		a.constructor = dojo.NodeList;
-		dojo._mixin(a, dojo.NodeList.prototype);
-		return a;
+
+	var tnl = function(arr){
+		arr.constructor = dojo.NodeList;
+		dojo._mixin(arr, dojo.NodeList.prototype);
+		return arr;
 	}
 
 	dojo.NodeList = function(){
@@ -23,6 +24,8 @@ dojo.require("dojo._base.array");
 
 		return tnl(Array.apply(null, arguments));
 	}
+
+	dojo.NodeList._wrap = tnl;
 
 	dojo.extend(dojo.NodeList, {
 		// http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods

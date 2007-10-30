@@ -5,15 +5,16 @@ dojo.require("dojo._base.lang");
 dojo.require("dojo._base.query");
 
 (function(){
+	var _d = dojo;
 	function setValue(/*Object*/obj, /*String*/name, /*String*/value){
 		//summary:
 		//		For the nameed property in object, set the value. If a value
 		//		already exists and it is a string, convert the value to be an
 		//		array of values.
 		var val = obj[name];
-		if(dojo.isString(val)){
+		if(_d.isString(val)){
 			obj[name] = [val, value];
-		}else if(dojo.isArray(val)){
+		}else if(_d.isArray(val)){
 			val.push(value);
 		}else{
 			obj[name] = value;
@@ -51,10 +52,9 @@ dojo.require("dojo._base.query");
 		//				]
 		//			};
 	
-		// FIXME: seems that dojo.query needs negation operators!!
 		var ret = {};
-		var iq = "input[type!=file][type!=submit][type!=image][type!=reset][type!=button], select, textarea";
-		dojo.query(iq, formNode).filter(function(node){
+		var iq = "input:not([type=file]):not([type=submit]):not([type=image]):not([type=reset]):not([type=button]), select, textarea";
+		_d.query(iq, formNode).filter(function(node){
 			return (!node.disabled);
 		}).forEach(function(item){
 			var _in = item.name;
@@ -63,7 +63,7 @@ dojo.require("dojo._base.query");
 				if(item.checked){ setValue(ret, _in, item.value); }
 			}else if(item.multiple){
 				ret[_in] = [];
-				dojo.query("option", item).forEach(function(opt){
+				_d.query("option", item).forEach(function(opt){
 					if(opt.selected){
 						setValue(ret, _in, opt.value);
 					}
@@ -77,186 +77,183 @@ dojo.require("dojo._base.query");
 		});
 		return ret; // Object
 	}
-})();
 
-dojo.objectToQuery = function(/*Object*/ map){
-	//	summary:
-	//		takes a key/value mapping object and returns a string representing
-	//		a URL-encoded version of that object.
-	//	example:
-	//		this object:
-	//
-	//		|	{ 
-	//		|		blah: "blah",
-	//		|		multi: [
-	//		|			"thud",
-	//		|			"thonk"
-	//		|		]
-	//		|	};
-	//
-	//	yeilds the following query string:
-	//	
-	//	|	"blah=blah&multi=thud&multi=thonk"
+	dojo.objectToQuery = function(/*Object*/ map){
+		//	summary:
+		//		takes a key/value mapping object and returns a string representing
+		//		a URL-encoded version of that object.
+		//	example:
+		//		this object:
+		//
+		//		|	{ 
+		//		|		blah: "blah",
+		//		|		multi: [
+		//		|			"thud",
+		//		|			"thonk"
+		//		|		]
+		//		|	};
+		//
+		//	yeilds the following query string:
+		//	
+		//	|	"blah=blah&multi=thud&multi=thonk"
 
 
-	// FIXME: need to implement encodeAscii!!
-	var ec = encodeURIComponent;
-	var ret = "";
-	var backstop = {};
-	for(var x in map){
-		if(map[x] != backstop[x]){
-			if(dojo.isArray(map[x])){
-				for(var y=0; y<map[x].length; y++){
-					ret += ec(x) + "=" + ec(map[x][y]) + "&";
+		// FIXME: need to implement encodeAscii!!
+		var ec = encodeURIComponent;
+		var ret = "";
+		var backstop = {};
+		for(var x in map){
+			if(map[x] != backstop[x]){
+				if(_d.isArray(map[x])){
+					for(var y=0; y<map[x].length; y++){
+						ret += ec(x) + "=" + ec(map[x][y]) + "&";
+					}
+				}else{
+					ret += ec(x) + "=" + ec(map[x]) + "&";
 				}
+			}
+		}
+		if(ret.length && ret.charAt(ret.length-1) == "&"){
+			ret = ret.substr(0, ret.length-1);
+		}
+		return ret; // String
+	}
+
+	dojo.formToQuery = function(/*DOMNode||String*/ formNode){
+		// summary:
+		//		return URL-encoded string representing the form passed as either a
+		//		node or string ID identifying the form to serialize
+		return _d.objectToQuery(_d.formToObject(formNode)); // String
+	}
+
+	dojo.formToJson = function(/*DOMNode||String*/ formNode){
+		// summary:
+		//		return a serialized JSON string from a form node or string
+		//		ID identifying the form to serialize
+		return _d.toJson(_d.formToObject(formNode)); // String
+	}
+
+	dojo.queryToObject = function(/*String*/ str){
+		// summary:
+		//		returns an object representing a de-serialized query section of a
+		//		URL. Query keys with multiple values are returned in an array.
+		// description:
+		//		This string:
+		//
+		//			"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
+		//		
+		//		returns this object structure:
+		//
+		//			{
+		//				foo: [ "bar", "baz" ],
+		//				thinger: " spaces =blah",
+		//				zonk: "blarg"
+		//			}
+		//	
+		//		Note that spaces and other urlencoded entities are correctly
+		//		handled.
+
+		// FIXME: should we grab the URL string if we're not passed one?
+		var ret = {};
+		var qp = str.split("&");
+		var dc = decodeURIComponent;
+		_d.forEach(qp, function(item){
+			if(item.length){
+				var parts = item.split("=");
+				var name = dc(parts.shift());
+				var val = dc(parts.join("="));
+				if(_d.isString(ret[name])){
+					ret[name] = [ret[name]];
+				}
+				if(_d.isArray(ret[name])){
+					ret[name].push(val);
+				}else{
+					ret[name] = val;
+				}
+			}
+		});
+		return ret; // Object
+	}
+
+	/*
+		from refactor.txt:
+
+		all bind() replacement APIs take the following argument structure:
+
+			{
+				url: "blah.html",
+
+				// all below are optional, but must be supported in some form by
+				// every IO API
+				timeout: 1000, // milliseconds
+				handleAs: "text", // replaces the always-wrong "mimetype"
+				content: { 
+					key: "value"
+				},
+
+				// browser-specific, MAY be unsupported
+				sync: true, // defaults to false
+				form: dojo.byId("someForm") 
+			}
+	*/
+
+	// need to block async callbacks from snatching this thread as the result
+	// of an async callback might call another sync XHR, this hangs khtml forever
+	// must checked by watchInFlight()
+
+	dojo._blockAsync = false;
+
+	dojo._contentHandlers = {
+		"text": function(xhr){ return xhr.responseText; },
+		"json": function(xhr){
+			if(!djConfig.usePlainJson){
+				console.debug("Consider using mimetype:text/json-comment-filtered"
+					+ " to avoid potential security issues with JSON endpoints"
+					+ " (use djConfig.usePlainJson=true to turn off this message)");
+			}
+			return _d.fromJson(xhr.responseText);
+		},
+		"json-comment-filtered": function(xhr){ 
+			// NOTE: we provide the json-comment-filtered option as one solution to
+			// the "JavaScript Hijacking" issue noted by Fortify and others. It is
+			// not appropriate for all circumstances.
+
+			var value = xhr.responseText;
+			var cStartIdx = value.indexOf("\/*");
+			var cEndIdx = value.lastIndexOf("*\/");
+			if(cStartIdx == -1 || cEndIdx == -1){
+				throw new Error("JSON was not comment filtered");
+			}
+			return _d.fromJson(value.substring(cStartIdx+2, cEndIdx));
+		},
+		"javascript": function(xhr){ 
+			// FIXME: try Moz and IE specific eval variants?
+			return _d.eval(xhr.responseText);
+		},
+		"xml": function(xhr){ 
+			if(_d.isIE && !xhr.responseXML){
+				_d.forEach(["MSXML2", "Microsoft", "MSXML", "MSXML3"], function(i){
+					try{
+						var doc = new ActiveXObject(prefixes[i]+".XMLDOM");
+						doc.async = false;
+						doc.loadXML(xhr.responseText);
+						return doc;	//	DOMDocument
+					}catch(e){ /* squelch */ };
+				});
 			}else{
-				ret += ec(x) + "=" + ec(map[x]) + "&";
+				return xhr.responseXML;
 			}
 		}
-	}
-	if(ret.length && ret.charAt(ret.length-1) == "&"){
-		ret = ret.substr(0, ret.length-1);
-	}
-	return ret; // String
-}
+	};
 
-dojo.formToQuery = function(/*DOMNode||String*/ formNode){
-	// summary:
-	//		return URL-encoded string representing the form passed as either a
-	//		node or string ID identifying the form to serialize
-	return dojo.objectToQuery(dojo.formToObject(formNode)); // String
-}
-
-dojo.formToJson = function(/*DOMNode||String*/ formNode){
-	// summary:
-	//		return a serialized JSON string from a form node or string
-	//		ID identifying the form to serialize
-	return dojo.toJson(dojo.formToObject(formNode)); // String
-}
-
-dojo.queryToObject = function(/*String*/ str){
-	// summary:
-	//		returns an object representing a de-serialized query section of a
-	//		URL. Query keys with multiple values are returned in an array.
-	// description:
-	//		This string:
-	//
-	//			"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
-	//		
-	//		returns this object structure:
-	//
-	//			{
-	//				foo: [ "bar", "baz" ],
-	//				thinger: " spaces =blah",
-	//				zonk: "blarg"
-	//			}
-	//	
-	//		Note that spaces and other urlencoded entities are correctly
-	//		handled.
-
-	// FIXME: should we grab the URL string if we're not passed one?
-	var ret = {};
-	var qp = str.split("&");
-	var dc = decodeURIComponent;
-	dojo.forEach(qp, function(item){
-		if(item.length){
-			var parts = item.split("=");
-			var name = dc(parts.shift());
-			var val = dc(parts.join("="));
-			if(dojo.isString(ret[name])){
-				ret[name] = [ret[name]];
-			}
-			if(dojo.isArray(ret[name])){
-				ret[name].push(val);
-			}else{
-				ret[name] = val;
-			}
+	dojo._contentHandlers["json-comment-optional"] = function(xhr){
+		var handlers = _d._contentHandlers;
+		try{
+			return handlers["json-comment-filtered"](xhr);
+		}catch(e){
+			return handlers["json"](xhr);
 		}
-	});
-	return ret; // Object
-}
-
-/*
-	from refactor.txt:
-
-	all bind() replacement APIs take the following argument structure:
-
-		{
-			url: "blah.html",
-
-			// all below are optional, but must be supported in some form by
-			// every IO API
-			timeout: 1000, // milliseconds
-			handleAs: "text", // replaces the always-wrong "mimetype"
-			content: { 
-				key: "value"
-			},
-
-			// browser-specific, MAY be unsupported
-			sync: true, // defaults to false
-			form: dojo.byId("someForm") 
-		}
-*/
-
-// need to block async callbacks from snatching this thread as the result
-// of an async callback might call another sync XHR, this hangs khtml forever
-// must checked by watchInFlight()
-
-dojo._blockAsync = false;
-
-dojo._contentHandlers = {
-	"text": function(xhr){ return xhr.responseText; },
-	"json": function(xhr){
-		if(!djConfig.usePlainJson){
-			console.debug("Consider using mimetype:text/json-comment-filtered"
-				+ " to avoid potential security issues with JSON endpoints"
-				+ " (use djConfig.usePlainJson=true to turn off this message)");
-		}
-		return dojo.fromJson(xhr.responseText);
-	},
-	"json-comment-filtered": function(xhr){ 
-		// NOTE: we provide the json-comment-filtered option as one solution to
-		// the "JavaScript Hijacking" issue noted by Fortify and others. It is
-		// not appropriate for all circumstances.
-
-		var value = xhr.responseText;
-		var cStartIdx = value.indexOf("\/*");
-		var cEndIdx = value.lastIndexOf("*\/");
-		if(cStartIdx == -1 || cEndIdx == -1){
-			throw new Error("JSON was not comment filtered");
-		}
-		return dojo.fromJson(value.substring(cStartIdx+2, cEndIdx));
-	},
-	"javascript": function(xhr){ 
-		// FIXME: try Moz and IE specific eval variants?
-		return dojo.eval(xhr.responseText);
-	},
-	"xml": function(xhr){ 
-		if(dojo.isIE && !xhr.responseXML){
-			dojo.forEach(["MSXML2", "Microsoft", "MSXML", "MSXML3"], function(i){
-				try{
-					var doc = new ActiveXObject(prefixes[i]+".XMLDOM");
-					doc.async = false;
-					doc.loadXML(xhr.responseText);
-					return doc;	//	DOMDocument
-				}catch(e){ /* squelch */ };
-			});
-		}else{
-			return xhr.responseXML;
-		}
-	}
-};
-
-dojo._contentHandlers["json-comment-optional"] = function(xhr){
-	var handlers = dojo._contentHandlers;
-	try{
-		return handlers["json-comment-filtered"](xhr);
-	}catch(e){
-		return handlers["json"](xhr);
-	}
-};
-
-(function(){
+	};
 
 	dojo._ioSetArgs = function(/*Object*/args,
 			/*Function*/canceller,
@@ -351,12 +348,12 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		//Get values from form if requestd.
 		var formObject = null;
 		if(args.form){ 
-			var form = dojo.byId(args.form);
+			var form = _d.byId(args.form);
 			//IE requires going through getAttributeNode instead of just getAttribute in some form cases, 
 			//so use it for all.  See #2844
 			var actnNode = form.getAttributeNode("action");
 			ioArgs.url = ioArgs.url || (actnNode ? actnNode.value : null); 
-			formObject = dojo.formToObject(form);
+			formObject = _d.formToObject(form);
 		}
 
 		// set up the query params
@@ -373,11 +370,11 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		if(args.preventCache){
 			miArgs.push({"dojo.preventCache": new Date().valueOf()});
 		}
-		ioArgs.query = dojo.objectToQuery(dojo.mixin.apply(null, miArgs));
+		ioArgs.query = _d.objectToQuery(_d.mixin.apply(null, miArgs));
 	
 		// .. and the real work of getting the deferred in order, etc.
 		ioArgs.handleAs = args.handleAs || "text";
-		var d = new dojo.Deferred(canceller);
+		var d = new _d.Deferred(canceller);
 		d.addCallbacks(okHandler, function(error){
 			return errHandler(error, d);
 		});
@@ -387,19 +384,19 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		//The callbacks will get the deferred result value as the
 		//first argument and the ioArgs object as the second argument.
 		var ld = args.load;
-		if(ld && dojo.isFunction(ld)){
+		if(ld && _d.isFunction(ld)){
 			d.addCallback(function(value){
 				return ld.call(args, value, ioArgs);
 			});
 		}
 		var err = args.error;
-		if(err && dojo.isFunction(err)){
+		if(err && _d.isFunction(err)){
 			d.addErrback(function(value){
 				return err.call(args, value, ioArgs);
 			});
 		}
 		var handle = args.handle;
-		if(handle && dojo.isFunction(handle)){
+		if(handle && _d.isFunction(handle)){
 			d.addBoth(function(value){
 				return handle.call(args, value, ioArgs);
 			});
@@ -428,7 +425,7 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 	var _deferredOk = function(/*Deferred*/dfd){
 		//summary: okHandler function for dojo._ioSetArgs call.
 
-		return dojo._contentHandlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
+		return _d._contentHandlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
 	}
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.
@@ -440,9 +437,9 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 
 	var _makeXhrDeferred = function(/*Object*/args){
 		//summary: makes the Deferred object for this xhr request.
-		var dfd = dojo._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
+		var dfd = _d._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
 		//Pass the args to _xhrObj, to allow xhr iframe proxy interceptions.
-		dfd.ioArgs.xhr = dojo._xhrObj(dfd.ioArgs.args);
+		dfd.ioArgs.xhr = _d._xhrObj(dfd.ioArgs.args);
 		return dfd;
 	}
 
@@ -459,7 +456,7 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		// make sure sync calls stay thread safe, if this callback is called
 		// during a sync call and this results in another sync call before the
 		// first sync call ends the browser hangs
-		if(!dojo._blockAsync){
+		if(!_d._blockAsync){
 			// we need manual loop because we often modify _inFlight (and therefore 'i') while iterating
 			// note: the second clause is an assigment on purpose, lint may complain
 			for(var i=0, tif; (i<_inFlight.length)&&(tif=_inFlight[i]); i++){
@@ -501,7 +498,7 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		//summary: Cancels all pending IO requests, regardless of IO type
 		//(xhr, script, iframe).
 		try{
-			dojo.forEach(_inFlight, function(i){
+			_d.forEach(_inFlight, function(i){
 				i.dfd.cancel();
 			});
 		}catch(e){/*squelch*/}
@@ -509,11 +506,11 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 
 	//Automatically call cancel all io calls on unload
 	//in IE for trac issue #2357.
-	if(dojo.isIE){
-		dojo.addOnUnload(dojo._ioCancelAll);
+	if(_d.isIE){
+		_d.addOnUnload(_d._ioCancelAll);
 	}
 
-	dojo._ioWatch = function(/*Deferred*/dfd,
+	_d._ioWatch = function(/*Deferred*/dfd,
 		/*Function*/validCheck,
 		/*Function*/ioCheck,
 		/*Function*/resHandle){
@@ -548,7 +545,7 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		return 4 == dfd.ioArgs.xhr.readyState; //boolean
 	}
 	var _resHandle = function(/*Deferred*/dfd){
-		if(dojo._isDocumentOk(dfd.ioArgs.xhr)){
+		if(_d._isDocumentOk(dfd.ioArgs.xhr)){
 			dfd.callback(dfd);
 		}else{
 			dfd.errback(new Error("bad http response code:" + dfd.ioArgs.xhr.status));
@@ -578,7 +575,7 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		}catch(e){
 			dfd.cancel();
 		}
-		dojo._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
+		_d._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
 		return dfd; //Deferred
 	}
 
@@ -611,7 +608,7 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		//	headers:
 		//		Object. Additional HTTP headers to send in the request.
 		var dfd = _makeXhrDeferred(args);
-		dojo._ioAddQueryToUrl(dfd.ioArgs);
+		_d._ioAddQueryToUrl(dfd.ioArgs);
 		return _doIt("GET", dfd); // dojo.Deferred
 	}
 
@@ -663,10 +660,11 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		//		Sends an HTTP DELETE request to the server. See dojo.xhrGet()
 		//		for a list of commonly accepted properties on args.
 		var dfd = _makeXhrDeferred(args);
-		dojo._ioAddQueryToUrl(dfd.ioArgs);
+		_d._ioAddQueryToUrl(dfd.ioArgs);
 		return _doIt("DELETE", dfd); // dojo.Deferred
 	}
 
+	/*
 	dojo.wrapForm = function(formNode){
 		//summary:
 		//		A replacement for FormBind, but not implemented yet.
@@ -676,4 +674,5 @@ dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		// set/send?
 		throw new Error("dojo.wrapForm not yet implemented");
 	}
+	*/
 })();

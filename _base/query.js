@@ -445,7 +445,7 @@ dojo.query = function(query, root){
 		// see if we can constrain our next level to direct children
 		if(tqp.oper == ">"){
 			var ecn = element[childNodesName];
-			if(!ecn.length){
+			if(!ecn || !ecn.length){
 				return;
 			}
 			nidx++;

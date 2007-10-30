@@ -154,8 +154,7 @@ dojo.provide("dojo.back");
 	back.init = function(){
 		//summary: Initializes the undo stack. This must be called from a <script> 
 		//         block that lives inside the <body> tag to prevent bugs on IE.
-
-		// FIXME: should this function prevent re-init?
+		if(dojo.byId("dj_history")){ return; } // prevent reinit
 		var src = djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html");
 		document.write('<iframe style="border:0;width:1px;height:1px;position:absolute;visibility:hidden;bottom:0;right:0;" name="dj_history" id="dj_history" src="' + src + '"></iframe>');
 	};
@@ -169,14 +168,12 @@ dojo.provide("dojo.back");
 		initialState = createState(initialHref, args, initialHash);
 	};
 
-	// FIXME: it looks like the doc comments are old, inaccurate, or both
+	//FIXME: it looks like the doc comments are old, inaccurate, or both
 	//FIXME: Would like to support arbitrary back/forward jumps. Have to rework iframeLoaded among other things.
 	//FIXME: is there a slight race condition in moz using change URL with the timer check and when
 	//       the hash gets set? I think I have seen a back/forward call in quick succession, but not consistent.
 	back.addToHistory = function(/*Object*/ args){
-		//summary: adds a state object (args) to the history list. You must set
-		//djConfig.preventBackButtonFix = false to use dojo.undo.browser.
-
+		//summary: adds a state object (args) to the history list. 
 		//args: Object
 		//		args can have the following properties:
 		//		To support getting back button notifications, the object argument should implement a
@@ -191,7 +188,7 @@ dojo.provide("dojo.back");
 		//		not evaluate to false, that value will be used as the fragment identifier. For example,
 		//		if changeUrl: 'page1', then the URL will look like: http://some.domain.com/path#page1
 	 	//		Full example:
-		//		|	dojo.undo.browser.addToHistory({
+		//		|	dojo.back.addToHistory({
 		//		|		back: function() { alert('back pressed'); },
 		//		|		forward: function() { alert('forward pressed'); },
 		//		|		changeUrl: true
@@ -332,7 +329,7 @@ dojo.provide("dojo.back");
 		historyStack.push(createState(url, args, hash));
 	};
 
-
+  	//FIXME: bedlump or hide this in the closure? need to determine how it's called.
 	back.iframeLoaded = function(evt, ifrLoc){
 		//summary: private method. Do not call this directly.
 		var query = getUrlQuery(ifrLoc.href);

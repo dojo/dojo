@@ -85,9 +85,12 @@ dojo.connect = function(/*Object|null*/ obj,
 						/*Boolean*/ dontFix){
 	// summary:
 	//		Create a link that calls one function when another executes. 
+	//
 	// description:
 	//		Connects method to event, so that after event fires, method
-	//		does too. Connect as many methods to event as needed.
+	//		does too. All connected functions are passed the same arguments as
+	//		the event function was initially called with. You may connect as
+	//		many methods to event as needed.
 	//
 	//		event must be a string. If obj is null, dojo.global is used.
 	//
@@ -98,14 +101,17 @@ dojo.connect = function(/*Object|null*/ obj,
 	//
 	//		The return value is a handle that is needed to 
 	//		remove this connection with dojo.disconnect.
+	//
 	// obj: 
 	//		The source object for the event function. 
 	//		Defaults to dojo.global if null.
 	//		If obj is a DOM node, the connection is delegated 
 	//		to the DOM event manager (unless dontFix is true).
+	//
 	// event:
 	//		String name of the event function in obj. 
 	//		I.e. identifies a property obj[event].
+	//
 	// context: 
 	//		The object that method will receive as "this".
 	//
@@ -115,36 +121,44 @@ dojo.connect = function(/*Object|null*/ obj,
 	//		If method is a string then context must be the source 
 	//		object object for method (context[method]). If context is null,
 	//		dojo.global is used.
+	//
 	// method:
 	//		A function reference, or name of a function in context. 
 	//		The function identified by method fires after event does. 
 	//		method receives the same arguments as the event.
 	//		See context argument comments for information on method's scope.
+	//
 	// dontFix:
-	//		If obj is a DOM node, set dontFix to true to  prevent delegation 
+	//		If obj is a DOM node, set dontFix to true to prevent delegation 
 	//		of this connection to the DOM event manager. 
-	// usage:
+	//
+	// example:
 	//		// when obj.onchange(), do ui.update()
 	//		dojo.connect(obj, "onchange", ui, "update");
 	//		dojo.connect(obj, "onchange", ui, ui.update); // same
 	//
+	// example:
 	//		// using return value for disconnect
 	//		var link = dojo.connect(obj, "onchange", ui, "update");
 	//		...
 	//		dojo.disconnect(link);
 	//
+	// example:
 	//		// when onglobalevent executes, watcher.handler is invoked
 	//		dojo.connect(null, "onglobalevent", watcher, "handler");
 	//
+	// example:
 	//		// when ob.onCustomEvent executes, customEventHandler is invoked
 	//		dojo.connect(ob, "onCustomEvent", null, "customEventHandler");
 	//		dojo.connect(ob, "onCustomEvent", "customEventHandler"); // same
 	//
+	// example:
 	//		// when ob.onCustomEvent executes, customEventHandler is invoked
 	//		// with the same scope (this)
 	//		dojo.connect(ob, "onCustomEvent", null, customEventHandler);
 	//		dojo.connect(ob, "onCustomEvent", customEventHandler); // same
 	//
+	// example:
 	//		// when globalEvent executes, globalHandler is invoked
 	//		// with the same scope (this)
 	//		dojo.connect(null, "globalEvent", null, globalHandler);
@@ -192,48 +206,48 @@ dojo._disconnect = function(obj, event, handle, listener){
 dojo._topics = {};
 
 dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Function*/ method){
-	// summary:
+	//	summary:
 	//		Attach a listener to a named topic. The listener function is invoked whenever the named
 	//		topic is published (see: dojo.publish).
 	//		Returns a handle which is needed to unsubscribe this listener.
-	// context:
+	//	context:
 	//		Scope in which method will be invoked, or null for default scope.
-	// method:
+	//	method:
 	//		The name of a function in context, or a function reference. This is the function that
 	//		is invoked when topic is published.
-	// usage:
-	//		dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
-	//		dojo.publish("alerts", [ "read this", "hello world" ]);																	
+	//	example:
+	//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
+	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);																	
 	
 	// support for 2 argument invocation (omitting context) depends on hitch
 	return [topic, dojo._listener.add(dojo._topics, topic, dojo.hitch(context, method))]; /*Handle*/
 }
 
 dojo.unsubscribe = function(/*Handle*/ handle){
-	// summary:
-	//		Remove a topic listener. 
-	// handle:
-	//		The handle returned from a call to subscribe.
-	// usage:
-	//		var alerter = dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
-	//		...
-	//		dojo.unsubscribe(alerter);
+	//	summary:
+	//	 	Remove a topic listener. 
+	//	handle:
+	//	 	The handle returned from a call to subscribe.
+	//	example:
+	//	|	var alerter = dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
+	//	|	...
+	//	|	dojo.unsubscribe(alerter);
 	if(handle){
 		dojo._listener.remove(dojo._topics, handle[0], handle[1]);
 	}
 }
 
 dojo.publish = function(/*String*/ topic, /*Array*/ args){
-	// summary:
-	//		Invoke all listener method subscribed to topic.
-	// topic:
-	//		The name of the topic to publish.
-	// args:
-	//		An array of arguments. The arguments will be applied 
-	//		to each topic subscriber (as first class parameters, via apply).
-	// usage:
-	//		dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
-	//		dojo.publish("alerts", [ "read this", "hello world" ]);	
+	//	summary:
+	//	 	Invoke all listener method subscribed to topic.
+	//	topic:
+	//	 	The name of the topic to publish.
+	//	args:
+	//	 	An array of arguments. The arguments will be applied 
+	//	 	to each topic subscriber (as first class parameters, via apply).
+	//	example:
+	//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
+	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);	
 	
 	// Note that args is an array, which is more efficient vs variable length
 	// argument list.  Ideally, var args would be implemented via Array
@@ -247,21 +261,21 @@ dojo.publish = function(/*String*/ topic, /*Array*/ args){
 dojo.connectPublisher = function(	/*String*/ topic, 
 									/*Object|null*/ obj, 
 									/*String*/ event){
-	// summary:
-	//		Ensure that everytime obj.event() is called, a message is published
-	//		on the topic. Returns a handle which can be passed to
-	//		dojo.disconnect() to disable subsequent automatic publication on
-	//		the topic.
-	// topic:
-	//		The name of the topic to publish.
-	// obj: 
-	//		The source object for the event function. Defaults to dojo.global
-	//		if null.
-	// event:
-	//		String name of the event function in obj. 
-	//		I.e. identifies a property obj[event].
-	// usage:
-	//		dojo.connectPublisher("/ajax/start", dojo, "xhrGet"};
+	//	summary:
+	//	 	Ensure that everytime obj.event() is called, a message is published
+	//	 	on the topic. Returns a handle which can be passed to
+	//	 	dojo.disconnect() to disable subsequent automatic publication on
+	//	 	the topic.
+	//	topic:
+	//	 	The name of the topic to publish.
+	//	obj: 
+	//	 	The source object for the event function. Defaults to dojo.global
+	//	 	if null.
+	//	event:
+	//	 	String name of the event function in obj. 
+	//	 	I.e. identifies a property obj[event].
+	//	example:
+	//	|	dojo.connectPublisher("/ajax/start", dojo, "xhrGet"};
 	var pf = function(){ dojo.publish(topic, arguments); }
-	return (event) ? dojo.connect(obj, event, pf) : dojo.connect(obj, pf);
+	return (event) ? dojo.connect(obj, event, pf) : dojo.connect(obj, pf); //Handle
 };

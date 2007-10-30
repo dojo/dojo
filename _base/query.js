@@ -124,8 +124,6 @@ dojo.query = function(query, root){
 
 	var d = dojo;
 	var childNodesName = dojo.isIE ? "children" : "childNodes";
-	var typePrefixes = ["|", "~", "^", "$", "*"];
-	var operators = [">", "~", "+"];
 
 	var getQueryParts = function(query){
 		// summary: state machine for query tokenization
@@ -161,7 +159,7 @@ dojo.query = function(query, root){
 		var endTag = function(){
 			if(inTag >= 0){
 				var tv = (inTag == x) ? null : ts(inTag, x).toLowerCase();
-				currentPart[ d.indexOf(operators, tv) ? "tag" : "oper" ] = tv;
+				currentPart[ (">~+".indexOf(tv) < 0)? "tag" : "oper" ] = tv;
 				inTag = -1;
 			}
 		}
@@ -169,7 +167,6 @@ dojo.query = function(query, root){
 		var endId = function(){
 			if(inId >= 0){
 				currentPart.id = ts(inId, x).replace(/\\/g, "");
-				doh.debug(currentPart.id);
 				inId = -1;
 			}
 		}
@@ -220,7 +217,7 @@ dojo.query = function(query, root){
 					_cp = null; // necessaray?
 					inBrackets = inMatchFor = -1;
 				}else if(cc == "="){
-					var addToCc = (d.indexOf(typePrefixes, lc) >=0 ) ? lc : "";
+					var addToCc = ("|~^$*".indexOf(lc) >=0 ) ? lc : "";
 					_cp.type = addToCc+cc;
 					_cp.attr = ts(inBrackets+1, x-addToCc.length);
 					inMatchFor = x+1;
@@ -610,8 +607,8 @@ dojo.query = function(query, root){
 
 	var firedCount = 0;
 
+	var blank = "";
 	var _getAttr = function(elem, attr){
-		var blank = "";
 		if(attr == "class"){
 			return elem.className || blank;
 		}
@@ -710,8 +707,8 @@ dojo.query = function(query, root){
 				// DomQuery and jQuery get this wrong, oddly enough.
 				// The CSS 3 selectors spec is pretty explicit about
 				// it, too.
-				var cn = elem[childNodesName];
-				var cnl = elem[childNodesName].length;
+				var cn = elem.childNodes;
+				var cnl = elem.childNodes.length;
 				// if(!cnl){ return true; }
 				for(var x=cnl-1; x >= 0; x--){
 					var nt = cn[x].nodeType;
@@ -720,6 +717,7 @@ dojo.query = function(query, root){
 				return true;
 			}
 		},
+		/* non standard!
 		"contains": function(name, condition){
 			return function(elem){
 				// FIXME: I dislike this version of "contains", as
@@ -730,6 +728,7 @@ dojo.query = function(query, root){
 				return (elem.innerHTML.indexOf(condition) >= 0);
 			}
 		},
+		*/
 		"not": function(name, condition){
 			var ntf = getFilterFunc(getQueryParts(condition)[0]);
 			return function(elem){
@@ -987,7 +986,7 @@ dojo.query = function(query, root){
 		} : getStepQueryFunc
 	);
 	// uncomment to disable XPath for testing and tuning the DOM path
-	// _getQueryFunc = getStepQueryFunc;
+	_getQueryFunc = getStepQueryFunc;
 
 	// FIXME: we've got problems w/ the NodeList query()/filter() functions if we go XPath for everything
 

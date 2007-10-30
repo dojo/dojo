@@ -203,8 +203,47 @@
 		return d.global.eval ? d.global.eval(scriptFragment) : eval(scriptFragment); 	// mixed
 	}
 
+	/*=====
+		dojo.deprecated = function(behaviour, extra, removal){
+			//	summary: 
+			//		Log a debug message to indicate that a behavior has been
+			//		deprecated.
+			//	behaviour: String
+			//		The API or behavior being deprecated. Usually in the form
+			//		of "myApp.someFunction()".
+			//	extra: String?
+			//		Text to append to the message. Often provides advice on a
+			//		new function or facility to achieve the same goal during
+			//		the deprecation period.
+			//	removal: String?
+			//		Text to indicate when in the future the behavior will be
+			//		removed. Usually a version number.
+			//	example:
+			//	|	dojo.deprecated("myApp.getTemp()", "use myApp.getLocaleTemp() instead", "1.0");
+		}
+
+		dojo.experimental = function(moduleName, extra){
+			//	summary: Marks code as experimental.
+			//	description: 
+			//	 	This can be used to mark a function, file, or module as
+			//	 	experimental.  Experimental code is not ready to be used, and the
+			//	 	APIs are subject to change without notice.  Experimental code may be
+			//	 	completed deleted without going through the normal deprecation
+			//	 	process.
+			//	moduleName: String
+			//	 	The name of a module, or the name of a module file or a specific
+			//	 	function
+			//	extra: String?
+			//	 	some additional message for the user
+			//	example:
+			//	|	dojo.experimental("dojo.data.Result");
+			//	example:
+			//	|	dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
+		}
+	=====*/
+
 	//Real functions declared in dojo._firebug.firebug.
-	dojo.deprecated = dojo.experimental = function(){};
+	d.deprecated = d.experimental = function(){};
 
 })();
 // vim:ai:ts=4:noet

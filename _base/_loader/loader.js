@@ -318,12 +318,6 @@
 		return module;
 	}
 
-
-	dojo.requireInto = function(/*String*/ moduleName, /*Object?*/ namespace){
-		dojo.require(moduleName);
-		dojo.mixin(namespace, dojo.getObject(moduleName));
-	}
-
 	dojo.provide = function(/*String*/ resourceName){
 		//	summary:
 		//		Each javascript source file must have (exactly) one dojo.provide()

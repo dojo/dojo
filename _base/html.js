@@ -13,20 +13,28 @@ try{
 // DOM Functions
 // =============================
 
+/*=====
+dojo.byId = function(id, doc){
+	//	summary:
+	//		similar to other library's "$" function, takes a
+	//		string representing a DOM id or a DomNode and
+	//		returns the corresponding DomNode. If a Node is
+	//		passed, this function is a no-op. Returns a
+	//		single DOM node or null, working around several
+	//		browser-specific bugs to do so.
+	//	id: String|DomNode
+	//	 	DOM id or DOM Node
+	//	doc: DocumentElement?
+	//		optional, defaults to the current value of
+	//		dojo.doc.  Can be used to retreive
+	//		node references from other documents.
+	//	return:
+	//		DomNode
+}
+=====*/
+
 if(dojo.isIE || dojo.isOpera){
-	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
-		// summary:
-		// 		similar to other library's "$" function, takes a
-		// 		string representing a DOM id or a DomNode and
-		// 		returns the corresponding DomNode. If a Node is
-		// 		passed, this function is a no-op. Returns a
-		// 		single DOM node or null, working around several
-		// 		browser-specific bugs to do so.
-		// id: DOM id or DOM Node
-		// doc:
-		//		optional, defaults to the current value of
-		//		dojo.doc.  Can be used to retreive
-		//		node references from other documents.
+	dojo.byId = function(id, doc){
 		if(dojo.isString(id)){
 			var _d = doc || dojo.doc;
 			var te = _d.getElementById(id);
@@ -49,19 +57,7 @@ if(dojo.isIE || dojo.isOpera){
 		}
 	}
 }else{
-	dojo.byId = function(/*String*/id, /*DocumentElement*/doc){
-		// summary:
-		// 		similar to other library's "$" function, takes a
-		// 		string representing a DOM id or a DomNode and
-		// 		returns the corresponding DomNode. If a Node is
-		// 		passed, this function is a no-op. Returns a
-		// 		single DOM node or null, working around several
-		// 		browser-specific bugs to do so.
-		// id: DOM id or DOM Node
-		// doc:
-		//		optional, defaults to the current value of
-		//		dojo.doc.  Can be used to retreive
-		//		node references from other documents.
+	dojo.byId = function(id, doc){
 		if(dojo.isString(id)){
 			return (doc || dojo.doc).getElementById(id);
 		}else{
@@ -98,7 +94,7 @@ if(dojo.isIE || dojo.isOpera){
 		}
 	};
 
-	dojo.isDescendant = function(/*Node|String*/node, /*Node|String*/ancestor){
+	dojo.isDescendant = function(/*DomNode|String*/node, /*DomNode|String*/ancestor){
 		//	summary:
 		//		Returns true if node is a descendant of ancestor
 		//	node: id or node reference to test
@@ -116,8 +112,11 @@ if(dojo.isIE || dojo.isOpera){
 		return false; // Boolean
 	};
 
-	dojo.setSelectable = function(/*Node|String*/node, /*Boolean*/selectable){
-		// summary: enable or disable selection on a node
+	dojo.setSelectable = function(/*DomNode|String*/node, /*Boolean*/selectable){
+		//	summary: enable or disable selection on a node
+		//	node:
+		//		id or reference to node
+		//	selectable:
 		node = dojo.byId(node);
 		if(dojo.isMozilla){
 			node.style.MozUserSelect = selectable ? "" : "none";
@@ -246,12 +245,15 @@ if(dojo.isIE || dojo.isOpera){
 /*=====
 	dojo.getComputedStyle = function(node){ //DomNode
 		//	summary:
-		//		returns a "computed style" object which can be used to
-		//		gather information about the current state of the
-		//		rendered node. 
-		//		Note that this may behave differently on different 
-		//		browsers. Values may have different formats and value 
-		//		encodings across browsers. 
+		//		returns a "computed style" object.
+		//	description:
+		//		get "computed style" object which can be used to gather
+		//		information about the current state of the rendered node. 
+		//
+		//		Note that this may behave differently on different browsers.
+		//		Values may have different formats and value encodings across
+		//		browsers. 
+		//
 		//		Use the dojo.style() method for more consistent (pixelized)
 		//		return values.
 		//	node:
@@ -320,14 +322,19 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	// FIXME: there opacity quirks on FF that we haven't ported over. Hrm.
-
-	dojo._getOpacity = (dojo.isIE ? function(/*DomNode*/node){
+	/*=====
+	dojo._getOpacity = function(node){
 			//	summary:
 			//		returns the current opacity of the passed node as a
 			//		floating-point value between 0 and 1.
-			//	node:
+			//	node: DomNode
 			//		a reference to a DOM node. Does NOT support taking an
 			//		ID string for speed reasons.
+			//	return: Number between 0 and 1
+	}
+	=====*/
+
+	dojo._getOpacity = (dojo.isIE ? function(node){
 			try{
 				return (node.filters.alpha.opacity / 100); // Number
 			}catch(e){
@@ -338,7 +345,8 @@ if(dojo.isIE || dojo.isOpera){
 		}
 	);
 
-	dojo._setOpacity = (dojo.isIE ? function(/*DomNode*/node, /*Number*/opacity){
+	/*=====
+	dojo._setOpacity = function(node, opacity){
 			//	summary:
 			//		set the opacity of the passed node portably. Returns the
 			//		new opacity of the node.
@@ -347,6 +355,11 @@ if(dojo.isIE || dojo.isOpera){
 			//		ID string for performance reasons.
 			//	opacity:
 			//		Number between 0 and 1. 0 specifies transparent.
+			//	return: Number between 0 and 1
+	}
+	=====*/
+
+	dojo._setOpacity = (dojo.isIE ? function(/*DomNode*/node, /*Number*/opacity){
 			if(opacity == 1){
 				// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so remove it altogether (bug #2661)
 				node.style.cssText = node.style.cssText.replace(/FILTER:[^;]*;/i, "");

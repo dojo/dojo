@@ -1,6 +1,5 @@
 dojo.provide("dojo._base.window");
 
-
 dojo._gearsObject = function(){
 	// summary: 
 	//		factory method to get a Google Gears plugin instance to
@@ -48,6 +47,7 @@ dojo._gearsObject = function(){
 dojo.isGears = (!!dojo._gearsObject())||0;
 
 // @global: dojo.doc
+
 // summary:
 //		Current document object. 'dojo.doc' can be modified
 //		for temporary context shifting. Also see dojo.withDoc().
@@ -78,7 +78,7 @@ dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocu
 
 dojo._fireCallback = function(callback, context, cbArguments){
 	// FIXME: should migrate to using "dojo.isString"!
-	if((context)&&((typeof callback == "string")||(callback instanceof String))){
+	if(context && dojo.isString(callback)){
 		callback = context[callback];
 	}
 	return (context ? callback.apply(context, cbArguments || [ ]) : callback());

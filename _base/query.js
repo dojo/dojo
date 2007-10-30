@@ -986,7 +986,7 @@ dojo.query = function(query, root){
 		} : getStepQueryFunc
 	);
 	// uncomment to disable XPath for testing and tuning the DOM path
-	_getQueryFunc = getStepQueryFunc;
+	// _getQueryFunc = getStepQueryFunc;
 
 	// FIXME: we've got problems w/ the NodeList query()/filter() functions if we go XPath for everything
 

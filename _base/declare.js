@@ -30,19 +30,19 @@ dojo.declare = function(/*String*/ className, /*Function||Array*/ superclass, /*
 	//
 	//		"className" is cached in "declaredClass" property of the new class.
 	//
-	// usage:
-	//		dojo.declare("my.classes.bar", my.classes.foo, {
-	//			// properties to be added to the class prototype
-	//			someValue: 2,
-	//			// initialization function
-	//			constructor: function(){
-	//				this.myComplicatedObject = new ReallyComplicatedObject(); 
-	//			},
-	//			// other functions
-	//			someMethod: function(){ 
-	//				doStuff(); 
-	//			}
-	//		);
+	//	example:
+	//	|	dojo.declare("my.classes.bar", my.classes.foo, {
+	//	|		// properties to be added to the class prototype
+	//	|		someValue: 2,
+	//	|		// initialization function
+	//	|		constructor: function(){
+	//	|			this.myComplicatedObject = new ReallyComplicatedObject(); 
+	//	|		},
+	//	|		// other functions
+	//	|		someMethod: function(){ 
+	//	|			doStuff(); 
+	//	|		}
+	//	|	);
 
 	// argument juggling (deprecated)
 	if(dojo.isFunction(props)||(arguments.length>3)){ 
@@ -79,7 +79,7 @@ dojo.declare = function(/*String*/ className, /*Function||Array*/ superclass, /*
 }
 
 dojo.mixin(dojo.declare, {
-	_delegate: function(base, mixin) {
+	_delegate: function(base, mixin){
 		var bp = (base||0).prototype, mp = (mixin||0).prototype;
 		// fresh constructor, fresh prototype
 		var ctor = dojo.declare._makeCtor();
@@ -93,16 +93,18 @@ dojo.mixin(dojo.declare, {
 		ctor.prototype.constructor = ctor;
 		// name this class for debugging
 		ctor.prototype.declaredClass = (bp||0).declaredClass + '_' + (mp||0).declaredClass;
-		dojo.setObject(ctor.prototype.declaredClass, ctor); // Function
+		if(bp || mp){
+			dojo.setObject(ctor.prototype.declaredClass, ctor); // Function
+		}
 		return ctor;
 	},
-	_extend: function(props) {
+	_extend: function(props){
 		for(var i in props){if(dojo.isFunction(fn=props[i])&&(!0[i])){fn.nom=i;}}
 		dojo.extend(this, props);
 	},
-	_makeCtor: function() {
+	_makeCtor: function(){
 		// we have to make a function, but don't want to close over anything
-		return function(){this._construct(arguments);}
+		return function(){ this._construct(arguments); }
 	},
 	_core: { 
 		_construct: function(args){

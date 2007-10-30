@@ -146,14 +146,6 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 	//need to be tracked. Also, don't track dojo.i18n, since it is a prerequisite
 	//and will be loaded correctly if we load it right away: it has no dependencies.
 	if(this._isXDomain && module && module != "dojo.i18n"){
- 		//If this is a __package__.js file, then this must be
-		//a package.* request (since xdomain can only work with the first
-		//path in a package search list. However, .* module names are not
-		//passed to this function, so do an adjustment here.
-		if(uri.indexOf("__package__") != -1){
-			module += ".*";
-		}
-
 		this._xdOrderedReqs.push(module);
 
 		//Add to waiting resources if it is an xdomain resource.

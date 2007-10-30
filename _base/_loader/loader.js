@@ -285,24 +285,8 @@
 		}
 
 		// convert periods to slashes
-		var nsyms = moduleName.split(".");
-		var syms = this._getModuleSymbols(moduleName);
-		var startedRelative = ((syms[0].charAt(0) != '/') && !syms[0].match(/^\w+:/));
-		var last = syms[syms.length - 1];
-		var relpath;
-		// figure out if we're looking for a full package, if so, we want to do
-		// things slightly diffrently
-		if(last=="*"){
-			moduleName = nsyms.slice(0, -1).join('.');
-			syms.pop();
-			relpath = syms.join("/") + "/" + (djConfig["packageFileName"]||"__package__") + '.js';
-			if(startedRelative && relpath.charAt(0)=="/"){
-				relpath = relpath.slice(1);
-			}
-		}else{
-			relpath = syms.join("/") + '.js';
-			moduleName = nsyms.join('.');
-		}
+		var relpath = this._getModuleSymbols(moduleName).join("/") + '.js';
+
 		var modArg = (!omitModuleCheck) ? moduleName : null;
 		var ok = this._loadPath(relpath, modArg);
 
@@ -329,7 +313,7 @@
 		dojo.mixin(namespace, dojo.getObject(moduleName));
 	}
 
-	dojo.provide = function(/*String*/ packageName){
+	dojo.provide = function(/*String*/ resourceName){
 		//	summary:
 		//		Each javascript source file must have (exactly) one dojo.provide()
 		//		call at the top of the file, corresponding to the file name.
@@ -354,19 +338,8 @@
 		//		dojo.provide() calls, to note that it includes multiple resources.
 
 		//Make sure we have a string.
-		var fullPkgName = packageName+"";
-		var strippedPkgName = fullPkgName;
-
-		var syms = packageName.split(/\./);
-		if(syms[syms.length-1]=="*"){
-			syms.pop();
-			strippedPkgName = syms.join(".");
-		}
-		var evaledPkg = d.getObject(strippedPkgName, true);
-		d._loadedModules[fullPkgName] = evaledPkg;
-		d._loadedModules[strippedPkgName] = evaledPkg;
-		
-		return evaledPkg; // Object
+		resourceName = resourceName + "";
+		return (d._loadedModules[resourceName] = d.getObject(resourceName, true)); // Object
 	}
 
 	//Start of old bootstrap2:

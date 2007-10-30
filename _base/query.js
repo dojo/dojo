@@ -134,6 +134,10 @@ dojo.query = function(query, root){
 		}
 		query += " "; // ensure that we terminate the state machine
 
+		var ts = function(s, e){
+			return d.trim(query.slice(s, e));
+		}
+
 		// the overall data graph of the full query, as represented by queryPart objects
 		var qparts = []; 
 		// state keeping vars
@@ -156,7 +160,7 @@ dojo.query = function(query, root){
 
 		var endTag = function(){
 			if(inTag >= 0){
-				var tv = (inTag == x) ? null : query.slice(inTag, x).toLowerCase();
+				var tv = (inTag == x) ? null : ts(inTag, x).toLowerCase();
 				currentPart[ d.indexOf(operators, tv) ? "tag" : "oper" ] = tv;
 				inTag = -1;
 			}
@@ -164,14 +168,15 @@ dojo.query = function(query, root){
 
 		var endId = function(){
 			if(inId >= 0){
-				currentPart.id = query.slice(inId, x);
+				currentPart.id = ts(inId, x).replace(/\\/g, "");
+				doh.debug(currentPart.id);
 				inId = -1;
 			}
 		}
 
 		var endClass = function(){
 			if(inClass >= 0){
-				currentPart.classes.push(query.slice(inClass+1, x));
+				currentPart.classes.push(ts(inClass+1, x).replace(/\\/g, ""));
 				inClass = -1;
 			}
 		}
@@ -180,8 +185,8 @@ dojo.query = function(query, root){
 			endId(); endTag(); endClass();
 		}
 
-		var pStart;
 		for(; x<ql, lc=cc, cc=query.charAt(x); x++){
+			if(lc == "\\"){ continue; }
 			if(!currentPart){
 				// NOTE: I hate all this alloc, but it's shorter than writing tons of if's
 				pStart = x;
@@ -201,9 +206,9 @@ dojo.query = function(query, root){
 				// look for a the close first
 				if(cc == "]"){
 					if(!_cp.attr){
-						_cp.attr = d.trim(query.slice(inBrackets+1, x));
+						_cp.attr = ts(inBrackets+1, x);
 					}else{
-						_cp.matchFor = d.trim(query.slice((inMatchFor||inBrackets+1), x));
+						_cp.matchFor = ts((inMatchFor||inBrackets+1), x);
 					}
 					var cmf = _cp.matchFor;
 					if(cmf){
@@ -217,14 +222,14 @@ dojo.query = function(query, root){
 				}else if(cc == "="){
 					var addToCc = (d.indexOf(typePrefixes, lc) >=0 ) ? lc : "";
 					_cp.type = addToCc+cc;
-					_cp.attr = d.trim(query.slice(inBrackets+1, x-addToCc.length));
+					_cp.attr = ts(inBrackets+1, x-addToCc.length);
 					inMatchFor = x+1;
 				}
 				// now look for other clause parts
 			}else if(inParens >= 0){
 				if(cc == ")"){
 					if(inPseudo >= 0){
-						_cp.value = query.slice(inParens+1, x);
+						_cp.value = ts(inParens+1, x);
 					}
 					inPseudo = inParens = -1;
 				}
@@ -248,7 +253,7 @@ dojo.query = function(query, root){
 			}else if(cc == "("){
 				if(inPseudo >= 0){
 					_cp = { 
-						name: query.slice(inPseudo+1, x), 
+						name: ts(inPseudo+1, x), 
 						value: null
 					}
 					currentPart.pseudos.push(_cp);
@@ -258,13 +263,13 @@ dojo.query = function(query, root){
 				// note that we expect the string to be " " terminated
 				endAll();
 				if(inPseudo >= 0){
-					currentPart.pseudos.push({ name: query.slice(inPseudo+1, x) });
+					currentPart.pseudos.push({ name: ts(inPseudo+1, x) });
 				}
 				currentPart.hasLoops = (	
 						currentPart.pseudos.length || 
 						currentPart.attrs.length || 
 						currentPart.classes.length	);
-				currentPart.query = d.trim(query.slice(pStart, x));
+				currentPart.query = ts(pStart, x);
 				currentPart.tag = (currentPart["oper"]) ? null : (currentPart.tag || "*");
 				qparts.push(currentPart);
 				currentPart = null;
@@ -311,7 +316,7 @@ dojo.query = function(query, root){
 								query, 
 								getDefault, 
 								handleMatch){
-		dojo.forEach(query.attrs, function(attr){
+		d.forEach(query.attrs, function(attr){
 			var matcher;
 			// type, attr, matchFor
 			if(attr.type && attrList[attr.type]){
@@ -892,7 +897,7 @@ dojo.query = function(query, root){
 	// "div.foo .bar") into simple query expressions (e.g., ["div.foo",
 	// ".bar"])
 	var _queryFuncCache = {
-		"*": dojo.isIE ? 
+		"*": d.isIE ? 
 			function(root){ 
 					return root.all;
 			} : 
@@ -1026,7 +1031,7 @@ dojo.query = function(query, root){
 	// returning a list of "uniques", hopefully in doucment order
 	var _zipIdx = 0;
 	var _zip = function(arr){
-		if(arr && arr.nozip){ return dojo.NodeList._wrap(arr); }
+		if(arr && arr.nozip){ return d.NodeList._wrap(arr); }
 		var ret = new d.NodeList();
 		if(!arr){ return ret; }
 		if(arr[0]){

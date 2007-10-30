@@ -43,6 +43,7 @@
 						// "t.is(0, (dojo.query('[ foo ~= \"\\'bar\\'\" ]')).length);",
 						"doh.is(3, (dojo.query('[foo]')).length);",
 						"doh.is(1, (dojo.query('[foo$=\"thud\"]')).length);",
+						"doh.is(1, (dojo.query('[foo$=\"thudish\"]')).length);",
 						"doh.is(1, (dojo.query('[foo|=\"bar\"]')).length);",
 						"doh.is(1, (dojo.query('[foo|=\"bar-baz\"]')).length);",
 						"doh.is(0, (dojo.query('[foo|=\"baz\"]')).length);",
@@ -64,11 +65,17 @@
 						"doh.is(1, dojo.query('#t h3:nth-child(2n)').length);",
 						"doh.is(0, dojo.query('#t h3:nth-child(2n+3)').length);",
 						"doh.is(2, dojo.query('#t h3:nth-child(1)').length);",
-						function NodeList_identity(t){
-							var foo = new dojo.NodeList([dojo.byId("container")]);
-							t.is(foo, dojo.query(foo));
+						function silly_IDs1(){
+							doh.t(document.getElementById("silly:id::with:colons"));
 						},
-						function xml(t){
+						function silly_IDs2(){
+							doh.is(1, dojo.query("#silly\\:id\\:\\:with\\:colons").length);
+						},
+						function NodeList_identity(){
+							var foo = new dojo.NodeList([dojo.byId("container")]);
+							doh.is(foo, dojo.query(foo));
+						},
+						function xml(){
 							try{
 								dojo.require("dojox.data.dom");
 								var doc = dojox.data.dom.createDocument("<ResultSet><Result>One</Result><Result>Two</Result></ResultSet>");
@@ -99,7 +106,7 @@
 			<span foo="bar"></span>
 			<span foo="baz bar thud"></span>
 			<!-- FIXME: should foo="bar-baz-thud" match? [foo$=thud] ??? -->
-			<span foo="bar-baz-thudish"></span>
+			<span foo="bar-baz-thudish" id="silly:id::with:colons"></span>
 			<div id="container">
 				<div id="child1" qux="true"></div>
 				<div id="child2"></div>

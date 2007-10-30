@@ -26,6 +26,7 @@ dojo.fx.combine = function(/*dojo._Animation[]*/ animations){
 	//	|		dojo.fadeOut({ node:otherNode })
 	//	|	]).play();
 	var ctr = new dojo._Animation({ curve: [0, 1] });
+	if(!animations.length){ return ctr; }
 	// animations.sort(function(a, b){ return a.duration-b.duration; });
 	ctr.duration = animations[0].duration;
 	dojo.forEach(animations, function(current){

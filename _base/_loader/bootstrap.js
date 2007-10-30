@@ -45,6 +45,8 @@
 		this.dojo = {};
 	}
 
+	var d = dojo;
+
 	// summary:
 	//		return the current global context object
 	//		(e.g., the window object in a browser).
@@ -69,106 +71,140 @@
 	var _platforms = ["Browser", "Rhino", "Spidermonkey", "Mobile"];
 	var t;
 	while(t=_platforms.shift()){
-		dojo["is"+t] = false;
+		d["is"+t] = false;
 	}
-})();
 
+	// Override locale setting, if specified
+	dojo.locale = djConfig.locale;
 
-// Override locale setting, if specified
-dojo.locale = djConfig.locale;
-
-//TODOC:  HOW TO DOC THIS?
-dojo.version = {
-	// summary: version number of this instance of dojo.
-	major: 0, minor: 9, patch: 0, flag: "dev",
-	revision: Number("$Rev$".match(/[0-9]+/)[0]),
-	toString: function(){
-		with(dojo.version){
-			return major + "." + minor + "." + patch + flag + " (" + revision + ")";	// String
+	//TODOC:  HOW TO DOC THIS?
+	dojo.version = {
+		// summary: version number of this instance of dojo.
+		major: 0, minor: 9, patch: 0, flag: "dev",
+		revision: Number("$Rev$".match(/[0-9]+/)[0]),
+		toString: function(){
+			with(d.version){
+				return major + "." + minor + "." + patch + flag + " (" + revision + ")";	// String
+			}
 		}
 	}
-}
 
-// Register with the OpenAjax hub
-if(typeof OpenAjax != "undefined"){
-	OpenAjax.hub.registerLibrary("dojo", "http://dojotoolkit.org", dojo.version.toString());
-}
-
-dojo._getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
-	var obj=context||dojo.global;
-	for(var i=0, p; obj&&(p=parts[i]); i++){
-		obj = (p in obj ? obj[p] : (create ? obj[p]={} : undefined));
+	// Register with the OpenAjax hub
+	if(typeof OpenAjax != "undefined"){
+		OpenAjax.hub.registerLibrary("dojo", "http://dojotoolkit.org", d.version.toString());
 	}
-	return obj; // Any
-}
 
-dojo.setObject = function(/*String*/name, /*Any*/value, /*Object*/context){
-	// summary: 
-	//		Set a property from a dot-separated string, such as "A.B.C"
-	//	description: 
-	//		Useful for longer api chains where you have to test each object in
-	//		the chain, or when you have an object reference in string format.
-	//		Objects are created as needed along 'path'.
-	//	name: 	
-	//		Path to a property, in the form "A.B.C".
-	//	context:
-	//		Optional. Object to use as root of path. Defaults to
-	//		'dojo.global'. Null may be passed.
-	var parts=name.split("."), p=parts.pop(), obj=dojo._getProp(parts, true, context);
-	return (obj && p ? (obj[p]=value) : undefined); // Any
-}
+	dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
+		// summary:
+		//		Adds all properties and methods of props to obj. This addition is
+		//		"prototype extension safe", so that instances of objects will not
+		//		pass along prototype defaults.
+		var tobj = {};
+		for(var x in props){
+			// the "tobj" condition avoid copying properties in "props"
+			// inherited from Object.prototype.  For example, if obj has a custom
+			// toString() method, don't overwrite it with the toString() method
+			// that props inherited from Object.prototype
+			if(tobj[x] === undefined || tobj[x] != props[x]){
+				obj[x] = props[x];
+			}
+		}
+		// IE doesn't recognize custom toStrings in for..in
+		if(d["isIE"] && props){
+			var p = props.toString;
+			if(typeof p == "function" && p != obj.toString && p != tobj.toString &&
+				p != "\nfunction toString() {\n    [native code]\n}\n"){
+					obj.toString = props.toString;
+			}
+		}
+		return obj; // Object
+	}
 
-dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/context){
-	// summary: 
-	//		Get a property from a dot-separated string, such as "A.B.C"
-	//	description: 
-	//		Useful for longer api chains where you have to test each object in
-	//		the chain, or when you have an object reference in string format.
-	//	name: 	
-	//		Path to an property, in the form "A.B.C".
-	//	context:
-	//		Optional. Object to use as root of path. Defaults to
-	//		'dojo.global'. Null may be passed.
-	//	create: 
-	//		Optional. If true, Objects will be created at any point along the
-	//		'path' that is undefined.
-	return dojo._getProp(name.split("."), create, context); // Any
-}
+	dojo.mixin = function(/*Object*/obj, /*Object...*/props){
+		// summary:	Adds all properties and methods of props to obj. 
+		for(var i=1, l=arguments.length; i<l; i++){
+			d._mixin(obj, arguments[i]);
+		}
+		return obj; // Object
+	}
 
-dojo.exists = function(/*String*/name, /*Object*/obj){
-	// summary: 
-	//		determine if an object supports a given method
-	// description: 
-	//		useful for longer api chains where you have to test each object in
-	//		the chain
-	// name: 	
-	//		Path to an object, in the form "A.B.C".
-	// obj:
-	//		Optional. Object to use as root of path. Defaults to
-	//		'dojo.global'. Null may be passed.
-	return !!dojo.getObject(name, false, obj); // Boolean
-}
+	dojo._getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
+		var obj=context||d.global;
+		for(var i=0, p; obj&&(p=parts[i]); i++){
+			obj = (p in obj ? obj[p] : (create ? obj[p]={} : undefined));
+		}
+		return obj; // Any
+	}
 
-dojo["eval"] = function(/*String*/ scriptFragment){
-	// summary: 
-	//		Perform an evaluation in the global scope.  Use this rather than
-	//		calling 'eval()' directly.
-	// description: 
-	//		Placed in a separate function to minimize size of trapped
-	//		evaluation context.
-	// note:
-	//	 - JSC eval() takes an optional second argument which can be 'unsafe'.
-	//	 - Mozilla/SpiderMonkey eval() takes an optional second argument which is the
-	//  	 scope object for new symbols.
+	dojo.setObject = function(/*String*/name, /*Any*/value, /*Object*/context){
+		// summary: 
+		//		Set a property from a dot-separated string, such as "A.B.C"
+		//	description: 
+		//		Useful for longer api chains where you have to test each object in
+		//		the chain, or when you have an object reference in string format.
+		//		Objects are created as needed along 'path'.
+		//	name: 	
+		//		Path to a property, in the form "A.B.C".
+		//	context:
+		//		Optional. Object to use as root of path. Defaults to
+		//		'dojo.global'. Null may be passed.
+		var parts=name.split("."), p=parts.pop(), obj=d._getProp(parts, true, context);
+		return (obj && p ? (obj[p]=value) : undefined); // Any
+	}
 
-	// FIXME: investigate Joseph Smarr's technique for IE:
-	//		http://josephsmarr.com/2007/01/31/fixing-eval-to-use-global-scope-in-ie/
-	//	see also:
-	// 		http://trac.dojotoolkit.org/ticket/744
-	return dojo.global.eval ? dojo.global.eval(scriptFragment) : eval(scriptFragment); 	// mixed
-}
+	dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/context){
+		// summary: 
+		//		Get a property from a dot-separated string, such as "A.B.C"
+		//	description: 
+		//		Useful for longer api chains where you have to test each object in
+		//		the chain, or when you have an object reference in string format.
+		//	name: 	
+		//		Path to an property, in the form "A.B.C".
+		//	context:
+		//		Optional. Object to use as root of path. Defaults to
+		//		'dojo.global'. Null may be passed.
+		//	create: 
+		//		Optional. If true, Objects will be created at any point along the
+		//		'path' that is undefined.
+		return d._getProp(name.split("."), create, context); // Any
+	}
 
-//Real functions declared in dojo._firebug.firebug.
-dojo.deprecated = dojo.experimental = function(){};
+	dojo.exists = function(/*String*/name, /*Object*/obj){
+		// summary: 
+		//		determine if an object supports a given method
+		// description: 
+		//		useful for longer api chains where you have to test each object in
+		//		the chain
+		// name: 	
+		//		Path to an object, in the form "A.B.C".
+		// obj:
+		//		Optional. Object to use as root of path. Defaults to
+		//		'dojo.global'. Null may be passed.
+		return !!d.getObject(name, false, obj); // Boolean
+	}
 
+
+	dojo["eval"] = function(/*String*/ scriptFragment){
+		// summary: 
+		//		Perform an evaluation in the global scope.  Use this rather than
+		//		calling 'eval()' directly.
+		// description: 
+		//		Placed in a separate function to minimize size of trapped
+		//		evaluation context.
+		// note:
+		//	 - JSC eval() takes an optional second argument which can be 'unsafe'.
+		//	 - Mozilla/SpiderMonkey eval() takes an optional second argument which is the
+		//  	 scope object for new symbols.
+
+		// FIXME: investigate Joseph Smarr's technique for IE:
+		//		http://josephsmarr.com/2007/01/31/fixing-eval-to-use-global-scope-in-ie/
+		//	see also:
+		// 		http://trac.dojotoolkit.org/ticket/744
+		return d.global.eval ? d.global.eval(scriptFragment) : eval(scriptFragment); 	// mixed
+	}
+
+	//Real functions declared in dojo._firebug.firebug.
+	dojo.deprecated = dojo.experimental = function(){};
+
+})();
 // vim:ai:ts=4:noet

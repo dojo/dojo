@@ -58,40 +58,6 @@ dojo.isAlien = function(/*anything*/ it){
 	return it && !dojo.isFunction(it) && /\{\s*\[native code\]\s*\}/.test(String(it)); // Boolean
 }
 
-dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
-	// summary:
-	//		Adds all properties and methods of props to obj. This addition is
-	//		"prototype extension safe", so that instances of objects will not
-	//		pass along prototype defaults.
-	var tobj = {};
-	for(var x in props){
-		// the "tobj" condition avoid copying properties in "props"
-		// inherited from Object.prototype.  For example, if obj has a custom
-		// toString() method, don't overwrite it with the toString() method
-		// that props inherited from Object.prototype
-		if(tobj[x] === undefined || tobj[x] != props[x]){
-			obj[x] = props[x];
-		}
-	}
-	// IE doesn't recognize custom toStrings in for..in
-	if(dojo.isIE && props){
-		var p = props.toString;
-		if(typeof p == "function" && p != obj.toString && p != tobj.toString &&
-			p != "\nfunction toString() {\n    [native code]\n}\n"){
-				obj.toString = props.toString;
-		}
-	}
-	return obj; // Object
-}
-
-dojo.mixin = function(/*Object*/obj, /*Object...*/props){
-	// summary:	Adds all properties and methods of props to obj. 
-	for(var i=1, l=arguments.length; i<l; i++){
-		dojo._mixin(obj, arguments[i]);
-	}
-	return obj; // Object
-}
-
 dojo.extend = function(/*Object*/ constructor, /*Object...*/ props){
 	// summary:
 	//		Adds all properties and methods of props to constructor's

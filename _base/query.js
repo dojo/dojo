@@ -139,8 +139,6 @@ dojo.query = function(query, root){
 		// the overall data graph of the full query, as represented by queryPart objects
 		var qparts = []; 
 		// state keeping vars
-		// var inQuotes = -1;
-		// var inSingleQuotes = -1;
 		var inBrackets = -1;
 		var inParens = -1;
 		var inMatchFor = -1;
@@ -150,6 +148,7 @@ dojo.query = function(query, root){
 		var inTag = -1;
 		var lc = ""; // the last character
 		var cc = ""; // the current character
+		var pStart;
 		// iteration vars
 		var x = 0; // index in the query
 		var ql = query.length;

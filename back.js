@@ -168,7 +168,7 @@ dojo.provide("dojo.back");
 		initialState = createState(initialHref, args, initialHash);
 	};
 
-	//FIXME: it looks like the doc comments are old, inaccurate, or both
+	//FIXME: Make these doc comments not be awful. At least they're not wrong.
 	//FIXME: Would like to support arbitrary back/forward jumps. Have to rework iframeLoaded among other things.
 	//FIXME: is there a slight race condition in moz using change URL with the timer check and when
 	//       the hash gets set? I think I have seen a back/forward call in quick succession, but not consistent.

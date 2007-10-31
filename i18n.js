@@ -9,6 +9,10 @@ dojo.i18n.getLocalization = function(/*String*/packageName, /*String*/bundleName
 //		Returns a hash containing name/value pairs in its prototypesuch that values can be easily overridden.
 //		Throws an exception if the bundle is not found.
 //		Bundle must have already been loaded by dojo.requireLocalization() or by a build optimization step.
+//		NOTE: try not to call this method as part of an object property definition (var foo = { bar: dojo.i18n.getLocalization() }).
+//		In some loading situations, the bundle may not be available in time for the object definition.
+//		Instead, call this method inside a function that is run after all modules load or the page loads (like in dojo.adOnLoad()),
+//		or in a widget lifecycle method.
 //
 //	packageName: package which is associated with this resource
 //	bundleName: the base filename of the resource bundle (without the ".js" suffix)

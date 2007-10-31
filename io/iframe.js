@@ -102,31 +102,36 @@ dojo.io.iframe = {
 		return doc;
 	},
 
-	send: function(/*Object*/args){
-		//summary: function that sends the request to the server.
-		//This transport can only process one send() request at a time, so if send() is called
-		//multiple times, it will queue up the calls and only process one at a time.
-		//See dojo._ioArgs() in _base/xhr.js for a list of commonly accepted 
-		//properties on the args argument. Additional properties accepted by send():
-		//method:
+	/*=====
+	dojo.io.iframe.__ioArgs = function(kwArgs){
+		//	summary:
+		//		All the properties described in the dojo.__ioArgs type, apply to this
+		//		type. The following additional properties are allowed for dojo.io.iframe.send():
+		//	method: String?
 		//		The HTTP method to use. "GET" or "POST" are the only supported values.
 		//		It will try to read the value from the form node's method, then try this
 		//		argument. If neither one exists, then it defaults to POST.
-		//handleAs:
+		//	handleAs: String?
 		//		Specifies what format the result data should be given to the load/handle callback. Valid values are:
 		//		text, html, javascript, json. IMPORTANT: For all values EXCEPT html,
 		//		The server response should be an HTML file with a textarea element. The response data should be inside the textarea
 		//		element. Using an HTML document the only reliable, cross-browser way this transport can know
 		//		when the response has loaded. For the html handleAs value, just return a normal HTML document.
 		//		NOTE: xml or any other XML type is NOT supported by this transport.
-		//content:
-		//		Object: If "form" is one of the other args properties, then the content
+		//	content: Object?
+		//		If "form" is one of the other args properties, then the content
 		//		object properties become hidden form form elements. For instance, a content
 		//		object of {name1 : "value1"} is converted to a hidden form element with a name
 		//		of "name1" and a value of "value1". If there is not a "form" property, then
 		//		the content object is converted into a name=value&name=value string, by
 		//		using dojo.objectToQuery().
+	}
+	=====*/
 
+	send: function(/*dojo.io.iframe.__ioArgs*/args){
+		//summary: function that sends the request to the server.
+		//This transport can only process one send() request at a time, so if send() is called
+		//multiple times, it will queue up the calls and only process one at a time.
 		if(!this["_frame"]){
 			this._frame = this.create(this._iframeName, "dojo.io.iframe._iframeOnload();");
 		}

@@ -1,5 +1,22 @@
 dojo.provide("dojo.DeferredList");
 dojo.declare("dojo.DeferredList", dojo.Deferred, {
+	// Summary:
+	//	DeferredList takes an array of existing deferreds and returns a new deferred of its own
+	//	this new deferred will typically have its callback fired when all of the deferreds in
+	//	the given list have fired their own deferreds.  The parameters `fireOnOneCallback` and
+	//	fireOnOneErrback, will fire before all the deferreds as appropriate
+	//
+	//	list: Array
+	//		The list of deferreds to be synchronizied with this DeferredList
+	//	fireOnOneCallback: Boolean
+	//		Will cause the DeferredLists callback to be fired as soon as any
+	//		of the deferreds in its list have been fired instead of waiting until
+	//		the entire list has finished
+	//	fireonOneErrback: Boolean
+	//		Will cause the errback to fire upon any of the deferreds errback
+	//	canceller: Function
+	//		A deferred canceller function, see dojo.Deferred
+
 	constructor: function(list, /*bool?*/ fireOnOneCallback, /*bool?*/ fireOnOneErrback, /*bool?*/ consumeErrors, /*Function?*/ canceller){
 		this.list = list;
 		this.resultList = new Array(this.list.length);
@@ -32,7 +49,9 @@ dojo.declare("dojo.DeferredList", dojo.Deferred, {
 	},
 
 	_cbDeferred: function (index, succeeded, result) {
-		//dojo.debug("Fire "+index+" succ "+succeeded+" res "+result);
+		// summary:
+		//	The DeferredLists' callback handler
+
 		this.resultList[index] = [succeeded, result]; this.finishedCount += 1;
 		if (this.fired !== 0) {
 			if (succeeded && this.fireOnOneCallback) {
@@ -50,6 +69,10 @@ dojo.declare("dojo.DeferredList", dojo.Deferred, {
 	},
 
 	gatherResults: function (deferredList) {
+		// summary:	
+		//	Gathers the results of the deferreds for packaging
+		//	as the parameters to the Deferred Lists' callback
+
 		var d = new dojo.DeferedList(deferredList, false, true, false);
 		d.addCallback(function (results) {
 			var ret = [];

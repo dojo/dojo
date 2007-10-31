@@ -5,9 +5,18 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		//summary:
 		//Take a string as a url to retrieve an smd or an object that is an smd or partial smd to use
 		//as a definition for the service
-		//      - the text of the SMD to evaluate
-		//      - a raw SMD object
-		//      - the SMD URL
+		//
+		//	args: object
+		//		Takes a number of properties as kwArgs for defining the service.  It also
+		//		accepts a string.  When passed a string, it is treated as a url from
+		//		which it should synchronously retrieve an smd file.  Otherwise it is a kwArgs
+		//		object.  It accepts serviceUrl, to manually define a url for the rpc service
+		//		allowing the rpc system to be used without an smd definition. strictArgChecks
+		//		forces the system to verify that the # of arguments provided in a call
+		//		matches those defined in the smd.  smdString allows a developer to pass
+		//		a jsonString directly, which will be converted into an object or alternatively
+		//		smdObject is accepts an smdObject directly.
+		//				
 		if(args){
 			//if the arg is a string, we assume it is a url to retrieve an smd definition from
 			if(dojo.isString(args)){
@@ -16,7 +25,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 					handleAs: "json-comment-optional",
 					sync: true
 				});
-
+				
 				def.addCallback(this, "processSmd");
 				def.addErrback(function() {
 					throw new Error("Unable to load SMD from " + args);
@@ -55,12 +64,16 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		// 		parse the results coming back from an rpc request.  this
 		// 		base implementation, just returns the full object
 		// 		subclasses should parse and only return the actual results
+		//	obj: Object
+		//		Object that is the return results from an rpc request
 		return obj;
 	},
 
 	errorCallback: function(/* dojo.Deferred */ deferredRequestHandler){
 		// summary:
 		//		create callback that calls the Deferres errback method
+		//	deferredRequestHandler: Deferred
+		//		The deferred object handling a request.
 		return function(data){
 			deferredRequestHandler.errback(new Error(data.message));
 		};
@@ -69,6 +82,9 @@ dojo.declare("dojo.rpc.RpcService", null, {
 	resultCallback: function(/* dojo.Deferred */ deferredRequestHandler){
 		// summary:
 		// 		create callback that calls the Deferred's callback method
+		//	deferredRequestHandler: Deferred
+		//		The deferred object handling a request.
+
 		var tf = dojo.hitch(this, 
 			function(obj){
 				if(obj.error!=null){
@@ -94,6 +110,13 @@ dojo.declare("dojo.rpc.RpcService", null, {
 	generateMethod: function(/*string*/ method, /*array*/ parameters, /*string*/ url){
 		// summary:
 		// 		generate the local bind methods for the remote object
+		//	method: string
+		//		The name of the method we are generating
+		//	parameters: array
+		//		the array of parameters for this call.
+		//	url: string
+		//		the service url for this call
+
 		return dojo.hitch(this, function(){
 			var deferredRequestHandler = new dojo.Deferred();
 
@@ -112,10 +135,13 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		});
 	},
 
-	processSmd: function(/*json*/ object){
+	processSmd: function(object){
 		// summary:
 		// 		callback method for reciept of a smd object.  Parse the smd
 		// 		and generate functions based on the description
+		//	object:
+		//		smd object defining this service.
+
 		if(object.methods){
 			dojo.forEach(object.methods, function(m){
 				if(m && m.name){

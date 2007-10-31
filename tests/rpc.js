@@ -112,8 +112,7 @@ doh.register("tests.rpc",
 			name: "JsonP_test",
 			timeout: 10000,
 			setUp: function(){
-				this.svc = new dojo.rpc.JsonpService(dojo.moduleUrl("dojox.rpc","yahoo.smd")+"", {appid: "foo"});
-				console.debug(this.svc);
+				this.svc = new dojo.rpc.JsonpService(dojo.moduleUrl("dojox.rpc","yahoo.smd"), {appid: "foo"});
 			},
 			runTest: function(){
 				var d = new doh.Deferred();
@@ -124,7 +123,6 @@ doh.register("tests.rpc",
 					return d;
 				}
 
-				console.debug("Run Test: ", this.svc);
 				var td = this.svc.webSearch({query:"dojotoolkit"});
 
 				td.addCallbacks(function(result){

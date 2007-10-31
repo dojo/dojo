@@ -19,9 +19,14 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		//				
 		if(args){
 			//if the arg is a string, we assume it is a url to retrieve an smd definition from
-			if(dojo.isString(args)){
+			if( (dojo.isString(args)) || (args instanceof dojo._Url)){
+				if (args instanceof dojo._Url){
+					var url = args + "";
+				}else{
+					url = args;
+				}
 				var def = dojo.xhrGet({
-					url: args,
+					url: url,
 					handleAs: "json-comment-optional",
 					sync: true
 				});

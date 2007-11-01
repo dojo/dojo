@@ -455,9 +455,8 @@ dojo.require("dojo._base.array");
 
 	// syntactic sugar for DOM events
 	d.forEach([
-		"mouseover", "click", "mouseout", "mousemove", "blur", "mousedown",
-		"mouseup", "mousemove", "keydown", "keyup", "keypress", "mouseenter",
-		"mouseleave"
+		"blur", "click", "keydown", "keypress", "keyup", "mousedown", "mouseenter",
+		"mouseleave", "mousemove", "mouseout", "mouseover", "mouseup"
 		], function(evt){
 			var _oe = "on"+evt;
 			dojo.NodeList.prototype[_oe] = function(a, b){

@@ -13,28 +13,21 @@ try{
 // DOM Functions
 // =============================
 
-/*=====
-dojo.byId = function(id, doc){
-	//	summary:
-	//		similar to other library's "$" function, takes a
-	//		string representing a DOM id or a DomNode and
-	//		returns the corresponding DomNode. If a Node is
-	//		passed, this function is a no-op. Returns a
-	//		single DOM node or null, working around several
-	//		browser-specific bugs to do so.
-	//	id: String|DomNode
-	//	 	DOM id or DOM Node
-	//	doc: DocumentElement?
-	//		optional, defaults to the current value of
-	//		dojo.doc.  Can be used to retreive
-	//		node references from other documents.
-	//	return:
-	//		DomNode
-}
-=====*/
-
 if(dojo.isIE || dojo.isOpera){
-	dojo.byId = function(id, doc){
+	dojo.byId = function(/*String|DOMNode*/ id, /*DocumentElement?*/ doc){
+		//	summary:
+		//		similar to other library's "$" function, takes a
+		//		string representing a DOM id or a DomNode
+		//		and returns the corresponding DomNode. If a Node is
+		//		passed, this function is a no-op. Returns a
+		//		single DOM node or null, working around several
+		//		browser-specific bugs to do so.
+		//	id:
+		//	 	DOM id or DOM Node
+		//	doc:
+		//		optional, defaults to the current value of
+		//		dojo.doc.  Can be used to retreive
+		//		node references from other documents.
 		if(dojo.isString(id)){
 			var _d = doc || dojo.doc;
 			var te = _d.getElementById(id);
@@ -243,9 +236,9 @@ if(dojo.isIE || dojo.isOpera){
 	// This is a faux declaration to take pity on the doc tool
 
 /*=====
-	dojo.getComputedStyle = function(node){ //DomNode
+	dojo.getComputedStyle = function(node){
 		//	summary:
-		//		returns a "computed style" object.
+		//		Returns a "computed style" object.
 		//	description:
 		//		get "computed style" object which can be used to gather
 		//		information about the current state of the rendered node. 
@@ -325,7 +318,7 @@ if(dojo.isIE || dojo.isOpera){
 	/*=====
 	dojo._getOpacity = function(node){
 			//	summary:
-			//		returns the current opacity of the passed node as a
+			//		Returns the current opacity of the passed node as a
 			//		floating-point value between 0 and 1.
 			//	node: DomNode
 			//		a reference to a DOM node. Does NOT support taking an

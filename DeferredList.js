@@ -1,23 +1,24 @@
 dojo.provide("dojo.DeferredList");
 dojo.declare("dojo.DeferredList", dojo.Deferred, {
-	// Summary:
-	//	DeferredList takes an array of existing deferreds and returns a new deferred of its own
-	//	this new deferred will typically have its callback fired when all of the deferreds in
-	//	the given list have fired their own deferreds.  The parameters `fireOnOneCallback` and
-	//	fireOnOneErrback, will fire before all the deferreds as appropriate
-	//
-	//	list: Array
-	//		The list of deferreds to be synchronizied with this DeferredList
-	//	fireOnOneCallback: Boolean
-	//		Will cause the DeferredLists callback to be fired as soon as any
-	//		of the deferreds in its list have been fired instead of waiting until
-	//		the entire list has finished
-	//	fireonOneErrback: Boolean
-	//		Will cause the errback to fire upon any of the deferreds errback
-	//	canceller: Function
-	//		A deferred canceller function, see dojo.Deferred
-
-	constructor: function(list, /*bool?*/ fireOnOneCallback, /*bool?*/ fireOnOneErrback, /*bool?*/ consumeErrors, /*Function?*/ canceller){
+	constructor: function(/*Array*/ list, /*Boolean?*/ fireOnOneCallback, /*Boolean?*/ fireOnOneErrback, /*Boolean?*/ consumeErrors, /*Function?*/ canceller){
+		// summary:
+		//		Provides event handling for a group of Deferred objects.
+		// description:
+		//		DeferredList takes an array of existing deferreds and returns a new deferred of its own
+		//		this new deferred will typically have its callback fired when all of the deferreds in
+		//		the given list have fired their own deferreds.  The parameters `fireOnOneCallback` and
+		//		fireOnOneErrback, will fire before all the deferreds as appropriate
+		//
+		//	list:
+		//		The list of deferreds to be synchronizied with this DeferredList
+		//	fireOnOneCallback:
+		//		Will cause the DeferredLists callback to be fired as soon as any
+		//		of the deferreds in its list have been fired instead of waiting until
+		//		the entire list has finished
+		//	fireonOneErrback:
+		//		Will cause the errback to fire upon any of the deferreds errback
+		//	canceller:
+		//		A deferred canceller function, see dojo.Deferred
 		this.list = list;
 		this.resultList = new Array(this.list.length);
 

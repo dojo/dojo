@@ -93,9 +93,6 @@ dojo.mixin(dojo.declare, {
 		ctor.prototype.constructor = ctor;
 		// name this class for debugging
 		ctor.prototype.declaredClass = (bp||0).declaredClass + '_' + (mp||0).declaredClass;
-		if(bp || mp){
-			dojo.setObject(ctor.prototype.declaredClass, ctor); // Function
-		}
 		return ctor;
 	},
 	_extend: function(props){

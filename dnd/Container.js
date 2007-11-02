@@ -1,4 +1,4 @@
-dojo.provide("dojo.dnd.container");
+dojo.provide("dojo.dnd.Container");
 
 dojo.require("dojo.dnd.common");
 dojo.require("dojo.parser");

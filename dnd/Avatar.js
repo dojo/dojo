@@ -1,4 +1,4 @@
-dojo.provide("dojo.dnd.avatar");
+dojo.provide("dojo.dnd.Avatar");
 
 dojo.require("dojo.dnd.common");
 

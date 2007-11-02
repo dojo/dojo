@@ -1,8 +1,8 @@
-dojo.provide("dojo.dnd.manager");
+dojo.provide("dojo.dnd.Manager");
 
 dojo.require("dojo.dnd.common");
 dojo.require("dojo.dnd.autoscroll");
-dojo.require("dojo.dnd.avatar");
+dojo.require("dojo.dnd.Avatar");
 
 dojo.dnd.Manager = function(){
 	// summary: the manager of DnD operations (usually a singleton)

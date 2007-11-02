@@ -1,7 +1,7 @@
-dojo.provide("dojo.dnd.selector");
+dojo.provide("dojo.dnd.Selector");
 
 dojo.require("dojo.dnd.common");
-dojo.require("dojo.dnd.container");
+dojo.require("dojo.dnd.Container");
 
 /*
 	Container item states:

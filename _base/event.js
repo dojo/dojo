@@ -187,7 +187,7 @@ dojo.require("dojo._base.connect");
 	
 	// IE event normalization
 	if(dojo.isIE){ 
-		_trySetKeyCode = function(e, code){
+		var _trySetKeyCode = function(e, code){
 			try{
 				// squelch errors when keyCode is read-only
 				// (e.g. if keyCode is ctrl or shift)

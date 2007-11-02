@@ -39,17 +39,16 @@ dojo.require("dojo._base.array");
 		//			reduce
 		//			reduceRight
 
-		/*=====
-		slice: function(begin, end){
+		slice: function(/*===== begin, end =====*/){
 			// summary:
-			//		returns a new NodeList, maintaining this one in place
+			//		Returns a new NodeList, maintaining this one in place
 			// description:
 			//		This method behaves exactly like the Array.slice method
 			//		with the caveat that it returns a dojo.NodeList and not a
 			//		raw Array. For more details, see:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:slice
 			// begin: Integer
-			//		begin can be a positive or negative integer, with positive
+			//		Can be a positive or negative integer, with positive
 			//		integers noting the offset to begin at, and negative
 			//		integers denoting an offset from the end (i.e., to the left
 			//		of the end)
@@ -60,17 +59,10 @@ dojo.require("dojo._base.array");
 			var a = dojo._toArray(arguments);
 			return tnl(a.slice.apply(this, a));
 		},
-		=====*/
-		slice: function(){
-			var a = dojo._toArray(arguments);
-			return tnl(a.slice.apply(this, a));
-		},
 
-		// FIXME: Not sure how to doc varargs here!
-		/*=====
-		splice: function(index, howmany, item){
+		splice: function(/*===== index, howmany, item =====*/){
 			// summary:
-			//		returns a new NodeList, manipulating this NodeList based on
+			//		Returns a new NodeList, manipulating this NodeList based on
 			//		the arguments passed, potentially splicing in new elements
 			//		at an offset, optionally deleting elements
 			// description:
@@ -92,17 +84,13 @@ dojo.require("dojo._base.array");
 			//		spliced into the NodeList
 			// returns:
 			//		dojo.NodeList
-		},
-		=====*/
-		splice: function(){
 			var a = dojo._toArray(arguments);
 			return tnl(a.splice.apply(this, a));
 		},
 
-		/*=====
-		concat: function(item){
+		concat: function(/*===== item =====*/){
 			// summary:
-			//		returns a new NodeList comprised of items in this NodeList
+			//		Returns a new NodeList comprised of items in this NodeList
 			//		as well as items passed in as parameters
 			// description:
 			//		This method behaves exactly like the Array.concat method
@@ -114,9 +102,6 @@ dojo.require("dojo._base.array");
 			//		spliced into the NodeList
 			// returns:
 			//		dojo.NodeList
-		},
-		=====*/
-		concat: function(){
 			var a = dojo._toArray(arguments, 0, [this]);
 			return tnl(a.concat.apply([], a));
 		},
@@ -125,20 +110,19 @@ dojo.require("dojo._base.array");
 			//	summary:
 			//		see dojo.indexOf(). The primary difference is that the acted-on 
 			//		array is implicitly this NodeList
-			// value: Object
+			// value:
 			//		The value to search for.
-			// fromIndex: Integer?
+			// fromIndex:
 			//		The loction to start searching from. Optional. Defaults to 0.
 			//	description:
 			//		For more details on the behavior of indexOf, see:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
 			//	returns:
 			//		Positive Integer or 0 for a match, -1 of not found.
-			return d.indexOf(this, value, fromIndex);
+			return d.indexOf(this, value, fromIndex); // Integer
 		},
 
-		/*=====
-		lastIndexOf: function(value, fromIndex){
+		lastIndexOf: function(/*===== value, fromIndex =====*/){
 			// summary:
 			//		see dojo.lastIndexOf(). The primary difference is that the
 			//		acted-on array is implicitly this NodeList
@@ -151,10 +135,7 @@ dojo.require("dojo._base.array");
 			//		The loction to start searching from. Optional. Defaults to 0.
 			// returns:
 			//		Positive Integer or 0 for a match, -1 of not found.
-		},
-		=====*/
-		lastIndexOf: function(){
-			return d.lastIndexOf.apply(d, d._toArray(arguments, 0, [this]));
+			return d.lastIndexOf.apply(d, d._toArray(arguments, 0, [this])); // Integer
 		},
 
 		every: function(/*Function*/callback, /*Object?*/thisObject){
@@ -199,14 +180,13 @@ dojo.require("dojo._base.array");
 		
 		coords: function(){
 			//	summary:
-			// 		returns the box objects all elements in a node list as
+			// 		Returns the box objects all elements in a node list as
 			// 		an Array (*not* a NodeList)
 			
 			return d.map(this, d.coords);
 		},
 
-		/*=====
-		style: function(property, value){
+		style: function(/*===== property, value =====*/){
 			//	summary:
 			//		gets or sets the CSS property for every element in the NodeList
 			//	property: String
@@ -217,9 +197,6 @@ dojo.require("dojo._base.array");
 			//	return:
 			//		if no value is passed, the result is an array of strings.
 			//		If a value is passed, the return is this NodeList
-		},
-		=====*/
-		style: function(){
 			var aa = d._toArray(arguments, 0, [null]);
 			var s = this.map(function(i){
 				aa[0] = i;
@@ -228,8 +205,7 @@ dojo.require("dojo._base.array");
 			return (arguments.length > 1) ? this : s; // String||dojo.NodeList
 		},
 
-		/*=====
-		style: function(property, value){
+		styles: function(/*===== property, value =====*/){
 			//	summary:
 			//		Deprecated. Use NodeList.style instead. Will be removed in
 			//		Dojo 1.1. Gets or sets the CSS property for every element
@@ -242,9 +218,6 @@ dojo.require("dojo._base.array");
 			//	return:
 			//		if no value is passed, the result is an array of strings.
 			//		If a value is passed, the return is this NodeList
-		},
-		=====*/
-		styles: function(){
 			d.deprecated("NodeList.styles", "use NodeList.style instead", "1.1");
 			return this.style.apply(this, arguments);
 		},
@@ -357,7 +330,7 @@ dojo.require("dojo._base.array");
 		// FIXME: do we need this?
 		query: function(/*String*/ queryStr){
 			//	summary:
-			//		returns a new, flattened NodeList. Elements of the new list
+			//		Returns a new, flattened NodeList. Elements of the new list
 			//		satisfy the passed query but use elements of the
 			//		current NodeList as query roots.
 

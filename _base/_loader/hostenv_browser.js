@@ -109,10 +109,10 @@ if(typeof window != 'undefined'){
 
 		d._isDocumentOk = function(http){
 			var stat = http.status || 0;
-			return ( (stat>=200)&&(stat<300))|| 	// allow any 2XX response code
-				(stat==304)|| 						// get it out of the cache
-				(stat==1223)|| 						// Internet Explorer mangled the status code
-				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") ); // Boolean
+			return ( (stat>=200)&&(stat<300))|| 	// Boolean
+				(stat==304)|| 						// allow any 2XX response code
+				(stat==1223)|| 						// get it out of the cache
+				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") ); // Internet Explorer mangled the status code
 		}
 
 		//See if base tag is in use.
@@ -135,6 +135,8 @@ if(typeof window != 'undefined'){
 			// fail_ok:
 			//		Default false. If fail_ok and loading fails, return null
 			//		instead of throwing.
+			// returns: The response text. null is returned when there is a
+			//		failure and failure is okay (an exception otherwise)
 
 			// alert("_getText: " + uri);
 

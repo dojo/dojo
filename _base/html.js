@@ -13,21 +13,24 @@ try{
 // DOM Functions
 // =============================
 
+/*=====
+dojo.byId = function(id, doc){
+	//	summary:
+	//		similar to other library's "$" function, takes a
+	//		string representing a DOM id or a DomNode
+	//		and returns the corresponding DomNode. If a Node is
+	//		passed, this function is a no-op. Returns a
+	//		single DOM node or null, working around several
+	//		browser-specific bugs to do so.
+	//	id: String|DOMNode
+	//	 	DOM id or DOM Node
+	//	doc: DocumentElement
+	//		Document to work in. Defaults to the current value of
+	//		dojo.doc.  Can be used to retreive
+	//		node references from other documents.
+=====*/
 if(dojo.isIE || dojo.isOpera){
-	dojo.byId = function(/*String|DOMNode*/ id, /*DocumentElement?*/ doc){
-		//	summary:
-		//		similar to other library's "$" function, takes a
-		//		string representing a DOM id or a DomNode
-		//		and returns the corresponding DomNode. If a Node is
-		//		passed, this function is a no-op. Returns a
-		//		single DOM node or null, working around several
-		//		browser-specific bugs to do so.
-		//	id:
-		//	 	DOM id or DOM Node
-		//	doc:
-		//		Document to work in. Defaults to the current value of
-		//		dojo.doc.  Can be used to retreive
-		//		node references from other documents.
+	dojo.byId = function(id, doc){
 		if(dojo.isString(id)){
 			var _d = doc || dojo.doc;
 			var te = _d.getElementById(id);
@@ -58,6 +61,9 @@ if(dojo.isIE || dojo.isOpera){
 		}
 	}
 }
+/*=====
+}
+=====*/
 
 (function(){
 	/*

@@ -169,9 +169,9 @@
 		//		the specified function is called.  (Note that widgets' CSS and HTML
 		//		code is guaranteed to be downloaded before said widgets are
 		//		instantiated.)
-		// examples:
-		//		dojo.addOnLoad(functionPointer);
-		//		dojo.addOnLoad(object, "functionName");
+		// example:
+		//	|	dojo.addOnLoad(functionPointer);
+		//	|	dojo.addOnLoad(object, "functionName");
 		if(arguments.length == 1){
 			d._loaders.push(obj);
 		}else if(arguments.length > 1){
@@ -191,9 +191,9 @@
 
 	dojo.addOnUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
 		// summary: registers a function to be triggered when the page unloads
-		// examples:
-		//		dojo.addOnUnload(functionPointer)
-		//		dojo.addOnUnload(object, "functionName")
+		// example:
+		//	|	dojo.addOnUnload(functionPointer)
+		//	|	dojo.addOnUnload(object, "functionName")
 		if(arguments.length == 1){
 			d._unloaders.push(obj);
 		}else if(arguments.length > 1){
@@ -250,8 +250,7 @@
 
 	dojo._global_omit_module_check = false;
 
-	/*=====
-	dojo.require = function(moduleName, omitModuleCheck){
+	dojo._loadModule = dojo.require = function(/*String*/moduleName, /*Boolean?*/omitModuleCheck){
 		//	summary:
 		//		loads a Javascript module from the appropriate URI
 		//	moduleName: String
@@ -280,15 +279,7 @@
 		//	
 		//		|	var B = dojo._loadModule("A.B");
 		//	   	|	...
-		//	returns: Object
-		//		the required namespace object
-	}
-	=====*/
-
-	dojo.require = dojo._loadModule = function(/*String*/moduleName, /*Boolean?*/omitModuleCheck){
-		// summary:
-		//		fetch the module given by moduleName if it's not already loaded
-
+		//	returns: the required namespace object
 		omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
 		var module = this._loadedModules[moduleName];
 		if(module){

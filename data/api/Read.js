@@ -437,10 +437,10 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		there on, it merely cleans out any current data and resets the store to initial 
 		//		state.
 		//
-		//	examples:
-		//		var request = store.fetch({onComplete: doSomething});
-		//		...
-		//		store.close(request);
+		//	example:
+		//	|	var request = store.fetch({onComplete: doSomething});
+		//	|	...
+		//	|	store.close(request);
 		throw new Error('Unimplemented API: dojo.data.api.Read.close');
 	},
 

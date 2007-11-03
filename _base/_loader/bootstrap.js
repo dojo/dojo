@@ -16,7 +16,6 @@
 //		Setting any of these variables *after* the library has loaded does
 //		nothing at all.
 
-
 (function(){
 	// make sure djConfig is defined
 	if(typeof this["djConfig"] == "undefined"){
@@ -27,6 +26,7 @@
 	if((!this["console"])||(!console["firebug"])){
 		this.console = {};
 	}
+
 	var cn = [
 		"assert", "count", "debug", "dir", "dirxml", "error", "group",
 		"groupEnd", "info", "log", "profile", "profileEnd", "time",
@@ -55,7 +55,7 @@
 	//		code runs correctly in contexts other than web browsers (eg: Rhino on a server).
 	dojo.global = this;
 
-	var _config = {
+	var _config =/*===== djConfig = =====*/{
 		isDebug: false,
 		libraryScriptUri: "",
 		preventBackButtonFix: true,
@@ -133,10 +133,10 @@
 		for(var i=0, p; obj&&(p=parts[i]); i++){
 			obj = (p in obj ? obj[p] : (create ? obj[p]={} : undefined));
 		}
-		return obj; // Any
+		return obj; // mixed
 	}
 
-	dojo.setObject = function(/*String*/name, /*Any*/value, /*Object*/context){
+	dojo.setObject = function(/*String*/name, /*mixed*/value, /*Object*/context){
 		// summary: 
 		//		Set a property from a dot-separated string, such as "A.B.C"
 		//	description: 
@@ -149,7 +149,7 @@
 		//		Optional. Object to use as root of path. Defaults to
 		//		'dojo.global'. Null may be passed.
 		var parts=name.split("."), p=parts.pop(), obj=d._getProp(parts, true, context);
-		return (obj && p ? (obj[p]=value) : undefined); // Any
+		return (obj && p ? (obj[p]=value) : undefined); // mixed
 	}
 
 	dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/context){
@@ -166,10 +166,10 @@
 		//	create: 
 		//		Optional. If true, Objects will be created at any point along the
 		//		'path' that is undefined.
-		return d._getProp(name.split("."), create, context); // Any
+		return d._getProp(name.split("."), create, context); // mixed
 	}
 
-	dojo.exists = function(/*String*/name, /*Object*/obj){
+	dojo.exists = function(/*String*/name, /*Object?*/obj){
 		// summary: 
 		//		determine if an object supports a given method
 		// description: 
@@ -178,7 +178,7 @@
 		// name: 	
 		//		Path to an object, in the form "A.B.C".
 		// obj:
-		//		Optional. Object to use as root of path. Defaults to
+		//		Object to use as root of path. Defaults to
 		//		'dojo.global'. Null may be passed.
 		return !!d.getObject(name, false, obj); // Boolean
 	}

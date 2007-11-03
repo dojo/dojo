@@ -3,7 +3,7 @@ dojo.require("dojo._base.lang");
 
 // this file courtesy of the TurboAjax group, licensed under a Dojo CLA
 
-dojo.declare = function(/*String*/ className, /*Function||Array*/ superclass, /*Object*/ props){
+dojo.declare = function(/*String*/ className, /*Function|Function[]*/ superclass, /*Object*/ props){
 	//	summary: 
 	//		Create a feature-rich constructor from compact notation
 	//	className:

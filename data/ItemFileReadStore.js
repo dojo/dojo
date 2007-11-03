@@ -90,7 +90,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//	summary: 
 		//		See dojo.data.api.Read.getValue()
 		var values = this.getValues(item, attribute);
-		return (values.length > 0)?values[0]:defaultValue; // Anything
+		return (values.length > 0)?values[0]:defaultValue; // mixed
 	},
 
 	getValues: function(/* item */ item, 

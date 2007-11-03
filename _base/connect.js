@@ -207,8 +207,8 @@ dojo._topics = {};
 
 dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Function*/ method){
 	//	summary:
-	//		Attach a listener to a named topic. The listener function is invoked whenever the named
-	//		topic is published (see: dojo.publish).
+	//		Attach a listener to a named topic. The listener function is invoked whenever the
+	//		named topic is published (see: dojo.publish).
 	//		Returns a handle which is needed to unsubscribe this listener.
 	//	context:
 	//		Scope in which method will be invoked, or null for default scope.
@@ -272,7 +272,7 @@ dojo.connectPublisher = function(	/*String*/ topic,
 	//	 	The source object for the event function. Defaults to dojo.global
 	//	 	if null.
 	//	event:
-	//	 	String name of the event function in obj. 
+	//	 	The name of the event function in obj. 
 	//	 	I.e. identifies a property obj[event].
 	//	example:
 	//	|	dojo.connectPublisher("/ajax/start", dojo, "xhrGet"};

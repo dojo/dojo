@@ -31,7 +31,7 @@ dojo.provide("dojo._base.array");
 			for(i = fromIndex || i; i != end; i += step){
 				if(array[i] == value){ return i; }
 			}
-			return -1;	// number
+			return -1;	// Number
 		},
 
 		lastIndexOf: function(/*Array*/array, /*Object*/value, /*Integer?*/fromIndex){
@@ -41,7 +41,7 @@ dojo.provide("dojo._base.array");
 			// description:
 			//		For details on this method, see:
 			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
-			return dojo.indexOf(array, value, fromIndex, true); // number
+			return dojo.indexOf(array, value, fromIndex, true); // Number
 		},
 
 		forEach: function(/*Array*/arr, /*Function*/callback, /*Object?*/obj){
@@ -78,8 +78,10 @@ dojo.provide("dojo._base.array");
 
 		every: function(/*Array*/arr, /*Function*/callback, /*Object?*/thisObject){
 			// summary:
-			//		determines whether or not every item in the array satisfies the
-			//		condition implemented by callback. thisObject may be used to
+			//		Determines whether or not every item in the array satisfies the
+			//		condition implemented by callback.
+			// description:
+			//		The parameter thisObject may be used to
 			//		scope the call to callback. The function signature is derived
 			//		from the JavaScript 1.6 Array.every() function. More
 			//		information on this can be found here:
@@ -95,8 +97,10 @@ dojo.provide("dojo._base.array");
 
 		some: function(/*Array*/arr, /*Function*/callback, /*Object?*/thisObject){
 			// summary:
-			//		determines whether or not any item in the array satisfies the
-			//		condition implemented by callback. thisObject may be used to
+			//		Determines whether or not any item in the array satisfies the
+			//		condition implemented by callback.
+			// description:
+			//		The parameter thisObject may be used to
 			//		scope the call to callback. The function signature is derived
 			//		from the JavaScript 1.6 Array.some() function. More
 			//		information on this can be found here:

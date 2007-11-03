@@ -1,83 +1,6 @@
 dojo.provide("dojo._base.query");
 dojo.require("dojo._base.NodeList");
 
-/*=====
-dojo.query = function(query, root){
-	//	summary:
-	//		returns nodes which match the given CSS3 selector, searching the
-	//		entire document by default but optionally taking a node to scope
-	//		the search by. Returns an instance of dojo.NodeList.
-	//	description:
-	//		dojo.query() is the swiss army knife of DOM node manipulation in
-	//		Dojo. Much like Prototype's "$$" (bling-bling) function or JQuery's
-	//		"$" function, dojo.query provides robust, high-performance
-	//		CSS-based node selector support with the option of scoping searches
-	//		to a particular sub-tree of a document.
-	//
-	//		Supported Selectors:
-	//		--------------------
-	//
-	//		dojo.query() supports a rich set of CSS3 selectors, including:
-	//
-	//			* class selectors (e.g., ".foo")
-	//			* node type selectors like "span"
-	//			* " " descendant selectors
-	//			* ">" child element selectors 
-	//			* "#foo" style ID selectors
-	//			* "*" universal selector
-	//			* attribute queries:
-	//				* "[foo]" attribute presence selector
-	//				* "[foo='bar']" attribute value exact match
-	//				* "[foo~='bar']" attribute value list item match
-	//				* "[foo^='bar']" attribute start match
-	//				* "[foo$='bar']" attribute end match
-	//				* "[foo*='bar']" attribute substring match
-	//			* ":first-child", ":last-child" positional selectors
-	//			* ":nth-child(n)", ":nth-child(2n+1)" style positional calculations
-	//			* ":nth-child(even)", ":nth-child(odd)" positional selectors
-	//			* ":not(...)" negation pseudo selectors
-	//
-	//		Any legal combination of those selector types as per the CSS 3 sepc
-	//		will work with dojo.query(), including compound selectors (","
-	//		delimited). Very complex and useful searches can be constructed
-	//		with this palette of selectors and when combined with functions for
-	//		maniplation presented by dojo.NodeList, many types of DOM
-	//		manipulation operations become very straightforward.
-	//		
-	//		Unsupported Selectors:
-	//		--------------------
-	//
-	//		While dojo.query handles many CSS3 selectors, some fall outside of
-	//		what's resaonable for a programmatic node querying engine to
-	//		handle. Currently unsupported selectors include:
-	//		
-	//			* namespace-differentiated selectors of any form
-	//			* "~", the immediately preceeded-by sibling selector
-	//			* "+", the preceeded-by sibling selector
-	//			* all "::" pseduo-element selectors
-	//			* certain pseduo-selectors which don't get a lot of day-to-day use:
-	//				* :root, :lang(), :target, :focus
-	//			* all visual and state selectors:
-	//				* :root, :active, :hover, :visisted, :link, :enabled, :disabled, :checked
-	//			* :*-of-type pseudo selectors
-	//		
-	//		dojo.query and XML Documents:
-	//		-----------------------------
-	//		FIXME
-	//		
-	//	query: String
-	//		The CSS3 expression to match against. For details on the syntax of
-	//		CSS3 selectors, see:
-	//			http://www.w3.org/TR/css3-selectors/#selectors
-	//	root: String|DOMNode?
-	//		A node (or string ID of a node) to scope the search from. Optional.
-	//	returns:
-	//		An instance of dojo.NodeList. Many methods are available on
-	//		NodeLists for searching, iterating, manipulating, and handling
-	//		events on the matched nodes in the returned list.
-}
-=====*/
-
 /*
 	dojo.query() architectural overview:
 
@@ -1050,6 +973,79 @@ dojo.query = function(query, root){
 
 	// the main exectuor
 	d.query = function(query, root){
+		//	summary:
+		//		returns nodes which match the given CSS3 selector, searching the
+		//		entire document by default but optionally taking a node to scope
+		//		the search by. Returns an instance of dojo.NodeList.
+		//	description:
+		//		dojo.query() is the swiss army knife of DOM node manipulation in
+		//		Dojo. Much like Prototype's "$$" (bling-bling) function or JQuery's
+		//		"$" function, dojo.query provides robust, high-performance
+		//		CSS-based node selector support with the option of scoping searches
+		//		to a particular sub-tree of a document.
+		//
+		//		Supported Selectors:
+		//		--------------------
+		//
+		//		dojo.query() supports a rich set of CSS3 selectors, including:
+		//
+		//			* class selectors (e.g., ".foo")
+		//			* node type selectors like "span"
+		//			* " " descendant selectors
+		//			* ">" child element selectors 
+		//			* "#foo" style ID selectors
+		//			* "*" universal selector
+		//			* attribute queries:
+		//				* "[foo]" attribute presence selector
+		//				* "[foo='bar']" attribute value exact match
+		//				* "[foo~='bar']" attribute value list item match
+		//				* "[foo^='bar']" attribute start match
+		//				* "[foo$='bar']" attribute end match
+		//				* "[foo*='bar']" attribute substring match
+		//			* ":first-child", ":last-child" positional selectors
+		//			* ":nth-child(n)", ":nth-child(2n+1)" style positional calculations
+		//			* ":nth-child(even)", ":nth-child(odd)" positional selectors
+		//			* ":not(...)" negation pseudo selectors
+		//
+		//		Any legal combination of those selector types as per the CSS 3 sepc
+		//		will work with dojo.query(), including compound selectors (","
+		//		delimited). Very complex and useful searches can be constructed
+		//		with this palette of selectors and when combined with functions for
+		//		maniplation presented by dojo.NodeList, many types of DOM
+		//		manipulation operations become very straightforward.
+		//		
+		//		Unsupported Selectors:
+		//		--------------------
+		//
+		//		While dojo.query handles many CSS3 selectors, some fall outside of
+		//		what's resaonable for a programmatic node querying engine to
+		//		handle. Currently unsupported selectors include:
+		//		
+		//			* namespace-differentiated selectors of any form
+		//			* "~", the immediately preceeded-by sibling selector
+		//			* "+", the preceeded-by sibling selector
+		//			* all "::" pseduo-element selectors
+		//			* certain pseduo-selectors which don't get a lot of day-to-day use:
+		//				* :root, :lang(), :target, :focus
+		//			* all visual and state selectors:
+		//				* :root, :active, :hover, :visisted, :link, :enabled, :disabled, :checked
+		//			* :*-of-type pseudo selectors
+		//		
+		//		dojo.query and XML Documents:
+		//		-----------------------------
+		//		FIXME
+		//		
+		//	query: String
+		//		The CSS3 expression to match against. For details on the syntax of
+		//		CSS3 selectors, see:
+		//			http://www.w3.org/TR/css3-selectors/#selectors
+		//	root: String|DOMNode?
+		//		A node (or string ID of a node) to scope the search from. Optional.
+		//	returns:
+		//		An instance of dojo.NodeList. Many methods are available on
+		//		NodeLists for searching, iterating, manipulating, and handling
+		//		events on the matched nodes in the returned list.
+
 		// return is always an array
 		// NOTE: elementsById is not currently supported
 		// NOTE: ignores xpath-ish queries for now
@@ -1057,7 +1053,7 @@ dojo.query = function(query, root){
 			return query;
 		}
 		if(!d.isString(query)){
-			return new d.NodeList(query);
+			return new d.NodeList(query); // dojo.NodeList
 		}
 		if(d.isString(root)){
 			root = d.byId(root);

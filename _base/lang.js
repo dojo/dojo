@@ -86,7 +86,7 @@ dojo._hitchArgs = function(scope, method /*,...*/){
 		// locate our method
 		var f = named ? (scope||dojo.global)[method] : method;
 		// invoke with collected args
-		return f && f.apply(scope || this, pre.concat(args)); // Any
+		return f && f.apply(scope || this, pre.concat(args)); // mixed
  	} // Function
 }
 

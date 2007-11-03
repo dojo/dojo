@@ -25,7 +25,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	id:
 		//	 	DOM id or DOM Node
 		//	doc:
-		//		optional, defaults to the current value of
+		//		Document to work in. Defaults to the current value of
 		//		dojo.doc.  Can be used to retreive
 		//		node references from other documents.
 		if(dojo.isString(id)){
@@ -249,7 +249,7 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		//		Use the dojo.style() method for more consistent (pixelized)
 		//		return values.
-		//	node:
+		//	node: DOMNode
 		//		a reference to a DOM node. Does NOT support taking an
 		//		ID string for speed reasons.
 		//	example:
@@ -343,11 +343,11 @@ if(dojo.isIE || dojo.isOpera){
 			//	summary:
 			//		set the opacity of the passed node portably. Returns the
 			//		new opacity of the node.
-			//	node:
+			//	node: DOMNode
 			//		a reference to a DOM node. Does NOT support taking an
 			//		ID string for performance reasons.
-			//	opacity:
-			//		Number between 0 and 1. 0 specifies transparent.
+			//	opacity: Number
+			//		A Number between 0 and 1. 0 specifies transparent.
 			//	return: Number between 0 and 1
 	}
 	=====*/

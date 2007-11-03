@@ -133,36 +133,36 @@ dojo.connect = function(/*Object|null*/ obj,
 	//		of this connection to the DOM event manager. 
 	//
 	// example:
-	//		// when obj.onchange(), do ui.update()
-	//		dojo.connect(obj, "onchange", ui, "update");
-	//		dojo.connect(obj, "onchange", ui, ui.update); // same
+	//		When obj.onchange(), do ui.update():
+	//	|	dojo.connect(obj, "onchange", ui, "update");
+	//	|	dojo.connect(obj, "onchange", ui, ui.update); // same
 	//
 	// example:
-	//		// using return value for disconnect
-	//		var link = dojo.connect(obj, "onchange", ui, "update");
-	//		...
-	//		dojo.disconnect(link);
+	//		Using return value for disconnect:
+	//	|	var link = dojo.connect(obj, "onchange", ui, "update");
+	//	|	...
+	//	|	dojo.disconnect(link);
 	//
 	// example:
-	//		// when onglobalevent executes, watcher.handler is invoked
-	//		dojo.connect(null, "onglobalevent", watcher, "handler");
+	//		When onglobalevent executes, watcher.handler is invoked:
+	//	|	dojo.connect(null, "onglobalevent", watcher, "handler");
 	//
 	// example:
-	//		// when ob.onCustomEvent executes, customEventHandler is invoked
-	//		dojo.connect(ob, "onCustomEvent", null, "customEventHandler");
-	//		dojo.connect(ob, "onCustomEvent", "customEventHandler"); // same
+	//		When ob.onCustomEvent executes, customEventHandler is invoked:
+	//	|	dojo.connect(ob, "onCustomEvent", null, "customEventHandler");
+	//	|	dojo.connect(ob, "onCustomEvent", "customEventHandler"); // same
 	//
 	// example:
-	//		// when ob.onCustomEvent executes, customEventHandler is invoked
-	//		// with the same scope (this)
-	//		dojo.connect(ob, "onCustomEvent", null, customEventHandler);
-	//		dojo.connect(ob, "onCustomEvent", customEventHandler); // same
+	//		When ob.onCustomEvent executes, customEventHandler is invoked
+	//		with the same scope (this):
+	//	|	dojo.connect(ob, "onCustomEvent", null, customEventHandler);
+	//	|	dojo.connect(ob, "onCustomEvent", customEventHandler); // same
 	//
 	// example:
-	//		// when globalEvent executes, globalHandler is invoked
-	//		// with the same scope (this)
-	//		dojo.connect(null, "globalEvent", null, globalHandler);
-	//		dojo.connect("globalEvent", globalHandler); // same
+	//		When globalEvent executes, globalHandler is invoked
+	//		with the same scope (this):
+	//	|	dojo.connect(null, "globalEvent", null, globalHandler);
+	//	|	dojo.connect("globalEvent", globalHandler); // same
 
 	// normalize arguments
 	var a=arguments, args=[], i=0;
@@ -218,7 +218,7 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 	//	example:
 	//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
 	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);																	
-	
+
 	// support for 2 argument invocation (omitting context) depends on hitch
 	return [topic, dojo._listener.add(dojo._topics, topic, dojo.hitch(context, method))]; /*Handle*/
 }
@@ -248,7 +248,7 @@ dojo.publish = function(/*String*/ topic, /*Array*/ args){
 	//	example:
 	//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
 	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);	
-	
+
 	// Note that args is an array, which is more efficient vs variable length
 	// argument list.  Ideally, var args would be implemented via Array
 	// throughout the APIs.

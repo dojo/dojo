@@ -84,11 +84,12 @@ dojo.provide("dojo._base.array");
 			//		from the JavaScript 1.6 Array.every() function. More
 			//		information on this can be found here:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
-			// usage:
-			//		dojo.every([1, 2, 3, 4], function(item){ return item>1; });
-			//		// returns false
-			//		dojo.every([1, 2, 3, 4], function(item){ return item>0; });
-			//		// returns true 
+			// example:
+			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>1; });
+			//		returns false
+			// example:
+			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>0; });
+			//		returns true 
 			return this._everyOrSome(true, arr, callback, thisObject); // Boolean
 		},
 
@@ -121,9 +122,9 @@ dojo.provide("dojo._base.array");
 			//		function is a passthrough to the built-in map() function
 			//		provided by Array instances. For details on this, see:
 			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
-			// usage:
-			//		dojo.map([1, 2, 3, 4], function(item){ return item+1 });
-			//		// returns [2, 3, 4, 5]
+			// example:
+			//	|	dojo.map([1, 2, 3, 4], function(item){ return item+1 });
+			//		returns [2, 3, 4, 5]
 			var _p = _getParts(arr, obj, func); arr = _p[0];
 			var outArr = ((arguments[3]) ? (new arguments[3]()) : []);
 			for(var i=0;i<arr.length;++i){
@@ -134,7 +135,7 @@ dojo.provide("dojo._base.array");
 
 		filter: function(/*Array*/arr, /*Function*/callback, /*Object?*/obj){
 			// summary:
-			//		returns a new Array with those items from arr that match the
+			//		Returns a new Array with those items from arr that match the
 			//		condition implemented by callback. ob may be used to
 			//		scope the call to callback. The function signature is derived
 			//		from the JavaScript 1.6 Array.filter() function.

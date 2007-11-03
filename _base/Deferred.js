@@ -120,6 +120,10 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		another kind of error), so the errbacks should be prepared to
 	//		handle that error for cancellable Deferreds.
 	// example:
+	//	|	var deferred = new dojo.Deferred();
+	//	|	setTimeout(function(){ deferred.callback({success: true}); }, 1000);
+	//	|	return deferred;
+	// example:
 	//		Deferred objects are often used when making code asynchronous. It
 	//		may be easiest to write functions in a synchronous manner and then
 	//		split code using a deferred to trigger a response to a long-lived
@@ -149,7 +153,7 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		|		}
 	//		|	});
 	//		|	// NOTE: no way to add another callback here!!
-	//
+	// example:
 	//		Using a Deferred doesn't simplify the sending code any, but it
 	//		provides a standard interface for callers and senders alike,
 	//		providing both with a simple way to service multiple callbacks for
@@ -178,7 +182,7 @@ dojo.Deferred = function(/*Function?*/ canceller){
 	//		|	// NOTE: addErrback and addCallback both return the Deferred
 	//		|	// again, so we could chain adding callbacks or save the
 	//		|	// deferred for later should we need to be notified again.
-	//
+	// example:
 	//		In this example, renderLotsOfData is syncrhonous and so both
 	//		versions are pretty artificial. Putting the data display on a
 	//		timeout helps show why Deferreds rock:

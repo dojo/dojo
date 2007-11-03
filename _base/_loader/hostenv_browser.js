@@ -127,7 +127,7 @@ if(typeof window != 'undefined'){
 		var base = document.getElementsByTagName("base");
 		var hasBase = (base && base.length > 0);
 
-		d._getText = function(uri, fail_ok){
+		d._getText = function(/*URI*/ uri, /*Boolean*/ fail_ok){
 			// summary: Read the contents of the specified uri and return those contents.
 			// uri:
 			//		A relative or absolute uri. If absolute, it still must be in

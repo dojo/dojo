@@ -14,9 +14,9 @@ dojo._Line = function(/*int*/ start, /*int*/ end){
 	//	summary:
 	//		dojo._Line is the object used to generate values from a start value
 	//		to an end value
-	//	start: 
+	//	start: int
 	//		Beginning value for range
-	//	end:
+	//	end: int
 	//		Ending value for range
 	this.start = start;
 	this.end = end;
@@ -64,7 +64,7 @@ dojo.declare("dojo._Animation", null, {
 	// rate: Integer
 	//	the time in milliseconds to wait before advancing to next frame 
 	//	(used as a fps timer: rate/1000 = fps)
-	rate: 10, // 100 fps
+	rate: 10 /* 100 fps */,
 
 /*===== 
 	// delay: Integer

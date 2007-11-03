@@ -6,14 +6,14 @@ dojo.require("dojo._base.lang");
 dojo.declare = function(/*String*/ className, /*Function||Array*/ superclass, /*Object*/ props){
 	//	summary: 
 	//		Create a feature-rich constructor from compact notation
-	//	className: String
+	//	className:
 	//		The name of the constructor (loosely, a "class")
 	//		stored in the "declaredClass" property in the created prototype
-	//	superclass: Function||Array
+	//	superclass:
 	//		May be null, a Function, or an Array of Functions. If an array, 
 	//		the first element is used as the prototypical ancestor and
 	//		any following Functions become mixin ancestors.
-	//	props: Object
+	//	props:
 	//		An object whose properties are copied to the
 	//		created prototype.
 	//		Add an instance-initialization function by making it a property 

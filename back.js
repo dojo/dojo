@@ -160,9 +160,12 @@ dojo.provide("dojo.back");
 	};
 
 	back.setInitialState = function(/*Object*/args){
-		//summary: Sets the state object and back callback for the very first page that is loaded.
-		//description: It is recommended that you call this method as part of an event listener that is registered via
-		//dojo.addOnLoad().
+		//summary: 
+		//		Sets the state object and back callback for the very first page
+		//		that is loaded.
+		//description:
+		//		It is recommended that you call this method as part of an event
+		//		listener that is registered via dojo.addOnLoad().
 		//args: Object
 		//		See the addToHistory() function for the list of valid args properties.
 		initialState = createState(initialHref, args, initialHash);
@@ -172,28 +175,51 @@ dojo.provide("dojo.back");
 	//FIXME: Would like to support arbitrary back/forward jumps. Have to rework iframeLoaded among other things.
 	//FIXME: is there a slight race condition in moz using change URL with the timer check and when
 	//       the hash gets set? I think I have seen a back/forward call in quick succession, but not consistent.
-	back.addToHistory = function(/*Object*/ args){
-		//summary: adds a state object (args) to the history list. 
-		//args: Object
-		//		args can have the following properties:
-		//		To support getting back button notifications, the object argument should implement a
-		//		function called either "back", "backButton", or "handle". The string "back" will be
+
+	
+	/*=====
+	dojo.__backArgs = function(kwArgs){
+		// back: Function?
+		//		A function to be called when this state is reached via the user
+		//		clicking the back button.
+		//	forward: Function?
+		//		Upon return to this state from the "back, forward" combination
+		//		of navigation steps, this function will be called. Somewhat
+		//		analgous to the semantic of an "onRedo" event handler.
+		//	changeUrl: Boolean?|String?
+		//		Boolean indicating whether or not to create a unique hash for
+		//		this state. If a string is passed instead, it is used as the
+		//		hash.
+	}
+	=====*/
+
+	back.addToHistory = function(/*dojo.__backArgs*/ args){
+		//	summary: 
+		//		adds a state object (args) to the history list. 
+		//	description:
+		//		To support getting back button notifications, the object
+		//		argument should implement a function called either "back",
+		//		"backButton", or "handle". The string "back" will be passed as
+		//		the first and only argument to this callback.
+		//	
+		//		To support getting forward button notifications, the object
+		//		argument should implement a function called either "forward",
+		//		"forwardButton", or "handle". The string "forward" will be
 		//		passed as the first and only argument to this callback.
-		//		- To support getting forward button notifications, the object argument should implement a
-		//		function called either "forward", "forwardButton", or "handle". The string "forward" will be
-		//		passed as the first and only argument to this callback.
-		//		- If you want the browser location string to change, define "changeUrl" on the object. If the
+		//
+		//		If you want the browser location string to change, define "changeUrl" on the object. If the
 		//		value of "changeUrl" is true, then a unique number will be appended to the URL as a fragment
 		//		identifier (http://some.domain.com/path#uniquenumber). If it is any other value that does
 		//		not evaluate to false, that value will be used as the fragment identifier. For example,
 		//		if changeUrl: 'page1', then the URL will look like: http://some.domain.com/path#page1
-	 	//		Full example:
+		//
+	 	//	example:
 		//		|	dojo.back.addToHistory({
-		//		|		back: function() { alert('back pressed'); },
-		//		|		forward: function() { alert('forward pressed'); },
+		//		|		back: function(){ console.debug('back pressed'); },
+		//		|		forward: function(){ console.debug('forward pressed'); },
 		//		|		changeUrl: true
 		//		|	});
-		//
+
 		//	BROWSER NOTES:
 		//  Safari 1.2: 
 		//	back button "works" fine, however it's not possible to actually
@@ -329,9 +355,9 @@ dojo.provide("dojo.back");
 		historyStack.push(createState(url, args, hash));
 	};
 
-  	//FIXME: bedlump or hide this in the closure? need to determine how it's called.
-	back.iframeLoaded = function(evt, ifrLoc){
-		//summary: private method. Do not call this directly.
+	back._iframeLoaded = function(evt, ifrLoc){
+		//summary: 
+		//		private method. Do not call this directly.
 		var query = getUrlQuery(ifrLoc.href);
 		if(query == null){ 
 			// alert("iframeLoaded");

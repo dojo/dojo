@@ -126,11 +126,11 @@ dojo.require("dojo._base.query");
 		return _d.objectToQuery(_d.formToObject(formNode)); // String
 	}
 
-	dojo.formToJson = function(/*DOMNode||String*/ formNode){
+	dojo.formToJson = function(/*DOMNode||String*/ formNode, /*Boolean?*/prettyPrint){
 		// summary:
 		//		return a serialized JSON string from a form node or string
 		//		ID identifying the form to serialize
-		return _d.toJson(_d.formToObject(formNode)); // String
+		return _d.toJson(_d.formToObject(formNode), prettyPrint); // String
 	}
 
 	dojo.queryToObject = function(/*String*/ str){

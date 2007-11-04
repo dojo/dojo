@@ -1,9 +1,26 @@
 dojo.provide("dojo.cookie");
 
-dojo.cookie = function(/*String*/name, /*String?*/value, /*Object?*/props){
+/*=====
+dojo.__cookieProps = function(kwArgs){
+	//	expires: Date|Number?
+	//		If a number, seen as the number of days from today. If a date, the
+	//		date past which the cookie is invalid. If expires is in the past,
+	//		the cookie will be deleted If expires is left out or is 0, the
+	//		cookie will expire when the browser closes.
+	//	path: String?
+	//		The path to use for the cookie.
+	//	domain: String?
+	//		The domain to use for the cookie.
+	//	secure: Boolean?
+	//		Whether to only send the cookie on secure connections
+}
+=====*/
+
+
+dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/props){
 	//	summary: 
 	//		Get or set a cookie.
-	//
+	//	description:
 	// 		If you pass in one argument, the the value of the cookie is returned
 	//
 	// 		If you pass in two arguments, the cookie value is set to the second
@@ -12,18 +29,24 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*Object?*/props){
 	// 		If you pass in three arguments, the cookie value is set to the
 	// 		second argument, and the options on the third argument are used for
 	// 		extended properties on the cookie
-	//
-	//	name: The name of the cookie
-	//	value: Optional. The value for the cookie.
+	//	name:
+	//		The name of the cookie
+	//	value:
+	//		Optional. The value for the cookie.
 	//	props: 
 	//		Optional additional properties for the cookie
-	//       expires: Date or Number. Number is seen as days.
-	//                If expires is in the past, the cookie will be deleted
-	//                If expires is left out or is 0, the cookie will expire 
-	//                when the browser closes.
-	//       path: String. The path to use for the cookie.
-	//       domain: String. The domain to use for the cookie.
-	//       secure: Boolean. Whether to only send the cookie on secure connections
+	//	example:
+	//		set a cookie with the JSON-serialized contents of an object which
+	//		will expire 5 days from now:
+	//	|	dojo.cookie("configObj", dojo.toJson(config), { expires: 5 });
+	//	
+	//	example:
+	//		de-serialize a cookie back into a JavaScript object:
+	//	|	var config = dojo.fromJson(dojo.cookie("configObj"));
+	//	
+	//	example:
+	//		delete a cookie:
+	//	|	dojo.cookie("configObj", null);
 	var c = document.cookie;
 	if(arguments.length == 1){
 		var idx = c.lastIndexOf(name+'=');

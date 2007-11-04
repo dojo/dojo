@@ -1,7 +1,8 @@
 dojo.provide("dojo.date");
 
 dojo.date.getDaysInMonth = function(/*Date*/dateObject){
-	// summary: Returns the number of days in the month used by dateObject
+	//	summary:
+	//		Returns the number of days in the month used by dateObject
 	var month = dateObject.getMonth();
 	var days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	if(month == 1 && dojo.date.isLeapYear(dateObject)){ return 29; } // Number
@@ -9,14 +10,14 @@ dojo.date.getDaysInMonth = function(/*Date*/dateObject){
 }
 
 dojo.date.isLeapYear = function(/*Date*/dateObject){
-	// summary:
-	//	Determines if the year of the dateObject is a leap year
-	//
-	// description:
-	//	Leap years are years with an additional day YYYY-02-29, where the year
-	//	number is a multiple of four with the following exception: If a year
-	//	is a multiple of 100, then it is only a leap year if it is also a
-	//	multiple of 400. For example, 1900 was not a leap year, but 2000 is one.
+	//	summary:
+	//		Determines if the year of the dateObject is a leap year
+	//	description:
+	//		Leap years are years with an additional day YYYY-02-29, where the
+	//		year number is a multiple of four with the following exception: If
+	//		a year is a multiple of 100, then it is only a leap year if it is
+	//		also a multiple of 400. For example, 1900 was not a leap year, but
+	//		2000 is one.
 
 	var year = dateObject.getFullYear();
 	return !(year%400) || (!(year%4) && !!(year%100)); // Boolean
@@ -24,16 +25,15 @@ dojo.date.isLeapYear = function(/*Date*/dateObject){
 
 // FIXME: This is not localized
 dojo.date.getTimezoneName = function(/*Date*/dateObject){
-	// summary:
-	//	Get the user's time zone as provided by the browser
-	//
-	// dateObject: needed because the timezone may vary with time (daylight savings)
-	//
-	// description:
-	//	Try to get time zone info from toString or toLocaleString
-	//	method of the Date object -- UTC offset is not a time zone.
-	//	See http://www.twinsun.com/tz/tz-link.htm
-	//	Note: results may be inconsistent across browsers.
+	//	summary:
+	//		Get the user's time zone as provided by the browser
+	// dateObject:
+	//		Needed because the timezone may vary with time (daylight savings)
+	//	description:
+	//		Try to get time zone info from toString or toLocaleString method of
+	//		the Date object -- UTC offset is not a time zone.  See
+	//		http://www.twinsun.com/tz/tz-link.htm Note: results may be
+	//		inconsistent across browsers.
 
 	var str = dateObject.toString(); // Start looking in toString
 	var tz = ''; // The result -- return empty string if nothing found
@@ -71,21 +71,18 @@ dojo.date.getTimezoneName = function(/*Date*/dateObject){
 // Utility methods to do arithmetic calculations with Dates
 
 dojo.date.compare = function(/*Date*/date1, /*Date?*/date2, /*String?*/portion){
-	// summary:
+	//	summary:
 	//		Compare two date objects by date, time, or both.
-	//
-	// description:
+	//	description:
 	//  	Returns 0 if equal, positive if a > b, else negative.
-	//
-	//	date1
+	//	date1:
 	//		Date object
-	//
-	//	date2
+	//	date2:
 	//		Date object.  If not specified, the current Date is used.
-	//
-	//	portion
-	//		A string indicating the "date" or "time" portion of a Date object.  Compares both "date" and "time" by default.
-	//		One of the following: "date", "time", "datetime"
+	//	portion:
+	//		A string indicating the "date" or "time" portion of a Date object.
+	//		Compares both "date" and "time" by default.  One of the following:
+	//		"date", "time", "datetime"
 
 	// Extra step required in copy for IE - see #3112
 	date1 = new Date(Number(date1));
@@ -109,16 +106,15 @@ dojo.date.compare = function(/*Date*/date1, /*Date?*/date2, /*String?*/portion){
 };
 
 dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
-	// summary:
+	//	summary:
 	//		Add to a Date in intervals of different size, from milliseconds to years
-	// date: Date
+	//	date: Date
 	//		Date object to start with
-	//
-	// interval:
+	//	interval:
 	//		A string representing the interval.  One of the following:
-	//			"year", "month", "day", "hour", "minute", "second", "millisecond", "quarter", "week", "weekday"
-	//
-	// amount:
+	//			"year", "month", "day", "hour", "minute", "second",
+	//			"millisecond", "quarter", "week", "weekday"
+	//	amount:
 	//		How much to add to the date.
 
 	var sum = new Date(Number(date)); // convert to Number before copying to accomodate IE (#3112)
@@ -202,19 +198,18 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 };
 
 dojo.date.difference = function(/*Date*/date1, /*Date?*/date2, /*String?*/interval){
-	// summary:
-	//		Get the difference in a specific unit of time (e.g., number of months, weeks,
-	//		days, etc.) between two dates, rounded to the nearest integer.
-	//
-	// date1:
+	//	summary:
+	//		Get the difference in a specific unit of time (e.g., number of
+	//		months, weeks, days, etc.) between two dates, rounded to the
+	//		nearest integer.
+	//	date1:
 	//		Date object
-	//
-	// date2:
+	//	date2:
 	//		Date object.  If not specified, the current Date is used.
-	//
-	// interval:
+	//	interval:
 	//		A string representing the interval.  One of the following:
-	//			"year", "month", "day", "hour", "minute", "second", "millisecond", "quarter", "week", "weekday"
+	//			"year", "month", "day", "hour", "minute", "second",
+	//			"millisecond", "quarter", "week", "weekday"
 	//		Defaults to "day".
 
 	date2 = date2 || new Date();

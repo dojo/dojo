@@ -238,7 +238,7 @@ dojo.trim = function(/*String*/ str){
 	//		to its compact size and relatively good performance (see Steven
 	//		Levithan's blog:
 	//		http://blog.stevenlevithan.com/archives/faster-trim-javascript).
-	//		The fastest but longest version of this function is going to be
-	//		placed in dojo.string.
+	//		The fastest but longest version of this function is located at
+	//		dojo.string.trim()
 	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');	// String
 }

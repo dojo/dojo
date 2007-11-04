@@ -1,23 +1,27 @@
 dojo.provide("dojo.i18n");
 
 dojo.i18n.getLocalization = function(/*String*/packageName, /*String*/bundleName, /*String?*/locale){
-//	summary:
-//		Returns an Object containing the localization for a given resource bundle
-//		in a package, matching the specified locale.
-//
-//	description:
-//		Returns a hash containing name/value pairs in its prototypesuch that values can be easily overridden.
-//		Throws an exception if the bundle is not found.
-//		Bundle must have already been loaded by dojo.requireLocalization() or by a build optimization step.
-//		NOTE: try not to call this method as part of an object property definition (var foo = { bar: dojo.i18n.getLocalization() }).
-//		In some loading situations, the bundle may not be available in time for the object definition.
-//		Instead, call this method inside a function that is run after all modules load or the page loads (like in dojo.adOnLoad()),
-//		or in a widget lifecycle method.
-//
-//	packageName: package which is associated with this resource
-//	bundleName: the base filename of the resource bundle (without the ".js" suffix)
-//	locale: the variant to load (optional).  By default, the locale defined by the
-//		host environment: dojo.locale
+	//	summary:
+	//		Returns an Object containing the localization for a given resource
+	//		bundle in a package, matching the specified locale.
+	//	description:
+	//		Returns a hash containing name/value pairs in its prototypesuch
+	//		that values can be easily overridden.  Throws an exception if the
+	//		bundle is not found.  Bundle must have already been loaded by
+	//		dojo.requireLocalization() or by a build optimization step.  NOTE:
+	//		try not to call this method as part of an object property
+	//		definition (var foo = { bar: dojo.i18n.getLocalization() }).  In
+	//		some loading situations, the bundle may not be available in time
+	//		for the object definition.  Instead, call this method inside a
+	//		function that is run after all modules load or the page loads (like
+	//		in dojo.adOnLoad()), or in a widget lifecycle method.
+	//	packageName:
+	//		package which is associated with this resource
+	//	bundleName:
+	//		the base filename of the resource bundle (without the ".js" suffix)
+	//	locale:
+	//		the variant to load (optional).  By default, the locale defined by
+	//		the host environment: dojo.locale
 
 	locale = dojo.i18n.normalizeLocale(locale);
 
@@ -66,11 +70,11 @@ dojo.i18n.normalizeLocale = function(/*String?*/locale){
 };
 
 dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String?*/availableFlatLocales){
-	// summary:
-	//	See dojo.requireLocalization()
-	//
-	// description:
-	//  Called by the bootstrap, but factored out so that it is only included in the build when needed.
+	//	summary:
+	//		See dojo.requireLocalization()
+	//	description:
+	// 		Called by the bootstrap, but factored out so that it is only
+	// 		included in the build when needed.
 
 	var targetLocale = dojo.i18n.normalizeLocale(locale);
  	var bundlePackage = [moduleName, "nls", bundleName].join(".");
@@ -211,7 +215,7 @@ dojo.i18n._searchLocalePath = function(/*String*/locale, /*Boolean*/down, /*Func
 };
 
 dojo.i18n._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated){
-	// summary:
+	//	summary:
 	//		Load built, flattened resource bundles, if available for all
 	//		locales used in the page. Only called by built layer files.
 

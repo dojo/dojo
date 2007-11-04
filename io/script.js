@@ -25,7 +25,8 @@ dojo.io.script.__ioArgs = function(kwArgs){
 
 dojo.io.script = {
 	get: function(/*dojo.io.script.__ioArgs*/args){
-		//summary: sends a get request using a dynamically created script tag.
+		//	summary:
+		//		sends a get request using a dynamically created script tag.
 		var dfd = this._makeScriptDeferred(args);
 		var ioArgs = dfd.ioArgs;
 		dojo._ioAddQueryToUrl(ioArgs);
@@ -36,9 +37,13 @@ dojo.io.script = {
 	},
 
 	attach: function(/*String*/id, /*String*/url){
-		//Attaches the script element to the DOM.
-		//Use this method if you just want to attach a script to the
-		//DOM and do not care when or if it loads.
+		//	summary:
+		//		creates a new <script> tag pointing to the specified URL and
+		//		adds it to the document.
+		//	description:
+		//		Attaches the script element to the DOM.  Use this method if you
+		//		just want to attach a script to the DOM and do not care when or
+		//		if it loads.
 		var element = dojo.doc.createElement("script");
 		element.type = "text/javascript";
 		element.src = url;
@@ -57,7 +62,8 @@ dojo.io.script = {
 	},
 
 	_makeScriptDeferred: function(/*Object*/args){
-		//summary: sets up the Deferred object for script request.
+		//summary: 
+		//		sets up a Deferred object for an IO request.
 		var dfd = dojo._ioSetArgs(args, this._deferredCancel, this._deferredOk, this._deferredError);
 
 		var ioArgs = dfd.ioArgs;
@@ -78,7 +84,7 @@ dojo.io.script = {
 			dfd._jsonpCallback = this._jsonpCallback;
 			this["jsonp_" + ioArgs.id] = dfd;
 		}
-		return dfd;
+		return dfd; // dojo.Deferred
 	},
 	
 	_deferredCancel: function(/*Deferred*/dfd){
@@ -183,10 +189,11 @@ dojo.io.script = {
 	},
 
 	_jsonpCallback: function(/*JSON Object*/json){
-		//summary: generic handler for jsonp callback. A pointer
-		//to this function is used for all jsonp callbacks.
-		//NOTE: the "this" in this function will be the Deferred
-		//object that represents the script request.
+		//summary: 
+		//		generic handler for jsonp callback. A pointer to this function
+		//		is used for all jsonp callbacks.  NOTE: the "this" in this
+		//		function will be the Deferred object that represents the script
+		//		request.
 		this.ioArgs.json = json;
 	}
 }

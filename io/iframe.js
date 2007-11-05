@@ -2,15 +2,20 @@ dojo.provide("dojo.io.iframe");
 
 dojo.io.iframe = {
 	create: function(/*String*/fname, /*String*/onloadstr, /*String?*/uri){
-		//summary: Creates a hidden iframe in the page. Used mostly for IO transports.
-		//		You do not need to call this to start a dojo.io.iframe request. Just call send().
-		//fname: String
-		//		The name of the iframe. Used for the name attribute on the iframe.
-		//onloadstr: String
-		//		A string of JavaScript that will be executed when the content in the iframe loads.
-		//uri: String
-		//		The value of the src attribute on the iframe element. If a value is not
-		//		given, then dojo/resources/blank.html will be used.
+		//	summary:
+		//		Creates a hidden iframe in the page. Used mostly for IO
+		//		transports.  You do not need to call this to start a
+		//		dojo.io.iframe request. Just call send().
+		//	fname: String
+		//		The name of the iframe. Used for the name attribute on the
+		//		iframe.
+		//	onloadstr: String
+		//		A string of JavaScript that will be executed when the content
+		//		in the iframe loads.
+		//	uri: String
+		//		The value of the src attribute on the iframe element. If a
+		//		value is not given, then dojo/resources/blank.html will be
+		//		used.
 		if(window[fname]){ return window[fname]; }
 		if(window.frames[fname]){ return window.frames[fname]; }
 		var cframe = null;
@@ -34,13 +39,13 @@ dojo.io.iframe = {
 		window[fname] = cframe;
 	
 		with(cframe.style){
-			if(!dojo.isSafari){
+			// if(!dojo.isSafari){
 				//We can't change the src in Safari 2.0.3 if absolute position. Bizarro.
 				position = "absolute";
-			}
-			left = top = "0px";
-			height = width = "1px";
-			visibility = "hidden";
+			// }
+			left = top = "300px";
+			height = width = "300px";
+			// visibility = "hidden";
 		}
 
 		if(!dojo.isIE){
@@ -53,8 +58,9 @@ dojo.io.iframe = {
 
 	setSrc: function(/*DOMNode*/iframe, /*String*/src, /*Boolean*/replace){
 		//summary:
-		//		Sets the URL that is loaded in an IFrame. The replace parameter indicates whether
-		//		location.replace() should be used when changing the location of the iframe.
+		//		Sets the URL that is loaded in an IFrame. The replace parameter
+		//		indicates whether location.replace() should be used when
+		//		changing the location of the iframe.
 		try{
 			if(!replace){
 				if(dojo.isSafari){
@@ -65,7 +71,7 @@ dojo.io.iframe = {
 			}else{
 				// Fun with DOM 0 incompatibilities!
 				var idoc;
-				if(dojo.isIE){
+				if(dojo.isIE || dojo.isSafari > 2){
 					idoc = iframe.contentWindow.document;
 				}else if(dojo.isSafari){
 					idoc = iframe.document;
@@ -105,25 +111,31 @@ dojo.io.iframe = {
 	/*=====
 	dojo.io.iframe.__ioArgs = function(kwArgs){
 		//	summary:
-		//		All the properties described in the dojo.__ioArgs type, apply to this
-		//		type. The following additional properties are allowed for dojo.io.iframe.send():
+		//		All the properties described in the dojo.__ioArgs type, apply
+		//		to this type. The following additional properties are allowed
+		//		for dojo.io.iframe.send():
 		//	method: String?
-		//		The HTTP method to use. "GET" or "POST" are the only supported values.
-		//		It will try to read the value from the form node's method, then try this
-		//		argument. If neither one exists, then it defaults to POST.
+		//		The HTTP method to use. "GET" or "POST" are the only supported
+		//		values.  It will try to read the value from the form node's
+		//		method, then try this argument. If neither one exists, then it
+		//		defaults to POST.
 		//	handleAs: String?
-		//		Specifies what format the result data should be given to the load/handle callback. Valid values are:
-		//		text, html, javascript, json. IMPORTANT: For all values EXCEPT html,
-		//		The server response should be an HTML file with a textarea element. The response data should be inside the textarea
-		//		element. Using an HTML document the only reliable, cross-browser way this transport can know
-		//		when the response has loaded. For the html handleAs value, just return a normal HTML document.
-		//		NOTE: xml or any other XML type is NOT supported by this transport.
+		//		Specifies what format the result data should be given to the
+		//		load/handle callback. Valid values are: text, html, javascript,
+		//		json. IMPORTANT: For all values EXCEPT html, The server
+		//		response should be an HTML file with a textarea element. The
+		//		response data should be inside the textarea element. Using an
+		//		HTML document the only reliable, cross-browser way this
+		//		transport can know when the response has loaded. For the html
+		//		handleAs value, just return a normal HTML document.  NOTE: xml
+		//		or any other XML type is NOT supported by this transport.
 		//	content: Object?
 		//		If "form" is one of the other args properties, then the content
-		//		object properties become hidden form form elements. For instance, a content
-		//		object of {name1 : "value1"} is converted to a hidden form element with a name
-		//		of "name1" and a value of "value1". If there is not a "form" property, then
-		//		the content object is converted into a name=value&name=value string, by
+		//		object properties become hidden form form elements. For
+		//		instance, a content object of {name1 : "value1"} is converted
+		//		to a hidden form element with a name of "name1" and a value of
+		//		"value1". If there is not a "form" property, then the content
+		//		object is converted into a name=value&name=value string, by
 		//		using dojo.objectToQuery().
 	}
 	=====*/
@@ -158,7 +170,7 @@ dojo.io.iframe = {
 					if(handleAs != "html"){
 						value = ifd.getElementsByTagName("textarea")[0].value; //text
 						if(handleAs == "json"){
-							value = dojo.fromJson("(" + value + ")"); //json
+							value = dojo.fromJson(value); //json
 						}else if(handleAs == "javascript"){
 							value = dojo.eval(value); //javascript
 						}
@@ -307,7 +319,7 @@ dojo.io.iframe = {
 			var toClean = ioArgs._contentToClean;
 			for(var i = 0; i < toClean.length; i++) {
 				var key = toClean[i];
-				if(dojo.isSafari){
+				if(dojo.isSafari < 3){
 					//In Safari (at least 2.0.3), can't use form[key] syntax to find the node,
 					//for nodes that were dynamically added.
 					for(var j = 0; j < fNode.childNodes.length; j++){

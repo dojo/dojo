@@ -39,13 +39,13 @@ dojo.io.iframe = {
 		window[fname] = cframe;
 	
 		with(cframe.style){
-			// if(!dojo.isSafari){
+			if(dojo.isSafari < 3){
 				//We can't change the src in Safari 2.0.3 if absolute position. Bizarro.
 				position = "absolute";
-			// }
-			left = top = "300px";
-			height = width = "300px";
-			// visibility = "hidden";
+			}
+			left = top = "1px";
+			height = width = "1px";
+			visibility = "hidden";
 		}
 
 		if(!dojo.isIE){

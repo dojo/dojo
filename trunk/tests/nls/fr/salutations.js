@@ -1,0 +1,4 @@
+{
+ fr: "Français",
+ hello: "Bonjour"
+}

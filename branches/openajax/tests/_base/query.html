@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<title>testing dojo.query()</title>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+		</style>
+		<script type="text/javascript" src="../../dojo.js" 
+			djConfig="isDebug: true, noFirebugLite: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						"t.is(4, (dojo.query('h3')).length);",
+						"t.is(4, (dojo.query('#t h3')).length);",
+						"t.is(1, (dojo.query('#t div > h3')).length);",
+						"t.is(3, (dojo.query('#t > h3')).length);",
+						"t.is(3, (dojo.query('> h3', dojo.byId('t'))).length);",
+						"t.is(2, (dojo.query('.foo, .bar')).length);",
+						"t.is(2, (dojo.query('.foo,.bar')).length);",
+						"t.is(2, (dojo.query('.foo')).length);",
+						"t.is(2, (dojo.query('.baz')).length);",
+						"t.is(1, (dojo.query('span.baz')).length);",
+						"t.is(1, (dojo.query('sPaN.baz')).length);",
+						"t.is(1, (dojo.query('SPAN.baz')).length);",
+						// FIXME: need to support [foo="foo bar"]. We're incorrectly tokenizing!
+						"t.is(2, (dojo.query('[foo~=\"bar\"]')).length);",
+						"t.is(3, (dojo.query('[foo]')).length);",
+						"t.is(1, (dojo.query('[foo$=\"thud\"]')).length);",
+						"t.is(1, (dojo.query('[foo|=\"bar\"]')).length);",
+						"t.is(1, (dojo.query('[foo|=\"bar-baz\"]')).length);",
+						"t.is(0, (dojo.query('[foo|=\"baz\"]')).length);",
+						"t.is(dojo.byId('_foo'), dojo.query('.foo:nth-child(2)')[0]);",
+						"t.is(dojo.query('style')[0], dojo.query(':nth-child(2)')[0]);",
+						"t.is(2, dojo.query('> [qux]', dojo.byId('container')).length);",
+						"t.is('child1', dojo.query('> [qux]', dojo.byId('container'))[0].id);",
+						"t.is('child3', dojo.query('> [qux]', dojo.byId('container'))[1].id);",
+						"t.is(3, dojo.query('>', dojo.byId('container')).length);",
+						"t.is('passed', dojo.query('#bug')[0].value);",
+						function xml(t){
+							try{
+								dojo.require("dojox.data.dom");
+								var doc = dojox.data.dom.createDocument("<ResultSet><Result>One</Result><Result>Two</Result></ResultSet>");
+								console.debug(doc);
+								console.debug(doc.documentElement);
+								console.debug(dojo.query("Result", doc.documentElement));
+							}catch(e){ console.debug(e); }
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>testing dojo.query()</h1>
+		<div id="t">
+			<h3>h3 <span>span</span> endh3 </h3>
+			<!-- comment to throw things off -->
+			<div class="foo bar" id="_foo">
+				<h3>h3</h3>
+				<span id="foo"></span>
+				<span></span>
+			</div>
+			<h3>h3</h3>
+			<h3 class="baz">h3</h3>
+			<span class="foobar baz foo"></span>
+			<span foo="bar"></span>
+			<span foo="baz bar thud"></span>
+			<!-- FIXME: should foo="bar-baz-thud" match? [foo$=thud] ??? -->
+			<span foo="bar-baz-thudish"></span>
+			<div id="container">
+				<div id="child1" qux="true"></div>
+				<div id="child2"></div>
+				<div id="child3" qux="true"></div>
+			</div>
+			<div qux="true"></div>
+			<input id="notbug" name="bug" type="hidden" value="failed" /> 
+			<input id="bug" type="hidden" value="passed" /> 
+		</div>
+	</body>
+</html>
+

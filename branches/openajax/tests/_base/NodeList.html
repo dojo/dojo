@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<!--
+	we use a strict-mode DTD to ensure that the box model is the same for these
+	basic tests
+-->
+<html>
+	<head>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+			html, body {
+				padding: 0px;
+				margin: 0px;
+				border: 0px;
+			}
+
+			#sq100 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+		</style>
+		<title>testing dojo.NodeList</title>
+		<script type="text/javascript" src="../../dojo.js" 
+			djConfig="isDebug: true, noFirebugLite: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.addOnLoad(function(){
+				fourElementNL = new dojo.NodeList(
+					dojo.byId("c1"), 
+					dojo.byId("t"),
+					dojo.byId("c1"), 
+					dojo.byId("t")
+				);
+				doh.register("t", 
+					[
+						// constructor tests
+						function ctor(t){
+							var nl = new dojo.NodeList();
+							nl.push(dojo.byId("c1"));
+							t.is(1, nl.length);
+						},
+						function ctorArgs(t){
+							var nl = new dojo.NodeList(4);
+							nl.push(dojo.byId("c1"));
+							t.is(5, nl.length);
+						},
+						function ctorArgs2(t){
+							var nl = new dojo.NodeList(dojo.byId("c1"), dojo.byId("t"));
+							t.is(2, nl.length);
+							t.is(dojo.byId("c1"), nl[0]);
+							t.is(dojo.byId("t"), nl[1]);
+						},
+						// iteration and array tests
+						function forEach(t){
+							var lastItem;
+							var nl = new dojo.NodeList(dojo.byId("c1"), dojo.byId("t"));
+							nl.forEach(function(i){ lastItem = i; });
+							t.is(dojo.byId("t"), lastItem);
+
+							var r = nl.forEach(function(i, idx, arr){
+								t.t(arr instanceof dojo.NodeList);
+								t.is(2, arr.length);
+							});
+							t.t(r instanceof dojo.NodeList);
+							t.is(r, nl);
+						},
+						
+						function indexOf(t){
+							t.is(0, fourElementNL.indexOf(dojo.byId("c1")));
+							t.is(1, fourElementNL.indexOf(dojo.byId("t")));
+							t.is(-1, fourElementNL.indexOf(null));
+						},
+						
+						function lastIndexOf(t){
+							t.is(2, fourElementNL.lastIndexOf(dojo.byId("c1")));
+							t.is(3, fourElementNL.lastIndexOf(dojo.byId("t")));
+							t.is(-1, fourElementNL.lastIndexOf(null));
+						},
+						
+						function every(t){
+							var ctr = 0;
+							var ret = fourElementNL.every(function(){
+								ctr++;
+								return true;
+							});
+							t.is(4, ctr);
+							t.t(ret);
+
+							ctr = 0;
+							var ret = fourElementNL.every(function(){
+								ctr++;
+								return false;
+							});
+							t.is(1, ctr);
+							t.f(ret);
+						},
+						
+						function some(t){
+							var ret = fourElementNL.some(function(){
+								return true;
+							});
+							t.t(ret);
+
+							var ret = fourElementNL.some(function(i){
+								return (i.id == "t");
+							});
+							t.t(ret);
+						},
+						
+						function map(t){
+							var ret = fourElementNL.map(function(){
+								return true;
+							});
+
+							t.is(ret, [true, true, true, true]);
+							var cnt = 0;
+							var ret = fourElementNL.map(function(){
+								return cnt++;
+							});
+							// t.is(ret, [0, 1, 2, 3]);
+
+							t.t(ret instanceof dojo.NodeList);
+
+							// make sure that map() returns a NodeList
+							var sum = 0;
+							fourElementNL.map(function(){ return 2; }).forEach( function(x){ sum += x; } );
+							t.is(sum, 8);
+						},
+
+						// sub-search
+						function query(t){
+							var pnl = new dojo.NodeList(dojo.byId("t"));
+							t.is(dojo.byId("c1"), pnl.query("span")[0]);
+							t.is(dojo.byId("t"), dojo.query("body").query(":last-child")[0]);
+							t.is(dojo.byId("c1"), dojo.query("body").query(":last-child")[1]);
+							t.is(1, pnl.query().length);
+						},
+						
+						function filter(t){
+							t.is(dojo.query("body :first-child").filter(":last-child")[0], dojo.byId("c1"));
+							t.is(1, dojo.query("*").filter(function(n){ return (n.nodeName.toLowerCase() == "span"); }).length);
+
+							var filterObj = {
+								filterFunc: function(n){
+									return (n.nodeName.toLowerCase() == "span");
+								}
+							};
+							t.is(1, dojo.query("*").filter(filterObj.filterFunc).length);
+							t.is(1, dojo.query("*").filter(filterObj.filterFunc, filterObj).length);
+						},
+
+						// layout DOM functions
+						function coords(t){
+							var tnl = new dojo.NodeList(dojo.byId('sq100'))
+							t.t(dojo.isArray(tnl));
+							t.is(100, tnl.coords()[0].w);
+							t.is(100, tnl.coords()[0].h);
+							t.is(document.body.getElementsByTagName("*").length, dojo.query("body *").coords().length);
+						},
+						
+						function style(t){
+							var sq100 = dojo.byId("sq100")
+							var tnl = new dojo.NodeList(sq100)
+							t.is(1, tnl.style("opacity"));
+							tnl.push(dojo.byId("t"));
+							dojo.style(dojo.byId("t"), "opacity", 0.5);
+							t.is(1, tnl.style("opacity"));
+						},
+						
+						function styles(t){
+							var tnl = new dojo.NodeList(dojo.byId("sq100"));
+							t.is(1, tnl.styles("opacity")[0]);
+							tnl.push(dojo.byId("t"));
+							dojo.style(dojo.byId("t"), "opacity", 0.5);
+							t.is(0.5, tnl.styles("opacity")[1]);
+						},
+
+						/*
+						function concat(t){
+							var s = dojo.query("span");
+							var d = dojo.query("div");
+							t.t(s.concat(d) instanceof dojo.NodeList);
+							t.is((d.length + s.length), s.concat(d).length);
+							t.t(s.concat([]) instanceof dojo.NodeList);
+						},
+						*/
+						
+						function place(t){
+							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+							var nl = dojo.query("b", tn).place(tn, "first");
+							t.t(nl instanceof dojo.NodeList);
+							t.is(1, nl.length);
+							t.is("b", nl[0].nodeName.toLowerCase());
+							t.is(tn, nl[0].parentNode);
+							t.is(tn.firstChild, nl[0]);
+						},
+						
+						function orphan(t){
+							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+							var nl = dojo.query("span", tn).orphan();
+							t.t(nl instanceof dojo.NodeList);
+
+							t.is(2, nl.length);
+							t.is(1, tn.getElementsByTagName("*").length);
+
+							tn.innerHTML = ih;
+							var nl = dojo.query("*", tn).orphan("b");
+							t.is(1, nl.length);
+							t.is("blah", nl[0].innerHTML);
+						},
+
+						/*						
+						function adopt(t){
+						},
+						
+						function addContent(t){
+						},
+						
+						function fadeIn(t){
+						},
+						
+						function fadeOut(t){
+						},
+						
+						function animateProperty(t){
+						},
+						*/
+						
+						function connect(t){
+							var ih = "<div><span></span></div><span class='thud'><button>blah</button></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+
+							var ctr = 0;
+							var nl = dojo.query("button", tn).connect("onclick", function(){
+								ctr++;
+							});
+							nl[0].click();
+							t.is(1, ctr);
+							nl[0].click();
+							nl[0].click();
+							t.is(3, ctr);
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>testing dojo.NodeList</h1>
+		<div id="sq100">
+			100px square, abs
+		</div>
+		<div id="t">
+			<span id="c1">c1</span>
+		</div>
+	</body>
+</html>
+

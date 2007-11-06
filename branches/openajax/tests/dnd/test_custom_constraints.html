@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Dojo custom constraint test</title>
+	<style type="text/css">
+		@import "../../resources/dojo.css";
+
+		body {
+			padding: 1em;
+		}
+
+		.moveable {
+			background: #FFFFBF;
+			border: 1px solid black;
+			width: 300px;
+			padding: 10px 20px;
+			margin: 0px;
+			cursor: pointer;
+		}
+	</style>
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+	<script type="text/javascript" src="../../dnd/move.js"></script>
+	<script type="text/javascript">
+		dojo.require("dojo.dnd.move");
+		
+		var STEP = 50;
+		
+		dojo.declare("gridMover", dojo.dnd.Mover, {
+			onMouseMove: function(e){
+				// summary: event processor for onmousemove
+				// e: Event: mouse event
+				var m = this.marginBox;
+				var c = {l: m.l + e.pageX, t: m.t + e.pageY};
+				c.l -= c.l % STEP;
+				c.t -= c.t % STEP;
+				dojo.marginBox(this.node, c);
+			}
+		});
+		
+		var m1;
+		var init = function(){
+			m1 = new dojo.dnd.Moveable("moveable1", {mover: gridMover});
+		};
+		dojo.addOnLoad(init);
+	</script>
+</head>
+<body>
+	<h1>Dojo custom constraint test</h1>
+	<p class="moveable" id="moveable1"><strong>This paragraph stops at 50x50 grid knots:</strong> Donec ac odio sed pede aliquet auctor. Donec et lectus. Praesent feugiat ultrices enim. Morbi lectus. Donec vestibulum posuere libero. Donec quam enim, nonummy a, auctor vitae, placerat id, massa. Vivamus vulputate luctus nibh. Donec dolor orci, sagittis ac, pretium sed, ornare sit amet, pede. Vestibulum leo justo, pellentesque sit amet, tristique sed, tempor eu, felis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam scelerisque velit vel sem. Curabitur vulputate. Morbi pretium porta dui.</p>
+</body>
+</html>

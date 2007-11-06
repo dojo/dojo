@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.addOnLoad() and dojo.addOnUnload()</title>
+		<script type="text/javascript" 
+			src="../../../dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.addOnLoad(function(){
+				alert("addOnLoad works");
+			});
+			dojo.addOnUnload(function(){
+				alert("addOnUnload works");
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Testing dojo.addOnLoad() and dojo.addOnUnload()</h1>
+
+		<p>This page has registers a function with dojo.addOnLoad() and dojo.addOnUnload.</p>
+		
+		<p><b>dojo.addOnLoad()</b>: You should see an alert with the page first loads ("addOnLoad works").</p>
+		
+		<p><b>dojo.addOnUnload()</b>: You should see an alert if the page is reloaded, or if you navigate to a 
+		different web page ("addOnUnload works").
+	</body>
+</html>
+

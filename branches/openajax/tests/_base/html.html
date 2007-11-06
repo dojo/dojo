@@ -1,0 +1,391 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<!--
+	we use a strict-mode DTD to ensure that the box model is the same for these
+	basic tests
+-->
+<html>
+	<head>
+		<title>testing Core HTML/DOM/CSS/Style utils</title>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+		</style>
+		<script type="text/javascript" 
+			src="../../dojo.js" 
+			djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+
+			function getIframeDocument(/*DOMNode*/iframeNode){
+				//summary: Returns the document object associated with the iframe DOM Node argument.
+				var doc = iframeNode.contentDocument || // W3
+					(
+						(iframeNode.contentWindow)&&(iframeNode.contentWindow.document)
+					) ||  // IE
+					(
+						(iframeNode.name)&&(document.frames[iframeNode.name])&&
+						(document.frames[iframeNode.name].document)
+					) || null;
+				return doc;
+			}
+
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						"t.is(100, dojo.marginBox('sq100').w);",
+						"t.is(100, dojo.marginBox('sq100').h);",
+
+						"t.is(120, dojo.marginBox('sq100margin10').w);",
+						"t.is(120, dojo.marginBox('sq100margin10').h);",
+						"t.is(100, dojo.contentBox('sq100margin10').w);",
+						"t.is(100, dojo.contentBox('sq100margin10').h);",
+
+						"t.is(140, dojo.marginBox('sq100margin10pad10').w);",
+						"t.is(140, dojo.marginBox('sq100margin10pad10').h);",
+
+						"t.is(120, dojo.marginBox('sq100pad10').w);",
+						"t.is(120, dojo.marginBox('sq100pad10').h);",
+
+						"t.is(110, dojo.marginBox('sq100ltpad10').w);",
+						"t.is(110, dojo.marginBox('sq100ltpad10').h);",
+						"t.is(100, dojo.contentBox('sq100ltpad10').w);",
+						"t.is(100, dojo.contentBox('sq100ltpad10').h);",
+
+						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').w);",
+						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').h);",
+
+						"t.is(120, dojo.marginBox('sq100border10').w);",
+						"t.is(120, dojo.marginBox('sq100border10').h);",
+						"t.is(100, dojo.contentBox('sq100border10').w);",
+						"t.is(100, dojo.contentBox('sq100border10').h);",
+
+						"t.is(140, dojo.marginBox('sq100border10margin10').w);",
+						"t.is(140, dojo.marginBox('sq100border10margin10').h);",
+						"t.is(100, dojo.contentBox('sq100border10margin10').w);",
+						"t.is(100, dojo.contentBox('sq100border10margin10').h);",
+
+						"t.is(160, dojo.marginBox('sq100border10margin10pad10').w);",
+						"t.is(160, dojo.marginBox('sq100border10margin10pad10').h);",
+						"t.is(100, dojo.contentBox('sq100border10margin10pad10').w);",
+						"t.is(100, dojo.contentBox('sq100border10margin10pad10').h);",
+
+						// FIXME: the 'correct' w is not 100 on Safari WebKit (2.0.4 [419.3]), the right-margin extends to the document edge
+						// "t.is(100, dojo.marginBox('sq100nopos').w);", 
+						"t.is(100, dojo.marginBox('sq100nopos').h);",
+						
+						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
+						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
+						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
+						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).h);",
+
+						"t.is(0, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
+						"t.is(0, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
+						"t.is(10, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
+						"t.is(10, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).h);",
+
+						"t.is(10, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).l);",
+						"t.is(10, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).t);",
+						"t.is(20, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
+						"t.is(20, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
+
+						"t.is(20, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).l);",
+						"t.is(20, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).t);",
+						"t.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
+						"t.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
+
+						function coordsBasic(t){
+							var pos = dojo.coords("sq100", false);
+							// console.debug(pos);
+							t.is(100, pos.x);
+							t.is(100, pos.y);
+							t.is(100, pos.w);
+							t.is(100, pos.h);
+						},
+						function coordsMargin(t){
+							// coords is getting us the margin-box location, is
+							// this right?
+							var pos = dojo.coords("sq100margin10", false);
+							t.is(260, pos.x);
+							t.is(110, pos.y);
+							t.is(120, pos.w);
+							t.is(120, pos.h);
+						},
+						function sq100nopos(t){
+							var pos = dojo.coords("sq100nopos", false);
+							// console.debug(pos);
+							t.is(0, pos.x);
+							t.t(pos.y > 0);
+							// FIXME: the 'correct' w is not 100 on Safari WebKit (2.0.4 [419.3]), the right-margin extends to the document edge
+							// t.is(100, pos.w);
+							t.is(100, pos.h);
+						},
+						function coordsScrolled(t) {
+							var s = document.createElement('div');
+							var c = document.createElement('div');
+							document.body.appendChild(s);
+							s.appendChild(c);
+							var x=257, y= 285;
+							with (s.style) {
+								position = 'absolute';
+								overflow = 'scroll';
+							}	
+							dojo._setMarginBox(s, x, y, 100, 100);
+							dojo._setMarginBox(c, 0, 0, 500, 500);
+							s.scrollTop = 200;
+							var pos = dojo.coords(s, true);
+							t.is(x, pos.x);
+							t.is(y, pos.y);
+						},
+						"t.is(1, dojo.style('sq100nopos', 'opacity'));",
+						"t.is(0.1, dojo.style('sq100nopos', 'opacity', 0.1));",
+						"t.is(0.8, dojo.style('sq100nopos', 'opacity', 0.8));",
+						"t.is('static', dojo.style('sq100nopos', 'position'));",
+						function getBgcolor(t){
+							var bgc = dojo.style('sq100nopos', 'backgroundColor');
+							t.t((bgc == "rgb(0, 0, 0)")||(bgc == "black")||(bgc == "#000000"));
+						},
+						function isDescendant(t){
+							t.t(dojo.isDescendant("sq100", dojo.body()));
+							t.t(dojo.isDescendant("sq100", dojo.doc));
+							t.t(dojo.isDescendant("sq100", "sq100"));
+							t.t(dojo.isDescendant(dojo.byId("sq100"), "sq100"));
+							t.f(dojo.isDescendant("sq100", dojo.byId("sq100").firstChild));
+							t.t(dojo.isDescendant(dojo.byId("sq100").firstChild, "sq100"));
+						},
+						function isDescendantIframe(t){
+							var bif = dojo.byId("blah");
+							getIframeDocument(bif).write("<html><body><div id='subDiv'></div></body></html>");
+							getIframeDocument(bif).close();
+							// this test barely makes sense. disabling it for now.
+							// t.t(dojo.isDescendant(bif.contentDocument.getElementById("subDiv"), bif.parentNode));
+							var subDiv = getIframeDocument(bif).getElementById("subDiv");
+							t.t(dojo.isDescendant(subDiv, subDiv));
+							t.t(dojo.isDescendant(subDiv, subDiv.parentNode));
+							t.f(dojo.isDescendant(subDiv.parentNode, subDiv));
+
+						},
+						function testClassFunctions(t){
+							var node = dojo.byId("sq100");
+							dojo.addClass(node, "a");
+							t.is("a", node.className);
+							dojo.removeClass(node, "c");
+							t.is("a", node.className);
+							t.assertTrue(dojo.hasClass(node, "a"));
+							t.assertFalse(dojo.hasClass(node, "b"));
+							dojo.addClass(node, "b");
+							t.is("a b", node.className);
+							t.assertTrue(dojo.hasClass(node, "a"));
+							t.assertTrue(dojo.hasClass(node, "b"));
+							dojo.removeClass(node, "a");
+							t.is("b", node.className);
+							t.assertFalse(dojo.hasClass(node, "a"));
+							t.assertTrue(dojo.hasClass(node, "b"));
+							dojo.toggleClass(node, "a");
+							t.is("b a", node.className);
+							t.assertTrue(dojo.hasClass(node, "a"));
+							t.assertTrue(dojo.hasClass(node, "b"));
+							dojo.toggleClass(node, "a");
+							t.is("b", node.className);
+							t.assertFalse(dojo.hasClass(node, "a"));
+							t.assertTrue(dojo.hasClass(node, "b"));
+							dojo.toggleClass(node, "b");
+							t.is("", node.className);
+							t.assertFalse(dojo.hasClass(node, "a"));
+							t.assertFalse(dojo.hasClass(node, "b"));
+							dojo.removeClass(node, "c");
+							t.assertTrue(!node.className);
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+		<style type="text/css">
+			html, body {
+				padding: 0px;
+				margin: 0px;
+				border: 0px;
+			}
+
+			#sq100 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#sq100margin10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 250px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding: 0px;
+				margin: 10px;
+				overflow: hidden;
+			}
+
+			#sq100margin10pad10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 400px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding: 10px;
+				margin: 10px;
+				overflow: hidden;
+			}
+
+			#sq100pad10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 250px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding: 10px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#sq100ltpad10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 250px;
+				top: 250px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding-left: 10px;
+				padding-top: 10px;
+				padding-right: 0px;
+				padding-bottom: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#sq100ltpad10rbmargin10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 400px;
+				top: 250px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding-left: 10px;
+				padding-top: 10px;
+				padding-right: 0px;
+				padding-bottom: 0px;
+				margin-left: 0px;
+				margin-top: 0px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+				overflow: hidden;
+			}
+
+			#sq100border10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 400px;
+				width: 100px;
+				height: 100px;
+				border: 10px solid yellow;
+				padding: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#sq100border10margin10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 250px;
+				top: 400px;
+				width: 100px;
+				height: 100px;
+				border: 10px solid yellow;
+				padding: 0px;
+				margin: 10px;
+				overflow: hidden;
+			}
+
+			#sq100border10margin10pad10 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 400px;
+				top: 400px;
+				width: 100px;
+				height: 100px;
+				border: 10px solid yellow;
+				padding: 10px;
+				margin: 10px;
+				overflow: hidden;
+			}
+
+			#sq100nopos {
+				background-color: black;
+				color: white;
+				width: 100px;
+				height: 100px;
+				padding: 0px;
+				margin: 0px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>testing Core HTML/DOM/CSS/Style utils</h1>
+		<div id="sq100">
+			100px square, abs
+		</div>
+		<div id="sq100margin10">
+			100px square, abs, 10px margin
+		</div>
+		<div id="sq100margin10pad10">
+			100px square, abs, 10px margin, 10px padding
+		</div>
+		<div id="sq100pad10">
+			100px square, abs, 10px padding
+		</div>
+		<div id="sq100ltpad10">
+			100px square, abs, 10px left and top padding
+		</div>
+		<div id="sq100ltpad10rbmargin10">
+			100px square, abs, 10px left and top padding, 10px bottom and right margin
+		</div>
+		<div id="sq100border10">
+			100px square, abs, 10px yellow border
+		</div>
+		<div id="sq100border10margin10">
+			100px square, abs, 10px yellow border, 10px margin
+		</div>
+		<div id="sq100border10margin10pad10">
+			100px square, abs, 10px yellow border, 10px margin, 10px padding
+		</div>
+		<div id="sq100nopos">
+			100px square, no positioning
+		</div>
+		<iframe id="blah"></iframe>
+	</body>
+</html>
+

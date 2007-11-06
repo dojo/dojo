@@ -1,0 +1,30 @@
+// generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
+({
+        'months-format-abbr':["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"],
+        'months-format-wide':["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"],
+        'months-standAlone-narrow':["G","F","M","A","M","G","L","A","S","O","N","D"],
+        'days-format-abbr':["dom","lun","mar","mer","gio","ven","sab"],
+        'days-format-wide':["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"],
+        'days-standAlone-narrow':["D","L","M","M","G","V","S"],
+        'quarters-format-abbreviated':["T1","T2","T3","T4"],
+        'quarters-format-wide':["1o trimestre","2o trimestre","3o trimestre","4o trimestre"],
+        'am':"m.",
+        'pm':"p.",
+        'eraAbbr':["aC","dC"],
+        'dateFormat-full': "EEEE d MMMM yyyy",
+        'dateFormat-long': "dd MMMM yyyy",
+        'dateFormat-medium': "dd/MMM/yy",
+        'dateFormat-short': "dd/MM/yy",
+        'field-era':"era",
+        'field-year':"anno",
+        'field-month':"mese",
+        'field-week':"settimana",
+        'field-day':"giorno",
+        'field-weekday':"giorno della settimana",
+        'field-dayperiod':"periodo del giorno",
+        'field-hour':"ora",
+        'field-minute':"minuto",
+        'field-second':"secondo",
+        'field-zone':"zona"
+})
+                        

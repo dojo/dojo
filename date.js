@@ -187,7 +187,7 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 	}
 
 	if(property){
-		sum["set"+property](sum["get"+property]()+amount);
+		sum["setUTC"+property](sum["getUTC"+property]()+amount);
 	}
 
 	if(fixOvershoot && (sum.getDate() < date.getDate())){

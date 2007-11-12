@@ -125,14 +125,13 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 		case "day":
 			break;
 		case "weekday":
-			//i18n FIXME: assumes Saturday/Sunday weekend, but even this is not standard.  There are CLDR entries to localize this.
-			var dayOfMonth = date.getDate();
-			var days, weeks;
-			var adj = 0;
+			//i18n FIXME: assumes Saturday/Sunday weekend, but this is not always true.  see dojo.cldr.supplemental
+
 			// Divide the increment time span into weekspans plus leftover days
 			// e.g., 8 days is one 5-day weekspan / and two leftover days
 			// Can't have zero leftover days, so numbers divisible by 5 get
 			// a days value of 5, and the remaining days make up the number of weeks
+			var days, weeks;
 			var mod = amount % 5;
 			if(!mod){
 				days = (amount > 0) ? 5 : -5;
@@ -145,6 +144,7 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 			var strt = date.getDay();
 			// Orig date is Sat / positive incrementer
 			// Jump over Sun
+			var adj = 0;
 			if(strt == 6 && amount > 0){
 				adj = 1;
 			}else if(strt == 0 && amount < 0){
@@ -160,7 +160,7 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 			}
 			// Increment by number of weeks plus leftover days plus
 			// weekend adjustments
-			amount = dayOfMonth + 7 * weeks + days + adj;
+			amount = (7 * weeks) + days + adj;
 			break;
 		case "year":
 			property = "FullYear";

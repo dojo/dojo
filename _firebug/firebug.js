@@ -69,13 +69,15 @@ if(
 ){
 (function(){
 	// don't build a firebug frame in iframes
-	if(window != window.parent){ 
-		// but if we've got a parent logger, connect to it
-		if(window.parent["console"]){
-			window.console = window.parent.console;
+	try{
+		if(window != window.parent){ 
+			// but if we've got a parent logger, connect to it
+			if(window.parent["console"]){
+				window.console = window.parent.console;
+			}
+			return; 
 		}
-		return; 
-	}
+	}catch(e){}
 
 	window.console = {
 		log: function(){

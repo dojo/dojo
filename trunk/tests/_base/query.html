@@ -1,0 +1,135 @@
+<html>
+	<head>
+		<title>testing dojo.query()</title>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+		</style>
+		<script type="text/javascript" src="../../dojo.js" 
+			djConfig="isDebug: true, debugAtAllCosts: true, noFirebugLite: true"></script>
+		<script type="text/javascript" src="../../../util/doh/runner.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						"doh.is(4, (dojo.query('h3')).length);",
+						"doh.is(1, (dojo.query('h1:first-child')).length);",
+						"doh.is(2, (dojo.query('h3:first-child')).length);",
+						"doh.is(1, (dojo.query('#t')).length);",
+						"doh.is(1, (dojo.query('#bug')).length);",
+						"doh.is(4, (dojo.query('#t h3')).length);",
+						"doh.is(1, (dojo.query('div#t')).length);",
+						"doh.is(4, (dojo.query('div#t h3')).length);",
+						"doh.is(0, (dojo.query('span#t')).length);",
+						"doh.is(1, (dojo.query('#t div > h3')).length);",
+						"doh.is(2, (dojo.query('.foo')).length);",
+						"doh.is(1, (dojo.query('.foo.bar')).length);",
+						"doh.is(2, (dojo.query('.baz')).length);",
+						"doh.is(3, (dojo.query('#t > h3')).length);",
+						"doh.is(12, (dojo.query('#t > *')).length);",
+						"doh.is(12, (dojo.query('#t >')).length);",
+						"doh.is(3, (dojo.query('.foo >')).length);",
+						"doh.is(3, (dojo.query('.foo > *')).length);",
+						"doh.is(3, (dojo.query('> *', 'container')).length);",
+						"doh.is(3, (dojo.query('> h3', 't')).length);",
+						"doh.is(2, (dojo.query('.foo, .bar')).length);",
+						"doh.is(2, (dojo.query('.foo,.bar')).length);",
+						"doh.is(1, (dojo.query('.foo.bar')).length);",
+						"doh.is(2, (dojo.query('.foo')).length);",
+						"doh.is(2, (dojo.query('.baz')).length);",
+						"doh.is(1, (dojo.query('span.baz')).length);",
+						"doh.is(1, (dojo.query('sPaN.baz')).length);",
+						"doh.is(1, (dojo.query('SPAN.baz')).length);",
+						// FIXME: need to support [foo="foo bar"]. We're incorrectly tokenizing!
+						"doh.is(2, (dojo.query('[foo~=\"bar\"]')).length);",
+						"doh.is(2, (dojo.query('[ foo ~= \"bar\" ]')).length);",
+						// "t.is(0, (dojo.query('[ foo ~= \"\\'bar\\'\" ]')).length);",
+						"doh.is(3, (dojo.query('[foo]')).length);",
+						"doh.is(1, (dojo.query('[foo$=\"thud\"]')).length);",
+						"doh.is(1, (dojo.query('[foo$=thud]')).length);",
+						"doh.is(1, (dojo.query('[foo$=\"thudish\"]')).length);",
+						"doh.is(1, (dojo.query('#t [foo$=thud]')).length);",
+						"doh.is(1, (dojo.query('#t [ title $= thud ]')).length);",
+						"doh.is(0, (dojo.query('#t span[ title $= thud ]')).length);",
+						"doh.is(1, (dojo.query('[foo|=\"bar\"]')).length);",
+						"doh.is(1, (dojo.query('[foo|=\"bar-baz\"]')).length);",
+						"doh.is(0, (dojo.query('[foo|=\"baz\"]')).length);",
+						"doh.is(dojo.byId('_foo'), dojo.query('.foo:nth-child(2)')[0]);",
+						"doh.is(dojo.query('style')[0], dojo.query(':nth-child(2)')[0]);",
+						"doh.is(3, dojo.query('>', 'container').length);",
+						"doh.is(3, dojo.query('> *', 'container').length);",
+						"doh.is(2, dojo.query('> [qux]', 'container').length);",
+						"doh.is('child1', dojo.query('> [qux]', 'container')[0].id);",
+						"doh.is('child3', dojo.query('> [qux]', 'container')[1].id);",
+						"doh.is(3, dojo.query('>', 'container').length);",
+						"doh.is(3, dojo.query('> *', 'container').length);",
+						"doh.is('passed', dojo.query('#bug')[0].value);",
+						"doh.is(1, dojo.query('#t span.foo:not(span:first-child)').length);",
+						"doh.is(1, dojo.query('#t span.foo:not(:first-child)').length);",
+						"doh.is(2, dojo.query('#t > h3:nth-child(odd)').length);",
+						"doh.is(3, dojo.query('#t h3:nth-child(odd)').length);",
+						"doh.is(3, dojo.query('#t h3:nth-child(2n+1)').length);",
+						"doh.is(1, dojo.query('#t h3:nth-child(even)').length);",
+						"doh.is(1, dojo.query('#t h3:nth-child(2n)').length);",
+						"doh.is(0, dojo.query('#t h3:nth-child(2n+3)').length);",
+						"doh.is(2, dojo.query('#t h3:nth-child(1)').length);",
+						"doh.is(1, dojo.query('#t > h3:nth-child(1)').length);",
+						"doh.is(3, dojo.query('#t :nth-child(3)').length);",
+						"doh.is(0, dojo.query('#t > div:nth-child(1)').length);",
+						"doh.is(7, dojo.query('#t span').length);",
+						"doh.is(4, dojo.query('#t > span:empty').length);",
+						"doh.is(6, dojo.query('#t span:empty').length);",
+						"doh.is(0, dojo.query('h3 span:empty').length);",
+						"doh.is(1, dojo.query('h3 :not(:empty)').length);",
+						function silly_IDs1(){
+							doh.t(document.getElementById("silly:id::with:colons"));
+							doh.is(1, dojo.query("#silly\\:id\\:\\:with\\:colons").length);
+						},
+						function NodeList_identity(){
+							var foo = new dojo.NodeList([dojo.byId("container")]);
+							doh.is(foo, dojo.query(foo));
+						},
+						function xml(){
+							try{
+								dojo.require("dojox.data.dom");
+								var doc = dojox.data.dom.createDocument("<ResultSet><Result>One</Result><Result>Two</Result></ResultSet>");
+								console.debug(doc);
+								console.debug(doc.documentElement);
+								console.debug(dojo.query("Result", doc.documentElement));
+							}catch(e){ console.debug(e); }
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>testing dojo.query()</h1>
+		<div id="t">
+			<h3>h3 <span>span</span> endh3 </h3>
+			<!-- comment to throw things off -->
+			<div class="foo bar" id="_foo">
+				<h3>h3</h3>
+				<span id="foo"></span>
+				<span></span>
+			</div>
+			<h3>h3</h3>
+			<h3 class="baz" title="thud">h3</h3>
+			<span class="foobar baz foo"></span>
+			<span foo="bar"></span>
+			<span foo="baz bar thud"></span>
+			<!-- FIXME: should foo="bar-baz-thud" match? [foo$=thud] ??? -->
+			<span foo="bar-baz-thudish" id="silly:id::with:colons"></span>
+			<div id="container">
+				<div id="child1" qux="true"></div>
+				<div id="child2"></div>
+				<div id="child3" qux="true"></div>
+			</div>
+			<div qux="true"></div>
+			<input id="notbug" name="bug" type="hidden" value="failed" /> 
+			<input id="bug" type="hidden" value="passed" /> 
+		</div>
+	</body>
+</html>
+

@@ -1,0 +1,370 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<!--
+	we use a strict-mode DTD to ensure that the box model is the same for these
+	basic tests
+-->
+<html>
+	<head>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+			html, body {
+				padding: 0px;
+				margin: 0px;
+				border: 0px;
+			}
+
+			#sq100 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+		</style>
+		<title>testing dojo.NodeList</title>
+		<script type="text/javascript" src="../../dojo.js" 
+			djConfig="isDebug: true, noFirebugLite: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.addOnLoad(function(){
+				var c = dojo.byId("c1");
+				var t = dojo.byId("t"); 
+				var s = dojo.byId("sq100"); 
+				var fourElementNL = new dojo.NodeList(c, t, c, t);
+				doh.register("t", 
+					[
+						// constructor tests
+						function ctor(){
+							var nl = new dojo.NodeList();
+							nl.push(c);
+							doh.is(1, nl.length);
+						},
+						function ctorArgs(){
+							var nl = new dojo.NodeList(4);
+							nl.push(c);
+							doh.is(5, nl.length);
+						},
+						function ctorArgs2(){
+							var nl = new dojo.NodeList(c, t);
+							doh.is(2, nl.length);
+							doh.is(c, nl[0]);
+							doh.is(t, nl[1]);
+						},
+						// iteration and array tests
+						function forEach(){
+							var lastItem;
+							var nl = new dojo.NodeList(c, t);
+							nl.forEach(function(i){ lastItem = i; });
+							doh.is(t, lastItem);
+
+							var r = nl.forEach(function(i, idx, arr){
+								doh.t(arr.constructor == dojo.NodeList);
+								doh.is(2, arr.length);
+							});
+							doh.t(r.constructor == dojo.NodeList);
+							doh.is(r, nl);
+						},
+						
+						function indexOf(){
+							doh.is(0, fourElementNL.indexOf(c));
+							doh.is(1, fourElementNL.indexOf(t));
+							doh.is(-1, fourElementNL.indexOf(null));
+						},
+						
+						function lastIndexOf(){
+							doh.is(2, fourElementNL.lastIndexOf(c));
+							doh.is(3, fourElementNL.lastIndexOf(t));
+							doh.is(-1, fourElementNL.lastIndexOf(null));
+						},
+						
+						function every(){
+							var ctr = 0;
+							var ret = fourElementNL.every(function(){
+								ctr++;
+								return true;
+							});
+							doh.is(4, ctr);
+							doh.t(ret);
+
+							ctr = 0;
+							var ret = fourElementNL.every(function(){
+								ctr++;
+								return false;
+							});
+							doh.is(1, ctr);
+							doh.f(ret);
+						},
+						
+						function some(){
+							var ret = fourElementNL.some(function(){
+								return true;
+							});
+							doh.t(ret);
+
+							var ret = fourElementNL.some(function(i){
+								return (i.id == "t");
+							});
+							doh.t(ret);
+						},
+						
+						function map(){
+							var ret = fourElementNL.map(function(){
+								return true;
+							});
+
+							doh.is(ret, [true, true, true, true]);
+							var cnt = 0;
+							var ret = fourElementNL.map(function(){
+								return cnt++;
+							});
+							// doh.is(ret, [0, 1, 2, 3]);
+
+							doh.t(ret.constructor == dojo.NodeList);
+
+							// make sure that map() returns a NodeList
+							var sum = 0;
+							fourElementNL.map(function(){ return 2; }).forEach( function(x){ sum += x; } );
+							doh.is(sum, 8);
+						},
+
+						function slice(){
+							var pnl = new dojo.NodeList(t, t, c);
+							doh.is(2, pnl.slice(1).length);
+							doh.is(3, pnl.length);
+							doh.is(c, pnl.slice(-1)[0]);
+							doh.is(2, pnl.slice(-2).length);
+						},
+
+						function splice(){
+							var pnl = new dojo.NodeList(t, t, c);
+							console.debug(pnl.splice(1));
+							/*
+							doh.is(2, pnl.splice(1).length);
+							doh.is(1, pnl.length);
+							pnl = new dojo.NodeList(t, t, c);
+							doh.is(c, pnl.splice(-1)[0]);
+							doh.is(2, pnl.length);
+							pnl = new dojo.NodeList(t, t, c);
+							doh.is(2, pnl.splice(-2).length);
+							*/
+						},
+
+						function spliceInsert(){
+							// insert 1
+							var pnl = new dojo.NodeList(t, t, c);
+							pnl.splice(0, 0, c);
+							doh.is(4, pnl.length);
+							doh.is(c, pnl[0]);
+
+							// insert multiple
+							pnl = new dojo.NodeList(t, t, c);
+							pnl.splice(0, 0, c, s);
+							doh.is(5, pnl.length);
+							doh.is(c, pnl[0]);
+							doh.is(s, pnl[1]);
+							doh.is(t, pnl[2]);
+
+							// insert multiple at offset
+							pnl = new dojo.NodeList(t, t, c);
+							pnl.splice(1, 0, c, s);
+							doh.is(5, pnl.length);
+							doh.is(t, pnl[0]);
+							doh.is(c, pnl[1]);
+							doh.is(s, pnl[2]);
+							doh.is(t, pnl[3]);
+						},
+
+						function spliceDel(){
+							// clobbery 1
+							var pnl = new dojo.NodeList(c, t, s);
+							pnl.splice(0, 1);
+							doh.is(2, pnl.length);
+							doh.is(t, pnl[0]);
+
+							// clobber multiple
+							pnl = new dojo.NodeList(c, t, s);
+							pnl.splice(0, 2);
+							doh.is(1, pnl.length);
+							doh.is(s, pnl[0]);
+
+							// ...at an offset
+							pnl = new dojo.NodeList(c, t, s);
+							pnl.splice(1, 1);
+							doh.is(2, pnl.length);
+							doh.is(c, pnl[0]);
+							doh.is(s, pnl[1]);
+
+						},
+
+						function spliceInsertDel(){
+							// clobbery 1
+							var pnl = new dojo.NodeList(c, t, s);
+							pnl.splice(1, 1, s);
+							doh.is(3, pnl.length);
+							doh.is(dojo.NodeList(c, s, s), pnl);
+
+							pnl = new dojo.NodeList(c, t, s);
+							pnl.splice(1, 2, s);
+							doh.is(2, pnl.length);
+							doh.is(dojo.NodeList(c, s), pnl);
+						},
+
+						// sub-search
+						function query(){
+							var pnl = new dojo.NodeList(t);
+							doh.is(c, pnl.query("span")[0]);
+							doh.is(t, dojo.query("body").query(":last-child")[0]);
+							doh.is(c, dojo.query("body").query(":last-child")[1]);
+							doh.is(1, pnl.query().length);
+						},
+						
+						function filter(){
+							doh.is(dojo.query("body :first-child").filter(":last-child")[0], c);
+							doh.is(1, dojo.query("*").filter(function(n){ return (n.nodeName.toLowerCase() == "span"); }).length);
+
+							var filterObj = {
+								filterFunc: function(n){
+									return (n.nodeName.toLowerCase() == "span");
+								}
+							};
+							doh.is(1, dojo.query("*").filter(filterObj.filterFunc).length);
+							doh.is(1, dojo.query("*").filter(filterObj.filterFunc, filterObj).length);
+						},
+
+						// layout DOM functions
+						function coords(){
+							var tnl = new dojo.NodeList(dojo.byId('sq100'))
+							doh.t(dojo.isArray(tnl));
+							doh.is(100, tnl.coords()[0].w);
+							doh.is(100, tnl.coords()[0].h);
+							doh.is(document.body.getElementsByTagName("*").length, dojo.query("body *").coords().length);
+						},
+						
+						function styleGet(){
+							// test getting
+							var tnl = new dojo.NodeList(s);
+							doh.is(1, tnl.style("opacity")[0]);
+							tnl.push(t);
+							dojo.style(t, "opacity", 0.5);
+							doh.is(0.5, tnl.style("opacity").slice(-1)[0]);
+							tnl.style("opacity", 1);
+						},
+
+						function styleSet(){
+							// test setting
+							var tnl = new dojo.NodeList(s, t);
+							tnl.style("opacity", 0.5);
+							doh.is(0.5, dojo.style(tnl[0], "opacity"));
+							doh.is(0.5, dojo.style(tnl[1], "opacity"));
+							// reset
+							tnl.style("opacity", 1);
+						},
+						
+						function styles(){
+							var tnl = new dojo.NodeList(s, t);
+							tnl.styles("opacity", 1);
+							doh.is(1, tnl.styles("opacity")[0]);
+							dojo.style(t, "opacity", 0.5);
+							doh.is(1.0, tnl.styles("opacity")[0]);
+							doh.is(0.5, tnl.styles("opacity")[1]);
+							// reset things
+							tnl.styles("opacity", 1);
+						},
+
+						function concat(){
+							var spans = dojo.query("span");
+							var divs = dojo.query("div");
+							console.debug(spans.concat(divs));
+							doh.is(spans.concat(divs).constructor, dojo.NodeList);
+							doh.is((divs.length + spans.length), spans.concat(divs).length);
+						},
+
+						function concat2(t){
+							var spans = dojo.query("span");
+							var divs = dojo.query("div");
+							doh.is(spans.concat([]).constructor, dojo.NodeList);
+						},
+						
+						function place(t){
+							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+							var nl = dojo.query("b", tn).place(tn, "first");
+							doh.t(nl.constructor == dojo.NodeList);
+							doh.is(1, nl.length);
+							doh.is("b", nl[0].nodeName.toLowerCase());
+							doh.is(tn, nl[0].parentNode);
+							doh.is(tn.firstChild, nl[0]);
+						},
+						
+						function orphan(t){
+							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+							var nl = dojo.query("span", tn).orphan();
+							doh.t(nl.constructor == dojo.NodeList);
+
+							doh.is(2, nl.length);
+							doh.is(1, tn.getElementsByTagName("*").length);
+
+							tn.innerHTML = ih;
+							var nl = dojo.query("*", tn).orphan("b");
+							doh.is(1, nl.length);
+							doh.is("blah", nl[0].innerHTML);
+						},
+
+						/*						
+						// FIXME
+						function adopt(t){
+						},
+						
+						function addContent(t){
+						},
+						*/
+						
+						function connect(t){
+							var ih = "<div><span></span></div><span class='thud'><button>blah</button></span>";
+							
+							var tn = document.createElement("div");
+							tn.innerHTML = ih;
+							dojo.body().appendChild(tn);
+
+							var ctr = 0;
+							var nl = dojo.query("button", tn).connect("onclick", function(){
+								ctr++;
+							});
+							nl[0].click();
+							doh.is(1, ctr);
+							nl[0].click();
+							nl[0].click();
+							doh.is(3, ctr);
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>testing dojo.NodeList</h1>
+		<div id="sq100">
+			100px square, abs
+		</div>
+		<div id="t">
+			<span id="c1">c1</span>
+		</div>
+	</body>
+</html>
+

@@ -191,7 +191,7 @@ dojo.declare("dojo._Animation", null, {
 		//		If true, play the animation after setting the progress.
 		this._stopTimer();
 		this._active = this._paused = true;
-		this._percent = percent * 100;
+		this._percent = percent;
 		if(andPlay){ this.play(); }
 		return this; // dojo._Animation
 	},

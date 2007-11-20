@@ -896,7 +896,7 @@ if(dojo.isIE || dojo.isOpera){
 				}
 				if(node.parentNode != db){
 					var nd = node;
-					if(dojo.isOpera || (dojo.isSafari >= 5)){ nd = db; }
+					if(dojo.isOpera || (dojo.isSafari >= 3)){ nd = db; }
 					ret.x -= _sumAncestorProperties(nd, "scrollLeft");
 					ret.y -= _sumAncestorProperties(nd, "scrollTop");
 				}

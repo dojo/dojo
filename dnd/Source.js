@@ -200,7 +200,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		}
 		var accepted = this.accept && this.checkAcceptance(source, nodes);
 		this._changeState("Target", accepted ? "" : "Disabled");
-		if(accepted){
+		if(accepted && this == source){
 			dojo.dnd.manager().overSource(this);
 		}
 		this.isDragging = true;

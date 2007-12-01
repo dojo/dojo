@@ -2,6 +2,8 @@ dojo.provide("dojo.dnd.autoscroll");
 
 dojo.dnd.getViewport = function(){
 	// summary: returns a viewport size (visible part of the window)
+
+	// FIXME: need more docs!!
 	var d = dojo.doc, dd = d.documentElement, w = window, b = dojo.body();
 	if(dojo.isMozilla){
 		return {w: dd.clientWidth, h: w.innerHeight};	// Object
@@ -22,8 +24,13 @@ dojo.dnd.V_AUTOSCROLL_VALUE = 16;
 dojo.dnd.H_AUTOSCROLL_VALUE = 16;
 
 dojo.dnd.autoScroll = function(e){
-	// summary: a handler for onmousemove event, which scrolls the window, if necesary
-	// e: Event: onmousemove event
+	// summary:
+	//		a handler for onmousemove event, which scrolls the window, if
+	//		necesary
+	// e: Event:
+	//		onmousemove event
+
+	// FIXME: needs more docs!
 	var v = dojo.dnd.getViewport(), dx = 0, dy = 0;
 	if(e.clientX < dojo.dnd.H_TRIGGER_AUTOSCROLL){
 		dx = -dojo.dnd.H_AUTOSCROLL_VALUE;
@@ -42,15 +49,19 @@ dojo.dnd._validNodes = {"div": 1, "p": 1, "td": 1};
 dojo.dnd._validOverflow = {"auto": 1, "scroll": 1};
 
 dojo.dnd.autoScrollNodes = function(e){
-	// summary: a handler for onmousemove event, which scrolls the first avaialble Dom element,
-	//	it falls back to dojo.dnd.autoScroll()
-	// e: Event: onmousemove event
+	// summary:
+	//		a handler for onmousemove event, which scrolls the first avaialble
+	//		Dom element, it falls back to dojo.dnd.autoScroll()
+	// e: Event:
+	//		onmousemove event
+
+	// FIXME: needs more docs!
 	for(var n = e.target; n;){
 		if(n.nodeType == 1 && (n.tagName.toLowerCase() in dojo.dnd._validNodes)){
 			var s = dojo.getComputedStyle(n);
 			if(s.overflow.toLowerCase() in dojo.dnd._validOverflow){
 				var b = dojo._getContentBox(n, s), t = dojo._abs(n, true);
-				console.debug(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
+				// console.debug(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
 				b.l += t.x + n.scrollLeft;
 				b.t += t.y + n.scrollTop;
 				var w = Math.min(dojo.dnd.H_TRIGGER_AUTOSCROLL, b.w / 2), 
@@ -74,7 +85,7 @@ dojo.dnd.autoScrollNodes = function(e){
 				var oldLeft = n.scrollLeft, oldTop = n.scrollTop;
 				n.scrollLeft = n.scrollLeft + dx;
 				n.scrollTop  = n.scrollTop  + dy;
-				if(dx || dy) console.debug(oldLeft + ", " + oldTop + "\n" + dx + ", " + dy + "\n" + n.scrollLeft + ", " + n.scrollTop);
+				// if(dx || dy){ console.debug(oldLeft + ", " + oldTop + "\n" + dx + ", " + dy + "\n" + n.scrollLeft + ", " + n.scrollTop); }
 				if(oldLeft != n.scrollLeft || oldTop != n.scrollTop){ return; }
 			}
 		}

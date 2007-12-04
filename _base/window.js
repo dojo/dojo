@@ -41,29 +41,41 @@ dojo._gearsObject = function(){
 	return dojo.getObject("google.gears");
 };
 
+/*=====
+dojo.isGears = {
+	// summary: True if client is using Google Gears
+};
+=====*/
 // see if we have Google Gears installed, and if
 // so, make it available in the runtime environment
 // and in the Google standard 'google.gears' global object
 dojo.isGears = (!!dojo._gearsObject())||0;
 
-// @global: dojo.doc
-
-// summary:
-//		Current document object. 'dojo.doc' can be modified
-//		for temporary context shifting. Also see dojo.withDoc().
-// description:
-//    Refer to dojo.doc rather
-//    than referring to 'window.document' to ensure your code runs
-//    correctly in managed contexts.
+/*=====
+dojo.doc = {
+	// summary:
+	//		Alias for the current document. 'dojo.doc' can be modified
+	//		for temporary context shifting. Also see dojo.withDoc().
+	// description:
+	//    Refer to dojo.doc rather
+	//    than referring to 'window.document' to ensure your code runs
+	//    correctly in managed contexts.
+	// example:
+	// 	n.appendChild(dojo.doc.createElement('div'));
+}
+=====*/
 dojo.doc = window["document"] || null;
 
 dojo.body = function(){
 	// summary:
+	//		Return the body element of the document
 	//		return the body object associated with dojo.doc
+	// example:
+	// 	dojo.body().appendChild(dojo.doc.createElement('div'));
 
 	// Note: document.body is not defined for a strict xhtml document
 	// Would like to memoize this, but dojo.doc can change vi dojo.withDoc().
-	return dojo.doc.body || dojo.doc.getElementsByTagName("body")[0];
+	return dojo.doc.body || dojo.doc.getElementsByTagName("body")[0]; // Node
 }
 
 dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocument){

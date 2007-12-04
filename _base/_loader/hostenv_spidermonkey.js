@@ -9,6 +9,13 @@ if(djConfig["baseUrl"]){
 }
 
 dojo._name = 'spidermonkey';
+
+/*=====
+dojo.isSpidermonkey = {
+	// summary: Detect spidermonkey 
+};
+=====*/
+
 dojo.isSpidermonkey = true;
 dojo.exit = function(exitcode){ 
 	quit(exitcode); 

@@ -5,7 +5,7 @@ dojo.require("dojo._base.connect");
 
 (function(){
 	// DOM event listener machinery
-	var del = dojo._event_listener = {
+	var del = (dojo._event_listener = {
 		add: function(/*DOMNode*/node, /*String*/name, /*Function*/fp){
 			if(!node){return;} 
 			name = del._normalizeEventName(name);
@@ -13,7 +13,7 @@ dojo.require("dojo._base.connect");
 			fp = del._fixCallback(name, fp);
 
 			var oname = name;
-			if((!dojo.isIE)&&((name == "mouseenter")||(name == "mouseleave"))){
+			if(!dojo.isIE && (name == "mouseenter")||(name == "mouseleave")){
 				var oname = name;
 				var ofp = fp;
 				name = (name == "mouseenter") ? "mouseover" : "mouseout";
@@ -39,13 +39,13 @@ dojo.require("dojo._base.connect");
 			//		the name of the handler to remove the function from
 			// handle:
 			//		the handle returned from add
-			(node)&&(node.removeEventListener(del._normalizeEventName(event), handle, false));
+			node && node.removeEventListener(del._normalizeEventName(event), handle, false);
 		},
 		_normalizeEventName: function(/*String*/name){
 			// Generally, name should be lower case, unless it is special
 			// somehow (e.g. a Mozilla DOM event).
 			// Remove 'on'.
-			return (name.slice(0,2)=="on" ? name.slice(2) : name);
+			return name.slice(0,2) =="on" ? name.slice(2) : name;
 		},
 		_fixCallback: function(/*String*/name, fp){
 			// By default, we only invoke _fixEvent for 'keypress'
@@ -53,7 +53,7 @@ dojo.require("dojo._base.connect");
 			// to revisit this optimization.
 			// This also applies to _fixEvent overrides for Safari and Opera
 			// below.
-			return (name!="keypress" ? fp : function(e){ return fp.call(this, del._fixEvent(e, this)); });	
+			return name != "keypress" ? fp : function(e){ return fp.call(this, del._fixEvent(e, this)); };
 		},
 		_fixEvent: function(evt, sender){
 			// _fixCallback only attaches us to keypress.
@@ -69,7 +69,7 @@ dojo.require("dojo._base.connect");
 		_setKeyChar: function(evt){
 			evt.keyChar = (evt.charCode ? String.fromCharCode(evt.charCode) : '');
 		}
-	};
+	});
 
 	// DOM events
 	
@@ -125,6 +125,7 @@ dojo.require("dojo._base.connect");
 	// keyCode against these named constants, as the
 	// actual codes can vary by browser.
 	dojo.keys = {
+		// summary: definitions for common key values
 		BACKSPACE: 8,
 		TAB: 9,
 		CLEAR: 12,
@@ -340,9 +341,9 @@ dojo.require("dojo._base.connect");
 			_stealthKeyDown: function(evt){
 				// IE doesn't fire keypress for most non-printable characters.
 				// other browsers do, we simulate it here.
-				var kp=evt.currentTarget.onkeypress;
+				var kp = evt.currentTarget.onkeypress;
 				// only works if kp exists and is a dispatcher
-				if(!kp||!kp._listeners)return;
+				if(!kp || !kp._listeners){ return; }
 				// munge key/charCode
 				var k=evt.keyCode;
 				// These are Windows Virtual Key Codes

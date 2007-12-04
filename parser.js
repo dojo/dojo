@@ -2,6 +2,7 @@ dojo.provide("dojo.parser");
 dojo.require("dojo.date.stamp");
 
 dojo.parser = new function(){
+	// summary: The Dom/Widget parsing package
 
 	var d = dojo;
 

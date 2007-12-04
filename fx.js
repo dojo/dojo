@@ -1,6 +1,12 @@
 dojo.provide("dojo.fx");
 dojo.provide("dojo.fx.Toggler");
 
+/*=====
+dojo.fx = {
+	// summary: Effects library on top of Base animations
+};
+=====*/
+
 dojo.fx.chain = function(/*dojo._Animation[]*/ animations){
 	// summary: Chain a list of dojo._Animation s to run in sequence
 	// example:

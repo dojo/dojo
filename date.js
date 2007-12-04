@@ -1,5 +1,11 @@
 dojo.provide("dojo.date");
 
+/*=====
+dojo.date = {
+	// summary: Date manipulation utilities
+}
+=====*/
+
 dojo.date.getDaysInMonth = function(/*Date*/dateObject){
 	//	summary:
 	//		Returns the number of days in the month used by dateObject

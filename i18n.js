@@ -1,5 +1,11 @@
 dojo.provide("dojo.i18n");
 
+/*=====
+dojo.i18n = {
+	// summary: Utility classes to enable loading of resources for internationalization (i18n)
+};
+=====*/
+
 dojo.i18n.getLocalization = function(/*String*/packageName, /*String*/bundleName, /*String?*/locale){
 	//	summary:
 	//		Returns an Object containing the localization for a given resource

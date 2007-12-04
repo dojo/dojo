@@ -5,6 +5,12 @@ dojo.require("dojo.i18n");
 dojo.requireLocalization("dojo.cldr", "currency");
 dojo.require("dojo.cldr.monetary");
 
+/*=====
+dojo.currency = {
+	// summary: localized formatting and parsing routines for currencies
+}
+=====*/
+
 dojo.currency._mixInDefaults = function(options){
 	options = options || {};
 	options.type = "currency";

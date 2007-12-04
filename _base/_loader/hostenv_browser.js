@@ -1,3 +1,49 @@
+/*=====
+dojo.isBrowser = {
+	// summary: True if the client is a web-browser
+	// example:
+	//	if(dojo.isBrowser){ ... }
+};
+
+dojo.isFF = {
+	// summary: True if client is using FireFox browser. False otherwise.
+	// example:
+	//	if(dojo.isFF && dojo.isFF > 1){ ... }
+};
+
+dojo.isIE = {
+	// summary: The major version if client it using Internet Explorer (or false) 
+	// example:
+	//	if(dojo.isIE && dojo.isIE > 6){
+	//		// we are IE7
+	//  }
+};
+
+dojo.isKhtml = {
+	// summary: True if client is  using Khtml browsers (konqueror, et al)
+};
+
+dojo.isMozilla = {
+	// summary: True if client is using a Mozilla-based browser. 
+};
+
+dojo.isOpera = {
+	// summary: True if client is using the Opera web browser
+};
+
+dojo.isSafari = {
+	// summary: True if client is using the Safari web browser
+	// example:
+	// 	|	if(dojo.isSafari){ ... }
+	//
+	// example: 
+	//	Detect iPhone:
+	//	|	if(dojo.isSafari && (navigator.userAgent.indexOf("iPhone") < 0)){ 
+	//	|		// we are iPhone. iPod touch reports "iPod" above
+	//	|	}
+};
+=====*/
+
 if(typeof window != 'undefined'){
 	dojo.isBrowser = true;
 	dojo._name = "browser";

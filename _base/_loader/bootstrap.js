@@ -1,20 +1,22 @@
-// TODOC: HOW TO DOC THE BELOW?
-// @global: djConfig
-// summary:
-//		Application code can set the global 'djConfig' prior to loading
-//		the library to override certain global settings for how dojo works.
-// description:  The variables that can be set are as follows:
-//			- isDebug: false
-//			- libraryScriptUri: ""
-//			- locale: undefined
-//			- extraLocale: undefined
-//			- preventBackButtonFix: true
-// note:
-//		'djConfig' does not exist under 'dojo.*' so that it can be set before the
-//		'dojo' variable exists.
-// note:
-//		Setting any of these variables *after* the library has loaded does
-//		nothing at all.
+/*=====
+djConfig = {
+	// summary:
+	//		Application code can set the global 'djConfig' prior to loading
+	//		the library to override certain global settings for how dojo works.
+	// description:  The variables that can be set are as follows:
+	//			- isDebug: false
+	//			- libraryScriptUri: ""
+	//			- locale: undefined
+	//			- extraLocale: undefined
+	//			- preventBackButtonFix: true
+	// note:
+	//		'djConfig' does not exist under 'dojo.*' so that it can be set before the
+	//		'dojo' variable exists.
+	// note:
+	//		Setting any of these variables *after* the library has loaded does
+	//		nothing at all.
+}
+=====*/
 
 (function(){
 	// make sure djConfig is defined
@@ -47,12 +49,16 @@
 
 	var d = dojo;
 
+/*=====
+dojo.global = {
 	// summary:
-	//		return the current global context object
-	//		(e.g., the window object in a browser).
+	//		Alias for the global scope
+	//		(e.g. the window object in a browser).
 	// description:
 	//		Refer to 'dojo.global' rather than referring to window to ensure your
-	//		code runs correctly in contexts other than web browsers (eg: Rhino on a server).
+	//		code runs correctly in contexts other than web browsers (e.g. Rhino on a server).
+}
+=====*/
 	dojo.global = this;
 
 	var _config =/*===== djConfig = =====*/{
@@ -74,10 +80,14 @@
 		d["is"+t] = false;
 	}
 
+/*=====
 	// Override locale setting, if specified
+	dojo.locale = {
+		// summary: the locale as defined by Dojo (read-only)
+	};
+=====*/
 	dojo.locale = djConfig.locale;
 
-	//TODOC:  HOW TO DOC THIS?
 	dojo.version = {
 		// summary: version number of this instance of dojo.
 		major: 0, minor: 9, patch: 0, flag: "dev",

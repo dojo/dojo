@@ -7,6 +7,10 @@ dojo.require("dojo.regexp");
 
 
 /*=====
+dojo.number = {
+	// summary: localized formatting and parsing routines for Number
+}
+
 dojo.number.__formatOptions = function(kwArgs){
 	//	pattern: String?
 	//		override formatting pattern with this string (see

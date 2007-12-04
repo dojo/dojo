@@ -1,19 +1,25 @@
 dojo.provide("dojo.back");
 
-(function() { 
-	
+/*=====
+dojo.back = {
+	// summary: Browser history management resources
+}
+=====*/
+
+
+(function(){ 
 	var back = dojo.back;
-	
+
 	// everyone deals with encoding the hash slightly differently
-	
+
 	function getHash(){ 
 		var h = window.location.hash;
-		if(h.charAt(0) == "#") { h = h.substring(1); }
+		if(h.charAt(0) == "#"){ h = h.substring(1); }
 		return dojo.isMozilla ? h : decodeURIComponent(h); 
 	}
 	
 	function setHash(h){
-		if(!h) { h = "" };
+		if(!h){ h = ""; }
 		window.location.hash = encodeURIComponent(h);
 		historyCounter = history.length;
 	}
@@ -89,7 +95,7 @@ dojo.provide("dojo.back");
 	function getUrlQuery(url){
 		//summary: private method. Do not call this directly.
 		var segments = url.split("?");
-		if (segments.length < 2){
+		if(segments.length < 2){
 			return null; //null
 		}
 		else{
@@ -101,9 +107,9 @@ dojo.provide("dojo.back");
 		//summary: private method. Do not call this directly.
 		var url = (djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
-        if (historyIframe) {
-		    (dojo.isSafari) ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
-        } else {
+        if(historyIframe){
+		    dojo.isSafari ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
+        }else{
             //console.warn("dojo.back: Not initialised. You need to call dojo.back.init() from a <script> block that lives inside the <body> tag.");
         }
 		return url; //String
@@ -377,8 +383,7 @@ dojo.provide("dojo.back");
 		//Note that only one step back or forward is supported.
 		if(historyStack.length >= 2 && query == getUrlQuery(historyStack[historyStack.length-2].url)){
 			handleBackButton();
-		}
-		else if(forwardStack.length > 0 && query == getUrlQuery(forwardStack[forwardStack.length-1].url)){
+		}else if(forwardStack.length > 0 && query == getUrlQuery(forwardStack[forwardStack.length-1].url)){
 			handleForwardButton();
 		}
 	};

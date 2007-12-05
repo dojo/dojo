@@ -601,6 +601,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 				if(this._loadInProgress){
 					this._queuedFetches.push({args: keywordArgs});
 				}else{
+					this._loadInProgress = true;
 					var getArgs = {
 							url: self._jsonFileUrl, 
 							handleAs: "json-comment-optional"

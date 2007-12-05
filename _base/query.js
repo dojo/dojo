@@ -182,7 +182,7 @@ dojo.require("dojo._base.NodeList");
 			endId(); endTag(); endClass();
 		}
 
-		for(; x<ql, lc=cc, cc=query.charAt(x); x++){
+		for(; lc=cc, cc=query.charAt(x),x<ql; x++){
 			if(lc == "\\"){ continue; }
 			if(!currentPart){
 				// NOTE: I hate all this alloc, but it's shorter than writing tons of if's

@@ -189,11 +189,11 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 		case "minute":
 		case "second":
 		case "millisecond":
-			property = interval.charAt(0).toUpperCase() + interval.substring(1) + "s";
+			property = "UTC"+interval.charAt(0).toUpperCase() + interval.substring(1) + "s";
 	}
 
 	if(property){
-		sum["setUTC"+property](sum["getUTC"+property]()+amount);
+		sum["set"+property](sum["get"+property]()+amount);
 	}
 
 	if(fixOvershoot && (sum.getDate() < date.getDate())){

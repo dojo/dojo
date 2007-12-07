@@ -88,7 +88,7 @@ dojo.global = {
 =====*/
 	dojo.locale = djConfig.locale;
 	
-	var rev = "$Rev$".match(/[0-9]+/);
+	var rev = "$Rev$".match(/\d+/);
 
 	dojo.version = {
 		// summary: version number of this instance of dojo.

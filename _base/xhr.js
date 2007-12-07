@@ -55,7 +55,7 @@ dojo.require("dojo._base.query");
 		var ret = {};
 		var iq = "input:not([type=file]):not([type=submit]):not([type=image]):not([type=reset]):not([type=button]), select, textarea";
 		_d.query(iq, formNode).filter(function(node){
-			return (!node.disabled);
+			return !node.disabled;
 		}).forEach(function(item){
 			var _in = item.name;
 			var type = (item.type||"").toLowerCase();
@@ -80,7 +80,7 @@ dojo.require("dojo._base.query");
 
 	dojo.objectToQuery = function(/*Object*/ map){
 		//	summary:
-		//		takes a key/value mapping object and returns a string representing
+		//		takes a name/value mapping object and returns a string representing
 		//		a URL-encoded version of that object.
 		//	example:
 		//		this object:
@@ -93,30 +93,28 @@ dojo.require("dojo._base.query");
 		//		|		]
 		//		|	};
 		//
-		//	yeilds the following query string:
+		//	yields the following query string:
 		//	
 		//	|	"blah=blah&multi=thud&multi=thonk"
 
-
 		// FIXME: need to implement encodeAscii!!
-		var ec = encodeURIComponent;
-		var ret = "";
+		var enc = encodeURIComponent;
+		var pairs = [];
 		var backstop = {};
-		for(var x in map){
-			if(map[x] != backstop[x]){
-				if(_d.isArray(map[x])){
-					for(var y=0; y<map[x].length; y++){
-						ret += ec(x) + "=" + ec(map[x][y]) + "&";
+		for(var name in map){
+			name = enc(name);
+			var value = map[name];
+			if(value != backstop[name]){
+				if(_d.isArray(value)){
+					for(var i=0; i < value.length; i++){
+						pairs.push(name + "=" + enc(value[i]));
 					}
 				}else{
-					ret += ec(x) + "=" + ec(map[x]) + "&";
+					pairs.push(name + "=" + enc(value));
 				}
 			}
 		}
-		if(ret.length && ret.charAt(ret.length-1) == "&"){
-			ret = ret.substr(0, ret.length-1);
-		}
-		return ret; // String
+		return pairs.join("&"); // String
 	}
 
 	dojo.formToQuery = function(/*DOMNode||String*/ formNode){
@@ -207,7 +205,7 @@ dojo.require("dojo._base.query");
 		"text": function(xhr){ return xhr.responseText; },
 		"json": function(xhr){
 			if(!djConfig.usePlainJson){
-				console.debug("Consider using mimetype:text/json-comment-filtered"
+				console.warn("Consider using mimetype:text/json-comment-filtered"
 					+ " to avoid potential security issues with JSON endpoints"
 					+ " (use djConfig.usePlainJson=true to turn off this message)");
 			}
@@ -231,18 +229,18 @@ dojo.require("dojo._base.query");
 			return _d.eval(xhr.responseText);
 		},
 		"xml": function(xhr){ 
-			if(_d.isIE && !xhr.responseXML){
-				_d.forEach(["MSXML2", "Microsoft", "MSXML", "MSXML3"], function(i){
+			var result = xhr.responseXML;
+			if(_d.isIE && (!result || window.location.protocol == "file:")){
+				_d.forEach(["MSXML2", "Microsoft", "MSXML", "MSXML3"], function(prefix){
 					try{
-						var doc = new ActiveXObject(prefixes[i]+".XMLDOM");
-						doc.async = false;
-						doc.loadXML(xhr.responseText);
-						return doc;	//	DOMDocument
-					}catch(e){ /* squelch */ };
+						var dom = new ActiveXObject(prefix + ".XMLDOM");
+						dom.async = false;
+						dom.loadXML(xhr.responseText);
+						result = dom;
+					}catch(e){ /* Not available. Squelch and try next one. */ };
 				});
-			}else{
-				return xhr.responseXML;
 			}
+			return result; // DOMDocument
 		}
 	};
 

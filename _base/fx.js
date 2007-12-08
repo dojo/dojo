@@ -236,7 +236,7 @@ dojo.declare("dojo._Animation", null, {
 
 			_t.fire("onAnimate", [_t.curve.getValue(step)]);
 
-			if(step < 1){
+			if(_t._percent < 1){
 				_t._startTimer();
 			}else{
 				_t._active = false;

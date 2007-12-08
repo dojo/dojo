@@ -301,6 +301,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this.before = true;
 		this.isDragging = false;
 		this.mouseDown = false;
+		delete this.mouseButton;
 		this._changeState("Source", "");
 		this._changeState("Target", "");
 	},

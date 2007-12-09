@@ -706,7 +706,7 @@ if(dojo.isIE || dojo.isOpera){
 													/*Number?*/widthPx, /*Number?*/heightPx, 
 													/*Object*/computedStyle){
 		//	summary:
-		//		sets the size of the node's margin box and palcement
+		//		sets the size of the node's margin box and placement
 		//		(left/top), irrespective of box model. Think of it as a
 		//		passthrough to dojo._setBox that handles box-model vagaries for
 		//		you.
@@ -839,7 +839,7 @@ if(dojo.isIE || dojo.isOpera){
 		// In RTL direction, scrollLeft should be a negative value, but IE 
 		// returns a positive one. All codes using documentElement.scrollLeft
 		// must call this function to fix this error, otherwise the position
-		// will offset to right when there is a horizonal scrollbar.
+		// will offset to right when there is a horizontal scrollbar.
 		if(dojo.isIE && !dojo._isBodyLtr()){
 			var de = dojo.doc.documentElement;
 			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer

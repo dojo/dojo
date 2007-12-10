@@ -151,6 +151,26 @@ tests.register("tests._base.lang",
 			}
 			var obj2 = thinger.apply(this, obj1);
 			t.assertEqual(obj1[0], obj2[0]);
-		}
+		},
+		
+		function clone(t) { 
+			var obj1 = {foo: 'bar', answer: 42, jan102007: new Date(2007, 0, 10), 
+				baz: {
+					a: null, 
+					b: [
+						1, "b", 2.3, true, false
+						//, function(){ return 4; }, /\d+/gm
+					]
+				}
+			}; 
+			var obj2 = dojo.clone(obj1);
+			t.assertEqual(obj1.foo, obj2.foo);
+			t.assertEqual(obj1.answer, obj2.answer);
+			t.assertEqual(obj1.jan102007, obj2.jan102007);
+			t.assertEqual(obj1.baz.a, obj2.baz.a);
+			for(var i = 0; i < obj1.baz.b.length; ++i){
+				t.assertEqual(obj1.baz.b[i], obj2.baz.b[i]);
+			}
+		} 
 	]
 );

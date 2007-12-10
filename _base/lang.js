@@ -214,20 +214,24 @@ dojo.clone = function(/*anything*/ o){
 			r.push(dojo.clone(o[i]));
 		}
 		return r; // Array
-	}else if(dojo.isObject(o)){
-		if(o.nodeType && o.cloneNode){ // isNode
-			return o.cloneNode(true); // Node
-		}else{
-			var r = new o.constructor(); // specific to dojo.declare()'d classes!
-			for(var i in o){
-				if(!(i in r) || r[i] != o[i]){
-					r[i] = dojo.clone(o[i]);
-				}
-			}
-			return r; // Object
+	}
+	if(!dojo.isObject(o)){
+		return o;	/*anything*/
+	}
+	if(o.nodeType && o.cloneNode){ // isNode
+		return o.cloneNode(true); // Node
+	}
+	if(o instanceof Date){
+		return new Date(o.getTime());	// Date
+	}
+	// Generic objects
+	var r = new o.constructor(); // specific to dojo.declare()'d classes!
+	for(var i in o){
+		if(!(i in r) || r[i] != o[i]){
+			r[i] = dojo.clone(o[i]);
 		}
 	}
-	return o; /*anything*/
+	return r; // Object
 }
 
 dojo.trim = function(/*String*/ str){

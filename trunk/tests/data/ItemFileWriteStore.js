@@ -621,6 +621,32 @@ doh.register("tests.data.ItemFileWriteStore",
 			store.save({onComplete:onComplete, onError:onError});
 			return deferred; //Object
 		},
+		function testWriteAPI_newItem_revert(){
+			//	summary: 
+			//		Test for bug #5357.  Ensure that the revert properly nulls the identity position
+			//      for a new item after revert.
+			var args = {data: {
+				label:"name",
+				items:[
+					{name:'Ecuador', capital:'Quito'},
+					{name:'Egypt', capital:'Cairo'},
+					{name:'El Salvador', capital:'San Salvador'},
+					{name:'Equatorial Guinea', capital:'Malabo'},
+					{name:'Eritrea', capital:'Asmara'},
+					{name:'Estonia', capital:'Tallinn'},
+					{name:'Ethiopia', capital:'Addis Ababa'}
+				]
+			} }; 
+			var store = new dojo.data.ItemFileWriteStore(args);
+
+			var newCountry = store.newItem({name: "Utopia", capitol: "Perfect"});
+
+			//DO NOT ACCESS THIS WAY.  THESE ARE INTERNAL VARIABLES.  DOING THIS FOR TEST PURPOSES.
+			var itemEntryNum = newCountry[store._itemNumPropName];
+			doh.assertTrue(store._arrayOfAllItems[itemEntryNum] === newCountry);
+			store.revert();
+			doh.assertTrue(store._arrayOfAllItems[itemEntryNum] === null);
+		},
 		function testNotificationAPI_onSet(){
 			//	summary: 
 			//		Simple test of the onSet API

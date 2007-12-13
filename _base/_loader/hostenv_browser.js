@@ -91,8 +91,7 @@ if(typeof window != 'undefined'){
 		d.isOpera = (dua.indexOf("Opera") >= 0) ? tv : 0;
 		d.isKhtml = (dav.indexOf("Konqueror") >= 0)||(dav.indexOf("Safari") >= 0) ? tv : 0;
 		if(dav.indexOf("Safari") >= 0){
-			var vi = dav.indexOf("Version/");
-			d.isSafari = (vi) ? parseFloat(dav.substring(vi+8)) : 2;
+ 			d.isSafari = parseFloat(dav.split("Version/")[1]) || 2;
 		}
 		var geckoPos = dua.indexOf("Gecko");
 		d.isMozilla = d.isMoz = ((geckoPos >= 0)&&(!d.isKhtml)) ? tv : 0;

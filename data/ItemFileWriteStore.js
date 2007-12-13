@@ -435,7 +435,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			newItem[this._storeRefPropName] = null;
 			// null out the new item, but don't change the array index so
 			// so we can keep using _arrayOfAllItems.length.
-			this._arrayOfAllItems[newItem._itemNumPropName] = null;
+			this._arrayOfAllItems[newItem[this._itemNumPropName]] = null;
 			if(newItem[this._rootItemPropName]){
 				this._removeArrayElement(this._arrayOfTopLevelItems, newItem);
 			}

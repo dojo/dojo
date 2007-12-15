@@ -44,6 +44,16 @@
 							}
 						},
 						{
+							name: "objectGet",
+							runTest: function(t){
+								// set the object cookie
+								var n = "dojo_test";
+								var v = { foo:"bar", baz:"foo" };
+								dojo.cookie.useObject(n,v);
+								t.is(v,dojo.cookie.useObject(n));
+							}
+						},
+						{
 							name: "daysAsNumber",
 							runTest: function(t){
 								// set a cookie with a numerical expires

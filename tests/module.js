@@ -17,6 +17,7 @@ try{
 	dojo.require("tests.behavior");
 	dojo.require("tests.parser");
 	dojo.require("tests.colors");
+	dojo.requireIf(dojo.isBrowser,"tests.cookie"); 
 	dojo.require("tests.fx");
 }catch(e){
 	doh.debug(e);

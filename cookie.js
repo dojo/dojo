@@ -71,3 +71,45 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 		return null;
 	}
 };
+
+dojo.cookie.useObject = function(/*String*/name, /*String?*/value, /*Object?*/props){
+	//	summary:
+	//		Extends the dojo.cookie function. Calling this method will allow you to
+	//		easily store an object into a cookie, as well as pull an object back out
+	//		from the cookie.
+	//
+	//	example:
+	//	|	// set a cookie object
+	//	|	dojo.cookie.useObject("foo",{ bar:"baz" });
+	//
+	//	example:
+	//	|	// get a cookie object
+	//	|	var obj = dojo.cookie.useObject("foo");
+	//	|	// same as
+	//	|	// var obj = dojo.fromJson(dojo.cookie("foo"));
+	
+	if(arguments.length == 1){
+		return dojo.fromJson(this(name));
+	}else{
+		this(name, dojo.toJson(value), props||{});
+	}
+	
+};
+
+dojo.cookie.isSupported = function(){
+	//	summary:
+	//		Use to determine if the current browser supports cookies or not.
+	//		
+	//		Returns true if user allows cookies.
+	//		Returns false if user doesn't allow cookies.
+	
+	if(typeof navigator.cookieEnabled != "boolean"){
+		this("__djCookieTest__", "CookiesAllowed", { expires: 90 });
+		var cookieVal = this("__djCookieTest__");
+		navigator.cookieEnabled = (cookieVal == "CookiesAllowed");
+		if(navigator.cookieEnabled){
+			this("__djCookieTest__", "", 0);
+		}
+	}
+	return navigator.cookieEnabled;
+};

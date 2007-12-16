@@ -498,7 +498,10 @@ if(
 			if(!object){ continue; }
 			if(typeof(object) == "string"){
 				appendText(object, html);
-				
+		
+			}else if(iobject.nodeType == 9){
+				appendText("[ XmlDoc ]", html);
+
 			}else if(object.nodeType == 1){
 				// simple tracing of dom nodes
 				appendText("< "+object.tagName+" id=\""+ object.id+"\" />", html);

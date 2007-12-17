@@ -499,7 +499,7 @@ if(
 			if(typeof(object) == "string"){
 				appendText(object, html);
 		
-			}else if(iobject.nodeType == 9){
+			}else if(object.nodeType == 9){
 				appendText("[ XmlDoc ]", html);
 
 			}else if(object.nodeType == 1){

@@ -14,7 +14,7 @@ dojo.fromJson = function(/*String*/ json){
 		return eval("(" + json + ")");
 	}catch(e){
 		console.debug(e);
-		return json;
+		return json; //FIXME: peller: we should document this behavior and/or throw instead.  I prefer the latter.
 	}
 }
 
@@ -56,14 +56,16 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	//		a String representing the serialized version of the passed object.
 
 	_indentStr = _indentStr || "";
-	var nextIndent = (prettyPrint ? _indentStr + dojo.toJsonIndentStr : "");
-	var newLine = (prettyPrint ? "\n" : "");
-	var objtype = typeof(it);
+	var nextIndent = prettyPrint ? _indentStr + dojo.toJsonIndentStr : "";
+	var newLine = prettyPrint ? "\n" : "";
+	var objtype = typeof it;
 	if(objtype == "undefined"){
 		return "undefined";
-	}else if((objtype == "number")||(objtype == "boolean")){
+	}
+	if(objtype == "number" || objtype == "boolean"){
 		return it + "";
-	}else if(it === null){
+	}
+	if(it === null){
 		return "null";
 	}
 	if(dojo.isString(it)){ 
@@ -89,18 +91,19 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 			return recurse(newObj, prettyPrint, nextIndent);
 		}
 	}
-	var sep=(prettyPrint?", ":","), psep=(prettyPrint?": ":":");
+
+	var sep = prettyPrint ? " " : "";
+
 	// array
 	if(dojo.isArray(it)){
-		var res = [];
-		for(var i = 0; i < it.length; i++){
-			var val = recurse(it[i], prettyPrint, nextIndent);
-			if(typeof(val) != "string"){
+		var res = dojo.map(it, function(obj){
+			var val = recurse(obj, prettyPrint, nextIndent);
+			if(typeof val != "string"){
 				val = "undefined";
 			}
-			res.push(newLine + nextIndent + val);
-		}
-		return "[" + res.join(sep) + newLine + _indentStr + "]";
+			return newLine + nextIndent + val;
+		});
+		return "[" + res.join("," + sep) + newLine + _indentStr + "]";
 	}
 	/*
 	// look in the registry
@@ -120,22 +123,22 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	var output = [];
 	for(var key in it){
 		var keyStr;
-		if(typeof(key) == "number"){
+		if(typeof key == "number"){
 			keyStr = '"' + key + '"';
-		}else if(typeof(key) == "string"){
+		}else if(typeof key == "string"){
 			keyStr = dojo._escapeString(key);
 		}else{
 			// skip non-string or number keys
 			continue;
 		}
 		val = recurse(it[key], prettyPrint, nextIndent);
-		if(typeof(val) != "string"){
+		if(typeof val != "string"){
 			// skip non-serializable values
 			continue;
 		}
 		// FIXME: use += on Moz!!
 		//	 MOW NOTE: using += is a pain because you have to account for the dangling comma...
-		output.push(newLine + nextIndent + keyStr + psep + val);
+		output.push(newLine + nextIndent + keyStr + ":" + sep + val);
 	}
-	return "{" + output.join(sep) + newLine + _indentStr + "}";
+	return "{" + output.join("," + sep) + newLine + _indentStr + "}";
 }

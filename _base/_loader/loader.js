@@ -6,7 +6,7 @@
 (function(){
 	var d = dojo;
 
-	dojo.mixin(dojo, {
+	d.mixin(d, {
 		_loadedModules: {},
 		_inFlightCount: 0,
 		_hasResource: {},
@@ -68,14 +68,14 @@
 		// cb: 
 		//		a callback function to pass the result of evaluating the script
 
-		var uri = (((relpath.charAt(0) == '/' || relpath.match(/^\w+:/))) ? "" : this.baseUrl) + relpath;
+		var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : this.baseUrl) + relpath;
 		if(djConfig.cacheBust && d.isBrowser){
 			uri += "?" + String(djConfig.cacheBust).replace(/\W+/g,"");
 		}
 		try{
 			return !module ? this._loadUri(uri, cb) : this._loadUriAndCheck(uri, module, cb); // Boolean
 		}catch(e){
-			console.debug(e);
+			console.error(e);
 			return false; // Boolean
 		}
 	}
@@ -115,9 +115,9 @@
 		try{
 			ok = this._loadUri(uri, cb);
 		}catch(e){
-			console.debug("failed loading " + uri + " with error: " + e);
+			console.error("failed loading " + uri + " with error: " + e);
 		}
-		return Boolean(ok && this._loadedModules[moduleName]); // Boolean
+		return !!(ok && this._loadedModules[moduleName]); // Boolean
 	}
 
 	dojo.loaded = function(){
@@ -137,7 +137,7 @@
 		this._loaders = [];
 
 		for(var x=0; x<mll.length; x++){
-			mll[x]();
+			try{ mll[x](); }catch(e){ console.error(e); /* let other events fire */ }
 		}
 
 		this._loadNotifying = false;
@@ -206,7 +206,7 @@
 	dojo._modulesLoaded = function(){
 		if(d._postLoad){ return; }
 		if(d._inFlightCount > 0){ 
-			console.debug("files still in flight!");
+			console.warn("files still in flight!");
 			return;
 		}
 		d._callLoaded();
@@ -219,7 +219,7 @@
 		//still for non-browser environments though). This might also help the issue with
 		//FF 2.0 and freezing issues where we try to do sync xhr while background css images
 		//are being loaded (trac #2572)? Consider for 0.9.
-		if(typeof setTimeout == "object" || (djConfig["useXDomain"] && d.isOpera)){
+		if(typeof setTimeout == "object" || (djConfig.useXDomain && d.isOpera)){
 			setTimeout("dojo.loaded();", 0);
 		}else{
 			d.loaded();
@@ -292,13 +292,13 @@
 		var modArg = (!omitModuleCheck) ? moduleName : null;
 		var ok = this._loadPath(relpath, modArg);
 
-		if((!ok)&&(!omitModuleCheck)){
+		if(!ok && !omitModuleCheck){
 			throw new Error("Could not load '" + moduleName + "'; last tried '" + relpath + "'");
 		}
 
 		// check that the symbol was defined
 		// Don't bother if we're doing xdomain (asynchronous) loading.
-		if((!omitModuleCheck)&&(!this["_isXDomain"])){
+		if(!omitModuleCheck && !this._isXDomain){
 			// pass in false so we can give better error
 			module = this._loadedModules[moduleName];
 			if(!module){
@@ -364,8 +364,8 @@
 
 		// FIXME: dojo.name_ no longer works!!
 
-		var common = modMap["common"]||[];
-		var result = common.concat(modMap[d._name]||modMap["default"]||[]);
+		var common = modMap.common || [];
+		var result = common.concat(modMap[d._name] || modMap["default"] || []);
 
 		for(var x=0; x<result.length; x++){
 			var curr = result[x];
@@ -376,7 +376,6 @@
 			}
 		}
 	}
-
 
 	dojo.requireIf = function(/*Boolean*/ condition, /*String*/ resourceName){
 		// summary:
@@ -502,10 +501,10 @@
 			var uriobj = new d._Url(uri+"");
 
 			if(
-				(relobj.path=="")	&&
-				(!relobj.scheme)	&&
-				(!relobj.authority)	&&
-				(!relobj.query)
+				relobj.path == "" &&
+				!relobj.scheme &&
+				!relobj.authority &&
+				!relobj.query
 			){
 				if(relobj.fragment != n){
 					uriobj.fragment = relobj.fragment;
@@ -596,7 +595,7 @@
 		// example:
 		//	|	dojo.moduleUrl("acme","images/small.png")
 
-		var loc = dojo._getModuleSymbols(module).join('/');
+		var loc = d._getModuleSymbols(module).join('/');
 		if(!loc){ return null; }
 		if(loc.lastIndexOf("/") != loc.length-1){
 			loc += "/";

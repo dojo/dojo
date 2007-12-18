@@ -561,7 +561,7 @@ dojo.require("dojo._base.query");
 		if(_d._isDocumentOk(xhr)){
 			dfd.callback(dfd);
 		}else{
-			var err = new Error("Unable to load "+uri+" status:"+ xhr.status);
+			var err = new Error("Unable to load " + dfd.ioArgs.url + " status:" + xhr.status);
 			err.status = xhr.status;
 			err.responseText = xhr.responseText;
 			dfd.errback(err);

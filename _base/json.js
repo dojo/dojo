@@ -89,6 +89,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 			return recurse(newObj, prettyPrint, nextIndent);
 		}
 	}
+	var sep=(prettyPrint?", ":","), psep=(prettyPrint?": ":":");
 	// array
 	if(dojo.isArray(it)){
 		var res = [];
@@ -99,7 +100,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 			}
 			res.push(newLine + nextIndent + val);
 		}
-		return "[" + res.join(", ") + newLine + _indentStr + "]";
+		return "[" + res.join(sep) + newLine + _indentStr + "]";
 	}
 	/*
 	// look in the registry
@@ -134,7 +135,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 		}
 		// FIXME: use += on Moz!!
 		//	 MOW NOTE: using += is a pain because you have to account for the dangling comma...
-		output.push(newLine + nextIndent + keyStr + ": " + val);
+		output.push(newLine + nextIndent + keyStr + psep + val);
 	}
-	return "{" + output.join(", ") + newLine + _indentStr + "}";
+	return "{" + output.join(sep) + newLine + _indentStr + "}";
 }

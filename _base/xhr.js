@@ -102,15 +102,15 @@ dojo.require("dojo._base.query");
 		var pairs = [];
 		var backstop = {};
 		for(var name in map){
-			name = enc(name);
 			var value = map[name];
 			if(value != backstop[name]){
+				var assign = enc(name) + "=";
 				if(_d.isArray(value)){
 					for(var i=0; i < value.length; i++){
-						pairs.push(name + "=" + enc(value[i]));
+						pairs.push(assign + enc(value[i]));
 					}
 				}else{
-					pairs.push(name + "=" + enc(value));
+					pairs.push(assign + enc(value));
 				}
 			}
 		}
@@ -154,12 +154,12 @@ dojo.require("dojo._base.query");
 		// FIXME: should we grab the URL string if we're not passed one?
 		var ret = {};
 		var qp = str.split("&");
-		var dc = decodeURIComponent;
+		var dec = decodeURIComponent;
 		_d.forEach(qp, function(item){
 			if(item.length){
 				var parts = item.split("=");
-				var name = dc(parts.shift());
-				var val = dc(parts.join("="));
+				var name = dec(parts.shift());
+				var val = dec(parts.join("="));
 				if(_d.isString(ret[name])){
 					ret[name] = [ret[name]];
 				}
@@ -237,7 +237,7 @@ dojo.require("dojo._base.query");
 						dom.async = false;
 						dom.loadXML(xhr.responseText);
 						result = dom;
-					}catch(e){ /* Not available. Squelch and try next one. */ };
+					}catch(e){ /* Not available. Squelch and try next one. */ }
 				});
 			}
 			return result; // DOMDocument
@@ -426,8 +426,8 @@ dojo.require("dojo._base.query");
 		
 		dfd.canceled = true;
 		var xhr = dfd.ioArgs.xhr;
-		var _at = (typeof xhr.abort);
-		if((_at == "function")||(_at == "unknown")){
+		var _at = typeof xhr.abort;
+		if(_at == "function" || _at == "unknown"){
 			xhr.abort();
 		}
 		var err = new Error("xhr cancelled");
@@ -471,7 +471,7 @@ dojo.require("dojo._base.query");
 		if(!_d._blockAsync){
 			// we need manual loop because we often modify _inFlight (and therefore 'i') while iterating
 			// note: the second clause is an assigment on purpose, lint may complain
-			for(var i=0, tif; (i<_inFlight.length)&&(tif=_inFlight[i]); i++){
+			for(var i = 0, tif; i < _inFlight.length && (tif = _inFlight[i]); i++){
 				var dfd = tif.dfd;
 				try{
 					if(!dfd || dfd.canceled || !tif.validCheck(dfd)){
@@ -481,7 +481,7 @@ dojo.require("dojo._base.query");
 						tif.resHandle(dfd);
 					}else if(dfd.startTime){
 						//did we timeout?
-						if(dfd.startTime + (dfd.ioArgs.args.timeout||0) < now){
+						if(dfd.startTime + (dfd.ioArgs.args.timeout || 0) < now){
 							_inFlight.splice(i--, 1);
 							var err = new Error("timeout exceeded");
 							err.dojoType = "timeout";
@@ -491,7 +491,7 @@ dojo.require("dojo._base.query");
 						}
 					}
 				}catch(e){
-					// FIXME: make sure we errback!
+					// FIXME: make sure we errback! (fixed?  remove console.debug?)
 					console.debug(e);
 					dfd.errback(new Error("_watchInFlightError!"));
 				}
@@ -557,10 +557,14 @@ dojo.require("dojo._base.query");
 		return 4 == dfd.ioArgs.xhr.readyState; //boolean
 	}
 	var _resHandle = function(/*Deferred*/dfd){
-		if(_d._isDocumentOk(dfd.ioArgs.xhr)){
+		var xhr = dfd.ioArgs.xhr;
+		if(_d._isDocumentOk(xhr)){
 			dfd.callback(dfd);
 		}else{
-			dfd.errback(new Error("bad http response code:" + dfd.ioArgs.xhr.status));
+			var err = new Error("Unable to load "+uri+" status:"+ xhr.status);
+			err.status = xhr.status;
+			err.responseText = xhr.responseText;
+			dfd.errback(err);
 		}
 	}
 
@@ -580,7 +584,7 @@ dojo.require("dojo._base.query");
 			}
 		}
 		// FIXME: is this appropriate for all content types?
-		ioArgs.xhr.setRequestHeader("Content-Type", (args.contentType||_defaultContentType));
+		ioArgs.xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
 		// FIXME: set other headers here!
 		try{
 			ioArgs.xhr.send(ioArgs.query);
@@ -660,7 +664,7 @@ dojo.require("dojo._base.query");
 		//		String. The raw data to send in the body of the PUT request.
 		var dfd = _makeXhrDeferred(args);
 		var ioArgs = dfd.ioArgs;
-		if(args["putData"]){
+		if(args.putData){
 			ioArgs.query = args.putData;
 			args.putData = null;
 		}

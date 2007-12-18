@@ -3,6 +3,7 @@
 <html>
 	<head>
 		<title>testing form and xhr utils</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
@@ -11,7 +12,7 @@
 		<script type="text/javascript">
 			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
-				var f1fo = { blah: "blah" };
+				var f1fo = { 'blah': "blah" };
 				var f1foStr = "blah=blah";
 				var f1foJson = '{"blah": "blah"}';
 
@@ -32,31 +33,41 @@
 				var f3foStr = "spaces=string%20with%20spaces&";
 				var f3foJson = '{"spaces": "string with spaces"}';
 
+				var f5fo = { 'blåh': "bláh" };
+				var f5foStr = "bl%C3%A5h=bl%C3%A1h";
+				var f5foJson = '{"blåh": "bláh"}';
+
+
 				doh.register("t", 
 					[
 						function formNodeToObject(t){
 							t.is(f1fo , dojo.formToObject(dojo.byId("f1")));
+							t.is(f5fo , dojo.formToObject(dojo.byId("f5")));
 						},
 						function formIdToObject(t){
 							t.is(f1fo , dojo.formToObject("f1"));
+							t.is(f5fo , dojo.formToObject("f5"));
 						},
 						function formToObjectWithMultiSelect(t){
 							t.is(f2fo , dojo.formToObject("f2"));
 						},
 						function objectToQuery(t){
 							t.is(f1foStr , dojo.objectToQuery(f1fo));
+							t.is(f5foStr , dojo.objectToQuery(f5fo));
 						},
 						function objectToQueryArr(t){
 							t.is(f2foStr, dojo.objectToQuery(f2fo));
 						},
 						function formToQuery(t){
 							t.is(f1foStr, dojo.formToQuery("f1"));
+							t.is(f5foStr, dojo.formToQuery("f5"));
 						},
 						function formToQueryArr(t){
 							t.is(f2foStr, dojo.formToQuery("f2"));
 						},
 						function formToJson(t){
 							t.is(f1foJson, dojo.formToJson("f1"));
+							t.is(f5foJson, dojo.formToJson("f5"));
 						},
 						function formToJsonArr(t){
 							t.is(f2foJson, dojo.formToJson("f2"));
@@ -65,6 +76,7 @@
 							t.is(f1fo , dojo.queryToObject(f1foStr));
 							t.is(f2fo , dojo.queryToObject(f2foStr));
 							t.is(f3fo , dojo.queryToObject(f3foStr));
+							t.is(f5fo , dojo.queryToObject(f5foStr));
 						},
 						function textContentHandler(t){
 							t.is("foo bar baz ", 
@@ -381,6 +393,11 @@
 		</form>
 		<form id="f4" style="border: 1px solid black;" action="xhrDummyMethod.php">
 			<input type="hidden" name="action" value="Form with input named action">
+		</form>
+		<form id="f5" style="border: 1px solid black;">
+			<input type="text" name="blåh" value="bláh">
+			<input type="text" name="no_value" value="blah" disabled>
+			<input type="button" name="no_value2" value="blah">
 		</form>
 	</body>
 </html>

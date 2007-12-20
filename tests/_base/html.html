@@ -194,6 +194,83 @@
 							t.assertFalse(dojo.hasClass(node, "b"));
 							dojo.removeClass(node, "c");
 							t.assertTrue(!node.className);
+						},
+						function getTypeInput(t){
+							t.f(dojo.hasAttr(dojo.byId("input-no-type"), "type"));
+							t.is("text", dojo.attr(dojo.byId("input-no-type"), "type"));
+							t.t(dojo.hasAttr(dojo.byId("input-with-type"), "type"));
+							t.is("checkbox", dojo.attr(dojo.byId("input-with-type"), "type"));
+						},
+						function getWithString(t){
+							t.f(dojo.hasAttr("input-no-type", "type"));
+							t.is("text", dojo.attr("input-no-type", "type"));
+							t.t(dojo.hasAttr("input-with-type", "type"));
+							t.is("checkbox", dojo.attr("input-with-type", "type"));
+						},
+						function attrId(t){
+							t.t(dojo.hasAttr("div-no-tabindex", "id"));
+							t.is("div-no-tabindex", dojo.attr("div-no-tabindex", "id"));
+							var div = document.createElement("div");
+							t.f(dojo.hasAttr(div, "id"));
+							t.is(null, dojo.attr(div, "id"));
+							dojo.attr(div, "id", "attrId1");
+							t.t(dojo.hasAttr(div, "id"));
+							t.is("attrId1", dojo.attr(div, "id"));
+							dojo.removeAttr(div, "id");
+							t.f(dojo.hasAttr(div, "id"));
+							t.is(null, dojo.attr(div, "id"));
+						},
+						function getTabindexDiv(t){
+							t.f(dojo.hasAttr("div-no-tabindex", "tabindex"));
+							t.is(null, dojo.attr("div-no-tabindex", "tabindex"));
+							t.t(dojo.hasAttr("div-tabindex-minus-1", "tabindex"));
+							t.is(-1, dojo.attr("div-tabindex-minus-1", "tabindex"));
+							t.t(dojo.hasAttr("div-tabindex-0", "tabindex"));
+							t.is(0, dojo.attr("div-tabindex-0", "tabindex"));
+							t.is(1, dojo.attr("div-tabindex-1", "tabindex"));
+						},
+						function getTabindexInput(t){
+							t.f(dojo.hasAttr("input-no-tabindex", "tabindex"));
+							t.is(null, dojo.attr("input-no-tabindex", "tabindex"));
+							t.t(dojo.hasAttr("input-tabindex-minus-1", "tabindex"));
+							t.is(-1, dojo.attr("input-tabindex-minus-1", "tabindex"));
+							t.t(dojo.hasAttr("input-tabindex-0", "tabindex"));
+							t.is(0, dojo.attr("input-tabindex-0", "tabindex"));
+							t.is(1, dojo.attr("input-tabindex-1", "tabindex"));
+						},
+						function setTabindexDiv(t){
+							var div = document.createElement("div");
+							t.is(null, dojo.attr(div, "tabindex"));
+							dojo.attr(div, "tabindex", -1);
+							t.is(-1, dojo.attr(div, "tabindex"));
+							dojo.attr(div, "tabindex", 0);
+							t.is(0, dojo.attr(div, "tabindex"));
+							dojo.attr(div, "tabindex", 1);
+							t.is(1, dojo.attr(div, "tabindex"));
+						},
+						function setTabindexInput(t){
+							var input = document.createElement("input");
+							t.is(null, dojo.attr(input, "tabindex"));
+							dojo.attr(input, "tabindex", -1);
+							t.is(-1, dojo.attr(input, "tabindex"));
+							dojo.attr(input, "tabindex", 0);
+							t.is(0, dojo.attr(input, "tabindex"));
+							dojo.attr(input, "tabindex", 1);
+							t.is(1, dojo.attr(input, "tabindex"));
+						},
+						function removeTabindexFromDiv(t){
+							var div = document.createElement("div");
+							dojo.attr(div, "tabindex", 1);
+							t.is(1, dojo.attr(div, "tabindex"));
+							dojo.removeAttr(div, "tabindex");
+							t.is(null, dojo.attr(div, "tabindex"));
+						},
+						function removeTabindexFromInput(t){
+							var input = document.createElement("input");
+							dojo.attr(input, "tabindex", 1);
+							t.is(1, dojo.attr(input, "tabindex"));
+							dojo.removeAttr(input, "tabindex");
+							t.is(null, dojo.attr(input, "tabindex"));
 						}
 					]
 				);
@@ -386,6 +463,20 @@
 			100px square, no positioning
 		</div>
 		<iframe id="blah"></iframe>
+
+		<div id="div-no-tabindex"></div>
+		<div id="div-tabindex-minus-1" tabindex="-1"></div>
+		<div id="div-tabindex-0" tabindex="0"></div>
+		<div id="div-tabindex-1" tabindex="1"></div>
+
+		<div>
+			<input id="input-no-type">
+			<input id="input-with-type" type="checkbox">
+			<input id="input-no-tabindex">
+			<input id="input-tabindex-minus-1" tabindex="-1">
+			<input id="input-tabindex-0" tabindex="0">
+			<input id="input-tabindex-1" tabindex="1">
+		</div>
 	</body>
 </html>
 

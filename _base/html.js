@@ -946,6 +946,102 @@ if(dojo.isIE || dojo.isOpera){
 		mb.y = abs.y;
 		return mb;
 	}
+
+	// =============================
+	// Element attribute Functions
+	// =============================
+
+	var _fixAttrName = function(/*String*/name){
+		switch(name.toLowerCase()){
+			case "tabindex":
+				// Internet Explorer will only set or remove tabindex
+				// if it is spelled "tabIndex"
+				return dojo.isIE ? "tabIndex" : "tabindex";
+			default:
+				return name;
+		}
+	}
+
+	// non-deprecated HTML4 attributes with default values
+	// http://www.w3.org/TR/html401/index/attributes.html
+	// FF and Safari will return the default values if you
+	// access the attributes via a property but not
+	// via getAttribute()
+	var _attrProps = {
+		colspan: "colSpan",
+		enctype: "enctype",
+		frameborder: "frameborder",
+		method: "method",
+		rowspan: "rowSpan",
+		scrolling: "scrolling",
+		shape: "shape",
+		span: "span",
+		type: "type",
+		valuetype: "valueType"
+	}
+
+	var _hasAttr = function(/*DomNode*/node, /*String*/name){
+		var attr = node.getAttributeNode(name);
+		return attr ? attr.specified : false;
+	}
+
+	dojo.hasAttr = function(/*DomNode|String*/node, /*String*/name){
+		// summary:
+		//		Returns true if the requested attribute is specified on the
+		//		given element, and false otherwise.
+		//	node:
+		//		id or reference to the element to check
+		//	name:
+		//		the name of the attribute
+		//	returns:
+		//		true if the requested attribute is specified on the
+		//		given element, and false otherwise
+		return _hasAttr(dojo.byId(node), _fixAttrName(name)); // boolean
+	}
+
+	dojo.attr = function(/*DomNode|String*/node, /*String*/name, /*String?*/value){
+		// summary:
+		//		Gets or sets an attribute on an HTML element.
+		// description:
+		//		If 2 arguments are passed, acts as a getter.
+		//		If a third argument is passed, acts as a setter.
+		// node:
+		//		id or reference to the element to get or set the attribute on
+		// name:
+		//		the name of the attribute to get or set
+		// value:
+		//		the value for the attribute (optional)
+		// returns:
+		//		when used as a getter, the value of the requested attribute
+		//		or null if that attribute does not have a specified or
+		//		default value;
+		//		when user as a setter, undefined
+		node = dojo.byId(node);
+		name = _fixAttrName(name);
+		if(arguments.length == 3){
+			node.setAttribute(name, value);
+			return undefined;
+		}else{
+			// should we access this attribute via a property or
+			// via getAttribute()?
+			var prop = _attrProps[name.toLowerCase()];
+			if(prop){
+				return node[prop];
+			}else{
+				return _hasAttr(node, name) ? node.getAttribute(name) : null;
+			}
+		}
+	}
+
+	dojo.removeAttr = function(/*DomNode|String*/node, /*String*/name){
+		// summary:
+		//		Removes an attribute from an HTML element.
+		// node:
+		//		id or reference to the element to remove the attribute from
+		// name:
+		//		the name of the attribute to remove
+		dojo.byId(node).removeAttribute(_fixAttrName(name));
+	}
 })();
 
 // =============================

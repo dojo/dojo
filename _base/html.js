@@ -986,7 +986,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	dojo.hasAttr = function(/*DomNode|String*/node, /*String*/name){
-		// summary:
+		//	summary:
 		//		Returns true if the requested attribute is specified on the
 		//		given element, and false otherwise.
 		//	node:
@@ -1000,18 +1000,18 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	dojo.attr = function(/*DomNode|String*/node, /*String*/name, /*String?*/value){
-		// summary:
+		//	summary:
 		//		Gets or sets an attribute on an HTML element.
-		// description:
+		//	description:
 		//		If 2 arguments are passed, acts as a getter.
 		//		If a third argument is passed, acts as a setter.
-		// node:
+		//	node:
 		//		id or reference to the element to get or set the attribute on
-		// name:
+		//	name:
 		//		the name of the attribute to get or set
-		// value:
+		//	value:
 		//		the value for the attribute (optional)
-		// returns:
+		//	returns:
 		//		when used as a getter, the value of the requested attribute
 		//		or null if that attribute does not have a specified or
 		//		default value;
@@ -1034,11 +1034,11 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	dojo.removeAttr = function(/*DomNode|String*/node, /*String*/name){
-		// summary:
+		//	summary:
 		//		Removes an attribute from an HTML element.
-		// node:
+		//	node:
 		//		id or reference to the element to remove the attribute from
-		// name:
+		//	name:
 		//		the name of the attribute to remove
 		dojo.byId(node).removeAttribute(_fixAttrName(name));
 	}

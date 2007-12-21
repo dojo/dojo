@@ -224,7 +224,10 @@
 							t.f(dojo.hasAttr("div-no-tabindex", "tabindex"));
 							t.is(null, dojo.attr("div-no-tabindex", "tabindex"));
 							t.t(dojo.hasAttr("div-tabindex-minus-1", "tabindex"));
-							t.is(-1, dojo.attr("div-tabindex-minus-1", "tabindex"));
+							if(!dojo.isOpera){
+								// Opera (at least <= 9) does not support tabindex="-1"
+								t.is(-1, dojo.attr("div-tabindex-minus-1", "tabindex"));
+							}
 							t.t(dojo.hasAttr("div-tabindex-0", "tabindex"));
 							t.is(0, dojo.attr("div-tabindex-0", "tabindex"));
 							t.is(1, dojo.attr("div-tabindex-1", "tabindex"));
@@ -233,7 +236,10 @@
 							t.f(dojo.hasAttr("input-no-tabindex", "tabindex"));
 							t.is(null, dojo.attr("input-no-tabindex", "tabindex"));
 							t.t(dojo.hasAttr("input-tabindex-minus-1", "tabindex"));
-							t.is(-1, dojo.attr("input-tabindex-minus-1", "tabindex"));
+							if(!dojo.isOpera){
+								// Opera (at least <= 9) does not support tabindex="-1"
+								t.is(-1, dojo.attr("input-tabindex-minus-1", "tabindex"));
+							}
 							t.t(dojo.hasAttr("input-tabindex-0", "tabindex"));
 							t.is(0, dojo.attr("input-tabindex-0", "tabindex"));
 							t.is(1, dojo.attr("input-tabindex-1", "tabindex"));
@@ -242,7 +248,10 @@
 							var div = document.createElement("div");
 							t.is(null, dojo.attr(div, "tabindex"));
 							dojo.attr(div, "tabindex", -1);
-							t.is(-1, dojo.attr(div, "tabindex"));
+							if(!dojo.isOpera){
+								// Opera (at least <= 9) does not support tabindex="-1"
+								t.is(-1, dojo.attr(div, "tabindex"));
+							}
 							dojo.attr(div, "tabindex", 0);
 							t.is(0, dojo.attr(div, "tabindex"));
 							dojo.attr(div, "tabindex", 1);
@@ -252,7 +261,10 @@
 							var input = document.createElement("input");
 							t.is(null, dojo.attr(input, "tabindex"));
 							dojo.attr(input, "tabindex", -1);
-							t.is(-1, dojo.attr(input, "tabindex"));
+							if(!dojo.isOpera){
+								// Opera (at least <= 9) does not support tabindex="-1"
+								t.is(-1, dojo.attr(input, "tabindex"));
+							}
 							dojo.attr(input, "tabindex", 0);
 							t.is(0, dojo.attr(input, "tabindex"));
 							dojo.attr(input, "tabindex", 1);

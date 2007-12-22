@@ -128,7 +128,7 @@ dojo.require("dojo._base.NodeList");
 
 	var getQueryParts = function(query){
 		// summary: state machine for query tokenization
-		if(query.charAt(query.length-1) == ">"){
+		if(">~+".indexOf(query.charAt(query.length-1)) >= 0){
 			query += " *"
 		}
 		query += " "; // ensure that we terminate the state machine
@@ -159,7 +159,7 @@ dojo.require("dojo._base.NodeList");
 		var endTag = function(){
 			if(inTag >= 0){
 				var tv = (inTag == x) ? null : ts(inTag, x).toLowerCase();
-				currentPart[ (">~+".indexOf(tv) < 0)? "tag" : "oper" ] = tv;
+				currentPart[ (">~+".indexOf(tv) < 0) ? "tag" : "oper" ] = tv;
 				inTag = -1;
 			}
 		}
@@ -331,19 +331,31 @@ dojo.require("dojo._base.NodeList");
 		while(qparts.length){
 			var tqp = qparts.shift();
 			var prefix;
+			var postfix = "";
 			// FIXME: need to add support for ~ and +
 			if(tqp.oper == ">"){
 				prefix = "/";
-				// prefix = "/child::node()";
+				// prefix = "/child::*";
+				tqp = qparts.shift();
+			}else if(tqp.oper == "~"){
+				prefix = "/following-sibling::"; // get element following siblings
+				tqp = qparts.shift();
+			}else if(tqp.oper == "+"){
+				// FIXME: 
+				//		fails when selecting subsequent siblings by node type
+				//		because the position() checks the position in the list
+				//		of matching elements and not the localized siblings
+				prefix = "/following-sibling::";
+				postfix = "[position()=1]";
 				tqp = qparts.shift();
 			}else{
 				prefix = "//";
-				// prefix = "/descendant::node()"
+				// prefix = "/descendant::*"
 			}
 
 			// get the tag name (if any)
 
-			xpath += prefix + tqp.tag;
+			xpath += prefix + tqp.tag + postfix;
 			
 			// check to see if it's got an id. Needs to come first in xpath.
 			if(tqp.id){
@@ -438,14 +450,41 @@ dojo.require("dojo._base.NodeList");
 		}
 	}
 
+	var _childElements = function(root){
+		var ret = [];
+		var te, x=0, tret = root[childNodesName];
+		while(te=tret[x++]){
+			if(te.nodeType == 1){ ret.push(te); }
+		}
+		return ret;
+	}
+
+	var _nextSiblings = function(root, single){
+		var ret = [];
+		var te = root;
+		while(te = te.nextSibling){
+			if(te.nodeType == 1){
+				ret.push(te);
+				if(single){ break; }
+			}
+		}
+		return ret;
+	}
+
 	var _filterDown = function(element, queryParts, matchArr, idx){
+		// NOTE:
+		//		in the fast path! this function is called recursively and for
+		//		every run of a query.
 		var nidx = idx+1;
 		var isFinal = (queryParts.length == nidx);
 		var tqp = queryParts[idx];
 
 		// see if we can constrain our next level to direct children
-		if(tqp.oper == ">"){
-			var ecn = element[childNodesName];
+		if(tqp.oper){
+			var ecn = (tqp.oper == ">") ? 
+				_childElements(element) :
+				_nextSiblings(element, (tqp.oper == "+"));
+
 			if(!ecn || !ecn.length){
 				return;
 			}
@@ -717,7 +756,6 @@ dojo.require("dojo._base.NodeList");
 				return true;
 			}
 		},
-		/* non standard!
 		"contains": function(name, condition){
 			return function(elem){
 				// FIXME: I dislike this version of "contains", as
@@ -728,7 +766,6 @@ dojo.require("dojo._base.NodeList");
 				return (elem.innerHTML.indexOf(condition) >= 0);
 			}
 		},
-		*/
 		"not": function(name, condition){
 			var ntf = getFilterFunc(getQueryParts(condition)[0]);
 			return function(elem){
@@ -903,14 +940,9 @@ dojo.require("dojo._base.NodeList");
 			function(root){
 				 return root.getElementsByTagName("*");
 			},
-		">": function(root){
-			var ret = [];
-			var te, x=0, tret = root[childNodesName];
-			while(te=tret[x++]){
-				if(te.nodeType == 1){ ret.push(te); }
-			}
-			return ret;
-		}
+		"~": _nextSiblings,
+		"+": function(root){ return _nextSiblings(root, true); },
+		">": _childElements
 	};
 
 	var getStepQueryFunc = function(query){
@@ -927,7 +959,7 @@ dojo.require("dojo._base.NodeList");
 		var sqf = function(root){
 			var localQueryParts = qparts.slice(0); // clone the src arr
 			var candidates;
-			if(localQueryParts[0].oper == ">"){
+			if(localQueryParts[0].oper == ">"){ // FIXME: what if it's + or ~?
 				candidates = [ root ];
 				// root = document;
 			}else{
@@ -956,11 +988,7 @@ dojo.require("dojo._base.NodeList");
 			// can we handle it?
 			if(	(document["evaluate"])&&
 				(query.indexOf(":") == -1)&&
-				(
-					(true) // ||
-					// (query.indexOf("[") == -1) ||
-					// (query.indexOf("=") == -1)
-				)
+				(query.indexOf("+") == -1) // skip direct sibling matches. See line ~344
 			){
 				// dojo.debug(query);
 				// should we handle it?
@@ -1068,10 +1096,12 @@ dojo.require("dojo._base.NodeList");
 	}
 
 	/*
-	// exposing these was a mistake
+	// exposing this was a mistake
 	d.query.attrs = attrs;
-	d.query.pseudos = pseudos;
 	*/
+	// exposing this because new pseudo matches are only executed through the
+	// DOM query path (never through the xpath optimizing branch)
+	d.query.pseudos = pseudos;
 
 	// one-off function for filtering a NodeList based on a simple selector
 	d._filterQueryResult = function(nodeList, simpleFilter){

@@ -9,9 +9,11 @@
 		<script type="text/javascript" src="../../../util/doh/runner.js"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
+			dojo.require("dojox.data.dom");
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
+						// basic sanity checks
 						"doh.is(4, (dojo.query('h3')).length);",
 						"doh.is(1, (dojo.query('h1:first-child')).length);",
 						"doh.is(2, (dojo.query('h3:first-child')).length);",
@@ -26,21 +28,26 @@
 						"doh.is(1, (dojo.query('.foo.bar')).length);",
 						"doh.is(2, (dojo.query('.baz')).length);",
 						"doh.is(3, (dojo.query('#t > h3')).length);",
+						// syntactic equivalents
 						"doh.is(12, (dojo.query('#t > *')).length);",
 						"doh.is(12, (dojo.query('#t >')).length);",
 						"doh.is(3, (dojo.query('.foo >')).length);",
 						"doh.is(3, (dojo.query('.foo > *')).length);",
+						// with a root, by ID
 						"doh.is(3, (dojo.query('> *', 'container')).length);",
 						"doh.is(3, (dojo.query('> h3', 't')).length);",
+						// compound queries
 						"doh.is(2, (dojo.query('.foo, .bar')).length);",
 						"doh.is(2, (dojo.query('.foo,.bar')).length);",
+						// multiple class attribute
 						"doh.is(1, (dojo.query('.foo.bar')).length);",
 						"doh.is(2, (dojo.query('.foo')).length);",
 						"doh.is(2, (dojo.query('.baz')).length);",
+						// case sensitivity
 						"doh.is(1, (dojo.query('span.baz')).length);",
 						"doh.is(1, (dojo.query('sPaN.baz')).length);",
 						"doh.is(1, (dojo.query('SPAN.baz')).length);",
-						// FIXME: need to support [foo="foo bar"]. We're incorrectly tokenizing!
+						"doh.is(1, (dojo.query('[class = \"foo bar\"]')).length);",
 						"doh.is(2, (dojo.query('[foo~=\"bar\"]')).length);",
 						"doh.is(2, (dojo.query('[ foo ~= \"bar\" ]')).length);",
 						// "t.is(0, (dojo.query('[ foo ~= \"\\'bar\\'\" ]')).length);",
@@ -56,6 +63,7 @@
 						"doh.is(0, (dojo.query('[foo|=\"baz\"]')).length);",
 						"doh.is(dojo.byId('_foo'), dojo.query('.foo:nth-child(2)')[0]);",
 						"doh.is(dojo.query('style')[0], dojo.query(':nth-child(2)')[0]);",
+						// descendant selectors
 						"doh.is(3, dojo.query('>', 'container').length);",
 						"doh.is(3, dojo.query('> *', 'container').length);",
 						"doh.is(2, dojo.query('> [qux]', 'container').length);",
@@ -64,8 +72,18 @@
 						"doh.is(3, dojo.query('>', 'container').length);",
 						"doh.is(3, dojo.query('> *', 'container').length);",
 						"doh.is('passed', dojo.query('#bug')[0].value);",
+						// sibling selectors
+						"doh.is(1, dojo.query('+', 'container').length);",
+						"doh.is(3, dojo.query('~', 'container').length);",
+						"doh.is(1, (dojo.query('.foo + span')).length);",
+						"doh.is(4, (dojo.query('.foo ~ span')).length);",
+						"doh.is(1, (dojo.query('#foo ~ *')).length);",
+						"doh.is(1, (dojo.query('#foo ~')).length);",
+						// sub-selector parsing
 						"doh.is(1, dojo.query('#t span.foo:not(span:first-child)').length);",
 						"doh.is(1, dojo.query('#t span.foo:not(:first-child)').length);",
+
+						// nth-child tests
 						"doh.is(2, dojo.query('#t > h3:nth-child(odd)').length);",
 						"doh.is(3, dojo.query('#t h3:nth-child(odd)').length);",
 						"doh.is(3, dojo.query('#t h3:nth-child(2n+1)').length);",
@@ -77,10 +95,12 @@
 						"doh.is(3, dojo.query('#t :nth-child(3)').length);",
 						"doh.is(0, dojo.query('#t > div:nth-child(1)').length);",
 						"doh.is(7, dojo.query('#t span').length);",
+						// :empty pseudo-selector
 						"doh.is(4, dojo.query('#t > span:empty').length);",
 						"doh.is(6, dojo.query('#t span:empty').length);",
 						"doh.is(0, dojo.query('h3 span:empty').length);",
 						"doh.is(1, dojo.query('h3 :not(:empty)').length);",
+						// escaping of ":" chars inside an ID
 						function silly_IDs1(){
 							doh.t(document.getElementById("silly:id::with:colons"));
 							doh.is(1, dojo.query("#silly\\:id\\:\\:with\\:colons").length);
@@ -91,11 +111,10 @@
 						},
 						function xml(){
 							try{
-								dojo.require("dojox.data.dom");
 								var doc = dojox.data.dom.createDocument("<ResultSet><Result>One</Result><Result>Two</Result></ResultSet>");
 								console.debug(doc);
-								console.debug(doc.documentElement);
-								console.debug(dojo.query("Result", doc.documentElement));
+								console.debug(dojox.data.dom.innerXML(doc.documentElement));
+								console.debug(dojo.query("Result", doc.documentElement).length);
 							}catch(e){ console.debug(e); }
 						}
 					]

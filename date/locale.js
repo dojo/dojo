@@ -19,10 +19,9 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 	// Format a pattern without literals
 	function formatPattern(dateObject, bundle, pattern){
 		return pattern.replace(/([a-z])\1*/ig, function(match){
-			var s;
+			var s, pad;
 			var c = match.charAt(0);
 			var l = match.length;
-			var pad;
 			var widthList = ["abbr", "wide", "narrow"];
 			switch(c){
 				case 'G':
@@ -53,19 +52,19 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 				case 'M':
 				case 'L':
 					var m = dateObject.getMonth();
-					var width;
+					var widthM;
 					switch(l){
 						case 1: case 2:
 							s = m+1; pad = true;
 							break;
 						case 3: case 4: case 5:
-							width = widthList[l-3];
+							widthM = widthList[l-3];
 							break;
 					}
-					if(width){
-						var type = (c == "L") ? "standalone" : "format";
-						var prop = ["months",type,width].join("-");
-						s = bundle[prop][m];
+					if(widthM){
+						var typeM = (c == "L") ? "standalone" : "format";
+						var propM = ["months", typeM, widthM].join("-");
+						s = bundle[propM][m];
 					}
 					break;
 				case 'w':
@@ -82,7 +81,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 				case 'e':
 				case 'c': // REVIEW: don't see this in the spec?
 					var d = dateObject.getDay();
-					var width;
+					var widthD;
 					switch(l){
 						case 1: case 2:
 							if(c == 'e'){
@@ -95,13 +94,13 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 							}
 							// else fallthrough...
 						case 3: case 4: case 5:
-							width = widthList[l-3];
+							widthD = widthList[l-3];
 							break;
 					}
-					if(width){
-						var type = (c == "c") ? "standalone" : "format";
-						var prop = ["days",type,width].join("-");
-						s = bundle[prop][d];
+					if(widthD){
+						var typeD = (c == "c") ? "standalone" : "format";
+						var propD = ["days", typeD, widthD].join("-");
+						s = bundle[propD][d];
 					}
 					break;
 				case 'a':
@@ -294,8 +293,8 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 	var result = new Date(1972, 0);
 	var expected = {};
 	var amPm = "";
-	dojo.forEach(match, function(v, i){
-		if(!i){return;}
+	var valid = dojo.every(match, function(v, i){
+		if(!i){return true;}
 		var token=tokens[i-1];
 		var l=token.length;
 		switch(token.charAt(0)){
@@ -319,7 +318,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 					}else{
 						//we expected 2 digits and got more...
 						if(options.strict){
-							return null;
+							return false;
 						}
 						//interpret literally, so '150' would be 150 A.D.
 						//also tolerate '1950', if 'yyyy' input passed to 'yy' format
@@ -340,7 +339,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 					v = dojo.indexOf(months, v);
 					if(v == -1){
 //						console.debug("dojo.date.locale.parse: Could not parse month name: '" + v + "'.");
-						return null;
+						return false;
 					}
 				}else{
 					v--;
@@ -359,7 +358,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				v = dojo.indexOf(days, v);
 				if(v == -1){
 //					console.debug("dojo.date.locale.parse: Could not parse weekday name: '" + v + "'.");
-					return null;
+					return false;
 				}
 
 				//TODO: not sure what to actually do with this input,
@@ -387,7 +386,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				}
 				if(options.strict && v != am && v != pm){
 //					console.debug("dojo.date.locale.parse: Could not parse am/pm part.");
-					return null;
+					return false;
 				}
 
 				// we might not have seen the hours field yet, so store the state and apply hour change later
@@ -402,7 +401,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				//TODO: strict bounds checking, padding
 				if(v > 23){
 //					console.debug("dojo.date.locale.parse: Illegal hours value");
-					return null;
+					return false;
 				}
 
 				//in the 12-hour case, adjusting for am/pm requires the 'a' part
@@ -424,27 +423,22 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 //TODO: throw?
 //				console.debug("dojo.date.locale.parse: unsupported pattern char=" + token.charAt(0));
 		}
+		return true;
 	});
+
+	//validate parse date fields versus input date fields
+	if(!valid ||
+		(expected.year && result.getFullYear() != expected.year) ||
+		(expected.month && result.getMonth() != expected.month) ||
+		(expected.date && result.getDate() != expected.date)){
+		return null;
+	}
 
 	var hours = result.getHours();
 	if(amPm === 'p' && hours < 12){
 		result.setHours(hours + 12); //e.g., 3pm -> 15
 	}else if(amPm === 'a' && hours == 12){
 		result.setHours(0); //12am -> 0
-	}
-
-	//validate parse date fields versus input date fields
-	if(expected.year && result.getFullYear() != expected.year){
-//		console.debug("dojo.date.locale.parse: Parsed year: '" + result.getFullYear() + "' did not match input year: '" + expected.year + "'.");
-		return null;
-	}
-	if(expected.month && result.getMonth() != expected.month){
-//		console.debug("dojo.date.locale.parse: Parsed month: '" + result.getMonth() + "' did not match input month: '" + expected.month + "'.");
-		return null;
-	}
-	if(expected.date && result.getDate() != expected.date){
-//		console.debug("dojo.date.locale.parse: Parsed day of month: '" + result.getDate() + "' did not match input day of month: '" + expected.date + "'.");
-		return null;
 	}
 
 	//TODO: implement a getWeekday() method in order to test 

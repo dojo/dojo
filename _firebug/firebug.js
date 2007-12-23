@@ -495,7 +495,6 @@ if(
 			appendText(" ", html);
 			
 			var object = objects[i];
-			if(!object){ continue; }
 			if(typeof(object) == "string"){
 				appendText(object, html);
 		

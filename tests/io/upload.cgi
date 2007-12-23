@@ -54,7 +54,7 @@ print """Content-Type: text/html
 	<head>
 	</head>
 	<body>
-	    <textarea style="width: 100%%; height: 100px;">{ %s }</textarea>
+	    <textarea style="width: 100%; height: 100px;">{ %s }</textarea>
 	</body>
 </html>
 """ % (string.join(dbg, "\n"))

@@ -29,10 +29,12 @@ dojo._xdDebugFileLoaded = function(resourceName){
 		dbgQueue.currentResourceName = null;
 		this._xdNotifyLoaded();
 	}else{
-		dbgQueue.currentResourceName = dbgQueue[0].resourceName;
-		var element = document.createElement("script");
-		element.type = "text/javascript";
-		element.src = dbgQueue[0].resourcePath;
-		document.getElementsByTagName("head")[0].appendChild(element);
-	}		
+		if(resourceName == dbgQueue.currentResourceName){
+			dbgQueue.currentResourceName = dbgQueue[0].resourceName;
+			var element = document.createElement("script");
+			element.type = "text/javascript";
+			element.src = dbgQueue[0].resourcePath;
+			document.getElementsByTagName("head")[0].appendChild(element);
+		}
+	}
 }

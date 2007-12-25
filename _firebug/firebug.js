@@ -495,7 +495,10 @@ if(
 			appendText(" ", html);
 			
 			var object = objects[i];
-			if(typeof(object) == "string"){
+			if(object === undefined || object === null ){
+				appendNull(object, html);
+
+			}else if(typeof(object) == "string"){
 				appendText(object, html);
 		
 			}else if(object.nodeType == 9){

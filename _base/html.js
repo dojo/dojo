@@ -107,7 +107,7 @@ if(dojo.isIE || dojo.isOpera){
 				}
 				node = node.parentNode;
 			}
-		}catch(e){ return false; /* squelch */ }
+		}catch(e){ /* squelch, return false */ }
 		return false; // Boolean
 	};
 
@@ -774,7 +774,7 @@ if(dojo.isIE || dojo.isOpera){
 	// =============================
 	
 	var _sumAncestorProperties = function(node, prop){
-		if(!(node = (node||0).parentNode)){return 0};
+		if(!(node = (node||0).parentNode)){return 0}; //FIXME: 0.parentNode?
 		var val, retVal = 0, _b = dojo.body();
 		while(node && node.style){
 			if(gcs(node).position == "fixed"){
@@ -902,18 +902,18 @@ if(dojo.isIE || dojo.isOpera){
 				}
 				var curnode = node;
 				do{
-					var n = curnode["offsetLeft"];
+					var n = curnode.offsetLeft;
 					//FIXME: ugly hack to workaround the submenu in 
 					//popupmenu2 does not shown up correctly in opera. 
 					//Someone have a better workaround?
 					if(!dojo.isOpera || n>0){
 						ret.x += isNaN(n) ? 0 : n;
 					}
-					var m = curnode["offsetTop"];
-					ret.y += isNaN(m) ? 0 : m;
+					var t = curnode.offsetTop;
+					ret.y += isNaN(t) ? 0 : t;
 					curnode = curnode.offsetParent;
-				}while((curnode != endNode)&&curnode);
-			}else if(node["x"]&&node["y"]){
+				}while((curnode != endNode) && curnode);
+			}else if(node.x && node.y){
 				ret.x += isNaN(node.x) ? 0 : node.x;
 				ret.y += isNaN(node.y) ? 0 : node.y;
 			}

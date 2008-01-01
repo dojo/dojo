@@ -145,7 +145,7 @@
 		//Make sure nothing else got added to the onload queue
 		//after this first run. If something did, and we are not waiting for any
 		//more inflight resources, run again.
-		if(d._postLoad && d._inFlightCount == 0 && this._loaders.length > 0){
+		if(d._postLoad && d._inFlightCount == 0 && this._loaders.length){
 			d._callLoaded();
 		}
 	}

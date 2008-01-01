@@ -65,8 +65,8 @@ if(typeof window != 'undefined'){
 				var m = src.match(rePkg);
 				if(m){
 					// find out where we came from
-					if(!djConfig["baseUrl"]){
-						djConfig["baseUrl"] = src.substring(0, m.index);
+					if(!djConfig.baseUrl){
+						djConfig.baseUrl = src.substring(0, m.index);
 					}
 					// and find out if we need to modify our behavior
 					var cfg = scripts[i].getAttribute("djConfig");
@@ -80,7 +80,7 @@ if(typeof window != 'undefined'){
 				}
 			}
 		}
-		d.baseUrl = djConfig["baseUrl"];
+		d.baseUrl = djConfig.baseUrl;
 
 		// fill in the rendering support information in dojo.render.*
 		var n = navigator;
@@ -89,41 +89,35 @@ if(typeof window != 'undefined'){
 		var tv = parseFloat(dav);
 
 		d.isOpera = (dua.indexOf("Opera") >= 0) ? tv : 0;
-		d.isKhtml = (dav.indexOf("Konqueror") >= 0)||(dav.indexOf("Safari") >= 0) ? tv : 0;
 		if(dav.indexOf("Safari") >= 0){
- 			d.isSafari = parseFloat(dav.split("Version/")[1]) || 2;
+			d.isSafari = parseFloat(dav.split("Version/")[1]) || 2;
 		}
-		var geckoPos = dua.indexOf("Gecko");
-		d.isMozilla = d.isMoz = ((geckoPos >= 0)&&(!d.isKhtml)) ? tv : 0;
-		d.isFF = 0;
-		d.isIE = 0;
-		try{
-			if(d.isMoz){
-				d.isFF = parseFloat(dua.split("Firefox/")[1].split(" ")[0]);
-			}
-			if((document.all)&&(!d.isOpera)){
-				d.isIE = parseFloat(dav.split("MSIE ")[1].split(";")[0]);
-			}
-		}catch(e){}
+		d.isKhtml = (dav.indexOf("Konqueror") >= 0 || d.isSafari) ? tv : 0;
+		d.isMozilla = d.isMoz = (dua.indexOf("Gecko") >= 0 && !d.isKhtml) ? tv : 0;
+		d.isFF = d.isIE = 0;
+		if(d.isMoz){
+			d.isFF = parseFloat(dua.split("Firefox/")[1]) || 0;
+		}
+		if(document.all && !d.isOpera){
+			d.isIE = parseFloat(dav.split("MSIE ")[1]) || 0;
+		}
 
 		//Workaround to get local file loads of dojo to work on IE 7
 		//by forcing to not use native xhr.
-		if(dojo.isIE && (window.location.protocol === "file:")){
+		if(dojo.isIE && window.location.protocol === "file:"){
 			djConfig.ieForceActiveXXhr=true;
 		}
 
-		var cm = document["compatMode"];
-		d.isQuirks = (cm == "BackCompat")||(cm == "QuirksMode")||(d.isIE < 6);
+		var cm = document.compatMode;
+		d.isQuirks = cm == "BackCompat" || cm == "QuirksMode" || d.isIE < 6;
 
 		// TODO: is the HTML LANG attribute relevant?
 		d.locale = djConfig.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
 
-		d._println = console.debug;
-
 		// These are in order of decreasing likelihood; this will change in time.
 		d._XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
 
-		d._xhrObj= function(){
+		d._xhrObj = function(){
 			// summary: 
 			//		does the work of portably generating a new XMLHTTPRequest
 			//		object.
@@ -134,7 +128,7 @@ if(typeof window != 'undefined'){
 			}
 			if(!http){
 				for(var i=0; i<3; ++i){
-					var progid = dojo._XMLHTTP_PROGIDS[i];
+					var progid = d._XMLHTTP_PROGIDS[i];
 					try{
 						http = new ActiveXObject(progid);
 					}catch(e){
@@ -142,7 +136,7 @@ if(typeof window != 'undefined'){
 					}
 
 					if(http){
-						dojo._XMLHTTP_PROGIDS = [progid];  // so faster next time
+						d._XMLHTTP_PROGIDS = [progid];  // so faster next time
 						break;
 					}
 				}
@@ -157,9 +151,9 @@ if(typeof window != 'undefined'){
 
 		d._isDocumentOk = function(http){
 			var stat = http.status || 0;
-			return ( (stat>=200)&&(stat<300))|| 	// Boolean
-				(stat==304)|| 						// allow any 2XX response code
-				(stat==1223)|| 						// get it out of the cache
+			return (stat >= 200 && stat < 300) || 	// Boolean
+				stat == 304 || 						// allow any 2XX response code
+				stat == 1223 || 						// get it out of the cache
 				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") ); // Internet Explorer mangled the status code
 		}
 
@@ -227,9 +221,9 @@ if(typeof window != 'undefined'){
 		// A bug in khtml calls events callbacks for document for event which isnt supported
 		// for example a created contextmenu event calls DOMContentLoaded, workaround
 		var type = (e && e.type) ? e.type.toLowerCase() : "load";
-		if(arguments.callee.initialized || (type!="domcontentloaded" && type!="load")){ return; }
+		if(arguments.callee.initialized || (type != "domcontentloaded" && type != "load")){ return; }
 		arguments.callee.initialized = true;
-		if(typeof dojo["_khtmlTimer"] != 'undefined'){
+		if("_khtmlTimer" in dojo){
 			clearInterval(dojo._khtmlTimer);
 			delete dojo._khtmlTimer;
 		}
@@ -246,7 +240,7 @@ if(typeof window != 'undefined'){
 		//		due to a threading issue in Firefox 2.0, we can't enable
 		//		DOMContentLoaded on that platform. For more information, see:
 		//		http://trac.dojotoolkit.org/ticket/1704
-		if(dojo.isOpera|| (dojo.isMoz && (djConfig["enableMozDomContentLoaded"] === true))){
+		if(dojo.isOpera || (dojo.isMoz && djConfig.enableMozDomContentLoaded === true)){
 			document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
 		}
 
@@ -265,7 +259,6 @@ if(typeof window != 'undefined'){
 	//	END DOMContentLoaded
 
 	(function(){
-
 		var _w = window;
 		var _handleNodeEvent = function(/*String*/evtName, /*Function*/fp){
 			// summary:
@@ -277,8 +270,8 @@ if(typeof window != 'undefined'){
 			_w[evtName] = function(){
 				fp.apply(_w, arguments);
 				oldHandler.apply(_w, arguments);
-			}
-		}
+			};
+		};
 
 		if(dojo.isIE){
 			// 	for Internet Explorer. readyState will not be achieved on init
@@ -338,7 +331,7 @@ if(typeof window != 'undefined'){
 // dojo.requireIf(djConfig["debugAtAllCosts"] && !window.widget && djConfig["useXDomain"], "dojo.browser_debug_xd");
 
 if(djConfig.isDebug){
-		dojo.require("dojo._firebug.firebug");
+	dojo.require("dojo._firebug.firebug");
 }
 
 if(djConfig.debugAtAllCosts){

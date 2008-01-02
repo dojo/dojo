@@ -128,12 +128,11 @@ if(
 		dir: function(object){
 			// summary: 
 			//		Traces object. Only partially implemented.
-			var html = [];
 						
 			var pairs = [];
-			for(var name in object){
+			for(var prop in object){
 				try{
-					pairs.push([name, object[name]]);
+					pairs.push([prop, object[prop]]);
 				}catch(e){
 					/* squelch */
 				}
@@ -143,7 +142,7 @@ if(
 				return a[0] < b[0] ? -1 : 1; 
 			});
 			
-			html.push('<table>');
+			var html = ['<table>'];
 			for(var i = 0; i < pairs.length; ++i){
 				var name = pairs[i][0], value = pairs[i][1];
 				
@@ -284,7 +283,7 @@ if(
 		}
 	}
 	
-	openWin = function(){
+	function openWin(){
 		var win = window.open("","_firebug","status=0,menubar=0,resizable=1,width=640,height=480,scrollbars=1,addressbar=0");
 		var newDoc=win.document;
 		HTMLstring='<html><head><title>Firebug Lite</title></head>\n';
@@ -293,12 +292,10 @@ if(
 		/*HTMLstring+='<button onclick="(function(){ console.log(dojo.version.toString()); })()">Test Parent Dojo</button>\n';*/
 		HTMLstring+='<div id="fb"></div>';
 		HTMLstring+='</body></html>';
-	
-	
+
 		newDoc.write(HTMLstring);
 		newDoc.close();
 		return win;
-	
 	}
 	
 	function createFrame(){
@@ -306,19 +303,18 @@ if(
 			return;
 		}
 		
+		var containerHeight = "100%";
 		if(djConfig.popup){
 			_firebugWin = openWin();
 			_firebugDoc = _firebugWin.document;
 			djConfig.debugContainerId = 'fb';
-			var containerHeight = "100%";
 			
 			// connecting popup
 			_firebugWin.console = window.console;
 			_firebugWin.dojo = window.dojo;
-
 		}else{
-			_firebugDoc = document;	
-			var containerHeight = (djConfig.debugHeight) ? djConfig.debugHeight + "px" :"300px";
+			_firebugDoc = document;
+			containerHeight = (djConfig.debugHeight || 300) + "px";
 		}
 		
 		var styleElement = _firebugDoc.createElement("link");
@@ -480,9 +476,8 @@ if(
 		
 		for(var i = 0; i < parts.length; ++i){
 			var part = parts[i];
-			if(part && typeof(part) == "object"){
-				var object = objects[++objIndex];
-				part.appender(object, html);
+			if(part && typeof part == "object"){
+				part.appender(objects[++objIndex], html);
 			}else{
 				appendText(part, html);
 			}
@@ -539,9 +534,7 @@ if(
 				// create a back button
 				var bkBtn = '<a href="javascript:console.closeObjectInspector();">&nbsp;<<&nbsp;Back</a>';
 				consoleObjectInspector.innerHTML = bkBtn + "<pre>" + printObject( this.obj ) + "</pre>";
-													  
 			})
-
 		}
 	}
 
@@ -582,7 +575,7 @@ if(
 					return "&quot;";
 			}
 			return "?";
-		};
+		}
 		return String(value).replace(/[<>&"']/g, replaceChars);
 	}
 
@@ -734,18 +727,16 @@ if(
 	}
 
 	function onError(msg, href, lineNo){
-		var html = [];
-		
 		var lastSlash = href.lastIndexOf("/");
 		var fileName = lastSlash == -1 ? href : href.substr(lastSlash+1);
-		
-		html.push(
+
+		var html = [
 			'<span class="errorMessage">', msg, '</span>', 
 			'<div class="objectBox-sourceLink">', fileName, ' (line ', lineNo, ')</div>'
-		);
-		
+		];
+
 		logRow(html, "error");
-	};
+	}
 
 
 	//After converting to div instead of iframe, now getting two keydowns right away in IE 6.
@@ -755,7 +746,7 @@ if(
 	function onKeyDown(event){
 		var timestamp = (new Date()).getTime();
 		if(timestamp > onKeyDownTime + 200){
-			var event = dojo.fixEvent(event);
+			event = dojo.fixEvent(event);
 			var keys = dojo.keys;
 			var ekc = event.keyCode;
 			onKeyDownTime = timestamp;
@@ -823,11 +814,16 @@ if(
 			commandLine.value = "";
 		}
 	}
+
+	function isArray(it){
+		return it && it instanceof Array || typeof it == "array";
+	}
+
 	//***************************************************************************************************
 	// Print Object Helpers
-	getAtts = function(o){
+	function getAtts(o){
 		//Get amount of items in an object
-		if(dojo.isArray(o)) { 
+		if(isArray(o)){
 			return "[array with " + o.length + " slots]"; 
 		}else{
 			var i = 0;
@@ -838,14 +834,13 @@ if(
 		}
 	}
 
-	printObject = function(o, i, txt){
-		
+	function printObject(o, i, txt){
 		// Recursively trace object, indenting to represent depth for display in object inspector
 		// TODO: counter to prevent overly complex or looped objects (will probably help with dom nodes)
 		var br = "\n"; // using a <pre>... otherwise we'd need a <br />
 		var ind = "  ";
-		txt = (txt) ? txt : "";
-		i = (i) ? i : ind;
+		txt = txt || "";
+		i = i || ind;
 		for(var nm in o){
 			if(typeof(o[nm]) == "object"){
 				txt += i+nm +" -> " + getAtts(o[nm]) + br;
@@ -856,9 +851,8 @@ if(
 		}
 		return txt;
 	}
-		
-		
-	getObjectAbbr = function(obj){
+
+	function getObjectAbbr(obj){
 		// Gets an abbreviation of an object for display in log
 		// X items in object, including id
 		// X items in an array
@@ -872,19 +866,15 @@ if(
 		var cnt = 0;
 
 		if(isError){
-			nm = "[ Error: "+(obj["message"]||obj["description"]||obj)+" ]";
-		}else if(dojo.isArray(obj)){
-			nm ="[";
-			for(var i=0;i<obj.length;i++){
-				nm+=obj[i]+","
-				if(i>arCnt){
-					nm+=" ... ("+obj.length+" items)";
-					break;
-				}
+			nm = "[ Error: "+(obj.message || obj.description || obj)+" ]";
+		}else if(isArray(obj)){
+			nm = "[" + obj.slice(0,arCnt).join(",");
+			if(obj.length > arCnt){
+				nm += " ... ("+obj.length+" items)";
 			}
-			nm+="]";
-		}else if((!dojo.isObject(obj))||dojo.isString(obj)){
-			nm = obj+"";
+			nm += "]";
+		}else if(typeof obj != "object" || typeof obj == "string"){
+			nm = obj + "";
 		}else{
 			nm = "{";
 			for(var i in obj){

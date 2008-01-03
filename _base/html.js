@@ -841,8 +841,8 @@ if(dojo.isIE || dojo.isOpera){
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
 		if(dojo.isIE && !dojo._isBodyLtr()){
-			var de = dojo.doc.documentElement;
-			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
+			var de = dojo.doc.body;
+			return de.clientWidth - de.offsetWidth; // Integer
 		}
 		return scrollLeft; // Integer
 	}
@@ -1025,11 +1025,8 @@ if(dojo.isIE || dojo.isOpera){
 			// should we access this attribute via a property or
 			// via getAttribute()?
 			var prop = _attrProps[name.toLowerCase()];
-			if(prop){
-				return node[prop];
-			}else{
-				return _hasAttr(node, name) ? node.getAttribute(name) : null;
-			}
+			return prop ? node[prop] :
+				_hasAttr(node, name) ? node.getAttribute(name) : null;
 		}
 	}
 

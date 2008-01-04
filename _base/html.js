@@ -40,8 +40,7 @@ if(dojo.isIE || dojo.isOpera){
 				return te;
 			}else{
 				var eles = _d.all[id];
-				if(!eles){ return; }
-				if(!eles.length){ return eles; }
+				if(!eles || !eles.length){ return eles; }
 				// if more than 1, choose first with the correct id
 				var i=0;
 				while((te=eles[i++])){
@@ -54,11 +53,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 }else{
 	dojo.byId = function(id, doc){
-		if(dojo.isString(id)){
-			return (doc || dojo.doc).getElementById(id);
-		}else{
-			return id; // DomNode
-		}
+		return dojo.isString(id) ? (doc || dojo.doc).getElementById(id) : id; // DomNode
 	}
 }
 /*=====
@@ -189,11 +184,8 @@ if(dojo.isIE || dojo.isOpera){
 			case "first":
 				if(refNode.firstChild){
 					return _insertBefore(node, refNode.firstChild);	//	boolean
-				}else{
-					refNode.appendChild(node);
-					return true;	//	boolean
 				}
-				break;
+				// else fallthrough...
 			default: // aka: last
 				refNode.appendChild(node);
 				return true;	//	boolean
@@ -221,7 +213,7 @@ if(dojo.isIE || dojo.isOpera){
 	if(dojo.isIE /*|| dojo.isOpera*/){
 		var _dcm = document.compatMode;
 		// client code may have to adjust if compatMode varies across iframes
-		dojo.boxModel = (_dcm=="BackCompat")||(_dcm=="QuirksMode")||(dojo.isIE<6) ? "border-box" : "content-box";
+		dojo.boxModel = _dcm == "BackCompat" || _dcm == "QuirksMode" || dojo.isIE<6 ? "border-box" : "content-box"; // FIXME: remove IE < 6 support?
 	}
 
 	// =============================
@@ -333,16 +325,15 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	=====*/
 
-	dojo._getOpacity = (dojo.isIE ? function(node){
-			try{
-				return (node.filters.alpha.opacity / 100); // Number
-			}catch(e){
-				return 1; // Number
-			}
-		} : function(node){
-			return dojo.getComputedStyle(node).opacity;
+	dojo._getOpacity = dojo.isIE ? function(node){
+		try{
+			return node.filters.alpha.opacity / 100; // Number
+		}catch(e){
+			return 1; // Number
 		}
-	);
+	} : function(node){
+		return dojo.getComputedStyle(node).opacity;
+	};
 
 	/*=====
 	dojo._setOpacity = function(node, opacity){
@@ -358,29 +349,29 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	=====*/
 
-	dojo._setOpacity = (dojo.isIE ? function(/*DomNode*/node, /*Number*/opacity){
-			if(opacity == 1){
-				// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so remove it altogether (bug #2661)
-				node.style.cssText = node.style.cssText.replace(/FILTER:[^;]*;?/i, "");
-				if(node.nodeName.toLowerCase() == "tr"){
-					dojo.query("> td", node).forEach(function(i){
-						i.style.cssText = i.style.cssText.replace(/FILTER:[^;]*;?/i, "");
-					});
-				}
-			}else{
-				var o = "Alpha(Opacity="+(opacity*100)+")";
-				node.style.filter = o;
-			}
+	dojo._setOpacity = dojo.isIE ? function(/*DomNode*/node, /*Number*/opacity){
+		if(opacity == 1){
+			// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so remove it altogether (bug #2661)
+			var filterRE = /FILTER:[^;]*;?/i;
+			node.style.cssText = node.style.cssText.replace(filterRE, "");
 			if(node.nodeName.toLowerCase() == "tr"){
 				dojo.query("> td", node).forEach(function(i){
-					i.style.filter = o;
+					i.style.cssText = i.style.cssText.replace(filterRE, "");
 				});
 			}
-			return opacity;
-		} : function(node, opacity){
-			return node.style.opacity = opacity;
+		}else{
+			var o = "Alpha(Opacity="+ opacity * 100 +")";
+			node.style.filter = o;
 		}
-	);
+		if(node.nodeName.toLowerCase() == "tr"){
+			dojo.query("> td", node).forEach(function(i){
+				i.style.filter = o;
+			});
+		}
+		return opacity;
+	} : function(node, opacity){
+		return node.style.opacity = opacity;
+	};
 
 	var _pixelNamesCache = {
 		width: true, height: true, left: true, top: true
@@ -396,14 +387,14 @@ if(dojo.isIE || dojo.isOpera){
 				// FIXME: add workaround for #2855 here
 			}
 			if(
-				(type.indexOf("margin") >= 0) ||
-				// (type.indexOf("border") >= 0) ||
-				(type.indexOf("padding") >= 0) ||
-				(type.indexOf("width") >= 0) ||
-				(type.indexOf("height") >= 0) ||
-				(type.indexOf("max") >= 0) ||
-				(type.indexOf("min") >= 0) ||
-				(type.indexOf("offset") >= 0)
+				type.indexOf("margin") >= 0 ||
+				// type.indexOf("border") >= 0 ||
+				type.indexOf("padding") >= 0 ||
+				type.indexOf("width") >= 0 ||
+				type.indexOf("height") >= 0 ||
+				type.indexOf("max") >= 0 ||
+				type.indexOf("min") >= 0 ||
+				type.indexOf("offset") >= 0
 			){
 				_pixelNamesCache[type] = true;
 				return dojo._toPixelValue(node, value)
@@ -668,12 +659,11 @@ if(dojo.isIE || dojo.isOpera){
 		//	h: optional. width in current box model.
 		//	u: optional. unit measure to use for other measures. Defaults to "px".
 		u = u || "px";
-		with(node.style){
-			if(!isNaN(l)){ left = l+u; }
-			if(!isNaN(t)){ top = t+u; }
-			if(w>=0){ width = w+u; }
-			if(h>=0){ height = h+u; }
-		}
+		var s = node.style;
+		if(!isNaN(l)){ s.left = l+u; }
+		if(!isNaN(t)){ s.top = t+u; }
+		if(w>=0){ s.width = w+u; }
+		if(h>=0){ s.height = h+u; }
 	}
 
 	dojo._usesBorderBox = function(/*DomNode*/node){
@@ -825,14 +815,15 @@ if(dojo.isIE || dojo.isOpera){
 		//NOTE: assumes we're being called in an IE browser
 
 		var de = dojo.doc.documentElement;
-		if(dojo.isIE >= 7){
-			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top}; // Object
-		}else{
+//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
+
+		return (dojo.isIE >= 7) ?
+			{x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top}
+		:
 			// IE 6.0
-			return {x: dojo._isBodyLtr() || window.parent == window ?
+			{x: dojo._isBodyLtr() || window.parent == window ?
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
 				y: de.clientTop}; // Object
-		}
 	};
 	
 	dojo._fixIeBiDiScrollLeft = function(/*Integer*/ scrollLeft){
@@ -840,13 +831,14 @@ if(dojo.isIE || dojo.isOpera){
 		// returns a positive one. All codes using documentElement.scrollLeft
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
+		var d = dojo.doc;
 		if(dojo.isIE && !dojo._isBodyLtr()){
-			var de = dojo.doc.body;
-			return de.clientWidth - de.offsetWidth; // Integer
+			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
+			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
 		}
 		return scrollLeft; // Integer
 	}
-	
+
 	dojo._abs = function(/*DomNode*/node, /*Boolean?*/includeScroll){
 		//	summary:
 		//		Gets the absolute position of the passed element based on the

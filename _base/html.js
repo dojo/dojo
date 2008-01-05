@@ -68,6 +68,9 @@ if(dojo.isIE || dojo.isOpera){
 	*/
 
 	var _destroyContainer = null;
+	dojo.addOnUnload(function(){
+		_destroyContainer=null; //prevent IE leak
+	});
 	dojo._destroyElement = function(/*String||DomNode*/node){
 		// summary:
 		//		removes node from its parent, clobbers it and all of its

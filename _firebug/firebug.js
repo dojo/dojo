@@ -80,6 +80,7 @@ if(
 	}catch(e){}
 
 	window.console = {
+		_connects: [],
 		log: function(){
 			// summary: 
 			//		Sends arguments to console.
@@ -224,6 +225,7 @@ if(
 			// summary: 
 			//		Clears message console. Do not call this directly
 			consoleBody.innerHTML = "";
+			dojo.forEach(this._connects,dojo.disconnect);
 		},
 
 		open: function(){ 
@@ -375,6 +377,20 @@ if(
 
 	dojo.addOnLoad(createFrame);
 
+	function clearFrame(){
+		_firebugDoc = null;
+		_firebugWin.console.clear();
+		_firebugWin = null;
+		consoleFrame = null;
+		consoleBody = null;
+		consoleObjectInspector = null;
+		commandLine = null;
+		messageQueue = [];
+		groupStack = [];
+		timeMap = {};
+	}
+	dojo.addOnUnload(clearFrame);
+
 	function evalCommandLine(){
 		var text = commandLine.value;
 		commandLine.value = "";
@@ -446,11 +462,11 @@ if(
 	function pushGroup(message, className){
 		logFormatted(message, className);
 
-		var groupRow = consoleBody.ownerDocument.createElement("div");
-		groupRow.className = "logGroup";
+		//var groupRow = consoleBody.ownerDocument.createElement("div");
+		//groupRow.className = "logGroup";
 		var groupRowBox = consoleBody.ownerDocument.createElement("div");
 		groupRowBox.className = "logGroupBox";
-		groupRow.appendChild(groupRowBox);
+		//groupRow.appendChild(groupRowBox);
 		appendRow(groupRowBox);
 		groupStack.push(groupRowBox);
 	}
@@ -527,14 +543,14 @@ if(
 			// avoid parsing these objects unless necessary
 			btn.obj = obs[i];
 	
-			dojo.connect(btn, "onclick", function(){
+			_firebugWin.console._connects.push(dojo.connect(btn, "onclick", function(){
 				// hide rows
 				consoleBody.style.display = "none";
 				consoleObjectInspector.style.display = "block";
 				// create a back button
 				var bkBtn = '<a href="javascript:console.closeObjectInspector();">&nbsp;<<&nbsp;Back</a>';
 				consoleObjectInspector.innerHTML = bkBtn + "<pre>" + printObject( this.obj ) + "</pre>";
-			})
+			}));
 		}
 	}
 

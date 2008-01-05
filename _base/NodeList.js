@@ -12,6 +12,17 @@ dojo.require("dojo._base.array");
 		return arr;
 	}
 
+	var _mapIntoDojo = function(func){
+		return function(){
+			var aa = d._toArray(arguments, 0, [null]);
+			var s = this.map(function(i){
+				aa[0] = i;
+				return d[func].apply(d, aa);
+			});
+			return (arguments.length > 1) ? this : s; // String||dojo.NodeList
+		}
+	};
+
 	dojo.NodeList = function(){
 		//	summary:
 		//		dojo.NodeList is as subclass of Array which adds syntactic 
@@ -186,7 +197,21 @@ dojo.require("dojo._base.array");
 			return d.map(this, d.coords);
 		},
 
-		style: function(/*===== property, value =====*/){
+		/*=====
+		attr: function(property, value){
+			//	summary:
+			//		gets or sets the DOM attribute for every element in the
+			//		NodeList
+			//	property: String
+			//		the attribute to get/set
+			//	value: String?
+			//		optional. The value to set the property to
+			//	return:
+			//		if no value is passed, the result is an array of attribute values
+			//		If a value is passed, the return is this NodeList
+		},
+
+		style: function(property, value){
 			//	summary:
 			//		gets or sets the CSS property for every element in the NodeList
 			//	property: String
@@ -197,30 +222,10 @@ dojo.require("dojo._base.array");
 			//	return:
 			//		if no value is passed, the result is an array of strings.
 			//		If a value is passed, the return is this NodeList
-			var aa = d._toArray(arguments, 0, [null]);
-			var s = this.map(function(i){
-				aa[0] = i;
-				return d.style.apply(d, aa);
-			});
-			return (arguments.length > 1) ? this : s; // String||dojo.NodeList
 		},
-
-		styles: function(/*===== property, value =====*/){
-			//	summary:
-			//		Deprecated. Use NodeList.style instead. Will be removed in
-			//		Dojo 1.1. Gets or sets the CSS property for every element
-			//		in the NodeList
-			//	property: String
-			//		the CSS property to get/set, in JavaScript notation
-			//		("lineHieght" instead of "line-height") 
-			//	value: String?
-			//		optional. The value to set the property to
-			//	return:
-			//		if no value is passed, the result is an array of strings.
-			//		If a value is passed, the return is this NodeList
-			d.deprecated("NodeList.styles", "use NodeList.style instead", "1.1");
-			return this.style.apply(this, arguments);
-		},
+		=====*/
+		attr: _mapIntoDojo("attr"),
+		style: _mapIntoDojo("style"),
 
 		addClass: function(/*String*/ className){
 			// summary:
@@ -285,6 +290,8 @@ dojo.require("dojo._base.array");
 			// example:
 			//		attach foo.bar() to every odd div's onmouseover
 			//		|	dojo.query("div:nth-child(odd)").onclick("onmouseover", foo, "bar");
+
+			// FIXME: if we only get a function, should the scope be the node?
 			this.forEach(function(item){
 				d.connect(item, methodName, objOrFunc, funcName);
 			});
@@ -334,7 +341,7 @@ dojo.require("dojo._base.array");
 			//		satisfy the passed query but use elements of the
 			//		current NodeList as query roots.
 
-			queryStr = queryStr||"";
+			if(!queryStr){ return this; };
 
 			// FIXME: probably slow
 			var ret = d.NodeList();

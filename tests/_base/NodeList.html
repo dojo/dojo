@@ -268,15 +268,15 @@
 							tnl.style("opacity", 1);
 						},
 						
-						function styles(){
+						function style(){
 							var tnl = new dojo.NodeList(s, t);
-							tnl.styles("opacity", 1);
-							doh.is(1, tnl.styles("opacity")[0]);
+							tnl.style("opacity", 1);
+							doh.is(1, tnl.style("opacity")[0]);
 							dojo.style(t, "opacity", 0.5);
-							doh.is(1.0, tnl.styles("opacity")[0]);
-							doh.is(0.5, tnl.styles("opacity")[1]);
+							doh.is(1.0, tnl.style("opacity")[0]);
+							doh.is(0.5, tnl.style("opacity")[1]);
 							// reset things
-							tnl.styles("opacity", 1);
+							tnl.style("opacity", 1);
 						},
 
 						function concat(){

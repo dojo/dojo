@@ -12,6 +12,40 @@ dojo.require("dojo.data.api.Notification");
 // that we use for its superclass, ItemFileReadStore:
 tests.data.readOnlyItemFileTestTemplates.registerTestsForDatastore("dojo.data.ItemFileWriteStore");
 
+tests.data.ItemFileWriteStore.getTestData = function(name){
+	var data = {};
+	if(name === "reference_integrity"){
+		if(dojo.isBrowser){
+			data = {url: dojo.moduleUrl("tests", "data/reference_integrity.json").toString() };
+		}else{
+			data = 
+				{ data: { 
+					"identifier": "id",
+					"label": "name",
+					"items": [
+						{"id": 1, "name": "Item 1"},
+						{"id": 2, "name": "Item 2"},
+						{"id": 3, "name": "Item 3"},
+						{"id": 4, "name": "Item 4"},
+						{"id": 5, "name": "Item 5"},
+						{"id": 6, "name": "Item 6"},
+						{"id": 7, "name": "Item 7"},
+						{"id": 8, "name": "Item 8"},
+						{"id": 9, "name": "Item 9"},
+						{"id": 10, "name": "Item 10", "friends": [{"_reference": 1},{"_reference": 3},{"_reference": 5}]},
+						{"id": 11, "name": "Item 11", "friends": [{"_reference": 10}], "siblings": [{"_reference": 10}]},
+						{"id": 12, "name": "Item 12", "friends": [{"_reference": 3},{"_reference": 7}], "enemies": [{"_reference": 10}]},
+						{"id": 13, "name": "Item 13", "friends": [{"_reference": 10}]},
+						{"id": 14, "name": "Item 14", "friends": [{"_reference": 11}]},
+						{"id": 15, "name": "item 15", "friends": [{"id": 16, "name": "Item 16"}]}
+					]
+				}
+			}
+		}
+	}
+	return data;
+};
+
 
 // Now run some tests that are specific to the write-access features:
 doh.register("tests.data.ItemFileWriteStore", 
@@ -196,7 +230,7 @@ doh.register("tests.data.ItemFileWriteStore",
 					doh.assertTrue(parentInfo.newValue === newItem);
 					onNewInvoked = true;
 				};
-                
+
 				//Attach an onSet and verify onSet is NOT called in this case.
 				store.onSet = function(item, attribute, oldValue, newValue){
 					doh.assertTrue(false);
@@ -895,6 +929,422 @@ doh.register("tests.data.ItemFileWriteStore",
 				store.fetch({onComplete:onCompleteAgain, onError:onError});
 			}
 			store.fetch({onComplete:onComplete, onError:onError});
+			return deferred;
+		},
+		function testReferenceIntegrity_checkReferences(){
+			//	summary: 
+			//		Simple test to verify the references were properly resolved.
+			//	description:
+			//		Simple test to verify the references were properly resolved.
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
+
+			var deferred = new doh.Deferred();
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			function onComplete(items, request){
+
+				var item10 = null;
+				var item1  = null;
+				var item3  = null;
+				var item5  = null;
+
+				for (var i = 0; i < items.length; i++) {
+					var ident = store.getIdentity(items[i]);
+					if (ident === 10) {
+						item10 = items[i];
+					}else if (ident === 1) {
+						item1 = items[i];
+					}else if (ident === 3) {
+						item3 = items[i];
+					}else if (ident === 5) {
+						item5 = items[i];
+					}
+				}
+				var friends = store.getValues(item10, "friends");
+				doh.assertTrue(friends !== null);
+				doh.assertTrue(friends !== undefined);
+
+				doh.assertTrue(store.isItem(item10));
+				doh.assertTrue(store.isItem(item1));
+				doh.assertTrue(store.isItem(item3));
+				doh.assertTrue(store.isItem(item5));
+				var found = 0;
+				try{
+					for (var i = 0; i < friends.length; i++) {
+						if (i === 0) {
+							doh.assertTrue(store.isItem(friends[i]));
+							doh.assertEqual(friends[i], item1);
+							doh.assertEqual(store.getIdentity(friends[i]), 1);
+							found++;
+						}else if (i === 1) {
+							doh.assertTrue(store.isItem(friends[i]));
+							doh.assertEqual(friends[i], item3);
+							doh.assertEqual(store.getIdentity(friends[i]), 3);
+							found++;
+						}else if (i === 2) {
+							doh.assertTrue(store.isItem(friends[i]));
+							doh.assertEqual(friends[i], item5);
+							doh.assertEqual(store.getIdentity(friends[i]), 5);
+							found++;
+						}
+					}
+				}catch(e){
+					doh.errback(e);
+				}
+				doh.assertEqual(3, found);
+				deferred.callback(true);
+			}
+			store.fetch({onError: onError, onComplete: onComplete});
+			return deferred;
+		},
+		function testReferenceIntegrity_deleteReferencedItem(){
+			//	summary: 
+			//		Simple test to verify the references were properly deleted.
+			//	description:
+			//		Simple test to verify the references were properly deleted.
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			function onItem(item, request){
+				try{
+					console.log("Before delete map state is: " + dojo.toJson(item[store._reverseRefMap]));
+					store.deleteItem(item);
+					console.log("After delete map state is: " + dojo.toJson(item[store._reverseRefMap]));
+					function verifyRefDelete(items, request){
+						var passed = true;
+						for(var i = 0; i < items.length; i++){
+							var curItem = items[i];
+							var attributes = store.getAttributes(curItem);
+							for(var j = 0; j < attributes.length; j++){
+								var values = store.getValues(curItem, attributes[j]);
+								var badRef = false;
+								for(var k = 0; k < values.length; k++){
+									var value = values[k];
+									try{
+										var id = store.getIdentity(value);
+										if(id == 10){
+											badRef = true;
+											break;
+										}
+									}catch(e){/*Not an item, even a dead one, just eat it.*/}
+								}
+								if(badRef){
+									deferred.errback(new Error("Found a reference remaining to a deleted item.  Failure."));
+									passed = false;
+									break;
+								}
+							}
+						}
+						if(passed){
+							deferred.callback(true);
+						}
+					}
+					store.fetch({onComplete: verifyRefDelete, onError: onError});
+				}catch(error){
+					deferred.errback(error);
+				}
+			}
+			store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem});
+			return deferred;
+		},
+		function testReferenceIntegrity_deleteReferencedItemThenRevert(){
+			//	summary: 
+			//		Simple test to verify the references were properly deleted.
+			//	description:
+			//		Simple test to verify the references were properly deleted.
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			function onItem(item, request){
+				try{
+					//DO NOT EVER ACCESS THESE VARIABLES LIKE THIS!  
+					//THIS IS FOR TESTING INTERNAL STATE!
+					console.log("Map before delete:");
+					store._dumpReferenceMap();
+					var beforeDelete = dojo.toJson(item[store._reverseRefMap]);
+					store.deleteItem(item);
+					console.log("Map after delete:");
+					store._dumpReferenceMap();
+					var afterDelete = dojo.toJson(item[store._reverseRefMap]);
+					store.revert();
+					console.log("Map after revert:");
+					store._dumpReferenceMap();
+					var afterRevert = dojo.toJson(item[store._reverseRefMap]);
+					doh.assertTrue(afterRevert === beforeDelete);
+				}catch(e){
+					deferred.errback(e);
+					passed = false;
+				}
+				if(passed){
+					deferred.callback(true);
+				}
+			}
+			store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem});
+			return deferred;
+		},
+		function testReferenceIntegrity_removeReferenceFromAttribute(){
+			//	summary: 
+			//		Simple test to verify the reference removal updates the internal map.
+			//	description:
+			//		Simple test to verify the reference removal updates the internal map.
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+				doh.assertTrue(false);
+			}
+			function onItem(item, request){
+				try{
+					store.setValues(item, "friends", [null]);
+
+					function onItem2(item10, request){
+						//DO NOT EVER ACCESS THESE VARIABLES LIKE THIS!  
+						//THIS IS FOR TESTING INTERNAL STATE!
+						var refMap = item10[store._reverseRefMap];
+						store._dumpReferenceMap();
+
+						console.log("MAP for Item 10 is: " + dojo.toJson(refMap));
+
+						//Assert there is no reference to item 10 in item 11's attribute 'friends'.
+						doh.assertTrue(!refMap["11"]["friends"]);
+						store.setValues(item, "siblings", [0, 1, 2]);
+						//Assert there are no more references to 10 in 11.  Ergo, "11"  should be a 'undefined' attribute for the map of items referencing '10'..
+						doh.assertTrue(!refMap["11"]);
+						deferred.callback(true);
+					}
+					store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem2});
+
+				}catch(e){
+					console.debug(e);
+					deferred.errback(e);
+					doh.assertTrue(false);
+				}
+			}
+			store.fetchItemByIdentity({identity: 11, onError: onError, onItem: onItem});
+			return deferred;
+		},
+		function testReferenceIntegrity_deleteReferencedItemNonParent(){
+			//	summary: 
+			//		Simple test to verify the references to a non-parent item was properly deleted.
+			//	description:
+			//		Simple test to verify the references to a non-parent item was properly deleted.
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+			}
+			function onItem(item, request){
+				try{
+					console.log("Reference state for item 16 is: " + dojo.toJson(item[store._reverseRefMap]));
+					store.deleteItem(item);
+					function verifyRefDelete(items, request){
+						var passed = true;
+						for(var i = 0; i < items.length; i++){
+							var curItem = items[i];
+							var attributes = store.getAttributes(curItem);
+							for(var j = 0; j < attributes.length; j++){
+								var values = store.getValues(curItem, attributes[j]);
+								var badRef = false;
+								for(var k = 0; k < values.length; k++){
+									var value = values[k];
+									try{
+										var id = store.getIdentity(value);
+										if(id == 16){
+											badRef = true;
+											break;
+										}
+									}catch(e){/*Not an item, even a dead one, just eat it.*/}
+								}
+								if(badRef){
+									deferred.errback(new Error("Found a reference remaining to a deleted item.  Failure."));
+									passed = false;
+									break;
+								}
+							}
+						}
+						if(passed){
+							deferred.callback(true);
+						}
+					}
+					store.fetch({onComplete: verifyRefDelete, onError: onError});
+				}catch(error){
+					deferred.errback(error);
+				}
+			}
+			store.fetchItemByIdentity({identity: 16, onError: onError, onItem: onItem});
+			return deferred;
+		},
+		function testReferenceIntegrity_addReferenceToAttribute(){
+			//	summary: 
+			//		Simple test to verify the reference additions can happen.
+			//	description:
+			//		Simple test to verify the reference additions can happen.
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+				doh.assertTrue(false);
+			}
+			function onComplete(items, request){
+
+				doh.assertTrue(items.length > 2);
+
+				var item1 = items[0];
+				var item2 = items[1];
+
+				//DO NOT EVER ACCESS THESE VARIABLES LIKE THIS!  
+				//THIS IS FOR TESTING INTERNAL STATE!
+				console.log("Map state for Item 1 is: " + dojo.toJson(item1[store._reverseRefMap]));
+				console.log("Map state for Item 2 is: " + dojo.toJson(item2[store._reverseRefMap]));
+
+				store.setValue(item1, "siblings", item2);
+
+				//Emit the current map state for inspection.
+				console.log("Map state for Item 1 is: " + dojo.toJson(item1[store._reverseRefMap]));
+				console.log("Map state for Item 2 is: " + dojo.toJson(item2[store._reverseRefMap]));
+
+				doh.assertTrue(item2[store._reverseRefMap] != null);
+
+				//Assert there is a recorded reference to item 2 in item 1's attribute 'sibling'.
+				doh.assertTrue(item2[store._reverseRefMap][store.getIdentity(item1)]["siblings"]);
+
+				deferred.callback(true);
+			}
+			store.fetch({onError: onError, onComplete: onComplete});
+			return deferred;
+		},
+		function testReferenceIntegrity_newItemWithParentReference(){
+			//	summary: 
+			//		Simple test to verify that newItems with a parent properly record the parent's reference in the map.
+			//	description:
+			//		Simple test to verify that newItems with a parent properly record the parent's reference in the map.
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+				doh.assertTrue(false);
+			}
+			function onItem(item, request){
+				try{
+					//Create a new item and set its parent to item 10's uncle attribute.
+					var newItem = store.newItem({id: 17, name: "Item 17"}, {parent: item, attribute: "uncles"}); 
+					
+					//DO NOT EVER ACCESS THESE VARIABLES LIKE THIS!  
+					//THIS IS FOR TESTING INTERNAL STATE!
+					//Look up the references to 17, as item 10 has one now on attribute 'uncles'
+					var refs = newItem[store._reverseRefMap];
+
+					//Assert there is a reference from 10 to item 17, on attribute uncle
+					doh.assertTrue(refs["10"]["uncles"]);
+
+					console.log("State of map of item 17 after newItem: " + dojo.toJson(refs));
+				}catch(e){
+					console.debug(e);
+					deferred.errback(e);
+					doh.assertTrue(false);
+					passed = false;
+				}
+				if(passed){
+					deferred.callback(true);
+				}
+			}
+			store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem});
+			return deferred;
+		},
+		function testReferenceIntegrity_newItemWithReferenceToExistingItem(){
+			//	summary: 
+			//		Simple test to verify that a new item with references to existing items properly record the references in the map.
+			//	description:
+			//		Simple test to verify that a new item with references to existing items properly record the references in the map.
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+				doh.assertTrue(false);
+			}
+			function onItem(item, request){
+				try{
+					//DO NOT EVER ACCESS THESE VARIABLES LIKE THIS!  
+					//THIS IS FOR TESTING INTERNAL STATE!
+					console.log("State of reference map to item 10 before newItem: " + dojo.toJson(item[store._reverseRefMap]));
+					
+					//Create a new item and set its parent to item 10's uncle attribute.
+					var newItem = store.newItem({id: 17, name: "Item 17", friends: [item]});
+					
+					//DO NOT EVER ACCESS THESE VARIABLES LIKE THIS!  
+					//THIS IS FOR TESTING INTERNAL STATE!
+					//Look up the references to 10, as item 17 has one on friends now.
+					var refs = item[store._reverseRefMap];
+					
+					//Assert there is a reference from 15 to item 10, on attribute friends
+					doh.assertTrue(refs["17"]["friends"]);
+
+					console.log("State of reference map to item 10 after newItem: " + dojo.toJson(refs));
+				}catch(e){
+					console.debug(e);
+					deferred.errback(e);
+					doh.assertTrue(false);
+					passed = false;
+				}
+				if(passed){
+					deferred.callback(true);
+				}
+			}
+			store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem});
+			return deferred;
+		},
+		function testReferenceIntegrity_disableReferenceIntegrity(){
+			//	summary: 
+			//		Simple test to verify reference integrity can be disabled.
+			//	description:
+			//		Simple test to verify reference integrity can be disabled.
+		
+			var params = tests.data.ItemFileWriteStore.getTestData("reference_integrity");
+			params.referenceIntegrity = false;
+			var store = new dojo.data.ItemFileWriteStore(params);
+
+			var deferred = new doh.Deferred();
+			function onError(error, request){
+				deferred.errback(error);
+				doh.assertTrue(false);
+			}
+			function onItem(item, request){
+				//DO NOT EVER ACCESS THESE VARIABLES LIKE THIS!  
+				//THIS IS FOR TESTING INTERNAL STATE!
+				if(item[store._reverseRefMap] === undefined){
+					deferred.callback(true);
+				}else{
+					deferred.errback(new Error("Disabling of reference integreity failed."));
+				}
+			}
+			store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem});
 			return deferred;
 		}
 	]

@@ -58,6 +58,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		this._storeRefPropName = "_S";  // Default name for the store reference to attach to every item.
 		this._itemNumPropName = "_0"; // Default Item Id for isItem to attach to every item.
 		this._rootItemPropName = "_RI"; // Default Item Id for isItem to attach to every item.
+		this._reverseRefMap = "_RRM"; // Default attribute for constructing a reverse reference map for use with reference integrity
 		this._loadInProgress = false;	//Got to track the initial load to prevent duelling loads of the dataset.
 		this._queuedFetches = [];
 	},
@@ -110,7 +111,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		var attributes = [];
 		for(var key in item){
 			// Save off only the real item attributes, not the special id marks for O(1) isItem.
-			if((key !== this._storeRefPropName) && (key !== this._itemNumPropName) && (key !== this._rootItemPropName)){
+			if((key !== this._storeRefPropName) && (key !== this._itemNumPropName) && (key !== this._rootItemPropName) && (key !== this._reverseRefMap)){
 				attributes.push(key);
 			}
 		}
@@ -473,6 +474,9 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		while(allAttributeNames[this._itemNumPropName]){
 			this._itemNumPropName += "_";
 		}
+		while(allAttributeNames[this._reverseRefMap]){
+			this._reverseRefMap += "_";
+		}
 
 		// Step 4: Some data files specify an optional 'identifier', which is 
 		// the name of an attribute that holds the identity of each item. 
@@ -547,7 +551,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 						}
 						if(value._reference){
 							var referenceDescription = value._reference; // example: {name:'Miss Piggy'}
-							if(dojo.isString(referenceDescription)){
+							if(!dojo.isObject(referenceDescription)){
 								// example: 'Miss Piggy'
 								// from an item like: { name:['Kermit'], friends:[{_reference:'Miss Piggy'}]}
 								arrayOfValues[j] = this._itemsByIdentity[referenceDescription];
@@ -567,11 +571,39 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 									}
 								}
 							}
+							if(this.referenceIntegrity){
+								var refItem = arrayOfValues[j];
+								if(this.isItem(refItem)){
+									this._addReferenceToMap(refItem, item, key);
+								}
+							}
+						}else if(this.isItem(value)){
+							//It's a child item (not one referenced through _reference).  
+							//We need to treat this as a referenced item, so it can be cleaned up
+							//in a write store easily.
+							if(this.referenceIntegrity){
+								this._addReferenceToMap(value, item, key);
+							}
 						}
 					}
 				}
 			}
 		}
+	},
+
+	_addReferenceToMap: function(/*item*/ refItem, /*item*/ parentItem, /*string*/ attribute){
+		 //	summary:
+		 //		Method to add an reference map entry for an item and attribute.
+		 //	description:
+		 //		Method to add an reference map entry for an item and attribute. 		 //
+		 //	refItem:
+		 //		The item that is referenced.
+		 //	parentItem:
+		 //		The item that holds the new reference to refItem.
+		 //	attribute:
+		 //		The attribute on parentItem that contains the new reference.
+		 
+		 //Stub function, does nothing.  Real processing is in ItemFileWriteStore.
 	},
 
 	getIdentity: function(/* item */ item){

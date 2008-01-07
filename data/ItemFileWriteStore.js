@@ -35,13 +35,19 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		if(!this._datatypeMap['Date'].serialize){
 			this._datatypeMap['Date'].serialize = function(obj){
 				return dojo.date.stamp.toISOString(obj, {zulu:true});
-			}
+			};
 		}
-		
+		//Disable only if explicitly set to false.
+		if(keywordParameters && (keywordParameters.referenceIntegrity === false)){
+			this.referenceIntegrity = false;
+		}
+
 		// this._saveInProgress is set to true, briefly, from when save() is first called to when it completes
 		this._saveInProgress = false;
-	}, 
-	
+	},
+
+	referenceIntegrity: true,  //Flag that defaultly enabled reference integrity tracking.  This way it can also be disabled pogrammatially or declaratively.
+
 	_assert: function(/* boolean */ condition){
 		if(!condition) {
 			throw new Error("assertion failed in ItemFileWriteStore");
@@ -99,6 +105,9 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		newItem[this._itemNumPropName] = this._arrayOfAllItems.length;
 		if(this._itemsByIdentity){
 			this._itemsByIdentity[newIdentity] = newItem;
+			//We have to set the identifier now, otherwise we can't look it
+			//up at calls to setValueorValues in parentInfo handling.
+			newItem[identifierAttribute] = [newIdentity];
 		}
 		this._arrayOfAllItems.push(newItem);
 
@@ -161,6 +170,14 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				value = [value];
 			}
 			newItem[key] = value;
+			if(this.referenceIntegrity){
+				for(var i = 0; i < value.length; i++){
+					var val = value[i];
+					if(this.isItem(val)){
+						this._addReferenceToMap(val, newItem, key);
+					}
+				}
+			}
 		}
 		this.onNew(newItem, pInfo); // dojo.data.api.Notification call
 		return newItem; // item
@@ -180,13 +197,75 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		this._assert(!this._saveInProgress);
 		this._assertIsItem(item);
 
-		// remove this item from the _arrayOfAllItems, but leave a null value in place
+		// Remove this item from the _arrayOfAllItems, but leave a null value in place
 		// of the item, so as not to change the length of the array, so that in newItem() 
 		// we can still safely do: newIdentity = this._arrayOfAllItems.length;
 		var indexInArrayOfAllItems = item[this._itemNumPropName];
-		this._arrayOfAllItems[indexInArrayOfAllItems] = null;
-		
 		var identity = this.getIdentity(item);
+
+		//If we have reference integrity on, we need to do reference cleanup for the deleted item
+		if(this.referenceIntegrity){
+			//First scan all the attributes of this items for references and clean them up in the map 
+			//As this item is going away, no need to track its references anymore.
+
+			//Get the attributes list before we generate the backup so it 
+			//doesn't pollute the attributes list.
+			var attributes = this.getAttributes(item);
+
+			//Backup the map, we'll have to restore it potentially, in a revert.
+			if(item[this._reverseRefMap]){
+				item["backup_" + this._reverseRefMap] = dojo.clone(item[this._reverseRefMap]);
+			}
+			
+			//TODO:  This causes a reversion problem.  This list won't be restored on revert since it is
+			//attached to the 'value'. item, not ours.  Need to back tese up somehow too.
+			//Maybe build a map of the backup of the entries and attach it to the deleted item to be restored
+			//later.  Or just record them and call _addReferenceToMap on them in revert.
+			dojo.forEach(attributes, function(attribute){
+				dojo.forEach(this.getValues(item, attribute), function(value){
+					if(this.isItem(value)){
+						//We have to back up all the references we had to others so they can be restored on a revert.
+						if(!item["backupRefs_" + this._reverseRefMap]){
+							item["backupRefs_" + this._reverseRefMap] = [];
+						}
+						item["backupRefs_" + this._reverseRefMap].push({id: this.getIdentity(value), attr: attribute});
+						this._removeReferenceFromMap(value, item, attribute);
+					}
+				}, this);
+			}, this);
+
+			//Next, see if we have references to this item, if we do, we have to clean them up too.
+			var references = item[this._reverseRefMap];
+			if(references){
+				//Look through all the items noted as references to clean them up.
+				for(var itemId in references){
+					var containingItem = null;
+					if(this._itemsByIdentity){
+						containingItem = this._itemsByIdentity[itemId];
+					}else{
+						containingItem = this._arrayOfAllItems[itemId];
+					}
+					//We have a reference to a containing item, now we have to process the
+					//attributes and clear all references to the item being deleted.
+					if(containingItem){
+						for(var attribute in references[itemId]){
+							var oldValues = this.getValues(containingItem, attribute) || [];
+							var newValues = dojo.filter(oldValues, function(possibleItem){
+							   return !(this.isItem(possibleItem) && this.getIdentity(possibleItem) == identity);
+							}, this);
+							//Remove the note of the reference to the item and set the values on the modified attribute.
+							this._removeReferenceFromMap(item, containingItem, attribute); 
+							if(newValues.length < oldValues.length){
+								this.setValues(containingItem, attribute, newValues);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		this._arrayOfAllItems[indexInArrayOfAllItems] = null;
+
 		item[this._storeRefPropName] = null;
 		if(this._itemsByIdentity){
 			delete this._itemsByIdentity[identity];
@@ -241,18 +320,15 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			// record the original state, so that we'll be able to revert if 
 			// the revert method gets called.  If the item has already been
 			// modified then there's no need to do this now, since we already
-			// have a record of the original state.
+			// have a record of the original state.						
 			var copyOfItemState = {};
 			for(var key in item){
 				if((key === this._storeRefPropName) || (key === this._itemNumPropName) || (key === this._rootItemPropName)){
 					copyOfItemState[key] = item[key];
+				}else if(key === this._reverseRefMap){
+					copyOfItemState[key] = dojo.clone(item[key]);
 				}else{
-					var valueArray = item[key];
-					var copyOfValueArray = [];
-					for(var i = 0; i < valueArray.length; ++i){
-						copyOfValueArray.push(valueArray[i]);
-					}
-					copyOfItemState[key] = copyOfValueArray;
+					copyOfItemState[key] = item[key].slice(0, item[key].length);
 				}
 			}
 			// Now mark the item as dirty, and save the copy of the original state
@@ -261,28 +337,92 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		
 		// Okay, now we can actually change this attribute on the item
 		var success = false;
+		
 		if(dojo.isArray(newValueOrValues) && newValueOrValues.length === 0){
+			
 			// If we were passed an empty array as the value, that counts
 			// as "unsetting" the attribute, so we need to remove this 
 			// attribute from the item.
 			success = delete item[attribute];
 			newValueOrValues = undefined; // used in the onSet Notification call below
+
+			if(this.referenceIntegrity && oldValueOrValues){
+				var oldValues = oldValueOrValues;
+				if (!dojo.isArray(oldValues)){
+					oldValues = [oldValues];
+				}
+				for(var i = 0; i < oldValues.length; i++){
+					var value = oldValues[i];
+					if(this.isItem(value)){
+						this._removeReferenceFromMap(value, item, attribute);
+					}
+				}
+			}
 		}else{
-			var newValueArray = [];
+			var newValueArray;
 			if(dojo.isArray(newValueOrValues)){
 				var newValues = newValueOrValues;
-				// Unforunately, it's not safe to just do this:
+				// Unfortunately, it's not safe to just do this:
 				//    newValueArray = newValues;
-				// Instead, we need to take each value in the values array and copy 
-				// it into the new array, so that our internal data structure won't  
+				// Instead, we need to copy the array, which slice() does very nicely.
+				// This is so that our internal data structure won't  
 				// get corrupted if the user mucks with the values array *after*
 				// calling setValues().
-				for(var j = 0; j < newValues.length; ++j){
-					newValueArray.push(newValues[j]);
-				}
+				newValueArray = newValueOrValues.slice(0, newValueOrValues.length);
 			}else{
-				var newValue = newValueOrValues;
-				newValueArray.push(newValue);
+				newValueArray = [newValueOrValues];
+			}
+
+			//We need to handle reference integrity if this is on. 
+			//In the case of set, we need to see if references were added or removed
+			//and update the reference tracking map accordingly.
+			if(this.referenceIntegrity){
+				if(oldValueOrValues){
+					var oldValues = oldValueOrValues;
+					if(!dojo.isArray(oldValues)){
+						oldValues = [oldValues];
+					}
+					//Use an associative map to determine what was added/removed from the list.
+					//Should be O(n) performant.  First look at all the old values and make a list of them
+					//Then for any item not in the old list, we add it.  If it was already present, we remove it.
+					//Then we pass over the map and any references left it it need to be removed (IE, no match in
+					//the new values list).
+					var map = {};
+					dojo.forEach(oldValues, function(possibleItem){
+						if(this.isItem(possibleItem)){
+							var id = this.getIdentity(possibleItem);
+							map[id.toString()] = true;
+						}
+					}, this);
+					dojo.forEach(newValueArray, function(possibleItem){
+						if(this.isItem(possibleItem)){
+							var id = this.getIdentity(possibleItem);
+							if(map[id.toString()]){
+								delete map[id.toString()];
+							}else{
+								this._addReferenceToMap(possibleItem, item, attribute); 
+							}
+						}
+					}, this);
+					for(var rId in map){
+						var removedItem;
+						if(this._itemsByIdentity){
+							removedItem = this._itemsByIdentity[rId];
+						}else{
+							removedItem = this._arrayOfAllItems[rId];
+						}
+						this._removeReferenceFromMap(removedItem, item, attribute);
+					}
+				}else{
+					//Everything is new (no old values) so we have to just
+					//insert all the references, if any.
+					for(var i = 0; i < newValueArray.length; i++){
+						var value = newValueArray[i];
+						if(this.isItem(value)){
+							this._addReferenceToMap(value, item, attribute);
+						}
+					}
+				}
 			}
 			item[attribute] = newValueArray;
 			success = true;
@@ -295,6 +435,77 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		return success; // boolean
 	},
 
+	_addReferenceToMap: function(/*item*/ refItem, /*item*/ parentItem, /*string*/ attribute){
+		//	summary:
+		//		Method to add an reference map entry for an item and attribute.
+		//	description:
+		//		Method to add an reference map entry for an item and attribute. 		 //
+		//	refItem:
+		//		The item that is referenced.
+		//	parentItem:
+		//		The item that holds the new reference to refItem.
+		//	attribute:
+		//		The attribute on parentItem that contains the new reference.
+		 
+		var parentId = this.getIdentity(parentItem);
+		var references = refItem[this._reverseRefMap];
+
+		if(!references){
+			references = refItem[this._reverseRefMap] = {};
+		}
+		var itemRef = references[parentId];
+		if(!itemRef){
+			itemRef = references[parentId] = {};
+		}
+		itemRef[attribute] = true;
+	},
+
+	_removeReferenceFromMap: function(/* item */ refItem, /* item */ parentItem, /*strin*/ attribute){
+		//	summary:
+		//		Method to remove an reference map entry for an item and attribute.
+		//	description:
+		//		Method to remove an reference map entry for an item and attribute.  This will
+		//		also perform cleanup on the map such that if there are no more references at all to 
+		//		the item, its reference object and entry are removed.
+		//
+		//	refItem:
+		//		The item that is referenced.
+		//	parentItem:
+		//		The item holding a reference to refItem.
+		//	attribute:
+		//		The attribute on parentItem that contains the reference.
+		var identity = this.getIdentity(parentItem);
+		var references = refItem[this._reverseRefMap];
+		var itemId;
+		if(references){
+			for(itemId in references){
+				if(itemId == identity){
+					delete references[itemId][attribute];
+					if(this._isEmpty(references[itemId])){
+						delete references[itemId];
+					}
+				}
+			}
+			if(this._isEmpty(references)){
+				delete refItem[this._reverseRefMap];
+			}
+		}
+	},
+
+	_dumpReferenceMap: function(){
+		//	summary:
+		//		Function to dump the reverse reference map of all items in the store for debug purposes.
+		//	description:
+		//		Function to dump the reverse reference map of all items in the store for debug purposes.
+		var i;
+		for(i = 0; i < this._arrayOfAllItems.length; i++){
+			var item = this._arrayOfAllItems[i];
+			if(item && item[this._reverseRefMap]){
+				console.log("Item: [" + this.getIdentity(item) + "] is referenced by: " + dojo.toJson(item[this._reverseRefMap]));
+			}
+		}
+	},
+						   
 	_getValueOrValues: function(/* item */ item, /* attribute-name-string */ attribute){
 		var valueOrValues = undefined;
 		if(this.hasAttribute(item, attribute)){
@@ -322,7 +533,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			return referenceObject;
 		}else{
 			if(typeof value === "object"){
-				for(type in this._datatypeMap){
+				for(var type in this._datatypeMap){
 					var typeMap = this._datatypeMap[type];
 					if (dojo.isObject(typeMap) && !dojo.isFunction(typeMap)){
 						if(value instanceof typeMap.type){
@@ -359,7 +570,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		for(var i = 0; i < this._arrayOfAllItems.length; ++i){
 			var item = this._arrayOfAllItems[i];
 			if(item !== null){
-				serializableItem = {};
+				var serializableItem = {};
 				for(var key in item){
 					if(key !== this._storeRefPropName && key !== this._itemNumPropName){
 						var attribute = key;
@@ -381,6 +592,26 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		var prettyPrint = true;
 		return dojo.toJson(serializableStructure, prettyPrint);
 	},
+
+	_isEmpty: function(something){
+		//	summary: 
+		//		Function to determine if an array or object has no properties or values.
+		//	something:
+		//		The array or object to examine.
+		var empty = true;
+		if(dojo.isObject(something)){
+			var i;
+			for(i in something){
+				empty = false;
+				break;
+			}
+		}else if(dojo.isArray(something)){
+			if(something.length > 0){
+				empty = false;
+			}
+		}
+		return empty; //boolean
+	},
 	
 	save: function(/* object */ keywordArgs){
 		// summary: See dojo.data.api.Write.save()
@@ -396,6 +627,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				_modifiedItems:{},
 				_deletedItems:{}
 			};
+
 			self._saveInProgress = false; // must come after this._pending is cleared, but before any callbacks
 			if(keywordArgs && keywordArgs.onComplete){
 				var scope = keywordArgs.scope || dojo.global;
@@ -469,18 +701,43 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				this._itemsByIdentity[identity] = originalItem;
 			}			
 		}
+		var deletedItem;
 		for(identity in this._pending._deletedItems){
-			var deletedItem = this._pending._deletedItems[identity];
+			deletedItem = this._pending._deletedItems[identity];
 			deletedItem[this._storeRefPropName] = this;
 			var index = deletedItem[this._itemNumPropName];
+
+			//Restore the reverse refererence map, if any.
+			if(deletedItem["backup_" + this._reverseRefMap]){
+				deletedItem[this._reverseRefMap] = deletedItem["backup_" + this._reverseRefMap];
+				delete deletedItem["backup_" + this._reverseRefMap];
+			}
 			this._arrayOfAllItems[index] = deletedItem;
 			if (this._itemsByIdentity) {
 				this._itemsByIdentity[identity] = deletedItem;
 			}
 			if(deletedItem[this._rootItemPropName]){
 				this._arrayOfTopLevelItems.push(deletedItem);
+			}	  
+		}
+		//We have to pass through it again and restore the reference maps after all the
+		//undeletes have occurred.
+		for(identity in this._pending._deletedItems){
+			deletedItem = this._pending._deletedItems[identity];
+			if(deletedItem["backupRefs_" + this._reverseRefMap]){
+				dojo.forEach(deletedItem["backupRefs_" + this._reverseRefMap], function(reference){
+					var refItem;
+					if(this._itemsByIdentity){
+						refItem = this._itemsByIdentity[reference.id];
+					}else{
+						refItem = this._arrayOfAllItems[reference.id];
+					}
+					this._addReferenceToMap(refItem, deletedItem, reference.attr);
+				}, this);
+				delete deletedItem["backupRefs_" + this._reverseRefMap]; 
 			}
 		}
+
 		this._pending = {
 			_newItems:{}, 
 			_modifiedItems:{}, 
@@ -500,14 +757,9 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}else{
 			// return true if the store is dirty -- which means return true
 			// if there are any new items, dirty items, or modified items
-			var key;
-			for(key in this._pending._newItems){
-				return true;
-			}
-			for(key in this._pending._modifiedItems){
-				return true;
-			}
-			for(key in this._pending._deletedItems){
+			if(!this._isEmpty(this._pending._newItems) || 
+			   !this._isEmpty(this._pending._modifiedItems) ||
+			   !this._isEmpty(this._pending._deletedItems)){
 				return true;
 			}
 			return false; // boolean
@@ -523,7 +775,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		// summary: See dojo.data.api.Notification.onSet()
 		
 		// No need to do anything. This method is here just so that the 
-		// client code can connect observers to it. 
+		// client code can connect observers to it.
 	},
 
 	onNew: function(/* item */ newItem, /*object?*/ parentInfo){
@@ -539,5 +791,4 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		// No need to do anything. This method is here just so that the 
 		// client code can connect observers to it. 
 	}
-
 });

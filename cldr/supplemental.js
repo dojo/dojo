@@ -16,13 +16,13 @@ dojo.cldr.supplemental.getFirstDayOfWeek = function(/*String?*/locale){
 		as:0,au:0,az:0,bw:0,ca:0,cn:0,fo:0,ge:0,gl:0,gu:0,hk:0,ie:0,il:0,is:0,jm:0,jp:0,kg:0,kr:0,la:0,
 		mh:0,mo:0,mp:0,mt:0,nz:0,ph:0,pk:0,sg:0,th:0,tt:0,tw:0,um:0,us:0,uz:0,vi:0,za:0,zw:0,
 		et:0,mw:0,ng:0,tj:0,
-		gb:0,
+// variant. do not use?		gb:0,
 		sy:4
 	};
 
 	var country = dojo.cldr.supplemental._region(locale);
 	var dow = firstDay[country];
-	return (typeof dow == 'undefined') ? 1 : dow; /*Number*/
+	return (dow === undefined) ? 1 : dow; /*Number*/
 };
 
 dojo.cldr.supplemental._region = function(/*String?*/locale){
@@ -64,7 +64,7 @@ dojo.cldr.supplemental.getWeekend = function(/*String?*/locale){
 	var country = dojo.cldr.supplemental._region(locale);
 	var start = weekendStart[country];
 	var end = weekendEnd[country];
-	if(typeof start == 'undefined'){start=6;}
-	if(typeof end == 'undefined'){end=0;}
+	if(start === undefined){start=6;}
+	if(end === undefined){end=0;}
 	return {start:start, end:end}; /*Object {start,end}*/
 };

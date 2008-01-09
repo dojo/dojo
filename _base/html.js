@@ -975,11 +975,6 @@ if(dojo.isIE || dojo.isOpera){
 		valuetype: "valueType"
 	}
 
-	var _hasAttr = function(/*DomNode*/node, /*String*/name){
-		var attr = node.getAttributeNode(name);
-		return attr ? attr.specified : false;
-	}
-
 	dojo.hasAttr = function(/*DomNode|String*/node, /*String*/name){
 		//	summary:
 		//		Returns true if the requested attribute is specified on the
@@ -991,7 +986,8 @@ if(dojo.isIE || dojo.isOpera){
 		//	returns:
 		//		true if the requested attribute is specified on the
 		//		given element, and false otherwise
-		return _hasAttr(dojo.byId(node), _fixAttrName(name)); // boolean
+		var attr = dojo.byId(node).getAttributeNode(_fixAttrName(name));
+		return attr ? attr.specified : false;
 	}
 
 	dojo.attr = function(/*DomNode|String*/node, /*String*/name, /*String?*/value){
@@ -1021,7 +1017,7 @@ if(dojo.isIE || dojo.isOpera){
 			// via getAttribute()?
 			var prop = _attrProps[name.toLowerCase()];
 			return prop ? node[prop] :
-				_hasAttr(node, name) ? node.getAttribute(name) : null;
+				dojo.hasAttr(node, name) ? node.getAttribute(name) : null;
 		}
 	}
 

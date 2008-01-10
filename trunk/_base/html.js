@@ -107,7 +107,7 @@ if(dojo.isIE || dojo.isOpera){
 				}
 				node = node.parentNode;
 			}
-		}catch(e){ return -1; /* squelch */ }
+		}catch(e){ /* squelch */ }
 		return false; // Boolean
 	};
 

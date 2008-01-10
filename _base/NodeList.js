@@ -194,7 +194,7 @@ dojo.require("dojo._base.array");
 			// 		Returns the box objects all elements in a node list as
 			// 		an Array (*not* a NodeList)
 			
-			return d.map(this, d.coords);
+			return d.map(this, d.coords); // Array
 		},
 
 		/*=====
@@ -258,7 +258,7 @@ dojo.require("dojo._base.array");
 			//			"after"
 			// 		or an offset in the childNodes property
 			var item = d.query(queryOrNode)[0];
-			position = position||"last";
+			position = position || "last";
 
 			for(var x=0; x<this.length; x++){
 				d.place(this[x], item, position);
@@ -305,9 +305,9 @@ dojo.require("dojo._base.array");
 			//		NodeList.
 			//	simpleFilter: single-expression CSS filter
 			//	return: a dojo.NodeList of all of the elements orpahned
-			var orphans = (simpleFilter) ? d._filterQueryResult(this, simpleFilter) : this;
+			var orphans = simpleFilter ? d._filterQueryResult(this, simpleFilter) : this;
 			orphans.forEach(function(item){
-				if(item["parentNode"]){
+				if(item.parentNode){
 					item.parentNode.removeChild(item);
 				}
 			});
@@ -331,7 +331,7 @@ dojo.require("dojo._base.array");
 			//			"after"
 			// 		or an offset in the childNodes property
 			var item = this[0];
-			return d.query(queryOrListOrNode).forEach(function(ai){ d.place(ai, item, (position||"last")); }); // dojo.NodeList
+			return d.query(queryOrListOrNode).forEach(function(ai){ d.place(ai, item, position || "last"); }); // dojo.NodeList
 		},
 
 		// FIXME: do we need this?
@@ -341,13 +341,14 @@ dojo.require("dojo._base.array");
 			//		satisfy the passed query but use elements of the
 			//		current NodeList as query roots.
 
-			if(!queryStr){ return this; };
+			if(!queryStr){ return this; }
 
 			// FIXME: probably slow
+			// FIXME: use map?
 			var ret = d.NodeList();
 			this.forEach(function(item){
 				d.query(queryStr, item).forEach(function(subItem){
-					if(typeof subItem != "undefined"){
+					if(subItem !== undefined){
 						ret.push(subItem);
 					}
 				});
@@ -374,7 +375,7 @@ dojo.require("dojo._base.array");
 			var _a = arguments;
 			var r = d.NodeList();
 			var rp = function(t){ 
-				if(typeof t != "undefined"){
+				if(t !== undefined){
 					r.push(t); 
 				}
 			}
@@ -385,13 +386,11 @@ dojo.require("dojo._base.array");
 					return items; // dojo.NodeList
 				}
 				// if we got a callback, run it over the filtered items
-				d.forEach(d.filter(items, _a[1], _a[2]), rp);
-				return r; // dojo.NodeList
+				_a.shift();
 			}
 			// handle the (callback, [thisObject]) case
 			d.forEach(d.filter(items, _a[0], _a[1]), rp);
 			return r; // dojo.NodeList
-
 		},
 		
 		/*
@@ -436,10 +435,10 @@ dojo.require("dojo._base.array");
 			}else{
 				ta.appendChild(content);
 			}
-			if(typeof position == "undefined"){
+			if(position === undefined){
 				position = "last";
 			}
-			var ct = ((position == "first")||(position == "after")) ? "lastChild" : "firstChild";
+			var ct = (position == "first" || position == "after") ? "lastChild" : "firstChild";
 			this.forEach(function(item){
 				var tn = ta.cloneNode(true);
 				while(tn[ct]){

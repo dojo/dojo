@@ -407,6 +407,20 @@ dojo.require("dojo._base.array");
 			//	summary:
 			//		add a node or some HTML as a string to every item in the list. 
 			//		Returns the original list.
+			//	description:
+			//		a copy of the HTML content is added to each item in the
+			//		list, with an optional position argument. If no position
+			//		argument is provided, the content is appended to the end of
+			//		each item.
+			//	example:
+			//		appends content to the end if the position is ommitted
+			//	|	dojo.query("h3 > p").addContent("hey there!");
+			//	example:
+			//		add something to the front of each element that has a "thinger" property:
+			//	|	dojo.query("[thinger]").addContent("...", "first");
+			//	example:
+			//		adds a header before each element of the list
+			//	|	dojo.query(".note").addContent("<h4>NOTE:</h4>", "before");
 			//	content:
 			//		the HTML in string format to add at position to every item
 			//	position:
@@ -421,6 +435,9 @@ dojo.require("dojo._base.array");
 				ta.innerHTML = content;
 			}else{
 				ta.appendChild(content);
+			}
+			if(typeof position == "undefined"){
+				position = "last";
 			}
 			var ct = ((position == "first")||(position == "after")) ? "lastChild" : "firstChild";
 			this.forEach(function(item){

@@ -43,11 +43,30 @@ djConfig = {
 
 	//TODOC:  HOW TO DOC THIS?
 	// dojo is the root variable of (almost all) our public symbols -- make sure it is defined.
-	if(typeof this["dojo"] == "undefined"){
-		this.dojo = {};
+	if(typeof dojo == "undefined"){
+		this.dojo = {
+			_scopeName: "dojo",
+			_scopePrefix: "",
+			_scopePrefixArgs: "",
+			_scopeSuffix: "",
+			_scopeMap: {},
+			_scopeMapRev: {}
+		};
 	}
 
 	var d = dojo;
+
+	//Need placeholders for dijit and dojox for scoping code.
+	if(typeof dijit == "undefined"){
+		this.dijit = {_scopeName: "dijit"};
+	}
+	if(typeof dojox == "undefined"){
+		this.dojox = {_scopeName: "dojox"};
+	}
+	
+	if(!dojo._scopeArgs){
+		dojo._scopeArgs = [dojo, dijit, dojox];
+	}
 
 /*=====
 dojo.global = {
@@ -76,7 +95,7 @@ dojo.global = {
 
 	var _platforms = ["Browser", "Rhino", "Spidermonkey", "Mobile"];
 	var t;
-	while(t=_platforms.shift()){
+	while((t=_platforms.shift())){
 		d["is"+t] = false;
 	}
 
@@ -103,7 +122,7 @@ dojo.global = {
 
 	// Register with the OpenAjax hub
 	if(typeof OpenAjax != "undefined"){
-		OpenAjax.hub.registerLibrary("dojo", "http://dojotoolkit.org", d.version.toString());
+		OpenAjax.hub.registerLibrary(dojo._scopeName, "http://dojotoolkit.org", d.version.toString());
 	}
 
 	dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
@@ -143,6 +162,9 @@ dojo.global = {
 	dojo._getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
 		var obj=context||d.global;
 		for(var i=0, p; obj&&(p=parts[i]); i++){
+			if(i == 0 && this._scopeMap[p]){
+				p = this._scopeMap[p];
+			}
 			obj = (p in obj ? obj[p] : (create ? obj[p]={} : undefined));
 		}
 		return obj; // mixed

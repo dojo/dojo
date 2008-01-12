@@ -101,7 +101,13 @@
 		if(!contents){ return false; } // Boolean
 		this._loadedUrls[uri] = true;
 		this._loadedUrls.push(uri);
-		if(cb){ contents = '('+contents+')'; }
+		if(cb){
+			contents = '('+contents+')';
+		}else{
+			//Only do the scoping if no callback. If a callback is specified,
+			//it is most likely the i18n bundle stuff.
+			contents = this._scopePrefix + contents + this._scopeSuffix;
+		}
 		var value = d["eval"](contents+"\r\n//@ sourceURL="+uri);
 		if(cb){ cb(value); }
 		return true; // Boolean
@@ -220,7 +226,7 @@
 		//FF 2.0 and freezing issues where we try to do sync xhr while background css images
 		//are being loaded (trac #2572)? Consider for 0.9.
 		if(typeof setTimeout == "object" || (djConfig.useXDomain && d.isOpera)){
-			setTimeout("dojo.loaded();", 0);
+			setTimeout(dojo._scopeName + ".loaded();", 0);
 		}else{
 			d.loaded();
 		}
@@ -281,6 +287,16 @@
 		//	   	|	...
 		//	returns: the required namespace object
 		omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
+		
+		//See if there is a scope mapping.
+		var sparts = moduleName.split(".");
+		var scp = dojo._scopeMapRev[sparts[0]];
+		if(scp){
+			sparts[0] = scp;
+			moduleName = sparts.join(".");
+		}
+
+		//Check if it is already loaded.
 		var module = this._loadedModules[moduleName];
 		if(module){
 			return module;

@@ -45,7 +45,7 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 
 	//Create resource object and the call to _xdResourceLoaded.
 	var output = [];
-	output.push("dojo._xdResourceLoaded({\n");
+	output.push(dojo._scopeName + "._xdResourceLoaded({\n");
 
 	//Add dependencies
 	if(deps.length > 0){
@@ -60,10 +60,10 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	}
 
 	//Add the contents of the file inside a function.
-	//Pass in dojo as an argument to the function to help with
-	//allowing multiple versions of dojo in a page.
-	output.push("\ndefineResource: function(dojo){");
-	
+	//Pass in scope arguments so we can support multiple versions of the
+	//same module on a page.
+	output.push("\ndefineResource: function(" + dojo._scopePrefixArgs + "){");
+
 	//Don't put in the contents in the debugAtAllCosts case
 	//since the contents may have syntax errors. Let those
 	//get pushed up when the script tags are added to the page
@@ -160,7 +160,7 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 
 		//Start timer
 		if(!this._xdTimer){
-			this._xdTimer = setInterval("dojo._xdWatchInFlight();", 100);
+			this._xdTimer = setInterval(dojo._scopeName + "._xdWatchInFlight();", 100);
 		}
 		this._xdStartTime = (new Date()).getTime();
 	}
@@ -205,8 +205,14 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 			var res = this._xdCreateResource(contents, module, uri);
 			dojo.eval(res);
 		}else{
-			if(cb){ contents = '('+contents+')'; }
-			var value = dojo.eval(contents);
+			if(cb){
+				contents = '('+contents+')';
+			}else{
+				//Only do the scoping if no callback. If a callback is specified,
+				//it is most likely the i18n bundle stuff.
+				contents = this._scopePrefix + contents + this._scopeSuffix;
+			}
+			var value = dojo["eval"](contents+"\r\n//@ sourceURL="+uri);
 			if(cb){
 				cb(value);
 			}
@@ -585,9 +591,8 @@ dojo._xdWatchInFlight = function(){
 			this._xdDebugQueue.push({resourceName: content.resourceName, resourcePath: content.resourcePath});
 		}else{
 			//Evaluate the resource to bring it into being.
-			//Pass dojo in so that later, to support multiple versions of dojo
-			//in a page, we can pass which version of dojo to use.	
-			content(dojo);
+			//Pass in scope args to allow multiple versions of modules in a page.	
+			content.apply(dojo.global, dojo._scopeArgs);
 		}
 	}
 
@@ -595,12 +600,11 @@ dojo._xdWatchInFlight = function(){
 	//This normally shouldn't happen with proper dojo.provide and dojo.require
 	//usage, but providing it just in case. Note that these may not be executed
 	//in the original order that the developer intended.
-	//Pass dojo in so that later, to support multiple versions of dojo
-	//in a page, we can pass which version of dojo to use.
 	for(var i = 0; i < this._xdContents.length; i++){
 		var current = this._xdContents[i];
 		if(current.content && !current.isDefined){
-			current.content(dojo);
+			//Pass in scope args to allow multiple versions of modules in a page.	
+			current.content.apply(dojo.global, dojo._scopeArgs);
 		}
 	}
 

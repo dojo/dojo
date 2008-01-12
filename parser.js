@@ -5,6 +5,8 @@ dojo.parser = new function(){
 	// summary: The Dom/Widget parsing package
 
 	var d = dojo;
+	var dtName = d._scopeName + "Type";
+	var qry = "[" + dtName + "]";
 
 	function val2type(/*Object*/ value){
 		// summary:
@@ -125,7 +127,7 @@ dojo.parser = new function(){
 		var thelist = [];
 		d.forEach(nodes, function(node){
 			if(!node){ return; }
-			var type = node.getAttribute("dojoType");
+			var type = node.getAttribute(dtName);
 			if((!type)||(!type.length)){ return; }
 			var clsInfo = getClassInfo(type);
 			var clazz = clsInfo.cls;
@@ -220,7 +222,7 @@ dojo.parser = new function(){
 		//		Search specified node (or root node) recursively for class instances,
 		//		and instantiate them Searches for
 		//		dojoType="qualified.class.name"
-		var list = d.query('[dojoType]', rootNode);
+		var list = d.query(qry, rootNode);
 		// go build the object instances
 		var instances = this.instantiate(list);
 		return instances;

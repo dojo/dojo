@@ -67,7 +67,7 @@ dojo.io.script = {
 		var dfd = dojo._ioSetArgs(args, this._deferredCancel, this._deferredOk, this._deferredError);
 
 		var ioArgs = dfd.ioArgs;
-		ioArgs.id = "dojoIoScript" + (this._counter++);
+		ioArgs.id = dojo._scopeName + "IoScript" + (this._counter++);
 		ioArgs.canDelete = false;
 
 		//Special setup for jsonp case

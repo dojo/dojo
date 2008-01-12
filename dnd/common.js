@@ -14,7 +14,7 @@ dojo.dnd.getUniqueId = function(){
 	// summary: returns a unique string for use with any DOM element
 	var id;
 	do{
-		id = "dojoUnique" + (++dojo.dnd._uniqueId);
+		id = dojo._scopeName + "Unique" + (++dojo.dnd._uniqueId);
 	}while(dojo.byId(id));
 	return id;
 };

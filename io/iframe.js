@@ -145,7 +145,7 @@ dojo.io.iframe = {
 		//This transport can only process one send() request at a time, so if send() is called
 		//multiple times, it will queue up the calls and only process one at a time.
 		if(!this["_frame"]){
-			this._frame = this.create(this._iframeName, "dojo.io.iframe._iframeOnload();");
+			this._frame = this.create(this._iframeName, dojo._scopeName + ".io.iframe._iframeOnload();");
 		}
 
 		//Set up the deferred.
@@ -229,7 +229,7 @@ dojo.io.iframe = {
 
 	_currentDfd: null,
 	_dfdQueue: [],
-	_iframeName: "dojoIoIframe",
+	_iframeName: dojo._scopeName + "IoIframe",
 
 	_fireNextRequest: function(){
 		//summary: Internal method used to fire the next request in the bind queue.

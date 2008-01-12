@@ -281,7 +281,7 @@ if(typeof window != 'undefined'){
 			// 	strips all comments -- including conditional ones.
 
 			document.write('<scr'+'ipt defer src="//:" '
-				+ 'onreadystatechange="if(this.readyState==\'complete\'){dojo._loadInit();}">'
+				+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
 				+ '</scr'+'ipt>'
 			);
 

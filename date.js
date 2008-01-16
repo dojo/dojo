@@ -94,7 +94,7 @@ dojo.date.compare = function(/*Date*/date1, /*Date?*/date2, /*String?*/portion){
 	date1 = new Date(Number(date1));
 	date2 = new Date(Number(date2 || new Date()));
 
-	if(typeof portion !== "undefined"){
+	if(portion !== "undefined"){
 		if(portion == "date"){
 			// Ignore times and compare dates.
 			date1.setHours(0, 0, 0, 0);

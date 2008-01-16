@@ -43,8 +43,8 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 
 	if(match){
 		match.shift();
-		match[1] && match[1]--; // Javascript Date months are 0-based
-		match[6] && (match[6] *= 1000); // Javascript Date expects fractional seconds as milliseconds
+		if(match[1]){match[1]--;} // Javascript Date months are 0-based
+		if(match[6]){match[6] *= 1000;} // Javascript Date expects fractional seconds as milliseconds
 
 		if(defaultTime){
 			// mix in defaultTime.  Relatively expensive, so use || operators for the fast path of defaultTime === 0
@@ -57,7 +57,7 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 				}
 			});
 		}
-		result = new Date(match[0]||1970, match[1]||0, match[2]||0, match[3]||0, match[4]||0, match[5]||0, match[6]||0);
+		result = new Date(match[0]||1970, match[1]||0, match[2]||1, match[3]||0, match[4]||0, match[5]||0, match[6]||0);
 
 		var offset = 0;
 		var zoneSign = match[7] && match[7].charAt(0);

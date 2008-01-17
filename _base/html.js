@@ -1010,14 +1010,18 @@ if(dojo.isIE || dojo.isOpera){
 		node = dojo.byId(node);
 		name = _fixAttrName(name);
 		if(arguments.length == 3){
-			node.setAttribute(name, value);
+			if(typeof value == "function"){ // e.g. onsubmit
+				node[name] = value;
+			}else{
+				node.setAttribute(name, value);
+			}
 			return undefined;
 		}else{
 			// should we access this attribute via a property or
 			// via getAttribute()?
 			var prop = _attrProps[name.toLowerCase()];
 			return prop ? node[prop] :
-				dojo.hasAttr(node, name) ? node.getAttribute(name) : null;
+				dojo.hasAttr(node, name) ? node.getAttribute(name) : (node[name]/*function*/||null);
 		}
 	}
 

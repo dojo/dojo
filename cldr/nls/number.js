@@ -17,9 +17,9 @@
         'percentFormat':"#,##0%",
         'currencySpacing-beforeCurrency-currencyMatch':"[:letter:]",
         'currencySpacing-beforeCurrency-surroundingMatch':"[:digit:]",
-        'currencySpacing-beforeCurrency-insertBetween':" ",
+        'currencySpacing-beforeCurrency-insertBetween':" ",
         'currencySpacing-afterCurrency-currencyMatch':"[:letter:]",
         'currencySpacing-afterCurrency-surroundingMatch':"[:digit:]",
-        'currencySpacing-afterCurrency-insertBetween':" ",
+        'currencySpacing-afterCurrency-insertBetween':" ",
         'currencyFormat':"¤ #,##0.00"
 })

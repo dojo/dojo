@@ -4,6 +4,7 @@
 	CAD_displayName:"Dollaro Canadese",
 	CHF_displayName:"Franco Svizzero",
 	CHF_symbol:"SFr.",
+	CNY_displayName:"Renmimbi Cinese",
 	EUR_displayName:"Euro",
 	GBP_displayName:"Sterlina Inglese",
 	HKD_displayName:"Dollaro di Hong Kong",

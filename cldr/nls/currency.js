@@ -3,10 +3,10 @@
 	EUR_displayName:"EUR",
 	EUR_symbol:"€",
 	GBP_displayName:"GBP",
-	GBP_symbol:"£",
+	GBP_symbol:"UK£",
 	JPY_displayName:"JPY",
-	JPY_symbol:"¥",
+	JPY_symbol:"JP¥",
 	USD_displayName:"USD",
-	USD_symbol:"$"
+	USD_symbol:"US$"
 })
                  

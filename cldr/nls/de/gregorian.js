@@ -6,7 +6,9 @@
         'days-format-abbr':["So","Mo","Di","Mi","Do","Fr","Sa"],
         'days-format-wide':["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"],
         'days-standAlone-narrow':["S","M","D","M","D","F","S"],
+        'quarters-format-abbreviated':["Q1","Q2","Q3","Q4"],
         'quarters-format-wide':["1. Quartal","2. Quartal","3. Quartal","4. Quartal"],
+        'quarters-stand-alone-narrow':["1","2","3","4"],
         'am':"vorm.",
         'pm':"nachm.",
         'eraNames':["v. Chr.","n. Chr."],
@@ -15,6 +17,21 @@
         'dateFormat-long': "d. MMMM yyyy",
         'dateFormat-medium': "dd.MM.yyyy",
         'dateFormat-short': "dd.MM.yy",
-        'timeFormat-full': "H:mm' Uhr 'z"
+        'timeFormat-full': "HH:mm:ss v",
+        'timeFormat-long': "HH:mm:ss z",
+        'timeFormat-medium': "HH:mm:ss",
+        'timeFormat-short': "HH:mm",
+        'dateTimeAvailableFormats':["E d","H","HH:mm","HH:mm:ss","E MMM d","d. MMMM","dd.MM.","d.M.","mm:ss","MM.yy","MMM yy","Q yy","yyyy","MMMM yyyy"],
+        'field-era':"Epoche",
+        'field-year':"Jahr",
+        'field-month':"Monat",
+        'field-week':"Woche",
+        'field-day':"Tag",
+        'field-weekday':"Wochentag",
+        'field-dayperiod':"Tageshälfte",
+        'field-hour':"Stunde",
+        'field-minute':"Minute",
+        'field-second':"Sekunde",
+        'field-zone':"Zone"
 })
                         

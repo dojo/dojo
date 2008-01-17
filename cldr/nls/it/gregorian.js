@@ -13,7 +13,7 @@
         'eraAbbr':["aC","dC"],
         'dateFormat-full': "EEEE d MMMM yyyy",
         'dateFormat-long': "dd MMMM yyyy",
-        'dateFormat-medium': "dd/MMM/yy",
+        'dateFormat-medium': "dd/MMM/yyyy",
         'dateFormat-short': "dd/MM/yy",
         'field-era':"era",
         'field-year':"anno",

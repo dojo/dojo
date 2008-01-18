@@ -869,9 +869,10 @@ if(dojo.isIE || dojo.isOpera){
 			ret.y = client.top - offset.y;
 		}else if(ownerDocument["getBoxObjectFor"]){
 			// mozilla
-			var bo = ownerDocument.getBoxObjectFor(node);
-			ret.x = bo.x - _sumAncestorProperties(node, "scrollLeft");
-			ret.y = bo.y - _sumAncestorProperties(node, "scrollTop");
+			var bo = ownerDocument.getBoxObjectFor(node),
+				b = dojo._getBorderExtents(node);
+			ret.x = bo.x - b.l - _sumAncestorProperties(node, "scrollLeft");
+			ret.y = bo.y - b.t - _sumAncestorProperties(node, "scrollTop");
 		}else{
 			if(node["offsetParent"]){
 				hasScroll = true;

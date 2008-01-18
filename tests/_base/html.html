@@ -110,6 +110,11 @@
 							t.is(120, pos.w);
 							t.is(120, pos.h);
 						},
+						function coordsBorder(t){
+							var pos = dojo.coords("sq100border10", false);
+							t.is(100, pos.x);
+							t.is(400, pos.y);
+						},
 						function sq100nopos(t){
 							var pos = dojo.coords("sq100nopos", false);
 							// console.debug(pos);
@@ -128,6 +133,7 @@
 							with (s.style) {
 								position = 'absolute';
 								overflow = 'scroll';
+								border = "10px solid black";
 							}	
 							dojo._setMarginBox(s, x, y, 100, 100);
 							dojo._setMarginBox(c, 0, 0, 500, 500);

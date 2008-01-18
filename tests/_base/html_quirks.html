@@ -44,6 +44,11 @@
 							t.is(120, pos.w);
 							t.is(120, pos.h);
 						},
+						function coordsBorder(t){
+							var pos = dojo.coords("sq100border10", false);
+							t.is(100, pos.x);
+							t.is(400, pos.y);
+						},
 						function sq100nopos(t){
 							var pos = dojo.coords("sq100nopos", false);
 							// console.debug(pos);

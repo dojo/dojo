@@ -269,6 +269,9 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 	//		the addCustomFormats method.
 	//		Formatting patterns are implemented using the syntax described at
 	//		http://www.unicode.org/reports/tr35/#Date_Format_Patterns
+	//		When two digit years are used, a century is chosen according to a sliding 
+	//		window of 80 years before and 20 years after present year, for both yy and yyyy patterns.
+	//		year < 100CE requires strict mode.
 	//
 	// value:
 	//		A string representation of a date
@@ -299,7 +302,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 		var l=token.length;
 		switch(token.charAt(0)){
 			case 'y':
-				if(l != 2){
+				if(l != 2 && options.strict){
 					//interpret year literally, so '5' would be 5 A.D.
 					result.setFullYear(v);
 					expected.year = v;

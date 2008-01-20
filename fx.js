@@ -7,45 +7,204 @@ dojo.fx = {
 };
 =====*/
 
-dojo.fx.chain = function(/*dojo._Animation[]*/ animations){
-	// summary: Chain a list of dojo._Animation s to run in sequence
-	// example:
-	//	|	dojo.fx.chain([
-	//	|		dojo.fadeIn({ node:node }),
-	//	|		dojo.fadeOut({ node:otherNode })
-	//	|	]).play();
-	//
-	var first = animations.shift();
-	var previous = first;
-	dojo.forEach(animations, function(current){
-		dojo.connect(previous, "onEnd", current, "play");
-		previous = current;
-	});
-	return first; // dojo._Animation
-};
-
-dojo.fx.combine = function(/*dojo._Animation[]*/ animations){
-	// summary: Combine a list of dojo._Animation s to run in parallel
-	// example:
-	//	|	dojo.fx.combine([
-	//	|		dojo.fadeIn({ node:node }),
-	//	|		dojo.fadeOut({ node:otherNode })
-	//	|	]).play();
-	var ctr = new dojo._Animation({ curve: [0, 1] });
-	if(!animations.length){ return ctr; }
-	// animations.sort(function(a, b){ return a.duration-b.duration; });
-	ctr.duration = animations[0].duration;
-	dojo.forEach(animations, function(current){
-		dojo.forEach([ "play", "pause", "stop" ],
-			function(e){
-				if(current[e]){
-					dojo.connect(ctr, e, current, e);
+(function(){
+	var _baseObj = {
+			_fire: function(evt, args){
+				if(this[evt]){
+					this[evt].apply(this, args||[]);
 				}
+				return this;
 			}
-		);
+		};
+
+	var _chain = function(animations){
+		this._index = -1;
+		this._animations = animations||[];
+		this._current = this._onAnimateCtx = this._onEndCtx = null;
+
+		this.duration = 0;
+		dojo.forEach(this._animations, function(a){
+			this.duration += a.duration;
+			if(a.delay){ this.duration += a.delay; }
+		}, this);
+	};
+	dojo.extend(_chain, {
+		_onAnimate: function(arg){
+			this._fire("onAnimate", arg);
+		},
+		_onEnd: function(){
+			dojo.disconnect(this._onAnimateCtx);
+			dojo.disconnect(this._onEndCtx);
+			this._onAnimateCtx = this._onEndCtx = null;
+			if(this._index + 1 == this._animations.length){
+				this._fire("onEnd");
+			}else{
+				// switch animations
+				this._current = this._animations[++this._index];
+				this._onAnimateCtx = dojo.connect(this._current, "onAnimate", this, "_onAnimate");
+				this._onEndCtx = dojo.connect(this._current, "onEnd", this, "_onEnd");
+				this._current.play(0, true);
+			}
+		},
+		play: function(/*int?*/ delay, /*Boolean?*/ gotoStart){
+			if(!this._current){ this._current = this._animations[this._index = 0]; }
+			if(!gotoStart && this._current.status() == "playing"){ return this; }
+			var onBeforeBegin = dojo.connect(this._current, "onBeforeBegin", this, function(){
+					this._fire("onBeforeBegin");
+				}),
+				onBegin = dojo.connect(this._current, "onBegin", this, function(arg){
+					this._fire("onBegin", arg);
+				}),
+				onPlay = dojo.connect(this._current, "onPlay", this, function(arg){
+					this._fire("onPlay", arg);
+					dojo.disconnect(onBeforeBegin);
+					dojo.disconnect(onBegin);
+					dojo.disconnect(onPlay);
+				});
+			if(this._onAnimateCtx){
+				dojo.disconnect(this._onAnimateCtx);
+			}
+			this._onAnimateCtx = dojo.connect(this._current, "onAnimate", this, "_onAnimate");
+			if(this._onEndCtx){
+				dojo.disconnect(this._onEndCtx);
+			}
+			this._onEndCtx = dojo.connect(this._current, "onEnd", this, "_onEnd");
+			this._current.play.apply(this._current, arguments);
+			return this;
+		},
+		pause: function(){
+			if(this._current){
+				var e = dojo.connect(this._current, "onPause", this, function(arg){
+						this._fire("onPause", arg);
+						dojo.disconnect(e);
+					});
+				this._current.pause();
+			}
+			return this;
+		},
+		gotoPercent: function(/*Decimal*/percent, /*Boolean?*/ andPlay){
+			this.pause();
+			var offset = this.duration * percent;
+			this._current = null;
+			dojo.some(this._animations, function(a){
+				if(a.duration <= offset){
+					this._current = a;
+					return true;
+				}
+				offset -= a.duration;
+				return false;
+			});
+			if(this._current){
+				this._current.gotoPercent(offset / _current.duration, andPlay);
+			}
+			return this;
+		},
+		stop: function(/*boolean?*/ gotoEnd){
+			if(this._current){
+				if(gotoEnd){
+					for(; this._index + 1 < this._animations.length; ++this._index){
+						this._animations[this._index].stop(true);
+					}
+					this._current = this._animations[this._index];
+				}
+				var e = dojo.connect(this._current, "onStop", this, function(arg){
+						this._fire("onStop", arg);
+						dojo.disconnect(e);
+					});
+				this._current.stop();
+			}
+			return this;
+		},
+		status: function(){
+			return this._current ? this._current.status() : "stopped";
+		},
+		destroy: function(){
+			if(this._onAnimateCtx){ dojo.disconnect(this._onAnimateCtx); }
+			if(this._onEndCtx){ dojo.disconnect(this._onEndCtx); }
+		}
 	});
-	return ctr; // dojo._Animation
-};
+	dojo.extend(_chain, _baseObj);
+
+	dojo.fx.chain = function(/*dojo._Animation[]*/ animations){
+		// summary: Chain a list of dojo._Animation s to run in sequence
+		// example:
+		//	|	dojo.fx.chain([
+		//	|		dojo.fadeIn({ node:node }),
+		//	|		dojo.fadeOut({ node:otherNode })
+		//	|	]).play();
+		//
+		return new _chain(animations) // dojo._Animation
+	};
+
+	var _combine = function(animations){
+		this._animations = animations||[];
+		this._connects = [];
+
+		this.duration = 0;
+		dojo.forEach(animations, function(a){
+			var duration = a.duration;
+			if(a.delay){ duration += a.delay; }
+			if(this.duration < duration){ this.duration = duration; }
+			this._connects.push(dojo.connect(a, "onEnd", this, "_onEnd"));
+		}, this);
+		
+		this._pseudoAnimation = new dojo._Animation({curve: [0, 1], duration: this.duration});
+		dojo.forEach(["onBeforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop"], 
+			function(evt){
+				this._connects.push(dojo.connect(this._pseudoAnimation, evt, dojo.hitch(this, "_fire", evt)));
+			},
+			this
+		);
+	};
+	dojo.extend(_combine, {
+		_doAction: function(action, args){
+			dojo.forEach(this._animations, function(a){
+				a[action].apply(a, args);
+			});
+			return this;
+		},
+		_onEnd: function(){
+			var all = dojo.every(this._animations, function(a){
+				return a.status() == "stopped";
+			});
+			if(all){ this._fire("onEnd"); }
+		},
+		play: function(/*int?*/ delay, /*Boolean?*/ gotoStart){
+			return this._doAction("play", arguments);
+		},
+		pause: function(){
+			return this._doAction("pause", arguments);
+		},
+		gotoPercent: function(/*Decimal*/percent, /*Boolean?*/ andPlay){
+			this._pseudoAnimation[action].apply(this._pseudoAnimation, args);
+			var ms = this.duration * percent;
+			dojo.forEach(this._animations, function(a){
+				a.gotoPercent(a.duration < ms ? 1 : (ms / a.duration), andPlay);
+			});
+			return this;
+		},
+		stop: function(/*boolean?*/ gotoEnd){
+			return this._doAction("stop", arguments);
+		},
+		status: function(){
+			return this._pseudoAnimation.status();
+		},
+		destroy: function(){
+			dojo.forEach(this._connects, dojo.disconnect);
+		}
+	});
+	dojo.extend(_combine, _baseObj);
+
+	dojo.fx.combine = function(/*dojo._Animation[]*/ animations){
+		// summary: Combine a list of dojo._Animation s to run in parallel
+		// example:
+		//	|	dojo.fx.combine([
+		//	|		dojo.fadeIn({ node:node }),
+		//	|		dojo.fadeOut({ node:otherNode })
+		//	|	]).play();
+		return new _combine(animations); // dojo._Animation
+	};
+})();
 
 dojo.declare("dojo.fx.Toggler", null, {
 	// summary:

@@ -11,6 +11,8 @@ dojo.require("dojo._base.html");
 */
 (function(){ 
 
+	var d = dojo;
+	
 	dojo._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:
 		//		dojo._Line is the object used to generate values from a start value
@@ -28,17 +30,17 @@ dojo.require("dojo._base.html");
 		}
 	}
 	
-	dojo.declare("dojo._Animation", null, {
+	d.declare("dojo._Animation", null, {
 		//	summary
 		//		A generic animation object that fires callbacks into it's handlers
 		//		object at various states
 		//
 		constructor: function(/*Object*/ args){
-			dojo.mixin(this, args);
-			if(dojo.isArray(this.curve)){
+			d.mixin(this, args);
+			if(d.isArray(this.curve)){
 				/* curve: Array
 					pId: a */
-				this.curve = new dojo._Line(this.curve[0], this.curve[1]);
+				this.curve = new d._Line(this.curve[0], this.curve[1]);
 			}
 		},
 		
@@ -90,7 +92,8 @@ dojo.require("dojo._base.html");
 		//	Synthetic event fired after the final frame of a dojo._Animation
 		onEnd: null,
 	
-		// ???
+		// onPlay: Event
+		//	Synthetic event fired any time a dojo._Animation is play()'ed
 		onPlay: null,
 	
 		// onPause: Event
@@ -106,7 +109,7 @@ dojo.require("dojo._base.html");
 		_percent: 0,
 		_startRepeatCount: 0,
 	
-		fire: function(/*Event*/ evt, /*Array?*/ args){
+		_fire: function(/*Event*/ evt, /*Array?*/ args){
 			//	summary:
 			//		Convenience function.  Fire event "evt" and pass it the
 			//		arguments specified in "args".
@@ -137,7 +140,7 @@ dojo.require("dojo._base.html");
 				return _t; // dojo._Animation
 			}
 	
-			_t.fire("beforeBegin");
+			_t._fire("beforeBegin");
 	
 			var de = delay||_t.delay;
 			var _p = dojo.hitch(_t, "_play", gotoStart);
@@ -165,10 +168,10 @@ dojo.require("dojo._base.html");
 				if(!_t._startRepeatCount){
 					_t._startRepeatCount = _t.repeat;
 				}
-				_t.fire("onBegin", [value]);
+				_t._fire("onBegin", [value]);
 			}
 	
-			_t.fire("onPlay", [value]);
+			_t._fire("onPlay", [value]);
 	
 			_t._cycle();
 			return _t; // dojo._Animation
@@ -177,9 +180,9 @@ dojo.require("dojo._base.html");
 		pause: function(){
 			// summary: Pauses a running animation.
 			this._stopTimer();
-			if(!this._active){ return this; /*dojo._Animation*/}
+			if(!this._active){ return this; /*dojo._Animation*/ }
 			this._paused = true;
-			this.fire("onPause", [this.curve.getValue(this._percent)]);
+			this._fire("onPause", [this.curve.getValue(this._percent)]);
 			return this; // dojo._Animation
 		},
 	
@@ -200,12 +203,12 @@ dojo.require("dojo._base.html");
 		stop: function(/*boolean?*/ gotoEnd){
 			// summary: Stops a running animation.
 			// gotoEnd: If true, the animation will end.
-			if(!this._timer){ return; }
+			if(!this._timer){ return this; /* dojo._Animation */ }
 			this._stopTimer();
 			if(gotoEnd){
 				this._percent = 1;
 			}
-			this.fire("onStop", [this.curve.getValue(this._percent)]);
+			this._fire("onStop", [this.curve.getValue(this._percent)]);
 			this._active = this._paused = false;
 			return this; // dojo._Animation
 		},
@@ -235,7 +238,7 @@ dojo.require("dojo._base.html");
 					step = _t.easing(step);
 				}
 	
-				_t.fire("onAnimate", [_t.curve.getValue(step)]);
+				_t._fire("onAnimate", [_t.curve.getValue(step)]);
 	
 				if(_t._percent < 1){
 					_t._startTimer();
@@ -254,14 +257,13 @@ dojo.require("dojo._base.html");
 						}
 					}
 					_t._percent = 0;
-					_t.fire("onEnd");
+					_t._fire("onEnd");
 				}
 			}
 			return _t; // dojo._Animation
 		}
 	});
 
-	var d = dojo;
 	var ctr = 0;
 	var _globalTimerList = [];
 	var runner = {
@@ -271,16 +273,16 @@ dojo.require("dojo._base.html");
 	dojo._Animation.prototype._startTimer = function(){
 		// this._timer = setTimeout(dojo.hitch(this, "_cycle"), this.rate);
 		if(!this._timer){
-			this._timer = dojo.connect(runner, "run", this, "_cycle");
+			this._timer = d.connect(runner, "run", this, "_cycle");
 			ctr++;
 		}
 		if(!timer){
-			timer = setInterval(dojo.hitch(runner, "run"), this.rate);
+			timer = setInterval(d.hitch(runner, "run"), this.rate);
 		}
 	};
 
 	dojo._Animation.prototype._stopTimer = function(){
-		dojo.disconnect(this._timer);
+		d.disconnect(this._timer);
 		this._timer = null;
 		ctr--;
 		if(!ctr){

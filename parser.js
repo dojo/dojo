@@ -158,6 +158,7 @@ dojo.parser = new function(){
 			// the widget on instantiation.
 			// <script type="dojo/method"> tags (with no event) are executed after instantiation
 			// <script type="dojo/connect" event="foo"> tags are dojo.connected after instantiation
+			// note: dojo/* script tags cannot exist in self closing widgets, like <input />
 			if(!ps){
 				var connects = [],	// functions to connect after instantiation
 					calls = [];		// functions to call after instantiation
@@ -194,10 +195,10 @@ dojo.parser = new function(){
 
 			// process connections and startup functions
 			if(!ps){
-				dojo.forEach(connects, function(connect){
-					dojo.connect(instance, connect.event, null, connect.func);
+				d.forEach(connects, function(connect){
+					d.connect(instance, connect.event, null, connect.func);
 				});
-				dojo.forEach(calls, function(func){
+				d.forEach(calls, function(func){
 					func.call(instance);
 				});
 			}

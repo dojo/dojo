@@ -844,8 +844,11 @@ if(dojo.isIE || dojo.isOpera){
 
 	dojo._abs = function(/*DomNode*/node, /*Boolean?*/includeScroll){
 		//	summary:
-		//		Gets the absolute position of the passed element based on the
-		//		document itself. Returns an object of the form:
+		//		Gets the position of the passed element relative to
+		//		the viewport (if includeScroll==false), or relative to the
+		//		document root (if includeScroll==true).
+		//
+		//		Returns an object of the form:
 		//			{ x: 100, y: 300 }
 		//		if includeScroll is passed, the x and y values will include any
 		//		document offsets that may affect the position relative to the
@@ -858,7 +861,6 @@ if(dojo.isIE || dojo.isOpera){
 			x: 0,
 			y: 0
 		};
-		var hasScroll = false;
 
 		// targetBoxType == "border-box"
 		var db = dojo.body();
@@ -875,7 +877,6 @@ if(dojo.isIE || dojo.isOpera){
 			ret.y = bo.y - b.t - _sumAncestorProperties(node, "scrollTop");
 		}else{
 			if(node["offsetParent"]){
-				hasScroll = true;
 				var endNode;
 				// in Safari, if the node is an absolutely positioned child of
 				// the body and the body has a margin the offset of the child
@@ -892,7 +893,7 @@ if(dojo.isIE || dojo.isOpera){
 				}
 				if(node.parentNode != db){
 					var nd = node;
-					if(dojo.isOpera || (dojo.isSafari >= 3)){ nd = db; }
+					if(dojo.isOpera){ nd = db; }
 					ret.x -= _sumAncestorProperties(nd, "scrollLeft");
 					ret.y -= _sumAncestorProperties(nd, "scrollTop");
 				}
@@ -917,11 +918,10 @@ if(dojo.isIE || dojo.isOpera){
 		// account for document scrolling
 		// if offsetParent is used, ret value already includes scroll position
 		// so we may have to actually remove that value if !includeScroll
-		if(hasScroll || includeScroll){
+		if(includeScroll){
 			var scroll = dojo._docScroll();
-			var m = hasScroll ? (!includeScroll ? -1 : 0) : 1;
-			ret.y += m*scroll.y;
-			ret.x += m*scroll.x;
+			ret.y += scroll.y;
+			ret.x += scroll.x;
 		}
 
 		return ret; // object

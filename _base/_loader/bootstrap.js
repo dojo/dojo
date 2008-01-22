@@ -19,11 +19,6 @@ djConfig = {
 =====*/
 
 (function(){
-	// make sure djConfig is defined
-	if(typeof this["djConfig"] == "undefined"){
-		this.djConfig = {};
-	}
-
 	// firebug stubs
 	if((!this["console"])||(!console["firebug"])){
 		this.console = {};
@@ -64,8 +59,8 @@ djConfig = {
 		this.dojox = {_scopeName: "dojox"};
 	}
 	
-	if(!dojo._scopeArgs){
-		dojo._scopeArgs = [dojo, dijit, dojox];
+	if(!d._scopeArgs){
+		d._scopeArgs = [dojo, dijit, dojox];
 	}
 
 /*=====
@@ -78,18 +73,18 @@ dojo.global = {
 	//		code runs correctly in contexts other than web browsers (e.g. Rhino on a server).
 }
 =====*/
-	dojo.global = this;
+	d.global = this;
 
-	var _config =/*===== djConfig = =====*/{
+	d.config =/*===== djConfig = =====*/{
 		isDebug: false,
 		libraryScriptUri: "",
 		preventBackButtonFix: true,
 		delayMozLoadingFix: false
 	};
 
-	for(var option in _config){
-		if(typeof djConfig[option] == "undefined"){
-			djConfig[option] = _config[option];
+	if(typeof djConfig != "undefined"){
+		for(var opt in djConfig){
+			d.config[opt] = djConfig[opt];
 		}
 	}
 
@@ -105,7 +100,7 @@ dojo.global = {
 		// summary: the locale as defined by Dojo (read-only)
 	};
 =====*/
-	dojo.locale = djConfig.locale;
+	dojo.locale = d.config.locale;
 	
 	var rev = "$Rev$".match(/\d+/);
 

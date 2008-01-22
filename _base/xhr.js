@@ -204,7 +204,7 @@ dojo.require("dojo._base.query");
 	dojo._contentHandlers = {
 		"text": function(xhr){ return xhr.responseText; },
 		"json": function(xhr){
-			if(!djConfig.usePlainJson){
+			if(!dojo.config.usePlainJson){
 				console.warn("Consider using mimetype:text/json-comment-filtered"
 					+ " to avoid potential security issues with JSON endpoints"
 					+ " (use djConfig.usePlainJson=true to turn off this message)");

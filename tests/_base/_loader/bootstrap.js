@@ -9,10 +9,6 @@ tests.register("tests._base._loader.bootstrap",
 			t.assertEqual("function", typeof console.assert);
 		},
 
-		function hasDjConfig(t){
-			t.assertTrue("djConfig" in dojo.global);
-		},
-
 		{
 			name: "getObject",
 			setUp: function(){

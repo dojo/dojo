@@ -15,9 +15,9 @@ dojo.requireIf(dojo.isBrowser, "dojo._base.xhr");
 dojo.requireIf(dojo.isBrowser, "dojo._base.fx");
 
 (function(){
-	if(djConfig.require){
-		for(var x=0; x<djConfig.require.length; x++){
-			dojo["require"](djConfig.require[x]);
+	if(dojo.config.require){
+		for(var x=0; x<dojo.config.require.length; x++){
+			dojo["require"](dojo.config.require[x]);
 		}
 	}
 })();

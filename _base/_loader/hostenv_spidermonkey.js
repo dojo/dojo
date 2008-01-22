@@ -2,8 +2,8 @@
  * SpiderMonkey host environment
  */
 
-if(djConfig["baseUrl"]){
-	dojo.baseUrl = djConfig["baseUrl"];
+if(dojo.config["baseUrl"]){
+	dojo.baseUrl = dojo.config["baseUrl"];
 }else{
 	dojo.baseUrl = "./";
 }
@@ -73,8 +73,8 @@ dojo._loadUri = function(uri){
 //Register any module paths set up in djConfig. Need to do this
 //in the hostenvs since hostenv_browser can read djConfig from a
 //script tag's attribute.
-if(djConfig["modulePaths"]){
-	for(var param in djConfig["modulePaths"]){
-		dojo.registerModulePath(param, djConfig["modulePaths"][param]);
+if(dojo.config["modulePaths"]){
+	for(var param in dojo.config["modulePaths"]){
+		dojo.registerModulePath(param, dojo.config["modulePaths"][param]);
 	}
 }

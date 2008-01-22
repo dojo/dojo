@@ -9,7 +9,7 @@ dojo._xdReset = function(){
 	//to evaluate resources in order. If there is a xdomain resource followed by a xhr resource, we can't load
 	//the xhr resource until the one before it finishes loading. The text of the xhr resource will be converted
 	//to match the format for a xd resource and put in the xd load queue.
-	this._isXDomain = djConfig.useXDomain || false;
+	this._isXDomain = dojo.config.useXDomain || false;
 
 	this._xdTimer = 0;
 	this._xdInFlight = {};
@@ -68,7 +68,7 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	//since the contents may have syntax errors. Let those
 	//get pushed up when the script tags are added to the page
 	//in the debugAtAllCosts case.
-	if(!djConfig["debugAtAllCosts"] || resourceName == "dojo._base._loader.loader_debug"){
+	if(!dojo.config["debugAtAllCosts"] || resourceName == "dojo._base._loader.loader_debug"){
 		output.push(contents);
 	}
 	//Add isLocal property so we know if we have to do something different
@@ -122,7 +122,7 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
     	}
     }
 
-	if(djConfig.cacheBust && dojo.isBrowser) { uri += "?" + String(djConfig.cacheBust).replace(/\W+/g,""); }
+	if(dojo.config.cacheBust && dojo.isBrowser) { uri += "?" + String(dojo.config.cacheBust).replace(/\W+/g,""); }
 	try{
 		return ((!module || this._isXDomain) ? this._loadUri(uri, cb, currentIsXDomain, module) : this._loadUriAndCheck(uri, module, cb)); //Boolean
 	}catch(e){
@@ -324,7 +324,7 @@ dojo._xdLoadFlattenedBundle = function(/*String*/moduleName, /*String*/bundleNam
 dojo._xdInitExtraLocales = function(){
 	// Simulate the extra locale work that dojo.requireLocalization does.
 
-	var extra = djConfig.extraLocale;
+	var extra = dojo.config.extraLocale;
 	if(extra){
 		if(!extra instanceof Array){
 			extra = [extra];
@@ -557,7 +557,7 @@ dojo._xdWatchInFlight = function(){
 	//Monitors in-flight requests for xd module resources.
 
 	var noLoads = "";
-	var waitInterval = (djConfig.xdWaitSeconds || 15) * 1000;
+	var waitInterval = (dojo.config.xdWaitSeconds || 15) * 1000;
 	var expired = (this._xdStartTime + waitInterval) < (new Date()).getTime();
 
 	//If any xdInFlight are true, then still waiting for something to load.
@@ -584,7 +584,7 @@ dojo._xdWatchInFlight = function(){
 	var defLength = this._xdDefList.length;
 	for(var i= 0; i < defLength; i++){
 		var content = dojo._xdDefList[i];
-		if(djConfig["debugAtAllCosts"] && content["resourceName"]){
+		if(dojo.config["debugAtAllCosts"] && content["resourceName"]){
 			if(!this["_xdDebugQueue"]){
 				this._xdDebugQueue = [];
 			}

@@ -65,22 +65,22 @@ if(typeof window != 'undefined'){
 				var m = src.match(rePkg);
 				if(m){
 					// find out where we came from
-					if(!djConfig.baseUrl){
-						djConfig.baseUrl = src.substring(0, m.index);
+					if(!dojo.config.baseUrl){
+						dojo.config.baseUrl = src.substring(0, m.index);
 					}
 					// and find out if we need to modify our behavior
 					var cfg = scripts[i].getAttribute("djConfig");
 					if(cfg){
 						var cfgo = eval("({ "+cfg+" })");
 						for(var x in cfgo){
-							djConfig[x] = cfgo[x];
+							dojo.config[x] = cfgo[x];
 						}
 					}
 					break; // "first Dojo wins"
 				}
 			}
 		}
-		d.baseUrl = djConfig.baseUrl;
+		d.baseUrl = dojo.config.baseUrl;
 
 		// fill in the rendering support information in dojo.render.*
 		var n = navigator;
@@ -105,14 +105,14 @@ if(typeof window != 'undefined'){
 		//Workaround to get local file loads of dojo to work on IE 7
 		//by forcing to not use native xhr.
 		if(dojo.isIE && window.location.protocol === "file:"){
-			djConfig.ieForceActiveXXhr=true;
+			dojo.config.ieForceActiveXXhr=true;
 		}
 
 		var cm = document.compatMode;
 		d.isQuirks = cm == "BackCompat" || cm == "QuirksMode" || d.isIE < 6;
 
 		// TODO: is the HTML LANG attribute relevant?
-		d.locale = djConfig.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
+		d.locale = dojo.config.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
 
 		// These are in order of decreasing likelihood; this will change in time.
 		d._XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
@@ -123,7 +123,7 @@ if(typeof window != 'undefined'){
 			//		object.
 			var http = null;
 			var last_e = null;
-			if(!dojo.isIE || !djConfig.ieForceActiveXXhr){
+			if(!dojo.isIE || !dojo.config.ieForceActiveXXhr){
 				try{ http = new XMLHttpRequest(); }catch(e){}
 			}
 			if(!http){
@@ -240,7 +240,7 @@ if(typeof window != 'undefined'){
 		//		due to a threading issue in Firefox 2.0, we can't enable
 		//		DOMContentLoaded on that platform. For more information, see:
 		//		http://trac.dojotoolkit.org/ticket/1704
-		if(dojo.isOpera || (dojo.isMoz && djConfig.enableMozDomContentLoaded === true)){
+		if(dojo.isOpera || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
 			document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
 		}
 
@@ -322,20 +322,12 @@ if(typeof window != 'undefined'){
 } //if (typeof window != 'undefined')
 
 //Load debug code if necessary.
-// dojo.requireIf((djConfig["isDebug"] || djConfig["debugAtAllCosts"]), "dojo.debug");
-
-//window.widget is for Dashboard detection
-//The full conditionals are spelled out to avoid issues during builds.
-//Builds may be looking for require/requireIf statements and processing them.
-// dojo.requireIf(djConfig["debugAtAllCosts"] && !window.widget && !djConfig["useXDomain"], "dojo.browser_debug");
-// dojo.requireIf(djConfig["debugAtAllCosts"] && !window.widget && djConfig["useXDomain"], "dojo.browser_debug_xd");
-
-if(djConfig.isDebug){
+if(dojo.config.isDebug){
 	dojo.require("dojo._firebug.firebug");
 }
 
-if(djConfig.debugAtAllCosts){
-	djConfig.useXDomain = true;
+if(dojo.config.debugAtAllCosts){
+	dojo.config.useXDomain = true;
 	dojo.require("dojo._base._loader.loader_xd");
 	dojo.require("dojo._base._loader.loader_debug");
 	dojo.require("dojo.i18n");

@@ -2,8 +2,8 @@
 * Rhino host environment
 */
 
-if(djConfig["baseUrl"]){
-	dojo.baseUrl = djConfig["baseUrl"];
+if(dojo.config["baseUrl"]){
+	dojo.baseUrl = dojo.config["baseUrl"];
 }else{
 	dojo.baseUrl = "./";
 }
@@ -165,12 +165,12 @@ function dj_readInputStream(is, encoding){
 }
 
 // call this now because later we may not be on the top of the stack
-if(!djConfig.libraryScriptUri.length){
+if(!dojo.config.libraryScriptUri.length){
 	try{
-		djConfig.libraryScriptUri = dojo._rhinoCurrentScriptViaJava(1);
+		dojo.config.libraryScriptUri = dojo._rhinoCurrentScriptViaJava(1);
 	}catch(e){
 		// otherwise just fake it
-		if(djConfig["isDebug"]){
+		if(dojo.config["isDebug"]){
 			print("\n");
 			print("we have no idea where Dojo is located.");
 			print("Please try loading rhino in a non-interpreted mode or set a");
@@ -180,7 +180,7 @@ if(!djConfig.libraryScriptUri.length){
 			print("\n");
 			print("Dojo will try to load anyway");
 		}
-		djConfig.libraryScriptUri = "./";
+		dojo.config.libraryScriptUri = "./";
 	}
 }
 
@@ -228,8 +228,8 @@ function setTimeout(func, delay){
 //Register any module paths set up in djConfig. Need to do this
 //in the hostenvs since hostenv_browser can read djConfig from a
 //script tag's attribute.
-if(djConfig["modulePaths"]){
-	for(var param in djConfig["modulePaths"]){
-		dojo.registerModulePath(param, djConfig["modulePaths"][param]);
+if(dojo.config["modulePaths"]){
+	for(var param in dojo.config["modulePaths"]){
+		dojo.registerModulePath(param, dojo.config["modulePaths"][param]);
 	}
 }

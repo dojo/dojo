@@ -201,7 +201,7 @@ dojo.require("dojo._base.connect");
 		// by default, use the standard listener
 		var iel = dojo._listener;
 		// dispatcher tracking property
-		if(!djConfig._allow_leaks){
+		if(!dojo.config._allow_leaks){
 			// custom listener that handles leak protection for DOM events
 			node_listener = iel = dojo._ie_listener = {
 				// support handler indirection: event handler functions are 

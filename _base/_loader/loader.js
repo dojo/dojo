@@ -69,8 +69,8 @@
 		//		a callback function to pass the result of evaluating the script
 
 		var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : this.baseUrl) + relpath;
-		if(djConfig.cacheBust && d.isBrowser){
-			uri += "?" + String(djConfig.cacheBust).replace(/\W+/g,"");
+		if(dojo.config.cacheBust && d.isBrowser){
+			uri += "?" + String(dojo.config.cacheBust).replace(/\W+/g,"");
 		}
 		try{
 			return !module ? this._loadUri(uri, cb) : this._loadUriAndCheck(uri, module, cb); // Boolean
@@ -225,7 +225,7 @@
 		//still for non-browser environments though). This might also help the issue with
 		//FF 2.0 and freezing issues where we try to do sync xhr while background css images
 		//are being loaded (trac #2572)? Consider for 0.9.
-		if(typeof setTimeout == "object" || (djConfig.useXDomain && d.isOpera)){
+		if(typeof setTimeout == "object" || (dojo.config.useXDomain && d.isOpera)){
 			setTimeout(dojo._scopeName + ".loaded();", 0);
 		}else{
 			d.loaded();

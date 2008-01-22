@@ -144,7 +144,7 @@ dojo.withDoc = function(	/*Object*/documentObject,
 //in the hostenvs since hostenv_browser can read djConfig from a
 //script tag's attribute.
 (function(){
-	var mp = djConfig["modulePaths"];
+	var mp = dojo.config["modulePaths"];
 	if(mp){
 		for(var param in mp){
 			dojo.registerModulePath(param, mp[param]);

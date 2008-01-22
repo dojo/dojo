@@ -64,7 +64,7 @@ if(
 		(!("firebug" in console))
 	)&&
 	(
-		(djConfig["noFirebugLite"] !== true)
+		(dojo.config["noFirebugLite"] !== true)
 	)
 ){
 (function(){
@@ -306,17 +306,17 @@ if(
 		}
 		
 		var containerHeight = "100%";
-		if(djConfig.popup){
+		if(dojo.config.popup){
 			_firebugWin = openWin();
 			_firebugDoc = _firebugWin.document;
-			djConfig.debugContainerId = 'fb';
+			dojo.config.debugContainerId = 'fb';
 			
 			// connecting popup
 			_firebugWin.console = window.console;
 			_firebugWin.dojo = window.dojo;
 		}else{
 			_firebugDoc = document;
-			containerHeight = (djConfig.debugHeight || 300) + "px";
+			containerHeight = (dojo.config.debugHeight || 300) + "px";
 		}
 		
 		var styleElement = _firebugDoc.createElement("link");
@@ -336,8 +336,8 @@ if(
 			styleParent.appendChild(styleElement);
 		}
 		
-		if(typeof djConfig != "undefined" && djConfig["debugContainerId"]){
-			consoleFrame = _firebugDoc.getElementById(djConfig.debugContainerId);
+		if(dojo.config["debugContainerId"]){
+			consoleFrame = _firebugDoc.getElementById(dojo.config.debugContainerId);
 		}
 		if(!consoleFrame){
 			consoleFrame = _firebugDoc.createElement("div");
@@ -347,7 +347,7 @@ if(
 		consoleFrame.style.height = containerHeight;
 		consoleFrame.style.display = (frameVisible ? "block" : "none");	  
 		
-		var closeStr = (djConfig.popup) ? "" : '    <a href="#" onclick="console.close(); return false;">Close</a>';
+		var closeStr = (dojo.config.popup) ? "" : '    <a href="#" onclick="console.close(); return false;">Close</a>';
 		consoleFrame.innerHTML = 
 			  '<div id="firebugToolbar">'
 			+ '  <a href="#" onclick="console.clear(); return false;">Clear</a>'
@@ -910,7 +910,7 @@ if(
 	addEvent(document, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
 	
 	if(	(document.documentElement.getAttribute("debug") == "true")||
-		(djConfig.isDebug)
+		(dojo.config.isDebug)
 	){
 		toggleConsole(true);
 	}

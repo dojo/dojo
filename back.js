@@ -105,7 +105,7 @@ dojo.back = {
 	
 	function loadIframeHistory(){
 		//summary: private method. Do not call this directly.
-		var url = (djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?" + (new Date()).getTime();
+		var url = (dojo.config["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
         if(historyIframe){
 		    dojo.isSafari ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
@@ -161,7 +161,7 @@ dojo.back = {
 		//summary: Initializes the undo stack. This must be called from a <script> 
 		//         block that lives inside the <body> tag to prevent bugs on IE.
 		if(dojo.byId("dj_history")){ return; } // prevent reinit
-		var src = djConfig["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html");
+		var src = dojo.config["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html");
 		document.write('<iframe style="border:0;width:1px;height:1px;position:absolute;visibility:hidden;bottom:0;right:0;" name="dj_history" id="dj_history" src="' + src + '"></iframe>');
 	};
 
@@ -261,7 +261,7 @@ dojo.back = {
 		var hash = null;
 		var url = null;
 		if(!historyIframe){
-			if(djConfig["useXDomain"] && !djConfig["dojoIframeHistoryUrl"]){
+			if(dojo.config["useXDomain"] && !dojo.config["dojoIframeHistoryUrl"]){
 				console.debug("dojo.back: When using cross-domain Dojo builds,"
 					+ " please save iframe_history.html to your domain and set djConfig.dojoIframeHistoryUrl"
 					+ " to the path on your domain to iframe_history.html");

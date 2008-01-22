@@ -3,7 +3,7 @@ dojo.provide("tests._base._loader.loader");
 tests.register("tests._base._loader.loader", 
 	[
 		function baseUrl(t){
-			var originalBaseUrl = djConfig["baseUrl"] || "./";
+			var originalBaseUrl = dojo.config["baseUrl"] || "./";
 
 			t.assertEqual(originalBaseUrl, dojo.baseUrl);
 		},

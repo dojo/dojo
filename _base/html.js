@@ -1027,7 +1027,7 @@ if(dojo.isIE || dojo.isOpera){
 				return node.getAttribute(name);
 			}else{
 				var value = node[name];
-				return (value === undefined ? null : value);
+				return (typeof value == 'boolean' || typeof value == 'function') ? value : null;
 			}
 		}
 	}

@@ -4,16 +4,16 @@
 	<head>
 		<title>Using scope names inside dojo.require/dojoType</title>
 
-		<link rel="stylesheet" type="text/css" href="../../../resources/dojo.css" />
-		<link rel="stylesheet" type="text/css" href="../../../../dijit/css/dijitTests.css" />
-		<link rel="stylesheet" type="text/css" href="../../../../dijit/themes/tundra/tundra.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../resources/dojo.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/css/dijitTests.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/themes/tundra/tundra.css" />
 		
 		<script type="text/javascript">
 			//djConfig for 0.4.3 setup.
 			djConfig = {
 				isDebug: true,
 				parseOnLoad: true,
-				baseUrl: "../../../",
+				baseUrl: "../../../../",
 				scopeMap: [
 					["dojo", "jodo"],
 					["dijit", "jidit"],
@@ -22,7 +22,7 @@
 			};
 		</script>
 
-		<script type="text/javascript" src="../../../dojo.js"></script>
+		<script type="text/javascript" src="../../../../dojo.js"></script>
 		<script type="text/javascript">
 
 			//Notice that dijit._Calendar is required, not jidit._Calendar.

@@ -4,9 +4,9 @@
 	<head>
 		<title>Multiversion Dojo: 0.4.3 and 1.0</title>
 
-		<link rel="stylesheet" type="text/css" href="../../../resources/dojo.css" />
-		<link rel="stylesheet" type="text/css" href="../../../../dijit/css/dijitTests.css" />
-		<link rel="stylesheet" type="text/css" href="../../../../dijit/themes/tundra/tundra.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../resources/dojo.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/css/dijitTests.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/themes/tundra/tundra.css" />
 		
 		<script type="text/javascript">
 			//djConfig for 0.4.3 setup.
@@ -21,12 +21,23 @@
 			//Also, just adding properties instead of redefining djConfig, since that
 			//will wipe out djConfig values set up by the 0.4.3 dojo.
 			djConfig.parseOnLoad = true;
-			djConfig.baseUrl = "../../../";
+			djConfig.baseUrl = "../../../../";
+			djConfig.useXDomain = true; //Technically this was set already in the 0.4.3 xd dojo.js file.
 		</script>
-		<script type="text/javascript" src="../../../dojo.js"></script>
+		<script type="text/javascript" src="../../../../dojo.xd.js"></script>
 		<script type="text/javascript">
 			dojo.require("dojo.widget.DropdownDatePicker");
 
+			//Get base xd path
+			var xdPath = location.href;
+			var lastIndex = location.href.lastIndexOf("/");
+			xdPath = xdPath.substring(0, lastIndex + 1);
+			
+			//Set up xdomain locations for dojo/dijit/dojox.
+			jodo.registerModulePath("dojo", xdPath + "../../../../../dojo");
+			jodo.registerModulePath("dijit", xdPath + "../../../../../dijit");
+			jodo.registerModulePath("dojox", xdPath + "../../../../../dojox");
+			
 			//Notice that dijit._Calendar is required, not jidit._Calendar.
 			//Same for the dojo resources (not jodo resources).
 			jodo.require("dijit._Calendar");
@@ -46,13 +57,15 @@
 		</script>
 	</head>
 	<body>
-		<h1>Multiversion Dojo: 0.4.3 and 1.0</h1>
+		<h1>XDomain Multiversion Dojo: 0.4.3 and 1.0</h1>
 	
-		<p><b>NOTE: This test only works with a built version of Dojo, and it must be built with the scopeMap parameter (the backslashes below are required):</b></p>
+		<p><b>NOTE: This test only works with a built, xdomain version of Dojo, and it must be built with the scopeMap parameter (the backslashes below are required):</b></p>
 
-		<p style="color: blue; background-color: yellow">build.sh profile=standard action=release scopeMap=[[\"dojo\",\"jodo\"],[\"dijit\",\"jidit\"],[\"dojox\",\"jodox\"]]</p>
+		<p style="color: blue; background-color: yellow">build.sh profile=standard action=release scopeMap=[[\"dojo\",\"jodo\"],[\"dijit\",\"jidit\"],[\"dojox\",\"jodox\"]] xdDojoScopeName=jodo loader=xdomain</p>
 		
-		<p>This page loads Dojo 0.4.3 and Dojo 1.0 (under the jodo scope)</p>
+		<p><b>Only load this page from an http:// URL</b>. Otherwise, the xd loading will not happen.</p>
+
+		<p>This page xdomain loads Dojo 0.4.3 and Dojo 1.0 (under the jodo scope)</p>
 		
 		<p>Dojo 0.4.3 version: <span id="output043"></span></p>
 		

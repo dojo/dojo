@@ -4,9 +4,9 @@
 	<head>
 		<title>Multiversion Dojo: 0.4.3 and 1.0</title>
 
-		<link rel="stylesheet" type="text/css" href="../../../resources/dojo.css" />
-		<link rel="stylesheet" type="text/css" href="../../../../dijit/css/dijitTests.css" />
-		<link rel="stylesheet" type="text/css" href="../../../../dijit/themes/tundra/tundra.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../resources/dojo.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/css/dijitTests.css" />
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/themes/tundra/tundra.css" />
 		
 		<script type="text/javascript">
 			//djConfig for 0.4.3 setup.
@@ -22,14 +22,14 @@
 			//Also, just adding properties instead of redefining djConfig, since that
 			//will wipe out djConfig values set up by the 0.4.3 dojo.
 			djConfig.parseOnLoad = true;
-			djConfig.baseUrl = "../../../";
+			djConfig.baseUrl = "../../../../";
 			djConfig.scopeMap = [
 				["dojo", "dojo10"],
 				["dijit", "dijit10"],
 				["dojox", "dojox10"]					
 			];
 		</script>
-		<script type="text/javascript" src="../../../dojo.js"></script>
+		<script type="text/javascript" src="../../../../dojo.js"></script>
 		<script type="text/javascript">
 			dojo.require("dojo.widget.DropdownDatePicker");
 			dojo10.require("dijit._Calendar");

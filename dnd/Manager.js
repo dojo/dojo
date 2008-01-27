@@ -4,21 +4,22 @@ dojo.require("dojo.dnd.common");
 dojo.require("dojo.dnd.autoscroll");
 dojo.require("dojo.dnd.Avatar");
 
-dojo.dnd.Manager = function(){
+dojo.declare("dojo.dnd.Manager", null, {
 	// summary: the manager of DnD operations (usually a singleton)
-	this.avatar  = null;
-	this.source = null;
-	this.nodes = [];
-	this.copy  = true;
-	this.target = null;
-	this.canDropFlag = false;
-	this.events = [];
-};
+	constructor: function(){
+		this.avatar  = null;
+		this.source = null;
+		this.nodes = [];
+		this.copy  = true;
+		this.target = null;
+		this.canDropFlag = false;
+		this.events = [];
+	},
 
-dojo.extend(dojo.dnd.Manager, {
 	// avatar's offset from the mouse
 	OFFSET_X: 16,
 	OFFSET_Y: 16,
+	
 	// methods
 	overSource: function(source){
 		// summary: called when a source detected a mouse-over conditiion

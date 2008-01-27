@@ -2,14 +2,16 @@ dojo.provide("dojo.dnd.Avatar");
 
 dojo.require("dojo.dnd.common");
 
-dojo.dnd.Avatar = function(manager){
+dojo.declare("dojo.dnd.Avatar", null, {
 	// summary: an object, which represents transferred DnD items visually
 	// manager: Object: a DnD manager object
-	this.manager = manager;
-	this.construct();
-};
 
-dojo.extend(dojo.dnd.Avatar, {
+	constructor: function(manager){
+		this.manager = manager;
+		this.construct();
+	},
+
+	// methods
 	construct: function(){
 		// summary: a constructor function;
 		//	it is separate so it can be (dynamically) overwritten in case of need

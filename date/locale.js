@@ -292,7 +292,6 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 
 	var widthList = ['abbr', 'wide', 'narrow'];
 	var result = [1970,0,1,0,0,0,0]; // will get converted to a Date at the end
-	var expected = {};
 	var amPm = "";
 	var valid = dojo.every(match, function(v, i){
 		if(!i){return true;}
@@ -303,7 +302,6 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				if(l != 2 && options.strict){
 					//interpret year literally, so '5' would be 5 A.D.
 					result[0] = v;
-					expected.year = v;
 				}else{
 					if(v<100){
 						v = Number(v);
@@ -314,7 +312,6 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 						var cutoff = Math.min(Number(year.substring(2, 4)) + 20, 99);
 						var num = (v < cutoff) ? century + v : century - 100 + v;
 						result[0] = num;
-						expected.year = num;
 					}else{
 						//we expected 2 digits and got more...
 						if(options.strict){
@@ -323,7 +320,6 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 						//interpret literally, so '150' would be 150 A.D.
 						//also tolerate '1950', if 'yyyy' input passed to 'yy' format
 						result[0] = v;
-						expected.year = v;
 					}
 				}
 				break;
@@ -345,7 +341,6 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 					v--;
 				}
 				result[1] = v;
-				expected.month = v;
 				break;
 			case 'E':
 			case 'e':
@@ -368,7 +363,6 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				break;
 			case 'd':
 				result[2] = v;
-				expected.date = v;
 				break;
 			case 'D':
 				result[1] = 0;
@@ -439,10 +433,11 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 
 	// Do some bounds checking.  The Date() constructor normalizes things like April 32nd...
 	//TODO: why isn't this done for times as well?
+	var allTokens = tokens.join("");
 	if(!valid ||
-		(expected.year && dateObject.getFullYear() != result[0]) ||
-		(expected.month && dateObject.getMonth() != result[1]) ||
-		(expected.date && dateObject.getDate() != result[2])){
+		(allTokens.indexOf('y') != -1 && dateObject.getFullYear() != result[0]) ||
+		(allTokens.indexOf('M') != -1 && dateObject.getMonth() != result[1]) ||
+		(allTokens.indexOf('d') != -1 && dateObject.getDate() != result[2])){
 		return null;
 	}
 

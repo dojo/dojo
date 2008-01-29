@@ -356,7 +356,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				if(!options.strict){
 					//Case-insensitive comparison
 					v = v.toLowerCase();
-					days = dojo.map(days, "".toLowerCase);
+					days = dojo.map(days, function(d){return d.toLowerCase();});
 				}
 				v = dojo.indexOf(days, v);
 				if(v == -1){

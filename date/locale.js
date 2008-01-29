@@ -361,11 +361,10 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				//without more context, can't affect the actual date
 				//TODO: just validate?
 				break;
-			case 'd':
-				result[2] = v;
-				break;
 			case 'D':
 				result[1] = 0;
+				// fallthrough...
+			case 'd':
 				result[2] = v;
 				break;
 			case 'a': //am/pm
@@ -386,7 +385,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 				amPm = (v == pm) ? 'p' : (v == am) ? 'a' : '';
 				break;
 			case 'K': //hour (1-24)
-				if(v==24){v=0;}
+				if(v == 24){ v = 0; }
 				// fallthrough...
 			case 'h': //hour (1-12)
 			case 'H': //hour (0-23)
@@ -399,7 +398,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 
 				//in the 12-hour case, adjusting for am/pm requires the 'a' part
 				//which could come before or after the hour, so we will adjust later
-				result[3] =v;
+				result[3] = v;
 				break;
 			case 'm': //minutes
 				result[4] = v;

@@ -19,6 +19,19 @@ dojo.provide = function(resourceName){
 }
 
 dojo._xdDebugFileLoaded = function(resourceName){
+
+	if(!this._xdDebugScopeChecked){
+		//If using a scoped dojo, we need to expose dojo as a real global
+		//for the debugAtAllCosts stuff to work.
+		if(dojo._scopeName != "dojo"){
+			window.dojo = window[dojo.config.scopeMap[0][1]];
+			window.dijit = window[dojo.config.scopeMap[1][1]];
+			window.dojox = window[dojo.config.scopeMap[2][1]];
+		}
+
+		this._xdDebugScopeChecked = true;
+	}
+	
 	var dbgQueue = this._xdDebugQueue;
 	
 	if(resourceName && resourceName == dbgQueue.currentResourceName){

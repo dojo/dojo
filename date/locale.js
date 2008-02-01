@@ -418,7 +418,7 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 		return true;
 	});
 
-	var hours = result[3];
+	var hours = result[3]*1;
 	if(amPm === 'p' && hours < 12){
 		result[3] = hours + 12; //e.g., 3pm -> 15
 	}else if(amPm === 'a' && hours == 12){

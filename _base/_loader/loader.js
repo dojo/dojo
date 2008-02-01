@@ -287,14 +287,6 @@
 		//	   	|	...
 		//	returns: the required namespace object
 		omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
-		
-		//See if there is a scope mapping.
-		var sparts = moduleName.split(".");
-		var scp = dojo._scopeMapRev[sparts[0]];
-		if(scp){
-			sparts[0] = scp;
-			moduleName = sparts.join(".");
-		}
 
 		//Check if it is already loaded.
 		var module = this._loadedModules[moduleName];

@@ -27,9 +27,9 @@
 
 			//Notice that dijit._Calendar is required, not jidit._Calendar.
 			//Same for the dojo resources (not jodo resources).
-			jodo.require("jidit._Calendar");
-			jodo.require("jodo.date.locale");
-			jodo.require("jodo.parser"); // scan page for widgets
+			jodo.require("dijit._Calendar");
+			jodo.require("dojo.date.locale");
+			jodo.require("dojo.parser"); // scan page for widgets
 
 			jodo.addOnLoad(function(){
 				jodo.byId("output10").innerHTML = jodo.version.toString();

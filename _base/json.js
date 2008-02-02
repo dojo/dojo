@@ -9,13 +9,7 @@ dojo.fromJson = function(/*String*/ json){
 	// return:
 	//		An object, the result of the evaluation
 
-	// FIXME: should this accept mozilla's optional second arg?
-	try {
-		return eval("(" + json + ")");
-	}catch(e){
-		console.debug(e);
-		return json; //FIXME: peller: we should document this behavior and/or throw instead.  I prefer the latter.
-	}
+	return eval("(" + json + ")");
 }
 
 dojo._escapeString = function(/*String*/str){
@@ -23,12 +17,9 @@ dojo._escapeString = function(/*String*/str){
 	//		Adds escape sequences for non-visual characters, double quote and
 	//		backslash and surrounds with double quotes to form a valid string
 	//		literal.
-	return ('"' + str.replace(/(["\\])/g, '\\$1') + '"'
-		).replace(/[\f]/g, "\\f"
-		).replace(/[\b]/g, "\\b"
-		).replace(/[\n]/g, "\\n"
-		).replace(/[\t]/g, "\\t"
-		).replace(/[\r]/g, "\\r"); // string
+	return ('"' + str.replace(/(["\\])/g, '\\$1') + '"').
+		replace(/[\f]/g, "\\f").replace(/[\b]/g, "\\b").replace(/[\n]/g, "\\n").
+		replace(/[\t]/g, "\\t").replace(/[\r]/g, "\\r"); // string
 }
 
 dojo.toJsonIndentStr = "\t";
@@ -55,13 +46,10 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	// return:
 	//		a String representing the serialized version of the passed object.
 
-	_indentStr = _indentStr || "";
-	var nextIndent = prettyPrint ? _indentStr + dojo.toJsonIndentStr : "";
-	var newLine = prettyPrint ? "\n" : "";
-	var objtype = typeof it;
-	if(objtype == "undefined"){
+	if(it === undefined){
 		return "undefined";
 	}
+	var objtype = typeof it;
 	if(objtype == "number" || objtype == "boolean"){
 		return it + "";
 	}
@@ -79,6 +67,8 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	// short-circuit for objects that support "json" serialization
 	// if they return "self" then just pass-through...
 	var newObj;
+	_indentStr = _indentStr || "";
+	var nextIndent = prettyPrint ? _indentStr + dojo.toJsonIndentStr : "";
 	if(typeof it.__json__ == "function"){
 		newObj = it.__json__();
 		if(it !== newObj){
@@ -93,6 +83,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	}
 
 	var sep = prettyPrint ? " " : "";
+	var newLine = prettyPrint ? "\n" : "";
 
 	// array
 	if(dojo.isArray(it)){

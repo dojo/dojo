@@ -430,11 +430,10 @@ dojo.date.locale.parse = function(/*String*/value, /*Object?*/options){
 
 	var dateObject = new Date(result[0], result[1], result[2], result[3], result[4], result[5], result[6]); // Date
 
-	// Do some bounds checking.  The Date() constructor normalizes things like April 32nd...
+	// Check for overflow.  The Date() constructor normalizes things like April 32nd...
 	//TODO: why isn't this done for times as well?
 	var allTokens = tokens.join("");
 	if(!valid ||
-		(allTokens.indexOf('y') != -1 && dateObject.getFullYear() != result[0]) ||
 		(allTokens.indexOf('M') != -1 && dateObject.getMonth() != result[1]) ||
 		(allTokens.indexOf('d') != -1 && dateObject.getDate() != result[2])){
 		return null;

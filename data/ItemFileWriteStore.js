@@ -694,8 +694,14 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			this._arrayOfAllItems[arrayIndex] = originalItem;
 			
 			if(modifiedItem[this._rootItemPropName]){
-				arrayIndex = modifiedItem[this._itemNumPropName];
-				this._arrayOfTopLevelItems[arrayIndex] = originalItem;
+				var i;
+				for (i = 0; i < this._arrayOfTopLevelItems.length; i++) {
+					var possibleMatch = this._arrayOfTopLevelItems[i];
+					if (this.getIdentity(possibleMatch) == identity){
+						this._arrayOfTopLevelItems[i] = originalItem;
+						break;
+					}
+				}
 			}
 			if(this._itemsByIdentity){
 				this._itemsByIdentity[identity] = originalItem;

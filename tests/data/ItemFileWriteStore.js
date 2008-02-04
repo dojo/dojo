@@ -1094,6 +1094,51 @@ doh.register("tests.data.ItemFileWriteStore",
 			store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem});
 			return deferred;
 		},
+		function testReferenceIntegrity_deleteMultipleItemsWithReferencesAndRevert(){
+			//	summary: 
+			//		Simple test to verify that a flow of deleting items with references and reverting does not damate the internal structure.
+			//		Created for tracker bug: #5743
+			//	description:
+			//		Simple test to verify that a flow of deleting items with references and reverting does not damate the internal structure.
+			//		Created for tracker bug: #5743
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_references"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+				doh.assertTrue(false);
+			}
+			function onItem(item, request){
+				//Save off the located item, then locate another one (peer to Egypt)
+				doh.assertTrue(store.isItem(item));
+				var egypt = item;
+
+				function onItem2(item, request){
+					doh.assertTrue(store.isItem(item));
+					var nairobi = item;
+
+					//Delete them
+					store.deleteItem(egypt);
+					store.deleteItem(nairobi);
+					try{
+						//Revert, then do a fetch.  If the internals have been damaged, this will generally
+						//cause onError to fire instead of onComplete.
+						store.revert();
+						function onComplete(items, request){
+							deferred.callback(true);
+						}
+						store.fetch({query: {name: "*"}, start: 0, count: 20, onComplete: onComplete, onError: onError});
+					}catch(e){
+						deferred.errback(e)
+					}
+				}
+				store.fetchItemByIdentity({identity: "Nairobi", onError: onError, onItem: onItem2});
+			}
+			store.fetchItemByIdentity({identity: "Egypt", onError: onError, onItem: onItem});
+			return deferred;
+		},
 		function testReferenceIntegrity_removeReferenceFromAttribute(){
 			//	summary: 
 			//		Simple test to verify the reference removal updates the internal map.
@@ -1341,7 +1386,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				if(item[store._reverseRefMap] === undefined){
 					deferred.callback(true);
 				}else{
-					deferred.errback(new Error("Disabling of reference integreity failed."));
+					deferred.errback(new Error("Disabling of reference integrity failed."));
 				}
 			}
 			store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem});

@@ -380,6 +380,74 @@ doh.register("tests.data.ItemFileWriteStore",
 			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
 			return deferred; //Object
 		},
+		function testWriteAPI_deleteAndModifyMultipleItemsAndRevert(){
+			//	summary: 
+			//		Simple test to verify that a flow of deleting items and modifying items does not damage the internal structure.
+			//		Created for tracker bug: #5743
+			//	description:
+			//		Simple test to verify that a flow of deleting items and modifying items does not damage the internal structure.
+			//		Created for tracker bug: #5743
+		
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_references"));
+
+			var deferred = new doh.Deferred();
+			var passed = true;
+			function onError(error, request){
+				deferred.errback(error);
+				doh.assertTrue(false);
+			}
+			function onItem(item, request){
+				//Save off the located item, then locate another one (peer to Egypt)
+				doh.assertTrue(store.isItem(item));
+				var egypt = item;
+
+				function onItem2(item, request){
+					doh.assertTrue(store.isItem(item));
+					var nairobi = item;
+
+					function onItem3(item, request){
+						doh.assertTrue(store.isItem(item));
+						var kenya = item;
+
+						//Remove the reference to nairobi before we delete the Narobi item.
+						//Basically, force Kenya to be modified top-level.  Since the
+						//current impl doesn't 
+						var children = store.getValues(kenya, "children");
+						var newChildren = [];
+						var i;
+						for(i = 0; i < children.length; i++){
+							var value = children[i];
+							if(store.isItem(value)){
+								if (store.getIdentity(value) != store.getIdentity(nairobi)){
+									newChildren.push(value);
+								}
+							}else{
+								newChildren.push(value);
+							}
+						}
+						store.setValues(kenya, "children", newChildren);
+						store.deleteItem(nairobi);
+						store.deleteItem(egypt);
+
+						try{
+							//Revert, then do a fetch.  If the internals have been damaged, this will generally
+							//cause onError to fire instead of onComplete.
+							store.revert();
+							function onComplete(items, request){
+								deferred.callback(true);
+							}
+							store.fetch({query: {name: "*"}, start: 0, count: 20, onComplete: onComplete, onError: onError});
+						}catch(e){
+							deferred.errback(e)
+						}
+					}
+					store.fetchItemByIdentity({identity: "Kenya", onError: onError, onItem: onItem3});
+				}
+				store.fetchItemByIdentity({identity: "Nairobi", onError: onError, onItem: onItem2});
+			}
+			store.fetchItemByIdentity({identity: "Egypt", onError: onError, onItem: onItem});
+			return deferred;
+		},
 		function testWriteAPI_save(){
 			//	summary: 
 			//		Simple test of the save API

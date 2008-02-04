@@ -17,7 +17,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 
 (function(){
 	// Format a pattern without literals
-	function formatPattern(dateObject, bundle, pattern){
+	function formatPattern(dateObject, bundle, fullYear, pattern){
 		return pattern.replace(/([a-z])\1*/ig, function(match){
 			var s, pad;
 			var c = match.charAt(0);
@@ -33,8 +33,11 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 						case 1:
 							break;
 						case 2:
-							s = String(s); s = s.substr(s.length - 2);
-							break;
+							if(!fullYear){
+								s = String(s); s = s.substr(s.length - 2);
+								break;
+							}
+							// falthrough
 						default:
 							pad = true;
 					}
@@ -193,6 +196,7 @@ dojo.date.locale.format = function(/*Date*/dateObject, /*Object?*/options){
 	//		datePattern,timePattern- override pattern with this string
 	//		am,pm- override strings for am/pm in times
 	//		locale- override the locale used to determine formatting rules
+	//		fullYear- use 4 digit years whenever 2 digit years are called for
 
 	options = options || {};
 
@@ -200,7 +204,7 @@ dojo.date.locale.format = function(/*Date*/dateObject, /*Object?*/options){
 	var formatLength = options.formatLength || 'short';
 	var bundle = dojo.date.locale._getGregorianBundle(locale);
 	var str = [];
-	var sauce = dojo.hitch(this, formatPattern, dateObject, bundle);
+	var sauce = dojo.hitch(this, formatPattern, dateObject, bundle, options.fullYear);
 	if(options.selector == "year"){
 		// Special case as this is not yet driven by CLDR data
 		var year = dateObject.getFullYear();

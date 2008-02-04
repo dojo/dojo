@@ -1,5 +1,6 @@
 dojo.provide("dojo._base.window");
 
+//>>excludeStart("noGears", kwArgs.noGears == "true");
 dojo._gearsObject = function(){
 	// summary: 
 	//		factory method to get a Google Gears plugin instance to
@@ -50,6 +51,8 @@ dojo.isGears = {
 // so, make it available in the runtime environment
 // and in the Google standard 'google.gears' global object
 dojo.isGears = (!!dojo._gearsObject())||0;
+
+//>>excludeEnd("noGears");
 
 /*=====
 dojo.doc = {

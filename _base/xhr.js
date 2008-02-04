@@ -625,18 +625,30 @@ dojo.require("dojo._base.query");
 	}
 	=====*/
 
+	dojo.xhr = function(/*String*/ method, /*dojo.__xhrArgs*/ args, /*boolean?*/ hasBody){
+		//	summary: 
+		//		Sends an HTTP request with the given method. If the request has an 
+		//		HTTP body, then pass true for hasBody. The method argument should be uppercase.
+		//		Also look at dojo.xhrGet(), xhrPost(), xhrPut() and dojo.xhrDelete() for shortcuts
+		//		for those HTTP methods. There are also methods for "raw" PUT and POST methods
+		//		via dojo.rawXhrPut() and dojo.rawXhrPost() respectively.
+		var dfd = _makeXhrDeferred(args);
+		if(!hasBody){
+			_d._ioAddQueryToUrl(dfd.ioArgs);
+		}
+		return _doIt(method, dfd); // dojo.Deferred
+	}
+
 	dojo.xhrGet = function(/*dojo.__xhrArgs*/ args){
 		//	summary: 
 		//		Sends an HTTP GET request to the server.
-		var dfd = _makeXhrDeferred(args);
-		_d._ioAddQueryToUrl(dfd.ioArgs);
-		return _doIt("GET", dfd); // dojo.Deferred
+		return d.xhr("GET", args); //dojo.Deferred
 	}
 
 	dojo.xhrPost = function(/*dojo.__xhrArgs*/ args){
 		//summary: 
 		//		Sends an HTTP POST request to the server.
-		return _doIt("POST", _makeXhrDeferred(args)); // dojo.Deferred
+		return dojo.xhr("POST", args, true); // dojo.Deferred
 	}
 
 	dojo.rawXhrPost = function(/*dojo.__xhrArgs*/ args){
@@ -653,7 +665,7 @@ dojo.require("dojo._base.query");
 	dojo.xhrPut = function(/*dojo.__xhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP PUT request to the server.
-		return _doIt("PUT", _makeXhrDeferred(args)); // dojo.Deferred
+		return dojo.xhr("PUT", args, true); // dojo.Deferred
 	}
 
 	dojo.rawXhrPut = function(/*dojo.__xhrArgs*/ args){
@@ -674,9 +686,7 @@ dojo.require("dojo._base.query");
 	dojo.xhrDelete = function(/*dojo.__xhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP DELETE request to the server.
-		var dfd = _makeXhrDeferred(args);
-		_d._ioAddQueryToUrl(dfd.ioArgs);
-		return _doIt("DELETE", dfd); // dojo.Deferred
+		return d.xhr("DELETE", args); //dojo.Deferred
 	}
 
 	/*

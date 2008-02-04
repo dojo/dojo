@@ -1096,10 +1096,10 @@ doh.register("tests.data.ItemFileWriteStore",
 		},
 		function testReferenceIntegrity_deleteMultipleItemsWithReferencesAndRevert(){
 			//	summary: 
-			//		Simple test to verify that a flow of deleting items with references and reverting does not damate the internal structure.
+			//		Simple test to verify that a flow of deleting items with references and reverting does not damage the internal structure.
 			//		Created for tracker bug: #5743
 			//	description:
-			//		Simple test to verify that a flow of deleting items with references and reverting does not damate the internal structure.
+			//		Simple test to verify that a flow of deleting items with references and reverting does not damage the internal structure.
 			//		Created for tracker bug: #5743
 		
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_references"));

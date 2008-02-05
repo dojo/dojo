@@ -642,13 +642,13 @@ dojo.require("dojo._base.query");
 	dojo.xhrGet = function(/*dojo.__xhrArgs*/ args){
 		//	summary: 
 		//		Sends an HTTP GET request to the server.
-		return d.xhr("GET", args); //dojo.Deferred
+		return _d.xhr("GET", args); //dojo.Deferred
 	}
 
 	dojo.xhrPost = function(/*dojo.__xhrArgs*/ args){
 		//summary: 
 		//		Sends an HTTP POST request to the server.
-		return dojo.xhr("POST", args, true); // dojo.Deferred
+		return _d.xhr("POST", args, true); // dojo.Deferred
 	}
 
 	dojo.rawXhrPost = function(/*dojo.__xhrArgs*/ args){
@@ -665,7 +665,7 @@ dojo.require("dojo._base.query");
 	dojo.xhrPut = function(/*dojo.__xhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP PUT request to the server.
-		return dojo.xhr("PUT", args, true); // dojo.Deferred
+		return _d.xhr("PUT", args, true); // dojo.Deferred
 	}
 
 	dojo.rawXhrPut = function(/*dojo.__xhrArgs*/ args){
@@ -686,7 +686,7 @@ dojo.require("dojo._base.query");
 	dojo.xhrDelete = function(/*dojo.__xhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP DELETE request to the server.
-		return d.xhr("DELETE", args); //dojo.Deferred
+		return _d.xhr("DELETE", args); //dojo.Deferred
 	}
 
 	/*

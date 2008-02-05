@@ -409,6 +409,26 @@
 		//		relative to Dojo root. For example, module acme is mapped to
 		//		../acme.  If you want to use a different module name, use
 		//		dojo.registerModulePath. 
+		//	example:
+		//		If your dojo.js is located at this location in the web root:
+		//	|	/myapp/js/dojo/dojo/dojo.js
+		//		and your modules are located at:
+		//	|	/myapp/js/foo/bar.js
+		//	|	/myapp/js/foo/baz.js
+		//	|	/myapp/js/foo/thud/xyzzy.js
+		//		Your application can tell Dojo to locate the "foo" namespace by calling:
+		//	|	dojo.registerModulePath("foo", "../../foo");
+		//		At which point you can then use dojo.require() to load the
+		//		modules (assuming they provide() the same things which are
+		//		required). The full code might be:
+		//	|	<script type="text/javascript" 
+		//	|		src="/myapp/js/dojo/dojo/dojo.js"></script>
+		//	|	<script type="text/javascript">
+		//	|		dojo.registerModulePath("foo", "../../foo");
+		//	|		dojo.require("foo.bar");
+		//	|		dojo.require("foo.baz");
+		//	|		dojo.require("foo.thud.xyzzy");
+		//	|	</script>
 		d._modulePrefixes[module] = { name: module, value: prefix };
 	}
 

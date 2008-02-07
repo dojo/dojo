@@ -160,7 +160,11 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 
 		//Start timer
 		if(!this._xdTimer){
-			this._xdTimer = setInterval(dojo._scopeName + "._xdWatchInFlight();", 100);
+			if(dojo.isAIR){
+				this._xdTimer = setInterval(function(){dojo._xdWatchInFlight();}, 100);
+			}else{
+				this._xdTimer = setInterval(dojo._scopeName + "._xdWatchInFlight();", 100);
+			}
 		}
 		this._xdStartTime = (new Date()).getTime();
 	}
@@ -175,6 +179,10 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 		var xdUri = uri.substring(0, lastIndex) + ".xd";
 		if(lastIndex != uri.length - 1){
 			xdUri += uri.substring(lastIndex, uri.length);
+		}
+
+		if (dojo.isAIR){
+			xdUri = xdUri.replace("app:/", "/");
 		}
 
 		//Add to script src

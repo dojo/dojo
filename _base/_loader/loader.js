@@ -226,7 +226,11 @@
 		//FF 2.0 and freezing issues where we try to do sync xhr while background css images
 		//are being loaded (trac #2572)? Consider for 0.9.
 		if(typeof setTimeout == "object" || (dojo.config.useXDomain && d.isOpera)){
-			setTimeout(dojo._scopeName + ".loaded();", 0);
+			if(dojo.isAIR){
+				setTimeout(function(){dojo.loaded();}, 0);
+			}else{
+				setTimeout(dojo._scopeName + ".loaded();", 0);
+			}
 		}else{
 			d.loaded();
 		}

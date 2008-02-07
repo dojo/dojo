@@ -54,4 +54,4 @@ function doJsonpCallback(){
 
 //Set a timeout to do the callback check, since MSIE won't see the SCRIPT tag until
 //we complete processing of this page.
-setTimeout('doJsonpCallback()', 300);
+setTimeout(function(){doJsonpCallback();}, 300);

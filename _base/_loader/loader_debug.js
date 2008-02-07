@@ -12,7 +12,11 @@ dojo.provide = function(resourceName){
 		//Set a timeout so the module can be executed into existence. Normally the
 		//dojo.provide call in a module is the first line. Don't want to risk attaching
 		//another script tag until the current one finishes executing.
-		window.setTimeout(dojo._scopeName + "._xdDebugFileLoaded('" + resourceName + "')", 1);
+		if(dojo.isAIR){
+			window.setTimeout(function(){dojo._xdDebugFileLoaded(resourceName);}, 1);
+		}else{
+			window.setTimeout(dojo._scopeName + "._xdDebugFileLoaded('" + resourceName + "')", 1);
+		}
 	}
 
 	return dojo.nonDebugProvide.apply(dojo, arguments);

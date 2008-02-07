@@ -92,6 +92,7 @@ if(typeof window != 'undefined'){
 		if(dav.indexOf("Safari") >= 0){
 			d.isSafari = parseFloat(dav.split("Version/")[1]) || 2;
 		}
+		d.isAIR = (dua.indexOf("AdobeAIR") >= 0) ? 1 : 0;
 		d.isKhtml = (dav.indexOf("Konqueror") >= 0 || d.isSafari) ? tv : 0;
 		d.isMozilla = d.isMoz = (dua.indexOf("Gecko") >= 0 && !d.isKhtml) ? tv : 0;
 		d.isFF = d.isIE = 0;
@@ -249,7 +250,9 @@ if(typeof window != 'undefined'){
 		window.addEventListener("load", dojo._loadInit, null);
 	}
 
-	if(/(WebKit|khtml)/i.test(navigator.userAgent)){ // sniff
+	if(dojo.isAIR){
+		window.addEventListener("load", dojo._loadInit, null);
+	}else if(/(WebKit|khtml)/i.test(navigator.userAgent)){ // sniff
 		dojo._khtmlTimer = setInterval(function(){
 			if(/loaded|complete/.test(document.readyState)){
 				dojo._loadInit(); // call the onload handler

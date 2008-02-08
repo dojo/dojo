@@ -139,15 +139,3 @@ dojo.withDoc = function(	/*Object*/documentObject,
 	}
 	return rval;
 };
-
-//Register any module paths set up in djConfig. Need to do this
-//in the hostenvs since hostenv_browser can read djConfig from a
-//script tag's attribute.
-(function(){
-	var mp = dojo.config["modulePaths"];
-	if(mp){
-		for(var param in mp){
-			dojo.registerModulePath(param, mp[param]);
-		}
-	}
-})();

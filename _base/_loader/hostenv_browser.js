@@ -195,6 +195,10 @@ if(typeof window != 'undefined'){
 			alert(uri);
 			*/
 
+			if(d.config.cacheBust){
+				uri += (uri.indexOf("?") == -1 ? "?" : "&") + String(d.config.cacheBust).replace(/\W+/g,"");
+			}
+
 			http.open('GET', uri, false);
 			try{
 				http.send(null);
@@ -323,6 +327,18 @@ if(typeof window != 'undefined'){
 	});
 	*/
 } //if (typeof window != 'undefined')
+
+//Register any module paths set up in djConfig. Need to do this
+//in the hostenvs since hostenv_browser can read djConfig from a
+//script tag's attribute.
+(function(){
+	var mp = dojo.config["modulePaths"];
+	if(mp){
+		for(var param in mp){
+			dojo.registerModulePath(param, mp[param]);
+		}
+	}
+})();
 
 //Load debug code if necessary.
 if(dojo.config.isDebug){

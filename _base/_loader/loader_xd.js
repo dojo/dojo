@@ -122,7 +122,6 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
     	}
     }
 
-	if(dojo.config.cacheBust && dojo.isBrowser) { uri += "?" + String(dojo.config.cacheBust).replace(/\W+/g,""); }
 	try{
 		return ((!module || this._isXDomain) ? this._loadUri(uri, cb, currentIsXDomain, module) : this._loadUriAndCheck(uri, module, cb)); //Boolean
 	}catch(e){

@@ -69,9 +69,6 @@
 		//		a callback function to pass the result of evaluating the script
 
 		var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : this.baseUrl) + relpath;
-		if(dojo.config.cacheBust && d.isBrowser){
-			uri += "?" + String(dojo.config.cacheBust).replace(/\W+/g,"");
-		}
 		try{
 			return !module ? this._loadUri(uri, cb) : this._loadUriAndCheck(uri, module, cb); // Boolean
 		}catch(e){

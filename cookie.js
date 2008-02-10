@@ -1,12 +1,14 @@
 dojo.provide("dojo.cookie");
 
+dojo.require("dojo.regexp");
+
 /*=====
 dojo.__cookieProps = function(kwArgs){
-	//	expires: Date|Number?
-	//		If a number, seen as the number of days from today. If a date, the
-	//		date past which the cookie is invalid. If expires is in the past,
-	//		the cookie will be deleted If expires is left out or is 0, the
-	//		cookie will expire when the browser closes.
+	//	expires: Date|String|Number?
+	//		If a number, the number of days from today at which the cookie
+	//		will expire. If a date, the date past which the cookie will expire.
+	//		If expires is in the past, the cookie will be deleted.
+	//		If expires is omitted or is 0, the cookie will expire when the browser closes.
 	//	path: String?
 	//		The path to use for the cookie.
 	//	domain: String?
@@ -21,20 +23,14 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 	//	summary: 
 	//		Get or set a cookie.
 	//	description:
-	// 		If you pass in one argument, the the value of the cookie is returned
-	//
-	// 		If you pass in two arguments, the cookie value is set to the second
-	// 		argument.
-	//
-	// 		If you pass in three arguments, the cookie value is set to the
-	// 		second argument, and the options on the third argument are used for
-	// 		extended properties on the cookie
+	// 		If one argument is passed, returns the value of the cookie
+	// 		For two or more arguments, acts as a setter.
 	//	name:
-	//		The name of the cookie
+	//		Name of the cookie
 	//	value:
-	//		Optional. The value for the cookie.
+	//		Value for the cookie
 	//	props: 
-	//		Optional additional properties for the cookie
+	//		Properties for the cookie
 	//	example:
 	//		set a cookie with the JSON-serialized contents of an object which
 	//		will expire 5 days from now:
@@ -46,29 +42,30 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 	//	
 	//	example:
 	//		delete a cookie:
-	//	|	dojo.cookie("configObj", null);
+	//	|	dojo.cookie("configObj", null, {expires: -1});
 	var c = document.cookie;
 	if(arguments.length == 1){
-		var idx = c.lastIndexOf(name+'=');
-		if(idx == -1){ return null; }
-		var start = idx+name.length+1;
-		var end = c.indexOf(';', idx+name.length+1);
-		if(end == -1){ end = c.length; }
-		return decodeURIComponent(c.substring(start, end)); 
+		var matches = c.match(new RegExp("(?:^|(?:; ))" + dojo.regexp.escapeString(name) + "=([^;]*)"));
+		return matches ? decodeURIComponent(matches[1]) : undefined; // String or undefined
 	}else{
 		props = props || {};
-		value = encodeURIComponent(value);
-		if(typeof(props.expires) == "number"){ 
+// FIXME: expires=0 seems to disappear right away, not on close? (FF3)  Change docs?
+		var exp = props.expires;
+		if(typeof exp == "number"){ 
 			var d = new Date();
-			d.setTime(d.getTime()+(props.expires*24*60*60*1000));
+			d.setTime(d.getTime() + exp*24*60*60*1000);
 			props.expires = d;
 		}
-		document.cookie = name + "=" + value 
-			+ (props.expires ? "; expires=" + props.expires.toUTCString() : "")
-			+ (props.path ? "; path=" + props.path : "")
-			+ (props.domain ? "; domain=" + props.domain : "")
-			+ (props.secure ? "; secure" : "");
-		return null;
+		if(exp && exp.toUTCString){ props.expires = exp.toUTCString(); }
+
+		value = encodeURIComponent(value);
+		var updatedCookie = name + "=" + value;
+		for(propName in props){
+			updatedCookie += "; " + propName;
+			var propValue = props[propName];
+			if(propValue !== true){ updatedCookie += "=" + propValue; }
+		}
+		document.cookie = updatedCookie;
 	}
 };
 
@@ -93,7 +90,6 @@ dojo.cookie.useObject = function(/*String*/name, /*String?*/value, /*Object?*/pr
 	}else{
 		this(name, dojo.toJson(value), props||{});
 	}
-	
 };
 
 dojo.cookie.isSupported = function(){

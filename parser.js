@@ -209,8 +209,9 @@ dojo.parser = new function(){
 		// (non-top level) children
 		d.forEach(thelist, function(instance){
 			if(	instance  && 
-				(instance.startup) && 
-				((!instance.getParent) || (!instance.getParent()))
+				instance.startup &&
+				!instance._started && 
+				(!instance.getParent || !instance.getParent())
 			){
 				instance.startup();
 			}

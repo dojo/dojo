@@ -1011,7 +1011,7 @@ if(dojo.isIE || dojo.isOpera){
 		node = dojo.byId(node);
 		name = _fixAttrName(name);
 		if(arguments.length == 3){
-			if(typeof value == "function" || (dojo.isFF && (typeof value == "boolean"))){ // e.g. onsubmit, disabled
+			if(typeof value == "function" || typeof value == "boolean"){ // e.g. onsubmit, disabled
 				node[name] = value;
 			}else{
 				node.setAttribute(name, value);
@@ -1023,11 +1023,9 @@ if(dojo.isIE || dojo.isOpera){
 			var prop = _attrProps[name.toLowerCase()];
 			if(prop){
 				return node[prop];
-			}else if(dojo.hasAttr(node, name) && !(dojo.isFF && (typeof node[name] == "boolean"))){
-				return node.getAttribute(name);
 			}else{
 				var value = node[name];
-				return (typeof value == 'boolean' || typeof value == 'function') ? value : null;
+				return (typeof value == 'boolean' || typeof value == 'function') ? value : (dojo.hasAttr(node, name) ? node.getAttribute(name) : null);
 			}
 		}
 	}

@@ -54,7 +54,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 		if(typeof exp == "number"){ 
 			var d = new Date();
 			d.setTime(d.getTime() + exp*24*60*60*1000);
-			props.expires = d;
+			exp = props.expires = d;
 		}
 		if(exp && exp.toUTCString){ props.expires = exp.toUTCString(); }
 

@@ -329,22 +329,27 @@ dojo.require("dojo._base.html");
 	}
 
 	/*=====
-	dojo.__fadeArgs = function(kwArgs){
+	dojo.__FadeArgs = function(node, duration, easing){
+		// 	node: DOMNode|String
+		//		The node referenced in the animation
 		//	duration: Integer?
 		//		Duration of the animation in milliseconds.
 		// easing: Function?
 		//		An easing function.
+		this.node = node;
+		this.duration = duration;
+		this.easing = easing;
 	}
 	=====*/
 
-	dojo.fadeIn = function(/*dojo.__fadeArgs*/ args){
+	dojo.fadeIn = function(/*dojo.__FadeArgs*/ args){
 		// summary: 
 		//		Returns an animation that will fade node defined in 'args' from
 		//		its current opacity to fully opaque.
 		return d._fade(d.mixin({ end: 1 }, args)); // dojo._Animation
 	}
 
-	dojo.fadeOut = function(/*dojo.__fadeArgs*/  args){
+	dojo.fadeOut = function(/*dojo.__FadeArgs*/  args){
 		// summary: 
 		//		Returns an animation that will fade node defined in 'args'
 		//		from its current opacity to fully transparent.

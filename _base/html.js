@@ -431,6 +431,12 @@ if(dojo.isIE || dojo.isOpera){
 			return dojo._getOpacity(n);
 		}
 		var s = dojo.getComputedStyle(n);
+		if(args==2 && !dojo.isString(style)){
+			for(var x in style){
+				dojo.style(node, x, style[x]);
+			}
+			return s;
+		}
 		return (args == 1) ? s : _toStyleValue(n, style, s[style]); /* CSS2Properties||String||Number */
 	}
 

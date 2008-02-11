@@ -23,8 +23,8 @@
 						(iframeNode.contentWindow)&&(iframeNode.contentWindow.document)
 					) ||  // IE
 					(
-						(iframeNode.name)&&(document.frames[iframeNode.name])&&
-						(document.frames[iframeNode.name].document)
+						(iframeNode.name)&&(documendoh.frames[iframeNode.name])&&
+						(documendoh.frames[iframeNode.name].document)
 					) || null;
 				return doc;
 			}
@@ -32,97 +32,97 @@
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
-						"t.is(100, dojo.marginBox('sq100').w);",
-						"t.is(100, dojo.marginBox('sq100').h);",
+						"doh.is(100, dojo.marginBox('sq100').w);",
+						"doh.is(100, dojo.marginBox('sq100').h);",
 
-						"t.is(120, dojo.marginBox('sq100margin10').w);",
-						"t.is(120, dojo.marginBox('sq100margin10').h);",
-						"t.is(100, dojo.contentBox('sq100margin10').w);",
-						"t.is(100, dojo.contentBox('sq100margin10').h);",
+						"doh.is(120, dojo.marginBox('sq100margin10').w);",
+						"doh.is(120, dojo.marginBox('sq100margin10').h);",
+						"doh.is(100, dojo.contentBox('sq100margin10').w);",
+						"doh.is(100, dojo.contentBox('sq100margin10').h);",
 
-						"t.is(140, dojo.marginBox('sq100margin10pad10').w);",
-						"t.is(140, dojo.marginBox('sq100margin10pad10').h);",
+						"doh.is(140, dojo.marginBox('sq100margin10pad10').w);",
+						"doh.is(140, dojo.marginBox('sq100margin10pad10').h);",
 
-						"t.is(120, dojo.marginBox('sq100pad10').w);",
-						"t.is(120, dojo.marginBox('sq100pad10').h);",
+						"doh.is(120, dojo.marginBox('sq100pad10').w);",
+						"doh.is(120, dojo.marginBox('sq100pad10').h);",
 
-						"t.is(110, dojo.marginBox('sq100ltpad10').w);",
-						"t.is(110, dojo.marginBox('sq100ltpad10').h);",
-						"t.is(100, dojo.contentBox('sq100ltpad10').w);",
-						"t.is(100, dojo.contentBox('sq100ltpad10').h);",
+						"doh.is(110, dojo.marginBox('sq100ltpad10').w);",
+						"doh.is(110, dojo.marginBox('sq100ltpad10').h);",
+						"doh.is(100, dojo.contentBox('sq100ltpad10').w);",
+						"doh.is(100, dojo.contentBox('sq100ltpad10').h);",
 
-						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').w);",
-						"t.is(120, dojo.marginBox('sq100ltpad10rbmargin10').h);",
+						"doh.is(120, dojo.marginBox('sq100ltpad10rbmargin10').w);",
+						"doh.is(120, dojo.marginBox('sq100ltpad10rbmargin10').h);",
 
-						"t.is(120, dojo.marginBox('sq100border10').w);",
-						"t.is(120, dojo.marginBox('sq100border10').h);",
-						"t.is(100, dojo.contentBox('sq100border10').w);",
-						"t.is(100, dojo.contentBox('sq100border10').h);",
+						"doh.is(120, dojo.marginBox('sq100border10').w);",
+						"doh.is(120, dojo.marginBox('sq100border10').h);",
+						"doh.is(100, dojo.contentBox('sq100border10').w);",
+						"doh.is(100, dojo.contentBox('sq100border10').h);",
 
-						"t.is(140, dojo.marginBox('sq100border10margin10').w);",
-						"t.is(140, dojo.marginBox('sq100border10margin10').h);",
-						"t.is(100, dojo.contentBox('sq100border10margin10').w);",
-						"t.is(100, dojo.contentBox('sq100border10margin10').h);",
+						"doh.is(140, dojo.marginBox('sq100border10margin10').w);",
+						"doh.is(140, dojo.marginBox('sq100border10margin10').h);",
+						"doh.is(100, dojo.contentBox('sq100border10margin10').w);",
+						"doh.is(100, dojo.contentBox('sq100border10margin10').h);",
 
-						"t.is(160, dojo.marginBox('sq100border10margin10pad10').w);",
-						"t.is(160, dojo.marginBox('sq100border10margin10pad10').h);",
-						"t.is(100, dojo.contentBox('sq100border10margin10pad10').w);",
-						"t.is(100, dojo.contentBox('sq100border10margin10pad10').h);",
+						"doh.is(160, dojo.marginBox('sq100border10margin10pad10').w);",
+						"doh.is(160, dojo.marginBox('sq100border10margin10pad10').h);",
+						"doh.is(100, dojo.contentBox('sq100border10margin10pad10').w);",
+						"doh.is(100, dojo.contentBox('sq100border10margin10pad10').h);",
 
 						// FIXME: the 'correct' w is not 100 on Safari WebKit (2.0.4 [419.3]), the right-margin extends to the document edge
-						// "t.is(100, dojo.marginBox('sq100nopos').w);", 
-						"t.is(100, dojo.marginBox('sq100nopos').h);",
+						// "doh.is(100, dojo.marginBox('sq100nopos').w);", 
+						"doh.is(100, dojo.marginBox('sq100nopos').h);",
 						
-						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
-						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
-						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
-						"t.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).h);",
+						"doh.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
+						"doh.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
+						"doh.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
+						"doh.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).h);",
 
-						"t.is(0, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
-						"t.is(0, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
-						"t.is(10, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
-						"t.is(10, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).h);",
+						"doh.is(0, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
+						"doh.is(0, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
+						"doh.is(10, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
+						"doh.is(10, dojo._getMarginExtents(dojo.byId('sq100ltpad10rbmargin10')).h);",
 
-						"t.is(10, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).l);",
-						"t.is(10, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).t);",
-						"t.is(20, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
-						"t.is(20, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
+						"doh.is(10, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).l);",
+						"doh.is(10, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).t);",
+						"doh.is(20, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
+						"doh.is(20, dojo._getBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
 
-						"t.is(20, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).l);",
-						"t.is(20, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).t);",
-						"t.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
-						"t.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
+						"doh.is(20, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).l);",
+						"doh.is(20, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).t);",
+						"doh.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
+						"doh.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
 
 						function coordsBasic(t){
 							var pos = dojo.coords("sq100", false);
 							// console.debug(pos);
-							t.is(100, pos.x);
-							t.is(100, pos.y);
-							t.is(100, pos.w);
-							t.is(100, pos.h);
+							doh.is(100, pos.x);
+							doh.is(100, pos.y);
+							doh.is(100, pos.w);
+							doh.is(100, pos.h);
 						},
 						function coordsMargin(t){
 							// coords is getting us the margin-box location, is
 							// this right?
 							var pos = dojo.coords("sq100margin10", false);
-							t.is(260, pos.x);
-							t.is(110, pos.y);
-							t.is(120, pos.w);
-							t.is(120, pos.h);
+							doh.is(260, pos.x);
+							doh.is(110, pos.y);
+							doh.is(120, pos.w);
+							doh.is(120, pos.h);
 						},
 						function coordsBorder(t){
 							var pos = dojo.coords("sq100border10", false);
-							t.is(100, pos.x);
-							t.is(400, pos.y);
+							doh.is(100, pos.x);
+							doh.is(400, pos.y);
 						},
 						function sq100nopos(t){
 							var pos = dojo.coords("sq100nopos", false);
 							// console.debug(pos);
-							t.is(0, pos.x);
-							t.t(pos.y > 0);
+							doh.is(0, pos.x);
+							doh.t(pos.y > 0);
 							// FIXME: the 'correct' w is not 100 on Safari WebKit (2.0.4 [419.3]), the right-margin extends to the document edge
-							// t.is(100, pos.w);
-							t.is(100, pos.h);
+							// doh.is(100, pos.w);
+							doh.is(100, pos.h);
 						},
 						function coordsScrolled(t) {
 							var s = document.createElement('div');
@@ -139,156 +139,162 @@
 							dojo._setMarginBox(c, 0, 0, 500, 500);
 							s.scrollTop = 200;
 							var pos = dojo.coords(s, true);
-							t.is(x, pos.x);
-							t.is(y, pos.y);
+							doh.is(x, pos.x);
+							doh.is(y, pos.y);
 						},
-						"t.is(1, dojo.style('sq100nopos', 'opacity'));",
-						"t.is(0.1, dojo.style('sq100nopos', 'opacity', 0.1));",
-						"t.is(0.8, dojo.style('sq100nopos', 'opacity', 0.8));",
-						"t.is('static', dojo.style('sq100nopos', 'position'));",
+						"doh.is(1, dojo.style('sq100nopos', 'opacity'));",
+						"doh.is(0.1, dojo.style('sq100nopos', 'opacity', 0.1));",
+						"doh.is(0.8, dojo.style('sq100nopos', 'opacity', 0.8));",
+						function styleObject(){
+							dojo.style('sq100nopos', { 'opacity': 0.1 });
+							doh.is(0.1, dojo.style('sq100nopos', 'opacity'));
+							dojo.style('sq100nopos', { 'opacity': 0.8 });
+							doh.is(0.8, dojo.style('sq100nopos', 'opacity'));
+						},
+						"doh.is('static', dojo.style('sq100nopos', 'position'));",
 						function getBgcolor(t){
 							var bgc = dojo.style('sq100nopos', 'backgroundColor');
-							t.t((bgc == "rgb(0, 0, 0)")||(bgc == "black")||(bgc == "#000000"));
+							doh.t((bgc == "rgb(0, 0, 0)")||(bgc == "black")||(bgc == "#000000"));
 						},
 						function isDescendant(t){
-							t.t(dojo.isDescendant("sq100", dojo.body()));
-							t.t(dojo.isDescendant("sq100", dojo.doc));
-							t.t(dojo.isDescendant("sq100", "sq100"));
-							t.t(dojo.isDescendant(dojo.byId("sq100"), "sq100"));
-							t.f(dojo.isDescendant("sq100", dojo.byId("sq100").firstChild));
-							t.t(dojo.isDescendant(dojo.byId("sq100").firstChild, "sq100"));
+							doh.t(dojo.isDescendant("sq100", dojo.body()));
+							doh.t(dojo.isDescendant("sq100", dojo.doc));
+							doh.t(dojo.isDescendant("sq100", "sq100"));
+							doh.t(dojo.isDescendant(dojo.byId("sq100"), "sq100"));
+							doh.f(dojo.isDescendant("sq100", dojo.byId("sq100").firstChild));
+							doh.t(dojo.isDescendant(dojo.byId("sq100").firstChild, "sq100"));
 						},
 						function isDescendantIframe(t){
 							var bif = dojo.byId("blah");
 							getIframeDocument(bif).write("<html><body><div id='subDiv'></div></body></html>");
 							getIframeDocument(bif).close();
 							// this test barely makes sense. disabling it for now.
-							// t.t(dojo.isDescendant(bif.contentDocument.getElementById("subDiv"), bif.parentNode));
+							// doh.t(dojo.isDescendant(bif.contentDocument.getElementById("subDiv"), bif.parentNode));
 							var subDiv = getIframeDocument(bif).getElementById("subDiv");
-							t.t(dojo.isDescendant(subDiv, subDiv));
-							t.t(dojo.isDescendant(subDiv, subDiv.parentNode));
-							t.f(dojo.isDescendant(subDiv.parentNode, subDiv));
+							doh.t(dojo.isDescendant(subDiv, subDiv));
+							doh.t(dojo.isDescendant(subDiv, subDiv.parentNode));
+							doh.f(dojo.isDescendant(subDiv.parentNode, subDiv));
 
 						},
 						function testClassFunctions(t){
 							var node = dojo.byId("sq100");
 							dojo.addClass(node, "a");
-							t.is("a", node.className);
+							doh.is("a", node.className);
 							dojo.removeClass(node, "c");
-							t.is("a", node.className);
+							doh.is("a", node.className);
 							t.assertTrue(dojo.hasClass(node, "a"));
 							t.assertFalse(dojo.hasClass(node, "b"));
 							dojo.addClass(node, "b");
-							t.is("a b", node.className);
+							doh.is("a b", node.className);
 							t.assertTrue(dojo.hasClass(node, "a"));
 							t.assertTrue(dojo.hasClass(node, "b"));
 							dojo.removeClass(node, "a");
-							t.is("b", node.className);
+							doh.is("b", node.className);
 							t.assertFalse(dojo.hasClass(node, "a"));
 							t.assertTrue(dojo.hasClass(node, "b"));
 							dojo.toggleClass(node, "a");
-							t.is("b a", node.className);
+							doh.is("b a", node.className);
 							t.assertTrue(dojo.hasClass(node, "a"));
 							t.assertTrue(dojo.hasClass(node, "b"));
 							dojo.toggleClass(node, "a");
-							t.is("b", node.className);
+							doh.is("b", node.className);
 							t.assertFalse(dojo.hasClass(node, "a"));
 							t.assertTrue(dojo.hasClass(node, "b"));
 							dojo.toggleClass(node, "b");
-							t.is("", node.className);
+							doh.is("", node.className);
 							t.assertFalse(dojo.hasClass(node, "a"));
 							t.assertFalse(dojo.hasClass(node, "b"));
 							dojo.removeClass(node, "c");
 							t.assertTrue(!node.className);
 						},
 						function getTypeInput(t){
-							t.f(dojo.hasAttr(dojo.byId("input-no-type"), "type"));
-							t.is("text", dojo.attr(dojo.byId("input-no-type"), "type"));
-							t.t(dojo.hasAttr(dojo.byId("input-with-type"), "type"));
-							t.is("checkbox", dojo.attr(dojo.byId("input-with-type"), "type"));
+							doh.f(dojo.hasAttr(dojo.byId("input-no-type"), "type"));
+							doh.is("text", dojo.attr(dojo.byId("input-no-type"), "type"));
+							doh.t(dojo.hasAttr(dojo.byId("input-with-type"), "type"));
+							doh.is("checkbox", dojo.attr(dojo.byId("input-with-type"), "type"));
 						},
 						function getWithString(t){
-							t.f(dojo.hasAttr("input-no-type", "type"));
-							t.is("text", dojo.attr("input-no-type", "type"));
-							t.t(dojo.hasAttr("input-with-type", "type"));
-							t.is("checkbox", dojo.attr("input-with-type", "type"));
+							doh.f(dojo.hasAttr("input-no-type", "type"));
+							doh.is("text", dojo.attr("input-no-type", "type"));
+							doh.t(dojo.hasAttr("input-with-type", "type"));
+							doh.is("checkbox", dojo.attr("input-with-type", "type"));
 						},
 						function attrId(t){
-							t.t(dojo.hasAttr("div-no-tabindex", "id"));
-							t.is("div-no-tabindex", dojo.attr("div-no-tabindex", "id"));
+							doh.t(dojo.hasAttr("div-no-tabindex", "id"));
+							doh.is("div-no-tabindex", dojo.attr("div-no-tabindex", "id"));
 							var div = document.createElement("div");
-							t.f(dojo.hasAttr(div, "id"));
-							t.is(null, dojo.attr(div, "id"));
+							doh.f(dojo.hasAttr(div, "id"));
+							doh.is(null, dojo.attr(div, "id"));
 							dojo.attr(div, "id", "attrId1");
-							t.t(dojo.hasAttr(div, "id"));
-							t.is("attrId1", dojo.attr(div, "id"));
+							doh.t(dojo.hasAttr(div, "id"));
+							doh.is("attrId1", dojo.attr(div, "id"));
 							dojo.removeAttr(div, "id");
-							t.f(dojo.hasAttr(div, "id"));
-							t.is(null, dojo.attr(div, "id"));
+							doh.f(dojo.hasAttr(div, "id"));
+							doh.is(null, dojo.attr(div, "id"));
 						},
 						function getTabindexDiv(t){
-							t.f(dojo.hasAttr("div-no-tabindex", "tabindex"));
-							t.is(null, dojo.attr("div-no-tabindex", "tabindex"));
-							t.t(dojo.hasAttr("div-tabindex-minus-1", "tabindex"));
+							doh.f(dojo.hasAttr("div-no-tabindex", "tabindex"));
+							doh.is(null, dojo.attr("div-no-tabindex", "tabindex"));
+							doh.t(dojo.hasAttr("div-tabindex-minus-1", "tabindex"));
 							if(!dojo.isOpera){
 								// Opera (at least <= 9) does not support tabindex="-1"
-								t.is(-1, dojo.attr("div-tabindex-minus-1", "tabindex"));
+								doh.is(-1, dojo.attr("div-tabindex-minus-1", "tabindex"));
 							}
-							t.t(dojo.hasAttr("div-tabindex-0", "tabindex"));
-							t.is(0, dojo.attr("div-tabindex-0", "tabindex"));
-							t.is(1, dojo.attr("div-tabindex-1", "tabindex"));
+							doh.t(dojo.hasAttr("div-tabindex-0", "tabindex"));
+							doh.is(0, dojo.attr("div-tabindex-0", "tabindex"));
+							doh.is(1, dojo.attr("div-tabindex-1", "tabindex"));
 						},
 						function getTabindexInput(t){
-							t.f(dojo.hasAttr("input-no-tabindex", "tabindex"));
-							t.is(null, dojo.attr("input-no-tabindex", "tabindex"));
-							t.t(dojo.hasAttr("input-tabindex-minus-1", "tabindex"));
+							doh.f(dojo.hasAttr("input-no-tabindex", "tabindex"));
+							doh.is(null, dojo.attr("input-no-tabindex", "tabindex"));
+							doh.t(dojo.hasAttr("input-tabindex-minus-1", "tabindex"));
 							if(!dojo.isOpera){
 								// Opera (at least <= 9) does not support tabindex="-1"
-								t.is(-1, dojo.attr("input-tabindex-minus-1", "tabindex"));
+								doh.is(-1, dojo.attr("input-tabindex-minus-1", "tabindex"));
 							}
-							t.t(dojo.hasAttr("input-tabindex-0", "tabindex"));
-							t.is(0, dojo.attr("input-tabindex-0", "tabindex"));
-							t.is(1, dojo.attr("input-tabindex-1", "tabindex"));
+							doh.t(dojo.hasAttr("input-tabindex-0", "tabindex"));
+							doh.is(0, dojo.attr("input-tabindex-0", "tabindex"));
+							doh.is(1, dojo.attr("input-tabindex-1", "tabindex"));
 						},
 						function setTabindexDiv(t){
 							var div = document.createElement("div");
-							t.is(null, dojo.attr(div, "tabindex"));
+							doh.is(null, dojo.attr(div, "tabindex"));
 							dojo.attr(div, "tabindex", -1);
 							if(!dojo.isOpera){
 								// Opera (at least <= 9) does not support tabindex="-1"
-								t.is(-1, dojo.attr(div, "tabindex"));
+								doh.is(-1, dojo.attr(div, "tabindex"));
 							}
 							dojo.attr(div, "tabindex", 0);
-							t.is(0, dojo.attr(div, "tabindex"));
+							doh.is(0, dojo.attr(div, "tabindex"));
 							dojo.attr(div, "tabindex", 1);
-							t.is(1, dojo.attr(div, "tabindex"));
+							doh.is(1, dojo.attr(div, "tabindex"));
 						},
 						function setTabindexInput(t){
 							var input = document.createElement("input");
-							t.is(null, dojo.attr(input, "tabindex"));
+							doh.is(null, dojo.attr(input, "tabindex"));
 							dojo.attr(input, "tabindex", -1);
 							if(!dojo.isOpera){
 								// Opera (at least <= 9) does not support tabindex="-1"
-								t.is(-1, dojo.attr(input, "tabindex"));
+								doh.is(-1, dojo.attr(input, "tabindex"));
 							}
 							dojo.attr(input, "tabindex", 0);
-							t.is(0, dojo.attr(input, "tabindex"));
+							doh.is(0, dojo.attr(input, "tabindex"));
 							dojo.attr(input, "tabindex", 1);
-							t.is(1, dojo.attr(input, "tabindex"));
+							doh.is(1, dojo.attr(input, "tabindex"));
 						},
 						function removeTabindexFromDiv(t){
 							var div = document.createElement("div");
 							dojo.attr(div, "tabindex", 1);
-							t.is(1, dojo.attr(div, "tabindex"));
+							doh.is(1, dojo.attr(div, "tabindex"));
 							dojo.removeAttr(div, "tabindex");
-							t.is(null, dojo.attr(div, "tabindex"));
+							doh.is(null, dojo.attr(div, "tabindex"));
 						},
 						function removeTabindexFromInput(t){
 							var input = document.createElement("input");
 							dojo.attr(input, "tabindex", 1);
-							t.is(1, dojo.attr(input, "tabindex"));
+							doh.is(1, dojo.attr(input, "tabindex"));
 							dojo.removeAttr(input, "tabindex");
-							t.is(null, dojo.attr(input, "tabindex"));
+							doh.is(null, dojo.attr(input, "tabindex"));
 						}
 					]
 				);

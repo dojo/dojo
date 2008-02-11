@@ -14,12 +14,13 @@ dojo.require("dojo._base.array");
 
 	var _mapIntoDojo = function(func){
 		return function(){
-			var aa = d._toArray(arguments, 0, [null]);
+			var _a = arguments;
+			var aa = d._toArray(_a, 0, [null]);
 			var s = this.map(function(i){
 				aa[0] = i;
 				return d[func].apply(d, aa);
 			});
-			return (arguments.length > 1) ? this : s; // String||dojo.NodeList
+			return ( (_a.length > 1) || !d.isString(_a[0]) ) ? this : s; // String||dojo.NodeList
 		}
 	};
 

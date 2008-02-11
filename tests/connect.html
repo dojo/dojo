@@ -8,7 +8,7 @@
 			@import "../../dijit/themes/tundra/tundra.css";
 		</style>
 		<script type="text/javascript" 
-			src="../dojo.js" djConfig="isDebug: true"></script>
+			src="../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 		<script type="text/javascript">
 			dojo.require("dojo.parser");
 			dojo.require("dijit.form.Button");
@@ -24,7 +24,7 @@
 				alert("we shouldn't see this, it'll be replaced by the next handler");
 				console.debug(this.domNode.innerHTML);
 			</script>
-			<script type="dojo/connect" event="onClick" replace="true">
+			<script type="dojo/method" event="onClick">
 				console.debug(this.domNode.innerHTML.length);
 			</script>
 		</span>

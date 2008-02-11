@@ -410,7 +410,7 @@ if(dojo.isIE || dojo.isOpera){
 
 	// public API
 	
-	dojo.style = function(/*DomNode|String*/ node, /*String*/style, /*String?*/value){
+	dojo.style = function(/*DomNode|String*/ node, /*String?||Object?*/style, /*String?*/value){
 		//	summary:
 		//		gets or sets a style property on node. If 2 arguments are
 		//		passed, acts as a getter. If value is passed, acts as a setter
@@ -419,10 +419,30 @@ if(dojo.isIE || dojo.isOpera){
 		//		id or reference to node to get/set style for
 		//	style:
 		//		the style property to set in DOM-accessor format
-		//		("borderWidth", not "border-width").
+		//		("borderWidth", not "border-width") or an object with key/value
+		//		pairs suitable for setting each property. optional.
 		//	value:
 		//		optional. If passed, sets value on the node for style, handling
 		//		cross-browser concerns.
+		//	example:
+		//		passing only an ID or node returns the computed style object of
+		//		the node:
+		//	|	dojo.style("thinger");
+		//	example:
+		//		passing a node and a style property returns the current
+		//		normalized, computed value for that property:
+		//	|	dojo.style("thinger", "opacity"); // 1 by default
+		//	example:
+		//		passing a node, a style property, and a value changes the
+		//		current display of the node and returns the new computed value
+		//	|	dojo.style("thinger", "opacity", 0.5); // == 0.5
+		//	example:
+		//		passing a node, an object-style style property sets each of the values in turn and returns the computed style object of the node:
+		//	|	dojo.style("thinger", {
+		//	|		"opacity": 0.5,
+		//	|		"border": "3px solid black",
+		//	|		"height": 300
+		//	|	});
 		var n=dojo.byId(node), args=arguments.length, op=(style=="opacity");
 		if(args==3){
 			return op ? dojo._setOpacity(n, value) : n.style[style] = value; /*Number*/

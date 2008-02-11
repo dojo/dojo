@@ -1026,6 +1026,13 @@ dojo.require("dojo._base.NodeList");
 	// future
 	var getQueryFunc = function(query){
 		// return a cached version if one is available
+		if(d.doc["querySelectorAll"]){
+			return function(root){
+				var r = root.querySelectorAll(query);
+				r.nozip = true; // skip expensive duplication checks and just wrap in a NodeList
+				return r;
+			};
+		}
 		if(_queryFuncCache[query]){ return _queryFuncCache[query]; }
 		if(0 > query.indexOf(",")){
 			// if it's not a compound query (e.g., ".foo, .bar"), cache and return a dispatcher

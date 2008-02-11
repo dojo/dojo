@@ -92,7 +92,7 @@ if(typeof window != 'undefined'){
 		// safari detection derived from:
 		//		http://developer.apple.com/internet/safari/faq.html#anchor2
 		//		http://developer.apple.com/internet/safari/uamatrix.html
-		var idx = dav.indexOf("Safari")||dav.indexOf("WebKit");
+		var idx = Math.max(dav.indexOf("WebKit"), dav.indexOf("Safari"), 0);
 		if(idx){
 			// try to grab the explicit Safari version first. If we don't get
 			// one, look for 419.3+ as the indication that we're on something

@@ -379,33 +379,17 @@ if(dojo.isIE || dojo.isOpera){
 	var _pixelNamesCache = {
 		width: true, height: true, left: true, top: true
 	};
+	var _pixelRegExp = /^(?:margin*|padding*|width|height|max*|min*|offset*)/ /*|border*/;
 	var _toStyleValue = function(node, type, value){
 		type = type.toLowerCase();
-		if(_pixelNamesCache[type] === true){
-			return dojo._toPixelValue(node, value)
-		}else if(_pixelNamesCache[type] === false){
-			return value;
-		}else{
-			if(dojo.isOpera && type == "cssText"){
-				// FIXME: add workaround for #2855 here
-			}
-			if(
-				type.indexOf("margin") >= 0 ||
-				// type.indexOf("border") >= 0 ||
-				type.indexOf("padding") >= 0 ||
-				type.indexOf("width") >= 0 ||
-				type.indexOf("height") >= 0 ||
-				type.indexOf("max") >= 0 ||
-				type.indexOf("min") >= 0 ||
-				type.indexOf("offset") >= 0
-			){
-				_pixelNamesCache[type] = true;
-				return dojo._toPixelValue(node, value)
-			}else{
-				_pixelNamesCache[type] = false;
-				return value;
-			}
+		if(!(type in _pixelNamesCache)){
+//			if(dojo.isOpera && type == "cssText"){
+// FIXME: add workaround for #2855 here
+//			}
+			_pixelNamesCache[type] = _pixelRegExp.test(type);
 		}
+		return _pixelNamesCache[type] ? dojo._toPixelValue(node, value) : value;
+
 	}
 
 	// public API
@@ -551,7 +535,7 @@ if(dojo.isIE || dojo.isOpera){
 			t=px(n, s.marginTop),
 			r=px(n, s.marginRight),
 			b=px(n, s.marginBottom);
-		if (dojo.isSafari && (s.position != "absolute")){
+		if(dojo.isSafari && (s.position != "absolute")){
 			// FIXME: Safari's version of the computed right margin
 			// is the space between our right edge and the right edge 
 			// of our offsetParent. 
@@ -793,7 +777,7 @@ if(dojo.isIE || dojo.isOpera){
 	// =============================
 	
 	var _sumAncestorProperties = function(node, prop){
-		if(!(node = (node||0).parentNode)){return 0}; //FIXME: 0.parentNode?
+		if(!(node = (node||0).parentNode)){return 0};
 		var val, retVal = 0, _b = dojo.body();
 		while(node && node.style){
 			if(gcs(node).position == "fixed"){

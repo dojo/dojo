@@ -379,7 +379,7 @@ if(dojo.isIE || dojo.isOpera){
 	var _pixelNamesCache = {
 		width: true, height: true, left: true, top: true
 	};
-	var _pixelRegExp = /^(?:margin|padding|width|height|max|min|offset)/;  // |border
+	var _pixelRegExp = /margin|padding|width|height|max|min|offset/;  // |border
 	var _toStyleValue = function(node, type, value){
 		type = type.toLowerCase();
 		if(!(type in _pixelNamesCache)){

@@ -355,7 +355,7 @@ if(
 			+ closeStr
 			+ '  </span>'
 			+ '</div>'
-			+ '<input type="text" id="firebugCommandLine">'
+			+ '<input type="text" id="firebugCommandLine" />'
 			+ '<div id="firebugLog"></div>'
 			+ '<div id="objectLog" style="display:none;"></div>';
 

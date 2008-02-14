@@ -8,7 +8,7 @@ dojo.__cookieProps = function(kwArgs){
 	//		If a number, the number of days from today at which the cookie
 	//		will expire. If a date, the date past which the cookie will expire.
 	//		If expires is in the past, the cookie will be deleted.
-	//		If expires is omitted or is 0, the cookie will expire when the browser closes.
+	//		If expires is omitted or is 0, the cookie will expire when the browser closes. << FIXME: 0 seems to disappear right away? FF3.
 	//	path: String?
 	//		The path to use for the cookie.
 	//	domain: String?
@@ -45,7 +45,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 	//	|	dojo.cookie("configObj", null, {expires: -1});
 	var c = document.cookie;
 	if(arguments.length == 1){
-		var matches = c.match(new RegExp("(?:^|(?:; ))" + dojo.regexp.escapeString(name) + "=([^;]*)"));
+		var matches = c.match(new RegExp("(?:^|; )" + dojo.regexp.escapeString(name) + "=([^;]*)"));
 		return matches ? decodeURIComponent(matches[1]) : undefined; // String or undefined
 	}else{
 		props = props || {};
@@ -69,42 +69,18 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 	}
 };
 
-dojo.cookie.useObject = function(/*String*/name, /*String?*/value, /*Object?*/props){
-	//	summary:
-	//		Extends the dojo.cookie function. Calling this method will allow you to
-	//		easily store an object into a cookie, as well as pull an object back out
-	//		from the cookie.
-	//
-	//	example:
-	//	|	// set a cookie object
-	//	|	dojo.cookie.useObject("foo",{ bar:"baz" });
-	//
-	//	example:
-	//	|	// get a cookie object
-	//	|	var obj = dojo.cookie.useObject("foo");
-	//	|	// same as
-	//	|	// var obj = dojo.fromJson(dojo.cookie("foo"));
-	
-	if(arguments.length == 1){
-		return dojo.fromJson(this(name));
-	}else{
-		this(name, dojo.toJson(value), props||{});
-	}
-};
-
 dojo.cookie.isSupported = function(){
 	//	summary:
 	//		Use to determine if the current browser supports cookies or not.
 	//		
 	//		Returns true if user allows cookies.
 	//		Returns false if user doesn't allow cookies.
-	
-	if(typeof navigator.cookieEnabled != "boolean"){
-		this("__djCookieTest__", "CookiesAllowed", { expires: 90 });
-		var cookieVal = this("__djCookieTest__");
-		navigator.cookieEnabled = (cookieVal == "CookiesAllowed");
+
+	if(!("cookieEnabled" in navigator)){
+		this("__djCookieTest__", "CookiesAllowed");
+		navigator.cookieEnabled = this("__djCookieTest__") == "CookiesAllowed";
 		if(navigator.cookieEnabled){
-			this("__djCookieTest__", "", 0);
+			this("__djCookieTest__", "", {expires: -1});
 		}
 	}
 	return navigator.cookieEnabled;

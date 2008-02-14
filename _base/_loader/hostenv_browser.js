@@ -252,7 +252,7 @@ if(typeof window != 'undefined'){
 		//		due to a threading issue in Firefox 2.0, we can't enable
 		//		DOMContentLoaded on that platform. For more information, see:
 		//		http://trac.dojotoolkit.org/ticket/1704
-		if(dojo.isOpera || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
+		if(dojo.isOpera || dojo.isFF >= 3 || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
 			document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
 		}
 

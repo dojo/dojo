@@ -918,6 +918,11 @@ if(dojo.isIE || dojo.isOpera){
 					}
 					var t = curnode.offsetTop;
 					ret.y += isNaN(t) ? 0 : t;
+					if(dojo.isSafari && curnode != node){
+						var cs = dojo.getComputedStyle(curnode);
+						ret.x += dojo._toPixelValue(curnode, cs.borderLeftWidth);
+						ret.y += dojo._toPixelValue(curnode, cs.borderTopWidth);
+					}
 					curnode = curnode.offsetParent;
 				}while((curnode != endNode) && curnode);
 			}else if(node.x && node.y){

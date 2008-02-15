@@ -30,7 +30,7 @@ dojo.fx = {
 	};
 	dojo.extend(_chain, {
 		_onAnimate: function(arg){
-			this._fire("onAnimate", arg);
+			this._fire("onAnimate", arguments);
 		},
 		_onEnd: function(){
 			dojo.disconnect(this._onAnimateCtx);
@@ -53,10 +53,10 @@ dojo.fx = {
 					this._fire("beforeBegin");
 				}),
 				onBegin = dojo.connect(this._current, "onBegin", this, function(arg){
-					this._fire("onBegin", arg);
+					this._fire("onBegin", arguments);
 				}),
 				onPlay = dojo.connect(this._current, "onPlay", this, function(arg){
-					this._fire("onPlay", arg);
+					this._fire("onPlay", arguments);
 					dojo.disconnect(beforeBegin);
 					dojo.disconnect(onBegin);
 					dojo.disconnect(onPlay);
@@ -75,7 +75,7 @@ dojo.fx = {
 		pause: function(){
 			if(this._current){
 				var e = dojo.connect(this._current, "onPause", this, function(arg){
-						this._fire("onPause", arg);
+						this._fire("onPause", arguments);
 						dojo.disconnect(e);
 					});
 				this._current.pause();
@@ -108,7 +108,7 @@ dojo.fx = {
 					this._current = this._animations[this._index];
 				}
 				var e = dojo.connect(this._current, "onStop", this, function(arg){
-						this._fire("onStop", arg);
+						this._fire("onStop", arguments);
 						dojo.disconnect(e);
 					});
 				this._current.stop();

@@ -121,6 +121,63 @@
 							
 						},
 						{
+							name:"delayTest",
+							timeout:1500,
+							runTest:function(t){
+								var d = new doh.Deferred();
+								var delay = 100;
+								var _anims = [];
+								var nodes = ["a","b","c","d"];
+								dojo.forEach(nodes,function(n){
+									_anims.push(dojo.fadeOut({ node:n, duration:100, delay: delay += 100 }));
+								});
+								var a = dojo.fx.combine(_anims);
+								var timer = new Date();
+								var _rund = null;
+								dojo.connect(a,"onEnd",function(){
+									if(!_rund){
+										// FIXME: need to actually check the timer result
+										_rund = true;
+										var x = timer - new Date();
+										d.callback(true);
+									}else{
+										d.callback(false);
+										console.warn("FIRED! TOO MANY TIMES");
+									}
+								});
+								a.play();
+								return d;	
+							}
+						},
+						{
+							name:"delayTestChain",
+							timeout:2200,
+							runTest:function(t){
+								var d = new doh.Deferred();
+								var delay = 100;
+								var _anims = [];
+								var nodes = ["a","b","c","d"];
+								dojo.forEach(nodes,function(n){
+									_anims.push(dojo.fadeIn({ node:n, duration:100, delay: delay += 100 }));
+								});
+								var a = dojo.fx.chain(_anims);
+								var timer = new Date();
+								var _rund = null;
+								dojo.connect(a,"onEnd",function(){
+									if(!_rund){
+										_rund = true;
+										var x = timer - new Date();
+										d.callback(true);				
+									}else{
+										d.callback(false);
+										console.warn("FIRED! TOO MANY TIMES",x);	
+									}					
+								});
+								a.play();
+								return d;	
+							}
+						},
+						{
 							name:"combineOnEnd",
 							timeout:1500,
 							runTest: function(t){
@@ -235,6 +292,9 @@
 		</style>
 	</head>
 	<body>
+		<div class="box" id="a">a</div><div class="box" id="b">b</div>
+		<div class="box" id="c">c</div><div class="box" id="d">d</div>
+	
 		<div id="foo" class="box">
 			<p>
 			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean

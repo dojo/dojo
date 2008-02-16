@@ -34,11 +34,21 @@ dojo.declare("dojo.dnd.Avatar", null, {
 			tr = dojo.doc.createElement("tr");
 			tr.className = "dojoDndAvatarItem";
 			td = dojo.doc.createElement("td");
-			var node = source.creator ?
+			if(source.creator){
 				// create an avatar representation of the node
-				node = source._normalizedCreator(source.getItem(this.manager.nodes[i].id).data, "avatar").node :
+				node = source._normalizedCreator(source.getItem(this.manager.nodes[i].id).data, "avatar").node;
+			}else{
 				// or just clone the node and hope it works
 				node = this.manager.nodes[i].cloneNode(true);
+				if(node.tagName.toLowerCase() == "tr"){
+					// insert extra table nodes
+					var table = dojo.doc.createElement("table"),
+						tbody = dojo.doc.createElement("tbody");
+					tbody.appendChild(node);
+					table.appendChild(tbody);
+					node = table;
+				}
+			}
 			node.id = "";
 			td.appendChild(node);
 			tr.appendChild(td);

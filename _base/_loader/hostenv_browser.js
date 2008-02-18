@@ -245,32 +245,43 @@ if(typeof window != 'undefined'){
 		}
 	}
 
-	//	START DOMContentLoaded
-	// Mozilla and Opera 9 expose the event we could use
-	if(document.addEventListener){
-		// NOTE: 
-		//		due to a threading issue in Firefox 2.0, we can't enable
-		//		DOMContentLoaded on that platform. For more information, see:
-		//		http://trac.dojotoolkit.org/ticket/1704
-		if(dojo.isOpera || dojo.isFF >= 3 || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
-			document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
-		}
-
-		//	mainly for Opera 8.5, won't be fired if DOMContentLoaded fired already.
-		//  also used for Mozilla because of trac #1640
-		window.addEventListener("load", dojo._loadInit, null);
+	dojo._fakeLoadInit = function(){
+		dojo._loadInit({type: "load"});
 	}
 
-	if(dojo.isAIR){
-		window.addEventListener("load", dojo._loadInit, null);
-	}else if(/(WebKit|khtml)/i.test(navigator.userAgent)){ // sniff
-		dojo._khtmlTimer = setInterval(function(){
-			if(/loaded|complete/.test(document.readyState)){
-				dojo._loadInit(); // call the onload handler
+	if(dojo.config.afterOnLoad){
+		//Dojo is being added to the page after page load, so just trigger
+		//the init sequence after a timeout. Using a timeout so the rest of this
+		//script gets evaluated properly.
+		window.setTimeout(dojo._fakeLoadInit, 1000);
+	}else{
+		//	START DOMContentLoaded
+		// Mozilla and Opera 9 expose the event we could use
+		if(document.addEventListener){
+			// NOTE: 
+			//		due to a threading issue in Firefox 2.0, we can't enable
+			//		DOMContentLoaded on that platform. For more information, see:
+			//		http://trac.dojotoolkit.org/ticket/1704
+			if(dojo.isOpera || dojo.isFF >= 3 || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
+				document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
 			}
-		}, 10);
+	
+			//	mainly for Opera 8.5, won't be fired if DOMContentLoaded fired already.
+			//  also used for Mozilla because of trac #1640
+			window.addEventListener("load", dojo._loadInit, null);
+		}
+	
+		if(dojo.isAIR){
+			window.addEventListener("load", dojo._loadInit, null);
+		}else if(/(WebKit|khtml)/i.test(navigator.userAgent)){ // sniff
+			dojo._khtmlTimer = setInterval(function(){
+				if(/loaded|complete/.test(document.readyState)){
+					dojo._loadInit(); // call the onload handler
+				}
+			}, 10);
+		}
+		//	END DOMContentLoaded
 	}
-	//	END DOMContentLoaded
 
 	(function(){
 		var _w = window;
@@ -293,11 +304,12 @@ if(typeof window != 'undefined'){
 			// 	because we don't know if there are other functions added that
 			// 	might.  Note that this has changed because the build process
 			// 	strips all comments -- including conditional ones.
-
-			document.write('<scr'+'ipt defer src="//:" '
-				+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
-				+ '</scr'+'ipt>'
-			);
+			if(!dojo.config.afterOnLoad){
+				document.write('<scr'+'ipt defer src="//:" '
+					+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
+					+ '</scr'+'ipt>'
+				);
+			}
 
 			// IE WebControl hosted in an application can fire "beforeunload" and "unload"
 			// events when control visibility changes, causing Dojo to unload too soon. The

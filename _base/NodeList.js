@@ -447,7 +447,20 @@ dojo.require("dojo._base.array");
 				}
 			});
 			return this; // dojo.NodeList
+		},
+		
+		instantiate: function(/*String|Object*/ declaredClass, /*Object?*/ properties){
+			// summary:
+			//		Create a new instance of a specified class, using the specified properties
+			//		and each node in the nodeList as a srcNodeRef
+			//
+			var c = d.isFunction(declaredClass) ? declaredClass : d.getObject(declaredClass);
+			this.forEach(function(i){
+				new c(properties||{},i);
+			})
+			return this; // dojo.NodeList
 		}
+
 	});
 
 	// syntactic sugar for DOM events

@@ -106,7 +106,7 @@ dojo.global = {
 
 	dojo.version = {
 		// summary: version number of this instance of dojo.
-		major: 0, minor: 9, patch: 0, flag: "dev",
+		major: 1, minor: 1, patch: 0, flag: "b1",
 		revision: rev ? Number(rev[0]) : 999999,
 		toString: function(){
 			with(d.version){

@@ -13,9 +13,9 @@ tests.register("tests.date.locale",
 			setUp: function(){
 				var partLocaleList = ["en-us", "fr-fr", "es", "de-at", "ja-jp", "zh-cn"];
 
-				for(var i = 0 ; i < partLocaleList.length; i ++){
-					dojo.requireLocalization("dojo.cldr","gregorian",partLocaleList[i]);
-				}
+				dojo.forEach(partLocaleList, function(locale){
+					dojo.requireLocalization("dojo.cldr", "gregorian", locale);
+				});
 			},
 			runTest: function(t){
 			},
@@ -99,7 +99,7 @@ tests.register("tests.date.locale",
 	// ...but not in strict mode
 	t.f( Boolean(dojo.date.locale.parse("Aug. 11, 2006", {formatLength:'medium', selector:'date', locale:'en', strict:true})));
 	// Note: 06 for year part will be translated literally as the year 6 C.E.
-	t.is( aug_11_06CE, dojo.date.locale.parse("Aug 11, 06", {formatLength:'medium', selector:'date', locale:'en'}));
+	t.is( aug_11_06CE, dojo.date.locale.parse("Aug 11, 06", {selector:'date', datePattern:'MMM dd, yyyy', strict:true}));
 	//en: 'long' fmt: MMMM d, yyyy
 	t.is( aug_11_2006, dojo.date.locale.parse("August 11, 2006", {formatLength:'long', selector:'date', locale:'en'}));
 

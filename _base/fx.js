@@ -258,6 +258,7 @@ dojo.require("dojo._base.html");
 					}
 					_t._percent = 0;
 					_t._fire("onEnd");
+					_t._stopTimer();
 				}
 			}
 			return _t; // dojo._Animation
@@ -267,7 +268,7 @@ dojo.require("dojo._base.html");
 	var ctr = 0;
 	var _globalTimerList = [];
 	var runner = {
-		run: function(){}
+		run: function(){ }
 	};
 	var timer = null;
 	dojo._Animation.prototype._startTimer = function(){

@@ -99,7 +99,11 @@ dojo.io.iframe = {
 		//summary: Returns the document object associated with the iframe DOM Node argument.
 		var doc = iframeNode.contentDocument || // W3
 			(
-				(iframeNode.contentWindow)&&(iframeNode.contentWindow.document)
+				(
+					(iframeNode.name) && (iframeNode.document) && 
+					(document.getElementsByTagName("iframe")[iframeNode.name].contentWindow) &&
+					(document.getElementsByTagName("iframe")[iframeNode.name].contentWindow.document)
+				)
 			) ||  // IE
 			(
 				(iframeNode.name)&&(document.frames[iframeNode.name])&&

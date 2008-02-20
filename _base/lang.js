@@ -4,12 +4,12 @@ dojo.provide("dojo._base.lang");
 
 dojo.isString = function(/*anything*/ it){
 	// summary:	Return true if it is a String
-	return typeof it == "string" || it instanceof String; // Boolean
+	return !!arguments.length && (typeof it == "string" || it instanceof String); // Boolean
 }
 
 dojo.isArray = function(/*anything*/ it){
 	// summary: Return true if it is an Array
-	return it && it instanceof Array || typeof it == "array"; // Boolean
+	return it && (it instanceof Array || typeof it == "array"); // Boolean
 }
 
 /*=====

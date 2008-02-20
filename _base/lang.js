@@ -21,7 +21,7 @@ dojo.isFunction = function(it){
 
 dojo.isFunction = (function(){
 	var _isFunction = function(/*anything*/ it){
-		return typeof it == "function" || it instanceof Function; // Boolean
+		return it && (typeof it == "function" || it instanceof Function); // Boolean
 	};
 
 	return dojo.isSafari ?

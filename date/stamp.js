@@ -24,6 +24,7 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 	//		Assumes the local time zone if not specified.  Does not validate.  Improperly formatted
 	//		input may return null.  Arguments which are out of bounds will be handled
 	// 		by the Date constructor (e.g. January 32nd typically gets resolved to February 1st)
+	//		Only years between 100 and 9999 are supported.
 	//
   	//	formattedString:
 	//		A string such as 2005-06-30T08:05:00-07:00 or 2005-06-30 or T08:05:00
@@ -58,6 +59,7 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 			});
 		}
 		result = new Date(match[0]||1970, match[1]||0, match[2]||1, match[3]||0, match[4]||0, match[5]||0, match[6]||0);
+//		result.setFullYear(match[0]||1970); // for year < 100
 
 		var offset = 0;
 		var zoneSign = match[7] && match[7].charAt(0);
@@ -83,7 +85,7 @@ dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*Object?*/options){
 	//	description:
 	//		When options.selector is omitted, output follows RFC3339 (http://www.ietf.org/rfc/rfc3339.txt)
 	//		The local time zone is included as an offset from GMT, except when selector=='time' (time without a date)
-	//		Does not check bounds.
+	//		Does not check bounds.  Only years between 100 and 9999 are supported.
 	//
 	//	dateObject:
 	//		A Date object
@@ -94,13 +96,14 @@ dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*Object?*/options){
 	//		zulu- if true, UTC/GMT is used for a timezone
 	//		milliseconds- if true, output milliseconds
 
-	var _ = function(n){ return (n < 10) ? "0" + n : n; }
+	var _ = function(n){ return (n < 10) ? "0" + n : n; };
 	options = options || {};
 	var formattedDate = [];
 	var getter = options.zulu ? "getUTC" : "get";
 	var date = "";
 	if(options.selector != "time"){
-		date = [dateObject[getter+"FullYear"](), _(dateObject[getter+"Month"]()+1), _(dateObject[getter+"Date"]())].join('-');
+		var year = dateObject[getter+"FullYear"]();
+		date = ["0000".substr((year+"").length)+year, _(dateObject[getter+"Month"]()+1), _(dateObject[getter+"Date"]())].join('-');
 	}
 	formattedDate.push(date);
 	if(options.selector != "date"){

@@ -9,23 +9,20 @@ dojo.require("dojo._base.connect");
 		add: function(/*DOMNode*/node, /*String*/name, /*Function*/fp){
 			if(!node){return;} 
 			name = del._normalizeEventName(name);
-
 			fp = del._fixCallback(name, fp);
-
 			var oname = name;
 			if(!dojo.isIE && (name == "mouseenter" || name == "mouseleave")){
-				var oname = name;
 				var ofp = fp;
+				//oname = name;
 				name = (name == "mouseenter") ? "mouseover" : "mouseout";
 				fp = function(e){
 					// thanks ben!
 					if(!dojo.isDescendant(e.relatedTarget, node)){
-						// e.type = oname; // FIXME: doesn't take?
-						return ofp.call(this, e);
+						// e.type = oname; // FIXME: doesn't take? SJM: event.type is generally immutable.
+						return ofp.call(this, e); 
 					}
 				}
 			}
-
 			node.addEventListener(name, fp, false);
 			return fp; /*Handle*/
 		},
@@ -38,7 +35,9 @@ dojo.require("dojo._base.connect");
 			//		the name of the handler to remove the function from
 			// handle:
 			//		the handle returned from add
-			node && node.removeEventListener(del._normalizeEventName(event), handle, false);
+			if (node){
+				node.removeEventListener(del._normalizeEventName(event), handle, false);
+			}
 		},
 		_normalizeEventName: function(/*String*/name){
 			// Generally, name should be lower case, unless it is special
@@ -239,22 +238,30 @@ dojo.require("dojo._base.connect");
 				if(!node){return;} // undefined
 				event = del._normalizeEventName(event);
 				if(event=="onkeypress"){
-					// we need to listen to onkeydown to synthesize 
+					// we need to listen to onkeydown to synthesize
 					// keypress events that otherwise won't fire
 					// on IE
 					var kd = node.onkeydown;
-					if(!kd || !kd._listeners || !kd._stealthKeydown){
-						// we simply ignore this connection when disconnecting
-						// because it's side-effects are harmless 
-						del.add(node, "onkeydown", del._stealthKeyDown);
-						// we only want one stealth listener per node
-						node.onkeydown._stealthKeydown = true;
+					if(!kd || !kd._listeners || !kd._stealthKeydownHandle){
+						var h = del.add(node, "onkeydown", del._stealthKeyDown);
+						kd = node.onkeydown;
+						kd._stealthKeydownHandle = h;
+						kd._stealthKeydownRefs = 1;
+					}else{
+						kd._stealthKeydownRefs++;
 					}
 				}
 				return iel.add(node, event, del._fixCallback(fp));
 			},
 			remove: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
-				iel.remove(node, del._normalizeEventName(event), handle); 
+				event = del._normalizeEventName(event);
+				iel.remove(node, event, handle); 
+				if(event=="onkeypress"){
+					var kd = node.onkeydown;
+					if(--kd._stealthKeydownRefs <= 0){
+						iel.remove(node, "onkeydown", kd._stealthKeydownHandle);
+					}
+				}
 			},
 			_normalizeEventName: function(/*String*/eventName){
 				// Generally, eventName should be lower case, unless it is

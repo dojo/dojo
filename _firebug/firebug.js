@@ -10,7 +10,7 @@ dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ 
 	var message = "DEPRECATED: " + behaviour;
 	if(extra){ message += " " + extra; }
 	if(removal){ message += " -- will be removed in version: " + removal; }
-	console.debug(message);
+	console.warn(message);
 }
 
 dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
@@ -32,7 +32,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//	|	dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
 	var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
 	if(extra){ message += " " + extra; }
-	console.debug(message);
+	console.warn(message);
 }
 
 // FIREBUG LITE
@@ -220,11 +220,13 @@ if(
 		},
 		
 		profileEnd: function(){ },
-		
+
 		clear: function(){
 			// summary: 
 			//		Clears message console. Do not call this directly
-			consoleBody.innerHTML = "";
+			while(consoleBody.childNodes.length){
+				dojo._destroyElement(consoleBody.firstChild);	
+			}
 			dojo.forEach(this._connects,dojo.disconnect);
 		},
 
@@ -347,7 +349,7 @@ if(
 		consoleFrame.style.height = containerHeight;
 		consoleFrame.style.display = (frameVisible ? "block" : "none");	  
 		
-		var closeStr = (dojo.config.popup) ? "" : '    <a href="#" onclick="console.close(); return false;">Close</a>';
+		var closeStr = dojo.config.popup ? "" : '    <a href="#" onclick="console.close(); return false;">Close</a>';
 		consoleFrame.innerHTML = 
 			  '<div id="firebugToolbar">'
 			+ '  <a href="#" onclick="console.clear(); return false;">Clear</a>'
@@ -402,7 +404,6 @@ if(
 			value = eval(text);
 		}catch(e){
 			console.debug(e);
-			/* squelch */
 		}
 
 		console.log(value);
@@ -502,7 +503,7 @@ if(
 		
 		var ids = [];
 		var obs = [];
-		for(var i = objIndex+1; i < objects.length; ++i){
+		for(i = objIndex+1; i < objects.length; ++i){
 			appendText(" ", html);
 			
 			var object = objects[i];
@@ -535,7 +536,7 @@ if(
 		logRow(html, className);
 		
 		// Now that the row is inserted in the DOM, loop through all of the links that were just created
-		for(var i=0; i<ids.length; i++){
+		for(i=0; i<ids.length; i++){
 			var btn = _firebugDoc.getElementById(ids[i]);
 			if(!btn){ continue; }
 	
@@ -639,9 +640,9 @@ if(
 	
 	function appendObject(object, html){
 		try{
-			if(object == undefined){
+			if(object === undefined){
 				appendNull("undefined", html);
-			}else if(object == null){
+			}else if(object === null){
 				appendNull("null", html);
 			}else if(typeof object == "string"){
 				appendString(object, html);
@@ -666,7 +667,7 @@ if(
 		var reObject = /\[object (.*?)\]/;
 
 		var m = reObject.exec(text);
-		html.push('<span class="objectBox-object">', m ? m[1] : text, '</span>')
+		html.push('<span class="objectBox-object">', m ? m[1] : text, '</span>');
 	}
 	
 	function appendSelector(object, html){
@@ -894,11 +895,11 @@ if(
 		}else{
 			nm = "{";
 			for(var i in obj){
-				cnt++
-				if(cnt > obCnt) break;
+				cnt++;
+				if(cnt > obCnt){ break; }
 				nm += i+"="+obj[i]+"  ";
 			}
-			nm+="}"
+			nm+="}";
 		}
 		
 		return nm;

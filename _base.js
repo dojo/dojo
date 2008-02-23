@@ -1,4 +1,7 @@
 dojo.provide("dojo._base");
+//>>includeStart("i18nXdInclude", fileName.indexOf("dojo.xd.js") != -1 && kwArgs.loader == "xdomain");
+dojo.require("dojo.i18n");
+//>>includeEnd("i18nXdInclude");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.declare");
 dojo.require("dojo._base.connect");

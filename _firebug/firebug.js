@@ -58,15 +58,9 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		Option for console height (ignored for popup)
 	//		|	var djConfig = {isDebug: true, debugHeight:100 };
 	
-if(
-	(
-		(!("console" in window)) || 
-		(!("firebug" in console))
-	)&&
-	(
-		(dojo.config["noFirebugLite"] !== true)
-	)
-){
+if((!("console" in window) || !("firebug" in console)) &&
+	dojo.config.noFirebugLite !== true){
+
 (function(){
 	// don't build a firebug frame in iframes
 	try{
@@ -77,7 +71,7 @@ if(
 			}
 			return; 
 		}
-	}catch(e){}
+	}catch(e){/*squelch*/}
 
 	window.console = {
 		_connects: [],
@@ -263,6 +257,7 @@ if(
 	var consoleFrame = null;
 	var consoleBody = null;
 	var commandLine = null;
+	var consoleToolbar = null;
 	
 	var frameVisible = false;
 	var messageQueue = [];
@@ -287,32 +282,91 @@ if(
 		}
 	}
 	
-	function openWin(){
-		var win = window.open("","_firebug","status=0,menubar=0,resizable=1,width=640,height=480,scrollbars=1,addressbar=0");
+	function openWin(x,y,w,h){
+		var win = window.open("","_firebug","status=0,menubar=0,resizable=1,top="+y+",left="+x+",width="+w+",height="+h+",scrollbars=1,addressbar=0");
+		if(!win){
+			var msg = "Firebug Lite could not open a pop-up window, most likely because of a blocker.\n" +
+				"Either enable pop-ups for this domain, or change the djConfig to popup=false.";
+			alert(msg);
+		}
+		createResizeHandler(win);
 		var newDoc=win.document;
-		HTMLstring='<html><head><title>Firebug Lite</title></head>\n';
-		HTMLstring+='<body bgColor="#CCCCCC">\n';
-		//Testing access to dojo from the popup window
-		/*HTMLstring+='<button onclick="(function(){ console.log(dojo.version.toString()); })()">Test Parent Dojo</button>\n';*/
-		HTMLstring+='<div id="fb"></div>';
-		HTMLstring+='</body></html>';
-
+		//Safari needs an HTML height
+		HTMLstring=	'<html style="height:100%;"><head><title>Firebug Lite</title></head>\n' +
+					'<body bgColor="#ccc" style="height:98%;" onresize="opener.onFirebugResize()">\n' +
+					'<div id="fb"></div>' +
+					'</body></html>';
+	
 		newDoc.write(HTMLstring);
 		newDoc.close();
 		return win;
 	}
+
+	function createResizeHandler(wn){
+		// summary
+		//		Creates handle for onresize window. Called from script in popup's body tag (so that it will work with IE).
+		//
+		
+		var d = new Date();
+			d.setTime(d.getTime()+(60*24*60*60*1000)); // 60 days
+			d = d.toUTCString();
+			
+			var dc = wn.document,
+				getViewport;
+				
+			if (wn.innerWidth){
+				getViewport = function(){
+					return{w:wn.innerWidth, h:wn.innerHeight};
+				}
+			}else if (dc.documentElement && dc.documentElement.clientWidth){
+				getViewport = function(){
+					return{w:dc.documentElement.clientWidth, h:dc.documentElement.clientHeight};
+				}
+			}else if (dc.body){
+				getViewport = function(){
+					return{w:dc.body.clientWidth, h:dc.body.clientHeight};
+				}
+			}
+			
+
+		window.onFirebugResize = function(){ 
+			
+			//resize the height of the console log body
+			layout(getViewport().h);
+			
+			clearInterval(wn._firebugWin_resize);
+			wn._firebugWin_resize = setTimeout(function(){
+				var x = wn.screenLeft,
+					y = wn.screenTop,
+					w = wn.outerWidth  || wn.document.body.offsetWidth,
+					h = wn.outerHeight || wn.document.body.offsetHeight;
+				
+				document.cookie = "_firebugPosition=" + [x,y,w,h].join(",") + "; expires="+d+"; path=/";
+					 
+			 }, 5000); //can't capture window.onMove - long timeout gives better chance of capturing a resize, then the move
+		
+		}
+	}
+	
+	
+	/*****************************************************************************/
+	
 	
 	function createFrame(){
 		if(consoleFrame){
 			return;
 		}
 		
-		var containerHeight = "100%";
 		if(dojo.config.popup){
-			_firebugWin = openWin();
-			_firebugDoc = _firebugWin.document;
-			dojo.config.debugContainerId = 'fb';
-			
+			var containerHeight = "100%";
+			var cookieMatch = document.cookie.match(/(?:^|; )_firebugPosition=([^;]*)/);
+			var p = cookieMatch ? cookieMatch[1].split(",") : [2,2,320,480];
+
+			_firebugWin = openWin(p[0],p[1],p[2],p[3]);	// global
+			_firebugDoc = _firebugWin.document;			// global
+
+			djConfig.debugContainerId = 'fb';
+		
 			// connecting popup
 			_firebugWin.console = window.console;
 			_firebugWin.dojo = window.dojo;
@@ -338,7 +392,7 @@ if(
 			styleParent.appendChild(styleElement);
 		}
 		
-		if(dojo.config["debugContainerId"]){
+		if(dojo.config.debugContainerId){
 			consoleFrame = _firebugDoc.getElementById(dojo.config.debugContainerId);
 		}
 		if(!consoleFrame){
@@ -362,8 +416,8 @@ if(
 			+ '<div id="objectLog" style="display:none;"></div>';
 
 
-		var toolbar = _firebugDoc.getElementById("firebugToolbar");
-		toolbar.onmousedown = onSplitterMouseDown;
+		consoleToolbar = _firebugDoc.getElementById("firebugToolbar");
+		consoleToolbar.onmousedown = onSplitterMouseDown;
 
 		commandLine = _firebugDoc.getElementById("firebugCommandLine");
 		addEvent(commandLine, "keydown", onCommandLineKeyDown);
@@ -381,7 +435,10 @@ if(
 
 	function clearFrame(){
 		_firebugDoc = null;
-		_firebugWin.console.clear();
+		
+		if(_firebugWin.console){
+			_firebugWin.console.clear();
+		}
 		_firebugWin = null;
 		consoleFrame = null;
 		consoleBody = null;
@@ -403,19 +460,22 @@ if(
 		try{
 			value = eval(text);
 		}catch(e){
-			console.debug(e);
+			console.debug(e); // put exception on the console
 		}
 
 		console.log(value);
 	}
 	
-	function layout(){
-		var toolbar = consoleBody.ownerDocument.getElementById("firebugToolbar");
-		var height = consoleFrame.offsetHeight - (toolbar.offsetHeight + commandLine.offsetHeight);
-		consoleBody.style.top = toolbar.offsetHeight + "px";
-		consoleBody.style.height = height + "px";
+	function layout(h){
+		var height = h ? 
+			h  - (consoleToolbar.offsetHeight + commandLine.offsetHeight +25 + (h*.01)) + "px" : 
+			consoleFrame.offsetHeight - (consoleToolbar.offsetHeight + commandLine.offsetHeight) + "px";
 		
-		commandLine.style.top = (consoleFrame.offsetHeight - commandLine.offsetHeight) + "px";
+		consoleBody.style.top = consoleToolbar.offsetHeight + "px";
+		consoleBody.style.height = height;
+		consoleObjectInspector.style.height = height;
+		consoleObjectInspector.style.top = consoleToolbar.offsetHeight + "px";
+		commandLine.style.bottom = 0;
 	}
 	
 	function logRow(message, className, handler){
@@ -526,7 +586,7 @@ if(
 				var id = "_a" + __consoleAnchorId__++;
 				ids.push(id);
 				// need to save the object, so the arrays line up
-				obs.push(object)
+				obs.push(object);
 				var str = '<a id="'+id+'" href="javascript:void(0);">'+getObjectAbbr(object)+'</a>';
 				
 				appendLink( str , html);
@@ -696,7 +756,7 @@ if(
 				
 				html.push('&nbsp;<span class="nodeName">', attr.nodeName.toLowerCase(),
 					'</span>=&quot;<span class="nodeValue">', escapeHTML(attr.nodeValue),
-					'</span>&quot;')
+					'</span>&quot;');
 			}
 
 			if(node.firstChild){
@@ -798,9 +858,9 @@ if(
 	}
 	
 	function onSplitterMouseMove(event){
-		var win = document.all
-			? event.srcElement.ownerDocument.parentWindow
-			: event.target.ownerDocument.defaultView;
+		var win = document.all ?
+			event.srcElement.ownerDocument.parentWindow :
+			event.target.ownerDocument.defaultView;
 
 		var clientY = event.clientY;
 		if(win != win.parent){
@@ -866,6 +926,7 @@ if(
 				txt += i+nm +" : "+o[nm] + br;
 			}
 		}
+		txt += br; // keeps data from running to the edge of page
 		return txt;
 	}
 

@@ -194,7 +194,7 @@ class Services_JSON
             case 1:
                 // this case should never be reached, because we are in ASCII range
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
-                return $ut8;
+                return $utf8;
 
             case 2:
                 // return a UTF-16 character from a 2-byte UTF-8 char

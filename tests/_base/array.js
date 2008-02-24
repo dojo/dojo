@@ -78,6 +78,33 @@ tests.register("tests._base.array",
 		},
 		// FIXME: test forEach w/ a NodeList()?
 
+		function testForEach_string_callback(t){
+			// Test using strings as callback", which accept the parameters with
+			// the names "item", "index" and "array"!
+			var foo = [128, "bbb", 512];
+			// Test that the variable "item" contains the value of each item.
+			this._res = "";
+			dojo.forEach(foo, 'this._res+=item', this);
+			t.assertEqual(this._res, "128bbb512");
+			// Test that the variable "index" contains each index.
+			this._res = [];
+			dojo.forEach(foo, 'this._res.push(index)', this);
+			t.assertEqual(this._res, [0,1,2]);
+			// Test that the variable "array" always contains the entire array.
+			this._res = [];
+			dojo.forEach(foo, 'this._res.push(array)', this);
+			t.assertEqual(this._res, [[128, "bbb", 512],[128, "bbb", 512],[128, "bbb", 512]]);
+			// Catch undefined variable usage (I used to use "i" :-)).
+			var caughtException = false;
+			try{
+				dojo.forEach(foo, 'this._res+=i', this);
+			}catch(e){
+				caughtException = true;
+			}
+			t.assertTrue(caughtException);
+		},
+
+		// FIXME: test forEach w/ a NodeList()?
 		function testEvery(t){
 			var foo = [128, "bbb", 512];
 

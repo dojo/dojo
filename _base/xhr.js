@@ -591,25 +591,30 @@ dojo.require("dojo._base.query");
 		// workaround for IE6's apply() "issues"
 		var ioArgs = dfd.ioArgs;
 		var args = ioArgs.args;
-		ioArgs.xhr.open(type, ioArgs.url, args.sync !== true, args.user || undefined, args.password || undefined);
+		var xhr = ioArgs.xhr;
+		xhr.open(type, ioArgs.url, args.sync !== true, args.user || undefined, args.password || undefined);
 		if(args.headers){
 			for(var hdr in args.headers){
 				if(hdr.toLowerCase() === "content-type" && !args.contentType){
 					args.contentType = args.headers[hdr];
 				}else{
-					ioArgs.xhr.setRequestHeader(hdr, args.headers[hdr]);
+					xhr.setRequestHeader(hdr, args.headers[hdr]);
 				}
 			}
 		}
 		// FIXME: is this appropriate for all content types?
-		ioArgs.xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
+		xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
+		if(!args.headers || !args.headers["X-Requested-With"]){
+			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+		}
 		// FIXME: set other headers here!
 		try{
-			ioArgs.xhr.send(ioArgs.query);
+			xhr.send(ioArgs.query);
 		}catch(e){
 			dfd.cancel();
 		}
 		_d._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
+		xhr = null;
 		return dfd; //Deferred
 	}
 

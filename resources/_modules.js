@@ -10,7 +10,7 @@ dojo.cldr = {
 };
 
 dojo.data = {
-	// summary: Dojo Data API
+	// summary: A uniform data access layer
 };
 
 dojo.dnd = {

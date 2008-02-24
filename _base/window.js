@@ -89,11 +89,10 @@ dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocu
 };
 
 dojo._fireCallback = function(callback, context, cbArguments){
-	// FIXME: should migrate to using "dojo.isString"!
 	if(context && dojo.isString(callback)){
 		callback = context[callback];
 	}
-	return (context ? callback.apply(context, cbArguments || [ ]) : callback());
+	return callback.apply(context, cbArguments || [ ]);
 }
 
 dojo.withGlobal = function(	/*Object*/globalObject, 

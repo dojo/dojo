@@ -23,12 +23,12 @@ dojo.provide("dojo._base.array");
 			//		For details on this method, see:
 			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
 
-			var i = 0, step = 1, end = array.length;
+			var step = 1, end = array.length, i = 0;
 			if(findLast){
 				i = end - 1;
 				step = end = -1;
 			}
-			for(i = fromIndex || i; i != end; i += step){
+			for(i = fromIndex || i; i < end; i += step){
 				if(array[i] == value){ return i; }
 			}
 			return -1;	// Number

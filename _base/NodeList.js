@@ -285,7 +285,7 @@ dojo.require("dojo._base.array");
 			//		event. May also be a function reference.
 			//	example:
 			//		add an onclick handler to every button on the page
-			//		|	dojo.query("onclick", function(e){
+			//		|	dojo.query("div:nth-child(odd)").connect("onclick", function(e){
 			//		|		console.debug("clicked!");
 			//		|	});
 			// example:

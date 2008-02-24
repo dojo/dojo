@@ -55,7 +55,7 @@ dojo.require("dojo._base.query");
 		var ret = {};
 		var iq = "input:not([type=file]):not([type=submit]):not([type=image]):not([type=reset]):not([type=button]), select, textarea";
 		_d.query(iq, formNode).filter(function(node){
-			return !node.disabled;
+			return !node.disabled && node.name;
 		}).forEach(function(item){
 			var _in = item.name;
 			var type = (item.type||"").toLowerCase();

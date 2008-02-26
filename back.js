@@ -158,8 +158,8 @@ dojo.back = {
 	};
 	
 	back.init = function(){
-		//summary: Initializes the undo stack. This must be called from a <script> 
-		//         block that lives inside the <body> tag to prevent bugs on IE.
+		//summary: Initializes the undo stack. This must be called from a `<script>` 
+		//         block that lives inside the `<body>` tag to prevent bugs on IE.
 		if(dojo.byId("dj_history")){ return; } // prevent reinit
 		var src = dojo.config["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html");
 		document.write('<iframe style="border:0;width:1px;height:1px;position:absolute;visibility:hidden;bottom:0;right:0;" name="dj_history" id="dj_history" src="' + src + '"></iframe>');

@@ -51,8 +51,8 @@ dojo.provide("dojo._base.array");
 			// callback: a function is invoked with three arguments: item, index, and array
 			// thisObject: may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.5 Array.forEach() method.
-			//		In environments that support JavaScript 1.5, this function is a passthrough to the built-in method.
+			//		This function corresponds to the JavaScript 1.6 Array.forEach() method.
+			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
 
@@ -87,8 +87,8 @@ dojo.provide("dojo._base.array");
 			//		if the condition is met.
 			// thisObject: may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.5 Array.every() method.
-			//		In environments that support JavaScript 1.5, this function is a passthrough to the built-in method.
+			//		This function corresponds to the JavaScript 1.6 Array.every() method.
+			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
 			// example:
@@ -109,8 +109,8 @@ dojo.provide("dojo._base.array");
 			//		if the condition is met.
 			// thisObject: may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.5 Array.some() method.
-			//		In environments that support JavaScript 1.5, this function is a passthrough to the built-in method.
+			//		This function corresponds to the JavaScript 1.6 Array.some() method.
+			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
 			// example:
@@ -130,8 +130,8 @@ dojo.provide("dojo._base.array");
 			// callback: a function is invoked with three arguments: item, index, and array and returns a value
 			// thisObject: may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.5 Array.map() method.
-			//		In environments that support JavaScript 1.5, this function is a passthrough to the built-in method.
+			//		This function corresponds to the JavaScript 1.6 Array.map() method.
+			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
 			// example:
@@ -154,8 +154,8 @@ dojo.provide("dojo._base.array");
 			//		if the condition is met.
 			// thisObject: may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.5 Array.filter() method.
-			//		In environments that support JavaScript 1.5, this function is a passthrough to the built-in method.
+			//		This function corresponds to the JavaScript 1.6 Array.filter() method.
+			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
 			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
 			// example:

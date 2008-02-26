@@ -32,9 +32,12 @@ dojo.require("dojo._base.html");
 	
 	d.declare("dojo._Animation", null, {
 		//	summary
-		//		A generic animation object that fires callbacks into it's handlers
-		//		object at various states
-		//
+		//		A generic animation class that fires callbacks into it's handlers
+		//		object at various states. Nearly all dojo animation functions
+		//		return an instance of this method, usually without calling the
+		//		.play() method beforehand. Therefore, you will likely need to
+		//		call .play() on instances of dojo._Animation when one is
+		//		returned.
 		constructor: function(/*Object*/ args){
 			d.mixin(this, args);
 			if(d.isArray(this.curve)){
@@ -393,13 +396,16 @@ dojo.require("dojo._base.html");
 		//		'args.properties'
 		//
 		// description:
-		//		The foundation of most dojo.fx animations, dojo.AnimateProperty
-		//		will take an object of "properties" corresponding to style
-		//		properties, and animate them in parallel over a set duration.
+		//		dojo.animateProperty is the foundation of most dojo.fx
+		//		animations. It takes an object of "properties" corresponding to
+		//		style properties, and animates them in parallel over a set
+		//		duration.
 		//	
 		//		args.node can be a String or a DomNode reference
 		//	
 		// 	example:
+		//		animate width, height, and padding over 2 seconds...the
+		//		pedantic way:
 		//	|	dojo.animateProperty({ node: node, duration:2000,
 		//	|		properties: {
 		//	|			width: { start: '200', end: '400', unit:"px" },
@@ -408,6 +414,22 @@ dojo.require("dojo._base.html");
 		//	|		}
 		//	|	}).play();
 		//
+		// 	example:
+		//		plug in a different easing function and register a callback for
+		//		when the animation ends. Easing functions accept values between
+		//		zero and one and return a value on that basis. In this case, an
+		//		exponential-in curve.
+		//	|	dojo.animateProperty({ 
+		//	|		node: "nodeId",
+		//	|		// dojo figures out the start value
+		//	|		properties: { width: { end: 400 } },
+		//	|		easing: function(n){
+		//	|			return (n==0) ? 0 : Math.pow(2, 10 * (n - 1));
+		//	|		},
+		//	|		onEnd: function(){
+		//	|			// called when the animation finishes
+		//	|		}
+		//	|	}).play(500); // delay playing half a second
 
 		args.node = d.byId(args.node);
 		if(!args.easing){ args.easing = d._defaultEasing; }

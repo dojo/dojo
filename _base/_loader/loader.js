@@ -406,7 +406,7 @@
 		//	summary: 
 		//		maps a module name to a path
 		//	description: 
-		//		An unregistered module is given the default path of ../<module>,
+		//		An unregistered module is given the default path of ../[module],
 		//		relative to Dojo root. For example, module acme is mapped to
 		//		../acme.  If you want to use a different module name, use
 		//		dojo.registerModulePath. 

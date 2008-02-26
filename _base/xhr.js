@@ -30,27 +30,27 @@ dojo.require("dojo._base.query");
 		// description:
 		//		This form:
 		//
-		//			<form id="test_form">
-		//				<input type="text" name="blah" value="blah">
-		//				<input type="text" name="no_value" value="blah" disabled>
-		//				<input type="button" name="no_value2" value="blah">
-		//				<select type="select" multiple name="multi" size="5">
-		//					<option value="blah">blah</option>
-		//					<option value="thud" selected>thud</option>
-		//					<option value="thonk" selected>thonk</option>
-		//				</select>
-		//			</form>
+		//		|	<form id="test_form">
+		//		|		<input type="text" name="blah" value="blah">
+		//		|		<input type="text" name="no_value" value="blah" disabled>
+		//		|		<input type="button" name="no_value2" value="blah">
+		//		|		<select type="select" multiple name="multi" size="5">
+		//		|			<option value="blah">blah</option>
+		//		|			<option value="thud" selected>thud</option>
+		//		|			<option value="thonk" selected>thonk</option>
+		//		|		</select>
+		//		|	</form>
 		//
 		//		yields this object structure as the result of a call to
 		//		formToObject():
 		//
-		//			{ 
-		//				blah: "blah",
-		//				multi: [
-		//					"thud",
-		//					"thonk"
-		//				]
-		//			};
+		//		|	{ 
+		//		|		blah: "blah",
+		//		|		multi: [
+		//		|			"thud",
+		//		|			"thonk"
+		//		|		]
+		//		|	};
 	
 		var ret = {};
 		var iq = "input:not([type=file]):not([type=submit]):not([type=image]):not([type=reset]):not([type=button]), select, textarea";

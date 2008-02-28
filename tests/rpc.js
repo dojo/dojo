@@ -100,7 +100,7 @@ doh.register("tests.rpc",
 			},
 			runTest: function(){
 
-				if (this.svc.objectName="testClass") {
+				if (this.svc.objectName=="testClass") {
 					return true;
 				} else {
 					return new Error("Error loading and/or parsing an smd file");
@@ -112,7 +112,7 @@ doh.register("tests.rpc",
 			name: "JsonP_test",
 			timeout: 10000,
 			setUp: function(){
-				this.svc = new dojo.rpc.JsonpService(dojo.moduleUrl("dojox.rpc","yahoo.smd"), {appid: "foo"});
+				this.svc = new dojo.rpc.JsonpService(dojo.moduleUrl("dojo.tests.resources","yahoo_smd_v1.smd"), {appid: "foo"});
 			},
 			runTest: function(){
 				var d = new doh.Deferred();

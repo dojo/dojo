@@ -139,8 +139,12 @@
 		//For other xdomain package loads after the initial load.
 		this._loaders = [];
 
-		for(var x=0; x<mll.length; x++){
-			try{ mll[x](); }catch(e){ console.error(e); /* let other events fire */ }
+		for(var x = 0; x < mll.length; x++){
+			try{
+				mll[x]();
+			}catch(e){
+				console.error("dojo.addOnLoad callback failed: " + e, e); /* let other load events fire, like the parser, but report the error */
+			}
 		}
 
 		this._loadNotifying = false;

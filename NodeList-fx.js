@@ -9,14 +9,14 @@ dojo["NodeList-fx"] = {
 
 dojo.extend(dojo.NodeList, {
 	_anim: function(obj, method, args){
-		var anims = [];
 		args = args||{};
-		this.forEach(function(item){
-			var tmpArgs = { node: item };
-			dojo.mixin(tmpArgs, args);
-			anims.push(obj[method](tmpArgs));
-		});
-		return dojo.fx.combine(anims); // dojo._Animation
+		return dojo.fx.combine(
+			this.map(function(item){
+				var tmpArgs = { node: item };
+				dojo.mixin(tmpArgs, args);
+				return obj[method](tmpArgs);
+			})
+		); // dojo._Animation
 	},
 
 	wipeIn: function(args){
@@ -87,5 +87,47 @@ dojo.extend(dojo.NodeList, {
 		//	|		} 
 		//	|	}).play();
 		return this._anim(dojo, "animateProperty", args); // dojo._Animation
+	},
+
+	anim: function(	/*Object*/ 			properties, 
+					/*Integer?*/		duration, 
+					/*Function?*/		easing, 
+					/*Function?*/		onEnd,
+					/*Integer?*/		delay){
+		//	summary:
+		//		Animate one or more CSS properties for all nodes in this list.
+		//		The returned animation object will already be playing when it
+		//		is returned. See the docs for `dojo.anim` for full details.
+		//	properties: Object
+		//		the properties to animate
+		//	duration: Integer?
+		//		Optional. The time to run the animations for
+		//	easing: Function?
+		//		Optional. The easing function to use.
+		//	onEnd: Function?
+		//		A function to be called when the animation ends
+		//	delay:
+		//		how long to delay playing the returned animation
+		//	example:
+		//		Another way to fade out:
+		//	|	dojo.query(".thinger").anim({ opacity: 0 });
+		//	example:
+		//		animate all elements with the "thigner" class to a width of 500
+		//		pixels over half a second
+		//	|	dojo.query(".thinger").anim({ width: 500 }, 700);
+		var canim = dojo.fx.combine(
+			this.map(function(item){
+				return dojo.animateProperty({
+					node: item,
+					properties: properties,
+					duration: duration||350,
+					easing: easing
+				});
+			})
+		); 
+		if(onEnd){
+			dojo.connect(canim, "onEnd", onEnd);
+		}
+		return canim.play(delay||0); // dojo._Animation
 	}
 });

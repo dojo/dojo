@@ -49,7 +49,7 @@ dojo.require("dojo._base.html");
 		
 		// duration: Integer
 		//	The time in milliseonds the animation will take to run
-		duration: 1000,
+		duration: 350,
 	
 	/*=====
 		// curve: dojo._Line||Array
@@ -120,8 +120,18 @@ dojo.require("dojo._base.html");
 			//		The event to fire.
 			//	args:
 			//		The arguments to pass to the event.
-			if(this[evt]){
-				this[evt].apply(this, args||[]);
+			try{
+				if(this[evt]){
+					this[evt].apply(this, args||[]);
+				}
+			}catch(e){
+				// squelch and log because we shouldn't allow exceptions in
+				// synthetic event handlers to cause the internal timer to run
+				// amuck, potentially pegging the CPU. I'm not a fan of this
+				// squelch, but hopefully logging will make it clear what's
+				// going on
+				console.error("exception in animation handler for:", evt);
+				console.error(e);
 			}
 			return this; // dojo._Animation
 		},
@@ -289,9 +299,10 @@ dojo.require("dojo._base.html");
 		d.disconnect(this._timer);
 		this._timer = null;
 		ctr--;
-		if(!ctr){
+		if(ctr <= 0){
 			clearInterval(timer);
 			timer = null;
+			ctr = 0;
 		}
 	};
 
@@ -323,7 +334,9 @@ dojo.require("dojo._base.html");
 		var fArgs = d.mixin({ properties: {} }, args);
 		var props = (fArgs.properties.opacity = {});
 		props.start = !("start" in fArgs) ?
-			function(){ return Number(d.style(fArgs.node, "opacity")); } : fArgs.start;
+			function(){ 
+				return Number(d.style(fArgs.node, "opacity")); 
+			} : fArgs.start;
 		props.end = fArgs.end;
 
 		var anim = d.animateProperty(fArgs);
@@ -338,7 +351,7 @@ dojo.require("dojo._base.html");
 		//		The node referenced in the animation
 		//	duration: Integer?
 		//		Duration of the animation in milliseconds.
-		// easing: Function?
+		//	easing: Function?
 		//		An easing function.
 		this.node = node;
 		this.duration = duration;
@@ -366,6 +379,10 @@ dojo.require("dojo._base.html");
 	}
 
 	var PropLine = function(properties){
+		// PropLine is an internal class which is used to model the values of
+		// an a group of CSS properties across an animation lifecycle. In
+		// particular, the "getValue" function handles getting interpolated
+		// values between start and end for a particular CSS value.
 		this._properties = properties;
 		for(var p in properties){
 			var prop = properties[p];
@@ -401,8 +418,18 @@ dojo.require("dojo._base.html");
 		//		style properties, and animates them in parallel over a set
 		//		duration.
 		//	
-		//		args.node can be a String or a DomNode reference
+		//		args.node can be a String or a DOMNode reference
 		//	
+		// 	example:
+		//		A simple animation that changes the width of the specified node.
+		//	|	dojo.animateProperty({ 
+		//	|		node: "nodeId",
+		//	|		properties: { width: 400 },
+		//	|	}).play();
+		//		Dojo figures out the start value for the width and converts the
+		//		integer specified for the width to the more expressive but
+		//		verbose form `{ width: { end: '400', units: 'px' } }` which you
+		//		can also specify directly
 		// 	example:
 		//		animate width, height, and padding over 2 seconds...the
 		//		pedantic way:
@@ -438,10 +465,15 @@ dojo.require("dojo._base.html");
 		d.connect(anim, "beforeBegin", anim, function(){
 			var pm = {};
 			for(var p in this.properties){
-				// Make shallow copy of properties into pm because we overwrite some values below.
-				// In particular if start/end are functions we don't want to overwrite them or
-				// the functions won't be called if the animation is reused.
-				var prop = (pm[p] = d.mixin({}, this.properties[p]));
+				// Make shallow copy of properties into pm because we overwrite
+				// some values below. In particular if start/end are functions
+				// we don't want to overwrite them or the functions won't be
+				// called if the animation is reused.
+				if(p == "width" || p == "height"){
+					this.node.display = "block";
+				}
+				var prop = this.properties[p];
+				prop = pm[p] = d.mixin({}, (d.isObject(prop) ? prop: { end: prop }));
 
 				if(d.isFunction(prop.start)){
 					prop.start = prop.start();
@@ -449,7 +481,6 @@ dojo.require("dojo._base.html");
 				if(d.isFunction(prop.end)){
 					prop.end = prop.end();
 				}
-
 				var isColor = (p.toLowerCase().indexOf("color") >= 0);
 				function getStyle(node, p){
 					// dojo.style(node, "height") can return "auto" or "" on IE; this is more reliable:
@@ -465,26 +496,74 @@ dojo.require("dojo._base.html");
 				}
 
 				if(isColor){
-					// console.debug("it's a color!");
 					prop.start = new d.Color(prop.start);
 					prop.end = new d.Color(prop.end);
 				}else{
 					prop.start = (p == "opacity") ? Number(prop.start) : parseFloat(prop.start);
 				}
-				// console.debug("start:", prop.start);
-				// console.debug("end:", prop.end);
 			}
 			this.curve = new PropLine(pm);
 		});
 		d.connect(anim, "onAnimate", anim, function(propValues){
 			// try{
 			for(var s in propValues){
-				// console.debug(s, propValues[s], this.node.style[s]);
 				d.style(this.node, s, propValues[s]);
 				// this.node.style[s] = propValues[s];
 			}
-			// }catch(e){ console.debug(dojo.toJson(e)); }
 		});
 		return anim; // dojo._Animation
+	}
+
+	dojo.anim = function(	/*DOMNode|String*/ 	node, 
+							/*Object*/ 			properties, 
+							/*Integer?*/		duration, 
+							/*Function?*/		easing, 
+							/*Function?*/		onEnd,
+							/*Integer?*/		delay){
+		//	summary:
+		//		a simpler interface to `dojo.animateProperty()`, also returns
+		//		an instance of `dojo._Animation` but begins the animation
+		//		immediately unlike nearly every other Dojo animation API.
+		//	description:
+		//		`dojo.anim` is a simpler (but somewhat less powerful) version
+		//		of `dojo.animateProperty` which defaults many basic properties
+		//		and allows for positional parameters to be used in place of the
+		//		packed "property bag" which is used for other Dojo animation
+		//		methods.
+		//
+		//		The `dojo._Animation` object returned from `dojo.anim` will be
+		//		already playing when it is returned from this function, so
+		//		calling play() on it again is (usually) a no-op.
+		//	node:
+		//		a DOM node or the id of a node to animate CSS properties on
+		//	duration:
+		//		Optional. The number of milliseconds over which the animation
+		//		should run. Defaults to the global animation default duration
+		//		(350ms).
+		//	easing:
+		//		Optional. An easing function over which to calculate
+		//		accelreation and deceleration of the animation through its
+		//		duration. A default easing algorithm is provided, but you may
+		//		plug in any you wish. A large selection of easing algorithms
+		//		are available in `dojox.fx.easing`.
+		//	onEnd:
+		//		Optional. A function to be called when the animation finishes
+		//		running.
+		//	delay:
+		//		Optional. The number of milliseconds to delay beginning the
+		//		animation by. The default is 0.
+		//	example:
+		//		Fade out a node
+		//	|	dojo.anim("id", { opacity: 0 });
+		//	example:
+		//		Fade out a node over a full second
+		//	|	dojo.anim("id", { opacity: 0 }, 1000);
+		return d.animateProperty({ 
+			node: node,
+			duration: duration||d._Animation.prototype.duration,
+			properties: properties,
+			easing: easing,
+			onEnd: onEnd 
+		}).play(delay||0);
 	}
 })();

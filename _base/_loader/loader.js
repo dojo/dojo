@@ -11,11 +11,12 @@
 		_inFlightCount: 0,
 		_hasResource: {},
 
-		// FIXME: it should be possible to pull module prefixes in from djConfig
 		_modulePrefixes: {
-			dojo: {name: "dojo", value: "."},
-			doh: {name: "doh", value: "../util/doh"},
-			tests: {name: "tests", value: "tests"}
+			dojo: 	{	name: "dojo", value: "." },
+			dojox: 	{	name: "dojox", value: "../dojox" },
+			dijit: 	{	name: "dijit", value: "../dijit" },
+			doh: 	{	name: "doh", value: "../util/doh" },
+			tests: 	{	name: "tests", value: "tests" }
 		},
 
 		_moduleHasPrefix: function(/*String*/module){
@@ -264,29 +265,40 @@
 	dojo._loadModule = dojo.require = function(/*String*/moduleName, /*Boolean?*/omitModuleCheck){
 		//	summary:
 		//		loads a Javascript module from the appropriate URI
-		//	moduleName: String
-		//	omitModuleCheck: Boolean?
+		//	moduleName:
+		//		module name to load. Module paths are de-referenced by dojo's
+		//		internal mapping of locations to names and are disambiguated by
+		//		longest prefix. See `dojo.registerModulePath()` for details on
+		//		registering new modules.
+		//	omitModuleCheck:
+		//		if `true`, omitModuleCheck skips the step of ensuring that the
+		//		loaded file actually defines the symbol it is referenced by.
+		//		For example if it called as `dojo._loadModule("a.b.c")` and the
+		//		file located at `a/b/c.js` does not define an object `a.b.c`,
+		//		and exception will be throws whereas no exception is raised
+		//		when called as `dojo._loadModule("a.b.c", true)`
 		//	description:
-		//		_loadModule("A.B") first checks to see if symbol A.B is defined. If
-		//		it is, it is simply returned (nothing to do).
+		//		`dojo._loadModule("A.B")` first checks to see if symbol A.B is
+		//		defined. If it is, it is simply returned (nothing to do).
 		//	
-		//		If it is not defined, it will look for "A/B.js" in the script root
+		//		If it is not defined, it will look for `A/B.js` in the script root
 		//		directory.
 		//	
-		//		It throws if it cannot find a file to load, or if the symbol A.B is
-		//		not defined after loading.
+		//		`dojo._loadModule` throws an excpetion if it cannot find a file
+		//		to load, or if the symbol `A.B` is not defined after loading.
 		//	
-		//		It returns the object A.B.
+		//		It returns the object `A.B`.
 		//	
-		//		This does nothing about importing symbols into the current package.
-		//		It is presumed that the caller will take care of that. For example,
-		//		to import all symbols:
+		//		`dojo._loadModule()` does nothing about importing symbols into
+		//		the current namespace.  It is presumed that the caller will
+		//		take care of that. For example, to import all symbols into a
+		//		local block, you might write:
 		//	
 		//		|	with (dojo._loadModule("A.B")) {
 		//		|		...
 		//		|	}
 		//	
-		//		And to import just the leaf symbol:
+		//		And to import just the leaf symbol to a local variable:
 		//	
 		//		|	var B = dojo._loadModule("A.B");
 		//	   	|	...
@@ -324,27 +336,29 @@
 
 	dojo.provide = function(/*String*/ resourceName){
 		//	summary:
-		//		Each javascript source file must have (exactly) one dojo.provide()
-		//		call at the top of the file, corresponding to the file name.
-		//		For example, js/dojo/foo.js must have dojo.provide("dojo.foo"); at the
-		//		top of the file.
+		//		Each javascript source file must have at least one
+		//		`dojo.provide()` call at the top of the file, corresponding to
+		//		the file name.  For example, `js/dojo/foo.js` must have
+		//		`dojo.provide("dojo.foo");` before any calls to
+		//		`dojo.require()` are made.
 		//	description:
-		//		Each javascript source file is called a resource.  When a resource
-		//		is loaded by the browser, dojo.provide() registers that it has been
-		//		loaded.
+		//		Each javascript source file is called a resource.  When a
+		//		resource is loaded by the browser, `dojo.provide()` registers
+		//		that it has been loaded.
 		//	
-		//		For backwards compatibility reasons, in addition to registering the
-		//		resource, dojo.provide() also ensures that the javascript object
-		//		for the module exists.  For example,
-		//		dojo.provide("dojo.io.cometd"), in addition to registering that
-		//		cometd.js is a resource for the dojo.iomodule, will ensure that
-		//		the dojo.io javascript object exists, so that calls like
-		//		dojo.io.foo = function(){ ... } don't fail.
+		//		For backwards compatibility reasons, in addition to registering
+		//		the resource, `dojo.provide()` also ensures that the javascript
+		//		object for the module exists.  For example,
+		//		`dojo.provide("dojox.data.FlickrStore")`, in addition to
+		//		registering that `FlickrStore.js` is a resource for the
+		//		`dojox.data` module, will ensure that the `dojox.data`
+		//		javascript object exists, so that calls like 
+		//		`dojo.data.foo = function(){ ... }` don't fail.
 		//
-		//		In the case of a build (or in the future, a rollup), where multiple
-		//		javascript source files are combined into one bigger file (similar
-		//		to a .lib or .jar file), that file will contain multiple
-		//		dojo.provide() calls, to note that it includes multiple resources.
+		//		In the case of a build where multiple javascript source files
+		//		are combined into one bigger file (similar to a .lib or .jar
+		//		file), that file may contain multiple dojo.provide() calls, to
+		//		note that it includes multiple resources.
 
 		//Make sure we have a string.
 		resourceName = resourceName + "";
@@ -353,29 +367,29 @@
 
 	//Start of old bootstrap2:
 
-	dojo.platformRequire = function(/*Object containing Arrays*/modMap){
+	dojo.platformRequire = function(/*Object*/modMap){
+		//	summary:
+		//		require one or more modules based on which host environment
+		//		Dojo is currently operating in
 		//	description:
-		//		This method taks a "map" of arrays which one can use to optionally
-		//		load dojo modules. The map is indexed by the possible
-		//		dojo.name_ values, with two additional values: "default"
-		//		and "common". The items in the "default" array will be loaded if
-		//		none of the other items have been choosen based on the
-		//		hostenv.name_ item. The items in the "common" array will _always_
-		//		be loaded, regardless of which list is chosen.  Here's how it's
-		//		normally called:
-		//	
+		//		This method takes a "map" of arrays which one can use to
+		//		optionally load dojo modules. The map is indexed by the
+		//		possible dojo.name_ values, with two additional values:
+		//		"default" and "common". The items in the "default" array will
+		//		be loaded if none of the other items have been choosen based on
+		//		dojo.name_, set by your host environment. The items in the
+		//		"common" array will *always* be loaded, regardless of which
+		//		list is chosen.
+		//	example:
 		//		|	dojo.platformRequire({
-		//		|		// an example that passes multiple args to _loadModule()
 		//		|		browser: [
-		//		|			["foo.bar.baz", true, true], 
-		//		|			"foo.sample",
-		//		|			"foo.test,
+		//		|			"foo.sample", // simple module
+		//		|			"foo.test",
+		//		|			["foo.bar.baz", true] // skip object check in _loadModule
 		//		|		],
-		//		|		default: [ "foo.sample.*" ],
-		//		|		common: [ "really.important.module.*" ]
+		//		|		default: [ "foo.sample._base" ],
+		//		|		common: [ "important.module.common" ]
 		//		|	});
-
-		// FIXME: dojo.name_ no longer works!!
 
 		var common = modMap.common || [];
 		var result = common.concat(modMap[d._name] || modMap["default"] || []);
@@ -463,41 +477,41 @@
 		//		mycode.mywidget and bundleNames available include bundleone and
 		//		bundletwo:
 		//
-		//			...
-		//			mycode/
-		//			 mywidget/
-		//			  nls/
-		//			   bundleone.js (the fallback translation, English in this example)
-		//			   bundletwo.js (also a fallback translation)
-		//			   de/
-		//			    bundleone.js
-		//			    bundletwo.js
-		//			   de-at/
-		//			    bundleone.js
-		//			   en/
-		//			    (empty; use the fallback translation)
-		//			   en-us/
-		//			    bundleone.js
-		//			   en-gb/
-		//			    bundleone.js
-		//			   es/
-		//			    bundleone.js
-		//			    bundletwo.js
-		//			  ...etc
-		//			...
+		//	|		...
+		//	|		mycode/
+		//	|		 mywidget/
+		//	|		  nls/
+		//	|		   bundleone.js (the fallback translation, English in this example)
+		//	|		   bundletwo.js (also a fallback translation)
+		//	|		   de/
+		//	|		    bundleone.js
+		//	|		    bundletwo.js
+		//	|		   de-at/
+		//	|		    bundleone.js
+		//	|		   en/
+		//	|		    (empty; use the fallback translation)
+		//	|		   en-us/
+		//	|		    bundleone.js
+		//	|		   en-gb/
+		//	|		    bundleone.js
+		//	|		   es/
+		//	|		    bundleone.js
+		//	|		    bundletwo.js
+		//	|		  ...etc
+		//	|		...
 		//
 		//		Each directory is named for a locale as specified by RFC 3066,
 		//		(http://www.ietf.org/rfc/rfc3066.txt), normalized in lowercase.
-		//		Note that the two bundles in the example do not define all the same
-		//		variants.  For a given locale, bundles will be loaded for that
-		//		locale and all more general locales above it, including a fallback
-		//		at the root directory.  For example, a declaration for the "de-at"
-		//		locale will first load nls/de-at/bundleone.js, then
-		//		nls/de/bundleone.js and finally nls/bundleone.js.  The data will be
-		//		flattened into a single Object so that lookups will follow this
-		//		cascading pattern.  An optional build step can preload the bundles
-		//		to avoid data redundancy and the multiple network hits normally
-		//		required to load these resources.
+		//		Note that the two bundles in the example do not define all the
+		//		same variants.  For a given locale, bundles will be loaded for
+		//		that locale and all more general locales above it, including a
+		//		fallback at the root directory.  For example, a declaration for
+		//		the "de-at" locale will first load `nls/de-at/bundleone.js`,
+		//		then `nls/de/bundleone.js` and finally `nls/bundleone.js`.  The
+		//		data will be flattened into a single Object so that lookups
+		//		will follow this cascading pattern.  An optional build step can
+		//		preload the bundles to avoid data redundancy and the multiple
+		//		network hits normally required to load these resources.
 
 		d.require("dojo.i18n");
 		d.i18n._requireLocalization.apply(d.hostenv, arguments);
@@ -522,7 +536,7 @@
 
 		// TODO: support for IPv6, see RFC 2732
 		var _a = arguments;
-		var uri = _a[0];
+		var uri = [_a[0]];
 		// resolve uri components relative to each other
 		for(var i = 1; i<_a.length; i++){
 			if(!_a[i]){ continue; }
@@ -531,7 +545,7 @@
 			// FIXME: Tracked (and fixed) in Webkit bug 3537.
 			//		http://bugs.webkit.org/show_bug.cgi?id=3537
 			var relobj = new d._Url(_a[i]+"");
-			var uriobj = new d._Url(uri+"");
+			var uriobj = new d._Url(uri[0]+"");
 
 			if(
 				relobj.path == "" &&
@@ -556,6 +570,7 @@
 						var segs = path.split("/");
 						for(var j = 0; j < segs.length; j++){
 							if(segs[j] == "."){
+								// flatten "./" references
 								if(j == segs.length - 1){
 									segs[j] = "";
 								}else{
@@ -564,7 +579,7 @@
 								}
 							}else if(j > 0 && !(j == 1 && segs[0] == "") &&
 								segs[j] == ".." && segs[j-1] != ".."){
-
+								// flatten "../" references
 								if(j == (segs.length - 1)){
 									segs.splice(j, 1);
 									segs[j - 1] = "";
@@ -579,23 +594,23 @@
 				}
 			}
 
-			uri = "";
+			uri = [];
 			if(relobj.scheme){ 
-				uri += relobj.scheme + ":";
+				uri.push(relobj.scheme, ":");
 			}
 			if(relobj.authority){
-				uri += "//" + relobj.authority;
+				uri.push("//", relobj.authority);
 			}
-			uri += relobj.path;
+			uri.push(relobj.path);
 			if(relobj.query){
-				uri += "?" + relobj.query;
+				uri.push("?", relobj.query);
 			}
 			if(relobj.fragment){
-				uri += "#" + relobj.fragment;
+				uri.push("#", relobj.fragment);
 			}
 		}
 
-		this.uri = uri.toString();
+		this.uri = uri.join("");
 
 		// break the uri into its main components
 		var r = this.uri.match(ore);
@@ -620,13 +635,34 @@
 	dojo._Url.prototype.toString = function(){ return this.uri; };
 
 	dojo.moduleUrl = function(/*String*/module, /*dojo._Url||String*/url){
-		// summary: 
-		//		Returns a Url object relative to a module
-		//		
-		// example: 
-		//	|	dojo.moduleUrl("dojo.widget","templates/template.html");
-		// example:
-		//	|	dojo.moduleUrl("acme","images/small.png")
+		//	summary: 
+		//		Returns a `dojo._Url` object relative to a module.
+		//	example:
+		//	|	var pngPath = dojo.moduleUrl("acme","images/small.png");
+		//	|	console.dir(pngPath); // list the object properties
+		//	|	// create an image and set it's source to pngPath's value:
+		//	|	var img = document.createElement("img");
+		// 	|	// NOTE: we assign the string representation of the url object
+		//	|	img.src = pngPath.toString(); 
+		//	|	// add our image to the document
+		//	|	dojo.body().appendChild(img);
+		//	example: 
+		//		you may de-reference as far as you like down the package
+		//		hierarchy.  This is sometimes handy to avoid lenghty relative
+		//		urls or for building portable sub-packages. In this example,
+		//		the `acme.widget` and `acme.util` directories may be located
+		//		under different roots (see `dojo.registerModulePath`) but the
+		//		the modules which reference them can be unaware of their
+		//		relative locations on the filesystem:
+		//	|	// somewhere in a configuration block
+		//	|	dojo.registerModulePath("acme.widget", "../../acme/widget");
+		//	|	dojo.registerModulePath("acme.util", "../../util");
+		//	|	
+		//	|	// ...
+		//	|	
+		//	|	// code in a module using acme resources
+		//	|	var tmpltPath = dojo.moduleUrl("acme.widget","templates/template.html");
+		//	|	var dataPath = dojo.moduleUrl("acme.util","resources/data.json");
 
 		var loc = d._getModuleSymbols(module).join('/');
 		if(!loc){ return null; }

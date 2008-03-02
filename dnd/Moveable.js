@@ -92,6 +92,9 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	},
 	onMoveStop: function(/* dojo.dnd.Mover */ mover){
 		// summary: called after every move operation
+		if(mover.timer){
+			clearTimeout(mover.timer);
+		}
 		dojo.publish("/dnd/move/stop", [mover]);
 		dojo.removeClass(dojo.body(), "dojoMove");
 		dojo.removeClass(this.node, "dojoMoveItem");
@@ -105,9 +108,17 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
 		// summary: called during every move notification,
 		//	should actually move the node, can be overwritten.
-		this.onMoving(mover, leftTop);
-		dojo.marginBox(mover.node, leftTop);
-		this.onMoved(mover, leftTop);
+		var _this = this;
+		mover.leftTop = leftTop;
+		if(!mover.timer){
+			mover.timer = setTimeout(function(){
+				mover.timer = null;
+				var leftTop = mover.leftTop;
+				_this.onMoving(mover, leftTop);
+				dojo.marginBox(mover.node, leftTop);
+				_this.onMoved(mover, leftTop);
+			}, 0);
+		}
 	},
 	onMoving: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
 		// summary: called before every incremental move,

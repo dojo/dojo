@@ -300,7 +300,8 @@ dojo.extend(dojo.Deferred, {
 	},
 
 	callback: function(res){
-		// summary:	Begin the callback sequence with a non-error value.
+		//	summary:	
+		//		Begin the callback sequence with a non-error value.
 		
 		/*
 		callback or errback should only be called once on a given
@@ -311,7 +312,7 @@ dojo.extend(dojo.Deferred, {
 	},
 
 	errback: function(/*Error*/res){
-		// summary: 
+		//	summary: 
 		//		Begin the callback sequence with an error result.
 		this._check();
 		if(!(res instanceof Error)){
@@ -320,36 +321,25 @@ dojo.extend(dojo.Deferred, {
 		this._resback(res);
 	},
 
-	addBoth: function(/*Function||Object*/cb, /*Optional, String*/cbfn){
-		// summary:
+	addBoth: function(/*Function|Object*/cb, /*String?*/cbfn){
+		//	summary:
 		//		Add the same function as both a callback and an errback as the
-		//		next element on the callback sequence.	This is useful for code
+		//		next element on the callback sequence.This is useful for code
 		//		that you want to guarantee to run, e.g. a finalizer.
-		var enclosed = dojo.hitch(cb, cbfn);
-		if(arguments.length > 2){
-			enclosed = dojo.partial(enclosed, arguments, 2);
-		}
+		var enclosed = dojo.hitch.apply(dojo, arguments);
 		return this.addCallbacks(enclosed, enclosed);
 	},
 
-	addCallback: function(cb, cbfn){
-		// summary: 
+	addCallback: function(/*Function|Object*/cb, /*String?*/cbfn /*...*/){
+		//	summary: 
 		//		Add a single callback to the end of the callback sequence.
-		var enclosed = dojo.hitch(cb, cbfn);
-		if(arguments.length > 2){
-			enclosed = dojo.partial(enclosed, arguments, 2);
-		}
-		return this.addCallbacks(enclosed, null);
+		return this.addCallbacks(dojo.hitch.apply(dojo, arguments));
 	},
 
 	addErrback: function(cb, cbfn){
-		// summary: 
+		//	summary: 
 		//		Add a single callback to the end of the callback sequence.
-		var enclosed = dojo.hitch(cb, cbfn);
-		if(arguments.length > 2){
-			enclosed = dojo.partial(enclosed, arguments, 2);
-		}
-		return this.addCallbacks(null, enclosed);
+		return this.addCallbacks(null, dojo.hitch.apply(dojo, arguments));
 	},
 
 	addCallbacks: function(cb, eb){

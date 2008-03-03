@@ -20,7 +20,7 @@ dojo.require("dojo.dnd.Manager");
 */
 
 /*=====
-dojo.dnd.__SourceArgs = function(node, duration, easing){
+dojo.dnd.__SourceArgs = function(){
 	//	summary:
 	//		a dict of parameters for DnD Source configuration. Note that any
 	//		property on Source elements may be configured, but this is the
@@ -36,6 +36,11 @@ dojo.dnd.__SourceArgs = function(node, duration, easing){
 	//		always copy items, if true, use a state of Ctrl key otherwise
 	//	withHandles: Boolean?
 	//		allows dragging only by handles
+	this.isSource = isSource;
+	this.accept = accept;
+	this.horizontal = horizontal;
+	this.copyOnly = copyOnly;
+	this.withHandles = withHandles;
 }
 =====*/
 

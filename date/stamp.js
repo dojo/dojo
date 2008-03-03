@@ -13,13 +13,13 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 	//		The following combinations are valid:
 	//
 	//			* dates only
-	//				- yyyy
-	//				- yyyy-MM
-	//				- yyyy-MM-dd
+	//			|	* yyyy
+	//			|	* yyyy-MM
+	//			|	* yyyy-MM-dd
 	// 			* times only, with an optional time zone appended
-	//				- THH:mm
-	//				- THH:mm:ss
-	//				- THH:mm:ss.SSS
+	//			|	* THH:mm
+	//			|	* THH:mm:ss
+	//			|	* THH:mm:ss.SSS
 	// 			* and "datetimes" which could be any combination of the above
 	//
 	//		timezones may be specified as Z (for UTC) or +/- followed by a time expression HH:mm
@@ -81,18 +81,21 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 }
 
 /*=====
-	dojo.date.stamp.__options = function(selector, zulu, milliseconds){
-	//	selector: String
-	//		"date" or "time" for partial formatting of the Date object.
-	//		Both date and time will be formatted by default.
-	//	zulu: Boolean
-	//		if true, UTC/GMT is used for a timezone
-	//	milliseconds: Boolean
-	//		if true, output milliseconds
+	dojo.date.stamp.__Options = function(){
+		//	selector: String
+		//		"date" or "time" for partial formatting of the Date object.
+		//		Both date and time will be formatted by default.
+		//	zulu: Boolean
+		//		if true, UTC/GMT is used for a timezone
+		//	milliseconds: Boolean
+		//		if true, output milliseconds
+		this.selector = selector;
+		this.zulu = zulu;
+		this.milliseconds = milliseconds;
 	}
 =====*/
 
-dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*dojo.date.stamp.__options?*/options){
+dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*dojo.date.stamp.__Options?*/options){
 	//	summary:
 	//		Format a Date object as a string according a subset of the ISO-8601 standard
 	//

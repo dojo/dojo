@@ -19,6 +19,26 @@ dojo.require("dojo.dnd.Manager");
 		"After"		- insert point is after the anchor
 */
 
+/*=====
+dojo.dnd.__SourceArgs = function(node, duration, easing){
+	//	summary:
+	//		a dict of parameters for DnD Source configuration. Note that any
+	//		property on Source elements may be configured, but this is the
+	//		short-list
+	//	isSource: Boolean?
+	//		can be used as a DnD source. Defaults to true.
+	//	accept: Array?
+	//		list of accepted types (text strings) for a target; defaults to
+	//		["text"]
+	//	horizontal: Boolean?
+	//		a horizontal container, if true, vertical otherwise or when omitted
+	//	copyOnly: Boolean?
+	//		always copy items, if true, use a state of Ctrl key otherwise
+	//	withHandles: Boolean?
+	//		allows dragging only by handles
+}
+=====*/
+
 dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	// summary: a Source object, which can be used as a DnD source, or a DnD target
 	
@@ -30,29 +50,22 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	withHandles: false,
 	accept: ["text"],
 	
-	constructor: function(node, params){
-		// summary: a constructor of the Source
-		// node: Node: node or node's id to build the source on
-		// params: Object: a dict of parameters, recognized parameters are:
-		//	isSource: Boolean: can be used as a DnD source, if true; assumed to be "true" if omitted
-		//	accept: Array: list of accepted types (text strings) for a target; assumed to be ["text"] if omitted
-		//	horizontal: Boolean: a horizontal container, if true, vertical otherwise or when omitted
-		//	copyOnly: Boolean: always copy items, if true, use a state of Ctrl key otherwise
-		//	withHandles: Boolean: allows dragging only by handles
-		//	the rest of parameters are passed to the selector
-		if(!params){ params = {}; }
-		this.isSource = typeof params.isSource == "undefined" ? true : params.isSource;
-		var type = params.accept instanceof Array ? params.accept : ["text"];
-		this.accept = null;
+	constructor: function(/*DOMNode|String*/node, /*dojo.dnd.__SourceArgs?*/params){
+		// summary: 
+		//		a constructor of the Source
+		// node:
+		//		node or node's id to build the source on
+		// params: 
+		//		any property of this class may be configured via the params
+		//		object which is mixed-in to the `dojo.dnd.Source` instance
+		dojo.mixin(this, dojo.mixin({}, params));
+		var type = this.accept;
 		if(type.length){
 			this.accept = {};
 			for(var i = 0; i < type.length; ++i){
 				this.accept[type[i]] = 1;
 			}
 		}
-		this.horizontal = params.horizontal;
-		this.copyOnly = params.copyOnly;
-		this.withHandles = params.withHandles;
 		// class-specific variables
 		this.isDragging = false;
 		this.mouseDown = false;

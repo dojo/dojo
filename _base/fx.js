@@ -296,9 +296,11 @@ dojo.require("dojo._base.html");
 	};
 
 	dojo._Animation.prototype._stopTimer = function(){
-		d.disconnect(this._timer);
-		this._timer = null;
-		ctr--;
+		if(this._timer){
+			d.disconnect(this._timer);
+			this._timer = null;
+			ctr--;
+		}
 		if(ctr <= 0){
 			clearInterval(timer);
 			timer = null;

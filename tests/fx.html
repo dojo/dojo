@@ -132,18 +132,10 @@
 									_anims.push(dojo.fadeOut({ node:n, duration:100, delay: delay += 100 }));
 								});
 								var a = dojo.fx.combine(_anims);
-								var timer = new Date();
-								var _rund = null;
+								var timer = (new Date()).getTime();
 								dojo.connect(a,"onEnd",function(){
-									if(!_rund){
-										// FIXME: need to actually check the timer result
-										_rund = true;
-										var x = timer - new Date();
-										d.callback(true);
-									}else{
-										d.callback(false);
-										console.warn("FIRED! TOO MANY TIMES");
-									}
+									console.warn("delayTest running time:", (new Date()).getTime() - timer, "ms, expected:", a.duration, "ms");
+									d.callback(true);
 								});
 								a.play();
 								return d;	
@@ -161,20 +153,13 @@
 									_anims.push(dojo.fadeIn({ node:n, duration:100, delay: delay += 100 }));
 								});
 								var a = dojo.fx.chain(_anims);
-								var timer = new Date();
-								var _rund = null;
+								var timer = (new Date()).getTime();
 								dojo.connect(a,"onEnd",function(){
-									if(!_rund){
-										_rund = true;
-										var x = timer - new Date();
-										d.callback(true);				
-									}else{
-										d.callback(false);
-										console.warn("FIRED! TOO MANY TIMES",x);	
-									}					
+									console.warn("delayTestChain running time:", (new Date()).getTime() - timer, "ms, expected:", a.duration, "ms");
+									d.callback(true);
 								});
 								a.play();
-								return d;	
+								return d;
 							}
 						},
 						{
@@ -184,9 +169,9 @@
 								var d = new doh.Deferred();
 								var a = dojo.fadeOut({ node:"foo2", duration:400 });
 								var b = dojo.fadeIn({ node:"foo2", duration:400 });
-								var chain = dojo.fx.combine([a,b]);
-								dojo.connect(chain,"onEnd",dojo.hitch(d,"callback",true));
-								chain.play();
+								var combine = dojo.fx.combine([a,b]);
+								dojo.connect(combine,"onEnd",dojo.hitch(d,"callback",true));
+								combine.play();
 								return d;
 							}
 							
@@ -198,9 +183,9 @@
 								var d = new doh.Deferred();
 								var a = dojo.fadeOut({ node:"foo2", duration:400 });
 								var b = dojo.fadeIn({ node:"foo2", duration:400 });
-								var chain = dojo.fx.combine([a,b]);
-								dojo.connect(chain,"onPlay",dojo.hitch(d,"callback",true));
-								chain.play();
+								var combine = dojo.fx.combine([a,b]);
+								dojo.connect(combine,"onPlay",dojo.hitch(d,"callback",true));
+								combine.play();
 								return d;
 							}
 							

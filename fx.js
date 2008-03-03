@@ -29,7 +29,7 @@ dojo.fx = {
 		}, this);
 	};
 	dojo.extend(_chain, {
-		_onAnimate: function(arg){
+		_onAnimate: function(){
 			this._fire("onAnimate", arguments);
 		},
 		_onEnd: function(){
@@ -139,6 +139,7 @@ dojo.fx = {
 	var _combine = function(animations){
 		this._animations = animations||[];
 		this._connects = [];
+		this._finished = 0;
 
 		this.duration = 0;
 		dojo.forEach(animations, function(a){
@@ -164,19 +165,23 @@ dojo.fx = {
 			return this;
 		},
 		_onEnd: function(){
-			var all = dojo.every(this._animations, function(a){
-				return a.status() == "stopped";
-			});
-			if(all){ this._fire("onEnd"); }
+			if(++this._finished == this._animations.length){
+				this._fire("onEnd");
+			}
+		},
+		_call: function(action, args){
+			var t = this._pseudoAnimation;
+			t[action].apply(t, args);
 		},
 		play: function(/*int?*/ delay, /*Boolean?*/ gotoStart){
+			this._finished = 0;
 			this._doAction("play", arguments);
-			this._pseudoAnimation.play.apply(this, arguments);
+			this._call("play", arguments);
 			return this;
 		},
 		pause: function(){
 			this._doAction("pause", arguments);
-			this._pseudoAnimation.pause.apply(this, arguments);
+			this._call("pause", arguments);
 			return this;
 		},
 		gotoPercent: function(/*Decimal*/percent, /*Boolean?*/ andPlay){
@@ -184,12 +189,12 @@ dojo.fx = {
 			dojo.forEach(this._animations, function(a){
 				a.gotoPercent(a.duration < ms ? 1 : (ms / a.duration), andPlay);
 			});
-			this._pseudoAnimation[action].apply(this._pseudoAnimation, arguments);
+			this._call("gotoProcent", arguments);
 			return this;
 		},
 		stop: function(/*boolean?*/ gotoEnd){
 			this._doAction("stop", arguments);
-			this._pseudoAnimation.stop.apply(this, arguments);
+			this._call("stop", arguments);
 			return this;
 		},
 		status: function(){

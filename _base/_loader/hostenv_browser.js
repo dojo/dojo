@@ -1,50 +1,22 @@
 /*=====
 dojo.isBrowser = {
-	//	summary:
-	//		True if the client is a web-browser
 	//	example:
 	//	|	if(dojo.isBrowser){ ... }
 };
 
 dojo.isFF = {
-	//	summary: Number
-	//		Greater than zero if client is FireFox. 0 otherwise. Corresponds to
-	//		major detected FireFox version (1.5, 2, 3, etc.)
 	//	example:
 	//	|	if(dojo.isFF > 1){ ... }
 };
 
 dojo.isIE = {
-	//	summary: Number
-	//		Greater than zero if client is MSIE(PC). 0 otherwise. Corresponds to
-	//		major detected IE version (6, 7, 8, etc.)
 	// example:
 	//	|	if(dojo.isIE > 6){
 	//	|		// we are IE7
 	// 	|	}
 };
 
-dojo.isKhtml = {
-	//	summary: Number
-	//		Greater than zero if client is a KTHML-derived browser (Konqueror,
-	//		Safari, etc.). 0 otherwise. Corresponds to major detected version.
-};
-
-dojo.isMozilla = {
-	//	summary: Number
-	//		Greater than zero if client is a Mozilla-based browser (Firefox,
-	//		SeaMonkey). 0 otherwise. Corresponds to major detected version.
-};
-
-dojo.isOpera = {
-	//	summary: Number
-	//		Greater than zero if client is Opera. 0 otherwise. Corresponds to
-	//		major detected version.
-};
-
 dojo.isSafari = {
-	//	summary: Number
-	//		Greater than zero if client is Safari or iPhone. 0 otherwise.
 	//	example:
 	//	|	if(dojo.isSafari){ ... }
 	//	example: 
@@ -53,6 +25,35 @@ dojo.isSafari = {
 	//	|		// we are iPhone. iPod touch reports "iPod" above
 	//	|	}
 };
+
+dojo = {
+	// isBrowser: Boolean
+	//		True if the client is a web-browser
+	isBrowser: true,
+	//	isFF: Number
+	//		Greater than zero if client is FireFox. 0 otherwise. Corresponds to
+	//		major detected FireFox version (1.5, 2, 3, etc.)
+	isFF: 2,
+	//	isIE: Number
+	//		Greater than zero if client is MSIE(PC). 0 otherwise. Corresponds to
+	//		major detected IE version (6, 7, 8, etc.)
+	isIE: 6,
+	//	isKhtml: Number
+	//		Greater than zero if client is a KTHML-derived browser (Konqueror,
+	//		Safari, etc.). 0 otherwise. Corresponds to major detected version.
+	isKhtml: 0,
+	//	isMozilla: Number
+	//		Greater than zero if client is a Mozilla-based browser (Firefox,
+	//		SeaMonkey). 0 otherwise. Corresponds to major detected version.
+	isMozilla: 0,
+	//	isOpera: Number
+	//		Greater than zero if client is Opera. 0 otherwise. Corresponds to
+	//		major detected version.
+	isOpera: 0,
+	//	isSafari: Number
+	//		Greater than zero if client is Safari or iPhone. 0 otherwise.
+	isSafari: 0
+}
 =====*/
 
 if(typeof window != 'undefined'){

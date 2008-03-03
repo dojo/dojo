@@ -423,7 +423,7 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__formatOp
 		return true;
 	});
 
-	var hours = result[3]*1;
+	var hours = +result[3];
 	if(amPm === 'p' && hours < 12){
 		result[3] = hours + 12; //e.g., 3pm -> 15
 	}else if(amPm === 'a' && hours == 12){
@@ -434,6 +434,9 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__formatOp
 	//validity of input strings containing 'EEE' or 'EEEE'...
 
 	var dateObject = new Date(result[0], result[1], result[2], result[3], result[4], result[5], result[6]); // Date
+	if(options.strict){
+		dateObject.setFullYear(result[0]);
+	}
 
 	// Check for overflow.  The Date() constructor normalizes things like April 32nd...
 	//TODO: why isn't this done for times as well?

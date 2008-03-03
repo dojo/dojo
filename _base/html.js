@@ -24,7 +24,7 @@ dojo.byId = function(id, doc){
 	//		browser-specific bugs to do so.
 	//	id: String|DOMNode
 	//	 	DOM id or DOM Node
-	//	doc: DocumentElement
+	//	doc: DocumentElement?
 	//		Document to work in. Defaults to the current value of
 	//		dojo.doc.  Can be used to retreive
 	//		node references from other documents.

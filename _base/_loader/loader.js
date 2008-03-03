@@ -13,8 +13,8 @@
 
 		_modulePrefixes: {
 			dojo: 	{	name: "dojo", value: "." },
-			dojox: 	{	name: "dojox", value: "../dojox" },
-			dijit: 	{	name: "dijit", value: "../dijit" },
+			// dojox: 	{	name: "dojox", value: "../dojox" },
+			// dijit: 	{	name: "dijit", value: "../dijit" },
 			doh: 	{	name: "doh", value: "../util/doh" },
 			tests: 	{	name: "tests", value: "tests" }
 		},
@@ -78,7 +78,7 @@
 		}
 	}
 
-	dojo._loadUri = function(/*String (URL)*/uri, /*Function?*/cb){
+	dojo._loadUri = function(/*String*/uri, /*Function?*/cb){
 		//	summary:
 		//		Loads JavaScript from a URI
 		//	description:
@@ -113,7 +113,7 @@
 	//>>excludeEnd("xdomainExclude");
 
 	// FIXME: probably need to add logging to this method
-	dojo._loadUriAndCheck = function(/*String (URL)*/uri, /*String*/moduleName, /*Function?*/cb){
+	dojo._loadUriAndCheck = function(/*String*/uri, /*String*/moduleName, /*Function?*/cb){
 		// summary: calls loadUri then findModule and returns true if both succeed
 		var ok = false;
 		try{
@@ -134,7 +134,7 @@
 		//		finishes runing.
 		this._loadNotifying = true;
 		this._postLoad = true;
-		var mll = this._loaders;
+		var mll = d._loaders;
 		
 		//Clear listeners so new ones can be added
 		//For other xdomain package loads after the initial load.
@@ -153,7 +153,7 @@
 		//Make sure nothing else got added to the onload queue
 		//after this first run. If something did, and we are not waiting for any
 		//more inflight resources, run again.
-		if(d._postLoad && d._inFlightCount == 0 && this._loaders.length){
+		if(d._postLoad && d._inFlightCount == 0 && mll.length){
 			d._callLoaded();
 		}
 	}

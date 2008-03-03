@@ -21,7 +21,7 @@ dojo.provide("dojo._base.array");
 			//		passed array. If the value is not found, -1 is returned.
 			// description:
 			//		For details on this method, see:
-			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
+			// 			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
 
 			var step = 1, end = array.length, i = (fromIndex||0);
 			if(findLast){

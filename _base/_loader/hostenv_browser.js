@@ -1,43 +1,54 @@
 /*=====
 dojo.isBrowser = {
-	// summary: True if the client is a web-browser
-	// example:
-	//	if(dojo.isBrowser){ ... }
+	//	summary:
+	//		True if the client is a web-browser
+	//	example:
+	//	|	if(dojo.isBrowser){ ... }
 };
 
 dojo.isFF = {
-	// summary: True if client is using FireFox browser. False otherwise.
-	// example:
-	//	if(dojo.isFF && dojo.isFF > 1){ ... }
+	//	summary: Number
+	//		Greater than zero if client is FireFox. 0 otherwise. Corresponds to
+	//		major detected FireFox version (1.5, 2, 3, etc.)
+	//	example:
+	//	|	if(dojo.isFF > 1){ ... }
 };
 
 dojo.isIE = {
-	// summary: The major version if client it using Internet Explorer (or false) 
+	//	summary: Number
+	//		Greater than zero if client is MSIE(PC). 0 otherwise. Corresponds to
+	//		major detected IE version (6, 7, 8, etc.)
 	// example:
-	//	if(dojo.isIE && dojo.isIE > 6){
-	//		// we are IE7
-	//  }
+	//	|	if(dojo.isIE > 6){
+	//	|		// we are IE7
+	// 	|	}
 };
 
 dojo.isKhtml = {
-	// summary: True if client is  using Khtml browsers (konqueror, et al)
+	//	summary: Number
+	//		Greater than zero if client is a KTHML-derived browser (Konqueror,
+	//		Safari, etc.). 0 otherwise. Corresponds to major detected version.
 };
 
 dojo.isMozilla = {
-	// summary: True if client is using a Mozilla-based browser. 
+	//	summary: Number
+	//		Greater than zero if client is a Mozilla-based browser (Firefox,
+	//		SeaMonkey). 0 otherwise. Corresponds to major detected version.
 };
 
 dojo.isOpera = {
-	// summary: True if client is using the Opera web browser
+	//	summary: Number
+	//		Greater than zero if client is Opera. 0 otherwise. Corresponds to
+	//		major detected version.
 };
 
 dojo.isSafari = {
-	// summary: True if client is using the Safari web browser
-	// example:
-	// 	|	if(dojo.isSafari){ ... }
-	//
-	// example: 
-	//	Detect iPhone:
+	//	summary: Number
+	//		Greater than zero if client is Safari or iPhone. 0 otherwise.
+	//	example:
+	//	|	if(dojo.isSafari){ ... }
+	//	example: 
+	//		Detect iPhone:
 	//	|	if(dojo.isSafari && (navigator.userAgent.indexOf("iPhone") < 0)){ 
 	//	|		// we are iPhone. iPod touch reports "iPod" above
 	//	|	}
@@ -65,8 +76,8 @@ if(typeof window != 'undefined'){
 				var m = src.match(rePkg);
 				if(m){
 					// find out where we came from
-					if(!dojo.config.baseUrl){
-						dojo.config.baseUrl = src.substring(0, m.index);
+					if(!d.config.baseUrl){
+						d.config.baseUrl = src.substring(0, m.index);
 					}
 					// and find out if we need to modify our behavior
 					var cfg = scripts[i].getAttribute("djConfig");
@@ -80,7 +91,7 @@ if(typeof window != 'undefined'){
 				}
 			}
 		}
-		d.baseUrl = dojo.config.baseUrl;
+		d.baseUrl = d.config.baseUrl;
 
 		// fill in the rendering support information in dojo.render.*
 		var n = navigator;

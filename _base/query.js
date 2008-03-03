@@ -1031,12 +1031,12 @@ dojo.require("dojo._base.NodeList");
 		//			* `~`, the immediately preceeded-by sibling selector
 		//			* `+`, the preceeded-by sibling selector
 		//			* attribute queries:
-		//				* `[foo]` attribute presence selector
-		//				* `[foo='bar']` attribute value exact match
-		//				* `[foo~='bar']` attribute value list item match
-		//				* `[foo^='bar']` attribute start match
-		//				* `[foo$='bar']` attribute end match
-		//				* `[foo*='bar']` attribute substring match
+		//			|	* `[foo]` attribute presence selector
+		//			|	* `[foo='bar']` attribute value exact match
+		//			|	* `[foo~='bar']` attribute value list item match
+		//			|	* `[foo^='bar']` attribute start match
+		//			|	* `[foo$='bar']` attribute end match
+		//			|	* `[foo*='bar']` attribute substring match
 		//			* `:first-child`, `:last-child` positional selectors
 		//			* `:empty` content emtpy selector
 		//			* `:empty` content emtpy selector
@@ -1061,9 +1061,9 @@ dojo.require("dojo._base.NodeList");
 		//			* namespace-differentiated selectors of any form
 		//			* all `::` pseduo-element selectors
 		//			* certain pseduo-selectors which don't get a lot of day-to-day use:
-		//				* `:root`, `:lang()`, `:target`, `:focus`
+		//			|	* `:root`, `:lang()`, `:target`, `:focus`
 		//			* all visual and state selectors:
-		//				* `:root`, `:active`, `:hover`, `:visisted`, `:link`,
+		//			|	* `:root`, `:active`, `:hover`, `:visisted`, `:link`,
 		//				  `:enabled`, `:disabled`, `:checked`
 		//			* `:*-of-type` pseudo selectors
 		//		

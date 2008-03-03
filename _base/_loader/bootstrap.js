@@ -1,20 +1,25 @@
 /*=====
+// note:
+//		'djConfig' does not exist under 'dojo.*' so that it can be set before the
+//		'dojo' variable exists.
+// note:
+//		Setting any of these variables *after* the library has loaded does
+//		nothing at all.
+
 djConfig = {
 	// summary:
 	//		Application code can set the global 'djConfig' prior to loading
 	//		the library to override certain global settings for how dojo works.
-	// description:  The variables that can be set are as follows:
-	//			- isDebug: false
-	//			- libraryScriptUri: ""
-	//			- locale: undefined
-	//			- extraLocale: undefined
-	//			- preventBackButtonFix: true
-	// note:
-	//		'djConfig' does not exist under 'dojo.*' so that it can be set before the
-	//		'dojo' variable exists.
-	// note:
-	//		Setting any of these variables *after* the library has loaded does
-	//		nothing at all.
+	// isDebug: Boolean
+	isDebug: false,
+	// libraryScriptUri: String
+	libraryScriptUri: "",
+	// locale: String
+	locale: undefined,
+	// extraLocale: String
+	extraLocale: undefined,
+	// preventBackButtonFix: Boolean
+	preventBackButtonFix: true
 }
 =====*/
 

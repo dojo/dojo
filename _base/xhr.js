@@ -254,8 +254,7 @@ dojo.require("dojo._base.query");
 	};
 
 	/*=====
-	dojo.__IoArgs = function(	url, content, timeout, form,
-								preventCache, handleAs, load, error, handle){
+	dojo.__IoArgs = function(){
 		//	url: String
 		//		URL to server endpoint.
 		//	content: Object?
@@ -629,7 +628,7 @@ dojo.require("dojo._base.query");
 
 	/*=====
 	dojo.declare("dojo.__XhrArgs", dojo.__IoArgs, {
-		constructor: function(handleAs, sync, headers){
+		constructor: function(){
 			//	summary:
 			//		In addition to the properties listed for the dojo._IoArgs type,
 			//		the following properties are allowed for dojo.xhr* methods.

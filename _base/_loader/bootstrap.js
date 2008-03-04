@@ -11,15 +11,63 @@ djConfig = {
 	//		Application code can set the global 'djConfig' prior to loading
 	//		the library to override certain global settings for how dojo works.
 	// isDebug: Boolean
+	//		Defaults to `false`. If set to `true`, ensures that Dojo provides
+	//		extende debugging feedback via Firebug. If Firebug is not available
+	//		on your platform, setting `isDebug` to `true` will force Dojo to
+	//		pull in (and display) the version of Firebug Lite which is
+	//		integrated into the Dojo distribution, thereby always providing a
+	//		debugging/logging console when `isDebug` is enabled. Note that
+	//		Firebug's `console.*` methods are ALWAYS defined by Dojo. If
+	//		`isDebug` is false and you are on a platform without Firebug, these
+	//		methods will be defined as no-ops.
 	isDebug: false,
-	// libraryScriptUri: String
-	libraryScriptUri: "",
+	// debugAtAllCosts: Boolean
+	//		Defaults to `false`. If set to `true`, this triggers an alternate
+	//		mode of the package system in which dependencies are detected and
+	//		only then are resources evaluated in dependency order via
+	//		`<script>` tag inclusion. This may double-request resources and
+	//		cause problems with scripts which expect `dojo.require()` to
+	//		preform synchronously. `debugAtAllCosts` can be an invaluable
+	//		debugging aid, but when using it, ensure that all code which
+	//		depends on Dojo modules is wrapped in `dojo.addOnLoad()` handlers.
+	//		Due to the somewhat unpredictable side-effects of using
+	//		`debugAtAllCosts`, it is strongly recommended that you enable this
+	//		flag as a last resort. `debugAtAllCosts` has no effect when loading
+	//		resources across domains. For usage information, see the [Dojo
+	//		Book](http://dojotoolkit.org/book/book-dojo/part-4-meta-dojo-making-your-dojo-code-run-faster-and-better/debugging-facilities/deb)
+	debugAtAllCosts: false,
 	// locale: String
+	//		The locale to assume for loading localized resources in this page.
+	//		The form of the locale is in the common convention format of
+	//		`en-us` and `zh-cn`. See the documentation for `dojo.i18n` and
+	//		`dojo.requireLocalization` for details on loading localized
+	//		resources. If no locale is specified, Dojo attempts to determine
+	//		the locale of the page from the browser's `navigator.userLanguage`
+	//		or `navigator.language` properties.
 	locale: undefined,
 	// extraLocale: String
+	//		No default value. Specifies a secondary locale whose
+	//		resources should also be loaded alongside the default locale when
+	//		calls to `dojo.requireLocalization()` are processed.
 	extraLocale: undefined,
-	// preventBackButtonFix: Boolean
-	preventBackButtonFix: true
+	// baseUrl: String
+	//		The directory in which `dojo.js` is located. Under normal
+	//		conditions, Dojo auto-detects the correct location from which it
+	//		was loaded. You may need to manually configure `baseUrl` in cases
+	//		where you have renamed `dojo.js` or in which `<base>` tags confuse
+	//		some browsers (e.g., IE 6). The variable `dojo.baseUrl` is assigned
+	//		either the value of `djConfig.baseUrl` if one is provided or the
+	//		auto-detected root if not. Other modules are located relative to
+	//		this path.
+	baseUrl: undefined,
+	// modulePaths: Object
+	//		A map of module names to paths relative to `dojo.baseUrl`. The
+	//		key/value pairs correspond directly to the arguments which
+	//		`dojo.registerModulePath` accepts. Specifiying
+	//		`djConfig.modulePaths = { "foo": "../../bar" }` is the equivalent
+	//		of calling `dojo.registerModulePath("foo", "../../bar");`. Multiple
+	//		modules may be configured via `djConfig.modulePaths`.
+	modulePaths: {},
 }
 =====*/
 
@@ -82,9 +130,7 @@ dojo.global = {
 
 	d.config =/*===== djConfig = =====*/{
 		isDebug: false,
-		libraryScriptUri: "",
-		preventBackButtonFix: true,
-		delayMozLoadingFix: false
+		debugAtAllCosts: false
 	};
 
 	if(typeof djConfig != "undefined"){

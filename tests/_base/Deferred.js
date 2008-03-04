@@ -23,7 +23,7 @@ doh.register("tests._base.Deferred",
 		function callback_extra_args(t){
 			var nd = new dojo.Deferred();
 			var cnt = 0;
-			nd.addCallback(window, function(base, res){ cnt+=base; cnt+=res; return cnt; }, 30);
+			nd.addCallback(dojo.global, function(base, res){ cnt+=base; cnt+=res; return cnt; }, 30);
 			nd.callback(5);
 			t.assertEqual(cnt, 35);
 		},

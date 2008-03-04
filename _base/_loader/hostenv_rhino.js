@@ -165,7 +165,10 @@ function dj_readInputStream(is, encoding){
 }
 
 // call this now because later we may not be on the top of the stack
-if(!dojo.config.libraryScriptUri.length){
+if(
+	(!dojo.config.libraryScriptUri)||
+	(!dojo.config.libraryScriptUri.length)
+){
 	try{
 		dojo.config.libraryScriptUri = dojo._rhinoCurrentScriptViaJava(1);
 	}catch(e){

@@ -222,10 +222,10 @@ dojo.require("dojo._base.connect");
 				},
 				// remove a listener from an object
 				remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
-					var f = (source||dojo.global)[method], l = f&&f._listeners;
+					var f = (source||dojo.global)[method], l = f && f._listeners;
 					if(f && l && handle--){
 						delete ieh[l[handle]];
-						delete l[handle]; 
+						delete l[handle];
 					}
 				}
 			};
@@ -260,6 +260,7 @@ dojo.require("dojo._base.connect");
 					var kd = node.onkeydown;
 					if(--kd._stealthKeydownRefs <= 0){
 						iel.remove(node, "onkeydown", kd._stealthKeydownHandle);
+						delete kd._stealthKeydownHandle;
 					}
 				}
 			},
@@ -500,19 +501,21 @@ if(dojo.isIE){
 	// keep this out of the closure
 	// closing over 'iel' or 'ieh' b0rks leak prevention
 	// ls[i] is an index into the master handler array
-	dojo._getIeDispatcher = function(){
-		return function(){
-			var ap=Array.prototype, h=dojo._ie_listener.handlers, c=arguments.callee, ls=c._listeners, t=h[c.target];
-			// return value comes from original target function
-			var r = t && t.apply(this, arguments);
-			// invoke listeners after target function
-			for(var i in ls){
-				if(!(i in ap)){
-					h[ls[i]].apply(this, arguments);
-				}
+	dojo._ieDispatcher = function(args){
+		var ap=Array.prototype, h=dojo._ie_listener.handlers, c=args.callee, ls=c._listeners, t=h[c.target];
+		// return value comes from original target function
+		var r = t && t.apply(this, args);
+		// invoke listeners after target function
+		for(var i in ls){
+			if(!(i in ap)){
+				h[ls[i]].apply(this, args);
 			}
-			return r;
 		}
+		return r;
+	}
+	dojo._getIeDispatcher = function(){
+		// ensure the returned function closes over nothing
+		return new Function("dojo._ieDispatcher(arguments)"); // function
 	}
 	// keep this out of the closure to reduce RAM allocation
 	dojo._event_listener._fixCallback = function(fp){

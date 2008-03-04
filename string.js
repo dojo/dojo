@@ -8,8 +8,8 @@ dojo.string = {
 
 dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean?*/end){
 	// summary:
-	//		Pad a string to guarantee that it is at least 'size' length by
-	//		filling with the character 'c' at either the start or end of the
+	//		Pad a string to guarantee that it is at least `size` length by
+	//		filling with the character `ch` at either the start or end of the
 	//		string. Pads at the start, by default.
 	// text: the string to pad
 	// size: length to provide padding
@@ -31,7 +31,7 @@ dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean
 };
 
 dojo.string.substitute = function(	/*String*/template, 
-									/*Object or Array*/map, 
+									/*Object|Array*/map, 
 									/*Function?*/transform, 
 									/*Object?*/thisObject){
 	// summary:
@@ -40,14 +40,14 @@ dojo.string.substitute = function(	/*String*/template,
 	// description:
 	//		For example,
 	//		|	dojo.string.substitute("File '${0}' is not found in directory '${1}'.",["foo.html","/temp"]);
-	//		|	dojo.string.substitute("File '${name}' is not found in directory '${info.dir}'.",{name: "foo.html", info: {dir: "/temp"}});
+	//		|	dojo.string.substitute("File '${name}' is not found in directory '${info.dir}'.",
+	//		|		{name: "foo.html", info: {dir: "/temp"}});
 	//		both return
-	//			"File 'foo.html' is not found in directory '/temp'."
+	//		|	"File 'foo.html' is not found in directory '/temp'."
 	// template: 
-	//		a string with expressions in the form ${key} to be replaced or
-	//		${key:format} which specifies a format function.  NOTE syntax has
-	//		changed from %{key}
-	// map: where to look for substitutions
+	//		a string with expressions in the form `${key}` to be replaced or
+	//		`${key:format}` which specifies a format function.
+	// map: hash to search for substitutions
 	// transform: 
 	//		a function to process all parameters before substitution takes
 	//		place, e.g. dojo.string.encodeXML
@@ -66,10 +66,9 @@ dojo.string.substitute = function(	/*String*/template,
 dojo.string.trim = function(/*String*/ str){
 	// summary: trims whitespaces from both sides of the string
 	// description:
-	//	This version of trim() was taken from Steven Levithan's blog: 
-	//	http://blog.stevenlevithan.com/archives/faster-trim-javascript.
-	//	The short yet good-performing version of this function is 
-	//	dojo.trim(), which is part of the base.
+	//	This version of trim() was taken from [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript).
+	//	The short yet performant version of this function is 
+	//	dojo.trim(), which is part of Dojo base.
 	str = str.replace(/^\s+/, '');
 	for(var i = str.length - 1; i > 0; i--){
 		if(/\S/.test(str.charAt(i))){

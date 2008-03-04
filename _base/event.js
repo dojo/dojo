@@ -501,21 +501,21 @@ if(dojo.isIE){
 	// keep this out of the closure
 	// closing over 'iel' or 'ieh' b0rks leak prevention
 	// ls[i] is an index into the master handler array
-	dojo._ieDispatcher = function(args){
+	dojo._ieDispatcher = function(args, sender){
 		var ap=Array.prototype, h=dojo._ie_listener.handlers, c=args.callee, ls=c._listeners, t=h[c.target];
 		// return value comes from original target function
-		var r = t && t.apply(this, args);
+		var r = t && t.apply(sender, args);
 		// invoke listeners after target function
 		for(var i in ls){
 			if(!(i in ap)){
-				h[ls[i]].apply(this, args);
+				h[ls[i]].apply(sender, args);
 			}
 		}
 		return r;
 	}
 	dojo._getIeDispatcher = function(){
 		// ensure the returned function closes over nothing
-		return new Function("dojo._ieDispatcher(arguments)"); // function
+		return new Function("dojo._ieDispatcher(arguments, this)"); // function
 	}
 	// keep this out of the closure to reduce RAM allocation
 	dojo._event_listener._fixCallback = function(fp){

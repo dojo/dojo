@@ -9,7 +9,7 @@ function test_date_iso(t){
 	var date = dojo.date.stamp.fromISOString(rfc);
 	t.is(2005,date.getFullYear());
 	t.is(5,date.getMonth());
-	t.is(29,date.getDate());
+	t.is(29,date.getUTCDate());
 	t.is(15,date.getUTCHours());
 	t.is(5,date.getMinutes());
 	t.is(0,date.getSeconds());

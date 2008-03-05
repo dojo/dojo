@@ -1022,32 +1022,69 @@ if(dojo.isIE || dojo.isOpera){
 		return attr ? attr.specified : false;
 	}
 
-	dojo.attr = function(/*DomNode|String*/node, /*String*/name, /*String?*/value){
+	dojo.attr = function(/*DomNode|String*/node, /*String|Object*/name, /*String?*/value){
 		//	summary:
 		//		Gets or sets an attribute on an HTML element.
 		//	description:
-		//		If 2 arguments are passed, acts as a getter.
-		//		If a third argument is passed, acts as a setter.
+		//		Handles normalized getting and setting of attributes on DOM
+		//		Nodes. If 2 arguments are passed, and a the second argumnt is a
+		//		string, acts as a getter.
+		//	
+		//		If a third argument is passed, or if the second argumnt is a
+		//		map of attributes, acts as a setter.
 		//	node:
 		//		id or reference to the element to get or set the attribute on
 		//	name:
-		//		the name of the attribute to get or set
+		//		the name of the attribute to get or set.
 		//	value:
-		//		the value for the attribute (optional)
+		//		Optional. The value to set for the attribute
 		//	returns:
 		//		when used as a getter, the value of the requested attribute
 		//		or null if that attribute does not have a specified or
 		//		default value;
+		//
 		//		when user as a setter, undefined
+		//	example:
+		//	|	// get the current value of the "foo" attribute on a node
+		//	|	dojo.attr(dojo.byId("nodeId"), "foo");
+		//	|	
+		//	|	// we can just pass the id:
+		//	|	dojo.attr("nodeId", "foo");
+		//	|
+		//	|	// use attr() to set the tab index
+		//	|	dojo.attr("nodeId", "tabindex", 3);
+		//	|
+		//	|	// set multiple values at once, including event handlers:
+		//	|	dojo.attr("formId", {
+		//	|		"foo": "bar",
+		//	|		"tabindex": -1,
+		//	|		"method": "POST",
+		//	|		"onsubmit": function(e){
+		//	|			dojo.stopEvent(e);
+		//	|			// submit the form with Ajax
+		//	|			dojo.xhrPost({ form: "formId" });
+		//	|		}
+		//	|	});
+
+		var args = arguments.length;
+		if(args == 2 && !dojo.isString(name)){
+			for(var x in name){ dojo.attr(node, x, name[x]); }
+			return;
+		}
 		node = dojo.byId(node);
 		name = _fixAttrName(name);
-		if(arguments.length == 3){
-			if(typeof value == "function" || typeof value == "boolean"){ // e.g. onsubmit, disabled
+		if(args == 3){
+			if(dojo.isFunction(value)){
+				delete node[name]; // preserve clobbering behavior
+				// ensure that event objects are normalized, etc.
+				dojo.connect(node, name, value);
+			}else if(typeof value == "boolean"){ // e.g. onsubmit, disabled
+				// if a function, we should normalize the event object here!!!
 				node[name] = value;
 			}else{
 				node.setAttribute(name, value);
 			}
-			return undefined;
+			return;
 		}else{
 			// should we access this attribute via a property or
 			// via getAttribute()?

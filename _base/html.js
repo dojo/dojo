@@ -427,6 +427,22 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		"border": "3px solid black",
 		//	|		"height": 300
 		//	|	});
+		// 	example:
+		//		style properties in JavaScript are mixed-cased when the CSS equilivant is hypenated.
+		//		font-size becomes fontSize, and so on.
+		//	|	dojo.style("thinger",{
+		//	|		fontSize:"14pt",
+		//	|		letterSpacing:"1.2em"
+		//	|	});
+		//	example:
+		//		dojo.NodeList implements .style() using the same syntax, omitting the "node" parameter, calling
+		//		dojo.style() on every element of the list. See: dojo.query and dojo.NodeList
+		//	|	dojo.query(".someClassName").style("visibility","hidden");
+		//	|	// or
+		//	|	dojo.query("#baz > div").style({
+		//	|		opacity:0.75,
+		//	|		fontSize:"13pt"
+		//	|	});
 		var n=dojo.byId(node), args=arguments.length, op=(style=="opacity");
 		if(args==3){
 			return op ? dojo._setOpacity(n, value) : n.style[style] = value; /*Number*/

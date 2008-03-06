@@ -389,9 +389,11 @@ if(dojo.isIE || dojo.isOpera){
 			_pixelNamesCache[type] = _pixelRegExp.test(type);
 		}
 		return _pixelNamesCache[type] ? dojo._toPixelValue(node, value) : value;
-
 	}
 
+	var _floatStyle = dojo.isIE ? "styleFloat" : "cssFloat";
+	var _floatAliases = { "cssFloat": _floatStyle, "styleFloat": _floatStyle, "float": _floatStyle };
+	
 	// public API
 	
 	dojo.style = function(/*DomNode|String*/ node, /*String?||Object?*/style, /*String?*/value){
@@ -443,15 +445,16 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		opacity:0.75,
 		//	|		fontSize:"13pt"
 		//	|	});
-		var n=dojo.byId(node), args=arguments.length, op=(style=="opacity");
+		var n = dojo.byId(node), args = arguments.length, op = (style=="opacity");
+		style = _floatAliases[style] || style;
 		if(args==3){
 			return op ? dojo._setOpacity(n, value) : n.style[style] = value; /*Number*/
 		}
-		if(args==2 && op){
+		if(args == 2 && op){
 			return dojo._getOpacity(n);
 		}
 		var s = dojo.getComputedStyle(n);
-		if(args==2 && !dojo.isString(style)){
+		if(args == 2 && !dojo.isString(style)){
 			for(var x in style){
 				dojo.style(node, x, style[x]);
 			}

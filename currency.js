@@ -54,16 +54,7 @@ dojo.currency.regexp = function(/*dojo.number.__RegexpOptions?*/options){
 //
 // description:
 //		Returns regular expression with positive and negative match, group and decimal separators
-//
-// options: object {pattern: String, locale: String, strict: Boolean, places: mixed}
-//		currency- the ISO4217 currency code, a three letter sequence like "USD"
-//			See http://en.wikipedia.org/wiki/ISO_4217
-//		symbol- override currency symbol. Normally, will be looked up in table of supported currencies, and ISO currency code will
-//			be used if not found.  See dojo.i18n.cldr.nls->currency.js
-//		pattern- override pattern with this string
-//		locale- override the locale used to determine formatting rules
-//		strict- strict parsing, false by default
-//		places- number of decimal places to accept.  Default is defined by currency.
+//		Note: the options.places default, the number of decimal places to accept, is defined by the currency type.
 	return dojo.number.regexp(dojo.currency._mixInDefaults(options)); // String
 }
 
@@ -79,8 +70,10 @@ dojo.declare("dojo.currency.__ParseOptions", [dojo.number.__ParseOptions], {
 	//	fractional: Boolean?|Array?
 	//		where places are implied by pattern or explicit 'places' parameter, whether to include the fractional portion.
 	//		By default for currencies, it the fractional portion is optional.
-
-	this.type = type;
+	type: "",
+	symbol: "",
+	places: "",
+	fractional: ""
 });
 =====*/
 

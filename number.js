@@ -13,8 +13,8 @@ dojo.number = {
 
 dojo.number.__FormatOptions = function(){
 	//	pattern: String?
-	//		override formatting pattern with this string (see
-	//		dojo.number._applyPattern)
+	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
+	//		with this string
 	//	type: String?
 	//		choose a format type based on the locale from the following:
 	//		decimal, scientific, percent, currency. decimal by default.
@@ -25,7 +25,7 @@ dojo.number.__FormatOptions = function(){
 	//		5 rounds to nearest .5; 0 rounds to nearest whole (default). -1
 	//		means don't round.
 	//	currency: String?
-	//		iso4217 currency code
+	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD"
 	//	symbol: String?
 	//		localized currency symbol
 	//	locale: String?

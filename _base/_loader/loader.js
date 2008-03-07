@@ -106,7 +106,8 @@
 			//it is most likely the i18n bundle stuff.
 			contents = this._scopePrefix + contents + this._scopeSuffix;
 		}
-		var value = d["eval"](contents+"\r\n//@ sourceURL="+uri);
+		if(d.isMoz){ contents += "\r\n//@ sourceURL=" + uri; } // debugging assist for Firebug
+		var value = d["eval"](contents);
 		if(cb){ cb(value); }
 		return true; // Boolean
 	}

@@ -139,7 +139,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 					s = dateObject.getSeconds(); pad = true;
 					break;
 				case 'S':
-					s = Math.round(dateObject.getMilliseconds() * Math.pow(10, l-3));
+					s = Math.round(dateObject.getMilliseconds() * Math.pow(10, l-3)); pad = true;
 					break;
 				case 'v': // FIXME: don't know what this is. seems to be same as z?
 				case 'z':

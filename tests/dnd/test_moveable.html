@@ -20,13 +20,13 @@
 		#handle1 {
 			background: #333;
 			color: #fff;
-			font-weight:bold; 
+			font-weight: bold;
 			cursor: pointer;
 			border: 1px solid black;
 		}
 		#moveable2 {
-			background: #fff;
 			position: absolute;
+			background: #fff;
 			width:  200px;
 			height: 200px;
 			left: 100px;
@@ -37,6 +37,14 @@
 			cursor: pointer;
 			radius:8pt;
 			-moz-border-radius:8pt 8pt; 
+		}
+		#moveable3 {
+			position: relative;
+			width: 150px;
+			height: 100px;
+			background: #ff8;
+			color: blue;
+			font-weight: bold;
 		}
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
@@ -49,6 +57,7 @@
 		var init = function(){
 			m1 = new dojo.dnd.Moveable("moveable1", {handle: "handle1"});
 			m2 = new dojo.dnd.Moveable("moveable2");
+			m3 = new dojo.dnd.Moveable("moveable3");
 
 			dojo.subscribe("/dnd/move/start", function(mover){ 
 				console.debug("Start move", mover); 	
@@ -89,6 +98,9 @@
 	<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec est. Cras semper nunc ut metus. Pellentesque blandit pede at erat. Quisque nonummy leo id metus. Donec mi mi, viverra id, adipiscing vitae, consectetuer ut, elit. In lectus augue, porttitor quis, viverra id, dignissim id, leo. Maecenas sapien. Nam adipiscing sem. Aenean ligula. Etiam vel velit. In mollis cursus dolor. Suspendisse ac nibh id leo tempor posuere. Aliquam sapien tellus, elementum non, aliquam sed, luctus eu, augue. Aliquam elementum leo nec enim. Donec ornare sagittis magna. Mauris ac tellus.</p>
 	<p>Duis ac augue rhoncus neque adipiscing feugiat. Donec pulvinar sem vitae neque. Donec commodo metus at ipsum. Cras vel magna vehicula lorem varius consequat. Morbi at enim vitae lectus mollis sodales. Sed tincidunt quam ut mi varius hendrerit. Sed porta arcu non libero. Quisque et wisi. Pellentesque lobortis. Ut enim felis, varius vitae, ornare quis, auctor ut, risus. Ut porta lorem vel quam. Etiam nunc purus, consectetuer non, lobortis eu, fermentum eu, magna. Aenean ultrices ante. Aliquam erat volutpat. Morbi quis velit eu mi sollicitudin lacinia. Suspendisse potenti. Donec lectus.</p>
 	<p>Quisque egestas turpis. Sed id ipsum id libero euismod nonummy. Nam sed dolor. Mauris in turpis. Duis nec wisi eget ante ultrices varius. Ut eget neque. Suspendisse sagittis iaculis tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus at justo. Donec imperdiet, elit et commodo bibendum, leo augue pellentesque arcu, ac dapibus lorem nulla eget erat. In viverra, tellus eu luctus eleifend, urna nibh lobortis sapien, ac pulvinar massa enim vel turpis. Sed orci neque, sagittis eu, mattis vitae, rutrum condimentum, leo. Fusce wisi odio, convallis at, condimentum vel, imperdiet id, mi. Mauris semper, magna pretium consectetuer sollicitudin, eros enim vehicula risus, eu ultrices turpis quam at wisi. Nam mollis.</p>
-	<div id="moveable2">You can drag this whole paragraph around.</div>	
+	<div id="moveable2">
+		<div>You can drag this whole object around.</div>
+		<div id="moveable3">You can move this paragraph. It is relatively positioned.</div>
+	</div>
 </body>
 </html>

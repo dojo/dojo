@@ -99,7 +99,6 @@ dojo.declare("dojo.dnd.Manager", null, {
 		if(a){
 			//dojo.dnd.autoScrollNodes(e);
 			dojo.dnd.autoScroll(e);
-			//dojo.marginBox(a.node, {l: e.pageX + this.OFFSET_X, t: e.pageY + this.OFFSET_Y});
 			var s = a.node.style;
 			s.left = (e.pageX + this.OFFSET_X) + "px";
 			s.top  = (e.pageY + this.OFFSET_Y) + "px";

@@ -19,6 +19,7 @@ try{
 	dojo.require("tests.colors");
 	dojo.requireIf(dojo.isBrowser,"tests.cookie");
 	dojo.require("tests.fx");
+	dojo.require("tests.DeferredList");
 }catch(e){
 	doh.debug(e);
 }

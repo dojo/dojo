@@ -40,12 +40,9 @@ dojo.declare("dojo.DeferredList", dojo.Deferred, {
 		this.fireOnOneErrback = fireOnOneErrback;
 		this.consumeErrors = consumeErrors;
 
-		var index = 0;
-
 		dojo.forEach(this.list, function(d, index){
 			d.addCallback(this, function(r){ this._cbDeferred(index, true, r); return r; });
 			d.addErrback(this, function(r){ this._cbDeferred(index, false, r); return r; });
-			index++;
 		}, this);
 	},
 

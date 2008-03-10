@@ -986,7 +986,8 @@ if(dojo.isIE || dojo.isOpera){
 			case "tabindex":
 				// Internet Explorer will only set or remove tabindex
 				// if it is spelled "tabIndex"
-				return dojo.isIE ? "tabIndex" : "tabindex";
+				// console.debug((dojo.isIE && dojo.isIE < 8)? "tabIndex" : "tabindex");
+				return (dojo.isIE && dojo.isIE < 8) ? "tabIndex" : "tabindex";
 			default:
 				return name;
 		}
@@ -1078,7 +1079,9 @@ if(dojo.isIE || dojo.isOpera){
 		name = _fixAttrName(name);
 		if(args == 3){
 			if(dojo.isFunction(value)){
-				delete node[name]; // preserve clobbering behavior
+				try{
+					delete node[name]; // preserve clobbering behavior
+				}catch(e){}
 				// ensure that event objects are normalized, etc.
 				dojo.connect(node, name, value);
 			}else if(typeof value == "boolean"){ // e.g. onsubmit, disabled

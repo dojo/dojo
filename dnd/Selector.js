@@ -125,7 +125,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 			if(!dojo.dnd.getCopyKeyState(e)){
 				this._removeSelection();
 			}
-			var c = dojo.query("> .dojoDndItem", this.parent);
+			var c = this.getAllNodes();
 			if(c.length){
 				if(!this.anchor){
 					this.anchor = c[0];

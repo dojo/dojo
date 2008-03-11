@@ -147,7 +147,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		}
 
 		// process specially marked children
-		dojo.query("> .dojoDndItem", this.parent).forEach(function(node){
+		this.getAllNodes().forEach(function(node){
 			if(!node.id){ node.id = dojo.dnd.getUniqueId(); }
 			var type = node.getAttribute("dndType"),
 				data = node.getAttribute("dndData");

@@ -489,7 +489,7 @@ dojo.require("dojo._base.html");
 					var v = ({height: node.offsetHeight, width: node.offsetWidth})[p];
 					if(v !== undefined){ return v; }
 					v = d.style(node, p);
-					return (p=="opacity") ? Number(v) : parseFloat(v);
+					return (p=="opacity") ? Number(v) : (isColor ? v : parseFloat(v));
 				}
 				if(!("end" in prop)){
 					prop.end = getStyle(this.node, p);

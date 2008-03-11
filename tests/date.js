@@ -266,7 +266,7 @@ function test_date_add(t){
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
 
 	dtA = new Date(2001, 9, 28, 0);
-	dtB = new Date(2001, 9, 28, 1);
+	dtB = new Date(dtA.getTime() + (60 * 60 * 1000));
 	t.is(dtB, dojo.date.add(dtA, interv, 1));
 
 	dtA = new Date(2001, 9, 28, 23);

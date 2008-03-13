@@ -946,7 +946,12 @@ dojo.require("dojo._base.NodeList");
 	// future
 	var getQueryFunc = function(query){
 		// return a cached version if one is available
-		if(d.doc["querySelectorAll"]){
+		var qcz = query.charAt(0);
+		if(d.doc["querySelectorAll"] && 
+			// as per CSS 3, we can't currently start w/ combinator:
+			//		http://www.w3.org/TR/css3-selectors/#w3cselgrammar
+			!(qcz == ">" || qcz == "+" || qcz == "~")	
+		){
 			return function(root){
 				var r = root.querySelectorAll(query);
 				r.nozip = true; // skip expensive duplication checks and just wrap in a NodeList

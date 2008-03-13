@@ -3,12 +3,14 @@ dojo.provide("dojo._base.lang");
 // Crockford (ish) functions
 
 dojo.isString = function(/*anything*/ it){
-	// summary:	Return true if it is a String
+	//	summary:
+	//		Return true if it is a String
 	return !!arguments.length && it != null && (typeof it == "string" || it instanceof String); // Boolean
 }
 
 dojo.isArray = function(/*anything*/ it){
-	// summary: Return true if it is an Array
+	//	summary:
+	//		Return true if it is an Array
 	return it && (it instanceof Array || typeof it == "array"); // Boolean
 }
 
@@ -16,6 +18,7 @@ dojo.isArray = function(/*anything*/ it){
 dojo.isFunction = function(it){
 	// summary: Return true if it is a Function
 	// it: anything
+	//	return: Boolean
 }
 =====*/
 
@@ -34,7 +37,8 @@ dojo.isFunction = (function(){
 
 dojo.isObject = function(/*anything*/ it){
 	// summary: 
-	//		Returns true if it is a JavaScript object (or an Array, a Function or null)
+	//		Returns true if it is a JavaScript object (or an Array, a Function
+	//		or null)
 	return it !== undefined &&
 		(it === null || typeof it == "object" || dojo.isArray(it) || dojo.isFunction(it)); // Boolean
 }
@@ -49,7 +53,7 @@ dojo.isArrayLike = function(/*anything*/ it){
 	//		dojo.isArrayLike(), but will return false when passed to
 	//		dojo.isArray().
 	//	return:
-	//		If it walks like a duck and quicks like a duck, return true
+	//		If it walks like a duck and quicks like a duck, return `true`
 	var d = dojo;
 	return it && it !== undefined &&
 		// keep out built-in constructors (Number, String, ...) which have length
@@ -91,7 +95,7 @@ dojo._hitchArgs = function(scope, method /*,...*/){
 }
 
 dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
-	// summary: 
+	//	summary: 
 	//		Returns a function that will only ever execute in the a given scope. 
 	//		This allows for easy use of object member functions
 	//		in callbacks and other places in which the "this" keyword may
@@ -100,16 +104,16 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 	//		beyond "method".
 	//		Each of these values will be used to "placehold" (similar to curry)
 	//		for the hitched function. 
-	// scope: 
+	//	scope: 
 	//		The scope to use when method executes. If method is a string, 
 	//		scope is also the object containing method.
-	// method:
+	//	method:
 	//		A function to be hitched to scope, or the name of the method in
 	//		scope to be hitched.
-	// example:
+	//	example:
 	//	|	dojo.hitch(foo, "bar")(); 
 	//		runs foo.bar() in the scope of foo
-	// example:
+	//	example:
 	//	|	dojo.hitch(foo, myFunction);
 	//		returns a function that runs myFunction in the scope of foo
 	if(arguments.length > 2){
@@ -172,7 +176,7 @@ dojo.delegate = dojo._delegate = function(obj, props){
 }
 
 dojo.partial = function(/*Function|String*/method /*, ...*/){
-	// summary:
+	//	summary:
 	//		similar to hitch() except that the scope object is left to be
 	//		whatever the execution context eventually becomes.
 	//	description:
@@ -183,16 +187,17 @@ dojo.partial = function(/*Function|String*/method /*, ...*/){
 }
 
 dojo._toArray = function(/*Object*/obj, /*Number?*/offset, /*Array?*/ startWith){
-	// summary:
-	//		Converts an array-like object (i.e. arguments, DOMCollection)
-	//		to an array. Returns a new Array object.
-	// obj:
+	//	summary:
+	//		Converts an array-like object (i.e. arguments, DOMCollection) to an
+	//		array. Returns a new Array with the elements of obj.
+	//	obj:
 	//		the object to "arrayify". We expect the object to have, at a
 	//		minimum, a length property which corresponds to integer-indexed
 	//		properties.
-	// offset:
-	//		the location in obj to start iterating from. Defaults to 0. Optional.
-	// startWith:
+	//	offset:
+	//		the location in obj to start iterating from. Defaults to 0.
+	//		Optional.
+	//	startWith:
 	//		An array to pack with the properties of obj. If provided,
 	//		properties in obj are appended at the end of startWith and
 	//		startWith is the returned array.

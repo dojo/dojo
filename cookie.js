@@ -3,7 +3,7 @@ dojo.provide("dojo.cookie");
 dojo.require("dojo.regexp");
 
 /*=====
-dojo.__cookieProps = function(kwArgs){
+dojo.__cookieProps = function(){
 	//	expires: Date|String|Number?
 	//		If a number, the number of days from today at which the cookie
 	//		will expire. If a date, the date past which the cookie will expire.
@@ -15,6 +15,10 @@ dojo.__cookieProps = function(kwArgs){
 	//		The domain to use for the cookie.
 	//	secure: Boolean?
 	//		Whether to only send the cookie on secure connections
+	this.expires = expires;
+	this.path = path;
+	this.domain = domain;
+	this.secure = secure;
 }
 =====*/
 

@@ -1016,7 +1016,9 @@ if((!("console" in window) || !("firebug" in console)) &&
 		used = used || [];
 		looking:
 		for(var nm in o){
-			if(o[nm] && o[nm].nodeType){
+			if(o[nm] === window || o[nm] === document){
+				continue;
+			}else if(o[nm] && o[nm].nodeType){
 				if(o[nm].nodeType == 1){
 					txt += i+nm + " : < "+o[nm].tagName+" id=\""+ o[nm].id+"\" />" + br;
 				}else if(o[nm].nodeType == 3){

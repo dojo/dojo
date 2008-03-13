@@ -35,6 +35,33 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	console.warn(message);
 }
 
+dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/props){
+	var c = document.cookie;
+	if(arguments.length == 1){
+		var matches = c.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+		return matches ? decodeURIComponent(matches[1]) : undefined; // String or undefined
+	}else{
+		props = props || {};
+// FIXME: expires=0 seems to disappear right away, not on close? (FF3)  Change docs?
+		var exp = props.expires;
+		if(typeof exp == "number"){ 
+			var d = new Date();
+			d.setTime(d.getTime() + exp*24*60*60*1000);
+			exp = props.expires = d;
+		}
+		if(exp && exp.toUTCString){ props.expires = exp.toUTCString(); }
+
+		value = encodeURIComponent(value);
+		var updatedCookie = name + "=" + value;
+		for(propName in props){
+			updatedCookie += "; " + propName;
+			var propValue = props[propName];
+			if(propValue !== true){ updatedCookie += "=" + propValue; }
+		}
+		document.cookie = updatedCookie;
+	}
+};
+
 // FIREBUG LITE
 	// summary: Firebug Lite, the baby brother to Joe Hewitt's Firebug for Mozilla Firefox
 	// description:
@@ -610,6 +637,11 @@ if((!("console" in window) || !("firebug" in console)) &&
 				consoleObjectInspector.style.display = "block";
 				// create a back button
 				var bkBtn = '<a href="javascript:console.closeObjectInspector();">&nbsp;<<&nbsp;Back</a>';
+				try{
+					printObject(this.obj);
+				}catch(e){
+					this.obj = e;
+				}
 				consoleObjectInspector.innerHTML = bkBtn + "<pre>" + printObject( this.obj ) + "</pre>";
 			}));
 		}
@@ -692,10 +724,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 	}
 
 	function appendFunction(object, html){
-		var reName = /function ?(.*?)\(/;
-		var m = reName.exec(objectToString(object));
-		var name = m ? m[1] : "function";
-		html.push('<span class="objectBox-function">', escapeHTML(name), '()</span>');
+		html.push('<span class="objectBox-function">', getObjectAbbr(object), '</span>');
 	}
 	
 	function appendObject(object, html){
@@ -885,10 +914,76 @@ if((!("console" in window) || !("firebug" in console)) &&
 	}
 	
 	function onCommandLineKeyDown(event){
-		if(event.keyCode == 13){
+		if(event.keyCode == 13 && commandLine.value){
+			addToHistory(commandLine.value);
 			evalCommandLine();
 		}else if(event.keyCode == 27){
 			commandLine.value = "";
+		}else if(event.keyCode == dojo.keys.UP_ARROW || event.charCode == dojo.keys.UP_ARROW){
+			navigateHistory("older");
+		}else if(event.keyCode == dojo.keys.DOWN_ARROW || event.charCode == dojo.keys.DOWN_ARROW){
+			navigateHistory("newer");
+		}else if(event.keyCode == dojo.keys.HOME || event.charCode == dojo.keys.HOME){
+			historyPosition = 1;
+			navigateHistory("older");
+		}else if(event.keyCode == dojo.keys.END || event.charCode == dojo.keys.END){
+			historyPosition = 999999;
+			navigateHistory("newer");
+		}
+	}
+
+	var historyPosition = -1;
+	var historyCommandLine = null;
+
+	function addToHistory(value){
+		var history = dojo.cookie("firebug_history");
+		history = (history) ? dojo.fromJson(history) : [];
+		var pos = dojo.indexOf(history, value);
+		if (pos != -1){
+			history.splice(pos, 1);
+		}
+		history.push(value);
+		dojo.cookie("firebug_history", dojo.toJson(history), 30);
+		while(history.length && !dojo.cookie("firebug_history")){
+			history.shift();
+			dojo.cookie("firebug_history", dojo.toJson(history), 30);
+		}
+		historyCommandLine = null;
+		historyPosition = -1;
+	}
+
+	function navigateHistory(direction){
+		var history = dojo.cookie("firebug_history");
+		history = (history) ? dojo.fromJson(history) : [];
+		if(!history.length){
+			return;
+		}
+
+		if(historyCommandLine === null){
+			historyCommandLine = commandLine.value;
+		}
+
+		if(historyPosition == -1){
+			historyPosition = history.length;
+		}
+
+		if(direction == "older"){
+			--historyPosition;
+			if(historyPosition < 0){
+				historyPosition = 0;
+			}
+		}else if(direction == "newer"){
+			++historyPosition;
+			if(historyPosition > history.length){
+				historyPosition = history.length;
+			}
+		}
+
+		if(historyPosition == history.length){
+			commandLine.value = historyCommandLine;
+			historyCommandLine = null;
+		}else{
+			commandLine.value = history[historyPosition];
 		}
 	}
 
@@ -911,19 +1006,44 @@ if((!("console" in window) || !("firebug" in console)) &&
 		}
 	}
 
-	function printObject(o, i, txt){
+	function printObject(o, i, txt, used){
 		// Recursively trace object, indenting to represent depth for display in object inspector
 		// TODO: counter to prevent overly complex or looped objects (will probably help with dom nodes)
 		var br = "\n"; // using a <pre>... otherwise we'd need a <br />
 		var ind = "  ";
 		txt = txt || "";
 		i = i || ind;
+		used = used || [];
+		looking:
 		for(var nm in o){
-			if(typeof(o[nm]) == "object"){
+			if(o[nm] && o[nm].nodeType){
+				if(o[nm].nodeType == 1){
+					txt += i+nm + " : < "+o[nm].tagName+" id=\""+ o[nm].id+"\" />" + br;
+				}else if(o[nm].nodeType == 3){
+					txt += i+nm + " : [ TextNode "+o[nm].data + " ]" + br;
+				}
+			}else if(typeof o[nm] == "object" && (o[nm] instanceof String || o[nm] instanceof Number || o[nm] instanceof Boolean)){
+				txt += i+nm + " : " + o[nm] + br;
+			}else if(typeof(o[nm]) == "object" && o[nm]){
+				for(var j = 0, seen; seen = used[j]; j++){
+					if(o[nm] === seen){
+						txt += i+nm + " : RECURSION" + br;
+						continue looking;
+					}
+				}
+				used.push(o[nm]);
 				txt += i+nm +" -> " + getAtts(o[nm]) + br;
-				txt += printObject(o[nm], i+ind);
+				txt += printObject(o[nm], i+ind, "", used);
+			}else if(typeof o[nm] == "undefined"){
+				txt += i+nm + " : undefined" + br;
+			}else if(nm == "toString" && typeof o[nm] == "function"){
+				var toString = o[nm]();
+				if(typeof toString == "string" && toString.match(/function ?(.*?)\(/)){
+					toString = escapeHTML(getObjectAbbr(o[nm]));
+				}
+				txt += i+nm +" : " + toString + br;
 			}else{
-				txt += i+nm +" : "+o[nm] + br;
+				txt += i+nm +" : "+ escapeHTML(getObjectAbbr(o[nm])) + br;
 			}
 		}
 		txt += br; // keeps data from running to the edge of page
@@ -936,7 +1056,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 		// X items in an array
 		// TODO: Firebug Sr. actually goes by char count
 		var isError = (obj instanceof Error);
-		var nm = obj.id || obj.name || obj.ObjectID || obj.widgetId;
+		var nm = (obj && (obj.id || obj.name || obj.ObjectID || obj.widgetId));
 		if(!isError && nm){ return "{"+nm+"}";	}
 
 		var obCnt = 2;
@@ -951,6 +1071,18 @@ if((!("console" in window) || !("firebug" in console)) &&
 				nm += " ... ("+obj.length+" items)";
 			}
 			nm += "]";
+		}else if(typeof obj == "function"){
+			nm = obj + "";
+			var reg = /function\s*([^\(]*)(\([^\)]*\))[^\{]*\{/;
+			var m = reg.exec(nm);
+			if(m){
+				if(!m[1]){
+					m[1] = "function";
+				}
+				nm = m[1] + m[2];
+			}else{
+				nm = "function()";
+			}
 		}else if(typeof obj != "object" || typeof obj == "string"){
 			nm = obj + "";
 		}else{

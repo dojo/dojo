@@ -35,33 +35,6 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	console.warn(message);
 }
 
-dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/props){
-	var c = document.cookie;
-	if(arguments.length == 1){
-		var matches = c.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
-		return matches ? decodeURIComponent(matches[1]) : undefined; // String or undefined
-	}else{
-		props = props || {};
-// FIXME: expires=0 seems to disappear right away, not on close? (FF3)  Change docs?
-		var exp = props.expires;
-		if(typeof exp == "number"){ 
-			var d = new Date();
-			d.setTime(d.getTime() + exp*24*60*60*1000);
-			exp = props.expires = d;
-		}
-		if(exp && exp.toUTCString){ props.expires = exp.toUTCString(); }
-
-		value = encodeURIComponent(value);
-		var updatedCookie = name + "=" + value;
-		for(propName in props){
-			updatedCookie += "; " + propName;
-			var propValue = props[propName];
-			if(propValue !== true){ updatedCookie += "=" + propValue; }
-		}
-		document.cookie = updatedCookie;
-	}
-};
-
 // FIREBUG LITE
 	// summary: Firebug Lite, the baby brother to Joe Hewitt's Firebug for Mozilla Firefox
 	// description:
@@ -936,24 +909,24 @@ if((!("console" in window) || !("firebug" in console)) &&
 	var historyCommandLine = null;
 
 	function addToHistory(value){
-		var history = dojo.cookie("firebug_history");
+		var history = cookie("firebug_history");
 		history = (history) ? dojo.fromJson(history) : [];
 		var pos = dojo.indexOf(history, value);
 		if (pos != -1){
 			history.splice(pos, 1);
 		}
 		history.push(value);
-		dojo.cookie("firebug_history", dojo.toJson(history), 30);
-		while(history.length && !dojo.cookie("firebug_history")){
+		cookie("firebug_history", dojo.toJson(history), 30);
+		while(history.length && !cookie("firebug_history")){
 			history.shift();
-			dojo.cookie("firebug_history", dojo.toJson(history), 30);
+			cookie("firebug_history", dojo.toJson(history), 30);
 		}
 		historyCommandLine = null;
 		historyPosition = -1;
 	}
 
 	function navigateHistory(direction){
-		var history = dojo.cookie("firebug_history");
+		var history = cookie("firebug_history");
 		history = (history) ? dojo.fromJson(history) : [];
 		if(!history.length){
 			return;
@@ -986,6 +959,18 @@ if((!("console" in window) || !("firebug" in console)) &&
 			commandLine.value = history[historyPosition];
 		}
 	}
+
+	function cookie(name, value){
+		var c = document.cookie;
+		if(arguments.length == 1){
+			var matches = c.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+			return matches ? decodeURIComponent(matches[1]) : undefined; // String or undefined
+		}else{
+			var d = new Date();
+			d.setMonth(d.getMonth()+1);
+			document.cookie = name + "=" + encodeURIComponent(value) + ((d.toUtcString) ? "; expires=" + d.toUTCString() : "");
+		}
+	};
 
 	function isArray(it){
 		return it && it instanceof Array || typeof it == "array";

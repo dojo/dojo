@@ -114,6 +114,7 @@ dojo.dnd.move.constrainedMover = function(fun, within){
 	// fun: Function: called on drag, and returns a constraint box
 	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
 	//	otherwise the constraint is applied to the left-top corner
+	dojo.deprecated("dojo.dnd.move.constrainedMover, use dojo.dnd.move.constrainedMoveable instead");
 	var mover = function(node, e, notifier){
 		dojo.dnd.Mover.call(this, node, e, notifier);
 	};
@@ -145,6 +146,7 @@ dojo.dnd.move.boxConstrainedMover = function(box, within){
 	// box: Object: a constraint box (l, t, w, h)
 	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
 	//	otherwise the constraint is applied to the left-top corner
+	dojo.deprecated("dojo.dnd.move.boxConstrainedMover, use dojo.dnd.move.boxConstrainedMoveable instead");
 	return dojo.dnd.move.constrainedMover(function(){ return box; }, within);	// Object
 };
 
@@ -154,6 +156,7 @@ dojo.dnd.move.parentConstrainedMover = function(area, within){
 	//	"padding" for the padding box, and "content" for the content box; "content" is the default value.
 	// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
 	//	otherwise the constraint is applied to the left-top corner
+	dojo.deprecated("dojo.dnd.move.parentConstrainedMover, use dojo.dnd.move.parentConstrainedMoveable instead");
 	var fun = function(){
 		var n = this.node.parentNode, 
 			s = dojo.getComputedStyle(n), 

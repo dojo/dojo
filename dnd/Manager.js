@@ -66,7 +66,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 	},
 	canDrop: function(flag){
 		// summary: called to notify if the current target can accept items
-		var canDropFlag = this.target && flag;
+		var canDropFlag = Boolean(this.target && flag);
 		if(this.canDropFlag != canDropFlag){
 			this.canDropFlag = canDropFlag;
 			this.avatar.update();

@@ -67,14 +67,9 @@ dojo.declare("dojo.dnd.Avatar", null, {
 		// summary: updates the avatar to reflect the current DnD state
 		dojo[(this.manager.canDropFlag ? "add" : "remove") + "Class"](this.node, "dojoDndAvatarCanDrop");
 		// replace text
-		var t = this.node.getElementsByTagName("td");
-		for(var i = 0; i < t.length; ++i){
-			var n = t[i];
-			if(dojo.hasClass(n.parentNode, "dojoDndAvatarHeader")){
-				n.innerHTML = this._generateText();
-				break;
-			}
-		}
+		dojo.query("tr.dojoDndAvatarHeader td").forEach(function(node){
+			node.innerHTML = this._generateText();
+		}, this);
 	},
 	_generateText: function(){
 		// summary: generates a proper text to reflect copying or moving of items

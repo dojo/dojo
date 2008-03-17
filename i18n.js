@@ -64,7 +64,7 @@ dojo.i18n.normalizeLocale = function(/*String?*/locale){
 	//		Returns canonical form of locale, as used by Dojo.
 	//
 	//  description:
-	//		All variants are case-insensitive and are separated by '-' as specified in RFC 3066.
+	//		All variants are case-insensitive and are separated by '-' as specified in [RFC 3066](http://www.ietf.org/rfc/rfc3066.txt).
 	//		If no locale is specified, the dojo.locale is returned.  dojo.locale is defined by
 	//		the user agent's locale unless overridden by djConfig.
 

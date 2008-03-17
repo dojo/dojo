@@ -382,10 +382,14 @@ if(dojo.isIE || dojo.isOpera){
 	var _pixelRegExp = /margin|padding|width|height|max|min|offset/;  // |border
 	var _toStyleValue = function(node, type, value){
 		type = type.toLowerCase();
+		if(dojo.isIE && value == "auto"){
+			if(type == "height"){ return node.offsetHeight; }
+			if(type == "width"){ return node.offsetWidth; }
+		}
 		if(!(type in _pixelNamesCache)){
-//			if(dojo.isOpera && type == "cssText"){
-// FIXME: add workaround for #2855 here
-//			}
+			//	if(dojo.isOpera && type == "cssText"){
+			// 		FIXME: add workaround for #2855 here
+			//	}
 			_pixelNamesCache[type] = _pixelRegExp.test(type);
 		}
 		return _pixelNamesCache[type] ? dojo._toPixelValue(node, value) : value;
@@ -396,7 +400,9 @@ if(dojo.isIE || dojo.isOpera){
 	
 	// public API
 	
-	dojo.style = function(/*DomNode|String*/ node, /*String?||Object?*/style, /*String?*/value){
+	dojo.style = function(	/*DomNode|String*/		node, 
+							/*String?||Object?*/	style, 
+							/*String?*/				value){
 		//	summary:
 		//		gets or sets a style property on node. If 2 arguments are
 		//		passed, acts as a getter. If value is passed, acts as a setter
@@ -893,9 +899,9 @@ if(dojo.isIE || dojo.isOpera){
 
 		// targetBoxType == "border-box"
 		var db = dojo.body();
-		if(dojo.isIE){
+		if(dojo.isIE || (dojo.isFF >= 3)){
 			var client = node.getBoundingClientRect();
-			var offset = dojo._getIeDocumentElementOffset();
+			var offset = (dojo.isIE) ? dojo._getIeDocumentElementOffset() : { x: 0, y: 0};
 			ret.x = client.left - offset.x;
 			ret.y = client.top - offset.y;
 		}else if(ownerDocument["getBoxObjectFor"]){

@@ -7,7 +7,7 @@
 			@import "../resources/dojo.css";
 		</style>
 		<script type="text/javascript" 
-			src="../dojo.js" djConfig="isDebug: false"></script>
+			src="../dojo.js" djConfig="isDebug: true, popup: true"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
 			dojo.require("dojo.behavior");
@@ -25,7 +25,7 @@
 				}
 			}
 
-			var topicCount = 0;
+			topicCount = 0;
 			dojo.subscribe("/foo", function(){ topicCount++; });
 
 			// no behaviors should be executed when onload fires
@@ -62,6 +62,7 @@
 							// dojo.query(".bar").styles("opacity", 1.0);
 						},
 						function topics(t){
+							var d = new doh.Deferred();
 							t.is(0, topicCount);
 							dojo.behavior.add({ ".foo": "/foo" });
 							dojo.behavior.apply();
@@ -74,11 +75,18 @@
 							dojo.behavior.apply();
 							t.is(2, topicCount);
 							dojo.byId("blah").focus();
-							t.is(3, topicCount);
 							dojo.byId("blah").blur();
 							dojo.byId("blah").focus();
-							t.is(4, topicCount);
-
+							setTimeout(function(){
+								// blur/focus event generation isn't synchronous on IE
+								try{
+									t.is(4, topicCount);
+									d.callback(true);
+								}catch(e){
+									d.errback(e);
+								}
+							}, 10);
+							return d;
 						}
 					]
 				);
@@ -93,6 +101,6 @@
 				<span>.foo &gt; .bar &gt; span</span>	
 			</div>
 		</div>
-		<input type="text" id="blah" class="foo blah" name="thinger" value="thinger">
+		<input type="text" id="blah" class="foo blah" name="thinger" value="thinger" tabIndex="0">
 	</body>
 </html>

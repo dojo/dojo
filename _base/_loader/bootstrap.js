@@ -10,6 +10,7 @@ djConfig = {
 	// summary:
 	//		Application code can set the global 'djConfig' prior to loading
 	//		the library to override certain global settings for how dojo works.
+	//
 	// isDebug: Boolean
 	//		Defaults to `false`. If set to `true`, ensures that Dojo provides
 	//		extende debugging feedback via Firebug. If Firebug is not available
@@ -33,20 +34,20 @@ djConfig = {
 	//		Due to the somewhat unpredictable side-effects of using
 	//		`debugAtAllCosts`, it is strongly recommended that you enable this
 	//		flag as a last resort. `debugAtAllCosts` has no effect when loading
-	//		resources across domains. For usage information, see the [Dojo
-	//		Book](http://dojotoolkit.org/book/book-dojo/part-4-meta-dojo-making-your-dojo-code-run-faster-and-better/debugging-facilities/deb)
+	//		resources across domains. For usage information, see the
+	//		[Dojo Book](http://dojotoolkit.org/book/book-dojo/part-4-meta-dojo-making-your-dojo-code-run-faster-and-better/debugging-facilities/deb)
 	debugAtAllCosts: false,
 	// locale: String
-	//		The locale to assume for loading localized resources in this page.
-	//		The form of the locale is in the common convention format of
-	//		`en-us` and `zh-cn`. See the documentation for `dojo.i18n` and
-	//		`dojo.requireLocalization` for details on loading localized
-	//		resources. If no locale is specified, Dojo attempts to determine
-	//		the locale of the page from the browser's `navigator.userLanguage`
+	//		The locale to assume for loading localized resources in this page,
+	//		specified according to [RFC 3066](http://www.ietf.org/rfc/rfc3066.txt).
+	//		Must be specified entirely in lowercase, e.g. `en-us` and `zh-cn`.
+	//		See the documentation for `dojo.i18n` and `dojo.requireLocalization`
+	//		for details on loading localized resources. If no locale is specified,
+	//		Dojo assumes the locale of the user agent, according to `navigator.userLanguage`
 	//		or `navigator.language` properties.
 	locale: undefined,
-	// extraLocale: String
-	//		No default value. Specifies a secondary locale whose
+	// extraLocale: Array
+	//		No default value. Specifies additional locales whose
 	//		resources should also be loaded alongside the default locale when
 	//		calls to `dojo.requireLocalization()` are processed.
 	extraLocale: undefined,
@@ -169,7 +170,7 @@ dojo.global = {
 		//	revision: Number
 		//		The SVN rev from which dojo was pulled
 		major: 1, minor: 1, patch: 0, flag: "dev",
-		revision: rev ? Number(rev[0]) : 999999,
+		revision: rev ? +rev[0] : 999999, //FIXME: use NaN?
 		toString: function(){
 			with(d.version){
 				return major + "." + minor + "." + patch + flag + " (" + revision + ")";	// String
@@ -268,8 +269,8 @@ dojo.global = {
 	}
 
 	dojo._getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
-		var obj=context||d.global;
-		for(var i=0, p; obj&&(p=parts[i]); i++){
+		var obj=context || d.global;
+		for(var i=0, p; obj && (p=parts[i]); i++){
 			if(i == 0 && this._scopeMap[p]){
 				p = this._scopeMap[p];
 			}
@@ -305,7 +306,7 @@ dojo.global = {
 		//		wheras with `dojo.setObject`, we can shorten that to:
 		//	|	dojo.setObject("parent.child.prop", "some value", obj);
 		var parts=name.split("."), p=parts.pop(), obj=d._getProp(parts, true, context);
-		return (obj && p ? (obj[p]=value) : undefined); // Object
+		return obj && p ? (obj[p]=value) : undefined; // Object
 	}
 
 	dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/context){

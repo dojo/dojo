@@ -155,8 +155,8 @@ dojo.delegate = function(obj, props){
 	//	|	var foo = { bar: "baz" };
 	//	|	var thinger = dojo.delegate(foo, { thud: "xyzzy"});
 	//	|	thinger.bar == "baz"; // delegated to foo
-	//	|	foo.xyzzy == undefined; // by definition
-	//	|	thinger.xyzzy == "xyzzy"; // mixed in from props
+	//	|	foo.thud == undefined; // by definition
+	//	|	thinger.thud == "xyzzy"; // mixed in from props
 	//	|	foo.bar = "thonk";
 	//	|	thinger.bar == "thonk"; // still delegated to foo's bar
 }

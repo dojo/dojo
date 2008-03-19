@@ -78,7 +78,9 @@ djConfig = {
 	// if((!this["console"])||(!console["firebug"])){
 
 	if(!this["console"]){
-		this.console = {};
+		this.console = {
+			log: function(){} // no-op
+		};
 	}
 
 	var cn = [
@@ -86,9 +88,6 @@ djConfig = {
 		"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
 		"trace", "warn", "log" 
 	];
-	if(!console["log"]){ // some browsers don't have full firebug bug give us console.log. Use it if we can. Refs #6255
-		console.log = function(){}; // no-op
-	}
 	var i=0, tn;
 	while((tn=cn[i++])){
 		if(!console[tn]){

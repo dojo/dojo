@@ -7,8 +7,17 @@
 			src="../../../dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript">
 			dojo.addOnLoad(function(){
-				alert("addOnLoad works");
+				console.debug("addOnLoad(func) works");
 			});
+			var scope = {
+				named: function(){ console.debug("addOnLoad(obj, name) works"); },
+				refd: function(){ console.debug("addOnLoad(obj, func) works"); }
+			};
+			dojo.addOnLoad(scope, "named");
+			dojo.addOnLoad(scope, scope.refd);
+			// dojo.addOnLoad(scope, "named");
+			// dojo.addOnLoad(scope, scope.refd);
+
 			dojo.addOnUnload(function(){
 				alert("addOnUnload works");
 			});

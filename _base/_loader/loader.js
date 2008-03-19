@@ -145,6 +145,7 @@
 			try{
 				mll[x]();
 			}catch(e){
+				throw e;
 				console.error("dojo.addOnLoad callback failed: " + e, e); /* let other load events fire, like the parser, but report the error */
 			}
 		}
@@ -170,6 +171,15 @@
 		}
 	}
 
+	var onto = function(arr, obj, fn){
+		if(!fn){
+			arr.push(obj);
+		}else if(fn){
+			var func = (typeof fn == "string") ? obj[fn] : fn;
+			arr.push(function(){ func.call(obj); });
+		}
+	}
+
 	dojo.addOnLoad = function(/*Object?*/obj, /*String|Function*/functionName){
 		// summary:
 		//		Registers a function to be triggered after the DOM has finished
@@ -181,13 +191,9 @@
 		// example:
 		//	|	dojo.addOnLoad(functionPointer);
 		//	|	dojo.addOnLoad(object, "functionName");
-		if(arguments.length == 1){
-			d._loaders.push(obj);
-		}else if(arguments.length > 1){
-			d._loaders.push(function(){
-				obj[functionName]();
-			});
-		}
+		//	|	dojo.addOnLoad(object, function(){ /* ... */});
+
+		onto(d._loaders, obj, functionName);
 
 		//Added for xdomain loading. dojo.addOnLoad is used to
 		//indicate callbacks after doing some dojo.require() statements.
@@ -199,17 +205,14 @@
 	}
 
 	dojo.addOnUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
-		// summary: registers a function to be triggered when the page unloads
+		// summary:
+		//		registers a function to be triggered when the page unloads
 		// example:
 		//	|	dojo.addOnUnload(functionPointer)
 		//	|	dojo.addOnUnload(object, "functionName")
-		if(arguments.length == 1){
-			d._unloaders.push(obj);
-		}else if(arguments.length > 1){
-			d._unloaders.push(function(){
-				obj[functionName]();
-			});
-		}
+		//	|	dojo.addOnUnload(object, function(){ /* ... */});
+
+		onto(d._unloaders, obj, functionName);
 	}
 
 	dojo._modulesLoaded = function(){
@@ -222,12 +225,14 @@
 	}
 
 	dojo._callLoaded = function(){
-		//The "object" check is for IE, and the other opera check fixes an issue
-		//in Opera where it could not find the body element in some widget test cases.
-		//For 0.9, maybe route all browsers through the setTimeout (need protection
-		//still for non-browser environments though). This might also help the issue with
-		//FF 2.0 and freezing issues where we try to do sync xhr while background css images
-		//are being loaded (trac #2572)? Consider for 0.9.
+
+		// The "object" check is for IE, and the other opera check fixes an
+		// issue in Opera where it could not find the body element in some
+		// widget test cases.  For 0.9, maybe route all browsers through the
+		// setTimeout (need protection still for non-browser environments
+		// though). This might also help the issue with FF 2.0 and freezing
+		// issues where we try to do sync xhr while background css images are
+		// being loaded (trac #2572)? Consider for 0.9.
 		if(typeof setTimeout == "object" || (dojo.config.useXDomain && d.isOpera)){
 			if(dojo.isAIR){
 				setTimeout(function(){dojo.loaded();}, 0);

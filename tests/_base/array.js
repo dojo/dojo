@@ -6,43 +6,47 @@ tests.register("tests._base.array",
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];
 			
-			t.assertTrue(dojo.indexOf([45, 56, 85], 56) == 1);
-			t.assertTrue(dojo.indexOf([Number, String, Date], String) == 1);
-			t.assertTrue(dojo.indexOf(foo, foo[1]) == 1);
-			t.assertTrue(dojo.indexOf(foo, foo[2]) == 2);
-			t.assertTrue(dojo.indexOf(bar, bar[1]) == 1);
-			t.assertTrue(dojo.indexOf(bar, bar[2]) == 2);
-			
+			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56));
+			t.assertEqual(1, dojo.indexOf([Number, String, Date], String));
+			t.assertEqual(1, dojo.indexOf(foo, foo[1]));
+			t.assertEqual(2, dojo.indexOf(foo, foo[2]));
+			t.assertEqual(1, dojo.indexOf(bar, bar[1]));
+			t.assertEqual(2, dojo.indexOf(bar, bar[2]));
+			t.assertEqual(-1, dojo.indexOf({a:1}, "a"));
+
 			foo.push(bar);
-			t.assertTrue(dojo.indexOf(foo, bar) == 3);
+			t.assertEqual(3, dojo.indexOf(foo, bar));
 		},
 
 		function testIndexOfFromIndex(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];
 			
-			// FIXME: what happens w/ negative indexes?
 			t.assertEqual(-1, dojo.indexOf([45, 56, 85], 56, 2));
 			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, 1));
+			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, -1));
+			// Make sure going out of bounds doesn't throw us in an infinite loop
+			t.assertEqual(-1, dojo.indexOf([45, 56, 85], 56, 3));
 		},
 
 		function testLastIndexOf(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "aaa", "ccc"];
 			
-			t.assertTrue(dojo.indexOf([45, 56, 85], 56) == 1);
-			t.assertTrue(dojo.indexOf([Number, String, Date], String) == 1);
-			t.assertTrue(dojo.lastIndexOf(foo, foo[1]) == 1);
-			t.assertTrue(dojo.lastIndexOf(foo, foo[2]) == 2);
-			t.assertTrue(dojo.lastIndexOf(bar, bar[1]) == 1);
-			t.assertTrue(dojo.lastIndexOf(bar, bar[2]) == 2);
-			t.assertTrue(dojo.lastIndexOf(bar, bar[0]) == 2);
+			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56));
+			t.assertEqual(1, dojo.indexOf([Number, String, Date], String));
+			t.assertEqual(1, dojo.lastIndexOf(foo, foo[1]));
+			t.assertEqual(2, dojo.lastIndexOf(foo, foo[2]));
+			t.assertEqual(1, dojo.lastIndexOf(bar, bar[1]));
+			t.assertEqual(2, dojo.lastIndexOf(bar, bar[2]));
+			t.assertEqual(2, dojo.lastIndexOf(bar, bar[0]));
 		},
 
 		function testLastIndexOfFromIndex(t){
-			// FIXME: what happens w/ negative indexes?
 			t.assertEqual(1, dojo.lastIndexOf([45, 56, 85], 56, 1));
 			t.assertEqual(-1, dojo.lastIndexOf([45, 56, 85], 85, 1));
+			t.assertEqual(-1, dojo.lastIndexOf([45, 56, 85], 85, -1));
+			t.assertEqual(0, dojo.lastIndexOf([45, 56, 45], 45, 0));
 		},
 
 		function testForEach(t){

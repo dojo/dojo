@@ -23,12 +23,16 @@ dojo.provide("dojo._base.array");
 			//		For details on this method, see:
 			// 			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
 
-			var step = 1, end = array.length, i = (fromIndex||0);
+			var step = 1, end = array.length || 0, i = 0;
 			if(findLast){
-				step = -1, i = (fromIndex||array.length - 1), end = -1;
+				i = end - 1;
+				step = end = -1;
 			}
-			for(; i!=end; i+=step){
-				if(array[i] == value){ return i; }
+			if(fromIndex != undefined){ i = fromIndex; }
+			if((findLast && i > end) || i < end){
+				for(; i != end; i += step){
+					if(array[i] == value){ return i; }
+				}
 			}
 			return -1;	// Number
 		},
@@ -39,7 +43,7 @@ dojo.provide("dojo._base.array");
 			//		If the value is not found, -1 is returned.
 			// description:
 			//		For details on this method, see:
-			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
+			// 			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf>
 			return dojo.indexOf(array, value, fromIndex, true); // Number
 		},
 
@@ -53,7 +57,7 @@ dojo.provide("dojo._base.array");
 			//		This function corresponds to the JavaScript 1.6 Array.forEach() method.
 			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
+			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
 
 			// match the behavior of the built-in forEach WRT empty arrs
 			if(!arr || !arr.length){ return; }
@@ -89,7 +93,7 @@ dojo.provide("dojo._base.array");
 			//		This function corresponds to the JavaScript 1.6 Array.every() method.
 			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
+			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
 			// example:
 			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>1; });
 			//		returns false
@@ -111,7 +115,7 @@ dojo.provide("dojo._base.array");
 			//		This function corresponds to the JavaScript 1.6 Array.some() method.
 			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
+			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
 			// example:
 			//	|	dojo.some([1, 2, 3, 4], function(item){ return item>1; });
 			//		returns true
@@ -132,7 +136,7 @@ dojo.provide("dojo._base.array");
 			//		This function corresponds to the JavaScript 1.6 Array.map() method.
 			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
+			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
 			// example:
 			//	|	dojo.map([1, 2, 3, 4], function(item){ return item+1 });
 			//		returns [2, 3, 4, 5]
@@ -156,7 +160,7 @@ dojo.provide("dojo._base.array");
 			//		This function corresponds to the JavaScript 1.6 Array.filter() method.
 			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
 			//		For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
+			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter>
 			// example:
 			//	|	dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
 			//		returns [2, 3, 4]

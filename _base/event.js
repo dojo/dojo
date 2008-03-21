@@ -515,7 +515,7 @@ if(dojo.isIE){
 	}
 	dojo._getIeDispatcher = function(){
 		// ensure the returned function closes over nothing
-		return new Function("dojo._ieDispatcher(arguments, this)"); // function
+		return new Function(dojo._scopeName + "._ieDispatcher(arguments, this)"); // function
 	}
 	// keep this out of the closure to reduce RAM allocation
 	dojo._event_listener._fixCallback = function(fp){

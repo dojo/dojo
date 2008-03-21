@@ -29,9 +29,14 @@ dojo.declare("dojo.dnd.move.constrainedMoveable", dojo.dnd.Moveable, {
 	onFirstMove: function(/* dojo.dnd.Mover */ mover){
 		// summary: called during the very first move notification,
 		//	can be used to initialize coordinates, can be overwritten.
-		var c = this.constraintBox = this.constraints.call(this, mover), m = mover.marginBox;
-		c.r = c.l + c.w - (this.within ? m.w : 0);
-		c.b = c.t + c.h - (this.within ? m.h : 0);
+		var c = this.constraintBox = this.constraints.call(this, mover);
+		c.r = c.l + c.w;
+		c.b = c.t + c.h;
+		if(this.within){
+			var mb = dojo.marginBox(mover.node);
+			c.r -= mb.w;
+			c.b -= mb.h;
+		}
 	},
 	onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
 		// summary: called during every move notification,
@@ -133,9 +138,14 @@ dojo.dnd.move.constrainedMover = function(fun, within){
 		onFirstMove: function(){
 			// summary: called once to initialize things; it is meant to be called only once
 			dojo.dnd.Mover.prototype.onFirstMove.call(this);
-			var c = this.constraintBox = fun.call(this), m = this.marginBox;
-			c.r = c.l + c.w - (within ? m.w : 0);
-			c.b = c.t + c.h - (within ? m.h : 0);
+			var c = this.constraintBox = fun.call(this);
+			c.r = c.l + c.w;
+			c.b = c.t + c.h;
+			if(within){
+				var mb = dojo.marginBox(this.node);
+				c.r -= mb.w;
+				c.b -= mb.h;
+			}
 		}
 	});
 	return mover;	// Object

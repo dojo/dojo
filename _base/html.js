@@ -1042,6 +1042,16 @@ if(dojo.isIE || dojo.isOpera){
 		//	
 		//		If a third argument is passed, or if the second argumnt is a
 		//		map of attributes, acts as a setter.
+		//
+		//		When passing functions as values, note that they will not be
+		//		directly assigned to slots on the node, but rather the default
+		//		behavior will be removed and the new behavior will be added
+		//		using `dojo.connect()`, meaning that event handler properties
+		//		will be normalized and that some caveats with regards to
+		//		non-standard behaviors for onsubmit apply. Namely that you
+		//		should cancel form submission using `dojo.stopEvent()` on the
+		//		passed event object instead of returning a boolean value from
+		//		the handler itself.
 		//	node:
 		//		id or reference to the element to get or set the attribute on
 		//	name:
@@ -1070,7 +1080,14 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		"tabindex": -1,
 		//	|		"method": "POST",
 		//	|		"onsubmit": function(e){
+		//	|			// stop submitting the form. Note that the IE behavior
+		//	|			// of returning true or false will have no effect here
+		//	|			// since our handler is connect()ed to the built-in
+		//	|			// onsubmit behavior and so we need to use
+		//	|			// dojo.stopEvent() to ensure that the submission
+		//	|			// doesn't proceed.
 		//	|			dojo.stopEvent(e);
+		//	|
 		//	|			// submit the form with Ajax
 		//	|			dojo.xhrPost({ form: "formId" });
 		//	|		}

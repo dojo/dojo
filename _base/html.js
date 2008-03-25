@@ -18,7 +18,7 @@ dojo.byId = function(id, doc){
 	//	summary:
 	//		Returns DOM node with matching `id` attribute or `null` 
 	//		if not found, similar to "$" function in another library.
-	//		If `id` is a DomNode is given, this function is a no-op.
+	//		If `id` is a DomNode, this function is a no-op.
 	//
 	//	id: String|DOMNode
 	//	 	A string to match an HTML id attribute or a reference to a DOM Node
@@ -404,9 +404,9 @@ if(dojo.isIE || dojo.isOpera){
 							/*String?|Object?*/ style, 
 							/*String?*/ value){
 		//	summary:
-		//		Gets or sets a style property on node. If 2 arguments are
-		//		passed, acts as a getter. If value is passed, acts as a setter
-		//		for the property.
+		//		Accesses styles on a node. If 2 arguments are
+		//		passed, acts as a getter. If 3 arguments are passed, acts
+		//		as a setter.
 		//	node:
 		//		id or reference to node to get/set style for
 		//	style:

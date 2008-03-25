@@ -2,14 +2,12 @@ dojo.provide("dojo._base.json");
 
 dojo.fromJson = function(/*String*/ json){
 	// summary:
-	// 		evaluates the passed string-form of a JSON object
+	// 		Parses a [JSON](http://json.org) string to return a JavaScript object.
 	// json: 
 	//		a string literal of a JSON item, for instance:
-	//			'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'
-	// return:
-	//		An object, the result of the evaluation
+	//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 
-	return eval("(" + json + ")");
+	return eval("(" + json + ")"); // Object
 }
 
 dojo._escapeString = function(/*String*/str){
@@ -25,7 +23,10 @@ dojo._escapeString = function(/*String*/str){
 dojo.toJsonIndentStr = "\t";
 dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _indentStr){
 	// summary:
-	//		Create a JSON serialization of an object. 
+	//		Returns a [JSON](http://json.org) serialization of an object.
+	//
+	// description:
+	//		Returns a [JSON](http://json.org) serialization of an object.
 	//		Note that this doesn't check for infinite recursion, so don't do that!
 	//
 	// it:
@@ -42,9 +43,6 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	//
 	// _indentStr:
 	//		private variable for recursive calls when pretty printing, do not use.
-	//		
-	// return:
-	//		a String representing the serialized version of the passed object.
 
 	if(it === undefined){
 		return "undefined";
@@ -108,7 +106,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	// it's a function with no adapter, skip it
 	*/
 	if(objtype == "function"){
-		return null;
+		return null; // null
 	}
 	// generic object code path
 	var output = [];
@@ -131,5 +129,5 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 		//	 MOW NOTE: using += is a pain because you have to account for the dangling comma...
 		output.push(newLine + nextIndent + keyStr + ":" + sep + val);
 	}
-	return "{" + output.join("," + sep) + newLine + _indentStr + "}";
+	return "{" + output.join("," + sep) + newLine + _indentStr + "}"; // String
 }

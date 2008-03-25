@@ -119,7 +119,7 @@ dojo.require("dojo._base.query");
 
 	dojo.formToQuery = function(/*DOMNode||String*/ formNode){
 		// summary:
-		//		return URL-encoded string representing the form passed as either a
+		//		Returns a URL-encoded string representing the form passed as either a
 		//		node or string ID identifying the form to serialize
 		return _d.objectToQuery(_d.formToObject(formNode)); // String
 	}
@@ -138,15 +138,15 @@ dojo.require("dojo._base.query");
 		// description:
 		//		This string:
 		//
-		//			"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
+		//	|		"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
 		//		
-		//		returns this object structure:
+		//		results in this object structure:
 		//
-		//			{
-		//				foo: [ "bar", "baz" ],
-		//				thinger: " spaces =blah",
-		//				zonk: "blarg"
-		//			}
+		//	|		{
+		//	|			foo: [ "bar", "baz" ],
+		//	|			thinger: " spaces =blah",
+		//	|			zonk: "blarg"
+		//	|		}
 		//	
 		//		Note that spaces and other urlencoded entities are correctly
 		//		handled.
@@ -647,7 +647,7 @@ dojo.require("dojo._base.query");
 	});
 	=====*/
 
-	dojo.xhr = function(/*String*/ method, /*dojo.__XhrArgs*/ args, /*boolean?*/ hasBody){
+	dojo.xhr = function(/*String*/ method, /*dojo.__XhrArgs*/ args, /*Boolean?*/ hasBody){
 		//	summary: 
 		//		Sends an HTTP request with the given method. If the request has an 
 		//		HTTP body, then pass true for hasBody. The method argument should be uppercase.

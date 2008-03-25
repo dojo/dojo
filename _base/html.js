@@ -146,19 +146,22 @@ if(dojo.isIE || dojo.isOpera){
 
 	dojo.place = function(/*String|DomNode*/node, /*String|DomNode*/refNode, /*String|Number*/position){
 		//	summary:
-		//		attempt to insert node in relation to ref based on position
+		//		Attempt to insert node into the DOM, choosing from various positioning options.
+		//		Returns true if successful, false otherwise.
 		//	node: 
-		//		id or reference to node to place relative to refNode
+		//		id or node reference to place relative to refNode
 		//	refNode: 
-		//		id or reference of node to use as basis for placement
+		//		id or node reference to use as basis for placement
 		//	position:
 		//		string noting the position of node relative to refNode or a
 		//		number indicating the location in the childNodes collection of
 		//		refNode. Accepted string values are:
-		//			* before
-		//			* after
-		//			* first
-		//			* last
+		//
+		//		* before
+		//		* after
+		//		* first
+		//		* last
+		//
 		//		"first" and "last" indicate positions as children of refNode.
 
 		// FIXME: need to write tests for this!!!!
@@ -508,9 +511,11 @@ if(dojo.isIE || dojo.isOpera){
 		//	summary:
 		//		returns an object with properties useful for noting the border
 		//		dimensions.
-		// 			l/t = the sum of left/top border (respectively)
-		//			w = the sum of the left and right border
-		//			h = the sum of the top and bottom border
+		//
+		// 		* l/t = the sum of left/top border (respectively)
+		//		* w = the sum of the left and right border
+		//		* h = the sum of the top and bottom border
+		//
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
@@ -532,9 +537,11 @@ if(dojo.isIE || dojo.isOpera){
 		//	summary:
 		//		returns object with properties useful for box fitting with
 		//		regards to padding.
-		//			l/t = the sum of left/top padding and left/top border (respectively)
-		//			w = the sum of the left and right padding and border
-		//			h = the sum of the top and bottom padding and border
+		//
+		//		* l/t = the sum of left/top padding and left/top border (respectively)
+		//		* w = the sum of the left and right padding and border
+		//		* h = the sum of the top and bottom padding and border
+		//
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
@@ -554,9 +561,11 @@ if(dojo.isIE || dojo.isOpera){
 		//	summary:
 		//		returns object with properties useful for box fitting with
 		//		regards to box margins (i.e., the outer-box).
-		//			l/t = marginLeft, marginTop, respectively
-		//			w = total width, margin inclusive
-		//			h = total height, margin inclusive
+		//
+		//		* l/t = marginLeft, marginTop, respectively
+		//		* w = total width, margin inclusive
+		//		* h = total height, margin inclusive
+		//
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.

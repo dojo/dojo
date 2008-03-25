@@ -16,17 +16,16 @@ try{
 /*=====
 dojo.byId = function(id, doc){
 	//	summary:
-	//		similar to other library's "$" function, takes a
-	//		string representing a DOM id or a DomNode
-	//		and returns the corresponding DomNode. If a Node is
-	//		passed, this function is a no-op. Returns a
-	//		single DOM node or null, working around several
-	//		browser-specific bugs to do so.
+	//		Returns DOM node with matching `id` attribute or `null` 
+	//		if not found, similar to "$" function in another library.
+	//		If `id` is a DomNode is given, this function is a no-op.
+	//
 	//	id: String|DOMNode
-	//	 	DOM id or DOM Node
-	//	doc: DocumentElement?
+	//	 	A string to match an HTML id attribute or a reference to a DOM Node
+	//
+	//	doc: Document?
 	//		Document to work in. Defaults to the current value of
-	//		dojo.doc.  Can be used to retreive
+	//		dojo.doc.  Can be used to retrieve
 	//		node references from other documents.
 =====*/
 if(dojo.isIE || dojo.isOpera){
@@ -228,30 +227,31 @@ if(dojo.isIE || dojo.isOpera){
 	//
 	// API functions below that need to access computed styles accept an 
 	// optional computedStyle parameter.
-	//
 	// If this parameter is omitted, the functions will call getComputedStyle themselves.
-	//
 	// This way, calling code can access computedStyle once, and then pass the reference to 
 	// multiple API functions. 
-	//
-	// This is a faux declaration to take pity on the doc tool
 
 /*=====
 	dojo.getComputedStyle = function(node){
 		//	summary:
 		//		Returns a "computed style" object.
+		//
 		//	description:
-		//		get "computed style" object which can be used to gather
+		//		Gets a "computed style" object which can be used to gather
 		//		information about the current state of the rendered node. 
 		//
 		//		Note that this may behave differently on different browsers.
 		//		Values may have different formats and value encodings across
-		//		browsers. 
+		//		browsers.
+		//
+		//		Note also that this method is expensive.  Wherever possible,
+		//		reuse the returned object.
 		//
 		//		Use the dojo.style() method for more consistent (pixelized)
 		//		return values.
+		//
 		//	node: DOMNode
-		//		a reference to a DOM node. Does NOT support taking an
+		//		A reference to a DOM node. Does NOT support taking an
 		//		ID string for speed reasons.
 		//	example:
 		//	|	dojo.getComputedStyle(dojo.byId('foo')).borderWidth;
@@ -400,11 +400,11 @@ if(dojo.isIE || dojo.isOpera){
 	
 	// public API
 	
-	dojo.style = function(	/*DomNode|String*/		node, 
-							/*String?||Object?*/	style, 
-							/*String?*/				value){
+	dojo.style = function(	/*DomNode|String*/ node, 
+							/*String?|Object?*/ style, 
+							/*String?*/ value){
 		//	summary:
-		//		gets or sets a style property on node. If 2 arguments are
+		//		Gets or sets a style property on node. If 2 arguments are
 		//		passed, acts as a getter. If value is passed, acts as a setter
 		//		for the property.
 		//	node:
@@ -412,36 +412,40 @@ if(dojo.isIE || dojo.isOpera){
 		//	style:
 		//		the style property to set in DOM-accessor format
 		//		("borderWidth", not "border-width") or an object with key/value
-		//		pairs suitable for setting each property. optional.
+		//		pairs suitable for setting each property.
 		//	value:
-		//		optional. If passed, sets value on the node for style, handling
+		//		If passed, sets value on the node for style, handling
 		//		cross-browser concerns.
 		//	example:
-		//		passing only an ID or node returns the computed style object of
+		//		Passing only an ID or node returns the computed style object of
 		//		the node:
 		//	|	dojo.style("thinger");
 		//	example:
-		//		passing a node and a style property returns the current
+		//		Passing a node and a style property returns the current
 		//		normalized, computed value for that property:
 		//	|	dojo.style("thinger", "opacity"); // 1 by default
+		//
 		//	example:
-		//		passing a node, a style property, and a value changes the
+		//		Passing a node, a style property, and a value changes the
 		//		current display of the node and returns the new computed value
 		//	|	dojo.style("thinger", "opacity", 0.5); // == 0.5
+		//
 		//	example:
-		//		passing a node, an object-style style property sets each of the values in turn and returns the computed style object of the node:
+		//		Passing a node, an object-style style property sets each of the values in turn and returns the computed style object of the node:
 		//	|	dojo.style("thinger", {
 		//	|		"opacity": 0.5,
 		//	|		"border": "3px solid black",
 		//	|		"height": 300
 		//	|	});
+		//
 		// 	example:
-		//		style properties in JavaScript are mixed-cased when the CSS equilivant is hypenated.
+		//		When the CSS style property is hyphenated, the JavaScript property is camelCased.
 		//		font-size becomes fontSize, and so on.
 		//	|	dojo.style("thinger",{
 		//	|		fontSize:"14pt",
 		//	|		letterSpacing:"1.2em"
 		//	|	});
+		//
 		//	example:
 		//		dojo.NodeList implements .style() using the same syntax, omitting the "node" parameter, calling
 		//		dojo.style() on every element of the list. See: dojo.query and dojo.NodeList
@@ -451,9 +455,10 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		opacity:0.75,
 		//	|		fontSize:"13pt"
 		//	|	});
+
 		var n = dojo.byId(node), args = arguments.length, op = (style=="opacity");
 		style = _floatAliases[style] || style;
-		if(args==3){
+		if(args == 3){
 			return op ? dojo._setOpacity(n, value) : n.style[style] = value; /*Number*/
 		}
 		if(args == 2 && op){
@@ -477,9 +482,11 @@ if(dojo.isIE || dojo.isOpera){
 		//	summary:
 		// 		Returns object with special values specifically useful for node
 		// 		fitting.
-		// 			l/t = left/top padding (respectively)
-		// 			w = the total of the left and right padding 
-		// 			h = the total of the top and bottom padding
+		//
+		// 		* l/t = left/top padding (respectively)
+		// 		* w = the total of the left and right padding 
+		// 		* h = the total of the top and bottom padding
+		//
 		//		If 'node' has position, l/t forms the origin for child nodes. 
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
@@ -757,18 +764,18 @@ if(dojo.isIE || dojo.isOpera){
 	
 	dojo.marginBox = function(/*DomNode|String*/node, /*Object?*/box){
 		//	summary:
-		//		getter/setter for the margin-box of node.
+		//		Getter/setter for the margin-box of node.
 		//	description: 
 		//		Returns an object in the expected format of box (regardless
 		//		if box is passed). The object might look like:
-		//			{ l: 50, t: 200, w: 300: h: 150 }
+		//			`{ l: 50, t: 200, w: 300: h: 150 }`
 		//		for a node offset from its parent 50px to the left, 200px from
 		//		the top with a margin width of 300px and a margin-height of
 		//		150px.
 		//	node:
 		//		id or reference to DOM Node to get/set box for
 		//	box:
-		//		optional. If passed, denotes that dojo.marginBox() should
+		//		If passed, denotes that dojo.marginBox() should
 		//		update/set the margin box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
 		var n=dojo.byId(node), s=gcs(n), b=box;
@@ -777,11 +784,11 @@ if(dojo.isIE || dojo.isOpera){
 
 	dojo.contentBox = function(/*DomNode|String*/node, /*Object?*/box){
 		//	summary:
-		//		getter/setter for the content-box of node.
+		//		Getter/setter for the content-box of node.
 		//	description:
 		//		Returns an object in the expected format of box (regardless if box is passed).
 		//		The object might look like:
-		//			{ l: 50, t: 200, w: 300: h: 150 }
+		//			`{ l: 50, t: 200, w: 300: h: 150 }`
 		//		for a node offset from its parent 50px to the left, 200px from
 		//		the top with a content width of 300px and a content-height of
 		//		150px. Note that the content box may have a much larger border
@@ -790,7 +797,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	node:
 		//		id or reference to DOM Node to get/set box for
 		//	box:
-		//		optional. If passed, denotes that dojo.contentBox() should
+		//		If passed, denotes that dojo.contentBox() should
 		//		update/set the content box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
 		var n=dojo.byId(node), s=gcs(n), b=box;
@@ -938,7 +945,7 @@ if(dojo.isIE || dojo.isOpera){
 					//FIXME: ugly hack to workaround the submenu in 
 					//popupmenu2 does not shown up correctly in opera. 
 					//Someone have a better workaround?
-					if(!dojo.isOpera || n>0){
+					if(!dojo.isOpera || n > 0){
 						ret.x += isNaN(n) ? 0 : n;
 					}
 					var t = curnode.offsetTop;
@@ -971,10 +978,14 @@ if(dojo.isIE || dojo.isOpera){
 	dojo.coords = function(/*DomNode|String*/node, /*Boolean?*/includeScroll){
 		//	summary:
 		//		Returns an object that measures margin box width/height and
-		//		absolute positioning data from dojo._abs(). Return value will
-		//		be in the form:
-		//			{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }
-		//		does not act as a setter. If includeScroll is passed, the x and
+		//		absolute positioning data from dojo._abs().
+		//
+		//	description:
+		//		Returns an object that measures margin box width/height and
+		//		absolute positioning data from dojo._abs().
+		//		Return value will be in the form:
+		//			`{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }`
+		//		Does not act as a setter. If includeScroll is passed, the x and
 		//		y params are affected as one would expect in dojo._abs().
 		var n=dojo.byId(node), s=gcs(n), mb=dojo._getMarginBox(n, s);
 		var abs = dojo._abs(n, includeScroll);
@@ -1029,7 +1040,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		true if the requested attribute is specified on the
 		//		given element, and false otherwise
 		var attr = dojo.byId(node).getAttributeNode(_fixAttrName(name));
-		return attr ? attr.specified : false;
+		return attr ? attr.specified : false; // Boolean
 	}
 
 	dojo.attr = function(/*DomNode|String*/node, /*String|Object*/name, /*String?*/value){
@@ -1057,7 +1068,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	name:
 		//		the name of the attribute to get or set.
 		//	value:
-		//		Optional. The value to set for the attribute
+		//		The value to set for the attribute
 		//	returns:
 		//		when used as a getter, the value of the requested attribute
 		//		or null if that attribute does not have a specified or

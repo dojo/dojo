@@ -32,7 +32,7 @@ dojo.require("dojo._base.html");
 	
 	d.declare("dojo._Animation", null, {
 		//	summary
-		//		A generic animation class that fires callbacks into it's handlers
+		//		A generic animation class that fires callbacks into its handlers
 		//		object at various states. Nearly all dojo animation functions
 		//		return an instance of this method, usually without calling the
 		//		.play() method beforehand. Therefore, you will likely need to
@@ -80,7 +80,7 @@ dojo.require("dojo._base.html");
 		// events
 		//
 		// beforeBegin: Event
-		//	Synthetic event fired before a dojo._Animation begins playing (synhcronous)
+		//	Synthetic event fired before a dojo._Animation begins playing (synchronous)
 		beforeBegin: null,
 	
 		// onBegin: Event
@@ -408,7 +408,18 @@ dojo.require("dojo._base.html");
 		}
 	}
 
-	dojo.animateProperty = function(/*Object*/ args){
+	/*=====
+	dojo.declare("dojo.__AnimArgs", [dojo.__FadeArgs], {
+		// Properties: Object?
+		//	A hash map of style properties to Objects describing the transition,
+		//	such as the properties of dojo._Line with an additional 'unit' property
+		properties: {}
+		
+		//TODOC: add event callbacks
+	});
+	=====*/
+
+	dojo.animateProperty = function(/*dojo.__AnimArgs*/ args){
 		//	summary: 
 		//		Returns an animation that will transition the properties of
 		//		node defined in 'args' depending how they are defined in
@@ -419,8 +430,6 @@ dojo.require("dojo._base.html");
 		//		animations. It takes an object of "properties" corresponding to
 		//		style properties, and animates them in parallel over a set
 		//		duration.
-		//	
-		//		args.node can be a String or a DOMNode reference
 		//	
 		// 	example:
 		//		A simple animation that changes the width of the specified node.
@@ -523,12 +532,12 @@ dojo.require("dojo._base.html");
 							/*Function?*/		onEnd,
 							/*Integer?*/		delay){
 		//	summary:
-		//		a simpler interface to `dojo.animateProperty()`, also returns
+		//		A simpler interface to `dojo.animateProperty()`, also returns
 		//		an instance of `dojo._Animation` but begins the animation
-		//		immediately unlike nearly every other Dojo animation API.
+		//		immediately, unlike nearly every other Dojo animation API.
 		//	description:
 		//		`dojo.anim` is a simpler (but somewhat less powerful) version
-		//		of `dojo.animateProperty` which defaults many basic properties
+		//		of `dojo.animateProperty`.  It uses defaults for many basic properties
 		//		and allows for positional parameters to be used in place of the
 		//		packed "property bag" which is used for other Dojo animation
 		//		methods.
@@ -539,20 +548,20 @@ dojo.require("dojo._base.html");
 		//	node:
 		//		a DOM node or the id of a node to animate CSS properties on
 		//	duration:
-		//		Optional. The number of milliseconds over which the animation
+		//		The number of milliseconds over which the animation
 		//		should run. Defaults to the global animation default duration
 		//		(350ms).
 		//	easing:
-		//		Optional. An easing function over which to calculate
-		//		accelreation and deceleration of the animation through its
-		//		duration. A default easing algorithm is provided, but you may
+		//		An easing function over which to calculate acceleration
+		//		and deceleration of the animation through its duration.
+		//		A default easing algorithm is provided, but you may
 		//		plug in any you wish. A large selection of easing algorithms
 		//		are available in `dojox.fx.easing`.
 		//	onEnd:
-		//		Optional. A function to be called when the animation finishes
+		//		A function to be called when the animation finishes
 		//		running.
 		//	delay:
-		//		Optional. The number of milliseconds to delay beginning the
+		//		The number of milliseconds to delay beginning the
 		//		animation by. The default is 0.
 		//	example:
 		//		Fade out a node

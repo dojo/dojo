@@ -36,7 +36,6 @@
 							var d = new doh.Deferred();
 							var s = dojo.fx.wipeOut({
 								node: "foo",
-								duration: 500,
 								onEnd: function(){
 									doh.t(dojo.style("foo", "height") < 5);
 									d.callback(true);
@@ -46,19 +45,20 @@
 						},
 						
 						function wipeIn(t){
-							dojo.byId("foo").style.height = "0px";
 							var d = new doh.Deferred();
-							dojo.fx.wipeIn({
-								node: "foo", 
-								duration: 500,
-								onEnd: function(){
-									doh.t(dojo.style("foo", "height") != 0);
-									d.callback(true);
-								}
-							}).play();
+							setTimeout(function(){
+								dojo.fx.wipeIn({
+									node: "foo", 
+									onEnd: function(){
+										console.debug(dojo.style("foo", "height"));
+										doh.t(dojo.style("foo", "height") >  10);
+										d.callback(true);
+									}
+								}).play();
+							}, 10);
 							return d;
 						},
-						
+
 						{
 							name: "chain",
 							timeout: 1500,
@@ -122,7 +122,7 @@
 						},
 						{
 							name:"delayTest",
-							timeout:1500,
+							timeout:2000,
 							runTest:function(t){
 								var d = new doh.Deferred();
 								var delay = 100;

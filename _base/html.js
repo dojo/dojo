@@ -66,6 +66,8 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	*/
 
+	var d = dojo;
+
 	var _destroyContainer = null;
 	dojo.addOnUnload(function(){
 		_destroyContainer=null; //prevent IE leak
@@ -77,7 +79,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	node:
 		//		the element to be destroyed, either as an ID or a reference
 
-		node = dojo.byId(node);
+		node = d.byId(node);
 		try{
 			if(!_destroyContainer){
 				_destroyContainer = document.createElement("div");
@@ -96,8 +98,8 @@ if(dojo.isIE || dojo.isOpera){
 		//	node: id or node reference to test
 		//	ancestor: id or node reference of potential parent to test against
 		try{
-			node = dojo.byId(node);
-			ancestor = dojo.byId(ancestor);
+			node = d.byId(node);
+			ancestor = d.byId(ancestor);
 			while(node){
 				if(node === ancestor){
 					return true; // Boolean
@@ -113,14 +115,14 @@ if(dojo.isIE || dojo.isOpera){
 		//	node:
 		//		id or reference to node
 		//	selectable:
-		node = dojo.byId(node);
-		if(dojo.isMozilla){
+		node = d.byId(node);
+		if(d.isMozilla){
 			node.style.MozUserSelect = selectable ? "" : "none";
-		}else if(dojo.isKhtml){
+		}else if(d.isKhtml){
 			node.style.KhtmlUserSelect = selectable ? "auto" : "none";
-		}else if(dojo.isIE){
+		}else if(d.isIE){
 			node.unselectable = selectable ? "" : "on";
-			dojo.query("*", node).forEach(function(descendant){
+			d.query("*", node).forEach(function(descendant){
 				descendant.unselectable = selectable ? "" : "on";
 			});
 		}
@@ -168,8 +170,8 @@ if(dojo.isIE || dojo.isOpera){
 		if(!node || !refNode || position === undefined){ 
 			return false;	//	boolean 
 		}
-		node = dojo.byId(node);
-		refNode = dojo.byId(refNode);
+		node = d.byId(node);
+		refNode = d.byId(refNode);
 		if(typeof position == "number"){
 			var cn = refNode.childNodes;
 			if((position == 0 && cn.length == 0) ||
@@ -215,10 +217,10 @@ if(dojo.isIE || dojo.isOpera){
 	// IIRC, earlier versions of Opera did in fact use border-box.
 	// Opera guys, this is really confusing. Opera being broken in quirks mode is not our fault.
 
-	if(dojo.isIE /*|| dojo.isOpera*/){
+	if(d.isIE /*|| dojo.isOpera*/){
 		var _dcm = document.compatMode;
 		// client code may have to adjust if compatMode varies across iframes
-		dojo.boxModel = _dcm == "BackCompat" || _dcm == "QuirksMode" || dojo.isIE<6 ? "border-box" : "content-box"; // FIXME: remove IE < 6 support?
+		d.boxModel = _dcm == "BackCompat" || _dcm == "QuirksMode" || d.isIE<6 ? "border-box" : "content-box"; // FIXME: remove IE < 6 support?
 	}
 
 	// =============================
@@ -263,7 +265,7 @@ if(dojo.isIE || dojo.isOpera){
 =====*/
 
 	var gcs, dv = document.defaultView;
-	if(dojo.isSafari){
+	if(d.isSafari){
 		gcs = function(/*DomNode*/node){
 			var s = dv.getComputedStyle(node, null);
 			if(!s && node.style){ 
@@ -272,7 +274,7 @@ if(dojo.isIE || dojo.isOpera){
 			}
 			return s || {};
 		}; 
-	}else if(dojo.isIE){
+	}else if(d.isIE){
 		gcs = function(node){
 			return node.currentStyle;
 		};
@@ -283,7 +285,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	dojo.getComputedStyle = gcs;
 
-	if(!dojo.isIE){
+	if(!d.isIE){
 		dojo._toPixelValue = function(element, value){
 			// style values can be floats, client code may want
 			// to round for integer pixels.
@@ -317,6 +319,7 @@ if(dojo.isIE || dojo.isOpera){
 			return avalue;
 		}
 	}
+	var px = d._toPixelValue;
 
 	// FIXME: there opacity quirks on FF that we haven't ported over. Hrm.
 	/*=====
@@ -331,14 +334,14 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	=====*/
 
-	dojo._getOpacity = dojo.isIE ? function(node){
+	dojo._getOpacity = d.isIE ? function(node){
 		try{
 			return node.filters.alpha.opacity / 100; // Number
 		}catch(e){
 			return 1; // Number
 		}
 	} : function(node){
-		return dojo.getComputedStyle(node).opacity;
+		return gcs(node).opacity;
 	};
 
 	/*=====
@@ -355,13 +358,13 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	=====*/
 
-	dojo._setOpacity = dojo.isIE ? function(/*DomNode*/node, /*Number*/opacity){
+	dojo._setOpacity = d.isIE ? function(/*DomNode*/node, /*Number*/opacity){
 		if(opacity == 1){
 			// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so remove it altogether (bug #2661)
 			var filterRE = /FILTER:[^;]*;?/i;
 			node.style.cssText = node.style.cssText.replace(filterRE, "");
 			if(node.nodeName.toLowerCase() == "tr"){
-				dojo.query("> td", node).forEach(function(i){
+				d.query("> td", node).forEach(function(i){
 					i.style.cssText = i.style.cssText.replace(filterRE, "");
 				});
 			}
@@ -370,7 +373,7 @@ if(dojo.isIE || dojo.isOpera){
 			node.style.filter = o;
 		}
 		if(node.nodeName.toLowerCase() == "tr"){
-			dojo.query("> td", node).forEach(function(i){
+			d.query("> td", node).forEach(function(i){
 				i.style.filter = o;
 			});
 		}
@@ -385,7 +388,7 @@ if(dojo.isIE || dojo.isOpera){
 	var _pixelRegExp = /margin|padding|width|height|max|min|offset/;  // |border
 	var _toStyleValue = function(node, type, value){
 		type = type.toLowerCase();
-		if(dojo.isIE && value == "auto"){
+		if(d.isIE && value == "auto"){
 			if(type == "height"){ return node.offsetHeight; }
 			if(type == "width"){ return node.offsetWidth; }
 		}
@@ -395,10 +398,10 @@ if(dojo.isIE || dojo.isOpera){
 			//	}
 			_pixelNamesCache[type] = _pixelRegExp.test(type);
 		}
-		return _pixelNamesCache[type] ? dojo._toPixelValue(node, value) : value;
+		return _pixelNamesCache[type] ? px(node, value) : value;
 	}
 
-	var _floatStyle = dojo.isIE ? "styleFloat" : "cssFloat";
+	var _floatStyle = d.isIE ? "styleFloat" : "cssFloat";
 	var _floatAliases = { "cssFloat": _floatStyle, "styleFloat": _floatStyle, "float": _floatStyle };
 	
 	// public API
@@ -459,18 +462,18 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		fontSize:"13pt"
 		//	|	});
 
-		var n = dojo.byId(node), args = arguments.length, op = (style=="opacity");
+		var n = d.byId(node), args = arguments.length, op = (style=="opacity");
 		style = _floatAliases[style] || style;
 		if(args == 3){
-			return op ? dojo._setOpacity(n, value) : n.style[style] = value; /*Number*/
+			return op ? d._setOpacity(n, value) : n.style[style] = value; /*Number*/
 		}
 		if(args == 2 && op){
-			return dojo._getOpacity(n);
+			return d._getOpacity(n);
 		}
-		var s = dojo.getComputedStyle(n);
-		if(args == 2 && !dojo.isString(style)){
+		var s = gcs(n);
+		if(args == 2 && !d.isString(style)){
 			for(var x in style){
-				dojo.style(node, x, style[x]);
+				d.style(node, x, style[x]);
 			}
 			return s;
 		}
@@ -495,10 +498,9 @@ if(dojo.isIE || dojo.isOpera){
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
 		var 
-			s=computedStyle||gcs(n), 
-			px=dojo._toPixelValue,
-			l=px(n, s.paddingLeft), 
-			t=px(n, s.paddingTop);
+			s = computedStyle||gcs(n), 
+			l = px(n, s.paddingLeft), 
+			t = px(n, s.paddingTop);
 		return { 
 			l: l,
 			t: t,
@@ -520,11 +522,10 @@ if(dojo.isIE || dojo.isOpera){
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
 		var 
-			ne='none',
-			px=dojo._toPixelValue, 
-			s=computedStyle||gcs(n), 
-			bl=(s.borderLeftStyle!=ne ? px(n, s.borderLeftWidth) : 0),
-			bt=(s.borderTopStyle!=ne ? px(n, s.borderTopWidth) : 0);
+			ne = "none",
+			s = computedStyle||gcs(n), 
+			bl = (s.borderLeftStyle != ne ? px(n, s.borderLeftWidth) : 0),
+			bt = (s.borderTopStyle != ne ? px(n, s.borderTopWidth) : 0);
 		return { 
 			l: bl,
 			t: bt,
@@ -546,9 +547,9 @@ if(dojo.isIE || dojo.isOpera){
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
 		var 
-			s=computedStyle||gcs(n), 
-			p=dojo._getPadExtents(n, s),
-			b=dojo._getBorderExtents(n, s);
+			s = computedStyle||gcs(n), 
+			p = d._getPadExtents(n, s),
+			b = d._getBorderExtents(n, s);
 		return { 
 			l: p.l + b.l,
 			t: p.t + b.t,
@@ -570,13 +571,12 @@ if(dojo.isIE || dojo.isOpera){
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
 		var 
-			s=computedStyle||gcs(n), 
-			px=dojo._toPixelValue,
-			l=px(n, s.marginLeft),
-			t=px(n, s.marginTop),
-			r=px(n, s.marginRight),
-			b=px(n, s.marginBottom);
-		if(dojo.isSafari && (s.position != "absolute")){
+			s = computedStyle||gcs(n), 
+			l = px(n, s.marginLeft),
+			t = px(n, s.marginTop),
+			r = px(n, s.marginRight),
+			b = px(n, s.marginBottom);
+		if(d.isSafari && (s.position != "absolute")){
 			// FIXME: Safari's version of the computed right margin
 			// is the space between our right edge and the right edge 
 			// of our offsetParent. 
@@ -612,9 +612,9 @@ if(dojo.isIE || dojo.isOpera){
 		// summary:
 		//		returns an object that encodes the width, height, left and top
 		//		positions of the node's margin box.
-		var s = computedStyle||gcs(node), me = dojo._getMarginExtents(node, s);
+		var s = computedStyle||gcs(node), me = d._getMarginExtents(node, s);
 		var	l = node.offsetLeft - me.l,	t = node.offsetTop - me.t;
-		if(dojo.isMoz){
+		if(d.isMoz){
 			// Mozilla:
 			// If offsetParent has a computed overflow != visible, the offsetLeft is decreased
 			// by the parent's border.
@@ -630,16 +630,16 @@ if(dojo.isIE || dojo.isOpera){
 				if(p && p.style){
 					var pcs = gcs(p);
 					if(pcs.overflow != "visible"){
-						var be = dojo._getBorderExtents(p, pcs);
+						var be = d._getBorderExtents(p, pcs);
 						l += be.l, t += be.t;
 					}
 				}
 			}
-		}else if(dojo.isOpera){
+		}else if(d.isOpera){
 			// On Opera, offsetLeft includes the parent's border
 			var p = node.parentNode;
 			if(p){
-				var be = dojo._getBorderExtents(p);
+				var be = d._getBorderExtents(p);
 				l -= be.l, t -= be.t;
 			}
 		}
@@ -659,14 +659,14 @@ if(dojo.isIE || dojo.isOpera){
 
 		// clientWidth/Height are important since the automatically account for scrollbars
 		// fallback to offsetWidth/Height for special cases (see #3378)
-		var s=computedStyle||gcs(node), pe=dojo._getPadExtents(node, s), be=dojo._getBorderExtents(node, s), w=node.clientWidth, h;
+		var s=computedStyle||gcs(node), pe=d._getPadExtents(node, s), be=d._getBorderExtents(node, s), w=node.clientWidth, h;
 		if(!w){
 			w=node.offsetWidth, h=node.offsetHeight;
 		}else{
 			h=node.clientHeight, be.w = be.h = 0; 
 		}
 		// On Opera, offsetLeft includes the parent's border
-		if(dojo.isOpera){ pe.l += be.l; pe.t += be.t; };
+		if(d.isOpera){ pe.l += be.l; pe.t += be.t; };
 		return { 
 			l: pe.l, 
 			t: pe.t, 
@@ -676,7 +676,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	dojo._getBorderBox = function(node, computedStyle){
-		var s=computedStyle||gcs(node), pe=dojo._getPadExtents(node, s), cb=dojo._getContentBox(node, s);
+		var s=computedStyle||gcs(node), pe=d._getPadExtents(node, s), cb=d._getContentBox(node, s);
 		return { 
 			l: cb.l - pe.l, 
 			t: cb.t - pe.t, 
@@ -730,20 +730,19 @@ if(dojo.isIE || dojo.isOpera){
 		// For whatever reason, TABLE and BUTTON are always border-box by default.
 		// If you have assigned a different box to either one via CSS then
 		// box functions will break.
-		return dojo.boxModel=="border-box" || n=="TABLE" || n=="BUTTON"; // boolean
+		return d.boxModel=="border-box" || n=="TABLE" || n=="BUTTON"; // boolean
 	}
 
 	dojo._setContentSize = function(/*DomNode*/node, /*Number*/widthPx, /*Number*/heightPx, /*Object*/computedStyle){
 		//	summary:
 		//		Sets the size of the node's contents, irrespective of margins,
 		//		padding, or borders.
-		var bb = dojo._usesBorderBox(node);
-		if(bb){
-			var pb = dojo._getPadBorderExtents(node, computedStyle);
-			if(widthPx>=0){ widthPx += pb.w; }
-			if(heightPx>=0){ heightPx += pb.h; }
+		if(d._usesBorderBox(node)){
+			var pb = d._getPadBorderExtents(node, computedStyle);
+			if(widthPx >= 0){ widthPx += pb.w; }
+			if(heightPx >= 0){ heightPx += pb.h; }
 		}
-		dojo._setBox(node, NaN, NaN, widthPx, heightPx);
+		d._setBox(node, NaN, NaN, widthPx, heightPx);
 	}
 
 	dojo._setMarginBox = function(/*DomNode*/node, 	/*Number?*/leftPx, /*Number?*/topPx, 
@@ -755,16 +754,16 @@ if(dojo.isIE || dojo.isOpera){
 		//		passthrough to dojo._setBox that handles box-model vagaries for
 		//		you.
 
-		var s = computedStyle || dojo.getComputedStyle(node);
+		var s = computedStyle||gcs(node);
 		// Some elements have special padding, margin, and box-model settings. 
 		// To use box functions you may need to set padding, margin explicitly.
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
-		var bb=dojo._usesBorderBox(node),
-				pb=bb ? _nilExtents : dojo._getPadBorderExtents(node, s),
-				mb=dojo._getMarginExtents(node, s);
+		var bb=d._usesBorderBox(node),
+				pb=bb ? _nilExtents : d._getPadBorderExtents(node, s),
+				mb=d._getMarginExtents(node, s);
 		if(widthPx>=0){	widthPx = Math.max(widthPx - pb.w - mb.w, 0); }
 		if(heightPx>=0){ heightPx = Math.max(heightPx - pb.h - mb.h, 0); }
-		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
+		d._setBox(node, leftPx, topPx, widthPx, heightPx);
 	}
 	
 	var _nilExtents = { l:0, t:0, w:0, h:0 };
@@ -787,8 +786,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		If passed, denotes that dojo.marginBox() should
 		//		update/set the margin box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
-		var n=dojo.byId(node), s=gcs(n), b=box;
-		return !b ? dojo._getMarginBox(n, s) : dojo._setMarginBox(n, b.l, b.t, b.w, b.h, s); // Object
+		var n=d.byId(node), s=gcs(n), b=box;
+		return !b ? d._getMarginBox(n, s) : d._setMarginBox(n, b.l, b.t, b.w, b.h, s); // Object
 	}
 
 	dojo.contentBox = function(/*DomNode|String*/node, /*Object?*/box){
@@ -810,7 +809,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		update/set the content box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
 		var n=dojo.byId(node), s=gcs(n), b=box;
-		return !b ? dojo._getContentBox(n, s) : dojo._setContentSize(n, b.w, b.h, s); // Object
+		return !b ? d._getContentBox(n, s) : d._setContentSize(n, b.w, b.h, s); // Object
 	}
 	
 	// =============================
@@ -819,7 +818,7 @@ if(dojo.isIE || dojo.isOpera){
 	
 	var _sumAncestorProperties = function(node, prop){
 		if(!(node = (node||0).parentNode)){return 0};
-		var val, retVal = 0, _b = dojo.body();
+		var val, retVal = 0, _b = d.body();
 		while(node && node.style){
 			if(gcs(node).position == "fixed"){
 				return 0;
@@ -837,20 +836,21 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	dojo._docScroll = function(){
-		var _b = dojo.body();
-		var _w = dojo.global;
-		var de = dojo.doc.documentElement;
+		var 
+			_b = d.body(),
+			_w = d.global,
+			de = d.doc.documentElement;
 		return {
 			y: (_w.pageYOffset || de.scrollTop || _b.scrollTop || 0),
-			x: (_w.pageXOffset || dojo._fixIeBiDiScrollLeft(de.scrollLeft) || _b.scrollLeft || 0)
+			x: (_w.pageXOffset || d._fixIeBiDiScrollLeft(de.scrollLeft) || _b.scrollLeft || 0)
 		};
 	};
 	
 	dojo._isBodyLtr = function(){
 		//FIXME: could check html and body tags directly instead of computed style?  need to ignore case, accept empty values
-		return !("_bodyLtr" in dojo) ? 
-			dojo._bodyLtr = dojo.getComputedStyle(dojo.body()).direction == "ltr" :
-			dojo._bodyLtr; // Boolean 
+		return !("_bodyLtr" in d) ? 
+			d._bodyLtr = gcs(d.body()).direction == "ltr" :
+			d._bodyLtr; // Boolean 
 	}
 	
 	dojo._getIeDocumentElementOffset = function(){
@@ -868,14 +868,14 @@ if(dojo.isIE || dojo.isOpera){
 
 		//NOTE: assumes we're being called in an IE browser
 
-		var de = dojo.doc.documentElement;
-//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
+		var de = d.doc.documentElement;
+		//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
 
-		return (dojo.isIE >= 7) ?
+		return (d.isIE >= 7) ?
 			{x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top}
 		:
 			// IE 6.0
-			{x: dojo._isBodyLtr() || window.parent == window ?
+			{x: d._isBodyLtr() || window.parent == window ?
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
 				y: de.clientTop}; // Object
 	};
@@ -885,9 +885,9 @@ if(dojo.isIE || dojo.isOpera){
 		// returns a positive one. All codes using documentElement.scrollLeft
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
-		var d = dojo.doc;
-		if(dojo.isIE && !dojo._isBodyLtr()){
-			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
+		var dd = d.doc;
+		if(d.isIE && !dojo._isBodyLtr()){
+			var de = dd.compatMode == "BackCompat" ? dd.body : dd.documentElement;
 			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
 		}
 		return scrollLeft; // Integer
@@ -914,16 +914,16 @@ if(dojo.isIE || dojo.isOpera){
 		};
 
 		// targetBoxType == "border-box"
-		var db = dojo.body();
-		if(dojo.isIE || (dojo.isFF >= 3)){
+		var db = d.body();
+		if(d.isIE || (d.isFF >= 3)){
 			var client = node.getBoundingClientRect();
-			var offset = (dojo.isIE) ? dojo._getIeDocumentElementOffset() : { x: 0, y: 0};
+			var offset = (d.isIE) ? d._getIeDocumentElementOffset() : { x: 0, y: 0};
 			ret.x = client.left - offset.x;
 			ret.y = client.top - offset.y;
 		}else if(ownerDocument["getBoxObjectFor"]){
 			// mozilla
 			var bo = ownerDocument.getBoxObjectFor(node),
-				b = dojo._getBorderExtents(node);
+				b = d._getBorderExtents(node);
 			ret.x = bo.x - b.l - _sumAncestorProperties(node, "scrollLeft");
 			ret.y = bo.y - b.t - _sumAncestorProperties(node, "scrollTop");
 		}else{
@@ -934,7 +934,7 @@ if(dojo.isIE || dojo.isOpera){
 				// and the body contain the body's margins, so we need to end
 				// at the body
 				// FIXME: getting contrary results to the above in latest WebKit.
-				if(dojo.isSafari &&
+				if(d.isSafari &&
 					//(node.style.getPropertyValue("position") == "absolute") &&
 					(gcs(node).position == "absolute") &&
 					(node.parentNode == db)){
@@ -944,7 +944,7 @@ if(dojo.isIE || dojo.isOpera){
 				}
 				if(node.parentNode != db){
 					var nd = node;
-					if(dojo.isOpera){ nd = db; }
+					if(d.isOpera){ nd = db; }
 					ret.x -= _sumAncestorProperties(nd, "scrollLeft");
 					ret.y -= _sumAncestorProperties(nd, "scrollTop");
 				}
@@ -954,15 +954,15 @@ if(dojo.isIE || dojo.isOpera){
 					//FIXME: ugly hack to workaround the submenu in 
 					//popupmenu2 does not shown up correctly in opera. 
 					//Someone have a better workaround?
-					if(!dojo.isOpera || n > 0){
+					if(!d.isOpera || n > 0){
 						ret.x += isNaN(n) ? 0 : n;
 					}
 					var t = curnode.offsetTop;
 					ret.y += isNaN(t) ? 0 : t;
-					if(dojo.isSafari && curnode != node){
-						var cs = dojo.getComputedStyle(curnode);
-						ret.x += dojo._toPixelValue(curnode, cs.borderLeftWidth);
-						ret.y += dojo._toPixelValue(curnode, cs.borderTopWidth);
+					if(d.isSafari && curnode != node){
+						var cs = gcs(curnode);
+						ret.x += px(curnode, cs.borderLeftWidth);
+						ret.y += px(curnode, cs.borderTopWidth);
 					}
 					curnode = curnode.offsetParent;
 				}while((curnode != endNode) && curnode);
@@ -975,7 +975,7 @@ if(dojo.isIE || dojo.isOpera){
 		// if offsetParent is used, ret value already includes scroll position
 		// so we may have to actually remove that value if !includeScroll
 		if(includeScroll){
-			var scroll = dojo._docScroll();
+			var scroll = d._docScroll();
 			ret.y += scroll.y;
 			ret.x += scroll.x;
 		}
@@ -996,8 +996,8 @@ if(dojo.isIE || dojo.isOpera){
 		//			`{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }`
 		//		Does not act as a setter. If includeScroll is passed, the x and
 		//		y params are affected as one would expect in dojo._abs().
-		var n=dojo.byId(node), s=gcs(n), mb=dojo._getMarginBox(n, s);
-		var abs = dojo._abs(n, includeScroll);
+		var n=d.byId(node), s=gcs(n), mb=d._getMarginBox(n, s);
+		var abs = d._abs(n, includeScroll);
 		mb.x = abs.x;
 		mb.y = abs.y;
 		return mb;
@@ -1013,7 +1013,7 @@ if(dojo.isIE || dojo.isOpera){
 				// Internet Explorer will only set or remove tabindex
 				// if it is spelled "tabIndex"
 				// console.debug((dojo.isIE && dojo.isIE < 8)? "tabIndex" : "tabindex");
-				return (dojo.isIE && dojo.isIE < 8) ? "tabIndex" : "tabindex";
+				return (d.isIE && d.isIE < 8) ? "tabIndex" : "tabindex";
 			default:
 				return name;
 		}
@@ -1048,9 +1048,15 @@ if(dojo.isIE || dojo.isOpera){
 		//	returns:
 		//		true if the requested attribute is specified on the
 		//		given element, and false otherwise
-		var attr = dojo.byId(node).getAttributeNode(_fixAttrName(name));
+		var attr = d.byId(node).getAttributeNode(_fixAttrName(name));
 		return attr ? attr.specified : false; // Boolean
 	}
+
+	var _evtHdlrMap = {
+		
+	}
+
+	var _ctr = 0;
 
 	dojo.attr = function(/*DomNode|String*/node, /*String|Object*/name, /*String?*/value){
 		//	summary:
@@ -1114,19 +1120,35 @@ if(dojo.isIE || dojo.isOpera){
 		//	|	});
 
 		var args = arguments.length;
-		if(args == 2 && !dojo.isString(name)){
-			for(var x in name){ dojo.attr(node, x, name[x]); }
+		if(args == 2 && !d.isString(name)){
+			for(var x in name){ d.attr(node, x, name[x]); }
 			return;
 		}
-		node = dojo.byId(node);
+		node = d.byId(node);
 		name = _fixAttrName(name);
 		if(args == 3){
-			if(dojo.isFunction(value)){
-				try{
-					delete node[name]; // preserve clobbering behavior
-				}catch(e){}
+			if(d.isFunction(value)){
+				// clobber if we can
+				var attrId = d.attr(node, "_djid");
+				if(!attrId){
+					attrId = _ctr++;
+					d.attr(node, "_djid", attrId);
+				}
+				if(!_evtHdlrMap[attrId]){
+					_evtHdlrMap[attrId] = {};
+				}
+				var h = _evtHdlrMap[attrId][name];
+				if(h){
+					d.disconnect(h);
+				}else{
+					try{
+						delete node[name];
+					}catch(e){}
+				}
+
 				// ensure that event objects are normalized, etc.
-				dojo.connect(node, name, value);
+				_evtHdlrMap[attrId][name] = d.connect(node, name, value);
+
 			}else if(typeof value == "boolean"){ // e.g. onsubmit, disabled
 				// if a function, we should normalize the event object here!!!
 				node[name] = value;
@@ -1142,7 +1164,7 @@ if(dojo.isIE || dojo.isOpera){
 				return node[prop];
 			}else{
 				var value = node[name];
-				return (typeof value == 'boolean' || typeof value == 'function') ? value : (dojo.hasAttr(node, name) ? node.getAttribute(name) : null);
+				return (typeof value == 'boolean' || typeof value == 'function') ? value : (d.hasAttr(node, name) ? node.getAttribute(name) : null);
 			}
 		}
 	}
@@ -1154,7 +1176,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		id or reference to the element to remove the attribute from
 		//	name:
 		//		the name of the attribute to remove
-		dojo.byId(node).removeAttribute(_fixAttrName(name));
+		d.byId(node).removeAttribute(_fixAttrName(name));
 	}
 })();
 

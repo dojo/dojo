@@ -303,7 +303,6 @@
 								"tabindex": 1,
 								"type": "text",
 								"onfocus": function(e){
-									// console.debug(ctr);
 									ctr++;
 								}
 							});
@@ -311,11 +310,41 @@
 							doh.is(1, dojo.attr(input, "tabindex"));
 							doh.is("text", dojo.attr(input, "type"));
 							doh.is(0, ctr);
+							var def = new doh.Deferred();
 							input.focus();
-							doh.is(1, ctr);
-							input.blur();
+							setTimeout(function(){
+								doh.is(1, ctr);
+								input.blur();
+								input.focus();
+								setTimeout(function(){
+									doh.is(2, ctr);
+									def.callback(true);
+								}, 10);
+							}, 10);
+							return def;
+						},
+						function attr_reconnect(t){
+							var input = document.createElement("input");
+							var ctr = 0;
+							dojo.attr(input, "type", "text");
+							dojo.attr(input, "onfocus", function(e){ ctr++; });
+							dojo.attr(input, "onfocus", function(e){ ctr++; });
+							dojo.attr(input, "onfocus", function(e){ ctr++; });
+							dojo.body().appendChild(input);
+							doh.is("text", dojo.attr(input, "type"));
+							doh.is(0, ctr);
+							var def = new doh.Deferred();
 							input.focus();
-							doh.is(2, ctr);
+							setTimeout(function(){
+								doh.is(1, ctr);
+								input.blur();
+								input.focus();
+								setTimeout(function(){
+									doh.is(2, ctr);
+									def.callback(true);
+								}, 10);
+							}, 10);
+							return def;
 						}
 					]
 				);

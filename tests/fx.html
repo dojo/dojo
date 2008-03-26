@@ -224,7 +224,7 @@
 							var d = new doh.Deferred();
 							var t = new dojo.fx.Toggler({
 							    node: "foo",
-							    hideDuration: 1000,
+							    hideDuration: 100,
 								hideFunc: dojo.fx.wipeOut,
 								showFunc: dojo.fx.wipeIn 
 							});
@@ -232,7 +232,7 @@
 							setTimeout(function(){
 								var sa = t.show();
 								dojo.connect(sa, "onEnd", dojo.hitch(d, "callback", true));
-							}, 500);
+							}, 50);
 							return d;
 						}
 					]

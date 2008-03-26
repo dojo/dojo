@@ -340,7 +340,6 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 	}, args));
 
 	dojo.connect(anim, "onEnd", function(){ 
-		console.debug(s("visibility"), s("display"), s("height"), node.scrollHeight);
 		s.height = "auto";
 	});
 

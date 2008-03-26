@@ -306,33 +306,28 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 	//		node defined in 'args' object from it's current height to
 	//		it's natural height (with no scrollbar).
 	//		Node must have no margin/border/padding.
-	var d = dojo;
-	args.node = d.byId(args.node);
-	var node = args.node, s = d.hitch(d, "style", node);
+	args.node = dojo.byId(args.node);
+	var node = args.node, s = node.style;
 
-	var anim = d.animateProperty(d.mixin({
+	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
 			height: {
 				// wrapped in functions so we wait till the last second to query (in case value has changed)
 				start: function(){
 					// start at current [computed] height, but use 1px rather than 0
 					// because 0 causes IE to display the whole panel
-
-					s("overflow", "hidden");
-
-					if(s("visibility") == "hidden" || s("display") =="none"){
-						s({
-							"height": 1,
-							"display": "",
-							"visibility": ""
-						});
+					s.overflow="hidden";
+					if(s.visibility=="hidden"||s.display=="none"){
+						s.height="1px";
+						s.display="";
+						s.visibility="";
 						return 1;
 					}else{
-						return Math.max(s("height"), 1);
+						var height = dojo.style(node, "height");
+						return Math.max(height, 1);
 					}
 				},
 				end: function(){
-					// console.debug(s("visibility"), s("display"), s("height"), node.scrollHeight);
 					return node.scrollHeight;
 				}
 			}

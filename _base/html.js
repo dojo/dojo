@@ -1057,6 +1057,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	var _ctr = 0;
+	var _attrId = dojo._scopeName + "attrid";
 
 	dojo.attr = function(/*DomNode|String*/node, /*String|Object*/name, /*String?*/value){
 		//	summary:
@@ -1129,10 +1130,10 @@ if(dojo.isIE || dojo.isOpera){
 		if(args == 3){
 			if(d.isFunction(value)){
 				// clobber if we can
-				var attrId = d.attr(node, "_djid");
+				var attrId = d.attr(node, _attrId);
 				if(!attrId){
 					attrId = _ctr++;
-					d.attr(node, "_djid", attrId);
+					d.attr(node, _attrId, attrId);
 				}
 				if(!_evtHdlrMap[attrId]){
 					_evtHdlrMap[attrId] = {};

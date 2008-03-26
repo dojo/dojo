@@ -5,7 +5,6 @@ if(dojo.isBrowser){
 	var userArgs = window.location.search.replace(/[\?&](dojoUrl|testUrl|testModule)=[^&]*/g,"").replace(/^&/,"?");
 	doh.registerUrl("dojo/tests/back-bookmark.html", dojo.moduleUrl("dojo","tests/back-bookmark.html"+userArgs), 99999999);
 	doh.registerUrl("dojo/tests/back.html", dojo.moduleUrl("dojo","tests/back.html"+userArgs), 99999999);
-	doh.registerUrl("dojo/tests/connect.html", dojo.moduleUrl("dojo","tests/connect.html"+userArgs), 99999999);
 	doh.registerUrl("dojo/tests/test_FirebugLite.html", dojo.moduleUrl("dojo","tests/test_FirebugLite.html"+userArgs), 99999999);
 	doh.registerUrl("dojo/tests/test_fx.html", dojo.moduleUrl("dojo","tests/test_fx.html"+userArgs), 99999999);
 	doh.registerUrl("dojo/tests/dnd/flickr_viewer.html", dojo.moduleUrl("dojo","tests/dnd/flickr_viewer.html"+userArgs), 99999999);

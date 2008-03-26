@@ -110,7 +110,7 @@ dojo.number._applyPattern = function(/*Number*/value, /*String*/pattern, /*dojo.
 		throw new Error("unable to find a number expression in pattern: "+pattern);
 	}
 	return pattern.replace(numberPatternRE,
-		dojo.number._formatAbsolute(value, numberPattern[0], {decimal: decimal, group: group, places: options.places}));
+		dojo.number._formatAbsolute(value, numberPattern[0], {decimal: decimal, group: group, places: options.places, round: options.round}));
 }
 
 dojo.number.round = function(/*Number*/value, /*Number*/places, /*Number?*/multiple){

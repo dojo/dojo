@@ -61,31 +61,34 @@ dojo.dnd.autoScrollNodes = function(e){
 			var s = dojo.getComputedStyle(n);
 			if(s.overflow.toLowerCase() in dojo.dnd._validOverflow){
 				var b = dojo._getContentBox(n, s), t = dojo._abs(n, true);
-				// console.debug(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
-				b.l += t.x + n.scrollLeft;
-				b.t += t.y + n.scrollTop;
+				//console.debug(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
 				var w = Math.min(dojo.dnd.H_TRIGGER_AUTOSCROLL, b.w / 2), 
 					h = Math.min(dojo.dnd.V_TRIGGER_AUTOSCROLL, b.h / 2),
-					rx = e.pageX - b.l, ry = e.pageY - b.t, dx = 0, dy = 0;
+					rx = e.pageX - t.x, ry = e.pageY - t.y, dx = 0, dy = 0;
+				if(dojo.isSafari || dojo.isOpera){
+					// FIXME: this code should not be here, it should be taken into account 
+					// either by the event fixing code, or the dojo._abs()
+					// FIXME: this code doesn't work on Opera 9.5 Beta
+					rx += dojo.body().scrollLeft, ry += dojo.body().scrollTop;
+				}
 				if(rx > 0 && rx < b.w){
 					if(rx < w){
-						dx = -dojo.dnd.H_AUTOSCROLL_VALUE;
+						dx = -w;
 					}else if(rx > b.w - w){
-						dx = dojo.dnd.H_AUTOSCROLL_VALUE;
+						dx = w;
 					}
 				}
 				//console.debug("ry =", ry, "b.h =", b.h, "h =", h);
 				if(ry > 0 && ry < b.h){
 					if(ry < h){
-						dy = -dojo.dnd.V_AUTOSCROLL_VALUE;
+						dy = -h;
 					}else if(ry > b.h - h){
-						dy = dojo.dnd.V_AUTOSCROLL_VALUE;
+						dy = h;
 					}
 				}
 				var oldLeft = n.scrollLeft, oldTop = n.scrollTop;
 				n.scrollLeft = n.scrollLeft + dx;
 				n.scrollTop  = n.scrollTop  + dy;
-				// if(dx || dy){ console.debug(oldLeft + ", " + oldTop + "\n" + dx + ", " + dy + "\n" + n.scrollLeft + ", " + n.scrollTop); }
 				if(oldLeft != n.scrollLeft || oldTop != n.scrollTop){ return; }
 			}
 		}

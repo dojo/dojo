@@ -97,8 +97,8 @@ dojo.declare("dojo.dnd.Manager", null, {
 		// e: Event: mouse event
 		var a = this.avatar;
 		if(a){
-			//dojo.dnd.autoScrollNodes(e);
-			dojo.dnd.autoScroll(e);
+			dojo.dnd.autoScrollNodes(e);
+			//dojo.dnd.autoScroll(e);
 			var s = a.node.style;
 			s.left = (e.pageX + this.OFFSET_X) + "px";
 			s.top  = (e.pageY + this.OFFSET_Y) + "px";

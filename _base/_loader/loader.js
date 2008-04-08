@@ -525,7 +525,7 @@
 
 
 	var ore = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$");
-	var ire = new RegExp("^((([^:]+:)?([^@]+))@)?([^:]*)(:([0-9]+))?$");
+	var ire = new RegExp("^((([^\\[:]+):)?([^@]+)@)?(\\[([^\\]]+)\\]|([^\\[:]*))(:([0-9]+))?$");
 
 	dojo._Url = function(/*dojo._Url||String...*/){
 		// summary: 
@@ -540,7 +540,6 @@
 
 		var n = null;
 
-		// TODO: support for IPv6, see RFC 2732
 		var _a = arguments;
 		var uri = [_a[0]];
 		// resolve uri components relative to each other
@@ -633,8 +632,8 @@
 
 			this.user = r[3] || n;
 			this.password = r[4] || n;
-			this.host = r[5];
-			this.port = r[7] || n;
+			this.host = r[6] || r[7]; // ipv6 || ipv4
+			this.port = r[9] || n;
 		}
 	}
 

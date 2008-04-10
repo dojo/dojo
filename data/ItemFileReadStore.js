@@ -61,9 +61,17 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		this._reverseRefMap = "_RRM"; // Default attribute for constructing a reverse reference map for use with reference integrity
 		this._loadInProgress = false;	//Got to track the initial load to prevent duelling loads of the dataset.
 		this._queuedFetches = [];
+		if(keywordParameters.urlPreventCache !== undefined){
+			this.urlPreventCache = keywordParameters.urlPreventCache?true:false;
+		}
 	},
 	
 	url: "",	// use "" rather than undefined for the benefit of the parser (#3539)
+
+	//Parameter to allow specifying if preventCache should be passed to the xhrGet call or not when loading data from a url.  
+	//Note this does not mean the store calls the server on each fetch, only that the data load has preventCache set as an option.
+	//Added for tracker: #6072
+	urlPreventCache: false,  
 
 	_assertIsItem: function(/* item */ item){
 		//	summary:
@@ -284,7 +292,8 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 					this._loadInProgress = true;
 					var getArgs = {
 							url: self._jsonFileUrl, 
-							handleAs: "json-comment-optional"
+							handleAs: "json-comment-optional",
+							preventCache: this.urlPreventCache
 						};
 					var getHandler = dojo.xhrGet(getArgs);
 					getHandler.addCallback(function(data){
@@ -636,7 +645,8 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 					this._loadInProgress = true;
 					var getArgs = {
 							url: self._jsonFileUrl, 
-							handleAs: "json-comment-optional"
+							handleAs: "json-comment-optional",
+							preventCache: this.urlPreventCache
 					};
 					var getHandler = dojo.xhrGet(getArgs);
 					getHandler.addCallback(function(data){
@@ -727,6 +737,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 				var getArgs = {
 					url: self._jsonFileUrl, 
 					handleAs: "json-comment-optional",
+					preventCache: this.urlPreventCache,
 					sync: true
 				};
 			var getHandler = dojo.xhrGet(getArgs);

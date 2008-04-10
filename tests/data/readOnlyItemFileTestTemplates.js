@@ -251,6 +251,32 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Identity API: fetchItemByIdentity() preventCache",
+		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of the fetchItemByIdentity function of the store.
+			var args = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
+			args.urlPreventCache = true;
+			var store = new datastore(args);
+
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				if(item !== null){
+					var name = store.getValue(item,"name");
+					t.assertEqual(name, "El Salvador");
+				}
+				d.callback(true);
+			}
+			function onError(errData){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
+			return d; // Deferred
+		}
+	},
+	{
 		name: "Identity API: fetchItemByIdentity() notFound",
  		runTest: function(datastore, t){
 			//	summary: 
@@ -458,6 +484,32 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+			
+			var d = new doh.Deferred();
+			function completedAll(items, request){
+				t.is(7, items.length);
+				d.callback(true);
+			}
+			function error(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+
+			//Get everything...
+			store.fetch({ onComplete: completedAll, onError: error});
+			return d;
+		}
+	},
+	{
+		name: "Read API: fetch() all PreventCache",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of a basic fetch on ItemFileReadStore.
+			//	description:
+			//		Simple test of a basic fetch on ItemFileReadStore.
+			var args = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
+			args.urlPreventCache = true;
+			var store = new datastore(args);
 			
 			var d = new doh.Deferred();
 			function completedAll(items, request){

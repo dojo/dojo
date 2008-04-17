@@ -58,7 +58,7 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		}else{
 			new this.mover(this.node, e, this);
 		}
-		dojo.stopEvent(e);
+		e.preventDefault();
 	},
 	onMouseMove: function(e){
 		// summary: event processor for onmousemove, used only for delayed drags

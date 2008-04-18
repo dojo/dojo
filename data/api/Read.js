@@ -224,7 +224,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		conforming to dojo.data.api.Request or may be a simple anonymous object
 		//		that may contain any of the following:
 		//		{ 
-		//			query: query-string or query-object,
+		//			query: query-object or query-string,
 		//			queryOptions: object,
 		//			onBegin: Function,
 		//			onItem: Function,
@@ -246,13 +246,20 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		The dojo.data.api.Read API does not specify the syntax or semantics
 		//		of the query itself -- each different data store implementation
 		//		may have its own notion of what a query should look like.
-		//		In most implementations the query will probably be a string, but
-		//		in some implementations the query might be a Date, or a number,
-		//		or some complex keyword parameter object.  The dojo.data.api.Read
-		//		API is completely agnostic about what the query actually is.  
-		//		In general for query objects that accept strings as attribute value matches, 
-		//		the store should support basic filtering capability, such as * (match any character)
-		//		and ? (match single character). 
+		//		However, as of dojo 0.9, 1.0, and 1.1, all the provided datastores in dojo.data
+		//		and dojox.data support an object structure query, where the object is a set of 
+		//		name/value parameters such as { attrFoo: valueBar, attrFoo1: valueBar1}.  Most of the
+		//		dijit widgets, such as ComboBox assume this to be the case when working with a datastore 
+		//		when they dynamically update the query.  Therefore, for maximum compatibility with dijit 
+		//		widgets the recommended query parameter is a key/value object.  That does not mean that the
+		//		the datastore may not take alternative query forms, such as a simple string, a Date, a number, 
+		//		or a mix of such.  Ultimately, The dojo.data.api.Read API is agnostic about what the query 
+		//		format.  
+		//		Further note:  In general for query objects that accept strings as attribute 
+		//		value matches, the store should also support basic filtering capability, such as * 
+		//		(match any character) and ? (match single character).  An example query that is a query object
+		//		would be like: { attrFoo: "value*"}.  Which generally means match all items where they have 
+		//		an attribute named attrFoo, with a value that starts with 'value'.
 		//
 		//	The *queryOptions* parameter
 		//		The queryOptions parameter is an optional parameter used to specify optiosn that may modify

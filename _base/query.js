@@ -683,6 +683,9 @@ dojo.require("dojo._base.NodeList");
 				// based version might be more accurate, but since
 				// jQuery and DomQuery also potentially get this wrong,
 				// I'm leaving it for now.
+				if(condition.charAt(0)=='"' || condition.charAt(0)=="'"){//remove quote
+					condition=condition.substr(1,condition.length-2);
+				}
 				return (elem.innerHTML.indexOf(condition) >= 0);
 			}
 		},
@@ -695,34 +698,44 @@ dojo.require("dojo._base.NodeList");
 		"nth-child": function(name, condition){
 			var pi = parseInt;
 			if(condition == "odd"){
-				return function(elem){
-					return (
-						((getNodeIndex(elem)) % 2) == 1
-					);
+				condition = "2n+1";
+			}else if(condition == "even"){
+				condition = "2n";
+			}
+			if(condition.indexOf("n") != -1){
+				var tparts = condition.split("n", 2);
+				var pred = tparts[0] ? (tparts[0]=='-'?-1:pi(tparts[0])) : 1;
+				var idx = tparts[1] ? pi(tparts[1]) : 0;
+				var lb = 0, ub = -1;
+				if(pred>0){
+					if(idx<0){
+						idx = (idx % pred) && (pred + (idx % pred));
+					}else if(idx>0){
+						if(idx >= pred){
+							lb = idx - idx % pred;
+						}
+						idx = idx % pred;
+					}
+				}else if(pred<0){
+					pred *= -1;
+					if(idx>0){
+						ub = idx;
+						idx = idx % pred;
+					} //idx has to be greater than 0 when pred is negative; shall we throw an error here?
 				}
-			}else if((condition == "2n")||
-				(condition == "even")){
-				return function(elem){
-					return ((getNodeIndex(elem) % 2) == 0);
+				if(pred>0){
+					return function(elem){
+						var i=getNodeIndex(elem);
+						return (i>=lb) && (ub<0 || i<=ub) && ((i % pred) == idx);
+					}
+				}else{
+					condition=idx;
 				}
-			}else if(condition.indexOf("0n+") == 0){
-				var ncount = pi(condition.substr(3));
-				return function(elem){
-					return (elem.parentNode[childNodesName][ncount-1] === elem);
-				}
-			}else if(	(condition.indexOf("n+") > 0) &&
-						(condition.length > 3) ){
-				var tparts = condition.split("n+", 2);
-				var pred = pi(tparts[0]);
-				var idx = pi(tparts[1]);
-				return function(elem){
-					return ((getNodeIndex(elem) % pred) == idx);
-				}
-			}else if(condition.indexOf("n") == -1){
-				var ncount = pi(condition);
-				return function(elem){
-					return (getNodeIndex(elem) == ncount);
-				}
+			}
+			//if(condition.indexOf("n") == -1){
+			var ncount = pi(condition);
+			return function(elem){
+				return (getNodeIndex(elem) == ncount);
 			}
 		}
 	};
@@ -809,7 +822,7 @@ dojo.require("dojo._base.NodeList");
 		if(query.tag && query.id && !query.hasLoops){
 			// we got a filtered ID search (e.g., "h4#thinger")
 			retFunc = function(root){
-				var te = d.byId(query.id);
+				var te = d.byId(query.id, (root.ownerDocument||root)); //root itself may be a document
 				if(filterFunc(te)){
 					return [ te ];
 				}

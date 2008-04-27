@@ -22,6 +22,7 @@ tests.register("tests.string",
 			t.is("astoria", dojo.string.trim("astoria                            "));
 			t.is("astoria", dojo.string.trim("                            astoria"));
 			t.is("astoria", dojo.string.trim("astoria"));
+			t.is("a", dojo.string.trim("   a   "));
 		}
 	]
 );

@@ -70,7 +70,7 @@ dojo.string.trim = function(/*String*/ str){
 	//	The short yet performant version of this function is 
 	//	dojo.trim(), which is part of Dojo base.
 	str = str.replace(/^\s+/, '');
-	for(var i = str.length - 1; i > 0; i--){
+	for(var i = str.length - 1; i >= 0; i--){
 		if(/\S/.test(str.charAt(i))){
 			str = str.substring(0, i + 1);
 			break;

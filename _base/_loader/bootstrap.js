@@ -13,7 +13,7 @@ djConfig = {
 	//
 	// isDebug: Boolean
 	//		Defaults to `false`. If set to `true`, ensures that Dojo provides
-	//		extende debugging feedback via Firebug. If Firebug is not available
+	//		extended debugging feedback via Firebug. If Firebug is not available
 	//		on your platform, setting `isDebug` to `true` will force Dojo to
 	//		pull in (and display) the version of Firebug Lite which is
 	//		integrated into the Dojo distribution, thereby always providing a

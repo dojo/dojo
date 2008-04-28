@@ -23,6 +23,13 @@ tests.register("tests.string",
 			t.is("astoria", dojo.string.trim("                            astoria"));
 			t.is("astoria", dojo.string.trim("astoria"));
 			t.is("a", dojo.string.trim("   a   "));
+		},
+		
+		function test_string_rep(t){
+			t.is("aaaaa", dojo.string.rep("a", 5));
+			t.is("abababab", dojo.string.rep("ab", 4));
+			t.is("", dojo.string.rep("ab", 0));
+			t.is("", dojo.string.rep("", 3));
 		}
 	]
 );

@@ -6,6 +6,25 @@ dojo.string = {
 };
 =====*/
 
+dojo.string.rep = function(/*String*/s, /*int*/n){
+	// summary:
+	//		Efficiently replicate a string `n` times.
+	// s: the string to replicate
+	// n: number of times to replicate the string
+	
+	if(n <= 0 || !s){ return ""; }
+	
+	var buf = [];
+	for(;;){
+		if(n & 1){
+			buf.push(s);
+		}
+		if(!(n >>= 1)){ break; }
+		s += s;
+	}
+	return buf.join("");	// String
+};
+
 dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean?*/end){
 	// summary:
 	//		Pad a string to guarantee that it is at least `size` length by
@@ -16,18 +35,12 @@ dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean
 	// ch: character to pad, defaults to '0'
 	// end: adds padding at the end if true, otherwise pads at start
 
-	var out = String(text);
 	if(!ch){
 		ch = '0';
 	}
-	while(out.length < size){
-		if(end){
-			out += ch;
-		}else{
-			out = ch + out;
-		}
-	}
-	return out;	// String
+	var out = String(text),
+		pad = dojo.string.rep(ch, Math.ceil((size - out.length) / ch.length));
+	return end ? out + pad : pad + out;	// String
 };
 
 dojo.string.substitute = function(	/*String*/template, 

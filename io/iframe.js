@@ -125,14 +125,16 @@ dojo.io.iframe = {
 		//		defaults to POST.
 		//	handleAs: String?
 		//		Specifies what format the result data should be given to the
-		//		load/handle callback. Valid values are: text, html, javascript,
-		//		json. IMPORTANT: For all values EXCEPT html, The server
-		//		response should be an HTML file with a textarea element. The
-		//		response data should be inside the textarea element. Using an
+		//		load/handle callback. Valid values are: text, html, xml, json,
+		//		javascript. IMPORTANT: For all values EXCEPT html and xml, The
+		//		server response should be an HTML file with a textarea element.
+		//		The response data should be inside the textarea element. Using an
 		//		HTML document the only reliable, cross-browser way this
 		//		transport can know when the response has loaded. For the html
 		//		handleAs value, just return a normal HTML document.  NOTE: xml
-		//		or any other XML type is NOT supported by this transport.
+		//		is now supported with this transport (as of 1.1+); a known issue
+		//		is if the XML document in question is malformed, Internet Explorer
+		//		will throw an uncatchable error.
 		//	content: Object?
 		//		If "form" is one of the other args properties, then the content
 		//		object properties become hidden form form elements. For

@@ -43,12 +43,9 @@ dojo.io.iframe = {
 				//We can't change the src in Safari 2.0.3 if absolute position. Bizarro.
 				position = "absolute";
 			}
-			/*
 			left = top = "1px";
 			height = width = "1px";
 			visibility = "hidden";
-			*/
-			width="100%", height="300px";
 		}
 
 		if(!dojo.isIE){

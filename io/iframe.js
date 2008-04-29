@@ -43,9 +43,12 @@ dojo.io.iframe = {
 				//We can't change the src in Safari 2.0.3 if absolute position. Bizarro.
 				position = "absolute";
 			}
+			/*
 			left = top = "1px";
 			height = width = "1px";
 			visibility = "hidden";
+			*/
+			width="100%", height="300px";
 		}
 
 		if(!dojo.isIE){
@@ -172,11 +175,43 @@ dojo.io.iframe = {
 					//Assign correct value based on handleAs value.
 					value = ifd; //html
 					if(handleAs != "html"){
-						value = ifd.getElementsByTagName("textarea")[0].value; //text
-						if(handleAs == "json"){
-							value = dojo.fromJson(value); //json
-						}else if(handleAs == "javascript"){
-							value = dojo.eval(value); //javascript
+						if(handleAs == "xml"){
+							//	FF, Saf 3+ and Opera all seem to be fine with ifd being xml.  We have to
+							//	do it manually for IE.  Refs #6334.
+							if(dojo.isIE){
+								dojo.query("a", dii._frame.contentWindow.document.documentElement).orphan();
+								var xmlText=(dii._frame.contentWindow.document).documentElement.innerText;
+								xmlText=xmlText.replace(/>\s+</g, "><");
+
+								//	do the manual "find the prefix".
+								if(!this._ieXmlDom){
+									for(var i=0, a=["MSXML2", "Microsoft", "MSXML", "MSXML3"], l=a.length; i<l; i++){
+										try{
+											var test=new ActiveXObject(a[i]+".XmlDom");
+											this._ieXmlDom=a[i]+".XmlDom";
+											break;
+										} catch(e){ /* squash it */}
+									}
+									
+									//	recheck to make sure we have XML support.
+									if(!this._ieXmlDom){
+										throw new Error("dojo.io.iframe.send (return handler): your copy of Internet Explorer does not support XML documents.");
+									}
+								}
+
+								//	create the document manually
+								var _xml=new ActiveXObject(this._ieXmlDom);
+								_xml.async=false;
+								_xml.loadXML(xmlText);
+								value=_xml;
+							}
+						} else {
+							value = ifd.getElementsByTagName("textarea")[0].value; //text
+							if(handleAs == "json"){
+								value = dojo.fromJson(value); //json
+							}else if(handleAs == "javascript"){
+								value = dojo.eval(value); //javascript
+							}
 						}
 					}
 				}catch(e){

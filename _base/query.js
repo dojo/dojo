@@ -25,7 +25,7 @@ dojo.require("dojo._base.NodeList");
 				  statement dispatchers are cached (to prevent re-definition)
 				  as are entire dispatch chains (to make re-execution of the
 				  same query fast)
-				- in the xpath path, tokenization yeilds a concatenation of
+				- in the xpath path, tokenization yields a concatenation of
 				  parameterized xpath selectors. As with the DOM version, both
 				  simple selector blocks and overall evaluators are cached to
 				  prevent re-defintion
@@ -372,8 +372,8 @@ dojo.require("dojo._base.NodeList");
 
 	var _childElements = function(root){
 		var ret = [];
-		var te, x=0, tret = root[childNodesName];
-		while(te=tret[x++]){
+		var te, x = 0, tret = root[childNodesName];
+		while((te = tret[x++])){
 			if(te.nodeType == 1){ ret.push(te); }
 		}
 		return ret;
@@ -382,7 +382,7 @@ dojo.require("dojo._base.NodeList");
 	var _nextSiblings = function(root, single){
 		var ret = [];
 		var te = root;
-		while(te = te.nextSibling){
+		while((te = te.nextSibling)){
 			if(te.nodeType == 1){
 				ret.push(te);
 				if(single){ break; }
@@ -453,7 +453,7 @@ dojo.require("dojo._base.NodeList");
 		// for every root, get the elements that match the descendant selector
 		// for(var x=elements.length-1, te; x>=0, te=elements[x]; x--){
 		var x = elements.length - 1, te;
-		while(te = elements[x--]){
+		while((te = elements[x--])){
 			_filterDown(te, queryParts, ret, 0);
 		}
 		return ret;
@@ -835,7 +835,7 @@ dojo.require("dojo._base.NodeList");
 				retFunc = function(root){
 					var ret = [];
 					var te, x=0, tret = root.getElementsByTagName(query.tag);
-					while(te=tret[x++]){
+					while((te = tret[x++])){
 						ret.push(te);
 					}
 					return ret;
@@ -843,8 +843,8 @@ dojo.require("dojo._base.NodeList");
 			}else{
 				retFunc = function(root){
 					var ret = [];
-					var te, x=0, tret = root.getElementsByTagName(query.tag);
-					while(te=tret[x++]){
+					var te, x = 0, tret = root.getElementsByTagName(query.tag);
+					while((te = tret[x++])){
 						if(filterFunc(te)){
 							ret.push(te);
 						}
@@ -986,7 +986,7 @@ dojo.require("dojo._base.NodeList");
 				var pindex = 0; // avoid array alloc for every invocation
 				var ret = [];
 				var tp;
-				while(tp = parts[pindex++]){
+				while((tp = parts[pindex++])){
 					ret = ret.concat(_getQueryFunc(tp, tp.indexOf(" "))(root));
 				}
 				return ret;
@@ -1013,7 +1013,7 @@ dojo.require("dojo._base.NodeList");
 		if(arr.length < 2){ return ret; }
 		_zipIdx++;
 		arr[0]["_zipIdx"] = _zipIdx;
-		for(var x=1, te; te = arr[x]; x++){
+		for(var x = 1, te; te = arr[x]; x++){
 			if(arr[x]["_zipIdx"] != _zipIdx){ 
 				ret.push(te);
 			}
@@ -1192,7 +1192,7 @@ dojo.require("dojo._base.NodeList");
 	d._filterQueryResult = function(nodeList, simpleFilter){
 		var tnl = new d.NodeList();
 		var ff = (simpleFilter) ? getFilterFunc(getQueryParts(simpleFilter)[0]) : function(){ return true; };
-		for(var x=0, te; te = nodeList[x]; x++){
+		for(var x = 0, te; te = nodeList[x]; x++){
 			if(ff(te)){ tnl.push(te); }
 		}
 		return tnl;

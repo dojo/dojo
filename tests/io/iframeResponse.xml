@@ -6,5 +6,12 @@
 		<child>BAZ</child>
 		<child>BAT</child>
 	</Children>
+	<![CDATA[
+		function(){
+			for(var i=0; i<somethign; i++){
+				if(foo>bar){ /* whatever */ }
+			}
+		}
+	]]>
 	<a href="something">something else</a>
 </Envelope>

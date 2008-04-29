@@ -209,7 +209,7 @@ dojo.require("dojo._base.query");
 					+ " to avoid potential security issues with JSON endpoints"
 					+ " (use djConfig.usePlainJson=true to turn off this message)");
 			}
-			return _d.fromJson(xhr.responseText);
+			return (xhr.status == 204) ? undefined : _d.fromJson(xhr.responseText);
 		},
 		"json-comment-filtered": function(xhr){ 
 			// NOTE: we provide the json-comment-filtered option as one solution to
@@ -222,7 +222,8 @@ dojo.require("dojo._base.query");
 			if(cStartIdx == -1 || cEndIdx == -1){
 				throw new Error("JSON was not comment filtered");
 			}
-			return _d.fromJson(value.substring(cStartIdx+2, cEndIdx));
+			return (xhr.status == 204) ? undefined :
+				_d.fromJson(value.substring(cStartIdx+2, cEndIdx));
 		},
 		"javascript": function(xhr){ 
 			// FIXME: try Moz and IE specific eval variants?

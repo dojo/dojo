@@ -1009,7 +1009,6 @@ if((!("console" in window) || !("firebug" in console)) &&
 	
 	function printObject(o, i, txt, used){
 		// Recursively trace object, indenting to represent depth for display in object inspector
-		var br = "\n"; 
 		var ind = " \t";
 		txt = txt || "";
 		i = i || ind;
@@ -1025,7 +1024,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 			return i + o.toString() + br;
 		}
 		
-		br=",\n", cnt = 0, length = objectLength(o)
+		var br=",\n", cnt = 0, length = objectLength(o)
 		
 		looking:
 		for(var nm in o){

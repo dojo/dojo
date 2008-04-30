@@ -109,9 +109,9 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 		return null; // null
 	}
 	// generic object code path
-	var output = [];
-	for(var key in it){
-		var keyStr;
+	var output = [], key;
+	for(key in it){
+		var keyStr, val;
 		if(typeof key == "number"){
 			keyStr = '"' + key + '"';
 		}else if(typeof key == "string"){

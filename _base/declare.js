@@ -88,7 +88,8 @@ dojo.mixin(dojo.declare, {
 		return ctor;
 	},
 	_extend: function(props){
-		for(var i in props){ if(dojo.isFunction(fn=props[i]) && !0[i]){fn.nom=i;} }
+		var i, fn;
+		for(i in props){ if(dojo.isFunction(fn=props[i]) && !0[i]){fn.nom=i;} }
 		dojo.extend(this, props);
 	},
 	_makeCtor: function(){

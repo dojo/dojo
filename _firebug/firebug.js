@@ -516,7 +516,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 		var text = commandLine.value;
 		commandLine.value = "";
 
-		logRow([clPrefix, text], "command");
+		logRow([">  ", text], "command");
 		
 		var value;
 		try{
@@ -906,20 +906,21 @@ if((!("console" in window) || !("firebug" in console)) &&
 		}
 	}
 
-	function onCommandLineKeyDown(event){
-		if(event.keyCode == 13 && commandLine.value){
+	function onCommandLineKeyDown(e){
+		var dk = dojo.keys;
+		if(e.keyCode == 13 && commandLine.value){
 			addToHistory(commandLine.value);
 			evalCommandLine();
-		}else if(event.keyCode == 27){
+		}else if(e.keyCode == 27){
 			commandLine.value = "";
-		}else if(event.keyCode == dojo.keys.UP_ARROW || event.charCode == dojo.keys.UP_ARROW){
+		}else if(e.keyCode == dk.UP_ARROW || e.charCode == dk.UP_ARROW){
 			navigateHistory("older");
-		}else if(event.keyCode == dojo.keys.DOWN_ARROW || event.charCode == dojo.keys.DOWN_ARROW){
+		}else if(e.keyCode == dk.DOWN_ARROW || e.charCode == dk.DOWN_ARROW){
 			navigateHistory("newer");
-		}else if(event.keyCode == dojo.keys.HOME || event.charCode == dojo.keys.HOME){
+		}else if(e.keyCode == dk.HOME || e.charCode == dk.HOME){
 			historyPosition = 1;
 			navigateHistory("older");
-		}else if(event.keyCode == dojo.keys.END || event.charCode == dojo.keys.END){
+		}else if(e.keyCode == dk.END || e.charCode == dk.END){
 			historyPosition = 999999;
 			navigateHistory("newer");
 		}

@@ -55,7 +55,7 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 			return dir * comparator(a,b); //int
 		};
 	}
-
+	var sortAttribute;
 	for(var i = 0; i < sortSpec.length; i++){
 		sortAttribute = sortSpec[i];
 		if(sortAttribute.attribute){

@@ -95,7 +95,7 @@ dojo.fx = {
 				return false;
 			});
 			if(this._current){
-				this._current.gotoPercent(offset / _current.duration, andPlay);
+				this._current.gotoPercent(offset / this._current.duration, andPlay);
 			}
 			return this;
 		},

@@ -29,7 +29,7 @@ dojo.declare("dojo.dnd.Avatar", null, {
 		dojo.style(tr, "opacity", 0.9);
 		b.appendChild(tr);
 		var k = Math.min(5, this.manager.nodes.length);
-		var source = this.manager.source;
+		var source = this.manager.source, node;
 		for(var i = 0; i < k; ++i){
 			tr = dojo.doc.createElement("tr");
 			tr.className = "dojoDndAvatarItem";

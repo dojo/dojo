@@ -210,7 +210,7 @@ dojo.require("dojo.parser");
 					}
   
 					if(this.extractContent){
-						match = cont.match(/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im);
+						var match = cont.match(/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im);
 						if(match){ cont = match[1]; }
 					}
 				}
@@ -256,7 +256,7 @@ dojo.require("dojo.parser");
         	    // back to that of the original constructor (vs. deleting/resetting everything regardless of ctor params)
         	    // so we could do something here to move the original properties aside for later restoration
         	    var empty = {}, key;
-        	    for(var key in params){
+        	    for(key in params){
         	        if(key in empty){ continue; }
         	        // TODO: here's our opportunity to mask the properties we dont consider configurable/overridable
         	        // .. but history shows we'll almost always guess wrong

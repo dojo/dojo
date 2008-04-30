@@ -344,7 +344,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 		createResizeHandler(win);
 		var newDoc=win.document;
 		//Safari needs an HTML height
-		HTMLstring=	'<html style="height:100%;"><head><title>Firebug Lite</title></head>\n' +
+		var HTMLstring=	'<html style="height:100%;"><head><title>Firebug Lite</title></head>\n' +
 					'<body bgColor="#ccc" style="height:97%;" onresize="opener.onFirebugResize()">\n' +
 					'<div id="fb"></div>' +
 					'</body></html>';
@@ -1025,7 +1025,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 			return i + o.toString() + br;
 		}
 		
-		var br=",\n", cnt = 0, length = objectLength(o)
+		br=",\n", cnt = 0, length = objectLength(o)
 		
 		looking:
 		for(var nm in o){

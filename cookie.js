@@ -63,7 +63,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 		if(exp && exp.toUTCString){ props.expires = exp.toUTCString(); }
 
 		value = encodeURIComponent(value);
-		var updatedCookie = name + "=" + value;
+		var updatedCookie = name + "=" + value, propName;
 		for(propName in props){
 			updatedCookie += "; " + propName;
 			var propValue = props[propName];

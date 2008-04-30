@@ -1029,7 +1029,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 		looking:
 		for(var nm in o){
 			cnt++;
-			if(cnt==length) br = "\n";
+			if(cnt==length){br = "\n"};
 			if(o[nm] === window || o[nm] === document){
 				continue;
 			}else if(o[nm] && o[nm].nodeType){

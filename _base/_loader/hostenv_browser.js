@@ -261,12 +261,7 @@ if(typeof window != 'undefined'){
 		dojo._loadInit({type: "load"});
 	}
 
-	if(dojo.config.afterOnLoad){
-		//Dojo is being added to the page after page load, so just trigger
-		//the init sequence after a timeout. Using a timeout so the rest of this
-		//script gets evaluated properly.
-		window.setTimeout(dojo._fakeLoadInit, 1000);
-	}else{
+	if(!dojo.config.afterOnLoad){
 		//	START DOMContentLoaded
 		// Mozilla and Opera 9 expose the event we could use
 		if(document.addEventListener){

@@ -209,7 +209,7 @@ dojo.require("dojo._base.query");
 					+ " to avoid potential security issues with JSON endpoints"
 					+ " (use djConfig.usePlainJson=true to turn off this message)");
 			}
-			return (xhr.status == 204) ? undefined : _d.fromJson(xhr.responseText);
+			return _d.fromJson(xhr.responseText);
 		},
 		"json-comment-filtered": function(xhr){ 
 			// NOTE: we provide the json-comment-filtered option as one solution to
@@ -222,8 +222,7 @@ dojo.require("dojo._base.query");
 			if(cStartIdx == -1 || cEndIdx == -1){
 				throw new Error("JSON was not comment filtered");
 			}
-			return (xhr.status == 204) ? undefined :
-				_d.fromJson(value.substring(cStartIdx+2, cEndIdx));
+			return _d.fromJson(value.substring(cStartIdx+2, cEndIdx));
 		},
 		"javascript": function(xhr){ 
 			// FIXME: try Moz and IE specific eval variants?
@@ -465,14 +464,6 @@ dojo.require("dojo._base.query");
 		return error;
 	}
 
-	var _makeXhrDeferred = function(/*dojo.__XhrArgs*/args){
-		//summary: makes the Deferred object for this xhr request.
-		var dfd = _d._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
-		//Pass the args to _xhrObj, to allow xhr iframe proxy interceptions.
-		dfd.ioArgs.xhr = _d._xhrObj(dfd.ioArgs.args);
-		return dfd;
-	}
-
 	// avoid setting a timer per request. It degrades performance on IE
 	// something fierece if we don't use unified loops.
 	var _inFlightIntvl = null;
@@ -586,38 +577,6 @@ dojo.require("dojo._base.query");
 		}
 	}
 
-	var _doIt = function(/*String*/type, /*Deferred*/dfd){
-		// IE 6 is a steaming pile. It won't let you call apply() on the native function (xhr.open).
-		// workaround for IE6's apply() "issues"
-		var ioArgs = dfd.ioArgs;
-		var args = ioArgs.args;
-		var xhr = ioArgs.xhr;
-		xhr.open(type, ioArgs.url, args.sync !== true, args.user || undefined, args.password || undefined);
-		if(args.headers){
-			for(var hdr in args.headers){
-				if(hdr.toLowerCase() === "content-type" && !args.contentType){
-					args.contentType = args.headers[hdr];
-				}else{
-					xhr.setRequestHeader(hdr, args.headers[hdr]);
-				}
-			}
-		}
-		// FIXME: is this appropriate for all content types?
-		xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
-		if(!args.headers || !args.headers["X-Requested-With"]){
-			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-		}
-		// FIXME: set other headers here!
-		try{
-			xhr.send(ioArgs.query);
-		}catch(e){
-			dfd.cancel();
-		}
-		_d._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
-		xhr = null;
-		return dfd; //Deferred
-	}
-
 	dojo._ioAddQueryToUrl = function(/*dojo.__IoCallbackArgs*/ioArgs){
 		//summary: Adds query params discovered by the io deferred construction to the URL.
 		//Only use this for operations which are fundamentally GET-type operations.
@@ -655,11 +614,51 @@ dojo.require("dojo._base.query");
 		//		Also look at dojo.xhrGet(), xhrPost(), xhrPut() and dojo.xhrDelete() for shortcuts
 		//		for those HTTP methods. There are also methods for "raw" PUT and POST methods
 		//		via dojo.rawXhrPut() and dojo.rawXhrPost() respectively.
-		var dfd = _makeXhrDeferred(args);
-		if(!hasBody){
+
+		//Make the Deferred object for this xhr request.
+		var dfd = _d._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
+
+		//Pass the args to _xhrObj, to allow xhr iframe proxy interceptions.
+		dfd.ioArgs.xhr = _d._xhrObj(dfd.ioArgs.args);
+
+		if(hasBody){
+			if("postData" in args){
+				dfd.ioArgs.query = args.postData;
+			}else if("putData" in args){
+				dfd.ioArgs.query = args.putData;
+			}
+		}else{
 			_d._ioAddQueryToUrl(dfd.ioArgs);
 		}
-		return _doIt(method, dfd); // dojo.Deferred
+
+		// IE 6 is a steaming pile. It won't let you call apply() on the native function (xhr.open).
+		// workaround for IE6's apply() "issues"
+		var ioArgs = dfd.ioArgs;
+		var xhr = ioArgs.xhr;
+		xhr.open(method, ioArgs.url, args.sync !== true, args.user || undefined, args.password || undefined);
+		if(args.headers){
+			for(var hdr in args.headers){
+				if(hdr.toLowerCase() === "content-type" && !args.contentType){
+					args.contentType = args.headers[hdr];
+				}else{
+					xhr.setRequestHeader(hdr, args.headers[hdr]);
+				}
+			}
+		}
+		// FIXME: is this appropriate for all content types?
+		xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
+		if(!args.headers || !args.headers["X-Requested-With"]){
+			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+		}
+		// FIXME: set other headers here!
+		try{
+			xhr.send(ioArgs.query);
+		}catch(e){
+			dfd.cancel();
+		}
+		_d._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
+		xhr = null;
+		return dfd; //Deferred
 	}
 
 	dojo.xhrGet = function(/*dojo.__XhrArgs*/ args){
@@ -668,42 +667,22 @@ dojo.require("dojo._base.query");
 		return _d.xhr("GET", args); //dojo.Deferred
 	}
 
-	dojo.xhrPost = function(/*dojo.__XhrArgs*/ args){
-		//summary: 
-		//		Sends an HTTP POST request to the server.
-		return _d.xhr("POST", args, true); // dojo.Deferred
-	}
-
-	dojo.rawXhrPost = function(/*dojo.__XhrArgs*/ args){
+	dojo.rawXhrPost = dojo.xhrPost = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP POST request to the server. In addtion to the properties
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
 		//	postData:
-		//		String. The raw data to send in the body of the POST request.
-		var dfd = _makeXhrDeferred(args);
-		dfd.ioArgs.query = args.postData;
-		return _doIt("POST", dfd); // dojo.Deferred
+		//		String. Send raw data in the body of the POST request.
+		return _d.xhr("POST", args, true); // dojo.Deferred
 	}
 
-	dojo.xhrPut = function(/*dojo.__XhrArgs*/ args){
-		//	summary:
-		//		Sends an HTTP PUT request to the server.
-		return _d.xhr("PUT", args, true); // dojo.Deferred
-	}
-
-	dojo.rawXhrPut = function(/*dojo.__XhrArgs*/ args){
+	dojo.rawXhrPut = dojo.xhrPut = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP PUT request to the server. In addtion to the properties
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
 		//	putData:
-		//		String. The raw data to send in the body of the PUT request.
-		var dfd = _makeXhrDeferred(args);
-		var ioArgs = dfd.ioArgs;
-		if(args.putData){
-			ioArgs.query = args.putData;
-			args.putData = null;
-		}
-		return _doIt("PUT", dfd); // dojo.Deferred
+		//		String. Send raw data in the body of the PUT request.
+		return _d.xhr("PUT", args, true); // dojo.Deferred
 	}
 
 	dojo.xhrDelete = function(/*dojo.__XhrArgs*/ args){

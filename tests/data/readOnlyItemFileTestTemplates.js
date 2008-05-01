@@ -2193,6 +2193,87 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: close (clearOnClose: true)",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
+			if (dojo.isBrowser) {
+				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
+				params.clearOnClose = true;
+				params.urlPreventCache = true;
+				var store = new datastore(params);
+
+				var d = new doh.Deferred();
+				function onItem(item){
+					var error = null;
+					try {
+						t.assertTrue(item !== null);
+						var ec = item;
+						var val = store.getValue(ec, "name");
+						t.assertEqual("Ecuador", val);
+
+						store.close();
+						//Check some internals here.  Do not normally access these!
+						t.assertTrue(store._arrayOfAllItems.length === 0);
+						t.assertTrue(store._loadFinished === false);
+					}catch (e){
+						error = e;
+					}
+					if (error) {
+						d.errback(error);
+					}else{
+						d.callback(true);
+					}
+				}
+				function onError(errData){
+					d.errback(errData);
+				}
+				store.fetchItemByIdentity({identity:"ec", onItem:onItem, onError:onError});
+				return d; // Deferred
+			}
+		}
+	},
+	{
+		name: "Read API: close (clearOnClose: false)",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
+			if (dojo.isBrowser) {
+				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
+				params.urlPreventCache = true;
+				var store = new datastore(params);
+
+				var d = new doh.Deferred();
+				function onItem(item){
+					var error = null;
+					try {
+						t.assertTrue(item !== null);
+						var ec = item;
+						var val = store.getValue(ec, "name");
+						t.assertEqual("Ecuador", val);
+
+						store.close();
+						//Check some internals here.  Do not normally access these!
+						t.assertTrue(store._arrayOfAllItems.length !== 0);
+						t.assertTrue(store._loadFinished === true);
+					}catch (e){
+						error = e;
+					}
+					if (error) {
+						d.errback(error);
+					}else{
+						d.callback(true);
+					}
+				}
+				function onError(errData){
+					d.errback(errData);
+				}
+				store.fetchItemByIdentity({identity:"ec", onItem:onItem, onError:onError});
+				return d; // Deferred
+			}
+		}
+	},
+	{
 		name: "Identity API: no_identifier_specified",
  		runTest: function(datastore, t){
 			var arrayOfItems = [

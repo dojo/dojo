@@ -64,9 +64,18 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		if(keywordParameters.urlPreventCache !== undefined){
 			this.urlPreventCache = keywordParameters.urlPreventCache?true:false;
 		}
+		if(keywordParameters.clearOnClose){
+			this.clearOnClose = true;
+		}
 	},
 	
 	url: "",	// use "" rather than undefined for the benefit of the parser (#3539)
+
+	//Parameter to allow users to specify if a close call should force a reload or not.
+	//By default, it retains the old behavior of not clearing if close is called.  But
+	//if set true, the store will be reset to default state.  Note that by doing this,
+	//all item handles will become invalid and a new fetch must be issued.
+	clearOnClose: false,
 
 	//Parameter to allow specifying if preventCache should be passed to the xhrGet call or not when loading data from a url.  
 	//Note this does not mean the store calls the server on each fetch, only that the data load has preventCache set as an option.
@@ -362,6 +371,17 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 	close: function(/*dojo.data.api.Request || keywordArgs || null */ request){
 		 //	summary: 
 		 //		See dojo.data.api.Read.close()
+		 if(this.clearOnClose && (this._jsonFileUrl !== "")){
+			 //Reset all internalsback to default state.  This will force a reload
+			 //on next fetch, but only if the data came from a url.  Passed in data
+			 //means it should not clear the data.
+			 this._arrayOfAllItems = [];
+			 this._arrayOfTopLevelItems = [];
+			 this._loadFinished = false;
+			 this._itemsByIdentity = null;
+			 this._loadInProgress = false;
+			 this._queuedFetches = [];
+		 }
 	},
 
 	_getItemsFromLoadedData: function(/* Object */ dataObject){

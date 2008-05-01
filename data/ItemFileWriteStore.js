@@ -759,7 +759,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			var identity = this.getIdentity(item);
 			return new Boolean(this._pending._newItems[identity] || 
 				this._pending._modifiedItems[identity] ||
-				this._pending._deletedItems[identity]); // boolean
+				this._pending._deletedItems[identity]).valueOf(); // boolean
 		}else{
 			// return true if the store is dirty -- which means return true
 			// if there are any new items, dirty items, or modified items
@@ -796,5 +796,24 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		
 		// No need to do anything. This method is here just so that the 
 		// client code can connect observers to it. 
+	},
+
+	close: function(/* object? */ request) {
+		 // summary:
+		 //		Over-ride of base close function of ItemFileReadStore to add in check for store state.
+		 // description:
+		 //		Over-ride of base close function of ItemFileReadStore to add in check for store state.
+		 //		If the store is still dirty (unsaved changes), then an error will be thrown instead of
+		 //		clearing the internal state for reload from the url.
+
+		 //Clear if not dirty ... or throw an error
+		 if(this.clearOnClose){
+			 if(!this.isDirty()){
+				 this.inherited(arguments);
+			 }else if(this._jsonFileUrl !== ""){
+				 //Only throw an error if the store was dirty and we were loading from a url (cannot reload from url until state is saved).
+				 throw new Error("dojo.data.ItemFileWriteStore: There are unsaved changes present in the store.  Please save or revert the changes before invoking close.");
+			 }
+		 }
 	}
 });

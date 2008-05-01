@@ -40,7 +40,7 @@ tests.data.ItemFileWriteStore.getTestData = function(name){
 						{"id": 15, "name": "item 15", "friends": [{"id": 16, "name": "Item 16"}]}
 					]
 				}
-			}
+			};
 		}
 	}
 	return data;
@@ -60,10 +60,10 @@ doh.register("tests.data.ItemFileWriteStore",
 			var features = store.getFeatures(); 
 
 			// make sure we have the expected features:
-			doh.assertTrue(features["dojo.data.api.Read"] != null);
-			doh.assertTrue(features["dojo.data.api.Identity"] != null);
-			doh.assertTrue(features["dojo.data.api.Write"] != null);
-			doh.assertTrue(features["dojo.data.api.Notification"] != null);
+			doh.assertTrue(features["dojo.data.api.Read"] !== null);
+			doh.assertTrue(features["dojo.data.api.Identity"] !== null);
+			doh.assertTrue(features["dojo.data.api.Write"] !== null);
+			doh.assertTrue(features["dojo.data.api.Notification"] !== null);
 			doh.assertFalse(features["iggy"]);
 			
 			// and only the expected features:
@@ -85,7 +85,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
-			function onComplete(items, request){
+			var onComplete = function(items, request){
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "capital", "Cairo"));
@@ -94,7 +94,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				//    Okay, so this seems very odd.  Maybe I'm just being dense.
 				//    These tests works:
 				doh.assertEqual(store.isDirty(item), false);
-				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(store.isDirty(item) === false);
 				//    But these seemingly equivalent tests will not work:
 				// doh.assertFalse(store.isDirty(item));
 				// doh.assertTrue(!(store.isDirty(item)));
@@ -102,18 +102,17 @@ doh.register("tests.data.ItemFileWriteStore",
 				//    All of which seems especially weird, given that this *does* work:
 				doh.assertFalse(store.isDirty());
 				
-				
-				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(store.isDirty(item) === false);
 				doh.assertTrue(!store.isDirty());
 				store.setValue(item, "capital", "New Cairo");
 				doh.assertTrue(store.isDirty(item));
 				doh.assertTrue(store.isDirty());
 				doh.assertEqual(store.getValue(item, "capital").toString(), "New Cairo");
 				deferred.callback(true);
-			}
-			function onError(error, request){
+			};
+			var onError = function(error, request){
 				deferred.errback(error);
-			}
+			};
 			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
 			return deferred; //Object
 		},
@@ -129,7 +128,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
-				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(store.isDirty(item) === false);
 				doh.assertTrue(!store.isDirty());
 				store.setValues(item, "name", ["Egypt 1", "Egypt 2"]);
 				doh.assertTrue(store.isDirty(item));
@@ -157,7 +156,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
-				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(store.isDirty(item) === false);
 				doh.assertTrue(!store.isDirty());
 				store.unsetAttribute(item, "name");
 				doh.assertTrue(store.isDirty(item));
@@ -216,7 +215,12 @@ doh.register("tests.data.ItemFileWriteStore",
 
 			var deferred = new doh.Deferred();
 			doh.assertTrue(!store.isDirty());
-			function onComplete(items, request){
+
+			var onError = function(error, request){
+				deferred.errback(error);
+			};
+
+			var onComplete = function(items, request){
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
@@ -236,6 +240,8 @@ doh.register("tests.data.ItemFileWriteStore",
 					doh.assertTrue(false);
 				};
 
+
+
 				//See if we can add in a new item representing the city of Cairo.
 				//This should also call the onNew set above....
 				var newItem = store.newItem({name: "Cairo", abbr: "Cairo"}, {parent: item, attribute: "cities"});
@@ -254,10 +260,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				}
 				//Do a shallow search first, should find nothing.
 				store.fetch({query:{name:"Cairo"}, onComplete: onCompleteNewItemShallow, onError: onError});
-			}
-			function onError(error, request){
-				deferred.errback(error);
-			}
+			};
 			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
 			return deferred; //Object
 		},
@@ -335,24 +338,26 @@ doh.register("tests.data.ItemFileWriteStore",
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
-			function onComplete(items, request){
+
+			var onError = function(error, request){
+				deferred.errback(error);
+			};
+
+			var onComplete = function(items, request){
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
-				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(store.isDirty(item) === false);
 				doh.assertTrue(!store.isDirty());
 				store.deleteItem(item);
 				doh.assertTrue(store.isDirty(item));
 				doh.assertTrue(store.isDirty());
-				function onCompleteToo(itemsToo, requestToo) {
+				var onCompleteToo = function(itemsToo, requestToo) {
 					doh.assertEqual(0, itemsToo.length);
 					deferred.callback(true);
-				}
+				};
 				store.fetch({query:{name:"Egypt"}, onComplete: onCompleteToo, onError: onError});
-			}
-			function onError(error, request){
-				deferred.errback(error);
-			}
+			};
 			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
 			return deferred; //Object
 		},
@@ -387,11 +392,16 @@ doh.register("tests.data.ItemFileWriteStore",
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
-			function onComplete(items, request) {
+
+			var onError = function(error, request){
+				deferred.errback(error);
+			};
+
+			var onComplete = function(items, request) {
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
-				doh.assertTrue(store.isDirty(item) == false);
+				doh.assertTrue(store.isDirty(item) === false);
 				doh.assertTrue(!store.isDirty());
 				store.setValue(item, "name", "Egypt 2");
 				doh.assertTrue(store.getValue(item, "name") == "Egypt 2");
@@ -400,17 +410,14 @@ doh.register("tests.data.ItemFileWriteStore",
 				store.revert();
 				
 				//Fetch again to see if it reset the state.
-				function onCompleteToo(itemsToo, requestToo){
+				var onCompleteToo = function(itemsToo, requestToo){
 					doh.assertEqual(1, itemsToo.length);
 					var itemToo = itemsToo[0];
 					doh.assertTrue(store.containsValue(itemToo, "name", "Egypt"));
 					deferred.callback(true);
-				}
+				};
 				store.fetch({query:{name:"Egypt"}, onComplete: onCompleteToo, onError: onError});
-			}
-			function onError(error, request){
-				deferred.errback(error);
-			}
+			};
 			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
 			return deferred; //Object
 		},
@@ -466,6 +473,12 @@ doh.register("tests.data.ItemFileWriteStore",
 			//		Simple test of the save API
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var egypt;
+
+			var deferred = new doh.Deferred();
+			var onError = function(error){
+				deferred.errback(error);
+			};
+
 			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
 				var struct = dojo.fromJson(newFileContentString);
 				doh.assertEqual(struct.identifier, store.getIdentityAttributes(egypt)[0]);
@@ -473,29 +486,23 @@ doh.register("tests.data.ItemFileWriteStore",
 				doh.assertEqual(struct.items.length, 7);
 				
 				var cloneStore = new dojo.data.ItemFileWriteStore({data:struct});
-				function onItemClone(itemClone){
+				var onItemClone = function(itemClone){
 					var egyptClone = itemClone;
 					doh.assertEqual(store.getIdentityAttributes(egypt)[0], cloneStore.getIdentityAttributes(egyptClone)[0]);
 					doh.assertEqual(store.getLabelAttributes(egypt)[0], cloneStore.getLabelAttributes(egyptClone)[0]);
 					doh.assertEqual(store.getValue(egypt, "name"), cloneStore.getValue(egyptClone, "name"));
-				}
+				};
 				cloneStore.fetchItemByIdentity({identity:"eg", onItem:onItemClone, onError:onError});
-				
 				saveCompleteCallback();
 			};
-
-			var deferred = new doh.Deferred();
-			function onError(error){
-				deferred.errback(error);
-			}
-			function onItem(item){
+			var onItem = function(item){
 				egypt = item;
-				function onComplete() {
+				var onComplete = function() {
 					deferred.callback(true);
-				}
+				};
 				store.setValue(egypt, "capital", "New Cairo");
 				store.save({onComplete:onComplete, onError:onError});
-			}
+			};
 			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
 			return deferred; //Object
 		},
@@ -505,6 +512,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			//	description:
 			//		Simple test of the save API	with a non-atomic type (Date) that has a type mapping.
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+			
+			var deferred = new doh.Deferred();
 			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
 
 				//Now load the new data into a datastore and validate that it stored the date right.
@@ -514,7 +523,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				function gotItem(item){
 					var independenceDate = newStore.getValue(item,"independence"); 
 					doh.assertTrue(independenceDate instanceof Date);
-					doh.assertTrue(dojo.date.compare(new Date(1993,04,24), independenceDate, "date") === 0);
+					doh.assertTrue(dojo.date.compare(new Date(1993,4,24), independenceDate, "date") === 0);
 					saveCompleteCallback();
 				}
 				function failed(error, request){
@@ -524,17 +533,16 @@ doh.register("tests.data.ItemFileWriteStore",
 				newStore.fetchItemByIdentity({identity:"eg", onItem:gotItem, onError:failed});
 			};
 
-			var deferred = new doh.Deferred();
-			function onError(error){
+			var onError = function(error){
 				deferred.errback(error);
-			}
-			function onItem(item){
-				function onComplete() {
+			};
+			var onItem = function(item){
+				var onComplete = function() {
 					deferred.callback(true);
-				}
-				store.setValue(item, "independence", new Date(1993,04,24));
+				};
+				store.setValue(item, "independence", new Date(1993,4,24));
 				store.save({onComplete:onComplete, onError:onError});
-			}
+			};
 			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
 			return deferred; //Object
 		},
@@ -562,11 +570,13 @@ doh.register("tests.data.ItemFileWriteStore",
 					typeMap: customTypeMap
 			});
 			
+			var deferred = new doh.Deferred();
 			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
 				//Now load the new data into a datastore and validate that it stored the Color right.
 				var dataset = dojo.fromJson(newFileContentString);
 				var newStore = new dojo.data.ItemFileWriteStore({data: dataset, typeMap: customTypeMap});
 
+				var deferred = new doh.Deferred();
 				function gotItem(item){
 					var hairColor = newStore.getValue(item,"hairColor"); 
 					doh.assertTrue(hairColor instanceof dojo.Color);
@@ -581,13 +591,12 @@ doh.register("tests.data.ItemFileWriteStore",
 			};
 
 			//Add a new item with a color type, then save it.
-			var deferred = new doh.Deferred();
-			function onError(error){
+            var onError = function(error){
 				deferred.errback(error);
-			}
-			function onComplete() {
+			};
+			var onComplete = function() {
 				deferred.callback(true);
-			}
+			};
 
 			var animal = store.newItem({name: "Animal", hairColor: new dojo.Color("yellow")});
 			store.save({onComplete:onComplete, onError:onError});
@@ -619,37 +628,38 @@ doh.register("tests.data.ItemFileWriteStore",
 													return obj.toString();
 												}
 											}
-								}
+								};
 			var store = new dojo.data.ItemFileWriteStore({
 					data:dataset,
 					typeMap: customTypeMap
 			});
+			
+			var deferred = new doh.Deferred();
 			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
 				//Now load the new data into a datastore and validate that it stored the Color right.
 				var dataset = dojo.fromJson(newFileContentString);
 				var newStore = new dojo.data.ItemFileWriteStore({data: dataset, typeMap: customTypeMap});
 
-				function gotItem(item){
+				var gotItem = function(item){
 					var hairColor = newStore.getValue(item,"hairColor"); 
 					doh.assertTrue(hairColor instanceof dojo.Color);
 					doh.assertEqual("rgba(255, 255, 0, 1)", hairColor.toString());
 					saveCompleteCallback();
-				}
-				function failed(error, request){
+				};
+				var failed = function(error, request){
 					deferred.errback(error);
 					saveFailedCallback();
-				}
+				};
 				newStore.fetchItemByIdentity({identity:"Animal", onItem:gotItem, onError:failed});
 			};
 
 			//Add a new item with a color type, then save it.
-			var deferred = new doh.Deferred();
-			function onError(error){
+            var onError = function(error){
 				deferred.errback(error);
-			}
-			function onComplete() {
+			};
+			var onComplete = function() {
 				deferred.callback(true);
-			}
+			};
 
 			var animal = store.newItem({name: "Animal", hairColor: new dojo.Color("yellow")});
 			store.save({onComplete:onComplete, onError:onError});
@@ -742,7 +752,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				var egypt = fetchedItem;
 				var connectHandle = null;
 				function deleteItemHandler(item){
-					doh.assertTrue(store.isItem(item) == false);
+					doh.assertTrue(store.isItem(item) === false);
 					doh.assertTrue(item == egypt);
 					deferred.callback(true);
 					dojo.disconnect(connectHandle);
@@ -840,7 +850,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			
 			var onError = function(error, request){
 				deferred.errback(error);
-			}
+			};
 			var onComplete = function(items, request){
 				doh.assertEqual(7, items.length);
 				
@@ -864,9 +874,9 @@ doh.register("tests.data.ItemFileWriteStore",
 						}
 					}
 					deferred.callback(true);
-				}
+				};
 				store.fetch({onComplete:onCompleteAgain, onError:onError});
-			}
+			};
 			
 			store.fetch({onComplete:onComplete, onError:onError});
 			return deferred;
@@ -893,7 +903,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			
 			var onError = function(error, request){
 				deferred.errback(error);
-			}
+			};
 			var onComplete = function(items, request){
 				doh.assertEqual(7, items.length);
 				
@@ -923,11 +933,11 @@ doh.register("tests.data.ItemFileWriteStore",
 					var revertComplete = function(itemsReverted, request){
 						doh.assertEqual(7, itemsReverted.length);
 						deferred.callback(true);
-					}
+					};
 					store.fetch({onComplete:revertComplete, onError:onError});
-				}
+				};
 				store.fetch({onComplete:onCompleteAgain, onError:onError});
-			}
+			};
 			store.fetch({onComplete:onComplete, onError:onError});
 			return deferred;
 		},
@@ -940,17 +950,18 @@ doh.register("tests.data.ItemFileWriteStore",
 			var store = new dojo.data.ItemFileWriteStore(tests.data.ItemFileWriteStore.getTestData("reference_integrity"));
 
 			var deferred = new doh.Deferred();
-			function onError(error, request){
+			var onError = function(error, request){
 				deferred.errback(error);
-			}
-			function onComplete(items, request){
+			};
+			var onComplete = function(items, request){
 
 				var item10 = null;
 				var item1  = null;
 				var item3  = null;
 				var item5  = null;
 
-				for (var i = 0; i < items.length; i++) {
+				var i;
+				for (i = 0; i < items.length; i++) {
 					var ident = store.getIdentity(items[i]);
 					if (ident === 10) {
 						item10 = items[i];
@@ -972,7 +983,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				doh.assertTrue(store.isItem(item5));
 				var found = 0;
 				try{
-					for (var i = 0; i < friends.length; i++) {
+					for (i = 0; i < friends.length; i++) {
 						if (i === 0) {
 							doh.assertTrue(store.isItem(friends[i]));
 							doh.assertEqual(friends[i], item1);
@@ -995,7 +1006,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				}
 				doh.assertEqual(3, found);
 				deferred.callback(true);
-			}
+			};
 			store.fetch({onError: onError, onComplete: onComplete});
 			return deferred;
 		},
@@ -1131,7 +1142,7 @@ doh.register("tests.data.ItemFileWriteStore",
 						}
 						store.fetch({query: {name: "*"}, start: 0, count: 20, onComplete: onComplete, onError: onError});
 					}catch(e){
-						deferred.errback(e)
+						deferred.errback(e);
 					}
 				}
 				store.fetchItemByIdentity({identity: "Nairobi", onError: onError, onItem: onItem2});
@@ -1269,7 +1280,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				console.log("Map state for Item 1 is: " + dojo.toJson(item1[store._reverseRefMap]));
 				console.log("Map state for Item 2 is: " + dojo.toJson(item2[store._reverseRefMap]));
 
-				doh.assertTrue(item2[store._reverseRefMap] != null);
+				doh.assertTrue(item2[store._reverseRefMap] !== null);
 
 				//Assert there is a recorded reference to item 2 in item 1's attribute 'sibling'.
 				doh.assertTrue(item2[store._reverseRefMap][store.getIdentity(item1)]["siblings"]);
@@ -1391,6 +1402,43 @@ doh.register("tests.data.ItemFileWriteStore",
 			}
 			store.fetchItemByIdentity({identity: 10, onError: onError, onItem: onItem});
 			return deferred;
+		}, 
+		function testReadAPI_close_dirty_failure(){
+			//	summary: 
+			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
+			if (dojo.isBrowser) {
+				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
+				params.clearOnClose = true;
+				params.urlPreventCache = true;
+				var store = new dojo.data.ItemFileWriteStore(params);
+
+				var d = new doh.Deferred();
+				var onItem = function(item){
+					var error = null;
+					try {
+						doh.assertTrue(item !== null);
+						var ec = item;
+						var val = store.getValue(ec, "name");
+						doh.assertEqual("Ecuador", val);
+						var newItem = store.newItem({abbr: "foo", name: "bar"});
+						
+						//Should throw an error...
+						store.close();
+					}catch (e){
+						error = e;
+					}
+					if (error === null) {
+						d.errback(new Error("Store was dirty, should have thrown an error on close!"));
+					}else{
+						d.callback(true);
+					}
+				};
+				var onError = function(errData){
+					d.errback(errData);
+				};
+				store.fetchItemByIdentity({identity:"ec", onItem:onItem, onError:onError});
+				return d; // Deferred
+			}
 		}
 	]
 );

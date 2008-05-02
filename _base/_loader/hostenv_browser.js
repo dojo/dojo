@@ -318,27 +318,14 @@ if(typeof window != 'undefined'){
 				);
 			}
 
-			// IE WebControl hosted in an application can fire "beforeunload" and "unload"
-			// events when control visibility changes, causing Dojo to unload too soon. The
-			// following code fixes the problem
-			// Reference: http://support.microsoft.com/default.aspx?scid=kb;en-us;199155
-			var _unloading = true;
-			_handleNodeEvent("onbeforeunload", function(){
-				_w.setTimeout(function(){ _unloading = false; }, 0);
-			});
-			_handleNodeEvent("onunload", function(){
-				if(_unloading){ dojo.unloaded(); }
-			});
-
 			try{
 				document.namespaces.add("v","urn:schemas-microsoft-com:vml");
 				document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
 			}catch(e){}
-		}else{
-			// FIXME: dojo.unloaded requires dojo scope, so using anon function wrapper.
-			_handleNodeEvent("onbeforeunload", function() { dojo.unloaded(); });
 		}
 
+		// FIXME: dojo.unloaded requires dojo scope, so using anon function wrapper.
+		_handleNodeEvent("onbeforeunload", function() { dojo.unloaded(); });
 	})();
 
 	/*

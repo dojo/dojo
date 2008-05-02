@@ -111,16 +111,7 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
 	var currentIsXDomain = this._xdIsXDomainPath(relpath);
     this._isXDomain |= currentIsXDomain;
 
-	var uri = this.baseUrl + relpath;
-	if(currentIsXDomain){
-        // check whether the relpath is an absolute URL itself. If so, we 
-        // ignore baseUrl
-    	var colonIndex = relpath.indexOf(":");
-    	var slashIndex = relpath.indexOf("/");
-        if(colonIndex > 0 && colonIndex < slashIndex){ 
-		    uri = relpath;
-    	}
-    }
+	var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : this.baseUrl) + relpath;
 
 	try{
 		return ((!module || this._isXDomain) ? this._loadUri(uri, cb, currentIsXDomain, module) : this._loadUriAndCheck(uri, module, cb)); //Boolean

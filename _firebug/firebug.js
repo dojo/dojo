@@ -465,6 +465,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 			+ buildLink("Clear", "Remove All Console Logs", "clear", "")
 			+ buildLink("ReCSS", "Refresh CSS without reloading page", "recss", "")
 			
+			+ buildLink("Close", "Close the console", "close", "right")
 			+ buildLink("Console", "Show Console Logs", "openConsole", "right")
 			+ buildLink("Object", "Show Object Inspector", "openObjectInspector", "right")
 			+ buildLink("DOM", "Show DOM Inspector", "openDomInspector", "right")

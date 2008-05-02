@@ -88,6 +88,10 @@ tests.register("tests.date.locale",
 	// ...but not in strict mode
 	t.f( Boolean(dojo.date.locale.parse("8/11/2006", {formatLength:'short', selector:'date', locale:'en', strict:true})));
 
+	// test dates with no spaces
+	t.is( aug_11_2006, dojo.date.locale.parse("11Aug2006", {selector: 'date', datePattern: 'ddMMMyyyy'}));
+	t.is( new Date(2006, 7, 1), dojo.date.locale.parse("Aug2006", {selector: 'date', datePattern: 'MMMyyyy'}));
+
 	//en: 'medium' fmt: MMM d, yyyy
 	// Tolerate either 8 or 08 for month part.
 	t.is( aug_11_2006, dojo.date.locale.parse("Aug 11, 2006", {formatLength:'medium', selector:'date', locale:'en'}));

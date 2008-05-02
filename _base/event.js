@@ -66,6 +66,7 @@ dojo.require("dojo._base.connect");
 		},
 		_setKeyChar: function(evt){
 			evt.keyChar = evt.charCode ? String.fromCharCode(evt.charCode) : '';
+			evt.charOrCode = evt.keyChar || evt.keyCode;
 		}
 	});
 

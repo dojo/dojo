@@ -204,17 +204,19 @@ dojo.require("dojo._base.query");
 	dojo._contentHandlers = {
 		"text": function(xhr){ return xhr.responseText; },
 		"json": function(xhr){
-			if(!dojo.config.usePlainJson){
-				console.warn("Consider using mimetype:text/json-comment-filtered"
-					+ " to avoid potential security issues with JSON endpoints"
-					+ " (use djConfig.usePlainJson=true to turn off this message)");
-			}
 			return _d.fromJson(xhr.responseText);
 		},
 		"json-comment-filtered": function(xhr){ 
-			// NOTE: we provide the json-comment-filtered option as one solution to
-			// the "JavaScript Hijacking" issue noted by Fortify and others. It is
-			// not appropriate for all circumstances.
+			// NOTE: the json-comment-filtered option was implemented to prevent
+			// "JavaScript Hijacking", but it is less secure than standard JSON. Use
+			// standard JSON instead. JSON prefixing can be used to subvert hijacking.
+			if(!dojo.config.useCommentedJson){
+				console.warn("Consider using the standard mimetype:application/json."
+					+ " json-commenting can introduce security issues, if you wish to "
+					+ " decrease the chances of hijacking, use the standard the 'json' handler and "
+					+ " prefix your json with :\n{}&&\n "
+					+ " (use djConfig.useCommentedJson=true to turn off this message)");
+			}
 
 			var value = xhr.responseText;
 			var cStartIdx = value.indexOf("\/*");

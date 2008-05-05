@@ -769,9 +769,14 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 					//We mainly wanted to sync/wait here.
 					//TODO:  Revisit the loading scheme of this store to improve multi-initial
 					//request handling.
-					if (self._loadInProgress !== true && !self._loadFinished) {
+					if(self._loadInProgress !== true && !self._loadFinished){
 						self._getItemsFromLoadedData(data);
 						self._loadFinished = true;
+					}else if(self._loadInProgress){
+						//Okay, we hit an error state we can't recover from.  A forced load occurred
+						//while an async load was occurring.  Since we cannot block at this point, the best
+						//that can be managed is to throw an error.
+						throw new Error("dojo.data.ItemFileReadStore:  Unable to perform a synchronous forced load of data, an async load is in progress and incomplete.  Synchronous operation cannot be completed at this time."); 
 					}
 				}catch(e){
 					console.log(e);

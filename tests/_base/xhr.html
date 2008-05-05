@@ -152,7 +152,8 @@
 								baz: [
 									{ thonk: "blarg" },
 									"xyzzy!"
-								]
+								],
+								documentElement: "Element" //Added to make IE happy.
 							};
 							t.is(fauxObj,
 								dojo._contentHandlers["xml"]({ responseXML: fauxObj })

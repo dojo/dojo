@@ -230,7 +230,7 @@ dojo.require("dojo._base.query");
 		},
 		"xml": function(xhr){ 
 			var result = xhr.responseXML;
-			if(_d.isIE && (!result || window.location.protocol == "file:")){
+			if(_d.isIE && (!result || result.documentElement == null)){
 				_d.forEach(["MSXML2", "Microsoft", "MSXML", "MSXML3"], function(prefix){
 					try{
 						var dom = new ActiveXObject(prefix + ".XMLDOM");

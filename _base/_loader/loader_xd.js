@@ -31,7 +31,7 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 
 	//Find dependencies.
 	var deps = [];
-    var depRegExp = /dojo.(require|requireIf|provide|requireAfterIf|platformRequire|requireLocalization)\(([\w\W]*?)\)/mg;
+    var depRegExp = /dojo.(require|requireIf|provide|requireAfterIf|platformRequire|requireLocalization)\s*\(([\w\W]*?)\)/mg;
     var match;
 	while((match = depRegExp.exec(depContents)) != null){
 		if(match[1] == "requireLocalization"){
@@ -285,7 +285,7 @@ dojo._xdResourceLoaded = function(/*Object*/res){
 				}) - 1;
 	
 			//Add provide/requires to dependency map.
-			for(var i = 0; i < provideList.length; i++){
+			for(i = 0; i < provideList.length; i++){
 				this._xdDepMap[provideList[i]] = { requires: requireList, requiresAfter: requireAfterList, contentIndex: contentIndex };
 			}
 		}
@@ -293,7 +293,7 @@ dojo._xdResourceLoaded = function(/*Object*/res){
 		//Now update the inflight status for any provided resources in this loaded resource.
 		//Do this at the very end (in a *separate* for loop) to avoid shutting down the 
 		//inflight timer check too soon.
-		for(var i = 0; i < provideList.length; i++){
+		for(i = 0; i < provideList.length; i++){
 			this._xdInFlight[provideList[i]] = false;
 		}
 	}
@@ -432,7 +432,7 @@ dojo._xdUnpackDependency = function(/*Array*/dep){
 		case "platformRequire":
 			var modMap = dep[1];
 			var common = modMap["common"]||[];
-			var newDeps = (modMap[dojo.hostenv.name_]) ? common.concat(modMap[dojo.hostenv.name_]||[]) : common.concat(modMap["default"]||[]);	
+			newDeps = (modMap[dojo.hostenv.name_]) ? common.concat(modMap[dojo.hostenv.name_]||[]) : common.concat(modMap["default"]||[]);	
 			//Flatten the array of arrays into a one-level deep array.
 			//Each result could be an array of 3 elements  (the 3 arguments to dojo.require).
 			//We only need the first one.
@@ -490,13 +490,13 @@ dojo._xdEvalReqs = function(/*Array*/reqChain){
 	while(reqChain.length > 0){
 		var req = reqChain[reqChain.length - 1];
 		var res = this._xdDepMap[req];
+		var i, reqs, nextReq;
 		if(res){
 			//Trace down any requires for this resource.
 			//START dojo._xdTraceReqs() inlining for small Safari 2.0 call stack
-			var reqs = res.requires;
+			reqs = res.requires;
 			if(reqs && reqs.length > 0){
-				var nextReq;
-				for(var i = 0; i < reqs.length; i++){
+				for(i = 0; i < reqs.length; i++){
 					nextReq = reqs[i].name;
 					if(nextReq && !reqChain[nextReq]){
 						//New req depedency. Follow it down.
@@ -521,10 +521,9 @@ dojo._xdEvalReqs = function(/*Array*/reqChain){
 
 			//Trace down any requireAfters for this resource.
 			//START dojo._xdTraceReqs() inlining for small Safari 2.0 call stack
-			var reqs = res.requiresAfter;
+			reqs = res.requiresAfter;
 			if(reqs && reqs.length > 0){
-				var nextReq;
-				for(var i = 0; i < reqs.length; i++){
+				for(i = 0; i < reqs.length; i++){
 					nextReq = reqs[i].name;
 					if(nextReq && !reqChain[nextReq]){
 						//New req depedency. Follow it down.
@@ -598,7 +597,7 @@ dojo._xdWatchInFlight = function(){
 	//This normally shouldn't happen with proper dojo.provide and dojo.require
 	//usage, but providing it just in case. Note that these may not be executed
 	//in the original order that the developer intended.
-	for(var i = 0; i < this._xdContents.length; i++){
+	for(i = 0; i < this._xdContents.length; i++){
 		var current = this._xdContents[i];
 		if(current.content && !current.isDefined){
 			//Pass in scope args to allow multiple versions of modules in a page.	

@@ -776,7 +776,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 						//Okay, we hit an error state we can't recover from.  A forced load occurred
 						//while an async load was occurring.  Since we cannot block at this point, the best
 						//that can be managed is to throw an error.
-						throw new Error("dojo.data.ItemFileReadStore:  Unable to perform a synchronous forced load of data, an async load is in progress and incomplete.  Synchronous operation cannot be completed at this time."); 
+						throw new Error("dojo.data.ItemFileReadStore:  Unable to perform a synchronous load, an async load is in progress."); 
 					}
 				}catch(e){
 					console.log(e);

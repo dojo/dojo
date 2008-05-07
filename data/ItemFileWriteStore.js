@@ -256,7 +256,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 							//Remove the note of the reference to the item and set the values on the modified attribute.
 							this._removeReferenceFromMap(item, containingItem, attribute); 
 							if(newValues.length < oldValues.length){
-								this.setValues(containingItem, attribute, newValues);
+								this._setValueOrValues(containingItem, attribute, newValues, true);
 							}
 						}
 					}

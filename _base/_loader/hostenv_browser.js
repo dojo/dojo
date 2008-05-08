@@ -215,6 +215,8 @@ if(typeof window != 'undefined'){
 			*/
 
 			if(d.config.cacheBust){
+				//Make sure we have a string before string methods are used on uri
+				uri += "";
 				uri += (uri.indexOf("?") == -1 ? "?" : "&") + String(d.config.cacheBust).replace(/\W+/g,"");
 			}
 

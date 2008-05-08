@@ -275,7 +275,7 @@ dojo.connectPublisher = function(	/*String*/ topic,
 	//	 	The name of the event function in obj. 
 	//	 	I.e. identifies a property obj[event].
 	//	example:
-	//	|	dojo.connectPublisher("/ajax/start", dojo, "xhrGet"};
+	//	|	dojo.connectPublisher("/ajax/start", dojo, "xhrGet");
 	var pf = function(){ dojo.publish(topic, arguments); }
 	return (event) ? dojo.connect(obj, event, pf) : dojo.connect(obj, pf); //Handle
 };

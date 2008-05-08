@@ -248,9 +248,9 @@ dojo.require("dojo._base.query");
 
 	dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		var handlers = _d._contentHandlers;
-		try{
+		if(xhr.responseText && xhr.responseText.indexOf("\/*") != -1){
 			return handlers["json-comment-filtered"](xhr);
-		}catch(e){
+		}else{
 			return handlers["json"](xhr);
 		}
 	};

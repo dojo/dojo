@@ -123,6 +123,11 @@
 									responseText: "\tblag\n/*"+dojo.toJson(jsonObj)+"*/\n\r\t\r"
 								})
 							);
+							t.is(jsonObj,
+								dojo._contentHandlers["json-comment-optional"]({
+									responseText: "\tblag\n/*"+dojo.toJson(jsonObj)+"*/\n\r\t\r"
+								})
+							);
 						},
 						function jsContentHandler(t){
 							var jsonObj = {

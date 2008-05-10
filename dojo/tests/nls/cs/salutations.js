@@ -1,0 +1,4 @@
+{
+ cs: "česky",
+ hello: "Ahoj"
+}

@@ -1,0 +1,2 @@
+// generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
+({"EUR_displayName":"歐元","CAD_displayName":"加幣","GBP_displayName":"英鎊","AUD_displayName":"澳幣","GBP_symbol":"GBP","JPY_displayName":"日圓","EUR_symbol":"EUR","CNY_displayName":"人民幣"})

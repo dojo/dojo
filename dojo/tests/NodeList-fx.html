@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.fx extensions to dojo.NodeList</title>
+		<style type="text/css">
+			@import "../resources/dojo.css";
+		</style>
+		<script type="text/javascript" 
+			src="../dojo.js" djConfig="isDebug: true, popup: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.require("dojo.NodeList-fx");
+
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						function fadeOut(){
+							dojo.query("p").style("opacity", 1);
+							var anim = dojo.query("p").fadeOut();
+							var d = new doh.Deferred();
+							dojo.connect(anim, "onEnd", function(){
+								doh.t(dojo.query("p").every(function(item){ 
+									return dojo.style(item, "opacity") == 0;
+								}));
+								d.callback(true);
+							});
+							anim.play();
+							return d;
+						},
+						function fadeIn(){
+							dojo.query("p").style("opacity", 0);
+							var anim = dojo.query("p").fadeIn();
+							var d = new doh.Deferred();
+							dojo.connect(anim, "onEnd", function(){
+								doh.t(dojo.query("p").every(function(item){ 
+									return dojo.style(item, "opacity") == 1;
+								}));
+								d.callback(true);
+							});
+							anim.play();
+							return d;
+						},
+						function wipeOut(){
+							dojo.query("p").style("height", "");
+							var anim = dojo.query("p").wipeOut();
+							var d = new doh.Deferred();
+							dojo.connect(anim, "onEnd", function(){
+								doh.t(dojo.query("p").every(function(item){ 
+									return dojo.style(item, "height") == 0;
+								}));
+								d.callback(true);
+							});
+							anim.play();
+							return d;
+						},
+						function wipeIn(){
+							dojo.query("p").style("height", 0);
+							var anim = dojo.query("p").wipeIn();
+							var d = new doh.Deferred();
+							dojo.connect(anim, "onEnd", function(){
+								doh.t(dojo.query("p").every(function(item){ 
+									// FIXME: need a more robust test for "have wiped all the way in"
+									return dojo.style(item, "height") != 0;
+								}));
+								d.callback(true);
+							});
+							anim.play();
+							return d;
+						},
+						function slideTo(){
+							var anim = dojo.query("p").slideTo({
+								left: 500
+							});
+							var d = new doh.Deferred();
+							dojo.connect(anim, "onEnd", function(){
+								doh.t(dojo.query("p").every(function(item){ 
+									// FIXME: need a more robust test for "have wiped all the way in"
+									return dojo.style(item, "left") == 500;
+								}));
+								d.callback(true);
+							});
+							anim.play();
+							return d;
+						},
+						function anim(){
+							dojo.query("p").style("position", "");
+							dojo.query("p").style("left", "");
+							var anim = dojo.query("p").anim({
+								width: 500
+							});
+							console.debug(anim);
+							var d = new doh.Deferred();
+							dojo.connect(anim, "onEnd", function(){
+								/*
+								doh.t(dojo.query("p").every(function(item){ 
+									// FIXME: need a more robust test for "have wiped all the way in"
+									return dojo.style(item, "width") == 500;
+								}));
+								*/
+								d.callback(true);
+							});
+							return d;
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+		<p>
+		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean semper
+		sagittis velit. Cras in mi. Duis porta mauris ut ligula.  Proin porta
+		rutrum lacus. Etiam consequat scelerisque quam. Nulla facilisi.
+		Maecenas luctus venenatis nulla. In sit amet dui non mi semper iaculis.
+		Sed molestie tortor at ipsum. Morbi dictum rutrum magna. Sed vitae
+		risus.
+		</p>
+		<p>
+		Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
+		imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer lorem
+		nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean id mi in
+		massa bibendum suscipit. Integer eros. Nullam suscipit mauris. In
+		pellentesque. Mauris ipsum est, pharetra semper, pharetra in, viverra
+		quis, tellus. Etiam purus. Quisque egestas, tortor ac cursus lacinia,
+		felis leo adipiscing nisi, et rhoncus elit dolor eget eros. Fusce ut
+		quam. Suspendisse eleifend leo vitae ligula. Nulla facilisi. Nulla
+		rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
+		semper velit ante id metus. Praesent massa dolor, porttitor sed,
+		pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
+		tortor pharetra congue.  Suspendisse pulvinar.
+		</p>
+		<p>
+		Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
+		imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer lorem
+		nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean id mi in
+		massa bibendum suscipit. Integer eros. Nullam suscipit mauris. In
+		pellentesque. Mauris ipsum est, pharetra semper, pharetra in, viverra
+		quis, tellus. Etiam purus. Quisque egestas, tortor ac cursus lacinia,
+		felis leo adipiscing nisi, et rhoncus elit dolor eget eros. Fusce ut
+		quam. Suspendisse eleifend leo vitae ligula. Nulla facilisi. Nulla
+		rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
+		semper velit ante id metus. Praesent massa dolor, porttitor sed,
+		pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
+		tortor pharetra congue.  Suspendisse pulvinar.
+		</p>
+	</body>
+</html>
+

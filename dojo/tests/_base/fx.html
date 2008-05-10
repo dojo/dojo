@@ -1,0 +1,342 @@
+<html>
+	<head>
+		<title>testing Core FX</title>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+		</style>
+		<script type="text/javascript" 
+			src="../../dojo.js" 
+			djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../../_base/fx.js"></script>
+		<script type="text/javascript">
+			var duration = 500;
+			var timeout = 750;
+			dojo.require("doh.runner");
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						{
+							name: "fadeOut",
+							timeout: timeout,
+							runTest: function(){
+								var opacity = dojo.style('foo', 'opacity');
+								doh.is(1, opacity);
+								var anim = dojo.fadeOut({ node: 'foo', duration: duration });
+								var d = new doh.Deferred();
+								dojo.connect(anim, "onEnd", function(){
+									var opacity = dojo.style('foo', 'opacity');
+									var elapsed = (new Date()) - anim._start;
+									doh.is(0, opacity);
+									doh.t(elapsed >= duration);
+									d.callback(true);
+								});
+								anim._start = new Date();
+								anim.play();
+								return d;
+							}
+						},
+						{
+							name: "fadeIn",
+							timeout: timeout,
+							runTest: function(){
+								var opacity = dojo.style('foo', 'opacity');
+								doh.is(0, opacity);
+								var anim = dojo.fadeIn({ node: 'foo', duration: duration });
+								var d = new doh.Deferred();
+								dojo.connect(anim, "onEnd", function(){
+									var opacity = dojo.style('foo', 'opacity');
+									var elapsed = (new Date()) - anim._start;
+									doh.is(1, opacity);
+									doh.t(elapsed >= duration);
+									d.callback(true);
+								});
+								anim._start = new Date();
+								anim.play();
+								return d;
+							}
+						},
+						{
+							name: "animateColor",
+							timeout: timeout,
+							runTest: function(){
+								var d = new doh.Deferred();
+								var anim = dojo.animateProperty({ 
+									node: "foo", 
+									duration: duration,
+									properties: { 
+										color: 				{ start: "black", end: "white" },
+										backgroundColor: 	{ start: "white", end: "black" } 
+									} 
+								});
+								dojo.connect(anim, "onEnd", anim, function(){
+									d.callback(true);
+								});
+								anim.play();
+								return d;
+							}
+						},
+						{
+							name: "animateColorBack",
+							timeout: timeout,
+							runTest: function(){
+								var d = new doh.Deferred();
+								var anim = dojo.animateProperty({ 
+									node: "foo", 
+									duration: duration,
+									properties: { 
+										color: 				{ end: "black" },
+										backgroundColor: 	{ end: "#5d81b4" }, 
+										letterSpacing: 		{ start: 0, end: 10 } 
+									} 
+								});
+								dojo.connect(anim, "onEnd", anim, function(){
+									d.callback(true);
+								});
+								anim.play();
+								return d;
+							}
+						},
+						{
+							name: "animateHeight",
+							timeout: timeout,
+							runTest: function(t){
+								dojo.byId("foo").style.height = "";
+								var startHeight = dojo.marginBox("foo").h; 
+								var endHeight = Math.round(startHeight / 2);
+								
+								var anim = dojo.animateProperty({
+									node: "foo",
+									properties: { height: { end: endHeight } },
+									duration: duration
+								});
+
+								var d = new doh.Deferred();
+
+								dojo.connect(anim, "onEnd", anim, function(){
+									var elapsed = (new Date().valueOf()) - anim._startTime;
+									doh.t(elapsed >= duration);
+									var height = dojo.marginBox("foo").h; 
+									doh.is(height, endHeight);
+									d.callback(true);
+								});
+								
+								anim.play();
+								return d;
+							}
+						},
+						{
+							name: "animateHeight_defaults_syntax",
+							timeout: timeout,
+							runTest: function(){
+								dojo.byId("foo").style.height = "";
+								var startHeight = dojo.marginBox("foo").h; 
+								var endHeight = Math.round(startHeight / 2);
+								
+								var anim = dojo.animateProperty({
+									node: "foo",
+									properties: { height: endHeight },
+									duration: duration
+								});
+
+								var d = new doh.Deferred();
+
+								dojo.connect(anim, "onEnd", anim, function(){
+									var elapsed = (new Date().valueOf()) - anim._startTime;
+									doh.t(elapsed >= duration);
+									var height = dojo.marginBox("foo").h; 
+									doh.is(height, endHeight);
+									d.callback(true);
+								});
+								
+								anim.play();
+								return d;
+							}
+						},
+						{
+							name: "inlineWidth",
+							timeout: timeout,
+							runTest: function(){
+								dojo.style("foo", "display", "none");
+								dojo.style("bar", "display", "");
+								var startWidth = dojo.marginBox("bar").w; 
+								var endWidth = Math.round(startWidth / 2);
+								
+								var anim = dojo.animateProperty({
+									node: "bar",
+									properties: { width: endWidth },
+									duration: duration
+								});
+
+								var d = new doh.Deferred();
+
+								dojo.connect(anim, "onEnd", anim, function(){
+									var elapsed = (new Date().valueOf()) - anim._startTime;
+									doh.t(elapsed >= duration);
+									doh.is(dojo.marginBox("bar").w, endWidth);
+									d.callback(true);
+								});
+								
+								anim.play();
+								return d;
+							}
+						},
+						{
+							name: "anim",
+							timeout: timeout+500,
+							runTest: function(){
+								var id = "baz";
+								dojo.style("bar", "display", "none");
+								dojo.style(id, "display", "");
+								var kickoff = new Date().valueOf();
+								var startWidth = dojo.marginBox(id).w; 
+								var endWidth = Math.round(startWidth / 2);
+
+								var d = new doh.Deferred();
+								var anim = dojo.anim(
+									id, 
+									{ 
+										width: endWidth,
+										opacity: 0
+									}, 
+									duration, 
+									null, 
+									function(){
+										var elapsed = (new Date().valueOf()) - anim._startTime;
+										doh.t(elapsed >= duration);
+										doh.t((new Date().valueOf()) >= (kickoff+duration+500));
+										doh.is(dojo.marginBox(id).w, endWidth);
+										doh.is(dojo.style(id, "opacity"), 0);
+										d.callback(true);
+									},
+									500
+								);
+								return d;
+							}
+						},
+						{
+							name: "anim_defaults",
+							timeout: 1000,
+							runTest: function(){
+								var id = "thud";
+								dojo.style("baz", "display", "none");
+								dojo.style(id, "display", "");
+								var startWidth = dojo.marginBox(id).w; 
+								var endWidth = Math.round(startWidth / 2);
+
+								var d = new doh.Deferred();
+								var anim = dojo.anim(id, { width: endWidth });
+								dojo.connect(anim, "onEnd", function(){
+									var elapsed = (new Date().valueOf()) - anim._startTime;
+									doh.t(elapsed >= dojo._Animation.prototype.duration); // the default
+									doh.is(dojo.marginBox(id).w, endWidth);
+									d.callback(true);
+								});
+								return d;
+							}
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+		<style type="text/css">
+			body {
+				margin: 1em;
+				background-color: #DEDEDE;
+			}
+
+			.box {
+				color: #292929;
+				/* color: #424242; */
+				/* text-align: left; */
+				width: 300px;
+				border: 1px solid #BABABA;
+				background-color: white;
+				padding-left: 10px;
+				padding-right: 10px;
+				margin-left: 10px;
+				-o-border-radius: 10px;
+				-moz-border-radius: 12px;
+				-webkit-border-radius: 10px;
+				/* -opera-border-radius: 10px; */
+				border-radius: 10px;
+				-moz-box-sizing: border-box;
+				-opera-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				-khtml-box-sizing: border-box;
+				box-sizing: border-box;
+				overflow: hidden;
+				/* position: absolute; */
+			}
+		</style>
+	</head>
+	<body>
+		<h1>testing Core FX</h1>
+		<form name="testForm">
+		<input type="button" onClick="dojo.fadeOut({ node: 'foo', duration: 1000 }).play()" value="fade out"></input>
+		<input type="button" onClick="dojo.fadeIn({ node: 'foo', duration: 1000 }).play()" value="fade in"></input>
+		</form>
+		<div id="foo" class="box" style="float: left;">
+			<p>
+			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
+			semper sagittis velit. Cras in mi. Duis porta mauris ut ligula.
+			Proin porta rutrum lacus. Etiam consequat scelerisque quam. Nulla
+			facilisi.  Maecenas luctus venenatis nulla. In sit amet dui non mi
+			semper iaculis.  Sed molestie tortor at ipsum. Morbi dictum rutrum
+			magna. Sed vitae risus.
+			</p>
+			<p>
+			Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
+			imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer
+			lorem nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean
+			id mi in massa bibendum suscipit. Integer eros. Nullam suscipit
+			mauris. In pellentesque. Mauris ipsum est, pharetra semper,
+			pharetra in, viverra quis, tellus. Etiam purus. Quisque egestas,
+			tortor ac cursus lacinia, felis leo adipiscing nisi, et rhoncus
+			elit dolor eget eros. Fusce ut quam. Suspendisse eleifend leo vitae
+			ligula. Nulla facilisi. Nulla rutrum, erat vitae lacinia dictum,
+			pede purus imperdiet lacus, ut semper velit ante id metus. Praesent
+			massa dolor, porttitor sed, pulvinar in, consequat ut, leo. Nullam
+			nec est. Aenean id risus blandit tortor pharetra congue.
+			Suspendisse pulvinar.
+			</p>
+		</div>
+		<p id="bar" style="display: none;">
+		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean semper
+		sagittis velit. Cras in mi. Duis porta mauris ut ligula.  Proin porta
+		rutrum lacus. Etiam consequat scelerisque quam. Nulla facilisi.
+		Maecenas luctus venenatis nulla. In sit amet dui non mi semper iaculis.
+		Sed molestie tortor at ipsum. Morbi dictum rutrum magna. Sed vitae
+		risus.
+		</p>
+		<p id="baz" style="display: none;">
+		Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
+		imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer lorem
+		nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean id mi in
+		massa bibendum suscipit. Integer eros. Nullam suscipit mauris. In
+		pellentesque. Mauris ipsum est, pharetra semper, pharetra in, viverra
+		quis, tellus. Etiam purus. Quisque egestas, tortor ac cursus lacinia,
+		felis leo adipiscing nisi, et rhoncus elit dolor eget eros. Fusce ut
+		quam. Suspendisse eleifend leo vitae ligula. Nulla facilisi. Nulla
+		rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
+		semper velit ante id metus. Praesent massa dolor, porttitor sed,
+		pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
+		tortor pharetra congue.  Suspendisse pulvinar.
+		</p>
+		<p id="thud" style="display: none;">
+		Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
+		imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer lorem
+		nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean id mi in
+		massa bibendum suscipit. Integer eros. Nullam suscipit mauris. In
+		pellentesque. Mauris ipsum est, pharetra semper, pharetra in, viverra
+		quis, tellus. Etiam purus. Quisque egestas, tortor ac cursus lacinia,
+		felis leo adipiscing nisi, et rhoncus elit dolor eget eros. Fusce ut
+		quam. Suspendisse eleifend leo vitae ligula. Nulla facilisi. Nulla
+		rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
+		semper velit ante id metus. Praesent massa dolor, porttitor sed,
+		pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
+		tortor pharetra congue.  Suspendisse pulvinar.
+		</p>
+	</body>
+</html>
+

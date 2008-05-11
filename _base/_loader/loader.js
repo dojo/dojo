@@ -204,6 +204,14 @@
 		}
 	}
 
+	//Support calling dojo.addOnLoad via djConfig.addOnLoad. Support all the
+	//call permutations of dojo.addOnLoad. Mainly useful when dojo is added
+	//to the page after the page has loaded.
+	var dca = d.config.addOnLoad;
+	if(dca){
+		d.addOnLoad[(dca instanceof Array ? "apply" : "call")](d, dca);
+	}
+
 	dojo.addOnUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
 		// summary:
 		//		registers a function to be triggered when the page unloads

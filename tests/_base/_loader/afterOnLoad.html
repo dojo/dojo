@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../../dijit/themes/tundra/tundra.css" />
 
 		<script type="text/javascript">
-			window.onload = function(){
+			function init(){
 				//Create global djConfig object first. We cannot use the djConfig attribute
 				//on the script tag since it may not be visible in some browsers at the time
 				//dojo.js executes. This causes problems when the "require" property is used
@@ -19,6 +19,13 @@
 					baseUrl: "../../../",
 					parseOnLoad: true,
 					afterOnLoad:true,
+					addOnLoad: function(){
+						//This function is registered with
+						//dojo.addOnLoad as Dojo is defined after
+						//being added to the DOM.
+						console.log("djConfig.addOnLoad callback fired OK: dojo.parser.parse is a "
+							+ (typeof dojo.parser.parse));
+					},
 					require: [
 						'dojo.parser',
 						'dijit._Calendar'
@@ -36,6 +43,14 @@
 			function myHandler(id,newValue){
 				console.debug("onChange for id = " + id + ", value: " + newValue);
 			}
+			
+			//Register onload init function that will add Dojo to the page.
+			if(window.addEventListener){
+				window.addEventListener("load", init, false);
+			}else{
+				window.attachEvent("onload", init);
+			}
+
 		</script>
 	</head>
 	<body>

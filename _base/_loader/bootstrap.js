@@ -69,6 +69,21 @@ djConfig = {
 	//		of calling `dojo.registerModulePath("foo", "../../bar");`. Multiple
 	//		modules may be configured via `djConfig.modulePaths`.
 	modulePaths: {},
+	// afterOnLoad: Boolean 
+	//		Indicates Dojo was added to the page after the page load. In this case
+	//		Dojo will not wait for the page DOMContentLoad/load events and fire
+	//		its dojo.addOnLoad callbacks after making sure all outstanding
+	//		dojo.required modules have loaded.
+	afterOnLoad: false,
+	// addOnLoad: Function or Array
+	//		Adds a callback via dojo.addOnLoad. Useful when Dojo is added after
+	//		the page loads and djConfig.afterOnLoad is true. Supports the same
+	//		arguments as dojo.addOnLoad. When using a function reference, use
+	//		`djConfig.addOnLoad = function(){};`. For object with function name use
+	//		`djConfig.addOnLoad = [myObject, "functionName"];` and for object with
+	//		function reference use
+	//		`djConfig.addOnLoad = [myObject, function(){}];`
+	addOnLoad: null,
 }
 =====*/
 

@@ -8,7 +8,7 @@ dojo.require("dojo._base.query");
 	var _d = dojo;
 	function setValue(/*Object*/obj, /*String*/name, /*String*/value){
 		//summary:
-		//		For the nameed property in object, set the value. If a value
+		//		For the named property in object, set the value. If a value
 		//		already exists and it is a string, convert the value to be an
 		//		array of values.
 		var val = obj[name];
@@ -288,9 +288,7 @@ dojo.require("dojo._base.query");
 		//	handle: Function?
 		//		function(response, ioArgs){}. response is an Object, ioArgs
 		//		is of type dojo.__IoCallbackArgs. The handle function will
-		//		be called in either the successful or error case.  For
-		//		the load, error and handle functions, the ioArgs object
-		//		will contain the following properties: 
+		//		be called in either the successful or error case.
 		this.url = url;
 		this.content = content;
 		this.timeout = timeout;

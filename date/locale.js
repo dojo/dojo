@@ -65,7 +65,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 							break;
 					}
 					if(widthM){
-						var typeM = (c == "L") ? "standalone" : "format";
+						var typeM = (c == "L") ? "standAlone" : "format";
 						var propM = ["months", typeM, widthM].join("-");
 						s = bundle[propM][m];
 					}
@@ -101,7 +101,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 							break;
 					}
 					if(widthD){
-						var typeD = (c == "c") ? "standalone" : "format";
+						var typeD = (c == "c") ? "standAlone" : "format";
 						var propD = ["days", typeD, widthD].join("-");
 						s = bundle[propD][d];
 					}

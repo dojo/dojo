@@ -189,7 +189,7 @@ dojo.fx = {
 			dojo.forEach(this._animations, function(a){
 				a.gotoPercent(a.duration < ms ? 1 : (ms / a.duration), andPlay);
 			});
-			this._call("gotoProcent", arguments);
+			this._call("gotoPercent", arguments);
 			return this;
 		},
 		stop: function(/*boolean?*/ gotoEnd){

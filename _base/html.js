@@ -1014,6 +1014,10 @@ if(dojo.isIE || dojo.isOpera){
 				// if it is spelled "tabIndex"
 				// console.debug((dojo.isIE && dojo.isIE < 8)? "tabIndex" : "tabindex");
 				return (d.isIE && d.isIE < 8) ? "tabIndex" : "tabindex";
+		case "for": case "htmlfor":
+				// to pick up for attrib set in markup via getAttribute() IE<8 uses "htmlFor" and others use "for"
+				// get/setAttribute works in all as long use same value for both get/set
+				return (d.isIE && d.isIE < 8) ? "htmlFor" : "for";
 			default:
 				return name;
 		}
@@ -1048,7 +1052,9 @@ if(dojo.isIE || dojo.isOpera){
 		//	returns:
 		//		true if the requested attribute is specified on the
 		//		given element, and false otherwise
-		var attr = d.byId(node).getAttributeNode(_fixAttrName(name));
+		var fixName = _fixAttrName(name);
+		fixName = fixName == "htmlFor" ? "for" : fixName; //IE<8 uses htmlFor except in this case
+		var attr = d.byId(node).getAttributeNode(fixName);
 		return attr ? attr.specified : false; // Boolean
 	}
 

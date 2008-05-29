@@ -78,7 +78,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		//	are present in the empty object (IE and/or 3rd-party libraries).
 		o = o || dojo.global;
 		var m = this.map, e = dojo.dnd._empty;
-		for(var i in this.map){
+		for(var i in m){
 			if(i in e){ continue; }
 			f.call(o, m[i], i, m);
 		}
@@ -128,7 +128,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		// summary: prepares the object to be garbage-collected
 		dojo.forEach(this.events, dojo.disconnect);
 		this.clearItems();
-		this.node = this.parent = this.current;
+		this.node = this.parent = this.current = null;
 	},
 
 	// markup methods

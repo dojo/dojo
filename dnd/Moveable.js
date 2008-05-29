@@ -70,7 +70,7 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		dojo.stopEvent(e);
 	},
 	onMouseUp: function(e){
-		// summary: event processor for onmouseup, used only for delayed delayed drags
+		// summary: event processor for onmouseup, used only for delayed drags
 		// e: Event: mouse event
 		dojo.disconnect(this.events.pop());
 		dojo.disconnect(this.events.pop());

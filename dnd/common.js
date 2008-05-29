@@ -1,6 +1,7 @@
 dojo.provide("dojo.dnd.common");
 
-dojo.dnd._copyKey = navigator.appVersion.indexOf("Macintosh") < 0 ? "ctrlKey" : "metaKey";
+dojo.dnd._isMac = navigator.appVersion.indexOf("Macintosh") >= 0;
+dojo.dnd._copyKey = dojo.dnd._isMac ? "metaKey" : "ctrlKey";
 
 dojo.dnd.getCopyKeyState = function(e) {
 	// summary: abstracts away the difference between selection on Mac and PC,

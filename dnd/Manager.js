@@ -111,7 +111,9 @@ dojo.declare("dojo.dnd.Manager", null, {
 	onMouseUp: function(e){
 		// summary: event processor for onmouseup
 		// e: Event: mouse event
-		if(this.avatar && (!("mouseButton" in this.source) || this.source.mouseButton == e.button)){
+		if(this.avatar && (!("mouseButton" in this.source) || 
+				(dojo.isSafari && dojo.dnd._isMac && this.source.mouseButton == 2 ? 
+					e.button == 0 : this.source.mouseButton == e.button))){
 			if(this.target && this.canDropFlag){
 				var params = [this.source, this.nodes, Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e))), this.target];
 				dojo.publish("/dnd/drop/before", params);

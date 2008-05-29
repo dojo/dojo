@@ -134,7 +134,7 @@ dojo.mixin(dojo.declare, {
 				p = c.superclass;
 				m = c.mixin;
 				if(m==mixin || (m instanceof mixin.constructor)){return p;}
-				if(m && (m=m._findMixin(mixin))){return m;}
+				if(m && m._findMixin && (m=m._findMixin(mixin))){return m;}
 				c = p && p.constructor;
 			}
 		},

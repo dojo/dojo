@@ -1,7 +1,7 @@
 dojo.provide("dojo._base.declare");
 dojo.require("dojo._base.lang");
 
-// this file courtesy of the TurboAjax group, licensed under a Dojo CLA
+// this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
 dojo.declare = function(/*String*/ className, /*Function|Function[]*/ superclass, /*Object*/ props){
 	//	summary: 
@@ -45,7 +45,6 @@ dojo.declare = function(/*String*/ className, /*Function|Function[]*/ superclass
 	//	|	);
 
 	// process superclass argument
-	// var dd=dojo.declare, mixins=null;
 	var dd = arguments.callee, mixins;
 	if(dojo.isArray(superclass)){
 		mixins = superclass;
@@ -58,12 +57,13 @@ dojo.declare = function(/*String*/ className, /*Function|Function[]*/ superclass
 			superclass = dd._delegate(superclass, m);
 		});
 	}
-	// prepare values
-	var init = (props||0).constructor, ctor = dd._delegate(superclass), fn;
-	// name methods (experimental)
-	for(var i in props){ if(dojo.isFunction(fn = props[i]) && !0[i]){fn.nom = i;} } // 0[i] checks Object.prototype
-	// decorate prototype
-	dojo.extend(ctor, {declaredClass: className, _constructor: init, preamble: null}, props || 0); 
+	// create constructor
+	var ctor = dd._delegate(superclass);
+	// extend with "props"
+	props = props || {};
+	ctor.extend(props);
+	// more prototype decoration
+	dojo.extend(ctor, {declaredClass: className, _constructor: props.constructor/*, preamble: null*/});
 	// special help for IE
 	ctor.prototype.constructor = ctor;
 	// create named reference
@@ -72,15 +72,15 @@ dojo.declare = function(/*String*/ className, /*Function|Function[]*/ superclass
 
 dojo.mixin(dojo.declare, {
 	_delegate: function(base, mixin){
-		var bp = (base||0).prototype, mp = (mixin||0).prototype;
+		var bp = (base||0).prototype, mp = (mixin||0).prototype, dd=dojo.declare;
 		// fresh constructor, fresh prototype
-		var ctor = dojo.declare._makeCtor();
+		var ctor = dd._makeCtor();
 		// cache ancestry
-		dojo.mixin(ctor, {superclass: bp, mixin: mp, extend: dojo.declare._extend});
+		dojo.mixin(ctor, {superclass: bp, mixin: mp, extend: dd._extend});
 		// chain prototypes
 		if(base){ctor.prototype = dojo._delegate(bp);}
 		// add mixin and core
-		dojo.extend(ctor, dojo.declare._core, mp||0, {_constructor: null, preamble: null});
+		dojo.extend(ctor, dd._core, mp||0, {_constructor: null/*, preamble: null*/});
 		// special help for IE
 		ctor.prototype.constructor = ctor;
 		// name this class for debugging
@@ -89,7 +89,7 @@ dojo.mixin(dojo.declare, {
 	},
 	_extend: function(props){
 		var i, fn;
-		for(i in props){ if(dojo.isFunction(fn=props[i]) && !0[i]){fn.nom=i;} }
+		for(i in props){ if(dojo.isFunction(fn=props[i]) && !0[i]){fn.nom=i;fn.ctor=this;} }
 		dojo.extend(this, props);
 	},
 	_makeCtor: function(){
@@ -155,17 +155,21 @@ dojo.mixin(dojo.declare, {
 			return !has && (p=this._findMixin(ptype)) && this._findMethod(name, method, p, has);
 		},
 		inherited: function(name, args, newArgs){
-			// optionalize name argument (experimental)
+			// optionalize name argument
 			var a = arguments;
 			if(!dojo.isString(a[0])){newArgs=args; args=name; name=args.callee.nom;}
 			a = newArgs||args;
 			var c = args.callee, p = this.constructor.prototype, fn, mp;
-			// if not an instance override 
+			// if not an instance override
 			if(this[name] != c || p[name] == c){
-				mp = this._findMethod(name, c, p, true);
+				// start from memoized prototype, or
+				// find a prototype that has property 'name' == 'c'
+				mp = (c.ctor||0).superclass || this._findMethod(name, c, p, true);
 				if(!mp){throw(this.declaredClass + ': inherited method "' + name + '" mismatch');}
+				// find a prototype that has property 'name' != 'c'
 				p = this._findMethod(name, c, mp, false);
 			}
+			// we expect 'name' to be in prototype 'p'
 			fn = p && p[name];
 			if(!fn){throw(mp.declaredClass + ': inherited method "' + name + '" not found');}
 			// if the function exists, invoke it in our scope

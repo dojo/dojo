@@ -45,12 +45,25 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 
 	//Create resource object and the call to _xdResourceLoaded.
 	var output = [];
+	
+	//See if there are any dojo.loadInit calls
+	var loadInitCalls = dojo._xdExtractLoadInits(contents);
+	if(loadInitCalls){
+		//Adjust fileContents since extractLoadInits removed something.
+		contents = loadInitCalls[0];
+		
+		//Add any loadInit calls to the top of the xd file.
+		for(var i = 1; i < loadInitCalls.length; i++){
+			output.push(loadInitCalls[i] + ";\n");
+		}
+	}
+
 	output.push(dojo._scopeName + "._xdResourceLoaded({\n");
 
 	//Add dependencies
 	if(deps.length > 0){
 		output.push("depends: [");
-		for(var i = 0; i < deps.length; i++){
+		for(i = 0; i < deps.length; i++){
 			if(i > 0){
 				output.push(",\n");
 			}
@@ -76,6 +89,57 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	output.push("\n}, resourceName: '" + resourceName + "', resourcePath: '" + resourcePath + "'});");
 	
 	return output.join(""); //String
+}
+
+dojo._xdExtractLoadInits = function(/*String*/fileContents){
+	//Extracts
+	var regexp = /dojo.loadInit\s*\(/g;
+	regexp.lastIndex = 0;
+
+	var parenRe = /[\(\)]/g;
+	parenRe.lastIndex = 0;
+
+	var results = [];
+	var matches;
+	while((matches = regexp.exec(fileContents))){
+		//Find end of the call by finding the matching end paren
+		parenRe.lastIndex = regexp.lastIndex;
+		var matchCount = 1;
+		var parenMatch;
+		while((parenMatch = parenRe.exec(fileContents))){
+			if(parenMatch[0] == ")"){
+				matchCount -= 1;
+			}else{
+				matchCount += 1;
+			}
+			if(matchCount == 0){
+				break;
+			}
+		}
+		
+		if(matchCount != 0){
+			throw "unmatched paren around character " + parenRe.lastIndex + " in: " + fileContents;
+		}
+
+		//Put the master matching string in the results.
+		var startIndex = regexp.lastIndex - matches[0].length;
+		results.push(fileContents.substring(startIndex, parenRe.lastIndex));
+
+		//Remove the matching section.
+		var remLength = parenRe.lastIndex - startIndex;
+		fileContents = fileContents.substring(0, startIndex) + fileContents.substring(parenRe.lastIndex, fileContents.length);
+
+		//Move the master regexp past the last matching paren point.
+		regexp.lastIndex = parenRe.lastIndex - remLength;
+
+		regexp.lastIndex = parenRe.lastIndex;
+	}
+
+	if(results.length > 0){
+		results.unshift(fileContents);
+	}
+
+	return (results.length ? results : null);
 }
 
 dojo._xdIsXDomainPath = function(/*string*/relpath) {

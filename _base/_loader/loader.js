@@ -276,6 +276,23 @@
 
 	dojo._global_omit_module_check = false;
 
+	dojo.loadInit = function(/*Function*/init){
+		//	summary:
+		//		Executes a function that needs to be executed for the loader's dojo.requireIf
+		//		resolutions to work. This is needed mostly for the xdomain loader case where
+		//		a function needs to be executed to set up the possible values for a dojo.requireIf
+		//		call.
+		//	init:
+		//		a function reference. Executed immediately.
+		//	description: This function is mainly a marker for the xdomain loader to know parts of
+		//		code that needs be executed outside the function wrappper that is placed around modules.
+		//		The init function could be executed more than once, and it should make no assumptions
+		//		on what is loaded, or what modules are available. Only the functionality in Dojo Base
+		//		is allowed to be used. Avoid using this method. For a valid use case,
+		//		see the source for dojox.gfx.
+		init();
+	}
+
 	dojo._loadModule = dojo.require = function(/*String*/moduleName, /*Boolean?*/omitModuleCheck){
 		//	summary:
 		//		loads a Javascript module from the appropriate URI

@@ -80,7 +80,7 @@ dojo.mixin(dojo.declare, {
 		// chain prototypes
 		if(base){ctor.prototype = dojo._delegate(bp);}
 		// add mixin and core
-		dojo.extend(ctor, dd._core, mp||0, {_constructor: null/*, preamble: null*/});
+		dojo.extend(ctor, dd._core, mp||0, {_constructor: null, preamble: null});
 		// special help for IE
 		ctor.prototype.constructor = ctor;
 		// name this class for debugging

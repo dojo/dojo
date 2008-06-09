@@ -81,8 +81,8 @@ if(dojo.isIE || dojo.isOpera){
 
 		node = d.byId(node);
 		try{
-			if(!_destroyContainer){
-				_destroyContainer = document.createElement("div");
+			if(!_destroyContainer || _destroyContainer.ownerDocument != node.ownerDocument){
+				_destroyContainer = node.ownerDocument.createElement("div");
 			}
 			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
 			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
@@ -264,9 +264,10 @@ if(dojo.isIE || dojo.isOpera){
 	}
 =====*/
 
-	var gcs, dv = document.defaultView;
+	var gcs;
 	if(d.isSafari){
 		gcs = function(/*DomNode*/node){
+			var dv = node.ownerDocument.defaultView;
 			var s = dv.getComputedStyle(node, null);
 			if(!s && node.style){ 
 				node.style.display = ""; 
@@ -280,6 +281,7 @@ if(dojo.isIE || dojo.isOpera){
 		};
 	}else{
 		gcs = function(node){
+			var dv = node.ownerDocument.defaultView;
 			return dv.getComputedStyle(node, null);
 		};
 	}

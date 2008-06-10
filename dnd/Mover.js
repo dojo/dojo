@@ -37,12 +37,14 @@ dojo.declare("dojo.dnd.Mover", null, {
 		dojo.dnd.autoScroll(e);
 		var m = this.marginBox;
 		this.host.onMove(this, {l: m.l + e.pageX, t: m.t + e.pageY});
+		dojo.stopEvent(e);
 	},
 	onMouseUp: function(e){
 		if(dojo.isSafari && dojo.dnd._isMac && this.mouseButton == 2 ? 
 				e.button == 0 : this.mouseButton == e.button){
 			this.destroy();
 		}
+		dojo.stopEvent(e);
 	},
 	// utilities
 	onFirstMove: function(){

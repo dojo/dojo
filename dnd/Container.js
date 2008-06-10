@@ -26,12 +26,16 @@ dojo.declare("dojo.dnd.Container", null, {
 		//	creator: Function: a creator function, which takes a data item, and returns an object like that:
 		//		{node: newNode, data: usedData, type: arrayOfStrings}
 		//	skipForm: Boolean: don't start the drag operation, if clicked on form elements
+		//	dropParent: Node: node or node's id to use as the parent node for dropped items
+		//		(must be underneath the 'node' parameter in the DOM)
 		//	_skipStartup: Boolean: skip startup(), which collects children, for deferred initialization
 		//		(this is used in the markup mode)
 		this.node = dojo.byId(node);
 		if(!params){ params = {}; }
 		this.creator = params.creator || null;
 		this.skipForm = params.skipForm;
+		this.parent = params.dropParent && dojo.byId(params.dropParent);
+		
 		this.defaultCreator = dojo.dnd._defaultCreator(this.node);
 
 		// class-specific variables
@@ -140,10 +144,13 @@ dojo.declare("dojo.dnd.Container", null, {
 		// summary: collects valid child items and populate the map
 		
 		// set up the real parent node
-		this.parent = this.node;
-		if(this.parent.tagName.toLowerCase() == "table"){
-			var c = this.parent.getElementsByTagName("tbody");
-			if(c && c.length){ this.parent = c[0]; }
+		if(!this.parent){
+			// use the standard algorithm, if not assigned
+			this.parent = this.node;
+			if(this.parent.tagName.toLowerCase() == "table"){
+				var c = this.parent.getElementsByTagName("tbody");
+				if(c && c.length){ this.parent = c[0]; }
+			}
 		}
 
 		// process specially marked children

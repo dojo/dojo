@@ -24,6 +24,7 @@
 				strProp1: "original1",
 				strProp2: "original2",
 				arrProp: [],
+				arrProp2: ["foo"],
 				boolProp1: false,
 				boolProp2: true,
 				boolProp3: false,
@@ -100,6 +101,9 @@
 							t.is(3, obj.arrProp.length);
 							t.is(3, obj.arrProp[1].length);
 							t.is(["foo", "bar", "baz"], obj.arrProp);
+
+							// make sure empty arrays are possible
+							t.is([], obj.arrProp2);
 						},
 						function testBoolProp(t){
 							// make sure that both true and false get read correctly,
@@ -209,6 +213,7 @@
 			strProp1="text" strProp2=""
 			intProp="5"
 			arrProp="foo, bar, baz"
+			arrProp2=""
 			boolProp1="true" boolProp2="false"
 			dateProp1="2006-01-01" dateProp2="" dateProp3="now"
 			funcProp2="foo" funcProp3="this.func3Called=true;"

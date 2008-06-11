@@ -49,7 +49,7 @@ dojo.parser = new function(){
 					return d.getObject(value, false);
 				}catch(e){ return new Function(); }
 			case "array":
-				return value.split(/\s*,\s*/);
+				return value ? value.split(/\s*,\s*/) : [];
 			case "date":
 				switch(value){
 					case "": return new Date("");	// the NaN of dates

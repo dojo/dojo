@@ -472,7 +472,7 @@ function _processPattern(pattern, applyPattern, applyLiteral, applyAll){
 	//split on single quotes (which escape literals in date format strings) 
 	//but preserve escaped single quotes (e.g., o''clock)
 	var chunks = pattern.match(/(''|[^'])+/g); 
-	var literal = false;
+	var literal = pattern.charAt(0) == "'";
 
 	dojo.forEach(chunks, function(chunk, i){
 		if(!chunk){

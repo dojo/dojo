@@ -245,6 +245,33 @@ tests.register("tests.date.locale",
 			}
 		},
 		{
+			name: "format_patterns",
+			runTest: function(t){
+				var time = new Date(2006, 7, 11, 12, 30);
+				var tformat = {selector:'time', strict:true, timePattern:"h 'o''clock'", locale:'en'};
+//BUG				t.is(time.getHours(), dojo.date.locale.parse("12 o'clock", tformat).getHours());
+
+				tformat = {selector:'time', strict:true, timePattern:" 'Hour is' h", locale:'en'};
+				t.is(time.getHours(), dojo.date.locale.parse(" Hour is 12", tformat).getHours());
+
+				tformat = {selector:'time', strict:true, timePattern:"'Hour is' h", locale:'en'};
+				t.is(time.getHours(), dojo.date.locale.parse("Hour is 12", tformat).getHours());
+			}
+		},
+		{
+			name: "parse_patterns",
+			runTest: function(t){
+				var time = new Date(2006, 7, 11, 12, 30);
+				var tformat = {selector:'time', strict:true, timePattern:"h 'o''clock'", locale:'en'};
+//BUG				t.is(time.getHours(), dojo.date.locale.parse("12 o'clock", tformat).getHours());
+
+				tformat = {selector:'time', strict:true, timePattern:" 'Hour is' h", locale:'en'};
+				t.is(time.getHours(), dojo.date.locale.parse(" Hour is 12", tformat).getHours());
+				tformat = {selector:'time', strict:true, timePattern:"'Hour is' h", locale:'en'};
+				t.is(time.getHours(), dojo.date.locale.parse("Hour is 12", tformat).getHours());
+			}
+		},
+		{
 			name: "day_of_year",
 			runTest: function(t){
 

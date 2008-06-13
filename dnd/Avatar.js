@@ -67,7 +67,7 @@ dojo.declare("dojo.dnd.Avatar", null, {
 		// summary: updates the avatar to reflect the current DnD state
 		dojo[(this.manager.canDropFlag ? "add" : "remove") + "Class"](this.node, "dojoDndAvatarCanDrop");
 		// replace text
-		dojo.query("tr.dojoDndAvatarHeader td").forEach(function(node){
+		dojo.query("tr.dojoDndAvatarHeader td", this.node).forEach(function(node){
 			node.innerHTML = this._generateText();
 		}, this);
 	},

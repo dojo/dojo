@@ -336,9 +336,18 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	=====*/
 
+	var astr = "DXImageTransform.Microsoft.Alpha";
+	var af = function(n, f){ 
+		try{
+			return n.filters.item(astr);
+		}catch(e){
+			return f ? {} : null;
+		}
+	}
+
 	dojo._getOpacity = d.isIE ? function(node){
 		try{
-			return node.filters.alpha.opacity / 100; // Number
+			return af(node).Opacity / 100; // Number
 		}catch(e){
 			return 1; // Number
 		}
@@ -361,22 +370,22 @@ if(dojo.isIE || dojo.isOpera){
 	=====*/
 
 	dojo._setOpacity = d.isIE ? function(/*DomNode*/node, /*Number*/opacity){
+		var ov = opacity * 100;
+		node.style.zoom = 1.0;
 		if(opacity == 1){
 			// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so remove it altogether (bug #2661)
-			var filterRE = /FILTER:[^;]*;?/i;
-			node.style.cssText = node.style.cssText.replace(filterRE, "");
-			if(node.nodeName.toLowerCase() == "tr"){
-				d.query("> td", node).forEach(function(i){
-					i.style.cssText = i.style.cssText.replace(filterRE, "");
-				});
-			}
+			af(node, 1).Enabled = false;
 		}else{
-			var o = "Alpha(Opacity="+ opacity * 100 +")";
-			node.style.filter = o;
+			af(node, 1).Enabled = true;
+			if(!af(node)){
+				node.style.filter += " progid:"+astr+"(Opacity="+ov+")";
+			}else{
+				af(node, 1).Opacity = ov;
+			}
 		}
 		if(node.nodeName.toLowerCase() == "tr"){
 			d.query("> td", node).forEach(function(i){
-				i.style.filter = o;
+				d._setOpacity(i, opacity);
 			});
 		}
 		return opacity;
@@ -615,7 +624,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		returns an object that encodes the width, height, left and top
 		//		positions of the node's margin box.
 		var s = computedStyle||gcs(node), me = d._getMarginExtents(node, s);
-		var	l = node.offsetLeft - me.l,	t = node.offsetTop - me.t;
+		var	l = node.offsetLeft - me.l,	t = node.offsetTop - me.t, p = node.parentNode;
 		if(d.isMoz){
 			// Mozilla:
 			// If offsetParent has a computed overflow != visible, the offsetLeft is decreased
@@ -628,7 +637,6 @@ if(dojo.isIE || dojo.isOpera){
 			}else{
 				// If child's computed left/top are not parseable as a number (e.g. "auto"), we
 				// have no choice but to examine the parent's computed style.
-				var p = node.parentNode;
 				if(p && p.style){
 					var pcs = gcs(p);
 					if(pcs.overflow != "visible"){
@@ -639,10 +647,10 @@ if(dojo.isIE || dojo.isOpera){
 			}
 		}else if(d.isOpera){
 			// On Opera, offsetLeft includes the parent's border
-			var p = node.parentNode;
 			if(p){
 				var be = d._getBorderExtents(p);
-				l -= be.l, t -= be.t;
+				l -= be.l;
+				t -= be.t;
 			}
 		}
 		return { 
@@ -1009,17 +1017,19 @@ if(dojo.isIE || dojo.isOpera){
 	// Element attribute Functions
 	// =============================
 
+	var ieLT8 = (d.isIE && d.isIE < 8);
+
 	var _fixAttrName = function(/*String*/name){
 		switch(name.toLowerCase()){
 			case "tabindex":
 				// Internet Explorer will only set or remove tabindex
 				// if it is spelled "tabIndex"
 				// console.debug((dojo.isIE && dojo.isIE < 8)? "tabIndex" : "tabindex");
-				return (d.isIE && d.isIE < 8) ? "tabIndex" : "tabindex";
-		case "for": case "htmlfor":
+				return ieLT8 ? "tabIndex" : "tabindex";
+			case "for": case "htmlfor":
 				// to pick up for attrib set in markup via getAttribute() IE<8 uses "htmlFor" and others use "for"
 				// get/setAttribute works in all as long use same value for both get/set
-				return (d.isIE && d.isIE < 8) ? "htmlFor" : "for";
+				return ieLT8 ? "htmlFor" : "for";
 			default:
 				return name;
 		}

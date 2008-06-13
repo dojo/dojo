@@ -312,13 +312,6 @@ dojo.require("dojo._base.html");
 		// only set the zoom if the "tickle" value would be the same as the
 		// default
 		var ns = node.style;
-		if(!ns.zoom.length && d.style(node, "zoom") == "normal"){
-			// make sure the node "hasLayout"
-			// NOTE: this has been tested with larger and smaller user-set text
-			// sizes and works fine
-			ns.zoom = "1";
-			// node.style.zoom = "normal";
-		}
 		// don't set the width to auto if it didn't already cascade that way.
 		// We don't want to f anyones designs
 		if(!ns.width.length && d.style(node, "width") == "auto"){
@@ -515,13 +508,7 @@ dojo.require("dojo._base.html");
 			}
 			this.curve = new PropLine(pm);
 		});
-		d.connect(anim, "onAnimate", anim, function(propValues){
-			// try{
-			for(var s in propValues){
-				d.style(this.node, s, propValues[s]);
-				// this.node.style[s] = propValues[s];
-			}
-		});
+		d.connect(anim, "onAnimate", d.hitch(d, "style", anim.node));
 		return anim; // dojo._Animation
 	}
 

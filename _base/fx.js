@@ -543,7 +543,7 @@ dojo.require("dojo._base.html");
 		//		and deceleration of the animation through its duration.
 		//		A default easing algorithm is provided, but you may
 		//		plug in any you wish. A large selection of easing algorithms
-		//		are available in `dojox.fx.easing`.
+		//		are available in `dojo.fx.easing`.
 		//	onEnd:
 		//		A function to be called when the animation finishes
 		//		running.

@@ -21,7 +21,7 @@ dojo.provide("dojo._base.array");
 			//		passed array. If the value is not found, -1 is returned.
 			// description:
 			//		For details on this method, see:
-			// 			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
+			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
 
 			var step = 1, end = array.length || 0, i = 0;
 			if(findLast){
@@ -39,25 +39,65 @@ dojo.provide("dojo._base.array");
 
 		lastIndexOf: function(/*Array*/array, /*Object*/value, /*Integer?*/fromIndex){
 			// summary:
-			//		locates the last index of the provided value in the passed array. 
-			//		If the value is not found, -1 is returned.
+			//		locates the last index of the provided value in the passed
+			//		array. If the value is not found, -1 is returned.
 			// description:
 			//		For details on this method, see:
-			// 			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf>
+			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
 			return dojo.indexOf(array, value, fromIndex, true); // Number
 		},
 
 		forEach: function(/*Array|String*/arr, /*Function|String*/callback, /*Object?*/thisObject){
-			// summary:
-			//		for every item in arr, callback is invoked.  Return values are ignored.
-			// arr: the array to iterate on.  If a string, operates on individual characters.
-			// callback: a function is invoked with three arguments: item, index, and array
-			// thisObject: may be used to scope the call to callback
-			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.forEach() method.
-			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
-			//		For more details, see:
+			//	summary:
+			//		for every item in arr, callback is invoked. Return values are ignored.
+			//	arr:
+			//		the array to iterate over. If a string, operates on individual characters.
+			//	callback:
+			//		a function is invoked with three arguments: item, index, and array
+			//	thisObject:
+			//		may be used to scope the call to callback
+			//	description:
+			//		This function corresponds to the JavaScript 1.6
+			//		Array.forEach() method. For more details, see:
 			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
+			//	example:
+			//	|	// log out all members of the array:
+			//	|	dojo.forEach(
+			//	|		[ "thinger", "blah", "howdy", 10 ],
+			//	|		function(item){
+			//	|			console.debug(item);
+			//	|		}
+			//	|	);
+			//	example:
+			//	|	// log out the members and their indexes
+			//	|	dojo.forEach(
+			//	|		[ "thinger", "blah", "howdy", 10 ],
+			//	|		function(item, idx, arr){
+			//	|			console.debug(item, "at index:", idx);
+			//	|		}
+			//	|	);
+			//	example:
+			//	|	// use a scoped object member as the callback
+			//	|	
+			//	|	var obj = {
+			//	|		prefix: "logged via obj.callback:", 
+			//	|		callback: function(item){
+			//	|			console.debug(this.prefix, item);
+			//	|		}
+			//	|	};
+			//	|	
+			//	|	// specifying the scope function executes the callback in that scope
+			//	|	dojo.forEach(
+			//	|		[ "thinger", "blah", "howdy", 10 ],
+			//	|		obj.callback,
+			//	|		obj
+			//	|	);
+			//	|	
+			//	|	// alternately, we can accomplish the same thing with dojo.hitch()
+			//	|	dojo.forEach(
+			//	|		[ "thinger", "blah", "howdy", 10 ],
+			//	|		dojo.hitch(obj, "callback")
+			//	|	);
 
 			// match the behavior of the built-in forEach WRT empty arrs
 			if(!arr || !arr.length){ return; }
@@ -85,21 +125,23 @@ dojo.provide("dojo._base.array");
 			// summary:
 			//		Determines whether or not every item in arr satisfies the
 			//		condition implemented by callback.
-			// arr: the array to iterate on.  If a string, operates on individual characters.
-			// callback: a function is invoked with three arguments: item, index, and array and returns true
-			//		if the condition is met.
-			// thisObject: may be used to scope the call to callback
+			// arr:
+			//		the array to iterate on. If a string, operates on individual characters.
+			// callback:
+			//		a function is invoked with three arguments: item, index,
+			//		and array and returns true if the condition is met.
+			// thisObject:
+			//		may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.every() method.
-			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
-			//		For more details, see:
-			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
+			//		This function corresponds to the JavaScript 1.6
+			//		Array.every() method. For more details, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
 			// example:
+			//	|	// returns false
 			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>1; });
-			//		returns false
 			// example:
+			//	|	// returns true 
 			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>0; });
-			//		returns true 
 			return this._everyOrSome(true, arr, callback, thisObject); // Boolean
 		},
 
@@ -107,21 +149,23 @@ dojo.provide("dojo._base.array");
 			// summary:
 			//		Determines whether or not any item in arr satisfies the
 			//		condition implemented by callback.
-			// arr: the array to iterate on.  If a string, operates on individual characters.
-			// callback: a function is invoked with three arguments: item, index, and array and returns true
-			//		if the condition is met.
-			// thisObject: may be used to scope the call to callback
+			// arr:
+			//		the array to iterate over. If a string, operates on individual characters.
+			// callback:
+			//		a function is invoked with three arguments: item, index,
+			//		and array and returns true if the condition is met.
+			// thisObject:
+			//		may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.some() method.
-			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
-			//		For more details, see:
-			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
+			//		This function corresponds to the JavaScript 1.6
+			//		Array.some() method. For more details, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
 			// example:
+			//	|	// is true
 			//	|	dojo.some([1, 2, 3, 4], function(item){ return item>1; });
-			//		returns true
 			// example:
+			//	|	// is false
 			//	|	dojo.some([1, 2, 3, 4], function(item){ return item<1; });
-			//		returns false
 			return this._everyOrSome(false, arr, callback, thisObject); // Boolean
 		},
 
@@ -129,17 +173,22 @@ dojo.provide("dojo._base.array");
 			// summary:
 			//		applies callback to each element of arr and returns
 			//		an Array with the results
-			// arr: the array to iterate on.  If a string, operates on individual characters.
-			// callback: a function is invoked with three arguments: item, index, and array and returns a value
-			// thisObject: may be used to scope the call to callback
+			// arr:
+			//		the array to iterate on. If a string, operates on
+			//		individual characters.
+			// callback:
+			//		a function is invoked with three arguments, (item, index,
+			//		array),  and returns a value
+			// thisObject:
+			//		may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.map() method.
-			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
-			//		For more details, see:
-			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
+			//		This function corresponds to the JavaScript 1.6 Array.map()
+			//		method. For more details, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
 			// example:
+			//	|	// returns [2, 3, 4, 5]
 			//	|	dojo.map([1, 2, 3, 4], function(item){ return item+1 });
-			//		returns [2, 3, 4, 5]
+
 			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
 			var outArr = (arguments[3] ? (new arguments[3]()) : []);
 			for(var i=0;i<arr.length;++i){
@@ -152,18 +201,22 @@ dojo.provide("dojo._base.array");
 			// summary:
 			//		Returns a new Array with those items from arr that match the
 			//		condition implemented by callback.
-			// arr: the array to iterate on.  If a string, operates on individual characters.
-			// callback: a function is invoked with three arguments: item, index, and array and returns true
-			//		if the condition is met.
-			// thisObject: may be used to scope the call to callback
+			// arr:
+			//		the array to iterate over.
+			// callback:
+			//		a function that is invoked with three arguments (item,
+			//		index, array). The return of this function is expected to
+			//		be a boolean which determines whether the passed-in item
+			//		will be included in the returned array.
+			// thisObject:
+			//		may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.filter() method.
-			//		In environments that support JavaScript 1.6, this function is a passthrough to the built-in method.
-			//		For more details, see:
-			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter>
+			//		This function corresponds to the JavaScript 1.6
+			//		Array.filter() method. For more details, see:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
 			// example:
+			//	|	// returns [2, 3, 4]
 			//	|	dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
-			//		returns [2, 3, 4]
 
 			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
 			var outArr = [];

@@ -53,20 +53,11 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 //					}
 					break;
 				case 'M':
-				case 'L':
 					var m = dateObject.getMonth();
-					var widthM;
-					switch(l){
-						case 1: case 2:
-							s = m+1; pad = true;
-							break;
-						case 3: case 4: case 5:
-							widthM = widthList[l-3];
-							break;
-					}
-					if(widthM){
-						var typeM = (c == "L") ? "standAlone" : "format";
-						var propM = ["months", typeM, widthM].join("-");
+					if(l<3){
+						s = m+1; pad = true;
+					}else{
+						var propM = ["months", "format", widthList[l-3]].join("-");
 						s = bundle[propM][m];
 					}
 					break;
@@ -81,28 +72,11 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 					s = dojo.date.locale._getDayOfYear(dateObject); pad = true;
 					break;
 				case 'E':
-				case 'e':
-				case 'c': // REVIEW: don't see this in the spec?
 					var d = dateObject.getDay();
-					var widthD;
-					switch(l){
-						case 1: case 2:
-							if(c == 'e'){
-								var first = dojo.cldr.supplemental.getFirstDayOfWeek(options.locale);
-								d = (d-first+7)%7;
-							}
-							if(c != 'c'){
-								s = d+1; pad = true;
-								break;
-							}
-							// else fallthrough...
-						case 3: case 4: case 5:
-							widthD = widthList[l-3];
-							break;
-					}
-					if(widthD){
-						var typeD = (c == "c") ? "standAlone" : "format";
-						var propD = ["days", typeD, widthD].join("-");
+					if(l<3){
+						s = d+1; pad = true;
+					}else{
+						var propD = ["days", "format", widthList[l-3]].join("-");
 						s = bundle[propD][d];
 					}
 					break;
@@ -161,7 +135,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 					}
 					s = tz.join("");
 					break;
-//				case 'Y': case 'u': case 'W': case 'F': case 'g': case 'A':
+//				case 'Y': case 'u': case 'W': case 'F': case 'g': case 'A': case 'e':
 //					console.debug(match+" modifier unimplemented");
 				default:
 					throw new Error("dojo.date.locale.format: invalid pattern char: "+pattern);

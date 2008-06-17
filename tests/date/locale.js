@@ -60,6 +60,8 @@ tests.register("tests.date.locale",
 	t.is("11.08.06", dojo.date.locale.format(date, {formatLength:'short',selector:'date', locale:'de-at'}));
 	t.is("06/08/11", dojo.date.locale.format(date, {formatLength:'short',selector:'date', locale:'ja-jp'}));
 
+	t.is("6", dojo.date.locale.format(date, {datePattern:'E', selector:'date'}));
+
 	t.is("12:55 AM", dojo.date.locale.format(date, {formatLength:'short',selector:'time', locale:'en-us'}));
 	t.is("12:55:12", dojo.date.locale.format(date, {timePattern:'h:m:s',selector:'time'}));
 	t.is("12:55:12.35", dojo.date.locale.format(date, {timePattern:'h:m:s.SS',selector:'time'}));

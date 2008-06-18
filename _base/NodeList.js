@@ -74,7 +74,7 @@ dojo.require("dojo._base.array");
 			//		Optional parameter to describe what position relative to
 			//		the NodeList's zero index to end the slice at. Like begin,
 			//		can be positive or negative.
-			var a = dojo._toArray(arguments);
+			var a = d._toArray(arguments);
 			return tnl(a.slice.apply(this, a));
 		},
 
@@ -102,7 +102,7 @@ dojo.require("dojo._base.array");
 			//		spliced into the NodeList
 			// returns:
 			//		dojo.NodeList
-			var a = dojo._toArray(arguments);
+			var a = d._toArray(arguments);
 			return tnl(a.splice.apply(this, a));
 		},
 
@@ -120,7 +120,7 @@ dojo.require("dojo._base.array");
 			//		spliced into the NodeList
 			// returns:
 			//		dojo.NodeList
-			var a = dojo._toArray(arguments, 0, [this]);
+			var a = d._toArray(arguments, 0, [this]);
 			return tnl(a.concat.apply([], a));
 		},
 		
@@ -325,13 +325,8 @@ dojo.require("dojo._base.array");
 			//		single-expression CSS filter
 			//	return:
 			//		`dojo.NodeList` the orpahned elements 
-			var orphans = simpleFilter ? d._filterQueryResult(this, simpleFilter) : this;
-			orphans.forEach(function(item){
-				if(item.parentNode){
-					item.parentNode.removeChild(item);
-				}
-			});
-			return orphans; // dojo.NodeList
+			return (simpleFilter ? d._filterQueryResult(this, simpleFilter) : this).
+				forEach("if(item.parentNode){ item.parentNode.removeChild(item); }"); // dojo.NodeList
 		},
 
 		adopt: function(/*String||Array||DomNode*/ queryOrListOrNode, /*String?*/ position){
@@ -351,7 +346,9 @@ dojo.require("dojo._base.array");
 			//			* "after"
 			// 		or an offset in the childNodes property
 			var item = this[0];
-			return d.query(queryOrListOrNode).forEach(function(ai){ d.place(ai, item, position || "last"); }); // dojo.NodeList
+			return d.query(queryOrListOrNode).forEach(function(ai){ 
+				d.place(ai, item, position || "last"); 
+			}); // dojo.NodeList
 		},
 
 		// FIXME: do we need this?
@@ -367,11 +364,8 @@ dojo.require("dojo._base.array");
 			// FIXME: use map?
 			var ret = d.NodeList();
 			this.forEach(function(item){
-				d.query(queryStr, item).forEach(function(subItem){
-					if(subItem !== undefined){
-						ret.push(subItem);
-					}
-				});
+				// FIXME: why would we ever get undefined here?
+				ret = ret.concat(d.query(queryStr, item).filter(function(subItem){ return (subItem !== undefined); }));
 			});
 			return ret; // dojo.NodeList
 		},
@@ -497,7 +491,7 @@ dojo.require("dojo._base.array");
 		"mouseup"
 		], function(evt){
 			var _oe = "on"+evt;
-			dojo.NodeList.prototype[_oe] = function(a, b){
+			d.NodeList.prototype[_oe] = function(a, b){
 				return this.connect(_oe, a, b);
 			}
 				// FIXME: should these events trigger publishes?

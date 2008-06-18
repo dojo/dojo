@@ -72,6 +72,7 @@ if(dojo.isIE || dojo.isOpera){
 	dojo.addOnUnload(function(){
 		_destroyContainer=null; //prevent IE leak
 	});
+
 	dojo._destroyElement = function(/*String||DomNode*/node){
 		// summary:
 		//		removes node from its parent, clobbers it and all of its
@@ -121,10 +122,8 @@ if(dojo.isIE || dojo.isOpera){
 		}else if(d.isKhtml){
 			node.style.KhtmlUserSelect = selectable ? "auto" : "none";
 		}else if(d.isIE){
-			node.unselectable = selectable ? "" : "on";
-			d.query("*", node).forEach(function(descendant){
-				descendant.unselectable = selectable ? "" : "on";
-			});
+			var v = node.unselectable = selectable ? "" : "on";
+			d.query("*", node).forEach("item.unselectable = '"+v+"'");
 		}
 		//FIXME: else?  Opera?
 	};

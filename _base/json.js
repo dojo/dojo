@@ -67,14 +67,9 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	var newObj;
 	_indentStr = _indentStr || "";
 	var nextIndent = prettyPrint ? _indentStr + dojo.toJsonIndentStr : "";
-	if(typeof it.__json__ == "function"){
-		newObj = it.__json__();
-		if(it !== newObj){
-			return recurse(newObj, prettyPrint, nextIndent);
-		}
-	}
-	if(typeof it.json == "function"){
-		newObj = it.json();
+	var tf = it.__json__||it.json;
+	if(dojo.isFunction(tf)){
+		newObj = tf.call(it);
 		if(it !== newObj){
 			return recurse(newObj, prettyPrint, nextIndent);
 		}

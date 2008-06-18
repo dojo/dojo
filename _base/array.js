@@ -59,7 +59,7 @@ dojo.provide("dojo._base.array");
 			//	description:
 			//		This function corresponds to the JavaScript 1.6
 			//		Array.forEach() method. For more details, see:
-			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
 			//	example:
 			//	|	// log out all members of the array:
 			//	|	dojo.forEach(

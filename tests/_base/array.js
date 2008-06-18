@@ -87,25 +87,32 @@ tests.register("tests._base.array",
 			// the names "item", "index" and "array"!
 			var foo = [128, "bbb", 512];
 			// Test that the variable "item" contains the value of each item.
-			this._res = "";
-			dojo.forEach(foo, 'this._res+=item', this);
-			t.assertEqual(this._res, "128bbb512");
+			var obj = {
+				_res: ""
+			};
+			dojo.forEach(foo, "this._res += item", obj);
+			t.assertEqual(obj._res, "128bbb512");
 			// Test that the variable "index" contains each index.
-			this._res = [];
-			dojo.forEach(foo, 'this._res.push(index)', this);
-			t.assertEqual(this._res, [0,1,2]);
+			obj._res = [];
+			dojo.forEach(foo, "this._res.push(index)", obj);
+			t.assertEqual(obj._res, [0,1,2]);
 			// Test that the variable "array" always contains the entire array.
-			this._res = [];
-			dojo.forEach(foo, 'this._res.push(array)', this);
-			t.assertEqual(this._res, [[128, "bbb", 512],[128, "bbb", 512],[128, "bbb", 512]]);
+			obj._res = [];
+			dojo.forEach(foo, "this._res.push(array)", obj);
+			t.assertEqual(obj._res, [
+				[128, "bbb", 512],
+				[128, "bbb", 512],
+				[128, "bbb", 512]
+			]);
 			// Catch undefined variable usage (I used to use "i" :-)).
 			var caughtException = false;
 			try{
-				dojo.forEach(foo, 'this._res+=i', this);
+				dojo.forEach(foo, "this._res += arr[i];", obj);
 			}catch(e){
 				caughtException = true;
 			}
 			t.assertTrue(caughtException);
+			return;
 		},
 
 		// FIXME: test forEach w/ a NodeList()?

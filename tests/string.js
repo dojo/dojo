@@ -11,10 +11,67 @@ tests.register("tests.string",
 		},
 
 		function test_string_substitute(t){
-			t.is("File 'foo.html' is not found in directory '/temp'.", dojo.string.substitute("File '${0}' is not found in directory '${1}'.", ["foo.html","/temp"]));
-			t.is("File 'foo.html' is not found in directory '/temp'.", dojo.string.substitute("File '${name}' is not found in directory '${info.dir}'.", {name: "foo.html", info: {dir: "/temp"}}));
+			t.is("File 'foo.html' is not found in directory '/temp'.", 
+				dojo.string.substitute(
+					"File '${0}' is not found in directory '${1}'.", 
+					["foo.html","/temp"]
+				)
+			);
+			t.is("File 'foo.html' is not found in directory '/temp'.", 
+				dojo.string.substitute(
+					"File '${name}' is not found in directory '${info.dir}'.",
+					{
+						name: "foo.html",
+						info: { dir: "/temp" }
+					}
+				)
+			);
 			// Verify that an error is thrown!
 			t.assertError(Error, dojo.string, "substitute", ["${x}", {y:1}]);
+		},
+		
+		function test_string_substitute_transform(t){
+			var getPrefix = function(str){
+				// try to figure out the type
+				var prefix = (str.charAt(0) == "/") ? "directory": "file";
+				if(this.____prefix){
+					prefix = this.____prefix + prefix;
+				}
+				return prefix + " '" + str + "'";
+			}
+
+			var obj = {
+				____prefix: "...",
+				getPrefix: getPrefix
+			};
+
+			t.is("file 'foo.html' is not found in directory '/temp'.", 
+				dojo.string.substitute(
+					"${0} is not found in ${1}.",
+					["foo.html","/temp"],
+					getPrefix
+				)
+			);
+
+			t.is("...file 'foo.html' is not found in ...directory '/temp'.", 
+				dojo.string.substitute(
+					"${0} is not found in ${1}.",
+					["foo.html","/temp"],
+					obj.getPrefix, obj
+				)
+			);
+		},
+
+		function test_string_substitute_formatter(t){
+			t.is("thinger -- howdy", 
+				dojo.string.substitute(
+					"${0:postfix}", ["thinger"], null, {
+						postfix: function(value, key){
+							return value + " -- howdy";
+						}
+					}
+				)
+			);
 		},
 		
 		function test_string_trim(t){

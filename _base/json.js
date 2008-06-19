@@ -72,7 +72,10 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 		}
 	}
 	if(it.nodeType && it.cloneNode){ // isNode
-		throw new Error("No serializer was provided for DOM nodes");
+		// we can't seriailize DOM nodes as regular objects because they have cycles
+		// DOM nodes could be serialized with something like outerHTML, but
+		// that can be provided by users in the form of .json or .__json__ function.
+		throw new Error("Can't serialize DOM nodes");
 	}
 
 	var sep = prettyPrint ? " " : "";

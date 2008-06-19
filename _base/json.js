@@ -57,9 +57,6 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	if(dojo.isString(it)){ 
 		return dojo._escapeString(it); 
 	}
-	if(it.nodeType && it.cloneNode){ // isNode
-		return ""; // FIXME: would something like outerHTML be better here?
-	}
 	// recurse
 	var recurse = arguments.callee;
 	// short-circuit for objects that support "json" serialization
@@ -73,6 +70,9 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 		if(it !== newObj){
 			return recurse(newObj, prettyPrint, nextIndent);
 		}
+	}
+	if(it.nodeType && it.cloneNode){ // isNode
+		throw new Error("No serializer was provided for DOM nodes");
 	}
 
 	var sep = prettyPrint ? " " : "";

@@ -817,7 +817,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		If passed, denotes that dojo.contentBox() should
 		//		update/set the content box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
-		var n=dojo.byId(node), s=gcs(n), b=box;
+		var n=d.byId(node), s=gcs(n), b=box;
 		return !b ? d._getContentBox(n, s) : d._setContentSize(n, b.w, b.h, s); // Object
 	}
 	
@@ -1108,16 +1108,19 @@ if(dojo.isIE || dojo.isOpera){
 		//		default value;
 		//
 		//		when user as a setter, undefined
+		//
 		//	example:
 		//	|	// get the current value of the "foo" attribute on a node
 		//	|	dojo.attr(dojo.byId("nodeId"), "foo");
-		//	|	
-		//	|	// we can just pass the id:
+		//	|	// or we can just pass the id:
 		//	|	dojo.attr("nodeId", "foo");
-		//	|
+		//
+		//	example:
 		//	|	// use attr() to set the tab index
 		//	|	dojo.attr("nodeId", "tabindex", 3);
 		//	|
+		//
+		//	example:
 		//	|	// set multiple values at once, including event handlers:
 		//	|	dojo.attr("formId", {
 		//	|		"foo": "bar",
@@ -1196,45 +1199,48 @@ if(dojo.isIE || dojo.isOpera){
 		//		the name of the attribute to remove
 		d.byId(node).removeAttribute(_fixAttrName(name));
 	}
+
+
+	// =============================
+	// (CSS) Class Functions
+	// =============================
+	var _className = "className";
+
+	dojo.hasClass = function(/*DomNode|String*/node, /*String*/classStr){
+		//	summary:
+		//		Returns whether or not the specified classes are a portion of the
+		//		class list currently applied to the node. 
+		return ((" "+ d.byId(node)[_className] +" ").indexOf(" "+ classStr +" ") >= 0);  // Boolean
+	};
+
+	dojo.addClass = function(/*DomNode|String*/node, /*String*/classStr){
+		//	summary:
+		//		Adds the specified classes to the end of the class list on the
+		//		passed node.
+		node = d.byId(node);
+		var cls = node[_className];
+		if((" "+ cls +" ").indexOf(" " + classStr + " ") < 0){
+			node[_className] = cls + (cls ? ' ' : '') + classStr;
+		}
+	};
+
+	dojo.removeClass = function(/*DomNode|String*/node, /*String*/classStr){
+		// summary: Removes the specified classes from node.
+		node = d.byId(node);
+		var t = d.trim((" " + node[_className] + " ").replace(" " + classStr + " ", " "));
+		if(node[_className] != t){ node[_className] = t; }
+	};
+
+	dojo.toggleClass = function(/*DomNode|String*/node, /*String*/classStr, /*Boolean?*/condition){
+		//	summary: 	
+		//		Adds a class to node if not present, or removes if present.
+		//		Pass a boolean condition if you want to explicitly add or remove.
+		//	condition:
+		//		If passed, true means to add the class, false means to remove.
+		if(condition === undefined){
+			condition = !d.hasClass(node, classStr);
+		}
+		d[condition ? "addClass" : "removeClass"](node, classStr);
+	};
+
 })();
-
-// =============================
-// (CSS) Class Functions
-// =============================
-
-dojo.hasClass = function(/*DomNode|String*/node, /*String*/classStr){
-	//	summary:
-	//		Returns whether or not the specified classes are a portion of the
-	//		class list currently applied to the node. 
-	return ((" "+dojo.byId(node).className+" ").indexOf(" "+classStr+" ") >= 0);  // Boolean
-};
-
-dojo.addClass = function(/*DomNode|String*/node, /*String*/classStr){
-	//	summary:
-	//		Adds the specified classes to the end of the class list on the
-	//		passed node.
-	node = dojo.byId(node);
-	var cls = node.className;
-	if((" "+cls+" ").indexOf(" "+classStr+" ") < 0){
-		node.className = cls + (cls ? ' ' : '') + classStr;
-	}
-};
-
-dojo.removeClass = function(/*DomNode|String*/node, /*String*/classStr){
-	// summary: Removes the specified classes from node.
-	node = dojo.byId(node);
-	var t = dojo.trim((" " + node.className + " ").replace(" " + classStr + " ", " "));
-	if(node.className != t){ node.className = t; }
-};
-
-dojo.toggleClass = function(/*DomNode|String*/node, /*String*/classStr, /*Boolean?*/condition){
-	//	summary: 	
-	//		Adds a class to node if not present, or removes if present.
-	//		Pass a boolean condition if you want to explicitly add or remove.
-	//	condition:
-	//		If passed, true means to add the class, false means to remove.
-	if(condition === undefined){
-		condition = !dojo.hasClass(node, classStr);
-	}
-	dojo[condition ? "addClass" : "removeClass"](node, classStr);
-};

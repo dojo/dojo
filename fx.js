@@ -349,6 +349,7 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 	//		from it's current height to 1px, and then hide it.
 	var node = args.node = dojo.byId(args.node);
 	var s = node.style;
+	var o;
 
 	var anim = dojo.animateProperty(dojo.mixin({
 		properties: {
@@ -359,10 +360,12 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 	}, args));
 
 	dojo.connect(anim, "beforeBegin", function(){
+		o = s.overflow;
 		s.overflow = "hidden";
 		s.display = "";
 	});
 	dojo.connect(anim, "onEnd", function(){
+		s.overflow = o;
 		s.height = "auto";
 		s.display = "none";
 	});

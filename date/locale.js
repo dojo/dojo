@@ -586,7 +586,7 @@ dojo.date.locale.getNames = function(/*String*/item, /*String*/type, /*String?*/
 	if(use == 'standAlone'){
 		var key = props.join('-');
 		label = lookup(locale)[key];
-		// Fall back to 'form
+		// Fall back to 'format' flavor of name
 		if(label === lookup("ROOT")[key]){ label = undefined; } // a bit of a kludge, in the absense of real aliasing support in dojo.cldr
 	}
 	props[1] = 'format';

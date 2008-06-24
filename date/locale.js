@@ -612,7 +612,7 @@ dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 
 dojo.date.locale._getDayOfYear = function(/*Date*/dateObject){
 	// summary: gets the day of the year as represented by dateObject
-	return dojo.date.difference(new Date(dateObject.getFullYear(), 0, 1), dateObject) + 1; // Number
+	return dojo.date.difference(new Date(dateObject.getFullYear(), 0, 1, dateObject.getHours()), dateObject) + 1; // Number
 };
 
 dojo.date.locale._getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDayOfWeek){

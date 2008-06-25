@@ -70,6 +70,42 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		this.selection = {};
 		return this;	// self
 	},
+	forInSelectedItems: function(/*Function*/ f, /*Object?*/ o){
+		// summary: iterates over selected items,
+		// see dojo.dnd.Container.forInItems() for details
+		o = o || dojo.global;
+		var s = this.selection, e = dojo.dnd._empty;
+		for(var i in s){
+			if(i in e){ continue; }
+			f.call(o, this.getItem(i), i, this);
+		}
+	},
+	sync: function(){
+		// summary: synch up the node list with the data map
+		
+		dojo.dnd.Selector.superclass.sync.call(this);
+		
+		// fix the anchor
+		if(this.anchor){
+			if(!this.getItem(this.anchor.id)){
+				this.anchor = null;
+			}
+		}
+		
+		// fix the selection
+		var t = [], e = dojo.dnd._empty;
+		for(var i in this.selection){
+			if(i in e){ continue; }
+			if(!this.getItem(i)){
+				t.push(i);
+			}
+		}
+		dojo.forEach(t, function(i){
+			delete this.selection[i];
+		}, this);
+		
+		return this;	// self
+	},
 	insertNodes: function(addSelected, data, before, anchor){
 		// summary: inserts new data items (see Container's insertNodes method for details)
 		// addSelected: Boolean: all new nodes will be added to selected items, if true, no selection change otherwise

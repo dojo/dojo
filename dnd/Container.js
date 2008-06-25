@@ -82,7 +82,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		var m = this.map, e = dojo.dnd._empty;
 		for(var i in m){
 			if(i in e){ continue; }
-			f.call(o, m[i], i, m);
+			f.call(o, m[i], i, this);
 		}
 	},
 	clearItems: function(){
@@ -94,6 +94,29 @@ dojo.declare("dojo.dnd.Container", null, {
 	getAllNodes: function(){
 		// summary: returns a list (an array) of all valid child nodes
 		return dojo.query("> .dojoDndItem", this.parent);	// NodeList
+	},
+	sync: function(){
+		// summary: synch up the node list with the data map
+		var map = {};
+		this.getAllNodes().forEach(function(node){
+			if(node.id){
+				var item = this.getItem(node.id);
+				if(item){
+					map[node.id] = item;
+					return;
+				}
+			}else{
+				node.id = dojo.dnd.getUniqueId();
+			}
+			var type = node.getAttribute("dndType"),
+				data = node.getAttribute("dndData");
+			map[node.id] = {
+				data: data || node.innerHTML,
+				type: type ? type.split(/\s*,\s*/) : ["text"]
+			};
+		}, this);
+		this.map = map;
+		return this;	// self
 	},
 	insertNodes: function(data, before, anchor){
 		// summary: inserts an array of new nodes before/after an anchor node
@@ -153,15 +176,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		this.defaultCreator = dojo.dnd._defaultCreator(this.parent);
 
 		// process specially marked children
-		this.getAllNodes().forEach(function(node){
-			if(!node.id){ node.id = dojo.dnd.getUniqueId(); }
-			var type = node.getAttribute("dndType"),
-				data = node.getAttribute("dndData");
-			this.setItem(node.id, {
-				data: data ? data : node.innerHTML,
-				type: type ? type.split(/\s*,\s*/) : ["text"]
-			});
-		}, this);
+		this.sync();
 	},
 
 	// mouse events
@@ -307,7 +322,7 @@ dojo.dnd._defaultCreator = function(node){
 		var isObj = item && dojo.isObject(item);
 		var data = (isObj && item.data) ? item.data : item;
 		var type = (isObj && item.type) ? item.type : ["text"];
-		var t = String(data), n = (hint == "avatar" ? dojo.dnd._createSpan : c)(t);
+		var n = (hint == "avatar" ? dojo.dnd._createSpan : c)(String(data));
 		n.id = dojo.dnd.getUniqueId();
 		return {node: n, data: data, type: type};
 	};

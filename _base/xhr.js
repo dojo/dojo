@@ -482,7 +482,7 @@ dojo.require("dojo._base.query");
 			// note: the second clause is an assigment on purpose, lint may complain
 			for(var i = 0, tif; i < _inFlight.length && (tif = _inFlight[i]); i++){
 				var dfd = tif.dfd;
-				try{
+				var func = function(){
 					if(!dfd || dfd.canceled || !tif.validCheck(dfd)){
 						_inFlight.splice(i--, 1); 
 					}else if(tif.ioCheck(dfd)){
@@ -499,10 +499,17 @@ dojo.require("dojo._base.query");
 							dfd.cancel();
 						}
 					}
-				}catch(e){
-					// FIXME: make sure we errback! (fixed?  remove console.debug?)
-					console.debug(e);
-					dfd.errback(new Error("_watchInFlightError!"));
+				};
+				if(dojo.config.isDebug){
+					func.call(this);
+				}else{
+					try{
+						func.call(this);
+					}catch(e){
+						// FIXME: make sure we errback! (fixed?  remove console.debug?)
+						console.debug(e);
+						dfd.errback(new Error("_watchInFlightError!"));
+					}
 				}
 			}
 		}
@@ -651,10 +658,14 @@ dojo.require("dojo._base.query");
 			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		}
 		// FIXME: set other headers here!
-		try{
+		if(dojo.config.isDebug){
 			xhr.send(ioArgs.query);
-		}catch(e){
-			dfd.cancel();
+		}else{
+			try{
+				xhr.send(ioArgs.query);
+			}catch(e){
+				dfd.cancel();
+			}
 		}
 		_d._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
 		xhr = null;

@@ -369,7 +369,7 @@ dojo.extend(dojo.Deferred, {
 			// Array
 			var f = chain.shift()[fired];
 			if(!f){ continue; }
-			try{
+			var func = function(){
 				res = f(res);
 				fired = ((res instanceof Error) ? 1 : 0);
 				if(res instanceof dojo.Deferred){
@@ -387,10 +387,17 @@ dojo.extend(dojo.Deferred, {
 					// inlined from _unpause
 					this.paused++;
 				}
-			}catch(err){
-				console.debug(err);
-				fired = 1;
-				res = err;
+			};
+			if(dojo.config.isDebug){
+				func.call(this);
+			}else{
+				try{
+					func.call(this);
+				}catch(err){
+					console.debug(err);
+					fired = 1;
+					res = err;
+				}
 			}
 		}
 		this.fired = fired;

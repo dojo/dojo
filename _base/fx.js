@@ -120,22 +120,26 @@ dojo.require("dojo._base.html");
 			//		The event to fire.
 			//	args:
 			//		The arguments to pass to the event.
-			try{
-				if(this[evt]){
+			if(this[evt]){
+				if(dojo.config.isDebug){
 					this[evt].apply(this, args||[]);
+				}else{
+					try{
+						this[evt].apply(this, args||[]);
+					}catch(e){
+						// squelch and log because we shouldn't allow exceptions in
+						// synthetic event handlers to cause the internal timer to run
+						// amuck, potentially pegging the CPU. I'm not a fan of this
+						// squelch, but hopefully logging will make it clear what's
+						// going on
+						console.error("exception in animation handler for:", evt);
+						console.error(e);
+					}
 				}
-			}catch(e){
-				// squelch and log because we shouldn't allow exceptions in
-				// synthetic event handlers to cause the internal timer to run
-				// amuck, potentially pegging the CPU. I'm not a fan of this
-				// squelch, but hopefully logging will make it clear what's
-				// going on
-				console.error("exception in animation handler for:", evt);
-				console.error(e);
 			}
 			return this; // dojo._Animation
 		},
-	
+
 		play: function(/*int?*/ delay, /*Boolean?*/ gotoStart){
 			// summary:
 			//		Start the animation.

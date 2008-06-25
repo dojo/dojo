@@ -14,7 +14,7 @@ dojo.require("dojo.parser");
 
 dojo.declare("dojo.dnd.Container", null, {
 	// summary: a Container object, which knows when mouse hovers over it, 
-	//	and know over which element it hovers
+	//	and over which element it hovers
 	
 	// object attributes (for markup)
 	skipForm: false,
@@ -36,8 +36,6 @@ dojo.declare("dojo.dnd.Container", null, {
 		this.skipForm = params.skipForm;
 		this.parent = params.dropParent && dojo.byId(params.dropParent);
 		
-		this.defaultCreator = dojo.dnd._defaultCreator(this.node);
-
 		// class-specific variables
 		this.map = {};
 		this.current = null;
@@ -152,6 +150,7 @@ dojo.declare("dojo.dnd.Container", null, {
 				if(c && c.length){ this.parent = c[0]; }
 			}
 		}
+		this.defaultCreator = dojo.dnd._defaultCreator(this.parent);
 
 		// process specially marked children
 		this.getAllNodes().forEach(function(node){
@@ -257,7 +256,7 @@ dojo.declare("dojo.dnd.Container", null, {
 	},
 	_normalizedCreator: function(item, hint){
 		// summary: adds all necessary data to the output of the user-supplied creator function
-		var t = (this.creator ? this.creator : this.defaultCreator)(item, hint);
+		var t = (this.creator || this.defaultCreator).call(this, item, hint);
 		if(!dojo.isArray(t.type)){ t.type = ["text"]; }
 		if(!t.node.id){ t.node.id = dojo.dnd.getUniqueId(); }
 		dojo.addClass(t.node, "dojoDndItem");
@@ -299,12 +298,13 @@ dojo.dnd._createSpan = function(text){
 dojo.dnd._defaultCreatorNodes = {ul: "li", ol: "li", div: "div", p: "div"};
 
 dojo.dnd._defaultCreator = function(node){
-	// summary: takes a container node, and returns an appropriate creator function
+	// summary: takes a parent node, and returns an appropriate creator function
 	// node: Node: a container node
 	var tag = node.tagName.toLowerCase();
-	var c = tag == "table" ? dojo.dnd._createTrTd : dojo.dnd._createNode(dojo.dnd._defaultCreatorNodes[tag]);
+	var c = tag == "tbody" || tag == "thead" ? dojo.dnd._createTrTd :
+			dojo.dnd._createNode(dojo.dnd._defaultCreatorNodes[tag]);
 	return function(item, hint){	// Function
-		var isObj = dojo.isObject(item) && item;
+		var isObj = item && dojo.isObject(item);
 		var data = (isObj && item.data) ? item.data : item;
 		var type = (isObj && item.type) ? item.type : ["text"];
 		var t = String(data), n = (hint == "avatar" ? dojo.dnd._createSpan : c)(t);

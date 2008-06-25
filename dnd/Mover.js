@@ -49,7 +49,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 	// utilities
 	onFirstMove: function(){
 		// summary: makes the node absolute; it is meant to be called only once
-		var s = this.node.style, l, t;
+		var s = this.node.style, l, t, h = this.host;
 		switch(s.position){
 			case "relative":
 			case "absolute":
@@ -66,7 +66,9 @@ dojo.declare("dojo.dnd.Mover", null, {
 		}
 		this.marginBox.l = l - this.marginBox.l;
 		this.marginBox.t = t - this.marginBox.t;
-		this.host.onFirstMove(this);
+		if(h && h.onMoveStart){
+			h.onFirstMove(this);
+		}
 		dojo.disconnect(this.events.pop());
 	},
 	destroy: function(){
@@ -78,6 +80,6 @@ dojo.declare("dojo.dnd.Mover", null, {
 			h.onMoveStop(this);
 		}
 		// destroy objects
-		this.events = this.node = null;
+		this.events = this.node = this.host = null;
 	}
 });

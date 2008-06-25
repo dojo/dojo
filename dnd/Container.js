@@ -319,10 +319,19 @@ dojo.dnd._defaultCreator = function(node){
 	var c = tag == "tbody" || tag == "thead" ? dojo.dnd._createTrTd :
 			dojo.dnd._createNode(dojo.dnd._defaultCreatorNodes[tag]);
 	return function(item, hint){	// Function
-		var isObj = item && dojo.isObject(item);
-		var data = (isObj && item.data) ? item.data : item;
-		var type = (isObj && item.type) ? item.type : ["text"];
-		var n = (hint == "avatar" ? dojo.dnd._createSpan : c)(String(data));
+		var isObj = item && dojo.isObject(item), data, type, n;
+		if(isObj && item.tagName && item.nodeType && item.getAttribute){
+			// process a DOM node
+			data = item.getAttribute("dndData") || item.innerHTML;
+			type = item.getAttribute("dndType");
+			type = type ? type.split(/\s*,\s*/) : ["text"];
+			n = item;	// this node is going to be moved rather than copied
+		}else{
+			// process a DnD item object or a string
+			data = (isObj && item.data) ? item.data : item;
+			type = (isObj && item.type) ? item.type : ["text"];
+			n = (hint == "avatar" ? dojo.dnd._createSpan : c)(String(data));
+		}
 		n.id = dojo.dnd.getUniqueId();
 		return {node: n, data: data, type: type};
 	};

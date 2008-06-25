@@ -80,7 +80,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 		this.events = [];
 		this.avatar.destroy();
 		this.avatar = null;
-		this.source = null;
+		this.source = this.target = null;
 		this.nodes = [];
 	},
 	makeAvatar: function(){
@@ -91,6 +91,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 		// summary: updates the avatar, it is separate to be overwritten dynamically, if needed
 		this.avatar.update();
 	},
+	
 	// mouse event processors
 	onMouseMove: function(e){
 		// summary: event processor for onmousemove
@@ -124,6 +125,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			this.stopDrag();
 		}
 	},
+	
 	// keyboard event processors
 	onKeyDown: function(e){
 		// summary: event processor for onkeydown:
@@ -154,6 +156,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			}
 		}
 	},
+	
 	// utilities
 	_setCopyStatus: function(copy){
 		// summary: changes the copy status

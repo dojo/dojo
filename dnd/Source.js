@@ -223,91 +223,16 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		}
 		this.isDragging = true;
 	},
-	onDndDrop: function(source, nodes, copy){
+	onDndDrop: function(source, nodes, copy, target){
 		// summary: topic event processor for /dnd/drop, called to finish the DnD operation
 		// source: Object: the source which provides items
 		// nodes: Array: the list of transferred items
 		// copy: Boolean: copy items, if true, move items otherwise
-		do{ //break box
-			if(this.containerState != "Over"){ break; }
-			var oldCreator = this._normalizedCreator;
-			if(this != source){
-				// transferring nodes from the source to the target
-				if(this.creator){
-					// use defined creator
-					this._normalizedCreator = function(node, hint){
-						return oldCreator.call(this, source.getItem(node.id).data, hint);
-					};
-				}else{
-					// we have no creator defined => move/clone nodes
-					if(copy){
-						// clone nodes
-						this._normalizedCreator = function(node, hint){
-							var t = source.getItem(node.id);
-							var n = node.cloneNode(true);
-							n.id = dojo.dnd.getUniqueId();
-							return {node: n, data: t.data, type: t.type};
-						};
-					}else{
-						// move nodes
-						this._normalizedCreator = function(node, hint){
-							var t = source.getItem(node.id);
-							source.delItem(node.id);
-							return {node: node, data: t.data, type: t.type};
-						};
-					}
-				}
-			}else{
-				// transferring nodes within the single source
-				if(this.current && this.current.id in this.selection){ break; }
-				if(this.creator){
-					// use defined creator
-					if(copy){
-						// create new copies of data items
-						this._normalizedCreator = function(node, hint){
-							return oldCreator.call(this, source.getItem(node.id).data, hint);
-						};
-					}else{
-						// move nodes
-						if(!this.current){ break; }
-						this._normalizedCreator = function(node, hint){
-							var t = source.getItem(node.id);
-							return {node: node, data: t.data, type: t.type};
-						};
-					}
-				}else{
-					// we have no creator defined => move/clone nodes
-					if(copy){
-						// clone nodes
-						this._normalizedCreator = function(node, hint){
-							var t = source.getItem(node.id);
-							var n = node.cloneNode(true);
-							n.id = dojo.dnd.getUniqueId();
-							return {node: n, data: t.data, type: t.type};
-						};
-					}else{
-						// move nodes
-						if(!this.current){ break; }
-						this._normalizedCreator = function(node, hint){
-							var t = source.getItem(node.id);
-							return {node: node, data: t.data, type: t.type};
-						};
-					}
-				}
-			}
-			this._removeSelection();
-			if(this != source){
-				this._removeAnchor();
-			}
-			if(this != source && !copy && !this.creator){
-				source.selectNone();
-			}
-			this.insertNodes(true, nodes, this.before, this.current);
-			if(this != source && !copy && this.creator){
-				source.deleteSelectedNodes();
-			}
-			this._normalizedCreator = oldCreator;
-		}while(false);
+		// target: Object: the target which accepts items
+		if(this == target){
+			// this one is for us => move nodes!
+			this.onDrop(source, nodes, copy);
+		}
 		this.onDndCancel();
 	},
 	onDndCancel: function(){
@@ -322,6 +247,119 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		delete this.mouseButton;
 		this._changeState("Source", "");
 		this._changeState("Target", "");
+	},
+	
+	// local events
+	onDrop: function(source, nodes, copy){
+		// summary: called only on the current target, when drop is performed
+		// source: Object: the source which provides items
+		// nodes: Array: the list of transferred items
+		// copy: Boolean: copy items, if true, move items otherwise
+		
+		if(this != source){
+			this.onDropExternal(source, nodes, copy);
+		}else{
+			this.onDropInternal(nodes, copy);
+		}
+	},
+	onDropExternal: function(source, nodes, copy){
+		// summary: called only on the current target, when drop is performed
+		//	from an external source
+		// source: Object: the source which provides items
+		// nodes: Array: the list of transferred items
+		// copy: Boolean: copy items, if true, move items otherwise
+		
+		var oldCreator = this._normalizedCreator;
+		// transferring nodes from the source to the target
+		if(this.creator){
+			// use defined creator
+			this._normalizedCreator = function(node, hint){
+				return oldCreator.call(this, source.getItem(node.id).data, hint);
+			};
+		}else{
+			// we have no creator defined => move/clone nodes
+			if(copy){
+				// clone nodes
+				this._normalizedCreator = function(node, hint){
+					var t = source.getItem(node.id);
+					var n = node.cloneNode(true);
+					n.id = dojo.dnd.getUniqueId();
+					return {node: n, data: t.data, type: t.type};
+				};
+			}else{
+				// move nodes
+				this._normalizedCreator = function(node, hint){
+					var t = source.getItem(node.id);
+					source.delItem(node.id);
+					return {node: node, data: t.data, type: t.type};
+				};
+			}
+		}
+		this.selectNone();
+		if(!copy && !this.creator){
+			source.selectNone();
+		}
+		this.insertNodes(true, nodes, this.before, this.current);
+		if(!copy && this.creator){
+			source.deleteSelectedNodes();
+		}
+		this._normalizedCreator = oldCreator;
+	},
+	onDropInternal: function(nodes, copy){
+		// summary: called only on the current target, when drop is performed
+		//	from the same target/source
+		// nodes: Array: the list of transferred items
+		// copy: Boolean: copy items, if true, move items otherwise
+		
+		var oldCreator = this._normalizedCreator;
+		// transferring nodes within the single source
+		if(this.current && this.current.id in this.selection){
+			// do nothing
+			return;
+		}
+		if(this.creator){
+			// use defined creator
+			if(copy){
+				// create new copies of data items
+				this._normalizedCreator = function(node, hint){
+					return oldCreator.call(this, this.getItem(node.id).data, hint);
+				};
+			}else{
+				// move nodes
+				if(!this.current){
+					// do nothing
+					return;
+				}
+				this._normalizedCreator = function(node, hint){
+					var t = this.getItem(node.id);
+					return {node: node, data: t.data, type: t.type};
+				};
+			}
+		}else{
+			// we have no creator defined => move/clone nodes
+			if(copy){
+				// clone nodes
+				this._normalizedCreator = function(node, hint){
+					var t = this.getItem(node.id);
+					var n = node.cloneNode(true);
+					n.id = dojo.dnd.getUniqueId();
+					return {node: n, data: t.data, type: t.type};
+				};
+			}else{
+				// move nodes
+				if(!this.current){
+					// do nothing
+					return;
+				}
+				this._normalizedCreator = function(node, hint){
+					var t = this.getItem(node.id);
+					return {node: node, data: t.data, type: t.type};
+				};
+			}
+		}
+		this._removeSelection();
+		this.insertNodes(true, nodes, this.before, this.current);
+		this._normalizedCreator = oldCreator;
 	},
 	
 	// utilities

@@ -51,6 +51,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	isSource: true,
 	horizontal: false,
 	copyOnly: false,
+	selfCopy: false,
 	skipForm: false,
 	withHandles: false,
 	accept: ["text"],
@@ -120,11 +121,24 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		}
 		return true;	// Boolean
 	},
-	copyState: function(keyPressed){
+	copyState: function(keyPressed, self){
 		// summary: Returns true, if we need to copy items, false to move.
 		//		It is separated to be overwritten dynamically, if needed.
 		// keyPressed: Boolean: the "copy" was pressed
-		return this.copyOnly || keyPressed;	// Boolean
+		// self: Boolean?: optional flag, which means that we are about to drop on itself
+		
+		if(keyPressed){ return true; }
+		if(arguments.length < 2){
+			self = this == dojo.dnd.manager().target;
+		}
+		if(self){
+			if(this.copyOnly){
+				return this.selfCopy;
+			}
+		}else{
+			return this.copyOnly;
+		}
+		return false;	// Boolean
 	},
 	destroy: function(){
 		// summary: prepares the object to be garbage-collected
@@ -171,7 +185,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			if(this.mouseDown && this.isSource){
 				var nodes = this.getSelectedNodes();
 				if(nodes.length){
-					m.startDrag(this, nodes, this.copyState(dojo.dnd.getCopyKeyState(e)));
+					m.startDrag(this, nodes, this.copyState(dojo.dnd.getCopyKeyState(e), true));
 				}
 			}
 		}

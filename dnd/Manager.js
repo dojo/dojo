@@ -116,7 +116,8 @@ dojo.declare("dojo.dnd.Manager", null, {
 				(dojo.isSafari && dojo.dnd._isMac && this.source.mouseButton == 2 ? 
 					e.button == 0 : this.source.mouseButton == e.button))){
 			if(this.target && this.canDropFlag){
-				var params = [this.source, this.nodes, Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e))), this.target];
+				var copy = Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e))),
+				params = [this.source, this.nodes, copy, this.target];
 				dojo.publish("/dnd/drop/before", params);
 				dojo.publish("/dnd/drop", params);
 			}else{

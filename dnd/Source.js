@@ -375,17 +375,31 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this.insertNodes(true, nodes, this.before, this.current);
 		this._normalizedCreator = oldCreator;
 	},
+	onDraggingOver: function(){
+		// summary: called during the active DnD operation, when items
+		// are dragged over this target, and it is not disabled
+	},
+	onDraggingOut: function(){
+		// summary: called during the active DnD operation, when items
+		// are dragged away from this target, and it is not disabled
+	},
 	
 	// utilities
 	onOverEvent: function(){
 		// summary: this function is called once, when mouse is over our container
 		dojo.dnd.Source.superclass.onOverEvent.call(this);
 		dojo.dnd.manager().overSource(this);
+		if(this.isDragging && this.targetState != "Disabled"){
+			this.onDraggingOver();
+		}
 	},
 	onOutEvent: function(){
 		// summary: this function is called once, when mouse is out of our container
 		dojo.dnd.Source.superclass.onOutEvent.call(this);
 		dojo.dnd.manager().outSource(this);
+		if(this.isDragging && this.targetState != "Disabled"){
+			this.onDraggingOut();
+		}
 	},
 	_markTargetAnchor: function(before){
 		// summary: assigns a class to the current target anchor based on "before" status

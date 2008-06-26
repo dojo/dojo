@@ -26,6 +26,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 		// source: Object: the reporter
 		if(this.avatar){
 			this.target = (source && source.targetState != "Disabled") ? source : null;
+			this.canDropFlag = Boolean(this.target);
 			this.avatar.update();
 		}
 		dojo.publish("/dnd/source/over", [source]);

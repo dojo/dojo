@@ -33,7 +33,14 @@ dojo.dnd.__SourceArgs = function(){
 	//	horizontal: Boolean?
 	//		a horizontal container, if true, vertical otherwise or when omitted
 	//	copyOnly: Boolean?
-	//		always copy items, if true, use a state of Ctrl key otherwise
+	//		copy items, if true, use a state of Ctrl key otherwise,
+	//		see selfCopy and selfAccept for more details
+	//	selfCopy: Boolean?
+	//		copy items by default when dropping on itself,
+	//		false by default, works only if copyOnly is true
+	//	selfAccept: Boolean?
+	//		accept its own items when copyOnly is true,
+	//		true by default, works only if copyOnly is true
 	//	withHandles: Boolean?
 	//		allows dragging only by handles
 	this.isSource = isSource;
@@ -52,6 +59,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	horizontal: false,
 	copyOnly: false,
 	selfCopy: false,
+	selfAccept: true,
 	skipForm: false,
 	withHandles: false,
 	accept: ["text"],
@@ -104,7 +112,9 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// summary: checks, if the target can accept nodes from this source
 		// source: Object: the source which provides items
 		// nodes: Array: the list of transferred items
-		if(this == source){ return true; }
+		if(this == source){
+			return !this.copyOnly || this.selfAccept;
+		}
 		for(var i = 0; i < nodes.length; ++i){
 			var type = source.getItem(nodes[i].id).type;
 			// type instanceof Array
@@ -232,7 +242,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		}
 		var accepted = this.accept && this.checkAcceptance(source, nodes);
 		this._changeState("Target", accepted ? "" : "Disabled");
-		if(accepted && this == source){
+		if(this == source){
 			dojo.dnd.manager().overSource(this);
 		}
 		this.isDragging = true;

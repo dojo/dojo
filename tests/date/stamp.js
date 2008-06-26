@@ -11,7 +11,7 @@ function test_date_iso(t){
 	t.is(5,date.getMonth());
 	t.is(29,date.getUTCDate());
 	t.is(15,date.getUTCHours());
-	t.is(5,date.getMinutes());
+	t.is(5,date.getUTCMinutes());
 	t.is(0,date.getSeconds());
 
 	rfc  = "2004-02-29";

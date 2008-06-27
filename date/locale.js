@@ -581,18 +581,18 @@ dojo.date.locale.getNames = function(/*String*/item, /*String*/type, /*String?*/
 	//	override locale used to find the names
 
 	var label;
-	var lookup = dojo.date.locale._getGregorianBundle;
+	var lookup = dojo.date.locale._getGregorianBundle(locale);
 	var props = [item, use, type];
 	if(use == 'standAlone'){
 		var key = props.join('-');
-		label = lookup(locale)[key];
+		label = lookup[key];
 		// Fall back to 'format' flavor of name
-		if(label === lookup("ROOT")[key]){ label = undefined; } // a bit of a kludge, in the absense of real aliasing support in dojo.cldr
+		if(label[0] == 1){ label = undefined; } // kludge, in the absense of real aliasing support in dojo.cldr
 	}
 	props[1] = 'format';
 
 	// return by copy so changes won't be made accidentally to the in-memory model
-	return (label || lookup(locale)[props.join('-')]).concat(); /*Array*/
+	return (label || lookup[props.join('-')]).concat(); /*Array*/
 };
 
 dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){

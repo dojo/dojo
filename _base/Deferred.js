@@ -394,7 +394,6 @@ dojo.extend(dojo.Deferred, {
 				try{
 					func.call(this);
 				}catch(err){
-					console.debug(err);
 					fired = 1;
 					res = err;
 				}

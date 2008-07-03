@@ -458,8 +458,7 @@ dojo.require("dojo._base.query");
 	}
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.
-		
-		// console.debug("xhr error in:", dfd.ioArgs.xhr);
+
 		console.debug(error);
 		return error;
 	}
@@ -506,9 +505,7 @@ dojo.require("dojo._base.query");
 					try{
 						func.call(this);
 					}catch(e){
-						// FIXME: make sure we errback! (fixed?  remove console.debug?)
-						console.debug(e);
-						dfd.errback(new Error("_watchInFlightError!"));
+						dfd.errback(e);
 					}
 				}
 			}

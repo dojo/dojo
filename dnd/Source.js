@@ -42,11 +42,13 @@ dojo.dnd.__SourceArgs = function(){
 	//		accept its own items when copyOnly is true,
 	//		true by default, works only if copyOnly is true
 	//	withHandles: Boolean?
-	//		allows dragging only by handles
+	//		allows dragging only by handles, false by default
 	this.isSource = isSource;
 	this.accept = accept;
 	this.horizontal = horizontal;
 	this.copyOnly = copyOnly;
+	this.selfCopy = selfCopy;
+	this.selfAccept = selfAccept;
 	this.withHandles = withHandles;
 }
 =====*/
@@ -62,6 +64,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	selfAccept: true,
 	skipForm: false,
 	withHandles: false,
+	autoSync: false,
 	accept: ["text"],
 	
 	constructor: function(/*DOMNode|String*/node, /*dojo.dnd.__SourceArgs?*/params){
@@ -237,6 +240,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// source: Object: the source which provides items
 		// nodes: Array: the list of transferred items
 		// copy: Boolean: copy items, if true, move items otherwise
+		if(this.autoSync){ this.sync(); }
 		if(this.isSource){
 			this._changeState("Source", this == source ? (copy ? "Copied" : "Moved") : "");
 		}
@@ -461,5 +465,20 @@ dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
 	markupFactory: function(params, node){
 		params._skipStartup = true;
 		return new dojo.dnd.Target(node, params);
+	}
+});
+
+dojo.declare("dojo.dnd.AutoSource", dojo.dnd.Source, {
+	// summary: a source, which syncs its DnD nodes by default
+	
+	constructor: function(node, params){
+		// summary: a constructor of the AutoSource --- see the Source constructor for details
+		this.autoSync = true;
+	},
+
+	// markup methods
+	markupFactory: function(params, node){
+		params._skipStartup = true;
+		return new dojo.dnd.AutoSource(node, params);
 	}
 });

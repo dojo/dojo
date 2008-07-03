@@ -17,10 +17,15 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		// summary: a constructor of the Selector
 		// node: Node: node or node's id to build the selector on
 		// params: Object: a dict of parameters, recognized parameters are:
-		//	singular: Boolean: allows selection of only one element, if true
-		//	the rest of parameters are passed to the container
+		//	singular: Boolean
+		//		allows selection of only one element, if true
+		//		the rest of parameters are passed to the container
+		//	autoSync: Boolean
+		//		autosynchronizes the source with its list of DnD nodes,
+		//		false by default
 		if(!params){ params = {}; }
 		this.singular = params.singular;
+		this.autoSync = params.autoSync;
 		// class-specific variables
 		this.selection = {};
 		this.anchor = null;
@@ -151,6 +156,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 	onMouseDown: function(e){
 		// summary: event processor for onmousedown
 		// e: Event: mouse event
+		if(this.autoSync){ this.sync(); }
 		if(!this.current){ return; }
 		if(!this.singular && !dojo.dnd.getCopyKeyState(e) && !e.shiftKey && (this.current.id in this.selection)){
 			this.simpleSelection = true;

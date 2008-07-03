@@ -22,7 +22,7 @@ dojo.io.iframe = {
 		var turi = uri;
 		if(!turi){
 			if(dojo.config["useXDomain"] && !dojo.config["dojoBlankHtmlUrl"]){
-				console.debug("dojo.io.iframe.create: When using cross-domain Dojo builds,"
+				console.warn("dojo.io.iframe.create: When using cross-domain Dojo builds,"
 					+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
 					+ " to the path on your domain to blank.html");
 			}

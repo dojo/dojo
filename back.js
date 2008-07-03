@@ -262,7 +262,7 @@ dojo.back = {
 		var url = null;
 		if(!historyIframe){
 			if(dojo.config["useXDomain"] && !dojo.config["dojoIframeHistoryUrl"]){
-				console.debug("dojo.back: When using cross-domain Dojo builds,"
+				console.warn("dojo.back: When using cross-domain Dojo builds,"
 					+ " please save iframe_history.html to your domain and set djConfig.dojoIframeHistoryUrl"
 					+ " to the path on your domain to iframe_history.html");
 			}

@@ -111,7 +111,7 @@ djConfig = {
 				console[tcn] = function(){ 
 					var a = Array.apply({}, arguments);
 					a.unshift(tcn+":");
-					console.log(a.join(" "));
+					console["log"](a.join(" "));
 				}
 			})();
 		}

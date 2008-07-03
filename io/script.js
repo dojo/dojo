@@ -20,7 +20,7 @@ dojo.io.script.__ioArgs = function(kwArgs){
 	//		"typeof(" + checkString + ") != 'undefined'"
 	//		being true means that the script fetched has been loaded. 
 	//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
-	//	frameDoc: Document.
+	//	frameDoc: Document
 	//		The Document object for a child iframe. If this is passed in, the script
 	//		will be attached to that document. This can be helpful in some comet long-polling
 	//		scenarios with Firefox and Opera.
@@ -35,7 +35,10 @@ dojo.io.script = {
 		var ioArgs = dfd.ioArgs;
 		dojo._ioAddQueryToUrl(ioArgs);
 
-		this.attach(ioArgs.id, ioArgs.url, args.frameDoc);
+		if(this._canAttach(ioArgs)){
+			this.attach(ioArgs.id, ioArgs.url, args.frameDoc);
+		}
+
 		dojo._ioWatch(dfd, this._validCheck, this._ioCheck, this._resHandle);
 		return dfd;
 	},
@@ -56,9 +59,10 @@ dojo.io.script = {
 		doc.getElementsByTagName("head")[0].appendChild(element);
 	},
 
-	remove: function(/*String*/id){
-		//summary: removes the script element with the given id.
-		dojo._destroyElement(dojo.byId(id));
+	remove: function(/*String*/id, /*Document?*/frameDocument){
+		//summary: removes the script element with the given id, from the given frameDocument.
+		//If no frameDocument is passed, the current document is used.
+		dojo._destroyElement(dojo.byId(id, frameDocument));
 		
 		//Remove the jsonp callback on dojo.io.script, if it exists.
 		if(this["jsonp_" + id]){
@@ -85,7 +89,9 @@ dojo.io.script = {
 			ioArgs.query += args.callbackParamName
 				+ "="
 				+ (args.frameDoc ? "parent." : "")
-				+ "dojo.io.script.jsonp_" + ioArgs.id + "._jsonpCallback";
+				+ dojo._scopeName + ".io.script.jsonp_" + ioArgs.id + "._jsonpCallback";
+
+			ioArgs.frameDoc = args.frameDoc;
 
 			//Setup the Deferred to have the jsonp callback.
 			ioArgs.canDelete = true;
@@ -101,7 +107,7 @@ dojo.io.script = {
 		//DO NOT use "this" and expect it to be dojo.io.script.
 		dfd.canceled = true;
 		if(dfd.ioArgs.canDelete){
-			dojo.io.script._deadScripts.push(dfd.ioArgs.id);
+			dojo.io.script._addDeadScript(dfd.ioArgs);
 		}
 	},
 
@@ -112,7 +118,7 @@ dojo.io.script = {
 
 		//Add script to list of things that can be removed.		
 		if(dfd.ioArgs.canDelete){
-			dojo.io.script._deadScripts.push(dfd.ioArgs.id);
+			dojo.io.script._addDeadScript(dfd.ioArgs);
 		}
 
 		if(dfd.ioArgs.json){
@@ -136,9 +142,9 @@ dojo.io.script = {
 			if(error.dojoType == "timeout"){
 				//For timeouts, remove the script element immediately to
 				//avoid a response from it coming back later and causing trouble.
-				dojo.io.script.remove(dfd.ioArgs.id);
+				dojo.io.script.remove(dfd.ioArgs.id, dfd.ioArgs.frameDoc);
 			}else{
-				dojo.io.script._deadScripts.push(dfd.ioArgs.id);
+				dojo.io.script._addDeadScript(dfd.ioArgs);
 			}
 		}
 		console.debug("dojo.io.script error", error);
@@ -147,6 +153,13 @@ dojo.io.script = {
 
 	_deadScripts: [],
 	_counter: 1,
+
+	_addDeadScript: function(/*Object*/ioArgs){
+		//summary: sets up an entry in the deadScripts array.
+		dojo.io.script._deadScripts.push({id: ioArgs.id, frameDoc: ioArgs.frameDoc});
+		//Being extra paranoid about leaks:
+		ioArgs.frameDoc = null;
+	},
 
 	_validCheck: function(/*Deferred*/dfd){
 		//summary: inflight check function to see if dfd is still valid.
@@ -160,7 +173,8 @@ dojo.io.script = {
 		if(deadScripts && deadScripts.length > 0){
 			for(var i = 0; i < deadScripts.length; i++){
 				//Remove the script tag
-				_self.remove(deadScripts[i]);
+				_self.remove(deadScripts[i].id, deadScripts[i].frameDoc);
+				deadScripts[i].frameDoc = null;
 			}
 			dojo.io.script._deadScripts = [];
 		}
@@ -196,6 +210,12 @@ dojo.io.script = {
 		}
 	},
 
+	_canAttach: function(/*Object*/ioArgs){
+		//summary: A method that can be overridden by other modules
+		//to control when the script attachment occurs.
+		return true;
+	},
+	
 	_jsonpCallback: function(/*JSON Object*/json){
 		//summary: 
 		//		generic handler for jsonp callback. A pointer to this function

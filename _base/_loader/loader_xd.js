@@ -45,7 +45,8 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 
 	//Create resource object and the call to _xdResourceLoaded.
 	var output = [];
-	
+	output.push(dojo._scopeName + "._xdResourceLoaded(function(" + dojo._scopePrefixArgs + "){\n");
+
 	//See if there are any dojo.loadInit calls
 	var loadInitCalls = dojo._xdExtractLoadInits(contents);
 	if(loadInitCalls){
@@ -58,7 +59,7 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 		}
 	}
 
-	output.push(dojo._scopeName + "._xdResourceLoaded({\n");
+	output.push("return {");
 
 	//Add dependencies
 	if(deps.length > 0){
@@ -86,7 +87,7 @@ dojo._xdCreateResource = function(/*String*/contents, /*String*/resourceName, /*
 	}
 	//Add isLocal property so we know if we have to do something different
 	//in debugAtAllCosts situations.
-	output.push("\n}, resourceName: '" + resourceName + "', resourcePath: '" + resourcePath + "'});");
+	output.push("\n}, resourceName: '" + resourceName + "', resourcePath: '" + resourcePath + "'};});");
 	
 	return output.join(""); //String
 }
@@ -180,7 +181,7 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
 	try{
 		return ((!module || this._isXDomain) ? this._loadUri(uri, cb, currentIsXDomain, module) : this._loadUriAndCheck(uri, module, cb)); //Boolean
 	}catch(e){
-		console.debug(e);
+		console.error(e);
 		return false; //Boolean
 	}
 }
@@ -291,6 +292,11 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 dojo._xdResourceLoaded = function(/*Object*/res){
 	//summary: Internal xd loader function. Called by an xd module resource when
 	//it has been loaded via a script tag.
+	
+	//Evaluate the function with scopeArgs for multiversion support.
+	res = res.apply(dojo.global, dojo._scopeArgs);
+
+	//Work through dependencies.
 	var deps = res.depends;
 	var requireList = null;
 	var requireAfterList = null;

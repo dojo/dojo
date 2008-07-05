@@ -56,6 +56,7 @@ dojo.io.script = {
 		element.type = "text/javascript";
 		element.src = url;
 		element.id = id;
+		element.charset = "utf-8";
 		doc.getElementsByTagName("head")[0].appendChild(element);
 	},
 

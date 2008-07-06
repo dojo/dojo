@@ -286,7 +286,13 @@ dojo.require("dojo._base.query");
 		//		is of type dojo.__IoCallbackArgs. The error function will
 		//		be called in an error case.  The error case is when the 
 		//		send or receive of a request fails, the url is invalid, the
-		//		connection times out, etc. 
+		//		connection times out, etc. It will also be called if djConfig.isDebug
+		//		is set to false (or undefined) and the load or handle callback
+		//		throws an exception. This allows deployed applications the web app
+		//		to continue to run even when a logic error happens in the callback.
+		//		If djConfig.isDebug is set to true, then an exception in the load
+		//		or handle callbacks will not be caught and sent to the error callback,
+		//		to allow for easier debugging.
 		//	handle: Function?
 		//		function(response, ioArgs){}. response is an Object, ioArgs
 		//		is of type dojo.__IoCallbackArgs. The handle function will

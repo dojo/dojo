@@ -101,7 +101,9 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 		var flatLocales = availableFlatLocales.split(",");
 		for(var i = 0; i < flatLocales.length; i++){
 			//Locale must match from start of string.
-			if(targetLocale.indexOf(flatLocales[i]) == 0){
+			//Using ["indexOf"] so customBase builds do not see
+			//this as a dojo._base.array dependency.
+			if(targetLocale["indexOf"](flatLocales[i]) == 0){
 				if(flatLocales[i].length > bestLocale.length){
 					bestLocale = flatLocales[i];
 				}

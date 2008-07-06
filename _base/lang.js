@@ -201,11 +201,7 @@ dojo._toArray = function(/*Object*/obj, /*Number?*/offset, /*Array?*/ startWith)
 	//		An array to pack with the properties of obj. If provided,
 	//		properties in obj are appended at the end of startWith and
 	//		startWith is the returned array.
-	var arr = startWith||[];
-	for(var x = offset || 0; x < obj.length; x++){
-		arr.push(obj[x]);
-	}
-	return arr; // Array
+	return (startWith||[]).concat(Array.prototype.slice.call(obj, offset||0));	//	Array
 }
 
 dojo.clone = function(/*anything*/ o){

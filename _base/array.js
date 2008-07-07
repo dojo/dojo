@@ -105,14 +105,14 @@ dojo.provide("dojo._base.array");
 			// FIXME: there are several ways of handilng thisObject. Is
 			// dojo.global always the default context?
 			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
-			for(var i=0,l=_p[0].length; i<l; i++){ 
+			for(var i=0,l=arr.length; i<l; ++i){ 
 				_p[2].call(_p[1], arr[i], i, arr);
 			}
 		},
 
 		_everyOrSome: function(/*Boolean*/every, /*Array|String*/arr, /*Function|String*/callback, /*Object?*/thisObject){
 			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
-			for(var i = 0, l = arr.length; i < l; i++){
+			for(var i=0,l=arr.length; i<l; ++i){
 				var result = !!_p[2].call(_p[1], arr[i], i, arr);
 				if(every ^ result){
 					return result; // Boolean
@@ -191,7 +191,7 @@ dojo.provide("dojo._base.array");
 
 			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
 			var outArr = (arguments[3] ? (new arguments[3]()) : []);
-			for(var i=0;i<arr.length;++i){
+			for(var i=0,l=arr.length; i<l; ++i){
 				outArr.push(_p[2].call(_p[1], arr[i], i, arr));
 			}
 			return outArr; // Array
@@ -220,7 +220,7 @@ dojo.provide("dojo._base.array");
 
 			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
 			var outArr = [];
-			for(var i = 0; i < arr.length; i++){
+			for(var i=0,l=arr.length; i<l; ++i){
 				if(_p[2].call(_p[1], arr[i], i, arr)){
 					outArr.push(arr[i]);
 				}

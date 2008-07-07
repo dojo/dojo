@@ -57,9 +57,9 @@ dojo.data.util.filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/
 	}
 	rxp += "$";
 	if(ignoreCase){
-		return new RegExp(rxp,"i"); //RegExp
+		return new RegExp(rxp,"mi"); //RegExp
 	}else{
-		return new RegExp(rxp); //RegExp
+		return new RegExp(rxp,"m"); //RegExp
 	}
 	
 };

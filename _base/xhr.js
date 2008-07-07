@@ -452,7 +452,7 @@ dojo.require("dojo._base.query");
 		dfd.canceled = true;
 		var xhr = dfd.ioArgs.xhr;
 		var _at = typeof xhr.abort;
-		if(_at == "function" || _at == "unknown"){
+		if(_at == "function" || _at == "object" || _at == "unknown"){
 			xhr.abort();
 		}
 		var err = new Error("xhr cancelled");

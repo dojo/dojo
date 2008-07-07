@@ -455,8 +455,7 @@ dojo.require("dojo._base.query");
 		if(_at == "function" || _at == "object" || _at == "unknown"){
 			xhr.abort();
 		}
-		var err = new Error("xhr cancelled");
-		err.dojoType = "cancel";
+		var err = dfd.ioArgs.error || new Error("xhr cancelled");
 		return err;
 	}
 	var _deferredOk = function(/*Deferred*/dfd){
@@ -532,7 +531,9 @@ dojo.require("dojo._base.query");
 		//(xhr, script, iframe).
 		try{
 			_d.forEach(_inFlight, function(i){
-				i.dfd.cancel();
+				try{
+					i.dfd.cancel();
+				}catch(e){/*squelch*/}
 			});
 		}catch(e){/*squelch*/}
 	}
@@ -669,6 +670,7 @@ dojo.require("dojo._base.query");
 			try{
 				xhr.send(ioArgs.query);
 			}catch(e){
+				dfd.ioArgs.error = e;
 				dfd.cancel();
 			}
 		}

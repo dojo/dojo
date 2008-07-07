@@ -32,8 +32,8 @@ dojo.cldr.supplemental._region = function(/*String?*/locale){
 	if(!region){
 		// IE often gives language only (#2269)
 		// Arbitrary mappings of language-only locales to a country:
-        region = {de:"de", en:"us", es:"es", fi:"fi", fr:"fr", hu:"hu", it:"it",
-        ja:"jp", ko:"kr", nl:"nl", pt:"br", sv:"se", zh:"cn"}[tags[0]];
+		region = {de:"de", en:"us", es:"es", fi:"fi", fr:"fr", he:"il", hu:"hu", it:"it",
+			ja:"jp", ko:"kr", nl:"nl", pt:"br", sv:"se", zh:"cn"}[tags[0]];
 	}else if(region.length == 4){
 		// The ISO 3166 country code is usually in the second position, unless a
 		// 4-letter script is given. See http://www.ietf.org/rfc/rfc4646.txt

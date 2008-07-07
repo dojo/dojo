@@ -104,12 +104,13 @@ if(typeof window != 'undefined'){
 		// safari detection derived from:
 		//		http://developer.apple.com/internet/safari/faq.html#anchor2
 		//		http://developer.apple.com/internet/safari/uamatrix.html
-		var idx = Math.max(dav.indexOf("WebKit"), dav.indexOf("Safari"), 0);
-		if(idx){
+		var index = Math.max(dav.indexOf("WebKit"), dav.indexOf("Safari"), 0);
+		if(index){
 			// try to grab the explicit Safari version first. If we don't get
 			// one, look for 419.3+ as the indication that we're on something
 			// "Safari 3-ish". Lastly, default to "Safari 2" handling.
-			d.isSafari = parseFloat(dav.split("Version/")[1]) || ( ( parseFloat(dav.substr(idx+7)) >= 419.3 ) ? 3 : 2 ) || 2;
+			d.isSafari = parseFloat(dav.split("Version/")[1]) ||
+				(parseFloat(dav.substr(index + 7)) > 419.3) ? 3 : 2;
 		}
 		d.isAIR = (dua.indexOf("AdobeAIR") >= 0) ? 1 : 0;
 		d.isKhtml = (dav.indexOf("Konqueror") >= 0 || d.isSafari) ? tv : 0;

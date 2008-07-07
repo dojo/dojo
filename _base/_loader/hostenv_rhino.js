@@ -195,37 +195,45 @@ dojo.body = function(){
 	return document.body;	
 }
 
-dojo._timeouts = [];
+// Supply setTimeout/clearTimeout implementations if they aren't already there
+// Note: this assumes that we define both if one is not provided... there might
+// be a better way to do this if there is a use case where one is defined but
+// not the other
+try{
+	setTimeout;
+	clearTimeout;
+}catch(e){
+	dojo._timeouts = [];
+	function clearTimeout(idx){
+		if(!dojo._timeouts[idx]){ return; }
+		dojo._timeouts[idx].stop();
+	}
 
-function clearTimeout(idx){
-	if(!dojo._timeouts[idx]){ return; }
-	dojo._timeouts[idx].stop();
-}
+	function setTimeout(func, delay){
+		// summary: provides timed callbacks using Java threads
 
-function setTimeout(func, delay){
-	// summary: provides timed callbacks using Java threads
-
-	var def={
-		sleepTime:delay,
-		hasSlept:false,
+		var def={
+			sleepTime:delay,
+			hasSlept:false,
 		
-		run:function(){
-			if(!this.hasSlept){
-				this.hasSlept=true;
-				java.lang.Thread.currentThread().sleep(this.sleepTime);
+			run:function(){
+				if(!this.hasSlept){
+					this.hasSlept=true;
+					java.lang.Thread.currentThread().sleep(this.sleepTime);
+				}
+				try{
+					func();
+				}catch(e){
+					console.debug("Error running setTimeout thread:" + e);
+				}
 			}
-			try{
-				func();
-			}catch(e){
-				console.debug("Error running setTimeout thread:" + e);
-			}
-		}
-	};
+		};
 	
-	var runnable = new java.lang.Runnable(def);
-	var thread = new java.lang.Thread(runnable);
-	thread.start();
-	return dojo._timeouts.push(thread)-1;
+		var runnable = new java.lang.Runnable(def);
+		var thread = new java.lang.Thread(runnable);
+		thread.start();
+		return dojo._timeouts.push(thread)-1;
+	}
 }
 
 //Register any module paths set up in djConfig. Need to do this

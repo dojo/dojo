@@ -46,7 +46,9 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//			If you are new to Firebug, or used to the Dojo 0.4 dojo.debug, you can learn Firebug 
 	//				functionality by reading the function comments below or visiting http://www.getfirebug.com/docs.html
 	//	NOTE:
-	//		To test Firebug Lite in Firefox, set console = null;
+	//		To test Firebug Lite in Firefox:
+	//			FF2: set "console = null" before loading dojo and set djConfig.isDebug=true
+	//			FF3: disable Firebug and set djConfig.isDebug=true
 	//
 	// example:
 	//		Supports inline objects in object inspector window (only simple trace of dom nodes, however)
@@ -58,11 +60,36 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		Option for console height (ignored for popup)
 	//		|	var djConfig = {isDebug: true, debugHeight:100 };
 	
-if((!("console" in window) || !("firebug" in console)) &&
-	dojo.config.noFirebugLite !== true){
+	
+	// There is something of a battery of tests to determine if Firebug exists or not
+/*	
+	var hasConsole = ("console" in window);
+	var isFirebug = (hasConsole && console.firebug)
+	var hasMethod = (hasConsole && console.notifyFirebug)
+	var consoleTest = (hasConsole && (isFirebug || hasMethod));
+	var fbNoLitebug = dojo.config.noFirebugLite;
 
+
+//alert("FF:"+dojo.isFF+" hasConsole:"+hasConsole+" consoleTest:"+consoleTest+" fbNoLitebug:"+fbNoLitebug)
+
+var txt = ""
+for(var nm in console){
+	txt += nm+"::"+console[nm]
+}
+setTimeout(function(){
+//document.getElementById("output").innerHTML= txt;
+					}, 500)
+//if( !dojo.isFF && !hasConsole && !fbNoLitebug){
+*/
+
+if((	!dojo.isFF || 									// if not Firefox, there's no firebug
+		(dojo.isFF && !("console" in window)) || 		// Firefox, but Firebug is not installed.
+		(dojo.isFF && !window.loadFirebugConsole)) && 	// Firefox, but Firebug is disabled
+   		!dojo.config.noFirebugLite)						// Deprecated: Should be isDebug=false
+{
+	
 (function(){
-	// don't build a firebug frame in iframes
+	// don't build firebug in iframes
 	try{
 		if(window != window.parent){ 
 			// but if we've got a parent logger, connect to it
@@ -1138,5 +1165,8 @@ if((!("console" in window) || !("firebug" in console)) &&
 	){
 		toggleConsole(true);
 	}
+	
+	if(dojo.config.noFirebugLite) console.warn("DEPRECATED: dojo.config.noFirebugLite - use djConfig.isDebug=false instead");
+	if(dojo.isFF && !window.loadFirebugConsole && !dojo.config.allowFirebugLite) console.log("To disable Firebug Lite in Firefox, use djConfig.isDebug=false. Suppress this message with djConfig.allowFirebugLite=true");
 })();
 }

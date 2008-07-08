@@ -32,7 +32,7 @@
 	'timeFormat-medium': "HH:mm:ss",
 	'timeFormat-short': "HH:mm",
 	'dateTimeFormat': "{1} {0}" ,
-	'dateTimeAvailableFormats':["E d","H","HH:mm","HH:mm:ss","E MMM d","MMMM d","M-d","mm:ss","yy-MM","yy MMM","yy Q","yyyy"],
+	'dateTimeAvailableFormats':["H:mm","L","E, M-d","LLL","E MMM d","E MMMM d","MMMM d","MMM d","M-d","d","mm:ss","yyyy","yyyy-M","EEE, yyyy-M-d","yyyy MMM","EEE, yyyy MMM d","yyyy MMMM","yyyy Q","yyyy QQQ"],
         'dateTimeFormats-appendItem-Day':"{0} ({2}: {1})",
         'dateTimeFormats-appendItem-Day-Of-Week':"{0} {1}",
         'dateTimeFormats-appendItem-Era':"{0} {1}",

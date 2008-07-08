@@ -21,5 +21,5 @@
 	'currencySpacing-afterCurrency-currencyMatch':"[:letter:]",
 	'currencySpacing-afterCurrency-surroundingMatch':"[:digit:]",
 	'currencySpacing-afterCurrency-insertBetween':" ",
-	'currencyFormat':"¤ #,##0.00"
+	'currencyFormat':"¤ #,##0.00"
 })

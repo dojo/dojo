@@ -22,7 +22,7 @@
 	'timeFormat-medium': "HH:mm:ss",
 	'timeFormat-short': "HH:mm",
 	'dateTimeFormat': "{1} {0}" ,
-	'dateTimeAvailableFormats':["HH:mm","HH:mm:ss","E d MMM","d MMMM","dd/MM","d/M","mm:ss","MM/yy","MMM yy","Q yy","QQQQ yy","MMMM yyyy"],
+	'dateTimeAvailableFormats':["HH:mm","HH:mm:ss","H:mm","L","EEE d/M","LLL","E d MMM","EEE d MMMM","d MMMM","d MMM","dd MMM","d/MM","dd/MM","d/M","d","HH:mm","HH:mm:ss","mm:ss","mm:ss","yyyy","M/yyyy","EEE d/M/yyyy","MMM yyyy","EEE d MMM yyyy","MMMM yyyy","'T'Q yyyy","QQQ yyyy","MM/yy","MMM yy","EEE d MMM yy","d MMM yy","'T'Q yy","QQQQ yy","MMMM yyyy"],
         'field-era':"ère",
         'field-year':"année",
         'field-month':"mois",

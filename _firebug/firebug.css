@@ -190,6 +190,9 @@
 	margin-right:5px;
 	margin-left:0;
 }
+#firebugToolbar ul.tabs li.gap{
+	margin-left:20px;
+}
 #firebugToolbar .tabs a{
 	text-decoration:none;
 	background:transparent url(tab_rgt_norm.png) no-repeat right;

@@ -465,10 +465,10 @@ if((!("console" in window) || !("firebug" in console)) &&
 			+ buildLink("Clear", "Remove All Console Logs", "clear", "")
 			+ buildLink("ReCSS", "Refresh CSS without reloading page", "recss", "")
 			
-			+ buildLink("Close", "Close the console", "close", "right")
-			+ buildLink("Console", "Show Console Logs", "openConsole", "right")
-			+ buildLink("Object", "Show Object Inspector", "openObjectInspector", "right")
-			+ buildLink("DOM", "Show DOM Inspector", "openDomInspector", "right")
+			+ buildLink("Console", "Show Console Logs", "openConsole", "gap")
+			+ buildLink("DOM", "Show DOM Inspector", "openDomInspector", "")
+			+ buildLink("Object", "Show Object Inspector", "openObjectInspector", "")
+			+ ((dojo.config.popup) ? "" : buildLink("Close", "Close the console", "close", "gap"))
 			
 			+ '	</ul>'
 			+ '</div>'
@@ -1033,6 +1033,8 @@ if((!("console" in window) || !("firebug" in console)) &&
 			if(cnt==length){br = "\n"};
 			if(o[nm] === window || o[nm] === document){
 				continue;
+			}else if(o[nm] === null){
+				txt += i+nm + " : NULL" + br;
 			}else if(o[nm] && o[nm].nodeType){
 				if(o[nm].nodeType == 1){
 					//txt += i+nm + " : < "+o[nm].tagName+" id=\""+ o[nm].id+"\" />" + br;
@@ -1055,7 +1057,7 @@ if((!("console" in window) || !("firebug" in console)) &&
 				}
 				used.push(o[nm]);
 				
-				opnCls = (isArray(o))?["[","]"]:["{","}"]
+				opnCls = (isArray(o[nm]))?["[","]"]:["{","}"]
 				txt += i+nm +" : " + opnCls[0] + "\n";//non-standard break, (no comma)
 				txt += printObject(o[nm], i+ind, "", used);
 				txt += i + opnCls[1] + br;

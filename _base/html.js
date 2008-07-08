@@ -924,9 +924,15 @@ if(dojo.isIE || dojo.isOpera){
 
 		// targetBoxType == "border-box"
 		var db = d.body();
-		if(d.isIE){
+		if(d.isIE || (d.isFF >= 3)){
 			var client = node.getBoundingClientRect();
-			var offset = (d.isIE) ? d._getIeDocumentElementOffset() : { x: 0, y: 0};
+			var cs;
+			if(d.isFF){
+				// in FF3 you have to subract the document element margins
+				var dv = node.ownerDocument.defaultView;
+				cs=dv.getComputedStyle(db.parentNode, null);
+			}
+			var offset = (d.isIE) ? d._getIeDocumentElementOffset() : { x: px(db.parentNode,cs.marginLeft), y: px(db.parentNode,cs.marginTop)};
 			ret.x = client.left - offset.x;
 			ret.y = client.top - offset.y;
 		}else{
@@ -948,6 +954,7 @@ if(dojo.isIE || dojo.isOpera){
 				// Opera seems to be double counting for some elements
 				ret.x -= _sumAncestorProperties(node, "scrollLeft");
 				ret.y -= _sumAncestorProperties(node, "scrollTop");
+
 				var curnode = node;
 				do{
 					var n = curnode.offsetLeft;
@@ -964,11 +971,15 @@ if(dojo.isIE || dojo.isOpera){
 						if(d.isSafari){
 							ret.x += px(curnode, cs.borderLeftWidth);
 							ret.y += px(curnode, cs.borderTopWidth);
-						}else if(d.isMozilla && curnode != db){
-							ret.x += px(curnode, cs.paddingLeft)+px(curnode, cs.marginLeft);
-							ret.y += px(curnode, cs.paddingTop)+px(curnode, cs.marginTop);
+						}else if(d.isFF){
+							// tried left+right with differently sized left/right borders
+							// it really is 2xleft border in FF, not left+right, even in RTL!
+							ret.x += 2*px(curnode,cs.borderLeftWidth);
+							ret.y += 2*px(curnode,cs.borderTopWidth);
 						}
 					}
+					// FIXME: static children in a static div in FF2 are affected by the div's border as well
+					// but offsetParent will skip this div!
 					curnode = curnode.offsetParent;
 				}while((curnode != endNode) && curnode);
 			}else if(node.x && node.y){

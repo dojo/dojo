@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
 		<title>supplementary dojo._abs() tests</title>
@@ -12,13 +13,13 @@
 				/* position a red square over pressed button */
 				var pos = dojo._abs(this, true);
 				var marker = document.createElement('div');
-				marker.className = "marker";
-				with (marker.style) {
-					top = pos.y;
-					left = pos.x;
-				}
-				console.log(marker);
 				document.body.appendChild(marker);
+				marker.className = "marker";
+				marker.style.position="absolute";
+				marker.style.top = pos.y+"px";
+				marker.style.left = pos.x+"px";
+				console.log(marker);
+				return false;
 			}
 				
 			dojo.addOnLoad(function(){
@@ -41,8 +42,8 @@
 				width: 10px;
 				height: 10px;
 				border: none;
-				margin: 0;
-				padding: 0;
+				margin: 0px;
+				padding: 0px;
 				background-color: red;
 			}
 
@@ -52,8 +53,9 @@
 			
 			div {
 				position: absolute;
-				border: 3px solid gray;
-				padding: 6px;
+				border: 17px solid gray;
+				padding: 37px;
+				margin: 29px;
 				overflow: auto;
 			}
 
@@ -62,10 +64,10 @@
 	<body>
 		<h1>supplementary dojo._abs() tests</h1>
 		<button style="top: 100px; left: 200px;">click</button>
-		<button style="top: 800px; left: 200px;">click</button>
+		<button style="top: 900px; left: 200px;">click</button>
 		<div id="outer" style="position: absolute; top: 300px; left: 100px; height: 400px; width: 600px;">
 			<button style="top: 50px; left: 200px;">click2</button>
-			<div id="middle" style="position: absolute; top: 100px; left: 100px; height: 400px; width: 400px;">
+			<div id="middle" style="position: absolute; top: 100px; left: 100px; height: 400px; width: 400px; border-width:13px 11px 23px 7px;">
 				<div id="staticDiv" style="position: static; margin-top: 20px;">
 					<button style="position: static;">click3</button>
 					<br><br><br><br><br>
@@ -76,7 +78,7 @@
 					<button style="top: 500px; left: 100px;">click6</button>
 				</div>
 				<button style="position: static;">click7</button>
-				<button style="position: relative; top: 10px; left: 10px;">click8</button>
+				<button style="position: relative; top: 10px; left: 10px;" id="click8">click8</button>
 				<button style="top: 300px; left: 200px;">click9</button>
 			</div>
 		</div>

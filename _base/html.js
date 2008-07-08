@@ -924,17 +924,11 @@ if(dojo.isIE || dojo.isOpera){
 
 		// targetBoxType == "border-box"
 		var db = d.body();
-		if(d.isIE || (d.isFF >= 3)){
+		if(d.isIE){
 			var client = node.getBoundingClientRect();
 			var offset = (d.isIE) ? d._getIeDocumentElementOffset() : { x: 0, y: 0};
 			ret.x = client.left - offset.x;
 			ret.y = client.top - offset.y;
-		}else if(ownerDocument["getBoxObjectFor"]){
-			// mozilla
-			var bo = ownerDocument.getBoxObjectFor(node),
-				b = d._getBorderExtents(node);
-			ret.x = bo.x - b.l - _sumAncestorProperties(node, "scrollLeft");
-			ret.y = bo.y - b.t - _sumAncestorProperties(node, "scrollTop");
 		}else{
 			if(node["offsetParent"]){
 				var endNode;
@@ -951,12 +945,9 @@ if(dojo.isIE || dojo.isOpera){
 				}else{
 					endNode = db.parentNode;
 				}
-				if(node.parentNode != db){
-					var nd = node;
-					if(d.isOpera){ nd = db; }
-					ret.x -= _sumAncestorProperties(nd, "scrollLeft");
-					ret.y -= _sumAncestorProperties(nd, "scrollTop");
-				}
+				// Opera seems to be double counting for some elements
+				ret.x -= _sumAncestorProperties(node, "scrollLeft");
+				ret.y -= _sumAncestorProperties(node, "scrollTop");
 				var curnode = node;
 				do{
 					var n = curnode.offsetLeft;
@@ -968,10 +959,15 @@ if(dojo.isIE || dojo.isOpera){
 					}
 					var t = curnode.offsetTop;
 					ret.y += isNaN(t) ? 0 : t;
-					if(d.isSafari && curnode != node){
+					if(curnode != node){
 						var cs = gcs(curnode);
-						ret.x += px(curnode, cs.borderLeftWidth);
-						ret.y += px(curnode, cs.borderTopWidth);
+						if(d.isSafari){
+							ret.x += px(curnode, cs.borderLeftWidth);
+							ret.y += px(curnode, cs.borderTopWidth);
+						}else if(d.isMozilla && curnode != db){
+							ret.x += px(curnode, cs.paddingLeft)+px(curnode, cs.marginLeft);
+							ret.y += px(curnode, cs.paddingTop)+px(curnode, cs.marginTop);
+						}
 					}
 					curnode = curnode.offsetParent;
 				}while((curnode != endNode) && curnode);

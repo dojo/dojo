@@ -238,6 +238,34 @@ if(typeof window != 'undefined'){
 			}
 			return http.responseText; // String
 		}
+		
+		d._windowUnloaders = [];
+		
+		d.windowUnloaded = function(){
+			// summary:
+			//		signal fired by impending window destruction. You may use
+			//		dojo.addOnWIndowUnload() or dojo.connect() to this method to perform
+			//		page/application cleanup methods. See dojo.addOnWindowUnload for more info.
+			var mll = this._windowUnloaders;
+			while(mll.length){
+				(mll.pop())();
+			}
+		}
+
+		d.addOnWindowUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
+			// summary:
+			//		registers a function to be triggered when window.onunload fires.
+			//		Be careful trying to modify the DOM or access JavaScript properties
+			//		during this phase of page unloading: they may not always be available.
+			//		Consider dojo.addOnUnload() if you need to modify the DOM or do heavy
+			//		JavaScript work.
+			// example:
+			//	|	dojo.addOnWindowUnload(functionPointer)
+			//	|	dojo.addOnWindowUnload(object, "functionName")
+			//	|	dojo.addOnWindowUnload(object, function(){ /* ... */});
+	
+			d._onto(d._windowUnloaders, obj, functionName);
+		}
 	})();
 
 	dojo._initFired = false;
@@ -329,6 +357,7 @@ if(typeof window != 'undefined'){
 
 		// FIXME: dojo.unloaded requires dojo scope, so using anon function wrapper.
 		_handleNodeEvent("onbeforeunload", function() { dojo.unloaded(); });
+		_handleNodeEvent("onunload", function() { dojo.windowUnloaded(); });
 	})();
 
 	/*

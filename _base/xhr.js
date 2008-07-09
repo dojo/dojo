@@ -541,7 +541,7 @@ dojo.require("dojo._base.query");
 	//Automatically call cancel all io calls on unload
 	//in IE for trac issue #2357.
 	if(_d.isIE){
-		_d.addOnUnload(_d._ioCancelAll);
+		_d.addOnWindowUnload(_d._ioCancelAll);
 	}
 
 	_d._ioWatch = function(/*Deferred*/dfd,

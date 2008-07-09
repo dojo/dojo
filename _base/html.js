@@ -69,7 +69,7 @@ if(dojo.isIE || dojo.isOpera){
 	var d = dojo;
 
 	var _destroyContainer = null;
-	dojo.addOnUnload(function(){
+	dojo.addOnWindowUnload(function(){
 		_destroyContainer=null; //prevent IE leak
 	});
 

@@ -159,14 +159,14 @@
 		// summary:
 		//		signal fired by impending environment destruction. You may use
 		//		dojo.addOnUnload() or dojo.connect() to this method to perform
-		//		page/application cleanup methods.
+		//		page/application cleanup methods. See dojo.addOnUnload for more info.
 		var mll = this._unloaders;
 		while(mll.length){
 			(mll.pop())();
 		}
 	}
 
-	var onto = function(arr, obj, fn){
+	d._onto = function(arr, obj, fn){
 		if(!fn){
 			arr.push(obj);
 		}else if(fn){
@@ -188,7 +188,7 @@
 		//	|	dojo.addOnLoad(object, "functionName");
 		//	|	dojo.addOnLoad(object, function(){ /* ... */});
 
-		onto(d._loaders, obj, functionName);
+		d._onto(d._loaders, obj, functionName);
 
 		//Added for xdomain loading. dojo.addOnLoad is used to
 		//indicate callbacks after doing some dojo.require() statements.
@@ -209,13 +209,19 @@
 
 	dojo.addOnUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
 		// summary:
-		//		registers a function to be triggered when the page unloads
+		//		registers a function to be triggered when the page unloads. In a browser
+		//		enviroment, the functions will be triggered during the window.onbeforeunload
+		//		event. Be careful doing work during window.onbeforeunload. onbeforeunload
+		//		can be triggered if a link to download a file is clicked, or if the link is a
+		//		javascript: link. In these cases, the onbeforeunload event fires, but the
+		//		document is not actually destroyed. So be careful about doing destructive
+		//		operations in a dojo.addOnUnload callback.
 		// example:
 		//	|	dojo.addOnUnload(functionPointer)
 		//	|	dojo.addOnUnload(object, "functionName")
 		//	|	dojo.addOnUnload(object, function(){ /* ... */});
 
-		onto(d._unloaders, obj, functionName);
+		d._onto(d._unloaders, obj, functionName);
 	}
 
 	dojo._modulesLoaded = function(){

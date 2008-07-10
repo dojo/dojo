@@ -263,25 +263,36 @@ if(dojo.isIE || dojo.isOpera){
 	}
 =====*/
 
+	// Although we normally eschew argument validation at this
+	// level, here we test argument 'node' for (duck)type.
+	// Argument node must also implement Element.
+	// Because 'document' is the 'parentNode' of 'body'
+	// it is frequently sent to this function even 
+	// though it is not Element.
 	var gcs;
 	if(d.isSafari){
 		gcs = function(/*DomNode*/node){
-			var dv = node.ownerDocument.defaultView;
-			var s = dv.getComputedStyle(node, null);
-			if(!s && node.style){ 
-				node.style.display = ""; 
-				s = dv.getComputedStyle(node, null);
+			var s;
+			if (node instanceof Element) {
+				var dv = node.ownerDocument.defaultView;
+				var s = dv.getComputedStyle(node, null);
+				if(!s && node.style){ 
+					node.style.display = ""; 
+					s = dv.getComputedStyle(node, null);
+				}
 			}
 			return s || {};
 		}; 
 	}else if(d.isIE){
 		gcs = function(node){
-			return node.currentStyle;
+			// IE (as of 7) doesn't expose Element like sane browsers
+			return node.nodeType == 1 /* ELEMENT_NODE*/ ? node.currentStyle : {};
 		};
 	}else{
 		gcs = function(node){
-			var dv = node.ownerDocument.defaultView;
-			return dv.getComputedStyle(node, null);
+			return node instanceof Element ? 
+				node.ownerDocument.defaultView.getComputedStyle(node, null) 
+				: {};
 		};
 	}
 	dojo.getComputedStyle = gcs;
@@ -623,7 +634,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		returns an object that encodes the width, height, left and top
 		//		positions of the node's margin box.
 		var s = computedStyle||gcs(node), me = d._getMarginExtents(node, s);
-		var	l = node.offsetLeft - me.l,	t = node.offsetTop - me.t, p = node.parentNode;
+		var l = node.offsetLeft - me.l, t = node.offsetTop - me.t, p = node.parentNode;
 		if(d.isMoz){
 			// Mozilla:
 			// If offsetParent has a computed overflow != visible, the offsetLeft is decreased
@@ -775,7 +786,7 @@ if(dojo.isIE || dojo.isOpera){
 		var bb=d._usesBorderBox(node),
 				pb=bb ? _nilExtents : d._getPadBorderExtents(node, s),
 				mb=d._getMarginExtents(node, s);
-		if(widthPx>=0){	widthPx = Math.max(widthPx - pb.w - mb.w, 0); }
+		if(widthPx>=0){ widthPx = Math.max(widthPx - pb.w - mb.w, 0); }
 		if(heightPx>=0){ heightPx = Math.max(heightPx - pb.h - mb.h, 0); }
 		d._setBox(node, leftPx, topPx, widthPx, heightPx);
 	}

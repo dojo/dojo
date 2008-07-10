@@ -71,6 +71,8 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 	
 	url: "",	// use "" rather than undefined for the benefit of the parser (#3539)
 
+	data: null,	// define this so that the parser can populate it
+	
 	//Parameter to allow users to specify if a close call should force a reload or not.
 	//By default, it retains the old behavior of not clearing if close is called.  But
 	//if set true, the store will be reset to default state.  Note that by doing this,

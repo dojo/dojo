@@ -794,9 +794,9 @@ if(dojo.isIE || dojo.isOpera){
 			// setting an explicit size eliminates the margin.
 			// We have to swizzle the width to get correct margin reading.
 			if (dojo._isButtonTag(node)){
-				var s = node.style;
-				if (widthPx>=0 && !s.width) { s.width = "4px"; }
-				if (heightPx>=0 && !s.height) { s.height = "4px"; }
+				var ns = node.style;
+				if (widthPx>=0 && !ns.width) { ns.width = "4px"; }
+				if (heightPx>=0 && !ns.height) { ns.height = "4px"; }
 			}
 		}
 		var mb=d._getMarginExtents(node, s);

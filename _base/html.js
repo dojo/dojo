@@ -740,6 +740,13 @@ if(dojo.isIE || dojo.isOpera){
 		if(h>=0){ s.height = h+u; }
 	}
 
+	dojo._isButtonTag = function(/*DomNode*/node) {
+		// summary:
+		//		True if the node is BUTTON or INPUT.type="button".
+		return node.tagName == "BUTTON" 
+			|| node.tagName=="INPUT" && node.getAttribute("type").toUpperCase() == "BUTTON"; // boolean
+	}
+	
 	dojo._usesBorderBox = function(/*DomNode*/node){
 		//	summary: 
 		//		True if the node uses border-box layout.
@@ -752,10 +759,7 @@ if(dojo.isIE || dojo.isOpera){
 		// box functions will break.
 		
 		var n = node.tagName;
-		if (n == "INPUT") {
-			n = node.getAttribute("type").toUpperCase();
-		}
-		return d.boxModel=="border-box" || n=="TABLE" || n=="BUTTON"; // boolean
+		return d.boxModel=="border-box" || n=="TABLE" || dojo._isButtonTag(node); // boolean
 	}
 
 	dojo._setContentSize = function(/*DomNode*/node, /*Number*/widthPx, /*Number*/heightPx, /*Object*/computedStyle){
@@ -784,8 +788,18 @@ if(dojo.isIE || dojo.isOpera){
 		// To use box functions you may need to set padding, margin explicitly.
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
 		var bb=d._usesBorderBox(node),
-				pb=bb ? _nilExtents : d._getPadBorderExtents(node, s),
-				mb=d._getMarginExtents(node, s);
+				pb=bb ? _nilExtents : d._getPadBorderExtents(node, s);
+		if (dojo.isSafari) {
+			// on Safari (3.1.2), button nodes with no explicit size have a default margin
+			// setting an explicit size eliminates the margin.
+			// We have to swizzle the width to get correct margin reading.
+			if (dojo._isButtonTag(node)){
+				var s = node.style;
+				if (widthPx>=0 && !s.width) { s.width = "4px"; }
+				if (heightPx>=0 && !s.height) { s.height = "4px"; }
+			}
+		}
+		var mb=d._getMarginExtents(node, s);
 		if(widthPx>=0){ widthPx = Math.max(widthPx - pb.w - mb.w, 0); }
 		if(heightPx>=0){ heightPx = Math.max(heightPx - pb.h - mb.h, 0); }
 		d._setBox(node, leftPx, topPx, widthPx, heightPx);

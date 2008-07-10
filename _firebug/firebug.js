@@ -60,27 +60,6 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		Option for console height (ignored for popup)
 	//		|	var djConfig = {isDebug: true, debugHeight:100 };
 	
-	
-	// There is something of a battery of tests to determine if Firebug exists or not
-/*	
-	var hasConsole = ("console" in window);
-	var isFirebug = (hasConsole && console.firebug)
-	var hasMethod = (hasConsole && console.notifyFirebug)
-	var consoleTest = (hasConsole && (isFirebug || hasMethod));
-	var fbNoLitebug = dojo.config.noFirebugLite;
-
-
-//alert("FF:"+dojo.isFF+" hasConsole:"+hasConsole+" consoleTest:"+consoleTest+" fbNoLitebug:"+fbNoLitebug)
-
-var txt = ""
-for(var nm in console){
-	txt += nm+"::"+console[nm]
-}
-setTimeout(function(){
-//document.getElementById("output").innerHTML= txt;
-					}, 500)
-//if( !dojo.isFF && !hasConsole && !fbNoLitebug){
-*/
 
 if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 		(dojo.isFF && !("console" in window)) || 		// Firefox, but Firebug is not installed.

@@ -155,9 +155,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		id or node reference to use as basis for placement
 		//	position:
 		//		string noting the position of node relative to refNode or a
-		//		number indicating the location in the childNodes collection of
-		//		refNode. Accepted string values are:
-		//
+		//		number indicating the location in the childNodes collection of refNode. 
+		//		Accepted string values are:
 		//		* before
 		//		* after
 		//		* first

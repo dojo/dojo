@@ -5,7 +5,7 @@
 			@import "../../resources/dojo.css";
 		</style>
 		<script type="text/javascript" src="../../dojo.js" 
-			djConfig="isDebug: true, debugAtAllCosts: false, noFirebugLite: true"></script>
+			djConfig="isDebug: true, debugAtAllCosts: false, popup: false, noFirebugLite: true"></script>
 		<script type="text/javascript" src="../../../util/doh/runner.js"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
@@ -13,6 +13,10 @@
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
+						// "doh.t(false, 'howdy!')",
+						// "doh.f(true, 'howdy!')",
+						// "doh.e(Error, window, function(){ throw new Error(); })",
+
 						// basic sanity checks
 						"doh.is(4, (dojo.query('h3')).length);",
 						"doh.is(1, (dojo.query('h1:first-child')).length);",
@@ -121,11 +125,27 @@
 						},
 						function xml(){
 							try{
-								var doc = dojox.data.dom.createDocument("<ResultSet><Result>One</Result><Result>Two</Result></ResultSet>");
-								console.debug(doc);
-								console.debug(dojox.data.dom.innerXML(doc.documentElement));
-								console.debug(dojo.query("Result", doc.documentElement).length);
-							}catch(e){ console.debug(e); }
+								var doc = dojox.data.dom.createDocument([
+									"<ResultSet>",
+										"<Result>One</Result>",
+										"<RESULT>Two</RESULT>",
+										"<result>Three</result>",
+										"<result>Four</result>",
+									"</ResultSet>"
+								].join("")
+								);
+								var de = doc.documentElement;
+								console.debug(dojox.data.dom.innerXML(de));
+
+								doh.is(2, dojo.query("result", de).length);
+								doh.is(1, dojo.query("Result", de).length);
+								doh.is(1, dojo.query("RESULT", de).length);
+								doh.is(0, dojo.query("resulT", de).length);
+								doh.is(0, dojo.query("rEsulT", de).length);
+							}catch(e){ 
+								console.debug(e);
+								// debugger;
+							}
 						}
 					]
 				);

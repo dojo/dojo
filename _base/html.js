@@ -413,9 +413,6 @@ if(dojo.isIE || dojo.isOpera){
 			if(type == "width"){ return node.offsetWidth; }
 		}
 		if(!(type in _pixelNamesCache)){
-			//	if(dojo.isOpera && type == "cssText"){
-			// 		FIXME: add workaround for #2855 here
-			//	}
 			_pixelNamesCache[type] = _pixelRegExp.test(type);
 		}
 		return _pixelNamesCache[type] ? px(node, value) : value;
@@ -497,7 +494,7 @@ if(dojo.isIE || dojo.isOpera){
 			}
 			return s;
 		}
-		return (args == 1) ? s : _toStyleValue(n, style, s[style]); /* CSS2Properties||String||Number */
+		return (args == 1) ? s : _toStyleValue(n, style, s[style]||n.style[style]); /* CSS2Properties||String||Number */
 	}
 
 	// =============================

@@ -585,6 +585,9 @@ dojo.require("dojo._base.NodeList");
 		if(attr == "for"){
 			return elem.htmlFor || blank;
 		}
+		if(attr == "style"){
+			return elem.style.cssText || blank;
+		}
 		return elem.getAttribute(attr, 2) || blank;
 	}
 

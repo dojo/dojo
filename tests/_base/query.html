@@ -109,6 +109,11 @@
 						"doh.is(12, dojo.query('#t > *:nth-child(n-5)').length);",
 						"doh.is(6, dojo.query('#t > *:nth-child(2n-5)').length);",
 						
+						// :checked pseudo-selector
+						"doh.is(2, dojo.query('#t2 > :checked').length);",
+						"doh.is(dojo.byId('checkbox2'), dojo.query('#t2 > input[type=checkbox]:checked')[0]);",
+						"doh.is(dojo.byId('radio2'), dojo.query('#t2 > input[type=radio]:checked')[0]);",
+
 						// :empty pseudo-selector
 						"doh.is(4, dojo.query('#t > span:empty').length);",
 						"doh.is(6, dojo.query('#t span:empty').length);",
@@ -176,8 +181,16 @@
 				<div id="child3" qux="true"></div>
 			</div>
 			<div qux="true"></div>
-			<input id="notbug" name="bug" type="hidden" value="failed" /> 
-			<input id="bug" type="hidden" value="passed" /> 
+			<input id="notbug" name="bug" type="hidden" value="failed"> 
+			<input id="bug" type="hidden" value="passed"> 
+		</div>
+		<div id="t2">
+			<input type="checkbox" name="checkbox1" id="checkbox1" value="foo">
+			<input type="checkbox" name="checkbox2" id="checkbox2" value="bar" checked>
+
+			<input type="radio" name="radio" id="radio1" value="thinger">
+			<input type="radio" name="radio" id="radio2" value="stuff" checked>
+			<input type="radio" name="radio" id="radio3" value="blah">
 		</div>
 	</body>
 </html>

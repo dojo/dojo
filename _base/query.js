@@ -650,6 +650,11 @@ dojo.require("dojo._base.NodeList");
 	};
 
 	var pseudos = {
+		"checked": function(name, condition){
+			return function(elem){
+				return !!d.attr(elem, "checked");
+			}
+		},
 		"first-child": function(name, condition){
 			return function(elem){
 				if(elem.nodeType != 1){ return false; }
@@ -1086,6 +1091,7 @@ dojo.require("dojo._base.NodeList");
 		//			* `:first-child`, `:last-child` positional selectors
 		//			* `:empty` content emtpy selector
 		//			* `:empty` content emtpy selector
+		//			* `:checked` pseudo selector
 		//			* `:nth-child(n)`, `:nth-child(2n+1)` style positional calculations
 		//			* `:nth-child(even)`, `:nth-child(odd)` positional selectors
 		//			* `:not(...)` negation pseudo selectors
@@ -1110,7 +1116,7 @@ dojo.require("dojo._base.NodeList");
 		//			|	* `:root`, `:lang()`, `:target`, `:focus`
 		//			* all visual and state selectors:
 		//			|	* `:root`, `:active`, `:hover`, `:visisted`, `:link`,
-		//				  `:enabled`, `:disabled`, `:checked`
+		//				  `:enabled`, `:disabled`
 		//			* `:*-of-type` pseudo selectors
 		//		
 		//		dojo.query and XML Documents:

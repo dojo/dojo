@@ -30,28 +30,28 @@ dojo = {
 	// isBrowser: Boolean
 	//		True if the client is a web-browser
 	isBrowser: true,
-	//	isFF: Number
-	//		Greater than zero if client is FireFox. 0 otherwise. Corresponds to
+	//	isFF: Number | undefined
+	//		Version as a Number if client is FireFox. undefined otherwise. Corresponds to
 	//		major detected FireFox version (1.5, 2, 3, etc.)
 	isFF: 2,
-	//	isIE: Number
-	//		Greater than zero if client is MSIE(PC). 0 otherwise. Corresponds to
+	//	isIE: Number | undefined
+	//		Version as a Number if client is MSIE(PC). undefined otherwise. Corresponds to
 	//		major detected IE version (6, 7, 8, etc.)
 	isIE: 6,
-	//	isKhtml: Number
-	//		Greater than zero if client is a KTHML-derived browser (Konqueror,
-	//		Safari, etc.). 0 otherwise. Corresponds to major detected version.
+	//	isKhtml: Number | undefined
+	//		Version as a Number if client is a KTHML-derived browser (Konqueror,
+	//		Safari, etc.). undefined otherwise. Corresponds to major detected version.
 	isKhtml: 0,
-	//	isMozilla: Number
-	//		Greater than zero if client is a Mozilla-based browser (Firefox,
-	//		SeaMonkey). 0 otherwise. Corresponds to major detected version.
+	//	isMozilla: Number | undefined
+	//		Version as a Number if client is a Mozilla-based browser (Firefox,
+	//		SeaMonkey). undefined otherwise. Corresponds to major detected version.
 	isMozilla: 0,
-	//	isOpera: Number
-	//		Greater than zero if client is Opera. 0 otherwise. Corresponds to
+	//	isOpera: Number | undefined
+	//		Version as a Number if client is Opera. undefined otherwise. Corresponds to
 	//		major detected version.
 	isOpera: 0,
-	//	isSafari: Number
-	//		Greater than zero if client is Safari or iPhone. 0 otherwise.
+	//	isSafari: Number | undefined
+	//		Version as a Number if client is Safari or iPhone. undefined otherwise.
 	isSafari: 0
 }
 =====*/
@@ -100,7 +100,7 @@ if(typeof window != 'undefined'){
 		var dav = n.appVersion;
 		var tv = parseFloat(dav);
 
-		d.isOpera = (dua.indexOf("Opera") >= 0) ? tv : 0;
+		if(dua.indexOf("Opera") >= 0){ d.isOpera = tv; }
 		// safari detection derived from:
 		//		http://developer.apple.com/internet/safari/faq.html#anchor2
 		//		http://developer.apple.com/internet/safari/uamatrix.html
@@ -112,15 +112,14 @@ if(typeof window != 'undefined'){
 			d.isSafari = parseFloat(dav.split("Version/")[1]) ||
 				(parseFloat(dav.substr(index + 7)) > 419.3) ? 3 : 2;
 		}
-		d.isAIR = (dua.indexOf("AdobeAIR") >= 0) ? 1 : 0;
-		d.isKhtml = (dav.indexOf("Konqueror") >= 0 || d.isSafari) ? tv : 0;
-		d.isMozilla = d.isMoz = (dua.indexOf("Gecko") >= 0 && !d.isKhtml) ? tv : 0;
-		d.isFF = d.isIE = 0;
+		if(dua.indexOf("AdobeAIR") >= 0){ d.isAIR = 1; }
+		if(dav.indexOf("Konqueror") >= 0 || d.isSafari){ d.isKhtml =  tv; }
+		if(dua.indexOf("Gecko") >= 0 && !d.isKhtml){ d.isMozilla = d.isMoz = tv; }
 		if(d.isMoz){
-			d.isFF = parseFloat(dua.split("Firefox/")[1]) || 0;
+			d.isFF = parseFloat(dua.split("Firefox/")[1]) || undefined;
 		}
 		if(document.all && !d.isOpera){
-			d.isIE = parseFloat(dav.split("MSIE ")[1]) || 0;
+			d.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
 		}
 
 		//Workaround to get local file loads of dojo to work on IE 7

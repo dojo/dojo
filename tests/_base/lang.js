@@ -151,6 +151,11 @@ tests.register("tests._base.lang",
 			}
 			var obj2 = thinger.apply(this, obj1);
 			t.assertEqual(obj1[0], obj2[0]);
+			//test DomCollection
+			var div = document.createElement('div');
+			div.innerHTML="<a href='#'>link</a>text";
+			var r=dojo._toArray(div.childNodes);
+			t.is(2,r.length);
 		},
 		
 		function clone(t) { 

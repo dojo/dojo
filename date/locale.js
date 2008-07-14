@@ -275,7 +275,7 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 
 	var info = dojo.date.locale._parseInfo(options);
 	var tokens = info.tokens, bundle = info.bundle;
-	var re = new RegExp("^" + info.regexp + "$");
+	var re = new RegExp("^" + info.regexp + "$", info.strict ? "" : "i");
 	var match = re.exec(value);
 	if(!match){ return null; } // null
 
@@ -521,7 +521,9 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 					s = am + '|' + pm;
 					if(am != am.toLowerCase()){ s += '|' + am.toLowerCase(); }
 					if(pm != pm.toLowerCase()){ s += '|' + pm.toLowerCase(); }
+					if(s.indexOf('.') != -1){ s += '|' + s.replace(/\./g, ""); }
 				}
+				s = s.replace(/\./g, "\\.");
 				break;
 			default:
 			// case 'v':

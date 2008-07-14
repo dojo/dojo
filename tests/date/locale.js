@@ -62,7 +62,7 @@ tests.register("tests.date.locale",
 
 	t.is("6", dojo.date.locale.format(date, {datePattern:'E', selector:'date'}));
 
-	t.is("12:55 AM", dojo.date.locale.format(date, {formatLength:'short',selector:'time', locale:'en-us'}));
+	t.is("12:55 a.m.", dojo.date.locale.format(date, {formatLength:'short',selector:'time', locale:'en-us'}));
 	t.is("12:55:12", dojo.date.locale.format(date, {timePattern:'h:m:s',selector:'time'}));
 	t.is("12:55:12.35", dojo.date.locale.format(date, {timePattern:'h:m:s.SS',selector:'time'}));
 	t.is("24:55:12.35", dojo.date.locale.format(date, {timePattern:'k:m:s.SS',selector:'time'}));
@@ -238,12 +238,11 @@ tests.register("tests.date.locale",
 		{
 			name: "parse_times",
 			runTest: function(t){
-
-	var time = new Date(2006, 7, 11, 12, 30);
-	var tformat = {selector:'time', strict:true, timePattern:"h:mm a", locale:'en'};
-
-	t.is(time.getHours(), dojo.date.locale.parse("12:30 PM", tformat).getHours());
-	t.is(time.getMinutes(), dojo.date.locale.parse("12:30 PM", tformat).getMinutes());
+				var time = new Date(2006, 7, 11, 12, 30);
+				var tformat = {selector:'time', strict:true, timePattern:"h:mm a", locale:'en'};
+			
+				t.is(time.getHours(), dojo.date.locale.parse("12:30 p.m.", tformat).getHours());
+				t.is(time.getMinutes(), dojo.date.locale.parse("12:30 p.m.", tformat).getMinutes());
 			}
 		},
 		{

@@ -324,10 +324,15 @@ dojo.require("dojo._base.NodeList");
 
 		var tf = function(parent){
 			// XPath query strings are memoized.
+
 			var ret = [];
 			var xpathResult;
+			var tdoc = doc;
+			if(parent){
+				tdoc = (parent.nodeType == 9) ? parent : parent.ownerDocument;
+			}
 			try{
-				xpathResult = doc.evaluate(xpath, parent, null, 
+				xpathResult = tdoc.evaluate(xpath, parent, null, 
 												// XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 												XPathResult.ANY_TYPE, null);
 			}catch(e){

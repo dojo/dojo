@@ -114,11 +114,39 @@
 						"doh.is(dojo.byId('checkbox2'), dojo.query('#t2 > input[type=checkbox]:checked')[0]);",
 						"doh.is(dojo.byId('radio2'), dojo.query('#t2 > input[type=radio]:checked')[0]);",
 
+						// cross-document queries
+						{
+
+							name: "crossDocumentQuery",
+							setUp: function(){
+								dojo.require("dojo.io.iframe");
+								this.t3 = window.frames["t3"];
+								this.doc = dojo.io.iframe.doc(t3);
+								this.doc.open();
+								this.doc.write([
+									"<html><head>",
+									"<title>inner document</title>",
+									"</head>",
+									"<body>",
+									"<div id='st1'><h3>h3 <span>span <span> inner <span>inner-inner</span></span></span> endh3 </h3></div>",
+									"</body>",
+									"</html>"
+								].join(""));
+							},
+							runTest: function(){
+								doh.is(1, dojo.query('h3', dojo.byId("st1", this.doc)).length);
+								// use a long query to force a test of the XPath system on FF. see bug #7075
+								doh.is(1, dojo.query('h3 > span > span > span', dojo.byId("st1", this.doc)).length);
+								doh.is(1, dojo.query('h3 > span > span > span', this.doc.body.firstChild).length);
+							}
+						},
+
 						// :empty pseudo-selector
 						"doh.is(4, dojo.query('#t > span:empty').length);",
 						"doh.is(6, dojo.query('#t span:empty').length);",
 						"doh.is(0, dojo.query('h3 span:empty').length);",
 						"doh.is(1, dojo.query('h3 :not(:empty)').length);",
+
 						// escaping of ":" chars inside an ID
 						function silly_IDs1(){
 							doh.t(document.getElementById("silly:id::with:colons"));
@@ -192,6 +220,7 @@
 			<input type="radio" name="radio" id="radio2" value="stuff" checked>
 			<input type="radio" name="radio" id="radio3" value="blah">
 		</div>
+		<iframe id="t3" name="t3" src="../../resources/blank.html"></iframe>
 	</body>
 </html>
 

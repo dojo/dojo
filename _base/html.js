@@ -272,9 +272,9 @@ if(dojo.isIE || dojo.isOpera){
 	if(d.isSafari){
 		gcs = function(/*DomNode*/node){
 			var s;
-			if (node instanceof Element) {
+			if(node instanceof Element){
 				var dv = node.ownerDocument.defaultView;
-				var s = dv.getComputedStyle(node, null);
+				s = dv.getComputedStyle(node, null);
 				if(!s && node.style){ 
 					node.style.display = ""; 
 					s = dv.getComputedStyle(node, null);
@@ -1049,7 +1049,7 @@ if(dojo.isIE || dojo.isOpera){
 	// Element attribute Functions
 	// =============================
 
-	var ieLT8 = (d.isIE && d.isIE < 8);
+	var ieLT8 = d.isIE < 8;
 
 	var _fixAttrName = function(/*String*/name){
 		switch(name.toLowerCase()){

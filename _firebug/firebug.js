@@ -1126,7 +1126,7 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 			for(var i in obj){
 				cnt++;
 				if(cnt > obCnt){ break; }
-				nm += i+"="+obj[i]+"  ";
+				nm += i+":"+escapeHTML(obj[i])+"  ";
 			}
 			nm+="}";
 		}
@@ -1137,6 +1137,7 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 	//*************************************************************************************
 	
 	window.onerror = onError;
+	
 	addEvent(document, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
 	
 	if(	(document.documentElement.getAttribute("debug") == "true")||

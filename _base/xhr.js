@@ -278,11 +278,11 @@ dojo.require("dojo._base.query");
 		//		Acceptable values depend on the type of IO
 		//		transport (see specific IO calls for more information).
 		//	load: Function?
-		//		function(response, ioArgs){} returning an Object. TODOC: what is response?  ioArgs
-		//		is of type dojo.__IoCallbackArgs. This function will be
-		//		called on a successful HTTP response.
+		//		function(response, ioArgs){} response is of type Object, ioArgs
+		//		is of type dojo.__IoCallbackArgs.  This function will be
+		//		called on a successful HTTP response code.
 		//	error: Function?
-		//		function(response, ioArgs){} returning an Object. TODOC: what is response? ioArgs
+		//		function(response, ioArgs){} response is of type Object, ioArgs
 		//		is of type dojo.__IoCallbackArgs. This function will
 		//		be called when the request fails due to a network or server error, the url
 		//		is invalid, etc. It will also be called if the load or handle callback throws an
@@ -290,8 +290,8 @@ dojo.require("dojo._base.query");
 		//		to continue to run even when a logic error happens in the callback, while making
 		//		it easier to troubleshoot while in debug mode.
 		//	handle: Function?
-		//		function(response, ioArgs){} returning an Object. TODOC: what is response? ioArgs
-		//		is of type dojo.__IoCallbackArgs. TODOC: what is response?  This function will
+		//		function(response, ioArgs){} response is of type Object, ioArgs
+		//		is of type dojo.__IoCallbackArgs.  This function will
 		//		be called at the end of every request, whether or not an error occurs.
 		this.url = url;
 		this.content = content;

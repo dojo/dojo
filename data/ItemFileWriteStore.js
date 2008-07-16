@@ -662,19 +662,6 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		this._assert(!this._saveInProgress);
 
 		var identity;
-		for(identity in this._pending._newItems){
-			var newItem = this._pending._newItems[identity];
-			newItem[this._storeRefPropName] = null;
-			// null out the new item, but don't change the array index so
-			// so we can keep using _arrayOfAllItems.length.
-			this._arrayOfAllItems[newItem[this._itemNumPropName]] = null;
-			if(newItem[this._rootItemPropName]){
-				this._removeArrayElement(this._arrayOfTopLevelItems, newItem);
-			}
-			if(this._itemsByIdentity){
-				delete this._itemsByIdentity[identity];
-			}
-		}
 		for(identity in this._pending._modifiedItems){
 			// find the original item and the modified item that replaced it
 			var originalItem = this._pending._modifiedItems[identity];
@@ -741,6 +728,20 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 					this._addReferenceToMap(refItem, deletedItem, reference.attr);
 				}, this);
 				delete deletedItem["backupRefs_" + this._reverseRefMap]; 
+			}
+		}
+
+		for(identity in this._pending._newItems){
+			var newItem = this._pending._newItems[identity];
+			newItem[this._storeRefPropName] = null;
+			// null out the new item, but don't change the array index so
+			// so we can keep using _arrayOfAllItems.length.
+			this._arrayOfAllItems[newItem[this._itemNumPropName]] = null;
+			if(newItem[this._rootItemPropName]){
+				this._removeArrayElement(this._arrayOfTopLevelItems, newItem);
+			}
+			if(this._itemsByIdentity){
+				delete this._itemsByIdentity[identity];
 			}
 		}
 

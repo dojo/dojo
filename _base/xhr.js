@@ -212,10 +212,10 @@ dojo.require("dojo._base.query");
 			// standard JSON instead. JSON prefixing can be used to subvert hijacking.
 			if(!dojo.config.useCommentedJson){
 				console.warn("Consider using the standard mimetype:application/json."
-					+ " json-commenting can introduce security issues, if you wish to "
-					+ " decrease the chances of hijacking, use the standard the 'json' handler and "
-					+ " prefix your json with :\n{}&&\n "
-					+ " (use djConfig.useCommentedJson=true to turn off this message)");
+					+ " json-commenting can introduce security issues. To"
+					+ " decrease the chances of hijacking, use the standard the 'json' handler and"
+					+ " prefix your json with: {}&&\n"
+					+ "Use djConfig.useCommentedJson=true to turn off this message.");
 			}
 
 			var value = xhr.responseText;
@@ -621,12 +621,17 @@ dojo.require("dojo._base.query");
 	=====*/
 
 	dojo.xhr = function(/*String*/ method, /*dojo.__XhrArgs*/ args, /*Boolean?*/ hasBody){
-		//	summary: 
-		//		Sends an HTTP request with the given method. If the request has an 
-		//		HTTP body, then pass true for hasBody. The method argument should be uppercase.
-		//		Also look at dojo.xhrGet(), xhrPost(), xhrPut() and dojo.xhrDelete() for shortcuts
+		//	summary:
+		//		Sends an HTTP request with the given method.
+		//	description:
+		//		Sends an HTTP request with the given method.
+		//		See also dojo.xhrGet(), xhrPost(), xhrPut() and dojo.xhrDelete() for shortcuts
 		//		for those HTTP methods. There are also methods for "raw" PUT and POST methods
 		//		via dojo.rawXhrPut() and dojo.rawXhrPost() respectively.
+		//	method:
+		//		HTTP method to be used, such as GET, POST, PUT, DELETE.  Should be uppercase.
+		//	hasBody:
+		//		If the request has an HTTP body, then pass true for hasBody.
 
 		//Make the Deferred object for this xhr request.
 		var dfd = _d._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);

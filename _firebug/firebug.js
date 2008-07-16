@@ -1,5 +1,6 @@
 dojo.provide("dojo._firebug.firebug");
 
+
 dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
 	// summary: 
 	//		Log a debug message to indicate that a behavior has been
@@ -11,7 +12,7 @@ dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ 
 	if(extra){ message += " " + extra; }
 	if(removal){ message += " -- will be removed in version: " + removal; }
 	console.warn(message);
-}
+};
 
 dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	// summary: Marks code as experimental.
@@ -33,7 +34,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
 	if(extra){ message += " " + extra; }
 	console.warn(message);
-}
+};
 
 // FIREBUG LITE
 	// summary: Firebug Lite, the baby brother to Joe Hewitt's Firebug for Mozilla Firefox
@@ -59,13 +60,13 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	// example:
 	//		Option for console height (ignored for popup)
 	//		|	var djConfig = {isDebug: true, debugHeight:100 };
-	
 
-if((	!dojo.isFF || 									// if not Firefox, there's no firebug
-		(dojo.isFF && !("console" in window)) || 		// Firefox, but Firebug is not installed.
-		(dojo.isFF && !window.loadFirebugConsole)) && 	// Firefox, but Firebug is disabled
-   		!dojo.config.noFirebugLite)						// Deprecated: Should be isDebug=false
-{
+if(	
+   !dojo.isFF || 									// if not Firefox, there's no firebug
+	(dojo.isFF && !("console" in window)) || 		// Firefox, but Firebug is not installed.
+	(dojo.isFF && !(window.loadFirebugConsole || console.firebug)) && 	// Firefox, but Firebug is disabled (1.2 check, 1.0 check)
+	!dojo.config.noFirebugLite						// Deprecated: Should be isDebug=false
+){
 	
 (function(){
 	// don't build firebug in iframes
@@ -162,7 +163,7 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 			//	|	console.time("myFunction");
 			//	|	console.timeEnd("load");
 			//	|	console.timeEnd("myFunction");
-			timeMap[name] = (new Date()).getTime();
+			timeMap[name] = new Date().getTime();
 		},
 		
 		timeEnd: function(name){
@@ -288,7 +289,7 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 				s=a[i];
 				if(s.rel.toLowerCase().indexOf('stylesheet')>=0&&s.href) {
 					var h=s.href.replace(/(&|%5C?)forceReload=\d+/,'');
-					s.href=h+(h.indexOf('?')>=0?'&':'?')+'forceReload='+(new Date().valueOf())
+					s.href=h+(h.indexOf('?')>=0?'&':'?')+'forceReload='+new Date().valueOf();
 				}
 			}
 		}
@@ -375,15 +376,15 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 			if (wn.innerWidth){
 				getViewport = function(){
 					return{w:wn.innerWidth, h:wn.innerHeight};
-				}
+				};
 			}else if (dc.documentElement && dc.documentElement.clientWidth){
 				getViewport = function(){
 					return{w:dc.documentElement.clientWidth, h:dc.documentElement.clientHeight};
-				}
+				};
 			}else if (dc.body){
 				getViewport = function(){
 					return{w:dc.body.clientWidth, h:dc.body.clientHeight};
-				}
+				};
 			}
 			
 
@@ -403,7 +404,7 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 					 
 			 }, 5000); //can't capture window.onMove - long timeout gives better chance of capturing a resize, then the move
 		
-		}
+		};
 	}
 	
 	
@@ -462,8 +463,8 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 		consoleFrame.style.display = (frameVisible ? "block" : "none");	  
 		
 		var buildLink = function(label, title, method, _class){
-			return '<li class="'+_class+'"><a href="javascript:void(0);" onclick="console.'+ method +'(); return false;" title="'+title+'">'+label+'</a></li>'
-		}
+			return '<li class="'+_class+'"><a href="javascript:void(0);" onclick="console.'+ method +'(); return false;" title="'+title+'">'+label+'</a></li>';
+		};
 		consoleFrame.innerHTML = 
 			  '<div id="firebugToolbar">'
 			+ '  <ul id="fireBugTabs" class="tabs">'
@@ -889,7 +890,7 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 
 	//After converting to div instead of iframe, now getting two keydowns right away in IE 6.
 	//Make sure there is a little bit of delay.
-	var onKeyDownTime = (new Date()).getTime();
+	var onKeyDownTime = new Date().getTime();
 
 	function onKeyDown(event){
 		var timestamp = (new Date()).getTime();
@@ -1027,16 +1028,16 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 			appendNode(o, html);
 			return html.join("");
 		}
+		
+		var br=",\n", cnt = 0, length = objectLength(o);
+		
 		if(o instanceof Date){
 			return i + o.toString() + br;
 		}
-		
-		var br=",\n", cnt = 0, length = objectLength(o)
-		
 		looking:
 		for(var nm in o){
 			cnt++;
-			if(cnt==length){br = "\n"};
+			if(cnt==length){br = "\n";}
 			if(o[nm] === window || o[nm] === document){
 				continue;
 			}else if(o[nm] === null){
@@ -1063,7 +1064,7 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 				}
 				used.push(o[nm]);
 				
-				opnCls = (isArray(o[nm]))?["[","]"]:["{","}"]
+				opnCls = (isArray(o[nm]))?["[","]"]:["{","}"];
 				txt += i+nm +" : " + opnCls[0] + "\n";//non-standard break, (no comma)
 				txt += printObject(o[nm], i+ind, "", used);
 				txt += i + opnCls[1] + br;
@@ -1146,7 +1147,11 @@ if((	!dojo.isFF || 									// if not Firefox, there's no firebug
 		toggleConsole(true);
 	}
 	
-	if(dojo.config.noFirebugLite) console.warn("DEPRECATED: dojo.config.noFirebugLite - use djConfig.isDebug=false instead");
-	if(dojo.isFF && !window.loadFirebugConsole && !dojo.config.allowFirebugLite) console.log("To disable Firebug Lite in Firefox, use djConfig.isDebug=false. Suppress this message with djConfig.allowFirebugLite=true");
+	//Warning message that this param will not be used much longer:
+	if(dojo.config.noFirebugLite){ console.warn("DEPRECATED: dojo.config.noFirebugLite - use djConfig.isDebug=false instead"); }
+	
+	// Notice to Firefox users who disable Firebug, and discover that Firebug Lite pops up. 
+	if(dojo.isFF && !window.loadFirebugConsole && !dojo.config.allowFirebugLite){ console.log("To disable Firebug Lite in Firefox, use djConfig.isDebug=false. Suppress this message with djConfig.allowFirebugLite=true");}
+	
 })();
 }

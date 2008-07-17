@@ -1078,6 +1078,8 @@ if(dojo.isIE || dojo.isOpera){
 				// to pick up for attrib set in markup via getAttribute() IE<8 uses "htmlFor" and others use "for"
 				// get/setAttribute works in all as long use same value for both get/set
 				return ieLT8 ? "htmlFor" : "for";
+			case "class" :
+				return d.isIE ? "className" : "class";
 			default:
 				return name;
 		}

@@ -1,5 +1,44 @@
 dojo.provide("dojo.io.iframe");
 
+/*=====
+dojo.declare("dojo.io.iframe.__ioArgs", [dojo.__IoArgs], {
+	constructor: function(kwArgs){
+		//	summary:
+		//		All the properties described in the dojo.__ioArgs type, apply
+		//		to this type. The following additional properties are allowed
+		//		for dojo.io.iframe.send():
+		//	method: String?
+		//		The HTTP method to use. "GET" or "POST" are the only supported
+		//		values.  It will try to read the value from the form node's
+		//		method, then try this argument. If neither one exists, then it
+		//		defaults to POST.
+		//	handleAs: String?
+		//		Specifies what format the result data should be given to the
+		//		load/handle callback. Valid values are: text, html, xml, json,
+		//		javascript. IMPORTANT: For all values EXCEPT html and xml, The
+		//		server response should be an HTML file with a textarea element.
+		//		The response data should be inside the textarea element. Using an
+		//		HTML document the only reliable, cross-browser way this
+		//		transport can know when the response has loaded. For the html
+		//		handleAs value, just return a normal HTML document.  NOTE: xml
+		//		is now supported with this transport (as of 1.1+); a known issue
+		//		is if the XML document in question is malformed, Internet Explorer
+		//		will throw an uncatchable error.
+		//	content: Object?
+		//		If "form" is one of the other args properties, then the content
+		//		object properties become hidden form form elements. For
+		//		instance, a content object of {name1 : "value1"} is converted
+		//		to a hidden form element with a name of "name1" and a value of
+		//		"value1". If there is not a "form" property, then the content
+		//		object is converted into a name=value&name=value string, by
+		//		using dojo.objectToQuery().
+		this.method = kwArgs.method;
+		this.handleAs = kwArgs.handleAs;
+		this.content = kwArgs.content;
+	}
+});
+=====*/
+
 dojo.io.iframe = {
 	create: function(/*String*/fname, /*String*/onloadstr, /*String?*/uri){
 		//	summary:
@@ -111,40 +150,6 @@ dojo.io.iframe = {
 			) || null;
 		return doc;
 	},
-
-	/*=====
-	dojo.io.iframe.__ioArgs = function(kwArgs){
-		//	summary:
-		//		All the properties described in the dojo.__ioArgs type, apply
-		//		to this type. The following additional properties are allowed
-		//		for dojo.io.iframe.send():
-		//	method: String?
-		//		The HTTP method to use. "GET" or "POST" are the only supported
-		//		values.  It will try to read the value from the form node's
-		//		method, then try this argument. If neither one exists, then it
-		//		defaults to POST.
-		//	handleAs: String?
-		//		Specifies what format the result data should be given to the
-		//		load/handle callback. Valid values are: text, html, xml, json,
-		//		javascript. IMPORTANT: For all values EXCEPT html and xml, The
-		//		server response should be an HTML file with a textarea element.
-		//		The response data should be inside the textarea element. Using an
-		//		HTML document the only reliable, cross-browser way this
-		//		transport can know when the response has loaded. For the html
-		//		handleAs value, just return a normal HTML document.  NOTE: xml
-		//		is now supported with this transport (as of 1.1+); a known issue
-		//		is if the XML document in question is malformed, Internet Explorer
-		//		will throw an uncatchable error.
-		//	content: Object?
-		//		If "form" is one of the other args properties, then the content
-		//		object properties become hidden form form elements. For
-		//		instance, a content object of {name1 : "value1"} is converted
-		//		to a hidden form element with a name of "name1" and a value of
-		//		"value1". If there is not a "form" property, then the content
-		//		object is converted into a name=value&name=value string, by
-		//		using dojo.objectToQuery().
-	}
-	=====*/
 
 	send: function(/*dojo.io.iframe.__ioArgs*/args){
 		//summary: function that sends the request to the server.

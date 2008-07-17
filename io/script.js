@@ -1,30 +1,34 @@
 dojo.provide("dojo.io.script");
 
 /*=====
-dojo.io.script.__ioArgs = function(kwArgs){
-	//	summary:
-	//		All the properties described in the dojo.__ioArgs type, apply to this
-	//		type as well, EXCEPT "handleAs". It is not applicable to
-	//		dojo.io.script.get() calls, since it is implied by the usage of
-	//		"callbackParamName" (response will be a JSONP call returning JSON)
-	//		or "checkString" (response is pure JavaScript defined in
-	//		the body of the script that was attached). The following additional
-	//		properties are allowed for dojo.io.script.get():
-	//	callbackParamName: String
-	//		The URL parameter name that indicates the JSONP callback string.
-	//		For instance, when using Yahoo JSONP calls it is normally, 
-	//		callbackParamName: "callback". For AOL JSONP calls it is normally 
-	//		callbackParamName: "c".
-	//	checkString: String
-	//		A string of JavaScript that when evaluated like so: 
-	//		"typeof(" + checkString + ") != 'undefined'"
-	//		being true means that the script fetched has been loaded. 
-	//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
-	//	frameDoc: Document
-	//		The Document object for a child iframe. If this is passed in, the script
-	//		will be attached to that document. This can be helpful in some comet long-polling
-	//		scenarios with Firefox and Opera.
-}
+dojo.declare("dojo.io.script.__ioArgs", [dojo.__IoArgs], {
+	constructor: function(kwArgs){
+		//	summary:
+		//		All the properties described in the dojo.__ioArgs type, apply to this
+		//		type as well, EXCEPT "handleAs". It is not applicable to
+		//		dojo.io.script.get() calls, since it is implied by the usage of
+		//		"callbackParamName" (response will be a JSONP call returning JSON)
+		//		or "checkString" (response is pure JavaScript defined in
+		//		the body of the script that was attached).
+		//	callbackParamName: String
+		//		The URL parameter name that indicates the JSONP callback string.
+		//		For instance, when using Yahoo JSONP calls it is normally, 
+		//		callbackParamName: "callback". For AOL JSONP calls it is normally 
+		//		callbackParamName: "c".
+		//	checkString: String
+		//		A string of JavaScript that when evaluated like so: 
+		//		"typeof(" + checkString + ") != 'undefined'"
+		//		being true means that the script fetched has been loaded. 
+		//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
+		//	frameDoc: Document
+		//		The Document object for a child iframe. If this is passed in, the script
+		//		will be attached to that document. This can be helpful in some comet long-polling
+		//		scenarios with Firefox and Opera.
+		this.callbackParamName = kwArgs.callbackParamName;
+		this.checkString = kwArgs.checkString;
+		this.frameDoc = kwArgs.frameDoc;
+	}
+});
 =====*/
 
 dojo.io.script = {

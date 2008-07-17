@@ -1114,9 +1114,10 @@ if(dojo.isIE || dojo.isOpera){
 		//	returns:
 		//		true if the requested attribute is specified on the
 		//		given element, and false otherwise
+		node = d.byId(node);
 		var fixName = _fixAttrName(name);
 		fixName = fixName == "htmlFor" ? "for" : fixName; //IE<8 uses htmlFor except in this case
-		var attr = d.byId(node).getAttributeNode(fixName);
+		var attr = node.getAttributeNode && node.getAttributeNode(fixName);
 		return attr ? attr.specified : false; // Boolean
 	}
 

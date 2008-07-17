@@ -16,7 +16,11 @@ dojo.require("dojo._base.connect");
 				//oname = name;
 				name = (name == "mouseenter") ? "mouseover" : "mouseout";
 				fp = function(e){
-					// thanks ben!
+					// check tagName to fix a FF2 bug with invalid nodes (hidden child DIV of INPUT)
+					// which causes isDecendant to return false which causes
+					// spurious, and more importantly, incorrect mouse events to fire.
+					// TODO: remove tagName check when Firefox 2 is no longer supported
+					try{ e.relatedTarget.tagName; } catch(e2){ return; }
 					if(!dojo.isDescendant(e.relatedTarget, node)){
 						// e.type = oname; // FIXME: doesn't take? SJM: event.type is generally immutable.
 						return ofp.call(this, e); 

@@ -272,7 +272,7 @@ if(dojo.isIE || dojo.isOpera){
 	if(d.isSafari){
 		gcs = function(/*DomNode*/node){
 			var s;
-			if(node instanceof Element){
+			if (node instanceof Element) {
 				var dv = node.ownerDocument.defaultView;
 				s = dv.getComputedStyle(node, null);
 				if(!s && node.style){ 
@@ -978,8 +978,13 @@ if(dojo.isIE || dojo.isOpera){
 					endNode = db.parentNode;
 				}
 				// Opera seems to be double counting for some elements
-				ret.x -= _sumAncestorProperties(node, "scrollLeft");
-				ret.y -= _sumAncestorProperties(node, "scrollTop");
+				var cs=gcs(node);
+				var n=node;
+				if(d.isOpera&&cs.position!="absolute"){
+					n=n.offsetParent;
+				}
+				ret.x -= _sumAncestorProperties(n, "scrollLeft");
+				ret.y -= _sumAncestorProperties(n, "scrollTop");
 
 				var curnode = node;
 				do{
@@ -992,8 +997,8 @@ if(dojo.isIE || dojo.isOpera){
 					}
 					var t = curnode.offsetTop;
 					ret.y += isNaN(t) ? 0 : t;
+					var cs = gcs(curnode);
 					if(curnode != node){
-						var cs = gcs(curnode);
 						if(d.isSafari){
 							ret.x += px(curnode, cs.borderLeftWidth);
 							ret.y += px(curnode, cs.borderTopWidth);
@@ -1004,8 +1009,19 @@ if(dojo.isIE || dojo.isOpera){
 							ret.y += 2*px(curnode,cs.borderTopWidth);
 						}
 					}
-					// FIXME: static children in a static div in FF2 are affected by the div's border as well
+					// static children in a static div in FF2 are affected by the div's border as well
 					// but offsetParent will skip this div!
+					if(d.isFF&&cs.position=="static"){
+						var parent=curnode.parentNode;
+						while(parent!=curnode.offsetParent){
+							var pcs=gcs(parent);
+							if(pcs.position=="static"){
+								ret.x += px(curnode,pcs.borderLeftWidth);
+								ret.y += px(curnode,pcs.borderTopWidth);
+							}
+							parent=parent.parentNode;
+						}
+					}
 					curnode = curnode.offsetParent;
 				}while((curnode != endNode) && curnode);
 			}else if(node.x && node.y){

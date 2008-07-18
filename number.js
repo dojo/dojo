@@ -147,8 +147,8 @@ dojo.number.__FormatAbsoluteOptions = function(){
 	//		the decimal separator
 	//	group: String?
 	//		the group separator
-	//	places: Integer?
-	//		number of decimal places
+	//	places: Integer?|String?
+	//		number of decimal places.  the range "n,m" will format to m places.
 	//	round: Number?
 	//		5 rounds to nearest .5; 0 rounds to nearest whole (default). -1
 	//		means don't round.
@@ -180,6 +180,10 @@ dojo.number._formatAbsolute = function(/*Number*/value, /*String*/pattern, /*doj
 	var valueParts = String(Math.abs(value)).split(".");
 	var fractional = valueParts[1] || "";
 	if(options.places){
+		var comma = dojo.isString(options.places) && options.places.indexOf(",");
+		if(comma){
+			options.places = options.places.substring(comma+1);
+		}
 		valueParts[1] = dojo.string.pad(fractional.substr(0, options.places), options.places, '0', true);
 	}else if(patternParts[1] && options.places !== 0){
 		// Pad fractional with trailing zeros
@@ -517,7 +521,7 @@ dojo.number._integerRegexp = function(/*dojo.number.__IntegerRegexpFlags?*/flags
 	}
 	// build sign RE
 	var signRE = dojo.regexp.buildGroupRE(flags.signed,
-		function(q) { return q ? "[-+]" : ""; },
+		function(q){ return q ? "[-+]" : ""; },
 		true
 	);
 

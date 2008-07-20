@@ -91,13 +91,8 @@ abbr, acronym {
 	Default: 13px, specified by the YUI imports.
 */
 body { 
-	font: 75%/1.5 Myriad,Helvetica,Tahoma,Arial,clean,sans-serif; 
-	*font-size: small;
-	*font: x-small;
-}
-
-html>body {
-	font-size: 12px;
+	font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif; 
+	*font-size: 75%;
 }
 
 /* Headings */

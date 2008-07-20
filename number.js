@@ -256,7 +256,7 @@ dojo.number.__RegexpOptions = function(){
 	//		strict parsing, false by default
 	//	places: Number|String?
 	//		number of decimal places to accept: Infinity, a positive number, or
-	//		a range "n,m".  By default, defined by pattern.
+	//		a range "n,m".  Defined by pattern or Infinity if pattern not provided.
 	this.pattern = pattern;
 	this.type = type;
 	this.locale = locale;
@@ -314,7 +314,7 @@ dojo.number._parseInfo = function(/*Object?*/options){
 			var places = options.places;
 			if(parts.length == 1 || places === 0){flags.fractional = false;}
 			else{
-				if(places === undefined){ places = parts[1].lastIndexOf('0')+1; }
+				if(places === undefined){ places = options.pattern ? parts[1].lastIndexOf('0')+1 : Infinity; }
 				if(places && options.fractional == undefined){flags.fractional = true;} // required fractional, unless otherwise specified
 				if(!options.places && (places < parts[1].length)){ places += "," + parts[1].length; }
 				flags.places = places;

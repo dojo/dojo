@@ -206,6 +206,9 @@ tests.register("tests.number",
 	t.t(isNaN(dojo.number.parse("")));
 	t.t(isNaN(dojo.number.parse("abcd")));
 
+	// should allow unlimited precision, by default
+	t.is(1.23456789, dojo.number.parse("1.23456789", {locale: "en-us"}));
+
 	//test whitespace
 //	t.is(-1234567, dojo.number.parse("  -1,234,567  ", {locale: "en-us"}));
 

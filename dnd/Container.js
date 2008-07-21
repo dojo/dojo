@@ -84,6 +84,7 @@ dojo.declare("dojo.dnd.Container", null, {
 			if(i in e){ continue; }
 			f.call(o, m[i], i, this);
 		}
+		return o;	// Object
 	},
 	clearItems: function(){
 		// summary: removes all data items from the map

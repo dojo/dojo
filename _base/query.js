@@ -1219,8 +1219,8 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		root = root||d.doc;
-		var od = root.ownerDocument;
-		caseSensitive = (!!od) && (d.isIE ? od.xml : od.xmlVersion);
+		var od = root.ownerDocument||root.documentElement;
+		caseSensitive = (root.contentType && root.contentType=="application/xml") || (!!od) && (d.isIE ? od.xml : (root.xmlVersion||od.xmlVersion));
 		return _zip(getQueryFunc(query)(root)); // dojo.NodeList
 	}
 

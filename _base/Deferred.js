@@ -370,7 +370,11 @@ dojo.extend(dojo.Deferred, {
 			var f = chain.shift()[fired];
 			if(!f){ continue; }
 			var func = function(){
-				res = f(res);
+				var ret = f(res);
+				//If no response, then use previous response.
+				if(typeof ret != "undefined"){
+					res = ret;
+				}
 				fired = ((res instanceof Error) ? 1 : 0);
 				if(res instanceof dojo.Deferred){
 					cb = function(res){

@@ -501,6 +501,30 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: fetch() all (count === Infinity)",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of a basic fetch on ItemFileReadStore and with a count of Infinity.
+			//	description:
+			//		Simple test of a basic fetch on ItemFileReadStore and with a count of Infinity.
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+			
+			var d = new doh.Deferred();
+			function completedAll(items, request){
+				t.is(7, items.length);
+				d.callback(true);
+			}
+			function error(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+
+			//Get everything...
+			store.fetch({ onComplete: completedAll, onError: error, start: 0, count: Infinity});
+			return d;
+		}
+	},
+	{
 		name: "Read API: fetch() all PreventCache",
  		runTest: function(datastore, t){
 			//	summary: 

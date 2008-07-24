@@ -46,7 +46,7 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 		var aborted = false;
 
 		var startIndex = requestObject.start?requestObject.start:0;
-		var endIndex   = requestObject.count?(startIndex + requestObject.count):items.length;
+		var endIndex   = (requestObject.count && (requestObject.count !== Infinity))?(startIndex + requestObject.count):items.length;
 
 		requestObject.abort = function(){
 			aborted = true;

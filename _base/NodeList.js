@@ -480,6 +480,19 @@ dojo.require("dojo._base.array");
 			return this.forEach(function(i){
 				new c(properties||{},i);
 			}) // dojo.NodeList
+		},
+
+		at: function(/*===== index =====*/){
+			//	summary:
+			//		Returns a new NodeList comprised of items in this NodeList
+			//		at the given index or indices.
+			//	index: Integer...
+			//		One or more 0-based indices of items in the current NodeList.
+			//	returns:
+			//		dojo.NodeList
+			var nl = new dojo.NodeList();
+			dojo.forEach(arguments, function(i) { if(this[i]) { nl.push(this[i]); } }, this);
+			return nl; // dojo.NodeList
 		}
 
 	});

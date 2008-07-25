@@ -350,6 +350,23 @@
 							nl[0].click();
 							nl[0].click();
 							doh.is(3, ctr);
+						},
+
+						function at(t){
+							var divs = dojo.query("div");
+							var at0 = divs.at(0);
+							doh.is(divs[0], at0[0]);
+
+							var at1 = divs.at(1,3,5);
+							doh.is(divs[1], at1[0]);
+							doh.is(divs[3], at1[1]);
+							doh.is(divs[5], at1[2]);
+
+							var at2 = divs.at(3,6,9);
+							doh.is(at2.length, 2);
+
+							var at3 = divs.at(3,6).at(1);
+							doh.is(divs[6], at3[0]);
 						}
 					]
 				);

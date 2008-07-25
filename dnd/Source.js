@@ -345,27 +345,13 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			// do nothing
 			return;
 		}
-		if(this.creator){
-			// use defined creator
-			if(copy){
+		if(copy){
+			if(this.creator){
 				// create new copies of data items
 				this._normalizedCreator = function(node, hint){
 					return oldCreator.call(this, this.getItem(node.id).data, hint);
 				};
 			}else{
-				// move nodes
-				if(!this.current){
-					// do nothing
-					return;
-				}
-				this._normalizedCreator = function(node, hint){
-					var t = this.getItem(node.id);
-					return {node: node, data: t.data, type: t.type};
-				};
-			}
-		}else{
-			// we have no creator defined => move/clone nodes
-			if(copy){
 				// clone nodes
 				this._normalizedCreator = function(node, hint){
 					var t = this.getItem(node.id);
@@ -373,17 +359,17 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 					n.id = dojo.dnd.getUniqueId();
 					return {node: n, data: t.data, type: t.type};
 				};
-			}else{
-				// move nodes
-				if(!this.current){
-					// do nothing
-					return;
-				}
-				this._normalizedCreator = function(node, hint){
-					var t = this.getItem(node.id);
-					return {node: node, data: t.data, type: t.type};
-				};
 			}
+		}else{
+			// move nodes
+			if(!this.current){
+				// do nothing
+				return;
+			}
+			this._normalizedCreator = function(node, hint){
+				var t = this.getItem(node.id);
+				return {node: node, data: t.data, type: t.type};
+			};
 		}
 		this._removeSelection();
 		this.insertNodes(true, nodes, this.before, this.current);

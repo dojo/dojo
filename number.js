@@ -109,6 +109,7 @@ dojo.number._applyPattern = function(/*Number*/value, /*String*/pattern, /*dojo.
 	if(!numberPattern){
 		throw new Error("unable to find a number expression in pattern: "+pattern);
 	}
+	if(options.fractional === false){ options.places = 0; }
 	return pattern.replace(numberPatternRE,
 		dojo.number._formatAbsolute(value, numberPattern[0], {decimal: decimal, group: group, places: options.places, round: options.round}));
 }

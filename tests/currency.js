@@ -28,6 +28,7 @@ tests.register("tests.currency",
 				t.is("1.234,56 \u20ac", dojo.currency.format(1234.56, {currency: "EUR", locale: "de-de"}));
 				// There is no special currency symbol for ADP, so expect the ISO code instead
 				t.is("ADP123", dojo.currency.format(123, {currency: "ADP", locale: "en-us"}));
+				t.is("$1,234", dojo.currency.format(1234, {currency: "USD", fractional: false, locale: "en-us"}));
 
 				t.is(123.45, dojo.currency.parse("$123.45", {currency: "USD", locale: "en-us"}));
 				t.is(1234.56, dojo.currency.parse("$1,234.56", {currency: "USD", locale: "en-us"}));

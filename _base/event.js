@@ -511,16 +511,18 @@ if(dojo.isIE){
 		var ap=Array.prototype, h=dojo._ie_listener.handlers, c=args.callee, ls=c[dojo._ieListenersName], t=h[c.target];
 		// return value comes from original target function
 		var r = t && t.apply(sender, args);
+		// make local copy of listener array so it's immutable during processing
+		var lls = [].concat(ls);
 		// invoke listeners after target function
-		for(var i in ls){
+		for(var i in lls){
 			if(!(i in ap)){
-				h[ls[i]].apply(sender, args);
+				h[lls[i]].apply(sender, args);
 			}
 		}
 		return r;
 	}
 	dojo._getIeDispatcher = function(){
-		// ensure the returned function closes over nothing
+		// ensure the returned function closes over nothing ("new Function" apparently doesn't close)
 		return new Function(dojo._scopeName + "._ieDispatcher(arguments, this)"); // function
 	}
 	// keep this out of the closure to reduce RAM allocation

@@ -17,11 +17,13 @@ dojo._listener = {
 		return function(){
 			var ap=Array.prototype, c=arguments.callee, ls=c._listeners, t=c.target;
 			// return value comes from original target function
-			var r=t && t.apply(this, arguments);
+			var r = t && t.apply(this, arguments);
+			// make local copy of listener array so it is immutable during processing
+			var lls = [].concat(ls);
 			// invoke listeners after target function
-			for(var i in ls){
+			for(var i in lls){
 				if(!(i in ap)){
-					ls[i].apply(this, arguments);
+					lls[i].apply(this, arguments);
 				}
 			}
 			// return value comes from original target function

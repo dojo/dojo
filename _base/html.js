@@ -60,12 +60,6 @@ if(dojo.isIE || dojo.isOpera){
 =====*/
 
 (function(){
-	/*
-	dojo.createElement = function(obj, parent, position){
-		// TODO: need to finish this!
-	}
-	*/
-
 	var d = dojo;
 
 	var _destroyContainer = null;
@@ -1200,6 +1194,10 @@ if(dojo.isIE || dojo.isOpera){
 		node = d.byId(node);
 		name = _fixAttrName(name);
 		if(args == 3){
+			// FIXME:
+			//		what about when the name is "style" and value is an object?
+			//		It seems natural to pass it in to dojo.style(node,
+			//		value)...should we support this?
 			if(d.isFunction(value)){
 				// clobber if we can
 				var attrId = d.attr(node, _attrId);
@@ -1222,9 +1220,13 @@ if(dojo.isIE || dojo.isOpera){
 				// ensure that event objects are normalized, etc.
 				_evtHdlrMap[attrId][name] = d.connect(node, name, value);
 
-			}else if(typeof value == "boolean"){ // e.g. onsubmit, disabled
-				// if a function, we should normalize the event object here!!!
+			}else if(
+				(typeof value == "boolean")|| // e.g. onsubmit, disabled
+				(name == "innerHTML")
+			){
 				node[name] = value;
+			}else if((name == "style")&&(!d.isString(value))){
+				d.style(node, value);
 			}else{
 				node.setAttribute(name, value);
 			}
@@ -1252,6 +1254,11 @@ if(dojo.isIE || dojo.isOpera){
 		d.byId(node).removeAttribute(_fixAttrName(name));
 	}
 
+	/*
+	dojo.createElement = function(type, attrs, parent, position){
+		// TODO: need to finish this!
+	}
+	*/
 
 	// =============================
 	// (CSS) Class Functions

@@ -162,18 +162,18 @@ dojo.delegate = function(obj, props){
 }
 =====*/
 
-
-dojo.delegate = dojo._delegate = function(obj, props){
-
-	// boodman/crockford delegation
+dojo.delegate = dojo._delegate = (function(){
+	// boodman/crockford delegation w/ cornford optimization
 	function TMP(){};
-	TMP.prototype = obj;
-	var tmp = new TMP();
-	if(props){
-		dojo.mixin(tmp, props);
+	return function(obj, props){
+		TMP.prototype = obj;
+		var tmp = new TMP();
+		if(props){
+			dojo._mixin(tmp, props);
+		}
+		return tmp; // Object
 	}
-	return tmp; // Object
-};
+})();
 
 /*=====
 dojo._toArray = function(obj, offset, startWith){

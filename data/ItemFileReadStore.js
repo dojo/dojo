@@ -399,6 +399,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//		Array of items in store item format.
 		
 		// First, we define a couple little utility functions...
+		var addingArrays = false;
 		
 		function valueIsAnItem(/* anything */ aValue){
 			// summary:
@@ -417,9 +418,9 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 			var isItem = (
 				(aValue != null) &&
 				(typeof aValue == "object") &&
-				(!dojo.isArray(aValue)) &&
+				(!dojo.isArray(aValue) || addingArrays) &&
 				(!dojo.isFunction(aValue)) &&
-				(aValue.constructor == Object) &&
+				(aValue.constructor == Object || dojo.isArray(aValue)) &&
 				(typeof aValue._reference == "undefined") && 
 				(typeof aValue._type == "undefined") && 
 				(typeof aValue._value == "undefined")
@@ -464,6 +465,9 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 
 		for(i = 0; i < this._arrayOfTopLevelItems.length; ++i){
 			item = this._arrayOfTopLevelItems[i];
+			if(dojo.isArray(item)){
+				addingArrays = true;
+			}
 			addItemAndSubItemsToArrayOfAllItems(item);
 			item[this._rootItemPropName]=true;
 		}

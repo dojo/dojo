@@ -457,7 +457,8 @@ dojo.require("dojo._base.query");
 	var _deferredOk = function(/*Deferred*/dfd){
 		//summary: okHandler function for dojo._ioSetArgs call.
 
-		return _d._contentHandlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
+		var ret = _d._contentHandlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
+		return (typeof ret == "undefined") ? null : ret;
 	}
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.

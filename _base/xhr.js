@@ -204,7 +204,7 @@ dojo.require("dojo._base.query");
 	dojo._contentHandlers = {
 		"text": function(xhr){ return xhr.responseText; },
 		"json": function(xhr){
-			return _d.fromJson(xhr.responseText);
+			return _d.fromJson(xhr.responseText || null);
 		},
 		"json-comment-filtered": function(xhr){ 
 			// NOTE: the json-comment-filtered option was implemented to prevent

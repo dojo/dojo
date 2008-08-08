@@ -3,20 +3,6 @@ dojo.experimental("dojo.robot");
 dojo.require("doh.robot");
 
 (function(){
-// what if the applet is not bundled with this build?
-// need to kick start doh tests relying on it
-var dohRobotCheck=dojo.xhr("HEAD", {
-	url:dojo.moduleUrl("util","doh/robot/DOHRobot.jar"),
-	error:function(response, ioArgs){
-		if(ioArgs.xhr.status == 404){
-			// oops! no applet
-			// move the tests along
-			doh.robot._appletDead=true;
-			doh.run();
-		}
-	}
-});
-
 // users who use doh+dojo get the added convenience of dojo.mouseMoveAt,
 // instead of computing the absolute coordinates of their elements themselves
 dojo.mixin(doh.robot,{

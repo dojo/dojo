@@ -501,7 +501,7 @@ dojo.require("dojo._base.array");
 	d.forEach([
 		"blur", "focus", "click", "keydown", "keypress", "keyup", "mousedown",
 		"mouseenter", "mouseleave", "mousemove", "mouseout", "mouseover",
-		"mouseup", "submit"
+		"mouseup", "submit", "load", "error"
 		], function(evt){
 			var _oe = "on"+evt;
 			d.NodeList.prototype[_oe] = function(a, b){

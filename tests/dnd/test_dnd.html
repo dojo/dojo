@@ -85,21 +85,20 @@
 					var count1=dojo.query("> div", container1).length;
 					var count2=dojo.query("> div", container2).length;
 					var d = new doh.Deferred();
-					var s = new Function('return window');
-					doh.robot.mouseMove(s,68,396,631,true);
-					doh.robot.mouseMoveAt(s,'dojoUnique13',2034,9,4);
-					doh.robot.mousePress(s,{left:true, middle:false, right:false},1);
-					doh.robot.mouseMoveAt(sec,'dojoUnique13',1,6,10);
-					doh.robot.mouseMoveAt(s,container2,1402);
-					doh.robot.mouseRelease(s,{left:true, middle:false, right:false},2093);
-					setTimeout(function(){
+					doh.robot.mouseMove(68, 396, 631, true);
+					doh.robot.mouseMoveAt('dojoUnique13', 2034, 9, 4);
+					doh.robot.mousePress({left:true, middle:false, right:false}, 1);
+					doh.robot.mouseMoveAt('dojoUnique13', 1, 6, 10);
+					doh.robot.mouseMoveAt(container2, 1402);
+					doh.robot.mouseRelease({left:true, middle:false, right:false}, 2093);
+					doh.robot.sequence(function(){
 						// assert container1 has -1 elements, container2 has +1
 						if((dojo.query("> div", container1).length==(count1-1))&&(dojo.query("> div", container2).length==(count2+1))){
 							d.callback(true);
 						}else{
 							d.errback(new Error("Wrong number of items in containers 1 and 2"));
 						}
-					}, 8875);
+					}, 1000);
 					return d;
 				}
 			});
@@ -110,20 +109,19 @@
 					var count1=dojo.query("> div", container1).length;
 					var count2=dojo.query("> div", container2).length;
 					var d = new doh.Deferred();
-					var s = new Function('return window');
-					doh.robot.mouseMoveAt(s,document.getElementsByTagName('STRONG')[0],633,2,6);
-					doh.robot.mousePress(s,{left:true, middle:false, right:false},3);
-					doh.robot.mouseMoveAt(s,document.getElementsByTagName('STRONG')[0],1,3,6);
-					doh.robot.mouseMoveAt(s,container1,663);
-					doh.robot.mouseRelease(s,{left:true, middle:false, right:false},240);
-					setTimeout(function(){
+					doh.robot.mouseMoveAt(document.getElementsByTagName('STRONG')[0], 633, 2, 6);
+					doh.robot.mousePress({left:true, middle:false, right:false}, 3);
+					doh.robot.mouseMoveAt(document.getElementsByTagName('STRONG')[0], 1, 3, 6);
+					doh.robot.mouseMoveAt(container1, 663);
+					doh.robot.mouseRelease({left:true, middle:false, right:false}, 240);
+					doh.robot.sequence(function(){
 						// assert container1 has +1 elements, container2 has same
 						if((dojo.query("> div", container1).length==(count1+1))&&(dojo.query("> div", container2).length==count2)){
 							d.callback(true);
 						}else{
 							d.errback(new Error("Wrong number of items in containers 1 and 2"));
 						}
-					}, 6298);
+					}, 1000);
 					return d;
 				}
 			});
@@ -134,20 +132,19 @@
 					var count2=dojo.query("> div", container2).length;
 					var count5=dojo.query("> div", container5).length;
 					var d = new doh.Deferred();
-					var s = new Function('return window');
-					doh.robot.mouseMoveAt(s,'dojoUnique11',270,20,6);
-					doh.robot.mousePress(s,{left:true, middle:false, right:false},3);
-					doh.robot.mouseMoveAt(s,'dojoUnique11',1,21,6);
-					doh.robot.mouseMoveAt(s,container2,540);
-					doh.robot.mouseRelease(s,{left:true, middle:false, right:false},693);
-					setTimeout(function(){
+					doh.robot.mouseMoveAt('dojoUnique11', 270, 20, 6);
+					doh.robot.mousePress({left:true, middle:false, right:false}, 3);
+					doh.robot.mouseMoveAt('dojoUnique11', 1, 21, 6);
+					doh.robot.mouseMoveAt(container2, 540);
+					doh.robot.mouseRelease({left:true, middle:false, right:false}, 693);
+					doh.robot.sequence(function(){
 						// assert container2 has +0 elements, container5 has +0
 						if((dojo.query("> div", container2).length==count2)&&(dojo.query("> div", container5).length==count5)){
 							d.callback(true);
 						}else{
 							d.errback(new Error("Wrong number of items in containers 2 and 5"));
 						}
-					}, 6587);
+					}, 1000);
 					return d;
 				}
 			});

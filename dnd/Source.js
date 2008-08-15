@@ -65,6 +65,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	skipForm: false,
 	withHandles: false,
 	autoSync: false,
+	delay: 0, // pixels
 	accept: ["text"],
 	
 	constructor: function(/*DOMNode|String*/node, /*dojo.dnd.__SourceArgs?*/params){
@@ -89,6 +90,8 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this.targetAnchor = null;
 		this.targetBox = null;
 		this.before = true;
+		this._lastX = 0;
+		this._lastY = 0;
 		// states
 		this.sourceState  = "";
 		if(this.isSource){
@@ -195,7 +198,8 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 				m.canDrop(!this.current || m.source != this || !(this.current.id in this.selection));
 			}
 		}else{
-			if(this.mouseDown && this.isSource){
+			if(this.mouseDown && this.isSource &&
+					(Math.abs(e.pageX - this._lastX) > this.delay || Math.abs(e.pageY - this._lastY) > this.delay)){
 				var nodes = this.getSelectedNodes();
 				if(nodes.length){
 					m.startDrag(this, nodes, this.copyState(dojo.dnd.getCopyKeyState(e), true));
@@ -209,6 +213,8 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		if(this._legalMouseDown(e) && (!this.skipForm || !dojo.dnd.isFormElement(e))){
 			this.mouseDown = true;
 			this.mouseButton = e.button;
+			this._lastX = e.pageX;
+			this._lastY = e.pageY;
 			dojo.dnd.Source.superclass.onMouseDown.call(this, e);
 		}
 	},

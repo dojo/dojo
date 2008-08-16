@@ -18,7 +18,7 @@ dojo.isArray = function(/*anything*/ it){
 dojo.isFunction = function(it){
 	// summary: Return true if it is a Function
 	// it: anything
-	//	return: Boolean
+	return; // Boolean
 }
 =====*/
 
@@ -52,15 +52,15 @@ dojo.isArrayLike = function(/*anything*/ it){
 	//		and DOM collections will return true when passed to
 	//		dojo.isArrayLike(), but will return false when passed to
 	//		dojo.isArray().
-	//	return:
+	//	returns:
 	//		If it walks like a duck and quicks like a duck, return `true`
 	var d = dojo;
-	return it && it !== undefined &&
+	return it && it !== undefined && // Boolean
 		// keep out built-in constructors (Number, String, ...) which have length
 		// properties
 		!d.isString(it) && !d.isFunction(it) &&
 		!(it.tagName && it.tagName.toLowerCase() == 'form') &&
-		(d.isArray(it) || isFinite(it.length)); // Boolean
+		(d.isArray(it) || isFinite(it.length));
 }
 
 dojo.isAlien = function(/*anything*/ it){

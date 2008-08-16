@@ -389,7 +389,7 @@ dojo.global = {
 		//		Placed in a separate function to minimize size of trapped
 		//		exceptions. Calling eval() directly from some other scope may
 		//		complicate tracebacks on some platforms.
-		//	return:
+		//	returns:
 		//		The result of the evaluation. Often `undefined`
 
 

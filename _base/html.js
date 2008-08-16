@@ -335,7 +335,8 @@ if(dojo.isIE || dojo.isOpera){
 			//	node: DomNode
 			//		a reference to a DOM node. Does NOT support taking an
 			//		ID string for speed reasons.
-			//	return: Number between 0 and 1
+			//	returns: Number between 0 and 1
+			return; // Number
 	}
 	=====*/
 
@@ -368,7 +369,8 @@ if(dojo.isIE || dojo.isOpera){
 			//		ID string for performance reasons.
 			//	opacity: Number
 			//		A Number between 0 and 1. 0 specifies transparent.
-			//	return: Number between 0 and 1
+			//	returns: Number between 0 and 1
+			return; // Number
 	}
 	=====*/
 

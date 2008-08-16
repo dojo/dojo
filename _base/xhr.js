@@ -678,13 +678,13 @@ dojo.require("dojo._base.query");
 		}
 		_d._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
 		xhr = null;
-		return dfd; //Deferred
+		return dfd; // dojo.Deferred
 	}
 
 	dojo.xhrGet = function(/*dojo.__XhrArgs*/ args){
 		//	summary: 
 		//		Sends an HTTP GET request to the server.
-		return _d.xhr("GET", args); //dojo.Deferred
+		return _d.xhr("GET", args); // dojo.Deferred
 	}
 
 	dojo.rawXhrPost = dojo.xhrPost = function(/*dojo.__XhrArgs*/ args){

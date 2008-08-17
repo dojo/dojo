@@ -51,27 +51,27 @@ dojo.require("dojo._base.query");
 		//		|			"thonk"
 		//		|		]
 		//		|	};
-	
+
 		var ret = {};
-		var iq = "input:not([type=file]):not([type=submit]):not([type=image]):not([type=reset]):not([type=button]), select, textarea";
-		_d.query(iq, formNode).filter(function(node){
-			return !node.disabled && node.name;
-		}).forEach(function(item){
+		var exclude = "file|submit|image|reset|button|";
+		_d.forEach(dojo.byId(formNode).elements, function(item){
 			var _in = item.name;
 			var type = (item.type||"").toLowerCase();
-			if(type == "radio" || type == "checkbox"){
-				if(item.checked){ setValue(ret, _in, item.value); }
-			}else if(item.multiple){
-				ret[_in] = [];
-				_d.query("option", item).forEach(function(opt){
-					if(opt.selected){
-						setValue(ret, _in, opt.value);
+			if(_in && type && exclude.indexOf(type) == -1 && !item.disabled){
+				if(type == "radio" || type == "checkbox"){
+					if(item.checked){ setValue(ret, _in, item.value); }
+				}else if(item.multiple){
+					ret[_in] = [];
+					_d.query("option", item).forEach(function(opt){
+						if(opt.selected){
+							setValue(ret, _in, opt.value);
+						}
+					});
+				}else{ 
+					setValue(ret, _in, item.value);
+					if(type == "image"){
+						ret[_in+".x"] = ret[_in+".y"] = ret[_in].x = ret[_in].y = 0;
 					}
-				});
-			}else{ 
-				setValue(ret, _in, item.value);
-				if(type == "image"){
-					ret[_in+".x"] = ret[_in+".y"] = ret[_in].x = ret[_in].y = 0;
 				}
 			}
 		});
@@ -451,7 +451,11 @@ dojo.require("dojo._base.query");
 		if(_at == "function" || _at == "object" || _at == "unknown"){
 			xhr.abort();
 		}
-		var err = dfd.ioArgs.error || new Error("xhr cancelled");
+		var err = dfd.ioArgs.error;
+		if(!err){
+			err = new Error("xhr cancelled");
+			err.dojoType="cancel";
+		}
 		return err;
 	}
 	var _deferredOk = function(/*Deferred*/dfd){

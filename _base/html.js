@@ -403,10 +403,20 @@ if(dojo.isIE || dojo.isOpera){
 	};
 	var _pixelRegExp = /margin|padding|width|height|max|min|offset/;  // |border
 	var _toStyleValue = function(node, type, value){
-		type = type.toLowerCase();
-		if(d.isIE && value == "auto"){
-			if(type == "height"){ return node.offsetHeight; }
-			if(type == "width"){ return node.offsetWidth; }
+		type = type.toLowerCase(); // FIXME: should we really be doing string case conversion here? Should we cache it? Need to profile!
+		if(d.isIE){
+			console.debug(type, value, typeof value);
+			if(value == "auto"){
+				if(type == "height"){ return node.offsetHeight; }
+				if(type == "width"){ return node.offsetWidth; }
+			}
+			if(type == "fontweight"){
+				switch(value){
+					case 400: return "normal";
+					case 700: return "bold";
+					default: return "normal";
+				}
+			}
 		}
 		if(!(type in _pixelNamesCache)){
 			_pixelNamesCache[type] = _pixelRegExp.test(type);

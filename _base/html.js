@@ -116,7 +116,7 @@ if(dojo.isIE || dojo.isOpera){
 		}else if(d.isKhtml){
 			node.style.KhtmlUserSelect = selectable ? "auto" : "none";
 		}else if(d.isIE){
-			var v = node.unselectable = selectable ? "" : "on";
+			var v = (node.unselectable = selectable ? "" : "on");
 			d.query("*", node).forEach("item.unselectable = '"+v+"'");
 		}
 		//FIXME: else?  Opera?
@@ -166,11 +166,12 @@ if(dojo.isIE || dojo.isOpera){
 		refNode = d.byId(refNode);
 		if(typeof position == "number"){
 			var cn = refNode.childNodes;
-			if((position == 0 && cn.length == 0) ||
+			if((!position && !cn.length) ||
 				cn.length == position){
-				refNode.appendChild(node); return true;
+				refNode.appendChild(node);
+				return true;
 			}
-			if(position == 0){
+			if(!position){
 				return _insertBefore(node, refNode.firstChild);
 			}
 			return _insertAfter(node, cn[position-1]);
@@ -284,8 +285,7 @@ if(dojo.isIE || dojo.isOpera){
 	}else{
 		gcs = function(node){
 			return node instanceof Element ? 
-				node.ownerDocument.defaultView.getComputedStyle(node, null) 
-				: {};
+				node.ownerDocument.defaultView.getComputedStyle(node, null) : {};
 		};
 	}
 	dojo.getComputedStyle = gcs;
@@ -295,7 +295,7 @@ if(dojo.isIE || dojo.isOpera){
 			// style values can be floats, client code may want
 			// to round for integer pixels.
 			return parseFloat(value) || 0; 
-		}
+		};
 	}else{
 		dojo._toPixelValue = function(element, avalue){
 			if(!avalue){ return 0; }
@@ -411,8 +411,8 @@ if(dojo.isIE || dojo.isOpera){
 			}
 			if(type == "fontweight"){
 				switch(value){
-					case 400: return "normal";
 					case 700: return "bold";
+					case 400:
 					default: return "normal";
 				}
 			}

@@ -405,7 +405,6 @@ if(dojo.isIE || dojo.isOpera){
 	var _toStyleValue = function(node, type, value){
 		type = type.toLowerCase(); // FIXME: should we really be doing string case conversion here? Should we cache it? Need to profile!
 		if(d.isIE){
-			console.debug(type, value, typeof value);
 			if(value == "auto"){
 				if(type == "height"){ return node.offsetHeight; }
 				if(type == "width"){ return node.offsetWidth; }

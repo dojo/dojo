@@ -259,7 +259,8 @@ if(dojo.isIE || dojo.isOpera){
 
 	// Although we normally eschew argument validation at this
 	// level, here we test argument 'node' for (duck)type.
-	// Argument node must also implement Element.
+	// Argument node must also implement Element.  (Note: we check
+	// against HTMLElement rather than Element for interop with prototype.js)
 	// Because 'document' is the 'parentNode' of 'body'
 	// it is frequently sent to this function even 
 	// though it is not Element.
@@ -267,7 +268,7 @@ if(dojo.isIE || dojo.isOpera){
 	if(d.isSafari){
 		gcs = function(/*DomNode*/node){
 			var s;
-			if (node instanceof Element) {
+			if(node instanceof HTMLElement){
 				var dv = node.ownerDocument.defaultView;
 				s = dv.getComputedStyle(node, null);
 				if(!s && node.style){ 
@@ -284,7 +285,7 @@ if(dojo.isIE || dojo.isOpera){
 		};
 	}else{
 		gcs = function(node){
-			return node instanceof Element ? 
+			return node instanceof HTMLElement ? 
 				node.ownerDocument.defaultView.getComputedStyle(node, null) : {};
 		};
 	}
@@ -1249,8 +1250,9 @@ if(dojo.isIE || dojo.isOpera){
 			if(prop){
 				return node[prop];
 			}else{
-				var value = node[name];
-				return (typeof value == 'boolean' || typeof value == 'function') ? value : (d.hasAttr(node, name) ? node.getAttribute(name) : null);
+				var attrValue = node[name];
+				return (typeof attrValue == 'boolean' || typeof attrValue == 'function') ? attrValue
+					: (d.hasAttr(node, name) ? node.getAttribute(name) : null);
 			}
 		}
 	}

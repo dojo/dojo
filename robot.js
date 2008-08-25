@@ -37,7 +37,7 @@ dojo.mixin(doh.robot,{
 		}, delay);
 	},
 
-	mouseMoveAt : function(/*String||DOMNode||Function*/ node, /*Integer, optional*/ delay, /*Number, optional*/ offsetX, /*Number, optional*/ offsetY, /*Integer, optional*/ duration){
+	mouseMoveAt : function(/*String||DOMNode||Function*/ node, /*Integer, optional*/ delay, /*Integer, optional*/ duration, /*Number, optional*/ offsetX, /*Number, optional*/ offsetY){
 		// summary:
 		//		Moves the mouse over the specified node at the specified relative x,y offset.
 		//
@@ -59,15 +59,15 @@ dojo.mixin(doh.robot,{
 		//			doh.mouseClick({left:true}, 100) // first call; wait 100ms
 		//			doh.typeKeys("dij", 500) // 500ms AFTER previous call; 600ms in all
 		//
+		// duration:
+		//		Approximate time Robot will spend moving the mouse
+		//		The default is 100ms.
+		//
 		// offsetX:
 		//		x offset relative to the node, in pixels, to move the mouse. The default is half the node's width.
 		//
 		// offsetY:
 		//		y offset relative to the node, in pixels, to move the mouse. The default is half the node's height.
-		//
-		// duration:
-		//		Approximate time Robot will spend moving the mouse
-		//		The default is 100ms.
 		//
 
 		doh.robot._assertRobot();

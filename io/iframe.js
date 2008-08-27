@@ -1,8 +1,8 @@
 dojo.provide("dojo.io.iframe");
 
 /*=====
-dojo.declare("dojo.io.iframe.__ioArgs", [dojo.__IoArgs], {
-	constructor: function(kwArgs){
+dojo.declare("dojo.io.iframe.__ioArgs", dojo.__IoArgs, {
+	constructor: function(){
 		//	summary:
 		//		All the properties described in the dojo.__ioArgs type, apply
 		//		to this type. The following additional properties are allowed
@@ -32,9 +32,9 @@ dojo.declare("dojo.io.iframe.__ioArgs", [dojo.__IoArgs], {
 		//		"value1". If there is not a "form" property, then the content
 		//		object is converted into a name=value&name=value string, by
 		//		using dojo.objectToQuery().
-		this.method = kwArgs.method;
-		this.handleAs = kwArgs.handleAs;
-		this.content = kwArgs.content;
+		this.method = method;
+		this.handleAs = handleAs;
+		this.content = content;
 	}
 });
 =====*/

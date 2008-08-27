@@ -19,7 +19,19 @@ dojo._listener = {
 			// return value comes from original target function
 			var r = t && t.apply(this, arguments);
 			// make local copy of listener array so it is immutable during processing
-			var lls = [].concat(ls);
+			var lls;
+			if(!dojo.isRhino){
+				lls = [].concat(ls);
+			}else{
+				// FIXME: in Rhino, using concat on a sparse Array results in a dense Array.
+				// IOW, if an array A has elements [0, 2, 4], then under Rhino, "concat [].A"
+				// results in [0, 1, 2, 3, 4], where element 1 and 3 have value 'undefined'
+				// "A.slice(0)" has the same behavior.
+				lls = [];
+				for(var i in ls){
+					lls[i] = ls[i];
+				}
+			}
 			// invoke listeners after target function
 			for(var i in lls){
 				if(!(i in ap)){
@@ -67,7 +79,7 @@ dojo._listener = {
 		var f = (source||dojo.global)[method];
 		// remember that handle is the index+1 (0 is not a valid handle)
 		if(f && f._listeners && handle--){
-			delete f._listeners[handle]; 
+			delete f._listeners[handle];
 		}
 	}
 };

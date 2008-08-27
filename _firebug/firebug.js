@@ -59,14 +59,17 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		|	var djConfig = {isDebug: true, popup:true };
 	// example:
 	//		Option for console height (ignored for popup)
-	//		|	var djConfig = {isDebug: true, debugHeight:100 };
+	//		|	var djConfig = {isDebug: true, debugHeight:100 }
+
 
 if(	
-   !dojo.isFF || 									// if not Firefox, there's no firebug
+   !dojo.config.useCustomLogger &&
+   !dojo.isAIR &&									// isDebug triggers AIRInsector, not Firebug
+   (!dojo.isFF || 									// if not Firefox, there's no firebug
 	(dojo.isFF && !("console" in window)) || 		// Firefox, but Firebug is not installed.
 	(dojo.isFF && !(window.loadFirebugConsole || console.firebug)) && 	// Firefox, but Firebug is disabled (1.2 check, 1.0 check)
 	!dojo.config.noFirebugLite						// Deprecated: Should be isDebug=false
-){
+)){
 	
 (function(){
 	// don't build firebug in iframes
@@ -1137,7 +1140,7 @@ if(
 		
 	//*************************************************************************************
 	
-	window.onerror = onError;
+	//window.onerror = onError;
 	
 	addEvent(document, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
 	

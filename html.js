@@ -114,7 +114,8 @@ dojo.require("dojo.parser");
 			id: "",
 
 			// cleanContent: Boolean
-			//		Should the content be cleaned/made safe before injection (e.g by removing doctype, title elems)
+			//		Should the content be treated as a full html document, 
+			// 		and the real content stripped of <html>, <body> wrapper before injection
 			cleanContent: false,
 			
 			// extractContent: Boolean
@@ -124,10 +125,6 @@ dojo.require("dojo.parser");
 			// parseContent: Boolean
 			//		Should the node by passed to the parser after the new content is set
 			parseContent: false,
-			
-			// parseOnLoad: Boolean
-			//		synonym for parseContent (for 1:1 with ContentPane)
-			parseOnLoad: false,
 			
 			// lifecyle methods
 			constructor: function(/* Object */params, /* String|DomNode */node){
@@ -140,7 +137,7 @@ dojo.require("dojo.parser");
 
 				// give precedence to params.node vs. the node argument
 				// and ensure its a node, not an id string
-				var node = this.node = dojo.byId( this.node || node );
+				node = this.node = dojo.byId( this.node || node );
 	
 				if(!this.id){
 					this.id = [
@@ -228,8 +225,8 @@ dojo.require("dojo.parser");
 				// summary
 				//		Called after set(), when the new content has been pushed into the node
 				//		It provides an opportunity for post-processing before handing back the node to the caller
-				// 		This default implementation checks a parseContent or parseOnLoad flag to optionally run the dojo parser over the new content
-				if(this.parseContent || this.parseOnLoad){
+				// 		This default implementation checks a parseContent flag to optionally run the dojo parser over the new content
+				if(this.parseContent){
 					// populates this.parseResults if you need those..
 					this._parse();
 				}
@@ -287,7 +284,7 @@ dojo.require("dojo.parser");
 				if(consoleText){
 					console.error(consoleText, err);
 				}else if(errText){ // a empty string won't change current content
-					dojo.html._setNodeContent(this.domNode, errText, true);
+					dojo.html._setNodeContent(this.node, errText, true);
 				}
 			}
 	}); // end dojo.declare()

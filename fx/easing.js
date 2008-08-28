@@ -35,13 +35,13 @@ dojo.fx.easing = {
 	},
 
 	quadOut: function(/* Decimal? */n){
-		return n * (n-2) * -1;
+		return n * (n - 2) * -1;
 	},
 
 	quadInOut: function(/* Decimal? */n){
-		n=n*2;
-		if(n<1){ return Math.pow(n, 2) / 2; }
-		return -1 * ((--n)*(n-2) - 1) / 2;
+		n = n * 2;
+		if(n < 1){ return Math.pow(n, 2) / 2; }
+		return -1 * ((--n) * (n - 2) - 1) / 2;
 	},
 
 	cubicIn: function(/* Decimal? */n){
@@ -49,13 +49,13 @@ dojo.fx.easing = {
 	},
 
 	cubicOut: function(/* Decimal? */n){
-		return Math.pow(n-1, 3) + 1;
+		return Math.pow(n - 1, 3) + 1;
 	},
 
 	cubicInOut: function(/* Decimal? */n){
-		n=n*2;
-		if(n<1){ return Math.pow(n, 3) / 2; }
-		n-=2;
+		n = n * 2;
+		if(n < 1){ return Math.pow(n, 3) / 2; }
+		n -= 2;
 		return (Math.pow(n, 3) + 2) / 2;
 	},
 
@@ -64,14 +64,14 @@ dojo.fx.easing = {
 	},
 
 	quartOut: function(/* Decimal? */n){
-		return -1 * (Math.pow(n-1, 4) - 1);
+		return -1 * (Math.pow(n - 1, 4) - 1);
 	},
 
 	quartInOut: function(/* Decimal? */n){
-		n=n*2;
-		if(n<1){ return Math.pow(n, 4) / 2; }
-		n-=2;
-		return -1/2 * (Math.pow(n, 4) - 2);
+		n = n * 2;
+		if(n < 1){ return Math.pow(n, 4) / 2; }
+		n -= 2;
+		return -1 / 2 * (Math.pow(n, 4) - 2);
 	},
 
 	quintIn: function(/* Decimal? */n){
@@ -79,34 +79,34 @@ dojo.fx.easing = {
 	},
 
 	quintOut: function(/* Decimal? */n){
-		return Math.pow(n-1, 5) + 1;
+		return Math.pow(n - 1, 5) + 1;
 	},
 
 	quintInOut: function(/* Decimal? */n){
-		n=n*2;
-		if(n<1){ return Math.pow(n, 5) / 2; };
-		n-=2;
+		n = n * 2;
+		if(n < 1){ return Math.pow(n, 5) / 2; };
+		n -= 2;
 		return (Math.pow(n, 5) + 2) / 2;
 	},
 
 	sineIn: function(/* Decimal? */n){
-		return -1 * Math.cos(n * (Math.PI/2)) + 1;
+		return -1 * Math.cos(n * (Math.PI / 2)) + 1;
 	},
 
 	sineOut: function(/* Decimal? */n){
-		return Math.sin(n * (Math.PI/2));
+		return Math.sin(n * (Math.PI / 2));
 	},
 
 	sineInOut: function(/* Decimal? */n){
-		return -1 * (Math.cos(Math.PI*n) - 1) / 2;
+		return -1 * (Math.cos(Math.PI * n) - 1) / 2;
 	},
 
 	expoIn: function(/* Decimal? */n){
-		return (n==0) ? 0 : Math.pow(2, 10 * (n - 1));
+		return (n == 0) ? 0 : Math.pow(2, 10 * (n - 1));
 	},
 
 	expoOut: function(/* Decimal? */n){
-		return (n==1) ? 1 : (-1 * Math.pow(2, -10 * n) + 1);
+		return (n == 1) ? 1 : (-1 * Math.pow(2, -10 * n) + 1);
 	},
 
 	expoInOut: function(/* Decimal? */n){
@@ -123,7 +123,7 @@ dojo.fx.easing = {
 	},
 
 	circOut: function(/* Decimal? */n){
-		n = n-1;
+		n = n - 1;
 		return Math.sqrt(1 - Math.pow(n, 2));
 	},
 
@@ -135,12 +135,14 @@ dojo.fx.easing = {
 	},
 
 	backIn: function(/* Decimal? */n){
+		// summary: An easing function that starts away from the target, and 
+		//		quickly accelerates towards the end value
 		var s = 1.70158;
 		return Math.pow(n, 2) * ((s + 1) * n - s);
 	},
 
 	backOut: function(/* Decimal? */n){
-		// summary: an easing function that pops past the range briefly, and 
+		// summary: An easing function that pops past the range briefly, and 
 		// 	slowly comes back. 
 		n = n - 1;
 		var s = 1.70158;
@@ -148,14 +150,16 @@ dojo.fx.easing = {
 	},
 
 	backInOut: function(/* Decimal? */n){
+		// summary: An easing function combining the effects of backIn and backOut
 		var s = 1.70158 * 1.525;
 		n = n * 2;
-		if(n < 1){ return (Math.pow(n, 2)*((s+1)*n - s)) / 2; }
+		if(n < 1){ return (Math.pow(n, 2) * ((s + 1) * n - s)) / 2; }
 		n-=2;
 		return (Math.pow(n, 2) * ((s + 1) * n + s) + 2) / 2;
 	},
 
 	elasticIn: function(/* Decimal? */n){
+		// summary: An easing function the elastically snaps from the start value
 		if(n == 0 || n == 1){ return n; }
 		var p = .3;
 		var s = p / 4;

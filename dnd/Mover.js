@@ -78,7 +78,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		}
 		this.marginBox.l = l - this.marginBox.l;
 		this.marginBox.t = t - this.marginBox.t;
-		if(h && h.onMoveStart){
+		if(h && h.onFirstMove){
 			h.onFirstMove(this);
 		}
 		dojo.disconnect(this.events.pop());

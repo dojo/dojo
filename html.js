@@ -12,10 +12,10 @@ dojo.require("dojo.parser");
 		// summary:
 		//		removes !DOCTYPE and title elements from the html string.
 		// 
-		// 		khtml is picky about dom faults, you can't attach a style or <title> node as child of body
-		// 		must go into head, so we need to cut out those tags
+		//		khtml is picky about dom faults, you can't attach a style or <title> node as child of body
+		//		must go into head, so we need to cut out those tags
 		//	cont:
-		// 		An html string for insertion into the dom
+		//		An html string for insertion into the dom
 		//	
 		return cont.replace(/(?:\s*<!DOCTYPE\s[^>]+>|<title[^>]*>[\s\S]*?<\/title>)/ig, ""); // String
 	};
@@ -39,12 +39,12 @@ dojo.require("dojo.parser");
 		//		the parent element
 		//	content:
 		//		the content to be set on the parent element. 
-		// 		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
+		//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
 		// shouldEmptyFirst
-		// 		if shouldEmptyFirst is true, the node will first be emptied of all content before the new content is inserted
-		// 		defaults to false
+		//		if shouldEmptyFirst is true, the node will first be emptied of all content before the new content is inserted
+		//		defaults to false
 		if(shouldEmptyFirst){
-			dojo.html._emptyNode(node);	
+			dojo.html._emptyNode(node); 
 		}
 
 		if(typeof cont == "string"){
@@ -108,14 +108,14 @@ dojo.require("dojo.parser");
 			// content: String|DomNode|DomNode[]
 			//		The content to be placed in the node. Can be an HTML string, a node reference, or a enumerable list of nodes
 			content: "",
-        	
+			
 			// id: String?
 			//		Usually only used internally, and auto-generated with each instance 
 			id: "",
 
 			// cleanContent: Boolean
 			//		Should the content be treated as a full html document, 
-			// 		and the real content stripped of <html>, <body> wrapper before injection
+			//		and the real content stripped of <html>, <body> wrapper before injection
 			cleanContent: false,
 			
 			// extractContent: Boolean
@@ -132,7 +132,7 @@ dojo.require("dojo.parser");
 				//		Provides a configurable, extensible object to wrap the setting on content on a node
 				//		call the set() method to actually set the content..
  
-                // the original params are mixed directly into the instance "this"
+				// the original params are mixed directly into the instance "this"
 				dojo.mixin(this, params || {});
 
 				// give precedence to params.node vs. the node argument
@@ -151,26 +151,26 @@ dojo.require("dojo.parser");
 					new Error(this.declaredClass + ": no node provided to " + this.id);
 				}
 			},
-        	set: function(/* String|DomNode|NodeList? */ cont, /* Object? */ params){
+			set: function(/* String|DomNode|NodeList? */ cont, /* Object? */ params){
 				// summary:
 				//		front-end to the set-content sequence 
 				//	cont:
-				// 		An html string, node or enumerable list of nodes for insertion into the dom
-				// 		If not provided, the object's content property will be used
+				//		An html string, node or enumerable list of nodes for insertion into the dom
+				//		If not provided, the object's content property will be used
 				if(undefined !== cont){
 					this.content = cont;
 				}
 				// in the re-use scenario, set needs to be able to mixin new configuration
 				if(params){
-    				this._mixin(params);
+					this._mixin(params);
 				}
-	
+
 				this.onBegin();
 				this.setContent();
 				this.onEnd();
 
 				return this.node;
-    	    },
+			},
 			setContent: function(){
 				// summary:
 				//		sets the content on the node 
@@ -194,12 +194,34 @@ dojo.require("dojo.parser");
 				// always put back the node for the next method
 				this.node = node; // DomNode
 			},
+			
+			empty: function() {
+				// summary
+				//	cleanly empty out existing content
+
+				// destroy any widgets from a previous run
+				// NOTE: if you dont want this you'll need to empty 
+				// the parseResults array property yourself to avoid bad things happenning
+				if(this.parseResults && this.parseResults.length) {
+					dojo.forEach(this.parseResults, function(w) {
+						if(w.destroy){
+							w.destroy();
+						}
+					});
+					delete this.parseResults;
+				}
+				// this is fast, but if you know its already empty or safe, you could 
+				// override empty to skip this step
+				dojo.html._emptyNode(this.node);
+			},
 	
 			onBegin: function(){
 				// summary
 				//		Called after instantiation, but before set(); 
-				//		It allows modification of any of the object properties - including the node and content provided - before the set operation actually takes place
-				// 		This default implementation checks for cleanContent and extractContent flags to optionally pre-process html string content
+				//		It allows modification of any of the object properties 
+				//		- including the node and content provided - before the set operation actually takes place
+				//		This default implementation checks for cleanContent and extractContent flags to 
+				//		optionally pre-process html string content
 				var cont = this.content;
 	
 				if(dojo.isString(cont)){
@@ -212,11 +234,10 @@ dojo.require("dojo.parser");
 						if(match){ cont = match[1]; }
 					}
 				}
-				// cleanly empty out existing content
-				// this is fast, but if you know its empty or safe, you could 
-				// override onBegin to skip this step
-				dojo.html._emptyNode(this.node);
-	
+
+				// clean out the node and any cruft associated with it - like widgets
+				this.empty();
+				
 				this.content = cont;
 				return this.node; /* DomNode */
 			},
@@ -225,7 +246,7 @@ dojo.require("dojo.parser");
 				// summary
 				//		Called after set(), when the new content has been pushed into the node
 				//		It provides an opportunity for post-processing before handing back the node to the caller
-				// 		This default implementation checks a parseContent flag to optionally run the dojo parser over the new content
+				//		This default implementation checks a parseContent flag to optionally run the dojo parser over the new content
 				if(this.parseContent){
 					// populates this.parseResults if you need those..
 					this._parse();
@@ -234,12 +255,12 @@ dojo.require("dojo.parser");
 			},
 	
 			tearDown: function(){
-			    // summary
-			    //      manually reset the Setter instance if its being re-used for example for another set()
+				// summary
+				//		manually reset the Setter instance if its being re-used for example for another set()
 				// description
-				//      tearDown() is not called automatically. 
-				//      In normal use, the Setter instance properties are simply allowed to fall out of scope
-				//      but the tearDown method can be called to explicitly reset this instance.
+				//		tearDown() is not called automatically. 
+				//		In normal use, the Setter instance properties are simply allowed to fall out of scope
+				//		but the tearDown method can be called to explicitly reset this instance.
 				delete this.parseResults; 
 				delete this.node; 
 				delete this.content; 
@@ -264,8 +285,8 @@ dojo.require("dojo.parser");
 			},
 			_parse: function(){
 				// summary: 
-				// 		runs the dojo parser over the node contents, storing any results in this.parseResults
-				// 		Any errors resulting from parsing are passed to _onError for handling
+				//		runs the dojo parser over the node contents, storing any results in this.parseResults
+				//		Any errors resulting from parsing are passed to _onError for handling
 
 				var rootNode = this.node;
 				try{
@@ -278,8 +299,8 @@ dojo.require("dojo.parser");
   
 			_onError: function(type, err, consoleText){
 				// summary:
-				// 		shows user the string that is returned by on[type]Error
-				// 		overide/implement on[type]Error and return your own string to customize
+				//		shows user the string that is returned by on[type]Error
+				//		overide/implement on[type]Error and return your own string to customize
 				var errText = this['on' + type + 'Error'].call(this, err);
 				if(consoleText){
 					console.error(consoleText, err);
@@ -296,11 +317,11 @@ dojo.require("dojo.parser");
 			//		the parent element that will receive the content
 			//	cont:
 			//		the content to be set on the parent element. 
-			// 		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
-			// 	params: 
-			// 		Optional flags/properties to configure the content-setting. See dojo.html._ContentSetter
-			// 	example:
-			// 		A safe string/node/nodelist content replacement/injection with hooks for extension
+			//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
+			//	params: 
+			//		Optional flags/properties to configure the content-setting. See dojo.html._ContentSetter
+			//	example:
+			//		A safe string/node/nodelist content replacement/injection with hooks for extension
 			//		Example Usage: 
 			//		dojo.html.set(node, "some string"); 
 			//		dojo.html.set(node, contentNode, {options}); 
@@ -313,8 +334,8 @@ dojo.require("dojo.parser");
 			// more options but slower
 			// note the arguments are reversed in order, to match the convention for instantiation via the parser
 			var op = new dojo.html._ContentSetter(dojo.mixin( 
-			        params, 
-			        { content: cont, node: node } 
+					params, 
+					{ content: cont, node: node } 
 			));
 			return op.set();
 		}

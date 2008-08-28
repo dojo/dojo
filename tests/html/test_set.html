@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
+		"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 	<title>dojo.html.set test</title>
@@ -7,12 +7,10 @@
 	<script src='../../dojo.js' djConfig='isDebug:true, parseOnLoad:false'></script>
 	<script src='../../html.js'></script>
 	<script src='../../../util/doh/runner.js'></script>
-	<script type="text/javascript">console.log("doh runner loaded");</script>
 	<script>
 		dojo.require('doh.runner');
 		dojo.require('dojo.html');
 		dojo.require('dojo.NodeList-html');
-		console.log("requires done");
 
 		/* test goals
 		 * injecting content as string, node, nodelist. 
@@ -35,13 +33,12 @@
 		});
 		dojo.declare("dojo.html.test.DeclarativeContentSetter", dojo.html._ContentSetter, {
 			postscript: function() {
-			    this.set();
+				this.set();
 			}
 		});
 		
 		
 		dojo.addOnLoad(function(){
-			console.log("starting addOnLoad");
 
 			function ieTrimSpaceBetweenTags(str){
 				return str.replace(/(<[a-z]*[^>]*>)\s*/ig, "$1");
@@ -54,8 +51,7 @@
 					{
 						name: 'set',
 						runTest: function(t){
-							window.currentTest = "basicChecks set";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							targetNode = dojo.byId("pane1");
 							var msg = "Simple No-params Test";
 							var result = "";
@@ -69,8 +65,7 @@
 					{
 						name: 'setContentWithOnEnd',
 						runTest: function(t){
-							window.currentTest = "basicChecks setContentWithOnEnd";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							targetNode = dojo.byId("pane1");
 							var msg = "setContentWithOnEnd Test";
 							var result = false;
@@ -79,7 +74,6 @@
 								msg, 
 								{
 									onEnd: function() {
-										console.log("in custom onEnd");
 										dojo.getObject(this.declaredClass).prototype.onEnd.call(this);
 										result = true;
 									}
@@ -92,8 +86,7 @@
 					{
 						name: 'setContent_with_parsing',
 						runTest: function(t){
-							window.currentTest = "basicChecks setContent_with_parsing";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							var cont = '<div dojoType="dojo.html.test.SimpleThing" jsId="ifrs" data="{}"></div>';
 							dojo.html.set(
 								dojo.byId("pane1"),
@@ -113,8 +106,7 @@
 					{
 						name: 'emptyElement',
 						runTest: function(t){
-							window.currentTest = "basicChecks emptyElement";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							var msg = "setContentWithOnEnd Test";
 							var node = dojo.byId("pane1");
 							node.innerHTML = '<div><span>just</span>some test<br/></div>text';
@@ -129,8 +121,7 @@
 					{
 						name: 'changeContentTRHead',
 						runTest: function(t){
-							window.currentTest = "basicChecks changeContentTRHead";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							targetNode = dojo.query('table#tableTest > thead > tr')[0];
 							
 							var html = "<td><div>This</div>Should<u>Work</u></td>";
@@ -151,8 +142,7 @@
 					{
 						name: 'changeContentTHead',
 						runTest: function(t){
-							window.currentTest = "basicChecks changeContentTHead";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							targetNode = dojo.query('table#tableTest > thead')[0];
 
 							var html = "<tr><td><div>This</div>Should<u>Work</u></td></tr>";
@@ -173,8 +163,7 @@
 					{
 						name: 'changeContentTRBody',
 						runTest: function(t){
-							window.currentTest = "basicChecks changeContentTRBody";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							targetNode = dojo.query('table#tableTest > tbody > tr')[0];
 							var html = "<td><div>This</div>Should<u>Work</u></td>";
 							dojo.html.set(
@@ -193,8 +182,7 @@
 					{
 						name: 'changeContentTBody',
 						runTest: function(t){
-							window.currentTest = "basicChecks changeContentTBody";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							targetNode = dojo.query('table#tableTest > tbody')[0];
 							var html = "<tr><td><div>This</div>Should<u>Work</u></td></tr>";
 							dojo.html.set(
@@ -212,8 +200,7 @@
 					{
 						name: 'changeContentTable',
 						runTest: function(t){
-							window.currentTest = "basicChecks changeContentTable";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							targetNode = dojo.query('table#tableTest')[0];
 							var html = "<tbody><tr><td><div>This</div>Should<u>Work</u></td></tr></tbody>";
 							dojo.html.set(
@@ -231,23 +218,22 @@
 					{
 						name: 'extractContent',
 						runTest: function(t){
-							window.currentTest = "basicChecks extractContent";
-							console.log("running " + currentTest);
+							console.log("basicChecks: " + this.name);
 							targetNode = dojo.byId("pane1");
 							var html = ''
 							+'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">'
-							+'<html>                                            '
-							+'	<head>                                          '
-							+'		<title>                                     '
-							+'			the title                                    '
-							+'		</title>                                    '
-							+'	</head>                                         '
-							+'	<body>                                          '
-							+'		<p>                                         '
-							+'			This is the <b>Good Stuff</b><br>       '
-							+'		</p>                                        '
-							+'	</body>                                         '
-							+'</html>                                           ';
+							+'<html>											'
+							+'	<head>											'
+							+'		<title>										'
+							+'			the title									 '
+							+'		</title>									'
+							+'	</head>											'
+							+'	<body>											'
+							+'		<p>											'
+							+'			This is the <b>Good Stuff</b><br>		'
+							+'		</p>										'
+							+'	</body>											'
+							+'</html>											';
 							
 							dojo.html.set(
 								targetNode, html, 
@@ -267,8 +253,7 @@
 					{
 						name: 'nodelistHtml',
 						runTest: function(t){
-							window.currentTest = "nodelistExtension nodelistHtml";
-							console.log("running " + currentTest);
+							console.log("nodelistExtension: " + this.name);
 
 							dojo.query(".zork").html("<li dojoType='dojo.html.test.ParserInstantiateTester'>1</li><li dojoType='dojo.html.test.ParserInstantiateTester'>2</li><li dojoType='dojo.html.test.ParserInstantiateTester'>3</li>", 
 							{ 
@@ -301,8 +286,7 @@
 					{
 						name: 'contentOpFromMarkup',
 						runTest: function(t){
-							window.currentTest = "fromMarkup contentOpFromMarkup";
-							console.log("running " + currentTest);
+							console.log("fromMarkup: " + this.name);
 
 							dojo.parser.parse("markupSetContentOp");
 							t.assertTrue(dojo.byId("markupPane").innerHTML == "markupSetContentOp: new node content");
@@ -314,8 +298,7 @@
 					{
 						name: 'extendedContentOpFromMarkup',
 						runTest: function(t){
-							window.currentTest = "fromMarkup extendedSetMethod";
-							console.log("running " + currentTest);
+							console.log("fromMarkup: " + this.name);
 
 							dojo.parser.parse("markupSetContentOpX");
 
@@ -330,8 +313,7 @@
 					{
 						name: 'ContentSetterReUse',
 						runTest: function(t){
-							window.currentTest = "reuse ContentSetterReUser";
-							console.log("running " + currentTest);
+							console.log("fromMarkup: " + this.name);
 
 							targetNode = dojo.byId('pane1');
 							var args = [
@@ -431,13 +413,13 @@
 	</div>
 	<div id="markupSetContentOpX">
 		<div dojoType="dojo.html.test.DeclarativeContentSetter" jsId="markupSetContentOpX_setter" node="markupPane" content="markupSetContentOpX: new node content">
-    	<script type="dojo/method" event="onBegin">
+		<script type="dojo/method" event="onBegin">
 			this.content = this.content.toUpperCase();
 			console.log(this.id + ", made my content look like this:" + this.content);
-    	</script>
+		</script>
 		<script type="dojo/method" event="onFoo">
-		    console.log("dojo/method supplied onBegin");
-	    	this.content = this.content.toUpperCase();
+			console.log("dojo/method supplied onBegin");
+			this.content = this.content.toUpperCase();
 		</script>
 		</div>
 	</div>

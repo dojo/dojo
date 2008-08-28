@@ -316,7 +316,7 @@ dojo.require("dojo._base.array");
 			//			* "after"
 			// 		or an offset in the childNodes property
 			var item = d.query(queryOrNode)[0];
-			return this.forEach(function(i){ d.place(i, item, (position||"last")); }); // dojo.NodeList
+			return this.forEach(function(i){ d.place(i, item, position); }); // dojo.NodeList
 		},
 
 		orphan: function(/*String?*/ simpleFilter){

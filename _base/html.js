@@ -159,24 +159,20 @@ if(dojo.isIE || dojo.isOpera){
 		//		"first" and "last" indicate positions as children of refNode.
 
 		// FIXME: need to write tests for this!!!!
-		if(!node || !refNode || position === undefined){ 
+		if(!node || !refNode){
 			return false;	//	boolean 
 		}
 		node = d.byId(node);
 		refNode = d.byId(refNode);
 		if(typeof position == "number"){
 			var cn = refNode.childNodes;
-			if((!position && !cn.length) ||
-				cn.length == position){
+			if(!cn.length || cn.length <= position){
 				refNode.appendChild(node);
 				return true;
 			}
-			if(!position){
-				return _insertBefore(node, refNode.firstChild);
-			}
-			return _insertAfter(node, cn[position-1]);
+			return _insertBefore(node, position <= 0 ? refNode.firstChild : cn[position]);
 		}
-		switch(position.toLowerCase()){
+		switch(position){
 			case "before":
 				return _insertBefore(node, refNode);	//	boolean
 			case "after":

@@ -139,7 +139,7 @@ if(dojo.isIE || dojo.isOpera){
 		return true;	//	boolean
 	}
 
-	dojo.place = function(/*String|DomNode*/node, /*String|DomNode*/refNode, /*String|Number*/position){
+	dojo.place = function(/*String|DomNode*/node, /*String|DomNode*/refNode, /*String?|Number?*/position){
 		//	summary:
 		//		Attempt to insert node into the DOM, choosing from various positioning options.
 		//		Returns true if successful, false otherwise.
@@ -156,7 +156,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		* first
 		//		* last
 		//
-		//		"first" and "last" indicate positions as children of refNode.
+		//		"first" and "last" indicate positions as children of refNode.  position defaults
+		//		to "last" if not specified
 
 		// FIXME: need to write tests for this!!!!
 		if(!node || !refNode){

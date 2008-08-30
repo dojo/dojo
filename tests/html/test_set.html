@@ -259,26 +259,47 @@
 							{ 
 								parseContent: true, 
 								onBegin: function() {
-									this.content = this.content.replace(/([0-9])/g, this.id + ": $1");
-									dojo.getObject(this.declaredClass).prototype.onBegin.call(this);
+									this.content = this.content.replace(/([0-9])/g, "MOOO");
+									this.inherited("onBegin", arguments);
 								}
 							}).removeClass("notdone").addClass("done");
 							
 							var liNodes = dojo.query(".zork > li");
 							
+							// test to make sure three li's were added to class="zork" node (3x 3 set li's)
+							t.assertEqual(9, liNodes.length);
+
 							// test the innerHTML's got replaced in our onBegin
-							t.assertTrue( liNodes.every(function(n) { return n.innerHTML.match(/SetContent/) }) ); 
+							t.assertTrue( liNodes.every(function(n) { return n.innerHTML.match(/MOOO/) }) ); 
 							console.log(this.name + ": innerHTML.match subtest was ok");
+							
 							// test the parent elements got the correct className
 							t.assertTrue( dojo.query(".zork").every(function(n) { return n.className == "zork done"; }) );
 							console.log(this.name + ": li.className subtest was ok");
+							
 							// and test the parser correctly created object from the child nodes 
+							// ...they should all have a test attribute now
 							t.assertTrue( liNodes.every(function(n) { return n.getAttribute("test") == "ok"; }) );
-							console.log(this.name + ": Tester instantiation subtest was ok");
+							console.log(this.name + ": Tester instantiation subtest(getAttribute) was ok");
 							
 						},
 						tearDown: function(){
 							// dojo.html._emptyNode(targetNode);
+						}
+					}, 
+					{
+						name: "nodeListSimple",
+						runTest: function(t){
+							var txt = "foo";
+							dojo.query("#simpleText").html("<p>"+txt+"</p>");
+
+							// check if its there at all
+							var len = dojo.query("#simpleText p").length;
+							t.assertEqual(1, len);
+							
+							// check the inner html is right:
+							var p = dojo.query("#simpleText p")[0];
+							t.assertTrue( p && p.innerHTML == txt );
 						}
 					}
 				]);
@@ -431,5 +452,6 @@
 			</script>
 		</div>
 	</div>
+	<h1 id="simpleText">test</h1>
 </body>
 </html>

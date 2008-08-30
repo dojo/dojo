@@ -176,7 +176,9 @@ dojo.require("dojo.parser");
 				//		sets the content on the node 
 
 				var node = this.node; 
-
+				if(!node) {
+					console.error("setContent given no node");
+				}
 				try{
 					node = dojo.html._setNodeContent(node, this.content);
 				}catch(e){
@@ -326,7 +328,10 @@ dojo.require("dojo.parser");
 			//		dojo.html.set(node, "some string"); 
 			//		dojo.html.set(node, contentNode, {options}); 
 			//		dojo.html.set(node, myNode.childNodes, {options}); 
-	 
+		if(undefined == cont){
+			console.warn("dojo.html.set: no cont argument provided, using empty string");
+			cont = "";
+		}	
 		if(!params){
 			// simple and fast
 			return dojo.html._setNodeContent(node, cont, true);

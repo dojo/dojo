@@ -23,14 +23,14 @@ dojo.extend(dojo.NodeList, {
 		//	| 	parseContent: true, 
 		//	| 	onBegin: function(){
 		//	| 		this.content = this.content.replace(/([0-9])/g, this.id + ": $1");
-		//	| 		dojo.content._SetContentOperation.prototype.onBegin.apply(this, []);
+		//	| 		this.inherited("onBegin", arguments);
 		//	| 	}
 		//	| }).removeClass("notdone").addClass("done");
 
-		var dhs = new dojo.html._ContentSetter(null, content, params || {});
+		var dhs = new dojo.html._ContentSetter(params || {});
 		this.forEach(function(elm){
 			dhs.node = elm; 
-			dhs.set();
+			dhs.set(content);
 			dhs.tearDown();
 		});
 		return this; // dojo.NodeList

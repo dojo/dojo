@@ -20,8 +20,13 @@ dojo._listener = {
 			var r = t && t.apply(this, arguments);
 			// make local copy of listener array so it is immutable during processing
 			var lls;
+			//>>includeStart("connectRhino", kwArgs.profileProperties.hostenvType == "rhino");
 			if(!dojo.isRhino){
+			//>>includeEnd("connectRhino");
+				//>>includeStart("connectBrowser", kwArgs.profileProperties.hostenvType != "rhino");
 				lls = [].concat(ls);
+				//>>includeEnd("connectBrowser");
+			//>>includeStart("connectRhino", kwArgs.profileProperties.hostenvType == "rhino");
 			}else{
 				// FIXME: in Rhino, using concat on a sparse Array results in a dense Array.
 				// IOW, if an array A has elements [0, 2, 4], then under Rhino, "concat [].A"
@@ -32,6 +37,8 @@ dojo._listener = {
 					lls[i] = ls[i];
 				}
 			}
+			//>>includeEnd("connectRhino");
+
 			// invoke listeners after target function
 			for(var i in lls){
 				if(!(i in ap)){

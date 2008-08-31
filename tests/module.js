@@ -20,6 +20,7 @@ try{
 	dojo.requireIf(dojo.isBrowser,"tests.cookie");
 	dojo.require("tests.fx");
 	dojo.require("tests.DeferredList");
+	dojo.require("tests.html");
 }catch(e){
 	doh.debug(e);
 }

@@ -1,8 +1,8 @@
 dojo.provide("dojo.io.script");
 
 /*=====
-dojo.declare("dojo.io.script.__ioArgs", [dojo.__IoArgs], {
-	constructor: function(kwArgs){
+dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
+	constructor: function(){
 		//	summary:
 		//		All the properties described in the dojo.__ioArgs type, apply to this
 		//		type as well, EXCEPT "handleAs". It is not applicable to
@@ -24,9 +24,9 @@ dojo.declare("dojo.io.script.__ioArgs", [dojo.__IoArgs], {
 		//		The Document object for a child iframe. If this is passed in, the script
 		//		will be attached to that document. This can be helpful in some comet long-polling
 		//		scenarios with Firefox and Opera.
-		this.callbackParamName = kwArgs.callbackParamName;
-		this.checkString = kwArgs.checkString;
-		this.frameDoc = kwArgs.frameDoc;
+		this.callbackParamName = callbackParamName;
+		this.checkString = checkString;
+		this.frameDoc = frameDoc;
 	}
 });
 =====*/

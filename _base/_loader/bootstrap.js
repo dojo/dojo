@@ -94,10 +94,10 @@ djConfig = {
 
 	if(!this["console"]){
 		this.console = {
-			log: function(){} // no-op
 		};
 	}
 
+	//	Be careful to leave 'log' always at the end
 	var cn = [
 		"assert", "count", "debug", "dir", "dirxml", "error", "group",
 		"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
@@ -108,11 +108,11 @@ djConfig = {
 		if(!console[tn]){
 			(function(){
 				var tcn = tn+"";
-				console[tcn] = function(){ 
+				console[tcn] = ('log' in console) ? function(){ 
 					var a = Array.apply({}, arguments);
 					a.unshift(tcn+":");
 					console["log"](a.join(" "));
-				}
+				} : function(){}
 			})();
 		}
 	}

@@ -1,17 +1,187 @@
 ({
+	"field-dayperiod": "Tageshälfte", 
+	"field-minute": "Minute", 
+	"eraNames": [
+		"v. Chr.", 
+		"n. Chr."
+	], 
+	"field-weekday": "Wochentag", 
+	"days-standAlone-wide": [
+		"Sonntag", 
+		"Montag", 
+		"Dienstag", 
+		"Mittwoch", 
+		"Donnerstag", 
+		"Freitag", 
+		"Samstag"
+	], 
+	"months-standAlone-narrow": [
+		"J", 
+		"F", 
+		"M", 
+		"A", 
+		"M", 
+		"J", 
+		"J", 
+		"A", 
+		"S", 
+		"O", 
+		"N", 
+		"D"
+	], 
+	"field-era": "Epoche", 
+	"field-hour": "Stunde", 
+	"quarters-standAlone-abbr": [
+		"1. Quartal", 
+		"2. Quartal", 
+		"3. Quartal", 
+		"4. Quartal"
+	], 
+	"timeFormat-full": "HH:mm:ss v", 
+	"months-standAlone-abbr": [
+		"Januar", 
+		"Februar", 
+		"Mär", 
+		"April", 
+		"Mai", 
+		"Juni", 
+		"Jul", 
+		"Aug", 
+		"Sep", 
+		"Okt", 
+		"Nov", 
+		"Dez"
+	], 
+	"days-standAlone-narrow": [
+		"S", 
+		"M", 
+		"D", 
+		"M", 
+		"D", 
+		"F", 
+		"S"
+	], 
+	"eraAbbr": [
+		"v. Chr.", 
+		"n. Chr."
+	], 
+	"dateFormat-long": "d. MMMM yyyy", 
+	"timeFormat-medium": "HH:mm:ss", 
 	"field-zone": "Zone", 
+	"dateFormat-medium": "dd.MM.yyyy", 
+	"quarters-standAlone-wide": [
+		"1. Quartal", 
+		"2. Quartal", 
+		"3. Quartal", 
+		"4. Quartal"
+	], 
+	"dateTimeFormat": "{1} {0}", 
+	"field-year": "Jahr", 
+	"quarters-standAlone-narrow": [
+		"1", 
+		"2", 
+		"3", 
+		"4"
+	], 
+	"field-week": "Woche", 
+	"months-standAlone-wide": [
+		"Januar", 
+		"Februar", 
+		"März", 
+		"April", 
+		"Mai", 
+		"Juni", 
+		"Juli", 
+		"August", 
+		"September", 
+		"Oktober", 
+		"November", 
+		"Dezember"
+	], 
+	"timeFormat-long": "HH:mm:ss z", 
+	"months-format-abbr": [
+		"Jan", 
+		"Feb", 
+		"Mrz", 
+		"Apr", 
+		"Mai", 
+		"Jun", 
+		"Jul", 
+		"Aug", 
+		"Sep", 
+		"Okt", 
+		"Nov", 
+		"Dez"
+	], 
+	"timeFormat-short": "HH:mm", 
+	"field-month": "Monat", 
 	"quarters-format-abbr": [
 		"Q1", 
 		"Q2", 
 		"Q3", 
 		"Q4"
 	], 
-	"dateFormat-medium": "dd.MM.yyyy", 
-	"field-second": "Sekunde", 
-	"field-week": "Woche", 
+	"days-format-abbr": [
+		"So.", 
+		"Mo.", 
+		"Di.", 
+		"Mi.", 
+		"Do.", 
+		"Fr.", 
+		"Sa."
+	], 
 	"pm": "nachm.", 
-	"timeFormat-full": "HH:mm:ss v", 
-	"dateTimeFormat": "{1} {0}", 
+	"days-format-narrow": [
+		"S", 
+		"M", 
+		"D", 
+		"M", 
+		"D", 
+		"F", 
+		"S"
+	], 
+	"field-second": "Sekunde", 
+	"field-day": "Tag", 
+	"months-format-narrow": [
+		"J", 
+		"F", 
+		"M", 
+		"A", 
+		"M", 
+		"J", 
+		"J", 
+		"A", 
+		"S", 
+		"O", 
+		"N", 
+		"D"
+	], 
+	"am": "vorm.", 
+	"days-standAlone-abbr": [
+		"Sonntag", 
+		"Montag", 
+		"Dienstag", 
+		"Mittwoch", 
+		"Donnerstag", 
+		"Freitag", 
+		"Samstag"
+	], 
+	"dateFormat-short": "dd.MM.yy", 
+	"dateFormat-full": "EEEE, d. MMMM yyyy", 
+	"months-format-wide": [
+		"Januar", 
+		"Februar", 
+		"März", 
+		"April", 
+		"Mai", 
+		"Juni", 
+		"Juli", 
+		"August", 
+		"September", 
+		"Oktober", 
+		"November", 
+		"Dezember"
+	], 
 	"dateTimeAvailableFormats": [
 		"E d.", 
 		"H", 
@@ -50,96 +220,11 @@
 		"yyyy", 
 		"MMMM yyyy"
 	], 
-	"months-standAlone-narrow": [
-		"J", 
-		"F", 
-		"M", 
-		"A", 
-		"M", 
-		"J", 
-		"J", 
-		"A", 
-		"S", 
-		"O", 
-		"N", 
-		"D"
-	], 
-	"am": "vorm.", 
-	"days-standAlone-narrow": [
-		"S", 
-		"M", 
-		"D", 
-		"M", 
-		"D", 
-		"F", 
-		"S"
-	], 
-	"eraNames": [
-		"v. Chr.", 
-		"n. Chr."
-	], 
-	"field-year": "Jahr", 
-	"months-standAlone-abbr": [
-		"1", 
-		"2", 
-		"Mär", 
-		"4", 
-		"5", 
-		"6", 
-		"Jul", 
-		"Aug", 
-		"Sep", 
-		"Okt", 
-		"Nov", 
-		"Dez"
-	], 
-	"field-minute": "Minute", 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
-	"timeFormat-medium": "HH:mm:ss", 
-	"field-hour": "Stunde", 
-	"dateFormat-long": "d. MMMM yyyy", 
-	"field-day": "Tag", 
-	"field-dayperiod": "Tageshälfte", 
-	"field-month": "Monat", 
-	"dateFormat-short": "dd.MM.yy", 
-	"months-format-wide": [
-		"Januar", 
-		"Februar", 
-		"März", 
-		"April", 
-		"Mai", 
-		"Juni", 
-		"Juli", 
-		"August", 
-		"September", 
-		"Oktober", 
-		"November", 
-		"Dezember"
-	], 
-	"field-era": "Epoche", 
-	"timeFormat-short": "HH:mm", 
-	"months-format-abbr": [
-		"Jan", 
-		"Feb", 
-		"Mrz", 
-		"Apr", 
-		"Mai", 
-		"Jun", 
-		"Jul", 
-		"Aug", 
-		"Sep", 
-		"Okt", 
-		"Nov", 
-		"Dez"
-	], 
-	"eraAbbr": [
-		"v. Chr.", 
-		"n. Chr."
+	"quarters-format-wide": [
+		"1. Quartal", 
+		"2. Quartal", 
+		"3. Quartal", 
+		"4. Quartal"
 	], 
 	"days-format-wide": [
 		"Sonntag", 
@@ -150,22 +235,8 @@
 		"Freitag", 
 		"Samstag"
 	], 
-	"timeFormat-long": "HH:mm:ss z", 
-	"quarters-format-wide": [
-		"1. Quartal", 
-		"2. Quartal", 
-		"3. Quartal", 
-		"4. Quartal"
-	], 
-	"dateFormat-full": "EEEE, d. MMMM yyyy", 
-	"days-format-abbr": [
-		"So.", 
-		"Mo.", 
-		"Di.", 
-		"Mi.", 
-		"Do.", 
-		"Fr.", 
-		"Sa."
-	], 
-	"field-weekday": "Wochentag"
+	"eraNarrow": [
+		"v. Chr.", 
+		"n. Chr."
+	]
 })

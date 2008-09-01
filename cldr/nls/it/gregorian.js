@@ -31,7 +31,27 @@
 	], 
 	"field-era": "era", 
 	"field-hour": "ora", 
+	"quarters-standAlone-abbr": [
+		"1o trimestre", 
+		"2o trimestre", 
+		"3o trimestre", 
+		"4o trimestre"
+	], 
 	"timeFormat-full": "HH.mm.ss v", 
+	"months-standAlone-abbr": [
+		"gennaio", 
+		"febbraio", 
+		"marzo", 
+		"aprile", 
+		"maggio", 
+		"giugno", 
+		"Luglio", 
+		"agosto", 
+		"settembre", 
+		"ottobre", 
+		"novembre", 
+		"dicembre"
+	], 
 	"days-standAlone-narrow": [
 		"D", 
 		"L", 
@@ -49,6 +69,12 @@
 	"timeFormat-medium": "HH.mm.ss", 
 	"field-zone": "zona", 
 	"dateFormat-medium": "dd/MMM/yyyy", 
+	"quarters-standAlone-wide": [
+		"1o trimestre", 
+		"2o trimestre", 
+		"3o trimestre", 
+		"4o trimestre"
+	], 
 	"dateTimeFormat": "{1} {0}", 
 	"field-year": "anno", 
 	"quarters-standAlone-narrow": [
@@ -65,11 +91,11 @@
 		"Maggio", 
 		"Giugno", 
 		"Luglio", 
-		"8", 
-		"9", 
-		"10", 
-		"11", 
-		"12"
+		"agosto", 
+		"settembre", 
+		"ottobre", 
+		"novembre", 
+		"dicembre"
 	], 
 	"field-week": "settimana", 
 	"timeFormat-long": "HH.mm.ss z", 
@@ -105,9 +131,41 @@
 		"sab"
 	], 
 	"pm": "p.", 
+	"days-format-narrow": [
+		"D", 
+		"L", 
+		"M", 
+		"M", 
+		"G", 
+		"V", 
+		"S"
+	], 
 	"field-second": "secondo", 
 	"field-day": "giorno", 
+	"months-format-narrow": [
+		"G", 
+		"F", 
+		"M", 
+		"A", 
+		"M", 
+		"G", 
+		"L", 
+		"A", 
+		"S", 
+		"O", 
+		"N", 
+		"D"
+	], 
 	"am": "m.", 
+	"days-standAlone-abbr": [
+		"domenica", 
+		"lunedì", 
+		"martedì", 
+		"mercoledì", 
+		"giovedì", 
+		"venerdì", 
+		"sabato"
+	], 
 	"dateFormat-short": "dd/MM/yy", 
 	"dateFormat-full": "EEEE d MMMM yyyy", 
 	"months-format-wide": [
@@ -169,5 +227,9 @@
 		"giovedì", 
 		"venerdì", 
 		"sabato"
+	], 
+	"eraNarrow": [
+		"aC", 
+		"dC"
 	]
 })

@@ -1,7 +1,24 @@
-// generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
 ({
+	"quarters-standAlone-wide": [
+		"第1季", 
+		"第2季", 
+		"第3季", 
+		"第4季"
+	], 
+	"quarters-format-abbr": [
+		"第1季", 
+		"第2季", 
+		"第3季", 
+		"第4季"
+	], 
 	"dateFormat-medium": "yyyy/M/d", 
 	"field-second": "秒", 
+	"quarters-standAlone-abbr": [
+		"第1季", 
+		"第2季", 
+		"第3季", 
+		"第4季"
+	], 
 	"field-week": "週", 
 	"timeFormat-full": "ahh時mm分ss秒v", 
 	"dateTimeAvailableFormats": [

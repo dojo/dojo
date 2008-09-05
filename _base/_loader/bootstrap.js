@@ -83,7 +83,7 @@ djConfig = {
 	//		`djConfig.addOnLoad = [myObject, "functionName"];` and for object with
 	//		function reference use
 	//		`djConfig.addOnLoad = [myObject, function(){}];`
-	addOnLoad: null,
+	addOnLoad: null
 }
 =====*/
 

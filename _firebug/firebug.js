@@ -427,7 +427,7 @@ if(
 			_firebugWin = openWin(p[0],p[1],p[2],p[3]);	// global
 			_firebugDoc = _firebugWin.document;			// global
 
-			djConfig.debugContainerId = 'fb';
+			dojo.config.debugContainerId = 'fb';
 		
 			// connecting popup
 			_firebugWin.console = window.console;

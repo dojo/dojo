@@ -438,8 +438,9 @@ dojo.require("dojo._base.html");
 		//		integer specified for the width to the more expressive but
 		//		verbose form `{ width: { end: '400', units: 'px' } }` which you
 		//		can also specify directly
+		//
 		// 	example:
-		//		animate width, height, and padding over 2 seconds...the
+		//		Animate width, height, and padding over 2 seconds... the
 		//		pedantic way:
 		//	|	dojo.animateProperty({ node: node, duration:2000,
 		//	|		properties: {
@@ -448,9 +449,11 @@ dojo.require("dojo._base.html");
 		//	|			paddingTop: { start:'5', end:'50', unit:"px" } 
 		//	|		}
 		//	|	}).play();
-		//
+		//		Note 'paddingTop' is used over 'padding-top'. Multi-name CSS properties
+		//		are written using "mixed case", as the hyphen is illegal as an object key.
+		//		
 		// 	example:
-		//		plug in a different easing function and register a callback for
+		//		Plug in a different easing function and register a callback for
 		//		when the animation ends. Easing functions accept values between
 		//		zero and one and return a value on that basis. In this case, an
 		//		exponential-in curve.
@@ -465,7 +468,23 @@ dojo.require("dojo._base.html");
 		//	|			// called when the animation finishes
 		//	|		}
 		//	|	}).play(500); // delay playing half a second
-
+		//
+		//	example:
+		//		Like all `dojo._Animation`s, animateProperty returns a handle to the
+		//		Animation instance, which fires the events common to Dojo FX. Use `dojo.connect`
+		//		to access these events outside of the Animation definiton:
+		//	|	var anim = dojo.animateProperty({
+		//	|		node:"someId",
+		//	|		properties:{
+		//	|			width:400, height:500
+		//	|		}
+		//	|	});
+		//	|	dojo.connect(anim,"onEnd", function(){
+		//	|		console.log("animation ended");
+		//	|	});
+		//	|	// play the animation now:
+		//	|	anim.play();
+		
 		args.node = d.byId(args.node);
 		if(!args.easing){ args.easing = d._defaultEasing; }
 

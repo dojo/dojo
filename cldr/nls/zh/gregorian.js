@@ -32,10 +32,10 @@
 	"field-era": "时期", 
 	"field-hour": "小时", 
 	"quarters-standAlone-abbr": [
-		"第1季度", 
-		"第2季度", 
-		"第3季度", 
-		"第4季度"
+		"1季", 
+		"2季", 
+		"3季", 
+		"4季"
 	], 
 	"timeFormat-full": "ahh时mm分ss秒v", 
 	"months-standAlone-abbr": [
@@ -158,13 +158,13 @@
 	], 
 	"am": "上午", 
 	"days-standAlone-abbr": [
-		"星期日", 
-		"星期一", 
-		"星期二", 
-		"星期三", 
-		"星期四", 
-		"星期五", 
-		"星期六"
+		"周日", 
+		"周一", 
+		"周二", 
+		"周三", 
+		"周四", 
+		"周五", 
+		"周六"
 	], 
 	"dateFormat-short": "yy-M-d", 
 	"dateFormat-full": "yyyy年M月d日EEEE", 

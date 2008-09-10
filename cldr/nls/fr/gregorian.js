@@ -32,25 +32,25 @@
 	"field-era": "ère", 
 	"field-hour": "heure", 
 	"quarters-standAlone-abbr": [
-		"1er trimestre", 
-		"2e trimestre", 
-		"3e trimestre", 
-		"4e trimestre"
+		"T1", 
+		"T2", 
+		"T3", 
+		"T4"
 	], 
 	"timeFormat-full": "HH:mm:ss v", 
 	"months-standAlone-abbr": [
-		"janvier", 
-		"février", 
+		"janv.", 
+		"févr.", 
 		"mars", 
-		"avril", 
+		"avr.", 
 		"mai", 
 		"juin", 
-		"juillet", 
+		"juil.", 
 		"août", 
-		"septembre", 
-		"octobre", 
-		"novembre", 
-		"décembre"
+		"sept.", 
+		"oct.", 
+		"nov.", 
+		"déc."
 	], 
 	"days-standAlone-narrow": [
 		"D", 
@@ -158,13 +158,13 @@
 	], 
 	"am": "AM", 
 	"days-standAlone-abbr": [
-		"dimanche", 
-		"lundi", 
-		"mardi", 
-		"mercredi", 
-		"jeudi", 
-		"vendredi", 
-		"samedi"
+		"dim.", 
+		"lun.", 
+		"mar.", 
+		"mer.", 
+		"jeu.", 
+		"ven.", 
+		"sam."
 	], 
 	"dateFormat-short": "dd/MM/yy", 
 	"dateFormat-full": "EEEE d MMMM yyyy", 

@@ -31,12 +31,6 @@
 	], 
 	"field-era": "時代", 
 	"field-hour": "時", 
-	"quarters-standAlone-abbr": [
-		"第1四半期", 
-		"第2四半期", 
-		"第3四半期", 
-		"第4四半期"
-	], 
 	"timeFormat-full": "H時mm分ss秒v", 
 	"months-standAlone-abbr": [
 		"1月", 
@@ -144,13 +138,13 @@
 	"field-day": "日", 
 	"am": "午前", 
 	"days-standAlone-abbr": [
-		"日曜日", 
-		"月曜日", 
-		"火曜日", 
-		"水曜日", 
-		"木曜日", 
-		"金曜日", 
-		"土曜日"
+		"日", 
+		"月", 
+		"火", 
+		"水", 
+		"木", 
+		"金", 
+		"土"
 	], 
 	"dateFormat-short": "yy/MM/dd", 
 	"dateFormat-full": "yyyy年M月d日EEEE", 

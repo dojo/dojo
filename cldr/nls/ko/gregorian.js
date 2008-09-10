@@ -32,10 +32,10 @@
 	"field-era": "연호", 
 	"field-hour": "시", 
 	"quarters-standAlone-abbr": [
-		"제 1/4분기", 
-		"제 2/4분기", 
-		"제 3/4분기", 
-		"제 4/4분기"
+		"1분기", 
+		"2분기", 
+		"3분기", 
+		"4분기"
 	], 
 	"timeFormat-full": "a hh시 mm분 ss초 v", 
 	"months-standAlone-abbr": [
@@ -158,13 +158,13 @@
 	], 
 	"am": "오전", 
 	"days-standAlone-abbr": [
-		"일요일", 
-		"월요일", 
-		"화요일", 
-		"수요일", 
-		"목요일", 
-		"금요일", 
-		"토요일"
+		"일", 
+		"월", 
+		"화", 
+		"수", 
+		"목", 
+		"금", 
+		"토"
 	], 
 	"dateFormat-short": "yy. M. d.", 
 	"dateFormat-full": "yyyy년 M월 d일 EEEE", 

@@ -31,26 +31,20 @@
 	], 
 	"field-era": "Era", 
 	"field-hour": "Hour", 
-	"quarters-standAlone-abbr": [
-		"1st quarter", 
-		"2nd quarter", 
-		"3rd quarter", 
-		"4th quarter"
-	], 
 	"timeFormat-full": "h:mm:ss a v", 
 	"months-standAlone-abbr": [
-		"January", 
-		"February", 
-		"March", 
-		"April", 
+		"Jan", 
+		"Feb", 
+		"Mar", 
+		"Apr", 
 		"May", 
-		"June", 
-		"July", 
-		"August", 
-		"September", 
-		"October", 
-		"November", 
-		"December"
+		"Jun", 
+		"Jul", 
+		"Aug", 
+		"Sep", 
+		"Oct", 
+		"Nov", 
+		"Dec"
 	], 
 	"days-standAlone-narrow": [
 		"S", 
@@ -158,13 +152,13 @@
 	], 
 	"am": "a.m.", 
 	"days-standAlone-abbr": [
-		"Sunday", 
-		"Monday", 
-		"Tuesday", 
-		"Wednesday", 
-		"Thursday", 
-		"Friday", 
-		"Saturday"
+		"Sun", 
+		"Mon", 
+		"Tue", 
+		"Wed", 
+		"Thu", 
+		"Fri", 
+		"Sat"
 	], 
 	"dateFormat-short": "M/d/yy", 
 	"dateFormat-full": "EEEE, MMMM d, yyyy", 

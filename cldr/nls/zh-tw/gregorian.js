@@ -106,6 +106,15 @@
 	"field-hour": "小時", 
 	"dateFormat-short": "yyyy/M/d", 
 	"field-era": "年代", 
+	"days-standAlone-abbr": [
+		"週日", 
+		"週一", 
+		"週二", 
+		"週三", 
+		"週四", 
+		"週五", 
+		"週六"
+	], 
 	"timeFormat-long": "ahh時mm分ss秒z", 
 	"quarters-format-wide": [
 		"第1季", 

@@ -21,8 +21,8 @@ dojo.isSafari = {
 	//	|	if(dojo.isSafari){ ... }
 	//	example: 
 	//		Detect iPhone:
-	//	|	if(dojo.isSafari && (navigator.userAgent.indexOf("iPhone") < 0)){ 
-	//	|		// we are iPhone. iPod touch reports "iPod" above
+	//	|	if(dojo.isSafari && navigator.userAgent.indexOf("iPhone") != -1){ 
+	//	|		// we are iPhone. Note, iPod touch reports "iPod" above and fails this test.
 	//	|	}
 };
 

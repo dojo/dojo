@@ -202,8 +202,10 @@ if(
 		clear: function(){
 			// summary: 
 			//		Clears message console. Do not call this directly
-			while(consoleBody.childNodes.length){
-				dojo._destroyElement(consoleBody.firstChild);	
+			if(consoleBody){
+				while(consoleBody.childNodes.length){
+					dojo._destroyElement(consoleBody.firstChild);	
+				}
 			}
 			dojo.forEach(this._connects,dojo.disconnect);
 		},

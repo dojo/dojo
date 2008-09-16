@@ -298,41 +298,42 @@
 		//	summary:
 		//		loads a Javascript module from the appropriate URI
 		//	moduleName:
-		//		module name to load. Module paths are de-referenced by dojo's
+		//		module name to load, using periods for separators,
+		//		 e.g. "dojo.date.locale".  Module paths are de-referenced by dojo's
 		//		internal mapping of locations to names and are disambiguated by
 		//		longest prefix. See `dojo.registerModulePath()` for details on
 		//		registering new modules.
 		//	omitModuleCheck:
 		//		if `true`, omitModuleCheck skips the step of ensuring that the
 		//		loaded file actually defines the symbol it is referenced by.
-		//		For example if it called as `dojo._loadModule("a.b.c")` and the
+		//		For example if it called as `dojo.require("a.b.c")` and the
 		//		file located at `a/b/c.js` does not define an object `a.b.c`,
 		//		and exception will be throws whereas no exception is raised
-		//		when called as `dojo._loadModule("a.b.c", true)`
+		//		when called as `dojo.require("a.b.c", true)`
 		//	description:
-		//		`dojo._loadModule("A.B")` first checks to see if symbol A.B is
+		//		`dojo.require("A.B")` first checks to see if symbol A.B is
 		//		defined. If it is, it is simply returned (nothing to do).
 		//	
 		//		If it is not defined, it will look for `A/B.js` in the script root
 		//		directory.
 		//	
-		//		`dojo._loadModule` throws an excpetion if it cannot find a file
+		//		`dojo.require` throws an excpetion if it cannot find a file
 		//		to load, or if the symbol `A.B` is not defined after loading.
 		//	
 		//		It returns the object `A.B`.
 		//	
-		//		`dojo._loadModule()` does nothing about importing symbols into
+		//		`dojo.require()` does nothing about importing symbols into
 		//		the current namespace.  It is presumed that the caller will
 		//		take care of that. For example, to import all symbols into a
 		//		local block, you might write:
 		//	
-		//		|	with (dojo._loadModule("A.B")) {
+		//		|	with (dojo.require("A.B")) {
 		//		|		...
 		//		|	}
 		//	
 		//		And to import just the leaf symbol to a local variable:
 		//	
-		//		|	var B = dojo._loadModule("A.B");
+		//		|	var B = dojo.require("A.B");
 		//	   	|	...
 		//	returns: the required namespace object
 		omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
@@ -417,7 +418,7 @@
 		//		|		browser: [
 		//		|			"foo.sample", // simple module
 		//		|			"foo.test",
-		//		|			["foo.bar.baz", true] // skip object check in _loadModule
+		//		|			["foo.bar.baz", true] // skip object check in _loadModule (dojo.require)
 		//		|		],
 		//		|		default: [ "foo.sample._base" ],
 		//		|		common: [ "important.module.common" ]
@@ -488,7 +489,7 @@
 		//		Declares translated resources and loads them if necessary, in the
 		//		same style as dojo.require.  Contents of the resource bundle are
 		//		typically strings, but may be any name/value pair, represented in
-		//		JSON format.  See also dojo.i18n.getLocalization.
+		//		JSON format.  See also `dojo.i18n.getLocalization`.
 		// moduleName: 
 		//		name of the package containing the "nls" directory in which the
 		//		bundle is found

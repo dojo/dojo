@@ -490,48 +490,11 @@
 		//		same style as dojo.require.  Contents of the resource bundle are
 		//		typically strings, but may be any name/value pair, represented in
 		//		JSON format.  See also `dojo.i18n.getLocalization`.
-		// moduleName: 
-		//		name of the package containing the "nls" directory in which the
-		//		bundle is found
-		// bundleName: 
-		//		bundle name, i.e. the filename without the '.js' suffix
-		// locale: 
-		//		the locale to load (optional)  By default, the browser's user
-		//		locale as defined by dojo.locale
-		// availableFlatLocales: 
-		//		A comma-separated list of the available, flattened locales for this
-		//		bundle. This argument should only be set by the build process.
+		//
 		// description:
 		//		Load translated resource bundles provided underneath the "nls"
 		//		directory within a package.  Translated resources may be located in
-		//		different packages throughout the source tree.  For example, a
-		//		particular widget may define one or more resource bundles,
-		//		structured in a program as follows, where moduleName is
-		//		mycode.mywidget and bundleNames available include bundleone and
-		//		bundletwo:
-		//
-		//	|		...
-		//	|		mycode/
-		//	|		 mywidget/
-		//	|		  nls/
-		//	|		   bundleone.js (the fallback translation, English in this example)
-		//	|		   bundletwo.js (also a fallback translation)
-		//	|		   de/
-		//	|		    bundleone.js
-		//	|		    bundletwo.js
-		//	|		   de-at/
-		//	|		    bundleone.js
-		//	|		   en/
-		//	|		    (empty; use the fallback translation)
-		//	|		   en-us/
-		//	|		    bundleone.js
-		//	|		   en-gb/
-		//	|		    bundleone.js
-		//	|		   es/
-		//	|		    bundleone.js
-		//	|		    bundletwo.js
-		//	|		  ...etc
-		//	|		...
+		//		different packages throughout the source tree.  
 		//
 		//		Each directory is named for a locale as specified by RFC 3066,
 		//		(http://www.ietf.org/rfc/rfc3066.txt), normalized in lowercase.
@@ -545,6 +508,50 @@
 		//		will follow this cascading pattern.  An optional build step can
 		//		preload the bundles to avoid data redundancy and the multiple
 		//		network hits normally required to load these resources.
+		//
+		// moduleName: 
+		//		name of the package containing the "nls" directory in which the
+		//		bundle is found
+		//
+		// bundleName: 
+		//		bundle name, i.e. the filename without the '.js' suffix
+		//
+		// locale: 
+		//		the locale to load (optional)  By default, the browser's user
+		//		locale as defined by dojo.locale
+		//
+		// availableFlatLocales: 
+		//		A comma-separated list of the available, flattened locales for this
+		//		bundle. This argument should only be set by the build process.
+		//
+		//	example:
+		//		A particular widget may define one or more resource bundles,
+		//		structured in a program as follows, where moduleName is
+		//		mycode.mywidget and bundleNames available include bundleone and
+		//		bundletwo:
+		//	|		...
+		//	|	mycode/
+		//	|		mywidget/
+		//	|			nls/
+		//	|				bundleone.js (the fallback translation, English in this example)
+		//	|				bundletwo.js (also a fallback translation)
+		//	|				de/
+		//	|					bundleone.js
+		//	|					bundletwo.js
+		//	|				de-at/
+		//	|					bundleone.js
+		//	|				en/
+		//	|					(empty; use the fallback translation)
+		//	|				en-us/
+		//	|					bundleone.js
+		//	|				en-gb/
+		//	|					bundleone.js
+		//	|				es/
+		//	|					bundleone.js
+		//	|					bundletwo.js
+		//	|				  ...etc
+		//	|				...
+		//
 
 		d.require("dojo.i18n");
 		d.i18n._requireLocalization.apply(d.hostenv, arguments);

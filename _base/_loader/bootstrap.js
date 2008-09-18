@@ -56,7 +56,7 @@ djConfig = {
 	//		conditions, Dojo auto-detects the correct location from which it
 	//		was loaded. You may need to manually configure `baseUrl` in cases
 	//		where you have renamed `dojo.js` or in which `<base>` tags confuse
-	//		some browsers (e.g., IE 6). The variable `dojo.baseUrl` is assigned
+	//		some browsers (e.g. IE 6). The variable `dojo.baseUrl` is assigned
 	//		either the value of `djConfig.baseUrl` if one is provided or the
 	//		auto-detected root if not. Other modules are located relative to
 	//		this path.
@@ -83,7 +83,7 @@ djConfig = {
 	//		`djConfig.addOnLoad = [myObject, "functionName"];` and for object with
 	//		function reference use
 	//		`djConfig.addOnLoad = [myObject, function(){}];`
-	addOnLoad: null
+	addOnLoad: null,
 	// require: Array
 	//		An array of module names to be loaded immediately after dojo.js has been included
 	//		in a page. 
@@ -282,7 +282,7 @@ dojo.global = {
 		//	|	var flattened = dojo.mixin(
 		//	|		{
 		//	|			name: "Frylock",
-		//	|			braces: true,
+		//	|			braces: true
 		//	|		}
 		//	|		{
 		//	|			name: "Carl Brutanananadilewski"

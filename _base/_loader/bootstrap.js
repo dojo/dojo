@@ -84,6 +84,10 @@ djConfig = {
 	//		function reference use
 	//		`djConfig.addOnLoad = [myObject, function(){}];`
 	addOnLoad: null
+	// require: Array
+	//		An array of module names to be loaded immediately after dojo.js has been included
+	//		in a page. 
+	require: []
 }
 =====*/
 

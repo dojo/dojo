@@ -283,7 +283,7 @@ dojo.global = {
 		//	|		{
 		//	|			name: "Frylock",
 		//	|			braces: true
-		//	|		}
+		//	|		},
 		//	|		{
 		//	|			name: "Carl Brutanananadilewski"
 		//	|		}

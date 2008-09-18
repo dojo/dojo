@@ -72,6 +72,9 @@ dojo.mixin(doh.robot,{
 				height: '100%'
 			});
 			document.body.appendChild(iframe);
+			var base=document.createElement('base');
+			base.href=url;
+			document.getElementsByTagName("head")[0].appendChild(base);
 		});
 	},
 

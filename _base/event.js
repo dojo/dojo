@@ -190,7 +190,7 @@ dojo.require("dojo._base.connect");
 	};
 	
 	// IE event normalization
-	if(dojo.isIE){ 
+	if(dojo.isIE || dojo.isSafari){ 
 		var _trySetKeyCode = function(e, code){
 			try{
 				// squelch errors when keyCode is read-only
@@ -402,10 +402,12 @@ dojo.require("dojo._base.connect");
 		});
 				
 		// override stopEvent for IE
-		dojo.stopEvent = function(evt){
-			evt = evt || window.event;
-			del._stopPropagation.call(evt);
-			del._preventDefault.call(evt);
+		if(dojo.isIE){
+			dojo.stopEvent = function(evt){
+				evt = evt || window.event;
+				del._stopPropagation.call(evt);
+				del._preventDefault.call(evt);
+			}
 		}
 	}
 
@@ -450,60 +452,18 @@ dojo.require("dojo._base.connect");
 			_fixEvent: function(evt, sender){
 				switch(evt.type){
 					case "keypress":
-						var c = evt.charCode, s = evt.shiftKey, k = evt.keyCode;
-						// FIXME: This is a hack, suggest we rethink keyboard strategy.
-						// Arrow and page keys have 0 "keyCode" in keypress events.on Safari for Windows
-						k = k || identifierMap[evt.keyIdentifier] || 0;
-						if(evt.keyIdentifier=="Enter"){
-							c = 0; // differentiate Enter from CTRL-m (both code 13)
-						}else if((evt.ctrlKey)&&(c>0)&&(c<27)){
-							c += 96; // map CTRL-[A-Z] codes to ASCII
-						} else if (c==dojo.keys.SHIFT_TAB) {
-							c = dojo.keys.TAB; // morph SHIFT_TAB into TAB + shiftKey: true
-							s = true;
-						} else {
-							c = (c>=32 && c<63232 ? c : 0); // avoid generating keyChar for non-printables
-						}
-						return del._synthesizeEvent(evt, {charCode: c, shiftKey: s, keyCode: k});
+						if(evt.faux){ return evt; }
+						var c = evt.charCode;
+						c = c>=32? c : 0;
+						return del._synthesizeEvent(evt, {charCode: c, faux: true});
 				}
 				return evt;
 			}
 		});
-		
-		dojo.mixin(dojo.keys, {
-			SHIFT_TAB: 25,
-			UP_ARROW: 63232,
-			DOWN_ARROW: 63233,
-			LEFT_ARROW: 63234,
-			RIGHT_ARROW: 63235,
-			F1: 63236,
-			F2: 63237,
-			F3: 63238,
-			F4: 63239,
-			F5: 63240,
-			F6: 63241,
-			F7: 63242,
-			F8: 63243,
-			F9: 63244,
-			F10: 63245,
-			F11: 63246,
-			F12: 63247,
-			PAUSE: 63250,
-			DELETE: 63272,
-			HOME: 63273,
-			END: 63275,
-			PAGE_UP: 63276,
-			PAGE_DOWN: 63277,
-			INSERT: 63302,
-			PRINT_SCREEN: 63248,
-			SCROLL_LOCK: 63249,
-			NUM_LOCK: 63289
-		});
-		var dk = dojo.keys, identifierMap = { "Up": dk.UP_ARROW, "Down": dk.DOWN_ARROW, "Left": dk.LEFT_ARROW, "Right": dk.RIGHT_ARROW, "PageUp": dk.PAGE_UP, "PageDown": dk.PAGE_DOWN }; 
 	}
 })();
 
-if(dojo.isIE){
+if(dojo.isIE || dojo.isSafari){
 	// keep this out of the closure
 	// closing over 'iel' or 'ieh' b0rks leak prevention
 	// ls[i] is an index into the master handler array

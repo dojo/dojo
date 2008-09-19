@@ -43,7 +43,25 @@ dojo._xdDebugFileLoaded = function(resourceName){
 	}
 
 	if(dbgQueue.length == 0){
+		//Check for more modules that need debug loading.
+		//dojo._xdWatchInFlight will add more things to the debug
+		//queue if they just recently loaded but it was not detected
+		//between the dojo._xdWatchInFlight intervals.
+		dojo._xdWatchInFlight();
+	}
+
+	if(dbgQueue.length == 0){
 		dbgQueue.currentResourceName = null;
+
+		//Make sure nothing else is in flight.
+		//If something is still in flight, then it still
+		//needs to be added to debug queue after it loads.
+		for(var param in this._xdInFlight){
+			if(this._xdInFlight[param] === true){
+				return;
+			}
+		}
+
 		this._xdNotifyLoaded();
 	}else{
 		if(resourceName == dbgQueue.currentResourceName){

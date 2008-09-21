@@ -11,7 +11,7 @@ dojo.string.rep = function(/*String*/str, /*Integer*/num){
 	//		Efficiently replicate a string `n` times.
 	//	str:
 	//		the string to replicate
-	//	n:
+	//	num:
 	//		number of times to replicate the string
 	
 	if(num <= 0 || !str){ return ""; }

@@ -375,17 +375,17 @@ if(dojo.isIE || dojo.isOpera){
 	dojo._setOpacity = d.isIE ? function(/*DomNode*/node, /*Number*/opacity){
 		var ov = opacity * 100;
 		node.style.zoom = 1.0;
-		if(opacity == 1){
-			// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so remove it altogether (bug #2661)
-			af(node, 1).Enabled = false;
+
+		// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so disable it altogether (bug #2661),
+		//but still update the opacity value so we can get a correct reading if it is read later.
+		af(node, 1).Enabled = (opacity == 1 ? false : true);
+
+		if(!af(node)){
+			node.style.filter += " progid:"+astr+"(Opacity="+ov+")";
 		}else{
-			af(node, 1).Enabled = true;
-			if(!af(node)){
-				node.style.filter += " progid:"+astr+"(Opacity="+ov+")";
-			}else{
-				af(node, 1).Opacity = ov;
-			}
+			af(node, 1).Opacity = ov;
 		}
+
 		if(node.nodeName.toLowerCase() == "tr"){
 			d.query("> td", node).forEach(function(i){
 				d._setOpacity(i, opacity);

@@ -243,6 +243,15 @@ dojo.require("dojo._base.connect");
 			add: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
 				if(!node){return;} // undefined
 				event = del._normalizeEventName(event);
+				if(!dojo.isIE && (event == "onmouseenter" || event == "onmouseleave")){
+					var ofp = fp;
+					event = (event == "onmouseenter") ? "onmouseover" : "onmouseout";
+					fp = function(e){
+						if(!dojo.isDescendant(e.relatedTarget, node)){
+							return ofp.call(this, e); 
+						}
+					}
+				}
 				if(event=="onkeypress"){
 					// we need to listen to onkeydown to synthesize
 					// keypress events that otherwise won't fire

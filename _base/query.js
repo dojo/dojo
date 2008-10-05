@@ -1,5 +1,7 @@
-dojo.provide("dojo._base.query");
-dojo.require("dojo._base.NodeList");
+if(this["dojo"]){
+	dojo.provide("dojo._base.query");
+	dojo.require("dojo._base.NodeList");
+}
 
 /*
 	dojo.query() architectural overview:
@@ -34,52 +36,92 @@ dojo.require("dojo._base.NodeList");
 				  evaluation of nodes based on each simple query section
 				- xpath queries can, thankfully, be executed in one shot
 			5.) matched nodes are pruned to ensure they are unique
+
+		NOTE: 
+				this design is likely to become simplified with the advent of
+				querySelectorAll for supported browsers which today use the
+				XPath variant. E.g., once Firefox 3.1 is on the street,
+				dropping the xpath engine (and the query optimizer to select
+				for it) should remove significant code (assuming that
+				querySelectorAll is indeed faster than xpath and DOM on FF 3.1).
 */
 
-;(function(){
+;(function(d){
 	// define everything in a closure for compressability reasons. "d" is an
 	// alias to "dojo" since it's so frequently used. This seems a
 	// transformation that the build system could perform on a per-file basis.
 
 	////////////////////////////////////////////////////////////////////////
+	// Toolkit aliases
+	////////////////////////////////////////////////////////////////////////
+
+	// if you are extracing dojo.query for use in your own system, you will
+	// need to provide over-rides for these methods. No other porting should be
+	// necessaray, save for configuring the system to use a class other than
+	// dojo.NodeList as the return instance instantiator
+	var trim = d.trim;
+	var each = d.forEach;
+	// d.isIE; // float
+	// d.isSafari; // float
+	// d.doc ; // float
+	var listCtor = d.NodeList;
+	var isString = d.isString;
+
+	var getDoc = function(){ return d.doc; };
+	var attr = d.attr; // FIXME: we probably don't need to use attr() for checked
+
+	////////////////////////////////////////////////////////////////////////
 	// Utility code
 	////////////////////////////////////////////////////////////////////////
 
-	var d = dojo;
-	var childNodesName = dojo.isIE ? "children" : "childNodes";
+
+	// on IE, using "children" can be much faster
+	var childNodesName = d.isIE ? "children" : "childNodes";
+
+	// global thunk to determine whether we should treat the current query as
+	// case sensitive or not. Set by the query evaluator based on the document
+	// passed as the current context to search.
 	var caseSensitive = false;
+
+	var yesman = function(){ return true; };
 
 	var getQueryParts = function(query){
 		// summary: state machine for query tokenization
+
+		// are we implicitly searching all children?
 		if(">~+".indexOf(query.charAt(query.length-1)) >= 0){
 			query += " *"
 		}
 		query += " "; // ensure that we terminate the state machine
 
-		var ts = function(s, e){
-			return d.trim(query.slice(s, e));
+		var ts = function(/*Integer*/ s, /*Integer*/ e){
+			// take an index to start a string slice from and an end position
+			// and return a trimmed copy of that sub-string
+			return trim(query.slice(s, e));
 		}
 
 		// the overall data graph of the full query, as represented by queryPart objects
 		var qparts = []; 
+
 		// state keeping vars
-		var inBrackets = -1;
-		var inParens = -1;
-		var inMatchFor = -1;
-		var inPseudo = -1;
-		var inClass = -1;
-		var inId = -1;
-		var inTag = -1;
-		var lc = ""; // the last character
-		var cc = ""; // the current character
-		var pStart;
+		var inBrackets = -1, inParens = -1, inMatchFor = -1, 
+			inPseudo = -1, inClass = -1, inId = -1, inTag = -1, 
+			lc = "", cc = "", pStart;
 		// iteration vars
 		var x = 0; // index in the query
 		var ql = query.length;
 		var currentPart = null; // data structure representing the entire clause
 		var _cp = null; // the current pseudo or attr matcher
+		// several temporary variables are assigned to this structure durring a
+		// potential sub-expression match:
+		//		attr: a string representing the current full attribute match in a bracket expression
+		//		type: if there's an operator in a bracket expression, this is used to keep track of it
+		//		value: the internals of parenthetical expression for a pseudo. for :nth-child(2n+1), value might be "2n+1"
 
 		var endTag = function(){
+			// called when the tokenizer hits the end of a particular tag name.
+			// Re-sets state variables for tag matching and sets up the matcher
+			// to handle the next type of token (tag or operator).
 			if(inTag >= 0){
 				var tv = (inTag == x) ? null : ts(inTag, x); // .toLowerCase();
 				currentPart[ (">~+".indexOf(tv) < 0) ? "tag" : "oper" ] = tv;
@@ -88,6 +130,7 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		var endId = function(){
+			// called when the tokenizer might be at the end of an ID portion of a match
 			if(inId >= 0){
 				currentPart.id = ts(inId, x).replace(/\\/g, "");
 				inId = -1;
@@ -95,6 +138,9 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		var endClass = function(){
+			// called when the tokenizer might be at the end of a class name
+			// match. CSS allows for multiple classes, so we augment the
+			// current item with another class in its list
 			if(inClass >= 0){
 				currentPart.classes.push(ts(inClass+1, x).replace(/\\/g, ""));
 				inClass = -1;
@@ -102,44 +148,88 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		var endAll = function(){
+			// at the end of a simple fragment, so wall off the matches
 			endId(); endTag(); endClass();
 		}
 
+		// iterate over the query, charachter by charachter, building up a 
+		// list of query part objects
 		for(; lc=cc, cc=query.charAt(x),x<ql; x++){
-			if(lc == "\\"){ continue; }
-			if(!currentPart){
+			//		cc: the current character in the match
+			//		lc: the last charachter (if any)
+
+			// someone is trying to escape something, so don't try to match any
+			// fragments. We assume we're inside a literal.
+			if(lc == "\\"){ continue; } 
+			if(!currentPart){ // a part was just ended or none has yet been created
 				// NOTE: I hate all this alloc, but it's shorter than writing tons of if's
 				pStart = x;
+				//	rules describe full CSS sub-expressions, like:
+				//		#someId
+				//		.className:first-child
+				//	but not:
+				//		thinger > div.howdy[type=thinger]
+				//	the indidual components of the previous query would be
+				//	split into 3 parts that would be represented a structure
+				//	kind if like:
+				//		[
+				//			{
+				//				query: "thinger",
+				//				tag: "thinger",
+				//			},
+				//			{
+				//				query: ">",
+				//				oper: ">",
+				//			},
+				//			{
+				//				query: "div.howdy[type=thinger]",
+				//				classes: ["howdy"],
+				//			},
+				//		]
 				currentPart = {
-					query: null,
-					pseudos: [],
-					attrs: [],
-					classes: [],
-					tag: null,
-					oper: null,
-					id: null
+					query: null, // the full text of the part's rule
+					pseudos: [], // CSS supports multiple pseud-class matches in a single rule
+					attrs: [], 	// CSS supports multi-attribute match, so we need an array
+					classes: [], // class matches may be additive, e.g.: .thinger.blah.howdy
+					tag: null, 	// only one tag...
+					oper: null, // ...or operator per component. Note that these wind up being exclusive.
+					id: null  	// the id component of a rule
 				};
-				inTag = x;
+				// if we don't have a part, we assume we're going to start at
+				// the beginning of a match, which should be a tag name. This
+				// might fault a little later on, but we detect that and this
+				// iteration will still be fine.
+				inTag = x; 
 			}
 
 			if(inBrackets >= 0){
 				// look for a the close first
-				if(cc == "]"){
+				if(cc == "]"){ // if we're in a [...] clause and we end, do assignment
 					if(!_cp.attr){
+						// no attribute match was previously begun, so we
+						// assume this is an attribute existance match in the
+						// form of [someAttributeName]
 						_cp.attr = ts(inBrackets+1, x);
 					}else{
+						// we had an attribute already, so we know that we're matching some sort of value, as in [attrName=howdy]
 						_cp.matchFor = ts((inMatchFor||inBrackets+1), x);
 					}
 					var cmf = _cp.matchFor;
 					if(cmf){
+						// try to strip quotes from the matchFor value. We want
+						// [attrName=howdy] to match the same 
+						//	as [attrName = 'howdy' ]
 						if(	(cmf.charAt(0) == '"') || (cmf.charAt(0)  == "'") ){
 							_cp.matchFor = cmf.substring(1, cmf.length-1);
 						}
 					}
+					// end the attribute by adding it to the list of attributes. 
 					currentPart.attrs.push(_cp);
 					_cp = null; // necessaray?
 					inBrackets = inMatchFor = -1;
 				}else if(cc == "="){
+					// if the last char was an operator prefix, make sure we
+					// record it along with the "=" operator. 
 					var addToCc = ("|~^$*".indexOf(lc) >=0 ) ? lc : "";
 					_cp.type = addToCc+cc;
 					_cp.attr = ts(inBrackets+1, x-addToCc.length);
@@ -147,6 +237,7 @@ dojo.require("dojo._base.NodeList");
 				}
 				// now look for other clause parts
 			}else if(inParens >= 0){
+				// if we're in a parenthetical expression, we need to figure out if it's attached to a pseduo-selector rule like :nth-child(1)
 				if(cc == ")"){
 					if(inPseudo >= 0){
 						_cp.value = ts(inParens+1, x);
@@ -154,24 +245,32 @@ dojo.require("dojo._base.NodeList");
 					inPseudo = inParens = -1;
 				}
 			}else if(cc == "#"){
+				// start of an ID match
 				endAll();
 				inId = x+1;
 			}else if(cc == "."){
+				// start of a class match
 				endAll();
 				inClass = x;
 			}else if(cc == ":"){
+				// start of a pseudo-selector match
 				endAll();
 				inPseudo = x;
 			}else if(cc == "["){
+				// start of an attribute match. 
 				endAll();
 				inBrackets = x;
+				// provide a new structure for the attribute match to fill-in
 				_cp = {
 					/*=====
 					attr: null, type: null, matchFor: null
 					=====*/
 				};
 			}else if(cc == "("){
+				// we really only care if we've entered a parenthetical
+				// expression if we're already inside a pseudo-selector match
 				if(inPseudo >= 0){
+					// provide a new structure for the pseudo match to fill-in
 					_cp = { 
 						name: ts(inPseudo+1, x), 
 						value: null
@@ -179,21 +278,42 @@ dojo.require("dojo._base.NodeList");
 					currentPart.pseudos.push(_cp);
 				}
 				inParens = x;
-			}else if(cc == " " && lc != cc){
-				// note that we expect the string to be " " terminated
+			}else if(cc == " " && lc != cc){ 
+				// if it's a space char and the last char is too, consume the
+				// current one without doing more work
+
+				// NOTE: we expect the query to be " " terminated
 				endAll();
 				if(inPseudo >= 0){
 					currentPart.pseudos.push({ name: ts(inPseudo+1, x) });
 				}
+				// hint to the selector engine to tell it whether or not it
+				// needs to do any iteration. Many simple selectors don't, and
+				// we can avoid significant construction-time work by advising
+				// the system to skip them
 				currentPart.hasLoops = (	
 						currentPart.pseudos.length || 
 						currentPart.attrs.length || 
 						currentPart.classes.length	);
-				currentPart.query = ts(pStart, x);
+
+				currentPart.query = ts(pStart, x); // save the full expression as a string
+
+				// otag/tag are hints to suggest to the system whether or not
+				// it's an operator or a tag. We save a copy of otag since the
+				// tag name is cast to upper-case in regular HTML matches. The
+				// system has a global switch to figure out if the current
+				// expression needs to be case sensitive or not and it will use
+				// otag or tag accordingly
 				currentPart.otag = currentPart.tag = (currentPart["oper"]) ? null : (currentPart.tag || "*");
-				if(currentPart.tag){ // FIXME: not valid in case-sensitive documents
+
+				if(currentPart.tag){
+					// if we're in a case-insensitive HTML doc, we likely want
+					// the toUpperCase when matching on element.tagName. If we
+					// do it here, we can skip the string op per node
+					// comparison
 					currentPart.tag = currentPart.tag.toUpperCase();
 				}
+				// add the part to the list
 				qparts.push(currentPart);
 				currentPart = null;
 			}
@@ -239,7 +359,7 @@ dojo.require("dojo._base.NodeList");
 								query, 
 								getDefault, 
 								handleMatch){
-		d.forEach(query.attrs, function(attr){
+		each(query.attrs, function(attr){
 			var matcher;
 			// type, attr, matchFor
 			if(attr.type && attrList[attr.type]){
@@ -252,8 +372,9 @@ dojo.require("dojo._base.NodeList");
 	}
 
 	var buildPath = function(query){
+		// create an xpath expression from a full css query
 		var xpath = ".";
-		var qparts = getQueryParts(d.trim(query));
+		var qparts = getQueryParts(trim(query));
 		while(qparts.length){
 			var tqp = qparts.shift();
 			var prefix;
@@ -287,7 +408,7 @@ dojo.require("dojo._base.NodeList");
 				xpath += "[@id='"+tqp.id+"'][1]";
 			}
 
-			d.forEach(tqp.classes, function(cn){
+			each(tqp.classes, function(cn){
 				var cnl = cn.length;
 				var padding = " ";
 				if(cn.charAt(cnl-1) == "*"){
@@ -307,7 +428,9 @@ dojo.require("dojo._base.NodeList");
 				}
 			);
 
-			// FIXME: need to implement pseudo-class checks!!
+			// FIXME: 
+			//		need to implement pseudo-class checks!! Currently pseudos
+			//		force the DOM branch to be run instead
 		};
 		return xpath;
 	};
@@ -318,7 +441,7 @@ dojo.require("dojo._base.NodeList");
 			return _xpathFuncCache[path];
 		}
 
-		var doc = d.doc;
+		var doc = getDoc();
 		// don't need to memoize. The closure scope handles it for us.
 		var xpath = buildPath(path);
 
@@ -379,6 +502,7 @@ dojo.require("dojo._base.NodeList");
 	}
 
 	var _childElements = function(root){
+		// get an array of child *elements*, skipping text and comment nodes
 		var ret = [];
 		var te, x = 0, tret = root[childNodesName];
 		while((te = tret[x++])){
@@ -660,6 +784,7 @@ dojo.require("dojo._base.NodeList");
 	var pseudos = {
 		"checked": function(name, condition){
 			return function(elem){
+				// FIXME: need to make this more portable!!
 				return !!d.attr(elem, "checked");
 			}
 		},
@@ -792,7 +917,7 @@ dojo.require("dojo._base.NodeList");
 		}
 
 		// if there's a class in our query, generate a match function for it
-		d.forEach(query.classes, function(cname, idx, arr){
+		each(query.classes, function(cname, idx, arr){
 			// get the class name
 			var isWildcard = cname.charAt(cname.length-1) == "*";
 			if(isWildcard){
@@ -806,7 +931,7 @@ dojo.require("dojo._base.NodeList");
 			ff.count = idx;
 		});
 
-		d.forEach(query.pseudos, function(pseudo){
+		each(query.pseudos, function(pseudo){
 			if(pseudos[pseudo.name]){
 				ff = agree(ff, pseudos[pseudo.name](pseudo.name, pseudo.value));
 			}
@@ -816,7 +941,7 @@ dojo.require("dojo._base.NodeList");
 			function(tmatcher){ ff = agree(ff, tmatcher); }
 		);
 		if(!ff){
-			ff = function(){ return true; };
+			ff = yesman; 
 		}
 		return _simpleFiltersCache[query.query] = ff;
 	}
@@ -904,11 +1029,11 @@ dojo.require("dojo._base.NodeList");
 
 	var getStepQueryFunc = function(query){
 		// if it's trivial, get a fast-path dispatcher
-		var qparts = getQueryParts(d.trim(query));
+		var qparts = getQueryParts(trim(query));
 		// if(query[query.length-1] == ">"){ query += " *"; }
 		if(qparts.length == 1){
 			var tt = getElementsFunc(qparts[0]);
-			tt.nozip = true; // FIXME: is this right? Shouldn't this be wrapped in a closure to mark the return?
+			// tt.nozip = true; // FIXME: is this right? Shouldn't this be wrapped in a closure to mark the return?
 			return tt;
 		}
 
@@ -985,7 +1110,7 @@ dojo.require("dojo._base.NodeList");
 	var getQueryFunc = function(query){
 		// return a cached version if one is available
 		var qcz = query.charAt(0);
-		if(d.doc["querySelectorAll"] && 
+		if(getDoc()["querySelectorAll"] && 
 			( (!d.isSafari) || (d.isSafari > 3.1) ) && // see #5832
 			// as per CSS 3, we can't currently start w/ combinator:
 			//		http://www.w3.org/TR/css3-selectors/#w3cselgrammar
@@ -1029,8 +1154,8 @@ dojo.require("dojo._base.NodeList");
 	// returning a list of "uniques", hopefully in doucment order
 	var _zipIdx = 0;
 	var _zip = function(arr){
-		if(arr && arr.nozip){ return d.NodeList._wrap(arr); }
-		var ret = new d.NodeList();
+		if(arr && arr.nozip){ return listCtor._wrap(arr); }
+		var ret = new listCtor();
 		if(!arr){ return ret; }
 		if(arr[0]){
 			ret.push(arr[0]);
@@ -1130,18 +1255,26 @@ dojo.require("dojo._base.NodeList");
 		//		dojo.query and XML Documents:
 		//		-----------------------------
 		//		
-		//		`dojo.query` currently only supports searching XML documents
-		//		whose tags and attributes are 100% lower-case. This is a known
-		//		limitation and will [be addressed soon](http://trac.dojotoolkit.org/ticket/3866)
+		//		`dojo.query` (as of dojo 1.2) supports searching XML documents
+		//		in a case-sensitive manner. If an HTML document is served with
+		//		a doctype that forces case-sensitivity (e.g., XHTML 1.1
+		//		Strict), dojo.query() will detect this and "do the right
+		//		thing". Case sensitivity is dependent upon the document being
+		//		searched and not the query used. It is therefore possible to
+		//		use case-sensitive queries on strict sub-documents (iframes,
+		//		etc.) or XML documents while still assuming case-insensitivity
+		//		for a host/root document.
+		//
 		//		Non-selector Queries:
 		//		---------------------
 		//
 		//		If something other than a String is passed for the query,
-		//		`dojo.query` will return a new `dojo.NodeList` constructed from
-		//		that parameter alone and all further processing will stop. This
-		//		means that if you have a reference to a node or NodeList, you
-		//		can quickly construct a new NodeList from the original by
-		//		calling `dojo.query(node)` or `dojo.query(list)`.
+		//		`dojo.query` will return a new `dojo.NodeList` instance
+		//		constructed from that parameter alone and all further
+		//		processing will stop. This means that if you have a reference
+		//		to a node or NodeList, you can quickly construct a new NodeList
+		//		from the original by calling `dojo.query(node)` or
+		//		`dojo.query(list)`.
 		//
 		//	query:
 		//		The CSS3 expression to match against. For details on the syntax of
@@ -1205,20 +1338,17 @@ dojo.require("dojo._base.NodeList");
 		//	|	});
 
 
-		// NOTE: elementsById is not currently supported
-		// NOTE: ignores xpath-ish queries for now
-
-		if(query.constructor == d.NodeList){
+		if(query.constructor == listCtor){
 			return query;
 		}
-		if(!d.isString(query)){
-			return new d.NodeList(query); // dojo.NodeList
+		if(!isString(query)){
+			return new listCtor(query); // dojo.NodeList
 		}
-		if(d.isString(root)){
+		if(isString(root)){
 			root = d.byId(root);
 		}
 
-		root = root||d.doc;
+		root = root||getDoc();
 		var od = root.ownerDocument||root.documentElement;
 		caseSensitive = (root.contentType && root.contentType=="application/xml") || (!!od) && (d.isIE ? od.xml : (root.xmlVersion||od.xmlVersion));
 		return _zip(getQueryFunc(query)(root)); // dojo.NodeList
@@ -1234,11 +1364,11 @@ dojo.require("dojo._base.NodeList");
 
 	// one-off function for filtering a NodeList based on a simple selector
 	d._filterQueryResult = function(nodeList, simpleFilter){
-		var tnl = new d.NodeList();
-		var ff = (simpleFilter) ? getFilterFunc(getQueryParts(simpleFilter)[0]) : function(){ return true; };
+		var tnl = new listCtor();
+		var ff = (simpleFilter) ? getFilterFunc(getQueryParts(simpleFilter)[0]) : yesman;
 		for(var x = 0, te; te = nodeList[x]; x++){
 			if(ff(te)){ tnl.push(te); }
 		}
 		return tnl;
 	}
-})();
+})(this["queryPortability"]||dojo);

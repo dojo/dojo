@@ -157,28 +157,38 @@
 							doh.is(foo, dojo.query(foo));
 						},
 						function xml(){
-							try{
-								var doc = dojox.data.dom.createDocument([
-									"<ResultSet>",
-										"<Result>One</Result>",
-										"<RESULT>Two</RESULT>",
-										"<result>Three</result>",
-										"<result>Four</result>",
-									"</ResultSet>"
-								].join("")
-								);
-								var de = doc.documentElement;
-								console.debug(dojox.data.dom.innerXML(de));
+							var doc = dojox.data.dom.createDocument([
+								"<ResultSet>",
+									"<Result>One</Result>",
+									"<RESULT>Two</RESULT>",
+									"<result>Three</result>",
+									"<result>Four</result>",
+								"</ResultSet>"
+							].join("")
+							);
+							var de = doc.documentElement;
+							console.debug(dojox.data.dom.innerXML(de));
 
-								doh.is(2, dojo.query("result", de).length);
-								doh.is(1, dojo.query("Result", de).length);
-								doh.is(1, dojo.query("RESULT", de).length);
-								doh.is(0, dojo.query("resulT", de).length);
-								doh.is(0, dojo.query("rEsulT", de).length);
-							}catch(e){ 
-								console.debug(e);
-								// debugger;
-							}
+							doh.is(2, dojo.query("result", de).length, "all lower");
+							doh.is(1, dojo.query("Result", de).length, "mixed case");
+							doh.is(1, dojo.query("RESULT", de).length, "all upper");
+							doh.is(0, dojo.query("resulT", de).length, "no match");
+							doh.is(0, dojo.query("rEsulT", de).length, "no match");
+						},
+						function xml_attrs(){
+							var doc = dojox.data.dom.createDocument([
+								"<ResultSet>",
+									"<RESULT thinger='blah'>Two</RESULT>",
+									"<RESULT thinger='gadzooks'>Two</RESULT>",
+								"</ResultSet>"
+							].join(""));
+							var de = doc.documentElement;
+							console.debug(dojox.data.dom.innerXML(de));
+
+							doh.is(2, dojo.query("RESULT", de).length, "result elements");
+							doh.is(0, dojo.query("RESULT[THINGER]", de).length, "result elements with attrs (wrong)");
+							doh.is(2, dojo.query("RESULT[thinger]", de).length, "result elements with attrs");
+							doh.is(1, dojo.query("RESULT[thinger=blah]", de).length, "result elements with attr value");
 						}
 					]
 				);

@@ -1,6 +1,7 @@
-if(this["dojo"]){
+if(dojo){
 	dojo.provide("dojo._base.query");
 	dojo.require("dojo._base.NodeList");
+	dojo.require("dojo._base.lang");
 }
 
 /*
@@ -1350,7 +1351,11 @@ if(this["dojo"]){
 
 		root = root||getDoc();
 		var od = root.ownerDocument||root.documentElement;
-		caseSensitive = (root.contentType && root.contentType=="application/xml") || (!!od) && (d.isIE ? od.xml : (root.xmlVersion||od.xmlVersion));
+		// FIXME: Opera in XHTML mode doesn't detect case-sensitivity correctly
+		caseSensitive = (root.contentType && root.contentType=="application/xml") || 
+						(d.isOpera && root.doctype) ||
+						(!!od) && 
+						(d.isIE ? od.xml : (root.xmlVersion||od.xmlVersion));
 		return _zip(getQueryFunc(query)(root)); // dojo.NodeList
 	}
 

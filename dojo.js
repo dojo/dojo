@@ -146,8 +146,6 @@ if(typeof dojo == "undefined"){
 			if((this["document"])&&(this["document"]["getElementsByTagName"])){
 				var root = getRootNode().root;	
 				if(!this["djConfig"]){ djConfig = {}; }
-				// console.debug(root);
-				// alert(root);
 				djConfig["baseUrl"] = root;
 			}
 		}
@@ -160,35 +158,58 @@ if(typeof dojo == "undefined"){
 		// It counts on the package system functioning in order to work, so add
 		// it last
 		tmps.push(root+"_base.js");
+
+		var lastRoot = getRootNode().node;
+		var isOpera = 0;
+		var isWebKit = 0;
+
+		if(hostEnv == "browser"){
+			try{
+				var ua = navigator.userAgent;
+				isOpera = (ua.indexOf("Opera") >= 0);
+				isWebKit = (ua.indexOf("WebKit") >= 0);
+			}catch(e){ /* squelch */ }
+		}
+
+		// Opera and Safari don't handle injected script tags in the right
+		// order, so we resort to XHR to make things work there when we find
+		// ourselves in a strict XHTML environment (e.g., document.write bombs
+		// out)
+		var injectXHRCode = function(src){
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", src, false);
+			xhr.send();
+			eval(xhr.responseText);
+		}
 	
+		var injectScriptNode = function(src){
+			if(isWebKit){ return injectXHRCode(src); }
+			var head = document.getElementsByTagName("head")[0];
+			var script = document.createElement("script");
+			script.setAttribute("type", "text/javascript");
+			if(head.lastChild === lastRoot){
+				head.appendChild(script);
+			}else{
+				lastRoot.parentNode.insertBefore(script, lastRoot.nextSibling);
+			}
+			script.src = src;
+			lastRoot = script;
+		}
 		for(var x=0; x < tmps.length; x++){
 			if(isRhino || isSpidermonkey || (this.Jaxer && this.Jaxer.isOnServer)){
 				load(tmps[x]);
 			}else if(isFFExt){
-				/*
-				try{
-					document.write("<scr"+"ipt type='text/javascript' src='"+tmps[x]+"'></scr"+"ipt>");
-				}catch(e){
-				*/
-					var l = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
-						.getService(Components.interfaces.mozIJSSubScriptLoader);
-					l.loadSubScript(tmps[x], this)
-				// }
+				var l = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
+					.getService(Components.interfaces.mozIJSSubScriptLoader);
+				l.loadSubScript(tmps[x], this)
+			}else if(isOpera){ // opera fails silently!!
+				injectXHRCode(tmps[x]);
 			}else{
 				try{
 					document.write("<scr"+"ipt type='text/javascript' src='"+tmps[x]+"'></scr"+"ipt>");
 				}catch(e){
-					var lastRoot = getRootNode().node;
-					var head = document.getElementsByTagName("head")[0];
-					var script = document.createElement("script");
-					script.setAttribute("type", "text/javascript");
-					if(head.lastChild === lastRoot){
-						head.appendChild(script);
-					}else{
-						lastRoot.parentNode.insertBefore(script, lastRoot.nextSibling);
-					}
-					script.src = tmps[x];
-					lastRoot = script;
+					// strict XHTML mode, no document.write
+					injectScriptNode(tmps[x]);
 				}
 			}
 		}

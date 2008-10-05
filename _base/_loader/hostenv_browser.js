@@ -40,8 +40,13 @@ dojo = {
 	isIE: 6,
 	//	isKhtml: Number | undefined
 	//		Version as a Number if client is a KTHML-derived browser (Konqueror,
-	//		Safari, etc.). undefined otherwise. Corresponds to major detected version.
+	//		Safari, Chrome, etc.). undefined otherwise. Corresponds to major
+	//		detected version.
 	isKhtml: 0,
+	//	isWebKit: Number | undefined
+	//		Version as a Number if client is a KTHML-derived browser (Konqueror,
+	//		Safari, Chrome, etc.). undefined otherwise. Same as isKhtml.
+	isWebKit: 0,
 	//	isMozilla: Number | undefined
 	//		Version as a Number if client is a Mozilla-based browser (Firefox,
 	//		SeaMonkey). undefined otherwise. Corresponds to major detected version.
@@ -96,9 +101,9 @@ if(typeof window != 'undefined'){
 
 		// fill in the rendering support information in dojo.render.*
 		var n = navigator;
-		var dua = n.userAgent;
-		var dav = n.appVersion;
-		var tv = parseFloat(dav);
+		var dua = n.userAgent,
+			dav = n.appVersion,
+			tv = parseFloat(dav);
 
 		if(dua.indexOf("Opera") >= 0){ d.isOpera = tv; }
 		// safari detection derived from:
@@ -113,7 +118,13 @@ if(typeof window != 'undefined'){
 				(parseFloat(dav.substr(index + 7)) > 419.3) ? 3 : 2;
 		}
 		if(dua.indexOf("AdobeAIR") >= 0){ d.isAIR = 1; }
-		if(dav.indexOf("Konqueror") >= 0 || d.isSafari){ d.isKhtml =  tv; }
+		if(	dav.indexOf("WebKit") >= 0 || 
+			dav.indexOf("Konqueror") >= 0 || 
+			d.isSafari || 
+			d.isAIR
+		){ 
+			d.isWebKit = d.isKhtml =  tv;
+		}
 		if(dua.indexOf("Gecko") >= 0 && !d.isKhtml){ d.isMozilla = d.isMoz = tv; }
 		if(d.isMoz){
 			d.isFF = parseFloat(dua.split("Firefox/")[1]) || undefined;
@@ -200,19 +211,12 @@ if(typeof window != 'undefined'){
 			// returns: The response text. null is returned when there is a
 			//		failure and failure is okay (an exception otherwise)
 
-			// alert("_getText: " + uri);
-
 			// NOTE: must be declared before scope switches ie. this._xhrObj()
 			var http = this._xhrObj();
 
 			if(!hasBase && dojo._Url){
 				uri = (new dojo._Url(owloc, uri)).toString();
 			}
-			/*
-			console.debug("_getText:", uri);
-			console.debug(window.location+"");
-			alert(uri);
-			*/
 
 			if(d.config.cacheBust){
 				//Make sure we have a string before string methods are used on uri
@@ -223,7 +227,6 @@ if(typeof window != 'undefined'){
 			http.open('GET', uri, false);
 			try{
 				http.send(null);
-				// alert(http);
 				if(!d._isDocumentOk(http)){
 					var err = Error("Unable to load "+uri+" status:"+ http.status);
 					err.status = http.status;

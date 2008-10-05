@@ -94,30 +94,33 @@ djConfig = {
 (function(){
 	// firebug stubs
 
-	// if((!this["console"])||(!console["firebug"])){
+	if(typeof this["loadFirebugConsole"] == "function"){
+		// Firebug 1.2 is a PITA
+		this["loadFirebugConsole"]();
+	}else{
+		if(!this["console"]){
+			this.console = {
+			};
+		}
 
-	if(!this["console"]){
-		this.console = {
-		};
-	}
-
-	//	Be careful to leave 'log' always at the end
-	var cn = [
-		"assert", "count", "debug", "dir", "dirxml", "error", "group",
-		"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
-		"trace", "warn", "log" 
-	];
-	var i=0, tn;
-	while((tn=cn[i++])){
-		if(!console[tn]){
-			(function(){
-				var tcn = tn+"";
-				console[tcn] = ('log' in console) ? function(){ 
-					var a = Array.apply({}, arguments);
-					a.unshift(tcn+":");
-					console["log"](a.join(" "));
-				} : function(){}
-			})();
+		//	Be careful to leave 'log' always at the end
+		var cn = [
+			"assert", "count", "debug", "dir", "dirxml", "error", "group",
+			"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
+			"trace", "warn", "log" 
+		];
+		var i=0, tn;
+		while((tn=cn[i++])){
+			if(!console[tn]){
+				(function(){
+					var tcn = tn+"";
+					console[tcn] = ('log' in console) ? function(){ 
+						var a = Array.apply({}, arguments);
+						a.unshift(tcn+":");
+						console["log"](a.join(" "));
+					} : function(){}
+				})();
+			}
 		}
 	}
 

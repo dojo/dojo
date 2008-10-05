@@ -1264,11 +1264,183 @@ if(dojo.isIE || dojo.isOpera){
 		d.byId(node).removeAttribute(_fixAttrName(name));
 	}
 
-	/*
-	dojo.createElement = function(type, attrs, parent, position){
-		// TODO: need to finish this!
+	/*=====
+	dojo.__CreateElementArgs = function(){
+		//	tagName: String
+		//		The type of element to create, e.g. "div"
+		//	style: Object?
+		//		Style rules to apply directly to the element, as though passed to dojo.style()
+		//	className: String?
+		//		Classes to apply to the node
+		//	innerHTML: String?
+		//		Serialized content to inject into the node.
+		//	childNodes: Array?
+		//		An array of dojo.__CreateElementArgs definitions of nodes to
+		//		place inside of this element.
+		//	id: String?
+		//		ID that the node may be fetch by with dojo.byId
+		//	parentNode: DOMNode|String?
+		//		the node or ID of a node to insert this new element relative to
+		//	position: String|Number?
+		//		the location relative to parentNode at which this node will be
+		//		located. Defaults to "last". See dojo.place() for more details
+		//		on number values and other possible placement options.
+
+		this.tagName = tagName;
+		this.style =  style;
+		this.className = className;
+		this.innerHTML = innerHTML;
+		this.childNodes = childNodes;
+		this.id = id;
+		this.parentNode = parentNode;
+		this.position = position;
 	}
-	*/
+	=====*/
+	var tmpNode; 
+	dojo.createElement = function(/* dojo.__CreateElementArgs|String */ obj){
+		//	summary:
+		//		creates an element (and potentially sub-elements) based on the
+		//		structure passed-in. If a string is passed, treat it as HTML to
+		//		be de-serialized via innerHTML but only return the first
+		//		element. If an object is passed, its structure roughly
+		//		represents a serialized DOM representation of a node. Note that
+		//		the returned element tree will NOT be attached to the visible
+		//		DOM when returned unless a parentNode (and optionally
+		//		"position") attribute is specified. See also dojo.elem()
+		//	obj:
+		//		an object that represents the DOM to be constructed. Properties
+		//		such as childNodes an innerHTML are supported as are functions
+		//		to specify event handler and a style object to represent inline
+		//		styles. Use of `childNodes` and `innerHTML` are exclusive, so
+		//		be sure to only use one or the other.
+		//	example:
+		//		create a set of nested elements, starting with a div:
+		//	|	var el = dojo.createElement({
+		//	|		tagName: "div",
+		//	|
+		//	|		// specify styling and classes to apply
+		//	|		style: { border: "1px solid black" },
+		//	|
+		//	|		className: "thinger redBackground",
+		//	|
+		//	|		// attaching an anonymous function
+		//	|		onmouseenter: function(e){
+		//	|			console.debug("entered", e.target);
+		//	|		},
+		//	|
+		//	|		// attaching a member of an object
+		//	|		onclick: dojo.hitch(console, "debug", "clicked!"),
+		//	|
+		//	|		// attaching a member of an object
+		//	|		// specify children in the same format
+		//	|		childNodes: [
+		//	|			{
+		//	|				tagName: "img",
+		//	|				src: "http://www.dojotoolkit.org/sites/all/themes/dtk/img/demo.png"
+		//	|				style: { border: "none" }
+		//	|			},
+		//	|			{
+		//	|				tagName: "div",
+		//	|				innerHTML: "howdy there, pardner!"
+		//	|			}
+		//	|		]
+		//	|	});
+		//	example:
+		//		create a link with text and an image inside and place it at the
+		//		top of the document:
+		//	|	var el = dojo.createElement({
+		//	|		tagName: "a",
+		//	|		href: "http://dojotoolkit.org",
+		//	|		parentNode: dojo.body(),
+		//	|		childNodes: [
+		//	|			"<span>howdy!</span>",
+		//	|			{
+		//	|				tagName: "img",
+		//	|				src: "http://www.dojotoolkit.org/sites/all/themes/dtk/img/demo.png"
+		//	|			},
+		//	|		]
+		//	|	});
+		if(dojo.isString(obj)){
+			// make sure we've got a temporary node to push the contents into
+			// and ensure that it's from the current document context
+			if(!tmpNode || tmpNode.ownerDocument != dojo.doc){ 
+				tmpNode = dojo.doc.createElement("div");
+			}
+			tmpNode.innerHTML = obj;
+			return tmpNode.removeChild(tmp.firstChild);
+		}
+		var type = obj.nodeName||obj.tagName||obj.tag;
+		delete obj.nodeName;
+		delete obj.tagName;
+		delete obj.tag;
+
+		var cn = obj.childNodes;
+		delete obj.childNodes;
+
+		var doc = obj.ownerDocument||dojo.doc;
+		delete obj.ownerDocument;
+
+		var ih = obj.innerHTML;
+		delete obj.innerHTML;
+
+		var tn = doc.createElement(type);
+		dojo.attr(tn, obj);
+		if(ih){
+			tn.innerHTML = ih;
+		}else if(cn){
+			dojo.forEach(cn, function(child){
+				child.parentNode = child.parentNode||tn;
+				return dojo.createElement(child);
+			});
+		}
+		if(obj.parentNode){
+			obj.position = (typeof obj.position != undefined) ? obj.position : "last";
+			dojo.place(tn, obj.parentNode, obj.position);
+		}
+		return tn; // DOMNode
+	};
+
+	dojo.elem = function(	/*String*/ type, 
+							/*Object?*/ attrs, 
+							/*DOMNode|String?*/ par, 
+							/*String|Integer?*/ location){
+		//	summary:
+		//		a shorthand for dojo.createElement which provides ease-of-use
+		//		for the case of building single elements. It supports optional
+		//		placement via the parent and location arguments
+		//	type:
+		//		the node type to create, e.g. "div"
+		//	attrs:
+		//		an optional list of attributes to assign to the element,
+		//		potentially including innerHTML or childNodes. See
+		//		dojo.createElement for an understanding of all of the types of
+		//		attributes which may be specified.
+		//	parent:
+		//		an optional reference to a node to place the created element
+		//		relative to
+		//	location:
+		//		if a parent is specified, this location indicates where to put
+		//		the created element relative to the parent. See dojo.place()
+		//		for accepted values. If no location is provided, the element is
+		//		added to the end of the referenced parent.
+		var al = arguments.length;
+		// FIXME: what if it's a string that starts w/ an "<", shouldn't we just create it?
+		if((al == 1)&&(!dojo.isString(type))){
+			return dojo.createElement(type);
+		}
+		// FIXME: what if attrs is a string? Should we treat is specially, say by making it the ID or by setting innerHTML to it?
+		if(!attrs){
+			attrs = {};
+		}
+		attrs.tag = type;
+		if(par){
+			attrs.parentNode = par;
+			if(al == 4){
+				attrs.position = location;
+			}
+		}
+		return dojo.createElement(attrs); // DOMNode
+	}
 
 	// =============================
 	// (CSS) Class Functions

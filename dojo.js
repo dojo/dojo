@@ -50,10 +50,36 @@ if(typeof dojo == "undefined"){
 	// only try to load Dojo if we don't already have one. Dojo always follows
 	// a "first Dojo wins" policy.
 	(function(){
+		var getRootNode = function(){
+			// attempt to figure out the path to dojo if it isn't set in the config
+			if((this["document"])&&(this["document"]["getElementsByTagName"])){
+				var scripts = document.getElementsByTagName("script");
+				var rePkg = /dojo\.js([\?\.]|$)/i;
+				for(var i = 0; i < scripts.length; i++){
+					var src = scripts[i].getAttribute("src");
+					if(!src){ continue; }
+					var m = src.match(rePkg);
+					if(m){
+						return { 
+							node: scripts[i], 
+							root: src.substring(0, m.index)
+						};
+						/*
+						root = src.substring(0, m.index);
+						if(!this["djConfig"]){ djConfig = {}; }
+						djConfig["baseUrl"] = root;
+						break;
+						*/
+					}
+				}
+			}
+		}
+
 		// we default to a browser environment if we can't figure it out
 		var hostEnv = "browser";
 		var isRhino = false;
 		var isSpidermonkey = false;
+		var isFFExt = false;
 		if(
 			(typeof this["load"] == "function")&&
 			(
@@ -72,6 +98,15 @@ if(typeof dojo == "undefined"){
 			// can count on from it is a "load" function.
 			isSpidermonkey  = true;
 			hostEnv = "spidermonkey";
+		}else if(
+			(typeof this["ChromeWindow"] != "undefined") &&
+			(window instanceof ChromeWindow)
+		){
+			try{
+				Components.classes["@mozilla.org/moz/jssubscript-loader;1"];
+				isFFExt = true;
+				hostEnv = "ff_ext";
+			}catch(e){}
 		}
 		var tmps = ["bootstrap.js", "loader.js", "hostenv_"+hostEnv+".js"];
 		if (this.Jaxer && this.Jaxer.isOnServer) {
@@ -97,7 +132,11 @@ if(typeof dojo == "undefined"){
 			var root = "./";
 			if(isSpidermonkey){
 				// auto-detect the base path via an exception. Hack!
-				try{ throw new Error(""); }catch(e){ root = e.fileName.split("dojo.js")[0]; };
+				try{
+					throw new Error(""); 
+				}catch(e){ 
+					root = String(e.fileName||e.sourceURL).split("dojo.js")[0];
+				};
 			}
 			if(!this["djConfig"]){
 				djConfig = { baseUrl: root };
@@ -105,19 +144,11 @@ if(typeof dojo == "undefined"){
 	
 			// attempt to figure out the path to dojo if it isn't set in the config
 			if((this["document"])&&(this["document"]["getElementsByTagName"])){
-				var scripts = document.getElementsByTagName("script");
-				var rePkg = /dojo\.js([\?\.]|$)/i;
-				for(var i = 0; i < scripts.length; i++){
-					var src = scripts[i].getAttribute("src");
-					if(!src){ continue; }
-					var m = src.match(rePkg);
-					if(m){
-						root = src.substring(0, m.index);
-						if(!this["djConfig"]){ djConfig = {}; }
-						djConfig["baseUrl"] = root;
-						break;
-					}
-				}
+				var root = getRootNode().root;	
+				if(!this["djConfig"]){ djConfig = {}; }
+				// console.debug(root);
+				// alert(root);
+				djConfig["baseUrl"] = root;
 			}
 		}
 		// FIXME: should we be adding the lang stuff here so we can count on it
@@ -133,13 +164,31 @@ if(typeof dojo == "undefined"){
 		for(var x=0; x < tmps.length; x++){
 			if(isRhino || isSpidermonkey || (this.Jaxer && this.Jaxer.isOnServer)){
 				load(tmps[x]);
+			}else if(isFFExt){
+				/*
+				try{
+					document.write("<scr"+"ipt type='text/javascript' src='"+tmps[x]+"'></scr"+"ipt>");
+				}catch(e){
+				*/
+					var l = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
+						.getService(Components.interfaces.mozIJSSubScriptLoader);
+					l.loadSubScript(tmps[x], this)
+				// }
 			}else{
 				try{
 					document.write("<scr"+"ipt type='text/javascript' src='"+tmps[x]+"'></scr"+"ipt>");
 				}catch(e){
+					var lastRoot = getRootNode().node;
+					var head = document.getElementsByTagName("head")[0];
 					var script = document.createElement("script");
+					script.setAttribute("type", "text/javascript");
+					if(head.lastChild === lastRoot){
+						head.appendChild(script);
+					}else{
+						lastRoot.parentNode.insertBefore(script, lastRoot.nextSibling);
+					}
 					script.src = tmps[x];
-					document.getElementsByTagName("head")[0].appendChild(script);
+					lastRoot = script;
 				}
 			}
 		}

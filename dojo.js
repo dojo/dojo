@@ -159,12 +159,13 @@ if(typeof dojo == "undefined"){
 		// it last
 		tmps.push(root+"_base.js");
 
-		var lastRoot = getRootNode().node;
+		var lastRoot;
 		var isOpera = 0;
 		var isWebKit = 0;
 
 		if(hostEnv == "browser"){
 			try{
+				lastRoot = getRootNode().node;
 				var ua = navigator.userAgent;
 				isOpera = (ua.indexOf("Opera") >= 0);
 				isWebKit = (ua.indexOf("WebKit") >= 0);

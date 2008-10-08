@@ -61,17 +61,17 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		Option for console height (ignored for popup)
 	//		|	var djConfig = {isDebug: true, debugHeight:100 }
 
-
 if(	
    !dojo.config.useCustomLogger &&
    !dojo.isAIR &&									// isDebug triggers AIRInsector, not Firebug
-   (!dojo.isFF || 									// if not Firefox, there's no firebug
-	(dojo.isFF && !("console" in window)) || 		// Firefox, but Firebug is not installed.
-	(dojo.isFF && !(window.loadFirebugConsole || console.firebug)) && 	// Firefox, but Firebug is disabled (1.2 check, 1.0 check)
+   (!dojo.isMoz || 									// if not Firefox, there's no firebug
+	(dojo.isMoz && !("console" in window)) || 		// Firefox, but Firebug is not installed.
+	(dojo.isMoz && !(window.loadFirebugConsole || console.firebug)) && 	// Firefox, but Firebug is disabled (1.2 check, 1.0 check)
 	!dojo.config.noFirebugLite						// Deprecated: Should be isDebug=false
 )){
 	
 (function(){
+
 	// don't build firebug in iframes
 	try{
 		if(window != window.parent){ 
@@ -1156,7 +1156,10 @@ if(
 	if(dojo.config.noFirebugLite){ console.warn("DEPRECATED: dojo.config.noFirebugLite - use djConfig.isDebug=false instead"); }
 	
 	// Notice to Firefox users who disable Firebug, and discover that Firebug Lite pops up. 
-	if(dojo.isFF && !window.loadFirebugConsole && !dojo.config.allowFirebugLite){ console.log("To disable Firebug Lite in Firefox, use djConfig.isDebug=false. Suppress this message with djConfig.allowFirebugLite=true");}
+	if(dojo.isFF && !window.loadFirebugConsole && !dojo.config.allowFirebugLite){ 
+		console.log("To disable Firebug Lite in Firefox, use djConfig.isDebug=false. Suppress this message with djConfig.allowFirebugLite=true");
+	}
 	
 })();
-}
+
+} // end if

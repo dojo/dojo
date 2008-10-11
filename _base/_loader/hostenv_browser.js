@@ -39,13 +39,13 @@ dojo = {
 	//		major detected IE version (6, 7, 8, etc.)
 	isIE: 6,
 	//	isKhtml: Number | undefined
-	//		Version as a Number if client is a KTHML-derived browser (Konqueror,
-	//		Safari, Chrome, etc.). undefined otherwise. Corresponds to major
-	//		detected version.
+	//		Version as a Number if client is a KHTML browser. undefined otherwise. Corresponds to major
+	//		detected version. See dojo.isWebKit for better version numbers for other KHTML-affiliated
+	//		browsers.
 	isKhtml: 0,
 	//	isWebKit: Number | undefined
-	//		Version as a Number if client is a KTHML-derived browser (Konqueror,
-	//		Safari, Chrome, etc.). undefined otherwise. Same as isKhtml.
+	//		Version as a Number if client is a WebKit-derived browser (Konqueror,
+	//		Safari, Chrome, etc.). undefined otherwise.
 	isWebKit: 0,
 	//	isMozilla: Number | undefined
 	//		Version as a Number if client is a Mozilla-based browser (Firefox,
@@ -58,6 +58,9 @@ dojo = {
 	//	isSafari: Number | undefined
 	//		Version as a Number if client is Safari or iPhone. undefined otherwise.
 	isSafari: 0
+	//	isChrome: Number | undefined
+	//		Version as a Number if client is Chrome browser. undefined otherwise.
+	isChrome: 0
 }
 =====*/
 
@@ -106,26 +109,26 @@ if(typeof window != 'undefined'){
 			tv = parseFloat(dav);
 
 		if(dua.indexOf("Opera") >= 0){ d.isOpera = tv; }
+		if(dua.indexOf("AdobeAIR") >= 0){ d.isAIR = 1; }
+		d.isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : 0;
+		d.isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
+		d.isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
+
 		// safari detection derived from:
 		//		http://developer.apple.com/internet/safari/faq.html#anchor2
 		//		http://developer.apple.com/internet/safari/uamatrix.html
 		var index = Math.max(dav.indexOf("WebKit"), dav.indexOf("Safari"), 0);
-		if(index){
+		if(index && !dojo.isChrome){
 			// try to grab the explicit Safari version first. If we don't get
-			// one, look for 419.3+ as the indication that we're on something
-			// "Safari 3-ish". Lastly, default to "Safari 2" handling.
-			d.isSafari = parseFloat(dav.split("Version/")[1]) ||
-				(parseFloat(dav.substr(index + 7)) > 419.3) ? 3 : 2;
+			// one, look for less than 419.3 as the indication that we're on something
+			// "Safari 2-ish".
+			d.isSafari = parseFloat(dav.split("Version/")[1]);
+			if(!d.isSafari || parseFloat(dav.substr(index + 7)) <= 419.3){
+				d.isSafari = 2;
+			}
 		}
-		if(dua.indexOf("AdobeAIR") >= 0){ d.isAIR = 1; }
-		if(	dav.indexOf("WebKit") >= 0 || 
-			dav.indexOf("Konqueror") >= 0 || 
-			d.isSafari || 
-			d.isAIR
-		){ 
-			d.isWebKit = d.isKhtml =  tv;
-		}
-		if(dua.indexOf("Gecko") >= 0 && !d.isKhtml){ d.isMozilla = d.isMoz = tv; }
+
+		if(dua.indexOf("Gecko") >= 0 && !d.isKhtml && !d.isWebKit){ d.isMozilla = d.isMoz = tv; }
 		if(d.isMoz){
 			d.isFF = parseFloat(dua.split("Firefox/")[1]) || undefined;
 		}
@@ -302,7 +305,7 @@ if(typeof window != 'undefined'){
 			//		due to a threading issue in Firefox 2.0, we can't enable
 			//		DOMContentLoaded on that platform. For more information, see:
 			//		http://trac.dojotoolkit.org/ticket/1704
-			if(dojo.isOpera || dojo.isFF >= 3 || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
+			if(dojo.isWebKit > 525 || dojo.isOpera || dojo.isFF >= 3 || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
 				document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
 			}
 	
@@ -313,7 +316,7 @@ if(typeof window != 'undefined'){
 	
 		if(dojo.isAIR){
 			window.addEventListener("load", dojo._loadInit, null);
-		}else if(/(WebKit|khtml)/i.test(navigator.userAgent)){ // sniff
+		}else if((dojo.isWebKit < 525) || dojo.isKhtml){
 			dojo._khtmlTimer = setInterval(function(){
 				if(/loaded|complete/.test(document.readyState)){
 					dojo._loadInit(); // call the onload handler

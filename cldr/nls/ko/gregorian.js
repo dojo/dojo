@@ -1,147 +1,4 @@
 ({
-	"field-dayperiod": "오전/오후", 
-	"field-minute": "분", 
-	"eraNames": [
-		"서력기원전", 
-		"서력기원"
-	], 
-	"field-weekday": "요일", 
-	"days-standAlone-wide": [
-		"일요일", 
-		"월요일", 
-		"화요일", 
-		"수요일", 
-		"목요일", 
-		"금요일", 
-		"토요일"
-	], 
-	"months-standAlone-narrow": [
-		"1월", 
-		"2월", 
-		"3월", 
-		"4월", 
-		"5월", 
-		"6월", 
-		"7월", 
-		"8월", 
-		"9월", 
-		"10월", 
-		"11월", 
-		"12월"
-	], 
-	"field-era": "연호", 
-	"field-hour": "시", 
-	"quarters-standAlone-abbr": [
-		"1분기", 
-		"2분기", 
-		"3분기", 
-		"4분기"
-	], 
-	"timeFormat-full": "a hh시 mm분 ss초 v", 
-	"months-standAlone-abbr": [
-		"1월", 
-		"2월", 
-		"3월", 
-		"4월", 
-		"5월", 
-		"6월", 
-		"7월", 
-		"8월", 
-		"9월", 
-		"10월", 
-		"11월", 
-		"12월"
-	], 
-	"days-standAlone-narrow": [
-		"일", 
-		"월", 
-		"화", 
-		"수", 
-		"목", 
-		"금", 
-		"토"
-	], 
-	"eraAbbr": [
-		"기원전", 
-		"서기"
-	], 
-	"dateFormat-long": "yyyy년 M월 d일", 
-	"timeFormat-medium": "a h:mm:ss", 
-	"field-zone": "시간대", 
-	"dateFormat-medium": "yyyy. M. d.", 
-	"quarters-standAlone-wide": [
-		"제 1/4분기", 
-		"제 2/4분기", 
-		"제 3/4분기", 
-		"제 4/4분기"
-	], 
-	"dateTimeFormat": "{1} {0}", 
-	"field-year": "년", 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
-	"months-standAlone-wide": [
-		"1월", 
-		"2월", 
-		"3월", 
-		"4월", 
-		"5월", 
-		"6월", 
-		"7월", 
-		"8월", 
-		"9월", 
-		"10월", 
-		"11월", 
-		"12월"
-	], 
-	"field-week": "주", 
-	"timeFormat-long": "a hh시 mm분 ss초 z", 
-	"months-format-abbr": [
-		"1월", 
-		"2월", 
-		"3월", 
-		"4월", 
-		"5월", 
-		"6월", 
-		"7월", 
-		"8월", 
-		"9월", 
-		"10월", 
-		"11월", 
-		"12월"
-	], 
-	"timeFormat-short": "a h:mm", 
-	"field-month": "월", 
-	"quarters-format-abbr": [
-		"1분기", 
-		"2분기", 
-		"3분기", 
-		"4분기"
-	], 
-	"days-format-abbr": [
-		"일", 
-		"월", 
-		"화", 
-		"수", 
-		"목", 
-		"금", 
-		"토"
-	], 
-	"pm": "오후", 
-	"days-format-narrow": [
-		"일", 
-		"월", 
-		"화", 
-		"수", 
-		"목", 
-		"금", 
-		"토"
-	], 
-	"field-second": "초", 
-	"field-day": "일", 
 	"months-format-narrow": [
 		"1월", 
 		"2월", 
@@ -156,18 +13,21 @@
 		"11월", 
 		"12월"
 	], 
-	"am": "오전", 
-	"days-standAlone-abbr": [
-		"일", 
-		"월", 
-		"화", 
-		"수", 
-		"목", 
-		"금", 
-		"토"
+	"quarters-standAlone-narrow": [
+		"1", 
+		"2", 
+		"3", 
+		"4"
 	], 
-	"dateFormat-short": "yy. M. d.", 
-	"dateFormat-full": "yyyy년 M월 d일 EEEE", 
+	"field-weekday": "요일", 
+	"dateFormatItem-yQQQ": "yyyy년 QQQ", 
+	"dateFormatItem-yMEd": "yyyy. M. d. EEE", 
+	"dateFormatItem-MMMEd": "MMM d일 (E)", 
+	"eraNarrow": [
+		"기원전", 
+		"서기"
+	], 
+	"dateFormat-long": "yyyy년 M월 d일", 
 	"months-format-wide": [
 		"1월", 
 		"2월", 
@@ -182,43 +42,124 @@
 		"11월", 
 		"12월"
 	], 
-	"dateTimeAvailableFormats": [
-		"d일 (E)", 
-		"HH:mm", 
-		"HH:mm:ss", 
-		"H:mm", 
-		"H시 m분 s초", 
-		"L", 
-		"M. d. (E)", 
-		"LLL", 
-		"MMM d일 (E)", 
-		"MMMM d일 (E)", 
-		"MMMM d일", 
-		"MMM d일", 
-		"MM. dd", 
-		"M. d.", 
-		"d", 
-		"mm:ss", 
-		"mm:ss", 
-		"yyyy", 
-		"yyyy. M.", 
-		"yyyy. M. d. EEE", 
-		"yyyy년 MMM", 
-		"yyyy년 MMM d일 EEE", 
-		"yyyy년 MMMM", 
-		"yyyy년 Q분기", 
-		"yyyy년 QQQ", 
-		"YY. M.", 
-		"yy년 MMM", 
-		"yy년 Q분기", 
-		"yyyy. MM"
+	"dateFormat-full": "yyyy년 M월 d일 EEEE", 
+	"dateFormatItem-Md": "M. d.", 
+	"field-era": "연호", 
+	"months-standAlone-wide": [
+		"1월", 
+		"2월", 
+		"3월", 
+		"4월", 
+		"5월", 
+		"6월", 
+		"7월", 
+		"8월", 
+		"9월", 
+		"10월", 
+		"11월", 
+		"12월"
 	], 
+	"timeFormat-short": "a h:mm", 
 	"quarters-format-wide": [
 		"제 1/4분기", 
 		"제 2/4분기", 
 		"제 3/4분기", 
 		"제 4/4분기"
 	], 
+	"timeFormat-long": "a hh시 mm분 ss초 z", 
+	"field-year": "년", 
+	"dateTimeFormat": "{1} {0}", 
+	"months-format-abbr": [
+		"1월", 
+		"2월", 
+		"3월", 
+		"4월", 
+		"5월", 
+		"6월", 
+		"7월", 
+		"8월", 
+		"9월", 
+		"10월", 
+		"11월", 
+		"12월"
+	], 
+	"dateFormatItem-yyQ": "yy년 Q분기", 
+	"dateFormatItem-yMMM": "yyyy년 MMM", 
+	"field-hour": "시", 
+	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
+	"dateFormatItem-MMdd": "MM. dd", 
+	"timeFormat-full": "a hh시 mm분 ss초 v", 
+	"dateFormatItem-yQ": "yyyy년 Q분기", 
+	"dateFormatItem-yM": "yyyy. M.", 
+	"am": "오전", 
+	"months-standAlone-abbr": [
+		"1월", 
+		"2월", 
+		"3월", 
+		"4월", 
+		"5월", 
+		"6월", 
+		"7월", 
+		"8월", 
+		"9월", 
+		"10월", 
+		"11월", 
+		"12월"
+	], 
+	"quarters-format-abbr": [
+		"1분기", 
+		"2분기", 
+		"3분기", 
+		"4분기"
+	], 
+	"dateFormatItem-HHmmss": "HH:mm:ss", 
+	"quarters-standAlone-wide": [
+		"제 1/4분기", 
+		"제 2/4분기", 
+		"제 3/4분기", 
+		"제 4/4분기"
+	], 
+	"dateFormatItem-M": "L", 
+	"days-standAlone-wide": [
+		"일요일", 
+		"월요일", 
+		"화요일", 
+		"수요일", 
+		"목요일", 
+		"금요일", 
+		"토요일"
+	], 
+	"dateFormatItem-MMMMd": "MMMM d일", 
+	"dateFormatItem-yyMMM": "yy년 MMM", 
+	"timeFormat-medium": "a h:mm:ss", 
+	"dateFormatItem-Hm": "H:mm", 
+	"eraAbbr": [
+		"기원전", 
+		"서기"
+	], 
+	"quarters-standAlone-abbr": [
+		"1분기", 
+		"2분기", 
+		"3분기", 
+		"4분기"
+	], 
+	"field-minute": "분", 
+	"days-standAlone-abbr": [
+		"일", 
+		"월", 
+		"화", 
+		"수", 
+		"목", 
+		"금", 
+		"토"
+	], 
+	"field-dayperiod": "오전/오후", 
+	"dateFormatItem-d": "d", 
+	"dateFormatItem-ms": "mm:ss", 
+	"dateFormatItem-MMMd": "MMM d일", 
+	"dateFormatItem-MEd": "M. d. (E)", 
+	"dateFormatItem-yMMMM": "yyyy년 MMMM", 
+	"field-day": "일", 
 	"days-format-wide": [
 		"일요일", 
 		"월요일", 
@@ -228,8 +169,66 @@
 		"금요일", 
 		"토요일"
 	], 
-	"eraNarrow": [
-		"기원전", 
-		"서기"
-	]
+	"field-zone": "시간대", 
+	"dateFormatItem-yyyyMM": "yyyy. MM", 
+	"dateFormatItem-y": "yyyy", 
+	"months-standAlone-narrow": [
+		"1월", 
+		"2월", 
+		"3월", 
+		"4월", 
+		"5월", 
+		"6월", 
+		"7월", 
+		"8월", 
+		"9월", 
+		"10월", 
+		"11월", 
+		"12월"
+	], 
+	"dateFormatItem-yyMM": "YY. M.", 
+	"days-format-abbr": [
+		"일", 
+		"월", 
+		"화", 
+		"수", 
+		"목", 
+		"금", 
+		"토"
+	], 
+	"eraNames": [
+		"서력기원전", 
+		"서력기원"
+	], 
+	"days-format-narrow": [
+		"일", 
+		"월", 
+		"화", 
+		"수", 
+		"목", 
+		"금", 
+		"토"
+	], 
+	"field-month": "월", 
+	"days-standAlone-narrow": [
+		"일", 
+		"월", 
+		"화", 
+		"수", 
+		"목", 
+		"금", 
+		"토"
+	], 
+	"dateFormatItem-MMM": "LLL", 
+	"dateFormatItem-HHmm": "HH:mm", 
+	"pm": "오후", 
+	"dateFormatItem-MMMMEd": "MMMM d일 (E)", 
+	"dateFormat-short": "yy. M. d.", 
+	"field-second": "초", 
+	"dateFormatItem-yMMMEd": "yyyy년 MMM d일 EEE", 
+	"dateFormatItem-Ed": "d일 (E)", 
+	"field-week": "주", 
+	"dateFormat-medium": "yyyy. M. d.", 
+	"dateFormatItem-mmss": "mm:ss", 
+	"dateFormatItem-Hms": "H시 m분 s초"
 })

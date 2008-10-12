@@ -1,10 +1,14 @@
 ({
+	"dateFormatItem-yM": "M/yyyy", 
 	"field-dayperiod": "AM/PM", 
+	"dateFormatItem-yQ": "Q yyyy", 
 	"field-minute": "Minute", 
 	"eraNames": [
 		"Before Christ", 
 		"Anno Domini"
 	], 
+	"dateFormatItem-MMMEd": "E, MMM d", 
+	"dateFormatItem-yQQQ": "QQQ yyyy", 
 	"field-weekday": "Day of the Week", 
 	"days-standAlone-wide": [
 		"Sunday", 
@@ -15,6 +19,7 @@
 		"Friday", 
 		"Saturday"
 	], 
+	"dateFormatItem-MMM": "LLL", 
 	"months-standAlone-narrow": [
 		"J", 
 		"F", 
@@ -31,6 +36,7 @@
 	], 
 	"field-era": "Era", 
 	"field-hour": "Hour", 
+	"dateFormatItem-y": "yyyy", 
 	"timeFormat-full": "h:mm:ss a v", 
 	"months-standAlone-abbr": [
 		"Jan", 
@@ -46,6 +52,7 @@
 		"Nov", 
 		"Dec"
 	], 
+	"dateFormatItem-yMMM": "MMM yyyy", 
 	"days-standAlone-narrow": [
 		"S", 
 		"M", 
@@ -61,8 +68,10 @@
 	], 
 	"dateFormat-long": "MMMM d, yyyy", 
 	"timeFormat-medium": "h:mm:ss a", 
+	"dateFormatItem-Hm": "HH:mm", 
 	"field-zone": "Zone", 
 	"dateFormat-medium": "MMM d, yyyy", 
+	"dateFormatItem-Hms": "HH:mm:ss", 
 	"quarters-standAlone-wide": [
 		"1st quarter", 
 		"2nd quarter", 
@@ -70,6 +79,8 @@
 		"4th quarter"
 	], 
 	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMMM": "MMMM yyyy", 
+	"dateFormatItem-ms": "mm:ss", 
 	"field-year": "Year", 
 	"quarters-standAlone-narrow": [
 		"1", 
@@ -92,6 +103,8 @@
 		"November", 
 		"December"
 	], 
+	"dateFormatItem-MMMMEd": "E, MMMM d", 
+	"dateFormatItem-MMMd": "MMM d", 
 	"timeFormat-long": "h:mm:ss a z", 
 	"months-format-abbr": [
 		"Jan", 
@@ -109,12 +122,7 @@
 	], 
 	"timeFormat-short": "h:mm a", 
 	"field-month": "Month", 
-	"quarters-format-abbr": [
-		"Q1", 
-		"Q2", 
-		"Q3", 
-		"Q4"
-	], 
+	"dateFormatItem-MMMMd": "MMMM d", 
 	"days-format-abbr": [
 		"Sun", 
 		"Mon", 
@@ -124,18 +132,17 @@
 		"Fri", 
 		"Sat"
 	], 
-	"pm": "p.m.", 
-	"days-format-narrow": [
-		"S", 
-		"M", 
-		"T", 
-		"W", 
-		"T", 
-		"F", 
-		"S"
+	"pm": "PM", 
+	"dateFormatItem-M": "L", 
+	"quarters-format-abbr": [
+		"Q1", 
+		"Q2", 
+		"Q3", 
+		"Q4"
 	], 
 	"field-second": "Second", 
 	"field-day": "Day", 
+	"dateFormatItem-MEd": "E, M/d", 
 	"months-format-narrow": [
 		"J", 
 		"F", 
@@ -150,7 +157,17 @@
 		"N", 
 		"D"
 	], 
-	"am": "a.m.", 
+	"days-format-narrow": [
+		"S", 
+		"M", 
+		"T", 
+		"W", 
+		"T", 
+		"F", 
+		"S"
+	], 
+	"dateFormatItem-hm": "h:mm a", 
+	"am": "AM", 
 	"days-standAlone-abbr": [
 		"Sun", 
 		"Mon", 
@@ -161,7 +178,10 @@
 		"Sat"
 	], 
 	"dateFormat-short": "M/d/yy", 
+	"dateFormatItem-yMMMEd": "EEE, MMM d, yyyy", 
 	"dateFormat-full": "EEEE, MMMM d, yyyy", 
+	"dateFormatItem-Md": "M/d", 
+	"dateFormatItem-yMEd": "EEE, M/d/yyyy", 
 	"months-format-wide": [
 		"January", 
 		"February", 
@@ -176,29 +196,7 @@
 		"November", 
 		"December"
 	], 
-	"dateTimeAvailableFormats": [
-		"HH:mm", 
-		"HH:mm:ss", 
-		"L", 
-		"E, M/d", 
-		"LLL", 
-		"E, MMM d", 
-		"E, MMMM d", 
-		"MMMM d", 
-		"MMM d", 
-		"M/d", 
-		"d", 
-		"h:mm a", 
-		"mm:ss", 
-		"yyyy", 
-		"M/yyyy", 
-		"EEE, M/d/yyyy", 
-		"MMM yyyy", 
-		"EEE, MMM d, yyyy", 
-		"MMMM yyyy", 
-		"Q yyyy", 
-		"QQQ yyyy"
-	], 
+	"dateFormatItem-d": "d", 
 	"quarters-format-wide": [
 		"1st quarter", 
 		"2nd quarter", 

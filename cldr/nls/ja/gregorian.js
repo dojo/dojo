@@ -1,20 +1,18 @@
 ({
+	"dateFormatItem-yM": "y/M", 
 	"field-dayperiod": "午前/午後", 
-	"field-minute": "分", 
+	"dateFormatItem-GGGGyMd": "GGGGy年M月d日", 
+	"dateFormatItem-yQ": "y/Q", 
 	"eraNames": [
 		"紀元前", 
 		"西暦"
 	], 
+	"dateFormatItem-MMMEd": "M月d日(E)", 
+	"dateFormatItem-MMdd": "MM/dd", 
+	"dateFormatItem-yQQQ": "yyyyQQQ", 
 	"field-weekday": "曜日", 
-	"days-standAlone-wide": [
-		"日曜日", 
-		"月曜日", 
-		"火曜日", 
-		"水曜日", 
-		"木曜日", 
-		"金曜日", 
-		"土曜日"
-	], 
+	"dateFormatItem-MMM": "LLL", 
+	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
 	"months-standAlone-narrow": [
 		"1", 
 		"2", 
@@ -31,7 +29,19 @@
 	], 
 	"field-era": "時代", 
 	"field-hour": "時", 
+	"dateFormatItem-y": "y", 
 	"timeFormat-full": "H時mm分ss秒v", 
+	"dateFormatItem-yyyy": "y年", 
+	"field-minute": "分", 
+	"days-standAlone-wide": [
+		"日曜日", 
+		"月曜日", 
+		"火曜日", 
+		"水曜日", 
+		"木曜日", 
+		"金曜日", 
+		"土曜日"
+	], 
 	"months-standAlone-abbr": [
 		"1月", 
 		"2月", 
@@ -46,6 +56,7 @@
 		"11月", 
 		"12月"
 	], 
+	"dateFormatItem-Ed": "d日(EEE)", 
 	"days-standAlone-narrow": [
 		"日", 
 		"月", 
@@ -59,10 +70,14 @@
 		"紀元前", 
 		"西暦"
 	], 
+	"dateFormatItem-yMMM": "y年M月", 
+	"dateFormatItem-yyyyMM": "yyyy/MM", 
 	"dateFormat-long": "yyyy年M月d日", 
 	"timeFormat-medium": "H:mm:ss", 
+	"dateFormatItem-Hm": "H:mm", 
 	"field-zone": "タイムゾーン", 
 	"dateFormat-medium": "yyyy/MM/dd", 
+	"dateFormatItem-yyMMM": "y年M月", 
 	"quarters-standAlone-wide": [
 		"第1四半期", 
 		"第2四半期", 
@@ -70,6 +85,8 @@
 		"第4四半期"
 	], 
 	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMMM": "y年M月", 
+	"dateFormatItem-ms": "mm:ss", 
 	"field-year": "年", 
 	"quarters-standAlone-narrow": [
 		"1", 
@@ -92,6 +109,9 @@
 		"11月", 
 		"12月"
 	], 
+	"dateFormatItem-MMMMEd": "M月d日(E)", 
+	"dateFormatItem-MMMd": "M月d日", 
+	"dateFormatItem-yyQ": "yy/Q", 
 	"timeFormat-long": "HH:mm:ssz", 
 	"months-format-abbr": [
 		"1月", 
@@ -108,13 +128,8 @@
 		"12月"
 	], 
 	"timeFormat-short": "H:mm", 
-	"field-month": "月", 
-	"quarters-format-abbr": [
-		"Q1", 
-		"Q2", 
-		"Q3", 
-		"Q4"
-	], 
+	"dateFormatItem-H": "H時", 
+	"dateFormatItem-MMMMd": "M月d日", 
 	"days-format-abbr": [
 		"日", 
 		"月", 
@@ -125,6 +140,18 @@
 		"土"
 	], 
 	"pm": "午後", 
+	"dateFormatItem-M": "L", 
+	"quarters-format-abbr": [
+		"Q1", 
+		"Q2", 
+		"Q3", 
+		"Q4"
+	], 
+	"dateFormatItem-mmss": "mm:ss", 
+	"field-month": "月", 
+	"dateFormatItem-MEd": "M/d(E)", 
+	"field-day": "日", 
+	"field-second": "秒", 
 	"days-format-narrow": [
 		"日", 
 		"月", 
@@ -134,8 +161,6 @@
 		"金", 
 		"土"
 	], 
-	"field-second": "秒", 
-	"field-day": "日", 
 	"am": "午前", 
 	"days-standAlone-abbr": [
 		"日", 
@@ -147,7 +172,10 @@
 		"土"
 	], 
 	"dateFormat-short": "yy/MM/dd", 
+	"dateFormatItem-yMMMEd": "y年M月d日(EEE)", 
 	"dateFormat-full": "yyyy年M月d日EEEE", 
+	"dateFormatItem-Md": "M/d", 
+	"dateFormatItem-yMEd": "y/M/d(EEE)", 
 	"months-format-wide": [
 		"1月", 
 		"2月", 
@@ -162,36 +190,7 @@
 		"11月", 
 		"12月"
 	], 
-	"dateTimeAvailableFormats": [
-		"d日(EEE)", 
-		"GGGGy年M月d日", 
-		"H時", 
-		"H:mm", 
-		"L", 
-		"M/d(E)", 
-		"LLL", 
-		"M月d日(E)", 
-		"M月d日(E)", 
-		"M月d日", 
-		"M月d日", 
-		"MM/dd", 
-		"M/d", 
-		"d日", 
-		"mm:ss", 
-		"mm:ss", 
-		"y", 
-		"y/M", 
-		"y/M/d(EEE)", 
-		"y年M月", 
-		"y年M月d日(EEE)", 
-		"y年M月", 
-		"y/Q", 
-		"yyyyQQQ", 
-		"y年M月", 
-		"yy/Q", 
-		"y年", 
-		"yyyy/MM"
-	], 
+	"dateFormatItem-d": "d日", 
 	"quarters-format-wide": [
 		"第1四半期", 
 		"第2四半期", 

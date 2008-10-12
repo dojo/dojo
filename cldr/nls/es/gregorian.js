@@ -1,147 +1,4 @@
 ({
-	"field-dayperiod": "periodo del día", 
-	"field-minute": "minuto", 
-	"eraNames": [
-		"antes de Cristo", 
-		"anno Dómini"
-	], 
-	"field-weekday": "día de la semana", 
-	"days-standAlone-wide": [
-		"domingo", 
-		"lunes", 
-		"martes", 
-		"miércoles", 
-		"jueves", 
-		"viernes", 
-		"sábado"
-	], 
-	"months-standAlone-narrow": [
-		"E", 
-		"F", 
-		"M", 
-		"A", 
-		"M", 
-		"J", 
-		"J", 
-		"A", 
-		"S", 
-		"O", 
-		"N", 
-		"D"
-	], 
-	"field-era": "era", 
-	"field-hour": "hora", 
-	"quarters-standAlone-abbr": [
-		"T1", 
-		"T2", 
-		"T3", 
-		"T4"
-	], 
-	"timeFormat-full": "hh:mm:ss a v", 
-	"months-standAlone-abbr": [
-		"ene", 
-		"feb", 
-		"mar", 
-		"abr", 
-		"may", 
-		"jun", 
-		"jul", 
-		"ago", 
-		"sep", 
-		"oct", 
-		"nov", 
-		"dic"
-	], 
-	"days-standAlone-narrow": [
-		"D", 
-		"L", 
-		"M", 
-		"M", 
-		"J", 
-		"V", 
-		"S"
-	], 
-	"eraAbbr": [
-		"a.C.", 
-		"d.C."
-	], 
-	"dateFormat-long": "d 'de' MMMM 'de' yyyy", 
-	"timeFormat-medium": "HH:mm:ss", 
-	"field-zone": "zona", 
-	"dateFormat-medium": "dd/MM/yyyy", 
-	"quarters-standAlone-wide": [
-		"1er trimestre", 
-		"2º trimestre", 
-		"3er trimestre", 
-		"4º trimestre"
-	], 
-	"dateTimeFormat": "{1} {0}", 
-	"field-year": "año", 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
-	"field-week": "semana", 
-	"months-standAlone-wide": [
-		"enero", 
-		"febrero", 
-		"marzo", 
-		"abril", 
-		"mayo", 
-		"junio", 
-		"julio", 
-		"agosto", 
-		"septiembre", 
-		"octubre", 
-		"noviembre", 
-		"diciembre"
-	], 
-	"timeFormat-long": "HH:mm:ss z", 
-	"months-format-abbr": [
-		"ene", 
-		"feb", 
-		"mar", 
-		"abr", 
-		"may", 
-		"jun", 
-		"jul", 
-		"ago", 
-		"sep", 
-		"oct", 
-		"nov", 
-		"dic"
-	], 
-	"timeFormat-short": "HH:mm", 
-	"field-month": "mes", 
-	"quarters-format-abbr": [
-		"T1", 
-		"T2", 
-		"T3", 
-		"T4"
-	], 
-	"days-format-abbr": [
-		"dom", 
-		"lun", 
-		"mar", 
-		"mié", 
-		"jue", 
-		"vie", 
-		"sáb"
-	], 
-	"pm": "p.m.", 
-	"days-format-narrow": [
-		"D", 
-		"L", 
-		"M", 
-		"M", 
-		"J", 
-		"V", 
-		"S"
-	], 
-	"field-second": "segundo", 
-	"field-day": "día", 
 	"months-format-narrow": [
 		"E", 
 		"F", 
@@ -156,18 +13,23 @@
 		"N", 
 		"D"
 	], 
-	"am": "a.m.", 
-	"days-standAlone-abbr": [
-		"dom", 
-		"lun", 
-		"mar", 
-		"mié", 
-		"jue", 
-		"vie", 
-		"sáb"
+	"quarters-standAlone-narrow": [
+		"1", 
+		"2", 
+		"3", 
+		"4"
 	], 
-	"dateFormat-short": "dd/MM/yy", 
-	"dateFormat-full": "EEEE d 'de' MMMM 'de' yyyy", 
+	"dateFormatItem-yyQQQQ": "QQQQ 'de' yy", 
+	"field-weekday": "día de la semana", 
+	"dateFormatItem-yQQQ": "QQQ yyyy", 
+	"dateFormatItem-yMEd": "EEE d/M/yyyy", 
+	"dateFormatItem-MMMEd": "E d MMM", 
+	"eraNarrow": [
+		"a.C.", 
+		"d.C."
+	], 
+	"dateFormatItem-MMMdd": "dd-MMM", 
+	"dateFormat-long": "d 'de' MMMM 'de' yyyy", 
 	"months-format-wide": [
 		"enero", 
 		"febrero", 
@@ -182,45 +44,124 @@
 		"noviembre", 
 		"diciembre"
 	], 
-	"dateTimeAvailableFormats": [
-		"HH:mm", 
-		"HH:mm:ss", 
-		"H:mm", 
-		"L", 
-		"E, d-M", 
-		"LLL", 
-		"E d MMM", 
-		"E d MMMM", 
-		"d 'de' MMMM", 
-		"d MMM", 
-		"dd-MMM", 
-		"d/MM", 
-		"d/M", 
-		"d", 
-		"hh:mm a", 
-		"hh:mm:ss a", 
-		"mm:ss", 
-		"mm:ss", 
-		"yyyy", 
-		"M/yyyy", 
-		"EEE d/M/yyyy", 
-		"MMM yyyy", 
-		"EEE, d MMM yyyy", 
-		"MMMM 'de' yyyy", 
-		"Q yyyy", 
-		"QQQ yyyy", 
-		"MM/yy", 
-		"MMM-yy", 
-		"Q yy", 
-		"QQQQ 'de' yy", 
-		"MM/yyyy"
-	], 
+	"dateFormat-full": "EEEE d 'de' MMMM 'de' yyyy", 
+	"dateFormatItem-Md": "d/M", 
+	"field-era": "era", 
+	"dateFormatItem-yM": "M/yyyy", 
+	"timeFormat-short": "HH:mm", 
 	"quarters-format-wide": [
 		"1er trimestre", 
 		"2º trimestre", 
 		"3er trimestre", 
 		"4º trimestre"
 	], 
+	"timeFormat-long": "HH:mm:ss z", 
+	"field-year": "año", 
+	"dateTimeFormat": "{1} {0}", 
+	"months-format-abbr": [
+		"ene", 
+		"feb", 
+		"mar", 
+		"abr", 
+		"may", 
+		"jun", 
+		"jul", 
+		"ago", 
+		"sep", 
+		"oct", 
+		"nov", 
+		"dic"
+	], 
+	"dateFormatItem-yyQ": "Q yy", 
+	"dateFormatItem-yMMM": "MMM yyyy", 
+	"field-hour": "hora", 
+	"patternChars": "GuMtkHmsSEDFwWahKzUeygAZvcL", 
+	"dateFormatItem-yQ": "Q yyyy", 
+	"timeFormat-full": "hh:mm:ss a v", 
+	"months-standAlone-wide": [
+		"enero", 
+		"febrero", 
+		"marzo", 
+		"abril", 
+		"mayo", 
+		"junio", 
+		"julio", 
+		"agosto", 
+		"septiembre", 
+		"octubre", 
+		"noviembre", 
+		"diciembre"
+	], 
+	"am": "a.m.", 
+	"months-standAlone-abbr": [
+		"ene", 
+		"feb", 
+		"mar", 
+		"abr", 
+		"may", 
+		"jun", 
+		"jul", 
+		"ago", 
+		"sep", 
+		"oct", 
+		"nov", 
+		"dic"
+	], 
+	"quarters-format-abbr": [
+		"T1", 
+		"T2", 
+		"T3", 
+		"T4"
+	], 
+	"dateFormatItem-HHmmss": "HH:mm:ss", 
+	"dateFormatItem-hhmmss": "hh:mm:ss a", 
+	"dateFormatItem-M": "L", 
+	"quarters-standAlone-wide": [
+		"1er trimestre", 
+		"2º trimestre", 
+		"3er trimestre", 
+		"4º trimestre"
+	], 
+	"days-standAlone-wide": [
+		"domingo", 
+		"lunes", 
+		"martes", 
+		"miércoles", 
+		"jueves", 
+		"viernes", 
+		"sábado"
+	], 
+	"dateFormatItem-MMMMd": "d 'de' MMMM", 
+	"dateFormatItem-yyMMM": "MMM-yy", 
+	"timeFormat-medium": "HH:mm:ss", 
+	"dateFormatItem-Hm": "H:mm", 
+	"eraAbbr": [
+		"a.C.", 
+		"d.C."
+	], 
+	"quarters-standAlone-abbr": [
+		"T1", 
+		"T2", 
+		"T3", 
+		"T4"
+	], 
+	"field-minute": "minuto", 
+	"days-standAlone-abbr": [
+		"dom", 
+		"lun", 
+		"mar", 
+		"mié", 
+		"jue", 
+		"vie", 
+		"sáb"
+	], 
+	"field-dayperiod": "periodo del día", 
+	"dateFormatItem-d": "d", 
+	"dateFormatItem-ms": "mm:ss", 
+	"dateFormatItem-MMMd": "d MMM", 
+	"dateFormatItem-MEd": "E, d-M", 
+	"dateFormatItem-yMMMM": "MMMM 'de' yyyy", 
+	"field-day": "día", 
 	"days-format-wide": [
 		"domingo", 
 		"lunes", 
@@ -230,8 +171,66 @@
 		"viernes", 
 		"sábado"
 	], 
-	"eraNarrow": [
-		"a.C.", 
-		"d.C."
-	]
+	"field-zone": "zona", 
+	"dateFormatItem-yyyyMM": "MM/yyyy", 
+	"dateFormatItem-y": "yyyy", 
+	"months-standAlone-narrow": [
+		"E", 
+		"F", 
+		"M", 
+		"A", 
+		"M", 
+		"J", 
+		"J", 
+		"A", 
+		"S", 
+		"O", 
+		"N", 
+		"D"
+	], 
+	"dateFormatItem-yyMM": "MM/yy", 
+	"days-format-abbr": [
+		"dom", 
+		"lun", 
+		"mar", 
+		"mié", 
+		"jue", 
+		"vie", 
+		"sáb"
+	], 
+	"eraNames": [
+		"antes de Cristo", 
+		"anno Dómini"
+	], 
+	"days-format-narrow": [
+		"D", 
+		"L", 
+		"M", 
+		"M", 
+		"J", 
+		"V", 
+		"S"
+	], 
+	"field-month": "mes", 
+	"days-standAlone-narrow": [
+		"D", 
+		"L", 
+		"M", 
+		"M", 
+		"J", 
+		"V", 
+		"S"
+	], 
+	"dateFormatItem-MMM": "LLL", 
+	"dateFormatItem-HHmm": "HH:mm", 
+	"pm": "p.m.", 
+	"dateFormatItem-MMMMEd": "E d MMMM", 
+	"dateFormat-short": "dd/MM/yy", 
+	"dateFormatItem-MMd": "d/MM", 
+	"field-second": "segundo", 
+	"dateFormatItem-yMMMEd": "EEE, d MMM yyyy", 
+	"dateFormatItem-hhmm": "hh:mm a", 
+	"field-week": "semana", 
+	"dateFormat-medium": "dd/MM/yyyy", 
+	"dateFormatItem-mmss": "mm:ss"
 })

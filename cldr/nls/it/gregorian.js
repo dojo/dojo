@@ -1,11 +1,15 @@
 ({
+	"dateFormatItem-yM": "M/yyyy", 
 	"field-dayperiod": "periodo del giorno", 
+	"dateFormatItem-yQ": "Q-yyyy", 
 	"field-minute": "minuto", 
 	"eraNames": [
 		"a.C.", 
 		"d.C"
 	], 
-	"field-weekday": "giorno della settimana", 
+	"dateFormatItem-MMMEd": "EEE d MMM", 
+	"dateFormatItem-MMdd": "dd/MM", 
+	"dateFormatItem-yQQQ": "QQQ yyyy", 
 	"days-standAlone-wide": [
 		"Domenica", 
 		"Lunedì", 
@@ -15,6 +19,7 @@
 		"Venerdì", 
 		"Sabato"
 	], 
+	"dateFormatItem-MMM": "LLL", 
 	"months-standAlone-narrow": [
 		"G", 
 		"F", 
@@ -29,7 +34,11 @@
 		"N", 
 		"D"
 	], 
+	"field-weekday": "giorno della settimana", 
 	"field-era": "era", 
+	"dateFormatItem-hhmm": "hh.mm a", 
+	"dateFormatItem-y": "yyyy", 
+	"timeFormat-full": "HH.mm.ss v", 
 	"field-hour": "ora", 
 	"quarters-standAlone-abbr": [
 		"T1", 
@@ -37,7 +46,6 @@
 		"T3", 
 		"T4"
 	], 
-	"timeFormat-full": "HH.mm.ss v", 
 	"months-standAlone-abbr": [
 		"gen", 
 		"feb", 
@@ -52,6 +60,7 @@
 		"nov", 
 		"dic"
 	], 
+	"dateFormatItem-yMMM": "MMM yyyy", 
 	"days-standAlone-narrow": [
 		"D", 
 		"L", 
@@ -65,24 +74,31 @@
 		"aC", 
 		"dC"
 	], 
+	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
 	"dateFormat-long": "dd MMMM yyyy", 
 	"timeFormat-medium": "HH.mm.ss", 
+	"dateFormatItem-Hm": "HH:mm", 
 	"field-zone": "zona", 
 	"dateFormat-medium": "dd/MMM/yyyy", 
+	"dateFormatItem-yyMM": "MM/yy", 
+	"dateFormatItem-yyQQQQ": "QQQQ yy", 
+	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMMM": "MMMM yyyy", 
+	"dateFormatItem-ms": "mm:ss", 
+	"field-year": "anno", 
 	"quarters-standAlone-wide": [
 		"1o trimestre", 
 		"2o trimestre", 
 		"3o trimestre", 
 		"4o trimestre"
 	], 
-	"dateTimeFormat": "{1} {0}", 
-	"field-year": "anno", 
 	"quarters-standAlone-narrow": [
 		"1", 
 		"2", 
 		"3", 
 		"4"
 	], 
+	"dateFormatItem-HHmmss": "HH.mm.ss", 
 	"months-standAlone-wide": [
 		"Gennaio", 
 		"Febbraio", 
@@ -98,6 +114,10 @@
 		"dicembre"
 	], 
 	"field-week": "settimana", 
+	"dateFormatItem-MMMMEd": "EEE d MMMM", 
+	"dateFormatItem-MMMd": "d MMM", 
+	"dateFormatItem-HHmm": "HH.mm", 
+	"dateFormatItem-yyQ": "Q yy", 
 	"timeFormat-long": "HH.mm.ss z", 
 	"months-format-abbr": [
 		"gen", 
@@ -115,12 +135,7 @@
 	], 
 	"timeFormat-short": "HH.mm", 
 	"field-month": "mese", 
-	"quarters-format-abbr": [
-		"T1", 
-		"T2", 
-		"T3", 
-		"T4"
-	], 
+	"dateFormatItem-MMMMd": "d MMMM", 
 	"days-format-abbr": [
 		"dom", 
 		"lun", 
@@ -130,18 +145,19 @@
 		"ven", 
 		"sab"
 	], 
+	"dateFormatItem-MMMMdd": "dd MMMM", 
+	"dateFormatItem-M": "L", 
 	"pm": "p.", 
-	"days-format-narrow": [
-		"D", 
-		"L", 
-		"M", 
-		"M", 
-		"G", 
-		"V", 
-		"S"
+	"quarters-format-abbr": [
+		"T1", 
+		"T2", 
+		"T3", 
+		"T4"
 	], 
-	"field-second": "secondo", 
 	"field-day": "giorno", 
+	"dateFormatItem-MEd": "EEE d/M", 
+	"field-second": "secondo", 
+	"dateFormatItem-hhmmss": "hh.mm.ss a", 
 	"months-format-narrow": [
 		"G", 
 		"F", 
@@ -156,6 +172,15 @@
 		"N", 
 		"D"
 	], 
+	"days-format-narrow": [
+		"D", 
+		"L", 
+		"M", 
+		"M", 
+		"G", 
+		"V", 
+		"S"
+	], 
 	"am": "m.", 
 	"days-standAlone-abbr": [
 		"dom", 
@@ -167,7 +192,10 @@
 		"sab"
 	], 
 	"dateFormat-short": "dd/MM/yy", 
+	"dateFormatItem-yMMMEd": "EEE d MMM yyyy", 
 	"dateFormat-full": "EEEE d MMMM yyyy", 
+	"dateFormatItem-Md": "d/M", 
+	"dateFormatItem-yMEd": "EEE, d-M-yyyy", 
 	"months-format-wide": [
 		"gennaio", 
 		"febbraio", 
@@ -182,37 +210,7 @@
 		"novembre", 
 		"dicembre"
 	], 
-	"dateTimeAvailableFormats": [
-		"HH.mm", 
-		"HH.mm.ss", 
-		"HH:mm", 
-		"L", 
-		"EEE d/M", 
-		"LLL", 
-		"EEE d MMM", 
-		"EEE d MMMM", 
-		"d MMMM", 
-		"dd MMMM", 
-		"d MMM", 
-		"dd/MM", 
-		"d/M", 
-		"d", 
-		"hh.mm a", 
-		"hh.mm.ss a", 
-		"mm:ss", 
-		"yyyy", 
-		"M/yyyy", 
-		"EEE, d-M-yyyy", 
-		"MMM yyyy", 
-		"EEE d MMM yyyy", 
-		"MMMM yyyy", 
-		"Q-yyyy", 
-		"QQQ yyyy", 
-		"MM/yy", 
-		"Q yy", 
-		"QQQQ yy", 
-		"MMMM yyyy"
-	], 
+	"dateFormatItem-d": "d", 
 	"quarters-format-wide": [
 		"1o trimestre", 
 		"2o trimestre", 

@@ -634,11 +634,11 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				keywordArgs.onComplete.call(scope);
 			}
 		};
-		var saveFailedCallback = function(){
+		var saveFailedCallback = function(err){
 			self._saveInProgress = false;
 			if(keywordArgs && keywordArgs.onError){
 				var scope = keywordArgs.scope || dojo.global;
-				keywordArgs.onError.call(scope);
+				keywordArgs.onError.call(scope, err);
 			}
 		};
 		

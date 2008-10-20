@@ -124,7 +124,7 @@
 		"Fri", 
 		"Sat"
 	], 
-	"pm": "p.m.", 
+	"pm": "PM", 
 	"days-format-narrow": [
 		"S", 
 		"M", 
@@ -150,7 +150,7 @@
 		"N", 
 		"D"
 	], 
-	"am": "a.m.", 
+	"am": "AM", 
 	"days-standAlone-abbr": [
 		"Sun", 
 		"Mon", 

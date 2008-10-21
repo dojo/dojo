@@ -40,8 +40,7 @@ dojo = {
 	isIE: 6,
 	//	isKhtml: Number | undefined
 	//		Version as a Number if client is a KHTML browser. undefined otherwise. Corresponds to major
-	//		detected version. See dojo.isWebKit for better version numbers for other KHTML-affiliated
-	//		browsers.
+	//		detected version.
 	isKhtml: 0,
 	//	isWebKit: Number | undefined
 	//		Version as a Number if client is a WebKit-derived browser (Konqueror,

@@ -443,8 +443,9 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// summary: checks if user clicked on "approved" items
 		// e: Event: mouse event
 		if(!this.withHandles){ return true; }
-		for(var node = e.target; node && !dojo.hasClass(node, "dojoDndItem"); node = node.parentNode){
+		for(var node = e.target; node; node = node.parentNode){
 			if(dojo.hasClass(node, "dojoDndHandle")){ return true; }
+			if(dojo.hasClass(node, "dojoDndItem")){ break; }
 		}
 		return false;	// Boolean
 	}

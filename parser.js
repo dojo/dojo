@@ -128,15 +128,15 @@ dojo.parser = new function(){
 		d.forEach(nodes, function(node){
 			if(!node){ return; }
 			var type = node.getAttribute(dtName);
-			if((!type)||(!type.length)){ return; }
-			var clsInfo = getClassInfo(type);
-			var clazz = clsInfo.cls;
-			var ps = clazz._noScript||clazz.prototype._noScript;
+			if(!type || !type.length){ return; }
+			var clsInfo = getClassInfo(type),
+				clazz = clsInfo.cls,
+				ps = clazz._noScript || clazz.prototype._noScript;
 
 			// read parameters (ie, attributes).
 			// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
-			var params = {};
-			var attributes = node.attributes;
+			var params = {},
+				attributes = node.attributes;
 			for(var name in clsInfo.params){
 				var item = attributes.getNamedItem(name);
 				if(!item || (!item.specified && (!dojo.isIE || name.toLowerCase()!="value"))){ continue; }
@@ -249,25 +249,24 @@ dojo.parser = new function(){
 	}
 })();
 
-//TODO: ported from 0.4.x Dojo.  Can we reduce this?
-dojo.parser._anonCtr = 0;
-dojo.parser._anon = {}; // why is this property required?
-dojo.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
-	// summary:
-	//		Creates a reference to anonFuncPtr in thisObj with a completely
-	//		unique name. The new name is returned as a String. 
-	var jpn = "$joinpoint";
-	var nso = (thisObj|| dojo.parser._anon);
-	if(dojo.isIE){
-		var cn = anonFuncPtr["__dojoNameCache"];
-		if(cn && nso[cn] === anonFuncPtr){
-			return anonFuncPtr["__dojoNameCache"];
+(function(){
+	var _anonCtr = 0, _anon = {};
+	dojo.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
+		// summary:
+		//		Creates a reference to anonFuncPtr in thisObj with a completely
+		//		unique name. The new name is returned as a String. 
+		var nso = thisObj || _anon;
+		if(dojo.isIE){
+			var cn = anonFuncPtr["__dojoNameCache"];
+			if(cn && nso[cn] === anonFuncPtr){
+				return cn;
+			}
 		}
+		var name;
+		do{
+			name = "__" + _anonCtr++;
+		}while(name in nso)
+		nso[name] = anonFuncPtr;
+		return name; // String
 	}
-	var ret = "__"+dojo.parser._anonCtr++;
-	while(typeof nso[ret] != "undefined"){
-		ret = "__"+dojo.parser._anonCtr++;
-	}
-	nso[ret] = anonFuncPtr;
-	return ret; // String
-}
+})();

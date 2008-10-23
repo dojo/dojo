@@ -334,7 +334,7 @@ dojo.require("dojo._base.html");
 		var props = (fArgs.properties.opacity = {});
 		props.start = !("start" in fArgs) ?
 			function(){ 
-				return Number(d.style(fArgs.node, "opacity")); 
+				return Number(d.style(fArgs.node, "opacity")||0); 
 			} : fArgs.start;
 		props.end = fArgs.end;
 
@@ -398,7 +398,7 @@ dojo.require("dojo._base.html");
 				if(start instanceof d.Color){
 					ret[p] = d.blendColors(start, prop.end, r, prop.tempColor).toCss();
 				}else if(!d.isArray(start)){
-					ret[p] = ((prop.end - start) * r) + start + (p != "opacity" ? prop.units||"px" : "");
+					ret[p] = ((prop.end - start) * r) + start + (p != "opacity" ? prop.units||"px" : 0);
 				}
 			}
 			return ret;

@@ -8,6 +8,26 @@ dojo.parser = new function(){
 	var dtName = d._scopeName + "Type";
 	var qry = "[" + dtName + "]";
 
+	var _anonCtr = 0, _anon = {};
+	var nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
+		// summary:
+		//		Creates a reference to anonFuncPtr in thisObj with a completely
+		//		unique name. The new name is returned as a String. 
+		var nso = thisObj || _anon;
+		if(dojo.isIE){
+			var cn = anonFuncPtr["__dojoNameCache"];
+			if(cn && nso[cn] === anonFuncPtr){
+				return cn;
+			}
+		}
+		var name;
+		do{
+			name = "__" + _anonCtr++;
+		}while(name in nso)
+		nso[name] = anonFuncPtr;
+		return name; // String
+	}
+
 	function val2type(/*Object*/ value){
 		// summary:
 		//		Returns name of type of given value.
@@ -44,7 +64,7 @@ dojo.parser = new function(){
 				try{
 					if(value.search(/[^\w\.]+/i) != -1){
 						// TODO: "this" here won't work
-						value = d.parser._nameAnonFunc(new Function(value), this);
+						value = nameAnonFunc(new Function(value), this);
 					}
 					return d.getObject(value, false);
 				}catch(e){ return new Function(); }
@@ -246,27 +266,5 @@ dojo.parser = new function(){
 		dojo._loaders.splice(1, 0, parseRunner);
 	}else{
 		dojo._loaders.unshift(parseRunner);
-	}
-})();
-
-(function(){
-	var _anonCtr = 0, _anon = {};
-	dojo.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
-		// summary:
-		//		Creates a reference to anonFuncPtr in thisObj with a completely
-		//		unique name. The new name is returned as a String. 
-		var nso = thisObj || _anon;
-		if(dojo.isIE){
-			var cn = anonFuncPtr["__dojoNameCache"];
-			if(cn && nso[cn] === anonFuncPtr){
-				return cn;
-			}
-		}
-		var name;
-		do{
-			name = "__" + _anonCtr++;
-		}while(name in nso)
-		nso[name] = anonFuncPtr;
-		return name; // String
 	}
 })();

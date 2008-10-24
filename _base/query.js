@@ -593,7 +593,7 @@ dojo.require("dojo._base.NodeList");
 		if(attr == "style"){
 			return elem.style.cssText || blank;
 		}
-		return elem.getAttribute(attr, 2) || blank;
+		return (caseSensitive ? elem.getAttribute(attr) : elem.getAttribute(attr, 2)) || blank;
 	}
 
 	var attrs = {
@@ -767,7 +767,7 @@ dojo.require("dojo._base.NodeList");
 	var defaultGetter = (d.isIE) ? function(cond){
 		var clc = cond.toLowerCase();
 		return function(elem){
-			return elem[cond]||elem[clc];
+			return (caseSensitive ? elem.getAttribute(cond) : elem[cond]||elem[clc]);
 		}
 	} : function(cond){
 		return function(elem){

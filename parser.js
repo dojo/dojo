@@ -90,7 +90,7 @@ dojo.parser = new function(){
 	
 	function getClassInfo(/*String*/ className){
 		// className:
-		//		fully qualified name (like "dijit.Button")
+		//		fully qualified name (like "dijit.form.Button")
 		// returns:
 		//		structure like
 		//			{ 

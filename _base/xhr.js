@@ -230,16 +230,17 @@ dojo.require("dojo._base.query");
 			// FIXME: try Moz and IE specific eval variants?
 			return _d.eval(xhr.responseText);
 		},
-		"xml": function(xhr){ 
+		"xml": function(xhr){
 			var result = xhr.responseXML;
-			if(_d.isIE && (!result || result.documentElement == null)){
-				_d.forEach(["MSXML2", "Microsoft", "MSXML", "MSXML3"], function(prefix){
+			if(_d.isIE && (!result || !result.documentElement)){
+				_d.some(["MSXML2", "Microsoft", "MSXML", "MSXML3"], function(prefix){
 					try{
 						var dom = new ActiveXObject(prefix + ".XMLDOM");
 						dom.async = false;
 						dom.loadXML(xhr.responseText);
 						result = dom;
-					}catch(e){ /* Not available. Squelch and try next one. */ }
+					}catch(e){ return false; }
+					return true;
 				});
 			}
 			return result; // DOMDocument

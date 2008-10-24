@@ -152,17 +152,14 @@
 							);
 						},
 						function xmlContentHandler(t){
-							var fauxObj = {
-								foo: "bar",
-								baz: [
-									{ thonk: "blarg" },
-									"xyzzy!"
-								],
-								documentElement: "Element" //Added to make IE happy.
-							};
-							t.is(fauxObj,
-								dojo._contentHandlers["xml"]({ responseXML: fauxObj })
-							);
+							var fauxXhr = {};
+							fauxXhr.responseText = "<foo><bar baz='thonk'>blarg</bar></foo>";
+							if("DOMParser" in dojo.global){
+								var parser = new DOMParser();
+								fauxXhr.responseXML = parser.parseFromString(fauxXhr.responseText, "text/xml"); //	DOMDocument
+							}
+							var xmlDoc = dojo._contentHandlers["xml"](fauxXhr);
+							t.is("foo", xmlDoc.documentElement.tagName);
 						},
 						function xhrGet(t){
 							var d = new doh.Deferred();

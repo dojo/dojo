@@ -9,7 +9,17 @@
 		<script type="text/javascript" src="../../../util/doh/runner.js"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
-			dojo.require("dojox.data.dom");
+
+			function createDocument(xml){
+				var fauxXhr = { responseText: xml };
+				if("DOMParser" in dojo.global){
+					var parser = new DOMParser();
+					fauxXhr.responseXML = parser.parseFromString(xml, "text/xml");
+				}
+				// kludge: use dojo.xhr contentHandler for XML to process IE XMLDOC as needed
+				return dojo._contentHandlers["xml"](fauxXhr); // DOMDocument
+			}
+
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
@@ -157,7 +167,7 @@
 							doh.is(foo, dojo.query(foo));
 						},
 						function xml(){
-							var doc = dojox.data.dom.createDocument([
+							var doc = createDocument([
 								"<ResultSet>",
 									"<Result>One</Result>",
 									"<RESULT>Two</RESULT>",
@@ -167,7 +177,6 @@
 							].join("")
 							);
 							var de = doc.documentElement;
-							console.debug(dojox.data.dom.innerXML(de));
 
 							doh.is(2, dojo.query("result", de).length, "all lower");
 							doh.is(1, dojo.query("Result", de).length, "mixed case");
@@ -176,14 +185,13 @@
 							doh.is(0, dojo.query("rEsulT", de).length, "no match");
 						},
 						function xml_attrs(){
-							var doc = dojox.data.dom.createDocument([
+							var doc = createDocument([
 								"<ResultSet>",
 									"<RESULT thinger='blah'>Two</RESULT>",
 									"<RESULT thinger='gadzooks'>Two</RESULT>",
 								"</ResultSet>"
 							].join(""));
 							var de = doc.documentElement;
-							console.debug(dojox.data.dom.innerXML(de));
 
 							doh.is(2, dojo.query("RESULT", de).length, "result elements");
 							doh.is(0, dojo.query("RESULT[THINGER]", de).length, "result elements with attrs (wrong)");

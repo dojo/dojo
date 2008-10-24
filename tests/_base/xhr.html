@@ -152,11 +152,10 @@
 							);
 						},
 						function xmlContentHandler(t){
-							var fauxXhr = {};
-							fauxXhr.responseText = "<foo><bar baz='thonk'>blarg</bar></foo>";
+							var fauxXhr = { responseText: "<foo><bar baz='thonk'>blarg</bar></foo>" };
 							if("DOMParser" in dojo.global){
 								var parser = new DOMParser();
-								fauxXhr.responseXML = parser.parseFromString(fauxXhr.responseText, "text/xml"); //	DOMDocument
+								fauxXhr.responseXML = parser.parseFromString(fauxXhr.responseText, "text/xml");
 							}
 							var xmlDoc = dojo._contentHandlers["xml"](fauxXhr);
 							t.is("foo", xmlDoc.documentElement.tagName);

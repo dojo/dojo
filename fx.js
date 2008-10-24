@@ -301,7 +301,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 });
 
 dojo.fx.wipeIn = function(/*Object*/ args){
-	// summary
+	// summary:
 	//		Returns an animation that will expand the
 	//		node defined in 'args' object from it's current height to
 	//		it's natural height (with no scrollbar).
@@ -344,7 +344,7 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 }
 
 dojo.fx.wipeOut = function(/*Object*/ args){
-	// summary
+	// summary:
 	//		Returns an animation that will shrink node defined in "args"
 	//		from it's current height to 1px, and then hide it.
 	var node = args.node = dojo.byId(args.node);
@@ -374,7 +374,7 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 }
 
 dojo.fx.slideTo = function(/*Object?*/ args){
-	// summary
+	// summary:
 	//		Returns an animation that will slide "node" 
 	//		defined in args Object from its current position to
 	//		the position defined by (args.left, args.top).

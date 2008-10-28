@@ -343,7 +343,7 @@ dojo.global = {
 		return obj && p ? (obj[p]=value) : undefined; // Object
 	}
 
-	dojo.getObject = function(/*String*/name, /*Boolean*/create, /*Object*/context){
+	dojo.getObject = function(/*String*/name, /*Boolean?*/create, /*Object?*/context){
 		// summary: 
 		//		Get a property from a dot-separated string, such as "A.B.C"
 		//	description: 
@@ -351,12 +351,12 @@ dojo.global = {
 		//		the chain, or when you have an object reference in string format.
 		//	name: 	
 		//		Path to an property, in the form "A.B.C".
-		//	context:
-		//		Optional. Object to use as root of path. Defaults to
-		//		'dojo.global'. Null may be passed.
 		//	create: 
 		//		Optional. Defaults to `false`. If `true`, Objects will be
 		//		created at any point along the 'path' that is undefined.
+		//	context:
+		//		Optional. Object to use as root of path. Defaults to
+		//		'dojo.global'. Null may be passed.
 		return d._getProp(name.split("."), create, context); // Object
 	}
 

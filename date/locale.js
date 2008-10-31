@@ -614,7 +614,7 @@ dojo.date.locale.displayPattern = function(/*String*/fixedPattern, /*String?*/lo
 		local = dojo.date.locale._getGregorianBundle(locale).patternChars;
 	return dojo.map(fixedPattern, function(c){
 		 var i = fixed.indexOf(c);
-		 return i < 0 ? c : local.substr(i, 1);
+		 return i < 0 ? c : local.charAt(i);
 	}).join(""); // String
 }
 

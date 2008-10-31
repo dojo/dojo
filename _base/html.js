@@ -433,6 +433,14 @@ if(dojo.isIE || dojo.isOpera){
 		//		Accesses styles on a node. If 2 arguments are
 		//		passed, acts as a getter. If 3 arguments are passed, acts
 		//		as a setter.
+		//	description:
+		//		Getting the style value uses the computed style for the node, so the value
+		//		will be a calculated value, not just the immediate node.style value.
+		//		Also when getting values, use specific style names,
+		//		like "borderBottomWidth" instead of "border" since compound values like
+		//		"border" are not necessarily reflected as expected.
+		//		If you want to get node dimensions, use dojo.marginBox() or
+		//		dojo.contentBox(). 
 		//	node:
 		//		id or reference to node to get/set style for
 		//	style:

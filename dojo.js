@@ -52,7 +52,7 @@ if(typeof dojo == "undefined"){
 	(function(){
 		var getRootNode = function(){
 			// attempt to figure out the path to dojo if it isn't set in the config
-			if((this["document"])&&(this["document"]["getElementsByTagName"])){
+			if(this["document"] && this["document"]["getElementsByTagName"]){
 				var scripts = document.getElementsByTagName("script");
 				var rePkg = /dojo\.js([\?\.]|$)/i;
 				for(var i = 0; i < scripts.length; i++){
@@ -81,10 +81,10 @@ if(typeof dojo == "undefined"){
 		var isSpidermonkey = false;
 		var isFFExt = false;
 		if(
-			(typeof this["load"] == "function")&&
+			typeof this["load"] == "function" &&
 			(
-				(typeof this["Packages"] == "function")||
-				(typeof this["Packages"] == "object")
+				typeof this["Packages"] == "function" ||
+				typeof this["Packages"] == "object"
 			)
 		){
 			// Rhino environments make Java code available via the Packages
@@ -99,14 +99,14 @@ if(typeof dojo == "undefined"){
 			isSpidermonkey  = true;
 			hostEnv = "spidermonkey";
 		}else if(
-			(typeof this["ChromeWindow"] != "undefined") &&
-			(window instanceof ChromeWindow)
+			"ChromeWindow" in this &&
+			window instanceof ChromeWindow
 		){
 			try{
 				Components.classes["@mozilla.org/moz/jssubscript-loader;1"];
 				isFFExt = true;
 				hostEnv = "ff_ext";
-			}catch(e){}
+			}catch(e){ /* squelch Permission Denied error, which just means this is not an extension */ }
 		}
 		var tmps = ["bootstrap.js", "loader.js", "hostenv_"+hostEnv+".js"];
 		if (this.Jaxer && this.Jaxer.isOnServer) {
@@ -114,16 +114,16 @@ if(typeof dojo == "undefined"){
 		}
 	
 		if(
-			(this["djConfig"])&&
+			this["djConfig"]&&
 			(
-				(djConfig["forceXDomain"])||
-				(djConfig["useXDomain"])
+				djConfig["forceXDomain"] ||
+				djConfig["useXDomain"]
 			)
 		){
 			tmps.push("loader_xd.js");
 		}
 	
-		if((this["djConfig"])&&(djConfig["baseUrl"])){
+		if(this["djConfig"] && djConfig["baseUrl"]){
 			// if the user explicitly tells us where Dojo has been loaded from
 			// (or should be loaded from) via djConfig, skip the auto-detection
 			// routines.
@@ -135,15 +135,15 @@ if(typeof dojo == "undefined"){
 				try{
 					throw new Error(""); 
 				}catch(e){ 
-					root = String(e.fileName||e.sourceURL).split("dojo.js")[0];
-				};
+					root = String(e.fileName || e.sourceURL).split("dojo.js")[0];
+				}
 			}
 			if(!this["djConfig"]){
 				djConfig = { baseUrl: root };
 			}
 	
 			// attempt to figure out the path to dojo if it isn't set in the config
-			if((this["document"])&&(this["document"]["getElementsByTagName"])){
+			if(this["document"] && this["document"]["getElementsByTagName"]){
 				var root = getRootNode().root;	
 				if(!this["djConfig"]){ djConfig = {}; }
 				djConfig["baseUrl"] = root;

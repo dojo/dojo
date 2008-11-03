@@ -1095,8 +1095,11 @@ if(
 		// X items in an array
 		// TODO: Firebug Sr. actually goes by char count
 		var isError = (obj instanceof Error);
-		if(obj.nodeType == 1 || obj.nodeType == 3){
+		if(obj.nodeType == 1){
 			return escapeHTML('< '+obj.tagName.toLowerCase()+' id=\"'+ obj.id+ '\" />');
+		}
+		if(obj.nodeType == 3){
+			return escapeHTML('[TextNode: "'+obj.nodeValue+'"]');
 		}
 		var nm = (obj && (obj.id || obj.name || obj.ObjectID || obj.widgetId));
 		if(!isError && nm){ return "{"+nm+"}";	}

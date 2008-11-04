@@ -68,7 +68,7 @@ if(typeof window != 'undefined'){
 			return (stat >= 200 && stat < 300) || 	// Boolean
 				stat == 304 || 						// allow any 2XX response code
 				stat == 1223 || 						// get it out of the cache
-				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") ); // Internet Explorer mangled the status code
+				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") );
 		}
 
 		// FIXME: PORTME
@@ -169,6 +169,87 @@ if(typeof window != 'undefined'){
 	
 			d._onto(d._windowUnloaders, obj, functionName);
 		}
+
+		// XUL specific APIs
+		var contexts = [];
+		var current = null;
+		dojo._defaultContext = [ window, document ];
+
+		dojo.pushContext = function(/*Object|String?*/g, /*MDocumentElement?*/d){
+			//	summary:
+			//		causes subsequent calls to Dojo methods to assume the
+			//		passed object and, optionally, document as the default
+			//		scopes to use. A 2-element array of the previous global and
+			//		document are returned.
+			//	description:
+			//		dojo.pushContext treats contexts as a stack. The
+			//		auto-detected contexts which are initially provided using
+			//		dojo.setContext() require authors to keep state in order to
+			//		"return" to a previous context, whereas the
+			//		dojo.pushContext and dojo.popContext methods provide a more
+			//		natural way to augment blocks of code to ensure that they
+			//		execute in a different window or frame without issue. If
+			//		called without any arguments, the default context (the
+			//		context when Dojo is first loaded) is instead pushed into
+			//		the stack. If only a single string is passed, a node in the
+			//		intitial context's document is looked up and its
+			//		contextWindow and contextDocument properties are used as
+			//		the context to push. This means that iframes can be given
+			//		an ID and code can be executed in the scope of the iframe's
+			//		document in subsequent calls easily.
+			//	g:
+			//		The global context. If a string, the id of the frame to
+			//		search for a context and document.
+			//	d:
+			//		The document element to execute subsequent code with.
+			var old = [dojo.global, dojo.doc];
+			contexts.push(old);
+			var n;
+			if(!g && !d){
+				n = dojo._defaultContext;
+			}else{
+				n = [ g, d ];
+				if(!d && dojo.isString(g)){
+					var t = document.getElementById(g);
+					if(t.contentDocument){
+						n = [t.contentWindow, t.contentDocument];
+					}
+				}
+			}
+			current = n;
+			dojo.setContext.apply(dojo, n);
+			return old; // Array
+		};
+
+		dojo.popContext = function(){
+			//	summary:
+			//		If the context stack contains elements, ensure that
+			//		subsequent code executes in the *previous* context to the
+			//		current context. The current context set ([global,
+			//		document]) is returned.
+			var oc = current;
+			if(!contexts.length){
+				return oc;
+			}
+			dojo.setContext.apply(dojo, contexts.pop());
+			return oc;
+		};
+
+		// FIXME: 
+		//		don't really like the current arguments and order to
+		//		_inContext, so don't make it public until it's right!
+		dojo._inContext = function(g, d, f){
+			var a = dojo._toArray(arguments);
+			f = a.pop();
+			if(a.length == 1){
+				d = null;
+			}
+			dojo.pushContext(g, d);
+			var r = f();
+			dojo.popContext();
+			return r;
+		};
+
 	})();
 
 	dojo._initFired = false;
@@ -251,4 +332,5 @@ if(dojo.config.isDebug){
 	console.debug = function(){
 		console.log(dojo._toArray(arguments).join(" "));
 	}
+	// FIXME: what about the rest of the console.* methods? And is there any way to reach into firebug and log into it directly?
 }

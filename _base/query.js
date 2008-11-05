@@ -1223,8 +1223,8 @@ if(dojo){
 		//			|	* `[foo$='bar']` attribute end match
 		//			|	* `[foo*='bar']` attribute substring match
 		//			* `:first-child`, `:last-child` positional selectors
-		//			* `:empty` content emtpy selector
-		//			* `:empty` content emtpy selector
+		//			* `:empty` content empty selector
+		//			* `:empty` content empty selector
 		//			* `:checked` pseudo selector
 		//			* `:nth-child(n)`, `:nth-child(2n+1)` style positional calculations
 		//			* `:nth-child(even)`, `:nth-child(odd)` positional selectors
@@ -1234,14 +1234,14 @@ if(dojo){
 		//		`dojo.query()`, including compound selectors ("," delimited).
 		//		Very complex and useful searches can be constructed with this
 		//		palette of selectors and when combined with functions for
-		//		maniplation presented by dojo.NodeList, many types of DOM
+		//		manipulation presented by dojo.NodeList, many types of DOM
 		//		manipulation operations become very straightforward.
 		//		
 		//		Unsupported Selectors:
 		//		----------------------
 		//
 		//		While dojo.query handles many CSS3 selectors, some fall outside of
-		//		what's resaonable for a programmatic node querying engine to
+		//		what's reasonable for a programmatic node querying engine to
 		//		handle. Currently unsupported selectors include:
 		//		
 		//			* namespace-differentiated selectors of any form

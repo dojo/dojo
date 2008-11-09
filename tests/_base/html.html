@@ -179,33 +179,33 @@
 						function testClassFunctions(t){
 							var node = dojo.byId("sq100");
 							dojo.addClass(node, "a");
-							doh.is("a", node.className);
+							doh.is("a", node.className, "class is a");
 							dojo.removeClass(node, "c");
-							doh.is("a", node.className);
-							t.assertTrue(dojo.hasClass(node, "a"));
-							t.assertFalse(dojo.hasClass(node, "b"));
+							doh.is("a", node.className, "class is still a");
+							t.assertTrue(dojo.hasClass(node, "a"), "class is a, test for a");
+							t.assertFalse(dojo.hasClass(node, "b"), "class is a, test for b");
 							dojo.addClass(node, "b");
-							doh.is("a b", node.className);
-							t.assertTrue(dojo.hasClass(node, "a"));
-							t.assertTrue(dojo.hasClass(node, "b"));
+							doh.is("a b", node.className, "class is a b");
+							t.assertTrue(dojo.hasClass(node, "a"), "class is a b, test for a");
+							t.assertTrue(dojo.hasClass(node, "b"), "class is a b, test for b");
 							dojo.removeClass(node, "a");
-							doh.is("b", node.className);
-							t.assertFalse(dojo.hasClass(node, "a"));
-							t.assertTrue(dojo.hasClass(node, "b"));
+							doh.is("b", node.className, "class is b");
+							t.assertFalse(dojo.hasClass(node, "a"), "class is b, test for a");
+							t.assertTrue(dojo.hasClass(node, "b"), "class is b, test for b");
 							dojo.toggleClass(node, "a");
-							doh.is("b a", node.className);
-							t.assertTrue(dojo.hasClass(node, "a"));
-							t.assertTrue(dojo.hasClass(node, "b"));
+							doh.is("b a", node.className, "class is b a");
+							t.assertTrue(dojo.hasClass(node, "a"), "class is b a, test for a");
+							t.assertTrue(dojo.hasClass(node, "b"), "class is b a, test for b");
 							dojo.toggleClass(node, "a");
-							doh.is("b", node.className);
-							t.assertFalse(dojo.hasClass(node, "a"));
-							t.assertTrue(dojo.hasClass(node, "b"));
+							doh.is("b", node.className, "class is b (again)");
+							t.assertFalse(dojo.hasClass(node, "a"), "class is b (again), test for a");
+							t.assertTrue(dojo.hasClass(node, "b"), "class is b (again), test for b");
 							dojo.toggleClass(node, "b");
-							doh.is("", node.className);
-							t.assertFalse(dojo.hasClass(node, "a"));
-							t.assertFalse(dojo.hasClass(node, "b"));
+							doh.is("", node.className, "class is blank");
+							t.assertFalse(dojo.hasClass(node, "a"), "class is blank, test for a");
+							t.assertFalse(dojo.hasClass(node, "b"), "class is blank, test for b");
 							dojo.removeClass(node, "c");
-							t.assertTrue(!node.className);
+							t.assertTrue(!node.className, "no class");
 						},
 						function getTypeInput(t){
 							doh.f(dojo.hasAttr(dojo.byId("input-no-type"), "type"));
@@ -308,19 +308,19 @@
 								}
 							});
 							dojo.body().appendChild(input);
-							doh.is(1, dojo.attr(input, "tabindex"));
-							doh.is("text", dojo.attr(input, "type"));
-							doh.is(0, ctr);
-							doh.t(dojo.hasClass(input, "thinger"));
-							doh.t(dojo.hasClass(input, "blah"));
+							doh.is(1, dojo.attr(input, "tabindex"), "tabindex");
+							doh.is("text", dojo.attr(input, "type"), "type");
+							doh.is(0, ctr, "onfocus ctr == 0");
+							doh.t(dojo.hasClass(input, "thinger"), "hasClass of thinger");
+							doh.t(dojo.hasClass(input, "blah"), "hasClass of blah");
 							var def = new doh.Deferred();
 							input.focus();
 							setTimeout(function(){
-								doh.is(1, ctr);
+								doh.is(1, ctr, "onfocus ctr == 1");
 								input.blur();
 								input.focus();
 								setTimeout(function(){
-									doh.is(2, ctr);
+									doh.is(2, ctr, "onfocus ctr == 2");
 									def.callback(true);
 								}, 10);
 							}, 10);

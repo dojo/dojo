@@ -1090,7 +1090,7 @@ if(dojo.isIE || dojo.isOpera){
 				// get/setAttribute works in all as long use same value for both get/set
 				return ieLT8 ? "htmlFor" : "for";
 			case "class" :
-				return d.isIE ? "className" : "class";
+				return ieLT8 ? "className" : "class";
 			default:
 				return name;
 		}

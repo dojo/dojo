@@ -163,7 +163,7 @@ dojo.parser = new function(){
 			var params = {},
 				attributes = node.attributes;
 			for(var name in clsInfo.params){
-				var item = name in mixin?mixin[name]:attributes.getNamedItem(name);
+				var item = name in mixin?{value:mixin[name],specified:true}:attributes.getNamedItem(name);
 				if(!item || (!item.specified && (!dojo.isIE || name.toLowerCase()!="value"))){ continue; }
 				var value = item.value;
 				// Deal with IE quirks for 'class' and 'style'
@@ -175,7 +175,11 @@ dojo.parser = new function(){
 					value = "style" in mixin?mixin.style:(node.style && node.style.cssText); // FIXME: Opera?
 				}
 				var _type = clsInfo.params[name];
-				params[name] = str2obj(value, _type);
+				if(typeof value == "string"){
+					params[name] = str2obj(value, _type);
+				}else{
+					params[name] = value;
+				}
 			}
 
 			// Process <script type="dojo/*"> script tags

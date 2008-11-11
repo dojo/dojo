@@ -139,15 +139,20 @@ dojo.parser = new function(){
 		return new Function(preamble+script.innerHTML+suffix);
 	}
 
-	this.instantiate = function(/* Array */nodes){
+	this.instantiate = function(/* Array */nodes, /* Object? */mixin){
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
 		//		potentially calls a layout method to allow them to connect with
 		//		any children		
+		// mixin: Object
+		//		An object that will be mixed in with each node in the array.
+		//		Values in the mixin will override values in the node, if they
+		//		exist.
 		var thelist = [];
+		mixin = mixin||{};
 		d.forEach(nodes, function(node){
 			if(!node){ return; }
-			var type = node.getAttribute(dtName);
+			var type = dtName in mixin?mixin[dtName]:node.getAttribute(dtName);
 			if(!type || !type.length){ return; }
 			var clsInfo = getClassInfo(type),
 				clazz = clsInfo.cls,
@@ -158,16 +163,16 @@ dojo.parser = new function(){
 			var params = {},
 				attributes = node.attributes;
 			for(var name in clsInfo.params){
-				var item = attributes.getNamedItem(name);
+				var item = name in mixin?mixin[name]:attributes.getNamedItem(name);
 				if(!item || (!item.specified && (!dojo.isIE || name.toLowerCase()!="value"))){ continue; }
 				var value = item.value;
 				// Deal with IE quirks for 'class' and 'style'
 				switch(name){
 				case "class":
-					value = node.className;
+					value = "className" in mixin?mixin.className:node.className;
 					break;
 				case "style":
-					value = node.style && node.style.cssText; // FIXME: Opera?
+					value = "style" in mixin?mixin.style:(node.style && node.style.cssText); // FIXME: Opera?
 				}
 				var _type = clsInfo.params[name];
 				params[name] = str2obj(value, _type);

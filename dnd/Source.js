@@ -30,11 +30,15 @@ dojo.dnd.__SourceArgs = function(){
 	//	accept: Array?
 	//		list of accepted types (text strings) for a target; defaults to
 	//		["text"]
-	//	horizontal: Boolean?
-	//		a horizontal container, if true, vertical otherwise or when omitted
+	//	autoSync: Boolean
+	//		if true refreshes the node list on every operation; false by default
 	//	copyOnly: Boolean?
 	//		copy items, if true, use a state of Ctrl key otherwise,
 	//		see selfCopy and selfAccept for more details
+	//	delay: Number
+	//		the move delay in pixels before detecting a drag; 0 by default
+	//	horizontal: Boolean?
+	//		a horizontal container, if true, vertical otherwise or when omitted
 	//	selfCopy: Boolean?
 	//		copy items by default when dropping on itself,
 	//		false by default, works only if copyOnly is true
@@ -45,8 +49,10 @@ dojo.dnd.__SourceArgs = function(){
 	//		allows dragging only by handles, false by default
 	this.isSource = isSource;
 	this.accept = accept;
-	this.horizontal = horizontal;
+	this.autoSync = autoSync;
 	this.copyOnly = copyOnly;
+	this.delay = delay;
+	this.horizontal = horizontal;
 	this.selfCopy = selfCopy;
 	this.selfAccept = selfAccept;
 	this.withHandles = withHandles;
@@ -437,8 +443,9 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// summary: checks if user clicked on "approved" items
 		// e: Event: mouse event
 		if(!this.withHandles){ return true; }
-		for(var node = e.target; node && !dojo.hasClass(node, "dojoDndItem"); node = node.parentNode){
+		for(var node = e.target; node; node = node.parentNode){
 			if(dojo.hasClass(node, "dojoDndHandle")){ return true; }
+			if(dojo.hasClass(node, "dojoDndItem")){ break; }
 		}
 		return false;	// Boolean
 	}

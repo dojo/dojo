@@ -60,7 +60,10 @@ dojo.declare("dojo.dnd.Manager", null, {
 			dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
 			dojo.connect(dojo.doc, "onmouseup",   this, "onMouseUp"),
 			dojo.connect(dojo.doc, "onkeydown",   this, "onKeyDown"),
-			dojo.connect(dojo.doc, "onkeyup",     this, "onKeyUp")
+			dojo.connect(dojo.doc, "onkeyup",     this, "onKeyUp"),
+			// cancel text selection and text dragging
+			dojo.connect(dojo.doc, "ondragstart",   dojo.stopEvent),
+			dojo.connect(dojo.body(), "onselectstart", dojo.stopEvent)
 		];
 		var c = "dojoDnd" + (copy ? "Copy" : "Move");
 		dojo.addClass(dojo.body(), c); 

@@ -21,8 +21,8 @@ dojo.declare("dojo.dnd.Mover", null, {
 			dojo.connect(d, "onmousemove", this, "onMouseMove"),
 			dojo.connect(d, "onmouseup",   this, "onMouseUp"),
 			// cancel text selection and text dragging
-			dojo.connect(d, "ondragstart",   dojo, "stopEvent"),
-			dojo.connect(d, "onselectstart", dojo, "stopEvent"),
+			dojo.connect(d, "ondragstart",   dojo.stopEvent),
+			dojo.connect(d.body, "onselectstart", dojo.stopEvent),
 			firstEvent
 		];
 		// notify that the move has started

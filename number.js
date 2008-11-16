@@ -339,14 +339,15 @@ dojo.number._parseInfo = function(/*Object?*/options){
 
 	if(isCurrency){
 		// substitute the currency symbol for the placeholder in the pattern
-		re = re.replace(/(\s*)(\u00a4{1,3})(\s*)/g, function(match, before, target, after){
+		re = re.replace(/([\s\xa0]*)(\u00a4{1,3})([\s\xa0]*)/g, function(match, before, target, after){
 			var prop = ["symbol", "currency", "displayName"][target.length-1];
 			var symbol = dojo.regexp.escapeString(options[prop] || options.currency || "");
-			before = before ? "\\s" : "";
-			after = after ? "\\s" : "";
+			before = before ? "[\\s\\xa0]" : "";
+			after = after ? "[\\s\\xa0]" : "";
 			if(!options.strict){
 				if(before){before += "*";}
 				if(after){after += "*";}
+				console.log( "(?:"+before+symbol+after+")?");
 				return "(?:"+before+symbol+after+")?";
 			}
 			return before+symbol+after;
@@ -392,6 +393,7 @@ dojo.number.parse = function(/*String*/expression, /*dojo.number.__ParseOptions?
 	// expression:
 	//		A string representation of a Number
 	var info = dojo.number._parseInfo(options);
+console.log(info.regexp);
 	var results = (new RegExp("^"+info.regexp+"$")).exec(expression);
 	if(!results){
 		return NaN; //NaN

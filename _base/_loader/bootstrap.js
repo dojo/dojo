@@ -59,7 +59,7 @@ djConfig = {
 	//		some browsers (e.g. IE 6). The variable `dojo.baseUrl` is assigned
 	//		either the value of `djConfig.baseUrl` if one is provided or the
 	//		auto-detected root if not. Other modules are located relative to
-	//		this path.
+	//		this path. The path should end in a slash.
 	baseUrl: undefined,
 	// modulePaths: Object
 	//		A map of module names to paths relative to `dojo.baseUrl`. The
@@ -87,7 +87,20 @@ djConfig = {
 	// require: Array
 	//		An array of module names to be loaded immediately after dojo.js has been included
 	//		in a page. 
-	require: []
+	require: [],
+	// defaultDuration: Array
+	//		Default duration, in milliseconds, for wipe and fade animations within dijits.
+	//		Assigned to dijit.defaultDuration.
+	defaultDuration: 200,
+	// dojoBlankHtmlUrl: String
+	//		Used by some modules to configure an empty iframe. Used by dojo.io.iframe and
+	//		dojo.back, and dijit popup support in IE where an iframe is needed to make sure native
+	//		controls do not bleed through the popups. Normally this configuration variable 
+	//		does not need to be set, except when using cross-domain/CDN Dojo builds.
+	//		Save dojo/resources/blank.html to your domain and set `djConfig.dojoBlankHtmlUrl` 
+	//		to the path on your domain your copy of blank.html.
+	dojoBlankHtmlUrl: undefined
+	
 }
 =====*/
 
@@ -100,6 +113,7 @@ djConfig = {
 	}else{
 		if(!this["console"]){
 			this.console = {
+				fromDojo: true
 			};
 		}
 

@@ -347,7 +347,6 @@ dojo.number._parseInfo = function(/*Object?*/options){
 			if(!options.strict){
 				if(before){before += "*";}
 				if(after){after += "*";}
-				console.log( "(?:"+before+symbol+after+")?");
 				return "(?:"+before+symbol+after+")?";
 			}
 			return before+symbol+after;

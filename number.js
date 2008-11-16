@@ -392,7 +392,6 @@ dojo.number.parse = function(/*String*/expression, /*dojo.number.__ParseOptions?
 	// expression:
 	//		A string representation of a Number
 	var info = dojo.number._parseInfo(options);
-console.log(info.regexp);
 	var results = (new RegExp("^"+info.regexp+"$")).exec(expression);
 	if(!results){
 		return NaN; //NaN

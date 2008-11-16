@@ -82,6 +82,41 @@ if(
 		}
 	}catch(e){/*squelch*/}
 
+
+	// ***************************************************************************
+	// Placing these variables before the functions that use them to avoid a 
+	// shrinksafe bug where variable renaming does not happen correctly otherwise.
+
+	// most of the objects in this script are run anonomously
+	var _firebugDoc = document;
+	var _firebugWin = window;
+	var __consoleAnchorId__ = 0;
+	
+	var consoleFrame = null;
+	var consoleBody = null;
+	var consoleObjectInspector = null;
+	var fireBugTabs = null;
+	var commandLine = null;
+	var consoleToolbar = null;
+	
+	var frameVisible = false;
+	var messageQueue = [];
+	var groupStack = [];
+	var timeMap = {};
+	
+	var consoleDomInspector = null;
+	var _inspectionMoveConnection;
+	var _inspectionClickConnection;
+	var _inspectionEnabled = false;
+	var _inspectionTimer = null;
+	var _inspectTempNode = document.createElement("div");
+			
+			
+	var _inspectCurrentNode;
+	var _restoreBorderStyle;
+
+	// ***************************************************************************
+
 	window.console = {
 		_connects: [],
 		log: function(){
@@ -298,36 +333,6 @@ if(
 			}
 		}
 	};
-	
-	// ***************************************************************************
-	
-	// most of the objects in this script are run anonomously
-	var _firebugDoc = document;
-	var _firebugWin = window;
-	var __consoleAnchorId__ = 0;
-	
-	var consoleFrame = null;
-	var consoleBody = null;
-	var consoleObjectInspector = null;
-	var fireBugTabs = null;
-	var commandLine = null;
-	var consoleToolbar = null;
-	
-	var frameVisible = false;
-	var messageQueue = [];
-	var groupStack = [];
-	var timeMap = {};
-	
-	var consoleDomInspector = null;
-	var _inspectionMoveConnection;
-	var _inspectionClickConnection;
-	var _inspectionEnabled = false;
-	var _inspectionTimer = null;
-	var _inspectTempNode = document.createElement("div");
-			
-			
-	var _inspectCurrentNode;
-	var _restoreBorderStyle;
 
 	// ***************************************************************************
 

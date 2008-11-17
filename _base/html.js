@@ -917,13 +917,16 @@ if(dojo.isIE || dojo.isOpera){
 		var de = d.doc.documentElement;
 		//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
 
-		return (d.isIE >= 7) ?
-			{x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top}
-		:
-			// IE 6.0
-			{x: d._isBodyLtr() || window.parent == window ?
+		if(dojo.isIE == 6){
+			return {x: d._isBodyLtr() || _getIeDocumentElementOffsetwindow.parent == window ?
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
 				y: de.clientTop}; // Object
+		}else if(dojo.isIE == 7){
+			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top};
+		}else{
+			return {x: 0, y: 0};
+		}
+
 	};
 	
 	dojo._fixIeBiDiScrollLeft = function(/*Integer*/ scrollLeft){
@@ -963,7 +966,6 @@ if(dojo.isIE || dojo.isOpera){
 
 		// targetBoxType == "border-box"
 		var db = d.body(), dh = d.body().parentNode;
-		console.log("node is " + node.tagName + ", and gbcr is" + node["getBoundingClientRect"]);
 		if(node["getBoundingClientRect"]){
 			// IE6+, FF3+, and Opera 9.6+ all take this branch
 			var client = node.getBoundingClientRect();

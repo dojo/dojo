@@ -29,6 +29,14 @@ tests.register("tests._base.lang",
 			t.assertEqual("string", typeof test["bar"]);
 		},
 
+		function isFunction(t){
+			t.assertTrue(dojo.isFunction(new Function()));
+			t.assertTrue(dojo.isFunction(isFunction));
+			if(dojo.isBrowser){ // test the Safari workaround for NodeList
+				t.assertFalse(dojo.isFunction(dojo.doc.getElementsByName("html")));
+			}
+		},
+
 		function isObject(t){
 			t.assertFalse(dojo.isObject(true));
 			t.assertFalse(dojo.isObject(false));

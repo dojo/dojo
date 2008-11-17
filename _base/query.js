@@ -155,7 +155,7 @@ if(dojo){
 
 		// iterate over the query, charachter by charachter, building up a 
 		// list of query part objects
-		for(; lc=cc, cc=query.charAt(x),x<ql; x++){
+		for(; lc = cc, cc = query.charAt(x), x < ql; x++){
 			//		cc: the current character in the match
 			//		lc: the last charachter (if any)
 
@@ -470,7 +470,7 @@ if(dojo){
 			}
 			return ret;
 		}
-		return _xpathFuncCache[path] = tf;
+		return (_xpathFuncCache[path] = tf);
 	};
 
 	/*
@@ -515,7 +515,7 @@ if(dojo){
 	var _nextSiblings = function(root, single){
 		var ret = [];
 		var te = root;
-		while(te = te.nextSibling){
+		while((te = te.nextSibling)){
 			if(te.nodeType == 1){
 				ret.push(te);
 				if(single){ break; }
@@ -1064,7 +1064,7 @@ if(dojo){
 		//		function to determine on the fly if we should stick w/ the
 		//		potentially optimized variant or if we should try something
 		//		new.
-		(document["evaluate"] && !d.isSafari) ? 
+		(document["evaluate"] && !d.isWebKit) ? 
 		function(query, root){
 			// has xpath support that's faster than DOM
 			var qparts = query.split(" ");
@@ -1112,7 +1112,7 @@ if(dojo){
 		// return a cached version if one is available
 		var qcz = query.charAt(0);
 		if(getDoc()["querySelectorAll"] && 
-			( (!d.isSafari) || (d.isSafari > 3.1) ) && // see #5832
+			(!d.isSafari || d.isSafari > 3.1) && // see #5832
 			// as per CSS 3, we can't currently start w/ combinator:
 			//		http://www.w3.org/TR/css3-selectors/#w3cselgrammar
 			(">+~".indexOf(qcz) == -1)

@@ -972,26 +972,14 @@ if(dojo){
 		if(query.tag && query.id && !query.hasLoops){
 			// we got a filtered ID search (e.g., "h4#thinger")
 			retFunc = function(root){
-				var te = d.byId(query.id, (root.ownerDocument||root)); //root itself may be a document
+				var te = d.byId(query.id, root.ownerDocument || root); //root itself may be a document
 				if(filterFunc(te)){
 					return [ te ];
 				}
 			}
 		}else{
-			var tret;
-
-			if(!query.hasLoops){
-				// it's just a plain-ol elements-by-tag-name query from the root
-				retFunc = function(root){
-					var ret = [];
-					var te, x=0, tret = root.getElementsByTagName(query[ caseSensitive ? "otag" : "tag"]);
-					while((te = tret[x++])){
-						ret.push(te);
-					}
-					return ret;
-				}
-			}else{
-				retFunc = function(root){
+			retFunc = query.hasLoops ?
+				function(root){
 					var ret = [];
 					var te, x = 0, tret = root.getElementsByTagName(query[ caseSensitive ? "otag" : "tag"]);
 					while((te = tret[x++])){
@@ -1001,7 +989,16 @@ if(dojo){
 					}
 					return ret;
 				}
-			}
+			:
+				// it's just a plain-ol elements-by-tag-name query from the root
+				function(root){
+					var ret = [];
+					var te, x=0, tret = root.getElementsByTagName(query[ caseSensitive ? "otag" : "tag"]);
+					while((te = tret[x++])){
+						ret.push(te);
+					}
+					return ret;
+				};
 		}
 		return _getElementsFuncCache[query.query] = retFunc;
 	}

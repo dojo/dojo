@@ -954,25 +954,33 @@ if(dojo.isIE || dojo.isOpera){
 		// FIXME: need to decide in the brave-new-world if we're going to be
 		// margin-box or border-box.
 		var ownerDocument = node.ownerDocument;
-		var ret = {
-			x: 0,
-			y: 0
+		var ret;
+		var add = function(x, y){
+			ret.x += x;
+			ret.y += y;
 		};
+		var subtract = function(x, y){ add(-1 * x, -1 * y); };
 
 		// targetBoxType == "border-box"
-		var db = d.body();
-		if(d.isIE || (d.isFF >= 3)){
+		var db = d.body(), dh = d.body().parentNode;
+		if(node["getBoundingClientRect"]){
 			var client = node.getBoundingClientRect();
-			var cs;
-			if(d.isFF){
-				// in FF3 you have to subract the document element margins
-				var dv = node.ownerDocument.defaultView;
-				cs=dv.getComputedStyle(db.parentNode, null);
+			ret = { x: client.left, y: client.top };
+			if(d.isFF >= 3){
+				// in FF3 you have to subtract the document element margins
+				var cs = gcs(dh);
+				subtract( px(dh, cs.marginLeft), px(dh, cs.marginTop) );
 			}
-			var offset = (d.isIE) ? d._getIeDocumentElementOffset() : { x: px(db.parentNode,cs.marginLeft), y: px(db.parentNode,cs.marginTop)};
-			ret.x = client.left - offset.x;
-			ret.y = client.top - offset.y;
+			if(d.isIE <= 7){
+				// On IE 6 and 7 there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
+				var offset = d._getIeDocumentElementOffset();
+				subtract(offset.x, offset.y);
+			}
 		}else{
+			ret = {
+				x: 0,
+				y: 0
+			};
 			if(node["offsetParent"]){
 				var endNode;
 				// in Safari, if the node is an absolutely positioned child of
@@ -994,8 +1002,7 @@ if(dojo.isIE || dojo.isOpera){
 				if(d.isOpera&&cs.position!="absolute"){
 					n=n.offsetParent;
 				}
-				ret.x -= _sumAncestorProperties(n, "scrollLeft");
-				ret.y -= _sumAncestorProperties(n, "scrollTop");
+				subtract(_sumAncestorProperties(n, "scrollLeft"), _sumAncestorProperties(n, "scrollTop"));
 
 				var curnode = node;
 				do{
@@ -1011,13 +1018,11 @@ if(dojo.isIE || dojo.isOpera){
 					var cs = gcs(curnode);
 					if(curnode != node){
 						if(d.isSafari){
-							ret.x += px(curnode, cs.borderLeftWidth);
-							ret.y += px(curnode, cs.borderTopWidth);
+							add(px(curnode, cs.borderLeftWidth), px(curnode, cs.borderTopWidth));
 						}else if(d.isFF){
 							// tried left+right with differently sized left/right borders
 							// it really is 2xleft border in FF, not left+right, even in RTL!
-							ret.x += 2*px(curnode,cs.borderLeftWidth);
-							ret.y += 2*px(curnode,cs.borderTopWidth);
+							add(2*px(curnode,cs.borderLeftWidth), 2*px(curnode,cs.borderTopWidth));
 						}
 					}
 					// static children in a static div in FF2 are affected by the div's border as well
@@ -1027,8 +1032,7 @@ if(dojo.isIE || dojo.isOpera){
 						while(parent!=curnode.offsetParent){
 							var pcs=gcs(parent);
 							if(pcs.position=="static"){
-								ret.x += px(curnode,pcs.borderLeftWidth);
-								ret.y += px(curnode,pcs.borderTopWidth);
+								add(px(curnode,pcs.borderLeftWidth), px(curnode,pcs.borderTopWidth));
 							}
 							parent=parent.parentNode;
 						}
@@ -1036,8 +1040,7 @@ if(dojo.isIE || dojo.isOpera){
 					curnode = curnode.offsetParent;
 				}while((curnode != endNode) && curnode);
 			}else if(node.x && node.y){
-				ret.x += isNaN(node.x) ? 0 : node.x;
-				ret.y += isNaN(node.y) ? 0 : node.y;
+				add(isNaN(node.x) ? 0 : node.x, isNaN(node.y) ? 0 : node.y);
 			}
 		}
 		// account for document scrolling
@@ -1045,8 +1048,7 @@ if(dojo.isIE || dojo.isOpera){
 		// so we may have to actually remove that value if !includeScroll
 		if(includeScroll){
 			var scroll = d._docScroll();
-			ret.y += scroll.y;
-			ret.x += scroll.x;
+			add(scroll.x, scroll.y);
 		}
 
 		return ret; // object

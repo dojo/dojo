@@ -964,6 +964,7 @@ if(dojo.isIE || dojo.isOpera){
 		// targetBoxType == "border-box"
 		var db = d.body(), dh = d.body().parentNode;
 		if(node["getBoundingClientRect"]){
+			// IE6+, FF3+, Safari3.2+, and Opera 9.6+ all take this branch
 			var client = node.getBoundingClientRect();
 			ret = { x: client.left, y: client.top };
 			if(d.isFF >= 3){
@@ -977,49 +978,23 @@ if(dojo.isIE || dojo.isOpera){
 				subtract(offset.x, offset.y);
 			}
 		}else{
+			// I think only FF2 needs this branch
 			ret = {
 				x: 0,
 				y: 0
 			};
 			if(node["offsetParent"]){
-				var endNode;
-				// in Safari, if the node is an absolutely positioned child of
-				// the body and the body has a margin the offset of the child
-				// and the body contain the body's margins, so we need to end
-				// at the body
-				// FIXME: getting contrary results to the above in latest WebKit.
-				if(d.isSafari &&
-					//(node.style.getPropertyValue("position") == "absolute") &&
-					(gcs(node).position == "absolute") &&
-					(node.parentNode == db)){
-					endNode = db;
-				}else{
-					endNode = db.parentNode;
-				}
-				// Opera seems to be double counting for some elements
-				var cs=gcs(node);
-				var n=node;
-				if(d.isOpera&&cs.position!="absolute"){
-					n=n.offsetParent;
-				}
-				subtract(_sumAncestorProperties(n, "scrollLeft"), _sumAncestorProperties(n, "scrollTop"));
+				subtract(_sumAncestorProperties(node, "scrollLeft"), _sumAncestorProperties(node, "scrollTop"));
 
 				var curnode = node;
 				do{
-					var n = curnode.offsetLeft;
-					//FIXME: ugly hack to workaround the submenu in 
-					//popupmenu2 does not shown up correctly in opera. 
-					//Someone have a better workaround?
-					if(!d.isOpera || n > 0){
-						ret.x += isNaN(n) ? 0 : n;
-					}
-					var t = curnode.offsetTop;
-					ret.y += isNaN(t) ? 0 : t;
+					var n = curnode.offsetLeft,
+						t = curnode.offsetTop;
+					add( isNaN(n) ? 0 : n, isNaN(t) ? 0 : t)
+
 					var cs = gcs(curnode);
 					if(curnode != node){
-						if(d.isSafari){
-							add(px(curnode, cs.borderLeftWidth), px(curnode, cs.borderTopWidth));
-						}else if(d.isFF){
+						if(d.isFF){
 							// tried left+right with differently sized left/right borders
 							// it really is 2xleft border in FF, not left+right, even in RTL!
 							add(2*px(curnode,cs.borderLeftWidth), 2*px(curnode,cs.borderTopWidth));
@@ -1038,7 +1013,7 @@ if(dojo.isIE || dojo.isOpera){
 						}
 					}
 					curnode = curnode.offsetParent;
-				}while((curnode != endNode) && curnode);
+				}while((curnode != dh) && curnode);
 			}else if(node.x && node.y){
 				add(isNaN(node.x) ? 0 : node.x, isNaN(node.y) ? 0 : node.y);
 			}

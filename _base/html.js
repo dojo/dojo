@@ -963,8 +963,9 @@ if(dojo.isIE || dojo.isOpera){
 
 		// targetBoxType == "border-box"
 		var db = d.body(), dh = d.body().parentNode;
+		console.log("node is " + node.tagName + ", and gbcr is" + node["getBoundingClientRect"]);
 		if(node["getBoundingClientRect"]){
-			// IE6+, FF3+, Safari3.2+, and Opera 9.6+ all take this branch
+			// IE6+, FF3+, and Opera 9.6+ all take this branch
 			var client = node.getBoundingClientRect();
 			ret = { x: client.left, y: client.top };
 			if(d.isFF >= 3){
@@ -978,13 +979,28 @@ if(dojo.isIE || dojo.isOpera){
 				subtract(offset.x, offset.y);
 			}
 		}else{
-			// I think only FF2 needs this branch
+			// FF2 and Safari
 			ret = {
 				x: 0,
 				y: 0
 			};
 			if(node["offsetParent"]){
 				subtract(_sumAncestorProperties(node, "scrollLeft"), _sumAncestorProperties(node, "scrollTop"));
+
+				var endNode;
+				// in Safari, if the node is an absolutely positioned child of
+				// the body and the body has a margin the offset of the child
+				// and the body contain the body's margins, so we need to end
+				// at the body
+				// FIXME: getting contrary results to the above in latest WebKit.
+				if(d.isSafari &&
+					//(node.style.getPropertyValue("position") == "absolute") &&
+					(gcs(node).position == "absolute") &&
+					(node.parentNode == db)){
+					endNode = db;
+				}else{
+					endNode = dh;
+				}
 
 				var curnode = node;
 				do{
@@ -998,6 +1014,8 @@ if(dojo.isIE || dojo.isOpera){
 							// tried left+right with differently sized left/right borders
 							// it really is 2xleft border in FF, not left+right, even in RTL!
 							add(2*px(curnode,cs.borderLeftWidth), 2*px(curnode,cs.borderTopWidth));
+						}else{
+							add(px(curnode, cs.borderLeftWidth), px(curnode, cs.borderTopWidth));
 						}
 					}
 					// static children in a static div in FF2 are affected by the div's border as well
@@ -1013,7 +1031,7 @@ if(dojo.isIE || dojo.isOpera){
 						}
 					}
 					curnode = curnode.offsetParent;
-				}while((curnode != dh) && curnode);
+				}while((curnode != endNode) && curnode);
 			}else if(node.x && node.y){
 				add(isNaN(node.x) ? 0 : node.x, isNaN(node.y) ? 0 : node.y);
 			}

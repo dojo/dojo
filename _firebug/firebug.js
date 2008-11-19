@@ -64,7 +64,8 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 if(	
    !dojo.config.useCustomLogger &&
    !dojo.isAIR &&									// isDebug triggers AIRInsector, not Firebug
-   ((("console" in window) && ("fromDojo" in window.console)) || 		// Firefox, but Firebug is not installed.
+   (!dojo.isMoz || 									// if not Firefox, there's no firebug
+	(dojo.isMoz && !("console" in window)) || 		// Firefox, but Firebug is not installed.
 	(dojo.isMoz && !(window.loadFirebugConsole || console.firebug)) && 	// Firefox, but Firebug is disabled (1.2 check, 1.0 check)
 	!dojo.config.noFirebugLite						// Deprecated: Should be isDebug=false
 )){
@@ -82,11 +83,10 @@ if(
 		}
 	}catch(e){/*squelch*/}
 
-
 	// ***************************************************************************
 	// Placing these variables before the functions that use them to avoid a 
 	// shrinksafe bug where variable renaming does not happen correctly otherwise.
-
+	
 	// most of the objects in this script are run anonomously
 	var _firebugDoc = document;
 	var _firebugWin = window;

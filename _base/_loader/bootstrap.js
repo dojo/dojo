@@ -112,9 +112,7 @@ djConfig = {
 		this["loadFirebugConsole"]();
 	}else{
 		if(!this["console"]){
-			this.console = {
-				fromDojo: true
-			};
+			this.console = {};
 		}
 
 		//	Be careful to leave 'log' always at the end

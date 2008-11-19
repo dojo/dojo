@@ -917,14 +917,17 @@ if(dojo.isIE || dojo.isOpera){
 		var de = d.doc.documentElement;
 		//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
 
-		if(dojo.isIE == 6){
+		if(dojo.isIE == 6 ){
 			return {x: d._isBodyLtr() || _getIeDocumentElementOffsetwindow.parent == window ?
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
 				y: de.clientTop}; // Object
 		}else if(dojo.isIE == 7){
 			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top};
 		}else{
-			return {x: 0, y: 0};
+			return {
+				x: de.getBoundingClientRect().left - de.offsetLeft + de.scrollLeft,
+				y: de.getBoundingClientRect().top - de.offsetTop + de.scrollTop
+			};
 		}
 
 	};

@@ -63,7 +63,7 @@ if(dojo.isIE || dojo.isOpera){
 	var d = dojo;
 
 	var _destroyContainer = null;
-	dojo.addOnWindowUnload(function(){
+	d.addOnWindowUnload(function(){
 		_destroyContainer=null; //prevent IE leak
 	});
 
@@ -378,7 +378,7 @@ if(dojo.isIE || dojo.isOpera){
 
 		// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so disable it altogether (bug #2661),
 		//but still update the opacity value so we can get a correct reading if it is read later.
-		af(node, 1).Enabled = (opacity == 1 ? false : true);
+		af(node, 1).Enabled = !(opacity == 1);
 
 		if(!af(node)){
 			node.style.filter += " progid:"+astr+"(Opacity="+ov+")";
@@ -766,7 +766,7 @@ if(dojo.isIE || dojo.isOpera){
 		// box functions will break.
 		
 		var n = node.tagName;
-		return d.boxModel=="border-box" || n=="TABLE" || dojo._isButtonTag(node); // boolean
+		return d.boxModel=="border-box" || n=="TABLE" || d._isButtonTag(node); // boolean
 	}
 
 	dojo._setContentSize = function(/*DomNode*/node, /*Number*/widthPx, /*Number*/heightPx, /*Object*/computedStyle){
@@ -796,11 +796,11 @@ if(dojo.isIE || dojo.isOpera){
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
 		var bb=d._usesBorderBox(node),
 				pb=bb ? _nilExtents : d._getPadBorderExtents(node, s);
-		if (dojo.isSafari) {
+		if(d.isSafari){
 			// on Safari (3.1.2), button nodes with no explicit size have a default margin
 			// setting an explicit size eliminates the margin.
 			// We have to swizzle the width to get correct margin reading.
-			if (dojo._isButtonTag(node)){
+			if(d._isButtonTag(node)){
 				var ns = node.style;
 				if (widthPx>=0 && !ns.width) { ns.width = "4px"; }
 				if (heightPx>=0 && !ns.height) { ns.height = "4px"; }
@@ -894,9 +894,8 @@ if(dojo.isIE || dojo.isOpera){
 	
 	dojo._isBodyLtr = function(){
 		//FIXME: could check html and body tags directly instead of computed style?  need to ignore case, accept empty values
-		return !("_bodyLtr" in d) ? 
-			d._bodyLtr = gcs(d.body()).direction == "ltr" :
-			d._bodyLtr; // Boolean 
+		return ("_bodyLtr" in d) ? d._bodyLtr :
+			d._bodyLtr = gcs(d.body()).direction == "ltr"; // Boolean 
 	}
 	
 	dojo._getIeDocumentElementOffset = function(){
@@ -917,11 +916,11 @@ if(dojo.isIE || dojo.isOpera){
 		var de = d.doc.documentElement;
 		//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
 
-		if(dojo.isIE == 6 ){
+		if(d.isIE == 6){
 			return {x: d._isBodyLtr() || _getIeDocumentElementOffsetwindow.parent == window ?
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
 				y: de.clientTop}; // Object
-		}else if(dojo.isIE == 7){
+		}else if(d.isIE == 7){
 			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top};
 		}else{
 			return {
@@ -938,7 +937,7 @@ if(dojo.isIE || dojo.isOpera){
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
 		var dd = d.doc;
-		if(d.isIE && !dojo._isBodyLtr()){
+		if(d.isIE && !d._isBodyLtr()){
 			var de = dd.compatMode == "BackCompat" ? dd.body : dd.documentElement;
 			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
 		}
@@ -1026,7 +1025,7 @@ if(dojo.isIE || dojo.isOpera){
 					}
 					// static children in a static div in FF2 are affected by the div's border as well
 					// but offsetParent will skip this div!
-					if(d.isFF&&cs.position=="static"){
+					if(d.isFF && cs.position=="static"){
 						var parent=curnode.parentNode;
 						while(parent!=curnode.offsetParent){
 							var pcs=gcs(parent);
@@ -1242,11 +1241,11 @@ if(dojo.isIE || dojo.isOpera){
 				_evtHdlrMap[attrId][name] = d.connect(node, name, value);
 
 			}else if(
-				(typeof value == "boolean")|| // e.g. onsubmit, disabled
-				(name == "innerHTML")
+				typeof value == "boolean" || // e.g. onsubmit, disabled
+				name == "innerHTML"
 			){
 				node[name] = value;
-			}else if((name == "style")&&(!d.isString(value))){
+			}else if(name == "style" && !d.isString(value)){
 				d.style(node, value);
 			}else{
 				node.setAttribute(name, value);

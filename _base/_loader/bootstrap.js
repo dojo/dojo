@@ -108,12 +108,10 @@ djConfig = {
 	// firebug stubs
 
 	if(typeof this["loadFirebugConsole"] == "function"){
-		// Firebug 1.2 is a PITA
+		// for Firebug 1.2
 		this["loadFirebugConsole"]();
 	}else{
-		if(!this["console"]){
-			this.console = {};
-		}
+		this.console = this.console || {};
 
 		//	Be careful to leave 'log' always at the end
 		var cn = [
@@ -186,12 +184,6 @@ dojo.global = {
 		}
 	}
 
-	var _platforms = ["Browser", "Rhino", "Spidermonkey", "Mobile"];
-	var t;
-	while((t=_platforms.shift())){
-		d["is"+t] = false;
-	}
-
 /*=====
 	// Override locale setting, if specified
 	dojo.locale = {
@@ -245,7 +237,7 @@ dojo.global = {
 			}
 		}
 		// IE doesn't recognize custom toStrings in for..in
-		if(d["isIE"] && props){
+		if(d.isIE && props){
 			var p = props.toString;
 			if(typeof p == "function" && p != obj.toString && p != tobj.toString &&
 				p != "\nfunction toString() {\n    [native code]\n}\n"){

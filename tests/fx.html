@@ -221,6 +221,41 @@
 							
 						},
 						
+						{
+							name:"stopDelay",
+							timeout:1500,
+							runTest: function(t){
+								
+								var d = new doh.Deferred();
+								var a = dojo.fadeOut({ node: "foo2", delay:400 });
+								dojo.connect(a, "onPlay", dojo.hitch(d, "errback", true));
+								a.play(); 
+								a.stop();
+								setTimeout(function(){
+									d.callback(true);
+								}, 500);
+								return d;
+							}
+						},
+						
+						{
+							name:"stopDelayPassed",
+							timeout:1500,
+							runTest: function(t){
+							
+								var d = new doh.Deferred();
+								var b = dojo.fadeIn({ node: "foo2" });
+								dojo.connect(b, "onPlay", dojo.hitch(d, "errback", true));
+								b.play(400); 
+								b.stop();
+								setTimeout(function(){
+									d.callback(true);
+								}, 600);
+								return d;
+							}
+							
+						},
+						
 						function Toggler(){
 							var d = new doh.Deferred();
 							var t = new dojo.fx.Toggler({

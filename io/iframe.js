@@ -186,16 +186,19 @@ dojo.io.iframe = {
 								dojo.query("a", dii._frame.contentWindow.document.documentElement).orphan();
 								var xmlText=(dii._frame.contentWindow.document).documentElement.innerText;
 								xmlText=xmlText.replace(/>\s+</g, "><");
-
+								xmlText=dojo.trim(xmlText);
 								//	do the manual "find the prefix".
 								if(!this._ieXmlDom){
-									for(var i=0, a=["MSXML2", "Microsoft", "MSXML", "MSXML3"], l=a.length; i<l; i++){
+									var sf = [".DOMDocument", ".XMLDOM"];
+									var dp = ["Microsoft"+sf[1], "MSXML6"+sf[0], "MSXML4"+sf[0], "MSXML3"+sf[0], "MSXML2"+sf[0]];
+									var self = this;
+									dojo.some(dp, function(p){
 										try{
-											var test=new ActiveXObject(a[i]+".XmlDom");
-											this._ieXmlDom=a[i]+".XmlDom";
-											break;
-										} catch(e){ /* squash it */}
-									}
+											var test = new ActiveXObject(p);
+										}catch(e){return false; }
+										self._ieXmlDom = p;
+										return true;
+									});
 									
 									//	recheck to make sure we have XML support.
 									if(!this._ieXmlDom){

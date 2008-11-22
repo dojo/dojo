@@ -11,7 +11,7 @@ dojo.require("dojo._base.html");
 */
 (function(){ 
 
-	var d = dojo;
+	var d = dojo, _mixin = d.mixin;
 	
 	dojo._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:
@@ -23,11 +23,11 @@ dojo.require("dojo._base.html");
 		//		Ending value for range
 		this.start = start;
 		this.end = end;
-		this.getValue = function(/*float*/ n){
-			//	summary: returns the point on the line
-			//	n: a floating point number greater than 0 and less than 1
-			return ((this.end - this.start) * n) + this.start; // Decimal
-		}
+	}
+	dojo._Line.prototype.getValue = function(/*float*/ n){
+		//	summary: Returns the point on the line
+		//	n: a floating point number greater than 0 and less than 1
+		return ((this.end - this.start) * n) + this.start; // Decimal
 	}
 	
 	d.declare("dojo._Animation", null, {
@@ -39,7 +39,7 @@ dojo.require("dojo._base.html");
 		//		call .play() on instances of dojo._Animation when one is
 		//		returned.
 		constructor: function(/*Object*/ args){
-			d.mixin(this, args);
+			_mixin(this, args);
 			if(d.isArray(this.curve)){
 				/* curve: Array
 					pId: a */
@@ -149,6 +149,7 @@ dojo.require("dojo._base.html");
 			//		If true, starts the animation from the beginning; otherwise,
 			//		starts it from its current position.
 			var _t = this;
+			if(_t._delayTimer){ _t._clearTimer(); }
 			if(gotoStart){
 				_t._stopTimer();
 				_t._active = _t._paused = false;
@@ -159,10 +160,11 @@ dojo.require("dojo._base.html");
 	
 			_t._fire("beforeBegin");
 	
-			var de = delay||_t.delay;
-			var _p = dojo.hitch(_t, "_play", gotoStart);
+			var de = delay || _t.delay,
+				_p = dojo.hitch(_t, "_play", gotoStart);
+				
 			if(de > 0){
-				setTimeout(_p, de);
+				_t._delayTimer = setTimeout(_p, de);
 				return _t; // dojo._Animation
 			}
 			_p();
@@ -171,6 +173,7 @@ dojo.require("dojo._base.html");
 	
 		_play: function(gotoStart){
 			var _t = this;
+			if(_t._delayTimer){ _t._clearTimer(); }
 			_t._startTime = new Date().valueOf();
 			if(_t._paused){
 				_t._startTime -= _t.duration * _t._percent;
@@ -196,11 +199,13 @@ dojo.require("dojo._base.html");
 	
 		pause: function(){
 			// summary: Pauses a running animation.
-			this._stopTimer();
-			if(!this._active){ return this; /*dojo._Animation*/ }
-			this._paused = true;
-			this._fire("onPause", [this.curve.getValue(this._percent)]);
-			return this; // dojo._Animation
+			var _t = this;
+			if(_t._delayTimer){ _t._clearTimer(); }
+			_t._stopTimer();
+			if(!_t._active){ return _t; /*dojo._Animation*/ }
+			_t._paused = true;
+			_t._fire("onPause", [_t.curve.getValue(_t._percent)]);
+			return _t; // dojo._Animation
 		},
 	
 		gotoPercent: function(/*Decimal*/ percent, /*Boolean?*/ andPlay){
@@ -210,24 +215,27 @@ dojo.require("dojo._base.html");
 			//		A percentage in decimal notation (between and including 0.0 and 1.0).
 			//	andPlay:
 			//		If true, play the animation after setting the progress.
-			this._stopTimer();
-			this._active = this._paused = true;
-			this._percent = percent;
-			if(andPlay){ this.play(); }
-			return this; // dojo._Animation
+			var _t = this;
+			_t._stopTimer();
+			_t._active = _t._paused = true;
+			_t._percent = percent;
+			if(andPlay){ _t.play(); }
+			return _t; // dojo._Animation
 		},
 	
 		stop: function(/*boolean?*/ gotoEnd){
 			// summary: Stops a running animation.
 			// gotoEnd: If true, the animation will end.
-			if(!this._timer){ return this; /* dojo._Animation */ }
-			this._stopTimer();
+			var _t = this;
+			if(_t._delayTimer){ _t._clearTimer(); }
+			if(!_t._timer){ return _t; /* dojo._Animation */ }
+			_t._stopTimer();
 			if(gotoEnd){
-				this._percent = 1;
+				_t._percent = 1;
 			}
-			this._fire("onStop", [this.curve.getValue(this._percent)]);
-			this._active = this._paused = false;
-			return this; // dojo._Animation
+			_t._fire("onStop", [_t.curve.getValue(_t._percent)]);
+			_t._active = _t._paused = false;
+			return _t; // dojo._Animation
 		},
 	
 		status: function(){
@@ -279,15 +287,23 @@ dojo.require("dojo._base.html");
 				}
 			}
 			return _t; // dojo._Animation
+		},
+		
+		_clearTimer: function(){
+			// summary: Clear the play delay timer
+			clearTimeout(this._delayTimer);
+			delete this._delayTimer;
 		}
+		
 	});
 
-	var ctr = 0;
-	var _globalTimerList = [];
-	var runner = {
-		run: function(){ }
-	};
-	var timer = null;
+	var ctr = 0,
+		_globalTimerList = [],
+		timer = null,
+		runner = {
+			run: function(){ }
+		};
+
 	dojo._Animation.prototype._startTimer = function(){
 		// this._timer = setTimeout(dojo.hitch(this, "_cycle"), this.rate);
 		if(!this._timer){
@@ -330,8 +346,9 @@ dojo.require("dojo._base.html");
 		//		args.end) (end is mandatory, start is optional)
 
 		args.node = d.byId(args.node);
-		var fArgs = d.mixin({ properties: {} }, args);
-		var props = (fArgs.properties.opacity = {});
+		var fArgs = _mixin({ properties: {} }, args),
+		 	props = (fArgs.properties.opacity = {});
+		
 		props.start = !("start" in fArgs) ?
 			function(){ 
 				return Number(d.style(fArgs.node, "opacity")||0); 
@@ -362,14 +379,14 @@ dojo.require("dojo._base.html");
 		// summary: 
 		//		Returns an animation that will fade node defined in 'args' from
 		//		its current opacity to fully opaque.
-		return d._fade(d.mixin({ end: 1 }, args)); // dojo._Animation
+		return d._fade(_mixin({ end: 1 }, args)); // dojo._Animation
 	}
 
 	dojo.fadeOut = function(/*dojo.__FadeArgs*/  args){
 		// summary: 
 		//		Returns an animation that will fade node defined in 'args'
 		//		from its current opacity to fully transparent.
-		return d._fade(d.mixin({ end: 0 }, args)); // dojo._Animation
+		return d._fade(_mixin({ end: 0 }, args)); // dojo._Animation
 	}
 
 	dojo._defaultEasing = function(/*Decimal?*/ n){
@@ -390,19 +407,20 @@ dojo.require("dojo._base.html");
 				prop.tempColor = new d.Color();
 			}
 		}
-		this.getValue = function(r){
-			var ret = {};
-			for(var p in this._properties){
-				var prop = this._properties[p];
-				var start = prop.start;
-				if(start instanceof d.Color){
-					ret[p] = d.blendColors(start, prop.end, r, prop.tempColor).toCss();
-				}else if(!d.isArray(start)){
-					ret[p] = ((prop.end - start) * r) + start + (p != "opacity" ? prop.units||"px" : 0);
-				}
+	}
+
+	PropLine.prototype.getValue = function(r){
+		var ret = {};
+		for(var p in this._properties){
+			var prop = this._properties[p],
+				start = prop.start;
+			if(start instanceof d.Color){
+				ret[p] = d.blendColors(start, prop.end, r, prop.tempColor).toCss();
+			}else if(!d.isArray(start)){
+				ret[p] = ((prop.end - start) * r) + start + (p != "opacity" ? prop.units || "px" : 0);
 			}
-			return ret;
 		}
+		return ret;
 	}
 
 	/*=====
@@ -500,7 +518,7 @@ dojo.require("dojo._base.html");
 					this.node.display = "block";
 				}
 				var prop = this.properties[p];
-				prop = pm[p] = d.mixin({}, (d.isObject(prop) ? prop: { end: prop }));
+				prop = pm[p] = _mixin({}, (d.isObject(prop) ? prop: { end: prop }));
 
 				if(d.isFunction(prop.start)){
 					prop.start = prop.start();
@@ -514,7 +532,7 @@ dojo.require("dojo._base.html");
 					var v = ({height: node.offsetHeight, width: node.offsetWidth})[p];
 					if(v !== undefined){ return v; }
 					v = d.style(node, p);
-					return (p=="opacity") ? Number(v) : (isColor ? v : parseFloat(v));
+					return (p == "opacity") ? Number(v) : (isColor ? v : parseFloat(v));
 				}
 				if(!("end" in prop)){
 					prop.end = getStyle(this.node, p);

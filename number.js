@@ -23,7 +23,7 @@ dojo.number.__FormatOptions = function(){
 	//		information in the provided pattern.
 	//	round: Number?
 	//		5 rounds to nearest .5; 0 rounds to nearest whole (default). -1
-	//		means don't round.
+	//		means do not round.
 	//	currency: String?
 	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD"
 	//	symbol: String?
@@ -117,18 +117,19 @@ dojo.number._applyPattern = function(/*Number*/value, /*String*/pattern, /*dojo.
 dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/multiple){
 	//	summary:
 	//		An inexact rounding method for low-precision values to compensate for
-	//		binary floating point artifacts.
+	//		binary floating point artifacts and browser quirks.
 	//	description:
-	//		Rounds the value to the nearest value with the given number of decimal places (.5 up)
+	//		Rounds towards +Infinity to the nearest value with the given number of decimal places (.5 rounds up)
 	//		Also rounds up values which are very close to, but under the cut off, likely due to the
-	//		binary floating point representation.  Therefore, the rounding may not be mathematically correct
-	//		for full precision floating point values.
+	//		binary floating point representation of Javascript Numbers.  Therefore, the rounding may
+	//		not be mathematically correct for full precision floating point values.
 	//	value:
-	//		the number to round
+	//		The number to round
 	//	places:
-	//		the number of decimal places where rounding takes place.  Defaults to 0 for whole rounding.
+	//		The number of decimal places where rounding takes place.  Defaults to 0 for whole rounding.
+	//		Must be non-negative.
 	//	multiple:
-	//		rounds next place to nearest multiple
+	//		Rounds next place to nearest value of multiple/10.  10 by default.
 	//	example:
 	//		>>> 4.8-(1.1+2.2)
 	//		1.4999999999999996
@@ -142,10 +143,26 @@ dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/mult
 	//		"0.01"
 	//		>>> dojo.number.round((4.8-(1.1+2.2))/100,2)
 	//		0.02
+	//		>>> dojo.number.round(10.71, 0, 2.5)
+	//		10.75
 	var wholeFigs = Math.log(Math.abs(value))/Math.log(10);
 	var factor = 10 / (multiple || 10);
 	var delta = Math.pow(10, -14+wholeFigs);
 	return (factor * (+value+delta)).toFixed(places) / factor; // Number
+}
+
+if((0.5).toFixed() == 0){ // isIE: toFixed() bug workaround.  Fails when most significant digit is just after the rounding place and is >=5
+	(function(){
+		var round = dojo.number.round;
+		dojo.number.round = function(v, p, m){
+			var d = Math.pow(10, -p), a = Math.abs(v);
+			p = p || 0;
+			if(p <= 0 || a >= d || a * Math.pow(10, p + 1) < 5){
+				d = 0;
+			}
+			return round(v, p, m) + d;
+		}
+	})();
 }
 
 /*=====
@@ -412,7 +429,7 @@ dojo.number.parse = function(/*String*/expression, /*dojo.number.__ParseOptions?
 		replace(new RegExp("["+info.group + "\\s\\xa0"+"]", "g"), "").
 		replace(info.decimal, ".");
 	// Adjust for negative sign, percent, etc. as necessary
-	return Number(absoluteMatch) * info.factor; //Number
+	return absoluteMatch * info.factor; //Number
 };
 
 /*=====

@@ -301,7 +301,7 @@ if(dojo.isIE || dojo.isOpera){
 			if(avalue=="medium"){ return 4; }
 			// style values can be floats, client code may
 			// want to round this value for integer pixels.
-			if(avalue.slice && (avalue.slice(-2)=='px')){ return parseFloat(avalue); }
+			if(avalue.slice && avalue.slice(-2)=='px'){ return parseFloat(avalue); }
 			with(element){
 				var sLeft = style.left;
 				var rsLeft = runtimeStyle.left;
@@ -802,8 +802,8 @@ if(dojo.isIE || dojo.isOpera){
 			// We have to swizzle the width to get correct margin reading.
 			if(d._isButtonTag(node)){
 				var ns = node.style;
-				if (widthPx>=0 && !ns.width) { ns.width = "4px"; }
-				if (heightPx>=0 && !ns.height) { ns.height = "4px"; }
+				if(widthPx>=0 && !ns.width) { ns.width = "4px"; }
+				if(heightPx>=0 && !ns.height) { ns.height = "4px"; }
 			}
 		}
 		var mb=d._getMarginExtents(node, s);
@@ -917,7 +917,7 @@ if(dojo.isIE || dojo.isOpera){
 		//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
 
 		if(d.isIE == 6){
-			return {x: d._isBodyLtr() || _getIeDocumentElementOffsetwindow.parent == window ?
+			return {x: d._isBodyLtr() || window.parent == window ?
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
 				y: de.clientTop}; // Object
 		}else if(d.isIE == 7){

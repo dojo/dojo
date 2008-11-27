@@ -52,7 +52,7 @@ dojo.declare = function(/*String*/ className, /*Function|Function[]*/ superclass
 	}
 	// construct intermediate classes for mixins
 	if(mixins){
-		dojo.forEach(mixins, function(m){
+		dojo.forEach(mixins, function(m, i){
 			if(!m){ throw(className + ": mixin #" + i + " is null"); } // It's likely a required module is not loaded
 			superclass = dd._delegate(superclass, m);
 		});

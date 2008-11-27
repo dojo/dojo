@@ -53,7 +53,7 @@ if(typeof window != 'undefined'){
 				//		http://developer.mozilla.org/en/mozIJSSubScriptLoader
 				var l = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
 					.getService(Components.interfaces.mozIJSSubScriptLoader);
-				l.loadSubScript(uri, d.global)
+				var value = l.loadSubScript(uri, d.global)
 				if(cb){ cb(value); }
 				return true;
 			}else{
@@ -75,7 +75,7 @@ if(typeof window != 'undefined'){
 		// var owloc = window.location+"";
 		// var base = document.getElementsByTagName("base");
 		// var hasBase = (base && base.length > 0);
-		hasBase = false;
+		var hasBase = false;
 
 		d._getText = function(/*URI*/ uri, /*Boolean*/ fail_ok){
 			// summary: Read the contents of the specified uri and return those contents.

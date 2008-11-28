@@ -351,7 +351,7 @@ dojo.require("dojo._base.html");
 		
 		props.start = !("start" in fArgs) ?
 			function(){ 
-				return Number(d.style(fArgs.node, "opacity")||0); 
+				return +d.style(fArgs.node, "opacity")||0; 
 			} : fArgs.start;
 		props.end = fArgs.end;
 
@@ -529,10 +529,10 @@ dojo.require("dojo._base.html");
 				var isColor = (p.toLowerCase().indexOf("color") >= 0);
 				function getStyle(node, p){
 					// dojo.style(node, "height") can return "auto" or "" on IE; this is more reliable:
-					var v = ({height: node.offsetHeight, width: node.offsetWidth})[p];
+					var v = {height: node.offsetHeight, width: node.offsetWidth}[p];
 					if(v !== undefined){ return v; }
 					v = d.style(node, p);
-					return (p == "opacity") ? Number(v) : (isColor ? v : parseFloat(v));
+					return (p == "opacity") ? +v : (isColor ? v : parseFloat(v));
 				}
 				if(!("end" in prop)){
 					prop.end = getStyle(this.node, p);
@@ -544,7 +544,7 @@ dojo.require("dojo._base.html");
 					prop.start = new d.Color(prop.start);
 					prop.end = new d.Color(prop.end);
 				}else{
-					prop.start = (p == "opacity") ? Number(prop.start) : parseFloat(prop.start);
+					prop.start = (p == "opacity") ? +prop.start : parseFloat(prop.start);
 				}
 			}
 			this.curve = new PropLine(pm);

@@ -149,8 +149,15 @@ tests.register("tests.number",
 		{
 			name: "round",
 			runTest: function(t){
-				t.is("-162.29", dojo.number.round(-162.295, 2));
-				t.is("162.30", dojo.number.round(162.295, 2)); // #7930 -- floating point rounding issue, must approximate decimal arithmetic
+				t.is(0, dojo.number.round(0));
+				t.is(1, dojo.number.round(0.5));
+				t.is(-1, dojo.number.round(-0.5));
+				t.is(0.1, dojo.number.round(0.05, 1));
+				t.is(-0.1, dojo.number.round(-0.05, 1));
+				t.is(1.1, dojo.number.round(1.05, 1));
+				t.is(-1.1, dojo.number.round(-1.05, 1));
+				t.is(-162.3, dojo.number.round(-162.295, 2));
+				t.is(162.3, dojo.number.round(162.295, 2));
 			}
 		},
 		{
@@ -161,7 +168,7 @@ tests.register("tests.number",
 				t.is("123.455", dojo.number.round(123.454, 2, 5));
 				t.is("123.455", dojo.number.round(123.456, 2, 5));
 				t.is("-123.45", dojo.number.round(-123.452, 2, 5));
-				t.is("-123.45", dojo.number.round(-123.4525, 2, 5));
+				t.is("-123.455", dojo.number.round(-123.4525, 2, 5));
 				t.is("-123.455", dojo.number.round(-123.454, 2, 5));
 				t.is("-123.455", dojo.number.round(-123.456, 2, 5));
 			}
@@ -217,14 +224,14 @@ tests.register("tests.number",
 				t.is(-12345, dojo.number.round(-12345 +  0.1), "rsux213");
 				
 				t.is(-12346, dojo.number.round(-12346 +  0.49999), "rsux215");
-//				t.is(-12346, dojo.number.round(-12346 +  0.5), "rsux216");
+				t.is(-12346, dojo.number.round(-12346 +  0.5), "rsux216");
 				t.is(-12345, dojo.number.round(-12346 +  0.50001   ), "rsux217");
 				
 				t.is(-12345, dojo.number.round(-12345 +  0.4), "rsux220");
 				t.is(-12345, dojo.number.round(-12345 +  0.49), "rsux221");
 				t.is(-12345, dojo.number.round(-12345 +  0.499), "rsux222");
 				t.is(-12345, dojo.number.round(-12345 +  0.49999), "rsux223");
-//				t.is(-12345, dojo.number.round(-12345 +  0.5), "rsux224");
+				t.is(-12345, dojo.number.round(-12345 +  0.5), "rsux224");
 				t.is(-12344, dojo.number.round(-12345 +  0.50001), "rsux225");
 				t.is(-12344, dojo.number.round(-12345 +  0.5001), "rsux226");
 				t.is(-12344, dojo.number.round(-12345 +  0.501), "rsux227");
@@ -306,7 +313,7 @@ tests.register("tests.number",
 	t.is("-1,234,568", dojo.number.format(-1234567.89, {places:0, locale: "en-us"}));
 //	t.is("-12,34,568", dojo.number.format(-1234567.89, {places:0, locale: "en-in"}));
 	t.is("-1,000.11", dojo.number.format(-1000.114, {places:2, locale: "en-us"}));
-	t.is("-1,000.11", dojo.number.format(-1000.115, {places:2, locale: "en-us"}));
+	t.is("-1,000.12", dojo.number.format(-1000.115, {places:2, locale: "en-us"}));
 	t.is("-1,000.12", dojo.number.format(-1000.116, {places:2, locale: "en-us"}));
 	t.is("-0.00", dojo.number.format(-0.0001, {places:2, locale: "en-us"}));
 	t.is("0.00", dojo.number.format(0, {places:2, locale: "en-us"}));

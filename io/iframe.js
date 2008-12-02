@@ -187,32 +187,12 @@ dojo.io.iframe = {
 								var xmlText=(dii._frame.contentWindow.document).documentElement.innerText;
 								xmlText=xmlText.replace(/>\s+</g, "><");
 								xmlText=dojo.trim(xmlText);
-								//	do the manual "find the prefix".
-								if(!this._ieXmlDom){
-									var sf = [".DOMDocument", ".XMLDOM"];
-									var dp = ["Microsoft"+sf[1], "MSXML6"+sf[0], "MSXML4"+sf[0], "MSXML3"+sf[0], "MSXML2"+sf[0]];
-									var self = this;
-									dojo.some(dp, function(p){
-										try{
-											var test = new ActiveXObject(p);
-										}catch(e){return false; }
-										self._ieXmlDom = p;
-										return true;
-									});
-									
-									//	recheck to make sure we have XML support.
-									if(!this._ieXmlDom){
-										throw new Error("dojo.io.iframe.send (return handler): your copy of Internet Explorer does not support XML documents.");
-									}
-								}
-
-								//	create the document manually
-								var _xml=new ActiveXObject(this._ieXmlDom);
-								_xml.async=false;
-								_xml.loadXML(xmlText);
-								value=_xml;
+								//Reusing some code in base dojo for handling XML content.  Simpler and keeps
+								//Core from duplicating the effort needed to locate the XML Parser on IE.
+								var fauxXhr = { responseText: xmlText };
+								value = dojo._contentHandlers["xml"](fauxXhr); // DOMDocument
 							}
-						} else {
+						}else{
 							value = ifd.getElementsByTagName("textarea")[0].value; //text
 							if(handleAs == "json"){
 								value = dojo.fromJson(value); //json

@@ -335,6 +335,8 @@ tests.register("tests.number",
 	t.is(-1234567.89, dojo.number.parse("-1 234 567,89", {locale: "fr-fr"}));
 	t.t(isNaN(dojo.number.parse("-1 234 567,89", {locale: "en-us"})));
 
+	t.is(123, dojo.number.parse("0123", {pattern: "0000"}));
+
 	t.t(isNaN(dojo.number.parse("10,00", {locale: "en-us"})));
 	t.t(isNaN(dojo.number.parse("1000.1", {locale: "fr-fr"})));
 
@@ -738,9 +740,10 @@ function test_number_format_pad(){
 	 * but the following failed,
 	 * [10]-"1,45 that" implies that we partially parse input
 	 */
-	var failData = ([            
-		"00",          //[0] leading zero before zero
-        "012",         //[1] leading zero before digit
+	var failData = ([        
+// leading zeros without separators are tolerated #6933   
+//		"00",          //[0] leading zero before zero
+//		"012",         //[1] leading zero before digit
         "0,456",       //[2] leading zero before group separator
         "1,2",         //[3] wrong number of digits after group separator
         ",0",          //[4] leading group separator before zero

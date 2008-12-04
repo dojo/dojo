@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html dir="rtl">
+	<head>
+		<title>testing Core HTML/DOM/CSS/Style utils</title>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+		</style>
+		<script type="text/javascript" 
+			src="../../dojo.js" 
+			djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						function coordsWithVertScrollbar(t){
+							// show vertical scrollbar
+							dojo.byId("rect_vert").style.display = "";
+							try{
+								t.is(100, dojo.coords('rect100').x);
+							}finally{
+								dojo.byId("rect_vert").style.display = "none";
+							}
+						},
+
+						function coordsWithHorzScrollbar(t){
+							// show horizonal scrollbar & scroll a bit left
+							dojo.byId("rect_horz").style.display = "";
+							scrollBy(-50, 0);
+							try{
+								t.is(100, dojo.coords('rect100', true).x);
+							}finally{
+								dojo.byId("rect_horz").style.display = "none";
+							}
+						},
+
+						function eventClientXY(t){ // IE only test
+							if(dojo.isIE){
+								// show vertical scrollbar
+								dojo.byId("rect_vert").style.display = "";
+
+								var rect = dojo.byId("rect100");
+								var assertException = null;
+
+								function rect_onclick(e){
+									// move the rectangle to the mouse point
+									rect.style.left = e.pageX + "px";
+									rect.style.top = e.pageY + "px";
+									window.alert("Do NOT move your mouse!!!\n\n" + 
+												"The black rectangle's top-left point should be under the mouse point.\n\n" +
+												"If not, you will see a failure in the test report later.\n\n" +
+												"Now press the space bar, but do NOT move your mouse.");
+									rect.fireEvent('ondblclick');
+								}
+
+								function rect_ondblclick(){
+									// test if the rectangle is really under the mouse point
+									try{
+										t.is(0, event.offsetX);
+										t.is(0, event.offsetY);
+									}catch (e){ // allow the exception in a event handler go to the event firer 
+										assertException = e;
+									}
+								}
+
+								dojo.connect(rect, "onclick", null, rect_onclick);
+								dojo.connect(rect, "ondblclick", null, rect_ondblclick);
+								window.alert("Move the mouse to anywhere in this page, and then press the space bar.");
+								rect.fireEvent('onclick');
+								if(assertException != null){
+									throw assertException;
+								}
+							}
+						}
+						
+					]
+				);
+				doh.run();
+			});
+		</script>
+		<style type="text/css">
+			#rect100 {
+				background-color: black;
+				color: white;
+				position: absolute;
+				left: 100px;
+				top: 100px;
+				width: 100px;
+				height: 100px;
+				border: 0px;
+				padding: 0px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>testing Core HTML/DOM/CSS/Style utils</h1>
+		<div id="rect100">
+			100px rect, abs, 
+			mouse point is at top-left after the test "eventClientXY"
+		</div>
+		<div id="rect_vert" style="height:1600px;display:none">show vertical scrollbar</div>
+		<div id="rect_horz" style="width:1600px;display:none">show horizonal scrollbar</div>
+	</body>
+</html>
+

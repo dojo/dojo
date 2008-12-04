@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Using scope names inside dojo.require/dojoType</title>
+
+		<link rel="stylesheet" type="text/css" href="../../../../resources/dojo.css">
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/tests/css/dijitTests.css">
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/themes/tundra/tundra.css">
+		
+		<script type="text/javascript">
+			//djConfig for 0.4.3 setup.
+			djConfig = {
+				isDebug: true,
+				debugAtAllCosts: true,
+				parseOnLoad: true,
+				baseUrl: "../../../../",
+				scopeMap: [
+					["dojo", "jodo"],
+					["dijit", "jidit"],
+					["dojox", "jodox"]					
+				]
+			};
+		</script>
+
+		<script type="text/javascript" src="../../../../dojo.js"></script>
+		<script type="text/javascript">
+
+			//Notice that dijit._Calendar is required, not jidit._Calendar.
+			//Same for the dojo resources (not jodo resources).
+			jodo.require("dijit._Calendar");
+			jodo.require("dojo.date.locale");
+			jodo.require("dojo.parser"); // scan page for widgets
+
+			jodo.addOnLoad(function(){
+				jodo.byId("output10").innerHTML = jodo.version.toString();
+			});
+
+			function myHandler(id,newValue){
+				console.debug("onChange for id = " + id + ", value: " + newValue);
+			}
+			function foobar(){
+				jodo.byId("typeOut").innerHTML = "typeof dojo: " + (typeof dojo) +  "<br>typeof dijit: " + (typeof dijit) + "<br>typeof dojox: " + (typeof dojox);
+			}
+			setTimeout(foobar, 2000);
+		</script>
+	</head>
+	<body>
+		<h1>Using scope names inside dojo.require/dojoType</h1>
+	
+		<p><b>NOTE: This test only works with a built version of Dojo.</b></p>
+
+		<p>Jodo version: <span id="output10"></span></p>
+
+		<p><b>typeof dojo, dijit and dojox should be object, since debugAtAllCosts is ON</b>: <br><span id="typeOut"></span></p>
+
+		<p class="tundra">
+			<input id="calendar1" jodoType="jidit._Calendar" onChange="myHandler(this.id,arguments[0])">
+		</p>
+		
+	</body>
+</html>
+

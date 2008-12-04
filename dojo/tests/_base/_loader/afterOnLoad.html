@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing afterOnLoad</title>
+
+		<link rel="stylesheet" type="text/css" href="../../../resources/dojo.css">
+		<link rel="stylesheet" type="text/css" href="../../../../dijit/tests/css/dijitTests.css">
+		<link rel="stylesheet" type="text/css" href="../../../../dijit/themes/tundra/tundra.css">
+
+		<script type="text/javascript">
+			function init(){
+				//Create global djConfig object first. We cannot use the djConfig attribute
+				//on the script tag since it may not be visible in some browsers at the time
+				//dojo.js executes. This causes problems when the "require" property is used
+				//as part of djConfig. Also note that you have to set baseUrl directly, since
+				//it cannot be detected as part of script tag.
+				djConfig = {
+					baseUrl: "../../../",
+					parseOnLoad: true,
+					afterOnLoad:true,
+					addOnLoad: function(){
+						//This function is registered with
+						//dojo.addOnLoad as Dojo is defined after
+						//being added to the DOM.
+						console.log("djConfig.addOnLoad callback fired OK: dojo.parser.parse is a "
+							+ (typeof dojo.parser.parse));
+					},
+					require: [
+						'dojo.parser',
+						'dijit._Calendar'
+					],
+					isDebug: true
+				};
+
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				script.src = "../../../dojo.js";
+				
+				document.getElementsByTagName("head")[0].appendChild(script);
+			}
+
+			function myHandler(id,newValue){
+				console.debug("onChange for id = " + id + ", value: " + newValue);
+			}
+			
+			//Register onload init function that will add Dojo to the page.
+			if(window.addEventListener){
+				window.addEventListener("load", init, false);
+			}else{
+				window.attachEvent("onload", init);
+			}
+
+		</script>
+	</head>
+	<body>
+		<h1>Testing afterOnLoad</h1>
+
+		<p><b>This page only works with a dojo build</b>. It will not work properly if you run it directly from the subversion source.</p>
+
+		<p>This page tests loading dojo after the page is loaded. </p>
+		
+		<p>When the window.onload fires, the dojo script tag will be added to the DOM 
+		and configured to fire the onload callbacks. If everything works, you should
+		see a Calendar below.</p>
+		
+		<p class="tundra">
+			<input id="calendar1" dojoType="dijit._Calendar" onChange="myHandler(this.id,arguments[0])">
+		</p>
+	</body>
+</html>

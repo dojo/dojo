@@ -988,21 +988,6 @@ if(dojo.isIE || dojo.isOpera){
 				ret.x -= _sumAncestorProperties(node, "scrollLeft");
 				ret.y -= _sumAncestorProperties(node, "scrollTop");
 
-				var endNode;
-				// in Safari, if the node is an absolutely positioned child of
-				// the body and the body has a margin the offset of the child
-				// and the body contain the body's margins, so we need to end
-				// at the body
-				// FIXME: getting contrary results to the above in latest WebKit.
-				if(d.isSafari &&
-					//(node.style.getPropertyValue("position") == "absolute") &&
-					(gcs(node).position == "absolute") &&
-					(node.parentNode == db)){
-					endNode = db;
-				}else{
-					endNode = dh;
-				}
-
 				var curnode = node;
 				do{
 					var n = curnode.offsetLeft,
@@ -1036,7 +1021,7 @@ if(dojo.isIE || dojo.isOpera){
 						}
 					}
 					curnode = curnode.offsetParent;
-				}while((curnode != endNode) && curnode);
+				}while((curnode != dh) && curnode);
 			}else if(node.x && node.y){
 				ret.x += isNaN(node.x) ? 0 : node.x;
 				ret.y += isNaN(node.y) ? 0 : node.y;

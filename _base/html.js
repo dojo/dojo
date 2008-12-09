@@ -665,7 +665,7 @@ if(dojo.isIE || dojo.isOpera){
 		}else if(d.isOpera){
 			// On Opera, offsetLeft includes the parent's border
 			if(p){
-				var be = d._getBorderExtents(p);
+				be = d._getBorderExtents(p);
 				l -= be.l;
 				t -= be.t;
 			}
@@ -863,7 +863,7 @@ if(dojo.isIE || dojo.isOpera){
 	// =============================
 	
 	var _sumAncestorProperties = function(node, prop){
-		if(!(node = (node||0).parentNode)){return 0};
+		if(!(node = (node||0).parentNode)){return 0}
 		var val, retVal = 0, _b = d.body();
 		while(node && node.style){
 			if(gcs(node).position == "fixed"){
@@ -958,7 +958,6 @@ if(dojo.isIE || dojo.isOpera){
 
 		// FIXME: need to decide in the brave-new-world if we're going to be
 		// margin-box or border-box.
-		var ownerDocument = node.ownerDocument;
 		var ret;
 
 		// targetBoxType == "border-box"
@@ -970,8 +969,8 @@ if(dojo.isIE || dojo.isOpera){
 			if(d.isFF >= 3){
 				// in FF3 you have to subtract the document element margins
 				var cs = gcs(dh);
-				ret.x -= px(dh, cs.marginLeft);
-				ret.y -= px(dh, cs.marginTop);
+				ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
+				ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);
 			}
 			if(d.isIE){
 				// On IE there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
@@ -1011,7 +1010,7 @@ if(dojo.isIE || dojo.isOpera){
 					ret.x += isNaN(n) ? 0 : n;
 					ret.y += isNaN(t) ? 0 : t;
 
-					var cs = gcs(curnode);
+					cs = gcs(curnode);
 					if(curnode != node){
 						if(d.isFF){
 							// tried left+right with differently sized left/right borders

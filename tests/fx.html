@@ -272,6 +272,43 @@
 							return d;
 						},
 						
+						function combineChain(t){
+							// test combining two chained() animations
+							var anim1 = dojo.fx.chain([
+								dojo.fadeIn({ node:"chained" }),
+								dojo.fadeOut({ node:"chained" })
+							]);
+							var anim2 = dojo.fx.chain([
+								dojo.fadeOut({ node:"chainedtoo" }),
+								dojo.fadeIn({ node:"chainedtoo" })
+							]);
+							
+							var anim = dojo.fx.combine([anim1, anim2]);
+
+							var d = new doh.Deferred();
+							dojo.connect(anim, "onEnd", dojo.hitch(d, "callback", true));
+							anim.play();
+						},
+						
+						function chainCombine(t){
+							// test chaining two combined() animations
+							var anim1 = dojo.fx.combine([
+								dojo.fadeIn({ node:"chained" }),
+								dojo.fadeOut({ node:"chainedtoo" })
+							]);
+							var anim2 = dojo.fx.combine([
+								dojo.fadeOut({ node:"chained" }),
+								dojo.fadeIn({ node:"chainedtoo" })
+							]);
+							
+							var anim = dojo.fx.chain([anim1, anim2]);
+
+							var d = new doh.Deferred();
+							dojo.connect(anim, "onEnd", dojo.hitch(d, "callback", true));
+							anim.play();
+
+						},
+						
 						function easingNames(t){
 							for(var i in dojo.fx.easing){
 								t.assertTrue(dojo.isFunction(dojo.fx.easing[i]));
@@ -354,5 +391,9 @@
 			</p>
 		</div>
 		<div id="foo2">foo2</div>
+		
+		<div>
+			<p id="chained">foo</p><p id="chainedtoo">bar</p>
+		</div>
 	</body>
 </html>

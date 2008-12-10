@@ -152,7 +152,10 @@ dojo.fx = {
 		this._pseudoAnimation = new dojo._Animation({curve: [0, 1], duration: this.duration});
 		dojo.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop"], 
 			function(evt){
-				this._connects.push(dojo.connect(this._pseudoAnimation, evt, dojo.hitch(this, "_fire", evt)));
+				var self = this;
+				this._connects.push(dojo.connect(this._pseudoAnimation, evt,
+					function(){ self._fire(evt, arguments); }
+				));
 			},
 			this
 		);

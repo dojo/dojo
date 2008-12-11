@@ -975,8 +975,9 @@ if(dojo.isIE || dojo.isOpera){
 			if(d.isIE){
 				// On IE there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
 				var offset = d._getIeDocumentElementOffset();
-				ret.x -= offset.x;
-				ret.y -= offset.y;
+                // fixes the position in IE, quirks mode
+				ret.x -= offset.x + (d.isQuirks ? db.clientLeft : 0);
+				ret.y -= offset.y + (d.isQuirks ? db.clientTop : 0);
 			}
 		}else{
 			// FF2 and Safari

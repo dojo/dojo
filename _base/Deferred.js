@@ -392,7 +392,7 @@ dojo.extend(dojo.Deferred, {
 					this.paused++;
 				}
 			};
-			if(dojo.config.isDebug){
+			if(dojo.config.debugAtAllCosts){
 				func.call(this);
 			}else{
 				try{

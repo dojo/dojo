@@ -121,7 +121,7 @@ dojo.require("dojo._base.html");
 			//	args:
 			//		The arguments to pass to the event.
 			if(this[evt]){
-				if(dojo.config.isDebug){
+				if(dojo.config.debugAtAllCosts){
 					this[evt].apply(this, args||[]);
 				}else{
 					try{

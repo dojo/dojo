@@ -289,7 +289,7 @@ dojo.require("dojo._base.query");
 		//		is of type dojo.__IoCallbackArgs. This function will
 		//		be called when the request fails due to a network or server error, the url
 		//		is invalid, etc. It will also be called if the load or handle callback throws an
-		//		exception, unless djConfig.isDebug is true.  This allows deployed applications
+		//		exception, unless djConfig.debugAtAllCosts is true.  This allows deployed applications
 		//		to continue to run even when a logic error happens in the callback, while making
 		//		it easier to troubleshoot while in debug mode.
 		//	handle: Function?
@@ -510,7 +510,7 @@ dojo.require("dojo._base.query");
 						}
 					}
 				};
-				if(dojo.config.isDebug){
+				if(dojo.config.debugAtAllCosts){
 					func.call(this);
 				}else{
 					try{
@@ -673,7 +673,7 @@ dojo.require("dojo._base.query");
 			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		}
 		// FIXME: set other headers here!
-		if(dojo.config.isDebug){
+		if(dojo.config.debugAtAllCosts){
 			xhr.send(ioArgs.query);
 		}else{
 			try{

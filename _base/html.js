@@ -262,7 +262,7 @@ if(dojo.isIE || dojo.isOpera){
 	// it is frequently sent to this function even 
 	// though it is not Element.
 	var gcs;
-	if(d.isSafari){
+	if(d.isWebKit){
 		gcs = function(/*DomNode*/node){
 			var s;
 			if(node instanceof HTMLElement){
@@ -604,7 +604,7 @@ if(dojo.isIE || dojo.isOpera){
 			t = px(n, s.marginTop),
 			r = px(n, s.marginRight),
 			b = px(n, s.marginBottom);
-		if(d.isSafari && (s.position != "absolute")){
+		if(d.isWebKit && (s.position != "absolute")){
 			// FIXME: Safari's version of the computed right margin
 			// is the space between our right edge and the right edge 
 			// of our offsetParent. 
@@ -796,7 +796,7 @@ if(dojo.isIE || dojo.isOpera){
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
 		var bb=d._usesBorderBox(node),
 				pb=bb ? _nilExtents : d._getPadBorderExtents(node, s);
-		if(d.isSafari){
+		if(d.isWebKit){
 			// on Safari (3.1.2), button nodes with no explicit size have a default margin
 			// setting an explicit size eliminates the margin.
 			// We have to swizzle the width to get correct margin reading.

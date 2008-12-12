@@ -108,7 +108,7 @@ dojo.back = {
 		var url = (dojo.config["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
         if(historyIframe){
-		    dojo.isSafari ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
+		    dojo.isWebKit ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
         }else{
             //console.warn("dojo.back: Not initialised. You need to call dojo.back.init() from a <script> block that lives inside the <body> tag.");
         }

@@ -27,8 +27,8 @@ dojo.isFunction = (function(){
 		return it && (typeof it == "function" || it instanceof Function); // Boolean
 	};
 
-	return dojo.isSafari ?
-		// only slow this down w/ gratuitious casting in Safari since it's what's b0rken
+	return dojo.isWebKit ?
+		// only slow this down w/ gratuitious casting in WebKit since it's what's b0rken
 		function(/*anything*/ it){
 			if(typeof it == "function" && it == "[object NodeList]"){ return false; }
 			return _isFunction(it); // Boolean

@@ -102,7 +102,7 @@ dojo.io.iframe = {
 		//		changing the location of the iframe.
 		try{
 			if(!replace){
-				if(dojo.isSafari){
+				if(dojo.isWebKit){
 					iframe.location = src;
 				}else{
 					frames[iframe.name].location = src;
@@ -110,7 +110,8 @@ dojo.io.iframe = {
 			}else{
 				// Fun with DOM 0 incompatibilities!
 				var idoc;
-				if(dojo.isIE || dojo.isSafari > 2){
+				//WebKit > 521 corresponds with Safari 3, which started with 522 WebKit version.
+				if(dojo.isIE || dojo.isWebKit > 521){
 					idoc = iframe.contentWindow.document;
 				}else if(dojo.isSafari){
 					idoc = iframe.document;

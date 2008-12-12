@@ -54,7 +54,7 @@ if(typeof dojo == "undefined"){
 			// attempt to figure out the path to dojo if it isn't set in the config
 			if(this["document"] && this["document"]["getElementsByTagName"]){
 				var scripts = document.getElementsByTagName("script");
-				var rePkg = /dojo\.js([\?\.]|$)/i;
+				var rePkg = /dojo\.js(\W|$)/i;
 				for(var i = 0; i < scripts.length; i++){
 					var src = scripts[i].getAttribute("src");
 					if(!src){ continue; }

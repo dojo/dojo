@@ -40,7 +40,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		dojo.stopEvent(e);
 	},
 	onMouseUp: function(e){
-		if(dojo.isSafari && dojo.dnd._isMac && this.mouseButton == 2 ? 
+		if(dojo.isWebkit && dojo.dnd._isMac && this.mouseButton == 2 ? 
 				e.button == 0 : this.mouseButton == e.button){
 			this.destroy();
 		}

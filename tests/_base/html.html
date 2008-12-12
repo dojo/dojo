@@ -296,6 +296,14 @@
 							dojo.removeAttr(input, "tabindex");
 							doh.is(null, dojo.attr(input, "tabindex"));
 						},
+						function setReadonlyInput(t){
+							var input = document.createElement("input");
+							doh.f(dojo.attr(input, "readonly"));
+							dojo.attr(input, "readonly", true);
+							doh.is(true, dojo.attr(input, "readonly"));
+							dojo.attr(input, "readonly", false);
+							doh.is(false, dojo.attr(input, "readonly"));
+						},
 						function attr_map(t){
 							var input = document.createElement("input");
 							var ctr= 0;

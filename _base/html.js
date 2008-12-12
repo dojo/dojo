@@ -1068,16 +1068,17 @@ if(dojo.isIE || dojo.isOpera){
 
 	var _fixAttrName = function(/*String*/name){
 		switch(name.toLowerCase()){
+			// Internet Explorer will only set or remove tabindex/readonly
+			// if it is spelled "tabIndex"/"readOnly"
 			case "tabindex":
-				// Internet Explorer will only set or remove tabindex
-				// if it is spelled "tabIndex"
-				// console.debug((dojo.isIE && dojo.isIE < 8)? "tabIndex" : "tabindex");
 				return ieLT8 ? "tabIndex" : "tabindex";
+			case "readonly":
+				return ieLT8 ? "readOnly" : "readonly";
 			case "for": case "htmlfor":
 				// to pick up for attrib set in markup via getAttribute() IE<8 uses "htmlFor" and others use "for"
 				// get/setAttribute works in all as long use same value for both get/set
 				return ieLT8 ? "htmlFor" : "for";
-			case "class" :
+			case "class":
 				return ieLT8 ? "className" : "class";
 			default:
 				return name;

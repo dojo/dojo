@@ -154,7 +154,7 @@ dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/incr
 	return (factor * (+value + (value > 0 ? delta : -delta))).toFixed(places) / factor; // Number
 }
 
-if((0.5).toFixed() == 0){
+if((0.9).toFixed() == 0){
 	// (isIE) toFixed() bug workaround: Rounding fails on IE when most significant digit
 	// is just after the rounding place and is >=5
 	(function(){

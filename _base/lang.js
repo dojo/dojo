@@ -27,8 +27,8 @@ dojo.isFunction = (function(){
 		return it && (typeof it == "function" || it instanceof Function); // Boolean
 	};
 
-	return dojo.isWebKit ?
-		// only slow this down w/ gratuitious casting in WebKit since it's what's b0rken
+	return dojo.isSafari ?
+		// only slow this down w/ gratuitious casting in Safari (not WebKit)
 		function(/*anything*/ it){
 			if(typeof it == "function" && it == "[object NodeList]"){ return false; }
 			return _isFunction(it); // Boolean
@@ -164,7 +164,7 @@ dojo.delegate = function(obj, props){
 
 dojo.delegate = dojo._delegate = (function(){
 	// boodman/crockford delegation w/ cornford optimization
-	function TMP(){};
+	function TMP(){}
 	return function(obj, props){
 		TMP.prototype = obj;
 		var tmp = new TMP();
@@ -246,8 +246,8 @@ dojo.clone = function(/*anything*/ o){
 		return new Date(o.getTime());	// Date
 	}
 	// Generic objects
-	var r = new o.constructor(); // specific to dojo.declare()'d classes!
-	for(var i in o){
+	r = new o.constructor(); // specific to dojo.declare()'d classes!
+	for(i in o){
 		if(!(i in r) || r[i] != o[i]){
 			r[i] = dojo.clone(o[i]);
 		}

@@ -65,7 +65,7 @@ dojo.dnd.autoScrollNodes = function(e){
 				var w = Math.min(dojo.dnd.H_TRIGGER_AUTOSCROLL, b.w / 2), 
 					h = Math.min(dojo.dnd.V_TRIGGER_AUTOSCROLL, b.h / 2),
 					rx = e.pageX - t.x, ry = e.pageY - t.y, dx = 0, dy = 0;
-				if(dojo.isWebkit || dojo.isOpera){
+				if(dojo.isWebKit || dojo.isOpera){
 					// FIXME: this code should not be here, it should be taken into account 
 					// either by the event fixing code, or the dojo._abs()
 					// FIXME: this code doesn't work on Opera 9.5 Beta

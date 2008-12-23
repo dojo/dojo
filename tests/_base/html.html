@@ -213,6 +213,10 @@
 							doh.t(dojo.hasAttr(dojo.byId("input-with-type"), "type"));
 							doh.is("checkbox", dojo.attr(dojo.byId("input-with-type"), "type"));
 						},
+						function getDefaultValueInput(t){
+							dojo.byId("input-default-value").value = "something else";
+							doh.is("default value", dojo.attr(dojo.byId("input-default-value"), "defaultValue"));
+						},
 						function getWithString(t){
 							doh.f(dojo.hasAttr("input-no-type", "type"));
 							doh.is("text", dojo.attr("input-no-type", "type"));
@@ -615,6 +619,7 @@
 			<input id="input-tabindex-minus-1" tabindex="-1">
 			<input id="input-tabindex-0" tabindex="0">
 			<input id="input-tabindex-1" tabindex="1">
+			<input id="input-default-value" type="text" value="default value">
 		</div>
 		<div>
 			<label id="label-no-for">label with no for </label><input type="text" id="label-test-input">

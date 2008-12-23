@@ -1100,7 +1100,8 @@ if(dojo.isIE || dojo.isOpera){
 		shape: "shape",
 		span: "span",
 		type: "type",
-		valuetype: "valueType"
+		valuetype: "valueType",
+		defaultvalue: "defaultValue"
 	}
 
 	dojo.hasAttr = function(/*DomNode|String*/node, /*String*/name){

@@ -27,6 +27,21 @@ dojo.byId = function(id, doc){
 	//		Document to work in. Defaults to the current value of
 	//		dojo.doc.  Can be used to retrieve
 	//		node references from other documents.
+	// 
+	//	example:
+	//	Look up a node by ID:
+	//	| var n = dojo.byId("foo");
+	//
+	//	example:
+	//	Check if a node exists.
+	//	|	if(dojo.byId("bar")){ ... }
+	//
+	//	example:
+	//	Allow string or DomNode references to be passed to a custom function:
+	//	| var foo = function(nodeOrId){ 
+	//	|	nodeOrId = dojo.byId(nodeOrId); 
+	//	|	// ... more stuff
+	//	| }
 =====*/
 if(dojo.isIE || dojo.isOpera){
 	dojo.byId = function(id, doc){
@@ -90,8 +105,8 @@ if(dojo.isIE || dojo.isOpera){
 	dojo.isDescendant = function(/*DomNode|String*/node, /*DomNode|String*/ancestor){
 		//	summary:
 		//		Returns true if node is a descendant of ancestor
-		//	node: id or node reference to test
-		//	ancestor: id or node reference of potential parent to test against
+		//	node: string id or node reference to test
+		//	ancestor: string id or node reference of potential parent to test against
 		try{
 			node = d.byId(node);
 			ancestor = d.byId(ancestor);
@@ -110,6 +125,8 @@ if(dojo.isIE || dojo.isOpera){
 		//	node:
 		//		id or reference to node
 		//	selectable:
+		//		state to put the node in. false indicates unselectable, true 
+		//		allows selection.
 		node = d.byId(node);
 		if(d.isMozilla){
 			node.style.MozUserSelect = selectable ? "" : "none";
@@ -158,6 +175,25 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		//		"first" and "last" indicate positions as children of refNode.  position defaults
 		//		to "last" if not specified
+		//
+		//		.place() is also a method of `dojo.NodeList`, allowing `dojo.query` node lookups.
+		// 
+		// example:
+		// Place a node by string id as the last child of another node by string id:
+		// | 	dojo.place("someNode", "anotherNode");
+		//
+		// example:
+		// Place a node by string id before another node by string id
+		// | 	dojo.place("someNode", "anotherNode", "before");
+		//
+		// example:
+		// Create a Node, and place it in the body element (last child):
+		// | 	dojo.place(dojo.doc.createElement('div'), dojo.body());
+		//
+		// example:
+		// Put a new LI as the first child of a list by id:
+		// | 	dojo.place(dojo.doc.createElement('li'), "someUl", "first");
+		
 
 		// FIXME: need to write tests for this!!!!
 		if(!node || !refNode){
@@ -175,17 +211,17 @@ if(dojo.isIE || dojo.isOpera){
 		}
 		switch(position){
 			case "before":
-				return _insertBefore(node, refNode);	//	boolean
+				return _insertBefore(node, refNode);	//	Boolean
 			case "after":
-				return _insertAfter(node, refNode);		//	boolean
+				return _insertAfter(node, refNode);		//	Boolean
 			case "first":
 				if(refNode.firstChild){
-					return _insertBefore(node, refNode.firstChild);	//	boolean
+					return _insertBefore(node, refNode.firstChild);	//	Boolean
 				}
 				// else fallthrough...
 			default: // aka: last
 				refNode.appendChild(node);
-				return true;	//	boolean
+				return true;	//	Boolean
 		}
 	}
 
@@ -210,7 +246,7 @@ if(dojo.isIE || dojo.isOpera){
 	if(d.isIE /*|| dojo.isOpera*/){
 		var _dcm = document.compatMode;
 		// client code may have to adjust if compatMode varies across iframes
-		d.boxModel = _dcm == "BackCompat" || _dcm == "QuirksMode" || d.isIE<6 ? "border-box" : "content-box"; // FIXME: remove IE < 6 support?
+		d.boxModel = _dcm == "BackCompat" || _dcm == "QuirksMode" || d.isIE < 6 ? "border-box" : "content-box"; // FIXME: remove IE < 6 support?
 	}
 
 	// =============================
@@ -250,6 +286,11 @@ if(dojo.isIE || dojo.isOpera){
 		//		ID string for speed reasons.
 		//	example:
 		//	|	dojo.getComputedStyle(dojo.byId('foo')).borderWidth;
+		//
+		//	example:
+		//	Reusing the returned object, avoiding multiple lookups:
+		//	|	var cs = dojo.getComputedStyle(dojo.byId("someNode"));
+		//	|	var w = cs.width, h = cs.height;
 		return; // CSS2Properties
 	}
 =====*/
@@ -289,19 +330,19 @@ if(dojo.isIE || dojo.isOpera){
 	dojo.getComputedStyle = gcs;
 
 	if(!d.isIE){
-		dojo._toPixelValue = function(element, value){
+		d._toPixelValue = function(element, value){
 			// style values can be floats, client code may want
 			// to round for integer pixels.
 			return parseFloat(value) || 0; 
 		};
 	}else{
-		dojo._toPixelValue = function(element, avalue){
+		d._toPixelValue = function(element, avalue){
 			if(!avalue){ return 0; }
 			// on IE7, medium is usually 4 pixels
-			if(avalue=="medium"){ return 4; }
+			if(avalue == "medium"){ return 4; }
 			// style values can be floats, client code may
 			// want to round this value for integer pixels.
-			if(avalue.slice && avalue.slice(-2)=='px'){ return parseFloat(avalue); }
+			if(avalue.slice && avalue.slice(-2) == 'px'){ return parseFloat(avalue); }
 			with(element){
 				var sLeft = style.left;
 				var rsLeft = runtimeStyle.left;
@@ -381,7 +422,7 @@ if(dojo.isIE || dojo.isOpera){
 		af(node, 1).Enabled = !(opacity == 1);
 
 		if(!af(node)){
-			node.style.filter += " progid:"+astr+"(Opacity="+ov+")";
+			node.style.filter += " progid:" + astr + "(Opacity=" + ov + ")";
 		}else{
 			af(node, 1).Opacity = ov;
 		}
@@ -1270,13 +1311,35 @@ if(dojo.isIE || dojo.isOpera){
 		//	summary:
 		//		Returns whether or not the specified classes are a portion of the
 		//		class list currently applied to the node. 
+		//
+		//	node: 
+		//		String ID or DomNode reference to check the class for.
+		//
+		//	classStr:
+		//		A string class name to look for.
+		// 
+		//	example:
+		//	| if(dojo.hasClass("someNode","aSillyClassName")){ ... }
+		//
 		return ((" "+ d.byId(node)[_className] +" ").indexOf(" "+ classStr +" ") >= 0);  // Boolean
 	};
 
 	dojo.addClass = function(/*DomNode|String*/node, /*String*/classStr){
 		//	summary:
 		//		Adds the specified classes to the end of the class list on the
-		//		passed node.
+		//		passed node. Will not re-apply duplicate classes.
+		//
+		//	node: String ID or DomNode reference to add a class string too
+		//	classStr: A String class name to add
+		//
+		// example:
+		//	Add A class to some node:
+		//	|	dojo.addClass("someNode", "anewClass");
+		//
+		// example:
+		//	Add two classes at once:
+		//	| 	dojo.addClass("someNode", "firstClass secondClass");
+		
 		node = d.byId(node);
 		var cls = node[_className];
 		if((" "+ cls +" ").indexOf(" " + classStr + " ") < 0){
@@ -1285,18 +1348,34 @@ if(dojo.isIE || dojo.isOpera){
 	};
 
 	dojo.removeClass = function(/*DomNode|String*/node, /*String*/classStr){
-		// summary: Removes the specified classes from node.
+		// summary: Removes the specified classes from node. No `dojo.hasClass` 
+		//		check is required. 
+		//
+		// node: String ID or DomNode reference to remove the class from.
+		// classString: String class name to remove
+		//
+		// example:
+		// 	| dojo.removeClass("someNode", "firstClass");
+		//
 		node = d.byId(node);
 		var t = d.trim((" " + node[_className] + " ").replace(" " + classStr + " ", " "));
 		if(node[_className] != t){ node[_className] = t; }
 	};
 
 	dojo.toggleClass = function(/*DomNode|String*/node, /*String*/classStr, /*Boolean?*/condition){
-		//	summary: 	
+		//	summary:
 		//		Adds a class to node if not present, or removes if present.
 		//		Pass a boolean condition if you want to explicitly add or remove.
 		//	condition:
 		//		If passed, true means to add the class, false means to remove.
+		//
+		// example:
+		//	| dojo.toggleClass("someNode", "hovered");
+		//
+		// example:
+		// 	Forcefully add a class
+		//	| dojo.toggleClass("someNode", "hovered", true);
+		//
 		if(condition === undefined){
 			condition = !d.hasClass(node, classStr);
 		}

@@ -28,12 +28,12 @@ dojo.colors = {
 		//		rgba, hsl, hsla, including rgb(a) with percentage values.
 		var m = color.toLowerCase().match(/^(rgba?|hsla?)\(([\s\.\-,%0-9]+)\)/);
 		if(m){
-			var c = m[2].split(/\s*,\s*/), l = c.length, t = m[1];
+			var c = m[2].split(/\s*,\s*/), l = c.length, t = m[1], a;
 			if((t == "rgb" && l == 3) || (t == "rgba" && l == 4)){
 				var r = c[0];
 				if(r.charAt(r.length - 1) == "%"){
 					// 3 rgb percentage values
-					var a = dojo.map(c, function(x){
+					a = dojo.map(c, function(x){
 						return parseFloat(x) * 2.56;
 					});
 					if(l == 4){ a[3] = c[3]; }
@@ -49,9 +49,13 @@ dojo.colors = {
 					// calculate rgb according to the algorithm 
 					// recommended by the CSS3 Color Module 
 					m2 = L <= 0.5 ? L * (S + 1) : L + S - L * S, 
-					m1 = 2 * L - m2,
-					a = [hue2rgb(m1, m2, H + 1 / 3) * 256,
-						hue2rgb(m1, m2, H) * 256, hue2rgb(m1, m2, H - 1 / 3) * 256, 1];
+					m1 = 2 * L - m2;
+				a = [
+					hue2rgb(m1, m2, H + 1 / 3) * 256,
+					hue2rgb(m1, m2, H) * 256,
+					hue2rgb(m1, m2, H - 1 / 3) * 256,
+					1
+				];
 				if(l == 4){ a[3] = c[3]; }
 				return dojo.colorFromArray(a, obj);	// dojo.Color
 			}
@@ -85,7 +89,7 @@ dojo.colors.makeGrey = function(/*Number*/ g, /*Number?*/ a){
 };
 
 // mixin all CSS3 named colors not already in _base, along with SVG 1.0 variant spellings
-dojo.Color.named = dojo.mixin({
+dojo.mixin(dojo.Color.named, {
 	aliceblue:	[240,248,255],
 	antiquewhite:	[250,235,215],
 	aquamarine:	[127,255,212],
@@ -218,4 +222,4 @@ dojo.Color.named = dojo.mixin({
 	wheat:	[245,222,179],
 	whitesmoke:	[245,245,245],
 	yellowgreen:	[154,205,50]
-}, dojo.Color.named);
+});

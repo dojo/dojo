@@ -462,8 +462,9 @@ if(dojo.isIE || dojo.isOpera){
 		return _pixelNamesCache[type] ? px(node, value) : value;
 	}
 
-	var _floatStyle = d.isIE ? "styleFloat" : "cssFloat";
-	var _floatAliases = { "cssFloat": _floatStyle, "styleFloat": _floatStyle, "float": _floatStyle };
+	var _floatStyle = d.isIE ? "styleFloat" : "cssFloat",
+		_floatAliases = { "cssFloat": _floatStyle, "styleFloat": _floatStyle, "float": _floatStyle }
+	;
 	
 	// public API
 	
@@ -531,7 +532,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		fontSize:"13pt"
 		//	|	});
 
-		var n = d.byId(node), args = arguments.length, op = (style=="opacity");
+		var n = d.byId(node), args = arguments.length, op = (style == "opacity");
 		style = _floatAliases[style] || style;
 		if(args == 3){
 			return op ? d._setOpacity(n, value) : n.style[style] = value; /*Number*/
@@ -546,7 +547,7 @@ if(dojo.isIE || dojo.isOpera){
 			}
 			return s;
 		}
-		return (args == 1) ? s : _toStyleValue(n, style, s[style]||n.style[style]); /* CSS2Properties||String||Number */
+		return (args == 1) ? s : _toStyleValue(n, style, s[style] || n.style[style]); /* CSS2Properties||String||Number */
 	}
 
 	// =============================
@@ -605,7 +606,7 @@ if(dojo.isIE || dojo.isOpera){
 
 	dojo._getPadBorderExtents = function(/*DomNode*/n, /*Object*/computedStyle){
 		//	summary:
-		//		returns object with properties useful for box fitting with
+		//		Returns object with properties useful for box fitting with
 		//		regards to padding.
 		//
 		//		* l/t = the sum of left/top padding and left/top border (respectively)
@@ -681,7 +682,7 @@ if(dojo.isIE || dojo.isOpera){
 		// summary:
 		//		returns an object that encodes the width, height, left and top
 		//		positions of the node's margin box.
-		var s = computedStyle||gcs(node), me = d._getMarginExtents(node, s);
+		var s = computedStyle || gcs(node), me = d._getMarginExtents(node, s);
 		var l = node.offsetLeft - me.l, t = node.offsetTop - me.t, p = node.parentNode;
 		if(d.isMoz){
 			// Mozilla:
@@ -727,11 +728,16 @@ if(dojo.isIE || dojo.isOpera){
 
 		// clientWidth/Height are important since the automatically account for scrollbars
 		// fallback to offsetWidth/Height for special cases (see #3378)
-		var s=computedStyle||gcs(node), pe=d._getPadExtents(node, s), be=d._getBorderExtents(node, s), w=node.clientWidth, h;
+		var s = computedStyle || gcs(node),
+			pe = d._getPadExtents(node, s),
+			be = d._getBorderExtents(node, s),
+			w = node.clientWidth, 
+			h
+		;
 		if(!w){
-			w=node.offsetWidth, h=node.offsetHeight;
+			w = node.offsetWidth, h = node.offsetHeight;
 		}else{
-			h=node.clientHeight, be.w = be.h = 0; 
+			h = node.clientHeight, be.w = be.h = 0; 
 		}
 		// On Opera, offsetLeft includes the parent's border
 		if(d.isOpera){ pe.l += be.l; pe.t += be.t; };
@@ -744,7 +750,10 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	dojo._getBorderBox = function(node, computedStyle){
-		var s=computedStyle||gcs(node), pe=d._getPadExtents(node, s), cb=d._getContentBox(node, s);
+		var s = computedStyle || gcs(node), 
+			pe = d._getPadExtents(node, s),
+			cb = d._getContentBox(node, s)
+		;
 		return { 
 			l: cb.l - pe.l, 
 			t: cb.t - pe.t, 
@@ -782,10 +791,10 @@ if(dojo.isIE || dojo.isOpera){
 		//	u: optional. unit measure to use for other measures. Defaults to "px".
 		u = u || "px";
 		var s = node.style;
-		if(!isNaN(l)){ s.left = l+u; }
-		if(!isNaN(t)){ s.top = t+u; }
-		if(w>=0){ s.width = w+u; }
-		if(h>=0){ s.height = h+u; }
+		if(!isNaN(l)){ s.left = l + u; }
+		if(!isNaN(t)){ s.top = t + u; }
+		if(w >= 0){ s.width = w + u; }
+		if(h >= 0){ s.height = h + u; }
 	}
 
 	dojo._isButtonTag = function(/*DomNode*/node) {
@@ -831,25 +840,26 @@ if(dojo.isIE || dojo.isOpera){
 		//		passthrough to dojo._setBox that handles box-model vagaries for
 		//		you.
 
-		var s = computedStyle||gcs(node);
+		var s = computedStyle || gcs(node),
 		// Some elements have special padding, margin, and box-model settings. 
 		// To use box functions you may need to set padding, margin explicitly.
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
-		var bb=d._usesBorderBox(node),
-				pb=bb ? _nilExtents : d._getPadBorderExtents(node, s);
+			bb = d._usesBorderBox(node),
+			pb = bb ? _nilExtents : d._getPadBorderExtents(node, s)
+		;
 		if(d.isWebKit){
 			// on Safari (3.1.2), button nodes with no explicit size have a default margin
 			// setting an explicit size eliminates the margin.
 			// We have to swizzle the width to get correct margin reading.
 			if(d._isButtonTag(node)){
 				var ns = node.style;
-				if(widthPx>=0 && !ns.width) { ns.width = "4px"; }
-				if(heightPx>=0 && !ns.height) { ns.height = "4px"; }
+				if(widthPx >= 0 && !ns.width) { ns.width = "4px"; }
+				if(heightPx >= 0 && !ns.height) { ns.height = "4px"; }
 			}
 		}
-		var mb=d._getMarginExtents(node, s);
-		if(widthPx>=0){ widthPx = Math.max(widthPx - pb.w - mb.w, 0); }
-		if(heightPx>=0){ heightPx = Math.max(heightPx - pb.h - mb.h, 0); }
+		var mb = d._getMarginExtents(node, s);
+		if(widthPx >= 0){ widthPx = Math.max(widthPx - pb.w - mb.w, 0); }
+		if(heightPx >= 0){ heightPx = Math.max(heightPx - pb.h - mb.h, 0); }
 		d._setBox(node, leftPx, topPx, widthPx, heightPx);
 	}
 	
@@ -873,7 +883,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		If passed, denotes that dojo.marginBox() should
 		//		update/set the margin box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
-		var n=d.byId(node), s=gcs(n), b=box;
+		var n = d.byId(node), s = gcs(n), b = box;
 		return !b ? d._getMarginBox(n, s) : d._setMarginBox(n, b.l, b.t, b.w, b.h, s); // Object
 	}
 
@@ -895,7 +905,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		If passed, denotes that dojo.contentBox() should
 		//		update/set the content box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
-		var n=d.byId(node), s=gcs(n), b=box;
+		var n = d.byId(node), s = gcs(n), b = box;
 		return !b ? d._getContentBox(n, s) : d._setContentSize(n, b.w, b.h, s); // Object
 	}
 	
@@ -958,9 +968,9 @@ if(dojo.isIE || dojo.isOpera){
 		//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
 
 		if(d.isIE == 6){
-			return {x: d._isBodyLtr() || window.parent == window ?
+			return { x: d._isBodyLtr() || window.parent == window ?
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
-				y: de.clientTop}; // Object
+				y: de.clientTop }; // Object
 		}else if(d.isIE == 7){
 			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top};
 		}else{
@@ -999,10 +1009,9 @@ if(dojo.isIE || dojo.isOpera){
 
 		// FIXME: need to decide in the brave-new-world if we're going to be
 		// margin-box or border-box.
-		var ret;
-
+		
 		// targetBoxType == "border-box"
-		var db = d.body(), dh = d.body().parentNode;
+		var db = d.body(), dh = d.body().parentNode, ret;
 		if(node["getBoundingClientRect"]){
 			// IE6+, FF3+, and Opera 9.6+ all take this branch
 			var client = node.getBoundingClientRect();
@@ -1016,7 +1025,7 @@ if(dojo.isIE || dojo.isOpera){
 			if(d.isIE){
 				// On IE there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
 				var offset = d._getIeDocumentElementOffset();
-                // fixes the position in IE, quirks mode
+				// fixes the position in IE, quirks mode
 				ret.x -= offset.x + (d.isQuirks ? db.clientLeft : 0);
 				ret.y -= offset.y + (d.isQuirks ? db.clientTop : 0);
 			}
@@ -1029,7 +1038,7 @@ if(dojo.isIE || dojo.isOpera){
 			if(node["offsetParent"]){
 				ret.x -= _sumAncestorProperties(node, "scrollLeft");
 				ret.y -= _sumAncestorProperties(node, "scrollTop");
-
+				
 				var curnode = node;
 				do{
 					var n = curnode.offsetLeft,
@@ -1042,8 +1051,8 @@ if(dojo.isIE || dojo.isOpera){
 						if(d.isFF){
 							// tried left+right with differently sized left/right borders
 							// it really is 2xleft border in FF, not left+right, even in RTL!
-							ret.x += 2*px(curnode,cs.borderLeftWidth);
-							ret.y += 2*px(curnode,cs.borderTopWidth);
+							ret.x += 2 * px(curnode,cs.borderLeftWidth);
+							ret.y += 2 * px(curnode,cs.borderTopWidth);
 						}else{
 							ret.x += px(curnode, cs.borderLeftWidth);
 							ret.y += px(curnode, cs.borderTopWidth);
@@ -1078,7 +1087,7 @@ if(dojo.isIE || dojo.isOpera){
 			ret.y += scroll.y;
 		}
 
-		return ret; // object
+		return ret; // Object
 	}
 
 	// FIXME: need a setter for coords or a moveTo!!
@@ -1094,7 +1103,7 @@ if(dojo.isIE || dojo.isOpera){
 		//			`{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }`
 		//		Does not act as a setter. If includeScroll is passed, the x and
 		//		y params are affected as one would expect in dojo._abs().
-		var n=d.byId(node), s=gcs(n), mb=d._getMarginBox(n, s);
+		var n = d.byId(node), s = gcs(n), mb = d._getMarginBox(n, s);
 		var abs = d._abs(n, includeScroll);
 		mb.x = abs.x;
 		mb.y = abs.y;
@@ -1162,12 +1171,9 @@ if(dojo.isIE || dojo.isOpera){
 		return attr ? attr.specified : false; // Boolean
 	}
 
-	var _evtHdlrMap = {
-		
-	}
-
-	var _ctr = 0;
-	var _attrId = dojo._scopeName + "attrid";
+	var _evtHdlrMap = {}, _ctr = 0,
+		_attrId = dojo._scopeName + "attrid"
+	;
 
 	dojo.attr = function(/*DomNode|String*/node, /*String|Object*/name, /*String?*/value){
 		//	summary:

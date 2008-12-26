@@ -18,6 +18,13 @@ dojo.require("dojo._base.lang");
 		//	| c.setColor([0,0,0]); // black
 		//	| var hex = c.toHex(); // #000000
 		//
+		// example:
+		//	Work with a node's color:
+		//	| var color = dojo.style("someNode", "backgroundColor");
+		//	| var n = new dojo.Color(color);
+		//	| // adjust the color some
+		//	| n.r *= .5; 
+		//  | console.log(n.toString()); // rgb(128, 255, 255);
 		if(color){ this.setColor(color); }
 	};
 
@@ -99,7 +106,7 @@ dojo.require("dojo._base.lang");
 			return "#" + arr.join("");	// String
 		},
 		toCss: function(/*Boolean?*/ includeAlpha){
-			// summary: returns a css color string in rgb(a) representation
+			// summary: Returns a css color string in rgb(a) representation
 			//
 			// example:
 			// |	var c = new dojo.Color("#FFF").toCss();
@@ -108,7 +115,7 @@ dojo.require("dojo._base.lang");
 			return (includeAlpha ? "rgba(" + rgb + ", " + t.a : "rgb(" + rgb) + ")";	// String
 		},
 		toString: function(){
-			// summary: returns a visual representation of the color
+			// summary: Returns a visual representation of the color
 			return this.toCss(true); // String
 		}
 	});
@@ -139,6 +146,12 @@ dojo.require("dojo._base.lang");
 	dojo.colorFromHex = function(/*String*/ color, /*dojo.Color?*/ obj){
 		// summary: converts a hex string with a '#' prefix to a color object.
 		//	Supports 12-bit #rgb shorthand.
+		//
+		// example:
+		//	| var thing = dojo.colorFromHex("#ededed"); // grey, longhand
+		//
+		// example:
+		//	| var thing = dojo.colorFromHex("#000"); // black, shorthand
 		var t = obj || new d.Color(),
 			bits = (color.length == 4) ? 4 : 8,
 			mask = (1 << bits) - 1;

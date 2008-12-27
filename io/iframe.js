@@ -363,12 +363,12 @@ dojo.io.iframe = {
 					for(var j = 0; j < fNode.childNodes.length; j++){
 						var chNode = fNode.childNodes[j];
 						if(chNode.name == key){
-							dojo._destroyElement(chNode);
+							dojo.destroy(chNode);
 							break;
 						}
 					}
 				}else{
-					dojo._destroyElement(fNode[key]);
+					dojo.destroy(fNode[key]);
 					fNode[key] = null;
 				}
 			}

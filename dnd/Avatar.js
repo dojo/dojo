@@ -60,7 +60,7 @@ dojo.declare("dojo.dnd.Avatar", null, {
 	},
 	destroy: function(){
 		// summary: a desctructor for the avatar, called to remove all references so it can be garbage-collected
-		dojo._destroyElement(this.node);
+		dojo.destroy(this.node);
 		this.node = false;
 	},
 	update: function(){

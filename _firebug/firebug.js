@@ -238,7 +238,7 @@ if(
 			//		Clears message console. Do not call this directly
 			if(consoleBody){
 				while(consoleBody.childNodes.length){
-					dojo._destroyElement(consoleBody.firstChild);	
+					dojo.destroy(consoleBody.firstChild);	
 				}
 			}
 			dojo.forEach(this._connects,dojo.disconnect);

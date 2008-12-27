@@ -69,7 +69,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 			if(i in e){ continue; }
 			var n = dojo.byId(i);
 			this.delItem(i);
-			dojo._destroyElement(n);
+			dojo.destroy(n);
 		}
 		this.anchor = null;
 		this.selection = {};

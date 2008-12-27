@@ -27,7 +27,7 @@ dojo.require("dojo.parser");
 		//		the parent element
 
 		while(node.firstChild){
-			dojo._destroyElement(node.firstChild);
+			dojo.destroy(node.firstChild);
 		}
 	};
 

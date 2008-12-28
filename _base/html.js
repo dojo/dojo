@@ -1163,7 +1163,8 @@ if(dojo.isIE || dojo.isOpera){
 		shape: "shape",
 		span: "span",
 		type: "type",
-		valuetype: "valueType"
+		valuetype: "valueType",
+		innerhtml: "innerHTML"	// doesn't have the default but should be treated like a property
 	}
 
 	dojo.hasAttr = function(/*DomNode|String*/node, /*String*/name){
@@ -1259,7 +1260,7 @@ if(dojo.isIE || dojo.isOpera){
 			return;
 		}
 		name = _fixAttrName(name);
-		if(args == 3){
+		if(args == 3){ // setter
 			// FIXME:
 			//		what about when the name is "style" and value is an object?
 			//		It seems natural to pass it in to dojo.style(node,
@@ -1296,18 +1297,17 @@ if(dojo.isIE || dojo.isOpera){
 			}else{
 				node.setAttribute(name, value);
 			}
-			return;
 		}else{
+			// getter
 			// should we access this attribute via a property or
 			// via getAttribute()?
 			var prop = _attrProps[name.toLowerCase()];
 			if(prop){
 				return node[prop];
-			}else{
-				var attrValue = node[name];
-				return (typeof attrValue == 'boolean' || typeof attrValue == 'function') ? attrValue
-					: (d.hasAttr(node, name) ? node.getAttribute(name) : null);
 			}
+			var attrValue = node[name];
+			return (typeof attrValue == 'boolean' || typeof attrValue == 'function') ? attrValue
+				: (d.hasAttr(node, name) ? node.getAttribute(name) : null);
 		}
 	}
 

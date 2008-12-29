@@ -82,7 +82,11 @@ if(dojo.isIE || dojo.isOpera){
 		_destroyContainer = null; //prevent IE leak
 	});
 
-	// FIXME: how to deprecate (if at all) _destroyElement in 2.0?
+/*=====
+	dojo._destroyElement = function(node){
+		// summary: Existing alias for `dojo.destroy`. Deprecated, will be removed in 2.0
+	}
+=====*/
 	dojo._destroyElement = dojo.destroy = function(/*String|DomNode*/node){
 		//	summary:
 		//		Removes a node from its parent, clobbering it and all of its
@@ -1220,7 +1224,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		or null if that attribute does not have a specified or
 		//		default value;
 		//
-		//		when user as a setter, undefined
+		//		when used as a setter, undefined
 		//
 		//	example:
 		//	|	// get the current value of the "foo" attribute on a node
@@ -1234,7 +1238,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	|
 		//
 		//	example:
-		//	|	// set multiple values at once, including event handlers:
+		//	Set multiple values at once, including event handlers:
 		//	|	dojo.attr("formId", {
 		//	|		"foo": "bar",
 		//	|		"tabindex": -1,
@@ -1252,19 +1256,33 @@ if(dojo.isIE || dojo.isOpera){
 		//	|			dojo.xhrPost({ form: "formId" });
 		//	|		}
 		//	|	});
+		//
+		//	example:
+		//	Style is s special case: Only set with an object hash of styles
+		//	|	dojo.attr("someNode",{
+		//	|		id:"bar",
+		//	|		style:{
+		//	|			width:"200px", height:"100px", color:"#000"
+		//	|		}
+		//	|	});
+		//
+		//	example:
+		//	Again, only set style as an object hash of styles:
+		//	|	var obj = { color:"#fff", backgroundColor:"#000" };
+		//	|	dojo.attr("someNode", "style", obj);
+		//	|
+		//	|	// though shorter to use `dojo.style` in this case:
+		//	|	dojo.style("someNode", obj);
 		
 		node = d.byId(node);
 		var args = arguments.length;
 		if(args == 2 && !d.isString(name)){
 			for(var x in name){ d.attr(node, x, name[x]); }
+			// FIXME: return the node in this case? could be useful.
 			return;
 		}
 		name = _fixAttrName(name);
 		if(args == 3){ // setter
-			// FIXME:
-			//		what about when the name is "style" and value is an object?
-			//		It seems natural to pass it in to dojo.style(node,
-			//		value)...should we support this?
 			if(d.isFunction(value)){
 				// clobber if we can
 				var attrId = d.attr(node, _attrId);
@@ -1293,6 +1311,7 @@ if(dojo.isIE || dojo.isOpera){
 			){
 				node[name] = value;
 			}else if(name == "style" && !d.isString(value)){
+				// when the name is "style" and value is an object, pass along
 				d.style(node, value);
 			}else{
 				node.setAttribute(name, value);
@@ -1326,24 +1345,41 @@ if(dojo.isIE || dojo.isOpera){
 		//		and placement. 
 		//
 		// description:
-		//		A DOM Element creation function. A shorthand for `document.createElement`,
-		//		creating single elements, and allowing for a convenient optional 
-		//		attribute setting step, as well as an optional DOM placement reference.
+		//		A DOM Element creation function. A shorthand method for creating a node of
+		//		type `tag`, and allowing for a convenient optional attribute setting step, 
+		//		as well as an optional DOM placement reference.
 		//|
-		//		Attributes are set by passing the optional object through `dojo.attr`.
-		//		Placement is done via `dojo.place`.
+		//		Attributes are set by passing the optional object through `dojo.attr`. See
+		//		`dojo.attr` for noted caevats and nuances, and API if applicable. 
 		//|
-		// tag: String|DomNode
-		//		A string of the element to create (eg: "div", "a", "p", "li") or
-		//		a reference to a DomNode to use as the Node in this action.
+		//		Placement is done via `dojo.place`, assuming the new node to be the action 
+		//		node, passing along the optional reference node and position. 
+		//|
+		//		NOTE: 
+		//		This is explicitly documented as NOT an alias to `dojo.doc.createElement`, 
+		//		as complex markup creation is planned in future versions. If you are using
+		//		`dojo.doc.createElement` with complex markup to work around known browser
+		//		quirks, you should remain doing so. 
+		//|	
+		//		eg: dojo.doc.createElement(dojo.isIE < 7 ? "<iframe name='baz'></iframe>" : "iframe");
+		//|
+		//		Do NOT expect passing the complex markup through `dojo.create` to continue
+		//		to work in all versions. `dojo.create` currently only supports single tag creation, though
+		//		as a byproduct of it's design APPEARS to support creating complex markup in 
+		//		these edge cases. `dojo.create` should NOT be used in that way until it
+		//		supports complex markup officially, as defined by this API. 
+		//
+		// tag: String
+		//		A string of the element to create (eg: "div", "a", "p", "li", "script", "br") 
 		//
 		// attrs: Object?
-		//		An optional object-hash of attributes to set on the newly created node
+		//		An optional object-hash of attributes to set on the newly created node. 
+		//		See: `dojo.attr` for a description of available attributes.
 		//
 		// refNode: String?|DomNode?
 		//		Optional reference node. Used by `dojo.place` to place the newly created
 		//		node somewhere in the dom relative to refNode. Can be a DomNode reference
-		//		or String ID of a node
+		//		or String ID of a node.
 		//	
 		// pos: String?
 		//		Optional positional reference. Defaults to "last" by way of `dojo.place`,
@@ -1373,7 +1409,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	| });
 		//
 		// example:
-		//	Create an anchor, with an href:
+		//	Create an anchor, with an href. Place in BODY:
 		//	| dojo.create("a", { href:"foo.html", title:"Goto FOO!" }, dojo.body());
 		//
 		// example:
@@ -1407,14 +1443,15 @@ if(dojo.isIE || dojo.isOpera){
 		// 
 		//	example:
 		//	| if(dojo.hasClass("someNode","aSillyClassName")){ ... }
-		//
+		
 		return ((" "+ d.byId(node)[_className] +" ").indexOf(" "+ classStr +" ") >= 0);  // Boolean
 	};
 
 	dojo.addClass = function(/*DomNode|String*/node, /*String*/classStr){
 		//	summary:
 		//		Adds the specified classes to the end of the class list on the
-		//		passed node. Will not re-apply duplicate classes.
+		//		passed node. Will not re-apply duplicate classes, except in edge
+		//		cases when adding multiple classes at once.
 		//
 		//	node: String ID or DomNode reference to add a class string too
 		//	classStr: A String class name to add
@@ -1424,8 +1461,12 @@ if(dojo.isIE || dojo.isOpera){
 		//	|	dojo.addClass("someNode", "anewClass");
 		//
 		// example:
-		//	Add two classes at once:
+		//	Add two classes at once (could potentially add duplicate):
 		//	| 	dojo.addClass("someNode", "firstClass secondClass");
+		//
+		// example:
+		//	Available in `dojo.NodeList` for multiple additions
+		//	| dojo.query("ul > li").addClass("firstLevel");
 		
 		node = d.byId(node);
 		var cls = node[_className];
@@ -1439,11 +1480,16 @@ if(dojo.isIE || dojo.isOpera){
 		//		check is required. 
 		//
 		// node: String ID or DomNode reference to remove the class from.
+		//
 		// classString: String class name to remove
 		//
 		// example:
 		// 	| dojo.removeClass("someNode", "firstClass");
 		//
+		// example:
+		//	Available in `dojo.NodeList` for multiple removal
+		//	| dojo.query(".foo").removeClass("foo");
+		
 		node = d.byId(node);
 		var t = d.trim((" " + node[_className] + " ").replace(" " + classStr + " ", " "));
 		if(node[_className] != t){ node[_className] = t; }
@@ -1463,6 +1509,10 @@ if(dojo.isIE || dojo.isOpera){
 		// 	Forcefully add a class
 		//	| dojo.toggleClass("someNode", "hovered", true);
 		//
+		// example:
+		//	Available in `dojo.NodeList` for multiple toggles
+		//	| dojo.query(".toggleMe").toggleClass("toggleMe");
+		
 		if(condition === undefined){
 			condition = !d.hasClass(node, classStr);
 		}

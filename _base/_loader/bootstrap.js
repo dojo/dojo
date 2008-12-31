@@ -221,12 +221,12 @@ dojo.global = {
 		OpenAjax.hub.registerLibrary(dojo._scopeName, "http://dojotoolkit.org", d.version.toString());
 	}
 
+	var tobj = {};
 	dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
 		// summary:
 		//		Adds all properties and methods of props to obj. This addition
 		//		is "prototype extension safe", so that instances of objects
 		//		will not pass along prototype defaults.
-		var tobj = {};
 		for(var x in props){
 			// the "tobj" condition avoid copying properties in "props"
 			// inherited from Object.prototype.  For example, if obj has a custom
@@ -300,6 +300,7 @@ dojo.global = {
 		//	|	console.debug(flattened.name);
 		//	|	// will print "true"
 		//	|	console.debug(flattened.braces);
+		if(!obj){ obj = {}; }
 		for(var i=1, l=arguments.length; i<l; i++){
 			d._mixin(obj, arguments[i]);
 		}

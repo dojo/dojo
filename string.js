@@ -61,7 +61,7 @@ dojo.string.substitute = function(	/*String*/		template,
 	//		exception if any parameter is unmatched.
 	//	template: 
 	//		a string with expressions in the form `${key}` to be replaced or
-	//		`${key:format}` which specifies a format function.
+	//		`${key:format}` which specifies a format function. keys are case-sensitive. 
 	//	map:
 	//		hash to search for substitutions
 	//	transform: 

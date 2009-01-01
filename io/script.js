@@ -67,7 +67,7 @@ dojo.io.script = {
 	remove: function(/*String*/id, /*Document?*/frameDocument){
 		//summary: removes the script element with the given id, from the given frameDocument.
 		//If no frameDocument is passed, the current document is used.
-		dojo._destroyElement(dojo.byId(id, frameDocument));
+		dojo.destroy(dojo.byId(id, frameDocument));
 		
 		//Remove the jsonp callback on dojo.io.script, if it exists.
 		if(this["jsonp_" + id]){

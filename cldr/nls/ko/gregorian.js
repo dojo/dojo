@@ -45,6 +45,7 @@
 	"dateFormat-full": "yyyy년 M월 d일 EEEE", 
 	"dateFormatItem-Md": "M. d.", 
 	"field-era": "연호", 
+	"dateFormatItem-yM": "yyyy. M.", 
 	"months-standAlone-wide": [
 		"1월", 
 		"2월", 
@@ -66,9 +67,13 @@
 		"제 3/4분기", 
 		"제 4/4분기"
 	], 
+	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "a hh시 mm분 ss초 z", 
 	"field-year": "년", 
-	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMM": "yyyy년 MMM", 
+	"dateFormatItem-yQ": "yyyy년 Q분기", 
+	"field-hour": "시", 
+	"dateFormatItem-MMdd": "MM. dd", 
 	"months-format-abbr": [
 		"1월", 
 		"2월", 
@@ -84,13 +89,8 @@
 		"12월"
 	], 
 	"dateFormatItem-yyQ": "yy년 Q분기", 
-	"dateFormatItem-yMMM": "yyyy년 MMM", 
-	"field-hour": "시", 
 	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
-	"dateFormatItem-MMdd": "MM. dd", 
 	"timeFormat-full": "a hh시 mm분 ss초 v", 
-	"dateFormatItem-yQ": "yyyy년 Q분기", 
-	"dateFormatItem-yM": "yyyy. M.", 
 	"am": "오전", 
 	"months-standAlone-abbr": [
 		"1월", 
@@ -112,13 +112,13 @@
 		"3분기", 
 		"4분기"
 	], 
-	"dateFormatItem-HHmmss": "HH:mm:ss", 
 	"quarters-standAlone-wide": [
 		"제 1/4분기", 
 		"제 2/4분기", 
 		"제 3/4분기", 
 		"제 4/4분기"
 	], 
+	"dateFormatItem-HHmmss": "HH:mm:ss", 
 	"dateFormatItem-M": "L", 
 	"days-standAlone-wide": [
 		"일요일", 
@@ -133,17 +133,18 @@
 	"dateFormatItem-yyMMM": "yy년 MMM", 
 	"timeFormat-medium": "a h:mm:ss", 
 	"dateFormatItem-Hm": "H:mm", 
-	"eraAbbr": [
-		"기원전", 
-		"서기"
-	], 
 	"quarters-standAlone-abbr": [
 		"1분기", 
 		"2분기", 
 		"3분기", 
 		"4분기"
 	], 
+	"eraAbbr": [
+		"기원전", 
+		"서기"
+	], 
 	"field-minute": "분", 
+	"field-dayperiod": "오전/오후", 
 	"days-standAlone-abbr": [
 		"일", 
 		"월", 
@@ -153,7 +154,6 @@
 		"금", 
 		"토"
 	], 
-	"field-dayperiod": "오전/오후", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
 	"dateFormatItem-MMMd": "MMM d일", 

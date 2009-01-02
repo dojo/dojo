@@ -1,4 +1,3 @@
-// generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
 ({
 	"quarters-standAlone-wide": [
 		"第1季", 
@@ -14,18 +13,32 @@
 	], 
 	"dateFormat-medium": "yyyy/M/d", 
 	"field-second": "秒", 
-	"dateFormatItem-Ed": "d日（E）", 
 	"quarters-standAlone-abbr": [
 		"第1季", 
 		"第2季", 
 		"第3季", 
 		"第4季"
 	], 
-	"field-week": "週", 
 	"dateFormatItem-MMdd": "MM/dd", 
 	"dateFormatItem-MEd": "M-d（E）", 
 	"dateFormatItem-yMEd": "yyyy/M/d（EEE）", 
+	"field-week": "週", 
+	"months-format-narrow": [
+		"1", 
+		"2", 
+		"3", 
+		"4", 
+		"5", 
+		"6", 
+		"7", 
+		"8", 
+		"9", 
+		"10", 
+		"11", 
+		"12"
+	], 
 	"timeFormat-full": "ahh時mm分ss秒v", 
+	"dateFormatItem-HHmmss": "H:mm:ss", 
 	"dateTimeAvailableFormats": [
 		"d日（E）", 
 		"H:mm", 
@@ -60,7 +73,7 @@
 		"yyyy年M月", 
 		"yyyy年MMMM"
 	], 
-	"dateFormatItem-HHmmss": "H:mm:ss", 
+	"dateFormatItem-Md": "M/d", 
 	"months-standAlone-narrow": [
 		"1", 
 		"2", 
@@ -93,7 +106,6 @@
 		"西元前", 
 		"西元"
 	], 
-	"dateFormatItem-Md": "M/d", 
 	"months-standAlone-abbr": [
 		"1月", 
 		"2月", 
@@ -144,5 +156,6 @@
 		"週五", 
 		"週六"
 	], 
-	"field-zone": "區域"
+	"field-zone": "區域", 
+	"dateFormatItem-Ed": "d日（E）"
 })

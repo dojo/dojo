@@ -19,8 +19,8 @@
 		"3", 
 		"4"
 	], 
-	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"field-weekday": "Wochentag", 
+	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"dateFormatItem-yQQQ": "QQQ yyyy", 
 	"dateFormatItem-yMEd": "EEE, yyyy-M-d", 
 	"dateFormatItem-MMMEd": "E d. MMM", 
@@ -48,6 +48,20 @@
 	"dateFormatItem-yyMMdd": "dd.MM.yy", 
 	"field-era": "Epoche", 
 	"dateFormatItem-yM": "yyyy-M", 
+	"months-standAlone-wide": [
+		"Januar", 
+		"Februar", 
+		"März", 
+		"April", 
+		"Mai", 
+		"Juni", 
+		"Juli", 
+		"August", 
+		"September", 
+		"Oktober", 
+		"November", 
+		"Dezember"
+	], 
 	"timeFormat-short": "HH:mm", 
 	"quarters-format-wide": [
 		"1. Quartal", 
@@ -55,9 +69,14 @@
 		"3. Quartal", 
 		"4. Quartal"
 	], 
+	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "HH:mm:ss z", 
 	"field-year": "Jahr", 
-	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMM": "MMM yyyy", 
+	"dateFormatItem-yQ": "Q yyyy", 
+	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
+	"field-hour": "Stunde", 
+	"dateFormatItem-MMdd": "dd.MM.", 
 	"months-format-abbr": [
 		"Jan", 
 		"Feb", 
@@ -73,38 +92,10 @@
 		"Dez"
 	], 
 	"dateFormatItem-yyQ": "Q yy", 
-	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
-	"dateFormatItem-yMMM": "MMM yyyy", 
-	"field-hour": "Stunde", 
 	"patternChars": "GjMtkHmsSEDFwWahKzJeugAZvcL", 
 	"timeFormat-full": "HH:mm:ss v", 
-	"dateFormatItem-MMdd": "dd.MM.", 
-	"dateFormatItem-yQ": "Q yyyy", 
-	"months-standAlone-wide": [
-		"Januar", 
-		"Februar", 
-		"März", 
-		"April", 
-		"Mai", 
-		"Juni", 
-		"Juli", 
-		"August", 
-		"September", 
-		"Oktober", 
-		"November", 
-		"Dezember"
-	], 
 	"am": "vorm.", 
 	"dateFormatItem-H": "H", 
-	"quarters-format-abbr": [
-		"Q1", 
-		"Q2", 
-		"Q3", 
-		"Q4"
-	], 
-	"dateFormatItem-HHmmss": "HH:mm:ss", 
-	"dateFormatItem-hhmmss": "HH:mm:ss", 
-	"dateFormatItem-M": "L", 
 	"months-standAlone-abbr": [
 		"Jan", 
 		"Feb", 
@@ -119,12 +110,21 @@
 		"Nov", 
 		"Dez"
 	], 
+	"quarters-format-abbr": [
+		"Q1", 
+		"Q2", 
+		"Q3", 
+		"Q4"
+	], 
 	"quarters-standAlone-wide": [
 		"1. Quartal", 
 		"2. Quartal", 
 		"3. Quartal", 
 		"4. Quartal"
 	], 
+	"dateFormatItem-HHmmss": "HH:mm:ss", 
+	"dateFormatItem-hhmmss": "HH:mm:ss", 
+	"dateFormatItem-M": "L", 
 	"days-standAlone-wide": [
 		"Sonntag", 
 		"Montag", 

@@ -3,6 +3,7 @@
 	"field-dayperiod": "午前/午後", 
 	"dateFormatItem-GGGGyMd": "GGGGy年M月d日", 
 	"dateFormatItem-yQ": "y/Q", 
+	"field-minute": "分", 
 	"eraNames": [
 		"紀元前", 
 		"西暦"
@@ -11,6 +12,15 @@
 	"dateFormatItem-MMdd": "MM/dd", 
 	"dateFormatItem-yQQQ": "yyyyQQQ", 
 	"field-weekday": "曜日", 
+	"days-standAlone-wide": [
+		"日曜日", 
+		"月曜日", 
+		"火曜日", 
+		"水曜日", 
+		"木曜日", 
+		"金曜日", 
+		"土曜日"
+	], 
 	"dateFormatItem-MMM": "LLL", 
 	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
 	"months-standAlone-narrow": [
@@ -32,16 +42,6 @@
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "H時mm分ss秒v", 
 	"dateFormatItem-yyyy": "y年", 
-	"field-minute": "分", 
-	"days-standAlone-wide": [
-		"日曜日", 
-		"月曜日", 
-		"火曜日", 
-		"水曜日", 
-		"木曜日", 
-		"金曜日", 
-		"土曜日"
-	], 
 	"months-standAlone-abbr": [
 		"1月", 
 		"2月", 
@@ -57,6 +57,7 @@
 		"12月"
 	], 
 	"dateFormatItem-Ed": "d日(EEE)", 
+	"dateFormatItem-yMMM": "y年M月", 
 	"days-standAlone-narrow": [
 		"日", 
 		"月", 
@@ -70,12 +71,11 @@
 		"紀元前", 
 		"西暦"
 	], 
-	"dateFormatItem-yMMM": "y年M月", 
 	"dateFormatItem-yyyyMM": "yyyy/MM", 
 	"dateFormat-long": "yyyy年M月d日", 
 	"timeFormat-medium": "H:mm:ss", 
-	"dateFormatItem-Hm": "H:mm", 
 	"field-zone": "タイムゾーン", 
+	"dateFormatItem-Hm": "H:mm", 
 	"dateFormat-medium": "yyyy/MM/dd", 
 	"dateFormatItem-yyMMM": "y年M月", 
 	"quarters-standAlone-wide": [
@@ -129,7 +129,14 @@
 	], 
 	"timeFormat-short": "H:mm", 
 	"dateFormatItem-H": "H時", 
+	"field-month": "月", 
 	"dateFormatItem-MMMMd": "M月d日", 
+	"quarters-format-abbr": [
+		"Q1", 
+		"Q2", 
+		"Q3", 
+		"Q4"
+	], 
 	"days-format-abbr": [
 		"日", 
 		"月", 
@@ -141,17 +148,7 @@
 	], 
 	"pm": "午後", 
 	"dateFormatItem-M": "L", 
-	"quarters-format-abbr": [
-		"Q1", 
-		"Q2", 
-		"Q3", 
-		"Q4"
-	], 
 	"dateFormatItem-mmss": "mm:ss", 
-	"field-month": "月", 
-	"dateFormatItem-MEd": "M/d(E)", 
-	"field-day": "日", 
-	"field-second": "秒", 
 	"days-format-narrow": [
 		"日", 
 		"月", 
@@ -161,6 +158,9 @@
 		"金", 
 		"土"
 	], 
+	"field-second": "秒", 
+	"field-day": "日", 
+	"dateFormatItem-MEd": "M/d(E)", 
 	"am": "午前", 
 	"days-standAlone-abbr": [
 		"日", 

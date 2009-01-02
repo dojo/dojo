@@ -45,6 +45,7 @@
 	"dateFormat-full": "EEEE, d 'de' MMMM 'de' yyyy", 
 	"dateFormatItem-Md": "d/M", 
 	"field-era": "Era", 
+	"dateFormatItem-yM": "MM/yyyy", 
 	"months-standAlone-wide": [
 		"janeiro", 
 		"fevereiro", 
@@ -66,9 +67,13 @@
 		"3º trimestre", 
 		"4º trimestre"
 	], 
+	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "HH:mm:ss z", 
 	"field-year": "Ano", 
-	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMM": "MMM 'de' yyyy", 
+	"dateFormatItem-yQ": "yyyy Q", 
+	"field-hour": "Hora", 
+	"dateFormatItem-MMdd": "dd/MM", 
 	"months-format-abbr": [
 		"jan", 
 		"fev", 
@@ -84,12 +89,7 @@
 		"dez"
 	], 
 	"dateFormatItem-yyQ": "Q yy", 
-	"dateFormatItem-yMMM": "MMM 'de' yyyy", 
-	"field-hour": "Hora", 
-	"dateFormatItem-MMdd": "dd/MM", 
-	"dateFormatItem-yQ": "yyyy Q", 
 	"timeFormat-full": "HH'h'mm'min'ss's' v", 
-	"dateFormatItem-yM": "MM/yyyy", 
 	"am": "AM", 
 	"months-standAlone-abbr": [
 		"jan", 
@@ -111,13 +111,13 @@
 		"T3", 
 		"T4"
 	], 
-	"dateFormatItem-HHmmss": "HH:mm:ss", 
 	"quarters-standAlone-wide": [
 		"1º trimestre", 
 		"2º trimestre", 
 		"3º trimestre", 
 		"4º trimestre"
 	], 
+	"dateFormatItem-HHmmss": "HH:mm:ss", 
 	"dateFormatItem-M": "L", 
 	"days-standAlone-wide": [
 		"domingo", 
@@ -134,17 +134,18 @@
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"timeFormat-medium": "HH:mm:ss", 
 	"dateFormatItem-Hm": "H:mm", 
-	"eraAbbr": [
-		"a.C.", 
-		"d.C."
-	], 
 	"quarters-standAlone-abbr": [
 		"T1", 
 		"T2", 
 		"T3", 
 		"T4"
 	], 
+	"eraAbbr": [
+		"a.C.", 
+		"d.C."
+	], 
 	"field-minute": "Minuto", 
+	"field-dayperiod": "Período do dia", 
 	"days-standAlone-abbr": [
 		"dom", 
 		"seg", 
@@ -154,7 +155,6 @@
 		"sex", 
 		"sáb"
 	], 
-	"field-dayperiod": "Período do dia", 
 	"dateFormatItem-yyMMMd": "d 'de' MMM 'de' yy", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 

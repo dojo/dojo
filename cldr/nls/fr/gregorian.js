@@ -19,8 +19,8 @@
 		"3", 
 		"4"
 	], 
-	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"field-weekday": "jour de la semaine", 
+	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"dateFormatItem-yQQQ": "QQQ yyyy", 
 	"dateFormatItem-yMEd": "EEE d/M/yyyy", 
 	"dateFormatItem-MMMEd": "E d MMM", 
@@ -48,6 +48,20 @@
 	"dateFormatItem-Md": "d/M", 
 	"field-era": "ère", 
 	"dateFormatItem-yM": "M/yyyy", 
+	"months-standAlone-wide": [
+		"janvier", 
+		"février", 
+		"mars", 
+		"avril", 
+		"mai", 
+		"juin", 
+		"juillet", 
+		"août", 
+		"septembre", 
+		"octobre", 
+		"novembre", 
+		"décembre"
+	], 
 	"timeFormat-short": "HH:mm", 
 	"quarters-format-wide": [
 		"1er trimestre", 
@@ -55,9 +69,14 @@
 		"3e trimestre", 
 		"4e trimestre"
 	], 
+	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "HH:mm:ss z", 
 	"field-year": "année", 
-	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMM": "MMM yyyy", 
+	"dateFormatItem-yQ": "'T'Q yyyy", 
+	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
+	"field-hour": "heure", 
+	"dateFormatItem-MMdd": "dd/MM", 
 	"months-format-abbr": [
 		"janv.", 
 		"févr.", 
@@ -73,27 +92,8 @@
 		"déc."
 	], 
 	"dateFormatItem-yyQ": "'T'Q yy", 
-	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
-	"dateFormatItem-yMMM": "MMM yyyy", 
-	"field-hour": "heure", 
 	"patternChars": "GaMjkHmsSEDFwWxhKzAeugXZvcL", 
 	"timeFormat-full": "HH:mm:ss v", 
-	"dateFormatItem-MMdd": "dd/MM", 
-	"dateFormatItem-yQ": "'T'Q yyyy", 
-	"months-standAlone-wide": [
-		"janvier", 
-		"février", 
-		"mars", 
-		"avril", 
-		"mai", 
-		"juin", 
-		"juillet", 
-		"août", 
-		"septembre", 
-		"octobre", 
-		"novembre", 
-		"décembre"
-	], 
 	"am": "AM", 
 	"months-standAlone-abbr": [
 		"janv.", 
@@ -115,15 +115,15 @@
 		"T3", 
 		"T4"
 	], 
-	"dateFormatItem-HHmmss": "HH:mm:ss", 
-	"dateFormatItem-hhmmss": "HH:mm:ss", 
-	"dateFormatItem-M": "L", 
 	"quarters-standAlone-wide": [
 		"1er trimestre", 
 		"2e trimestre", 
 		"3e trimestre", 
 		"4e trimestre"
 	], 
+	"dateFormatItem-HHmmss": "HH:mm:ss", 
+	"dateFormatItem-hhmmss": "HH:mm:ss", 
+	"dateFormatItem-M": "L", 
 	"days-standAlone-wide": [
 		"dimanche", 
 		"lundi", 
@@ -138,6 +138,12 @@
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"timeFormat-medium": "HH:mm:ss", 
 	"dateFormatItem-Hm": "H:mm", 
+	"quarters-standAlone-abbr": [
+		"T1", 
+		"T2", 
+		"T3", 
+		"T4"
+	], 
 	"eraAbbr": [
 		"av. J.-C.", 
 		"ap. J.-C."
@@ -152,12 +158,6 @@
 		"jeu.", 
 		"ven.", 
 		"sam."
-	], 
-	"quarters-standAlone-abbr": [
-		"T1", 
-		"T2", 
-		"T3", 
-		"T4"
 	], 
 	"dateFormatItem-yyMMMd": "d MMM yy", 
 	"dateFormatItem-d": "d", 

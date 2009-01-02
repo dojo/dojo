@@ -10,6 +10,7 @@
 	"dateFormatItem-MMMEd": "EEE d MMM", 
 	"dateFormatItem-MMdd": "dd/MM", 
 	"dateFormatItem-yQQQ": "QQQ yyyy", 
+	"field-weekday": "giorno della settimana", 
 	"days-standAlone-wide": [
 		"Domenica", 
 		"Lunedì", 
@@ -34,18 +35,17 @@
 		"N", 
 		"D"
 	], 
-	"field-weekday": "giorno della settimana", 
 	"field-era": "era", 
-	"dateFormatItem-hhmm": "hh.mm a", 
-	"dateFormatItem-y": "yyyy", 
-	"timeFormat-full": "HH.mm.ss v", 
 	"field-hour": "ora", 
+	"dateFormatItem-hhmm": "hh.mm a", 
 	"quarters-standAlone-abbr": [
 		"T1", 
 		"T2", 
 		"T3", 
 		"T4"
 	], 
+	"dateFormatItem-y": "yyyy", 
+	"timeFormat-full": "HH.mm.ss v", 
 	"months-standAlone-abbr": [
 		"gen", 
 		"feb", 
@@ -77,21 +77,21 @@
 	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
 	"dateFormat-long": "dd MMMM yyyy", 
 	"timeFormat-medium": "HH.mm.ss", 
-	"dateFormatItem-Hm": "HH:mm", 
 	"field-zone": "zona", 
+	"dateFormatItem-Hm": "HH:mm", 
 	"dateFormat-medium": "dd/MMM/yyyy", 
 	"dateFormatItem-yyMM": "MM/yy", 
 	"dateFormatItem-yyQQQQ": "QQQQ yy", 
-	"dateTimeFormat": "{1} {0}", 
-	"dateFormatItem-yMMMM": "MMMM yyyy", 
-	"dateFormatItem-ms": "mm:ss", 
-	"field-year": "anno", 
 	"quarters-standAlone-wide": [
 		"1o trimestre", 
 		"2o trimestre", 
 		"3o trimestre", 
 		"4o trimestre"
 	], 
+	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMMM": "MMMM yyyy", 
+	"dateFormatItem-ms": "mm:ss", 
+	"field-year": "anno", 
 	"quarters-standAlone-narrow": [
 		"1", 
 		"2", 
@@ -136,6 +136,12 @@
 	"timeFormat-short": "HH.mm", 
 	"field-month": "mese", 
 	"dateFormatItem-MMMMd": "d MMMM", 
+	"quarters-format-abbr": [
+		"T1", 
+		"T2", 
+		"T3", 
+		"T4"
+	], 
 	"days-format-abbr": [
 		"dom", 
 		"lun", 
@@ -146,18 +152,20 @@
 		"sab"
 	], 
 	"dateFormatItem-MMMMdd": "dd MMMM", 
-	"dateFormatItem-M": "L", 
 	"pm": "p.", 
-	"quarters-format-abbr": [
-		"T1", 
-		"T2", 
-		"T3", 
-		"T4"
+	"dateFormatItem-M": "L", 
+	"days-format-narrow": [
+		"D", 
+		"L", 
+		"M", 
+		"M", 
+		"G", 
+		"V", 
+		"S"
 	], 
+	"field-second": "secondo", 
 	"field-day": "giorno", 
 	"dateFormatItem-MEd": "EEE d/M", 
-	"field-second": "secondo", 
-	"dateFormatItem-hhmmss": "hh.mm.ss a", 
 	"months-format-narrow": [
 		"G", 
 		"F", 
@@ -172,15 +180,7 @@
 		"N", 
 		"D"
 	], 
-	"days-format-narrow": [
-		"D", 
-		"L", 
-		"M", 
-		"M", 
-		"G", 
-		"V", 
-		"S"
-	], 
+	"dateFormatItem-hhmmss": "hh.mm.ss a", 
 	"am": "m.", 
 	"days-standAlone-abbr": [
 		"dom", 

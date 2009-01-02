@@ -45,6 +45,7 @@
 	"dateFormat-full": "yyyy年M月d日EEEE", 
 	"dateFormatItem-Md": "M-d", 
 	"field-era": "时期", 
+	"dateFormatItem-yM": "yyyy-M", 
 	"months-standAlone-wide": [
 		"一月", 
 		"二月", 
@@ -66,9 +67,14 @@
 		"第3季度", 
 		"第4季度"
 	], 
+	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "ahh时mm分ss秒z", 
 	"field-year": "年", 
-	"dateTimeFormat": "{1} {0}", 
+	"dateFormatItem-yMMM": "yyyy年MMM", 
+	"dateFormatItem-yQ": "yyyy年QQQ", 
+	"dateFormatItem-yyyyMMMM": "yyyy年MMMM", 
+	"field-hour": "小时", 
+	"dateFormatItem-MMdd": "MM-dd", 
 	"months-format-abbr": [
 		"1月", 
 		"2月", 
@@ -84,30 +90,10 @@
 		"12月"
 	], 
 	"dateFormatItem-yyQ": "yy年第Q季度", 
-	"dateFormatItem-yyyyMMMM": "yyyy年MMMM", 
-	"dateFormatItem-yMMM": "yyyy年MMM", 
-	"field-hour": "小时", 
 	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
 	"timeFormat-full": "ahh时mm分ss秒v", 
-	"dateFormatItem-MMdd": "MM-dd", 
-	"dateFormatItem-yQ": "yyyy年QQQ", 
-	"dateFormatItem-yM": "yyyy-M", 
 	"am": "上午", 
 	"dateFormatItem-H": "H时", 
-	"quarters-format-abbr": [
-		"1季", 
-		"2季", 
-		"3季", 
-		"4季"
-	], 
-	"dateFormatItem-HHmmss": "HH:mm:ss", 
-	"quarters-standAlone-wide": [
-		"第1季度", 
-		"第2季度", 
-		"第3季度", 
-		"第4季度"
-	], 
-	"dateFormatItem-M": "L", 
 	"months-standAlone-abbr": [
 		"一月", 
 		"二月", 
@@ -122,6 +108,20 @@
 		"十一月", 
 		"十二月"
 	], 
+	"quarters-format-abbr": [
+		"1季", 
+		"2季", 
+		"3季", 
+		"4季"
+	], 
+	"quarters-standAlone-wide": [
+		"第1季度", 
+		"第2季度", 
+		"第3季度", 
+		"第4季度"
+	], 
+	"dateFormatItem-HHmmss": "HH:mm:ss", 
+	"dateFormatItem-M": "L", 
 	"days-standAlone-wide": [
 		"星期日", 
 		"星期一", 
@@ -135,6 +135,12 @@
 	"dateFormatItem-yyMMM": "yy年MMM", 
 	"timeFormat-medium": "ahh:mm:ss", 
 	"dateFormatItem-Hm": "H:mm", 
+	"quarters-standAlone-abbr": [
+		"1季", 
+		"2季", 
+		"3季", 
+		"4季"
+	], 
 	"eraAbbr": [
 		"公元前", 
 		"公元"
@@ -149,12 +155,6 @@
 		"周四", 
 		"周五", 
 		"周六"
-	], 
-	"quarters-standAlone-abbr": [
-		"1季", 
-		"2季", 
-		"3季", 
-		"4季"
 	], 
 	"dateFormatItem-d": "d日", 
 	"dateFormatItem-ms": "mm:ss", 

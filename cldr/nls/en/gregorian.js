@@ -68,8 +68,8 @@
 	], 
 	"dateFormat-long": "MMMM d, yyyy", 
 	"timeFormat-medium": "h:mm:ss a", 
-	"dateFormatItem-Hm": "HH:mm", 
 	"field-zone": "Zone", 
+	"dateFormatItem-Hm": "HH:mm", 
 	"dateFormat-medium": "MMM d, yyyy", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"quarters-standAlone-wide": [
@@ -123,6 +123,12 @@
 	"timeFormat-short": "h:mm a", 
 	"field-month": "Month", 
 	"dateFormatItem-MMMMd": "MMMM d", 
+	"quarters-format-abbr": [
+		"Q1", 
+		"Q2", 
+		"Q3", 
+		"Q4"
+	], 
 	"days-format-abbr": [
 		"Sun", 
 		"Mon", 
@@ -134,11 +140,14 @@
 	], 
 	"pm": "PM", 
 	"dateFormatItem-M": "L", 
-	"quarters-format-abbr": [
-		"Q1", 
-		"Q2", 
-		"Q3", 
-		"Q4"
+	"days-format-narrow": [
+		"S", 
+		"M", 
+		"T", 
+		"W", 
+		"T", 
+		"F", 
+		"S"
 	], 
 	"field-second": "Second", 
 	"field-day": "Day", 
@@ -156,15 +165,6 @@
 		"O", 
 		"N", 
 		"D"
-	], 
-	"days-format-narrow": [
-		"S", 
-		"M", 
-		"T", 
-		"W", 
-		"T", 
-		"F", 
-		"S"
 	], 
 	"dateFormatItem-hm": "h:mm a", 
 	"am": "AM", 

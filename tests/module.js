@@ -13,6 +13,7 @@ try{
 	dojo.require("tests.io.script");
 	dojo.require("tests.io.iframe");
 	dojo.requireIf(dojo.isBrowser, "tests.rpc");
+	dojo.require("tests.regexp");
 	dojo.require("tests.string");
 	dojo.require("tests.behavior");
 	dojo.require("tests.parser");

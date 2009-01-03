@@ -12,8 +12,7 @@ dojo.regexp.escapeString = function(/*String*/str, /*String?*/except){
 	// except:
 	//		a String with special characters to be left unescaped
 
-//	return str.replace(/([\f\b\n\t\r[\^$|?*+(){}])/gm, "\\$1"); // string
-	return str.replace(/([\.$?*|{}\(\)\[\]\\\/^])/g, function(ch){
+	return str.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(ch){
 		if(except && except.indexOf(ch) != -1){
 			return ch;
 		}

@@ -4,17 +4,17 @@ if(this["dojo"]||window["dojo"]){
 	dojo.require("dojo._base.NodeList");
 	dojo.require("dojo._base.lang");
 
-//>>excludeStart("steakExclude", fileName.indexOf("dojo") != -1);
+//>>excludeStart("acmeExclude", fileName.indexOf("dojo") != -1);
 
-}else if(!this["steak"] && !this["queryPortability"]){
+}else if(!this["acme"] && !this["queryPortability"]){
 	// NOTE: 
 	//		the functions and properties are duplicates of things found
 	//		elsewhere in Dojo. They've been copied here to make query.js a
-	//		stand-alone system.  The "steakExclude" ensures that it *never*
+	//		stand-alone system.  The "acmeExclude" ensures that it *never*
 	//		shows up in builds of Dojo.
 	(function(){
 		// a self-sufficient query impl
-		steak = {
+		acme = {
 			trim: function(/*String*/ str){
 				// summary:
 				//		trims whitespaces from both sides of the string
@@ -58,30 +58,30 @@ if(this["dojo"]||window["dojo"]){
 			// attr; // FIXME: we probably don't need to use attr() for checked
 		};
 
-		// define steak.isIE, steak.isSafari, steak.isOpera, etc.
+		// define acme.isIE, acme.isSafari, acme.isOpera, etc.
 		var n = navigator;
 		var dua = n.userAgent;
 		var dav = n.appVersion;
 		var tv = parseFloat(dav);
-		steak.isOpera = (dua.indexOf("Opera") >= 0) ? tv: undefined;
-		steak.isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : undefined;
-		steak.isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
-		steak.isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
+		acme.isOpera = (dua.indexOf("Opera") >= 0) ? tv: undefined;
+		acme.isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : undefined;
+		acme.isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
+		acme.isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
 		var index = Math.max(dav.indexOf("WebKit"), dav.indexOf("Safari"), 0);
-		if(index && !steak.isChrome){
-			steak.isSafari = parseFloat(dav.split("Version/")[1]);
-			if(!steak.isSafari || parseFloat(dav.substr(index + 7)) <= 419.3){
-				steak.isSafari = 2;
+		if(index && !acme.isChrome){
+			acme.isSafari = parseFloat(dav.split("Version/")[1]);
+			if(!acme.isSafari || parseFloat(dav.substr(index + 7)) <= 419.3){
+				acme.isSafari = 2;
 			}
 		}
-		if(document.all && !steak.isOpera){
-			steak.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
+		if(document.all && !acme.isOpera){
+			acme.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
 		}
 
 		Array._wrap = function(arr){ return arr; };
 	})();
 
-//>>excludeEnd("steakExclude");
+//>>excludeEnd("acmeExclude");
 }
 
 /*
@@ -118,7 +118,7 @@ if(this["dojo"]||window["dojo"]){
 
 ;(function(d){
 	// define everything in a closure for compressability reasons. "d" is an
-	// alias to "dojo" (or the toolkit alias object, e.g., "steak").
+	// alias to "dojo" (or the toolkit alias object, e.g., "acme").
 
 	////////////////////////////////////////////////////////////////////////
 	// Toolkit aliases
@@ -1573,6 +1573,8 @@ if(this["dojo"]||window["dojo"]){
 		//		testing the DOM branch without worrying about the
 		//		behavior/performance of the QSA branch.
 		var r = getQueryFunc(query, true)(root);
+		// FIXME:
+		//		need to investigate this branch WRT #8074 and #8075
 		if(r && r.nozip && !listCtor._wrap){
 			return r;
 		}
@@ -1594,4 +1596,4 @@ if(this["dojo"]||window["dojo"]){
 		}
 		return tmpNodeList;
 	}
-})(this["queryPortability"]||this["steak"]||dojo);
+})(this["queryPortability"]||this["acme"]||dojo);

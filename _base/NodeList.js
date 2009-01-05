@@ -325,7 +325,10 @@ dojo.require("dojo._base.array");
 			//		filter from their parents and returns them as a new
 			//		NodeList.
 			//	simpleFilter:
-			//		single-expression CSS filter
+			//		single-expression CSS rule. For example, ".thinger" or
+			//		"#someId[attrName='value']" but not "div > span". In short,
+			//		anything which does not invoke a descent to evaluate but
+			//		can instead be used to test a single node is acceptable.
 			//	returns:
 			//		`dojo.NodeList` containing the orpahned elements 
 			return (simpleFilter ? d._filterQueryResult(this, simpleFilter) : this). // dojo.NodeList
@@ -357,9 +360,24 @@ dojo.require("dojo._base.array");
 		// FIXME: do we need this?
 		query: function(/*String*/ queryStr){
 			//	summary:
-			//		Returns a new, flattened NodeList. Elements of the new list
-			//		satisfy the passed query but use elements of the
-			//		current NodeList as query roots.
+			//		Returns a new list whose memebers match the passed query,
+			//		assuming elements of the current NodeList as the root for
+			//		each search.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo">
+			//	|		<p>
+			//	|			bacon is tasty, <span>dontcha think?</span>
+			//	|		</p>
+			//	|	</div>
+			//	|	<div id="bar">
+			//	|		<p>great commedians may not be funny <span>in person</span></p>
+			//	|	</div>
+			//		If we are presented with the following defintion for a NodeList:
+			//	|	var l = new dojo.NodeList(dojo.byId("foo"), dojo.byId("bar"));
+			//		it's possible to find all span elements under paragraphs
+			//		contained by these elements with this sub-query:
+			//	| 	var spans = l.query("p span");
 
 			if(!queryStr){ return this; }
 
@@ -373,11 +391,17 @@ dojo.require("dojo._base.array");
 			return ret; // dojo.NodeList
 		},
 
-		filter: function(/*String*/ simpleQuery){
+		filter: function(/*String|Function*/ simpleFilter){
 			//	summary:
-			// 		"masks" the built-in javascript filter() method to support
-			//		passing a simple string filter in addition to supporting
-			//		filtering function objects.
+			// 		"masks" the built-in javascript filter() method (supported
+			// 		in Dojo via `dojo.filter`) to support passing a simple
+			// 		string filter in addition to supporting filtering function
+			// 		objects.
+			//	simpleFilter:
+			//		If a string, a single-expression CSS rule. For example, ".thinger" or
+			//		"#someId[attrName='value']" but not "div > span". In short,
+			//		anything which does not invoke a descent to evaluate but
+			//		can instead be used to test a single node is acceptable.
 			//	example:
 			//		"regular" JS filter syntax as exposed in dojo.filter:
 			//		|	dojo.query("*").filter(function(item){
@@ -396,14 +420,14 @@ dojo.require("dojo._base.array");
 					r.push(t); 
 				}
 			}
-			if(d.isString(simpleQuery)){
+			if(d.isString(simpleFilter)){
 				items = d._filterQueryResult(this, _a[0]);
 				if(_a.length == 1){
 					// if we only got a string query, pass back the filtered results
 					return items; // dojo.NodeList
 				}
 				// if we got a callback, run it over the filtered items
-				_a.shift();
+				_a.shift(); // FIXME: does this need a _toArray to work?
 			}
 			// handle the (callback, [thisObject]) case
 			d.forEach(d.filter(items, _a[0], _a[1]), rp);
@@ -419,7 +443,7 @@ dojo.require("dojo._base.array");
 		},
 		*/
 
-		addContent: function(/*String*/ content, /*String||Integer?*/ position){
+		addContent: function(/*String|DomNode*/ content, /*String||Integer?*/ position){
 			//	summary:
 			//		add a node or some HTML as a string to every item in the list. 
 			//		Returns the original list.
@@ -429,7 +453,8 @@ dojo.require("dojo._base.array");
 			//		argument is provided, the content is appended to the end of
 			//		each item.
 			//	content:
-			//		the HTML in string format to add at position to every item
+			//		DOM node or HTML in string format to add at position to
+			//		every item
 			//	position:
 			//		can be one of:
 			//			* "last"||"end" (default)
@@ -446,6 +471,10 @@ dojo.require("dojo._base.array");
 			//	example:
 			//		adds a header before each element of the list
 			//	|	dojo.query(".note").addContent("<h4>NOTE:</h4>", "before");
+			//	example:
+			//		add a clone of a DOM node to the end of every element in
+			//		the list, removing it from its existing parent.
+			//	|	dojo.query(".note").addContent(dojo.byId("foo"));
 			var ta = d.doc.createElement("span");
 			if(d.isString(content)){
 				ta.innerHTML = content;
@@ -467,7 +496,9 @@ dojo.require("dojo._base.array");
 
 		empty: function(){
 			//	summary:
-			//		clears all content from each node in the list
+			//		clears all content from each node in the list. Effectively
+			//		equivalent to removing all child nodes from every item in
+			//		the list.
 			return this.forEach("item.innerHTML='';"); // dojo.NodeList
 
 			// FIXME: should we be checking for and/or disposing of widgets below these nodes?

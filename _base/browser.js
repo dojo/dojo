@@ -1,6 +1,7 @@
 dojo.provide("dojo._base.browser");
 
 dojo.require("dojo._base.window");
+dojo.require("dojo._base.connect");
 dojo.require("dojo._base.event");
 dojo.require("dojo._base.html");
 dojo.require("dojo._base.NodeList");

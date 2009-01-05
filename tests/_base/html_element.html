@@ -140,8 +140,31 @@
 							}, dojo.body());
 							
 							doh.is(1, dojo.query(".restored").length);
-						}
+						},
 						
+						function emptyDiv(t){
+							var n = dojo.create("div", {
+								innerHTML: "1<span class='red'>2</span>3<em custom='x'>4</em>5"
+							});
+							doh.isNot("", n.innerHTML);
+							dojo.empty(n);
+							doh.is("", n.innerHTML);
+							dojo.destroy(n);
+						},
+						
+						function emptyTable(t){
+							var table = dojo.create("table", null, dojo.body()),
+								tr1 = dojo.create("tr", null, table),
+								td1 = dojo.create("td", {innerHTML: "a"}, tr1),
+								td2 = dojo.create("td", {innerHTML: "b"}, tr1),
+								tr2 = dojo.create("tr", null, table),
+								td3 = dojo.create("td", {innerHTML: "c"}, tr2),
+								td4 = dojo.create("td", {innerHTML: "d"}, tr2);
+							doh.isNot("", table.innerHTML);
+							dojo.empty(table);
+							doh.is("", table.innerHTML);
+							dojo.destroy(table);
+						}
 					]
 				);
 				doh.run();

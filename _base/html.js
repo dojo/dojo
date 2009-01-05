@@ -1425,6 +1425,33 @@ if(dojo.isIE || dojo.isOpera){
 		return n; // DomNode
 	}
 	
+	/*=====
+	dojo.empty = function(node){
+			//	summary:
+			//		safely removes all children of the node.
+			//	node: DOMNode|String
+			//		a reference to a DOM node or an id.
+			//	example:
+			//	Destroy node's children byId:
+			//	| dojo.empty("someId");
+			//
+			//	example:
+			//	Destroy all nodes' children in a list by reference:
+			//	| dojo.query(".someNode").forEach(dojo.empty);
+	}
+	=====*/
+
+	d.empty = d.isIE ?
+		function(node){
+			node = d.byId(node);
+			for(var c; c = node.lastChild;){ // intentional assignment
+				d.destroy(c);
+			}
+		} :
+		function(node){
+			d.byId(node).innerHTML = "";
+		};
+
 	// =============================
 	// (CSS) Class Functions
 	// =============================

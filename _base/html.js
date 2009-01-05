@@ -1140,7 +1140,7 @@ if(dojo.isIE || dojo.isOpera){
 			case "tabindex":
 				return ieLT8 ? "tabIndex" : "tabindex";
 			case "readonly":
-				return ieLT8 ? "readOnly" : "readonly";
+				return "readOnly";
 			case "for": case "htmlfor":
 				// to pick up for attrib set in markup via getAttribute() IE<8 uses "htmlFor" and others use "for"
 				// get/setAttribute works in all as long use same value for both get/set

@@ -1,60 +1,13 @@
 <html>
 	<head>
 		<title>look ma! query, but no Dojo!</title>
+
 		<!-- we pull in query.js, but not the rest of Dojo -->
-		<script type="text/javascript">
-			// a namespace for query to attach itself to and find utility methods on:
-			queryPortability = {
-				trim: function(/*String*/ str){
-					//	summary:
-					//		a function that takes a string and removes whitespace
-					return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');	// String
-				},
-				forEach: function(/*String*/ arr, /*Function*/ callback, /*Object?*/ thisObject){
-					//	summary:
-					// 		an iterator function that passes items, indexes,
-					// 		and the array to a callback
-					if(!arr || !arr.length){ return; }
-					for(var i=0,l=arr.length; i<l; ++i){ 
-						callback.call(thisObject||window, arr[i], i, arr);
-					}
-				},
-				byId: function(id, doc){
-					// 	summary:
-					//		a function that return an element by ID, but also
-					//		accepts nodes safely
-					if(typeof id == "string"){
-						return (doc||document).getElementById(id); // DomNode
-					}else{
-						return id; // DomNode
-					}
-				},
-				isString: function(item){
-					// summary: 
-					//		is item a string?
-					return (typeof item == "string"); // Boolean
-				},
-				// the default document to search
-				doc: document,
-				// floating point number corresponding to IE version
-				isIE: 0, // FIXME
-				// floating point number corresponding to Safari version
-				isSafari: 0, // FIXME
-				// the constructor for node list objects returned from query()
-				NodeList: Array,
-				// attr; // FIXME: we probably don't need to use attr() for checked
-			};
-			Array._wrap = function(arr){ return arr; };
-		</script>
-		<!-- 
-			note that we have to pull in the query-defining closure *after*
-			we've defined either the "dojo" or "queryPortability" objects
-		-->
 		<script type="text/javascript" src="../../_base/query.js"></script>
 
 		<!-- test it out! -->
 		<script type="text/javascript">
-			$ = queryPortability.query;
+			$ = acme.query;
 			window.onload = function(){
 				alert($("p.stranger")[1].innerHTML + " stranger");
 			}

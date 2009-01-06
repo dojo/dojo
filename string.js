@@ -119,21 +119,32 @@ dojo.string.substitute = function(	/*String*/		template,
 	}); // string
 };
 
-dojo.string.trim = function(/*String*/ str){
-	// summary:
+/*=====
+dojo.string.trim = function(str){
+	//	summary:
 	//		Trims whitespace from both sides of the string
-	// description:
+	//	str: String
+	//		String to be trimmed
+	//	returns: String
+	//		Returns the trimmed string
+	//	description:
 	//		This version of trim() was taken from [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript).
 	//		The short yet performant version of this function is dojo.trim(),
 	//		which is part of Dojo base.  Uses String.prototype.trim instead, if available.
+	return "";	// String
+}
+=====*/
 
-	if(str.trim){ return str.trim(); }
-	str = str.replace(/^\s+/, '');
-	for(var i = str.length - 1; i >= 0; i--){
-		if(/\S/.test(str.charAt(i))){
-			str = str.substring(0, i + 1);
-			break;
+dojo.string.trim = String.prototype.trim ?
+	function(str){ return str.trim(); } :
+	function(str){
+		if(str.trim){ return str.trim(); }
+		str = str.replace(/^\s+/, '');
+		for(var i = str.length - 1; i >= 0; i--){
+			if(/\S/.test(str.charAt(i))){
+				str = str.substring(0, i + 1);
+				break;
+			}
 		}
-	}
-	return str;	// String
-};
+		return str;
+	};

@@ -1452,6 +1452,96 @@ if(dojo.isIE || dojo.isOpera){
 			d.byId(node).innerHTML = "";
 		};
 
+	/*=====
+	dojo.toDom = function(frag, doc){
+			//	summary:
+			//		instantiates an HTML fragment returning the corresponding DOM.
+			//	frag: String
+			//		the HTML fragment
+			//	doc: DocumentNode?
+			//		optional document to use when creating DOM nodes, defaults to
+			//		dojo.doc if not specified.
+			//	returns: DocumentFragment
+			//
+			//	example:
+			//	Create a table row:
+			//	| var tr = dojo.toDom("<tr><td>First!</td></tr>");
+	}
+	=====*/
+
+	// support stuff for dojo.toDom
+	var selfClosedTags = {img: 1, meta: 1, hr: 1, br: 1},
+		tagWrap = {
+			option: ["select"],
+			tbody: ["table"],
+			thead: ["table"],
+			tfoot: ["table"],
+			tr: ["table", "tbody"],
+			td: ["table", "tbody", "tr"],
+			fieldset: ["form"],
+			legend: ["form", "fieldset"],
+			caption: ["table"],
+			colgroup: ["table"],
+			col: ["table", "colgroup"],
+			li: ["ul"]
+		},
+		reSelfClosedTag = /<\s*(\w+)([^\/\>]*)\/\s*>/g,
+		reTag = /<\s*([\w\:]+)/,
+		masterNode = {}, masterNum = 0;
+
+	// generate start/end tag strings to use
+	// for the injection for each special tag wrap case.
+	for(var param in tagWrap){
+		var tw = tagWrap[param];
+		tw.pre  = "<" + tw.join("><") + ">";
+		tw.post = "</" + tw.reverse().join("></") + ">";
+		// the last line is destructive: it reverses the array,
+		// but we don't care at this point
+	}
+
+	d.toDom = function(frag, doc){
+		// summary converts HTML string into DOM nodes.
+
+		doc = doc || d.doc;
+		var masterId = doc.__dojoToDomId;
+		if(!masterId){
+			doc.__dojoToDomId = masterId = (++masterNum).toString();
+			masterNode[masterId] = doc.createElement("div");
+		}
+
+		// make sure frag is a string.
+		frag += "";
+
+		// convert <tag/> into <tag></tag>
+		frag = frag.replace(reSelfClosedTag, function(tag, name, contents){
+			if(name in selfClosedTags){
+				return tag;
+			}
+			return "<" + name + contents + "></" + name + ">";
+		});
+
+		// find the starting tag, and get node wrapper
+		var match = frag.match(reTag),
+			tag = match ? match[1].toLowerCase() : "",
+			master = masterNode[masterId],
+			wrap, i, fc, df;
+		if(match && tagWrap[tag]){
+			wrap = tagWrap[tag];
+			master.innerHTML = wrap.pre + frag + wrap.post;
+			for(i = wrap.length; i; --i){
+				master = master.firstChild;
+			}
+		}else{
+			master.innerHTML = frag;
+		}
+
+		df = doc.createDocumentFragment();
+		while(fc = master.firstChild){ // intentional assignment
+			df.appendChild(fc);
+		}
+		return df;
+	}
+
 	// =============================
 	// (CSS) Class Functions
 	// =============================

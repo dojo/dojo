@@ -164,6 +164,31 @@
 							dojo.empty(table);
 							doh.is("", table.innerHTML);
 							dojo.destroy(table);
+						},
+
+						function toDomSpans(t){
+							var t = dojo.toDom("<span>1</span><span>2</span>");
+							doh.is(2, t.childNodes.length);
+							doh.is("span", t.firstChild.tagName.toLowerCase());
+							doh.is("1", t.firstChild.innerHTML);
+							doh.is("span", t.lastChild.tagName.toLowerCase());
+							doh.is("2", t.lastChild.innerHTML);
+						},
+
+						function toDomTr(t){
+							var t = dojo.toDom("<tr><td>First!</td></tr>");
+							doh.is(1, t.childNodes.length);
+							doh.is("tr", t.firstChild.tagName.toLowerCase());
+							doh.is(1, t.firstChild.childNodes.length);
+							doh.is("td", t.firstChild.firstChild.tagName.toLowerCase());
+							doh.is("First!", t.firstChild.firstChild.innerHTML);
+						},
+
+						function toDomText(t){
+							var t = dojo.toDom("Hello, world!");
+							doh.is(1, t.childNodes.length);
+							doh.is(3, t.firstChild.nodeType);
+							doh.is("Hello, world!", t.firstChild.nodeValue);
 						}
 					]
 				);

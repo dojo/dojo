@@ -126,6 +126,8 @@ dojo.string.trim = function(/*String*/ str){
 	//		This version of trim() was taken from [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript).
 	//		The short yet performant version of this function is dojo.trim(),
 	//		which is part of Dojo base.
+
+	if(str.trim){ return str.trim(); }
 	str = str.replace(/^\s+/, '');
 	for(var i = str.length - 1; i >= 0; i--){
 		if(/\S/.test(str.charAt(i))){

@@ -136,7 +136,7 @@ dojo.string.trim = function(str){
 =====*/
 
 dojo.string.trim = String.prototype.trim ?
-	function(str){ return str.trim(); } :
+	dojo.trim : // aliasing to the native function
 	function(str){
 		if(str.trim){ return str.trim(); }
 		str = str.replace(/^\s+/, '');

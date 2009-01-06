@@ -506,7 +506,7 @@ if(this["dojo"]||window["dojo"]){
 		// # of parent candidates), so we refactor it into a slower series of
 		// nested loops to speed up the system as a whole
 		for(var i = 0; i < qpl; i++){
-			ret = [];
+			ret = []; // FIXME: should we be using 'new listCtor()' here instead?
 			qp = queryParts[i];
 			x = candidates.length - 1;
 			bag = null;
@@ -979,6 +979,7 @@ if(this["dojo"]||window["dojo"]){
 		return !!pn;
 	}
 
+	/*
 	var _getNodeGetter = function(prop, str, filterFunc, nozip){
 		// summary:
 		//		specializer for node-finding logic
@@ -993,6 +994,7 @@ if(this["dojo"]||window["dojo"]){
 			return ret;
 		}
 	}
+	*/
 
 	var _getElementsFuncCache = {};
 
@@ -1086,14 +1088,31 @@ if(this["dojo"]||window["dojo"]){
 				// ignore class and ID filters since we will have handled both
 				filterFunc = getSimpleFilterFunc(query, { el: 1, classes: 1, id: 1 });
 				var classesString = query.classes.join(" ");
-				retFunc = _getNodeGetter("getElementsByClassName", classesString, filterFunc);
+				// retFunc = _getNodeGetter("getElementsByClassName", classesString, filterFunc);
+				retFunc = function(root, arr){
+					var ret = getArr(null, arr), te, x=0;
+					var tret = root.getElementsByClassName(classesString);
+					while((te = tret[x++])){
+						if(filterFunc(te, root)){ ret.push(te); }
+					}
+					return ret;
+				};
+
 			}else{
 				// the common case:
 				//		a descendant selector without a fast path. By now it's got
 				//		to have a tag selector, even if it's just "*" so we query
 				//		by that and filter
 				filterFunc = getSimpleFilterFunc(query, { el: 1, tag: 1, id: 1 });
-				retFunc = _getNodeGetter("getElementsByTagName", qt, filterFunc);
+				// retFunc = _getNodeGetter("getElementsByTagName", qt, filterFunc);
+				retFunc = function(root, arr){
+					var ret = getArr(null, arr), te, x=0;
+					var tret = root.getElementsByTagName(query.getTag());
+					while((te = tret[x++])){
+						if(filterFunc(te, root)){ ret.push(te); }
+					}
+					return ret;
+				};
 			}
 		}else{
 			// the query is scoped in some way. Instead of querying by tag we
@@ -1302,16 +1321,11 @@ if(this["dojo"]||window["dojo"]){
 					var ret = [];
 					var tp;
 					while((tp = parts[pindex++])){
-						ret = ret.concat(getStepQueryFunc(tp, tp.indexOf(" "))(root));
+						ret = ret.concat(getStepQueryFunc(tp)(root));
 					}
 					return ret;
 				}
 			);
-			// if we've been forced down the DOM route explicitly, ensure that
-			// future calls to this selector on the QSA branch hit our (safer)
-			// DOM version instead.
-			// if(forceDOM){ _queryFuncCacheQSA[query]  = tf; }
-			// return tf;
 		}
 	}
 

@@ -121,11 +121,11 @@ dojo.string.substitute = function(	/*String*/		template,
 
 dojo.string.trim = function(/*String*/ str){
 	// summary:
-	//		trims whitespaces from both sides of the string
+	//		Trims whitespace from both sides of the string
 	// description:
 	//		This version of trim() was taken from [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript).
 	//		The short yet performant version of this function is dojo.trim(),
-	//		which is part of Dojo base.
+	//		which is part of Dojo base.  Uses String.prototype.trim instead, if available.
 
 	if(str.trim){ return str.trim(); }
 	str = str.replace(/^\s+/, '');

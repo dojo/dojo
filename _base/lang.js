@@ -134,7 +134,7 @@ dojo.hitch = function(/*Object*/scope, /*Function|String*/method /*,...*/){
 /*=====
 dojo.delegate = function(obj, props){
 	//	summary:
-	//		returns a new object which "looks" to obj for properties which it
+	//		Returns a new object which "looks" to obj for properties which it
 	//		does not have a value for. Optionally takes a bag of properties to
 	//		seed the returned object with initially. 
 	//	description:
@@ -257,12 +257,12 @@ dojo.clone = function(/*anything*/ o){
 
 dojo.trim = function(/*String*/ str){
 	// summary: 
-	//		trims whitespaces from both sides of the string
+	//		Trims whitespace from both sides of the string
 	// description:
 	//		This version of trim() was selected for inclusion into the base due
-	//		to its compact size and relatively good performance (see Steven
-	//		Levithan's blog:
-	//		http://blog.stevenlevithan.com/archives/faster-trim-javascript).
+	//		to its compact size and relatively good performance
+	//		(see [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript)
+	//		Uses String.prototype.trim instead, if available.
 	//		The fastest but longest version of this function is located at
 	//		dojo.string.trim()
 	return str.trim ? str.trim() : str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');	// String

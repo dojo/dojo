@@ -160,7 +160,6 @@ if(this["dojo"]||window["dojo"]){
 
 	// how high?
 	var yesman = function(){ return true; };
-	yesman.agreeable = true;
 
 	////////////////////////////////////////////////////////////////////////
 	// Tokenizer
@@ -183,15 +182,13 @@ if(this["dojo"]||window["dojo"]){
 		//		below.
 
 
-
 		// NOTE: 
-		//		this code is designed to compress well, and while thoroughly
-		//		documented isn't expected to be simple to read or modify. Your
-		//		best bet when hacking the tokenizer is to put The Donnas on
-		//		*really* loud (may we recommend their "Spend The Night"
-		//		release?) and just assume you're gonna make mistakes. 
-		//		Knowing is half the battle ;-)
-
+		//		this code is designed to run fast and compress well. Sacrifices
+		//		to readibility and maintainability have been made.  Your best
+		//		bet when hacking the tokenizer is to put The Donnas on *really*
+		//		loud (may we recommend their "Spend The Night" release?) and
+		//		just assume you're gonna make mistakes. Keep the unit tests
+		//		open and run them frequently. Knowing is half the battle ;-)
 		if(specials.indexOf(query.charAt(query.length-1)) >= 0){
 			// if we end with a ">", "+", or "~", that means we're implicitly
 			// searching all children, so make it explicit
@@ -200,7 +197,6 @@ if(this["dojo"]||window["dojo"]){
 			// if you have not provided a terminator, one will be provided for
 			// you...
 			query += " ";
-
 		}
 
 		var ts = function(/*Integer*/ s, /*Integer*/ e){
@@ -214,33 +210,17 @@ if(this["dojo"]||window["dojo"]){
 		// the overall data graph of the full query, as represented by queryPart objects
 		var queryParts = []; 
 
-		// an iterator interface which queryParts exposes
-		/*
-		queryParts.iter = function(){
-			var idx = 0;
-			var _t = this;
-			return {
-				nextItem: function(){ idx++; return _t[idx]; },
-				current: function(){ return _t[idx]; },
-				peek: function(){ return _t[idx+1]; },
-				rewind: function(){ return _t[idx=0]; },
-				ff: function(){ return _t[(idx=(_t.length-1))]; },
-				first: function(){ return _t[0]; },
-				last: function(){ return _t[_t.length-1]; },
-				arr: function(){ return _t; }
-			};
-		};
-		*/
 
 		// state keeping vars
 		var inBrackets = -1, inParens = -1, inMatchFor = -1, 
 			inPseudo = -1, inClass = -1, inId = -1, inTag = -1, 
 			lc = "", cc = "", pStart;
+
 		// iteration vars
-		var x = 0; // index in the query
-		var ql = query.length;
-		var currentPart = null; // data structure representing the entire clause
-		var _cp = null; // the current pseudo or attr matcher
+		var x = 0, // index in the query
+			ql = query.length,
+			currentPart = null, // data structure representing the entire clause
+			_cp = null; // the current pseudo or attr matcher
 		// several temporary variables are assigned to this structure durring a
 		// potential sub-expression match:
 		//		attr:
@@ -287,9 +267,77 @@ if(this["dojo"]||window["dojo"]){
 			endId(); endTag(); endClass();
 		}
 
+		var endPart = function(){
+			endAll();
+			if(inPseudo >= 0){
+				currentPart.pseudos.push({ name: ts(inPseudo+1, x) });
+			}
+			// hint to the selector engine to tell it whether or not it
+			// needs to do any iteration. Many simple selectors don't, and
+			// we can avoid significant construction-time work by advising
+			// the system to skip them
+			currentPart.loops = (	
+					currentPart.pseudos.length || 
+					currentPart.attrs.length || 
+					currentPart.classes.length	);
+
+			currentPart.oquery = currentPart.query = ts(pStart, x); // save the full expression as a string
+
+			// console.debug("|"+currentPart.oquery+"|");
+
+			// otag/tag are hints to suggest to the system whether or not
+			// it's an operator or a tag. We save a copy of otag since the
+			// tag name is cast to upper-case in regular HTML matches. The
+			// system has a global switch to figure out if the current
+			// expression needs to be case sensitive or not and it will use
+			// otag or tag accordingly
+			currentPart.otag = currentPart.tag = (currentPart["oper"]) ? null : (currentPart.tag || "*");
+
+			if(currentPart.tag){
+				// if we're in a case-insensitive HTML doc, we likely want
+				// the toUpperCase when matching on element.tagName. If we
+				// do it here, we can skip the string op per node
+				// comparison
+				currentPart.tag = currentPart.tag.toUpperCase();
+			}
+
+			// add the part to the list
+			if(queryParts.length && (queryParts[queryParts.length-1].oper)){
+				// operators are always infix, so we remove them from the
+				// list and attach them to the next match. The evaluator is
+				// responsible for sorting out how to handle them.
+				currentPart.infixOper = queryParts.pop();
+				currentPart.query = currentPart.infixOper.query + " " + currentPart.query;
+				/*
+				console.debug(	"swapping out the infix", 
+								currentPart.infixOper, 
+								"and attaching it to", 
+								currentPart);
+				*/
+			}
+			queryParts.push(currentPart);
+
+			currentPart = null;
+		}
+
+		var newPart = function(){
+			return {
+				query: null, // the full text of the part's rule
+				pseudos: [], // CSS supports multiple pseud-class matches in a single rule
+				attrs: [], 	// CSS supports multi-attribute match, so we need an array
+				classes: [], // class matches may be additive, e.g.: .thinger.blah.howdy
+				tag: null, 	// only one tag...
+				oper: null, // ...or operator per component. Note that these wind up being exclusive.
+				id: null, 	// the id component of a rule
+				getTag: function(){
+					return (caseSensitive) ? this.otag : this.tag;
+				}
+			};
+		};
+
 		// iterate over the query, charachter by charachter, building up a 
 		// list of query part objects
-		for(; lc=cc, cc=query.charAt(x),x<ql; x++){
+		for(; lc=cc, cc=query.charAt(x), x < ql; x++){
 			//		cc: the current character in the match
 			//		lc: the last charachter (if any)
 
@@ -321,18 +369,8 @@ if(this["dojo"]||window["dojo"]){
 				//				}
 				//			},
 				//		]
-				currentPart = {
-					query: null, // the full text of the part's rule
-					pseudos: [], // CSS supports multiple pseud-class matches in a single rule
-					attrs: [], 	// CSS supports multi-attribute match, so we need an array
-					classes: [], // class matches may be additive, e.g.: .thinger.blah.howdy
-					tag: null, 	// only one tag...
-					oper: null, // ...or operator per component. Note that these wind up being exclusive.
-					id: null, 	// the id component of a rule
-					getTag: function(){
-						return (caseSensitive) ? this.otag : this.tag;
-					}
-				};
+				currentPart = newPart();
+
 				// if we don't have a part, we assume we're going to start at
 				// the beginning of a match, which should be a tag name. This
 				// might fault a little later on, but we detect that and this
@@ -419,59 +457,13 @@ if(this["dojo"]||window["dojo"]){
 					currentPart.pseudos.push(_cp);
 				}
 				inParens = x;
-			}else if(cc == " " && lc != cc){ 
+			}else if(
+				(cc == " ") && 
 				// if it's a space char and the last char is too, consume the
 				// current one without doing more work
-
-				// NOTE: we expect the query to be " " terminated
-				endAll();
-				if(inPseudo >= 0){
-					currentPart.pseudos.push({ name: ts(inPseudo+1, x) });
-				}
-				// hint to the selector engine to tell it whether or not it
-				// needs to do any iteration. Many simple selectors don't, and
-				// we can avoid significant construction-time work by advising
-				// the system to skip them
-				currentPart.loops = (	
-						currentPart.pseudos.length || 
-						currentPart.attrs.length || 
-						currentPart.classes.length	);
-
-				currentPart.oquery = currentPart.query = ts(pStart, x); // save the full expression as a string
-
-				// otag/tag are hints to suggest to the system whether or not
-				// it's an operator or a tag. We save a copy of otag since the
-				// tag name is cast to upper-case in regular HTML matches. The
-				// system has a global switch to figure out if the current
-				// expression needs to be case sensitive or not and it will use
-				// otag or tag accordingly
-				currentPart.otag = currentPart.tag = (currentPart["oper"]) ? null : (currentPart.tag || "*");
-
-				if(currentPart.tag){
-					// if we're in a case-insensitive HTML doc, we likely want
-					// the toUpperCase when matching on element.tagName. If we
-					// do it here, we can skip the string op per node
-					// comparison
-					currentPart.tag = currentPart.tag.toUpperCase();
-				}
-
-				// add the part to the list
-				if(queryParts.length && (queryParts[queryParts.length-1].oper)){
-					// operators are always infix, so we remove them from the
-					// list and attach them to the next match. The evaluator is
-					// responsible for sorting out how to handle them.
-					currentPart.infixOper = queryParts.pop();
-					currentPart.query = currentPart.infixOper.query + " " + currentPart.query;
-					/*
-					console.debug(	"swapping out the infix", 
-									currentPart.infixOper, 
-									"and attaching it to", 
-									currentPart);
-					*/
-				}
-				queryParts.push(currentPart);
-
-				currentPart = null;
+				(lc != cc)
+			){
+				endPart();
 			}
 		}
 		return queryParts;
@@ -496,6 +488,13 @@ if(this["dojo"]||window["dojo"]){
 			return first.apply(window, arguments) && second.apply(window, arguments);
 		}
 	}
+
+	var getArr = function(i, arr){
+		var r = arr||[]; // FIXME: should this be 'new listCtor()' ?
+		if(i){ r.push(i); }
+		return r;
+	};
+
 	var _isElement = function(n){ return (1 == n.nodeType); };
 
 	var filterDown = function(root, queryParts){
@@ -525,6 +524,7 @@ if(this["dojo"]||window["dojo"]){
 		return ret;
 	}
 
+	// FIXME: need to shorten up getNodeIndex and make it work with children/nextElementSibling
 	var getNodeIndex = function(node){
 		// NOTE: 
 		//		we could have a more accurate caching mechanism by invalidating
@@ -585,6 +585,7 @@ if(this["dojo"]||window["dojo"]){
 	// FIXME: need to coalesce _getAttr with defaultGetter
 	var blank = "";
 	var _getAttr = function(elem, attr){
+		if(!elem){ return blank; }
 		if(attr == "class"){
 			return elem.className || blank;
 		}
@@ -644,7 +645,7 @@ if(this["dojo"]||window["dojo"]){
 			//		left) with "en"
 			var valueDash = " "+value+"-";
 			return function(elem){
-				var ea = " "+(elem.getAttribute(attr, 2) || "");
+				var ea = " "+_getAttr(elem, attr);
 				return (
 					(ea == value) ||
 					(ea.indexOf(valueDash)==0)
@@ -658,6 +659,29 @@ if(this["dojo"]||window["dojo"]){
 		}
 	};
 
+	// avoid testing for node type if we can. Defining this in the negative
+	// here to avoid negation in the fast path.
+	var _noNES = (typeof getDoc().firstChild.nextElementSibling == "undefined");
+	var _ns = !_noNES ? "nextElementSibling" : "nextSibling";
+	var _ps = !_noNES ? "previousElementSibling" : "previousSibling";
+	var _simpleNodeTest = (_noNES ? _isElement : yesman);
+
+	var _lookLeft = function(node){
+		// look left
+		while(node = node[_ps]){
+			if(_simpleNodeTest(node)){ return false; }
+		}
+		return true;
+	}
+
+	var _lookRight = function(node){
+		// look right
+		while(node = node[_ns]){
+			if(_simpleNodeTest(node)){ return false; }
+		}
+		return true;
+	}
+
 	var pseudos = {
 		"checked": function(name, condition){
 			return function(elem){
@@ -665,44 +689,12 @@ if(this["dojo"]||window["dojo"]){
 				return !!d.attr(elem, "checked");
 			}
 		},
-		"first-child": function(name, condition){
-			return function(elem){
-				if(!_isElement(elem)){ return false; }
-				// check to see if any of the previous siblings are elements
-				var fc = elem.previousSibling;
-				while(fc && (!_isElement(fc))){
-					fc = fc.previousSibling;
-				}
-				return (!fc);
-			}
-		},
-		"last-child": function(name, condition){
-			return function(elem){
-				if(!_isElement(elem)){ return false; }
-				// check to see if any of the next siblings are elements
-				var nc = elem.nextSibling;
-				while(nc && (!_isElement(nc))){
-					nc = nc.nextSibling;
-				}
-				return (!nc);
-			}
-		},
+		"first-child": function(){ return _lookLeft; },
+		"last-child": function(){ return _lookRight; },
 		"only-child": function(name, condition){
 			return function(node){ 
-				// FIXME: investigate if we can do better than iteration!
-				// return node.parentNode[childNodesName].length == 1;
-
-				var n = node, p = node;
-				// look left
-				while(p = p[_ps]){
-					if(_simpleNodeTest(p)){ return false; }
-				}
-
-				// look right
-				while(n = n[_ns]){
-					if(_simpleNodeTest(n)){ return false; }
-				}
-				
+				if(!_lookLeft(node)){ return false; }
+				if(!_lookRight(node)){ return false; }
 				return true;
 			};
 		},
@@ -803,25 +795,17 @@ if(this["dojo"]||window["dojo"]){
 
 	var getSimpleFilterFunc = function(query, ignores){
 		if(!query){ return yesman; }
-		// console.debug("generating filters for:");
 		ignores = ignores||{};
-
-		/*
-		var fcHit = (_simpleFiltersCache[query.query]||_filtersCache[query.query]);
-		if(fcHit){ return fcHit; }
-		*/
 
 		var ff = null;
 
 		if(!("el" in ignores)){
-			// console.debug("	el");
 			ff = agree(ff, _isElement);
 		}
 
 
 		if(!("tag" in ignores)){
 			if(query.tag != "*"){
-				// console.debug("	tag");
 				ff = agree(ff, function(elem){
 					return (elem.tagName == query.getTag());
 				});
@@ -830,8 +814,6 @@ if(this["dojo"]||window["dojo"]){
 
 
 		if(!("classes" in ignores)){
-			// if there's a class in our query, generate a match function for it
-			// console.debug("	classes");
 			each(query.classes, function(cname, idx, arr){
 				// get the class name
 				var isWildcard = cname.charAt(cname.length-1) == "*";
@@ -848,10 +830,10 @@ if(this["dojo"]||window["dojo"]){
 		}
 
 		if(!("pseudos" in ignores)){
-			// console.debug("	pseudos");
 			each(query.pseudos, function(pseudo){
-				if(pseudos[pseudo.name]){
-					ff = agree(ff, pseudos[pseudo.name](pseudo.name, pseudo.value));
+				var pn = pseudo.name;
+				if(pseudos[pn]){
+					ff = agree(ff, pseudos[pn](pn, pseudo.value));
 				}
 			});
 		}
@@ -881,7 +863,6 @@ if(this["dojo"]||window["dojo"]){
 
 		if(!ff){
 			if(!("default" in ignores)){
-				// console.debug("	default");
 				ff = yesman; 
 			}
 		}
@@ -893,13 +874,6 @@ if(this["dojo"]||window["dojo"]){
 	//		themselves out in benchmarks):
 	//			* single child
 	//			* "are we already the last child?"
-
-	// avoid testing for node type if we can. Defining this in the negative
-	// here to avoid negation in the fast path.
-	var _noNES = (typeof getDoc().firstChild.nextElementSibling == "undefined");
-	var _ns = !_noNES ? "nextElementSibling" : "nextSibling";
-	var _ps = !_noNES ? "previousElementSibling" : "previousSibling";
-	var _simpleNodeTest = (_noNES ? _isElement : yesman);
 
 	var _nextSibling = function(filterFunc){
 		return function(node, ret, bag){
@@ -954,13 +928,6 @@ if(this["dojo"]||window["dojo"]){
 		};
 	}
 
-	var getArr = function(i, arr, nozip){
-		var r = arr||[];
-		if(i){ r.push(i); }
-		r.nozip = nozip;
-		return r;
-	};
-
 	// thanks, Dean!
 	var itemIsAfterRoot = d.isIE ? function(item, root){
 		return (item.sourceIndex > root.sourceIndex);
@@ -979,23 +946,6 @@ if(this["dojo"]||window["dojo"]){
 		return !!pn;
 	}
 
-	/*
-	var _getNodeGetter = function(prop, str, filterFunc, nozip){
-		// summary:
-		//		specializer for node-finding logic
-		return function(root, arr){
-			var ret = getArr(null, arr, nozip), te, x=0;
-			var tret = root[prop](str);
-			while((te = tret[x++])){
-				if(filterFunc(te, root)){
-					ret.push(te);
-				}
-			}
-			return ret;
-		}
-	}
-	*/
-
 	var _getElementsFuncCache = {};
 
 	var getElementsFunc = function(query){
@@ -1006,8 +956,8 @@ if(this["dojo"]||window["dojo"]){
 		//		be treated as infix operators
 
 		var qq = query.query;
-		var cachedFunc = _getElementsFuncCache[qq];
-		if(cachedFunc){ return cachedFunc; }
+		var retFunc = _getElementsFuncCache[qq];
+		if(retFunc){ return retFunc; }
 
 		// NOTE:
 		//		fundamentally this function is designed to return a local query
@@ -1058,7 +1008,6 @@ if(this["dojo"]||window["dojo"]){
 		var filterFunc = getSimpleFilterFunc(query, { el: 1 });
 		var qt = query.tag;
 		var wildcardTag = ("*" == qt);
-		var retFunc;
 
 		if(!oper){
 			// if there's no infix operator, then it's a descendant query. 
@@ -1090,7 +1039,7 @@ if(this["dojo"]||window["dojo"]){
 				var classesString = query.classes.join(" ");
 				// retFunc = _getNodeGetter("getElementsByClassName", classesString, filterFunc);
 				retFunc = function(root, arr){
-					var ret = getArr(null, arr), te, x=0;
+					var ret = getArr(0, arr), te, x=0;
 					var tret = root.getElementsByClassName(classesString);
 					while((te = tret[x++])){
 						if(filterFunc(te, root)){ ret.push(te); }
@@ -1106,7 +1055,7 @@ if(this["dojo"]||window["dojo"]){
 				filterFunc = getSimpleFilterFunc(query, { el: 1, tag: 1, id: 1 });
 				// retFunc = _getNodeGetter("getElementsByTagName", qt, filterFunc);
 				retFunc = function(root, arr){
-					var ret = getArr(null, arr), te, x=0;
+					var ret = getArr(0, arr), te, x=0;
 					var tret = root.getElementsByTagName(query.getTag());
 					while((te = tret[x++])){
 						if(filterFunc(te, root)){ ret.push(te); }
@@ -1130,8 +1079,7 @@ if(this["dojo"]||window["dojo"]){
 				retFunc = _childElements(filterFunc);
 			}
 		}
-		_getElementsFuncCache[query.query] = retFunc;
-		return retFunc;
+		return _getElementsFuncCache[query.query] = retFunc;
 	}
 
 	////////////////////////////////////////////////////////////////////////
@@ -1157,8 +1105,8 @@ if(this["dojo"]||window["dojo"]){
 	};
 	*/
 
-	var _queryFuncCacheDOM = {};
-	var _queryFuncCacheQSA = {};
+	var _queryFuncCacheDOM = {},
+		_queryFuncCacheQSA = {};
 
 	// this is the second level of spliting, from full-length queries (e.g.,
 	// "div.foo .bar") into simple query expressions (e.g., ["div.foo",
@@ -1586,7 +1534,7 @@ if(this["dojo"]||window["dojo"]){
 		//		adding "true" as the 2nd argument to getQueryFunc is useful for
 		//		testing the DOM branch without worrying about the
 		//		behavior/performance of the QSA branch.
-		var r = getQueryFunc(query, true)(root);
+		var r = getQueryFunc(query)(root);
 		// FIXME:
 		//		need to investigate this branch WRT #8074 and #8075
 		if(r && r.nozip && !listCtor._wrap){
@@ -1595,11 +1543,8 @@ if(this["dojo"]||window["dojo"]){
 		return _zip(r); // dojo.NodeList
 	}
 
-	/*
-	// exposing these was a mistake
-	d.query.attrs = attrs;
+	// FIXME: need to add infrastructure for post-filtering pseudos, ala :last
 	d.query.pseudos = pseudos;
-	*/
 
 	// one-off function for filtering a NodeList based on a simple selector
 	d._filterQueryResult = function(nodeList, simpleFilter){

@@ -1470,7 +1470,8 @@ if(dojo.isIE || dojo.isOpera){
 	=====*/
 
 	// support stuff for dojo.toDom
-	var selfClosedTags = {img: 1, meta: 1, hr: 1, br: 1},
+	var selfClosedTags = {img: 1, meta: 1, hr: 1, br: 1, col: 1, param: 1,
+			link: 1, base: 1, input: 1},
 		tagWrap = {
 			option: ["select"],
 			tbody: ["table"],
@@ -1478,6 +1479,7 @@ if(dojo.isIE || dojo.isOpera){
 			tfoot: ["table"],
 			tr: ["table", "tbody"],
 			td: ["table", "tbody", "tr"],
+			th: ["table", "thead", "tr"],
 			fieldset: ["form"],
 			legend: ["form", "fieldset"],
 			caption: ["table"],

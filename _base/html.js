@@ -1489,7 +1489,8 @@ if(dojo.isIE || dojo.isOpera){
 		},
 		reSelfClosedTag = /<\s*(\w+)([^\/\>]*)\/\s*>/g,
 		reTag = /<\s*([\w\:]+)/,
-		masterNode = {}, masterNum = 0;
+		masterNode = {}, masterNum = 0,
+		masterName = "__" + d._scopeName + "ToDomId";
 
 	// generate start/end tag strings to use
 	// for the injection for each special tag wrap case.
@@ -1505,9 +1506,9 @@ if(dojo.isIE || dojo.isOpera){
 		// summary converts HTML string into DOM nodes.
 
 		doc = doc || d.doc;
-		var masterId = doc.__dojoToDomId;
+		var masterId = doc[masterName];
 		if(!masterId){
-			doc.__dojoToDomId = masterId = (++masterNum).toString();
+			doc[masterName] = masterId = (++masterNum).toString();
 			masterNode[masterId] = doc.createElement("div");
 		}
 

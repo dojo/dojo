@@ -501,6 +501,33 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: fetch() abort",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of a basic fetch abort on ItemFileReadStore.
+			//	description:
+			//		Simple test of a basic fetch abort on ItemFileReadStore.
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+			
+			var d = new doh.Deferred();
+			function completedAll(items, request){
+				t.is(7, items.length);
+				d.errback(new Error("Should not be here."));
+			}
+			function error(errData, request){
+				//An abort should throw a cancel error, so we should
+				//reach this.
+				t.assertTrue(true);
+				d.callback(true);
+			}
+
+			//Get everything...
+			var req = store.fetch({ onComplete: completedAll, onError: error});
+			req.abort();
+			return d;
+		}
+	},
+	{
 		name: "Read API: fetch() all (count === Infinity)",
  		runTest: function(datastore, t){
 			//	summary: 

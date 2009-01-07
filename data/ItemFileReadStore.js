@@ -244,27 +244,29 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		var self = this;
 		var filter = function(requestArgs, arrayOfItems){
 			var items = [];
+			var i, key;
 			if(requestArgs.query){
+				var value;
 				var ignoreCase = requestArgs.queryOptions ? requestArgs.queryOptions.ignoreCase : false; 
 
 				//See if there are any string values that can be regexp parsed first to avoid multiple regexp gens on the
 				//same value for each item examined.  Much more efficient.
 				var regexpList = {};
-				for(var key in requestArgs.query){
-					var value = requestArgs.query[key];
+				for(key in requestArgs.query){
+					value = requestArgs.query[key];
 					if(typeof value === "string"){
 						regexpList[key] = dojo.data.util.filter.patternToRegExp(value, ignoreCase);
 					}
 				}
 
-				for(var i = 0; i < arrayOfItems.length; ++i){
+				for(i = 0; i < arrayOfItems.length; ++i){
 					var match = true;
 					var candidateItem = arrayOfItems[i];
 					if(candidateItem === null){
 						match = false;
 					}else{
-						for(var key in requestArgs.query) {
-							var value = requestArgs.query[key];
+						for(key in requestArgs.query) {
+							value = requestArgs.query[key];
 							if (!self._containsValue(candidateItem, key, value, regexpList[key])){
 								match = false;
 							}
@@ -281,7 +283,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 				// can get lists and sort without affecting each other.  We also need to
 				// filter out any null values that have been left as a result of deleteItem()
 				// calls in ItemFileWriteStore.
-				for(var i = 0; i < arrayOfItems.length; ++i){
+				for(i = 0; i < arrayOfItems.length; ++i){
 					var item = arrayOfItems[i];
 					if(item !== null){
 						items.push(item);
@@ -327,6 +329,25 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 						self._loadInProgress = false;
 						errorCallback(error, keywordArgs);
 					});
+
+					//Wire up the cancel to abort of the request
+					//This call cancel on the deferred if it hasn't been called
+					//yet and then will chain to the simple abort of the
+					//simpleFetch keywordArgs
+					var oldAbort = null;
+					if(keywordArgs.abort){
+						oldAbort = keywordArgs.abort;
+					}
+					keywordArgs.abort = function(){
+						var df = getHandler;
+						if (df && df.fired === -1){
+							df.cancel();
+							df = null;
+						}
+						if(oldAbort){
+							oldAbort.call(keywordArgs);
+						}
+					};
 				}
 			}else if(this._jsonData){
 				try{
@@ -418,14 +439,14 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 			// 	|	true == valueIsAnItem({iggy:'pop'});
 			// 	|	true == valueIsAnItem({foo:42});
 			var isItem = (
-				(aValue != null) &&
-				(typeof aValue == "object") &&
+				(aValue !== null) &&
+				(typeof aValue === "object") &&
 				(!dojo.isArray(aValue) || addingArrays) &&
 				(!dojo.isFunction(aValue)) &&
 				(aValue.constructor == Object || dojo.isArray(aValue)) &&
-				(typeof aValue._reference == "undefined") && 
-				(typeof aValue._type == "undefined") && 
-				(typeof aValue._value == "undefined")
+				(typeof aValue._reference === "undefined") && 
+				(typeof aValue._type === "undefined") && 
+				(typeof aValue._value === "undefined")
 			);
 			return isItem;
 		}
@@ -663,6 +684,8 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//		See dojo.data.api.Identity.fetchItemByIdentity()
 
 		// Hasn't loaded yet, we have to trigger the load.
+		var item;
+		var scope;
 		if(!this._loadFinished){
 			var self = this;
 			if(this._jsonFileUrl){
@@ -683,7 +706,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 							self._getItemsFromLoadedData(data);
 							self._loadFinished = true;
 							self._loadInProgress = false;
-							var item = self._getItemByIdentity(keywordArgs.identity);
+							item = self._getItemByIdentity(keywordArgs.identity);
 							if(keywordArgs.onItem){
 								keywordArgs.onItem.call(scope, item);
 							}
@@ -709,17 +732,17 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 				self._getItemsFromLoadedData(self._jsonData);
 				self._jsonData = null;
 				self._loadFinished = true;
-				var item = self._getItemByIdentity(keywordArgs.identity);
+				item = self._getItemByIdentity(keywordArgs.identity);
 				if(keywordArgs.onItem){
-					var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+					scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
 					keywordArgs.onItem.call(scope, item);
 				}
 			} 
 		}else{
 			// Already loaded.  We can just look it up and call back.
-			var item = this._getItemByIdentity(keywordArgs.identity);
+			item = this._getItemByIdentity(keywordArgs.identity);
 			if(keywordArgs.onItem){
-				var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+				scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
 				keywordArgs.onItem.call(scope, item);
 			}
 		}

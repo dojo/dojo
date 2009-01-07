@@ -167,28 +167,28 @@
 						},
 
 						function toDomSpans(t){
-							var t = dojo.toDom("<span>1</span><span>2</span>");
-							doh.is(2, t.childNodes.length);
-							doh.is("span", t.firstChild.tagName.toLowerCase());
-							doh.is("1", t.firstChild.innerHTML);
-							doh.is("span", t.lastChild.tagName.toLowerCase());
-							doh.is("2", t.lastChild.innerHTML);
+							var n = dojo.toDom("<span>1</span><span>2</span>");
+							doh.is(2, n.childNodes.length);
+							doh.is("span", n.firstChild.tagName.toLowerCase());
+							doh.is("1", n.firstChild.innerHTML);
+							doh.is("span", n.lastChild.tagName.toLowerCase());
+							doh.is("2", n.lastChild.innerHTML);
 						},
 
 						function toDomTr(t){
-							var t = dojo.toDom("<tr><td>First!</td></tr>");
-							doh.is(1, t.childNodes.length);
-							doh.is("tr", t.firstChild.tagName.toLowerCase());
-							doh.is(1, t.firstChild.childNodes.length);
-							doh.is("td", t.firstChild.firstChild.tagName.toLowerCase());
-							doh.is("First!", t.firstChild.firstChild.innerHTML);
+							var n = dojo.toDom("<tr><td>First!</td></tr>");
+							doh.is(1, n.childNodes.length);
+							doh.is("tr", n.firstChild.tagName.toLowerCase());
+							doh.is(1, n.firstChild.childNodes.length);
+							doh.is("td", n.firstChild.firstChild.tagName.toLowerCase());
+							doh.is("First!", n.firstChild.firstChild.innerHTML);
 						},
 
 						function toDomText(t){
-							var t = dojo.toDom("Hello, world!");
-							doh.is(1, t.childNodes.length);
-							doh.is(3, t.firstChild.nodeType);
-							doh.is("Hello, world!", t.firstChild.nodeValue);
+							var n = dojo.toDom("Hello, world!");
+							doh.is(1, n.childNodes.length);
+							doh.is(3, n.firstChild.nodeType);
+							doh.is("Hello, world!", n.firstChild.nodeValue);
 						}
 					]
 				);

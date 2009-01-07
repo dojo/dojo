@@ -411,6 +411,21 @@
 							// when markup include for attrib make sure can retrieve using for or htmlFor
 							doh.is("input-with-label", dojo.attr(labelWithFor, "for"));
 							doh.is("input-with-label", dojo.attr(labelWithFor, "htmlFor"));						
+						},
+						function attrInnerHtmlDiv(t){
+							var n = dojo.create("div", {
+									innerHTML: "1<em>2</em>3"
+								}, dojo.body());
+							doh.is("1<em>2</em>3", n.innerHTML.toLowerCase());
+							dojo.destroy(n);
+						},
+						function attrInnerHtmlTable(t){
+							var n = dojo.create("table", {
+									innerHTML: "<thead><tr><th>1st!</th></tr></thead><tbody></tbody>"
+								}, dojo.body());
+							doh.is("<thead><tr><th>1st!</th></tr></thead><tbody></tbody>",
+								n.innerHTML.toLowerCase().replace(/\s+/g, ""));
+							dojo.destroy(n);
 						}
 					]
 				);

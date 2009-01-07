@@ -1190,8 +1190,11 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	var _evtHdlrMap = {}, _ctr = 0,
-		_attrId = dojo._scopeName + "attrid"
-	;
+		_attrId = dojo._scopeName + "attrid",
+		// the next dictionary lists elements with read-only innerHTML on IE
+		_roInnerHtml = {col: 1, colgroup: 1,
+			// frameset: 1, head: 1, html: 1, style: 1,
+			table: 1, tbody: 1, tfoot: 1, thead: 1, tr: 1, title: 1};
 
 	dojo.attr = function(/*DomNode|String*/node, /*String|Object*/name, /*String?*/value){
 		//	summary:
@@ -1277,6 +1280,7 @@ if(dojo.isIE || dojo.isOpera){
 		node = d.byId(node);
 		var args = arguments.length;
 		if(args == 2 && !d.isString(name)){
+			// the object form of setter: the 2nd argument is a dictionary
 			for(var x in name){ d.attr(node, x, name[x]); }
 			// FIXME: return the node in this case? could be useful.
 			return;
@@ -1305,14 +1309,21 @@ if(dojo.isIE || dojo.isOpera){
 				// ensure that event objects are normalized, etc.
 				_evtHdlrMap[attrId][name] = d.connect(node, name, value);
 
-			}else if(
-				typeof value == "boolean" || // e.g. onsubmit, disabled
-				name == "innerHTML"
-			){
+			}else if(typeof value == "boolean"){ // e.g. onsubmit, disabled
 				node[name] = value;
-			}else if(name == "style" && !d.isString(value)){
+			}else if(name === "style" && !d.isString(value)){
 				// when the name is "style" and value is an object, pass along
 				d.style(node, value);
+			}else if(name === "innerHTML"){
+				if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
+					var frag = d.toDom(value, node.ownerDocument), c;
+					d.empty(node);
+					while(c = frag.firstChild){ // intentional assignment
+						node.appendChild(c);
+					}
+				}else{
+					node[name] = value;
+				}
 			}else{
 				node.setAttribute(name, value);
 			}
@@ -1508,7 +1519,7 @@ if(dojo.isIE || dojo.isOpera){
 		doc = doc || d.doc;
 		var masterId = doc[masterName];
 		if(!masterId){
-			doc[masterName] = masterId = (++masterNum).toString();
+			doc[masterName] = masterId = ++masterNum + "";
 			masterNode[masterId] = doc.createElement("div");
 		}
 

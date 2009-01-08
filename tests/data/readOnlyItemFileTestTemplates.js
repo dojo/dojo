@@ -24,7 +24,7 @@ tests.data.readOnlyItemFileTestTemplates.registerTestsForDatastore = function(/*
 		test.runTest = makeNewTestFunction(testTemplate);
 		testsForDatastore.push(test);
 	}
-	var testGroupName = "tests.data.readOnlyItemFileTestTemplates, with datastore " + datastoreClassName;
+	var testGroupName = "IFSCommonTests: " + datastoreClassName;
 	doh.register(testGroupName, testsForDatastore);
 };
 

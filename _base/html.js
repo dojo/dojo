@@ -1316,11 +1316,8 @@ if(dojo.isIE || dojo.isOpera){
 				d.style(node, value);
 			}else if(name === "innerHTML"){
 				if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
-					var frag = d.toDom(value, node.ownerDocument), c;
 					d.empty(node);
-					while(c = frag.firstChild){ // intentional assignment
-						node.appendChild(c);
-					}
+					node.appendChild(d.toDom(value, node.ownerDocument));
 				}else{
 					node[name] = value;
 				}

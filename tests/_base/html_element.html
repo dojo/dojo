@@ -177,18 +177,16 @@
 
 						function toDomTr(t){
 							var n = dojo.toDom("<tr><td>First!</td></tr>");
+							doh.is("tr", n.tagName.toLowerCase());
 							doh.is(1, n.childNodes.length);
-							doh.is("tr", n.firstChild.tagName.toLowerCase());
-							doh.is(1, n.firstChild.childNodes.length);
-							doh.is("td", n.firstChild.firstChild.tagName.toLowerCase());
-							doh.is("First!", n.firstChild.firstChild.innerHTML);
+							doh.is("td", n.firstChild.tagName.toLowerCase());
+							doh.is("First!", n.firstChild.innerHTML);
 						},
 
 						function toDomText(t){
 							var n = dojo.toDom("Hello, world!");
-							doh.is(1, n.childNodes.length);
-							doh.is(3, n.firstChild.nodeType);
-							doh.is("Hello, world!", n.firstChild.nodeValue);
+							doh.is(3, n.nodeType);
+							doh.is("Hello, world!", n.nodeValue);
 						}
 					]
 				);

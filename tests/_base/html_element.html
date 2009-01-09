@@ -167,7 +167,7 @@
 						},
 
 						function toDomSpans(t){
-							var n = dojo.toDom("<span>1</span><span>2</span>");
+							var n = dojo._toDom("<span>1</span><span>2</span>");
 							doh.is(2, n.childNodes.length);
 							doh.is("span", n.firstChild.tagName.toLowerCase());
 							doh.is("1", n.firstChild.innerHTML);
@@ -176,7 +176,7 @@
 						},
 
 						function toDomTr(t){
-							var n = dojo.toDom("<tr><td>First!</td></tr>");
+							var n = dojo._toDom("<tr><td>First!</td></tr>");
 							doh.is("tr", n.tagName.toLowerCase());
 							doh.is(1, n.childNodes.length);
 							doh.is("td", n.firstChild.tagName.toLowerCase());
@@ -184,7 +184,7 @@
 						},
 
 						function toDomText(t){
-							var n = dojo.toDom("Hello, world!");
+							var n = dojo._toDom("Hello, world!");
 							doh.is(3, n.nodeType);
 							doh.is("Hello, world!", n.nodeValue);
 						}

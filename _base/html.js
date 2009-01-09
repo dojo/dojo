@@ -1317,7 +1317,7 @@ if(dojo.isIE || dojo.isOpera){
 			}else if(name === "innerHTML"){
 				if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
 					d.empty(node);
-					node.appendChild(d.toDom(value, node.ownerDocument));
+					node.appendChild(d._toDom(value, node.ownerDocument));
 				}else{
 					node[name] = value;
 				}
@@ -1461,7 +1461,7 @@ if(dojo.isIE || dojo.isOpera){
 		};
 
 	/*=====
-	dojo.toDom = function(frag, doc){
+	dojo._toDom = function(frag, doc){
 			//	summary:
 			//		instantiates an HTML fragment returning the corresponding DOM.
 			//	frag: String
@@ -1473,11 +1473,11 @@ if(dojo.isIE || dojo.isOpera){
 			//
 			//	example:
 			//	Create a table row:
-			//	| var tr = dojo.toDom("<tr><td>First!</td></tr>");
+			//	| var tr = dojo._toDom("<tr><td>First!</td></tr>");
 	}
 	=====*/
 
-	// support stuff for dojo.toDom
+	// support stuff for dojo._toDom
 	var tagWrap = {
 			option: ["select"],
 			tbody: ["table"],
@@ -1506,7 +1506,7 @@ if(dojo.isIE || dojo.isOpera){
 		// but we don't care at this point
 	}
 
-	d.toDom = function(frag, doc){
+	d._toDom = function(frag, doc){
 		// summary converts HTML string into DOM nodes.
 
 		doc = doc || d.doc;

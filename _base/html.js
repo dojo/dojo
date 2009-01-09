@@ -1478,9 +1478,7 @@ if(dojo.isIE || dojo.isOpera){
 	=====*/
 
 	// support stuff for dojo.toDom
-	var selfClosedTags = {img: 1, meta: 1, hr: 1, br: 1, col: 1, param: 1,
-			link: 1, base: 1, input: 1},
-		tagWrap = {
+	var tagWrap = {
 			option: ["select"],
 			tbody: ["table"],
 			thead: ["table"],
@@ -1495,7 +1493,6 @@ if(dojo.isIE || dojo.isOpera){
 			col: ["table", "colgroup"],
 			li: ["ul"]
 		},
-		reSelfClosedTag = /<\s*(\w+)([^\/\>]*)\/\s*>/g,
 		reTag = /<\s*([\w\:]+)/,
 		masterNode = {}, masterNum = 0,
 		masterName = "__" + d._scopeName + "ToDomId";
@@ -1520,16 +1517,8 @@ if(dojo.isIE || dojo.isOpera){
 			masterNode[masterId] = doc.createElement("div");
 		}
 
-		// make sure frag is a string.
+		// make sure the frag is a string.
 		frag += "";
-
-		// convert <tag/> into <tag></tag>
-		frag = frag.replace(reSelfClosedTag, function(tag, name, contents){
-			if(name in selfClosedTags){
-				return tag;
-			}
-			return "<" + name + contents + "></" + name + ">";
-		});
 
 		// find the starting tag, and get node wrapper
 		var match = frag.match(reTag),

@@ -179,7 +179,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		Attempt to insert node into the DOM, choosing from various positioning options.
 		//		Returns true if successful, false otherwise.
 		//	node: 
-		//		id or node reference to place relative to refNode
+		//		id or node reference, or HTML fragment starting with "<" to place relative to refNode
 		//	refNode: 
 		//		id or node reference to use as basis for placement
 		//	position:
@@ -216,8 +216,10 @@ if(dojo.isIE || dojo.isOpera){
 		if(!node || !refNode){
 			return false;	//	boolean 
 		}
-		node = d.byId(node);
 		refNode = d.byId(refNode);
+		if(d.isString(node)){
+			node = node.charAt(0) == "<" ? d._toDom(node, refNode.ownerDocument) : d.byId(node);
+		}
 		if(typeof position == "number"){
 			var cn = refNode.childNodes;
 			if(!cn.length || cn.length <= position){

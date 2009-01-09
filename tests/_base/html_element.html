@@ -187,6 +187,35 @@
 							var n = dojo._toDom("Hello, world!");
 							doh.is(3, n.nodeType);
 							doh.is("Hello, world!", n.nodeValue);
+						},
+
+						function placeDivs(t){
+							dojo.place("<p class='disposable'>1</p>", dojo.body());
+							var n = dojo.query("body > .disposable")[0];
+							dojo.place("<p class='disposable'>0</p>", n, "before");
+							dojo.place("<p class='disposable'>2</p>", n, "after");
+							dojo.place("<span>a</span>", n, "first");
+							dojo.place("<span>z</span>", n, "last");
+							n = dojo.query("body > .disposable");
+							doh.is(3, n.length);
+							doh.is("0", n[0].innerHTML);
+							doh.is("2", n[2].innerHTML);
+							doh.is("<span>a</span>1<span>z</span>", n[1].innerHTML.toLowerCase());
+							n.forEach(dojo.destroy);
+						},
+
+						function placeTable(t){
+							dojo.place("<table class='disposable'><tbody></tbody></table>", dojo.body());
+							var n = dojo.query("body > table.disposable > tbody")[0];
+							dojo.place("<tr><td>1</td></tr>", n);
+							dojo.place("<tr><td>0</td></tr>", n, "first");
+							dojo.place("<tr><td>2</td></tr>", n, "last");
+							n = dojo.query("body > table.disposable tr");
+							doh.is(3, n.length);
+							doh.is("<td>0</td>", n[0].innerHTML.toLowerCase());
+							doh.is("<td>1</td>", n[1].innerHTML.toLowerCase());
+							doh.is("<td>2</td>", n[2].innerHTML.toLowerCase());
+							dojo.query("body > table.disposable").forEach(dojo.destroy);
 						}
 					]
 				);

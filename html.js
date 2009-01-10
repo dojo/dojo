@@ -20,16 +20,15 @@ dojo.require("dojo.parser");
 		return cont.replace(/(?:\s*<!DOCTYPE\s[^>]+>|<title[^>]*>[\s\S]*?<\/title>)/ig, ""); // String
 	};
 
-	dojo.html._emptyNode = function(/* DomNode */ node){
+/*====
+	dojo.html._emptyNode = function(node){
 		// summary:
 		//		removes all child nodes from the given node
-		//	node:
+		//	node: DOMNode
 		//		the parent element
-
-		while(node.firstChild){
-			dojo.destroy(node.firstChild);
-		}
 	};
+=====*/
+	dojo.html._emptyNode = dojo.empty;
 
 	dojo.html._setNodeContent = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont, /* Boolean? */ shouldEmptyFirst){
 		// summary:

@@ -220,6 +220,27 @@
 							doh.is("<td>3</td>", n[3].innerHTML.toLowerCase());
 							doh.is("<td>4</td>", n[4].innerHTML.toLowerCase());
 							dojo.query("body > table.disposable").forEach(dojo.destroy);
+						},
+
+						function placeReplace(t){
+							dojo.place("<p class='disposable'>2</p>", dojo.body());
+							var n = dojo.query("body > .disposable")[0];
+							dojo.place("<p class='disposable'>0</p><p class='disposable'>1</p>", n, "replace");
+							n = dojo.query("body > .disposable");
+							doh.is(2, n.length);
+							doh.is("0", n[0].innerHTML);
+							doh.is("1", n[1].innerHTML);
+							n.forEach(dojo.destroy);
+						},
+
+						function placeOnly(t){
+							dojo.place("<p class='disposable'><em>1</em>2<strong>3</strong></p>", dojo.body());
+							var n = dojo.query("body > .disposable")[0];
+							dojo.place("<span>42</span>99", n, "only");
+							n = dojo.query("body > .disposable");
+							doh.is(1, n.length);
+							doh.is("<span>42</span>99", n[0].innerHTML.toLowerCase());
+							n.forEach(dojo.destroy);
 						}
 					]
 				);

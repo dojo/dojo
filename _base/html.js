@@ -188,11 +188,13 @@ if(dojo.isIE || dojo.isOpera){
 		//		Accepted string values are:
 		//	|	* before
 		//	|	* after
+		//	|	* replace
+		//	|	* only
 		//	|	* first
 		//	|	* last
 		//
-		//		"first" and "last" indicate positions as children of refNode.  position defaults
-		//		to "last" if not specified
+		//		"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,
+		//		"only" replaces all children.  position defaults to "last" if not specified
 		//
 		//		.place() is also a method of `dojo.NodeList`, allowing `dojo.query` node lookups.
 		// 
@@ -233,6 +235,13 @@ if(dojo.isIE || dojo.isOpera){
 				return _insertBefore(node, refNode);	//	Boolean
 			case "after":
 				return _insertAfter(node, refNode);		//	Boolean
+			case "replace":
+				refNode.parentNode.replaceChild(node, refNode);
+				return true;
+			case "only":
+				d.empty(refNode);
+				refNode.appendChild(node);
+				return true;
 			case "first":
 				if(refNode.firstChild){
 					return _insertBefore(node, refNode.firstChild);	//	Boolean

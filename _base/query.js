@@ -1316,7 +1316,7 @@ if(this["dojo"]||window["dojo"]){
 		}
 		// var ret = new listCtor();
 		var ret = new listCtor();
-		if(!arr){ return ret; }
+		if(!arr || !arr.length){ return ret; }
 		if(arr[0]){
 			ret.push(arr[0]);
 		}

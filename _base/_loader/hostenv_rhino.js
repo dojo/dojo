@@ -16,7 +16,7 @@ if(typeof print == "function"){
 	console.debug = print;
 }
 
-if(typeof dojo["byId"] == "undefined"){
+if(!("byId" in dojo)){
 	dojo.byId = function(id, doc){
 		if(id && (typeof id == "string" || id instanceof String)){
 			if(!doc){ doc = document; }
@@ -189,7 +189,7 @@ if(
 
 // summary:
 //		return the document object associated with the dojo.global
-dojo.doc = typeof(document) != "undefined" ? document : null;
+dojo.doc = typeof document != "undefined" ? document : null;
 
 dojo.body = function(){
 	return document.body;	
@@ -199,10 +199,7 @@ dojo.body = function(){
 // Note: this assumes that we define both if one is not provided... there might
 // be a better way to do this if there is a use case where one is defined but
 // not the other
-try{
-	setTimeout;
-	clearTimeout;
-}catch(e){
+if(typeof setTimeout == "undefined" || typeof clearTimeout == "undefined"){
 	dojo._timeouts = [];
 	function clearTimeout(idx){
 		if(!dojo._timeouts[idx]){ return; }

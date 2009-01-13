@@ -44,6 +44,14 @@ dojo._loadUri = function(uri, cb){
 		//FIXME: Use Rhino 1.6 native readFile/readUrl if available?
 		if(cb){
 			var contents = (local ? readText : readUri)(uri, "UTF-8");
+
+			// patch up the input to eval until https://bugzilla.mozilla.org/show_bug.cgi?id=471005 is fixed.
+			if(!eval("'\u200f'").length){
+				contents = contents.replace(/[\u200E\u200F\u202A-\u202E]/g, function(match){ 
+					return "\\u" + match.charCodeAt(0).toString(16); 
+				})
+			}
+
 			cb(eval('('+contents+')'));
 		}else{
 			load(uri);

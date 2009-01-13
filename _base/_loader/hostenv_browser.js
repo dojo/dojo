@@ -152,10 +152,8 @@ if(typeof window != 'undefined'){
 
 		d._xhrObj = function(){
 			// summary: 
-			//		does the work of portably generating a new XMLHTTPRequest
-			//		object.
-			var http = null;
-			var last_e = null;
+			//		does the work of portably generating a new XMLHTTPRequest object.
+			var http, last_e;
 			if(!dojo.isIE || !dojo.config.ieForceActiveXXhr){
 				try{ http = new XMLHttpRequest(); }catch(e){}
 			}

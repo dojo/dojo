@@ -47,7 +47,7 @@ dojo._loadUri = function(uri, cb){
 
 			// patch up the input to eval until https://bugzilla.mozilla.org/show_bug.cgi?id=471005 is fixed.
 			if(!eval("'\u200f'").length){
-				contents = contents.replace(/[\u200E\u200F\u202A-\u202E]/g, function(match){ 
+				contents = String(contents).replace(/[\u200E\u200F\u202A-\u202E]/g, function(match){ 
 					return "\\u" + match.charCodeAt(0).toString(16); 
 				})
 			}

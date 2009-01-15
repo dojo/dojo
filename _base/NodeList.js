@@ -303,17 +303,19 @@ dojo.require("dojo._base.array");
 		place: function(/*String||Node*/ queryOrNode, /*String*/ position){
 			//	summary:
 			//		places elements of this node list relative to the first element matched
-			//		by queryOrNode. Returns the original NodeList.
+			//		by queryOrNode. Returns the original NodeList. See: `dojo.place`
 			//	queryOrNode:
 			//		may be a string representing any valid CSS3 selector or a DOM node.
 			//		In the selector case, only the first matching element will be used 
 			//		for relative positioning.
 			//	position:
 			//		can be one of:
-			//			* "last"||"end" (default)
-			//			* "first||"start"
-			//			* "before"
-			//			* "after"
+			//		|	* "last" (default)
+			//		|	* "first"
+			//		|	* "before"
+			//		|	* "after"
+			//		|	* "only"
+			//		|	* "replace"
 			// 		or an offset in the childNodes property
 			var item = d.query(queryOrNode)[0];
 			return this.forEach(function(i){ d.place(i, item, position); }); // dojo.NodeList
@@ -346,10 +348,12 @@ dojo.require("dojo._base.array");
 			//		first element of this NodeList.
 			//	position:
 			//		can be one of:
-			//			* "last"||"end" (default)
-			//			* "first||"start"
-			//			* "before"
-			//			* "after"
+			//		|	* "last" (default)
+			//		|	* "first"
+			//		|	* "before"
+			//		|	* "after"
+			//		|	* "only"
+			//		|	* "replace"
 			// 		or an offset in the childNodes property
 			var item = this[0];
 			return d.query(queryOrListOrNode).forEach(function(ai){ // dojo.NodeList
@@ -407,7 +411,7 @@ dojo.require("dojo._base.array");
 			//		|	dojo.query("*").filter(function(item){
 			//		|		// highlight every paragraph
 			//		|		return (item.nodeName == "p");
-			//		|	}).styles("backgroundColor", "yellow");
+			//		|	}).style("backgroundColor", "yellow");
 			// example:
 			//		the same filtering using a CSS selector
 			//		|	dojo.query("*").filter("p").styles("backgroundColor", "yellow");

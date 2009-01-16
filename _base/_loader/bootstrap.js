@@ -100,10 +100,6 @@ djConfig = {
 	//		Save dojo/resources/blank.html to your domain and set `djConfig.dojoBlankHtmlUrl` 
 	//		to the path on your domain your copy of blank.html.
 	dojoBlankHtmlUrl: undefined
-	// hostEnv: String
-	//		Defaults to "browser".  When appended to "hostenv_", forms the name of the module
-	//		which defines functionality specific to a host environment (typically a browser or
-	//		standalone scripting engine such as Rhino, Spidermonkey.	
 }
 =====*/
 

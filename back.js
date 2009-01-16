@@ -269,7 +269,7 @@ dojo.back = {
 			historyIframe = window.frames["dj_history"];
 		}
 		if(!bookmarkAnchor){
-			dojo.create("a", {style: {display: "none"}}, dojo.body());
+			bookmarkAnchor = dojo.create("a", {style: {display: "none"}}, dojo.body());
 		}
 		if(args["changeUrl"]){
 			hash = ""+ ((args["changeUrl"]!==true) ? args["changeUrl"] : (new Date()).getTime());

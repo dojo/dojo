@@ -191,6 +191,8 @@ dojo.global = {
 =====*/
 	dojo.locale = d.config.locale;
 
+	var rev = "$Rev$".match(/\d+/); 
+
 	dojo.version = {
 		// summary: 
 		//		version number of dojo
@@ -205,7 +207,7 @@ dojo.global = {
 		//	revision: Number
 		//		The SVN rev from which dojo was pulled
 		major: 1, minor: 3, patch: 0, flag: "dev",
-		revision: +"$Rev$".match(/\d+/)[0],
+		revision: rev ? +rev[0] : NaN,
 		toString: function(){
 			with(d.version){
 				return major + "." + minor + "." + patch + flag + " (" + revision + ")";	// String

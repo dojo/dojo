@@ -170,32 +170,38 @@ if(dojo.isIE || dojo.isOpera){
 		//FIXME: else?  Opera?
 	};
 
-	var _insertBefore = function(/*Node*/node, /*Node*/ref){
-		ref.parentNode.insertBefore(node, ref);
-		return true;	//	boolean
+	var _insertBefore = function(/*DomNode*/node, /*DomNode*/ref){
+		var parent = ref.parentNode;
+		if(parent){
+			parent.insertBefore(node, ref);
+		}
 	}
 
-	var _insertAfter = function(/*Node*/node, /*Node*/ref){
+	var _insertAfter = function(/*DomNode*/node, /*DomNode*/ref){
 		//	summary:
 		//		Try to insert node after ref
-		var pn = ref.parentNode;
-		if(ref == pn.lastChild){
-			pn.appendChild(node);
-		}else{
-			return _insertBefore(node, ref.nextSibling);	//	boolean
+		var parent = ref.parentNode;
+		if(parent){
+			if(parent.lastChild == ref){
+				parent.appendChild(node);
+			}else{
+				parent.insertBefore(node, ref.nextSibling);
+			}
 		}
-		return true;	//	boolean
 	}
 
-	dojo.place = function(/*String|DomNode*/node, /*String|DomNode*/refNode, /*String?|Number?*/position){
+	dojo.place = function(node, refNode, position){
 		//	summary:
 		//		Attempt to insert node into the DOM, choosing from various positioning options.
 		//		Returns true if successful, false otherwise.
-		//	node: 
+		//
+		//	node: String|DomNode
 		//		id or node reference, or HTML fragment starting with "<" to place relative to refNode
-		//	refNode: 
+		//
+		//	refNode: String|DomNode
 		//		id or node reference to use as basis for placement
-		//	position:
+		//
+		//	position: String|Number?
 		//		string noting the position of node relative to refNode or a
 		//		number indicating the location in the childNodes collection of refNode. 
 		//		Accepted string values are:
@@ -205,9 +211,11 @@ if(dojo.isIE || dojo.isOpera){
 		//	|	* only
 		//	|	* first
 		//	|	* last
-		//
 		//		"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,
 		//		"only" replaces all children.  position defaults to "last" if not specified
+		//
+		//	returns: DomNode
+		//		Returned values is the first argument resolved to a DOM node.
 		//
 		//		.place() is also a method of `dojo.NodeList`, allowing `dojo.query` node lookups.
 		// 
@@ -227,10 +235,6 @@ if(dojo.isIE || dojo.isOpera){
 		// Put a new LI as the first child of a list by id:
 		// | 	dojo.place(dojo.create('li'), "someUl", "first");
 
-		// FIXME: need to expand unit tests for this.
-		if(!node || !refNode){
-			return false;	//	boolean 
-		}
 		refNode = d.byId(refNode);
 		if(d.isString(node)){
 			node = node.charAt(0) == "<" ? d._toDom(node, refNode.ownerDocument) : d.byId(node);
@@ -239,31 +243,35 @@ if(dojo.isIE || dojo.isOpera){
 			var cn = refNode.childNodes;
 			if(!cn.length || cn.length <= position){
 				refNode.appendChild(node);
-				return true;
+			}else{
+				_insertBefore(node, cn[position < 0 ? 0 : position]);
 			}
-			return _insertBefore(node, position <= 0 ? refNode.firstChild : cn[position]);
+		}else{
+			switch(position){
+				case "before":
+					_insertBefore(node, refNode);
+					break;
+				case "after":
+					_insertAfter(node, refNode);
+					break;
+				case "replace":
+					refNode.parentNode.replaceChild(node, refNode);
+					break; 
+				case "only":
+					d.empty(refNode);
+					refNode.appendChild(node);
+					break;
+				case "first":
+					if(refNode.firstChild){
+						_insertBefore(node, refNode.firstChild);
+						break;
+					}
+					// else fallthrough...
+				default: // aka: last
+					refNode.appendChild(node);
+			}
 		}
-		switch(position){
-			case "before":
-				return _insertBefore(node, refNode);	//	Boolean
-			case "after":
-				return _insertAfter(node, refNode);		//	Boolean
-			case "replace":
-				refNode.parentNode.replaceChild(node, refNode);
-				return true;
-			case "only":
-				d.empty(refNode);
-				refNode.appendChild(node);
-				return true;
-			case "first":
-				if(refNode.firstChild){
-					return _insertBefore(node, refNode.firstChild);	//	Boolean
-				}
-				// else fallthrough...
-			default: // aka: last
-				refNode.appendChild(node);
-				return true;	//	Boolean
-		}
+		return node; // DomNode
 	}
 
 	// Box functions will assume this model.

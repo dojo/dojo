@@ -263,6 +263,24 @@
 							doh.is(1, n.length);
 							doh.is("<span>42</span>99", n[0].innerHTML.toLowerCase());
 							n.forEach(dojo.destroy);
+						},
+						
+						function placeNumber(t){
+							var n = dojo.place("<p><em>1</em><em>2</em></p>", dojo.body());
+							doh.is(2, n.childNodes.length);
+							dojo.place("<span>C</span>", n, 99);
+							doh.is(3, n.childNodes.length);
+							doh.is("span", n.childNodes[2].tagName.toLowerCase());
+							doh.is("C", n.childNodes[2].innerHTML);
+							dojo.place("<span>A</span>", n, -1);
+							doh.is(4, n.childNodes.length);
+							doh.is("span", n.childNodes[0].tagName.toLowerCase());
+							doh.is("A", n.childNodes[0].innerHTML);
+							dojo.place("<span>B</span>", n, 2);
+							doh.is(5, n.childNodes.length);
+							doh.is("span", n.childNodes[2].tagName.toLowerCase());
+							doh.is("B", n.childNodes[2].innerHTML);
+							dojo.destroy(n);
 						}
 					]
 				);

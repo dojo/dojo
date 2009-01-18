@@ -1,4 +1,4 @@
-dojo.requre("dojo._base.lang");
+dojo.require("dojo._base.lang");
 dojo.provide("dojo._base.html");
 
 // FIXME: need to add unit tests for all the semi-public methods

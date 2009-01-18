@@ -1,4 +1,4 @@
-dojo.require("dojo._base.lang");
+dojo.requre("dojo._base.lang");
 dojo.provide("dojo._base.html");
 
 // FIXME: need to add unit tests for all the semi-public methods
@@ -1049,20 +1049,23 @@ if(dojo.isIE || dojo.isOpera){
 		}
 
 	};
+	//>>excludeEnd("webkitMobile");
 	
 	dojo._fixIeBiDiScrollLeft = function(/*Integer*/ scrollLeft){
 		// In RTL direction, scrollLeft should be a negative value, but IE 
 		// returns a positive one. All codes using documentElement.scrollLeft
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
+
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		var dd = d.doc;
 		if(d.isIE && !d._isBodyLtr()){
 			var de = dd.compatMode == "BackCompat" ? dd.body : dd.documentElement;
 			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
 		}
+		//>>excludeEnd("webkitMobile");
 		return scrollLeft; // Integer
 	}
-	//>>excludeEnd("webkitMobile");
 
 	dojo._abs = function(/*DomNode*/node, /*Boolean?*/includeScroll){
 		//	summary:

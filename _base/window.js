@@ -56,19 +56,17 @@ dojo.withGlobal = function(	/*Object*/globalObject,
 	// description:
 	//		When callback() returns or throws an error, the dojo.global
 	//		and dojo.doc will be restored to its previous state.
-	var rval;
 	var oldGlob = dojo.global;
 	var oldDoc = dojo.doc;
 	var oldLtr = dojo._bodyLtr;
 	try{
 		dojo.setContext(globalObject, globalObject.document);
 		delete dojo._bodyLtr; // uncache
-		rval = dojo._fireCallback(callback, thisObject, cbArguments);
+		return dojo._fireCallback(callback, thisObject, cbArguments);
 	}finally{
 		dojo.setContext(oldGlob, oldDoc);
 		if(oldLtr !== undefined){ dojo._bodyLtr = oldLtr; }
 	}
-	return rval;
 }
 
 dojo.withDoc = function(	/*Object*/documentObject, 
@@ -81,16 +79,14 @@ dojo.withDoc = function(	/*Object*/documentObject,
 	// description:
 	//		When callback() returns or throws an error, the dojo.doc will
 	//		be restored to its previous state.
-	var rval;
 	var oldDoc = dojo.doc;
 	var oldLtr = dojo._bodyLtr;
 	try{
 		dojo.doc = documentObject;
 		delete dojo._bodyLtr; // uncache
-		rval = dojo._fireCallback(callback, thisObject, cbArguments);
+		return dojo._fireCallback(callback, thisObject, cbArguments);
 	}finally{
 		dojo.doc = oldDoc;
 		if(oldLtr !== undefined){ dojo._bodyLtr = oldLtr; }
 	}
-	return rval;
 };

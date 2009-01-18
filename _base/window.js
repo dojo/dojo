@@ -59,11 +59,14 @@ dojo.withGlobal = function(	/*Object*/globalObject,
 	var rval;
 	var oldGlob = dojo.global;
 	var oldDoc = dojo.doc;
+	var oldLtr = dojo._bodyLtr;
 	try{
 		dojo.setContext(globalObject, globalObject.document);
+		delete dojo._bodyLtr; // uncache
 		rval = dojo._fireCallback(callback, thisObject, cbArguments);
 	}finally{
 		dojo.setContext(oldGlob, oldDoc);
+		if(typeof oldLtr != "undefined"){ dojo._bodyLtr = oldLtr; }
 	}
 	return rval;
 }
@@ -80,11 +83,14 @@ dojo.withDoc = function(	/*Object*/documentObject,
 	//		be restored to its previous state.
 	var rval;
 	var oldDoc = dojo.doc;
+	var oldLtr = dojo._bodyLtr;
 	try{
 		dojo.doc = documentObject;
+		delete dojo._bodyLtr; // uncache
 		rval = dojo._fireCallback(callback, thisObject, cbArguments);
 	}finally{
 		dojo.doc = oldDoc;
+		if(typeof oldLtr != "undefined"){ dojo._bodyLtr = oldLtr; }
 	}
 	return rval;
 };

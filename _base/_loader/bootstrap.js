@@ -215,10 +215,12 @@ dojo.global = {
 		}
 	}
 
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	// Register with the OpenAjax hub
 	if(typeof OpenAjax != "undefined"){
 		OpenAjax.hub.registerLibrary(dojo._scopeName, "http://dojotoolkit.org", d.version.toString());
 	}
+	//>>excludeEnd("webkitMobile");
 
 	var tobj = {};
 	dojo._mixin = function(/*Object*/ obj, /*Object*/ props){
@@ -235,6 +237,7 @@ dojo.global = {
 				obj[x] = props[x];
 			}
 		}
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		// IE doesn't recognize custom toStrings in for..in
 		if(d.isIE && props){
 			var p = props.toString;
@@ -243,6 +246,7 @@ dojo.global = {
 					obj.toString = props.toString;
 			}
 		}
+		//>>excludeEnd("webkitMobile");
 		return obj; // Object
 	}
 

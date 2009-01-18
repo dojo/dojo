@@ -1373,20 +1373,6 @@ if(dojo.isIE || dojo.isOpera){
 		//|
 		//		Placement is done via `dojo.place`, assuming the new node to be the action 
 		//		node, passing along the optional reference node and position. 
-		//|
-		//		NOTE: 
-		//		This is explicitly documented as NOT an alias to `dojo.doc.createElement`, 
-		//		as complex markup creation is planned in future versions. If you are using
-		//		`dojo.doc.createElement` with complex markup to work around known browser
-		//		quirks, you should remain doing so. 
-		//|	
-		//		eg: dojo.doc.createElement(dojo.isIE < 7 ? "<iframe name='baz'></iframe>" : "iframe");
-		//|
-		//		Do NOT expect passing the complex markup through `dojo.create` to continue
-		//		to work in all versions. `dojo.create` currently only supports single tag creation, though
-		//		as a byproduct of it's design APPEARS to support creating complex markup in 
-		//		these edge cases. `dojo.create` should NOT be used in that way until it
-		//		supports complex markup officially, as defined by this API. 
 		//
 		// tag: String|DomNode
 		//		A string of the element to create (eg: "div", "a", "p", "li", "script", "br"),

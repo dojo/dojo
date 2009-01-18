@@ -1388,8 +1388,10 @@ if(dojo.isIE || dojo.isOpera){
 		//		these edge cases. `dojo.create` should NOT be used in that way until it
 		//		supports complex markup officially, as defined by this API. 
 		//
-		// tag: String
-		//		A string of the element to create (eg: "div", "a", "p", "li", "script", "br") 
+		// tag: String|DomNode
+		//		A string of the element to create (eg: "div", "a", "p", "li", "script", "br"),
+		//		or an HTML fragment to instantiate (eg: "<div><span>1</span></div>"),
+		//		or an existing DOM node to process.
 		//
 		// attrs: Object?
 		//		An optional object-hash of attributes to set on the newly created node. 
@@ -1407,16 +1409,27 @@ if(dojo.isIE || dojo.isOpera){
 		//		required if a 'pos' is specified.
 		//
 		// example:
-		//	Create a div:
+		//	Create a DIV:
 		//	| var n = dojo.create("div");
 		//
 		// example:
-		//	Create a div with content:
+		//	Create a DIV with content:
 		//	| var n = dojo.create("div", { innerHTML:"<p>hi</p>" });
 		//
 		// example:
 		//	Place a new DIV in the BODY, with no attributes set
 		//	| var n = dojo.create("div", null, dojo.body());
+		//
+		// example:
+		//	Create a DIV with content, and append it to the BODY:
+		//	| var n = dojo.create("<div><p>hi</p></div>", null, dojo.body());
+		//
+		// example:
+		//	Create a DIV with content, add attributes, and append to the BODY:
+		//	| var n = dojo.create("<div><p>hi</p></div>", {
+		//	|                       id: "abc", style: {color: "red"}
+		//	|                     },
+		//	|                     dojo.body());
 		//
 		// example:
 		//	Create an UL, and populate it with LI's. Place the list as the first-child of a 
@@ -1437,11 +1450,18 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		.addClass("newDiv")
 		//	|		.onclick(function(e){ console.log('clicked', e.target) })
 		//	|		.place("#someNode"); // redundant, but cleaner.
-		
-		var n = d.doc.createElement(tag);
-		if(attrs){ d.attr(n, attrs); }
-		if(refNode){ d.place(n, refNode, pos); }
-		return n; // DomNode
+
+		var doc = d.doc;
+		if(refNode){		
+			refNode = d.byId(refNode);
+			doc = refNode.ownerDocument;
+		}
+		if(d.isString(tag)){
+			tag = tag.charAt(0) == "<" ? d._toDom(tag, doc) : doc.createElement(tag);
+		}
+		if(attrs && tag.nodeType == 1 /* ELEMENT_NODE */){ d.attr(tag, attrs); }
+		if(refNode){ d.place(tag, refNode, pos); }
+		return tag; // DomNode
 	}
 	
 	/*=====

@@ -133,15 +133,31 @@
 							doh.is(0, c().length);
 						},
 						
-						function recreateOne(t){
+						function recreateOneV1(t){
 							var n = dojo.create("h2", {
 								"class":"restored",
 								innerHTML:"<span>The End</span>"
 							}, dojo.body());
 							
 							doh.is(1, dojo.query(".restored").length);
+							dojo.destroy(n);
 						},
 						
+						function recreateOneV2(t){
+							var n = dojo.create("<h2 class='restored'><span>The End</span></h2>", null, dojo.body());
+							doh.is(1, dojo.query(".restored").length);
+							dojo.destroy(n);
+						},
+						
+						function recreateOneV3(t){
+							var n = dojo.create("<h2><span>The End</span></h2>", {
+								"class":"restored"
+							}, dojo.body());
+							
+							doh.is(1, dojo.query(".restored").length);
+							dojo.destroy(n);
+						},
+
 						function emptyDiv(t){
 							var n = dojo.create("div", {
 								innerHTML: "1<span class='red'>2</span>3<em custom='x'>4</em>5"
@@ -269,4 +285,3 @@
 		
 	</body>
 </html>
-

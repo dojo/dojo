@@ -11,7 +11,12 @@ dojo.require("dojo._base.connect");
 			name = del._normalizeEventName(name);
 			fp = del._fixCallback(name, fp);
 			var oname = name;
-			if(!dojo.isIE && (name == "mouseenter" || name == "mouseleave")){
+			if(
+				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+				!dojo.isIE && 
+				//>>excludeEnd("webkitMobile");
+				(name == "mouseenter" || name == "mouseleave")
+			){
 				var ofp = fp;
 				//oname = name;
 				name = (name == "mouseenter") ? "mouseover" : "mouseout";
@@ -212,6 +217,7 @@ dojo.require("dojo._base.connect");
 		SCROLL_LOCK: 145
 	};
 	
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	// IE event normalization
 	if(dojo.isIE){ 
 		var _trySetKeyCode = function(e, code){
@@ -413,6 +419,7 @@ dojo.require("dojo._base.connect");
 			del._preventDefault.call(evt);
 		}
 	}
+	//>>excludeEnd("webkitMobile");
 
 	del._synthesizeEvent = function(evt, props){
 			var faux = dojo.mixin({}, evt, props);
@@ -425,6 +432,7 @@ dojo.require("dojo._base.connect");
 			return faux;
 	}
 	
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	// Opera event normalization
 	if(dojo.isOpera){
 		dojo.mixin(del, {
@@ -448,9 +456,12 @@ dojo.require("dojo._base.connect");
 			}
 		});
 	}
+	//>>excludeEnd("webkitMobile");
 
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	// Webkit event normalization
 	if(dojo.isWebKit){
+		//>>excludeEnd("webkitMobile");
 		del._add = del.add;
 		del._remove = del.remove;
 
@@ -511,9 +522,12 @@ dojo.require("dojo._base.connect");
 				return evt;
 			}
 		});
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}
+	//>>excludeEnd("webkitMobile");
 })();
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(dojo.isIE){
 	// keep this out of the closure
 	// closing over 'iel' or 'ieh' b0rks leak prevention
@@ -542,3 +556,4 @@ if(dojo.isIE){
 		return function(e){ return fp.call(this, f(e, this)); };
 	}
 }
+//>>excludeEnd("webkitMobile");

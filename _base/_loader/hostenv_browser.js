@@ -127,6 +127,7 @@ if(typeof window != 'undefined'){
 			}
 		}
 
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(dua.indexOf("Gecko") >= 0 && !d.isKhtml && !d.isWebKit){ d.isMozilla = d.isMoz = tv; }
 		if(d.isMoz){
 			d.isFF = parseFloat(dua.split("Firefox/")[1]) || undefined;
@@ -140,6 +141,7 @@ if(typeof window != 'undefined'){
 		if(dojo.isIE && window.location.protocol === "file:"){
 			dojo.config.ieForceActiveXXhr=true;
 		}
+		//>>excludeEnd("webkitMobile");
 
 		var cm = document.compatMode;
 		d.isQuirks = cm == "BackCompat" || cm == "QuirksMode" || d.isIE < 6;
@@ -148,14 +150,19 @@ if(typeof window != 'undefined'){
 		d.locale = dojo.config.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();
 
 		// These are in order of decreasing likelihood; this will change in time.
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		d._XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
+		//>>excludeEnd("webkitMobile");
 
 		d._xhrObj = function(){
 			// summary: 
 			//		does the work of portably generating a new XMLHTTPRequest object.
 			var http, last_e;
+			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			if(!dojo.isIE || !dojo.config.ieForceActiveXXhr){
+			//>>excludeEnd("webkitMobile");
 				try{ http = new XMLHttpRequest(); }catch(e){}
+			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			}
 			if(!http){
 				for(var i=0; i<3; ++i){
@@ -172,6 +179,7 @@ if(typeof window != 'undefined'){
 					}
 				}
 			}
+			//>>excludeEnd("webkitMobile");
 
 			if(!http){
 				throw new Error("XMLHTTP not available: "+last_e);
@@ -338,6 +346,7 @@ if(typeof window != 'undefined'){
 			};
 		};
 
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(dojo.isIE){
 			// 	for Internet Explorer. readyState will not be achieved on init
 			// 	call, but dojo doesn't need it however, we'll include it
@@ -356,6 +365,7 @@ if(typeof window != 'undefined'){
 				document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
 			}catch(e){}
 		}
+		//>>excludeEnd("webkitMobile");
 
 		// FIXME: dojo.unloaded requires dojo scope, so using anon function wrapper.
 		_handleNodeEvent("onbeforeunload", function() { dojo.unloaded(); });

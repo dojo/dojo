@@ -328,16 +328,20 @@ dojo.require("dojo._base.html");
 		}
 	};
 
-	var _makeFadeable = (d.isIE) ? function(node){
-		// only set the zoom if the "tickle" value would be the same as the
-		// default
-		var ns = node.style;
-		// don't set the width to auto if it didn't already cascade that way.
-		// We don't want to f anyones designs
-		if(!ns.width.length && d.style(node, "width") == "auto"){
-			ns.width = "auto";
-		}
-	} : function(){};
+	var _makeFadeable = 
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+		d.isIE ? function(node){
+			// only set the zoom if the "tickle" value would be the same as the
+			// default
+			var ns = node.style;
+			// don't set the width to auto if it didn't already cascade that way.
+			// We don't want to f anyones designs
+			if(!ns.width.length && d.style(node, "width") == "auto"){
+				ns.width = "auto";
+			}
+		} : 
+		//>>excludeEnd("webkitMobile");
+		function(){};
 
 	dojo._fade = function(/*Object*/ args){
 		//	summary: 

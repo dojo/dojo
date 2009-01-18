@@ -116,6 +116,7 @@ if(this["dojo"]||window["dojo"]){
 			5.) matched nodes are pruned to ensure they are unique (if necessaray)
 */
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 ;(function(d){
 	// define everything in a closure for compressability reasons. "d" is an
 	// alias to "dojo" (or the toolkit alias object, e.g., "acme").
@@ -320,21 +321,6 @@ if(this["dojo"]||window["dojo"]){
 			currentPart = null;
 		}
 
-		var newPart = function(){
-			return {
-				query: null, // the full text of the part's rule
-				pseudos: [], // CSS supports multiple pseud-class matches in a single rule
-				attrs: [], 	// CSS supports multi-attribute match, so we need an array
-				classes: [], // class matches may be additive, e.g.: .thinger.blah.howdy
-				tag: null, 	// only one tag...
-				oper: null, // ...or operator per component. Note that these wind up being exclusive.
-				id: null, 	// the id component of a rule
-				getTag: function(){
-					return (caseSensitive) ? this.otag : this.tag;
-				}
-			};
-		};
-
 		// iterate over the query, charachter by charachter, building up a 
 		// list of query part objects
 		for(; lc=cc, cc=query.charAt(x), x < ql; x++){
@@ -369,7 +355,18 @@ if(this["dojo"]||window["dojo"]){
 				//				}
 				//			},
 				//		]
-				currentPart = newPart();
+				currentPart = {
+					query: null, // the full text of the part's rule
+					pseudos: [], // CSS supports multiple pseud-class matches in a single rule
+					attrs: [], 	// CSS supports multi-attribute match, so we need an array
+					classes: [], // class matches may be additive, e.g.: .thinger.blah.howdy
+					tag: null, 	// only one tag...
+					oper: null, // ...or operator per component. Note that these wind up being exclusive.
+					id: null, 	// the id component of a rule
+					getTag: function(){
+						return (caseSensitive) ? this.otag : this.tag;
+					}
+				};
 
 				// if we don't have a part, we assume we're going to start at
 				// the beginning of a match, which should be a tag name. This
@@ -1297,7 +1294,7 @@ if(this["dojo"]||window["dojo"]){
 		}
 	} : 
 	function(node){
-		return (node._uid || (node._uid = _zipIdx++));
+		return (node._uid || (node._uid = ++_zipIdx));
 	};
 
 	var _isUnique = function(node, bag){
@@ -1556,3 +1553,52 @@ if(this["dojo"]||window["dojo"]){
 		return tmpNodeList;
 	}
 })(this["queryPortability"]||this["acme"]||dojo);
+//>>excludeEnd("webkitMobile");
+
+//>>includeStart("webkitMobile", kwArgs.webkitMobile);
+if(!dojo["query"]){
+	(function(){
+		var ctr = 0;
+		// QSA-only for webkit modible. Welcome to the future.
+		dojo.query = function(query, root){
+			var listCtor = dojo.NodeList;
+			if(!query){
+				return new listCtor();
+			}
+
+			if(query.constructor == listCtor){
+				return query;
+			}
+
+			if(!dojo.isString(query)){
+				return new listCtor(query); // dojo.NodeList
+			}
+
+			if(dojo.isString(root)){
+				root = dojo.byId(root);
+			}
+
+			root = root||dojo.doc;
+			var rootIsDoc = (root.nodeType == 9);
+			var doc = rootIsDoc ? root : (root.ownerDocment||dojo.doc);
+			// rewrite the query to be ID rooted
+			if(!rootIsDoc || (">~+".indexOf(query.charAt(0)) >= 0)){
+				root.id = root.id||("qUnique"+(ctr++));
+				query = "#"+root.id+" "+query;
+			}
+			// rewrite the query to not choke on something like ".yada.yada >"
+			// by adding a final descendant component
+
+			// FIXME: is there a shorter way to write this in a non-suck JS engine?
+			if(">~+".indexOf(query.charAt(query.length-1)) >= 0){
+				query += " *";
+			}
+			return listCtor._wrap(
+				Array.prototype.slice.call(
+					doc.querySelectorAll(query)
+				)
+			);
+		};
+	})();
+}
+//>>includeEnd("webkitMobile");

@@ -207,9 +207,13 @@ dojo._toArray = function(obj, offset, startWith){
 		return arr;
 	};
 
-	dojo._toArray = (!dojo.isIE) ? efficient : function(obj){
-		return ((obj.item) ? slow : efficient).apply(this, arguments);
-	};
+	dojo._toArray = 
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+		dojo.isIE ?  function(obj){
+			return ((obj.item) ? slow : efficient).apply(this, arguments);
+		} : 
+		//>>excludeEnd("webkitMobile");
+		efficient;
 
 })();
 

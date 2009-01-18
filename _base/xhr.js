@@ -232,6 +232,7 @@ dojo.require("dojo._base.query");
 		},
 		xml: function(xhr){
 			var result = xhr.responseXML;
+			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			if(_d.isIE && (!result || !result.documentElement)){
 				var ms = function(n){ return "MSXML" + n + ".DOMDocument"; }
 				var dp = ["Microsoft.XMLDOM", ms(6), ms(4), ms(3), ms(2)];
@@ -245,6 +246,7 @@ dojo.require("dojo._base.query");
 					return true;
 				});
 			}
+			//>>excludeEnd("webkitMobile");
 			return result; // DOMDocument
 		}
 	};
@@ -544,9 +546,11 @@ dojo.require("dojo._base.query");
 
 	//Automatically call cancel all io calls on unload
 	//in IE for trac issue #2357.
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(_d.isIE){
 		_d.addOnWindowUnload(_d._ioCancelAll);
 	}
+	//>>excludeEnd("webkitMobile");
 
 	_d._ioWatch = function(/*Deferred*/dfd,
 		/*Function*/validCheck,

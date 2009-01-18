@@ -1404,9 +1404,9 @@ if(dojo.isIE || dojo.isOpera){
 		//	
 		// pos: String?
 		//		Optional positional reference. Defaults to "last" by way of `dojo.place`,
-		//		though can be set to "first","after","before","last" to further control
-		//		the placement of the new node relative to the refNode. 'refNode' is
-		//		required if a 'pos' is specified.
+		//		though can be set to "first","after","before","last", "replace" or "only"
+		//		to further control the placement of the new node relative to the refNode.
+		//		'refNode' is required if a 'pos' is specified.
 		//
 		// example:
 		//	Create a DIV:
@@ -1452,6 +1452,12 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		.place("#someNode"); // redundant, but cleaner.
 
 		var doc = d.doc;
+		if(attrs && attrs.nodeType === 1 && attrs.tagName && attrs.appendChild){
+			// attrs is a DOM node => attrs is missing, and refNode is used
+			pos = refNode;
+			refNode = attrs;
+			attrs = null;
+		}
 		if(refNode){		
 			refNode = d.byId(refNode);
 			doc = refNode.ownerDocument;

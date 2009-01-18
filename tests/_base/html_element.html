@@ -132,7 +132,7 @@
 							doh.f(dojo.byId("ancFoo"));
 							doh.is(0, c().length);
 						},
-						
+
 						function recreateOneV1(t){
 							var n = dojo.create("h2", {
 								"class":"restored",
@@ -142,18 +142,24 @@
 							doh.is(1, dojo.query(".restored").length);
 							dojo.destroy(n);
 						},
-						
+
 						function recreateOneV2(t){
 							var n = dojo.create("<h2 class='restored'><span>The End</span></h2>", null, dojo.body());
 							doh.is(1, dojo.query(".restored").length);
 							dojo.destroy(n);
 						},
-						
+
 						function recreateOneV3(t){
 							var n = dojo.create("<h2><span>The End</span></h2>", {
 								"class":"restored"
 							}, dojo.body());
 							
+							doh.is(1, dojo.query(".restored").length);
+							dojo.destroy(n);
+						},
+
+						function recreateOneV4(t){
+							var n = dojo.create("<h2 class='restored'><span>The End</span></h2>", dojo.body());
 							doh.is(1, dojo.query(".restored").length);
 							dojo.destroy(n);
 						},
@@ -167,7 +173,7 @@
 							doh.is("", n.innerHTML);
 							dojo.destroy(n);
 						},
-						
+
 						function emptyTable(t){
 							var table = dojo.create("table", null, dojo.body()),
 								tr1 = dojo.create("tr", null, table),

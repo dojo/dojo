@@ -66,7 +66,7 @@ dojo.withGlobal = function(	/*Object*/globalObject,
 		rval = dojo._fireCallback(callback, thisObject, cbArguments);
 	}finally{
 		dojo.setContext(oldGlob, oldDoc);
-		if(typeof oldLtr != "undefined"){ dojo._bodyLtr = oldLtr; }
+		if(oldLtr !== undefined){ dojo._bodyLtr = oldLtr; }
 	}
 	return rval;
 }
@@ -90,7 +90,7 @@ dojo.withDoc = function(	/*Object*/documentObject,
 		rval = dojo._fireCallback(callback, thisObject, cbArguments);
 	}finally{
 		dojo.doc = oldDoc;
-		if(typeof oldLtr != "undefined"){ dojo._bodyLtr = oldLtr; }
+		if(oldLtr !== undefined){ dojo._bodyLtr = oldLtr; }
 	}
 	return rval;
 };

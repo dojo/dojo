@@ -1439,7 +1439,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		.place("#someNode"); // redundant, but cleaner.
 
 		var doc = d.doc;
-		if(attrs && attrs.nodeType === 1 && attrs.tagName && attrs.appendChild){
+		if(attrs && (typeof attrs == "string" || attrs.nodeType === 1 && attrs.tagName && attrs.appendChild)){
 			// attrs is a DOM node => attrs is missing, and refNode is used
 			pos = refNode;
 			refNode = attrs;

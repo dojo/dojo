@@ -1364,12 +1364,12 @@ if(dojo.isIE || dojo.isOpera){
 		//		and placement. 
 		//
 		// description:
-		//		A DOM Element creation function. A shorthand method for creating a node of
-		//		type `tag`, and allowing for a convenient optional attribute setting step, 
+		//		A DOM Element creation function. A shorthand method for creating a node or
+		//		a fragment, and allowing for a convenient optional attribute setting step, 
 		//		as well as an optional DOM placement reference.
 		//|
-		//		Attributes are set by passing the optional object through `dojo.attr`. See
-		//		`dojo.attr` for noted caevats and nuances, and API if applicable. 
+		//		Attributes are set by passing the optional object through `dojo.attr`.
+		//		See `dojo.attr` for noted caevats and nuances, and API if applicable. 
 		//|
 		//		Placement is done via `dojo.place`, assuming the new node to be the action 
 		//		node, passing along the optional reference node and position. 
@@ -1380,7 +1380,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		or an existing DOM node to process.
 		//
 		// attrs: Object?
-		//		An optional object-hash of attributes to set on the newly created node. 
+		//		An optional object-hash of attributes to set on the newly created node.
+		//		In case of a fragment, it should have a single root node to be processed.
 		//		See: `dojo.attr` for a description of available attributes.
 		//
 		// refNode: String?|DomNode?

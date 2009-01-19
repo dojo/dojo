@@ -53,7 +53,7 @@ dojo.isArrayLike = function(/*anything*/ it){
 	//		dojo.isArrayLike(), but will return false when passed to
 	//		dojo.isArray().
 	//	returns:
-	//		If it walks like a duck and quicks like a duck, return `true`
+	//		If it walks like a duck and quacks like a duck, return `true`
 	var d = dojo;
 	return it && it !== undefined && // Boolean
 		// keep out built-in constructors (Number, String, ...) which have length

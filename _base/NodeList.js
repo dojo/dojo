@@ -2,9 +2,11 @@ dojo.provide("dojo._base.NodeList");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.array");
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 
 	var d = dojo;
+//>>excludeEnd("webkitMobile");
 
 	var tnl = function(arr){
 		// decorate an array to make it look like a NodeList
@@ -569,4 +571,6 @@ dojo.require("dojo._base.array");
 		}
 	);
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
+//>>excludeEnd("webkitMobile");

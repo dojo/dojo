@@ -103,7 +103,9 @@ djConfig = {
 }
 =====*/
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
+//>>excludeEnd("webkitMobile");
 	// firebug stubs
 
 	if(typeof this["loadFirebugConsole"] == "function"){
@@ -146,6 +148,7 @@ djConfig = {
 		};
 	}
 
+	var dojo = this.dojo;
 	var d = dojo;
 
 	//Need placeholders for dijit and dojox for scoping code.
@@ -462,5 +465,7 @@ dojo.global = {
 	//Real functions declared in dojo._firebug.firebug.
 	d.deprecated = d.experimental = function(){};
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
+//>>excludeEnd("webkitMobile");
 // vim:ai:ts=4:noet

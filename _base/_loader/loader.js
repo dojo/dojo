@@ -3,8 +3,10 @@
  * all of the package loading methods.
  */
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 	var d = dojo;
+//>>excludeEnd("webkitMobile");
 
 	d.mixin(d, {
 		_loadedModules: {},
@@ -718,4 +720,6 @@
 
 		return new d._Url(loc, url); // String
 	}
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
+//>>excludeEnd("webkitMobile");

@@ -1,5 +1,7 @@
 // if(this["dojo"]||window["dojo"]||dojo){
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(this["dojo"]||window["dojo"]){
+//>>excludeEnd("webkitMobile");
 	dojo.provide("dojo._base.query");
 	dojo.require("dojo._base.NodeList");
 	dojo.require("dojo._base.lang");
@@ -81,8 +83,8 @@ if(this["dojo"]||window["dojo"]){
 		Array._wrap = function(arr){ return arr; };
 	})();
 
-//>>excludeEnd("acmeExclude");
 }
+//>>excludeEnd("acmeExclude");
 
 /*
 	dojo.query() architectural overview:

@@ -63,14 +63,19 @@ dojo = {
 }
 =====*/
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(typeof window != 'undefined'){
+//>>excludeEnd("webkitMobile");
 	dojo.isBrowser = true;
 	dojo._name = "browser";
 
 
 	// attempt to figure out the path to dojo if it isn't set in the config
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	(function(){
 		var d = dojo;
+//>>excludeEnd("webkitMobile");
+
 		// this is a scope protection closure. We set browser versions and grab
 		// the URL we were loaded from here.
 
@@ -276,7 +281,9 @@ if(typeof window != 'undefined'){
 	
 			d._onto(d._windowUnloaders, obj, functionName);
 		}
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	})();
+//>>excludeEnd("webkitMobile");
 
 	dojo._initFired = false;
 	//	BEGIN DOMContentLoaded, from Dean Edwards (http://dean.edwards.name/weblog/2006/06/again/)
@@ -331,7 +338,9 @@ if(typeof window != 'undefined'){
 		//	END DOMContentLoaded
 	}
 
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	(function(){
+	//>>excludeEnd("webkitMobile");
 		var _w = window;
 		var _handleNodeEvent = function(/*String*/evtName, /*Function*/fp){
 			// summary:
@@ -370,7 +379,9 @@ if(typeof window != 'undefined'){
 		// FIXME: dojo.unloaded requires dojo scope, so using anon function wrapper.
 		_handleNodeEvent("onbeforeunload", function() { dojo.unloaded(); });
 		_handleNodeEvent("onunload", function() { dojo.windowUnloaded(); });
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	})();
+	//>>excludeEnd("webkitMobile");
 
 	/*
 	OpenAjax.subscribe("OpenAjax", "onload", function(){
@@ -383,19 +394,23 @@ if(typeof window != 'undefined'){
 		dojo.unloaded();
 	});
 	*/
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 } //if (typeof window != 'undefined')
 
 //Register any module paths set up in djConfig. Need to do this
 //in the hostenvs since hostenv_browser can read djConfig from a
 //script tag's attribute.
 (function(){
+//>>excludeEnd("webkitMobile");
 	var mp = dojo.config["modulePaths"];
 	if(mp){
 		for(var param in mp){
 			dojo.registerModulePath(param, mp[param]);
 		}
 	}
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
+//>>excludeEnd("webkitMobile");
 
 //Load debug code if necessary.
 if(dojo.config.isDebug){

@@ -3,7 +3,9 @@ dojo.require("dojo._base.connect");
 
 // this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
+//>>excludeEnd("webkitMobile");
 	// DOM event listener machinery
 	var del = (dojo._event_listener = {
 		add: function(/*DOMNode*/node, /*String*/name, /*Function*/fp){
@@ -525,7 +527,9 @@ dojo.require("dojo._base.connect");
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}
 	//>>excludeEnd("webkitMobile");
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
+//>>excludeEnd("webkitMobile");
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(dojo.isIE){

@@ -9,9 +9,12 @@ dojo.require("dojo._base.html");
 	Animation losely package based on Dan Pupius' work, contributed under CLA: 
 		http://pupius.co.uk/js/Toolkit.Drawing.js
 */
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){ 
 
-	var d = dojo, _mixin = d.mixin;
+	var d = dojo;
+//>>excludeEnd("webkitMobile");
+	var _mixin = d.mixin;
 	
 	dojo._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:
@@ -609,4 +612,6 @@ dojo.require("dojo._base.html");
 			onEnd: onEnd 
 		}).play(delay||0);
 	}
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
+//>>excludeEnd("webkitMobile");

@@ -81,8 +81,10 @@ if(dojo.isIE || dojo.isOpera){
 }
 =====*/
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 	var d = dojo;
+//>>excludeEnd("webkitMobile");
 
 	var _destroyContainer = null;
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
@@ -1737,4 +1739,6 @@ if(dojo.isIE || dojo.isOpera){
 		d[condition ? "addClass" : "removeClass"](node, classStr);
 	};
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
+//>>excludeEnd("webkitMobile");

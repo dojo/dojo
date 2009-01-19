@@ -1,6 +1,7 @@
 dojo.require("dojo._base.lang");
 dojo.provide("dojo._base.array");
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 	var _getParts = function(arr, obj, cb){
 		return [ 
@@ -229,3 +230,16 @@ dojo.provide("dojo._base.array");
 		}
 	});
 })();
+//>>excludeEnd("webkitMobile");
+//>>includeStart("webkitMobile", kwArgs.webkitMobile);
+["indexOf", "lastIndexOf", "forEach", "map", "some", "every", "filter"].forEach(
+	function(name, idx){
+		dojo[name] = function(arr, callback, thisObj){
+			if((idx > 1)&& dojo.isString(callback)){
+				callback = new Function("item", "index", "array", callback);
+			}
+			return Array.prototype[name].call(arr, callback, thisObj);
+		}
+	}
+);
+//>>includeEnd("webkitMobile");

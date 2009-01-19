@@ -4,7 +4,9 @@ dojo.require("dojo._base.json");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.query");
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
+//>>excludeEnd("webkitMobile");
 	var _d = dojo;
 	function setValue(/*Object*/obj, /*String*/name, /*String*/value){
 		//summary:
@@ -733,4 +735,6 @@ dojo.require("dojo._base.query");
 		throw new Error("dojo.wrapForm not yet implemented");
 	}
 	*/
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
+//>>excludeEnd("webkitMobile");

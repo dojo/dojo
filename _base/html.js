@@ -1030,8 +1030,8 @@ if(dojo.isIE || dojo.isOpera){
 	dojo._getIeDocumentElementOffset = function(){
 		// summary
 		// The following values in IE contain an offset:
-		//     event.clientX 
-		//     event.clientY 
+		//     event.clientX
+		//     event.clientY
 		//     node.getBoundingClientRect().left
 		//     node.getBoundingClientRect().top
 		// But other position related values do not contain this offset, such as
@@ -1053,8 +1053,8 @@ if(dojo.isIE || dojo.isOpera){
 			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top};
 		}else{
 			return {
-				x: de.getBoundingClientRect().left - de.offsetLeft + de.scrollLeft,
-				y: de.getBoundingClientRect().top - de.offsetTop + de.scrollTop
+				x: de.getBoundingClientRect().left - de.offsetLeft,
+				y: de.getBoundingClientRect().top - de.offsetTop
 			};
 		}
 
@@ -1108,6 +1108,7 @@ if(dojo.isIE || dojo.isOpera){
 			if(d.isIE){
 				// On IE there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
 				var offset = d._getIeDocumentElementOffset();
+
 				// fixes the position in IE, quirks mode
 				ret.x -= offset.x + (d.isQuirks ? db.clientLeft : 0);
 				ret.y -= offset.y + (d.isQuirks ? db.clientTop : 0);

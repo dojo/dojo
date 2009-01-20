@@ -1516,6 +1516,7 @@ if(this["dojo"]||window["dojo"]){
 		}
 		if(isString(root)){
 			root = d.byId(root);
+			if(!root){ return new listCtor(); }
 		}
 
 		root = root||getDoc();
@@ -1581,6 +1582,7 @@ if(!dojo["query"]){
 
 			if(dojo.isString(root)){
 				root = dojo.byId(root);
+				if(!root){ return new listCtor(); }
 			}
 
 			root = root||dojo.doc;

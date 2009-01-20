@@ -6,6 +6,9 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" 
 			djConfig="isDebug: true, debugAtAllCosts: false, popup: false, noFirebugLite: true"></script>
+		<!--
+		<script type="text/javascript" src="../_base/steak.js"></script>
+		-->
 		<script type="text/javascript" src="../../../util/doh/runner.js"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
@@ -43,21 +46,26 @@
 						"doh.is(1, (dojo.query('.foo.bar')).length);",
 						"doh.is(2, (dojo.query('.baz')).length);",
 						"doh.is(3, (dojo.query('#t > h3')).length);",
+
 						// syntactic equivalents
 						"doh.is(12, (dojo.query('#t > *')).length);",
 						"doh.is(12, (dojo.query('#t >')).length);",
 						"doh.is(3, (dojo.query('.foo >')).length);",
 						"doh.is(3, (dojo.query('.foo > *')).length);",
+
 						// with a root, by ID
 						"doh.is(3, (dojo.query('> *', 'container')).length);",
 						"doh.is(3, (dojo.query('> h3', 't')).length);",
+
 						// compound queries
 						"doh.is(2, (dojo.query('.foo, .bar')).length);",
 						"doh.is(2, (dojo.query('.foo,.bar')).length);",
+
 						// multiple class attribute
 						"doh.is(1, (dojo.query('.foo.bar')).length);",
 						"doh.is(2, (dojo.query('.foo')).length);",
 						"doh.is(2, (dojo.query('.baz')).length);",
+
 						// case sensitivity
 						"doh.is(1, (dojo.query('span.baz')).length);",
 						"doh.is(1, (dojo.query('sPaN.baz')).length);",
@@ -65,6 +73,7 @@
 						"doh.is(1, (dojo.query('[class = \"foo bar\"]')).length);",
 						"doh.is(2, (dojo.query('[foo~=\"bar\"]')).length);",
 						"doh.is(2, (dojo.query('[ foo ~= \"bar\" ]')).length);",
+
 						// "t.is(0, (dojo.query('[ foo ~= \"\\'bar\\'\" ]')).length);",
 						"doh.is(3, (dojo.query('[foo]')).length);",
 						"doh.is(1, (dojo.query('[foo$=\"thud\"]')).length);",
@@ -78,6 +87,7 @@
 						"doh.is(0, (dojo.query('[foo|=\"baz\"]')).length);",
 						"doh.is(dojo.byId('_foo'), dojo.query('.foo:nth-child(2)')[0]);",
 						"doh.is(dojo.query('style')[0], dojo.query(':nth-child(2)')[0]);",
+
 						// descendant selectors
 						"doh.is(3, dojo.query('>', 'container').length);",
 						"doh.is(3, dojo.query('> *', 'container').length);",
@@ -87,6 +97,10 @@
 						"doh.is(3, dojo.query('>', 'container').length);",
 						"doh.is(3, dojo.query('> *', 'container').length);",
 						"doh.is('passed', dojo.query('#bug')[0].value);",
+
+						// failed scope arg
+						"doh.is(0, (dojo.query('*', 'thinger')).length);",
+
 						// sibling selectors
 						"doh.is(1, dojo.query('+', 'container').length);",
 						"doh.is(3, dojo.query('~', 'container').length);",
@@ -94,6 +108,7 @@
 						"doh.is(4, (dojo.query('.foo ~ span')).length);",
 						"doh.is(1, (dojo.query('#foo ~ *')).length);",
 						"doh.is(1, (dojo.query('#foo ~')).length);",
+
 						// sub-selector parsing
 						"doh.is(1, dojo.query('#t span.foo:not(span:first-child)').length);",
 						"doh.is(1, dojo.query('#t span.foo:not(:first-child)').length);",

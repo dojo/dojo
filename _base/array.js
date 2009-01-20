@@ -231,6 +231,9 @@ dojo.provide("dojo._base.array");
 	});
 })();
 //>>excludeEnd("webkitMobile");
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+/*
+//>>excludeEnd("webkitMobile");
 //>>includeStart("webkitMobile", kwArgs.webkitMobile);
 ["indexOf", "lastIndexOf", "forEach", "map", "some", "every", "filter"].forEach(
 	function(name, idx){
@@ -243,3 +246,6 @@ dojo.provide("dojo._base.array");
 	}
 );
 //>>includeEnd("webkitMobile");
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+*/
+//>>excludeEnd("webkitMobile");

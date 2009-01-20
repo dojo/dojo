@@ -83,8 +83,8 @@ if(this["dojo"]||window["dojo"]){
 		Array._wrap = function(arr){ return arr; };
 	})();
 
-}
 //>>excludeEnd("acmeExclude");
+}
 
 /*
 	dojo.query() architectural overview:
@@ -1557,6 +1557,9 @@ if(this["dojo"]||window["dojo"]){
 })(this["queryPortability"]||this["acme"]||dojo);
 //>>excludeEnd("webkitMobile");
 
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+/*
+//>>excludeEnd("webkitMobile");
 //>>includeStart("webkitMobile", kwArgs.webkitMobile);
 if(!dojo["query"]){
 	(function(){
@@ -1604,3 +1607,6 @@ if(!dojo["query"]){
 	})();
 }
 //>>includeEnd("webkitMobile");
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+*/
+//>>excludeEnd("webkitMobile");

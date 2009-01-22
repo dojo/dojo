@@ -144,22 +144,7 @@
 						},
 
 						function recreateOneV2(t){
-							var n = dojo.create("<h2 class='restored'><span>The End</span></h2>", null, dojo.body());
-							doh.is(1, dojo.query(".restored").length);
-							dojo.destroy(n);
-						},
-
-						function recreateOneV3(t){
-							var n = dojo.create("<h2><span>The End</span></h2>", {
-								"class":"restored"
-							}, dojo.body());
-							
-							doh.is(1, dojo.query(".restored").length);
-							dojo.destroy(n);
-						},
-
-						function recreateOneV4(t){
-							var n = dojo.create("<h2 class='restored'><span>The End</span></h2>", dojo.body());
+							var n = dojo.place("<h2 class='restored'><span>The End</span></h2>", dojo.body());
 							doh.is(1, dojo.query(".restored").length);
 							dojo.destroy(n);
 						},

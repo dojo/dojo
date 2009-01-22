@@ -1442,19 +1442,18 @@ if(dojo.isIE || dojo.isOpera){
 		//		as well as an optional DOM placement reference.
 		//|
 		//		Attributes are set by passing the optional object through `dojo.attr`.
-		//		See `dojo.attr` for noted caevats and nuances, and API if applicable. 
+		//		See `dojo.attr` for noted caveats and nuances, and API if applicable. 
 		//|
 		//		Placement is done via `dojo.place`, assuming the new node to be the action 
 		//		node, passing along the optional reference node and position. 
 		//
 		// tag: String|DomNode
 		//		A string of the element to create (eg: "div", "a", "p", "li", "script", "br"),
-		//		or an HTML fragment to instantiate (eg: "<div><span>1</span></div>"),
 		//		or an existing DOM node to process.
 		//
-		// attrs: Object?
-		//		An optional object-hash of attributes to set on the newly created node.
-		//		In case of a fragment, it should have a single root node to be processed.
+		// attrs: Object
+		//		An object-hash of attributes to set on the newly created node.
+		//		Can be null, if you don't want to set any attributes/styles.
 		//		See: `dojo.attr` for a description of available attributes.
 		//
 		// refNode: String?|DomNode?
@@ -1468,6 +1467,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		to further control the placement of the new node relative to the refNode.
 		//		'refNode' is required if a 'pos' is specified.
 		//
+		// returns: DomNode
+		//
 		// example:
 		//	Create a DIV:
 		//	| var n = dojo.create("div");
@@ -1479,17 +1480,6 @@ if(dojo.isIE || dojo.isOpera){
 		// example:
 		//	Place a new DIV in the BODY, with no attributes set
 		//	| var n = dojo.create("div", null, dojo.body());
-		//
-		// example:
-		//	Create a DIV with content, and append it to the BODY:
-		//	| var n = dojo.create("<div><p>hi</p></div>", null, dojo.body());
-		//
-		// example:
-		//	Create a DIV with content, add attributes, and append to the BODY:
-		//	| var n = dojo.create("<div><p>hi</p></div>", {
-		//	|                       id: "abc", style: {color: "red"}
-		//	|                     },
-		//	|                     dojo.body());
 		//
 		// example:
 		//	Create an UL, and populate it with LI's. Place the list as the first-child of a 
@@ -1512,20 +1502,14 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		.place("#someNode"); // redundant, but cleaner.
 
 		var doc = d.doc;
-		if(attrs && (typeof attrs == "string" || attrs.nodeType === 1 && attrs.tagName && attrs.appendChild)){
-			// attrs is a DOM node => attrs is missing, and refNode is used
-			pos = refNode;
-			refNode = attrs;
-			attrs = null;
-		}
 		if(refNode){		
 			refNode = d.byId(refNode);
 			doc = refNode.ownerDocument;
 		}
 		if(d.isString(tag)){
-			tag = tag.charAt(0) == "<" ? d._toDom(tag, doc) : doc.createElement(tag);
+			tag = doc.createElement(tag);
 		}
-		if(attrs && tag.nodeType == 1 /* ELEMENT_NODE */){ d.attr(tag, attrs); }
+		if(attrs){ d.attr(tag, attrs); }
 		if(refNode){ d.place(tag, refNode, pos); }
 		return tag; // DomNode
 	}

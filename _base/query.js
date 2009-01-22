@@ -84,6 +84,7 @@ if(this["dojo"]||window["dojo"]){
 	})();
 
 //>>excludeEnd("acmeExclude");
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 }
 
 /*
@@ -118,7 +119,6 @@ if(this["dojo"]||window["dojo"]){
 			5.) matched nodes are pruned to ensure they are unique (if necessaray)
 */
 
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 ;(function(d){
 	// define everything in a closure for compressability reasons. "d" is an
 	// alias to "dojo" (or the toolkit alias object, e.g., "acme").

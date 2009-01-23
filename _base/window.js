@@ -38,55 +38,56 @@ dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocu
 	dojo.doc = globalDocument;
 };
 
-dojo._fireCallback = function(callback, context, cbArguments){
-	if(context && dojo.isString(callback)){
-		callback = context[callback];
-	}
-	return callback.apply(context, cbArguments || [ ]);
-}
-
 dojo.withGlobal = function(	/*Object*/globalObject, 
 							/*Function*/callback, 
 							/*Object?*/thisObject, 
 							/*Array?*/cbArguments){
 	// summary:
-	//		Call callback with globalObject as dojo.global and
+	//		Invoke callback with globalObject as dojo.global and
+	//		globalObject.document as dojo.doc.
+	// description:
+	//		Invoke callback with globalObject as dojo.global and
 	//		globalObject.document as dojo.doc. If provided, globalObject
 	//		will be executed in the context of object thisObject
-	// description:
 	//		When callback() returns or throws an error, the dojo.global
 	//		and dojo.doc will be restored to its previous state.
+
 	var oldGlob = dojo.global;
-	var oldDoc = dojo.doc;
-	var oldLtr = dojo._bodyLtr;
 	try{
-		dojo.setContext(globalObject, globalObject.document);
-		delete dojo._bodyLtr; // uncache
-		return dojo._fireCallback(callback, thisObject, cbArguments);
+		dojo.global = globalObject;
+		return dojo.withDoc.call(null, globalObject.document, callback, thisObject, cbArguments);
 	}finally{
-		dojo.setContext(oldGlob, oldDoc);
-		if(oldLtr !== undefined){ dojo._bodyLtr = oldLtr; }
+		dojo.global = oldGlob;
 	}
 }
 
-dojo.withDoc = function(	/*Object*/documentObject, 
+dojo.withDoc = function(	/*DocumentElement*/documentObject, 
 							/*Function*/callback, 
 							/*Object?*/thisObject, 
 							/*Array?*/cbArguments){
 	// summary:
-	//		Call callback with documentObject as dojo.doc. If provided,
-	//		callback will be executed in the context of object thisObject
+	//		Invoke callback with documentObject as dojo.doc.
 	// description:
+	//		Invoke callback with documentObject as dojo.doc. If provided,
+	//		callback will be executed in the context of object thisObject
 	//		When callback() returns or throws an error, the dojo.doc will
 	//		be restored to its previous state.
-	var oldDoc = dojo.doc;
-	var oldLtr = dojo._bodyLtr;
+
+	var oldDoc = dojo.doc,
+		oldLtr = dojo._bodyLtr;
+
 	try{
 		dojo.doc = documentObject;
 		delete dojo._bodyLtr; // uncache
-		return dojo._fireCallback(callback, thisObject, cbArguments);
+
+		if(thisObject && dojo.isString(callback)){
+			callback = thisObject[callback];
+		}
+
+		return callback.apply(thisObject, cbArguments || []);
 	}finally{
 		dojo.doc = oldDoc;
 		if(oldLtr !== undefined){ dojo._bodyLtr = oldLtr; }
 	}
 };
+	

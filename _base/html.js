@@ -58,11 +58,15 @@ if(dojo.isIE || dojo.isOpera){
 				return te;
 			}else{
 				var eles = _d.all[id];
-				if(!eles || !eles.length){ return eles; }
+				if(!eles || eles.nodeName){
+					eles = [eles];
+				}
 				// if more than 1, choose first with the correct id
 				var i=0;
 				while((te=eles[i++])){
-					if(te.attributes.id.value == id){ return te; }
+					if(te.attributes && te.attributes.id && te.attributes.id.value == id){
+						return te;
+					}
 				}
 			}
 		}else{

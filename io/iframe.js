@@ -78,7 +78,7 @@ dojo.io.iframe = {
 		window[fname] = cframe;
 	
 		with(cframe.style){
-			if(dojo.isSafari < 3){
+			if(!(dojo.isSafari < 3)){
 				//We can't change the src in Safari 2.0.3 if absolute position. Bizarro.
 				position = "absolute";
 			}

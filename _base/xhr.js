@@ -570,14 +570,22 @@ dojo.require("dojo._base.query");
 		//resHandle:
 		//		Function used to process response. Gets the dfd
 		//		object as its only argument.
-		if(dfd.ioArgs.args.timeout){
+		var args = dfd.ioArgs.args;
+		if(args.timeout){
 			dfd.startTime = (new Date()).getTime();
 		}
 		_inFlight.push({dfd: dfd, validCheck: validCheck, ioCheck: ioCheck, resHandle: resHandle});
 		if(!_inFlightIntvl){
 			_inFlightIntvl = setInterval(_watchInFlight, 50);
 		}
-		_watchInFlight(); // handle sync requests
+		// handle sync requests
+		//A weakness: async calls in flight
+		//could have their handlers called as part of the
+		//_watchInFlight call, before the sync's callbacks
+		// are called.
+		if(args.sync){
+			_watchInFlight();
+		}
 	}
 
 	var _defaultContentType = "application/x-www-form-urlencoded";

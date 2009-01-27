@@ -6,15 +6,26 @@ dojo.data.util.sorter.basicComparator = function(	/*anything*/ a,
 	//		Basic comparision function that compares if an item is greater or less than another item
 	//	description:  
 	//		returns 1 if a > b, -1 if a < b, 0 if equal.
-	//		undefined values are treated as larger values so that they're pushed to the end of the list.
-
-	var ret = 0;
-	if(a > b || typeof a === "undefined" || a === null){
-		ret = 1;
-	}else if(a < b || typeof b === "undefined" || b === null){
-		ret = -1;
+	//		'null' values (null, undefined) are treated as larger values so that they're pushed to the end of the list.
+	//		And compared to each other, null is equivalent to undefined.
+	
+	//null is a problematic compare, so if null, we set to undefined.
+	//Makes the check logic simple, compact, and consistent
+	//And (null == undefined) === true, so the check later against null
+	//works for undefined and is less bytes.
+	var r = -1;
+	if(a === null){
+		a = undefined;
 	}
-	return ret; //int, {-1,0,1}
+	if(b === null){
+		b = undefined;
+	}
+	if(a == b){
+		r = 0; 
+	}else if(a > b || a == null){
+		r = 1; 
+	}
+	return r; //int {-1,0,1}
 };
 
 dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortSpec,

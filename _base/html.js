@@ -1049,16 +1049,16 @@ if(dojo.isIE || dojo.isOpera){
 		var de = d.doc.documentElement;
 		//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
 
-		if(d.isIE == 6){
+		if(d.isIE < 7){
 			return { x: d._isBodyLtr() || window.parent == window ?
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft, 
 				y: de.clientTop }; // Object
-		}else if(d.isIE == 7){
+		}else if(d.isIE < 8){
 			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top};
 		}else{
 			return {
-				x: de.getBoundingClientRect().left - de.offsetLeft,
-				y: de.getBoundingClientRect().top - de.offsetTop
+				x: 0,
+				y: 0
 			};
 		}
 

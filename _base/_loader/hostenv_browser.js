@@ -254,33 +254,101 @@ if(typeof window != 'undefined'){
 			return http.responseText; // String
 		}
 		
+
+		var _w = window;
+		var _handleNodeEvent = function(/*String*/evtName, /*Function*/fp){
+			// summary:
+			//		non-destructively adds the specified function to the node's
+			//		evtName handler.
+			// evtName: should be in the form "onclick" for "onclick" handlers.
+			// Make sure you pass in the "on" part.
+			var oldHandler = _w[evtName] || function(){};
+			_w[evtName] = function(){
+				fp.apply(_w, arguments);
+				oldHandler.apply(_w, arguments);
+			};
+		};
+
+
 		d._windowUnloaders = [];
 		
 		d.windowUnloaded = function(){
 			// summary:
 			//		signal fired by impending window destruction. You may use
-			//		dojo.addOnWIndowUnload() or dojo.connect() to this method to perform
-			//		page/application cleanup methods. See dojo.addOnWindowUnload for more info.
-			var mll = this._windowUnloaders;
+			//		dojo.addOnWindowUnload() to register a listener for this
+			//		event. NOTE: if you wish to dojo.connect() to this method
+			//		to perform page/application cleanup, be aware that this
+			//		event WILL NOT fire if no handler has been registered with
+			//		dojo.addOnWindowUnload. This behavior started in Dojo 1.3.
+			//		Previous versions always triggered dojo.windowUnloaded. See
+			//		dojo.addOnWindowUnload for more info.
+			var mll = d._windowUnloaders;
 			while(mll.length){
 				(mll.pop())();
 			}
-		}
+		};
 
-		d.addOnWindowUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
+		var _onWindowUnloadAttached = 0;
+		d.addOnWindowUnload = function(/*Object?|Function?*/obj, /*String|Function?*/functionName){
 			// summary:
-			//		registers a function to be triggered when window.onunload fires.
-			//		Be careful trying to modify the DOM or access JavaScript properties
-			//		during this phase of page unloading: they may not always be available.
-			//		Consider dojo.addOnUnload() if you need to modify the DOM or do heavy
-			//		JavaScript work.
+			//		registers a function to be triggered when window.onunload
+			//		fires. 
+			//	description:
+			//		The first time that addOnWindowUnload is called Dojo
+			//		will register a page listener to trigger your unload
+			//		handler with. Note that registering these handlers may
+			//		destory "fastback" page caching in browsers that support
+			//		it. Be careful trying to modify the DOM or access
+			//		JavaScript properties during this phase of page unloading:
+			//		they may not always be available. Consider
+			//		dojo.addOnUnload() if you need to modify the DOM or do
+			//		heavy JavaScript work since it fires at the eqivalent of
+			//		the page's "onbeforeunload" uvent.
 			// example:
 			//	|	dojo.addOnWindowUnload(functionPointer)
-			//	|	dojo.addOnWindowUnload(object, "functionName")
+			//	|	dojo.addOnWindowUnload(object, "functionName");
 			//	|	dojo.addOnWindowUnload(object, function(){ /* ... */});
-	
+
 			d._onto(d._windowUnloaders, obj, functionName);
-		}
+			if(!_onWindowUnloadAttached){
+				_onWindowUnloadAttached = 1;
+				_handleNodeEvent("onunload", d.windowUnloaded);
+			}
+		};
+
+		var _onUnloadAttached = 0;
+		d.addOnUnload = function(/*Object?|Function?*/obj, /*String|Function?*/functionName){
+			// summary:
+			//		registers a function to be triggered when the page unloads.
+			//	description:
+			//		The first time that addOnUnload is called Dojo will
+			//		register a page listener to trigger your unload handler
+			//		with. 
+			//
+			//		In a browser enviroment, the functions will be triggered
+			//		during the window.onbeforeunload event. Be careful of doing
+			//		too much work in an unload handler. onbeforeunload can be
+			//		triggered if a link to download a file is clicked, or if
+			//		the link is a javascript: link. In these cases, the
+			//		onbeforeunload event fires, but the document is not
+			//		actually destroyed. So be careful about doing destructive
+			//		operations in a dojo.addOnUnload callback.
+			//
+			//		Further note that calling dojo.addOnUnload will prevent
+			//		browsers from using a "fast back" cache to make page
+			//		loading via back button instantaneous. 
+			// example:
+			//	|	dojo.addOnUnload(functionPointer)
+			//	|	dojo.addOnUnload(object, "functionName")
+			//	|	dojo.addOnUnload(object, function(){ /* ... */});
+
+			d._onto(d._unloaders, obj, functionName);
+			if(!_onUnloadAttached){
+				_onUnloadAttached = 1;
+				_handleNodeEvent("onbeforeunload", dojo.unloaded);
+			}
+		};
+
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	})();
 //>>excludeEnd("webkitMobile");
@@ -312,20 +380,25 @@ if(typeof window != 'undefined'){
 	if(!dojo.config.afterOnLoad){
 		//	START DOMContentLoaded
 		// Mozilla and Opera 9 expose the event we could use
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(document.addEventListener){
 			// NOTE: 
 			//		due to a threading issue in Firefox 2.0, we can't enable
 			//		DOMContentLoaded on that platform. For more information, see:
 			//		http://trac.dojotoolkit.org/ticket/1704
 			if(dojo.isWebKit > 525 || dojo.isOpera || dojo.isFF >= 3 || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
+		//>>excludeEnd("webkitMobile");
 				document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			}
 	
 			//	mainly for Opera 8.5, won't be fired if DOMContentLoaded fired already.
 			//  also used for Mozilla because of trac #1640
 			window.addEventListener("load", dojo._loadInit, null);
 		}
+		//>>excludeEnd("webkitMobile");
 	
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(dojo.isAIR){
 			window.addEventListener("load", dojo._loadInit, null);
 		}else if((dojo.isWebKit < 525) || dojo.isKhtml){
@@ -335,53 +408,31 @@ if(typeof window != 'undefined'){
 				}
 			}, 10);
 		}
+		//>>excludeEnd("webkitMobile");
 		//	END DOMContentLoaded
 	}
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	(function(){
-	//>>excludeEnd("webkitMobile");
-		var _w = window;
-		var _handleNodeEvent = function(/*String*/evtName, /*Function*/fp){
-			// summary:
-			//		non-destructively adds the specified function to the node's
-			//		evtName handler.
-			// evtName: should be in the form "onclick" for "onclick" handlers.
-			// Make sure you pass in the "on" part.
-			var oldHandler = _w[evtName] || function(){};
-			_w[evtName] = function(){
-				fp.apply(_w, arguments);
-				oldHandler.apply(_w, arguments);
-			};
-		};
-
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(dojo.isIE){
-			// 	for Internet Explorer. readyState will not be achieved on init
-			// 	call, but dojo doesn't need it however, we'll include it
-			// 	because we don't know if there are other functions added that
-			// 	might.  Note that this has changed because the build process
-			// 	strips all comments -- including conditional ones.
-			if(!dojo.config.afterOnLoad){
-				document.write('<scr'+'ipt defer src="//:" '
-					+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
-					+ '</scr'+'ipt>'
-				);
-			}
-
-			try{
-				document.namespaces.add("v","urn:schemas-microsoft-com:vml");
-				document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
-			}catch(e){}
+	if(dojo.isIE){
+		// 	for Internet Explorer. readyState will not be achieved on init
+		// 	call, but dojo doesn't need it however, we'll include it
+		// 	because we don't know if there are other functions added that
+		// 	might.  Note that this has changed because the build process
+		// 	strips all comments -- including conditional ones.
+		if(!dojo.config.afterOnLoad){
+			document.write('<scr'+'ipt defer src="//:" '
+				+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
+				+ '</scr'+'ipt>'
+			);
 		}
-		//>>excludeEnd("webkitMobile");
 
-		// FIXME: dojo.unloaded requires dojo scope, so using anon function wrapper.
-		_handleNodeEvent("onbeforeunload", function() { dojo.unloaded(); });
-		_handleNodeEvent("onunload", function() { dojo.windowUnloaded(); });
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	})();
+		try{
+			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
+			document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
+		}catch(e){}
+	}
 	//>>excludeEnd("webkitMobile");
+
 
 	/*
 	OpenAjax.subscribe("OpenAjax", "onload", function(){

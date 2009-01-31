@@ -130,11 +130,11 @@
 	dojo.loaded = function(){
 		// summary:
 		//		signal fired when initial environment and package loading is
-		//		complete. You may use dojo.addOnLoad() or dojo.connect() to
-		//		this method in order to handle initialization tasks that
-		//		require the environment to be initialized. In a browser host,
-		//		declarative widgets will be constructed when this function
-		//		finishes runing.
+		//		complete. You should use dojo.addOnLoad() instead of doing a 
+		//		direct dojo.connect() to this method in order to handle
+		//		initialization tasks that require the environment to be
+		//		initialized. In a browser host,	declarative widgets will 
+		//		be constructed when this function	finishes runing.
 		this._loadNotifying = true;
 		this._postLoad = true;
 		var mll = d._loaders;
@@ -159,9 +159,10 @@
 
 	dojo.unloaded = function(){
 		// summary:
-		//		signal fired by impending environment destruction. You may use
-		//		dojo.addOnUnload() or dojo.connect() to this method to perform
-		//		page/application cleanup methods. See dojo.addOnUnload for more info.
+		//		signal fired by impending environment destruction. You should use
+		//		dojo.addOnUnload() instead of doing a direct dojo.connect() to this 
+		//		method to perform page/application cleanup methods. See 
+		//		dojo.addOnUnload for more info.
 		var mll = d._unloaders;
 		while(mll.length){
 			(mll.pop())();

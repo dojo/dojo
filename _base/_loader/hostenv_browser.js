@@ -303,7 +303,7 @@ if(typeof window != 'undefined'){
 			//		they may not always be available. Consider
 			//		dojo.addOnUnload() if you need to modify the DOM or do
 			//		heavy JavaScript work since it fires at the eqivalent of
-			//		the page's "onbeforeunload" uvent.
+			//		the page's "onbeforeunload" event.
 			// example:
 			//	|	dojo.addOnWindowUnload(functionPointer)
 			//	|	dojo.addOnWindowUnload(object, "functionName");

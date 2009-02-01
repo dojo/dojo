@@ -568,7 +568,9 @@ if(dojo.isIE || dojo.isOpera){
 		//		pairs suitable for setting each property.
 		//	value:
 		//		If passed, sets value on the node for style, handling
-		//		cross-browser concerns.
+		//		cross-browser concerns.  When setting a pixel value,
+		//		be sure to include "px" in the value. For instance, top: "200px".
+		//		Otherwise, in some cases, some browsers will not apply the style.
 		//	example:
 		//		Passing only an ID or node returns the computed style object of
 		//		the node:
@@ -588,7 +590,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	|	dojo.style("thinger", {
 		//	|		"opacity": 0.5,
 		//	|		"border": "3px solid black",
-		//	|		"height": 300
+		//	|		"height": "300px"
 		//	|	});
 		//
 		// 	example:

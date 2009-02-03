@@ -12,17 +12,19 @@
  */
 
 //This file gets copied to dojo/_base/query.js, so set the provide accordingly.
-dojo.provide("dojo._base.query");
-dojo.require("dojo._base.NodeList");
+if(this["dojo"]||window["dojo"]){
+	dojo.provide("dojo._base.query");
+	dojo.require("dojo._base.NodeList");
 
-//Start Dojo mappings.
+	//Start Dojo mappings.
 
-dojo.query = function(/*String*/ query, /*String|DOMNode?*/ root, /*Function?*/ctor){
-	return dojo.Sizzle(query, root, new (ctor || dojo.NodeList));
-}
+	dojo.query = function(/*String*/ query, /*String|DOMNode?*/ root, /*Function?*/ctor){
+		return dojo.Sizzle(query, root, new (ctor || dojo.NodeList));
+	}
 
-dojo._filterQueryResult = function(nodeList, simpleFilter){
-	return dojo.Sizzle(simpleFilter, null, null, nodeList);
+	dojo._filterQueryResult = function(nodeList, simpleFilter){
+		return dojo.Sizzle(simpleFilter, null, null, nodeList);
+	}
 }
 
 //Main Sizzle code follows...
@@ -837,4 +839,4 @@ var contains = document.compareDocumentPosition ?  function(a, b){
 
 (ns || window).Sizzle = Sizzle;
 
-})(dojo);
+})(this["dojo"]);

@@ -469,12 +469,12 @@ dojo.require("dojo._base.query");
 		//summary: okHandler function for dojo._ioSetArgs call.
 
 		var ret = _d._contentHandlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
-		return (typeof ret == "undefined") ? null : ret;
+		return ret === undefined ? null : ret;
 	}
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.
 
-		console.debug(error);
+		console.error(error);
 		return error;
 	}
 

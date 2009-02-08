@@ -12,18 +12,34 @@
  */
 
 //This file gets copied to dojo/_base/query.js, so set the provide accordingly.
-if(this["dojo"]||window["dojo"]){
+if(typeof dojo != "undefined"){
 	dojo.provide("dojo._base.query");
 	dojo.require("dojo._base.NodeList");
 
 	//Start Dojo mappings.
+	dojo.query = function(/*String*/ query, /*String|DOMNode?*/ root, /*Function?*/listCtor){
+		listCtor = listCtor || dojo.NodeList;
 
-	dojo.query = function(/*String*/ query, /*String|DOMNode?*/ root, /*Function?*/ctor){
-		return dojo.Sizzle(query, root, new (ctor || dojo.NodeList));
+		if(!query){
+			return new listCtor();
+		}
+
+		if(query.constructor == listCtor){
+			return query;
+		}
+		if(!dojo.isString(query)){
+			return new listCtor(query); // dojo.NodeList
+		}
+		if(dojo.isString(root)){
+			root = dojo.byId(root);
+			if(!root){ return new listCtor(); }
+		}
+
+		return dojo.Sizzle(query, root, new listCtor());
 	}
 
 	dojo._filterQueryResult = function(nodeList, simpleFilter){
-		return dojo.Sizzle(simpleFilter, null, null, nodeList);
+		return dojo.Sizzle.filter(simpleFilter, nodeList);
 	}
 }
 
@@ -839,4 +855,4 @@ var contains = document.compareDocumentPosition ?  function(a, b){
 
 (ns || window).Sizzle = Sizzle;
 
-})(this["dojo"]);
+})(typeof dojo == "undefined" ? null : dojo);

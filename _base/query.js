@@ -1,6 +1,5 @@
-// if(this["dojo"]||window["dojo"]||dojo){
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-if(this["dojo"]||window["dojo"]){
+if(typeof dojo != "undefined"){
 //>>excludeEnd("webkitMobile");
 	dojo.provide("dojo._base.query");
 	dojo.require("dojo._base.NodeList");

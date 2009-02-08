@@ -136,7 +136,7 @@ if(typeof dojo != "undefined"){
 	// 					d.isOpera; // float
 	// 					d.isWebKit; // float
 	// 					d.doc ; // document element
-	var listCtor = 		d.NodeList;
+	d._queryListCtor = 		d.NodeList;
 	var isString = 		d.isString;
 
 	var getDoc = function(){ return d.doc; };
@@ -486,7 +486,7 @@ if(typeof dojo != "undefined"){
 
 	var getArr = function(i, arr){
 		// helps us avoid array alloc when we don't need it
-		var r = arr||[]; // FIXME: should this be 'new listCtor()' ?
+		var r = arr||[]; // FIXME: should this be 'new d._queryListCtor()' ?
 		if(i){ r.push(i); }
 		return r;
 	};
@@ -591,6 +591,44 @@ if(typeof dojo != "undefined"){
 			if(_simpleNodeTest(node)){ return false; }
 		}
 		return true;
+	};
+
+
+	//Need to define getNodeIndex before it is first used because of shrinksafe bug.
+	var getNodeIndex = function(node){
+		// NOTE: 
+		//		we could have a more accurate caching mechanism by invalidating
+		//		caches after the query has finished, but I think that'd lead to
+		//		significantly more cache churn than the cache would provide
+		//		value for in the common case. Generally, we're more
+		//		conservative (and therefore, more accurate) than jQuery and
+		//		DomQuery WRT node node indexes, but there may be corner cases
+		//		in which we fall down.  How much we care about them is TBD.
+
+		var root = node.parentNode;
+		var te, x = 0, i = 0, 
+			tret = root[childNodesName], 
+			ret = -1,
+			ci = parseInt(node["_cidx"]||-1),
+			cl = parseInt(root["_clen"]||-1);
+
+		if(!tret){ return -1; }
+
+		if( ci >= 0 && cl >= 0 && cl == tret.length){
+			// if it's legit, tag and release
+			return ci;
+		}
+
+		// else re-key things
+		root["_clen"] = tret.length;
+		while(te = tret[x++]){
+			if(_simpleNodeTest(te)){ 
+				i++;
+				if(node === te){ ret = i; }
+				te["_cix"] = i;
+			}
+		}
+		return ret;
 	};
 
 	var pseudos = {
@@ -836,43 +874,6 @@ if(typeof dojo != "undefined"){
 			return ret;
 		};
 	};
-
-	var getNodeIndex = function(node){
-		// NOTE: 
-		//		we could have a more accurate caching mechanism by invalidating
-		//		caches after the query has finished, but I think that'd lead to
-		//		significantly more cache churn than the cache would provide
-		//		value for in the common case. Generally, we're more
-		//		conservative (and therefore, more accurate) than jQuery and
-		//		DomQuery WRT node node indexes, but there may be corner cases
-		//		in which we fall down.  How much we care about them is TBD.
-
-		var root = node.parentNode;
-		var te, x = 0, i = 0, 
-			tret = root[childNodesName], 
-			ret = -1,
-			ci = parseInt(node["_cidx"]||-1),
-			cl = parseInt(root["_clen"]||-1);
-
-		if(!tret){ return -1; }
-
-		if( ci >= 0 && cl >= 0 && cl == tret.length){
-			// if it's legit, tag and release
-			return ci;
-		}
-
-		// else re-key things
-		root["_clen"] = tret.length;
-		while(te = tret[x++]){
-			if(_simpleNodeTest(te)){ 
-				i++;
-				if(node === te){ ret = i; }
-				te["_cix"] = i;
-			}
-		}
-		return ret;
-	};
-
 	
 	/*
 	// thanks, Dean!
@@ -1090,7 +1091,7 @@ if(typeof dojo != "undefined"){
 			// that need to be fast (e.g., "#someId").
 			var tef = getElementsFunc(qparts[0]);
 			return function(root){
-				var r = tef(root, new listCtor());
+				var r = tef(root, new d._queryListCtor());
 				if(r){ r.nozip = true; }
 				return r;
 			}
@@ -1277,10 +1278,10 @@ if(typeof dojo != "undefined"){
 	var _zipIdxName = "_zipIdx";
 	var _zip = function(arr){
 		if(arr && arr.nozip){ 
-			return (listCtor._wrap) ? listCtor._wrap(arr) : arr;
+			return (d._queryListCtor._wrap) ? d._queryListCtor._wrap(arr) : arr;
 		}
-		// var ret = new listCtor();
-		var ret = new listCtor();
+		// var ret = new d._queryListCtor();
+		var ret = new d._queryListCtor();
 		if(!arr || !arr.length){ return ret; }
 		if(arr[0]){
 			ret.push(arr[0]);
@@ -1471,18 +1472,18 @@ if(typeof dojo != "undefined"){
 		//	|	});
 
 		if(!query){
-			return new listCtor();
+			return new d._queryListCtor();
 		}
 
-		if(query.constructor == listCtor){
+		if(query.constructor == d._queryListCtor){
 			return query;
 		}
 		if(!isString(query)){
-			return new listCtor(query); // dojo.NodeList
+			return new d._queryListCtor(query); // dojo.NodeList
 		}
 		if(isString(root)){
 			root = d.byId(root);
-			if(!root){ return new listCtor(); }
+			if(!root){ return new d._queryListCtor(); }
 		}
 
 		root = root||getDoc();
@@ -1505,7 +1506,7 @@ if(typeof dojo != "undefined"){
 		var r = getQueryFunc(query)(root);
 		// FIXME:
 		//		need to investigate this branch WRT #8074 and #8075
-		if(r && r.nozip && !listCtor._wrap){
+		if(r && r.nozip && !d._queryListCtor._wrap){
 			return r;
 		}
 		return _zip(r); // dojo.NodeList
@@ -1516,7 +1517,7 @@ if(typeof dojo != "undefined"){
 
 	// one-off function for filtering a NodeList based on a simple selector
 	d._filterQueryResult = function(nodeList, simpleFilter){
-		var tmpNodeList = new listCtor();
+		var tmpNodeList = new d._queryListCtor();
 		var filterFunc = getSimpleFilterFunc(getQueryParts(simpleFilter)[0]);
 		for(var x = 0, te; te = nodeList[x]; x++){
 			if(filterFunc(te)){ tmpNodeList.push(te); }
@@ -1535,22 +1536,22 @@ if(!dojo["query"]){
 		var ctr = 0;
 		// QSA-only for webkit modible. Welcome to the future.
 		dojo.query = function(query, root){
-			var listCtor = dojo.NodeList;
+			d._queryListCtor = dojo.NodeList;
 			if(!query){
-				return new listCtor();
+				return new d._queryListCtor();
 			}
 
-			if(query.constructor == listCtor){
+			if(query.constructor == d._queryListCtor){
 				return query;
 			}
 
 			if(!dojo.isString(query)){
-				return new listCtor(query); // dojo.NodeList
+				return new d._queryListCtor(query); // dojo.NodeList
 			}
 
 			if(dojo.isString(root)){
 				root = dojo.byId(root);
-				if(!root){ return new listCtor(); }
+				if(!root){ return new d._queryListCtor(); }
 			}
 
 			root = root||dojo.doc;
@@ -1567,7 +1568,7 @@ if(!dojo["query"]){
 			if(">~+".indexOf(query.slice(-1)) >= 0){
 				query += " *";
 			}
-			return listCtor._wrap(
+			return d._queryListCtor._wrap(
 				Array.prototype.slice.call(
 					doc.querySelectorAll(query)
 				)

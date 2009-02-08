@@ -435,7 +435,7 @@ if(typeof window != 'undefined'){
 
 		try{
 			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
-			document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML)");
+			document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML);  display:inline-block");
 		}catch(e){}
 	}
 	//>>excludeEnd("webkitMobile");

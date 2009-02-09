@@ -757,7 +757,7 @@ if(typeof dojo != "undefined"){
 		if(!("tag" in ignores)){
 			if(query.tag != "*"){
 				ff = agree(ff, function(elem){
-					return (elem.tagName == query.getTag());
+					return (elem && (elem.tagName == query.getTag()));
 				});
 			}
 		}
@@ -812,7 +812,6 @@ if(typeof dojo != "undefined"){
 				ff = agree(ff, function(elem){ return (elem.id == query.id); });
 			}
 		}
-
 
 		if(!ff){
 			if(!("default" in ignores)){

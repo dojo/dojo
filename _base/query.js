@@ -809,7 +809,9 @@ if(typeof dojo != "undefined"){
 
 		if(!("id" in ignores)){
 			if(query.id){
-				ff = agree(ff, function(elem){ return (elem.id == query.id); });
+				ff = agree(ff, function(elem){ 
+					return (!!elem && (elem.id == query.id));
+				});
 			}
 		}
 
@@ -1309,8 +1311,7 @@ if(typeof dojo != "undefined"){
 				}
 			}catch(e){ /* squelch */ }
 		}else{
-			// console.debug("zip in length:", arr.length);
-			arr[0][_zipIdxName] = _zipIdx;
+			if(arr[0]){ arr[0][_zipIdxName] = _zipIdx; }
 			for(var x = 1, te; te = arr[x]; x++){
 				if(arr[x][_zipIdxName] != _zipIdx){ 
 					ret.push(te);

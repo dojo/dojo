@@ -47,6 +47,9 @@
 						"doh.is(2, (dojo.query('.baz')).length);",
 						"doh.is(3, (dojo.query('#t > h3')).length);",
 
+
+						"doh.is(2, (dojo.query('#foo, #baz, #bug')).length);",
+
 						// syntactic equivalents
 						"doh.is(12, (dojo.query('#t > *')).length);",
 						"doh.is(12, (dojo.query('#t >')).length);",

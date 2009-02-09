@@ -367,6 +367,21 @@
 
 							var at3 = divs.at(3,6).at(1);
 							doh.is(divs[6], at3[0]);
+						},
+	
+						function _mapIn(t){
+							var passes = false;
+							var count = 0;
+							var i = {
+								setTrue: function(node){
+									count++;
+									passes = true;
+								}
+							};
+							dojo.NodeList.prototype.setTrue = dojo.NodeList._mapIn("setTrue", false, i);
+							var divs = dojo.query("div").setTrue();
+							doh.t(passes);
+							doh.is(count, divs.length);
 						}
 					]
 				);

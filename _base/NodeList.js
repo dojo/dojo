@@ -15,18 +15,19 @@ dojo.require("dojo._base.array");
 		return arr;
 	}
 
-	var _mapIntoDojo = function(func, alwaysThis){
+	var _mapIn = function(func, alwaysThis, s){
 		// returns a function which, when executed in the scope of its caller,
 		// applies the passed arguments to a particular dojo.* function (named
 		// in func) and aggregates the returns. if alwaysThis is true, it
 		// always returns the scope object and not the collected returns from
 		// the Dojo method
+		var sc = s||d;
 		return function(){
 			var _a = arguments;
 			var aa = d._toArray(_a, 0, [null]);
 			var s = this.map(function(i){
 				aa[0] = i;
-				return d[func].apply(d, aa);
+				return sc[func].apply(sc, aa);
 			});
 			return (alwaysThis || ( (_a.length > 1) || !d.isString(_a[0]) )) ? this : s; // String||dojo.NodeList
 		}
@@ -46,6 +47,7 @@ dojo.require("dojo._base.array");
 	}
 
 	dojo.NodeList._wrap = tnl;
+	dojo.NodeList._mapIn = _mapIn;
 
 	dojo.extend(dojo.NodeList, {
 		// http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods
@@ -293,12 +295,12 @@ dojo.require("dojo._base.array");
 			//		|	dojo.query("div:nth-child(odd)").connect("onmouseover", foo, "bar");
 		},
 		=====*/
-		attr: _mapIntoDojo("attr"),
-		style: _mapIntoDojo("style"),
-		addClass: _mapIntoDojo("addClass", true),
-		removeClass: _mapIntoDojo("removeClass", true),
-		toggleClass: _mapIntoDojo("toggleClass", true),
-		connect: _mapIntoDojo("connect", true),
+		attr: _mapIn("attr"),
+		style: _mapIn("style"),
+		addClass: _mapIn("addClass", true),
+		removeClass: _mapIn("removeClass", true),
+		toggleClass: _mapIn("toggleClass", true),
+		connect: _mapIn("connect", true),
 
 		// FIXME: connectPublisher()? connectRunOnce()?
 

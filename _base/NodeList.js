@@ -195,7 +195,7 @@ dojo.require("dojo._base.array");
 			return !newList ? this : this._stash(nl); // dojo.NodeList
 		},
 
-		create: function(/*String*/ tagName, /*Object?*/ attrs){
+		create: function(/*String*/ tagName){
 			// summary:
 			// 		Create a new element for each of the nodes in this list
 			// 		returning a new NodeList of the newly selected nodes.  The
@@ -204,9 +204,11 @@ dojo.require("dojo._base.array");
 			//
 			//	tagName: String
 			//		A type of node to create. eg: "div", "a", "li"
+			//
 			// example:
 			//	|	dojo.query("li.tooltip")
-			//	|		.create("div", { tabIndex: -1 })
+			//	|		.create("div")
+			//	|			.attr({ tabIndex: -1 })
 			//	|			.place("ul#bar")
 			//	|			.addClass("tooltip")
 			//	|		.end()
@@ -217,7 +219,7 @@ dojo.require("dojo._base.array");
 			//	|	;
 			return this._stash(
 				this.map(function(){
-					return d.create(tagName, attrs);
+					return d.create(tagName);
 				})
 			); // dojo.NodeList
 		},
@@ -619,14 +621,13 @@ dojo.require("dojo._base.array");
 			return this; // dojo.NodeList
 		},
 
+		// FIXME: should be empty: _mapIn("empty", true) ?
 		empty: function(){
 			//	summary:
 			//		clears all content from each node in the list. Effectively
 			//		equivalent to removing all child nodes from every item in
 			//		the list.
 			return this.forEach("item.innerHTML='';"); // dojo.NodeList
-
-			// FIXME: should we be checking for and/or disposing of widgets below these nodes?
 		},
 		
 		instantiate: function(/*String|Object*/ declaredClass, /*Object?*/ properties){

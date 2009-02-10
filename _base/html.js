@@ -1513,7 +1513,11 @@ if(dojo.isIE || dojo.isOpera){
 			doc = refNode.ownerDocument;
 		}
 		if(d.isString(tag)){
-			tag = doc.createElement(tag);
+			try{
+				tag = doc.createElement(tag);
+			}catch(e){
+				tag = dojo._toDom(tag);
+			}
 		}
 		if(attrs){ d.attr(tag, attrs); }
 		if(refNode){ d.place(tag, refNode, pos); }

@@ -61,6 +61,54 @@ dojo.require("dojo._base.array");
 		//			reduce
 		//			reduceRight
 
+		_stash: function(/* dojo.NodeList */nl){
+			// summary: Stash this NodeList on the next NodeList returned
+			//  	so .end() has somewhere to go.
+			//
+			// example:
+			//	A Partially redundant example. Make an "odd" method which returns a
+			//	stashed `dojo.NodeList`: 
+			//	|	dojo.extend(dojo.NodeList, {
+			//	|		odd: function(){
+			//	|			return this._stash(this.filter(function(n,i){ return i % 2 == 0 }));
+			//	|		}
+			//	|	});
+			//  |	// then see how _stash applies a sub-list, to be .end()'ed out of
+			//	|   dojo.query(".foo")
+			//	|		.odd()
+			//	|			.addClass("stripe")
+			//	|		.end()
+			//	|		// access to the orig .foo list
+			//	|		.removeClass("foo")
+			//  | 
+			//
+			nl.__last = this;
+			return nl; // dojo.NodeList
+		},
+		
+		end: function(){
+			// summary: Break out of this current depth of chaining, returning
+			//		to the last most sequential NodeList, or this.
+			//
+			// description:
+			//		Break out of this current depth of chaining, returning 
+			//		to the last most sequential NodeList (or this NodeList if no
+			//		previous NodeList was stashed). Works in conjunction with
+			//		`dojo.NodeList._stash` to control a NodeList in advanced ways.
+			//
+			// example:
+			//	|	dojo.query("a")
+			//	|		.wrap("div", true)
+			//	|			// connect click to the divs
+			//	|			.onclick(function(e){ .. }))
+			//	|			.addClass("onADiv")
+			//	|		.end()
+			//	|		// jump back to the list of anchors
+			//  |		.style(...)
+			//
+			return this.__last || this; // dojo.NodeList
+		},
+
 		slice: function(/*===== begin, end =====*/){
 			// summary:
 			//		Returns a new NodeList, maintaining this one in place
@@ -110,6 +158,70 @@ dojo.require("dojo._base.array");
 			return tnl(a.splice.apply(this, a));
 		},
 
+		wrap: function(/*String*/ nodeType, /*dojo.NodeList?*/ newList){
+			// summary:
+			// 		Wrap a list of nodes in a nodeType, returning this
+			// 		NodeList, or a new `dojo.NodeList` of the newly created
+			// 		elements by setting a parameter
+			//
+			// description:
+			//		So this makes the most sense in the single-node list, but
+			//		applies and works by creating an element for each node in
+			//		the list, and wrapping it in the created node. 
+			//
+			// nodeType: String
+			//		An element to create. eg: "div", "li", "a", etc.
+			//
+			// newList: Boolean?
+			//		If true, a new NodeList is returned from this call.  If
+			//		false, null, or omitted this NodeList is returned
+			//
+			// example:
+			//		Wrap an additional DIV element around all DIVs with class="foo",
+			//		and connect a function to the click event to the wrapper node:
+			//
+			//	|	dojo.query("div.foo").wrap("div").onclick(function(e){
+			//	|		console.log('clicked', e.target); 
+			//	|	});
+			//
+			//	returns: A NodeList of the wrapping elements or This same NodeList
+			var nl = new d.NodeList();
+			this.forEach(function(n){
+				var element = d.create(nodeType);
+				d.place(element, n, "before");
+				d.place(n, element, "first");
+				nl.push(element);
+			});
+			return !newList ? this : this._stash(nl); // dojo.NodeList
+		},
+
+		create: function(/*String*/ tagName, /*Object?*/ attrs){
+			// summary:
+			// 		Create a new element for each of the nodes in this list
+			// 		returning a new NodeList of the newly selected nodes.  The
+			// 		returned list is a stashed-NodeList, and will return from
+			// 		and .end() call back to the original NodeList.
+			//
+			//	tagName: String
+			//		A type of node to create. eg: "div", "a", "li"
+			// example:
+			//	|	dojo.query("li.tooltip")
+			//	|		.create("div", { tabIndex: -1 })
+			//	|			.place("ul#bar")
+			//	|			.addClass("tooltip")
+			//	|		.end()
+			//	|		.removeClass("tooltip")
+			//	|		.onclick(function(e){
+			//	|			// handle click for the node
+			//	|		})
+			//	|	;
+			return this._stash(
+				this.map(function(){
+					return d.create(tagName, attrs);
+				})
+			); // dojo.NodeList
+		},
+		
 		concat: function(/*===== item =====*/){
 			// summary:
 			//		Returns a new NodeList comprised of items in this NodeList
@@ -306,12 +418,14 @@ dojo.require("dojo._base.array");
 
 		place: function(/*String||Node*/ queryOrNode, /*String*/ position){
 			//	summary:
-			//		places elements of this node list relative to the first element matched
-			//		by queryOrNode. Returns the original NodeList. See: `dojo.place`
+			//		Similar to other toolkit's "appendTo".  Places elements of
+			//		this node list relative to the first element matched by
+			//		queryOrNode. Returns the original NodeList. See:
+			//		`dojo.place`. 
 			//	queryOrNode:
-			//		may be a string representing any valid CSS3 selector or a DOM node.
-			//		In the selector case, only the first matching element will be used 
-			//		for relative positioning.
+			//		may be a string representing any valid CSS3 selector or a
+			//		DOM node.  In the selector case, only the first matching
+			//		element will be used for relative positioning.
 			//	position:
 			//		can be one of:
 			//		|	* "last" (default)
@@ -321,6 +435,9 @@ dojo.require("dojo._base.array");
 			//		|	* "only"
 			//		|	* "replace"
 			// 		or an offset in the childNodes property
+			// 	example:
+			// 		put selected items from a list into some other list
+			//	| 	dojo.query("li.clicked").place("ul#otherList");
 			var item = d.query(queryOrNode)[0];
 			return this.forEach(function(i){ d.place(i, item, position); }); // dojo.NodeList
 		},
@@ -532,10 +649,34 @@ dojo.require("dojo._base.array");
 			//		One or more 0-based indices of items in the current NodeList.
 			//	returns:
 			//		dojo.NodeList
-			var nl = new dojo.NodeList();
-			dojo.forEach(arguments, function(i) { if(this[i]) { nl.push(this[i]); } }, this);
+			var nl = new d.NodeList();
+			d.forEach(arguments, function(i){
+				if(this[i]){ nl.push(this[i]); }
+			}, this);
+			return nl; // dojo.NodeList
+		},
+
+		children: function(/* String? */tag){
+			// summary:
+			// 		Return a new `dojo.NodeList` of children 
+			//		of the nodes in this current list. 
+			//		
+			// tag: String?
+			//		A selector to match for children, defaults to *
+			return this._stash(this.query(tag || "*")); // dojo.NodeList
+		},
+	
+		parent: function(){
+			// summary:
+			// 		Retruns a new `dojo.NodeList` of the parent nodes
+			//		of the nodes in this current list. 
+			var nl = this._stash(new d.NodeList());
+			this.forEach(function(n){
+				nl.push(n.parentNode);
+			})
 			return nl; // dojo.NodeList
 		}
+		
 
 	});
 

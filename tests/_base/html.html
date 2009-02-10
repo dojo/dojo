@@ -426,10 +426,6 @@
 							doh.is("<thead><tr><th>1st!</th></tr></thead><tbody></tbody>",
 								n.innerHTML.toLowerCase().replace(/\s+/g, ""));
 							dojo.destroy(n);
-						},
-						function createWithMarkup(t){
-							var n = dojo.create("<div><span>howdy!</span></div>");
-							doh.is("<span>howdy!</span>", n.innerHTML.toLowerCase());
 						}
 					]
 				);

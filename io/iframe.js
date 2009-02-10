@@ -131,7 +131,7 @@ dojo.io.iframe = {
 				}
 			}
 		}catch(e){ 
-			console.debug("dojo.io.iframe.setSrc: ", e); 
+			console.log("dojo.io.iframe.setSrc: ", e); 
 		}
 	},
 

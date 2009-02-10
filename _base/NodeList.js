@@ -288,7 +288,7 @@ dojo.require("dojo._base.array");
 			//	example:
 			//		add an onclick handler to every button on the page
 			//		|	dojo.query("div:nth-child(odd)").connect("onclick", function(e){
-			//		|		console.debug("clicked!");
+			//		|		console.log("clicked!");
 			//		|	});
 			// example:
 			//		attach foo.bar() to every odd div's onmouseover
@@ -559,13 +559,13 @@ dojo.require("dojo._base.array");
 								// see:
 								//		http://developer.mozilla.org/en/docs/DOM:element
 
-								console.debug(n, evt, _oe);
+								console.log(n, evt, _oe);
 
 								// FIXME: need synthetic event support!
 								var _e = { target: n, faux: true, type: evt };
 								// dojo._event_listener._synthesizeEvent({}, { target: n, faux: true, type: evt });
-								try{ n[evt](_e); }catch(e){ console.debug(e); }
-								try{ n[_oe](_e); }catch(e){ console.debug(e); }
+								try{ n[evt](_e); }catch(e){ console.log(e); }
+								try{ n[_oe](_e); }catch(e){ console.log(e); }
 							})
 				);
 			}

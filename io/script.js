@@ -152,7 +152,7 @@ dojo.io.script = {
 				dojo.io.script._addDeadScript(dfd.ioArgs);
 			}
 		}
-		console.debug("dojo.io.script error", error);
+		console.log("dojo.io.script error", error);
 		return error;
 	},
 

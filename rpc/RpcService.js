@@ -155,7 +155,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 										m.url||m.serviceUrl||m.serviceURL);
 					if(!dojo.isFunction(this[m.name])){
 						throw new Error("RpcService: Failed to create" + m.name + "()");
-						/*console.debug("RpcService: Failed to create", m.name, "()");*/
+						/*console.log("RpcService: Failed to create", m.name, "()");*/
 					}
 				}
 			}, this);

@@ -257,7 +257,6 @@
 				}
 			}
 		}
-		// console.debug(syms);
 		return syms; // Array
 	}
 

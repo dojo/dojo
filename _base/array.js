@@ -66,7 +66,7 @@ dojo.provide("dojo._base.array");
 			//	|	dojo.forEach(
 			//	|		[ "thinger", "blah", "howdy", 10 ],
 			//	|		function(item){
-			//	|			console.debug(item);
+			//	|			console.log(item);
 			//	|		}
 			//	|	);
 			//	example:
@@ -74,7 +74,7 @@ dojo.provide("dojo._base.array");
 			//	|	dojo.forEach(
 			//	|		[ "thinger", "blah", "howdy", 10 ],
 			//	|		function(item, idx, arr){
-			//	|			console.debug(item, "at index:", idx);
+			//	|			console.log(item, "at index:", idx);
 			//	|		}
 			//	|	);
 			//	example:
@@ -83,7 +83,7 @@ dojo.provide("dojo._base.array");
 			//	|	var obj = {
 			//	|		prefix: "logged via obj.callback:", 
 			//	|		callback: function(item){
-			//	|			console.debug(this.prefix, item);
+			//	|			console.log(this.prefix, item);
 			//	|		}
 			//	|	};
 			//	|	

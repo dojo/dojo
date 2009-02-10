@@ -99,7 +99,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 		newObj = dojo.json.jsonRegistry.match(it);
 		return recurse(newObj, prettyPrint, nextIndent);
 	}catch(e){
-		// console.debug(e);
+		// console.log(e);
 	}
 	// it's a function with no adapter, skip it
 	*/

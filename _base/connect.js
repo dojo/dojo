@@ -237,7 +237,7 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 	//		The name of a function in context, or a function reference. This is the function that
 	//		is invoked when topic is published.
 	//	example:
-	//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
+	//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); });
 	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);																	
 
 	// support for 2 argument invocation (omitting context) depends on hitch

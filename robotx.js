@@ -33,6 +33,7 @@ var iframeLoad=function(){
 		onIframeLoad();
 	}
 	var unloadConnect = dojo.connect(dojo.body(), 'onunload', function(){
+		dojo.global = window;
 		dojo.doc = document;
 		dojo.disconnect(unloadConnect);
 	});
@@ -55,7 +56,13 @@ if(iframe['attachEvent'] !== undefined){
 
 dojo.mixin(doh.robot,{
 	_updateDocument: function(){
-		dojo.doc = iframe.contentWindow.document;
+		dojo.setContext(iframe.contentWindow, iframe.contentWindow.document);
+		var win = dojo.global;
+		if(win["dojo"]){
+			// allow the tests to subscribe to topics published by the iframe
+			dojo._topics = win.dojo._topics;
+		}
+		 
 	},
 
 	initRobot: function(/*String*/ url){

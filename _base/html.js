@@ -1589,7 +1589,7 @@ if(dojo.isIE || dojo.isOpera){
 	// for the injection for each special tag wrap case.
 	for(var param in tagWrap){
 		var tw = tagWrap[param];
-		tw.pre  = "<" + tw.join("><") + ">";
+		tw.pre  = param == "option" ? '<select multiple="multiple">' : "<" + tw.join("><") + ">";
 		tw.post = "</" + tw.reverse().join("></") + ">";
 		// the last line is destructive: it reverses the array,
 		// but we don't care at this point

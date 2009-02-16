@@ -196,6 +196,18 @@
 							doh.is("Hello, world!", n.nodeValue);
 						},
 
+						function toDomOption(t){
+							var n = dojo._toDom('<option value="1">First</option>');
+							doh.f(n.selected);
+
+							var n = dojo._toDom('<option value="1" selected="selected">First</option>');
+							doh.t(n.selected);
+
+							n = dojo._toDom('<option value="1">First</option><option value="2" selected>Second</option>');
+							doh.f(n.childNodes[0].selected);
+							doh.t(n.childNodes[1].selected);
+						},
+
 						function placeDivs(t){
 							dojo.place("<p class='disposable'>2</p>", dojo.body());
 							var n = dojo.query("body > .disposable")[0];

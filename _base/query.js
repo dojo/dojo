@@ -114,7 +114,7 @@ if(typeof dojo != "undefined"){
 				  evaluation of nodes based on each simple query section
 				- for native implementations, this may mean working around spec
 				  bugs. So be it.
-			5.) matched nodes are pruned to ensure they are unique (if necessaray)
+			5.) matched nodes are pruned to ensure they are unique (if necessary)
 */
 
 ;(function(d){
@@ -127,7 +127,7 @@ if(typeof dojo != "undefined"){
 
 	// if you are extracing dojo.query for use in your own system, you will
 	// need to provide these methods and properties. No other porting should be
-	// necessaray, save for configuring the system to use a class other than
+	// necessary, save for configuring the system to use a class other than
 	// dojo.NodeList as the return instance instantiator
 	var trim = 			d.trim;
 	var each = 			d.forEach;
@@ -399,7 +399,7 @@ if(typeof dojo != "undefined"){
 					}
 					// end the attribute by adding it to the list of attributes. 
 					currentPart.attrs.push(_cp);
-					_cp = null; // necessaray?
+					_cp = null; // necessary?
 					inBrackets = inMatchFor = -1;
 				}else if(cc == "="){
 					// if the last char was an operator prefix, make sure we
@@ -913,7 +913,7 @@ if(typeof dojo != "undefined"){
 		//		founde, a test function is applied to weed out the ones we
 		//		don't want. Many common cases can be fast-pathed. We spend a
 		//		lot of cycles to create a dispatcher that doesn't do more work
-		//		than necessaray at any point since, unlike this function, the
+		//		than necessary at any point since, unlike this function, the
 		//		dispatchers will be called every time. The logic of generating
 		//		efficient dispatchers looks like this in pseudo code:
 		//
@@ -984,7 +984,7 @@ if(typeof dojo != "undefined"){
 					}
 				}
 			}else if(getDoc()["getElementsByClassName"] && query.classes.length){
-				// it's a class-baed query and we've got a fast way to run it.
+				// it's a class-based query and we've got a fast way to run it.
 
 				// ignore class and ID filters since we will have handled both
 				filterFunc = getSimpleFilterFunc(query, { el: 1, classes: 1, id: 1 });
@@ -1109,7 +1109,7 @@ if(typeof dojo != "undefined"){
 	//	  caching is split into DOM query evaluators and QSA query evaluators
 	//	* caching query results is dirty and leak-prone (or, at a minimum,
 	//	  prone to unbounded growth). Other toolkits may go this route, but
-	//	  they totally destory their own ability to manage their memory
+	//	  they totally destroy their own ability to manage their memory
 	//	  footprint. If we implement it, it should only ever be with a fixed
 	//	  total element reference # limit and an LRU-style algorithm since JS
 	//	  has no weakref support. Caching compiled query evaluators is also
@@ -1367,7 +1367,7 @@ if(typeof dojo != "undefined"){
 		//		`dojo.query()`, including compound selectors ("," delimited).
 		//		Very complex and useful searches can be constructed with this
 		//		palette of selectors and when combined with functions for
-		//		maniplation presented by dojo.NodeList, many types of DOM
+		//		manipulation presented by dojo.NodeList, many types of DOM
 		//		manipulation operations become very straightforward.
 		//		
 		//		Unsupported Selectors:
@@ -1534,7 +1534,7 @@ if(typeof dojo != "undefined"){
 if(!dojo["query"]){
 	(function(){
 		var ctr = 0;
-		// QSA-only for webkit modible. Welcome to the future.
+		// QSA-only for webkit mobile. Welcome to the future.
 		dojo.query = function(query, root){
 			d._queryListCtor = dojo.NodeList;
 			if(!query){
@@ -1556,7 +1556,7 @@ if(!dojo["query"]){
 
 			root = root||dojo.doc;
 			var rootIsDoc = (root.nodeType == 9);
-			var doc = rootIsDoc ? root : (root.ownerDocment||dojo.doc);
+			var doc = rootIsDoc ? root : (root.ownerDocument||dojo.doc);
 			// rewrite the query to be ID rooted
 			if(!rootIsDoc || (">~+".indexOf(query.charAt(0)) >= 0)){
 				root.id = root.id||("qUnique"+(ctr++));

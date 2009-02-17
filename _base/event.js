@@ -25,7 +25,7 @@ dojo.require("dojo._base.connect");
 				fp = function(e){		
 					if(dojo.isFF <= 2) {
 						// check tagName to fix a FF2 bug with invalid nodes (hidden child DIV of INPUT)
-						// which causes isDecendant to return false which causes
+						// which causes isDescendant to return false which causes
 						// spurious, and more importantly, incorrect mouse events to fire.
 						// TODO: remove tagName check when Firefox 2 is no longer supported
 						try{ e.relatedTarget.tagName; }catch(e2){ return; }

@@ -116,9 +116,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 	onMouseUp: function(e){
 		// summary: event processor for onmouseup
 		// e: Event: mouse event
-		if(this.avatar && (!("mouseButton" in this.source) || 
-				(dojo.isWebKit && dojo.dnd._isMac && this.source.mouseButton == 2 ? 
-					e.button == 0 : this.source.mouseButton == e.button))){
+		if(this.avatar){
 			if(this.target && this.canDropFlag){
 				var copy = Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e))),
 				params = [this.source, this.nodes, copy, this.target];

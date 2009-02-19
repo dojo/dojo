@@ -30,3 +30,10 @@ dojo.dnd.isFormElement = function(/*Event*/ e){
 	}
 	return " button textarea input select option ".indexOf(" " + t.tagName.toLowerCase() + " ") >= 0;	// Boolean
 };
+
+// doesn't take into account when multiple buttons are pressed
+dojo.dnd._lmb = dojo.isIE ? 1 : 0;	// left mouse button
+
+dojo.dnd._isLmbPressed = dojo.isIE ?
+	function(e){ return e.button & 1; } : // intentional bit-and
+	function(e){ return e.button === 0; };

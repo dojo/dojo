@@ -160,7 +160,11 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		if(!this.current){ return; }
 		if(!this.singular && !dojo.dnd.getCopyKeyState(e) && !e.shiftKey && (this.current.id in this.selection)){
 			this.simpleSelection = true;
-			dojo.stopEvent(e);
+			if(e.button === dojo.dnd._lmb){
+				// accept the left button and stop the event
+				// for IE we don't stop event when multiple buttons are pressed
+				dojo.stopEvent(e);
+			}
 			return;
 		}
 		if(!this.singular && e.shiftKey){

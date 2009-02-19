@@ -216,9 +216,8 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	onMouseDown: function(e){
 		// summary: event processor for onmousedown
 		// e: Event: mouse event
-		if(this._legalMouseDown(e) && (!this.skipForm || !dojo.dnd.isFormElement(e))){
+		if(!this.mouseDown && this._legalMouseDown(e) && (!this.skipForm || !dojo.dnd.isFormElement(e))){
 			this.mouseDown = true;
-			this.mouseButton = e.button;
 			this._lastX = e.pageX;
 			this._lastY = e.pageY;
 			dojo.dnd.Source.superclass.onMouseDown.call(this, e);
@@ -284,7 +283,6 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this.before = true;
 		this.isDragging = false;
 		this.mouseDown = false;
-		delete this.mouseButton;
 		this._changeState("Source", "");
 		this._changeState("Target", "");
 	},
@@ -442,8 +440,14 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	_legalMouseDown: function(e){
 		// summary: checks if user clicked on "approved" items
 		// e: Event: mouse event
+		
+		// accept only the left mouse button
+		if(!dojo.dnd._isLmbPressed(e)){ return false; }
+		
 		if(!this.withHandles){ return true; }
-		for(var node = e.target; node; node = node.parentNode){
+		
+		// check for handles
+		for(var node = e.target; node && node !== this.node; node = node.parentNode){
 			if(dojo.hasClass(node, "dojoDndHandle")){ return true; }
 			if(dojo.hasClass(node, "dojoDndItem")){ break; }
 		}

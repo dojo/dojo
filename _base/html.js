@@ -1225,13 +1225,13 @@ if(dojo.isIE || dojo.isOpera){
 			//>>excludeEnd("webkitMobile");
 			case "readonly":
 				return "readOnly";
+			case "class":
+				return "className";
 			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			case "for": case "htmlfor":
 				// to pick up for attrib set in markup via getAttribute() IE<8 uses "htmlFor" and others use "for"
 				// get/setAttribute works in all as long use same value for both get/set
 				return ieLT8 ? "htmlFor" : "for";
-			case "class":
-				return ieLT8 ? "className" : "class";
 			//>>excludeEnd("webkitMobile");
 			default:
 				return name;
@@ -1254,7 +1254,9 @@ if(dojo.isIE || dojo.isOpera){
 		span: "span",
 		type: "type",
 		valuetype: "valueType",
-		innerhtml: "innerHTML"	// doesn't have the default but should be treated like a property
+		// the following attributes don't have the default but should be treated like properties
+		classname: "className",
+		innerhtml: "innerHTML"
 	}
 
 	dojo.hasAttr = function(/*DomNode|String*/node, /*String*/name){
@@ -1400,6 +1402,8 @@ if(dojo.isIE || dojo.isOpera){
 			}else if(name === "style" && !d.isString(value)){
 				// when the name is "style" and value is an object, pass along
 				d.style(node, value);
+			}else if(name == "className"){
+				node.className = value;
 			}else if(name === "innerHTML"){
 				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 				if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){

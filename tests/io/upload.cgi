@@ -42,7 +42,9 @@ if form.has_key("fileFields"):
 	debug("'fileCount': '" + str(len(fileFields)) + "',")
 	for field in fileFields:
 		debug("'fileField' : '"+field + "',")
-		save_uploaded_file(str(field).strip(), UPLOAD_DIR)
+		# Uncomment the line below to really test file save.
+		# You may need to modify UPLOAD_DIR above.
+		# save_uploaded_file(str(field).strip(), UPLOAD_DIR)
 	retval = "true";
 
 debug("'retval': " + retval)
@@ -54,7 +56,7 @@ print """Content-Type: text/html
 	<head>
 	</head>
 	<body>
-	    <textarea style="width: 100%; height: 100px;">{ %s }</textarea>
+	    <textarea style="width: 100%%; height: 100px;">{ %s }</textarea>
 	</body>
 </html>
 """ % (string.join(dbg, "\n"))

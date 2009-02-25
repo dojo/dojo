@@ -150,7 +150,7 @@ dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/incr
 	//		10.75
 	var wholeFigs = Math.log(Math.abs(value))/Math.log(10);
 	var factor = 10 / (increment || 10);
-	var delta = Math.pow(10, -14 + wholeFigs);
+	var delta = Math.pow(10, -15 + wholeFigs);
 	return (factor * (+value + (value > 0 ? delta : -delta))).toFixed(places) / factor; // Number
 }
 

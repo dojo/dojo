@@ -282,9 +282,10 @@
 						function concat(){
 							var spans = dojo.query("span");
 							var divs = dojo.query("div");
-							console.debug(spans.concat(divs));
-							doh.is(spans.concat(divs).constructor, dojo.NodeList);
-							doh.is((divs.length + spans.length), spans.concat(divs).length);
+							var cat = spans.concat(divs);
+							console.debug(cat);
+							doh.t(cat.constructor == dojo.NodeList || cat.constructor == NodeList);
+							doh.is((divs.length + spans.length), cat.length);
 						},
 
 						function concat2(t){
@@ -300,7 +301,7 @@
 							tn.innerHTML = ih;
 							dojo.body().appendChild(tn);
 							var nl = dojo.query("b", tn).place(tn, "first");
-							doh.t(nl.constructor == dojo.NodeList);
+							doh.t(nl.constructor == dojo.NodeList || nl.constructor == NodeList);
 							doh.is(1, nl.length);
 							doh.is("b", nl[0].nodeName.toLowerCase());
 							doh.is(tn, nl[0].parentNode);
@@ -314,7 +315,7 @@
 							tn.innerHTML = ih;
 							dojo.body().appendChild(tn);
 							var nl = dojo.query("span", tn).orphan();
-							doh.t(nl.constructor == dojo.NodeList);
+							doh.t(nl.constructor == dojo.NodeList || nl.constructor == NodeList);
 
 							doh.is(2, nl.length);
 							doh.is(1, tn.getElementsByTagName("*").length);
@@ -329,11 +330,37 @@
 						// FIXME
 						function adopt(t){
 						},
-						
-						function addContent(t){
-						},
 						*/
-						
+
+						function addContent(t){
+							//text content
+							var tn = document.createElement("div");
+							var nl = dojo.query(tn).addContent("some text content");
+
+							doh.is(1, nl[0].childNodes.length);
+							doh.is("some text content", nl[0].firstChild.nodeValue);
+
+							//move a node
+							var mNode = document.createElement("span");
+							mNode.id = "addContent1";
+							mNode.innerHTML = "hello";
+							dojo.body().appendChild(mNode);
+							doh.t(dojo.byId("addContent1"));
+							
+							nl.addContent(mNode);
+							doh.f(dojo.byId("addContent1"));
+							doh.is("addContent1", nl[0].lastChild.id);
+							
+							//put in multiple content/clone node
+							tn.innerHTML = '<select><option name="second"  value="second" selected>second</option></select>'
+							               '<select><option name="second"  value="second" selected>second</option></select>';
+							nl = dojo.query("select", tn).addContent('<option name="first" value="first">first</option>', "first");
+							nl.forEach(function(node){
+								doh.is("first", node.options[0].value);
+								doh.f(node.options[0].selected);
+							});
+						},
+
 						function connect(t){
 							var ih = "<div><span></span></div><span class='thud'><button>blah</button></span>";
 							
@@ -369,7 +396,7 @@
 							doh.is(divs[6], at3[0]);
 						},
 	
-						function _mapIn(t){
+						function _adaptAsForEach(t){
 							var passes = false;
 							var count = 0;
 							var i = {
@@ -378,7 +405,7 @@
 									passes = true;
 								}
 							};
-							dojo.NodeList.prototype.setTrue = dojo.NodeList._mapIn("setTrue", false, i);
+							dojo.NodeList.prototype.setTrue = dojo.NodeList._adaptAsForEach(i.setTrue, i);
 							var divs = dojo.query("div").setTrue();
 							doh.t(passes);
 							doh.is(count, divs.length);

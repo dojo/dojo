@@ -8,46 +8,131 @@ dojo.require("dojo._base.array");
 	var d = dojo;
 //>>excludeEnd("webkitMobile");
 
-	var tnl = function(arr){
+	var ap = Array.prototype, aps = ap.slice, apc = ap.concat;
+	
+	var tnl = function(a){
 		// decorate an array to make it look like a NodeList
-		arr.constructor = dojo.NodeList;
-		dojo._mixin(arr, dojo.NodeList.prototype);
-		return arr;
-	}
+		a.constructor = d.NodeList;
+		dojo._mixin(a, d.NodeList.prototype);
+		return a;
+	};
 
-	var _mapIn = function(func, alwaysThis, s){
-		// returns a function which, when executed in the scope of its caller,
-		// applies the passed arguments to a particular dojo.* function (named
-		// in func) and aggregates the returns. if alwaysThis is true, it
-		// always returns the scope object and not the collected returns from
-		// the Dojo method
-		var sc = s||d;
+	var loopBody = function(f, a, o){
+		a = [0].concat(aps.call(a, 0));
+		o = o || d.global;
+		return function(node){
+			a[0] = node;
+			return f.apply(o, a);
+		};
+	};
+	
+	// adapters
+
+	var adaptAsForEach = function(f, o){
+		// summary: adapts a single node function to be used in the forEach-type actions
+		// f: Function: a function to adapt
+		// o: Object?: an optional context for f
 		return function(){
-			var _a = arguments;
-			var aa = d._toArray(_a, 0, [null]);
-			var s = this.map(function(i){
-				aa[0] = i;
-				return sc[func].apply(sc, aa);
-			});
-			return (alwaysThis || ( (_a.length > 1) || !d.isString(_a[0]) )) ? this : s; // String||dojo.NodeList
+			this.forEach(loopBody(f, arguments, o));
+			return this;	// self
+		};
+	};
+
+	var adaptAsMap = function(f, o){
+		// summary: adapts a single node function to be used in the map-type actions
+		// f: Function: a function to adapt
+		// o: Object?: an optional context for f
+		return function(){
+			return this.map(loopBody(f, arguments, o));
+		};
+	};
+	
+	var adaptAsFilter = function(f, o){
+		// summary: adapts a single node function to be used in the filter-type actions
+		// f: Function: a function to adapt
+		// o: Object?: an optional context for f
+		return function(){
+			return this.filter(loopBody(f, arguments, o));
+		};
+	};
+	
+	var adaptWithCondition = function(f, g, o){
+		// summary: adapts a single node function to be used in the map-type actions,
+		//		behaves like forEach() or map() depending on arguments
+		// f: Function: a function to adapt
+		// g: Function: a condition function, if true runs as map(), otherwise runs as forEach()
+		// o: Object?: an optional context for f and g
+		return function(){
+			var a = arguments, body = loopBody(f, a, o);
+			if(g.call(o || d.global, a)){
+				return this.map(body);	// self
+			}
+			this.forEach(body);
+			return this;	// self
+		};
+	};
+	
+	// the guard function for dojo.attr() and dojo.style()
+	var magicGuard = function(a){
+		return a.length == 1 && d.isString(a[0])
+	};
+	
+	// function to orphan nodes
+	var orphan = function(node){
+		var p = node.parentNode;
+		if(p){
+			p.removeChild(node);
 		}
 	};
+	// FIXME: should we move orphan() to dojo.html?
 
 	dojo.NodeList = function(){
 		//	summary:
-		//		dojo.NodeList is as subclass of Array which adds syntactic 
-		//		sugar for chaining, common iteration operations, animation, 
-		//		and node manipulation. NodeLists are most often returned as
-		//		the result of dojo.query() calls.
+		//		dojo.NodeList is as pseudo-subclass of Array which adds syntactic 
+		//		sugar for chaining, common iteration operations, animation, and
+		//		node manipulation. NodeLists are most often returned as the result
+		//		of dojo.query() calls.
 		//	example:
 		//		create a node list from a node
 		//		|	new dojo.NodeList(dojo.byId("foo"));
 
 		return tnl(Array.apply(null, arguments));
-	}
+	};
 
-	dojo.NodeList._wrap = tnl;
-	dojo.NodeList._mapIn = _mapIn;
+	var nl = d.NodeList, nlp = nl.prototype;
+	
+	// expose adapters and the wrapper as private functions
+	
+	nl._wrap = tnl;
+	nl._adaptAsMap = adaptAsMap;
+	nl._adaptAsForEach = adaptAsForEach;
+	nl._adaptAsFilter  = adaptAsFilter;
+	nl._adaptWithCondition = adaptWithCondition;
+	
+	// mass assignment
+	
+	// add array redirectors
+	d.forEach(["slice", "splice"], function(name){
+		var f = ap[name];
+		nlp[name] = function(){ return tnl(f.apply(this, arguments)); };
+	});
+	// concat should be here but some browsers with native NodeList have problems with it
+	
+	// add array.js redirectors
+	d.forEach(["indexOf", "lastIndexOf", "every", "some"], function(name){
+		var f = d[name];
+		nlp[name] = function(){ return f.apply(d, [this].concat(aps.call(arguments, 0))); };
+	});
+	
+	// add conditional methods
+	d.forEach(["attr", "style"], function(name){
+		nlp[name] = adaptWithCondition(d[name], magicGuard);
+	});
+	
+	// add forEach actions
+	d.forEach(["connect", "addClass", "removeClass", "toggleClass", "empty"], function(name){
+		nlp[name] = adaptAsForEach(d[name]);
+	});
 
 	dojo.extend(dojo.NodeList, {
 		// http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods
@@ -61,7 +146,8 @@ dojo.require("dojo._base.array");
 		//			reduce
 		//			reduceRight
 
-		slice: function(/*===== begin, end =====*/){
+		/*=====
+		slice: function(begin, end){
 			// summary:
 			//		Returns a new NodeList, maintaining this one in place
 			// description:
@@ -78,11 +164,10 @@ dojo.require("dojo._base.array");
 			//		Optional parameter to describe what position relative to
 			//		the NodeList's zero index to end the slice at. Like begin,
 			//		can be positive or negative.
-			var a = d._toArray(arguments);
-			return tnl(a.slice.apply(this, a));
+			return tnl(a.slice.apply(this, arguments));
 		},
 
-		splice: function(/*===== index, howmany, item =====*/){
+		splice: function(index, howmany, item){
 			// summary:
 			//		Returns a new NodeList, manipulating this NodeList based on
 			//		the arguments passed, potentially splicing in new elements
@@ -106,11 +191,67 @@ dojo.require("dojo._base.array");
 			//		spliced into the NodeList
 			// returns:
 			//		dojo.NodeList
-			var a = d._toArray(arguments);
-			return tnl(a.splice.apply(this, a));
+			return tnl(a.splice.apply(this, arguments));
 		},
 
-		concat: function(/*===== item =====*/){
+		indexOf: function(value, fromIndex){
+			//	summary:
+			//		see dojo.indexOf(). The primary difference is that the acted-on 
+			//		array is implicitly this NodeList
+			// value: Object:
+			//		The value to search for.
+			// fromIndex: Integer?:
+			//		The loction to start searching from. Optional. Defaults to 0.
+			//	description:
+			//		For more details on the behavior of indexOf, see:
+			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
+			//	returns:
+			//		Positive Integer or 0 for a match, -1 of not found.
+			return d.indexOf(this, value, fromIndex); // Integer
+		},
+
+		lastIndexOf: function(value, fromIndex){
+			// summary:
+			//		see dojo.lastIndexOf(). The primary difference is that the
+			//		acted-on array is implicitly this NodeList
+			//	description:
+			//		For more details on the behavior of lastIndexOf, see:
+			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf>
+			// value: Object:
+			//		The value to search for.
+			// fromIndex: Integer?:
+			//		The loction to start searching from. Optional. Defaults to 0.
+			// returns:
+			//		Positive Integer or 0 for a match, -1 of not found.
+			return d.lastIndexOf(this, value, fromIndex); // Integer
+		},
+
+		every: function(callback, thisObject){
+			//	summary:
+			//		see `dojo.every()` and:
+			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
+			//		Takes the same structure of arguments and returns as
+			//		dojo.every() with the caveat that the passed array is
+			//		implicitly this NodeList
+			// callback: Function: the callback
+			// thisObject: Object?: the context
+			return d.every(this, callback, thisObject); // Boolean
+		},
+
+		some: function(callback, thisObject){
+			//	summary:
+			//		see dojo.some() and:
+			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
+			//		Takes the same structure of arguments and returns as
+			//		dojo.some() with the caveat that the passed array is
+			//		implicitly this NodeList
+			// callback: Function: the callback
+			// thisObject: Object?: the context
+			return d.some(this, callback, thisObject); // Boolean
+		},
+		=====*/
+
+		concat: function(item){
 			// summary:
 			//		Returns a new NodeList comprised of items in this NodeList
 			//		as well as items passed in as parameters
@@ -124,60 +265,26 @@ dojo.require("dojo._base.array");
 			//		spliced into the NodeList
 			// returns:
 			//		dojo.NodeList
-			var a = d._toArray(arguments, 0, [this]);
-			return tnl(a.concat.apply([], a));
-		},
-		
-		indexOf: function(/*Object*/ value, /*Integer?*/ fromIndex){
-			//	summary:
-			//		see dojo.indexOf(). The primary difference is that the acted-on 
-			//		array is implicitly this NodeList
-			// value:
-			//		The value to search for.
-			// fromIndex:
-			//		The loction to start searching from. Optional. Defaults to 0.
-			//	description:
-			//		For more details on the behavior of indexOf, see:
-			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
-			//	returns:
-			//		Positive Integer or 0 for a match, -1 of not found.
-			return d.indexOf(this, value, fromIndex); // Integer
-		},
-
-		lastIndexOf: function(/*===== value, fromIndex =====*/){
-			// summary:
-			//		see dojo.lastIndexOf(). The primary difference is that the
-			//		acted-on array is implicitly this NodeList
-			//	description:
-			//		For more details on the behavior of lastIndexOf, see:
-			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf>
-			// value: Object
-			//		The value to search for.
-			// fromIndex: Integer?
-			//		The loction to start searching from. Optional. Defaults to 0.
-			// returns:
-			//		Positive Integer or 0 for a match, -1 of not found.
-			return d.lastIndexOf.apply(d, d._toArray(arguments, 0, [this])); // Integer
-		},
-
-		every: function(/*Function*/callback, /*Object?*/thisObject){
-			//	summary:
-			//		see `dojo.every()` and:
-			//			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
-			//		Takes the same structure of arguments and returns as
-			//		dojo.every() with the caveat that the passed array is
-			//		implicitly this NodeList
-			return d.every(this, callback, thisObject); // Boolean
-		},
-
-		some: function(/*Function*/callback, /*Object?*/thisObject){
-			//	summary:
-			//		see dojo.some() and:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
-			//		Takes the same structure of arguments and returns as
-			//		dojo.some() with the caveat that the passed array is
-			//		implicitly this NodeList
-			return d.some(this, callback, thisObject); // Boolean
+			
+			//return tnl(apc.apply(this, arguments));
+			// the line above won't work for the native NodeList :-(
+			
+			// implementation notes:
+			// 1) Native NodeList is not an array, and cannot be used directly
+			// in concat() --- the latter doesn't recognize it as an array, and
+			// does not inline it, but append as a single entity.
+			// 2) On some browsers (e.g., Safari) the "constructor" property is
+			// read-only and cannot be changed. So we have to test for both
+			// native NodeList and dojo.NodeList in this property to recognize
+			// the node list.
+			
+			var t = d.isArray(this) ? this : aps.call(this, 0),
+				m = d.map(arguments, function(a){
+					return a && !d.isArray(a) &&
+						(a.constructor === NodeList || a.constructor == nl) ?
+							aps.call(a, 0) : a;
+				});
+			return tnl(apc.apply(t, m));	// dojo.NodeList
 		},
 
 		map: function(/*Function*/ func, /*Function?*/ obj){
@@ -185,22 +292,21 @@ dojo.require("dojo._base.array");
 			//		see dojo.map(). The primary difference is that the acted-on
 			//		array is implicitly this NodeList and the return is a
 			//		dojo.NodeList (a subclass of Array)
-
-			return d.map(this, func, obj, d.NodeList); // dojo.NodeList
+			///return d.map(this, func, obj, d.NodeList); // dojo.NodeList
+			return tnl(d.map(this, func, obj)); // dojo.NodeList
 		},
 
 		forEach: function(callback, thisObj){
 			//	summary:
 			//		see dojo.forEach(). The primary difference is that the acted-on 
 			//		array is implicitly this NodeList
-
 			d.forEach(this, callback, thisObj);
 			// non-standard return to allow easier chaining
 			return this; // dojo.NodeList 
 		},
 
-		// custom methods
-		
+
+		/*=====
 		coords: function(){
 			//	summary:
 			// 		Returns the box objects all elements in a node list as
@@ -209,7 +315,6 @@ dojo.require("dojo._base.array");
 			return d.map(this, d.coords); // Array
 		},
 
-		/*=====
 		attr: function(property, value){
 			//	summary:
 			//		gets or sets the DOM attribute for every element in the
@@ -294,15 +399,30 @@ dojo.require("dojo._base.array");
 			//		attach foo.bar() to every odd div's onmouseover
 			//		|	dojo.query("div:nth-child(odd)").connect("onmouseover", foo, "bar");
 		},
+
+		empty: function(){
+			//	summary:
+			//		clears all content from each node in the list. Effectively
+			//		equivalent to removing all child nodes from every item in
+			//		the list.
+			return this.forEach("item.innerHTML='';"); // dojo.NodeList
+			// FIXME: should we be checking for and/or disposing of widgets below these nodes?
+		},
 		=====*/
-		attr: _mapIn("attr"),
-		style: _mapIn("style"),
-		addClass: _mapIn("addClass", true),
-		removeClass: _mapIn("removeClass", true),
-		toggleClass: _mapIn("toggleClass", true),
-		connect: _mapIn("connect", true),
+		
+		// useful html methods
+		coords:	adaptAsMap(d.coords),
 
 		// FIXME: connectPublisher()? connectRunOnce()?
+
+		/*
+		destroy: function(){
+			//	summary:
+			//		destroys every item in 	the list.
+			this.forEach(d.destroy);
+			// FIXME: should we be checking for and/or disposing of widgets below these nodes?
+		},
+		*/
 
 		place: function(/*String||Node*/ queryOrNode, /*String*/ position){
 			//	summary:
@@ -322,7 +442,7 @@ dojo.require("dojo._base.array");
 			//		|	* "replace"
 			// 		or an offset in the childNodes property
 			var item = d.query(queryOrNode)[0];
-			return this.forEach(function(i){ d.place(i, item, position); }); // dojo.NodeList
+			return this.forEach(function(node){ d.place(node, item, position); }); // dojo.NodeList
 		},
 
 		orphan: function(/*String?*/ simpleFilter){
@@ -337,8 +457,7 @@ dojo.require("dojo._base.array");
 			//		can instead be used to test a single node is acceptable.
 			//	returns:
 			//		`dojo.NodeList` containing the orpahned elements 
-			return (simpleFilter ? d._filterQueryResult(this, simpleFilter) : this). // dojo.NodeList
-				forEach("if(item.parentNode){ item.parentNode.removeChild(item); }"); 
+			return (simpleFilter ? d._filterQueryResult(this, simpleFilter) : this).forEach(orphan); // dojo.NodeList
 		},
 
 		adopt: function(/*String||Array||DomNode*/ queryOrListOrNode, /*String?*/ position){
@@ -359,10 +478,7 @@ dojo.require("dojo._base.array");
 			//		|	* "only"
 			//		|	* "replace"
 			// 		or an offset in the childNodes property
-			var item = this[0];
-			return d.query(queryOrListOrNode).forEach(function(ai){ // dojo.NodeList
-				d.place(ai, item, position || "last"); 
-			});
+			return d.query(queryOrListOrNode).place(item[0], position);	// dojo.NodeList
 		},
 
 		// FIXME: do we need this?
@@ -387,16 +503,13 @@ dojo.require("dojo._base.array");
 			//		contained by these elements with this sub-query:
 			//	| 	var spans = l.query("p span");
 
-			if(!queryStr){ return this; }
-
 			// FIXME: probably slow
-			// FIXME: use map?
-			var ret = d.NodeList();
-			this.forEach(function(item){
+			if(!queryStr){ return this; }
+			var ret = this.map(function(node){
 				// FIXME: why would we ever get undefined here?
-				ret = ret.concat(d.query(queryStr, item).filter(function(subItem){ return (subItem !== undefined); }));
+				return d.query(queryStr, node).filter(function(subNode){ return subNode !== undefined; });
 			});
-			return ret; // dojo.NodeList
+			return tnl(apc.apply([], ret));	// dojo.NodeList
 		},
 
 		filter: function(/*String|Function*/ simpleFilter){
@@ -420,26 +533,17 @@ dojo.require("dojo._base.array");
 			//		the same filtering using a CSS selector
 			//		|	dojo.query("*").filter("p").styles("backgroundColor", "yellow");
 
-			var items = this;
-			var _a = arguments;
-			var r = d.NodeList();
-			var rp = function(t){ 
-				if(t !== undefined){
-					r.push(t); 
-				}
-			}
+			var a = arguments, items = this, start = 0;
 			if(d.isString(simpleFilter)){
-				items = d._filterQueryResult(this, _a[0]);
-				if(_a.length == 1){
+				items = d._filterQueryResult(this, a[0]);
+				if(a.length == 1){
 					// if we only got a string query, pass back the filtered results
 					return items; // dojo.NodeList
 				}
 				// if we got a callback, run it over the filtered items
-				_a.shift(); // FIXME: does this need a _toArray to work?
+				start = 1;
 			}
-			// handle the (callback, [thisObject]) case
-			d.forEach(d.filter(items, _a[0], _a[1]), rp);
-			return r; // dojo.NodeList
+			return tnl(d.filter(items, a[start], a[start + 1]));	// dojo.NodeList
 		},
 		
 		/*
@@ -483,35 +587,16 @@ dojo.require("dojo._base.array");
 			//		add a clone of a DOM node to the end of every element in
 			//		the list, removing it from its existing parent.
 			//	|	dojo.query(".note").addContent(dojo.byId("foo"));
-			var ta = d.doc.createElement("span");
-			if(d.isString(content)){
-				ta.innerHTML = content;
-			}else{
-				ta.appendChild(content);
+			var c = d.isString(content) ? d._toDom(content, this[0] && this[0].ownerDocument) : content, i, l = this.length - 1;
+			for(i = 0; i < l; ++i){
+				d.place(c.cloneNode(true), this[i], position);
 			}
-			if(position === undefined){
-				position = "last";
+			if(l >= 0){
+				d.place(c, this[l], position);
 			}
-			var ct = (position == "first" || position == "after") ? "lastChild" : "firstChild";
-			this.forEach(function(item){
-				var tn = ta.cloneNode(true);
-				while(tn[ct]){
-					d.place(tn[ct], item, position);
-				}
-			});
-			return this; // dojo.NodeList
+			return this;	// dojo.NodeList
 		},
 
-		empty: function(){
-			//	summary:
-			//		clears all content from each node in the list. Effectively
-			//		equivalent to removing all child nodes from every item in
-			//		the list.
-			return this.forEach("item.innerHTML='';"); // dojo.NodeList
-
-			// FIXME: should we be checking for and/or disposing of widgets below these nodes?
-		},
-		
 		instantiate: function(/*String|Object*/ declaredClass, /*Object?*/ properties){
 			//	summary:
 			//		Create a new instance of a specified class, using the
@@ -519,9 +604,8 @@ dojo.require("dojo._base.array");
 			//		srcNodeRef
 			//
 			var c = d.isFunction(declaredClass) ? declaredClass : d.getObject(declaredClass);
-			return this.forEach(function(i){
-				new c(properties||{},i);
-			}) // dojo.NodeList
+			properties = properties || {};
+			return this.forEach(function(node){ new c(properties, node); });	// dojo.NodeList
 		},
 
 		at: function(/*===== index =====*/){
@@ -532,9 +616,9 @@ dojo.require("dojo._base.array");
 			//		One or more 0-based indices of items in the current NodeList.
 			//	returns:
 			//		dojo.NodeList
-			var nl = new dojo.NodeList();
-			dojo.forEach(arguments, function(i) { if(this[i]) { nl.push(this[i]); } }, this);
-			return nl; // dojo.NodeList
+			var t = new dojo.NodeList();
+			d.forEach(arguments, function(i){ if(this[i]){ t.push(this[i]); }}, this);
+			return t; // dojo.NodeList
 		}
 
 	});
@@ -545,7 +629,7 @@ dojo.require("dojo._base.array");
 		"mouseenter", "mouseleave", "mousemove", "mouseout", "mouseover", "mouseup", "submit" 
 		], function(evt){
 			var _oe = "on"+evt;
-			d.NodeList.prototype[_oe] = function(a, b){
+			nlp[_oe] = function(a, b){
 				return this.connect(_oe, a, b);
 			}
 				// FIXME: should these events trigger publishes?

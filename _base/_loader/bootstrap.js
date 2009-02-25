@@ -148,7 +148,6 @@ djConfig = {
 		};
 	}
 
-	var dojo = this.dojo;
 	var d = dojo;
 
 	//Need placeholders for dijit and dojox for scoping code.

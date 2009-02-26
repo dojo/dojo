@@ -116,16 +116,12 @@ dojo.number._applyPattern = function(/*Number*/value, /*String*/pattern, /*dojo.
 
 dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/increment){
 	//	summary:
-	//		An inexact rounding method to compensate for binary floating point artifacts and browser quirks.
+	//		Rounds to the nearest value with the given number of decimal places, away from zero
 	//	description:
-	//		Rounds to the nearest value with the given number of decimal places, away from zero if equal,
-	//		similar to Number.toFixed().  Rounding can be done by fractional increments also.
-	//		Makes minor adjustments to accommodate for precision errors due to binary floating point representation
-	//		of Javascript Numbers.  See http://speleotrove.com/decimal/decifaq.html for more information.
-	//		Because of this adjustment, the rounding may not be mathematically correct for full precision
-	//		floating point values.  The calculations assume 14 significant figures, so the number of decimal
-	//		places preserved will vary with the magnitude of the input.  This is not a substitute for
-	//		decimal arithmetic.
+	//		Rounds to the nearest value with the given number of decimal places, away from zero if equal.
+	//		Similar to Number.toFixed(), but compensates for browser quirks. Rounding can be done by
+	//		fractional increments also, such as the nearest quarter.
+	//		NOTE: Subject to floating point errors.  See dojox.math.round for experimental workaround.
 	//	value:
 	//		The number to round
 	//	places:
@@ -134,24 +130,14 @@ dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/incr
 	//	increment:
 	//		Rounds next place to nearest value of increment/10.  10 by default.
 	//	example:
-	//		>>> 4.8-(1.1+2.2)
-	//		1.4999999999999996
-	//		>>> Math.round(4.8-(1.1+2.2))
-	//		1
-	//		>>> dojo.number.round(4.8-(1.1+2.2))
-	//		2
-	//		>>> ((4.8-(1.1+2.2))/100)
-	//		0.014999999999999996
-	//		>>> ((4.8-(1.1+2.2))/100).toFixed(2)
-	//		"0.01"
-	//		>>> dojo.number.round((4.8-(1.1+2.2))/100,2)
-	//		0.02
+	//		>>> dojo.number.round(-0.5)
+	//		-1
+	//		>>> dojo.number.round(162.295, 2)
+	//		162.29  // note floating point error.  Should be 162.3
 	//		>>> dojo.number.round(10.71, 0, 2.5)
 	//		10.75
-	var wholeFigs = Math.log(Math.abs(value))/Math.log(10);
 	var factor = 10 / (increment || 10);
-	var delta = Math.pow(10, -15 + wholeFigs);
-	return (factor * (+value + (value > 0 ? delta : -delta))).toFixed(places) / factor; // Number
+	return (factor * +value).toFixed(places) / factor; // Number
 }
 
 if((0.9).toFixed() == 0){

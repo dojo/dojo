@@ -147,6 +147,15 @@ tests.register("tests.number",
 			}
 		},
 		{
+			name: "invalid",
+			runTest: function(t){
+				t.t(null === dojo.number.format(NaN));
+				t.t(null === dojo.number.format(Number.NaN));
+				t.t(null === dojo.number.format(Infinity));
+				t.t(null === dojo.number.format(-Infinity));
+			}
+		},
+		{
 			name: "round",
 			runTest: function(t){
 				t.is(0, dojo.number.round(0));

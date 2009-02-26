@@ -48,16 +48,16 @@ dojo.number.format = function(/*Number*/value, /*dojo.number.__FormatOptions?*/o
 	//		Formatting patterns appropriate to the locale are chosen from the
 	//		[CLDR](http://unicode.org/cldr) as well as the appropriate symbols and
 	//		delimiters.  See <http://www.unicode.org/reports/tr35/#Number_Elements>
+	//		If value is Infinity, -Infinity, or is not a valid JavaScript number, return null.
 	// value:
-	//		the number to be formatted.  If not a valid JavaScript number,
-	//		return null.
+	//		the number to be formatted
 
 	options = dojo.mixin({}, options || {});
 	var locale = dojo.i18n.normalizeLocale(options.locale);
 	var bundle = dojo.i18n.getLocalization("dojo.cldr", "number", locale);
 	options.customs = bundle;
 	var pattern = options.pattern || bundle[(options.type || "decimal") + "Format"];
-	if(isNaN(value)){ return null; } // null
+	if(isNaN(value) || Math.abs(value) == Infinity){ return null; } // null
 	return dojo.number._applyPattern(value, pattern, options); // String
 };
 

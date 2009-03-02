@@ -136,7 +136,7 @@ if(typeof dojo != "undefined"){
 	// 					d.isOpera; // float
 	// 					d.isWebKit; // float
 	// 					d.doc ; // document element
-	d._queryListCtor = 		d.NodeList;
+	var qlc = d._queryListCtor = 		d.NodeList;
 	var isString = 		d.isString;
 
 	var getDoc = function(){ return d.doc; };
@@ -984,7 +984,7 @@ if(typeof dojo != "undefined"){
 				// testing shows that the overhead of yesman() is acceptable
 				// and can save us some bytes vs. re-defining the function
 				// everywhere.
-				filerFunc = (!query.loops && !qt) ? 
+				filterFunc = (!query.loops && wildcardTag) ? 
 					yesman : 
 					getSimpleFilterFunc(query, { el: 1, id: 1 });
 
@@ -1014,6 +1014,16 @@ if(typeof dojo != "undefined"){
 					return ret;
 				};
 
+			}else if(!wildcardTag && !query.loops){
+				// it's tag only. Fast-path it.
+				retFunc = function(root, arr){
+					var ret = getArr(0, arr), te, x=0;
+					var tret = root.getElementsByTagName(query.getTag());
+					while((te = tret[x++])){
+						ret.push(te);
+					}
+					return ret;
+				};
 			}else{
 				// the common case:
 				//		a descendant selector without a fast path. By now it's got
@@ -1108,7 +1118,7 @@ if(typeof dojo != "undefined"){
 			// that need to be fast (e.g., "#someId").
 			var tef = getElementsFunc(qparts[0]);
 			return function(root){
-				var r = tef(root, new d._queryListCtor());
+				var r = tef(root, new qlc());
 				if(r){ r.nozip = true; }
 				return r;
 			}
@@ -1248,12 +1258,16 @@ if(typeof dojo != "undefined"){
 				// constituent parts and return a dispatcher that will
 				// merge the parts when run
 				function(root){
-					var pindex = 0; // avoid array alloc for every invocation
-					var ret = [];
-					var tp;
+					var pindex = 0, // avoid array alloc for every invocation
+						nz = true,
+						ret = [],
+						tp;
 					while((tp = parts[pindex++])){
-						ret = ret.concat(getStepQueryFunc(tp)(root));
+						var n = getStepQueryFunc(tp)(root)
+						nz = nz && n["nozip"];
+						ret = ret.concat(n);
 					}
+					ret.nozip = nz;
 					return ret;
 				}
 			);
@@ -1295,10 +1309,10 @@ if(typeof dojo != "undefined"){
 	var _zipIdxName = "_zipIdx";
 	var _zip = function(arr){
 		if(arr && arr.nozip){ 
-			return (d._queryListCtor._wrap) ? d._queryListCtor._wrap(arr) : arr;
+			return (qlc._wrap) ? qlc._wrap(arr) : arr;
 		}
 		// var ret = new d._queryListCtor();
-		var ret = new d._queryListCtor();
+		var ret = new qlc();
 		if(!arr || !arr.length){ return ret; }
 		if(arr[0]){
 			ret.push(arr[0]);
@@ -1488,18 +1502,18 @@ if(typeof dojo != "undefined"){
 		//	|	});
 
 		if(!query){
-			return new d._queryListCtor();
+			return new qlc();
 		}
 
-		if(query.constructor == d._queryListCtor){
+		if(query.constructor == qlc){
 			return query;
 		}
 		if(!isString(query)){
-			return new d._queryListCtor(query); // dojo.NodeList
+			return new qlc(query); // dojo.NodeList
 		}
 		if(isString(root)){
 			root = d.byId(root);
-			if(!root){ return new d._queryListCtor(); }
+			if(!root){ return new qlc(); }
 		}
 
 		root = root||getDoc();
@@ -1522,7 +1536,7 @@ if(typeof dojo != "undefined"){
 		var r = getQueryFunc(query)(root);
 		// FIXME:
 		//		need to investigate this branch WRT #8074 and #8075
-		if(r && r.nozip && !d._queryListCtor._wrap){
+		if(r && r.nozip && !qlc._wrap){
 			return r;
 		}
 		return _zip(r); // dojo.NodeList

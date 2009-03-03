@@ -447,7 +447,7 @@ dojo.xdRequireLocalization = function(/*String*/moduleName, /*String*/bundleName
 	//See if the bundle we are going to use is already loaded.
  	var bundleResource = dojo.getObject([moduleName, "nls", bundleName].join("."));
 	if(bundleResource && bundleResource[fixedBestLocale]){
-		bundle[jsLoc.replace('-', '_')] = bundleResource[fixedBestLocale];
+		bundleMap[jsLoc.replace('-', '_')] = bundleResource[fixedBestLocale];
 	}else{
 		//Need to remember what locale we wanted and which one we actually use.
 		//Then when we load the one we are actually using, use that bundle for the one

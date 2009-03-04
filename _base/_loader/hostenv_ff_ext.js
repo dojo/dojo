@@ -267,10 +267,6 @@ if(typeof window != 'undefined'){
 		}
 	}
 
-	dojo._fakeLoadInit = function(){
-		dojo._loadInit({type: "load"});
-	}
-
 	/*
 	(function(){
 		var _w = window;

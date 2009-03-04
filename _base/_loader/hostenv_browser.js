@@ -115,6 +115,7 @@ if(typeof window != 'undefined'){
 		if(dua.indexOf("Opera") >= 0){ d.isOpera = tv; }
 		if(dua.indexOf("AdobeAIR") >= 0){ d.isAIR = 1; }
 		d.isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : 0;
+		d.isGecko = parseFloat(dua.split("Gecko/")[1]) || undefined;
 		d.isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
 		d.isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
 
@@ -367,7 +368,7 @@ if(typeof window != 'undefined'){
 		// allow multiple calls, only first one will take effect
 		// A bug in khtml calls events callbacks for document for event which isnt supported
 		// for example a created contextmenu event calls DOMContentLoaded, workaround
-		var type = (e && e.type) ? e.type.toLowerCase() : "load";
+		var type = e && e.type ? e.type.toLowerCase() : "load";
 		if(arguments.callee.initialized || (type != "domcontentloaded" && type != "load")){ return; }
 		arguments.callee.initialized = true;
 		if("_khtmlTimer" in dojo){
@@ -378,10 +379,6 @@ if(typeof window != 'undefined'){
 		if(dojo._inFlightCount == 0){
 			dojo._modulesLoaded();
 		}
-	}
-
-	dojo._fakeLoadInit = function(){
-		dojo._loadInit({type: "load"});
 	}
 
 	if(!dojo.config.afterOnLoad){

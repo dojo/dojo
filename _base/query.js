@@ -140,7 +140,7 @@ if(typeof dojo != "undefined"){
 	var isString = 		d.isString;
 
 	var getDoc = function(){ return d.doc; };
-	var cssCaseBug = (!d.isWebKit || ((getDoc().compatMode) == "BackCompat"));
+	var cssCaseBug = (d.isWebKit && ((getDoc().compatMode) == "BackCompat"));
 
 	////////////////////////////////////////////////////////////////////////
 	// Global utilities
@@ -948,6 +948,10 @@ if(typeof dojo != "undefined"){
 		//				return def(root):
 		//					return filter(root.getElementsByClassName(cssClass));
 		//
+		//			elif only(tag):
+		//				return def(root):
+		//					return root.getElementsByTagName(tagName);
+		//
 		//			else:
 		//				# search by tag name, then filter
 		//				return def(root):
@@ -976,6 +980,7 @@ if(typeof dojo != "undefined"){
 		var filterFunc = getSimpleFilterFunc(query, { el: 1 });
 		var qt = query.tag;
 		var wildcardTag = ("*" == qt);
+		var ecs = getDoc()["getElementsByClassName"]; 
 
 		if(!oper){
 			// if there's no infix operator, then it's a descendant query. ID
@@ -1001,8 +1006,11 @@ if(typeof dojo != "undefined"){
 					}
 				}
 			}else if(
-				getDoc()["getElementsByClassName"] && 
+				ecs && 
+				// isAlien check. Workaround for Prototype.js being totally evil/dumb.
+				/\{\s*\[native code\]\s*\}/.test(String(ecs)) && 
 				query.classes.length &&
+				// WebKit bug where quirks-mode docs select by class w/o case sensitivity
 				!cssCaseBug
 			){
 				// it's a class-based query and we've got a fast way to run it.
@@ -1198,10 +1206,9 @@ if(typeof dojo != "undefined"){
 		var qcz = query.charAt(0);
 		var nospace = (-1 == query.indexOf(" "));
 
-		if(
-			(qcz == "#") && (nospace) &&
-			(!/[.:\[\(]/.test(query)) // make sure it's an ID only search
-		){
+		// byId searches are wicked fast compared to QSA, even when filtering
+		// is required
+		if( (query.indexOf("#") >= 0) && (nospace) ){
 			forceDOM = true;
 		}
 
@@ -1213,7 +1220,7 @@ if(typeof dojo != "undefined"){
 			// IE's QSA impl sucks on pseudos
 			(!d.isIE || (query.indexOf(":") == -1)) &&
 
-			(!cssCaseBug || !(query.indexOf(".") >= 0)) &&
+			(!(cssCaseBug && (query.indexOf(".") >= 0))) &&
 
 			// FIXME:
 			//		need to tighten up browser rules on ":contains" and "|=" to

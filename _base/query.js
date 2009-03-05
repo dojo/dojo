@@ -140,6 +140,7 @@ if(typeof dojo != "undefined"){
 	var isString = 		d.isString;
 
 	var getDoc = function(){ return d.doc; };
+	var cssCaseBug = (!d.isWebKit || ((getDoc().compatMode) == "BackCompat"));
 
 	////////////////////////////////////////////////////////////////////////
 	// Global utilities
@@ -999,7 +1000,11 @@ if(typeof dojo != "undefined"){
 						}
 					}
 				}
-			}else if(getDoc()["getElementsByClassName"] && query.classes.length){
+			}else if(
+				getDoc()["getElementsByClassName"] && 
+				query.classes.length &&
+				!cssCaseBug
+			){
 				// it's a class-based query and we've got a fast way to run it.
 
 				// ignore class and ID filters since we will have handled both
@@ -1207,13 +1212,18 @@ if(typeof dojo != "undefined"){
 			(specials.indexOf(qcz) == -1) && 
 			// IE's QSA impl sucks on pseudos
 			(!d.isIE || (query.indexOf(":") == -1)) &&
+
+			(!cssCaseBug || !(query.indexOf(".") >= 0)) &&
+
 			// FIXME:
 			//		need to tighten up browser rules on ":contains" and "|=" to
 			//		figure out which aren't good
 			(query.indexOf(":contains") == -1) &&
-			(query.indexOf("|=") == -1) && // some browsers don't grok it
-			true
+			(query.indexOf("|=") == -1) // some browsers don't grok it
 		);
+		// console.debug(d.isWebKit && (d.doc.compatMode == "BackCompat"));
+		// console.debug(!d.isWebKit || !((query.indexOf(".") >= 0) && ((d.doc.compatMode+"") == "BackCompat")));
+		// console.debug(!d.isWebKit, ((query.indexOf(".") >= 0) && ((d.doc.compatMode+"") == "BackCompat")));
 
 		// TODO: 
 		//		if we've got a descendant query (e.g., "> .thinger" instead of
@@ -1259,15 +1269,11 @@ if(typeof dojo != "undefined"){
 				// merge the parts when run
 				function(root){
 					var pindex = 0, // avoid array alloc for every invocation
-						nz = true,
 						ret = [],
 						tp;
 					while((tp = parts[pindex++])){
-						var n = getStepQueryFunc(tp)(root)
-						nz = nz && n["nozip"];
-						ret = ret.concat(n);
+						ret = ret.concat(getStepQueryFunc(tp)(root));
 					}
-					ret.nozip = nz;
 					return ret;
 				}
 			);

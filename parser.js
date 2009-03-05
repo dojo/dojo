@@ -108,9 +108,10 @@ dojo.parser = new function(){
 			var proto = cls.prototype;
 	
 			// get table of parameter names & types
-			var params={};
+			var params = {}, dummyClass = {};
 			for(var name in proto){
 				if(name.charAt(0)=="_"){ continue; } 	// skip internal properties
+				if(name in dummyClass){ continue; }		// skip "constructor" and "toString"
 				var defVal = proto[name];
 				params[name]=val2type(defVal);
 			}

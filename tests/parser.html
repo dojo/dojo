@@ -12,7 +12,10 @@
 			dojo.require("doh.runner");
 
 			dojo.declare("tests.parser.Class1", null, {
-				constructor: function(args, node){ dojo.mixin(this, args); }, 
+				constructor: function(args, node){
+					this.params = args;
+					dojo.mixin(this, args);
+				}, 
 				preambleTestProp: 1,
 				preamble: function(){
 					this.preambleTestProp++;
@@ -135,6 +138,22 @@
 							// dateProp3="now", should map to current date
 							t.is(dojo.date.stamp.toISOString(new Date(), {selector: 'date'}),
 								dojo.date.stamp.toISOString(obj.dateProp3, {selector: 'date'}));
+						},
+						function testUnwantedParams(t){
+							// Make sure that parser doesn't pass any unwanted parameters to
+							// widget constructor, especially "toString" or "constructor"
+							for(var param in obj.params){
+								doh.t(dojo.indexOf(
+									["strProp1", "strProp2",
+									"intProp",
+									"arrProp", "arrProp2",
+									"boolProp1", "boolProp2",
+									"dateProp1", "dateProp2", "dateProp3",
+									"funcProp2", "funcProp3",
+									"preamble",
+									"callInc1", "callInc2"],
+									param) >= 0, param);
+							}
 						},
 						function testDisabledFlag(t){
 							t.is("boolean", (typeof disabledObj.disabled));

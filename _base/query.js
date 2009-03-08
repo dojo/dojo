@@ -597,8 +597,8 @@ if(typeof dojo != "undefined"){
 		var root = node.parentNode;
 		var i = 0,
 			tret = root[childNodesName],
-			ci = parseInt(node["_i"]||-1),
-			cl = parseInt(root["_l"]||-1);
+			ci = (node["_i"]||-1),
+			cl = (root["_l"]||-1);
 
 		if(!tret){ return -1; }
 		var l = tret.length;

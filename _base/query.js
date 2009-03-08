@@ -606,12 +606,10 @@ if(typeof dojo != "undefined"){
 		// we calcuate the parent length as a cheap way to invalidate the
 		// cache. It's not 100% accurate, but it's much more honest than what
 		// other libraries do
-		/*
 		if( cl == l && ci >= 0 && cl >= 0 ){
 			// if it's legit, tag and release
 			return ci;
 		}
-		*/
 
 		// else re-key things
 		root["_l"] = l;

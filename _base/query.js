@@ -285,7 +285,6 @@ if(typeof dojo != "undefined"){
 
 			currentPart.oquery = currentPart.query = ts(pStart, x); // save the full expression as a string
 
-			// console.debug("|"+currentPart.oquery+"|");
 
 			// otag/tag are hints to suggest to the system whether or not
 			// it's an operator or a tag. We save a copy of otag since the
@@ -598,8 +597,8 @@ if(typeof dojo != "undefined"){
 		var root = node.parentNode;
 		var i = 0,
 			tret = root[childNodesName],
-			ci = (node["_i"]||-1),
-			cl = (root["_l"]||-1);
+			ci = parseInt(node["_i"]||-1),
+			cl = parseInt(root["_l"]||-1);
 
 		if(!tret){ return -1; }
 		var l = tret.length;
@@ -607,15 +606,17 @@ if(typeof dojo != "undefined"){
 		// we calcuate the parent length as a cheap way to invalidate the
 		// cache. It's not 100% accurate, but it's much more honest than what
 		// other libraries do
+		/*
 		if( cl == l && ci >= 0 && cl >= 0 ){
 			// if it's legit, tag and release
 			return ci;
 		}
+		*/
 
 		// else re-key things
 		root["_l"] = l;
 		ci = -1;
-		for(var te = root.firstChild; te; te = te[_ns]){
+		for(var te = root["firstElementChild"]||root["firstChild"]; te; te = te[_ns]){
 			if(_simpleNodeTest(te)){ 
 				te["_i"] = ++i;
 				if(node === te){ 
@@ -1228,9 +1229,6 @@ if(typeof dojo != "undefined"){
 			(query.indexOf(":contains") == -1) &&
 			(query.indexOf("|=") == -1) // some browsers don't grok it
 		);
-		// console.debug(d.isWebKit && (d.doc.compatMode == "BackCompat"));
-		// console.debug(!d.isWebKit || !((query.indexOf(".") >= 0) && ((d.doc.compatMode+"") == "BackCompat")));
-		// console.debug(!d.isWebKit, ((query.indexOf(".") >= 0) && ((d.doc.compatMode+"") == "BackCompat")));
 
 		// TODO: 
 		//		if we've got a descendant query (e.g., "> .thinger" instead of
@@ -1361,7 +1359,6 @@ if(typeof dojo != "undefined"){
 				}
 				te[_zipIdxName] = _zipIdx;
 			}
-			// console.debug("zip out length:", ret.length);
 		}
 		return ret;
 	};
@@ -1547,6 +1544,7 @@ if(typeof dojo != "undefined"){
 		//		testing the DOM branch without worrying about the
 		//		behavior/performance of the QSA branch.
 		var r = getQueryFunc(query)(root);
+
 		// FIXME:
 		//		need to investigate this branch WRT #8074 and #8075
 		if(r && r.nozip && !qlc._wrap){

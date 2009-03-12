@@ -995,7 +995,7 @@ if(typeof dojo != "undefined"){
 
 				retFunc = function(root, arr){
 					var te = d.byId(query.id, (root.ownerDocument||root));
-					if(!filterFunc(te)){ return; }
+					if(!te || !filterFunc(te)){ return; }
 					if(9 == root.nodeType){ // if root's a doc, we just return directly
 						return getArr(te, arr);
 					}else{ // otherwise check ancestry

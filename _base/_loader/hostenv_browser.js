@@ -115,7 +115,6 @@ if(typeof window != 'undefined'){
 		if(dua.indexOf("Opera") >= 0){ d.isOpera = tv; }
 		if(dua.indexOf("AdobeAIR") >= 0){ d.isAIR = 1; }
 		d.isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : 0;
-		d.isGecko = parseFloat(dua.split("Gecko/")[1]) || undefined;
 		d.isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
 		d.isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
 
@@ -136,7 +135,8 @@ if(typeof window != 'undefined'){
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(dua.indexOf("Gecko") >= 0 && !d.isKhtml && !d.isWebKit){ d.isMozilla = d.isMoz = tv; }
 		if(d.isMoz){
-			d.isFF = parseFloat(dua.split("Firefox/")[1]) || undefined;
+			//We really need to get away from this. Consider a sane isGecko approach for the future.
+			d.isFF = parseFloat(dua.split("Firefox/")[1]) || parseFloat(dua.split("Minefield/")[1]) || parseFloat(dua.split("Shiretoko/")[1]) || undefined;
 		}
 		if(document.all && !d.isOpera){
 			d.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;

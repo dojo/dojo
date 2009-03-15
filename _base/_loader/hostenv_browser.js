@@ -136,7 +136,7 @@ if(typeof window != 'undefined'){
 		if(dua.indexOf("Gecko") >= 0 && !d.isKhtml && !d.isWebKit){ d.isMozilla = d.isMoz = tv; }
 		if(d.isMoz){
 			//We really need to get away from this. Consider a sane isGecko approach for the future.
-			d.isFF = parseFloat(dua.split("Firefox/")[1]) || parseFloat(dua.split("Minefield/")[1]) || parseFloat(dua.split("Shiretoko/")[1]) || undefined;
+			d.isFF = parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1] || dua.split("Shiretoko/")[1]) || undefined;
 		}
 		if(document.all && !d.isOpera){
 			d.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;

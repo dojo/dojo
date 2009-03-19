@@ -29,6 +29,14 @@
 							doh.t(dojo.byId("ranch"));
 							doh.t(dojo.byId("cattle3"));
 							doh.is("span", dojo.byId("fish").nodeName.toLowerCase());
+							
+							var startNode = dojo.byId("start");
+							var clonedNode = dojo.clone(startNode);
+							clonedNode.id= "clonedStart";
+							clonedNode.innerHTML= "This is a cloned div";
+							dojo.body().appendChild(clonedNode);
+
+							doh.is("This is a cloned div", dojo.byId("clonedStart").innerHTML);
 						}
 					]
 				);
@@ -64,5 +72,8 @@
 			<input type="text" name="turtle" value="turtle">
 		</form>
 		<span id="fish">Fish span</span>
+		
+		<div id="start">a start node</div>
+		
 	</body>
 </html>

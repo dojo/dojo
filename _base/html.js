@@ -54,7 +54,7 @@ if(dojo.isIE || dojo.isOpera){
 			var te = _d.getElementById(id);
 			// attributes.id.value is better than just id in case the 
 			// user has a name=id inside a form
-			if(te && te.attributes.id.value == id){
+			if(te && (te.attributes.id.value == id || (typeof te.id == "string" && te.id == id))){
 				return te;
 			}else{
 				var eles = _d.all[id];
@@ -64,7 +64,8 @@ if(dojo.isIE || dojo.isOpera){
 				// if more than 1, choose first with the correct id
 				var i=0;
 				while((te=eles[i++])){
-					if(te.attributes && te.attributes.id && te.attributes.id.value == id){
+					if((te.attributes && te.attributes.id && te.attributes.id.value == id)
+						|| (typeof te.id == "string" && te.id == id)){
 						return te;
 					}
 				}

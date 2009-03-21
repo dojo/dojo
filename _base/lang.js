@@ -24,7 +24,8 @@ dojo.isFunction = function(it){
 
 dojo.isFunction = (function(){
 	var _isFunction = function(/*anything*/ it){
-		return it && (typeof it == "function" || it instanceof Function); // Boolean
+		var t = typeof it; // must evaluate separately due to bizarre Opera bug. See #8937 
+		return it && (t == "function" || it instanceof Function); // Boolean
 	};
 
 	return dojo.isSafari ?

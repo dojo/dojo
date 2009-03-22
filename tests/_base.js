@@ -122,6 +122,7 @@ try{
 	dojo.require("tests._base.connect");
 	dojo.require("tests._base.Deferred");
 	dojo.require("tests._base.json");
+	dojo.require("tests._base.object");
 	// FIXME: add test includes for the rest of the Dojo Base groups here
 	dojo.requireIf(dojo.isBrowser, "tests._base.html");
 	dojo.requireIf(dojo.isBrowser, "tests._base.fx");

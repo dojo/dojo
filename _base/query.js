@@ -1509,6 +1509,10 @@ if(typeof dojo != "undefined"){
 		//	|		});
 		//	|	});
 
+		//Set list constructor to desired value. This can change
+		//between calls, so always re-assign here.
+		qlc = d._queryListCtor;
+
 		if(!query){
 			return new qlc();
 		}

@@ -1533,7 +1533,7 @@ if(typeof dojo != "undefined"){
 		// 		Opera in XHTML mode doesn't detect case-sensitivity correctly
 		// 		and it's not clear that there's any way to test for it
 		caseSensitive = (root.contentType && root.contentType=="application/xml") || 
-						(d.isOpera && root.doctype) ||
+						(d.isOpera && (root.doctype || od.toString() == "[object XMLDocument]")) ||
 						(!!od) && 
 						(d.isIE ? od.xml : (root.xmlVersion||od.xmlVersion));
 

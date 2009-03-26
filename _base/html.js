@@ -54,7 +54,7 @@ if(dojo.isIE || dojo.isOpera){
 			var te = _d.getElementById(id);
 			// attributes.id.value is better than just id in case the 
 			// user has a name=id inside a form
-			if(te && te.attributes.id.value == id){
+			if(te && (te.attributes.id.value == id || te.id == id)){
 				return te;
 			}else{
 				var eles = _d.all[id];
@@ -64,7 +64,8 @@ if(dojo.isIE || dojo.isOpera){
 				// if more than 1, choose first with the correct id
 				var i=0;
 				while((te=eles[i++])){
-					if(te.attributes && te.attributes.id && te.attributes.id.value == id){
+					if((te.attributes && te.attributes.id && te.attributes.id.value == id)
+						|| te.id == id){
 						return te;
 					}
 				}
@@ -784,8 +785,8 @@ if(dojo.isIE || dojo.isOpera){
 					}
 				}
 			}
-		}else if(d.isOpera){
-			// On Opera, offsetLeft includes the parent's border
+		}else if(d.isOpera || (d.isIE > 7 && !d.isQuirks)){
+			// On Opera and IE 8, offsetLeft/Top includes the parent's border
 			if(p){
 				be = d._getBorderExtents(p);
 				l -= be.l;
@@ -1068,14 +1069,14 @@ if(dojo.isIE || dojo.isOpera){
 	//>>excludeEnd("webkitMobile");
 	
 	dojo._fixIeBiDiScrollLeft = function(/*Integer*/ scrollLeft){
-		// In RTL direction, scrollLeft should be a negative value, but IE 
+		// In RTL direction, scrollLeft should be a negative value, but IE < 8
 		// returns a positive one. All codes using documentElement.scrollLeft
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
 
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		var dd = d.doc;
-		if(d.isIE && !d._isBodyLtr()){
+		if(d.isIE < 8 && !d._isBodyLtr()){
 			var de = dd.compatMode == "BackCompat" ? dd.body : dd.documentElement;
 			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
 		}

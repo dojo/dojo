@@ -48,7 +48,8 @@ dojo.declare("dojo.dnd.Mover", null, {
 	},
 	// utilities
 	onFirstMove: function(){
-		// summary: makes the node absolute; it is meant to be called only once
+		// summary: makes the node absolute; it is meant to be called only once. 
+		// 	relative and absolutely positioned nodes are assumed to use pixel units
 		var s = this.node.style, l, t, h = this.host;
 		switch(s.position){
 			case "relative":

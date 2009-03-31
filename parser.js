@@ -237,15 +237,17 @@ dojo.parser = new function(){
 		// Call startup on each top level instance if it makes sense (as for
 		// widgets).  Parent widgets will recursively call startup on their
 		// (non-top level) children
-		d.forEach(thelist, function(instance){
-			if(	instance  && 
-				instance.startup &&
-				!instance._started && 
-				(!instance.getParent || !instance.getParent())
-			){
-				instance.startup();
-			}
-		});
+		if(!mixin._started){
+			d.forEach(thelist, function(instance){
+				if(	instance  && 
+					instance.startup &&
+					!instance._started && 
+					(!instance.getParent || !instance.getParent())
+				){
+					instance.startup();
+				}
+			});
+		}
 		return thelist;
 	};
 

@@ -664,35 +664,21 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		var identity;
 		for(identity in this._pending._modifiedItems){
 			// find the original item and the modified item that replaced it
-			var originalItem = this._pending._modifiedItems[identity];
+			var copyOfItemState = this._pending._modifiedItems[identity];
 			var modifiedItem = null;
 			if(this._itemsByIdentity){
 				modifiedItem = this._itemsByIdentity[identity];
 			}else{
 				modifiedItem = this._arrayOfAllItems[identity];
 			}
-			
-			// make the original item into a full-fledged item again
-			originalItem[this._storeRefPropName] = this;
-			modifiedItem[this._storeRefPropName] = null;
-
-			// replace the modified item with the original one
-			var arrayIndex = modifiedItem[this._itemNumPropName];
-			this._arrayOfAllItems[arrayIndex] = originalItem;
-			
-			if(modifiedItem[this._rootItemPropName]){
-				var i;
-				for (i = 0; i < this._arrayOfTopLevelItems.length; i++) {
-					var possibleMatch = this._arrayOfTopLevelItems[i];
-					if (this.getIdentity(possibleMatch) == identity){
-						this._arrayOfTopLevelItems[i] = originalItem;
-						break;
-					}
-				}
+	
+			// Restore the original item into a full-fledged item again, we want to try to 
+			// keep the same object instance as if we don't it, causes bugs like #9022.
+			copyOfItemState[this._storeRefPropName] = this;
+			for(key in modifiedItem){
+				delete modifiedItem[key];
 			}
-			if(this._itemsByIdentity){
-				this._itemsByIdentity[identity] = originalItem;
-			}			
+			dojo.mixin(modifiedItem, copyOfItemState);
 		}
 		var deletedItem;
 		for(identity in this._pending._deletedItems){

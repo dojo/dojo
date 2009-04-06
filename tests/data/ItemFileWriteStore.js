@@ -691,6 +691,110 @@ doh.register("tests.data.ItemFileWriteStore",
 			store.revert();
 			doh.assertTrue(store._arrayOfAllItems[itemEntryNum] === null);
 		},
+		function testWriteAPI_new_modify_revert(){
+			//	summary: 
+			//		Test of a new item, modify it, then revert, to ensure the state remains consistent.  Added due to #9022.
+			//	description:
+			//		Test of a new item, modify it, then revert, to ensure the state remains consistent.  Added due to #9022.
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+
+			var deferred = new doh.Deferred();
+			doh.assertTrue(!store.isDirty());
+
+			var onError = function(error, request){
+				deferred.errback(error);
+			};
+
+			var intialFetch = function(items, request){
+				var initialCount = items.length;
+				var canada = store.newItem({name: "Canada", abbr:"ca", capital:"Ottawa"});
+				store.setValue(canada, "someattribute", "modified a new item!");
+				var afterNewFetch = function(items, request){
+					var afterNewCount = items.length;
+					doh.assertEqual(afterNewCount, (initialCount + 1));
+					store.revert();
+					var afterRevertFetch = function(items, request){
+						var afterRevertCount = items.length;
+						doh.assertEqual(afterRevertCount, initialCount);
+						deferred.callback(true);
+					};
+					store.fetch({onComplete: afterRevertFetch, onError: onError});
+				};
+				store.fetch({onComplete: afterNewFetch, onError: onError});
+			};
+			store.fetch({onComplete: intialFetch, onError: onError});
+			return deferred; //Object
+		},
+		function testWriteAPI_new_modify_delete_revert(){
+			//	summary: 
+			//		Test of a new item, modify it, delete it, then revert, to ensure the state remains consistent.  Added due to #9022.
+			//	description:
+			//		Test of a new item, modify it, delete it, then revert, to ensure the state remains consistent.  Added due to #9022.
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
+			var i;
+			var found = false;
+
+			var deferred = new doh.Deferred();
+			doh.assertTrue(!store.isDirty());
+
+			var onError = function(error, request){
+				deferred.errback(error);
+			};
+
+			var intialFetch = function(items, request){
+				var initialCount = items.length;
+				var canada = store.newItem({name: "Canada", abbr:"ca", capital:"Ottawa"});
+				store.setValue(canada, "someattribute", "modified a new item!");
+				
+				// check that after new and modify, the total items count goes up by one.
+				var afterNewFetch = function(items, request){
+					var afterNewCount = items.length;
+					doh.assertEqual(afterNewCount, (initialCount + 1));
+					store.deleteItem(canada);
+					
+					//Check that after delete, the total items count goes back to initial count.  
+					//Also verify the item with abbr of ca is gone.
+					var afterDeleteFetch = function(items, request){
+						var afterDeleteCount = items.length;
+						doh.assertEqual(initialCount, afterDeleteCount);
+
+						for(i=0; i < items.length; i++){
+							found = (store.getIdentity(items[i]) === "ca");
+							if(found){ 
+								break;
+							}
+						}
+						if(found){
+							deferred.errback(new Error("Error: Found the supposedly deleted item!"));
+						}else{
+							store.revert();
+							//Check that after revert, we still have the same item count as the 
+							//original fetch.  Also verify the item with abbr of ca is gone.
+							var afterRevertFetch = function(items, request){
+								var afterRevertCount = items.length;
+								doh.assertEqual(afterRevertCount, initialCount);
+								for(i=0; i < items.length; i++){
+									found = (store.getIdentity(items[i]) === "ca");
+									if(found){ 
+										break;
+									}
+								}
+								if(found){
+									deferred.errback(new Error("Error: Found the 'new' item after revert!"));
+								}else{
+									deferred.callback(true);
+								}
+							};
+							store.fetch({onComplete: afterRevertFetch, onError: onError});
+						}
+					};
+					store.fetch({onComplete: afterDeleteFetch, onError: onError});
+				};
+				store.fetch({onComplete: afterNewFetch, onError: onError});
+			};
+			store.fetch({onComplete: intialFetch, onError: onError});
+			return deferred; //Object
+		},
 		function testNotificationAPI_onSet(){
 			//	summary: 
 			//		Simple test of the onSet API

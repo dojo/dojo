@@ -32,7 +32,7 @@ dojo.require("dojo._base.html");
 		return ((this.end - this.start) * n) + this.start; // Decimal
 	};
 	
-	dojo._Animation = function(args){
+	dojo.Animation = function(args){
 		//	summary:
 		//		A generic animation class that fires callbacks into its handlers
 		//		object at various states. 
@@ -41,7 +41,7 @@ dojo.require("dojo._base.html");
 		//		object at various states. Nearly all dojo animation functions
 		//		return an instance of this method, usually without calling the
 		//		.play() method beforehand. Therefore, you will likely need to
-		//		call .play() on instances of `dojo._Animation` when one is
+		//		call .play() on instances of `dojo.Animation` when one is
 		//		returned.
 		// args: Object
 		//		The 'magic argument', mixing all the properties into this
@@ -54,7 +54,10 @@ dojo.require("dojo._base.html");
 		
 	};
 	
-	d.extend(dojo._Animation, {
+	// Alias to drop come 2.0:
+	d._Animation = d.Animation;
+	
+	d.extend(dojo.Animation, {
 		// duration: Integer
 		//		The time in milliseonds the animation will take to run
 		duration: 350,
@@ -87,31 +90,31 @@ dojo.require("dojo._base.html");
 		delay: null,
 	
 		// beforeBegin: Event?
-		//		Synthetic event fired before a dojo._Animation begins playing (synchronous)
+		//		Synthetic event fired before a dojo.Animation begins playing (synchronous)
 		beforeBegin: null,
 	
 		// onBegin: Event?
-		//		Synthetic event fired as a dojo._Animation begins playing (useful?)
+		//		Synthetic event fired as a dojo.Animation begins playing (useful?)
 		onBegin: null,
 	
 		// onAnimate: Event?
-		//		Synthetic event fired at each interval of a `dojo._Animation`
+		//		Synthetic event fired at each interval of a `dojo.Animation`
 		onAnimate: null,
 	
 		// onEnd: Event?
-		//		Synthetic event fired after the final frame of a `dojo._Animation`
+		//		Synthetic event fired after the final frame of a `dojo.Animation`
 		onEnd: null,
 	
 		// onPlay: Event?
-		//		Synthetic event fired any time a `dojo._Animation` is play()'ed
+		//		Synthetic event fired any time a `dojo.Animation` is play()'ed
 		onPlay: null,
 	
 		// onPause: Event?
-		//		Synthetic event fired when a `dojo._Animation` is paused
+		//		Synthetic event fired when a `dojo.Animation` is paused
 		onPause: null,
 	
 		// onStop: Event
-		//		Synthetic event fires when a `dojo._Animation` is stopped
+		//		Synthetic event fires when a `dojo.Animation` is stopped
 		onStop: null,
 	
 	=====*/
@@ -126,7 +129,7 @@ dojo.require("dojo._base.html");
 			//	description:
 			//		Convenience function.  Fire event "evt" and pass it the
 			//		arguments specified in "args".
-			//		Fires the callback in the scope of the `dojo._Animation` 
+			//		Fires the callback in the scope of the `dojo.Animation` 
 			//		instance.
 			//	evt:
 			//		The event to fire.
@@ -150,7 +153,7 @@ dojo.require("dojo._base.html");
 					}
 				}
 			}
-			return this; // dojo._Animation
+			return this; // dojo.Animation
 		},
 
 		play: function(/*int?*/ delay, /*Boolean?*/ gotoStart){
@@ -161,7 +164,7 @@ dojo.require("dojo._base.html");
 			// gotoStart:
 			//		If true, starts the animation from the beginning; otherwise,
 			//		starts it from its current position.
-			// returns: dojo._Animation
+			// returns: dojo.Animation
 			//		The instance to allow chaining.
 
 			var _t = this;
@@ -210,7 +213,7 @@ dojo.require("dojo._base.html");
 			_t._fire("onPlay", [value]);
 	
 			_t._cycle();
-			return _t; // dojo._Animation
+			return _t; // dojo.Animation
 		},
 	
 		pause: function(){
@@ -218,10 +221,10 @@ dojo.require("dojo._base.html");
 			var _t = this;
 			if(_t._delayTimer){ _t._clearTimer(); }
 			_t._stopTimer();
-			if(!_t._active){ return _t; /*dojo._Animation*/ }
+			if(!_t._active){ return _t; /*dojo.Animation*/ }
 			_t._paused = true;
 			_t._fire("onPause", [_t.curve.getValue(_t._percent)]);
-			return _t; // dojo._Animation
+			return _t; // dojo.Animation
 		},
 	
 		gotoPercent: function(/*Decimal*/ percent, /*Boolean?*/ andPlay){
@@ -236,7 +239,7 @@ dojo.require("dojo._base.html");
 			_t._active = _t._paused = true;
 			_t._percent = percent;
 			if(andPlay){ _t.play(); }
-			return _t; // dojo._Animation
+			return _t; // dojo.Animation
 		},
 	
 		stop: function(/*boolean?*/ gotoEnd){
@@ -244,14 +247,14 @@ dojo.require("dojo._base.html");
 			// gotoEnd: If true, the animation will end.
 			var _t = this;
 			if(_t._delayTimer){ _t._clearTimer(); }
-			if(!_t._timer){ return _t; /* dojo._Animation */ }
+			if(!_t._timer){ return _t; /* dojo.Animation */ }
 			_t._stopTimer();
 			if(gotoEnd){
 				_t._percent = 1;
 			}
 			_t._fire("onStop", [_t.curve.getValue(_t._percent)]);
 			_t._active = _t._paused = false;
-			return _t; // dojo._Animation
+			return _t; // dojo.Animation
 		},
 	
 		status: function(){
@@ -303,7 +306,7 @@ dojo.require("dojo._base.html");
 					_t._stopTimer();
 				}
 			}
-			return _t; // dojo._Animation
+			return _t; // dojo.Animation
 		},
 		
 		_clearTimer: function(){
@@ -314,7 +317,7 @@ dojo.require("dojo._base.html");
 		
 	});
 
-	// the local timer, stubbed into all _Animation instances
+	// the local timer, stubbed into all Animation instances
 	var ctr = 0,
 		_globalTimerList = [],
 		timer = null,
@@ -322,7 +325,7 @@ dojo.require("dojo._base.html");
 			run: function(){}
 		};
 
-	d.extend(d._Animation, {
+	d.extend(d.Animation, {
 
 		_startTimer: function(){
 			if(!this._timer){
@@ -383,7 +386,7 @@ dojo.require("dojo._base.html");
 		var anim = d.animateProperty(fArgs);
 		d.connect(anim, "beforeBegin", d.partial(_makeFadeable, fArgs.node));
 
-		return anim; // dojo._Animation
+		return anim; // dojo.Animation
 	};
 
 	/*=====
@@ -404,18 +407,18 @@ dojo.require("dojo._base.html");
 		// summary: 
 		//		Returns an animation that will fade node defined in 'args' from
 		//		its current opacity to fully opaque.
-		return d._fade(_mixin({ end: 1 }, args)); // dojo._Animation
+		return d._fade(_mixin({ end: 1 }, args)); // dojo.Animation
 	};
 
 	dojo.fadeOut = function(/*dojo.__FadeArgs*/  args){
 		// summary: 
 		//		Returns an animation that will fade node defined in 'args'
 		//		from its current opacity to fully transparent.
-		return d._fade(_mixin({ end: 0 }, args)); // dojo._Animation
+		return d._fade(_mixin({ end: 0 }, args)); // dojo.Animation
 	};
 
 	dojo._defaultEasing = function(/*Decimal?*/ n){
-		// summary: The default easing function for dojo._Animation(s)
+		// summary: The default easing function for dojo.Animation(s)
 		return 0.5 + ((Math.sin((n + 1.5) * Math.PI)) / 2);
 	};
 
@@ -514,7 +517,7 @@ dojo.require("dojo._base.html");
 		//	|	}).play(500); // delay playing half a second
 		//
 		// example:
-		//		Like all `dojo._Animation`s, animateProperty returns a handle to the
+		//		Like all `dojo.Animation`s, animateProperty returns a handle to the
 		//		Animation instance, which fires the events common to Dojo FX. Use `dojo.connect`
 		//		to access these events outside of the Animation definiton:
 		//	|	var anim = dojo.animateProperty({
@@ -551,7 +554,7 @@ dojo.require("dojo._base.html");
 		var n = args.node = d.byId(args.node);
 		if(!args.easing){ args.easing = d._defaultEasing; }
 
-		var anim = new d._Animation(args);
+		var anim = new d.Animation(args);
 		d.connect(anim, "beforeBegin", anim, function(){
 			var pm = {};
 			for(var p in this.properties){
@@ -598,7 +601,7 @@ dojo.require("dojo._base.html");
 			this.curve = new PropLine(pm);
 		});
 		d.connect(anim, "onAnimate", d.hitch(d, "style", anim.node));
-		return anim; // dojo._Animation
+		return anim; // dojo.Animation
 	};
 
 	dojo.anim = function(	/*DOMNode|String*/ 	node, 
@@ -609,7 +612,7 @@ dojo.require("dojo._base.html");
 							/*Integer?*/		delay){
 		//	summary:
 		//		A simpler interface to `dojo.animateProperty()`, also returns
-		//		an instance of `dojo._Animation` but begins the animation
+		//		an instance of `dojo.Animation` but begins the animation
 		//		immediately, unlike nearly every other Dojo animation API.
 		//	description:
 		//		`dojo.anim` is a simpler (but somewhat less powerful) version
@@ -618,7 +621,7 @@ dojo.require("dojo._base.html");
 		//		packed "property bag" which is used for other Dojo animation
 		//		methods.
 		//
-		//		The `dojo._Animation` object returned from `dojo.anim` will be
+		//		The `dojo.Animation` object returned from `dojo.anim` will be
 		//		already playing when it is returned from this function, so
 		//		calling play() on it again is (usually) a no-op.
 		//	node:
@@ -645,9 +648,9 @@ dojo.require("dojo._base.html");
 		//	example:
 		//		Fade out a node over a full second
 		//	|	dojo.anim("id", { opacity: 0 }, 1000);
-		return d.animateProperty({ // dojo._Animation
+		return d.animateProperty({ // dojo.Animation
 			node: node,
-			duration: duration || d._Animation.prototype.duration,
+			duration: duration || d.Animation.prototype.duration,
 			properties: properties,
 			easing: easing,
 			onEnd: onEnd 

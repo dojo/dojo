@@ -227,7 +227,7 @@
 								var anim = dojo.anim(id, { width: endWidth });
 								dojo.connect(anim, "onEnd", function(){
 									var elapsed = (new Date().valueOf()) - anim._startTime;
-									doh.t(elapsed >= dojo._Animation.prototype.duration); // the default
+									doh.t(elapsed >= dojo.Animation.prototype.duration); // the default
 									doh.is(dojo.marginBox(id).w, endWidth);
 									d.callback(true);
 								});

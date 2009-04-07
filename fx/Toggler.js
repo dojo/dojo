@@ -46,11 +46,11 @@ dojo.declare("dojo.fx.Toggler", null, {
 	node: null,
 
 	// showFunc: Function
-	//	The function that returns the dojo._Animation to show the node
+	//	The function that returns the dojo.Animation to show the node
 	showFunc: dojo.fadeIn,
 
 	// hideFunc: Function	
-	//	The function that returns the dojo._Animation to hide the node
+	//	The function that returns the dojo.Animation to hide the node
 	hideFunc: dojo.fadeOut,
 
 	// showDuration:

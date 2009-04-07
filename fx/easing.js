@@ -8,7 +8,7 @@ dojo.fx.easing = {
 	// description:
 	//
 	//		Easing functions are used to manipulate the iteration through
-	//		an `dojo._Animation`s _Line. _Line being the properties of an Animation,
+	//		an `dojo.Animation`s _Line. _Line being the properties of an Animation,
 	//		and the easing function progresses through that Line determing
 	//		how quickly (or slowly) it should go. Or more accurately: modify
 	//		the value of the _Line based on the percentage of animation completed.

@@ -16,53 +16,53 @@ dojo.extend(dojo.NodeList, {
 				dojo.mixin(tmpArgs, args);
 				return obj[method](tmpArgs);
 			})
-		); // dojo._Animation
+		); // dojo.Animation
 	},
 
 	wipeIn: function(args){
 		//	summary:
-		//		wipe in all elements of this NodeList. Returns an instance of dojo._Animation
+		//		wipe in all elements of this NodeList. Returns an instance of dojo.Animation
 		//	example:
 		//		Fade in all tables with class "blah":
 		//		|	dojo.query("table.blah").wipeIn().play();
-		return this._anim(dojo.fx, "wipeIn", args); // dojo._Animation
+		return this._anim(dojo.fx, "wipeIn", args); // dojo.Animation
 	},
 
 	wipeOut: function(args){
 		//	summary:
-		//		wipe out all elements of this NodeList. Returns an instance of dojo._Animation
+		//		wipe out all elements of this NodeList. Returns an instance of dojo.Animation
 		//	example:
 		//		Wipe out all tables with class "blah":
 		//		|	dojo.query("table.blah").wipeOut().play();
-		return this._anim(dojo.fx, "wipeOut", args); // dojo._Animation
+		return this._anim(dojo.fx, "wipeOut", args); // dojo.Animation
 	},
 
 	slideTo: function(args){
 		//	summary:
 		//		slide all elements of the node list to the specified place.
-		//		Returns an instance of dojo._Animation
+		//		Returns an instance of dojo.Animation
 		//	example:
 		//		|	Move all tables with class "blah" to 300/300:
 		//		|	dojo.query("table.blah").slideTo({
 		//		|		left: 40,
 		//		|		top: 50
 		//		|	}).play();
-		return this._anim(dojo.fx, "slideTo", args); // dojo._Animation
+		return this._anim(dojo.fx, "slideTo", args); // dojo.Animation
 	},
 
 
 	fadeIn: function(args){
 		//	summary:
-		//		fade in all elements of this NodeList. Returns an instance of dojo._Animation
+		//		fade in all elements of this NodeList. Returns an instance of dojo.Animation
 		//	example:
 		//		Fade in all tables with class "blah":
 		//		|	dojo.query("table.blah").fadeIn().play();
-		return this._anim(dojo, "fadeIn", args); // dojo._Animation
+		return this._anim(dojo, "fadeIn", args); // dojo.Animation
 	},
 
 	fadeOut: function(args){
 		//	summary:
-		//		fade out all elements of this NodeList. Returns an instance of dojo._Animation
+		//		fade out all elements of this NodeList. Returns an instance of dojo.Animation
 		//	example:
 		//		Fade out all elements with class "zork":
 		//		|	dojo.query(".zork").fadeOut().play();
@@ -71,7 +71,7 @@ dojo.extend(dojo.NodeList, {
 		//		|	var fo = dojo.query(".zork").fadeOut();
 		//		|	dojo.connect(fo, "onEnd", function(){ /*...*/ });
 		//		|	fo.play();
-		return this._anim(dojo, "fadeOut", args); // dojo._Animation
+		return this._anim(dojo, "fadeOut", args); // dojo.Animation
 	},
 
 	animateProperty: function(args){
@@ -86,7 +86,7 @@ dojo.extend(dojo.NodeList, {
 		//	|			left:		{ end: 300 } 
 		//	|		} 
 		//	|	}).play();
-		return this._anim(dojo, "animateProperty", args); // dojo._Animation
+		return this._anim(dojo, "animateProperty", args); // dojo.Animation
 	},
 
 	anim: function(	/*Object*/ 			properties, 
@@ -128,6 +128,6 @@ dojo.extend(dojo.NodeList, {
 		if(onEnd){
 			dojo.connect(canim, "onEnd", onEnd);
 		}
-		return canim.play(delay||0); // dojo._Animation
+		return canim.play(delay||0); // dojo.Animation
 	}
 });

@@ -98,8 +98,8 @@ tests.register("tests.date.locale",
 	t.f( Boolean(dojo.date.locale.parse("8/11/2006", {formatLength:'short', selector:'date', locale:'en', strict:true})));
 
 	// test dates with no spaces
-	t.is( aug_11_2006, dojo.date.locale.parse("11Aug2006", {selector: 'date', datePattern: 'ddMMMyyyy'}));
-	t.is( new Date(2006, 7, 1), dojo.date.locale.parse("Aug2006", {selector: 'date', datePattern: 'MMMyyyy'}));
+	t.is( aug_11_2006, dojo.date.locale.parse("11Aug2006", {selector: 'date', datePattern: 'ddMMMyyyy', locale: 'en'}));
+	t.is( new Date(2006, 7, 1), dojo.date.locale.parse("Aug2006", {selector: 'date', datePattern: 'MMMyyyy', locale: 'en'}));
 
 	//en: 'medium' fmt: MMM d, yyyy
 	// Tolerate either 8 or 08 for month part.
@@ -113,7 +113,7 @@ tests.register("tests.date.locale",
 	// Note: 06 for year part will be translated literally as the year 6 C.E.
 	var aug_11_06CE = new Date(2006, 7, 11, 0);
 	aug_11_06CE.setFullYear(6); //literally the year 6 C.E.
-	t.is( aug_11_06CE, dojo.date.locale.parse("Aug 11, 06", {selector:'date', datePattern:'MMM dd, yyyy', strict:true}));
+	t.is( aug_11_06CE, dojo.date.locale.parse("Aug 11, 06", {selector:'date', datePattern:'MMM dd, yyyy', locale: 'en', strict:true}));
 
 	//en: 'long' fmt: MMMM d, yyyy
 	t.is( aug_11_2006, dojo.date.locale.parse("August 11, 2006", {formatLength:'long', selector:'date', locale:'en'}));

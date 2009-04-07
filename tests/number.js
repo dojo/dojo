@@ -68,7 +68,7 @@ tests.number.checkParse=function(t,options,sourceInput,expectResult){
 tests.number.rounding = function(t,number,maxFractionDigits,expected){
 	var pattern="#0.";
 	for(var i=0; i<maxFractionDigits; i++){pattern += "#";}
-	var result = dojo.number.format(number,{pattern:pattern});
+	var result = dojo.number.format(number,{locale:tests.number.locale, pattern:pattern});
 	t.is(expected,result);	
 }
 
@@ -138,7 +138,7 @@ tests.register("tests.number",
 			name: "number",
 			setUp: function(){
 				var partLocaleList = ["en-us", "fr-fr", "de-de"];
-
+				tests.number.locale = "en-us";
 				for(var i = 0 ; i < partLocaleList.length; i ++){
 					dojo.requireLocalization("dojo.cldr","number",partLocaleList[i]);
 				}
@@ -295,16 +295,16 @@ tests.register("tests.number",
 			runTest: function(t){
 
 	t.is("0123", dojo.number.format(123, {pattern: "0000"}));
-	t.is("-12,34,567.890", dojo.number.format(-1234567.89, {pattern: "#,##,##0.000##"}));
-	t.is("-12,34,567.89012", dojo.number.format(-1234567.890123, {pattern: "#,##,##0.000##"}));
-	t.is("(1,234,567.89012)", dojo.number.format(-1234567.890123, {pattern: "#,##0.000##;(#,##0.000##)"}));
-	t.is("(1,234,567.89012)", dojo.number.format(-1234567.890123, {pattern: "#,##0.000##;(#)"}));
-	t.is("50.1%", dojo.number.format(0.501, {pattern: "#0.#%"}));
+	t.is("-12,34,567.890", dojo.number.format(-1234567.89, {pattern: "#,##,##0.000##", locale: 'en-us'}));
+	t.is("-12,34,567.89012", dojo.number.format(-1234567.890123, {pattern: "#,##,##0.000##", locale: 'en-us'}));
+	t.is("(1,234,567.89012)", dojo.number.format(-1234567.890123, {pattern: "#,##0.000##;(#,##0.000##)", locale: 'en-us'}));
+	t.is("(1,234,567.89012)", dojo.number.format(-1234567.890123, {pattern: "#,##0.000##;(#)", locale: 'en-us'}));
+	t.is("50.1%", dojo.number.format(0.501, {pattern: "#0.#%", locale: 'en-us'}));
 	t.is("98", dojo.number.format(1998, {pattern: "00"}));
 	t.is("01998", dojo.number.format(1998, {pattern: "00000"}));
-	t.is("0.13", dojo.number.format(0.125, {pattern: "0.##"})); //NOTE: expects round_half_up, not round_half_even
-	t.is("0.1250", dojo.number.format(0.125, {pattern: "0.0000"}));
-	t.is("0.1", dojo.number.format(0.100004, {pattern: "0.####"}));
+	t.is("0.13", dojo.number.format(0.125, {pattern: "0.##", locale: 'en-us'})); //NOTE: expects round_half_up, not round_half_even
+	t.is("0.1250", dojo.number.format(0.125, {pattern: "0.0000", locale: 'en-us'}));
+	t.is("0.1", dojo.number.format(0.100004, {pattern: "0.####", locale: 'en-us'}));
 
 	t.is("-12", dojo.number.format(-12.3, {places:0, locale: "en-us"}));
 	t.is("-1,234,567.89", dojo.number.format(-1234567.89, {locale: "en-us"}));
@@ -359,20 +359,20 @@ tests.register("tests.number",
 //	t.is(-1234567, dojo.number.parse("  -1,234,567  ", {locale: "en-us"}));
 
 //	t.t(dojo.number.parse("9.1093826E-31"));
-	t.is(0.501, dojo.number.parse("50.1%", {pattern: "#0.#%"}));
+	t.is(0.501, dojo.number.parse("50.1%", {pattern: "#0.#%", locale: 'en-us'}));
 
-	t.is(123.4, dojo.number.parse("123.4", {pattern: "#0.#"}));
-	t.is(-123.4, dojo.number.parse("-123.4", {pattern: "#0.#"}));
-	t.is(123.4, dojo.number.parse("123.4", {pattern: "#0.#;(#0.#)"}));
-	t.is(-123.4, dojo.number.parse("(123.4)", {pattern: "#0.#;(#0.#)"}));
+	t.is(123.4, dojo.number.parse("123.4", {pattern: "#0.#", locale: 'en-us'}));
+	t.is(-123.4, dojo.number.parse("-123.4", {pattern: "#0.#", locale: 'en-us'}));
+	t.is(123.4, dojo.number.parse("123.4", {pattern: "#0.#;(#0.#)", locale: 'en-us'}));
+	t.is(-123.4, dojo.number.parse("(123.4)", {pattern: "#0.#;(#0.#)", locale: 'en-us'}));
 
 	t.is(null, dojo.number.format("abcd", {pattern: "0000"}));
 	
 	t.is(123, dojo.number.parse("123", {places:0}));
 	t.is(123, dojo.number.parse("123", {places:'0'}));
-	t.is(123.4, dojo.number.parse("123.4", {places:1}));
-	t.is(123.45, dojo.number.parse("123.45", {places:'1,3'}));
-	t.is(123.45, dojo.number.parse("123.45", {places:'0,2'}));
+	t.is(123.4, dojo.number.parse("123.4", {places:1, locale: 'en-us'}));
+	t.is(123.45, dojo.number.parse("123.45", {places:'1,3', locale: 'en-us'}));
+	t.is(123.45, dojo.number.parse("123.45", {places:'0,2', locale: 'en-us'}));
 			}
 		},
 		{
@@ -442,7 +442,7 @@ tests.register("tests.number",
 	//var num = (["0","0.", ".0", "0"]);      
 	for (var i=0; i<patternsLength; ++i)
 	{	
-		options = {pattern:patterns[i]};
+		options = {pattern:patterns[i], locale: 'en-us'};
 		tests.number.checkFormatParseCycle(t, options,0,num[i],false);       
 	}
 	
@@ -552,7 +552,7 @@ tests.register("tests.number",
 	//Pattern ###.###\u2030 should format 0.4857 as 485.7\u2030,but got 485.700\u2030 instead    
 	pattern = "###.###\u2030";
 	expectResult = "485.7\u2030";
-	result = dojo.number.format(0.4857,{pattern:pattern});
+	result = dojo.number.format(0.4857,{pattern:pattern, locale: 'en-us'});
 	t.is(expectResult,result);
 
     //TODO: !!Failed mile percent case - ###.###m
@@ -711,7 +711,7 @@ function test_number_format_pad(){
 	//Refer to ICU4J's NumberFormatTest.TestParse() which is only a rudimentary version
 	var pattern = "00";
 	var str = "0.0";	
-	var result = dojo.number.parse(str,{pattern:pattern});
+	var result = dojo.number.parse(str,{pattern:pattern, locale: 'en-us'});
 	//TODO: add more locales
 //FIXME: is this a valid test?
 //	t.is(0,result);
@@ -854,7 +854,7 @@ function test_number_format_pad(){
 /**
  * Refer to ICU4J's NumberFormatRegressionTest.Test4161100()
  */
-	tests.number.checkFormatParseCycle(t, {pattern:"#0.#"},-0.09,"-0.1",false);
+	tests.number.checkFormatParseCycle(t, {pattern:"#0.#", locale: 'en-us'},-0.09,"-0.1",false);
 			}
 		},
 		{
@@ -902,13 +902,13 @@ function test_number_format_pad(){
 	tests.number.checkFormatParseCycle(t, {places:0},0,"0",false);
 	//TODO:in icu4j,0.1 should be formatted to ".1" when minimumIntegerDigits=0
 	tests.number.checkFormatParseCycle(t, {places:0},0.1,"0",false);	
-	tests.number.checkParse(t, {pattern:"#0.#####"},123.55456,123.55456);
+	tests.number.checkParse(t, {pattern:"#0.#####", locale: 'en-us'},123.55456,123.55456);
 //!! fails because default pattern only has 3 decimal places
 //	tests.number.checkParse(t, null,123.55456,123.55456);
 	
 	//See whether it fails first format 0.0 ,parse "99.99",and then reformat 0.0 
 	tests.number.checkFormatParseCycle(t, {pattern:"#.#"},0.0,"0",false);
-	tests.number.checkParse(t, null,"99.99",99.99);
+	tests.number.checkParse(t, {locale: 'en-us'},"99.99",99.99);
 	tests.number.checkFormatParseCycle(t, {pattern:"#.#"},0.0,"0",false);
 			}
 		},
@@ -997,7 +997,7 @@ function test_number_format_pad(){
 		tests.number.checkFormatParseCycle(t, {pattern:patterns[i]},-42,"-"+expect[i],false);	
 	}
 	
-	tests.number.checkFormatParseCycle(t, {pattern:"#,#00.00;-#.#"},3456.78,"3,456.78",false);
+	tests.number.checkFormatParseCycle(t, {pattern:"#,#00.00;-#.#", locale: 'en-us'},3456.78,"3,456.78",false);
 	//!!Failed case
 	//tests.number.checkFormatParseCycle(t, {pattern:"#,#00.00 p''ieces;-#,#00.00 p''ieces"},3456.78,"3,456.78 p'ieces",false);	
 	//tests.number.checkFormatParseCycle(t, {pattern:"000.0#0"},3456.78,null,false);
@@ -1028,14 +1028,14 @@ function test_number_format_pad(){
 /**
  * Refer to ICU4J's NumberRegression.Test4125885()
  */
-	tests.number.checkFormatParseCycle(t, {pattern:"000.00"},12.34,"012.34",false);
-	tests.number.checkFormatParseCycle(t, {pattern:"+000.00%;-000.00%"},0.1234,"+012.34%",false);
-	tests.number.checkFormatParseCycle(t, {pattern:"##,###,###.00"},9.02,"9.02",false);
+	tests.number.checkFormatParseCycle(t, {pattern:"000.00", locale: 'en-us'},12.34,"012.34",false);
+	tests.number.checkFormatParseCycle(t, {pattern:"+000.00%;-000.00%", locale: 'en-us'},0.1234,"+012.34%",false);
+	tests.number.checkFormatParseCycle(t, {pattern:"##,###,###.00", locale: 'en-us'},9.02,"9.02",false);
 	
 	var patterns =(["#.00", "0.00", "00.00", "#0.0#", "#0.00"]);
 	var expect =  (["1.20", "1.20", "01.20", "1.2",   "1.20" ]);
 	for(var i =0 ; i < patterns.length; i ++){
-		tests.number.checkFormatParseCycle(t, {pattern:patterns[i]},1.2,expect[i],false);
+		tests.number.checkFormatParseCycle(t, {pattern:patterns[i], locale: 'en-us'},1.2,expect[i],false);
 	}
 			}
 		},

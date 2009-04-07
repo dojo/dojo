@@ -758,6 +758,122 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: fetch() hierarchy off",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of a basic fetch on ItemFileReadStore of all items with hierarchy disabled
+			//		This should turn off processing child objects as data store items.  It will still process
+			//		references and type maps.
+			//	description:
+			//		Simple test of a basic fetch on ItemFileReadStore of all items with hierarchy disabled
+			//		This should turn off processing child objects as data store items.  It will still process
+			//		references and type maps.
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
+			
+			//Set this as hierarchy off before fetch to make sure it traps and configs right.
+			store.hierarchical = false;
+			
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				//With hierarchy off, this should only match 2, as only two data store items
+				//will be quertied
+				t.assertEqual(items.length, 2);
+				var i;
+				var passed = true;
+				for(i = 0; i < items.length; i++){
+					var countries = store.getValues(items[i], "countries");
+					if(countries){
+						var j;
+						//Make sure none of the child objects were processed into items.
+						for(j = 0; j<countries.length; j++){
+							passed = !store.isItem(countries[j]);
+							if(!passed){
+								break;
+							}
+						}
+					}
+					if(!passed){
+						break;
+					}
+				}
+				if(!passed){
+					d.errback(new Error("Located a child item with hierarchy off and no references in the data.  Error."));
+				}else{
+					d.callback(true);
+				}
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			//Find all items starting with A, including child (nested) items.
+			store.fetch({ 	query: {name: "A*"}, 
+									onComplete: onComplete, 
+									onError: onError,
+									queryOptions: {deep:true}
+								});
+			return d;
+		}
+	},
+	{
+		name: "Read API: fetch() hierarchy off refs still parse",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of a basic fetch on ItemFileReadStore of all items with hierarchy disabled
+			//		This should turn off processing child objects as data store items.  It will still process
+			//		references and type maps.
+			//	description:
+			//		Simple test of a basic fetch on ItemFileReadStore of all items with hierarchy disabled
+			//		This should turn off processing child objects as data store items.  It will still process
+			//		references and type maps.
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_references"));
+			
+			//Set this as hierarchy off before fetch to make sure it traps and configs right.
+			store.hierarchical = false;
+			
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				//With hierarchy off, this should only match 2, as only two data store items
+				//will be quertied
+				t.assertEqual(items.length, 4);
+				var i;
+				var passed = true;
+				for(i = 0; i < items.length; i++){
+					var countries = store.getValues(items[i], "children");
+					if(countries){
+						var j;
+						//Make sure none of the child objects were processed into items.
+						for(j = 0; j<countries.length; j++){
+							passed = store.isItem(countries[j]);
+							if(!passed){
+								break;
+							}
+						}
+					}
+					if(!passed){
+						break;
+					}
+				}
+				if(!passed){
+					d.errback(new Error("Found a non-child item in a reference list in a references based input.  Error."));
+				}else{
+					d.callback(true);
+				}
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			//Find all items starting with A, including child (nested) items.
+			store.fetch({ 	query: {name: "A*"}, 
+									onComplete: onComplete, 
+									onError: onError,
+									queryOptions: {deep:true}
+								});
+			return d;
+		}
+	},
+	{
 		name: "Read API: fetch() one_commentFilteredJson",
  		runTest: function(datastore, t){
 			//	summary: 

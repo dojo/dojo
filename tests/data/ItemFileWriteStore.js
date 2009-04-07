@@ -506,6 +506,42 @@ doh.register("tests.data.ItemFileWriteStore",
 			store.fetchItemByIdentity({identity:"eg", onItem:onItem, onError:onError});
 			return deferred; //Object
 		},
+		function testWriteAPI_saveEverything_HierarchyOff(){
+			//	summary: 
+			//		Simple test of the save API
+			//	description:
+			//		Simple test of the save API
+			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
+			store.hierarchical = false;
+			var africa;
+
+			var deferred = new doh.Deferred();
+			var onError = function(error){
+				deferred.errback(error);
+			};
+
+			store._saveEverything = function(saveCompleteCallback, saveFailedCallback, newFileContentString){
+				var struct = dojo.fromJson(newFileContentString);
+				doh.assertEqual(struct.items.length, 3);
+				var cloneStore = new dojo.data.ItemFileWriteStore({data:struct, hierarchical: false});
+				var onItemClone = function(items, request){
+					var africaClone = items[0];
+					doh.assertEqual(store.getValue(africa, "name"), cloneStore.getValue(africaClone, "name"));
+				};
+				cloneStore.fetch({query: {name:"Africa"}, onComplete:onItemClone, onError:onError, queryOptions: {deep: true}});
+				saveCompleteCallback();
+			};
+			var onComplete = function(items, request){
+				africa = items[0];
+				var onComplete = function() {
+					deferred.callback(true);
+				};
+				store.setValue(africa, "size", "HUGE!");
+				store.save({onComplete:onComplete, onError:onError});
+			};
+			store.fetch({query: {name:"Africa"}, onComplete:onComplete, onError:onError, queryOptions: {deep: true}});
+			return deferred; //Object
+		},
 		function testWriteAPI_saveEverything_withDateType(){
 			//	summary: 
 			//		Simple test of the save API	with a non-atomic type (Date) that has a type mapping.

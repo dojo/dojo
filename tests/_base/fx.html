@@ -233,7 +233,152 @@
 								});
 								return d;
 							}
+						},
+						{
+							// basic testing of a function for a property
+							name:"anim-fn-property",
+							timeout:1000,
+							runTest: function(){
+								
+								var d = new doh.Deferred();
+								dojo.animateProperty({
+									node: "thud",
+									properties:{
+										// also testing node passed to property function
+										padding: function(node){
+											doh.is("thud", node.id);
+											d.callback(true);
+											return { end:15, start:22 };
+										}
+									},
+									duration:350
+								}).play();
+								return d;	
+							}
+						},
+						{
+							// just testing a property function which returns two other functions
+							name:"anim-fn-property-return-fn",
+							timeout:1000,
+							runTest: function(){
+								
+								var d = new doh.Deferred();
+								dojo.animateProperty({
+									node: "thud",
+									properties:{
+										// also testing node passed to property function
+										height: function(node){
+											return {
+												start: function(){ return 50; },
+												end: function(){ d.callback(true); return 100; }
+											};
+										}
+									},
+									duration:350
+								}).play();
+								return d;	
+							}
+						},
+						{
+							// ensuring the end property can be a function
+							name:"anim-fn-prop-end",
+							timeout:1000,
+							runTest: function(){
+								
+								var d = new doh.Deferred();
+								dojo.animateProperty({
+									node: "thud",
+									properties:{
+										width: { 
+											// also testing node passed to end function
+											end: function(node){
+												doh.is("thud", node.id);
+												d.callback(true);
+												return 100;
+											}
+										}
+									},
+									duration:50
+								}).play();
+								
+								return d;	
+							}
+						},
+						{
+							// ensuring the start property can be a function
+							name:"anim-fn-prop-start",
+							timeout:1000,
+							runTest: function(){
+								
+								var d = new doh.Deferred();
+								dojo.animateProperty({
+									node: "thud",
+									properties:{
+										width: { 
+											// also testing node passed to start function
+											start: function(node){
+												doh.is("thud", node.id);
+												d.callback(true);
+												return 100;
+											},
+											end: 200
+										}
+									},
+									duration:50
+								}).play();
+								
+								return d;
+							}
+						},
+						{
+							// ensuring our node ref is passed onEnd:
+							name:"anim-onend-node",
+							timeout:1000,
+							runTest: function(){
+								
+								var d = new doh.Deferred();
+								dojo.animateProperty({
+									node: "thud",
+									properties:{
+										width: 200
+									},
+									duration:50,
+									onEnd:function(node){
+										if(node){
+											doh.is("thud", node.id);
+											d.callback(true);
+										}
+									}
+								}).play();
+								
+								return d;	
+							}
+						},
+						{
+							// ensuring our node ref is passed beforeBegin:
+							name:"anim-onend-node",
+							timeout:1000,
+							runTest: function(){
+
+								var d = new doh.Deferred();
+								dojo.animateProperty({
+									node: "thud",
+									properties:{
+										width: 200
+									},
+									duration:50,
+									beforeBegin:function(node){
+										if(node){
+											doh.is("thud", node.id);
+											d.callback(true);
+										}
+									}
+								}).play();
+
+								return d;	
+							}
 						}
+						
 					]
 				);
 				doh.run();

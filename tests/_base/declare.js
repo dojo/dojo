@@ -185,7 +185,33 @@ tests.register("tests._base.declare",
 			dojo.declare("tests._base.declare.tmp16");
 			new tests._base.declare.tmp16({ preamble: function(){ passed = true; } });
 			t.t(passed);
+		},
+		
+		function basicMixin(t){
+			// testing if a plain Class-like object can be inherited 
+			// by dojo.declare
+			var d = new doh.Deferred;
+			
+			var Thing = function(args){
+				dojo.mixin(this, args);
+			}
+			Thing.prototype.method = function(){
+				t.t(true);
+				d.callback(true);
+			}
+			
+			dojo.declare("Thinger", Thing, {
+				method: function(){
+					this.inherited(arguments);
+				}
+			});
+			
+			var it = new Thinger();
+			it.method();
+			
+			return d;
 		}
+		
 		// FIXME: there are still some permutations to test like:
 		//	- ctor arguments
 		//	- multi-level inheritance + L/R conflict checks

@@ -313,7 +313,7 @@ dojo.fx = {
 		//		defined in args Object from its current position to
 		//		the position defined by (args.left, args.top).
 		// example:
-		//	|	dojo.fx.slideTo({ node: node, left:"40", top:"50", unit:"px" }).play()
+		//	|	dojo.fx.slideTo({ node: node, left:"40", top:"50", units:"px" }).play()
 
 		var node = args.node = d.byId(args.node), 
 			top = null, left = null;

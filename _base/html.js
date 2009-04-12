@@ -49,29 +49,28 @@ dojo.byId = function(id, doc){
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(dojo.isIE || dojo.isOpera){
 	dojo.byId = function(id, doc){
-		if(dojo.isString(id)){
-			var _d = doc || dojo.doc;
-			var te = _d.getElementById(id);
-			// attributes.id.value is better than just id in case the 
-			// user has a name=id inside a form
-			if(te && (te.attributes.id.value == id || te.id == id)){
-				return te;
-			}else{
-				var eles = _d.all[id];
-				if(!eles || eles.nodeName){
-					eles = [eles];
-				}
-				// if more than 1, choose first with the correct id
-				var i=0;
-				while((te=eles[i++])){
-					if((te.attributes && te.attributes.id && te.attributes.id.value == id)
-						|| te.id == id){
-						return te;
-					}
+		if(id.nodeType){
+			return id;
+		}
+		var _d = doc || dojo.doc;
+		var te = _d.getElementById(id);
+		// attributes.id.value is better than just id in case the 
+		// user has a name=id inside a form
+		if(te && (te.attributes.id.value == id || te.id == id)){
+			return te;
+		}else{
+			var eles = _d.all[id];
+			if(!eles || eles.nodeName){
+				eles = [eles];
+			}
+			// if more than 1, choose first with the correct id
+			var i=0;
+			while((te=eles[i++])){
+				if((te.attributes && te.attributes.id && te.attributes.id.value == id)
+					|| te.id == id){
+					return te;
 				}
 			}
-		}else{
-			return id; // DomNode
 		}
 	};
 }else{
@@ -90,6 +89,8 @@ if(dojo.isIE || dojo.isOpera){
 (function(){
 	var d = dojo;
 //>>excludeEnd("webkitMobile");
+	var byId = d.byId;
+	var isString = d.isString;
 
 	var _destroyContainer = null;
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
@@ -125,7 +126,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	Destroy all nodes in a list by reference:
 		//	| dojo.query(".someNode").forEach(dojo.destroy);
 		
-		node = d.byId(node);
+		node = byId(node);
 		try{
 			if(!_destroyContainer || _destroyContainer.ownerDocument != node.ownerDocument){
 				_destroyContainer = node.ownerDocument.createElement("div");
@@ -144,8 +145,8 @@ if(dojo.isIE || dojo.isOpera){
 		//	node: string id or node reference to test
 		//	ancestor: string id or node reference of potential parent to test against
 		try{
-			node = d.byId(node);
-			ancestor = d.byId(ancestor);
+			node = byId(node);
+			ancestor = byId(ancestor);
 			while(node){
 				if(node === ancestor){
 					return true; // Boolean
@@ -163,7 +164,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	selectable:
 		//		state to put the node in. false indicates unselectable, true 
 		//		allows selection.
-		node = d.byId(node);
+		node = byId(node);
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(d.isMozilla){
 			node.style.MozUserSelect = selectable ? "" : "none";
@@ -244,9 +245,9 @@ if(dojo.isIE || dojo.isOpera){
 		//		Put a new LI as the first child of a list by id:
 		// | 	dojo.place(dojo.create('li'), "someUl", "first");
 
-		refNode = d.byId(refNode);
-		if(d.isString(node)){
-			node = node.charAt(0) == "<" ? d._toDom(node, refNode.ownerDocument) : d.byId(node);
+		refNode = byId(refNode);
+		if(isString(node)){
+			node = node.charAt(0) == "<" ? d._toDom(node, refNode.ownerDocument) : byId(node);
 		}
 		if(typeof position == "number"){
 			var cn = refNode.childNodes;
@@ -614,7 +615,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	|		fontSize:"13pt"
 		//	|	});
 
-		var n = d.byId(node), args = arguments.length, op = (style == "opacity");
+		var n = byId(node), args = arguments.length, op = (style == "opacity");
 		style = _floatAliases[style] || style;
 		if(args == 3){
 			return op ? d._setOpacity(n, value) : n.style[style] = value; /*Number*/
@@ -623,7 +624,7 @@ if(dojo.isIE || dojo.isOpera){
 			return d._getOpacity(n);
 		}
 		var s = gcs(n);
-		if(args == 2 && !d.isString(style)){
+		if(args == 2 && !isString(style)){
 			for(var x in style){
 				d.style(node, x, style[x]);
 			}
@@ -976,7 +977,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		If passed, denotes that dojo.marginBox() should
 		//		update/set the margin box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
-		var n = d.byId(node), s = gcs(n), b = box;
+		var n = byId(node), s = gcs(n), b = box;
 		return !b ? d._getMarginBox(n, s) : d._setMarginBox(n, b.l, b.t, b.w, b.h, s); // Object
 	}
 
@@ -998,7 +999,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		If passed, denotes that dojo.contentBox() should
 		//		update/set the content box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
-		var n = d.byId(node), s = gcs(n), b = box;
+		var n = byId(node), s = gcs(n), b = box;
 		return !b ? d._getContentBox(n, s) : d._setContentSize(n, b.w, b.h, s); // Object
 	}
 	
@@ -1214,7 +1215,7 @@ if(dojo.isIE || dojo.isOpera){
 		//|			{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }
 		//		Does not act as a setter. If includeScroll is passed, the x and
 		//		y params are affected as one would expect in dojo._abs().
-		var n = d.byId(node), s = gcs(n), mb = d._getMarginBox(n, s);
+		var n = byId(node), s = gcs(n), mb = d._getMarginBox(n, s);
 		var abs = d._abs(n, includeScroll);
 		mb.x = abs.x;
 		mb.y = abs.y;
@@ -1284,7 +1285,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	returns:
 		//		true if the requested attribute is specified on the
 		//		given element, and false otherwise
-		node = d.byId(node);
+		node = byId(node);
 		var fixName = _fixAttrName(name);
 		fixName = fixName == "htmlFor" ? "for" : fixName; //IE<8 uses htmlFor except in this case
 		var attr = node.getAttributeNode && node.getAttributeNode(fixName);
@@ -1379,11 +1380,13 @@ if(dojo.isIE || dojo.isOpera){
 		//	|	// though shorter to use `dojo.style` in this case:
 		//	|	dojo.style("someNode", obj);
 		
-		node = d.byId(node);
+		node = byId(node);
 		var args = arguments.length;
-		if(args == 2 && !d.isString(name)){
+		if(args == 2 && !isString(name)){
 			// the object form of setter: the 2nd argument is a dictionary
-			for(var x in name){ d.attr(node, x, name[x]); }
+			for(var x in name){
+				d.attr(node, x, name[x]);
+			}
 			// FIXME: return the node in this case? could be useful.
 			return;
 		}
@@ -1413,7 +1416,7 @@ if(dojo.isIE || dojo.isOpera){
 
 			}else if(typeof value == "boolean"){ // e.g. onsubmit, disabled
 				node[name] = value;
-			}else if(name === "style" && !d.isString(value)){
+			}else if(name === "style" && !isString(value)){
 				// when the name is "style" and value is an object, pass along
 				d.style(node, value);
 			}else if(name == "className"){
@@ -1453,7 +1456,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		id or reference to the element to remove the attribute from
 		//	name:
 		//		the name of the attribute to remove
-		d.byId(node).removeAttribute(_fixAttrName(name));
+		byId(node).removeAttribute(_fixAttrName(name));
 	}
 	
 	dojo.create = function(tag, attrs, refNode, pos){
@@ -1528,10 +1531,10 @@ if(dojo.isIE || dojo.isOpera){
 
 		var doc = d.doc;
 		if(refNode){		
-			refNode = d.byId(refNode);
+			refNode = byId(refNode);
 			doc = refNode.ownerDocument;
 		}
-		if(d.isString(tag)){
+		if(isString(tag)){
 			tag = doc.createElement(tag);
 		}
 		if(attrs){ d.attr(tag, attrs); }
@@ -1558,14 +1561,14 @@ if(dojo.isIE || dojo.isOpera){
 	d.empty = 
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		d.isIE ?  function(node){
-			node = d.byId(node);
+			node = byId(node);
 			for(var c; c = node.lastChild;){ // intentional assignment
 				d.destroy(c);
 			}
 		} :
 		//>>excludeEnd("webkitMobile");
 		function(node){
-			d.byId(node).innerHTML = "";
+			byId(node).innerHTML = "";
 		};
 
 	/*=====
@@ -1675,7 +1678,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	example:
 		//	| if(dojo.hasClass("someNode","aSillyClassName")){ ... }
 		
-		return ((" "+ d.byId(node)[_className] +" ").indexOf(" "+ classStr +" ") >= 0);  // Boolean
+		return ((" "+ byId(node)[_className] +" ").indexOf(" "+ classStr +" ") >= 0);  // Boolean
 	};
 
 	dojo.addClass = function(/*DomNode|String*/node, /*String*/classStr){
@@ -1702,7 +1705,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	Available in `dojo.NodeList` for multiple additions
 		//	| dojo.query("ul > li").addClass("firstLevel");
 		
-		node = d.byId(node);
+		node = byId(node);
 		var cls = node[_className];
 		if((" "+ cls +" ").indexOf(" " + classStr + " ") < 0){
 			node[_className] = cls + (cls ? ' ' : '') + classStr;
@@ -1727,7 +1730,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	Available in `dojo.NodeList` for multiple removal
 		//	| dojo.query(".foo").removeClass("foo");
 		
-		node = d.byId(node);
+		node = byId(node);
 		var t = d.trim((" " + node[_className] + " ").replace(" " + classStr + " ", " "));
 		if(node[_className] != t){ node[_className] = t; }
 	};

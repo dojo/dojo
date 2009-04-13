@@ -546,8 +546,9 @@ if(dojo.isIE){
 		var lls = [].concat(ls);
 		// invoke listeners after target function
 		for(var i in lls){
-			if(!(i in ap)){
-				h[lls[i]].apply(sender, args);
+			var f = h[lls[i]];
+			if(!(i in ap) && f){
+				f.apply(sender, args);
 			}
 		}
 		return r;

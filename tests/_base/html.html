@@ -32,6 +32,11 @@
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
+						"doh.is(null, dojo.byId('nonExistantId'));",
+						"doh.is(null, dojo.byId(null));",
+						"doh.is(null, dojo.byId(''));",
+						"doh.is(undefined, dojo.byId(undefined));", 
+
 						"doh.is(100, dojo.marginBox('sq100').w);",
 						"doh.is(100, dojo.marginBox('sq100').h);",
 

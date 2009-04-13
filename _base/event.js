@@ -539,15 +539,20 @@ if(dojo.isIE){
 	// closing over 'iel' or 'ieh' b0rks leak prevention
 	// ls[i] is an index into the master handler array
 	dojo._ieDispatcher = function(args, sender){
-		var ap=Array.prototype, h=dojo._ie_listener.handlers, c=args.callee, ls=c[dojo._ieListenersName], t=h[c.target];
+		var ap = Array.prototype,
+			h = dojo._ie_listener.handlers,
+			c = args.callee,
+			ls = c[dojo._ieListenersName],
+			t = h[c.target];
 		// return value comes from original target function
 		var r = t && t.apply(sender, args);
 		// make local copy of listener array so it's immutable during processing
 		var lls = [].concat(ls);
 		// invoke listeners after target function
 		for(var i in lls){
-			if(!(i in ap)){
-				h[lls[i]].apply(sender, args);
+			var f = h[lls[i]];
+			if(!(i in ap) && f){
+				f.apply(sender, args);
 			}
 		}
 		return r;

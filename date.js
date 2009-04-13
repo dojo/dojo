@@ -91,19 +91,17 @@ dojo.date.compare = function(/*Date*/date1, /*Date?*/date2, /*String?*/portion){
 	//		"date", "time", "datetime"
 
 	// Extra step required in copy for IE - see #3112
-	date1 = new Date(Number(date1));
-	date2 = new Date(Number(date2 || new Date()));
+	date1 = new Date(+date1);
+	date2 = new Date(+(date2 || new Date()));
 
-	if(portion !== "undefined"){
-		if(portion == "date"){
-			// Ignore times and compare dates.
-			date1.setHours(0, 0, 0, 0);
-			date2.setHours(0, 0, 0, 0);
-		}else if(portion == "time"){
-			// Ignore dates and compare times.
-			date1.setFullYear(0, 0, 0);
-			date2.setFullYear(0, 0, 0);
-		}
+	if(portion == "date"){
+		// Ignore times and compare dates.
+		date1.setHours(0, 0, 0, 0);
+		date2.setHours(0, 0, 0, 0);
+	}else if(portion == "time"){
+		// Ignore dates and compare times.
+		date1.setFullYear(0, 0, 0);
+		date2.setFullYear(0, 0, 0);
 	}
 	
 	if(date1 > date2){ return 1; } // int
@@ -123,7 +121,7 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 	//	amount:
 	//		How much to add to the date.
 
-	var sum = new Date(Number(date)); // convert to Number before copying to accomodate IE (#3112)
+	var sum = new Date(+date); // convert to Number before copying to accomodate IE (#3112)
 	var fixOvershoot = false;
 	var property = "Date";
 
@@ -185,10 +183,11 @@ dojo.date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 			fixOvershoot = true;
 			property = "Month";
 			break;
-		case "hour":
-		case "minute":
-		case "second":
-		case "millisecond":
+//		case "hour":
+//		case "minute":
+//		case "second":
+//		case "millisecond":
+		default:
 			property = "UTC"+interval.charAt(0).toUpperCase() + interval.substring(1) + "s";
 	}
 

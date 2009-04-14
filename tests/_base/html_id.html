@@ -20,6 +20,9 @@
 				doh.register("t", 
 					[
 						function byId(t){
+							doh.f(dojo.byId(null));
+							doh.f(dojo.byId(undefined));
+
 							doh.f(dojo.byId("baz"));
 							doh.f(dojo.byId("foobar"));
 							doh.f(dojo.byId("dude"));

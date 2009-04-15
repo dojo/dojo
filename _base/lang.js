@@ -5,7 +5,7 @@ dojo.provide("dojo._base.lang");
 dojo.isString = function(/*anything*/ it){
 	//	summary:
 	//		Return true if it is a String
-	return !!arguments.length && it != null && (typeof it == "string" || it instanceof String); // Boolean
+	return it && (typeof it == "string" || it instanceof String); // Boolean
 }
 
 dojo.isArray = function(/*anything*/ it){

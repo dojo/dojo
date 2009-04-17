@@ -375,7 +375,10 @@ dojo.global = {
 		//		determine if an object supports a given method
 		//	description: 
 		//		useful for longer api chains where you have to test each object in
-		//		the chain
+		//		the chain. Useful only for object and method detection.
+		//		Not useful for testing generic properties on an object.
+		//		In particular, dojo.exists("foo.bar") when foo.bar = ""
+		//		will return false. Use ("bar" in foo) to test for those cases.
 		//	name: 	
 		//		Path to an object, in the form "A.B.C".
 		//	obj:

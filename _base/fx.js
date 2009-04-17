@@ -5,7 +5,7 @@ dojo.require("dojo._base.lang");
 dojo.require("dojo._base.html");
 
 /*
-	Animation losely package based on Dan Pupius' work, contributed under CLA: 
+	Animation loosely package based on Dan Pupius' work, contributed under CLA: 
 		http://pupius.co.uk/js/Toolkit.Drawing.js
 */
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);

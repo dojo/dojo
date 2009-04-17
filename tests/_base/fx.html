@@ -342,7 +342,7 @@
 									properties:{
 										width: 200
 									},
-									duration:50,
+									duration:150,
 									onEnd:function(node){
 										if(node){
 											doh.is("thud", node.id);
@@ -356,7 +356,7 @@
 						},
 						{
 							// ensuring our node ref is passed beforeBegin:
-							name:"anim-onend-node",
+							name:"anim-beforebegin-node",
 							timeout:1000,
 							runTest: function(){
 
@@ -371,13 +371,87 @@
 										if(node){
 											doh.is("thud", node.id);
 											d.callback(true);
+										}else{
+											d.errback(node);
 										}
 									}
 								}).play();
 
 								return d;	
 							}
+						},
+						{
+							name:"anim-onend-scope",
+							timeout:1000,
+							runTest: function(){
+								var d = new doh.Deferred();
+								dojo.declare("fx.Thinger", null, {
+									constructor: function(a){
+										this.bar = 10;
+									},
+									method: function(e){
+										d.callback(true);
+									}
+								});
+								
+								dojo.declare("fx.ThingerToo", fx.Thinger, {
+									method: function(){
+										var a = arguments;
+										dojo.fadeIn({
+											node:"thud",
+											onEnd: dojo.hitch(this, function(){
+												// to call inherited in a callback, stash the orig 'arguments'
+												this.inherited(a);
+											}),
+											duration:100
+										}).play()
+									}
+								});
+								
+								var x = new fx.ThingerToo();
+								x.method();
+								
+								return d;
+							}
+						},
+						{
+							name:"anim-onend-scope-natural",
+							timeout:1000,
+							runTest: function(){
+								var d = new doh.Deferred();
+
+								// testing vanilla inheritance
+								fx.NThinger = function(args){
+									dojo.mixin(this, args);
+								}
+								fx.NThinger.prototype.method = function(){
+									d.callback(true);
+								}
+								
+								
+								dojo.declare("fx.ThingerThree", fx.NThinger, {
+									method: function(){
+										var x = dojo.fadeOut({
+											node:"thud",
+											duration:100
+										});
+										
+										// to use with connect, pass a newArgs (arguements again) to override any 
+										// possible references passed from the orig function.
+										dojo.connect(x, "onEnd", dojo.hitch(this, "inherited", arguments, arguments));
+										
+										x.play();
+									}
+								});
+								
+								var x = new fx.ThingerThree();
+								x.method();
+								
+								return d;
+							}
 						}
+						
+					
 						
 					]
 				);

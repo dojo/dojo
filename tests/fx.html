@@ -319,6 +319,52 @@
 							for(var i in dojo.fx.easing){
 								t.assertTrue(!isNaN(dojo.fx.easing[i](0.5)));
 							}
+						},
+						
+						{
+							name:"onendStatus-chain",
+							timeout:1500,
+							runTest: function(t){
+								var d = new doh.Deferred;
+								
+								var a1 = dojo.fadeOut({ node:"a1" });
+								var a2 = dojo.fadeOut({ node:"a2" });
+								
+								var anim = dojo.fx.chain([a1, a2]);
+								dojo.connect(anim, "onEnd", function(){
+									t.is("stopped", a1.status());
+									t.is("stopped", a2.status());
+									t.is("stopped", anim.status());
+									d.callback(true);
+								});
+								
+								anim.play();
+								
+								return d;
+							}
+						},	
+						{
+							name:"onendStatus-combine",
+							timeout:1500,
+							runTest: function(t){
+								var d = new doh.Deferred;
+
+								var a1 = dojo.fadeOut({ node:"a1" });
+								var a2 = dojo.fadeOut({ node:"a2" });
+
+								var anim = dojo.fx.combine([a1, a2]);
+								dojo.connect(anim, "onEnd", function(){
+									t.is("stopped", a1.status());
+									t.is("stopped", a2.status());
+									setTimeout(function(){
+										t.is("stopped", anim.status());
+										d.callback(true);	
+									}, 10);
+								});
+
+								anim.play();
+								return d;
+							}
 						}
 					]
 				);
@@ -395,5 +441,8 @@
 		<div>
 			<p id="chained">foo</p><p id="chainedtoo">bar</p>
 		</div>
+		
+		<p id="a1">p</p><p id="a2">p</p>
+		
 	</body>
 </html>

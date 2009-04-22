@@ -114,6 +114,23 @@
 								}
 							});
 							return d;
+						},
+						function ioIframeContentArray(t){
+							//Tests if an array passed in content causes as an error on cleanup.
+							var d = new doh.Deferred();
+							var td = dojo.io.iframe.send({
+								url: "iframeResponse.text.html",
+								form: "contentArrayTest",
+								content: {"tag": ["value1","value2"]},
+								handle: function(res, ioArgs){
+									if(!(res instanceof Error)){
+										d.callback(true);
+									} else {
+										d.errback(false);
+									}
+								}
+							});
+							return d;
 						}
 					]
 				);
@@ -141,5 +158,7 @@ dojo.addOnLoad(function(){
 	</head>
 	<body>
 
+		<form id="contentArrayTest" method="get" enctype="multipart/form-data">
+		</form>
 	</body>
 </html>

@@ -357,22 +357,18 @@ dojo.io.iframe = {
 			var toClean = ioArgs._contentToClean;
 			for(var i = 0; i < toClean.length; i++) {
 				var key = toClean[i];
-				if(dojo.isSafari < 3){
-					//In Safari (at least 2.0.3), can't use form[key] syntax to find the node,
-					//for nodes that were dynamically added.
-					for(var j = 0; j < fNode.childNodes.length; j++){
-						var chNode = fNode.childNodes[j];
-						if(chNode.name == key){
-							dojo.destroy(chNode);
-							break;
-						}
+				//Need to cycle over all nodes since we may have added
+				//an array value which means that more than one node could
+				//have the same .name value.
+				for(var j = 0; j < fNode.childNodes.length; j++){
+					var chNode = fNode.childNodes[j];
+					if(chNode.name == key){
+						dojo.destroy(chNode);
+						break;
 					}
-				}else{
-					dojo.destroy(fNode[key]);
-					fNode[key] = null;
 				}
 			}
-	
+
 			// restore original action + target
 			if(ioArgs["_originalAction"]){
 				fNode.setAttribute("action", ioArgs._originalAction);

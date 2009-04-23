@@ -56,7 +56,7 @@ dojo = {
 	isOpera: 0,
 	//	isSafari: Number | undefined
 	//		Version as a Number if client is Safari or iPhone. undefined otherwise.
-	isSafari: 0
+	isSafari: 0,
 	//	isChrome: Number | undefined
 	//		Version as a Number if client is Chrome browser. undefined otherwise.
 	isChrome: 0

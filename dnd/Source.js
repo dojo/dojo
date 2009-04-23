@@ -47,6 +47,8 @@ dojo.dnd.__SourceArgs = function(){
 	//		true by default, works only if copyOnly is true
 	//	withHandles: Boolean?
 	//		allows dragging only by handles, false by default
+	//  generateText: Boolean?
+	//		generate text node for drag and drop, true by default
 	this.isSource = isSource;
 	this.accept = accept;
 	this.autoSync = autoSync;
@@ -56,6 +58,7 @@ dojo.dnd.__SourceArgs = function(){
 	this.selfCopy = selfCopy;
 	this.selfAccept = selfAccept;
 	this.withHandles = withHandles;
+	this.generateText = true;
 }
 =====*/
 
@@ -73,6 +76,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	autoSync: false,
 	delay: 0, // pixels
 	accept: ["text"],
+	generateText: true,
 	
 	constructor: function(/*DOMNode|String*/node, /*dojo.dnd.__SourceArgs?*/params){
 		// summary: 

@@ -24,6 +24,7 @@ dojo.declare("dojo.dnd.Avatar", null, {
 					margin:   "0px"
 				}
 			}),
+			source = this.manager.source, node,
 			b = dojo.create("tbody", null, a),
 			tr = dojo.create("tr", null, b),
 			td = dojo.create("td", null, tr),
@@ -32,10 +33,9 @@ dojo.declare("dojo.dnd.Avatar", null, {
 						innerHTML : this.manager.copy ? '+' : "<"
 					}, td) : null,
 			span = dojo.create("span", {
-				innerHTML: this._generateText()
+				innerHTML: source.generateText ? this._generateText() : ""
 			}, td),
-			k = Math.min(5, this.manager.nodes.length), i = 0,
-			source = this.manager.source, node;
+			k = Math.min(5, this.manager.nodes.length), i = 0;
 		// we have to set the opacity on IE only after the node is live
 		dojo.attr(tr, {
 			"class": "dojoDndAvatarHeader",

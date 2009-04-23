@@ -203,7 +203,7 @@ if(dojo.isIE || dojo.isOpera){
 	dojo.place = function(node, refNode, position){
 		//	summary:
 		//		Attempt to insert node into the DOM, choosing from various positioning options.
-		//		Returns true if successful, false otherwise.
+		//		Returns the first argument resolved to a DOM node.
 		//
 		//	node: String|DomNode
 		//		id or node reference, or HTML fragment starting with "<" to place relative to refNode

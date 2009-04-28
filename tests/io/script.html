@@ -8,6 +8,8 @@
 		</style>
 		<script type="text/javascript" 
 			src="../../dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" 
+			src="../../io/script.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
 			dojo.require("dojo.io.script");
@@ -15,6 +17,22 @@
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
+						function ioScriptLoad(t){
+							//t.is("undefined", typeof(scriptLoad));
+							var d = new doh.Deferred();
+							var td = dojo.io.script.get({
+								url: "scriptLoad.js"
+							});
+							td.addBoth(function(res){
+								if(typeof(scriptLoad) != "undefined"
+									&& t.is("loaded", scriptLoad)){
+									d.callback(true);
+								}else{
+									d.errback(false);
+								}
+							});
+							return d;
+						},
 						function ioScriptSimple(t){
 							var d = new doh.Deferred();
 							var td = dojo.io.script.get({
@@ -36,7 +54,7 @@
 							var td = dojo.io.script.get({
 								url: "scriptJsonp.js",
 								content: { foo: "bar" },
-								callbackParamName: "callback"
+								jsonp: "callback"
 							});
 							td.addBoth(function(res){
 								if(!(res instanceof Error) && 

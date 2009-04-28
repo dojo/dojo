@@ -295,7 +295,6 @@ dojo.require("dojo._base.query");
 		//		to continue to run even when a logic error happens in the callback, while making
 		//		it easier to troubleshoot while in debug mode.
 		//	handle: Function?
-		//		function(response, ioArgs){} response is of type Object, ioArgs
 		//		This function will
 		//		be called at the end of every request, whether or not an error occurs.
 		this.url = url;

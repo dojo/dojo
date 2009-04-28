@@ -285,12 +285,10 @@ dojo.require("dojo._base.query");
 		//		Acceptable values depend on the type of IO
 		//		transport (see specific IO calls for more information).
 		//	load: Function?
-		//		function(response, ioArgs){} response is of type Object, ioArgs
-		//		is of type dojo.__IoCallbackArgs.  This function will be
+		//		This function will be
 		//		called on a successful HTTP response code.
 		//	error: Function?
-		//		function(response, ioArgs){} response is of type Object, ioArgs
-		//		is of type dojo.__IoCallbackArgs. This function will
+		//		This function will
 		//		be called when the request fails due to a network or server error, the url
 		//		is invalid, etc. It will also be called if the load or handle callback throws an
 		//		exception, unless djConfig.debugAtAllCosts is true.  This allows deployed applications
@@ -298,7 +296,7 @@ dojo.require("dojo._base.query");
 		//		it easier to troubleshoot while in debug mode.
 		//	handle: Function?
 		//		function(response, ioArgs){} response is of type Object, ioArgs
-		//		is of type dojo.__IoCallbackArgs.  This function will
+		//		This function will
 		//		be called at the end of every request, whether or not an error occurs.
 		this.url = url;
 		this.content = content;
@@ -306,9 +304,27 @@ dojo.require("dojo._base.query");
 		this.form = form;
 		this.preventCache = preventCache;
 		this.handleAs = handleAs;
-		this.load = load;
-		this.error = error;
-		this.handle = handle;
+		this.load = function(response, ioArgs){
+			// ioArgs: dojo.__IoCallbackArgs
+			//		Provides additional information about the request.
+			// response: Object
+			//		The response in the format as defined with handleAs.
+		}
+		this.error = function(response, ioArgs){
+			// ioArgs: dojo.__IoCallbackArgs
+			//		Provides additional information about the request.
+			// response: Object
+			//		The response in the format as defined with handleAs.
+		}
+		this.handle = function(loadOrError, response, ioArgs){
+			// loadOrError: String
+			//		Provides a string that tells you whether this function
+			//		was called because of success (load) or failure (error).
+			// response: Object
+			//		The response in the format as defined with handleAs.
+			// ioArgs: dojo.__IoCallbackArgs
+			//		Provides additional information about the request.
+		}
 	}
 	=====*/
 

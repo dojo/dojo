@@ -414,33 +414,33 @@ dojo.require("dojo._base.query");
 		// 		dojo.xhr, dojo.io.script and dojo.io.iframe can all
 		// 		trigger these topics to be published.
 		//	start: String
-		//		"dojo/io/start" is sent when there are no outstanding IO
+		//		"/dojo/io/start" is sent when there are no outstanding IO
 		// 		requests, and a new IO request is started. No arguments
 		// 		are passed with this topic.
 		//	send: String
-		//		"dojo/io/send" is sent whenever a new IO request is started.
+		//		"/dojo/io/send" is sent whenever a new IO request is started.
 		// 		It passes the dojo.Deferred for the request with the topic.
 		//	load: String
-		//		"dojo/io/load" is sent whenever an IO request has loaded
+		//		"/dojo/io/load" is sent whenever an IO request has loaded
 		// 		successfully. It passes the response and the dojo.Deferred
 		// 		for the request with the topic.
 		//	error: String
-		//		"dojo/io/error" is sent whenever an IO request has errored.
+		//		"/dojo/io/error" is sent whenever an IO request has errored.
 		// 		It passes the error and the dojo.Deferred
 		// 		for the request with the topic.
 		//	done: String
-		//		"dojo/io/done" is sent whenever an IO request has completed,
+		//		"/dojo/io/done" is sent whenever an IO request has completed,
 		// 		either by loading or by erroring. It passes the error and
 		// 		the dojo.Deferred for the request with the topic.
 		//	stop: String
-		//		"dojo/io/stop" is sent when all outstanding IO requests have
+		//		"/dojo/io/stop" is sent when all outstanding IO requests have
 		// 		finished. No arguments are passed with this topic.
-		this.start = "dojo/io/start";
-		this.send = "dojo/io/send";
-		this.load = "dojo/io/load";
-		this.error = "dojo/io/error";
-		this.done = "dojo/io/done";
-		this.stop = "dojo/io/stop";
+		this.start = "/dojo/io/start";
+		this.send = "/dojo/io/send";
+		this.load = "/dojo/io/load";
+		this.error = "/dojo/io/error";
+		this.done = "/dojo/io/done";
+		this.stop = "/dojo/io/stop";
 	}
 	=====*/
 

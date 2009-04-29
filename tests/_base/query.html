@@ -105,6 +105,17 @@
 						"doh.is(3, dojo.query('> *', 'container').length);",
 						"doh.is('passed', dojo.query('#bug')[0].value);",
 
+						// bug 9071
+						"doh.is(2, (dojo.query('a', 't4')).length);",
+						"doh.is(2, (dojo.query('p a', 't4')).length);",
+						"doh.is(2, (dojo.query('div p', 't4')).length);",
+						"doh.is(2, (dojo.query('div p a', 't4')).length);",
+						"doh.is(2, (dojo.query('.subA', 't4')).length);",
+						"doh.is(2, (dojo.query('.subP .subA', 't4')).length);",
+						"doh.is(2, (dojo.query('.subDiv .subP', 't4')).length);",
+						"doh.is(2, (dojo.query('.subDiv .subP .subA', 't4')).length);",
+
+
 						// failed scope arg
 						"doh.is(0, (dojo.query('*', 'thinger')).length);",
 						"doh.is(0, (dojo.query('div#foo').length));",
@@ -239,7 +250,7 @@
 				<span></span>
 			</div>
 			<h3>h3</h3>
-			<h3 class="baz" title="thud">h3</h3>
+			<h3 class="baz foobar" title="thud">h3</h3>
 			<span class="fooBar baz foo"></span>
 			<span foo="bar"></span>
 			<span foo="baz bar thud"></span>
@@ -263,6 +274,14 @@
 			<input type="radio" name="radio" id="radio3" value="blah">
 		</div>
 		<iframe id="t3" name="t3" src="../../resources/blank.html"></iframe>
+		<div id="t4">
+			<div id="one" class="subDiv">
+				<p class="one subP"><a class="subA">one</a></p>
+				<div id="two" class="subDiv">
+					<p class="two subP"><a class="subA">two</a></p>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
 

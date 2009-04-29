@@ -82,7 +82,7 @@ if(dojo.isIE || dojo.isOpera){
 }
 //>>excludeEnd("webkitMobile");
 /*=====
-}
+};
 =====*/
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);

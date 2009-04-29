@@ -46,6 +46,8 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			var ioArgs = dfd.ioArgs;
 			dojo._ioAddQueryToUrl(ioArgs);
 	
+			dojo._ioNotifyStart(dfd);
+
 			if(this._canAttach(ioArgs)){
 				var node = this.attach(ioArgs.id, ioArgs.url, args.frameDoc);
 

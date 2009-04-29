@@ -329,11 +329,13 @@ dojo.io.iframe = {
 					fn.setAttribute("target", this._iframeName);
 				}
 				fn.target = this._iframeName;
+				dojo._ioNotifyStart(dfd);
 				fn.submit();
 			}else{
 				// otherwise we post a GET string by changing URL location for the
 				// iframe
 				var tmpUrl = args.url + (args.url.indexOf("?") > -1 ? "&" : "?") + ioArgs.query;
+				dojo._ioNotifyStart(dfd);
 				this.setSrc(this._frame, tmpUrl, true);
 			}
 		}catch(e){

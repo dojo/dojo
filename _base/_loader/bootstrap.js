@@ -99,7 +99,7 @@ djConfig = {
 	//		does not need to be set, except when using cross-domain/CDN Dojo builds.
 	//		Save dojo/resources/blank.html to your domain and set `djConfig.dojoBlankHtmlUrl` 
 	//		to the path on your domain your copy of blank.html.
-	dojoBlankHtmlUrl: undefined
+	dojoBlankHtmlUrl: undefined,
 	//	ioPublish: Boolean?
 	//		Set this to true to enable publishing of topics for the different phases of
 	// 		IO operations. Publishing is done via dojo.publish. See dojo.__IoPublish for a list

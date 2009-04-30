@@ -275,7 +275,7 @@ dojo.require("dojo._base.query");
 
 	dojo._contentHandlers["json-comment-optional"] = function(xhr){
 		var handlers = _d._contentHandlers;
-		if(xhr.responseText && xhr.responseText.indexOf("\/*") != -1){
+		if(xhr.responseText && /^[^{\[]*\/\*/.test(xhr.responseText)){
 			return handlers["json-comment-filtered"](xhr);
 		}else{
 			return handlers["json"](xhr);

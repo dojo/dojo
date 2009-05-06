@@ -5,8 +5,8 @@ dojo.parser = new function(){
 	// summary: The Dom/Widget parsing package
 
 	var d = dojo;
-	var dtName = d._scopeName + "Type";
-	var qry = "[" + dtName + "]";
+	this._attrName = d._scopeName + "Type";
+	this._query = "[" + this._attrName + "]";
 
 	var _anonCtr = 0, _anon = {};
 	var nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
@@ -149,11 +149,11 @@ dojo.parser = new function(){
 		//		An object that will be mixed in with each node in the array.
 		//		Values in the mixin will override values in the node, if they
 		//		exist.
-		var thelist = [];
+		var thelist = [], dp = dojo.parser;
 		mixin = mixin||{};
 		d.forEach(nodes, function(node){
 			if(!node){ return; }
-			var type = dtName in mixin?mixin[dtName]:node.getAttribute(dtName);
+			var type = dp._attrName in mixin?mixin[dp._attrName]:node.getAttribute(dp._attrName);
 			if(!type || !type.length){ return; }
 			var clsInfo = getClassInfo(type),
 				clazz = clsInfo.cls,
@@ -256,7 +256,7 @@ dojo.parser = new function(){
 		//		Search specified node (or root node) recursively for class instances,
 		//		and instantiate them Searches for
 		//		dojoType="qualified.class.name"
-		var list = d.query(qry, rootNode);
+		var list = d.query(this._query, rootNode);
 		// go build the object instances
 		var instances = this.instantiate(list);
 		return instances;

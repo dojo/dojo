@@ -2414,6 +2414,179 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: close (clearOnClose: true, reset url.)",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
+			if (dojo.isBrowser) {
+				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
+				params.clearOnClose = true;
+				params.urlPreventCache = true;
+				var store = new datastore(params);
+
+				var d = new doh.Deferred();
+				function onItem(item){
+					var error = null;
+					try {
+						t.assertTrue(item !== null);
+						var ec = item;
+						var val = store.getValue(ec, "name");
+						t.assertEqual("Ecuador", val);
+
+						store.close();
+						//Check some internals here.  Do not normally access these!
+						t.assertTrue(store._arrayOfAllItems.length === 0);
+						t.assertTrue(store._loadFinished === false);
+						
+						store.url = dojo.moduleUrl("tests", "data/countries_withNull.json").toString();
+						function onItem2 (item){
+							var err;
+							try{
+								t.assertTrue(item !== null);
+                                var val = store.getValue(item, "name");
+								t.assertEqual(null, val);
+							}catch(e){
+								err = e;
+							}
+							if(err){
+								d.errback(err);
+							}else{
+								d.callback(true);
+							}
+						}
+						store.fetchItemByIdentity({identity:"ec", onItem:onItem2, onError:onError});
+					}catch (e){
+						error = e;
+					}
+					if (error) {
+						d.errback(error);
+					}
+				}
+				function onError(errData){
+					d.errback(errData);
+				}
+				store.fetchItemByIdentity({identity:"ec", onItem:onItem, onError:onError});
+				return d; // Deferred
+			}
+		}
+	},
+	{
+		name: "Read API: fetch, close (clearOnClose: true, reset url.)",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
+			if (dojo.isBrowser) {
+				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
+				params.clearOnClose = true;
+				params.urlPreventCache = true;
+				var store = new datastore(params);
+
+				var d = new doh.Deferred();
+				function onItem(item){
+					var error = null;
+					try {
+						t.assertTrue(item !== null);
+						var ec = item;
+						var val = store.getValue(ec, "name");
+						t.assertEqual("Ecuador", val);
+
+						store.close();
+						//Check some internals here.  Do not normally access these!
+						t.assertTrue(store._arrayOfAllItems.length === 0);
+						t.assertTrue(store._loadFinished === false);
+						
+						store.url = dojo.moduleUrl("tests", "data/countries_withNull.json").toString();
+						function onComplete (items){
+                            var err;
+							try{
+								t.assertEqual(1, items.length);
+								var item = items[0];
+								t.assertTrue(item !== null);
+                                var val = store.getValue(item, "name");
+								t.assertEqual(null, val);
+							}catch(e){
+								err = e;
+							}
+							if(err){
+								d.errback(err);
+							}else{
+								d.callback(true);
+							}
+						}
+						store.fetch({query: {abbr:"ec"}, onComplete:onComplete, onError:onError});
+					}catch (e){
+						error = e;
+					}
+					if (error) {
+						d.errback(error);
+					}
+				}
+				function onError(errData){
+					d.errback(errData);
+				}
+				store.fetchItemByIdentity({identity:"ec", onItem:onItem, onError:onError});
+				return d; // Deferred
+			}
+		}
+	},
+	{
+		name: "Read API: close (clearOnClose: true, reset _jsonFileUrl.)",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
+			if (dojo.isBrowser) {
+				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
+				params.clearOnClose = true;
+				params.urlPreventCache = true;
+				var store = new datastore(params);
+
+				var d = new doh.Deferred();
+				function onItem(item){
+					var error = null;
+					try {
+						t.assertTrue(item !== null);
+						var ec = item;
+						var val = store.getValue(ec, "name");
+						t.assertEqual("Ecuador", val);
+
+						store.close();
+						//Check some internals here.  Do not normally access these!
+						t.assertTrue(store._arrayOfAllItems.length === 0);
+						t.assertTrue(store._loadFinished === false);
+						
+						store._jsonFileUrl = dojo.moduleUrl("tests", "data/countries_withNull.json").toString();
+						function onItem2 (item){
+							var err;
+							try{
+								t.assertTrue(item !== null);
+                                var val = store.getValue(item, "name");
+								t.assertEqual(null, val);
+							}catch(e){
+								err = e;
+							}
+							if(err){
+								d.errback(err);
+							}else{
+								d.callback(true);
+							}
+						}
+						store.fetchItemByIdentity({identity:"ec", onItem:onItem2, onError:onError});
+					}catch (e){
+						error = e;
+					}
+					if (error) {
+						d.errback(error);
+					}
+				}
+				function onError(errData){
+					d.errback(errData);
+				}
+				store.fetchItemByIdentity({identity:"ec", onItem:onItem, onError:onError});
+				return d; // Deferred
+			}
+		}
+	},
+	{
 		name: "Read API: close (clearOnClose: false)",
  		runTest: function(datastore, t){
 			//	summary: 

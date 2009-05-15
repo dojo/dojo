@@ -40,6 +40,8 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		this._arrayOfTopLevelItems = [];
 		this._loadFinished = false;
 		this._jsonFileUrl = keywordParameters.url;
+		this._ccUrl = keywordParameters.url;
+		this.url = keywordParameters.url;
 		this._jsonData = keywordParameters.data;
 		this._datatypeMap = keywordParameters.typeMap || {};
 		if(!this._datatypeMap['Date']){
@@ -73,6 +75,10 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 	},
 	
 	url: "",	// use "" rather than undefined for the benefit of the parser (#3539)
+
+	//Internal var, crossCheckUrl.  Used so that setting either url or _jsonFileUrl, can still trigger a reload
+	//when clearOnClose and close is used.
+	_ccUrl: "",
 
 	data: null,	// define this so that the parser can populate it
 
@@ -306,7 +312,22 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		if(this._loadFinished){
 			filter(keywordArgs, this._getItemsArray(keywordArgs.queryOptions));
 		}else{
-
+			//Do a check on the JsonFileUrl and crosscheck it.
+			//If it doesn't match the cross-check, it needs to be updated
+			//This allows for either url or _jsonFileUrl to he changed to
+			//reset the store load location.  Done this way for backwards 
+			//compatibility.  People use _jsonFileUrl (even though officially
+			//private.
+			if(this._jsonFileUrl !== this._ccUrl){
+				dojo.deprecated("dojo.data.ItemFileReadStore: ", 
+					"To change the url, set the url property of the store," +
+					" not _jsonFileUrl.  _jsonFileUrl support will be removed in 2.0");
+				this._ccUrl = this._jsonFileUrl;
+				this.url = this._jsonFileUrl;
+			}else if(this.url !== this._ccUrl){
+				this._jsonFileUrl = this.url;
+				this._ccUrl = this.url;
+			}
 			if(this._jsonFileUrl){
 				//If fetches come in before the loading has finished, but while
 				//a load is in progress, we have to defer the fetching to be 
@@ -699,6 +720,22 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		var scope;
 		if(!this._loadFinished){
 			var self = this;
+			//Do a check on the JsonFileUrl and crosscheck it.
+			//If it doesn't match the cross-check, it needs to be updated
+			//This allows for either url or _jsonFileUrl to he changed to
+			//reset the store load location.  Done this way for backwards 
+			//compatibility.  People use _jsonFileUrl (even though officially
+			//private.
+			if(this._jsonFileUrl !== this._ccUrl){
+				dojo.deprecated("dojo.data.ItemFileReadStore: ", 
+					"To change the url, set the url property of the store," +
+					" not _jsonFileUrl.  _jsonFileUrl support will be removed in 2.0");
+				this._ccUrl = this._jsonFileUrl;
+				this.url = this._jsonFileUrl;
+			}else if(this.url !== this._ccUrl){
+				this._jsonFileUrl = this.url;
+				this._ccUrl = this.url;
+			}
 			if(this._jsonFileUrl){
 
 				if(this._loadInProgress){
@@ -795,9 +832,25 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//		Internal function to force a load of the store if it hasn't occurred yet.  This is required
 		//		for specific functions to work properly.  
 		var self = this;
+		//Do a check on the JsonFileUrl and crosscheck it.
+		//If it doesn't match the cross-check, it needs to be updated
+		//This allows for either url or _jsonFileUrl to he changed to
+		//reset the store load location.  Done this way for backwards 
+		//compatibility.  People use _jsonFileUrl (even though officially
+		//private.
+		if(this._jsonFileUrl !== this._ccUrl){
+			dojo.deprecated("dojo.data.ItemFileReadStore: ", 
+				"To change the url, set the url property of the store," +
+				" not _jsonFileUrl.  _jsonFileUrl support will be removed in 2.0");
+			this._ccUrl = this._jsonFileUrl;
+			this.url = this._jsonFileUrl;
+		}else if(this.url !== this._ccUrl){
+			this._jsonFileUrl = this.url;
+			this._ccUrl = this.url;
+		}
 		if(this._jsonFileUrl){
 				var getArgs = {
-					url: self._jsonFileUrl, 
+					url: this._jsonFileUrl, 
 					handleAs: "json-comment-optional",
 					preventCache: this.urlPreventCache,
 					sync: true

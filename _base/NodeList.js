@@ -10,11 +10,11 @@ dojo.require("dojo._base.array");
 
 	var ap = Array.prototype, aps = ap.slice, apc = ap.concat;
 	
-	var tnl = function(a){
+	var tnl = function(a, parent){
 		// decorate an array to make it look like a NodeList
-		a.constructor = d.NodeList;
-		dojo._mixin(a, d.NodeList.prototype);
-		return a;
+		a.constructor = d._NodeListCtor;
+		dojo._mixin(a, d._NodeListCtor.prototype);
+		return parent ? a._stash(parent) : a;
 	};
 
 	var loopBody = function(f, a, o){
@@ -186,25 +186,32 @@ dojo.require("dojo._base.array");
 		return tnl(Array.apply(null, arguments));
 	};
 
+	//Allow things that new up a NodeList to use a delegated or alternate NodeList implementation.
+	d._NodeListCtor = d.NodeList;
+
 	var nl = d.NodeList, nlp = nl.prototype;
-	
+
 	// expose adapters and the wrapper as private functions
-	
+
 	nl._wrap = tnl;
 	nl._adaptAsMap = adaptAsMap;
 	nl._adaptAsForEach = adaptAsForEach;
 	nl._adaptAsFilter  = adaptAsFilter;
 	nl._adaptWithCondition = adaptWithCondition;
-	
+
 	// mass assignment
 	
 	// add array redirectors
 	d.forEach(["slice", "splice"], function(name){
 		var f = ap[name];
-		nlp[name] = function(){ return tnl(f.apply(this, arguments)); };
+		//Use a copy of the this array via this.slice() to allow .end() to work right in the splice case.
+		// CANNOT apply ._stash()/end() to splice since it currently modifies
+		// the existing this array -- it would break backward compatibility if we copy the array before
+		// the splice so that we can use .end(). So only doing the stash option to tnl for slice.
+		nlp[name] = function(){ return tnl(f.apply(this, arguments), name == "slice" ? this : null); };
 	});
 	// concat should be here but some browsers with native NodeList have problems with it
-	
+
 	// add array.js redirectors
 	d.forEach(["indexOf", "lastIndexOf", "every", "some"], function(name){
 		var f = d[name];
@@ -222,6 +229,20 @@ dojo.require("dojo._base.array");
 	});
 
 	dojo.extend(dojo.NodeList, {
+		_stash: function(parent){
+			// summary:
+			// 		Private function to hold to a parent NodeList to allow .end() to work.
+			this._parent = parent;
+			return this; //dojo.NodeList
+		},
+
+		end: function(){
+			// summary:
+			// 		Ends use of the current dojo.NodeLit by returning the previous dojo.NodeList
+			// 		that generated the current dojo.NodeList.
+			return this._parent; //dojo.NodeList
+		},
+
 		// http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods
 
 		// FIXME: handle return values for #3244
@@ -264,6 +285,8 @@ dojo.require("dojo._base.array");
 			//		with the caveat that it returns a dojo.NodeList and not a
 			//		raw Array. For more details, see Mozilla's (splice
 			//		documentation)[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:splice]
+			// 		For backwards compatibility, calling .end() on the spliced NodeList
+			// 		does not return the original NodeList -- splice alters the NodeList in place.
 			// index: Integer
 			//		begin can be a positive or negative integer, with positive
 			//		integers noting the offset to begin at, and negative
@@ -370,10 +393,10 @@ dojo.require("dojo._base.array");
 			var t = d.isArray(this) ? this : aps.call(this, 0),
 				m = d.map(arguments, function(a){
 					return a && !d.isArray(a) &&
-						(a.constructor === NodeList || a.constructor == nl) ?
+						(a.constructor === NodeList || a.constructor == d._NodeListCtor) ?
 							aps.call(a, 0) : a;
 				});
-			return tnl(apc.apply(t, m));	// dojo.NodeList
+			return tnl(apc.apply(t, m), this);	// dojo.NodeList
 		},
 
 		map: function(/*Function*/ func, /*Function?*/ obj){
@@ -382,7 +405,7 @@ dojo.require("dojo._base.array");
 			//		array is implicitly this NodeList and the return is a
 			//		dojo.NodeList (a subclass of Array)
 			///return d.map(this, func, obj, d.NodeList); // dojo.NodeList
-			return tnl(d.map(this, func, obj)); // dojo.NodeList
+			return tnl(d.map(this, func, obj), this); // dojo.NodeList
 		},
 
 		forEach: function(callback, thisObj){
@@ -566,7 +589,7 @@ dojo.require("dojo._base.array");
 			//		|	"only"
 			//		|	"replace"
 			// 		or an offset in the childNodes property
-			return d.query(queryOrListOrNode).place(item[0], position);	// dojo.NodeList
+			return d.query(queryOrListOrNode).place(item[0], position)._stash(this);	// dojo.NodeList
 		},
 
 		// FIXME: do we need this?
@@ -597,7 +620,7 @@ dojo.require("dojo._base.array");
 				// FIXME: why would we ever get undefined here?
 				return d.query(queryStr, node).filter(function(subNode){ return subNode !== undefined; });
 			});
-			return tnl(apc.apply([], ret));	// dojo.NodeList
+			return tnl(apc.apply([], ret), this);	// dojo.NodeList
 		},
 
 		filter: function(/*String|Function*/ simpleFilter){
@@ -627,12 +650,12 @@ dojo.require("dojo._base.array");
 				items = d._filterQueryResult(this, a[0]);
 				if(a.length == 1){
 					// if we only got a string query, pass back the filtered results
-					return items; // dojo.NodeList
+					return items._stash(this); // dojo.NodeList
 				}
 				// if we got a callback, run it over the filtered items
 				start = 1;
 			}
-			return tnl(d.filter(items, a[start], a[start + 1]));	// dojo.NodeList
+			return tnl(d.filter(items, a[start], a[start + 1]), this);	// dojo.NodeList
 		},
 		
 		/*
@@ -710,9 +733,9 @@ dojo.require("dojo._base.array");
 			//		NodeList.
 			//	returns:
 			//		dojo.NodeList
-			var t = new dojo.NodeList();
+			var t = new dojo._NodeListCtor();
 			d.forEach(arguments, function(i){ if(this[i]){ t.push(this[i]); }}, this);
-			return t; // dojo.NodeList
+			return t._stash(this); // dojo.NodeList
 		}
 
 	});

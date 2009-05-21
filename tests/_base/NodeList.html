@@ -39,6 +39,15 @@
 				var t = dojo.byId("t"); 
 				var s = dojo.byId("sq100"); 
 				var fourElementNL = new dojo.NodeList(c, t, c, t);
+
+				function verify(/*dojo.NodeList*/nl, /*Array*/ids){
+					for(var i = 0, node; node = nl[i]; i++){
+						doh.is(ids[i], node.id);
+					}
+					//Make sure lengths are equal.
+					doh.is(ids.length, i);
+				}
+
 				doh.register("t", 
 					[
 						// constructor tests
@@ -121,6 +130,9 @@
 							});
 
 							doh.is(ret, [true, true, true, true]);
+							
+							verify(ret.end(), ["c1", "t", "c1", "t"]);
+
 							var cnt = 0;
 							var ret = fourElementNL.map(function(){
 								return cnt++;
@@ -141,11 +153,13 @@
 							doh.is(3, pnl.length);
 							doh.is(c, pnl.slice(-1)[0]);
 							doh.is(2, pnl.slice(-2).length);
+							verify(pnl.slice(1).end(), ["t", "t", "c1"]);
 						},
 
 						function splice(){
 							var pnl = new dojo.NodeList(t, t, c);
 							console.debug(pnl.splice(1));
+
 							/*
 							doh.is(2, pnl.splice(1).length);
 							doh.is(1, pnl.length);
@@ -224,6 +238,7 @@
 							doh.is(t, dojo.query("body").query(":last-child")[0]);
 							doh.is(c, dojo.query("body").query(":last-child")[1]);
 							doh.is(1, pnl.query().length);
+							verify(pnl.query("span").end(), ["t"]);
 						},
 						
 						function filter(){
@@ -237,6 +252,7 @@
 							};
 							doh.is(1, dojo.query("*").filter(filterObj.filterFunc).length);
 							doh.is(1, dojo.query("*").filter(filterObj.filterFunc, filterObj).length);
+							verify((new dojo.NodeList(t)).filter("span").end(), ["t"]);
 						},
 
 						// layout DOM functions
@@ -286,6 +302,7 @@
 							console.debug(cat);
 							doh.t(cat.constructor == dojo.NodeList || cat.constructor == NodeList);
 							doh.is((divs.length + spans.length), cat.length);
+							verify(cat.end(), ["c1"]);
 						},
 
 						function concat2(t){
@@ -394,6 +411,9 @@
 
 							var at3 = divs.at(3,6).at(1);
 							doh.is(divs[6], at3[0]);
+							
+							var ending = divs.at(0).end();
+							verify([ending[0], ending[1]], ["sq100", "t"]);
 						},
 	
 						function _adaptAsForEach(t){

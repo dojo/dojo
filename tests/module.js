@@ -22,6 +22,7 @@ try{
 	dojo.require("tests.fx");
 	dojo.require("tests.DeferredList");
 	dojo.require("tests.html");
+	dojo.requireIf(dojo.isBrowser,"tests.NodeList-traverse");
 }catch(e){
 	doh.debug(e);
 }

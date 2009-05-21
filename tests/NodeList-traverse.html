@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html id="html">
+	<head>
+		<title>Testing dojo.NodeList-traverse extensions to dojo.NodeList</title>
+		<style type="text/css">
+			@import "../resources/dojo.css";
+		</style>
+		<script type="text/javascript" 
+			src="../dojo.js" djConfig="isDebug: true, popup: true"></script>
+		<script type="text/javascript" 
+			src="../NodeList-traverse.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.require("dojo.NodeList-traverse");
+
+			function verify(/*dojo.NodeList*/nl, /*Array*/ids){
+				for(var i = 0, node; node = nl[i]; i++){
+					doh.is(ids[i], node.id);
+				}
+				//Make sure lengths are equal.
+				doh.is(ids.length, i);
+			}
+
+			dojo.addOnLoad(function(){
+				var divs = dojo.query("div");
+
+				doh.register("t", 
+					[
+						function children(t){
+							verify(divs.last().children(), ["crass", "classy", "yeah"]);
+						},
+
+						function closest(t){
+							var classy = dojo.query("#classy");
+							var closestDiv = classy.closest("div");
+							verify(closestDiv, ["third"]);
+							verify(closestDiv.end().closest(".classy"), ["classy"]);
+						},
+
+						function parent(t){
+							verify(dojo.query("#classy").parent(), ["third"]);
+						},
+
+						function parents(t){
+							var classy = dojo.query("#classy");
+							verify(classy.parents(), ["third", "body", "html"]);
+							verify(classy.parents(".third"), ["third"]);
+							verify(classy.parents("body"), ["body"]);
+						},
+
+						function siblings(t){
+							verify(dojo.query("#classy").siblings(), ["crass", "yeah"]);
+						},
+
+						function next(t){
+							verify(dojo.query("#crass").next(), ["classy"]);
+						},
+
+						function prev(t){
+							verify(dojo.query("#classy").prev(), ["crass"]);
+						},
+
+						function first(t){
+							verify(divs.first(), ["sq100"]);
+						},
+
+						function last(t){
+							verify(divs.last(), ["third"]);
+						},
+
+						function even(t){
+							verify(divs.even(), ["t"]);
+						},
+
+						function odd(t){
+							verify(divs.odd(), ["sq100", "third"]);
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body id="body" class="classy">
+		<h1 id="firstH1">testing dojo.NodeList-traverse</h1>
+		<div id="sq100">
+			100px square, abs
+		</div>
+		<div id="t">
+			<span id="c1">c1</span>
+		</div>
+		<div id="third" class="third">
+			<!-- This is the third top level div -->
+			<span id="crass">Crass, baby</span>
+			The third div
+			<span id="classy" class="classy">Classy, baby</span>
+			The third div, again
+			<!-- Another comment -->
+			<span id="yeah">Yeah, baby</span>
+		</div>
+	</body>
+</html>
+

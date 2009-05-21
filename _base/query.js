@@ -136,7 +136,7 @@ if(typeof dojo != "undefined"){
 	// 					d.isOpera; // float
 	// 					d.isWebKit; // float
 	// 					d.doc ; // document element
-	var qlc = d._queryListCtor = 		d.NodeList;
+	var qlc = d._NodeListCtor = 		d.NodeList;
 	var isString = 		d.isString;
 
 	var getDoc = function(){ return d.doc; };
@@ -486,7 +486,7 @@ if(typeof dojo != "undefined"){
 
 	var getArr = function(i, arr){
 		// helps us avoid array alloc when we don't need it
-		var r = arr||[]; // FIXME: should this be 'new d._queryListCtor()' ?
+		var r = arr||[]; // FIXME: should this be 'new d._NodeListCtor()' ?
 		if(i){ r.push(i); }
 		return r;
 	};
@@ -1326,7 +1326,7 @@ if(typeof dojo != "undefined"){
 		if(arr && arr.nozip){ 
 			return (qlc._wrap) ? qlc._wrap(arr) : arr;
 		}
-		// var ret = new d._queryListCtor();
+		// var ret = new d._NodeListCtor();
 		var ret = new qlc();
 		if(!arr || !arr.length){ return ret; }
 		if(arr[0]){
@@ -1517,7 +1517,7 @@ if(typeof dojo != "undefined"){
 
 		//Set list constructor to desired value. This can change
 		//between calls, so always re-assign here.
-		qlc = d._queryListCtor;
+		qlc = d._NodeListCtor;
 
 		if(!query){
 			return new qlc();
@@ -1566,7 +1566,7 @@ if(typeof dojo != "undefined"){
 
 	// one-off function for filtering a NodeList based on a simple selector
 	d._filterQueryResult = function(nodeList, simpleFilter){
-		var tmpNodeList = new d._queryListCtor();
+		var tmpNodeList = new d._NodeListCtor();
 		var filterFunc = getSimpleFilterFunc(getQueryParts(simpleFilter)[0]);
 		for(var x = 0, te; te = nodeList[x]; x++){
 			if(filterFunc(te)){ tmpNodeList.push(te); }
@@ -1585,22 +1585,22 @@ if(!dojo["query"]){
 		var ctr = 0;
 		// QSA-only for webkit mobile. Welcome to the future.
 		dojo.query = function(query, root){
-			d._queryListCtor = dojo.NodeList;
+			d._NodeListCtor = dojo.NodeList;
 			if(!query){
-				return new d._queryListCtor();
+				return new d._NodeListCtor();
 			}
 
-			if(query.constructor == d._queryListCtor){
+			if(query.constructor == d._NodeListCtor){
 				return query;
 			}
 
 			if(!dojo.isString(query)){
-				return new d._queryListCtor(query); // dojo.NodeList
+				return new d._NodeListCtor(query); // dojo.NodeList
 			}
 
 			if(dojo.isString(root)){
 				root = dojo.byId(root);
-				if(!root){ return new d._queryListCtor(); }
+				if(!root){ return new d._NodeListCtor(); }
 			}
 
 			root = root||dojo.doc;
@@ -1617,7 +1617,7 @@ if(!dojo["query"]){
 			if(">~+".indexOf(query.slice(-1)) >= 0){
 				query += " *";
 			}
-			return d._queryListCtor._wrap(
+			return d._NodeListCtor._wrap(
 				Array.prototype.slice.call(
 					doc.querySelectorAll(query)
 				)

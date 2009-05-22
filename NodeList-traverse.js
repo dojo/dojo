@@ -43,7 +43,7 @@ dojo.extend(dojo.NodeList, {
 	_getUniqueNodeListWithParent: function(nodes, query){
 		// summary:
 		// 		gets unique element nodes, filters them further
-		// 		with an optional query and then calls _stash
+		// 		with an optional query and then calls _stash to track parent NodeList.
 		var ary = this._getUniqueAsNodeList(nodes);
 		ary = (query ? dojo._filterQueryResult(ary, query) : ary);
 		return ary._stash(this);  //dojo.NodeList
@@ -95,11 +95,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
-			var parent = node.parentNode;
-			while(parent.nodeType != 1 && parent.nodeType != 9){
-				parent = parent.parentNode;
-			}
-			return parent;
+			return node.parentNode;
 		}); //dojo.NodeList
 	},
 
@@ -129,7 +125,7 @@ dojo.extend(dojo.NodeList, {
 		// 		original dojo.NodeList.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var pary = []
-			var nodes = node.parentNode.childNodes;
+			var nodes = (node.parentNode && node.parentNode.childNodes);
 			for(var i = 0; i < nodes.length; i++){
 				if(nodes[i] != node){
 					pary.push(nodes[i]);

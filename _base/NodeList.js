@@ -10,8 +10,15 @@ dojo.require("dojo._base.array");
 
 	var ap = Array.prototype, aps = ap.slice, apc = ap.concat;
 	
-	var tnl = function(a, parent){
-		// decorate an array to make it look like a NodeList
+	var tnl = function(/*Array*/a, /*dojo.NodeList?*/parent){
+		// summary:
+		// 		decorate an array to make it look like a `dojo.NodeList`.
+		// a:
+		// 		Array of nodes to decorate.
+		// parent:
+		// 		An optional parent NodeList that generated the current
+		// 		list of nodes. Used to call _stash() so the parent NodeList
+		// 		can be accessed via end() later.
 		a.constructor = d._NodeListCtor;
 		dojo._mixin(a, d._NodeListCtor.prototype);
 		return parent ? a._stash(parent) : a;
@@ -231,16 +238,52 @@ dojo.require("dojo._base.array");
 	dojo.extend(dojo.NodeList, {
 		_stash: function(parent){
 			// summary:
-			// 		Private function to hold to a parent NodeList to allow .end() to work.
+			// 		Private function to hold to a parent NodeList. end() to return the parent NodeList.
+			//
+			// example:
+			// How to make a `dojo.NodeList` method that only returns the third node in
+			// the dojo.NodeList but allows access to the original NodeList by using this._stash:
+			//	|	dojo.extend(dojo.NodeList, {
+			//	|		third: function(){
+			//  |			var newNodeList = dojo.NodeList(this[2]);
+			//	|			return newNodeList._stash(this);
+			//	|		}
+			//	|	});
+			//	|	// then see how _stash applies a sub-list, to be .end()'ed out of
+			//	|	dojo.query(".foo")
+			//	|		.third()
+			//	|			.addClass("thirdFoo")
+			//	|		.end()
+			//	|		// access to the orig .foo list
+			//	|		.removeClass("foo")
+			//	| 
+			//
 			this._parent = parent;
 			return this; //dojo.NodeList
 		},
 
 		end: function(){
 			// summary:
-			// 		Ends use of the current dojo.NodeLit by returning the previous dojo.NodeList
+			// 		Ends use of the current `dojo.NodeList` by returning the previous dojo.NodeList
 			// 		that generated the current dojo.NodeList.
-			return this._parent; //dojo.NodeList
+			// description:
+			// 		Returns the `dojo.NodeList` that generated the current `dojo.NodeList`. If there
+			// 		is no parent dojo.NodeList, then an error is returned to indicate a bad chaining
+			// 		call.
+			// example:
+			//	|	dojo.query("a")
+			//	|		.filter(".disabled")
+			//	|			// operate on the anchors that only have a disabled class
+			//	|			.style("color", "grey")
+			//	|		.end()
+			//	|		// jump back to the list of anchors
+			//	|		.style(...)
+			//
+			if(this._parent){
+				return this._parent;
+			}else{
+				throw new Error("Bad call to dojo.NodeList.end(): no parent NodeList");
+			}
 		},
 
 		// http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods

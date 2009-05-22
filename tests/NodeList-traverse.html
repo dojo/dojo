@@ -70,11 +70,15 @@
 						},
 
 						function even(t){
-							verify(divs.even(), ["t"]);
+							var even = divs.even();
+							verify(even, ["t"]);
+							verify(even.end(), ["sq100", "t", "third"]);
 						},
 
 						function odd(t){
-							verify(divs.odd(), ["sq100", "third"]);
+							var odd = divs.odd();
+							verify(odd, ["sq100", "third"]);
+							verify(odd.end(), ["sq100", "t", "third"]);
 						}
 					]
 				);

@@ -192,9 +192,9 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
-		return dojo._NodeListCtor._wrap(dojo.filter(this, function(item, i){
+		return this.filter(function(item, i){
 			return i % 2 != 0;
-		}), this); //dojo.NodeList
+		}); //dojo.NodeList
 	},
 
 	odd: function(){
@@ -203,8 +203,8 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
-		return dojo._NodeListCtor._wrap(dojo.filter(this, function(item, i){
+		return this.filter(function(item, i){
 			return i % 2 == 0;
-		}), this); //dojo.NodeList
+		}); //dojo.NodeList
 	}
 });

@@ -23,6 +23,7 @@ try{
 	dojo.require("tests.DeferredList");
 	dojo.require("tests.html");
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-traverse");
+	dojo.require("tests.cache");
 }catch(e){
 	doh.debug(e);
 }

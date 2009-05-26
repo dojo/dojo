@@ -797,7 +797,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		 if(this.clearOnClose){
 			 if(!this.isDirty()){
 				 this.inherited(arguments);
-			 }else if(this._jsonFileUrl !== ""){
+			 }else{
 				 //Only throw an error if the store was dirty and we were loading from a url (cannot reload from url until state is saved).
 				 throw new Error("dojo.data.ItemFileWriteStore: There are unsaved changes present in the store.  Please save or revert the changes before invoking close.");
 			 }

@@ -4,6 +4,29 @@ dojo.require("dojo.data.api.Identity");
 dojo.require("dojo.date");
 dojo.require("dojo.date.stamp");
 
+dojo.declare("tests.data.Wrapper", null, {
+	//	summary:
+	//		Simple class to use for typeMap in order to	test out 
+	//		'falsy' values for _value.
+	_wrapped: null,
+
+	constructor: function(obj){
+		this._wrapped = obj;
+	},
+
+	getValue: function() {
+		return this._wrapped;
+	},
+
+	setValue: function(obj) {
+		this._wrapped = obj;
+	},
+
+	toString: function(){
+		 return "WRAPPER: [" + this._wrapped + "]";
+	}
+});
+
 
 tests.data.readOnlyItemFileTestTemplates.registerTestsForDatastore = function(/* String */ datastoreClassName){
 	// summary:
@@ -2346,6 +2369,197 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: custom_datatype_CustomObject 0 (False) value",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test type mapping and _values that are false-like
+			var dataset = {
+				identifier:'name',
+				items: [
+					{ name:'Bob', species:'human', age: {_type:'tests.data.Wrapper', _value:0} },
+					{ name:'Nancy', species:'human', age: {_type:'tests.data.Wrapper', _value:32} }
+				]
+			};
+			var store = new datastore({
+					data:dataset,
+					typeMap:{'tests.data.Wrapper': 	{	
+											type: tests.data.Wrapper,
+											deserialize: function(value){
+												return new tests.data.Wrapper(value);
+											}
+										}
+							}
+			});
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var bob = item;
+				var age = store.getValue(item, "age");
+				t.assertTrue(age instanceof tests.data.Wrapper);
+				t.assertTrue(age.toString() == "WRAPPER: [0]");
+				d.callback(true);
+			}
+			function onError(errData){
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity:"Bob", onItem:onItem, onError:onError});
+			return d; // Deferred
+		}
+	},
+	{
+		name: "Read API: custom_datatype_CustomObject Boolean False values",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test type mapping and _values that are false-like
+			var dataset = {
+				identifier:'name',
+				items: [
+					{ name:'Bob', isHuman: {_type:'tests.data.Wrapper', _value:false} },
+					{ name:'Nancy', isHuman: {_type:'tests.data.Wrapper', _value: true} }
+				]
+			};
+			var store = new datastore({
+					data:dataset,
+					typeMap:{'tests.data.Wrapper': 	{	
+											type: tests.data.Wrapper,
+											deserialize: function(value){
+												return new tests.data.Wrapper(value);
+											}
+										}
+							}
+			});
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var bob = item;
+				var isHuman = store.getValue(item, "isHuman");
+				t.assertTrue(isHuman instanceof tests.data.Wrapper);
+				t.assertTrue(isHuman.toString() == "WRAPPER: [false]");
+				d.callback(true);
+			}
+			function onError(errData){
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity:"Bob", onItem:onItem, onError:onError});
+			return d; // Deferred
+		}
+	},
+	{
+		name: "Read API: custom_datatype_CustomObject Empty String values",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test type mapping and _values that are false-like
+			var dataset = {
+				identifier:'name',
+				items: [
+					{ name:'Bob', lastName: {_type:'tests.data.Wrapper', _value:""} },
+					{ name:'Nancy', lastName: {_type:'tests.data.Wrapper', _value: "Doe"} }
+				]
+			};
+			var store = new datastore({
+					data:dataset,
+					typeMap:{'tests.data.Wrapper': 	{	
+											type: tests.data.Wrapper,
+											deserialize: function(value){
+												return new tests.data.Wrapper(value);
+											}
+										}
+							}
+			});
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var bob = item;
+				var lastName = store.getValue(item, "lastName");
+				t.assertTrue(lastName instanceof tests.data.Wrapper);
+				t.assertTrue(lastName.toString() == "WRAPPER: []");
+				d.callback(true);
+			}
+			function onError(errData){
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity:"Bob", onItem:onItem, onError:onError});
+			return d; // Deferred
+		}
+	},
+	{
+		name: "Read API: custom_datatype_CustomObject explicit null values",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test type mapping and _values that are false-like
+			var dataset = {
+				identifier:'name',
+				items: [
+					{ name:'Bob', lastName: {_type:'tests.data.Wrapper', _value:null} },
+					{ name:'Nancy', lastName: {_type:'tests.data.Wrapper', _value: "Doe"} }
+				]
+			};
+			var store = new datastore({
+					data:dataset,
+					typeMap:{'tests.data.Wrapper': 	{	
+											type: tests.data.Wrapper,
+											deserialize: function(value){
+												return new tests.data.Wrapper(value);
+											}
+										}
+							}
+			});
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var bob = item;
+				var lastName = store.getValue(item, "lastName");
+				t.assertTrue(lastName instanceof tests.data.Wrapper);
+				console.log(lastName.toString());
+				t.assertTrue(lastName.toString() == "WRAPPER: [null]");
+				d.callback(true);
+			}
+			function onError(errData){
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity:"Bob", onItem:onItem, onError:onError});
+			return d; // Deferred
+		}
+	},
+	{
+		name: "Read API: custom_datatype_CustomObject explicit undefined value",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test type mapping and _values that are false-like
+			var dataset = {
+				identifier:'name',
+				items: [
+					{ name:'Bob', lastName: {_type:'tests.data.Wrapper', _value: undefined} },
+					{ name:'Nancy', lastName: {_type:'tests.data.Wrapper', _value: "Doe"} }
+				]
+			};
+			var store = new datastore({
+					data:dataset,
+					typeMap:{'tests.data.Wrapper': 	{	
+											type: tests.data.Wrapper,
+											deserialize: function(value){
+												return new tests.data.Wrapper(value);
+											}
+										}
+							}
+			});
+			var d = new doh.Deferred();
+			function onItem(item){
+				t.assertTrue(item !== null);
+				var bob = item;
+				var lastName = store.getValue(item, "lastName");
+				t.assertTrue(lastName instanceof tests.data.Wrapper);
+				t.assertTrue(lastName.toString() == "WRAPPER: [undefined]");
+				d.callback(true);
+			}
+			function onError(errData){
+				d.errback(errData);
+			}
+			store.fetchItemByIdentity({identity:"Bob", onItem:onItem, onError:onError});
+			return d; // Deferred
+		}
+	},
+	{
 		name: "Read API: hierarchical_data",
  		runTest: function(datastore, t){
 			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["geography_hierarchy_small"]);
@@ -2624,6 +2838,72 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				store.fetchItemByIdentity({identity:"ec", onItem:onItem, onError:onError});
 				return d; // Deferred
 			}
+		}
+	},
+	{
+		name: "Read API: close (clearOnClose: true, reset data.)",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Function to test that clear on close and reset of data works.
+			//	description:
+			//		Function to test that clear on close and reset of data works.
+			var store = new datastore({data: { identifier: "uniqueId", 
+											  items: [ {uniqueId: 1, value:"foo*bar"},
+												   {uniqueId: 2, value:"bar*foo"}, 
+												   {uniqueId: 3, value:"boomBam"},
+												   {uniqueId: 4, value:"bit$Bite"},
+												   {uniqueId: 5, value:"ouagadogou"},
+												   {uniqueId: 6, value:"BaBaMaSaRa***Foo"},
+												   {uniqueId: 7, value:"squawl"},
+												   {uniqueId: 8, value:"seaweed"},
+												   {uniqueId: 9, value:"jfq4@#!$!@Rf14r14i5u"}
+												 ]
+										}
+								 });
+
+			var d = new doh.Deferred();
+			var firstComplete = function(items, request){
+				t.assertEqual(items.length, 1);
+				var firstItem = items[0];
+
+				//Set the store clearing options and the new data
+				store.clearOnClose = true;
+				store.data = { identifier: "uniqueId", 
+					items: [ {uniqueId: 1, value:"foo*bar"},
+						{uniqueId: 2, value:"bar*foo"}, 
+						{uniqueId: 3, value:"boomBam"},
+						{uniqueId: 4, value:"bit$Bite"},
+						{uniqueId: 5, value:"ouagadogou"},
+						{uniqueId: 6, value:"BaBaMaSaRa***Foo"},
+						{uniqueId: 7, value:"squawl"},
+						{uniqueId: 8, value:"seaweed"},
+						{uniqueId: 9, value:"jfq4@#!$!@Rf14r14i5u"}
+					]
+				};
+                store.close();
+
+				//Do the next fetch and verify that the next item you get is not
+				//a reference to the same item (data cleared and reloaded.
+				var secondComplete = function(items, request){
+					try{
+						t.assertEqual(items.length, 1);
+						var secondItem = items[0];
+						t.assertTrue(firstItem != null);
+						t.assertTrue(secondItem != null);
+						t.assertTrue(firstItem != secondItem);
+						d.callback(true);
+					}catch(e){
+						d.errback(e);
+					}
+				}
+				store.fetch({query: {value: "bar\*foo"}, onComplete: secondComplete, onError: error});
+			}
+			function error(error, request){
+				t.assertTrue(false);
+				d.errback(error);
+			}
+			store.fetch({query: {value: "bar\*foo"}, onComplete: firstComplete, onError: error});
+			return d;
 		}
 	},
 	{

@@ -646,7 +646,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 				for(var j = 0; j < arrayOfValues.length; ++j) {
 					value = arrayOfValues[j]; // example: {_reference:{name:'Miss Piggy'}}
 					if(value !== null && typeof value == "object"){
-						if(value._type && value._value){
+						if(("_type" in value) && ("_value" in  value)){
 							var type = value._type; // examples: 'Date', 'Color', or 'ComplexNumber'
 							var mappingObj = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber, {type: dojo.Color, deserialize(value){ return new dojo.Color(value)}}
 							if(!mappingObj){ 

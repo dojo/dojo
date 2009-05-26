@@ -2510,7 +2510,6 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				var bob = item;
 				var lastName = store.getValue(item, "lastName");
 				t.assertTrue(lastName instanceof tests.data.Wrapper);
-				console.log(lastName.toString());
 				t.assertTrue(lastName.toString() == "WRAPPER: [null]");
 				d.callback(true);
 			}

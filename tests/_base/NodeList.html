@@ -376,6 +376,63 @@
 								doh.is("first", node.options[0].value);
 								doh.f(node.options[0].selected);
 							});
+
+							//Some divs to use for addContent template actions.
+							var templs = dojo._toDom('<div class="multitemplate"></div><div class="multitemplate"></div>');
+							dojo.body().appendChild(templs);
+							templs = dojo.query(".multitemplate");
+
+							//templateFunc test
+							templs.addContent({
+								template: '<b>[name]</b>',
+								templateFunc: function(str, obj){ return str.replace(/\[name\]/g, obj.name); },
+								name: "bar"
+							});
+
+							var bolds = templs.query("b");
+							doh.is(2, bolds.length);
+							bolds.forEach(function(node){
+								doh.is("bar", node.innerHTML);
+							});
+
+							//template with dojo.string.substitute used.
+							dojo.require("dojo.string");
+							templs.addContent({
+								template: "<p>${name}</p>",
+								name: "baz"
+							});
+
+							var ps = templs.query("p");
+							doh.is(2, ps.length);
+							ps.forEach(function(node){
+								doh.is("baz", node.innerHTML);
+							});
+
+							//Try a dojo.declared thing.
+							dojo.require("dojo.parser");
+							dojo.declare("dojo.tests.Mini", null, {
+								constructor: function(args, node){
+									dojo.mixin(this, args);
+									node.innerHTML = this.name;
+									this.domNode = node;
+								},
+								name: ""
+							});
+							
+							templs.addContent({
+								template: '<i dojoType="dojo.tests.Mini" name="cool"></i>',
+								parse: true
+							});
+							
+							doh.is(2, templs.instantiated.length);
+							dojo.forEach(templs.instantiated, function(instantiated){
+								doh.is("dojo.tests.Mini", instantiated.declaredClass);
+								doh.is("cool", instantiated.name);
+								doh.is("cool", instantiated.domNode.innerHTML);
+							});
+
+							//Get rid of the junk used for template testing.
+							templs.orphan();
 						},
 
 						function connect(t){

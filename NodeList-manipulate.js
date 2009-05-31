@@ -30,73 +30,6 @@ dojo["NodeList-manipulate"] = {
 		return text;
 	}
 
-	function normalizeInsertData(/*String||Element||NodeList*/content, /*DOMNode*/refNode){
-		// summary:
-		// 		normalizes data to an array of items to insert.
-		// 		Wanted to just use a DocumentFragment, but for the array/NodeList
-		// 		case that meant  using cloneNode, but we may not want that.
-		// 		Cloning should only happen if the node operations span
-		// 		multiple refNodes. Also, need a real array, not a NodeList from the
-		// 		DOM since the node movements could change those NodeLists.
-		if(typeof content == "string"){
-			content = dojo._toDom(content, (refNode && refNode.ownerDocument));
-			if(content.nodeType == 11){
-				//DocumentFragment. It cannot handle cloneNode calls, so pull out the children.
-				content = dojo._toArray(content.childNodes);
-			}else{
-				content = [content];
-			}
-		}else if(!dojo.isArrayLike(content)){
-			content = [content];
-		}else if(!dojo.isArray(content)){
-			//To get to this point, content is array-like, but
-			//not an array, which likely means a DOM NodeList. Convert it now.
-			content = dojo._toArray(content);
-		}
-		return content; //Array
-	}
-
-	function place(/*Array*/ary, /*DOMNode*/refNode, /*String*/position, /*Boolean*/useClone){
-		// summary:
-		// 		handles placing an array of nodes relative to another node.
-		// 		Also allows for cloning the nodes in the array.
-		var rNode = refNode;
-		//Always cycle backwards in case the array is really a
-		//DOM NodeList and the DOM operations take it out of the live collection.
-		var length = ary.length;
-		for(var i = length - 1; i >= 0; i--){
-			var node = (useClone ? ary[i].cloneNode(true) : ary[i]);
-			if(i == length - 1){
-				dojo.place(node, rNode, position);
-			}else{
-				rNode.parentNode.insertBefore(node, rNode);
-			}
-			rNode = node;
-		}
-	}
-
-	function insertPlace(/*String||DOMNode||NodeList*/content, /*NodeList*/nl, /*String*/position){
-		// summary:
-		// 		reusable chunk for different position calls.
-		content = normalizeInsertData(content, nl[0]);
-		for(var i = 0, node; node = nl[i]; i++){
-			place(content, node, position, i > 0);
-		}
-		return nl; //dojo.NodeList
-	}
-
-	function reverseInsertPlace(/*String*/query, /*NodeList*/nl, /*String*/position){
-		// summary:
-		// 		reusable chunk for different To/After position calls.
-		var nl2 = dojo.query(query);
-		for(var i = 0; i < nl2.length; i++){
-			for(var j = 0, item; item = nl[j]; j++){
-				dojo.place((i > 0 ? item.cloneNode(true) : item), nl2[i], position);
-			}
-		}
-		return nl; //dojo.NodeList
-	}
-
 	function getWrapInsertion(/*DOMNode*/node){
 		// summary:
 		// 		finds the innermost element to use for wrap insertion.
@@ -122,6 +55,20 @@ dojo["NodeList-manipulate"] = {
 	}
 
 	dojo.extend(dojo.NodeList, {
+		_placeMultiple: function(/*String*/query, /*String*/position){
+			// summary:
+			// 		private method for inserting queried nodes into all nodes in this NodeList
+			// 		at different positions. Differs from NodeList.place because it will clone
+			// 		the nodes in this NodeList if the query matches more than one element.
+			var nl2 = dojo.query(query);
+			for(var i = 0; i < nl2.length; i++){
+				for(var j = 0, item; item = this[j]; j++){
+					dojo.place((i > 0 ? item.cloneNode(true) : item), nl2[i], position);
+				}
+			}
+			return this; //dojo.NodeList
+		},
+
 		innerHTML: function(/*String?||DOMNode?|NodeList?*/value){
 			// summary:
 			// 		allows setting the innerHTML of each node in the NodeList,
@@ -139,7 +86,7 @@ dojo["NodeList-manipulate"] = {
 			// 		node is in this NodeList. The nodes in this NodeList are returned in the "set"
 			// 		usage of this method, not the HTML that was inserted.
 			if(arguments.length){
-				return insertPlace(value, this, "only"); //dojo.NodeList
+				return this.addContent(value, "only"); //dojo.NodeList
 			}else{
 				return this[0].innerHTML; //String
 			}
@@ -257,7 +204,7 @@ dojo["NodeList-manipulate"] = {
 			// 		is greater than 1. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the appended content.
-			return insertPlace(content, this, "last"); //dojo.NodeList
+			return this.addContent(content, "last"); //dojo.NodeList
 		},
 
 		appendTo: function(/*String*/query){
@@ -270,7 +217,7 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
 			// 		from the query.
-			return reverseInsertPlace(query, this, "last"); //dojo.NodeList
+			return this._placeMultiple(query, "last"); //dojo.NodeList
 		},
 
 		prepend: function(/*String||DOMNode||NodeList*/content){
@@ -281,7 +228,7 @@ dojo["NodeList-manipulate"] = {
 			// 		is greater than 1. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the prepended content.
-			return insertPlace(content, this, "first"); //dojo.NodeList
+			return this.addContent(content, "first"); //dojo.NodeList
 		},
 
 		prependTo: function(/*String*/query){
@@ -294,7 +241,7 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
 			// 		from the query.
-			return reverseInsertPlace(query, this, "first"); //dojo.NodeList
+			return this._placeMultiple(query, "first"); //dojo.NodeList
 		},
 
 		after: function(/*String||Element||NodeList*/content){
@@ -305,7 +252,7 @@ dojo["NodeList-manipulate"] = {
 			// 		is greater than 1. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the content.
-			return insertPlace(content, this, "after"); //dojo.NodeList
+			return this.addContent(content, "after"); //dojo.NodeList
 		},
 
 		insertAfter: function(/*String*/query){
@@ -318,7 +265,7 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
 			// 		from the query.
-			return reverseInsertPlace(query, this, "after"); //dojo.NodeList
+			return this._placeMultiple(query, "after"); //dojo.NodeList
 		},
 
 		before: function(/*String||DOMNode||NodeList*/content){
@@ -329,7 +276,7 @@ dojo["NodeList-manipulate"] = {
 			// 		is greater than 1. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in this NodeList
 			// 		will be returned, not the content.
-			return insertPlace(content, this, "before"); //dojo.NodeList
+			return this.addContent(content, "before"); //dojo.NodeList
 		},
 
 		insertBefore: function(/*String*/query){
@@ -342,7 +289,7 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
 			// 		from the query.
-			return reverseInsertPlace(query, this, "before"); //dojo.NodeList
+			return this._placeMultiple(query, "before"); //dojo.NodeList
 		},
 
 		/*=====
@@ -446,9 +393,9 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the replacing content.
 			// 		Note that the returned nodes have been removed from the DOM.
-			content = normalizeInsertData(content, this[0]);
+			content = this._normalize(content, this[0]);
 			for(var i = 0, node; node = this[i]; i++){
-				place(content, node, "before", i > 0);
+				this._place(content, node, "before", i > 0);
 				node.parentNode.removeChild(node);
 			}
 			return this; //dojo.NodeList
@@ -466,9 +413,9 @@ dojo["NodeList-manipulate"] = {
 			// 		from the query. Note that the returned nodes have been
 			// 		removed from the DOM.
 			var nl = dojo.query(query);
-			var content = normalizeInsertData(this, this[0]);
+			var content = this._normalize(this, this[0]);
 			for(var i = 0, node; node = nl[i]; i++){
-				place(content, node, "before", i > 0);
+				this._place(content, node, "before", i > 0);
 				node.parentNode.removeChild(node);
 			}
 			return this; //dojo.NodeList

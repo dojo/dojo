@@ -236,9 +236,103 @@ dojo.require("dojo._base.array");
 	});
 
 	dojo.extend(dojo.NodeList, {
+		_normalize: function(/*String||Element||Object||NodeList*/content, /*DOMNode?*/refNode){
+			// summary:
+			// 		normalizes data to an array of items to insert.
+			// description:
+			// 		If content is an object, it can have special properties "template" and
+			// 		"parse". If "template" is defined, then the template value is run through
+			// 		dojo.string.substitute (if dojo.string.substitute has been dojo.required elsewhere),
+			// 		or if templateFunc is a function on the content, that function will be used to
+			// 		transform the template into a final string to be used for for passing to dojo._toDom.
+			// 		If content.parse is true, then it is remembered for later, for when the content
+			// 		nodes are inserted into the DOM. At that point, the nodes will be parsed for widgets
+			// 		(if dojo.parser has been dojo.required elsewhere).
+	
+			//Wanted to just use a DocumentFragment, but for the array/NodeList
+			//case that meant  using cloneNode, but we may not want that.
+			//Cloning should only happen if the node operations span
+			//multiple refNodes. Also, need a real array, not a NodeList from the
+			//DOM since the node movements could change those NodeLists.
+	
+			var parse = content.parse === true ? true : false;
+
+			//Do we have an object that needs to be run through a template?
+			if(typeof content.template == "string"){
+				var templateFunc = content.templateFunc || (dojo.string && dojo.string.substitute);
+				content = templateFunc ? templateFunc(content.template, content) : content;
+			}
+
+			if(typeof content == "string"){
+				content = dojo._toDom(content, (refNode && refNode.ownerDocument));
+				if(content.nodeType == 11){
+					//DocumentFragment. It cannot handle cloneNode calls, so pull out the children.
+					content = dojo._toArray(content.childNodes);
+				}else{
+					content = [content];
+				}
+			}else if(!dojo.isArrayLike(content)){
+				content = [content];
+			}else if(!dojo.isArray(content)){
+				//To get to this point, content is array-like, but
+				//not an array, which likely means a DOM NodeList. Convert it now.
+				content = dojo._toArray(content);
+			}
+
+			//Pass around the parse info
+			if(parse){
+				content._runParse = true;
+			}
+			return content; //Array
+		},
+
+		_place: function(/*Array*/ary, /*DOMNode*/refNode, /*String*/position, /*Boolean*/useClone){
+			// summary:
+			// 		private utility to handle placing an array of nodes relative to another node.
+			// description:
+			// 		Allows for cloning the nodes in the array, and for
+			// 		optionally parsing widgets, if ary._runParse is true.
+			// 		Parsed widgets are placed in an "instantiated" array off
+			// 		the NodeList.
+			//
+			var rNode = refNode, tempNode;
+			var widgets = ary._runParse ? [] : null;
+
+			//Always cycle backwards in case the array is really a
+			//DOM NodeList and the DOM operations take it out of the live collection.
+			var length = ary.length;
+			for(var i = length - 1; i >= 0; i--){
+				var node = (useClone ? ary[i].cloneNode(true) : ary[i]);
+
+				//If need widget parsing, use a temp node, instead of waiting after inserting into
+				//real DOM because we need to start widget parsing at one node up from current node,
+				//which could cause some already parsed widgets to be parsed again.
+				if(ary._runParse && dojo.parser && dojo.parser.parse){
+					if(!tempNode){
+						tempNode = rNode.ownerDocument.createElement("div");
+					}
+					tempNode.appendChild(node);
+					widgets = widgets.concat(dojo.parser.parse(tempNode));
+					tempNode.removeChild(node);
+				}
+
+				if(i == length - 1){
+					dojo.place(node, rNode, position);
+				}else{
+					rNode.parentNode.insertBefore(node, rNode);
+				}
+				rNode = node;
+			}
+
+			if(widgets){
+				this.instantiated = this.instantiated.concat(widgets);
+			}
+			return widgets;
+		},
+
 		_stash: function(parent){
 			// summary:
-			// 		Private function to hold to a parent NodeList. end() to return the parent NodeList.
+			// 		private function to hold to a parent NodeList. end() to return the parent NodeList.
 			//
 			// example:
 			// How to make a `dojo.NodeList` method that only returns the third node in
@@ -261,6 +355,11 @@ dojo.require("dojo._base.array");
 			this._parent = parent;
 			return this; //dojo.NodeList
 		},
+
+		// instantiated: Array
+		//		Holds instantiated objects from either the instantiate method or via the optional
+		// 		widget parsing that is available via addContent.
+		instantiated: [],
 
 		end: function(){
 			// summary:
@@ -459,7 +558,6 @@ dojo.require("dojo._base.array");
 			// non-standard return to allow easier chaining
 			return this; // dojo.NodeList 
 		},
-
 
 		/*=====
 		coords: function(){
@@ -710,9 +808,9 @@ dojo.require("dojo._base.array");
 		},
 		*/
 
-		addContent: function(/*String|DomNode*/ content, /*String||Integer?*/ position){
+		addContent: function(/*String||DomNode||Object||dojo.NodeList*/ content, /*String||Integer?*/ position){
 			//	summary:
-			//		add a node or some HTML as a string to every item in the
+			//		add a node, NodeList or some HTML as a string to every item in the
 			//		list.  Returns the original list.
 			//	description:
 			//		a copy of the HTML content is added to each item in the
@@ -720,8 +818,16 @@ dojo.require("dojo._base.array");
 			//		argument is provided, the content is appended to the end of
 			//		each item.
 			//	content:
-			//		DOM node or HTML in string format to add at position to
-			//		every item
+			//		DOM node, HTML in string format, a NodeList or an Object. If a DOM node or
+			// 		NodeList, the content will be cloned if the current NodeList has more than one
+			// 		element. Only the DOM nodes are cloned, no event handlers. If it is an Object,
+			// 		it should be an object with at "template" String property that has the HTML string
+			// 		to insert. If dojo.string has already been dojo.required, then dojo.string.substitute
+			// 		will be used on the "template" to generate the final HTML string. Other allowed
+			// 		properties on the object are: "parse" if the HTML
+			// 		string should be parsed for widgets (dojo.require("dojo.parser") to get that
+			// 		option to work), and "templateFunc" if a template function besides dojo.string.substitute
+			// 		should be used to transform the "template".
 			//	position:
 			//		can be one of:
 			//		|	"last"||"end" (default)
@@ -743,28 +849,49 @@ dojo.require("dojo._base.array");
 			//		add a clone of a DOM node to the end of every element in
 			//		the list, removing it from its existing parent.
 			//	|	dojo.query(".note").addContent(dojo.byId("foo"));
-			var c = d.isString(content) ? 
-						d._toDom(content, this[0] && this[0].ownerDocument) : 
-						content, 
-					i, 
-					l = this.length - 1;
-			for(i = 0; i < l; ++i){
-				d.place(c.cloneNode(true), this[i], position);
+			//  example:
+			//  	Append nodes from a templatized string.
+			// 		dojo.require("dojo.string");
+			// 		dojo.query(".note").addContent({
+			//  		template: '<b>${id}: </b><span>${name}</span>',
+			// 			id: "user332",
+			//  		name: "Mr. Anderson"
+			//  	});
+			//  example:
+			//  	Append nodes from a templatized string that also has widgets parsed.
+			//  	dojo.require("dojo.string");
+			//  	dojo.require("dojo.parser");
+			//  	var notes = dojo.query(".note").addContent({
+			//  		template: '<button dojoType="dijit.form.Button">${text}</button>',
+			//  		parse: true,
+			//  		text: "Send"
+			//  	});
+			//  	//The newly instantiated widgets are available via the .instantiated array property.
+			//  	var dijitButtons = notes.instantiated;
+			content = this._normalize(content, this[0]);
+			for(var i = 0, node; node = this[i]; i++){
+				this._place(content, node, position, i > 0);
 			}
-			if(l >= 0){
-				d.place(c, this[l], position);
-			}
-			return this;	// dojo.NodeList
+			return this; //dojo.NodeList
 		},
 
 		instantiate: function(/*String|Object*/ declaredClass, /*Object?*/ properties){
 			//	summary:
 			//		Create a new instance of a specified class, using the
 			//		specified properties and each node in the nodeList as a
-			//		srcNodeRef
+			//		srcNodeRef. The instantiated objects are available as the
+			// 		"instantiated" property on this NodeList.
+			//	example:
+			//		Grabs all buttons in the page and converts them to diji.form.Buttons. Then
+			// 		grabs the instantiated buttons via the instantiated property on the NodeList.
+			//	|	var buttons = dojo.query("button").instantiate("dijit.form.Button", {showLabel: true});
+			//  |	var buttonWidgets = buttons.instantiated;
 			var c = d.isFunction(declaredClass) ? declaredClass : d.getObject(declaredClass);
 			properties = properties || {};
-			return this.forEach(function(node){ new c(properties, node); });	// dojo.NodeList
+			var self = this;
+			return this.forEach(function(node){
+				self.instantiated.push(c(properties, node));
+			});	// dojo.NodeList
 		},
 
 		at: function(/*===== index =====*/){

@@ -834,6 +834,8 @@ dojo.require("dojo._base.array");
 			//		|	"first||"start"
 			//		|	"before"
 			//		|	"after"
+			//		|	"replace" (replaces nodes in this NodeList with new content)
+			//		|	"only" (removes other children of the nodes so new content is hte only child)
 			// 		or an offset in the childNodes property
 			//	example:
 			//		appends content to the end if the position is ommitted

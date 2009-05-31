@@ -65,6 +65,11 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			return dojo._toArray(node.childNodes);
 		}); //dojo.NodeList
@@ -77,6 +82,11 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			do{
 				if(dojo._filterQueryResult([node], query).length){
@@ -94,6 +104,11 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			return node.parentNode;
 		}); //dojo.NodeList
@@ -106,6 +121,11 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var pary = []
 			while(node.parentNode){
@@ -123,6 +143,11 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var pary = []
 			var nodes = (node.parentNode && node.parentNode.childNodes);
@@ -142,6 +167,11 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var next = node.nextSibling;
 			while(next && next.nodeType != 1){
@@ -158,6 +188,11 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var prev = node.previousSibling;
 			while(prev && prev.nodeType != 1){

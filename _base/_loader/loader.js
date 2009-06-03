@@ -94,24 +94,42 @@
 		//		as an expression, typically used by the resource bundle loader to
 		//		load JSON-style resources
 
-		if(this._loadedUrls[uri]){
+		if(d._loadedUrls[uri]){
 			return true; // Boolean
 		}
-		var contents = this._getText(uri, true);
-		if(!contents){ return false; } // Boolean
-		this._loadedUrls[uri] = true;
-		this._loadedUrls.push(uri);
-		if(cb){
-			contents = '('+contents+')';
-		}else{
-			//Only do the scoping if no callback. If a callback is specified,
-			//it is most likely the i18n bundle stuff.
-			contents = this._scopePrefix + contents + this._scopeSuffix;
+		d._inFlightCount++; // block addOnLoad calls that arrive while we're busy downloading
+		var contents = d._getText(uri, true);
+		if(contents){ // not 404, et al
+			d._loadedUrls[uri] = true;
+			d._loadedUrls.push(uri);
+			if(cb){
+				contents = '('+contents+')';
+			}else{
+				//Only do the scoping if no callback. If a callback is specified,
+				//it is most likely the i18n bundle stuff.
+				contents = d._scopePrefix + contents + d._scopeSuffix;
+			}
+			if(d.isMoz){ contents += "\r\n//@ sourceURL=" + uri; } // debugging assist for Firebug
+			var value = d["eval"](contents);
+			if(cb){ cb(value); }
 		}
-		if(d.isMoz){ contents += "\r\n//@ sourceURL=" + uri; } // debugging assist for Firebug
-		var value = d["eval"](contents);
-		if(cb){ cb(value); }
-		return true; // Boolean
+		// Check to see if we need to call _callLoaded() due to an addOnLoad() that arrived while we were busy downloading
+		if(--d._inFlightCount == 0 && d._postLoad && d._loaders.length){
+			// We shouldn't be allowed to get here but Firefox allows an event 
+			// (mouse, keybd, async xhrGet) to interrupt a synchronous xhrGet. 
+			// If the current script block contains multiple require() statements, then after each
+			// require() returns, inFlightCount == 0, but we want to hold the _callLoaded() until
+			// all require()s are done since the out-of-sequence addOnLoad() presumably needs them all.
+			// setTimeout allows the next require() to start (if needed), and then we check this again.
+			setTimeout(function(){ 
+				// If inFlightCount > 0, then multiple require()s are running sequentially and 
+				// the next require() started after setTimeout() was executed but before we got here.
+				if(d._inFlightCount == 0){ 
+					d._callLoaded();
+				}
+			}, 0);
+		}
+		return !!contents; // Boolean: contents? true : false
 	}
 	//>>excludeEnd("xdomainExclude");
 

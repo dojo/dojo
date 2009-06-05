@@ -438,7 +438,8 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 	// Check for underflow, due to DST shifts.  See #9366
 	// This assumes a 1 hour dst shift correction at midnight
 	// We could compare the timezone offset after the shift and add the difference instead.
-	if(dateToken && dateObject.getDate() < result[2]){
+	if((monthToken && dateObject.getMonth() < result[1]) ||
+		(dateToken && dateObject.getDate() < result[2])){
 		dateObject = dojo.date.add(dateObject, "hour", 1);
 	}
 

@@ -50,31 +50,34 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 	//
 	var sortFunctions=[];   
 
-	function createSortFunction(attr, dir){
+	function createSortFunction(attr, dir, comp, s){
+		//Passing in comp and s (comparator and store), makes this
+		//function much faster.
 		return function(itemA, itemB){
-			var a = store.getValue(itemA, attr);
-			var b = store.getValue(itemB, attr);
-			//See if we have a override for an attribute comparison.
-			var comparator = null;
-			if(store.comparatorMap){
-				if(typeof attr !== "string"){
-					 attr = store.getIdentity(attr);
-				}
-				comparator = store.comparatorMap[attr]||dojo.data.util.sorter.basicComparator;
-			}
-			comparator = comparator||dojo.data.util.sorter.basicComparator; 
-			return dir * comparator(a,b); //int
+			var a = s.getValue(itemA, attr);
+			var b = s.getValue(itemB, attr);
+			return dir * comp(a,b); //int
 		};
 	}
 	var sortAttribute;
+	var map = store.comparatorMap;
+	var bc = dojo.data.util.sorter.basicComparator;
 	for(var i = 0; i < sortSpec.length; i++){
 		sortAttribute = sortSpec[i];
-		if(sortAttribute.attribute){
-			var direction = (sortAttribute.descending) ? -1 : 1;
-			sortFunctions.push(createSortFunction(sortAttribute.attribute, direction));
+		var attr = sortAttribute.attribute
+		if(attr){
+			var dir = (sortAttribute.descending) ? -1 : 1;
+			var comp = bc;
+			if(map){
+				if(typeof attr !== "string" && ("toString" in attr)){
+					 attr = attr.toString();
+				}
+				comp = map[attr]||bc;
+			}
+			sortFunctions.push(createSortFunction(attr, 
+				dir, comp, store));
 		}
 	}
-
 	return function(rowA, rowB){
 		var i=0;
 		while(i < sortFunctions.length){

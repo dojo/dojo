@@ -64,7 +64,7 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 	var bc = dojo.data.util.sorter.basicComparator;
 	for(var i = 0; i < sortSpec.length; i++){
 		sortAttribute = sortSpec[i];
-		var attr = sortAttribute.attribute
+		var attr = sortAttribute.attribute;
 		if(attr){
 			var dir = (sortAttribute.descending) ? -1 : 1;
 			var comp = bc;

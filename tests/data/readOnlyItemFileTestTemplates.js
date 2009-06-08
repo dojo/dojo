@@ -1295,19 +1295,24 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 
 			var d = new doh.Deferred();
 			function onItem(item){
-				t.assertTrue(item !== null);
-				t.assertTrue(store.hasAttribute(item, "abbr"));
-				t.assertTrue(!store.hasAttribute(item, "abbr_not"));
-
-				//Test that null attributes throw an exception
-				var passed = false;
 				try{
-					store.hasAttribute(item, null);
-				}catch (e){
-					passed = true;
+					t.assertTrue(item !== null);
+
+					t.assertTrue(store.hasAttribute(item, "abbr"));
+					t.assertTrue(!store.hasAttribute(item, "abbr_not"));
+
+					//Test that null attributes throw an exception
+					var passed = false;
+					try{
+						store.hasAttribute(item, null);
+					}catch (e){
+						passed = true;
+					}
+					t.assertTrue(passed);
+					d.callback(true);
+				}catch(e){
+					d.errback(e);
 				}
-				t.assertTrue(passed);
-				d.callback(true);
 			}
 			function onError(errData){
 				t.assertTrue(false);

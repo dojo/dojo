@@ -109,7 +109,7 @@
 				//it is most likely the i18n bundle stuff.
 				contents = d._scopePrefix + contents + d._scopeSuffix;
 			}
-			if(d.isMoz){ contents += "\r\n//@ sourceURL=" + uri; } // debugging assist for Firebug
+			if(!d.isIE){ contents += "\r\n//@ sourceURL=" + uri; } // debugging assist for Firebug
 			var value = d["eval"](contents);
 			if(cb){ cb(value); }
 		}
@@ -246,12 +246,10 @@
 		// though). This might also help the issue with FF 2.0 and freezing
 		// issues where we try to do sync xhr while background css images are
 		// being loaded (trac #2572)? Consider for 0.9.
-		if(typeof setTimeout == "object" || (dojo.config.useXDomain && d.isOpera)){
-			if(dojo.isAIR){
-				setTimeout(function(){dojo.loaded();}, 0);
-			}else{
-				setTimeout(dojo._scopeName + ".loaded();", 0);
-			}
+		if(typeof setTimeout == "object" || (d.config.useXDomain && d.isOpera)){
+			setTimeout(
+				d.isAIR ? function(){ d.loaded(); } : d._scopeName + ".loaded();",
+				0);
 		}else{
 			d.loaded();
 		}
@@ -264,7 +262,7 @@
 		var syms = modulename.split(".");
 		for(var i = syms.length; i>0; i--){
 			var parentModule = syms.slice(0, i).join(".");
-			if((i==1) && !this._moduleHasPrefix(parentModule)){		
+			if(i == 1 && !this._moduleHasPrefix(parentModule)){		
 				// Support default module directory (sibling of dojo) for top-level modules 
 				syms[0] = "../" + syms[0];
 			}else{
@@ -350,7 +348,7 @@
 		// convert periods to slashes
 		var relpath = this._getModuleSymbols(moduleName).join("/") + '.js';
 
-		var modArg = (!omitModuleCheck) ? moduleName : null;
+		var modArg = !omitModuleCheck ? moduleName : null;
 		var ok = this._loadPath(relpath, modArg);
 
 		if(!ok && !omitModuleCheck){
@@ -561,8 +559,8 @@
 	};
 
 
-	var ore = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$");
-	var ire = new RegExp("^((([^\\[:]+):)?([^@]+)@)?(\\[([^\\]]+)\\]|([^\\[:]*))(:([0-9]+))?$");
+	var ore = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$"),
+		ire = new RegExp("^((([^\\[:]+):)?([^@]+)@)?(\\[([^\\]]+)\\]|([^\\[:]*))(:([0-9]+))?$");
 
 	dojo._Url = function(/*dojo._Url||String...*/){
 		// summary: 
@@ -575,10 +573,9 @@
 		//		the current document use:
 		//      	new dojo._Url(document.baseURI, url)
 
-		var n = null;
-
-		var _a = arguments;
-		var uri = [_a[0]];
+		var n = null,
+			_a = arguments,
+			uri = [_a[0]];
 		// resolve uri components relative to each other
 		for(var i = 1; i<_a.length; i++){
 			if(!_a[i]){ continue; }
@@ -586,8 +583,8 @@
 			// Safari doesn't support this.constructor so we have to be explicit
 			// FIXME: Tracked (and fixed) in Webkit bug 3537.
 			//		http://bugs.webkit.org/show_bug.cgi?id=3537
-			var relobj = new d._Url(_a[i]+"");
-			var uriobj = new d._Url(uri[0]+"");
+			var relobj = new d._Url(_a[i]+""),
+				uriobj = new d._Url(uri[0]+"");
 
 			if(
 				relobj.path == "" &&

@@ -424,11 +424,22 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 
 	// Check for overflow.  The Date() constructor normalizes things like April 32nd...
 	//TODO: why isn't this done for times as well?
-	var allTokens = tokens.join("");
+	var allTokens = tokens.join(""),
+		dateToken = allTokens.indexOf('d') != -1,
+		monthToken = allTokens.indexOf('M') != -1;
+
 	if(!valid ||
-		(allTokens.indexOf('M') != -1 && dateObject.getMonth() != result[1]) ||
-		(allTokens.indexOf('d') != -1 && dateObject.getDate() != result[2])){
+		(monthToken && dateObject.getMonth() > result[1]) ||
+		(dateToken && dateObject.getDate() > result[2])){
 		return null;
+	}
+
+	// Check for underflow, due to DST shifts.  See #9366
+	// This assumes a 1 hour dst shift correction at midnight
+	// We could compare the timezone offset after the shift and add the difference instead.
+	if((monthToken && dateObject.getMonth() < result[1]) ||
+		(dateToken && dateObject.getDate() < result[2])){
+		dateObject = dojo.date.add(dateObject, "hour", 1);
 	}
 
 	return dateObject; // Date

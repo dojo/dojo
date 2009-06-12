@@ -313,7 +313,10 @@ dojo.require("dojo._base.array");
 					}
 					tempNode.appendChild(node);
 					widgets = widgets.concat(dojo.parser.parse(tempNode));
-					tempNode.removeChild(node);
+					node = tempNode.firstChild;
+					while(tempNode.firstChild){
+						tempNode.removeChild(tempNode.firstChild);
+					}
 				}
 
 				if(i == length - 1){

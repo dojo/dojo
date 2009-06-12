@@ -312,6 +312,47 @@
 		//		and exception will be throws whereas no exception is raised
 		//		when called as `dojo.require("a.b.c", true)`
 		//	description:
+		// 		Modules are loaded via dojo.require by using one of two loaders: the normal loader
+		// 		and the xdomain loader. The xdomain loader is used when dojo was built with a
+		// 		custom build that specified loader=xdomain and the module lives on a modulePath
+		// 		that is a whole URL, with protocol and a domain. The versions of Dojo that are on
+		// 		the Google and AOL CDNs use the xdomain loader.
+		// 
+		// 		If the module is loaded via the xdomain loader, it is an asynchronous load, since
+		// 		the module is added via a dynamically created script tag. This
+		// 		means that dojo.require() can return before the module has loaded. However, this 
+		// 		should only happen in the case where you do dojo.require calls in the top-level
+		// 		HTML page, or if you purposely avoid the loader checking for dojo.require
+		// 		dependencies in your module by using a syntax like dojo["require"] to load the module.
+		// 
+		// 		Sometimes it is useful to not have the loader detect the dojo.require calls in the
+		// 		module so that you can dynamically load the modules as a result of an action on the
+		// 		page, instead of right at module load time.
+		// 
+		// 		Also, for script blocks in an HTML page, the loader does not pre-process them, so
+		// 		it does not know to download the modules before the dojo.require calls occur.
+		// 
+		// 		So, in those two cases, when you want on-the-fly module loading or for script blocks
+		// 		in the HTML page, special care must be taken if the dojo.required code is loaded
+		// 		asynchronously. To make sure you can execute code that depends on the dojo.required
+		// 		modules, be sure to add the code that depends on the modules in a dojo.addOnLoad()
+		// 		callback. dojo.addOnLoad waits for all outstanding modules to finish loading before
+		// 		executing. Example:
+		// 
+		//	   	|	<script type="text/javascript">
+		//		|	dojo.require("foo");
+		//		|	dojo.require("bar");
+		//	   	|	dojo.addOnLoad(function(){
+		//	   	|		//you can now safely do something with foo and bar
+		//	   	|	});
+		//	   	|	</script>
+		// 
+		// 		This type of syntax works with both xdomain and normal loaders, so it is good
+		// 		practice to always use this idiom for on-the-fly code loading and in HTML script
+		// 		blocks. If at some point you change loaders and where the code is loaded from,
+		// 		it will all still work.
+		// 
+		// 		More on how dojo.require
 		//		`dojo.require("A.B")` first checks to see if symbol A.B is
 		//		defined. If it is, it is simply returned (nothing to do).
 		//	
@@ -321,7 +362,8 @@
 		//		`dojo.require` throws an excpetion if it cannot find a file
 		//		to load, or if the symbol `A.B` is not defined after loading.
 		//	
-		//		It returns the object `A.B`.
+		//		It returns the object `A.B`, but note the caveats above about on-the-fly loading and
+		// 		HTML script blocks when the xdomain loader is loading a module.
 		//	
 		//		`dojo.require()` does nothing about importing symbols into
 		//		the current namespace.  It is presumed that the caller will

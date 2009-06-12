@@ -85,6 +85,18 @@ dojo["NodeList-manipulate"] = {
 			// 		The nodes represented by the value argument will be cloned if more than one
 			// 		node is in this NodeList. The nodes in this NodeList are returned in the "set"
 			// 		usage of this method, not the HTML that was inserted.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo"></div>
+			//	|	<div id="bar"></div>
+			//		This code inserts <p>Hello World</p> into both divs:
+			//	|	dojo.query("div").innerHTML("<p>Hello World</p>");
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo"><p>Hello Mars</p></div>
+			//	|	<div id="bar"><p>Hello World</p></div>
+			//		This code returns "<p>Hello Mars</p>":
+			//	|	var message = dojo.query("div").innerHTML();
 			if(arguments.length){
 				return this.addContent(value, "only"); //dojo.NodeList
 			}else{
@@ -119,6 +131,18 @@ dojo["NodeList-manipulate"] = {
 			// 		allows seting the text value of each node in the NodeList,
 			// 		if there is a value passed in, otherwise, returns the text value for all the
 			// 		nodes in the NodeList in one string.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo"></div>
+			//	|	<div id="bar"></div>
+			//		This code inserts "Hello World" into both divs:
+			//	|	dojo.query("div").innerHTML("Hello World");
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo"><p>Hello Mars <span>today</span></p></div>
+			//	|	<div id="bar"><p>Hello World</p></div>
+			//		This code returns "Hello Mars today":
+			//	|	var message = dojo.query("div").text();
 			if(arguments.length){
 				for(var i = 0, node; node = this[i]; i++){
 					if(node.nodeType == 1){
@@ -142,6 +166,19 @@ dojo["NodeList-manipulate"] = {
 			// 		NodeList, or properly selecting/checking the right value for radio/checkbox/select
 			// 		elements. If no value is passed, the value of the first node in this NodeList
 			// 		is returned.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<input type="text" value="foo">
+			//	|	<select multiple>
+			//	|		<option value="red" selected>Red</option>
+			//	|		<option value="blue">Blue</option>
+			//	|		<option value="yellow" selected>Yellow</option>
+			//	|	</select>
+			//		This code gets and sets the values for the form fields above:
+			//	|	dojo.query('[type="text"]).val(); //gets value foo
+			//	|	dojo.query('[type="text"]).val("bar"); //sets the input's value to "bar"
+			// 	|	dojo.query("select").val() //gets array value ["red", "yellow"]
+			// 	|	dojo.query("select").val(["blue", "yellow"]) //Sets the blue and yellow options to selected.
 
 			//Special work for input elements.
 			if(arguments.length){
@@ -204,6 +241,15 @@ dojo["NodeList-manipulate"] = {
 			// 		is greater than 1. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the appended content.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo"><p>Hello Mars</p></div>
+			//	|	<div id="bar"><p>Hello World</p></div>
+			//		Running this code:
+			//	|	dojo.query("div").append("<span>append</span>");
+			//		Results in this DOM structure:
+			//	|	<div id="foo"><p>Hello Mars</p><span>append</span></div>
+			//	|	<div id="bar"><p>Hello World</p><span>append</span></div>
 			return this.addContent(content, "last"); //dojo.NodeList
 		},
 
@@ -217,6 +263,16 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
 			// 		from the query.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<span>append</span>
+			//	|	<p>Hello Mars</p>
+			//	|	<p>Hello World</p>
+			//		Running this code:
+			//	|	dojo.query("span").appendTo("p");
+			//		Results in this DOM structure:
+			//	|	<p>Hello Mars<span>append</span></p>
+			//	|	<p>Hello World<span>append</span></p>
 			return this._placeMultiple(query, "last"); //dojo.NodeList
 		},
 
@@ -228,6 +284,15 @@ dojo["NodeList-manipulate"] = {
 			// 		is greater than 1. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the prepended content.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo"><p>Hello Mars</p></div>
+			//	|	<div id="bar"><p>Hello World</p></div>
+			//		Running this code:
+			//	|	dojo.query("div").prepend("<span>prepend</span>");
+			//		Results in this DOM structure:
+			//	|	<div id="foo"><span>prepend</span><p>Hello Mars</p></div>
+			//	|	<div id="bar"><span>prepend</span><p>Hello World</p></div>
 			return this.addContent(content, "first"); //dojo.NodeList
 		},
 
@@ -241,6 +306,16 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
 			// 		from the query.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<span>prepend</span>
+			//	|	<p>Hello Mars</p>
+			//	|	<p>Hello World</p>
+			//		Running this code:
+			//	|	dojo.query("span").prependTo("p");
+			//		Results in this DOM structure:
+			//	|	<p><span>prepend</span>Hello Mars</p>
+			//	|	<p><span>prepend</span>Hello World</p>
 			return this._placeMultiple(query, "first"); //dojo.NodeList
 		},
 
@@ -252,6 +327,15 @@ dojo["NodeList-manipulate"] = {
 			// 		is greater than 1. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the content.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo"><p>Hello Mars</p></div>
+			//	|	<div id="bar"><p>Hello World</p></div>
+			//		Running this code:
+			//	|	dojo.query("div").after("<span>after</span>");
+			//		Results in this DOM structure:
+			//	|	<div id="foo"><p>Hello Mars</p></div><span>after</span>
+			//	|	<div id="bar"><p>Hello World</p></div><span>after</span>
 			return this.addContent(content, "after"); //dojo.NodeList
 		},
 
@@ -265,6 +349,16 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
 			// 		from the query.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<span>after</span>
+			//	|	<p>Hello Mars</p>
+			//	|	<p>Hello World</p>
+			//		Running this code:
+			//	|	dojo.query("span").insertAfter("p");
+			//		Results in this DOM structure:
+			//	|	<p>Hello Mars</p><span>after</span>
+			//	|	<p>Hello World</p><span>after</span>
 			return this._placeMultiple(query, "after"); //dojo.NodeList
 		},
 
@@ -276,6 +370,15 @@ dojo["NodeList-manipulate"] = {
 			// 		is greater than 1. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in this NodeList
 			// 		will be returned, not the content.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div id="foo"><p>Hello Mars</p></div>
+			//	|	<div id="bar"><p>Hello World</p></div>
+			//		Running this code:
+			//	|	dojo.query("div").before("<span>before</span>");
+			//		Results in this DOM structure:
+			//	|	<span>before</span><div id="foo"><p>Hello Mars</p></div>
+			//	|	<span>before</span><div id="bar"><p>Hello World</p></div>
 			return this.addContent(content, "before"); //dojo.NodeList
 		},
 
@@ -289,6 +392,16 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
 			// 		from the query.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<span>before</span>
+			//	|	<p>Hello Mars</p>
+			//	|	<p>Hello World</p>
+			//		Running this code:
+			//	|	dojo.query("span").insertBefore("p");
+			//		Results in this DOM structure:
+			//	|	<span>before</span><p>Hello Mars</p>
+			//	|	<span>before</span><p>Hello World</p>
 			return this._placeMultiple(query, "before"); //dojo.NodeList
 		},
 
@@ -318,6 +431,15 @@ dojo["NodeList-manipulate"] = {
 			// 		element. Only DOM nodes are cloned, not any attached
 			// 		event handlers. The nodes in the current NodeList will
 			// 		be returned, not the nodes from html.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<b>one</b>
+			//	|	<b>two</b>
+			//		Running this code:
+			//	|	dojo.query("b").wrap("<div><span></span></div>");
+			//		Results in this DOM structure:
+			//	|	<div><span><b>one</b></span></div>
+			//	|	<div><span><b>two</b></span></div>
 			if(this[0]){
 				html = makeWrapNode(html, this[0]);
 
@@ -344,6 +466,25 @@ dojo["NodeList-manipulate"] = {
 			// 		nodes in this NodeList as the child of the html.
 			// description:
 			// 		The nodes in the current NodeList will be returned, not the nodes from html.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div class="container">
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="red">Red Two</div>
+			// 	|		<div class="blue">Blue Two</div>
+			//	|	</div>
+			//		Running this code:
+			//	|	dojo.query(".red").wrapAll('<div class="allRed"></div>');
+			//		Results in this DOM structure:
+			//	|	<div class="container">
+			// 	|		<div class="allRed">
+			// 	|			<div class="red">Red One</div>
+			// 	|			<div class="red">Red Two</div>
+			// 	|		</div>
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="blue">Blue Two</div>
+			//	|	</div>
 			if(this[0]){
 				html = makeWrapNode(html, this[0]);
 
@@ -368,6 +509,23 @@ dojo["NodeList-manipulate"] = {
 			// 		element. Only DOM nodes are cloned, not any attached
 			// 		event handlers. The nodes in the current NodeList will
 			// 		be returned, not the nodes from html.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div class="container">
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="red">Red Two</div>
+			// 	|		<div class="blue">Blue Two</div>
+			//	|	</div>
+			//		Running this code:
+			//	|	dojo.query(".red").wrapInner('<span class="special"></span>');
+			//		Results in this DOM structure:
+			//	|	<div class="container">
+			// 	|		<div class="red"><span class="special">Red One</span></div>
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="red"><span class="special">Red Two</span></div>
+			// 	|		<div class="blue">Blue Two</div>
+			//	|	</div>
 			if(this[0]){
 				html = makeWrapNode(html, this[0]);
 				for(var i = 0; i < this.length; i++){
@@ -393,6 +551,23 @@ dojo["NodeList-manipulate"] = {
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the replacing content.
 			// 		Note that the returned nodes have been removed from the DOM.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div class="container">
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="red">Red Two</div>
+			// 	|		<div class="blue">Blue Two</div>
+			//	|	</div>
+			//		Running this code:
+			//	|	dojo.query(".red").replaceWith('<div class="green">Green</div>');
+			//		Results in this DOM structure:
+			//	|	<div class="container">
+			// 	|		<div class="green">Green</div>
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="green">Green</div>
+			// 	|		<div class="blue">Blue Two</div>
+			//	|	</div>
 			content = this._normalize(content, this[0]);
 			for(var i = 0, node; node = this[i]; i++){
 				this._place(content, node, "before", i > 0);
@@ -410,8 +585,33 @@ dojo["NodeList-manipulate"] = {
 			// 		matches more than one element. Only the DOM nodes are cloned, not
 			// 		any attached event handlers. The nodes currently in
 			// 		this NodeList will be returned, not the matched nodes
-			// 		from the query. Note that the returned nodes have been
-			// 		removed from the DOM.
+			// 		from the query. The nodes currently in this NodeLIst could have
+			// 		been cloned, so the returned NodeList will include the cloned nodes.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div class="container">
+			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="red">Red Two</div>
+			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="blue">Blue Two</div>
+			//	|	</div>
+			//		Running this code:
+			//	|	dojo.query(".red").replaceAll(".blue");
+			//		Results in this DOM structure:
+			//	|	<div class="container">
+			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="red">Red Two</div>
+			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="red">Red Two</div>
+			//	|	</div>
 			var nl = dojo.query(query);
 			var content = this._normalize(this, this[0]);
 			for(var i = 0, node; node = nl[i]; i++){
@@ -426,6 +626,25 @@ dojo["NodeList-manipulate"] = {
 			// 		Clones all the nodes in this NodeList and returns them as a new NodeList.
 			// description:
 			// 		Only the DOM nodes are cloned, not any attached event handlers.
+			//	example:
+			//		assume a DOM created by this markup:
+			//	|	<div class="container">
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="red">Red Two</div>
+			// 	|		<div class="blue">Blue Two</div>
+			//	|	</div>
+			//		Running this code:
+			//	|	dojo.query(".red").clone().appendTo(".container");
+			//		Results in this DOM structure:
+			//	|	<div class="container">
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="blue">Blue One</div>
+			// 	|		<div class="red">Red Two</div>
+			// 	|		<div class="blue">Blue Two</div>
+			// 	|		<div class="red">Red One</div>
+			// 	|		<div class="red">Red Two</div>
+			//	|	</div>
 
 			//TODO: need option to clone events?
 			var ary = [];

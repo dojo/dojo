@@ -70,6 +70,21 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		Some Text
+		// 	|		<div class="blue">Blue One</div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".container").children();
+		//		returns the four divs that are children of the container div.
+		//		Running this code:
+		//	|	dojo.query(".container").children(".red");
+		//		returns the two divs that have the class "red".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			return dojo._toArray(node.childNodes);
 		}); //dojo.NodeList
@@ -87,6 +102,18 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		Some Text
+		// 	|		<div class="blue">Blue One</div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".red").closest(".container");
+		//		returns the div with class "container".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			do{
 				if(dojo._filterQueryResult([node], query).length){
@@ -109,6 +136,20 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		<div class="blue first"><span class="text">Blue One</span></div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue"><span class="text">Blue Two</span></div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".text").parent();
+		//		returns the two divs with class "blue".
+		//		Running this code:
+		//	|	dojo.query(".text").parent(".first");
+		//		returns the one div with class "blue" and "first".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			return node.parentNode;
 		}); //dojo.NodeList
@@ -126,6 +167,21 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		<div class="blue first"><span class="text">Blue One</span></div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue"><span class="text">Blue Two</span></div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".text").parents();
+		//		returns the two divs with class "blue", the div with class "container",
+		// 	|	the body element and the html element.
+		//		Running this code:
+		//	|	dojo.query(".text").parent(".container");
+		//		returns the one div with class "container".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var pary = []
 			while(node.parentNode){
@@ -148,6 +204,22 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		Some Text
+		// 	|		<div class="blue first">Blue One</div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".first").siblings();
+		//		returns the two div with class "red" and the other div
+		// 	|	with class "blue" that does not have "first".
+		//		Running this code:
+		//	|	dojo.query(".first").siblings(".red");
+		//		returns the two div with class "red".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var pary = []
 			var nodes = (node.parentNode && node.parentNode.childNodes);
@@ -172,6 +244,21 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		Some Text
+		// 	|		<div class="blue first">Blue One</div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".first").next();
+		//		returns the div with class "red" and has innerHTML of "Red Two".
+		//		Running this code:
+		//	|	dojo.query(".first").next(".blue");
+		//		does not return any elements.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var next = node.nextSibling;
 			while(next && next.nodeType != 1){
@@ -193,6 +280,21 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		Some Text
+		// 	|		<div class="blue first">Blue One</div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".first").prev();
+		//		returns the div with class "red" and has innerHTML of "Red One".
+		//		Running this code:
+		//	|	dojo.query(".first").prev(".blue");
+		//		does not return any elements.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var prev = node.previousSibling;
 			while(prev && prev.nodeType != 1){
@@ -209,6 +311,17 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		<div class="blue first">Blue One</div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue last">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".blue").first();
+		//		returns the div with class "blue" and "first".
 		return dojo._NodeListCtor._wrap(((this[0] && [this[0]]) || []), this); //dojo.NodeList
 	},
 
@@ -218,6 +331,17 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		<div class="blue first">Blue One</div>
+		// 	|		<div class="red">Red Two</div>
+		// 	|		<div class="blue last">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".blue").last();
+		//		returns the last div with class "blue", 
 		return dojo._NodeListCtor._wrap((this.length ? [this[this.length - 1]] : []), this); //dojo.NodeList
 	},
 
@@ -227,6 +351,17 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="interior red">Red One</div>
+		// 	|		<div class="interior blue">Blue One</div>
+		// 	|		<div class="interior red">Red Two</div>
+		// 	|		<div class="interior blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".interior").even();
+		//		returns the two divs with class "blue"
 		return this.filter(function(item, i){
 			return i % 2 != 0;
 		}); //dojo.NodeList
@@ -238,6 +373,17 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="interior red">Red One</div>
+		// 	|		<div class="interior blue">Blue One</div>
+		// 	|		<div class="interior red">Red Two</div>
+		// 	|		<div class="interior blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".interior").odd();
+		//		returns the two divs with class "red"
 		return this.filter(function(item, i){
 			return i % 2 == 0;
 		}); //dojo.NodeList

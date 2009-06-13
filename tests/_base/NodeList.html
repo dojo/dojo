@@ -343,11 +343,15 @@
 							doh.is("blah", nl[0].innerHTML);
 						},
 
-						/*						
 						// FIXME
 						function adopt(t){
+							var div = dojo.query(dojo.create("div"));
+							div.adopt(dojo.create("span"));
+							div.adopt(dojo.create("em"), "first");
+							t.is(2, dojo.query("*", div[0]).length);
+							t.is("em", div[0].firstChild.tagName.toLowerCase());
+							t.is("span", div[0].lastChild.tagName.toLowerCase());
 						},
-						*/
 
 						function addContent(t){
 							//text content

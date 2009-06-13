@@ -733,7 +733,7 @@ dojo.require("dojo._base.array");
 			//		|	"only"
 			//		|	"replace"
 			// 		or an offset in the childNodes property
-			return d.query(queryOrListOrNode).place(item[0], position)._stash(this);	// dojo.NodeList
+			return d.query(queryOrListOrNode).place(this[0], position)._stash(this);	// dojo.NodeList
 		},
 
 		// FIXME: do we need this?

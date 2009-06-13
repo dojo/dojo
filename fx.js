@@ -151,7 +151,7 @@ dojo.fx = {
 		
 		this._pseudoAnimation = new d.Animation({curve: [0, 1], duration: this.duration});
 		var self = this;
-		d.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop"], 
+		d.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"], 
 			function(evt){
 				self._connects.push(d.connect(self._pseudoAnimation, evt,
 					function(){ self._fire(evt, arguments); }
@@ -167,7 +167,7 @@ dojo.fx = {
 			return this;
 		},
 		_onEnd: function(){
-			if(++this._finished == this._animations.length){
+			if(++this._finished > this._animations.length){
 				this._fire("onEnd");
 			}
 		},

@@ -24,8 +24,9 @@ dojo.isFunction = function(it){
 
 dojo.isFunction = (function(){
 	var _isFunction = function(/*anything*/ it){
-		var t = typeof it; // must evaluate separately due to bizarre Opera bug. See #8937 
-		return it && (t == "function" || it instanceof Function); // Boolean
+		var t = typeof it; // must evaluate separately due to bizarre Opera bug. See #8937
+		//Firefox thinks object HTML element is a function, so test for nodeType.
+		return it && (t == "function" || it instanceof Function) && !it.nodeType; // Boolean
 	};
 
 	return dojo.isSafari ?

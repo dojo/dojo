@@ -49,11 +49,13 @@ dojo.byId = function(id, doc){
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(dojo.isIE || dojo.isOpera){
 	dojo.byId = function(id, doc){
-		if(!id || id.nodeType){
+		if(!id){
+			return null;
+		}
+		if(id.nodeType){
 			return id;
 		}
-		var _d = doc || dojo.doc;
-		var te = _d.getElementById(id);
+		var _d = doc || dojo.doc, te = _d.getElementById(id);
 		// attributes.id.value is better than just id in case the 
 		// user has a name=id inside a form
 		if(te && (te.attributes.id.value == id || te.id == id)){
@@ -1259,18 +1261,20 @@ if(dojo.isIE || dojo.isOpera){
 	var _attrProps = {
 		colspan: "colSpan",
 		enctype: "enctype",
-		frameborder: "frameborder",
+		frameborder: "frameBorder",
 		method: "method",
 		rowspan: "rowSpan",
 		scrolling: "scrolling",
 		shape: "shape",
 		span: "span",
 		type: "type",
-		valuetype: "valueType",
-		// the following attributes don't have the default but should be treated like properties
-		classname: "className",
-		innerhtml: "innerHTML"
+		valuetype: "valueType"
 	};
+	
+	var _hasAttr = function(node, name){
+		var attr = node.getAttributeNode && node.getAttributeNode(name);
+		return attr && attr.specified; // Boolean
+	}
 
 	dojo.hasAttr = function(/*DomNode|String*/node, /*String*/name){
 		//	summary:
@@ -1284,10 +1288,11 @@ if(dojo.isIE || dojo.isOpera){
 		//		true if the requested attribute is specified on the
 		//		given element, and false otherwise
 		node = byId(node);
-		var fixName = _fixAttrName(name);
-		fixName = fixName == "htmlFor" ? "for" : fixName; //IE<8 uses htmlFor except in this case
-		var attr = node.getAttributeNode && node.getAttributeNode(fixName);
-		return attr ? attr.specified : false; // Boolean
+		name = _fixAttrName(name);
+		if((name.toLowerCase() in _attrProps)){
+			return _hasAttr(node, name);	// Boolean
+		}
+		return (name in node) && name != "href" && !d.isObject(node[name]) || _hasAttr(node, name);	//Boolean
 	}
 
 	var _evtHdlrMap = {}, _ctr = 0,
@@ -1305,7 +1310,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		Nodes. If 2 arguments are passed, and a the second argumnt is a
 		//		string, acts as a getter.
 		//	
-		//		If a third argument is passed, or if the second argumnt is a
+		//		If a third argument is passed, or if the second argument is a
 		//		map of attributes, acts as a setter.
 		//
 		//		When passing functions as values, note that they will not be
@@ -1328,7 +1333,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		or null if that attribute does not have a specified or
 		//		default value;
 		//
-		//		when used as a setter, undefined
+		//		when used as a setter, the DOM node
 		//
 		//	example:
 		//	|	// get the current value of the "foo" attribute on a node
@@ -1379,72 +1384,92 @@ if(dojo.isIE || dojo.isOpera){
 		//	|	dojo.style("someNode", obj);
 		
 		node = byId(node);
-		var args = arguments.length;
+		var args = arguments.length, prop;
 		if(args == 2 && !isString(name)){
 			// the object form of setter: the 2nd argument is a dictionary
 			for(var x in name){
 				d.attr(node, x, name[x]);
 			}
-			// FIXME: return the node in this case? could be useful.
-			return;
+			return node; // DomNode
 		}
 		name = _fixAttrName(name);
-		if(args == 3){ // setter
-			if(d.isFunction(value)){
-				// clobber if we can
-				var attrId = d.attr(node, _attrId);
-				if(!attrId){
-					attrId = _ctr++;
-					d.attr(node, _attrId, attrId);
+		if(args == 3){
+			// setter
+			do{
+				if(name === "style" && !isString(value)){
+					// when the name is "style" and value is an object, pass along
+					d.style(node, value);
+					break;
 				}
-				if(!_evtHdlrMap[attrId]){
-					_evtHdlrMap[attrId] = {};
+				if(name === "innerHTML"){
+					//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+					if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
+						d.empty(node);
+						node.appendChild(d._toDom(value, node.ownerDocument));
+					}else{
+					//>>excludeEnd("webkitMobile");
+						node[name] = value;
+					//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+					}
+					//>>excludeEnd("webkitMobile");
+					break;
 				}
-				var h = _evtHdlrMap[attrId][name];
-				if(h){
-					d.disconnect(h);
-				}else{
-					try{
-						delete node[name];
-					}catch(e){}
+				if(d.isFunction(value)){
+					// clobber if we can
+					var attrId = d.attr(node, _attrId);
+					if(!attrId){
+						attrId = _ctr++;
+						d.attr(node, _attrId, attrId);
+					}
+					if(!_evtHdlrMap[attrId]){
+						_evtHdlrMap[attrId] = {};
+					}
+					var h = _evtHdlrMap[attrId][name];
+					if(h){
+						d.disconnect(h);
+					}else{
+						try{
+							delete node[name];
+						}catch(e){}
+					}
+					// ensure that event objects are normalized, etc.
+					_evtHdlrMap[attrId][name] = d.connect(node, name, value);
+					break;
 				}
-
-				// ensure that event objects are normalized, etc.
-				_evtHdlrMap[attrId][name] = d.connect(node, name, value);
-
-			}else if(typeof value == "boolean"){ // e.g. onsubmit, disabled
-				node[name] = value;
-			}else if(name === "style" && !isString(value)){
-				// when the name is "style" and value is an object, pass along
-				d.style(node, value);
-			}else if(name == "className"){
-				node.className = value;
-			}else if(name === "innerHTML"){
-				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-				if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
-					d.empty(node);
-					node.appendChild(d._toDom(value, node.ownerDocument));
-				}else{
-				//>>excludeEnd("webkitMobile");
+				if(typeof value == "boolean"){ // e.g. onsubmit, disabled
 					node[name] = value;
-				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+					break;
 				}
-				//>>excludeEnd("webkitMobile");
-			}else{
+				prop = _attrProps[name.toLowerCase()];
+				if(prop){
+					node[prop] = value;
+					break;
+				}
+				if((name in node) && name !== "href"){
+					var attrValue = node[name];
+					if(!d.isObject(attrValue)){
+						node[name] = value;
+						break;
+					}
+				}
 				node.setAttribute(name, value);
-			}
-		}else{
-			// getter
-			// should we access this attribute via a property or
-			// via getAttribute()?
-			var prop = _attrProps[name.toLowerCase()];
-			if(prop){
-				return node[prop];
-			}
-			var attrValue = node[name];
-			return (typeof attrValue == 'boolean' || typeof attrValue == 'function') ? attrValue
-				: (d.hasAttr(node, name) ? node.getAttribute(name) : null);
+			}while(false);
+			return node; // DomNode
 		}
+		// getter
+		// should we access this attribute via a property or
+		// via getAttribute()?
+		prop = _attrProps[name.toLowerCase()];
+		if(prop){
+			return node[prop];
+		}
+		if((name in node) && name !== "href"){
+			var attrValue = node[name];
+			if(!d.isObject(attrValue)){
+				return attrValue;
+			}
+		}
+		return _hasAttr(node, name) ? node.getAttribute(name) : null;
 	}
 
 	dojo.removeAttr = function(/*DomNode|String*/node, /*String*/name){

@@ -210,7 +210,7 @@ if(typeof window != 'undefined'){
 			return (stat >= 200 && stat < 300) || 	// Boolean
 				stat == 304 || 						// allow any 2XX response code
 				stat == 1223 || 						// get it out of the cache
-				(!stat && (lp=="file:" || lp=="chrome:" || lp=="app:") ); // Internet Explorer mangled the status code OR we're Titanium requesting a local file
+				(!stat && (lp == "file:" || lp == "chrome:" || lp == "app:") ); // Internet Explorer mangled the status code OR we're Titanium requesting a local file
 		}
 
 		//See if base tag is in use.

@@ -218,9 +218,83 @@ dojo.require("dojo._base.connect");
 		F14: 125,
 		F15: 126,
 		NUM_LOCK: 144,
-		SCROLL_LOCK: 145
+		SCROLL_LOCK: 145,
+		// virtual key mapping
+		copyKey: dojo.isMac ? "metaKey" : "ctrlKey"
 	};
 	
+	dojo.isCopyKeyPressed = function(e){
+		// summary: checks an event for the copy key (meta on Mac, and ctrl anywhere else)
+		// e: Event: event object to examine
+		return e[dojo.keys.copyKey];	// Boolean
+	};
+
+	// Public: decoding mouse buttons from events
+
+/*=====
+	dojo.mouseButtons = {
+		// LEFT: Number
+		//		Numeric value of the left mouse button for the platform.
+		LEFT:   0,
+		// MIDDLE: Number
+		//		Numeric value of the middle mouse button for the platform.
+		MIDDLE: 1,
+		// RIGHT: Number
+		//		Numeric value of the right mouse button for the platform.
+		RIGHT:  2,
+	
+		isButton: function(e, button){
+			// summary: checks an event object for a pressed button
+			// e: Event: event object to examine
+			// button: Number: the button value (example: dojo.mouseButton.LEFT)
+			return e.button == button; // Boolean
+		},
+		isLeft: function(e){
+			// summary: checks an event object for the pressed left button
+			// e: Event: event object to examine
+			return e.button == 0; // Boolean
+		},
+		isMiddle: function(e){
+			// summary: checks an event object for the pressed middle button
+			// e: Event: event object to examine
+			return e.button == 1; // Boolean
+		},
+		isRight: function(e){
+			// summary: checks an event object for the pressed right button
+			// e: Event: event object to examine
+			return e.button == 2; // Boolean
+		}
+	};
+=====*/
+
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+	if(dojo.isIE){
+		dojo.mouseButtons = {
+			LEFT:   1,
+			MIDDLE: 4,
+			RIGHT:  2,
+			// helper functions
+			isButton: function(e, button){ return e.button & button; },
+			isLeft:   function(e){ return e.button & 1; },
+			isMiddle: function(e){ return e.button & 4; },
+			isRight:  function(e){ return e.button & 2; }
+		};
+	}else{
+	//>>excludeEnd("webkitMobile");
+		dojo.mouseButtons = {
+			LEFT:   0,
+			MIDDLE: 1,
+			RIGHT:  2,
+			// helper functions
+			isButton: function(e, button){ return e.button == button; },
+			isLeft:   function(e){ return e.button == 0; },
+			isMiddle: function(e){ return e.button == 1; },
+			isRight:  function(e){ return e.button == 2; }
+		};
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+	}
+	//>>excludeEnd("webkitMobile");
+
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	// IE event normalization
 	if(dojo.isIE){ 

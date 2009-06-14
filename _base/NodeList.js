@@ -914,13 +914,16 @@ dojo.require("dojo._base.array");
 		}
 
 	});
-
-	// syntactic sugar for DOM events
-	d.forEach([
+	
+	nl.events = [
+		// summary: list of all DOM events used in NodeList
 		"blur", "focus", "change", "click", "error", "keydown", "keypress",
 		"keyup", "load", "mousedown", "mouseenter", "mouseleave", "mousemove",
 		"mouseout", "mouseover", "mouseup", "submit" 
-		], function(evt){
+	];
+
+	// syntactic sugar for DOM events
+	d.forEach(nl.events, function(evt){
 			var _oe = "on"+evt;
 			nlp[_oe] = function(a, b){
 				return this.connect(_oe, a, b);
@@ -945,8 +948,7 @@ dojo.require("dojo._base.array");
 								try{ n[_oe](_e); }catch(e){ console.log(e); }
 							})
 				);
-			}
-			*/
+				*/
 		}
 	);
 

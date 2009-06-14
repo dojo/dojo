@@ -158,7 +158,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		// e: Event: mouse event
 		if(this.autoSync){ this.sync(); }
 		if(!this.current){ return; }
-		if(!this.singular && !dojo.isCopyKeyPressed(e) && !e.shiftKey && (this.current.id in this.selection)){
+		if(!this.singular && !dojo.isCopyKey(e) && !e.shiftKey && (this.current.id in this.selection)){
 			this.simpleSelection = true;
 			if(e.button === dojo.mouseButtons.LEFT){
 				// accept the left button and stop the event
@@ -168,7 +168,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 			return;
 		}
 		if(!this.singular && e.shiftKey){
-			if(!dojo.isCopyKeyPressed(e)){
+			if(!dojo.isCopyKey(e)){
 				this._removeSelection();
 			}
 			var c = this.getAllNodes();
@@ -197,7 +197,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		}else{
 			if(this.singular){
 				if(this.anchor == this.current){
-					if(dojo.isCopyKeyPressed(e)){
+					if(dojo.isCopyKey(e)){
 						this.selectNone();
 					}
 				}else{
@@ -207,7 +207,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 					this.selection[this.current.id] = 1;
 				}
 			}else{
-				if(dojo.isCopyKeyPressed(e)){
+				if(dojo.isCopyKey(e)){
 					if(this.anchor == this.current){
 						delete this.selection[this.anchor.id];
 						this._removeAnchor();

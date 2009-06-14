@@ -223,7 +223,7 @@ dojo.require("dojo._base.connect");
 		copyKey: dojo.isMac ? "metaKey" : "ctrlKey"
 	};
 	
-	dojo.isCopyKeyPressed = function(e){
+	dojo.isCopyKey = function(e){
 		// summary: checks an event for the copy key (meta on Mac, and ctrl anywhere else)
 		// e: Event: event object to examine
 		return e[dojo.keys.copyKey];	// Boolean

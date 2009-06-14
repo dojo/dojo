@@ -107,7 +107,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			var s = a.node.style;
 			s.left = (e.pageX + this.OFFSET_X) + "px";
 			s.top  = (e.pageY + this.OFFSET_Y) + "px";
-			var copy = Boolean(this.source.copyState(dojo.isCopyKeyPressed(e)));
+			var copy = Boolean(this.source.copyState(dojo.isCopyKey(e)));
 			if(this.copy != copy){ 
 				this._setCopyStatus(copy);
 			}
@@ -118,7 +118,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 		// e: Event: mouse event
 		if(this.avatar){
 			if(this.target && this.canDropFlag){
-				var copy = Boolean(this.source.copyState(dojo.isCopyKeyPressed(e))),
+				var copy = Boolean(this.source.copyState(dojo.isCopyKey(e))),
 				params = [this.source, this.nodes, copy, this.target];
 				dojo.publish("/dnd/drop/before", params);
 				dojo.publish("/dnd/drop", params);

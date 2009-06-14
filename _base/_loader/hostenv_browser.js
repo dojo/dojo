@@ -60,6 +60,8 @@ dojo = {
 	//	isChrome: Number | undefined
 	//		Version as a Number if client is Chrome browser. undefined otherwise.
 	isChrome: 0
+	//	isMac: Boolean
+	//		True if the client runs on Mac
 }
 =====*/
 
@@ -117,6 +119,7 @@ if(typeof window != 'undefined'){
 		d.isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : 0;
 		d.isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
 		d.isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
+		d.isMac = dav.indexOf("Macintosh") >= 0;
 
 		// safari detection derived from:
 		//		http://developer.apple.com/internet/safari/faq.html#anchor2

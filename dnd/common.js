@@ -1,15 +1,5 @@
 dojo.provide("dojo.dnd.common");
 
-dojo.dnd._isMac = navigator.appVersion.indexOf("Macintosh") >= 0;
-dojo.dnd._copyKey = dojo.dnd._isMac ? "metaKey" : "ctrlKey";
-
-dojo.dnd.getCopyKeyState = function(e) {
-	// summary: abstracts away the difference between selection on Mac and PC,
-	//	and returns the state of the "copy" key to be pressed.
-	// e: Event: mouse event
-	return e[dojo.dnd._copyKey];	// Boolean
-};
-
 dojo.dnd._uniqueId = 0;
 dojo.dnd.getUniqueId = function(){
 	// summary: returns a unique string for use with any DOM element
@@ -30,10 +20,3 @@ dojo.dnd.isFormElement = function(/*Event*/ e){
 	}
 	return " button textarea input select option ".indexOf(" " + t.tagName.toLowerCase() + " ") >= 0;	// Boolean
 };
-
-// doesn't take into account when multiple buttons are pressed
-dojo.dnd._lmb = dojo.isIE ? 1 : 0;	// left mouse button
-
-dojo.dnd._isLmbPressed = dojo.isIE ?
-	function(e){ return e.button & 1; } : // intentional bit-and
-	function(e){ return e.button === 0; };

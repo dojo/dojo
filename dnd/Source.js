@@ -212,7 +212,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 					(Math.abs(e.pageX - this._lastX) > this.delay || Math.abs(e.pageY - this._lastY) > this.delay)){
 				var nodes = this.getSelectedNodes();
 				if(nodes.length){
-					m.startDrag(this, nodes, this.copyState(dojo.dnd.getCopyKeyState(e), true));
+					m.startDrag(this, nodes, this.copyState(dojo.isCopyKeyPressed(e), true));
 				}
 			}
 		}
@@ -446,7 +446,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// e: Event: mouse event
 		
 		// accept only the left mouse button
-		if(!dojo.dnd._isLmbPressed(e)){ return false; }
+		if(!dojo.mouseButtons.isLeft(e)){ return false; }
 		
 		if(!this.withHandles){ return true; }
 		

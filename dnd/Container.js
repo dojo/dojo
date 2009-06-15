@@ -12,24 +12,45 @@ dojo.require("dojo.parser");
 		"Over"	- mouse over a container item
 */
 
+/*=====
+dojo.declare("dojo.dnd.__ContainerArgs", [], {
+	creator: function(){
+		// summary:
+		//		a creator function, which takes a data item, and returns an object like that:
+		//		{node: newNode, data: usedData, type: arrayOfStrings}
+	},
+
+	// skipForm: Boolean
+	//		don't start the drag operation, if clicked on form elements
+	skipForm: false,
+
+	// dropParent: Node||String
+	//		node or node's id to use as the parent node for dropped items
+	//		(must be underneath the 'node' parameter in the DOM)
+	dropParent: null,
+
+	// _skipStartup: Boolean
+	//		skip startup(), which collects children, for deferred initialization
+	//		(this is used in the markup mode)
+	_skipStartup: false
+});
+=====*/
+
 dojo.declare("dojo.dnd.Container", null, {
-	// summary: a Container object, which knows when mouse hovers over it, 
-	//	and over which element it hovers
+	// summary:
+	//		a Container object, which knows when mouse hovers over it, 
+	//		and over which element it hovers
 	
 	// object attributes (for markup)
 	skipForm: false,
 	
 	constructor: function(node, params){
-		// summary: a constructor of the Container
-		// node: Node: node or node's id to build the container on
-		// params: Object: a dict of parameters, recognized parameters are:
-		//	creator: Function: a creator function, which takes a data item, and returns an object like that:
-		//		{node: newNode, data: usedData, type: arrayOfStrings}
-		//	skipForm: Boolean: don't start the drag operation, if clicked on form elements
-		//	dropParent: Node: node or node's id to use as the parent node for dropped items
-		//		(must be underneath the 'node' parameter in the DOM)
-		//	_skipStartup: Boolean: skip startup(), which collects children, for deferred initialization
-		//		(this is used in the markup mode)
+		// summary:
+		//		a constructor of the Container
+		// node: Node
+		//		node or node's id to build the container on
+		// params: dojo.dnd.__ContainerArgs
+		//		a dictionary of parameters
 		this.node = dojo.byId(node);
 		if(!params){ params = {}; }
 		this.creator = params.creator || null;
@@ -60,24 +81,31 @@ dojo.declare("dojo.dnd.Container", null, {
 	},
 	
 	// object attributes (for markup)
-	creator: function(){},	// creator function, dummy at the moment
+	creator: function(){
+		// summary:
+		//		creator function, dummy at the moment
+	},
 	
 	// abstract access to the map
 	getItem: function(/*String*/ key){
-		// summary: returns a data item by its key (id)
+		// summary:
+		//		returns a data item by its key (id)
 		return this.map[key];	// Object
 	},
 	setItem: function(/*String*/ key, /*Object*/ data){
-		// summary: associates a data item with its key (id)
+		// summary:
+		//		associates a data item with its key (id)
 		this.map[key] = data;
 	},
 	delItem: function(/*String*/ key){
-		// summary: removes a data item from the map by its key (id)
+		// summary:
+		//		removes a data item from the map by its key (id)
 		delete this.map[key];
 	},
 	forInItems: function(/*Function*/ f, /*Object?*/ o){
-		// summary: iterates over a data map skipping members, which 
-		//	are present in the empty object (IE and/or 3rd-party libraries).
+		// summary:
+		//		iterates over a data map skipping members that 
+		//		are present in the empty object (IE and/or 3rd-party libraries).
 		o = o || dojo.global;
 		var m = this.map, e = dojo.dnd._empty;
 		for(var i in m){
@@ -93,11 +121,13 @@ dojo.declare("dojo.dnd.Container", null, {
 	
 	// methods
 	getAllNodes: function(){
-		// summary: returns a list (an array) of all valid child nodes
+		// summary:
+		//		returns a list (an array) of all valid child nodes
 		return dojo.query("> .dojoDndItem", this.parent);	// NodeList
 	},
 	sync: function(){
-		// summary: synch up the node list with the data map
+		// summary:
+		//		sync up the node list with the data map
 		var map = {};
 		this.getAllNodes().forEach(function(node){
 			if(node.id){
@@ -120,10 +150,14 @@ dojo.declare("dojo.dnd.Container", null, {
 		return this;	// self
 	},
 	insertNodes: function(data, before, anchor){
-		// summary: inserts an array of new nodes before/after an anchor node
-		// data: Array: a list of data items, which should be processed by the creator function
-		// before: Boolean: insert before the anchor, if true, and after the anchor otherwise
-		// anchor: Node: the anchor node to be used as a point of insertion
+		// summary:
+		//		inserts an array of new nodes before/after an anchor node
+		// data: Array
+		//		a list of data items, which should be processed by the creator function
+		// before: Boolean
+		//		insert before the anchor, if true, and after the anchor otherwise
+		// anchor: Node
+		//		the anchor node to be used as a point of insertion
 		if(!this.parent.firstChild){
 			anchor = null;
 		}else if(before){
@@ -151,7 +185,8 @@ dojo.declare("dojo.dnd.Container", null, {
 		return this;	// self
 	},
 	destroy: function(){
-		// summary: prepares the object to be garbage-collected
+		// summary:
+		//		prepares this object to be garbage-collected
 		dojo.forEach(this.events, dojo.disconnect);
 		this.clearItems();
 		this.node = this.parent = this.current = null;
@@ -163,7 +198,8 @@ dojo.declare("dojo.dnd.Container", null, {
 		return new dojo.dnd.Container(node, params);
 	},
 	startup: function(){
-		// summary: collects valid child items and populate the map
+		// summary:
+		//		collects valid child items and populate the map
 		
 		// set up the real parent node
 		if(!this.parent){
@@ -182,8 +218,10 @@ dojo.declare("dojo.dnd.Container", null, {
 
 	// mouse events
 	onMouseOver: function(e){
-		// summary: event processor for onmouseover
-		// e: Event: mouse event
+		// summary:
+		//		event processor for onmouseover
+		// e: Event
+		//		mouse event
 		var n = e.relatedTarget;
 		while(n){
 			if(n == this.node){ break; }
@@ -204,8 +242,10 @@ dojo.declare("dojo.dnd.Container", null, {
 		this.current = n;
 	},
 	onMouseOut: function(e){
-		// summary: event processor for onmouseout
-		// e: Event: mouse event
+		// summary:
+		//		event processor for onmouseout
+		// e: Event
+		//		mouse event
 		for(var n = e.relatedTarget; n;){
 			if(n == this.node){ return; }
 			try{
@@ -222,8 +262,10 @@ dojo.declare("dojo.dnd.Container", null, {
 		this.onOutEvent();
 	},
 	onSelectStart: function(e){
-		// summary: event processor for onselectevent and ondragevent
-		// e: Event: mouse event
+		// summary:
+		//		event processor for onselectevent and ondragevent
+		// e: Event
+		//		mouse event
 		if(!this.skipForm || !dojo.dnd.isFormElement(e)){
 			dojo.stopEvent(e);
 		}
@@ -231,15 +273,20 @@ dojo.declare("dojo.dnd.Container", null, {
 	
 	// utilities
 	onOverEvent: function(){
-		// summary: this function is called once, when mouse is over our container
+		// summary:
+		//		this function is called once, when mouse is over our container
 	},
 	onOutEvent: function(){
-		// summary: this function is called once, when mouse is out of our container
+		// summary:
+		//		this function is called once, when mouse is out of our container
 	},
 	_changeState: function(type, newState){
-		// summary: changes a named state to new state value
-		// type: String: a name of the state to change
-		// newState: String: new state
+		// summary:
+		//		changes a named state to new state value
+		// type: String
+		//		a name of the state to change
+		// newState: String
+		//		new state
 		var prefix = "dojoDnd" + type;
 		var state  = type.toLowerCase() + "State";
 		//dojo.replaceClass(this.node, prefix + newState, prefix + this[state]);
@@ -248,20 +295,28 @@ dojo.declare("dojo.dnd.Container", null, {
 		this[state] = newState;
 	},
 	_addItemClass: function(node, type){
-		// summary: adds a class with prefix "dojoDndItem"
-		// node: Node: a node
-		// type: String: a variable suffix for a class name
+		// summary:
+		//		adds a class with prefix "dojoDndItem"
+		// node: Node
+		//		a node
+		// type: String
+		//		a variable suffix for a class name
 		dojo.addClass(node, "dojoDndItem" + type);
 	},
 	_removeItemClass: function(node, type){
-		// summary: removes a class with prefix "dojoDndItem"
-		// node: Node: a node
-		// type: String: a variable suffix for a class name
+		// summary:
+		//		removes a class with prefix "dojoDndItem"
+		// node: Node
+		//		a node
+		// type: String
+		//		a variable suffix for a class name
 		dojo.removeClass(node, "dojoDndItem" + type);
 	},
 	_getChildByEvent: function(e){
-		// summary: gets a child, which is under the mouse at the moment, or null
-		// e: Event: a mouse event
+		// summary:
+		//		gets a child, which is under the mouse at the moment, or null
+		// e: Event
+		//		a mouse event
 		var node = e.target;
 		if(node){
 			for(var parent = node.parentNode; parent; node = parent, parent = node.parentNode){
@@ -271,7 +326,8 @@ dojo.declare("dojo.dnd.Container", null, {
 		return null;
 	},
 	_normalizedCreator: function(item, hint){
-		// summary: adds all necessary data to the output of the user-supplied creator function
+		// summary:
+		//		adds all necessary data to the output of the user-supplied creator function
 		var t = (this.creator || this.defaultCreator).call(this, item, hint);
 		if(!dojo.isArray(t.type)){ t.type = ["text"]; }
 		if(!t.node.id){ t.node.id = dojo.dnd.getUniqueId(); }
@@ -281,9 +337,11 @@ dojo.declare("dojo.dnd.Container", null, {
 });
 
 dojo.dnd._createNode = function(tag){
-	// summary: returns a function, which creates an element of given tag 
-	//	(SPAN by default) and sets its innerHTML to given text
-	// tag: String: a tag name or empty for SPAN
+	// summary:
+	//		returns a function, which creates an element of given tag 
+	//		(SPAN by default) and sets its innerHTML to given text
+	// tag: String
+	//		a tag name or empty for SPAN
 	if(!tag){ return dojo.dnd._createSpan; }
 	return function(text){	// Function
 		return dojo.create(tag, {innerHTML: text});	// Node
@@ -291,25 +349,32 @@ dojo.dnd._createNode = function(tag){
 };
 
 dojo.dnd._createTrTd = function(text){
-	// summary: creates a TR/TD structure with given text as an innerHTML of TD
-	// text: String: a text for TD
+	// summary:
+	//		creates a TR/TD structure with given text as an innerHTML of TD
+	// text: String
+	//		a text for TD
 	var tr = dojo.create("tr");
 	dojo.create("td", {innerHTML: text}, tr);
 	return tr;	// Node
 };
 
 dojo.dnd._createSpan = function(text){
-	// summary: creates a SPAN element with given text as its innerHTML
-	// text: String: a text for SPAN
+	// summary:
+	//		creates a SPAN element with given text as its innerHTML
+	// text: String
+	//		a text for SPAN
 	return dojo.create("span", {innerHTML: text});	// Node
 };
 
-// dojo.dnd._defaultCreatorNodes: Object: a dicitionary, which maps container tag names to child tag names
+// dojo.dnd._defaultCreatorNodes: Object
+//		a dictionary that maps container tag names to child tag names
 dojo.dnd._defaultCreatorNodes = {ul: "li", ol: "li", div: "div", p: "div"};
 
 dojo.dnd._defaultCreator = function(node){
-	// summary: takes a parent node, and returns an appropriate creator function
-	// node: Node: a container node
+	// summary:
+	//		takes a parent node, and returns an appropriate creator function
+	// node: Node
+	//		a container node
 	var tag = node.tagName.toLowerCase();
 	var c = tag == "tbody" || tag == "thead" ? dojo.dnd._createTrTd :
 			dojo.dnd._createNode(dojo.dnd._defaultCreatorNodes[tag]);

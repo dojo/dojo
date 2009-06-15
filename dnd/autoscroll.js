@@ -1,7 +1,10 @@
 dojo.provide("dojo.dnd.autoscroll");
 
 dojo.dnd.getViewport = function(){
-	// summary: returns a viewport size (visible part of the window)
+	// summary:
+	//		Returns a viewport size (visible part of the window)
+
+	// TODO: remove this when getViewport() moved to dojo core, see #7028
 
 	// FIXME: need more docs!!
 	var d = dojo.doc, dd = d.documentElement, w = window, b = dojo.body();
@@ -27,7 +30,7 @@ dojo.dnd.autoScroll = function(e){
 	// summary:
 	//		a handler for onmousemove event, which scrolls the window, if
 	//		necesary
-	// e: Event:
+	// e: Event
 	//		onmousemove event
 
 	// FIXME: needs more docs!
@@ -52,7 +55,7 @@ dojo.dnd.autoScrollNodes = function(e){
 	// summary:
 	//		a handler for onmousemove event, which scrolls the first avaialble
 	//		Dom element, it falls back to dojo.dnd.autoScroll()
-	// e: Event:
+	// e: Event
 	//		onmousemove event
 
 	// FIXME: needs more docs!

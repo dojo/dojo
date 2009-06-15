@@ -8,7 +8,7 @@ dojo.require("dojo._base.connect");
 //>>excludeEnd("webkitMobile");
 	// DOM event listener machinery
 	var del = (dojo._event_listener = {
-		add: function(/*DOMNode*/node, /*String*/name, /*Function*/fp){
+		add: function(/*DOMNode*/ node, /*String*/ name, /*Function*/ fp){
 			if(!node){return;} 
 			name = del._normalizeEventName(name);
 			fp = del._fixCallback(name, fp);
@@ -39,7 +39,7 @@ dojo.require("dojo._base.connect");
 			node.addEventListener(name, fp, false);
 			return fp; /*Handle*/
 		},
-		remove: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
+		remove: function(/*DOMNode*/ node, /*String*/ event, /*Handle*/ handle){
 			// summary:
 			//		clobbers the listener from the node
 			// node:
@@ -57,13 +57,13 @@ dojo.require("dojo._base.connect");
 				node.removeEventListener(event, handle, false);
 			}
 		},
-		_normalizeEventName: function(/*String*/name){
+		_normalizeEventName: function(/*String*/ name){
 			// Generally, name should be lower case, unless it is special
 			// somehow (e.g. a Mozilla DOM event).
 			// Remove 'on'.
 			return name.slice(0,2) =="on" ? name.slice(2) : name;
 		},
-		_fixCallback: function(/*String*/name, fp){
+		_fixCallback: function(/*String*/ name, fp){
 			// By default, we only invoke _fixEvent for 'keypress'
 			// If code is added to _fixEvent for other events, we have
 			// to revisit this optimization.
@@ -108,7 +108,7 @@ dojo.require("dojo._base.connect");
 
 	// DOM events
 	
-	dojo.fixEvent = function(/*Event*/evt, /*DOMNode*/sender){
+	dojo.fixEvent = function(/*Event*/ evt, /*DOMNode*/ sender){
 		// summary:
 		//		normalizes properties on the event object including event
 		//		bubbling methods, keystroke normalization, and x/y positions
@@ -119,7 +119,7 @@ dojo.require("dojo._base.connect");
 		return del._fixEvent(evt, sender);
 	}
 
-	dojo.stopEvent = function(/*Event*/evt){
+	dojo.stopEvent = function(/*Event*/ evt){
 		// summary:
 		//		prevents propagation and clobbers the default action of the
 		//		passed event
@@ -160,7 +160,8 @@ dojo.require("dojo._base.connect");
 	// keyCode against these named constants, as the
 	// actual codes can vary by browser.
 	dojo.keys = {
-		// summary: definitions for common key values
+		// summary:
+		//		Definitions for common key values
 		BACKSPACE: 8,
 		TAB: 9,
 		CLEAR: 12,
@@ -224,8 +225,10 @@ dojo.require("dojo._base.connect");
 	};
 	
 	dojo.isCopyKey = function(e){
-		// summary: checks an event for the copy key (meta on Mac, and ctrl anywhere else)
-		// e: Event: event object to examine
+		// summary:
+		//		Checks an event for the copy key (meta on Mac, and ctrl anywhere else)
+		// e: Event
+		//		Event object to examine
 		return e[dojo.keys.copyKey];	// Boolean
 	};
 
@@ -244,24 +247,33 @@ dojo.require("dojo._base.connect");
 		RIGHT:  2,
 	
 		isButton: function(e, button){
-			// summary: checks an event object for a pressed button
-			// e: Event: event object to examine
-			// button: Number: the button value (example: dojo.mouseButton.LEFT)
+			// summary:
+			//		Checks an event object for a pressed button
+			// e: Event
+			//		Event object to examine
+			// button: Number
+			//		The button value (example: dojo.mouseButton.LEFT)
 			return e.button == button; // Boolean
 		},
 		isLeft: function(e){
-			// summary: checks an event object for the pressed left button
-			// e: Event: event object to examine
+			// summary:
+			//		Checks an event object for the pressed left button
+			// e: Event
+			//		Event object to examine
 			return e.button == 0; // Boolean
 		},
 		isMiddle: function(e){
-			// summary: checks an event object for the pressed middle button
-			// e: Event: event object to examine
+			// summary:
+			//		Checks an event object for the pressed middle button
+			// e: Event
+			//		Event object to examine
 			return e.button == 1; // Boolean
 		},
 		isRight: function(e){
-			// summary: checks an event object for the pressed right button
-			// e: Event: event object to examine
+			// summary:
+			//		Checks an event object for the pressed right button
+			// e: Event
+			//		Event object to examine
 			return e.button == 2; // Boolean
 		}
 	};
@@ -347,7 +359,7 @@ dojo.require("dojo._base.connect");
 		}
 
 		dojo.mixin(del, {
-			add: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
+			add: function(/*DOMNode*/ node, /*String*/ event, /*Function*/ fp){
 				if(!node){return;} // undefined
 				event = del._normalizeEventName(event);
 				if(event=="onkeypress"){
@@ -366,7 +378,7 @@ dojo.require("dojo._base.connect");
 				}
 				return iel.add(node, event, del._fixCallback(fp));
 			},
-			remove: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
+			remove: function(/*DOMNode*/ node, /*String*/ event, /*Handle*/ handle){
 				event = del._normalizeEventName(event);
 				iel.remove(node, event, handle); 
 				if(event=="onkeypress"){
@@ -377,19 +389,21 @@ dojo.require("dojo._base.connect");
 					}
 				}
 			},
-			_normalizeEventName: function(/*String*/eventName){
+			_normalizeEventName: function(/*String*/ eventName){
 				// Generally, eventName should be lower case, unless it is
 				// special somehow (e.g. a Mozilla event)
 				// ensure 'on'
 				return eventName.slice(0,2) != "on" ? "on" + eventName : eventName;
 			},
 			_nop: function(){},
-			_fixEvent: function(/*Event*/evt, /*DOMNode*/sender){
+			_fixEvent: function(/*Event*/ evt, /*DOMNode*/ sender){
 				// summary:
 				//		normalizes properties on the event object including event
 				//		bubbling methods, keystroke normalization, and x/y positions
-				// evt: native event object
-				// sender: node to treat as "currentTarget"
+				// evt:
+				//		native event object
+				// sender:
+				//		node to treat as "currentTarget"
 				if(!evt){
 					var w = sender && (sender.ownerDocument || sender.document || sender).parentWindow || window;
 					evt = w.event; 
@@ -544,7 +558,7 @@ dojo.require("dojo._base.connect");
 		del._remove = del.remove;
 
 		dojo.mixin(del, {
-			add: function(/*DOMNode*/node, /*String*/event, /*Function*/fp){
+			add: function(/*DOMNode*/ node, /*String*/ event, /*Function*/ fp){
 				if(!node){return;} // undefined
 				var handle = del._add(node, event, fp);
 				if(del._normalizeEventName(event) == "keypress"){
@@ -581,7 +595,7 @@ dojo.require("dojo._base.connect");
 				return handle; /*Handle*/
 			},
 
-			remove: function(/*DOMNode*/node, /*String*/event, /*Handle*/handle){
+			remove: function(/*DOMNode*/ node, /*String*/ event, /*Handle*/ handle){
 				if(node){
 					if(handle._stealthKeyDownHandle){
 						del._remove(node, "keydown", handle._stealthKeyDownHandle);

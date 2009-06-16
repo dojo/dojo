@@ -78,7 +78,8 @@ if(dojo.isIE || dojo.isOpera){
 }else{
 //>>excludeEnd("webkitMobile");
 	dojo.byId = function(id, doc){
-		return dojo.isString(id) ? (doc || dojo.doc).getElementById(id) : id; // DomNode
+		// inline'd type check
+		return (typeof id == "string") ? (doc || dojo.doc).getElementById(id) : id; // DomNode
 	};
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 }
@@ -92,7 +93,6 @@ if(dojo.isIE || dojo.isOpera){
 	var d = dojo;
 //>>excludeEnd("webkitMobile");
 	var byId = d.byId;
-	var isString = d.isString;
 
 	var _destroyContainer = null;
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
@@ -248,10 +248,10 @@ if(dojo.isIE || dojo.isOpera){
 		// | 	dojo.place(dojo.create('li'), "someUl", "first");
 
 		refNode = byId(refNode);
-		if(isString(node)){
+		if(typeof node == "string"){ // inline'd type check
 			node = node.charAt(0) == "<" ? d._toDom(node, refNode.ownerDocument) : byId(node);
 		}
-		if(typeof position == "number"){
+		if(typeof position == "number"){ // inline'd type check
 			var cn = refNode.childNodes;
 			if(!cn.length || cn.length <= position){
 				refNode.appendChild(node);
@@ -624,7 +624,7 @@ if(dojo.isIE || dojo.isOpera){
 			return d._getOpacity(n);
 		}
 		var s = gcs(n);
-		if(args == 2 && !isString(style)){
+		if(args == 2 && typeof style != "string"){ // inline'd type check
 			for(var x in style){
 				d.style(node, x, style[x]);
 			}
@@ -1385,7 +1385,7 @@ if(dojo.isIE || dojo.isOpera){
 		
 		node = byId(node);
 		var args = arguments.length, prop;
-		if(args == 2 && !isString(name)){
+		if(args == 2 && typeof name != "string"){ // inline'd type check
 			// the object form of setter: the 2nd argument is a dictionary
 			for(var x in name){
 				d.attr(node, x, name[x]);
@@ -1396,12 +1396,12 @@ if(dojo.isIE || dojo.isOpera){
 		if(args == 3){
 			// setter
 			do{
-				if(name === "style" && !isString(value)){
+				if(name == "style" && typeof value != "string"){ // inline'd type check
 					// when the name is "style" and value is an object, pass along
 					d.style(node, value);
 					break;
 				}
-				if(name === "innerHTML"){
+				if(name == "innerHTML"){
 					//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 					if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
 						d.empty(node);
@@ -1557,7 +1557,7 @@ if(dojo.isIE || dojo.isOpera){
 			refNode = byId(refNode);
 			doc = refNode.ownerDocument;
 		}
-		if(isString(tag)){
+		if(typeof tag == "string"){ // inline'd type check
 			tag = doc.createElement(tag);
 		}
 		if(attrs){ d.attr(tag, attrs); }

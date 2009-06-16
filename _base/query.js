@@ -47,11 +47,6 @@ if(typeof dojo != "undefined"){
 					return id; // DomNode
 				}
 			},
-			isString: function(item){
-				// summary: 
-				//		is item a string?
-				return (typeof item == "string"); // Boolean
-			},
 			// the default document to search
 			doc: document,
 			// the constructor for node list objects returned from query()
@@ -137,7 +132,6 @@ if(typeof dojo != "undefined"){
 	// 					d.isWebKit; // float
 	// 					d.doc ; // document element
 	var qlc = d._NodeListCtor = 		d.NodeList;
-	var isString = 		d.isString;
 
 	var getDoc = function(){ return d.doc; };
 	var cssCaseBug = (d.isWebKit && ((getDoc().compatMode) == "BackCompat"));
@@ -1526,10 +1520,10 @@ if(typeof dojo != "undefined"){
 		if(query.constructor == qlc){
 			return query;
 		}
-		if(!isString(query)){
+		if(typeof query != "string"){ // inline'd type check
 			return new qlc(query); // dojo.NodeList
 		}
-		if(isString(root)){
+		if(typeof root == "string"){ // inline'd type check
 			root = d.byId(root);
 			if(!root){ return new qlc(); }
 		}
@@ -1594,11 +1588,11 @@ if(!dojo["query"]){
 				return query;
 			}
 
-			if(!dojo.isString(query)){
+			if(typeof query != "string"){ // inline'd type check
 				return new d._NodeListCtor(query); // dojo.NodeList
 			}
 
-			if(dojo.isString(root)){
+			if(typeof root == "string"){ // inline'd type check
 				root = dojo.byId(root);
 				if(!root){ return new d._NodeListCtor(); }
 			}

@@ -5,10 +5,10 @@ dojo.provide("dojo._base.array");
 (function(){
 	var _getParts = function(arr, obj, cb){
 		return [ 
-			dojo.isString(arr) ? arr.split("") : arr, 
+			(typeof arr == "string") ? arr.split("") : arr, 
 			obj || dojo.global,
 			// FIXME: cache the anonymous functions we create here?
-			dojo.isString(cb) ? new Function("item", "index", "array", cb) : cb
+			(typeof cb == "string") ? new Function("item", "index", "array", cb) : cb
 		];
 	};
 
@@ -238,7 +238,7 @@ dojo.provide("dojo._base.array");
 ["indexOf", "lastIndexOf", "forEach", "map", "some", "every", "filter"].forEach(
 	function(name, idx){
 		dojo[name] = function(arr, callback, thisObj){
-			if((idx > 1)&& dojo.isString(callback)){
+			if((idx > 1) && (typeof callback == "string")){
 				callback = new Function("item", "index", "array", callback);
 			}
 			return Array.prototype[name].call(arr, callback, thisObj);

@@ -98,7 +98,7 @@ dojo.require("dojo._base.array");
 	var magicGuard = function(a){
 		//	summary:
 		//		the guard function for dojo.attr() and dojo.style()
-		return a.length == 1 && d.isString(a[0])
+		return a.length == 1 && (typeof a[0] == "string"); // inline'd type check
 	};
 	
 	var orphan = function(node){
@@ -790,7 +790,7 @@ dojo.require("dojo._base.array");
 			//		|	dojo.query("*").filter("p").styles("backgroundColor", "yellow");
 
 			var a = arguments, items = this, start = 0;
-			if(d.isString(simpleFilter)){
+			if(typeof simpleFilter == "string"){ // inline'd type check
 				items = d._filterQueryResult(this, a[0]);
 				if(a.length == 1){
 					// if we only got a string query, pass back the filtered results

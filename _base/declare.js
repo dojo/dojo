@@ -217,7 +217,11 @@ dojo.mixin(dojo.declare, {
 
 			var a = arguments;
 			// some magic crap that alters `arguments` to shift in the case of missing `name`
-			if(!dojo.isString(a[0])){ newArgs = args; args = name; name = args.callee.nom; }
+			if(typeof a[0] != "string"){ // inline'd type check
+				newArgs = args;
+				args = name;
+				name = args.callee.nom;
+			}
 			a = newArgs || args; // WARNING: hitch()ed functions may pass a newArgs you aren't expecting.
 			var c = args.callee, p = this.constructor.prototype, fn, mp;
 			// if not an instance override

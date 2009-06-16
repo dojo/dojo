@@ -16,7 +16,7 @@ dojo.require("dojo._base.query");
 		//		already exists and it is a string, convert the value to be an
 		//		array of values.
 		var val = obj[name];
-		if(_d.isString(val)){
+		if(typeof val == "string"){ // inline'd type check
 			obj[name] = [val, value];
 		}else if(_d.isArray(val)){
 			val.push(value);
@@ -182,9 +182,10 @@ dojo.require("dojo._base.query");
 				var parts = item.split("=");
 				var name = dec(parts.shift());
 				var val = dec(parts.join("="));
-				if(_d.isString(ret[name])){
+				if(typeof ret[name] == "string"){ // inline'd type check
 					ret[name] = [ret[name]];
 				}
+
 				if(_d.isArray(ret[name])){
 					ret[name].push(val);
 				}else{

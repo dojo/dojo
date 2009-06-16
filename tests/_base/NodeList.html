@@ -489,6 +489,28 @@
 							var divs = dojo.query("div").setTrue();
 							doh.t(passes);
 							doh.is(count, divs.length);
+						},
+						
+						function instantiate(t){
+
+							var test = 0;
+							dojo.declare("some.Thing", null, {
+								foo:"baz",
+								constructor: function(props, node){
+									dojo.mixin(this, props);
+									t.is("bar", this.foo, test++);
+								}
+							});
+							
+							dojo.query("#thinger").instantiate(some.Thing, {
+								foo:"bar"
+							});
+							
+							dojo.query("#thinger2").instantiate("some.Thing", {
+								foo:"bar"
+							});
+							
+							t.is(2, test);
 						}
 					]
 				);
@@ -504,6 +526,8 @@
 		<div id="t">
 			<span id="c1">c1</span>
 		</div>
+		<p id="thinger">Hi</p>
+		<p id="thinger2">Hi</p>
 	</body>
 </html>
 

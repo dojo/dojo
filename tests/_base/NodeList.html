@@ -492,25 +492,30 @@
 						},
 						
 						function instantiate(t){
+							//Insert some divs to use for test
+							dojo.place('<p id="thinger">Hi</p><p id="thinger2">Hi</p>', dojo.body());
 
 							var test = 0;
-							dojo.declare("some.Thing", null, {
+							dojo.declare("tests._base.NodeList.some.Thing", null, {
 								foo:"baz",
 								constructor: function(props, node){
 									dojo.mixin(this, props);
 									t.is("bar", this.foo, test++);
 								}
 							});
-							
-							dojo.query("#thinger").instantiate(some.Thing, {
+
+							dojo.query("#thinger").instantiate(tests._base.NodeList.some.Thing, {
 								foo:"bar"
 							});
-							
-							dojo.query("#thinger2").instantiate("some.Thing", {
+
+							dojo.query("#thinger2").instantiate("tests._base.NodeList.some.Thing", {
 								foo:"bar"
 							});
-							
+
 							t.is(2, test);
+
+							//clean up the divs inserted for the test.
+							dojo.query("#thinger, #thinger2").orphan();
 						}
 					]
 				);
@@ -526,8 +531,6 @@
 		<div id="t">
 			<span id="c1">c1</span>
 		</div>
-		<p id="thinger">Hi</p>
-		<p id="thinger2">Hi</p>
 	</body>
 </html>
 

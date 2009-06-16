@@ -895,7 +895,7 @@ dojo.require("dojo._base.array");
 			properties = properties || {};
 			var self = this;
 			return this.forEach(function(node){
-				self.instantiated.push(c(properties, node));
+				self.instantiated.push(new c(properties, node));
 			});	// dojo.NodeList
 		},
 

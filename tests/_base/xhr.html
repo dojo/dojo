@@ -49,6 +49,20 @@
 				var f5foStr = "bl%C3%A5h=bl%C3%A1h";
 				var f5foJson = '{"blåh":"bláh"}';
 
+				var f6fo = {
+					cb_group: "foo",
+					radio_group: "bam"
+				};
+
+				var f6fo1 = {
+					cb_group: "boo",
+					radio_group: "baz"
+				};
+
+				var f6fo2 = {
+					cb_group: ["foo","boo"],
+					radio_group: "baz"
+				};
 
 				var topics = [
 					"/dojo/io/start",
@@ -106,6 +120,20 @@
 						function formIdToObject(t){
 							t.is(f1fo , dojo.formToObject("f1"));
 							t.is(f5fo , dojo.formToObject("f5"));
+						},
+						function formToObjectRadioGroup(t){
+							t.is(f6fo , dojo.formToObject("f6"));
+							
+							dojo.byId('f6_checkbox1').checked = false;
+							dojo.byId('f6_checkbox2').checked = true;
+							dojo.byId('f6_radio1').checked = true;
+							t.is(f6fo1 , dojo.formToObject("f6"));
+
+							dojo.byId('f6_checkbox1').checked = true;
+							t.is(f6fo2 , dojo.formToObject("f6"));
+
+							dojo.byId('f6_checkbox2').checked = false; // reset back to defaults
+							dojo.byId('f6_radio2').checked = true;
 						},
 						function formToObjectWithMultiSelect(t){
 							t.is(f2fo , dojo.formToObject("f2"));

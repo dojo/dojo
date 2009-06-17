@@ -15,6 +15,12 @@ dojo.require("dojo._base.query");
 		//		For the named property in object, set the value. If a value
 		//		already exists and it is a string, convert the value to be an
 		//		array of values.
+
+		//Skip it if there is no value
+		if(value === null){
+			return;
+		}
+
 		var val = obj[name];
 		if(typeof val == "string"){ // inline'd type check
 			obj[name] = [val, value];

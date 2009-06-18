@@ -427,11 +427,12 @@
 								parse: true
 							});
 							
-							doh.is(2, templs.instantiated.length);
-							dojo.forEach(templs.instantiated, function(instantiated){
-								doh.is("dojo.tests.Mini", instantiated.declaredClass);
-								doh.is("cool", instantiated.name);
-								doh.is("cool", instantiated.domNode.innerHTML);
+							
+							var declaredNodes = templs.query("[dojoType]");
+
+							doh.is(2, declaredNodes.length);
+							dojo.forEach(declaredNodes, function(node){
+								doh.is("cool", node.innerHTML);
 							});
 
 							//Get rid of the junk used for template testing.

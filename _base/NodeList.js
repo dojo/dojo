@@ -292,11 +292,7 @@ dojo.require("dojo._base.array");
 			// description:
 			// 		Allows for cloning the nodes in the array, and for
 			// 		optionally parsing widgets, if ary._runParse is true.
-			// 		Parsed widgets are placed in an "instantiated" array off
-			// 		the NodeList.
-			//
 			var rNode = refNode, tempNode;
-			var widgets = ary._runParse ? [] : null;
 
 			//Always cycle backwards in case the array is really a
 			//DOM NodeList and the DOM operations take it out of the live collection.
@@ -312,7 +308,7 @@ dojo.require("dojo._base.array");
 						tempNode = rNode.ownerDocument.createElement("div");
 					}
 					tempNode.appendChild(node);
-					widgets = widgets.concat(dojo.parser.parse(tempNode));
+					dojo.parser.parse(tempNode);
 					node = tempNode.firstChild;
 					while(tempNode.firstChild){
 						tempNode.removeChild(tempNode.firstChild);
@@ -326,11 +322,6 @@ dojo.require("dojo._base.array");
 				}
 				rNode = node;
 			}
-
-			if(widgets){
-				this.instantiated = this.instantiated.concat(widgets);
-			}
-			return widgets;
 		},
 
 		_stash: function(parent){
@@ -358,11 +349,6 @@ dojo.require("dojo._base.array");
 			this._parent = parent;
 			return this; //dojo.NodeList
 		},
-
-		// instantiated: Array
-		//		Holds instantiated objects from either the instantiate method or via the optional
-		// 		widget parsing that is available via addContent.
-		instantiated: [],
 
 		end: function(){
 			// summary:
@@ -871,8 +857,6 @@ dojo.require("dojo._base.array");
 			//  		parse: true,
 			//  		text: "Send"
 			//  	});
-			//  	//The newly instantiated widgets are available via the .instantiated array property.
-			//  	var dijitButtons = notes.instantiated;
 			content = this._normalize(content, this[0]);
 			for(var i = 0, node; node = this[i]; i++){
 				this._place(content, node, position, i > 0);
@@ -884,18 +868,15 @@ dojo.require("dojo._base.array");
 			//	summary:
 			//		Create a new instance of a specified class, using the
 			//		specified properties and each node in the nodeList as a
-			//		srcNodeRef. The instantiated objects are available as the
-			// 		"instantiated" property on this NodeList.
+			//		srcNodeRef.
 			//	example:
-			//		Grabs all buttons in the page and converts them to diji.form.Buttons. Then
-			// 		grabs the instantiated buttons via the instantiated property on the NodeList.
+			//		Grabs all buttons in the page and converts them to diji.form.Buttons.
 			//	|	var buttons = dojo.query("button").instantiate("dijit.form.Button", {showLabel: true});
-			//  |	var buttonWidgets = buttons.instantiated;
 			var c = d.isFunction(declaredClass) ? declaredClass : d.getObject(declaredClass);
 			properties = properties || {};
 			var self = this;
 			return this.forEach(function(node){
-				self.instantiated.push(new c(properties, node));
+				new c(properties, node);
 			});	// dojo.NodeList
 		},
 

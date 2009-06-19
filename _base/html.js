@@ -1225,57 +1225,50 @@ if(dojo.isIE || dojo.isOpera){
 	// =============================
 	// Element attribute Functions
 	// =============================
-
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	var ieLT8 = d.isIE < 8;
-	//>>excludeEnd("webkitMobile");
-
-	var _fixAttrName = function(/*String*/name){
-		switch(name.toLowerCase()){
-			// Internet Explorer will only set or remove tabindex/readonly
-			// if it is spelled "tabIndex"/"readOnly"
-			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			case "tabindex":
-				return ieLT8 ? "tabIndex" : "tabindex";
-			//>>excludeEnd("webkitMobile");
-			case "readonly":
-				return "readOnly";
-			case "class":
-				return "className";
-			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			case "for": case "htmlfor":
-				// to pick up for attrib set in markup via getAttribute() IE<8 uses "htmlFor" and others use "for"
-				// get/setAttribute works in all as long use same value for both get/set
-				return ieLT8 ? "htmlFor" : "for";
-			//>>excludeEnd("webkitMobile");
-			default:
-				return name;
-		}
-	}
-
-	// non-deprecated HTML4 attributes with default values
-	// http://www.w3.org/TR/html401/index/attributes.html
-	// FF and Safari will return the default values if you
-	// access the attributes via a property but not
-	// via getAttribute()
-	var _attrProps = {
-		colspan: "colSpan",
-		enctype: "enctype",
-		frameborder: "frameBorder",
-		method: "method",
-		rowspan: "rowSpan",
-		scrolling: "scrolling",
-		shape: "shape",
-		span: "span",
-		type: "type",
-		valuetype: "valueType"
-	};
 	
+	// dojo.attr() should conform to http://www.w3.org/TR/DOM-Level-2-Core/
+
+	var _propNames = {
+			// properties renamed to avoid clashes with reserved words
+			"class":   "className",
+			"for":     "htmlFor",
+			// properties written as camelCase
+			tabindex:  "tabIndex",
+			readonly:  "readOnly",
+			colspan:   "colSpan",
+			frameborder: "frameBorder",
+			rowspan:   "rowSpan",
+			valuetype: "valueType"
+		},
+		_attrNames = {
+			// original attribute names
+			classname: "class",
+			htmlfor:   "for",
+			// for IE
+			tabindex:  "tabIndex",
+			readonly:  "readOnly"
+		},
+		_forcePropNames = {
+			innerHTML: 1,
+			className: 1,
+			htmlFor:   d.isIE,
+			value:     1
+		};
+	
+	var _fixAttrName = function(/*String*/ name){
+		return _attrNames[name.toLowerCase()] || name;
+	};
+
 	var _hasAttr = function(node, name){
 		var attr = node.getAttributeNode && node.getAttributeNode(name);
 		return attr && attr.specified; // Boolean
-	}
+	};
 
+	// There is a difference in the presence of certain properties and their default values
+	// between browsers. For example, on IE "disabled" is present on all elements,
+	// but it is value is "false"; "tabIndex" of <div> returns 0 by default on IE, yet other browsers
+	// can return -1.
+	
 	dojo.hasAttr = function(/*DomNode|String*/node, /*String*/name){
 		//	summary:
 		//		Returns true if the requested attribute is specified on the
@@ -1287,12 +1280,8 @@ if(dojo.isIE || dojo.isOpera){
 		//	returns:
 		//		true if the requested attribute is specified on the
 		//		given element, and false otherwise
-		node = byId(node);
-		name = _fixAttrName(name);
-		if((name.toLowerCase() in _attrProps)){
-			return _hasAttr(node, name);	// Boolean
-		}
-		return (name in node) && name != "href" && !d.isObject(node[name]) || _hasAttr(node, name);	//Boolean
+		var lc = name.toLowerCase();
+		return _forcePropNames[_propNames[lc] || name] || _hasAttr(byId(node), _attrNames[lc] || name);	// Boolean
 	}
 
 	var _evtHdlrMap = {}, _ctr = 0,
@@ -1343,14 +1332,14 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		//	example:
 		//	|	// use attr() to set the tab index
-		//	|	dojo.attr("nodeId", "tabindex", 3);
+		//	|	dojo.attr("nodeId", "tabIndex", 3);
 		//	|
 		//
 		//	example:
 		//	Set multiple values at once, including event handlers:
 		//	|	dojo.attr("formId", {
 		//	|		"foo": "bar",
-		//	|		"tabindex": -1,
+		//	|		"tabIndex": -1,
 		//	|		"method": "POST",
 		//	|		"onsubmit": function(e){
 		//	|			// stop submitting the form. Note that the IE behavior
@@ -1392,29 +1381,34 @@ if(dojo.isIE || dojo.isOpera){
 			}
 			return node; // DomNode
 		}
-		name = _fixAttrName(name);
+		var lc = name.toLowerCase(),
+			propName = _propNames[lc] || name,
+			forceProp = _forcePropNames[propName],
+			attrName = _attrNames[lc] || name;
 		if(args == 3){
 			// setter
 			do{
-				if(name == "style" && typeof value != "string"){ // inline'd type check
-					// when the name is "style" and value is an object, pass along
+				if(propName == "style" && typeof value != "string"){ // inline'd type check
+					// special case: setting a style
 					d.style(node, value);
 					break;
 				}
-				if(name == "innerHTML"){
+				if(propName == "innerHTML"){
+					// special case: assigning HTML
 					//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 					if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
 						d.empty(node);
 						node.appendChild(d._toDom(value, node.ownerDocument));
 					}else{
 					//>>excludeEnd("webkitMobile");
-						node[name] = value;
+						node[propName] = value;
 					//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 					}
 					//>>excludeEnd("webkitMobile");
 					break;
 				}
 				if(d.isFunction(value)){
+					// special case: assigning an event handler
 					// clobber if we can
 					var attrId = d.attr(node, _attrId);
 					if(!attrId){
@@ -1424,55 +1418,47 @@ if(dojo.isIE || dojo.isOpera){
 					if(!_evtHdlrMap[attrId]){
 						_evtHdlrMap[attrId] = {};
 					}
-					var h = _evtHdlrMap[attrId][name];
+					var h = _evtHdlrMap[attrId][propName];
 					if(h){
 						d.disconnect(h);
 					}else{
 						try{
-							delete node[name];
+							delete node[propName];
 						}catch(e){}
 					}
 					// ensure that event objects are normalized, etc.
-					_evtHdlrMap[attrId][name] = d.connect(node, name, value);
+					_evtHdlrMap[attrId][propName] = d.connect(node, propName, value);
 					break;
 				}
-				if(typeof value == "boolean"){ // e.g. onsubmit, disabled
-					node[name] = value;
+				if(forceProp || typeof value == "boolean"){
+					// special case: forcing assignment to the property
+					// special case: setting boolean to a property instead of attribute
+					node[propName] = value;
 					break;
 				}
-				prop = _attrProps[name.toLowerCase()];
-				if(prop){
-					node[prop] = value;
-					break;
-				}
-				if((name in node) && name !== "href"){
-					var attrValue = node[name];
-					if(!d.isObject(attrValue)){
-						node[name] = value;
-						break;
-					}
-				}
-				node.setAttribute(name, value);
+				// node's attribute
+				node.setAttribute(attrName, value);
 			}while(false);
 			return node; // DomNode
 		}
 		// getter
 		// should we access this attribute via a property or
 		// via getAttribute()?
-		prop = _attrProps[name.toLowerCase()];
-		if(prop){
-			return node[prop];
+		value = node[propName];
+		if(forceProp && typeof value != "undefined"){
+			// node's property
+			return value;	// Anything
 		}
-		if((name in node) && name !== "href"){
-			var attrValue = node[name];
-			if(!d.isObject(attrValue)){
-				return attrValue;
-			}
+		if(propName != "href" && (typeof value == "boolean" || d.isFunction(value))){
+			// node's property
+			return value;	// Anything
 		}
-		return _hasAttr(node, name) ? node.getAttribute(name) : null;
+		// node's attribute
+		// we need _hasAttr() here to guard against IE returning a default value
+		return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
 	}
 
-	dojo.removeAttr = function(/*DomNode|String*/node, /*String*/name){
+	dojo.removeAttr = function(/*DomNode|String*/ node, /*String*/ name){
 		//	summary:
 		//		Removes an attribute from an HTML element.
 		//	node:
@@ -1480,6 +1466,25 @@ if(dojo.isIE || dojo.isOpera){
 		//	name:
 		//		the name of the attribute to remove
 		byId(node).removeAttribute(_fixAttrName(name));
+	}
+	
+	dojo.getEffectiveAttrValue = function(/*DomNode|String*/ node, /*String*/ name){
+		//	summary:
+		//		Returns an effective value of a property or an attribute.
+		//	node:
+		//		id or reference to the element to remove the attribute from
+		//	name:
+		//		the name of the attribute
+		node = byId(node);
+		var lc = name.toLowerCase(),
+			propName = _propNames[lc] || name;
+		if((propName in node) && propName != "href"){
+			// node's property
+			return node[propName];	// Anything
+		}
+		// node's attribute
+		var attrName = _attrNames[lc] || name;
+		return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
 	}
 	
 	dojo.create = function(tag, attrs, refNode, pos){

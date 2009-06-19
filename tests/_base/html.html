@@ -214,13 +214,13 @@
 						},
 						function getTypeInput(t){
 							doh.f(dojo.hasAttr(dojo.byId("input-no-type"), "type"));
-							doh.is("text", dojo.attr(dojo.byId("input-no-type"), "type"));
+							doh.is(null, dojo.attr(dojo.byId("input-no-type"), "type"));
 							doh.t(dojo.hasAttr(dojo.byId("input-with-type"), "type"));
 							doh.is("checkbox", dojo.attr(dojo.byId("input-with-type"), "type"));
 						},
 						function getWithString(t){
 							doh.f(dojo.hasAttr("input-no-type", "type"));
-							doh.is("text", dojo.attr("input-no-type", "type"));
+							doh.is(null, dojo.attr("input-no-type", "type"));
 							doh.t(dojo.hasAttr("input-with-type", "type"));
 							doh.is("checkbox", dojo.attr("input-with-type", "type"));
 						},
@@ -228,90 +228,88 @@
 							doh.t(dojo.hasAttr("div-no-tabindex", "id"));
 							doh.is("div-no-tabindex", dojo.attr("div-no-tabindex", "id"));
 							var div = document.createElement("div");
-							doh.t(dojo.hasAttr(div, "id"));
-							doh.is("", dojo.attr(div, "id"));
+							doh.f(dojo.hasAttr(div, "id"));
+							doh.is(null, dojo.attr(div, "id"));
 							dojo.attr(div, "id", "attrId1");
 							doh.t(dojo.hasAttr(div, "id"));
 							doh.is("attrId1", dojo.attr(div, "id"));
 							dojo.removeAttr(div, "id");
-							doh.t(dojo.hasAttr(div, "id"));
-							doh.is("", dojo.attr(div, "id"));
+							doh.f(dojo.hasAttr(div, "id"));
+							doh.is(null, dojo.attr(div, "id"));
 						},
 						function getTabindexDiv(t){
-							if(!dojo.isIE || dojo.isIE >= 8){
-								// IE6/7 always reports tabIndex as defined
-								doh.f(dojo.hasAttr("div-no-tabindex", "tabindex"));
-								doh.f(dojo.attr("div-no-tabindex", "tabindex"));
-							}
-							doh.t(dojo.hasAttr("div-tabindex-minus-1", "tabindex"));
+							doh.f(dojo.hasAttr("div-no-tabindex", "tabIndex"));
+							doh.t(dojo.attr("div-no-tabindex", "tabIndex") <= 0);
+							doh.t(dojo.hasAttr("div-tabindex-minus-1", "tabIndex"));
 							if(!dojo.isOpera){
-								// Opera (at least <= 9) does not support tabindex="-1"
-								doh.is(-1, dojo.attr("div-tabindex-minus-1", "tabindex"));
+								// Opera (at least <= 9) does not support tabIndex="-1"
+								doh.is(-1, dojo.attr("div-tabindex-minus-1", "tabIndex"));
 							}
-							doh.t(dojo.hasAttr("div-tabindex-0", "tabindex"));
-							doh.is(0, dojo.attr("div-tabindex-0", "tabindex"));
-							doh.is(1, dojo.attr("div-tabindex-1", "tabindex"));
+							doh.t(dojo.hasAttr("div-tabindex-0", "tabIndex"));
+							doh.is(0, dojo.attr("div-tabindex-0", "tabIndex"));
+							doh.is(1, dojo.attr("div-tabindex-1", "tabIndex"));
 						},
 						function getTabindexInput(t){
 							if(!dojo.isIE || dojo.isIE >= 8){
 								// IE6/7 always reports tabIndex as defined
-								doh.f(dojo.hasAttr("input-no-tabindex", "tabindex"));
-								doh.f(dojo.attr("input-no-tabindex", "tabindex"));
+								doh.f(dojo.hasAttr("input-no-tabindex", "tabIndex"));
+								doh.f(dojo.attr("input-no-tabindex", "tabIndex"));
 							}
-							doh.t(dojo.hasAttr("input-tabindex-minus-1", "tabindex"));
+							doh.t(dojo.hasAttr("input-tabindex-minus-1", "tabIndex"));
 							if(!dojo.isOpera){
-								// Opera (at least <= 9) does not support tabindex="-1"
-								doh.is(-1, dojo.attr("input-tabindex-minus-1", "tabindex"));
+								// Opera (at least <= 9) does not support tabIndex="-1"
+								doh.is(-1, dojo.attr("input-tabindex-minus-1", "tabIndex"));
 							}
-							doh.t(dojo.hasAttr("input-tabindex-0", "tabindex"));
-							doh.is(0, dojo.attr("input-tabindex-0", "tabindex"));
-							doh.is(1, dojo.attr("input-tabindex-1", "tabindex"));
+							doh.t(dojo.hasAttr("input-tabindex-0", "tabIndex"));
+							doh.is(0, dojo.attr("input-tabindex-0", "tabIndex"));
+							doh.is(1, dojo.attr("input-tabindex-1", "tabIndex"));
 						},
 						function setTabindexDiv(t){
 							var div = document.createElement("div");
-							if(!dojo.isIE || dojo.isIE >= 8){
-								// IE6/7 always reports tabIndex as defined
-								doh.f(dojo.attr(div, "tabindex"));
-							}
-							dojo.attr(div, "tabindex", -1);
+							doh.is(null, dojo.attr(div, "tabIndex"));
+							dojo.attr(div, "tabIndex", -1);
 							if(!dojo.isOpera){
-								// Opera (at least <= 9) does not support tabindex="-1"
-								doh.is(-1, dojo.attr(div, "tabindex"));
+								// Opera (at least <= 9) does not support tabIndex="-1"
+								doh.is(-1, dojo.attr(div, "tabIndex"));
 							}
-							dojo.attr(div, "tabindex", 0);
-							doh.is(0, dojo.attr(div, "tabindex"));
-							dojo.attr(div, "tabindex", 1);
-							doh.is(1, dojo.attr(div, "tabindex"));
+							dojo.attr(div, "tabIndex", 0);
+							doh.is(0, dojo.attr(div, "tabIndex"));
+							dojo.attr(div, "tabIndex", 1);
+							doh.is(1, dojo.attr(div, "tabIndex"));
 						},
 						function setTabindexInput(t){
 							var input = document.createElement("input");
-							if(!dojo.isIE || dojo.isIE >= 8){
-								// IE6/7 always reports tabIndex as defined
-								doh.f(dojo.attr(input, "tabindex"));
-							}
-							dojo.attr(input, "tabindex", -1);
+							doh.t(dojo.attr(input, "tabIndex") <= 0);
+							dojo.attr(input, "tabIndex", -1);
 							if(!dojo.isOpera){
-								// Opera (at least <= 9) does not support tabindex="-1"
-								doh.is(-1, dojo.attr(input, "tabindex"));
+								// Opera (at least <= 9) does not support tabIndex="-1"
+								doh.is(-1, dojo.attr(input, "tabIndex"));
 							}
-							dojo.attr(input, "tabindex", 0);
-							doh.is(0, dojo.attr(input, "tabindex"));
-							dojo.attr(input, "tabindex", 1);
-							doh.is(1, dojo.attr(input, "tabindex"));
+							dojo.attr(input, "tabIndex", 0);
+							doh.is(0, dojo.attr(input, "tabIndex"));
+							dojo.attr(input, "tabIndex", 1);
+							doh.is(1, dojo.attr(input, "tabIndex"));
 						},
 						function removeTabindexFromDiv(t){
 							var div = document.createElement("div");
-							dojo.attr(div, "tabindex", 1);
-							doh.is(1, dojo.attr(div, "tabindex"));
-							dojo.removeAttr(div, "tabindex");
-							doh.f(dojo.attr(div, "tabindex"));
+							dojo.attr(div, "tabIndex", 1);
+							doh.is(1, dojo.attr(div, "tabIndex"));
+							dojo.removeAttr(div, "tabIndex");
+							doh.is(null, dojo.attr(div, "tabIndex"));
+						},
+						function removeDisabledFromInput(t){
+							var input = document.createElement("input");
+							dojo.attr(input, "disabled", true);
+							doh.t(dojo.attr(input, "disabled"));
+							dojo.removeAttr(input, "disabled");
+							doh.f(dojo.attr(input, "disabled"));
 						},
 						function removeTabindexFromInput(t){
 							var input = document.createElement("input");
-							dojo.attr(input, "tabindex", 1);
-							doh.is(1, dojo.attr(input, "tabindex"));
-							dojo.removeAttr(input, "tabindex");
-							doh.f(dojo.attr(input, "tabindex"));
+							dojo.attr(input, "tabIndex", 1);
+							doh.is(1, dojo.attr(input, "tabIndex"));
+							dojo.removeAttr(input, "tabIndex");
+							doh.is(null, dojo.attr(input, "tabIndex"));
 						},
 						function setReadonlyInput(t){
 							var input = document.createElement("input");
@@ -326,15 +324,19 @@
 							var ctr= 0;
 							dojo.attr(input, {
 								"class": "thinger blah",
-								"tabindex": 1,
+								"tabIndex": 1,
 								"type": "text",
 								"onfocus": function(e){
 									ctr++;
 								}
 							});
 							dojo.body().appendChild(input);
-							doh.is(1, dojo.attr(input, "tabindex"), "tabindex");
-							doh.is("text", dojo.attr(input, "type"), "type");
+							doh.is(1, dojo.attr(input, "tabIndex"), "tabIndex");
+							if(!dojo.isIE || dojo.isIE > 7){
+								// IE6/7 treats type="text" as missing, even if it was
+								// explicitly specified
+								doh.is("text", dojo.attr(input, "type"), "type");
+							}
 							doh.is(0, ctr, "onfocus ctr == 0");
 							doh.t(dojo.hasClass(input, "thinger"), "hasClass of thinger");
 							doh.t(dojo.hasClass(input, "blah"), "hasClass of blah");
@@ -359,7 +361,11 @@
 							dojo.attr(input, "onfocus", function(e){ ctr++; });
 							dojo.attr(input, "onfocus", function(e){ ctr++; });
 							dojo.body().appendChild(input);
-							doh.is("text", dojo.attr(input, "type"));
+							if(!dojo.isIE || dojo.isIE > 7){
+								// IE6/7 treats type="text" as missing, even if it was
+								// explicitly specified
+								doh.is("text", dojo.attr(input, "type"));
+							}
 							doh.is(0, ctr);
 							var def = new doh.Deferred();
 							input.focus();
@@ -402,8 +408,11 @@
 							// create label with no for attribute make sure requesting
 							// it as for and html for returns null
 							var label = document.createElement("label");
-							doh.f(dojo.attr(label, "for"));
-							doh.f(dojo.attr(label, "htmlFor"));
+							if(!dojo.isIE){
+								// IE always assumes that "for" is present
+								doh.f(dojo.attr(label, "for"));
+								doh.f(dojo.attr(label, "htmlFor"));
+							}
 							// add a for attribute and test that can get by requesting for
 							dojo.attr(label, "for", "testId");
 							doh.is("testId", dojo.attr(label, "for"));
@@ -418,19 +427,16 @@
 							var labelNoFor = dojo.byId("label-no-for");
 							// make sure testing if has attribute using for or htmlFor 
 							// both return null when no value set
-							if(!dojo.isIE || dojo.isIE >= 8){
-								// IE6/7 always reports for and htmlFor as defined
+							if(!dojo.isIE){
+								// IE always assumes that "for" is present
 								doh.f(dojo.hasAttr(labelNoFor, "for"));
 								doh.f(dojo.hasAttr(labelNoFor, "htmlFor"));
 							}
 							var labelWithFor = dojo.byId("label-with-for");
 							// when markup includes for make certain testing if has attribute
 							// using for or htmlFor returns true
-							if(!dojo.isIE || dojo.isIE >= 8){
-								// IE6/7 always reports for and htmlFor as defined
-								doh.t(dojo.hasAttr(labelWithFor, "for"));
-								doh.t(dojo.hasAttr(labelWithFor, "htmlFor"));
-							}
+							doh.t(dojo.hasAttr(labelWithFor, "for"));
+							doh.t(dojo.hasAttr(labelWithFor, "htmlFor"));
 							// when markup include for attrib make sure can retrieve using for or htmlFor
 							doh.is("input-with-label", dojo.attr(labelWithFor, "for"));
 							doh.is("input-with-label", dojo.attr(labelWithFor, "htmlFor"));						
@@ -653,17 +659,17 @@
 		<iframe id="blah"></iframe>
 
 		<div id="div-no-tabindex"></div>
-		<div id="div-tabindex-minus-1" tabindex="-1"></div>
-		<div id="div-tabindex-0" tabindex="0"></div>
-		<div id="div-tabindex-1" tabindex="1"></div>
+		<div id="div-tabindex-minus-1" tabIndex="-1"></div>
+		<div id="div-tabindex-0" tabIndex="0"></div>
+		<div id="div-tabindex-1" tabIndex="1"></div>
 
 		<div>
 			<input id="input-no-type">
 			<input id="input-with-type" type="checkbox">
 			<input id="input-no-tabindex">
-			<input id="input-tabindex-minus-1" tabindex="-1">
-			<input id="input-tabindex-0" tabindex="0">
-			<input id="input-tabindex-1" tabindex="1">
+			<input id="input-tabindex-minus-1" tabIndex="-1">
+			<input id="input-tabindex-0" tabIndex="0">
+			<input id="input-tabindex-1" tabIndex="1">
 			<input id="input-text-value" type="text" value="123">
 		</div>
 		<div>

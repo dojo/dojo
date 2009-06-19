@@ -225,12 +225,14 @@ dojo.require("dojo._base.connect");
 		copyKey: dojo.isMac ? (dojo.isSafari ? 91 : 224 ) : 17
 	};
 	
+	var evtCopyKey = dojo.isMac ? "metaKey" : "ctrlKey";
+	
 	dojo.isCopyKey = function(e){
 		// summary:
 		//		Checks an event for the copy key (meta on Mac, and ctrl anywhere else)
 		// e: Event
 		//		Event object to examine
-		return e[dojo.isMac ? "metaKey" : "ctrlKey"];	// Boolean
+		return e[evtCopyKey];	// Boolean
 	};
 
 	// Public: decoding mouse buttons from events

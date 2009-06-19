@@ -169,6 +169,7 @@ dojo.require("dojo._base.connect");
 		SHIFT: 16,
 		CTRL: 17,
 		ALT: 18,
+		META: dojo.isSafari ? 91 : 224,		// the apple key on macs
 		PAUSE: 19,
 		CAPS_LOCK: 20,
 		ESCAPE: 27,
@@ -221,7 +222,7 @@ dojo.require("dojo._base.connect");
 		NUM_LOCK: 144,
 		SCROLL_LOCK: 145,
 		// virtual key mapping
-		copyKey: dojo.isMac ? "metaKey" : "ctrlKey"
+		copyKey: dojo.isMac ? (dojo.isSafari ? 91 : 224 ) : 17
 	};
 	
 	dojo.isCopyKey = function(e){
@@ -229,7 +230,7 @@ dojo.require("dojo._base.connect");
 		//		Checks an event for the copy key (meta on Mac, and ctrl anywhere else)
 		// e: Event
 		//		Event object to examine
-		return e[dojo.keys.copyKey];	// Boolean
+		return e[dojo.isMac ? "metaKey" : "ctrlKey"];	// Boolean
 	};
 
 	// Public: decoding mouse buttons from events

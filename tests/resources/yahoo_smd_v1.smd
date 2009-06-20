@@ -103,7 +103,7 @@
 		},
 		{
 			// http://developer.yahoo.com/search/web/V1/relatedSuggestion.html
-			"name":"spellingSuggestion",
+			"name":"relatedSuggestion",
 			"serviceURL": "http://api.search.yahoo.com/WebSearchService/V1/relatedSuggestion",
 			"parameters":[
 				{ "name":"query", "type":"STRING" },

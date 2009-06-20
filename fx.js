@@ -224,7 +224,7 @@ dojo.fx = {
 		//
 		// example:
 		//	When the longest animation ends, execute a function:
-		//	| 	var anim = dojo.fx.combine([
+		//	|	var anim = dojo.fx.combine([
 		//	|		dojo.fadeIn({ node: n, duration:700 }),
 		//	|		dojo.fadeOut({ node: otherNode, duration: 300 })
 		//	|	]);

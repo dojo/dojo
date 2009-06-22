@@ -303,7 +303,7 @@ dojo.require("dojo._base.html");
 					}
 					_t._percent = 0;
 					_t._fire("onEnd", [_t.node]);
-					_t._stopTimer();
+					!_t.repeat && _t._stopTimer();
 				}
 			}
 			return _t; // dojo.Animation

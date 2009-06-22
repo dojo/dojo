@@ -465,6 +465,11 @@
 							dojo.byId("input-text-value").value = "xyz";
 							doh.is("xyz", dojo.byId("input-text-value").value);
 							doh.is("xyz", dojo.attr("input-text-value", "value"));
+						},
+						function testInputDisabled(t){
+							doh.f(dojo.attr("input-no-disabled", "disabled"));
+							doh.t(dojo.attr("input-with-disabled", "disabled"));
+							doh.t(dojo.attr("input-with-disabled-true", "disabled"));
 						}
 					]
 				);
@@ -671,6 +676,9 @@
 			<input id="input-tabindex-0" tabIndex="0">
 			<input id="input-tabindex-1" tabIndex="1">
 			<input id="input-text-value" type="text" value="123">
+			<input id="input-no-disabled" type="text">
+			<input id="input-with-disabled" type="text" disabled>
+			<input id="input-with-disabled-true" disabled="true">
 		</div>
 		<div>
 			<label id="label-no-for">label with no for </label><input type="text" id="label-test-input">

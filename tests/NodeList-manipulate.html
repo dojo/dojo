@@ -149,6 +149,27 @@
 								doh.is("foo", node.childNodes[2].className);
 								doh.is("foo", node.childNodes[3].className);
 							});
+							
+							dojo.query("body").append('<p class="bands"></p><p class="drummer">john</p><p class="drummer">bonham</p>');
+							var bands = dojo.query(".bands");
+							dojo.query(".drummer").appendTo(bands);
+							bands.forEach(function(node){
+								doh.is(2, node.childNodes.length);
+								doh.is("drummer", node.childNodes[0].className);
+								doh.is("drummer", node.childNodes[1].className);
+								
+							});
+							
+							dojo.query("body").append('<p class="guitarist">jimmy</p><p class="guitarist">page</p>');
+							dojo.query(".guitarist").appendTo(bands[0]);
+							bands.forEach(function(node){
+								doh.is(4, node.childNodes.length);
+								doh.is("guitarist", node.childNodes[2].className);
+								doh.is("guitarist", node.childNodes[3].className);								
+							});
+
+							//Get rid of bands
+							bands.remove();
 						},
 
 						function prepend(t){

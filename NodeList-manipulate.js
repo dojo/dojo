@@ -55,12 +55,12 @@ dojo["NodeList-manipulate"] = {
 	}
 
 	dojo.extend(dojo.NodeList, {
-		_placeMultiple: function(/*String*/query, /*String*/position){
+		_placeMultiple: function(/*String||Node||NodeList*/query, /*String*/position){
 			// summary:
 			// 		private method for inserting queried nodes into all nodes in this NodeList
 			// 		at different positions. Differs from NodeList.place because it will clone
 			// 		the nodes in this NodeList if the query matches more than one element.
-			var nl2 = dojo.query(query);
+			var nl2 = typeof query == "string" || query.nodeType ? dojo.query(query) : query;
 			for(var i = 0; i < nl2.length; i++){
 				for(var j = 0, item; item = this[j]; j++){
 					dojo.place((i > 0 ? item.cloneNode(true) : item), nl2[i], position);

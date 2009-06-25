@@ -150,7 +150,7 @@ if(dojo.isIE || dojo.isOpera){
 			node = byId(node);
 			ancestor = byId(ancestor);
 			while(node){
-				if(node === ancestor){
+				if(node == ancestor){
 					return true; // Boolean
 				}
 				node = node.parentNode;

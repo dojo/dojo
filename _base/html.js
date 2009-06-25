@@ -354,10 +354,8 @@ if(dojo.isIE || dojo.isOpera){
 =====*/
 
 	// Although we normally eschew argument validation at this
-	// level, here we test argument 'node' for (duck)type.
-	// Argument node must also implement Element.  (Note: we check
-	// against HTMLElement rather than Element for interop with prototype.js)
-	// Because 'document' is the 'parentNode' of 'body'
+	// level, here we test argument 'node' for (duck)type,
+	// by testing nodeType, ecause 'document' is the 'parentNode' of 'body'
 	// it is frequently sent to this function even 
 	// though it is not Element.
 	var gcs;
@@ -366,7 +364,7 @@ if(dojo.isIE || dojo.isOpera){
 	//>>excludeEnd("webkitMobile");
 		gcs = function(/*DomNode*/node){
 			var s;
-			if(node instanceof HTMLElement){
+			if(node.nodeType == 1){
 				var dv = node.ownerDocument.defaultView;
 				s = dv.getComputedStyle(node, null);
 				if(!s && node.style){ 
@@ -384,7 +382,7 @@ if(dojo.isIE || dojo.isOpera){
 		};
 	}else{
 		gcs = function(node){
-			return node instanceof HTMLElement ? 
+			return node.nodeType == 1 ? 
 				node.ownerDocument.defaultView.getComputedStyle(node, null) : {};
 		};
 	}

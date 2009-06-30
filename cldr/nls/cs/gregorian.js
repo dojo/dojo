@@ -94,7 +94,7 @@
 		"12."
 	], 
 	"timeFormat-medium": "H:mm:ss", 
-	"dateFormat-long": "d. MMMM yyyy", 
+	"dateFormat-long": "d. MMMM y", 
 	"dateFormat-short": "d.M.yy", 
 	"months-format-wide": [
 		"ledna", 
@@ -165,14 +165,13 @@
 		"př.Kr.", 
 		"po Kr."
 	], 
-	"patternChars": "GuMtkHmsSEDFwWahKzUeygAZvcL", 
 	"quarters-format-wide": [
 		"1. čtvrtletí", 
 		"2. čtvrtletí", 
 		"3. čtvrtletí", 
 		"4. čtvrtletí"
 	], 
-	"dateFormat-full": "EEEE, d. MMMM yyyy", 
+	"dateFormat-full": "EEEE, d. MMMM y", 
 	"days-format-abbr": [
 		"ne", 
 		"po", 

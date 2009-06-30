@@ -3,6 +3,7 @@
 	AUD_displayName:"דולר אוסטרלי",
 	CAD_displayName:"דולר קנדי",
 	CHF_displayName:"פרנק שוויצרי",
+	CNY_displayName:"יואן רנמינבי סיני",
 	EUR_displayName:"אירו",
 	GBP_displayName:"לירה שטרלינג",
 	HKD_displayName:"דולר הונג קונגי",

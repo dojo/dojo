@@ -20,14 +20,14 @@
 		"4"
 	], 
 	"field-weekday": "viikonpäivä", 
-	"dateFormatItem-yQQQ": "QQQ yyyy", 
+	"dateFormatItem-yQQQ": "QQQ y", 
 	"dateFormatItem-yMEd": "EEE d.M.yyyy", 
 	"dateFormatItem-MMMEd": "E d. MMM", 
 	"eraNarrow": [
 		"eKr.", 
 		"jKr."
 	], 
-	"dateFormat-long": "d. MMMM yyyy", 
+	"dateFormat-long": "d. MMMM y", 
 	"months-format-wide": [
 		"tammikuuta", 
 		"helmikuuta", 
@@ -42,11 +42,39 @@
 		"marraskuuta", 
 		"joulukuuta"
 	], 
-	"dateFormat-full": "EEEE d. MMMM yyyy", 
+	"dateFormatItem-EEEd": "EEE d.", 
+	"dateFormat-full": "EEEE d. MMMM y", 
 	"dateFormatItem-Md": "d.M.", 
 	"field-era": "aikakausi", 
 	"dateFormatItem-yM": "L.yyyy", 
 	"months-standAlone-wide": [
+		"tammikuu", 
+		"helmikuu", 
+		"maaliskuu", 
+		"huhtikuu", 
+		"toukokuu", 
+		"kesäkuu", 
+		"heinäkuu", 
+		"elokuu", 
+		"syyskuu", 
+		"lokakuu", 
+		"marraskuu", 
+		"joulukuu"
+	], 
+	"timeFormat-short": "H.mm", 
+	"quarters-format-wide": [
+		"1. neljännes", 
+		"2. neljännes", 
+		"3. neljännes", 
+		"4. neljännes"
+	], 
+	"timeFormat-long": "H.mm.ss z", 
+	"field-year": "vuosi", 
+	"dateFormatItem-yMMM": "LLL y", 
+	"dateFormatItem-yQ": "Q/yyyy", 
+	"dateFormatItem-yyyyMMMM": "LLLL y", 
+	"field-hour": "tunti", 
+	"months-format-abbr": [
 		"tammikuuta", 
 		"helmikuuta", 
 		"maaliskuuta", 
@@ -60,37 +88,8 @@
 		"marraskuuta", 
 		"joulukuuta"
 	], 
-	"timeFormat-short": "H.mm", 
-	"quarters-format-wide": [
-		"1. neljännes", 
-		"2. neljännes", 
-		"3. neljännes", 
-		"4. neljännes"
-	], 
-	"dateTimeFormat": "{1} {0}", 
-	"timeFormat-long": "H.mm.ss z", 
-	"field-year": "vuosi", 
-	"dateFormatItem-yMMM": "LLL yyyy", 
-	"dateFormatItem-yQ": "Q/yyyy", 
-	"dateFormatItem-yyyyMMMM": "LLLL yyyy", 
-	"field-hour": "tunti", 
-	"months-format-abbr": [
-		"tammi", 
-		"helmi", 
-		"maalis", 
-		"huhti", 
-		"touko", 
-		"kesä", 
-		"heinä", 
-		"elo", 
-		"syys", 
-		"loka", 
-		"marras", 
-		"joulu"
-	], 
 	"dateFormatItem-yyQ": "Q/yy", 
-	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
-	"timeFormat-full": "H.mm.ss v", 
+	"timeFormat-full": "H.mm.ss zzzz", 
 	"dateFormatItem-yyyyMEEEd": "EEE d.M.yyyy", 
 	"am": "ap.", 
 	"months-standAlone-abbr": [
@@ -122,13 +121,13 @@
 	"dateFormatItem-HHmmss": "HH.mm.ss", 
 	"dateFormatItem-M": "L", 
 	"days-standAlone-wide": [
-		"sunnuntaina", 
-		"maanantaina", 
-		"tiistaina", 
-		"keskiviikkona", 
-		"torstaina", 
-		"perjantaina", 
-		"lauantaina"
+		"sunnuntai", 
+		"maanantai", 
+		"tiistai", 
+		"keskiviikko", 
+		"torstai", 
+		"perjantai", 
+		"lauantai"
 	], 
 	"dateFormatItem-MMMMd": "d. MMMM", 
 	"dateFormatItem-yyMMM": "MMM yy", 
@@ -159,8 +158,9 @@
 	"dateFormatItem-ms": "mm.ss", 
 	"dateFormatItem-MMMd": "d. MMM", 
 	"dateFormatItem-MEd": "E d.M.", 
-	"dateFormatItem-yMMMM": "LLLL yyyy", 
+	"dateFormatItem-yMMMM": "LLLL y", 
 	"field-day": "päivä", 
+	"dateFormatItem-yMMMMccccd": "cccc, d. MMMM y", 
 	"days-format-wide": [
 		"sunnuntaina", 
 		"maanantaina", 
@@ -171,7 +171,7 @@
 		"lauantaina"
 	], 
 	"field-zone": "aikavyöhyke", 
-	"dateFormatItem-y": "yyyy", 
+	"dateFormatItem-y": "y", 
 	"months-standAlone-narrow": [
 		"T", 
 		"H", 
@@ -187,6 +187,7 @@
 		"J"
 	], 
 	"dateFormatItem-yyMM": "M/yy", 
+	"dateFormatItem-hm": "h.mm a", 
 	"days-format-abbr": [
 		"su", 
 		"ma", 
@@ -220,15 +221,14 @@
 		"L"
 	], 
 	"dateFormatItem-MMM": "LLL", 
-	"dateFormatItem-HHmm": "HH.mm", 
 	"pm": "ip.", 
 	"dateFormatItem-MMMMEd": "E d. MMMM", 
 	"dateFormat-short": "d.M.yyyy", 
 	"field-second": "sekunti", 
-	"dateFormatItem-yMMMEd": "EEE d. MMM yyyy", 
+	"dateFormatItem-yMMMEd": "EEE d. MMM y", 
 	"field-week": "viikko", 
 	"dateFormat-medium": "d.M.yyyy", 
 	"dateFormatItem-yyyyM": "M/yyyy", 
-	"dateFormatItem-mmss": "mm.ss", 
-	"dateFormatItem-yyyyQQQQ": "QQQQ yyyy"
+	"dateFormatItem-yyyyQQQQ": "QQQQ y", 
+	"dateFormatItem-hms": "h.mm.ss a"
 })

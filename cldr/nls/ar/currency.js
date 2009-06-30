@@ -4,6 +4,7 @@
 	CAD_displayName:"دولار كندى",
 	CHF_displayName:"فرنك سويسرى",
 	CNY_displayName:"يوان صيني",
+	CNY_symbol:"ى.ص",
 	EUR_displayName:"يورو",
 	GBP_displayName:"جنيه سترليني",
 	HKD_displayName:"دولار هونج كونج",

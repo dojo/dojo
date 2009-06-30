@@ -9,7 +9,7 @@
 	], 
 	"dateFormatItem-MMMEd": "EEE d MMM", 
 	"dateFormatItem-MMdd": "dd/MM", 
-	"dateFormatItem-yQQQ": "QQQ yyyy", 
+	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-weekday": "giorno della settimana", 
 	"days-standAlone-wide": [
 		"Domenica", 
@@ -44,8 +44,8 @@
 		"T3", 
 		"T4"
 	], 
-	"dateFormatItem-y": "yyyy", 
-	"timeFormat-full": "HH.mm.ss v", 
+	"dateFormatItem-y": "y", 
+	"timeFormat-full": "HH.mm.ss zzzz", 
 	"months-standAlone-abbr": [
 		"gen", 
 		"feb", 
@@ -60,7 +60,7 @@
 		"nov", 
 		"dic"
 	], 
-	"dateFormatItem-yMMM": "MMM yyyy", 
+	"dateFormatItem-yMMM": "MMM y", 
 	"days-standAlone-narrow": [
 		"D", 
 		"L", 
@@ -74,12 +74,12 @@
 		"aC", 
 		"dC"
 	], 
-	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
-	"dateFormat-long": "dd MMMM yyyy", 
+	"dateFormatItem-yyyyMMMM": "MMMM y", 
+	"dateFormat-long": "dd MMMM y", 
 	"timeFormat-medium": "HH.mm.ss", 
 	"field-zone": "zona", 
 	"dateFormatItem-Hm": "HH:mm", 
-	"dateFormat-medium": "dd/MMM/yyyy", 
+	"dateFormat-medium": "dd/MMM/y", 
 	"dateFormatItem-yyMM": "MM/yy", 
 	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"quarters-standAlone-wide": [
@@ -88,8 +88,7 @@
 		"3o trimestre", 
 		"4o trimestre"
 	], 
-	"dateTimeFormat": "{1} {0}", 
-	"dateFormatItem-yMMMM": "MMMM yyyy", 
+	"dateFormatItem-yMMMM": "MMMM y", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-year": "anno", 
 	"quarters-standAlone-narrow": [
@@ -192,8 +191,8 @@
 		"sab"
 	], 
 	"dateFormat-short": "dd/MM/yy", 
-	"dateFormatItem-yMMMEd": "EEE d MMM yyyy", 
-	"dateFormat-full": "EEEE d MMMM yyyy", 
+	"dateFormatItem-yMMMEd": "EEE d MMM y", 
+	"dateFormat-full": "EEEE d MMMM y", 
 	"dateFormatItem-Md": "d/M", 
 	"dateFormatItem-yMEd": "EEE, d-M-yyyy", 
 	"months-format-wide": [

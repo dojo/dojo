@@ -1,9 +1,15 @@
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
-	CNY_displayName:"Kitajski Yuan Renminbi",
-	EUR_displayName:"Evro",
-	GBP_displayName:"Britanski Funt Sterling",
-	JPY_displayName:"Japonski Jen",
-	USD_displayName:"Ameriški Dolar"
+	AUD_displayName:"avstralski dolar",
+	CAD_displayName:"kanadski dolar",
+	CHF_displayName:"švicarski frank",
+	CNY_displayName:"kitajski juan renminbi",
+	EUR_displayName:"evro",
+	GBP_displayName:"britanski funt",
+	HKD_displayName:"hongkonški dolar",
+	JPY_displayName:"japonski jen",
+	JPY_symbol:"¥",
+	USD_displayName:"ameriški dolar",
+	USD_symbol:"$"
 })
                  

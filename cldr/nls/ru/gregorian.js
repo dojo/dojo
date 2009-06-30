@@ -20,15 +20,15 @@
 		"4"
 	], 
 	"field-weekday": "День недели", 
-	"dateFormatItem-yQQQ": "yyyy QQQ", 
+	"dateFormatItem-yQQQ": "y QQQ", 
 	"dateFormatItem-yMEd": "EEE, yyyy-M-d", 
-	"dateFormatItem-yyyyLLLL": "LLLL yyyy", 
+	"dateFormatItem-yyyyLLLL": "LLLL y", 
 	"dateFormatItem-MMMEd": "E MMM d", 
 	"eraNarrow": [
 		"до н.э.", 
 		"н.э."
 	], 
-	"dateFormat-long": "d MMMM yyyy 'г'.", 
+	"dateFormat-long": "d MMMM y 'г'.", 
 	"months-format-wide": [
 		"января", 
 		"февраля", 
@@ -43,7 +43,7 @@
 		"ноября", 
 		"декабря"
 	], 
-	"dateFormat-full": "EEEE, d MMMM yyyy 'г'.", 
+	"dateFormat-full": "EEEE, d MMMM y 'г'.", 
 	"dateFormatItem-Md": "d.M", 
 	"field-era": "Эра", 
 	"dateFormatItem-yM": "yyyy-M", 
@@ -68,11 +68,10 @@
 		"3-й квартал", 
 		"4-й квартал"
 	], 
-	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "H:mm:ss z", 
 	"field-year": "Год", 
-	"dateFormatItem-yMMM": "MMM. y", 
-	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
+	"dateFormatItem-yMMM": "MMM y", 
+	"dateFormatItem-yyyyMMMM": "MMMM y", 
 	"field-hour": "Час", 
 	"dateFormatItem-MMdd": "dd.MM", 
 	"months-format-abbr": [
@@ -90,8 +89,7 @@
 		"дек."
 	], 
 	"dateFormatItem-yyQ": "Q yy", 
-	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
-	"timeFormat-full": "H:mm:ss v", 
+	"timeFormat-full": "H:mm:ss zzzz", 
 	"am": "AM", 
 	"dateFormatItem-H": "H", 
 	"months-standAlone-abbr": [
@@ -174,7 +172,7 @@
 	], 
 	"field-zone": "Часовой пояс", 
 	"dateFormatItem-yyyyMM": "MM.yyyy", 
-	"dateFormatItem-y": "yyyy", 
+	"dateFormatItem-y": "y", 
 	"months-standAlone-narrow": [
 		"Я", 
 		"Ф", 
@@ -228,11 +226,11 @@
 	"dateFormatItem-MMMMEd": "E MMMM d", 
 	"dateFormat-short": "dd.MM.yy", 
 	"field-second": "Секунда", 
-	"dateFormatItem-yMMMEd": "E, d MMM. y", 
+	"dateFormatItem-yMMMEd": "E, d MMM y", 
 	"dateFormatItem-Ed": "E d", 
 	"field-week": "Неделя", 
 	"dateFormat-medium": "dd.MM.yyyy", 
 	"dateFormatItem-mmss": "mm:ss", 
-	"dateFormatItem-yyyyQQQQ": "QQQQ yyyy 'г'.", 
-	"dateFormatItem-yyyy": "yyyy"
+	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'.", 
+	"dateFormatItem-yyyy": "y"
 })

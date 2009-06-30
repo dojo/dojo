@@ -1,10 +1,10 @@
 // generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
 ({
-	'dateFormat-full': "EEEE, d MMMM yyyy",
-	'dateFormat-long': "d MMMM yyyy",
-	'dateFormat-medium': "d MMM yyyy",
+	'dateFormat-full': "EEEE, d MMMM y",
+	'dateFormat-long': "d MMMM y",
+	'dateFormat-medium': "d MMM y",
 	'dateFormat-short': "dd/MM/yyyy",
-	'timeFormat-full': "HH:mm:ss v",
+	'timeFormat-full': "HH:mm:ss zzzz",
 	'timeFormat-long': "HH:mm:ss z",
 	'timeFormat-medium': "HH:mm:ss",
 	'timeFormat-short': "HH:mm",
@@ -16,6 +16,6 @@
 	'dateFormatItem-yMEd':"EEE, d/M/yyyy",
 	'dateFormatItem-yyMMM':"MMM yy",
 	'dateFormatItem-yyyyMM':"MM/yyyy",
-	'dateFormatItem-yyyyMMMM':"MMMM yyyy"
+	'dateFormatItem-yyyyMMMM':"MMMM y"
 })
                         

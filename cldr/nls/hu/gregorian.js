@@ -17,7 +17,6 @@
 		"szombat"
 	], 
 	"dateFormatItem-MMM": "LLL", 
-	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
 	"months-standAlone-narrow": [
 		"J", 
 		"F", 
@@ -40,7 +39,7 @@
 		"N3", 
 		"N4"
 	], 
-	"timeFormat-full": "H:mm:ss v", 
+	"timeFormat-full": "H:mm:ss zzzz", 
 	"months-standAlone-abbr": [
 		"jan.", 
 		"febr.", 
@@ -69,8 +68,8 @@
 		"i. sz."
 	], 
 	"dateFormatItem-yyyyMM": "yyyy.MM", 
-	"dateFormatItem-yyyyMMMM": "yyyy. MMMM", 
-	"dateFormat-long": "yyyy. MMMM d.", 
+	"dateFormatItem-yyyyMMMM": "y. MMMM", 
+	"dateFormat-long": "y. MMMM d.", 
 	"timeFormat-medium": "H:mm:ss", 
 	"field-zone": "zóna", 
 	"dateFormatItem-Hm": "HH:mm", 
@@ -81,7 +80,6 @@
 		"III. negyedév", 
 		"IV. negyedév"
 	], 
-	"dateTimeFormat": "{1} {0}", 
 	"field-year": "év", 
 	"quarters-standAlone-narrow": [
 		"1", 
@@ -104,8 +102,8 @@
 		"november", 
 		"december"
 	], 
-	"dateFormatItem-MMMd": "MMM d", 
-	"dateFormatItem-yyQ": "Q yy", 
+	"dateFormatItem-MMMd": "MMM d.", 
+	"dateFormatItem-yyQ": "yy/Q", 
 	"timeFormat-long": "H:mm:ss z", 
 	"months-format-abbr": [
 		"jan.", 
@@ -179,7 +177,7 @@
 		"Szo"
 	], 
 	"dateFormat-short": "yyyy.MM.dd.", 
-	"dateFormat-full": "yyyy. MMMM d.", 
+	"dateFormat-full": "y. MMMM d., EEEE", 
 	"dateFormatItem-Md": "M. d.", 
 	"months-format-wide": [
 		"január", 

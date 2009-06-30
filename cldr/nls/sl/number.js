@@ -7,9 +7,13 @@
 	'nativeZeroDigit':"0",
 	'patternDigit':"#",
 	'plusSign':"+",
-	'minusSign':"-",
-	'exponential':"E",
+	'minusSign':"–",
+	'exponential':"e",
 	'perMille':"‰",
 	'infinity':"∞",
-	'nan':"NaN"
+	'nan':"NaN",
+	'decimalFormat':"#,##0.###",
+	'scientificFormat':"#E0",
+	'percentFormat':"#,##0%",
+	'currencyFormat':"#,##0.00 ¤"
 })

@@ -10,6 +10,7 @@
 	HKD_displayName:"香港ドル",
 	JPY_displayName:"日本円",
 	JPY_symbol:"￥",
-	USD_displayName:"米ドル"
+	USD_displayName:"米ドル",
+	USD_symbol:"$"
 })
                  

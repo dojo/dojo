@@ -9,7 +9,7 @@
 	], 
 	"dateFormatItem-MMMEd": "d MMM E", 
 	"field-weekday": "Dzień tygodnia", 
-	"dateFormatItem-yQQQ": "yyyy QQQ", 
+	"dateFormatItem-yQQQ": "y QQQ", 
 	"dateFormatItem-MMdd": "MM-dd", 
 	"days-standAlone-wide": [
 		"niedziela", 
@@ -44,8 +44,8 @@
 		"3 kw.", 
 		"4 kw."
 	], 
-	"dateFormatItem-y": "yyyy", 
-	"timeFormat-full": "HH:mm:ss v", 
+	"dateFormatItem-y": "y", 
+	"timeFormat-full": "HH:mm:ss zzzz", 
 	"months-standAlone-abbr": [
 		"sty", 
 		"lut", 
@@ -74,13 +74,13 @@
 		"n.e."
 	], 
 	"dateFormatItem-yyyyMM": "yyyy-MM", 
-	"dateFormatItem-yyyyMMMM": "LLLL yyyy", 
-	"dateFormat-long": "d MMMM yyyy", 
+	"dateFormatItem-yyyyMMMM": "LLLL y", 
+	"dateFormat-long": "d MMMM y", 
 	"timeFormat-medium": "HH:mm:ss", 
 	"field-zone": "Strefa", 
 	"dateFormatItem-Hm": "H:mm", 
 	"dateFormatItem-yyMM": "MM/yy", 
-	"dateFormat-medium": "yyyy-MM-dd", 
+	"dateFormat-medium": "dd-MM-yyyy", 
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"quarters-standAlone-wide": [
 		"I kwartał", 
@@ -88,8 +88,7 @@
 		"III kwartał", 
 		"IV kwartał"
 	], 
-	"dateTimeFormat": "{1} {0}", 
-	"dateFormatItem-yMMMM": "LLLL yyyy", 
+	"dateFormatItem-yMMMM": "LLLL y", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-year": "Rok", 
 	"quarters-standAlone-narrow": [
@@ -191,9 +190,9 @@
 		"pt.", 
 		"sob."
 	], 
-	"dateFormat-short": "yy-MM-dd", 
-	"dateFormatItem-yMMMEd": "EEE, d MMM yyyy", 
-	"dateFormat-full": "EEEE, d MMMM yyyy", 
+	"dateFormat-short": "dd-MM-yy", 
+	"dateFormatItem-yMMMEd": "EEE, d MMM y", 
+	"dateFormat-full": "EEEE, d MMMM y", 
 	"dateFormatItem-Md": "d.M", 
 	"dateFormatItem-yMEd": "EEE, d.M.yyyy", 
 	"months-format-wide": [

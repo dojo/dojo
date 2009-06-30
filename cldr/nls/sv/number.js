@@ -11,6 +11,7 @@
 	'exponential':"×10^",
 	'perMille':"‰",
 	'infinity':"∞",
+	'nan':"¤¤¤",
 	'decimalFormat':"#,##0.###",
 	'scientificFormat':"#E0",
 	'percentFormat':"#,##0 %",

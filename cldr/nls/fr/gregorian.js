@@ -21,7 +21,7 @@
 	], 
 	"field-weekday": "jour de la semaine", 
 	"dateFormatItem-yyQQQQ": "QQQQ yy", 
-	"dateFormatItem-yQQQ": "QQQ yyyy", 
+	"dateFormatItem-yQQQ": "QQQ y", 
 	"dateFormatItem-yMEd": "EEE d/M/yyyy", 
 	"dateFormatItem-MMMEd": "E d MMM", 
 	"eraNarrow": [
@@ -29,7 +29,7 @@
 		"ap. J.-C."
 	], 
 	"dateFormatItem-MMMdd": "dd MMM", 
-	"dateFormat-long": "d MMMM yyyy", 
+	"dateFormat-long": "d MMMM y", 
 	"months-format-wide": [
 		"janvier", 
 		"février", 
@@ -44,7 +44,9 @@
 		"novembre", 
 		"décembre"
 	], 
-	"dateFormat-full": "EEEE d MMMM yyyy", 
+	"dateTimeFormat-medium": "{1} {0}", 
+	"dateFormatItem-EEEd": "d EEE", 
+	"dateFormat-full": "EEEE d MMMM y", 
 	"dateFormatItem-Md": "d/M", 
 	"field-era": "ère", 
 	"dateFormatItem-yM": "M/yyyy", 
@@ -69,12 +71,11 @@
 		"3e trimestre", 
 		"4e trimestre"
 	], 
-	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "HH:mm:ss z", 
 	"field-year": "année", 
-	"dateFormatItem-yMMM": "MMM yyyy", 
-	"dateFormatItem-yQ": "'T'Q yyyy", 
-	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
+	"dateFormatItem-yMMM": "MMM y", 
+	"dateFormatItem-yQ": "'T'Q y", 
+	"dateFormatItem-yyyyMMMM": "MMMM y", 
 	"field-hour": "heure", 
 	"dateFormatItem-MMdd": "dd/MM", 
 	"months-format-abbr": [
@@ -92,8 +93,7 @@
 		"déc."
 	], 
 	"dateFormatItem-yyQ": "'T'Q yy", 
-	"patternChars": "GaMjkHmsSEDFwWxhKzAeugXZvcL", 
-	"timeFormat-full": "HH:mm:ss v", 
+	"timeFormat-full": "HH:mm:ss zzzz", 
 	"am": "AM", 
 	"months-standAlone-abbr": [
 		"janv.", 
@@ -122,7 +122,6 @@
 		"4e trimestre"
 	], 
 	"dateFormatItem-HHmmss": "HH:mm:ss", 
-	"dateFormatItem-hhmmss": "HH:mm:ss", 
 	"dateFormatItem-M": "L", 
 	"days-standAlone-wide": [
 		"dimanche", 
@@ -162,9 +161,16 @@
 	"dateFormatItem-yyMMMd": "d MMM yy", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
+	"quarters-format-narrow": [
+		"T1", 
+		"T2", 
+		"T3", 
+		"T4"
+	], 
+	"dateTimeFormat-long": "{1} {0}", 
 	"dateFormatItem-MMMd": "d MMM", 
 	"dateFormatItem-MEd": "EEE d/M", 
-	"dateFormatItem-yMMMM": "MMMM yyyy", 
+	"dateFormatItem-yMMMM": "MMMM y", 
 	"field-day": "jour", 
 	"days-format-wide": [
 		"dimanche", 
@@ -176,7 +182,7 @@
 		"samedi"
 	], 
 	"field-zone": "fuseau horaire", 
-	"dateFormatItem-y": "yyyy", 
+	"dateFormatItem-y": "y", 
 	"months-standAlone-narrow": [
 		"J", 
 		"F", 
@@ -231,9 +237,9 @@
 	"dateFormat-short": "dd/MM/yy", 
 	"dateFormatItem-MMd": "d/MM", 
 	"field-second": "seconde", 
-	"dateFormatItem-yMMMEd": "EEE d MMM yyyy", 
-	"dateFormatItem-hhmm": "HH:mm", 
+	"dateFormatItem-yMMMEd": "EEE d MMM y", 
 	"field-week": "semaine", 
-	"dateFormat-medium": "d MMM yyyy", 
-	"dateFormatItem-mmss": "mm:ss"
+	"dateFormat-medium": "d MMM y", 
+	"dateFormatItem-mmss": "mm:ss", 
+	"dateTimeFormat-short": "{1} {0}"
 })

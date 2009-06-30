@@ -9,7 +9,8 @@
 	], 
 	"dateFormatItem-MMMEd": "E d. MMM", 
 	"dateFormatItem-MMdd": "dd.MM", 
-	"dateFormatItem-yQQQ": "QQQ yyyy", 
+	"dateFormatItem-hms": "h.mm.ss a", 
+	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-weekday": "ukedag", 
 	"days-standAlone-wide": [
 		"søndag", 
@@ -43,8 +44,8 @@
 		"K3", 
 		"K4"
 	], 
-	"dateFormatItem-y": "yyyy", 
-	"timeFormat-full": "'kl'. HH.mm.ss v", 
+	"dateFormatItem-y": "y", 
+	"timeFormat-full": "'kl'. HH.mm.ss zzzz", 
 	"months-standAlone-abbr": [
 		"jan.", 
 		"feb.", 
@@ -59,7 +60,7 @@
 		"nov.", 
 		"des."
 	], 
-	"dateFormatItem-yMMM": "MMM yyyy", 
+	"dateFormatItem-yMMM": "MMM y", 
 	"days-standAlone-narrow": [
 		"S", 
 		"M", 
@@ -73,12 +74,13 @@
 		"f.Kr.", 
 		"e.Kr."
 	], 
-	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
-	"dateFormat-long": "d. MMMM yyyy", 
+	"dateFormatItem-yyyyMMMM": "MMMM y", 
+	"dateFormat-long": "d. MMMM y", 
 	"timeFormat-medium": "HH.mm.ss", 
+	"dateFormatItem-EEEd": "EEE d", 
 	"field-zone": "sone", 
 	"dateFormatItem-Hm": "HH.mm", 
-	"dateFormat-medium": "d. MMM yyyy", 
+	"dateFormat-medium": "d. MMM y", 
 	"dateFormatItem-yyMM": "MM.yy", 
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"dateFormatItem-yyQQQQ": "QQQQ yy", 
@@ -88,8 +90,7 @@
 		"3. kvartal", 
 		"4. kvartal"
 	], 
-	"dateTimeFormat": "{1} {0}", 
-	"dateFormatItem-yMMMM": "MMMM yyyy", 
+	"dateFormatItem-yMMMM": "MMMM y", 
 	"dateFormatItem-ms": "mm.ss", 
 	"field-year": "år", 
 	"quarters-standAlone-narrow": [
@@ -116,7 +117,6 @@
 	], 
 	"dateFormatItem-MMMMEd": "E d. MMMM", 
 	"dateFormatItem-MMMd": "d. MMM", 
-	"dateFormatItem-HHmm": "HH.mm", 
 	"dateFormatItem-yyQ": "Q yy", 
 	"timeFormat-long": "HH.mm.ss z", 
 	"months-format-abbr": [
@@ -151,9 +151,8 @@
 		"fre.", 
 		"lør."
 	], 
-	"pm": "ettermiddag", 
+	"pm": "PM", 
 	"dateFormatItem-M": "L", 
-	"dateFormatItem-mmss": "mm.ss", 
 	"days-format-narrow": [
 		"S", 
 		"M", 
@@ -180,7 +179,8 @@
 		"N", 
 		"D"
 	], 
-	"am": "formiddag", 
+	"dateFormatItem-hm": "h.mm a", 
+	"am": "AM", 
 	"days-standAlone-abbr": [
 		"søn.", 
 		"man.", 
@@ -191,8 +191,8 @@
 		"lør."
 	], 
 	"dateFormat-short": "dd.MM.yy", 
-	"dateFormatItem-yMMMEd": "EEE d. MMM yyyy", 
-	"dateFormat-full": "EEEE d. MMMM yyyy", 
+	"dateFormatItem-yMMMEd": "EEE d. MMM y", 
+	"dateFormat-full": "EEEE d. MMMM y", 
 	"dateFormatItem-Md": "d.M.", 
 	"dateFormatItem-yMEd": "EEE d.M.yyyy", 
 	"months-format-wide": [

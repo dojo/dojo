@@ -8,7 +8,6 @@
 	EUR_displayName:"欧元",
 	GBP_displayName:"英镑",
 	HKD_displayName:"港元",
-	HKD_symbol:"HK$",
 	JPY_displayName:"日元",
 	USD_displayName:"美元"
 })

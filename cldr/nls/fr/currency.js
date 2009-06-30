@@ -1,11 +1,11 @@
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
 	AUD_displayName:"dollar australien",
-	AUD_symbol:"$A",
+	AUD_symbol:"$AU",
 	CAD_displayName:"dollar canadien",
-	CAD_symbol:"$Ca",
+	CAD_symbol:"$CA",
 	CHF_displayName:"franc suisse",
-	CHF_symbol:"sFr.",
+	CHF_symbol:"CHF",
 	CNY_displayName:"yuan renminbi chinois",
 	CNY_symbol:"Ұ",
 	EUR_displayName:"euro",

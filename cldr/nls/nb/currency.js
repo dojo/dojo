@@ -1,9 +1,13 @@
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
 	AUD_displayName:"australske dollar",
+	AUD_symbol:"AUD",
 	CAD_displayName:"kanadiske dollar",
+	CAD_symbol:"CAD",
 	CHF_displayName:"sveitsiske franc",
+	CHF_symbol:"CHF",
 	CNY_displayName:"kinesiske yuan renminbi",
+	CNY_symbol:"CNY",
 	EUR_displayName:"euro",
 	EUR_symbol:"EUR",
 	GBP_displayName:"britiske pund sterling",

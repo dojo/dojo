@@ -6,18 +6,18 @@
 		"4"
 	], 
 	"field-weekday": "יום בשבוע", 
-	"dateFormatItem-yQQQ": "yyyy QQQ", 
-	"dateFormatItem-yMEd": "EEE, yyyy-M-d", 
+	"dateFormatItem-yQQQ": "y QQQ", 
+	"dateFormatItem-yMEd": "EEE, d.M.yyyy", 
 	"dateFormatItem-MMMEd": "E d MMM", 
 	"eraNarrow": [
 		"לפנה״ס", 
 		"לסה״נ"
 	], 
-	"dateFormat-long": "d MMMM yyyy", 
+	"dateFormat-long": "d בMMMM y", 
 	"months-format-wide": [
 		"ינואר", 
 		"פברואר", 
-		"מרץ", 
+		"מרס", 
 		"אפריל", 
 		"מאי", 
 		"יוני", 
@@ -28,10 +28,11 @@
 		"נובמבר", 
 		"דצמבר"
 	], 
-	"dateFormat-full": "EEEE d MMMM yyyy", 
+	"dateTimeFormat-medium": "{1} {0}", 
+	"dateFormat-full": "EEEE, d בMMMM y", 
 	"dateFormatItem-Md": "d/M", 
 	"field-era": "תקופה", 
-	"dateFormatItem-yM": "yyyy-M", 
+	"dateFormatItem-yM": "M.yyyy", 
 	"months-standAlone-wide": [
 		"ינואר", 
 		"פברואר", 
@@ -53,18 +54,17 @@
 		"רבעון 3", 
 		"רבעון 4"
 	], 
-	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "HH:mm:ss z", 
 	"field-year": "שנה", 
-	"dateFormatItem-yMMM": "yyyy MMM", 
+	"dateFormatItem-yMMM": "y MMM", 
 	"dateFormatItem-yQ": "yyyy Q", 
-	"dateFormatItem-yyyyMMMM": "MMMM yyyy", 
+	"dateFormatItem-yyyyMMMM": "MMMM y", 
 	"field-hour": "שעה", 
 	"dateFormatItem-MMdd": "dd/MM", 
 	"months-format-abbr": [
 		"ינו", 
 		"פבר", 
-		"מרץ", 
+		"מרס", 
 		"אפר", 
 		"מאי", 
 		"יונ", 
@@ -76,8 +76,7 @@
 		"דצמ"
 	], 
 	"dateFormatItem-yyQ": "Q yy", 
-	"patternChars": "GanjkHmsSEDFwWxhKzAeugXZvcL", 
-	"timeFormat-full": "HH:mm:ss v", 
+	"timeFormat-full": "HH:mm:ss zzzz", 
 	"am": "לפנה\"צ", 
 	"dateFormatItem-H": "H", 
 	"months-standAlone-abbr": [
@@ -115,9 +114,9 @@
 		"יום רביעי", 
 		"יום חמישי", 
 		"יום שישי", 
-		"שבת"
+		"יום שבת"
 	], 
-	"dateFormatItem-MMMMd": "d MMMM", 
+	"dateFormatItem-MMMMd": "d בMMMM", 
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"timeFormat-medium": "HH:mm:ss", 
 	"dateFormatItem-Hm": "H:mm", 
@@ -134,19 +133,21 @@
 	"field-minute": "דקה", 
 	"field-dayperiod": "Dayperiod", 
 	"days-standAlone-abbr": [
-		"א", 
-		"ב", 
-		"ג", 
-		"ד", 
-		"ה", 
-		"ו", 
-		"ש"
+		"יום א'", 
+		"יום ב'", 
+		"יום ג'", 
+		"יום ד'", 
+		"יום ה'", 
+		"יום ו'", 
+		"שבת"
 	], 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
+	"dateTimeFormat-long": "{1} {0}", 
 	"dateFormatItem-MMMd": "MMM d", 
 	"dateFormatItem-MEd": "E, M-d", 
-	"dateFormatItem-yMMMM": "yyyy MMMM", 
+	"dateTimeFormat-full": "{1} {0}", 
+	"dateFormatItem-yMMMM": "MMMM y", 
 	"field-day": "יום", 
 	"days-format-wide": [
 		"יום ראשון", 
@@ -155,34 +156,20 @@
 		"יום רביעי", 
 		"יום חמישי", 
 		"יום שישי", 
-		"שבת"
+		"יום שבת"
 	], 
 	"field-zone": "אזור", 
 	"dateFormatItem-yyyyMM": "MM/yyyy", 
-	"dateFormatItem-y": "yyyy", 
-	"months-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4", 
-		"5", 
-		"6", 
-		"7", 
-		"8", 
-		"9", 
-		"10", 
-		"11", 
-		"12"
-	], 
+	"dateFormatItem-y": "y", 
 	"dateFormatItem-yyMM": "MM/yy", 
 	"days-format-abbr": [
-		"א", 
-		"ב", 
-		"ג", 
-		"ד", 
-		"ה", 
-		"ו", 
-		"ש"
+		"יום א'", 
+		"יום ב'", 
+		"יום ג'", 
+		"יום ד'", 
+		"יום ה'", 
+		"יום ו'", 
+		"שבת"
 	], 
 	"eraNames": [
 		"לפני הספירה", 
@@ -213,10 +200,11 @@
 	"dateFormatItem-MMMMEd": "E MMMM d", 
 	"dateFormat-short": "dd/MM/yy", 
 	"field-second": "שנייה", 
-	"dateFormatItem-yMMMEd": "EEE, yyyy MMM d", 
+	"dateFormatItem-yMMMEd": "EEE, y MMM d", 
 	"dateFormatItem-Ed": "E d", 
 	"field-week": "שבוע", 
 	"dateFormat-medium": "dd/MM/yyyy", 
 	"dateFormatItem-mmss": "mm:ss", 
-	"dateFormatItem-yyyy": "yyyy"
+	"dateTimeFormat-short": "{1} {0}", 
+	"dateFormatItem-yyyy": "y"
 })

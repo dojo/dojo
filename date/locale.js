@@ -204,23 +204,22 @@ dojo.date.locale.format = function(/*Date*/dateObject, /*dojo.date.locale.__Form
 		str = [],
 		sauce = dojo.hitch(this, formatPattern, dateObject, bundle, options.fullYear);
 	if(options.selector == "year"){
-		// Special case as this is not yet driven by CLDR data
-		var year = dateObject.getFullYear();
-		if(locale.match(/^zh|^ja/)){
-			year += "\u5E74";
-		}
-		return year;
+		return _processPattern(bundle["dateFormatItem-yyyy"] || "yyyy", sauce);
+	}
+	var pattern;
+	if(options.selector != "date"){
+		pattern = options.timePattern || bundle["timeFormat-"+formatLength];
+		if(pattern){str.push(_processPattern(pattern, sauce));}
 	}
 	if(options.selector != "time"){
-		var datePattern = options.datePattern || bundle["dateFormat-"+formatLength];
-		if(datePattern){str.push(_processPattern(datePattern, sauce));}
+		pattern = options.datePattern || bundle["dateFormat-"+formatLength];
+		if(pattern){str.push(_processPattern(pattern, sauce));}
 	}
-	if(options.selector != "date"){
-		var timePattern = options.timePattern || bundle["timeFormat-"+formatLength];
-		if(timePattern){str.push(_processPattern(timePattern, sauce));}
-	}
-	var result = str.join(" "); //TODO: use locale-specific pattern to assemble date + time
-	return result; // String
+
+	return str.length == 1 ? str[0] : bundle["dateTimeFormat-"+formatLength].replace(/\{([^\s\:\}]+)\}/g,
+		function(match, key){
+			return str[key];
+		}); // String
 };
 
 dojo.date.locale.regexp = function(/*dojo.date.locale.__FormatOptions?*/options){
@@ -608,27 +607,6 @@ dojo.date.locale.getNames = function(/*String*/item, /*String*/type, /*String?*/
 	// return by copy so changes won't be made accidentally to the in-memory model
 	return (label || lookup[props.join('-')]).concat(); /*Array*/
 };
-
-dojo.date.locale.displayPattern = function(/*String*/fixedPattern, /*String?*/locale){
-	// summary:
-	//	Provides a localized representation of a date/time pattern string
-	//
-	// description:
-	//	Takes a date/time pattern string like "MM/dd/yyyy" and substitutes
-	//	the letters appropriate to show a user in a particular locale, as
-	//	defined in [the CLDR specification](http://www.unicode.org/reports/tr35/tr35-4.html#Date_Format_Patterns)
-	// fixedPattern:
-	//	A date string using symbols from this set: "GyMdkHmsSEDFwWahKzYeugAZvcL"
-	// locale:
-	//	use a special locale, otherwise takes the default
-
-	var fixed = "GyMdkHmsSEDFwWahKzYeugAZvcL",
-		local = dojo.date.locale._getGregorianBundle(locale).patternChars;
-	return dojo.map(fixedPattern, function(c){
-		 var i = fixed.indexOf(c);
-		 return i < 0 ? c : local.charAt(i);
-	}).join(""); // String
-}
 
 dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 	// summary:

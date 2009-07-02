@@ -170,6 +170,7 @@ dojo.delegate = dojo._delegate = (function(){
 	return function(obj, props){
 		TMP.prototype = obj;
 		var tmp = new TMP();
+		TMP.prototype = null;
 		if(props){
 			dojo._mixin(tmp, props);
 		}

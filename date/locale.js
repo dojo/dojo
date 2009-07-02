@@ -608,27 +608,6 @@ dojo.date.locale.getNames = function(/*String*/item, /*String*/type, /*String?*/
 	return (label || lookup[props.join('-')]).concat(); /*Array*/
 };
 
-dojo.date.locale.displayPattern = function(/*String*/fixedPattern, /*String?*/locale){
-	// summary:
-	//	Provides a localized representation of a date/time pattern string
-	//
-	// description:
-	//	Takes a date/time pattern string like "MM/dd/yyyy" and substitutes
-	//	the letters appropriate to show a user in a particular locale, as
-	//	defined in [the CLDR specification](http://www.unicode.org/reports/tr35/tr35-4.html#Date_Format_Patterns)
-	// fixedPattern:
-	//	A date string using symbols from this set: "GyMdkHmsSEDFwWahKzYeugAZvcL"
-	// locale:
-	//	use a special locale, otherwise takes the default
-
-	var fixed = "GyMdkHmsSEDFwWahKzYeugAZvcL",
-		local = dojo.date.locale._getGregorianBundle(locale).patternChars;
-	return dojo.map(fixedPattern, function(c){
-		 var i = fixed.indexOf(c);
-		 return i < 0 ? c : local.charAt(i);
-	}).join(""); // String
-}
-
 dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 	// summary:
 	//	Determines if the date falls on a weekend, according to local custom.

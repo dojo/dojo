@@ -45,13 +45,6 @@ tests.register("tests.date.locale",
 			}
 		},
 		{
-			name: "pattern",
-			runTest: function(t){
-				t.is("MM/dd/yyyy", dojo.date.locale.displayPattern("MM/dd/yyyy", "en"));
-				t.is("jj/MM/aaaa", dojo.date.locale.displayPattern("dd/MM/yyyy", "fr"));
-			}
-		},
-		{
 			name: "format",
 			runTest: function(t){
 

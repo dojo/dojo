@@ -11,7 +11,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 	//	|		node: "nodeId",
 	//	|		showDuration: 500,
 	//	|		// hideDuration will default to "200"
-	//	|		showFunc: dojo.wipeIn, 
+	//	|		showFunc: dojo.fx.wipeIn, 
 	//	|		// hideFunc will default to "fadeOut"
 	//	|	});
 	//	|	t.show(100); // delay showing for 100ms

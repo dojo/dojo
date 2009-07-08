@@ -126,13 +126,13 @@
 	], 
 	"timeFormat-short": "h:mm a", 
 	"field-month": "Month", 
-	"dateFormatItem-MMMMd": "MMMM d", 
 	"quarters-format-abbr": [
 		"Q1", 
 		"Q2", 
 		"Q3", 
 		"Q4"
 	], 
+	"dateFormatItem-MMMMd": "MMMM d", 
 	"days-format-abbr": [
 		"Sun", 
 		"Mon", 

@@ -198,6 +198,7 @@
 		"금", 
 		"토"
 	], 
+	"dateFormatItem-yMMMd": "y년 MMM d일", 
 	"eraNames": [
 		"서력기원전", 
 		"서력기원"

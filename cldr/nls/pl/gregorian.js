@@ -134,13 +134,13 @@
 	], 
 	"timeFormat-short": "HH:mm", 
 	"field-month": "Miesiąc", 
-	"dateFormatItem-MMMMd": "d MMMM", 
 	"quarters-format-abbr": [
 		"K1", 
 		"K2", 
 		"K3", 
 		"K4"
 	], 
+	"dateFormatItem-MMMMd": "d MMMM", 
 	"days-format-abbr": [
 		"niedz.", 
 		"pon.", 

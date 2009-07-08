@@ -7,7 +7,7 @@
 	'nativeZeroDigit':"0",
 	'patternDigit':"#",
 	'plusSign':"+",
-	'minusSign':"–",
+	'minusSign':"-",
 	'exponential':"e",
 	'perMille':"‰",
 	'infinity':"∞",

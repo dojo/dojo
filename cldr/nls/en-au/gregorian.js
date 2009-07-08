@@ -4,8 +4,8 @@
 	'dateFormat-long': "d MMMM y",
 	'dateFormat-medium': "dd/MM/yyyy",
 	'dateFormat-short': "d/MM/yy",
-	'dateFormatItem-MMMMd':"d MMMM",
 	'dateFormatItem-MMdd':"dd/MM",
+	'dateFormatItem-MMMMd':"d MMMM",
 	'dateFormatItem-yyyyMM':"MM/yyyy",
 	'dateFormatItem-yyyyMMMM':"MMMM y"
 })

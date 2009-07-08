@@ -106,11 +106,11 @@
 		"Maggio", 
 		"Giugno", 
 		"Luglio", 
-		"agosto", 
-		"settembre", 
-		"ottobre", 
-		"novembre", 
-		"dicembre"
+		"Agosto", 
+		"Settembre", 
+		"Ottobre", 
+		"Novembre", 
+		"Dicembre"
 	], 
 	"field-week": "settimana", 
 	"dateFormatItem-MMMMEd": "EEE d MMMM", 
@@ -134,13 +134,13 @@
 	], 
 	"timeFormat-short": "HH.mm", 
 	"field-month": "mese", 
-	"dateFormatItem-MMMMd": "d MMMM", 
 	"quarters-format-abbr": [
 		"T1", 
 		"T2", 
 		"T3", 
 		"T4"
 	], 
+	"dateFormatItem-MMMMd": "d MMMM", 
 	"days-format-abbr": [
 		"dom", 
 		"lun", 
@@ -202,7 +202,7 @@
 		"aprile", 
 		"maggio", 
 		"giugno", 
-		"Luglio", 
+		"luglio", 
 		"agosto", 
 		"settembre", 
 		"ottobre", 

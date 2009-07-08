@@ -8,8 +8,8 @@
 		"e.Kr."
 	], 
 	"dateFormatItem-MMMEd": "E d. MMM", 
-	"dateFormatItem-MMdd": "dd.MM", 
 	"dateFormatItem-hms": "h.mm.ss a", 
+	"dateFormatItem-MMdd": "dd.MM", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-weekday": "ukedag", 
 	"days-standAlone-wide": [

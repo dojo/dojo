@@ -8,8 +8,8 @@
 		"e.Kr."
 	], 
 	"dateFormatItem-MMMEd": "E d MMM", 
-	"dateFormatItem-MMdd": "dd/MM", 
 	"dateFormatItem-hms": "h.mm.ss a", 
+	"dateFormatItem-MMdd": "dd/MM", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-weekday": "ugedag", 
 	"days-standAlone-wide": [
@@ -135,13 +135,13 @@
 	"timeFormat-short": "HH.mm", 
 	"dateFormatItem-H": "H", 
 	"field-month": "måned", 
-	"dateFormatItem-MMMMd": "d. MMMM", 
 	"quarters-format-abbr": [
 		"K1", 
 		"K2", 
 		"K3", 
 		"K4"
 	], 
+	"dateFormatItem-MMMMd": "d. MMMM", 
 	"days-format-abbr": [
 		"søn", 
 		"man", 

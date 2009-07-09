@@ -19,6 +19,10 @@ dojo.require("dojo._base.array");
 
 	var loopBody = function(f, a, o){
 		a = [0].concat(aps.call(a, 0));
+		if(!a.sort){
+			// make sure it's a real array before we pass it on to be wrapped
+			a = aps.call(a, 0);
+		}
 		o = o || d.global;
 		return function(node){
 			a[0] = node;

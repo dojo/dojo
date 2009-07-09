@@ -232,6 +232,11 @@
 							doh.is(0, dojo.query("RESULT[THINGER]", de).length, "result elements with attrs (wrong)");
 							doh.is(2, dojo.query("RESULT[thinger]", de).length, "result elements with attrs");
 							doh.is(1, dojo.query("RESULT[thinger=blah]", de).length, "result elements with attr value");
+						},
+						function sort(){
+							var i = dojo.query("div");
+							// smoke test
+							i.sort(function(a,b){ return 1; })
 						}
 					]
 				);

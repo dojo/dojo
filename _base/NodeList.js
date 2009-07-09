@@ -2,7 +2,7 @@ dojo.provide("dojo._base.NodeList");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.array");
 
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile||true);
 (function(){
 
 	var d = dojo;
@@ -19,6 +19,10 @@ dojo.require("dojo._base.array");
 		// 		An optional parent NodeList that generated the current
 		// 		list of nodes. Used to call _stash() so the parent NodeList
 		// 		can be accessed via end() later.
+		if(!a.sort){
+			// make sure it's a real array before we pass it on to be wrapped
+			a = aps.call(a, 0);
+		}
 		a.constructor = d._NodeListCtor;
 		dojo._mixin(a, d._NodeListCtor.prototype);
 		return parent ? a._stash(parent) : a;
@@ -933,6 +937,6 @@ dojo.require("dojo._base.array");
 		}
 	);
 
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile||true);
 })();
 //>>excludeEnd("webkitMobile");

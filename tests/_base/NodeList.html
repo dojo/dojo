@@ -305,13 +305,13 @@
 							verify(cat.end(), ["c1"]);
 						},
 
-						function concat2(t){
+						function concat2(){
 							var spans = dojo.query("span");
 							var divs = dojo.query("div");
 							doh.is(spans.concat([]).constructor, dojo.NodeList);
 						},
 						
-						function place(t){
+						function place(){
 							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
 							
 							var tn = document.createElement("div");
@@ -325,7 +325,7 @@
 							doh.is(tn.firstChild, nl[0]);
 						},
 						
-						function orphan(t){
+						function orphan(){
 							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
 							
 							var tn = document.createElement("div");
@@ -343,16 +343,16 @@
 							doh.is("blah", nl[0].innerHTML);
 						},
 
-						function adopt(t){
+						function adopt(){
 							var div = dojo.query(dojo.create("div"));
 							div.adopt(dojo.create("span"));
 							div.adopt(dojo.create("em"), "first");
-							t.is(2, dojo.query("*", div[0]).length);
-							t.is("em", div[0].firstChild.tagName.toLowerCase());
-							t.is("span", div[0].lastChild.tagName.toLowerCase());
+							doh.is(2, dojo.query("*", div[0]).length);
+							doh.is("em", div[0].firstChild.tagName.toLowerCase());
+							doh.is("span", div[0].lastChild.tagName.toLowerCase());
 						},
 
-						function addContent(t){
+						function addContent(){
 							//text content
 							var tn = document.createElement("div");
 							var nl = dojo.query(tn).addContent("some text content");
@@ -439,7 +439,7 @@
 							templs.orphan();
 						},
 
-						function connect(t){
+						function connect(){
 							var ih = "<div><span></span></div><span class='thud'><button>blah</button></span>";
 							
 							var tn = document.createElement("div");
@@ -457,7 +457,7 @@
 							doh.is(3, ctr);
 						},
 
-						function at(t){
+						function at(){
 							var divs = dojo.query("div");
 							var at0 = divs.at(0);
 							doh.is(divs[0], at0[0]);
@@ -476,6 +476,11 @@
 							var ending = divs.at(0).end();
 							verify([ending[0], ending[1]], ["sq100", "t"]);
 						},
+
+						function attr(){
+							var divs = dojo.query("div");
+							var ids = divs.attr("id");
+						},
 	
 						function _adaptAsForEach(t){
 							var passes = false;
@@ -492,7 +497,7 @@
 							doh.is(count, divs.length);
 						},
 						
-						function instantiate(t){
+						function instantiate(){
 							//Insert some divs to use for test
 							dojo.place('<p id="thinger">Hi</p><p id="thinger2">Hi</p>', dojo.body());
 
@@ -501,7 +506,7 @@
 								foo:"baz",
 								constructor: function(props, node){
 									dojo.mixin(this, props);
-									t.is("bar", this.foo, test++);
+									doh.is("bar", this.foo, test++);
 								}
 							});
 
@@ -513,7 +518,7 @@
 								foo:"bar"
 							});
 
-							t.is(2, test);
+							doh.is(2, test);
 
 							//clean up the divs inserted for the test.
 							dojo.query("#thinger, #thinger2").orphan();

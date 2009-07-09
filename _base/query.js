@@ -134,7 +134,8 @@ if(typeof dojo != "undefined"){
 	var qlc = d._NodeListCtor = 		d.NodeList;
 
 	var getDoc = function(){ return d.doc; };
-	var cssCaseBug = (d.isWebKit && ((getDoc().compatMode) == "BackCompat"));
+	// NOTE(alex): the spec is idiotic. CSS queries should ALWAYS be case-sensitive, but nooooooo
+	var cssCaseBug = ((d.isWebKit||d.isMozilla) && ((getDoc().compatMode) == "BackCompat"));
 
 	////////////////////////////////////////////////////////////////////////
 	// Global utilities
@@ -1003,7 +1004,6 @@ if(typeof dojo != "undefined"){
 				// isAlien check. Workaround for Prototype.js being totally evil/dumb.
 				/\{\s*\[native code\]\s*\}/.test(String(ecs)) && 
 				query.classes.length &&
-				// WebKit bug where quirks-mode docs select by class w/o case sensitivity
 				!cssCaseBug
 			){
 				// it's a class-based query and we've got a fast way to run it.

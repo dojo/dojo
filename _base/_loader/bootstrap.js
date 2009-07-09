@@ -205,19 +205,28 @@ dojo.global = {
 
 	var rev = "$Rev$".match(/\d+/); 
 
-	dojo.version = {
+/*=====
+	dojo.version = function(){
 		// summary: 
-		//		version number of dojo
-		//	major: Integer
+		//		Version number of the Dojo Toolkit
+		// major: Integer
 		//		Major version. If total version is "1.2.0beta1", will be 1
-		//	minor: Integer
+		// minor: Integer
 		//		Minor version. If total version is "1.2.0beta1", will be 2
-		//	patch: Integer
+		// patch: Integer
 		//		Patch version. If total version is "1.2.0beta1", will be 0
-		//	flag: String
+		// flag: String
 		//		Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
-		//	revision: Number
+		// revision: Number
 		//		The SVN rev from which dojo was pulled
+		this.major = 0;
+		this.minor = 0;
+		this.patch = 0;
+		this.flag = "";
+		this.revision = 0;
+	}
+=====*/
+	dojo.version = {
 		major: 1, minor: 4, patch: 0, flag: "dev",
 		revision: rev ? +rev[0] : NaN,
 		toString: function(){

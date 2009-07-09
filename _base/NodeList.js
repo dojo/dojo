@@ -2,7 +2,7 @@ dojo.provide("dojo._base.NodeList");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.array");
 
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile||true);
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 
 	var d = dojo;
@@ -937,6 +937,6 @@ dojo.require("dojo._base.array");
 		}
 	);
 
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile||true);
+//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
 //>>excludeEnd("webkitMobile");

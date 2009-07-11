@@ -110,6 +110,10 @@ djConfig = {
 	//		isDebug is true and Firebug is not available or running, then it bypasses
 	//		the creation of Firebug Lite allowing you to define your own console object.
 	useCustomLogger: undefined
+	// transparentColor: Array
+	//		Array containing the r, g, b components used as transparent color in dojo.Color;
+	//		if undefined, [255,255,255] (white) will be used.
+	transparentColor: undefined
 }
 =====*/
 

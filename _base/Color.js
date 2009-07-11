@@ -47,7 +47,8 @@ dojo.require("dojo._base.lang");
 		navy:       [0,0,128],
 		blue:       [0,0,255],
 		teal:		[0,128,128],
-		aqua:		[0,255,255]
+		aqua:		[0,255,255],
+		transparent: d.config.transparentColor || [255,255,255]
 	};
 
 	dojo.extend(dojo.Color, {

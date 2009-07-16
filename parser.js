@@ -140,17 +140,22 @@ dojo.parser = new function(){
 		return new Function(preamble+script.innerHTML+suffix);
 	}
 
-	this.instantiate = function(/* Array */nodes, /* Object? */mixin){
+	this.instantiate = function(/* Array */nodes, /* Object? */mixin, /* Object? */args){
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
 		//		potentially calls a layout method to allow them to connect with
 		//		any children		
-		// mixin: Object
+		// mixin: Object?
 		//		An object that will be mixed in with each node in the array.
 		//		Values in the mixin will override values in the node, if they
 		//		exist.
+		// args: Object?
+		//		An object used to hold kwArgs for instantiation.
+		//		Only supports 'noStart' currently.
 		var thelist = [], dp = dojo.parser;
 		mixin = mixin||{};
+		args = args||{};
+		
 		d.forEach(nodes, function(node){
 			if(!node){ return; }
 			var type = dp._attrName in mixin?mixin[dp._attrName]:node.getAttribute(dp._attrName);
@@ -239,7 +244,7 @@ dojo.parser = new function(){
 		// (non-top level) children
 		if(!mixin._started){
 			d.forEach(thelist, function(instance){
-				if(	instance  && 
+				if(	!args.noStart && instance  && 
 					instance.startup &&
 					!instance._started && 
 					(!instance.getParent || !instance.getParent())
@@ -251,15 +256,63 @@ dojo.parser = new function(){
 		return thelist;
 	};
 
-	this.parse = function(/*DomNode?*/ rootNode){
+	this.parse = function(/*DomNode?*/ rootNode, /* Object? */ args){
 		// summary:
+		//		Scan the DOM for class instances, and instantiate them.
+		//
+		// description:
 		//		Search specified node (or root node) recursively for class instances,
 		//		and instantiate them Searches for
 		//		dojoType="qualified.class.name"
-		var list = d.query(this._query, rootNode);
-		// go build the object instances
-		var instances = this.instantiate(list);
-		return instances;
+		//
+		// rootNode: DomNode?
+		//		A default starting root node from which to start the parsing. Can be
+		//		omitted, defaulting to the entire document. If omitted, the `args`
+		//		object can be passed in this place. If the `args` object has a 
+		//		`rootNode` member, that is used.
+		//
+		// args:
+		//		a kwArgs object passed along to instantiate()
+		//		
+		//			* noStart: Boolean?
+		//				when set will prevent the parser from calling .startup()
+		//				when locating the nodes. 
+		//			* rootNode: DomNode?
+		//				identical to the function's `rootNode` argument, though
+		//				allowed to be passed in via this `args object. 
+		//
+		// example:
+		//		Parse all widgets on a page:
+		//	|		dojo.parser.parse();
+		//
+		// example:
+		//		Parse all classes within the node with id="foo"
+		//	|		dojo.parser.parse(dojo.byId(foo));
+		//
+		// example:
+		//		Parse all classes in a page, but do not call .startup() on any 
+		//		child
+		//	|		dojo.parser.parse({ noStart: true })
+		//
+		// example:
+		//		Parse all classes in a node, but do not call .startup()
+		//	|		dojo.parser.parse(someNode, { noStart:true });
+		//	|		// or
+		// 	|		dojo.parser.parse({ noStart:true, rootNode: someNode });
+
+		// determine the root node based on the passed arguments.
+		var root;
+		if(!args && rootNode && rootNode.rootNode){
+			args = rootNode;
+			root = args.rootNode;
+		}else{
+			root = rootNode;
+		}
+
+		var	list = d.query(this._query, root);
+			// go build the object instances
+		return this.instantiate(list, null, args); // Array
+
 	};
 }();
 

@@ -216,7 +216,46 @@
 						function testCheckedFlag(t){
 							t.f(checkedObj.disabled);
 							t.t(checkedObj.checked);
-						}						
+						},
+						function testnostart(t){
+						  
+							var started = false;
+							dojo.declare("SampleThinger", null, {
+								startup: function(){
+									started = true;
+								}
+							});
+						  
+							dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
+							dojo.parser.parse("parsertest", { noStart:true });
+							
+							t.f(started);
+							
+							dojo.empty("parsertest");
+							
+							started = false;
+							
+							dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
+							dojo.parser.parse({ noStart:true, rootNode:"parsertest" });
+			  				
+							t.f(started);
+						},
+						
+						// test the various iterations of parser test
+						function rootTest(t){
+						  
+							var handle = function(sel, root){
+								t.is("parsertest2", root);
+							}
+							var tmp = dojo.connect(dojo, "query", handle);
+							
+							dojo.parser.parse("parsertest2");
+							dojo.parser.parse({ rootNode: "parsertest2" });
+							dojo.parser.parse("parsertest2", { noStart:true });
+							
+							dojo.disconnect(tmp);
+							
+						}
 					]
 				);
 				doh.run();
@@ -261,5 +300,9 @@
 		</div>
 		<input dojoType="tests.parser.inputClass" jsId="checkedObj" checked type="checkbox">
 		<button dojoType="tests.parser.inputClass" jsId="disabledObj" disabled>hi</button>
+		
+		<div id="parsertest"></div>
+		<div id="parsertest2"></div>
+		
 	</body>
 </html>

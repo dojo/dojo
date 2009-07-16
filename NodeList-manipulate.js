@@ -128,7 +128,7 @@ dojo["NodeList-manipulate"] = {
 
 		text: function(/*String*/value){
 			// summary:
-			// 		allows seting the text value of each node in the NodeList,
+			// 		allows setting the text value of each node in the NodeList,
 			// 		if there is a value passed in, otherwise, returns the text value for all the
 			// 		nodes in the NodeList in one string.
 			//	example:
@@ -136,7 +136,7 @@ dojo["NodeList-manipulate"] = {
 			//	|	<div id="foo"></div>
 			//	|	<div id="bar"></div>
 			//		This code inserts "Hello World" into both divs:
-			//	|	dojo.query("div").innerHTML("Hello World");
+			//	|	dojo.query("div").text("Hello World");
 			//	example:
 			//		assume a DOM created by this markup:
 			//	|	<div id="foo"><p>Hello Mars <span>today</span></p></div>
@@ -162,7 +162,7 @@ dojo["NodeList-manipulate"] = {
 
 		val: function(/*String||Array*/value){
 			// summary:
-			// 		If value is passed, allows seting the value property of form elements in this
+			// 		If a value is passed, allows seting the value property of form elements in this
 			// 		NodeList, or properly selecting/checking the right value for radio/checkbox/select
 			// 		elements. If no value is passed, the value of the first node in this NodeList
 			// 		is returned.
@@ -175,8 +175,8 @@ dojo["NodeList-manipulate"] = {
 			//	|		<option value="yellow" selected>Yellow</option>
 			//	|	</select>
 			//		This code gets and sets the values for the form fields above:
-			//	|	dojo.query('[type="text"]).val(); //gets value foo
-			//	|	dojo.query('[type="text"]).val("bar"); //sets the input's value to "bar"
+			//	|	dojo.query('[type="text"]').val(); //gets value foo
+			//	|	dojo.query('[type="text"]').val("bar"); //sets the input's value to "bar"
 			// 	|	dojo.query("select").val() //gets array value ["red", "yellow"]
 			// 	|	dojo.query("select").val(["blue", "yellow"]) //Sets the blue and yellow options to selected.
 

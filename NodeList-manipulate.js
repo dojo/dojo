@@ -61,11 +61,33 @@ dojo["NodeList-manipulate"] = {
 			// 		at different positions. Differs from NodeList.place because it will clone
 			// 		the nodes in this NodeList if the query matches more than one element.
 			var nl2 = typeof query == "string" || query.nodeType ? dojo.query(query) : query;
+			var toAdd = [];
 			for(var i = 0; i < nl2.length; i++){
-				for(var j = 0, item; item = this[j]; j++){
-					dojo.place((i > 0 ? item.cloneNode(true) : item), nl2[i], position);
+				//Go backwards in DOM to make dom insertions easier via insertBefore
+				var refNode = nl2[i];
+				var length = this.length;
+				for(var j = length - 1, item; item = this[j]; j--){
+					if(i > 0){
+						//Need to clone the item. This also means
+						//it needs to be added to the current NodeList
+						//so it can also be the target of other chaining operations.
+						item = this._cloneNode(item);
+						toAdd.unshift(item);
+					}
+					if(j == length - 1){
+						dojo.place(item, refNode, position);
+					}else{
+						refNode.parentNode.insertBefore(item, refNode);
+					}
+					refNode = item;
 				}
 			}
+
+			//Add the toAdd items to the current NodeList.
+			toAdd.unshift(this.length - 1);
+			toAdd.unshift(0);
+			Array.prototype.splice.apply(this, toAdd);
+
 			return this; //dojo.NodeList
 		},
 
@@ -448,7 +470,7 @@ dojo["NodeList-manipulate"] = {
 					//Always clone because if html is used to hold one of
 					//the "this" nodes, then on the clone of html it will contain
 					//that "this" node, and that would be bad.
-					var clone = html.cloneNode(true);
+					var clone = this._cloneNode(html);
 					if(node.parentNode){
 						node.parentNode.replaceChild(clone, node);
 					}
@@ -532,11 +554,11 @@ dojo["NodeList-manipulate"] = {
 					//Always clone because if html is used to hold one of
 					//the "this" nodes, then on the clone of html it will contain
 					//that "this" node, and that would be bad.
-					var clone = html.cloneNode(true);
+					var clone = this._cloneNode(html);
 					
 					//Need to convert the childNodes to an array since wrapAll modifies the
 					//DOM and can change the live childNodes NodeList.
-					dojo._NodeListCtor._wrap(dojo._toArray(this[i].childNodes)).wrapAll(clone);
+					this._wrap(dojo._toArray(this[i].childNodes), null, this._NodeListCtor).wrapAll(clone);
 				}
 			}
 			return this; //dojo.NodeList
@@ -649,9 +671,9 @@ dojo["NodeList-manipulate"] = {
 			//TODO: need option to clone events?
 			var ary = [];
 			for(var i = 0; i < this.length; i++){
-				ary.push(this[i].cloneNode(true));
+				ary.push(this._cloneNode(this[i]));
 			}
-			return dojo._NodeListCtor._wrap(ary, this); //dojo.NodeList
+			return this._wrap(ary, this, this._NodeListCtor); //dojo.NodeList
 		}
 	});
 

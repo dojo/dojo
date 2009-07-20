@@ -37,7 +37,7 @@ dojo.extend(dojo.NodeList, {
 				ary.push(node);
 			}
 		}
-		return dojo._NodeListCtor._wrap(ary);	 //dojo.NodeList
+		return this._wrap(ary, null, this._NodeListCtor);	 //dojo.NodeList
 	},
 
 	_getUniqueNodeListWithParent: function(nodes, query){
@@ -45,7 +45,7 @@ dojo.extend(dojo.NodeList, {
 		// 		gets unique element nodes, filters them further
 		// 		with an optional query and then calls _stash to track parent NodeList.
 		var ary = this._getUniqueAsNodeList(nodes);
-		ary = (query ? dojo._filterQueryResult(ary, query) : ary);
+		ary = (query ? (this._filterQueryResult || dojo._filterQueryResult)(ary, query) : ary);
 		return ary._stash(this);  //dojo.NodeList
 	},
 
@@ -114,9 +114,10 @@ dojo.extend(dojo.NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".red").closest(".container");
 		//		returns the div with class "container".
+		var self = this;
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			do{
-				if(dojo._filterQueryResult([node], query).length){
+				if((self._filterQueryResult || dojo._filterQueryResult)([node], query).length){
 					return node;
 				}
 			}while((node = node.parentNode) && node.nodeType == 1);
@@ -180,7 +181,7 @@ dojo.extend(dojo.NodeList, {
 		//		returns the two divs with class "blue", the div with class "container",
 		// 	|	the body element and the html element.
 		//		Running this code:
-		//	|	dojo.query(".text").parent(".container");
+		//	|	dojo.query(".text").parents(".container");
 		//		returns the one div with class "container".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var pary = []
@@ -251,13 +252,13 @@ dojo.extend(dojo.NodeList, {
 		// 	|		Some Text
 		// 	|		<div class="blue first">Blue One</div>
 		// 	|		<div class="red">Red Two</div>
-		// 	|		<div class="blue">Blue Two</div>
+		// 	|		<div class="blue last">Blue Two</div>
 		//	|	</div>
 		//		Running this code:
 		//	|	dojo.query(".first").next();
 		//		returns the div with class "red" and has innerHTML of "Red Two".
 		//		Running this code:
-		//	|	dojo.query(".first").next(".blue");
+		//	|	dojo.query(".last").next(".red");
 		//		does not return any elements.
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			var next = node.nextSibling;
@@ -322,7 +323,7 @@ dojo.extend(dojo.NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".blue").first();
 		//		returns the div with class "blue" and "first".
-		return dojo._NodeListCtor._wrap(((this[0] && [this[0]]) || []), this); //dojo.NodeList
+		return this._wrap(((this[0] && [this[0]]) || []), this); //dojo.NodeList
 	},
 
 	last: function(){
@@ -342,7 +343,7 @@ dojo.extend(dojo.NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".blue").last();
 		//		returns the last div with class "blue", 
-		return dojo._NodeListCtor._wrap((this.length ? [this[this.length - 1]] : []), this); //dojo.NodeList
+		return this._wrap((this.length ? [this[this.length - 1]] : []), this); //dojo.NodeList
 	},
 
 	even: function(){

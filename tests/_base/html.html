@@ -10,8 +10,8 @@
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
-		<script type="text/javascript" 
-			src="../../dojo.js" 
+		<script type="text/javascript"
+			src="../../dojo.js"
 			djConfig="isDebug: true"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
@@ -30,12 +30,12 @@
 			}
 
 			dojo.addOnLoad(function(){
-				doh.register("t", 
+				doh.register("t",
 					[
 						"doh.is(null, dojo.byId('nonExistantId'));",
 						"doh.is(null, dojo.byId(null));",
 						"doh.is(null, dojo.byId(''));",
-						"doh.is(undefined, dojo.byId(undefined));", 
+						"doh.is(undefined, dojo.byId(undefined));",
 
 						"doh.is(100, dojo.marginBox('sq100').w);",
 						"doh.is(100, dojo.marginBox('sq100').h);",
@@ -75,9 +75,9 @@
 						"doh.is(100, dojo.contentBox('sq100border10margin10pad10').h);",
 
 						// FIXME: the 'correct' w is not 100 on Safari WebKit (2.0.4 [419.3]), the right-margin extends to the document edge
-						// "doh.is(100, dojo.marginBox('sq100nopos').w);", 
+						// "doh.is(100, dojo.marginBox('sq100nopos').w);",
 						"doh.is(100, dojo.marginBox('sq100nopos').h);",
-						
+
 						"doh.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).l);",
 						"doh.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).t);",
 						"doh.is(10, dojo._getPadExtents(dojo.byId('sq100ltpad10rbmargin10')).w);",
@@ -139,7 +139,7 @@
 								position = 'absolute';
 								overflow = 'scroll';
 								border = "10px solid black";
-							}	
+							}
 							dojo._setMarginBox(s, x, y, 100, 100);
 							dojo._setMarginBox(c, 0, 0, 500, 500);
 							s.scrollTop = 200;
@@ -460,7 +460,7 @@
 							doh.t(dojo.hasAttr(labelWithFor, "htmlFor"));
 							// when markup include for attrib make sure can retrieve using for or htmlFor
 							doh.is("input-with-label", dojo.attr(labelWithFor, "for"));
-							doh.is("input-with-label", dojo.attr(labelWithFor, "htmlFor"));						
+							doh.is("input-with-label", dojo.attr(labelWithFor, "htmlFor"));
 						},
 						function attrInnerHtmlDiv(t){
 							var n = dojo.create("div", {

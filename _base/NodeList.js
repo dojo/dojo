@@ -9,7 +9,7 @@ dojo.require("dojo._base.array");
 //>>excludeEnd("webkitMobile");
 
 	var ap = Array.prototype, aps = ap.slice, apc = ap.concat;
-	
+
 	var tnl = function(/*Array*/ a, /*dojo.NodeList?*/ parent, /*Function?*/ NodeListCtor){
 		// summary:
 		// 		decorate an array to make it look like a `dojo.NodeList`.
@@ -42,7 +42,7 @@ dojo.require("dojo._base.array");
 			return f.apply(o, a);
 		};
 	};
-	
+
 	// adapters
 
 	var adaptAsForEach = function(f, o){
@@ -72,7 +72,7 @@ dojo.require("dojo._base.array");
 			return this.map(loopBody(f, arguments, o));
 		};
 	};
-	
+
 	var adaptAsFilter = function(f, o){
 		//	summary:
 		//		adapts a single node function to be used in the filter-type actions
@@ -84,9 +84,9 @@ dojo.require("dojo._base.array");
 			return this.filter(loopBody(f, arguments, o));
 		};
 	};
-	
+
 	var adaptWithCondition = function(f, g, o){
-		//	summary: 
+		//	summary:
 		//		adapts a single node function to be used in the map-type
 		//		actions, behaves like forEach() or map() depending on arguments
 		//	f: Function
@@ -104,13 +104,13 @@ dojo.require("dojo._base.array");
 			return this;	// self
 		};
 	};
-	
+
 	var magicGuard = function(a){
 		//	summary:
 		//		the guard function for dojo.attr() and dojo.style()
 		return a.length == 1 && (typeof a[0] == "string"); // inline'd type check
 	};
-	
+
 	var orphan = function(node){
 		//	summary:
 		//		function to orphan nodes
@@ -217,7 +217,7 @@ dojo.require("dojo._base.array");
 	nl._adaptWithCondition = adaptWithCondition;
 
 	// mass assignment
-	
+
 	// add array redirectors
 	d.forEach(["slice", "splice"], function(name){
 		var f = ap[name];
@@ -234,12 +234,12 @@ dojo.require("dojo._base.array");
 		var f = d[name];
 		nlp[name] = function(){ return f.apply(d, [this].concat(aps.call(arguments, 0))); };
 	});
-	
+
 	// add conditional methods
 	d.forEach(["attr", "style"], function(name){
 		nlp[name] = adaptWithCondition(d[name], magicGuard);
 	});
-	
+
 	// add forEach actions
 	d.forEach(["connect", "addClass", "removeClass", "toggleClass", "empty"], function(name){
 		nlp[name] = adaptAsForEach(d[name]);
@@ -258,13 +258,13 @@ dojo.require("dojo._base.array");
 			// 		If content.parse is true, then it is remembered for later, for when the content
 			// 		nodes are inserted into the DOM. At that point, the nodes will be parsed for widgets
 			// 		(if dojo.parser has been dojo.required elsewhere).
-	
+
 			//Wanted to just use a DocumentFragment, but for the array/NodeList
 			//case that meant  using cloneNode, but we may not want that.
 			//Cloning should only happen if the node operations span
 			//multiple refNodes. Also, need a real array, not a NodeList from the
 			//DOM since the node movements could change those NodeLists.
-	
+
 			var parse = content.parse === true ? true : false;
 
 			//Do we have an object that needs to be run through a template?
@@ -368,7 +368,7 @@ dojo.require("dojo._base.array");
 			//	|		.end()
 			//	|		// access to the orig .foo list
 			//	|		.removeClass("foo")
-			//	| 
+			//	|
 			//
 			this._parent = parent;
 			return this; //dojo.NodeList
@@ -403,7 +403,7 @@ dojo.require("dojo._base.array");
 
 		// FIXME: handle return values for #3244
 		//		http://trac.dojotoolkit.org/ticket/3244
-		
+
 		// FIXME:
 		//		need to wrap or implement:
 		//			join (perhaps w/ innerHTML/outerHTML overload for toString() of items?)
@@ -533,10 +533,10 @@ dojo.require("dojo._base.array");
 			//		spliced into the NodeList
 			// returns:
 			//		dojo.NodeList
-			
+
 			//return this._wrap(apc.apply(this, arguments));
 			// the line above won't work for the native NodeList :-(
-			
+
 			// implementation notes:
 			// 1) Native NodeList is not an array, and cannot be used directly
 			// in concat() --- the latter doesn't recognize it as an array, and
@@ -545,7 +545,7 @@ dojo.require("dojo._base.array");
 			// read-only and cannot be changed. So we have to test for both
 			// native NodeList and dojo.NodeList in this property to recognize
 			// the node list.
-			
+
 			var t = d.isArray(this) ? this : aps.call(this, 0),
 				m = d.map(arguments, function(a){
 					return a && !d.isArray(a) &&
@@ -578,7 +578,7 @@ dojo.require("dojo._base.array");
 			//	summary:
 			// 		Returns the box objects all elements in a node list as
 			// 		an Array (*not* a NodeList)
-			
+
 			return d.map(this, d.coords); // Array
 		},
 
@@ -602,7 +602,7 @@ dojo.require("dojo._base.array");
 			//		gets or sets the CSS property for every element in the NodeList
 			//	property: String
 			//		the CSS property to get/set, in JavaScript notation
-			//		("lineHieght" instead of "line-height") 
+			//		("lineHieght" instead of "line-height")
 			//	value: String?
 			//		optional. The value to set the property to
 			//	returns:
@@ -679,7 +679,7 @@ dojo.require("dojo._base.array");
 			// FIXME: should we be checking for and/or disposing of widgets below these nodes?
 		},
 		=====*/
-		
+
 		// useful html methods
 		coords:	adaptAsMap(d.coords),
 
@@ -815,7 +815,7 @@ dojo.require("dojo._base.array");
 			}
 			return this._wrap(d.filter(items, a[start], a[start + 1]), this);	// dojo.NodeList
 		},
-		
+
 		/*
 		// FIXME: should this be "copyTo" and include parenting info?
 		clone: function(){
@@ -923,12 +923,12 @@ dojo.require("dojo._base.array");
 		}
 
 	});
-	
+
 	nl.events = [
 		// summary: list of all DOM events used in NodeList
 		"blur", "focus", "change", "click", "error", "keydown", "keypress",
 		"keyup", "load", "mousedown", "mouseenter", "mouseleave", "mousemove",
-		"mouseout", "mouseover", "mouseup", "submit" 
+		"mouseout", "mouseover", "mouseup", "submit"
 	];
 
 	// syntactic sugar for DOM events
@@ -939,8 +939,8 @@ dojo.require("dojo._base.array");
 			}
 				// FIXME: should these events trigger publishes?
 				/*
-				return (a ? this.connect(_oe, a, b) : 
-							this.forEach(function(n){  
+				return (a ? this.connect(_oe, a, b) :
+							this.forEach(function(n){
 								// FIXME:
 								//		listeners get buried by
 								//		addEventListener and can't be dug back

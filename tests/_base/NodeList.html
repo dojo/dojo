@@ -294,6 +294,40 @@
 							// reset things
 							tnl.style("opacity", 1);
 						},
+						
+						function addRemoveClass(){
+							var tnl = new dojo.NodeList(s, t);
+							tnl.addClass("a");
+							doh.is("a", s.className);
+							doh.is("a", t.className);
+							tnl.addClass("a b");
+							doh.is("a b", s.className);
+							doh.is("a b", t.className);
+							tnl.addClass(["a", "c"]);
+							doh.is("a b c", s.className);
+							doh.is("a b c", t.className);
+							tnl.removeClass();
+							doh.is("", s.className);
+							doh.is("", t.className);
+							tnl.addClass("    a");
+							doh.is("a", s.className);
+							doh.is("a", t.className);
+							tnl.addClass(" a  b ");
+							doh.is("a b", s.className);
+							doh.is("a b", t.className);
+							tnl.addClass(" c  b a ");
+							doh.is("a b c", s.className);
+							doh.is("a b c", t.className);
+							tnl.removeClass(" b");
+							doh.is("a c", s.className);
+							doh.is("a c", t.className);
+							tnl.removeClass("a b ");
+							doh.is("c", s.className);
+							doh.is("c", t.className);
+							tnl.removeClass(["a", "c"]);
+							doh.is("", s.className);
+							doh.is("", t.className);
+						},
 
 						function concat(){
 							var spans = dojo.query("span");

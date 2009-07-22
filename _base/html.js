@@ -1706,41 +1706,64 @@ if(dojo.isIE || dojo.isOpera){
 		//	example:
 		//	| if(dojo.hasClass("someNode","aSillyClassName")){ ... }
 		
-		return ((" "+ byId(node)[_className] +" ").indexOf(" "+ classStr +" ") >= 0);  // Boolean
+		return ((" "+ byId(node)[_className] +" ").indexOf(" " + classStr + " ") >= 0);  // Boolean
 	};
+	
+	var spaces = /\s+/, a1 = [""],
+		str2array = function(s){
+			if(typeof s == "string" || s instanceof String){
+				if(s.indexOf(" ") < 0){
+					a1[0] = s;
+					return a1;
+				}else{
+					return s.split(spaces);
+				}
+			}
+			// assumed to be an array
+			return s;
+		};
 
-	dojo.addClass = function(/*DomNode|String*/node, /*String*/classStr){
+	dojo.addClass = function(/*DomNode|String*/node, /*String|Array*/classStr){
 		//	summary:
 		//		Adds the specified classes to the end of the class list on the
-		//		passed node. Will not re-apply duplicate classes, except in edge
-		//		cases when adding multiple classes at once.
+		//		passed node. Will not re-apply duplicate classes.
 		//
 		//	node:
 		//		String ID or DomNode reference to add a class string too
 		//
 		//	classStr:
-		//		A String class name to add
+		//		A String class name to add, or several space-separated class names,
+		//		or an array of class names.
 		//
 		// example:
-		//	Add A class to some node:
+		//	Add a class to some node:
 		//	|	dojo.addClass("someNode", "anewClass");
 		//
 		// example:
-		//	Add two classes at once (could potentially add duplicate):
+		//	Add two classes at once:
 		//	| 	dojo.addClass("someNode", "firstClass secondClass");
+		//
+		// example:
+		//	Add two classes at once (using array):
+		//	| 	dojo.addClass("someNode", ["firstClass", "secondClass"]);
 		//
 		// example:
 		//	Available in `dojo.NodeList` for multiple additions
 		//	| dojo.query("ul > li").addClass("firstLevel");
 		
 		node = byId(node);
-		var cls = node[_className];
-		if((" "+ cls +" ").indexOf(" " + classStr + " ") < 0){
-			node[_className] = cls + (cls ? ' ' : '') + classStr;
+		classStr = str2array(classStr);
+		var cls = " " + node[_className] + " ";
+		for(var i = 0, len = classStr.length, c; i < len; ++i){
+			c = classStr[i];
+			if(c && cls.indexOf(" " + c + " ") < 0){
+				cls += c + " ";
+			}
 		}
+		node[_className] = d.trim(cls);
 	};
 
-	dojo.removeClass = function(/*DomNode|String*/node, /*String*/classStr){
+	dojo.removeClass = function(/*DomNode|String*/node, /*String|Array?*/classStr){
 		// summary:
 		//		Removes the specified classes from node. No `dojo.hasClass`
 		//		check is required. 
@@ -1748,19 +1771,44 @@ if(dojo.isIE || dojo.isOpera){
 		// node:
 		// 		String ID or DomNode reference to remove the class from.
 		//
-		// classString:
-		//		String class name to remove
+		// classStr:
+		//		An optional String class name to remove, or several space-separated
+		//		class names, or an array of class names. If omitted, all class names
+		//		will be deleted.
 		//
 		// example:
+		//	Remove a class from some node:
 		// 	| dojo.removeClass("someNode", "firstClass");
+		//
+		// example:
+		//	Remove two classes from some node:
+		// 	| dojo.removeClass("someNode", "firstClass secondClass");
+		//
+		// example:
+		//	Remove two classes from some node (using array):
+		// 	| dojo.removeClass("someNode", ["firstClass", "secondClass"]);
+		//
+		// example:
+		//	Remove all classes from some node:
+		// 	| dojo.removeClass("someNode");
 		//
 		// example:
 		//	Available in `dojo.NodeList` for multiple removal
 		//	| dojo.query(".foo").removeClass("foo");
 		
 		node = byId(node);
-		var t = d.trim((" " + node[_className] + " ").replace(" " + classStr + " ", " "));
-		if(node[_className] != t){ node[_className] = t; }
+		var cls;
+		if(classStr !== undefined){
+			classStr = str2array(classStr);
+			cls = " " + node[_className] + " ";
+			for(var i = 0, len = classStr.length; i < len; ++i){
+				cls = cls.replace(" " + classStr[i] + " ", " ");
+			}
+			cls = d.trim(cls);
+		}else{
+			cls = "";
+		}
+		if(node[_className] != cls){ node[_className] = cls; }
 	};
 
 	dojo.toggleClass = function(/*DomNode|String*/node, /*String*/classStr, /*Boolean?*/condition){

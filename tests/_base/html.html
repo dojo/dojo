@@ -212,6 +212,27 @@
 							dojo.removeClass(node, "c");
 							t.assertTrue(!node.className, "no class");
 						},
+						function testAddRemoveClassMultiple(t){
+							var node = dojo.byId("sq100");
+							dojo.addClass(node, "a");
+							t.is("a", node.className, "class is a");
+							dojo.addClass(node, "a b");
+							t.is("a b", node.className, "class is a b");
+							dojo.addClass(node, "b a");
+							t.is("a b", node.className, "class is still a b");
+							dojo.addClass(node, ["a", "c"]);
+							t.is("a b c", node.className, "class is a b c");
+							dojo.removeClass(node, "c a");
+							t.is("b", node.className, "class is b");
+							dojo.removeClass(node);
+							t.is("", node.className, "empty class");
+							dojo.addClass(node, "  c   b   a ");
+							t.is("c b a", node.className, "class is c b a");
+							dojo.removeClass(node, " c b ");
+							t.is("a", node.className, "class is a");
+							dojo.removeClass(node, ["a", "c"]);
+							t.is("", node.className, "empty class");
+						},
 						function getTypeInput(t){
 							doh.f(dojo.hasAttr(dojo.byId("input-no-type"), "type"));
 							doh.is(null, dojo.attr(dojo.byId("input-no-type"), "type"));

@@ -615,16 +615,19 @@ dojo.require("dojo._base.array");
 		addClass: function(className){
 			//	summary:
 			//		adds the specified class to every node in the list
-			//	className: String
-			//		the CSS class to add
+			//	className: String|Array
+			//		A String class name to add, or several space-separated class names,
+			//		or an array of class names.
 			return; // dojo.NodeList
 		},
 
 		removeClass: function(className){
 			//	summary:
 			//		removes the specified class from every node in the list
-			//	className: String
-			//		the CSS class to add
+			//	className: String|Array?
+			//		An optional String class name to remove, or several space-separated
+			//		class names, or an array of class names. If omitted, all class names
+			//		will be deleted.
 			//	returns:
 			//		dojo.NodeList, this list
 			return; // dojo.NodeList

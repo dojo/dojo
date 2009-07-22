@@ -895,7 +895,7 @@ if(dojo.isIE || dojo.isOpera){
 		// summary:
 		//		True if the node is BUTTON or INPUT.type="button".
 		return node.tagName == "BUTTON"
-			|| node.tagName=="INPUT" && node.getAttribute("type").toUpperCase() == "BUTTON"; // boolean
+			|| node.tagName=="INPUT" && (node.getAttribute("type")||'').toUpperCase() == "BUTTON"; // boolean
 	}
 
 	dojo._usesBorderBox = function(/*DomNode*/node){

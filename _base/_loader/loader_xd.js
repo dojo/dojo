@@ -186,6 +186,8 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
 	}
 }
 
+dojo._xdCharSet = "utf-8";
+
 dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDomain, /*String?*/module){
 	//summary: Internal xd loader function. Overrides loadUri() from loader.js.
 	//		xd loading requires slightly different behavior from loadPath().
@@ -243,6 +245,9 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 		//Add to script src
 		var element = document.createElement("script");
 		element.type = "text/javascript";
+		if(this._xdCharSet){
+			element.charset = this._xdCharSet;
+		}
 		element.src = xdUri;
 		if(!this.headElement){
 			this._headElement = document.getElementsByTagName("head")[0];

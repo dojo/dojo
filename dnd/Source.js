@@ -500,7 +500,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// check for handles
 		for(var node = e.target; node && node !== this.node; node = node.parentNode){
 			if(dojo.hasClass(node, "dojoDndHandle")){ return true; }
-			if(dojo.hasClass(node, "dojoDndItem")){ break; }
+			if(dojo.hasClass(node, "dojoDndItem") || dojo.hasClass(node, "dojoDndIgnore")){ break; }
 		}
 		return false;	// Boolean
 	}

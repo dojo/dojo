@@ -1120,8 +1120,9 @@ if(dojo.isIE || dojo.isOpera){
 			var client = node.getBoundingClientRect();
 			ret = { x: client.left, y: client.top };
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			if(d.isFF >= 3){
-				// in FF3 you have to subtract the document element margins
+			if(d.isFF == 3){
+				// In FF3 you have to subtract the document element margins.
+				// Fixed in FF3.5 though.
 				var cs = gcs(dh);
 				ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
 				ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);

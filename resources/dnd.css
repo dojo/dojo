@@ -8,6 +8,9 @@
 .dojoDndMove .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/dndMove.png); background-repeat: no-repeat;}
 .dojoDndCopy .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/dndCopy.png); background-repeat: no-repeat;}
 
+.dojoDndHandle {cursor: move;}
+.dojoDndIgnore {cursor: default;}
+
 .dijit_a11y .dojoDndAvatar { font-size: 1em; font-weight:bold;}
 .dijit_a11y .dojoDndAvatarHeader td {padding-left:2px !important;}
 .dijit_a11y .dojoDndAvatarHeader td span {padding-right: 5px;}

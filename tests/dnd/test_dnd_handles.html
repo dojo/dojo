@@ -11,7 +11,7 @@
 
 		.container { width: 100px; display: block; }
 		.container.handles .dojoDndHandle { background: #fee; }
-		.clear { clear: both; } 
+		.clear { clear: both; }
 	</style>
 
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
@@ -43,12 +43,12 @@
 		<li>Ctrl+drop &mdash; copies elements to the valid target (use Meta key on Mac).</li>
 	</ul>
 	
-	<p>Source with handles. Items should be draggable by "Item".</p>
+	<p>Source with handles. Items should be draggable by the "em" of the word "Item" (and also see a 'move' cursor on it).</p>
 	<div dojoType="dojo.dnd.Source" jsId="c1" withHandles="true" class="container handles">
-		<div class="dojoDndItem"><span class="dojoDndHandle">Item</span> <strong>Alpha</strong></div>
-		<div class="dojoDndItem"><span class="dojoDndHandle">Item</span> <strong>Beta</strong></div>
-		<div class="dojoDndItem"><span class="dojoDndHandle">Item</span> <strong>Gamma</strong></div>
-		<div class="dojoDndItem"><span class="dojoDndHandle">Item</span> <strong>Delta</strong></div>
+		<div class="dojoDndItem"><span class="dojoDndHandle"><span class="dojoDndIgnore">It</span>em</span> <strong>Alpha</strong></div>
+		<div class="dojoDndItem"><span class="dojoDndHandle"><span class="dojoDndIgnore">It</span>em</span> <strong>Beta</strong></div>
+		<div class="dojoDndItem"><span class="dojoDndHandle"><span class="dojoDndIgnore">It</span>em</span> <strong>Gamma</strong></div>
+		<div class="dojoDndItem"><span class="dojoDndHandle"><span class="dojoDndIgnore">It</span>em</span> <strong>Delta</strong></div>
 	</div>
 
 	<p>Source without handles.</p>

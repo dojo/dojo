@@ -1038,9 +1038,8 @@ if(dojo.isIE || dojo.isOpera){
 	};
 
 	dojo._isBodyLtr = function(){
-		//FIXME: could check html and body tags directly instead of computed style?  need to ignore case, accept empty values
-		return ("_bodyLtr" in d) ? d._bodyLtr :
-			d._bodyLtr = gcs(d.body()).direction == "ltr"; // Boolean 
+		return "_bodyLtr" in d? d._bodyLtr :
+			d._bodyLtr = (d.body().dir || d.doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean 
 	}
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);

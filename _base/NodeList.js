@@ -151,7 +151,7 @@ dojo.require("dojo._base.array");
 		//		|	// property that is both readable and writable and
 		//		|	// push/pop/shift/unshift methods
 		//		|	console.log(l.length);
-		//		|	l.push(dojo.create("<span>howdy!</span>"));
+		//		|	l.push(dojo.create("span"));
 		//		|
 		//		|	// dojo's normalized array methods work too:
 		//		|	console.log( l.indexOf(dojo.byId("foo")) );

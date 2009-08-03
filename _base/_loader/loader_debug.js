@@ -24,7 +24,7 @@ dojo.provide = function(resourceName){
 
 dojo._xdDebugFileLoaded = function(resourceName){
 
-	if(!this._xdDebugScopeChecked){
+	if(!dojo._xdDebugScopeChecked){
 		//If using a scoped dojo, we need to expose dojo as a real global
 		//for the debugAtAllCosts stuff to work.
 		if(dojo._scopeName != "dojo"){
@@ -33,10 +33,10 @@ dojo._xdDebugFileLoaded = function(resourceName){
 			window.dojox = window[dojo.config.scopeMap[2][1]];
 		}
 
-		this._xdDebugScopeChecked = true;
+		dojo._xdDebugScopeChecked = true;
 	}
 	
-	var dbgQueue = this._xdDebugQueue;
+	var dbgQueue = dojo._xdDebugQueue;
 	
 	if(resourceName && resourceName == dbgQueue.currentResourceName){
 		dbgQueue.shift();
@@ -56,13 +56,13 @@ dojo._xdDebugFileLoaded = function(resourceName){
 		//Make sure nothing else is in flight.
 		//If something is still in flight, then it still
 		//needs to be added to debug queue after it loads.
-		for(var param in this._xdInFlight){
-			if(this._xdInFlight[param] === true){
+		for(var param in dojo._xdInFlight){
+			if(dojo._xdInFlight[param] === true){
 				return;
 			}
 		}
 
-		this._xdNotifyLoaded();
+		dojo._xdNotifyLoaded();
 	}else{
 		if(resourceName == dbgQueue.currentResourceName){
 			dbgQueue.currentResourceName = dbgQueue[0].resourceName;

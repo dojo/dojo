@@ -237,7 +237,7 @@ if(typeof window != 'undefined'){
 			//		failure and failure is okay (an exception otherwise)
 
 			// NOTE: must be declared before scope switches ie. this._xhrObj()
-			var http = this._xhrObj();
+			var http = d._xhrObj();
 
 			if(!hasBase && dojo._Url){
 				uri = (new dojo._Url(owloc, uri)).toString();

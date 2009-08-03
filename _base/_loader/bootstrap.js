@@ -346,8 +346,8 @@ dojo.global = {
 	dojo._getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
 		var obj=context || d.global;
 		for(var i=0, p; obj && (p=parts[i]); i++){
-			if(i == 0 && this._scopeMap[p]){
-				p = this._scopeMap[p];
+			if(i == 0 && d._scopeMap[p]){
+				p = d._scopeMap[p];
 			}
 			obj = (p in obj ? obj[p] : (create ? obj[p]={} : undefined));
 		}

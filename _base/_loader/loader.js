@@ -23,14 +23,14 @@
 
 		_moduleHasPrefix: function(/*String*/module){
 			// summary: checks to see if module has been established
-			var mp = this._modulePrefixes;
+			var mp = d._modulePrefixes;
 			return !!(mp[module] && mp[module].value); // Boolean
 		},
 
 		_getModulePrefix: function(/*String*/module){
 			// summary: gets the prefix associated with module
-			var mp = this._modulePrefixes;
-			if(this._moduleHasPrefix(module)){
+			var mp = d._modulePrefixes;
+			if(d._moduleHasPrefix(module)){
 				return mp[module].value; // String
 			}
 			return module; // String
@@ -71,9 +71,9 @@
 		// cb: 
 		//		a callback function to pass the result of evaluating the script
 
-		var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : this.baseUrl) + relpath;
+		var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : d.baseUrl) + relpath;
 		try{
-			return !module ? this._loadUri(uri, cb) : this._loadUriAndCheck(uri, module, cb); // Boolean
+			return !module ? d._loadUri(uri, cb) : d._loadUriAndCheck(uri, module, cb); // Boolean
 		}catch(e){
 			console.error(e);
 			return false; // Boolean
@@ -138,11 +138,11 @@
 		// summary: calls loadUri then findModule and returns true if both succeed
 		var ok = false;
 		try{
-			ok = this._loadUri(uri, cb);
+			ok = d._loadUri(uri, cb);
 		}catch(e){
 			console.error("failed loading " + uri + " with error: " + e);
 		}
-		return !!(ok && this._loadedModules[moduleName]); // Boolean
+		return !!(ok && d._loadedModules[moduleName]); // Boolean
 	}
 
 	dojo.loaded = function(){
@@ -152,20 +152,20 @@
 		//		direct dojo.connect() to this method in order to handle
 		//		initialization tasks that require the environment to be
 		//		initialized. In a browser host,	declarative widgets will 
-		//		be constructed when this function	finishes runing.
-		this._loadNotifying = true;
-		this._postLoad = true;
+		//		be constructed when this function finishes runing.
+		d._loadNotifying = true;
+		d._postLoad = true;
 		var mll = d._loaders;
 
 		//Clear listeners so new ones can be added
 		//For other xdomain package loads after the initial load.
-		this._loaders = [];
+		d._loaders = [];
 
 		for(var x = 0; x < mll.length; x++){
 			mll[x]();
 		}
 
-		this._loadNotifying = false;
+		d._loadNotifying = false;
 		
 		//Make sure nothing else got added to the onload queue
 		//after this first run. If something did, and we are not waiting for any
@@ -262,11 +262,11 @@
 		var syms = modulename.split(".");
 		for(var i = syms.length; i>0; i--){
 			var parentModule = syms.slice(0, i).join(".");
-			if(i == 1 && !this._moduleHasPrefix(parentModule)){		
+			if(i == 1 && !d._moduleHasPrefix(parentModule)){		
 				// Support default module directory (sibling of dojo) for top-level modules 
 				syms[0] = "../" + syms[0];
 			}else{
-				var parentModulePath = this._getModulePrefix(parentModule);
+				var parentModulePath = d._getModulePrefix(parentModule);
 				if(parentModulePath != parentModule){
 					syms.splice(0, i, parentModulePath);
 					break;
@@ -379,19 +379,19 @@
 		//		|	var B = dojo.require("A.B");
 		//	   	|	...
 		//	returns: the required namespace object
-		omitModuleCheck = this._global_omit_module_check || omitModuleCheck;
+		omitModuleCheck = d._global_omit_module_check || omitModuleCheck;
 
 		//Check if it is already loaded.
-		var module = this._loadedModules[moduleName];
+		var module = d._loadedModules[moduleName];
 		if(module){
 			return module;
 		}
 
 		// convert periods to slashes
-		var relpath = this._getModuleSymbols(moduleName).join("/") + '.js';
+		var relpath = d._getModuleSymbols(moduleName).join("/") + '.js';
 
 		var modArg = !omitModuleCheck ? moduleName : null;
-		var ok = this._loadPath(relpath, modArg);
+		var ok = d._loadPath(relpath, modArg);
 
 		if(!ok && !omitModuleCheck){
 			throw new Error("Could not load '" + moduleName + "'; last tried '" + relpath + "'");
@@ -399,9 +399,9 @@
 
 		// check that the symbol was defined
 		// Don't bother if we're doing xdomain (asynchronous) loading.
-		if(!omitModuleCheck && !this._isXDomain){
+		if(!omitModuleCheck && !d._isXDomain){
 			// pass in false so we can give better error
-			module = this._loadedModules[moduleName];
+			module = d._loadedModules[moduleName];
 			if(!module){
 				throw new Error("symbol '" + moduleName + "' is not defined after loading '" + relpath + "'"); 
 			}

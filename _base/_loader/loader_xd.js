@@ -9,14 +9,14 @@ dojo._xdReset = function(){
 	//to evaluate resources in order. If there is a xdomain resource followed by a xhr resource, we can't load
 	//the xhr resource until the one before it finishes loading. The text of the xhr resource will be converted
 	//to match the format for a xd resource and put in the xd load queue.
-	this._isXDomain = dojo.config.useXDomain || false;
+	dojo._isXDomain = dojo.config.useXDomain || false;
 
-	this._xdTimer = 0;
-	this._xdInFlight = {};
-	this._xdOrderedReqs = [];
-	this._xdDepMap = {};
-	this._xdContents = [];
-	this._xdDefList = [];
+	dojo._xdTimer = 0;
+	dojo._xdInFlight = {};
+	dojo._xdOrderedReqs = [];
+	dojo._xdDepMap = {};
+	dojo._xdContents = [];
+	dojo._xdDefList = [];
 }
 
 //Call reset immediately to set the state.
@@ -159,7 +159,7 @@ dojo._xdIsXDomainPath = function(/*string*/relpath) {
 		//Only treat it as xdomain if the page does not have a
 		//host (file:// url) or if the baseUrl does not match the
 		//current window's domain.
-		var url = this.baseUrl;
+		var url = dojo.baseUrl;
 		colonIndex = url.indexOf(":");
 		slashIndex = url.indexOf("/");
 		if(colonIndex > 0 && colonIndex < slashIndex && (!location.host || url.indexOf("http://" + location.host) != 0)){
@@ -173,13 +173,13 @@ dojo._loadPath = function(/*String*/relpath, /*String?*/module, /*Function?*/cb)
 	//summary: Internal xd loader function. Overrides loadPath() from loader.js.
 	//xd loading requires slightly different behavior from loadPath().
 
-	var currentIsXDomain = this._xdIsXDomainPath(relpath);
-    this._isXDomain |= currentIsXDomain;
+	var currentIsXDomain = dojo._xdIsXDomainPath(relpath);
+    dojo._isXDomain |= currentIsXDomain;
 
-	var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : this.baseUrl) + relpath;
+	var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : dojo.baseUrl) + relpath;
 
 	try{
-		return ((!module || this._isXDomain) ? this._loadUri(uri, cb, currentIsXDomain, module) : this._loadUriAndCheck(uri, module, cb)); //Boolean
+		return ((!module || dojo._isXDomain) ? dojo._loadUri(uri, cb, currentIsXDomain, module) : dojo._loadUriAndCheck(uri, module, cb)); //Boolean
 	}catch(e){
 		console.error(e);
 		return false; //Boolean
@@ -193,7 +193,7 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 	//		xd loading requires slightly different behavior from loadPath().
 	//description: Wanted to override getText(), but it is used by
 	//		the widget code in too many, synchronous ways right now.
-	if(this._loadedUrls[uri]){
+	if(dojo._loadedUrls[uri]){
 		return 1; //Boolean
 	}
 
@@ -202,28 +202,28 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 	//it is a non-xd i18n bundle, which can load immediately and does not 
 	//need to be tracked. Also, don't track dojo.i18n, since it is a prerequisite
 	//and will be loaded correctly if we load it right away: it has no dependencies.
-	if(this._isXDomain && module && module != "dojo.i18n"){
-		this._xdOrderedReqs.push(module);
+	if(dojo._isXDomain && module && module != "dojo.i18n"){
+		dojo._xdOrderedReqs.push(module);
 
 		//Add to waiting resources if it is an xdomain resource.
 		//Don't add non-xdomain i18n bundles, those get evaled immediately.
 		if(currentIsXDomain || uri.indexOf("/nls/") == -1){
-			this._xdInFlight[module] = true;
+			dojo._xdInFlight[module] = true;
 
 			//Increment inFlightCount
 			//This will stop the modulesLoaded from firing all the way.
-			this._inFlightCount++;
+			dojo._inFlightCount++;
 		}
 
 		//Start timer
-		if(!this._xdTimer){
+		if(!dojo._xdTimer){
 			if(dojo.isAIR){
-				this._xdTimer = setInterval(function(){dojo._xdWatchInFlight();}, 100);
+				dojo._xdTimer = setInterval(function(){dojo._xdWatchInFlight();}, 100);
 			}else{
-				this._xdTimer = setInterval(dojo._scopeName + "._xdWatchInFlight();", 100);
+				dojo._xdTimer = setInterval(dojo._scopeName + "._xdWatchInFlight();", 100);
 			}
 		}
-		this._xdStartTime = (new Date()).getTime();
+		dojo._xdStartTime = (new Date()).getTime();
 	}
 
 	if (currentIsXDomain){
@@ -245,32 +245,32 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 		//Add to script src
 		var element = document.createElement("script");
 		element.type = "text/javascript";
-		if(this._xdCharSet){
-			element.charset = this._xdCharSet;
+		if(dojo._xdCharSet){
+			element.charset = dojo._xdCharSet;
 		}
 		element.src = xdUri;
-		if(!this.headElement){
-			this._headElement = document.getElementsByTagName("head")[0];
+		if(!dojo.headElement){
+			dojo._headElement = document.getElementsByTagName("head")[0];
 
 			//Head element may not exist, particularly in html
 			//html 4 or tag soup cases where the page does not
 			//have a head tag in it. Use html element, since that will exist.
 			//Seems to be an issue mostly with Opera 9 and to lesser extent Safari 2
-			if(!this._headElement){
-				this._headElement = document.getElementsByTagName("html")[0];
+			if(!dojo._headElement){
+				dojo._headElement = document.getElementsByTagName("html")[0];
 			}
 		}
-		this._headElement.appendChild(element);
+		dojo._headElement.appendChild(element);
 	}else{
-		var contents = this._getText(uri, null, true);
+		var contents = dojo._getText(uri, null, true);
 		if(contents == null){ return 0; /*boolean*/}
 		
 		//If this is not xdomain, or if loading a i18n resource bundle, then send it down
 		//the normal eval/callback path.
-		if(this._isXDomain
+		if(dojo._isXDomain
 			&& uri.indexOf("/nls/") == -1
 			&& module != "dojo.i18n"){
-			var res = this._xdCreateResource(contents, module, uri);
+			var res = dojo._xdCreateResource(contents, module, uri);
 			dojo.eval(res);
 		}else{
 			if(cb){
@@ -278,7 +278,7 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 			}else{
 				//Only do the scoping if no callback. If a callback is specified,
 				//it is most likely the i18n bundle stuff.
-				contents = this._scopePrefix + contents + this._scopeSuffix;
+				contents = dojo._scopePrefix + contents + dojo._scopeSuffix;
 			}
 			var value = dojo["eval"](contents+"\r\n//@ sourceURL="+uri);
 			if(cb){
@@ -289,8 +289,8 @@ dojo._loadUri = function(/*String*/uri, /*Function?*/cb, /*boolean*/currentIsXDo
 
 	//These steps are done in the non-xd loader version of this function.
 	//Maintain these steps to fit in with the existing system.
-	this._loadedUrls[uri] = true;
-	this._loadedUrls.push(uri);
+	dojo._loadedUrls[uri] = true;
+	dojo._loadedUrls.push(uri);
 	return true; //Boolean
 }
 
@@ -324,7 +324,7 @@ dojo._xdResourceLoaded = function(/*Object*/res){
 					requireAfterList = [];
 				}
 
-				var unpackedDeps = this._xdUnpackDependency(dep);
+				var unpackedDeps = dojo._xdUnpackDependency(dep);
 				if(unpackedDeps.requires){
 					requireList = requireList.concat(unpackedDeps.requires);
 				}
@@ -352,7 +352,7 @@ dojo._xdResourceLoaded = function(/*Object*/res){
 			res.defineResource(dojo);
 		}else{
 			//Save off the resource contents for definition later.
-			var contentIndex = this._xdContents.push({
+			var contentIndex = dojo._xdContents.push({
 					content: res.defineResource,
 					resourceName: res["resourceName"],
 					resourcePath: res["resourcePath"],
@@ -361,7 +361,7 @@ dojo._xdResourceLoaded = function(/*Object*/res){
 	
 			//Add provide/requires to dependency map.
 			for(i = 0; i < provideList.length; i++){
-				this._xdDepMap[provideList[i]] = { requires: requireList, requiresAfter: requireAfterList, contentIndex: contentIndex };
+				dojo._xdDepMap[provideList[i]] = { requires: requireList, requiresAfter: requireAfterList, contentIndex: contentIndex };
 			}
 		}
 
@@ -369,7 +369,7 @@ dojo._xdResourceLoaded = function(/*Object*/res){
 		//Do this at the very end (in a *separate* for loop) to avoid shutting down the 
 		//inflight timer check too soon.
 		for(i = 0; i < provideList.length; i++){
-			this._xdInFlight[provideList[i]] = false;
+			dojo._xdInFlight[provideList[i]] = false;
 		}
 	}
 }
@@ -475,8 +475,8 @@ dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, 
     // summary: loads a bundle intelligently based on whether the module is 
     // local or xd. Overrides the local-case implementation.
     
-    var modulePath = this.moduleUrl(moduleName).toString();
-    if (this._xdIsXDomainPath(modulePath)) {
+    var modulePath = dojo.moduleUrl(moduleName).toString();
+    if (dojo._xdIsXDomainPath(modulePath)) {
         // call cross-domain loader
         return dojo.xdRequireLocalization.apply(dojo, arguments);
     } else {
@@ -549,12 +549,12 @@ dojo._xdWalkReqs = function(){
 	//the right order.
 	var reqChain = null;
 	var req;
-	for(var i = 0; i < this._xdOrderedReqs.length; i++){
-		req = this._xdOrderedReqs[i];
-		if(this._xdDepMap[req]){
+	for(var i = 0; i < dojo._xdOrderedReqs.length; i++){
+		req = dojo._xdOrderedReqs[i];
+		if(dojo._xdDepMap[req]){
 			reqChain = [req];
 			reqChain[req] = true; //Allow for fast lookup of the req in the array
-			this._xdEvalReqs(reqChain);
+			dojo._xdEvalReqs(reqChain);
 		}
 	}
 }
@@ -564,7 +564,7 @@ dojo._xdEvalReqs = function(/*Array*/reqChain){
 	//Does a depth first, breadth second search and eval of required modules.
 	while(reqChain.length > 0){
 		var req = reqChain[reqChain.length - 1];
-		var res = this._xdDepMap[req];
+		var res = dojo._xdDepMap[req];
 		var i, reqs, nextReq;
 		if(res){
 			//Trace down any requires for this resource.
@@ -577,22 +577,22 @@ dojo._xdEvalReqs = function(/*Array*/reqChain){
 						//New req depedency. Follow it down.
 						reqChain.push(nextReq);
 						reqChain[nextReq] = true;
-						this._xdEvalReqs(reqChain);
+						dojo._xdEvalReqs(reqChain);
 					}
 				}
 			}
 			//END dojo._xdTraceReqs() inlining for small Safari 2.0 call stack
 
 			//Evaluate the resource.
-			var contents = this._xdContents[res.contentIndex];
+			var contents = dojo._xdContents[res.contentIndex];
 			if(!contents.isDefined){
 				var content = contents.content;
 				content["resourceName"] = contents["resourceName"];
 				content["resourcePath"] = contents["resourcePath"];
-				this._xdDefList.push(content);
+				dojo._xdDefList.push(content);
 				contents.isDefined = true;
 			}
-			this._xdDepMap[req] = null;
+			dojo._xdDepMap[req] = null;
 
 			//Trace down any requireAfters for this resource.
 			//START dojo._xdTraceReqs() inlining for small Safari 2.0 call stack
@@ -604,7 +604,7 @@ dojo._xdEvalReqs = function(/*Array*/reqChain){
 						//New req depedency. Follow it down.
 						reqChain.push(nextReq);
 						reqChain[nextReq] = true;
-						this._xdEvalReqs(reqChain);
+						dojo._xdEvalReqs(reqChain);
 					}
 				}
 			}
@@ -620,8 +620,8 @@ dojo._xdClearInterval = function(){
 	//summary: Internal xd loader function.
 	//Clears the interval timer used to check on the
 	//status of in-flight xd module resource requests.
-	clearInterval(this._xdTimer);
-	this._xdTimer = 0;
+	clearInterval(dojo._xdTimer);
+	dojo._xdTimer = 0;
 }
 
 dojo._xdWatchInFlight = function(){
@@ -630,12 +630,12 @@ dojo._xdWatchInFlight = function(){
 
 	var noLoads = "";
 	var waitInterval = (dojo.config.xdWaitSeconds || 15) * 1000;
-	var expired = (this._xdStartTime + waitInterval) < (new Date()).getTime();
+	var expired = (dojo._xdStartTime + waitInterval) < (new Date()).getTime();
 
 	//If any xdInFlight are true, then still waiting for something to load.
 	//Come back later. If we timed out, report the things that did not load.
-	for(var param in this._xdInFlight){
-		if(this._xdInFlight[param] === true){
+	for(var param in dojo._xdInFlight){
+		if(dojo._xdInFlight[param] === true){
 			if(expired){
 				noLoads += param + " ";
 			}else{
@@ -645,22 +645,22 @@ dojo._xdWatchInFlight = function(){
 	}
 
 	//All done. Clean up and notify.
-	this._xdClearInterval();
+	dojo._xdClearInterval();
 
 	if(expired){
 		throw "Could not load cross-domain resources: " + noLoads;
 	}
 
-	this._xdWalkReqs();
+	dojo._xdWalkReqs();
 	
-	var defLength = this._xdDefList.length;
+	var defLength = dojo._xdDefList.length;
 	for(var i= 0; i < defLength; i++){
 		var content = dojo._xdDefList[i];
 		if(dojo.config["debugAtAllCosts"] && content["resourceName"]){
-			if(!this["_xdDebugQueue"]){
-				this._xdDebugQueue = [];
+			if(!dojo["_xdDebugQueue"]){
+				dojo._xdDebugQueue = [];
 			}
-			this._xdDebugQueue.push({resourceName: content.resourceName, resourcePath: content.resourcePath});
+			dojo._xdDebugQueue.push({resourceName: content.resourceName, resourcePath: content.resourcePath});
 		}else{
 			//Evaluate the resource to bring it into being.
 			//Pass in scope args to allow multiple versions of modules in a page.	
@@ -672,8 +672,8 @@ dojo._xdWatchInFlight = function(){
 	//This normally shouldn't happen with proper dojo.provide and dojo.require
 	//usage, but providing it just in case. Note that these may not be executed
 	//in the original order that the developer intended.
-	for(i = 0; i < this._xdContents.length; i++){
-		var current = this._xdContents[i];
+	for(i = 0; i < dojo._xdContents.length; i++){
+		var current = dojo._xdContents[i];
 		if(current.content && !current.isDefined){
 			//Pass in scope args to allow multiple versions of modules in a page.	
 			current.content.apply(dojo.global, dojo._scopeArgs);
@@ -681,21 +681,21 @@ dojo._xdWatchInFlight = function(){
 	}
 
 	//Clean up for the next round of xd loading.
-	this._xdReset();
+	dojo._xdReset();
 
-	if(this["_xdDebugQueue"] && this._xdDebugQueue.length > 0){
-		this._xdDebugFileLoaded();
+	if(dojo["_xdDebugQueue"] && dojo._xdDebugQueue.length > 0){
+		dojo._xdDebugFileLoaded();
 	}else{
-		this._xdNotifyLoaded();
+		dojo._xdNotifyLoaded();
 	}
 }
 
 dojo._xdNotifyLoaded = function(){
 	//Clear inflight count so we will finally do finish work.
-	this._inFlightCount = 0; 
+	dojo._inFlightCount = 0; 
 	
 	//Only trigger call loaded if dj_load_init has run. 
-	if(this._initFired && !this._loadNotifying){ 
-		this._callLoaded();
+	if(dojo._initFired && !dojo._loadNotifying){ 
+		dojo._callLoaded();
 	}
 }

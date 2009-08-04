@@ -1066,7 +1066,8 @@ if(dojo.isIE || dojo.isOpera){
 				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft,
 				y: de.clientTop }; // Object
 		}else if(d.isIE < 8){
-			return {x: de.getBoundingClientRect().left, y: de.getBoundingClientRect().top};
+			de = de.getBoundingClientRect();
+			return {x: de.left, y: de.top};
 		}else{
 			return {
 				x: 0,
@@ -1093,27 +1094,28 @@ if(dojo.isIE || dojo.isOpera){
 		return scrollLeft; // Integer
 	}
 
-	dojo._abs = function(/*DomNode*/node, /*Boolean?*/includeScroll){
+	// FIXME: need a setter for coords or a moveTo!!
+	dojo.position = dojo._abs = function(/*DomNode*/node, /*Boolean?*/includeScroll){
 		//	summary:
-		//		Gets the position of the passed element relative to
+		//		Gets the position and size of the passed element relative to
 		//		the viewport (if includeScroll==false), or relative to the
 		//		document root (if includeScroll==true).
 		//
+		//	description:
 		//		Returns an object of the form:
-		//			{ x: 100, y: 300 }
-		//		if includeScroll is passed, the x and y values will include any
+		//			{ x: 100, y: 300, w: 20, h: 15 }
+		//		If includeScroll==true, the x and y values will include any
 		//		document offsets that may affect the position relative to the
 		//		viewport.
+		//		Uses the border-box model (inclusive of border and padding but
+		//		not margin).  Does not act as a setter.
 
-		// FIXME: need to decide in the brave-new-world if we're going to be
-		// margin-box or border-box.
-
-		// targetBoxType == "border-box"
-		var db = d.body(), dh = d.body().parentNode, ret;
+		var db = d.body(), dh = db.parentNode, ret, node = dojo.byId(node);
 		if(node["getBoundingClientRect"]){
 			// IE6+, FF3+, super-modern WebKit, and Opera 9.6+ all take this branch
-			var client = node.getBoundingClientRect();
-			ret = { x: client.left, y: client.top };
+			with(node.getBoundingClientRect()){
+				ret = { x: left, y: top, w: right-left, h: bottom-top };
+			}
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			if(d.isFF == 3){
 				// In FF3 you have to subtract the document element margins.
@@ -1132,10 +1134,12 @@ if(dojo.isIE || dojo.isOpera){
 			}
 		//>>excludeEnd("webkitMobile");
 		}else{
-			// FF2 and Safari
+			// FF2 and older WebKit
 			ret = {
 				x: 0,
-				y: 0
+				y: 0,
+				w: node.offsetWidth,
+				h: node.offsetHeight
 			};
 			if(node["offsetParent"]){
 				ret.x -= _sumAncestorProperties(node, "scrollLeft");
@@ -1198,21 +1202,23 @@ if(dojo.isIE || dojo.isOpera){
 		return ret; // Object
 	}
 
-	// FIXME: need a setter for coords or a moveTo!!
 	dojo.coords = function(/*DomNode|String*/node, /*Boolean?*/includeScroll){
 		//	summary:
-		//		Returns an object that measures margin box width/height and
-		//		absolute positioning data from dojo._abs().
+		//		Deprecated: Use position() for border-box x/y/w/h
+		//		or marginBox() for margin-box w/h/l/t.
+		//		Returns an object representing a node's size and position.
 		//
 		//	description:
-		//		Returns an object that measures margin box width/height and
-		//		absolute positioning data from dojo._abs().
+		//		Returns an object that measures margin-box (w)idth/(h)eight
+		//		and absolute position x/y of the border-box. Also returned
+		//		is computed (l)eft and (t)op values in pixels from the
+		//		node's offsetParent as returned from marginBox().
 		//		Return value will be in the form:
 		//|			{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }
 		//		Does not act as a setter. If includeScroll is passed, the x and
-		//		y params are affected as one would expect in dojo._abs().
+		//		y params are affected as one would expect in dojo.position().
 		var n = byId(node), s = gcs(n), mb = d._getMarginBox(n, s);
-		var abs = d._abs(n, includeScroll);
+		var abs = d.position(n, includeScroll);
 		mb.x = abs.x;
 		mb.y = abs.y;
 		return mb;

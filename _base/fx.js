@@ -541,7 +541,7 @@ dojo.require("dojo._base.html");
 		//	|		properties:{
 		//	|			height:function(node){
 		//	|				// shrink this node by 50%
-		//	|				return dojo.coords(node).h / 2
+		//	|				return dojo.position(node).h / 2
 		//	|			},
 		//	|			width:{
 		//	|				start:function(node){ return 100; },

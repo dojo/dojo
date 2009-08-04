@@ -88,7 +88,7 @@ dojo.mixin(doh.robot,{
 		var y = offsetY;
 		doh.robot._scrollIntoView(node);
 		// coords relative to viewport be default
-		var c = dojo.coords(node);
+		var c = dojo.position(node);
 		x += c.x;
 		y += c.y;
 		doh.robot._mouseMove(x, y, false, duration);

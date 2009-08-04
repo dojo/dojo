@@ -325,7 +325,7 @@ dojo.fx = {
 				top = (pos == 'absolute' ? n.offsetTop : parseInt(cs.top) || 0);
 				left = (pos == 'absolute' ? n.offsetLeft : parseInt(cs.left) || 0);
 				if(pos != 'absolute' && pos != 'relative'){
-					var ret = d.coords(n, true);
+					var ret = d.position(n, true);
 					top = ret.y;
 					left = ret.x;
 					n.style.position="absolute";

@@ -19,7 +19,7 @@
 							// show vertical scrollbar
 							dojo.byId("rect_vert").style.display = "";
 							try{
-								t.is(100, dojo.coords('rect100').x);
+								t.is(100, dojo.position('rect100').x);
 							}finally{
 								dojo.byId("rect_vert").style.display = "none";
 							}
@@ -30,7 +30,7 @@
 							dojo.byId("rect_horz").style.display = "";
 							scrollBy(-50, 0);
 							try{
-								t.is(100, dojo.coords('rect100', true).x);
+								t.is(100, dojo.position('rect100', true).x);
 							}finally{
 								dojo.byId("rect_horz").style.display = "none";
 							}

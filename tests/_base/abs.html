@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title>supplementary dojo._abs() tests</title>
+		<title>supplementary dojo.position() tests</title>
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
@@ -11,7 +11,7 @@
 		<script type="text/javascript">
 			function onButtonClick(){
 				/* position a red square over pressed button */
-				var pos = dojo._abs(this, true);
+				var pos = dojo.position(this, true);
 				var marker = document.createElement('div');
 				document.body.appendChild(marker);
 				marker.className = "marker";
@@ -32,7 +32,7 @@
 				var buttons = dojo.query("button");
 				var start = new Date();
 				for(var i=0; i<100; i++){
-					for(var j=0; j<buttons.length; j++) dojo.coords(buttons[j]);
+					for(var j=0; j<buttons.length; j++) dojo.position(buttons[j]);
 				}
 				alert("benchmark: "  + (new Date() - start));
 				****/
@@ -77,7 +77,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>supplementary dojo._abs() tests</h1>
+		<h1>supplementary dojo.position() tests</h1>
 		<button style="top: 100px; left: 200px;">click</button>
 		<button style="top: 900px; left: 200px;">click</button>
 		<div id="outer" style="position: absolute; top: 300px; left: 100px; height: 400px; width: 600px;">

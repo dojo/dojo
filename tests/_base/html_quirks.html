@@ -28,7 +28,7 @@
 						"t.is(100, dojo.marginBox('sq100nopos').h);",
 
 						function coordsBasic(t){
-							var pos = dojo.coords("sq100", false);
+							var pos = dojo.position("sq100", false);
 							// console.debug(pos);
 							t.is(100, pos.x);
 							t.is(100, pos.y);
@@ -36,21 +36,30 @@
 							t.is(100, pos.h);
 						},
 						function coordsMargin(t){
-							// coords is getting us the margin-box location, is
-							// this right?
-							var pos = dojo.coords("sq100margin10", false);
+							// position() is getting us the border-box location
+							var pos = dojo.position("sq100margin10", false);
+							t.is(260, pos.x);
+							t.is(110, pos.y);
+							t.is(100, pos.w);
+							t.is(100, pos.h);
+							pos = dojo.marginBox("sq100margin10");
+							t.is(120, pos.w);
+							t.is(120, pos.h);
+							// Though coords shouldn't be used, test it for backward compatibility.
+							// coords returns the border-box location and margin-box size
+							pos = dojo.coords("sq100margin10", false);
 							t.is(260, pos.x);
 							t.is(110, pos.y);
 							t.is(120, pos.w);
 							t.is(120, pos.h);
 						},
 						function coordsBorder(t){
-							var pos = dojo.coords("sq100border10", false);
+							var pos = dojo.position("sq100border10", false);
 							t.is(100, pos.x);
 							t.is(400, pos.y);
 						},
 						function sq100nopos(t){
-							var pos = dojo.coords("sq100nopos", false);
+							var pos = dojo.position("sq100nopos", false);
 							// console.debug(pos);
 							t.is(0, pos.x);
 							t.t(pos.y > 0);

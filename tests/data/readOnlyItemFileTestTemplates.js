@@ -1088,6 +1088,56 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: fetch() with RegExp Match",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of a basic fetch using a RegExp works with IFRS
+			//	description:
+			//		Simple test of a basic fetch using a RegExp works with IFRS
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("data_multitype"));
+			
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				t.assertEqual(4, items.length);
+				d.callback(true);
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			store.fetch({ 	query: {count: new RegExp("^1.*$", "gi")}, 
+									onComplete: onComplete, 
+									onError: onError
+								});
+			return d;
+		}
+	},
+	{
+		name: "Read API: fetch() with RegExp Match Inline",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of a basic fetch using a RegExp works with IFRS
+			//	description:
+			//		Simple test of a basic fetch using a RegExp works with IFRS
+			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("data_multitype"));
+			
+			var d = new doh.Deferred();
+			function onComplete(items, request){
+				t.assertEqual(4, items.length);
+				d.callback(true);
+			}
+			function onError(errData, request){
+				t.assertTrue(false);
+				d.errback(errData);
+			}
+			store.fetch({ 	query: {count: /^1.*$/gi}, 
+									onComplete: onComplete, 
+									onError: onError
+								});
+			return d;
+		}
+	},
+	{
 		name: "Read API: fetch() with MultiType, MultiValue Match",
  		runTest: function(datastore, t){
 			//	summary: 

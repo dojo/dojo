@@ -275,9 +275,10 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 					value = requestArgs.query[key];
 					if(typeof value === "string"){
 						regexpList[key] = dojo.data.util.filter.patternToRegExp(value, ignoreCase);
+					}else if(value instanceof RegExp){
+						regexpList[key] = value;
 					}
 				}
-
 				for(i = 0; i < arrayOfItems.length; ++i){
 					var match = true;
 					var candidateItem = arrayOfItems[i];

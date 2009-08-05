@@ -582,6 +582,14 @@ dojo.require("dojo._base.array");
 			return d.map(this, d.coords); // Array
 		},
 
+		position: function(){
+			//	summary:
+			// 		Returns border-box objects (x/y/w/h) of all elements in a node list
+			// 		as an Array (*not* a NodeList)
+
+			return d.map(this, d.coords); // Array
+		},
+
 		attr: function(property, value){
 			//	summary:
 			//		gets or sets the DOM attribute for every element in the

@@ -576,16 +576,18 @@ dojo.require("dojo._base.array");
 		/*=====
 		coords: function(){
 			//	summary:
-			// 		Returns the box objects all elements in a node list as
-			// 		an Array (*not* a NodeList)
+			//		Returns the box objects of all elements in a node list as
+			//		an Array (*not* a NodeList). Acts like `dojo.coords`, though assumes
+			//		the node passed is each node in this list.
 
 			return d.map(this, d.coords); // Array
 		},
 
 		position: function(){
 			//	summary:
-			// 		Returns border-box objects (x/y/w/h) of all elements in a node list
-			// 		as an Array (*not* a NodeList)
+			//		Returns border-box objects (x/y/w/h) of all elements in a node list
+			//		as an Array (*not* a NodeList). Acts like `dojo.position`, though
+			//		assumes the node passed is each node in this list. 
 
 			return d.map(this, d.coords); // Array
 		},

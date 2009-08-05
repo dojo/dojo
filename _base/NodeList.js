@@ -682,6 +682,7 @@ dojo.require("dojo._base.array");
 
 		// useful html methods
 		coords:	adaptAsMap(d.coords),
+		position: adaptAsMap(d.position),
 
 		// FIXME: connectPublisher()? connectRunOnce()?
 

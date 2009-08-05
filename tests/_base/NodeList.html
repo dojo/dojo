@@ -261,7 +261,10 @@
 							doh.t(dojo.isArray(tnl));
 							doh.is(100, tnl.coords()[0].w);
 							doh.is(100, tnl.coords()[0].h);
+							doh.is(100, tnl.position()[0].w);
+							doh.is(100, tnl.position()[0].h);
 							doh.is(document.body.getElementsByTagName("*").length, dojo.query("body *").coords().length);
+							doh.is(document.body.getElementsByTagName("*").length, dojo.query("body *").position().length);
 						},
 
 						function styleGet(){

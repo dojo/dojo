@@ -589,7 +589,7 @@ dojo.require("dojo._base.array");
 			//		as an Array (*not* a NodeList). Acts like `dojo.position`, though
 			//		assumes the node passed is each node in this list. 
 
-			return d.map(this, d.coords); // Array
+			return d.map(this, d.position); // Array
 		},
 
 		attr: function(property, value){

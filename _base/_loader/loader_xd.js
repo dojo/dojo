@@ -692,8 +692,18 @@ dojo._xdWatchInFlight = function(){
 
 dojo._xdNotifyLoaded = function(){
 	//Clear inflight count so we will finally do finish work.
+
+	//Just having a legitimate status (true or false) for an inflight item
+	//means that it is still being processed. Do the typeof test
+	//to avoid bad JavaScript that might tinker with Object.prototype.
+	for(var prop in dojo._xdInFlight){
+		if(typeof dojo._xdInFlight[prop] == "boolean"){
+			return;
+		}
+	}
+
 	dojo._inFlightCount = 0; 
-	
+
 	//Only trigger call loaded if dj_load_init has run. 
 	if(dojo._initFired && !dojo._loadNotifying){ 
 		dojo._callLoaded();

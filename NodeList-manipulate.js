@@ -50,6 +50,9 @@ dojo["NodeList-manipulate"] = {
 				//DocumentFragment cannot handle cloneNode, so choose first child.
 				html = html.childNodes[0];
 			}
+		}else if(html.nodeType == 1 && html.parentNode){
+			//This element is already in the DOM clone it, but not its children.
+			html = html.cloneNode(false);
 		}
 		return html; /*DOMNode*/
 	}

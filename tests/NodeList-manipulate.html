@@ -284,6 +284,16 @@
 							dojo.query("h1").forEach(function(node){
 								doh.is("h4", node.parentNode.nodeName.toLowerCase());					
 							});
+							
+							//Complicated test that test for cloning of the wrap nodes in the right
+							//situation.
+							var div = dojo.create("div", {"class": "myClass"});
+							dojo.query("#inputForm").query("select").wrapAll(div).end().query("input").wrapAll(div);
+							var myClass = dojo.query(".myClass");
+
+							doh.is(2, myClass.length);
+							doh.is(5, dojo.query("input", myClass[0]).length);
+							doh.is(2, dojo.query("select", myClass[1]).length);
 						},
 
 						function wrapInner(t){

@@ -23,7 +23,7 @@
 			}
 
 			dojo.addOnLoad(function(){
-				var divs = dojo.query("div");
+				var divs = dojo.query("div.testDiv");
 
 				doh.register("t", 
 					[
@@ -88,13 +88,13 @@
 	</head>
 	<body id="body" class="classy">
 		<h1 id="firstH1">testing dojo.NodeList-traverse</h1>
-		<div id="sq100">
+		<div id="sq100" class="testDiv">
 			100px square, abs
 		</div>
-		<div id="t">
+		<div id="t" class="testDiv">
 			<span id="c1">c1</span>
 		</div>
-		<div id="third" class="third">
+		<div id="third" class="third testDiv">
 			<!-- This is the third top level div -->
 			<span id="crass">Crass, baby</span>
 			The third div

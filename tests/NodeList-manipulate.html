@@ -23,7 +23,7 @@
 			}
 
 			dojo.addOnLoad(function(){
-				var divs = dojo.query("div");
+				var divs = dojo.query("div.testDiv");
 
 				doh.register("t", 
 					[
@@ -141,7 +141,8 @@
 							//Create some new things.
 							dojo.query("body").append('<p class="singer">bo</p><p class="singer">diddly</p>');
 
-							dojo.query(".foo").appendTo(".singer");
+							var ret = dojo.query(".foo").appendTo(".singer");
+							doh.is(6, ret.length);
 
 							dojo.query(".singer").forEach(function(node){
 								doh.is(4, node.childNodes.length);
@@ -185,7 +186,8 @@
 							//Create some new things.
 							dojo.query("body").append('<p class="actor">steve</p><p class="actor">martin</p>');
 
-							dojo.query(".bar").prependTo(".actor");
+							var ret = dojo.query(".bar").prependTo(".actor");
+							doh.is(6, ret.length);
 
 							dojo.query(".actor").forEach(function(node){
 								doh.is(4, node.childNodes.length);
@@ -216,7 +218,8 @@
 
 						function insertAfter(t){
 							dojo.query("body").prepend('<h1>testing dojo.NodeList-manipulate</h1>');
-							dojo.query(".after").insertAfter("h1");
+							var ret = dojo.query(".after").insertAfter("h1");
+							doh.is(3, ret.length);
 
 							dojo.query("h1").forEach(function(node){
 								for(var i = 0; i < 3; i++){
@@ -242,7 +245,8 @@
 						},
 
 						function insertBefore(t){
-							dojo.query(".before").insertBefore("h1");
+							var ret = dojo.query(".before").insertBefore("h1");
+							doh.is(3, ret.length);
 
 							dojo.query("h1").forEach(function(node){
 								for(var i = 0; i < 3; i++){
@@ -328,13 +332,13 @@
 	</head>
 	<body id="body" class="classy">
 		<h1>testing dojo.NodeList-manipulate</h1>
-		<div id="sq100">
+		<div id="sq100" class="testDiv">
 			100px square, abs
 		</div>
-		<div id="t">
+		<div id="t" class="testDiv">
 			<span id="c1">c1</span>
 		</div>
-		<div id="third" class="third">
+		<div id="third" class="third testDiv">
 			<!-- This is the third top level div -->
 			<span id="crass">Crass, baby</span>
 			The third div

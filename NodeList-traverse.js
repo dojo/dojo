@@ -65,11 +65,13 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
-		//	query:
+		// query:
 		//		single-expression CSS rule. For example, ".thinger" or
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, all immediate child elements for the nodes in this dojo.NodeList.
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -102,6 +104,9 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, the closest parent that matches the query, including the current
+		//		node in this dojo.NodeList if it matches the query.
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -137,6 +142,8 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, immediate parent elements for nodes in this dojo.NodeList.
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -168,6 +175,8 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, all parent elements for nodes in this dojo.NodeList.
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -205,6 +214,8 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, all sibling elements for nodes in this dojo.NodeList.
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -245,6 +256,8 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, the next element for nodes in this dojo.NodeList.
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -281,6 +294,8 @@ dojo.extend(dojo.NodeList, {
 		//		"#someId[attrName='value']" but not "div > span". In short,
 		//		anything which does not invoke a descent to evaluate but
 		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, the previous element for nodes in this dojo.NodeList.
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -312,6 +327,8 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList, with the first node in this dojo.NodeList
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -332,6 +349,8 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList, with the last node in this dojo.NodeList
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -352,6 +371,8 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList, with the even nodes in this dojo.NodeList
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -374,6 +395,8 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList, with the odd nodes in this dojo.NodeList
 		//	example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">

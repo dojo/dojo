@@ -37,19 +37,18 @@ dojo.declare("dojo.dnd.__ContainerArgs", [], {
 
 dojo.dnd.Item = function(){
 	// summary:
-	//		Represents (one of) the source node(s) being dragged
-	// node: DomNode
-	//		The DOM Node being dragged
-	// data: Object
-	//		Logical representation of the object being dragged, typically a
-	//		name/value hash suitable for dojo.data's newItem() call like:
-	// |	{ id: 123, label: "my item" }
+	//		Represents (one of) the source node(s) being dragged.
+	//		Contains (at least) the "type" and "data" attributes.
 	// type: String[]
 	//		Type(s) of this item, by default this is ["text"]
+	// data: Object
+	//		Logical representation of the object being dragged.
+	//		If the drag object's type is "text" then data is a String,
+	//		if it's another type then data could be a different Object,
+	//		perhaps a name/value hash.
 	
-	this.node = node;
-	this.data = data;
 	this.type = type;
+	this.data = data;
 }
 =====*/
 

@@ -34,6 +34,23 @@ dojo.declare("dojo.dnd.__ContainerArgs", [], {
 	//		(this is used in the markup mode)
 	_skipStartup: false
 });
+
+dojo.dnd.Item = function(){
+	// summary:
+	//		Represents (one of) the source node(s) being dragged
+	// node: DomNode
+	//		The DOM Node being dragged
+	// data: Object
+	//		Logical representation of the object being dragged, typically a
+	//		name/value hash suitable for dojo.data's newItem() call like:
+	// |	{ id: 123, label: "my item" }
+	// type: String[]
+	//		Type(s) of this item, by default this is ["text"]
+	
+	this.node = node;
+	this.data = data;
+	this.type = type;
+}
 =====*/
 
 dojo.declare("dojo.dnd.Container", null, {
@@ -43,6 +60,17 @@ dojo.declare("dojo.dnd.Container", null, {
 	
 	// object attributes (for markup)
 	skipForm: false,
+	
+	/*=====
+	// current: DomNode
+	//		The DOM node the mouse is currently hovered over
+	current: null,
+	
+	// map: Hash<String, dojo.dnd.Item>
+	//		Map from an item's id (which is also the DOMNode's id) to
+	//		the dojo.dnd.Item itself.
+	map: {},
+	=====*/
 	
 	constructor: function(node, params){
 		// summary:
@@ -90,9 +118,9 @@ dojo.declare("dojo.dnd.Container", null, {
 	getItem: function(/*String*/ key){
 		// summary:
 		//		returns a data item by its key (id)
-		return this.map[key];	// Object
+		return this.map[key];	// dojo.dnd.Item
 	},
-	setItem: function(/*String*/ key, /*Object*/ data){
+	setItem: function(/*String*/ key, /*dojo.dnd.Item*/ data){
 		// summary:
 		//		associates a data item with its key (id)
 		this.map[key] = data;
@@ -115,7 +143,8 @@ dojo.declare("dojo.dnd.Container", null, {
 		return o;	// Object
 	},
 	clearItems: function(){
-		// summary: removes all data items from the map
+		// summary:
+		//		removes all data items from the map
 		this.map = {};
 	},
 	
@@ -325,7 +354,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		}
 		return null;
 	},
-	_normalizedCreator: function(item, hint){
+	_normalizedCreator: function(/*dojo.dnd.Item*/ item, /*String*/ hint){
 		// summary:
 		//		adds all necessary data to the output of the user-supplied creator function
 		var t = (this.creator || this.defaultCreator).call(this, item, hint);

@@ -23,8 +23,17 @@ dojo.declare("dojo.dnd.__SelectorArgs", [dojo.dnd.__ContainerArgs], {
 =====*/
 
 dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
-	// summary: a Selector object, which knows how to select its children
+	// summary:
+	//		a Selector object, which knows how to select its children
 	
+	/*=====
+	// selection: Set<String>
+	//		The set of id's that are currently selected, such that this.selection[id] == 1
+	//		if the node w/that id is selected.  Can iterate over selected node's id's like:
+	//	|		for(var id in this.selection)
+	selection: {},
+	=====*/
+
 	constructor: function(node, params){
 		// summary:
 		//		constructor of the Selector
@@ -58,7 +67,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 			if(i in e){ continue; }
 			t.push(dojo.byId(i));
 		}
-		return t;	// Array
+		return t;	// NodeList
 	},
 	selectNone: function(){
 		// summary:

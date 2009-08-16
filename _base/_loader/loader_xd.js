@@ -11,13 +11,24 @@ dojo._xdReset = function(){
 	//to match the format for a xd resource and put in the xd load queue.
 	dojo._isXDomain = dojo.config.useXDomain || false;
 
-	dojo._xdTimer = 0;
+	dojo._xdClearInterval();
 	dojo._xdInFlight = {};
 	dojo._xdOrderedReqs = [];
 	dojo._xdDepMap = {};
 	dojo._xdContents = [];
 	dojo._xdDefList = [];
 }
+
+dojo._xdClearInterval = function(){
+	//summary: Internal xd loader function.
+	//Clears the interval timer used to check on the
+	//status of in-flight xd module resource requests.
+	if(dojo._xdTimer){
+		clearInterval(dojo._xdTimer);
+		dojo._xdTimer = 0;
+	}
+}
+
 
 //Call reset immediately to set the state.
 dojo._xdReset();
@@ -614,14 +625,6 @@ dojo._xdEvalReqs = function(/*Array*/reqChain){
 		//Done with that require. Remove it and go to the next one.
 		reqChain.pop();
 	}
-}
-
-dojo._xdClearInterval = function(){
-	//summary: Internal xd loader function.
-	//Clears the interval timer used to check on the
-	//status of in-flight xd module resource requests.
-	clearInterval(dojo._xdTimer);
-	dojo._xdTimer = 0;
 }
 
 dojo._xdWatchInFlight = function(){

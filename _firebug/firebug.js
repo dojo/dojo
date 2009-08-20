@@ -60,17 +60,38 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		Option for console height (ignored for popup)
 	//		|	var djConfig = {isDebug: true, debugHeight:100 }
 
-if(
-   !window.firebug &&								// Testing for mozilla firebug lite 
-   !dojo.config.useCustomLogger &&
-	!dojo.isAIR &&									// isDebug triggers AIRInsector, not Firebug
-    (!dojo.isMoz || 								// if not Firefox, there's no firebug
-	(dojo.isMoz && !("console" in window)) || 		// Firefox, but Firebug is not installed.
-	(dojo.isMoz && !(window.loadFirebugConsole || console.firebug)) 	// Firefox, but Firebug is disabled (1.2 check, 1.0 check)
-)){
+
 
 (function(){
 
+	var isNewIE = (/Trident/.test(window.navigator.userAgent));
+	if(isNewIE){
+		// Fixing IE's console
+		// IE doesn't insert space between arguments. How annoying.
+		var calls = ["log", "info", "debug", "warn", "error"];
+		for(var i=0;i<calls.length;i++){
+			var m = calls[i];
+			var n = "_"+calls[i]
+			console[n] = console[m];
+			// need the closure here
+			console[m] = new Function('console.'+n+'(Array.prototype.slice.call(arguments).join(" "));')
+		}
+		// clear the console on load. This is more than a
+		// convenience - too many logs crashes it.
+		// If closed it throws an error
+		try{ console.clear(); }catch(e){}
+	}
+	
+	if(
+		!dojo.isFF &&								// Firefox has Firebug
+		(!dojo.isSafari || dojo.isSafari < 4) &&	// Safari 4 has a console
+		!isNewIE &&									// Has the new IE console
+		!window.firebug &&							// Testing for mozilla firebug lite 
+		!dojo.config.useCustomLogger &&				// Allow custom loggers
+		!dojo.isAIR									// isDebug triggers AIRInsector, not Firebug
+	){
+	
+	
 	// don't build firebug in iframes
 	try{
 		if(window != window.parent){ 
@@ -348,7 +369,7 @@ if(
 				}
 			}
 		}
-	};
+	}
 
 	// ***************************************************************************
 
@@ -357,14 +378,14 @@ if(
 		if(consoleFrame){
 			consoleFrame.style.display = frameVisible ? "block" : "none";
 		}
-	}
+	};
 
 	function focusCommandLine(){
 		toggleConsole(true);
 		if(commandLine){
 			commandLine.focus();
 		}
-	}
+	};
 	
 	function openWin(x,y,w,h){
 		var win = window.open("","_firebug","status=0,menubar=0,resizable=1,top="+y+",left="+x+",width="+w+",height="+h+",scrollbars=1,addressbar=0");
@@ -1178,7 +1199,7 @@ if(
 		toggleConsole(true);
 	}
 
-	
+}
+
 })();
 
-}

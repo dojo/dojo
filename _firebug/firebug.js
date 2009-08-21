@@ -73,11 +73,14 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 			var m = calls[i];
 			var n = "_"+calls[i]
 			console[n] = console[m];
-			// need the closure here
-			console[m] = new Function('console.'+n+'(Array.prototype.slice.call(arguments).join(" "));')
+			console[m] = new (function(){
+				var type = n;
+				return function(){
+					console[type](Array.prototype.slice.call(arguments).join(" "));
+				}
+			})();
 		}
-		// clear the console on load. This is more than a
-		// convenience - too many logs crashes it.
+		// clear the console on load. This is more than a convenience - too many logs crashes it.
 		// If closed it throws an error
 		try{ console.clear(); }catch(e){}
 	}
@@ -378,14 +381,14 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		if(consoleFrame){
 			consoleFrame.style.display = frameVisible ? "block" : "none";
 		}
-	};
+	}
 
 	function focusCommandLine(){
 		toggleConsole(true);
 		if(commandLine){
 			commandLine.focus();
 		}
-	};
+	}
 	
 	function openWin(x,y,w,h){
 		var win = window.open("","_firebug","status=0,menubar=0,resizable=1,top="+y+",left="+x+",width="+w+",height="+h+",scrollbars=1,addressbar=0");

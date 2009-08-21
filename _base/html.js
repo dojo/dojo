@@ -1114,17 +1114,9 @@ if(dojo.isIE || dojo.isOpera){
 		node = dojo.byId(node);
 		if(node["getBoundingClientRect"]){
 			// IE6+, FF3+, super-modern WebKit, and Opera 9.6+ all take this branch
-			with(node.getBoundingClientRect()){
-				ret = { x: left, y: top, w: right-left, h: bottom-top };
-			}
+			ret = node.getBoundingClientRect();
+			ret = { x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top };
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			if(d.isFF == 3){
-				// In FF3 you have to subtract the document element margins.
-				// Fixed in FF3.5 though.
-				var cs = gcs(dh);
-				ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
-				ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);
-			}
 			if(d.isIE){
 				// On IE there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
 				var offset = d._getIeDocumentElementOffset();
@@ -1132,6 +1124,12 @@ if(dojo.isIE || dojo.isOpera){
 				// fixes the position in IE, quirks mode
 				ret.x -= offset.x + (d.isQuirks ? db.clientLeft : 0);
 				ret.y -= offset.y + (d.isQuirks ? db.clientTop : 0);
+			}else if(d.isFF == 3){
+				// In FF3 you have to subtract the document element margins.
+				// Fixed in FF3.5 though.
+				var cs = gcs(dh);
+				ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
+				ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);
 			}
 		//>>excludeEnd("webkitMobile");
 		}else{

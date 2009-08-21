@@ -1110,7 +1110,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		Uses the border-box model (inclusive of border and padding but
 		//		not margin).  Does not act as a setter.
 
-		var db = d.body(), dh = db.parentNode, ret, node = dojo.byId(node);
+		var db = d.body(), dh = db.parentNode, ret;
+		node = dojo.byId(node);
 		if(node["getBoundingClientRect"]){
 			// IE6+, FF3+, super-modern WebKit, and Opera 9.6+ all take this branch
 			with(node.getBoundingClientRect()){

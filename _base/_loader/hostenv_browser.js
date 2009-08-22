@@ -274,12 +274,10 @@ if(typeof window != 'undefined'){
 			//		evtName handler.
 			// evtName: should be in the form "onclick" for "onclick" handlers.
 			// Make sure you pass in the "on" part.
-			//var oldHandler = _w[evtName] || function(){};
 			var _a = _w.attachEvent || _w.addEventListener;
 			evtName = _w.attachEvent ? evtName : evtName.substring(2);
 			_a(evtName, function(){
 				fp.apply(_w, arguments);
-				//oldHandler.apply(_w, arguments);
 			}, false);
 		};
 

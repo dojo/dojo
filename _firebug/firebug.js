@@ -73,7 +73,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 			var m = calls[i];
 			var n = "_"+calls[i]
 			console[n] = console[m];
-			console[m] = new (function(){
+			console[m] = (function(){
 				var type = n;
 				return function(){
 					console[type](Array.prototype.slice.call(arguments).join(" "));

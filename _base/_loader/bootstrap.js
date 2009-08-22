@@ -247,7 +247,7 @@ dojo.global = {
 	}
 	//>>excludeEnd("webkitMobile");
 
-	var empty = {}, extraNames;
+	var extraNames;
 	for(var i in {toString: 1}){ extraNames = []; break; }
 	dojo._extraNames = extraNames = extraNames || ["hasOwnProperty", "valueOf", "isPrototypeOf",
 		"propertyIsEnumerable", "toLocaleString", "toString"];
@@ -264,7 +264,7 @@ dojo.global = {
 			// toString() method, don't overwrite it with the toString() method
 			// that source inherited from Object.prototype
 			s = source[name];
-			if(s !== empty[name] && s !== target[name]){
+			if(!(name in target) || target[name] !== s){
 				target[name] = s;
 			}
 		}
@@ -274,7 +274,7 @@ dojo.global = {
 			for(; i < l; ++i){
 				name = extraNames[i];
 				s = source[name];
-				if(s !== empty[name] && s !== target[name]){
+				if(!(name in target) || target[name] !== s){
 					target[name] = s;
 				}
 			}

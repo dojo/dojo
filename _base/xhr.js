@@ -584,7 +584,9 @@ dojo.require("dojo._base.query");
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		//summary: errHandler function for dojo._ioSetArgs call.
 
-		console.error(error);
+		if(!dfd.ioArgs.args.failOk){
+			console.error(error);
+		}
 		return error;
 	}
 
@@ -780,9 +782,14 @@ dojo.require("dojo._base.query");
 			//		be a synchronous (blocking) request.
 			//	headers: Object?
 			//		Additional HTTP headers to send in the request.
+			//	failOk: Boolean?
+			//		false is default. Indicates whether a request should be
+			//		allowed to fail (and therefore no console error message in
+			//		the event of a failure)
 			this.handleAs = handleAs;
 			this.sync = sync;
 			this.headers = headers;
+			this.failOk = failOk;
 		}
 	});
 	=====*/

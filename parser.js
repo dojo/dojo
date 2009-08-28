@@ -321,7 +321,7 @@ dojo.parser = new function(){
 
 (function(){
 	var parseRunner = function(){ 
-		if(dojo.config["parseOnLoad"] == true){
+		if(dojo.config["parseOnLoad"]){
 			dojo.parser.parse(); 
 		}
 	};

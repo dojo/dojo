@@ -120,6 +120,17 @@ dojo.provide("dojo._base.lang");
 		//	example:
 		//	|	dojo.hitch(foo, myFunction);
 		//		returns a function that runs myFunction in the scope of foo
+		//	example:
+		//		Expansion on the default positional arguments passed along from
+		//		hitch. Passed args are mixed first, additional args after.
+		//	|	var foo = { bar: function(a, b, c){ console.log(a, b, c); } };
+		//	|	var fn = dojo.hitch(foo, "bar", 1, 2);
+		//	|	fn(3); // logs "1, 2, 3"
+		//	example:
+		//	|	var foo = { bar: 2 };
+		//	|	dojo.hitch(foo, function(){ this.bar = 10; })();
+		//		execute an anonymous function in scope of foo
+		
 		if(arguments.length > 2){
 			return d._hitchArgs.apply(d, arguments); // Function
 		}

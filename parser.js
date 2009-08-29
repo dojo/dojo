@@ -214,10 +214,7 @@ dojo.parser = new function(){
 				});
 			}
 
-			var markupFactory = clazz["markupFactory"];
-			if(!markupFactory && clazz["prototype"]){
-				markupFactory = clazz.prototype["markupFactory"];
-			}
+			var markupFactory = clazz.markupFactory || clazz.prototype && clazz.prototype.markupFactory;
 			// create the instance
 			var instance = markupFactory ? markupFactory(params, node, clazz) : new clazz(params, node);
 			thelist.push(instance);
@@ -321,7 +318,7 @@ dojo.parser = new function(){
 
 (function(){
 	var parseRunner = function(){ 
-		if(dojo.config["parseOnLoad"]){
+		if(dojo.config.parseOnLoad){
 			dojo.parser.parse(); 
 		}
 	};

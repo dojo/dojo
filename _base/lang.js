@@ -243,7 +243,7 @@ dojo.provide("dojo._base.lang");
 		return d.hitch.apply(d, arr.concat(d._toArray(arguments))); // Function
 	}
 
-	var extraNames = d._extraNames, extraLen = extraNames.length;
+	var extraNames = d._extraNames, extraLen = extraNames.length, empty = {};
 
 	dojo.clone = function(/*anything*/ o){
 		// summary:
@@ -284,7 +284,7 @@ dojo.provide("dojo._base.lang");
 			// toString() method, don't overwrite it with the toString() method
 			// that source inherited from Object.prototype
 			s = o[name];
-			if(!(name in r) || r[name] !== s){
+			if(!(name in r) || (r[name] !== s && (!(name in empty) || empty[name] !== s))){
 				r[name] = d.clone(s);
 			}
 		}
@@ -294,7 +294,7 @@ dojo.provide("dojo._base.lang");
 			for(i = 0; i < extraLen; ++i){
 				name = extraNames[i];
 				s = o[name];
-				if(!(name in r) || r[name] !== s){
+				if(!(name in r) || (r[name] !== s && (!(name in empty) || empty[name] !== s))){
 					r[name] = s; // functions only, we don't clone them
 				}
 			}

@@ -73,6 +73,9 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		if(keywordParameters.clearOnClose){
 			this.clearOnClose = true;
 		}
+		if("failOk" in keywordParameters){
+			this.failOk = keywordParameters.failOk?true:false;
+		}
 	},
 	
 	url: "",	// use "" rather than undefined for the benefit of the parser (#3539)

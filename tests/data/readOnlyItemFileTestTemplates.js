@@ -524,6 +524,35 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 		}
 	},
 	{
+		name: "Read API: fetch() all failOk",
+ 		runTest: function(datastore, t){
+			//	summary: 
+			//		Simple test of a basic fetch on ItemFileReadStore that fails quietly.
+			//	description:
+			//		Simple test of a basic fetch on ItemFileReadStore that fails quietly.
+			if(dojo.isBrowser){
+				var storeParams = {
+					url: "noSuchUrl",
+					failOk: true
+				}
+				var store = new datastore(storeParams);
+				console.log(store);
+                
+				var d = new doh.Deferred();
+				var completedAll = function(items, request){
+					d.errback(new Error("Should not be here, should have failed load."));
+				}
+				var error = function(errData, request){
+					d.callback(true);
+				}
+
+				//Get everything...
+				store.fetch({ onComplete: completedAll, onError: error});
+				return d;
+			}
+		}
+	},
+	{
 		name: "Read API: fetch() abort",
  		runTest: function(datastore, t){
 			//	summary: 

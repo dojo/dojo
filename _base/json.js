@@ -2,7 +2,10 @@ dojo.provide("dojo._base.json");
 
 dojo.fromJson = function(/*String*/ json){
 	// summary:
-	// 		Parses a [JSON](http://json.org) string to return a JavaScript object.  Throws for invalid JSON strings.
+	// 		Parses a [JSON](http://json.org) string to return a JavaScript object.
+	// description:
+	// 		Throws for invalid JSON strings, but it does not use a strict JSON parser. It
+	// 		delegates to eval().
 	// json: 
 	//		a string literal of a JSON item, for instance:
 	//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`

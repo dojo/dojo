@@ -567,7 +567,8 @@ dojo.require("dojo._base.array");
 		forEach: function(callback, thisObj){
 			//	summary:
 			//		see `dojo.forEach()`. The primary difference is that the acted-on 
-			//		array is implicitly this NodeList
+			//		array is implicitly this NodeList. If you want the option to break out
+			//		of the forEach loop, use every() or some() instead.
 			d.forEach(this, callback, thisObj);
 			// non-standard return to allow easier chaining
 			return this; // dojo.NodeList 

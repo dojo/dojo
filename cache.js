@@ -21,11 +21,13 @@ dojo.cache = {
 		// 		a cache value pass null for value. Since XMLHttpRequest (XHR) is used to fetch the
 		// 		the URL contents, only modules on the same domain of the page can use this capability.
 		// 		The build system can inline the cache values though, to allow for xdomain hosting.
-		// module: String
-		// 		The module name to use for the base part of the URL, similar to module argument
-		// 		to `dojo.moduleUrl`.
+		// module: String || Object
+		// 		If a String, the module name to use for the base part of the URL, similar to module argument
+		// 		to `dojo.moduleUrl`. If an Object, something that has a .toString() method that
+		// 		generates a valid path for the cache item. For example, a dojo._Url object.
 		// url: String
-		// 		The rest of the path to append to the path derived from the module argument.
+		// 		The rest of the path to append to the path derived from the module argument. If
+		// 		module is an object, then this second argument should be the "value" argument instead.
 		// value: String||Object
 		// 		If a String, the value to use in the cache for the module/url combination.
 		// 		If an Object, it can have two properties: value and sanitize. The value property
@@ -50,14 +52,30 @@ dojo.cache = {
 		// 		|	//If template.html contains "<html><body><h1>Hello</h1></body></html>", the
 		// 		|	//text variable will contain just "<h1>Hello</h1>".
 		//		|	var text = dojo["cache"]("my.module", "template.html", {sanitize: true});
+		//	example:
+		//		Same example as previous, but demostrates how an object can be passed in as
+		//		the first argument, then the value argument can then be the second argument.
+		// 		|	//If template.html contains "<html><body><h1>Hello</h1></body></html>", the
+		// 		|	//text variable will contain just "<h1>Hello</h1>".
+		//		|	var text = dojo["cache"](new dojo._Url("my/module/template.html"), {sanitize: true});
+
+		//Module could be a string, or an object that has a toString() method
+		//that will return a useful path. If it is an object, then the "url" argument
+		//will actually be the value argument.
+		if(typeof module == "string"){
+			var pathObj = dojo.moduleUrl(module, url);
+		}else{
+			pathObj = module;
+			value = url;
+		}
+		var key = pathObj.toString();
 
 		var val = value;
-		if(arguments.length > 2 && !dojo.isString(value)){
+		if(value !== undefined && !dojo.isString(value)){
 			val = ("value" in value ? value.value : undefined);
 		}
 
 		var sanitize = value && value.sanitize ? true : false;
-		var key = module + "/" + url.toString();
 
 		if(val || val === null){
 			//We have a value, either clear or set the cache value.
@@ -70,7 +88,7 @@ dojo.cache = {
 			//Allow cache values to be empty strings. If key property does
 			//not exist, fetch it.
 			if(!(key in cache)){
-				val = dojo._getText(dojo.moduleUrl(module, url).toString());
+				val = dojo._getText(key);
 				cache[key] = sanitize ? dojo.cache._sanitize(val) : val;
 			}
 			val = cache[key];

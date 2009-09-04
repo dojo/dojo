@@ -62,6 +62,8 @@ dojo.provide("dojo._base.array");
 		forEach: function(/*Array|String*/arr, /*Function|String*/callback, /*Object?*/thisObject){
 			//	summary:
 			//		for every item in arr, callback is invoked. Return values are ignored.
+			//		If you want to break out of the loop, consider using dojo.every() or dojo.some().
+			//		forEach does not allow breaking out of the loop over the items in arr.
 			//	arr:
 			//		the array to iterate over. If a string, operates on individual characters.
 			//	callback:

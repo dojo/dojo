@@ -222,7 +222,7 @@ dojo.require("dojo._base.connect");
 		NUM_LOCK: 144,
 		SCROLL_LOCK: 145,
 		// virtual key mapping
-		copyKey: dojo.isMac ? (dojo.isSafari ? 91 : 224 ) : 17
+		copyKey: dojo.isMac && !dojo.isAIR ? (dojo.isSafari ? 91 : 224 ) : 17
 	};
 	
 	var evtCopyKey = dojo.isMac ? "metaKey" : "ctrlKey";

@@ -104,12 +104,12 @@ djConfig = {
 	//		Set this to true to enable publishing of topics for the different phases of
 	// 		IO operations. Publishing is done via dojo.publish. See dojo.__IoPublish for a list
 	// 		of topics that are published.
-	ioPublish: false
+	ioPublish: false,
 	//  useCustomLogger: Anything?
 	//		If set to a value that evaluates to true such as a string or array and
 	//		isDebug is true and Firebug is not available or running, then it bypasses
 	//		the creation of Firebug Lite allowing you to define your own console object.
-	useCustomLogger: undefined
+	useCustomLogger: undefined,
 	// transparentColor: Array
 	//		Array containing the r, g, b components used as transparent color in dojo.Color;
 	//		if undefined, [255,255,255] (white) will be used.

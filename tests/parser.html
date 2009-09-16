@@ -61,6 +61,7 @@
 				markupFactory: function(args, node, classCtor){
 					var i = new classCtor();
 					i.classCtor = classCtor;
+					i.params = args;
 					return i;
 				}
 			});
@@ -255,6 +256,25 @@
 							
 							dojo.disconnect(tmp);
 							
+						},
+
+						// Test that when BorderContainer etc. extends _Widget,
+						// parser is aware of the new parameters added (to _Widget
+						// and all of it's subclasses)
+						function cacheRefresh(t){
+							// Add new node to be parsed, referencing a widget that the parser has already
+							// dealt with (and thus cached)
+							var wrapper = dojo.place("<div><div dojoType='tests.parser.Class3' newParam=12345>hi</div></div>", dojo.body(), "last");
+							
+							// Modify Class3's superclass widget to have new parameter (thus Class3 inherits it)
+							dojo.extend(tests.parser.Class2, {
+								newParam: 0
+							});
+							
+							// Run the parser and see if it reads in newParam
+							var widgets = dojo.parser.parse({rootNode: wrapper});
+							doh.is(1, widgets.length, "parsed newly inserted parserTest widget");
+							doh.is(12345, widgets[0].params.newParam, "new parameter parsed");
 						}
 					]
 				);

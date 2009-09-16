@@ -87,7 +87,14 @@ dojo.parser = new function(){
 		// map from fully qualified name (like "dijit.Button") to structure like
 		// { cls: dijit.Button, params: {label: "string", disabled: "boolean"} }
 	};
-	
+
+	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
+	// If BorderContainer is loaded after _Widget's parameter list has been cached,
+	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
+	dojo.connect(dojo, "extend", function(){
+		instanceClasses = {};
+	});
+
 	function getClassInfo(/*String*/ className){
 		// className:
 		//		fully qualified name (like "dijit.form.Button")

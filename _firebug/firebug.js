@@ -87,6 +87,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	
 	if(
 		!dojo.isFF &&								// Firefox has Firebug
+		(!dojo.isChrome || dojo.isChrome < 3) &&
 		(!dojo.isSafari || dojo.isSafari < 4) &&	// Safari 4 has a console
 		!isNewIE &&									// Has the new IE console
 		!window.firebug &&							// Testing for mozilla firebug lite 

@@ -22,7 +22,7 @@ try{
 	dojo.require("tests.fx");
 	dojo.require("tests.DeferredList");
 	dojo.require("tests.html");
-	dojo.requireIf(dojo.isBrowser, "tests.hash");
+//	dojo.requireIf(dojo.isBrowser, "tests.hash");
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-traverse");
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-manipulate");
 	dojo.require("tests.cache");

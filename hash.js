@@ -1,6 +1,6 @@
 dojo.provide("dojo.hash");
 //TODOC: where does this go?
-// summary: 
+// summary:
 //		Methods for monitoring and updating the hash in the browser URL.
 //
 // example:
@@ -59,7 +59,7 @@ dojo.provide("dojo.hash");
 
 	function _dispatchEvent(){
 		dojo.publish("/dojo/hashchange", [_getHash()]);
-	}		
+	}
 
 	function _pollLocation(){
 		if(_getHash() === _recentHash){
@@ -130,6 +130,8 @@ dojo.provide("dojo.hash");
 		//			reality. In this case we need to transition to s1.
 		//			Transitions: s1
 		//
+		//		The hashchange event is always dispatched on the transition back to s1.
+		//
 
 		// create and append iframe
 		var ifr = document.createElement("iframe"),
@@ -156,46 +158,48 @@ dojo.provide("dojo.hash");
 		}
 		
 		this.pollLocation = function(){
-			// check to see if we're in an iframe transition (s4 or s5)
-			if(transitioning && _recentHash === winLoc.hash){
-				// s4 (waiting for iframe to catch up to main window)
-				if(iframeLoc.search === expectedIFrameQuery){
-					// s5 (iframe caught up to main window), transition back to s1
-					resetState();
-				}
-				return;
-			}
+			//sync title of main window with title of iframe.
 			if(document.title != docTitle){
 				docTitle = this.iframe.document.title = document.title;
 			}
-			// check to see if we're in a stable state (iframe query == main window hash)
-			if(_recentHash === winLoc.hash && recentIframeQuery === iframeLoc.search){
-				// s1 (stable state), do nothing
-				return;
+			if(transitioning && _recentHash === winLoc.hash){
+				// we're in an iframe transition (s4 or s5)
+				if(iframeLoc.search === expectedIFrameQuery){
+					// s5 (iframe caught up to main window), transition back to s1
+					resetState();
+					_dispatchEvent();
+				}else{
+					// s4 (waiting for iframe to catch up to main window)
+					setTimeout(dojo.hitch(this,this.pollLocation),0);
+					return;
+				}
+			}else if(_recentHash === winLoc.hash && recentIframeQuery === iframeLoc.search){
+				// we're in stable state (s1, iframe query == main window hash), do nothing
+			}else{ 
+				// the user has initiated a URL change somehow.
+				// sync iframe query <-> main window hash
+				if(_recentHash !== winLoc.hash){
+					// s2 (main window location changed), set iframe url and transition to s4
+					_recentHash = winLoc.hash;
+					transitioning = true;
+					expectedIFrameQuery = "?" + _getHash();
+					ifr.src = ifr.src.split("?")[0] + expectedIFrameQuery;
+					setTimeout(dojo.hitch(this,this.pollLocation),0); //yielded transition to s4 while iframe reloads.
+					return;
+				}else{
+					// s3 (iframe location changed via back/forward button), set main window url and transition to s1.
+					winLoc.href = "#" + iframeLoc.search.substring(1);
+					resetState();
+					_dispatchEvent();
+				}
 			}
-
-			// if we're still going, the user has initiated a URL change somehow.
-			// sync iframe query <-> main window hash
-			if(_recentHash !== winLoc.hash){
-				// s2 (main window location changed), set iframe url and transition to s4
-				_recentHash = winLoc.hash;
-				transitioning = true;
-				expectedIFrameQuery = "?" + _getHash();
-				ifr.src = ifr.src.split("?")[0] + expectedIFrameQuery;
-			}else{
-				// s3 (iframe location changed via back/forward button), set main window url and transition to s1.
-				winLoc.href = "#" + iframeLoc.search.substring(1);
-				resetState();
-			}
-			// fire onhashchange event
-			_dispatchEvent();
+			setTimeout(dojo.hitch(this,this.pollLocation), _pollFrequency);
 		}
 		resetState(); // initialize state (transition to s1)
-		setInterval(dojo.hitch(this,this.pollLocation), _pollFrequency);
+		setTimeout(dojo.hitch(this,this.pollLocation), _pollFrequency);
 	}
-	
 	dojo.addOnLoad(function(){
-		if("onhashchange" in dojo.global && (!dojo.isIE || dojo.isIE >= 8)){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
+		if("onhashchange" in dojo.global && (!dojo.isIE || (dojo.isIE >= 8 && document.compatMode != "BackCompat"))){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
 			dojo.connect(dojo.global,"onhashchange",_dispatchEvent);
 		}else{
 			if(document.addEventListener){ // Non-IE

@@ -4,6 +4,7 @@ try{
 	dojo.require("tests._base");
 	dojo.require("tests.i18n"); 
 	dojo.requireIf(dojo.isBrowser, "tests.back-hash");
+	dojo.requireIf(dojo.isBrowser, "tests.hash");
 	dojo.require("tests.cldr");
 	dojo.require("tests.data");
 	dojo.require("tests.date");
@@ -22,7 +23,6 @@ try{
 	dojo.require("tests.fx");
 	dojo.require("tests.DeferredList");
 	dojo.require("tests.html");
-//	dojo.requireIf(dojo.isBrowser, "tests.hash");
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-traverse");
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-manipulate");
 	dojo.require("tests.cache");

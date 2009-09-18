@@ -17,7 +17,7 @@ dojo.number.__FormatOptions = function(){
 	//		with this string
 	//	type: String?
 	//		choose a format type based on the locale from the following:
-	//		decimal, scientific, percent, currency. decimal by default.
+	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
 	//	places: Number?
 	//		fixed number of decimal places to show.  This overrides any
 	//		information in the provided pattern.
@@ -263,7 +263,7 @@ dojo.number.__RegexpOptions = function(){
 	//		locale.
 	//	type: String?
 	//		choose a format type based on the locale from the following:
-	//		decimal, scientific, percent, currency. decimal by default.
+	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
 	//	locale: String?
 	//		override the locale used to determine formatting rules
 	//	strict: Boolean?
@@ -373,7 +373,7 @@ dojo.number.__ParseOptions = function(){
 	//		locale.
 	//	type: String?
 	//		choose a format type based on the locale from the following:
-	//		decimal, scientific, percent, currency. decimal by default.
+	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
 	//	locale: String
 	//		override the locale used to determine formatting rules
 	//	strict: Boolean?

@@ -94,8 +94,8 @@ dojo.require("dojo._base.array");
 
 	// find the next "inherited" method using available meta-information
 	function findInherited(self, caller, name){
-		var c = self.constructor, m = c._meta, bases = m.bases,
-			l = bases.length, i, nom, cache, currentBase;
+		var meta = self.constructor._meta, bases = meta.bases,
+			l = bases.length, i, f, opf, nom, cache, currentBase, proto;
 
 		if(!name){
 			nom = caller.nom;
@@ -106,24 +106,33 @@ dojo.require("dojo._base.array");
 		}
 
 		// error detection
-		if(name == "constructor" && m.ctorSpecial){
+		if(name == "constructor" && meta.ctorSpecial){
 			err("calling constructor as inherited");
 		}
-		if(m.chains.hasOwnProperty(name)){
+		if(meta.chains.hasOwnProperty(name)){
 			err("calling chained method as inherited: " + name);
 		}
 
 		// find our caller using simple cache and the list of base classes
 		cache = self._inherited;
 		currentBase = bases[cache.pos];
-		if(!currentBase || cache.name != name || !(
-				(currentBase._meta && currentBase._meta.hidden[name] === caller) ||
-				(currentBase.prototype.hasOwnProperty(name) && currentBase.prototype[name] === caller))){
+		meta = currentBase && currentBase._meta;
+		proto = currentBase && currentBase.prototype;
+		if(!currentBase || cache.name != name ||
+				!(meta ?
+					(meta.hidden[name] === caller ||
+						proto.hasOwnProperty(name) && proto[name] === caller) :
+					(proto[name] === caller))){
 			// cache bust
 			for(i = 0; i < l; ++i){
 				currentBase = bases[i];
-				if((currentBase._meta && currentBase._meta.hidden[name] === caller) ||
-						(currentBase.prototype.hasOwnProperty(name) && currentBase.prototype[name] === caller)){
+				meta = currentBase._meta;
+				proto = currentBase.prototype;
+				if(meta ?
+						(meta.hidden[name] === caller ||
+							proto.hasOwnProperty(name) &&
+							proto[name] === caller) :
+						(proto[name] === caller)){
 					break;
 				}
 			}
@@ -134,17 +143,30 @@ dojo.require("dojo._base.array");
 		}
 
 		// find next
+		opf = op[name];
 		while(++i < l){
-			if(bases[i].prototype.hasOwnProperty(name)){
-				cache.pos = i;
-				return bases[i].prototype[name];
+			currentBase = bases[i];
+			proto = currentBase.prototype;
+			if(currentBase._meta){
+				if(proto.hasOwnProperty(name)){
+					f = proto[name];
+					break;
+				}
+			}else{
+				f = proto[name];
+				if(f && f !== opf){
+					break;
+				}
 			}
 		}
 		cache.pos = i;
+		if(i < l){
+			return f;
+		}
 		
 		// check Object
-		if(name != "constructor" && op[name]){
-			return op[name];
+		if(opf && name != "constructor"){
+			return opf;
 		}
 
 		//return undefined;	// no need to return anything

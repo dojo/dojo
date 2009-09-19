@@ -92,114 +92,134 @@ dojo.require("dojo._base.array");
 		return result;
 	}
 
+	// find the next "inherited" method using available meta-information
+	function findInherited(self, caller, name){
+		var c = self.constructor, m = c._meta, bases = m.bases,
+			l = bases.length, i, nom, cache, currentBase;
+
+		if(!name){
+			nom = caller.nom;
+			if(!nom){
+				err("can't deduce a name to call inherited()");
+			}
+			name = nom;
+		}
+
+		// error detection
+		if(name == "constructor" && m.ctorSpecial){
+			err("calling constructor as inherited");
+		}
+		if(m.chains.hasOwnProperty(name)){
+			err("calling chained method as inherited: " + name);
+		}
+
+		// find our caller using simple cache and the list of base classes
+		cache = self._inherited;
+		currentBase = bases[cache.pos];
+		if(!currentBase || cache.name != name || !(
+				(currentBase._meta && currentBase._meta.hidden[name] === caller) ||
+				(currentBase.prototype.hasOwnProperty(name) && currentBase.prototype[name] === caller))){
+			// cache bust
+			for(i = 0; i < l; ++i){
+				currentBase = bases[i];
+				if((currentBase._meta && currentBase._meta.hidden[name] === caller) ||
+						(currentBase.prototype.hasOwnProperty(name) && currentBase.prototype[name] === caller)){
+					break;
+				}
+			}
+			cache.name = name;
+			cache.pos = i < l ? i : -1;
+		}else{
+			i = cache.pos;
+		}
+
+		// find next
+		while(++i < l){
+			if(bases[i].prototype.hasOwnProperty(name)){
+				cache.pos = i;
+				return bases[i].prototype[name];
+			}
+		}
+		cache.pos = i;
+		
+		// check Object
+		if(name != "constructor" && op[name]){
+			return op[name];
+		}
+
+		//return undefined;	// no need to return anything
+	}
+
+	// implementation of getInherited()
+	function getInherited(args, a){
+		var name;
+		// crack arguments
+		if(typeof args == "string"){
+			name = args;
+			args = a;
+		}
+		return findInherited(this, args.callee, name);
+	}
+	
+	// implementation of inherited()
+	function inherited(args, a, f){
+		var name;
+		// crack arguments
+		if(typeof args == "string"){
+			name = args;
+			args = a;
+			a = f;
+		}
+		f = findInherited(this, args.callee, name);
+		// do not call the inherited at the end of the chain
+		return f ? f.apply(this, a || args) : undefined;
+	}
+
+	// build a list of methods
+	function buildMethodList(bases, name, chains){
+		var methods = [], i = 0, l = bases.length, t, b;
+		for(;i < l; ++i){
+			b = bases[i];
+			t = b._meta;
+			if(t){
+				// this is a class created with dojo.declare()
+				t = t.hidden;
+				if(t.hasOwnProperty(name)){
+					// if this class has the method we need => add it
+					methods.push(t[name]);
+				}
+			}else{
+				// this is a native class
+				if(name == "constructor"){
+					// constructor => add it
+					methods.push(b);
+				}else{
+					t = b.prototype[name];
+					if(t && t !== op[name]){
+						// if this class has the method we need,
+						// and it is not default one => add it
+						methods.push(t);
+					}
+				}
+			}
+		}
+		// the last method comes from Object
+		if(name != "constructor"){
+			// we already handled the native constructor above => skip it
+			t = op[name];
+			if(t){
+				// there is a native method with such name => add it
+				methods.push(t);
+			}
+		}
+		// reverse the chain for "after" methods
+		return chains[name] === "after" ? methods.reverse() : methods;
+	}
+
 	d.makeDeclare = function(ctorSpecial, chains){
 		chains = chains || {};
 
-		function buildMethodList(bases, name){
-			var methods = [], i = 0, l = bases.length, h, b;
-			for(;i < l; ++i){
-				b = bases[i];
-				h = b._meta;
-				if(h){
-					// this is a class created with dojo.declare()
-					h = h.hidden;
-					if(h.hasOwnProperty(name)){
-						// if this class has the method we need => add it
-						methods.push(h[name]);
-					}
-				}else{
-					// this is a native class
-					if(name == "constructor"){
-						// constructor => add it
-						methods.push(b);
-					}else{
-						h = b.prototype[name];
-						if(h && h !== op[name]){
-							// if this class has the method we need,
-							// and it is not default one => add it
-							methods.push(h);
-						}
-					}
-				}
-			}
-			// the last method comes from Object
-			if(name != "constructor"){
-				// we already handled the native constructor above => skip it
-				h = op[name];
-				if(h){
-					// there is a native method with such name => add it
-					methods.push(h);
-				}
-			}
-			// reverse the chain for "after" methods
-			return chains[name] === "after" ? methods.reverse() : methods;
-		}
-
-		function findInherited(self, caller, name){
-			var c = self.constructor, m = c._meta, cache = c._cache,
-				i, l, f, n, ch, x;
-
-			if(!name){
-				n = caller.nom;
-				if(!n){
-					err("can't deduce a name to call inherited()");
-				}
-				name = n;
-			}
-			ch = cache.hasOwnProperty(name) && cache[name];
-
-			// get the cached method list
-			if(!ch){
-				if(name == "constructor" && ctorSpecial){
-					err("calling constructor as inherited");
-				}
-				if(chains.hasOwnProperty(name)){
-					err("calling chained method as inherited: " + name);
-				}
-				ch = cache[name] = buildMethodList(m.bases, name);
-			}
-
-			// simple caching
-			x = self._inherited;
-			if(x.name !== name || ch[x.pos] !== caller){
-				// find the caller
-				for(i = 0, l = ch.length; i < l && ch[i] !== caller; ++i);
-				if(i == l){
-					if(self[name] === caller){
-						i = -1;
-					}else{
-						err("can't find the inherited caller");
-					}
-				}
-				self._inherited = x = {name: name, pos: i};
-			}
-
-			return ch[++x.pos];
-		}
-		
-		function getInherited(args, a){
-			var name;
-			// crack arguments
-			if(typeof args == "string"){
-				name = args;
-				args = a;
-			}
-			return findInherited(this, args.callee, name);
-		}
-		
-		function inherited(args, a, f){
-			var name;
-			// crack arguments
-			if(typeof args == "string"){
-				name = args;
-				args = a;
-				a = f;
-			}
-			f = findInherited(this, args.callee, name);
-			// do not call the inherited at the end of the chain
-			return f ? f.apply(this, a || args) : undefined;
-		}
-
+		// dojo.declare
 		return function(className, superclass, props){
 			var mixins, proto, i, l, t, ctor, ctorChain, name, bases;
 
@@ -387,7 +407,7 @@ dojo.require("dojo._base.array");
 
 			// build metadata on the constructor
 			bases[0] = ctor;
-			ctor._meta  = {bases: bases, hidden: props};
+			ctor._meta  = {bases: bases, hidden: props, chains: chains, ctorSpecial: ctorSpecial};
 			ctor._cache = {};
 			ctor.superclass = superclass && superclass.prototype;
 
@@ -416,7 +436,7 @@ dojo.require("dojo._base.array");
 			function bindChain(name){
 				if(typeof chains[name] == "string")
 					var f = proto[name] = function(){
-						var t = buildMethodList(bases, name), l = t.length,
+						var t = buildMethodList(bases, name, chains), l = t.length,
 							f = function(){ for(var i = 0; i < l; ++i){ t[i].apply(this, arguments); } };
 						f.nom = name;
 						// memoization
@@ -431,7 +451,7 @@ dojo.require("dojo._base.array");
 			//each(d._extraNames, bindChain); // no need to chain functions
 
 			// get the constructor chain (used directly in constructors)
-			ctorChain = buildMethodList(bases, "constructor");
+			ctorChain = buildMethodList(bases, "constructor", chains);
 			if(!ctorSpecial && !chains.hasOwnProperty(name)){
 				ctor._cache.constructor = ctorChain;
 			}

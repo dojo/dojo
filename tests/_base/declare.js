@@ -210,6 +210,58 @@ tests.register("tests._base.declare",
 			it.method();
 			
 			return d;
+		},
+		
+		function mutatedMethods(t){
+			// testing if methods can be mutated (within a reason)
+			dojo.declare("tests._base.declare.tmp18", null, {
+				constructor: function(){ this.clear(); },
+				clear: function(){ this.flag = 0; },
+				foo: function(){ ++this.flag; },
+				bar: function(){ ++this.flag; },
+				baz: function(){ ++this.flag; }
+			});
+			dojo.declare("tests._base.declare.tmp19", tests._base.declare.tmp18, {
+				foo: function(){ ++this.flag; this.inherited(arguments); },
+				bar: function(){ ++this.flag; this.inherited(arguments); },
+				baz: function(){ ++this.flag; this.inherited(arguments); }
+			});
+			var x = new tests._base.declare.tmp19();
+			// smoke tests
+			t.is(0, x.flag);
+			x.foo();
+			t.is(2, x.flag);
+			x.clear();
+			t.is(0, x.flag);
+			var a = 0;
+			// dojo.connect() on a prototype method
+			dojo.connect(tests._base.declare.tmp19.prototype, "foo", function(){ a = 1; });
+			x.foo();
+			t.is(2, x.flag);
+			t.is(1, a);
+			x.clear();
+			a = 0;
+			// extra chaining
+			var old = tests._base.declare.tmp19.prototype.bar;
+			tests._base.declare.tmp19.prototype.bar = function(){
+				a = 1;
+				++this.flag;
+				old.call(this);
+			}
+			x.bar();
+			t.is(3, x.flag);
+			t.is(1, a);
+			x.clear();
+			a = 0;
+			// replacement
+			tests._base.declare.tmp19.prototype.baz = function(){
+				a = 1;
+				++this.flag;
+				this.inherited("baz", arguments);
+			}
+			x.baz();
+			t.is(2, x.flag);
+			t.is(1, a);
 		}
 		
 		// FIXME: there are still some permutations to test like:

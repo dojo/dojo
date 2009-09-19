@@ -241,7 +241,7 @@ dojo.require("dojo._base.array");
 	});
 
 	// add forEach actions
-	d.forEach(["connect", "addClass", "removeClass", "toggleClass", "empty"], function(name){
+	d.forEach(["connect", "addClass", "removeClass", "toggleClass", "empty", "removeAttr"], function(name){
 		nlp[name] = adaptAsForEach(d[name]);
 	});
 

@@ -559,6 +559,27 @@
 
 							//clean up the divs inserted for the test.
 							dojo.query("#thinger, #thinger2").orphan();
+						},
+						
+						function removeAttr(){
+							
+							// buildup
+							dojo.place('<p id="attr" title="Foobar">Hi</p>', dojo.body());
+							
+							var n = dojo.query("#attr");
+							
+							doh.t(dojo.hasAttr(n[0], "title"));
+							
+							var t = n.attr("title");
+							doh.is(t, "Foobar");
+							
+							n.removeAttr("title");
+							
+							t = dojo.hasAttr(n[0], "title");
+							doh.f(t);
+							
+							// cleanup
+							n.orphan();
 						}
 					]
 				);

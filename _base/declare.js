@@ -9,87 +9,89 @@ dojo.require("dojo._base.array");
 	var d = dojo, op = Object.prototype, isF = d.isFunction, each = d.forEach, xtor = function(){}, counter = 0;
 
 	function err(msg){ throw new Error("declare: " + msg); }
-
+	
 	// C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)
 	function c3mro(bases){
-		var result = [0], l = bases.length, classes = new Array(l),
-			i = 0, j, m, m2, c, cls, lin, proto, name, t;
+		var result = [0], dag, nameMap = {}, clsCount = 0, l = bases.length,
+			i = 0, j, lin, lin0, base, top, cls, proto, rec, name, refs;
 
-		// initialize
+		// build DAG
 		for(; i < l; ++i){
-			c = bases[i];
-			if(!c){
+			base = bases[i];
+			if(!base){
 				err("mixin #" + i + " is null");
 			}
-			lin = c._meta && c._meta.bases || [c];
-			m = {};
-			for(j = 0, m2 = lin.length; j < m2; ++j){
+			lin = base._meta && base._meta.bases || [base];
+			if(!i){
+				lin0 = lin;
+				/*
+				// optimization for degenerated case: bases == [Base]
+				if(l == 1){
+					return {
+						addons:      [],
+						superclass:  base,
+						bases:       result.concat(lin0)
+					};
+				}
+				*/
+			}
+			top = 0;
+			for(j = lin.length - 1; j >= 0; --j){
 				cls = lin[j];
 				proto = cls.prototype;
 				name = proto.hasOwnProperty("declaredClass") && proto.declaredClass;
 				if(!name){
 					name = proto.declaredClass = "dojoUniqClassName_" + (counter++);
 				}
-				m[name] = cls;
-			}
-			classes[i] = {
-				idx: 0,
-				map: m,
-				lin: d.map(lin, function(c){ return c.prototype.declaredClass; })
-			};
-		}
-
-		// C3 MRO algorithm
-		while(l){
-			if(l == 1){
-				// just one chain of inheritance => copy it directly
-				c = classes[0];
-				m = c.map;
-				return result.concat(d.map(c.lin.slice(c.idx), function(c){ return m[c]; }));
-			}
-			for(i = l; i--;){
-				m = classes[i];
-				c = m.lin[m.idx];
-				if(c){
-					// check if it is in the tail of any classes
-					t = 1;
-					for(j = l; j--;){
-						m2 = classes[j];
-						if(i != j && (c in m2.map)){
-							if(c == m2.lin[m2.idx]){
-								++t;
-							}else{
-								// there is a class in the tail => aborting
-								break;
-							}
-						}
-					}
-					if(j < 0){
-						result.push(m.map[c]);
-						// remove c from all heads
-						for(j = l; j--;){
-							m = classes[j];
-							if(c == m.lin[m.idx]){
-								++m.idx;
-								if(!--t){
-									// all proper heads are deleted => stop
-									break;
-								}
-							}
-						}
-						break;
-					}
+				if(nameMap.hasOwnProperty(name)){
+					rec = nameMap[name];
 				}else{
-					classes.splice(i, 1);
-					--l
+					rec = nameMap[name] = {count: 0, refs: [], cls: cls};
+					++clsCount;
+				}
+				if(top){
+					++top.count;
+					rec.refs.push(top);
+				}
+				top = rec;
+			}
+			if(top && !top.count){
+				top.next = dag;
+				dag = top;
+			}
+		}
+		
+		// remove classes without external references recursively
+		while(dag){
+			result.push(dag.cls);
+			--clsCount;
+			refs = dag.refs;
+			dag = dag.next;
+			for(i = 0, l = refs.length; i < l; ++i){
+				cls = refs[i];
+				if(!--cls.count){
+					cls.next = dag;
+					dag = cls;
 				}
 			}
-			if(i < 0 && l > 0){
-				err("can't build consistent linearization");
+		}
+		if(clsCount){
+			err("can't build consistent linearization");
+		}
+		
+		// see if we have the tail matching the base
+		//lin0 = lin0 || []; // degenerated case: bases == []
+		for(i = lin0.length - 1, j = result.length - 1; i >= 0; --i, --j){
+			if(lin0[i] !== result[j]){
+				break;
 			}
 		}
 
-		return result;
+		return {
+			addons:      result.slice(0, result.length - (i < 0 ? lin0.length : 1)),
+			superclass:  i < 0 ? bases[0] : result.slice(result.length - 1),
+			bases:       result
+		};
 	}
 
 	// find the next "inherited" method using available meta-information
@@ -240,7 +242,7 @@ dojo.require("dojo._base.array");
 
 		// dojo.declare
 		return function(className, superclass, props){
-			var mixins, proto, i, l, t, ctor, ctorChain, name, bases;
+			var mixins, proto, i, l, t, ctor, ctorChain, name, bases, result;
 
 			// crack parameters
 			if(typeof className != "string"){
@@ -251,16 +253,15 @@ dojo.require("dojo._base.array");
 			props = props || {};
 
 			// build a prototype
-			t = 0; // flag: the superclass chain is not handled yet
+			t = 1; // flag: the superclass chain is not processed yet
 			if(d.isArray(superclass)){
-				// suspected multiple inheritance
 				if(superclass.length > 1){
 					// we have several base classes => C3 MRO
-					bases = c3mro(superclass);
+					result = c3mro(superclass);
 					// build a chain
-					l = bases.length - 1;
-					superclass = bases[l];
-					for(i = l - 1;;){
+					superclass = result.superclass;
+					bases = result.addons;
+					for(i = bases.length - 1;;){
 						t = bases[i--];
 						// delegation
 						xtor.prototype = superclass.prototype;
@@ -277,14 +278,14 @@ dojo.require("dojo._base.array");
 						ctor.prototype = proto;
 						superclass = proto.constructor = ctor;
 					}
-					t = 1; // flag: the superclass chain is handled
+					bases = result.bases;
+					t = 0; // flag: the superclass chain was processed
 				}else{
-					// false alarm: we have just one (or zero?) base class
 					superclass = superclass[0];
 				}
 			}
-			if(!t){
-				// the supeclass chain is not handled yet
+			if(t){
+				// process the supeclass chain
 				bases = [0];
 				if(superclass){
 					// we have a superclass

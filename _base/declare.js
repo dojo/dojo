@@ -95,14 +95,11 @@ dojo.require("dojo._base.array");
 	// find the next "inherited" method using available meta-information
 	function findInherited(self, caller, name){
 		var meta = self.constructor._meta, bases = meta.bases,
-			l = bases.length, i, f, opf, nom, cache, currentBase, proto;
+			l = bases.length, i, f, opf, cache, currentBase, proto;
 
+		name = name || caller.nom;
 		if(!name){
-			nom = caller.nom;
-			if(!nom){
-				err("can't deduce a name to call inherited()");
-			}
-			name = nom;
+			err("can't deduce a name to call inherited()");
 		}
 
 		// error detection
@@ -198,7 +195,7 @@ dojo.require("dojo._base.array");
 	}
 
 	// build a list of methods
-	function buildMethodList(bases, name, chains){
+	function buildMethodList(bases, name, order){
 		var methods = [], i = 0, l = bases.length, t, b;
 		for(;i < l; ++i){
 			b = bases[i];
@@ -235,7 +232,7 @@ dojo.require("dojo._base.array");
 			}
 		}
 		// reverse the chain for "after" methods
-		return chains[name] === "after" ? methods.reverse() : methods;
+		return order === "after" ? methods.reverse() : methods;
 	}
 
 	d.makeDeclare = function(ctorSpecial, chains){
@@ -330,14 +327,14 @@ dojo.require("dojo._base.array");
 			d._mixin(proto, props);
 
 			// build ctor
-			if(ctorSpecial){
+			if(ctorSpecial || chains.hasOwnProperty("constructor")){
 				// compatibility mode with the legacy dojo.declare()
 				ctor = function(){
 					var a = arguments, args = a, a0 = a[0], f, i, l, h, preArgs;
 					this._inherited = {};
 					// perform the shaman's rituals of the original dojo.declare()
 					// 1) call two types of the preamble
-					if(a0 && a0.preamble || this.preamble){
+					if(ctorSpecial && (a0 && a0.preamble || this.preamble)){
 						// full blown ritual
 						preArgs = new Array(bases.length);
 						// prepare parameters
@@ -388,43 +385,23 @@ dojo.require("dojo._base.array");
 					}
 				};
 			}else{
-				// new construction (no preabmle, chaining is allowed)
-				if(chains.hasOwnProperty("constructor")){
-					// chained constructor
-					ctor = function(){
-						var a = arguments, f, i, l;
-						this._inherited = {};
-						// perform the shaman's rituals of the original dojo.declare()
-						// 1) do not call the preamble
-						// 2) call the constructor with the same parameters
-						for(i = 0, l = ctorChain.length; i < l; ++i){
-							ctorChain[i].apply(this, a)
-						}
-						// 3) call the postscript
-						f = this.postscript;
-						if(f){
-							f.apply(this, args);
-						}
-					};
-				}else{
-					// plain vanilla constructor (can use inherited() to call its base constructor)
-					ctor = function(){
-						var a = arguments, f;
-						this._inherited = {};
-						// perform the shaman's rituals of the original dojo.declare()
-						// 1) do not call the preamble
-						// 2) call our original constructor
-						f = ctorChain[0];
-						if(f){
-							f.apply(this, a);
-						}
-						// 3) call the postscript
-						f = this.postscript;
-						if(f){
-							f.apply(this, args);
-						}
-					};
-				}
+				// plain vanilla constructor (can use inherited() to call its base constructor)
+				ctor = function(){
+					var a = arguments, f;
+					this._inherited = {};
+					// perform the shaman's rituals of the original dojo.declare()
+					// 1) do not call the preamble
+					// 2) call our original constructor
+					f = ctorChain[0];
+					if(f){
+						f.apply(this, a);
+					}
+					// 3) call the postscript
+					f = this.postscript;
+					if(f){
+						f.apply(this, args);
+					}
+				};
 			}
 
 			// build metadata on the constructor
@@ -458,7 +435,7 @@ dojo.require("dojo._base.array");
 			function bindChain(name){
 				if(typeof chains[name] == "string")
 					var f = proto[name] = function(){
-						var t = buildMethodList(bases, name, chains), l = t.length,
+						var t = buildMethodList(bases, name, chains[name]), l = t.length,
 							f = function(){ for(var i = 0; i < l; ++i){ t[i].apply(this, arguments); } };
 						f.nom = name;
 						// memoization
@@ -473,10 +450,11 @@ dojo.require("dojo._base.array");
 			//each(d._extraNames, bindChain); // no need to chain functions
 
 			// get the constructor chain (used directly in constructors)
-			ctorChain = buildMethodList(bases, "constructor", chains);
-			if(!ctorSpecial && !chains.hasOwnProperty(name)){
-				ctor._cache.constructor = ctorChain;
-			}
+			// ctorSpecial => normal (auto-reversed)
+			// chain.before => reversed (auto-reversed)
+			// chain.after => normal (auto-reversed)
+			// chain.none => normal
+			ctorChain = buildMethodList(bases, "constructor", chains.constructor === "before" && "after");
 
 			return ctor;	// Function
 		};

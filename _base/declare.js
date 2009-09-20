@@ -307,25 +307,28 @@ dojo.require("dojo._base.array");
 			}
 			xtor.prototype = 0;	// cleanup
 
-			// add metadata for incoming functions
+			// add props adding metadata for incoming functions
 			for(name in props){
 				t = props[name];
-				if(t !== op[name] && isF(t)){
-					// non-trivial function method => attach its name
-					t.nom = name;
+				if(t !== op[name] || !(name in op)){
+					if(isF(t)){
+						// non-trivial function method => attach its name
+						t.nom = name;
+					}
+					proto[name] = t;
 				}
 			}
 			// process unenumerable methods on IE
 			each(d._extraNames, function(name, t){
 				t = props[name];
-				if(t !== op[name] && isF(t)){
-					// non-trivial function method => attach its name
-					t.nom = name;
+				if(t !== op[name] || !(name in op)){
+					if(isF(t)){
+						// non-trivial function method => attach its name
+						t.nom = name;
+					}
+					proto[name] = t;
 				}
 			});
-
-			// add props
-			d._mixin(proto, props);
 
 			// build ctor
 			if(ctorSpecial || chains.hasOwnProperty("constructor")){

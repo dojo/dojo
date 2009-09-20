@@ -290,7 +290,7 @@ dojo.global = {
 		//		(now modified) obj.
 		//	description:
 		//		`dojo.mixin` can mix multiple source objects into a
-		//		destionation object which is then returned. Unlike regular
+		//		destination object which is then returned. Unlike regular
 		//		`for...in` iteration, `dojo.mixin` is also smart about avoiding
 		//		extensions which other toolkits may unwisely add to the root
 		//		object prototype

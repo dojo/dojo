@@ -121,7 +121,13 @@ dojo.require("dojo._base.html");
 	
 		_percent: 0,
 		_startRepeatCount: 0,
-	
+
+		_getStep: function(){
+			var _p = this._percent,
+				_e = this.easing
+			;
+			return _e ? _e(_p) : _p;
+		},
 		_fire: function(/*Event*/ evt, /*Array?*/ args){
 			//	summary:
 			//		Convenience function.  Fire event "evt" and pass it the
@@ -201,8 +207,7 @@ dojo.require("dojo._base.html");
 	
 			_t._active = true;
 			_t._paused = false;
-	
-			var value = _t.curve.getValue(_t._percent);
+			var value = _t.curve.getValue(_t._getStep());
 			if(!_t._percent){
 				if(!_t._startRepeatCount){
 					_t._startRepeatCount = _t.repeat;
@@ -223,7 +228,7 @@ dojo.require("dojo._base.html");
 			_t._stopTimer();
 			if(!_t._active){ return _t; /*dojo.Animation*/ }
 			_t._paused = true;
-			_t._fire("onPause", [_t.curve.getValue(_t._percent)]);
+			_t._fire("onPause", [_t.curve.getValue(_t._getStep())]);
 			return _t; // dojo.Animation
 		},
 	
@@ -252,7 +257,7 @@ dojo.require("dojo._base.html");
 			if(gotoEnd){
 				_t._percent = 1;
 			}
-			_t._fire("onStop", [_t.curve.getValue(_t._percent)]);
+			_t._fire("onStop", [_t.curve.getValue(_t._getStep())]);
 			_t._active = _t._paused = false;
 			return _t; // dojo.Animation
 		},

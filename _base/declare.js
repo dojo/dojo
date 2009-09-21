@@ -9,7 +9,7 @@ dojo.require("dojo._base.array");
 	var d = dojo, op = Object.prototype, isF = d.isFunction, each = d.forEach, xtor = function(){}, counter = 0;
 
 	function err(msg){ throw new Error("declare: " + msg); }
-	
+
 	// C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)
 	function c3mro(bases){
 		var result = [0], dag, nameMap = {}, clsCount = 0, l = bases.length,
@@ -60,7 +60,7 @@ dojo.require("dojo._base.array");
 				dag = top;
 			}
 		}
-		
+
 		// remove classes without external references recursively
 		while(dag){
 			result.push(dag.cls);
@@ -78,7 +78,7 @@ dojo.require("dojo._base.array");
 		if(clsCount){
 			err("can't build consistent linearization");
 		}
-		
+
 		// see if we have the tail matching the base
 		//lin0 = lin0 || []; // degenerated case: bases == []
 		for(i = lin0.length - 1, j = result.length - 1; i >= 0; --i, --j){
@@ -159,16 +159,9 @@ dojo.require("dojo._base.array");
 			}
 		}
 		cache.pos = i;
-		if(i < l){
-			return f;
-		}
-		
-		// check Object
-		if(opf && name != "constructor"){
-			return opf;
-		}
 
-		//return undefined;	// no need to return anything
+		// return found method, or the underlying Object method
+		return i < l && f || name != "constructor" && opf;
 	}
 
 	// implementation of getInherited()
@@ -181,7 +174,7 @@ dojo.require("dojo._base.array");
 		}
 		return findInherited(this, args.callee, name);
 	}
-	
+
 	// implementation of inherited()
 	function inherited(args, a, f){
 		var name;
@@ -196,6 +189,17 @@ dojo.require("dojo._base.array");
 		return f ? f.apply(this, a || args) : undefined;
 	}
 
+	// emulation of "instanceof"
+	function isInstanceOf(cls){
+		var bases = this.constructor._meta.bases;
+		for(var i = 0, l = bases.length; i < l; ++i){
+			if(bases[i] === cls){
+				return true;
+			}
+		}
+		return this instanceof cls;
+	}
+	
 	// build a list of methods
 	function buildMethodList(bases, name, order){
 		var methods = [], i = 0, l = bases.length, t, b;
@@ -242,7 +246,7 @@ dojo.require("dojo._base.array");
 
 		// dojo.declare
 		return function(className, superclass, props){
-			var mixins, proto, i, l, t, ctor, ctorChain, name, bases, result;
+			var mixins, proto, i, l, t, ctor, ctorChain, name, bases, addons = [], result;
 
 			// crack parameters
 			if(typeof className != "string"){
@@ -253,57 +257,41 @@ dojo.require("dojo._base.array");
 			props = props || {};
 
 			// build a prototype
-			t = 1; // flag: the superclass chain is not processed yet
 			if(d.isArray(superclass)){
+				// possible multiple inheritance
 				if(superclass.length > 1){
 					// we have several base classes => C3 MRO
 					result = c3mro(superclass);
-					// build a chain
 					superclass = result.superclass;
-					bases = result.addons;
-					for(i = bases.length - 1;;){
-						t = bases[i--];
-						// delegation
-						xtor.prototype = superclass.prototype;
-						proto = new xtor;
-						if(!t){
-							// stop if nothing to add (the last base)
-							break;
-						}
-						// mix in properties
-						d._mixin(proto, t.prototype);
-						// chain in new constructor
-						ctor = function(){};
-						ctor.superclass = superclass;
-						ctor.prototype = proto;
-						superclass = proto.constructor = ctor;
-					}
+					addons = result.addons;
 					bases = result.bases;
-					t = 0; // flag: the superclass chain was processed
 				}else{
+					// false alarm: single inheritance
 					superclass = superclass[0];
 				}
 			}
-			if(t){
-				// process the supeclass chain
-				bases = [0];
-				if(superclass){
-					// we have a superclass
-					t = superclass._meta;
-					if(t){
-						// this class was made by dojo.declare() => add its bases
-						bases = bases.concat(t.bases);
-					}else{
-						// this is a native class => add it
-						bases.push(superclass);
-					}
+			if(superclass){
+				t = superclass._meta;
+				bases = bases || (t ? [0].concat(t.bases) : [0, superclass]);
+				for(i = addons.length - 1;; --i){
 					// delegation
 					xtor.prototype = superclass.prototype;
 					proto = new xtor;
-				}else{
-					// no superclass
-					proto = {};
+					if(i < 1){
+						// stop if nothing to add (the last base)
+						break;
+					}
+					// mix in properties
+					d._mixin(proto, addons[i].prototype);
+					// chain in new constructor
+					ctor = function(){};
+					ctor.superclass = superclass;
+					ctor.prototype = proto;
+					superclass = proto.constructor = ctor;
 				}
+			}else{
+				bases = [0];
+				proto = {};
 			}
 			xtor.prototype = 0;	// cleanup
 
@@ -351,7 +339,6 @@ dojo.require("dojo._base.array");
 								if(f){
 									a = f.apply(this, a) || a;
 								}
-
 							}
 							// process the preamble of this class
 							f = bases[i]._meta.hidden.preamble;
@@ -420,14 +407,7 @@ dojo.require("dojo._base.array");
 			// add "standard" methods to the ptototype
 			proto.getInherited = getInherited;
 			proto.inherited = inherited;
-			proto.isInstanceOf = function(cls){
-				for(var i = 0, l = bases.length; i < l; ++i){
-					if(bases[i] === cls){
-						return true;
-					}
-				}
-				return this instanceof cls;
-			};
+			proto.isInstanceOf = isInstanceOf;
 
 			// process named classes
 			if(className){
@@ -436,22 +416,23 @@ dojo.require("dojo._base.array");
 			}
 
 			// build chains and add them to the prototype
-			function bindChain(name){
-				if(typeof chains[name] == "string")
-					var f = proto[name] = function(){
-						var t = buildMethodList(bases, name, chains[name]), l = t.length,
-							f = function(){ for(var i = 0; i < l; ++i){ t[i].apply(this, arguments); } };
-						f.nom = name;
-						// memoization
-						ctor.prototype[name] = f;
-						f.apply(this, arguments);
-					};
-					f.nom = name;
-			}
 			for(name in chains){
-				bindChain(name);
+				if(typeof chains[name] == "string"){
+					t = proto[name] = function(name){
+						return function(){
+							var t = buildMethodList(bases, name, chains[name]), l = t.length,
+								f = function(){ for(var i = 0; i < l; ++i){ t[i].apply(this, arguments); } };
+							f.nom = name;
+							// memoization
+							ctor.prototype[name] = f;
+							f.apply(this, arguments);
+						};
+					}(name);
+					t.nom = name;
+				}
 			}
-			//each(d._extraNames, bindChain); // no need to chain functions
+			// chained methods do not return values
+			// no need to chain "invisible" functions
 
 			// get the constructor chain (used directly in constructors)
 			// ctorSpecial => normal (auto-reversed)

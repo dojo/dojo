@@ -6,13 +6,13 @@ dojo.require("dojo._base.array");
 // a drop-in replacement for dojo.declare() with fixed bugs and enhancements
 
 (function(){
-	var d = dojo, op = Object.prototype, isF = d.isFunction, each = d.forEach, xtor = function(){}, counter = 0;
+	var d = dojo, op = Object.prototype, isF = d.isFunction, xtor = function(){}, counter = 0;
 
 	function err(msg){ throw new Error("declare: " + msg); }
 
 	// C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)
 	function c3mro(bases){
-		var result = [0], dag, nameMap = {}, clsCount = 0, l = bases.length,
+		var result = [0], dag = [], nameMap = {}, clsCount = 0, l = bases.length,
 			i = 0, j, lin, lin0, base, top, cls, proto, rec, name, refs;
 
 		// build DAG
@@ -50,28 +50,27 @@ dojo.require("dojo._base.array");
 					++clsCount;
 				}
 				if(top){
-					++top.count;
 					rec.refs.push(top);
+					++top.count;
 				}
 				top = rec;
 			}
 			if(top && !top.count){
-				top.next = dag;
-				dag = top;
+				dag.push(top);
 			}
 		}
 
 		// remove classes without external references recursively
-		while(dag){
-			result.push(dag.cls);
+		dag = d.filter(dag, function(v){ return !v.count; });
+		while(dag.length){
+			top = dag.pop();
+			result.push(top.cls);
 			--clsCount;
-			refs = dag.refs;
-			dag = dag.next;
+			refs = top.refs;
 			for(i = 0, l = refs.length; i < l; ++i){
-				cls = refs[i];
-				if(!--cls.count){
-					cls.next = dag;
-					dag = cls;
+				top = refs[i];
+				if(!--top.count){
+					dag.push(top);
 				}
 			}
 		}
@@ -307,7 +306,8 @@ dojo.require("dojo._base.array");
 				}
 			}
 			// process unenumerable methods on IE
-			each(d._extraNames, function(name, t){
+			for(i = 0, l = d._extraNames.length; i < l; ++i){
+				name = d._extraNames[i];
 				t = props[name];
 				if(t !== op[name] || !(name in op)){
 					if(isF(t)){
@@ -316,7 +316,7 @@ dojo.require("dojo._base.array");
 					}
 					proto[name] = t;
 				}
-			});
+			}
 
 			// build ctor
 			if(ctorSpecial || chains.hasOwnProperty("constructor")){

@@ -46,19 +46,15 @@ dojo.require("dojo.parser");
 		if(cont) {
 			if(typeof cont == "string") {
 				cont = d._toDom(cont, node.ownerDocument);
-				if(cont.nodeType===11) {
-					// DocumentFragment
-					cont = cont.childNodes;
-				}
 			}
 			if(!cont.nodeType && d.isArrayLike(cont)) {
 				// handle as enumerable, but it may shrink as we enumerate it
 				for(var startlen=cont.length, i=0; i<cont.length; i=startlen==cont.length ? i+1 : 0) {
-					d.place( cont[Math.max(i, 0)], node, "last");
+					d.place( cont[i], node, "last");
 				}
 			} else {
-				// pass nodes and unknowns through to dojo.place
-				d.place( cont, node, "last");
+				// pass nodes, documentFragments and unknowns through to dojo.place
+				d.place(cont, node, "last");
 			}
 		}
 

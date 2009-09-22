@@ -262,6 +262,58 @@ tests.register("tests._base.declare",
 			x.baz();
 			t.is(2, x.flag);
 			t.is(1, a);
+		},
+		
+		function modifiedInstance(t){
+			var stack;
+			dojo.declare("tests._base.declare.tmp20", null, {
+				foo: function(){ stack.push(20); }
+			});
+			dojo.declare("tests._base.declare.tmp21", null, {
+				foo: function(){ 
+					this.inherited(arguments);
+					stack.push(21);
+				}
+			});
+			dojo.declare("tests._base.declare.tmp22", tests._base.declare.tmp20, {
+				foo: function(){
+					this.inherited(arguments);
+					stack.push(22);
+				}
+			});
+			dojo.declare("tests._base.declare.tmp23", 
+						[tests._base.declare.tmp20, tests._base.declare.tmp21], {
+				foo: function(){
+					this.inherited(arguments);
+					stack.push(22);
+				}
+			});
+			var a = new tests._base.declare.tmp22();
+			var b = new tests._base.declare.tmp23();
+			var c = {
+				foo: function(){
+					this.inherited("foo", arguments);
+					stack.push("INSIDE C");
+				}
+			};
+			stack = [];
+			a.foo();
+			t.is([20, 22], stack);
+
+			stack = [];
+			b.foo();
+			t.is([20, 21, 22], stack);
+
+			dojo.mixin(a, c);
+			dojo.mixin(b, c);
+			
+			stack = [];
+			a.foo();
+			t.is([20, 22, "INSIDE C"], stack);
+			
+			stack = [];
+			b.foo();
+			t.is([20, 21, 22, "INSIDE C"], stack);
 		}
 		
 		// FIXME: there are still some permutations to test like:

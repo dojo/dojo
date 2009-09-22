@@ -54,11 +54,13 @@
 							console.log("basicChecks: " + this.name);
 							targetNode = dojo.byId("pane1");
 							var msg = "Simple No-params Test";
+							console.log("targetNode has content: ", targetNode.innerHTML);
 							var result = "";
 							dojo.html.set(
 								targetNode,
 								msg
 							);
+							console.log("after set, targetNode has content: ", targetNode.innerHTML);
 							t.assertEqual(msg, targetNode.innerHTML);
 						}
 					},
@@ -207,6 +209,47 @@
 								targetNode, html, 
 								{
 									"testname": "basicChecks changeContentTable"
+								});
+							var res = ieTrimSpaceBetweenTags(targetNode.innerHTML.toLowerCase());
+							t.assertEqual(html.toLowerCase(), res);
+						},
+						tearDown: function(){
+							dojo.html._emptyNode(targetNode);
+						}
+					},
+					{
+						name: 'setNodeList',
+						runTest: function(t){
+							console.log("basicChecks: " + this.name);
+							var tmpUL = dojo.create("ul");
+							dojo.create("li", { innerHTML: "item 1" }, tmpUL);
+							dojo.create("li", { innerHTML: "item 2" }, tmpUL);
+							console.log("ul content: ", tmpUL.innerHTML, tmpUL.childNodes.length);
+							targetNode = dojo.byId("pane1");
+							dojo.html.set(
+								targetNode, tmpUL.childNodes, 
+								{
+									"testname": "basicChecks setNodeList"
+								});
+							var res = dojo.query("li", dojo.byId("pane1")).length
+							t.assertEqual(2, res);
+						},
+						tearDown: function(){
+							dojo.html._emptyNode(targetNode);
+						}
+					},
+					{
+						name: 'setMixedContent',
+						runTest: function(t){
+							console.log("basicChecks: " + this.name);
+							
+							targetNode = dojo.byId("pane1");
+							var html = '<h4>See Jane</h4>'
+							 + 'Look at her <span>Run</span>!';
+							dojo.html.set(
+								targetNode, html, 
+								{
+									"testname": "basicChecks setMixedContent"
 								});
 							var res = ieTrimSpaceBetweenTags(targetNode.innerHTML.toLowerCase());
 							t.assertEqual(html.toLowerCase(), res);

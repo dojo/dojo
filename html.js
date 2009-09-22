@@ -6,8 +6,9 @@ dojo.require("dojo.parser");
 (function(){ // private scope, sort of a namespace
 
 	// idCounter is incremented with each instantiation to allow asignment of a unique id for tracking, logging purposes
-	var idCounter = 0; 
-
+	var idCounter = 0, 
+		d = dojo;
+	
 	dojo.html._secureForInnerHtml = function(/*String*/ cont){
 		// summary:
 		//		removes !DOCTYPE and title elements from the html string.
@@ -33,66 +34,34 @@ dojo.require("dojo.parser");
 	dojo.html._setNodeContent = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont, /* Boolean? */ shouldEmptyFirst){
 		// summary:
 		//		inserts the given content into the given node
-		//		overlaps similiar functionality in dijit.layout.ContentPane._setContent
 		//	node:
 		//		the parent element
 		//	content:
 		//		the content to be set on the parent element. 
 		//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
-		// shouldEmptyFirst
-		//		if shouldEmptyFirst is true, the node will first be emptied of all content before the new content is inserted
-		//		defaults to false
-		if(shouldEmptyFirst){
-			dojo.html._emptyNode(node); 
+		
+		// always empty
+		d.empty(node);
+
+		if(cont) {
+			if(typeof cont == "string") {
+				cont = d._toDom(cont, node.ownerDocument);
+				if(cont.nodeType===11) {
+					// DocumentFragment
+					cont = cont.childNodes;
+				}
+			}
+			if(!cont.nodeType && d.isArrayLike(cont)) {
+				// handle as enumerable, but it may shrink as we enumerate it
+				for(var startlen=cont.length, i=0; i<cont.length; i=startlen==cont.length ? i+1 : 0) {
+					d.place( cont[Math.max(i, 0)], node, "last");
+				}
+			} else {
+				// pass nodes and unknowns through to dojo.place
+				d.place( cont, node, "last");
+			}
 		}
 
-		if(typeof cont == "string"){
-			// there's some hoops to jump through before we can set innerHTML on the would-be parent element. 
-	
-			// rationale for this block:
-			// if node is a table derivate tag, some browsers dont allow innerHTML on those
-			// TODO: <select>, <dl>? what other elements will give surprises if you naively set innerHTML?
-			
-			var pre = '', post = '', walk = 0, name = node.nodeName.toLowerCase();
-			switch(name){
-				case 'tr':
-					pre = '<tr>'; post = '</tr>';
-					walk += 1;//fallthrough
-				case 'tbody': case 'thead':// children of THEAD is of same type as TBODY
-					pre = '<tbody>' + pre; post += '</tbody>';
-					walk += 1;// falltrough
-				case 'table':
-					pre = '<table>' + pre; post += '</table>';
-					walk += 1;
-					break;
-			}
-			if(walk){
-				var n = node.ownerDocument.createElement('div');
-				n.innerHTML = pre + cont + post;
-				do{
-					n = n.firstChild;
-				}while(--walk);
-				// now we can safely add the child nodes...
-				dojo.forEach(n.childNodes, function(n){
-					node.appendChild(n.cloneNode(true));
-				});
-			}else{
-				// innerHTML the content as-is into the node (element)
-				// should we ever support setting content on non-element node types? 
-				// e.g. text nodes, comments, etc.?
-				node.innerHTML = cont;
-			}
-
-		}else{
-			// DomNode or NodeList
-			if(cont.nodeType){ // domNode (htmlNode 1 or textNode 3)
-				node.appendChild(cont);
-			}else{// nodelist or array such as dojo.Nodelist
-				dojo.forEach(cont, function(n){
-					node.appendChild(n.cloneNode(true));
-				});
-			}
-		}
 		// return DomNode
 		return node;
 	};

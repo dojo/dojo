@@ -31,7 +31,7 @@ dojo.require("dojo.parser");
 =====*/
 	dojo.html._emptyNode = dojo.empty;
 
-	dojo.html._setNodeContent = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont, /* Boolean? */ shouldEmptyFirst){
+	dojo.html._setNodeContent = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont){
 		// summary:
 		//		inserts the given content into the given node
 		//	node:

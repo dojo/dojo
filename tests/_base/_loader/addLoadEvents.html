@@ -13,7 +13,7 @@
 				named: function(){ console.debug("addOnLoad(obj, name) works"); },
 				refd: function(){ console.debug("addOnLoad(obj, func) works"); }
 			};
-			dojo.addOnLoad(scope, "named");
+			dojo.ready(scope, "named");
 			dojo.addOnLoad(scope, scope.refd);
 			// dojo.addOnLoad(scope, "named");
 			// dojo.addOnLoad(scope, scope.refd);

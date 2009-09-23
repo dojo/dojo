@@ -136,9 +136,8 @@ dojo.require("dojo._base.array");
 			}
 			cache.name = name;
 			cache.pos = i < l ? i : -1;
-		}else{
-			i = cache.pos;
 		}
+		i = cache.pos;
 
 		// find next
 		opf = op[name];

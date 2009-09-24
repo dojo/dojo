@@ -34,7 +34,7 @@ dojo.provide("dojo._base.array");
 			// description:
 			//		This method corresponds to the JavaScript 1.6 Array.indexOf method, with one difference: when
 			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript 
-			//		1.6's skips missing indexes.
+			//		1.6's indexOf skips the holes in the sparse array.
 			//		For details on this method, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
 
@@ -59,7 +59,7 @@ dojo.provide("dojo._base.array");
 			// description:
 			//		This method corresponds to the JavaScript 1.6 Array.lastIndexOf method, with one difference: when
 			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript 
-			//		1.6's skips missing indexes.
+			//		1.6's lastIndexOf skips the holes in the sparse array.
 			//		For details on this method, see:
 			// 			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/lastIndexOf
 			return dojo.indexOf(array, value, fromIndex, true); // Number

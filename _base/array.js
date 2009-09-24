@@ -33,7 +33,7 @@ dojo.provide("dojo._base.array");
 			//		passed array. If the value is not found, -1 is returned.
 			// description:
 			//		For details on this method, see:
-			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
+			// 			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
 
 			var step = 1, end = array.length || 0, i = 0;
 			if(findLast){
@@ -55,7 +55,7 @@ dojo.provide("dojo._base.array");
 			//		array. If the value is not found, -1 is returned.
 			// description:
 			//		For details on this method, see:
-			// 			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf
+			// 			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/lastIndexOf
 			return dojo.indexOf(array, value, fromIndex, true); // Number
 		},
 
@@ -71,9 +71,11 @@ dojo.provide("dojo._base.array");
 			//	thisObject:
 			//		may be used to scope the call to callback
 			//	description:
-			//		This function corresponds to the JavaScript 1.6
+			//		This function corresponds to the JavaScript 1.6 array method, with one difference: this
+			//		function runs over sparse arrays, passing the "holes" in the sparse array to
+			//		the callback function. JavaScript 1.6's forEach skips the holes in the sparse array.
 			//		Array.forEach() method. For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
+			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/forEach
 			//	example:
 			//	|	// log out all members of the array:
 			//	|	dojo.forEach(
@@ -138,7 +140,7 @@ dojo.provide("dojo._base.array");
 			// description:
 			//		This function corresponds to the JavaScript 1.6
 			//		Array.every() method. For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
+			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/every
 			// example:
 			//	|	// returns false
 			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>1; });
@@ -162,7 +164,7 @@ dojo.provide("dojo._base.array");
 			// description:
 			//		This function corresponds to the JavaScript 1.6
 			//		Array.some() method. For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
+			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/some
 			// example:
 			//	|	// is true
 			//	|	dojo.some([1, 2, 3, 4], function(item){ return item>1; });
@@ -187,7 +189,7 @@ dojo.provide("dojo._base.array");
 			// description:
 			//		This function corresponds to the JavaScript 1.6 Array.map()
 			//		method. For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
+			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
 			// example:
 			//	|	// returns [2, 3, 4, 5]
 			//	|	dojo.map([1, 2, 3, 4], function(item){ return item+1 });
@@ -216,7 +218,7 @@ dojo.provide("dojo._base.array");
 			// description:
 			//		This function corresponds to the JavaScript 1.6
 			//		Array.filter() method. For more details, see:
-			//			http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
+			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
 			// example:
 			//	|	// returns [2, 3, 4]
 			//	|	dojo.filter([1, 2, 3, 4], function(item){ return item>1; });

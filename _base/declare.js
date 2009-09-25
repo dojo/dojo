@@ -6,7 +6,7 @@ dojo.require("dojo._base.array");
 // a drop-in replacement for dojo.declare() with fixed bugs and enhancements
 
 (function(){
-	var d = dojo, op = Object.prototype, isF = d.isFunction, xtor = function(){}, counter = 0;
+	var d = dojo, op = Object.prototype, isF = d.isFunction, xtor = new Function, counter = 0;
 
 	function err(msg){ throw new Error("declare: " + msg); }
 
@@ -286,7 +286,7 @@ dojo.require("dojo._base.array");
 					// mix in properties
 					d._mixin(proto, mixins[i].prototype);
 					// chain in new constructor
-					ctor = function(){};
+					ctor = new Function;
 					ctor.superclass = superclass;
 					ctor.prototype = proto;
 					superclass = proto.constructor = ctor;

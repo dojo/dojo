@@ -15,7 +15,7 @@ dojo.require("dojo._base.array");
 		var result = [0], dag = [], nameMap = {}, clsCount = 0, l = bases.length,
 			i = 0, j, lin, lin0, base, top, cls, proto, rec, name, refs;
 
-		// build DAG
+		// build DAG as a class map
 		for(; i < l; ++i){
 			base = bases[i];
 			if(!base){
@@ -28,7 +28,7 @@ dojo.require("dojo._base.array");
 				// optimization for degenerated case: bases == [Base]
 				if(l == 1){
 					return {
-						addons:      [],
+						mixins:      [],
 						superclass:  base,
 						bases:       result.concat(lin0)
 					};
@@ -55,13 +55,17 @@ dojo.require("dojo._base.array");
 				}
 				top = rec;
 			}
-			if(top && !top.count){
-				dag.push(top);
+		}
+
+		// get DAG's roots
+		for(i = 0; i < l; ++i){
+			rec = nameMap[bases[i].prototype.declaredClass];
+			if(!rec.count){
+				dag.push(rec);
 			}
 		}
 
 		// remove classes without external references recursively
-		dag = d.filter(dag, function(v){ return !v.count; });
 		while(dag.length){
 			top = dag.pop();
 			result.push(top.cls);
@@ -87,8 +91,8 @@ dojo.require("dojo._base.array");
 		}
 
 		return {
-			addons:      result.slice(0, result.length - (i < 0 ? lin0.length : 1)),
-			superclass:  i < 0 ? bases[0] : result.slice(result.length - 1),
+			mixins:      result.slice(1, result.length - (i < 0 ? lin0.length : 1)),
+			superclass:  i < 0 ? bases[0] : result[result.length - 1],
 			bases:       result
 		};
 	}
@@ -244,7 +248,7 @@ dojo.require("dojo._base.array");
 
 		// dojo.declare
 		return function(className, superclass, props){
-			var mixins, proto, i, l, t, ctor, ctorChain, name, bases, addons = [], result;
+			var mixins = [], proto, i, l, t, ctor, ctorChain, name, bases, result;
 
 			// crack parameters
 			if(typeof className != "string"){
@@ -261,7 +265,7 @@ dojo.require("dojo._base.array");
 					// we have several base classes => C3 MRO
 					result = c3mro(superclass);
 					superclass = result.superclass;
-					addons = result.addons;
+					mixins = result.mixins;
 					bases = result.bases;
 				}else{
 					// false alarm: single inheritance
@@ -271,16 +275,16 @@ dojo.require("dojo._base.array");
 			if(superclass){
 				t = superclass._meta;
 				bases = bases || (t ? [0].concat(t.bases) : [0, superclass]);
-				for(i = addons.length - 1;; --i){
+				for(i = mixins.length - 1;; --i){
 					// delegation
 					xtor.prototype = superclass.prototype;
 					proto = new xtor;
-					if(i < 1){
+					if(i < 0){
 						// stop if nothing to add (the last base)
 						break;
 					}
 					// mix in properties
-					d._mixin(proto, addons[i].prototype);
+					d._mixin(proto, mixins[i].prototype);
 					// chain in new constructor
 					ctor = function(){};
 					ctor.superclass = superclass;

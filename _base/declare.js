@@ -12,7 +12,7 @@ dojo.require("dojo._base.array");
 
 	// C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)
 	function c3mro(bases){
-		var result = [0], dag = [], nameMap = {}, clsCount = 0, l = bases.length,
+		var result = [], dag = [{cls: 0, refs: []}], nameMap = {}, clsCount = 1, l = bases.length,
 			i = 0, j, lin, base, top, proto, rec, name, refs;
 
 		// build a list of bases naming them if needed
@@ -21,15 +21,7 @@ dojo.require("dojo._base.array");
 			if(!base){
 				err("mixin #" + i + " is null");
 			}
-			if(base._meta){
-				lin = base._meta.bases;
-			}else{
-				proto = base.prototype;
-				if(!proto.hasOwnProperty("declaredClass") || !proto.declaredClass){
-					proto.declaredClass = "dojoUniqClassName_" + (counter++);
-				}
-				lin = [base];
-			}
+			lin = base._meta ? base._meta.bases : [base];
 			top = 0;
 			// add bases to the name map
 			for(j = lin.length - 1; j >= 0; --j){
@@ -43,52 +35,67 @@ dojo.require("dojo._base.array");
 					++clsCount;
 				}
 				rec = nameMap[name];
-				if(top){
+				if(top && top !== rec){
 					rec.refs.push(top);
 					++top.count;
 				}
 				top = rec;
 			}
-			top.base = i;
-		}
-
-		// get DAG's roots
-		for(i = 0; i < l; ++i){
-			rec = nameMap[bases[i].prototype.declaredClass];
-			if(!rec.count){
-				dag.push(rec);
-			}
+			++top.count;
+			dag[0].refs.push(top);
 		}
 
 		// remove classes without external references recursively
 		while(dag.length){
 			top = dag.pop();
-			if(!dag.length && top.base === 0){
-				// check if it is the last one => superclass
-				for(base = top; base.refs.length == 1; base = base.refs[0]);
-				if(!base.refs.length){
-					// found our super class
-					result[0] = top.cls;
-					break;
-				}
-			}
 			result.push(top.cls);
 			--clsCount;
-			refs = top.refs;
-			for(i = 0, l = refs.length; i < l; ++i){
-				top = refs[i];
-				if(!--top.count){
-					dag.push(top);
+			// follow a single-linked chain
+			for(refs = top.refs; refs.length == 1; refs = top.refs){
+				top = refs[0];
+				if(!top){
+					// end of the chain
+					break;
+				}
+				if(--top.count){
+					// branch: signal next cycle
+					top = 0;
+					break;
+				}
+				result.push(top.cls);
+				--clsCount;
+			}
+			if(top){
+				// branch
+				for(i = 0, l = refs.length; i < l; ++i){
+					top = refs[i];
+					if(!--top.count){
+						dag.push(top);
+					}
 				}
 			}
 		}
-		if(!result[0]){
-			if(clsCount){
-				err("can't build consistent linearization");
-			}
-			result[0] = result.pop();
+		if(clsCount){
+			err("can't build consistent linearization");
 		}
-		
+
+		// calculate the superclass
+		l = 0;
+		base = bases[0];
+		if(base){
+			l = 1;
+			if(base._meta){
+				base = base._meta.bases;
+				for(i = 0, l = base.length, j = result.length - l; i < l; ++i, ++j){
+					if(base[i] !== result[j]){
+						l = 1;
+						break;
+					}
+				}
+			}
+		}
+		result[0] = l;
+
 		return result;
 	}
 
@@ -353,21 +360,19 @@ dojo.require("dojo._base.array");
 
 			// build a prototype
 			if(d.isArray(superclass)){
-				// possible multiple inheritance
-				if(superclass.length > 1){
-					// we have several base classes => C3 MRO
-					bases = c3mro(superclass);
-					superclass = bases[0];
-					mixins = bases.length;
-				}else{
-					// false alarm: single inheritance
-					superclass = superclass[0];
+				// C3 MRO
+				bases = c3mro(superclass);
+				t = bases[0];
+				superclass = t == 1 ? bases[bases.length - 1] : superclass[0];
+				mixins = bases.length - t;
+			}else{
+				bases = [0];
+				if(superclass){
+					t = superclass._meta;
+					bases = bases.concat(t ? t.bases : superclass);
 				}
 			}
-			bases = bases || [0];
 			if(superclass){
-				t = superclass._meta;
-				bases = bases.concat(t ? t.bases : superclass);
 				for(i = mixins - 1;; --i){
 					// delegation
 					xtor.prototype = superclass.prototype;

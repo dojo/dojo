@@ -203,7 +203,7 @@ dojo.require("dojo._base.array");
 		}
 		return this instanceof cls;
 	}
-	
+
 	// imlementation of our fancy extend (adds metadata)
 	function extend(props){
 		var name, t, i = 0, l = d._extraNames.length, proto = this.prototype;
@@ -231,7 +231,7 @@ dojo.require("dojo._base.array");
 			}
 		}
 	}
-	
+
 	// chained constructor compatible with the legacy dojo.declare()
 	function chainedConstructor(bases, ctorSpecial){
 		return function(){
@@ -290,7 +290,7 @@ dojo.require("dojo._base.array");
 			}
 		};
 	}
-	
+
 	// plain vanilla constructor (can use inherited() to call its base constructor)
 	function simpleConstructor(bases){
 		return function(){

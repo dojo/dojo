@@ -58,8 +58,8 @@ tests.register("tests._base.declare",
 			t.is("blah", tmp.foo);
 		},
 		function mixinSubclass(t){
-			dojo.declare("tests._base.declare.tmp7", null, { 
-				foo: "thonk" 
+			dojo.declare("tests._base.declare.tmp7", null, {
+				foo: "thonk"
 			});
 			dojo.declare("tests._base.declare.tmp8", null, {
 				constructor: function(){
@@ -186,12 +186,12 @@ tests.register("tests._base.declare",
 			new tests._base.declare.tmp16({ preamble: function(){ passed = true; } });
 			t.t(passed);
 		},
-		
+
 		function basicMixin(t){
 			// testing if a plain Class-like object can be inherited 
 			// by dojo.declare
 			var d = new doh.Deferred;
-			
+
 			var Thing = function(args){
 				dojo.mixin(this, args);
 			}
@@ -199,19 +199,19 @@ tests.register("tests._base.declare",
 				t.t(true);
 				d.callback(true);
 			}
-			
+
 			dojo.declare("Thinger", Thing, {
 				method: function(){
 					this.inherited(arguments);
 				}
 			});
-			
+
 			var it = new Thinger();
 			it.method();
-			
+
 			return d;
 		},
-		
+
 		function mutatedMethods(t){
 			// testing if methods can be mutated (within a reason)
 			dojo.declare("tests._base.declare.tmp18", null, {
@@ -263,14 +263,14 @@ tests.register("tests._base.declare",
 			t.is(2, x.flag);
 			t.is(1, a);
 		},
-		
+
 		function modifiedInstance(t){
 			var stack;
 			dojo.declare("tests._base.declare.tmp20", null, {
 				foo: function(){ stack.push(20); }
 			});
 			dojo.declare("tests._base.declare.tmp21", null, {
-				foo: function(){ 
+				foo: function(){
 					this.inherited(arguments);
 					stack.push(21);
 				}
@@ -281,7 +281,7 @@ tests.register("tests._base.declare",
 					stack.push(22);
 				}
 			});
-			dojo.declare("tests._base.declare.tmp23", 
+			dojo.declare("tests._base.declare.tmp23",
 						[tests._base.declare.tmp20, tests._base.declare.tmp21], {
 				foo: function(){
 					this.inherited(arguments);
@@ -306,16 +306,101 @@ tests.register("tests._base.declare",
 
 			dojo.mixin(a, c);
 			dojo.mixin(b, c);
-			
+
 			stack = [];
 			a.foo();
 			t.is([20, 22, "INSIDE C"], stack);
-			
+
 			stack = [];
 			b.foo();
 			t.is([20, 21, 22, "INSIDE C"], stack);
+		},
+
+		function duplicatedBase(t){
+			var stack;
+			var A = dojo.declare(null, {
+				constructor: function(){
+					stack.push(1);
+				}
+			});
+			var B = dojo.declare([A, A, A], {
+				constructor: function(){
+					stack.push(2);
+				}
+			});
+			stack = [];
+			new A;
+			t.is([1], stack);
+			stack = [];
+			new B;
+			t.is([1, 2], stack);
+		},
+
+		function indirectlyDuplicatedBase(t){
+			var stack;
+			var A = dojo.declare(null, {
+				constructor: function(){
+					stack.push(1);
+				}
+			});
+			var B = dojo.declare(A, {
+				constructor: function(){
+					stack.push(2);
+				}
+			});
+			var C = dojo.declare([A, B], {
+				constructor: function(){
+					stack.push(3);
+				}
+			});
+			var D = dojo.declare([B, A], {
+				constructor: function(){
+					stack.push(4);
+				}
+			});
+			stack = [];
+			new C;
+			t.is([1, 2, 3], stack);
+			stack = [];
+			new D;
+			t.is([1, 2, 4], stack);
+		},
+
+		function wrongMultipleInheritance(t){
+			var stack;
+			var A = dojo.declare([], {
+				constructor: function(){
+					stack.push(1);
+				}
+			});
+			var B = dojo.declare([A], {
+				constructor: function(){
+					stack.push(2);
+				}
+			});
+			stack = [];
+			new A;
+			t.is([1], stack);
+			stack = [];
+			new B;
+			t.is([1, 2], stack);
+		},
+
+		function impossibleBases(t){
+			var A = dojo.declare(null);
+			var B = dojo.declare(null);
+			var C = dojo.declare([A, B]);
+			var D = dojo.declare([B, A]);
+
+			var flag = false;
+			try{
+				var E = dojo.declare([C, D]);
+			}catch(e){
+				flag = true;
+			}
+			t.t(flag);
 		}
-		
+
 		// FIXME: there are still some permutations to test like:
 		//	- ctor arguments
 		//	- multi-level inheritance + L/R conflict checks

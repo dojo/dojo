@@ -13,48 +13,43 @@ dojo.require("dojo._base.array");
 	// C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)
 	function c3mro(bases){
 		var result = [0], dag = [], nameMap = {}, clsCount = 0, l = bases.length,
-			i = 0, j, lin, lin0, base, top, cls, proto, rec, name, refs;
+			i = 0, j, lin, base, top, proto, rec, name, refs;
 
-		// build DAG as a class map
+		// build a list of bases naming them if needed
 		for(; i < l; ++i){
 			base = bases[i];
 			if(!base){
 				err("mixin #" + i + " is null");
 			}
-			lin = base._meta && base._meta.bases || [base];
-			if(!i){
-				lin0 = lin;
-				/*
-				// optimization for degenerated case: bases == [Base]
-				if(l == 1){
-					return {
-						mixins:      [],
-						superclass:  base,
-						bases:       result.concat(lin0)
-					};
+			if(base._meta){
+				lin = base._meta.bases;
+			}else{
+				proto = base.prototype;
+				if(!proto.hasOwnProperty("declaredClass") || !proto.declaredClass){
+					proto.declaredClass = "dojoUniqClassName_" + (counter++);
 				}
-				*/
+				lin = [base];
 			}
 			top = 0;
+			// add bases to the name map
 			for(j = lin.length - 1; j >= 0; --j){
-				cls = lin[j];
-				proto = cls.prototype;
-				name = proto.hasOwnProperty("declaredClass") && proto.declaredClass;
-				if(!name){
-					name = proto.declaredClass = "dojoUniqClassName_" + (counter++);
+				proto = lin[j].prototype;
+				if(!proto.hasOwnProperty("declaredClass")){
+					proto.declaredClass = "dojoUniqClassName_" + (counter++);
 				}
-				if(nameMap.hasOwnProperty(name)){
-					rec = nameMap[name];
-				}else{
-					rec = nameMap[name] = {count: 0, refs: [], cls: cls};
+				name = proto.declaredClass;
+				if(!nameMap.hasOwnProperty(name)){
+					nameMap[name] = {count: 0, refs: [], cls: lin[j]};
 					++clsCount;
 				}
+				rec = nameMap[name];
 				if(top){
 					rec.refs.push(top);
 					++top.count;
 				}
 				top = rec;
 			}
+			top.base = i;
 		}
 
 		// get DAG's roots
@@ -68,6 +63,15 @@ dojo.require("dojo._base.array");
 		// remove classes without external references recursively
 		while(dag.length){
 			top = dag.pop();
+			if(!dag.length && top.base === 0){
+				// check if it is the last one => superclass
+				for(base = top; base.refs.length == 1; base = base.refs[0]);
+				if(!base.refs.length){
+					// found our super class
+					result[0] = top.cls;
+					break;
+				}
+			}
 			result.push(top.cls);
 			--clsCount;
 			refs = top.refs;
@@ -78,23 +82,14 @@ dojo.require("dojo._base.array");
 				}
 			}
 		}
-		if(clsCount){
-			err("can't build consistent linearization");
-		}
-
-		// see if we have the tail matching the base
-		//lin0 = lin0 || []; // degenerated case: bases == []
-		for(i = lin0.length - 1, j = result.length - 1; i >= 0; --i, --j){
-			if(lin0[i] !== result[j]){
-				break;
+		if(!result[0]){
+			if(clsCount){
+				err("can't build consistent linearization");
 			}
+			result[0] = result.pop();
 		}
-
-		return {
-			mixins:      result.slice(1, result.length - (i < 0 ? lin0.length : 1)),
-			superclass:  i < 0 ? bases[0] : result[result.length - 1],
-			bases:       result
-		};
+		
+		return result;
 	}
 
 	// find the next "inherited" method using available meta-information
@@ -202,45 +197,143 @@ dojo.require("dojo._base.array");
 		return this instanceof cls;
 	}
 	
-	// build a list of methods
-	function buildMethodList(bases, name, order){
-		var methods = [], i = 0, l = bases.length, t, b;
-		for(;i < l; ++i){
-			b = bases[i];
-			t = b._meta;
-			if(t){
-				// this is a class created with dojo.declare()
-				t = t.hidden;
-				if(t.hasOwnProperty(name)){
-					// if this class has the method we need => add it
-					methods.push(t[name]);
+	// imlementation of our fancy extend (adds metadata)
+	function extend(props){
+		var name, t, i = 0, l = d._extraNames.length, proto = this.prototype;
+		// add props adding metadata for incoming functions
+		for(name in props){
+			t = props[name];
+			if(t !== op[name] || !(name in op)){
+				if(isF(t)){
+					// non-trivial function method => attach its name
+					t.nom = name;
 				}
-			}else{
-				// this is a native class
-				if(name == "constructor"){
-					// constructor => add it
-					methods.push(b);
-				}else{
-					t = b.prototype[name];
-					if(t && t !== op[name]){
-						// if this class has the method we need,
-						// and it is not default one => add it
-						methods.push(t);
+				proto[name] = t;
+			}
+		}
+		// process unenumerable methods on IE
+		for(; i < l; ++i){
+			name = d._extraNames[i];
+			t = props[name];
+			if(t !== op[name] || !(name in op)){
+				if(isF(t)){
+					// non-trivial function method => attach its name
+					t.nom = name;
+				}
+				proto[name] = t;
+			}
+		}
+	}
+	
+	// chained constructor compatible with the legacy dojo.declare()
+	function chainedConstructor(bases, ctorSpecial){
+		return function(){
+			var a = arguments, args = a, a0 = a[0], f, i, m, h,
+				l = bases.length, preArgs;
+			this._inherited = {};
+			// perform the shaman's rituals of the original dojo.declare()
+			// 1) call two types of the preamble
+			if(ctorSpecial && (a0 && a0.preamble || this.preamble)){
+				// full blown ritual
+				preArgs = new Array(bases.length);
+				// prepare parameters
+				preArgs[0] = a;
+				for(i = 0;;){
+					// process the preamble of the 1st argument
+					a0 = a[0];
+					if(a0){
+						f = a0.preamble;
+						if(f){
+							a = f.apply(this, a) || a;
+						}
 					}
+					// process the preamble of this class
+					f = bases[i].prototype;
+					f = f.hasOwnProperty("preamble") && f.preamble;
+					if(f){
+						a = f.apply(this, a) || a;
+					}
+					// one pecularity of the preamble:
+					// it is called if it is not needed,
+					// e.g., there is no constructor to call
+					// let's watch for the last constructor
+					// (see ticket #9795)
+					if(++i == l){
+						break;
+					}
+					preArgs[i] = a;
 				}
 			}
-		}
-		// the last method comes from Object
-		if(name != "constructor"){
-			// we already handled the native constructor above => skip it
-			t = op[name];
-			if(t){
-				// there is a native method with such name => add it
-				methods.push(t);
+			// 2) call all non-trivial constructors using prepared arguments
+			for(i = l - 1; i >= 0; --i){
+				f = bases[i];
+				m = f._meta;
+				if(m){
+					h = m.hidden;
+					f = h.hasOwnProperty("constructor") && h.constructor;
+				}
+				if(f){
+					f.apply(this, preArgs ? preArgs[i] : a);
+				}
 			}
-		}
-		// reverse the chain for "after" methods
-		return order === "after" ? methods.reverse() : methods;
+			// 3) continue the original ritual: call the postscript
+			f = this.postscript;
+			if(f){
+				f.apply(this, args);
+			}
+		};
+	}
+	
+	// plain vanilla constructor (can use inherited() to call its base constructor)
+	function simpleConstructor(bases){
+		return function(){
+			var a = arguments, f, i = 0, l = bases.length;
+			this._inherited = {};
+			// perform the shaman's rituals of the original dojo.declare()
+			// 1) do not call the preamble
+			// 2) call the top constructor (it can use this.inherited())
+			for(; i < l; ++i){
+				f = bases[i];
+				m = f._meta;
+				if(m){
+					h = m.hidden;
+					f = h.hasOwnProperty("constructor") && h.constructor;
+				}
+				if(f){
+					f.apply(this, a);
+					break;
+				}
+			}
+			// 3) call the postscript
+			f = this.postscript;
+			if(f){
+				f.apply(this, a);
+			}
+		};
+	}
+
+	function chain(name, bases, reversed){
+		return function(){
+			var b, m, h, f, i = 0, l = bases.length, step = 1;
+			if(reversed){
+				i = l - 1;
+				step = l = -1;
+			}
+			for(; i != l; i += step){
+				f = 0;
+				b = bases[i];
+				m = b._meta;
+				if(m){
+					h = m.hidden;
+					f = h.hasOwnProperty(name) && h[name];
+				}else{
+					f = b.prototype[name];
+				}
+				if(f){
+					f.apply(this, arguments);
+				}
+			}
+		};
 	}
 
 	d.makeDeclare = function(ctorSpecial, chains){
@@ -248,7 +341,7 @@ dojo.require("dojo._base.array");
 
 		// dojo.declare
 		return function(className, superclass, props){
-			var mixins = [], proto, i, l, t, ctor, ctorChain, name, bases, result;
+			var proto, i, l, t, ctor, ctorChain, name, bases, mixins = 1;
 
 			// crack parameters
 			if(typeof className != "string"){
@@ -263,28 +356,29 @@ dojo.require("dojo._base.array");
 				// possible multiple inheritance
 				if(superclass.length > 1){
 					// we have several base classes => C3 MRO
-					result = c3mro(superclass);
-					superclass = result.superclass;
-					mixins = result.mixins;
-					bases = result.bases;
+					bases = c3mro(superclass);
+					superclass = bases[0];
+					mixins = bases.length;
 				}else{
 					// false alarm: single inheritance
 					superclass = superclass[0];
 				}
 			}
+			bases = bases || [0];
 			if(superclass){
 				t = superclass._meta;
-				bases = bases || (t ? [0].concat(t.bases) : [0, superclass]);
-				for(i = mixins.length - 1;; --i){
+				bases = bases.concat(t ? t.bases : superclass);
+				for(i = mixins - 1;; --i){
 					// delegation
 					xtor.prototype = superclass.prototype;
 					proto = new xtor;
-					if(i < 0){
+					if(!i){
 						// stop if nothing to add (the last base)
 						break;
 					}
 					// mix in properties
-					d._mixin(proto, mixins[i].prototype);
+					t = bases[i];
+					d._mixin(proto, t._meta ? t._meta.hidden : t.prototype);
 					// chain in new constructor
 					ctor = new Function;
 					ctor.superclass = superclass;
@@ -292,127 +386,29 @@ dojo.require("dojo._base.array");
 					superclass = proto.constructor = ctor;
 				}
 			}else{
-				bases = [0];
 				proto = {};
 			}
+			xtor.prototype = proto;
+			extend.call(xtor, props);
 			xtor.prototype = 0;	// cleanup
 
-			// add props adding metadata for incoming functions
-			for(name in props){
-				t = props[name];
-				if(t !== op[name] || !(name in op)){
-					if(isF(t)){
-						// non-trivial function method => attach its name
-						t.nom = name;
-					}
-					proto[name] = t;
-				}
-			}
-			// process unenumerable methods on IE
-			for(i = 0, l = d._extraNames.length; i < l; ++i){
-				name = d._extraNames[i];
-				t = props[name];
-				if(t !== op[name] || !(name in op)){
-					if(isF(t)){
-						// non-trivial function method => attach its name
-						t.nom = name;
-					}
-					proto[name] = t;
-				}
-			}
-
 			// build ctor
-			if(ctorSpecial || chains.hasOwnProperty("constructor")){
-				// compatibility mode with the legacy dojo.declare()
-				ctor = function(){
-					var a = arguments, args = a, a0 = a[0], f, i, l, h, preArgs;
-					this._inherited = {};
-					// perform the shaman's rituals of the original dojo.declare()
-					// 1) call two types of the preamble
-					if(ctorSpecial && (a0 && a0.preamble || this.preamble)){
-						// full blown ritual
-						preArgs = new Array(bases.length);
-						// prepare parameters
-						preArgs[0] = a;
-						for(i = 0, l = bases.length;;){
-							// process the preamble of the 1st argument
-							a0 = a[0];
-							if(a0){
-								f = a0.preamble;
-								if(f){
-									a = f.apply(this, a) || a;
-								}
-							}
-							// process the preamble of this class
-							f = bases[i]._meta.hidden.preamble;
-							if(f){
-								a = f.apply(this, a) || a;
-							}
-							// one pecularity of the preamble:
-							// it is called if it is not needed,
-							// e.g., there is no constructor to call
-							// let's watch for the last constructor
-							// (see ticket #9795)
-							if(++i == l){
-								break;
-							}
-							preArgs[i] = a;
-						}
-						// call all unique constructors using prepared arguments
-						for(--i; i >= 0; --i){
-							h = bases[i]._meta.hidden;
-							if(h.hasOwnProperty("constructor")){
-								h.constructor.apply(this, preArgs[i]);
-							}
-						}
-					}else{
-						// reduced ritual
-						// 2) call the constructor with the same parameters
-						for(i = ctorChain.length - 1; i >= 0; --i){
-							ctorChain[i].apply(this, a);
-						}
-					}
-					// 3) continue the original ritual: call the postscript
-					f = this.postscript;
-					if(f){
-						f.apply(this, args);
-					}
-				};
-			}else{
-				// plain vanilla constructor (can use inherited() to call its base constructor)
-				ctor = function(){
-					var a = arguments, f;
-					this._inherited = {};
-					// perform the shaman's rituals of the original dojo.declare()
-					// 1) do not call the preamble
-					// 2) call our original constructor
-					f = ctorChain[0];
-					if(f){
-						f.apply(this, a);
-					}
-					// 3) call the postscript
-					f = this.postscript;
-					if(f){
-						f.apply(this, args);
-					}
-				};
-			}
+			bases[0] = ctor = ctorSpecial || chains.hasOwnProperty("constructor") ?
+				chainedConstructor(bases, ctorSpecial) : simpleConstructor(bases);
 
-			// build metadata on the constructor
-			bases[0] = ctor;
+			// add metainformation to the constructor
 			ctor._meta  = {bases: bases, hidden: props, chains: chains, ctorSpecial: ctorSpecial};
-			ctor._cache = {};
 			ctor.superclass = superclass && superclass.prototype;
-
-			proto.constructor = ctor;
+			ctor.extend = extend;
 			ctor.prototype = proto;
+			proto.constructor = ctor;
 
 			// add "standard" methods to the ptototype
 			proto.getInherited = getInherited;
 			proto.inherited = inherited;
 			proto.isInstanceOf = isInstanceOf;
 
-			// process named classes
+			// add name if specified
 			if(className){
 				proto.declaredClass = className;
 				d.setObject(className, ctor);
@@ -421,28 +417,12 @@ dojo.require("dojo._base.array");
 			// build chains and add them to the prototype
 			for(name in chains){
 				if(typeof chains[name] == "string"){
-					t = proto[name] = function(name){
-						return function(){
-							var t = buildMethodList(bases, name, chains[name]), l = t.length,
-								f = function(){ for(var i = 0; i < l; ++i){ t[i].apply(this, arguments); } };
-							f.nom = name;
-							// memoization
-							ctor.prototype[name] = f;
-							f.apply(this, arguments);
-						};
-					}(name);
+					t = proto[name] = chain(name, bases, chains[name] === "after");
 					t.nom = name;
 				}
 			}
 			// chained methods do not return values
 			// no need to chain "invisible" functions
-
-			// get the constructor chain (used directly in constructors)
-			// ctorSpecial => normal (auto-reversed)
-			// chain.before => reversed (auto-reversed)
-			// chain.after => normal (auto-reversed)
-			// chain.none => normal
-			ctorChain = buildMethodList(bases, "constructor", chains.constructor === "before" && "after");
 
 			return ctor;	// Function
 		};

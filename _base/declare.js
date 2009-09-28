@@ -12,8 +12,8 @@ dojo.require("dojo._base.array");
 
 	// C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)
 	function c3mro(bases){
-		var result = [], dag = [{cls: 0, refs: []}], nameMap = {}, clsCount = 1, l = bases.length,
-			i = 0, j, lin, base, top, proto, rec, name, refs;
+		var result = [], roots = [{cls: 0, refs: []}], nameMap = {}, clsCount = 1,
+			l = bases.length, i = 0, j, lin, base, top, proto, rec, name, refs;
 
 		// build a list of bases naming them if needed
 		for(; i < l; ++i){
@@ -27,7 +27,7 @@ dojo.require("dojo._base.array");
 			for(j = lin.length - 1; j >= 0; --j){
 				proto = lin[j].prototype;
 				if(!proto.hasOwnProperty("declaredClass")){
-					proto.declaredClass = "dojoUniqClassName_" + (counter++);
+					proto.declaredClass = "uniqName_" + (counter++);
 				}
 				name = proto.declaredClass;
 				if(!nameMap.hasOwnProperty(name)){
@@ -42,23 +42,19 @@ dojo.require("dojo._base.array");
 				top = rec;
 			}
 			++top.count;
-			dag[0].refs.push(top);
+			roots[0].refs.push(top);
 		}
 
 		// remove classes without external references recursively
-		while(dag.length){
-			top = dag.pop();
+		while(roots.length){
+			top = roots.pop();
 			result.push(top.cls);
 			--clsCount;
-			// follow a single-linked chain
-			for(refs = top.refs; refs.length == 1; refs = top.refs){
+			// optimization: follow a single-linked chain
+			while(refs = top.refs, refs.length == 1){
 				top = refs[0];
-				if(!top){
-					// end of the chain
-					break;
-				}
-				if(--top.count){
-					// branch: signal next cycle
+				if(!top || --top.count){
+					// branch or end of chain => do not end to roots
 					top = 0;
 					break;
 				}
@@ -70,7 +66,7 @@ dojo.require("dojo._base.array");
 				for(i = 0, l = refs.length; i < l; ++i){
 					top = refs[i];
 					if(!--top.count){
-						dag.push(top);
+						roots.push(top);
 					}
 				}
 			}
@@ -79,22 +75,10 @@ dojo.require("dojo._base.array");
 			err("can't build consistent linearization");
 		}
 
-		// calculate the superclass
-		l = 0;
-		base = bases[0];
-		if(base){
-			l = 1;
-			if(base._meta){
-				base = base._meta.bases;
-				for(i = 0, l = base.length, j = result.length - l; i < l; ++i, ++j){
-					if(base[i] !== result[j]){
-						l = 1;
-						break;
-					}
-				}
-			}
-		}
-		result[0] = l;
+		// calculate the superclass offset
+		result[0] = base ?
+			base._meta && base === result[result.length - base._meta.bases.length] ?
+				base._meta.bases.length : 1 : 0;
 
 		return result;
 	}
@@ -363,8 +347,8 @@ dojo.require("dojo._base.array");
 				// C3 MRO
 				bases = c3mro(superclass);
 				t = bases[0];
-				superclass = t == 1 ? bases[bases.length - 1] : superclass[0];
 				mixins = bases.length - t;
+				superclass = bases[mixins];
 			}else{
 				bases = [0];
 				if(superclass){

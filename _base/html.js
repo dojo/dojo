@@ -19,8 +19,7 @@ try{
 dojo.byId = function(id, doc){
 	//	summary:
 	//		Returns DOM node with matching `id` attribute or `null`
-	//		if not found, similar to "$" function in another library.
-	//		If `id` is a DomNode, this function is a no-op.
+	//		if not found. If `id` is a DomNode, this function is a no-op.
 	//
 	//	id: String|DOMNode
 	//	 	A string to match an HTML id attribute or a reference to a DOM Node
@@ -32,18 +31,19 @@ dojo.byId = function(id, doc){
 	//
 	//	example:
 	//	Look up a node by ID:
-	//	| var n = dojo.byId("foo");
+	//	|	var n = dojo.byId("foo");
 	//
 	//	example:
-	//	Check if a node exists.
-	//	|	if(dojo.byId("bar")){ ... }
+	//	Check if a node exists, and use it.
+	//	|	var n = dojo.byId("bar");
+	//	|	if(n){ doStuff() ... }
 	//
 	//	example:
 	//	Allow string or DomNode references to be passed to a custom function:
-	//	| var foo = function(nodeOrId){
-	//	|	nodeOrId = dojo.byId(nodeOrId);
-	//	|	// ... more stuff
-	//	| }
+	//	|	var foo = function(nodeOrId){
+	//	|		nodeOrId = dojo.byId(nodeOrId);
+	//	|		// ... more stuff
+	//	|	}
 =====*/
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
@@ -122,11 +122,11 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		//	example:
 		//	Destroy a node byId:
-		//	| dojo.destroy("someId");
+		//	|	dojo.destroy("someId");
 		//
 		//	example:
 		//	Destroy all nodes in a list by reference:
-		//	| dojo.query(".someNode").forEach(dojo.destroy);
+		//	|	dojo.query(".someNode").forEach(dojo.destroy);
 
 		node = byId(node);
 		try{
@@ -146,6 +146,10 @@ if(dojo.isIE || dojo.isOpera){
 		//		Returns true if node is a descendant of ancestor
 		//	node: string id or node reference to test
 		//	ancestor: string id or node reference of potential parent to test against
+		//
+		// example:
+		//	Test is node id="bar" is a descendant of node id="foo"
+		//	|	if(dojo.isDescendant("bar", "foo")){ ... }
 		try{
 			node = byId(node);
 			ancestor = byId(ancestor);
@@ -160,12 +164,19 @@ if(dojo.isIE || dojo.isOpera){
 	};
 
 	dojo.setSelectable = function(/*DomNode|String*/node, /*Boolean*/selectable){
-		//	summary: enable or disable selection on a node
+		//	summary: 
+		//		Enable or disable selection on a node
 		//	node:
 		//		id or reference to node
 		//	selectable:
 		//		state to put the node in. false indicates unselectable, true 
 		//		allows selection.
+		//	example:
+		//	Make the node id="bar" unselectable
+		//	|	dojo.setSelectable("bar"); 
+		//	example:
+		//	Make the node id="bar" selectable
+		//	|	dojo.setSelectable("bar", true);
 		node = byId(node);
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(d.isMozilla){
@@ -233,19 +244,19 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		// example:
 		//		Place a node by string id as the last child of another node by string id:
-		// | 	dojo.place("someNode", "anotherNode");
+		//	|	dojo.place("someNode", "anotherNode");
 		//
 		// example:
 		//		Place a node by string id before another node by string id
-		// | 	dojo.place("someNode", "anotherNode", "before");
+		//	|	dojo.place("someNode", "anotherNode", "before");
 		//
 		// example:
 		//		Create a Node, and place it in the body element (last child):
-		// | 	dojo.place(dojo.create('div'), dojo.body());
+		//	|	dojo.place("<div></div>", dojo.body());
 		//
 		// example:
 		//		Put a new LI as the first child of a list by id:
-		// | 	dojo.place(dojo.create('li'), "someUl", "first");
+		//	|	dojo.place("<li></li>", "someUl", "first");
 
 		refNode = byId(refNode);
 		if(typeof node == "string"){ // inline'd type check
@@ -562,8 +573,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		Also when getting values, use specific style names,
 		//		like "borderBottomWidth" instead of "border" since compound values like
 		//		"border" are not necessarily reflected as expected.
-		//		If you want to get node dimensions, use dojo.marginBox() or
-		//		dojo.contentBox().
+		//		If you want to get node dimensions, use `dojo.marginBox()`, 
+		//		`dojo.contentBox()` or `dojo.position()`.
 		//	node:
 		//		id or reference to node to get/set style for
 		//	style:
@@ -607,7 +618,7 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		//	example:
 		//		dojo.NodeList implements .style() using the same syntax, omitting the "node" parameter, calling
-		//		dojo.style() on every element of the list. See: dojo.query and dojo.NodeList
+		//		dojo.style() on every element of the list. See: `dojo.query()` and `dojo.NodeList()`
 		//	|	dojo.query(".someClassName").style("visibility","hidden");
 		//	|	// or
 		//	|	dojo.query("#baz > div").style({
@@ -965,6 +976,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	summary:
 		//		Getter/setter for the margin-box of node.
 		//	description:
+		//		Getter/setter for the margin-box of node.
 		//		Returns an object in the expected format of box (regardless
 		//		if box is passed). The object might look like:
 		//			`{ l: 50, t: 200, w: 300: h: 150 }`
@@ -977,6 +989,16 @@ if(dojo.isIE || dojo.isOpera){
 		//		If passed, denotes that dojo.marginBox() should
 		//		update/set the margin box for node. Box is an object in the
 		//		above format. All properties are optional if passed.
+		//	example:
+		//	Retrieve the marginbox of a passed node
+		//	|	var box = dojo.marginBox("someNodeId");
+		//	|	console.dir(box);
+		//
+		//	example:
+		//	Set a node's marginbox to the size of another node
+		//	|	var box = dojo.marginBox("someNodeId");
+		//	|	dojo.marginBox("someOtherNode", box);
+		
 		var n = byId(node), s = gcs(n), b = box;
 		return !b ? d._getMarginBox(n, s) : d._setMarginBox(n, b.l, b.t, b.w, b.h, s); // Object
 	}
@@ -1111,7 +1133,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		not margin).  Does not act as a setter.
 
 		var db = d.body(), dh = db.parentNode, ret;
-		node = dojo.byId(node);
+		node = byId(node);
 		if(node["getBoundingClientRect"]){
 			// IE6+, FF3+, super-modern WebKit, and Opera 9.6+ all take this branch
 			ret = node.getBoundingClientRect();
@@ -1370,7 +1392,7 @@ if(dojo.isIE || dojo.isOpera){
 		//	|	var obj = { color:"#fff", backgroundColor:"#000" };
 		//	|	dojo.attr("someNode", "style", obj);
 		//	|
-		//	|	// though shorter to use `dojo.style` in this case:
+		//	|	// though shorter to use `dojo.style()` in this case:
 		//	|	dojo.style("someNode", obj);
 
 		node = byId(node);
@@ -1528,31 +1550,31 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		// example:
 		//	Create a DIV:
-		//	| var n = dojo.create("div");
+		//	|	var n = dojo.create("div");
 		//
 		// example:
 		//	Create a DIV with content:
-		//	| var n = dojo.create("div", { innerHTML:"<p>hi</p>" });
+		//	|	var n = dojo.create("div", { innerHTML:"<p>hi</p>" });
 		//
 		// example:
 		//	Place a new DIV in the BODY, with no attributes set
-		//	| var n = dojo.create("div", null, dojo.body());
+		//	|	var n = dojo.create("div", null, dojo.body());
 		//
 		// example:
 		//	Create an UL, and populate it with LI's. Place the list as the first-child of a 
 		//	node with id="someId":
-		//	| var ul = dojo.create("ul", null, "someId", "first");
-		//	| var items = ["one", "two", "three", "four"];
-		//	| dojo.forEach(items, function(data){
-		//	|	dojo.create("li", { innerHTML: data }, ul);
-		//	| });
+		//	|	var ul = dojo.create("ul", null, "someId", "first");
+		//	|	var items = ["one", "two", "three", "four"];
+		//	|	dojo.forEach(items, function(data){
+		//	|		dojo.create("li", { innerHTML: data }, ul);
+		//	|	});
 		//
 		// example:
 		//	Create an anchor, with an href. Place in BODY:
-		//	| dojo.create("a", { href:"foo.html", title:"Goto FOO!" }, dojo.body());
+		//	|	dojo.create("a", { href:"foo.html", title:"Goto FOO!" }, dojo.body());
 		//
 		// example:
-		//	Create a `dojo.NodeList` from a new element (for syntatic sugar):
+		//	Create a `dojo.NodeList()` from a new element (for syntatic sugar):
 		//	|	dojo.query(dojo.create('div'))
 		//	|		.addClass("newDiv")
 		//	|		.onclick(function(e){ console.log('clicked', e.target) })
@@ -1579,11 +1601,11 @@ if(dojo.isIE || dojo.isOpera){
 			//		a reference to a DOM node or an id.
 			//	example:
 			//	Destroy node's children byId:
-			//	| dojo.empty("someId");
+			//	|	dojo.empty("someId");
 			//
 			//	example:
 			//	Destroy all nodes' children in a list by reference:
-			//	| dojo.query(".someNode").forEach(dojo.empty);
+			//	|	dojo.query(".someNode").forEach(dojo.empty);
 	}
 	=====*/
 
@@ -1613,7 +1635,7 @@ if(dojo.isIE || dojo.isOpera){
 			//
 			//	example:
 			//	Create a table row:
-			//	| var tr = dojo._toDom("<tr><td>First!</td></tr>");
+			//	|	var tr = dojo._toDom("<tr><td>First!</td></tr>");
 	}
 	=====*/
 
@@ -1705,7 +1727,8 @@ if(dojo.isIE || dojo.isOpera){
 		//		A string class name to look for.
 		//
 		//	example:
-		//	| if(dojo.hasClass("someNode","aSillyClassName")){ ... }
+		//	Do something if a node with id="someNode" has class="aSillyClassName" present
+		//	|	if(dojo.hasClass("someNode","aSillyClassName")){ ... }
 
 		return ((" "+ byId(node)[_className] +" ").indexOf(" " + classStr + " ") >= 0);  // Boolean
 	};
@@ -1729,7 +1752,7 @@ if(dojo.isIE || dojo.isOpera){
 		//		Adds the specified classes to the end of the class list on the
 		//		passed node. Will not re-apply duplicate classes.
 		//
-	//	node:
+		//	node:
 		//		String ID or DomNode reference to add a class string too
 		//
 		//	classStr:
@@ -1742,15 +1765,15 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		// example:
 		//	Add two classes at once:
-		//	| 	dojo.addClass("someNode", "firstClass secondClass");
+		//	|	dojo.addClass("someNode", "firstClass secondClass");
 		//
 		// example:
 		//	Add two classes at once (using array):
-		//	| 	dojo.addClass("someNode", ["firstClass", "secondClass"]);
+		//	|	dojo.addClass("someNode", ["firstClass", "secondClass"]);
 		//
 		// example:
 		//	Available in `dojo.NodeList` for multiple additions
-		//	| dojo.query("ul > li").addClass("firstLevel");
+		//	|	dojo.query("ul > li").addClass("firstLevel");
 
 		node = byId(node);
 		classStr = str2array(classStr);
@@ -1779,23 +1802,23 @@ if(dojo.isIE || dojo.isOpera){
 		//
 		// example:
 		//	Remove a class from some node:
-		// 	| dojo.removeClass("someNode", "firstClass");
+		//	|	dojo.removeClass("someNode", "firstClass");
 		//
 		// example:
 		//	Remove two classes from some node:
-		// 	| dojo.removeClass("someNode", "firstClass secondClass");
+		//	|	dojo.removeClass("someNode", "firstClass secondClass");
 		//
 		// example:
 		//	Remove two classes from some node (using array):
-		// 	| dojo.removeClass("someNode", ["firstClass", "secondClass"]);
+		//	|	dojo.removeClass("someNode", ["firstClass", "secondClass"]);
 		//
 		// example:
 		//	Remove all classes from some node:
-		// 	| dojo.removeClass("someNode");
+		//	|	dojo.removeClass("someNode");
 		//
 		// example:
-		//	Available in `dojo.NodeList` for multiple removal
-		//	| dojo.query(".foo").removeClass("foo");
+		//	Available in `dojo.NodeList()` for multiple removal
+		//	|	dojo.query(".foo").removeClass("foo");
 
 		node = byId(node);
 		var cls;
@@ -1820,15 +1843,15 @@ if(dojo.isIE || dojo.isOpera){
 		//		If passed, true means to add the class, false means to remove.
 		//
 		// example:
-		//	| dojo.toggleClass("someNode", "hovered");
+		//	|	dojo.toggleClass("someNode", "hovered");
 		//
 		// example:
-		// 	Forcefully add a class
-		//	| dojo.toggleClass("someNode", "hovered", true);
+		//	Forcefully add a class
+		//	|	dojo.toggleClass("someNode", "hovered", true);
 		//
 		// example:
-		//	Available in `dojo.NodeList` for multiple toggles
-		//	| dojo.query(".toggleMe").toggleClass("toggleMe");
+		//	Available in `dojo.NodeList()` for multiple toggles
+		//	|	dojo.query(".toggleMe").toggleClass("toggleMe");
 
 		if(condition === undefined){
 			condition = !d.hasClass(node, classStr);

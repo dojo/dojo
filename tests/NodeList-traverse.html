@@ -57,8 +57,22 @@
 							verify(dojo.query("#crass").next(), ["classy"]);
 						},
 
+						function nextAll(t){
+							verify(dojo.query("#crass").nextAll(), ["classy", "yeah"]);
+							verify(dojo.query("#crass").nextAll("#yeah"), ["yeah"]);
+						},
+
 						function prev(t){
 							verify(dojo.query("#classy").prev(), ["crass"]);
+						},
+
+						function prevAll(t){
+							verify(dojo.query("#yeah").prevAll(), ["classy", "crass"]);
+							verify(dojo.query("#yeah").prevAll("#crass"), ["crass"]);
+						},
+
+						function andSelf(t){
+							verify(dojo.query("#yeah").prevAll().andSelf(), ["classy", "crass", "yeah"]);
 						},
 
 						function first(t){

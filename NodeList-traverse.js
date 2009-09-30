@@ -204,7 +204,7 @@ dojo.extend(dojo.NodeList, {
 
 	siblings: function(/*String?*/query){
 		// summary:
-		// 		Returns all subling elements for nodes in this dojo.NodeList.
+		// 		Returns all sibling elements for nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the sibling elements.
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
@@ -227,7 +227,7 @@ dojo.extend(dojo.NodeList, {
 		//	|	</div>
 		//		Running this code:
 		//	|	dojo.query(".first").siblings();
-		//		returns the two div with class "red" and the other div
+		//		returns the two divs with class "red" and the other div
 		// 	|	with class "blue" that does not have "first".
 		//		Running this code:
 		//	|	dojo.query(".first").siblings(".red");
@@ -282,6 +282,47 @@ dojo.extend(dojo.NodeList, {
 		}); //dojo.NodeList
 	},
 
+	nextAll: function(/*String?*/query){
+		// summary:
+		// 		Returns all sibling elements that come after the nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the sibling elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, all sibling elements that come after the nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red">Red One</div>
+		// 	|		Some Text
+		// 	|		<div class="blue first">Blue One</div>
+		// 	|		<div class="red next">Red Two</div>
+		// 	|		<div class="blue next">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".first").nextAll();
+		//		returns the two divs with class of "next".
+		//		Running this code:
+		//	|	dojo.query(".first").nextAll(".red");
+		//		returns the one div with class "red" and innerHTML "Red Two".
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			var pary = []
+			var next = node;
+			while((next = next.nextSibling)){
+				if(next.nodeType == 1){
+					pary.push(next);
+				}
+			}
+			return pary;
+		}); //dojo.NodeList
+	},
+
 	prev: function(/*String?*/query){
 		// summary:
 		// 		Returns the previous element for nodes in this dojo.NodeList.
@@ -318,6 +359,70 @@ dojo.extend(dojo.NodeList, {
 			}
 			return prev;
 		}); //dojo.NodeList
+	},
+
+	prevAll: function(/*String?*/query){
+		// summary:
+		// 		Returns all sibling elements that come before the nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the sibling elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		single-expression CSS rule. For example, ".thinger" or
+		//		"#someId[attrName='value']" but not "div > span". In short,
+		//		anything which does not invoke a descent to evaluate but
+		//		can instead be used to test a single node is acceptable.
+		// returns:
+		//		dojo.NodeList, all sibling elements that come before the nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red prev">Red One</div>
+		// 	|		Some Text
+		// 	|		<div class="blue prev">Blue One</div>
+		// 	|		<div class="red second">Red Two</div>
+		// 	|		<div class="blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".second").prevAll();
+		//		returns the two divs with class of "prev".
+		//		Running this code:
+		//	|	dojo.query(".first").prevAll(".red");
+		//		returns the one div with class "red prev" and innerHTML "Red One".
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			var pary = []
+			var prev = node;
+			while((prev = prev.previousSibling)){
+				if(prev.nodeType == 1){
+					pary.push(prev);
+				}
+			}
+			return pary;
+		}); //dojo.NodeList
+	},
+
+	andSelf: function(){
+		// summary:
+		// 		Adds the nodes from the previous dojo.NodeList to the current dojo.NodeList.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	<div class="container">
+		// 	|		<div class="red prev">Red One</div>
+		// 	|		Some Text
+		// 	|		<div class="blue prev">Blue One</div>
+		// 	|		<div class="red second">Red Two</div>
+		// 	|		<div class="blue">Blue Two</div>
+		//	|	</div>
+		//		Running this code:
+		//	|	dojo.query(".second").prevAll().andSelf();
+		//		returns the two divs with class of "prev", as well as the div with class "second".
+		return this.concat(this._parent);
 	},
 
 	//Alternate methods for the :first/:last/:even/:odd pseudos.

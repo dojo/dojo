@@ -40,6 +40,9 @@ dojo.declare("dojo.io.iframe.__ioArgs", dojo.__IoArgs, {
 =====*/
 
 dojo.io.iframe = {
+	// summary: 
+	//		Sends an Ajax I/O call using and Iframe (for instance, to upload files)
+	
 	create: function(/*String*/fname, /*String*/onloadstr, /*String?*/uri){
 		//	summary:
 		//		Creates a hidden iframe in the page. Used mostly for IO
@@ -153,8 +156,9 @@ dojo.io.iframe = {
 	},
 
 	send: function(/*dojo.io.iframe.__ioArgs*/args){
-		//summary: function that sends the request to the server.
-		//This transport can only process one send() request at a time, so if send() is called
+		//summary: 
+		//		Function that sends the request to the server.
+		//		This transport can only process one send() request at a time, so if send() is called
 		//multiple times, it will queue up the calls and only process one at a time.
 		if(!this["_frame"]){
 			this._frame = this.create(this._iframeName, dojo._scopeName + ".io.iframe._iframeOnload();");

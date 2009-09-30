@@ -239,13 +239,18 @@
 							);
 						},
 						function xmlContentHandler(t){
-							var fauxXhr = { responseText: "<foo><bar baz='thonk'>blarg</bar></foo>" };
-							if("DOMParser" in dojo.global){
-								var parser = new DOMParser();
-								fauxXhr.responseXML = parser.parseFromString(fauxXhr.responseText, "text/xml");
-							}
-							var xmlDoc = dojo._contentHandlers["xml"](fauxXhr);
-							t.is("foo", xmlDoc.documentElement.tagName);
+							var d = new doh.Deferred();
+							var td = dojo.xhrGet({
+								url: "xhr.xml",
+								handleAs: "xml",
+								load: function(xml, ioArgs){
+									t.is("thonk", xml.getElementsByTagName("bar")[0].getAttribute("baz"));
+									return xml; //must return a value here or the parent test deferred fails.
+								}
+							});
+							t.t(td instanceof dojo.Deferred);
+							td.addCallback(d, "callback");
+							return d;
 						},
 						function xhrGet(t){
 							var d = new doh.Deferred();
@@ -460,10 +465,10 @@
 							//some of the topics publish after this test is run.
 							
 							t.is(1, topicCount["/dojo/io/start"]);
-							t.is(12, topicCount["/dojo/io/send"]);
-							t.is(9, topicCount["/dojo/io/load"]);
+							t.is(13, topicCount["/dojo/io/send"]);
+							t.is(10, topicCount["/dojo/io/load"]);
 							t.is(2, topicCount["/dojo/io/error"]);
-							t.is(11, topicCount["/dojo/io/done"]);
+							t.is(12, topicCount["/dojo/io/done"]);
 							t.is(0, topicCount["/dojo/io/stop"]);
 
 							/*

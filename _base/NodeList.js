@@ -914,7 +914,6 @@ dojo.require("dojo._base.array");
 			//	|	var buttons = dojo.query("button").instantiate("dijit.form.Button", {showLabel: true});
 			var c = d.isFunction(declaredClass) ? declaredClass : d.getObject(declaredClass);
 			properties = properties || {};
-			var self = this;
 			return this.forEach(function(node){
 				new c(properties, node);
 			});	// dojo.NodeList

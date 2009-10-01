@@ -380,8 +380,7 @@ dojo.require("dojo._base.array");
 			// 		that generated the current dojo.NodeList.
 			// description:
 			// 		Returns the `dojo.NodeList` that generated the current `dojo.NodeList`. If there
-			// 		is no parent dojo.NodeList, then an error is returned to indicate a bad chaining
-			// 		call.
+			// 		is no parent dojo.NodeList, an empty dojo.NodeList is returned.
 			// example:
 			//	|	dojo.query("a")
 			//	|		.filter(".disabled")

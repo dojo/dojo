@@ -196,18 +196,35 @@
 		}
 	}
 
-	dojo.ready = dojo.addOnLoad = function(/*Object?*/obj, /*String|Function*/functionName){
+	dojo.ready = dojo.addOnLoad = function(/*Object*/obj, /*String|Function?*/functionName){
 		// summary:
+		//		Registers a function to be triggered after the DOM and dojo.require() calls 
+		//		have finished loading.
+		//
+		// description:
 		//		Registers a function to be triggered after the DOM has finished
-		//		loading and widgets declared in markup have been instantiated.
+		//		loading and `dojo.require` modules have loaded. Widgets declared in markup 
+		//		have been instantiated if `djConfig.parseOnLoad` is true when this fires. 
+		//
 		//		Images and CSS files may or may not have finished downloading when
 		//		the specified function is called.  (Note that widgets' CSS and HTML
 		//		code is guaranteed to be downloaded before said widgets are
-		//		instantiated.)
+		//		instantiated, though including css resouces BEFORE any script elements
+		//		is highly recommended).
+		//
 		// example:
-		//	|	dojo.addOnLoad(functionPointer);
+		//	Register an anonymous function to run when everything is ready
+		//	|	dojo.addOnLoad(function(){ doStuff(); });
+		//
+		// example:
+		//	Register a function to run when everything is ready by pointer:
+		//	|	var init = function(){ doStuff(); }
+		//	|	dojo.addOnLoad(init);
+		//
+		// example:
+		//	Register a function to run scoped to `object`, either by name or anonymously:
 		//	|	dojo.addOnLoad(object, "functionName");
-		//	|	dojo.addOnLoad(object, function(){ /* ... */});
+		//	|	dojo.addOnLoad(object, function(){ doStuff(); });
 
 		d._onto(d._loaders, obj, functionName);
 
@@ -412,15 +429,18 @@
 
 	dojo.provide = function(/*String*/ resourceName){
 		//	summary:
+		//		Register a resource with the package system. Works in conjunction with `dojo.require`
+		//
+		//	description:
+		//		Each javascript source file is called a resource.  When a
+		//		resource is loaded by the browser, `dojo.provide()` registers
+		//		that it has been loaded.
+		//
 		//		Each javascript source file must have at least one
 		//		`dojo.provide()` call at the top of the file, corresponding to
 		//		the file name.  For example, `js/dojo/foo.js` must have
 		//		`dojo.provide("dojo.foo");` before any calls to
 		//		`dojo.require()` are made.
-		//	description:
-		//		Each javascript source file is called a resource.  When a
-		//		resource is loaded by the browser, `dojo.provide()` registers
-		//		that it has been loaded.
 		//	
 		//		For backwards compatibility reasons, in addition to registering
 		//		the resource, `dojo.provide()` also ensures that the javascript
@@ -435,6 +455,13 @@
 		//		are combined into one bigger file (similar to a .lib or .jar
 		//		file), that file may contain multiple dojo.provide() calls, to
 		//		note that it includes multiple resources.
+		//
+		// resourceName: String
+		//		A dot-sperated string identifying a resource. 
+		//
+		// example:
+		//	Safely create a `my` object, and make dojo.require("my.CustomModule") work
+		//	|	dojo.provide("my.CustomModule"); 
 
 		//Make sure we have a string.
 		resourceName = resourceName + "";
@@ -482,8 +509,12 @@
 
 	dojo.requireIf = function(/*Boolean*/ condition, /*String*/ resourceName){
 		// summary:
-		//		If the condition is true then call dojo.require() for the specified
+		//		If the condition is true then call `dojo.require()` for the specified
 		//		resource
+		//
+		// example:
+		//	|	dojo.requireIf(dojo.isBrowser, "my.special.Module");
+		
 		if(condition === true){
 			// FIXME: why do we support chained require()'s here? does the build system?
 			var args = [];
@@ -498,7 +529,7 @@
 
 	dojo.registerModulePath = function(/*String*/module, /*String*/prefix){
 		//	summary: 
-		//		maps a module name to a path
+		//		Maps a module name to a path
 		//	description: 
 		//		An unregistered module is given the default path of ../[module],
 		//		relative to Dojo root. For example, module acme is mapped to
@@ -604,7 +635,7 @@
 	var ore = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$"),
 		ire = new RegExp("^((([^\\[:]+):)?([^@]+)@)?(\\[([^\\]]+)\\]|([^\\[:]*))(:([0-9]+))?$");
 
-	dojo._Url = function(/*dojo._Url||String...*/){
+	dojo._Url = function(/*dojo._Url|String...*/){
 		// summary: 
 		//		Constructor to create an object representing a URL.
 		//		It is marked as private, since we might consider removing
@@ -758,7 +789,7 @@
 			loc = d.baseUrl + loc;
 		}
 
-		return new d._Url(loc, url); // String
+		return new d._Url(loc, url); // dojo._Url
 	}
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();

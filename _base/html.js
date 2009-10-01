@@ -1117,7 +1117,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	// FIXME: need a setter for coords or a moveTo!!
-	dojo.position = dojo._abs = function(/*DomNode*/node, /*Boolean?*/includeScroll){
+	dojo._abs = dojo.position = function(/*DomNode*/node, /*Boolean?*/includeScroll){
 		//	summary:
 		//		Gets the position and size of the passed element relative to
 		//		the viewport (if includeScroll==false), or relative to the

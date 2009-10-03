@@ -144,6 +144,7 @@ djConfig = {
 						a.unshift(tcn+":");
 						console["log"](a.join(" "));
 					} : function(){}
+					console[tcn]._fake = true;
 				})();
 			}
 		}

@@ -101,35 +101,51 @@ dojo.connect = function(/*Object|null*/ obj,
 						/*String*/ event, 
 						/*Object|null*/ context, 
 						/*String|Function*/ method,
-						/*Boolean*/ dontFix){
+						/*Boolean?*/ dontFix){
 	// summary:
-	//		Create a link that calls one function when another executes. 
+	//		`dojo.connect` is the core event handling and delegation method in
+	//		Dojo. It allows one function to "listen in" on the execution of
+	//		any other, triggering the second whenever the first is called. Many
+	//		listeners may be attached to a function, and source functions may
+	//		be either regular function calls or DOM events.
 	//
 	// description:
-	//		Connects method to event, so that after event fires, method
-	//		does too. All connected functions are passed the same arguments as
-	//		the event function was initially called with. You may connect as
-	//		many methods to event as needed.
+	//		Connects listeners to actions, so that after event fires, a
+	//		listener is called with the same arguments passed to the orginal
+	//		function.
 	//
-	//		event must be a string. If obj is null, dojo.global is used.
+	//		Since `dojo.connect` allows the source of events to be either a
+	//		"regular" JavaScript function or a DOM event, it provides a uniform
+	//		interface for listening to all the types of events that an
+	//		application is likely to deal with though a single, unified
+	//		interface. DOM programmers may want to think of it as
+	//		"addEventListener for everything and anything".
 	//
-	//		null arguments may simply be omitted.
+	//		When setting up a connection, the `event` parameter must be a
+	//		string that is the name of the method/event to be listened for. If
+	//		`obj` is null, `dojo.global` is assumed, meaning that connections
+	//		to global methods are supported but also that you may inadvertantly
+	//		connect to a global by passing an incorrect object name or invalid
+	//		reference.
 	//
-	//		obj[event] can resolve to a function or undefined (null). 
-	//		If obj[event] is null, it is assigned a function.
+	//		`dojo.connect` generally is forgiving. If you pass the name of a
+	//		function or method that does not yet exist on `obj`, connect will
+	//		not fail, but will instead set up a stub method. Similarly, null
+	//		arguments may simply be omitted such that fewer than 4 arguments
+	//		may be required to set up a connection See the examples for deails.
 	//
 	//		The return value is a handle that is needed to 
-	//		remove this connection with dojo.disconnect.
+	//		remove this connection with `dojo.disconnect`.
 	//
 	// obj: 
 	//		The source object for the event function. 
-	//		Defaults to dojo.global if null.
+	//		Defaults to `dojo.global` if null.
 	//		If obj is a DOM node, the connection is delegated 
 	//		to the DOM event manager (unless dontFix is true).
 	//
 	// event:
 	//		String name of the event function in obj. 
-	//		I.e. identifies a property obj[event].
+	//		I.e. identifies a property `obj[event]`.
 	//
 	// context: 
 	//		The object that method will receive as "this".
@@ -149,7 +165,7 @@ dojo.connect = function(/*Object|null*/ obj,
 	//
 	// dontFix:
 	//		If obj is a DOM node, set dontFix to true to prevent delegation 
-	//		of this connection to the DOM event manager. 
+	//		of this connection to the DOM event manager.
 	//
 	// example:
 	//		When obj.onchange(), do ui.update():

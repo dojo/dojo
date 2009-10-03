@@ -266,7 +266,17 @@ dojo.io.iframe = {
 		//summary: Internal method used to fire the next request in the bind queue.
 		try{
 			if((this._currentDfd)||(this._dfdQueue.length == 0)){ return; }
-			var dfd = this._currentDfd = this._dfdQueue.shift();
+			//Find next deferred, skip the canceled ones.
+			do{
+				var dfd = this._currentDfd = this._dfdQueue.shift();
+			} while(dfd && dfd.canceled && this._dfdQueue.length);
+
+			//If no more dfds, cancel.
+			if(!dfd || dfd.canceled){
+				this._currentDfd =  null;
+				return;
+			}
+
 			var ioArgs = dfd.ioArgs;
 			var args = ioArgs.args;
 

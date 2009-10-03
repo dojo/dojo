@@ -93,11 +93,9 @@ dojo._listener = {
 
 // Multiple delegation for arbitrary methods.
 
-// This unit knows nothing about DOM, 
-// but we include DOM aware 
-// documentation and dontFix
-// argument here to help the autodocs.
-// Actual DOM aware code is in event.js.
+// This unit knows nothing about DOM, but we include DOM aware documentation
+// and dontFix argument here to help the autodocs. Actual DOM aware code is in
+// event.js.
 
 dojo.connect = function(/*Object|null*/ obj, 
 						/*String*/ event, 

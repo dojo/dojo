@@ -595,7 +595,7 @@ dojo.require("dojo._base.array");
 		attr: function(property, value){
 			//	summary:
 			//		gets or sets the DOM attribute for every element in the
-			//		NodeList
+			//		NodeList. See also `dojo.attr`
 			//	property: String
 			//		the attribute to get/set
 			//	value: String?
@@ -603,6 +603,16 @@ dojo.require("dojo._base.array");
 			//	returns:
 			//		if no value is passed, the result is an array of attribute values
 			//		If a value is passed, the return is this NodeList
+			//	example:
+			//		Make all nodes with a particular class focusabl:
+			//	|	dojo.query(".focusable").attr("tabIndex", -1);
+			//	example:
+			//		Disable a group of buttons:
+			//	|	dojo.query("button.group").attr("disalbed", true);
+			//	example:
+			//		innerHTML can be assigned or retreived as well:
+			//	|	// get the innerHTML (as an array) for each list item
+			//	|	var ih = dojo.query("li.replaceable").attr("innerHTML");
 			return; // dojo.NodeList
 			return; // Array
 		},

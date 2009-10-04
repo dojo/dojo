@@ -283,7 +283,25 @@ dojo.require("dojo._base.query");
 		},
 		xml: function(xhr){
 			// summary: A contentHandler returning an XML Document parsed from the response data
-			return xhr.responseXML; // DOMDocument
+			var result = xhr.responseXML;
+			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+			if(_d.isIE && (!result || !result.documentElement)){
+				//WARNING: this branch used by the xml handling in dojo.io.iframe,
+				//so be sure to test dojo.io.iframe if making changes below.
+				var ms = function(n){ return "MSXML" + n + ".DOMDocument"; }
+				var dp = ["Microsoft.XMLDOM", ms(6), ms(4), ms(3), ms(2)];
+				_d.some(dp, function(p){
+					try{
+						var dom = new ActiveXObject(p);
+						dom.async = false;
+						dom.loadXML(xhr.responseText);
+						result = dom;
+					}catch(e){ return false; }
+					return true;
+				});
+			}
+			//>>excludeEnd("webkitMobile");
+			return result; // DOMDocument
 		},
 		"json-comment-optional": function(xhr){
 			// summary: A contentHandler which checks the presence of comment-filtered JSON and 

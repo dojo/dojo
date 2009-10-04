@@ -144,13 +144,13 @@ dojo.io.iframe = {
 			(
 				(
 					(iframeNode.name) && (iframeNode.document) && 
-					(document.getElementsByTagName("iframe")[iframeNode.name].contentWindow) &&
-					(document.getElementsByTagName("iframe")[iframeNode.name].contentWindow.document)
+					(dojo.doc.getElementsByTagName("iframe")[iframeNode.name].contentWindow) &&
+					(dojo.doc.getElementsByTagName("iframe")[iframeNode.name].contentWindow.document)
 				)
 			) ||  // IE
 			(
-				(iframeNode.name)&&(document.frames[iframeNode.name])&&
-				(document.frames[iframeNode.name].document)
+				(iframeNode.name)&&(dojo.doc.frames[iframeNode.name])&&
+				(dojo.doc.frames[iframeNode.name].document)
 			) || null;
 		return doc;
 	},

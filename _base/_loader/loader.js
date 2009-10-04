@@ -588,7 +588,10 @@
 		//		bundle is found
 		//
 		// bundleName: 
-		//		bundle name, i.e. the filename without the '.js' suffix
+		//		bundle name, i.e. the filename without the '.js' suffix. Using "nls" as a
+		//		a bundle name is not supported, since "nls" is the name of the folder
+		//		that holds bundles. Using "nls" as the bundle name will cause problems
+		//		with the custom build.
 		//
 		// locale: 
 		//		the locale to load (optional)  By default, the browser's user

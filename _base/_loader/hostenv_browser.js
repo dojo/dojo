@@ -139,7 +139,7 @@ if(typeof window != 'undefined'){
 		if(dua.indexOf("Gecko") >= 0 && !d.isKhtml && !d.isWebKit){ d.isMozilla = d.isMoz = tv; }
 		if(d.isMoz){
 			//We really need to get away from this. Consider a sane isGecko approach for the future.
-			d.isFF = parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1] || dua.split("Shiretoko/")[1]) || undefined;
+			d.isFF = parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1]) || undefined;
 		}
 		if(document.all && !d.isOpera){
 			d.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
@@ -394,7 +394,7 @@ if(typeof window != 'undefined'){
 			//		due to a threading issue in Firefox 2.0, we can't enable
 			//		DOMContentLoaded on that platform. For more information, see:
 			//		http://trac.dojotoolkit.org/ticket/1704
-			if(dojo.isWebKit > 525 || dojo.isOpera || dojo.isFF >= 3 || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
+			if(dojo.isWebKit > 525 || dojo.isOpera || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
 		//>>excludeEnd("webkitMobile");
 				document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);

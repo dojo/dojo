@@ -1176,7 +1176,7 @@ if(dojo.isIE || dojo.isOpera){
 					cs = gcs(curnode);
 					if(curnode != node){
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-						if(d.isFF){
+						if(d.isMoz){
 							// tried left+right with differently sized left/right borders
 							// it really is 2xleft border in FF, not left+right, even in RTL!
 							ret.x += 2 * px(curnode,cs.borderLeftWidth);
@@ -1192,7 +1192,7 @@ if(dojo.isIE || dojo.isOpera){
 					// static children in a static div in FF2 are affected by the div's border as well
 					// but offsetParent will skip this div!
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-					if(d.isFF && cs.position=="static"){
+					if(d.isMoz && cs.position=="static"){
 						var parent=curnode.parentNode;
 						while(parent!=curnode.offsetParent){
 							var pcs=gcs(parent);

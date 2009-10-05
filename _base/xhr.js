@@ -862,14 +862,16 @@ dojo.require("dojo._base.query");
 			for(var hdr in args.headers){
 				if(hdr.toLowerCase() === "content-type" && !args.contentType){
 					args.contentType = args.headers[hdr];
-				}else{
+				}else if(args.headers[hdr]){
+					//Only add header if it has a value. This allows for instnace, skipping
+					//insertion of X-Requested-With by specifying empty value.
 					xhr.setRequestHeader(hdr, args.headers[hdr]);
 				}
 			}
 		}
 		// FIXME: is this appropriate for all content types?
 		xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
-		if(!args.headers || !args.headers["X-Requested-With"]){
+		if(!args.headers || !("X-Requested-With" in args.headers)){
 			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		}
 		// FIXME: set other headers here!

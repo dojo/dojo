@@ -366,6 +366,8 @@ dojo.extend(dojo.NodeList, {
 		// 		Returns all sibling elements that come before the nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the sibling elements.
 		// description:
+		// 		The returned nodes will be in reverse DOM order -- the first node in the list will
+		// 		be the node closest to the original node/NodeList.
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:

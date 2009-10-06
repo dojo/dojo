@@ -317,9 +317,8 @@ if(dojo.isIE || dojo.isOpera){
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(d.isIE /*|| dojo.isOpera*/){
-		var _dcm = document.compatMode;
 		// client code may have to adjust if compatMode varies across iframes
-		d.boxModel = _dcm == "BackCompat" || _dcm == "QuirksMode" || d.isIE < 6 ? "border-box" : "content-box"; // FIXME: remove IE < 6 support?
+		d.boxModel = document.compatMode == "BackCompat" ? "border-box" : "content-box";
 	}
 	//>>excludeEnd("webkitMobile");
 
@@ -1080,16 +1079,21 @@ if(dojo.isIE || dojo.isOpera){
 
 		//NOTE: assumes we're being called in an IE browser
 
-		var de = d.doc.documentElement;
-		//FIXME: use this instead?			var de = d.compatMode == "BackCompat" ? d.body : d.documentElement;
+		var de = d.doc.documentElement; // only deal with HTML element here, _abs handles body/quirks 
 
-		if(d.isIE < 7){
-			return { x: d._isBodyLtr() || window.parent == window ?
-				de.clientLeft : de.offsetWidth - de.clientWidth - de.clientLeft,
-				y: de.clientTop }; // Object
-		}else if(d.isIE < 8){
-			de = de.getBoundingClientRect();
-			return {x: de.left, y: de.top};
+		if(d.isIE < 8){
+			var r = de.getBoundingClientRect(); // works well for IE6+
+			//console.debug('rect left,top = ' + r.left+','+r.top + ', html client left/top = ' + de.clientLeft+','+de.clientTop + ', rtl = ' + (!d._isBodyLtr()) + ', quirks = ' + d.isQuirks);
+			var l = r.left,
+			    t = r.top;
+			if(d.isIE < 7){
+				l += de.clientLeft;	// scrollbar size in strict/RTL, or,
+				t += de.clientTop;	// HTML border size in strict
+			}
+			return {
+				x: l < 0? 0 : l, // FRAME element border size can lead to inaccurate negative values
+				y: t < 0? 0 : t
+			};
 		}else{
 			return {
 				x: 0,
@@ -1109,7 +1113,7 @@ if(dojo.isIE || dojo.isOpera){
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		var dd = d.doc;
 		if(d.isIE < 8 && !d._isBodyLtr()){
-			var de = dd.compatMode == "BackCompat" ? dd.body : dd.documentElement;
+			var de = d.isQuirks ? dd.body : dd.documentElement;
 			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
 		}
 		//>>excludeEnd("webkitMobile");
@@ -1144,8 +1148,8 @@ if(dojo.isIE || dojo.isOpera){
 				var offset = d._getIeDocumentElementOffset();
 
 				// fixes the position in IE, quirks mode
-				ret.x -= offset.x + (d.isQuirks ? db.clientLeft : 0);
-				ret.y -= offset.y + (d.isQuirks ? db.clientTop : 0);
+				ret.x -= offset.x + (d.isQuirks ? db.clientLeft+db.offsetLeft : 0);
+				ret.y -= offset.y + (d.isQuirks ? db.clientTop+db.offsetTop : 0);
 			}else if(d.isFF == 3){
 				// In FF3 you have to subtract the document element margins.
 				// Fixed in FF3.5 though.

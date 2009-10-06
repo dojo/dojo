@@ -159,8 +159,7 @@ if(typeof window != 'undefined'){
 		}
 		//>>excludeEnd("webkitMobile");
 
-		var cm = document.compatMode;
-		d.isQuirks = cm == "BackCompat" || cm == "QuirksMode" || d.isIE < 6;
+		d.isQuirks = document.compatMode == "BackCompat";
 
 		// TODO: is the HTML LANG attribute relevant?
 		d.locale = dojo.config.locale || (d.isIE ? n.userLanguage : n.language).toLowerCase();

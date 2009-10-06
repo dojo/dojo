@@ -31,8 +31,7 @@ if(typeof window != 'undefined'){
 		}
 
 		// FIXME
-		var cm = document.compatMode;
-		d.isQuirks = cm == "BackCompat" || cm == "QuirksMode";
+		d.isQuirks = document.compatMode == "BackCompat";
 
 		// FIXME
 		// TODO: is the HTML LANG attribute relevant?

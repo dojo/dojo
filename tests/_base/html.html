@@ -23,13 +23,28 @@
 						(iframeNode.contentWindow)&&(iframeNode.contentWindow.document)
 					) ||  // IE
 					(
-						(iframeNode.name)&&(documendoh.frames[iframeNode.name])&&
+						(iframeNode.name)&&(document.frames[iframeNode.name])&&
 						(documendoh.frames[iframeNode.name].document)
 					) || null;
 				return doc;
 			}
 
+
 			dojo.addOnLoad(function(){
+				// IE gets confused by the iframe when you press Refresh so load them dynamically
+				var iframe_div = dojo.byId('iframe_div');
+				dojo.addOnWindowUnload(function(){
+					iframe_div.innerHTML = 'unloading';
+				});
+				setTimeout(function(){
+					iframe_div.innerHTML = '<iframe src="absStrictIframe.html" name="iframe_strict" id="iframe_strict" \
+						style="border:3px solid black; padding:4px; margin:5px; background-color:black;" \
+						scrolling=yes allowtransparency=true></iframe>\
+					<iframe src="absQuirksIframe.html" name="iframe_quirks" id="iframe_quirks" \
+						style="border:3px solid black; padding:4px; margin:5px; background-color:black;" \
+						scrolling=yes allowtransparency=true></iframe>'; //'balanced
+				}, 0);
+
 				doh.register("t",
 					[
 						"doh.is(null, dojo.byId('nonExistantId'));",
@@ -98,6 +113,10 @@
 						"doh.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).w);",
 						"doh.is(40, dojo._getPadBorderExtents(dojo.byId('sq100border10margin10pad10')).h);",
 
+						function scrollUp(){
+							dojo.doc.documentElement.scrollTop = 0;
+						},
+
 						function coordsBasic(t){
 							var pos = dojo.position("sq100", false);
 							// console.debug(pos);
@@ -156,6 +175,39 @@
 							doh.is(x, pos.x);
 							doh.is(y, pos.y);
 						},
+						{
+							name: "coordsIframe",
+							timeout: 2000,
+							runTest: function(){
+								var def = new doh.Deferred();
+								setTimeout(function(){ try{
+									var oldLtr = dojo._isBodyLtr();
+									var oldQuirks = dojo.isQuirks;
+									dojo.withGlobal(dojo.byId('iframe_quirks').win, function(){
+										doh.t(dojo.isQuirks, "isQuirks == true in quirks/iframe");
+										doh.f(dojo._isBodyLtr(), "isBodyLtr == false in RTL/iframe");
+									        var pos = dojo.position('iframe_00_quirks');
+										doh.t(pos.x===0, "quirks iframe element x == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
+										doh.t(pos.y===0, "quirks iframe element y == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
+										doh.t(pos.w>0, "quirks iframe element w > 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
+										doh.t(pos.h>0, "quirks iframe element h > 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
+									});
+									dojo.withGlobal(dojo.byId('iframe_strict').win, function(){
+										doh.f(dojo.isQuirks, "isQuirks == false in strict/ifraee");
+										doh.f(dojo._isBodyLtr(), "isBodyLtr == false in RTL/iframe");
+									        var pos = dojo.position('iframe_00_strict');
+										doh.t(pos.x===0, "strict iframe element x == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
+										doh.t(pos.y===0, "strict iframe element y == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
+										doh.t(pos.w>0, "strict iframe element w > 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
+										doh.t(pos.h>0, "strict iframe element h > 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
+									});
+									doh.t(!oldLtr == !dojo._isBodyLtr(), "isBodyLtr restored after withGlobal");
+									doh.t(!oldQuirks == !dojo.isQuirks, "isQuirks restored after withGlobal");
+									def.callback(true);
+								}catch(e){ def.errback(e); } }, 1000);
+								return def;
+							}
+						},
 						"doh.is(1, dojo.style('sq100nopos', 'opacity'));",
 						"doh.is(0.1, dojo.style('sq100nopos', 'opacity', 0.1));",
 						"doh.is(0.8, dojo.style('sq100nopos', 'opacity', 0.8));",
@@ -180,8 +232,6 @@
 						},
 						function isDescendantIframe(t){
 							var bif = dojo.byId("blah");
-							getIframeDocument(bif).write("<html><body><div id='subDiv'></div></body></html>");
-							getIframeDocument(bif).close();
 							// this test barely makes sense. disabling it for now.
 							// doh.t(dojo.isDescendant(bif.contentDocument.getElementById("subDiv"), bif.parentNode));
 							var subDiv = getIframeDocument(bif).getElementById("subDiv");
@@ -692,7 +742,10 @@
 		<div id="sq100nopos">
 			100px square, no positioning
 		</div>
-		<iframe id="blah"></iframe>
+
+		<iframe id="blah" name="blah" src="javascript:'<html><body><div id=subDiv></div></body></html>'"></iframe>
+
+		<div id='iframe_div' style="position:absolute;top:0;left:500px;"></div>
 
 		<div id="div-no-tabindex"></div>
 		<div id="div-tabindex-minus-1" tabIndex="-1"></div>

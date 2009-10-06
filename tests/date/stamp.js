@@ -51,6 +51,10 @@ function test_date_iso(t){
 	t.is(0,date.getMonth());
 	t.is(1,date.getDate());
 
+	rfc = "0001-01T00:00:00";
+	date = dojo.date.stamp.fromISOString(rfc);
+	t.is(1,date.getFullYear());
+
 	date = dojo.date.stamp.fromISOString("T18:46:39");
 	t.is(18, date.getHours());
 	t.is(46, date.getMinutes());

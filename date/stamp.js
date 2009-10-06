@@ -41,8 +41,8 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 			/^(?:(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?)?(?:T(\d{2}):(\d{2})(?::(\d{2})(.\d+)?)?((?:[+-](\d{2}):(\d{2}))|Z)?)?$/;
 	}
 
-	var match = dojo.date.stamp._isoRegExp.exec(formattedString);
-	var result = null;
+	var match = dojo.date.stamp._isoRegExp.exec(formattedString),
+		result = null;
 
 	if(match){
 		match.shift();
@@ -60,11 +60,13 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 				}
 			});
 		}
-		result = new Date(match[0]||1970, match[1]||0, match[2]||1, match[3]||0, match[4]||0, match[5]||0, match[6]||0);
-//		result.setFullYear(match[0]||1970); // for year < 100
+		result = new Date(match[0]||1970, match[1]||0, match[2]||1, match[3]||0, match[4]||0, match[5]||0, match[6]||0); //TODO: UTC defaults
+		if(match[0] < 100){
+			result.setFullYear(match[0] || 1970);
+		}
 
-		var offset = 0;
-		var zoneSign = match[7] && match[7].charAt(0);
+		var offset = 0,
+			zoneSign = match[7] && match[7].charAt(0);
 		if(zoneSign != 'Z'){
 			offset = ((match[8] || 0) * 60) + (Number(match[9]) || 0);
 			if(zoneSign != '-'){ offset *= -1; }
@@ -109,9 +111,9 @@ dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*dojo.date.stamp.__O
 
 	var _ = function(n){ return (n < 10) ? "0" + n : n; };
 	options = options || {};
-	var formattedDate = [];
-	var getter = options.zulu ? "getUTC" : "get";
-	var date = "";
+	var formattedDate = [],
+		getter = options.zulu ? "getUTC" : "get",
+		date = "";
 	if(options.selector != "time"){
 		var year = dateObject[getter+"FullYear"]();
 		date = ["0000".substr((year+"").length)+year, _(dateObject[getter+"Month"]()+1), _(dateObject[getter+"Date"]())].join('-');

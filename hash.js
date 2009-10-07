@@ -50,11 +50,8 @@ dojo.provide("dojo.hash");
 
 	//Internal functions
 	function _getHash(){
-		var h = location.hash;
-		if(h.charAt(0) == "#"){
-			h = h.substring(1);
-		}
-		return dojo.isMoz ? h : decodeURIComponent(h);
+		var h = location.href, i = h.indexOf("#");
+		return (i >= 0) ? h.substring(i + 1) : "";
 	}
 
 	function _dispatchEvent(){

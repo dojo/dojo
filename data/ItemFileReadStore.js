@@ -58,11 +58,11 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		}
 		this._features = {'dojo.data.api.Read':true, 'dojo.data.api.Identity':true};
 		this._itemsByIdentity = null;
-		this._storeRefPropName = "_S";  // Default name for the store reference to attach to every item.
+		this._storeRefPropName = "_S"; // Default name for the store reference to attach to every item.
 		this._itemNumPropName = "_0"; // Default Item Id for isItem to attach to every item.
 		this._rootItemPropName = "_RI"; // Default Item Id for isItem to attach to every item.
 		this._reverseRefMap = "_RRM"; // Default attribute for constructing a reverse reference map for use with reference integrity
-		this._loadInProgress = false;	//Got to track the initial load to prevent duelling loads of the dataset.
+		this._loadInProgress = false; //Got to track the initial load to prevent duelling loads of the dataset.
 		this._queuedFetches = [];
 		if(keywordParameters.urlPreventCache !== undefined){
 			this.urlPreventCache = keywordParameters.urlPreventCache?true:false;
@@ -97,7 +97,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 	//Parameter to allow specifying if preventCache should be passed to the xhrGet call or not when loading data from a url.  
 	//Note this does not mean the store calls the server on each fetch, only that the data load has preventCache set as an option.
 	//Added for tracker: #6072
-	urlPreventCache: false,  
+	urlPreventCache: false,
 	
 	//Parameter for specifying that it is OK for the xhrGet call to fail silently.
 	failOk: false,
@@ -163,7 +163,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 	},
 
 	hasAttribute: function(	/* item */ item,
-							/* attribute-name-string */ attribute) {
+							/* attribute-name-string */ attribute){
 		//	summary: 
 		//		See dojo.data.api.Read.hasAttribute()
 		this._assertIsItem(item);
@@ -291,9 +291,9 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 					if(candidateItem === null){
 						match = false;
 					}else{
-						for(key in requestArgs.query) {
+						for(key in requestArgs.query){
 							value = requestArgs.query[key];
-							if (!self._containsValue(candidateItem, key, value, regexpList[key])){
+							if(!self._containsValue(candidateItem, key, value, regexpList[key])){
 								match = false;
 							}
 						}
@@ -389,7 +389,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 					}
 					keywordArgs.abort = function(){
 						var df = getHandler;
-						if (df && df.fired === -1){
+						if(df && df.fired === -1){
 							df.cancel();
 							df = null;
 						}
@@ -417,7 +417,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//	summary: 
 		//		Internal function to execute delayed request in the store.
 		//Execute any deferred fetches now.
-		if (this._queuedFetches.length > 0) {
+		if(this._queuedFetches.length > 0){
 			for(var i = 0; i < this._queuedFetches.length; i++){
 				var fData = this._queuedFetches[i];
 				var delayedQuery = fData.args;
@@ -436,7 +436,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//	summary: 
 		//		Internal function to determine which list of items to search over.
 		//	queryOptions: The query options parameter, if any.
-		if(queryOptions && queryOptions.deep) {
+		if(queryOptions && queryOptions.deep){
 			return this._arrayOfAllItems; 
 		}
 		return this._arrayOfTopLevelItems;
@@ -571,8 +571,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		for(i = 0; i < this._arrayOfAllItems.length; ++i){
 			item = this._arrayOfAllItems[i];
 			for(key in item){
-				if (key !== this._rootItemPropName)
-				{
+				if(key !== this._rootItemPropName){
 					var value = item[key];
 					if(value !== null){
 						if(!dojo.isArray(value)){
@@ -653,10 +652,10 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 			item = this._arrayOfAllItems[i]; // example: { name:['Kermit'], friends:[{_reference:{name:'Miss Piggy'}}] }
 			for(key in item){
 				arrayOfValues = item[key]; // example: [{_reference:{name:'Miss Piggy'}}]
-				for(var j = 0; j < arrayOfValues.length; ++j) {
+				for(var j = 0; j < arrayOfValues.length; ++j){
 					value = arrayOfValues[j]; // example: {_reference:{name:'Miss Piggy'}}
 					if(value !== null && typeof value == "object"){
-						if(("_type" in value) && ("_value" in  value)){
+						if(("_type" in value) && ("_value" in value)){
 							var type = value._type; // examples: 'Date', 'Color', or 'ComplexNumber'
 							var mappingObj = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber, {type: dojo.Color, deserialize(value){ return new dojo.Color(value)}}
 							if(!mappingObj){ 
@@ -787,7 +786,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 					};
 					var getHandler = dojo.xhrGet(getArgs);
 					getHandler.addCallback(function(data){
-						var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+						var scope = keywordArgs.scope?keywordArgs.scope:dojo.global;
 						try{
 							self._getItemsFromLoadedData(data);
 							self._loadFinished = true;
@@ -807,7 +806,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 					getHandler.addErrback(function(error){
 						self._loadInProgress = false;
 						if(keywordArgs.onError){
-							var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+							var scope = keywordArgs.scope?keywordArgs.scope:dojo.global;
 							keywordArgs.onError.call(scope, error);
 						}
 					});
@@ -820,7 +819,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 				self._loadFinished = true;
 				item = self._getItemByIdentity(keywordArgs.identity);
 				if(keywordArgs.onItem){
-					scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+					scope = keywordArgs.scope?keywordArgs.scope:dojo.global;
 					keywordArgs.onItem.call(scope, item);
 				}
 			} 
@@ -828,7 +827,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 			// Already loaded.  We can just look it up and call back.
 			item = this._getItemByIdentity(keywordArgs.identity);
 			if(keywordArgs.onItem){
-				scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
+				scope = keywordArgs.scope?keywordArgs.scope:dojo.global;
 				keywordArgs.onItem.call(scope, item);
 			}
 		}

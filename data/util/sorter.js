@@ -48,7 +48,7 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 	//	store: object
 	//		The datastore object to look up item values from.
 	//
-	var sortFunctions=[];   
+	var sortFunctions=[];
 
 	function createSortFunction(attr, dir, comp, s){
 		//Passing in comp and s (comparator and store), makes this
@@ -72,7 +72,7 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 				if(typeof attr !== "string" && ("toString" in attr)){
 					 attr = attr.toString();
 				}
-				comp = map[attr]||bc;
+				comp = map[attr] || bc;
 			}
 			sortFunctions.push(createSortFunction(attr, 
 				dir, comp, store));
@@ -87,5 +87,5 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 			}
 		}
 		return 0; //int  
-	};  //  Function
+	}; // Function
 };

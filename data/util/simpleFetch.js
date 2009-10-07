@@ -46,7 +46,7 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 		var aborted = false;
 
 		var startIndex = requestObject.start?requestObject.start:0;
-		var endIndex   = (requestObject.count && (requestObject.count !== Infinity))?(startIndex + requestObject.count):items.length;
+		var endIndex = (requestObject.count && (requestObject.count !== Infinity))?(startIndex + requestObject.count):items.length;
 
 		requestObject.abort = function(){
 			aborted = true;
@@ -75,10 +75,10 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 		}
 		if(requestObject.onComplete && !aborted){
 			var subset = null;
-			if (!requestObject.onItem) {
+			if(!requestObject.onItem){
 				subset = items.slice(startIndex, endIndex);
 			}
-			requestObject.onComplete.call(scope, subset, requestObject);   
+			requestObject.onComplete.call(scope, subset, requestObject);
 		}
 	};
 	this._fetchItems(request, _fetchHandler, _errorHandler);

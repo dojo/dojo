@@ -96,7 +96,7 @@ dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 		//		the callback functions will be called in the context of dojo.global.
 		//		For example, onItem.call(scope, item, request) vs. 
 		//		onItem.call(dojo.global, item, request)
-		if (!this.isItemLoaded(keywordArgs.item)) {
+		if(!this.isItemLoaded(keywordArgs.item)){
 			throw new Error('Unimplemented API: dojo.data.api.Identity.fetchItemByIdentity');
 		}
 	}

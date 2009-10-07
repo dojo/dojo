@@ -7,16 +7,26 @@ dojo.require("doh.robot");
 // instead of computing the absolute coordinates of their elements themselves
 dojo.mixin(doh.robot,{
 
-	// TODO: point to dojo.scrollIntoView post 1.2
-	_scrollIntoView : function(/*String||DOMNode||Function*/ node){
+	_resolveNode: function(/*String||DOMNode||Function*/ n){
+		if(typeof n == "function"){
+			// if the user passed a function returning a node, evaluate it
+			n = n();
+		}
+		return n? dojo.byId(n) : null;
+	},
+
+	// TODO: point to dojo.scrollIntoView when moved from dijit
+	_scrollIntoView: function(/*DOMNode*/ node){
 		// summary:
 		//		Scroll the passed node into view, if it is not.
-		// 		Stub to be replaced dijit.robot.
-		if(typeof node == "function"){
-			// if the user passed a function returning a node, evaluate it
-			node = node();
-		}
+		// 		Stub to be replaced in dijit.robot.
 		node.scrollIntoView(false);
+	},
+
+	_position: function(/*DOMNode*/ n){
+		// Returns the dojo.position of the passed node wrt the passed window's viewport.
+		// The version in dijit.robot has iframe support.
+		return dojo.position(n, false);
 	},
 
 	scrollIntoView : function(/*String||DOMNode||Function*/ node, /*Number, optional*/ delay){
@@ -33,7 +43,7 @@ dojo.mixin(doh.robot,{
 		//		The delay is a delta with respect to the previous automation call.
 		//
 		doh.robot.sequence(function(){
-			doh.robot._scrollIntoView(node);
+			doh.robot._scrollIntoView(doh.robot._resolveNode(node));
 		}, delay);
 	},
 
@@ -56,8 +66,8 @@ dojo.mixin(doh.robot,{
 		//		Delay, in milliseconds, to wait before firing.
 		//		The delay is a delta with respect to the previous automation call.
 		//		For example, the following code ends after 600ms:
-		//			doh.mouseClick({left:true}, 100) // first call; wait 100ms
-		//			doh.typeKeys("dij", 500) // 500ms AFTER previous call; 600ms in all
+		//			doh.robot.mouseClick({left:true}, 100) // first call; wait 100ms
+		//			doh.robot.typeKeys("dij", 500) // 500ms AFTER previous call; 600ms in all
 		//
 		// duration:
 		//		Approximate time Robot will spend moving the mouse
@@ -73,26 +83,17 @@ dojo.mixin(doh.robot,{
 		doh.robot._assertRobot();
 		duration = duration||100;
 		this.sequence(function(){
-		if(typeof node == "function"){
-			// if the user passed a function returning a node, evaluate it
-			node = node();
-		}
-		if(!node) return;
-		node=dojo.byId(node);
-		if(offsetY === undefined){
-			var box=dojo.contentBox(node);
-			offsetX=box.w/2;
-			offsetY=box.h/2;
-		}
-		var x = offsetX;
-		var y = offsetY;
-		doh.robot._scrollIntoView(node);
-		// coords relative to viewport be default
-		var c = dojo.position(node);
-		x += c.x;
-		y += c.y;
-		doh.robot._mouseMove(x, y, false, duration);
-		},delay,duration);
+			node=doh.robot._resolveNode(node);
+			doh.robot._scrollIntoView(node);
+			var pos = doh.robot._position(node);
+			if(offsetY === undefined){
+				offsetX=pos.w/2;
+				offsetY=pos.h/2;
+			}
+			var x = pos.x+offsetX;
+			var y = pos.y+offsetY;
+			doh.robot._mouseMove(x, y, false, duration);
+		}, delay, duration);
 	}
 });
 

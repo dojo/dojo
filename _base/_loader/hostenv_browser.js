@@ -364,75 +364,46 @@ if(typeof window != 'undefined'){
 	})();
 //>>excludeEnd("webkitMobile");
 
+	//START DOMContentLoaded
 	dojo._initFired = false;
-	//	BEGIN DOMContentLoaded, from Dean Edwards (http://dean.edwards.name/weblog/2006/06/again/)
 	dojo._loadInit = function(e){
-		dojo._initFired = true;
-		// allow multiple calls, only first one will take effect
-		// A bug in khtml calls events callbacks for document for event which isnt supported
-		// for example a created contextmenu event calls DOMContentLoaded, workaround
-		var type = e && e.type ? e.type.toLowerCase() : "load";
-		if(arguments.callee.initialized || (type != "domcontentloaded" && type != "load")){ return; }
-		arguments.callee.initialized = true;
-		if("_khtmlTimer" in dojo){
-			clearInterval(dojo._khtmlTimer);
-			delete dojo._khtmlTimer;
-		}
-
-		if(dojo._inFlightCount == 0){
-			dojo._modulesLoaded();
+		if(!dojo._initFired){
+			dojo._initFired = true;
+			if(dojo._loadInterval){
+				clearInterval(dojo._loadInterval);
+			}
+	
+			if(dojo._inFlightCount == 0){
+				dojo._modulesLoaded();
+			}
 		}
 	}
 
 	if(!dojo.config.afterOnLoad){
-		//	START DOMContentLoaded
-		// Mozilla and Opera 9 expose the event we could use
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(document.addEventListener){
-			// NOTE: 
-			//		due to a threading issue in Firefox 2.0, we can't enable
-			//		DOMContentLoaded on that platform. For more information, see:
-			//		http://trac.dojotoolkit.org/ticket/1704
-			if(dojo.isWebKit > 525 || dojo.isOpera || (dojo.isMoz && dojo.config.enableMozDomContentLoaded === true)){
-		//>>excludeEnd("webkitMobile");
-				document.addEventListener("DOMContentLoaded", dojo._loadInit, null);
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+		if(window.addEventListener){
+			//Standards. Hooray! Assumption here that if standards based,
+			//it knows about DOMContentLoaded.
+			document.addEventListener("DOMContentLoaded", dojo._loadInit, false);
+			window.addEventListener("load", dojo._loadInit, false);
+		}else if(window.attachEvent){
+			window.attachEvent("onload", dojo._loadInit);
+		}
+
+		//Set up a polling check in every case, in case the above DOMContentLoaded
+		//is not supported, or if it is something like IE. The load registrations above
+		//should be the final catch, but see if we get lucky beforehand.
+		var pageLoadRegExp = /loaded|complete/;
+		dojo._loadInterval = setInterval(function(){
+			//Check for document.readystate.
+			if(pageLoadRegExp.test(document.readyState)){
+				dojo._loadInit();
 			}
-	
-			//	mainly for Opera 8.5, won't be fired if DOMContentLoaded fired already.
-			//  also used for Mozilla because of trac #1640
-			window.addEventListener("load", dojo._loadInit, null);
-		}
-		//>>excludeEnd("webkitMobile");
-	
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(dojo.isAIR){
-			window.addEventListener("load", dojo._loadInit, null);
-		}else if((dojo.isWebKit < 525) || dojo.isKhtml){
-			dojo._khtmlTimer = setInterval(function(){
-				if(/loaded|complete/.test(document.readyState)){
-					dojo._loadInit(); // call the onload handler
-				}
-			}, 10);
-		}
-		//>>excludeEnd("webkitMobile");
-		//	END DOMContentLoaded
+		}, 10);
 	}
+	//END DOMContentLoaded
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(dojo.isIE){
-		// 	for Internet Explorer. readyState will not be achieved on init
-		// 	call, but dojo doesn't need it however, we'll include it
-		// 	because we don't know if there are other functions added that
-		// 	might.  Note that this has changed because the build process
-		// 	strips all comments -- including conditional ones.
-		if(!dojo.config.afterOnLoad){
-			document.write('<scr'+'ipt defer src="//:" '
-				+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
-				+ '</scr'+'ipt>'
-			);
-		}
-
 		try{
 			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
 			document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML);  display:inline-block");

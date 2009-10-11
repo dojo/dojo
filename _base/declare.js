@@ -6,7 +6,8 @@ dojo.require("dojo._base.array");
 // a drop-in replacement for dojo.declare() with fixed bugs and enhancements
 
 (function(){
-	var d = dojo, op = Object.prototype, isF = d.isFunction, xtor = new Function, counter = 0;
+	var d = dojo, op = Object.prototype, isF = d.isFunction, mix = d._mixin,
+		xtor = new Function, counter = 0;
 
 	function err(msg){ throw new Error("declare: " + msg); }
 
@@ -355,6 +356,10 @@ dojo.require("dojo._base.array");
 			}
 		}
 		if(superclass){
+			if(superclass._meta){
+				xtor.prototype = superclass._meta.chains;
+				chains = new xtor;
+			}
 			for(i = mixins - 1;; --i){
 				// delegation
 				xtor.prototype = superclass.prototype;
@@ -365,7 +370,12 @@ dojo.require("dojo._base.array");
 				}
 				// mix in properties
 				t = bases[i];
-				d._mixin(proto, t._meta ? t._meta.hidden : t.prototype);
+				if(t._meta){
+					mix(chains, t._meta.chains);
+					mix(proto, t._meta.hidden);
+				}else{
+					mix(proto, t.prototype);
+				}
 				// chain in new constructor
 				ctor = new Function;
 				ctor.superclass = superclass;
@@ -386,13 +396,8 @@ dojo.require("dojo._base.array");
 		xtor.prototype = 0;	// cleanup
 
 		// collect chains and flags
-		d.forEach(bases.slice(1).reverse(), function(ctor){
-			if(ctor._meta){
-				d._mixin(chains, ctor._meta.chains);
-			}
-		});
 		if(proto.hasOwnProperty("-chains-")){
-			d._mixin(chains, proto["-chains-"]);
+			mix(chains, proto["-chains-"]);
 		}
 
 		// build ctor

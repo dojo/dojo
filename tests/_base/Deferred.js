@@ -67,6 +67,19 @@ doh.register("tests._base.Deferred",
 			// nd.callback();
 			// t.debug(cnt);
 			// t.assertEqual(cnt, 1);
+		},
+
+		function callbackNested(t){
+			var nd = new dojo.Deferred();
+			var nestedReturn = "yellow";
+			nd.addCallback(function(res){
+				nd.addCallback(function(res2){
+					nestedReturn = res2;
+				});
+				return "blue";
+			});
+			nd.callback("red");
+			t.assertEqual("blue", nestedReturn);
 		}
 	]
 );

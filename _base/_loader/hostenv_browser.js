@@ -369,10 +369,7 @@ if(typeof window != 'undefined'){
 	dojo._loadInit = function(e){
 		if(!dojo._initFired){
 			dojo._initFired = true;
-			if(dojo._loadInterval){
-				clearInterval(dojo._loadInterval);
-			}
-	
+
 			if(dojo._inFlightCount == 0){
 				dojo._modulesLoaded();
 			}
@@ -380,36 +377,38 @@ if(typeof window != 'undefined'){
 	}
 
 	if(!dojo.config.afterOnLoad){
-		if(window.addEventListener){
+		if(document.addEventListener){
 			//Standards. Hooray! Assumption here that if standards based,
-			//it knows about DOMContentLoaded.
+			//it knows about DOMContentLoaded. It is OK if it does not, the fall through
+			//to window onload should be good enough.
 			document.addEventListener("DOMContentLoaded", dojo._loadInit, false);
 			window.addEventListener("load", dojo._loadInit, false);
 		}else if(window.attachEvent){
 			window.attachEvent("onload", dojo._loadInit);
 		}
-
-		//Set up a polling check in every case, in case the above DOMContentLoaded
-		//is not supported, or if it is something like IE. The load registrations above
-		//should be the final catch, but see if we get lucky beforehand.
-		var pageLoadRegExp = /loaded|complete/;
-		dojo._loadInterval = setInterval(function(){
-			//Check for document.readystate.
-			if(pageLoadRegExp.test(document.readyState)){
-				dojo._loadInit();
-			}
-		}, 10);
 	}
-	//END DOMContentLoaded
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(dojo.isIE){
+		// 	for Internet Explorer. readyState will not be achieved on init
+		// 	call, but dojo doesn't need it however, we'll include it
+		// 	because we don't know if there are other functions added that
+		// 	might.  Note that this has changed because the build process
+		// 	strips all comments -- including conditional ones.
+		if(!dojo.config.afterOnLoad){
+			document.write('<scr'+'ipt defer src="//:" '
+				+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
+				+ '</scr'+'ipt>'
+			);
+		}
+
 		try{
 			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
 			document.createStyleSheet().addRule("v\\:*", "behavior:url(#default#VML);  display:inline-block");
 		}catch(e){}
 	}
 	//>>excludeEnd("webkitMobile");
+	//END DOMContentLoaded
 
 
 	/*

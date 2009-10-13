@@ -9,26 +9,26 @@ dojo.cache = {
 
 (function(){
 	var cache = {};
-	dojo.cache = function(/*String*/module, /*String*/url, /*String||Object?*/value){
+	dojo.cache = function(/*String||Object*/module, /*String*/url, /*String||Object?*/value){
 		// summary:
 		// 		A getter and setter for storing the string content associated with the
 		// 		module and url arguments.
 		// description:
-		// 		module and url are used to call dojo.moduleUrl() to generate a module URL.
+		// 		module and url are used to call `dojo.moduleUrl()` to generate a module URL.
 		// 		If value is specified, the cache value for the moduleUrl will be set to
 		// 		that value. Otherwise, dojo.cache will fetch the moduleUrl and store it
 		// 		in its internal cache and return that cached value for the URL. To clear
 		// 		a cache value pass null for value. Since XMLHttpRequest (XHR) is used to fetch the
 		// 		the URL contents, only modules on the same domain of the page can use this capability.
 		// 		The build system can inline the cache values though, to allow for xdomain hosting.
-		// module: String || Object
+		// module: String||Object
 		// 		If a String, the module name to use for the base part of the URL, similar to module argument
 		// 		to `dojo.moduleUrl`. If an Object, something that has a .toString() method that
 		// 		generates a valid path for the cache item. For example, a dojo._Url object.
 		// url: String
 		// 		The rest of the path to append to the path derived from the module argument. If
 		// 		module is an object, then this second argument should be the "value" argument instead.
-		// value: String||Object
+		// value: String||Object?
 		// 		If a String, the value to use in the cache for the module/url combination.
 		// 		If an Object, it can have two properties: value and sanitize. The value property
 		// 		should be the value to use in the cache, and sanitize can be set to true or false,

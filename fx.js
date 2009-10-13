@@ -1,5 +1,5 @@
 dojo.provide("dojo.fx");
-dojo.require("dojo.fx.Toggler");
+dojo.require("dojo.fx.Toggler"); // FIXME: remove this back-compat require in 2.0 
 /*=====
 dojo.fx = {
 	// summary: Effects library on top of Base animations
@@ -126,8 +126,18 @@ dojo.fx = {
 	d.extend(_chain, _baseObj);
 
 	dojo.fx.chain = function(/*dojo.Animation[]*/ animations){
-		// summary: Chain a list of dojo.Animation s to run in sequence
+		// summary: 
+		//		Chain a list of `dojo.Animation`s to run in sequence
+		//
+		// description:
+		//		Return a `dojo.Animation` which will play all passed
+		//		`dojo.Animation` instances in sequence, firing its own
+		//		synthesized events simulating a single animation. (eg:
+		//		onEnd of this animation means the end of the chain, 
+		//		not the individual animations within)
+		//
 		// example:
+		//	Once `node` is faded out, fade in `otherNode`
 		//	|	dojo.fx.chain([
 		//	|		dojo.fadeIn({ node:node }),
 		//	|		dojo.fadeOut({ node:otherNode })
@@ -209,7 +219,8 @@ dojo.fx = {
 	d.extend(_combine, _baseObj);
 
 	dojo.fx.combine = function(/*dojo.Animation[]*/ animations){
-		// summary: Combine an array of `dojo.Animation`s to run in parallel
+		// summary: 
+		//		Combine a list of `dojo.Animation`s to run in parallel
 		//
 		// description:
 		//		Combine an array of `dojo.Animation`s to run in parallel, 
@@ -217,6 +228,7 @@ dojo.fx = {
 		//		animation, firing standard animation events.
 		//
 		// example:
+		//	Fade out `node` while fading in `otherNode` simultaneously
 		//	|	dojo.fx.combine([
 		//	|		dojo.fadeIn({ node:node }),
 		//	|		dojo.fadeOut({ node:otherNode })
@@ -238,12 +250,23 @@ dojo.fx = {
 
 	dojo.fx.wipeIn = function(/*Object*/ args){
 		// summary:
+		//		Expand a node to it's natural height.
+		//
+		// description:
 		//		Returns an animation that will expand the
 		//		node defined in 'args' object from it's current height to
 		//		it's natural height (with no scrollbar).
 		//		Node must have no margin/border/padding.
-		args.node = d.byId(args.node);
-		var node = args.node, s = node.style, o;
+		//
+		// args: Object
+		//		A hash-map of standard `dojo.Animation` constructor properties
+		//		(such as easing: node: duration: and so on)
+		//
+		// example:
+		//	|	dojo.fx.wipeIn({
+		//	|		node:"someId"
+		//	|	}).play()
+		var node = args.node = d.byId(args.node), s = node.style, o;
 
 		var anim = d.animateProperty(d.mixin({
 			properties: {
@@ -253,11 +276,11 @@ dojo.fx = {
 						// start at current [computed] height, but use 1px rather than 0
 						// because 0 causes IE to display the whole panel
 						o = s.overflow;
-						s.overflow="hidden";
-						if(s.visibility=="hidden"||s.display=="none"){
-							s.height="1px";
-							s.display="";
-							s.visibility="";
+						s.overflow = "hidden";
+						if(s.visibility == "hidden" || s.display == "none"){
+							s.height = "1px";
+							s.display = "";
+							s.visibility = "";
 							return 1;
 						}else{
 							var height = d.style(node, "height");
@@ -281,8 +304,19 @@ dojo.fx = {
 
 	dojo.fx.wipeOut = function(/*Object*/ args){
 		// summary:
+		//		Shrink a node to nothing and hide it. 
+		//
+		// description:
 		//		Returns an animation that will shrink node defined in "args"
 		//		from it's current height to 1px, and then hide it.
+		//
+		// args: Object
+		//		A hash-map of standard `dojo.Animation` constructor properties
+		//		(such as easing: node: duration: and so on)
+		// 
+		// example:
+		//	|	dojo.fx.wipeOut({ node:"someId" }).play()
+		
 		var node = args.node = d.byId(args.node), s = node.style, o;
 		
 		var anim = d.animateProperty(d.mixin({
@@ -307,11 +341,20 @@ dojo.fx = {
 		return anim; // dojo.Animation
 	}
 
-	dojo.fx.slideTo = function(/*Object?*/ args){
+	dojo.fx.slideTo = function(/*Object*/ args){
 		// summary:
+		//		Slide a node to a new top/left position
+		//
+		// description:
 		//		Returns an animation that will slide "node" 
 		//		defined in args Object from its current position to
 		//		the position defined by (args.left, args.top).
+		//
+		// args: Object
+		//		A hash-map of standard `dojo.Animation` constructor properties
+		//		(such as easing: node: duration: and so on). Special args members
+		//		are `top` and `left`, which indicate the new position to slide to.
+		//
 		// example:
 		//	|	dojo.fx.slideTo({ node: node, left:"40", top:"50", units:"px" }).play()
 

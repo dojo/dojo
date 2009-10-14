@@ -144,11 +144,14 @@ if(typeof window != 'undefined'){
 		if(document.all && !d.isOpera){
 			d.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
 			//In cases where the page has an HTTP header or META tag with
-			//X-UA-Compatible, then it is in emulation mode, for a previous
-			//version. Make sure isIE reflects the desired version.
+			//X-UA-Compatible, then it is in emulation mode.
+			//Make sure isIE reflects the desired version.
 			//document.documentMode of 5 means quirks mode.
-			if(d.isIE >= 8 && document.documentMode != 5){
-				d.isIE = document.documentMode;
+			//Only switch the value if documentMode's major version
+			//is different from isIE's major version.
+			var mode = document.documentMode;
+			if(mode && mode != 5 && Math.floor(d.isIE) != mode){
+				d.isIE = mode;
 			}
 		}
 

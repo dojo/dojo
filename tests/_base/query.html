@@ -158,6 +158,7 @@
 						"doh.is(2, dojo.query('#t2 > :checked').length);",
 						"doh.is(dojo.byId('checkbox2'), dojo.query('#t2 > input[type=checkbox]:checked')[0]);",
 						"doh.is(dojo.byId('radio2'), dojo.query('#t2 > input[type=radio]:checked')[0]);",
+						"doh.is(2, dojo.query('#t2select option:checked').length);",
 
 						// cross-document queries
 						{
@@ -278,6 +279,12 @@
 			<input type="radio" name="radio" id="radio2" value="stuff" checked>
 			<input type="radio" name="radio" id="radio3" value="blah">
 		</div>
+		<select id="t2select" multiple="multiple">
+			<option>0</option>
+			<option selected="selected">1</option>
+			<option selected="selected">2</option>
+		</select>
+		
 		<iframe id="t3" name="t3" src="../../resources/blank.html"></iframe>
 		<div id="t4">
 			<div id="one" class="subDiv">

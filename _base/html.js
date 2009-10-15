@@ -94,7 +94,8 @@ if(dojo.isIE || dojo.isOpera){
 //>>excludeEnd("webkitMobile");
 	var byId = d.byId;
 
-	var _destroyContainer = null;
+	var _destroyContainer = null,
+		_destroyDoc;
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	d.addOnWindowUnload(function(){
 		_destroyContainer = null; //prevent IE leak
@@ -130,8 +131,11 @@ if(dojo.isIE || dojo.isOpera){
 
 		node = byId(node);
 		try{
-			if(!_destroyContainer || _destroyContainer.ownerDocument != node.ownerDocument){
-				_destroyContainer = node.ownerDocument.createElement("div");
+			var doc = node.ownerDocument;
+			// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
+			if(!_destroyContainer || _destroyDoc != doc){
+				_destroyContainer = doc.createElement("div");
+				_destroyDoc = doc;
 			}
 			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
 			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature

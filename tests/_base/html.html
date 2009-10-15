@@ -551,6 +551,10 @@
 							doh.f(dojo.attr("input-no-disabled", "disabled"));
 							doh.t(dojo.attr("input-with-disabled", "disabled"));
 							doh.t(dojo.attr("input-with-disabled-true", "disabled"));
+						},
+						function testIframeDestroy10095(t){
+							var iframeWin = dojo.byId('10095_iframe').win;
+							doh.t(!iframeWin.document.getElementById('10095_textbox'), "reloaded iframe element destroyed");
 						}
 					]
 				);
@@ -744,6 +748,19 @@
 		</div>
 
 		<iframe id="blah" name="blah" src="javascript:'&lt;html&gt&lt;body&gt;&lt;div id=subDiv&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'"></iframe>
+
+		<script type="text/javascript">
+		var reloaded = false;
+		function iframe10095loaded() {
+			var iframeWin = dojo.byId('10095_iframe').win;
+			dojo.withGlobal(iframeWin, function(){ dojo.destroy(dojo.byId('10095_textbox')) });
+			if(!reloaded){
+				reloaded = true;
+				dojo.byId('10095_iframe').src=iframeWin.frameElement.src;
+			}
+		}
+		</script>
+		<iframe id="10095_iframe" style="display:none;" src="javascript:'&lt;html&gt;&lt;head&gt;&lt;script&gt;frameElement.win=window&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;input id=10095_textbox&gt;&lt;/body&gt;&lt;/html&gt;'" onload="dojo.addOnLoad(iframe10095loaded)"></iframe>
 
 		<div id='iframe_div' style="position:absolute;top:0;left:500px;"></div>
 

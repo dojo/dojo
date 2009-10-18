@@ -13,7 +13,8 @@ dojo.provide("dojo._base.lang");
 
 	dojo.isArray = function(/*anything*/ it){
 		//	summary:
-		//		Return true if it is an Array
+		//		Return true if it is an Array.
+		//		Does not work on Arrays created in other windows.
 		return it && (it instanceof Array || typeof it == "array"); // Boolean
 	}
 

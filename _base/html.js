@@ -49,10 +49,7 @@ dojo.byId = function(id, doc){
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(dojo.isIE || dojo.isOpera){
 	dojo.byId = function(id, doc){
-		if(!id){
-			return null;
-		}
-		if(id.nodeType){
+		if(typeof id != "string"){
 			return id;
 		}
 		var _d = doc || dojo.doc, te = _d.getElementById(id);

@@ -7,57 +7,38 @@ dojo.require("dojo.hash");
 	var titleSyncer = dojo.subscribe("/dojo/hashchange", null, function(){
 		document.title = dojo.hash() + " - " + title;
 	});
-	doh.register("tests.hash", [
-		{
-			name: "getAndSetWithOnHashChange",
-			timeout: 5000,
-			runTest: function(t){
-				var testCases = {
-					"cases" : [
-									"test",
-									"test with spaces",
-									"test%20with%20encoded",
-									"test+with+pluses",
-									" leading",
-									"trailing ",
-									"under_score",
-									"extra&instring",
-									"#leadinghash",
-									"foo=bar&bar=foo",
-									"extra?instring"
-								],
-					"expected" : [
-									"test",
-									"test with spaces",
-									"test with encoded",
-									"test+with+pluses",
-									" leading",
-									"trailing",
-									"under_score",
-									"extra&instring",
-									"leadinghash",
-									"foo=bar&bar=foo",
-									"extra?instring"
-								]
-				}
-				
-				var caseLength = testCases.cases.length;
-				var d = new doh.Deferred;
-				var count = 0;
-				var hash = dojo.subscribe("/dojo/hashchange", null, function(){
-					doh.is(dojo.hash(), testCases.expected[count]);
-					count++;
-					if (count < caseLength){
-						dojo.hash(testCases.cases[count]);
-					} else {
-						d.callback(true);
-						dojo.unsubscribe(hash);
-						document.title = title;
+	doh.register("tests.hash",
+		dojo.map(
+			[
+				// [ input, expected_output ]
+				[ "test", "test" ],
+				[ "test with spaces", "test with spaces" ],
+				[ "test%20with%20encoded", "test with encoded" ],
+				[ "test+with+pluses", "test+with+pluses" ],
+				[ " leading", " leading" ],
+				[ "trailing ", "trailing" ],
+				[ "under_score", "under_score" ],
+				[ "extra&instring", "extra&instring" ],
+				[ "#leadinghash", "leadinghash" ],
+				[ "foo=bar&bar=foo", "foo=bar&bar=foo" ],
+				[ "extra?instring", "extra?instring" ]
+			],
+			function(elem){
+				var test = elem[0], expected = elem[1];
+				return {
+					name: "getAndSetWithOnHashChange: " + test,
+					timeout: 5000,
+					runTest: function(t){
+						var d = new doh.Deferred();
+						var sub = dojo.subscribe("/dojo/hashchange", null, d.getTestCallback(function(){
+							dojo.unsubscribe(sub);
+							document.title = title;
+							doh.is(dojo.hash(), expected);
+						}));
+						dojo.hash(test);
+						return d;
 					}
-				});
-				dojo.hash(testCases.cases[0]);
-				return d;
-			}
-		}
-	]);
+				};
+			})
+		);
 })();

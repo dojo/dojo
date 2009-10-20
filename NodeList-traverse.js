@@ -22,6 +22,17 @@ dojo.extend(dojo.NodeList, {
 		return ary;	
 	},
 
+	_filterQueryResult: function(nodeList, query){
+		// summmary: 
+		// 		Replacement for dojo._filterQueryResult that does a full
+		// 		query. Slower, but allows for more types of queries.
+		var filter = dojo.filter(nodeList, function(node){
+			return dojo.query(query, node.parentNode).indexOf(node) != -1;
+		});
+		var result = this._wrap(filter);
+		return result;
+	},
+
 	_getUniqueAsNodeList: function(nodes){
 		// summary:
 		// 		given a list of nodes, make sure only unique
@@ -45,7 +56,7 @@ dojo.extend(dojo.NodeList, {
 		// 		gets unique element nodes, filters them further
 		// 		with an optional query and then calls _stash to track parent NodeList.
 		var ary = this._getUniqueAsNodeList(nodes);
-		ary = (query ? (this._filterQueryResult || dojo._filterQueryResult)(ary, query) : ary);
+		ary = (query ? this._filterQueryResult(ary, query) : ary);
 		return ary._stash(this);  //dojo.NodeList
 	},
 
@@ -66,10 +77,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		// query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, all immediate child elements for the nodes in this dojo.NodeList.
 		//	example:
@@ -100,10 +108,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, the closest parent that matches the query, including the current
 		//		node in this dojo.NodeList if it matches the query.
@@ -122,7 +127,7 @@ dojo.extend(dojo.NodeList, {
 		var self = this;
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			do{
-				if((self._filterQueryResult || dojo._filterQueryResult)([node], query).length){
+				if(self._filterQueryResult([node], query).length){
 					return node;
 				}
 			}while((node = node.parentNode) && node.nodeType == 1);
@@ -138,10 +143,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, immediate parent elements for nodes in this dojo.NodeList.
 		//	example:
@@ -171,10 +173,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, all parent elements for nodes in this dojo.NodeList.
 		//	example:
@@ -210,10 +209,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, all sibling elements for nodes in this dojo.NodeList.
 		//	example:
@@ -252,10 +248,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, the next element for nodes in this dojo.NodeList.
 		//	example:
@@ -290,10 +283,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, all sibling elements that come after the nodes in this dojo.NodeList.
 		//	example:
@@ -331,10 +321,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, the previous element for nodes in this dojo.NodeList.
 		//	example:
@@ -371,10 +358,7 @@ dojo.extend(dojo.NodeList, {
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
 		//	query:
-		//		single-expression CSS rule. For example, ".thinger" or
-		//		"#someId[attrName='value']" but not "div > span". In short,
-		//		anything which does not invoke a descent to evaluate but
-		//		can instead be used to test a single node is acceptable.
+		//		a CSS selector.
 		// returns:
 		//		dojo.NodeList, all sibling elements that come before the nodes in this dojo.NodeList.
 		//	example:

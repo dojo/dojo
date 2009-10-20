@@ -73,7 +73,8 @@ djConfig = {
 	//		Indicates Dojo was added to the page after the page load. In this case
 	//		Dojo will not wait for the page DOMContentLoad/load events and fire
 	//		its dojo.addOnLoad callbacks after making sure all outstanding
-	//		dojo.required modules have loaded.
+	//		dojo.required modules have loaded. Only works with a built dojo.js,
+	//		it does not work the dojo.js directly from source control.
 	afterOnLoad: false,
 	// addOnLoad: Function or Array
 	//		Adds a callback via dojo.addOnLoad. Useful when Dojo is added after

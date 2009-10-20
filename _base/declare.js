@@ -3,8 +3,6 @@ dojo.provide("dojo._base.declare");
 dojo.require("dojo._base.lang");
 dojo.require("dojo._base.array");
 
-// a drop-in replacement for dojo.declare() with fixed bugs and enhancements
-
 (function(){
 	var d = dojo, op = Object.prototype, isF = d.isFunction, mix = d._mixin,
 		xtor = new Function, counter = 0;

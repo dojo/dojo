@@ -154,7 +154,7 @@ djConfig = {
 	//TODOC:  HOW TO DOC THIS?
 	// dojo is the root variable of (almost all) our public symbols -- make sure it is defined.
 	if(typeof dojo == "undefined"){
-		this.dojo = {
+		dojo = {
 			_scopeName: "dojo",
 			_scopePrefix: "",
 			_scopePrefixArgs: "",
@@ -168,10 +168,10 @@ djConfig = {
 
 	//Need placeholders for dijit and dojox for scoping code.
 	if(typeof dijit == "undefined"){
-		this.dijit = {_scopeName: "dijit"};
+		dijit = {_scopeName: "dijit"};
 	}
 	if(typeof dojox == "undefined"){
-		this.dojox = {_scopeName: "dojox"};
+		dojox = {_scopeName: "dojox"};
 	}
 
 	if(!d._scopeArgs){

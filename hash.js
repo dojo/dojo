@@ -132,20 +132,21 @@ dojo.provide("dojo.hash");
 
 		// create and append iframe
 		var ifr = document.createElement("iframe"),
-			IFRAME_ID = "dojo-hash-iframe";
+			IFRAME_ID = "dojo-hash-iframe",
+			ifrSrc = dojo.moduleUrl("dojo","resources/blank.html");
 		ifr.id = IFRAME_ID;
-		ifr.src = dojo.moduleUrl("dojo", "resources/blank.html?" + _getHash());
+		ifr.src = ifrSrc + "?" + _getHash();
 		ifr.style.display = "none";
 		document.body.appendChild(ifr);
 
 		this.iframe = dojo.global[IFRAME_ID];
-		var recentIframeQuery, transitioning, expectedIFrameQuery, docTitle,
+		var recentIframeQuery, transitioning, expectedIFrameQuery, docTitle, ifrOffline,
 			iframeLoc = this.iframe.location,
 			winLoc = dojo.global.location;
 
 		function resetState(){
 			_recentHash = winLoc.hash;
-			recentIframeQuery = iframeLoc.search;
+			recentIframeQuery = ifrOffline ? _recentHash : iframeLoc.search;
 			transitioning = false;
 			expectedIFrameQuery = null;
 		}
@@ -155,14 +156,23 @@ dojo.provide("dojo.hash");
 		}
 		
 		this.pollLocation = function(){
-			//sync title of main window with title of iframe.
-			if(document.title != docTitle){
-				docTitle = this.iframe.document.title = document.title;
+			if(!ifrOffline) {
+				try{
+					iframeLoc.search;  //see if we can access the iframe without a permission denied error
+					//good, the iframe is same origin (no thrown exception)
+					if(document.title != docTitle){ //sync title of main window with title of iframe.
+						docTitle = this.iframe.document.title = document.title;
+					}
+				}catch(e){
+					//permission denied - server cannot be reached.
+					ifrOffline = true;
+					console.error("dojo.hash: Error adding history entry. Server unreachable.");
+				}
 			}
 			if(transitioning && _recentHash === winLoc.hash){
 				// we're in an iframe transition (s4 or s5)
-				if(iframeLoc.search === expectedIFrameQuery){
-					// s5 (iframe caught up to main window), transition back to s1
+				if(ifrOffline || iframeLoc.search === expectedIFrameQuery){
+					// s5 (iframe caught up to main window or iframe offline), transition back to s1
 					resetState();
 					_dispatchEvent();
 				}else{
@@ -170,9 +180,9 @@ dojo.provide("dojo.hash");
 					setTimeout(dojo.hitch(this,this.pollLocation),0);
 					return;
 				}
-			}else if(_recentHash === winLoc.hash && recentIframeQuery === iframeLoc.search){
+			}else if(_recentHash === winLoc.hash && (ifrOffline || recentIframeQuery === iframeLoc.search)){
 				// we're in stable state (s1, iframe query == main window hash), do nothing
-			}else{ 
+			}else{
 				// the user has initiated a URL change somehow.
 				// sync iframe query <-> main window hash
 				if(_recentHash !== winLoc.hash){
@@ -180,10 +190,11 @@ dojo.provide("dojo.hash");
 					_recentHash = winLoc.hash;
 					transitioning = true;
 					expectedIFrameQuery = "?" + _getHash();
-					ifr.src = ifr.src.split("?")[0] + expectedIFrameQuery;
+					ifr.src = ifrSrc + expectedIFrameQuery;
+					ifrOffline = false;	//we're updating the iframe src - set offline to false so we can check again on next poll.
 					setTimeout(dojo.hitch(this,this.pollLocation),0); //yielded transition to s4 while iframe reloads.
 					return;
-				}else{
+				}else if(!ifrOffline){
 					// s3 (iframe location changed via back/forward button), set main window url and transition to s1.
 					winLoc.href = "#" + iframeLoc.search.substring(1);
 					resetState();

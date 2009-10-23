@@ -4,9 +4,6 @@ dojo.require("dojo.hash");
 
 (function(){
 	var title = document.title;
-	var titleSyncer = dojo.subscribe("/dojo/hashchange", null, function(){
-		document.title = dojo.hash() + " - " + title;
-	});
 	doh.register("tests.hash",
 		dojo.map(
 			[
@@ -26,14 +23,14 @@ dojo.require("dojo.hash");
 			function(elem){
 				var test = elem[0], expected = elem[1];
 				return {
-					name: "getAndSetWithOnHashChange: " + test,
+					name: "setAndGetHash: " + test,
 					timeout: 5000,
 					runTest: function(t){
 						var d = new doh.Deferred();
 						var sub = dojo.subscribe("/dojo/hashchange", null, d.getTestCallback(function(){
+							document.title = dojo.hash() + " - " + title;
 							dojo.unsubscribe(sub);
-							document.title = title;
-							doh.is(dojo.hash(), expected);
+							doh.is(expected, dojo.hash());
 						}));
 						dojo.hash(test);
 						return d;

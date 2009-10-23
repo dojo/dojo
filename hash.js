@@ -51,7 +51,7 @@ dojo.provide("dojo.hash");
 	//Internal functions
 	function _getHash(){
 		var h = location.href, i = h.indexOf("#");
-		return (i >= 0) ? h.substring(i + 1) : "";
+		return (i >= 0) ? decodeURIComponent(h.substring(i + 1)) : "";
 	}
 
 	function _dispatchEvent(){

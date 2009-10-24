@@ -18,28 +18,12 @@ dojo.provide("dojo._base.lang");
 		return it && (it instanceof Array || typeof it == "array"); // Boolean
 	}
 
-	/*=====
-	dojo.isFunction = function(it){
-		// summary: Return true if it is a Function
-		// it: anything
-		return; // Boolean
-	}
-	=====*/
-
-	dojo.isFunction = (function(){
-		var _isFunction = function(/*anything*/ it){
-			var t = typeof it; // must evaluate separately due to bizarre Opera bug. See #8937
-			//Firefox thinks object HTML element is a function, so test for nodeType.
-			return it && (t == "function" || it instanceof Function) && !it.nodeType; // Boolean
-		};
-
-		return d.isSafari ?
-			// only slow this down w/ gratuitious casting in Safari (not WebKit)
-			function(/*anything*/ it){
-				if(typeof it == "function" && it == "[object NodeList]"){ return false; }
-				return _isFunction(it); // Boolean
-			} : _isFunction;
-	})();
+	var opts = Object.prototype.toString;
+	dojo.isFunction = function(/*anything*/ it){
+		// summary:
+		//		Return true if it is a Function
+		return opts.call(it) === "[object Function]";
+	};
 
 	dojo.isObject = function(/*anything*/ it){
 		// summary:

@@ -8,26 +8,6 @@ dojo.parser = new function(){
 	this._attrName = d._scopeName + "Type";
 	this._query = "[" + this._attrName + "]";
 
-	var _anonCtr = 0, _anon = {};
-	var nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
-		// summary:
-		//		Creates a reference to anonFuncPtr in thisObj with a completely
-		//		unique name. The new name is returned as a String. 
-		var nso = thisObj || _anon;
-		if(dojo.isIE){
-			var cn = anonFuncPtr["__dojoNameCache"];
-			if(cn && nso[cn] === anonFuncPtr){
-				return cn;
-			}
-		}
-		var name;
-		do{
-			name = "__" + _anonCtr++;
-		}while(name in nso)
-		nso[name] = anonFuncPtr;
-		return name; // String
-	}
-
 	function val2type(/*Object*/ value){
 		// summary:
 		//		Returns name of type of given value.
@@ -63,10 +43,12 @@ dojo.parser = new function(){
 				}
 				try{
 					if(value.search(/[^\w\.]+/i) != -1){
-						// TODO: "this" here won't work
-						value = nameAnonFunc(new Function(value), this);
+						// The user has specified some text for a function like "return x+5"
+						return new Function(value);
+					}else{
+						// The user has specified the name of a function like "myOnClick"
+						return d.getObject(value, false);
 					}
-					return d.getObject(value, false);
 				}catch(e){ return new Function(); }
 			case "array":
 				return value ? value.split(/\s*,\s*/) : [];

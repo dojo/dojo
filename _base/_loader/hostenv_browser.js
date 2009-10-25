@@ -373,6 +373,11 @@ if(typeof window != 'undefined'){
 		if(!dojo._initFired){
 			dojo._initFired = true;
 
+			//Help out IE to avoid memory leak.
+			if(!dojo.config.afterOnLoad && window.detachEvent){
+				window.detachEvent("onload", dojo._loadInit);
+			}
+
 			if(dojo._inFlightCount == 0){
 				dojo._modulesLoaded();
 			}

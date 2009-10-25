@@ -1203,7 +1203,8 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	}
 
 	dojo.addOnWindowUnload(function(){
-		// Erase the globals I created, to prevent spurious leak warnings
+		// Erase the globals and event handlers I created, to prevent spurious leak warnings
+		removeEvent(document, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
 		window.onFirebugResize = null;
 		window.console = null;
 	});

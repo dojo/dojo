@@ -75,6 +75,7 @@ dojo.require("dojo._base.array");
 		}
 
 		// calculate the superclass offset
+		base = bases[0];
 		result[0] = base ?
 			base._meta && base === result[result.length - base._meta.bases.length] ?
 				base._meta.bases.length : 1 : 0;

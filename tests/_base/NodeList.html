@@ -348,6 +348,15 @@
 							doh.is(spans.concat([]).constructor, dojo.NodeList);
 						},
 
+						function concat3(){
+							var spans = dojo.query("span");
+							var divs = dojo.query("div");
+							var cat = spans.concat(divs);
+
+							doh.t(typeof NodeList != "undefined" && cat.constructor === NodeList
+								|| cat.constructor === dojo.NodeList);
+						},
+
 						function place(){
 							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
 

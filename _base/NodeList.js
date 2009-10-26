@@ -548,7 +548,7 @@ dojo.require("dojo._base.array");
 			var t = d.isArray(this) ? this : aps.call(this, 0),
 				m = d.map(arguments, function(a){
 					return a && !d.isArray(a) &&
-						(a.constructor === NodeList || a.constructor == this._NodeListCtor) ?
+						(typeof NodeList != "undefined" && a.constructor === NodeList || a.constructor === this._NodeListCtor) ?
 							aps.call(a, 0) : a;
 				});
 			return this._wrap(apc.apply(t, m), this);	// dojo.NodeList

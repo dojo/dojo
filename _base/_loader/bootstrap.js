@@ -233,7 +233,7 @@ dojo.global = {
 	}
 =====*/
 	dojo.version = {
-		major: 1, minor: 4, patch: 0, flag: "dev",
+		major: 1, minor: 4, patch: 0, flag: "b2",
 		revision: rev ? +rev[0] : NaN,
 		toString: function(){
 			with(d.version){

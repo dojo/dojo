@@ -330,7 +330,7 @@ dojo.require("dojo._base.array");
 	}
 
 	d.declare = function(className, superclass, props){
-		var proto, i, t, ctor, name, bases, mixins = 1, chains = {};
+		var proto, i, t, ctor, name, bases, mixins = 1, chains = {}, parents = superclass;
 
 		// crack parameters
 		if(typeof className != "string"){
@@ -404,7 +404,7 @@ dojo.require("dojo._base.array");
 			chainedConstructor(bases, !chains.hasOwnProperty("constructor"));
 
 		// add meta information to the constructor
-		ctor._meta  = {bases: bases, hidden: props, chains: chains};
+		ctor._meta  = {bases: bases, hidden: props, chains: chains, parents: parents};
 		ctor.superclass = superclass && superclass.prototype;
 		ctor.extend = extend;
 		ctor.prototype = proto;

@@ -367,7 +367,7 @@ dojo.provide("dojo._base.lang");
 		//	|	        case "avg":   return sum(this.payments) / this.payments.length;
 		//	|	      }
 		//	|	    }
-		//	|	  ),
+		//	|	  )
 		//	|	);
 		//	|	// prints: 3 payments averaging 13 USD per payment.
 		//	example:

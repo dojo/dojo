@@ -834,8 +834,9 @@ dojo.require("dojo._base.query");
 		var dfd = _d._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
 		var ioArgs = dfd.ioArgs;
 
-		//Pass the args to _xhrObj, to allow xhr iframe proxy interceptions.
-		var xhr = dfd.ioArgs.xhr = _d._xhrObj(dfd.ioArgs.args);
+		//Pass the args to _xhrObj, to allow alternate XHR calls based specific calls, like
+		//the one used for iframe proxies.
+		var xhr = ioArgs.xhr = _d._xhrObj(ioArgs.args);
 		//If XHR factory fails, cancel the deferred.
 		if(!xhr){
 			dfd.cancel();
@@ -852,7 +853,7 @@ dojo.require("dojo._base.query");
 		}else if((arguments.length > 2 && !hasBody) || "POST|PUT".indexOf(method.toUpperCase()) == -1){
 			//Check for hasBody being passed. If no hasBody,
 			//then only append query string if not a POST or PUT request.
-			_d._ioAddQueryToUrl(dfd.ioArgs);
+			_d._ioAddQueryToUrl(ioArgs);
 		}
 
 		// IE 6 is a steaming pile. It won't let you call apply() on the native function (xhr.open).
@@ -882,7 +883,7 @@ dojo.require("dojo._base.query");
 			try{
 				xhr.send(ioArgs.query);
 			}catch(e){
-				dfd.ioArgs.error = e;
+				ioArgs.error = e;
 				dfd.cancel();
 			}
 		}

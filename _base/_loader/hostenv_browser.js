@@ -403,7 +403,7 @@ if(typeof window != 'undefined'){
 		// 	because we don't know if there are other functions added that
 		// 	might.  Note that this has changed because the build process
 		// 	strips all comments -- including conditional ones.
-		if(!dojo.config.afterOnLoad){
+		if(!dojo.config.afterOnLoad && !dojo.config.skipIeDomLoaded){
 			document.write('<scr'+'ipt defer src="//:" '
 				+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
 				+ '</scr'+'ipt>'

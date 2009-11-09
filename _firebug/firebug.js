@@ -90,7 +90,8 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		(!dojo.isChrome || dojo.isChrome < 3) &&
 		(!dojo.isSafari || dojo.isSafari < 4) &&	// Safari 4 has a console
 		!isNewIE &&									// Has the new IE console
-		!window.firebug &&							// Testing for mozilla firebug lite 
+		!window.firebug &&							// Testing for mozilla firebug lite
+		(typeof console != "undefined" && !console.firebug) && //A console that is not firebug's
 		!dojo.config.useCustomLogger &&				// Allow custom loggers
 		!dojo.isAIR									// isDebug triggers AIRInsector, not Firebug
 	){

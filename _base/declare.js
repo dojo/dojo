@@ -144,7 +144,7 @@ dojo.require("dojo._base.array");
 	}
 
 	// find the next "inherited" constructor using available meta-information
-	function findNextConstructor(meta, cache, caller){
+	function findNextCtor(meta, cache, caller){
 		var bases = meta.bases, chains = meta.chains, f, pos, opf, base;
 
 		// error detection
@@ -199,46 +199,54 @@ dojo.require("dojo._base.array");
 		name = name || caller.nom;
 		m = meta = this.constructor._meta;
 		if(name != "constructor"){
-			if(cache.c !== caller){
-				base = meta.bases[0];
-				meta = base._meta;
-				if(meta && meta.hidden[name] === caller){
+			// break box
+			do{
+				if(cache.c !== caller){
+					base = meta.bases[0];
+					meta = base._meta;
+					if(meta && meta.hidden[name] !== caller){
+						break;	// use the default
+					}
 					cache.n = name;
 					cache.c = caller;
 					cache.p = 0;
 				}
-			}
-			base = meta.bases[++cache.p];
-			meta = base && base._meta;
-			f = meta && meta.hidden[name];
-			if(f){
-				cache.c = f;
-			}else{
+				base = meta.bases[++cache.p];
+				meta = base && base._meta;
+				f = meta && meta.hidden[name];
+				if(f){
+					cache.c = f;
+					break;	// got it
+				}
 				--cache.p;
-			}
+			}while(0);
 			if(!f){
 				f = findNext(m, cache, caller, name);
 			}
 		}else{
-			if(cache.c !== caller){
-				base = meta.bases[0];
-				meta = base._meta;
-				if(meta && meta.ctor === caller){
+			// pseudo cycle with default exit clause
+			do{
+				if(cache.c !== caller){
+					base = meta.bases[0];
+					meta = base._meta;
+					if(meta && meta.ctor !== caller){
+						break;	// use the default
+					}
 					cache.n = "";
 					cache.c = caller;
 					cache.p = 0;
 				}
-			}
-			base = meta.bases[++cache.p];
-			meta = base && base._meta;
-			f = meta && meta.ctor;
-			if(f){
-				cache.c = f;
-			}else{
+				base = meta.bases[++cache.p];
+				meta = base && base._meta;
+				f = meta && meta.ctor;
+				if(f){
+					cache.c = f;
+					break;	// got it
+				}
 				--cache.p;
-			}
+			}while(0);
 			if(!f){
-				f = findNextConstructor(m, cache, caller);
+				f = findNextCtor(m, cache, caller, name);
 			}
 		}
 		// do not call the inherited at the end of the chain
@@ -259,46 +267,54 @@ dojo.require("dojo._base.array");
 		name = name || caller.nom;
 		m = meta = this.constructor._meta;
 		if(name != "constructor"){
-			if(cache.c !== caller){
-				base = meta.bases[0];
-				meta = base._meta;
-				if(meta && meta.hidden[name] === caller){
+			// break box
+			do{
+				if(cache.c !== caller){
+					base = meta.bases[0];
+					meta = base._meta;
+					if(meta && meta.hidden[name] !== caller){
+						break;	// use the default
+					}
 					cache.n = name;
 					cache.c = caller;
 					cache.p = 0;
 				}
-			}
-			base = meta.bases[++cache.p];
-			meta = base && base._meta;
-			f = meta && meta.hidden[name];
-			if(f){
-				cache.c = f;
-			}else{
+				base = meta.bases[++cache.p];
+				meta = base && base._meta;
+				f = meta && meta.hidden[name];
+				if(f){
+					cache.c = f;
+					break;	// got it
+				}
 				--cache.p;
-			}
+			}while(0);
 			if(!f){
 				f = findNext(m, cache, caller, name);
 			}
 		}else{
-			if(cache.c !== caller){
-				base = meta.bases[0];
-				meta = base._meta;
-				if(meta && meta.ctor === caller){
+			// pseudo cycle with default exit clause
+			do{
+				if(cache.c !== caller){
+					base = meta.bases[0];
+					meta = base._meta;
+					if(meta && meta.ctor !== caller){
+						break;	// use the default
+					}
 					cache.n = "";
 					cache.c = caller;
 					cache.p = 0;
 				}
-			}
-			base = meta.bases[++cache.p];
-			meta = base && base._meta;
-			f = meta && meta.ctor;
-			if(f){
-				cache.c = f;
-			}else{
+				base = meta.bases[++cache.p];
+				meta = base && base._meta;
+				f = meta && meta.ctor;
+				if(f){
+					cache.c = f;
+					break;	// got it
+				}
 				--cache.p;
-			}
+			}while(0);
 			if(!f){
-				f = findNextConstructor(m, cache, caller);
+				f = findNextCtor(m, cache, caller, name);
 			}
 		}
 		// do not call the inherited at the end of the chain

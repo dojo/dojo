@@ -212,8 +212,12 @@ dojo.require("dojo._base.array");
 					cache.p = 0;
 				}
 				base = meta.bases[++cache.p];
-				meta = base && base._meta;
-				f = meta && meta.hidden[name];
+				if(base){
+					meta = base.prototype; // meta is used as proto
+					if(!base._meta || meta.hasOwnProperty(name)){
+						f = meta[name];
+					}
+				}
 				if(f){
 					cache.c = f;
 					break;	// got it
@@ -280,8 +284,12 @@ dojo.require("dojo._base.array");
 					cache.p = 0;
 				}
 				base = meta.bases[++cache.p];
-				meta = base && base._meta;
-				f = meta && meta.hidden[name];
+				if(base){
+					meta = base.prototype; // meta is used as proto
+					if(!base._meta || meta.hasOwnProperty(name)){
+						f = meta[name];
+					}
+				}
 				if(f){
 					cache.c = f;
 					break;	// got it

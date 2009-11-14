@@ -103,7 +103,6 @@ dojo.require("dojo._base.array");
 
 		meta = this.constructor._meta;
 		bases = meta.bases;
-		chains = meta.chains;
 		
 		pos = cache.p;
 		if(name != "constructor"){
@@ -114,22 +113,16 @@ dojo.require("dojo._base.array");
 				meta = base._meta;
 				if(meta && meta.hidden[name] !== caller){
 					// error detection
-					if(chains && typeof chains[name] == "string"){
+					base = meta.chains; // subs for "chains"
+					if(base && typeof base[name] == "string"){
 						err("calling chained method with inherited: " + name);
 					}
 					// cache bust: full blown search
-					for(; base = bases[pos]; ++pos){	// intentional assignment
+					for(; base = bases[pos]; ++pos){ // intentional assignment
 						meta = base._meta;
-						if(meta){
-							proto = base.prototype;
-							if(proto.hasOwnProperty(name)){
-								if(proto[name] === caller){
-									break;
-								}
-							}
-							if(meta.hidden[name] === caller){
-								break;
-							}
+						proto = base.prototype;
+						if(meta && (meta.hidden[name] === caller || proto[name] === caller && proto.hasOwnProperty(name))){
+							break;
 						}
 					}
 					pos = base ? pos : -1;
@@ -137,15 +130,14 @@ dojo.require("dojo._base.array");
 			}
 			// find next and cache it in f updating pos
 			opf = op[name];
-			while(base = bases[++pos]){	// intentional assignment
+			while(base = bases[++pos]){ // intentional assignment
 				proto = base.prototype;
-				if(!base._meta || proto.hasOwnProperty(name)){
-					f = proto[name];
-					if(f && f !== opf){
-						break;
-					}
+				f = proto[name];
+				if(f && f !== opf && (!base._meta || proto.hasOwnProperty(name))){
+					break;
 				}
 			}
+			f = f || opf;
 		}else{
 			if(cache.c !== caller){
 				// find caller and cache its position on pos
@@ -154,15 +146,17 @@ dojo.require("dojo._base.array");
 				meta = base._meta;
 				if(meta && meta.ctor !== caller){
 					// error detection
-					if(!chains || chains.constructor !== "manual"){
+					base = meta.chains;
+					if(!base || base.constructor !== "manual"){
 						err("calling chained constructor with inherited");
 					}
 					// cache bust: full blown search
-					for(; base = bases[pos]; ++pos){	// intentional assignment
+					while(base = bases[pos]){ // intentional assignment
 						meta = base._meta;
 						if(meta && meta.ctor === caller){
 							break;
 						}
+						++pos;
 					}
 					pos = base ? pos : -1;
 				}
@@ -175,14 +169,16 @@ dojo.require("dojo._base.array");
 					break;
 				}
 			}
+			f = base && f;
 		}
-		cache.c = f = base && f;
+		// cache the found super method
+		cache.c = f;
 		cache.p = pos;
 		// now we have the result
 		if(f){
 			return a === true ? f : f.apply(this, a || args);
 		}
-		// intentionally no return
+		// intentionally if a super method was not found
 	}
 
 	function getInherited(name, args){
@@ -310,12 +306,10 @@ dojo.require("dojo._base.array");
 						t = f.apply(this, t) || t;
 					}
 				}
-				if(this.preamble){
+				f = this.preamble;
+				if(f){
 					// process the preamble of this class
-					f = this.preamble;
-					if(f){
-						f.apply(this, t);
-					}
+					f.apply(this, t);
 					// one pecularity of the preamble:
 					// it is called even if it is not needed,
 					// e.g., there is no constructor to call
@@ -361,21 +355,14 @@ dojo.require("dojo._base.array");
 
 	function chain(name, bases, reversed){
 		return function(){
-			var b, m, h, f, i = 0, l = bases.length, step = 1;
+			var b, m, f, i = 0, step = 1;
 			if(reversed){
-				i = l - 1;
-				step = l = -1;
+				i = bases.length - 1;
+				step = -1;
 			}
-			for(; i != l; i += step){
-				f = 0;
-				b = bases[i];
+			for(; b = bases[i]; i += step){ // intentional assignment
 				m = b._meta;
-				if(m){
-					h = m.hidden;
-					f = h.hasOwnProperty(name) && h[name];
-				}else{
-					f = b.prototype[name];
-				}
+				f = (m ? m.hidden : b.prototype)[name];
 				if(f){
 					f.apply(this, arguments);
 				}

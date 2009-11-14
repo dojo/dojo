@@ -133,14 +133,14 @@ dojo.require("dojo._base.array");
 			base = bases[++pos];
 			if(base){
 				proto = base.prototype;
-				if(!base._meta || proto.hasOwnProperty(name)){
+				if(base._meta && proto.hasOwnProperty(name)){
 					f = proto[name];
 				}else{
 					opf = op[name];
 					do{
 						proto = base.prototype;
 						f = proto[name];
-						if(f && (base._meta && proto.hasOwnProperty(name) || f !==opf)){
+						if(f && (base._meta ? proto.hasOwnProperty(name) : f !== opf)){
 							break;
 						}
 					}while(base = bases[++pos]); // intentional assignment

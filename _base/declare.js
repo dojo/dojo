@@ -112,7 +112,6 @@ dojo.require("dojo._base.array");
 				pos = 0;
 				base = bases[0];
 				meta = base._meta;
-				cache.n = name;
 				if(meta && meta.hidden[name] !== caller){
 					// error detection
 					if(chains && typeof chains[name] == "string"){
@@ -153,7 +152,6 @@ dojo.require("dojo._base.array");
 				pos = 0;
 				base = bases[0];
 				meta = base._meta;
-				cache.n = name;
 				if(meta && meta.ctor !== caller){
 					// error detection
 					if(!chains || chains.constructor !== "manual"){

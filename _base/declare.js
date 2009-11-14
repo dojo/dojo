@@ -82,11 +82,11 @@ dojo.require("dojo._base.array");
 
 		return result;
 	}
-	
+
 	function inherited(args, a, f){
 		var name, chains, bases, caller, meta, base, proto, opf, pos,
 			cache = this._inherited = this._inherited || {};
-		
+
 		// crack arguments
 		if(typeof args == "string"){
 			name = args;
@@ -94,16 +94,16 @@ dojo.require("dojo._base.array");
 			a = f;
 		}
 		f = 0;
-		
+
 		caller = args.callee;
 		name = name || caller.nom;
 		if(!name){
 			err("can't deduce a name to call inherited()");
 		}
-		
+
 		meta = this.constructor._meta;
 		bases = meta.bases;
-		
+
 		pos = cache.p;
 		if(name != cname){
 			// method
@@ -183,7 +183,7 @@ dojo.require("dojo._base.array");
 		// cache the found super method
 		cache.c = f;
 		cache.p = pos;
-		
+
 		// now we have the result
 		if(f){
 			return a === true ? f : f.apply(this, a || args);

@@ -4,8 +4,8 @@ dojo.require("dojo._base.lang");
 dojo.require("dojo._base.array");
 
 (function(){
-	var d = dojo, op = Object.prototype, mix = d._mixin, opts = op.toString,
-		xtor = new Function, counter = 0;
+	var d = dojo, mix = d._mixin, op = Object.prototype, opts = op.toString,
+		xtor = new Function, counter = 0, cname = "constructor";
 
 	function err(msg){ throw new Error("declare: " + msg); }
 
@@ -100,68 +100,76 @@ dojo.require("dojo._base.array");
 		if(!name){
 			err("can't deduce a name to call inherited()");
 		}
-
+		
 		meta = this.constructor._meta;
 		bases = meta.bases;
 		
 		pos = cache.p;
-		if(name != "constructor"){
+		if(name != cname){
+			// method
 			if(cache.c !== caller){
-				// find caller and cache its position on pos
+				// cache bust
 				pos = 0;
 				base = bases[0];
 				meta = base._meta;
-				if(meta && meta.hidden[name] !== caller){
+				if(meta.hidden[name] !== caller){
 					// error detection
-					base = meta.chains; // subs for "chains"
-					if(base && typeof base[name] == "string"){
+					chains = meta.chains;
+					if(chains && typeof chains[name] == "string"){
 						err("calling chained method with inherited: " + name);
 					}
-					// cache bust: full blown search
-					for(; base = bases[pos]; ++pos){ // intentional assignment
+					// find caller
+					do{
 						meta = base._meta;
 						proto = base.prototype;
-						if(meta && (meta.hidden[name] === caller || proto[name] === caller && proto.hasOwnProperty(name))){
+						if(meta && (proto[name] === caller && proto.hasOwnProperty(name) || meta.hidden[name] === caller)){
 							break;
 						}
-					}
+					}while(base = bases[++pos]); // intentional assignment
 					pos = base ? pos : -1;
 				}
 			}
-			// find next and cache it in f updating pos
-			opf = op[name];
-			while(base = bases[++pos]){ // intentional assignment
+			// find next
+			base = bases[++pos];
+			if(base){
 				proto = base.prototype;
-				f = proto[name];
-				if(f && f !== opf && (!base._meta || proto.hasOwnProperty(name))){
-					break;
+				if(!base._meta || proto.hasOwnProperty(name)){
+					f = proto[name];
+				}else{
+					opf = op[name];
+					do{
+						proto = base.prototype;
+						f = proto[name];
+						if(f && (base._meta && proto.hasOwnProperty(name) || f !==opf)){
+							break;
+						}
+					}while(base = bases[++pos]); // intentional assignment
 				}
 			}
-			f = f || opf;
+			f = base && f || op[name];
 		}else{
+			// constructor
 			if(cache.c !== caller){
-				// find caller and cache its position on pos
+				// cache bust
 				pos = 0;
-				base = bases[0];
-				meta = base._meta;
+				meta = bases[0]._meta;
 				if(meta && meta.ctor !== caller){
 					// error detection
-					base = meta.chains;
-					if(!base || base.constructor !== "manual"){
+					chains = meta.chains;
+					if(!chains || chains.constructor !== "manual"){
 						err("calling chained constructor with inherited");
 					}
-					// cache bust: full blown search
-					while(base = bases[pos]){ // intentional assignment
+					// find caller
+					while(base = bases[++pos]){ // intentional assignment
 						meta = base._meta;
 						if(meta && meta.ctor === caller){
 							break;
 						}
-						++pos;
-					}
+					};
 					pos = base ? pos : -1;
 				}
 			}
-			// find next and cache it in f updating pos
+			// find next
 			while(base = bases[++pos]){	// intentional assignment
 				meta = base._meta;
 				f = meta ? meta.ctor : base;
@@ -171,9 +179,11 @@ dojo.require("dojo._base.array");
 			}
 			f = base && f;
 		}
+
 		// cache the found super method
 		cache.c = f;
 		cache.p = pos;
+		
 		// now we have the result
 		if(f){
 			return a === true ? f : f.apply(this, a || args);
@@ -205,7 +215,7 @@ dojo.require("dojo._base.array");
 		// add props adding metadata for incoming functions skipping a constructor
 		for(name in source){
 			t = source[name];
-			if((t !== op[name] || !(name in op)) && name != "constructor"){
+			if((t !== op[name] || !(name in op)) && name != cname){
 				if(opts.call(t) == "[object Function]"){
 					// non-trivial function method => attach its name
 					t.nom = name;
@@ -217,7 +227,7 @@ dojo.require("dojo._base.array");
 		for(; i < l; ++i){
 			name = d._extraNames[i];
 			t = source[name];
-			if((t !== op[name] || !(name in op)) && name != "constructor"){
+			if((t !== op[name] || !(name in op)) && name != cname){
 				if(opts.call(t) == "[object Function]"){
 					// non-trivial function method => attach its name
 					t.nom = name;
@@ -421,7 +431,7 @@ dojo.require("dojo._base.array");
 		// add constructor
 		t = props.constructor;
 		if(t !== op.constructor){
-			t.nom = "constructor";
+			t.nom = cname;
 			proto.constructor = t;
 		}
 		xtor.prototype = 0;	// cleanup
@@ -438,7 +448,7 @@ dojo.require("dojo._base.array");
 		}
 
 		// build ctor
-		t = !chains || !chains.hasOwnProperty("constructor");
+		t = !chains || !chains.hasOwnProperty(cname);
 		bases[0] = ctor = (chains && chains.constructor === "manual") ? simpleConstructor(bases) :
 			(bases.length == 1 ? singleConstructor(props.constructor, t) : chainedConstructor(bases, t));
 
@@ -464,7 +474,7 @@ dojo.require("dojo._base.array");
 		// build chains and add them to the prototype
 		if(chains){
 			for(name in chains){
-				if(proto[name] && typeof chains[name] == "string" && name != "constructor"){
+				if(proto[name] && typeof chains[name] == "string" && name != cname){
 					t = proto[name] = chain(name, bases, chains[name] === "after");
 					t.nom = name;
 				}

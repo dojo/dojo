@@ -639,8 +639,7 @@ if(typeof dojo != "undefined"){
 	var pseudos = {
 		"checked": function(name, condition){
 			return function(elem){
-				// FIXME: make this more portable!!
-				return !!d.attr(elem, "checked");
+				return !!("checked" in elem ? elem.checked : elem.selected);
 			}
 		},
 		"first-child": function(){ return _lookLeft; },
@@ -1224,7 +1223,11 @@ if(typeof dojo != "undefined"){
 			// FIXME:
 			//		need to tighten up browser rules on ":contains" and "|=" to
 			//		figure out which aren't good
-			(query.indexOf(":contains") == -1) &&
+			//		Latest webkit (around 531.21.8) does not seem to do well with :checked on option
+			//		elements, even though according to spec, selected options should
+			//		match :checked. So go nonQSA for it:
+			//		http://bugs.dojotoolkit.org/ticket/5179
+			(query.indexOf(":contains") == -1) && (query.indexOf(":checked") == -1) && 
 			(query.indexOf("|=") == -1) // some browsers don't grok it
 		);
 

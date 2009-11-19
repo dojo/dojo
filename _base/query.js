@@ -1091,7 +1091,7 @@ if(typeof dojo != "undefined"){
 				ret.nozip = true;
 			}
 			var gef = getElementsFunc(qp);
-			while(te = candidates[x--]){
+			for(var j = 0; (te = candidates[j]); j++){
 				// for every root, get the elements that match the descendant
 				// selector, adding them to the "ret" array and filtering them
 				// via membership in this level's bag. If there are more query

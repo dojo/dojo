@@ -1182,8 +1182,25 @@ if(typeof dojo != "undefined"){
 		!!getDoc()[qsa] && 
 		// see #5832
 		(!d.isSafari || (d.isSafari > 3.1) || is525 )
-	); 
+	);
+
+	var infixSpaceRe = /([^ ])?([>~+])([^ ])?/g;
+	var infixNums = "1234567890";
+	var infixSpaceFunc = function(match, pre, ch, post) {
+		//Don't bother with n+3 type of matches, IE complains if we modify those.
+		if(pre != "n" || infixNums.indexOf(post) == -1){
+			pre = pre ? (pre != " " ? pre + " " : pre) : "";
+			post = post ? (post != " " && post != "=" ? " " + post : post) : "";
+		}
+		return pre + ch + post;
+	};
+
 	var getQueryFunc = function(query, forceDOM){
+		//Normalize query. The CSS3 selectors spec allows for omitting spaces around
+		//infix operators, >, ~ and +
+		//Do the work here since detection for spaces is used as a simple "not use QSA"
+		//test below.
+		query = query.replace(infixSpaceRe, infixSpaceFunc);
 
 		if(qsaAvail){
 			// if we've got a cached variant and we think we can do it, run it!

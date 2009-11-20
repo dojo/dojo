@@ -1184,15 +1184,10 @@ if(typeof dojo != "undefined"){
 		(!d.isSafari || (d.isSafari > 3.1) || is525 )
 	);
 
-	var infixSpaceRe = /([^ ])?([>~+])([^ ])?/g;
-	var infixNums = "1234567890";
+	//Don't bother with n+3 type of matches, IE complains if we modify those.
+	var infixSpaceRe = /n\+\d|([^ ])?([>~+])([^ =])?/g;
 	var infixSpaceFunc = function(match, pre, ch, post) {
-		//Don't bother with n+3 type of matches, IE complains if we modify those.
-		if(pre != "n" || infixNums.indexOf(post) == -1){
-			pre = pre ? (pre != " " ? pre + " " : pre) : "";
-			post = post ? (post != " " && post != "=" ? " " + post : post) : "";
-		}
-		return pre + ch + post;
+		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};
 
 	var getQueryFunc = function(query, forceDOM){

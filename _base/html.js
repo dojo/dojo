@@ -1496,7 +1496,7 @@ if(dojo.isIE || dojo.isOpera){
 		byId(node).removeAttribute(_fixAttrName(name));
 	}
 
-	dojo.getEffectiveAttrValue = function(/*DomNode|String*/ node, /*String*/ name){
+	dojo.getNodeProp = function(/*DomNode|String*/ node, /*String*/ name){
 		//	summary:
 		//		Returns an effective value of a property or an attribute.
 		//	node:
@@ -1840,7 +1840,7 @@ if(dojo.isIE || dojo.isOpera){
 		if(node[_className] != cls){ node[_className] = cls; }
 	};
 
-	dojo.toggleClass = function(/*DomNode|String*/node, /*String*/classStr, /*Boolean?*/condition){
+	dojo.toggleClass = function(/*DomNode|String*/node, /*String|Array*/classStr, /*Boolean?*/condition){
 		//	summary:
 		//		Adds a class to node if not present, or removes if present.
 		//		Pass a boolean condition if you want to explicitly add or remove.

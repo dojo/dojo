@@ -133,7 +133,7 @@ dojo.provide("dojo.hash");
 		// create and append iframe
 		var ifr = document.createElement("iframe"),
 			IFRAME_ID = "dojo-hash-iframe",
-			ifrSrc = dojo.moduleUrl("dojo","resources/blank.html");
+			ifrSrc = dojo.config.dojoBlankHtmlUrl || dojo.moduleUrl("dojo", "resources/blank.html");
 		ifr.id = IFRAME_ID;
 		ifr.src = ifrSrc + "?" + _getHash();
 		ifr.style.display = "none";

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html dir="LTR">
+	<head>
+		<title>testing Core _isBodyLtr function</title>
+		<script type="text/javascript" 
+			src="../../dojo.js" 
+			djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						function testRtl(t){
+							t.is(false, dojo._isBodyLtr());
+						},
+						function testCache(t){
+							dojo.body().setAttribute("dir", "ltr");
+							t.is(false, dojo._isBodyLtr());
+							delete dojo._bodyLtr; // clear cache
+							t.is(true, dojo._isBodyLtr());
+						},
+						function testHtmlValue(t){
+							delete dojo._bodyLtr; // clear cache
+							dojo.body().setAttribute("dir", "RTL");
+							t.is(false, dojo._isBodyLtr());
+							delete dojo._bodyLtr; // clear cache
+							dojo.body().removeAttribute("dir");
+							t.is(true, dojo._isBodyLtr());
+						},
+						function testDefaultValue(t){
+							delete dojo._bodyLtr; // clear cache
+							dojo.doc.documentElement.setAttribute("dir", "rtl");
+							t.is(false, dojo._isBodyLtr());
+							delete dojo._bodyLtr; // clear cache
+							dojo.doc.documentElement.removeAttribute("dir");
+							t.is(true, dojo._isBodyLtr());
+						},
+						function testHiddenIframe(t){
+							delete dojo._bodyLtr; // clear cache
+							dojo.doc.documentElement.setAttribute("dir", "rtl");
+							t.is(false, dojo._isBodyLtr());
+							t.is(true, dojo.withGlobal(dojo.byId('iframe').iframeContentWindow, "_isBodyLtr", dojo));
+							dojo.doc.documentElement.setAttribute("dir", "ltr");
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body dir="rtl">
+		<h1>testing Core _isBodyLtr function</h1>
+		<div style="display:none;">
+			<iframe id="iframe" src="javascript:'&lt;html&gt;&lt;head&gt;&lt;script&gt;frameElement.iframeContentWindow=window&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;'"></iframe>
+		</div>
+	</body>
+</html>
+

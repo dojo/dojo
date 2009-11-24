@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Multiversion Dojo: 0.4.3 and 1.0 (scoped djConfig)</title>
+
+		<link rel="stylesheet" type="text/css" href="../../../../resources/dojo.css">
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/tests/css/dijitTests.css">
+		<link rel="stylesheet" type="text/css" href="../../../../../dijit/themes/tundra/tundra.css">
+		
+		<script type="text/javascript">
+			//djConfig for 0.4.3 setup.
+			djConfig = {
+				isDebug: true
+			};
+		</script>
+		<script type="text/javascript" src="http://o.aolcdn.com/dojo/0.4.3/dojo.js"></script>
+
+		<script type="text/javascript" src="../../../../dojo.js"></script>
+		<script type="text/javascript">
+			dojo.require("dojo.widget.DropdownDatePicker");
+
+			//Notice that dijit.Calendar is required, not jidit._Calendar.
+			//Same for the dojo resources (not jodo resources).
+			jodo.require("dijit.Calendar");
+			jodo.require("dojo.date.locale");
+			jodo.require("dojo.parser"); // scan page for widgets
+
+			dojo.addOnLoad(function(){
+				dojo.byId("output043").innerHTML = djConfig.baseUrl;
+			});
+			jodo.addOnLoad(function(){
+				dojo.byId("output10").innerHTML = jodo.baseUrl;
+			});
+
+			function myHandler(id,newValue){
+				console.debug("onChange for id = " + id + ", value: " + newValue);
+			}
+		</script>
+	</head>
+	<body>
+		<h1>Multiversion Dojo: 0.4.3 and 1.0 (scoped djConfig)</h1>
+	
+		<p><b>NOTE: This test only works with a built version of Dojo, and it must be built with the scopeDjConfig parameter (the backslashes below are required):</b></p>
+
+		<p style="color: blue; background-color: yellow">build.sh profile=standard action=release scopeDjConfig=\{parseOnLoad:true,baseUrl:\"../../../../\",foo:\"bar\",scopeMap:[[\"dojo\",\"jodo\"],[\"dijit\",\"jidit\"],[\"dojox\",\"jodox\"]]\}</p>
+		
+		<p>This page loads Dojo 0.4.3 and Dojo 1.0 (under the jodo scope)</p>
+		
+		<p>djConfig.baseUrl should <b>not</b> exist: <span id="output043"></span></p>
+		
+		<p>jodo.baseUrl should be "../../../../": <span id="output10"></span></p>
+		
+		<p>
+			<input dojoType="dropdowndatepicker" value="2006-10-31" containerToggle="wipe" containerToggleDuration="300" >
+		</p>
+		
+		<p class="tundra">
+			<input id="calendar1" jodoType="dijit.Calendar" onChange="myHandler(this.id,arguments[0])">
+		</p>
+		
+	</body>
+</html>
+

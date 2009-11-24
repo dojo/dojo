@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html id="html">
+	<head>
+		<title>Testing dojo.NodeList-traverse extensions to dojo.NodeList</title>
+		<style type="text/css">
+			@import "../resources/dojo.css";
+		</style>
+		<script type="text/javascript" 
+			src="../dojo.js" djConfig="isDebug: true, popup: true"></script>
+		<script type="text/javascript" 
+			src="../NodeList-traverse.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.require("dojo.NodeList-traverse");
+
+			function verify(/*dojo.NodeList*/nl, /*Array*/ids){
+				for(var i = 0, node; node = nl[i]; i++){
+					doh.is(ids[i], node.id);
+				}
+				//Make sure lengths are equal.
+				doh.is(ids.length, i);
+			}
+
+			dojo.addOnLoad(function(){
+				var divs = dojo.query("div.testDiv");
+
+				doh.register("t", 
+					[
+						function children(t){
+							verify(divs.last().children(), ["crass", "classy", "yeah"]);
+						},
+
+						function closest(t){
+							var classy = dojo.query("#classy");
+							var closestDiv = classy.closest("div");
+							verify(closestDiv, ["third"]);
+							verify(closestDiv.end().closest(".classy"), ["classy"]);
+						},
+
+						function parent(t){
+							verify(dojo.query("#classy").parent(), ["third"]);
+						},
+
+						function parents(t){
+							var classy = dojo.query("#classy");
+							verify(classy.parents(), ["third", "body", "html"]);
+							verify(classy.parents(".third"), ["third"]);
+							verify(classy.parents("body"), ["body"]);
+						},
+
+						function siblings(t){
+							verify(dojo.query("#classy").siblings(), ["crass", "yeah"]);
+						},
+
+						function next(t){
+							verify(dojo.query("#crass").next(), ["classy"]);
+						},
+
+						function nextAll(t){
+							verify(dojo.query("#crass").nextAll(), ["classy", "yeah"]);
+							verify(dojo.query("#crass").nextAll("#yeah"), ["yeah"]);
+						},
+
+						function prev(t){
+							verify(dojo.query("#classy").prev(), ["crass"]);
+						},
+
+						function prevAll(t){
+							verify(dojo.query("#yeah").prevAll(), ["classy", "crass"]);
+							verify(dojo.query("#yeah").prevAll("#crass"), ["crass"]);
+						},
+
+						function andSelf(t){
+							verify(dojo.query("#yeah").prevAll().andSelf(), ["classy", "crass", "yeah"]);
+						},
+
+						function first(t){
+							verify(divs.first(), ["sq100"]);
+						},
+
+						function last(t){
+							verify(divs.last(), ["third"]);
+						},
+
+						function even(t){
+							var even = divs.even();
+							verify(even, ["t"]);
+							verify(even.end(), ["sq100", "t", "third"]);
+						},
+
+						function odd(t){
+							var odd = divs.odd();
+							verify(odd, ["sq100", "third"]);
+							verify(odd.end(), ["sq100", "t", "third"]);
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body id="body" class="classy">
+		<h1 id="firstH1">testing dojo.NodeList-traverse</h1>
+		<div id="sq100" class="testDiv">
+			100px square, abs
+		</div>
+		<div id="t" class="testDiv">
+			<span id="c1">c1</span>
+		</div>
+		<div id="third" class="third testDiv">
+			<!-- This is the third top level div -->
+			<span id="crass">Crass, baby</span>
+			The third div
+			<span id="classy" class="classy">Classy, baby</span>
+			The third div, again
+			<!-- Another comment -->
+			<span id="yeah">Yeah, baby</span>
+		</div>
+	</body>
+</html>
+

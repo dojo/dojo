@@ -1,4 +1,0 @@
-{
- it: "italiano",
- hello: "Ciao"
-}

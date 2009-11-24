@@ -1,4 +1,0 @@
-{
- tr: "Türkçe",
- hello: "Merhaba"
-}

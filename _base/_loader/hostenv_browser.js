@@ -419,7 +419,7 @@ if(typeof window != 'undefined'){
 				l = vmlElems.length;
 			}
 			for(; i < l; ++i){
-				s.addRule("v\\:" + vmlElems[i], "behavior:url(#default#VML);  display:inline-block");
+				s.addRule("v\\:" + vmlElems[i], "behavior:url(#default#VML); display:inline-block");
 			}
 		}catch(e){}
 	}

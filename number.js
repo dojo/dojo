@@ -25,7 +25,8 @@ dojo.number.__FormatOptions = function(){
 	//		5 rounds to nearest .5; 0 rounds to nearest whole (default). -1
 	//		means do not round.
 	//	currency: String?
-	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD"
+	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD".
+	//		For use with dojo.currency only.
 	//	symbol: String?
 	//		localized currency symbol
 	//	locale: String?
@@ -374,12 +375,13 @@ dojo.number.__ParseOptions = function(){
 	//	type: String?
 	//		choose a format type based on the locale from the following:
 	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
-	//	locale: String
+	//	locale: String?
 	//		override the locale used to determine formatting rules
 	//	strict: Boolean?
 	//		strict parsing, false by default
-	//	currency: Object
-	//		object with currency information
+	//	currency: String?
+	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD".
+	//		For use with dojo.currency only.
 	this.pattern = pattern;
 	this.type = type;
 	this.locale = locale;

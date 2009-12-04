@@ -32,7 +32,26 @@ dojo.currency._mixInDefaults = function(options){
 	return dojo.mixin(data, options);
 }
 
-dojo.currency.format = function(/*Number*/value, /*dojo.number.__FormatOptions?*/options){
+/*=====
+dojo.declare("dojo.currency.__FormatOptions", [dojo.number.__FormatOptions], {
+	//	type: String?
+	//		Should not be set.  Value is assumed to be currency.
+	//	currency: String?
+	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD".
+	//		For use with dojo.currency only.
+	//	symbol: String?
+	//		localized currency symbol. The default will be looked up in table of supported currencies in `dojo.cldr`
+	//		A [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code will be used if not found.
+	//	places: Number?
+	//		number of decimal places to show.  Default is defined based on which currency is used.
+	type: "",
+	symbol: "",
+	places: "",
+	fractional: ""
+});
+=====*/
+
+dojo.currency.format = function(/*Number*/value, /*dojo.currency.__FormatOptions?*/options){
 // summary:
 //		Format a Number as a currency, using locale-specific settings
 //
@@ -61,15 +80,18 @@ dojo.currency.regexp = function(/*dojo.number.__RegexpOptions?*/options){
 /*=====
 dojo.declare("dojo.currency.__ParseOptions", [dojo.number.__ParseOptions], {
 	//	type: String?
-	//		currency, set by default.
+	//		Should not be set.  Value is assumed to be currency.
+	//	currency: String?
+	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD".
+	//		For use with dojo.currency only.
 	//	symbol: String?
-	//		override currency symbol. Normally, will be looked up in table of supported currencies,
-	//		and ISO currency code will be used if not found.  See dojo.i18n.cldr.nls->currency.js
+	//		localized currency symbol. The default will be looked up in table of supported currencies in `dojo.cldr`
+	//		A [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code will be used if not found.
 	//	places: Number?
-	//		number of decimal places to accept.  Default is defined by currency.
+	//		number of decimal places to accept.  Default is defined based on which currency is used.
 	//	fractional: Boolean?|Array?
-	//		where places are implied by pattern or explicit 'places' parameter, whether to include the fractional portion.
-	//		By default for currencies, it the fractional portion is optional.
+	//		Whether to include the fractional portion, where the number of decimal places are implied by pattern
+	//		or explicit 'places' parameter.  By default for currencies, it the fractional portion is optional.
 	type: "",
 	symbol: "",
 	places: "",

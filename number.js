@@ -14,7 +14,8 @@ dojo.number = {
 dojo.number.__FormatOptions = function(){
 	//	pattern: String?
 	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
-	//		with this string
+	//		with this string.  Default value is based on locale.  Overriding this property will defeat
+	//		localization.
 	//	type: String?
 	//		choose a format type based on the locale from the following:
 	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
@@ -24,19 +25,12 @@ dojo.number.__FormatOptions = function(){
 	//	round: Number?
 	//		5 rounds to nearest .5; 0 rounds to nearest whole (default). -1
 	//		means do not round.
-	//	currency: String?
-	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD".
-	//		For use with dojo.currency only.
-	//	symbol: String?
-	//		localized currency symbol
 	//	locale: String?
 	//		override the locale used to determine formatting rules
 	this.pattern = pattern;
 	this.type = type;
 	this.places = places;
 	this.round = round;
-	this.currency = currency;
-	this.symbol = symbol;
 	this.locale = locale;
 }
 =====*/
@@ -162,7 +156,7 @@ dojo.number.__FormatAbsoluteOptions = function(){
 	//		the decimal separator
 	//	group: String?
 	//		the group separator
-	//	places: Integer?|String?
+	//	places: Number?|String?
 	//		number of decimal places.  the range "n,m" will format to m places.
 	//	round: Number?
 	//		5 rounds to nearest .5; 0 rounds to nearest whole (default). -1
@@ -260,15 +254,17 @@ dojo.number._formatAbsolute = function(/*Number*/value, /*String*/pattern, /*doj
 /*=====
 dojo.number.__RegexpOptions = function(){
 	//	pattern: String?
-	//		override pattern with this string.  Default is provided based on
-	//		locale.
+	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
+	//		with this string.  Default value is based on locale.  Overriding this property will defeat
+	//		localization.
 	//	type: String?
 	//		choose a format type based on the locale from the following:
 	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
 	//	locale: String?
 	//		override the locale used to determine formatting rules
 	//	strict: Boolean?
-	//		strict parsing, false by default
+	//		strict parsing, false by default.  Strict parsing requires input as produced by the format() method.
+	//		Non-strict is more permissive, e.g. flexible on white space, omitting thousands separators
 	//	places: Number|String?
 	//		number of decimal places to accept: Infinity, a positive number, or
 	//		a range "n,m".  Defined by pattern or Infinity if pattern not provided.
@@ -369,24 +365,22 @@ dojo.number._parseInfo = function(/*Object?*/options){
 
 /*=====
 dojo.number.__ParseOptions = function(){
-	//	pattern: String
-	//		override pattern with this string.  Default is provided based on
-	//		locale.
+	//	pattern: String?
+	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
+	//		with this string.  Default value is based on locale.  Overriding this property will defeat
+	//		localization.
 	//	type: String?
 	//		choose a format type based on the locale from the following:
 	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
 	//	locale: String?
 	//		override the locale used to determine formatting rules
 	//	strict: Boolean?
-	//		strict parsing, false by default
-	//	currency: String?
-	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD".
-	//		For use with dojo.currency only.
+	//		strict parsing, false by default.  Strict parsing requires input as produced by the format() method.
+	//		Non-strict is more permissive, e.g. flexible on white space, omitting thousands separators
 	this.pattern = pattern;
 	this.type = type;
 	this.locale = locale;
 	this.strict = strict;
-	this.currency = currency;
 }
 =====*/
 dojo.number.parse = function(/*String*/expression, /*dojo.number.__ParseOptions?*/options){
@@ -433,14 +427,14 @@ dojo.number.__RealNumberRegexpFlags = function(){
 	//	decimal: String?
 	//		A string for the character used as the decimal point.  Default
 	//		is ".".
-	//	fractional: Boolean|Array?
-	//		Whether decimal places are allowed.  Can be true, false, or [true,
-	//		false].  Default is [true, false]
-	//	exponent: Boolean|Array?
+	//	fractional: Boolean?|Array?
+	//		Whether decimal places are used.  Can be true, false, or [true,
+	//		false].  Default is [true, false] which means optional.
+	//	exponent: Boolean?|Array?
 	//		Express in exponential notation.  Can be true, false, or [true,
 	//		false]. Default is [true, false], (i.e. will match if the
 	//		exponential part is present are not).
-	//	eSigned: Boolean|Array?
+	//	eSigned: Boolean?|Array?
 	//		The leading plus-or-minus sign on the exponent.  Can be true,
 	//		false, or [true, false].  Default is [true, false], (i.e. will
 	//		match if it is signed or unsigned).  flags in regexp.integer can be

@@ -145,7 +145,9 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 
 		this._assertIsItem(item);
 		this._assertIsAttribute(attribute);
-		return item[attribute] || []; // Array
+		var arr = item[attribute] || [];
+		// Clone it before returning.  refs: #10474
+		return arr.slice(0, arr.length); // Array
 	},
 
 	getAttributes: function(/* item */ item){

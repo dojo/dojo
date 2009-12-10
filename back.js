@@ -223,6 +223,13 @@ dojo.back = {
 		//		not evaluate to false, that value will be used as the fragment identifier. For example,
 		//		if changeUrl: 'page1', then the URL will look like: http://some.domain.com/path#page1
 		//
+		//		There are problems with using dojo.back with semantically-named fragment identifiers
+		//		("hash values" on an URL). In most browsers it will be hard for dojo.back to know
+		//		distinguish a back from a forward event in those cases. For back/forward support to
+		//		work best, the fragment ID should always be a unique value (something using new Date().getTime()
+		//		for example). If you want to detect hash changes using semantic fragment IDs, then
+		//		consider using dojo.hash instead (in Dojo 1.4+).
+		//
 	 	//	example:
 		//		|	dojo.back.addToHistory({
 		//		|		back: function(){ console.log('back pressed'); },

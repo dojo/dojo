@@ -411,7 +411,7 @@ if(typeof window != 'undefined'){
 		}
 
 		try{
-			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
+			document.namespaces.add("v", "urn:schemas-microsoft-com:vml");
 			var vmlElems = ["*", "group", "roundrect", "oval", "shape", "rect", "imagedata"],
 				i = 0, l = 1, s = document.createStyleSheet();
 			if(dojo.isIE >= 8){

@@ -883,7 +883,7 @@ dojo.require("dojo._base.array");
 	/*=====
 	Object.isInstanceOf = function(cls){
 		//	summary:
-		//		Checks the inheritance cahin to see if it is inherited from this
+		//		Checks the inheritance chain to see if it is inherited from this
 		//		class.
 		//	cls: Function
 		//		Class constructor.

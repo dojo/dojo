@@ -11,7 +11,7 @@ dojo.require("dojo.hash");
 	
 	function getHash(){
 		var h = location.href, i = h.indexOf("#");
-		return (i >= 0) ? decodeURIComponent(h.substring(i + 1)) : "";
+		return (i >= 0) ? h.substring(i + 1) : "";
 	}
 
 	tests.register("tests.hash", [
@@ -61,24 +61,24 @@ dojo.require("dojo.hash");
 		},
 		// hash with spaces
 		{
-			name: "Getting the hash of 'test with spaces'",
+			name: "Getting the hash of 'test%20with%20spaces'",
 			setUp: function(){
 				setHash('test%20with%20spaces');
 			},
 			runTest: function(t){
-				t.is('test with spaces', dojo.hash());
+				t.is('test%20with%20spaces', dojo.hash());
 			},
 			tearDown: function(){
 				setHash();
 			}
 		},
 		{
-			name: "Setting the hash to 'test with spaces'",
+			name: "Setting the hash of 'test%20with%20spaces'",
 			setUp: function(){
-				dojo.hash('test with spaces');
+				setHash('test%20with%20spaces');
 			},
 			runTest: function(t){
-				t.is('test with spaces', getHash());
+				t.is('test%20with%20spaces', getHash());
 			},
 			tearDown: function(){
 				setHash();
@@ -111,24 +111,24 @@ dojo.require("dojo.hash");
 		},
 		// hash with leading space
 		{
-			name: "Getting the hash of ' leadingSpace'",
+			name: "Getting the hash of '%20leadingSpace'",
 			setUp: function(){
 				setHash('%20leadingSpace');
 			},
 			runTest: function(t){
-				t.is(' leadingSpace', dojo.hash());
+				t.is('%20leadingSpace', dojo.hash());
 			},
 			tearDown: function(){
 				setHash();
 			}
 		},
 		{
-			name: "Setting the hash to ' leadingSpace'",
+			name: "Setting the hash to '%20leadingSpace'",
 			setUp: function(){
 				dojo.hash('%20leadingSpace');
 			},
 			runTest: function(t){
-				t.is(' leadingSpace', getHash());
+				t.is('%20leadingSpace', getHash());
 			},
 			tearDown: function(){
 				setHash();
@@ -137,24 +137,24 @@ dojo.require("dojo.hash");
 		
 		// hash with trailing space:
 		{
-			name: "Getting the hash of 'trailingSpace '",
+			name: "Getting the hash of 'trailingSpace%20'",
 			setUp: function(){
 				setHash('trailingSpace%20');
 			},
 			runTest: function(t){
-				t.is('trailingSpace ', dojo.hash());
+				t.is('trailingSpace%20', dojo.hash());
 			},
 			tearDown: function(){
 				setHash();
 			}
 		},
 		{
-			name: "Setting the hash to 'trailingSpace '",
+			name: "Setting the hash to 'trailingSpace%20'",
 			setUp: function(){
 				dojo.hash('trailingSpace%20');
 			},
 			runTest: function(t){
-				t.is('trailingSpace ', getHash());
+				t.is('trailingSpace%20', getHash());
 			},
 			tearDown: function(){
 				setHash();

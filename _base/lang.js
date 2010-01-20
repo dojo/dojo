@@ -237,7 +237,7 @@ dojo.provide("dojo._base.lang");
 			// null, undefined, any non-object, or function
 			return o;	// anything
 		}
-		if(o.nodeType && o.cloneNode){
+		if(o.nodeType && "cloneNode" in o){
 			// DOM Node
 			return o.cloneNode(true); // Node
 		}

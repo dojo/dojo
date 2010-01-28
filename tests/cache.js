@@ -20,6 +20,9 @@ tests.register("tests.cache",
 				t.is(expected, dojo.trim(dojo.cache("dojo.tests.cache", "regular.html")));
 				t.is(expected, dojo.trim(dojo.cache("dojo.tests.cache", "sanitized.html", {sanitize: true})));
 				t.is(expected, dojo.trim(dojo.cache(new dojo._Url(objPath), {sanitize: true})));
+
+				//Make sure unset cache does not throw errors
+				t.is(null, dojo.cache("dojo.tests.cache", "regular.html", null));
 			}
 		}
 	]

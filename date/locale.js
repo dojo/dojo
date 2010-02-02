@@ -484,7 +484,7 @@ function _processPattern(pattern, applyPattern, applyLiteral, applyAll){
 		if(!chunk){
 			chunks[i]='';
 		}else{
-			chunks[i]=(literal ? applyLiteral : applyPattern)(chunk);
+			chunks[i]=(literal ? applyLiteral : applyPattern)(chunk.replace(/''/g, "'"));
 			literal = !literal;
 		}
 	});

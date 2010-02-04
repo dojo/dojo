@@ -43,18 +43,19 @@ dojo.currency._mixInDefaults = function(options){
 /*=====
 dojo.declare("dojo.currency.__FormatOptions", [dojo.number.__FormatOptions], {
 	//	type: String?
-	//		Should not be set.  Value is assumed to be 'currency'.
-	//	currency: String?
-	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD".
-	//		For use with dojo.currency only.
+	//		Should not be set.  Value is assumed to be "currency".
 	//	symbol: String?
 	//		localized currency symbol. The default will be looked up in table of supported currencies in `dojo.cldr`
 	//		A [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code will be used if not found.
+	//	currency: String?
+	//		an [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code, a three letter sequence like "USD".
+	//		For use with dojo.currency only.
 	//	places: Number?
 	//		number of decimal places to show.  Default is defined based on which currency is used.
 	type: "",
 	symbol: "",
 	places: "",
+	currency: ""
 });
 =====*/
 

@@ -34,7 +34,7 @@ dojo.number.__FormatOptions = function(){
 	this.places = places;
 	this.round = round;
 	this.locale = locale;
-	this.fractional: fractional;
+	this.fractional = fractional;
 }
 =====*/
 

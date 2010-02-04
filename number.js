@@ -27,11 +27,14 @@ dojo.number.__FormatOptions = function(){
 	//		means do not round.
 	//	locale: String?
 	//		override the locale used to determine formatting rules
+	//	fractional: Boolean?
+	//		If false, show no decimal places, overriding places and pattern settings.
 	this.pattern = pattern;
 	this.type = type;
 	this.places = places;
 	this.round = round;
 	this.locale = locale;
+	this.fractional: fractional;
 }
 =====*/
 
@@ -377,10 +380,14 @@ dojo.number.__ParseOptions = function(){
 	//	strict: Boolean?
 	//		strict parsing, false by default.  Strict parsing requires input as produced by the format() method.
 	//		Non-strict is more permissive, e.g. flexible on white space, omitting thousands separators
+	//	fractional: Boolean?|Array?
+	//		Whether to include the fractional portion, where the number of decimal places are implied by pattern
+	//		or explicit 'places' parameter.  The value [true,false] makes the fractional portion optional.
 	this.pattern = pattern;
 	this.type = type;
 	this.locale = locale;
 	this.strict = strict;
+	this.fractional = fractional;
 }
 =====*/
 dojo.number.parse = function(/*String*/expression, /*dojo.number.__ParseOptions?*/options){
@@ -452,7 +459,7 @@ dojo.number._realNumberRegexp = function(/*dojo.number.__RealNumberRegexpFlags?*
 	//		Builds a regular expression to match a real number in exponential
 	//		notation
 
-	// assign default values to missing paramters
+	// assign default values to missing parameters
 	flags = flags || {};
 	//TODO: use mixin instead?
 	if(!("places" in flags)){ flags.places = Infinity; }
@@ -521,7 +528,7 @@ dojo.number._integerRegexp = function(/*dojo.number.__IntegerRegexpFlags?*/flags
 	// summary: 
 	//		Builds a regular expression that matches an integer
 
-	// assign default values to missing paramters
+	// assign default values to missing parameters
 	flags = flags || {};
 	if(!("signed" in flags)){ flags.signed = [true, false]; }
 	if(!("separator" in flags)){

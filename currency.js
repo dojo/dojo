@@ -120,7 +120,7 @@ dojo.currency.parse = function(/*String*/expression, /*dojo.currency.__ParseOpti
 	//		are chosen appropriate to the locale, as well as the appropriate symbols and delimiters
 	//		and number of decimal places.
 	//
-	// expression: A string representation of a Number
+	// expression: A string representation of a currency value
 
 	return dojo.number.parse(expression, dojo.currency._mixInDefaults(options));
 }

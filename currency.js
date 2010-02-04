@@ -54,8 +54,8 @@ dojo.declare("dojo.currency.__FormatOptions", [dojo.number.__FormatOptions], {
 	//		number of decimal places to show.  Default is defined based on which currency is used.
 	type: "",
 	symbol: "",
-	places: "",
-	currency: ""
+	currency: "",
+	places: ""
 });
 =====*/
 
@@ -103,6 +103,7 @@ dojo.declare("dojo.currency.__ParseOptions", [dojo.number.__ParseOptions], {
 	//		or explicit 'places' parameter.  The value [true,false] makes the fractional portion optional.
 	//		By default for currencies, it the fractional portion is optional.
 	type: "",
+	currency: "",
 	symbol: "",
 	places: "",
 	fractional: ""

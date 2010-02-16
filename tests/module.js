@@ -26,6 +26,7 @@ try{
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-traverse");
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-manipulate");
 	dojo.require("tests.cache");
+	dojo.requireIf(dojo.isBrowser, "tests.uacss");
 }catch(e){
 	doh.debug(e);
 }

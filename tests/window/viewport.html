@@ -2,7 +2,7 @@
 		"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-	<title>dojo.window.getViewport() test</title>
+	<title>dojo.window.getBox() test</title>
 	<style type="text/css">
 		@import "../../../dojo/resources/dojo.css";
 		html, body { margin: 0px; padding: 0px; }
@@ -16,7 +16,7 @@
 
 		function compute(){
 			var d = dojo.marginBox(dojo.byId("documentBorder")),
-				v = dojo.window.getViewport();
+				v = dojo.window.getBox();
 			dojo.byId("results").innerHTML +=
 				"Document is " + d.w + "px x " + d.h + "px" +
 				", viewport is " + v.w + "px x " + v.h + "px" +
@@ -42,16 +42,16 @@
 						compute();
 						console.log("called compute");
 						var d = dojo.marginBox(dojo.byId("documentBorder")),
-							v = dojo.window.getViewport();
+							v = dojo.window.getBox();
 						doh.t(v.h > d.h, "test that viewport is bigger than document");
 						console.log("v.h is " + v.h + " and d.h is " + d.h);
 					},
 					function expand(t){
-						var v = dojo.window.getViewport();
+						var v = dojo.window.getBox();
 						console.log("calling addText");
 						addText();
 						compute();
-						var v2 = dojo.window.getViewport();
+						var v2 = dojo.window.getBox();
 						doh.t(v2.h <= v.h, "test that viewport didn't increase in size due to text added to document");
 						doh.t(v2.h+20 >= v.h, "test that viewport didn't shrink, except for space taken by scrollbars");
 						console.log("end");
@@ -65,7 +65,7 @@
 </head>
 <body>
 	<div id="documentBorder" style="border: solid red 2px;">
-		<h1>dojo.window.getViewport() test</h1>
+		<h1>dojo.window.getBox() test</h1>
 		<div style="padding: 10px; border: solid blue 1px;">padding div</div>
 		<button onclick="addText(); compute();">add text and compute size</button>
 		<button onclick="compute();">recompute size</button>

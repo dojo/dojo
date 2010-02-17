@@ -1,6 +1,6 @@
 dojo.provide("dojo.window");
 
-dojo.window.getViewport = function(){
+dojo.window.getBox = function(){
 	// summary:
 	//		Returns the dimensions and scroll position of the viewable area of a browser window
 
@@ -11,7 +11,7 @@ dojo.window.getViewport = function(){
 	return { w: scrollRoot.clientWidth, h: scrollRoot.clientHeight, l: scroll.x, t: scroll.y };
 };
 
-dojo.window.getDocumentWindow = function(doc){
+dojo.window.get = function(doc){
 	// summary:
 	// 		Get window object associated with document doc
 

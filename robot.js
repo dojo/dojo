@@ -1,6 +1,7 @@
 dojo.provide("dojo.robot");
 dojo.experimental("dojo.robot");
 dojo.require("doh.robot");
+dojo.require("dojo.window");
 
 (function(){
 // users who use doh+dojo get the added convenience of dojo.mouseMoveAt,
@@ -15,18 +16,92 @@ dojo.mixin(doh.robot,{
 		return n? dojo.byId(n) : null;
 	},
 
-	// TODO: point to dojo.scrollIntoView when moved from dijit
-	_scrollIntoView: function(/*DOMNode*/ node){
-		// summary:
-		//		Scroll the passed node into view, if it is not.
-		// 		Stub to be replaced in dijit.robot.
-		node.scrollIntoView(false);
+	_scrollIntoView: function(/*Node*/ n){
+		// scrolls the passed node into view, scrolling all ancester frames/windows as well.
+		// Assumes parent iframes can be made fully visible given the current browser window size
+		var d = dojo,
+			dr = doh.robot,
+			p = null;
+		d.forEach(dr._getWindowChain(n), function(w){
+			d.withGlobal(w, function(){
+				// get the position of the node wrt its parent window
+				// if it is a parent frame, its padding and border extents will get added in
+				var p2 = d.position(n, false),
+					b = d._getPadBorderExtents(n),
+					oldp = null;
+				// if p2 is the position of the original passed node, store the position away as p
+				// otherwise, node is actually an iframe. in this case, add the iframe's position wrt its parent window and also the iframe's padding and border extents
+				if(!p){
+					p = p2;
+				}else{
+					oldp = p;
+					p = {x: p.x+p2.x+b.l,
+						y: p.y+p2.y+b.t,
+						w: p.w,
+						h: p.h};
+
+				}
+				// scroll the parent window so that the node translated into the parent window's coordinate space is in view
+				dojo.window.scrollIntoView(n,p);
+				// adjust position for the new scroll offsets
+				p2 = d.position(n, false);
+				if(!oldp){
+					p = p2;
+				}else{
+					p = {x: oldp.x+p2.x+b.l,
+						y: oldp.y+p2.y+b.t,
+						w: p.w,
+						h: p.h};
+				}
+				// get the parent iframe so it can be scrolled too
+				n = w.frameElement;
+			});
+		});
 	},
 
-	_position: function(/*DOMNode*/ n){
-		// Returns the dojo.position of the passed node wrt the passed window's viewport.
-		// The version in dijit.robot has iframe support.
-		return dojo.position(n, false);
+	_position: function(/*Node*/ n){
+		// Returns the dojo.position of the passed node wrt the passed window's viewport,
+		// following any parent iframes containing the node and clipping the node to each iframe.
+		// precondition: _scrollIntoView already called
+		var d = dojo, p = null, M = Math.max, m = Math.min;
+		// p: the returned position of the node
+		d.forEach(doh.robot._getWindowChain(n), function(w){
+			d.withGlobal(w, function(){
+				// get the position of the node wrt its parent window
+				// if it is a parent frame, its padding and border extents will get added in
+				var p2 = d.position(n, false), b = d._getPadBorderExtents(n);
+				// if p2 is the position of the original passed node, store the position away as p
+				// otherwise, node is actually an iframe. in this case, add the iframe's position wrt its parent window and also the iframe's padding and border extents
+				if(!p){
+					p = p2;
+				}else{
+					var view;
+					d.withGlobal(n.contentWindow,function(){
+						view=dojo.window.getBox();
+					});
+					p2.r = p2.x+view.w;
+					p2.b = p2.y+view.h;
+					p = {x: M(p.x+p2.x,p2.x)+b.l, // clip left edge of node wrt the iframe
+						y: M(p.y+p2.y,p2.y)+b.t,	// top edge
+						r: m(p.x+p2.x+p.w,p2.r)+b.l,	// right edge (to compute width)
+						b: m(p.y+p2.y+p.h,p2.b)+b.t}; // bottom edge (to compute height)
+					// save a few bytes by computing width and height from r and b
+					p.w = p.r-p.x;
+					p.h = p.b-p.y;
+				}
+				// the new node is now the old node's parent iframe
+				n=w.frameElement;
+			});
+		});
+		return p;
+	},
+
+	_getWindowChain : function(/*Node*/ n){
+		// Returns an array of windows starting from the passed node's parent window and ending at dojo's window
+		var cW = dojo.window.get(n.ownerDocument);
+		var arr=[cW];
+		var f = cW.frameElement;
+		return (cW == dojo.global || f == null)? arr : arr.concat(doh.robot._getWindowChain(f));
 	},
 
 	scrollIntoView : function(/*String||DOMNode||Function*/ node, /*Number, optional*/ delay){
@@ -53,7 +128,6 @@ dojo.mixin(doh.robot,{
 		//
 		// description:
 		// 		Moves the mouse over the specified node at the specified relative x,y offset.
-		// 		You should manually scroll off-screen nodes into view; use dijit.robot for automatic scrolling support.
 		// 		If you do not specify an offset, mouseMove will default to move to the middle of the node.
 		// 		Example: to move the mouse over a ComboBox's down arrow node, call doh.mouseMoveAt(dijit.byId('setvaluetest').downArrowNode);
 		//

@@ -1,5 +1,7 @@
 dojo.provide("dojo.dnd.common");
 
+dojo.dnd.getCopyKeyState = dojo.isCopyKey;
+
 dojo.dnd._uniqueId = 0;
 dojo.dnd.getUniqueId = function(){
 	// summary:

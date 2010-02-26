@@ -443,28 +443,17 @@ dojo.global = {
 		return !!d.getObject(name, false, obj); // Boolean
 	}
 
-
 	dojo["eval"] = function(/*String*/ scriptFragment){
 		//	summary:
-		//		Perform an evaluation in the global scope. Use this rather than
-		//		calling 'eval()' directly.
+		//		A legacy method created for use exclusively by private Dojo methods. Do not use
+		//		this method directly, the behavior of this eval will differ from the normal
+		//		browser eval.
 		//	description:
 		//		Placed in a separate function to minimize size of trapped
 		//		exceptions. Calling eval() directly from some other scope may
 		//		complicate tracebacks on some platforms.
 		//	returns:
 		//		The result of the evaluation. Often `undefined`
-
-
-		// note:
-		//	 - JSC eval() takes an optional second argument which can be 'unsafe'.
-		//	 - Mozilla/SpiderMonkey eval() takes an optional second argument which is the
-		//  	 scope object for new symbols.
-
-		// FIXME: investigate Joseph Smarr's technique for IE:
-		//		http://josephsmarr.com/2007/01/31/fixing-eval-to-use-global-scope-in-ie/
-		//	see also:
-		// 		http://trac.dojotoolkit.org/ticket/744
 		return d.global.eval ? d.global.eval(scriptFragment) : eval(scriptFragment); 	// Object
 	}
 

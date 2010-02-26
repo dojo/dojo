@@ -445,7 +445,7 @@ dojo.global = {
 
 	dojo["eval"] = function(/*String*/ scriptFragment){
 		//	summary:
-		//		A legacy method created for use exclusively by private Dojo methods. Do not use
+		//		A legacy method created for use exclusively by internal Dojo methods. Do not use
 		//		this method directly, the behavior of this eval will differ from the normal
 		//		browser eval.
 		//	description:

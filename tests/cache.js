@@ -23,6 +23,10 @@ tests.register("tests.cache",
 
 				//Make sure unset cache does not throw errors
 				t.is(null, dojo.cache("dojo.tests.cache", "regular.html", null));
+
+				//Set empty string as value
+				t.is("", dojo.cache("dojo.tests.cache", "regular.html", ""));
+				t.is("", dojo.cache("dojo.tests.cache", "regular.html"));
 			}
 		}
 	]

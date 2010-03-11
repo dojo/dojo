@@ -80,7 +80,7 @@
 	//TODOC:  HOW TO DOC THIS?
 	dojo.version = {
 		// summary: version number of this instance of dojo.
-		major: 0, minor: 9, patch: 0, flag: "dev",
+		major: 1, minor: 0, patch: 3, flag: "",
 		revision: Number("$Rev$".match(/[0-9]+/)[0]),
 		toString: function(){
 			with(d.version){

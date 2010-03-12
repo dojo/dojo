@@ -1,5 +1,15 @@
 dojo.provide("tests._base.Deferred");
 
+var delay = function(ms){
+	var d = new dojo.Deferred();
+	setTimeout(function(){
+		d.progress(0.5);
+	},ms/2);
+	setTimeout(function(){
+		d.resolve();
+	},ms);
+	return d.promise;
+};
 doh.register("tests._base.Deferred", 
 	[
 
@@ -80,6 +90,61 @@ doh.register("tests._base.Deferred",
 			});
 			nd.callback("red");
 			t.assertEqual("blue", nestedReturn);
+		},
+		function simpleThen(t){
+			var td = new doh.Deferred();
+			delay().then(function(){
+				td.callback(true);
+			});
+			return td;
+		},
+		function thenChaining(t){
+			var td = new doh.Deferred();
+			var p = delay();
+			var p2 = p.then(function(){
+				return 1;
+			});
+			p3 = p2.then(function(){
+				return 2;
+			});
+			p3.then(function(){
+				p2.then(function(v){
+					t.assertEqual(v, 1);
+					p3.then(function(v){
+						t.assertEqual(v, 2);
+						td.callback(true);
+					});
+				});
+			});
+			return td;
+		},
+		function simpleWhen(t){
+			var td = new doh.Deferred();
+			dojo.when(delay(), function(){
+				td.callback(true);
+			});
+			return td;
+		},
+		function progress(t){
+			var td = new doh.Deferred();
+			var percentDone;
+			dojo.when(delay(), function(){
+				t.is(percentDone, 0.5);
+				td.callback(true);
+			},function(){},
+			function(completed){
+				percentDone = completed;
+			});
+			return td;
+		},
+		function errorHandler(t){
+			var def = new dojo.Deferred();
+			var handledError;
+			dojo.config.deferredOnError = function(e){
+				handledError = e;
+			};
+			def.reject(new Error("test"));
+			t.t(handledError instanceof Error);
 		}
 	]
 );

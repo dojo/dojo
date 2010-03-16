@@ -322,7 +322,7 @@ dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback
 	//		|	printFirstAndLast([1,2,3,4]) will work just as well as
 	//		|	printFirstAndLast(dojo.xhrGet(...));
 	
-	if(typeof promiseOrValue.then === "function"){
+	if(promiseOrValue && typeof promiseOrValue.then === "function"){
 		return promiseOrValue.then(callback, errback, progressHandler);
 	}
 	return callback(promiseOrValue);

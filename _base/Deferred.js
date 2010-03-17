@@ -1,26 +1,7 @@
 dojo.provide("dojo._base.Deferred");
 
 (function(){
-	function Promise() {
-	};
-	dojo.extend(Promise, {
-		addCallback: function (/*Function*/callback) {
-			return this.addCallbacks(dojo.hitch.apply(dojo, arguments));
-		},
-	
-		addErrback: function (/*Function*/errback) {
-			return this.addCallbacks(null, dojo.hitch.apply(dojo, arguments));
-		},
-	
-		addBoth: function (/*Function*/callback) {
-			var enclosed = dojo.hitch.apply(dojo, arguments);
-			return this.addCallbacks(enclosed, enclosed);
-
-		}
-	});
 		
-	Deferred.prototype = Promise.prototype;
-	
 	var freeze = Object.freeze || function(){};
 	// A deferred provides an API for creating and resolving a promise.
 	dojo.Deferred = function(/*Function?*/canceller){
@@ -171,7 +152,7 @@ dojo.provide("dojo._base.Deferred");
 	
 	function Deferred(canceller){
 		var result, finished, isError, head, nextListener;
-		var promise = this.promise = new Promise();
+		var promise = this.promise = {};
 		
 		function complete(value){
 			if(finished){
@@ -298,6 +279,22 @@ dojo.provide("dojo._base.Deferred");
 		}
 		freeze(promise);
 	};
+	dojo.extend(Deferred, {
+		addCallback: function (/*Function*/callback) {
+			return this.addCallbacks(dojo.hitch.apply(dojo, arguments));
+		},
+	
+		addErrback: function (/*Function*/errback) {
+			return this.addCallbacks(null, dojo.hitch.apply(dojo, arguments));
+		},
+	
+		addBoth: function (/*Function*/callback) {
+			var enclosed = dojo.hitch.apply(dojo, arguments);
+			return this.addCallbacks(enclosed, enclosed);
+
+		}
+	});
+	
 })();
 dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback, /*Function?*/progressHandler){
 	// summary:

@@ -208,7 +208,7 @@ dojo.provide("dojo._base.Deferred");
 			isError = true;
 			this.fired = 1;
 			complete(error);
-			(dojo.config.deferredOnError || console.error)(error);
+			(dojo.config.deferredOnError || function(x){ console.error(x); })(error);
 		};
 		// call progress to provide updates on the progress on the completion of the promise
 		this.progress = function(update){
@@ -245,8 +245,8 @@ dojo.provide("dojo._base.Deferred");
 			// example:
 			// 		An example of using a CommonJS compliant promise:
   			//		|	asyncComputeTheAnswerToEverything().
-    		//		|		then(addTwo).
-    		//		|		then(printResult, onError);
+			//		|		then(addTwo).
+			//		|		then(printResult, onError);
   			//		|	>44 
 			// 		
 			var returnDeferred = progressCallback == mutator ? this : new Deferred(promise.cancel);

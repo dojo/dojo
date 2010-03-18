@@ -20,6 +20,9 @@ dojo.DeferredList = function(/*Array*/ list, /*Boolean?*/ fireOnOneCallback, /*B
 	//		A deferred canceller function, see dojo.Deferred
 	var resultList = [];
 	var resultDeferred = dojo.Deferred();
+	if(list.length === 0 && !fireOnOneCallback){
+		resultDeferred.resolve([0, []]);
+	}
 	var finished = 0;
 	dojo.forEach(list, function(item, i){
 		item.then(function(result){

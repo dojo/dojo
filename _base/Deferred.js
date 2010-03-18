@@ -195,7 +195,8 @@ dojo.provide("dojo._base.Deferred");
 		// calling resolve will resolve the promise
 		var resolve = this.resolve = this.callback = function(value){
 			// summary:
-			//		Fulfills the Deferred instance successfully with the provide value 
+			//		Fulfills the Deferred instance successfully with the provide value
+			this.fired = 0; 
 			complete(value);
 		};
 		
@@ -205,6 +206,7 @@ dojo.provide("dojo._base.Deferred");
 			// summary:
 			//		Fulfills the Deferred instance as an error with the provided error 
 			isError = true;
+			this.fired = 1;
 			complete(error);
 			(dojo.config.deferredOnError || console.error)(error);
 		};
@@ -270,7 +272,7 @@ dojo.provide("dojo._base.Deferred");
 			// summary:
 			//		Cancels the asynchronous operation
 			if(!finished){
-				var error = canceller && canceller();
+				var error = canceller && canceller(this);
 				if (!(error instanceof Error)) {
 					error = new Error(error);
 				}
@@ -291,8 +293,8 @@ dojo.provide("dojo._base.Deferred");
 		addBoth: function (/*Function*/callback) {
 			var enclosed = dojo.hitch.apply(dojo, arguments);
 			return this.addCallbacks(enclosed, enclosed);
-
-		}
+		},
+		fired: -1
 	});
 	
 })();

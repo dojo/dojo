@@ -73,6 +73,13 @@
 				checked: false
 			});
 
+			// Test that dir attribute can be inherited from ancestor node
+			dojo.declare("tests.parser.DirClass", null, {
+				constructor: function(args, node){ dojo.mixin(this, args); },
+				dir: "",
+				name: ""
+			});
+
 			deepTestProp = {
 				blah: {
 					thinger: 1
@@ -210,14 +217,6 @@
 							t.t(obj4 instanceof tests.parser.Class3);
 							t.t(obj4 instanceof tests.parser.Class2);
 						},
-						function testDisabledFlag(t){
-							t.t(disabledObj.disabled);
-							t.f(disabledObj.checked);
-						},
-						function testCheckedFlag(t){
-							t.f(checkedObj.disabled);
-							t.t(checkedObj.checked);
-						},
 						function testnostart(t){
 						  
 							var started = false;
@@ -275,6 +274,16 @@
 							var widgets = dojo.parser.parse({rootNode: wrapper});
 							doh.is(1, widgets.length, "parsed newly inserted parserTest widget");
 							doh.is(12345, widgets[0].params.newParam, "new parameter parsed");
+						},
+
+						// Test that dir=rtl or dir=ltr setting trickles down from root node
+						function dir(){				
+							doh.is("rtl", setRtl.dir, "direct setting of dir=rtl works");
+							doh.is("rtl", inheritRtl.dir, "inherited rtl works");
+							doh.is("ltr", inheritLtr.dir, "inherited ltr works (closest ancestor wins)");
+							doh.is("rtl", inheritRtl2.dir, "inherited rtl works, from grandparent");
+							doh.is("ltr", setLtr.dir, "direct setting of dir=ltr overrides inherited RTL");
+							doh.f(noDir.dir, "no dir setting");
 						}
 					]
 				);
@@ -323,6 +332,19 @@
 		
 		<div id="parsertest"></div>
 		<div id="parsertest2"></div>
-		
+
+		<!-- section for testing that dir attribute trickles down from ancestor -->
+		<div dojoType="tests.parser.DirClass" jsId="setRtl" dir="rtl" name="RTL setting"></div>
+		<div dir="rtl">
+			<div dojoType="tests.parser.DirClass" jsId="inheritRtl" name="inherited RTL from parent"></div>
+			<div dir="ltr">
+				<div dojoType="tests.parser.DirClass" jsId="inheritLtr" name="inherited LTR from parent"></div>
+			</div>
+			<div>
+				<div dojoType="tests.parser.DirClass" jsId="inheritRtl2" name="inherited RTL from grandparent"></div>
+			</div>
+			<div dojoType="tests.parser.DirClass" jsId="setLtr" dir="ltr" name="LTR setting overrides inherited RTL"></div>
+		</div>
+		<div dojoType="tests.parser.DirClass" jsId="noDir" name="dir not inherited or set"></div>
 	</body>
 </html>

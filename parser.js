@@ -167,10 +167,17 @@ dojo.parser = new function(){
 						((clazz._noScript || clazz.prototype._noScript) ? [] : 
 							d.query("> script[type^='dojo/']", node));
 
-			// read parameters (ie, attributes).
-			// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
+			// Setup hash to hold parameter settings for this widget.   Start with the parameter
+			// settings inherited from ancestors (currently only "dir" can be inherited).
+			// Inherited setting may later be overridden by explicit settings on node itself.
 			var params = {},
 				attributes = node.attributes;
+			if(obj.inherited){
+				dojo.mixin(params, obj.inherited);
+			}
+
+			// read parameters (ie, attributes) specified on DOMNode
+			// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
 			for(var name in clsInfo.params){
 				var item = name in mixin?{value:mixin[name],specified:true}:attributes.getNamedItem(name);
 				if(!item || (!item.specified && (!dojo.isIE || name.toLowerCase()!="value"))){ continue; }
@@ -240,6 +247,11 @@ dojo.parser = new function(){
 		// widgets).  Parent widgets will recursively call startup on their
 		// (non-top level) children
 		if(!mixin._started){
+			// TODO: for 2.0, when old instantiate() API is desupported, store parent-child
+			// relationships in the nodes[] array so that no getParent() call is needed.
+			// Note that will  require a parse() call from ContentPane setting a param that the
+			// ContentPane is the parent widget (so that the parse doesn't call startup() on the
+			// ContentPane's children)
 			d.forEach(thelist, function(instance){
 				if(	!args.noStart && instance  && 
 					instance.startup &&
@@ -307,16 +319,29 @@ dojo.parser = new function(){
 		}
 
 		var attrName = this._attrName;
-		function recurse(parent, list, scripts){
+		function recurse(parent, inherited, list, scripts){
 			// summary:
 			//		Recursively looks for nodes with dojoType specified, storing in list[]
+			// parent: DomNode
+			//		Search descendants of this node
+			// inherited: Hash
+			//		{dir: "rtl"} type hash showing the RTL setting inherited from parent's ancestors,
+			//		or an empty hash
 			// list: DomNode[]
 			//		Output array of {type: "dijit.form.Button", node: DomNode, scripts: DomNode[] }
 			//		objects representing nodes to be turned into widgets
-			// parent: DomNode
-			//		Search descendants of this node
 			// scripts: DomNode[]?
 			//		If specified, put children of parent like <script type="dojo/..."> into this array
+
+			// if current node has a dir setting then it overrides any ancestor setting
+			inherited = {
+				dir: parent.getAttribute("dir") || inherited.dir
+			};
+			if(!inherited.dir){
+				delete inherited.dir;
+			}
+
+			// look for dojoType setting on each of parent's children
 			for(var child = parent.firstChild; child; child = child.nextSibling){
 				if(child.nodeType == 1){
 					var type = child.getAttribute(attrName);
@@ -325,8 +350,8 @@ dojo.parser = new function(){
 						var params = {
 							"type": type,
 							node: child,
-							scripts: [],	// script nodes that are my children
-							inherited: {}	// dir attribute inherited from parent (TODO)
+							scripts: [],			// <script> nodes that are parent's children
+							inherited: inherited	// dir attribute inherited from parent
 						};
 						list.push(params);
 					}else if(scripts && child.nodeName.toLowerCase() == "script"){
@@ -339,14 +364,14 @@ dojo.parser = new function(){
 
 					// recurse, looking for descendant nodes with dojoType specified, and also
 					// (if the current node has a dojoType) collecting <script type="dojo/..."> children
-					recurse(child, list, params && params.scripts);
+					recurse(child, inherited, list, params && params.scripts);
 				}
 			}
 		}
 
 		// Make list of all nodes on page w/dojoType specified
 		var list = [];
-		recurse(root || dojo.body(), list);
+		recurse(root ? dojo.byId(root) : dojo.body(), {}, list);
 
 		// go build the object instances
 		return this.instantiate(list, null, args); // Array

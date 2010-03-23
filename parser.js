@@ -132,8 +132,16 @@ dojo.parser = new function(){
 	this.instantiate = function(/* Array */nodes, /* Object? */mixin, /* Object? */args){
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
-		//		potentially calls a layout method to allow them to connect with
-		//		any children		
+		//		potentially calls a startup method to allow them to connect with
+		//		any children.
+		// nodes: Array
+		//		Array of nodes or objects like
+		//	|		{
+		//	|			type: "dijit.form.Button",
+		//	|			node: DOMNode,
+		//	|			scripts: [ ... ],	// array of <script type="dojo/..."> children of node
+		//	|			inherited: { ... }	// settings inherited from ancestors like dir, theme, etc.
+		//	|		}
 		// mixin: Object?
 		//		An object that will be mixed in with each node in the array.
 		//		Values in the mixin will override values in the node, if they
@@ -145,13 +153,19 @@ dojo.parser = new function(){
 		mixin = mixin||{};
 		args = args||{};
 		
-		d.forEach(nodes, function(node){
-			if(!node){ return; }
-			var type = dp._attrName in mixin?mixin[dp._attrName]:node.getAttribute(dp._attrName);
+		d.forEach(nodes, function(obj){
+			if(!obj){ return; }
+
+			var node = obj.node || obj,
+				type = obj.type || (dp._attrName in mixin ? mixin[dp._attrName] : node.getAttribute(dp._attrName));
+
 			if(!type || !type.length){ return; }
+
 			var clsInfo = getClassInfo(type),
 				clazz = clsInfo.cls,
-				ps = clazz._noScript || clazz.prototype._noScript;
+				scripts = obj.scripts || 
+						((clazz._noScript || clazz.prototype._noScript) ? [] : 
+							d.query("> script[type^='dojo/']", node));
 
 			// read parameters (ie, attributes).
 			// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
@@ -183,25 +197,24 @@ dojo.parser = new function(){
 			// <script type="dojo/method"> tags (with no event) are executed after instantiation
 			// <script type="dojo/connect" event="foo"> tags are dojo.connected after instantiation
 			// note: dojo/* script tags cannot exist in self closing widgets, like <input />
-			if(!ps){
-				var connects = [],	// functions to connect after instantiation
-					calls = [];		// functions to call after instantiation
+			var connects = [],	// functions to connect after instantiation
+				calls = [];		// functions to call after instantiation
 
-				d.query("> script[type^='dojo/']", node).orphan().forEach(function(script){
-					var event = script.getAttribute("event"),
-						type = script.getAttribute("type"),
-						nf = d.parser._functionFromScript(script);
-					if(event){
-						if(type == "dojo/connect"){
-							connects.push({event: event, func: nf});
-						}else{
-							params[event] = nf;
-						}
+			d.forEach(scripts, function(script){
+				node.removeChild(script);
+				var event = script.getAttribute("event"),
+					type = script.getAttribute("type"),
+					nf = d.parser._functionFromScript(script);
+				if(event){
+					if(type == "dojo/connect"){
+						connects.push({event: event, func: nf});
 					}else{
-						calls.push(nf);
+						params[event] = nf;
 					}
-				});
-			}
+				}else{
+					calls.push(nf);
+				}
+			});
 
 			var markupFactory = clazz.markupFactory || clazz.prototype && clazz.prototype.markupFactory;
 			// create the instance
@@ -215,14 +228,12 @@ dojo.parser = new function(){
 			}
 
 			// process connections and startup functions
-			if(!ps){
-				d.forEach(connects, function(connect){
-					d.connect(instance, connect.event, null, connect.func);
-				});
-				d.forEach(calls, function(func){
-					func.call(instance);
-				});
-			}
+			d.forEach(connects, function(connect){
+				d.connect(instance, connect.event, null, connect.func);
+			});
+			d.forEach(calls, function(func){
+				func.call(instance);
+			});
 		});
 
 		// Call startup on each top level instance if it makes sense (as for
@@ -295,10 +306,50 @@ dojo.parser = new function(){
 			root = rootNode;
 		}
 
-		var	list = d.query(this._query, root);
-			// go build the object instances
-		return this.instantiate(list, null, args); // Array
+		var attrName = this._attrName;
+		function recurse(parent, list, scripts){
+			// summary:
+			//		Recursively looks for nodes with dojoType specified, storing in list[]
+			// list: DomNode[]
+			//		Output array of {type: "dijit.form.Button", node: DomNode, scripts: DomNode[] }
+			//		objects representing nodes to be turned into widgets
+			// parent: DomNode
+			//		Search descendants of this node
+			// scripts: DomNode[]?
+			//		If specified, put children of parent like <script type="dojo/..."> into this array
+			for(var child = parent.firstChild; child; child = child.nextSibling){
+				if(child.nodeType == 1){
+					var type = child.getAttribute(attrName);
+					if(type){
+						// if dojoType specified, add to output array of nodes to instantiate
+						var params = {
+							"type": type,
+							node: child,
+							scripts: [],	// script nodes that are my children
+							inherited: {}	// dir attribute inherited from parent (TODO)
+						};
+						list.push(params);
+					}else if(scripts && child.nodeName.toLowerCase() == "script"){
+						// or maybe this is a <script type="dojo/..."> node, to attach to parent
+						type = child.getAttribute("type");
+						if(type && /^dojo\//i.test(type)){
+							scripts.push(child);
+						}
+					}
 
+					// recurse, looking for descendant nodes with dojoType specified, and also
+					// (if the current node has a dojoType) collecting <script type="dojo/..."> children
+					recurse(child, list, params && params.scripts);
+				}
+			}
+		}
+
+		// Make list of all nodes on page w/dojoType specified
+		var list = [];
+		recurse(root || dojo.body(), list);
+
+		// go build the object instances
+		return this.instantiate(list, null, args); // Array
 	};
 }();
 

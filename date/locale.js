@@ -82,7 +82,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 					break;
 				case 'a':
 					var timePeriod = (dateObject.getHours() < 12) ? 'am' : 'pm';
-					s = bundle[timePeriod];
+					s = bundle['dayPeriods-' + timePeriod + '-format-wide'];
 					break;
 				case 'h':
 				case 'H':
@@ -378,8 +378,8 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 				result[2] = v;
 				break;
 			case 'a': //am/pm
-				var am = options.am || bundle.am;
-				var pm = options.pm || bundle.pm;
+				var am = options.am || bundle['dayPeriods-am-format-wide'],
+					pm = options.pm || bundle['dayPeriods-pm-format-wide'];
 				if(!options.strict){
 					var period = /\./g;
 					v = v.replace(period,'').toLowerCase();
@@ -522,7 +522,7 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 			case 'w':
 				s = p2+'[1-9]|[1-4][0-9]|5[0-3]';
 				break;
-		    case 'E':
+			case 'E':
 				s = '\\S+';
 				break;
 			case 'h': //hour (1-12)
@@ -545,8 +545,8 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				s = '\\d{'+l+'}';
 				break;
 			case 'a':
-				var am = options.am || bundle.am || 'AM';
-				var pm = options.pm || bundle.pm || 'PM';
+				var am = options.am || bundle['dayPeriods-am-format-wide'],
+					pm = options.pm || bundle['dayPeriods-pm-format-wide'];
 				if(options.strict){
 					s = am + '|' + pm;
 				}else{
@@ -621,7 +621,7 @@ dojo.date.locale.getNames = function(/*String*/item, /*String*/type, /*String?*/
 		var key = props.join('-');
 		label = lookup[key];
 		// Fall back to 'format' flavor of name
-		if(label[0] == 1){ label = undefined; } // kludge, in the absense of real aliasing support in dojo.cldr
+		if(label[0] == 1){ label = undefined; } // kludge, in the absence of real aliasing support in dojo.cldr
 	}
 	props[1] = 'format';
 

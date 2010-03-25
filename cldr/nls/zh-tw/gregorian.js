@@ -1,4 +1,3 @@
-// generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
 ({
 	"dateFormatItem-yM": "yyyy/M", 
 	"field-minute": "分鐘", 
@@ -47,9 +46,13 @@
 	], 
 	"dateFormatItem-Ed": "d日(E)", 
 	"dateFormatItem-yMMM": "y年M月", 
+	"eraAbbr": [
+		"西元前", 
+		"西元"
+	], 
 	"timeFormat-medium": "ah:mm:ss", 
 	"field-zone": "區域", 
-	"dateFormatItem-yyMM": "yyyy/MM", 
+	"dateFormatItem-yyMM": "yy-MM", 
 	"dateFormat-medium": "yyyy/M/d", 
 	"quarters-standAlone-wide": [
 		"第1季", 
@@ -93,7 +96,7 @@
 		"週六"
 	], 
 	"field-second": "秒", 
-	"dateFormatItem-MEd": "M-d（E）", 
+	"dateFormatItem-MEd": "M/d（E）", 
 	"months-format-narrow": [
 		"1", 
 		"2", 
@@ -118,6 +121,7 @@
 		"週六"
 	], 
 	"dateFormat-short": "yy/M/d", 
+	"dateFormatItem-yMMMEd": "y年M月d日EEE", 
 	"dateFormatItem-Md": "M/d", 
 	"dateFormatItem-yMEd": "yyyy/M/d（EEE）", 
 	"dateTimeAvailableFormats": [
@@ -159,5 +163,9 @@
 		"第2季", 
 		"第3季", 
 		"第4季"
+	], 
+	"eraNarrow": [
+		"西元前", 
+		"西元"
 	]
 })

@@ -2,7 +2,6 @@
 ({
 	AUD_symbol:"AU$",
 	CAD_symbol:"CA$",
-	CHF_symbol:"Fr.",
 	CNY_symbol:"CN¥",
 	EUR_symbol:"€",
 	GBP_symbol:"£",

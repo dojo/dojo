@@ -8,6 +8,7 @@
 		"aC", 
 		"dC"
 	], 
+	"dateFormatItem-hms": "h:mm:ss a", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-weekday": "dia de la setmana", 
 	"days-standAlone-wide": [
@@ -36,6 +37,7 @@
 	], 
 	"field-era": "era", 
 	"field-hour": "hora", 
+	"dayPeriods-am-format-wide": "a.m.", 
 	"quarters-standAlone-abbr": [
 		"1T", 
 		"2T", 
@@ -44,6 +46,7 @@
 	], 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "H:mm:ss zzzz", 
+	"dayPeriods-pm-format-wide": "p.m.", 
 	"months-standAlone-abbr": [
 		"gen.", 
 		"febr.", 
@@ -58,7 +61,7 @@
 		"nov.", 
 		"des."
 	], 
-	"dateFormatItem-yMMM": "MMM y", 
+	"dateFormatItem-yMMM": "LLL y", 
 	"days-standAlone-narrow": [
 		"g", 
 		"l", 
@@ -73,12 +76,13 @@
 		"dC"
 	], 
 	"dateFormatItem-yyyyMM": "MM/yyyy", 
-	"dateFormat-long": "d 'de' MMMM 'de' y", 
+	"dateFormat-long": "d MMMM 'de' y", 
 	"timeFormat-medium": "H:mm:ss", 
 	"dateFormatItem-EEEd": "EEE d", 
 	"field-zone": "zona", 
 	"dateFormatItem-Hm": "H:mm", 
 	"dateFormat-medium": "dd/MM/yyyy", 
+	"dateFormatItem-Hms": "H:mm:ss", 
 	"quarters-standAlone-wide": [
 		"1r trimestre", 
 		"2n trimestre", 
@@ -88,14 +92,6 @@
 	"dateFormatItem-yMMMM": "LLLL 'del' y", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-year": "any", 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
-	"dateFormatItem-HHmmss": "HH:mm:ss", 
-	"field-week": "setmana", 
 	"months-standAlone-wide": [
 		"gener", 
 		"febrer", 
@@ -110,33 +106,35 @@
 		"novembre", 
 		"desembre"
 	], 
+	"field-week": "setmana", 
 	"dateFormatItem-MMMMEd": "E d MMMM", 
 	"dateFormatItem-MMMd": "d MMM", 
 	"dateFormatItem-yyQ": "Q yy", 
 	"timeFormat-long": "H:mm:ss z", 
 	"months-format-abbr": [
-		"gen.", 
-		"febr.", 
-		"març", 
-		"abr.", 
-		"maig", 
-		"juny", 
-		"jul.", 
-		"ag.", 
-		"set.", 
-		"oct.", 
-		"nov.", 
-		"des."
+		"de gen.", 
+		"de febr.", 
+		"de març", 
+		"d’abr.", 
+		"de maig", 
+		"de juny", 
+		"de jul.", 
+		"d’ag.", 
+		"de set.", 
+		"d’oct.", 
+		"de nov.", 
+		"de des."
 	], 
 	"timeFormat-short": "H:mm", 
+	"dateFormatItem-H": "H", 
 	"field-month": "mes", 
-	"dateFormatItem-MMMMd": "d 'de' MMMM", 
 	"quarters-format-abbr": [
 		"1T", 
 		"2T", 
 		"3T", 
 		"4T"
 	], 
+	"dateFormatItem-MMMMd": "d MMMM", 
 	"days-format-abbr": [
 		"dg.", 
 		"dl.", 
@@ -146,9 +144,8 @@
 		"dv.", 
 		"ds."
 	], 
-	"pm": "p.m.", 
-	"dateFormatItem-mmss": "mm:ss", 
 	"dateFormatItem-M": "L", 
+	"dateFormatItem-mmss": "mm:ss", 
 	"days-format-narrow": [
 		"g", 
 		"l", 
@@ -175,7 +172,7 @@
 		"n", 
 		"d"
 	], 
-	"am": "a.m.", 
+	"dateFormatItem-hm": "h:mm a", 
 	"days-standAlone-abbr": [
 		"dg", 
 		"dl", 
@@ -187,22 +184,22 @@
 	], 
 	"dateFormat-short": "dd/MM/yy", 
 	"dateFormatItem-yMMMEd": "EEE d MMM y", 
-	"dateFormat-full": "EEEE d 'de' MMMM 'de' y", 
+	"dateFormat-full": "EEEE d MMMM 'de' y", 
 	"dateFormatItem-Md": "d/M", 
 	"dateFormatItem-yMEd": "E d/M/yyyy", 
 	"months-format-wide": [
-		"gener", 
-		"febrer", 
-		"març", 
-		"abril", 
-		"maig", 
-		"juny", 
-		"juliol", 
-		"agost", 
-		"setembre", 
-		"octubre", 
-		"novembre", 
-		"desembre"
+		"de gener", 
+		"de febrer", 
+		"de març", 
+		"d’abril", 
+		"de maig", 
+		"de juny", 
+		"de juliol", 
+		"d’agost", 
+		"de setembre", 
+		"d’octubre", 
+		"de novembre", 
+		"de desembre"
 	], 
 	"dateFormatItem-d": "d", 
 	"quarters-format-wide": [

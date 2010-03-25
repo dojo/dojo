@@ -34,7 +34,9 @@
 	], 
 	"field-era": "Éra", 
 	"field-hour": "Hodina", 
+	"dayPeriods-am-format-wide": "dopoludnia", 
 	"timeFormat-full": "H:mm:ss zzzz", 
+	"dayPeriods-pm-format-wide": "popoludní", 
 	"months-standAlone-abbr": [
 		"jan", 
 		"feb", 
@@ -68,8 +70,9 @@
 	"timeFormat-medium": "H:mm:ss", 
 	"dateFormatItem-EEEd": "EEE, d.", 
 	"field-zone": "Pásmo", 
-	"dateFormatItem-Hm": "HH:mm", 
+	"dateFormatItem-Hm": "H:mm", 
 	"dateFormat-medium": "d.M.yyyy", 
+	"dateFormatItem-Hms": "H:mm:ss", 
 	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"quarters-standAlone-wide": [
 		"1. štvrťrok", 
@@ -114,6 +117,7 @@
 		"dec"
 	], 
 	"timeFormat-short": "H:mm", 
+	"dateFormatItem-H": "H", 
 	"field-month": "Mesiac", 
 	"dateFormatItem-MMMMd": "d. MMMM", 
 	"quarters-format-abbr": [
@@ -131,7 +135,6 @@
 		"pi", 
 		"so"
 	], 
-	"pm": "popoludní", 
 	"dateFormatItem-mmss": "mm:ss", 
 	"days-format-narrow": [
 		"N", 
@@ -159,7 +162,6 @@
 		"n", 
 		"d"
 	], 
-	"am": "dopoludnia", 
 	"days-standAlone-abbr": [
 		"ne", 
 		"po", 

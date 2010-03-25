@@ -1,5 +1,5 @@
 ({
-	"dateFormatItem-yM": "M-yyyy", 
+	"dateFormatItem-yM": "M/y", 
 	"field-dayperiod": "dagtid", 
 	"dateFormatItem-yQ": "Q yyyy", 
 	"field-minute": "minut", 
@@ -38,6 +38,7 @@
 	], 
 	"field-era": "æra", 
 	"field-hour": "time", 
+	"dayPeriods-am-format-wide": "f.m.", 
 	"quarters-standAlone-abbr": [
 		"K1", 
 		"K2", 
@@ -47,6 +48,7 @@
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "HH.mm.ss zzzz", 
 	"dateFormatItem-yyyy": "y", 
+	"dayPeriods-pm-format-wide": "e.m.", 
 	"months-standAlone-abbr": [
 		"jan", 
 		"feb", 
@@ -82,6 +84,7 @@
 	"dateFormatItem-Hm": "HH.mm", 
 	"dateFormat-medium": "dd/MM/yyyy", 
 	"dateFormatItem-yyMM": "MM/yy", 
+	"dateFormatItem-Hms": "HH.mm.ss", 
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"quarters-standAlone-wide": [
 		"1. kvartal", 
@@ -89,16 +92,8 @@
 		"3. kvartal", 
 		"4. kvartal"
 	], 
-	"dateFormatItem-yMMMM": "MMMM y", 
 	"dateFormatItem-ms": "mm.ss", 
 	"field-year": "år", 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
-	"dateFormatItem-HHmmss": "HH.mm.ss", 
 	"field-week": "uge", 
 	"months-standAlone-wide": [
 		"januar", 
@@ -117,7 +112,7 @@
 	"dateFormatItem-MMMMEd": "E, d. MMMM", 
 	"dateFormatItem-MMMd": "d. MMM", 
 	"dateFormatItem-yyQ": "Q. 'kvartal' yy", 
-	"timeFormat-long": "HH:mm:ss z", 
+	"timeFormat-long": "HH.mm.ss z", 
 	"months-format-abbr": [
 		"jan.", 
 		"feb.", 
@@ -133,7 +128,7 @@
 		"dec."
 	], 
 	"timeFormat-short": "HH.mm", 
-	"dateFormatItem-H": "H", 
+	"dateFormatItem-H": "HH", 
 	"field-month": "måned", 
 	"quarters-format-abbr": [
 		"K1", 
@@ -141,7 +136,6 @@
 		"K3", 
 		"K4"
 	], 
-	"dateFormatItem-MMMMd": "d. MMMM", 
 	"days-format-abbr": [
 		"søn", 
 		"man", 
@@ -151,7 +145,6 @@
 		"fre", 
 		"lør"
 	], 
-	"pm": "e.m.", 
 	"dateFormatItem-M": "M", 
 	"days-format-narrow": [
 		"S", 
@@ -164,7 +157,7 @@
 	], 
 	"field-second": "sekund", 
 	"field-day": "dag", 
-	"dateFormatItem-MEd": "E. d-M", 
+	"dateFormatItem-MEd": "E. d/M", 
 	"months-format-narrow": [
 		"J", 
 		"F", 
@@ -180,7 +173,6 @@
 		"D"
 	], 
 	"dateFormatItem-hm": "h.mm a", 
-	"am": "f.m.", 
 	"days-standAlone-abbr": [
 		"søn", 
 		"man", 
@@ -194,7 +186,7 @@
 	"dateFormatItem-yMMMEd": "EEE. d. MMM y", 
 	"dateFormat-full": "EEEE 'den' d. MMMM y", 
 	"dateFormatItem-Md": "d/M", 
-	"dateFormatItem-yMEd": "EEE. d-M-yyyy", 
+	"dateFormatItem-yMEd": "EEE. d/M/y", 
 	"months-format-wide": [
 		"januar", 
 		"februar", 

@@ -28,6 +28,7 @@
 		"CE"
 	], 
 	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}", 
+	"dayPeriods-pm-format-wide": "PM", 
 	"dateFormat-long": "y MMMM d", 
 	"months-format-wide": [
 		"1", 
@@ -48,6 +49,7 @@
 	"dateFormat-full": "EEEE, y MMMM dd", 
 	"dateFormatItem-Md": "M-d", 
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})", 
+	"dayPeriods-pm-format-abbr": "PM", 
 	"field-era": "Era", 
 	"dateFormatItem-yM": "y-M", 
 	"months-standAlone-wide": [
@@ -93,7 +95,7 @@
 	], 
 	"timeFormat-full": "HH:mm:ss zzzz", 
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})", 
-	"am": "AM", 
+	"dateFormatItem-H": "HH", 
 	"months-standAlone-abbr": [
 		"1", 
 		"2", 
@@ -130,9 +132,10 @@
 		"6", 
 		"7"
 	], 
-	"dateFormatItem-MMMMd": "MMMM d", 
 	"timeFormat-medium": "HH:mm:ss", 
-	"dateFormatItem-Hm": "H:mm", 
+	"dayPeriods-am-format-wide": "AM", 
+	"dayPeriods-am-format-narrow": "AM", 
+	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
 		"Q1", 
 		"Q2", 
@@ -162,11 +165,12 @@
 		"3", 
 		"4"
 	], 
+	"dateFormatItem-h": "h a", 
 	"dateTimeFormat-long": "{1} {0}", 
+	"dayPeriods-am-format-abbr": "AM", 
 	"dateFormatItem-MMMd": "MMM d", 
 	"dateFormatItem-MEd": "E, M-d", 
 	"dateTimeFormat-full": "{1} {0}", 
-	"dateFormatItem-yMMMM": "y MMMM", 
 	"field-day": "Day", 
 	"days-format-wide": [
 		"1", 
@@ -231,9 +235,7 @@
 	], 
 	"dateFormatItem-MMM": "LLL", 
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})", 
-	"pm": "PM", 
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})", 
-	"dateFormatItem-MMMMEd": "E MMMM d", 
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})", 
 	"dateFormat-short": "yyyy-MM-dd", 
 	"field-second": "Second", 
@@ -242,6 +244,7 @@
 	"field-week": "Week", 
 	"dateFormat-medium": "y MMM d", 
 	"dateTimeFormat-short": "{1} {0}", 
-	"dateFormatItem-Hms": "H:mm:ss", 
-	"dateFormatItem-hms": "h:mm:ss a"
+	"dateFormatItem-Hms": "HH:mm:ss", 
+	"dateFormatItem-hms": "h:mm:ss a", 
+	"dayPeriods-pm-format-narrow": "PM"
 })

@@ -1,18 +1,13 @@
 ({
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
 	"field-weekday": "曜日", 
 	"dateFormatItem-yQQQ": "yQQQ", 
 	"dateFormatItem-yMEd": "y/M/d(EEE)", 
 	"dateFormatItem-MMMEd": "M月d日(E)", 
 	"eraNarrow": [
-		"紀元前", 
-		"西暦"
+		"BC", 
+		"AD"
 	], 
+	"dayPeriods-pm-format-wide": "午後", 
 	"dateFormat-long": "y年M月d日", 
 	"months-format-wide": [
 		"1月", 
@@ -55,7 +50,7 @@
 		"第3四半期", 
 		"第4四半期"
 	], 
-	"timeFormat-long": "HH:mm:ss z", 
+	"timeFormat-long": "H:mm:ss z", 
 	"field-year": "年", 
 	"dateFormatItem-yMMM": "y年M月", 
 	"dateFormatItem-yQ": "y/Q", 
@@ -77,7 +72,6 @@
 	], 
 	"dateFormatItem-yyQ": "yy/Q", 
 	"timeFormat-full": "H時mm分ss秒 zzzz", 
-	"am": "午前", 
 	"dateFormatItem-H": "H時", 
 	"months-standAlone-abbr": [
 		"1月", 
@@ -115,13 +109,13 @@
 		"金曜日", 
 		"土曜日"
 	], 
-	"dateFormatItem-MMMMd": "M月d日", 
 	"dateFormatItem-yyMMM": "y年M月", 
 	"timeFormat-medium": "H:mm:ss", 
+	"dayPeriods-am-format-wide": "午前", 
 	"dateFormatItem-Hm": "H:mm", 
 	"eraAbbr": [
-		"紀元前", 
-		"西暦"
+		"BC", 
+		"AD"
 	], 
 	"field-minute": "分", 
 	"field-dayperiod": "午前/午後", 
@@ -136,11 +130,11 @@
 	], 
 	"dateFormatItem-d": "d日", 
 	"dateFormatItem-ms": "mm:ss", 
+	"dateFormatItem-h": "ah", 
 	"dateTimeFormat-long": "{1}{0}", 
 	"dateFormatItem-MMMd": "M月d日", 
 	"dateFormatItem-MEd": "M/d(E)", 
 	"dateTimeFormat-full": "{1}{0}", 
-	"dateFormatItem-yMMMM": "y年M月", 
 	"field-day": "日", 
 	"days-format-wide": [
 		"日曜日", 
@@ -204,8 +198,6 @@
 		"土"
 	], 
 	"dateFormatItem-MMM": "LLL", 
-	"pm": "午後", 
-	"dateFormatItem-MMMMEd": "M月d日(E)", 
 	"dateFormat-short": "yy/MM/dd", 
 	"field-second": "秒", 
 	"dateFormatItem-yMMMEd": "y年M月d日(EEE)", 
@@ -213,6 +205,7 @@
 	"field-week": "週", 
 	"dateFormat-medium": "yyyy/MM/dd", 
 	"dateTimeFormat-short": "{1} {0}", 
+	"dateFormatItem-Hms": "H:mm:ss", 
 	"dateFormatItem-hms": "ah:mm:ss", 
 	"dateFormatItem-yyyy": "y年"
 })

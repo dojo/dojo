@@ -26,13 +26,14 @@
 		"J", 
 		"J", 
 		"A", 
-		"S", 
+		"Sz", 
 		"O", 
 		"N", 
 		"D"
 	], 
 	"field-era": "éra", 
 	"field-hour": "óra", 
+	"dayPeriods-am-format-wide": "de.", 
 	"quarters-standAlone-abbr": [
 		"N1", 
 		"N2", 
@@ -40,6 +41,7 @@
 		"N4"
 	], 
 	"timeFormat-full": "H:mm:ss zzzz", 
+	"dayPeriods-pm-format-wide": "du.", 
 	"months-standAlone-abbr": [
 		"jan.", 
 		"febr.", 
@@ -58,10 +60,10 @@
 		"V", 
 		"H", 
 		"K", 
-		"S", 
-		"C", 
+		"Sz", 
+		"Cs", 
 		"P", 
-		"S"
+		"Sz"
 	], 
 	"eraAbbr": [
 		"i. e.", 
@@ -72,8 +74,9 @@
 	"dateFormat-long": "y. MMMM d.", 
 	"timeFormat-medium": "H:mm:ss", 
 	"field-zone": "zóna", 
-	"dateFormatItem-Hm": "HH:mm", 
+	"dateFormatItem-Hm": "H:mm", 
 	"dateFormat-medium": "yyyy.MM.dd.", 
+	"dateFormatItem-Hms": "H:mm:ss", 
 	"quarters-standAlone-wide": [
 		"I. negyedév", 
 		"II. negyedév", 
@@ -81,12 +84,6 @@
 		"IV. negyedév"
 	], 
 	"field-year": "év", 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
 	"field-week": "hét", 
 	"months-standAlone-wide": [
 		"január", 
@@ -120,6 +117,7 @@
 		"dec."
 	], 
 	"timeFormat-short": "H:mm", 
+	"dateFormatItem-H": "H", 
 	"field-month": "hónap", 
 	"dateFormatItem-MMMMd": "MMMM d.", 
 	"quarters-format-abbr": [
@@ -137,17 +135,16 @@
 		"P", 
 		"Szo"
 	], 
-	"pm": "du.", 
 	"dateFormatItem-mmss": "mm:ss", 
 	"dateFormatItem-M": "L", 
 	"days-format-narrow": [
 		"V", 
 		"H", 
 		"K", 
-		"S", 
-		"C", 
+		"Sz", 
+		"Cs", 
 		"P", 
-		"S"
+		"Sz"
 	], 
 	"field-second": "másodperc", 
 	"field-day": "nap", 
@@ -161,12 +158,11 @@
 		"J", 
 		"J", 
 		"A", 
-		"S", 
+		"Sz", 
 		"O", 
 		"N", 
 		"D"
 	], 
-	"am": "de.", 
 	"days-standAlone-abbr": [
 		"V", 
 		"H", 

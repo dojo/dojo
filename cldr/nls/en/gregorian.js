@@ -1,7 +1,7 @@
 ({
-	"dateFormatItem-yM": "M/yyyy", 
+	"dateFormatItem-yM": "M/y", 
 	"field-dayperiod": "AM/PM", 
-	"dateFormatItem-yQ": "Q yyyy", 
+	"dateFormatItem-yQ": "Q y", 
 	"field-minute": "Minute", 
 	"eraNames": [
 		"Before Christ", 
@@ -9,6 +9,7 @@
 	], 
 	"dateFormatItem-MMMEd": "E, MMM d", 
 	"dateTimeFormat-full": "{1} {0}", 
+	"dateFormatItem-hms": "h:mm:ss a", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-weekday": "Day of the Week", 
 	"days-standAlone-wide": [
@@ -39,8 +40,10 @@
 	"dateTimeFormat-medium": "{1} {0}", 
 	"field-era": "Era", 
 	"field-hour": "Hour", 
+	"dayPeriods-am-format-wide": "AM", 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "h:mm:ss a zzzz", 
+	"dayPeriods-pm-format-wide": "PM", 
 	"months-standAlone-abbr": [
 		"Jan", 
 		"Feb", 
@@ -73,16 +76,15 @@
 	"timeFormat-medium": "h:mm:ss a", 
 	"dateFormatItem-EEEd": "d EEE", 
 	"field-zone": "Zone", 
-	"dateFormatItem-Hm": "H:mm", 
+	"dateFormatItem-Hm": "HH:mm", 
 	"dateFormat-medium": "MMM d, y", 
-	"dateFormatItem-Hms": "H:mm:ss", 
+	"dateFormatItem-Hms": "HH:mm:ss", 
 	"quarters-standAlone-wide": [
 		"1st quarter", 
 		"2nd quarter", 
 		"3rd quarter", 
 		"4th quarter"
 	], 
-	"dateFormatItem-yMMMM": "MMMM y", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-year": "Year", 
 	"quarters-standAlone-narrow": [
@@ -107,7 +109,6 @@
 		"November", 
 		"December"
 	], 
-	"dateFormatItem-MMMMEd": "E, MMMM d", 
 	"dateFormatItem-MMMd": "MMM d", 
 	"timeFormat-long": "h:mm:ss a z", 
 	"months-format-abbr": [
@@ -132,7 +133,6 @@
 		"Q3", 
 		"Q4"
 	], 
-	"dateFormatItem-MMMMd": "MMMM d", 
 	"days-format-abbr": [
 		"Sun", 
 		"Mon", 
@@ -142,7 +142,6 @@
 		"Fri", 
 		"Sat"
 	], 
-	"pm": "PM", 
 	"dateFormatItem-M": "L", 
 	"days-format-narrow": [
 		"S", 
@@ -171,7 +170,6 @@
 		"D"
 	], 
 	"dateFormatItem-hm": "h:mm a", 
-	"am": "AM", 
 	"days-standAlone-abbr": [
 		"Sun", 
 		"Mon", 
@@ -185,7 +183,8 @@
 	"dateFormatItem-yMMMEd": "EEE, MMM d, y", 
 	"dateFormat-full": "EEEE, MMMM d, y", 
 	"dateFormatItem-Md": "M/d", 
-	"dateFormatItem-yMEd": "EEE, M/d/yyyy", 
+	"dayPeriods-noon-format-wide": "noon", 
+	"dateFormatItem-yMEd": "EEE, M/d/y", 
 	"months-format-wide": [
 		"January", 
 		"February", 

@@ -13,12 +13,6 @@
 		"M", 
 		"J"
 	], 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
 	"field-weekday": "viikonpäivä", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"dateFormatItem-yMEd": "EEE d.M.yyyy", 
@@ -27,6 +21,7 @@
 		"eKr.", 
 		"jKr."
 	], 
+	"dayPeriods-pm-format-wide": "ip.", 
 	"dateFormat-long": "d. MMMM y", 
 	"months-format-wide": [
 		"tammikuuta", 
@@ -45,6 +40,7 @@
 	"dateFormatItem-EEEd": "EEE d.", 
 	"dateFormat-full": "EEEE d. MMMM y", 
 	"dateFormatItem-Md": "d.M.", 
+	"dayPeriods-pm-format-abbr": "ip.", 
 	"field-era": "aikakausi", 
 	"dateFormatItem-yM": "L.yyyy", 
 	"months-standAlone-wide": [
@@ -91,7 +87,7 @@
 	"dateFormatItem-yyQ": "Q/yy", 
 	"timeFormat-full": "H.mm.ss zzzz", 
 	"dateFormatItem-yyyyMEEEd": "EEE d.M.yyyy", 
-	"am": "ap.", 
+	"dateFormatItem-H": "H", 
 	"months-standAlone-abbr": [
 		"tammi", 
 		"helmi", 
@@ -118,7 +114,6 @@
 		"3. neljännes", 
 		"4. neljännes"
 	], 
-	"dateFormatItem-HHmmss": "HH.mm.ss", 
 	"dateFormatItem-M": "L", 
 	"days-standAlone-wide": [
 		"sunnuntai", 
@@ -129,9 +124,9 @@
 		"perjantai", 
 		"lauantai"
 	], 
-	"dateFormatItem-MMMMd": "d. MMMM", 
-	"dateFormatItem-yyMMM": "MMM yy", 
+	"dateFormatItem-yyMMM": "LLLL yy", 
 	"timeFormat-medium": "H.mm.ss", 
+	"dayPeriods-am-format-wide": "ap.", 
 	"dateFormatItem-Hm": "H.mm", 
 	"quarters-standAlone-abbr": [
 		"1. nelj.", 
@@ -144,7 +139,7 @@
 		"jKr."
 	], 
 	"field-minute": "minuutti", 
-	"field-dayperiod": "ap/ip", 
+	"field-dayperiod": "ap./ip.", 
 	"days-standAlone-abbr": [
 		"su", 
 		"ma", 
@@ -156,9 +151,9 @@
 	], 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm.ss", 
+	"dayPeriods-am-format-abbr": "ap.", 
 	"dateFormatItem-MMMd": "d. MMM", 
 	"dateFormatItem-MEd": "E d.M.", 
-	"dateFormatItem-yMMMM": "LLLL y", 
 	"field-day": "päivä", 
 	"dateFormatItem-yMMMMccccd": "cccc, d. MMMM y", 
 	"days-format-wide": [
@@ -186,6 +181,7 @@
 		"M", 
 		"J"
 	], 
+	"dayPeriods-pm-standAlone-wide": "ip.", 
 	"dateFormatItem-yyMM": "M/yy", 
 	"dateFormatItem-hm": "h.mm a", 
 	"days-format-abbr": [
@@ -221,14 +217,14 @@
 		"L"
 	], 
 	"dateFormatItem-MMM": "LLL", 
-	"pm": "ip.", 
-	"dateFormatItem-MMMMEd": "E d. MMMM", 
 	"dateFormat-short": "d.M.yyyy", 
 	"field-second": "sekunti", 
 	"dateFormatItem-yMMMEd": "EEE d. MMM y", 
+	"dayPeriods-am-standAlone-wide": "ap.", 
 	"field-week": "viikko", 
 	"dateFormat-medium": "d.M.yyyy", 
 	"dateFormatItem-yyyyM": "M/yyyy", 
 	"dateFormatItem-yyyyQQQQ": "QQQQ y", 
+	"dateFormatItem-Hms": "H.mm.ss", 
 	"dateFormatItem-hms": "h.mm.ss a"
 })

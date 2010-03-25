@@ -1,5 +1,5 @@
 ({
-	"dateFormatItem-yM": "M yyyy", 
+	"dateFormatItem-yM": "M y", 
 	"field-dayperiod": "AM/PM", 
 	"dateFormatItem-yQ": "Q yyyy", 
 	"field-minute": "minutt", 
@@ -8,7 +8,7 @@
 		"e.Kr."
 	], 
 	"dateFormatItem-MMMEd": "E d. MMM", 
-	"dateFormatItem-hms": "h.mm.ss a", 
+	"dateFormatItem-hms": "h:mm:ss a", 
 	"dateFormatItem-MMdd": "dd.MM", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-weekday": "ukedag", 
@@ -38,6 +38,7 @@
 	], 
 	"field-era": "tidsalder", 
 	"field-hour": "time", 
+	"dayPeriods-am-format-wide": "AM", 
 	"quarters-standAlone-abbr": [
 		"K1", 
 		"K2", 
@@ -45,7 +46,8 @@
 		"K4"
 	], 
 	"dateFormatItem-y": "y", 
-	"timeFormat-full": "'kl'. HH.mm.ss zzzz", 
+	"timeFormat-full": "'kl'. HH:mm:ss zzzz", 
+	"dayPeriods-pm-format-wide": "PM", 
 	"months-standAlone-abbr": [
 		"jan.", 
 		"feb.", 
@@ -76,12 +78,13 @@
 	], 
 	"dateFormatItem-yyyyMMMM": "MMMM y", 
 	"dateFormat-long": "d. MMMM y", 
-	"timeFormat-medium": "HH.mm.ss", 
+	"timeFormat-medium": "HH:mm:ss", 
 	"dateFormatItem-EEEd": "EEE d", 
 	"field-zone": "sone", 
-	"dateFormatItem-Hm": "HH.mm", 
+	"dateFormatItem-Hm": "HH:mm", 
 	"dateFormat-medium": "d. MMM y", 
 	"dateFormatItem-yyMM": "MM.yy", 
+	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"quarters-standAlone-wide": [
@@ -90,16 +93,8 @@
 		"3. kvartal", 
 		"4. kvartal"
 	], 
-	"dateFormatItem-yMMMM": "MMMM y", 
 	"dateFormatItem-ms": "mm.ss", 
 	"field-year": "år", 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
-	"dateFormatItem-HHmmss": "HH.mm.ss", 
 	"field-week": "uke", 
 	"months-standAlone-wide": [
 		"januar", 
@@ -115,10 +110,9 @@
 		"november", 
 		"desember"
 	], 
-	"dateFormatItem-MMMMEd": "E d. MMMM", 
 	"dateFormatItem-MMMd": "d. MMM", 
 	"dateFormatItem-yyQ": "Q yy", 
-	"timeFormat-long": "HH.mm.ss z", 
+	"timeFormat-long": "HH:mm:ss z", 
 	"months-format-abbr": [
 		"jan.", 
 		"feb.", 
@@ -133,9 +127,8 @@
 		"nov.", 
 		"des."
 	], 
-	"timeFormat-short": "HH.mm", 
+	"timeFormat-short": "HH:mm", 
 	"field-month": "måned", 
-	"dateFormatItem-MMMMd": "d. MMMM", 
 	"quarters-format-abbr": [
 		"K1", 
 		"K2", 
@@ -151,7 +144,6 @@
 		"fre.", 
 		"lør."
 	], 
-	"pm": "PM", 
 	"dateFormatItem-M": "L", 
 	"days-format-narrow": [
 		"S", 
@@ -179,8 +171,7 @@
 		"N", 
 		"D"
 	], 
-	"dateFormatItem-hm": "h.mm a", 
-	"am": "AM", 
+	"dateFormatItem-hm": "h:mm a", 
 	"days-standAlone-abbr": [
 		"søn.", 
 		"man.", 

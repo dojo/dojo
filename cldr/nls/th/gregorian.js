@@ -39,8 +39,10 @@
 	"dateTimeFormat-medium": "{1}, {0}", 
 	"field-era": "สมัย", 
 	"field-hour": "ชั่วโมง", 
+	"dayPeriods-am-format-wide": "ก่อนเที่ยง", 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "H นาฬิกา m นาที ss วินาที zzzz", 
+	"dayPeriods-pm-format-wide": "หลังเที่ยง", 
 	"months-standAlone-abbr": [
 		"ม.ค.", 
 		"ก.พ.", 
@@ -76,6 +78,7 @@
 	"field-zone": "เขต", 
 	"dateFormatItem-Hm": "H:mm", 
 	"dateFormat-medium": "d MMM y", 
+	"dateFormatItem-Hms": "H:mm:ss", 
 	"quarters-standAlone-wide": [
 		"ไตรมาส 1", 
 		"ไตรมาส 2", 
@@ -85,14 +88,7 @@
 	"dateFormatItem-yMMMM": "MMMM y", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-year": "ปี", 
-	"quarters-standAlone-narrow": [
-		"1", 
-		"2", 
-		"3", 
-		"4"
-	], 
 	"dateTimeFormat-long": "{1}, {0}", 
-	"dateFormatItem-HHmmss": "HH:mm:ss", 
 	"field-week": "สัปดาห์", 
 	"months-standAlone-wide": [
 		"มกราคม", 
@@ -110,7 +106,6 @@
 	], 
 	"dateFormatItem-MMMMEd": "E d MMMM", 
 	"dateFormatItem-MMMd": "d MMM", 
-	"dateFormatItem-HHmm": "HH:mm", 
 	"dateFormatItem-yyQ": "Q yy", 
 	"timeFormat-long": "H นาฬิกา m นาที ss วินาที z", 
 	"months-format-abbr": [
@@ -128,6 +123,7 @@
 		"ธ.ค."
 	], 
 	"timeFormat-short": "H:mm", 
+	"dateFormatItem-H": "H", 
 	"field-month": "เดือน", 
 	"quarters-format-abbr": [
 		"Q1", 
@@ -145,7 +141,6 @@
 		"ศ.", 
 		"ส."
 	], 
-	"pm": "หลังเที่ยง", 
 	"dateFormatItem-M": "L", 
 	"dateFormatItem-mmss": "mm:ss", 
 	"days-format-narrow": [
@@ -174,7 +169,6 @@
 		"พ.ย.", 
 		"ธ.ค."
 	], 
-	"am": "ก่อนเที่ยง", 
 	"days-standAlone-abbr": [
 		"อา.", 
 		"จ.", 
@@ -220,5 +214,8 @@
 		"วันศุกร์", 
 		"วันเสาร์"
 	], 
-	"eraNarrow": "ก่อน ค.ศ."
+	"eraNarrow": [
+		"ก่อน ค.ศ.", 
+		"ค.ศ."
+	]
 })

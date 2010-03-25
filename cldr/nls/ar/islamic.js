@@ -1,11 +1,11 @@
 ({
-	"dateFormatItem-yM": "M‏/yyyy", 
-	"dateFormatItem-yQ": "yyyy Q", 
-	"eraNames": [
+	"dateFormat-medium": "dd‏/MM‏/yyyy", 
+	"dateFormatItem-MMMEd": "E d MMM", 
+	"dateFormatItem-yMEd": "EEE، d/‏M/‏yyyy", 
+	"eraNarrow": [
 		"هـ"
 	], 
-	"dateFormatItem-MMMEd": "E d MMM", 
-	"months-standAlone-narrow": [
+	"months-format-narrow": [
 		"م", 
 		"ص", 
 		"ر", 
@@ -20,42 +20,20 @@
 		"ذ"
 	], 
 	"timeFormat-full": "zzzz h:mm:ss a", 
-	"months-standAlone-abbr": [
-		"محرم", 
-		"صفر", 
-		"ربيع الأول", 
-		"ربيع الآخر", 
-		"جمادى الأولى", 
-		"جمادى الآخرة", 
-		"رجب", 
-		"شعبان", 
-		"رمضان", 
-		"شوال", 
-		"ذو القعدة", 
-		"ذو الحجة"
-	], 
-	"dateFormatItem-yMMM": "MMM y", 
-	"days-standAlone-narrow": [
-		"ح", 
-		"ن", 
-		"ث", 
+	"dateFormatItem-Md": "d/‏M", 
+	"months-standAlone-narrow": [
+		"م", 
+		"ص", 
 		"ر", 
-		"خ", 
+		"ر", 
 		"ج", 
-		"س"
-	], 
-	"eraAbbr": [
-		"هـ"
-	], 
-	"dateFormat-long": "d MMMM، y", 
-	"timeFormat-medium": "h:mm:ss a", 
-	"dateFormat-medium": "dd‏/MM‏/yyyy", 
-	"dateFormatItem-yMMMM": "MMMM y", 
-	"quarters-standAlone-narrow": [
-		"١", 
-		"٢", 
-		"٣", 
-		"٤"
+		"ج", 
+		"ر", 
+		"ش", 
+		"ر", 
+		"ش", 
+		"ذ", 
+		"ذ"
 	], 
 	"months-standAlone-wide": [
 		"محرم", 
@@ -71,10 +49,19 @@
 		"ذو القعدة", 
 		"ذو الحجة"
 	], 
-	"dateFormatItem-MMMMEd": "E d MMMM", 
-	"dateFormatItem-MMMd": "d MMM", 
-	"timeFormat-long": "z h:mm:ss a", 
-	"months-format-abbr": [
+	"eraNames": [
+		"هـ"
+	], 
+	"days-standAlone-narrow": [
+		"ح", 
+		"ن", 
+		"ث", 
+		"ر", 
+		"خ", 
+		"ج", 
+		"س"
+	], 
+	"months-standAlone-abbr": [
 		"محرم", 
 		"صفر", 
 		"ربيع الأول", 
@@ -88,44 +75,16 @@
 		"ذو القعدة", 
 		"ذو الحجة"
 	], 
-	"timeFormat-short": "h:mm a", 
-	"dateFormatItem-MMMMd": "d MMMM", 
-	"quarters-format-abbr": [
-		"الربع الأول", 
-		"الربع الثاني", 
-		"الربع الثالث", 
-		"الربع الرابع"
+	"quarters-standAlone-narrow": [
+		"١", 
+		"٢", 
+		"٣", 
+		"٤"
 	], 
-	"days-format-abbr": [
-		"أحد", 
-		"إثنين", 
-		"ثلاثاء", 
-		"أربعاء", 
-		"خميس", 
-		"جمعة", 
-		"سبت"
-	], 
-	"pm": "م", 
-	"months-format-narrow": [
-		"م", 
-		"ص", 
-		"ر", 
-		"ر", 
-		"ج", 
-		"ج", 
-		"ر", 
-		"ش", 
-		"ر", 
-		"ش", 
-		"ذ", 
-		"ذ"
-	], 
-	"am": "ص", 
+	"timeFormat-medium": "h:mm:ss a", 
+	"dateFormat-long": "d MMMM، y", 
 	"dateFormat-short": "d‏/M‏/yyyy", 
 	"dateFormatItem-yMMMEd": "EEE، d MMMM y", 
-	"dateFormat-full": "EEEE، d MMMM، y", 
-	"dateFormatItem-Md": "d‏/M", 
-	"dateFormatItem-yMEd": "EEE، d/‏M/‏yyyy", 
 	"months-format-wide": [
 		"محرم", 
 		"صفر", 
@@ -140,12 +99,26 @@
 		"ذو القعدة", 
 		"ذو الحجة"
 	], 
-	"quarters-format-wide": [
-		"الربع الأول", 
-		"الربع الثاني", 
-		"الربع الثالث", 
-		"الربع الرابع"
+	"dateFormatItem-yM": "M‏/yyyy", 
+	"timeFormat-short": "h:mm a", 
+	"months-format-abbr": [
+		"محرم", 
+		"صفر", 
+		"ربيع الأول", 
+		"ربيع الآخر", 
+		"جمادى الأولى", 
+		"جمادى الآخرة", 
+		"رجب", 
+		"شعبان", 
+		"رمضان", 
+		"شوال", 
+		"ذو القعدة", 
+		"ذو الحجة"
 	], 
+	"eraAbbr": [
+		"هـ"
+	], 
+	"timeFormat-long": "z h:mm:ss a", 
 	"days-format-wide": [
 		"الأحد", 
 		"الإثنين", 
@@ -155,7 +128,25 @@
 		"الجمعة", 
 		"السبت"
 	], 
-	"eraNarrow": [
-		"هـ"
+	"dateFormatItem-yQ": "yyyy Q", 
+	"dateFormatItem-yMMM": "MMM y", 
+	"quarters-format-wide": [
+		"الربع الأول", 
+		"الربع الثاني", 
+		"الربع الثالث", 
+		"الربع الرابع"
+	], 
+	"dayPeriods-pm-format-wide": "م", 
+	"dayPeriods-am-format-wide": "ص", 
+	"dateFormat-full": "EEEE، d MMMM، y", 
+	"dateFormatItem-MMMd": "d MMM", 
+	"days-format-abbr": [
+		"أحد", 
+		"إثنين", 
+		"ثلاثاء", 
+		"أربعاء", 
+		"خميس", 
+		"جمعة", 
+		"سبت"
 	]
 })

@@ -22,8 +22,8 @@
 		"av. J.-C.", 
 		"ap. J.-C."
 	], 
+	"dayPeriods-format-wide-morning": "matin", 
 	"dateFormatItem-MMMdd": "dd MMM", 
-	"dayPeriods-pm-format-wide": "PM", 
 	"dateFormat-long": "d MMMM y", 
 	"months-format-wide": [
 		"janvier", 
@@ -40,10 +40,10 @@
 		"décembre"
 	], 
 	"dateFormatItem-EEEd": "d EEE", 
+	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormat-full": "EEEE d MMMM y", 
-	"dayPeriods-afternoon-format-wide": "après-midi", 
 	"dateFormatItem-Md": "d/M", 
-	"dayPeriods-morning-format-wide": "matin", 
+	"dayPeriods-format-wide-noon": "midi", 
 	"field-era": "ère", 
 	"dateFormatItem-yM": "M/yyyy", 
 	"months-standAlone-wide": [
@@ -129,7 +129,6 @@
 	"dateFormatItem-yyMMMEEEd": "EEE d MMM yy", 
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"timeFormat-medium": "HH:mm:ss", 
-	"dayPeriods-am-format-wide": "AM", 
 	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
 		"T1", 
@@ -152,6 +151,7 @@
 		"ven.", 
 		"sam."
 	], 
+	"dayPeriods-format-wide-night": "soir", 
 	"dateFormatItem-yyMMMd": "d MMM yy", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
@@ -223,14 +223,14 @@
 		"S"
 	], 
 	"dateFormatItem-MMM": "LLL", 
+	"dayPeriods-format-wide-am": "AM", 
 	"dateFormatItem-MMMMEd": "EEE d MMMM", 
-	"dayPeriods-night-format-wide": "soir", 
 	"dateFormat-short": "dd/MM/yy", 
 	"dateFormatItem-MMd": "d/MM", 
+	"dayPeriods-format-wide-afternoon": "après-midi", 
 	"field-second": "seconde", 
 	"dateFormatItem-yMMMEd": "EEE d MMM y", 
 	"field-week": "semaine", 
 	"dateFormat-medium": "d MMM y", 
-	"dayPeriods-noon-format-wide": "midi", 
 	"dateFormatItem-Hms": "HH:mm:ss"
 })

@@ -46,6 +46,8 @@
 	"dateFormatItem-y": "y", 
 	"dateFormatItem-yyMMMEEEd": "EEE, d 'de' MMM 'de' yy", 
 	"timeFormat-full": "HH'h'mm'min'ss's' zzzz", 
+	"dayPeriods-format-wide-afternoon": "tarde", 
+	"dayPeriods-format-wide-night": "noite", 
 	"months-standAlone-abbr": [
 		"jan", 
 		"fev", 
@@ -82,7 +84,6 @@
 	"dateFormatItem-Hm": "HH'h'mm", 
 	"dateFormat-medium": "dd/MM/yyyy", 
 	"dateFormatItem-yyMM": "MM/yy", 
-	"dayPeriods-morning-format-wide": "manhã", 
 	"dateFormatItem-yyMMM": "MMM 'de' yy", 
 	"quarters-standAlone-wide": [
 		"1º trimestre", 
@@ -111,6 +112,7 @@
 	], 
 	"dateFormatItem-MMMd": "d 'de' MMM", 
 	"dateFormatItem-HHmm": "HH'h'mm", 
+	"dayPeriods-format-wide-morning": "manhã", 
 	"dateFormatItem-yyQ": "Q yy", 
 	"timeFormat-long": "HH'h'mm'min'ss's' z", 
 	"months-format-abbr": [
@@ -127,7 +129,7 @@
 		"nov", 
 		"dez"
 	], 
-	"dayPeriods-afternoon-format-wide": "tarde", 
+	"dayPeriods-format-wide-noon": "meio-dia", 
 	"timeFormat-short": "HH:mm", 
 	"field-month": "Mês", 
 	"quarters-format-abbr": [
@@ -172,7 +174,6 @@
 		"N", 
 		"D"
 	], 
-	"dayPeriods-night-format-wide": "noite", 
 	"days-standAlone-abbr": [
 		"dom", 
 		"seg", 
@@ -186,7 +187,6 @@
 	"dateFormatItem-yMMMEd": "EEE, d 'de' MMM 'de' y", 
 	"dateFormat-full": "EEEE, d 'de' MMMM 'de' y", 
 	"dateFormatItem-Md": "d/M", 
-	"dayPeriods-noon-format-wide": "meio-dia", 
 	"dateFormatItem-yMEd": "EEE, dd/MM/yyyy", 
 	"months-format-wide": [
 		"janeiro", 

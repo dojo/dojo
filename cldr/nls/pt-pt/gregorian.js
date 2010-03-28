@@ -5,8 +5,7 @@
 		"3.º trimestre", 
 		"4.º trimestre"
 	], 
-	"dayPeriods-pm-format-abbr": "p.m.", 
-	"dayPeriods-am-format-abbr": "a.m.", 
+	"dayPeriods-standAlone-wide-am": "a.m.", 
 	"quarters-format-abbr": [
 		"1.º trimestre", 
 		"2.º trimestre", 
@@ -20,6 +19,7 @@
 		"3.º trimestre", 
 		"4.º trimestre"
 	], 
+	"dayPeriods-standAlone-abbr-pm": "p.m.", 
 	"dateFormatItem-hm": "h:mm", 
 	"months-standAlone-wide": [
 		"Janeiro", 
@@ -35,6 +35,8 @@
 		"Novembro", 
 		"Dezembro"
 	], 
+	"dayPeriods-standAlone-abbr-am": "a.m.", 
+	"dayPeriods-format-wide-pm": "Depois do meio-dia", 
 	"months-standAlone-abbr": [
 		"Jan", 
 		"Fev", 
@@ -50,9 +52,10 @@
 		"Dez"
 	], 
 	"dateFormatItem-yQQQ": "QQQ 'de' y", 
-	"dayPeriods-am-standAlone-wide": "a.m.", 
-	"dayPeriods-am-standAlone-abbr": "a.m.", 
+	"dayPeriods-format-wide-am": "Antes do meio-dia", 
+	"dayPeriods-format-abbr-pm": "p.m.", 
 	"dateFormatItem-yyQ": "QQQ 'de' yy", 
+	"dayPeriods-format-abbr-am": "a.m.", 
 	"months-format-wide": [
 		"Janeiro", 
 		"Fevereiro", 
@@ -76,7 +79,6 @@
 		"Sexta-feira", 
 		"Sábado"
 	], 
-	"dayPeriods-pm-standAlone-wide": "p.m.", 
 	"months-format-abbr": [
 		"Jan", 
 		"Fev", 
@@ -117,9 +119,7 @@
 		"3.º trimestre", 
 		"4.º trimestre"
 	], 
-	"dayPeriods-pm-format-wide": "Depois do meio-dia", 
-	"dayPeriods-am-format-wide": "Antes do meio-dia", 
-	"dayPeriods-pm-standAlone-abbr": "p.m.", 
+	"dayPeriods-standAlone-wide-pm": "p.m.", 
 	"days-format-abbr": [
 		"Domingo", 
 		"Segunda-feira", 

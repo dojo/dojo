@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "M.yyyy", 
 	"field-dayperiod": "לפה״צ/אחה״צ", 
+	"dayPeriods-format-wide-pm": "אחה״צ", 
 	"dateFormatItem-yQ": "yyyy Q", 
 	"field-minute": "דקה", 
 	"eraNames": [
@@ -22,9 +23,9 @@
 		"יום שבת"
 	], 
 	"dateFormatItem-MMM": "LLL", 
+	"dayPeriods-format-wide-am": "לפנה״צ", 
 	"field-era": "תקופה", 
 	"field-hour": "שעה", 
-	"dayPeriods-am-format-wide": "לפנה״צ", 
 	"quarters-standAlone-abbr": [
 		"רבעון 1", 
 		"רבעון 2", 
@@ -34,7 +35,6 @@
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "HH:mm:ss zzzz", 
 	"dateFormatItem-yyyy": "y", 
-	"dayPeriods-pm-format-wide": "אחה״צ", 
 	"months-standAlone-abbr": [
 		"ינו׳", 
 		"פבר׳", 

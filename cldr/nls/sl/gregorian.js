@@ -1,5 +1,6 @@
 ({
 	"field-dayperiod": "Čas dneva", 
+	"dayPeriods-format-wide-pm": "pop.", 
 	"field-minute": "Minuta", 
 	"eraNames": [
 		"pred našim štetjem", 
@@ -30,11 +31,10 @@
 		"d"
 	], 
 	"field-era": "Doba", 
+	"dayPeriods-format-wide-am": "dop.", 
 	"field-hour": "Ura", 
-	"dayPeriods-am-format-wide": "dop.", 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "HH:mm:ss zzzz", 
-	"dayPeriods-pm-format-wide": "pop.", 
 	"months-standAlone-abbr": [
 		"jan", 
 		"feb", 

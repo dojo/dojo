@@ -14,7 +14,6 @@
 		"שבט", 
 		"אדר א׳", 
 		"אדר", 
-		"אדר ב׳", 
 		"ניסן", 
 		"אייר", 
 		"סיון", 
@@ -22,6 +21,7 @@
 		"אב", 
 		"אלול"
 	], 
+	"months-format-wide-leap": "אדר ב׳", 
 	"dateFormatItem-EEEd": "EEE ה-d", 
 	"eraNames": [
 		"לבה״ע"
@@ -36,6 +36,7 @@
 		"ו", 
 		"ש"
 	], 
+	"dayPeriods-format-wide-pm": "אחה״צ", 
 	"months-standAlone-abbr": [
 		"תשרי", 
 		"חשון", 
@@ -44,7 +45,6 @@
 		"שבט", 
 		"אדר א׳", 
 		"אדר", 
-		"אדר ב׳", 
 		"ניסן", 
 		"אייר", 
 		"סיון", 
@@ -52,6 +52,7 @@
 		"אב", 
 		"אלול"
 	], 
+	"dayPeriods-format-wide-am": "לפנה״צ", 
 	"dateFormat-long": "d בMMMM y", 
 	"dateFormat-short": "dd/MM/yy", 
 	"dateFormatItem-yMMMEd": "EEE, d בMMM y", 
@@ -63,7 +64,6 @@
 		"שבט", 
 		"אדר א׳", 
 		"אדר", 
-		"אדר ב׳", 
 		"ניסן", 
 		"אייר", 
 		"סיון", 
@@ -80,7 +80,6 @@
 		"שבט", 
 		"אדר א׳", 
 		"אדר", 
-		"אדר ב׳", 
 		"ניסן", 
 		"אייר", 
 		"סיון", 
@@ -108,8 +107,6 @@
 		"רבעון 3", 
 		"רבעון 4"
 	], 
-	"dayPeriods-pm-format-wide": "אחה״צ", 
-	"dayPeriods-am-format-wide": "לפנה״צ", 
 	"dateFormat-full": "EEEE, d בMMMM y", 
 	"dateFormatItem-MMMd": "d בMMM", 
 	"days-format-abbr": [

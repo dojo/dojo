@@ -7,7 +7,6 @@
 		"Shevat", 
 		"Adar I", 
 		"Adar", 
-		"Adar II", 
 		"Nisan", 
 		"Iyar", 
 		"Sivan", 
@@ -22,13 +21,13 @@
 		"4"
 	], 
 	"dateFormatItem-yQQQ": "y QQQ", 
+	"months-standAlone-narrow-leap": "Adar II", 
 	"dateFormatItem-yMEd": "EEE, y-M-d", 
 	"dateFormatItem-MMMEd": "E MMM d", 
 	"eraNarrow": [
 		"AM"
 	], 
 	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}", 
-	"dayPeriods-pm-format-wide": "PM", 
 	"dateFormat-long": "y MMMM d", 
 	"months-format-wide": [
 		"Tishri", 
@@ -38,7 +37,6 @@
 		"Shevat", 
 		"Adar I", 
 		"Adar", 
-		"Adar II", 
 		"Nisan", 
 		"Iyar", 
 		"Sivan", 
@@ -48,10 +46,11 @@
 	], 
 	"dateTimeFormat-medium": "{1} {0}", 
 	"dateFormatItem-EEEd": "d EEE", 
+	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormat-full": "EEEE, y MMMM dd", 
 	"dateFormatItem-Md": "M-d", 
+	"dayPeriods-format-abbr-am": "AM", 
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})", 
-	"dayPeriods-pm-format-abbr": "PM", 
 	"dateFormatItem-yM": "y-M", 
 	"months-standAlone-wide": [
 		"Tishri", 
@@ -61,7 +60,6 @@
 		"Shevat", 
 		"Adar I", 
 		"Adar", 
-		"Adar II", 
 		"Nisan", 
 		"Iyar", 
 		"Sivan", 
@@ -80,6 +78,7 @@
 	"dateFormatItem-yMMM": "y MMM", 
 	"dateFormatItem-yQ": "y Q", 
 	"dateTimeFormats-appendItem-Era": "{0} {1}", 
+	"months-format-abbr-leap": "Adar II", 
 	"months-format-abbr": [
 		"Tishri", 
 		"Heshvan", 
@@ -88,7 +87,6 @@
 		"Shevat", 
 		"Adar I", 
 		"Adar", 
-		"Adar II", 
 		"Nisan", 
 		"Iyar", 
 		"Sivan", 
@@ -107,7 +105,6 @@
 		"Shevat", 
 		"Adar I", 
 		"Adar", 
-		"Adar II", 
 		"Nisan", 
 		"Iyar", 
 		"Sivan", 
@@ -137,9 +134,8 @@
 		"6", 
 		"7"
 	], 
+	"months-standAlone-wide-leap": "Adar II", 
 	"timeFormat-medium": "HH:mm:ss", 
-	"dayPeriods-am-format-wide": "AM", 
-	"dayPeriods-am-format-narrow": "AM", 
 	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
 		"Q1", 
@@ -147,6 +143,7 @@
 		"Q3", 
 		"Q4"
 	], 
+	"months-format-narrow-leap": "Adar II", 
 	"eraAbbr": [
 		"AM"
 	], 
@@ -169,7 +166,7 @@
 	], 
 	"dateFormatItem-h": "h a", 
 	"dateTimeFormat-long": "{1} {0}", 
-	"dayPeriods-am-format-abbr": "AM", 
+	"dayPeriods-format-narrow-am": "AM", 
 	"dateFormatItem-MMMd": "MMM d", 
 	"dateFormatItem-MEd": "E, M-d", 
 	"dateTimeFormat-full": "{1} {0}", 
@@ -182,6 +179,7 @@
 		"6", 
 		"7"
 	], 
+	"months-standAlone-abbr-leap": "Adar II", 
 	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})", 
 	"dateFormatItem-y": "y", 
 	"months-standAlone-narrow": [
@@ -192,7 +190,6 @@
 		"Shevat", 
 		"Adar I", 
 		"Adar", 
-		"Adar II", 
 		"Nisan", 
 		"Iyar", 
 		"Sivan", 
@@ -203,6 +200,7 @@
 	"dateFormatItem-hm": "h:mm a", 
 	"dateTimeFormats-appendItem-Year": "{0} {1}", 
 	"dateTimeFormats-appendItem-Hour": "{0} ({2}: {1})", 
+	"dayPeriods-format-abbr-pm": "PM", 
 	"days-format-abbr": [
 		"1", 
 		"2", 
@@ -235,14 +233,16 @@
 	], 
 	"dateFormatItem-MMM": "LLL", 
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})", 
+	"dayPeriods-format-wide-am": "AM", 
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})", 
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})", 
 	"dateFormat-short": "yyyy-MM-dd", 
 	"dateFormatItem-yMMMEd": "EEE, y MMM d", 
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}", 
 	"dateFormat-medium": "y MMM d", 
+	"dayPeriods-format-narrow-pm": "PM", 
 	"dateTimeFormat-short": "{1} {0}", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a", 
-	"dayPeriods-pm-format-narrow": "PM"
+	"months-format-wide-leap": "Adar II"
 })

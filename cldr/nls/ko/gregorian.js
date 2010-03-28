@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "yyyy. M.", 
 	"field-dayperiod": "오전/오후", 
+	"dayPeriods-format-wide-pm": "오후", 
 	"dateFormatItem-yQ": "y년 Q분기", 
 	"field-minute": "분", 
 	"eraNames": [
@@ -37,10 +38,10 @@
 		"12월"
 	], 
 	"dateTimeFormat-short": "{1} {0}", 
+	"dayPeriods-format-wide-am": "오전", 
 	"dateTimeFormat-medium": "{1} {0}", 
 	"field-era": "연호", 
 	"field-hour": "시", 
-	"dayPeriods-am-format-wide": "오전", 
 	"quarters-standAlone-abbr": [
 		"1분기", 
 		"2분기", 
@@ -49,7 +50,6 @@
 	], 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "a h시 m분 s초 zzzz", 
-	"dayPeriods-pm-format-wide": "오후", 
 	"months-standAlone-abbr": [
 		"1월", 
 		"2월", 

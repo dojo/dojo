@@ -27,7 +27,6 @@
 		"f.Kr.", 
 		"e.Kr."
 	], 
-	"dayPeriods-pm-format-wide": "em", 
 	"dateFormat-long": "d MMMM y", 
 	"months-format-wide": [
 		"januari", 
@@ -44,6 +43,7 @@
 		"december"
 	], 
 	"dateFormatItem-EEEd": "EEE d", 
+	"dayPeriods-format-wide-pm": "em", 
 	"dateFormat-full": "EEEE'en' 'den' d:'e' MMMM y", 
 	"dateFormatItem-Md": "d/M", 
 	"dateFormatItem-MMMMEEEd": "EEE d MMMM", 
@@ -132,7 +132,6 @@
 	"dateFormatItem-MMMMd": "d:'e' MMMM", 
 	"dateFormatItem-yyMMM": "MMM -yy", 
 	"timeFormat-medium": "HH:mm:ss", 
-	"dayPeriods-am-format-wide": "fm", 
 	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
 		"K1", 
@@ -221,6 +220,7 @@
 		"L"
 	], 
 	"dateFormatItem-MMM": "LLL", 
+	"dayPeriods-format-wide-am": "fm", 
 	"dateFormatItem-MMMMEd": "E d:'e' MMMM", 
 	"dateFormat-short": "yyyy-MM-dd", 
 	"dateFormatItem-MMd": "d/M", 

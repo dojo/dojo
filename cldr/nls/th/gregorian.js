@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "M/yyyy", 
 	"field-dayperiod": "ช่วงวัน", 
+	"dayPeriods-format-wide-pm": "หลังเที่ยง", 
 	"dateFormatItem-yQ": "Q yyyy", 
 	"field-minute": "นาที", 
 	"eraNames": [
@@ -36,13 +37,12 @@
 		"ธ.ค."
 	], 
 	"dateTimeFormat-short": "{1}, {0}", 
+	"dayPeriods-format-wide-am": "ก่อนเที่ยง", 
 	"dateTimeFormat-medium": "{1}, {0}", 
 	"field-era": "สมัย", 
 	"field-hour": "ชั่วโมง", 
-	"dayPeriods-am-format-wide": "ก่อนเที่ยง", 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "H นาฬิกา m นาที ss วินาที zzzz", 
-	"dayPeriods-pm-format-wide": "หลังเที่ยง", 
 	"months-standAlone-abbr": [
 		"ม.ค.", 
 		"ก.พ.", 

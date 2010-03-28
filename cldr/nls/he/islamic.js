@@ -33,6 +33,7 @@
 		"ו", 
 		"ש"
 	], 
+	"dayPeriods-format-wide-pm": "אחה״צ", 
 	"months-standAlone-abbr": [
 		"מוחרם", 
 		"ספר", 
@@ -47,6 +48,7 @@
 		"זו אל-QI'DAH", 
 		"זו אל-חיג׳ה"
 	], 
+	"dayPeriods-format-wide-am": "לפנה״צ", 
 	"dateFormat-long": "d בMMMM y", 
 	"dateFormat-short": "dd/MM/yy", 
 	"dateFormatItem-yMMMEd": "EEE, d בMMM y", 
@@ -99,8 +101,6 @@
 		"רבעון 3", 
 		"רבעון 4"
 	], 
-	"dayPeriods-pm-format-wide": "אחה״צ", 
-	"dayPeriods-am-format-wide": "לפנה״צ", 
 	"dateFormat-full": "EEEE, d בMMMM y", 
 	"dateFormatItem-MMMd": "d בMMM", 
 	"days-format-abbr": [

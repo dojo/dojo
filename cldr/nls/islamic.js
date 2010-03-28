@@ -26,7 +26,6 @@
 		"AH"
 	], 
 	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}", 
-	"dayPeriods-pm-format-wide": "PM", 
 	"dateFormat-long": "y MMMM d", 
 	"months-format-wide": [
 		"Muharram", 
@@ -44,10 +43,11 @@
 	], 
 	"dateTimeFormat-medium": "{1} {0}", 
 	"dateFormatItem-EEEd": "d EEE", 
+	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormat-full": "EEEE, y MMMM dd", 
 	"dateFormatItem-Md": "M-d", 
+	"dayPeriods-format-abbr-am": "AM", 
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})", 
-	"dayPeriods-pm-format-abbr": "PM", 
 	"dateFormatItem-yM": "y-M", 
 	"months-standAlone-wide": [
 		"Muharram", 
@@ -128,8 +128,6 @@
 		"7"
 	], 
 	"timeFormat-medium": "HH:mm:ss", 
-	"dayPeriods-am-format-wide": "AM", 
-	"dayPeriods-am-format-narrow": "AM", 
 	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
 		"Q1", 
@@ -159,7 +157,7 @@
 	], 
 	"dateFormatItem-h": "h a", 
 	"dateTimeFormat-long": "{1} {0}", 
-	"dayPeriods-am-format-abbr": "AM", 
+	"dayPeriods-format-narrow-am": "AM", 
 	"dateFormatItem-MMMd": "MMM d", 
 	"dateFormatItem-MEd": "E, M-d", 
 	"dateTimeFormat-full": "{1} {0}", 
@@ -191,6 +189,7 @@
 	"dateFormatItem-hm": "h:mm a", 
 	"dateTimeFormats-appendItem-Year": "{0} {1}", 
 	"dateTimeFormats-appendItem-Hour": "{0} ({2}: {1})", 
+	"dayPeriods-format-abbr-pm": "PM", 
 	"days-format-abbr": [
 		"1", 
 		"2", 
@@ -223,14 +222,15 @@
 	], 
 	"dateFormatItem-MMM": "LLL", 
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})", 
+	"dayPeriods-format-wide-am": "AM", 
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})", 
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})", 
 	"dateFormat-short": "yyyy-MM-dd", 
 	"dateFormatItem-yMMMEd": "EEE, y MMM d", 
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}", 
 	"dateFormat-medium": "y MMM d", 
+	"dayPeriods-format-narrow-pm": "PM", 
 	"dateTimeFormat-short": "{1} {0}", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
-	"dateFormatItem-hms": "h:mm:ss a", 
-	"dayPeriods-pm-format-narrow": "PM"
+	"dateFormatItem-hms": "h:mm:ss a"
 })

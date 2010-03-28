@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "M/yyyy", 
 	"dateFormatItem-yQ": "Q yyyy", 
+	"dayPeriods-format-wide-pm": "หลังเที่ยง", 
 	"eraNames": [
 		"พุทธศักราช"
 	], 
@@ -20,9 +21,8 @@
 		"พ.ย.", 
 		"ธ.ค."
 	], 
-	"dayPeriods-am-format-wide": "ก่อนเที่ยง", 
+	"dayPeriods-format-wide-am": "ก่อนเที่ยง", 
 	"timeFormat-full": "H นาฬิกา m นาที ss วินาที zzzz", 
-	"dayPeriods-pm-format-wide": "หลังเที่ยง", 
 	"dateFormatItem-yMMM": "MMM y", 
 	"days-standAlone-narrow": [
 		"อ", 

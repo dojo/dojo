@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "M/yyyy", 
 	"field-dayperiod": "a.m./p.m.", 
+	"dayPeriods-format-wide-pm": "p.m.", 
 	"dateFormatItem-yQ": "Q yyyy", 
 	"field-minute": "minut", 
 	"dateFormatItem-MMMEd": "E d MMM", 
@@ -35,9 +36,9 @@
 		"n", 
 		"d"
 	], 
+	"dayPeriods-format-wide-am": "a.m.", 
 	"field-era": "era", 
 	"field-hour": "hora", 
-	"dayPeriods-am-format-wide": "a.m.", 
 	"quarters-standAlone-abbr": [
 		"1T", 
 		"2T", 
@@ -46,7 +47,6 @@
 	], 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "H:mm:ss zzzz", 
-	"dayPeriods-pm-format-wide": "p.m.", 
 	"months-standAlone-abbr": [
 		"gen.", 
 		"febr.", 

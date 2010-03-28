@@ -7,7 +7,6 @@
 		"BC", 
 		"AD"
 	], 
-	"dayPeriods-pm-format-wide": "午後", 
 	"dateFormat-long": "y年M月d日", 
 	"months-format-wide": [
 		"1月", 
@@ -24,6 +23,7 @@
 		"12月"
 	], 
 	"dateTimeFormat-medium": "{1} {0}", 
+	"dayPeriods-format-wide-pm": "午後", 
 	"dateFormat-full": "y年M月d日EEEE", 
 	"dateFormatItem-Md": "M/d", 
 	"dateFormatItem-yMd": "y/M/d", 
@@ -111,7 +111,6 @@
 	], 
 	"dateFormatItem-yyMMM": "y年M月", 
 	"timeFormat-medium": "H:mm:ss", 
-	"dayPeriods-am-format-wide": "午前", 
 	"dateFormatItem-Hm": "H:mm", 
 	"eraAbbr": [
 		"BC", 
@@ -198,6 +197,7 @@
 		"土"
 	], 
 	"dateFormatItem-MMM": "LLL", 
+	"dayPeriods-format-wide-am": "午前", 
 	"dateFormat-short": "yy/MM/dd", 
 	"field-second": "秒", 
 	"dateFormatItem-yMMMEd": "y年M月d日(EEE)", 

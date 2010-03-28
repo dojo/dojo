@@ -22,7 +22,6 @@
 		"π.Χ.", 
 		"μ.Χ."
 	], 
-	"dayPeriods-pm-format-wide": "μ.μ.", 
 	"dateFormat-long": "d MMMM y", 
 	"months-format-wide": [
 		"Ιανουαρίου", 
@@ -39,6 +38,7 @@
 		"Δεκεμβρίου"
 	], 
 	"dateFormatItem-EEEd": "EEE d", 
+	"dayPeriods-format-wide-pm": "μ.μ.", 
 	"dateFormat-full": "EEEE, d MMMM y", 
 	"dateFormatItem-Md": "d/M", 
 	"field-era": "Περίοδος", 
@@ -128,7 +128,6 @@
 	"dateFormatItem-MMMMd": "d MMMM", 
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"timeFormat-medium": "h:mm:ss a", 
-	"dayPeriods-am-format-wide": "π.μ.", 
 	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
 		"Τ1", 
@@ -218,6 +217,7 @@
 	], 
 	"dateFormatItem-MMM": "LLL", 
 	"dateFormatItem-HHmm": "HH:mm", 
+	"dayPeriods-format-wide-am": "π.μ.", 
 	"dateFormatItem-MMMMEd": "E, d MMMM", 
 	"dateFormatItem-MMMMdd": "dd MMMM", 
 	"dateFormat-short": "d/M/yy", 

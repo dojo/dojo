@@ -16,14 +16,13 @@
 	"field-weekday": "Dzień tygodnia", 
 	"dateFormatItem-yQQQ": "y QQQ", 
 	"dateFormatItem-yMEd": "EEE, d-M-y", 
-	"dayPeriods-earlyMorning-format-wide": "nad ranem", 
 	"dateFormatItem-MMMEd": "d MMM E", 
-	"dayPeriods-evening-format-wide": "wieczorem", 
 	"eraNarrow": [
 		"p.n.e.", 
 		"n.e."
 	], 
-	"dayPeriods-pm-format-wide": "PM", 
+	"dayPeriods-format-wide-earlyMorning": "nad ranem", 
+	"dayPeriods-format-wide-morning": "rano", 
 	"dateFormat-long": "d MMMM y", 
 	"months-format-wide": [
 		"stycznia", 
@@ -39,10 +38,11 @@
 		"listopada", 
 		"grudnia"
 	], 
+	"dayPeriods-format-wide-evening": "wieczorem", 
+	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormat-full": "EEEE, d MMMM y", 
-	"dayPeriods-afternoon-format-wide": "po południu", 
 	"dateFormatItem-Md": "d-M", 
-	"dayPeriods-morning-format-wide": "rano", 
+	"dayPeriods-format-wide-noon": "w południe", 
 	"field-era": "Era", 
 	"dateFormatItem-yM": "M-y", 
 	"months-standAlone-wide": [
@@ -127,7 +127,6 @@
 	"dateFormatItem-MMMMd": "d MMMM", 
 	"dateFormatItem-yyMMM": "MMM yy", 
 	"timeFormat-medium": "HH:mm:ss", 
-	"dayPeriods-am-format-wide": "AM", 
 	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
 		"1 kw.", 
@@ -150,11 +149,13 @@
 		"pt.", 
 		"sob."
 	], 
+	"dayPeriods-format-wide-night": "w nocy", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
 	"dateFormatItem-h": "hh a", 
 	"dateFormatItem-MMMd": "d MMM", 
 	"dateFormatItem-MEd": "E, d-M", 
+	"dayPeriods-format-wide-lateMorning": "przed południem", 
 	"dateFormatItem-yMMMM": "LLLL y", 
 	"field-day": "Dzień", 
 	"days-format-wide": [
@@ -218,14 +219,13 @@
 		"S"
 	], 
 	"dateFormatItem-MMM": "LLL", 
-	"dayPeriods-night-format-wide": "w nocy", 
+	"dayPeriods-format-wide-am": "AM", 
 	"dateFormat-short": "dd-MM-yy", 
+	"dayPeriods-format-wide-afternoon": "po południu", 
 	"field-second": "Sekunda", 
 	"dateFormatItem-yMMMEd": "EEE, d MMM y", 
-	"dayPeriods-lateMorning-format-wide": "przed południem", 
 	"field-week": "Tydzień", 
 	"dateFormat-medium": "dd-MM-yyyy", 
-	"dayPeriods-noon-format-wide": "w południe", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "hh:mm:ss a"
 })

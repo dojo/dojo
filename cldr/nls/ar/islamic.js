@@ -61,6 +61,7 @@
 		"ج", 
 		"س"
 	], 
+	"dayPeriods-format-wide-pm": "م", 
 	"months-standAlone-abbr": [
 		"محرم", 
 		"صفر", 
@@ -75,6 +76,7 @@
 		"ذو القعدة", 
 		"ذو الحجة"
 	], 
+	"dayPeriods-format-wide-am": "ص", 
 	"quarters-standAlone-narrow": [
 		"١", 
 		"٢", 
@@ -136,8 +138,6 @@
 		"الربع الثالث", 
 		"الربع الرابع"
 	], 
-	"dayPeriods-pm-format-wide": "م", 
-	"dayPeriods-am-format-wide": "ص", 
 	"dateFormat-full": "EEEE، d MMMM، y", 
 	"dateFormatItem-MMMd": "d MMM", 
 	"days-format-abbr": [

@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "M-y", 
 	"field-dayperiod": "AM/PM", 
+	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormatItem-yQ": "Q yyyy", 
 	"field-minute": "Minuut", 
 	"eraNames": [
@@ -35,9 +36,9 @@
 		"N", 
 		"D"
 	], 
+	"dayPeriods-format-wide-am": "AM", 
 	"field-era": "Tijdperk", 
 	"field-hour": "Uur", 
-	"dayPeriods-am-format-wide": "AM", 
 	"quarters-standAlone-abbr": [
 		"K1", 
 		"K2", 
@@ -46,7 +47,6 @@
 	], 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "HH:mm:ss zzzz", 
-	"dayPeriods-pm-format-wide": "PM", 
 	"months-standAlone-abbr": [
 		"jan.", 
 		"feb.", 

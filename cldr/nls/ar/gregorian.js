@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "M‏/yyyy", 
 	"field-dayperiod": "ص/م", 
+	"dayPeriods-format-wide-pm": "م", 
 	"dateFormatItem-yQ": "yyyy Q", 
 	"field-minute": "الدقائق", 
 	"eraNames": [
@@ -35,9 +36,9 @@
 		"ب", 
 		"د"
 	], 
+	"dayPeriods-format-wide-am": "ص", 
 	"field-era": "العصر", 
 	"field-hour": "الساعات", 
-	"dayPeriods-am-format-wide": "ص", 
 	"quarters-standAlone-abbr": [
 		"الربع الأول", 
 		"الربع الثاني", 
@@ -46,7 +47,6 @@
 	], 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "zzzz h:mm:ss a", 
-	"dayPeriods-pm-format-wide": "م", 
 	"months-standAlone-abbr": [
 		"يناير", 
 		"فبراير", 

@@ -1,5 +1,6 @@
 ({
 	"field-dayperiod": "Časť dňa", 
+	"dayPeriods-format-wide-pm": "popoludní", 
 	"dateFormatItem-yQ": "Q yyyy", 
 	"field-minute": "Minúta", 
 	"dateFormatItem-MMMEd": "E, d. MMM", 
@@ -32,11 +33,10 @@
 		"n", 
 		"d"
 	], 
+	"dayPeriods-format-wide-am": "dopoludnia", 
 	"field-era": "Éra", 
 	"field-hour": "Hodina", 
-	"dayPeriods-am-format-wide": "dopoludnia", 
 	"timeFormat-full": "H:mm:ss zzzz", 
-	"dayPeriods-pm-format-wide": "popoludní", 
 	"months-standAlone-abbr": [
 		"jan", 
 		"feb", 

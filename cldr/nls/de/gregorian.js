@@ -17,13 +17,13 @@
 	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"dateFormatItem-yMEd": "EEE, d.M.y", 
-	"dayPeriods-earlyMorning-format-wide": "morgens", 
 	"dateFormatItem-MMMEd": "E d. MMM", 
-	"dayPeriods-evening-format-wide": "abends", 
 	"eraNarrow": [
 		"v. Chr.", 
 		"n. Chr."
 	], 
+	"dayPeriods-format-wide-earlyMorning": "morgens", 
+	"dayPeriods-format-wide-morning": "vormittags", 
 	"dateFormat-long": "d. MMMM y", 
 	"months-format-wide": [
 		"Januar", 
@@ -39,12 +39,12 @@
 		"November", 
 		"Dezember"
 	], 
+	"dayPeriods-format-wide-evening": "abends", 
 	"dateFormatItem-EEEd": "d. EEE", 
 	"dateFormat-full": "EEEE, d. MMMM y", 
-	"dayPeriods-afternoon-format-wide": "nachmittags", 
 	"dateFormatItem-Md": "d.M.", 
 	"dateFormatItem-yyMMdd": "dd.MM.yy", 
-	"dayPeriods-morning-format-wide": "vormittags", 
+	"dayPeriods-format-wide-noon": "Mittag", 
 	"field-era": "Epoche", 
 	"dateFormatItem-yM": "M.y", 
 	"months-standAlone-wide": [
@@ -146,6 +146,7 @@
 		"Fr.", 
 		"Sa."
 	], 
+	"dayPeriods-format-wide-night": "nachts", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
 	"dateFormatItem-MMMd": "d. MMM", 
@@ -210,16 +211,15 @@
 		"S"
 	], 
 	"dateFormatItem-MMM": "LLL", 
-	"dayPeriods-night-format-wide": "nachts", 
 	"dateFormatItem-MMMMdd": "dd. MMMM", 
 	"dateFormat-short": "dd.MM.yy", 
 	"dateFormatItem-MMd": "d.MM.", 
+	"dayPeriods-format-wide-afternoon": "nachmittags", 
 	"field-second": "Sekunde", 
 	"dateFormatItem-yMMMEd": "EEE, d. MMM y", 
 	"dateFormatItem-Ed": "E d.", 
 	"field-week": "Woche", 
 	"dateFormat-medium": "dd.MM.yyyy", 
-	"dayPeriods-noon-format-wide": "Mittag", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-yyyy": "y"
 })

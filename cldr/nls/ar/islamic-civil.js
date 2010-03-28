@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "M‏/yyyy", 
 	"dateFormatItem-yQ": "yyyy Q", 
+	"dayPeriods-format-wide-pm": "م", 
 	"eraNames": [
 		"ه"
 	], 
@@ -29,13 +30,14 @@
 		"ذ", 
 		"ذ"
 	], 
+	"dayPeriods-format-wide-am": "ص", 
+	"dayPeriods-am-format-wide": "ص", 
 	"quarters-standAlone-abbr": [
 		"الربع الأول", 
 		"الربع الثاني", 
 		"الربع الثالث", 
 		"الربع الرابع"
 	], 
-	"dayPeriods-am-format-wide": "ص", 
 	"timeFormat-full": "zzzz h:mm:ss a", 
 	"dayPeriods-pm-format-wide": "م", 
 	"dayPeriods-format-wide": [

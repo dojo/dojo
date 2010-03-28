@@ -1,5 +1,6 @@
 ({
 	"field-dayperiod": "napszak", 
+	"dayPeriods-format-wide-pm": "du.", 
 	"field-minute": "perc", 
 	"eraNames": [
 		"időszámításunk előtt", 
@@ -31,9 +32,9 @@
 		"N", 
 		"D"
 	], 
+	"dayPeriods-format-wide-am": "de.", 
 	"field-era": "éra", 
 	"field-hour": "óra", 
-	"dayPeriods-am-format-wide": "de.", 
 	"quarters-standAlone-abbr": [
 		"N1", 
 		"N2", 
@@ -41,7 +42,6 @@
 		"N4"
 	], 
 	"timeFormat-full": "H:mm:ss zzzz", 
-	"dayPeriods-pm-format-wide": "du.", 
 	"months-standAlone-abbr": [
 		"jan.", 
 		"febr.", 

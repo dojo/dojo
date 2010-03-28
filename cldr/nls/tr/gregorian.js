@@ -1,6 +1,7 @@
 ({
 	"dateFormatItem-yM": "M/yyyy", 
 	"field-dayperiod": "AM/PM", 
+	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormatItem-yQ": "Q yyyy", 
 	"field-minute": "Dakika", 
 	"eraNames": [
@@ -35,9 +36,9 @@
 		"K", 
 		"A"
 	], 
+	"dayPeriods-format-wide-am": "AM", 
 	"field-era": "Miladi Dönem", 
 	"field-hour": "Saat", 
-	"dayPeriods-am-format-wide": "AM", 
 	"quarters-standAlone-abbr": [
 		"Ç1", 
 		"Ç2", 
@@ -47,7 +48,6 @@
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "HH:mm:ss zzzz", 
 	"dateFormatItem-yyyy": "y", 
-	"dayPeriods-pm-format-wide": "PM", 
 	"months-standAlone-abbr": [
 		"Oca", 
 		"Şub", 

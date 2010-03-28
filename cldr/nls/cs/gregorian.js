@@ -80,6 +80,7 @@
 		"P", 
 		"S"
 	], 
+	"dayPeriods-format-wide-pm": "odp.", 
 	"months-standAlone-abbr": [
 		"1.", 
 		"2.", 
@@ -94,6 +95,7 @@
 		"11.", 
 		"12."
 	], 
+	"dayPeriods-format-wide-am": "dop.", 
 	"timeFormat-medium": "H:mm:ss", 
 	"dateFormat-long": "d. MMMM y", 
 	"dateFormatItem-Hms": "H:mm:ss", 
@@ -174,8 +176,6 @@
 		"3. čtvrtletí", 
 		"4. čtvrtletí"
 	], 
-	"dayPeriods-pm-format-wide": "odp.", 
-	"dayPeriods-am-format-wide": "dop.", 
 	"dateFormat-full": "EEEE, d. MMMM y", 
 	"days-format-abbr": [
 		"ne", 

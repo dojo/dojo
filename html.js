@@ -257,7 +257,11 @@ dojo.require("dojo.parser");
 				var rootNode = this.node;
 				try{
 					// store the results (widgets, whatever) for potential retrieval
-					this.parseResults = dojo.parser.parse(rootNode, true);
+					this.parseResults = dojo.parser.parse({
+						rootNode: rootNode,
+						dir: this.dir,
+						lang: this.lang
+					});
 				}catch(e){
 					this._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);
 				}

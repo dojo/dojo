@@ -148,7 +148,7 @@ dojo.parser = new function(){
 		//		exist.
 		// args: Object?
 		//		An object used to hold kwArgs for instantiation.
-		//		Only supports 'noStart' currently.
+		//		Supports 'noStart' and inherited.
 		var thelist = [], dp = dojo.parser;
 		mixin = mixin||{};
 		args = args||{};
@@ -168,11 +168,16 @@ dojo.parser = new function(){
 							d.query("> script[type^='dojo/']", node));
 
 			// Setup hash to hold parameter settings for this widget.   Start with the parameter
-			// settings inherited from ancestors (currently only "dir" can be inherited).
+			// settings inherited from ancestors ("dir" and "lang").
 			// Inherited setting may later be overridden by explicit settings on node itself.
 			var params = {},
 				attributes = node.attributes;
+			if(args.defaults){
+				// settings for the document itself (or whatever subtree is being parsed)
+				dojo.mixin(params, args.defaults);
+			}
 			if(obj.inherited){
+				// settings from dir=rtl or lang=... on a node above this node
 				dojo.mixin(params, obj.inherited);
 			}
 
@@ -289,6 +294,10 @@ dojo.parser = new function(){
 		//			* rootNode: DomNode?
 		//				identical to the function's `rootNode` argument, though
 		//				allowed to be passed in via this `args object. 
+		//			* inherited: Object
+		//				Hash possibly containing dir and lang settings to be applied to
+		//				parsed widgets, unless there's another setting on a sub-node that overrides
+		//
 		//
 		// example:
 		//		Parse all widgets on a page:
@@ -319,7 +328,7 @@ dojo.parser = new function(){
 		}
 
 		var attrName = this._attrName;
-		function recurse(parent, inherited, list, scripts){
+		function recurse(parent, grandparentInherited, list, scripts){
 			// summary:
 			//		Recursively looks for nodes with dojoType specified, storing in list[]
 			// parent: DomNode
@@ -333,13 +342,14 @@ dojo.parser = new function(){
 			// scripts: DomNode[]?
 			//		If specified, put children of parent like <script type="dojo/..."> into this array
 
-			// if current node has a dir setting then it overrides any ancestor setting
-			inherited = {
-				dir: parent.getAttribute("dir") || inherited.dir
-			};
-			if(!inherited.dir){
-				delete inherited.dir;
-			}
+			// Effective dir and lang settings on parent node, either set directly or inherited from grandparent
+			var inherited = dojo.clone(grandparentInherited);
+			dojo.forEach(["dir", "lang"], function(name){
+				var val = parent.getAttribute(name);
+				if(val){
+					inherited[name] = val;
+				}
+			});
 
 			// look for dojoType setting on each of parent's children
 			for(var child = parent.firstChild; child; child = child.nextSibling){
@@ -351,7 +361,7 @@ dojo.parser = new function(){
 							"type": type,
 							node: child,
 							scripts: [],			// <script> nodes that are parent's children
-							inherited: inherited	// dir attribute inherited from parent
+							inherited: inherited	// dir & lang attributes inherited from parent
 						};
 						list.push(params);
 					}else if(scripts && child.nodeName.toLowerCase() == "script"){
@@ -371,7 +381,7 @@ dojo.parser = new function(){
 
 		// Make list of all nodes on page w/dojoType specified
 		var list = [];
-		recurse(root ? dojo.byId(root) : dojo.body(), {}, list);
+		recurse(root ? dojo.byId(root) : dojo.body(), (args && args.inherited) || {}, list);
 
 		// go build the object instances
 		return this.instantiate(list, null, args); // Array

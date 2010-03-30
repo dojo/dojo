@@ -22,6 +22,7 @@ try{
 	dojo.requireIf(dojo.isBrowser,"tests.cookie");
 	dojo.require("tests.fx");
 	dojo.require("tests.DeferredList");
+	dojo.require("tests.Stateful");
 	dojo.require("tests.html");
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-traverse");
 	dojo.requireIf(dojo.isBrowser,"tests.NodeList-manipulate");

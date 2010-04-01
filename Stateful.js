@@ -55,7 +55,7 @@ dojo.declare("dojo.Stateful", null, {
 		}
 		return this;
 	},
-	watch: function(/*String|Function*/name, /*Function?*/callback){
+	watch: function(/*String|Function?*/name, /*Function*/callback){
 		// summary:
 		//		Watches a property for changes
 		//	name:

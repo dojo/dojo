@@ -80,6 +80,18 @@
 				name: ""
 			});
 
+			// For testing that parser recurses correctly, except when the prototype has a
+			// stopParser flag
+			dojo.declare("tests.parser.NormalContainer", null, {
+				constructor: function(args, node){ dojo.mixin(this, args); }
+			});
+			dojo.declare("tests.parser.ShieldedContainer", null, {
+				constructor: function(args, node){ dojo.mixin(this, args); },
+				
+				// flag to tell parser not to instantiate nodes inside of me
+				stopParser: true
+			});
+
 			deepTestProp = {
 				blah: {
 					thinger: 1
@@ -284,6 +296,19 @@
 							doh.is("rtl", inheritRtl2.dir, "inherited rtl works, from grandparent");
 							doh.is("ltr", setLtr.dir, "direct setting of dir=ltr overrides inherited RTL");
 							doh.f(noDir.dir, "no dir setting");
+						},
+						
+						// Test that parser recurses correctly, except when there's a stopParser flag not to
+						function recurse(){
+							doh.t(container1, "normal container created");
+							doh.t(container1.incr, "script tag works too")
+							doh.t(window.contained1, "child widget also created");
+							doh.t(window.contained2, "child widget 2 also created");
+
+							doh.t(container2, "shielded container created");
+							doh.t(container2.incr, "script tag works too")
+							doh.f(window.contained3, "child widget not created");
+							doh.f(window.contained4, "child widget 2 not created");
 						}
 					]
 				);
@@ -346,5 +371,38 @@
 			<div dojoType="tests.parser.DirClass" jsId="setLtr" dir="ltr" name="LTR setting overrides inherited RTL"></div>
 		</div>
 		<div dojoType="tests.parser.DirClass" jsId="noDir" name="dir not inherited or set"></div>
+		
+		<!-- section for testing parser recursion -->
+
+		<div>
+			<div dojoType="tests.parser.NormalContainer" jsId="container1">
+				<!-- this script tag should get passed as param to NormalContainer constructor -->
+				<script type="dojo/method" event="incr" args="x">
+					return x+1;
+				</script>
+				
+				<!-- and these contained widgets should get instantiated -->
+				<div dojoType="tests.parser.Class1" jsId="contained1"></div>
+				<div>
+					<div dojoType="tests.parser.Class1" jsId="contained2"></div>			
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
+				<!-- this script tag should get passed as param to NormalContainer constructor -->
+				<script type="dojo/method" event="incr" args="x">
+					return x+1;
+				</script>
+				
+				<!-- but these contained widgets should *not* get instantiated -->
+				<div dojoType="tests.parser.Class1" jsId="contained3"></div>
+				<div>
+					<div dojoType="tests.parser.Class1" jsId="contained4"></div>			
+				</div>
+			</div>
+		</div>
+
 	</body>
 </html>

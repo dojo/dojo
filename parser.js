@@ -157,12 +157,12 @@ dojo.parser = new function(){
 			if(!obj){ return; }
 
 			var node = obj.node || obj,
-				type = obj.type || (dp._attrName in mixin ? mixin[dp._attrName] : node.getAttribute(dp._attrName));
+				type = obj.type || (dp._attrName in mixin ? mixin[dp._attrName] : node.getAttribute(dp._attrName)),
+				clsInfo = obj.clsInfo || (type && getClassInfo(type));
 
-			if(!type || !type.length){ return; }
+			if(!clsInfo){ return; }
 
-			var clsInfo = getClassInfo(type),
-				clazz = clsInfo.cls,
+			var clazz = clsInfo.cls,
 				scripts = obj.scripts || 
 						((clazz._noScript || clazz.prototype._noScript) ? [] : 
 							d.query("> script[type^='dojo/']", node));
@@ -328,60 +328,80 @@ dojo.parser = new function(){
 		}
 
 		var attrName = this._attrName;
-		function recurse(parent, grandparentInherited, list, scripts){
+		function scan(parent, list){
 			// summary:
-			//		Recursively looks for nodes with dojoType specified, storing in list[]
-			// parent: DomNode
-			//		Search descendants of this node
-			// inherited: Hash
-			//		{dir: "rtl"} type hash showing the RTL setting inherited from parent's ancestors,
-			//		or an empty hash
+			//		Parent is an Object representing a DOMNode, with or without a dojoType specified.
+			//		Scan parent's children looking for nodes with dojoType specified, storing in list[].
+			//		If parent has a dojoType, also collects <script type=dojo/*> children and stores in parent.scripts[].
+			// parent: Object
+			//		Object representing the parent node, like
+			//	|	{
+			//	|		node: DomNode, 			// scan children of this node
+			//	|		inherited: {dir: "rtl"},	// dir/lang setting inherited from above node
+			//	|
+			//	|		// attributes only set if node has dojoType specified
+			//	|		scripts: [],			// empty array, put <script type=dojo/*> in here
+			//	|		clsInfo: { cls: dijit.form.Button, ...}
+			//	|	}
 			// list: DomNode[]
-			//		Output array of {type: "dijit.form.Button", node: DomNode, scripts: DomNode[] }
-			//		objects representing nodes to be turned into widgets
-			// scripts: DomNode[]?
-			//		If specified, put children of parent like <script type="dojo/..."> into this array
+			//		Output array of objects (same format as parent) representing nodes to be turned into widgets
 
 			// Effective dir and lang settings on parent node, either set directly or inherited from grandparent
-			var inherited = dojo.clone(grandparentInherited);
+			var inherited = dojo.clone(parent.inherited);
 			dojo.forEach(["dir", "lang"], function(name){
-				var val = parent.getAttribute(name);
+				var val = parent.node.getAttribute(name);
 				if(val){
 					inherited[name] = val;
 				}
 			});
 
-			// look for dojoType setting on each of parent's children
-			for(var child = parent.firstChild; child; child = child.nextSibling){
+			// if parent is a widget, then search for <script type=dojo/*> tags and put them in scripts[].
+			var scripts = parent.scripts;
+
+			// unless parent is a widget with the stopParser flag set, continue search for dojoType, recursively
+			var recurse = !parent.clsInfo || !parent.clsInfo.cls.prototype.stopParser;
+
+			// scan parent's children looking for dojoType and <script type=dojo/*>
+			for(var child = parent.node.firstChild; child; child = child.nextSibling){
 				if(child.nodeType == 1){
-					var type = child.getAttribute(attrName);
+					var type = recurse && child.getAttribute(attrName);
 					if(type){
 						// if dojoType specified, add to output array of nodes to instantiate
 						var params = {
 							"type": type,
+							clsInfo: getClassInfo(type),
 							node: child,
-							scripts: [],			// <script> nodes that are parent's children
-							inherited: inherited	// dir & lang attributes inherited from parent
+							scripts: [], // <script> nodes that are parent's children
+							inherited: inherited // dir & lang attributes inherited from parent
 						};
 						list.push(params);
+
+						// Recurse, collecting <script type="dojo/..."> children, and also looking for
+						// descendant nodes with dojoType specified (unless the widget has the stopParser flag),
+						scan(params, list);
 					}else if(scripts && child.nodeName.toLowerCase() == "script"){
-						// or maybe this is a <script type="dojo/..."> node, to attach to parent
+						// if <script type="dojo/...">, save in scripts[]
 						type = child.getAttribute("type");
-						if(type && /^dojo\//i.test(type)){
+						if (type && /^dojo\//i.test(type)) {
 							scripts.push(child);
 						}
+					}else if(recurse){
+						// Recurse, looking for grandchild nodes with dojoType specified
+						scan({
+							node: child,
+							inherited: inherited
+						}, list);
 					}
-
-					// recurse, looking for descendant nodes with dojoType specified, and also
-					// (if the current node has a dojoType) collecting <script type="dojo/..."> children
-					recurse(child, inherited, list, params && params.scripts);
 				}
 			}
 		}
 
 		// Make list of all nodes on page w/dojoType specified
 		var list = [];
-		recurse(root ? dojo.byId(root) : dojo.body(), (args && args.inherited) || {}, list);
+		scan({
+			node: root ? dojo.byId(root) : dojo.body(),
+			inherited: (args && args.inherited) || {}
+		}, list);
 
 		// go build the object instances
 		return this.instantiate(list, null, args); // Array

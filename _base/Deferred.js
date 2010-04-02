@@ -1,7 +1,7 @@
 dojo.provide("dojo._base.Deferred");
 
 (function(){
-		
+	var mutator = function(){};		
 	var freeze = Object.freeze || function(){};
 	// A deferred provides an API for creating and resolving a promise.
 	dojo.Deferred = function(/*Function?*/canceller){
@@ -146,11 +146,6 @@ dojo.provide("dojo._base.Deferred");
 	//
 	//		Note that the caller doesn't have to change his code at all to
 	//		handle the asynchronous case.
-		return new Deferred(canceller);
-	} 
-	var mutator = function(){};
-	
-	function Deferred(canceller){
 		var result, finished, isError, head, nextListener;
 		var promise = this.promise = {};
 		
@@ -178,7 +173,8 @@ dojo.provide("dojo._base.Deferred");
 							newResult.then(listener.deferred.resolve, listener.deferred.reject);
 							continue;
 						}
-						listener.deferred.resolve(mutated && newResult === undefined ? result : newResult);
+						var unchanged = mutated && newResult === undefined;
+						listener.deferred[unchanged && isError ? "reject" : "resolve"](unchanged ? result : newResult);
 					}
 					catch (e) {
 						listener.deferred.reject(e);
@@ -249,7 +245,7 @@ dojo.provide("dojo._base.Deferred");
 			//		|		then(printResult, onError);
   			//		|	>44 
 			// 		
-			var returnDeferred = progressCallback == mutator ? this : new Deferred(promise.cancel);
+			var returnDeferred = progressCallback == mutator ? this : new dojo.Deferred(promise.cancel);
 			var listener = {
 				resolved: resolvedCallback, 
 				error: errorCallback, 
@@ -281,7 +277,7 @@ dojo.provide("dojo._base.Deferred");
 		}
 		freeze(promise);
 	};
-	dojo.extend(Deferred, {
+	dojo.extend(dojo.Deferred, {
 		addCallback: function (/*Function*/callback) {
 			return this.addCallbacks(dojo.hitch.apply(dojo, arguments));
 		},
@@ -296,7 +292,6 @@ dojo.provide("dojo._base.Deferred");
 		},
 		fired: -1
 	});
-	
 })();
 dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback, /*Function?*/progressHandler){
 	// summary:

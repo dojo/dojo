@@ -384,7 +384,7 @@ if(typeof window != 'undefined'){
 		}
 	}
 
-	if(!dojo.config.afterOnLoad){
+	if(!dojo.config.afterOnLoad){		
 		if(document.addEventListener){
 			//Standards. Hooray! Assumption here that if standards based,
 			//it knows about DOMContentLoaded. It is OK if it does not, the fall through
@@ -393,23 +393,28 @@ if(typeof window != 'undefined'){
 			window.addEventListener("load", dojo._loadInit, false);
 		}else if(window.attachEvent){
 			window.attachEvent("onload", dojo._loadInit);
+
+			//DOMContentLoaded approximation. Diego Perini found this MSDN article
+			//that indicates doScroll is available after DOM ready, so do a setTimeout
+			//to check when it is available.
+			//http://msdn.microsoft.com/en-us/library/ms531426.aspx
+			if(!dojo.config.skipIeDomLoaded && self === self.top){
+				dojo._scrollIntervalId = setInterval(function (){
+					try{
+						document.documentElement.doScroll("left");
+						dojo._loadInit();
+						if(dojo._scrollIntervalId){
+							clearInterval(dojo._scrollIntervalId);
+							dojo._scrollIntervalId = 0;
+						}
+					}catch (e){}
+				}, 30);
+			}
 		}
 	}
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(dojo.isIE){
-		// 	for Internet Explorer. readyState will not be achieved on init
-		// 	call, but dojo doesn't need it however, we'll include it
-		// 	because we don't know if there are other functions added that
-		// 	might.  Note that this has changed because the build process
-		// 	strips all comments -- including conditional ones.
-		if(!dojo.config.afterOnLoad && !dojo.config.skipIeDomLoaded){
-			document.write('<scr'+'ipt defer src="//:" '
-				+ 'onreadystatechange="if(this.readyState==\'complete\'){' + dojo._scopeName + '._loadInit();}">'
-				+ '</scr'+'ipt>'
-			);
-		}
-
 		try{
 			document.namespaces.add("v", "urn:schemas-microsoft-com:vml");
 			var vmlElems = ["*", "group", "roundrect", "oval", "shape", "rect", "imagedata"],

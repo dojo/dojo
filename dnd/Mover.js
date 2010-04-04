@@ -62,8 +62,8 @@ dojo.declare("dojo.dnd.Mover", null, {
 			case "relative":
 			case "absolute":
 				// assume that left and top values are in pixels already
-				l = Math.round(parseFloat(s.left));
-				t = Math.round(parseFloat(s.top));
+				l = Math.round(parseFloat(s.left)) || 0;
+				t = Math.round(parseFloat(s.top)) || 0;
 				break;
 			default:
 				s.position = "absolute";	// enforcing the absolute mode

@@ -15,7 +15,7 @@ dojo.number.__FormatOptions = function(){
 	//	pattern: String?
 	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
 	//		with this string.  Default value is based on locale.  Overriding this property will defeat
-	//		localization.
+	//		localization.  Literal characters in patterns are not supported.
 	//	type: String?
 	//		choose a format type based on the locale from the following:
 	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
@@ -44,8 +44,8 @@ dojo.number.format = function(/*Number*/value, /*dojo.number.__FormatOptions?*/o
 	// description:
 	//		Create a string from a Number using a known localized pattern.
 	//		Formatting patterns appropriate to the locale are chosen from the
-	//		[CLDR](http://unicode.org/cldr) as well as the appropriate symbols and
-	//		delimiters.  See <http://www.unicode.org/reports/tr35/#Number_Elements>
+	//		[Common Locale Data Repository](http://unicode.org/cldr) as well as the appropriate symbols and
+	//		delimiters.
 	//		If value is Infinity, -Infinity, or is not a valid JavaScript number, return null.
 	// value:
 	//		the number to be formatted
@@ -371,7 +371,7 @@ dojo.number.__ParseOptions = function(){
 	//	pattern: String?
 	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
 	//		with this string.  Default value is based on locale.  Overriding this property will defeat
-	//		localization.
+	//		localization.  Literal characters in patterns are not supported.
 	//	type: String?
 	//		choose a format type based on the locale from the following:
 	//		decimal, scientific (not yet supported), percent, currency. decimal by default.
@@ -399,6 +399,7 @@ dojo.number.parse = function(/*String*/expression, /*dojo.number.__ParseOptions?
 	//		Formatting patterns are chosen appropriate to the locale
 	//		and follow the syntax described by
 	//		[unicode.org TR35](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
+    	//		Note that literal characters in patterns are not supported.
 	// expression:
 	//		A string representation of a Number
 	var info = dojo.number._parseInfo(options);

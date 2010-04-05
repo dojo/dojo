@@ -10,6 +10,7 @@
 	], 
 	"dateFormatItem-MMMEd": "E, MMM d", 
 	"dateTimeFormat-full": "{1} {0}", 
+	"field-day-relative+-1": "Yesterday", 
 	"dateFormatItem-hms": "h:mm:ss a", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-weekday": "Day of the Week", 
@@ -59,6 +60,7 @@
 		"Dec"
 	], 
 	"dateFormatItem-yMMM": "MMM y", 
+	"field-day-relative+0": "Today", 
 	"days-standAlone-narrow": [
 		"S", 
 		"M", 
@@ -68,6 +70,7 @@
 		"F", 
 		"S"
 	], 
+	"field-day-relative+1": "Tomorrow", 
 	"eraAbbr": [
 		"BC", 
 		"AD"

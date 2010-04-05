@@ -6,7 +6,10 @@
 		"pred našim štetjem", 
 		"naše štetje"
 	], 
+	"field-day-relative+-1": "Včeraj", 
+	"field-day-relative+-2": "Predvčerajšnjim", 
 	"field-weekday": "Dan v tednu", 
+	"field-day-relative+-3": "Pred tremi dnevi", 
 	"days-standAlone-wide": [
 		"nedelja", 
 		"ponedeljek", 
@@ -49,6 +52,7 @@
 		"nov", 
 		"dec"
 	], 
+	"field-day-relative+0": "Danes", 
 	"days-standAlone-narrow": [
 		"n", 
 		"p", 
@@ -58,10 +62,13 @@
 		"p", 
 		"s"
 	], 
+	"field-day-relative+1": "Jutri", 
 	"eraAbbr": [
 		"pr. n. št.", 
 		"po Kr."
 	], 
+	"field-day-relative+2": "Pojutrišnjem", 
+	"field-day-relative+3": "Čez tri dni", 
 	"dateFormatItem-yyyyMMMM": "MMMM y", 
 	"dateFormat-long": "dd. MMMM y", 
 	"timeFormat-medium": "HH:mm:ss", 

@@ -88,6 +88,9 @@
 	"dateFormatItem-yyQ": "Q/yy", 
 	"timeFormat-full": "H.mm.ss zzzz", 
 	"dateFormatItem-yyyyMEEEd": "EEE d.M.yyyy", 
+	"field-day-relative+0": "tänään", 
+	"field-day-relative+1": "huomenna", 
+	"field-day-relative+2": "ylihuomenna", 
 	"dateFormatItem-H": "H", 
 	"months-standAlone-abbr": [
 		"tammi", 
@@ -151,6 +154,8 @@
 	], 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm.ss", 
+	"field-day-relative+-1": "eilen", 
+	"field-day-relative+-2": "toissapäivänä", 
 	"dateFormatItem-MMMd": "d. MMM", 
 	"dateFormatItem-MEd": "E d.M.", 
 	"field-day": "päivä", 

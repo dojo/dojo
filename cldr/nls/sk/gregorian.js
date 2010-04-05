@@ -8,8 +8,11 @@
 		"pred n.l.", 
 		"n.l."
 	], 
+	"field-day-relative+-1": "Včera", 
 	"dateFormatItem-yQQQ": "QQQ y", 
+	"field-day-relative+-2": "Predvčerom", 
 	"field-weekday": "Deň v týždni", 
+	"field-day-relative+-3": "Pred tromi dňami", 
 	"days-standAlone-wide": [
 		"nedeľa", 
 		"pondelok", 
@@ -52,6 +55,7 @@
 		"dec"
 	], 
 	"dateFormatItem-yMMM": "MMM y", 
+	"field-day-relative+0": "Dnes", 
 	"days-standAlone-narrow": [
 		"N", 
 		"P", 
@@ -61,10 +65,13 @@
 		"P", 
 		"S"
 	], 
+	"field-day-relative+1": "Zajtra", 
 	"eraAbbr": [
 		"pred n.l.", 
 		"n.l."
 	], 
+	"field-day-relative+2": "Pozajtra", 
+	"field-day-relative+3": "O tri dni", 
 	"dateFormatItem-yyyyMMMM": "MMMM y", 
 	"dateFormat-long": "d. MMMM y", 
 	"timeFormat-medium": "H:mm:ss", 

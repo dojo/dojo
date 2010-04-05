@@ -91,7 +91,11 @@
 	], 
 	"dateFormatItem-yyQ": "Q yy", 
 	"timeFormat-full": "HH:mm:ss zzzz", 
+	"field-day-relative+0": "heute", 
+	"field-day-relative+1": "morgen", 
+	"field-day-relative+2": "übermorgen", 
 	"dateFormatItem-H": "HH", 
+	"field-day-relative+3": "überübermorgen", 
 	"months-standAlone-abbr": [
 		"Jan", 
 		"Feb", 
@@ -137,6 +141,7 @@
 	], 
 	"field-minute": "Minute", 
 	"field-dayperiod": "Tageshälfte", 
+	"dayPeriods-format-wide-night": "nachts", 
 	"days-standAlone-abbr": [
 		"So.", 
 		"Mo.", 
@@ -146,9 +151,11 @@
 		"Fr.", 
 		"Sa."
 	], 
-	"dayPeriods-format-wide-night": "nachts", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
+	"field-day-relative+-1": "gestern", 
+	"field-day-relative+-2": "vorgestern", 
+	"field-day-relative+-3": "vorvorgestern", 
 	"dateFormatItem-MMMd": "d. MMM", 
 	"dateFormatItem-MEd": "E, d.M.", 
 	"field-day": "Tag", 

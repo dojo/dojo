@@ -1,3 +1,4 @@
+// generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
 ({
 	"dateFormatItem-yM": "yyyy/M", 
 	"field-minute": "分鐘", 
@@ -7,6 +8,8 @@
 	], 
 	"field-weekday": "週天", 
 	"dateFormatItem-MMdd": "MM/dd", 
+	"field-day-relative+-3": "大前天", 
+	"field-relative-day": "大後天", 
 	"months-standAlone-narrow": [
 		"1", 
 		"2", 
@@ -50,6 +53,8 @@
 		"西元前", 
 		"西元"
 	], 
+	"field-day-relative+2": "後天", 
+	"field-day-relative+3": "大後天", 
 	"timeFormat-medium": "ah:mm:ss", 
 	"field-zone": "區域", 
 	"dateFormatItem-yyMM": "yy-MM", 

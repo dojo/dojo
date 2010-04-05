@@ -95,6 +95,8 @@
 	], 
 	"timeFormat-full": "HH:mm:ss zzzz", 
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})", 
+	"field-day-relative+0": "Today", 
+	"field-day-relative+1": "Tomorrow", 
 	"dateFormatItem-H": "HH", 
 	"months-standAlone-abbr": [
 		"1", 
@@ -163,6 +165,7 @@
 		"3", 
 		"4"
 	], 
+	"field-day-relative+-1": "Yesterday", 
 	"dateFormatItem-h": "h a", 
 	"dateTimeFormat-long": "{1} {0}", 
 	"dayPeriods-format-narrow-am": "AM", 
@@ -222,7 +225,6 @@
 		"6", 
 		"7"
 	], 
-	"field-month": "Month", 
 	"days-standAlone-narrow": [
 		"1", 
 		"2", 
@@ -233,6 +235,7 @@
 		"7"
 	], 
 	"dateFormatItem-MMM": "LLL", 
+	"field-month": "Month", 
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})", 
 	"dayPeriods-format-wide-am": "AM", 
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})", 

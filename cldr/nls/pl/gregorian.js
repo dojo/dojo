@@ -88,6 +88,10 @@
 	], 
 	"dateFormatItem-yyQ": "Q yy", 
 	"timeFormat-full": "HH:mm:ss zzzz", 
+	"field-day-relative+0": "Dzisiaj", 
+	"field-day-relative+1": "Jutro", 
+	"field-day-relative+2": "Pojutrze", 
+	"field-day-relative+3": "Za trzy dni", 
 	"months-standAlone-abbr": [
 		"sty", 
 		"lut", 
@@ -140,6 +144,7 @@
 	], 
 	"field-minute": "Minuta", 
 	"field-dayperiod": "Dayperiod", 
+	"dayPeriods-format-wide-night": "w nocy", 
 	"days-standAlone-abbr": [
 		"niedz.", 
 		"pon.", 
@@ -149,10 +154,12 @@
 		"pt.", 
 		"sob."
 	], 
-	"dayPeriods-format-wide-night": "w nocy", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
+	"field-day-relative+-1": "Wczoraj", 
 	"dateFormatItem-h": "hh a", 
+	"field-day-relative+-2": "Przedwczoraj", 
+	"field-day-relative+-3": "Trzy dni temu", 
 	"dateFormatItem-MMMd": "d MMM", 
 	"dateFormatItem-MEd": "E, d-M", 
 	"dayPeriods-format-wide-lateMorning": "przed południem", 

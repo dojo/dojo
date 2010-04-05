@@ -9,6 +9,7 @@
 		"ميلادي"
 	], 
 	"dateFormatItem-MMMEd": "E d MMM", 
+	"field-day-relative+-1": "أمس", 
 	"dateFormatItem-MMdd": "dd‏/MM", 
 	"dateFormatItem-yQQQ": "y QQQ", 
 	"field-weekday": "اليوم", 
@@ -62,6 +63,7 @@
 		"ديسمبر"
 	], 
 	"dateFormatItem-yMMM": "MMM y", 
+	"field-day-relative+0": "اليوم", 
 	"days-standAlone-narrow": [
 		"ح", 
 		"ن", 
@@ -71,10 +73,12 @@
 		"ج", 
 		"س"
 	], 
+	"field-day-relative+1": "غدًا", 
 	"eraAbbr": [
 		"ق.م", 
 		"م"
 	], 
+	"field-day-relative+2": "بعد الغد", 
 	"dateFormatItem-yyyyMM": "MM‏/yyyy", 
 	"dateFormatItem-yyyyMMMM": "MMMM، y", 
 	"dateFormat-long": "d MMMM، y", 

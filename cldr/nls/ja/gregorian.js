@@ -56,6 +56,7 @@
 	"dateFormatItem-yQ": "y/Q", 
 	"field-hour": "時", 
 	"dateFormatItem-MMdd": "MM/dd", 
+	"dateFormatItem-yyQ": "yy/Q", 
 	"months-format-abbr": [
 		"1月", 
 		"2月", 
@@ -70,9 +71,12 @@
 		"11月", 
 		"12月"
 	], 
-	"dateFormatItem-yyQ": "yy/Q", 
 	"timeFormat-full": "H時mm分ss秒 zzzz", 
+	"field-day-relative+0": "今日", 
+	"field-day-relative+1": "明日", 
+	"field-day-relative+2": "明後日", 
 	"dateFormatItem-H": "H時", 
+	"field-day-relative+3": "3日後", 
 	"months-standAlone-abbr": [
 		"1月", 
 		"2月", 
@@ -129,8 +133,11 @@
 	], 
 	"dateFormatItem-d": "d日", 
 	"dateFormatItem-ms": "mm:ss", 
+	"field-day-relative+-1": "昨日", 
 	"dateFormatItem-h": "ah", 
 	"dateTimeFormat-long": "{1}{0}", 
+	"field-day-relative+-2": "一昨日", 
+	"field-day-relative+-3": "3日前", 
 	"dateFormatItem-MMMd": "M月d日", 
 	"dateFormatItem-MEd": "M/d(E)", 
 	"dateTimeFormat-full": "{1}{0}", 

@@ -6,8 +6,11 @@
 		"időszámításunk előtt", 
 		"időszámításunk szerint"
 	], 
+	"field-day-relative+-1": "tegnap", 
 	"dateFormatItem-MMdd": "MM.dd.", 
+	"field-day-relative+-2": "tegnapelőtt", 
 	"field-weekday": "hét napja", 
+	"field-day-relative+-3": "három nappal ezelőtt", 
 	"days-standAlone-wide": [
 		"vasárnap", 
 		"hétfő", 
@@ -56,6 +59,7 @@
 		"nov.", 
 		"dec."
 	], 
+	"field-day-relative+0": "ma", 
 	"days-standAlone-narrow": [
 		"V", 
 		"H", 
@@ -65,10 +69,13 @@
 		"P", 
 		"Sz"
 	], 
+	"field-day-relative+1": "holnap", 
 	"eraAbbr": [
 		"i. e.", 
 		"i. sz."
 	], 
+	"field-day-relative+2": "holnapután", 
+	"field-day-relative+3": "három nap múlva", 
 	"dateFormatItem-yyyyMM": "yyyy.MM", 
 	"dateFormatItem-yyyyMMMM": "y. MMMM", 
 	"dateFormat-long": "y. MMMM d.", 

@@ -9,9 +9,12 @@
 		"na Christus"
 	], 
 	"dateFormatItem-MMMEd": "E d MMM", 
+	"field-day-relative+-1": "gisteren", 
 	"dateFormatItem-MMdd": "dd-MM", 
 	"dateFormatItem-yQQQ": "QQQ y", 
+	"field-day-relative+-2": "eergisteren", 
 	"field-weekday": "Dag van de week", 
+	"field-day-relative+-3": "eereergisteren", 
 	"days-standAlone-wide": [
 		"zondag", 
 		"maandag", 
@@ -62,6 +65,7 @@
 		"dec."
 	], 
 	"dateFormatItem-yMMM": "MMM y", 
+	"field-day-relative+0": "vandaag", 
 	"days-standAlone-narrow": [
 		"Z", 
 		"M", 
@@ -71,10 +75,13 @@
 		"V", 
 		"Z"
 	], 
+	"field-day-relative+1": "morgen", 
 	"eraAbbr": [
 		"v. Chr.", 
 		"n. Chr."
 	], 
+	"field-day-relative+2": "overmorgen", 
+	"field-day-relative+3": "overovermorgen", 
 	"dateFormatItem-yyyyMMMM": "MMMM y", 
 	"dateFormat-long": "d MMMM y", 
 	"timeFormat-medium": "HH:mm:ss", 

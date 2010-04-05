@@ -7,8 +7,10 @@
 		"до н.э.", 
 		"н.э."
 	], 
+	"field-day-relative+-1": "Вчера", 
 	"dateFormatItem-MMdd": "dd.MM", 
 	"dateFormatItem-yQQQ": "y QQQ", 
+	"field-day-relative+-2": "Позавчера", 
 	"field-weekday": "День недели", 
 	"days-standAlone-wide": [
 		"Воскресенье", 
@@ -63,6 +65,7 @@
 	"dateFormatItem-Ed": "E d", 
 	"dateFormatItem-yMMM": "MMM y", 
 	"dateFormatItem-yyyyLLLL": "LLLL y", 
+	"field-day-relative+0": "Сегодня", 
 	"days-standAlone-narrow": [
 		"В", 
 		"П", 
@@ -72,10 +75,12 @@
 		"П", 
 		"С"
 	], 
+	"field-day-relative+1": "Завтра", 
 	"eraAbbr": [
 		"до н.э.", 
 		"н.э."
 	], 
+	"field-day-relative+2": "Послезавтра", 
 	"dateFormatItem-yyyyMM": "MM.yyyy", 
 	"dateFormatItem-yyyyMMMM": "MMMM y", 
 	"dateFormat-long": "d MMMM y 'г'.", 

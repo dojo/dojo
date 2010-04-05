@@ -90,6 +90,10 @@
 	], 
 	"dateFormatItem-yyQ": "'T'Q yy", 
 	"timeFormat-full": "HH:mm:ss zzzz", 
+	"field-day-relative+0": "aujourd’hui", 
+	"field-day-relative+1": "demain", 
+	"field-day-relative+2": "après-demain", 
+	"field-day-relative+3": "après-après-demain", 
 	"months-standAlone-abbr": [
 		"janv.", 
 		"févr.", 
@@ -142,6 +146,7 @@
 	], 
 	"field-minute": "minute", 
 	"field-dayperiod": "cadran", 
+	"dayPeriods-format-wide-night": "soir", 
 	"days-standAlone-abbr": [
 		"dim.", 
 		"lun.", 
@@ -151,7 +156,6 @@
 		"ven.", 
 		"sam."
 	], 
-	"dayPeriods-format-wide-night": "soir", 
 	"dateFormatItem-yyMMMd": "d MMM yy", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
@@ -161,6 +165,9 @@
 		"T3", 
 		"T4"
 	], 
+	"field-day-relative+-1": "hier", 
+	"field-day-relative+-2": "avant-hier", 
+	"field-day-relative+-3": "avant-avant-hier", 
 	"dateFormatItem-MMMd": "d MMM", 
 	"dateFormatItem-MEd": "EEE d/M", 
 	"field-day": "jour", 

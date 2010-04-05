@@ -370,6 +370,11 @@ if(typeof window != 'undefined'){
 	//START DOMContentLoaded
 	dojo._initFired = false;
 	dojo._loadInit = function(e){
+		if(dojo._scrollIntervalId){
+			clearInterval(dojo._scrollIntervalId);
+			dojo._scrollIntervalId = 0;
+		}
+
 		if(!dojo._initFired){
 			dojo._initFired = true;
 
@@ -403,10 +408,6 @@ if(typeof window != 'undefined'){
 					try{
 						document.documentElement.doScroll("left");
 						dojo._loadInit();
-						if(dojo._scrollIntervalId){
-							clearInterval(dojo._scrollIntervalId);
-							dojo._scrollIntervalId = 0;
-						}
 					}catch (e){}
 				}, 30);
 			}

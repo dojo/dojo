@@ -19,7 +19,7 @@ dojo._listener = {
 			// return value comes from original target function
 			var r = t && t.apply(this, arguments);
 			// make local copy of listener array so it is immutable during processing
-			var lls;
+			var i, lls;
 			//>>includeStart("connectRhino", kwArgs.profileProperties.hostenvType == "rhino");
 			if(!dojo.isRhino){
 			//>>includeEnd("connectRhino");
@@ -33,21 +33,21 @@ dojo._listener = {
 				// results in [0, 1, 2, 3, 4], where element 1 and 3 have value 'undefined'
 				// "A.slice(0)" has the same behavior.
 				lls = [];
-				for(var i in ls){
+				for(i in ls){
 					lls[i] = ls[i];
 				}
 			}
 			//>>includeEnd("connectRhino");
 
 			// invoke listeners after target function
-			for(var i in lls){
+			for(i in lls){
 				if(!(i in ap)){
 					lls[i].apply(this, arguments);
 				}
 			}
 			// return value comes from original target function
 			return r;
-		}
+		};
 	},
 	// add a listener to an object
 	add: function(/*Object*/ source, /*String*/ method, /*Function*/ listener){
@@ -62,7 +62,7 @@ dojo._listener = {
 		// The source method is either null, a dispatcher, or some other function
 		var f = source[method];
 		// Ensure a dispatcher
-		if(!f||!f._listeners){
+		if(!f || !f._listeners){
 			var d = dojo._listener.getDispatcher();
 			// original target function is special
 			d.target = f;
@@ -79,11 +79,11 @@ dojo._listener = {
 		// in non-IE browsers.
 		//
 		// We could have separate lists of before and after listeners.
-		return f._listeners.push(listener) ; /*Handle*/
+		return f._listeners.push(listener); /*Handle*/
 	},
 	// remove a listener from an object
 	remove: function(/*Object*/ source, /*String*/ method, /*Handle*/ handle){
-		var f = (source||dojo.global)[method];
+		var f = (source || dojo.global)[method];
 		// remember that handle is the index+1 (0 is not a valid handle)
 		if(f && f._listeners && handle--){
 			delete f._listeners[handle];
@@ -111,7 +111,7 @@ dojo.connect = function(/*Object|null*/ obj,
 	//
 	// description:
 	//		Connects listeners to actions, so that after event fires, a
-	//		listener is called with the same arguments passed to the orginal
+	//		listener is called with the same arguments passed to the original
 	//		function.
 	//
 	//		Since `dojo.connect` allows the source of events to be either a
@@ -124,7 +124,7 @@ dojo.connect = function(/*Object|null*/ obj,
 	//		When setting up a connection, the `event` parameter must be a
 	//		string that is the name of the method/event to be listened for. If
 	//		`obj` is null, `dojo.global` is assumed, meaning that connections
-	//		to global methods are supported but also that you may inadvertantly
+	//		to global methods are supported but also that you may inadvertently
 	//		connect to a global by passing an incorrect object name or invalid
 	//		reference.
 	//
@@ -132,7 +132,7 @@ dojo.connect = function(/*Object|null*/ obj,
 	//		function or method that does not yet exist on `obj`, connect will
 	//		not fail, but will instead set up a stub method. Similarly, null
 	//		arguments may simply be omitted such that fewer than 4 arguments
-	//		may be required to set up a connection See the examples for deails.
+	//		may be required to set up a connection See the examples for details.
 	//
 	//		The return value is a handle that is needed to 
 	//		remove this connection with `dojo.disconnect`.
@@ -201,7 +201,7 @@ dojo.connect = function(/*Object|null*/ obj,
 
 	// normalize arguments
 	var a=arguments, args=[], i=0;
-	// if a[0] is a String, obj was ommited
+	// if a[0] is a String, obj was omitted
 	args.push(dojo.isString(a[0]) ? null : a[i++], a[i++]);
 	// if the arg-after-next is a String or Function, context was NOT omitted
 	var a1 = a[i+1];
@@ -297,7 +297,7 @@ dojo.connectPublisher = function(	/*String*/ topic,
 									/*Object|null*/ obj, 
 									/*String*/ event){
 	//	summary:
-	//	 	Ensure that everytime obj.event() is called, a message is published
+	//	 	Ensure that every time obj.event() is called, a message is published
 	//	 	on the topic. Returns a handle which can be passed to
 	//	 	dojo.disconnect() to disable subsequent automatic publication on
 	//	 	the topic.
@@ -312,5 +312,5 @@ dojo.connectPublisher = function(	/*String*/ topic,
 	//	example:
 	//	|	dojo.connectPublisher("/ajax/start", dojo, "xhrGet");
 	var pf = function(){ dojo.publish(topic, arguments); }
-	return (event) ? dojo.connect(obj, event, pf) : dojo.connect(obj, pf); //Handle
+	return event ? dojo.connect(obj, event, pf) : dojo.connect(obj, pf); //Handle
 };

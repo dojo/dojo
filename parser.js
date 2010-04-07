@@ -400,7 +400,9 @@ dojo.parser = new function(){
 		var list = [];
 		scan({
 			node: root ? dojo.byId(root) : dojo.body(),
-			inherited: (args && args.inherited) || {}
+			inherited: (args && args.inherited) || {
+				dir: dojo._isBodyLtr() ? "ltr" : "rtl"
+			}
 		}, list);
 
 		// go build the object instances

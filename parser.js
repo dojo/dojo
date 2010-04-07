@@ -90,10 +90,8 @@ dojo.parser = new function(){
 		if(!instanceClasses[className]){
 			// get pointer to widget class
 			var cls = d.getObject(className);
-			if(!d.isFunction(cls)){
-				throw new Error("Could not load class '" + className +
-					"'. Did you spell the name correctly and use a full path, like 'dijit.form.Button'?");
-			}
+			if(!cls){ return null; }		// class not defined [yet]
+
 			var proto = cls.prototype;
 	
 			// get table of parameter names & types
@@ -160,7 +158,9 @@ dojo.parser = new function(){
 				type = obj.type || (dp._attrName in mixin ? mixin[dp._attrName] : node.getAttribute(dp._attrName)),
 				clsInfo = obj.clsInfo || (type && getClassInfo(type));
 
-			if(!clsInfo){ return; }
+			if(!clsInfo){
+				throw new Error("Could not load class '" + type);
+			}
 
 			var clazz = clsInfo.cls,
 				scripts = obj.scripts || 
@@ -369,7 +369,7 @@ dojo.parser = new function(){
 						// if dojoType specified, add to output array of nodes to instantiate
 						var params = {
 							"type": type,
-							clsInfo: getClassInfo(type),
+							clsInfo: getClassInfo(type),	// note: won't find classes declared via dojo.Declaration
 							node: child,
 							scripts: [], // <script> nodes that are parent's children
 							inherited: inherited // dir & lang attributes inherited from parent

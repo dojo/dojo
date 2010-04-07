@@ -20,7 +20,16 @@ doh.register("tests.Stateful",
 			watching.unwatch();
 			s.set("foo", 5);
 			doh.is(s.get("foo"), 5);
-		}
+		},
+		function setHash(t){
+			var s = new dojo.Stateful();
+			s.set({
+				foo:3,
+				bar: 5
+			});
+			doh.is(s.get("foo"), 3);
+			doh.is(s.get("bar"), 5);
+		}		
 
 
 	]

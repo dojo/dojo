@@ -48,6 +48,12 @@ dojo.declare("dojo.Stateful", null, {
 		//	|		// this will be called on the set below
 		//	|	}
 		//	|	stateful.set(foo, 5);
+		if(typeof name === "object"){
+			for(var x in name){
+				this.set(x, name[x]); 
+			}
+			return this;
+		}
 		var oldValue = this[name];
 		this[name] = value;
 		if(this._watchCallbacks){
@@ -60,7 +66,12 @@ dojo.declare("dojo.Stateful", null, {
 		//		Watches a property for changes
 		//	name:
 		//		Indicates the property to watch. This is optional (the callback may be the 
-		// 		only parameter), and if omitted, all the properties will be watched  
+		// 		only parameter), and if omitted, all the properties will be watched
+		// returns:
+		//		An object handle for the watch. The unwatch method of this object 
+		// 		can be used to discontinue watching this property:
+		//		|	var watchHandle = obj.watch("foo", callback);
+		//		|	watchHandle.unwatch(); // callback won't be called now
 		//	callback:
 		//		The function to execute when the property changes. This will be called after
 		//		the property has been changed. The callback will be called with the |this|

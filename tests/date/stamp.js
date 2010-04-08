@@ -86,6 +86,10 @@ function test_date_iso_tz(t){
 	date = dojo.date.stamp.fromISOString("T16:46:39-07:00");
 	t.is(23, date.getUTCHours());
 	
+	date = dojo.date.stamp.fromISOString("T00:00:00Z", new Date(2010,3,1));
+	t.is(0, date.getUTCHours());
+	t.is(2010, date.getFullYear());
+	
 	//+hh:mm, +hhmm, or +hh
 	
 	//-hh:mm, -hhmm, or -hh

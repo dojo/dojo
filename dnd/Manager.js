@@ -136,7 +136,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 		if(this.avatar){
 			if(this.target && this.canDropFlag){
 				var copy = Boolean(this.source.copyState(dojo.isCopyKey(e))),
-				params = [this.source, this.nodes, copy, this.target];
+				params = [this.source, this.nodes, copy, this.target, e];
 				dojo.publish("/dnd/drop/before", params);
 				dojo.publish("/dnd/drop", params);
 			}else{

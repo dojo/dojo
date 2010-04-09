@@ -48,6 +48,13 @@ dojo.declare("dojo.Stateful", null, {
 		//	|		// this will be called on the set below
 		//	|	}
 		//	|	stateful.set(foo, 5);
+		//
+		//	set() may also be called with a hash of name/value pairs, ex:
+		//	|	myObj.set({
+		//	|		foo: "Howdy",
+		//	|		bar: 3
+		//	|	})
+		//	This is equivalent to calling set(foo, "Howdy") and set(bar, 3)
 		if(typeof name === "object"){
 			for(var x in name){
 				this.set(x, name[x]); 

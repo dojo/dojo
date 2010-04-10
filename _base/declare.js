@@ -208,6 +208,23 @@ dojo.require("dojo._base.array");
 		}
 		return this instanceof cls;
 	}
+	
+	function mixOwn(target, source){
+		var name, i = 0, l = d._extraNames.length;
+		// add props adding metadata for incoming functions skipping a constructor
+		for(name in source){
+			if(name != cname && source.hasOwnProperty(name)){
+				target[name] = source[name];
+			}
+		}
+		// process unenumerable methods on IE
+		for(; i < l; ++i){
+			name = d._extraNames[i];
+			if(name != cname && source.hasOwnProperty(name)){
+				target[name] = source[name];
+			}
+		}
+	}
 
 	// imlementation of safe mixin function
 	function safeMixin(target, source){
@@ -416,7 +433,7 @@ dojo.require("dojo._base.array");
 				}
 				// mix in properties
 				t = bases[i];
-				mix(proto, t._meta ? t._meta.hidden : t.prototype);
+				(t._meta ? mixOwn : mix)(proto, t.prototype);
 				// chain in new constructor
 				ctor = new Function;
 				ctor.superclass = superclass;

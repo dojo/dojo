@@ -503,7 +503,7 @@ if(dojo.isIE || dojo.isOpera){
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		d.isIE ? function(/*DomNode*/node, /*Number*/opacity){
 			var ov = opacity * 100;
-			node.style.zoom = 1.0;
+			node.style.zoom = (opacity == 1 ? "" : 1.0);
 
 			// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so disable it altogether (bug #2661),
 			//but still update the opacity value so we can get a correct reading if it is read later.

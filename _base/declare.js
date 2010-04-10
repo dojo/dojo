@@ -19,6 +19,8 @@ dojo.require("dojo._base.array");
 			base = bases[i];
 			if(!base){
 				err("mixin #" + i + " is unknown. Did you use dojo.require() to pull it in?");
+			}else if(opts.call(base) != "[object Function]"){
+				err("mixin #" + i + " is not a callable constructor.");
 			}
 			lin = base._meta ? base._meta.bases : [base];
 			top = 0;
@@ -418,8 +420,12 @@ dojo.require("dojo._base.array");
 		}else{
 			bases = [0];
 			if(superclass){
-				t = superclass._meta;
-				bases = bases.concat(t ? t.bases : superclass);
+				if(opts.call(superclass) == "[object Function]"){
+					t = superclass._meta;
+					bases = bases.concat(t ? t.bases : superclass);
+				}else{
+					err("base class is not a callable constructor.");
+				}
 			}else if(superclass !== null){
 				err("unknown base class. Did you use dojo.require() to pull it in?")
 			}

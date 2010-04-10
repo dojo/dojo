@@ -326,17 +326,21 @@ dojo.number._parseInfo = function(/*Object?*/options){
 				exponent: false};
 			var parts = format.split('.');
 			var places = options.places;
-			if(parts.length == 1 || places === 0){flags.fractional = false;}
-			else{
-				if(places === undefined){ places = options.pattern ? parts[1].lastIndexOf('0')+1 : Infinity; }
+
+			// special condition for percent (factor != 1)
+			// allow decimal places even if not specified in pattern
+			if((parts.length == 1 && factor == 1) || places === 0){
+				flags.fractional = false;
+			}else{
+				if(places === undefined){ places = options.pattern ? parts[1].lastIndexOf('0') + 1 : Infinity; }
 				if(places && options.fractional == undefined){flags.fractional = true;} // required fractional, unless otherwise specified
 				if(!options.places && (places < parts[1].length)){ places += "," + parts[1].length; }
 				flags.places = places;
 			}
 			var groups = parts[0].split(',');
-			if(groups.length>1){
+			if(groups.length > 1){
 				flags.groupSize = groups.pop().length;
-				if(groups.length>1){
+				if(groups.length > 1){
 					flags.groupSize2 = groups.pop().length;
 				}
 			}

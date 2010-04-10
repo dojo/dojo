@@ -359,6 +359,9 @@ tests.register("tests.number",
 //	t.is(-1234567, dojo.number.parse("  -1,234,567  ", {locale: "en-us"}));
 
 //	t.t(dojo.number.parse("9.1093826E-31"));
+	t.is(1.23, dojo.number.parse("123%", {places:0, locale: "en-us", type: "percent"}));
+	t.t(isNaN(dojo.number.parse("123.46%", {places:0, locale: "en-us", type: "percent"})));
+	t.is(1.2346, dojo.number.parse("123.46%", {places:2, locale: "en-us", type: "percent"}));
 	t.is(0.501, dojo.number.parse("50.1%", {pattern: "#0.#%", locale: 'en-us'}));
 
 	t.is(123.4, dojo.number.parse("123.4", {pattern: "#0.#", locale: 'en-us'}));

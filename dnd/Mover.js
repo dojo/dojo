@@ -42,7 +42,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		//		mouse event
 		dojo.dnd.autoScroll(e);
 		var m = this.marginBox;
-		this.host.onMove(this, {l: m.l + e.pageX, t: m.t + e.pageY});
+		this.host.onMove(this, {l: m.l + e.pageX, t: m.t + e.pageY}, e);
 		dojo.stopEvent(e);
 	},
 	onMouseUp: function(e){
@@ -53,7 +53,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		dojo.stopEvent(e);
 	},
 	// utilities
-	onFirstMove: function(){
+	onFirstMove: function(e){
 		// summary:
 		//		makes the node absolute; it is meant to be called only once. 
 		// 		relative and absolutely positioned nodes are assumed to use pixel units
@@ -87,7 +87,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		this.marginBox.l = l - this.marginBox.l;
 		this.marginBox.t = t - this.marginBox.t;
 		if(h && h.onFirstMove){
-			h.onFirstMove(this);
+			h.onFirstMove(this, e);
 		}
 		dojo.disconnect(this.events.pop());
 	},

@@ -3,9 +3,9 @@ dojo.provide("tests._base.declare");
 tests.register("tests._base.declare",
 	[
 		function smokeTest(t){
-			dojo.declare("tests._base.declare.tmp");
+			dojo.declare("tests._base.declare.tmp", null);
 			var tmp = new tests._base.declare.tmp();
-			dojo.declare("testsFoo");
+			dojo.declare("testsFoo", null);
 			var tmp = new testsFoo();
 		},
 		function smokeTest2(t){
@@ -182,7 +182,7 @@ tests.register("tests._base.declare",
 		},
 		function mixinPreamble(t){
 			var passed = false;
-			dojo.declare("tests._base.declare.tmp16");
+			dojo.declare("tests._base.declare.tmp16", null);
 			new tests._base.declare.tmp16({ preamble: function(){ passed = true; } });
 			t.t(passed);
 		},

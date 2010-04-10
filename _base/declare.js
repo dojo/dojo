@@ -18,7 +18,7 @@ dojo.require("dojo._base.array");
 		for(; i < l; ++i){
 			base = bases[i];
 			if(!base){
-				err("mixin #" + i + " is null");
+				err("mixin #" + i + " is unknown. Did you use dojo.require() to pull it in?");
 			}
 			lin = base._meta ? base._meta.bases : [base];
 			top = 0;
@@ -420,6 +420,8 @@ dojo.require("dojo._base.array");
 			if(superclass){
 				t = superclass._meta;
 				bases = bases.concat(t ? t.bases : superclass);
+			}else if(superclass !== null){
+				err("unknown base class. Did you use dojo.require() to pull it in?")
 			}
 		}
 		if(superclass){

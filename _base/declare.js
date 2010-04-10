@@ -208,7 +208,7 @@ dojo.require("dojo._base.array");
 		}
 		return this instanceof cls;
 	}
-	
+
 	function mixOwn(target, source){
 		var name, i = 0, l = d._extraNames.length;
 		// add props adding metadata for incoming functions skipping a constructor

@@ -932,13 +932,34 @@ dojo.require("dojo._base.array");
 			//	summary:
 			//		Returns a new NodeList comprised of items in this NodeList
 			//		at the given index or indices.
+			//
 			//	index: Integer...
 			//		One or more 0-based indices of items in the current
-			//		NodeList.
+			//		NodeList. A negative index will start at the end of the
+			//		list and go backwards. 
+			//
+			//	example:
+			//	Shorten the list to the first, second, and third elements
+			//	|	dojo.query("a").at(0, 1, 2).forEach(fn); 
+			//
+			//	example:
+			//	Retrieve the first and last elements of a unordered list:
+			//	|	dojo.query("ul > li").at(0, -1).forEach(cb);
+			//
+			//	example:
+			//	Do something for the first element only, but end() out back to
+			//	the original list and continue chaining:
+			//	|	dojo.query("a").at(0).onclick(fn).end().forEach(function(n){
+			//	|		console.log(n); // all anchors on the page. 
+			//	|	})	
+			//
 			//	returns:
 			//		dojo.NodeList
 			var t = new this._NodeListCtor();
-			d.forEach(arguments, function(i){ if(this[i]){ t.push(this[i]); }}, this);
+			d.forEach(arguments, function(i){ 
+				if(i < 0){ i = this.length + i }
+				if(this[i]){ t.push(this[i]); }
+			}, this);
 			return t._stash(this); // dojo.NodeList
 		}
 
@@ -950,10 +971,12 @@ dojo.require("dojo._base.array");
 		"keyup", "load", "mousedown", "mouseenter", "mouseleave", "mousemove",
 		"mouseout", "mouseover", "mouseup", "submit"
 	];
+	
+	// FIXME: pseudo-doc the above automatically generated on-event functions
 
 	// syntactic sugar for DOM events
 	d.forEach(nl.events, function(evt){
-			var _oe = "on"+evt;
+			var _oe = "on" + evt;
 			nlp[_oe] = function(a, b){
 				return this.connect(_oe, a, b);
 			}

@@ -521,6 +521,14 @@
 
 							var ending = divs.at(0).end();
 							verify([ending[0], ending[1]], ["sq100", "t"]);
+							
+							var at4 = divs.at(-1);
+							doh.is(divs[divs.length - 1], at4[0]);
+							
+							var at5 = divs.at(1, -1);
+							doh.is(at5[0], divs[1]);
+							doh.is(at5[1], divs[divs.length - 1]);
+							
 						},
 
 						function attr(){

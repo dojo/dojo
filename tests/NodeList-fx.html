@@ -101,6 +101,31 @@
 								d.callback(true);
 							});
 							return d;
+						},
+						
+						function auto(){
+							
+							var d = new doh.Deferred(), x = 0;
+							var nl = dojo.query("p")
+								.fadeOut({ 
+									auto:true,
+									onEnd:function(){
+										if(!x){
+											// onend fires foreach in the list. only dfd once.
+											x++; d.callback(true);
+										}
+									}
+								})
+								// past here we're expecting a NodeList back, not an Animation
+								.at(0)
+								.forEach(function(n){
+									doh.t(true); // it worked.
+								})
+							;
+							
+							doh.t(nl.length); // ensure we actually did _something_ 
+							
+							return d;
 						}
 					]
 				);
@@ -129,7 +154,7 @@
 		rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
 		semper velit ante id metus. Praesent massa dolor, porttitor sed,
 		pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
-		tortor pharetra congue.  Suspendisse pulvinar.
+		tortor pharetra congue.	 Suspendisse pulvinar.
 		</p>
 		<p>
 		Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
@@ -143,7 +168,7 @@
 		rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
 		semper velit ante id metus. Praesent massa dolor, porttitor sed,
 		pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
-		tortor pharetra congue.  Suspendisse pulvinar.
+		tortor pharetra congue.	 Suspendisse pulvinar.
 		</p>
 	</body>
 </html>

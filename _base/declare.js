@@ -400,8 +400,6 @@ dojo.require("dojo._base.array");
 	}
 
 	d.declare = function(className, superclass, props){
-		var proto, i, t, ctor, name, bases, chains, mixins = 1, parents = superclass;
-
 		// crack parameters
 		if(typeof className != "string"){
 			props = superclass;
@@ -409,6 +407,8 @@ dojo.require("dojo._base.array");
 			className = "";
 		}
 		props = props || {};
+
+		var proto, i, t, ctor, name, bases, chains, mixins = 1, parents = superclass;
 
 		// build a prototype
 		if(opts.call(superclass) == "[object Array]"){

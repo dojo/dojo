@@ -161,7 +161,8 @@
 						},
 						function testUnwantedParams(t){
 							// Make sure that parser doesn't pass any unwanted parameters to
-							// widget constructor, especially "toString" or "constructor"
+							// widget constructor, especially "toString" or "constructor".
+							// Make exception for dir/lang which parser gleans from document itself.
 							for(var param in obj.params){
 								doh.t(dojo.indexOf(
 									["strProp1", "strProp2",
@@ -171,7 +172,7 @@
 									"dateProp1", "dateProp2", "dateProp3",
 									"funcProp2", "funcProp3",
 									"preamble",
-									"callInc1", "callInc2"],
+									"callInc1", "callInc2", "dir", "lang"],
 									param) >= 0, param);
 							}
 						},
@@ -295,7 +296,6 @@
 							doh.is("ltr", inheritLtr.dir, "inherited ltr works (closest ancestor wins)");
 							doh.is("rtl", inheritRtl2.dir, "inherited rtl works, from grandparent");
 							doh.is("ltr", setLtr.dir, "direct setting of dir=ltr overrides inherited RTL");
-							doh.f(noDir.dir, "no dir setting");
 						},
 						
 						// Test that parser recurses correctly, except when there's a stopParser flag not to

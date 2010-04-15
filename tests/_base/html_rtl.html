@@ -46,6 +46,7 @@
 									scrollBy(100, 0); // funny scrolling to account for different browsers
 									scrollBy(-50, 0);
 									t.is(50, Math.abs(dojo.position('rect100').x-pos.x), "position().x should have changed by 50 after horizontal scroll (actual change was " + Math.abs(dojo.position('rect100').x-pos.x) + ")");
+									scrollTo(0, 0); // reset horizontal scroll before hiding scrollbar for IE8's benefit
 									d.callback(true);
 								}catch(e){
 									d.errback(e);

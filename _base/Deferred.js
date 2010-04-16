@@ -192,7 +192,8 @@ dojo.provide("dojo._base.Deferred");
 		var resolve = this.resolve = this.callback = function(value){
 			// summary:
 			//		Fulfills the Deferred instance successfully with the provide value
-			this.fired = 0; 
+			this.fired = 0;
+			this.results = [value, null];
 			complete(value);
 		};
 		
@@ -204,7 +205,9 @@ dojo.provide("dojo._base.Deferred");
 			isError = true;
 			this.fired = 1;
 			complete(error);
-			(dojo.config.deferredOnError || function(x){ console.error(x); })(error);
+			if(!error || error.log !== false){
+				(dojo.config.deferredOnError || function(x){ console.error(x); })(error);
+			}
 		};
 		// call progress to provide updates on the progress on the completion of the promise
 		this.progress = function(update){
@@ -272,6 +275,7 @@ dojo.provide("dojo._base.Deferred");
 				if (!(error instanceof Error)) {
 					error = new Error(error);
 				}
+				error.log = false;
 				reject(error);
 			}
 		}

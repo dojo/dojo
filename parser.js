@@ -154,18 +154,27 @@ dojo.parser = new function(){
 		d.forEach(nodes, function(obj){
 			if(!obj){ return; }
 
-			var node = obj.node || obj,
-				type = obj.type || (dp._attrName in mixin ? mixin[dp._attrName] : node.getAttribute(dp._attrName)),
+			// Get pointers to DOMNode, dojoType string, and clsInfo (metadata about the dojoType), etc.s
+			var node, type, clsInfo, clazz, scripts;
+			if(obj.node){
+				// new format of nodes[] array, object w/lots of properties pre-computed for me
+				node = obj.node;
+				type = obj.type;
 				clsInfo = obj.clsInfo || (type && getClassInfo(type));
-
+				clazz = clsInfo && clsInfo.cls;
+				scripts = obj.scripts;
+			}else{
+				// old (backwards compatible) format of nodes[] array, simple array of DOMNodes
+				node = obj;
+				type = dp._attrName in mixin ? mixin[dp._attrName] : node.getAttribute(dp._attrName);
+				clsInfo = type && getClassInfo(type);
+				clazz = clsInfo && clsInfo.cls;
+				scripts = (clazz && (clazz._noScript || clazz.prototype._noScript) ? [] : 
+							d.query("> script[type^='dojo/']", node));
+			}
 			if(!clsInfo){
 				throw new Error("Could not load class '" + type);
 			}
-
-			var clazz = clsInfo.cls,
-				scripts = obj.scripts || 
-						((clazz._noScript || clazz.prototype._noScript) ? [] : 
-							d.query("> script[type^='dojo/']", node));
 
 			// Setup hash to hold parameter settings for this widget.   Start with the parameter
 			// settings inherited from ancestors ("dir" and "lang").

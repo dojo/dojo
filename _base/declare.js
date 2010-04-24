@@ -167,7 +167,7 @@ dojo.require("dojo._base.array");
 						if(meta && meta.ctor === caller){
 							break;
 						}
-					};
+					}
 					pos = base ? pos : -1;
 				}
 			}
@@ -228,7 +228,7 @@ dojo.require("dojo._base.array");
 		}
 	}
 
-	// imlementation of safe mixin function
+	// implementation of safe mixin function
 	function safeMixin(target, source){
 		var name, t, i = 0, l = d._extraNames.length;
 		// add props adding metadata for incoming functions skipping a constructor
@@ -290,7 +290,7 @@ dojo.require("dojo._base.array");
 					if(f){
 						a = f.apply(this, a) || a;
 					}
-					// one pecularity of the preamble:
+					// one peculiarity of the preamble:
 					// it is called if it is not needed,
 					// e.g., there is no constructor to call
 					// let's watch for the last constructor
@@ -339,7 +339,7 @@ dojo.require("dojo._base.array");
 				if(f){
 					// process the preamble of this class
 					f.apply(this, t);
-					// one pecularity of the preamble:
+					// one peculiarity of the preamble:
 					// it is called even if it is not needed,
 					// e.g., there is no constructor to call
 					// let's watch for the last constructor
@@ -361,7 +361,7 @@ dojo.require("dojo._base.array");
 	// plain vanilla constructor (can use inherited() to call its base constructor)
 	function simpleConstructor(bases){
 		return function(){
-			var a = arguments, i = 0, f;
+			var a = arguments, i = 0, f, m;
 			//this._inherited = {};
 			// perform the shaman's rituals of the original dojo.declare()
 			// 1) do not call the preamble
@@ -485,7 +485,7 @@ dojo.require("dojo._base.array");
 		ctor.prototype = proto;
 		proto.constructor = ctor;
 
-		// add "standard" methods to the ptototype
+		// add "standard" methods to the prototype
 		proto.getInherited = getInherited;
 		proto.inherited = inherited;
 		proto.isInstanceOf = isInstanceOf;

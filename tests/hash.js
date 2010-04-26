@@ -1,7 +1,7 @@
 dojo.provide("tests.hash");
 dojo.require("dojo.hash");
 
-;(function(){
+(function(){
 
 // utilities for the tests:
 	function setHash(h){
@@ -79,6 +79,31 @@ dojo.require("dojo.hash");
 			},
 			runTest: function(t){
 				t.is('test%20with%20spaces', getHash());
+			},
+			tearDown: function(){
+				setHash();
+			}
+		},
+		// hash with encoded hash
+		{
+			name: "Getting the hash of 'test%23with%23encoded%23hashes'",
+			setUp: function(){
+				setHash('test%23with%23encoded%23hashes');
+			},
+			runTest: function(t){
+				t.is('test%23with%23encoded%23hashes', dojo.hash());
+			},
+			tearDown: function(){
+				setHash();
+			}
+		},
+		{
+			name: "Setting the hash of 'test%23with%23encoded%23hashes'",
+			setUp: function(){
+				setHash('test%23with%23encoded%23hashes');
+			},
+			runTest: function(t){
+				t.is('test%23with%23encoded%23hashes', getHash());
 			},
 			tearDown: function(){
 				setHash();

@@ -154,6 +154,7 @@
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-day-relative+-1": "어제", 
+	"dateFormatItem-h": "a h", 
 	"dateTimeFormat-long": "{1} {0}", 
 	"field-day-relative+-2": "그저께", 
 	"field-day-relative+-3": "그끄제", 
@@ -188,6 +189,7 @@
 		"12월"
 	], 
 	"dateFormatItem-yyMM": "YY. M.", 
+	"dateFormatItem-hm": "a h:mm", 
 	"days-format-abbr": [
 		"일", 
 		"월", 
@@ -231,5 +233,6 @@
 	"dateFormat-medium": "yyyy. M. d.", 
 	"dateFormatItem-mmss": "mm:ss", 
 	"dateTimeFormat-short": "{1} {0}", 
-	"dateFormatItem-Hms": "H시 m분 s초"
+	"dateFormatItem-Hms": "H시 m분 s초", 
+	"dateFormatItem-hms": "a h:mm:ss"
 })

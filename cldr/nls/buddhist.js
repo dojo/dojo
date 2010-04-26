@@ -20,7 +20,7 @@
 		"4"
 	], 
 	"dateFormatItem-yQQQ": "y QQQ", 
-	"dateFormatItem-yMEd": "EEE, M/d/y", 
+	"dateFormatItem-yMEd": "EEE, y-M-d", 
 	"dateFormatItem-MMMEd": "E MMM d", 
 	"eraNarrow": [
 		"BE"
@@ -41,13 +41,14 @@
 		"11", 
 		"12"
 	], 
-	"dateFormatItem-EEEd": "EEE d", 
+	"dateTimeFormat-medium": "{1} {0}", 
+	"dateFormatItem-EEEd": "d EEE", 
 	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormat-full": "EEEE, MMMM d, y G", 
 	"dateFormatItem-Md": "M-d", 
 	"dayPeriods-format-abbr-am": "AM", 
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})", 
-	"dateFormatItem-yM": "M/y", 
+	"dateFormatItem-yM": "y-M", 
 	"months-standAlone-wide": [
 		"1", 
 		"2", 
@@ -69,9 +70,8 @@
 		"Q3", 
 		"Q4"
 	], 
-	"dateTimeFormat": "{1} {0}", 
 	"timeFormat-long": "HH:mm:ss z", 
-	"dateFormatItem-yMMM": "MMM, y", 
+	"dateFormatItem-yMMM": "y MMM", 
 	"dateFormatItem-yQ": "y Q", 
 	"dateTimeFormats-appendItem-Era": "{0} {1}", 
 	"months-format-abbr": [
@@ -127,7 +127,6 @@
 		"6", 
 		"7"
 	], 
-	"dateFormatItem-MMMMd": "MMMM d", 
 	"timeFormat-medium": "HH:mm:ss", 
 	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
@@ -157,10 +156,11 @@
 		"4"
 	], 
 	"dateFormatItem-h": "h a", 
+	"dateTimeFormat-long": "{1} {0}", 
 	"dayPeriods-format-narrow-am": "AM", 
 	"dateFormatItem-MMMd": "MMM d", 
 	"dateFormatItem-MEd": "E, M-d", 
-	"dateFormatItem-yMMMM": "MMMM, y", 
+	"dateTimeFormat-full": "{1} {0}", 
 	"days-format-wide": [
 		"1", 
 		"2", 
@@ -224,13 +224,13 @@
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})", 
 	"dayPeriods-format-wide-am": "AM", 
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})", 
-	"dateFormatItem-MMMMEd": "E MMMM d", 
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})", 
 	"dateFormat-short": "M/d/yyyy", 
-	"dateFormatItem-yMMMEd": "EEE, MMM d, y", 
+	"dateFormatItem-yMMMEd": "EEE, y MMM d", 
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}", 
 	"dateFormat-medium": "MMM d, y G", 
 	"dayPeriods-format-narrow-pm": "PM", 
+	"dateTimeFormat-short": "{1} {0}", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a"
 })

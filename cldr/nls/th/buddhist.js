@@ -6,6 +6,7 @@
 		"พุทธศักราช"
 	], 
 	"dateFormatItem-MMMEd": "E d MMM", 
+	"dateTimeFormat-full": "{1}, {0}", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"months-standAlone-narrow": [
 		"ม.ค.", 
@@ -21,7 +22,9 @@
 		"พ.ย.", 
 		"ธ.ค."
 	], 
+	"dateTimeFormat-short": "{1}, {0}", 
 	"dayPeriods-format-wide-am": "ก่อนเที่ยง", 
+	"dateTimeFormat-medium": "{1}, {0}", 
 	"timeFormat-full": "H นาฬิกา m นาที ss วินาที zzzz", 
 	"dateFormatItem-yMMM": "MMM y", 
 	"days-standAlone-narrow": [
@@ -38,11 +41,11 @@
 	], 
 	"dateFormat-long": "d MMMM y", 
 	"timeFormat-medium": "H:mm:ss", 
+	"dateFormatItem-EEEd": "EEE d", 
 	"dateFormatItem-Hm": "H:mm", 
 	"dateFormat-medium": "d MMM y", 
 	"dateFormatItem-Hms": "H:mm:ss", 
-	"dateFormatItem-yMMMM": "MMMM y", 
-	"dateFormatItem-MMMMEd": "E d MMMM", 
+	"dateTimeFormat-long": "{1}, {0}", 
 	"dateFormatItem-MMMd": "d MMM", 
 	"timeFormat-long": "H นาฬิกา m นาที ss วินาที z", 
 	"months-format-abbr": [
@@ -61,7 +64,6 @@
 	], 
 	"timeFormat-short": "H:mm", 
 	"dateFormatItem-H": "H", 
-	"dateFormatItem-MMMMd": "d MMMM", 
 	"days-format-abbr": [
 		"อา.", 
 		"จ.", 

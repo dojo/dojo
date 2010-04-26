@@ -63,7 +63,7 @@
 		"дек."
 	], 
 	"dateFormatItem-Ed": "E d", 
-	"dateFormatItem-yMMM": "MMM y", 
+	"dateFormatItem-yMMM": "LLL y", 
 	"dateFormatItem-yyyyLLLL": "LLLL y", 
 	"field-day-relative+0": "Сегодня", 
 	"days-standAlone-narrow": [
@@ -82,7 +82,7 @@
 	], 
 	"field-day-relative+2": "Послезавтра", 
 	"dateFormatItem-yyyyMM": "MM.yyyy", 
-	"dateFormatItem-yyyyMMMM": "MMMM y", 
+	"dateFormatItem-yyyyMMMM": "LLLL y", 
 	"dateFormat-long": "d MMMM y 'г'.", 
 	"timeFormat-medium": "H:mm:ss", 
 	"field-zone": "Часовой пояс", 
@@ -90,7 +90,7 @@
 	"dateFormat-medium": "dd.MM.yyyy", 
 	"dateFormatItem-yyMM": "MM.yy", 
 	"dateFormatItem-Hms": "H:mm:ss", 
-	"dateFormatItem-yyMMM": "MMM yy", 
+	"dateFormatItem-yyMMM": "LLL yy", 
 	"quarters-standAlone-wide": [
 		"1-й квартал", 
 		"2-й квартал", 

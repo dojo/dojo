@@ -41,6 +41,7 @@
 	], 
 	"dayPeriods-format-wide-evening": "abends", 
 	"dateFormatItem-EEEd": "d. EEE", 
+	"dayPeriods-format-wide-pm": "nachm.", 
 	"dateFormat-full": "EEEE, d. MMMM y", 
 	"dateFormatItem-Md": "d.M.", 
 	"dateFormatItem-yyMMdd": "dd.MM.yy", 
@@ -73,8 +74,8 @@
 	"dateFormatItem-yMMM": "MMM y", 
 	"dateFormatItem-yQ": "Q y", 
 	"dateFormatItem-yyyyMMMM": "MMMM y", 
-	"field-hour": "Stunde", 
 	"dateFormatItem-MMdd": "dd.MM.", 
+	"field-hour": "Stunde", 
 	"months-format-abbr": [
 		"Jan", 
 		"Feb", 
@@ -218,6 +219,7 @@
 		"S"
 	], 
 	"dateFormatItem-MMM": "LLL", 
+	"dayPeriods-format-wide-am": "vorm.", 
 	"dateFormatItem-MMMMdd": "dd. MMMM", 
 	"dateFormat-short": "dd.MM.yy", 
 	"dateFormatItem-MMd": "d.MM.", 

@@ -54,7 +54,7 @@
 		"nov", 
 		"dec"
 	], 
-	"dateFormatItem-yMMM": "MMM y", 
+	"dateFormatItem-yMMM": "LLL y", 
 	"field-day-relative+0": "Dnes", 
 	"days-standAlone-narrow": [
 		"N", 
@@ -72,7 +72,7 @@
 	], 
 	"field-day-relative+2": "Pozajtra", 
 	"field-day-relative+3": "O tri dni", 
-	"dateFormatItem-yyyyMMMM": "MMMM y", 
+	"dateFormatItem-yyyyMMMM": "LLLL y", 
 	"dateFormat-long": "d. MMMM y", 
 	"timeFormat-medium": "H:mm:ss", 
 	"dateFormatItem-EEEd": "EEE, d.", 
@@ -87,7 +87,7 @@
 		"3. štvrťrok", 
 		"4. štvrťrok"
 	], 
-	"dateFormatItem-yMMMM": "MMMM y", 
+	"dateFormatItem-yMMMM": "LLLL y", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-year": "Rok", 
 	"months-standAlone-wide": [

@@ -39,6 +39,7 @@
 		"12月"
 	], 
 	"dateTimeFormat-medium": "{1} {0}", 
+	"dayPeriods-format-wide-pm": "下午", 
 	"dateFormat-full": "y年M月d日EEEE", 
 	"dateFormatItem-Md": "M-d", 
 	"field-era": "时期", 
@@ -224,6 +225,7 @@
 		"六"
 	], 
 	"dateFormatItem-MMM": "LLL", 
+	"dayPeriods-format-wide-am": "上午", 
 	"dateFormatItem-MMMMdd": "MMMMdd日", 
 	"dayPeriods-format-wide-weeHours": "凌晨", 
 	"dateFormat-short": "yy-M-d", 

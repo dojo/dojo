@@ -227,7 +227,7 @@
 	], 
 	"dateFormatItem-MMM": "LLL", 
 	"dayPeriods-format-wide-am": "AM", 
-	"dateFormat-short": "dd-MM-yy", 
+	"dateFormat-short": "dd-MM-yyyy", 
 	"dayPeriods-format-wide-afternoon": "po południu", 
 	"field-second": "Sekunda", 
 	"dateFormatItem-yMMMEd": "EEE, d MMM y", 

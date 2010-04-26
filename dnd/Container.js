@@ -420,7 +420,9 @@ dojo.dnd._defaultCreator = function(node){
 			type = (isObj && item.type) ? item.type : ["text"];
 			n = (hint == "avatar" ? dojo.dnd._createSpan : c)(String(data));
 		}
-		n.id = dojo.dnd.getUniqueId();
+		if(!n.id){
+			n.id = dojo.dnd.getUniqueId();
+		}
 		return {node: n, data: data, type: type};
 	};
 };

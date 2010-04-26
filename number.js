@@ -332,7 +332,10 @@ dojo.number._parseInfo = function(/*Object?*/options){
 
 			// special condition for percent (factor != 1)
 			// allow decimal places even if not specified in pattern
-			if((parts.length == 1 && factor == 1) || places === 0){
+			if(parts.length == 1 && factor != 1){
+			    parts[1] = "###";
+			}
+			if(parts.length == 1 || places === 0){
 				flags.fractional = false;
 			}else{
 				if(places === undefined){ places = options.pattern ? parts[1].lastIndexOf('0') + 1 : Infinity; }

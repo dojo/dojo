@@ -74,7 +74,7 @@ tests.register("tests.date.locale",
 	t.is("12 o'clock AM", dojo.date.locale.format(date, {datePattern:"hh 'o''clock' a", selector:"date", locale: 'en'}));
 
 	// compare without timezone
-	t.is("\u4e0a\u534812\u65f655\u520612\u79d2", dojo.date.locale.format(date, {formatLength:'full',selector:'time', locale:'zh-cn'}).split(' ')[0]);
+	t.is("\u4e0a\u534812\u65f655\u520612\u79d2", dojo.date.locale.format(date, {formatLength:'full',selector:'time', locale:'zh-cn'}).substring(3));
 			}
 		},
 		{

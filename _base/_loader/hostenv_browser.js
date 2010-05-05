@@ -412,7 +412,7 @@ if(typeof window != 'undefined'){
 
 		try{
 			document.namespaces.add("v","urn:schemas-microsoft-com:vml");
-			var vmlElems = ["*", "group", "roundrect", "oval", "shape", "rect", "imagedata"],
+			var vmlElems = ["*", "group", "roundrect", "oval", "shape", "rect", "imagedata", "path", "textpath", "text"],
 				i = 0, l = 1, s = document.createStyleSheet();
 			if(dojo.isIE >= 8){
 				i = 1;

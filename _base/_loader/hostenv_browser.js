@@ -407,8 +407,16 @@ if(typeof window != 'undefined'){
 			if(!dojo.config.skipIeDomLoaded && self === self.top){
 				dojo._scrollIntervalId = setInterval(function (){
 					try{
-						document.documentElement.doScroll("left");
-						dojo._loadInit();
+						//When dojo is loaded into an iframe in an IE HTML Application 
+						//(HTA), such as in a selenium test, javascript in the iframe
+						//can't see anything outside of it, so self===self.top is true,
+						//but the iframe is not the top window and doScroll will be 
+						//available before document.body is set. Test document.body
+						//before trying the doScroll trick
+						if(document.body){
+							document.documentElement.doScroll("left");
+							dojo._loadInit();
+						}
 					}catch (e){}
 				}, 30);
 			}

@@ -77,10 +77,9 @@ if(typeof dojo == "undefined"){
 
 		// we default to a browser environment if we can't figure it out
 		var hostEnv = "browser";
-		var isRhino = false;
-		var isSpidermonkey = false;
-		var isFFExt = false;
-		if(
+		if(typeof djConfig !== "undefined" && djConfig.hostEnv){
+			hostEnv = djConfig.hostEnv;
+		}else if(
 			typeof this["load"] == "function" &&
 			(
 				typeof this["Packages"] == "function" ||
@@ -91,22 +90,11 @@ if(typeof dojo == "undefined"){
 			// object. Obviously, this check could be "juiced" if someone
 			// creates a "Packages" object and a "load" function, but we've
 			// never seen this happen in the wild yet.
-			var isRhino = true;
 			hostEnv = "rhino";
 		}else if(typeof this["load"] == "function"){
 			// Spidermonkey has a very spartan environment. The only thing we
 			// can count on from it is a "load" function.
-			isSpidermonkey  = true;
 			hostEnv = "spidermonkey";
-		}else if(
-			"ChromeWindow" in this &&
-			window instanceof ChromeWindow
-		){
-			try{
-				Components.classes["@mozilla.org/moz/jssubscript-loader;1"];
-				isFFExt = true;
-				hostEnv = "ff_ext";
-			}catch(e){ /* squelch Permission Denied error, which just means this is not an extension */ }
 		}
 		var tmps = ["bootstrap.js", "loader.js", "hostenv_"+hostEnv+".js"];
 		if (this.Jaxer && this.Jaxer.isOnServer) {
@@ -130,7 +118,7 @@ if(typeof dojo == "undefined"){
 			var root = djConfig["baseUrl"];
 		}else{
 			var root = "./";
-			if(isSpidermonkey){
+			if(hostEnv === "spidermonkey"){
 				// auto-detect the base path via an exception. Hack!
 				try{
 					throw new Error(""); 
@@ -197,9 +185,9 @@ if(typeof dojo == "undefined"){
 			lastRoot = script;
 		}
 		for(var x=0; x < tmps.length; x++){
-			if(isRhino || isSpidermonkey || (this.Jaxer && this.Jaxer.isOnServer)){
+			if(hostEnv === "rhino" || hostEnv === "spidermonkey" || (this.Jaxer && this.Jaxer.isOnServer)){
 				load(tmps[x]);
-			}else if(isFFExt){
+			}else if(hostEnv === "ff_ext"){
 				var l = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
 					.getService(Components.interfaces.mozIJSSubScriptLoader);
 				l.loadSubScript(tmps[x], this)

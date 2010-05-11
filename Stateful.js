@@ -87,11 +87,12 @@ dojo.declare("dojo.Stateful", null, {
 		
 		var callbacks = this._watchCallbacks;
 		if(!callbacks){
+			var self = this;
 			callbacks = this._watchCallbacks = function(name, oldValue, value, ignoreCatchall){
 				var notify = function(propertyCallbacks){
 					for(var i = 0, l = propertyCallbacks && propertyCallbacks.length; i < l; i++){
 						try{
-							propertyCallbacks[i].call(this, name, oldValue, value);
+							propertyCallbacks[i].call(self, name, oldValue, value);
 						}catch(e){
 							console.error(e);
 						}

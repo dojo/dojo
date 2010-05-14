@@ -270,6 +270,13 @@
 							t.assertFalse(dojo.hasClass(node, "b"), "class is blank, test for b");
 							dojo.removeClass(node, "c");
 							t.assertTrue(!node.className, "no class");
+							var acuWorked = true;
+							try{
+								dojo.addClass(node);
+							}catch(e){
+								acuWorked = false;
+							}
+							doh.is(true, acuWorked, "addClass handles undefined class");
 						},
 						function testAddRemoveClassMultiple(t){
 							var node = dojo.byId("sq100");

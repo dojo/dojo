@@ -1752,7 +1752,7 @@ if(dojo.isIE || dojo.isOpera){
 				}
 			}
 			// assumed to be an array
-			return s;
+			return s || "";
 		};
 
 	dojo.addClass = function(/*DomNode|String*/node, /*String|Array*/classStr){

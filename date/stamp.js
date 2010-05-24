@@ -55,9 +55,7 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 			dojo.forEach(dojo.map(["FullYear", "Month", "Date", "Hours", "Minutes", "Seconds", "Milliseconds"], function(prop){
 				return defaultTime["get" + prop]();
 			}), function(value, index){
-				if(match[index] === undefined){
-					match[index] = value;
-				}
+				match[index] = match[index] || value;
 			});
 		}
 		result = new Date(match[0]||1970, match[1]||0, match[2]||1, match[3]||0, match[4]||0, match[5]||0, match[6]||0); //TODO: UTC defaults

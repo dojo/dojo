@@ -205,6 +205,7 @@ dojo.provide("dojo._base.Deferred");
 			isError = true;
 			this.fired = 1;
 			complete(error);
+			this.results = [null, error];
 			if(!error || error.log !== false){
 				(dojo.config.deferredOnError || function(x){ console.error(x); })(error);
 			}

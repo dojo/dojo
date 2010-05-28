@@ -5,15 +5,15 @@ dojo.require("dojo._base.lang");
 dojo.require("dojo._base.html");
 
 /*
-	Animation loosely package based on Dan Pupius' work, contributed under CLA: 
+	Animation loosely package based on Dan Pupius' work, contributed under CLA:
 		http://pupius.co.uk/js/Toolkit.Drawing.js
 */
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-(function(){ 
+(function(){
 	var d = dojo;
 //>>excludeEnd("webkitMobile");
 	var _mixin = d._mixin;
-	
+
 	dojo._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:
 		//		dojo._Line is the object used to generate values from a start value
@@ -25,17 +25,17 @@ dojo.require("dojo._base.html");
 		this.start = start;
 		this.end = end;
 	};
-	
+
 	dojo._Line.prototype.getValue = function(/*float*/ n){
 		//	summary: Returns the point on the line
 		//	n: a floating point number greater than 0 and less than 1
 		return ((this.end - this.start) * n) + this.start; // Decimal
 	};
-	
+
 	dojo.Animation = function(args){
 		//	summary:
 		//		A generic animation class that fires callbacks into its handlers
-		//		object at various states. 
+		//		object at various states.
 		//	description:
 		//		A generic animation class that fires callbacks into its handlers
 		//		object at various states. Nearly all dojo animation functions
@@ -45,80 +45,80 @@ dojo.require("dojo._base.html");
 		//		returned.
 		// args: Object
 		//		The 'magic argument', mixing all the properties into this
-		//		animation instance. 
-		
+		//		animation instance.
+
 		_mixin(this, args);
 		if(d.isArray(this.curve)){
 			this.curve = new d._Line(this.curve[0], this.curve[1]);
 		}
-		
+
 	};
-	
+
 	// Alias to drop come 2.0:
 	d._Animation = d.Animation;
-	
+
 	d.extend(dojo.Animation, {
 		// duration: Integer
 		//		The time in milliseonds the animation will take to run
 		duration: 350,
-	
+
 	/*=====
 		// curve: dojo._Line|Array
 		//		A two element array of start and end values, or a `dojo._Line` instance to be
-		//		used in the Animation. 
+		//		used in the Animation.
 		curve: null,
-	
+
 		// easing: Function?
-		//		A Function to adjust the acceleration (or deceleration) of the progress 
+		//		A Function to adjust the acceleration (or deceleration) of the progress
 		//		across a dojo._Line
 		easing: null,
 	=====*/
-	
+
 		// repeat: Integer?
 		//		The number of times to loop the animation
 		repeat: 0,
-	
+
 		// rate: Integer?
-		//		the time in milliseconds to wait before advancing to next frame 
+		//		the time in milliseconds to wait before advancing to next frame
 		//		(used as a fps timer: 1000/rate = fps)
 		rate: 20 /* 50 fps */,
-	
-	/*===== 
+
+	/*=====
 		// delay: Integer?
-		//		The time in milliseconds to wait before starting animation after it 
+		//		The time in milliseconds to wait before starting animation after it
 		//		has been .play()'ed
 		delay: null,
-	
+
 		// beforeBegin: Event?
 		//		Synthetic event fired before a dojo.Animation begins playing (synchronous)
 		beforeBegin: null,
-	
+
 		// onBegin: Event?
 		//		Synthetic event fired as a dojo.Animation begins playing (useful?)
 		onBegin: null,
-	
+
 		// onAnimate: Event?
 		//		Synthetic event fired at each interval of a `dojo.Animation`
 		onAnimate: null,
-	
+
 		// onEnd: Event?
 		//		Synthetic event fired after the final frame of a `dojo.Animation`
 		onEnd: null,
-	
+
 		// onPlay: Event?
 		//		Synthetic event fired any time a `dojo.Animation` is play()'ed
 		onPlay: null,
-	
+
 		// onPause: Event?
 		//		Synthetic event fired when a `dojo.Animation` is paused
 		onPause: null,
-	
+
 		// onStop: Event
 		//		Synthetic event fires when a `dojo.Animation` is stopped
 		onStop: null,
-	
+
 	=====*/
-	
+
 		_percent: 0,
 		_startRepeatCount: 0,
 
@@ -135,7 +135,7 @@ dojo.require("dojo._base.html");
 			//	description:
 			//		Convenience function.  Fire event "evt" and pass it the
 			//		arguments specified in "args".
-			//		Fires the callback in the scope of the `dojo.Animation` 
+			//		Fires the callback in the scope of the `dojo.Animation`
 			//		instance.
 			//	evt:
 			//		The event to fire.
@@ -182,12 +182,12 @@ dojo.require("dojo._base.html");
 			}else if(_t._active && !_t._paused){
 				return _t;
 			}
-	
+
 			_t._fire("beforeBegin", [_t.node]);
-	
+
 			var de = delay || _t.delay,
 				_p = dojo.hitch(_t, "_play", gotoStart);
-				
+
 			if(de > 0){
 				_t._delayTimer = setTimeout(_p, de);
 				return _t;
@@ -195,7 +195,7 @@ dojo.require("dojo._base.html");
 			_p();
 			return _t;
 		},
-	
+
 		_play: function(gotoStart){
 			var _t = this;
 			if(_t._delayTimer){ _t._clearTimer(); }
@@ -203,8 +203,7 @@ dojo.require("dojo._base.html");
 			if(_t._paused){
 				_t._startTime -= _t.duration * _t._percent;
 			}
-			_t._endTime = _t._startTime + _t.duration;
-	
+
 			_t._active = true;
 			_t._paused = false;
 			var value = _t.curve.getValue(_t._getStep());
@@ -214,13 +213,13 @@ dojo.require("dojo._base.html");
 				}
 				_t._fire("onBegin", [value]);
 			}
-	
+
 			_t._fire("onPlay", [value]);
-	
+
 			_t._cycle();
 			return _t; // dojo.Animation
 		},
-	
+
 		pause: function(){
 			// summary: Pauses a running animation.
 			var _t = this;
@@ -231,7 +230,7 @@ dojo.require("dojo._base.html");
 			_t._fire("onPause", [_t.curve.getValue(_t._getStep())]);
 			return _t; // dojo.Animation
 		},
-	
+
 		gotoPercent: function(/*Decimal*/ percent, /*Boolean?*/ andPlay){
 			//	summary:
 			//		Sets the progress of the animation.
@@ -246,7 +245,7 @@ dojo.require("dojo._base.html");
 			if(andPlay){ _t.play(); }
 			return _t; // dojo.Animation
 		},
-	
+
 		stop: function(/*boolean?*/ gotoEnd){
 			// summary: Stops a running animation.
 			// gotoEnd: If true, the animation will end.
@@ -261,9 +260,9 @@ dojo.require("dojo._base.html");
 			_t._active = _t._paused = false;
 			return _t; // dojo.Animation
 		},
-	
+
 		status: function(){
-			// summary: 
+			// summary:
 			//		Returns a string token representation of the status of
 			//		the animation, one of: "paused", "playing", "stopped"
 			if(this._active){
@@ -271,30 +270,30 @@ dojo.require("dojo._base.html");
 			}
 			return "stopped"; // String
 		},
-	
+
 		_cycle: function(){
 			var _t = this;
 			if(_t._active){
 				var curr = new Date().valueOf();
-				var step = (curr - _t._startTime) / (_t._endTime - _t._startTime);
-	
+				var step = (curr - _t._startTime) / (_t.duration);
+
 				if(step >= 1){
 					step = 1;
 				}
 				_t._percent = step;
-	
+
 				// Perform easing
 				if(_t.easing){
 					step = _t.easing(step);
 				}
-	
+
 				_t._fire("onAnimate", [_t.curve.getValue(step)]);
-	
+
 				if(_t._percent < 1){
 					_t._startTimer();
 				}else{
 					_t._active = false;
-	
+
 					if(_t.repeat > 0){
 						_t.repeat--;
 						_t.play(null, true);
@@ -313,18 +312,17 @@ dojo.require("dojo._base.html");
 			}
 			return _t; // dojo.Animation
 		},
-		
+
 		_clearTimer: function(){
 			// summary: Clear the play delay timer
 			clearTimeout(this._delayTimer);
 			delete this._delayTimer;
 		}
-		
+
 	});
 
 	// the local timer, stubbed into all Animation instances
 	var ctr = 0,
-		_globalTimerList = [],
 		timer = null,
 		runner = {
 			run: function(){}
@@ -357,7 +355,7 @@ dojo.require("dojo._base.html");
 
 	});
 
-	var _makeFadeable = 
+	var _makeFadeable =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		d.isIE ? function(node){
 			// only set the zoom if the "tickle" value would be the same as the
@@ -368,23 +366,23 @@ dojo.require("dojo._base.html");
 			if(!ns.width.length && d.style(node, "width") == "auto"){
 				ns.width = "auto";
 			}
-		} : 
+		} :
 		//>>excludeEnd("webkitMobile");
 		function(){};
 
 	dojo._fade = function(/*Object*/ args){
-		//	summary: 
+		//	summary:
 		//		Returns an animation that will fade the node defined by
 		//		args.node from the start to end values passed (args.start
 		//		args.end) (end is mandatory, start is optional)
 
 		args.node = d.byId(args.node);
 		var fArgs = _mixin({ properties: {} }, args),
-		 	props = (fArgs.properties.opacity = {});
-		
+			props = (fArgs.properties.opacity = {});
+
 		props.start = !("start" in fArgs) ?
-			function(){ 
-				return +d.style(fArgs.node, "opacity")||0; 
+			function(){
+				return +d.style(fArgs.node, "opacity")||0;
 			} : fArgs.start;
 		props.end = fArgs.end;
 
@@ -396,7 +394,7 @@ dojo.require("dojo._base.html");
 
 	/*=====
 	dojo.__FadeArgs = function(node, duration, easing){
-		// 	node: DOMNode|String
+		//	node: DOMNode|String
 		//		The node referenced in the animation
 		//	duration: Integer?
 		//		Duration of the animation in milliseconds.
@@ -409,14 +407,14 @@ dojo.require("dojo._base.html");
 	=====*/
 
 	dojo.fadeIn = function(/*dojo.__FadeArgs*/ args){
-		// summary: 
+		// summary:
 		//		Returns an animation that will fade node defined in 'args' from
 		//		its current opacity to fully opaque.
 		return d._fade(_mixin({ end: 1 }, args)); // dojo.Animation
 	};
 
 	dojo.fadeOut = function(/*dojo.__FadeArgs*/  args){
-		// summary: 
+		// summary:
 		//		Returns an animation that will fade node defined in 'args'
 		//		from its current opacity to fully transparent.
 		return d._fade(_mixin({ end: 0 }, args)); // dojo.Animation
@@ -462,13 +460,13 @@ dojo.require("dojo._base.html");
 		//	A hash map of style properties to Objects describing the transition,
 		//	such as the properties of dojo._Line with an additional 'units' property
 		properties: {}
-		
+
 		//TODOC: add event callbacks
 	});
 	=====*/
 
 	dojo.animateProperty = function(/*dojo.__AnimArgs*/ args){
-		// summary: 
+		// summary:
 		//		Returns an animation that will transition the properties of
 		//		node defined in `args` depending how they are defined in
 		//		`args.properties`
@@ -478,10 +476,10 @@ dojo.require("dojo._base.html");
 		//		animations. It takes an object of "properties" corresponding to
 		//		style properties, and animates them in parallel over a set
 		//		duration.
-		//	
+		//
 		// example:
 		//		A simple animation that changes the width of the specified node.
-		//	|	dojo.animateProperty({ 
+		//	|	dojo.animateProperty({
 		//	|		node: "nodeId",
 		//	|		properties: { width: 400 },
 		//	|	}).play();
@@ -497,18 +495,18 @@ dojo.require("dojo._base.html");
 		//	|		properties: {
 		//	|			width: { start: '200', end: '400', units:"px" },
 		//	|			height: { start:'200', end: '400', units:"px" },
-		//	|			paddingTop: { start:'5', end:'50', units:"px" } 
+		//	|			paddingTop: { start:'5', end:'50', units:"px" }
 		//	|		}
 		//	|	}).play();
 		//		Note 'paddingTop' is used over 'padding-top'. Multi-name CSS properties
 		//		are written using "mixed case", as the hyphen is illegal as an object key.
-		//		
+		//
 		// example:
 		//		Plug in a different easing function and register a callback for
 		//		when the animation ends. Easing functions accept values between
 		//		zero and one and return a value on that basis. In this case, an
 		//		exponential-in curve.
-		//	|	dojo.animateProperty({ 
+		//	|	dojo.animateProperty({
 		//	|		node: "nodeId",
 		//	|		// dojo figures out the start value
 		//	|		properties: { width: { end: 400 } },
@@ -550,7 +548,7 @@ dojo.require("dojo._base.html");
 		//	|			},
 		//	|			width:{
 		//	|				start:function(node){ return 100; },
-		//	|				end:function(node){ return 200; }	
+		//	|				end:function(node){ return 200; }
 		//	|			}
 		//	|		}
 		//	|	}).play();
@@ -609,10 +607,10 @@ dojo.require("dojo._base.html");
 		return anim; // dojo.Animation
 	};
 
-	dojo.anim = function(	/*DOMNode|String*/ 	node, 
-							/*Object*/ 			properties, 
-							/*Integer?*/		duration, 
-							/*Function?*/		easing, 
+	dojo.anim = function(	/*DOMNode|String*/	node,
+							/*Object*/			properties,
+							/*Integer?*/		duration,
+							/*Function?*/		easing,
 							/*Function?*/		onEnd,
 							/*Integer?*/		delay){
 		//	summary:
@@ -658,7 +656,7 @@ dojo.require("dojo._base.html");
 			duration: duration || d.Animation.prototype.duration,
 			properties: properties,
 			easing: easing,
-			onEnd: onEnd 
+			onEnd: onEnd
 		}).play(delay || 0);
 	};
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);

@@ -171,7 +171,7 @@ pre {
 */
 table {  font-size:100%; }
 
-table.dojoTabular { 
+.dojoTabular { 
 	border-collapse: collapse; 
 	border-spacing: 0; 
 	border: 1px solid #ccc; 
@@ -183,15 +183,14 @@ table.dojoTabular {
 	font-weight: bold;
 }
 
-table.dojoTabular thead, table.dojoTabular tfoot { 
+.dojoTabular thead,
+.dojoTabular tfoot { 
 	background-color: #efefef; 
 	border: 1px solid #ccc; 
 	border-width: 1px 0; 
 }
 
-table.dojoTabular thead tr th,
-table.dojoTabular thead tr td,
-table.dojoTabular tbody tr td,
-table.dojoTabular tfoot tr td { 
+.dojoTabular th,
+.dojoTabular td { 
 	padding: 0.25em 0.5em;
 }

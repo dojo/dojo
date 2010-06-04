@@ -1,4 +1,5 @@
 dojo.provide("dojo._base.Deferred");
+dojo.require("dojo._base.lang");
 
 (function(){
 	var mutator = function(){};		
@@ -189,7 +190,7 @@ dojo.provide("dojo._base.Deferred");
 			}	
 		}
 		// calling resolve will resolve the promise
-		var resolve = this.resolve = this.callback = function(value){
+		this.resolve = this.callback = function(value){
 			// summary:
 			//		Fulfills the Deferred instance successfully with the provide value
 			this.fired = 0;
@@ -199,7 +200,7 @@ dojo.provide("dojo._base.Deferred");
 		
 		
 		// calling error will indicate that the promise failed
-		var reject = this.reject = this.errback = function(error){
+		this.reject = this.errback = function(error){
 			// summary:
 			//		Fulfills the Deferred instance as an error with the provided error 
 			isError = true;
@@ -277,7 +278,7 @@ dojo.provide("dojo._base.Deferred");
 					error = new Error(error);
 				}
 				error.log = false;
-				reject(error);
+				this.reject(error);
 			}
 		}
 		freeze(promise);

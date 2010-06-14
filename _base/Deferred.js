@@ -268,7 +268,7 @@ dojo.require("dojo._base.lang");
 			}
 			return returnDeferred.promise;
 		};
-		
+		var deferred = this;
 		this.cancel = promise.cancel = function () {
 			// summary:
 			//		Cancels the asynchronous operation
@@ -278,7 +278,7 @@ dojo.require("dojo._base.lang");
 					error = new Error(error);
 				}
 				error.log = false;
-				this.reject(error);
+				deferred.reject(error);
 			}
 		}
 		freeze(promise);

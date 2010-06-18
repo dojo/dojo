@@ -235,6 +235,8 @@ tests.register("tests.date.locale",
 
 	t.is( new Date(2006, 7, 11), dojo.date.locale.parse("11082006", {datePattern:"ddMMyyyy", selector:"date"}));
 
+	t.is( new Date(2006, 7, 31), dojo.date.locale.parse("31Aug2006", {datePattern:"ddMMMyyyy", selector:"date"}));
+
 			}
 		},
 		{

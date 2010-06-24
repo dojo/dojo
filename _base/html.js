@@ -1018,12 +1018,15 @@ if(dojo.isIE || dojo.isOpera){
 		//		150px. Note that the content box may have a much larger border
 		//		or margin box, depending on the box model currently in use and
 		//		CSS values set/inherited for node.
+		//		While the getter will return top and left values, the
+		//		setter only accepts setting the width and height.
 		//	node:
 		//		id or reference to DOM Node to get/set box for
 		//	box:
 		//		If passed, denotes that dojo.contentBox() should
 		//		update/set the content box for node. Box is an object in the
-		//		above format. All properties are optional if passed.
+		//		above format, but only w (width) and h (height) are supported.
+		//		All properties are optional if passed.
 		var n = byId(node), s = gcs(n), b = box;
 		return !b ? d._getContentBox(n, s) : d._setContentSize(n, b.w, b.h, s); // Object
 	}

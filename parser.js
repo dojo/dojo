@@ -1,6 +1,8 @@
 dojo.provide("dojo.parser");
 dojo.require("dojo.date.stamp");
 
+new Date("X"); // workaround for #11279, new Date("") == NaN
+
 dojo.parser = new function(){
 	// summary: The Dom/Widget parsing package
 

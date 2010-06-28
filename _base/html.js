@@ -1788,14 +1788,18 @@ if(dojo.isIE || dojo.isOpera){
 
 		node = byId(node);
 		classStr = str2array(classStr);
-		var cls = " " + node[_className] + " ";
+		var cls = node[_className], oldLen;
+		cls = cls ? " " + cls + " " : " ";
+		oldLen = cls.length;
 		for(var i = 0, len = classStr.length, c; i < len; ++i){
 			c = classStr[i];
 			if(c && cls.indexOf(" " + c + " ") < 0){
 				cls += c + " ";
 			}
 		}
-		node[_className] = d.trim(cls);
+		if(oldLen < cls.length){
+			node[_className] = cls.substr(1, cls.length - 2);
+		}
 	};
 
 	dojo.removeClass = function(/*DomNode|String*/node, /*String|Array?*/classStr){

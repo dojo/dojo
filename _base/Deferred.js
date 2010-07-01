@@ -273,12 +273,14 @@ dojo.require("dojo._base.lang");
 			// summary:
 			//		Cancels the asynchronous operation
 			if(!finished){
-				var error = canceller && canceller(this);
-				if (!(error instanceof Error)) {
-					error = new Error(error);
+				var error = canceller && canceller(deferred);
+				if(!finished){
+					if (!(error instanceof Error)) {
+						error = new Error(error);
+					}
+					error.log = false;
+					deferred.reject(error);
 				}
-				error.log = false;
-				deferred.reject(error);
 			}
 		}
 		freeze(promise);

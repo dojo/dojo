@@ -145,6 +145,29 @@ doh.register("tests._base.Deferred",
 			};
 			def.reject(new Error("test"));
 			t.t(handledError instanceof Error);
+		},
+		function cancelThenDerivative(t){
+			var def = new dojo.Deferred();
+			var def2 = def.then();
+			try{
+				def2.cancel();
+				t.t(true); // Didn't throw an error
+			}catch(e){
+				t.t(false);
+			}
+		},
+		function cancelPromiseValue(t){
+			var cancelledDef;
+			var def = new dojo.Deferred(function(_def){ cancelledDef = _def; });
+			def.promise.cancel();
+			t.is(def, cancelledDef);
+		},
+		function errorResult(t){
+			var def = new dojo.Deferred();
+			var result = new Error("rejected");
+			def.reject(result);
+			t.is(def.fired, 1);
+			t.is(def.results[1], result);
 		}
 	]
 );

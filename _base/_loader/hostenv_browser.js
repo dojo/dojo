@@ -427,16 +427,18 @@ if(typeof window != 'undefined'){
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(dojo.isIE){
 		try{
-			document.namespaces.add("v", "urn:schemas-microsoft-com:vml");
-			var vmlElems = ["*", "group", "roundrect", "oval", "shape", "rect", "imagedata", "path", "textpath", "text"],
-				i = 0, l = 1, s = document.createStyleSheet();
-			if(dojo.isIE >= 8){
-				i = 1;
-				l = vmlElems.length;
-			}
-			for(; i < l; ++i){
-				s.addRule("v\\:" + vmlElems[i], "behavior:url(#default#VML); display:inline-block");
-			}
+			(function(){
+				document.namespaces.add("v", "urn:schemas-microsoft-com:vml");
+				var vmlElems = ["*", "group", "roundrect", "oval", "shape", "rect", "imagedata", "path", "textpath", "text"],
+					i = 0, l = 1, s = document.createStyleSheet();
+				if(dojo.isIE >= 8){
+					i = 1;
+					l = vmlElems.length;
+				}
+				for(; i < l; ++i){
+					s.addRule("v\\:" + vmlElems[i], "behavior:url(#default#VML); display:inline-block");
+				}
+			})();
 		}catch(e){}
 	}
 	//>>excludeEnd("webkitMobile");

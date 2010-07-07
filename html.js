@@ -112,7 +112,7 @@ dojo.require("dojo.parser");
 				}
 
 				if(! (this.node || node)){
-					new Error(this.declaredClass + ": no node provided to " + this.id);
+					throw new Error(this.declaredClass + ": no node provided to " + this.id);
 				}
 			},
 			set: function(/* String|DomNode|NodeList? */ cont, /* Object? */ params){

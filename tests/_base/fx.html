@@ -23,13 +23,12 @@
 								doh.is(1, opacity);
 								var anim = dojo.fadeOut({ node: 'foo', duration: duration });
 								var d = new doh.Deferred();
-								dojo.connect(anim, "onEnd", function(){
+								dojo.connect(anim, "onEnd", d.getTestCallback(function(){
 									var opacity = dojo.style('foo', 'opacity');
 									var elapsed = (new Date()) - anim._start;
 									doh.is(0, opacity);
 									doh.t(elapsed >= duration);
-									d.callback(true);
-								});
+								}));
 								anim._start = new Date();
 								anim.play();
 								return d;
@@ -43,13 +42,12 @@
 								doh.is(0, opacity);
 								var anim = dojo.fadeIn({ node: 'foo', duration: duration });
 								var d = new doh.Deferred();
-								dojo.connect(anim, "onEnd", function(){
+								dojo.connect(anim, "onEnd", d.getTestCallback(function(){
 									var opacity = dojo.style('foo', 'opacity');
 									var elapsed = (new Date()) - anim._start;
 									doh.is(1, opacity);
 									doh.t(elapsed >= duration);
-									d.callback(true);
-								});
+								}));
 								anim._start = new Date();
 								anim.play();
 								return d;
@@ -112,13 +110,12 @@
 
 								var d = new doh.Deferred();
 
-								dojo.connect(anim, "onEnd", anim, function(){
+								dojo.connect(anim, "onEnd", anim, d.getTestCallback(function(){
 									var elapsed = (new Date().valueOf()) - anim._startTime;
 									doh.t(elapsed >= duration);
 									var height = dojo.marginBox("foo").h; 
 									doh.is(height, endHeight);
-									d.callback(true);
-								});
+								}));
 								
 								anim.play();
 								return d;
@@ -140,13 +137,12 @@
 
 								var d = new doh.Deferred();
 
-								dojo.connect(anim, "onEnd", anim, function(){
+								dojo.connect(anim, "onEnd", anim, d.getTestCallback(function(){
 									var elapsed = (new Date().valueOf()) - anim._startTime;
 									doh.t(elapsed >= duration);
 									var height = dojo.marginBox("foo").h; 
 									doh.is(height, endHeight);
-									d.callback(true);
-								});
+								}));
 								
 								anim.play();
 								return d;
@@ -169,12 +165,11 @@
 
 								var d = new doh.Deferred();
 
-								dojo.connect(anim, "onEnd", anim, function(){
+								dojo.connect(anim, "onEnd", anim, d.getTestCallback(function(){
 									var elapsed = (new Date().valueOf()) - anim._startTime;
 									doh.t(elapsed >= duration);
 									doh.is(dojo.marginBox("bar").w, endWidth);
-									d.callback(true);
-								});
+								}));
 								
 								anim.play();
 								return d;
@@ -200,14 +195,18 @@
 									}, 
 									duration, 
 									null, 
-									function(){
-										var elapsed = (new Date().valueOf()) - anim._startTime;
-										doh.t(elapsed >= duration);
-										doh.t((new Date().valueOf()) >= (kickoff+duration+500));
-										doh.is(dojo.marginBox(id).w, endWidth);
-										doh.is(dojo.style(id, "opacity"), 0);
-										d.callback(true);
-									},
+									d.getTestCallback(function(){
+										var curTime = (new Date().valueOf()),
+											elapsed = curTime - anim._startTime;
+										doh.t(elapsed >= duration, "test elapsed " + elapsed + " > duration " + duration);
+										doh.t(curTime >= (kickoff+duration+500),
+											"curTime >= (kickoff+duration+500): " + curTime + " >= (" + kickoff + "+" + duration + "+500)");
+
+										doh.is(dojo.marginBox(id).w, endWidth, 
+											"width matches endWidth ");
+
+										doh.is(0, dojo.style(id, "opacity"), "opacity");
+									}),
 									500
 								);
 								return d;
@@ -225,12 +224,12 @@
 
 								var d = new doh.Deferred();
 								var anim = dojo.anim(id, { width: endWidth });
-								dojo.connect(anim, "onEnd", function(){
+								dojo.connect(anim, "onEnd", d.getTestCallback(function(){
 									var elapsed = (new Date().valueOf()) - anim._startTime;
 									doh.t(elapsed >= dojo.Animation.prototype.duration); // the default
 									doh.is(dojo.marginBox(id).w, endWidth);
-									d.callback(true);
-								});
+								}));
+								anim.play();
 								return d;
 							}
 						},
@@ -246,12 +245,14 @@
 									properties:{
 										// also testing node passed to property function
 										padding: function(node){
-											doh.is("thud", node.id);
-											d.callback(true);
+											d.getTestErrback(function(){
+												doh.is("thud", node.id);
+											});
 											return { end:15, start:22 };
 										}
 									},
-									duration:350
+									duration:350,
+									onEnd: d.getTestCallback(function(){})
 								}).play();
 								return d;	
 							}
@@ -268,13 +269,17 @@
 									properties:{
 										// also testing node passed to property function
 										height: function(node){
+											d.getTestErrback(function(){
+												doh.is("thud", node.id);
+											});
 											return {
 												start: function(){ return 50; },
-												end: function(){ d.callback(true); return 100; }
+												end: function(){ return 100; }
 											};
 										}
 									},
-									duration:350
+									duration:350,
+									onEnd: d.getTestCallback(function(){})
 								}).play();
 								return d;	
 							}
@@ -292,13 +297,15 @@
 										width: { 
 											// also testing node passed to end function
 											end: function(node){
-												doh.is("thud", node.id);
-												d.callback(true);
+												d.getTestErrback(function(){
+													doh.is("thud", node.id);
+												});
 												return 100;
 											}
 										}
 									},
-									duration:50
+									duration:50,
+									onEnd: d.getTestCallback(function(){})
 								}).play();
 								
 								return d;	
@@ -317,14 +324,16 @@
 										width: { 
 											// also testing node passed to start function
 											start: function(node){
-												doh.is("thud", node.id);
-												d.callback(true);
+												d.getTestErrback(function(){
+													doh.is("thud", node.id);
+												});
 												return 100;
 											},
 											end: 200
 										}
 									},
-									duration:50
+									duration:50,
+									onEnd: d.getTestCallback(function(){})
 								}).play();
 								
 								return d;
@@ -343,19 +352,18 @@
 										width: 200
 									},
 									duration:150,
-									onEnd:function(node){
+									onEnd:d.getTestCallback(function(node){
 										if(node){
 											doh.is("thud", node.id);
-											d.callback(true);
 										}
-									}
+									})
 								}).play();
 								
 								return d;	
 							}
 						},
 						{
-							// ensuring our node ref is passed beforeBegin:
+							// ensuring our node ref is passed to beforeBegin:
 							name:"anim-beforebegin-node",
 							timeout:1000,
 							runTest: function(){
@@ -367,14 +375,10 @@
 										width: 200
 									},
 									duration:50,
-									beforeBegin:function(node){
-										if(node){
-											doh.is("thud", node.id);
-											d.callback(true);
-										}else{
-											d.errback(node);
-										}
-									}
+									beforeBegin:d.getTestErrback(function(node){
+										doh.is("thud", node.id);
+									}),
+									onEnd:d.getTestCallback(function(node){})
 								}).play();
 
 								return d;	

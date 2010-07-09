@@ -199,8 +199,10 @@
 										var curTime = (new Date().valueOf()),
 											elapsed = curTime - anim._startTime;
 										doh.t(elapsed >= duration, "test elapsed " + elapsed + " > duration " + duration);
-										doh.t(curTime >= (kickoff+duration+500),
-											"curTime >= (kickoff+duration+500): " + curTime + " >= (" + kickoff + "+" + duration + "+500)");
+										
+										// -5 because on FF a setTimeout(foo, x) may fire a little before x
+										doh.t(curTime >= (kickoff+duration+500-5),
+											"curTime >= (kickoff+duration+500-5): " + curTime + " >= (" + kickoff + "+" + duration + "+500-5)");
 
 										doh.is(dojo.marginBox(id).w, endWidth, 
 											"width matches endWidth ");

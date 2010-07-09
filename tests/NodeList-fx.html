@@ -13,18 +13,17 @@
 			dojo.require("dojo.NodeList-fx");
 
 			dojo.addOnLoad(function(){
-				doh.register("t", 
+				doh.register("NodeList-fx", 
 					[
 						function fadeOut(){
 							dojo.query("p").style("opacity", 1);
 							var anim = dojo.query("p").fadeOut();
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", function(){
-								doh.t(dojo.query("p").every(function(item){ 
-									return dojo.style(item, "opacity") == 0;
-								}));
-								d.callback(true);
-							});
+							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
+								dojo.query("p").forEach(function(item){ 
+									doh.is(0, dojo.style(item, "opacity"), "opacity for " + item);
+								});
+							}));
 							anim.play();
 							return d;
 						},
@@ -32,12 +31,11 @@
 							dojo.query("p").style("opacity", 0);
 							var anim = dojo.query("p").fadeIn();
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", function(){
-								doh.t(dojo.query("p").every(function(item){ 
-									return dojo.style(item, "opacity") == 1;
-								}));
-								d.callback(true);
-							});
+							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
+								dojo.query("p").forEach(function(item){ 
+									doh.is(1, dojo.style(item, "opacity"), "opacity for " + item);
+								});
+							}));
 							anim.play();
 							return d;
 						},
@@ -45,12 +43,11 @@
 							dojo.query("p").style("height", "");
 							var anim = dojo.query("p").wipeOut();
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", function(){
-								doh.t(dojo.query("p").every(function(item){ 
-									return dojo.style(item, "height") == 0;
-								}));
-								d.callback(true);
-							});
+							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
+								dojo.query("p").forEach(function(item){ 
+									doh.is(0, dojo.style(item, "height"), "height for " + item);
+								});
+							}));
 							anim.play();
 							return d;
 						},
@@ -58,13 +55,12 @@
 							dojo.query("p").style("height", 0);
 							var anim = dojo.query("p").wipeIn();
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", function(){
-								doh.t(dojo.query("p").every(function(item){ 
+							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
+								dojo.query("p").forEach(function(item){ 
 									// FIXME: need a more robust test for "have wiped all the way in"
-									return dojo.style(item, "height") != 0;
-								}));
-								d.callback(true);
-							});
+									doh.isNot(0, dojo.style(item, "height"), "height for " + item);
+								});
+							}));
 							anim.play();
 							return d;
 						},
@@ -73,13 +69,12 @@
 								left: 500
 							});
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", function(){
-								doh.t(dojo.query("p").every(function(item){ 
+							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
+								dojo.query("p").forEach(function(item){ 
 									// FIXME: need a more robust test for "have wiped all the way in"
-									return dojo.style(item, "left") == 500;
-								}));
-								d.callback(true);
-							});
+									doh.is(500, dojo.style(item, "left"), "left for " + item);
+								});
+							}));
 							anim.play();
 							return d;
 						},
@@ -91,15 +86,14 @@
 							});
 							console.debug(anim);
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", function(){
+							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
 								/*
-								doh.t(dojo.query("p").every(function(item){ 
+								dojo.query("p").forEach(function(item){ 
 									// FIXME: need a more robust test for "have wiped all the way in"
-									return dojo.style(item, "width") == 500;
+									doh.is(500, dojo.style(item, "width"), "width for" + item);
 								}));
 								*/
-								d.callback(true);
-							});
+							}));
 							return d;
 						},
 						
@@ -118,12 +112,13 @@
 								})
 								// past here we're expecting a NodeList back, not an Animation
 								.at(0)
-								.forEach(function(n){
+								.forEach(d.getTestErrback(function(n){
+									// TODO: this test is meaningless
 									doh.t(true); // it worked.
-								})
+								}))
 							;
 							
-							doh.t(nl.length); // ensure we actually did _something_ 
+							doh.t(nl.length, "dojo.query() found some nodes"); // ensure we actually will do _something_ 
 							
 							return d;
 						}

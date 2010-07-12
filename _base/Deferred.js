@@ -171,7 +171,7 @@ dojo.require("dojo._base.lang");
 					try {
 						var newResult = func(result);
 						if (newResult && typeof newResult.then === "function") {
-							newResult.then(listener.deferred.resolve, listener.deferred.reject);
+							newResult.then(dojo.hitch(listener.deferred, "resolve"), dojo.hitch(listener.deferred, "reject"));
 							continue;
 						}
 						var unchanged = mutated && newResult === undefined;

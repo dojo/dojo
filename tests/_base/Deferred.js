@@ -168,6 +168,13 @@ doh.register("tests._base.Deferred",
 			def.reject(result);
 			t.is(def.fired, 1);
 			t.is(def.results[1], result);
+		},
+		function globalLeak(t){
+			var def = new dojo.Deferred();
+			def.then(function(){ return def; });
+			def.resolve(true);
+			t.is(dojo.global.results, undefined, "results is leaking into global");
+			t.is(dojo.global.fired, undefined, "fired is leaking into global");
 		}
 	]
 );

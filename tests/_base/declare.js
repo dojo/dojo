@@ -399,6 +399,68 @@ tests.register("tests._base.declare",
 				flag = true;
 			}
 			t.t(flag);
+		},
+		
+		function noNew(t){
+			// all of the classes I create will use this as their
+			// pseudo-constructor function
+			function noNewConstructor(){
+				this.noNew_Value = 'instance value';
+			};
+
+			var g = dojo.global;
+			// this value will remain unchanged if the code for
+			// calling a constructor without 'new' works correctly.
+			g.noNew_Value = 'global value';
+
+			// perform the actual test
+			function noNewTest(cls){
+				// call class function without new
+				var obj = cls('instance value');
+				t.is(obj.noNew_Value, 'instance value');
+				t.is(g.noNew_Value, 'global value');
+			};
+
+			// There are three different functions that might be
+			// created by dojo.declare(), so I need to test all
+			// three.
+
+			// 1. Class with manual-chained constructor
+			noNewTest(
+				dojo.declare(null, {
+					constructor: noNewConstructor,
+					'-chains-': {constructor: 'manual'}
+				})
+			);
+
+			// 2. Class with no superclasses
+			var A = dojo.declare(null, {
+				constructor: noNewConstructor
+			});
+			noNewTest(A);
+
+			// 3. Class with at least one superclass
+			noNewTest(dojo.declare(A));
+
+			// Make sure multiple inheritance call works
+			var B = dojo.declare(A);
+			var C = dojo.declare(null, { ctest: function(){return true;} });
+			var D = dojo.declare([A, B, C], { dtest: function(){return true;} });
+			noNewTest(D);
+			// make sure I get the test functions from
+			// all superclasses
+			var d = D();
+			t.t(d.ctest());
+			t.t(d.dtest());
+
+			// Make sure call through an object works
+			var noNewClasses = {
+				D: D,
+				noNew_Value: 'unchanged'
+			};
+			var obj = noNewClasses.D();
+			t.is(obj.noNew_Value, 'instance value');
+			t.is(noNewClasses.noNew_Value, 'unchanged');
 		}
 
 		// FIXME: there are still some permutations to test like:

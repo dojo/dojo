@@ -267,6 +267,12 @@ dojo.require("dojo._base.array");
 		return function(){
 			var a = arguments, args = a, a0 = a[0], f, i, m,
 				l = bases.length, preArgs;
+
+			if(!(this instanceof a.callee)){
+				// not called via new, so force it
+				return applyNew(a);
+			}
+
 			//this._inherited = {};
 			// perform the shaman's rituals of the original dojo.declare()
 			// 1) call two types of the preamble
@@ -323,6 +329,12 @@ dojo.require("dojo._base.array");
 	function singleConstructor(ctor, ctorSpecial){
 		return function(){
 			var a = arguments, t = a, a0 = a[0], f;
+
+			if(!(this instanceof a.callee)){
+				// not called via new, so force it
+				return applyNew(a);
+			}
+
 			//this._inherited = {};
 			// perform the shaman's rituals of the original dojo.declare()
 			// 1) call two types of the preamble
@@ -362,6 +374,12 @@ dojo.require("dojo._base.array");
 	function simpleConstructor(bases){
 		return function(){
 			var a = arguments, i = 0, f, m;
+
+			if(!(this instanceof a.callee)){
+				// not called via new, so force it
+				return applyNew(a);
+			}
+
 			//this._inherited = {};
 			// perform the shaman's rituals of the original dojo.declare()
 			// 1) do not call the preamble
@@ -399,6 +417,30 @@ dojo.require("dojo._base.array");
 		};
 	}
 
+	// forceNew(ctor)
+	// return a new object that inherits from ctor.prototype but
+	// without actually running ctor on the object.
+	function forceNew(ctor){
+		// create object with correct prototype using a do-nothing
+		// constructor
+		xtor.prototype = ctor.prototype;
+		var t = new xtor;
+		xtor.prototype = null;	// clean up
+		return t;
+	}
+
+	// applyNew(args)
+	// just like 'new ctor()' except that the constructor and its arguments come
+	// from args, which must be an array or an arguments object
+	function applyNew(args){
+		// create an object with ctor's prototype but without
+		// calling ctor on it.
+		var ctor = args.callee, t = forceNew(ctor);
+		// execute the real constructor on the new object
+		ctor.apply(t, args);
+		return t;
+	}
+
 	d.declare = function(className, superclass, props){
 		// crack parameters
 		if(typeof className != "string"){
@@ -432,9 +474,7 @@ dojo.require("dojo._base.array");
 		}
 		if(superclass){
 			for(i = mixins - 1;; --i){
-				// delegation
-				xtor.prototype = superclass.prototype;
-				proto = new xtor;
+				proto = forceNew(superclass);
 				if(!i){
 					// stop if nothing to add (the last base)
 					break;
@@ -459,7 +499,6 @@ dojo.require("dojo._base.array");
 			t.nom = cname;
 			proto.constructor = t;
 		}
-		xtor.prototype = 0;	// cleanup
 
 		// collect chains and flags
 		for(i = mixins - 1; i; --i){ // intentional assignment

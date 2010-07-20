@@ -299,7 +299,7 @@ dojo.require("dojo._base.array");
 
 		_cloneNode: function(/*DOMNode*/ node){
 			// summary:
-			// 		private utiltity to clone a node. Not very interesting in the vanilla
+			// 		private utility to clone a node. Not very interesting in the vanilla
 			// 		dojo.NodeList case, but delegates could do interesting things like
 			// 		clone event handlers if that is derivable from the node.
 			return node.cloneNode(true);
@@ -393,7 +393,7 @@ dojo.require("dojo._base.array");
 			if(this._parent){
 				return this._parent;
 			}else{
-				//Just return empy list.
+				//Just return empty list.
 				return new this._NodeListCtor();
 			}
 		},
@@ -466,7 +466,7 @@ dojo.require("dojo._base.array");
 			// value: Object:
 			//		The value to search for.
 			// fromIndex: Integer?:
-			//		The loction to start searching from. Optional. Defaults to 0.
+			//		The location to start searching from. Optional. Defaults to 0.
 			//	description:
 			//		For more details on the behavior of indexOf, see Mozilla's
 			//		(indexOf
@@ -487,7 +487,7 @@ dojo.require("dojo._base.array");
 			// value: Object
 			//		The value to search for.
 			// fromIndex: Integer?
-			//		The loction to start searching from. Optional. Defaults to 0.
+			//		The location to start searching from. Optional. Defaults to 0.
 			// returns:
 			//		Positive Integer or 0 for a match, -1 of not found.
 			return d.lastIndexOf(this, value, fromIndex); // Integer
@@ -610,7 +610,7 @@ dojo.require("dojo._base.array");
 			//		Disable a group of buttons:
 			//	|	dojo.query("button.group").attr("disabled", true);
 			//	example:
-			//		innerHTML can be assigned or retreived as well:
+			//		innerHTML can be assigned or retrieved as well:
 			//	|	// get the innerHTML (as an array) for each list item
 			//	|	var ih = dojo.query("li.replaceable").attr("innerHTML");
 			return; // dojo.NodeList
@@ -743,7 +743,7 @@ dojo.require("dojo._base.array");
 			//	filter:
 			//		CSS selector like ".foo" or "div > span"
 			//	returns:
-			//		`dojo.NodeList` containing the orpahned elements 
+			//		`dojo.NodeList` containing the orphaned elements 
 			return (filter ? d._filterQueryResult(this, filter) : this).forEach(orphan); // dojo.NodeList
 		},
 
@@ -771,7 +771,7 @@ dojo.require("dojo._base.array");
 		// FIXME: do we need this?
 		query: function(/*String*/ queryStr){
 			//	summary:
-			//		Returns a new list whose memebers match the passed query,
+			//		Returns a new list whose members match the passed query,
 			//		assuming elements of the current NodeList as the root for
 			//		each search.
 			//	example:
@@ -782,9 +782,9 @@ dojo.require("dojo._base.array");
 			//	|		</p>
 			//	|	</div>
 			//	|	<div id="bar">
-			//	|		<p>great commedians may not be funny <span>in person</span></p>
+			//	|		<p>great comedians may not be funny <span>in person</span></p>
 			//	|	</div>
-			//		If we are presented with the following defintion for a NodeList:
+			//		If we are presented with the following definition for a NodeList:
 			//	|	var l = new dojo.NodeList(dojo.byId("foo"), dojo.byId("bar"));
 			//		it's possible to find all span elements under paragraphs
 			//		contained by these elements with this sub-query:
@@ -818,7 +818,7 @@ dojo.require("dojo._base.array");
 			//		|	dojo.query("*").filter("p").styles("backgroundColor", "yellow");
 
 			var a = arguments, items = this, start = 0;
-			if(typeof simpleFilter == "string"){ // inline'd type check
+			if(typeof filter == "string"){ // inline'd type check
 				items = d._filterQueryResult(this, a[0]);
 				if(a.length == 1){
 					// if we only got a string query, pass back the filtered results
@@ -866,10 +866,10 @@ dojo.require("dojo._base.array");
 			//		|	"before"
 			//		|	"after"
 			//		|	"replace" (replaces nodes in this NodeList with new content)
-			//		|	"only" (removes other children of the nodes so new content is hte only child)
+			//		|	"only" (removes other children of the nodes so new content is the only child)
 			// 		or an offset in the childNodes property
 			//	example:
-			//		appends content to the end if the position is ommitted
+			//		appends content to the end if the position is omitted
 			//	|	dojo.query("h3 > p").addContent("hey there!");
 			//	example:
 			//		add something to the front of each element that has a
@@ -900,7 +900,7 @@ dojo.require("dojo._base.array");
 			//  		text: "Send"
 			//  	});
 			content = this._normalize(content, this[0]);
-			for(var i = 0, node; node = this[i]; i++){
+			for(var i = 0, node; (node = this[i]); i++){
 				this._place(content, node, position, i > 0);
 			}
 			return this; //dojo.NodeList

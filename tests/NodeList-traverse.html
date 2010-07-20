@@ -14,12 +14,13 @@
 			dojo.require("doh.runner");
 			dojo.require("dojo.NodeList-traverse");
 
-			function verify(/*dojo.NodeList*/nl, /*Array*/ids){
-				for(var i = 0, node; node = nl[i]; i++){
-					doh.is(ids[i], node.id);
+			function verify(/*dojo.NodeList*/nl, /*Array*/ids, /*String*/ comment){
+				comment = comment || "verify";
+				for(var i = 0, node; (node = nl[i]); i++){
+					doh.is(ids[i], node.id, comment + " " + i);
 				}
 				//Make sure lengths are equal.
-				doh.is(ids.length, i);
+				doh.is(ids.length, i, comment + " length");
 			}
 
 			dojo.addOnLoad(function(){
@@ -32,10 +33,32 @@
 						},
 
 						function closest(t){
+							// test simple selector
 							var classy = dojo.query("#classy");
 							var closestDiv = classy.closest("div");
-							verify(closestDiv, ["third"]);
-							verify(closestDiv.end().closest(".classy"), ["classy"]);
+							verify(closestDiv, ["third"], "closest('div')");
+							verify(closestDiv.end().closest(".classy"), ["classy"], "closestDiv.end().closest('.classy')");
+
+							// test descendant selector
+							var bang = dojo.query(".bang");
+							var closestFooBar = bang.closest(".foo > .bar");
+							verify(closestFooBar, ["level4"], ".foo > .bar");
+
+							// test descendant selector that doesn't match (".foo" alone matches nodes, but not
+							// ".bogus .foo")
+							var closestBogusFoo = bang.closest(".bogus .foo");
+							verify(closestBogusFoo, [], ".bogus .foo");
+
+							// positive test that scope argument works: .foo > .bar should match a scope
+							// of "level2" or above
+							closestFooBar = bang.closest(".foo > .bar", "level2");
+							verify(closestFooBar, ["level4"], ".foo > .bar query relative to level2");
+
+							// negative test that scope argument works:  .foo > .bar relative to level3
+							// doesn't match since .foo is level3, rather than a child of level3
+							closestFooBar = bang.closest(".foo > .bar", "level3");
+							verify(closestFooBar, [], ".foo > .bar query relative to level3");
+
 						},
 
 						function parent(t){
@@ -116,6 +139,17 @@
 			The third div, again
 			<!-- Another comment -->
 			<span id="yeah">Yeah, baby</span>
+		</div>
+		<div id="level1" class="foo">
+			<div id="level2" class="bar">
+				<div id="level3" class="foo">
+					<div id="level4" class="bar">
+						<div id="level5" class="bar">
+							<div id="level6" class="bang">foo bar bar bang</div>
+						</div>
+					</div>			
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

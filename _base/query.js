@@ -1573,10 +1573,16 @@ if(typeof dojo != "undefined"){
 	// FIXME: need to add infrastructure for post-filtering pseudos, ala :last
 	d.query.pseudos = pseudos;
 
-	// one-off function for filtering a NodeList based on a simple selector
-	d._filterQueryResult = function(nodeList, simpleFilter){
-		var tmpNodeList = new d._NodeListCtor();
-		var filterFunc = getSimpleFilterFunc(getQueryParts(simpleFilter)[0]);
+	// function for filtering a NodeList based on a selector, optimized for simple selectors
+	d._filterQueryResult = function(/*NodeList*/ nodeList, /*String*/ filter, /*String|DOMNode?*/ root){
+		var tmpNodeList = new d._NodeListCtor(),
+			parts = getQueryParts(filter),
+			filterFunc =
+				(parts.length == 1) ?
+				getSimpleFilterFunc(parts[0]) :
+				function(node) {
+					return dojo.query(filter, root).indexOf(node) != -1;
+				};
 		for(var x = 0, te; te = nodeList[x]; x++){
 			if(filterFunc(te)){ tmpNodeList.push(te); }
 		}

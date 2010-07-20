@@ -736,18 +736,15 @@ dojo.require("dojo._base.array");
 			return this.forEach(function(node){ d.place(node, item, position); }); // dojo.NodeList
 		},
 
-		orphan: function(/*String?*/ simpleFilter){
+		orphan: function(/*String?*/ filter){
 			//	summary:
-			//		removes elements in this list that match the simple filter
+			//		removes elements in this list that match the filter
 			//		from their parents and returns them as a new NodeList.
-			//	simpleFilter:
-			//		single-expression CSS rule. For example, ".thinger" or
-			//		"#someId[attrName='value']" but not "div > span". In short,
-			//		anything which does not invoke a descent to evaluate but
-			//		can instead be used to test a single node is acceptable.
+			//	filter:
+			//		CSS selector like ".foo" or "div > span"
 			//	returns:
 			//		`dojo.NodeList` containing the orpahned elements 
-			return (simpleFilter ? d._filterQueryResult(this, simpleFilter) : this).forEach(orphan); // dojo.NodeList
+			return (filter ? d._filterQueryResult(this, filter) : this).forEach(orphan); // dojo.NodeList
 		},
 
 		adopt: function(/*String||Array||DomNode*/ queryOrListOrNode, /*String?*/ position){
@@ -802,18 +799,14 @@ dojo.require("dojo._base.array");
 			return this._wrap(apc.apply([], ret), this);	// dojo.NodeList
 		},
 
-		filter: function(/*String|Function*/ simpleFilter){
+		filter: function(/*String|Function*/ filter){
 			//	summary:
 			// 		"masks" the built-in javascript filter() method (supported
 			// 		in Dojo via `dojo.filter`) to support passing a simple
 			// 		string filter in addition to supporting filtering function
 			// 		objects.
-			//	simpleFilter:
-			//		If a string, a single-expression CSS rule. For example,
-			//		".thinger" or "#someId[attrName='value']" but not "div >
-			//		span". In short, anything which does not invoke a descent
-			//		to evaluate but can instead be used to test a single node
-			//		is acceptable.
+			//	filter:
+			//		If a string, a CSS rule like ".thinger" or "div > span".
 			//	example:
 			//		"regular" JS filter syntax as exposed in dojo.filter:
 			//		|	dojo.query("*").filter(function(item){

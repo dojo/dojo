@@ -22,17 +22,6 @@ dojo.extend(dojo.NodeList, {
 		return ary;	
 	},
 
-	_filterQueryResult: function(nodeList, query){
-		// summmary: 
-		// 		Replacement for dojo._filterQueryResult that does a full
-		// 		query. Slower, but allows for more types of queries.
-		var filter = dojo.filter(nodeList, function(node){
-			return dojo.query(query, node.parentNode).indexOf(node) != -1;
-		});
-		var result = this._wrap(filter);
-		return result;
-	},
-
 	_getUniqueAsNodeList: function(nodes){
 		// summary:
 		// 		given a list of nodes, make sure only unique
@@ -56,7 +45,7 @@ dojo.extend(dojo.NodeList, {
 		// 		gets unique element nodes, filters them further
 		// 		with an optional query and then calls _stash to track parent NodeList.
 		var ary = this._getUniqueAsNodeList(nodes);
-		ary = (query ? this._filterQueryResult(ary, query) : ary);
+		ary = (query ? dojo._filterQueryResult(ary, query) : ary);
 		return ary._stash(this);  //dojo.NodeList
 	},
 
@@ -100,19 +89,21 @@ dojo.extend(dojo.NodeList, {
 		}); //dojo.NodeList
 	},
 
-	closest: function(/*String*/query){
+	closest: function(/*String*/query, /*String|DOMNode?*/ root){
 		// summary:
 		// 		Returns closest parent that matches query, including current node in this
 		// 		dojo.NodeList if it matches the query.
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
-		//	query:
+		// query:
 		//		a CSS selector.
+		//	root:
+		//		If specified, query is relative to "root" rather than document body.
 		// returns:
 		//		dojo.NodeList, the closest parent that matches the query, including the current
 		//		node in this dojo.NodeList if it matches the query.
-		//	example:
+		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
 		// 	|		<div class="red">Red One</div>
@@ -124,13 +115,12 @@ dojo.extend(dojo.NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".red").closest(".container");
 		//		returns the div with class "container".
-		var self = this;
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			do{
-				if(self._filterQueryResult([node], query).length){
+				if(dojo._filterQueryResult([node], query, root).length){
 					return node;
 				}
-			}while((node = node.parentNode) && node.nodeType == 1);
+			}while(node != root && (node = node.parentNode) && node.nodeType == 1);
 			return null; //To make rhino strict checking happy.
 		}); //dojo.NodeList
 	},

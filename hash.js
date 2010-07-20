@@ -138,6 +138,13 @@ dojo.provide("dojo.hash");
 		var ifr = document.createElement("iframe"),
 			IFRAME_ID = "dojo-hash-iframe",
 			ifrSrc = dojo.config.dojoBlankHtmlUrl || dojo.moduleUrl("dojo", "resources/blank.html");
+
+		if(dojo.config.useXDomain && !dojo.config.dojoBlankHtmlUrl){
+			console.warn("dojo.hash: When using cross-domain Dojo builds,"
+				+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
+				+ " to the path on your domain to blank.html");
+		}
+
 		ifr.id = IFRAME_ID;
 		ifr.src = ifrSrc + "?" + _getHash();
 		ifr.style.display = "none";

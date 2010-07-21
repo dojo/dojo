@@ -98,7 +98,7 @@ dojo.extend(dojo.NodeList, {
 		// 		original dojo.NodeList.
 		// query:
 		//		a CSS selector.
-		//	root:
+		// root:
 		//		If specified, query is relative to "root" rather than document body.
 		// returns:
 		//		dojo.NodeList, the closest parent that matches the query, including the current
@@ -106,16 +106,16 @@ dojo.extend(dojo.NodeList, {
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
-		// 	|		<div class="red">Red One</div>
-		// 	|		Some Text
-		// 	|		<div class="blue">Blue One</div>
-		// 	|		<div class="red">Red Two</div>
-		// 	|		<div class="blue">Blue Two</div>
+		//	|		<div class="red">Red One</div>
+		//	|		Some Text
+		//	|		<div class="blue">Blue One</div>
+		//	|		<div class="red">Red Two</div>
+		//	|		<div class="blue">Blue Two</div>
 		//	|	</div>
 		//		Running this code:
 		//	|	dojo.query(".red").closest(".container");
 		//		returns the div with class "container".
-		return this._getRelatedUniqueNodes(query, function(node, ary){
+		return this._getRelatedUniqueNodes(null, function(node, ary){
 			do{
 				if(dojo._filterQueryResult([node], query, root).length){
 					return node;

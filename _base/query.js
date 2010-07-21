@@ -1578,7 +1578,7 @@ if(typeof dojo != "undefined"){
 		var tmpNodeList = new d._NodeListCtor(),
 			parts = getQueryParts(filter),
 			filterFunc =
-				(parts.length == 1) ?
+				(parts.length == 1 && !/[^\w#\.]/.test(filter)) ?
 				getSimpleFilterFunc(parts[0]) :
 				function(node) {
 					return dojo.query(filter, root).indexOf(node) != -1;

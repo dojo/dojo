@@ -94,6 +94,10 @@
 									throw assertException;
 								}
 							}
+						},
+						function testScrolledPosition(t){
+							doh.t(dojo.byId("scrollingStrictIframe").testResult, "scrolled strict position");
+							doh.t(dojo.byId("scrollingQuirksIframe").testResult, "scrolled quirks position");
 						}
 						
 					]
@@ -125,6 +129,9 @@
 		</div>
 		<div id="rect_vert" style="height:1600px;display:none">show vertical scrollbar</div>
 		<div id="rect_horz" style="width:1600px;position:relative;right:-200px;display:none">show horizonal scrollbar</div>
+		<br>
+		<iframe id="scrollingStrictIframe" src="scrollingStrictIframe.html?rtl"></iframe>
+		<iframe id="scrollingQuirksIframe" src="scrollingQuirksIframe.html?rtl"></iframe>
 	</body>
 </html>
 

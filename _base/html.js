@@ -1055,10 +1055,10 @@ if(dojo.isIE || dojo.isOpera){
 	}
 
 	dojo._docScroll = function(){
-		var n = d.global;
-		return "pageXOffset" in n? { x:n.pageXOffset, y:n.pageYOffset } :
-			(n=d.doc.documentElement, n.clientHeight? { x:d._fixIeBiDiScrollLeft(n.scrollLeft), y:n.scrollTop } :
-			(n=d.body(), { x:n.scrollLeft||0, y:n.scrollTop||0 }));
+		var n=d.global;
+		return "pageXOffset" in n
+			? { x:n.pageXOffset, y:n.pageYOffset }
+			: (n=d.isQuirks? d.doc.body : d.doc.documentElement, { x:d._fixIeBiDiScrollLeft(n.scrollLeft||0), y:n.scrollTop||0 });
 	};
 
 	dojo._isBodyLtr = function(){
@@ -1112,16 +1112,15 @@ if(dojo.isIE || dojo.isOpera){
 	//>>excludeEnd("webkitMobile");
 
 	dojo._fixIeBiDiScrollLeft = function(/*Integer*/ scrollLeft){
-		// In RTL direction, scrollLeft should be a negative value, but IE < 8
+		// In RTL direction, scrollLeft should be a negative value, but IE
 		// returns a positive one. All codes using documentElement.scrollLeft
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
 
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		var dd = d.doc;
-		if(d.isIE < 8 && !d._isBodyLtr()){
-			var de = d.isQuirks ? dd.body : dd.documentElement;
-			return scrollLeft + de.clientWidth - de.scrollWidth; // Integer
+		if(d.isIE && !d._isBodyLtr()){
+			var de = d.isQuirks ? d.doc.body : d.doc.documentElement;
+			return (d.isIE < 8 || d.isQuirks) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
 		}
 		//>>excludeEnd("webkitMobile");
 		return scrollLeft; // Integer

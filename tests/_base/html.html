@@ -562,6 +562,10 @@
 						function testIframeDestroy10095(t){
 							var iframeWin = dojo.byId('10095_iframe').win;
 							doh.t(!iframeWin.document.getElementById('10095_textbox'), "reloaded iframe element destroyed");
+						},
+						function testScrolledPosition(t){
+							doh.t(dojo.byId("scrollingStrictIframe").testResult, "scrolled Strict position");
+							doh.t(dojo.byId("scrollingQuirksIframe").testResult, "scrolled Quirks position");
 						}
 					]
 				);
@@ -792,6 +796,9 @@
 			<label id="label-no-for">label with no for </label><input type="text" id="label-test-input">
 			<label id="label-with-for" for="input-with-label">label with for </label><input type="text" id="input-with-label">
 		</div>
+
+		<iframe id="scrollingStrictIframe" src="scrollingStrictIframe.html"></iframe>
+		<iframe id="scrollingQuirksIframe" src="scrollingQuirksIframe.html"></iframe>
 	</body>
 </html>
 

@@ -207,8 +207,7 @@ if(typeof window != 'undefined'){
 		}
 
 		d._isDocumentOk = function(http){
-			var stat = http.status || 0,
-				lp = location.protocol;
+			var stat = http.status || 0;
 			return (stat >= 200 && stat < 300) || 	// Boolean
 				stat == 304 ||			// allow any 2XX response code
 				stat == 1223 ||			// get it out of the cache

@@ -315,19 +315,22 @@
 	dojo._loadModule = dojo.require = function(/*String*/moduleName, /*Boolean?*/omitModuleCheck){
 		//	summary:
 		//		loads a Javascript module from the appropriate URI
-		//	moduleName:
+		//
+		//	moduleName: String
 		//		module name to load, using periods for separators,
 		//		 e.g. "dojo.date.locale".  Module paths are de-referenced by dojo's
 		//		internal mapping of locations to names and are disambiguated by
 		//		longest prefix. See `dojo.registerModulePath()` for details on
 		//		registering new modules.
-		//	omitModuleCheck:
+		//
+		//	omitModuleCheck: Boolean?
 		//		if `true`, omitModuleCheck skips the step of ensuring that the
 		//		loaded file actually defines the symbol it is referenced by.
 		//		For example if it called as `dojo.require("a.b.c")` and the
 		//		file located at `a/b/c.js` does not define an object `a.b.c`,
 		//		and exception will be throws whereas no exception is raised
 		//		when called as `dojo.require("a.b.c", true)`
+		//
 		//	description:
 		// 		Modules are loaded via dojo.require by using one of two loaders: the normal loader
 		// 		and the xdomain loader. The xdomain loader is used when dojo was built with a
@@ -354,16 +357,8 @@
 		// 		asynchronously. To make sure you can execute code that depends on the dojo.required
 		// 		modules, be sure to add the code that depends on the modules in a dojo.addOnLoad()
 		// 		callback. dojo.addOnLoad waits for all outstanding modules to finish loading before
-		// 		executing. Example:
-		// 
-		//	   	|	<script type="text/javascript">
-		//		|	dojo.require("foo");
-		//		|	dojo.require("bar");
-		//	   	|	dojo.addOnLoad(function(){
-		//	   	|		//you can now safely do something with foo and bar
-		//	   	|	});
-		//	   	|	</script>
-		// 
+		// 		executing. 
+		//
 		// 		This type of syntax works with both xdomain and normal loaders, so it is good
 		// 		practice to always use this idiom for on-the-fly code loading and in HTML script
 		// 		blocks. If at some point you change loaders and where the code is loaded from,
@@ -376,7 +371,7 @@
 		//		If it is not defined, it will look for `A/B.js` in the script root
 		//		directory.
 		//	
-		//		`dojo.require` throws an excpetion if it cannot find a file
+		//		`dojo.require` throws an exception if it cannot find a file
 		//		to load, or if the symbol `A.B` is not defined after loading.
 		//	
 		//		It returns the object `A.B`, but note the caveats above about on-the-fly loading and
@@ -384,9 +379,20 @@
 		//	
 		//		`dojo.require()` does nothing about importing symbols into
 		//		the current namespace.  It is presumed that the caller will
-		//		take care of that. For example, to import all symbols into a
-		//		local block, you might write:
-		//	
+		//		take care of that.
+		//
+		// 	example:
+		// 		To use dojo.require in conjunction with dojo.ready:
+		//
+		//		|	dojo.require("foo");
+		//		|	dojo.require("bar");
+		//	   	|	dojo.addOnLoad(function(){
+		//	   	|		//you can now safely do something with foo and bar
+		//	   	|	});
+		// 
+		//	example:
+		//		For example, to import all symbols into a local block, you might write:
+		//
 		//		|	with (dojo.require("A.B")) {
 		//		|		...
 		//		|	}
@@ -395,7 +401,9 @@
 		//	
 		//		|	var B = dojo.require("A.B");
 		//	   	|	...
-		//	returns: the required namespace object
+		//
+		//	returns: 
+		//		the required namespace object
 		omitModuleCheck = d._global_omit_module_check || omitModuleCheck;
 
 		//Check if it is already loaded.

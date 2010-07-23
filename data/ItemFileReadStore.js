@@ -851,7 +851,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 
 	getIdentityAttributes: function(/* item */ item){
 		//	summary: 
-		//		See dojo.data.api.Identity.getIdentifierAttributes()
+		//		See dojo.data.api.Identity.getIdentityAttributes()
 		 
 		var identifier = this._features['dojo.data.api.Identity'];
 		if(identifier === Number){

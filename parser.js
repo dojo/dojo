@@ -394,7 +394,7 @@ dojo.parser = new function(){
 					}else if(scripts && child.nodeName.toLowerCase() == "script"){
 						// if <script type="dojo/...">, save in scripts[]
 						type = child.getAttribute("type");
-						if (type && /^dojo\//i.test(type)) {
+						if (type && /^dojo\/\w/i.test(type)) {
 							scripts.push(child);
 						}
 					}else if(recurse){

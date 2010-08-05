@@ -95,7 +95,7 @@ if(typeof window != 'undefined'){
 						d.config.baseUrl = src.substring(0, m.index);
 					}
 					// and find out if we need to modify our behavior
-					var cfg = scripts[i].getAttribute("djConfig");
+					var cfg = (scripts[i].getAttribute("djConfig") || scripts[i].getAttribute("data-dojo-config"));
 					if(cfg){
 						var cfgo = eval("({ "+cfg+" })");
 						for(var x in cfgo){

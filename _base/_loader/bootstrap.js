@@ -144,7 +144,7 @@ djConfig = {
 			"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
 			"trace", "warn", "log"
 		];
-		var i=0, tn;
+		var i = 0, tn;
 		while((tn=cn[i++])){
 			if(!console[tn]){
 				(function(){
@@ -204,9 +204,13 @@ dojo.global = {
 		debugAtAllCosts: false
 	};
 
-	if(typeof djConfig != "undefined"){
-		for(var opt in djConfig){
-			d.config[opt] = djConfig[opt];
+	// FIXME: 2.0, drop djConfig support. Use dojoConfig exclusively for global config.
+	var cfg = typeof djConfig != "undefined" ? djConfig : 
+		typeof dojoConfig != "undefined" ? dojoConfig : null;
+		
+	if(cfg){
+		for(var c in cfg){
+			d.config[c] = cfg[c];
 		}
 	}
 

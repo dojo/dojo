@@ -76,9 +76,14 @@ if(typeof dojo == "undefined"){
 		}
 
 		// we default to a browser environment if we can't figure it out
-		var hostEnv = "browser";
-		if(typeof djConfig !== "undefined" && djConfig.hostEnv){
-			hostEnv = djConfig.hostEnv;
+		var hostEnv = "browser", cfg = "dojoConfig";
+		
+		 // FIXME, 2.0: remove backwards compat djConfig global 
+		if(typeof this[cfg] === "undefined" && typeof djConfig !== "undefined"){
+			this[cfg] = djConfig;
+		}
+		if(typeof dojoConfig !== "undefined" && dojoConfig.hostEnv){
+			hostEnv = dojoConfig.hostEnv;
 		}else if(
 			typeof this["load"] == "function" &&
 			(
@@ -102,20 +107,20 @@ if(typeof dojo == "undefined"){
 		}
 	
 		if(
-			this["djConfig"]&&
+			this[cfg]&&
 			(
-				djConfig["forceXDomain"] ||
-				djConfig["useXDomain"]
+				dojoConfig["forceXDomain"] ||
+				dojoConfig["useXDomain"]
 			)
 		){
 			tmps.push("loader_xd.js");
 		}
 	
-		if(this["djConfig"] && djConfig["baseUrl"]){
+		if(this[cfg] && dojoConfig["baseUrl"]){
 			// if the user explicitly tells us where Dojo has been loaded from
 			// (or should be loaded from) via djConfig, skip the auto-detection
 			// routines.
-			var root = djConfig["baseUrl"];
+			var root = dojoConfig["baseUrl"];
 		}else{
 			var root = "./";
 			if(hostEnv === "spidermonkey"){
@@ -126,15 +131,15 @@ if(typeof dojo == "undefined"){
 					root = String(e.fileName || e.sourceURL).split("dojo.js")[0];
 				}
 			}
-			if(!this["djConfig"]){
-				djConfig = { baseUrl: root };
+			if(!this[cfg]){
+				dojoConfig = { baseUrl: root };
 			}
 	
 			// attempt to figure out the path to dojo if it isn't set in the config
 			if(this["document"] && this["document"]["getElementsByTagName"]){
 				var root = getRootNode().root;	
-				if(!this["djConfig"]){ djConfig = {}; }
-				djConfig["baseUrl"] = root;
+				if(!this[cfg]){ dojoConfig = {}; }
+				dojoConfig["baseUrl"] = root;
 			}
 		}
 		// FIXME: should we be adding the lang stuff here so we can count on it

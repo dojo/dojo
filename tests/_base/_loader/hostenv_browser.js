@@ -9,3 +9,9 @@ tests.register("tests._base._loader.hostenv_browser",
 		}
 	]
 );
+
+tests.registerUrl("tests._base._loader.data-config", dojo.moduleUrl("tests._base._loader", "config-data-global.html"));
+tests.registerUrl("tests._base._loader.data-elem-config", dojo.moduleUrl("tests._base._loader", "config-data.html"));
+tests.registerUrl("tests._base._loader.dj-config", dojo.moduleUrl("tests._base._loader", "config-dj-global.html"));
+tests.registerUrl("tests._base._loader.dj-elem-config", dojo.moduleUrl("tests._base._loader", "config-dj-elemt.html"));
+

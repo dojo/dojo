@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>testing dojo.config</title>
+		<script>
+			var dojoConfig = {
+				isDebug:true,
+				cats:'dogs',
+				a:2, b:[1,2,3]
+			};
+		</script>
+		<script type="text/javascript" src="../../../dojo.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.ready(function(){
+				doh.register("t", [
+					function gotConfig(t){
+						t.is("dogs", dojo.config.cats);
+						t.is(2, dojo.config.a);
+						t.is(3, dojo.config.b.length);
+					}
+				]);
+				doh.run();
+			})
+		</script>
+	</head>
+	<body>
+		<h2>Test data-dojo-config Param</h2>
+	</body>
+</html>
+

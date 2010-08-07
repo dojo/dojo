@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Parser Unit Test</title>
@@ -6,7 +7,7 @@
 		</style>
 		<script type="text/javascript"
 			src="../dojo.js"
-			djConfig="isDebug: true, parseOnLoad: true"></script>
+			data-dojo-config="isDebug: true, parseOnLoad: true"></script>
 		<script type="text/javascript">
 			dojo.require("dojo.parser");
 			dojo.require("doh.runner");
@@ -91,6 +92,33 @@
 				// flag to tell parser not to instantiate nodes inside of me
 				stopParser: true
 			});
+
+			dojo.declare("tests.parser.HTML5Props", null, {
+				constructor: function(args, node){ dojo.mixin(this, args); },
+				simple:false, 
+				a:2, 
+				b:null, c:null, d: null, e:null, f:null,
+				afn: function(){
+					return this.a * 2;
+				}
+			});
+			
+			// not on .prototype:
+			tests.parser.HTML5Props._aDefaultObj = {
+				a:1, b:2, simple:true
+			};
+
+			dojo.declare("tests.parser.HTML5withMethod", null, {
+				constructor: function(args, node){ dojo.mixin(this, args); },
+				baseValue: 10,
+				someMethod: function(a, b){
+					return this.baseValue; 
+				},
+				diffMethod: function(a){
+					this._ran = true;
+				}
+			})
+			
 
 			deepTestProp = {
 				blah: {
@@ -201,7 +229,7 @@
 							t.t(obj.func3Called);
 						},
 
-						// test <script> tags inside innerHTML of source node
+						// test script tags inside innerHTML of source node
 						"t.is(4, obj.preambleTestProp);",
 						"t.is(deepTestProp, obj.deepProp);",
 						function testConnect(t){
@@ -250,7 +278,7 @@
 							
 							dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
 							dojo.parser.parse({ noStart:true, rootNode:"parsertest" });
-			  				
+							
 							t.f(started);
 						},
 						
@@ -309,6 +337,46 @@
 							doh.t(container2.incr, "script tag works too")
 							doh.f(window.contained3, "child widget not created");
 							doh.f(window.contained4, "child widget 2 not created");
+						},
+						
+						function simpleHTML5(){
+							doh.t(typeof html5simple == "object", "data-dojo-id export");
+							doh.t(typeof html5simple2 == "object", "data-dojo-id export");
+							
+							doh.t(html5simple.simple, "default respecified in props=''");
+							doh.f(html5simple2.simple, "default overridden by props=''");
+							
+							// test data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
+							var it = html5simple2;
+							doh.is(1, it.a, "number in param");
+							doh.is("two", it.b, "string in param");
+							doh.t(dojo.isArray(it.c), "array in param");
+							doh.is(3, it.c.length, "array sanity");
+							doh.is("g", it.e.f, "nested object with string");
+							
+							// test the function
+							doh.is(it, it.d(), "simple 'return this' function");
+							
+						},
+						
+						function html5inherited(){
+							doh.t(typeof html5simple3 == "object");
+							var val = html5simple3.afn();
+							doh.is(html5simple3.a * 2, val, "afn() overrides default but calls inherited")
+						},
+						
+						function html5withMethod(){
+							// testing data-dojo-event and data-dojo-args support for dojo/method and dojo/connect
+							doh.t(typeof htmldojomethod == "object");
+							doh.t(htmldojomethod._methodRan, "plain dojo/method ran");
+							
+							var x = htmldojomethod.someMethod(2, 2);
+							doh.is(14, x, "overridden dojo/method");
+                            
+							htmldojomethod.diffMethod(2);
+							doh.t(htmldojomethod._ran, "ensures original was called first");
+							doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");
+							
 						}
 					]
 				);
@@ -321,7 +389,7 @@
 		<script>
 			function foo(){ this.fooCalled=true; }
 		</script>
-		<div dojoType="tests.parser.Class1" jsId="obj" 
+		<div dojoType="tests.parser.Class1" data-dojo-id="obj" 
 			strProp1="text" strProp2=""
 			intProp="5"
 			arrProp="foo, bar, baz"
@@ -384,7 +452,7 @@
 				<!-- and these contained widgets should get instantiated -->
 				<div dojoType="tests.parser.Class1" jsId="contained1"></div>
 				<div>
-					<div dojoType="tests.parser.Class1" jsId="contained2"></div>			
+					<div dojoType="tests.parser.Class1" jsId="contained2"></div>
 				</div>
 			</div>
 		</div>
@@ -399,8 +467,46 @@
 				<!-- but these contained widgets should *not* get instantiated -->
 				<div dojoType="tests.parser.Class1" jsId="contained3"></div>
 				<div>
-					<div dojoType="tests.parser.Class1" jsId="contained4"></div>			
+					<div dojoType="tests.parser.Class1" jsId="contained4"></div>
 				</div>
+			</div>
+		</div>
+
+		<div>
+			<div data-dojo-id="html5simple" data-dojo-type="tests.parser.HTML5Props" data-dojo-props="simple:true"></div>
+			<div data-dojo-id="html5simple2" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
+			></div>
+			<!-- note needing to use a named inherited lookup because we're just mixing in -->
+			<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
+			></div>
+			<div data-dojo-id="html5simpleinvalid" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-props="this will throw because it's invalid data" a="10"
+			></div>
+			
+			<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->
+			<div data-dojo-id="html5fromobjectns" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
+			></div>
+			<div data-dojo-id="html5fromobjectns2" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
+			></div>
+			
+		</div>
+		
+		<div>
+			<div data-dojo-id="htmldojomethod" data-dojo-type="tests.parser.HTML5withMethod">
+				<p>Some random markup</p>
+				<script type="dojo/method" data-dojo-event="someMethod" data-dojo-args="a, b">
+					return this.baseValue + a + b;
+				</script>
+				<script type="dojo/connect" data-dojo-event="diffMethod" data-dojo-args="a">
+					this._fromvalue = a;
+				</script>
+				<script type="dojo/method">
+					this._methodRan = true;
+				</script>
 			</div>
 		</div>
 

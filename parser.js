@@ -6,9 +6,8 @@ new Date("X"); // workaround for #11279, new Date("") == NaN
 dojo.parser = new function(){
 	// summary: The Dom/Widget parsing package
 
-	var d = dojo;
+	var d = dojo, _attrData = "data-" + d._scopeName + "-"
 	this._attrName = d._scopeName + "Type";
-	this._query = "[" + this._attrName + "]";
 
 	function val2type(/*Object*/ value){
 		// summary:
@@ -33,13 +32,13 @@ dojo.parser = new function(){
 			case "number":
 				return value.length ? Number(value) : NaN;
 			case "boolean":
-				// for checked/disabled value might be "" or "checked".  interpret as true.
+				// for checked/disabled value might be "" or "checked".	 interpret as true.
 				return typeof value == "boolean" ? value : !(value.toLowerCase()=="false");
 			case "function":
 				if(d.isFunction(value)){
 					// IE gives us a function, even when we say something like onClick="foo"
 					// (in which case it gives us an invalid function "function(){ foo }"). 
-					//  Therefore, convert to string
+					//	Therefore, convert to string
 					value=value.toString();
 					value=d.trim(value.substring(value.indexOf('{')+1, value.length-1));
 				}
@@ -68,7 +67,7 @@ dojo.parser = new function(){
 		}
 	}
 
-	var instanceClasses = {
+	var dummyClass = {}, instanceClasses = {
 		// map from fully qualified name (like "dijit.Button") to structure like
 		// { cls: dijit.Button, params: {label: "string", disabled: "boolean"} }
 	};
@@ -76,11 +75,24 @@ dojo.parser = new function(){
 	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
 	// If BorderContainer is loaded after _Widget's parameter list has been cached,
 	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
-	dojo.connect(dojo, "extend", function(){
+	d.connect(d, "extend", function(){
 		instanceClasses = {};
 	});
 
-	function getClassInfo(/*String*/ className){
+	function getProtoInfo(cls, params){
+		// cls: A prototype
+		//		The prototype of the class to check props on
+		// params: Object
+		//		The parameters object to mix found parameters onto.
+		for(var name in cls){
+			if(name.charAt(0)=="_"){ continue; }	// skip internal properties
+			if(name in dummyClass){ continue; }		// skip "constructor" and "toString"
+			params[name] = val2type(cls[name]);
+		}
+		return params;
+	}
+
+	function getClassInfo(/*String*/ className, skipProtoLookup){
 		// className:
 		//		fully qualified name (like "dijit.form.Button")
 		// returns:
@@ -90,31 +102,31 @@ dojo.parser = new function(){
 		//				params: { label: "string", disabled: "boolean"}
 		//			}
 
-		if(!instanceClasses[className]){
+		var c = instanceClasses[className];
+		if(!c){
 			// get pointer to widget class
-			var cls = d.getObject(className);
+			var cls = d.getObject(className), params = null;
 			if(!cls){ return null; }		// class not defined [yet]
-
-			var proto = cls.prototype;
-	
-			// get table of parameter names & types
-			var params = {}, dummyClass = {};
-			for(var name in proto){
-				if(name.charAt(0)=="_"){ continue; } 	// skip internal properties
-				if(name in dummyClass){ continue; }		// skip "constructor" and "toString"
-				var defVal = proto[name];
-				params[name]=val2type(defVal);
+			if(!skipProtoLookup){ // from fastpath, we don't need to lookup the attrs on the proto because they are explicit
+				params = getProtoInfo(cls.prototype, {})
 			}
-
-			instanceClasses[className] = { cls: cls, params: params };
+			c = { cls: cls, params: params };
+			
+		}else if(!skipProtoLookup && !c.params){
+			// if we're calling getClassInfo and have a cls proto, but no params info, scan that cls for params now
+			// and update the pointer in instanceClasses[className]. This happens when a widget appears in another 
+			// widget's template which still uses dojoType, but an instance of the widget appears prior with a data-dojo-type,
+			// skipping this lookup the first time. 
+			c.params = getProtoInfo(c.cls.prototype, {});
 		}
-		return instanceClasses[className];
+		
+		return c;
 	}
 
 	this._functionFromScript = function(script){
 		var preamble = "";
 		var suffix = "";
-		var argsStr = script.getAttribute("args");
+		var argsStr = (script.getAttribute(_attrData + "args") || script.getAttribute("args"));
 		if(argsStr){
 			d.forEach(argsStr.split(/\s*,\s*/), function(part, idx){
 				preamble += "var "+part+" = arguments["+idx+"]; ";
@@ -158,16 +170,17 @@ dojo.parser = new function(){
 			if(!obj){ return; }
 
 			// Get pointers to DOMNode, dojoType string, and clsInfo (metadata about the dojoType), etc.s
-			var node, type, clsInfo, clazz, scripts;
+			var node, type, clsInfo, clazz, scripts, fastpath;
 			if(obj.node){
 				// new format of nodes[] array, object w/lots of properties pre-computed for me
 				node = obj.node;
 				type = obj.type;
-				clsInfo = obj.clsInfo || (type && getClassInfo(type));
+				fastpath = obj.fastpath;
+				clsInfo = obj.clsInfo || (type && getClassInfo(type, fastpath));
 				clazz = clsInfo && clsInfo.cls;
 				scripts = obj.scripts;
 			}else{
-				// old (backwards compatible) format of nodes[] array, simple array of DOMNodes
+				// old (backwards compatible) format of nodes[] array, simple array of DOMNodes. no fastpath/data-dojo-type support here.
 				node = obj;
 				type = dp._attrName in mixin ? mixin[dp._attrName] : node.getAttribute(dp._attrName);
 				clsInfo = type && getClassInfo(type);
@@ -179,39 +192,58 @@ dojo.parser = new function(){
 				throw new Error("Could not load class '" + type);
 			}
 
-			// Setup hash to hold parameter settings for this widget.   Start with the parameter
+			// Setup hash to hold parameter settings for this widget.	Start with the parameter
 			// settings inherited from ancestors ("dir" and "lang").
 			// Inherited setting may later be overridden by explicit settings on node itself.
-			var params = {},
-				attributes = node.attributes;
+			var params = {}, 
+				extra,
+				attributes = node.attributes
+			;
+				
 			if(args.defaults){
 				// settings for the document itself (or whatever subtree is being parsed)
-				dojo.mixin(params, args.defaults);
+				d._mixin(params, args.defaults);
 			}
 			if(obj.inherited){
 				// settings from dir=rtl or lang=... on a node above this node
-				dojo.mixin(params, obj.inherited);
+				d._mixin(params, obj.inherited);
 			}
-
-			// read parameters (ie, attributes) specified on DOMNode
-			// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
-			for(var name in clsInfo.params){
-				var item = name in mixin?{value:mixin[name],specified:true}:attributes.getNamedItem(name);
-				if(!item || (!item.specified && (!dojo.isIE || name.toLowerCase()!="value"))){ continue; }
-				var value = item.value;
-				// Deal with IE quirks for 'class' and 'style'
-				switch(name){
-				case "class":
-					value = "className" in mixin?mixin.className:node.className;
-					break;
-				case "style":
-					value = "style" in mixin?mixin.style:(node.style && node.style.cssText); // FIXME: Opera?
+			
+			// mix things found in data-dojo-props into the params
+			if(fastpath && (extra = node.getAttribute(_attrData + "props")) && extra.length){
+				try{
+					extra = d.fromJson("{" + extra + "}");
+					d._mixin(params, extra);
+				}catch(e){
+					// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
+					console.warn("Invalid object notation in data-dojo-props:", node, e);
 				}
-				var _type = clsInfo.params[name];
-				if(typeof value == "string"){
-					params[name] = str2obj(value, _type);
-				}else{
-					params[name] = value;
+			}
+			
+			if(!fastpath){
+				// FIXME: we need something like "deprecateOnce()" to throw dojo.deprecation for something. 
+				// remove this logic in 2.0
+				// read parameters (ie, attributes) specified on DOMNode
+				
+				// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
+				for(var name in clsInfo.params){
+					var item = name in mixin ? { value:mixin[name], specified:true } : attributes.getNamedItem(name);
+					if(!item || (!item.specified && (!dojo.isIE || name.toLowerCase()!="value"))){ continue; }
+					var value = item.value;
+					// Deal with IE quirks for 'class' and 'style'
+					switch(name){
+					case "class":
+						value = "className" in mixin ? mixin.className : node.className;
+						break;
+					case "style":
+						value = "style" in mixin ? mixin.style : (node.style && node.style.cssText); // FIXME: Opera?
+					}
+					var _type = clsInfo.params[name];
+					if(typeof value == "string"){
+						params[name] = str2obj(value, _type);
+					}else{
+						params[name] = value;
+					}
 				}
 			}
 
@@ -226,7 +258,8 @@ dojo.parser = new function(){
 
 			d.forEach(scripts, function(script){
 				node.removeChild(script);
-				var event = script.getAttribute("event"),
+				// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
+				var event = (script.getAttribute(_attrData + "event") || script.getAttribute("event")),
 					type = script.getAttribute("type"),
 					nf = d.parser._functionFromScript(script);
 				if(event){
@@ -246,7 +279,8 @@ dojo.parser = new function(){
 			thelist.push(instance);
 
 			// map it to the JS namespace if that makes sense
-			var jsname = node.getAttribute("jsId");
+			// FIXME: in 2.0, drop jsId support. use data-dojo-id instead
+			var jsname = (node.getAttribute(_attrData + "id") || node.getAttribute("jsId"));
 			if(jsname){
 				d.setObject(jsname, instance);
 			}
@@ -270,7 +304,7 @@ dojo.parser = new function(){
 			// ContentPane is the parent widget (so that the parse doesn't call startup() on the
 			// ContentPane's children)
 			d.forEach(thelist, function(instance){
-				if(	!args.noStart && instance  && 
+				if( !args.noStart && instance  && 
 					instance.startup &&
 					!instance._started && 
 					(!instance.getParent || !instance.getParent())
@@ -288,9 +322,21 @@ dojo.parser = new function(){
 		//
 		// description:
 		//		Search specified node (or root node) recursively for class instances,
-		//		and instantiate them Searches for
-		//		dojoType="qualified.class.name"
+		//		and instantiate them. Searches for either data-dojo-type="Class" or
+		//		dojoType="Class" where "Class" is a a fully qualified class name,
+		//		like `dijit.form.Button`
 		//
+		//		Using `data-dojo-type`:
+		//		Attributes using can be mixed into the parameters used to instantitate the
+		//		Class by using a `data-dojo-props` attribute on the node being converted.
+		//		`data-dojo-props` should be a string attribute to be converted from JSON.
+		//
+		//		Using `dojoType`:
+		//		Attributes are read from the original domNode and converted to appropriate
+		//		types by looking up the Class prototype values. This is the default behavior
+		//		from Dojo 1.0 to Dojo 1.5. `dojoType` support is deprecated, and will
+		//		go away in Dojo 2.0.
+		//      
 		// rootNode: DomNode?
 		//		A default starting root node from which to start the parsing. Can be
 		//		omitted, defaulting to the entire document. If omitted, the `args`
@@ -310,14 +356,13 @@ dojo.parser = new function(){
 		//				Hash possibly containing dir and lang settings to be applied to
 		//				parsed widgets, unless there's another setting on a sub-node that overrides
 		//
-		//
 		// example:
 		//		Parse all widgets on a page:
 		//	|		dojo.parser.parse();
 		//
 		// example:
 		//		Parse all classes within the node with id="foo"
-		//	|		dojo.parser.parse(dojo.byId(foo));
+		//	|		dojo.parser.parse(dojo.byId('foo'));
 		//
 		// example:
 		//		Parse all classes in a page, but do not call .startup() on any 
@@ -328,7 +373,7 @@ dojo.parser = new function(){
 		//		Parse all classes in a node, but do not call .startup()
 		//	|		dojo.parser.parse(someNode, { noStart:true });
 		//	|		// or
-		// 	|		dojo.parser.parse({ noStart:true, rootNode: someNode });
+		//	|		dojo.parser.parse({ noStart:true, rootNode: someNode });
 
 		// determine the root node based on the passed arguments.
 		var root;
@@ -348,7 +393,7 @@ dojo.parser = new function(){
 			// parent: Object
 			//		Object representing the parent node, like
 			//	|	{
-			//	|		node: DomNode, 			// scan children of this node
+			//	|		node: DomNode,			// scan children of this node
 			//	|		inherited: {dir: "rtl"},	// dir/lang setting inherited from above node
 			//	|
 			//	|		// attributes only set if node has dojoType specified
@@ -376,12 +421,23 @@ dojo.parser = new function(){
 			// scan parent's children looking for dojoType and <script type=dojo/*>
 			for(var child = parent.node.firstChild; child; child = child.nextSibling){
 				if(child.nodeType == 1){
-					var type = recurse && child.getAttribute(attrName);
+					// FIXME: desupport dojoType in 2.0. use data-dojo-type instead
+					var type, html5 = recurse && child.getAttribute(_attrData + "type");
+					if(html5){ 
+						type = html5; 
+					}else{
+						// fallback to backward compatible mode, using dojoType. remove in 2.0
+						type = recurse && child.getAttribute(attrName); 
+					}
+					
+					var fastpath = html5 == type;
+
 					if(type){
-						// if dojoType specified, add to output array of nodes to instantiate
+						// if dojoType/data-dojo-type specified, add to output array of nodes to instantiate
 						var params = {
 							"type": type,
-							clsInfo: getClassInfo(type),	// note: won't find classes declared via dojo.Declaration
+							fastpath: fastpath,
+							clsInfo: getClassInfo(type, fastpath), // note: won't find classes declared via dojo.Declaration
 							node: child,
 							scripts: [], // <script> nodes that are parent's children
 							inherited: inherited // dir & lang attributes inherited from parent

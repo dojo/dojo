@@ -330,6 +330,19 @@
 							tnl.removeClass(["a", "c"]);
 							doh.is("", s.className);
 							doh.is("", t.className);
+							tnl.addClass("a b c");
+							tnl.replaceClass("d e", "a b");
+							doh.is("c d e", s.className, "class is c d e after replacing a b with d e");
+							doh.is("c d e", t.className, "class is c d e after replacing a b with d e");
+							tnl.replaceClass("f", "d");
+							doh.is("c e f", s.className, "class is c e f after replacing d with f");
+							doh.is("c e f", t.className, "class is c e f after replacing d with f");
+							tnl.replaceClass("d");
+							doh.is("d", s.className);
+							doh.is("d", t.className);
+							tnl.removeClass();
+							doh.is("", s.className, "empty class");
+							doh.is("", t.className, "empty class");
 						},
 
 						function concat(){

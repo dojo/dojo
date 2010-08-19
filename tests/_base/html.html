@@ -242,6 +242,7 @@
 						},
 						function testClassFunctions(t){
 							var node = dojo.byId("sq100");
+							dojo.removeClass(node);
 							dojo.addClass(node, "a");
 							doh.is("a", node.className, "class is a");
 							dojo.removeClass(node, "c");
@@ -277,9 +278,15 @@
 								acuWorked = false;
 							}
 							doh.is(true, acuWorked, "addClass handles undefined class");
+							dojo.addClass(node, "a");
+							dojo.replaceClass(node, "b", "a");
+							t.assertTrue(dojo.hasClass(node, "b"), "class is b after replacing a, test for b");
+							t.assertFalse(dojo.hasClass(node, "a"), "class is b after replacing a, test for not a");
+							
 						},
 						function testAddRemoveClassMultiple(t){
 							var node = dojo.byId("sq100");
+							dojo.removeClass(node);
 							dojo.addClass(node, "a");
 							t.is("a", node.className, "class is a");
 							dojo.addClass(node, "a b");
@@ -298,6 +305,12 @@
 							t.is("a", node.className, "class is a");
 							dojo.removeClass(node, ["a", "c"]);
 							t.is("", node.className, "empty class");
+							dojo.addClass(node, "a b");
+							dojo.replaceClass(node, "c", "a b");
+							t.is("c", node.className, "class is c");
+							dojo.replaceClass(node, "");
+							t.is("", node.className, "empty class");
+							node.className = "";
 						},
 						function getTypeInput(t){
 							doh.f(dojo.hasAttr(dojo.byId("input-no-type"), "type"));

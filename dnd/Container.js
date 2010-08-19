@@ -100,9 +100,9 @@ dojo.declare("dojo.dnd.Container", null, {
 		// set up events
 		this.events = [
 			dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
-			dojo.connect(this.node, "onmouseout",  this, "onMouseOut"),
+			dojo.connect(this.node, "onmouseout", this, "onMouseOut"),
 			// cancel text selection and text dragging
-			dojo.connect(this.node, "ondragstart",   this, "onSelectStart"),
+			dojo.connect(this.node, "ondragstart", this, "onSelectStart"),
 			dojo.connect(this.node, "onselectstart", this, "onSelectStart")
 		];
 	},
@@ -316,10 +316,9 @@ dojo.declare("dojo.dnd.Container", null, {
 		// newState: String
 		//		new state
 		var prefix = "dojoDnd" + type;
-		var state  = type.toLowerCase() + "State";
+		var state = type.toLowerCase() + "State";
 		//dojo.replaceClass(this.node, prefix + newState, prefix + this[state]);
-		dojo.removeClass(this.node, prefix + this[state]);
-		dojo.addClass(this.node, prefix + newState);
+		dojo.replaceClass(this.node, prefix + newState, prefix + this[state]);
 		this[state] = newState;
 	},
 	_addItemClass: function(node, type){

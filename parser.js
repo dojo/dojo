@@ -413,7 +413,7 @@ dojo.parser = new function(){
 			});
 
 			// if parent is a widget, then search for <script type=dojo/*> tags and put them in scripts[].
-			var scripts = parent.scripts;
+			var scripts = parent.clsInfo && !parent.clsInfo.cls.prototype._noScript ? parent.scripts : null;
 
 			// unless parent is a widget with the stopParser flag set, continue search for dojoType, recursively
 			var recurse = !parent.clsInfo || !parent.clsInfo.cls.prototype.stopParser;

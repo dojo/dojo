@@ -154,20 +154,22 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			args = args || {};
 			var self = this;
 			var scope = args.scope || self;
-			
-			dojo.when(this.objectProvider.query(args.query, args), function(results){
-				if(args.onBegin){
-					args.onBegin.call(scope, results.totalCount || results.length, args);
-				}
-				if(args.onItem){
-					for(var i=0; i<results.length;i++){
-						args.onItem.call(scope, results[i], args);
+			var results = this.objectProvider.query(args.query, args);
+			dojo.when(results.total, function(totalCount){
+				dojo.when(results, function(results){
+					if(args.onBegin){
+						args.onBegin.call(scope, totalCount || results.length, args);
 					}
-				}
-				if(args.onComplete){
-					args.onComplete.call(scope, args.onItem ? null : results, args);
-				}
-				return results;				
+					if(args.onItem){
+						for(var i=0; i<results.length;i++){
+							args.onItem.call(scope, results[i], args);
+						}
+					}
+					if(args.onComplete){
+						args.onComplete.call(scope, args.onItem ? null : results, args);
+					}
+					return results;				
+				}, args.onError && dojo.hitch(scope, args.onError));
 			}, args.onError && dojo.hitch(scope, args.onError));
 			args.abort = function(){
 				// abort the request

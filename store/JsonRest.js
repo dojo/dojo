@@ -82,10 +82,15 @@ dojo.declare("dojo.store.JsonRest", null, {
 			}
 			query += ")";
 		}
-		return dojo.xhrGet({
+		var results = dojo.xhrGet({
 			url: this.target + query,
 			handleAs: "json",
 			headers: headers
 		});
+		results.total = results.then(function(){
+			var range = results.ioArgs.xhr.getResponseHeader("Content-Range");
+			return range && (range=range.match(/\/(.*)/)) && parseInt(range[1]);
+		});
+		return results;
 	}
 });

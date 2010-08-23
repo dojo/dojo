@@ -1,4 +1,4 @@
-dojo.provide("tests.store.JsonRest");
+dojo.provide("dojo.tests.store.JsonRest");
 dojo.require("dojo.store.JsonRest");
 
 var store = new dojo.store.JsonRest({target: dojo.moduleUrl("dojo.tests.store", "")});

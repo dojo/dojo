@@ -283,6 +283,15 @@
 							t.assertTrue(dojo.hasClass(node, "b"), "class is b after replacing a, test for b");
 							t.assertFalse(dojo.hasClass(node, "a"), "class is b after replacing a, test for not a");
 							
+							dojo.replaceClass(node, "", "b");
+							t.assertFalse(dojo.hasClass(node, "b"), "class b should be removed, with no class added");
+							t.is("", node.className, "The className is empty");
+							
+							dojo.addClass(node, "b a");
+							dojo.replaceClass(node, "c", "");
+							t.is("b a c", node.className, 
+								"The className is  is 'b a c' after using an empty string in replaceClass");
+							
 						},
 						function testAddRemoveClassMultiple(t){
 							var node = dojo.byId("sq100");

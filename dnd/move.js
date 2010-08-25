@@ -46,7 +46,7 @@ dojo.declare("dojo.dnd.move.constrainedMoveable", dojo.dnd.Moveable, {
 		c.r = c.l + c.w;
 		c.b = c.t + c.h;
 		if(this.within){
-			var mb = dojo.marginBox(mover.node);
+			var mb = dojo._getMarginSize(mover.node);
 			c.r -= mb.w;
 			c.b -= mb.h;
 		}
@@ -179,7 +179,7 @@ dojo.dnd.move.constrainedMover = function(fun, within){
 			c.r = c.l + c.w;
 			c.b = c.t + c.h;
 			if(within){
-				var mb = dojo.marginBox(this.node);
+				var mb = dojo._getMarginSize(this.node);
 				c.r -= mb.w;
 				c.b -= mb.h;
 			}

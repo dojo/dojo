@@ -54,6 +54,8 @@
 
 						"doh.is(100, dojo.marginBox('sq100').w);",
 						"doh.is(100, dojo.marginBox('sq100').h);",
+						"doh.is(100, dojo._getMarginSize('sq100').w);",
+						"doh.is(100, dojo._getMarginSize('sq100').h);",
 
 						"doh.is(120, dojo.marginBox('sq100margin10').w);",
 						"doh.is(120, dojo.marginBox('sq100margin10').h);",
@@ -62,6 +64,8 @@
 
 						"doh.is(140, dojo.marginBox('sq100margin10pad10').w);",
 						"doh.is(140, dojo.marginBox('sq100margin10pad10').h);",
+						"doh.is(140, dojo._getMarginSize('sq100margin10pad10').w);",
+						"doh.is(140, dojo._getMarginSize('sq100margin10pad10').h);",
 
 						"doh.is(120, dojo.marginBox('sq100pad10').w);",
 						"doh.is(120, dojo.marginBox('sq100pad10').h);",
@@ -823,4 +827,5 @@
 		<iframe id="scrollingQuirksIframe" src="scrollingQuirksIframe.html"></iframe>
 	</body>
 </html>
+
 

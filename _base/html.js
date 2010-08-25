@@ -818,6 +818,20 @@ if(dojo.isIE || dojo.isOpera){
 			h: node.offsetHeight + me.h 
 		};
 	}
+	
+	dojo._getMarginSize = function(/*DomNode*/node, /*Object*/computedStyle){
+		// summary:
+		//	returns an object that encodes the width and height of
+		//	the node's margin box
+		node = byId(node);
+		var me = d._getMarginExtents(node, computedStyle || gcs(node));
+
+		var size = node.getBoundingClientRect();
+		return {
+			w: (size.right - size.left) + me.w,
+			h: (size.bottom - size.top) + me.h
+		}
+	}
 
 	dojo._getContentBox = function(node, computedStyle){
 		// summary:

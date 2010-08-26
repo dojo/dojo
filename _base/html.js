@@ -1156,85 +1156,27 @@ if(dojo.isIE || dojo.isOpera){
 		//		Uses the border-box model (inclusive of border and padding but
 		//		not margin).  Does not act as a setter.
 
-		var db = d.body(), dh = db.parentNode, ret;
 		node = byId(node);
-		if(node["getBoundingClientRect"]){
-			// IE6+, FF3+, super-modern WebKit, and Opera 9.6+ all take this branch
+		var	db = d.body(),
+			dh = db.parentNode,
 			ret = node.getBoundingClientRect();
-			ret = { x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top };
+		ret = { x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top };
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			if(d.isIE){
-				// On IE there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
-				var offset = d._getIeDocumentElementOffset();
+		if(d.isIE){
+			// On IE there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
+			var offset = d._getIeDocumentElementOffset();
 
-				// fixes the position in IE, quirks mode
-				ret.x -= offset.x + (d.isQuirks ? db.clientLeft+db.offsetLeft : 0);
-				ret.y -= offset.y + (d.isQuirks ? db.clientTop+db.offsetTop : 0);
-			}else if(d.isFF == 3){
-				// In FF3 you have to subtract the document element margins.
-				// Fixed in FF3.5 though.
-				var cs = gcs(dh);
-				ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
-				ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);
-			}
-		//>>excludeEnd("webkitMobile");
-		}else{
-			// FF2 and older WebKit
-			ret = {
-				x: 0,
-				y: 0,
-				w: node.offsetWidth,
-				h: node.offsetHeight
-			};
-			if(node["offsetParent"]){
-				ret.x -= _sumAncestorProperties(node, "scrollLeft");
-				ret.y -= _sumAncestorProperties(node, "scrollTop");
-
-				var curnode = node;
-				do{
-					var n = curnode.offsetLeft,
-						t = curnode.offsetTop;
-					ret.x += isNaN(n) ? 0 : n;
-					ret.y += isNaN(t) ? 0 : t;
-
-					cs = gcs(curnode);
-					if(curnode != node){
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-						if(d.isMoz){
-							// tried left+right with differently sized left/right borders
-							// it really is 2xleft border in FF, not left+right, even in RTL!
-							ret.x += 2 * px(curnode,cs.borderLeftWidth);
-							ret.y += 2 * px(curnode,cs.borderTopWidth);
-						}else{
-		//>>excludeEnd("webkitMobile");
-							ret.x += px(curnode, cs.borderLeftWidth);
-							ret.y += px(curnode, cs.borderTopWidth);
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-						}
-		//>>excludeEnd("webkitMobile");
-					}
-					// static children in a static div in FF2 are affected by the div's border as well
-					// but offsetParent will skip this div!
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-					if(d.isMoz && cs.position == "static"){
-						var parent = curnode.parentNode;
-						while(parent != curnode.offsetParent){
-							var pcs = gcs(parent);
-							if(pcs.position == "static"){
-								ret.x += px(curnode,pcs.borderLeftWidth);
-								ret.y += px(curnode,pcs.borderTopWidth);
-							}
-							parent = parent.parentNode;
-						}
-					}
-		//>>excludeEnd("webkitMobile");
-					curnode = curnode.offsetParent;
-				}while((curnode != dh) && curnode);
-			}else if(node.x && node.y){
-				ret.x += isNaN(node.x) ? 0 : node.x;
-				ret.y += isNaN(node.y) ? 0 : node.y;
-			}
+			// fixes the position in IE, quirks mode
+			ret.x -= offset.x + (d.isQuirks ? db.clientLeft+db.offsetLeft : 0);
+			ret.y -= offset.y + (d.isQuirks ? db.clientTop+db.offsetTop : 0);
+		}else if(d.isFF == 3){
+			// In FF3 you have to subtract the document element margins.
+			// Fixed in FF3.5 though.
+			var cs = gcs(dh);
+			ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
+			ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);
 		}
+		//>>excludeEnd("webkitMobile");
 		// account for document scrolling
 		// if offsetParent is used, ret value already includes scroll position
 		// so we may have to actually remove that value if !includeScroll

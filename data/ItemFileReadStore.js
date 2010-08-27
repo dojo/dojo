@@ -612,7 +612,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 				item = this._arrayOfAllItems[i];
 				arrayOfValues = item[identifier];
 				var identity = arrayOfValues[0];
-				if(!this._itemsByIdentity[identity]){
+				if(!Object.hasOwnProperty.call(this._itemsByIdentity, identity)){
 					this._itemsByIdentity[identity] = item;
 				}else{
 					if(this._jsonFileUrl){
@@ -838,9 +838,10 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//	summary:
 		//		Internal function to look an item up by its identity map.
 		var item = null;
-		if(this._itemsByIdentity){
+		if(this._itemsByIdentity &&
+		   Object.hasOwnProperty.call(this._itemsByIdentity, identity)){
 			item = this._itemsByIdentity[identity];
-		}else{
+		}else if (Object.hasOwnProperty.call(this._arrayOfAllItems, identity)){
 			item = this._arrayOfAllItems[identity];
 		}
 		if(item === undefined){

@@ -293,9 +293,12 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 	// value:
 	//		A string representation of a date
 
+	value = value.replace(/[\u200E\u200F\u202A\u202E]/g, ""); // remove bidi non-printing chars
+
 	var info = dojo.date.locale._parseInfo(options),
 		tokens = info.tokens, bundle = info.bundle,
-		re = new RegExp("^" + info.regexp + "$", info.strict ? "" : "i"),
+		re = new RegExp("^" + info.regexp.replace(/[\u200E\u200F\u202A\u202E]/g, "") + "$", // remove bidi non-printing chars
+			info.strict ? "" : "i"),
 		match = re.exec(value);
 
 	if(!match){ return null; } // null

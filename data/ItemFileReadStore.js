@@ -341,7 +341,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 			}
 
 			//See if there was any forced reset of data.
-			if(this.data != null && this._jsonData == null){
+			if(this.data != null){
 				this._jsonData = this.data;
 				this.data = null;
 			}
@@ -889,7 +889,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		}
 
 		//See if there was any forced reset of data.
-		if(this.data != null && this._jsonData == null){
+		if(this.data != null){
 			this._jsonData = this.data;
 			this.data = null;
 		}

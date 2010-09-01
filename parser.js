@@ -4,7 +4,8 @@ dojo.require("dojo.date.stamp");
 new Date("X"); // workaround for #11279, new Date("") == NaN
 
 dojo.parser = new function(){
-	// summary: The Dom/Widget parsing package
+	// summary:
+	//		The Dom/Widget parsing package
 
 	var d = dojo, _attrData = "data-" + d._scopeName + "-"
 	this._attrName = d._scopeName + "Type";
@@ -75,6 +76,7 @@ dojo.parser = new function(){
 	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
 	// If BorderContainer is loaded after _Widget's parameter list has been cached,
 	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
+	// TODO: remove this in 2.0, when we stop caching parameters.
 	d.connect(d, "extend", function(){
 		instanceClasses = {};
 	});
@@ -92,7 +94,10 @@ dojo.parser = new function(){
 		return params;
 	}
 
-	function getClassInfo(/*String*/ className, skipProtoLookup){
+	function getClassInfo(/*String*/ className, /*Boolean*/ skipParamsLookup){
+		// summary:
+		//		Maps a widget name string like "dijit.form.Button" to the widget constructor itself,
+		//		and a list of that widget's parameters and their types
 		// className:
 		//		fully qualified name (like "dijit.form.Button")
 		// returns:
@@ -107,12 +112,12 @@ dojo.parser = new function(){
 			// get pointer to widget class
 			var cls = d.getObject(className), params = null;
 			if(!cls){ return null; }		// class not defined [yet]
-			if(!skipProtoLookup){ // from fastpath, we don't need to lookup the attrs on the proto because they are explicit
+			if(!skipParamsLookup){ // from fastpath, we don't need to lookup the attrs on the proto because they are explicit
 				params = getProtoInfo(cls.prototype, {})
 			}
 			c = { cls: cls, params: params };
 			
-		}else if(!skipProtoLookup && !c.params){
+		}else if(!skipParamsLookup && !c.params){
 			// if we're calling getClassInfo and have a cls proto, but no params info, scan that cls for params now
 			// and update the pointer in instanceClasses[className]. This happens when a widget appears in another 
 			// widget's template which still uses dojoType, but an instance of the widget appears prior with a data-dojo-type,
@@ -169,7 +174,7 @@ dojo.parser = new function(){
 		d.forEach(nodes, function(obj){
 			if(!obj){ return; }
 
-			// Get pointers to DOMNode, dojoType string, and clsInfo (metadata about the dojoType), etc.s
+			// Get pointers to DOMNode, dojoType string, and clsInfo (metadata about the dojoType), etc.
 			var node, type, clsInfo, clazz, scripts, fastpath;
 			if(obj.node){
 				// new format of nodes[] array, object w/lots of properties pre-computed for me
@@ -224,7 +229,7 @@ dojo.parser = new function(){
 				// FIXME: we need something like "deprecateOnce()" to throw dojo.deprecation for something. 
 				// remove this logic in 2.0
 				// read parameters (ie, attributes) specified on DOMNode
-				
+
 				// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
 				for(var name in clsInfo.params){
 					var item = name in mixin ? { value:mixin[name], specified:true } : attributes.getNamedItem(name);

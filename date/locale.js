@@ -293,13 +293,13 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 	// value:
 	//		A string representation of a date
 
-	value = value.replace(/[\u200E\u200F\u202A\u202E]/g, ""); // remove bidi non-printing chars
-
-	var info = dojo.date.locale._parseInfo(options),
+	// remove non-printing bidi control chars from input and pattern
+	var controlChars = /[\u200E\u200F\u202A\u202E]/g,
+		info = dojo.date.locale._parseInfo(options),
 		tokens = info.tokens, bundle = info.bundle,
-		re = new RegExp("^" + info.regexp.replace(/[\u200E\u200F\u202A\u202E]/g, "") + "$", // remove bidi non-printing chars
+		re = new RegExp("^" + info.regexp.replace(controlChars, "") + "$",
 			info.strict ? "" : "i"),
-		match = re.exec(value);
+		match = re.exec(value && value.replace(controlChars, ""));
 
 	if(!match){ return null; } // null
 

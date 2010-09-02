@@ -200,10 +200,7 @@ dojo.parser = new function(){
 			// Setup hash to hold parameter settings for this widget.	Start with the parameter
 			// settings inherited from ancestors ("dir" and "lang").
 			// Inherited setting may later be overridden by explicit settings on node itself.
-			var params = {}, 
-				extra,
-				attributes = node.attributes
-			;
+			var params = {};
 				
 			if(args.defaults){
 				// settings for the document itself (or whatever subtree is being parsed)
@@ -215,20 +212,34 @@ dojo.parser = new function(){
 			}
 			
 			// mix things found in data-dojo-props into the params
-			if(fastpath && (extra = node.getAttribute(_attrData + "props")) && extra.length){
-				try{
-					extra = d.fromJson("{" + extra + "}");
-					d._mixin(params, extra);
-				}catch(e){
-					// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
-					console.warn("Invalid object notation in data-dojo-props:", node, e);
+			if(fastpath){
+				var extra = node.getAttribute(_attrData + "props");
+				if(extra && extra.length){
+					try{
+						extra = d.fromJson("{" + extra + "}");
+						d._mixin(params, extra);					
+					}catch(e){
+						// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
+						console.warn("Invalid object notation in data-dojo-props:", node, e);
+					}
 				}
-			}
-			
-			if(!fastpath){
+
+				// For the benefit of _Templated, check if node has data-dojo-attach-point/data-dojo-attach-event
+				// and mix those in as though they were parameters
+				var attachPoint = node.getAttribute(_attrData + "attach-point");
+				if(attachPoint){
+					params.dojoAttachPoint = attachPoint;
+				}
+				var attachEvent = node.getAttribute(_attrData + "attach-Event");
+				if(attachEvent){
+					params.dojoAttachEvent = attachEvent;
+				}
+			}else{
 				// FIXME: we need something like "deprecateOnce()" to throw dojo.deprecation for something. 
 				// remove this logic in 2.0
 				// read parameters (ie, attributes) specified on DOMNode
+
+				var attributes = node.attributes;
 
 				// clsInfo.params lists expected params like {"checked": "boolean", "n": "number"}
 				for(var name in clsInfo.params){

@@ -1,4 +1,5 @@
 dojo.provide("dojo.store.JsonRest");
+dojo.require("dojo.store.util.QueryResults");
 
 dojo.declare("dojo.store.JsonRest", null, {
 	target: "",
@@ -26,7 +27,7 @@ dojo.declare("dojo.store.JsonRest", null, {
 			headers: headers
 		});
 	},
-	put: function(object, id, options){
+	put: function(object, options){
 		//	summary:
 		// 		Stores an object by it's identity. This will trigger a PUT request to the server 
 		// 		if the object has an id, otherwise it will trigger a POST request	
@@ -35,16 +36,10 @@ dojo.declare("dojo.store.JsonRest", null, {
 		// options:
 		// 		Additional metadata for storing the data		
 		// options.id:
-		// 		The identity to use for storing the data		
-		return typeof id === "undefined" ?
-			dojo.xhrPost({
-				url:this.target,
-				postData: dojo.toJson(object),
-				handleAs: "json",
-				headers:{"Content-Type": "application/json"}
-			}) :
-			dojo.xhrPut({
-				url:this.target + id,
+		// 		The identity to use for storing the data
+		var hasId = options && typeof options.id != "undefined";
+		return dojo.xhr(hasId ? "PUT" : "POST", {
+				url: hasId ? this.target + options.id : this.target,
 				postData: dojo.toJson(object),
 				handleAs: "json",
 				headers:{"Content-Type": "application/json"}
@@ -91,6 +86,6 @@ dojo.declare("dojo.store.JsonRest", null, {
 			var range = results.ioArgs.xhr.getResponseHeader("Content-Range");
 			return range && (range=range.match(/\/(.*)/)) && parseInt(range[1]);
 		});
-		return results;
+		return dojo.store.util.QueryResults(results);
 	}
 });

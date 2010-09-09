@@ -22,6 +22,18 @@ tests.register("tests.store.JsonRest",
 				d.callback(true);
 			});
 			return d;
+		},
+		function testQueryIterative(t){
+			var d = new doh.Deferred();
+			var i = 0;
+			store.query("treeTestRoot").forEach(function(object){
+				i++;
+				console.log(i);
+				t.is(object.name, "node" + i);
+			}).then(function(){
+				d.callback(true);
+			});
+			return d;
 		}
 	]
 );

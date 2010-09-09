@@ -141,15 +141,6 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			// summary:
 			//		See dojo.data.api.Read.fetch
 			//
-			// The *queryOptions.cache* parameter
-			//		If true, indicates that the query result should be cached for future use. This is only available
-			// 		if dojox.data.ClientFilter has been loaded before the ServiceStore
-			//
-			//	The *syncMode* parameter
-			//		Indicates that the call should be fetch synchronously if possible (this is not always possible)
-			//
-			// The *clientFetch* parameter
-			//		This is a fetch keyword argument for explicitly doing client side filtering, querying, and paging
 
 			args = args || {};
 			var self = this;

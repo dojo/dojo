@@ -367,7 +367,11 @@ dojo.parser = new function(){
 		//				when locating the nodes. 
 		//			* rootNode: DomNode?
 		//				identical to the function's `rootNode` argument, though
-		//				allowed to be passed in via this `args object. 
+		//				allowed to be passed in via this `args object.
+		//			* template: Boolean
+		//				If true, ignores ContentPane's stopParser flag and parses contents inside of
+		//				a ContentPane inside of a template.   This allows dojoAttachPoint on widgets/nodes
+		//				nested inside the ContentPane to work.
 		//			* inherited: Object
 		//				Hash possibly containing dir and lang settings to be applied to
 		//				parsed widgets, unless there's another setting on a sub-node that overrides
@@ -432,7 +436,7 @@ dojo.parser = new function(){
 			var scripts = parent.clsInfo && !parent.clsInfo.cls.prototype._noScript ? parent.scripts : null;
 
 			// unless parent is a widget with the stopParser flag set, continue search for dojoType, recursively
-			var recurse = !parent.clsInfo || !parent.clsInfo.cls.prototype.stopParser;
+			var recurse = (!parent.clsInfo || !parent.clsInfo.cls.prototype.stopParser) || (args && args.template);
 
 			// scan parent's children looking for dojoType and <script type=dojo/*>
 			for(var child = parent.node.firstChild; child; child = child.nextSibling){

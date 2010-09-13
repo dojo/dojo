@@ -21,6 +21,14 @@ tests.register("tests.data.Memory",
 			t.is(store.query({prime: true}).length, 3);
 			t.is(store.query({even: true})[1].name, "four");
 		},
+		function testQueryWithSort(t){
+			t.is(store.query({prime: true}, {sort:[{attribute:"name"}]}).length, 3);
+			t.is(store.query({even: true}, {sort:[{attribute:"name"}]})[1].name, "two");
+		},
+		function testQueryWithPaging(t){
+			t.is(store.query({prime: true}, {start: 1, count: 1}).length, 1);
+			t.is(store.query({even: true}, {start: 1, count: 1})[0].name, "four");
+		},
 		function testPutUpdate(t){
 			var four = store.get(4);
 			four.square = true;

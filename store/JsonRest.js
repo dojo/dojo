@@ -45,7 +45,7 @@ dojo.declare("dojo.store.JsonRest", null, {
 				headers:{"Content-Type": "application/json"}
 			});
 	},
-	"delete": function(id){
+	remove: function(id){
 		//	summary:
 		// 		Deletes an object by it's identity. This will trigger a DELETE request to the server
 		// id:

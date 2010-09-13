@@ -368,7 +368,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 						result = this.objectProvider.put(object, {overwrite: !!old});
 					}
 					else{
-						result = this.objectProvider["delete"](this.getIdentity(old));
+						result = this.objectProvider.remove(this.getIdentity(old));
 					}
 					savingObjects.push(dirty);
 					dirtyObjects.splice(i--,1);

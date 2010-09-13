@@ -1,6 +1,7 @@
 dojo.provide("dojo.store.Memory");
 
 dojo.require("dojo.store.util.QueryResults");
+dojo.require("dojo.store.util.SimpleQueryEngine");
 
 dojo.declare("dojo.store.Memory", null, {
 	constructor: function(options){
@@ -26,41 +27,20 @@ dojo.declare("dojo.store.Memory", null, {
 	index:null,
 	// summary:
 	//		Defines the query engine to use for querying the data store
-	queryEngine: {
-		execute: function(query, array){
-			// summary:
-			//		Simple query engine that matches using filter functions, named filter
-			// 		functions or objects by name-value on a query object hash
-			var results = [];
-			if(typeof query == "string"){
-				// named query
-				query = this[query];
-			}else if(typeof query == "object"){
-				var queryObject = query;
-				query = function(object){
-					for(var key in queryObject){
-						if(queryObject[key] != object[key]){
-							return false;
-						}
-					}
-					return true;
-				};
-			}
-			for(var i = 0,l = array.length; i < l; i++){
-				var object = array[i];
-				if(query(object)){
-					results.push(object);
-				}
-			}
-			return results;
-		}
-	},
+	queryEngine: dojo.store.util.SimpleQueryEngine,
 	get: function(id){
 		//	summary:
 		// 		Retrieves an object by it's identity
 		// id:
 		// 		The identity to use to lookup the object		
 		return this.index[id]; 
+	},
+	getIdentity: function(object){
+		//	summary:
+		// 		Returns an object's identity
+		// object:
+		// 		The object to get the identity from		
+		return object[this.idProperty];
 	},
 	put: function(object, options){
 		//	summary:
@@ -88,7 +68,7 @@ dojo.declare("dojo.store.Memory", null, {
 		}
 		return this.put(object, options);
 	},
-	"delete": function(id){
+	remove: function(id){
 		//	summary:
 		// 		Deletes an object by it's identity
 		// id:
@@ -100,7 +80,7 @@ dojo.declare("dojo.store.Memory", null, {
 		// 		Queries the store for objects.
 		// query:
 		// 		The query to use for retrieving objects from the store		
-		return dojo.store.util.QueryResults(this.queryEngine.execute(query, this.data));
+		return dojo.store.util.QueryResults(this.queryEngine(query, options)(this.data));
 	},
 	setData: function(data){
 		//	summary:

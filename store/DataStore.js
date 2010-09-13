@@ -15,6 +15,17 @@ dojo.declare("dojo.store.DataStore", null, {
 		dojo.mixin(this, options);
 		this.idProperty = this.store.getIdentityAttributes()[0];
 	},
+	_objectConverter: function(callback){
+		var store = this.store;
+		return function(item){
+			var object = {};
+			var attributes = store.getAttributes(item);
+			for(var i = 0; i < attributes.length; i++){
+				object[attributes[i]] = store.getValue(item, attributes[i]);
+			}
+			return callback(returnedObject = object);			
+		}
+	},
 	get: function(id, options){
 		//	summary:
 		// 		Retrieves an object by it's identity. This will trigger a fetchItemByIdentity
@@ -22,17 +33,9 @@ dojo.declare("dojo.store.DataStore", null, {
 		// 		The identity to use to lookup the object
 		var returnedObject, returnedError;		
 		var deferred = new dojo.Deferred();
-		var store = this.store;
-		store.fetchItemByIdentity({
+		this.store.fetchItemByIdentity({
 			identity: id,
-			onItem: function(item){
-				var object = {};
-				var attributes = store.getAttributes(item);
-				for(var i = 0; i < attributes.length; i++){
-					object[attributes[i]] = store.getValue(item, attributes[i]);
-				}
-				deferred.resolve(returnedObject = object);
-			},
+			onItem: this._objectConverter(deferred.resolve),
 			onError: function(error){
 				deferred.reject(returnedError = error);
 			}
@@ -76,7 +79,7 @@ dojo.declare("dojo.store.DataStore", null, {
 			});
 		}
 	},
-	"delete": function(id){
+	remove: function(id){
 		//	summary:
 		// 		Deletes an object by it's identity.
 		// id:
@@ -98,13 +101,14 @@ dojo.declare("dojo.store.DataStore", null, {
 		var returnedObject, returnedError;		
 		var deferred = new dojo.Deferred();
 		deferred.total = new dojo.Deferred();
+		var converter = this._objectConverter(function(object){return object});
 		this.store.fetch(dojo.mixin({
 			query: query,
 			onBegin: function(count){
 				deferred.total.resolve(count);
 			},
 			onComplete: function(results){
-				deferred.resolve(results);
+				deferred.resolve(dojo.map(results, converter));
 			},
 			onError: function(error){
 				deferred.reject(error);

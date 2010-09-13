@@ -19,7 +19,7 @@ dojo.store.Watchable = function(store){
 		if(results && results.forEach){
 			results.watch = function(callback){
 				callbacks.push(function(changed, existingId){
-					if(query){
+					if(queryExecutor){
 						if(existingId){
 							// remove the old one
 							results.forEach(function(object, i){

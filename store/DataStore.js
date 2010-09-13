@@ -23,7 +23,7 @@ dojo.declare("dojo.store.DataStore", null, {
 			for(var i = 0; i < attributes.length; i++){
 				object[attributes[i]] = store.getValue(item, attributes[i]);
 			}
-			return callback(returnedObject = object);			
+			return callback(object);			
 		}
 	},
 	get: function(id, options){
@@ -35,7 +35,9 @@ dojo.declare("dojo.store.DataStore", null, {
 		var deferred = new dojo.Deferred();
 		this.store.fetchItemByIdentity({
 			identity: id,
-			onItem: this._objectConverter(deferred.resolve),
+			onItem: this._objectConverter(function(object){
+				deferred.resolve(returnedObject = object)
+			}),
 			onError: function(error){
 				deferred.reject(returnedError = error);
 			}

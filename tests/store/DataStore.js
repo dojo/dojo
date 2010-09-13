@@ -1,20 +1,20 @@
 dojo.provide("dojo.tests.store.DataStore");
 dojo.require("dojo.store.DataStore");
 dojo.require("dojo.data.ItemFileWriteStore")
-
+var two, four;
 var dataStore = dojo.data.ItemFileWriteStore({data:{
 	items: [
 		{id: 1, name: "one", prime: false},
-		{id: 2, name: "two", even: true, prime: true},
+		two = {id: 2, name: "two", even: true, prime: true},
 		{id: 3, name: "three", prime: true},
-		{id: 4, name: "four", even: true, prime: false},
+		four = {id: 4, name: "four", even: true, prime: false},
 		{id: 5, name: "five", prime: true}
 	],
 	identifier:"id"
 }});
 dataStore.fetchItemByIdentity({identity:null});
 var store = new dojo.store.DataStore({store:dataStore});
-tests.register("tests.data.Memory", 
+tests.register("dojo.tests.store.DataStore", 
 	[
 		function testGet(t){
 			t.is(store.get(1).name, "one");
@@ -25,7 +25,11 @@ tests.register("tests.data.Memory",
 			store.query({prime: true}).then(function(results){
 				t.is(results.length, 3);
 			});
-			store.query({even: true}).then(function(results){
+			store.query({even: true}).map(function(object){
+				for(var i in object){
+					t.is(object[i], (object.id == 2 ? two : four)[i]);
+				}
+			}).then(function(results){
 				t.is(results[1].name, "four");
 			});
 		},

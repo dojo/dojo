@@ -17,15 +17,15 @@ dojo.store.Watchable = function(store){
 		var results = originalQuery.apply(this, arguments);
 		var queryExecutor = store.queryEngine && store.queryEngine(query, options);
 		if(results && results.forEach){
-			results.watch = function(callback){
-				callbacks.push(function(changed, existingId){
+			results.watch = function(listener){
+				var callback = function(changed, existingId){
 					if(queryExecutor){
 						if(existingId){
 							// remove the old one
 							results.forEach(function(object, i){
 								if(store.getIdentity(object) == existingId){
 									results.splice(i, 1);
-									callback(i, existingId);
+									listener(i, existingId);
 								}
 							});
 						}
@@ -36,13 +36,19 @@ dojo.store.Watchable = function(store){
 							// TODO: handle paging correctly
 							results.push(changed);
 							results = queryExecutor(results);
-							callback(results.indexOf(changed), undefined, changed);
+							listener(results.indexOf(changed), undefined, changed);
 						}
 					}else{
 						// we don't have a queryEngine, so we don't provide any index information or updates to result sets 
-						callback(undefined, existingId, changed); 
+						listener(undefined, existingId, changed); 
 					}
-				});
+				};
+				callbacks.push(callback);
+				return {
+					unwatch: function(){
+						callbacks.splice(dojo.indexOf(callbacks, callback), 1);
+					}
+				}
 			};
 		}
 		return results;

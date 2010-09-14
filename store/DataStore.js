@@ -13,7 +13,6 @@ dojo.declare("dojo.store.DataStore", null, {
 		// options.store:
 		// 		This is the Dojo data store 
 		dojo.mixin(this, options);
-		this.idProperty = this.store.getIdentityAttributes()[0];
 	},
 	_objectConverter: function(callback){
 		var store = this.store;
@@ -60,7 +59,7 @@ dojo.declare("dojo.store.DataStore", null, {
 		// 		Additional metadata for storing the data		
 		// options.id:
 		// 		The identity to use for storing the data
-		var id = options && typeof options.id != "undefined" || object[this.idProperty];
+		var id = options && typeof options.id != "undefined" || object[this.idProperty || this.store.getIdentityAttributes()[0]];
 		var store = this.store;
 		if(typeof id == "undefined"){
 			store.newItem(object);

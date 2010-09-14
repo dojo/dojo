@@ -166,7 +166,7 @@ dojo.parser = new function(){
 		//		exist.
 		// args: Object?
 		//		An object used to hold kwArgs for instantiation.
-		//		Supports 'noStart' and inherited.
+		//		See parse.args argument for details.
 		var thelist = [], dp = dojo.parser;
 		mixin = mixin||{};
 		args = args||{};
@@ -234,6 +234,7 @@ dojo.parser = new function(){
 				if(attachEvent){
 					params.dojoAttachEvent = attachEvent;
 				}
+				dojo.mixin(params, mixin);
 			}else{
 				// FIXME: we need something like "deprecateOnce()" to throw dojo.deprecation for something. 
 				// remove this logic in 2.0
@@ -494,7 +495,8 @@ dojo.parser = new function(){
 		}, list);
 
 		// go build the object instances
-		return this.instantiate(list, null, args); // Array
+		var mixin = args && args.template ? {template: true} : null;
+		return this.instantiate(list, mixin, args); // Array
 	};
 }();
 

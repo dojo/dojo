@@ -422,10 +422,7 @@ dojo.global = {
 		//		determine if an object supports a given method
 		//	description:
 		//		useful for longer api chains where you have to test each object in
-		//		the chain. Useful only for object and method detection.
-		//		Not useful for testing generic properties on an object.
-		//		In particular, dojo.exists("foo.bar") when foo.bar = ""
-		//		will return false. Use ("bar" in foo) to test for those cases.
+		//		the chain. Useful for object and method detection.
 		//	name:
 		//		Path to an object, in the form "A.B.C".
 		//	obj:
@@ -444,7 +441,7 @@ dojo.global = {
 		//	|	// search from a particular scope
 		//	|	dojo.exists("bar", foo); // true
 		//	|	dojo.exists("bar.baz", foo); // false
-		return !!d.getObject(name, false, obj); // Boolean
+		return d.getObject(name, false, obj) !== undefined; // Boolean
 	}
 
 	dojo["eval"] = function(/*String*/ scriptFragment){

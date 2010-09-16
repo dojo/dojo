@@ -65,12 +65,23 @@ tests.register("tests._base._loader.bootstrap",
 			name: "exists",
 			setUp: function(){
 				this.foo = {
-					bar: {}
+					bar: {},
+					baz: 0,
+					bam: false,
+					bal: "",
+					ban: null
 				};
 			},
 			runTest: function(t){
 				t.assertTrue(dojo.exists("foo.bar", this));
 				t.assertFalse(dojo.exists("foo.bar"));
+				t.assertTrue(dojo.exists("foo.baz", this));
+				t.assertTrue(dojo.exists("foo.bal", this));
+				t.assertTrue(dojo.exists("foo.ban", this));
+				t.assertTrue(dojo.exists("foo.bam", this));
+				t.assertFalse(dojo.exists("foo.bat", this));
+				t.assertTrue(dojo.exists("a.b", { a:{ b:0 }}));
+				t.assertFalse(dojo.exists("foo.bar.baz.bam.bap", this));
 			}
 		},
 

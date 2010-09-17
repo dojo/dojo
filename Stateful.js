@@ -63,7 +63,7 @@ dojo.declare("dojo.Stateful", null, {
 		}
 		var oldValue = this[name];
 		this[name] = value;
-		if(this._watchCallbacks){
+		if(this._watchCallbacks && value !== oldValue){
 			this._watchCallbacks(name, oldValue, value);
 		}
 		return this;

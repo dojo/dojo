@@ -59,7 +59,7 @@ dojo.declare("dojo.store.DataStore", null, {
 		// 		Additional metadata for storing the data		
 		// options.id:
 		// 		The identity to use for storing the data
-		var id = options && typeof options.id != "undefined" || object[this.idProperty || this.store.getIdentityAttributes()[0]];
+		var id = options && typeof options.id != "undefined" || this.getIdentity(object);
 		var store = this.store;
 		if(typeof id == "undefined"){
 			store.newItem(object);
@@ -92,7 +92,6 @@ dojo.declare("dojo.store.DataStore", null, {
 				store.deleteItem(item);
 			}
 		});
-				
 	},
 	query: function(query, options){
 		//	summary:
@@ -116,5 +115,8 @@ dojo.declare("dojo.store.DataStore", null, {
 			}
 		}, options));
 		return dojo.store.util.QueryResults(deferred);
+	},
+	getIdentity: function(object){
+		return object[this.idProperty || this.store.getIdentityAttributes()[0]];		
 	}
 });

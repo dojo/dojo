@@ -24,40 +24,44 @@ dojo.store.Observable = function(store){
 				if(listeners.push(listener) == 1){
 					// first listener was added, create the query checker and updater
 					queryUpdaters.push(queryUpdater = function(changed, existingId){
-						if(++queryRevision != revision){
-							throw new Error("Query is out of date, you must watch() the query prior to any data modifications");
-						}
-						var removedObject, removedFrom, insertedInto;
-						if(existingId){
-							// remove the old one
-							results.forEach(function(object, i){
-								if(store.getIdentity(object) == existingId){
-									removedObject = object;
-									removedFrom = i;
-									results.splice(i, 1);
+						dojo.when(results, function(resultsArray){
+							var i;
+							if(++queryRevision != revision){
+								throw new Error("Query is out of date, you must watch() the query prior to any data modifications");
+							}
+							var removedObject, removedFrom, insertedInto;
+							if(existingId){
+								// remove the old one
+								for(i = 0, l = resultsArray.length; i < l; i++){
+									var object = resultsArray[i];
+									if(store.getIdentity(object) == existingId){
+										removedObject = object;
+										removedFrom = i;
+										resultsArray.splice(i, 1);
+									}
 								}
-							});
-						}
-						if(queryExecutor){
-							// add the new one
-							if(changed && 
-									// if a matches function exists, use that (probably more efficient)
-									(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){ 
-								// TODO: handle paging correctly
-								results.push(changed);
-								insertedInto = queryExecutor(results).indexOf(changed);
 							}
-						}else if(changed){
-							// we don't have a queryEngine, so we can't provide any information 
-							// about where it was inserted, but we can at least indicate a new object  
-							insertedInto = removedFrom || -1;
-						}
-						if((removedFrom > -1 || insertedInto > -2) && 
-								(includeObjectUpdates || (removedFrom != insertedInto))){
-							for(var i = 0;listener = listeners[i]; i++){
-								listener(changed || removedObject, removedFrom, insertedInto);
+							if(queryExecutor){
+								// add the new one
+								if(changed && 
+										// if a matches function exists, use that (probably more efficient)
+										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){ 
+									// TODO: handle paging correctly
+									resultsArray.push(changed);
+									insertedInto = queryExecutor(resultsArray).indexOf(changed);
+								}
+							}else if(changed){
+								// we don't have a queryEngine, so we can't provide any information 
+								// about where it was inserted, but we can at least indicate a new object  
+								insertedInto = removedFrom || -1;
 							}
-						}
+							if((removedFrom > -1 || insertedInto > -2) && 
+									(includeObjectUpdates || (removedFrom != insertedInto))){
+								for(i = 0;listener = listeners[i]; i++){
+									listener(changed || removedObject, removedFrom, insertedInto);
+								}
+							}
+						});
 					});
 				}
 				return {

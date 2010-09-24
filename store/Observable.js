@@ -38,6 +38,7 @@ dojo.store.Observable = function(store){
 										removedObject = object;
 										removedFrom = i;
 										resultsArray.splice(i, 1);
+										break;
 									}
 								}
 							}
@@ -90,7 +91,7 @@ dojo.store.Observable = function(store){
 				inMethod = true;
 				try{
 					return dojo.when(original.apply(this, arguments), function(results){
-						action(value);
+						action((typeof results == "object" && results) || value);
 						return results;
 					});
 				}finally{

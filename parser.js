@@ -230,7 +230,7 @@ dojo.parser = new function(){
 				if(attachPoint){
 					params.dojoAttachPoint = attachPoint;
 				}
-				var attachEvent = node.getAttribute(_attrData + "attach-Event");
+				var attachEvent = node.getAttribute(_attrData + "attach-event");
 				if(attachEvent){
 					params.dojoAttachEvent = attachEvent;
 				}

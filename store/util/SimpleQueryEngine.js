@@ -38,7 +38,9 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 		}
 		// now we paginate
 		if(options && (options.start || options.count)){
+			var total = results.length;
 			results = results.slice(options.start || 0, (options.start || 0) + (options.count || Infinity));
+			results.total = total;
 		}
 		return results;
 	}

@@ -10,7 +10,7 @@ var store = new dojo.store.Memory({
 		{id: 5, name: "five", prime: true}
 	]
 });
-tests.register("tests.data.Memory", 
+tests.register("dojo.tests.store.Memory", 
 	[
 		function testGet(t){
 			t.is(store.get(1).name, "one");

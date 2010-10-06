@@ -48,7 +48,12 @@ dojo.store.Observable = function(store){
 										// if a matches function exists, use that (probably more efficient)
 										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){ 
 									// TODO: handle paging correctly
-									resultsArray.push(changed);
+									if(removedFrom > -1){
+										// put back in the original slot so it doesn't move unless it needs to (relying on a stable sort below)
+										resultsArray.splice(removedFrom, 0, changed);
+									}else{
+										resultsArray.push(changed);
+									}
 									insertedInto = queryExecutor(resultsArray).indexOf(changed);
 								}
 							}else if(changed){

@@ -47,7 +47,7 @@ dojo.byId = function(id, doc){
 =====*/
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-if(dojo.isIE || dojo.isOpera){
+if(dojo.isIE){
 	dojo.byId = function(id, doc){
 		if(typeof id != "string"){
 			return id;
@@ -75,8 +75,9 @@ if(dojo.isIE || dojo.isOpera){
 }else{
 //>>excludeEnd("webkitMobile");
 	dojo.byId = function(id, doc){
-		// inline'd type check
-		return (typeof id == "string") ? (doc || dojo.doc).getElementById(id) : id; // DomNode
+		// inline'd type check.
+		// be sure to return null per documentation, to match IE branch.
+		return ((typeof id == "string") ? (doc || dojo.doc).getElementById(id) : id) || null; // DomNode
 	};
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 }

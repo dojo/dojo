@@ -193,6 +193,7 @@ dojo.require("dojo._base.lang");
 		this.resolve = this.callback = function(value){
 			// summary:
 			//		Fulfills the Deferred instance successfully with the provide value
+			isError = false;
 			this.fired = 0;
 			this.results = [value, null];
 			complete(value);

@@ -175,6 +175,24 @@ doh.register("tests._base.Deferred",
 			def.resolve(true);
 			t.is(dojo.global.results, undefined, "results is leaking into global");
 			t.is(dojo.global.fired, undefined, "fired is leaking into global");
-		}
-	]
+		},
+        function backAndForthProcess(t) {
+            var def = new dojo.Deferred();
+            var retval = 'fail';
+
+            def.addErrback(function() {
+                return 'ignore error and throw this good string';
+            }).addCallback(function() {
+                throw new Error('error1');
+            }).addErrback(function() {
+                return 'ignore second error and make it good again';
+            }).addCallback(function() {
+                retval = 'succeed';
+            });
+
+            def.errback('');
+
+            t.assertEqual('succeed', retval);
+        }	
+     ]
 );

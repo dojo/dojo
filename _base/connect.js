@@ -15,30 +15,13 @@ dojo._listener = {
 		//   objects
 		// - listener is invoked with current scope (this)
 		return function(){
-			var ap=Array.prototype, c=arguments.callee, ls=c._listeners, t=c.target;
-			// return value comes from original target function
-			var r = t && t.apply(this, arguments);
-			// make local copy of listener array so it is immutable during processing
-			var i, lls;
-			//>>includeStart("connectRhino", kwArgs.profileProperties.hostenvType == "rhino");
-			if(!dojo.isRhino){
-			//>>includeEnd("connectRhino");
-				//>>includeStart("connectBrowser", kwArgs.profileProperties.hostenvType != "rhino");
-				lls = [].concat(ls);
-				//>>includeEnd("connectBrowser");
-			//>>includeStart("connectRhino", kwArgs.profileProperties.hostenvType == "rhino");
-			}else{
-				// FIXME: in Rhino, using concat on a sparse Array results in a dense Array.
-				// IOW, if an array A has elements [0, 2, 4], then under Rhino, "concat [].A"
-				// results in [0, 1, 2, 3, 4], where element 1 and 3 have value 'undefined'
-				// "A.slice(0)" has the same behavior.
-				lls = [];
-				for(i in ls){
-					lls[i] = ls[i];
-				}
-			}
-			//>>includeEnd("connectRhino");
-
+			var ap = Array.prototype, c = arguments.callee, ls = c._listeners, t = c.target,
+				// return value comes from original target function
+				r = t && t.apply(this, arguments),
+				// make local copy of listener array so it is immutable during processing
+				i, lls = [].concat(ls)
+			;
+			
 			// invoke listeners after target function
 			for(i in lls){
 				if(!(i in ap)){
@@ -200,21 +183,21 @@ dojo.connect = function(/*Object|null*/ obj,
 	//	|	dojo.connect("globalEvent", globalHandler); // same
 
 	// normalize arguments
-	var a=arguments, args=[], i=0;
+	var a = arguments, args = [], i = 0;
 	// if a[0] is a String, obj was omitted
 	args.push(dojo.isString(a[0]) ? null : a[i++], a[i++]);
 	// if the arg-after-next is a String or Function, context was NOT omitted
 	var a1 = a[i+1];
-	args.push(dojo.isString(a1)||dojo.isFunction(a1) ? a[i++] : null, a[i++]);
+	args.push(dojo.isString(a1) || dojo.isFunction(a1) ? a[i++] : null, a[i++]);
 	// absorb any additional arguments
-	for(var l=a.length; i<l; i++){	args.push(a[i]); }
+	for(var l = a.length; i < l; i++){ args.push(a[i]); }
 	// do the actual work
 	return dojo._connect.apply(this, args); /*Handle*/
 }
 
 // used by non-browser hostenvs. always overriden by event.js
 dojo._connect = function(obj, event, context, method){
-	var l=dojo._listener, h=l.add(obj, event, dojo.hitch(context, method)); 
+	var l = dojo._listener, h = l.add(obj, event, dojo.hitch(context, method)); 
 	return [obj, event, h, l]; // Handle
 }
 

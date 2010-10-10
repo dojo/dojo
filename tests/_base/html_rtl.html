@@ -22,6 +22,7 @@
 							var d = new doh.Deferred();
 							setTimeout(function(){ // need time to render
 								try{
+									scrollTo(0, 50); // duplicate call to handle timing issues
 									t.is(100, dojo.position('rect100').x, "x pos should be 100 after vertical scroll");
 									t.is(50, dojo.position('rect100').y, "y pos should be 50 after vertical scroll");
 									d.callback(true);

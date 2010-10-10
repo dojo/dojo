@@ -110,11 +110,8 @@ dojo.io.iframe = {
 			}else{
 				// Fun with DOM 0 incompatibilities!
 				var idoc;
-				//WebKit > 521 corresponds with Safari 3, which started with 522 WebKit version.
-				if(dojo.isIE || dojo.isWebKit > 521){
+				if(dojo.isIE || dojo.isWebKit){
 					idoc = iframe.contentWindow.document;
-				}else if(dojo.isSafari){
-					idoc = iframe.document;
 				}else{ //  if(d.isMozilla){
 					idoc = iframe.contentWindow;
 				}

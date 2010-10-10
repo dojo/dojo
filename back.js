@@ -141,13 +141,6 @@ dojo.back = {
 					return;
 				}
 			}
-			
-			if(dojo.isSafari && dojo.isSafari < 3){
-				var hisLen = history.length;
-				if(hisLen > historyCounter) handleForwardButton();
-				else if(hisLen < historyCounter) handleBackButton();
-			  historyCounter = hisLen;
-			}
 		}
 	};
 	

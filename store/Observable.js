@@ -15,9 +15,14 @@ dojo.store.Observable = function(store){
 	}
 	var originalQuery = store.query;
 	store.query = function(query, options){
+		options = options || {};
 		var results = originalQuery.apply(this, arguments);
 		if(results && results.forEach){
-			var queryExecutor = store.queryEngine && store.queryEngine(query, options);
+			var nonPagedOptions = dojo.mixin({}, options);
+			delete nonPagedOptions.start;
+			delete nonPagedOptions.count;
+			
+			var queryExecutor = store.queryEngine && store.queryEngine(query, nonPagedOptions);
 			var queryRevision = revision;
 			var listeners = [], queryUpdater;
 			results.observe = function(listener, includeObjectUpdates){
@@ -25,6 +30,7 @@ dojo.store.Observable = function(store){
 					// first listener was added, create the query checker and updater
 					queryUpdaters.push(queryUpdater = function(changed, existingId){
 						dojo.when(results, function(resultsArray){
+							var atEnd = resultsArray.length != options.count;
 							var i;
 							if(++queryRevision != revision){
 								throw new Error("Query is out of date, you must watch() the query prior to any data modifications");
@@ -47,7 +53,7 @@ dojo.store.Observable = function(store){
 								if(changed && 
 										// if a matches function exists, use that (probably more efficient)
 										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){ 
-									// TODO: handle paging correctly
+
 									if(removedFrom > -1){
 										// put back in the original slot so it doesn't move unless it needs to (relying on a stable sort below)
 										resultsArray.splice(removedFrom, 0, changed);
@@ -55,6 +61,11 @@ dojo.store.Observable = function(store){
 										resultsArray.push(changed);
 									}
 									insertedInto = queryExecutor(resultsArray).indexOf(changed);
+									if((options.start && insertedInto == 0) ||
+										(!atEnd && insertedInto == resultsArray.length -1)){
+										// if it is at the end of the page, assume it goes into the prev or next page
+										insertedInto = -1;
+									}
 								}
 							}else if(changed){
 								// we don't have a queryEngine, so we can't provide any information 

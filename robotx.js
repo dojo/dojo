@@ -7,18 +7,48 @@ dojo.experimental("dojo.robotx");
 // dojo.require this file
 
 (function(){
-// have to wait for test page to load before testing!
-doh.robot._runsemaphore.lock.push("dojo.robotx.lock");
 
-var iframe = document.getElementById('robotapplication');
+var iframe = null;
 
 var groupStarted=dojo.connect(doh, '_groupStarted', function(){
 	dojo.disconnect(groupStarted);
 	iframe.style.visibility="visible";
 });
 
+var attachIframe = function(){
+	dojo.addOnLoad(function(){
+		var emptyStyle = {
+			overflow: dojo.isWebKit? 'hidden' : 'visible',
+			margin: '0px',
+			borderWidth: '0px',
+			height: '100%',
+			width: '100%'
+		};
+		dojo.style(document.documentElement, emptyStyle);
+		dojo.style(document.body, emptyStyle);
+		document.body.appendChild(iframe);
+		var base=document.createElement('base');
+		base.href=iframe.src;
+		document.getElementsByTagName("head")[0].appendChild(base);
+	});
+};
+
+// Prevent race conditions between iframe loading and robot init.
+// If iframe is allowed to load while the robot is typing, sync XHRs can prevent the robot from completing its initialization.
+var robotReady=false;
+var robotFrame=null;
+var _run=doh.robot._run;
+doh.robot._run=function(frame){
+	// Called from robot when the robot completed its initialization.
+	robotReady = true;
+	robotFrame = frame;
+	doh.robot._run=_run;
+	// If initRobot was already called, then attach the iframe.
+	if(iframe.src){ attachIframe(); }
+}
+
 var onIframeLoad=function(){
-	//iframe = document.getElementById('robotapplication');
+	// initial load handler: update the document and start the tests
 	doh.robot._updateDocument();
 	onIframeLoad = null;
 	var scrollRoot = (document.compatMode == 'BackCompat')? document.body : document.documentElement;
@@ -26,7 +56,15 @@ var onIframeLoad=function(){
 	if(consoleHeight){
 		iframe.style.height = (scrollRoot.clientHeight - consoleHeight)+"px";
 	}
-	doh.run();
+	// If dojo is present in the test case, then at least make a best effort to wait for it to load.
+	// The test must handle other race conditions like initial data queries by itself.
+	if(iframe.contentWindow.dojo){
+		iframe.contentWindow.dojo.addOnLoad(function(){
+			doh.robot._run(robotFrame);
+		});
+	}else{
+		doh.robot._run(robotFrame);
+	}
 };
 
 var iframeLoad=function(){
@@ -57,6 +95,9 @@ if(iframe['attachEvent'] !== undefined){
 	dojo.connect(iframe, 'onload', iframeLoad);
 }
 
+
+
+
 dojo.mixin(doh.robot,{
 	_updateDocument: function(){
 		dojo.setContext(iframe.contentWindow, iframe.contentWindow.document);
@@ -75,22 +116,13 @@ dojo.mixin(doh.robot,{
 		// url:
 		//		URL to open. Any of the test's dojo.doc calls (e.g. dojo.byId()), and any dijit.registry calls (e.g. dijit.byId()) will point to elements and widgets inside this application.
 		//
+
 		iframe.src=url;
-		dojo.addOnLoad(function(){
-			var emptyStyle = {
-				overflow: dojo.isWebKit? 'hidden' : 'visible',
-				margin: '0px',
-				borderWidth: '0px',
-				height: '100%',
-				width: '100%'
-			};
-			dojo.style(document.documentElement, emptyStyle);
-			dojo.style(document.body, emptyStyle);
-			document.body.appendChild(iframe);
-			var base=document.createElement('base');
-			base.href=url;
-			document.getElementsByTagName("head")[0].appendChild(base);
-		});
+		// see above note about race conditions
+		if(robotReady){
+			attachIframe();
+			
+		}
 	},
 
 	waitForPageToLoad: function(/*Function*/ submitActions){
@@ -125,5 +157,4 @@ dojo.mixin(doh.robot,{
 	}
 
 });
-
 })();

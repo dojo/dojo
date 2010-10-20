@@ -11,11 +11,7 @@
  *  Finally, dojo.provide/require added.
  */
 
-//This file gets copied to dojo/_base/query.js, so set the provide accordingly.
-if(typeof dojo != "undefined"){
-	dojo.provide("dojo._base.query");
-	dojo.require("dojo._base.NodeList");
-
+var startDojoMappings= function(dojo) {
 	//Start Dojo mappings.
 	dojo.query = function(/*String*/ query, /*String|DOMNode?*/ root, /*Function?*/listCtor){
 		listCtor = listCtor || dojo.NodeList;
@@ -36,16 +32,16 @@ if(typeof dojo != "undefined"){
 		}
 
 		return dojo.Sizzle(query, root, new listCtor());
-	}
+	};
 
 	dojo._filterQueryResult = function(nodeList, simpleFilter){
 		return dojo.Sizzle.filter(simpleFilter, nodeList);
-	}
-}
+	};
+};
 
 //Main Sizzle code follows...
 //ns argument, added for dojo, used at the end of the file.
-;(function(ns){
+var defineSizzle= function(ns){
 
 var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|[^[\]]+)+\]|\\.|[^ >+~,(\[]+)+|[>+~])(\s*,\s*)?/g,
 	done = 0,
@@ -853,6 +849,27 @@ var contains = document.compareDocumentPosition ?  function(a, b){
 
 // EXPOSE
 
-(ns || window).Sizzle = Sizzle;
+ns.Sizzle = Sizzle;
 
-})(typeof dojo == "undefined" ? null : dojo);
+};
+
+if (this["dojo"]) {
+  var defined= 0;
+//>>includeStart("asyncLoader", kwArgs.asynchLoader);
+  defined= 1;
+  define("dojo/_base/query", ["dojo", "dojo/_base/NodeList"], function(dojo) {
+    startDojoMappings(dojo);
+    defineSizzle(dojo);
+  });
+//>>includeEnd("asyncLoader");
+//>>excludeStart("asyncLoader", kwArgs.asynchLoader);
+  if (!defined) {
+    // must be in a built version that stripped out the define above
+  	dojo.provide("dojo._base.query");
+    dojo.require("dojo._base.NodeList");
+    defineSizzle(dojo);
+  } // else must be in a source version (or a build that likes define)
+//>>excludeEnd("asyncLoader");
+} else {
+  defineSizzle(window);
+}

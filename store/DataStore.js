@@ -1,5 +1,4 @@
-dojo.provide("dojo.store.DataStore");
-dojo.require("dojo.store.util.QueryResults");
+define("dojo/store/DataStore", ["dojo", "dojo/store/util/QueryResults"], function(dojo) {
 
 dojo.declare("dojo.store.DataStore", null, {
 	target: "",
@@ -119,4 +118,7 @@ dojo.declare("dojo.store.DataStore", null, {
 	getIdentity: function(object){
 		return object[this.idProperty || this.store.getIdentityAttributes()[0]];		
 	}
+});
+
+return dojo.store.DataStore;
 });

@@ -1,4 +1,5 @@
-dojo.provide("dojo.io.iframe");
+define("dojo/io/iframe", ["dojo"], function(dojo) {
+dojo.getObject("io", true, dojo);
 
 /*=====
 dojo.declare("dojo.io.iframe.__ioArgs", dojo.__IoArgs, {
@@ -81,7 +82,7 @@ dojo.io.iframe = {
 		window[fname] = cframe;
 	
 		with(cframe.style){
-			position = "absolute";
+				position = "absolute";
 			left = top = "1px";
 			height = width = "1px";
 			visibility = "hidden";
@@ -223,7 +224,7 @@ dojo.io.iframe = {
 				dojo.io.iframe._currentDfd = null;
 				dojo.io.iframe._fireNextRequest();
 			}
-		}
+		};
 
 		this._dfdQueue.push(dfd);
 		this._fireNextRequest();
@@ -391,4 +392,7 @@ dojo.io.iframe = {
 
 		ioArgs._finished = true;
 	}
-}
+};
+
+return dojo.io.iframe;
+});

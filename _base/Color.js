@@ -1,6 +1,4 @@
-dojo.provide("dojo._base.Color");
-dojo.require("dojo._base.array");
-dojo.require("dojo._base.lang");
+define("dojo/_base/Color", ["dojo", "dojo/_base/array", "dojo/_base/lang"], function(dojo) {
 
 (function(){
 
@@ -214,3 +212,6 @@ dojo.require("dojo._base.lang");
 		return a && d.colorFromArray(a, obj) || d.colorFromRgb(str, obj) || d.colorFromHex(str, obj);
 	};
 })();
+
+return dojo.Color;
+});

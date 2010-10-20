@@ -1,4 +1,4 @@
-dojo.provide("dojo.Stateful");
+define("dojo/Stateful", ["dojo"], function(dojo) {
 
 dojo.declare("dojo.Stateful", null, {
 	// summary:
@@ -63,7 +63,7 @@ dojo.declare("dojo.Stateful", null, {
 		}
 		var oldValue = this[name];
 		this[name] = value;
-		if(this._watchCallbacks && value !== oldValue){
+		if(this._watchCallbacks){
 			this._watchCallbacks(name, oldValue, value);
 		}
 		return this;
@@ -120,4 +120,7 @@ dojo.declare("dojo.Stateful", null, {
 		};
 	}
 	
+});
+
+return dojo.Stateful;
 });

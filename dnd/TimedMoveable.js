@@ -1,6 +1,4 @@
-dojo.provide("dojo.dnd.TimedMoveable");
-
-dojo.require("dojo.dnd.Moveable");
+define("dojo/dnd/TimedMoveable", ["dojo", "dojo/dnd/Moveable"], function(dojo) {
 
 /*=====
 dojo.declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
@@ -68,3 +66,6 @@ dojo.declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
 		}
 	});
 })();
+
+return dojo.dnd.TimedMoveable;
+});

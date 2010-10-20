@@ -34,6 +34,9 @@
 			djConfig="isDebug: false"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
+			dojo.require("dojo.string");
+			dojo.require("dojo.parser");
+
 			dojo.addOnLoad(function(){
 				var c = dojo.byId("c1");
 				var t = dojo.byId("t");
@@ -458,7 +461,6 @@
 							});
 
 							//template with dojo.string.substitute used.
-							dojo.require("dojo.string");
 							templs.addContent({
 								template: "<p>${name}</p>",
 								name: "baz"
@@ -471,7 +473,6 @@
 							});
 
 							//Try a dojo.declared thing.
-							dojo.require("dojo.parser");
 							dojo.declare("dojo.tests.Mini", null, {
 								constructor: function(args, node){
 									dojo.mixin(this, args);

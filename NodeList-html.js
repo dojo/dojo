@@ -1,5 +1,4 @@
-dojo.provide("dojo.NodeList-html");
-dojo.require("dojo.html");
+define("dojo/NodeList-html", ["dojo", "dojo/html"], function(dojo) {
 
 /*=====
 dojo["NodeList-html"] = {
@@ -35,4 +34,7 @@ dojo.extend(dojo.NodeList, {
 		});
 		return this; // dojo.NodeList
 	}
+});
+
+return dojo.NodeList;
 });

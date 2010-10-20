@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/zh-tw/currency",
+//begin v1.x content
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
 	"BRE_displayName": "巴西克魯賽羅 (1990-1993)", 
@@ -343,3 +345,5 @@
 	"ITL_symbol": "₤", 
 	"ZAR_symbol": "R"
 })
+//end v1.x content
+);

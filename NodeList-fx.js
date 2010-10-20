@@ -1,5 +1,4 @@
-dojo.provide("dojo.NodeList-fx");
-dojo.require("dojo.fx");
+define("dojo/NodeList-fx", ["dojo", "dojo/fx"], function(dojo) {
 
 /*=====
 dojo["NodeList-fx"] = {
@@ -204,4 +203,7 @@ dojo.extend(dojo.NodeList, {
 		}
 		return canim.play(delay||0); // dojo.Animation
 	}
+});
+
+return dojo.NodeList;
 });

@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/he/islamic",
+//begin v1.x content
 ({
 	"dateFormat-medium": "d בMMM yyyy", 
 	"dateFormatItem-MMMEd": "E, d בMMM", 
@@ -113,3 +115,5 @@
 		"שבת"
 	]
 })
+//end v1.x content
+);

@@ -1,4 +1,4 @@
-dojo.provide("dojo.AdapterRegistry");
+define("dojo/AdapterRegistry", ["dojo"], function(dojo) {
 
 dojo.AdapterRegistry = function(/*Boolean?*/ returnWrappers){
 	//	summary:
@@ -31,7 +31,7 @@ dojo.AdapterRegistry = function(/*Boolean?*/ returnWrappers){
 
 	this.pairs = [];
 	this.returnWrappers = returnWrappers || false; // Boolean
-}
+};
 
 dojo.extend(dojo.AdapterRegistry, {
 	register: function(/*String*/ name, /*Function*/ check, /*Function*/ wrap, /*Boolean?*/ directReturn, /*Boolean?*/ override){
@@ -92,4 +92,7 @@ dojo.extend(dojo.AdapterRegistry, {
 		}
 		return false;
 	}
+});
+
+return dojo.AdapterRegistry;
 });

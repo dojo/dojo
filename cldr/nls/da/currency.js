@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/da/currency",
+//begin v1.x content
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
 	AUD_displayName:"Australsk dollar",
@@ -12,3 +14,5 @@
 	USD_symbol:"$"
 })
                  
+//end v1.x content
+);

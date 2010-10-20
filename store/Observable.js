@@ -1,4 +1,4 @@
-dojo.provide("dojo.store.Observable");
+define("dojo/store/Observable", ["dojo"], function(dojo) {
 
 dojo.store.Observable = function(store){
 	//	summary: 
@@ -127,3 +127,6 @@ dojo.store.Observable = function(store){
 
 	return store;
 };
+
+return dojo.store.Observable;
+});

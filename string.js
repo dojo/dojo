@@ -1,4 +1,5 @@
-dojo.provide("dojo.string");
+define("dojo/string", ["dojo"], function(dojo) {
+dojo.getObject("string", true, dojo);
 
 /*=====
 dojo.string = { 
@@ -151,3 +152,6 @@ dojo.string.trim = String.prototype.trim ?
 		}
 		return str;
 	};
+
+return dojo.string;
+});

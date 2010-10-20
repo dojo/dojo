@@ -136,14 +136,25 @@ tests.register("tests.number",
 			// load resources here for specific locales:
 
 			name: "number",
-			setUp: function(){
+			runTest: function(t){
 				var partLocaleList = ["en-us", "fr-fr", "de-de"];
 				tests.number.locale = "en-us";
-				for(var i = 0 ; i < partLocaleList.length; i ++){
-					dojo.requireLocalization("dojo.cldr","number",partLocaleList[i]);
-				}
-			},
-			runTest: function(t){
+        if (!dojo.simulatedLoading) { //tests for the asynchronous loader machinery
+            var 
+              def = new doh.Deferred(),
+              deps= [];
+            dojo.forEach(partLocaleList, function(locale) {
+              deps.push(dojo.getL10nName("dojo/cldr", "number", locale));
+            });
+            define(deps, function() {
+							def.callback(true);
+            });
+            return def;
+        } else { // tests for the v1.x loader/i18n machinery
+  				for(var i = 0 ; i < partLocaleList.length; i ++){
+	  				dojo.requireLocalization("dojo.cldr","number",partLocaleList[i]);
+		  		}
+        }
 			}
 		},
 		{

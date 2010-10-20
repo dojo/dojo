@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/buddhist", { root: 
+//begin v1.x content
 ({
 	"months-format-narrow": [
 		"1", 
@@ -234,3 +236,7 @@
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a"
 })
+//end v1.x content
+,
+"th":1
+});

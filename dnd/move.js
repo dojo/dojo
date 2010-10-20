@@ -1,7 +1,4 @@
-dojo.provide("dojo.dnd.move");
-
-dojo.require("dojo.dnd.Mover");
-dojo.require("dojo.dnd.Moveable");
+define("dojo/dnd/move", ["dojo", "dojo/dnd/Mover", "dojo/dnd/Moveable"], function(dojo) {
 
 /*=====
 dojo.declare("dojo.dnd.move.__constrainedMoveableArgs", [dojo.dnd.__MoveableArgs], {
@@ -241,3 +238,6 @@ dojo.dnd.move.parentConstrainedMover = function(area, within){
 dojo.dnd.constrainedMover = dojo.dnd.move.constrainedMover;
 dojo.dnd.boxConstrainedMover = dojo.dnd.move.boxConstrainedMover;
 dojo.dnd.parentConstrainedMover = dojo.dnd.move.parentConstrainedMover;
+
+return dojo.dnd.move;
+});

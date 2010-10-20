@@ -1,3 +1,5 @@
+define("i18n!dojo/nls/ja/colors",
+//begin v1.x content
 ({
 // local representation of all CSS3 named colors, companion to dojo.colors.  To be used where descriptive information
 // is required for each color, such as a palette widget, and not for specifying color programatically.
@@ -152,3 +154,5 @@ whitesmoke: "ホワイト・スモーク",
 yellow: "黄",
 yellowgreen: "黄緑"
 })
+//end v1.x content
+);

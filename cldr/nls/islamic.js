@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/islamic", { root: 
+//begin v1.x content
 ({
 	"months-format-narrow": [
 		"1", 
@@ -234,3 +236,8 @@
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a"
 })
+//end v1.x content
+,
+"he":1,
+"ar":1
+});

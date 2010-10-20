@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/ko/currency",
+//begin v1.x content
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
 	AUD_displayName:"호주 달러",
@@ -11,3 +13,5 @@
 	USD_displayName:"미국 달러"
 })
                  
+//end v1.x content
+);

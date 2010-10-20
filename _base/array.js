@@ -1,5 +1,4 @@
-dojo.require("dojo._base.lang");
-dojo.provide("dojo._base.array");
+define("dojo/_base/array", ["dojo", "dojo/_base/lang"], function(dojo) {
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
@@ -267,3 +266,6 @@ dojo.provide("dojo._base.array");
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 */
 //>>excludeEnd("webkitMobile");
+
+return dojo;
+});

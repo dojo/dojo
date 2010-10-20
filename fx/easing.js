@@ -1,4 +1,5 @@
-dojo.provide("dojo.fx.easing");
+define("dojo/fx/easing", ["dojo"], function(dojo) {
+dojo.getObject("fx.easing", true, dojo);
 
 dojo.fx.easing = {
 	// summary: 
@@ -273,3 +274,6 @@ dojo.fx.easing = {
 		return (dojo.fx.easing.bounceOut(n * 2 - 1) / 2) + 0.5; // Decimal
 	}
 };
+
+return dojo.fx.easing;
+});

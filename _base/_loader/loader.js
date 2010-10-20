@@ -42,7 +42,7 @@
 		//		This variable is referenced by packages outside of bootstrap:
 		//		FloatingPane.js and undo/browser.js
 		_postLoad: false,
-		
+
 		//Egad! Lots of test files push on this directly instead of using dojo.addOnLoad.
 		_loaders: [],
 		_unloaders: [],
@@ -103,7 +103,8 @@
 			d._loadedUrls[uri] = true;
 			d._loadedUrls.push(uri);
 			if(cb){
-				contents = '('+contents+')';
+				//conditional to support script-inject i18n bundle format
+				contents = /^define\("i18n!/.test(contents) ? contents : '('+contents+')';
 			}else{
 				//Only do the scoping if no callback. If a callback is specified,
 				//it is most likely the i18n bundle stuff.
@@ -358,7 +359,7 @@
 		// 		modules, be sure to add the code that depends on the modules in a dojo.addOnLoad()
 		// 		callback. dojo.addOnLoad waits for all outstanding modules to finish loading before
 		// 		executing. 
-		//
+		// 
 		// 		This type of syntax works with both xdomain and normal loaders, so it is good
 		// 		practice to always use this idiom for on-the-fly code loading and in HTML script
 		// 		blocks. If at some point you change loaders and where the code is loaded from,
@@ -392,7 +393,7 @@
 		// 
 		//	example:
 		//		For example, to import all symbols into a local block, you might write:
-		//
+		//	
 		//		|	with (dojo.require("A.B")) {
 		//		|		...
 		//		|	}
@@ -802,6 +803,36 @@
 
 		return new d._Url(loc, url); // dojo._Url
 	}
+
+  //addition to support script-inject module format
+  this.define = function(
+      name,
+      deps,
+      def
+    ) {
+      if (/^i18n!/.test(name)) {
+        //no deps for i18n! plugin; therefore deps are def
+        return deps.root || deps;
+      }
+      dojo.provide(name.replace(/\//g, "."));
+      for (var args= [], depName, i= 0; i<deps.length; i++) {
+        depName= deps[i].replace(/\//g, ".");
+        // look for i18n! followed by anything followed by "/nls/" followed by anything without "/" followed by eos.
+        var match= depName.match(/^i18n\!(.+)\.nls\.([^\.]+)$/);
+        if (match) {
+          //fool the build system
+          dojo["requireLocalization"](match[1], match[2]);
+        } else {
+          if (depName!="dojo" && depName!="dijit" && depName!="dojox" && !dojo._loadedModules[depName]) {
+              dojo.require(depName);
+          }
+          args.push(dojo.getObject(depName));
+        }
+      }
+      return def.apply(null, args);
+    };
+  dojo.simulatedLoading = 1;
+
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
 //>>excludeEnd("webkitMobile");

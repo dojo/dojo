@@ -1,5 +1,4 @@
-dojo.provide("dojo.data.api.Read");
-dojo.require("dojo.data.api.Request");
+define("dojo/data/api/Read", ["dojo", "dojo/data/api/Request"], function(dojo) {
 
 dojo.declare("dojo.data.api.Read", null, {
 	//	summary:
@@ -499,4 +498,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		throw new Error('Unimplemented API: dojo.data.api.Read.getLabelAttributes');
 		return null;
 	}
+});
+
+return dojo.data.api.Read;
 });

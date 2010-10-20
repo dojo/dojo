@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/th/buddhist",
+//begin v1.x content
 ({
 	"dateFormatItem-yM": "M/yyyy", 
 	"dateFormatItem-yQ": "Q yyyy", 
@@ -112,3 +114,5 @@
 		"พ.ศ."
 	]
 })
+//end v1.x content
+);

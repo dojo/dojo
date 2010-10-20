@@ -1,4 +1,5 @@
-dojo.provide("dojo.date");
+define("dojo/date", ["dojo"], function(dojo) {
+dojo.getObject("date", true, dojo);
 
 /*=====
 dojo.date = {
@@ -13,7 +14,7 @@ dojo.date.getDaysInMonth = function(/*Date*/dateObject){
 	var days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	if(month == 1 && dojo.date.isLeapYear(dateObject)){ return 29; } // Number
 	return days[month]; // Number
-}
+};
 
 dojo.date.isLeapYear = function(/*Date*/dateObject){
 	//	summary:
@@ -27,7 +28,7 @@ dojo.date.isLeapYear = function(/*Date*/dateObject){
 
 	var year = dateObject.getFullYear();
 	return !(year%400) || (!(year%4) && !!(year%100)); // Boolean
-}
+};
 
 // FIXME: This is not localized
 dojo.date.getTimezoneName = function(/*Date*/dateObject){
@@ -72,7 +73,7 @@ dojo.date.getTimezoneName = function(/*Date*/dateObject){
 
 	// Make sure it doesn't somehow end up return AM or PM
 	return (tz == 'AM' || tz == 'PM') ? '' : tz; // String
-}
+};
 
 // Utility methods to do arithmetic calculations with Dates
 
@@ -336,3 +337,6 @@ dojo.date.difference = function(/*Date*/date1, /*Date?*/date2, /*String?*/interv
 	// Round for fractional values and DST leaps
 	return Math.round(delta); // Number (integer)
 };
+
+return dojo.date;
+});

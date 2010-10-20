@@ -1,4 +1,4 @@
-dojo.provide("dojo.fx.Toggler");
+define("dojo/fx/Toggler", ["dojo"], function(dojo) {
 
 dojo.declare("dojo.fx.Toggler", null, {
 	// summary:
@@ -93,4 +93,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 		//		Ammount of time to stall playing the hide animation
 		return this.hideAnim.play(delay || 0);
 	}
+});
+
+return dojo.fx.Toggler;
 });

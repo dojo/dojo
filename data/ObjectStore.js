@@ -1,4 +1,4 @@
-dojo.provide("dojo.data.ObjectStore");
+define("dojo/data/ObjectStore", ["dojo"], function(dojo) {
 
 
 
@@ -448,3 +448,6 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		onDelete: 	function(){}
 	}
 );
+
+return dojo.data.ObjectStore;
+});

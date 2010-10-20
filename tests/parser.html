@@ -9,8 +9,7 @@
 			src="../dojo.js"
 			data-dojo-config="isDebug: true, parseOnLoad: true"></script>
 		<script type="text/javascript">
-			dojo.require("dojo.parser");
-			dojo.require("doh.runner");
+      define("dojo/tests/parser/script", ["dojo", "dojo/parser", "doh/runner"], function(dojo) {
 
 			dojo.declare("tests.parser.Class1", null, {
 				constructor: function(args, node){
@@ -278,7 +277,7 @@
 							
 							dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
 							dojo.parser.parse({ noStart:true, rootNode:"parsertest" });
-							
+			  				
 							t.f(started);
 						},
 						
@@ -382,6 +381,7 @@
 				);
 				doh.run();
 			})
+      });
 		</script>
 	</head>
 	<body>
@@ -452,7 +452,7 @@
 				<!-- and these contained widgets should get instantiated -->
 				<div dojoType="tests.parser.Class1" jsId="contained1"></div>
 				<div>
-					<div dojoType="tests.parser.Class1" jsId="contained2"></div>
+					<div dojoType="tests.parser.Class1" jsId="contained2"></div>			
 				</div>
 			</div>
 		</div>
@@ -467,7 +467,7 @@
 				<!-- but these contained widgets should *not* get instantiated -->
 				<div dojoType="tests.parser.Class1" jsId="contained3"></div>
 				<div>
-					<div dojoType="tests.parser.Class1" jsId="contained4"></div>
+					<div dojoType="tests.parser.Class1" jsId="contained4"></div>			
 				</div>
 			</div>
 		</div>

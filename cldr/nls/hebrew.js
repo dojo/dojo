@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/hebrew", { root: 
+//begin v1.x content
 ({
 	"months-format-narrow": [
 		"Tishri", 
@@ -246,3 +248,8 @@
 	"dateFormatItem-hms": "h:mm:ss a", 
 	"months-format-wide-leap": "Adar II"
 })
+//end v1.x content
+,
+"he":1,
+"ar":1
+});

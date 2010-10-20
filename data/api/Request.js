@@ -1,4 +1,4 @@
-dojo.provide("dojo.data.api.Request");
+define("dojo/data/api/Request", ["dojo"], function(dojo) {
 
 dojo.declare("dojo.data.api.Request", null, {
 	//	summary:
@@ -25,4 +25,7 @@ dojo.declare("dojo.data.api.Request", null, {
 		//		please see dojo.data.api.Read.fetch().
 		throw new Error('Unimplemented API: dojo.data.api.Request.abort');
 	}
+});
+
+return dojo.data.api.Request;
 });

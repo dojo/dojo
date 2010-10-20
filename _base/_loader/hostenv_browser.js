@@ -479,8 +479,10 @@ if(dojo.config.isDebug){
 }
 
 if(dojo.config.debugAtAllCosts){
-	dojo.config.useXDomain = true;
-	dojo.require("dojo._base._loader.loader_xd");
+	// this breaks the new AMD based module loader. The XDomain won't be necessary
+	// anyway if you switch to the asynchronous loader
+	//dojo.config.useXDomain = true;
+	//dojo.require("dojo._base._loader.loader_xd");
 	dojo.require("dojo._base._loader.loader_debug");
 	dojo.require("dojo.i18n");
 }

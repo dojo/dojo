@@ -1,8 +1,5 @@
-dojo.provide("tests.data");
-//Squelch any json comment messages for now, since the UT allows for both.
-dojo.config.usePlainJson = true;
-dojo.require("tests.data.utils");
-dojo.require("tests.data.ItemFileReadStore");
-dojo.require("tests.data.ItemFileWriteStore");
+define("tests/data", ["dojo", "tests/data/utils", "tests/data/ItemFileReadStore", "tests/data/ItemFileWriteStore"], function(dojo) {
+  dojo.config.usePlainJson = true;
+});
 
 

@@ -1,5 +1,4 @@
-dojo.provide("dojo._base.Deferred");
-dojo.require("dojo._base.lang");
+define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
 
 (function(){
 	var mutator = function(){};		
@@ -283,7 +282,7 @@ dojo.require("dojo._base.lang");
 					deferred.reject(error);
 				}
 			}
-		}
+		};
 		freeze(promise);
 	};
 	dojo.extend(dojo.Deferred, {
@@ -330,3 +329,6 @@ dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback
 	}
 	return callback(promiseOrValue);
 };
+
+return dojo.Deferred;
+});

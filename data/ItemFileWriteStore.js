@@ -1,5 +1,4 @@
-dojo.provide("dojo.data.ItemFileWriteStore");
-dojo.require("dojo.data.ItemFileReadStore");
+define("dojo/data/ItemFileWriteStore", ["dojo", "dojo/data/ItemFileReadStore"], function(dojo) {
 
 dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 	constructor: function(/* object */ keywordParameters){
@@ -803,4 +802,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			 }
 		 }
 	}
+});
+
+return dojo.data.ItemFileWriteStore;
 });

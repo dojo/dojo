@@ -1,10 +1,5 @@
-dojo.provide("dojo.number");
-
-dojo.require("dojo.i18n");
-dojo.requireLocalization("dojo.cldr", "number");
-dojo.require("dojo.string");
-dojo.require("dojo.regexp");
-
+define("dojo/number", ["dojo", "dojo/i18n", "i18n!dojo/cldr/nls/number", "dojo/string", "dojo/regexp"], function(dojo) {
+dojo.getObject("number", true, dojo);
 
 /*=====
 dojo.number = {
@@ -109,7 +104,7 @@ dojo.number._applyPattern = function(/*Number*/value, /*String*/pattern, /*dojo.
 	if(options.fractional === false){ options.places = 0; }
 	return pattern.replace(numberPatternRE,
 		dojo.number._formatAbsolute(value, numberPattern[0], {decimal: decimal, group: group, places: options.places, round: options.round}));
-}
+};
 
 dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/increment){
 	//	summary:
@@ -135,7 +130,7 @@ dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/incr
 	//		10.75
 	var factor = 10 / (increment || 10);
 	return (factor * +value).toFixed(places) / factor; // Number
-}
+};
 
 if((0.9).toFixed() == 0){
 	// (isIE) toFixed() bug workaround: Rounding fails on IE when most significant digit
@@ -148,7 +143,7 @@ if((0.9).toFixed() == 0){
 				d = 0;
 			}
 			return round(v, p, m) + (v > 0 ? d : -d);
-		}
+		};
 	})();
 }
 
@@ -286,7 +281,7 @@ dojo.number.regexp = function(/*dojo.number.__RegexpOptions?*/options){
 	//		Returns regular expression with positive and negative match, group
 	//		and decimal separators
 	return dojo.number._parseInfo(options).regexp; // String
-}
+};
 
 dojo.number._parseInfo = function(/*Object?*/options){
 	options = options || {};
@@ -374,7 +369,7 @@ dojo.number._parseInfo = function(/*Object?*/options){
 
 	// normalize whitespace and return
 	return {regexp: re.replace(/[\xa0 ]/g, "[\\s\\xa0]"), group: group, decimal: decimal, factor: factor}; // Object
-}
+};
 
 /*=====
 dojo.number.__ParseOptions = function(){
@@ -570,4 +565,7 @@ dojo.number._integerRegexp = function(/*dojo.number.__IntegerRegexpFlags?*/flags
 	);
 
 	return signRE + numberRE; // String
-}
+};
+
+return dojo.number;
+});

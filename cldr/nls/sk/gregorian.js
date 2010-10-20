@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/sk/gregorian",
+//begin v1.x content
 ({
 	"field-dayperiod": "Časť dňa", 
 	"dayPeriods-format-wide-pm": "popoludní", 
@@ -219,3 +221,5 @@
 		"n.l."
 	]
 })
+//end v1.x content
+);

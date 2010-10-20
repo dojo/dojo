@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/pt-pt/gregorian",
+//begin v1.x content
 ({
 	"quarters-standAlone-wide": [
 		"1.º trimestre", 
@@ -130,3 +132,5 @@
 		"Sábado"
 	]
 })
+//end v1.x content
+);

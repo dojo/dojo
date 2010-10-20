@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/el/gregorian",
+//begin v1.x content
 ({
 	"months-format-narrow": [
 		"Ι", 
@@ -236,3 +238,5 @@
 	"dateFormatItem-mmss": "mm:ss", 
 	"dateFormatItem-yyyy": "y"
 })
+//end v1.x content
+);

@@ -1,6 +1,4 @@
-dojo.provide("dojo.dnd.Moveable");
-
-dojo.require("dojo.dnd.Mover");
+define("dojo/dnd/Moveable", ["dojo", "dojo/dnd/Mover"], function(dojo) {
 
 /*=====
 dojo.declare("dojo.dnd.__MoveableArgs", [], {
@@ -164,4 +162,7 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		
 		// default implementation does nothing
 	}
+});
+
+return dojo.dnd.Moveable;
 });

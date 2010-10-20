@@ -1,5 +1,4 @@
-dojo.provide("dojo.data.api.Identity");
-dojo.require("dojo.data.api.Read");
+define("dojo/data/api/Identity", ["dojo", "dojo/data/api/Read"], function(dojo) {
 
 dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 	//	summary:
@@ -100,4 +99,7 @@ dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 			throw new Error('Unimplemented API: dojo.data.api.Identity.fetchItemByIdentity');
 		}
 	}
+});
+
+return dojo.data.api.Identity;
 });

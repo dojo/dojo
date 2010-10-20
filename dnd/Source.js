@@ -1,7 +1,4 @@
-dojo.provide("dojo.dnd.Source");
-
-dojo.require("dojo.dnd.Selector");
-dojo.require("dojo.dnd.Manager");
+define("dojo/dnd/Source", ["dojo", "dojo/dnd/Selector", "dojo/dnd/Manager"], function(dojo) {
 
 /*
 	Container property:
@@ -535,4 +532,7 @@ dojo.declare("dojo.dnd.AutoSource", dojo.dnd.Source, {
 		params._skipStartup = true;
 		return new dojo.dnd.AutoSource(node, params);
 	}
+});
+
+return dojo.dnd.Source;
 });

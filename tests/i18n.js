@@ -1,3 +1,54 @@
+if (!dojo.simulatedLoading) { //tests for the asynchronous loader machinery
+
+// notice the module name is more precise with async tests; to wit, "dojo/tests/ compared to "tests"
+// "tests" could be used, but the accompanying change must be made in each of the i18n resources in
+// dojo/tests/nls.
+
+  define(["dojo", "plugin/i18n"], function(dojo) {
+    var
+      getTest = function(value, locale){
+        return function(){
+          var def = new doh.Deferred();
+          define([dojo.getL10nName("dojo/tests", "salutations", locale)], function(bundle) {
+            doh.assertEqual(value, dojo.getL10n("dojo/tests", "salutations", locale).hello);
+ 					  def.callback(true);
+          });
+          return def;
+        };
+      },
+
+      getFixture = function(locale, value){
+        return {
+          name: "salutations-"+locale,
+          timeout: 2000,
+          runTest: getTest(value, locale)
+        };
+      },
+
+      testSet = [
+        // Locale which overrides root translation
+        getFixture("de", "Hallo"),
+        // Locale which does not override root translation
+        getFixture("en", "Hello"),
+        // Locale which overrides its parent
+        getFixture("en-au", "G'day"),
+        // Locale which does not override its parent
+        getFixture("en-us", "Hello"),
+        // Locale which overrides its parent
+        getFixture("en-us-texas", "Howdy"),
+        // 3rd level variant which overrides its parent
+        getFixture("en-us-new_york", "Hello"),
+        // Locale which overrides its grandparent
+        getFixture("en-us-new_york-brooklyn", "Yo"),
+        // Locale which does not have any translation available
+        getFixture("xx", "Hello"),
+        // A double-byte string.  Everything should be read in as UTF-8 and treated as unicode within Javascript.
+        getFixture("zh-cn", "\u4f60\u597d")
+      ];
+    tests.register("tests.i18n", testSet);
+  });
+} else { // tests for the v1.x loader/i18n machinery
+
 dojo.provide("tests.i18n");
 
 dojo.require("dojo.i18n");
@@ -82,3 +133,5 @@ dojo.require("dojo.i18n");
 	};
 	tests.register("tests.i18n", testSet);
 })();
+
+}

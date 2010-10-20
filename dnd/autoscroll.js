@@ -1,6 +1,5 @@
-dojo.provide("dojo.dnd.autoscroll");
-
-dojo.require("dojo.window");
+define("dojo/dnd/autoscroll", ["dojo", "dojo/window"], function(dojo) {
+dojo.getObject("dnd", true, dojo);
 
 dojo.dnd.getViewport = dojo.window.getBox;
 
@@ -88,3 +87,5 @@ dojo.dnd.autoScrollNodes = function(e){
 	}
 	dojo.dnd.autoScroll(e);
 };
+
+});

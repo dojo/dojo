@@ -1,4 +1,5 @@
-dojo.provide("dojo.window");
+define("dojo/window", ["dojo"], function(dojo) {
+dojo.getObject("window", true, dojo);
 
 dojo.window.getBox = function(){
 	// summary:
@@ -130,3 +131,6 @@ dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 		node.scrollIntoView(false);
 	}
 };
+
+return dojo.window;
+});

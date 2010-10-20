@@ -1,4 +1,5 @@
-dojo.provide("dojo.store.util.SimpleQueryEngine");
+define("dojo/store/util/SimpleQueryEngine", ["dojo"], function(dojo) {
+dojo.getObject("store.util", true, dojo);
 
 dojo.store.util.SimpleQueryEngine = function(query, options){
 	// summary:
@@ -47,3 +48,6 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 	execute.matches = query;
 	return execute;
 };
+
+return dojo.store.util.SimpleQueryEngine;
+});

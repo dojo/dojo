@@ -12,6 +12,7 @@
 		<script type="text/javascript" src="../../../util/doh/runner.js"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
+			dojo.require("dojo.io.iframe");
 
 			function createDocument(xml){
 				var fauxXhr = { responseText: xml };
@@ -191,7 +192,6 @@
 
 							name: "crossDocumentQuery",
 							setUp: function(){
-								dojo.require("dojo.io.iframe");
 								this.t3 = window.frames["t3"];
 								this.doc = dojo.io.iframe.doc(t3);
 								this.doc.open();

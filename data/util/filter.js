@@ -1,4 +1,5 @@
-dojo.provide("dojo.data.util.filter");
+define("dojo/data/util/filter", ["dojo"], function(dojo) {
+dojo.getObject("data.util.filter", true, dojo);
 
 dojo.data.util.filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/ ignoreCase){
 	//	summary:  
@@ -63,3 +64,6 @@ dojo.data.util.filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/
 	}
 	
 };
+
+return dojo.data.util.filter;
+});

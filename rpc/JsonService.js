@@ -1,5 +1,4 @@
-dojo.provide("dojo.rpc.JsonService");
-dojo.require("dojo.rpc.RpcService");
+define("dojo/rpc/JsonService", ["dojo", "dojo/rpc/RpcService"], function(dojo) {
 
 dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 		bustCache: false,
@@ -77,3 +76,6 @@ dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 		}
 	}
 );
+
+return dojo.rpc.JsonService;
+});

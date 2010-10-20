@@ -1,8 +1,10 @@
-dojo.provide("tests.data.readOnlyItemFileTestTemplates");
-dojo.require("dojo.data.api.Read");
-dojo.require("dojo.data.api.Identity");
-dojo.require("dojo.date");
-dojo.require("dojo.date.stamp");
+define("tests/data/readOnlyItemFileTestTemplates", [
+  "dojo/data/api/Read",
+  "dojo/data/api/Identity",
+  "dojo/date",
+  "dojo/date/stamp"], function() {
+
+dojo.getObject("data.readOnlyItemFileTestTemplates", true, tests);
 
 dojo.declare("tests.data.Wrapper", null, {
 	//	summary:
@@ -3185,3 +3187,4 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 	}
 ];
 
+});

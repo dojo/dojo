@@ -1,5 +1,5 @@
-dojo.provide("dojo.fx");
-dojo.require("dojo.fx.Toggler"); // FIXME: remove this back-compat require in 2.0 
+define("dojo/fx", ["dojo", "dojo/fx/Toggler"], function(dojo) {
+
 /*=====
 dojo.fx = {
 	// summary: Effects library on top of Base animations
@@ -300,7 +300,7 @@ dojo.fx = {
 		});
 
 		return anim; // dojo.Animation
-	}
+	};
 
 	dojo.fx.wipeOut = function(/*Object*/ args){
 		// summary:
@@ -339,7 +339,7 @@ dojo.fx = {
 		});
 
 		return anim; // dojo.Animation
-	}
+	};
 
 	dojo.fx.slideTo = function(/*Object*/ args){
 		// summary:
@@ -388,6 +388,9 @@ dojo.fx = {
 		d.connect(anim, "beforeBegin", anim, init);
 
 		return anim; // dojo.Animation
-	}
+	};
 
 })();
+
+return dojo.fx;
+});

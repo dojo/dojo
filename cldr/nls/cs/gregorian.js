@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/cs/gregorian",
+//begin v1.x content
 ({
 	"dayPeriods-format-wide-pm": "odp.", 
 	"eraNames": [
@@ -192,3 +194,5 @@
 		"po Kr."
 	]
 })
+//end v1.x content
+);

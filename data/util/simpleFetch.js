@@ -1,5 +1,5 @@
-dojo.provide("dojo.data.util.simpleFetch");
-dojo.require("dojo.data.util.sorter");
+define("dojo/data/util/simpleFetch", ["dojo", "dojo/data/util/sorter"], function(dojo) {
+dojo.getObject("data.util.simpleFetch", true, dojo);
 
 dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 	//	summary:
@@ -84,3 +84,6 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 	this._fetchItems(request, _fetchHandler, _errorHandler);
 	return request;	// Object
 };
+
+return dojo.data.util.simpleFetch;
+});

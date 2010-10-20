@@ -1,5 +1,4 @@
-dojo.provide("dojo.NodeList-data");
-(function(d){
+define("dojo/NodeList-data", ["dojo"], function(d) {
 	
 /*=====
 	dojo.NodeList.prototype.data = function(key, value){
@@ -164,4 +163,4 @@ dojo.provide("dojo.NodeList-data");
 //		return r; // dojo.NodeList|Array|SingleItem
 //	};
 	
-})(dojo);
+});

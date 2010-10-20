@@ -1,7 +1,4 @@
-dojo.provide("dojo.dnd.Mover");
-
-dojo.require("dojo.dnd.common");
-dojo.require("dojo.dnd.autoscroll");
+define("dojo/dnd/Mover", ["dojo", "dojo/dnd/common", "dojo/dnd/autoscroll"], function(dojo) {
 
 dojo.declare("dojo.dnd.Mover", null, {
 	constructor: function(node, e, host){
@@ -103,4 +100,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		// destroy objects
 		this.events = this.node = this.host = null;
 	}
+});
+
+return dojo.dnd.Mover;
 });

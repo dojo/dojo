@@ -1,8 +1,4 @@
-dojo.provide("dojo.data.ItemFileReadStore");
-
-dojo.require("dojo.data.util.filter");
-dojo.require("dojo.data.util.simpleFetch");
-dojo.require("dojo.date.stamp");
+define("dojo/data/ItemFileReadStore", ["dojo", "dojo/data/util/filter", "dojo/data/util/simpleFetch", "dojo/date/stamp"], function(dojo) {
 
 dojo.declare("dojo.data.ItemFileReadStore", null,{
 	//	summary:
@@ -937,3 +933,6 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 });
 //Mix in the simple fetch implementation to this class.
 dojo.extend(dojo.data.ItemFileReadStore,dojo.data.util.simpleFetch);
+
+return dojo.data.ItemFileReadStore; 
+});

@@ -1,4 +1,5 @@
-dojo.provide("dojo.store.util.QueryResults");
+define("dojo/store/util/QueryResults", ["dojo"], function(dojo) {
+dojo.getObject("store.util", true, dojo);
 
 dojo.store.util.QueryResults = function(results){
 	//	summary:
@@ -24,3 +25,6 @@ dojo.store.util.QueryResults = function(results){
 	}
 	return results;
 };
+
+return dojo.store.util.QueryResults;
+});

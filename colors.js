@@ -1,4 +1,5 @@
-dojo.provide("dojo.colors");
+define("dojo/colors", ["dojo"], function(dojo) {
+dojo.getObject("colors", true, dojo);
 
 //TODO: this module appears to break naming conventions
 
@@ -222,4 +223,7 @@ dojo.mixin(dojo.Color.named, {
 	wheat:	[245,222,179],
 	whitesmoke:	[245,245,245],
 	yellowgreen:	[154,205,50]
+});
+
+return dojo.colors;
 });

@@ -1,12 +1,13 @@
-dojo.provide("tests.data.ItemFileWriteStore");
-dojo.require("tests.data.readOnlyItemFileTestTemplates");
+define("tests/data/ItemFileWriteStore", [
+  "dojo",
+  "tests/data/readOnlyItemFileTestTemplates",
+  "dojo/data/ItemFileWriteStore",
+  "dojo/data/api/Read",
+  "dojo/data/api/Identity",
+  "dojo/data/api/Write",
+  "dojo/data/api/Notification"], function(dojo) {
 
-dojo.require("dojo.data.ItemFileWriteStore");
-dojo.require("dojo.data.api.Read");
-dojo.require("dojo.data.api.Identity");
-dojo.require("dojo.data.api.Write");
-dojo.require("dojo.data.api.Notification");
-
+dojo.getObject("data.ItemFileWriteStore", true, tests);
 
 // First, make sure ItemFileWriteStore can still pass all the same unit tests 
 // that we use for its superclass, ItemFileReadStore:
@@ -1584,3 +1585,4 @@ doh.register("tests.data.ItemFileWriteStore",
 );
 
 
+});

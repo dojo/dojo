@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/sl/gregorian",
+//begin v1.x content
 ({
 	"field-dayperiod": "Čas dneva", 
 	"dayPeriods-format-wide-pm": "pop.", 
@@ -207,3 +209,5 @@
 		"po Kr."
 	]
 })
+//end v1.x content
+);

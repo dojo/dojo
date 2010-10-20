@@ -1,4 +1,5 @@
-dojo.provide("dojo.hash");
+define("dojo/hash", ["dojo"], function(dojo) {
+
 //TODOC: where does this go?
 // summary:
 //		Methods for monitoring and updating the hash in the browser URL.
@@ -10,7 +11,6 @@ dojo.provide("dojo.hash");
 //			// do something based on the hash value.
 // 		}
 
-(function(){
 	dojo.hash = function(/* String? */ hash, /* Boolean? */ replace){
 		//	summary:
 		//		Gets or sets the hash string.
@@ -41,7 +41,7 @@ dojo.provide("dojo.hash");
 			location.href = "#" + hash;
 		}
 		return hash; // String
-	}
+	};
 
 	// Global vars
 	var _recentHash = null,
@@ -163,7 +163,7 @@ dojo.provide("dojo.hash");
 
 		this.isTransitioning = function(){
 			return transitioning;
-		}
+		};
 		
 		this.pollLocation = function(){
 			if(!ifrOffline) {
@@ -214,7 +214,7 @@ dojo.provide("dojo.hash");
 				}
 			}
 			setTimeout(dojo.hitch(this,this.pollLocation), _pollFrequency);
-		}
+		};
 		resetState(); // initialize state (transition to s1)
 		setTimeout(dojo.hitch(this,this.pollLocation), _pollFrequency);
 	}
@@ -232,4 +232,6 @@ dojo.provide("dojo.hash");
 			// else non-supported browser, do nothing.
 		}
 	});
-})();
+
+  return dojo.hash;
+});

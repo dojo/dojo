@@ -1,4 +1,4 @@
-dojo.provide("dojo.behavior");
+define("dojo/behavior", ["dojo"], function(dojo) {
 
 dojo.behavior = new function(){
 	// summary: 
@@ -162,7 +162,7 @@ dojo.behavior = new function(){
 				arrIn(cversion, ruleName).push(rule);
 			});
 		});
-	}
+	};
 
 	var _applyToNode = function(node, action, ruleSetName){
 		if(dojo.isString(action)){
@@ -180,7 +180,7 @@ dojo.behavior = new function(){
 				dojo.connect(node, ruleSetName, action);
 			}
 		}
-	}
+	};
 
 	this.apply = function(){
 		// summary:
@@ -233,7 +233,10 @@ dojo.behavior = new function(){
 				}
 			);
 		});
-	}
-}
+	};
+};
 
 dojo.addOnLoad(dojo.behavior, "apply");
+
+return dojo.behavior;
+});

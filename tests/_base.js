@@ -109,7 +109,7 @@ if(doh.selfTest){
 try{
 	// go grab the others
 	dojo.require("tests._base._loader.bootstrap");
-	dojo.require("tests._base._loader.loader");
+	dojo.simulatedLoading && dojo.require("tests._base._loader.loader");
 	dojo.platformRequire({
 		browser: ["tests._base._loader.hostenv_browser"],
 		rhino: ["tests._base._loader.hostenv_rhino"],

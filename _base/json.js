@@ -1,4 +1,4 @@
-dojo.provide("dojo._base.json");
+define("dojo/_base/json", ["dojo"], function(dojo) {
 
 dojo.fromJson = function(/*String*/ json){
 	// summary:
@@ -12,7 +12,7 @@ dojo.fromJson = function(/*String*/ json){
 	//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 
 	return eval("(" + json + ")"); // Object
-}
+};
 
 dojo._escapeString = function(/*String*/str){
 	//summary:
@@ -22,7 +22,7 @@ dojo._escapeString = function(/*String*/str){
 	return ('"' + str.replace(/(["\\])/g, '\\$1') + '"').
 		replace(/[\f]/g, "\\f").replace(/[\b]/g, "\\b").replace(/[\n]/g, "\\n").
 		replace(/[\t]/g, "\\t").replace(/[\r]/g, "\\r"); // string
-}
+};
 
 dojo.toJsonIndentStr = "\t";
 dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _indentStr){
@@ -140,4 +140,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 		output.push(newLine + nextIndent + keyStr + ":" + sep + val);
 	}
 	return "{" + output.join("," + sep) + newLine + _indentStr + "}"; // String
-}
+};
+
+return dojo;
+});

@@ -1,5 +1,4 @@
-dojo.provide("dojo.data.api.Write");
-dojo.require("dojo.data.api.Read");
+define("dojo/data/api/Write", ["dojo", "dojo/data/api/Read"], function(dojo) {
 
 dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 	//	summary:
@@ -219,4 +218,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		throw new Error('Unimplemented API: dojo.data.api.Write.isDirty');
 		return false; // boolean
 	}
+});
+
+return dojo.data.api.Write;
 });

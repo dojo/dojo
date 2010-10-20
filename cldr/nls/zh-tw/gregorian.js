@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/zh-tw/gregorian",
+//begin v1.x content
 // generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
 ({
 	"dateFormatItem-yM": "yyyy/M", 
@@ -174,3 +176,5 @@
 		"西元"
 	]
 })
+//end v1.x content
+);

@@ -1,17 +1,13 @@
-dojo.provide("dojo.dnd.Manager");
-
-dojo.require("dojo.dnd.common");
-dojo.require("dojo.dnd.autoscroll");
-dojo.require("dojo.dnd.Avatar");
+define("dojo/dnd/Manager", ["dojo", "dojo/dnd/common", "dojo/dnd/autoscroll", "dojo/dnd/Avatar"], function(dojo) {
 
 dojo.declare("dojo.dnd.Manager", null, {
 	// summary:
 	//		the manager of DnD operations (usually a singleton)
 	constructor: function(){
-		this.avatar = null;
+		this.avatar  = null;
 		this.source = null;
 		this.nodes = [];
-		this.copy = true;
+		this.copy  = true;
 		this.target = null;
 		this.canDropFlag = false;
 		this.events = [];
@@ -60,18 +56,18 @@ dojo.declare("dojo.dnd.Manager", null, {
 		// copy: Boolean
 		//		copy items, if true, move items otherwise
 		this.source = source;
-		this.nodes = nodes;
-		this.copy = Boolean(copy); // normalizing to true boolean
+		this.nodes  = nodes;
+		this.copy   = Boolean(copy); // normalizing to true boolean
 		this.avatar = this.makeAvatar();
 		dojo.body().appendChild(this.avatar.node);
 		dojo.publish("/dnd/start", [source, nodes, this.copy]);
 		this.events = [
 			dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
-			dojo.connect(dojo.doc, "onmouseup", this, "onMouseUp"),
-			dojo.connect(dojo.doc, "onkeydown", this, "onKeyDown"),
-			dojo.connect(dojo.doc, "onkeyup", this, "onKeyUp"),
+			dojo.connect(dojo.doc, "onmouseup",   this, "onMouseUp"),
+			dojo.connect(dojo.doc, "onkeydown",   this, "onKeyDown"),
+			dojo.connect(dojo.doc, "onkeyup",     this, "onKeyUp"),
 			// cancel text selection and text dragging
-			dojo.connect(dojo.doc, "ondragstart", dojo.stopEvent),
+			dojo.connect(dojo.doc, "ondragstart",   dojo.stopEvent),
 			dojo.connect(dojo.body(), "onselectstart", dojo.stopEvent)
 		];
 		var c = "dojoDnd" + (copy ? "Copy" : "Move");
@@ -120,7 +116,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			//dojo.dnd.autoScroll(e);
 			var s = a.node.style;
 			s.left = (e.pageX + this.OFFSET_X) + "px";
-			s.top = (e.pageY + this.OFFSET_Y) + "px";
+			s.top  = (e.pageY + this.OFFSET_Y) + "px";
 			var copy = Boolean(this.source.copyState(dojo.isCopyKey(e)));
 			if(this.copy != copy){ 
 				this._setCopyStatus(copy);
@@ -207,3 +203,6 @@ dojo.dnd.manager = function(){
 	}
 	return dojo.dnd._manager;	// Object
 };
+
+return dojo.dnd.Manager;
+});

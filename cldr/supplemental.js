@@ -1,6 +1,5 @@
-dojo.provide("dojo.cldr.supplemental");
-
-dojo.require("dojo.i18n");
+define("dojo/cldr/supplemental", ["dojo", "dojo/i18n"], function(dojo) {
+dojo.getObject("cldr.supplemental", true, dojo);
 
 dojo.cldr.supplemental.getFirstDayOfWeek = function(/*String?*/locale){
 // summary: Returns a zero-based index for first day of the week
@@ -40,7 +39,7 @@ dojo.cldr.supplemental._region = function(/*String?*/locale){
 		region = tags[2];
 	}
 	return region;
-}
+};
 
 dojo.cldr.supplemental.getWeekend = function(/*String?*/locale){
 // summary: Returns a hash containing the start and end days of the weekend
@@ -68,3 +67,6 @@ dojo.cldr.supplemental.getWeekend = function(/*String?*/locale){
 	if(end === undefined){end=0;}
 	return {start:start, end:end}; /*Object {start,end}*/
 };
+
+return dojo.cldr.supplemental;
+});

@@ -1,5 +1,4 @@
-dojo.provide("dojo._base.event");
-dojo.require("dojo._base.connect");
+define("dojo/_base/event", ["dojo", "dojo/_base/connect"], function(dojo) {
 
 // this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
@@ -110,7 +109,7 @@ dojo.require("dojo._base.connect");
 		// sender: DOMNode
 		//		node to treat as "currentTarget"
 		return del._fixEvent(evt, sender);
-	}
+	};
 
 	dojo.stopEvent = function(/*Event*/ evt){
 		// summary:
@@ -121,7 +120,7 @@ dojo.require("dojo._base.connect");
 		evt.preventDefault();
 		evt.stopPropagation();
 		// NOTE: below, this method is overridden for IE
-	}
+	};
 
 	// the default listener to use on dontFix nodes, overriden for IE
 	var node_listener = dojo._listener;
@@ -141,11 +140,11 @@ dojo.require("dojo._base.connect");
 		// instead we return a listener id, which requires custom _disconnect below.
 		// return disconnect package
 		return [ obj, event, h, lid ];
-	}
+	};
 
 	dojo._disconnect = function(obj, event, handle, listener){
 		([dojo._listener, del, node_listener][listener]).remove(obj, event, handle);
-	}
+	};
 
 	// Constants
 
@@ -314,7 +313,7 @@ dojo.require("dojo._base.connect");
 			}catch(e){
 				return 0;
 			}
-		}
+		};
 
 		// by default, use the standard listener
 		var iel = dojo._listener;
@@ -505,7 +504,7 @@ dojo.require("dojo._base.connect");
 			evt = evt || window.event;
 			del._stopPropagation.call(evt);
 			del._preventDefault.call(evt);
-		}
+		};
 	}
 	//>>excludeEnd("webkitMobile");
 
@@ -518,7 +517,7 @@ dojo.require("dojo._base.connect");
 			faux.preventDefault = function(){ evt.preventDefault(); }; 
 			faux.stopPropagation = function(){ evt.stopPropagation(); }; 
 			return faux;
-	}
+	};
 	
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	// Opera event normalization
@@ -640,15 +639,18 @@ if(dojo.isIE){
 			}
 		}
 		return r;
-	}
+	};
 	dojo._getIeDispatcher = function(){
 		// ensure the returned function closes over nothing ("new Function" apparently doesn't close)
 		return new Function(dojo._scopeName + "._ieDispatcher(arguments, this)"); // function
-	}
+	};
 	// keep this out of the closure to reduce RAM allocation
 	dojo._event_listener._fixCallback = function(fp){
 		var f = dojo._event_listener._fixEvent;
 		return function(e){ return fp.call(this, f(e, this)); };
-	}
+	};
 }
 //>>excludeEnd("webkitMobile");
+
+return dojo.connect;
+});

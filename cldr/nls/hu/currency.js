@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/hu/currency",
+//begin v1.x content
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({
 	AUD_displayName:"Ausztrál dollár",
@@ -13,3 +15,5 @@
 	USD_symbol:"$"
 })
                  
+//end v1.x content
+);

@@ -1,8 +1,4 @@
-dojo.provide("dojo._base.xhr");
-dojo.require("dojo._base.Deferred");
-dojo.require("dojo._base.json");
-dojo.require("dojo._base.lang");
-dojo.require("dojo._base.query");
+define("dojo/_base/xhr", ["dojo", "dojo/_base/Deferred", "dojo/_base/json", "dojo/_base/lang", "dojo/_base/query"], function(dojo) {
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
@@ -46,7 +42,7 @@ dojo.require("dojo._base.query");
 			var type = (item.type||"").toLowerCase();
 			if(_in && type && !item.disabled){
 				if(type == "radio" || type == "checkbox"){
-					if(item.checked){ ret = item.value }
+					if(item.checked){ ret = item.value; }
 				}else if(item.multiple){
 					ret = [];
 					_d.query("option", item).forEach(function(opt){
@@ -60,7 +56,7 @@ dojo.require("dojo._base.query");
 			}
 		}
 		return ret; // Object
-	}
+	};
 
 	dojo.formToObject = function(/*DOMNode||String*/ formNode){
 		// summary:
@@ -108,7 +104,7 @@ dojo.require("dojo._base.query");
 			}
 		});
 		return ret; // Object
-	}
+	};
 
 	dojo.objectToQuery = function(/*Object*/ map){
 		//	summary:
@@ -147,21 +143,21 @@ dojo.require("dojo._base.query");
 			}
 		}
 		return pairs.join("&"); // String
-	}
+	};
 
 	dojo.formToQuery = function(/*DOMNode||String*/ formNode){
 		// summary:
 		//		Returns a URL-encoded string representing the form passed as either a
 		//		node or string ID identifying the form to serialize
 		return _d.objectToQuery(_d.formToObject(formNode)); // String
-	}
+	};
 
 	dojo.formToJson = function(/*DOMNode||String*/ formNode, /*Boolean?*/prettyPrint){
 		// summary:
 		//		Create a serialized JSON string from a form node or string
 		//		ID identifying the form to serialize
 		return _d.toJson(_d.formToObject(formNode), prettyPrint); // String
-	}
+	};
 
 	dojo.queryToObject = function(/*String*/ str){
 		// summary:
@@ -205,7 +201,7 @@ dojo.require("dojo._base.query");
 			}
 		});
 		return ret; // Object
-	}
+	};
 
 	// need to block async callbacks from snatching this thread as the result
 	// of an async callback might call another sync XHR, this hangs khtml forever
@@ -288,7 +284,7 @@ dojo.require("dojo._base.query");
 			if(_d.isIE && (!result || !result.documentElement)){
 				//WARNING: this branch used by the xml handling in dojo.io.iframe,
 				//so be sure to test dojo.io.iframe if making changes below.
-				var ms = function(n){ return "MSXML" + n + ".DOMDocument"; }
+				var ms = function(n){ return "MSXML" + n + ".DOMDocument"; };
 				var dp = ["Microsoft.XMLDOM", ms(6), ms(4), ms(3), ms(2)];
 				_d.some(dp, function(p){
 					try{
@@ -582,7 +578,7 @@ dojo.require("dojo._base.query");
 		// FIXME: need to wire up the xhr object's abort method to something
 		// analagous in the Deferred
 		return d;
-	}
+	};
 
 	var _deferredCancel = function(/*Deferred*/dfd){
 		// summary: canceller function for dojo._ioSetArgs call.
@@ -599,13 +595,13 @@ dojo.require("dojo._base.query");
 			err.dojoType="cancel";
 		}
 		return err;
-	}
+	};
 	var _deferredOk = function(/*Deferred*/dfd){
 		// summary: okHandler function for dojo._ioSetArgs call.
 
 		var ret = handlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
 		return ret === undefined ? null : ret;
-	}
+	};
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
 		// summary: errHandler function for dojo._ioSetArgs call.
 
@@ -613,7 +609,7 @@ dojo.require("dojo._base.query");
 			console.error(error);
 		}
 		return error;
-	}
+	};
 
 	// avoid setting a timer per request. It degrades performance on IE
 	// something fierece if we don't use unified loops.
@@ -690,7 +686,7 @@ dojo.require("dojo._base.query");
 			_inFlightIntvl = null;
 			return;
 		}
-	}
+	};
 
 	dojo._ioCancelAll = function(){
 		//summary: Cancels all pending IO requests, regardless of IO type
@@ -702,7 +698,7 @@ dojo.require("dojo._base.query");
 				}catch(e){/*squelch*/}
 			});
 		}catch(e){/*squelch*/}
-	}
+	};
 
 	//Automatically call cancel all io calls on unload
 	//in IE for trac issue #2357.
@@ -727,7 +723,7 @@ dojo.require("dojo._base.query");
 			_pubCount += 1;
 			_d.publish("/dojo/io/send", [dfd]);
 		}
-	}
+	};
 
 	_d._ioWatch = function(dfd, validCheck, ioCheck, resHandle){
 		// summary: 
@@ -760,16 +756,16 @@ dojo.require("dojo._base.query");
 		if(args.sync){
 			_watchInFlight();
 		}
-	}
+	};
 
 	var _defaultContentType = "application/x-www-form-urlencoded";
 
 	var _validCheck = function(/*Deferred*/dfd){
 		return dfd.ioArgs.xhr.readyState; //boolean
-	}
+	};
 	var _ioCheck = function(/*Deferred*/dfd){
 		return 4 == dfd.ioArgs.xhr.readyState; //boolean
-	}
+	};
 	var _resHandle = function(/*Deferred*/dfd){
 		var xhr = dfd.ioArgs.xhr;
 		if(_d._isDocumentOk(xhr)){
@@ -780,7 +776,7 @@ dojo.require("dojo._base.query");
 			err.responseText = xhr.responseText;
 			dfd.errback(err);
 		}
-	}
+	};
 
 	dojo._ioAddQueryToUrl = function(/*dojo.__IoCallbackArgs*/ioArgs){
 		//summary: Adds query params discovered by the io deferred construction to the URL.
@@ -789,7 +785,7 @@ dojo.require("dojo._base.query");
 			ioArgs.url += (ioArgs.url.indexOf("?") == -1 ? "?" : "&") + ioArgs.query;
 			ioArgs.query = null;
 		}		
-	}
+	};
 
 	/*=====
 	dojo.declare("dojo.__XhrArgs", dojo.__IoArgs, {
@@ -890,13 +886,13 @@ dojo.require("dojo._base.query");
 		_d._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
 		xhr = null;
 		return dfd; // dojo.Deferred
-	}
+	};
 
 	dojo.xhrGet = function(/*dojo.__XhrArgs*/ args){
 		//	summary: 
 		//		Sends an HTTP GET request to the server.
 		return _d.xhr("GET", args); // dojo.Deferred
-	}
+	};
 
 	dojo.rawXhrPost = dojo.xhrPost = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
@@ -905,7 +901,7 @@ dojo.require("dojo._base.query");
 		//	postData:
 		//		String. Send raw data in the body of the POST request.
 		return _d.xhr("POST", args, true); // dojo.Deferred
-	}
+	};
 
 	dojo.rawXhrPut = dojo.xhrPut = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
@@ -914,13 +910,13 @@ dojo.require("dojo._base.query");
 		//	putData:
 		//		String. Send raw data in the body of the PUT request.
 		return _d.xhr("PUT", args, true); // dojo.Deferred
-	}
+	};
 
 	dojo.xhrDelete = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP DELETE request to the server.
 		return _d.xhr("DELETE", args); //dojo.Deferred
-	}
+	};
 
 	/*
 	dojo.wrapForm = function(formNode){
@@ -936,3 +932,6 @@ dojo.require("dojo._base.query");
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();
 //>>excludeEnd("webkitMobile");
+
+return dojo.xhr;
+});

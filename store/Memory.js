@@ -1,7 +1,4 @@
-dojo.provide("dojo.store.Memory");
-
-dojo.require("dojo.store.util.QueryResults");
-dojo.require("dojo.store.util.SimpleQueryEngine");
+define("dojo/store/Memory", ["dojo", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"], function(dojo) {
 
 dojo.store.Memory = function(options){
 	// summary:
@@ -101,3 +98,6 @@ dojo.store.Memory = function(options){
 	store.setData(store.data);
 	return store;
 };
+
+return dojo.store.Memory;
+});

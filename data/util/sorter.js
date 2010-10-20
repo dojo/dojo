@@ -1,4 +1,5 @@
-dojo.provide("dojo.data.util.sorter");
+define("dojo/data/util/sorter", ["dojo"], function(dojo) {
+dojo.getObject("data.util.sorter", true, dojo);
 
 dojo.data.util.sorter.basicComparator = function(	/*anything*/ a, 
 													/*anything*/ b){
@@ -89,3 +90,6 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 		return 0; //int  
 	}; // Function
 };
+
+return dojo.data.util.sorter;
+});

@@ -1,6 +1,4 @@
-dojo.provide("dojo.cookie");
-
-dojo.require("dojo.regexp");
+define("dojo/cookie", ["dojo", "dojo/regexp"], function(dojo) {
 
 /*=====
 dojo.__cookieProps = function(){
@@ -89,3 +87,6 @@ dojo.cookie.isSupported = function(){
 	}
 	return navigator.cookieEnabled;
 };
+
+return dojo.cookie;
+});

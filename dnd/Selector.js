@@ -1,7 +1,4 @@
-dojo.provide("dojo.dnd.Selector");
-
-dojo.require("dojo.dnd.common");
-dojo.require("dojo.dnd.Container");
+define("dojo/dnd/Selector", ["dojo", "dojo/dnd/common", "dojo/dnd/Container"], function(dojo) {
 
 /*
 	Container item states:
@@ -322,4 +319,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		}
 		return this;	// self
 	}
+});
+
+return dojo.dnd.Selector;
 });

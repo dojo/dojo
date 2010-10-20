@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/th/gregorian",
+//begin v1.x content
 ({
 	"months-format-narrow": [
 		"ม.ค.", 
@@ -226,3 +228,5 @@
 	"dateTimeFormat-short": "{1}, {0}", 
 	"dateFormatItem-Hms": "H:mm:ss"
 })
+//end v1.x content
+);

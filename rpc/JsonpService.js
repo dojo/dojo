@@ -1,6 +1,4 @@
-dojo.provide("dojo.rpc.JsonpService");
-dojo.require("dojo.rpc.RpcService");
-dojo.require("dojo.io.script");
+define("dojo/rpc/JsonpService", ["dojo", "dojo/rpc/RpcService", "dojo/io/script"], function(dojo) {
 
 dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
 	// summary:
@@ -58,4 +56,7 @@ dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
 		dojo.mixin(params,this.required);
 		return params;
 	}
+});
+
+return dojo.rpc.JsonpService;
 });

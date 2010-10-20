@@ -10,19 +10,29 @@ tests.register("tests.date.locale",
 			// load resources here for specific locales:
 
 			name: "date.locale",
-			setUp: function(){
-				var partLocaleList = ["en-us", "fr-fr", "es", "de-at", "ja-jp", "zh-cn"];
-
-				dojo.forEach(partLocaleList, function(locale){
-					dojo.requireLocalization("dojo.cldr", "gregorian", locale);
-				});
-			},
 			runTest: function(t){
+				var partLocaleList = ["en-us", "fr-fr", "es", "de-at", "ja-jp", "zh-cn"];
+        if (!dojo.simulatedLoading) { //tests for the asynchronous loader machinery
+            var 
+              def = new doh.Deferred(),
+              deps= [];
+            dojo.forEach(partLocaleList, function(locale) {
+              deps.push(dojo.getL10nName("dojo/cldr", "gregorian", locale));
+            });
+            define(deps, function() {
+							def.callback(true);
+            });
+            return def;
+        } else { // tests for the v1.x loader/i18n machinery
+  				dojo.forEach(partLocaleList, function(locale){
+	  				dojo.requireLocalization("dojo.cldr", "gregorian", locale);
+		  		});
+        }
 			},
 			tearDown: function(){
 				//Clean up bundles that should not exist if
 				//the test is re-run.
-				delete dojo.cldr.nls.gregorian;
+				//delete dojo.cldr.nls.gregorian;
 			}
 		},
 		{

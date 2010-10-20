@@ -1,5 +1,4 @@
-dojo.provide("dojo._base.connect");
-dojo.require("dojo._base.lang");
+define("dojo/_base/connect", ["dojo", "dojo/_base/lang"], function(dojo) {
 
 // this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
@@ -16,12 +15,12 @@ dojo._listener = {
 		// - listener is invoked with current scope (this)
 		return function(){
 			var ap = Array.prototype, c = arguments.callee, ls = c._listeners, t = c.target,
-				// return value comes from original target function
+			// return value comes from original target function
 				r = t && t.apply(this, arguments),
-				// make local copy of listener array so it is immutable during processing
+			// make local copy of listener array so it is immutable during processing
 				i, lls = [].concat(ls)
 			;
-			
+
 			// invoke listeners after target function
 			for(i in lls){
 				if(!(i in ap)){
@@ -183,23 +182,23 @@ dojo.connect = function(/*Object|null*/ obj,
 	//	|	dojo.connect("globalEvent", globalHandler); // same
 
 	// normalize arguments
-	var a = arguments, args = [], i = 0;
+	var a=arguments, args=[], i=0;
 	// if a[0] is a String, obj was omitted
 	args.push(dojo.isString(a[0]) ? null : a[i++], a[i++]);
 	// if the arg-after-next is a String or Function, context was NOT omitted
 	var a1 = a[i+1];
-	args.push(dojo.isString(a1) || dojo.isFunction(a1) ? a[i++] : null, a[i++]);
+	args.push(dojo.isString(a1)||dojo.isFunction(a1) ? a[i++] : null, a[i++]);
 	// absorb any additional arguments
-	for(var l = a.length; i < l; i++){ args.push(a[i]); }
+	for(var l=a.length; i<l; i++){	args.push(a[i]); }
 	// do the actual work
 	return dojo._connect.apply(this, args); /*Handle*/
 }
 
 // used by non-browser hostenvs. always overriden by event.js
 dojo._connect = function(obj, event, context, method){
-	var l = dojo._listener, h = l.add(obj, event, dojo.hitch(context, method)); 
+	var l=dojo._listener, h=l.add(obj, event, dojo.hitch(context, method)); 
 	return [obj, event, h, l]; // Handle
-}
+};
 
 dojo.disconnect = function(/*Handle*/ handle){
 	// summary:
@@ -213,11 +212,11 @@ dojo.disconnect = function(/*Handle*/ handle){
 		// let's not keep this reference
 		delete handle[0];
 	}
-}
+};
 
 dojo._disconnect = function(obj, event, handle, listener){
 	listener.remove(obj, event, handle);
-}
+};
 
 // topic publish/subscribe
 
@@ -239,7 +238,7 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 
 	// support for 2 argument invocation (omitting context) depends on hitch
 	return [topic, dojo._listener.add(dojo._topics, topic, dojo.hitch(context, method))]; /*Handle*/
-}
+};
 
 dojo.unsubscribe = function(/*Handle*/ handle){
 	//	summary:
@@ -253,7 +252,7 @@ dojo.unsubscribe = function(/*Handle*/ handle){
 	if(handle){
 		dojo._listener.remove(dojo._topics, handle[0], handle[1]);
 	}
-}
+};
 
 dojo.publish = function(/*String*/ topic, /*Array*/ args){
 	//	summary:
@@ -274,7 +273,7 @@ dojo.publish = function(/*String*/ topic, /*Array*/ args){
 	if(f){
 		f.apply(this, args||[]);
 	}
-}
+};
 
 dojo.connectPublisher = function(	/*String*/ topic, 
 									/*Object|null*/ obj, 
@@ -297,3 +296,6 @@ dojo.connectPublisher = function(	/*String*/ topic,
 	var pf = function(){ dojo.publish(topic, arguments); }
 	return event ? dojo.connect(obj, event, pf) : dojo.connect(obj, pf); //Handle
 };
+
+return dojo.connect;
+});

@@ -1,9 +1,5 @@
-dojo.provide("dojo.currency");
-
-dojo.require("dojo.number");
-dojo.require("dojo.i18n");
-dojo.requireLocalization("dojo.cldr", "currency");
-dojo.require("dojo.cldr.monetary");
+define("dojo/currency", ["dojo", "dojo/number", "dojo/i18n", "i18n!dojo/cldr/nls/currency", "dojo/cldr/monetary"], function(dojo) {
+dojo.getObject("currency", true, dojo);
 
 /*=====
 dojo.currency = {
@@ -38,7 +34,7 @@ dojo.currency._mixInDefaults = function(options){
 
 	// Mixin with provided options
 	return dojo.mixin(data, options);
-}
+};
 
 /*=====
 dojo.declare("dojo.currency.__FormatOptions", [dojo.number.__FormatOptions], {
@@ -73,7 +69,7 @@ dojo.currency.format = function(/*Number*/value, /*dojo.currency.__FormatOptions
 //		the number to be formatted.
 
 	return dojo.number.format(value, dojo.currency._mixInDefaults(options));
-}
+};
 
 dojo.currency.regexp = function(/*dojo.number.__RegexpOptions?*/options){
 //
@@ -84,7 +80,7 @@ dojo.currency.regexp = function(/*dojo.number.__RegexpOptions?*/options){
 //		Returns regular expression with positive and negative match, group and decimal separators
 //		Note: the options.places default, the number of decimal places to accept, is defined by the currency type.
 	return dojo.number.regexp(dojo.currency._mixInDefaults(options)); // String
-}
+};
 
 /*=====
 dojo.declare("dojo.currency.__ParseOptions", [dojo.number.__ParseOptions], {
@@ -125,4 +121,7 @@ dojo.currency.parse = function(/*String*/expression, /*dojo.currency.__ParseOpti
 	// expression: A string representation of a currency value
 
 	return dojo.number.parse(expression, dojo.currency._mixInDefaults(options));
-}
+};
+
+return dojo.currency;
+});

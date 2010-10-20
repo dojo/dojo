@@ -1,7 +1,6 @@
-dojo.provide("dojo.robot");
+define("dojo/robot", ["dojo", "doh/robot", "dojo/window"], function(dojo) {
+
 dojo.experimental("dojo.robot");
-dojo.require("doh.robot");
-dojo.require("dojo.window");
 
 (function(){
 // users who use doh+dojo get the added convenience of dojo.mouseMoveAt,
@@ -172,3 +171,6 @@ dojo.mixin(doh.robot,{
 });
 
 })();
+
+return doh.robot;
+});

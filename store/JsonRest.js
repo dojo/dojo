@@ -1,5 +1,4 @@
-dojo.provide("dojo.store.JsonRest");
-dojo.require("dojo.store.util.QueryResults");
+define("dojo/store/JsonRest", ["dojo", "dojo/store/util/QueryResults"], function(dojo) {
 
 dojo.store.JsonRest = function(options){
 	// summary:
@@ -90,3 +89,6 @@ dojo.store.JsonRest = function(options){
 	dojo.mixin(store, options);
 	return store;
 };
+
+return dojo.store.JsonRest;
+});

@@ -1,4 +1,4 @@
-dojo.provide("dojo.rpc.RpcService");
+define("dojo/rpc/RpcService", ["dojo"], function(dojo) {
 
 dojo.declare("dojo.rpc.RpcService", null, {
 	constructor: function(args){
@@ -165,4 +165,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		this.required = object.required;
 		this.smd = object;
 	}
+});
+
+return dojo.rpc.RpcService;
 });

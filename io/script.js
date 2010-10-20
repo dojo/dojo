@@ -1,4 +1,5 @@
-dojo.provide("dojo.io.script");
+define("dojo/io/script", ["dojo"], function(dojo) {
+dojo.getObject("io", true, dojo);
 
 /*=====
 dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
@@ -34,7 +35,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 	}
 });
 =====*/
-;(function(){
+(function(){
 	var loadEvent = dojo.isIE ? "onreadystatechange" : "load",
 		readyRegExp = /complete|loaded/;
 
@@ -245,5 +246,8 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			//		request.
 			this.ioArgs.json = json;
 		}
-	}
+	};
 })();
+
+return dojo.io.script;
+});

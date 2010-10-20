@@ -10,7 +10,7 @@
 			src="../dojo.js" djConfig="isDebug: true, popup: true"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
-			dojo.require("dojo.behavior");
+			define("dojo/tests/bahavior/script", ["dojo", "dojo/behavior"], function(dojo) {
 
 			var applyCount = 0;
 
@@ -92,6 +92,7 @@
 				);
 				doh.run();
 			});
+      });
 		</script>
 	</head>
 	<body>

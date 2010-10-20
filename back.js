@@ -1,4 +1,5 @@
-dojo.provide("dojo.back");
+define("dojo/back", ["dojo"], function(dojo) {
+dojo.getObject("back", true, dojo);
 
 /*=====
 dojo.back = {
@@ -8,28 +9,22 @@ dojo.back = {
 
 
 (function(){ 
-	var back = dojo.back;
+	var back = dojo.back,
 
 	// everyone deals with encoding the hash slightly differently
 
-	function getHash(){ 
+	getHash= back.getHash= function(){ 
 		var h = window.location.hash;
 		if(h.charAt(0) == "#"){ h = h.substring(1); }
 		return dojo.isMozilla ? h : decodeURIComponent(h); 
-	}
+	},
 	
-	function setHash(h){
+	setHash= back.setHash= function(h){
 		if(!h){ h = ""; }
 		window.location.hash = encodeURIComponent(h);
 		historyCounter = history.length;
-	}
-	
-	// if we're in the test for these methods, expose them on dojo.back. ok'd with alex.
-	if(dojo.exists("tests.back-hash")){
-		back.getHash = getHash;
-		back.setHash = setHash;		
-	}
-	
+	};
+
 	var initialHref = (typeof(window) !== "undefined") ? window.location.href : "";
 	var initialHash = (typeof(window) !== "undefined") ? getHash() : "";
 	var initialState = null;
@@ -390,3 +385,6 @@ dojo.back = {
 		}
 	};
  })();
+
+return dojo.back;
+});

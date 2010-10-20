@@ -1,5 +1,5 @@
-dojo.provide("dojo._firebug.firebug");
-	
+define("dojo/_firebug/firebug", ["dojo"], function(dojo) {
+
 dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
 	// summary: 
 	//		Log a debug message to indicate that a behavior has been
@@ -61,9 +61,6 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		|	var djConfig = {isDebug: true, debugHeight:100 }
 
 
-
-(function(){
-
 	var isNewIE = (/Trident/.test(window.navigator.userAgent));
 	if(isNewIE){
 		// Fixing IE's console
@@ -71,13 +68,13 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		var calls = ["log", "info", "debug", "warn", "error"];
 		for(var i=0;i<calls.length;i++){
 			var m = calls[i];
-			var n = "_"+calls[i]
+			var n = "_"+calls[i];
 			console[n] = console[m];
 			console[m] = (function(){
 				var type = n;
 				return function(){
 					console[type](Array.prototype.slice.call(arguments).join(" "));
-				}
+				};
 			})();
 		}
 		// clear the console on load. This is more than a convenience - too many logs crashes it.
@@ -255,7 +252,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 				var func = f.toString();
 				var args=[];
 				for (var a = 0; a < f.arguments.length; a++) {
-					args.push(f.arguments[a])
+					args.push(f.arguments[a]);
 				}
 				if(f.arguments.length){
 					console.dir({"function":func, "arguments":args});	
@@ -374,7 +371,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 				}
 			}
 		}
-	}
+	};
 
 	// ***************************************************************************
 
@@ -601,7 +598,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		consoleDomInspector.style.top = tHeight + "px";
 		commandLine.style.bottom = 0;
 		
-		dojo.addOnWindowUnload(clearFrame)
+		dojo.addOnWindowUnload(clearFrame);
 	}
 	
 	function logRow(message, className, handler){
@@ -1063,7 +1060,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	function objectLength(o){
 		var cnt = 0;
 		for(var nm in o){
-			cnt++	
+			cnt++;
 		}
 		return cnt;
 	}
@@ -1211,5 +1208,5 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	});
 }
 
-})();
-
+return dojo;
+});

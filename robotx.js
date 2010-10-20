@@ -1,5 +1,5 @@
-dojo.provide("dojo.robotx");
-dojo.require("dojo.robot");
+define("dojo/robotx", ["dojo", "dojo/robot"], function(dojo) {
+
 dojo.experimental("dojo.robotx");
 
 // loads an external app into an iframe and points dojo.doc to the iframe document, allowing the robot to control it
@@ -158,3 +158,6 @@ dojo.mixin(doh.robot,{
 
 });
 })();
+
+return doh.robot;
+});

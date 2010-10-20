@@ -1,16 +1,11 @@
-dojo.provide("dojo.date.locale");
+define("dojo/date/locale", ["dojo", "dojo/date", "dojo/cldr/supplemental", "dojo/regexp", "dojo/string", "dojo/i18n", "i18n!dojo/cldr/nls/gregorian"], function(dojo) {
+dojo.getObject("date.locale", true, dojo);
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
 
-dojo.require("dojo.date");
-dojo.require("dojo.cldr.supplemental");
-dojo.require("dojo.regexp");
-dojo.require("dojo.string");
-dojo.require("dojo.i18n");
 
 // Load the bundles containing localization information for
 // names and formats
-dojo.requireLocalization("dojo.cldr", "gregorian");
 
 //NOTE: Everything in this module assumes Gregorian calendars.
 // Other calendars will be implemented in separate modules.
@@ -664,3 +659,6 @@ dojo.date.locale._getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDa
 
 	return week; // Number
 };
+
+return dojo.date.locale;
+});

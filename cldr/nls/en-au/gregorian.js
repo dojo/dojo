@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/en-au/gregorian",
+//begin v1.x content
 // generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
 ({
 	'dateFormat-full': "EEEE, d MMMM y",
@@ -13,3 +15,5 @@
 	'dateFormatItem-yyyyMMMM':"MMMM y"
 })
                         
+//end v1.x content
+);

@@ -1,5 +1,4 @@
-dojo.provide("dojo.data.api.Notification");
-dojo.require("dojo.data.api.Read");
+define("dojo/data/api/Notification", ["dojo", "dojo/data/api/Read"], function(dojo) {
 
 dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 	//	summary:
@@ -112,4 +111,7 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 		//		Nothing.
 		throw new Error('Unimplemented API: dojo.data.api.Notification.onDelete');
 	}
+});
+
+return dojo.data.api.Notification;
 });

@@ -1,6 +1,5 @@
-dojo.provide("dojo.uacss");
+define("dojo/uacss", ["dojo"], function(dojo) {
 
-(function(){
 	// summary:
 	//		Applies pre-set CSS classes to the top-level HTML node, based on:
 	// 			- browser (ex: dj_ie)
@@ -60,4 +59,6 @@ dojo.provide("dojo.uacss");
 			html.className = d.trim(html.className + " " + rtlClassStr);
 		}
 	});
-})();
+
+  return dojo;
+});

@@ -1,4 +1,4 @@
-dojo.provide("dojo.jaxer");
+define("dojo/jaxer", ["dojo"], function(dojo) {
 
 if(typeof print == "function"){
 	console.debug = Jaxer.Log.debug;
@@ -9,3 +9,6 @@ if(typeof print == "function"){
 }
 
 onserverload = dojo._loadInit;
+
+return dojo;
+});

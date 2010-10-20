@@ -1,4 +1,4 @@
-dojo.provide("dojo.NodeList-manipulate");
+define("dojo/NodeList-manipulate", ["dojo"], function(dojo) {
 
 /*=====
 dojo["NodeList-manipulate"] = {
@@ -718,3 +718,6 @@ dojo["NodeList-manipulate"] = {
 		dojo.NodeList.prototype.html = dojo.NodeList.prototype.innerHTML;
 	}
 })();
+
+return dojo.NodeList;
+});

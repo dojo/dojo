@@ -1,3 +1,5 @@
+define("i18n!dojo/tests/nls/salutations", { root: 
+//begin v1.x content
 {
  ar: "Arabic",
  cs: "Czech",
@@ -30,3 +32,31 @@
  hello_dojo: "${hello}, ${dojo}!",
  file_not_found:"The file you requested, ${0}, is not found."
 }
+//end v1.x content
+,
+"zh-tw":1,
+"zh-cn":1,
+"yi":1,
+"tr":1,
+"th":1,
+"sw":1,
+"ru":1,
+"pt":1,
+"pl":1,
+"ko":1,
+"ja":1,
+"it":1,
+"hi":1,
+"he":1,
+"fr":1,
+"fa":1,
+"es":1,
+"en-us-texas":1,
+"en-us-new_york-brooklyn":1,
+"en-us-hawaii":1,
+"en-au":1,
+"el":1,
+"de":1,
+"cs":1,
+"ar":1
+});

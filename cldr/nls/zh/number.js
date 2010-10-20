@@ -1,3 +1,5 @@
+define("i18n!dojo/cldr/nls/zh/number",
+//begin v1.x content
 // generated from ldml/main/*.xml, xpath: ldml/numbers
 ({
 	'decimal':".",
@@ -7,3 +9,5 @@
 	'percentFormat':"#,##0%",
 	'currencyFormat':"¤#,##0.00"
 })
+//end v1.x content
+);

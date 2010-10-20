@@ -1,4 +1,5 @@
-dojo.provide("dojo.dnd.common");
+define("dojo/dnd/common", ["dojo"], function(dojo) {
+dojo.getObject("dnd", true, dojo);
 
 dojo.dnd.getCopyKeyState = dojo.isCopyKey;
 
@@ -24,3 +25,6 @@ dojo.dnd.isFormElement = function(/*Event*/ e){
 	}
 	return " button textarea input select option ".indexOf(" " + t.tagName.toLowerCase() + " ") >= 0;	// Boolean
 };
+
+return dojo.dnd;
+});

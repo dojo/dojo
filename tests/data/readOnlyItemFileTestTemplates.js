@@ -1,8 +1,4 @@
-define("tests/data/readOnlyItemFileTestTemplates", [
-  "dojo/data/api/Read",
-  "dojo/data/api/Identity",
-  "dojo/date",
-  "dojo/date/stamp"], function() {
+define("tests/data/readOnlyItemFileTestTemplates", ["dojo/data/api/Read", "dojo/data/api/Identity", "dojo/date", "dojo/date/stamp"], function() {
 
 dojo.getObject("data.readOnlyItemFileTestTemplates", true, tests);
 

@@ -88,4 +88,5 @@ dojo.dnd.autoScrollNodes = function(e){
 	dojo.dnd.autoScroll(e);
 };
 
+return dojo.dnd;
 });

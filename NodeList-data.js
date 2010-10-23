@@ -163,4 +163,5 @@ define("dojo/NodeList-data", ["dojo"], function(d) {
 //		return r; // dojo.NodeList|Array|SingleItem
 //	};
 	
+return dojo.NodeList;
 });

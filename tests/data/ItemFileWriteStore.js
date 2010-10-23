@@ -1,11 +1,4 @@
-define("tests/data/ItemFileWriteStore", [
-  "dojo",
-  "tests/data/readOnlyItemFileTestTemplates",
-  "dojo/data/ItemFileWriteStore",
-  "dojo/data/api/Read",
-  "dojo/data/api/Identity",
-  "dojo/data/api/Write",
-  "dojo/data/api/Notification"], function(dojo) {
+define("tests/data/ItemFileWriteStore", ["dojo", "tests/data/readOnlyItemFileTestTemplates", "dojo/data/ItemFileWriteStore", "dojo/data/api/Read", "dojo/data/api/Identity", "dojo/data/api/Write", "dojo/data/api/Notification"], function(dojo) {
 
 dojo.getObject("data.ItemFileWriteStore", true, tests);
 

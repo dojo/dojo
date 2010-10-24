@@ -1,5 +1,5 @@
 define("dojo/_firebug/firebug", ["dojo"], function(dojo) {
-
+	
 dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
 	// summary: 
 	//		Log a debug message to indicate that a behavior has been
@@ -60,6 +60,9 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	//		Option for console height (ignored for popup)
 	//		|	var djConfig = {isDebug: true, debugHeight:100 }
 
+
+
+(function(){
 
 	var isNewIE = (/Trident/.test(window.navigator.userAgent));
 	if(isNewIE){
@@ -1207,6 +1210,8 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		window.console = null;
 	});
 }
+
+})();
 
 return dojo;
 });

@@ -5,7 +5,7 @@
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
-	var d = dojo;
+	var d = dojo, currentModule;
 //>>excludeEnd("webkitMobile");
 
 	d.mixin(d, {
@@ -415,10 +415,10 @@
 
 		// convert periods to slashes
 		var relpath = d._getModuleSymbols(moduleName).join("/") + '.js';
-
+		currentModule = moduleName;
 		var modArg = !omitModuleCheck ? moduleName : null;
 		var ok = d._loadPath(relpath, modArg);
-
+		currentModule = null;
 		if(!ok && !omitModuleCheck){
 			throw new Error("Could not load '" + moduleName + "'; last tried '" + relpath + "'");
 		}
@@ -565,8 +565,8 @@
 		//	|		dojo.require("foo.thud.xyzzy");
 		//	|	</script>
 		d._modulePrefixes[module] = { name: module, value: prefix };
-	}
-
+	};
+	
 	dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String?*/availableFlatLocales){
 		// summary:
 		//		Declares translated resources and loads them if necessary, in the
@@ -804,34 +804,76 @@
 		return new d._Url(loc, url); // dojo._Url
 	}
 
-  //addition to support script-inject module format
-  this.define = function(
-      name,
-      deps,
-      def
-    ) {
-      if (/^i18n!/.test(name)) {
-        //no deps for i18n! plugin; therefore deps are def
-        return deps.root || deps;
-      }
-      dojo.provide(name.replace(/\//g, "."));
-      for (var args= [], depName, i= 0; i<deps.length; i++) {
-        depName= deps[i].replace(/\//g, ".");
-        // look for i18n! followed by anything followed by "/nls/" followed by anything without "/" followed by eos.
-        var match= depName.match(/^i18n\!(.+)\.nls\.([^\.]+)$/);
-        if (match) {
-          //fool the build system
-          dojo["requireLocalization"](match[1], match[2]);
-        } else {
-          if (depName!="dojo" && depName!="dijit" && depName!="dojox" && !dojo._loadedModules[depName]) {
-              dojo.require(depName);
-          }
-          args.push(dojo.getObject(depName));
-        }
-      }
-      return def.apply(null, args);
-    };
-  dojo.simulatedLoading = 1;
+	//addition to support script-inject module format
+	this.define = function(name, deps, def){
+		if (/^i18n!/.test(name)) {
+			//no deps for i18n! plugin; therefore deps are def
+			return deps.root || deps;
+		}
+		if(!def){
+			// less than 3 args
+			if(deps){
+				// 2 args
+				def = deps;
+				deps = name;
+			}else{
+				// one arg
+				def = name;
+				deps = ["require", "exports", "module"];
+			}
+			name = currentModule.replace(/\./g,'/');
+		}
+		var dottedName = name.replace(/\//g, ".");
+		dojo.provide(dottedName);
+		var exports;
+		function resolvePath(relativeId){
+			if(relativeId.charAt(0) === '.'){
+				relativeId = name.substring(0, name.lastIndexOf('/') + 1) + relativeId;
+				while(lastId !== relativeId){
+					var lastId = relativeId;
+					relativeId = relativeId.replace(/\/[^\/]*\/\.\.\//,'/');
+				}
+				relativeId = relativeId.replace(/\/\.\//g,'/');
+			}
+			return relativeId.replace(/\//g, ".");
+		}
+		if(typeof def == "function"){
+			for(var args= [], depName, i= 0; i<deps.length; i++){
+				depName= resolvePath(deps[i]);
+				// look for i18n! followed by anything followed by "/nls/" followed by anything without "/" followed by eos.
+				var match= depName.match(/^i18n\!(.+)\.nls\.([^\.]+)$/);
+				if(match){
+					//fool the build system
+					dojo["requireLocalization"](match[1], match[2]);
+				}else{
+					var arg;
+					switch(depName){
+						case "require": arg = function(relativeId){
+							return dojo.require(resolvePath(relativeId));
+						}; break;
+						case "exports":  dojo._loadedModules[dottedName] = arg = {}; break;
+						case "module": var module = arg = {exports: dojo._loadedModules[dottedName]}; break;
+						case "dojo": case "dijit": case "dojox": 
+							arg = dojo.getObject(depName);
+							break; 
+						default: arg = dojo.require(depName);
+					}
+					args.push(arg);
+				}
+			}
+			var returned = def.apply(null, args);
+		}else{
+			returned = def;
+		}
+		
+		if(returned){
+			dojo._loadedModules[dottedName] = returned;
+		}
+		if(module){
+			dojo._loadedModules[dottedName] = module.exports;
+		}
+	};
+	dojo.simulatedLoading = 1;
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 })();

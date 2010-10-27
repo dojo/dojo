@@ -1,9 +1,11 @@
-dojo.provide("dojo._base");
-dojo.require("dojo._base.lang");
-dojo.require("dojo._base.array");
-dojo.require("dojo._base.declare");
-dojo.require("dojo._base.connect");
-dojo.require("dojo._base.Deferred");
-dojo.require("dojo._base.json");
-dojo.require("dojo._base.Color");
-dojo.requireIf(dojo.isBrowser, "dojo._base.browser");
+define("dojo/_base",[
+"dojo/_base/lang",
+"dojo/_base/array",
+"dojo/_base/declare",
+"dojo/_base/connect",
+"dojo/_base/Deferred",
+"dojo/_base/json",
+"dojo/_base/Color",
+dojo.isBrowser? "dojo/_base/browser" : "dojo/_base/lang"], function(){
+	return dojo;
+}); 

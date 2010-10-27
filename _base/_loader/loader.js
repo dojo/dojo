@@ -805,7 +805,27 @@
 	}
 
 	//addition to support script-inject module format
-	this.define = function(name, deps, def){
+	var define = this.define;
+	this.define = define ?
+	function(name, obj){
+		// an existing define is already defined, need to hook into define callbacks
+		if(typeof name == "string"){
+			if(/dojo|dijit/.test(name)){
+				dojo.provide(name.replace(/\//g, "."));
+			}
+			if(name.substring(0,5) == "i18n!"){
+				 // its an i18n bundle, put in dojo._loadedModules so getLocationization will work 
+				var locale = "ROOT";
+				name = name.substring(5).replace(/\/nls\/([\w-]+)\//, function(t, l){
+					locale = l.replace(/-/g,"_");
+					return "/nls/";
+				}).replace(/\//g, ".");
+				(dojo._loadedModules[name] = dojo._loadedModules[name] || {})[locale] = (obj.root || obj);
+			}
+		}
+		return define.apply(this, arguments);
+	} :
+	function(name, deps, def){
 		if (/^i18n!/.test(name)) {
 			//no deps for i18n! plugin; therefore deps are def
 			return deps.root || deps;
@@ -853,7 +873,7 @@
 						}; break;
 						case "exports":  dojo._loadedModules[dottedName] = arg = {}; break;
 						case "module": var module = arg = {exports: dojo._loadedModules[dottedName]}; break;
-						case "dojo": case "dijit": case "dojox": 
+						case "dojox": 
 							arg = dojo.getObject(depName);
 							break; 
 						default: arg = dojo.require(depName);
@@ -872,7 +892,10 @@
 		if(module){
 			dojo._loadedModules[dottedName] = module.exports;
 		}
+		return returned;
 	};
+	this.define("dojo", [], d);
+	this.define("dijit", [], this.dijit || (this.dijit = {}));
 	dojo.simulatedLoading = 1;
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);

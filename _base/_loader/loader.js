@@ -2,7 +2,7 @@
  * loader.js - A bootstrap module.  Runs before the hostenv_*.js file. Contains
  * all of the package loading methods.
  */
-
+var define;
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 	var d = dojo, currentModule;
@@ -805,8 +805,8 @@
 	}
 
 	//addition to support script-inject module format
-	var define = this.define;
-	this.define = define ?
+	var originalDefine = this.define;
+	define = originalDefine ?
 	function(name, obj){
 		// an existing define is already defined, need to hook into define callbacks
 		if(typeof name == "string"){
@@ -823,7 +823,7 @@
 				(dojo._loadedModules[name] = dojo._loadedModules[name] || {})[locale] = (obj.root || obj);
 			}
 		}
-		return define.apply(this, arguments);
+		return originalDefine.apply(this, arguments);
 	} :
 	function(name, deps, def){
 		if (/^i18n!/.test(name)) {
@@ -894,8 +894,8 @@
 		}
 		return returned;
 	};
-	this.define("dojo", [], d);
-	this.define("dijit", [], this.dijit || (this.dijit = {}));
+	define("dojo", [], d);
+	define("dijit", [], this.dijit || (this.dijit = {}));
 	dojo.simulatedLoading = 1;
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);

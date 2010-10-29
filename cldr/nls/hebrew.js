@@ -250,6 +250,6 @@ define("i18n!dojo/cldr/nls/hebrew", { root:
 })
 //end v1.x content
 ,
-"he":1,
-"ar":1
+"he": true,
+"ar": true
 });

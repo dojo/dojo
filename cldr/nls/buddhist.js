@@ -238,5 +238,5 @@ define("i18n!dojo/cldr/nls/buddhist", { root:
 })
 //end v1.x content
 ,
-"th":1
+"th": true
 });

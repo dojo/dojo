@@ -223,5 +223,5 @@ define("i18n!dojo/cldr/nls/islamic-civil", { root:
 })
 //end v1.x content
 ,
-"ar":1
+"ar": true
 });

@@ -174,6 +174,9 @@ define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
 							continue;
 						}
 						var unchanged = mutated && newResult === undefined;
+						if(mutated && !unchanged){ 
+							isError = newResult instanceof Error; 
+						} 
 						listener.deferred[unchanged && isError ? "reject" : "resolve"](unchanged ? result : newResult);
 					}
 					catch (e) {
@@ -192,7 +195,6 @@ define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
 		this.resolve = this.callback = function(value){
 			// summary:
 			//		Fulfills the Deferred instance successfully with the provide value
-			isError = false;
 			this.fired = 0;
 			this.results = [value, null];
 			complete(value);

@@ -176,23 +176,83 @@ doh.register("tests._base.Deferred",
 			t.is(dojo.global.results, undefined, "results is leaking into global");
 			t.is(dojo.global.fired, undefined, "fired is leaking into global");
 		},
-        function backAndForthProcess(t) {
-            var def = new dojo.Deferred();
-            var retval = 'fail';
+		function backAndForthProcess(t){
+			var def = new dojo.Deferred();
+			var retval = "fail";
 
-            def.addErrback(function() {
-                return 'ignore error and throw this good string';
-            }).addCallback(function() {
-                throw new Error('error1');
-            }).addErrback(function() {
-                return 'ignore second error and make it good again';
-            }).addCallback(function() {
-                retval = 'succeed';
-            });
+			def.addErrback(function(){
+				return "ignore error and throw this good string";
+			}).addCallback(function(){
+				throw new Error("error1");
+			}).addErrback(function(){
+				return "ignore second error and make it good again";
+			}).addCallback(function(){
+				retval = "succeed";
+			});
 
-            def.errback('');
+			def.errback("");
 
-            t.assertEqual('succeed', retval);
-        }	
-     ]
+			t.assertEqual("succeed", retval);
+		},
+		function backAndForthProcessThen(t){
+			var def = new dojo.Deferred;
+			var retval = "fail";
+
+			def.then(null, function(){
+				return "ignore error and throw this good string";
+			}).then(function(){
+				throw "error1";
+			}).then(null, function(){
+				return "ignore second error and make it good again";
+			}).then(function(){
+				retval = "succeed";
+			});
+
+			def.reject("");
+
+			t.assertEqual("succeed", retval);
+		},
+		function returnErrorObject(t){
+			var def = new dojo.Deferred();
+			var retval = "fail";
+
+			def.addCallback(function(){
+				return new Error("returning an error should work same as throwing");
+			}).addErrback(function(){
+				retval = "succeed";
+			});
+
+			def.callback();
+
+			t.assertEqual("succeed", retval);
+		},
+		function returnErrorObjectThen(t){
+			var def = new dojo.Deferred();
+			var retval = "fail";
+
+			def.then(function(){
+				return new Error("returning an error should NOT work same as throwing");
+			}).then(function(){
+				retval = "succeed";
+			});
+
+			def.resolve();
+
+			t.assertEqual("succeed", retval);
+		},
+		function errbackWithPromise(t){
+			var def = new dojo.Deferred();
+			var retval;
+
+			def.addCallbacks(function(){}, function(err){
+				return err;
+			});
+			def.promise.then(
+					function(){ retval = "fail"; },
+					function(){ retval = "succeed"; });
+			def.errback(new Error);
+
+			t.assertEqual("succeed", retval);
+		}
+ ]
 );

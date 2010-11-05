@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/ar/islamic-civil",
+define(
 //begin v1.x content
 ({
 	"dateFormatItem-yM": "M‏/yyyy", 

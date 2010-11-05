@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/pt/salutations",
+define(
 //begin v1.x content
 {
  pt: "Português",

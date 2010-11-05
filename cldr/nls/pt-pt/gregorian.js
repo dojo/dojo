@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/pt-pt/gregorian",
+define(
 //begin v1.x content
 ({
 	"quarters-standAlone-wide": [

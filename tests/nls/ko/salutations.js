@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/ko/salutations",
+define(
 //begin v1.x content
 {
  ko: "\uD55C\uAD6D\uC5B4",

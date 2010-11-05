@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/zh-tw/salutations",
+define(
 //begin v1.x content
 {
  'zh-tw': "漢語",

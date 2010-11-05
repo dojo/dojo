@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/ja/gregorian",
+define(
 //begin v1.x content
 ({
 	"field-weekday": "曜日", 

@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/cs/gregorian",
+define(
 //begin v1.x content
 ({
 	"dayPeriods-format-wide-pm": "odp.", 

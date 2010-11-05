@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/currency", { root: 
+define({ root: 
 //begin v1.x content
 // generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
 ({

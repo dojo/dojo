@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/en-us-hawaii/salutations",
+define(
 //begin v1.x content
 {
  hello: "Aloha"

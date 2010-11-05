@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/ru/gregorian",
+define(
 //begin v1.x content
 ({
 	"dateFormatItem-yM": "M.y", 

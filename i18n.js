@@ -1,4 +1,4 @@
-dojo.provide("dojo.i18n");
+define("dojo.i18n", ["dojo"], function(dojo){
 
 /*=====
 dojo.i18n = {
@@ -143,6 +143,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 				module.push(bundleName);
 				var filespec = module.join("/") + '.js';
 				loaded = dojo._loadPath(filespec, null, function(hash){
+					hash = hash.root || hash;
 					// Use singleton with prototype to point to parent bundle, then mix-in result from loadPath
 					var clazz = function(){};
 					clazz.prototype = parent;
@@ -245,3 +246,5 @@ dojo.i18n._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/loca
 		preload(extra[i]);
 	}
 };
+
+});

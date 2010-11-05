@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/en-au/salutations",
+define(
 //begin v1.x content
 {
  hello: "G'day"

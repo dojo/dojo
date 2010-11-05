@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/ar/hebrew",
+define(
 //begin v1.x content
 ({
 	"dateFormat-medium": "dd‏/MM‏/yyyy", 

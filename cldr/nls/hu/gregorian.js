@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/hu/gregorian",
+define(
 //begin v1.x content
 ({
 	"field-dayperiod": "napszak", 

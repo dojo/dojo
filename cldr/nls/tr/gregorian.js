@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/tr/gregorian",
+define(
 //begin v1.x content
 ({
 	"months-format-narrow": [

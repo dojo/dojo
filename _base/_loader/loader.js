@@ -2,7 +2,6 @@
  * loader.js - A bootstrap module.  Runs before the hostenv_*.js file. Contains
  * all of the package loading methods.
  */
-var define;
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 	var d = dojo, currentModule;
@@ -73,10 +72,13 @@ var define;
 
 		var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : d.baseUrl) + relpath;
 		try{
+			currentModule = module;
 			return !module ? d._loadUri(uri, cb) : d._loadUriAndCheck(uri, module, cb); // Boolean
 		}catch(e){
 			console.error(e);
 			return false; // Boolean
+		}finally{
+			currentModule = null;
 		}
 	}
 
@@ -104,7 +106,7 @@ var define;
 			d._loadedUrls.push(uri);
 			if(cb){
 				//conditional to support script-inject i18n bundle format
-				contents = /^define\("i18n!/.test(contents) ? contents : '('+contents+')';
+				contents = /^define\(/.test(contents) ? contents : '('+contents+')';
 			}else{
 				//Only do the scoping if no callback. If a callback is specified,
 				//it is most likely the i18n bundle stuff.
@@ -415,10 +417,8 @@ var define;
 
 		// convert periods to slashes
 		var relpath = d._getModuleSymbols(moduleName).join("/") + '.js';
-		currentModule = moduleName;
 		var modArg = !omitModuleCheck ? moduleName : null;
 		var ok = d._loadPath(relpath, modArg);
-		currentModule = null;
 		if(!ok && !omitModuleCheck){
 			throw new Error("Could not load '" + moduleName + "'; last tried '" + relpath + "'");
 		}
@@ -826,10 +826,6 @@ var define;
 		return originalDefine.apply(this, arguments);
 	} :
 	function(name, deps, def){
-		if (/^i18n!/.test(name)) {
-			//no deps for i18n! plugin; therefore deps are def
-			return deps.root || deps;
-		}
 		if(!def){
 			// less than 3 args
 			if(deps){
@@ -841,12 +837,13 @@ var define;
 				def = name;
 				deps = ["require", "exports", "module"];
 			}
-			name = currentModule.replace(/\./g,'/');
+			name = currentModule ? currentModule.replace(/\./g,'/') : "anon";
 		}
 		var dottedName = name.replace(/\//g, ".");
-		dojo.provide(dottedName);
-		var exports;
+		var exports = dojo.provide(dottedName);
+
 		function resolvePath(relativeId){
+			// do relative path resolution
 			if(relativeId.charAt(0) === '.'){
 				relativeId = name.substring(0, name.lastIndexOf('/') + 1) + relativeId;
 				while(lastId !== relativeId){
@@ -861,25 +858,29 @@ var define;
 			for(var args= [], depName, i= 0; i<deps.length; i++){
 				depName= resolvePath(deps[i]);
 				// look for i18n! followed by anything followed by "/nls/" followed by anything without "/" followed by eos.
-				var match= depName.match(/^i18n\!(.+)\.nls\.([^\.]+)$/);
-				if(match){
+				var exclamationIndex = depName.indexOf("!");
+				if(exclamationIndex > -1){
 					//fool the build system
-					dojo["requireLocalization"](match[1], match[2]);
+					if(depName.substring(0, exclamationIndex) == "i18n"){
+						var match = depName.match(/^i18n\!(.+)\.nls\.([^\.]+)$/);
+						dojo["requireLocalization"](match[1], match[2]);
+					}
+					arg = null; 
 				}else{
 					var arg;
 					switch(depName){
 						case "require": arg = function(relativeId){
 							return dojo.require(resolvePath(relativeId));
 						}; break;
-						case "exports":  dojo._loadedModules[dottedName] = arg = {}; break;
-						case "module": var module = arg = {exports: dojo._loadedModules[dottedName]}; break;
+						case "exports": arg = exports; break;
+						case "module": var module = arg = {exports: exports}; break;
 						case "dojox": 
 							arg = dojo.getObject(depName);
 							break; 
 						default: arg = dojo.require(depName);
 					}
-					args.push(arg);
 				}
+				args.push(arg);
 			}
 			var returned = def.apply(null, args);
 		}else{
@@ -888,11 +889,13 @@ var define;
 		
 		if(returned){
 			dojo._loadedModules[dottedName] = returned;
+			dojo.setObject(dottedName, returned);
 		}
 		if(module){
 			dojo._loadedModules[dottedName] = module.exports;
 		}
 		return returned;
+		
 	};
 	define("dojo", [], d);
 	define("dijit", [], this.dijit || (this.dijit = {}));

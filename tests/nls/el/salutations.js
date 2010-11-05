@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/el/salutations",
+define(
 //begin v1.x content
 {
  el: "Ελληνικά",

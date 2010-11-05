@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/he/islamic",
+define(
 //begin v1.x content
 ({
 	"dateFormat-medium": "d בMMM yyyy", 

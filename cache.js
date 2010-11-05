@@ -1,4 +1,4 @@
-dojo.provide("dojo.cache");
+define("dojo.cache", ["dojo"], function(dojo){
 
 /*=====
 dojo.cache = { 
@@ -7,7 +7,6 @@ dojo.cache = {
 };
 =====*/
 
-(function(){
 	var cache = {};
 	dojo.cache = function(/*String||Object*/module, /*String*/url, /*String||Object?*/value){
 		// summary:
@@ -113,4 +112,5 @@ dojo.cache = {
 		}
 		return val; //String
 	};
-})();
+	return dojo.cache;
+});

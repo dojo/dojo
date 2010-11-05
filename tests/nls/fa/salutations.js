@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/fa/salutations",
+define(
 //begin v1.x content
 {
  fa: "فارسی",

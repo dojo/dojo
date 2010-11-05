@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/salutations", { root: 
+define({ root: 
 //begin v1.x content
 {
  ar: "Arabic",

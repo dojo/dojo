@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/ja/salutations",
+define(
 //begin v1.x content
 {
  ja: "\u65E5\u672C\u8A9E",

@@ -1,4 +1,4 @@
-define("i18n!dojo/cldr/nls/th/buddhist",
+define(
 //begin v1.x content
 ({
 	"dateFormatItem-yM": "M/yyyy", 

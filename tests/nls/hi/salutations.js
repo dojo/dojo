@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/hi/salutations",
+define(
 //begin v1.x content
 {
  hi: "हिन्दी",

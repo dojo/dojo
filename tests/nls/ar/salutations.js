@@ -1,4 +1,4 @@
-define("i18n!dojo/tests/nls/ar/salutations",
+define(
 //begin v1.x content
 /*<?xml version="1.0" encoding="UTF-8" ?>*/
 // The above is a workaround for Konqueror and Safari (see bug #1010)

@@ -254,8 +254,10 @@ dojo.getObject("html", true, dojo);
 					// store the results (widgets, whatever) for potential retrieval
 					this.parseResults = dojo.parser.parse({
 						rootNode: rootNode,
-						dir: this.dir,
-						lang: this.lang
+						inherited: {
+							dir: this.dir,
+							lang: this.lang
+						}
 					});
 				}catch(e){
 					this._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);

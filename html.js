@@ -87,6 +87,10 @@ dojo.getObject("html", true, dojo);
 			// parseContent: Boolean
 			//		Should the node by passed to the parser after the new content is set
 			parseContent: false,
+
+			// startup: Boolean
+			//		Start the child widgets after parsing them.   Only obeyed if parseContent is true.
+			startup: true,
 			
 			// lifecyle methods
 			constructor: function(/* Object */params, /* String|DomNode */node){
@@ -254,6 +258,7 @@ dojo.getObject("html", true, dojo);
 					// store the results (widgets, whatever) for potential retrieval
 					this.parseResults = dojo.parser.parse({
 						rootNode: rootNode,
+						noStart: !this.startup,
 						inherited: {
 							dir: this.dir,
 							lang: this.lang

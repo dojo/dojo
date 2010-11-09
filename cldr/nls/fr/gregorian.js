@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"J", 
 		"F", 
@@ -41,7 +41,6 @@ define(
 		"novembre", 
 		"décembre"
 	], 
-	"dateFormatItem-EEEd": "d EEE", 
 	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormat-full": "EEEE d MMMM y", 
 	"dateFormatItem-Md": "d/M", 
@@ -148,7 +147,6 @@ define(
 	], 
 	"field-minute": "minute", 
 	"field-dayperiod": "cadran", 
-	"dayPeriods-format-wide-night": "soir", 
 	"days-standAlone-abbr": [
 		"dim.", 
 		"lun.", 
@@ -158,6 +156,7 @@ define(
 		"ven.", 
 		"sam."
 	], 
+	"dayPeriods-format-wide-night": "soir", 
 	"dateFormatItem-yyMMMd": "d MMM yy", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
@@ -239,9 +238,10 @@ define(
 	"dayPeriods-format-wide-afternoon": "après-midi", 
 	"field-second": "seconde", 
 	"dateFormatItem-yMMMEd": "EEE d MMM y", 
+	"dateFormatItem-Ed": "E d", 
 	"field-week": "semaine", 
 	"dateFormat-medium": "d MMM y", 
 	"dateFormatItem-Hms": "HH:mm:ss"
-})
+}
 //end v1.x content
 );

@@ -1,19 +1,19 @@
 define(
 //begin v1.x content
-({
+{
 	"dateFormatItem-yM": "M.y", 
 	"field-dayperiod": "AM/PM", 
 	"field-minute": "Минута", 
-	"dateFormatItem-MMMEd": "E d MMM", 
 	"eraNames": [
 		"до н.э.", 
 		"н.э."
 	], 
+	"dateFormatItem-MMMEd": "ccc, d MMM", 
 	"field-day-relative+-1": "Вчера", 
-	"dateFormatItem-MMdd": "dd.MM", 
+	"field-weekday": "День недели", 
 	"dateFormatItem-yQQQ": "y QQQ", 
 	"field-day-relative+-2": "Позавчера", 
-	"field-weekday": "День недели", 
+	"dateFormatItem-MMdd": "dd.MM", 
 	"days-standAlone-wide": [
 		"Воскресенье", 
 		"Понедельник", 
@@ -46,8 +46,8 @@ define(
 		"3-й кв.", 
 		"4-й кв."
 	], 
-	"dateFormatItem-y": "y", 
 	"dateFormatItem-yyMMMEEEd": "EEE, d MMM yy", 
+	"dateFormatItem-y": "y", 
 	"timeFormat-full": "H:mm:ss zzzz", 
 	"dateFormatItem-yyyy": "y", 
 	"months-standAlone-abbr": [
@@ -64,10 +64,11 @@ define(
 		"нояб.", 
 		"дек."
 	], 
-	"dateFormatItem-Ed": "E d", 
+	"dateFormatItem-Ed": "E, d", 
 	"dateFormatItem-yMMM": "LLL y", 
-	"dateFormatItem-yyyyLLLL": "LLLL y", 
 	"field-day-relative+0": "Сегодня", 
+	"dateFormatItem-yyyyLLLL": "LLLL y", 
+	"field-day-relative+1": "Завтра", 
 	"days-standAlone-narrow": [
 		"В", 
 		"П", 
@@ -77,7 +78,6 @@ define(
 		"П", 
 		"С"
 	], 
-	"field-day-relative+1": "Завтра", 
 	"eraAbbr": [
 		"до н.э.", 
 		"н.э."
@@ -144,13 +144,13 @@ define(
 		"4-й кв."
 	], 
 	"days-format-abbr": [
-		"Вс", 
-		"Пн", 
-		"Вт", 
-		"Ср", 
-		"Чт", 
-		"Пт", 
-		"Сб"
+		"вс", 
+		"пн", 
+		"вт", 
+		"ср", 
+		"чт", 
+		"пт", 
+		"сб"
 	], 
 	"dateFormatItem-M": "L", 
 	"days-format-narrow": [
@@ -227,6 +227,6 @@ define(
 		"до н.э.", 
 		"н.э."
 	]
-})
+}
 //end v1.x content
 );

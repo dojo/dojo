@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"J", 
 		"F", 
@@ -232,6 +232,6 @@ define(
 	"dateFormatItem-yMMMEd": "EEE, d 'de' MMM 'de' y", 
 	"field-week": "Semana", 
 	"dateFormat-medium": "dd/MM/yyyy"
-})
+}
 //end v1.x content
 );

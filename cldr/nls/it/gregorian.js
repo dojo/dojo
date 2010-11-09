@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"G", 
 		"F", 
@@ -225,10 +225,11 @@ define(
 	"dateFormat-short": "dd/MM/yy", 
 	"field-second": "secondo", 
 	"dateFormatItem-yMMMEd": "EEE d MMM y", 
+	"dateFormatItem-Ed": "E d", 
 	"field-week": "settimana", 
 	"dateFormat-medium": "dd/MMM/y", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "hh:mm:ss a"
-})
+}
 //end v1.x content
 );

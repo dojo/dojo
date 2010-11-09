@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"J", 
 		"F", 
@@ -19,7 +19,7 @@ define(
 	"dateFormatItem-yyQQQQ": "QQQQ yy", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"dateFormatItem-yMEd": "EEE, d.M.y", 
-	"dateFormatItem-MMMEd": "E d. MMM", 
+	"dateFormatItem-MMMEd": "E, d. MMM", 
 	"eraNarrow": [
 		"v. Chr.", 
 		"n. Chr."
@@ -42,7 +42,6 @@ define(
 		"Dezember"
 	], 
 	"dayPeriods-format-wide-evening": "abends", 
-	"dateFormatItem-EEEd": "d. EEE", 
 	"dayPeriods-format-wide-pm": "nachm.", 
 	"dateFormat-full": "EEEE, d. MMMM y", 
 	"dateFormatItem-Md": "d.M.", 
@@ -76,8 +75,8 @@ define(
 	"dateFormatItem-yMMM": "MMM y", 
 	"dateFormatItem-yQ": "Q y", 
 	"dateFormatItem-yyyyMMMM": "MMMM y", 
-	"dateFormatItem-MMdd": "dd.MM.", 
 	"field-hour": "Stunde", 
+	"dateFormatItem-MMdd": "dd.MM.", 
 	"months-format-abbr": [
 		"Jan", 
 		"Feb", 
@@ -97,7 +96,7 @@ define(
 	"field-day-relative+0": "heute", 
 	"field-day-relative+1": "morgen", 
 	"field-day-relative+2": "übermorgen", 
-	"dateFormatItem-H": "HH", 
+	"dateFormatItem-H": "HH 'Uhr'", 
 	"field-day-relative+3": "überübermorgen", 
 	"months-standAlone-abbr": [
 		"Jan", 
@@ -144,7 +143,6 @@ define(
 	], 
 	"field-minute": "Minute", 
 	"field-dayperiod": "Tageshälfte", 
-	"dayPeriods-format-wide-night": "nachts", 
 	"days-standAlone-abbr": [
 		"So.", 
 		"Mo.", 
@@ -154,6 +152,7 @@ define(
 		"Fr.", 
 		"Sa."
 	], 
+	"dayPeriods-format-wide-night": "nachts", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-day-relative+-1": "gestern", 
@@ -228,11 +227,11 @@ define(
 	"dayPeriods-format-wide-afternoon": "nachmittags", 
 	"field-second": "Sekunde", 
 	"dateFormatItem-yMMMEd": "EEE, d. MMM y", 
-	"dateFormatItem-Ed": "E d.", 
+	"dateFormatItem-Ed": "E, d.", 
 	"field-week": "Woche", 
 	"dateFormat-medium": "dd.MM.yyyy", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-yyyy": "y"
-})
+}
 //end v1.x content
 );

@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"Ι", 
 		"Φ", 
@@ -68,9 +68,9 @@ define(
 	], 
 	"timeFormat-long": "h:mm:ss a z", 
 	"field-year": "Έτος", 
-	"dateFormatItem-yMMM": "MMM y", 
+	"dateFormatItem-yMMM": "LLL y", 
 	"dateFormatItem-yQ": "y Q", 
-	"dateFormatItem-yyyyMMMM": "MMMM y", 
+	"dateFormatItem-yyyyMMMM": "LLLL y", 
 	"field-hour": "Ώρα", 
 	"dateFormatItem-MMdd": "dd/MM", 
 	"months-format-abbr": [
@@ -132,7 +132,7 @@ define(
 		"Σάββατο"
 	], 
 	"dateFormatItem-MMMMd": "d MMMM", 
-	"dateFormatItem-yyMMM": "MMM yy", 
+	"dateFormatItem-yyMMM": "LLL yy", 
 	"timeFormat-medium": "h:mm:ss a", 
 	"dateFormatItem-Hm": "HH:mm", 
 	"quarters-standAlone-abbr": [
@@ -163,7 +163,6 @@ define(
 	"field-day-relative+-3": "Πριν από τρεις ημέρες", 
 	"dateFormatItem-MMMd": "d MMM", 
 	"dateFormatItem-MEd": "E, d/M", 
-	"dateFormatItem-yMMMM": "LLLL y", 
 	"field-day": "Ημέρα", 
 	"days-format-wide": [
 		"Κυριακή", 
@@ -237,6 +236,6 @@ define(
 	"dateFormat-medium": "d MMM y", 
 	"dateFormatItem-mmss": "mm:ss", 
 	"dateFormatItem-yyyy": "y"
-})
+}
 //end v1.x content
 );

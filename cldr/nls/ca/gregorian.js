@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"g", 
 		"f", 
@@ -230,6 +230,6 @@ define(
 	"dateFormatItem-mmss": "mm:ss", 
 	"dateFormatItem-Hms": "H:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a"
-})
+}
 //end v1.x content
 );

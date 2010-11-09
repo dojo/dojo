@@ -1,18 +1,16 @@
 define(
 //begin v1.x content
-// generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
-({
-	AUD_displayName:"ดอลลาร์ออสเตรเลีย",
-	CAD_displayName:"ดอลลาร์แคนาดา",
-	CHF_displayName:"ฟรังก์สวิส",
-	CNY_displayName:"หยวนเหรินหมินปี้ (สาธารณรัฐประชาชนจีน)",
-	EUR_displayName:"ยูโร",
-	GBP_displayName:"ปอนด์สเตอร์ลิง (สหราชอาณาจักร)",
-	HKD_displayName:"ดอลลาร์ฮ่องกง",
-	JPY_displayName:"เยนญี่ปุ่น",
-	JPY_symbol:"¥",
-	USD_displayName:"ดอลลาร์สหรัฐ"
-})
-                 
+{
+	"HKD_displayName": "ดอลลาร์ฮ่องกง", 
+	"CHF_displayName": "ฟรังก์สวิส", 
+	"JPY_symbol": "¥", 
+	"CAD_displayName": "ดอลลาร์แคนาดา", 
+	"CNY_displayName": "หยวนเหรินหมินปี้ (สาธารณรัฐประชาชนจีน)", 
+	"AUD_displayName": "ดอลลาร์ออสเตรเลีย", 
+	"JPY_displayName": "เยนญี่ปุ่น", 
+	"USD_displayName": "ดอลลาร์สหรัฐ", 
+	"GBP_displayName": "ปอนด์สเตอร์ลิง (สหราชอาณาจักร)", 
+	"EUR_displayName": "ยูโร"
+}
 //end v1.x content
 );

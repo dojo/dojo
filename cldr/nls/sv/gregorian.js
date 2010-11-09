@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"J", 
 		"F", 
@@ -74,7 +74,7 @@ define(
 	], 
 	"timeFormat-long": "HH:mm:ss z", 
 	"field-year": "år", 
-	"dateFormatItem-yMMM": "y MMM", 
+	"dateFormatItem-yMMM": "MMM y", 
 	"dateFormatItem-yQ": "yyyy Q", 
 	"field-hour": "timme", 
 	"dateFormatItem-MMdd": "dd/MM", 
@@ -240,6 +240,6 @@ define(
 	"dateFormatItem-yyyyQQQQ": "QQQQ y", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a"
-})
+}
 //end v1.x content
 );

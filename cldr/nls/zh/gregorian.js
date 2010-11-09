@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"1月", 
 		"2月", 
@@ -72,8 +72,8 @@ define(
 	"dateFormatItem-yMMM": "y年MMM", 
 	"dateFormatItem-yQ": "y年QQQ", 
 	"dateFormatItem-yyyyMMMM": "y年MMMM", 
-	"dateFormatItem-MMdd": "MM-dd", 
 	"field-hour": "小时", 
+	"dateFormatItem-MMdd": "MM-dd", 
 	"months-format-abbr": [
 		"1月", 
 		"2月", 
@@ -120,7 +120,7 @@ define(
 		"第3季度", 
 		"第4季度"
 	], 
-	"dateFormatItem-M": "L", 
+	"dateFormatItem-M": "M月", 
 	"days-standAlone-wide": [
 		"星期日", 
 		"星期一", 
@@ -145,7 +145,6 @@ define(
 	], 
 	"field-minute": "分钟", 
 	"field-dayperiod": "上午/下午", 
-	"dayPeriods-format-wide-night": "晚上", 
 	"days-standAlone-abbr": [
 		"周日", 
 		"周一", 
@@ -155,10 +154,11 @@ define(
 		"周五", 
 		"周六"
 	], 
+	"dayPeriods-format-wide-night": "晚上", 
 	"dateFormatItem-d": "d日", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-day-relative+-1": "昨天", 
-	"dateFormatItem-h": "ah", 
+	"dateFormatItem-h": "ah时", 
 	"dateTimeFormat-long": "{1}{0}", 
 	"field-day-relative+-2": "前天", 
 	"dateFormatItem-MMMd": "MMMd日", 
@@ -242,6 +242,6 @@ define(
 	"dateFormatItem-Hms": "H:mm:ss", 
 	"dateFormatItem-hms": "ah:mm:ss", 
 	"dateFormatItem-yyyy": "y年"
-})
+}
 //end v1.x content
 );

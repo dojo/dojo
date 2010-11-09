@@ -1,10 +1,10 @@
 define(
 //begin v1.x content
-({
+{
 	"dateFormatItem-yM": "M/y", 
 	"field-dayperiod": "AM/PM", 
-	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormatItem-yQ": "Q y", 
+	"dayPeriods-format-wide-pm": "PM", 
 	"field-minute": "Minute", 
 	"eraNames": [
 		"Before Christ", 
@@ -13,9 +13,9 @@ define(
 	"dateFormatItem-MMMEd": "E, MMM d", 
 	"dateTimeFormat-full": "{1} {0}", 
 	"field-day-relative+-1": "Yesterday", 
+	"field-weekday": "Day of the Week", 
 	"dateFormatItem-hms": "h:mm:ss a", 
 	"dateFormatItem-yQQQ": "QQQ y", 
-	"field-weekday": "Day of the Week", 
 	"days-standAlone-wide": [
 		"Sunday", 
 		"Monday", 
@@ -41,10 +41,10 @@ define(
 		"D"
 	], 
 	"dateTimeFormat-short": "{1} {0}", 
-	"dayPeriods-format-wide-am": "AM", 
-	"dateTimeFormat-medium": "{1} {0}", 
 	"field-era": "Era", 
 	"field-hour": "Hour", 
+	"dayPeriods-format-wide-am": "AM", 
+	"dateTimeFormat-medium": "{1} {0}", 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "h:mm:ss a zzzz", 
 	"months-standAlone-abbr": [
@@ -63,6 +63,7 @@ define(
 	], 
 	"dateFormatItem-yMMM": "MMM y", 
 	"field-day-relative+0": "Today", 
+	"field-day-relative+1": "Tomorrow", 
 	"days-standAlone-narrow": [
 		"S", 
 		"M", 
@@ -72,7 +73,6 @@ define(
 		"F", 
 		"S"
 	], 
-	"field-day-relative+1": "Tomorrow", 
 	"eraAbbr": [
 		"BC", 
 		"AD"
@@ -224,6 +224,6 @@ define(
 		"B", 
 		"A"
 	]
-})
+}
 //end v1.x content
 );

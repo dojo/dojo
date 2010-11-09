@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"1월", 
 		"2월", 
@@ -72,7 +72,6 @@ define(
 	"dateFormatItem-yQ": "y년 Q분기", 
 	"field-hour": "시", 
 	"dateFormatItem-MMdd": "MM. dd", 
-	"dateFormatItem-yyQ": "yy년 Q분기", 
 	"months-format-abbr": [
 		"1월", 
 		"2월", 
@@ -87,10 +86,12 @@ define(
 		"11월", 
 		"12월"
 	], 
+	"dateFormatItem-yyQ": "yy년 Q분기", 
 	"timeFormat-full": "a h시 m분 s초 zzzz", 
 	"field-day-relative+0": "오늘", 
 	"field-day-relative+1": "내일", 
 	"field-day-relative+2": "모레", 
+	"dateFormatItem-H": "H시", 
 	"field-day-relative+3": "3일후", 
 	"months-standAlone-abbr": [
 		"1월", 
@@ -119,7 +120,7 @@ define(
 		"제 4/4분기"
 	], 
 	"dateFormatItem-HHmmss": "HH:mm:ss", 
-	"dateFormatItem-M": "L", 
+	"dateFormatItem-M": "M월", 
 	"days-standAlone-wide": [
 		"일요일", 
 		"월요일", 
@@ -153,10 +154,10 @@ define(
 		"금", 
 		"토"
 	], 
-	"dateFormatItem-d": "d", 
+	"dateFormatItem-d": "d일", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-day-relative+-1": "어제", 
-	"dateFormatItem-h": "a h", 
+	"dateFormatItem-h": "a h시", 
 	"dateTimeFormat-long": "{1} {0}", 
 	"field-day-relative+-2": "그저께", 
 	"field-day-relative+-3": "그끄제", 
@@ -175,7 +176,7 @@ define(
 	], 
 	"field-zone": "시간대", 
 	"dateFormatItem-yyyyMM": "yyyy. MM", 
-	"dateFormatItem-y": "y", 
+	"dateFormatItem-y": "y년", 
 	"months-standAlone-narrow": [
 		"1월", 
 		"2월", 
@@ -237,6 +238,6 @@ define(
 	"dateTimeFormat-short": "{1} {0}", 
 	"dateFormatItem-Hms": "H시 m분 s초", 
 	"dateFormatItem-hms": "a h:mm:ss"
-})
+}
 //end v1.x content
 );

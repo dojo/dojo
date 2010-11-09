@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"ม.ค.", 
 		"ก.พ.", 
@@ -227,6 +227,6 @@ define(
 	"dateFormatItem-mmss": "mm:ss", 
 	"dateTimeFormat-short": "{1}, {0}", 
 	"dateFormatItem-Hms": "H:mm:ss"
-})
+}
 //end v1.x content
 );

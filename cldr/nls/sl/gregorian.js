@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"field-dayperiod": "Čas dneva", 
 	"dayPeriods-format-wide-pm": "pop.", 
 	"field-minute": "Minuta", 
@@ -8,9 +8,10 @@ define(
 		"pred našim štetjem", 
 		"naše štetje"
 	], 
+	"dateFormatItem-MMMEd": "E., d. MMM", 
 	"field-day-relative+-1": "Včeraj", 
-	"field-day-relative+-2": "Predvčerajšnjim", 
 	"field-weekday": "Dan v tednu", 
+	"field-day-relative+-2": "Predvčerajšnjim", 
 	"field-day-relative+-3": "Pred tremi dnevi", 
 	"days-standAlone-wide": [
 		"nedelja", 
@@ -36,8 +37,8 @@ define(
 		"d"
 	], 
 	"field-era": "Doba", 
-	"dayPeriods-format-wide-am": "dop.", 
 	"field-hour": "Ura", 
+	"dayPeriods-format-wide-am": "dop.", 
 	"dateFormatItem-y": "y", 
 	"timeFormat-full": "HH:mm:ss zzzz", 
 	"months-standAlone-abbr": [
@@ -54,7 +55,10 @@ define(
 		"nov", 
 		"dec"
 	], 
+	"dateFormatItem-Ed": "E., d.", 
+	"dateFormatItem-yMMM": "MMM y", 
 	"field-day-relative+0": "Danes", 
+	"field-day-relative+1": "Jutri", 
 	"days-standAlone-narrow": [
 		"n", 
 		"p", 
@@ -64,7 +68,6 @@ define(
 		"p", 
 		"s"
 	], 
-	"field-day-relative+1": "Jutri", 
 	"eraAbbr": [
 		"pr. n. št.", 
 		"po Kr."
@@ -76,7 +79,7 @@ define(
 	"timeFormat-medium": "HH:mm:ss", 
 	"field-zone": "Območje", 
 	"dateFormatItem-Hm": "HH:mm", 
-	"dateFormat-medium": "d. MMM. yyyy", 
+	"dateFormat-medium": "d. MMM yyyy", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"quarters-standAlone-wide": [
 		"1. četrtletje", 
@@ -101,25 +104,25 @@ define(
 		"november", 
 		"december"
 	], 
+	"dateFormatItem-MMMd": "d. MMM", 
 	"dateFormatItem-yyQ": "Q/yy", 
 	"timeFormat-long": "HH:mm:ss z", 
 	"months-format-abbr": [
-		"jan", 
-		"feb", 
-		"mar", 
-		"apr", 
+		"jan.", 
+		"feb.", 
+		"mar.", 
+		"apr.", 
 		"maj", 
-		"jun", 
-		"jul", 
-		"avg", 
-		"sep", 
-		"okt", 
-		"nov", 
-		"dec"
+		"jun.", 
+		"jul.", 
+		"avg.", 
+		"sep.", 
+		"okt.", 
+		"nov.", 
+		"dec."
 	], 
 	"timeFormat-short": "HH:mm", 
 	"field-month": "Mesec", 
-	"dateFormatItem-MMMMd": "d. MMMM", 
 	"quarters-format-abbr": [
 		"Q1", 
 		"Q2", 
@@ -135,7 +138,6 @@ define(
 		"pet", 
 		"sob"
 	], 
-	"dateFormatItem-MMMMdd": "dd. MMMM", 
 	"dateFormatItem-mmss": "mm:ss", 
 	"days-format-narrow": [
 		"n", 
@@ -148,6 +150,7 @@ define(
 	], 
 	"field-second": "Sekunda", 
 	"field-day": "Dan", 
+	"dateFormatItem-MEd": "E., d. MM.", 
 	"months-format-narrow": [
 		"j", 
 		"f", 
@@ -173,8 +176,10 @@ define(
 	], 
 	"dateFormat-short": "d. MM. yy", 
 	"dateFormatItem-yyyyM": "M/yyyy", 
+	"dateFormatItem-yMMMEd": "E., d. MMM y", 
 	"dateFormat-full": "EEEE, dd. MMMM y", 
 	"dateFormatItem-Md": "d. M.", 
+	"dateFormatItem-yMEd": "E., d. M. y", 
 	"months-format-wide": [
 		"januar", 
 		"februar", 
@@ -208,6 +213,6 @@ define(
 		"pr. n. št.", 
 		"po Kr."
 	]
-})
+}
 //end v1.x content
 );

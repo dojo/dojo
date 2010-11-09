@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"dateFormat-medium": "dd/MM/yyyy", 
 	"dateFormatItem-MMMEd": "E, d בMMM", 
 	"dateFormatItem-yMEd": "EEE, d.M.yyyy", 
@@ -28,7 +28,6 @@ define(
 	"eraNames": [
 		"לבה״ע"
 	], 
-	"dateFormatItem-MMMMEd": "E, d בMMMM", 
 	"days-standAlone-narrow": [
 		"א", 
 		"ב", 
@@ -38,6 +37,7 @@ define(
 		"ו", 
 		"ש"
 	], 
+	"dateFormatItem-MMMMEd": "E, d בMMMM", 
 	"dayPeriods-format-wide-pm": "אחה״צ", 
 	"months-standAlone-abbr": [
 		"תשרי", 
@@ -120,6 +120,6 @@ define(
 		"יום ו׳", 
 		"שבת"
 	]
-})
+}
 //end v1.x content
 );

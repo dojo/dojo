@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"T", 
 		"H", 
@@ -38,9 +38,8 @@ define(
 		"marraskuuta", 
 		"joulukuuta"
 	], 
-	"dateFormatItem-EEEd": "EEE d.", 
 	"dayPeriods-format-wide-pm": "ip.", 
-	"dateFormat-full": "EEEE d. MMMM y", 
+	"dateFormat-full": "cccc d. MMMM y", 
 	"dateFormatItem-Md": "d.M.", 
 	"dayPeriods-standAlone-wide-pm": "ip.", 
 	"dayPeriods-format-abbr-am": "ap.", 
@@ -228,12 +227,13 @@ define(
 	"dateFormat-short": "d.M.yyyy", 
 	"field-second": "sekunti", 
 	"dateFormatItem-yMMMEd": "EEE d. MMM y", 
+	"dateFormatItem-Ed": "ccc d.", 
 	"field-week": "viikko", 
 	"dateFormat-medium": "d.M.yyyy", 
 	"dateFormatItem-yyyyM": "M/yyyy", 
 	"dateFormatItem-yyyyQQQQ": "QQQQ y", 
 	"dateFormatItem-Hms": "H.mm.ss", 
 	"dateFormatItem-hms": "h.mm.ss a"
-})
+}
 //end v1.x content
 );

@@ -1,10 +1,10 @@
 define(
 //begin v1.x content
-({
+{
 	"dateFormatItem-yM": "M‏/yyyy", 
 	"field-dayperiod": "ص/م", 
-	"dayPeriods-format-wide-pm": "م", 
 	"dateFormatItem-yQ": "yyyy Q", 
+	"dayPeriods-format-wide-pm": "م", 
 	"field-minute": "الدقائق", 
 	"eraNames": [
 		"قبل الميلاد", 
@@ -12,9 +12,9 @@ define(
 	], 
 	"dateFormatItem-MMMEd": "E d MMM", 
 	"field-day-relative+-1": "أمس", 
-	"dateFormatItem-MMdd": "dd‏/MM", 
-	"dateFormatItem-yQQQ": "y QQQ", 
 	"field-weekday": "اليوم", 
+	"dateFormatItem-yQQQ": "y QQQ", 
+	"dateFormatItem-MMdd": "dd‏/MM", 
 	"days-standAlone-wide": [
 		"الأحد", 
 		"الإثنين", 
@@ -39,9 +39,9 @@ define(
 		"ب", 
 		"د"
 	], 
-	"dayPeriods-format-wide-am": "ص", 
 	"field-era": "العصر", 
 	"field-hour": "الساعات", 
+	"dayPeriods-format-wide-am": "ص", 
 	"quarters-standAlone-abbr": [
 		"الربع الأول", 
 		"الربع الثاني", 
@@ -64,8 +64,10 @@ define(
 		"نوفمبر", 
 		"ديسمبر"
 	], 
+	"dateFormatItem-Ed": "E، d", 
 	"dateFormatItem-yMMM": "MMM y", 
 	"field-day-relative+0": "اليوم", 
+	"field-day-relative+1": "غدًا", 
 	"days-standAlone-narrow": [
 		"ح", 
 		"ن", 
@@ -75,7 +77,6 @@ define(
 		"ج", 
 		"س"
 	], 
-	"field-day-relative+1": "غدًا", 
 	"eraAbbr": [
 		"ق.م", 
 		"م"
@@ -234,6 +235,6 @@ define(
 		"ق.م", 
 		"م"
 	]
-})
+}
 //end v1.x content
 );

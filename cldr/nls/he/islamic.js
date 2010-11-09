@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"dateFormat-medium": "d בMMM yyyy", 
 	"dateFormatItem-MMMEd": "E, d בMMM", 
 	"dateFormatItem-yMEd": "EEE, d.M.yyyy", 
@@ -114,6 +114,6 @@ define(
 		"יום ו׳", 
 		"שבת"
 	]
-})
+}
 //end v1.x content
 );

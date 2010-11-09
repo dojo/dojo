@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"J", 
 		"F", 
@@ -39,7 +39,7 @@ define(
 		"november", 
 		"desember"
 	], 
-	"dateFormatItem-EEEd": "EEE d", 
+	"dateFormatItem-EEEd": "EEE d.", 
 	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormat-full": "EEEE d. MMMM y", 
 	"dateFormatItem-Md": "d.M.", 
@@ -229,6 +229,6 @@ define(
 	"dateFormat-medium": "d. MMM y", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a"
-})
+}
 //end v1.x content
 );

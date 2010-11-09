@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"dateFormatItem-yM": "M/yyyy", 
 	"dateFormatItem-yQ": "Q yyyy", 
 	"dayPeriods-format-wide-pm": "หลังเที่ยง", 
@@ -113,6 +113,6 @@ define(
 	"eraNarrow": [
 		"พ.ศ."
 	]
-})
+}
 //end v1.x content
 );

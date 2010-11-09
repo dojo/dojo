@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"dateFormat-medium": "dd‏/MM‏/yyyy", 
 	"dateFormatItem-MMMEd": "E d MMM", 
 	"dateFormatItem-yMEd": "EEE، d/‏M/‏yyyy", 
@@ -151,6 +151,6 @@ define(
 		"جمعة", 
 		"سبت"
 	]
-})
+}
 //end v1.x content
 );

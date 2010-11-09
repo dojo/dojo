@@ -1,21 +1,20 @@
 define(
 //begin v1.x content
-// generated from ldml/main/*.xml, xpath: ldml/numbers
-({
-	'decimal':",",
-	'group':".",
-	'list':",",
-	'percentSign':"%",
-	'nativeZeroDigit':"0",
-	'patternDigit':"#",
-	'plusSign':"+",
-	'minusSign':"-",
-	'exponential':"e",
-	'perMille':"‰",
-	'infinity':"∞",
-	'nan':"NaN",
-	'percentFormat':"#,##0%",
-	'currencyFormat':"#,##0.00 ¤"
-})
+{
+	"group": ".", 
+	"percentSign": "%", 
+	"exponential": "e", 
+	"percentFormat": "#,##0%", 
+	"list": ",", 
+	"infinity": "∞", 
+	"patternDigit": "#", 
+	"minusSign": "-", 
+	"decimal": ",", 
+	"nan": "NaN", 
+	"nativeZeroDigit": "0", 
+	"perMille": "‰", 
+	"currencyFormat": "#,##0.00 ¤", 
+	"plusSign": "+"
+}
 //end v1.x content
 );

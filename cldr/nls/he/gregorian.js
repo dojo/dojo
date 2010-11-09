@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"field-weekday": "יום בשבוע", 
 	"dateFormatItem-yQQQ": "y QQQ", 
 	"dateFormatItem-yMEd": "EEE, d.M.yyyy", 
@@ -93,13 +93,13 @@ define(
 		"נוב׳", 
 		"דצמ׳"
 	], 
-	"quarters-standAlone-wide": [
+	"quarters-format-abbr": [
 		"רבעון 1", 
 		"רבעון 2", 
 		"רבעון 3", 
 		"רבעון 4"
 	], 
-	"quarters-format-abbr": [
+	"quarters-standAlone-wide": [
 		"רבעון 1", 
 		"רבעון 2", 
 		"רבעון 3", 
@@ -208,6 +208,6 @@ define(
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a", 
 	"dateFormatItem-yyyy": "y"
-})
+}
 //end v1.x content
 );

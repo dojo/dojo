@@ -1,19 +1,19 @@
 define(
 //begin v1.x content
-({
+{
 	"field-dayperiod": "Časť dňa", 
-	"dayPeriods-format-wide-pm": "popoludní", 
 	"dateFormatItem-yQ": "Q yyyy", 
+	"dayPeriods-format-wide-pm": "popoludní", 
 	"field-minute": "Minúta", 
-	"dateFormatItem-MMMEd": "E, d. MMM", 
 	"eraNames": [
 		"pred n.l.", 
 		"n.l."
 	], 
+	"dateFormatItem-MMMEd": "E, d. MMM", 
 	"field-day-relative+-1": "Včera", 
+	"field-weekday": "Deň v týždni", 
 	"dateFormatItem-yQQQ": "QQQ y", 
 	"field-day-relative+-2": "Predvčerom", 
-	"field-weekday": "Deň v týždni", 
 	"field-day-relative+-3": "Pred tromi dňami", 
 	"days-standAlone-wide": [
 		"nedeľa", 
@@ -38,9 +38,9 @@ define(
 		"n", 
 		"d"
 	], 
-	"dayPeriods-format-wide-am": "dopoludnia", 
 	"field-era": "Éra", 
 	"field-hour": "Hodina", 
+	"dayPeriods-format-wide-am": "dopoludnia", 
 	"timeFormat-full": "H:mm:ss zzzz", 
 	"months-standAlone-abbr": [
 		"jan", 
@@ -58,6 +58,7 @@ define(
 	], 
 	"dateFormatItem-yMMM": "LLL y", 
 	"field-day-relative+0": "Dnes", 
+	"field-day-relative+1": "Zajtra", 
 	"days-standAlone-narrow": [
 		"N", 
 		"P", 
@@ -67,7 +68,6 @@ define(
 		"P", 
 		"S"
 	], 
-	"field-day-relative+1": "Zajtra", 
 	"eraAbbr": [
 		"pred n.l.", 
 		"n.l."
@@ -220,6 +220,6 @@ define(
 		"pred n.l.", 
 		"n.l."
 	]
-})
+}
 //end v1.x content
 );

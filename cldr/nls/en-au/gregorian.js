@@ -1,19 +1,17 @@
 define(
 //begin v1.x content
-// generated from ldml/main/*.xml, xpath: ldml/calendars/calendar-gregorian
-({
-	'dateFormat-full': "EEEE, d MMMM y",
-	'dateFormat-long': "d MMMM y",
-	'dateFormat-medium': "dd/MM/yyyy",
-	'dateFormat-short': "d/MM/yy",
-	'dateFormatItem-MEd':"E, d/M",
-	'dateFormatItem-MMdd':"dd/MM",
-	'dateFormatItem-MMMEd':"E, d MMM",
-	'dateFormatItem-MMMMd':"d MMMM",
-	'dateFormatItem-yMEd':"EEE, d/M/y",
-	'dateFormatItem-yyyyMM':"MM/yyyy",
-	'dateFormatItem-yyyyMMMM':"MMMM y"
-})
-                        
+{
+	"dateFormatItem-yMEd": "EEE, d/M/y", 
+	"dateFormatItem-yyyyMMMM": "MMMM y", 
+	"dateFormatItem-MEd": "E, d/M", 
+	"dateFormat-medium": "dd/MM/yyyy", 
+	"dateFormatItem-MMdd": "dd/MM", 
+	"dateFormatItem-yyyyMM": "MM/yyyy", 
+	"dateFormat-full": "EEEE, d MMMM y", 
+	"dateFormatItem-MMMMd": "d MMMM", 
+	"dateFormat-short": "d/MM/yy", 
+	"dateFormat-long": "d MMMM y", 
+	"dateFormatItem-MMMEd": "E, d MMM"
+}
 //end v1.x content
 );

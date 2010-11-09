@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"field-dayperiod": "napszak", 
 	"dayPeriods-format-wide-pm": "du.", 
 	"field-minute": "perc", 
@@ -8,10 +8,11 @@ define(
 		"időszámításunk előtt", 
 		"időszámításunk szerint"
 	], 
+	"dateFormatItem-MMMEd": "MMM d., E", 
 	"field-day-relative+-1": "tegnap", 
-	"dateFormatItem-MMdd": "MM.dd.", 
-	"field-day-relative+-2": "tegnapelőtt", 
 	"field-weekday": "hét napja", 
+	"field-day-relative+-2": "tegnapelőtt", 
+	"dateFormatItem-MMdd": "MM.dd.", 
 	"field-day-relative+-3": "három nappal ezelőtt", 
 	"days-standAlone-wide": [
 		"vasárnap", 
@@ -37,9 +38,9 @@ define(
 		"N", 
 		"D"
 	], 
-	"dayPeriods-format-wide-am": "de.", 
 	"field-era": "éra", 
 	"field-hour": "óra", 
+	"dayPeriods-format-wide-am": "de.", 
 	"quarters-standAlone-abbr": [
 		"N1", 
 		"N2", 
@@ -61,7 +62,9 @@ define(
 		"nov.", 
 		"dec."
 	], 
+	"dateFormatItem-Ed": "d., E", 
 	"field-day-relative+0": "ma", 
+	"field-day-relative+1": "holnap", 
 	"days-standAlone-narrow": [
 		"V", 
 		"H", 
@@ -71,7 +74,6 @@ define(
 		"P", 
 		"Sz"
 	], 
-	"field-day-relative+1": "holnap", 
 	"eraAbbr": [
 		"i. e.", 
 		"i. sz."
@@ -182,8 +184,10 @@ define(
 		"Szo"
 	], 
 	"dateFormat-short": "yyyy.MM.dd.", 
+	"dateFormatItem-yMMMEd": "y. MMM d., E", 
 	"dateFormat-full": "y. MMMM d., EEEE", 
 	"dateFormatItem-Md": "M. d.", 
+	"dateFormatItem-yMEd": "yyyy.MM.dd., E", 
 	"months-format-wide": [
 		"január", 
 		"február", 
@@ -218,6 +222,6 @@ define(
 		"i. e.", 
 		"i. sz."
 	]
-})
+}
 //end v1.x content
 );

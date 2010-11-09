@@ -1,10 +1,9 @@
 define(
 //begin v1.x content
-// generated from ldml/main/*.xml, xpath: ldml/numbers
-({
-	'decimal':",",
-	'group':" ",
-	'currencyFormat':"#,##0.00 ¤"
-})
+{
+	"currencyFormat": "#,##0.00 ¤", 
+	"group": " ", 
+	"decimal": ","
+}
 //end v1.x content
 );

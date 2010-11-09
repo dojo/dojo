@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"s", 
 		"l", 
@@ -17,8 +17,8 @@ define(
 	], 
 	"field-weekday": "Dzień tygodnia", 
 	"dateFormatItem-yQQQ": "y QQQ", 
-	"dateFormatItem-yMEd": "EEE, d-M-y", 
-	"dateFormatItem-MMMEd": "d MMM E", 
+	"dateFormatItem-yMEd": "EEE, d.MM.yyyy", 
+	"dateFormatItem-MMMEd": "E, d MMM", 
 	"eraNarrow": [
 		"p.n.e.", 
 		"n.e."
@@ -43,10 +43,10 @@ define(
 	"dayPeriods-format-wide-evening": "wieczorem", 
 	"dayPeriods-format-wide-pm": "PM", 
 	"dateFormat-full": "EEEE, d MMMM y", 
-	"dateFormatItem-Md": "d-M", 
+	"dateFormatItem-Md": "d.MM", 
 	"dayPeriods-format-wide-noon": "w południe", 
 	"field-era": "Era", 
-	"dateFormatItem-yM": "M-y", 
+	"dateFormatItem-yM": "MM.yyyy", 
 	"months-standAlone-wide": [
 		"styczeń", 
 		"luty", 
@@ -73,7 +73,7 @@ define(
 	"dateFormatItem-yQ": "yyyy Q", 
 	"dateFormatItem-yyyyMMMM": "LLLL y", 
 	"field-hour": "Godzina", 
-	"dateFormatItem-MMdd": "dd-MM", 
+	"dateFormatItem-MMdd": "d.MM", 
 	"months-format-abbr": [
 		"sty", 
 		"lut", 
@@ -146,7 +146,6 @@ define(
 	], 
 	"field-minute": "Minuta", 
 	"field-dayperiod": "Dayperiod", 
-	"dayPeriods-format-wide-night": "w nocy", 
 	"days-standAlone-abbr": [
 		"niedz.", 
 		"pon.", 
@@ -156,6 +155,7 @@ define(
 		"pt.", 
 		"sob."
 	], 
+	"dayPeriods-format-wide-night": "w nocy", 
 	"dateFormatItem-d": "d", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-day-relative+-1": "Wczoraj", 
@@ -163,7 +163,7 @@ define(
 	"field-day-relative+-2": "Przedwczoraj", 
 	"field-day-relative+-3": "Trzy dni temu", 
 	"dateFormatItem-MMMd": "d MMM", 
-	"dateFormatItem-MEd": "E, d-M", 
+	"dateFormatItem-MEd": "E, d.MM", 
 	"dayPeriods-format-wide-lateMorning": "przed południem", 
 	"dateFormatItem-yMMMM": "LLLL y", 
 	"field-day": "Dzień", 
@@ -177,7 +177,7 @@ define(
 		"sobota"
 	], 
 	"field-zone": "Strefa", 
-	"dateFormatItem-yyyyMM": "yyyy-MM", 
+	"dateFormatItem-yyyyMM": "MM.yyyy", 
 	"dateFormatItem-y": "y", 
 	"months-standAlone-narrow": [
 		"s", 
@@ -193,7 +193,6 @@ define(
 		"l", 
 		"g"
 	], 
-	"dateFormatItem-yyMM": "MM/yy", 
 	"dateFormatItem-hm": "hh:mm a", 
 	"days-format-abbr": [
 		"niedz.", 
@@ -229,14 +228,15 @@ define(
 	], 
 	"dateFormatItem-MMM": "LLL", 
 	"dayPeriods-format-wide-am": "AM", 
-	"dateFormat-short": "dd-MM-yyyy", 
+	"dateFormat-short": "dd.MM.yyyy", 
 	"dayPeriods-format-wide-afternoon": "po południu", 
 	"field-second": "Sekunda", 
 	"dateFormatItem-yMMMEd": "EEE, d MMM y", 
+	"dateFormatItem-Ed": "E, d", 
 	"field-week": "Tydzień", 
-	"dateFormat-medium": "dd-MM-yyyy", 
+	"dateFormat-medium": "d MMM y", 
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "hh:mm:ss a"
-})
+}
 //end v1.x content
 );

@@ -1,6 +1,7 @@
-define("i18n!dojo/cldr/nls/hebrew", { root: 
+define({ root:
+
 //begin v1.x content
-({
+{
 	"months-format-narrow": [
 		"Tishri", 
 		"Heshvan", 
@@ -247,9 +248,18 @@ define("i18n!dojo/cldr/nls/hebrew", { root:
 	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dateFormatItem-hms": "h:mm:ss a", 
 	"months-format-wide-leap": "Adar II"
-})
+}
 //end v1.x content
 ,
-"he": true,
-"ar": true
+	"ar": true,
+	"el": true,
+	"fi": true,
+	"fr": true,
+	"he": true,
+	"hu": true,
+	"nl": true,
+	"ru": true,
+	"sv": true,
+	"th": true,
+	"tr": true
 });

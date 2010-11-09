@@ -1,19 +1,19 @@
 define(
 //begin v1.x content
-({
+{
 	"quarters-standAlone-wide": [
 		"1.º trimestre", 
 		"2.º trimestre", 
 		"3.º trimestre", 
 		"4.º trimestre"
 	], 
-	"dayPeriods-standAlone-wide-am": "a.m.", 
 	"quarters-format-abbr": [
 		"1.º trimestre", 
 		"2.º trimestre", 
 		"3.º trimestre", 
 		"4.º trimestre"
 	], 
+	"dayPeriods-standAlone-wide-am": "a.m.", 
 	"dateFormat-medium": "d 'de' MMM 'de' yyyy", 
 	"quarters-standAlone-abbr": [
 		"1.º trimestre", 
@@ -21,8 +21,10 @@ define(
 		"3.º trimestre", 
 		"4.º trimestre"
 	], 
+	"dateFormatItem-Hm": "HH:mm", 
 	"dayPeriods-standAlone-abbr-pm": "p.m.", 
-	"dateFormatItem-hm": "h:mm", 
+	"dateFormatItem-HHmmss": "HH:mm:ss", 
+	"dateFormatItem-hm": "h:mm a", 
 	"months-standAlone-wide": [
 		"Janeiro", 
 		"Fevereiro", 
@@ -55,8 +57,10 @@ define(
 	], 
 	"dateFormatItem-yQQQ": "QQQ 'de' y", 
 	"dayPeriods-format-wide-am": "Antes do meio-dia", 
+	"dateFormatItem-Hms": "HH:mm:ss", 
 	"dayPeriods-format-abbr-pm": "p.m.", 
 	"dateFormatItem-yyQ": "QQQ 'de' yy", 
+	"dateFormatItem-ms": "mm:ss", 
 	"dayPeriods-format-abbr-am": "a.m.", 
 	"months-format-wide": [
 		"Janeiro", 
@@ -81,6 +85,7 @@ define(
 		"Sexta-feira", 
 		"Sábado"
 	], 
+	"dateFormatItem-HHmm": "HH:mm", 
 	"months-format-abbr": [
 		"Jan", 
 		"Fev", 
@@ -113,8 +118,8 @@ define(
 		"Sexta-feira", 
 		"Sábado"
 	], 
+	"dateFormatItem-hms": "h:mm:ss a", 
 	"dateFormatItem-yQ": "QQQ 'de' yyyy", 
-	"dateFormatItem-hms": "h:mm:ss", 
 	"quarters-format-wide": [
 		"1.º trimestre", 
 		"2.º trimestre", 
@@ -131,6 +136,6 @@ define(
 		"Sexta-feira", 
 		"Sábado"
 	]
-})
+}
 //end v1.x content
 );

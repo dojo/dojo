@@ -1,17 +1,15 @@
 define(
 //begin v1.x content
-// generated from ldml/main/*.xml, xpath: ldml/numbers/currencies
-({
-	AUD_displayName:"Austrálsky dolár",
-	CAD_displayName:"Kanadský dolár",
-	CHF_displayName:"Švajčiarský frank",
-	CNY_displayName:"Čínsky Yuan Renminbi",
-	EUR_displayName:"Euro",
-	GBP_displayName:"Britská libra",
-	HKD_displayName:"Hong Kongský dolár",
-	JPY_displayName:"Japonský yen",
-	USD_displayName:"US dolár"
-})
-                 
+{
+	"HKD_displayName": "Hong Kongský dolár", 
+	"CHF_displayName": "Švajčiarský frank", 
+	"CAD_displayName": "Kanadský dolár", 
+	"CNY_displayName": "Čínsky Yuan Renminbi", 
+	"AUD_displayName": "Austrálsky dolár", 
+	"JPY_displayName": "Japonský yen", 
+	"USD_displayName": "US dolár", 
+	"GBP_displayName": "Britská libra", 
+	"EUR_displayName": "Euro"
+}
 //end v1.x content
 );

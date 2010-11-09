@@ -1,6 +1,6 @@
 define(
 //begin v1.x content
-({
+{
 	"field-weekday": "曜日", 
 	"dateFormatItem-yQQQ": "yQQQ", 
 	"dateFormatItem-yMEd": "y/M/d(EEE)", 
@@ -58,7 +58,6 @@ define(
 	"dateFormatItem-yQ": "y/Q", 
 	"field-hour": "時", 
 	"dateFormatItem-MMdd": "MM/dd", 
-	"dateFormatItem-yyQ": "yy/Q", 
 	"months-format-abbr": [
 		"1月", 
 		"2月", 
@@ -73,6 +72,7 @@ define(
 		"11月", 
 		"12月"
 	], 
+	"dateFormatItem-yyQ": "yy/Q", 
 	"timeFormat-full": "H時mm分ss秒 zzzz", 
 	"field-day-relative+0": "今日", 
 	"field-day-relative+1": "明日", 
@@ -105,7 +105,7 @@ define(
 		"第3四半期", 
 		"第4四半期"
 	], 
-	"dateFormatItem-M": "L", 
+	"dateFormatItem-M": "M月", 
 	"days-standAlone-wide": [
 		"日曜日", 
 		"月曜日", 
@@ -136,7 +136,7 @@ define(
 	"dateFormatItem-d": "d日", 
 	"dateFormatItem-ms": "mm:ss", 
 	"field-day-relative+-1": "昨日", 
-	"dateFormatItem-h": "ah", 
+	"dateFormatItem-h": "ah時", 
 	"dateTimeFormat-long": "{1}{0}", 
 	"field-day-relative+-2": "一昨日", 
 	"field-day-relative+-3": "3日前", 
@@ -155,7 +155,7 @@ define(
 	], 
 	"field-zone": "タイムゾーン", 
 	"dateFormatItem-yyyyMM": "yyyy/MM", 
-	"dateFormatItem-y": "y", 
+	"dateFormatItem-y": "y年", 
 	"months-standAlone-narrow": [
 		"1", 
 		"2", 
@@ -217,6 +217,6 @@ define(
 	"dateFormatItem-Hms": "H:mm:ss", 
 	"dateFormatItem-hms": "ah:mm:ss", 
 	"dateFormatItem-yyyy": "y年"
-})
+}
 //end v1.x content
 );

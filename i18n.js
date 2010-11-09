@@ -1,4 +1,5 @@
-define("dojo.i18n", ["dojo"], function(dojo){
+define("dojo/i18n", ["dojo"], function(dojo){
+dojo.getObject("i18n", true, dojo);
 
 /*=====
 dojo.i18n = {
@@ -84,7 +85,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 
 	var targetLocale = dojo.i18n.normalizeLocale(locale);
  	var bundlePackage = [moduleName, "nls", bundleName].join(".");
-	// NOTE: 
+	// NOTE:
 	//		When loading these resources, the packaging does not match what is
 	//		on disk.  This is an implementation detail, as this is just a
 	//		private data structure to hold the loaded resources.  e.g.
@@ -94,7 +95,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 	//		in memory it is more logical and efficient to store in a different
 	//		order.  Locales cannot use dashes, since the resulting path will
 	//		not evaluate as valid JS, so we translate them to underscores.
-	
+
 	//Find the best-match locale to load if we have available flat locales.
 	var bestLocale = "";
 	if(availableFlatLocales){
@@ -111,7 +112,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 		}
 		if(!bestLocale){
 			bestLocale = "ROOT";
-		}		
+		}
 	}
 
 	//See if the desired locale is already loaded.
@@ -158,7 +159,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 			}else{
 				bundle[jsLoc] = parent;
 			}
-			
+
 			if(availableFlatLocales){
 				//Stop the locale path searching if we know the availableFlatLocales, since
 				//the first call to this function will load the only bundle that is needed.
@@ -176,8 +177,8 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 
 (function(){
 	// If other locales are used, dojo.requireLocalization should load them as
-	// well, by default. 
-	// 
+	// well, by default.
+	//
 	// Override dojo.requireLocalization to do load the default bundle, then
 	// iterate through the extraLocale list and load those translations as
 	// well, unless a particular locale was requested.
@@ -247,4 +248,5 @@ dojo.i18n._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/loca
 	}
 };
 
+return dojo.i18n;
 });

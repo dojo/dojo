@@ -1,0 +1,6 @@
+{
+  "name": "dojo",
+  "directories": {
+    "lib": "."
+  }
+}

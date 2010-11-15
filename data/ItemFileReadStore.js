@@ -492,7 +492,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 			// 	|	false == valueIsAnItem("Kermit");
 			// 	|	false == valueIsAnItem(42);
 			// 	|	false == valueIsAnItem(new Date());
-			// 	|	false == valueIsAnItem({_type:'Date', _value:'May 14, 1802'});
+			// 	|	false == valueIsAnItem({_type:'Date', _value:'1802-05-14T00:00:00Z'});
 			// 	|	false == valueIsAnItem({_reference:'Kermit'});
 			// 	|	true == valueIsAnItem({name:'Kermit', color:'green'});
 			// 	|	true == valueIsAnItem({iggy:'pop'});
@@ -640,7 +640,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		// (where miss_piggy is the object representing the 'Miss Piggy' item).
 		//
 		// We replace type/value pairs with typed-literals.  For example, we change:
-		//		{ name:['Nelson Mandela'], born:[{_type:'Date', _value:'July 18, 1918'}] }
+		//		{ name:['Nelson Mandela'], born:[{_type:'Date', _value:'1918-06-18T00:00:00Z'}] }
 		// into this:
 		//		{ name:['Kermit'], born:(new Date('July 18, 1918')) } 
 		//

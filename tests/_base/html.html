@@ -588,13 +588,35 @@
 						function testIframeDestroy10095(t){
 							var iframeWin = dojo.byId('10095_iframe').win;
 							doh.t(!iframeWin.document.getElementById('10095_textbox'), "reloaded iframe element destroyed");
-						},
-						function testScrolledPosition(t){
-							doh.t(dojo.byId("scrollingStrictIframe").testResult, "scrolled Strict position");
-							doh.t(dojo.byId("scrollingQuirksIframe").testResult, "scrolled Quirks position");
 						}
 					]
 				);
+				
+				// test to make sure position() works with a variety of scrollbars
+				dojo.forEach(["None", "Vert", "Both"], function(scroll){
+					dojo.forEach(["Quirks", "Strict"], function(doctype){
+						var id = "scrolling" + doctype + "Iframe" + scroll;
+						doh.register(id, {
+							name: "test_" + id,
+							timeout: 3000,
+							runTest: function(t){
+								var d = new doh.Deferred(),
+									s = document.createElement('SPAN');
+								s.loaded = function(iframe){
+									// resultReady is called from inside the iframe
+									iframe.resultReady = d.getTestCallback(function(){
+										t.is('EQUAL', iframe.testResult);
+									});
+									iframe.runScrollingTest(iframe);
+								};
+								s.innerHTML = '<iframe class="iframeTest" id="' + id + '" src="scrolling' + doctype + 'Iframe.html?ltr&' + scroll + '&large" frameborder="0" onload="this.parentNode.loaded(this)" style="background-color:gray;" allowtransparency></iframe>';
+								dojo.byId("iframeContainer").appendChild(s);
+								return d;
+							}
+						});
+					});
+				});
+
 				doh.run();
 			});
 		</script>
@@ -749,6 +771,10 @@
 				margin: 0px;
 			}
 
+			#scrollingStrictIframe,
+			#scrollingQuirksIframe {
+				border: 10px solid black;
+			}
 		</style>
 	</head>
 	<body>
@@ -823,9 +849,6 @@
 			<label id="label-with-for" for="input-with-label">label with for </label><input type="text" id="input-with-label">
 		</div>
 
-		<iframe id="scrollingStrictIframe" src="scrollingStrictIframe.html"></iframe>
-		<iframe id="scrollingQuirksIframe" src="scrollingQuirksIframe.html"></iframe>
+		<div id="iframeContainer"></div>
 	</body>
 </html>
-
-

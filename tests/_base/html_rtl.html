@@ -15,47 +15,22 @@
 			dojo.addOnLoad(function(){
 				doh.register("rtl", 
 					[
-						function coordsWithVertScrollbar(t){
-							// show vertical scrollbar
-							dojo.byId("rect_vert").style.display = "";
-							scrollTo(0, 50);
-							var d = new doh.Deferred();
-							setTimeout(function(){ // need time to render
-								try{
-									scrollTo(0, 50); // duplicate call to handle timing issues
-									t.is(100, dojo.position('rect100').x, "x pos should be 100 after vertical scroll");
-									t.is(50, dojo.position('rect100').y, "y pos should be 50 after vertical scroll");
-									d.callback(true);
-								}catch(e){
-									d.errback(e);
-								}finally{
-									dojo.byId("rect_vert").style.display = "none";
-								}
-							}, 100);
-							return d;
-						},
-
-						function coordsWithHorzScrollbar(t){
-							// show horizonal scrollbar & scroll a bit left
-							dojo.byId("rect_horz").style.display = "";
-							scrollTo(0, 0);
-							var d = new doh.Deferred();
-							setTimeout(function(){ // need time to render
-								try{
-									var pos = dojo.position('rect100');
-									t.is(100, pos.y, "position().y="+pos.y+" but should be 100 after horizontal scroll");
-									scrollBy(100, 0); // funny scrolling to account for different browsers
-									scrollBy(-50, 0);
-									t.is(50, Math.abs(dojo.position('rect100').x-pos.x), "position().x should have changed by 50 after horizontal scroll (actual change was " + Math.abs(dojo.position('rect100').x-pos.x) + ")");
-									scrollTo(0, 0); // reset horizontal scroll before hiding scrollbar for IE8's benefit
-									d.callback(true);
-								}catch(e){
-									d.errback(e);
-								}finally{
-									dojo.byId("rect_horz").style.display = "none";
-								}
-							}, 100);
-							return d;
+						{
+							name: "coordsWithScrolling",
+							timeout: 1000,
+							runTest: function(t){
+								var d = new doh.Deferred();
+								setTimeout(function(){ // allow browsers time to return the scroll point back to the last position
+									scrollTo(100, 50); // scroll a little
+									scrollBy(-50, 0); // net 50px horizontal movement: back-n-forth scrolling helps with different browsers
+									setTimeout(d.getTestCallback(function(){ // time to scroll
+										var pos = dojo.position('rect100', true);
+										t.is(100, pos.y, "y pos should be 100 after vertical scroll");
+										t.is(100, pos.x, "x pos should be 100 after horizontal scroll");
+									}), 100);
+								}, 100);
+								return d;
+							}
 						},
 
 						{
@@ -94,13 +69,49 @@
 							}
 						},
 
-						function testScrolledPosition(t){
-							doh.t(dojo.byId("scrollingStrictIframe").testResult, "scrolled strict position");
-							doh.t(dojo.byId("scrollingQuirksIframe").testResult, "scrolled quirks position");
+						{
+							name: "testScrolledPosition",
+							timeout: 10000,
+							runTest: function(t){
+								var d = new doh.Deferred(),
+									control = dojo.doc.getElementById('control');
+								control.resultReady = d.getTestCallback(function(){
+									t.is("EQUAL", control.testResult);
+								});
+								runScrollingTest(control);
+								return d;
+							}
 						}
-						
 					]
 				);
+				
+				// test to make sure position() works with a variety of scrollbars
+				dojo.forEach(["None", "Horz", "Vert", "Both"], function(scroll){
+					dojo.forEach(["Quirks", "Strict"], function(doctype){
+						dojo.forEach(["Small", "Large"], function(size){
+							var id = "scrolling" + doctype + "Iframe" + scroll + size;
+							doh.register(id, {
+								name: "test_" + id,
+								timeout: 3000,
+								runTest: function(t){
+									var d = new doh.Deferred(),
+										s = document.createElement('SPAN');
+									s.loaded = function(iframe){
+										// resultReady is called from inside the iframe
+										iframe.resultReady = d.getTestCallback(function(){
+											t.is('EQUAL', iframe.testResult);
+										});
+										iframe.runScrollingTest(iframe);
+									};
+									s.innerHTML = '<iframe class="iframeTest" id="' + id + '" src="scrolling' + doctype + 'Iframe.html?rtl&' + scroll + '&' + size +'" frameborder="0" onload="this.parentNode.loaded(this)" style="background-color:gray;" allowtransparency></iframe>';
+									dojo.byId("iframeContainer").appendChild(s);
+									return d;
+								}
+							});
+						});
+					});
+				});
+
 				doh.run();
 			});
 		</script>
@@ -118,6 +129,10 @@
 				margin: 0px;
 				overflow: hidden;
 			}
+
+			.iframeTest {
+				border: 5px solid black;
+			}
 		</style>
 	</head>
 	<body>
@@ -126,10 +141,10 @@
 			100px rect, abs, 
 			mouse point is at top-left after the test "eventClientXY"
 		</div>
-		<div id="rect_vert" style="height:1600px;display:none">show vertical scrollbar</div>
-		<div id="rect_horz" style="width:1600px;position:relative;right:-200px;display:none">show horizonal scrollbar</div>
+		<div id="rect_vert" style="height:1600px;">show vertical scrollbar</div>
+		<div id="rect_horz" style="width:1600px;position:relative;right:-200px;">show horizonal scrollbar</div>
 		<br>
-		<iframe id="scrollingStrictIframe" src="scrollingStrictIframe.html?rtl"></iframe>
-		<iframe id="scrollingQuirksIframe" src="scrollingQuirksIframe.html?rtl"></iframe>
+		<script type="text/javascript" src="scrollingIframe.js"></script>
+		<div id="iframeContainer"></div>
 	</body>
 </html>

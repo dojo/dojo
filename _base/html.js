@@ -1132,9 +1132,14 @@ if(dojo.isIE){
 		// will offset to right when there is a horizontal scrollbar.
 
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(d.isIE && !d._isBodyLtr()){
-			var de = d.isQuirks ? d.doc.body : d.doc.documentElement;
-			return (d.isIE < 8 || d.isQuirks) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
+		var ie = d.isIE;
+		if(ie && !d._isBodyLtr()){
+			var qk = d.isQuirks,
+				de = qk ? d.doc.body : d.doc.documentElement;
+			if(ie == 6 && !qk && d.global.frameElement && de.scrollHeight > de.clientHeight){
+				scrollLeft += de.clientLeft; // workaround ie6+strict+rtl+iframe+vertical-scrollbar bug where clientWidth is too small by clientLeft pixels
+			}
+			return (ie < 8 || qk) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
 		}
 		//>>excludeEnd("webkitMobile");
 		return scrollLeft; // Integer
@@ -1178,8 +1183,6 @@ if(dojo.isIE){
 			}
 		//>>excludeEnd("webkitMobile");
 		// account for document scrolling
-		// if offsetParent is used, ret value already includes scroll position
-		// so we may have to actually remove that value if !includeScroll
 		if(includeScroll){
 			var scroll = d._docScroll();
 			ret.x += scroll.x;

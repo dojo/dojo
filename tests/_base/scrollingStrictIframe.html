@@ -1,35 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
-	<SCRIPT type="text/javascript">
-		document.getElementsByTagName("HTML")[0].dir = window.location.search.substr(1) || "ltr";
-	</SCRIPT>
+	<SCRIPT type="text/javascript" src="scrollingIframe.js"></SCRIPT>
 </HEAD>
-<BODY style="margin:0;padding:0;border:0;">
-	<SPAN id="abs1" style="position:absolute;background-color:red;">&nbsp;&nbsp;</SPAN>
-	<SPAN id="abs2" style="position:absolute;background-color:blue;">&nbsp;</SPAN>
-	<CENTER><div style="width:110%;">scrolling in strict mode</div></CENTER>
-	<INPUT id="control" style="margin:55%;" size="2" />
-	<SCRIPT type="text/javascript">
-		// reposition the 2 absolute-positioned SPAN tags to the top/left of the static control 
-		//	INPUT element and check to make sure each has the same offsetLeft/Top
-		var doc = frameElement.ownerDocument;
-		var win = doc.parentWindow || doc.defaultView;
-		var dojo = win.dojo;
-		window.scrollTo(99999, 99999);
-		var control = document.getElementById('control');
-		var abs1 = document.getElementById('abs1');
-		var abs2 = document.getElementById('abs2');
-		var p = dojo.hitch(dojo, "withGlobal")(window, "position", dojo, [control, true]);
-		window.scrollTo(-99999, -99999);
-		abs1.style.left = p.x + "px";
-		abs1.style.top = p.y + "px";
-		p = dojo.hitch(dojo, "withGlobal")(window, "position", dojo, [control, true]);
-		abs2.style.left = p.x + "px";
-		abs2.style.top = p.y + "px";
-		control.scrollIntoView(true);
-		frameElement.testResult = abs1.offsetLeft == control.offsetLeft && abs2.offsetLeft == control.offsetLeft && 
-			abs1.offsetTop == control.offsetTop && abs2.offsetTop == control.offsetTop;
-	</SCRIPT>
-</BODY>
 </HTML>

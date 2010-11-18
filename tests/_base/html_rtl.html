@@ -13,7 +13,7 @@
 			dojo.require("doh.runner");
 			
 			dojo.addOnLoad(function(){
-				doh.register("t", 
+				doh.register("rtl", 
 					[
 						function coordsWithVertScrollbar(t){
 							// show vertical scrollbar
@@ -58,44 +58,42 @@
 							return d;
 						},
 
-						function eventClientXY(t){ // IE only test
-							if(dojo.isIE){
-								// show vertical scrollbar
-								dojo.byId("rect_vert").style.display = "";
+						{
+							name: "eventClientXY_IE",
+							timeout: 1000,
+							runTest: function(t){
+								if(!dojo.isIE){ return; }
 
-								var rect = dojo.byId("rect100");
-								var assertException = null;
-
-								function rect_onclick(e){
-									// move the rectangle to the mouse point
-									rect.style.left = e.pageX + "px";
-									rect.style.top = e.pageY + "px";
-									window.alert("Do NOT move your mouse!!!\n\n" + 
-												"The black rectangle's top-left point should be under the mouse point.\n\n" +
-												"If not, you will see a failure in the test report later.\n\n" +
-												"Now press the space bar, but do NOT move your mouse.");
-									rect.fireEvent('ondblclick');
-								}
-
-								function rect_ondblclick(){
-									// test if the rectangle is really under the mouse point
-									try{
-										t.is(0, event.offsetX);
-										t.is(0, event.offsetY);
-									}catch(e){ // allow the exception in a event handler go to the event firer 
-										assertException = e;
-									}
-								}
-
-								dojo.connect(rect, "onclick", null, rect_onclick);
-								dojo.connect(rect, "ondblclick", null, rect_ondblclick);
-								window.alert("Move the mouse to anywhere in this page, and then press the space bar.");
-								rect.fireEvent('onclick');
-								if(assertException != null){
-									throw assertException;
-								}
+								var
+								d = new doh.Deferred(),
+								rect = dojo.byId("rect100"),
+								handler = dojo.connect(dojo.body(), "onclick", null,
+									function(e){
+										// move the rectangle to the mouse point
+										dojo.disconnect(handler);
+										rect.style.left = e.pageX + "px";
+										rect.style.top = e.pageY + "px";
+										handler = dojo.connect(rect, 'ondblclick', null,
+											function(){
+												var offsetX = event.offsetX,
+													offsetY = event.offsetY;
+												dojo.disconnect(handler);
+												d.getTestCallback(function(){
+													t.is(0, offsetX);
+													t.is(0, offsetY);
+												})();
+											});
+										setTimeout(function(){
+											rect.fireEvent('ondblclick');
+										}, 100); // time to move rect to cursor position
+									});
+								setTimeout(function(){
+									dojo.body().fireEvent('onclick');
+								}, 100); // time to finish any pre-scrolling
+								return d;
 							}
 						},
+
 						function testScrolledPosition(t){
 							doh.t(dojo.byId("scrollingStrictIframe").testResult, "scrolled strict position");
 							doh.t(dojo.byId("scrollingQuirksIframe").testResult, "scrolled quirks position");
@@ -135,4 +133,3 @@
 		<iframe id="scrollingQuirksIframe" src="scrollingQuirksIframe.html?rtl"></iframe>
 	</body>
 </html>
-

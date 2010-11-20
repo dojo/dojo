@@ -10,6 +10,10 @@ dojo.store.JsonRest = function(options){
 	// 		The target base URL to use for all requests to the server 
 	var store = {
 		target: "",
+		// summary:
+		// 		The indicates the property to use as the identity property. The values of this
+		// 		property should be unique.	
+		idProperty: "id",
 		get: function(id, options){
 			//	summary:
 			// 		Retrieves an object by it's identity. This will trigger a GET request to the server
@@ -23,10 +27,17 @@ dojo.store.JsonRest = function(options){
 				handleAs: "json",
 				headers: headers
 			});
+		},		
+		getIdentity: function(object){
+			//	summary:
+			// 		Returns an object's identity
+			// object:
+			// 		The object to get the identity from		
+			return object[this.idProperty];
 		},
 		put: function(object, options){
 			//	summary:
-			// 		Stores an object by it's identity. This will trigger a PUT request to the server 
+			// 		Stores an object. This will trigger a PUT request to the server 
 			// 		if the object has an id, otherwise it will trigger a POST request	
 			// object:
 			// 		The object to store.
@@ -34,13 +45,33 @@ dojo.store.JsonRest = function(options){
 			// 		Additional metadata for storing the data		
 			// options.id:
 			// 		The identity to use for storing the data
-			var hasId = options && typeof options.id != "undefined";
-			return dojo.xhr(hasId ? "PUT" : "POST", {
-					url: hasId ? this.target + options.id : this.target,
+			options = options || {};
+			var id = ("id" in options) ? options.id : this.getIdentity(object);
+			var hasId = typeof id != "undefined";
+			return dojo.xhr(hasId && !options.incremental ? "PUT" : "POST", {
+					url: hasId ? this.target + id : this.target,
 					postData: dojo.toJson(object),
 					handleAs: "json",
-					headers:{"Content-Type": "application/json"}
+					headers:{
+						"Content-Type": "application/json",
+						"If-Match": options.overwrite === true ? "*" : null,
+						"If-None-Match": options.overwrite === false ? "*" : null,
+					}
 				});
+		},
+		add: function(object, options){
+			//	summary:
+			// 		Adds an object. This will trigger a PUT request to the server 
+			// 		if the object has an id, otherwise it will trigger a POST request	
+			// object:
+			// 		The object to store.
+			// options:
+			// 		Additional metadata for storing the data		
+			// options.id:
+			// 		The identity to use for storing the data
+			options = options || {};
+			options.overwrite = false;
+			return this.put(object, options);
 		},
 		remove: function(id){
 			//	summary:

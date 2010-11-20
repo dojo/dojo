@@ -6,6 +6,7 @@ try{
 	dojo.requireIf(dojo.isBrowser, "tests.back-hash");
 	dojo.requireIf(dojo.isBrowser, "tests.hash");
 	dojo.require("tests.cldr");
+	dojo.require("dojo.tests.store");
 	dojo.require("tests.data");
 	dojo.require("tests.date");
 	dojo.require("tests.number");

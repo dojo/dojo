@@ -321,7 +321,7 @@ dojo.parser = new function(){
 			// ContentPane's children)
 			d.forEach(thelist, function(instance){
 				if( !args.noStart && instance  && 
-					instance.startup &&
+					dojo.isFunction(instance.startup) &&
 					!instance._started && 
 					(!instance.getParent || !instance.getParent())
 				){

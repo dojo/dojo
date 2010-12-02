@@ -262,7 +262,8 @@ dojo.getObject("html", true, dojo);
 						inherited: {
 							dir: this.dir,
 							lang: this.lang
-						}
+						},
+						scope: "dojo"	// even in multi-version mode make href/content HTML use dojoType/data-dojo-type
 					});
 				}catch(e){
 					this._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);

@@ -6,8 +6,7 @@ dojo.parser = new function(){
 	// summary:
 	//		The Dom/Widget parsing package
 
-	var d = dojo, _attrData = "data-" + d._scopeName + "-"
-	this._attrName = d._scopeName + "Type";
+	var d = dojo;
 
 	function val2type(/*Object*/ value){
 		// summary:
@@ -127,10 +126,18 @@ dojo.parser = new function(){
 		return c;
 	}
 
-	this._functionFromScript = function(script){
+	this._functionFromScript = function(script, attrData){
+		// summary:
+		//		Convert a <script type="dojo/method" args="a, b, c"> ... </script>
+		//		into a function
+		// script: DOMNode
+		//		The <script> DOMNode
+		// attrData: String
+		//		For HTML5 compliance, searches for attrData + "args" (typically
+		//		"data-dojo-args") instead of "args"
 		var preamble = "";
 		var suffix = "";
-		var argsStr = (script.getAttribute(_attrData + "args") || script.getAttribute("args"));
+		var argsStr = (script.getAttribute(attrData + "args") || script.getAttribute("args"));
 		if(argsStr){
 			d.forEach(argsStr.split(/\s*,\s*/), function(part, idx){
 				preamble += "var "+part+" = arguments["+idx+"]; ";
@@ -166,10 +173,15 @@ dojo.parser = new function(){
 		// args: Object?
 		//		An object used to hold kwArgs for instantiation.
 		//		See parse.args argument for details.
-		var thelist = [], dp = dojo.parser;
+
+		var thelist = [],
 		mixin = mixin||{};
 		args = args||{};
-		
+
+		// TODO: for 2.0 default to data-dojo- regardless of scopeName (or maybe scopeName won't exist in 2.0)
+		var attrName = (args.scope || d._scopeName) + "Type",	// typically "dojoType"
+			attrData = "data-" + (args.scope || d._scopeName) + "-";	// typically "data-dojo-"
+
 		d.forEach(nodes, function(obj){
 			if(!obj){ return; }
 
@@ -186,7 +198,7 @@ dojo.parser = new function(){
 			}else{
 				// old (backwards compatible) format of nodes[] array, simple array of DOMNodes. no fastpath/data-dojo-type support here.
 				node = obj;
-				type = dp._attrName in mixin ? mixin[dp._attrName] : node.getAttribute(dp._attrName);
+				type = attrName in mixin ? mixin[attrName] : node.getAttribute(attrName);
 				clsInfo = type && getClassInfo(type);
 				clazz = clsInfo && clsInfo.cls;
 				scripts = (clazz && (clazz._noScript || clazz.prototype._noScript) ? [] : 
@@ -212,7 +224,7 @@ dojo.parser = new function(){
 			
 			// mix things found in data-dojo-props into the params
 			if(fastpath){
-				var extra = node.getAttribute(_attrData + "props");
+				var extra = node.getAttribute(attrData + "props");
 				if(extra && extra.length){
 					try{
 						extra = d.fromJson("{" + extra + "}");
@@ -225,11 +237,11 @@ dojo.parser = new function(){
 
 				// For the benefit of _Templated, check if node has data-dojo-attach-point/data-dojo-attach-event
 				// and mix those in as though they were parameters
-				var attachPoint = node.getAttribute(_attrData + "attach-point");
+				var attachPoint = node.getAttribute(attrData + "attach-point");
 				if(attachPoint){
 					params.dojoAttachPoint = attachPoint;
 				}
-				var attachEvent = node.getAttribute(_attrData + "attach-event");
+				var attachEvent = node.getAttribute(attrData + "attach-event");
 				if(attachEvent){
 					params.dojoAttachEvent = attachEvent;
 				}
@@ -275,9 +287,9 @@ dojo.parser = new function(){
 			d.forEach(scripts, function(script){
 				node.removeChild(script);
 				// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
-				var event = (script.getAttribute(_attrData + "event") || script.getAttribute("event")),
+				var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
 					type = script.getAttribute("type"),
-					nf = d.parser._functionFromScript(script);
+					nf = d.parser._functionFromScript(script, attrData);
 				if(event){
 					if(type == "dojo/connect"){
 						connects.push({event: event, func: nf});
@@ -296,7 +308,7 @@ dojo.parser = new function(){
 
 			// map it to the JS namespace if that makes sense
 			// FIXME: in 2.0, drop jsId support. use data-dojo-id instead
-			var jsname = (node.getAttribute(_attrData + "id") || node.getAttribute("jsId"));
+			var jsname = (node.getAttribute(attrData + "id") || node.getAttribute("jsId"));
 			if(jsname){
 				d.setObject(jsname, instance);
 			}
@@ -332,7 +344,7 @@ dojo.parser = new function(){
 		return thelist;
 	};
 
-	this.parse = function(/*DomNode?*/ rootNode, /* Object? */ args){
+	this.parse = function(rootNode, args){
 		// summary:
 		//		Scan the DOM for class instances, and instantiate them.
 		//
@@ -359,7 +371,7 @@ dojo.parser = new function(){
 		//		object can be passed in this place. If the `args` object has a 
 		//		`rootNode` member, that is used.
 		//
-		// args:
+		// args: Object
 		//		a kwArgs object passed along to instantiate()
 		//		
 		//			* noStart: Boolean?
@@ -375,6 +387,11 @@ dojo.parser = new function(){
 		//			* inherited: Object
 		//				Hash possibly containing dir and lang settings to be applied to
 		//				parsed widgets, unless there's another setting on a sub-node that overrides
+		//			* scope: String
+		//				Root for attribute names to search for.   If scopeName is dojo,
+		//				will search for data-dojo-type (or dojoType).   For backwards compatibility
+		//				reasons defaults to dojo._scopeName (which is "dojo" except when
+		//				multi-version support is used, when it will be something like dojo16, dojo20, etc.)
 		//
 		// example:
 		//		Parse all widgets on a page:
@@ -403,8 +420,11 @@ dojo.parser = new function(){
 		}else{
 			root = rootNode;
 		}
+		args = args || {};
 
-		var attrName = this._attrName;
+		var attrName = (args.scope || d._scopeName) + "Type",		// typically "dojoType"
+			attrData = "data-" + (args.scope || d._scopeName) + "-";	// typically "data-dojo-"
+
 		function scan(parent, list){
 			// summary:
 			//		Parent is an Object representing a DOMNode, with or without a dojoType specified.
@@ -442,7 +462,7 @@ dojo.parser = new function(){
 			for(var child = parent.node.firstChild; child; child = child.nextSibling){
 				if(child.nodeType == 1){
 					// FIXME: desupport dojoType in 2.0. use data-dojo-type instead
-					var type, html5 = recurse && child.getAttribute(_attrData + "type");
+					var type, html5 = recurse && child.getAttribute(attrData + "type");
 					if(html5){ 
 						type = html5; 
 					}else{

@@ -1,4 +1,4 @@
-define("dojo/i18n", ["dojo"], function(dojo){
+define("dojo/i18n", ["require", "dojo"], function(require, dojo){
 dojo.getObject("i18n", true, dojo);
 
 /*=====
@@ -35,6 +35,12 @@ dojo.i18n.getLocalization = function(/*String*/packageName, /*String*/bundleName
 	// look for nearest locale match
 	var elements = locale.split('-');
 	var module = [packageName,"nls",bundleName].join('.');
+	//>>includeStart("asyncLoader", kwArgs.asynchLoader);
+	if (typeof dojo.global.require !== "undefined") {
+		var obj = require([packageName.replace(/\./g, '/'), "nls", locale, bundleName].join('/'));
+		(dojo._loadedModules[module] = dojo._loadedModules[module] || {})[elements.join('_')] = (obj.root || obj);
+	}
+	//>>includeEnd("asyncLoader");
 	var bundle = dojo._loadedModules[module];
 	if(bundle){
 		var localization;

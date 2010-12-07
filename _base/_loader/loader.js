@@ -813,16 +813,6 @@
 			if(/dojo|dijit/.test(name)){
 				dojo.provide(name.replace(/\//g, "."));
 			}
-			if(name.substring(0,5) == "i18n!"){
-				 // its an i18n bundle, put in dojo._loadedModules so getLocationization will work 
-				var locale = "ROOT",
-					nls = name;	// don't change name since we will pass it on to originalDefine
-				nls = nls.substring(5).replace(/\/nls\/([\w-]+)\//, function(t, l){
-					locale = l.replace(/-/g,"_");
-					return "/nls/";
-				}).replace(/\//g, ".");
-				(dojo._loadedModules[nls] = dojo._loadedModules[nls] || {})[locale] = (obj.root || obj);
-			}
 		}
 		return originalDefine.apply(this, arguments);
 	} :

@@ -1,4 +1,4 @@
-define("dojo.cache", ["dojo"], function(dojo){
+define("dojo/cache", ["dojo"], function(dojo){
 
 /*=====
 dojo.cache = { 

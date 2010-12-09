@@ -32,11 +32,6 @@ dojo.require("dojo.store.Cache");
 				options.isLoaded = function(){ return true;};
 				t.is(store.query({prime: true}).length, 3);
 				t.is(cachingStore.get(3).name, "three");
-				t.is(store.query({prime: false}).length, 2);
-				options.canQueryCache = function(){
-					return true;
-				};
-				t.is(store.query({prime: true}).length, 3);
 			},
 			function testQueryWithSort(t){
 				t.is(store.query({prime: true}, {sort:[{attribute:"name"}]}).length, 3);

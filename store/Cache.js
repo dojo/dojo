@@ -9,9 +9,6 @@ dojo.store.Cache = function(masterStore, cachingStore, options){
 	var store = dojo.mixin({}, masterStore);
 	options = options || {};
 	store.query = function(query, directives){
-		if(options.canQueryCache && options.canQueryCache(query, directives)){
-			return cachingStore.query(query, directives);
-		}
 		var results = masterStore.query(query, directives);
 		results.forEach(function(object){
 			if(!options.isLoaded || options.isLoaded(object)){

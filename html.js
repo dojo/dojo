@@ -88,6 +88,13 @@ dojo.getObject("html", true, dojo);
 			//		Should the node by passed to the parser after the new content is set
 			parseContent: false,
 
+			// parserScope: String
+			//		Flag passed to parser.  Root for attribute names to search for.   If scopeName is dojo,
+			//		will search for data-dojo-type (or dojoType).  For backwards compatibility
+			//		reasons defaults to dojo._scopeName (which is "dojo" except when
+			//		multi-version support is used, when it will be something like dojo16, dojo20, etc.)
+			parserScope: dojo._scopeName,
+
 			// startup: Boolean
 			//		Start the child widgets after parsing them.   Only obeyed if parseContent is true.
 			startup: true,
@@ -263,7 +270,7 @@ dojo.getObject("html", true, dojo);
 							dir: this.dir,
 							lang: this.lang
 						},
-						scope: "dojo"	// even in multi-version mode make href/content HTML use dojoType/data-dojo-type
+						scope: this.parserScope
 					});
 				}catch(e){
 					this._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);

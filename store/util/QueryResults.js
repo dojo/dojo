@@ -4,6 +4,8 @@ dojo.getObject("store.util", true, dojo);
 dojo.store.util.QueryResults = function(results){
 	//	summary:
 	//		This wraps a query results with the appropriate methods
+	// if it is a promise it may be frozen
+	results = dojo.delegate(results);
 	function addIterativeMethod(method){
 		if(!results[method]){
 			results[method] = function(){

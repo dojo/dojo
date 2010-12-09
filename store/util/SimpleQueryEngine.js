@@ -31,7 +31,7 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 					var aValue = a[sort.attribute];
 					var bValue = b[sort.attribute];
 					if (aValue != bValue) {
-						return sort.descending == aValue > bValue ? -1 : 1;
+						return !!sort.descending == aValue > bValue ? -1 : 1;
 					}					
 				}
 				return 0;

@@ -46,6 +46,15 @@ dojo.store.Memory = function(options){
 			// 		The identity to use for storing the data		
 			id = options && options.id || object[this.idProperty] || Math.random();
 			this.index[id] = object;
+			var data = this.data,
+				idProperty = this.idProperty;
+			for(var i = 0, l = data.length; i < l; i++){
+				if(data[i][idProperty] == id){
+					data[i] = object;
+					return;
+				}
+			}
+			this.data.push(object);
 		},
 		add: function(object, options){
 			//	summary:
@@ -67,6 +76,14 @@ dojo.store.Memory = function(options){
 			// id:
 			// 		The identity to use to delete the object		
 			delete this.index[id];
+			var data = this.data,
+				idProperty = this.idProperty;
+			for(var i = 0, l = data.length; i < l; i++){
+				if(data[i][idProperty] == id){
+					data.splice(i, 1);
+					return;
+				}
+			}
 		},
 		query: function(query, options){
 			//	summary:

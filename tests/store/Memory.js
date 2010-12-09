@@ -62,6 +62,14 @@ dojo.require("dojo.store.Memory");
 				});
 				t.t(store.get(7).prime);
 			},
+			function testRemove(t){
+				store.remove(7);
+				t.is(store.get(7), undefined);
+			},
+			function testQueryAfterChanges(t){
+				t.is(store.query({prime: true}).length, 3);
+				t.is(store.query({perfect: true}).length, 1);
+			},		
 			function testIFRSStyleData(t){
 				var anotherStore = new dojo.store.Memory({
 					data: {

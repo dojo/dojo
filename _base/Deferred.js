@@ -45,7 +45,7 @@ define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
 	//			* callback(result)
 	//			* errback(result)
 	//
-	//		Callbacks are allowed to return promisesthemselves, so
+	//		Callbacks are allowed to return promises themselves, so
 	//		you can build complicated sequences of events with ease.
 	//
 	//		The creator of the Deferred may specify a canceller.  The canceller
@@ -119,7 +119,7 @@ define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
 	//		|	// again, so we could chain adding callbacks or save the
 	//		|	// deferred for later should we need to be notified again.
 	// example:
-	//		In this example, renderLotsOfData is syncrhonous and so both
+	//		In this example, renderLotsOfData is synchronous and so both
 	//		versions are pretty artificial. Putting the data display on a
 	//		timeout helps show why Deferreds rock:
 	//
@@ -147,7 +147,7 @@ define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
 	//		Note that the caller doesn't have to change his code at all to
 	//		handle the asynchronous case.
 		var result, finished, isError, head, nextListener;
-		var promise = this.promise = {};
+		var promise = (this.promise = {});
 		
 		function complete(value){
 			if(finished){
@@ -162,7 +162,7 @@ define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
 			while(!mutated && nextListener){
 				var listener = nextListener;
 				nextListener = nextListener.next;
-				if(mutated = (listener.progress == mutator)){ // assignment and check
+				if((mutated = (listener.progress == mutator))){ // assignment and check
 					finished = false;
 				}
 				var func = (isError ? listener.error : listener.resolved);

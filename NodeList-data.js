@@ -1,8 +1,9 @@
-define("dojo/NodeList-data", ["dojo"], function(d) {
-	
+define("dojo/NodeList-data", ["dojo"], function(dojo) {
+(function(d){
+
 /*=====
 	dojo.NodeList.prototype.data = function(key, value){
-		// summary: stash or get some arbitrary data on/from these nodes. 
+		// summary: stash or get some arbitrary data on/from these nodes.
 		//
 		// description:
 		//		Stash or get some arbirtrary data on/from these nodes. This private _data function is
@@ -11,10 +12,10 @@ define("dojo/NodeList-data", ["dojo"], function(d) {
 		//		returned. EVEN WHEN THE LIST IS length == 1.
 		//
 		//		A single-node version of this function is provided as `dojo._nodeData`, which follows
-		//		the same signature, though expects a String ID or DomNode reference in the first 
+		//		the same signature, though expects a String ID or DomNode reference in the first
 		//		position, before key/value arguments.
 		//
-		// node: String|DomNode 
+		// node: String|DomNode
 		//		The node to associate data with
 		//
 		// key: Object?|String?
@@ -32,7 +33,7 @@ define("dojo/NodeList-data", ["dojo"], function(d) {
 		//	|	if(touched[0] == "touched"){ alert('win'); }
 		//
 		// example:
-		//		Get all the data items for a given node. 
+		//		Get all the data items for a given node.
 		//	|	var list = dojo.query(".foo").data();
 		//	|	var first = list[0];
 		//
@@ -43,26 +44,26 @@ define("dojo/NodeList-data", ["dojo"], function(d) {
 		//	|	dojo.query(".foo").data("foo"); // returns [`bar`]
 		//
 		//	returns: Object|Anything|Nothing
-		//		When used as a setter via `dojo.NodeList`, a NodeList instance is returned 
+		//		When used as a setter via `dojo.NodeList`, a NodeList instance is returned
 		//		for further chaning. When used as a getter via `dojo.NodeList` an ARRAY
 		//		of items is returned. The items in the array correspond to the elements
 		//		in the original list. This is true even when the list length is 1, eg:
 		//		when looking up a node by ID (#foo)
 	};
-	
+
 	dojo.NodeList.prototype.removeData = function(key){
 		// summary: Remove the data associated with these nodes.
 		// key: String?
 		//		If ommitted, clean all data for this node.
 		//		If passed, remove the data item found at `key`
 	};
-	
+
 	dojo._nodeDataCache = {
 		// summary: An alias to the private dataCache for NodeList-data. NEVER USE THIS!
-		//		This private is only exposed for the benefit of unit testing, and is 
+		//		This private is only exposed for the benefit of unit testing, and is
 		//		removed during the build process.
 	};
-	
+
 =====*/
 
 	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid", nl = d.NodeList,
@@ -76,17 +77,17 @@ define("dojo/NodeList-data", ["dojo"], function(d) {
 			return pid;
 		}
 	;
-	
+
 	//>>excludeStart("debugging", true);
 	// exposed for unit tests:
 	d._nodeDataCache = dataCache;
 	//>>excludeEnd("debugging");
-	
+
 	var dodata = d._nodeData = function(node, key, value){
 
 		var pid = dopid(node), r;
 		if(!dataCache[pid]){ dataCache[pid] = {}; }
-		
+
 		// API discrepency: calling with only a node returns the whole object. $.data throws
 		if(arguments.length == 1){ r = dataCache[pid]; }
 		if(typeof key == "string"){
@@ -99,12 +100,12 @@ define("dojo/NodeList-data", ["dojo"], function(d) {
 		}else{
 			// must be a setter, mix `value` into data hash
 			// API discrepency: using object as setter works here
-			r = d._mixin(dataCache[pid], key); 
+			r = d._mixin(dataCache[pid], key);
 		}
-		
+
 		return r; // Object|Anything|Nothing
 	};
-	
+
 	var removeData = d._removeNodeData = function(node, key){
 		// summary: Remove some data from this node
 		// node: String|DomNode
@@ -114,22 +115,22 @@ define("dojo/NodeList-data", ["dojo"], function(d) {
 		//		If passed, remove only the passed `key` in the associated dataset
 		var pid = dopid(node);
 		if(dataCache[pid]){
-			if(key){ 
+			if(key){
 				delete dataCache[pid][key];
-			}else{ 
+			}else{
 				delete dataCache[pid];
 			}
 		}
 	};
-	
+
 	d._gcNodeData = function(){
-		// summary: super expensive: GC all data in the data for nodes that no longer exist in the dom. 
+		// summary: super expensive: GC all data in the data for nodes that no longer exist in the dom.
 		// description:
-		//		super expensive: GC all data in the data for nodes that no longer exist in the dom. 
+		//		super expensive: GC all data in the data for nodes that no longer exist in the dom.
 		//		MUCH safer to do this yourself, manually, on a per-node basis (via `NodeList.removeData()`)
 		//		provided as a stop-gap for exceptionally large/complex applications with constantly changing
 		//		content regions (eg: a dijit.layout.ContentPane with replacing data)
-		//		There is NO automatic GC going on. If you dojo.destroy() a node, you should _removeNodeData 
+		//		There is NO automatic GC going on. If you dojo.destroy() a node, you should _removeNodeData
 		//		prior to destruction.
 		var livePids = dojo.query("[" + dataattr + "]").map(dopid);
 		for(var i in dataCache){
@@ -162,6 +163,8 @@ define("dojo/NodeList-data", ["dojo"], function(d) {
 //		}
 //		return r; // dojo.NodeList|Array|SingleItem
 //	};
-	
+
+})(dojo);
+
 return dojo.NodeList;
 });

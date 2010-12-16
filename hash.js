@@ -11,6 +11,7 @@ define("dojo/hash", ["dojo"], function(dojo) {
 //			// do something based on the hash value.
 // 		}
 
+(function(){
 	dojo.hash = function(/* String? */ hash, /* Boolean? */ replace){
 		//	summary:
 		//		Gets or sets the hash string.
@@ -232,6 +233,7 @@ define("dojo/hash", ["dojo"], function(dojo) {
 			// else non-supported browser, do nothing.
 		}
 	});
+})();
 
   return dojo.hash;
 });

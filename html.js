@@ -2,6 +2,7 @@ define("dojo/html", ["dojo", "dojo/parser"], function(dojo) {
 dojo.getObject("html", true, dojo);
 
 // the parser might be needed..
+(function(){ // private scope, sort of a namespace
 
 	// idCounter is incremented with each instantiation to allow asignment of a unique id for tracking, logging purposes
 	var idCounter = 0, 
@@ -330,6 +331,7 @@ dojo.getObject("html", true, dojo);
 			return op.set();
 		}
 	};
+})();
 
 return dojo.html;
 });

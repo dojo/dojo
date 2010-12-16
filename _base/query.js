@@ -41,7 +41,7 @@ var defineQuery= function(d){
 	// Toolkit aliases
 	////////////////////////////////////////////////////////////////////////
 
-	// if you are extracing dojo.query for use in your own system, you will
+	// if you are extracting dojo.query for use in your own system, you will
 	// need to provide these methods and properties. No other porting should be
 	// necessary, save for configuring the system to use a class other than
 	// dojo.NodeList as the return instance instantiator
@@ -1321,8 +1321,8 @@ var defineQuery= function(d){
 		//			* `>` child element selectors 
 		//			* `#foo` style ID selectors
 		//			* `*` universal selector
-		//			* `~`, the immediately preceeded-by sibling selector
-		//			* `+`, the preceeded-by sibling selector
+		//			* `~`, the preceded-by sibling selector
+		//			* `+`, the immediately preceded-by sibling selector
 		//			* attribute queries:
 		//			|	* `[foo]` attribute presence selector
 		//			|	* `[foo='bar']` attribute value exact match
@@ -1348,7 +1348,7 @@ var defineQuery= function(d){
 		//		----------------------
 		//
 		//		While dojo.query handles many CSS3 selectors, some fall outside of
-		//		what's resaonable for a programmatic node querying engine to
+		//		what's reasonable for a programmatic node querying engine to
 		//		handle. Currently unsupported selectors include:
 		//		
 		//			* namespace-differentiated selectors of any form

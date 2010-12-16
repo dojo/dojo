@@ -1,5 +1,6 @@
 define("dojo/uacss", ["dojo"], function(dojo) {
 
+(function(){
 	// summary:
 	//		Applies pre-set CSS classes to the top-level HTML node, based on:
 	// 			- browser (ex: dj_ie)
@@ -51,7 +52,7 @@ define("dojo/uacss", ["dojo"], function(dojo) {
 	html.className = d.trim(html.className + " " + classStr);
 
 	// If RTL mode, then add dj_rtl flag plus repeat existing classes with -rtl extension.
-	// We can't run the code below until the <body> tag has loaded (so we can check for dir=rtl).  
+	// We can't run the code below until the <body> tag has loaded (so we can check for dir=rtl).
 	// Unshift() is to run sniff code before the parser.
 	dojo._loaders.unshift(function(){
 		if(!dojo._isBodyLtr()){
@@ -59,6 +60,7 @@ define("dojo/uacss", ["dojo"], function(dojo) {
 			html.className = d.trim(html.className + " " + rtlClassStr);
 		}
 	});
+})();
 
   return dojo;
 });

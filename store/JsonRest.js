@@ -90,8 +90,10 @@ dojo.store.JsonRest = function(options){
 			var headers = {Accept: "application/javascript, application/json"};
 			options = options || {};
 			
-			if(options.start || options.count){
-				headers.Range = "items=" + (options.start || '0') + '-' + ((options.count && options.count != Infinity && (options.count + (options.start || 0) - 1)) || '');
+			if(options.start >= 0 || options.count >= 0){
+				headers.Range = "items=" + (options.start || '0') + '-' + 
+					(("count" in options && options.count != Infinity) ? 
+						(options.count + (options.start || 0) - 1) : '');
 			}
 			if(dojo.isObject(query)){
 				query = dojo.objectToQuery(query);

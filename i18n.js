@@ -37,7 +37,8 @@ dojo.i18n.getLocalization = function(/*String*/packageName, /*String*/bundleName
 	var module = [packageName,"nls",bundleName].join('.');
 	//>>includeStart("asyncLoader", kwArgs.asynchLoader);
 	if (typeof dojo.global.require !== "undefined") {
-		var obj = require([packageName.replace(/\./g, '/'), "nls", locale, bundleName].join('/'));
+		// XXX: this only works for the default locale
+		var obj = require([packageName.replace(/\./g, '/'), "nls", bundleName].join('/'));
 		(dojo._loadedModules[module] = dojo._loadedModules[module] || {})[elements.join('_')] = (obj.root || obj);
 	}
 	//>>includeEnd("asyncLoader");

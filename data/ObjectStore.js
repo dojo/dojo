@@ -3,14 +3,14 @@ define("dojo/data/ObjectStore", ["dojo"], function(dojo) {
 
 
 dojo.declare("dojo.data.ObjectStore", null,{
-		objectProvider: null,
+		objectStore: null,
 		constructor: function(options){
 			// summary: 
 			//		A Dojo Data implementation that wraps Dojo object stores for backwards
 			//		compatibility.
 			//	options:
 			//		The configuration information to pass into the data store.
-			//	options.objectProvider:
+			//	options.objectStore:
 			//		The object store to use as the source provider for this data store
 			dojo.mixin(this, options);
 		},
@@ -145,7 +145,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			args = args || {};
 			var self = this;
 			var scope = args.scope || self;
-			var results = this.objectProvider.query(args.query, args);
+			var results = this.objectStore.query(args.query, args);
 			dojo.when(results.total, function(totalCount){
 				dojo.when(results, function(results){
 					if(args.onBegin){
@@ -174,10 +174,10 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			// 		return the store feature set
 
 			return {
-				"dojo.data.api.Read": !!this.objectProvider.get,
+				"dojo.data.api.Read": !!this.objectStore.get,
 				"dojo.data.api.Identity": true,
-				"dojo.data.api.Write": !!this.objectProvider.put,
-				"dojo.data.api.Notification": !!this.objectProvider.subscribe
+				"dojo.data.api.Write": !!this.objectStore.put,
+				"dojo.data.api.Notification": !!this.objectStore.subscribe
 			};
 		},
 
@@ -198,22 +198,22 @@ dojo.declare("dojo.data.ObjectStore", null,{
 
 
 		getIdentity: function(item){
-			return item.getId ? item.getId() : item[this.objectProvider.idProperty || "id"];
+			return item.getId ? item.getId() : item[this.objectStore.idProperty || "id"];
 		},
 
 		getIdentityAttributes: function(item){
 			// summary:
 			//		returns the attributes which are used to make up the
-			//		identity of an item.	Basically returns this.objectProvider.idProperty
+			//		identity of an item.	Basically returns this.objectStore.idProperty
 
-			return [this.objectProvider.idProperty];
+			return [this.objectStore.idProperty];
 		},
 
 		fetchItemByIdentity: function(args){
 			// summary:
 			//		fetch an item by its identity, by looking in our index of what we have loaded
 			var item;
-			dojo.when(this.objectProvider.get(args.identity),
+			dojo.when(this.objectStore.get(args.identity),
 				function(result){
 					item = result;
 					args.onItem.call(args.scope, result);
@@ -356,8 +356,8 @@ dojo.declare("dojo.data.ObjectStore", null,{
 						self._dirtyObjects = dirtyObject.concat(savingObjects); 
 					}
 				});
-				if(this.objectProvider.transaction){
-					var transaction = this.objectProvider.transaction();
+				if(this.objectStore.transaction){
+					var transaction = this.objectStore.transaction();
 				}
 				for(var i = 0; i < dirtyObjects.length; i++){
 					var dirty = dirtyObjects[i];
@@ -365,10 +365,10 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					var old = dirty.old;
 					delete object.__isDirty;
 					if(object){
-						result = this.objectProvider.put(object, {overwrite: !!old});
+						result = this.objectStore.put(object, {overwrite: !!old});
 					}
 					else{
-						result = this.objectProvider.remove(this.getIdentity(old));
+						result = this.objectStore.remove(this.getIdentity(old));
 					}
 					savingObjects.push(dirty);
 					dirtyObjects.splice(i--,1);

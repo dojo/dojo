@@ -3,7 +3,7 @@ dojo.require("dojo.data.ObjectStore");
 dojo.require("dojo.store.JsonRest");
 
 var objectStore = new dojo.store.JsonRest({target: dojo.moduleUrl("dojo.tests.store", "")});
-var dataStore = new dojo.data.ObjectStore({objectProvider: objectStore});
+var dataStore = new dojo.data.ObjectStore({objectStore: objectStore});
 tests.register("tests.data.ObjectStore", 
 	[
 		function testFetchByIdentity(t){

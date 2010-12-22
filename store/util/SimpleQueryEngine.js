@@ -7,22 +7,27 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 	// 		functions or objects by name-value on a query object hash
 	
 	// create our matching query function
-	if(typeof query == "string"){
-		// named query
-		if(!this[query]){
-			throw new Error("No filter function " + query + " was found in store");
-		}
-		query = this[query];
-	}else if(typeof query == "object"){
-		var queryObject = query;
-		query = function(object){
-			for(var key in queryObject){
-				if(queryObject[key] != object[key]){
-					return false;
+	switch(typeof query){
+		default: 
+			throw new Error("Can query with a " + typeof query); 
+		case "object": case "undefined":
+			var queryObject = query;
+			query = function(object){
+				for(var key in queryObject){
+					if(queryObject[key] != object[key]){
+						return false;
+					}
 				}
+				return true;
+			};
+			break;
+		case "string":
+			// named query
+			if(!this[query]){
+				throw new Error("No filter function " + query + " was found in store");
 			}
-			return true;
-		};
+			query = this[query];
+		case "function":
 	}
 	function execute(array){
 		// execute the whole query, first we filter

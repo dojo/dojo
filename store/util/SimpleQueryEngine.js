@@ -9,6 +9,9 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 	// create our matching query function
 	if(typeof query == "string"){
 		// named query
+		if(!this[query]){
+			throw new Error("No filter function " + query + " was found in store");
+		}
 		query = this[query];
 	}else if(typeof query == "object"){
 		var queryObject = query;

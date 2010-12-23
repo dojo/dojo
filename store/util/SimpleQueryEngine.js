@@ -9,7 +9,7 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 	// create our matching query function
 	switch(typeof query){
 		default: 
-			throw new Error("Can query with a " + typeof query); 
+			throw new Error("Can not query with a " + typeof query); 
 		case "object": case "undefined":
 			var queryObject = query;
 			query = function(object){
@@ -27,7 +27,9 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 				throw new Error("No filter function " + query + " was found in store");
 			}
 			query = this[query];
+			// fall through
 		case "function":
+			// fall through
 	}
 	function execute(array){
 		// execute the whole query, first we filter

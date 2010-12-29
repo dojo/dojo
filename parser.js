@@ -231,7 +231,7 @@ dojo.parser = new function(){
 						d._mixin(params, extra);					
 					}catch(e){
 						// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
-						console.warn("Invalid object notation in data-dojo-props:", node, e);
+						throw new Error(e.toString() + " in data-dojo-props='" + extra + "'");
 					}
 				}
 

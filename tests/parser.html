@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Parser Unit Test</title>
-		<style type="text/css">
+		<style type="text/css">     
 			@import "../resources/dojo.css";
 		</style>
 		<script type="text/javascript"
@@ -480,9 +480,6 @@
 			<!-- note needing to use a named inherited lookup because we're just mixing in -->
 			<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
 				data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
-			></div>
-			<div data-dojo-id="html5simpleinvalid" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-props="this will throw because it's invalid data" a="10"
 			></div>
 			
 			<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->

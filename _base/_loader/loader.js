@@ -3,7 +3,7 @@
  * all of the package loading methods.
  */
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-(function(){
+define("dojo/_base/_loader/loader", ["./bootstrap"], function(){
 	var d = dojo, currentModule;
 //>>excludeEnd("webkitMobile");
 
@@ -806,7 +806,7 @@
 
 	//addition to support script-inject module format
 	var originalDefine = this.define;
-	define = originalDefine ?
+	define = !originalDefine.dojo ?
 	function(name, obj){
 		// an existing define is already defined, need to hook into define callbacks
 		if(typeof name == "string"){
@@ -890,8 +890,9 @@
 	};
 	define("dojo", [], d);
 	define("dijit", [], this.dijit || (this.dijit = {}));
+	define("dojo/_base/_loader/loader",[],{});
 	dojo.simulatedLoading = 1;
-
+	
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-})();
+});
 //>>excludeEnd("webkitMobile");

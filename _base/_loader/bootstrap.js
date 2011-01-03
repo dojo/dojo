@@ -163,14 +163,23 @@ djConfig = {
 	//TODOC:  HOW TO DOC THIS?
 	// dojo is the root variable of (almost all) our public symbols -- make sure it is defined.
 	if(typeof dojo == "undefined"){
-		dojo = {
-			_scopeName: "dojo",
-			_scopePrefix: "",
-			_scopePrefixArgs: "",
-			_scopeSuffix: "",
-			_scopeMap: {},
-			_scopeMapRev: {}
-		};
+		if(typeof require == "function"){
+			// loaded by another module loader like RequireJS
+			dojo = require("dojo");
+			define("dojo/_base/_loader/bootstrap", [], dojo);
+		}else{
+			// Dojo is the module loader
+			define = function(id, deps, factory){factory(dojo)};
+			define.dojo = true;
+			dojo = {};
+		}
+		dojo._scopeName = "dojo";
+		dojo._scopePrefix = "";
+		dojo._scopePrefixArgs = "";
+		dojo._scopeSuffix = "";
+		dojo._scopeMap = {};
+		dojo._scopeMapRev = {};
+
 	}
 
 	var d = dojo;

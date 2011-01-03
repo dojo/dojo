@@ -64,7 +64,7 @@ dojo = {
 	//		True if the client runs on Mac
 }
 =====*/
-
+define("dojo/_base/_loader/hostenv_browser", ["./loader"], function(){
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(typeof window != 'undefined'){
 //>>excludeEnd("webkitMobile");
@@ -486,3 +486,4 @@ if(dojo.config.debugAtAllCosts){
 	dojo.require("dojo._base._loader.loader_debug");
 	dojo.require("dojo.i18n");
 }
+});

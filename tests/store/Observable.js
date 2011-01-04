@@ -42,7 +42,7 @@ dojo.require("dojo.store.Observable");
 							prime: false
 						}
 					});
-				secondObserver.dismiss();
+				secondObserver.cancel();
 				var one = store.get(1);
 				one.prime = true;
 				store.put(one); // should add it
@@ -77,7 +77,7 @@ dojo.require("dojo.store.Observable");
 					});
 				t.is(results.length, 3);
 				
-				observer.dismiss(); // shouldn't get any more calls
+				observer.cancel(); // shouldn't get any more calls
 				store.add({// should not be added
 					id:11, name:"eleven", prime:true
 				});

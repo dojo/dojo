@@ -5,12 +5,13 @@ dojo.store.Observable = function(store){
 	//		The Observable store wrapper takes a store and sets an observe method on query()
 	// 		results that can be used to monitor results for changes
 	var queryUpdaters = [], revision = 0;
-	// a Comet driven store could directly call notify to notify watchers when data has
+	// a Comet driven store could directly call notify to notify observers when data has
 	// changed on the backend
 	var notifyAll = store.notify = function(object, existingId){
 		revision++;
-		for(var i = 0, l = queryUpdaters.length; i < l; i++){
-			queryUpdaters[i](object, existingId);
+		var updaters = queryUpdaters.concat();
+		for(var i = 0, l = updaters.length; i < l; i++){
+			updaters[i](object, existingId);
 		}
 	}
 	var originalQuery = store.query;
@@ -33,7 +34,7 @@ dojo.store.Observable = function(store){
 							var atEnd = resultsArray.length != options.count;
 							var i;
 							if(++queryRevision != revision){
-								throw new Error("Query is out of date, you must watch() the query prior to any data modifications");
+								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
 							}
 							var removedObject, removedFrom, insertedInto;
 							if(existingId){
@@ -70,11 +71,12 @@ dojo.store.Observable = function(store){
 							}else if(changed){
 								// we don't have a queryEngine, so we can't provide any information 
 								// about where it was inserted, but we can at least indicate a new object  
-								insertedInto = removedFrom || -1;
+								insertedInto = removedFrom >= 0 ? removedFrom : -1;
 							}
 							if((removedFrom > -1 || insertedInto > -2) && 
-									(includeObjectUpdates || (removedFrom != insertedInto))){
-								for(i = 0;listener = listeners[i]; i++){
+									(includeObjectUpdates || !queryExecutor || (removedFrom != insertedInto))){
+								var copyListeners = listeners.concat();
+								for(i = 0;listener = copyListeners[i]; i++){
 									listener(changed || removedObject, removedFrom, insertedInto);
 								}
 							}
@@ -82,7 +84,7 @@ dojo.store.Observable = function(store){
 					});
 				}
 				return {
-					dismiss: function(){
+					cancel: function(){
 						// remove this listener
 						listeners.splice(dojo.indexOf(listeners, listener), 1);
 						if(!listeners.length){

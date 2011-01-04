@@ -55,6 +55,7 @@ dojo.store.Memory = function(options){
 				}
 			}
 			this.data.push(object);
+			return id;
 		},
 		add: function(object, options){
 			//	summary:

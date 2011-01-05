@@ -227,7 +227,7 @@ dojo.parser = new function(){
 				var extra = node.getAttribute(attrData + "props");
 				if(extra && extra.length){
 					try{
-						extra = d.fromJson("{" + extra + "}");
+						extra = d.fromJson.call(args.propsThis, "{" + extra + "}");
 						d._mixin(params, extra);					
 					}catch(e){
 						// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
@@ -392,6 +392,9 @@ dojo.parser = new function(){
 		//				will search for data-dojo-type (or dojoType).   For backwards compatibility
 		//				reasons defaults to dojo._scopeName (which is "dojo" except when
 		//				multi-version support is used, when it will be something like dojo16, dojo20, etc.)
+		//			* propsThis: Object
+		//				If specified, "this" referenced from data-dojo-props will refer to propsThis.
+		//				Intended for use from the widgets-in-template feature of `dijit._Templated`
 		//
 		// example:
 		//		Parse all widgets on a page:

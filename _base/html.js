@@ -1832,11 +1832,11 @@ if(dojo.isIE){
 		// example:
 		//	Available in `dojo.NodeList()` for multiple toggles
 		//	|	dojo.query(".findMe").replaceClass("addMe", "removeMe");
-		fakeNode.className = node.className;
 
+        node = byId(node);
+		fakeNode.className = node.className;
 		dojo.removeClass(fakeNode, removeClassStr)
 		dojo.addClass(fakeNode, addClassStr);
-
 		if(node.className !== fakeNode.className){
 			node.className = fakeNode.className;
 		}

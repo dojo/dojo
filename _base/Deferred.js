@@ -230,7 +230,7 @@ define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
 		};
 		// provide the implementation of the promise
 		this.then = promise.then = function(/*Function?*/resolvedCallback, /*Function?*/errorCallback, /*Function?*/progressCallback){
-			// summary
+			// summary:
 			// 		Adds a fulfilledHandler, errorHandler, and progressHandler to be called for 
 			// 		completion of a promise. The fulfilledHandler is called when the promise 
 			// 		is fulfilled. The errorHandler is called when a promise fails. The 

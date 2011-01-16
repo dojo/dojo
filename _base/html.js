@@ -1835,7 +1835,7 @@ if(dojo.isIE){
 
         node = byId(node);
 		fakeNode.className = node.className;
-		dojo.removeClass(fakeNode, removeClassStr)
+		dojo.removeClass(fakeNode, removeClassStr);
 		dojo.addClass(fakeNode, addClassStr);
 		if(node.className !== fakeNode.className){
 			node.className = fakeNode.className;

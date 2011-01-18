@@ -9,11 +9,11 @@ dojo.store.Observable = function(store){
 	// changed on the backend
 	var notifyAll = store.notify = function(object, existingId){
 		revision++;
-		var updaters = queryUpdaters.concat();
+		var updaters = queryUpdaters.slice();
 		for(var i = 0, l = updaters.length; i < l; i++){
 			updaters[i](object, existingId);
 		}
-	}
+	};
 	var originalQuery = store.query;
 	store.query = function(query, options){
 		options = options || {};
@@ -75,7 +75,7 @@ dojo.store.Observable = function(store){
 							}
 							if((removedFrom > -1 || insertedInto > -2) && 
 									(includeObjectUpdates || !queryExecutor || (removedFrom != insertedInto))){
-								var copyListeners = listeners.concat();
+								var copyListeners = listeners.slice();
 								for(i = 0;listener = copyListeners[i]; i++){
 									listener(changed || removedObject, removedFrom, insertedInto);
 								}
@@ -92,7 +92,7 @@ dojo.store.Observable = function(store){
 							queryUpdaters.splice(dojo.indexOf(queryUpdaters, queryUpdater), 1);
 						}
 					}
-				}
+				};
 			};
 		}
 		return results;

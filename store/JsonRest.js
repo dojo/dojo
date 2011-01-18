@@ -99,7 +99,7 @@ dojo.store.JsonRest = function(options){
 				query = dojo.objectToQuery(query);
 				query = query ? "?" + query: "";
 			}
-			if(options && options.sort && !options.queryStr){
+			if(options && options.sort){
 				query += (query ? "&" : "?") + "sort("
 				for(var i = 0; i<options.sort.length; i++){
 					var sort = options.sort[i];
@@ -108,7 +108,7 @@ dojo.store.JsonRest = function(options){
 				query += ")";
 			}
 			var results = dojo.xhrGet({
-				url: this.target + query,
+				url: this.target + (query || ""),
 				handleAs: "json",
 				headers: headers
 			});

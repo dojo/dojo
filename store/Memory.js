@@ -1,4 +1,4 @@
-define("dojo/store/Memory", ["dojo", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"], function(dojo, QueryResults, SimpleQueryEngine) {
+define("dojo/store/Memory", ["dojo", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"], function(dojo) {
 
 dojo.store.Memory = function(options){
 	// summary:
@@ -20,7 +20,7 @@ dojo.store.Memory = function(options){
 		index:{},
 		// summary:
 		//		Defines the query engine to use for querying the data store
-		queryEngine: SimpleQueryEngine,
+		queryEngine: dojo.store.util.SimpleQueryEngine,
 		get: function(id){
 			//	summary:
 			// 		Retrieves an object by it's identity
@@ -91,7 +91,7 @@ dojo.store.Memory = function(options){
 			// 		Queries the store for objects.
 			// query:
 			// 		The query to use for retrieving objects from the store		
-			return QueryResults(this.queryEngine(query, options)(this.data));
+			return dojo.store.util.QueryResults(this.queryEngine(query, options)(this.data));
 		},
 		setData: function(data){
 			//	summary:

@@ -7,9 +7,9 @@
 		</style>
 		<script type="text/javascript"
 			src="../dojo.js"
-			data-dojo-config="isDebug: true, parseOnLoad: true"></script>
+			data-dojo-config="isDebug: true, parseOnLoad: false"></script>
 		<script type="text/javascript">
-      define("dojo/tests/parser/script", ["dojo", "dojo/parser", "doh/runner"], function(dojo) {
+		define("dojo/tests/parser/script", ["dojo", "dojo/parser", "doh/runner"], function(dojo) {
 
 			dojo.declare("tests.parser.Class1", null, {
 				constructor: function(args, node){
@@ -128,6 +128,11 @@
 			dojo.addOnLoad(function(){
 				doh.register("t",
 					[
+						function parse(){
+							// Running the parser here so that failures appear in test log
+							dojo.parser.parse();
+						},
+
 						function testJsId(t){
 							// console.debug(obj);
 							t.t(typeof obj == "object");
@@ -270,7 +275,7 @@
 							dojo.parser.parse("parsertest", { noStart:true });
 							
 							t.f(started);
-							
+
 							dojo.empty("parsertest");
 							
 							started = false;
@@ -375,13 +380,12 @@
 							htmldojomethod.diffMethod(2);
 							doh.t(htmldojomethod._ran, "ensures original was called first");
 							doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");
-							
 						}
 					]
 				);
 				doh.run();
 			})
-      });
+		});
 		</script>
 	</head>
 	<body>

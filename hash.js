@@ -20,10 +20,10 @@ define("dojo/hash", ["dojo"], function(dojo) {
 		//		 - If no arguments are passed, acts as a getter.
 		//		 - If a string is passed, acts as a setter.
 		//	hash: 
-		//		String: the hash is set - #string.
+		//		the hash is set - #string.
 		//	replace:
-		//		Boolean: If true, updates the hash value in the current history 
-		//			state instead of creating a new history state.
+		//		If true, updates the hash value in the current history 
+		//		state instead of creating a new history state.
 		//	returns:
 		//		when used as a getter, returns the current hash string.
 		//		when used as a setter, returns the new hash string.
@@ -45,8 +45,7 @@ define("dojo/hash", ["dojo"], function(dojo) {
 	};
 
 	// Global vars
-	var _recentHash = null,
-		_ieUriMonitor = null,
+	var _recentHash, _ieUriMonitor, _connect,
 		_pollFrequency = dojo.config.hashPollFrequency || 100;
 
 	//Internal functions
@@ -84,7 +83,7 @@ define("dojo/hash", ["dojo"], function(dojo) {
 			return;
 		}
 		location.replace("#"+hash);
-		_pollLocation();
+		!_connect && _pollLocation();
 	}
 
 	function IEUriMonitor(){
@@ -221,7 +220,7 @@ define("dojo/hash", ["dojo"], function(dojo) {
 	}
 	dojo.addOnLoad(function(){
 		if("onhashchange" in dojo.global && (!dojo.isIE || (dojo.isIE >= 8 && document.compatMode != "BackCompat"))){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
-			dojo.connect(dojo.global,"onhashchange",_dispatchEvent);
+			_connect = dojo.connect(dojo.global,"onhashchange",_dispatchEvent);
 		}else{
 			if(document.addEventListener){ // Non-IE
 				_recentHash = _getHash();

@@ -44,8 +44,7 @@ dojo.provide("dojo.hash");
 	}
 
 	// Global vars
-	var _recentHash = null,
-		_ieUriMonitor = null,
+	var _recentHash, _ieUriMonitor, _connect,
 		_pollFrequency = dojo.config.hashPollFrequency || 100;
 
 	//Internal functions
@@ -83,7 +82,7 @@ dojo.provide("dojo.hash");
 			return;
 		}
 		location.replace("#"+hash);
-		_pollLocation();
+		!_connect && _pollLocation();
 	}
 
 	function IEUriMonitor(){
@@ -213,7 +212,7 @@ dojo.provide("dojo.hash");
 	}
 	dojo.addOnLoad(function(){
 		if("onhashchange" in dojo.global && (!dojo.isIE || (dojo.isIE >= 8 && document.compatMode != "BackCompat"))){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
-			dojo.connect(dojo.global,"onhashchange",_dispatchEvent);
+			_connect = dojo.connect(dojo.global,"onhashchange",_dispatchEvent);
 		}else{
 			if(document.addEventListener){ // Non-IE
 				_recentHash = _getHash();

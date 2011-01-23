@@ -2,8 +2,9 @@ define("dojo/store/util/QueryResults", ["dojo"], function(dojo) {
 dojo.getObject("store.util", true, dojo);
 
 dojo.store.util.QueryResults = function(results){
-	//	summary:
+	// summary:
 	//		This wraps a query results with the appropriate methods
+
 	// if it is a promise it may be frozen
 	if(results.then){
 		results = dojo.delegate(results);
@@ -16,15 +17,15 @@ dojo.store.util.QueryResults = function(results){
 					Array.prototype.unshift.call(args, results);
 					return dojo[method].apply(dojo, args);
 				});
-			}
+			};
 		}
 	}
 	addIterativeMethod("forEach");
 	addIterativeMethod("filter");
 	addIterativeMethod("map");
 	if(!results.total){
-		results.total = dojo.when(results, function(results){ 
-			return results.length
+		results.total = dojo.when(results, function(results){
+			return results.length;
 		});
 	}
 	return results;

@@ -1,11 +1,11 @@
 define("dojo/store/Cache", ["dojo"], function(dojo) {
 
 dojo.store.Cache = function(masterStore, cachingStore, options){
-	//	summary: 
+	// summary:
 	//		The Cache store wrapper takes a master store and a caching store,
-	// 		caches data from the master into the caching store for faster
+	//		caches data from the master into the caching store for faster
 	//		lookup. Normally one would use a memory store for the caching
-	// 		store and a server store like JsonRest for the master store.
+	//		store and a server store like JsonRest for the master store.
 	options = options || {};
 	return dojo.delegate(masterStore, {
 		query: function(query, directives){

@@ -1,9 +1,9 @@
 define("dojo/store/Observable", ["dojo"], function(dojo) {
 
 dojo.store.Observable = function(store){
-	//	summary: 
+	// summary: 
 	//		The Observable store wrapper takes a store and sets an observe method on query()
-	// 		results that can be used to monitor results for changes
+	//		results that can be used to monitor results for changes
 	var queryUpdaters = [], revision = 0;
 	// a Comet driven store could directly call notify to notify observers when data has
 	// changed on the backend
@@ -22,7 +22,7 @@ dojo.store.Observable = function(store){
 			var nonPagedOptions = dojo.mixin({}, options);
 			delete nonPagedOptions.start;
 			delete nonPagedOptions.count;
-			
+
 			var queryExecutor = store.queryEngine && store.queryEngine(query, nonPagedOptions);
 			var queryRevision = revision;
 			var listeners = [], queryUpdater;
@@ -51,7 +51,7 @@ dojo.store.Observable = function(store){
 							}
 							if(queryExecutor){
 								// add the new one
-								if(changed && 
+								if(changed &&
 										// if a matches function exists, use that (probably more efficient)
 										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){ 
 
@@ -69,11 +69,11 @@ dojo.store.Observable = function(store){
 									}
 								}
 							}else if(changed){
-								// we don't have a queryEngine, so we can't provide any information 
-								// about where it was inserted, but we can at least indicate a new object  
+								// we don't have a queryEngine, so we can't provide any information
+								// about where it was inserted, but we can at least indicate a new object
 								insertedInto = removedFrom >= 0 ? removedFrom : -1;
 							}
-							if((removedFrom > -1 || insertedInto > -2) && 
+							if((removedFrom > -1 || insertedInto > -2) &&
 									(includeObjectUpdates || !queryExecutor || (removedFrom != insertedInto))){
 								var copyListeners = listeners.slice();
 								for(i = 0;listener = copyListeners[i]; i++){
@@ -116,9 +116,9 @@ dojo.store.Observable = function(store){
 					inMethod = false;
 				}
 			};
-		}		
+		}
 	}
-	// monitor for updates by listening to these methods  
+	// monitor for updates by listening to these methods
 	whenFinished("put", function(object){
 		notifyAll(object, store.getIdentity(object));
 	});

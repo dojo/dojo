@@ -4,12 +4,12 @@ dojo.getObject("store.util", true, dojo);
 dojo.store.util.SimpleQueryEngine = function(query, options){
 	// summary:
 	//		Simple query engine that matches using filter functions, named filter
-	// 		functions or objects by name-value on a query object hash
-	
+	//		functions or objects by name-value on a query object hash
+
 	// create our matching query function
 	switch(typeof query){
-		default: 
-			throw new Error("Can not query with a " + typeof query); 
+		default:
+			throw new Error("Can not query with a " + typeof query);
 		case "object": case "undefined":
 			var queryObject = query;
 			query = function(object){
@@ -42,7 +42,7 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 					var bValue = b[sort.attribute];
 					if (aValue != bValue) {
 						return !!sort.descending == aValue > bValue ? -1 : 1;
-					}					
+					}
 				}
 				return 0;
 			});

@@ -1,4 +1,4 @@
-define("dojo/_base/window", ["dojo"], function(dojo) {
+define("dojo/_base/window", ["dojo/lib/kernel"], function(dojo){
 
 /*=====
 dojo.doc = {

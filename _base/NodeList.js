@@ -1,4 +1,4 @@
-define("dojo/_base/NodeList", ["dojo", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/connect", "dojo/_base/html"], function(dojo) {
+define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/connect", "dojo/_base/html"], function(dojo){
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){

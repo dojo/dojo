@@ -1,4 +1,4 @@
-define("dojo/_base/json", ["dojo"], function(dojo) {
+define("dojo/_base/json", ["dojo/lib/kernel"], function(dojo){
 
 dojo.fromJson = function(/*String*/ json){
 	// summary:

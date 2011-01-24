@@ -3,7 +3,7 @@
  * all of the package loading methods.
  */
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-define("dojo/_base/_loader/loader", ["./bootstrap"], function(){
+(function(){
 	var d = dojo, currentModule;
 //>>excludeEnd("webkitMobile");
 
@@ -802,21 +802,12 @@ define("dojo/_base/_loader/loader", ["./bootstrap"], function(){
 		}
 
 		return new d._Url(loc, url); // dojo._Url
-	}
+	};
 
-	//addition to support script-inject module format
-	var originalDefine = this.define;
-	define = !originalDefine.dojo ?
-	function(name, obj){
-		// an existing define is already defined, need to hook into define callbacks
-		if(typeof name == "string"){
-			if(/dojo|dijit/.test(name)){
-				dojo.provide(name.replace(/\//g, "."));
-			}
-		}
-		return originalDefine.apply(this, arguments);
-	} :
-	function(name, deps, def){
+//>>includeStart("amdLoader", kwArgs.asynchLoader);
+	// addition to support AMD module format
+	// replace the bootstrap define function (defined in _base/boostrap.js) with the dojo v1.x simulated AMD loader...
+	define= function(name, deps, def){
 		if(!def){
 			// less than 3 args
 			if(deps){
@@ -860,15 +851,26 @@ define("dojo/_base/_loader/loader", ["./bootstrap"], function(){
 				}else{
 					var arg;
 					switch(depName){
-						case "require": arg = function(relativeId){
-							return dojo.require(resolvePath(relativeId));
-						}; break;
-						case "exports": arg = exports; break;
-						case "module": var module = arg = {exports: exports}; break;
+						case "require": 
+							arg = function(relativeId){
+								return dojo.require(resolvePath(relativeId));
+							}; 
+							break;
+						case "exports": 
+							arg = exports; 
+							break;
+						case "module": 
+							var module = arg = {exports: exports};
+							break;
 						case "dojox": 
 							arg = dojo.getObject(depName);
-							break; 
-						default: arg = dojo.require(depName);
+							break;
+						case "dojo/lib/kernel": 
+						case "dojo/lib/backCompat":
+							arg = dojo;
+							break;
+						default: 
+							arg = dojo.require(depName);
 					}
 				}
 				args.push(arg);
@@ -888,11 +890,15 @@ define("dojo/_base/_loader/loader", ["./bootstrap"], function(){
 		return returned;
 		
 	};
-	define("dojo", [], d);
+	define.vendor = "dojotoolkit.org";
+	define.version = dojo.version;
+	define("dojo/lib/kernel", [], dojo);
+	define("dojo/lib/backCompat", [], dojo);
+	define("dojo", [], dojo);
 	define("dijit", [], this.dijit || (this.dijit = {}));
-	define("dojo/_base/_loader/loader",[],{});
-	dojo.simulatedLoading = 1;
-	
+//>>includeEnd("amdLoader");
+
+
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-});
+})();
 //>>excludeEnd("webkitMobile");

@@ -1,3 +1,9 @@
+//>>includeStart("amdLoader", kwArgs.asynchLoader);
+(function(){
+
+function bootstrapDojo(dojo, dijit, dojox){
+
+//>>includeEnd("amdLoader");
 /*=====
 // note:
 //		'djConfig' does not exist under 'dojo.*' so that it can be set before the
@@ -163,23 +169,14 @@ djConfig = {
 	//TODOC:  HOW TO DOC THIS?
 	// dojo is the root variable of (almost all) our public symbols -- make sure it is defined.
 	if(typeof dojo == "undefined"){
-		if(typeof require == "function"){
-			// loaded by another module loader like RequireJS
-			dojo = require("dojo");
-			define("dojo/_base/_loader/bootstrap", [], dojo);
-		}else{
-			// Dojo is the module loader
-			define = function(id, deps, factory){factory(dojo)};
-			define.dojo = true;
-			dojo = {};
-		}
-		dojo._scopeName = "dojo";
-		dojo._scopePrefix = "";
-		dojo._scopePrefixArgs = "";
-		dojo._scopeSuffix = "";
-		dojo._scopeMap = {};
-		dojo._scopeMapRev = {};
-
+		dojo = {
+			_scopeName: "dojo",
+			_scopePrefix: "",
+			_scopePrefixArgs: "",
+			_scopeSuffix: "",
+			_scopeMap: {},
+			_scopeMapRev: {}
+		};
 	}
 
 	var d = dojo;
@@ -513,3 +510,56 @@ dojo.global = {
 })();
 //>>excludeEnd("webkitMobile");
 // vim:ai:ts=4:noet
+//>>includeStart("amdLoader", kwArgs.asynchLoader);
+
+return {dojo:dojo, dijit:dijit, dojox:dojox};
+}
+
+// This resource ("bootstrap") is responsible for creating and starting to populate the
+// dojo, dijit, and dojox objects. With the introduction of AMD loading, there are
+// several ways bootstrap could be evaluated:
+// 
+// 1. Consequent to dojo.js script-injecting it. In this case it is expected to be
+//    evaluated immediately and dojo, dijit, and dojox are expected to be located
+//    in the global namespace. Note that if bootstrap is injected by dojo.js, then
+//    an AMD loader is *not* being used.
+// 
+// 2. Consequent to an AMD loader script-injecting it. In this case, it is expected
+//    to delay evaluation, and instead publish a factory function to be executed under
+//    the control of the AMD loader. IAW AMD loader design, the global space should
+//    not be polluted; therefore dojo, dijit, and dojox are not be published into
+//    the global space.
+// 
+// 3. Consequent to a built version of dojo (sync or xdomain loader).
+// 
+// For [1], a bootstrap version of define is provided below. the v1.6 sync loader
+// will replace this with a better AMD simulation. The bootstrap version ensures bootstrap
+// is executed immediately--just as with all dojo versions prior to v1.6.
+// 
+// For [2], a factory function is provided to the loader that executes the bootstrap
+// without polluting the global namespace. The factory returns the dojo object, and the
+// dijit and dojox objects are stuffed into the dojo object (at _dijit and _dojox) so
+// that dojo, dijit, and dojox bootstraps used with AMD can retrieve and control these
+// objects.
+// 
+// For [3], the build util with v1.6 strips *all* AMD artifacts from this resource and reverts it
+// to look like v1.5. This ensures the built version, with either the sync or xdomain loader, work
+// *exactly* as in v1.5. While it may be possible to do more, any solution that does not
+// include significant work on the build util is likely to introduce edge cases that fail. Therefore
+// this work is delayed for 1.7 when a AMD-capable built util will be provided.
+
+if(!this.define){
+	// bootstrapping dojo with sync loader; dojo, dijit, and dojox go into the global space
+	var result = bootstrapDojo();
+	dojo = result.dojo;
+	dijit = result.dijit;
+	dojox = result.dojox;
+}else{
+	// bootstrapping dojo with an AMD loader
+	define([], function(){
+		return bootstrapDojo().dojo;
+	});
+}
+
+})();
+//>>includeEnd("amdLoader");

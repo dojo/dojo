@@ -1,4 +1,4 @@
-define("dojo/_base/xhr", ["dojo", "dojo/_base/Deferred", "dojo/_base/json", "dojo/_base/lang", "dojo/_base/query"], function(dojo) {
+define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/json", "dojo/_base/lang", "dojo/_base/query"], function(dojo){
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){

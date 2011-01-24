@@ -1,4 +1,4 @@
-define("dojo/_base/Color", ["dojo", "dojo/_base/array", "dojo/_base/lang"], function(dojo) {
+define("dojo/_base/Color", ["dojo/lib/kernel", "dojo/_base/array", "dojo/_base/lang"], function(dojo){
 
 (function(){
 

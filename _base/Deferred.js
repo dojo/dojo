@@ -1,4 +1,4 @@
-define("dojo/_base/Deferred", ["dojo", "dojo/_base/lang"], function(dojo) {
+define("dojo/_base/Deferred", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo){
 
 (function(){
 	var mutator = function(){};		

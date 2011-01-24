@@ -109,8 +109,8 @@ if(doh.selfTest){
 try{
 	// go grab the others
 	dojo.require("tests._base._loader.bootstrap");
-	dojo.simulatedLoading && dojo.require("tests._base._loader.loader");
-	dojo.require("dojo.tests._base._loader.modules");
+	dojo.require("tests._base._loader.loader");
+	this.define && define.vendor=="dojotoolkit.org" && dojo.require("dojo.tests._base._loader.modules");
 	dojo.platformRequire({
 		browser: ["tests._base._loader.hostenv_browser"],
 		rhino: ["tests._base._loader.hostenv_rhino"],

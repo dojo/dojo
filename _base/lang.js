@@ -1,4 +1,4 @@
-define("dojo/_base/lang", ["dojo"], function(dojo) {
+define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 
 (function(){
 	var d = dojo, opts = Object.prototype.toString;

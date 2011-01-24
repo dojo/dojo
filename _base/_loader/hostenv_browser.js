@@ -1,3 +1,14 @@
+//>>includeStart("amdLoader", kwArgs.asynchLoader);
+define(["dojo/lib/backCompat"], function(dojo){
+// Note: if this resource is being loaded *without* an AMD loader, then
+// it is loaded by dojo.js which injects it into the doc with a script element. The simulated
+// AMD define function in _loader.js will cause the factory to be executed.
+// 
+// The build util with v1.6 strips all AMD artifacts from this resource and reverts it
+// to look like v1.5. This ensures the built version, with either the sync or xdomain loader, work
+// *exactly* as in v1.5.
+
+//>>includeEnd("amdLoader");
 /*=====
 dojo.isBrowser = {
 	//	example:
@@ -64,7 +75,6 @@ dojo = {
 	//		True if the client runs on Mac
 }
 =====*/
-define("dojo/_base/_loader/hostenv_browser", ["./loader"], function(){
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(typeof window != 'undefined'){
 //>>excludeEnd("webkitMobile");
@@ -486,4 +496,8 @@ if(dojo.config.debugAtAllCosts){
 	dojo.require("dojo._base._loader.loader_debug");
 	dojo.require("dojo.i18n");
 }
+
+//>>includeStart("amdLoader", kwArgs.asynchLoader);
+return dojo;
 });
+//>>includeEnd("amdLoader");

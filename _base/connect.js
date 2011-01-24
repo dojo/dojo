@@ -1,4 +1,4 @@
-define("dojo/_base/connect", ["dojo", "dojo/_base/lang"], function(dojo) {
+define("dojo/_base/connect", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo){
 
 // this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 

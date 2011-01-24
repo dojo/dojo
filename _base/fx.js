@@ -1,4 +1,4 @@
-define("dojo/_base/fx", ["dojo", "dojo/_base/Color", "dojo/_base/connect", "dojo/_base/lang", "dojo/_base/html"], function(dojo) {
+define("dojo/_base/fx", ["dojo/lib/kernel", "dojo/_base/Color", "dojo/_base/connect", "dojo/_base/lang", "dojo/_base/html"], function(dojo){
 
 /*
 	Animation loosely package based on Dan Pupius' work, contributed under CLA:

@@ -1,4 +1,4 @@
-if (!dojo.simulatedLoading) { //tests for the asynchronous loader machinery
+if(this.define && define.vendor!="dojotoolkit.org"){ //tests for the AMD loader
 
 // notice the module name is more precise with async tests; to wit, "dojo/tests/ compared to "tests"
 // "tests" could be used, but the accompanying change must be made in each of the i18n resources in
@@ -9,7 +9,7 @@ if (!dojo.simulatedLoading) { //tests for the asynchronous loader machinery
       getTest = function(value, locale){
         return function(){
           var def = new doh.Deferred();
-          define([dojo.getL10nName("dojo/tests", "salutations", locale)], function(bundle) {
+          define([dojo.getL10nName("dojo/tests", "salutations", locale)], function(bundle){
             doh.assertEqual(value, dojo.getL10n("dojo/tests", "salutations", locale).hello);
  					  def.callback(true);
           });

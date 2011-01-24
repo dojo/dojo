@@ -1,4 +1,4 @@
-define("dojo/_base/event", ["dojo", "dojo/_base/connect"], function(dojo) {
+define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(dojo){
 
 // this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 

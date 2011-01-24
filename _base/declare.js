@@ -1,4 +1,4 @@
-define("dojo/_base/declare", ["dojo", "dojo/_base/lang", "dojo/_base/array"], function(dojo) {
+define("dojo/_base/declare", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base/array"], function(dojo){
 
 (function(){
 	var d = dojo, mix = d._mixin, op = Object.prototype, opts = op.toString,

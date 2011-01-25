@@ -1,12 +1,11 @@
 define("dojo/store/Memory", ["dojo", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"], function(dojo) {
 
-dojo.store.Memory = function(options){
+dojo.store.Memory = function(/*dojo.store.Memory*/ options){
 	// summary:
 	//		This is a basic in-memory object store.
 	// options:
-	//		This provides any configuration information that will be mixed into the store
-	// options.data:
-	//		An array of data to use as the source of all the objects
+	//		This provides any configuration information that will be mixed into the store. 
+	// 		This should generally include the data property to provide the starting set of data.
 	var store = {
 		// data: Array
 		//		The array of all the objects in the memory store
@@ -51,7 +50,7 @@ dojo.store.Memory = function(options){
 			for(var i = 0, l = data.length; i < l; i++){
 				if(data[i][idProperty] == id){
 					data[i] = object;
-					return;
+					return id;
 				}
 			}
 			this.data.push(object);

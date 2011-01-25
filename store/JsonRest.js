@@ -1,14 +1,16 @@
 define("dojo/store/JsonRest", ["dojo", "dojo/store/util/QueryResults"], function(dojo) {
 
-dojo.store.JsonRest = function(options){
+dojo.store.JsonRest = function(/*dojo.store.JsonRest*/ options){
 	// summary:
 	//		This is a basic store for RESTful communicating with a server through JSON
 	//		formatted data.
 	// options:
 	//		This provides any configuration information that will be mixed into the store
-	// options.target:
-	//		The target base URL to use for all requests to the server
 	var store = {
+		// target: String
+		//		The target base URL to use for all requests to the server. This string will be 
+		// 		prepended to the id to generate the URL (relative or absolute) for requests 
+		// 		sent to the server 
 		target: "",
 		// idProperty: String
 		//		Indicates the property to use as the identity property. The values of this

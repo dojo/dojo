@@ -74,6 +74,11 @@ dojo.store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*
 };
 /*=====
 dojo.declare("dojo.store.Cache", null, {
+	//	example:
+	//	|	var master = new dojo.store.Memory(data);
+	//	|	var cacher = new dojo.store.Memory();
+	//	|	var store = new dojo.store.Cache(master, cacher);
+	//
 	query: function(query, directives){
 		//	summary:
 		//		Query the underlying master store and cache any results.
@@ -87,7 +92,7 @@ dojo.declare("dojo.store.Cache", null, {
 	get: function(id, directives){
 		//	summary:
 		//		Get the object with the specific id.
-		//	id: String
+		//	id: Number
 		//		The identifier for the object in question.
 		//	directives: dojo.store.__GetOptions?
 		//		Any additional parameters needed to describe how the get should be performed.
@@ -117,7 +122,7 @@ dojo.declare("dojo.store.Cache", null, {
 	remove: function(id, directives){
 		//	summary:
 		//		Remove the object with the specific id.
-		//	id: String
+		//	id: Number
 		//		The identifier for the object in question.
 		//	directives: dojo.store.__RemoveOptions?
 		//		Any additional parameters needed to describe how the remove should be performed.
@@ -125,7 +130,7 @@ dojo.declare("dojo.store.Cache", null, {
 	evict: function(id){
 		//	summary:
 		//		Remove the object with the given id from the underlying caching store.
-		//	id: String
+		//	id: Number
 		//		The identifier for the object in question.
 	}
 });

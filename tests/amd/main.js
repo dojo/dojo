@@ -16,7 +16,7 @@ require({
 			require:"../../../requirejs/require"
 		},
 	deps:[
-		"dojo/tests/sie/backCompat"
+		"dojo/tests/amd/backCompat"
 	],
 	callback:function(){
 		require.ready(function() {

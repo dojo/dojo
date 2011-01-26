@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>dojo with and AMD Loader!</title>
+    <script type="text/javascript" src="../../../../bdLoad/lib/require.js"></script>
+    <script type="text/javaScript">
+      var start= (new Date()).getTime();
+      require({
+				packages:[{
+					name: 'dojo',
+					location:'../..',
+					main:'lib/main-browser',
+					lib: '.'
+				}],
+			  paths:{
+          i18n:"dojo/lib/plugins/i18n",
+          text:"dojo/lib/plugins/text"
+        },
+        deps:["dojo"],
+        callback:function(){
+          dojo.byId("status").innerHTML= "The dojo package has been loaded.";
+          dojo.byId("time").innerHTML= (((new Date()).getTime() - start) / 1000) + "s";
+        }
+      });
+    </script>
+  </head>
+  <body class="tundra">
+    <h1>This demonstration loads the dojo package using the bdLoad AMD loader.</h1>
+    <p>bdLoad is available at <a href="http://bdframework.org/">http://bdframework.org/</a></p>
+    <h1>Status</h1>
+    <p id="status">loading</p>
+    <h1>Load Time</h1>
+    <p id="time"></p>
+  </body>
+</html>
+

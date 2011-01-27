@@ -5,6 +5,9 @@ dojo.store.util.QueryResults = function(results){
 	// summary:
 	//		This wraps a query results with the appropriate methods
 
+	if(!results){
+		return results;
+	}
 	// if it is a promise it may be frozen
 	if(results.then){
 		results = dojo.delegate(results);
@@ -15,7 +18,7 @@ dojo.store.util.QueryResults = function(results){
 				var args = arguments;
 				return dojo.when(results, function(results){
 					Array.prototype.unshift.call(args, results);
-					return dojo[method].apply(dojo, args);
+					return dojo.store.util.QueryResults(dojo[method].apply(dojo, args));
 				});
 			};
 		}

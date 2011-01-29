@@ -7,10 +7,9 @@ dojo.declare("dojo.store.DataStore", null, {
 		//		This is an adapter for using Dojo Data stores with an object store consumer.
 		//		You can provide a Dojo data store and use this adapter to interact with it through
 		//		the Dojo object store API
-		// options:
-		//		This provides any configuration information that will be mixed into the store
-		// options.store:
-		//		This is the Dojo data store
+		// options: Object?
+		//		This provides any configuration information that will be mixed into the store,
+		//		including a reference to the Dojo data store under the property "store".
 		dojo.mixin(this, options);
 	},
 	_objectConverter: function(callback){
@@ -25,9 +24,9 @@ dojo.declare("dojo.store.DataStore", null, {
 		};
 	},
 	get: function(id, options){
-		// summary:
+		// 	summary:
 		//		Retrieves an object by it's identity. This will trigger a fetchItemByIdentity
-		// id:
+		// 	id: Object?
 		//		The identity to use to lookup the object
 		var returnedObject, returnedError;
 		var deferred = new dojo.Deferred();
@@ -51,13 +50,12 @@ dojo.declare("dojo.store.DataStore", null, {
 	},
 	put: function(object, options){
 		// summary:
-		//		Stores an object by it's identity.
-		// object:
+		//		Stores an object by its identity.
+		// object: Object
 		//		The object to store.
-		// options:
-		//		Additional metadata for storing the data
-		// options.id:
-		//		The identity to use for storing the data
+		// options: Object?
+		//		Additional metadata for storing the data.  Includes a reference to an id
+		//		that the object may be stored with (i.e. { id: "foo" }).
 		var id = options && typeof options.id != "undefined" || this.getIdentity(object);
 		var store = this.store;
 		if(typeof id == "undefined"){
@@ -80,9 +78,9 @@ dojo.declare("dojo.store.DataStore", null, {
 		}
 	},
 	remove: function(id){
-		// summary:
-		//		Deletes an object by it's identity.
-		// id:
+		// 	summary:
+		//		Deletes an object by its identity.
+		// 	id: Object
 		//		The identity to use to delete the object
 		var store = this.store;
 		this.store.fetchItemByIdentity({
@@ -93,10 +91,14 @@ dojo.declare("dojo.store.DataStore", null, {
 		});
 	},
 	query: function(query, options){
-		// summary:
+		// 	summary:
 		//		Queries the store for objects.
-		// query:
+		// 	query: Object
 		//		The query to use for retrieving objects from the store
+		//	options: Object?
+		//		Optional options object as used by the underlying dojo.data Store.
+		//	returns: dojo.store.util.QueryResults
+		//		A query results object that can be used to iterate over results.
 		var returnedObject, returnedError;
 		var deferred = new dojo.Deferred();
 		deferred.total = new dojo.Deferred();
@@ -116,6 +118,12 @@ dojo.declare("dojo.store.DataStore", null, {
 		return dojo.store.util.QueryResults(deferred);
 	},
 	getIdentity: function(object){
+		//	summary:
+		//		Fetch the identity for the given object.
+		//	object: Object
+		//		The data object to get the identity from.
+		//	returns: Number
+		//		The id of the given object.
 		return object[this.idProperty || this.store.getIdentityAttributes()[0]];
 	}
 });

@@ -3,12 +3,12 @@ define("dojo/store/Cache", ["dojo"], function(dojo) {
 /*=====
 dojo.declare("dojo.store.__CacheArgs", null, {
 	constructor: function(){
-		//	summary:
+		// summary:
 		//		These are additional options for how caching is handled.
-		//	isLoaded: Function?
+		// isLoaded: Function?
 		//		This is a function that will be called for each item in a query response to determine
-		//		if it is cacheable. If isLoaded returns true, the item will be cached, otherwise it 
-		//		will not be cached. If isLoaded is not provided, all items will be cached. 
+		//		if it is cacheable. If isLoaded returns true, the item will be cached, otherwise it
+		//		will not be cached. If isLoaded is not provided, all items will be cached.
 		this.isLoaded = isLoaded;
 	}
 });
@@ -19,13 +19,13 @@ dojo.store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*
 	//		caches data from the master into the caching store for faster
 	//		lookup. Normally one would use a memory store for the caching
 	//		store and a server store like JsonRest for the master store.
-	//	masterStore:
+	// masterStore:
 	//		This is the authoritative store, all uncached requests or non-safe requests will
-	// 		be made against this store.
-	//	cachingStore: 
+	//		be made against this store.
+	// cachingStore:
 	//		This is the caching store that will be used to store responses for quick access.
 	//		Typically this should be a local store.
-	//	options:
+	// options:
 	//		These are additional options for how caching is handled.
 	options = options || {};
 	return dojo.delegate(masterStore, {
@@ -74,63 +74,63 @@ dojo.store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*
 };
 /*=====
 dojo.declare("dojo.store.Cache", null, {
-	//	example:
+	// example:
 	//	|	var master = new dojo.store.Memory(data);
 	//	|	var cacher = new dojo.store.Memory();
 	//	|	var store = new dojo.store.Cache(master, cacher);
 	//
 	query: function(query, directives){
-		//	summary:
+		// summary:
 		//		Query the underlying master store and cache any results.
-		//	query: Object|String
+		// query: Object|String
 		//		The object or string containing query information. Dependent on the query engine used.
-		//	directives: dojo.store.util.SimpleQueryEngine.__queryOptions?
+		// directives: dojo.store.util.SimpleQueryEngine.__queryOptions?
 		//		An optional keyword arguments object with additional parameters describing the query.
-		//	returns: dojo.store.util.QueryResults
+		// returns: dojo.store.util.QueryResults
 		//		A QueryResults object that can be used to iterate over.
 	},
 	get: function(id, directives){
-		//	summary:
+		// summary:
 		//		Get the object with the specific id.
-		//	id: Number
+		// id: Number
 		//		The identifier for the object in question.
-		//	directives: dojo.store.__GetOptions?
+		// directives: dojo.store.__GetOptions?
 		//		Any additional parameters needed to describe how the get should be performed.
-		//	returns: dojo.store.util.QueryResults
+		// returns: dojo.store.util.QueryResults
 		//		A QueryResults object.
 	},
 	add: function(object, directives){
-		//	summary:
+		// summary:
 		//		Add the given object to the store.
-		//	object: Object
+		// object: Object
 		//		The object to add to the store.
-		//	directives: dojo.store.__AddOptions?
+		// directives: dojo.store.__AddOptions?
 		//		Any additional parameters needed to describe how the add should be performed.
-		//	returns: Number
+		// returns: Number
 		//		The new id for the object.
 	},
 	put: function(object, directives){
-		//	summary:
+		// summary:
 		//		Put the object into the store (similar to an HTTP PUT).
-		//	object: Object
+		// object: Object
 		//		The object to put to the store.
-		//	directives: dojo.store.__PutOptions?
+		// directives: dojo.store.__PutOptions?
 		//		Any additional parameters needed to describe how the put should be performed.
-		//	returns: Number
+		// returns: Number
 		//		The new id for the object.
 	},
 	remove: function(id, directives){
-		//	summary:
+		// summary:
 		//		Remove the object with the specific id.
-		//	id: Number
+		// id: Number
 		//		The identifier for the object in question.
-		//	directives: dojo.store.__RemoveOptions?
+		// directives: dojo.store.__RemoveOptions?
 		//		Any additional parameters needed to describe how the remove should be performed.
 	},
 	evict: function(id){
-		//	summary:
+		// summary:
 		//		Remove the object with the given id from the underlying caching store.
-		//	id: Number
+		// id: Number
 		//		The identifier for the object in question.
 	}
 });

@@ -4,8 +4,8 @@ dojo.store.Memory = function(/*dojo.store.Memory*/ options){
 	// summary:
 	//		This is a basic in-memory object store.
 	// options:
-	//		This provides any configuration information that will be mixed into the store. 
-	// 		This should generally include the data property to provide the starting set of data.
+	//		This provides any configuration information that will be mixed into the store.
+	//		This should generally include the data property to provide the starting set of data.
 	var store = {
 		data:[],
 		idProperty: "id",
@@ -89,62 +89,62 @@ dojo.declare("dojo.store.Memory", null, {
 	//		Defines the query engine to use for querying the data store
 	queryEngine: dojo.store.util.SimpleQueryEngine,
 	get: function(id){
-		//	summary:
+		// summary:
 		//		Retrieves an object by its identity
-		//	id: Number
+		// id: Number
 		//		The identity to use to lookup the object
-		//	returns: Object
+		// returns: Object
 		//		The object in the store that matches the given id.
 	},
 	getIdentity: function(object){
-		// 	summary:
+		// summary:
 		//		Returns an object's identity
-		// 	object: Object
+		// object: Object
 		//		The object to get the identity from
-		//	returns: Number
+		// returns: Number
 	},
 	put: function(object, options){
-		// 	summary:
+		// summary:
 		//		Stores an object
-		// 	object: Object
+		// object: Object
 		//		The object to store.
-		// 	options: Object?
+		// options: Object?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
-		//	returns: Number
+		// returns: Number
 	},
 	add: function(object, options){
-		// 	summary:
+		// summary:
 		//		Creates an object, throws an error if the object already exists
-		// 	object: Object
+		// object: Object
 		//		The object to store.
-		// 	options: Object?
+		// options: Object?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
-		//	returns: Number
+		// returns: Number
 	},
 	remove: function(id){
-		// 	summary:
+		// summary:
 		//		Deletes an object by its identity
-		// 	id: Number
+		// id: Number
 		//		The identity to use to delete the object
 	},
 	query: function(query, options){
-		// 	summary:
+		// summary:
 		//		Queries the store for objects.
-		// 	query: Object
+		// query: Object
 		//		The query to use for retrieving objects from the store.
-		//	options: dojo.store.util.SimpleQueryEngine.__queryOptions?
+		// options: dojo.store.util.SimpleQueryEngine.__queryOptions?
 		//		The optional arguments to apply to the resultset.
-		//	returns: dojo.store.util.QueryResults
+		// returns: dojo.store.util.QueryResults
 		//		The results of the query, extended with iterative methods.
 		//
-		// 	example:
-		// 		Given the following store:
+		// example:
+		//		Given the following store:
 		//
-		// 	|	var store = new dojo.store.Memory({
-		// 	|		data: [
-		// 	|			{id: 1, name: "one", prime: false },
+		//	|	var store = new dojo.store.Memory({
+		//	|		data: [
+		//	|			{id: 1, name: "one", prime: false },
 		//	|			{id: 2, name: "two", even: true, prime: true},
 		//	|			{id: 3, name: "three", prime: true},
 		//	|			{id: 4, name: "four", even: true, prime: false},
@@ -161,9 +161,9 @@ dojo.declare("dojo.store.Memory", null, {
 		//	|	var results = store.query({ even: true });
 	},
 	setData: function(data){
-		// 	summary:
+		// summary:
 		//		Sets the given data as the source for this store, and indexes it
-		//	data: Object[]
+		// data: Object[]
 		//		An array of objects to use as the source of data.
 	}
 });

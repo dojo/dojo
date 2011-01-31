@@ -24,9 +24,9 @@ dojo.declare("dojo.store.DataStore", null, {
 		};
 	},
 	get: function(id, options){
-		// 	summary:
+		// summary:
 		//		Retrieves an object by it's identity. This will trigger a fetchItemByIdentity
-		// 	id: Object?
+		// id: Object?
 		//		The identity to use to lookup the object
 		var returnedObject, returnedError;
 		var deferred = new dojo.Deferred();
@@ -78,9 +78,9 @@ dojo.declare("dojo.store.DataStore", null, {
 		}
 	},
 	remove: function(id){
-		// 	summary:
+		// summary:
 		//		Deletes an object by its identity.
-		// 	id: Object
+		// id: Object
 		//		The identity to use to delete the object
 		var store = this.store;
 		this.store.fetchItemByIdentity({
@@ -91,13 +91,13 @@ dojo.declare("dojo.store.DataStore", null, {
 		});
 	},
 	query: function(query, options){
-		// 	summary:
+		// summary:
 		//		Queries the store for objects.
-		// 	query: Object
+		// query: Object
 		//		The query to use for retrieving objects from the store
-		//	options: Object?
+		// options: Object?
 		//		Optional options object as used by the underlying dojo.data Store.
-		//	returns: dojo.store.util.QueryResults
+		// returns: dojo.store.util.QueryResults
 		//		A query results object that can be used to iterate over results.
 		var returnedObject, returnedError;
 		var deferred = new dojo.Deferred();
@@ -118,11 +118,11 @@ dojo.declare("dojo.store.DataStore", null, {
 		return dojo.store.util.QueryResults(deferred);
 	},
 	getIdentity: function(object){
-		//	summary:
+		// summary:
 		//		Fetch the identity for the given object.
-		//	object: Object
+		// object: Object
 		//		The data object to get the identity from.
-		//	returns: Number
+		// returns: Number
 		//		The id of the given object.
 		return object[this.idProperty || this.store.getIdentityAttributes()[0]];
 	}

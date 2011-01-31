@@ -1,15 +1,15 @@
 define("dojo/store/Observable", ["dojo"], function(dojo) {
 
 dojo.store.Observable = function(store){
-	// summary: 
+	// summary:
 	//		The Observable store wrapper takes a store and sets an observe method on query()
 	//		results that can be used to monitor results for changes.
-	//		
-	//	description:
+	//
+	// description:
 	//		Observable wraps an existing store so that notifications can be made when a query
 	//		is performed.
 	//
-	//	example:
+	// example:
 	//		Create a Memory store that returns an observable query, and then log some
 	//		information about that query.
 	//
@@ -78,7 +78,7 @@ dojo.store.Observable = function(store){
 								// add the new one
 								if(changed &&
 										// if a matches function exists, use that (probably more efficient)
-										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){ 
+										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){
 
 									if(removedFrom > -1){
 										// put back in the original slot so it doesn't move unless it needs to (relying on a stable sort below)

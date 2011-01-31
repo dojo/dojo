@@ -8,9 +8,9 @@ dojo.store.JsonRest = function(/*dojo.store.JsonRest*/ options){
 	//		This provides any configuration information that will be mixed into the store
 	var store = {
 		// target: String
-		//		The target base URL to use for all requests to the server. This string will be 
-		// 		prepended to the id to generate the URL (relative or absolute) for requests 
-		// 		sent to the server 
+		//		The target base URL to use for all requests to the server. This string will be
+		//		prepended to the id to generate the URL (relative or absolute) for requests
+		//		sent to the server
 		target: "",
 		// idProperty: String
 		//		Indicates the property to use as the identity property. The values of this
@@ -126,69 +126,69 @@ dojo.store.JsonRest = function(/*dojo.store.JsonRest*/ options){
 };
 /*=====
 dojo.declare("dojo.store.JsonRest", null, {
-	// 	target: String
-	//		The target base URL to use for all requests to the server. This string will be 
-	// 		prepended to the id to generate the URL (relative or absolute) for requests 
-	// 		sent to the server 
+	// target: String
+	//		The target base URL to use for all requests to the server. This string will be
+	//		prepended to the id to generate the URL (relative or absolute) for requests
+	//		sent to the server
 	target: "",
-	// 	idProperty: String
+	// idProperty: String
 	//		Indicates the property to use as the identity property. The values of this
 	//		property should be unique.
 	idProperty: "id",
 
 	get: function(id){
-		//	summary:
+		// summary:
 		//		Retrieves an object by its identity. This will trigger a GET request to the server using
 		//		the url `this.target + id`.
-		//	id: Number
+		// id: Number
 		//		The identity to use to lookup the object
-		//	returns: Object
+		// returns: Object
 		//		The object in the store that matches the given id.
 	},
 	getIdentity: function(object){
-		// 	summary:
+		// summary:
 		//		Returns an object's identity
-		// 	object: Object
+		// object: Object
 		//		The object to get the identity from
-		//	returns: Number
+		// returns: Number
 	},
 	put: function(object, options){
-		// 	summary:
+		// summary:
 		//		Stores an object. This will trigger a PUT request to the server
 		//		if the object has an id, otherwise it will trigger a POST request.
-		// 	object: Object
+		// object: Object
 		//		The object to store.
-		// 	options: Object?
+		// options: Object?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
-		//	returns: Number
+		// returns: Number
 	},
 	add: function(object, options){
-		// 	summary:
+		// summary:
 		//		Adds an object. This will trigger a PUT request to the server
 		//		if the object has an id, otherwise it will trigger a POST request.
-		// 	object: Object
+		// object: Object
 		//		The object to store.
-		// 	options: Object?
+		// options: Object?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
-		//	returns: Number
+		// returns: Number
 	},
 	remove: function(id){
-		// 	summary:
+		// summary:
 		//		Deletes an object by its identity. This will trigger a DELETE request to the server.
-		// 	id: Number
+		// id: Number
 		//		The identity to use to delete the object
 	},
 	query: function(query, options){
-		// 	summary:
-		//		Queries the store for objects. This will trigger a GET request to the server, with the 
+		// summary:
+		//		Queries the store for objects. This will trigger a GET request to the server, with the
 		//		query added as a query string.
-		// 	query: Object
+		// query: Object
 		//		The query to use for retrieving objects from the store.
-		//	options: dojo.store.util.SimpleQueryEngine.__queryOptions?
+		// options: dojo.store.util.SimpleQueryEngine.__queryOptions?
 		//		The optional arguments to apply to the resultset.
-		//	returns: dojo.store.util.QueryResults
+		// returns: dojo.store.util.QueryResults
 		//		The results of the query, extended with iterative methods.
 	}
 });

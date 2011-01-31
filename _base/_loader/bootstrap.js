@@ -557,7 +557,10 @@ if(!this.define){
 }else{
 	// bootstrapping dojo with an AMD loader
 	define([], function(){
-		return bootstrapDojo().dojo;
+		var result= bootstrapDojo();
+		result.dojo._dijit= result.dijit;
+		result.dojo._dojox= result.dojox;
+		return result.dojo;
 	});
 }
 

@@ -1575,27 +1575,26 @@ var defineAcme= function(){
   return acme;
 };
 
-//prefers queryPortability, then acme, then dojo
-if(this["dojo"]){
-	var defined = 0;
 //>>includeStart("amdLoader", kwArgs.asynchLoader);
-	defined = 1;
+if (typeof define == "function"){
 	define("dojo/_base/query", ["dojo/lib/kernel", "dojo/_base/NodeList", "dojo/_base/lang", "dojo/_base/window"], function(dojo){
 		defineQuery(this["queryPortability"]||this["acme"]||dojo);
 	});
+}
+if (typeof define != "function"){
 //>>includeEnd("amdLoader");
-//>>excludeStart("amdLoader", kwArgs.asynchLoader);
-	if(!defined){
-		// must be in a built version that stripped out the define above
+	//prefers queryPortability, then acme, then dojo
+	if(this["dojo"]){
 		dojo.provide("dojo._base.query");
 		dojo.require("dojo._base.NodeList");
 		dojo.require("dojo._base.lang");
 		defineQuery(this["queryPortability"]||this["acme"]||dojo);
-	} // else must be in a source version (or a build that likes define)
-//>>excludeEnd("amdLoader");
-}else{
-	defineQuery(this["queryPortability"]||this["acme"]||defineAcme());
+	}else{
+		defineQuery(this["queryPortability"]||this["acme"]||defineAcme());
+	}
+//>>includeStart("amdLoader", kwArgs.asynchLoader);
 }
+//>>includeEnd("amdLoader");
 
 })();
 //>>excludeEnd("webkitMobile");

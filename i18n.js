@@ -7,7 +7,8 @@ dojo.i18n = {
 };
 =====*/
 
-dojo.i18n.getLocalization = function(/*String*/packageName, /*String*/bundleName, /*String?*/locale){
+// when using a real AMD loader, dojo.i18n.getLocalization is already defined by dojo/lib/backCompat
+dojo.i18n.getLocalization = dojo.i18n.getLocalization || function(/*String*/packageName, /*String*/bundleName, /*String?*/locale){
 	//	summary:
 	//		Returns an Object containing the localization for a given resource
 	//		bundle in a package, matching the specified locale.

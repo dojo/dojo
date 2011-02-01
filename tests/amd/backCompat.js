@@ -101,8 +101,10 @@ define(
 						}
 						return result.join("/");
 					},
-					result= compact(location.pathname + "/../" + dojo.moduleUrl("dojo.my", "module.js"));
-				t.assertTrue(/dojo\/my\/module\.js$/.test(result));
+					result1= compact(location.pathname + "/../" + dojo.moduleUrl("dojo.my", "module.js")),
+					result2= compact(location.pathname + "/../" + dojo.moduleUrl("dojo", "resources/blank.gif"));
+				t.assertTrue(/dojo\/my\/module\.js$/.test(result1));
+				t.assertTrue(/dojo\/resources\/blank\.gif$/.test(result2));
 			},
 	
 			function textPlugin(t){

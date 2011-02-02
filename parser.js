@@ -449,6 +449,7 @@ dojo.parser = new function(){
 			// Effective dir and lang settings on parent node, either set directly or inherited from grandparent
 			var inherited = dojo.clone(parent.inherited);
 			dojo.forEach(["dir", "lang"], function(name){
+				// TODO: what if this is a widget and dir/lang are declared in data-dojo-props?
 				var val = parent.node.getAttribute(name);
 				if(val){
 					inherited[name] = val;

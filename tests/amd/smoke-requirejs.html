@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<title>dojo with an AMD Loader!</title>
-		<script type="text/javascript" src="../../../../bdLoad/lib/require.js"></script>
+		<script type="text/javascript" src="../../../../requirejs/require.js"></script>
 		<script type="text/javaScript">
 			var start= (new Date()).getTime();
 			require({
@@ -15,8 +15,8 @@
 					lib: '.'
 				}],
 				paths:{
-					i18n:"../../lib/plugins/i18n",
-					text:"../../lib/plugins/text"
+					"require/i18n":"../../../../requirejs/require/i18n",
+					"require/text":"../../../../requirejs/require/text"
 				},
 				deps:["dojo", "dojo/date/locale", "text!smoke.txt"],
 				callback:function(dojo, locale, text){

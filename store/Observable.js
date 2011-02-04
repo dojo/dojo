@@ -86,7 +86,7 @@ dojo.store.Observable = function(store){
 									}else{
 										resultsArray.push(changed);
 									}
-									insertedInto = queryExecutor(resultsArray).indexOf(changed);
+									insertedInto = dojo.indexOf(queryExecutor(resultsArray), changed);
 									if((options.start && insertedInto == 0) ||
 										(!atEnd && insertedInto == resultsArray.length -1)){
 										// if it is at the end of the page, assume it goes into the prev or next page

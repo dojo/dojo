@@ -1,4 +1,4 @@
-define("dojo/store/util/SimpleQueryEngine", ["dojo"], function(dojo) {
+define("dojo/store/util/SimpleQueryEngine", ["dojo"], function(doo) {
 dojo.getObject("store.util", true, dojo);
 
 /*=====
@@ -48,6 +48,10 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 	//
 	// query: Object
 	//		An object hash with fields that may match fields of items in the store.
+	//		Values in the hash will be compared by normal == operator, but regular expressions
+	//		or any object that provides a test() method are also supported and can be 
+	// 		used to match strings by more complex expressions 
+	// 		(and then the regex's or object's test() method will be used to match values).
 	//
 	// options: dojo.store.util.SimpleQueryEngine.__queryOptions?
 	//		An object that contains optional information such as sort, start, and count.
@@ -76,7 +80,12 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 			var queryObject = query;
 			query = function(object){
 				for(var key in queryObject){
-					if(queryObject[key] != object[key]){
+					var required = queryObject[key];
+					if(required && required.test){
+						if(!required.test(object[key])){
+							return false;
+						} 
+					}else if(required != object[key]){
 						return false;
 					}
 				}

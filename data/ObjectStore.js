@@ -1,5 +1,4 @@
-define("dojo/data/ObjectStore", ["dojo"], function(dojo) {
-
+define("dojo/data/ObjectStore", ["dojo", "dojo/regexp"], function(dojo) {
 
 
 dojo.declare("dojo.data.ObjectStore", null,{
@@ -145,7 +144,17 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			args = args || {};
 			var self = this;
 			var scope = args.scope || self;
-			var results = this.objectStore.query(args.query, args);
+			var query = args.query;
+			if(typeof query == "object"){ // can be null, but that is ignore by for-in
+				for(var i in query){
+					// find any strings and convert them to regular expressions for wildcard support
+					var required = query[i];
+					if(typeof required == "string"){
+						query[i] = RegExp("^" + dojo.regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.ignoreCase ? "mi" : "m");
+					}
+				}
+			}
+			var results = this.objectStore.query(query, args);
 			dojo.when(results.total, function(totalCount){
 				dojo.when(results, function(results){
 					if(args.onBegin){

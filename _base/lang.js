@@ -245,6 +245,10 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 			// Date
 			return new Date(o.getTime());	// Date
 		}
+		if(o instanceof RegExp){ 
+			// RegExp 
+			return new RegExp(o);   // RegExp 
+		}
 		var r, i, l, s, name;
 		if(d.isArray(o)){
 			// array

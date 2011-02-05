@@ -261,7 +261,7 @@ if(dojo.isIE){
 
 		refNode = byId(refNode);
 		if(typeof node == "string"){ // inline'd type check
-			node = node.charAt(0) == "<" ? d._toDom(node, refNode.ownerDocument) : byId(node);
+			node = /^\s*</.test(node) ? d._toDom(node, refNode.ownerDocument) : byId(node);
 		}
 		if(typeof position == "number"){ // inline'd type check
 			var cn = refNode.childNodes;

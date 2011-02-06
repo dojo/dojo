@@ -332,7 +332,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//	handleAs: String?
 		//		Acceptable values depend on the type of IO
 		//		transport (see specific IO calls for more information).
-		// 	rawBody: String?
+		//	rawBody: String?
 		// 		Sets the raw body for an HTTP request. If this is used, then the content
 		// 		property is ignored. This is mostly useful for HTTP methods that have
 		// 		a body to their requests, like PUT or POST. This property can be used instead

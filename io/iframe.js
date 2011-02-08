@@ -283,16 +283,7 @@ dojo.io.iframe = {
 					// if we have things in content, we need to add them to the form
 					// before submission
 					var pHandler = function(name, value) {
-						var tn;
-						if(dojo.isIE){
-							tn = dojo.doc.createElement("<input type='hidden' name='"+name+"'>");
-						}else{
-							tn = dojo.doc.createElement("input");
-							tn.type = "hidden";
-							tn.name = name;
-						}
-						tn.value = value;
-						fn.appendChild(tn);
+						dojo.create("input", {type: "hidden", name: name, value: value}, fn);
 						ioArgs._contentToClean.push(name);
 					};
 					for(var x in content){

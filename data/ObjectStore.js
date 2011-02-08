@@ -140,12 +140,13 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			// summary:
 			//		See dojo.data.api.Read.fetch
 			//
-
+			
 			args = args || {};
 			var self = this;
 			var scope = args.scope || self;
 			var query = args.query;
 			if(typeof query == "object"){ // can be null, but that is ignore by for-in
+				query = dojo.delegate(query); // don't modify the original
 				for(var i in query){
 					// find any strings and convert them to regular expressions for wildcard support
 					var required = query[i];
@@ -154,6 +155,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					}
 				}
 			}
+			
 			var results = this.objectStore.query(query, args);
 			dojo.when(results.total, function(totalCount){
 				dojo.when(results, function(results){
@@ -173,7 +175,9 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			}, args.onError && dojo.hitch(scope, args.onError));
 			args.abort = function(){
 				// abort the request
-				defResult.ioArgs.xhr.abort();
+				if(results.cancel){
+					results.cancel();
+				}
 			};
 			args.store = this;
 			return args;
@@ -190,17 +194,19 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			};
 		},
 
-		getLabel: function(item){
-			// summary
-			//		returns the label for an item. Just gets the "label" attribute.
-			//
-			return this.getValue(item,this.labelProperty);
+		getLabel: function(/* item */ item){
+			//	summary: 
+			//		See dojo.data.api.Read.getLabel()
+			if(this.isItem(item)){
+				return this.getValue(item,this.labelProperty); //String
+			}
+			return undefined; //undefined
 		},
 
-		getLabelAttributes: function(item){
-			// summary:
-			//		returns an array of attributes that are used to create the label of an item
-			return [this.labelProperty];
+		getLabelAttributes: function(/* item */ item){
+			//	summary: 
+			//		See dojo.data.api.Read.getLabelAttributes()
+			return [this.labelProperty]; //array
 		},
 
 		//Identity API Support

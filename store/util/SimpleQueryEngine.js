@@ -1,4 +1,4 @@
-define("dojo/store/util/SimpleQueryEngine", ["dojo"], function(doo) {
+define("dojo/store/util/SimpleQueryEngine", ["dojo"], function(dojo) {
 dojo.getObject("store.util", true, dojo);
 
 /*=====

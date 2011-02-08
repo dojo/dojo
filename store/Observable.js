@@ -62,7 +62,8 @@ dojo.store.Observable = function(store){
 								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
 							}
 							var removedObject, removedFrom, insertedInto;
-							if(existingId){
+							if(existingId && 
+								(queryExecutor || !changed)){ // if it was changed and we don't have a queryExecutor, we shouldn't remove it because updated objects would be eliminated 
 								// remove the old one
 								for(i = 0, l = resultsArray.length; i < l; i++){
 									var object = resultsArray[i];

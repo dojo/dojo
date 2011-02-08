@@ -151,7 +151,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					// find any strings and convert them to regular expressions for wildcard support
 					var required = query[i];
 					if(typeof required == "string"){
-						query[i] = RegExp("^" + dojo.regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.ignoreCase ? "mi" : "m");
+						query[i] = RegExp("^" + dojo.regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.queryOptions && args.queryOptions.ignoreCase ? "mi" : "m");
 					}
 				}
 			}

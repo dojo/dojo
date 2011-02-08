@@ -71,27 +71,12 @@ dojo.io.iframe = {
 			}
 			turi = (dojo.config["dojoBlankHtmlUrl"]||dojo.moduleUrl("dojo", "resources/blank.html"));
 		}
-		var ifrstr = dojo.isIE ? '<iframe name="'+fname+'" src="'+turi+'" onload="'+onloadstr+'">' : 'iframe';
-		cframe = dojo.doc.createElement(ifrstr);
-		with(cframe){
-			name = fname;
-			setAttribute("name", fname);
-			id = fname;
-		}
-		dojo.body().appendChild(cframe);
-		window[fname] = cframe;
-	
-		with(cframe.style){
-				position = "absolute";
-			left = top = "1px";
-			height = width = "1px";
-			visibility = "hidden";
-		}
+		var cframe = dojo.place(
+			'<iframe id="'+fname+'" name="'+fname+'" src="'+turi+'" onload="'+onloadstr+
+			'" style="position: absolute; left: 1px; top: 1px; height: 1px; width: 1px; visibility: hidden">',
+		dojo.body());
 
-		if(!dojo.isIE){
-			this.setSrc(cframe, turi, true);
-			cframe.onload = new Function(onloadstr);
-		}
+		window[fname] = cframe;
 
 		return cframe;
 	},
@@ -181,8 +166,8 @@ dojo.io.iframe = {
 					if(handleAs != "html"){
 						if(handleAs == "xml"){
 							//	FF, Saf 3+ and Opera all seem to be fine with ifd being xml.  We have to
-							//	do it manually for IE.  Refs #6334.
-							if(dojo.isIE){
+							//	do it manually for IE6-8.  Refs #6334.
+							if(dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks)){
 								dojo.query("a", dii._frame.contentWindow.document.documentElement).orphan();
 								var xmlText=(dii._frame.contentWindow.document).documentElement.innerText;
 								xmlText=xmlText.replace(/>\s+</g, "><");

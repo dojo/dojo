@@ -116,7 +116,7 @@ dojo.store.JsonRest = function(/*dojo.store.JsonRest*/ options){
 			});
 			results.total = results.then(function(){
 				var range = results.ioArgs.xhr.getResponseHeader("Content-Range");
-				return range && (range=range.match(/\/(.*)/)) && parseInt(range[1]);
+				return range && (range=range.match(/\/(.*)/)) && +range[1];
 			});
 			return dojo.store.util.QueryResults(results);
 		}

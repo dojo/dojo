@@ -32,7 +32,7 @@ dojo.store.Observable = function(store){
 	var queryUpdaters = [], revision = 0;
 	// a Comet driven store could directly call notify to notify observers when data has
 	// changed on the backend
-	var notifyAll = store.notify = function(object, existingId){
+	store.notify = function(object, existingId){
 		revision++;
 		var updaters = queryUpdaters.slice();
 		for(var i = 0, l = updaters.length; i < l; i++){
@@ -61,7 +61,7 @@ dojo.store.Observable = function(store){
 							if(++queryRevision != revision){
 								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
 							}
-							var removedObject, removedFrom, insertedInto;
+							var removedObject, removedFrom = -1, insertedInto = -1;
 							if(existingId){
 								// remove the old one
 								for(i = 0, l = resultsArray.length; i < l; i++){
@@ -98,9 +98,9 @@ dojo.store.Observable = function(store){
 							}else if(changed){
 								// we don't have a queryEngine, so we can't provide any information
 								// about where it was inserted, but we can at least indicate a new object
-								insertedInto = removedFrom >= 0 ? removedFrom : -1;
+								insertedInto = removedFrom >= 0 ? removedFrom : (store.defaultIndex || 0);
 							}
-							if((removedFrom > -1 || insertedInto > -2) &&
+							if((removedFrom > -1 || insertedInto > -1) &&
 									(includeObjectUpdates || !queryExecutor || (removedFrom != insertedInto))){
 								var copyListeners = listeners.slice();
 								for(i = 0;listener = copyListeners[i]; i++){
@@ -147,11 +147,13 @@ dojo.store.Observable = function(store){
 	}
 	// monitor for updates by listening to these methods
 	whenFinished("put", function(object){
-		notifyAll(object, store.getIdentity(object));
+		store.notify(object, store.getIdentity(object));
 	});
-	whenFinished("add", notifyAll);
+	whenFinished("add", function(object){
+		store.notify(object);
+	});
 	whenFinished("remove", function(id){
-		notifyAll(undefined, id);
+		store.notify(undefined, id);
 	});
 
 	return store;

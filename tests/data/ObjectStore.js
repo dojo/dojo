@@ -65,6 +65,16 @@ tests.register("tests.data.ObjectStore",
 				d.callback(true);
 			}});
 			return d;
+		},
+		function testMemoryQueryWithWildcardCaseInsensitive(t){
+			var d = new doh.Deferred();
+			memoryDataStore.fetch({query:{name:"F*"}, queryOptions: {ignoreCase: true}, onComplete: function(results){
+				var object = results[0];
+				t.is(results.length, 2);
+				t.is(object.name, "four");
+				d.callback(true);
+			}});
+			return d;
 		}
 	]
 );

@@ -38,6 +38,8 @@ dojo.store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*
 			});
 			return results;
 		},
+		// look for a queryEngine in either store
+		queryEngine: masterStore.queryEngine || cachingStore.queryEngine,
 		get: function(id, directives){
 			return dojo.when(cachingStore.get(id), function(result){
 				return result || dojo.when(masterStore.get(id, directives), function(result){

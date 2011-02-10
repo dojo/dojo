@@ -1,6 +1,6 @@
 define("dojo/store/Memory", ["dojo", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"], function(dojo) {
 
-return dojo.declare("dojo.store.Memory", null, {
+dojo.declare("dojo.store.Memory", null, {
 	constructor: function(/*dojo.store.Memory*/ options){
 		// summary:
 		//		This is a basic in-memory object store.
@@ -146,4 +146,6 @@ return dojo.declare("dojo.store.Memory", null, {
 		}
 	}
 });
+
+return dojo.store.Memory;
 });

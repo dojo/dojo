@@ -1,6 +1,6 @@
 define("dojo/store/JsonRest", ["dojo", "dojo/store/util/QueryResults"], function(dojo) {
 
-return dojo.declare("dojo.store.JsonRest", null, {
+dojo.declare("dojo.store.JsonRest", null, {
 	constructor: function(/*dojo.store.JsonRest*/ options){
 		// summary:
 		//		This is a basic store for RESTful communicating with a server through JSON
@@ -131,4 +131,6 @@ return dojo.declare("dojo.store.JsonRest", null, {
 		return dojo.store.util.QueryResults(results);
 	}
 });
+
+return dojo.store.JsonRest;
 });

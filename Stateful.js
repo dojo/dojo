@@ -101,7 +101,7 @@ dojo.declare("dojo.Stateful", null, {
 						}
 					}
 				};
-				notify(callbacks[name]);
+				notify(callbacks['_' + name]);
 				if(!ignoreCatchall){
 					notify(callbacks["*"]); // the catch-all
 				}
@@ -110,6 +110,9 @@ dojo.declare("dojo.Stateful", null, {
 		if(!callback && typeof name === "function"){
 			callback = name;
 			name = "*";
+		}else{
+			// prepend with dash to prevent name conflicts with function (like "name" property)
+			name = '_' + name;
 		}
 		var propertyCallbacks = callbacks[name];
 		if(typeof propertyCallbacks !== "object"){

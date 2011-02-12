@@ -29,6 +29,25 @@ doh.register("tests.Stateful",
 			});
 			doh.is(s.get("foo"), 3);
 			doh.is(s.get("bar"), 5);
+		},		
+		function wildcard(t){
+			var s = new dojo.Stateful();
+			s.set({
+				foo:3,
+				bar: 5
+			});
+			var wildcard = 0;
+			var foo = 0;
+			s.watch(function(){
+				wildcard++;
+			});
+			s.watch("foo", function(){
+				foo++;
+			});
+			s.set("foo", 4); 
+			s.set("bar", 6);
+			doh.is(wildcard, 2);
+			doh.is(foo, 1);
 		}		
 
 

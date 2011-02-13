@@ -10,16 +10,16 @@ doh.register("tests.Stateful",
 			});
 			doh.is(s.get("foo"), 3);
 			var watching = s.watch("foo", function(name, oldValue, value){
-				doh.is(name, "foo");
-				doh.is(oldValue, 3);
-				doh.is(value, 4);
-				doh.is(s.get("foo"), 4);
+				doh.is("foo", name);
+				doh.is(3, oldValue);
+				doh.is(4, value);
+				doh.is(4, s.get("foo"));
 			});
 			s.set("foo", 4);
-			doh.is(s.get("foo"), 4);
+			doh.is(4, s.get("foo"));
 			watching.unwatch();
 			s.set("foo", 5);
-			doh.is(s.get("foo"), 5);
+			doh.is(5, s.get("foo"));
 		},
 		function setHash(t){
 			var s = new dojo.Stateful();
@@ -27,8 +27,8 @@ doh.register("tests.Stateful",
 				foo:3,
 				bar: 5
 			});
-			doh.is(s.get("foo"), 3);
-			doh.is(s.get("bar"), 5);
+			doh.is(3, s.get("foo"));
+			doh.is(5, s.get("bar"));
 		},		
 		function wildcard(t){
 			var s = new dojo.Stateful();
@@ -46,8 +46,8 @@ doh.register("tests.Stateful",
 			});
 			s.set("foo", 4); 
 			s.set("bar", 6);
-			doh.is(wildcard, 2);
-			doh.is(foo, 1);
+			doh.is(2, wildcard);
+			doh.is(1, foo);
 		}		
 
 

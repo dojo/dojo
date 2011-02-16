@@ -275,7 +275,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 =====*/
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(dojo.isIE){
+	if(dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks)){
 		dojo.mouseButtons = {
 			LEFT:   1,
 			MIDDLE: 4,
@@ -424,8 +424,10 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 				if(evt.type == "mouseout"){ 
 					evt.relatedTarget = evt.toElement;
 				}
-				evt.stopPropagation = del._stopPropagation;
-				evt.preventDefault = del._preventDefault;
+				if (dojo.isIE < 9 || dojo.isQuirks) {
+					evt.stopPropagation = del._stopPropagation;
+					evt.preventDefault = del._preventDefault;
+				}
 				return del._fixKeys(evt);
 			},
 			_fixKeys: function(evt){
@@ -500,11 +502,11 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 		});
 				
 		// override stopEvent for IE
-		dojo.stopEvent = function(evt){
+		dojo.stopEvent = (dojo.isIE < 9 || dojo.isQuirks) ? function(evt){
 			evt = evt || window.event;
 			del._stopPropagation.call(evt);
 			del._preventDefault.call(evt);
-		};
+		} : dojo.stopEvent;
 	}
 	//>>excludeEnd("webkitMobile");
 

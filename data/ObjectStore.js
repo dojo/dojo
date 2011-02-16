@@ -247,7 +247,6 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//
 			//	data: /* object */
 			//		The data to be added in as an item.
-			data = new this._constructor(data);
 			if(parentInfo){
 				// get the previous value or any empty array
 				var values = this.getValue(parentInfo.parent,parentInfo.attribute,[]);

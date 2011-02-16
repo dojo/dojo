@@ -38,6 +38,22 @@ tests.register("tests.data.ObjectStore",
 			}});
 			return d;
 		},
+		function testNewItem(t){
+			var newItem = memoryDataStore.newItem({
+				foo: "bar",
+				id: Math.random()
+			});
+			memoryDataStore.setValue(newItem, "prop1", 1);
+			memoryDataStore.save();
+			memoryDataStore.fetchItemByIdentity({
+				identity: memoryDataStore.getIdentity(newItem),
+				onItem: function(item){
+					t.is(memoryDataStore.getValue(item, "foo"), "bar");
+					memoryDataStore.setValue(newItem, "prop2", 2);
+					t.is(memoryDataStore.getValue(item, "prop1"), 1);
+					t.is(memoryDataStore.getValue(item, "prop2"), 2);
+				}});
+		},
 		function testMemoryQuery(t){
 			var d = new doh.Deferred();
 			memoryDataStore.fetch({query:{name:"one"}, onComplete: function(results){

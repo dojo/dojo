@@ -256,7 +256,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 				this.setValue(parentInfo.parent, parentInfo.attribute, values);
 			}
 			this._dirtyObjects.push({object:data, save: true});
-			
+			this.onNew(data);
 			return data;
 		},
 		deleteItem: function(item){

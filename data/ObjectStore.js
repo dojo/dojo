@@ -190,7 +190,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 				"dojo.data.api.Read": !!this.objectStore.get,
 				"dojo.data.api.Identity": true,
 				"dojo.data.api.Write": !!this.objectStore.put,
-				"dojo.data.api.Notification": !!this.objectStore.subscribe
+				"dojo.data.api.Notification": true
 			};
 		},
 

@@ -817,7 +817,7 @@
 			}else{
 				// one arg
 				def = name;
-				deps = ["require", "exports", "module"];
+				deps = typeof def == "function" ? ["require", "exports", "module"].slice(0, def.length) : [];
 			}
 			name = currentModule ? currentModule.replace(/\./g,'/') : "anon";
 		}

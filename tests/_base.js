@@ -110,7 +110,12 @@ try{
 	// go grab the others
 	dojo.require("tests._base._loader.bootstrap");
 	dojo.require("tests._base._loader.loader");
-	this.define && define.vendor=="dojotoolkit.org" && dojo.require("dojo.tests._base._loader.modules");
+
+	// make sure we're looking at global define
+	var global;
+	(function(){ global= this; })();
+	global.define && global.define.vendor=="dojotoolkit.org" && dojo.require("dojo.tests._base._loader.modules");
+
 	dojo.platformRequire({
 		browser: ["tests._base._loader.hostenv_browser"],
 		rhino: ["tests._base._loader.hostenv_rhino"],

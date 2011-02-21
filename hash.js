@@ -19,10 +19,10 @@ define("dojo/hash", ["dojo"], function(dojo) {
 		//		Handles getting and setting of location.hash.
 		//		 - If no arguments are passed, acts as a getter.
 		//		 - If a string is passed, acts as a setter.
-		//	hash: 
+		//	hash:
 		//		the hash is set - #string.
 		//	replace:
-		//		If true, updates the hash value in the current history 
+		//		If true, updates the hash value in the current history
 		//		state instead of creating a new history state.
 		//	returns:
 		//		when used as a getter, returns the current hash string.
@@ -51,7 +51,7 @@ define("dojo/hash", ["dojo"], function(dojo) {
 	//Internal functions
 	function _getSegment(str, delimiter){
 		var i = str.indexOf(delimiter);
-		return (i >= 0) ? str.substring(i+1) : "";  
+		return (i >= 0) ? str.substring(i+1) : "";
 	}
 	
 	function _getHash(){
@@ -88,7 +88,7 @@ define("dojo/hash", ["dojo"], function(dojo) {
 
 	function IEUriMonitor(){
 		// summary:
-		//		Determine if the browser's URI has changed or if the user has pressed the 
+		//		Determine if the browser's URI has changed or if the user has pressed the
 		//		back or forward button. If so, call _dispatchEvent.
 		//
 		//	description:
@@ -228,7 +228,7 @@ define("dojo/hash", ["dojo"], function(dojo) {
 			}else if(document.attachEvent){ // IE7-
 				//Use hidden iframe in versions of IE that don't have onhashchange event
 				_ieUriMonitor = new IEUriMonitor();
-			} 
+			}
 			// else non-supported browser, do nothing.
 		}
 	});

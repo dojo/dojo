@@ -77,11 +77,11 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	generateText: true,
 	
 	constructor: function(/*DOMNode|String*/node, /*dojo.dnd.__SourceArgs?*/params){
-		// summary: 
+		// summary:
 		//		a constructor of the Source
 		// node:
 		//		node or node's id to build the source on
-		// params: 
+		// params:
 		//		any property of this class may be configured via the params
 		//		object which is mixed-in to the `dojo.dnd.Source` instance
 		dojo.mixin(this, dojo.mixin({}, params));

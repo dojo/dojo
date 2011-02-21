@@ -1,7 +1,7 @@
 dojo.provide("tests.AdapterRegistry");
 dojo.require("dojo.AdapterRegistry");
 
-doh.register("tests.AdapterRegistry", 
+doh.register("tests.AdapterRegistry",
 	[
 		function ctor(t){
 			var taa = new dojo.AdapterRegistry();
@@ -14,7 +14,7 @@ doh.register("tests.AdapterRegistry",
 
 		function register(t){
 			var taa = new dojo.AdapterRegistry();
-			taa.register("blah", 
+			taa.register("blah",
 				function(str){ return str == "blah"; },
 				function(){ return "blah"; }
 			);
@@ -45,7 +45,7 @@ doh.register("tests.AdapterRegistry",
 
 		function returnWrappers(t){
 			var taa = new dojo.AdapterRegistry();
-			taa.register("blah", 
+			taa.register("blah",
 				function(str){ return str == "blah"; },
 				function(){ return "blah"; }
 			);
@@ -57,7 +57,7 @@ doh.register("tests.AdapterRegistry",
 
 		function unregister(t){
 			var taa = new dojo.AdapterRegistry();
-			taa.register("blah", 
+			taa.register("blah",
 				function(str){ return str == "blah"; },
 				function(){ return "blah"; }
 			);

@@ -75,7 +75,7 @@ djConfig = {
 	//		of calling `dojo.registerModulePath("foo", "../../bar");`. Multiple
 	//		modules may be configured via `djConfig.modulePaths`.
 	modulePaths: {},
-	// afterOnLoad: Boolean 
+	// afterOnLoad: Boolean
 	//		Indicates Dojo was added to the page after the page load. In this case
 	//		Dojo will not wait for the page DOMContentLoad/load events and fire
 	//		its dojo.addOnLoad callbacks after making sure all outstanding
@@ -102,7 +102,7 @@ djConfig = {
 	// dojoBlankHtmlUrl: String
 	//		Used by some modules to configure an empty iframe. Used by dojo.io.iframe and
 	//		dojo.back, and dijit popup support in IE where an iframe is needed to make sure native
-	//		controls do not bleed through the popups. Normally this configuration variable 
+	//		controls do not bleed through the popups. Normally this configuration variable
 	//		does not need to be set, except when using cross-domain/CDN Dojo builds.
 	//		Save dojo/resources/blank.html to your domain and set `djConfig.dojoBlankHtmlUrl`
 	//		to the path on your domain your copy of blank.html.
@@ -211,7 +211,7 @@ dojo.global = {
 	};
 
 	// FIXME: 2.0, drop djConfig support. Use dojoConfig exclusively for global config.
-	var cfg = typeof djConfig != "undefined" ? djConfig : 
+	var cfg = typeof djConfig != "undefined" ? djConfig :
 		typeof dojoConfig != "undefined" ? dojoConfig : null;
 		
 	if(cfg){
@@ -332,7 +332,7 @@ dojo.global = {
 		//	|		constructor: function(properties){
 		//	|			// property configuration:
 		//	|			dojo.mixin(this, properties);
-		//	|	
+		//	|
 		//	|			console.log(this.quip);
 		//	|			//  ...
 		//	|		},
@@ -353,7 +353,7 @@ dojo.global = {
 		//	|			name: "Carl Brutanananadilewski"
 		//	|		}
 		//	|	);
-		//	|	
+		//	|
 		//	|	// will print "Carl Brutanananadilewski"
 		//	|	console.log(flattened.name);
 		//	|	// will print "true"
@@ -518,30 +518,30 @@ return {dojo:dojo, dijit:dijit, dojox:dojox};
 // This resource ("bootstrap") is responsible for creating and starting to populate the
 // dojo, dijit, and dojox objects. With the introduction of AMD loading, there are
 // several ways bootstrap could be evaluated:
-// 
+//
 // 1. Consequent to dojo.js script-injecting it. In this case it is expected to be
 //    evaluated immediately and dojo, dijit, and dojox are expected to be located
 //    in the global namespace. Note that if bootstrap is injected by dojo.js, then
 //    an AMD loader is *not* being used.
-// 
+//
 // 2. Consequent to an AMD loader script-injecting it. In this case, it is expected
 //    to delay evaluation, and instead publish a factory function to be executed under
 //    the control of the AMD loader. IAW AMD loader design, the global space should
 //    not be polluted; therefore dojo, dijit, and dojox are not be published into
 //    the global space.
-// 
+//
 // 3. Consequent to a built version of dojo (sync or xdomain loader).
-// 
+//
 // For [1], a bootstrap version of define is provided below. the v1.6 sync loader
 // will replace this with a better AMD simulation. The bootstrap version ensures bootstrap
 // is executed immediately--just as with all dojo versions prior to v1.6.
-// 
+//
 // For [2], a factory function is provided to the loader that executes the bootstrap
 // without polluting the global namespace. The factory returns the dojo object, and the
 // dijit and dojox objects are stuffed into the dojo object (at _dijit and _dojox) so
 // that dojo, dijit, and dojox bootstraps used with AMD can retrieve and control these
 // objects.
-// 
+//
 // For [3], the build util with v1.6 strips *all* AMD artifacts from this resource and reverts it
 // to look like v1.5. This ensures the built version, with either the sync or xdomain loader, work
 // *exactly* as in v1.5. While it may be possible to do more, any solution that does not

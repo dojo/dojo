@@ -459,7 +459,7 @@ define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base
 
 		indexOf: function(value, fromIndex){
 			//	summary:
-			//		see dojo.indexOf(). The primary difference is that the acted-on 
+			//		see dojo.indexOf(). The primary difference is that the acted-on
 			//		array is implicitly this NodeList
 			// value: Object:
 			//		The value to search for.
@@ -563,12 +563,12 @@ define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base
 
 		forEach: function(callback, thisObj){
 			//	summary:
-			//		see `dojo.forEach()`. The primary difference is that the acted-on 
+			//		see `dojo.forEach()`. The primary difference is that the acted-on
 			//		array is implicitly this NodeList. If you want the option to break out
 			//		of the forEach loop, use every() or some() instead.
 			d.forEach(this, callback, thisObj);
 			// non-standard return to allow easier chaining
-			return this; // dojo.NodeList 
+			return this; // dojo.NodeList
 		},
 
 		/*=====
@@ -585,7 +585,7 @@ define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base
 			//	summary:
 			//		Returns border-box objects (x/y/w/h) of all elements in a node list
 			//		as an Array (*not* a NodeList). Acts like `dojo.position`, though
-			//		assumes the node passed is each node in this list. 
+			//		assumes the node passed is each node in this list.
 
 			return d.map(this, d.position); // Array
 		},
@@ -673,7 +673,7 @@ define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base
 			//		if 2 arguments are passed (methodName, objOrFunc), objOrFunc should
 			//		reference a function or be the name of the function in the global
 			//		namespace to attach. If 3 arguments are provided
-			//		(methodName, objOrFunc, funcName), objOrFunc must be the scope to 
+			//		(methodName, objOrFunc, funcName), objOrFunc must be the scope to
 			//		locate the bound function in
 			//	funcName: String?
 			//		optional. A string naming the function in objOrFunc to bind to the
@@ -719,7 +719,7 @@ define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base
 			//		by queryOrNode. Returns the original NodeList. See: `dojo.place`
 			//	queryOrNode:
 			//		may be a string representing any valid CSS3 selector or a DOM node.
-			//		In the selector case, only the first matching element will be used 
+			//		In the selector case, only the first matching element will be used
 			//		for relative positioning.
 			//	position:
 			//		can be one of:
@@ -741,7 +741,7 @@ define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base
 			//	filter:
 			//		CSS selector like ".foo" or "div > span"
 			//	returns:
-			//		`dojo.NodeList` containing the orphaned elements 
+			//		`dojo.NodeList` containing the orphaned elements
 			return (filter ? d._filterQueryResult(this, filter) : this).forEach(orphan); // dojo.NodeList
 		},
 
@@ -927,11 +927,11 @@ define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base
 			//	index: Integer...
 			//		One or more 0-based indices of items in the current
 			//		NodeList. A negative index will start at the end of the
-			//		list and go backwards. 
+			//		list and go backwards.
 			//
 			//	example:
 			//	Shorten the list to the first, second, and third elements
-			//	|	dojo.query("a").at(0, 1, 2).forEach(fn); 
+			//	|	dojo.query("a").at(0, 1, 2).forEach(fn);
 			//
 			//	example:
 			//	Retrieve the first and last elements of a unordered list:
@@ -941,13 +941,13 @@ define("dojo/_base/NodeList", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base
 			//	Do something for the first element only, but end() out back to
 			//	the original list and continue chaining:
 			//	|	dojo.query("a").at(0).onclick(fn).end().forEach(function(n){
-			//	|		console.log(n); // all anchors on the page. 
-			//	|	})	
+			//	|		console.log(n); // all anchors on the page.
+			//	|	})
 			//
 			//	returns:
 			//		dojo.NodeList
 			var t = new this._NodeListCtor();
-			d.forEach(arguments, function(i){ 
+			d.forEach(arguments, function(i){
 				if(i < 0){ i = this.length + i }
 				if(this[i]){ t.push(this[i]); }
 			}, this);

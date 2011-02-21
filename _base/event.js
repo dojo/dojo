@@ -8,13 +8,13 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 	// DOM event listener machinery
 	var del = (dojo._event_listener = {
 		add: function(/*DOMNode*/ node, /*String*/ name, /*Function*/ fp){
-			if(!node){return;} 
+			if(!node){return;}
 			name = del._normalizeEventName(name);
 			fp = del._fixCallback(name, fp);
 			var oname = name;
 			if(
 				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-				!dojo.isIE && 
+				!dojo.isIE &&
 				//>>excludeEnd("webkitMobile");
 				(name == "mouseenter" || name == "mouseleave")
 			){
@@ -24,7 +24,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 				fp = function(e){
 					if(!dojo.isDescendant(e.relatedTarget, node)){
 						// e.type = oname; // FIXME: doesn't take? SJM: event.type is generally immutable.
-						return ofp.call(this, e); 
+						return ofp.call(this, e);
 					}
 				}
 			}
@@ -65,7 +65,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 		},
 		_fixEvent: function(evt, sender){
 			// _fixCallback only attaches us to keypress.
-			// Switch on evt.type anyway because we might 
+			// Switch on evt.type anyway because we might
 			// be called directly from dojo.fixEvent.
 			switch(evt.type){
 				case "keypress":
@@ -81,20 +81,20 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 		// For IE and Safari: some ctrl-key combinations (mostly w/punctuation) do not emit a char code in IE
 		// we map those virtual key codes to ascii here
 		// not valid for all (non-US) keyboards, so maybe we shouldn't bother
-		_punctMap: { 
-			106:42, 
-			111:47, 
-			186:59, 
-			187:43, 
-			188:44, 
-			189:45, 
-			190:46, 
-			191:47, 
-			192:96, 
-			219:91, 
-			220:92, 
-			221:93, 
-			222:39 
+		_punctMap: {
+			106:42,
+			111:47,
+			186:59,
+			187:43,
+			188:44,
+			189:45,
+			190:46,
+			191:47,
+			192:96,
+			219:91,
+			220:92,
+			221:93,
+			222:39
 		}
 	});
 
@@ -135,7 +135,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 		// create a listener
 		var h = l.add(obj, event, dojo.hitch(context, method));
 		// formerly, the disconnect package contained "l" directly, but if client code
-		// leaks the disconnect package (by connecting it to a node), referencing "l" 
+		// leaks the disconnect package (by connecting it to a node), referencing "l"
 		// compounds the problem.
 		// instead we return a listener id, which requires custom _disconnect below.
 		// return disconnect package
@@ -304,7 +304,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	// IE event normalization
-	if(dojo.isIE){ 
+	if(dojo.isIE){
 		var _trySetKeyCode = function(e, code){
 			try{
 				// squelch errors when keyCode is read-only
@@ -322,7 +322,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 		if(!dojo.config._allow_leaks){
 			// custom listener that handles leak protection for DOM events
 			node_listener = iel = dojo._ie_listener = {
-				// support handler indirection: event handler functions are 
+				// support handler indirection: event handler functions are
 				// referenced here. Event dispatchers hold only indices.
 				handlers: [],
 				// add a listener to an object
@@ -375,7 +375,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 			},
 			remove: function(/*DOMNode*/ node, /*String*/ event, /*Handle*/ handle){
 				event = del._normalizeEventName(event);
-				iel.remove(node, event, handle); 
+				iel.remove(node, event, handle);
 				if(event=="onkeypress"){
 					var kd = node.onkeydown;
 					if(--kd._stealthKeydownRefs <= 0){
@@ -401,11 +401,11 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 				//		node to treat as "currentTarget"
 				if(!evt){
 					var w = sender && (sender.ownerDocument || sender.document || sender).parentWindow || window;
-					evt = w.event; 
+					evt = w.event;
 				}
 				if(!evt){return(evt);}
-				evt.target = evt.srcElement; 
-				evt.currentTarget = (sender || evt.srcElement); 
+				evt.target = evt.srcElement;
+				evt.currentTarget = (sender || evt.srcElement);
 				evt.layerX = evt.offsetX;
 				evt.layerY = evt.offsetY;
 				// FIXME: scroll position query is duped from dojo.html to
@@ -418,10 +418,10 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 				var offset = dojo._getIeDocumentElementOffset();
 				evt.pageX = evt.clientX + dojo._fixIeBiDiScrollLeft(docBody.scrollLeft || 0) - offset.x;
 				evt.pageY = evt.clientY + (docBody.scrollTop || 0) - offset.y;
-				if(evt.type == "mouseover"){ 
+				if(evt.type == "mouseover"){
 					evt.relatedTarget = evt.fromElement;
 				}
-				if(evt.type == "mouseout"){ 
+				if(evt.type == "mouseout"){
 					evt.relatedTarget = evt.toElement;
 				}
 				if (dojo.isIE < 9 || dojo.isQuirks) {
@@ -467,12 +467,12 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 					var c = unprintable ? 0 : k;
 					if(evt.ctrlKey){
 						if(k==3 || k==13){
-							return; // IE will post CTRL-BREAK, CTRL-ENTER as keypress natively 
-						}else if(c>95 && c<106){ 
+							return; // IE will post CTRL-BREAK, CTRL-ENTER as keypress natively
+						}else if(c>95 && c<106){
 							c -= 48; // map CTRL-[numpad 0-9] to ASCII
-						}else if((!evt.shiftKey)&&(c>=65&&c<=90)){ 
+						}else if((!evt.shiftKey)&&(c>=65&&c<=90)){
 							c += 32; // map CTRL-[A-Z] to lowercase
-						}else{ 
+						}else{
 							c = del._punctMap[c] || c; // map other problematic CTRL combinations to ASCII
 						}
 					}
@@ -486,13 +486,13 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 			},
 			// Called in Event scope
 			_stopPropagation: function(){
-				this.cancelBubble = true; 
+				this.cancelBubble = true;
 			},
 			_preventDefault: function(){
 				// Setting keyCode to 0 is the only way to prevent certain keypresses (namely
 				// ctrl-combinations that correspond to menu accelerator keys).
 				// Otoh, it prevents upstream listeners from getting this information
-				// Try to split the difference here by clobbering keyCode only for ctrl 
+				// Try to split the difference here by clobbering keyCode only for ctrl
 				// combinations. If you still need to access the key upstream, bubbledKeyCode is
 				// provided as a workaround.
 				this.bubbledKeyCode = this.keyCode;
@@ -513,11 +513,11 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 	del._synthesizeEvent = function(evt, props){
 			var faux = dojo.mixin({}, evt, props);
 			del._setKeyChar(faux);
-			// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault); 
+			// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault);
 			// but it throws an error when preventDefault is invoked on Safari
 			// does Event.preventDefault not support "apply" on Safari?
-			faux.preventDefault = function(){ evt.preventDefault(); }; 
-			faux.stopPropagation = function(){ evt.stopPropagation(); }; 
+			faux.preventDefault = function(){ evt.preventDefault(); };
+			faux.stopPropagation = function(){ evt.stopPropagation(); };
 			return faux;
 	};
 	
@@ -574,12 +574,12 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 							var c = unprintable ? 0 : k;
 							if(evt.ctrlKey){
 								if(k==3 || k==13){
-									return; // IE will post CTRL-BREAK, CTRL-ENTER as keypress natively 
-								}else if(c>95 && c<106){ 
+									return; // IE will post CTRL-BREAK, CTRL-ENTER as keypress natively
+								}else if(c>95 && c<106){
 									c -= 48; // map CTRL-[numpad 0-9] to ASCII
-								}else if(!evt.shiftKey && c>=65 && c<=90){ 
+								}else if(!evt.shiftKey && c>=65 && c<=90){
 									c += 32; // map CTRL-[A-Z] to lowercase
-								}else{ 
+								}else{
 									c = del._punctMap[c] || c; // map other problematic CTRL combinations to ASCII
 								}
 							}

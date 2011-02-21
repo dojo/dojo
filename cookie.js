@@ -22,7 +22,7 @@ dojo.__cookieProps = function(){
 
 
 dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/props){
-	//	summary: 
+	//	summary:
 	//		Get or set a cookie.
 	//	description:
 	// 		If one argument is passed, returns the value of the cookie
@@ -31,17 +31,17 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 	//		Name of the cookie
 	//	value:
 	//		Value for the cookie
-	//	props: 
+	//	props:
 	//		Properties for the cookie
 	//	example:
 	//		set a cookie with the JSON-serialized contents of an object which
 	//		will expire 5 days from now:
 	//	|	dojo.cookie("configObj", dojo.toJson(config), { expires: 5 });
-	//	
+	//
 	//	example:
 	//		de-serialize a cookie back into a JavaScript object:
 	//	|	var config = dojo.fromJson(dojo.cookie("configObj"));
-	//	
+	//
 	//	example:
 	//		delete a cookie:
 	//	|	dojo.cookie("configObj", null, {expires: -1});
@@ -53,7 +53,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 		props = props || {};
 // FIXME: expires=0 seems to disappear right away, not on close? (FF3)  Change docs?
 		var exp = props.expires;
-		if(typeof exp == "number"){ 
+		if(typeof exp == "number"){
 			var d = new Date();
 			d.setTime(d.getTime() + exp*24*60*60*1000);
 			exp = props.expires = d;
@@ -74,7 +74,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 dojo.cookie.isSupported = function(){
 	//	summary:
 	//		Use to determine if the current browser supports cookies or not.
-	//		
+	//
 	//		Returns true if user allows cookies.
 	//		Returns false if user doesn't allow cookies.
 

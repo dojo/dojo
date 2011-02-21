@@ -2,7 +2,7 @@ dojo.provide("dojo.tests.module");
 
 try{
 	dojo.require("tests._base");
-	dojo.require("tests.i18n"); 
+	dojo.require("tests.i18n");
 	dojo.requireIf(dojo.isBrowser, "tests.back-hash");
 	dojo.requireIf(dojo.isBrowser, "tests.hash");
 	dojo.require("tests.cldr");

@@ -2,7 +2,7 @@ dojo.provide("tests.DeferredList");
 
 dojo.require("dojo.DeferredList");
 
-doh.register("tests.DeferredList", 
+doh.register("tests.DeferredList",
 	[
 		function callback(t){
 			var d1 = new dojo.Deferred();
@@ -81,7 +81,7 @@ doh.register("tests.DeferredList",
 			d1.errback(e);
 			d2.callback("bar");
             t.assertTrue(fired);
-		}, 
+		},
 
         function gather(t){
 			var d1 = new dojo.Deferred();
@@ -104,7 +104,7 @@ dojo.provide("tests.DeferredList");
 
 dojo.require("dojo.DeferredList");
 
-doh.register("tests.DeferredList", 
+doh.register("tests.DeferredList",
 	[
 		function callback(t){
 			var d1 = new dojo.Deferred();
@@ -181,7 +181,7 @@ doh.register("tests.DeferredList",
 			d1.errback(e);
 			d2.callback("bar");
             t.assertTrue(fired);
-		}, 
+		},
 
         function gather(t){
 			var d1 = new dojo.Deferred();

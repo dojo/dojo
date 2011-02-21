@@ -1,8 +1,8 @@
 // test define statement spread across multiple lines
-// 
+//
 // AMD-id "my/module"
 define([
-  "your/module", 
+  "your/module",
   "his/module"
 ], function(yours, his) {
 

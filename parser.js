@@ -36,7 +36,7 @@ dojo.parser = new function(){
 			case "function":
 				if(d.isFunction(value)){
 					// IE gives us a function, even when we say something like onClick="foo"
-					// (in which case it gives us an invalid function "function(){ foo }"). 
+					// (in which case it gives us an invalid function "function(){ foo }").
 					//	Therefore, convert to string
 					value=value.toString();
 					value=d.trim(value.substring(value.indexOf('{')+1, value.length-1));
@@ -100,8 +100,8 @@ dojo.parser = new function(){
 		//		fully qualified name (like "dijit.form.Button")
 		// returns:
 		//		structure like
-		//			{ 
-		//				cls: dijit.Button, 
+		//			{
+		//				cls: dijit.Button,
 		//				params: { label: "string", disabled: "boolean"}
 		//			}
 
@@ -117,9 +117,9 @@ dojo.parser = new function(){
 			
 		}else if(!skipParamsLookup && !c.params){
 			// if we're calling getClassInfo and have a cls proto, but no params info, scan that cls for params now
-			// and update the pointer in instanceClasses[className]. This happens when a widget appears in another 
+			// and update the pointer in instanceClasses[className]. This happens when a widget appears in another
 			// widget's template which still uses dojoType, but an instance of the widget appears prior with a data-dojo-type,
-			// skipping this lookup the first time. 
+			// skipping this lookup the first time.
 			c.params = getProtoInfo(c.cls.prototype, {});
 		}
 		
@@ -201,7 +201,7 @@ dojo.parser = new function(){
 				type = attrName in mixin ? mixin[attrName] : node.getAttribute(attrName);
 				clsInfo = type && getClassInfo(type);
 				clazz = clsInfo && clsInfo.cls;
-				scripts = (clazz && (clazz._noScript || clazz.prototype._noScript) ? [] : 
+				scripts = (clazz && (clazz._noScript || clazz.prototype._noScript) ? [] :
 							d.query("> script[type^='dojo/']", node));
 			}
 			if(!clsInfo){
@@ -228,7 +228,7 @@ dojo.parser = new function(){
 				if(extra && extra.length){
 					try{
 						extra = d.fromJson.call(args.propsThis, "{" + extra + "}");
-						d._mixin(params, extra);					
+						d._mixin(params, extra);
 					}catch(e){
 						// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
 						throw new Error(e.toString() + " in data-dojo-props='" + extra + "'");
@@ -247,7 +247,7 @@ dojo.parser = new function(){
 				}
 				dojo.mixin(params, mixin);
 			}else{
-				// FIXME: we need something like "deprecateOnce()" to throw dojo.deprecation for something. 
+				// FIXME: we need something like "deprecateOnce()" to throw dojo.deprecation for something.
 				// remove this logic in 2.0
 				// read parameters (ie, attributes) specified on DOMNode
 
@@ -332,9 +332,9 @@ dojo.parser = new function(){
 			// ContentPane is the parent widget (so that the parse doesn't call startup() on the
 			// ContentPane's children)
 			d.forEach(thelist, function(instance){
-				if( !args.noStart && instance  && 
+				if( !args.noStart && instance  &&
 					dojo.isFunction(instance.startup) &&
-					!instance._started && 
+					!instance._started &&
 					(!instance.getParent || !instance.getParent())
 				){
 					instance.startup();
@@ -364,19 +364,19 @@ dojo.parser = new function(){
 		//		types by looking up the Class prototype values. This is the default behavior
 		//		from Dojo 1.0 to Dojo 1.5. `dojoType` support is deprecated, and will
 		//		go away in Dojo 2.0.
-		//      
+		//
 		// rootNode: DomNode?
 		//		A default starting root node from which to start the parsing. Can be
 		//		omitted, defaulting to the entire document. If omitted, the `args`
-		//		object can be passed in this place. If the `args` object has a 
+		//		object can be passed in this place. If the `args` object has a
 		//		`rootNode` member, that is used.
 		//
 		// args: Object
 		//		a kwArgs object passed along to instantiate()
-		//		
+		//
 		//			* noStart: Boolean?
 		//				when set will prevent the parser from calling .startup()
-		//				when locating the nodes. 
+		//				when locating the nodes.
 		//			* rootNode: DomNode?
 		//				identical to the function's `rootNode` argument, though
 		//				allowed to be passed in via this `args object.
@@ -405,7 +405,7 @@ dojo.parser = new function(){
 		//	|		dojo.parser.parse(dojo.byId('foo'));
 		//
 		// example:
-		//		Parse all classes in a page, but do not call .startup() on any 
+		//		Parse all classes in a page, but do not call .startup() on any
 		//		child
 		//	|		dojo.parser.parse({ noStart: true })
 		//
@@ -467,11 +467,11 @@ dojo.parser = new function(){
 				if(child.nodeType == 1){
 					// FIXME: desupport dojoType in 2.0. use data-dojo-type instead
 					var type, html5 = recurse && child.getAttribute(attrData + "type");
-					if(html5){ 
-						type = html5; 
+					if(html5){
+						type = html5;
 					}else{
 						// fallback to backward compatible mode, using dojoType. remove in 2.0
-						type = recurse && child.getAttribute(attrName); 
+						type = recurse && child.getAttribute(attrName);
 					}
 					
 					var fastpath = html5 == type;
@@ -527,9 +527,9 @@ dojo.parser = new function(){
 //after the a11y test.
 
 (function(){
-	var parseRunner = function(){ 
+	var parseRunner = function(){
 		if(dojo.config.parseOnLoad){
-			dojo.parser.parse(); 
+			dojo.parser.parse();
 		}
 	};
 

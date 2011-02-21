@@ -52,7 +52,7 @@ if(dojo.isIE){
 			return id;
 		}
 		var _d = doc || dojo.doc, te = _d.getElementById(id);
-		// attributes.id.value is better than just id in case the 
+		// attributes.id.value is better than just id in case the
 		// user has a name=id inside a form
 		if(te && (te.attributes.id.value == id || te.id == id)){
 			return te;
@@ -165,16 +165,16 @@ if(dojo.isIE){
 	};
 
 	dojo.setSelectable = function(/*DomNode|String*/node, /*Boolean*/selectable){
-		//	summary: 
+		//	summary:
 		//		Enable or disable selection on a node
 		//	node:
 		//		id or reference to node
 		//	selectable:
-		//		state to put the node in. false indicates unselectable, true 
+		//		state to put the node in. false indicates unselectable, true
 		//		allows selection.
 		//	example:
 		//	Make the node id="bar" unselectable
-		//	|	dojo.setSelectable("bar"); 
+		//	|	dojo.setSelectable("bar");
 		//	example:
 		//	Make the node id="bar" selectable
 		//	|	dojo.setSelectable("bar", true);
@@ -308,7 +308,7 @@ if(dojo.isIE){
 	dojo.boxModel = "content-box";
 
 	// We punt per-node box mode testing completely.
-	// If anybody cares, we can provide an additional (optional) unit 
+	// If anybody cares, we can provide an additional (optional) unit
 	// that overrides existing code to include per-node box sensitivity.
 
 	// Opera documentation claims that Opera 9 uses border-box in BackCompat mode.
@@ -330,10 +330,10 @@ if(dojo.isIE){
 	// getComputedStyle drives most of the style code.
 	// Wherever possible, reuse the returned object.
 	//
-	// API functions below that need to access computed styles accept an 
+	// API functions below that need to access computed styles accept an
 	// optional computedStyle parameter.
 	// If this parameter is omitted, the functions will call getComputedStyle themselves.
-	// This way, calling code can access computedStyle once, and then pass the reference to 
+	// This way, calling code can access computedStyle once, and then pass the reference to
 	// multiple API functions.
 
 /*=====
@@ -372,7 +372,7 @@ if(dojo.isIE){
 	// Although we normally eschew argument validation at this
 	// level, here we test argument 'node' for (duck)type,
 	// by testing nodeType, ecause 'document' is the 'parentNode' of 'body'
-	// it is frequently sent to this function even 
+	// it is frequently sent to this function even
 	// though it is not Element.
 	var gcs;
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
@@ -576,7 +576,7 @@ if(dojo.isIE){
 		//		Also when getting values, use specific style names,
 		//		like "borderBottomWidth" instead of "border" since compound values like
 		//		"border" are not necessarily reflected as expected.
-		//		If you want to get node dimensions, use `dojo.marginBox()`, 
+		//		If you want to get node dimensions, use `dojo.marginBox()`,
 		//		`dojo.contentBox()` or `dojo.position()`.
 		//	node:
 		//		id or reference to node to get/set style for
@@ -658,13 +658,13 @@ if(dojo.isIE){
 		//	description:
 		//		Returns an object with `w`, `h`, `l`, `t` properties:
 		//	|		l/t = left/top padding (respectively)
-		//	|		w = the total of the left and right padding 
+		//	|		w = the total of the left and right padding
 		//	|		h = the total of the top and bottom padding
 		//		If 'node' has position, l/t forms the origin for child nodes.
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
-		var 
+		var
 			s = computedStyle||gcs(n),
 			l = px(n, s.paddingLeft),
 			t = px(n, s.paddingTop);
@@ -688,7 +688,7 @@ if(dojo.isIE){
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
-		var 
+		var
 			ne = "none",
 			s = computedStyle||gcs(n),
 			bl = (s.borderLeftStyle != ne ? px(n, s.borderLeftWidth) : 0),
@@ -713,7 +713,7 @@ if(dojo.isIE){
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
-		var 
+		var
 			s = computedStyle||gcs(n),
 			p = d._getPadExtents(n, s),
 			b = d._getBorderExtents(n, s);
@@ -737,7 +737,7 @@ if(dojo.isIE){
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
-		var 
+		var
 			s = computedStyle||gcs(n),
 			l = px(n, s.marginLeft),
 			t = px(n, s.marginTop),
@@ -745,9 +745,9 @@ if(dojo.isIE){
 			b = px(n, s.marginBottom);
 		if(d.isWebKit && (s.position != "absolute")){
 			// FIXME: Safari's version of the computed right margin
-			// is the space between our right edge and the right edge 
+			// is the space between our right edge and the right edge
 			// of our offsetParent.
-			// What we are looking for is the actual margin value as 
+			// What we are looking for is the actual margin value as
 			// determined by CSS.
 			// Hack solution is to assume left/right margins are the same.
 			r = l;
@@ -766,10 +766,10 @@ if(dojo.isIE){
 	// They do *not* work for display: inline objects that have padding styles
 	// because the user agent ignores padding (it's bogus styling in any case)
 	//
-	// Be careful with IMGs because they are inline or block depending on 
+	// Be careful with IMGs because they are inline or block depending on
 	// browser and browser mode.
 
-	// Although it would be easier to read, there are not separate versions of 
+	// Although it would be easier to read, there are not separate versions of
 	// _getMarginBox for each browser because:
 	// 1. the branching is not expensive
 	// 2. factoring the shared code wastes cycles (function call overhead)
@@ -815,7 +815,7 @@ if(dojo.isIE){
 			l: l,
 			t: t,
 			w: node.offsetWidth + me.w,
-			h: node.offsetHeight + me.h 
+			h: node.offsetHeight + me.h
 		};
 	}
 	
@@ -886,12 +886,12 @@ if(dojo.isIE){
 	// Beware of display: inline objects that have padding styles
 	// because the user agent ignores padding (it's a bogus setup anyway)
 	//
-	// Be careful with IMGs because they are inline or block depending on 
+	// Be careful with IMGs because they are inline or block depending on
 	// browser and browser mode.
 	//
 	// Elements other than DIV may have special quirks, like built-in
 	// margins or padding, or values not detectable via computedStyle.
-	// In particular, margins on TABLE do not seems to appear 
+	// In particular, margins on TABLE do not seems to appear
 	// at all in computedStyle on Mozilla.
 
 	dojo._setBox = function(/*DomNode*/node, /*Number?*/l, /*Number?*/t, /*Number?*/w, /*Number?*/h, /*String?*/u){
@@ -1046,7 +1046,7 @@ if(dojo.isIE){
 	};
 
 	// =============================
-	// Positioning 
+	// Positioning
 	// =============================
 
 	var _sumAncestorProperties = function(node, prop){
@@ -1077,7 +1077,7 @@ if(dojo.isIE){
 
 	dojo._isBodyLtr = function(){
 		return "_bodyLtr" in d? d._bodyLtr :
-			d._bodyLtr = (d.body().dir || d.doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean 
+			d._bodyLtr = (d.body().dir || d.doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean
 	};
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
@@ -1100,7 +1100,7 @@ if(dojo.isIE){
 
 		//NOTE: assumes we're being called in an IE browser
 
-		var de = d.doc.documentElement; // only deal with HTML element here, _abs handles body/quirks 
+		var de = d.doc.documentElement; // only deal with HTML element here, _abs handles body/quirks
 
 		if(d.isIE < 8){
 			var r = de.getBoundingClientRect(); // works well for IE6+
@@ -1492,7 +1492,7 @@ if(dojo.isIE){
 		//		Attributes are set by passing the optional object through `dojo.attr`.
 		//		See `dojo.attr` for noted caveats and nuances, and API if applicable.
 		//|
-		//		Placement is done via `dojo.place`, assuming the new node to be the action 
+		//		Placement is done via `dojo.place`, assuming the new node to be the action
 		//		node, passing along the optional reference node and position.
 		//
 		// tag: String|DomNode
@@ -1530,7 +1530,7 @@ if(dojo.isIE){
 		//	|	var n = dojo.create("div", null, dojo.body());
 		//
 		// example:
-		//	Create an UL, and populate it with LI's. Place the list as the first-child of a 
+		//	Create an UL, and populate it with LI's. Place the list as the first-child of a
 		//	node with id="someId":
 		//	|	var ul = dojo.create("ul", null, "someId", "first");
 		//	|	var items = ["one", "two", "three", "four"];

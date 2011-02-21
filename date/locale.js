@@ -278,10 +278,10 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 	//		formatting lengths may be chosen, with "full" used by default.
 	//		Custom patterns may be used or registered with translations using
 	//		the dojo.date.locale.addCustomFormats method.
-	//	
+	//
 	//		Formatting patterns are implemented using [the syntax described at
 	//		unicode.org](http://www.unicode.org/reports/tr35/tr35-4.html#Date_Format_Patterns)
-	//		When two digit years are used, a century is chosen according to a sliding 
+	//		When two digit years are used, a century is chosen according to a sliding
 	//		window of 80 years before and 20 years after present year, for both `yy` and `yyyy` patterns.
 	//		year < 100CE requires strict mode.
 	//
@@ -433,7 +433,7 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 		result[3] = 0; //12am -> 0
 	}
 
-	//TODO: implement a getWeekday() method in order to test 
+	//TODO: implement a getWeekday() method in order to test
 	//validity of input strings containing 'EEE' or 'EEEE'...
 
 	var dateObject = new Date(result[0], result[1], result[2], result[3], result[4], result[5], result[6]); // Date
@@ -473,7 +473,7 @@ function _processPattern(pattern, applyPattern, applyLiteral, applyAll){
 	applyLiteral = applyLiteral || identity;
 	applyAll = applyAll || identity;
 
-	//split on single quotes (which escape literals in date format strings) 
+	//split on single quotes (which escape literals in date format strings)
 	//but preserve escaped single quotes (e.g., o''clock)
 	var chunks = pattern.match(/(''|[^'])+/g),
 		literal = pattern.charAt(0) == "'";

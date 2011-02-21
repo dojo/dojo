@@ -42,7 +42,7 @@ dojo["NodeList-manipulate"] = {
 	}
 
 	function makeWrapNode(/*DOMNode||String*/html, /*DOMNode*/refNode){
-		// summary: 
+		// summary:
 		// 		convert HTML into nodes if it is not already a node.
 		if(typeof html == "string"){
 			html = dojo._toDom(html, (refNode && refNode.ownerDocument));
@@ -646,25 +646,25 @@ dojo["NodeList-manipulate"] = {
 			//	example:
 			//		assume a DOM created by this markup:
 			//	|	<div class="container">
-			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="spacer">___</div>
 			// 	|		<div class="red">Red One</div>
-			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="spacer">___</div>
 			// 	|		<div class="blue">Blue One</div>
-			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="spacer">___</div>
 			// 	|		<div class="red">Red Two</div>
-			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="spacer">___</div>
 			// 	|		<div class="blue">Blue Two</div>
 			//	|	</div>
 			//		Running this code:
 			//	|	dojo.query(".red").replaceAll(".blue");
 			//		Results in this DOM structure:
 			//	|	<div class="container">
-			// 	|		<div class="spacer">___</div>			
-			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="spacer">___</div>
+			// 	|		<div class="spacer">___</div>
 			// 	|		<div class="red">Red One</div>
 			// 	|		<div class="red">Red Two</div>
-			// 	|		<div class="spacer">___</div>			
-			// 	|		<div class="spacer">___</div>			
+			// 	|		<div class="spacer">___</div>
+			// 	|		<div class="spacer">___</div>
 			// 	|		<div class="red">Red One</div>
 			// 	|		<div class="red">Red Two</div>
 			//	|	</div>

@@ -49,8 +49,8 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 	// query: Object
 	//		An object hash with fields that may match fields of items in the store.
 	//		Values in the hash will be compared by normal == operator, but regular expressions
-	//		or any object that provides a test() method are also supported and can be 
-	// 		used to match strings by more complex expressions 
+	//		or any object that provides a test() method are also supported and can be
+	// 		used to match strings by more complex expressions
 	// 		(and then the regex's or object's test() method will be used to match values).
 	//
 	// options: dojo.store.util.SimpleQueryEngine.__queryOptions?
@@ -84,7 +84,7 @@ dojo.store.util.SimpleQueryEngine = function(query, options){
 					if(required && required.test){
 						if(!required.test(object[key])){
 							return false;
-						} 
+						}
 					}else if(required != object[key]){
 						return false;
 					}

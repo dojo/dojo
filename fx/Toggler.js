@@ -7,16 +7,16 @@ dojo.declare("dojo.fx.Toggler", null, {
 	// description:
 	//		class constructor for an animation toggler. It accepts a packed
 	//		set of arguments about what type of animation to use in each
-	//		direction, duration, etc. All available members are mixed into 
-	//		these animations from the constructor (for example, `node`, 
-	//		`showDuration`, `hideDuration`). 
+	//		direction, duration, etc. All available members are mixed into
+	//		these animations from the constructor (for example, `node`,
+	//		`showDuration`, `hideDuration`).
 	//
 	// example:
 	//	|	var t = new dojo.fx.Toggler({
 	//	|		node: "nodeId",
 	//	|		showDuration: 500,
 	//	|		// hideDuration will default to "200"
-	//	|		showFunc: dojo.fx.wipeIn, 
+	//	|		showFunc: dojo.fx.wipeIn,
 	//	|		// hideFunc will default to "fadeOut"
 	//	|	});
 	//	|	t.show(100); // delay showing for 100ms
@@ -31,7 +31,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 	//		The function that returns the `dojo.Animation` to show the node
 	showFunc: dojo.fadeIn,
 
-	// hideFunc: Function	
+	// hideFunc: Function
 	//		The function that returns the `dojo.Animation` to hide the node
 	hideFunc: dojo.fadeOut,
 
@@ -47,7 +47,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 	// time show/hide are called if we're stopped somewhere in the
 	// middle.
 	// FIXME: also would be nice to specify individual showArgs/hideArgs mixed into
-	// each animation individually. 
+	// each animation individually.
 	// FIXME: also would be nice to have events from the animations exposed/bridged
 
 	/*=====

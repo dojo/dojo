@@ -15,7 +15,7 @@ var temp = function(){
 	}});
 	dataStore.fetchItemByIdentity({identity:null});
 	var store = new dojo.store.DataStore({store:dataStore});
-	tests.register("dojo.tests.store.DataStore", 
+	tests.register("dojo.tests.store.DataStore",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");

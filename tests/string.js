@@ -2,7 +2,7 @@ dojo.provide("tests.string");
 
 dojo.require("dojo.string");
 
-tests.register("tests.string", 
+tests.register("tests.string",
 	[
 		function test_string_pad(t){
 			t.is("00001", dojo.string.pad("1", 5));
@@ -11,13 +11,13 @@ tests.register("tests.string",
 		},
 
 		function test_string_substitute(t){
-			t.is("File 'foo.html' is not found in directory '/temp'.", 
+			t.is("File 'foo.html' is not found in directory '/temp'.",
 				dojo.string.substitute(
-					"File '${0}' is not found in directory '${1}'.", 
+					"File '${0}' is not found in directory '${1}'.",
 					["foo.html","/temp"]
 				)
 			);
-			t.is("File 'foo.html' is not found in directory '/temp'.", 
+			t.is("File 'foo.html' is not found in directory '/temp'.",
 				dojo.string.substitute(
 					"File '${name}' is not found in directory '${info.dir}'.",
 					{
@@ -45,7 +45,7 @@ tests.register("tests.string",
 				getPrefix: getPrefix
 			};
 
-			t.is("file 'foo.html' is not found in directory '/temp'.", 
+			t.is("file 'foo.html' is not found in directory '/temp'.",
 				dojo.string.substitute(
 					"${0} is not found in ${1}.",
 					["foo.html","/temp"],
@@ -53,7 +53,7 @@ tests.register("tests.string",
 				)
 			);
 
-			t.is("...file 'foo.html' is not found in ...directory '/temp'.", 
+			t.is("...file 'foo.html' is not found in ...directory '/temp'.",
 				dojo.string.substitute(
 					"${0} is not found in ${1}.",
 					["foo.html","/temp"],
@@ -63,7 +63,7 @@ tests.register("tests.string",
 		},
 
 		function test_string_substitute_formatter(t){
-			t.is("thinger -- howdy", 
+			t.is("thinger -- howdy",
 				dojo.string.substitute(
 					"${0:postfix}", ["thinger"], null, {
 						postfix: function(value, key){

@@ -1,6 +1,6 @@
 dojo.provide("tests._base.window");
 
-tests.register("tests._base.window", 
+tests.register("tests._base.window",
 	[
 		function withGlobal(t){
 			var arg1, arg2, innerThis, innerGlobal, innerDoc, finished,

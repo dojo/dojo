@@ -2,7 +2,7 @@
 // AMD-id "my/module" some commentary
 define(
 [
-  "your/module", 
+  "your/module",
   "his/module"
 ], function(yours, his) {
 

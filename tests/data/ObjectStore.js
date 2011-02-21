@@ -17,7 +17,7 @@ var memoryStore = new dojo.store.Memory({
 
 var dataStore = new dojo.data.ObjectStore({objectStore: restStore});
 var memoryDataStore = new dojo.data.ObjectStore({objectStore: memoryStore});
-tests.register("tests.data.ObjectStore", 
+tests.register("tests.data.ObjectStore",
 	[
 		function testFetchByIdentity(t){
 			var d = new doh.Deferred();

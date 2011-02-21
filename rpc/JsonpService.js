@@ -2,7 +2,7 @@ define("dojo/rpc/JsonpService", ["dojo", "dojo/rpc/RpcService", "dojo/io/script"
 
 dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
 	// summary:
-	//	Generic JSONP service.  Minimally extends RpcService to allow 
+	//	Generic JSONP service.  Minimally extends RpcService to allow
 	//	easy definition of nearly any JSONP style service. Example
 	//	SMD files exist in dojox.data
 
@@ -14,10 +14,10 @@ dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
 
 			dojo.forEach(this.required, function(req){
 				if(req=="" || req==undefined){
-					throw new Error("Required Service Argument not found: "+req); 
+					throw new Error("Required Service Argument not found: "+req);
 				}
 			});
-		}		
+		}
 	},
 
 	strictArgChecks: false,
@@ -39,7 +39,7 @@ dojo.declare("dojo.rpc.JsonpService", dojo.rpc.RpcService, {
 			callbackParamName: this.callbackParamName||"callback",
 			content: this.createRequest(parameters),
 			timeout: this.timeout,
-			handleAs: "json",	
+			handleAs: "json",
 			preventCache: true
 		});
 		def.addCallbacks(this.resultCallback(deferredRequestHandler), this.errorCallback(deferredRequestHandler));

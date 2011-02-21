@@ -10,7 +10,7 @@ dojo.require("dojo.store.Memory");
 			{id: 5, name: "five", prime: true}
 		]
 	});
-	tests.register("dojo.tests.store.Memory", 
+	tests.register("dojo.tests.store.Memory",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");
@@ -79,7 +79,7 @@ dojo.require("dojo.store.Memory");
 			function testQueryAfterChanges(t){
 				t.is(store.query({prime: true}).length, 3);
 				t.is(store.query({perfect: true}).length, 1);
-			},		
+			},
 			function testIFRSStyleData(t){
 				var anotherStore = new dojo.store.Memory({
 					data: {

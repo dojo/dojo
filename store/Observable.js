@@ -69,7 +69,7 @@ dojo.store.Observable = function(store){
 									if(store.getIdentity(object) == existingId){
 										removedObject = object;
 										removedFrom = i;
-										if(queryExecutor || !changed){// if it was changed and we don't have a queryExecutor, we shouldn't remove it because updated objects would be eliminated 
+										if(queryExecutor || !changed){// if it was changed and we don't have a queryExecutor, we shouldn't remove it because updated objects would be eliminated
 											resultsArray.splice(i, 1);
 										}
 										break;

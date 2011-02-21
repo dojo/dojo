@@ -7,7 +7,7 @@ dojo.fromJson = function(/*String*/ json){
 	// 		Throws for invalid JSON strings, but it does not use a strict JSON parser. It
 	// 		delegates to eval().  The content passed to this method must therefore come
 	//		from a trusted source.
-	// json: 
+	// json:
 	//		a string literal of a JSON item, for instance:
 	//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 
@@ -66,8 +66,8 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	if(it === null){
 		return "null";
 	}
-	if(dojo.isString(it)){ 
-		return dojo._escapeString(it); 
+	if(dojo.isString(it)){
+		return dojo._escapeString(it);
 	}
 	// recurse
 	var recurse = arguments.callee;

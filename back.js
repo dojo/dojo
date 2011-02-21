@@ -8,15 +8,15 @@ dojo.back = {
 =====*/
 
 
-(function(){ 
+(function(){
 	var back = dojo.back,
 
 	// everyone deals with encoding the hash slightly differently
 
-	getHash= back.getHash= function(){ 
+	getHash= back.getHash= function(){
 		var h = window.location.hash;
 		if(h.charAt(0) == "#"){ h = h.substring(1); }
-		return dojo.isMozilla ? h : decodeURIComponent(h); 
+		return dojo.isMozilla ? h : decodeURIComponent(h);
 	},
 	
 	setHash= back.setHash= function(h){
@@ -140,7 +140,7 @@ dojo.back = {
 	};
 	
 	back.init = function(){
-		//summary: Initializes the undo stack. This must be called from a <script> 
+		//summary: Initializes the undo stack. This must be called from a <script>
 		//         block that lives inside the <body> tag to prevent bugs on IE.
 		// description:
 		// 		Only call this method before the page's DOM is finished loading. Otherwise
@@ -158,7 +158,7 @@ dojo.back = {
 	};
 
 	back.setInitialState = function(/*Object*/args){
-		//summary: 
+		//summary:
 		//		Sets the state object and back callback for the very first page
 		//		that is loaded.
 		//description:
@@ -192,14 +192,14 @@ dojo.back = {
 	=====*/
 
 	back.addToHistory = function(/*dojo.__backArgs*/ args){
-		//	summary: 
-		//		adds a state object (args) to the history list. 
+		//	summary:
+		//		adds a state object (args) to the history list.
 		//	description:
 		//		To support getting back button notifications, the object
 		//		argument should implement a function called either "back",
 		//		"backButton", or "handle". The string "back" will be passed as
 		//		the first and only argument to this callback.
-		//	
+		//
 		//		To support getting forward button notifications, the object
 		//		argument should implement a function called either "forward",
 		//		"forwardButton", or "handle". The string "forward" will be
@@ -226,7 +226,7 @@ dojo.back = {
 		//		|	});
 
 		//	BROWSER NOTES:
-		//  Safari 1.2: 
+		//  Safari 1.2:
 		//	back button "works" fine, however it's not possible to actually
 		//	DETECT that you've moved backwards by inspecting window.location.
 		//	Unless there is some other means of locating.
@@ -240,10 +240,10 @@ dojo.back = {
 		//	previous hash value, but to the last full page load. This suggests
 		//	that the iframe is the correct way to capture the back button in
 		//	these cases.
-		//	Don't test this page using local disk for MSIE. MSIE will not create 
-		//	a history list for iframe_history.html if served from a file: URL. 
-		//	The XML served back from the XHR tests will also not be properly 
-		//	created if served from local disk. Serve the test pages from a web 
+		//	Don't test this page using local disk for MSIE. MSIE will not create
+		//	a history list for iframe_history.html if served from a file: URL.
+		//	The XML served back from the XHR tests will also not be properly
+		//	created if served from local disk. Serve the test pages from a web
 		//	server to test in that browser.
 		//	IE 6.0:
 		//	same behavior as IE 5.5 SP2
@@ -255,7 +255,7 @@ dojo.back = {
 		//If addToHistory is called, then that means we prune the
 		//forward stack -- the user went back, then wanted to
 		//start a new forward path.
-		forwardStack = []; 
+		forwardStack = [];
 
 		var hash = null;
 		var url = null;
@@ -289,9 +289,9 @@ dojo.back = {
 			}
 
 			changingUrl = true;
-			setTimeout(function() { 
-					setHash(hash); 
-					changingUrl = false; 					
+			setTimeout(function() {
+					setHash(hash);
+					changingUrl = false;
 				}, 1);
 			bookmarkAnchor.href = hash;
 			
@@ -359,10 +359,10 @@ dojo.back = {
 	};
 
 	back._iframeLoaded = function(evt, ifrLoc){
-		//summary: 
+		//summary:
 		//		private method. Do not call this directly.
 		var query = getUrlQuery(ifrLoc.href);
-		if(query == null){ 
+		if(query == null){
 			// alert("iframeLoaded");
 			// we hit the end of the history, so we should go back
 			if(historyStack.length == 1){

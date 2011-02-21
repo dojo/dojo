@@ -16,7 +16,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		//		matches those defined in the smd.  smdString allows a developer to pass
 		//		a jsonString directly, which will be converted into an object or alternatively
 		//		smdObject is accepts an smdObject directly.
-		//				
+		//
 		if(args){
 			//if the arg is a string, we assume it is a url to retrieve an smd definition from
 			if( (dojo.isString(args)) || (args instanceof dojo._Url)){
@@ -90,7 +90,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		//	deferredRequestHandler: Deferred
 		//		The deferred object handling a request.
 
-		var tf = dojo.hitch(this, 
+		var tf = dojo.hitch(this,
 			function(obj){
 				if(obj.error!=null){
 					var err;
@@ -105,7 +105,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 					err.errorObject = obj;
 					deferredRequestHandler.errback(err);
 				}else{
-					deferredRequestHandler.callback(this.parseResults(obj)); 
+					deferredRequestHandler.callback(this.parseResults(obj));
 				}
 			}
 		);
@@ -151,7 +151,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 			dojo.forEach(object.methods, function(m){
 				if(m && m.name){
 					this[m.name] = this.generateMethod(	m.name,
-										m.parameters, 
+										m.parameters,
 										m.url||m.serviceUrl||m.serviceURL);
 					if(!dojo.isFunction(this[m.name])){
 						throw new Error("RpcService: Failed to create" + m.name + "()");

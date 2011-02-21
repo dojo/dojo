@@ -66,8 +66,8 @@ dojo._loadUri = function(uri, cb){
 
 			// patch up the input to eval until https://bugzilla.mozilla.org/show_bug.cgi?id=471005 is fixed.
 			if(!eval("'\u200f'").length){
-				contents = String(contents).replace(/[\u200E\u200F\u202A-\u202E]/g, function(match){ 
-					return "\\u" + match.charCodeAt(0).toString(16); 
+				contents = String(contents).replace(/[\u200E\u200F\u202A-\u202E]/g, function(match){
+					return "\\u" + match.charCodeAt(0).toString(16);
 				})
 			}
 
@@ -82,7 +82,7 @@ dojo._loadUri = function(uri, cb){
 	}
 }
 
-dojo.exit = function(exitcode){ 
+dojo.exit = function(exitcode){
 	quit(exitcode);
 }
 
@@ -150,7 +150,7 @@ dojo._getText = function(/*URI*/ uri, /*Boolean*/ fail_ok){
 dojo.doc = typeof document != "undefined" ? document : null;
 
 dojo.body = function(){
-	return document.body;	
+	return document.body;
 }
 
 // Supply setTimeout/clearTimeout implementations if they aren't already there

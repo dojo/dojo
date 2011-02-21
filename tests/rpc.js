@@ -4,8 +4,8 @@ dojo.require("dojo.rpc.RpcService");
 dojo.require("dojo.rpc.JsonService");
 dojo.require("dojo.rpc.JsonpService");
 
-doh.register("tests.rpc", 
-	[ 
+doh.register("tests.rpc",
+	[
 
 		{
 			name: "JsonRPC-EchoTest",
@@ -24,7 +24,7 @@ doh.register("tests.rpc",
 								}
 							]
 						}
-					]	
+					]
 				}
 			
 				this.svc = new dojo.rpc.JsonService(testSmd);
@@ -62,7 +62,7 @@ doh.register("tests.rpc",
 			setUp: function(){
 				var testSmd={
 					serviceURL:"../../dojo/tests/resources/test_JsonRPCMediator.php",
-					methods:[ { name:"contentB" } ]	
+					methods:[ { name:"contentB" } ]
 				}
 			
 				this.svc = new dojo.rpc.JsonService(testSmd);

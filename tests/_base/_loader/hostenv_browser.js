@@ -1,6 +1,6 @@
 dojo.provide("tests._base._loader.hostenv_browser");
 
-tests.register("tests._base._loader.hostenv_browser", 
+tests.register("tests._base._loader.hostenv_browser",
 	[
 		function getText(t){
 			var filePath = dojo.moduleUrl("tests._base._loader", "getText.txt");

@@ -9,7 +9,7 @@ try{
 
 if(doh.selfTest){
 
-	doh.register("doh.smokeTest", 
+	doh.register("doh.smokeTest",
 		[
 			function sanityCheckHarness(t){
 				// sanity checks
@@ -19,7 +19,7 @@ if(doh.selfTest){
 				t.assertFalse(null);
 				var tObj = { w00t: false, blarg: true };
 				t.assertEqual(
-					["thinger", "blah", tObj], 
+					["thinger", "blah", tObj],
 					["thinger", "blah", tObj]
 				);
 				t.assertEqual(tObj, tObj);
@@ -55,7 +55,7 @@ if(doh.selfTest){
 	);
 
 	if(testGlobal["dojo"]){
-		doh.register("tests._base", 
+		doh.register("tests._base",
 			[
 				function dojoIsAvailable(t){
 					t.assertTrue(testGlobal["dojo"]);
@@ -66,7 +66,7 @@ if(doh.selfTest){
 
 	if(testGlobal["setTimeout"]){
 		// a stone-stupid async test
-		doh.register("tests.async", 
+		doh.register("tests.async",
 			[
 				{
 					name: "deferredSuccess",

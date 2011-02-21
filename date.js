@@ -53,7 +53,7 @@ dojo.date.getTimezoneName = function(/*Date*/dateObject){
 	}else{
 		// If at first you don't succeed ...
 		// If IE knows about the TZ, it appears before the year
-		// Capital letters or slash before a 4-digit year 
+		// Capital letters or slash before a 4-digit year
 		// at the end of string
 		var pat = /([A-Z\/]+) \d{4}$/;
 		if((match = str.match(pat))){
@@ -62,7 +62,7 @@ dojo.date.getTimezoneName = function(/*Date*/dateObject){
 		// Some browsers (e.g. Safari) glue the TZ on the end
 		// of toLocaleString instead of putting it in toString
 			str = dateObject.toLocaleString();
-			// Capital letters or slash -- end of string, 
+			// Capital letters or slash -- end of string,
 			// after space
 			pat = / ([A-Z\/]+)$/;
 			if((match = str.match(pat))){

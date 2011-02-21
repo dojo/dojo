@@ -1,6 +1,6 @@
 dojo.provide("tests._base._loader.bootstrap");
 
-tests.register("tests._base._loader.bootstrap", 
+tests.register("tests._base._loader.bootstrap",
 	[
 
 		function hasConsole(t){

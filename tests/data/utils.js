@@ -2,7 +2,7 @@ dojo.provide("tests.data.utils");
 dojo.require("dojo.data.util.filter");
 dojo.require("dojo.data.util.sorter");
 
-tests.register("tests.data.utils", 
+tests.register("tests.data.utils",
 	[
 		function testWildcardFilter_1(t){
 			var pattern = "ca*";

@@ -93,7 +93,7 @@ dojo.require("dojo.i18n");
 				if (!dojo.i18n.isLeftToRight(loc)) {
 					var RLE = "\u202b";
 					var PDF = "\u202c";
-					hello_dojo = RLE + hello_dojo + PDF;					
+					hello_dojo = RLE + hello_dojo + PDF;
 				}
 				hello_dojo += "\t[" + loc + "]";
 				if(language_as_english){hello_dojo += " " + language_as_english;}

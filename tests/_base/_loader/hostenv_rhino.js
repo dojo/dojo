@@ -1,6 +1,6 @@
 dojo.provide("tests._base._loader.hostenv_rhino");
 
-tests.register("tests._base._loader.hostenv_rhino", 
+tests.register("tests._base._loader.hostenv_rhino",
 	[
 		function getText(t){
 			var filePath = dojo.moduleUrl("tests._base._loader", "getText.txt");

@@ -2,13 +2,13 @@ define({ root:
 
 //begin v1.x content
 {
-	"USD_symbol": "US$", 
-	"CAD_symbol": "CA$", 
-	"GBP_symbol": "£", 
-	"HKD_symbol": "HK$", 
-	"JPY_symbol": "JP¥", 
-	"AUD_symbol": "AU$", 
-	"CNY_symbol": "CN¥", 
+	"USD_symbol": "US$",
+	"CAD_symbol": "CA$",
+	"GBP_symbol": "£",
+	"HKD_symbol": "HK$",
+	"JPY_symbol": "JP¥",
+	"AUD_symbol": "AU$",
+	"CNY_symbol": "CN¥",
 	"EUR_symbol": "€"
 }
 //end v1.x content

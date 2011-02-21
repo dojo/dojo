@@ -128,8 +128,8 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		// summary:
 		//		called before every move operation
 		dojo.publish("/dnd/move/start", [mover]);
-		dojo.addClass(dojo.body(), "dojoMove"); 
-		dojo.addClass(this.node, "dojoMoveItem"); 
+		dojo.addClass(dojo.body(), "dojoMove");
+		dojo.addClass(this.node, "dojoMoveItem");
 	},
 	onMoveStop: function(/* dojo.dnd.Mover */ mover){
 		// summary:

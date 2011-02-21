@@ -51,7 +51,7 @@ dojo.dnd.Item = function(){
 
 dojo.declare("dojo.dnd.Container", null, {
 	// summary:
-	//		a Container object, which knows when mouse hovers over it, 
+	//		a Container object, which knows when mouse hovers over it,
 	//		and over which element it hovers
 	
 	// object attributes (for markup)
@@ -128,7 +128,7 @@ dojo.declare("dojo.dnd.Container", null, {
 	},
 	forInItems: function(/*Function*/ f, /*Object?*/ o){
 		// summary:
-		//		iterates over a data map skipping members that 
+		//		iterates over a data map skipping members that
 		//		are present in the empty object (IE and/or 3rd-party libraries).
 		o = o || dojo.global;
 		var m = this.map, e = dojo.dnd._empty;
@@ -362,7 +362,7 @@ dojo.declare("dojo.dnd.Container", null, {
 
 dojo.dnd._createNode = function(tag){
 	// summary:
-	//		returns a function, which creates an element of given tag 
+	//		returns a function, which creates an element of given tag
 	//		(SPAN by default) and sets its innerHTML to given text
 	// tag: String
 	//		a tag name or empty for SPAN

@@ -129,7 +129,7 @@ dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*dojo.date.stamp.__O
 		}else if(options.selector != "time"){
 			var timezoneOffset = dateObject.getTimezoneOffset();
 			var absOffset = Math.abs(timezoneOffset);
-			time += (timezoneOffset > 0 ? "-" : "+") + 
+			time += (timezoneOffset > 0 ? "-" : "+") +
 				_(Math.floor(absOffset/60)) + ":" + _(absOffset%60);
 		}
 		formattedDate.push(time);

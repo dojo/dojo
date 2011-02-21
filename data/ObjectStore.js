@@ -4,7 +4,7 @@ define("dojo/data/ObjectStore", ["dojo", "dojo/regexp"], function(dojo) {
 dojo.declare("dojo.data.ObjectStore", null,{
 		objectStore: null,
 		constructor: function(options){
-			// summary: 
+			// summary:
 			//		A Dojo Data implementation that wraps Dojo object stores for backwards
 			//		compatibility.
 			//	options:
@@ -26,8 +26,8 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//	defaultValue:
 			//		the default value
 			
-			return typeof item.get === "function" ? item.get(property) : 
-				property in item ? 
+			return typeof item.get === "function" ? item.get(property) :
+				property in item ?
 					item[property] : defaultValue;
 		},
 		getValues: function(item, property){
@@ -170,7 +170,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					if(args.onComplete){
 						args.onComplete.call(scope, args.onItem ? null : results, args);
 					}
-					return results;				
+					return results;
 				}, args.onError && dojo.hitch(scope, args.onError));
 			}, args.onError && dojo.hitch(scope, args.onError));
 			args.abort = function(){
@@ -195,7 +195,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		},
 
 		getLabel: function(/* item */ item){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.getLabel()
 			if(this.isItem(item)){
 				return this.getValue(item,this.labelProperty); //String
@@ -204,7 +204,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		},
 
 		getLabelAttributes: function(/* item */ item){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.getLabelAttributes()
 			return [this.labelProperty]; //array
 		},
@@ -367,7 +367,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 						self._dirtyObjects = postCommitDirtyObjects;
 					}
 					else{
-						self._dirtyObjects = dirtyObject.concat(savingObjects); 
+						self._dirtyObjects = dirtyObject.concat(savingObjects);
 					}
 				});
 				if(this.objectStore.transaction){

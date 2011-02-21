@@ -2,7 +2,7 @@ dojo.provide("tests.cache");
 
 dojo.require("dojo.cache");
 
-tests.register("tests.cache", 
+tests.register("tests.cache",
 	[
 		{
 			runTest: function(t){

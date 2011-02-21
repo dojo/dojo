@@ -34,7 +34,7 @@ dojo.regexp.buildGroupRE = function(/*Object|Array*/arr, /*Function*/re, /*Boole
 	//		A single value or an array of values.
 	// re:
 	//		A function. Takes one parameter and converts it to a regular
-	//		expression. 
+	//		expression.
 	// nonCapture:
 	//		If true, uses non-capturing match, otherwise matches are retained
 	//		by regular expression. Defaults to false
@@ -60,7 +60,7 @@ dojo.regexp.group = function(/*String*/expression, /*Boolean?*/nonCapture){
 	//		adds group match to expression
 	// nonCapture:
 	//		If true, uses non-capturing match, otherwise matches are retained
-	//		by regular expression. 
+	//		by regular expression.
 	return "(" + (nonCapture ? "?:":"") + expression + ")"; // String
 };
 

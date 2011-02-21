@@ -2,7 +2,7 @@ define("dojo/gears", ["dojo"], function(dojo) {
 dojo.getObject("gears", true, dojo);
 
 dojo.gears._gearsObject = function(){
-	// summary: 
+	// summary:
 	//		factory method to get a Google Gears plugin instance to
 	//		expose in the browser runtime environment, if present
 	var factory;

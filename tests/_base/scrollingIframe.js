@@ -1,7 +1,7 @@
 var isQuirks = document.compatMode == "BackCompat";
 
 function runScrollingTest(resultNode){
-	// reposition the absolute-positioned tag to the top/left of the static control 
+	// reposition the absolute-positioned tag to the top/left of the static control
 	//	element and check to make sure each has the same offsetLeft/Top
 	if(!("dojo" in window)){
 		var doc = frameElement.ownerDocument;

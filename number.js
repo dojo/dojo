@@ -166,7 +166,7 @@ dojo.number.__FormatAbsoluteOptions = function(){
 =====*/
 
 dojo.number._formatAbsolute = function(/*Number*/value, /*String*/pattern, /*dojo.number.__FormatAbsoluteOptions?*/options){
-	// summary: 
+	// summary:
 	//		Apply numeric pattern to absolute value using options. Gives no
 	//		consideration to local customs.
 	// value:
@@ -480,10 +480,10 @@ dojo.number._realNumberRegexp = function(/*dojo.number.__RealNumberRegexpFlags?*
 			var re = "";
 			if(q && (flags.places!==0)){
 				re = "\\" + flags.decimal;
-				if(flags.places == Infinity){ 
-					re = "(?:" + re + "\\d+)?"; 
+				if(flags.places == Infinity){
+					re = "(?:" + re + "\\d+)?";
 				}else{
-					re += "\\d{" + flags.places + "}"; 
+					re += "\\d{" + flags.places + "}";
 				}
 			}
 			return re;
@@ -492,9 +492,9 @@ dojo.number._realNumberRegexp = function(/*dojo.number.__RealNumberRegexpFlags?*
 	);
 
 	var exponentRE = dojo.regexp.buildGroupRE(flags.exponent,
-		function(q){ 
+		function(q){
 			if(q){ return "([eE]" + dojo.number._integerRegexp({ signed: flags.eSigned}) + ")"; }
-			return ""; 
+			return "";
 		}
 	);
 
@@ -526,7 +526,7 @@ dojo.number.__IntegerRegexpFlags = function(){
 =====*/
 
 dojo.number._integerRegexp = function(/*dojo.number.__IntegerRegexpFlags?*/flags){
-	// summary: 
+	// summary:
 	//		Builds a regular expression that matches an integer
 
 	// assign default values to missing parameters

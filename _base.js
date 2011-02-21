@@ -8,4 +8,4 @@ define("dojo/_base",[
 "dojo/_base/Color",
 dojo.isBrowser? "dojo/_base/browser" : "dojo/_base/lang"], function(){
 	return dojo;
-}); 
+});

@@ -71,7 +71,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			dojo.connect(dojo.body(), "onselectstart", dojo.stopEvent)
 		];
 		var c = "dojoDnd" + (copy ? "Copy" : "Move");
-		dojo.addClass(dojo.body(), c); 
+		dojo.addClass(dojo.body(), c);
 	},
 	canDrop: function(flag){
 		// summary:
@@ -118,7 +118,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			s.left = (e.pageX + this.OFFSET_X) + "px";
 			s.top  = (e.pageY + this.OFFSET_Y) + "px";
 			var copy = Boolean(this.source.copyState(dojo.isCopyKey(e)));
-			if(this.copy != copy){ 
+			if(this.copy != copy){
 				this._setCopyStatus(copy);
 			}
 		}
@@ -152,7 +152,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			switch(e.keyCode){
 				case dojo.keys.CTRL:
 					var copy = Boolean(this.source.copyState(true));
-					if(this.copy != copy){ 
+					if(this.copy != copy){
 						this._setCopyStatus(copy);
 					}
 					break;
@@ -170,7 +170,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 		//		keyboard event
 		if(this.avatar && e.keyCode == dojo.keys.CTRL){
 			var copy = Boolean(this.source.copyState(false));
-			if(this.copy != copy){ 
+			if(this.copy != copy){
 				this._setCopyStatus(copy);
 			}
 		}

@@ -1,6 +1,6 @@
 dojo.provide("tests._base._loader.loader");
 
-tests.register("tests._base._loader.loader", 
+tests.register("tests._base._loader.loader",
 	[
 		function baseUrl(t){
 			var originalBaseUrl = dojo.config["baseUrl"] || "./";

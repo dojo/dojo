@@ -2,7 +2,7 @@ dojo.provide("tests.date");
 
 dojo.require("dojo.date");
 
-tests.register("tests.date.util", 
+tests.register("tests.date.util",
 	[
 
 /* Informational Functions
@@ -44,7 +44,7 @@ function test_date_isLeapYear(t){
 
 // The getTimezone function pulls from either the date's toString or
 // toLocaleString method -- it's really just a string-processing
-// function (assuming the Date obj passed in supporting both toString 
+// function (assuming the Date obj passed in supporting both toString
 // and toLocaleString) and as such can be tested for multiple browsers
 // by manually settting up fake Date objects with the actual strings
 // produced by various browser/OS combinations.
@@ -90,7 +90,7 @@ function test_date_getTimezoneName(t){
 	dt.strLocale = 'Monday, September 18, 2006 11:21:07 AM';
 	t.is('CDT', dojo.date.getTimezoneName(dt));
 
-	// Opera 9 Ubuntu Linux (Breezy) -- no TZ data expect empty string return 
+	// Opera 9 Ubuntu Linux (Breezy) -- no TZ data expect empty string return
 	dt.str = 'Mon, 18 Sep 2006 13:30:32 GMT-0500';
 	dt.strLocale = 'Monday September 18, 13:30:32 GMT-0500 2006';
 	t.is('', dojo.date.getTimezoneName(dt));
@@ -103,7 +103,7 @@ function test_date_getTimezoneName(t){
 	]
 );
 
-tests.register("tests.date.math", 
+tests.register("tests.date.math",
 	[
 function test_date_compare(t){
 	var d1=new Date();

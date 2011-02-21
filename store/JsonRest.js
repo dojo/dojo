@@ -10,9 +10,9 @@ dojo.declare("dojo.store.JsonRest", null, {
 		dojo.mixin(this, options);
 	},
 	// target: String
-	//		The target base URL to use for all requests to the server. This string will be 
-	// 	prepended to the id to generate the URL (relative or absolute) for requests 
-	// 	sent to the server 
+	//		The target base URL to use for all requests to the server. This string will be
+	// 	prepended to the id to generate the URL (relative or absolute) for requests
+	// 	sent to the server
 	target: "",
 	// idProperty: String
 	//		Indicates the property to use as the identity property. The values of this
@@ -91,7 +91,7 @@ dojo.declare("dojo.store.JsonRest", null, {
 	},
 	query: function(query, options){
 		// summary:
-		//		Queries the store for objects. This will trigger a GET request to the server, with the 
+		//		Queries the store for objects. This will trigger a GET request to the server, with the
 		//		query added as a query string.
 		// query: Object
 		//		The query to use for retrieving objects from the store.

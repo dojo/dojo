@@ -10,7 +10,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		//			...
 		//			typeN: function || object
 		//		}
-		//		Where if it is a function, it is assumed to be an object constructor that takes the 
+		//		Where if it is a function, it is assumed to be an object constructor that takes the
 		//		value of _value as the initialization parameters.  It is serialized assuming object.toString()
 		//		serialization.  If it is an object, then it is assumed
 		//		to be an object of general form:
@@ -26,8 +26,8 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		
 		// For keeping track of changes so that we can implement isDirty and revert
 		this._pending = {
-			_newItems:{}, 
-			_modifiedItems:{}, 
+			_newItems:{},
+			_modifiedItems:{},
 			_deletedItems:{}
 		};
 
@@ -90,8 +90,8 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			}
 		}
 		
-		// make sure this identity is not already in use by another item, if identifiers were 
-		// defined in the file.  Otherwise it would be the item count, 
+		// make sure this identity is not already in use by another item, if identifiers were
+		// defined in the file.  Otherwise it would be the item count,
 		// which should always be unique in this case.
 		if(this._itemsByIdentity){
 			this._assert(typeof this._itemsByIdentity[newIdentity] === "undefined");
@@ -100,7 +100,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		this._assert(typeof this._pending._deletedItems[newIdentity] === "undefined");
 		
 		var newItem = {};
-		newItem[this._storeRefPropName] = this;		
+		newItem[this._storeRefPropName] = this;
 		newItem[this._itemNumPropName] = this._arrayOfAllItems.length;
 		if(this._itemsByIdentity){
 			this._itemsByIdentity[newIdentity] = newItem;
@@ -153,14 +153,14 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				// Bummer, the user is trying to do something like
 				// newItem({_S:"foo"}).  Unfortunately, our superclass,
 				// ItemFileReadStore, is already using _S in each of our items
-				// to hold private info.  To avoid a naming collision, we 
-				// need to move all our private info to some other property 
+				// to hold private info.  To avoid a naming collision, we
+				// need to move all our private info to some other property
 				// of all the items/objects.  So, we need to iterate over all
-				// the items and do something like: 
+				// the items and do something like:
 				//    item.__S = item._S;
 				//    item._S = undefined;
-				// But first we have to make sure the new "__S" variable is 
-				// not in use, which means we have to iterate over all the 
+				// But first we have to make sure the new "__S" variable is
+				// not in use, which means we have to iterate over all the
 				// items checking for that.
 				throw new Error("encountered bug in ItemFileWriteStore.newItem");
 			}
@@ -197,17 +197,17 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		this._assertIsItem(item);
 
 		// Remove this item from the _arrayOfAllItems, but leave a null value in place
-		// of the item, so as not to change the length of the array, so that in newItem() 
+		// of the item, so as not to change the length of the array, so that in newItem()
 		// we can still safely do: newIdentity = this._arrayOfAllItems.length;
 		var indexInArrayOfAllItems = item[this._itemNumPropName];
 		var identity = this.getIdentity(item);
 
 		//If we have reference integrity on, we need to do reference cleanup for the deleted item
 		if(this.referenceIntegrity){
-			//First scan all the attributes of this items for references and clean them up in the map 
+			//First scan all the attributes of this items for references and clean them up in the map
 			//As this item is going away, no need to track its references anymore.
 
-			//Get the attributes list before we generate the backup so it 
+			//Get the attributes list before we generate the backup so it
 			//doesn't pollute the attributes list.
 			var attributes = this.getAttributes(item);
 
@@ -253,7 +253,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 								return !(this.isItem(possibleItem) && this.getIdentity(possibleItem) == identity);
 							}, this);
 							//Remove the note of the reference to the item and set the values on the modified attribute.
-							this._removeReferenceFromMap(item, containingItem, attribute); 
+							this._removeReferenceFromMap(item, containingItem, attribute);
 							if(newValues.length < oldValues.length){
 								this._setValueOrValues(containingItem, attribute, newValues, true);
 							}
@@ -315,11 +315,11 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 
 		var identity = this.getIdentity(item);
 		if(!this._pending._modifiedItems[identity]){
-			// Before we actually change the item, we make a copy of it to 
-			// record the original state, so that we'll be able to revert if 
+			// Before we actually change the item, we make a copy of it to
+			// record the original state, so that we'll be able to revert if
 			// the revert method gets called.  If the item has already been
 			// modified then there's no need to do this now, since we already
-			// have a record of the original state.						
+			// have a record of the original state.
 			var copyOfItemState = {};
 			for(var key in item){
 				if((key === this._storeRefPropName) || (key === this._itemNumPropName) || (key === this._rootItemPropName)){
@@ -340,7 +340,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		if(dojo.isArray(newValueOrValues) && newValueOrValues.length === 0){
 			
 			// If we were passed an empty array as the value, that counts
-			// as "unsetting" the attribute, so we need to remove this 
+			// as "unsetting" the attribute, so we need to remove this
 			// attribute from the item.
 			success = delete item[attribute];
 			newValueOrValues = undefined; // used in the onSet Notification call below
@@ -364,7 +364,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				// Unfortunately, it's not safe to just do this:
 				//    newValueArray = newValues;
 				// Instead, we need to copy the array, which slice() does very nicely.
-				// This is so that our internal data structure won't  
+				// This is so that our internal data structure won't
 				// get corrupted if the user mucks with the values array *after*
 				// calling setValues().
 				newValueArray = newValueOrValues.slice(0, newValueOrValues.length);
@@ -372,7 +372,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				newValueArray = [newValueOrValues];
 			}
 
-			//We need to handle reference integrity if this is on. 
+			//We need to handle reference integrity if this is on.
 			//In the case of set, we need to see if references were added or removed
 			//and update the reference tracking map accordingly.
 			if(this.referenceIntegrity){
@@ -399,7 +399,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 							if(map[id.toString()]){
 								delete map[id.toString()];
 							}else{
-								this._addReferenceToMap(possibleItem, item, attribute); 
+								this._addReferenceToMap(possibleItem, item, attribute);
 							}
 						}
 					}, this);
@@ -429,7 +429,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 
 		// Now we make the dojo.data.api.Notification call
 		if(callOnSet){
-			this.onSet(item, attribute, oldValueOrValues, newValueOrValues); 
+			this.onSet(item, attribute, oldValueOrValues, newValueOrValues);
 		}
 		return success; // boolean
 	},
@@ -464,7 +464,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		//		Method to remove an reference map entry for an item and attribute.
 		//	description:
 		//		Method to remove an reference map entry for an item and attribute.  This will
-		//		also perform cleanup on the map such that if there are no more references at all to 
+		//		also perform cleanup on the map such that if there are no more references at all to
 		//		the item, its reference object and entry are removed.
 		//
 		//	refItem:
@@ -521,7 +521,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 	_flatten: function(/* anything */ value){
 		if(this.isItem(value)){
 			var item = value;
-			// Given an item, return an serializable object that provides a 
+			// Given an item, return an serializable object that provides a
 			// reference to the item.
 			// For example, given kermit:
 			//    var kermit = store.newItem({id:2, name:"Kermit"});
@@ -552,7 +552,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 	},
 	
 	_getNewFileContentString: function(){
-		// summary: 
+		// summary:
 		//		Generate a string that can be saved to a file.
 		//		The result should look similar to:
 		//		http://trac.dojotoolkit.org/browser/dojo/trunk/tests/data/countries.json
@@ -593,7 +593,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 	},
 
 	_isEmpty: function(something){
-		//	summary: 
+		//	summary:
 		//		Function to determine if an array or object has no properties or values.
 		//	something:
 		//		The array or object to examine.
@@ -622,7 +622,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		var self = this;
 		var saveCompleteCallback = function(){
 			self._pending = {
-				_newItems:{}, 
+				_newItems:{},
 				_modifiedItems:{},
 				_deletedItems:{}
 			};
@@ -671,7 +671,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				modifiedItem = this._arrayOfAllItems[identity];
 			}
 	
-			// Restore the original item into a full-fledged item again, we want to try to 
+			// Restore the original item into a full-fledged item again, we want to try to
 			// keep the same object instance as if we don't it, causes bugs like #9022.
 			copyOfItemState[this._storeRefPropName] = this;
 			for(key in modifiedItem){
@@ -712,7 +712,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 					}
 					this._addReferenceToMap(refItem, deletedItem, reference.attr);
 				}, this);
-				delete deletedItem["backupRefs_" + this._reverseRefMap]; 
+				delete deletedItem["backupRefs_" + this._reverseRefMap];
 			}
 		}
 
@@ -731,8 +731,8 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}
 
 		this._pending = {
-			_newItems:{}, 
-			_modifiedItems:{}, 
+			_newItems:{},
+			_modifiedItems:{},
 			_deletedItems:{}
 		};
 		return true; // boolean
@@ -743,13 +743,13 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		if(item){
 			// return true if the item is dirty
 			var identity = this.getIdentity(item);
-			return new Boolean(this._pending._newItems[identity] || 
+			return new Boolean(this._pending._newItems[identity] ||
 				this._pending._modifiedItems[identity] ||
 				this._pending._deletedItems[identity]).valueOf(); // boolean
 		}else{
 			// return true if the store is dirty -- which means return true
 			// if there are any new items, dirty items, or modified items
-			if(!this._isEmpty(this._pending._newItems) || 
+			if(!this._isEmpty(this._pending._newItems) ||
 				!this._isEmpty(this._pending._modifiedItems) ||
 				!this._isEmpty(this._pending._deletedItems)){
 				return true;
@@ -760,28 +760,28 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 
 /* dojo.data.api.Notification */
 
-	onSet: function(/* item */ item, 
-					/*attribute-name-string*/ attribute, 
+	onSet: function(/* item */ item,
+					/*attribute-name-string*/ attribute,
 					/*object | array*/ oldValue,
 					/*object | array*/ newValue){
 		// summary: See dojo.data.api.Notification.onSet()
 		
-		// No need to do anything. This method is here just so that the 
+		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.
 	},
 
 	onNew: function(/* item */ newItem, /*object?*/ parentInfo){
 		// summary: See dojo.data.api.Notification.onNew()
 		
-		// No need to do anything. This method is here just so that the 
-		// client code can connect observers to it. 
+		// No need to do anything. This method is here just so that the
+		// client code can connect observers to it.
 	},
 
 	onDelete: function(/* item */ deletedItem){
 		// summary: See dojo.data.api.Notification.onDelete()
 		
-		// No need to do anything. This method is here just so that the 
-		// client code can connect observers to it. 
+		// No need to do anything. This method is here just so that the
+		// client code can connect observers to it.
 	},
 
 	close: function(/* object? */ request){

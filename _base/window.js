@@ -38,9 +38,9 @@ dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocu
 	dojo.doc = globalDocument;
 };
 
-dojo.withGlobal = function(	/*Object*/globalObject, 
-							/*Function*/callback, 
-							/*Object?*/thisObject, 
+dojo.withGlobal = function(	/*Object*/globalObject,
+							/*Function*/callback,
+							/*Object?*/thisObject,
 							/*Array?*/cbArguments){
 	// summary:
 	//		Invoke callback with globalObject as dojo.global and
@@ -61,9 +61,9 @@ dojo.withGlobal = function(	/*Object*/globalObject,
 	}
 };
 
-dojo.withDoc = function(	/*DocumentElement*/documentObject, 
-							/*Function*/callback, 
-							/*Object?*/thisObject, 
+dojo.withDoc = function(	/*DocumentElement*/documentObject,
+							/*Function*/callback,
+							/*Object?*/thisObject,
 							/*Array?*/cbArguments){
 	// summary:
 	//		Invoke callback with documentObject as dojo.doc.

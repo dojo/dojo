@@ -16,7 +16,7 @@ dojo.declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
 	dojo.declare("dojo.dnd.TimedMoveable", dojo.dnd.Moveable, {
 		// summary:
 		//		A specialized version of Moveable to support an FPS throttling.
-		//		This class puts an upper restriction on FPS, which may reduce 
+		//		This class puts an upper restriction on FPS, which may reduce
 		//		the CPU load. The additional parameter "timeout" regulates
 		//		the delay before actually moving the moveable object.
 		

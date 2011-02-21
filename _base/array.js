@@ -3,8 +3,8 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 	var _getParts = function(arr, obj, cb){
-		return [ 
-			(typeof arr == "string") ? arr.split("") : arr, 
+		return [
+			(typeof arr == "string") ? arr.split("") : arr,
 			obj || dojo.global,
 			// FIXME: cache the anonymous functions we create here?
 			(typeof cb == "string") ? new Function("item", "index", "array", cb) : cb
@@ -23,7 +23,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 	};
 
 	dojo.mixin(dojo, {
-		indexOf: function(	/*Array*/		array, 
+		indexOf: function(	/*Array*/		array,
 							/*Object*/		value,
 							/*Integer?*/	fromIndex,
 							/*Boolean?*/	findLast){
@@ -32,7 +32,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		passed array. If the value is not found, -1 is returned.
 			// description:
 			//		This method corresponds to the JavaScript 1.6 Array.indexOf method, with one difference: when
-			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript 
+			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript
 			//		1.6's indexOf skips the holes in the sparse array.
 			//		For details on this method, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
@@ -57,7 +57,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		array. If the value is not found, -1 is returned.
 			// description:
 			//		This method corresponds to the JavaScript 1.6 Array.lastIndexOf method, with one difference: when
-			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript 
+			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript
 			//		1.6's lastIndexOf skips the holes in the sparse array.
 			//		For details on this method, see:
 			// 			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/lastIndexOf
@@ -76,7 +76,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//	thisObject:
 			//		may be used to scope the call to callback
 			//	description:
-			//		This function corresponds to the JavaScript 1.6 Array.forEach() method, with one difference: when 
+			//		This function corresponds to the JavaScript 1.6 Array.forEach() method, with one difference: when
 			//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
 			//		the callback function with a value of undefined. JavaScript 1.6's forEach skips the holes in the sparse array.
 			//		For more details, see:
@@ -99,21 +99,21 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//	|	);
 			//	example:
 			//	|	// use a scoped object member as the callback
-			//	|	
+			//	|
 			//	|	var obj = {
-			//	|		prefix: "logged via obj.callback:", 
+			//	|		prefix: "logged via obj.callback:",
 			//	|		callback: function(item){
 			//	|			console.log(this.prefix, item);
 			//	|		}
 			//	|	};
-			//	|	
+			//	|
 			//	|	// specifying the scope function executes the callback in that scope
 			//	|	dojo.forEach(
 			//	|		[ "thinger", "blah", "howdy", 10 ],
 			//	|		obj.callback,
 			//	|		obj
 			//	|	);
-			//	|	
+			//	|
 			//	|	// alternately, we can accomplish the same thing with dojo.hitch()
 			//	|	dojo.forEach(
 			//	|		[ "thinger", "blah", "howdy", 10 ],
@@ -126,7 +126,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			// FIXME: there are several ways of handilng thisObject. Is
 			// dojo.global always the default context?
 			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
-			for(var i=0,l=arr.length; i<l; ++i){ 
+			for(var i=0,l=arr.length; i<l; ++i){
 				_p[2].call(_p[1], arr[i], i, arr);
 			}
 		},
@@ -143,7 +143,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			// thisObject:
 			//		may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.every() method, with one difference: when 
+			//		This function corresponds to the JavaScript 1.6 Array.every() method, with one difference: when
 			//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
 			//		the callback function with a value of undefined. JavaScript 1.6's every skips the holes in the sparse array.
 			//		For more details, see:
@@ -152,7 +152,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//	|	// returns false
 			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>1; });
 			// example:
-			//	|	// returns true 
+			//	|	// returns true
 			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>0; });
 			return everyOrSome(true, arr, callback, thisObject); // Boolean
 		},
@@ -169,7 +169,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			// thisObject:
 			//		may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.some() method, with one difference: when 
+			//		This function corresponds to the JavaScript 1.6 Array.some() method, with one difference: when
 			//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
 			//		the callback function with a value of undefined. JavaScript 1.6's some skips the holes in the sparse array.
 			//		For more details, see:
@@ -196,7 +196,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			// thisObject:
 			//		may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.map() method, with one difference: when 
+			//		This function corresponds to the JavaScript 1.6 Array.map() method, with one difference: when
 			//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
 			//		the callback function with a value of undefined. JavaScript 1.6's map skips the holes in the sparse array.
 			//		For more details, see:
@@ -227,9 +227,9 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			// thisObject:
 			//		may be used to scope the call to callback
 			// description:
-			//		This function corresponds to the JavaScript 1.6 Array.filter() method, with one difference: when 
+			//		This function corresponds to the JavaScript 1.6 Array.filter() method, with one difference: when
 			//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
-			//		the callback function with a value of undefined. JavaScript 1.6's filter skips the holes in the sparse array. 
+			//		the callback function with a value of undefined. JavaScript 1.6's filter skips the holes in the sparse array.
 			//		For more details, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
 			// example:

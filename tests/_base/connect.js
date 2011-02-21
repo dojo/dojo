@@ -12,7 +12,7 @@ good = function(){
 }
 
 // make 'iterations' connections to hub
-// roughly half of which will be to 'good' and 
+// roughly half of which will be to 'good' and
 // half to 'bad'
 // all connections to 'bad' are disconnected
 // test can then be performed on the values
@@ -35,8 +35,8 @@ markAndSweepTest = function(iterations){
 			rm.push(marked[m]);
 			marked.splice(m, 1);
 		}
-		marked = rm;				
-	} 
+		marked = rm;
+	}
 	for(var m=0; m<marked.length; m++){
 		dojo.disconnect(marked[m]);
 	}
@@ -66,8 +66,8 @@ markAndSweepSubscribersTest = function(iterations){
 			rm.push(marked[m]);
 			marked.splice(m, 1);
 		}
-		marked = rm;				
-	} 
+		marked = rm;
+	}
 	for(var m=0; m<marked.length; m++){
 		dojo.unsubscribe(marked[m]);
 	}
@@ -158,7 +158,7 @@ tests.register("tests._base.connect",
 			gFoo();
 			dojo.disconnect(link);
 			t.is(true, ok);
-			// verify disconnections 
+			// verify disconnections
 			gFoo();
 			t.is(false, ok);
 		},
@@ -167,12 +167,12 @@ tests.register("tests._base.connect",
 			var ok;
 			dojo.global["gFoo"] = function(){ok=false;};
 			dojo.global["gOk"] = function(){ok=true;};
-			// 2 arg shorthand for globals 
+			// 2 arg shorthand for globals
 			var link = dojo.connect("gFoo", "gOk");
 			gFoo();
 			dojo.disconnect(link);
 			t.is(true, ok);
-			// 2 arg shorthand for globals, alternate scoping 
+			// 2 arg shorthand for globals, alternate scoping
 			link = dojo.connect("gFoo", gOk);
 			gFoo();
 			dojo.disconnect(link);
@@ -186,7 +186,7 @@ tests.register("tests._base.connect",
 			foo.foo();
 			t.is(false, foo.ok);
 			t.is(true, bar.ok);
-		},		
+		},
 		function scopeTest2(t){
 			var foo = { ok: true, foo: function(){this.ok=false;} };
 			var bar = { ok: false, bar: function(){this.ok=true} };

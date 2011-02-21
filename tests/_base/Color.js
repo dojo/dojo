@@ -9,7 +9,7 @@ dojo.provide("tests._base.Color");
 		dojo.forEach(color.toRgba(), function(n){ t.is("number", typeof(n)); });
 	}
 
-	doh.register("tests._base.Color", 
+	doh.register("tests._base.Color",
 		[
 			function testColor1(t){ verifyColor(t, "maroon", maroon); },
 			function testColor2(t){ verifyColor(t, "white", white); },

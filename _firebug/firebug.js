@@ -1,11 +1,11 @@
 define("dojo/_firebug/firebug", ["dojo"], function(dojo) {
 	
 dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
-	// summary: 
+	// summary:
 	//		Log a debug message to indicate that a behavior has been
 	//		deprecated.
 	// extra: Text to append to the message.
-	// removal: 
+	// removal:
 	//		Text to indicate when in the future the behavior will be removed.
 	var message = "DEPRECATED: " + behaviour;
 	if(extra){ message += " " + extra; }
@@ -15,16 +15,16 @@ dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ 
 
 dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	// summary: Marks code as experimental.
-	// description: 
+	// description:
 	//		This can be used to mark a function, file, or module as
 	//		experimental.  Experimental code is not ready to be used, and the
 	//		APIs are subject to change without notice.  Experimental code may be
 	//		completed deleted without going through the normal deprecation
 	//		process.
-	// moduleName: 
+	// moduleName:
 	//		The name of a module, or the name of a module file or a specific
 	//		function
-	// extra: 
+	// extra:
 	//		some additional message for the user
 	// example:
 	//	|	dojo.experimental("dojo.data.Result");
@@ -40,10 +40,10 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	// description:
 	//		Opens a console for logging, debugging, and error messages.
 	//		Contains partial functionality to Firebug. See function list below.
-	//	NOTE: 
+	//	NOTE:
 	//			Firebug is a Firefox extension created by Joe Hewitt (see license). You do not need Dojo to run Firebug.
 	//			Firebug Lite is included in Dojo by permission from Joe Hewitt
-	//			If you are new to Firebug, or used to the Dojo 0.4 dojo.debug, you can learn Firebug 
+	//			If you are new to Firebug, or used to the Dojo 0.4 dojo.debug, you can learn Firebug
 	//				functionality by reading the function comments below or visiting http://www.getfirebug.com/docs.html
 	//	NOTE:
 	//		To test Firebug Lite in Firefox:
@@ -99,17 +99,17 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	
 	// don't build firebug in iframes
 	try{
-		if(window != window.parent){ 
+		if(window != window.parent){
 			// but if we've got a parent logger, connect to it
 			if(window.parent["console"]){
 				window.console = window.parent.console;
 			}
-			return; 
+			return;
 		}
 	}catch(e){/*squelch*/}
 
 	// ***************************************************************************
-	// Placing these variables before the functions that use them to avoid a 
+	// Placing these variables before the functions that use them to avoid a
 	// shrinksafe bug where variable renaming does not happen correctly otherwise.
 	
 	// most of the objects in this script are run anonomously
@@ -146,38 +146,38 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	window.console = {
 		_connects: [],
 		log: function(){
-			// summary: 
+			// summary:
 			//		Sends arguments to console.
 			logFormatted(arguments, "");
 		},
 		
 		debug: function(){
-			// summary: 
+			// summary:
 			//		Sends arguments to console. Missing finctionality to show script line of trace.
 			logFormatted(arguments, "debug");
 		},
 		
 		info: function(){
-			// summary: 
+			// summary:
 			//		Sends arguments to console, highlighted with (I) icon.
 			logFormatted(arguments, "info");
 		},
 		
 		warn: function(){
-			// summary: 
+			// summary:
 			//		Sends warning arguments to console, highlighted with (!) icon and blue style.
 			logFormatted(arguments, "warning");
 		},
 		
 		error: function(){
-			// summary: 
+			// summary:
 			//		Sends error arguments (object) to console, highlighted with (X) icon and yellow style
 			//			NEW: error object now displays in object inspector
 			logFormatted(arguments, "error");
 		},
 		
 		assert: function(truth, message){
-			// summary: 
+			// summary:
 			//		Tests for true. Throws exception if false.
 			if(!truth){
 				var args = [];
@@ -198,7 +198,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		},
 		
 		dirxml: function(node){
-			// summary: 
+			// summary:
 			//
 			var html = [];
 			appendNode(node, html);
@@ -206,20 +206,20 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		},
 		
 		group: function(){
-			// summary: 
-			//		collects log messages into a group, starting with this call and ending with 
+			// summary:
+			//		collects log messages into a group, starting with this call and ending with
 			//			groupEnd(). Missing collapse functionality
 			logRow(arguments, "group", pushGroup);
 		},
 		
 		groupEnd: function(){
-			// summary: 
+			// summary:
 			//		Closes group. See above
 			logRow(arguments, "", popGroup);
 		},
 		
 		time: function(name){
-			// summary: 
+			// summary:
 			//		Starts timers assigned to name given in argument. Timer stops and displays on timeEnd(title);
 			//	example:
 			//	|	console.time("load");
@@ -230,7 +230,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		},
 		
 		timeEnd: function(name){
-			// summary: 
+			// summary:
 			//		See above.
 			if(name in timeMap){
 				var delta = (new Date()).getTime() - timeMap[name];
@@ -240,7 +240,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		},
 		
 		count: function(name){
-			// summary: 
+			// summary:
 			//		Not supported
 			if(!countMap[name]) countMap[name] = 0;
 			countMap[name]++;
@@ -258,17 +258,17 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 					args.push(f.arguments[a]);
 				}
 				if(f.arguments.length){
-					console.dir({"function":func, "arguments":args});	
+					console.dir({"function":func, "arguments":args});
 				}else{
 					console.dir({"function":func});
 				}
 				
 				f = f.caller;
-			}	
+			}
 		},
 		
 		profile: function(){
-			// summary: 
+			// summary:
 			//		Not supported
 			this.warn(["profile() not supported."]);
 		},
@@ -276,24 +276,24 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		profileEnd: function(){ },
 
 		clear: function(){
-			// summary: 
+			// summary:
 			//		Clears message console. Do not call this directly
 			if(consoleBody){
 				while(consoleBody.childNodes.length){
-					dojo.destroy(consoleBody.firstChild);	
+					dojo.destroy(consoleBody.firstChild);
 				}
 			}
 			dojo.forEach(this._connects,dojo.disconnect);
 		},
 
-		open: function(){ 
-			// summary: 
+		open: function(){
+			// summary:
 			//		Opens message console. Do not call this directly
-			toggleConsole(true); 
+			toggleConsole(true);
 		},
 		
 		close: function(){
-			// summary: 
+			// summary:
 			//		Closes message console. Do not call this directly
 			if(frameVisible){
 				toggleConsole();
@@ -334,7 +334,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 			setTimeout(function(){
 				_inspectionClickConnection = dojo.connect(document, "click", function(evt){
 					document.body.style.cursor = "";
-					_inspectionEnabled = !_inspectionEnabled;																  
+					_inspectionEnabled = !_inspectionEnabled;
 					dojo.disconnect(_inspectionClickConnection);
 					// console._restoreBorder();
 				});
@@ -348,7 +348,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 			console._restoreBorder();
 		},
 		openConsole:function(){
-			// summary: 
+			// summary:
 			//		Closes object inspector and opens message console. Do not call this directly
 			consoleBody.style.display = "block";
 			consoleDomInspector.style.display = "none";
@@ -439,7 +439,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 			}
 			
 
-		window.onFirebugResize = function(){ 
+		window.onFirebugResize = function(){
 			
 			//resize the height of the console log body
 			layout(getViewport().h);
@@ -511,12 +511,12 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		}
 		consoleFrame.className += " firebug";
 		consoleFrame.style.height = containerHeight;
-		consoleFrame.style.display = (frameVisible ? "block" : "none");	  
+		consoleFrame.style.display = (frameVisible ? "block" : "none");
 		
 		var buildLink = function(label, title, method, _class){
 			return '<li class="'+_class+'"><a href="javascript:void(0);" onclick="console.'+ method +'(); return false;" title="'+title+'">'+label+'</a></li>';
 		};
-		consoleFrame.innerHTML = 
+		consoleFrame.innerHTML =
 			  '<div id="firebugToolbar">'
 			+ '  <ul id="fireBugTabs" class="tabs">'
 			
@@ -589,8 +589,8 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	
 	function layout(h){
 		var tHeight = 25; //consoleToolbar.offsetHeight; // tab style not ready on load - throws off layout
-		var height = h ? 
-			h  - (tHeight + commandLine.offsetHeight +25 + (h*.01)) + "px" : 
+		var height = h ?
+			h  - (tHeight + commandLine.offsetHeight +25 + (h*.01)) + "px" :
 			(consoleFrame.offsetHeight - tHeight - commandLine.offsetHeight) + "px";
 		
 		consoleBody.style.top = tHeight + "px";
@@ -746,7 +746,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 	function parseFormat(format){
 		var parts = [];
 
-		var reg = /((^%|[^\\]%)(\d+)?(\.)([a-zA-Z]))|((^%|[^\\]%)([a-zA-Z]))/;	  
+		var reg = /((^%|[^\\]%)(\d+)?(\.)([a-zA-Z]))|((^%|[^\\]%)([a-zA-Z]))/;
 		var appenderMap = {s: appendText, d: appendInteger, i: appendInteger, f: appendFloat};
 
 		for(var m = reg.exec(format); m; m = reg.exec(format)){
@@ -891,7 +891,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 					appendNode(child, html);
 				}
 					
-				html.push('</div><div class="objectBox-element">&lt;/<span class="nodeTag">', 
+				html.push('</div><div class="objectBox-element">&lt;/<span class="nodeTag">',
 					node.nodeName.toLowerCase(), '&gt;</span></div>');
 			}else{
 				html.push('/&gt;</div>');
@@ -924,7 +924,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		if(document.all){
 			event.cancelBubble = true;
 		}else{
-			event.stopPropagation();		
+			event.stopPropagation();
 		}
 	}
 
@@ -933,7 +933,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 		var fileName = lastSlash == -1 ? href : href.substr(lastSlash+1);
 
 		var html = [
-			'<span class="errorMessage">', msg, '</span>', 
+			'<span class="errorMessage">', msg, '</span>',
 			'<div class="objectBox-sourceLink">', fileName, ' (line ', lineNo, ')</div>'
 		];
 
@@ -956,7 +956,7 @@ dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 				toggleConsole();
 			}else if(
 				(ekc == keys.NUMPAD_ENTER || ekc == 76) &&
-				event.shiftKey && 
+				event.shiftKey &&
 				(event.metaKey || event.ctrlKey)
 			){
 				focusCommandLine();

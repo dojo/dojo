@@ -11,7 +11,7 @@ dojo.require("dojo.store.Observable");
 			{id: 5, name: "five", prime: true}
 		]
 	}));
-	tests.register("dojo.tests.store.Observable", 
+	tests.register("dojo.tests.store.Observable",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");
@@ -37,8 +37,8 @@ dojo.require("dojo.store.Observable");
 						previousIndex: 0,
 						newIndex: -1,
 						object:{
-							id: 2, 
-							name: "two", 
+							id: 2,
+							name: "two",
 							even: true,
 							prime: false
 						}
@@ -51,8 +51,8 @@ dojo.require("dojo.store.Observable");
 						previousIndex: -1,
 						"newIndex":2,
 						object:{
-							id: 1, 
-							name: "one", 
+							id: 1,
+							name: "one",
 							prime: true
 						}
 					});

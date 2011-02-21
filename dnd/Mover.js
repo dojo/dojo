@@ -3,7 +3,7 @@ define("dojo/dnd/Mover", ["dojo", "dojo/dnd/common", "dojo/dnd/autoscroll"], fun
 dojo.declare("dojo.dnd.Mover", null, {
 	constructor: function(node, e, host){
 		// summary:
-		//		an object which makes a node follow the mouse, or touch-drag on touch devices. 
+		//		an object which makes a node follow the mouse, or touch-drag on touch devices.
 		//		Used as a default mover, and as a base class for custom movers.
 		// node: Node
 		//		a node (or node's id) to be moved
@@ -54,7 +54,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		dojo.stopEvent(e);
 	},
 	onMouseUp: function(e){
-		if(dojo.isWebKit && dojo.isMac && this.mouseButton == 2 ? 
+		if(dojo.isWebKit && dojo.isMac && this.mouseButton == 2 ?
 				e.button == 0 : this.mouseButton == e.button){ // TODO Should condition be met for touch devices, too?
 			this.destroy();
 		}
@@ -63,7 +63,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 	// utilities
 	onFirstMove: function(e){
 		// summary:
-		//		makes the node absolute; it is meant to be called only once. 
+		//		makes the node absolute; it is meant to be called only once.
 		// 		relative and absolutely positioned nodes are assumed to use pixel units
 		var s = this.node.style, l, t, h = this.host;
 		switch(s.position){
@@ -83,7 +83,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 				// space into account - so we need to subtract the combined
 				// padding and margin.  We use getComputedStyle and
 				// _getMarginBox/_getContentBox to avoid the extra lookup of
-				// the computed style. 
+				// the computed style.
 				var b = dojo.doc.body;
 				var bs = dojo.getComputedStyle(b);
 				var bm = dojo._getMarginBox(b, bs);

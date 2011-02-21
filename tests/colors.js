@@ -9,7 +9,7 @@ dojo.require("dojo.colors");
 		dojo.forEach(source.toRgba(), function(n){ t.is("number", typeof(n)); });
 	}
 
-	doh.register("tests.colors", 
+	doh.register("tests.colors",
 		[
 			// all tests below are taken from #4.2 of the CSS3 Color Module
 			function testColorEx01(t){ verifyColor(t, "black", [0, 0, 0]); },

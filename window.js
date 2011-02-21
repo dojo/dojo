@@ -125,7 +125,7 @@ dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 				nodePos.y -= el.scrollTop;
 			}
 			el = (el != scrollRoot) && !fixedPos && el.parentNode;
-		}	
+		}
 	}catch(error){
 		console.error('scrollIntoView: ' + error);
 		node.scrollIntoView(false);

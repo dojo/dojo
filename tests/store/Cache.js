@@ -14,7 +14,7 @@ dojo.require("dojo.store.Cache");
 	var cachingStore = new dojo.store.Memory();
 	var options = {};
 	var store = dojo.store.Cache(masterStore, cachingStore, options);
-	tests.register("dojo.tests.store.Cache", 
+	tests.register("dojo.tests.store.Cache",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");

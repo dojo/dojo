@@ -2,12 +2,12 @@ define("dojo/data/api/Write", ["dojo", "dojo/data/api/Read"], function(dojo) {
 
 dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 	//	summary:
-	//		This is an abstract API that data provider implementations conform to.  
+	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines function signatures and intentionally leaves all the
 	//		functionss unimplemented.
 
 	getFeatures: function(){
-		//	summary: 
+		//	summary:
 		//		See dojo.data.api.Read.getFeatures()
 		return {
 			'dojo.data.api.Read': true,
@@ -21,16 +21,16 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		item based on the *keywordArgs* provided.  In general, the attribute
 		//		names in the keywords become the attributes in the new item and as for
 		//		the attribute values in keywordArgs, they become the values of the attributes
-		//		in the new item.  In addition, for stores that support hierarchical item 
+		//		in the new item.  In addition, for stores that support hierarchical item
 		//		creation, an optional second parameter is accepted that defines what item is the parent
 		//		of the new item and what attribute of that item should the new item be assigned to.
 		//		In general, this will assume that the attribute targetted is multi-valued and a new item
-		//		is appended onto the list of values for that attribute.  
+		//		is appended onto the list of values for that attribute.
 		//
 		//	keywordArgs:
 		//		A javascript object defining the initial content of the item as a set of JavaScript 'property name: value' pairs.
 		//	parentInfo:
-		//		An optional javascript object defining what item is the parent of this item (in a hierarchical store.  Not all stores do hierarchical items), 
+		//		An optional javascript object defining what item is the parent of this item (in a hierarchical store.  Not all stores do hierarchical items),
 		//		and what attribute of that parent to assign the new item to.  If this is present, and the attribute specified
 		//		is a multi-valued attribute, it will append this item into the array of values for that attribute.  The structure
 		//		of the object is as follows:
@@ -41,7 +41,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//
 		//	exceptions:
 		//		Throws an exception if *keywordArgs* is a string or a number or
-		//		anything other than a simple anonymous object.  
+		//		anything other than a simple anonymous object.
 		//		Throws an exception if the item in parentInfo is not an item from the store
 		//		or if the attribute isn't an attribute name string.
 		//	example:
@@ -56,11 +56,11 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	summary:
 		//		Deletes an item from the store.
 		//
-		//	item: 
+		//	item:
 		//		The item to delete.
 		//
 		//	exceptions:
-		//		Throws an exception if the argument *item* is not an item 
+		//		Throws an exception if the argument *item* is not an item
 		//		(if store.isItem(item) returns false).
 		//	example:
 		//	|	var success = store.deleteItem(kermit);
@@ -68,7 +68,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		return false; // boolean
 	},
 
-	setValue: function(	/* item */ item, 
+	setValue: function(	/* item */ item,
 						/* string */ attribute,
 						/* almost anything */ value){
 		//	summary:
@@ -93,7 +93,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 	},
 
 	setValues: function(/* item */ item,
-						/* string */ attribute, 
+						/* string */ attribute,
 						/* array */ values){
 		//	summary:
 		//		Adds each value in the *values* array as a value of the given
@@ -120,7 +120,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		return false; // boolean
 	},
 
-	unsetAttribute: function(	/* item */ item, 
+	unsetAttribute: function(	/* item */ item,
 								/* string */ attribute){
 		//	summary:
 		//		Deletes all the values of an attribute on an item.
@@ -144,9 +144,9 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//	summary:
 		//		Saves to the server all the changes that have been made locally.
 		//		The save operation may take some time and is generally performed
-		//		in an asynchronous fashion.  The outcome of the save action is 
+		//		in an asynchronous fashion.  The outcome of the save action is
 		//		is passed into the set of supported callbacks for the save.
-		//   
+		//
 		//	keywordArgs:
 		//		{
 		//			onComplete: function
@@ -162,7 +162,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		are generally passed to the onComplete.
 		//
 		//	The *onError* parameter.
-		//		function(errorData); 
+		//		function(errorData);
 		//
 		//		If an onError callback function is provided, the callback function
 		//		will be called if there is any sort of error while attempting to
@@ -174,12 +174,12 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		onComplete, onError, etc) will be invoked in the context of the scope
 		//		object.  In the body of the callback function, the value of the "this"
 		//		keyword will be the scope object.   If no scope object is provided,
-		//		the callback functions will be called in the context of dojo.global.  
-		//		For example, onComplete.call(scope) vs. 
+		//		the callback functions will be called in the context of dojo.global.
+		//		For example, onComplete.call(scope) vs.
 		//		onComplete.call(dojo.global)
 		//
 		//	returns:
-		//		Nothing.  Since the saves are generally asynchronous, there is 
+		//		Nothing.  Since the saves are generally asynchronous, there is
 		//		no need to return anything.  All results are passed via callbacks.
 		//	example:
 		//	|	store.save({onComplete: onSave});
@@ -201,8 +201,8 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 
 	isDirty: function(/* item? */ item){
 		//	summary:
-		//		Given an item, isDirty() returns true if the item has been modified 
-		//		since the last save().  If isDirty() is called with no *item* argument,  
+		//		Given an item, isDirty() returns true if the item has been modified
+		//		since the last save().  If isDirty() is called with no *item* argument,
 		//		then this function returns true if any item has been modified since
 		//		the last save().
 		//

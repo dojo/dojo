@@ -37,7 +37,7 @@
 
 		_loadedUrls: [],
 
-		//WARNING: 
+		//WARNING:
 		//		This variable is referenced by packages outside of bootstrap:
 		//		FloatingPane.js and undo/browser.js
 		_postLoad: false,
@@ -61,13 +61,13 @@
 		//		not caught by us, so the caller will see it.  We return a true
 		//		value if and only if the script is found.
 		//
-		// relpath: 
+		// relpath:
 		//		A relative path to a script (no leading '/', and typically ending
 		//		in '.js').
-		// module: 
+		// module:
 		//		A module whose existance to check for after loading a path.  Can be
 		//		used to determine success or failure of the load.
-		// cb: 
+		// cb:
 		//		a callback function to pass the result of evaluating the script
 
 		var uri = ((relpath.charAt(0) == '/' || relpath.match(/^\w+:/)) ? "" : d.baseUrl) + relpath;
@@ -91,7 +91,7 @@
 		//		it succeeded. Returns false if the URI reading failed.  Throws if
 		//		the evaluation throws.
 		//	uri: a uri which points at the script to be loaded
-		//	cb: 
+		//	cb:
 		//		a callback function to process the result of evaluating the script
 		//		as an expression, typically used by the resource bundle loader to
 		//		load JSON-style resources
@@ -118,16 +118,16 @@
 		}
 		// Check to see if we need to call _callLoaded() due to an addOnLoad() that arrived while we were busy downloading
 		if(--d._inFlightCount == 0 && d._postLoad && d._loaders.length){
-			// We shouldn't be allowed to get here but Firefox allows an event 
-			// (mouse, keybd, async xhrGet) to interrupt a synchronous xhrGet. 
+			// We shouldn't be allowed to get here but Firefox allows an event
+			// (mouse, keybd, async xhrGet) to interrupt a synchronous xhrGet.
 			// If the current script block contains multiple require() statements, then after each
 			// require() returns, inFlightCount == 0, but we want to hold the _callLoaded() until
 			// all require()s are done since the out-of-sequence addOnLoad() presumably needs them all.
 			// setTimeout allows the next require() to start (if needed), and then we check this again.
-			setTimeout(function(){ 
-				// If inFlightCount > 0, then multiple require()s are running sequentially and 
+			setTimeout(function(){
+				// If inFlightCount > 0, then multiple require()s are running sequentially and
 				// the next require() started after setTimeout() was executed but before we got here.
-				if(d._inFlightCount == 0){ 
+				if(d._inFlightCount == 0){
 					d._callLoaded();
 				}
 			}, 0);
@@ -151,10 +151,10 @@
 	dojo.loaded = function(){
 		// summary:
 		//		signal fired when initial environment and package loading is
-		//		complete. You should use dojo.addOnLoad() instead of doing a 
+		//		complete. You should use dojo.addOnLoad() instead of doing a
 		//		direct dojo.connect() to this method in order to handle
 		//		initialization tasks that require the environment to be
-		//		initialized. In a browser host,	declarative widgets will 
+		//		initialized. In a browser host,	declarative widgets will
 		//		be constructed when this function finishes runing.
 		d._loadNotifying = true;
 		d._postLoad = true;
@@ -181,8 +181,8 @@
 	dojo.unloaded = function(){
 		// summary:
 		//		signal fired by impending environment destruction. You should use
-		//		dojo.addOnUnload() instead of doing a direct dojo.connect() to this 
-		//		method to perform page/application cleanup methods. See 
+		//		dojo.addOnUnload() instead of doing a direct dojo.connect() to this
+		//		method to perform page/application cleanup methods. See
 		//		dojo.addOnUnload for more info.
 		var mll = d._unloaders;
 		while(mll.length){
@@ -201,13 +201,13 @@
 
 	dojo.ready = dojo.addOnLoad = function(/*Object*/obj, /*String|Function?*/functionName){
 		// summary:
-		//		Registers a function to be triggered after the DOM and dojo.require() calls 
+		//		Registers a function to be triggered after the DOM and dojo.require() calls
 		//		have finished loading.
 		//
 		// description:
 		//		Registers a function to be triggered after the DOM has finished
-		//		loading and `dojo.require` modules have loaded. Widgets declared in markup 
-		//		have been instantiated if `djConfig.parseOnLoad` is true when this fires. 
+		//		loading and `dojo.require` modules have loaded. Widgets declared in markup
+		//		have been instantiated if `djConfig.parseOnLoad` is true when this fires.
 		//
 		//		Images and CSS files may or may not have finished downloading when
 		//		the specified function is called.  (Note that widgets' CSS and HTML
@@ -250,7 +250,7 @@
 
 	dojo._modulesLoaded = function(){
 		if(d._postLoad){ return; }
-		if(d._inFlightCount > 0){ 
+		if(d._inFlightCount > 0){
 			console.warn("files still in flight!");
 			return;
 		}
@@ -282,8 +282,8 @@
 		var syms = modulename.split(".");
 		for(var i = syms.length; i>0; i--){
 			var parentModule = syms.slice(0, i).join(".");
-			if(i == 1 && !d._moduleHasPrefix(parentModule)){		
-				// Support default module directory (sibling of dojo) for top-level modules 
+			if(i == 1 && !d._moduleHasPrefix(parentModule)){
+				// Support default module directory (sibling of dojo) for top-level modules
 				syms[0] = "../" + syms[0];
 			}else{
 				var parentModulePath = d._getModulePrefix(parentModule);
@@ -340,46 +340,46 @@
 		// 		custom build that specified loader=xdomain and the module lives on a modulePath
 		// 		that is a whole URL, with protocol and a domain. The versions of Dojo that are on
 		// 		the Google and AOL CDNs use the xdomain loader.
-		// 
+		//
 		// 		If the module is loaded via the xdomain loader, it is an asynchronous load, since
 		// 		the module is added via a dynamically created script tag. This
-		// 		means that dojo.require() can return before the module has loaded. However, this 
+		// 		means that dojo.require() can return before the module has loaded. However, this
 		// 		should only happen in the case where you do dojo.require calls in the top-level
 		// 		HTML page, or if you purposely avoid the loader checking for dojo.require
 		// 		dependencies in your module by using a syntax like dojo["require"] to load the module.
-		// 
+		//
 		// 		Sometimes it is useful to not have the loader detect the dojo.require calls in the
 		// 		module so that you can dynamically load the modules as a result of an action on the
 		// 		page, instead of right at module load time.
-		// 
+		//
 		// 		Also, for script blocks in an HTML page, the loader does not pre-process them, so
 		// 		it does not know to download the modules before the dojo.require calls occur.
-		// 
+		//
 		// 		So, in those two cases, when you want on-the-fly module loading or for script blocks
 		// 		in the HTML page, special care must be taken if the dojo.required code is loaded
 		// 		asynchronously. To make sure you can execute code that depends on the dojo.required
 		// 		modules, be sure to add the code that depends on the modules in a dojo.addOnLoad()
 		// 		callback. dojo.addOnLoad waits for all outstanding modules to finish loading before
-		// 		executing. 
-		// 
+		// 		executing.
+		//
 		// 		This type of syntax works with both xdomain and normal loaders, so it is good
 		// 		practice to always use this idiom for on-the-fly code loading and in HTML script
 		// 		blocks. If at some point you change loaders and where the code is loaded from,
 		// 		it will all still work.
-		// 
+		//
 		// 		More on how dojo.require
 		//		`dojo.require("A.B")` first checks to see if symbol A.B is
 		//		defined. If it is, it is simply returned (nothing to do).
-		//	
+		//
 		//		If it is not defined, it will look for `A/B.js` in the script root
 		//		directory.
-		//	
+		//
 		//		`dojo.require` throws an exception if it cannot find a file
 		//		to load, or if the symbol `A.B` is not defined after loading.
-		//	
+		//
 		//		It returns the object `A.B`, but note the caveats above about on-the-fly loading and
 		// 		HTML script blocks when the xdomain loader is loading a module.
-		//	
+		//
 		//		`dojo.require()` does nothing about importing symbols into
 		//		the current namespace.  It is presumed that the caller will
 		//		take care of that.
@@ -392,20 +392,20 @@
 		//	   	|	dojo.addOnLoad(function(){
 		//	   	|		//you can now safely do something with foo and bar
 		//	   	|	});
-		// 
+		//
 		//	example:
 		//		For example, to import all symbols into a local block, you might write:
-		//	
+		//
 		//		|	with (dojo.require("A.B")) {
 		//		|		...
 		//		|	}
-		//	
+		//
 		//		And to import just the leaf symbol to a local variable:
-		//	
+		//
 		//		|	var B = dojo.require("A.B");
 		//	   	|	...
 		//
-		//	returns: 
+		//	returns:
 		//		the required namespace object
 		omitModuleCheck = d._global_omit_module_check || omitModuleCheck;
 
@@ -429,7 +429,7 @@
 			// pass in false so we can give better error
 			module = d._loadedModules[moduleName];
 			if(!module){
-				throw new Error("symbol '" + moduleName + "' is not defined after loading '" + relpath + "'"); 
+				throw new Error("symbol '" + moduleName + "' is not defined after loading '" + relpath + "'");
 			}
 		}
 
@@ -450,14 +450,14 @@
 		//		the file name.  For example, `js/dojo/foo.js` must have
 		//		`dojo.provide("dojo.foo");` before any calls to
 		//		`dojo.require()` are made.
-		//	
+		//
 		//		For backwards compatibility reasons, in addition to registering
 		//		the resource, `dojo.provide()` also ensures that the javascript
 		//		object for the module exists.  For example,
 		//		`dojo.provide("dojox.data.FlickrStore")`, in addition to
 		//		registering that `FlickrStore.js` is a resource for the
 		//		`dojox.data` module, will ensure that the `dojox.data`
-		//		javascript object exists, so that calls like 
+		//		javascript object exists, so that calls like
 		//		`dojo.data.foo = function(){ ... }` don't fail.
 		//
 		//		In the case of a build where multiple javascript source files
@@ -466,11 +466,11 @@
 		//		note that it includes multiple resources.
 		//
 		// resourceName: String
-		//		A dot-sperated string identifying a resource. 
+		//		A dot-sperated string identifying a resource.
 		//
 		// example:
 		//	Safely create a `my` object, and make dojo.require("my.CustomModule") work
-		//	|	dojo.provide("my.CustomModule"); 
+		//	|	dojo.provide("my.CustomModule");
 
 		//Make sure we have a string.
 		resourceName = resourceName + "";
@@ -527,7 +527,7 @@
 		if(condition === true){
 			// FIXME: why do we support chained require()'s here? does the build system?
 			var args = [];
-			for(var i = 1; i < arguments.length; i++){ 
+			for(var i = 1; i < arguments.length; i++){
 				args.push(arguments[i]);
 			}
 			d.require.apply(d, args);
@@ -537,13 +537,13 @@
 	dojo.requireAfterIf = d.requireIf;
 
 	dojo.registerModulePath = function(/*String*/module, /*String*/prefix){
-		//	summary: 
+		//	summary:
 		//		Maps a module name to a path
-		//	description: 
+		//	description:
 		//		An unregistered module is given the default path of ../[module],
 		//		relative to Dojo root. For example, module acme is mapped to
 		//		../acme.  If you want to use a different module name, use
-		//		dojo.registerModulePath. 
+		//		dojo.registerModulePath.
 		//	example:
 		//		If your dojo.js is located at this location in the web root:
 		//	|	/myapp/js/dojo/dojo/dojo.js
@@ -556,7 +556,7 @@
 		//		At which point you can then use dojo.require() to load the
 		//		modules (assuming they provide() the same things which are
 		//		required). The full code might be:
-		//	|	<script type="text/javascript" 
+		//	|	<script type="text/javascript"
 		//	|		src="/myapp/js/dojo/dojo/dojo.js"></script>
 		//	|	<script type="text/javascript">
 		//	|		dojo.registerModulePath("foo", "../../foo");
@@ -577,7 +577,7 @@
 		// description:
 		//		Load translated resource bundles provided underneath the "nls"
 		//		directory within a package.  Translated resources may be located in
-		//		different packages throughout the source tree.  
+		//		different packages throughout the source tree.
 		//
 		//		Each directory is named for a locale as specified by RFC 3066,
 		//		(http://www.ietf.org/rfc/rfc3066.txt), normalized in lowercase.
@@ -592,21 +592,21 @@
 		//		preload the bundles to avoid data redundancy and the multiple
 		//		network hits normally required to load these resources.
 		//
-		// moduleName: 
+		// moduleName:
 		//		name of the package containing the "nls" directory in which the
 		//		bundle is found
 		//
-		// bundleName: 
+		// bundleName:
 		//		bundle name, i.e. the filename without the '.js' suffix. Using "nls" as a
 		//		a bundle name is not supported, since "nls" is the name of the folder
 		//		that holds bundles. Using "nls" as the bundle name will cause problems
 		//		with the custom build.
 		//
-		// locale: 
+		// locale:
 		//		the locale to load (optional)  By default, the browser's user
 		//		locale as defined by dojo.locale
 		//
-		// availableFlatLocales: 
+		// availableFlatLocales:
 		//		A comma-separated list of the available, flattened locales for this
 		//		bundle. This argument should only be set by the build process.
 		//
@@ -648,11 +648,11 @@
 		ire = new RegExp("^((([^\\[:]+):)?([^@]+)@)?(\\[([^\\]]+)\\]|([^\\[:]*))(:([0-9]+))?$");
 
 	dojo._Url = function(/*dojo._Url|String...*/){
-		// summary: 
+		// summary:
 		//		Constructor to create an object representing a URL.
 		//		It is marked as private, since we might consider removing
 		//		or simplifying it.
-		// description: 
+		// description:
 		//		Each argument is evaluated in order relative to the next until
 		//		a canonical uri is produced. To get an absolute Uri relative to
 		//		the current document use:
@@ -719,7 +719,7 @@
 			}
 
 			uri = [];
-			if(relobj.scheme){ 
+			if(relobj.scheme){
 				uri.push(relobj.scheme, ":");
 			}
 			if(relobj.authority){
@@ -759,7 +759,7 @@
 	dojo._Url.prototype.toString = function(){ return this.uri; };
 
 	dojo.moduleUrl = function(/*String*/module, /*dojo._Url||String*/url){
-		//	summary: 
+		//	summary:
 		//		Returns a `dojo._Url` object relative to a module.
 		//	example:
 		//	|	var pngPath = dojo.moduleUrl("acme","images/small.png");
@@ -767,10 +767,10 @@
 		//	|	// create an image and set it's source to pngPath's value:
 		//	|	var img = document.createElement("img");
 		// 	|	// NOTE: we assign the string representation of the url object
-		//	|	img.src = pngPath.toString(); 
+		//	|	img.src = pngPath.toString();
 		//	|	// add our image to the document
 		//	|	dojo.body().appendChild(img);
-		//	example: 
+		//	example:
 		//		you may de-reference as far as you like down the package
 		//		hierarchy.  This is sometimes handy to avoid lenghty relative
 		//		urls or for building portable sub-packages. In this example,
@@ -781,9 +781,9 @@
 		//	|	// somewhere in a configuration block
 		//	|	dojo.registerModulePath("acme.widget", "../../acme/widget");
 		//	|	dojo.registerModulePath("acme.util", "../../util");
-		//	|	
+		//	|
 		//	|	// ...
-		//	|	
+		//	|
 		//	|	// code in a module using acme resources
 		//	|	var tmpltPath = dojo.moduleUrl("acme.widget","templates/template.html");
 		//	|	var dataPath = dojo.moduleUrl("acme.util","resources/data.json");
@@ -847,29 +847,29 @@
 						var match = depName.match(/^i18n\!(.+)\.nls\.([^\.]+)$/);
 						dojo["requireLocalization"](match[1], match[2]);
 					}
-					arg = null; 
+					arg = null;
 				}else{
 					var arg;
 					switch(depName){
-						case "require": 
+						case "require":
 							arg = function(relativeId){
 								return dojo.require(resolvePath(relativeId));
-							}; 
+							};
 							break;
-						case "exports": 
-							arg = exports; 
+						case "exports":
+							arg = exports;
 							break;
-						case "module": 
+						case "module":
 							var module = arg = {exports: exports};
 							break;
-						case "dojox": 
+						case "dojox":
 							arg = dojo.getObject(depName);
 							break;
-						case "dojo/lib/kernel": 
+						case "dojo/lib/kernel":
 						case "dojo/lib/backCompat":
 							arg = dojo;
 							break;
-						default: 
+						default:
 							arg = dojo.require(depName);
 					}
 				}

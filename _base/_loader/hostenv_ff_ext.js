@@ -234,7 +234,7 @@ if(typeof window != 'undefined'){
 			return oc;
 		};
 
-		// FIXME: 
+		// FIXME:
 		//		don't really like the current arguments and order to
 		//		_inContext, so don't make it public until it's right!
 		dojo._inContext = function(g, d, f){
@@ -295,7 +295,7 @@ if(typeof window != 'undefined'){
 	// 		Dojo's to fire once..but we might care if pages navigate. We'll
 	// 		probably need an extension-specific API
 	if(!dojo.config.afterOnLoad){
-		window.addEventListener("DOMContentLoaded",function(e){ 
+		window.addEventListener("DOMContentLoaded",function(e){
 			dojo._loadInit(e);
 			// console.log("DOM content loaded", e);
 		}, false);

@@ -82,7 +82,7 @@ dojo.declare("dojo.dnd.Avatar", null, {
 			var icon = dojo.byId("a11yIcon");
 			var text = '+';   // assume canDrop && copy
 			if (this.manager.canDropFlag && !this.manager.copy) {
-				text = '< '; // canDrop && move 
+				text = '< '; // canDrop && move
 			}else if (!this.manager.canDropFlag && !this.manager.copy) {
 				text = "o"; //!canDrop && move
 			}else if(!this.manager.canDropFlag){

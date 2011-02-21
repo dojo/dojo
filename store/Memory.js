@@ -5,7 +5,7 @@ dojo.declare("dojo.store.Memory", null, {
 		// summary:
 		//		This is a basic in-memory object store.
 		// options:
-		//		This provides any configuration information that will be mixed into the store. 
+		//		This provides any configuration information that will be mixed into the store.
 		// 		This should generally include the data property to provide the starting set of data.
 		this.index = {};
 		dojo.mixin(this, options);

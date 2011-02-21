@@ -319,6 +319,6 @@ dojo.require("dojo.hash");
 				dojo.unsubscribe(this._s);
 				setHash();
 			}
-		}	
+		}
 	]);
 })();

@@ -188,7 +188,7 @@ tests.register("tests._base.declare",
 		},
 
 		function basicMixin(t){
-			// testing if a plain Class-like object can be inherited 
+			// testing if a plain Class-like object can be inherited
 			// by dojo.declare
 			var d = new doh.Deferred;
 

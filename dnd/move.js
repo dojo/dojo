@@ -116,8 +116,8 @@ dojo.declare("dojo.dnd.move.parentConstrainedMoveable", dojo.dnd.move.constraine
 		//		an optional object with parameters
 		var area = params && params.area;
 		this.constraints = function(){
-			var n = this.node.parentNode, 
-				s = dojo.getComputedStyle(n), 
+			var n = this.node.parentNode,
+				s = dojo.getComputedStyle(n),
 				mb = dojo._getMarginBox(n, s);
 			if(area == "margin"){
 				return mb;	// Object
@@ -145,12 +145,12 @@ dojo.dnd.move.constrainedMover = function(fun, within){
 	// summary:
 	//		returns a constrained version of dojo.dnd.Mover
 	// description:
-	//		this function produces n object, which will put a constraint on 
+	//		this function produces n object, which will put a constraint on
 	//		the margin box of dragged object in absolute coordinates
 	// fun: Function
 	//		called on drag, and returns a constraint box
 	// within: Boolean
-	//		if true, constraints the whole dragged object withtin the rectangle, 
+	//		if true, constraints the whole dragged object withtin the rectangle,
 	//		otherwise the constraint is applied to the left-top corner
 
 	dojo.deprecated("dojo.dnd.move.constrainedMover, use dojo.dnd.move.constrainedMoveable instead");
@@ -191,7 +191,7 @@ dojo.dnd.move.boxConstrainedMover = function(box, within){
 	// box: Object
 	//		a constraint box (l, t, w, h)
 	// within: Boolean
-	//		if true, constraints the whole dragged object withtin the rectangle, 
+	//		if true, constraints the whole dragged object withtin the rectangle,
 	//		otherwise the constraint is applied to the left-top corner
 
 	dojo.deprecated("dojo.dnd.move.boxConstrainedMover, use dojo.dnd.move.boxConstrainedMoveable instead");
@@ -205,13 +205,13 @@ dojo.dnd.move.parentConstrainedMover = function(area, within){
 	//		"margin" to constrain within the parent's margin box, "border" for the border box,
 	//		"padding" for the padding box, and "content" for the content box; "content" is the default value.
 	// within: Boolean
-	//		if true, constraints the whole dragged object within the rectangle, 
+	//		if true, constraints the whole dragged object within the rectangle,
 	//		otherwise the constraint is applied to the left-top corner
 
 	dojo.deprecated("dojo.dnd.move.parentConstrainedMover, use dojo.dnd.move.parentConstrainedMoveable instead");
 	var fun = function(){
-		var n = this.node.parentNode, 
-			s = dojo.getComputedStyle(n), 
+		var n = this.node.parentNode,
+			s = dojo.getComputedStyle(n),
 			mb = dojo._getMarginBox(n, s);
 		if(area == "margin"){
 			return mb;	// Object

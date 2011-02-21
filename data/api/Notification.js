@@ -8,12 +8,12 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 	//
 	//	description:
 	//		This API defines a set of APIs that all datastores that conform to the
-	//		Notifications API must implement.  In general, most stores will implement 
+	//		Notifications API must implement.  In general, most stores will implement
 	//		these APIs as no-op functions for users who wish to monitor them to be able
-	//		to connect to then via dojo.connect().  For non-users of dojo.connect, 
+	//		to connect to then via dojo.connect().  For non-users of dojo.connect,
 	//		they should be able to just replace the function on the store to obtain
 	//		 notifications.  Both read-only and read-write stores may implement
-	//		this feature.  In the case of a read-only store, this feature makes sense if 
+	//		this feature.  In the case of a read-only store, this feature makes sense if
 	//		the store itself does internal polling to a back-end server and periodically updates
 	//		its cache of items (deletes, adds, and updates).
 	//
@@ -26,7 +26,7 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 	//	|	dojo.connect(store, "onSet", onSet);
 
 	getFeatures: function(){
-		//	summary: 
+		//	summary:
 		//		See dojo.data.api.Read.getFeatures()
 		return {
 			'dojo.data.api.Read': true,
@@ -34,16 +34,16 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 		};
 	},
 
-	onSet: function(/* item */ item, 
-					/* attribute-name-string */ attribute, 
+	onSet: function(/* item */ item,
+					/* attribute-name-string */ attribute,
 					/* object | array */ oldValue,
 					/* object | array */ newValue){
 		//	summary:
-		//		This function is called any time an item is modified via setValue, setValues, unsetAttribute, etc.  
+		//		This function is called any time an item is modified via setValue, setValues, unsetAttribute, etc.
 		//	description:
-		//		This function is called any time an item is modified via setValue, setValues, unsetAttribute, etc.  
-		//		Its purpose is to provide a hook point for those who wish to monitor actions on items in the store 
-		//		in a simple manner.  The general expected usage is to dojo.connect() to the store's 
+		//		This function is called any time an item is modified via setValue, setValues, unsetAttribute, etc.
+		//		Its purpose is to provide a hook point for those who wish to monitor actions on items in the store
+		//		in a simple manner.  The general expected usage is to dojo.connect() to the store's
 		//		implementation and be called after the store function is called.
 		//
 		//	item:
@@ -52,11 +52,11 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 		//		The attribute being changed represented as a string name.
 		//	oldValue:
 		//		The old value of the attribute.  In the case of single value calls, such as setValue, unsetAttribute, etc,
-		//		this value will be generally be an atomic value of some sort (string, int, etc, object).  In the case of 
+		//		this value will be generally be an atomic value of some sort (string, int, etc, object).  In the case of
 		//		multi-valued attributes, it will be an array.
 		//	newValue:
-		//		The new value of the attribute.  In the case of single value calls, such as setValue, this value will be 
-		//		generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes, 
+		//		The new value of the attribute.  In the case of single value calls, such as setValue, this value will be
+		//		generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes,
 		//		it will be an array.  In the case of unsetAttribute, the new value will be 'undefined'.
 		//
 		//	returns:
@@ -83,12 +83,12 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 		//		{
 		//			item: someItem,							//The parent item
 		//			attribute:	"attribute-name-string",	//The attribute the new item was assigned to.
-		//			oldValue: something	//Whatever was the previous value for the attribute.  
+		//			oldValue: something	//Whatever was the previous value for the attribute.
 		//						//If it is a single-value attribute only, then this value will be a single value.
 		//						//If it was a multi-valued attribute, then this will be an array of all the values minues the new one.
 		//			newValue: something	//The new value of the attribute.  In the case of single value calls, such as setValue, this value will be
 		//						//generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes,
-		//						//it will be an array.  
+		//						//it will be an array.
 		//		}
 		//
 		//	returns:

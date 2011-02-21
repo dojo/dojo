@@ -10,7 +10,7 @@ var delay = function(ms){
 	},ms);
 	return d.promise;
 };
-doh.register("tests._base.Deferred", 
+doh.register("tests._base.Deferred",
 	[
 
 		function callback(t){

@@ -27,13 +27,13 @@
 
 if(dojo.global.define && define.vendor!="dojotoolkit.org"){ //tests for the AMD loader
   define(["dojo", "dojo/currency", "plugin/i18n"], function(dojo){
-    tests.register("tests.currency", 
+    tests.register("tests.currency",
     	[
-    		{    
+    		{
     			name: "currency",
           timeout: 2000,
     			runTest: function(t){
-            var 
+            var
               def = new doh.Deferred(),
               deps= ["dojo"];
             dojo.forEach(["en-us", "en-ca", "de-de"], function(locale){
@@ -57,7 +57,7 @@ dojo.provide("tests.currency");
 
 dojo.require("dojo.currency");
 
-tests.register("tests.currency", 
+tests.register("tests.currency",
 	[
 		{
 			// Test formatting and parsing of currencies in various locales pre-built in dojo.cldr

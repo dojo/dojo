@@ -29,7 +29,7 @@ dojo.rpc = {
 
 dojo.baseUrl = {
 	// summary: The root relative path to dojo.js (as a string)
-	// example: 
+	// example:
 	//	if(typeof dojo != "undefined"){ console.log(dojo.baseUrl); }
 };
 

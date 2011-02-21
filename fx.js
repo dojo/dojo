@@ -7,7 +7,7 @@ dojo.fx = {
 =====*/
 (function(){
 	
-	var d = dojo, 
+	var d = dojo,
 		_baseObj = {
 			_fire: function(evt, args){
 				if(this[evt]){
@@ -126,14 +126,14 @@ dojo.fx = {
 	d.extend(_chain, _baseObj);
 
 	dojo.fx.chain = function(/*dojo.Animation[]*/ animations){
-		// summary: 
+		// summary:
 		//		Chain a list of `dojo.Animation`s to run in sequence
 		//
 		// description:
 		//		Return a `dojo.Animation` which will play all passed
 		//		`dojo.Animation` instances in sequence, firing its own
 		//		synthesized events simulating a single animation. (eg:
-		//		onEnd of this animation means the end of the chain, 
+		//		onEnd of this animation means the end of the chain,
 		//		not the individual animations within)
 		//
 		// example:
@@ -161,7 +161,7 @@ dojo.fx = {
 		
 		this._pseudoAnimation = new d.Animation({curve: [0, 1], duration: this.duration});
 		var self = this;
-		d.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"], 
+		d.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"],
 			function(evt){
 				self._connects.push(d.connect(self._pseudoAnimation, evt,
 					function(){ self._fire(evt, arguments); }
@@ -219,11 +219,11 @@ dojo.fx = {
 	d.extend(_combine, _baseObj);
 
 	dojo.fx.combine = function(/*dojo.Animation[]*/ animations){
-		// summary: 
+		// summary:
 		//		Combine a list of `dojo.Animation`s to run in parallel
 		//
 		// description:
-		//		Combine an array of `dojo.Animation`s to run in parallel, 
+		//		Combine an array of `dojo.Animation`s to run in parallel,
 		//		providing a new `dojo.Animation` instance encompasing each
 		//		animation, firing standard animation events.
 		//
@@ -294,7 +294,7 @@ dojo.fx = {
 			}
 		}, args));
 
-		d.connect(anim, "onEnd", function(){ 
+		d.connect(anim, "onEnd", function(){
 			s.height = "auto";
 			s.overflow = o;
 		});
@@ -304,7 +304,7 @@ dojo.fx = {
 
 	dojo.fx.wipeOut = function(/*Object*/ args){
 		// summary:
-		//		Shrink a node to nothing and hide it. 
+		//		Shrink a node to nothing and hide it.
 		//
 		// description:
 		//		Returns an animation that will shrink node defined in "args"
@@ -313,7 +313,7 @@ dojo.fx = {
 		// args: Object
 		//		A hash-map of standard `dojo.Animation` constructor properties
 		//		(such as easing: node: duration: and so on)
-		// 
+		//
 		// example:
 		//	|	dojo.fx.wipeOut({ node:"someId" }).play()
 		
@@ -346,7 +346,7 @@ dojo.fx = {
 		//		Slide a node to a new top/left position
 		//
 		// description:
-		//		Returns an animation that will slide "node" 
+		//		Returns an animation that will slide "node"
 		//		defined in args Object from its current position to
 		//		the position defined by (args.left, args.top).
 		//
@@ -358,7 +358,7 @@ dojo.fx = {
 		// example:
 		//	|	dojo.fx.slideTo({ node: node, left:"40", top:"50", units:"px" }).play()
 
-		var node = args.node = d.byId(args.node), 
+		var node = args.node = d.byId(args.node),
 			top = null, left = null;
 
 		var init = (function(n){

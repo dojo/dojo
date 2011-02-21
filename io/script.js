@@ -16,13 +16,13 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 		// 		legacy code. See notes for jsonp property.
 		//	jsonp: String
 		//		The URL parameter name that indicates the JSONP callback string.
-		//		For instance, when using Yahoo JSONP calls it is normally, 
-		//		jsonp: "callback". For AOL JSONP calls it is normally 
+		//		For instance, when using Yahoo JSONP calls it is normally,
+		//		jsonp: "callback". For AOL JSONP calls it is normally
 		//		jsonp: "c".
 		//	checkString: String
-		//		A string of JavaScript that when evaluated like so: 
+		//		A string of JavaScript that when evaluated like so:
 		//		"typeof(" + checkString + ") != 'undefined'"
-		//		being true means that the script fetched has been loaded. 
+		//		being true means that the script fetched has been loaded.
 		//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
 		//	frameDoc: Document
 		//		The Document object for a child iframe. If this is passed in, the script
@@ -97,7 +97,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 		},
 	
 		_makeScriptDeferred: function(/*Object*/args){
-			//summary: 
+			//summary:
 			//		sets up a Deferred object for an IO request.
 			var dfd = dojo._ioSetArgs(args, this._deferredCancel, this._deferredOk, this._deferredError);
 	
@@ -144,7 +144,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			//DO NOT use "this" and expect it to be dojo.io.script.
 			var ioArgs = dfd.ioArgs;
 	
-			//Add script to list of things that can be removed.		
+			//Add script to list of things that can be removed.
 			if(ioArgs.canDelete){
 				dojo.io.script._addDeadScript(ioArgs);
 			}
@@ -239,7 +239,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 		},
 		
 		_jsonpCallback: function(/*JSON Object*/json){
-			//summary: 
+			//summary:
 			//		generic handler for jsonp callback. A pointer to this function
 			//		is used for all jsonp callbacks.  NOTE: the "this" in this
 			//		function will be the Deferred object that represents the script

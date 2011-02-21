@@ -88,7 +88,7 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 		//		This allows for easy use of object member functions
 		//		in callbacks and other places in which the "this" keyword may
 		//		otherwise not reference the expected scope.
-		//		Any number of default positional arguments may be passed as parameters 
+		//		Any number of default positional arguments may be passed as parameters
 		//		beyond "method".
 		//		Each of these values will be used to "placehold" (similar to curry)
 		//		for the hitched function.
@@ -245,9 +245,9 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 			// Date
 			return new Date(o.getTime());	// Date
 		}
-		if(o instanceof RegExp){ 
-			// RegExp 
-			return new RegExp(o);   // RegExp 
+		if(o instanceof RegExp){
+			// RegExp
+			return new RegExp(o);   // RegExp
 		}
 		var r, i, l, s, name;
 		if(d.isArray(o)){
@@ -318,7 +318,7 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 	dojo.replace = function(tmpl, map, pattern){
 		//	summary:
 		//		Performs parameterized substitutions on a string. Throws an
-		//		exception if any parameter is unmatched. 
+		//		exception if any parameter is unmatched.
 		//	tmpl: String
 		//		String to be used as a template.
 		//	map: Object|Function

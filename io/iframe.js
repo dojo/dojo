@@ -41,7 +41,7 @@ dojo.declare("dojo.io.iframe.__ioArgs", dojo.__IoArgs, {
 =====*/
 
 dojo.io.iframe = {
-	// summary: 
+	// summary:
 	//		Sends an Ajax I/O call using and Iframe (for instance, to upload files)
 	
 	create: function(/*String*/fname, /*String*/onloadstr, /*String?*/uri){
@@ -113,8 +113,8 @@ dojo.io.iframe = {
 					idoc.location.replace(src);
 				}
 			}
-		}catch(e){ 
-			console.log("dojo.io.iframe.setSrc: ", e); 
+		}catch(e){
+			console.log("dojo.io.iframe.setSrc: ", e);
 		}
 	},
 
@@ -123,7 +123,7 @@ dojo.io.iframe = {
 		var doc = iframeNode.contentDocument || // W3
 			(
 				(
-					(iframeNode.name) && (iframeNode.document) && 
+					(iframeNode.name) && (iframeNode.document) &&
 					(dojo.doc.getElementsByTagName("iframe")[iframeNode.name].contentWindow) &&
 					(dojo.doc.getElementsByTagName("iframe")[iframeNode.name].contentWindow.document)
 				)
@@ -136,7 +136,7 @@ dojo.io.iframe = {
 	},
 
 	send: function(/*dojo.io.iframe.__ioArgs*/args){
-		//summary: 
+		//summary:
 		//		Function that sends the request to the server.
 		//		This transport can only process one send() request at a time, so if send() is called
 		//multiple times, it will queue up the calls and only process one at a time.
@@ -189,7 +189,7 @@ dojo.io.iframe = {
 				}catch(e){
 					value = e;
 				}finally{
-					ioArgs._callNext();				
+					ioArgs._callNext();
 				}
 				return value;
 			},
@@ -287,7 +287,7 @@ dojo.io.iframe = {
 						}
 					}
 				}
-				//IE requires going through getAttributeNode instead of just getAttribute in some form cases, 
+				//IE requires going through getAttributeNode instead of just getAttribute in some form cases,
 				//so use it for all.  See #2844
 				var actnNode = fn.getAttributeNode("action");
 				var mthdNode = fn.getAttributeNode("method");

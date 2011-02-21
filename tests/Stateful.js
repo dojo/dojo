@@ -2,7 +2,7 @@ dojo.provide("tests.Stateful");
 
 dojo.require("dojo.Stateful");
 
-doh.register("tests.Stateful", 
+doh.register("tests.Stateful",
 	[
 		function getSetWatch(t){
 			var s = new dojo.Stateful({
@@ -29,7 +29,7 @@ doh.register("tests.Stateful",
 			});
 			doh.is(3, s.get("foo"));
 			doh.is(5, s.get("bar"));
-		},		
+		},
 		function wildcard(t){
 			var s = new dojo.Stateful();
 			s.set({
@@ -44,11 +44,11 @@ doh.register("tests.Stateful",
 			s.watch("foo", function(){
 				foo++;
 			});
-			s.set("foo", 4); 
+			s.set("foo", 4);
 			s.set("bar", 6);
 			doh.is(2, wildcard);
 			doh.is(1, foo);
-		}		
+		}
 
 
 	]

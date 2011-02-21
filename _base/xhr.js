@@ -83,7 +83,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//		yields this object structure as the result of a call to
 		//		formToObject():
 		//
-		//		|	{ 
+		//		|	{
 		//		|		blah: "blah",
 		//		|		multi: [
 		//		|			"thud",
@@ -113,7 +113,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//	example:
 		//		this object:
 		//
-		//		|	{ 
+		//		|	{
 		//		|		blah: "blah",
 		//		|		multi: [
 		//		|			"thud",
@@ -122,7 +122,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//		|	};
 		//
 		//	yields the following query string:
-		//	
+		//
 		//	|	"blah=blah&multi=thud&multi=thonk"
 
 		// FIXME: need to implement encodeAscii!!
@@ -168,7 +168,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//		This string:
 		//
 		//	|		"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
-		//		
+		//
 		//		results in this object structure:
 		//
 		//	|		{
@@ -176,7 +176,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//	|			thinger: " spaces =blah",
 		//	|			zonk: "blarg"
 		//	|		}
-		//	
+		//
 		//		Note that spaces and other urlencoded entities are correctly
 		//		handled.
 
@@ -211,7 +211,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 
 	// MOW: remove dojo._contentHandlers alias in 2.0
 	var handlers = _d._contentHandlers = dojo.contentHandlers = {
-		// summary: 
+		// summary:
 		//		A map of availble XHR transport handle types. Name matches the
 		//		`handleAs` attribute passed to XHR calls.
 		//
@@ -219,41 +219,41 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//		A map of availble XHR transport handle types. Name matches the
 		//		`handleAs` attribute passed to XHR calls. Each contentHandler is
 		//		called, passing the xhr object for manipulation. The return value
-		//		from the contentHandler will be passed to the `load` or `handle` 
-		//		functions defined in the original xhr call. 
-		//		
+		//		from the contentHandler will be passed to the `load` or `handle`
+		//		functions defined in the original xhr call.
+		//
 		// example:
 		//		Creating a custom content-handler:
 		//	|	dojo.contentHandlers.makeCaps = function(xhr){
 		//	|		return xhr.responseText.toUpperCase();
 		//	|	}
 		//	|	// and later:
-		//	|	dojo.xhrGet({ 
+		//	|	dojo.xhrGet({
 		//	|		url:"foo.txt",
 		//	|		handleAs:"makeCaps",
 		//	|		load: function(data){ /* data is a toUpper version of foo.txt */ }
 		//	|	});
 
-		text: function(xhr){ 
+		text: function(xhr){
 			// summary: A contentHandler which simply returns the plaintext response data
-			return xhr.responseText; 
+			return xhr.responseText;
 		},
 		json: function(xhr){
 			// summary: A contentHandler which returns a JavaScript object created from the response data
 			return _d.fromJson(xhr.responseText || null);
 		},
-		"json-comment-filtered": function(xhr){ 
-			// summary: A contentHandler which expects comment-filtered JSON. 
-			// description: 
-			//		A contentHandler which expects comment-filtered JSON. 
+		"json-comment-filtered": function(xhr){
+			// summary: A contentHandler which expects comment-filtered JSON.
+			// description:
+			//		A contentHandler which expects comment-filtered JSON.
 			//		the json-comment-filtered option was implemented to prevent
 			//		"JavaScript Hijacking", but it is less secure than standard JSON. Use
 			//		standard JSON instead. JSON prefixing can be used to subvert hijacking.
-			//		
+			//
 			//		Will throw a notice suggesting to use application/json mimetype, as
 			//		json-commenting can introduce security issues. To decrease the chances of hijacking,
-			//		use the standard `json` contentHandler, and prefix your "JSON" with: {}&& 
-			//		
+			//		use the standard `json` contentHandler, and prefix your "JSON" with: {}&&
+			//
 			//		use djConfig.useCommentedJson = true to turn off the notice
 			if(!dojo.config.useCommentedJson){
 				console.warn("Consider using the standard mimetype:application/json."
@@ -271,7 +271,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 			}
 			return _d.fromJson(value.substring(cStartIdx+2, cEndIdx));
 		},
-		javascript: function(xhr){ 
+		javascript: function(xhr){
 			// summary: A contentHandler which evaluates the response data, expecting it to be valid JavaScript
 
 			// FIXME: try Moz and IE specific eval variants?
@@ -300,7 +300,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 			return result; // DOMDocument
 		},
 		"json-comment-optional": function(xhr){
-			// summary: A contentHandler which checks the presence of comment-filtered JSON and 
+			// summary: A contentHandler which checks the presence of comment-filtered JSON and
 			//		alternates between the `json` and `json-comment-filtered` contentHandlers.
 			if(xhr.responseText && /^[^{\[]*\/\*/.test(xhr.responseText)){
 				return handlers["json-comment-filtered"](xhr);
@@ -477,7 +477,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 			/*Function*/canceller,
 			/*Function*/okHandler,
 			/*Function*/errHandler){
-		//	summary: 
+		//	summary:
 		//		sets up the Deferred and ioArgs property on the Deferred so it
 		//		can be used in an io call.
 		//	args:
@@ -493,19 +493,19 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//		object returned from this function.
 		//	errHandler:
 		//		The first error callback to be registered with Deferred. It has the opportunity
-		//		to do cleanup on an error. It will receive two arguments: error (the 
+		//		to do cleanup on an error. It will receive two arguments: error (the
 		//		Error object) and dfd, the Deferred object returned from this function.
 
 		var ioArgs = {args: args, url: args.url};
 
 		//Get values from form if requestd.
 		var formObject = null;
-		if(args.form){ 
+		if(args.form){
 			var form = _d.byId(args.form);
-			//IE requires going through getAttributeNode instead of just getAttribute in some form cases, 
+			//IE requires going through getAttributeNode instead of just getAttribute in some form cases,
 			//so use it for all.  See #2844
 			var actnNode = form.getAttributeNode("action");
-			ioArgs.url = ioArgs.url || (actnNode ? actnNode.value : null); 
+			ioArgs.url = ioArgs.url || (actnNode ? actnNode.value : null);
 			formObject = _d.formToObject(form);
 		}
 
@@ -633,7 +633,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 	};
 
 	var _watchInFlight = function(){
-		//summary: 
+		//summary:
 		//		internal method that checks each inflight XMLHttpRequest to see
 		//		if it has completed or if the timeout situation applies.
 		
@@ -648,7 +648,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 				var dfd = tif.dfd;
 				var func = function(){
 					if(!dfd || dfd.canceled || !tif.validCheck(dfd)){
-						_inFlight.splice(i--, 1); 
+						_inFlight.splice(i--, 1);
 						_pubCount -= 1;
 					}else if(tif.ioCheck(dfd)){
 						_inFlight.splice(i--, 1);
@@ -726,7 +726,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 	};
 
 	_d._ioWatch = function(dfd, validCheck, ioCheck, resHandle){
-		// summary: 
+		// summary:
 		//		Watches the io request represented by dfd to see if it completes.
 		// dfd: Deferred
 		//		The Deferred object to watch.
@@ -784,7 +784,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		if(ioArgs.query.length){
 			ioArgs.url += (ioArgs.url.indexOf("?") == -1 ? "?" : "&") + ioArgs.query;
 			ioArgs.query = null;
-		}		
+		}
 	};
 
 	/*=====
@@ -889,7 +889,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 	};
 
 	dojo.xhrGet = function(/*dojo.__XhrArgs*/ args){
-		//	summary: 
+		//	summary:
 		//		Sends an HTTP GET request to the server.
 		return _d.xhr("GET", args); // dojo.Deferred
 	};

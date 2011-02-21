@@ -2,7 +2,7 @@ dojo.provide("dojo.tests.store.JsonRest");
 dojo.require("dojo.store.JsonRest");
 (function(){
 	var store = new dojo.store.JsonRest({target: dojo.moduleUrl("dojo.tests.store", "")});
-	tests.register("tests.store.JsonRest", 
+	tests.register("tests.store.JsonRest",
 		[
 			function testGet(t){
 				var d = new doh.Deferred();

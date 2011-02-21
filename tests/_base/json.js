@@ -1,6 +1,6 @@
 dojo.provide("tests._base.json");
 
-tests.register("tests._base.json", 
+tests.register("tests._base.json",
 	[
 		//Not testing dojo.toJson() on its own since Rhino will output the object properties in a different order.
 		//Still valid json, but just in a different order than the source string.

@@ -1,4 +1,4 @@
-var 
+var
 	addOnLoadResults = [],
 	writeToAddOnLoadResults = function(c, context){
 		return function() {
@@ -14,12 +14,12 @@ djConfig = {
 };
 
 define(
-	["dojo", "doh", "i18n!dojo/nls/colors", "text!./text.html", "text!./text.html!strip"], 
+	["dojo", "doh", "i18n!dojo/nls/colors", "text!./text.html", "text!./text.html!strip"],
 	function(dojo, doh, dojoColors, text, strippedText) {
 		doh.register("test.amd.backCompat", [
 			function djConfig(t){
 				t.assertEqual(dojo.config.someRandomProperty, "someRandomValue");
-			}, 
+			},
 	
 			function addOnLoad(t){
 				var d = new doh.Deferred();
@@ -59,7 +59,7 @@ define(
 				someOtherObject.someOtherMethod= writeToAddOnLoadResults("D", someOtherObject);
 				dojo.addOnUnload(someOtherObject, someOtherObject.someOtherMethod);
 				dojo.unloaded();
-				t.assertEqual(["D", "OK", "C", "OK", "B", "OK", "A", "OK"], addOnLoadResults); 
+				t.assertEqual(["D", "OK", "C", "OK", "B", "OK", "A", "OK"], addOnLoadResults);
 			},
 	
 			function l10nNames(t){
@@ -81,9 +81,9 @@ define(
 			},
 	
 			function moduleUrl(t){
-				var 
+				var
 					compact= function(path){
-						var 
+						var
 							parts= path.split("/"),
 							result= [],
 							segment;

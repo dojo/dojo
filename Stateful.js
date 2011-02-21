@@ -24,7 +24,7 @@ dojo.declare("dojo.Stateful", null, {
 		// description:
 		//		Get a named property on a Stateful object. The property may
 		//		potentially be retrieved via a getter method in subclasses. In the base class
-		// 		this just retrieves the object's property. 
+		// 		this just retrieves the object's property.
 		// 		For example:
 		//	|	stateful = new dojo.Stateful({foo: 3});
 		//	|	stateful.get("foo") // returns 3
@@ -36,11 +36,11 @@ dojo.declare("dojo.Stateful", null, {
 		// summary:
 		//		Set a property on a Stateful instance
 		//	name:
-		//		The property to set. 
+		//		The property to set.
 		//	value:
 		//		The value to set in the property.
 		// description:
-		//		Sets named properties on a stateful object and notifies any watchers of 
+		//		Sets named properties on a stateful object and notifies any watchers of
 		// 		the property. A programmatic setter may be defined in subclasses.
 		// 		For example:
 		//	|	stateful = new dojo.Stateful();
@@ -57,7 +57,7 @@ dojo.declare("dojo.Stateful", null, {
 		//	This is equivalent to calling set(foo, "Howdy") and set(bar, 3)
 		if(typeof name === "object"){
 			for(var x in name){
-				this.set(x, name[x]); 
+				this.set(x, name[x]);
 			}
 			return this;
 		}
@@ -72,17 +72,17 @@ dojo.declare("dojo.Stateful", null, {
 		// summary:
 		//		Watches a property for changes
 		//	name:
-		//		Indicates the property to watch. This is optional (the callback may be the 
+		//		Indicates the property to watch. This is optional (the callback may be the
 		// 		only parameter), and if omitted, all the properties will be watched
 		// returns:
-		//		An object handle for the watch. The unwatch method of this object 
+		//		An object handle for the watch. The unwatch method of this object
 		// 		can be used to discontinue watching this property:
 		//		|	var watchHandle = obj.watch("foo", callback);
 		//		|	watchHandle.unwatch(); // callback won't be called now
 		//	callback:
 		//		The function to execute when the property changes. This will be called after
 		//		the property has been changed. The callback will be called with the |this|
-		//		set to the instance, the first argument as the name of the property, the 
+		//		set to the instance, the first argument as the name of the property, the
 		// 		second argument as the old value and the third argument as the new value.
 		
 		var callbacks = this._watchCallbacks;

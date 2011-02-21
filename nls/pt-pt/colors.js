@@ -43,13 +43,13 @@ darksalmon: "salmão escuro",
 darkseagreen: "verde marinho escuro",
 darkslateblue: "azul ardósia escuro",
 darkslategray: "cinzento ardósia escuro",
-darkslategrey: "cinzento ardósia escuro",// same as darkslategray
+darkslategrey: "cinzento ardósia escuro", // same as darkslategray
 darkturquoise: "turquesa escuro",
 darkviolet: "violeta escuro",
 deeppink: "rosa profundo",
 deepskyblue: "azul céu profundo",
-dimgray: "cinzento escuro",
-dimgrey: "cinzento escuro", // same as dimgray
+dimgray: "cinzento esbatido",
+dimgrey: "cinzento esbatido", // same as dimgray
 dodgerblue: "azul furtivo",
 firebrick: "tijolo fogo",
 floralwhite: "branco floral",
@@ -153,6 +153,6 @@ white: "branco",
 whitesmoke: "fumo branco",
 yellow: "amarelo",
 yellowgreen: "verde amarelado"
-}) 
+})
 //end v1.x content
 );

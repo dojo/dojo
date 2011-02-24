@@ -1630,11 +1630,13 @@ if(dojo.isIE){
 	// generate start/end tag strings to use
 	// for the injection for each special tag wrap case.
 	for(var param in tagWrap){
-		var tw = tagWrap[param];
-		tw.pre  = param == "option" ? '<select multiple="multiple">' : "<" + tw.join("><") + ">";
-		tw.post = "</" + tw.reverse().join("></") + ">";
-		// the last line is destructive: it reverses the array,
-		// but we don't care at this point
+		if(tagWrap.hasOwnProperty(param)){
+			var tw = tagWrap[param];
+			tw.pre  = param == "option" ? '<select multiple="multiple">' : "<" + tw.join("><") + ">";
+			tw.post = "</" + tw.reverse().join("></") + ">";
+			// the last line is destructive: it reverses the array,
+			// but we don't care at this point
+		}
 	}
 
 	d._toDom = function(frag, doc){

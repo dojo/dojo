@@ -83,6 +83,8 @@ tests.register("tests.date.locale",
 
 	t.is("12 o'clock AM", dojo.date.locale.format(date, {datePattern:"hh 'o''clock' a", selector:"date", locale: 'en'}));
 
+	t.is("11/08/2006 12:55am", dojo.date.locale.format(date, {datePattern:"dd/MM/yyyy", timePattern:"hh:mma", locale: 'en', am:"am", pm:"pm"}));
+
 	// compare without timezone
 	t.is("\u4e0a\u534812\u65f655\u520612\u79d2", dojo.date.locale.format(date, {formatLength:'full',selector:'time', locale:'zh-cn'}).replace(/^.*(\u4e0a\u5348.*)/,"$1"));
 			}

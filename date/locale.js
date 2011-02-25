@@ -82,7 +82,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian");
 					break;
 				case 'a':
 					var timePeriod = (dateObject.getHours() < 12) ? 'am' : 'pm';
-					s = bundle['dayPeriods-format-wide-' + timePeriod];
+					s = options[timePeriod] || bundle['dayPeriods-format-wide-' + timePeriod];
 					break;
 				case 'h':
 				case 'H':

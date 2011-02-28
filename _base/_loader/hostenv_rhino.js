@@ -51,6 +51,9 @@ dojo._isLocalUrl = function(/*String*/ uri) {
 
 // see comments in spidermonkey loadUri
 dojo._loadUri = function(uri, cb){
+	if(dojo._loadedUrls[uri]){
+		return true; // Boolean
+	}
 	try{
 		var local;
 		try{
@@ -60,6 +63,7 @@ dojo._loadUri = function(uri, cb){
 			return false;
 		}
 
+		dojo._loadedUrls[uri] = true;
 		//FIXME: Use Rhino 1.6 native readFile/readUrl if available?
 		if(cb){
 			var contents = (local ? readText : readUri)(uri, "UTF-8");
@@ -70,13 +74,15 @@ dojo._loadUri = function(uri, cb){
 					return "\\u" + match.charCodeAt(0).toString(16);
 				})
 			}
-
-			cb(eval('('+contents+')'));
+			contents = /^define\(/.test(contents) ? contents : '('+contents+')';
+			cb(eval(contents));
 		}else{
 			load(uri);
 		}
+		dojo._loadedUrls.push(uri);
 		return true;
 	}catch(e){
+		dojo._loadedUrls[uri] = false;
 		console.debug("rhino load('" + uri + "') failed. Exception: " + e);
 		return false;
 	}

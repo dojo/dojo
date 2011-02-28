@@ -2,6 +2,7 @@ dojo.provide("tests._base.Deferred");
 
 var delay = function(ms){
 	var d = new dojo.Deferred();
+	ms = ms || 20;
 	setTimeout(function(){
 		d.progress(0.5);
 	},ms/2);

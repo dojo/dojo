@@ -394,7 +394,7 @@ dojo.parser = new function(){
 		//				multi-version support is used, when it will be something like dojo16, dojo20, etc.)
 		//			* propsThis: Object
 		//				If specified, "this" referenced from data-dojo-props will refer to propsThis.
-		//				Intended for use from the widgets-in-template feature of `dijit._Templated`
+		//				Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
 		//
 		// example:
 		//		Parse all widgets on a page:

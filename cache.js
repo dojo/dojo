@@ -99,8 +99,6 @@ dojo.cache = {
 		//		Strips <?xml ...?> declarations so that external SVG and XML
 		// 		documents can be added to a document without worry. Also, if the string
 		//		is an HTML document, only the part inside the body tag is returned.
-		// description:
-		// 		Copied from dijit._Templated._sanitizeTemplateString.
 		if(val){
 			val = val.replace(/^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im, "");
 			var matches = val.match(/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im);

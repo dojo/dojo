@@ -12,6 +12,9 @@ dojo.declare("dojo.store.DataStore", null, {
 		//		including a reference to the Dojo data store under the property "store".
 		dojo.mixin(this, options);
 	},
+	// store:
+	//		The object store to convert to a data store
+	store: null,
 	_objectConverter: function(callback){
 		var store = this.store;
 		return function(item){

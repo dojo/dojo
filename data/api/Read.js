@@ -318,7 +318,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		//	The *start* parameter.
 		//		If a start parameter is specified, this is a indication to the datastore to
 		//		only start returning items once the start number of items have been located and
-		//		skipped.  When this parameter is paired withh 'count', the store should be able
+		//		skipped.  When this parameter is paired with 'count', the store should be able
 		//		to page across queries with millions of hits by only returning subsets of the
 		//		hits for each query
 		//

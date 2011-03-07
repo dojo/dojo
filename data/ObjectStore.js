@@ -141,7 +141,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//		See dojo.data.api.Read.fetch
 			//
 			
-			args = args || {};
+			args = dojo.delegate(args, args && args.queryOptions);
 			var self = this;
 			var scope = args.scope || self;
 			var query = args.query;
@@ -151,12 +151,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					// find any strings and convert them to regular expressions for wildcard support
 					var required = query[i];
 					if(typeof required == "string"){
-						query[i] = RegExp("^" + dojo.regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.queryOptions && args.queryOptions.ignoreCase ? "mi" : "m");
-						query[i].toString = (function(original){
-							return function(){
-								return original;
-							}
-						})(required);
+						query[i] = RegExp("^" + dojo.regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.ignoreCase ? "mi" : "m");
 					}
 				}
 			}
@@ -184,6 +179,26 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					results.cancel();
 				}
 			};
+			if(results.observe){
+				results.observe(function(object, removedFrom, insertedInto){
+					if(dojo.indexOf(self._dirtyObjects, object) == -1){
+						if(removedFrom == -1){
+							self.onNew(object);
+						}
+						else if(insertedInto == -1){
+							self.onDelete(object);
+						}
+						else{
+							for(var i in object){
+								if(i != self.idProperty){
+									self.onSet(object, i, null, object[i]);
+								}
+							}
+						}
+					}
+				});
+			}
+			this.onFetch(results);
 			args.store = this;
 			return args;
 		},
@@ -464,7 +479,10 @@ dojo.declare("dojo.data.ObjectStore", null,{
 
 		onSet: function(){},
 		onNew: function(){},
-		onDelete: 	function(){}
+		onDelete: 	function(){},
+		// an extra to get result sets
+		onFetch: function(results){}
+		
 	}
 );
 

@@ -509,31 +509,31 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				s = '\\d{2,4}';
 				break;
 			case 'M':
-				s = (l>2) ? '\\S+?' : p2+'[1-9]|1[0-2]';
+				s = (l>2) ? '\\S+?' : '1[0-2]|'+p2+'[1-9]';
 				break;
 			case 'D':
-				s = p2+'[1-9]|'+p3+'[1-9][0-9]|[12][0-9][0-9]|3[0-5][0-9]|36[0-6]';
+				s = '[12][0-9][0-9]|3[0-5][0-9]|36[0-6]|'+p3+'[1-9][0-9]|'+p2+'[1-9]';
 				break;
 			case 'd':
 				s = '3[01]|[12]\\d|'+p2+'[1-9]';
 				break;
 			case 'w':
-				s = p2+'[1-9]|[1-4][0-9]|5[0-3]';
+				s = '[1-4][0-9]|5[0-3]|'+p2+'[1-9]';
 				break;
 			case 'E':
 				s = '\\S+';
 				break;
 			case 'h': //hour (1-12)
-				s = p2+'[1-9]|1[0-2]';
+				s = '1[0-2]|'+p2+'[1-9]';
 				break;
 			case 'k': //hour (0-11)
-				s = p2+'\\d|1[01]';
+				s = '1[01]|'+p2+'\\d';
 				break;
 			case 'H': //hour (0-23)
-				s = p2+'\\d|1\\d|2[0-3]';
+				s = '1\\d|2[0-3]|'+p2+'\\d';
 				break;
 			case 'K': //hour (1-24)
-				s = p2+'[1-9]|1\\d|2[0-4]';
+				s = '1\\d|2[0-4]|'+p2+'[1-9]';
 				break;
 			case 'm':
 			case 's':
@@ -545,10 +545,8 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 			case 'a':
 				var am = options.am || bundle['dayPeriods-format-wide-am'],
 					pm = options.pm || bundle['dayPeriods-format-wide-pm'];
-				if(options.strict){
-					s = am + '|' + pm;
-				}else{
-					s = am + '|' + pm;
+				s = am + '|' + pm;
+				if(!options.strict){
 					if(am != am.toLowerCase()){ s += '|' + am.toLowerCase(); }
 					if(pm != pm.toLowerCase()){ s += '|' + pm.toLowerCase(); }
 					if(s.indexOf('.') != -1){ s += '|' + s.replace(/\./g, ""); }

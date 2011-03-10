@@ -1107,7 +1107,7 @@ var defineQuery= function(d){
 
 	//Don't bother with n+3 type of matches, IE complains if we modify those.
 	var infixSpaceRe = /n\+\d|([^ ])?([>~+])([^ =])?/g;
-	var infixSpaceFunc = function(match, pre, ch, post) {
+	var infixSpaceFunc = function(match, pre, ch, post){
 		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};
 
@@ -1501,7 +1501,7 @@ var defineQuery= function(d){
 			filterFunc =
 				(parts.length == 1 && !/[^\w#\.]/.test(filter)) ?
 				getSimpleFilterFunc(parts[0]) :
-				function(node) {
+				function(node){
 					return dojo.query(filter, root).indexOf(node) != -1;
 				};
 		for(var x = 0, te; te = nodeList[x]; x++){
@@ -1576,12 +1576,12 @@ var defineAcme= function(){
 };
 
 //>>includeStart("amdLoader", kwArgs.asynchLoader);
-if (typeof define == "function"){
+if(typeof define == "function"){
 	define("dojo/_base/query", ["dojo/lib/kernel", "dojo/_base/NodeList", "dojo/_base/lang", "dojo/_base/window"], function(dojo){
 		defineQuery(this["queryPortability"]||this["acme"]||dojo);
 	});
 }
-if (typeof define != "function"){
+if(typeof define != "function"){
 //>>includeEnd("amdLoader");
 	//prefers queryPortability, then acme, then dojo
 	if(this["dojo"]){
@@ -1603,11 +1603,12 @@ if (typeof define != "function"){
 /*
 //>>excludeEnd("webkitMobile");
 //>>includeStart("webkitMobile", kwArgs.webkitMobile);
-(function() {
-  function qdef() {
-    if (dojo.query) {
-      return;
-    }
+(function(){
+	function qdef(){
+		if(dojo.query){
+			return;
+    	}
+
 		var ctr = 0;
 		// QSA-only for webkit mobile. Welcome to the future.
 		dojo.query = function(query, root){
@@ -1651,14 +1652,14 @@ if (typeof define != "function"){
 		};
 	}
 
-  if (typeof define != "undefined") {
-    define("dojo/_base/query", ["dojo", "dojo/_base/NodeList", "dojo/_base/lang"], qdef);
-  } else {
-    dojo.provide("dojo._base.query");
-	  dojo.require("dojo._base.NodeList");
-	  dojo.require("dojo._base.lang");
-    qdef();
-  }
+	if(typeof define != "undefined"){
+		define("dojo/_base/query", ["dojo", "dojo/_base/NodeList", "dojo/_base/lang"], qdef);
+	}else{
+		dojo.provide("dojo._base.query");
+		dojo.require("dojo._base.NodeList");
+		dojo.require("dojo._base.lang");
+		qdef();
+  	}
 })();
 
 //>>includeEnd("webkitMobile");

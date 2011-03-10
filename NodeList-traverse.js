@@ -96,21 +96,21 @@ dojo.extend(dojo.NodeList, {
 		// description:
 		// 		.end() can be used on the returned dojo.NodeList to get back to the
 		// 		original dojo.NodeList.
-		//	query:
+		// query:
 		//		a CSS selector.
 		// root:
 		//		If specified, query is relative to "root" rather than document body.
 		// returns:
 		//		dojo.NodeList, the closest parent that matches the query, including the current
 		//		node in this dojo.NodeList if it matches the query.
-		//	example:
+		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
-		// 	|		<div class="red">Red One</div>
-		// 	|		Some Text
-		// 	|		<div class="blue">Blue One</div>
-		// 	|		<div class="red">Red Two</div>
-		// 	|		<div class="blue">Blue Two</div>
+		//	|		<div class="red">Red One</div>
+		//	|		Some Text
+		//	|		<div class="blue">Blue One</div>
+		//	|		<div class="red">Red Two</div>
+		//	|		<div class="blue">Blue Two</div>
 		//	|	</div>
 		//		Running this code:
 		//	|	dojo.query(".red").closest(".container");

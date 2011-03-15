@@ -1,28 +1,26 @@
-define("dojo/_base/json", ["dojo/lib/kernel"], function(dojo){
+define("dojo/_base/json", ["dojo/lib/kernel", "dojo/json"], function(dojo, json){
 
-dojo.fromJson = function(/*String*/ json){
+dojo.fromJson = function(/*String*/ js){
 	// summary:
-	// 		Parses a [JSON](http://json.org) string to return a JavaScript object.
+	// 		Parses a JavaScript expression and returns a JavaScript value.
 	// description:
-	// 		Throws for invalid JSON strings, but it does not use a strict JSON parser. It
-	// 		delegates to eval().  The content passed to this method must therefore come
+	// 		Throws for invalid JavaScript expressions. It does not use a strict JSON parser. It
+	// 		always delegates to eval().  The content passed to this method must therefore come
 	//		from a trusted source.
-	// json:
-	//		a string literal of a JSON item, for instance:
+	//		It is recommend that you use dojo/json's parse function for an
+	// 		implementation uses the (faster) native JSON parse when available.
+	// js:
+	//		a string literal of a JavaScript expression, for instance:
 	//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 
-	return eval("(" + json + ")"); // Object
+	return eval("(" + js + ")"); // Object
 };
 
-dojo._escapeString = function(/*String*/str){
-	//summary:
-	//		Adds escape sequences for non-visual characters, double quote and
-	//		backslash and surrounds with double quotes to form a valid string
-	//		literal.
-	return ('"' + str.replace(/(["\\])/g, '\\$1') + '"').
-		replace(/[\f]/g, "\\f").replace(/[\b]/g, "\\b").replace(/[\n]/g, "\\n").
-		replace(/[\t]/g, "\\t").replace(/[\r]/g, "\\r"); // string
-};
+//summary:
+//		Adds escape sequences for non-visual characters, double quote and
+//		backslash and surrounds with double quotes to form a valid string
+//		literal.
+dojo._escapeString = json.stringify; // just delegate to json.stringify
 
 dojo.toJsonIndentStr = "\t";
 dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _indentStr){
@@ -31,16 +29,23 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	//	description:
 	//		Returns a [JSON](http://json.org) serialization of an object.
 	//		Note that this doesn't check for infinite recursion, so don't do that!
+	//		It is recommend that you use dojo/json's stringify function for an lighter 
+	// 		and faster implementation that matches the native JSON API and uses the 
+	// 		native JSON serializer when available.
 	//	it:
 	//		an object to be serialized. Objects may define their own
 	//		serialization via a special "__json__" or "json" function
 	//		property. If a specialized serializer has been defined, it will
 	//		be used as a fallback.
+	//		Note that in 1.5, toJson would serialize undefined, but this no longer supported
+	//		since it is not supported by native JSON serializer.
 	//	prettyPrint:
 	//		if true, we indent objects and arrays to make the output prettier.
 	//		The variable `dojo.toJsonIndentStr` is used as the indent string --
 	//		to use something other than the default (tab), change that variable
 	//		before calling dojo.toJson().
+	//		Note that if native JSON support is available, it will be used for serialization,
+	//		and native implementations vary on the exact spacing used in pretty printing.
 	//	_indentStr:
 	//		private variable for recursive calls when pretty printing, do not use.
 	//	example:
@@ -56,90 +61,16 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	//		|		},
 	//		|	});
 
-	if(it === undefined){
-		return "undefined";
-	}
-	var objtype = typeof it;
-	if(objtype == "number" || objtype == "boolean"){
-		return it + "";
-	}
-	if(it === null){
-		return "null";
-	}
-	if(dojo.isString(it)){
-		return dojo._escapeString(it);
-	}
-	// recurse
-	var recurse = arguments.callee;
-	// short-circuit for objects that support "json" serialization
-	// if they return "self" then just pass-through...
-	var newObj;
-	_indentStr = _indentStr || "";
-	var nextIndent = prettyPrint ? _indentStr + dojo.toJsonIndentStr : "";
-	var tf = it.__json__||it.json;
-	if(dojo.isFunction(tf)){
-		newObj = tf.call(it);
-		if(it !== newObj){
-			return recurse(newObj, prettyPrint, nextIndent);
-		}
-	}
-	if(it.nodeType && it.cloneNode){ // isNode
-		// we can't seriailize DOM nodes as regular objects because they have cycles
-		// DOM nodes could be serialized with something like outerHTML, but
-		// that can be provided by users in the form of .json or .__json__ function.
-		throw new Error("Can't serialize DOM nodes");
-	}
-
-	var sep = prettyPrint ? " " : "";
-	var newLine = prettyPrint ? "\n" : "";
-
-	// array
-	if(dojo.isArray(it)){
-		var res = dojo.map(it, function(obj){
-			var val = recurse(obj, prettyPrint, nextIndent);
-			if(typeof val != "string"){
-				val = "undefined";
+	// use dojo/json
+	return json.stringify(it, function(key, value){
+		if(value){
+			var tf = value.__json__||value.json;
+			if(typeof tf == "function"){
+				return tf.call(value);
 			}
-			return newLine + nextIndent + val;
-		});
-		return "[" + res.join("," + sep) + newLine + _indentStr + "]";
-	}
-	/*
-	// look in the registry
-	try {
-		window.o = it;
-		newObj = dojo.json.jsonRegistry.match(it);
-		return recurse(newObj, prettyPrint, nextIndent);
-	}catch(e){
-		// console.log(e);
-	}
-	// it's a function with no adapter, skip it
-	*/
-	if(objtype == "function"){
-		return null; // null
-	}
-	// generic object code path
-	var output = [], key;
-	for(key in it){
-		var keyStr, val;
-		if(typeof key == "number"){
-			keyStr = '"' + key + '"';
-		}else if(typeof key == "string"){
-			keyStr = dojo._escapeString(key);
-		}else{
-			// skip non-string or number keys
-			continue;
 		}
-		val = recurse(it[key], prettyPrint, nextIndent);
-		if(typeof val != "string"){
-			// skip non-serializable values
-			continue;
-		}
-		// FIXME: use += on Moz!!
-		//	 MOW NOTE: using += is a pain because you have to account for the dangling comma...
-		output.push(newLine + nextIndent + keyStr + ":" + sep + val);
-	}
-	return "{" + output.join("," + sep) + newLine + _indentStr + "}"; // String
+		return value;
+	}, prettyPrint && dojo.toJsonIndentStr);
 };
 
 return dojo;

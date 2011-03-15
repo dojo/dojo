@@ -16,10 +16,14 @@ dojo.fromJson = function(/*String*/ js){
 	return eval("(" + js + ")"); // Object
 };
 
-//summary:
-//		Adds escape sequences for non-visual characters, double quote and
-//		backslash and surrounds with double quotes to form a valid string
-//		literal.
+/*=====
+dojo._escapeString = function(){
+	//summary:
+	//		Adds escape sequences for non-visual characters, double quote and
+	//		backslash and surrounds with double quotes to form a valid string
+	//		literal.
+};
+=====*/
 dojo._escapeString = json.stringify; // just delegate to json.stringify
 
 dojo.toJsonIndentStr = "\t";
@@ -37,7 +41,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	//		serialization via a special "__json__" or "json" function
 	//		property. If a specialized serializer has been defined, it will
 	//		be used as a fallback.
-	//		Note that in 1.5, toJson would serialize undefined, but this no longer supported
+	//		Note that in 1.6, toJson would serialize undefined, but this no longer supported
 	//		since it is not supported by native JSON serializer.
 	//	prettyPrint:
 	//		if true, we indent objects and arrays to make the output prettier.

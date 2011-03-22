@@ -269,7 +269,8 @@ dojo.getObject("html", true, dojo);
 						noStart: !this.startup,
 						inherited: {
 							dir: this.dir,
-							lang: this.lang
+							lang: this.lang,
+							textDir: this.textDir
 						},
 						scope: this.parserScope
 					});

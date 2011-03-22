@@ -455,6 +455,11 @@ dojo.parser = new function(){
 					inherited[name] = val;
 				}
 			});
+			// inheritance from parents, widget and plain HTML containers
+			val = parent.node.getAttribute(attrData + "textdir");
+			if(val){
+				inherited.textDir = val;
+			}
 
 			// if parent is a widget, then search for <script type=dojo/*> tags and put them in scripts[].
 			var scripts = parent.clsInfo && !parent.clsInfo.cls.prototype._noScript ? parent.scripts : null;
@@ -513,7 +518,8 @@ dojo.parser = new function(){
 		scan({
 			node: root ? dojo.byId(root) : dojo.body(),
 			inherited: (args && args.inherited) || {
-				dir: dojo._isBodyLtr() ? "ltr" : "rtl"
+				dir: dojo._isBodyLtr() ? "ltr" : "rtl",
+				textDir: d.body().getAttribute(attrData + "textdir") || d.doc.documentElement.getAttribute(attrData + "textdir") || ""
 			}
 		}, list);
 

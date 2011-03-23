@@ -73,7 +73,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 			return evt;
 		},
 		_setKeyChar: function(evt){
-			evt.keyChar = evt.charCode ? String.fromCharCode(evt.charCode) : '';
+			evt.keyChar = evt.charCode >= 32 ? String.fromCharCode(evt.charCode) : '';
 			evt.charOrCode = evt.keyChar || evt.keyCode;
 		},
 		// For IE and Safari: some ctrl-key combinations (mostly w/punctuation) do not emit a char code in IE

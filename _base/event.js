@@ -11,7 +11,6 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 			if(!node){return;}
 			name = del._normalizeEventName(name);
 			fp = del._fixCallback(name, fp);
-			var oname = name;
 			if(
 				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 				!dojo.isIE &&
@@ -19,7 +18,6 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 				(name == "mouseenter" || name == "mouseleave")
 			){
 				var ofp = fp;
-				//oname = name;
 				name = (name == "mouseenter") ? "mouseover" : "mouseout";
 				fp = function(e){
 					if(!dojo.isDescendant(e.relatedTarget, node)){
@@ -479,7 +477,9 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 					// simulate a keypress event
 					var faux = del._synthesizeEvent(evt, {type: 'keypress', faux: true, charCode: c});
 					kp.call(evt.currentTarget, faux);
-					evt.cancelBubble = faux.cancelBubble;
+					if(dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks)){
+						evt.cancelBubble = faux.cancelBubble;
+					}
 					evt.returnValue = faux.returnValue;
 					_trySetKeyCode(evt, faux.keyCode);
 				}

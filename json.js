@@ -1,15 +1,17 @@
-define("dojo/json", [], function(){
-	var hasJSON = typeof JSON != "undefined"
+define("dojo/json", ["dojo/lib/kernel"], function(dojo){
+(function(){
+  var result;
+	var hasJSON = typeof JSON != "undefined";
 	var features = {
 		"json-parse": hasJSON, // all the parsers work fine
 		// Firefox 3.5/Gecko 1.9 fails to use replacer in stringify properly https://bugzilla.mozilla.org/show_bug.cgi?id=509184
-		"json-stringify": hasJSON && JSON.stringify({a:0}, function(k,v){return v||1}) == '{"a":1}' 
+		"json-stringify": hasJSON && JSON.stringify({a:0}, function(k,v){return v||1;}) == '{"a":1}' 
 	};
 	function has(feature){
 		return features[feature];
 	}
 	if(has("json-stringify")){
-		return JSON;
+		result= JSON;
 	}
 	else{
 		var escapeString = function(/*String*/str){
@@ -21,7 +23,7 @@ define("dojo/json", [], function(){
 				replace(/[\f]/g, "\\f").replace(/[\b]/g, "\\b").replace(/[\n]/g, "\\n").
 				replace(/[\t]/g, "\\t").replace(/[\r]/g, "\\r"); // string
 		};
-		return {
+		result= {
 			parse: has("json-parse") ? JSON.parse : function(str){
 				// summary:
 				// 		Parses a [JSON](http://json.org) string to return a JavaScript object.
@@ -132,4 +134,7 @@ define("dojo/json", [], function(){
 			}
 		};
 	}
+  dojo.json= result;
+  return result; // AMD-result
+})();
 });

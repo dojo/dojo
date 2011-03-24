@@ -472,7 +472,7 @@ if(dojo.isIE){
 	//>>excludeEnd("webkitMobile");
 	dojo._getOpacity =
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		d.isIE ? function(node){
+		d.isIE < 9 ? function(node){
 			try{
 				return af(node).Opacity / 100; // Number
 			}catch(e){
@@ -501,7 +501,7 @@ if(dojo.isIE){
 
 	dojo._setOpacity =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		d.isIE ? function(/*DomNode*/node, /*Number*/opacity){
+		d.isIE < 9 ? function(/*DomNode*/node, /*Number*/opacity){
 			var ov = opacity * 100, opaque = opacity == 1;
 			node.style.zoom = opaque ? "" : 1;
 

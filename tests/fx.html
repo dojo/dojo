@@ -365,6 +365,46 @@
 								anim.play();
 								return d;
 							}
+						},
+						{
+							name: "wipeOut onStop",
+							timeout: 1500,
+							runTest: function(t){
+								dojo.byId("foo").style.height = "auto";
+								dojo.byId("foo").style.overflow = "visible";
+								var d = new doh.Deferred();
+								var w = dojo.fx.wipeOut({
+									node: "foo",
+									duration: 1000
+								});
+								dojo.connect(w, "onStop", function(){
+									doh.t(dojo.byId("foo").style.overflow == "visible");
+									d.callback(true);
+								});
+								w.play();
+								setTimeout(function(){ w.stop(); }, 100);
+								return d;
+							}
+						},
+						{
+							name: "wipeIn onStop",
+							timeout: 1500,
+							runTest: function(t){
+								dojo.byId("foo").style.height = "0px";
+								dojo.byId("foo").style.overflow = "visible";
+								var d = new doh.Deferred();
+								var w = dojo.fx.wipeIn({
+									node: "foo",
+									duration: 1000
+								});
+								dojo.connect(w, "onStop", function(){
+									doh.t(dojo.byId("foo").style.overflow == "visible");
+									d.callback(true);
+								});
+								w.play();
+								setTimeout(function(){ w.stop(); }, 100);
+								return d;
+							}
 						}
 					]
 				);

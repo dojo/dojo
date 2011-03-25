@@ -294,10 +294,12 @@ dojo.fx = {
 			}
 		}, args));
 
-		d.connect(anim, "onEnd", function(){
+		var fini = function(){
 			s.height = "auto";
 			s.overflow = o;
-		});
+		};
+		d.connect(anim, "onStop", fini);
+		d.connect(anim, "onEnd", fini);
 
 		return anim; // dojo.Animation
 	};
@@ -332,11 +334,13 @@ dojo.fx = {
 			s.overflow = "hidden";
 			s.display = "";
 		});
-		d.connect(anim, "onEnd", function(){
+		var fini = function(){
 			s.overflow = o;
 			s.height = "auto";
 			s.display = "none";
-		});
+		};
+		d.connect(anim, "onStop", fini);
+		d.connect(anim, "onEnd", fini);
 
 		return anim; // dojo.Animation
 	};

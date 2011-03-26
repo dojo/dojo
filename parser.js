@@ -426,102 +426,131 @@ dojo.parser = new function(){
 		args = args || {};
 
 		var attrName = (args.scope || d._scopeName) + "Type",		// typically "dojoType"
-			attrData = "data-" + (args.scope || d._scopeName) + "-";	// typically "data-dojo-"
+			attrData = "data-" + (args.scope || d._scopeName) + "-",	// typically "data-dojo-"
+			dataDojoType = attrData + "type",						// typically "data-dojo-type"
+			dataDojoTextDir = attrData + "textdir";					// typically "data-dojo-textdir"
 
-		function scan(parent, list){
-			// summary:
-			//		Parent is an Object representing a DOMNode, with or without a dojoType specified.
-			//		Scan parent's children looking for nodes with dojoType specified, storing in list[].
-			//		If parent has a dojoType, also collects <script type=dojo/*> children and stores in parent.scripts[].
-			// parent: Object
-			//		Object representing the parent node, like
-			//	|	{
-			//	|		node: DomNode,			// scan children of this node
-			//	|		inherited: {dir: "rtl"},	// dir/lang setting inherited from above node
-			//	|
-			//	|		// attributes only set if node has dojoType specified
-			//	|		scripts: [],			// empty array, put <script type=dojo/*> in here
-			//	|		clsInfo: { cls: dijit.form.Button, ...}
-			//	|	}
-			// list: DomNode[]
-			//		Output array of objects (same format as parent) representing nodes to be turned into widgets
-
-			// Effective dir and lang settings on parent node, either set directly or inherited from grandparent
-			var inherited = dojo.clone(parent.inherited);
-			dojo.forEach(["dir", "lang"], function(name){
-				// TODO: what if this is a widget and dir/lang are declared in data-dojo-props?
-				var val = parent.node.getAttribute(name);
-				if(val){
-					inherited[name] = val;
-				}
-			});
-			// inheritance from parents, widget and plain HTML containers
-			val = parent.node.getAttribute(attrData + "textdir");
-			if(val){
-				inherited.textDir = val;
-			}
-
-			// if parent is a widget, then search for <script type=dojo/*> tags and put them in scripts[].
-			var scripts = parent.clsInfo && !parent.clsInfo.cls.prototype._noScript ? parent.scripts : null;
-
-			// unless parent is a widget with the stopParser flag set, continue search for dojoType, recursively
-			var recurse = (!parent.clsInfo || !parent.clsInfo.cls.prototype.stopParser) || (args && args.template);
-
-			// scan parent's children looking for dojoType and <script type=dojo/*>
-			for(var child = parent.node.firstChild; child; child = child.nextSibling){
-				if(child.nodeType == 1){
-					// FIXME: desupport dojoType in 2.0. use data-dojo-type instead
-					var type, html5 = recurse && child.getAttribute(attrData + "type");
-					if(html5){
-						type = html5;
-					}else{
-						// fallback to backward compatible mode, using dojoType. remove in 2.0
-						type = recurse && child.getAttribute(attrName);
-					}
-					
-					var fastpath = html5 == type;
-
-					if(type){
-						// if dojoType/data-dojo-type specified, add to output array of nodes to instantiate
-						var params = {
-							"type": type,
-							fastpath: fastpath,
-							clsInfo: getClassInfo(type, fastpath), // note: won't find classes declared via dojo.Declaration
-							node: child,
-							scripts: [], // <script> nodes that are parent's children
-							inherited: inherited // dir & lang attributes inherited from parent
-						};
-						list.push(params);
-
-						// Recurse, collecting <script type="dojo/..."> children, and also looking for
-						// descendant nodes with dojoType specified (unless the widget has the stopParser flag),
-						scan(params, list);
-					}else if(scripts && child.nodeName.toLowerCase() == "script"){
-						// if <script type="dojo/...">, save in scripts[]
-						type = child.getAttribute("type");
-						if (type && /^dojo\/\w/i.test(type)) {
-							scripts.push(child);
-						}
-					}else if(recurse){
-						// Recurse, looking for grandchild nodes with dojoType specified
-						scan({
-							node: child,
-							inherited: inherited
-						}, list);
-					}
-				}
-			}
-		}
-
-		// Make list of all nodes on page w/dojoType specified
+		// List of all nodes on page w/dojoType specified
 		var list = [];
-		scan({
-			node: root ? dojo.byId(root) : dojo.body(),
+
+		// Info on DOMNode currently being processed
+		var node = (root ? dojo.byId(root) : dojo.body()).firstChild;
+
+		// Info on parent of DOMNode current being processed
+		//	- inherited: dir, lang, and textDir setting of parent, or inherited by parent
+		//	- parent: pointer to identical structure for my parent (or null if no parent)
+		//	- scripts: if specified, collects <script type="dojo/..."> type nodes from children
+		var parent = {
 			inherited: (args && args.inherited) || {
 				dir: dojo._isBodyLtr() ? "ltr" : "rtl",
 				textDir: d.body().getAttribute(attrData + "textdir") || d.doc.documentElement.getAttribute(attrData + "textdir") || ""
 			}
-		}, list);
+		};
+
+		// For collecting <script type="dojo/..."> type nodes (when null, we don't need to collect)
+		var scripts;
+
+		// when true, only look for <script type="dojo/..."> tags, and don't recurse to children
+		var scriptsOnly;
+
+		function getEffective(parent){
+			// summary:
+			//		Get effective dir and lang settings for specified obj
+			//		(matching "parent" object structure above), and do caching
+			if(!parent.inherited){
+				var node = parent.node,
+					grandparent = getEffective(parent.parent);
+				parent.inherited = {
+					dir: node.getAttribute("dir") || grandparent.dir,
+					lang: node.getAttribute("lang") || grandparent.lang,
+					textDir: node.getAttribute(dataDojoTextDir) || grandparent.textDir
+				};
+				if(typeof parent.inherited.lang == "undefined"){ delete parent.inherited.lang; }
+			}
+			return parent.inherited;
+		}
+
+		// DFS on DOM tree, collecting nodes with data-dojo-type specified.
+		while(true){
+			if(!node){
+				// Finished this level, continue to parent's next sibling
+				if(!parent || !parent.node){
+					break;
+				}
+				node = parent.node.nextSibling;
+				scripts = parent.scripts;
+				scriptsOnly = false;
+				parent = parent.parent;
+				continue;
+			}
+
+			if(node.nodeType != 1){
+				// Text or comment node, skip to next sibling
+				node = node.nextSibling;
+				continue;
+			}
+
+			if(scripts && node.nodeName.toLowerCase() == "script"){
+				// Save <script type="dojo/..."> for parent, then continue to next sibling
+				type = node.getAttribute("type");
+				if(type && /^dojo\/\w/i.test(type)){
+					scripts.push(node);
+				}
+				node = node.nextSibling;
+				continue;
+			}
+			if(scriptsOnly){
+				node = node.nextSibling;
+				continue;
+			}
+
+			// Check for data-dojo-type attributes
+			var type, html5 = node.getAttribute(dataDojoType);
+			if(html5){
+				type = html5;
+			}else{
+				// fallback to backward compatible mode, using dojoType. remove in 2.0
+				type = node.getAttribute(attrName);
+			}
+			var fastpath = html5 == type;
+
+			// Short circuit for leaf nodes containing nothing [but text]
+			var firstChild = node.firstChild;
+			if(!type && (!firstChild || (firstChild.nodeType == 3 && !firstChild.nextSibling))){
+				node = node.nextSibling;
+				continue;
+			}
+
+			// Setup data structure to save info on current node for when we return from processing descendant nodes
+			var current = {
+				node: node,
+				scripts: scripts,
+				parent: parent
+			};
+
+			// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate
+			var clsInfo = type && getClassInfo(type, fastpath), // note: won't find classes declared via dojo.Declaration
+				childScripts = clsInfo && !clsInfo.cls.prototype._noScript ? [] : null; // <script> nodes that are parent's children
+			if(type){
+				list.push({
+					"type": type,
+					fastpath: fastpath,
+					clsInfo: clsInfo,
+					node: node,
+					scripts: childScripts,
+					inherited: getEffective(current) // dir & lang settings for current node, explicit or inherited
+				});
+			}
+
+			// Recurse, collecting <script type="dojo/..."> children, and also looking for
+			// descendant nodes with dojoType specified (unless the widget has the stopParser flag).
+			// When finished with children, go to my next sibling.
+			node = firstChild;
+			scripts = childScripts;
+			scriptsOnly = clsInfo && clsInfo.cls.prototype.stopParser && !(args && args.template);
+			parent = current;
+
+		}
 
 		// go build the object instances
 		var mixin = args && args.template ? {template: true} : null;

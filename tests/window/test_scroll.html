@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
                 "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html style="overflow-y:scroll;border:0px none;padding:0;margin:0;">
 <head>
         <title>dojo.window.scrollIntoView Test</title>
 
@@ -17,9 +17,22 @@
 		dojo.require("dojo.window");
 
 		var usingNative = !(dojo.isMoz || dojo.isIE || dojo.isWebKit || dojo.isOpera);
+		var loading = new doh.Deferred();
+		var count = 0;
 		dojo.addOnLoad(function(){
+			innerScrollBarSize = dojo.byId("nonscroll").clientWidth - dojo.byId("withscroll").clientWidth;
+			console.debug('inner scrollbar size = ' + innerScrollBarSize);
+			outerScrollBarSize = (dojo.isIE >= 9) ? ((dojo.position(document.documentElement).w - document.documentElement.clientWidth) || innerScrollBarSize) : innerScrollBarSize;
+			console.debug('outer scrollbar size = ' + outerScrollBarSize);
 		        doh.register("dojo.window.scroll",
 	                [
+				{
+					name: "wait for iframes to load",
+					timeout: 20000,
+					runTest: function(){
+						return loading;
+					}
+				},
 				function checkAttrs(){
 					var body = dojo.body();
 					dojo.window.scrollIntoView(body);
@@ -34,7 +47,7 @@
 				},
 				function test_8284(){
 					var minScroll, maxScroll, fudge=0;
-					if(dojo.isIE){
+					if(dojo.isIE <= 8){
 						minScroll = maxScroll = 11;
 						if(dojo.isIE <= 6){
 							fudge = dojo.byId('8284_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
@@ -44,49 +57,17 @@
 					}
 					generateTestXY('8284_quirks', "0", -maxScroll+fudge, "0", minScroll-fudge);
 					generateTestXY('8284_quirks_rtl', "0", -maxScroll+fudge, "0", minScroll-fudge);
-					if(dojo.isIE >= 8){
-						maxScroll--;
-						minScroll--;
+					if(dojo.isIE == 8){
+						minScroll = maxScroll = 10;
 					}
 					generateTestXY('8284_strict', "0", -maxScroll, "0", minScroll);
 					generateTestXY('8284_loose_rtl', "0", -maxScroll, "0", minScroll);
 				},
 				function test_absContent(){
-					var minScrollX, minScrollY, maxScrollX, maxScrollY;
-					if(dojo.isIE){
-						maxScrollX = -10 - sb;
-						maxScrollY = (dojo.isIE >= 8)? maxScrollX : (-38 - sb);
-					}else{
-						maxScrollX = maxScrollY = -10 - sb;
-					}
-					minScrollX = minScrollY = sb + 10;
-					generateTestXY('absContent_strict', maxScrollX, maxScrollY, minScrollX, minScrollY);
-					if(dojo.isIE < 7){
-						maxScrollX -= (sb & 1); // odd sized sb adds 1 more
-						minScrollX -= (sb & 1); // odd sized sb adds 1 more
-					}
-					if(dojo.isIE == 7){ minScrollX = -90; }
-					if(dojo.isOpera){
-						maxScrollX = 90;
-					}
-					generateTestXY('absContent_loose_rtl', maxScrollX, maxScrollY, minScrollX, minScrollY);
-					if(dojo.isIE){
-						maxScrollX = (dojo.isIE >= 7? -10 : -6) - sb;
-						maxScrollY = (dojo.isIE >= 7? -38 : -34) - sb;
-						minScrollY = minScrollX = -maxScrollX;
-					}else{
-						maxScrollX = maxScrollY = -(sb+10);
-						minScrollX = minScrollY = sb+10;
-					}
-					generateTestXY('absContent_quirks', maxScrollX, maxScrollY, minScrollX, minScrollY);
-					if(dojo.isIE < 8){
-						maxScrollX = (dojo.isIE >= 7 ? -10 : -6) - sb - (sb & 1);
-						minScrollX = "+" + ((dojo.isIE >= 7? 10 : 6) + sb - (sb & 1));
-					}
-					if(dojo.isOpera){
-						maxScrollX = 90;
-					}
-					generateTestXY('absContent_quirks_rtl', maxScrollX, maxScrollY, minScrollX, minScrollY);
+					generateTestXY('absContent_strict', 0, -10, 0, 10);
+					generateTestXY('absContent_loose_rtl', 0, -10, 0, 10);
+					generateTestXY('absContent_quirks', 0, -10, 0, 10);
+					generateTestXY('absContent_quirks_rtl', 0, -10, 0, 10);
 				},
 				function test_fixedNode(){
 					if(!(dojo.isIE <= 6)){
@@ -109,30 +90,20 @@
 					}
 				},
 				function test_7036_8665(){
-					var maxScroll;
-					var minScroll;
+					var maxScroll = 39;
+					var minScroll = 38;
 					if(dojo.isIE <= 7){
 						maxScroll = 54;
 						minScroll = 39;
-					}else{
-						maxScroll = 39;
-						minScroll = 38;
 					}
 					generateTest('7036_8665_strict', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
-					if(dojo.isIE){
+					generateTest('7036_8665_loose_rtl', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
+					if(dojo.isIE == 8){
 						maxScroll = 54;
 						minScroll = 39;
-					}else{
-						maxScroll = 39;
-						minScroll = 38;
 					}
 					generateTest('7036_8665_quirks', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
 					generateTest('7036_8665_quirks_rtl', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
-					if(dojo.isIE >= 8){
-						maxScroll = 39;
-						minScroll = 38;
-					}
-					generateTest('7036_8665_loose_rtl', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
 				},
 				function test_innerNoScrollBars(){
 					var scroll;
@@ -144,7 +115,7 @@
 						scroll = 39;
 					}
 					generateTestXY('innerNoScrollBars_strict', scroll, -29, scroll, -29);
-					if(dojo.isIE){
+					if(dojo.isIE <= 8){
 						scroll = -38;
 					}
 					generateTestXY('innerNoScrollBars_quirks', scroll, -29, scroll, -29);
@@ -160,7 +131,7 @@
 						scroll = 39;
 					}
 					generateTestXY('innerNoScrollBars_loose_rtl', scroll, -29, scroll, -29);
-					if(dojo.isIE){
+					if(dojo.isIE <= 8){
 						scroll = -38;
 					}
 					generateTestXY('innerNoScrollBars_quirks_rtl', scroll, -29, scroll, -29);
@@ -170,12 +141,6 @@
 					generateTest('noScrollBars_quirks', "(0,0)", "(0,0)");
 					generateTest('noScrollBars_loose_rtl', "(0,0)", "(0,0)");
 					generateTest('noScrollBars_quirks_rtl', "(0,0)", "(0,0)");
-				},
-				function test_bottomFloated(){
-					generateTest('bottomFloated_strict', "(+0,-0)", "(+0,-0)");
-					generateTest('bottomFloated_quirks', "(+0,-0)", "(+0,-0)");
-					generateTest('bottomFloated_loose_rtl', "("+(dojo.isOpera? -1 : (((dojo.isIE >= 8 || dojo.isWebKit)? "+" : "-")+0))+",-0)", "("+(dojo.isOpera? (sb+20) : (((dojo.isIE < 8 || dojo.isMoz)?"-":"+")+0))+",-0)");
-					generateTest('bottomFloated_quirks_rtl', "("+(dojo.isOpera? -1 : ((dojo.isWebKit? "+" : "-")+0))+",-0)", "("+(dojo.isOpera? (sb+20) : (((dojo.isIE || dojo.isMoz)?"-":"+")+0))+",-0)");
 				},
 				function test_table(){
 					var minScroll, maxScroll;
@@ -192,7 +157,7 @@
 					generateTest('table_quirks_rtl', maxScroll, minScroll);
 				},
 				function test_innerScrollbars(){
-					var scroll = sb - 5;
+					var scroll = innerScrollBarSize - 5;
 					generateTestXY('innerScrollbars_strict', -scroll, -scroll, scroll, scroll);
 					generateTestXY('innerScrollbars_loose_rtl', -scroll, -scroll, dojo.isIE == 7 ? -25 : scroll, scroll);
 					generateTestXY('innerScrollbars_quirks', -scroll, -scroll, scroll, scroll);
@@ -211,38 +176,40 @@
 				function test_tooBig(){
 					var fudge = 0;
 					if(dojo.isIE <= 6){
-						fudge = dojo.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+sb; // needed for running inside DOH runner
+						fudge = dojo.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+innerScrollBarSize; // needed for running inside DOH runner
 					}
 					var minScroll, maxScroll;
-					generateTestXY('tooBig_strict', sb+10,sb+20, 1,1);
-					generateTestXY('tooBig_quirks', sb+10-fudge,sb+20-fudge, 1,1);
-					if(dojo.isIE <= 7 || dojo.isMoz){
+					generateTestXY('tooBig_strict', outerScrollBarSize+10,outerScrollBarSize+20, 1,1);
+					generateTestXY('tooBig_quirks', outerScrollBarSize+10-fudge,outerScrollBarSize+20-fudge, 1,1);
+					if(dojo.isIE <= 7 || dojo.isMoz || dojo.isChrome){
 						maxScroll = -1;
 					}else if(dojo.isIE){
 						maxScroll = +20;
 					}else if(dojo.isOpera){
 						maxScroll = -90;
 					}else{
-						maxScroll = sb+10;
+						maxScroll = outerScrollBarSize+10;
 					}
-					if(dojo.isIE <= 7 || dojo.isMoz){
+					if(dojo.isIE <= 7 || dojo.isMoz || dojo.isChrome){
 						minScroll = -20;
 					}else if(dojo.isOpera){
-						minScroll = 80 + sb;
+						minScroll = 80 + outerScrollBarSize;
 					}else{
 						minScroll = 1;
 					}
-					generateTestXY('tooBig_loose_rtl', maxScroll,sb+20, minScroll,1);
+					generateTestXY('tooBig_loose_rtl', maxScroll,outerScrollBarSize+20, minScroll,1);
 					if(dojo.isIE >= 8){
 						maxScroll = -1;
+					}
+					if(dojo.isIE == 8){
 						minScroll = -20;
 					}
-					generateTestXY('tooBig_quirks_rtl', maxScroll,sb+20-fudge, minScroll,1);
+					generateTestXY('tooBig_quirks_rtl', maxScroll,outerScrollBarSize+20-fudge, minScroll,1);
 				},
 				function test_htmlPadding(){
 					var fudge = 0;
 					if(dojo.isIE <= 6){
-						fudge = dojo.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+sb; // needed for running inside DOH runner
+						fudge = dojo.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+innerScrollBarSize; // needed for running inside DOH runner
 					}
 					var minScroll, maxScroll;
 					if(dojo.isIE <= 7){
@@ -252,7 +219,7 @@
 					}
 					generateTest('htmlPadding_strict', "(0,-"+maxScroll+")", "(0,+"+minScroll+")");
 					generateTest('htmlPadding_loose_rtl', "(0,-"+maxScroll+")", "(0,+"+minScroll+")");
-					if(dojo.isIE){
+					if(dojo.isIE <= 8){
 						maxScroll = minScroll = 34;
 					}
 					generateTest('htmlPadding_quirks', "(0,-"+(maxScroll-fudge)+")", "(0,+"+(minScroll-fudge)+")");
@@ -262,22 +229,23 @@
 		        doh.run();
 		});
 		function generateTest(id, maxVal, minVal){
-			var expectedScroll, actualScroll, compare = usingNative? "isNot" : "is";
+			var compare = usingNative? "isNot" : "is";
 			with(dojo.byId(id)){
 				scrollMin();
 				scrollMax();
 				scrollIntoView();
-				actualScroll = getScroll();
-				expectedScroll = usingNative? "(-1,-1)" : maxVal;
-				doh[compare](expectedScroll, actualScroll, id+" max failed");
+				var maxActualScroll = getScroll();
+				var maxExpectedScroll = usingNative? "(-1,-1)" : maxVal;
 				scrollIntoView(); // make sure the value sticks
-				actualScroll = getScroll();
-				doh[compare](expectedScroll, actualScroll, id+" repeat max failed");
+				var repMaxActualScroll = getScroll();
 				scrollMin();
 				scrollIntoView();
-				actualScroll = getScroll();
-				expectedScroll = usingNative? "(+1,+1)" : minVal;
-				doh[compare](expectedScroll, actualScroll, id+" min failed");
+				var minActualScroll = getScroll();
+				var minExpectedScroll = usingNative? "(+1,+1)" : minVal;
+				dojo.byId(id).style.visibility = 'visible';
+				doh[compare](maxExpectedScroll, maxActualScroll, id+" max failed");
+				doh[compare](maxExpectedScroll, repMaxActualScroll, id+" repeat max failed");
+				doh[compare](minExpectedScroll, minActualScroll, id+" min failed");
 			}
 		}
 		function generateTestXY(id, maxScrollX, maxScrollY, minScrollX, minScrollY){
@@ -296,10 +264,6 @@
 <tr><td><div id="nonscroll"  style="width:100px;overflow:hidden;border:1px solid blue;">&nbsp;</div></td></tr>
 <tr><td><div id="withscroll" style="width:100px;overflow-x:hidden;overflow-y:scroll;border:1px solid red;">&nbsp;</div></td></tr>
 </table>
-<script type="text/javascript">
-sb = dojo.byId("nonscroll").clientWidth - dojo.byId("withscroll").clientWidth;
-console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
-</script>
 <!--	The test templates are below -->
 <fieldset>
 <label for="8249">Scrollable parent != offsetParent:</label>
@@ -331,11 +295,9 @@ console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
 <fieldset>
 <label for="absContent">Absolute-positioned content:</label>
 <div type="testIframe" id="absContent">
-	<iframestyle>INPUT { L_left:90px; R_right:90px; WKR_FF2R_left:90px; WKR_FF2R_right:auto; }
-		HTML { overflow:scroll !important; /*IE6*/ }</iframestyle>
-	<hr style="height:100px;width:200px;float:left;"/>
-	<hr style="height:100px;width:200px;float:right;"/>
-	<input id=it style="position:absolute;top:90px;">
+	<iframestyle>HTML { overflow-x:hidden !important; /*IE6*/ }</iframestyle>
+	<div style="height:200px;width:20px;"></div>
+	<input id=it style="position:absolute;left:10px;top:90px;">
 </div>
 </fieldset>
 <fieldset>
@@ -372,8 +334,9 @@ console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
 <fieldset>
 <label for="innerNoScrollBars">Complex scrollable inner content, no scrollbars:</label>
 <div type="testIframe" id="innerNoScrollBars">
-	<iframestyle>DIV { width:20px; IEQ_width:26px; height:20px; IEQ_height:24px; }</iframestyle>
-	<div style="overflow:hidden; margin:10px;border:1px solid red;border-width:1px 2px 3px 4px;"
+	<iframestyle>BODY { overflow:hidden !important; /*IE9*/ }</iframestyle>
+	<fieldset style="overflow:hidden; margin:10px;border:1px solid red;border-width:1px 2px 3px 4px;display:inline;"
+	><div style="overflow:hidden; width:20px;height:20px;"
 		><fieldset style="width:59px;overflow:visible;"
 			><input style="background-color:green;height:15px;float:left;"
 			><nobr style="margin:7px;padding:3px;border:5px solid pink;overflow:visible;display:block;width:90px;float:left;"
@@ -383,22 +346,18 @@ console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
 			></nobr
 			><input style="background-color:cyan;height:10px;float:left;"
 		></fieldset
-	></div>
+	></div
+	></fieldset>
 </div>
 </fieldset>
 <fieldset>
 <label for="noScrollBars">Nothing to do:</label>
 <div type="testIframe" id="noScrollBars">
+	<iframestyle>
+		HTML { overflow:hidden !important; /*IE6*/ }
+		BODY { overflow:hidden !important; /*IE9*/ }
+	</iframestyle>
 	<input id=it style="margin:25px;">
-</div>
-</fieldset>
-<fieldset>
-<label for="bottomFloated">Bottom, floated:</label>
-<div type="testIframe" id="bottomFloated">
-	<iframestyle>INPUT { L_float:left; R_float:right; WKR_FF2R_float:left; }</iframestyle>
-	<hr style="float:left;height:50px;"/>
-	<hr style="float:right;height:50px;"/>
-	<input id=it style="clear:both;">
 </div>
 </fieldset>
 <fieldset>
@@ -474,7 +433,7 @@ console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
 			n._scrollMinY = n.scrollTop;
 			n._scrollMinX = n.scrollLeft;
 			n.scrollTop++;
-			if(((n._scrollMaxX||0)-n._scrollMinX) == sb && (n.scrollWidth <= n.clientWidth || n.scrollWidth <= n.offsetWidth)){ // ignore fake scrolls
+			if(((n._scrollMaxX||0)-n._scrollMinX) == innerScrollBarSize && (n.scrollWidth <= n.clientWidth || n.scrollWidth <= n.offsetWidth)){ // ignore fake scrolls
 			}else if((n._scrollMaxX||0) > n._scrollMinX){
 				n.scrollLeft++;
 			}
@@ -490,7 +449,7 @@ console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
 			n._scrollMaxY = n.scrollTop;
 			n._scrollMaxX = n.scrollLeft;
 			n.scrollTop--;
-			if((n._scrollMaxX-(n._scrollMinX||0)) == sb && (n.scrollWidth <= n.clientWidth || n.scrollWidth <= n.offsetWidth)){
+			if((n._scrollMaxX-(n._scrollMinX||0)) == innerScrollBarSize && (n.scrollWidth <= n.clientWidth || n.scrollWidth <= n.offsetWidth)){
 				n._scrollMaxX = n.scrollLeft = (n._scrollMinX || 0); // ignore fake scrolls
 			}else{
 				n.scrollLeft--;
@@ -522,6 +481,9 @@ console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
 	function _onClick(win){
 		_scrollIntoView(win);
 		alert(_getScroll(win));
+	}
+	function iframeLoaded(){
+		if(--count == 0){ loading.callback(true); }
 	}
 	function initIframeMethods(iframeWin, parentWin){
 		iframeWin.frameElement.findInput = function(){ return parentWin._findInput(iframeWin) };
@@ -583,13 +545,15 @@ console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
 				'HR { width:120px;height:1px;visibility:hidden;display:block; }\n'+
 				style+
 			'<\/STYLE>'+
-			'<SCRIPT type=text/javascript>'+
-				'var win = frameElement.ownerDocument.defaultView||frameElement.document.parentWindow;'+
-				'win.initIframeMethods(window, win);'+
-			'<\/SCRIPT>'+
 		'<\/HEAD>'+
-		'<BODY BGCOLOR=#ffffff onclick=\'frameElement.onClick()\'>'+
+		'<BODY BGCOLOR=#ffffff>'+
 			content+
+			'<SCRIPT type=text/javascript>'+
+				'win=frameElement.ownerDocument.defaultView||frameElement.document.parentWindow;'+
+				'win.initIframeMethods(window, win);'+
+				'win.iframeLoaded();'+
+				'document.body.onclick=frameElement.onClick;'+
+			'<\/SCRIPT>'+
 		'<\/BODY>'+
 		'<\/HTML>"';
 		return iframeSrc;
@@ -604,19 +568,24 @@ console.debug('!!!!!!!!!!!! scrollbar size = ' + sb);
 		dojo.style(container, "cssText", "display:inline;border:1px ridge gray;padding:0px;margin:0px;background-color:"+color+";text-align:"+(rtl?"right;":"left;"));
 		container.appendChild(document.createTextNode(text));
 		var iframe = document.createElement('iframe');
-		if(dojo.isOpera){ iframe.setAttribute('src', iframeSrc); }
+		iframe.setAttribute('src', iframeSrc);
 		iframe.setAttribute('frameBorder', "0");
 		iframe.setAttribute('scrolling', "auto");
 		iframe.setAttribute('allowTransparency', "true");
 		iframe.setAttribute('id', id + idSuffix);
 		iframe.setAttribute('name', id + idSuffix);
 		iframe.className = className;
-		dojo.style(iframe, "cssText", "display:block;border:2px solid "+color+";background-color:transparent;margin:0px;padding:3px;"+style);
+		dojo.style(iframe, "cssText", "visibility:hidden;display:block;border:2px solid "+color+";background-color:transparent;margin:0px;padding:3px;"+style);
 		container.appendChild(iframe);
 		srcNode.appendChild(container);
-		if(!dojo.isOpera){ iframe.setAttribute('src', iframeSrc); }
+		var src = iframe.getAttribute("src");
+		if(!src || src.indexOf("javascript") == -1){
+			// set it again if it didn't stick the first time: esp. older Opera and WebKit
+			setTimeout(function(){ iframe.setAttribute('src', iframeSrc); }, 0);
+		}
 	}
 	var testIframes = dojo.query('DIV[type="testIframe"]');
+	count = testIframes.length * 4;
 	for(var i=0; i < testIframes.length; i++){
 		var srcNode = testIframes[i];
 		var content = srcNode.innerHTML || '';

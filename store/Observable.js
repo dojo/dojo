@@ -1,4 +1,5 @@
 define("dojo/store/Observable", ["dojo"], function(dojo) {
+dojo.getObject("store", true, dojo);
 
 dojo.store.Observable = function(store){
 	// summary:

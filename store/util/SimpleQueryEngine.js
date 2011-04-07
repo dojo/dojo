@@ -1,33 +1,6 @@
 define("dojo/store/util/SimpleQueryEngine", ["dojo"], function(dojo) {
 dojo.getObject("store.util", true, dojo);
 
-/*=====
-dojo.store.util.SimpleQueryEngine.__sortInformation = function(attribute, descending){
-	// summary:
-	//		An object describing what attribute to sort on, and the direction of the sort.
-	// attribute: String
-	//		The name of the attribute to sort on.
-	// descending: Boolean
-	//		The direction of the sort.  Default is false.
-	this.attribute = attribute;
-	this.descending = descending;
-};
-
-dojo.store.util.SimpleQueryEngine.__queryOptions = function(sort, start, count){
-	// summary:
-	//		Optional object with additional parameters for query results.
-	// sort: dojo.store.util.SimpleQueryEngine.__sortInformation[]?
-	//		A list of attributes to sort on, as well as direction
-	// start: Number?
-	//		The first result to begin iteration on
-	// count: Number?
-	//		The number of how many results should be returned.
-	this.sort = sort;
-	this.start = start;
-	this.count = count;
-};
-=====*/
-
 dojo.store.util.SimpleQueryEngine = function(query, options){
 	// summary:
 	//		Simple query engine that matches using filter functions, named filter

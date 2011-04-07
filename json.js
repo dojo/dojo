@@ -96,7 +96,7 @@ define("dojo/json", ["dojo/lib/kernel"], function(dojo){
 				
 					// array
 					if(it instanceof Array){
-						var res = [];
+						var itl, res = [];
 						for(key = 0, itl = it.length; key < itl; key++){
 							var obj = it[key];
 							val = stringify(obj, nextIndent, key);

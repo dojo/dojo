@@ -1,9 +1,11 @@
 define("dojo/store/Memory", ["dojo", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"], function(dojo) {
 
 dojo.declare("dojo.store.Memory", null, {
+	// summary:
+	//		This is a basic in-memory object store. It implements dojo.store.api.Store.
 	constructor: function(/*dojo.store.Memory*/ options){
 		// summary:
-		//		This is a basic in-memory object store.
+		//		Creates a memory object store.
 		// options:
 		//		This provides any configuration information that will be mixed into the store.
 		// 		This should generally include the data property to provide the starting set of data.
@@ -49,7 +51,7 @@ dojo.declare("dojo.store.Memory", null, {
 		//		Stores an object
 		// 	object: Object
 		//		The object to store.
-		// 	options: Object?
+		// 	options: dojo.store.api.Store.PutDirectives??
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		//	returns: Number
@@ -71,7 +73,7 @@ dojo.declare("dojo.store.Memory", null, {
 		//		Creates an object, throws an error if the object already exists
 		// 	object: Object
 		//		The object to store.
-		// 	options: Object?
+		// 	options: dojo.store.api.Store.PutDirectives??
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		//	returns: Number
@@ -100,9 +102,9 @@ dojo.declare("dojo.store.Memory", null, {
 		//		Queries the store for objects.
 		// 	query: Object
 		//		The query to use for retrieving objects from the store.
-		//	options: dojo.store.util.SimpleQueryEngine.__queryOptions?
+		//	options: dojo.store.api.Store.QueryOptions?
 		//		The optional arguments to apply to the resultset.
-		//	returns: dojo.store.util.QueryResults
+		//	returns: dojo.store.api.Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		//
 		// 	example:

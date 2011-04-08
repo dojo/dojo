@@ -176,8 +176,13 @@ dojo.declare("dojo.data.ObjectStore", null,{
 						args.onComplete.call(scope, args.onItem ? null : results, args);
 					}
 					return results;
-				}, args.onError && dojo.hitch(scope, args.onError));
-			}, args.onError && dojo.hitch(scope, args.onError));
+				}, errorHandler);
+			}, errorHandler);
+			function errorHandler(error){
+				if(args.onError){
+					args.onError.call(scope, error, args);
+				}
+			}
 			args.abort = function(){
 				// abort the request
 				if(results.cancel){

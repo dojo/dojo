@@ -1,4 +1,5 @@
 define("dojo/store/Cache", ["dojo"], function(dojo) {
+dojo.getObject("store", true, dojo);
 
 /*=====
 dojo.declare("dojo.store.__CacheArgs", null, {

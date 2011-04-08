@@ -7,7 +7,7 @@ tests.register("tests._base.json",
 
 		// take a json-compatible object, convert it to a json string, then put it back into json.
 		function toAndFromJson(t){
-			var testObj = {a:"a", b:1, c:"c", d:"d", e:{e1:"e1", e2:2}, f:[1,2,3], g:"g",h:{h1:{h2:{h3:"h3"}}}};
+			var testObj = {a:"a", b:1, c:"c", d:"d", e:{e1:"e1", e2:2}, f:[1,2,3], g:"g",h:{h1:{h2:{h3:"h3"}}},i:[[0,1,2],[3],[4]]};
 
 			var mirrorObj = dojo.fromJson(dojo.toJson(testObj));
 			t.assertEqual("a", mirrorObj.a);
@@ -27,6 +27,9 @@ tests.register("tests._base.json",
 			}catch(e){
 			}
 			t.assertEqual(undefined,badJson);
+			t.assertEqual(3, mirrorObj.i[0].length);
+			t.assertEqual(1, mirrorObj.i[1].length);
+			t.assertEqual(1, mirrorObj.i[2].length);
 		},
 		// tricky json, using our JSON extensions
 		function dojoExtendedJson(t){

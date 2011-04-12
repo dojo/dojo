@@ -415,6 +415,68 @@
 				}
 			]);
 
+			// Test specification of inherited attributes dir, lang, etc.
+			var handle;
+			doh.register("inherited", [
+				{
+					name: 'unspecified',
+					runTest: function(t){
+						var cont = '<div dojoType="dojo.html.test.SimpleThing" jsId="ifrs" data="{}"></div>';
+
+						var parserCalled, inherited;
+						handle = dojo.connect(dojo.parser, "parse", function(args){
+							parserCalled = true;
+							inherited = args.inherited;
+						});
+
+						dojo.html.set(
+							dojo.byId("pane1"),
+							cont,
+							{
+								parseContent: true
+							}
+						);
+						doh.t(parserCalled, "parser was called");
+						doh.f("dir" in inherited, "no dir specified");
+						doh.f("lang" in inherited, "no lang specified");
+					},
+					tearDown: function(){
+						dojo.disconnect(handle);
+					}
+				},
+				{
+					name: 'specified',
+					runTest: function(t){
+						var cont = '<div dojoType="dojo.html.test.SimpleThing" jsId="ifrs" data="{}"></div>';
+
+						var parserCalled, inherited;
+						handle = dojo.connect(dojo.parser, "parse", function(args){
+							parserCalled = true;
+							inherited = args.inherited;
+						});
+
+						dojo.html.set(
+							dojo.byId("pane1"),
+							cont,
+							{
+								dir: "rtl",
+								lang: "it_it",
+								textDir: "ltr",
+								parseContent: true
+							}
+						);
+						doh.t(parserCalled, "parser was called");
+						doh.is("rtl", inherited.dir, "dir");
+						doh.is("it_it", inherited.lang, "lang");
+						doh.is("ltr", inherited.textDir, "textdir");
+					},
+					tearDown: function(){
+						dojo.disconnect(handle);
+					}
+				}
+
+			]);
+
 			doh.run();
 		}); 
 	</script>

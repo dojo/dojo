@@ -93,10 +93,12 @@
 				custom2: 456
 			});
 
-			// Test that dir attribute can be inherited from ancestor node
-			dojo.declare("tests.parser.DirClass", null, {
+			// Test that dir, lang, etc. attributes can be inherited from ancestor node
+			dojo.declare("tests.parser.BidiClass", tests.parser.Widget, {
 				constructor: function(args, node){ dojo.mixin(this, args); },
 				dir: "",
+				lang: "",
+				textdir: "",
 				name: ""
 			});
 
@@ -346,15 +348,6 @@
 							doh.is(12345, widgets[0].params.newParam, "new parameter parsed");
 						},
 
-						// Test that dir=rtl or dir=ltr setting trickles down from root node
-						function dir(){				
-							doh.is("rtl", setRtl.dir, "direct setting of dir=rtl works");
-							doh.is("rtl", inheritRtl.dir, "inherited rtl works");
-							doh.is("ltr", inheritLtr.dir, "inherited ltr works (closest ancestor wins)");
-							doh.is("rtl", inheritRtl2.dir, "inherited rtl works, from grandparent");
-							doh.is("ltr", setLtr.dir, "direct setting of dir=ltr overrides inherited RTL");
-						},
-						
 						// Test that parser recurses correctly, except when there's a stopParser flag not to
 						function recurse(){
 							doh.t(container1, "normal container created");
@@ -408,6 +401,50 @@
 						}
 					]
 				);
+
+				doh.register("BIDI", [
+					// Test that dir=rtl or dir=ltr setting trickles down from root node
+					function dir(){
+						dojo.parser.parse("dirSection1");
+						dojo.parser.parse("dirSection2");
+						doh.is("rtl", setRtl.dir, "direct setting of dir=rtl works");
+						doh.is("rtl", inheritRtl.dir, "inherited rtl works");
+						doh.is("ltr", inheritLtr.dir, "inherited ltr works (closest ancestor wins)");
+						doh.is("rtl", inheritRtl2.dir, "inherited rtl works, from grandparent");
+						doh.is("ltr", setLtr.dir, "direct setting of dir=ltr overrides inherited RTL");
+					},
+					function lang(){
+						dojo.parser.parse("langSection");
+						doh.f(lang in noLang.params, "no lang");
+						doh.is("it_it", inheritedLang.lang, "inherited lang works");
+						doh.is("en_us", specifiedLang.lang,"direct setting of lang overrides inherited");
+					},
+					function textdir(){
+						dojo.parser.parse("textDirSection");
+						doh.f("textDir" in noTextdir.params, "no textdir");
+						doh.is("rtl", inheritedTextdir.textDir, "inherited textdir works");
+						doh.is("ltr", specifiedTextdir.textDir,"direct setting of textdir overrides inherited");
+					},
+					{
+						// Test that calling dojo.parser.parse(nodeX) will inherit dir/lang/etc. settings
+						// even from <html>
+						name: "inheritance from HTML",
+						setUp: function(){
+							dojo.attr(dojo.doc.documentElement, {dir: "rtl", lang: "ja-jp", "data-dojo-textdir": "auto"});
+							dojo.parser.parse("bidiInheritanceFromHtml");
+						},
+						runTest: function(){
+							doh.is("rtl", inheritedFromHtml.params.dir, "dir");
+							doh.is("ja-jp", inheritedFromHtml.params.lang, "lang");
+							doh.is("auto", inheritedFromHtml.params.textDir, "textDir");
+						},
+						tearDown: function(){
+							dojo.forEach(["dir", "lang", "data-dojo-textdir"], function(attr){
+								dojo.doc.documentElement.removeAttribute(attr);
+							});
+						}
+					}
+				]);
 
 				doh.register("IE attribute detection", [
 					function input1(){
@@ -550,22 +587,7 @@
 			<div id="parsertest"></div>
 			<div id="parsertest2"></div>
 
-			<!-- section for testing that dir attribute trickles down from ancestor -->
-			<div dojoType="tests.parser.DirClass" jsId="setRtl" dir="rtl" name="RTL setting"></div>
-			<div dir="rtl">
-				<div dojoType="tests.parser.DirClass" jsId="inheritRtl" name="inherited RTL from parent"></div>
-				<div dir="ltr">
-					<div dojoType="tests.parser.DirClass" jsId="inheritLtr" name="inherited LTR from parent"></div>
-				</div>
-				<div>
-					<div dojoType="tests.parser.DirClass" jsId="inheritRtl2" name="inherited RTL from grandparent"></div>
-				</div>
-				<div dojoType="tests.parser.DirClass" jsId="setLtr" dir="ltr" name="LTR setting overrides inherited RTL"></div>
-			</div>
-			<div dojoType="tests.parser.DirClass" jsId="noDir" name="dir not inherited or set"></div>
-
 			<!-- section for testing parser recursion -->
-
 			<div>
 				<div dojoType="tests.parser.NormalContainer" jsId="container1">
 					<!-- this script tag should get passed as param to NormalContainer constructor -->
@@ -632,6 +654,39 @@
 				</div>
 			</div>
 		</div> <!-- end of <div id=main> -->
+
+		<!-- section for testing that dir, lang attribute trickles down from ancestor -->
+		<div id="dirSection1">
+			<div dojoType="tests.parser.BidiClass" jsId="setRtl" dir="rtl" name="RTL setting"></div>
+			<div dojoType="tests.parser.BidiClass" jsId="noDir" name="dir not inherited or set"></div>
+		</div>
+		<div id="dirSection2" dir="rtl">
+			<div dojoType="tests.parser.BidiClass" jsId="inheritRtl" name="inherited RTL from parent"></div>
+			<div dir="ltr">
+				<div dojoType="tests.parser.BidiClass" jsId="inheritLtr" name="inherited LTR from parent"></div>
+			</div>
+			<div>
+				<div dojoType="tests.parser.BidiClass" jsId="inheritRtl2" name="inherited RTL from grandparent"></div>
+			</div>
+			<div dojoType="tests.parser.BidiClass" jsId="setLtr" dir="ltr" name="LTR setting overrides inherited RTL"></div>
+		</div>
+		<div id="langSection">
+			<div dojoType="tests.parser.BidiClass" jsId="noLang" name="shouldn't get lang"></div>
+			<div lang="it_it">
+				<div dojoType="tests.parser.BidiClass" jsId="inheritedLang" name="inherited lang from parent"></div>
+				<div dojoType="tests.parser.BidiClass" jsId="specifiedLang" lang="en_us" name="specified lang overrides parent"></div>
+			</div>
+		</div>
+		<div id="textDirSection">
+			<div dojoType="tests.parser.BidiClass" jsId="noTextdir" name="shouldn't get textdir"></div>
+			<div data-dojo-textdir="rtl">
+				<div dojoType="tests.parser.BidiClass" jsId="inheritedTextdir" name="inherited textdir from parent"></div>
+				<div dojoType="tests.parser.BidiClass" jsId="specifiedTextdir" data-dojo-textdir="ltr" name="specified textdir overrides parent"></div>
+			</div>
+		</div>
+		<div id="bidiInheritanceFromHtml">
+			<div dojoType="tests.parser.BidiClass" jsId="inheritedFromHtml" name="should get dir/lang/textDir from HTML tag"></div>
+		</div>
 
 		<!-- tests that we can parse parameters correctly on IE6/7, not getting tripped up by escaped quotes etc. -->
 		<div id=ie>

@@ -466,6 +466,7 @@ dojo.parser = new function(){
 		}else{
 			root = rootNode;
 		}
+		root = root ? dojo.byId(root) : dojo.body();
 		args = args || {};
 
 		var dojoType = (args.scope || d._scopeName) + "Type",		// typically "dojoType"
@@ -477,17 +478,29 @@ dojo.parser = new function(){
 		var list = [];
 
 		// Info on DOMNode currently being processed
-		var node = (root ? dojo.byId(root) : dojo.body()).firstChild;
+		var node = root.firstChild;
 
-		// Info on parent of DOMNode current being processed
+		// Info on parent of DOMNode currently being processed
 		//	- inherited: dir, lang, and textDir setting of parent, or inherited by parent
 		//	- parent: pointer to identical structure for my parent (or null if no parent)
 		//	- scripts: if specified, collects <script type="dojo/..."> type nodes from children
-		var parent = {
-			inherited: (args && args.inherited) || {
-				dir: dojo._isBodyLtr() ? "ltr" : "rtl",
-				textDir: d.body().getAttribute(attrData + "textdir") || d.doc.documentElement.getAttribute(attrData + "textdir") || ""
+		var inherited = args && args.inherited;
+		if(!inherited){
+			function findAncestorAttr(node, attr){
+				return node.getAttribute(attr) ||
+					(node !== d.doc.documentElement && node.parentNode ? findAncestorAttr(node.parentNode, attr) : null);
 			}
+			inherited = {
+				dir: findAncestorAttr(root, "dir"),
+				lang: findAncestorAttr(root, "lang"),
+				textDir: findAncestorAttr(root, dataDojoTextDir)
+			};
+			for(var key in inherited){
+				if(!inherited[key]){ delete inherited[key]; }
+			}
+		}
+		var parent = {
+			inherited: inherited
 		};
 
 		// For collecting <script type="dojo/..."> type nodes (when null, we don't need to collect)
@@ -498,17 +511,23 @@ dojo.parser = new function(){
 
 		function getEffective(parent){
 			// summary:
-			//		Get effective dir and lang settings for specified obj
-			//		(matching "parent" object structure above), and do caching
+			//		Get effective dir, lang, textDir settings for specified obj
+			//		(matching "parent" object structure above), and do caching.
+			//		Take care not to return null entries.
 			if(!parent.inherited){
+				parent.inherited = {};
 				var node = parent.node,
 					grandparent = getEffective(parent.parent);
-				parent.inherited = {
+				var inherited  = {
 					dir: node.getAttribute("dir") || grandparent.dir,
 					lang: node.getAttribute("lang") || grandparent.lang,
 					textDir: node.getAttribute(dataDojoTextDir) || grandparent.textDir
 				};
-				if(typeof parent.inherited.lang == "undefined"){ delete parent.inherited.lang; }
+				for(var key in inherited){
+					if(inherited[key]){
+						parent.inherited[key] = inherited[key];
+					}
+				}
 			}
 			return parent.inherited;
 		}

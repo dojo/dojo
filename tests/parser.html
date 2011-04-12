@@ -11,6 +11,12 @@
 		<script type="text/javascript">
 		define("dojo/tests/parser/script", ["dojo", "dojo/parser", "doh/runner"], function(dojo) {
 
+			dojo.declare("tests.parser.Widget", null, {
+				constructor: function(args, node){
+					this.params = args;
+				}
+			});
+
 			dojo.declare("tests.parser.Class1", null, {
 				constructor: function(args, node){
 					this.params = args;
@@ -73,10 +79,11 @@
 				checked: false
 			});
 
-			// Test that dir attribute can be inherited from ancestor node
-			dojo.declare("tests.parser.DirClass", null, {
+			// Test that dir, lang, etc. attribute can be inherited from ancestor node
+			dojo.declare("tests.parser.BidiClass", tests.parser.Widget, {
 				constructor: function(args, node){ dojo.mixin(this, args); },
 				dir: "",
+				lang: "",
 				name: ""
 			});
 
@@ -126,11 +133,11 @@
 			};
 
 			dojo.addOnLoad(function(){
-				doh.register("t",
+				doh.register("basic",
 					[
 						function parse(){
 							// Running the parser here so that failures appear in test log
-							dojo.parser.parse();
+							dojo.parser.parse("main");
 						},
 
 						function testJsId(t){
@@ -321,15 +328,6 @@
 							doh.is(12345, widgets[0].params.newParam, "new parameter parsed");
 						},
 
-						// Test that dir=rtl or dir=ltr setting trickles down from root node
-						function dir(){				
-							doh.is("rtl", setRtl.dir, "direct setting of dir=rtl works");
-							doh.is("rtl", inheritRtl.dir, "inherited rtl works");
-							doh.is("ltr", inheritLtr.dir, "inherited ltr works (closest ancestor wins)");
-							doh.is("rtl", inheritRtl2.dir, "inherited rtl works, from grandparent");
-							doh.is("ltr", setLtr.dir, "direct setting of dir=ltr overrides inherited RTL");
-						},
-						
 						// Test that parser recurses correctly, except when there's a stopParser flag not to
 						function recurse(){
 							doh.t(container1, "normal container created");
@@ -383,6 +381,26 @@
 						}
 					]
 				);
+
+				doh.register("BIDI", [
+					// Test that dir=rtl or dir=ltr setting trickles down from root node
+					function dir(){
+						dojo.parser.parse("dirSection1");
+						dojo.parser.parse("dirSection2");
+						doh.is("rtl", setRtl.dir, "direct setting of dir=rtl works");
+						doh.is("rtl", inheritRtl.dir, "inherited rtl works");
+						doh.is("ltr", inheritLtr.dir, "inherited ltr works (closest ancestor wins)");
+						doh.is("rtl", inheritRtl2.dir, "inherited rtl works, from grandparent");
+						doh.is("ltr", setLtr.dir, "direct setting of dir=ltr overrides inherited RTL");
+					},
+					function lang(){
+						dojo.parser.parse("langSection");
+						doh.f(lang in noLang.params, "no lang");
+						doh.is("it_it", inheritedLang.lang, "inherited lang works");
+						doh.is("en_us", specifiedLang.lang,"direct setting of lang overrides inherited");
+					}
+				]);
+
 				doh.run();
 			})
 		});
@@ -390,126 +408,146 @@
 	</head>
 	<body>
 		<h1>Parser Unit Test</h1>
-		<script>
-			function foo(){ this.fooCalled=true; }
-		</script>
-		<div dojoType="tests.parser.Class1" data-dojo-id="obj" 
-			strProp1="text" strProp2=""
-			intProp="5"
-			arrProp="foo, bar, baz"
-			arrProp2=""
-			boolProp1="true" boolProp2="false"
-			dateProp1="2006-01-01" dateProp2="" dateProp3="now"
-			funcProp2="foo" funcProp3="this.func3Called=true;"
-		>
-			<script type="dojo/method" event="preamble">
-				this.preambleTestProp = 3;
-			</script>
-			<script type="dojo/method">
-				// this should be run immediately
-				this.deepProp = deepTestProp;
-			</script>
-			<script type="dojo/connect" event="callInc">
-				this.callCount++;
-			</script>
-			<script type="dojo/method" event="callInc2">
-				this.callCount2++;
-			</script>
-		</div>
-		<div>
-			<div type="tests.parser.Class1" jsId="obj2" id="toParse">
-			</div>
-		</div>
-		<div dojoType="tests.parser.Class2" jsId="obj3">
-		</div>
-		<div dojoType="tests.parser.Class3" jsId="obj4">
-		</div>
-		<input dojoType="tests.parser.inputClass" jsId="checkedObj" checked type="checkbox">
-		<button dojoType="tests.parser.inputClass" jsId="disabledObj" disabled>hi</button>
-		
-		<div id="parsertest"></div>
-		<div id="parsertest2"></div>
 
-		<!-- section for testing that dir attribute trickles down from ancestor -->
-		<div dojoType="tests.parser.DirClass" jsId="setRtl" dir="rtl" name="RTL setting"></div>
-		<div dir="rtl">
-			<div dojoType="tests.parser.DirClass" jsId="inheritRtl" name="inherited RTL from parent"></div>
-			<div dir="ltr">
-				<div dojoType="tests.parser.DirClass" jsId="inheritLtr" name="inherited LTR from parent"></div>
-			</div>
-			<div>
-				<div dojoType="tests.parser.DirClass" jsId="inheritRtl2" name="inherited RTL from grandparent"></div>
-			</div>
-			<div dojoType="tests.parser.DirClass" jsId="setLtr" dir="ltr" name="LTR setting overrides inherited RTL"></div>
-		</div>
-		<div dojoType="tests.parser.DirClass" jsId="noDir" name="dir not inherited or set"></div>
-		
-		<!-- section for testing parser recursion -->
-
-		<div>
-			<div dojoType="tests.parser.NormalContainer" jsId="container1">
-				<!-- this script tag should get passed as param to NormalContainer constructor -->
-				<script type="dojo/method" event="incr" args="x">
-					return x+1;
-				</script>
-				
-				<!-- and these contained widgets should get instantiated -->
-				<div dojoType="tests.parser.Class1" jsId="contained1"></div>
-				<div>
-					<div dojoType="tests.parser.Class1" jsId="contained2"></div>			
-				</div>
-			</div>
-		</div>
-
-		<div>
-			<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
-				<!-- this script tag should get passed as param to NormalContainer constructor -->
-				<script type="dojo/method" event="incr" args="x">
-					return x+1;
-				</script>
-				
-				<!-- but these contained widgets should *not* get instantiated -->
-				<div dojoType="tests.parser.Class1" jsId="contained3"></div>
-				<div>
-					<div dojoType="tests.parser.Class1" jsId="contained4"></div>			
-				</div>
-			</div>
-		</div>
-
-		<div>
-			<div data-dojo-id="html5simple" data-dojo-type="tests.parser.HTML5Props" data-dojo-props="simple:true"></div>
-			<div data-dojo-id="html5simple2" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
-			></div>
-			<!-- note needing to use a named inherited lookup because we're just mixing in -->
-			<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
-			></div>
-			
-			<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->
-			<div data-dojo-id="html5fromobjectns" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
-			></div>
-			<div data-dojo-id="html5fromobjectns2" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
-			></div>
-			
-		</div>
-		
-		<div>
-			<div data-dojo-id="htmldojomethod" data-dojo-type="tests.parser.HTML5withMethod">
-				<p>Some random markup</p>
-				<script type="dojo/method" data-dojo-event="someMethod" data-dojo-args="a, b">
-					return this.baseValue + a + b;
-				</script>
-				<script type="dojo/connect" data-dojo-event="diffMethod" data-dojo-args="a">
-					this._fromvalue = a;
+		<div id="main">
+			<script>
+				function foo(){ this.fooCalled=true; }
+			</script>
+			<div dojoType="tests.parser.Class1" data-dojo-id="obj"
+				strProp1="text" strProp2=""
+				intProp="5"
+				arrProp="foo, bar, baz"
+				arrProp2=""
+				boolProp1="true" boolProp2="false"
+				dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+				funcProp2="foo" funcProp3="this.func3Called=true;"
+			>
+				<script type="dojo/method" event="preamble">
+					this.preambleTestProp = 3;
 				</script>
 				<script type="dojo/method">
-					this._methodRan = true;
+					// this should be run immediately
+					this.deepProp = deepTestProp;
+				</script>
+				<script type="dojo/connect" event="callInc">
+					this.callCount++;
+				</script>
+				<script type="dojo/method" event="callInc2">
+					this.callCount2++;
 				</script>
 			</div>
-		</div>
+			<div>
+				<div type="tests.parser.Class1" jsId="obj2" id="toParse">
+				</div>
+			</div>
+			<div dojoType="tests.parser.Class2" jsId="obj3">
+			</div>
+			<div dojoType="tests.parser.Class3" jsId="obj4">
+			</div>
+			<input dojoType="tests.parser.inputClass" jsId="checkedObj" checked type="checkbox">
+			<button dojoType="tests.parser.inputClass" jsId="disabledObj" disabled>hi</button>
 
+			<div id="parsertest"></div>
+			<div id="parsertest2"></div>
+
+			<!-- section for testing parser recursion -->
+			<div>
+				<div dojoType="tests.parser.NormalContainer" jsId="container1">
+					<!-- this script tag should get passed as param to NormalContainer constructor -->
+					<script type="dojo/method" event="incr" args="x">
+						return x+1;
+					</script>
+
+					<!-- and these contained widgets should get instantiated -->
+					<div dojoType="tests.parser.Class1" jsId="contained1"></div>
+					<div>
+						<div dojoType="tests.parser.Class1" jsId="contained2"></div>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
+					<!-- this script tag should get passed as param to NormalContainer constructor -->
+					<script type="dojo/method" event="incr" args="x">
+						return x+1;
+					</script>
+
+					<!-- but these contained widgets should *not* get instantiated -->
+					<div dojoType="tests.parser.Class1" jsId="contained3"></div>
+					<div>
+						<div dojoType="tests.parser.Class1" jsId="contained4"></div>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<div data-dojo-id="html5simple" data-dojo-type="tests.parser.HTML5Props" data-dojo-props="simple:true"></div>
+				<div data-dojo-id="html5simple2" data-dojo-type="tests.parser.HTML5Props"
+					data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
+				></div>
+				<!-- note needing to use a named inherited lookup because we're just mixing in -->
+				<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
+					data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
+				></div>
+
+				<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->
+				<div data-dojo-id="html5fromobjectns" data-dojo-type="tests.parser.HTML5Props"
+					data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
+				></div>
+				<div data-dojo-id="html5fromobjectns2" data-dojo-type="tests.parser.HTML5Props"
+					data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
+				></div>
+
+			</div>
+
+			<div>
+				<div data-dojo-id="htmldojomethod" data-dojo-type="tests.parser.HTML5withMethod">
+					<p>Some random markup</p>
+					<script type="dojo/method" data-dojo-event="someMethod" data-dojo-args="a, b">
+						return this.baseValue + a + b;
+					</script>
+					<script type="dojo/connect" data-dojo-event="diffMethod" data-dojo-args="a">
+						this._fromvalue = a;
+					</script>
+					<script type="dojo/method">
+						this._methodRan = true;
+					</script>
+				</div>
+			</div>
+		</div> <!-- close <div id=main> -->
+
+		<!-- section for testing that dir, lang attribute trickles down from ancestor -->
+		<div id="dirSection1">
+			<div dojoType="tests.parser.BidiClass" jsId="setRtl" dir="rtl" name="RTL setting"></div>
+			<div dojoType="tests.parser.BidiClass" jsId="noDir" name="dir not inherited or set"></div>
+		</div>
+		<div id="dirSection2" dir="rtl">
+			<div dojoType="tests.parser.BidiClass" jsId="inheritRtl" name="inherited RTL from parent"></div>
+			<div dir="ltr">
+				<div dojoType="tests.parser.BidiClass" jsId="inheritLtr" name="inherited LTR from parent"></div>
+			</div>
+			<div>
+				<div dojoType="tests.parser.BidiClass" jsId="inheritRtl2" name="inherited RTL from grandparent"></div>
+			</div>
+			<div dojoType="tests.parser.BidiClass" jsId="setLtr" dir="ltr" name="LTR setting overrides inherited RTL"></div>
+		</div>
+		<div id="langSection">
+			<div dojoType="tests.parser.BidiClass" jsId="noLang" name="shouldn't get lang"></div>
+			<div lang="it_it">
+				<div dojoType="tests.parser.BidiClass" jsId="inheritedLang" name="inherited lang from parent"></div>
+				<div dojoType="tests.parser.BidiClass" jsId="specifiedLang" lang="en_us" name="specified lang overrides parent"></div>
+			</div>
+		</div>
+		<div id="textDirSection">
+			<div dojoType="tests.parser.BidiClass" jsId="noTextdir" name="shouldn't get textdir"></div>
+			<div data-dojo-textdir="rtl">
+				<div dojoType="tests.parser.BidiClass" jsId="inheritedTextdir" name="inherited textdir from parent"></div>
+				<div dojoType="tests.parser.BidiClass" jsId="specifiedTextdir" data-dojo-textdir="ltr" name="specified textdir overrides parent"></div>
+			</div>
+		</div>
+		<div id="bidiInheritanceFromHtml">
+			<div dojoType="tests.parser.BidiClass" jsId="inheritedFromHtml" name="should get dir/lang/textDir from HTML tag"></div>
+		</div>
 	</body>
 </html>

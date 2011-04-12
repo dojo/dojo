@@ -423,6 +423,7 @@ dojo.parser = new function(){
 		}else{
 			root = rootNode;
 		}
+		root = root ? dojo.byId(root) : dojo.body();
 		args = args || {};
 
 		var attrName = (args.scope || d._scopeName) + "Type",		// typically "dojoType"
@@ -508,13 +509,19 @@ dojo.parser = new function(){
 			}
 		}
 
+		// Ignore bogus entries in inherited hash like {dir: ""}
+		var inherited = {};
+		if(args && args.inherited){
+			for(var key in args.inherited){
+				if(args.inherited[key]){ inherited[key] = args.inherited[key]; }
+			}
+		}
+
 		// Make list of all nodes on page w/dojoType specified
 		var list = [];
 		scan({
-			node: root ? dojo.byId(root) : dojo.body(),
-			inherited: (args && args.inherited) || {
-				dir: dojo._isBodyLtr() ? "ltr" : "rtl"
-			}
+			node: root,
+			inherited: inherited
 		}, list);
 
 		// go build the object instances

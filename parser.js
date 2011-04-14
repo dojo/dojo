@@ -4,7 +4,6 @@ define([".", "./date/stamp"], function(dojo) {
 	//	summary:
 	//		TODOC:This module defines 
 
-
 new Date("X"); // workaround for #11279, new Date("") == NaN
 
 var features = {
@@ -26,10 +25,10 @@ dojo.parser = new function(){
 	var _nameMap = {
 		// Map from widget name (ex: "dijit.form.Button") to structure mapping
 		// lowercase version of attribute names to the version in the widget ex:
-		// {
+		//	{
 		//		label: "label",
 		//		onclick: "onClick"
-		// }
+		//	}
 	};
 	function getNameMap(proto){
 		// summary:
@@ -144,7 +143,7 @@ dojo.parser = new function(){
 				// settings from dir=rtl or lang=... on a node above this node
 				d._mixin(params, obj.inherited);
 			}
-			
+
 			// Get list of attributes explicitly listed in the markup
 			var attributes;
 			if(has("dom-attributes-explicit")){
@@ -166,7 +165,7 @@ dojo.parser = new function(){
 						specified: true
 					};
 				});
-				}
+			}
 
 			// Read in attributes and process them, including data-dojo-props, data-dojo-type,
 			// dojoAttachPoint, etc., as well as normal foo=bar attributes.
@@ -183,37 +182,37 @@ dojo.parser = new function(){
 				if(lcName in specialAttrs){
 					switch(specialAttrs[lcName]){
 
-				// Data-dojo-props.		Save for later to make sure it overrides direct foo=bar settings
+					// Data-dojo-props.   Save for later to make sure it overrides direct foo=bar settings
 					case "data-dojo-props":
-					var extra = value;
-					break;
+						var extra = value;
+						break;
 
-				// data-dojo-id or jsId. TODO: drop jsId in 2.0
+					// data-dojo-id or jsId. TODO: drop jsId in 2.0
 					case "data-dojo-id":
 					case "jsId":
-					var jsname = value;
-					break;
+						var jsname = value;
+						break;
 
-				// For the benefit of _Templated
+					// For the benefit of _Templated
 					case "data-dojo-attach-point":
 					case "dojoAttachPoint":
-					params.dojoAttachPoint = value;
-					break;
+						params.dojoAttachPoint = value;
+						break;
 					case "data-dojo-attach-event":
 					case "dojoAttachEvent":
-					params.dojoAttachEvent = value;
-					break;
+						params.dojoAttachEvent = value;
+						break;
 
-				// Special parameter handling needed for IE
+					// Special parameter handling needed for IE
 					case "class":
-					params["class"] = node.className;
+						params["class"] = node.className;
 						break;
 					case "style":
-					params["style"] = node.style && node.style.cssText;
-					break;
+						params["style"] = node.style && node.style.cssText;
+						break;
 					}
 				}else{
-				// Normal attribute, ex: value="123"
+					// Normal attribute, ex: value="123"
 
 					// Find attribute in widget corresponding to specified name.
 					// May involve case conversion, ex: onclick --> onClick
@@ -254,7 +253,7 @@ dojo.parser = new function(){
 								}
 							}catch(e){ params[name] = new Function(); }
 							break;
-				default:
+						default:
 							var pVal = proto[name];
 							params[name] =
 								(pVal && "length" in pVal) ? (value ? value.split(/\s*,\s*/) : []) :	// array
@@ -300,20 +299,20 @@ dojo.parser = new function(){
 			if(scripts){
 				for(i=0; i<scripts.length; i++){
 					var script = scripts[i];
-				node.removeChild(script);
-				// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
-				var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
-					type = script.getAttribute("type"),
+					node.removeChild(script);
+					// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
+					var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
+						type = script.getAttribute("type"),
 						nf = this._functionFromScript(script, attrData);
-				if(event){
-					if(type == "dojo/connect"){
-						connects.push({event: event, func: nf});
+					if(event){
+						if(type == "dojo/connect"){
+							connects.push({event: event, func: nf});
+						}else{
+							params[event] = nf;
+						}
 					}else{
-						params[event] = nf;
+						calls.push(nf);
 					}
-				}else{
-					calls.push(nf);
-				}
 				}
 			}
 
@@ -337,16 +336,16 @@ dojo.parser = new function(){
 		}, this);
 
 		// Call startup on each top level instance if it makes sense (as for
-		// widgets).	Parent widgets will recursively call startup on their
+		// widgets).  Parent widgets will recursively call startup on their
 		// (non-top level) children
 		if(!mixin._started){
 			// TODO: for 2.0, when old instantiate() API is desupported, store parent-child
 			// relationships in the nodes[] array so that no getParent() call is needed.
-			// Note that will	 require a parse() call from ContentPane setting a param that the
+			// Note that will  require a parse() call from ContentPane setting a param that the
 			// ContentPane is the parent widget (so that the parse doesn't call startup() on the
 			// ContentPane's children)
 			d.forEach(thelist, function(instance){
-				if( !args.noStart && instance	 &&
+				if( !args.noStart && instance  &&
 					dojo.isFunction(instance.startup) &&
 					!instance._started &&
 					(!instance.getParent || !instance.getParent())
@@ -396,14 +395,14 @@ dojo.parser = new function(){
 		//				allowed to be passed in via this `args object.
 		//			* template: Boolean
 		//				If true, ignores ContentPane's stopParser flag and parses contents inside of
-		//				a ContentPane inside of a template.		This allows dojoAttachPoint on widgets/nodes
+		//				a ContentPane inside of a template.   This allows dojoAttachPoint on widgets/nodes
 		//				nested inside the ContentPane to work.
 		//			* inherited: Object
 		//				Hash possibly containing dir and lang settings to be applied to
 		//				parsed widgets, unless there's another setting on a sub-node that overrides
 		//			* scope: String
-		//				Root for attribute names to search for.		If scopeName is dojo,
-		//				will search for data-dojo-type (or dojoType).		For backwards compatibility
+		//				Root for attribute names to search for.   If scopeName is dojo,
+		//				will search for data-dojo-type (or dojoType).   For backwards compatibility
 		//				reasons defaults to dojo._scopeName (which is "dojo" except when
 		//				multi-version support is used, when it will be something like dojo16, dojo20, etc.)
 		//			* propsThis: Object
@@ -469,7 +468,7 @@ dojo.parser = new function(){
 			for(var key in inherited){
 				if(!inherited[key]){ delete inherited[key]; }
 			}
-				}
+		}
 		var parent = {
 			inherited: inherited
 		};
@@ -501,8 +500,8 @@ dojo.parser = new function(){
 				}
 			}
 			return parent.inherited;
-					}
-					
+		}
+
 		// DFS on DOM tree, collecting nodes with data-dojo-type specified.
 		while(true){
 			if(!node){
@@ -526,16 +525,16 @@ dojo.parser = new function(){
 			if(scripts && node.nodeName.toLowerCase() == "script"){
 				// Save <script type="dojo/..."> for parent, then continue to next sibling
 				type = node.getAttribute("type");
-						if (type && /^dojo\/\w/i.test(type)) {
+				if(type && /^dojo\/\w/i.test(type)){
 					scripts.push(node);
-						}
+				}
 				node = node.nextSibling;
 				continue;
-					}
+			}
 			if(scriptsOnly){
 				node = node.nextSibling;
 				continue;
-				}
+			}
 
 			// Check for data-dojo-type attribute, fallback to backward compatible dojoType
 			var type = node.getAttribute(dataDojoType) || node.getAttribute(dojoType);
@@ -564,7 +563,7 @@ dojo.parser = new function(){
 					scripts: childScripts,
 					inherited: getEffective(current) // dir & lang settings for current node, explicit or inherited
 				});
-		}
+			}
 
 			// Recurse, collecting <script type="dojo/..."> children, and also looking for
 			// descendant nodes with dojoType specified (unless the widget has the stopParser flag).
@@ -574,13 +573,14 @@ dojo.parser = new function(){
 			scriptsOnly = ctor && ctor.prototype.stopParser && !(args && args.template);
 			parent = current;
 
-			}
+		}
 
 		// go build the object instances
 		var mixin = args && args.template ? {template: true} : null;
 		return this.instantiate(list, mixin, args); // Array
 	};
 }();
+
 
 //Register the parser callback. It should be the first callback
 //after the a11y test.

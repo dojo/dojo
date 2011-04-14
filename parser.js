@@ -18,122 +18,33 @@ dojo.parser = new function(){
 
 	var d = dojo;
 
-	function str2obj(/*String*/ value, /*String*/ type){
-		// summary:
-		//		Convert given string value to given type
-		switch(type){
-			case "string":
-				return value;
-			case "number":
-				return value.length ? Number(value) : NaN;
-			case "boolean":
-				// for checked/disabled value might be "" or "checked".	 interpret as true.
-				return typeof value == "boolean" ? value : !(value.toLowerCase()=="false");
-			case "function":
-				if(d.isFunction(value)){
-					// IE gives us a function, even when we say something like onClick="foo"
-					// (in which case it gives us an invalid function "function(){ foo }").
-					//	Therefore, convert to string
-					value=value.toString();
-					value=d.trim(value.substring(value.indexOf('{')+1, value.length-1));
-				}
-				try{
-					if(value === "" || value.search(/[^\w\.]+/i) != -1){
-						// The user has specified some text for a function like "return x+5"
-						return new Function(value);
-					}else{
-						// The user has specified the name of a function like "myOnClick"
-						// or a single word function "return"
-						return d.getObject(value, false) || new Function(value);
-					}
-				}catch(e){ return new Function(); }
-			case "array":
-				return value ? value.split(/\s*,\s*/) : [];
-			case "date":
-				switch(value){
-					case "": return new Date("");	// the NaN of dates
-					case "now": return new Date();	// current date
-					default: return d.date.stamp.fromISOString(value);
-				}
-			case "url":
-				return d.baseUrl + value;
-			default:
-				return d.fromJson(value);
-		}
-	}
-
-	var dummyClass = {}, instanceClasses = {
-		// Map from fully qualified name (like "dijit.Button") to structure like:
-		// {
-		//		cls: dijit.Button,
-		//		params: {
-		//			label: {name: "label", type: "string"},
-		//			disabled: {name: "disabled", type: "boolean"},
-		//			onclick: {name: "onClick", type: "function"}
-		//		}
-		// }
-		// Note that the params key is lowercased, onclick rather than onClick.
+	var _nameMap = {
+		// Map from widget name (ex: "dijit.form.Button") to structure mapping
+		// lowercase version of attribute names to the version in the widget ex:
+		//	{
+		//		label: "label",
+		//		onclick: "onClick"
+		//	}
 	};
-
+	function getNameMap(proto){
+		// summary:
+		//		Returns map from lowercase name to attribute name in class, ex: {onclick: "onClick"}
+		var map = {};
+		for(var name in proto){
+			if(name.charAt(0)=="_"){ continue; }	// skip internal properties
+			map[name.toLowerCase()] = name;
+		}
+		return map;
+	}
 	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
 	// If BorderContainer is loaded after _Widget's parameter list has been cached,
 	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
 	d.connect(d, "extend", function(){
-		instanceClasses = {};
+		_nameMap = {};
 	});
 
-	// These are the data types where we can simply do "typeof value" to get the type of the value
-	var _nativeTypes = {"string": "string", "number": "number", "boolean": "boolean", "function": "function"};
-
-	// TODO: defer getProtoInfo() code until needed.
-	//   1. We can avoid using the lowerCase --> mixedCase
-	//		mapping for obvious parameters (lowercase values like "name", or commmon mixed case like onChange
-	//		onClick, tabIndex)
-	//	 2. Only need to compute types of parameters that the user specifies
-
-	function getProtoInfo(cls, params){
-		// cls: A prototype
-		//		The prototype of the class to check props on
-		// params: Object
-		//		The parameters object to mix found parameters onto.
-		for(var name in cls){
-			if(name.charAt(0)=="_"){ continue; }	// skip internal properties
-			if(name in dummyClass){ continue; }		// skip "constructor" and "toString"
-
-			var value = cls[name];
-			params[name.toLowerCase()] = {
-				name: name,
-				type:
-					_nativeTypes[typeof value] ||
-					((value && "length" in value) ? "array" :
-					(value instanceof Date) ? "date" :
-					(value instanceof d._Url) ? "url" :
-					"object")
-			};
-		}
-		return params;
-	}
-
-	function getClassInfo(/*String*/ className){
-		// summary:
-		//		Maps a widget name string like "dijit.form.Button" to the widget constructor itself,
-		//		and a list of that widget's parameters and their types
-		// className:
-		//		fully qualified name (like "dijit.form.Button")
-		// returns:
-		//		structure like instanceClasses, see above
-
-		var c = instanceClasses[className];
-		if(!c){
-			var cls = d.getObject(className);
-			if(!cls){ return null; }		// class not defined [yet]
-			var params = getProtoInfo(cls.prototype, {})
-			c = (instanceClasses[className] = { cls: cls, params: params });
-
-		}
-
-		return c;
-	}
+	// Map from widget name (ex: "dijit.form.Button") to constructor
+	var _ctorMap = {};
 
 	this._functionFromScript = function(script, attrData){
 		// summary:
@@ -190,7 +101,6 @@ dojo.parser = new function(){
 		// Precompute names of special attributes we are looking for
 		// TODO: for 2.0 default to data-dojo- regardless of scopeName (or maybe scopeName won't exist in 2.0)
 		var dojoType = (args.scope || d._scopeName) + "Type",		// typically "dojoType"
-			dojotype = dojoType.toLowerCase(),						// typically "dojotype" (intentionally lowercase)
 			attrData = "data-" + (args.scope || d._scopeName) + "-",// typically "data-dojo-"
 			dataDojoType = attrData + "type",						// typically "data-dojo-type"
 			dataDojoProps = attrData + "props",						// typically "data-dojo-props"
@@ -198,14 +108,21 @@ dojo.parser = new function(){
 			dataDojoAttachEvent = attrData + "attach-event",
 			dataDojoId = attrData + "id";
 
+		// And make hash to quickly check if a given attribute is special, and to map the name to something friendly
+		var specialAttrs = {};
+		dojo.forEach([dataDojoProps, dataDojoType, dojoType, dataDojoId, "jsId", dataDojoAttachPoint,
+				dataDojoAttachEvent, "dojoAttachPoint", "dojoAttachEvent", "class", "style"], function(name){
+			specialAttrs[name.toLowerCase()] = name.replace(args.scope, "dojo");
+		});
+
 		d.forEach(nodes, function(obj){
 			if(!obj){ return; }
 
 			var node = obj.node || obj,
 				type = dojoType in mixin ? mixin[dojoType] : obj.node ? obj.type : (node.getAttribute(dataDojoType) || node.getAttribute(dojoType)),
-				clsInfo = obj.clsInfo || (type && getClassInfo(type)),
-				clazz = clsInfo && clsInfo.cls;
-			if(!clsInfo){
+				ctor = _ctorMap[type] || (_ctorMap[type] = dojo.getObject(type));
+				proto = ctor && ctor.prototype;
+			if(!ctor){
 				throw new Error("Could not load class '" + type);
 			}
 
@@ -253,49 +170,96 @@ dojo.parser = new function(){
 				if(!item || !item.specified){
 					continue;
 				}
-				var lcName = item.name.toLowerCase(),
-					paramMeta = clsInfo.params[lcName],
-					name =  paramMeta ? paramMeta.name : item.name,
+
+				var name = item.name,
+					lcName = name.toLowerCase(),
 					value = item.value;
 
-				switch(lcName){
+				if(lcName in specialAttrs){
+					switch(specialAttrs[lcName]){
 
-				// Data-dojo-props.   Save for later to make sure it overrides direct foo=bar settings
-				case dataDojoProps:		// data-dojo-props
-					var extra = value;
-					break;
+					// Data-dojo-props.   Save for later to make sure it overrides direct foo=bar settings
+					case "data-dojo-props":
+						var extra = value;
+						break;
 
-				// The data-dojo-type=... setting itself, already processed
-				case dataDojoType:
-				case dojotype:
-					break;
+					// data-dojo-id or jsId. TODO: drop jsId in 2.0
+					case "data-dojo-id":
+					case "jsId":
+						var jsname = value;
+						break;
 
-				// data-dojo-id or jsId. TODO: drop jsId in 2.0
-				case dataDojoId:
-				case "jsid":
-					var jsname = value;
-					break;
+					// For the benefit of _Templated
+					case "data-dojo-attach-point":
+					case "dojoAttachPoint":
+						params.dojoAttachPoint = value;
+						break;
+					case "data-dojo-attach-event":
+					case "dojoAttachEvent":
+						params.dojoAttachEvent = value;
+						break;
 
-				// For the benefit of _Templated
-				case dataDojoAttachPoint:
-					params.dojoAttachPoint = value;
-					break;
-				case dataDojoAttachEvent:
-					params.dojoAttachEvent = value;
-					break;
+					// Special parameter handling needed for IE
+					case "class":
+						params["class"] = node.className;
+						break;
+					case "style":
+						params["style"] = node.style && node.style.cssText;
+						break;
+					}
+				}else{
+					// Normal attribute, ex: value="123"
 
-				// Special parameter handling needed for IE
-				case "class":
-					params["class"] = node.className;
-					break;
-				case "style":
-					params["style"] = node.style && node.style.cssText;
-					break;
+					// Find attribute in widget corresponding to specified name.
+					// May involve case conversion, ex: onclick --> onClick
+					if(!(name in proto)){
+						var map = (_nameMap[type] || (_nameMap[type] = getNameMap(proto)));
+						name = map[lcName] || name;
+					}
 
-				// Normal attribute, ex: value="123"
-				default:
-					if(typeof value == "string" && paramMeta){
-						params[name] = str2obj(value, paramMeta.type);
+					// Set params[name] to value, doing type conversion
+					if(typeof value == "string" && name in proto){
+						switch(typeof proto[name]){
+						case "string":
+							params[name] = value;
+							break;
+						case "number":
+							params[name] = value.length ? Number(value) : NaN;
+							break;
+						case "boolean":
+							// for checked/disabled value might be "" or "checked".	 interpret as true.
+							params[name] = typeof value == "boolean" ? value : !(value.toLowerCase()=="false");
+							break;
+						case "function":
+							if(d.isFunction(value)){
+								// IE gives us a function, even when we say something like onClick="foo"
+								// (in which case it gives us an invalid function "function(){ foo }").
+								//	Therefore, convert to string
+								value=value.toString();
+								value=d.trim(value.substring(value.indexOf('{')+1, value.length-1));
+							}
+							try{
+								if(value === "" || value.search(/[^\w\.]+/i) != -1){
+									// The user has specified some text for a function like "return x+5"
+									params[name] = new Function(value);
+								}else{
+									// The user has specified the name of a function like "myOnClick"
+									// or a single word function "return"
+									params[name] = d.getObject(value, false) || new Function(value);
+								}
+							}catch(e){ params[name] = new Function(); }
+							break;
+						default:
+							var pVal = proto[name];
+							params[name] =
+								(pVal && "length" in pVal) ? (value ? value.split(/\s*,\s*/) : []) :	// array
+									(pVal instanceof Date) ?
+										(value == "" ? new Date("") :	// the NaN of dates
+										value == "now" ? new Date() :	// current date
+										d.date.stamp.fromISOString(value)) :
+								(pVal instanceof d._Url) ? (d.baseUrl + value) :
+								d.fromJson(value);
+						}
 					}else{
 						params[name] = value;
 					}
@@ -316,9 +280,8 @@ dojo.parser = new function(){
 			// Any parameters specified in "mixin" override everything else.
 			d._mixin(params, mixin);
 
-			var scripts = obj.node ? obj.scripts : (clazz && (clazz._noScript || clazz.prototype._noScript) ? [] :
+			var scripts = obj.node ? obj.scripts : (ctor && (ctor._noScript || proto._noScript) ? [] :
 						d.query("> script[type^='dojo/']", node));
-
 
 			// Process <script type="dojo/*"> script tags
 			// <script type="dojo/method" event="foo"> tags are added to params, and passed to
@@ -329,26 +292,29 @@ dojo.parser = new function(){
 			var connects = [],	// functions to connect after instantiation
 				calls = [];		// functions to call after instantiation
 
-			d.forEach(scripts, function(script){
-				node.removeChild(script);
-				// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
-				var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
-					type = script.getAttribute("type"),
-					nf = d.parser._functionFromScript(script, attrData);
-				if(event){
-					if(type == "dojo/connect"){
-						connects.push({event: event, func: nf});
+			if(scripts){
+				for(i=0; i<scripts.length; i++){
+					var script = scripts[i];
+					node.removeChild(script);
+					// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
+					var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
+						type = script.getAttribute("type"),
+						nf = this._functionFromScript(script, attrData);
+					if(event){
+						if(type == "dojo/connect"){
+							connects.push({event: event, func: nf});
+						}else{
+							params[event] = nf;
+						}
 					}else{
-						params[event] = nf;
+						calls.push(nf);
 					}
-				}else{
-					calls.push(nf);
 				}
-			});
+			}
 
-			var markupFactory = clazz.markupFactory || clazz.prototype && clazz.prototype.markupFactory;
 			// create the instance
-			var instance = markupFactory ? markupFactory(params, node, clazz) : new clazz(params, node);
+			var markupFactory = ctor.markupFactory || proto.markupFactory;
+			var instance = markupFactory ? markupFactory(params, node, ctor) : new ctor(params, node);
 			thelist.push(instance);
 
 			// map it to the JS namespace if that makes sense
@@ -357,13 +323,13 @@ dojo.parser = new function(){
 			}
 
 			// process connections and startup functions
-			d.forEach(connects, function(connect){
-				d.connect(instance, connect.event, null, connect.func);
-			});
-			d.forEach(calls, function(func){
-				func.call(instance);
-			});
-		});
+			for(i=0; i<connects.length; i++){
+				d.connect(instance, connects[i].event, null, connects[i].func);
+			}
+			for(i=0; i<calls.length; i++){
+				calls[i].call(instance);
+			}
+		}, this);
 
 		// Call startup on each top level instance if it makes sense (as for
 		// widgets).  Parent widgets will recursively call startup on their
@@ -398,7 +364,7 @@ dojo.parser = new function(){
 		//		like `dijit.form.Button`
 		//
 		//		Using `data-dojo-type`:
-		//		Attributes using can be mixed into the parameters used to instantitate the
+		//		Attributes using can be mixed into the parameters used to instantiate the
 		//		Class by using a `data-dojo-props` attribute on the node being converted.
 		//		`data-dojo-props` should be a string attribute to be converted from JSON.
 		//
@@ -584,12 +550,11 @@ dojo.parser = new function(){
 			};
 
 			// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate
-			var clsInfo = type && getClassInfo(type), // note: won't find classes declared via dojo.Declaration
-				childScripts = clsInfo && !clsInfo.cls.prototype._noScript ? [] : null; // <script> nodes that are parent's children
+			var ctor = type && (_ctorMap[type] || (_ctorMap[type] = dojo.getObject(type))), // note: won't find classes declared via dojo.Declaration
+				childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
 			if(type){
 				list.push({
 					"type": type,
-					clsInfo: clsInfo,
 					node: node,
 					scripts: childScripts,
 					inherited: getEffective(current) // dir & lang settings for current node, explicit or inherited
@@ -601,7 +566,7 @@ dojo.parser = new function(){
 			// When finished with children, go to my next sibling.
 			node = firstChild;
 			scripts = childScripts;
-			scriptsOnly = clsInfo && clsInfo.cls.prototype.stopParser && !(args && args.template);
+			scriptsOnly = ctor && ctor.prototype.stopParser && !(args && args.template);
 			parent = current;
 
 		}

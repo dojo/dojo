@@ -6,30 +6,26 @@
 		<style type="text/css">
 			@import "../resources/dojo.css";
 		</style>
-		<script type="text/javascript" 
-			src="../dojo.js" djConfig="isDebug: true, popup: true"></script>
+		<script type="text/javascript" src="../dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-			define("dojo/tests/bahavior/script", ["dojo", "dojo/behavior"], function(dojo) {
-
-			var applyCount = 0;
-
-			var behaviorObj = {
-				".bar": 		function(elem){ 
-					dojo.style(elem, "opacity", 0.5);
-					applyCount++;
-				},
-				".foo > span":	function(elem){ 
-					elem.style.fontStyle = "italic";
-					applyCount++;
+			require(["dojo", "doh", "dojo/behavior", "*ready"], function(dojo, doh){
+				var applyCount = 0;
+	
+				var behaviorObj = {
+					".bar":			function(elem){ 
+						dojo.style(elem, "opacity", 0.5);
+						applyCount++;
+					},
+					".foo > span":	function(elem){ 
+						elem.style.fontStyle = "italic";
+						applyCount++;
+					}
 				}
-			}
+	
+				topicCount = 0;
+				dojo.subscribe("/foo", function(){ topicCount++; });
 
-			topicCount = 0;
-			dojo.subscribe("/foo", function(){ topicCount++; });
-
-			// no behaviors should be executed when onload fires
-			dojo.addOnLoad(function(){
+				// no behaviors should be executed when onload fires
 				doh.register("t", 
 					[
 						function add(t){
@@ -90,9 +86,8 @@
 						}
 					]
 				);
-				doh.run();
+				doh.runOnLoad();
 			});
-      });
 		</script>
 	</head>
 	<body>

@@ -1,8 +1,50 @@
-define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/json", "dojo/_base/lang", "dojo/_base/query"], function(dojo){
+define(["./kernel", "../has", "require", "./Deferred", "./json", "./lang", "./query"], function(dojo, has, require){
+	//	module:
+	//		dojo/_base.xhr
+	//	summary:
+	//		This modules defines the dojo.xhr* API.
 
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-(function(){
-//>>excludeEnd("webkitMobile");
+	has.add("native-xhr", function() {
+		// if true, the environment has a native XHR implementation
+		return !!XMLHttpRequest;
+	});
+
+	if (has("native-xhr")){
+		dojo._xhrObj = function(){
+			// summary:
+			//		does the work of portably generating a new XMLHTTPRequest object.
+			try{
+				return new XMLHttpRequest();
+			}catch(e){
+				throw new Error("XMLHTTP not available: "+e);
+			}
+		};
+	}else if(has("loader-provides-xhr")){
+		dojo._xhrObj = require.getXhr;
+	}else{
+		// PROGIDs are in order of decreasing likelihood; this will change in time.
+		for(var XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'], progid, i = 0; i<3;){
+			try{
+				progid = XMLHTTP_PROGIDS[i++];
+				if (new ActiveXObject(progid)) {
+					// this progid works; therefore, use it from now on
+					break;
+				}
+			}catch(e){
+				// squelch; we're just trying to find a good ActiveX PROGID
+				// if they all fail, then progid ends up as the last attempt and that will signal the error
+				// the first time the client actually tries to exec an xhr
+			}
+		}
+		dojo._xhrObj= function() {
+			try{
+				return new ActiveXObject(progid); 
+			}catch(e){
+				throw new Error("XMLHTTP not available: "+e);
+			}		 
+		};
+	}
+
 	var _d = dojo, cfg = _d.config;
 
 	function setValue(/*Object*/obj, /*String*/name, /*String*/value){
@@ -280,23 +322,24 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		xml: function(xhr){
 			// summary: A contentHandler returning an XML Document parsed from the response data
 			var result = xhr.responseXML;
-			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			if(_d.isIE && (!result || !result.documentElement)){
-				//WARNING: this branch used by the xml handling in dojo.io.iframe,
-				//so be sure to test dojo.io.iframe if making changes below.
-				var ms = function(n){ return "MSXML" + n + ".DOMDocument"; };
-				var dp = ["Microsoft.XMLDOM", ms(6), ms(4), ms(3), ms(2)];
-				_d.some(dp, function(p){
-					try{
-						var dom = new ActiveXObject(p);
-						dom.async = false;
-						dom.loadXML(xhr.responseText);
-						result = dom;
-					}catch(e){ return false; }
-					return true;
-				});
-			}
-			//>>excludeEnd("webkitMobile");
+			
+			if(has("ie")){
+				if((!result || !result.documentElement)){
+					//WARNING: this branch used by the xml handling in dojo.io.iframe,
+					//so be sure to test dojo.io.iframe if making changes below.
+					var ms = function(n){ return "MSXML" + n + ".DOMDocument"; };
+					var dp = ["Microsoft.XMLDOM", ms(6), ms(4), ms(3), ms(2)];
+					_d.some(dp, function(p){
+						try{
+							var dom = new ActiveXObject(p);
+							dom.async = false;
+							dom.loadXML(xhr.responseText);
+							result = dom;
+						}catch(e){ return false; }
+						return true;
+					});
+				}
+		 }
 			return result; // DOMDocument
 		},
 		"json-comment-optional": function(xhr){
@@ -333,15 +376,15 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//		Acceptable values depend on the type of IO
 		//		transport (see specific IO calls for more information).
 		//	rawBody: String?
-		// 		Sets the raw body for an HTTP request. If this is used, then the content
-		// 		property is ignored. This is mostly useful for HTTP methods that have
-		// 		a body to their requests, like PUT or POST. This property can be used instead
-		// 		of postData and putData for dojo.rawXhrPost and dojo.rawXhrPut respectively.
+		//		Sets the raw body for an HTTP request. If this is used, then the content
+		//		property is ignored. This is mostly useful for HTTP methods that have
+		//		a body to their requests, like PUT or POST. This property can be used instead
+		//		of postData and putData for dojo.rawXhrPost and dojo.rawXhrPut respectively.
 		//	ioPublish: Boolean?
 		//		Set this explicitly to false to prevent publishing of topics related to
-		// 		IO operations. Otherwise, if djConfig.ioPublish is set to true, topics
-		// 		will be published via dojo.publish for different phases of an IO operation.
-		// 		See dojo.__IoPublish for a list of topics that are published.
+		//		IO operations. Otherwise, if djConfig.ioPublish is set to true, topics
+		//		will be published via dojo.publish for different phases of an IO operation.
+		//		See dojo.__IoPublish for a list of topics that are published.
 		//	load: Function?
 		//		This function will be
 		//		called on a successful HTTP response code.
@@ -349,7 +392,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//		This function will
 		//		be called when the request fails due to a network or server error, the url
 		//		is invalid, etc. It will also be called if the load or handle callback throws an
-		//		exception, unless djConfig.debugAtAllCosts is true.  This allows deployed applications
+		//		exception, unless djConfig.debugAtAllCosts is true.	 This allows deployed applications
 		//		to continue to run even when a logic error happens in the callback, while making
 		//		it easier to troubleshoot while in debug mode.
 		//	handle: Function?
@@ -435,34 +478,34 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 
 	/*=====
 	dojo.__IoPublish = function(){
-		// 	summary:
-		// 		This is a list of IO topics that can be published
-		// 		if djConfig.ioPublish is set to true. IO topics can be
-		// 		published for any Input/Output, network operation. So,
-		// 		dojo.xhr, dojo.io.script and dojo.io.iframe can all
-		// 		trigger these topics to be published.
+		//	summary:
+		//		This is a list of IO topics that can be published
+		//		if djConfig.ioPublish is set to true. IO topics can be
+		//		published for any Input/Output, network operation. So,
+		//		dojo.xhr, dojo.io.script and dojo.io.iframe can all
+		//		trigger these topics to be published.
 		//	start: String
 		//		"/dojo/io/start" is sent when there are no outstanding IO
-		// 		requests, and a new IO request is started. No arguments
-		// 		are passed with this topic.
+		//		requests, and a new IO request is started. No arguments
+		//		are passed with this topic.
 		//	send: String
 		//		"/dojo/io/send" is sent whenever a new IO request is started.
-		// 		It passes the dojo.Deferred for the request with the topic.
+		//		It passes the dojo.Deferred for the request with the topic.
 		//	load: String
 		//		"/dojo/io/load" is sent whenever an IO request has loaded
-		// 		successfully. It passes the response and the dojo.Deferred
-		// 		for the request with the topic.
+		//		successfully. It passes the response and the dojo.Deferred
+		//		for the request with the topic.
 		//	error: String
 		//		"/dojo/io/error" is sent whenever an IO request has errored.
-		// 		It passes the error and the dojo.Deferred
-		// 		for the request with the topic.
+		//		It passes the error and the dojo.Deferred
+		//		for the request with the topic.
 		//	done: String
 		//		"/dojo/io/done" is sent whenever an IO request has completed,
-		// 		either by loading or by erroring. It passes the error and
-		// 		the dojo.Deferred for the request with the topic.
+		//		either by loading or by erroring. It passes the error and
+		//		the dojo.Deferred for the request with the topic.
 		//	stop: String
 		//		"/dojo/io/stop" is sent when all outstanding IO requests have
-		// 		finished. No arguments are passed with this topic.
+		//		finished. No arguments are passed with this topic.
 		this.start = "/dojo/io/start";
 		this.send = "/dojo/io/send";
 		this.load = "/dojo/io/load";
@@ -503,7 +546,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		if(args.form){
 			var form = _d.byId(args.form);
 			//IE requires going through getAttributeNode instead of just getAttribute in some form cases,
-			//so use it for all.  See #2844
+			//so use it for all.	See #2844
 			var actnNode = form.getAttributeNode("action");
 			ioArgs.url = ioArgs.url || (actnNode ? actnNode.value : null);
 			formObject = _d.formToObject(form);
@@ -702,20 +745,18 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 
 	//Automatically call cancel all io calls on unload
 	//in IE for trac issue #2357.
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(_d.isIE){
+	if(has("ie")){
 		_d.addOnWindowUnload(_d._ioCancelAll);
 	}
-	//>>excludeEnd("webkitMobile");
 
 	_d._ioNotifyStart = function(/*Deferred*/dfd){
 		// summary:
-		// 		If dojo.publish is available, publish topics
-		// 		about the start of a request queue and/or the
-		// 		the beginning of request.
+		//		If dojo.publish is available, publish topics
+		//		about the start of a request queue and/or the
+		//		the beginning of request.
 		// description:
-		// 		Used by IO transports. An IO transport should
-		// 		call this method before making the network connection.
+		//		Used by IO transports. An IO transport should
+		//		call this method before making the network connection.
 		if(cfg.ioPublish && _d.publish && dfd.ioArgs.args.ioPublish !== false){
 			if(!_pubCount){
 				_d.publish("/dojo/io/start");
@@ -822,7 +863,7 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		//		for those HTTP methods. There are also methods for "raw" PUT and POST methods
 		//		via dojo.rawXhrPut() and dojo.rawXhrPost() respectively.
 		//	method:
-		//		HTTP method to be used, such as GET, POST, PUT, DELETE.  Should be uppercase.
+		//		HTTP method to be used, such as GET, POST, PUT, DELETE.	 Should be uppercase.
 		//	hasBody:
 		//		If the request has an HTTP body, then pass true for hasBody.
 
@@ -929,9 +970,6 @@ define("dojo/_base/xhr", ["dojo/lib/kernel", "dojo/_base/Deferred", "dojo/_base/
 		throw new Error("dojo.wrapForm not yet implemented");
 	}
 	*/
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-})();
-//>>excludeEnd("webkitMobile");
 
 return dojo.xhr;
 });

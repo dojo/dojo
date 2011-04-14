@@ -1,4 +1,9 @@
-define("dojo/back", ["dojo"], function(dojo) {
+define(["."], function(dojo) {
+	//  module:
+	//    dojo/back
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("back", true, dojo);
 
 /*=====

@@ -1,4 +1,9 @@
-define("dojo/rpc/JsonService", ["dojo", "dojo/rpc/RpcService"], function(dojo) {
+define(["..", "./RpcService"], function(dojo) {
+	//  module:
+	//    dojo/rpc/JsonService
+	//	summary:
+	//		TODOC:This module defines 
+
 
 dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 		bustCache: false,

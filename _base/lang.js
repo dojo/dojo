@@ -1,7 +1,11 @@
-define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
+define(["./kernel", "../has"], function(dojo, has){
+	//	module:
+	//		dojo/_base/lang
+	//	summary:
+	//		This module defines the dojo core Javascript language extensions.
 
-(function(){
-	var d = dojo, opts = Object.prototype.toString;
+	var d = dojo,
+			opts = Object.prototype.toString;
 
 	// Crockford (ish) functions
 
@@ -36,7 +40,7 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 		//	summary:
 		//		similar to dojo.isArray() but more permissive
 		//	description:
-		//		Doesn't strongly test for "arrayness".  Instead, settles for "isn't
+		//		Doesn't strongly test for "arrayness".	Instead, settles for "isn't
 		//		a string or number and has a length property". Arguments objects
 		//		and DOM collections will return true when passed to
 		//		dojo.isArrayLike(), but will return false when passed to
@@ -210,7 +214,7 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 
 	dojo._toArray =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		d.isIE ?  function(obj){
+		d.isIE ?	function(obj){
 			return ((obj.item) ? slow : efficient).apply(this, arguments);
 		} :
 		//>>excludeEnd("webkitMobile");
@@ -227,8 +231,7 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 		return d.hitch.apply(d, arr.concat(d._toArray(arguments))); // Function
 	};
 
-	var extraNames = d._extraNames, extraLen = extraNames.length, empty = {};
-
+	var empty= {};
 	dojo.clone = function(/*anything*/ o){
 		// summary:
 		//		Clones objects (including DOM nodes) and all children.
@@ -247,7 +250,7 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 		}
 		if(o instanceof RegExp){
 			// RegExp
-			return new RegExp(o);   // RegExp
+			return new RegExp(o);		// RegExp
 		}
 		var r, i, l, s, name;
 		if(d.isArray(o)){
@@ -268,7 +271,7 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 		}
 		for(name in o){
 			// the "tobj" condition avoid copying properties in "source"
-			// inherited from Object.prototype.  For example, if target has a custom
+			// inherited from Object.prototype.	 For example, if target has a custom
 			// toString() method, don't overwrite it with the toString() method
 			// that source inherited from Object.prototype
 			s = o[name];
@@ -276,18 +279,16 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 				r[name] = d.clone(s);
 			}
 		}
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		// IE doesn't recognize some custom functions in for..in
-		if(extraLen){
-			for(i = 0; i < extraLen; ++i){
-				name = extraNames[i];
+		if (has("bug-for-in-skips-shadowed")){
+			var extraNames= dojo._extraNames;
+			for(i= extraNames.length; i;){
+				name = extraNames[--i];
 				s = o[name];
 				if(!(name in r) || (r[name] !== s && (!(name in empty) || empty[name] !== s))){
 					r[name] = s; // functions only, we don't clone them
 				}
 			}
 		}
-		//>>excludeEnd("webkitMobile");
 		return r; // Object
 	};
 
@@ -337,47 +338,47 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 		//	example:
 		//	|	// uses a dictionary for substitutions:
 		//	|	dojo.replace("Hello, {name.first} {name.last} AKA {nick}!",
-		//	|	  {
-		//	|	    nick: "Bob",
-		//	|	    name: {
-		//	|	      first:  "Robert",
-		//	|	      middle: "X",
-		//	|	      last:   "Cringely"
-		//	|	    }
-		//	|	  });
+		//	|		{
+		//	|			nick: "Bob",
+		//	|			name: {
+		//	|				first:	"Robert",
+		//	|				middle: "X",
+		//	|				last:		"Cringely"
+		//	|			}
+		//	|		});
 		//	|	// returns: Hello, Robert Cringely AKA Bob!
 		//	example:
 		//	|	// uses an array for substitutions:
 		//	|	dojo.replace("Hello, {0} {2}!",
-		//	|	  ["Robert", "X", "Cringely"]);
+		//	|		["Robert", "X", "Cringely"]);
 		//	|	// returns: Hello, Robert Cringely!
 		//	example:
 		//	|	// uses a function for substitutions:
 		//	|	function sum(a){
-		//	|	  var t = 0;
-		//	|	  dojo.forEach(a, function(x){ t += x; });
-		//	|	  return t;
+		//	|		var t = 0;
+		//	|		dojo.forEach(a, function(x){ t += x; });
+		//	|		return t;
 		//	|	}
 		//	|	dojo.replace(
-		//	|	  "{count} payments averaging {avg} USD per payment.",
-		//	|	  dojo.hitch(
-		//	|	    { payments: [11, 16, 12] },
-		//	|	    function(_, key){
-		//	|	      switch(key){
-		//	|	        case "count": return this.payments.length;
-		//	|	        case "min":   return Math.min.apply(Math, this.payments);
-		//	|	        case "max":   return Math.max.apply(Math, this.payments);
-		//	|	        case "sum":   return sum(this.payments);
-		//	|	        case "avg":   return sum(this.payments) / this.payments.length;
-		//	|	      }
-		//	|	    }
-		//	|	  )
+		//	|		"{count} payments averaging {avg} USD per payment.",
+		//	|		dojo.hitch(
+		//	|			{ payments: [11, 16, 12] },
+		//	|			function(_, key){
+		//	|				switch(key){
+		//	|					case "count": return this.payments.length;
+		//	|					case "min":		return Math.min.apply(Math, this.payments);
+		//	|					case "max":		return Math.max.apply(Math, this.payments);
+		//	|					case "sum":		return sum(this.payments);
+		//	|					case "avg":		return sum(this.payments) / this.payments.length;
+		//	|				}
+		//	|			}
+		//	|		)
 		//	|	);
 		//	|	// prints: 3 payments averaging 13 USD per payment.
 		//	example:
 		//	|	// uses an alternative PHP-like pattern for substitutions:
 		//	|	dojo.replace("Hello, ${0} ${2}!",
-		//	|	  ["Robert", "X", "Cringely"], /\$\{([^\}]+)\}/g);
+		//	|		["Robert", "X", "Cringely"], /\$\{([^\}]+)\}/g);
 		//	|	// returns: Hello, Robert Cringely!
 		return "";	// String
 	}
@@ -388,7 +389,6 @@ define("dojo/_base/lang", ["dojo/lib/kernel"], function(dojo){
 		return tmpl.replace(pattern || _pattern, d.isFunction(map) ?
 			map : function(_, k){ return d.getObject(k, false, map); });
 	};
-})();
 
-return dojo;
+	return dojo;
 });

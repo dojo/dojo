@@ -1,4 +1,5 @@
-dojo.provide("tests.cookie");
-if(dojo.isBrowser){
-	doh.registerUrl("tests.cookie", dojo.moduleUrl("tests", "cookie.html"));
-}
+define(["doh", "require"], function(doh, require){
+	if(doh.isBrowser){
+		doh.register(require.nameToUrl("./cookie.html"), 30000);
+	}
+});

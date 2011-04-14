@@ -1,4 +1,9 @@
-define("dojo/dnd/Mover", ["dojo", "dojo/dnd/common", "dojo/dnd/autoscroll"], function(dojo) {
+define(["..", "./common", "./autoscroll"], function(dojo) {
+	//  module:
+	//    dojo/dnd/Mover
+	//	summary:
+	//		TODOC:This module defines 
+
 
 dojo.declare("dojo.dnd.Mover", null, {
 	constructor: function(node, e, host){

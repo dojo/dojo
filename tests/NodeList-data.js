@@ -1,4 +1,5 @@
-dojo.provide("tests.NodeList-data");
-if(dojo.isBrowser){
-	doh.registerUrl("tests.NodeList-data", dojo.moduleUrl("tests", "NodeList-data.html"));
-}
+define(["doh", "require"], function(doh, require){
+	if(doh.isBrowser){
+		doh.register(require.nameToUrl("./NodeList-data.html"), 30000);
+	}
+});

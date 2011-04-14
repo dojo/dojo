@@ -1,4 +1,9 @@
-define("dojo/currency", ["dojo", "dojo/number", "dojo/i18n", "i18n!dojo/cldr/nls/currency", "dojo/cldr/monetary"], function(dojo) {
+define([".", "./number", "./i18n", "./i18n!./cldr/nls/currency", "./cldr/monetary"], function(dojo) {
+	//  module:
+	//    dojo/currency
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("currency", true, dojo);
 
 /*=====

@@ -1,36 +1,32 @@
-dojo.provide("dojo.tests.module");
-
-try{
-	dojo.require("tests._base");
-	dojo.require("tests.i18n");
-	dojo.requireIf(dojo.isBrowser, "tests.back-hash");
-	dojo.requireIf(dojo.isBrowser, "tests.hash");
-	dojo.require("tests.cldr");
-	dojo.require("dojo.tests.store");
-	dojo.require("tests.data");
-	dojo.require("tests.date");
-	dojo.require("tests.number");
-	dojo.require("tests.currency");
-	dojo.require("tests.AdapterRegistry");
-	dojo.require("tests.io.script");
-	dojo.require("tests.io.iframe");
-	dojo.requireIf(dojo.isBrowser, "tests.rpc");
-	dojo.require("tests.regexp");
-	dojo.require("tests.string");
-	dojo.require("tests.behavior");
-	dojo.require("tests.parser");
-	dojo.require("tests.colors");
-	dojo.requireIf(dojo.isBrowser,"tests.cookie");
-	dojo.require("tests.fx");
-	dojo.require("tests.DeferredList");
-	dojo.require("tests.Stateful");
-	dojo.require("tests.html");
-	dojo.requireIf(dojo.isBrowser,"tests.NodeList-traverse");
-	dojo.requireIf(dojo.isBrowser,"tests.NodeList-manipulate");
-	dojo.requireIf(dojo.isBrowser,"tests.NodeList-data");
-	dojo.require("tests.cache");
-	dojo.requireIf(dojo.isBrowser, "tests.uacss");
-	dojo.requireIf(dojo.isBrowser, "tests.window");
-}catch(e){
-	doh.debug(e);
-}
+define([
+	"dojo/tests/_base",
+	"dojo/tests/cache",
+	"dojo/tests/i18n",
+	"dojo/tests/cldr",
+	"dojo/tests/store",
+	"dojo/tests/data",
+	"dojo/tests/date",
+	"dojo/tests/number",
+	"dojo/tests/currency",
+	"dojo/tests/AdapterRegistry",
+	"dojo/tests/regexp",
+	"dojo/tests/string",
+	"dojo/tests/colors",
+	"dojo/tests/DeferredList",
+	"dojo/tests/Stateful",
+	"dojo/has!host-browser?dojo/tests/behavior",
+	"dojo/has!host-browser?dojo/tests/parser",
+	"dojo/has!host-browser?dojo/tests/html",
+	"dojo/has!host-browser?dojo/tests/fx",
+	"dojo/has!host-browser?dojo/tests/io/script",
+	"dojo/has!host-browser?dojo/tests/io/iframe",
+	"dojo/has!host-browser?dojo/tests/back-hash",
+	"dojo/has!host-browser?dojo/tests/hash",
+	"dojo/has!host-browser?dojo/tests/rpc",
+	"dojo/has!host-browser?dojo/tests/cookie",
+	"dojo/has!host-browser?dojo/tests/NodeList-traverse",
+	"dojo/has!host-browser?dojo/tests/NodeList-manipulate",
+	"dojo/has!host-browser?dojo/tests/NodeList-data",
+	"dojo/has!host-browser?dojo/tests/uacss",
+	"dojo/has!host-browser?dojo/tests/window"
+], 1);

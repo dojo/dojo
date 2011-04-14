@@ -1,5 +1,4 @@
-dojo.provide("tests.AdapterRegistry");
-dojo.require("dojo.AdapterRegistry");
+define(["..", "doh", "../AdapterRegistry"], function(dojo, doh){
 
 doh.register("tests.AdapterRegistry",
 	[
@@ -69,3 +68,5 @@ doh.register("tests.AdapterRegistry",
 		}
 	]
 );
+
+});

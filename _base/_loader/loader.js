@@ -2,6 +2,7 @@
  * loader.js - A bootstrap module.  Runs before the hostenv_*.js file. Contains
  * all of the package loading methods.
  */
+//>>not-amd pragma for docscript to say this is not an amd module 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
 	var d = dojo, currentModule;

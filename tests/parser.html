@@ -2,14 +2,12 @@
 <html>
 	<head>
 		<title>Parser Unit Test</title>
-		<style type="text/css">     
+		<style type="text/css">			
 			@import "../resources/dojo.css";
 		</style>
-		<script type="text/javascript"
-			src="../dojo.js"
-			data-dojo-config="isDebug: true, parseOnLoad: false"></script>
+		<script type="text/javascript" src="../dojo.js"></script>
 		<script type="text/javascript">
-		define("dojo/tests/parser/script", ["dojo", "dojo/parser", "doh/runner"], function(dojo) {
+			require(["dojo", "doh", "dojo/parser", "*ready"], function(){
 
 			dojo.declare("tests.parser.Widget", null, {
 				constructor: function(args, node){
@@ -153,254 +151,254 @@
 
 			dojo.addOnLoad(function(){
 				doh.register("basic tests",
-					[
-						function parse(){
-							// Running the parser here so that failures appear in test log
+				[
+					function parse(){
+						// Running the parser here so that failures appear in test log
 							dojo.parser.parse(dojo.byId("main"));
-						},
+					},
 
 						function testDataDojoId(t){
-							t.t(typeof obj == "object");
-						},
+						t.t(typeof obj == "object");
+					},
 						function testJsId(t){
 							t.t(typeof obj3 == "object");
 						},
-						// Attribute parsing tests
-						function testStrProp(t){
-							// normal string parameter
-							t.t(dojo.isString(obj.strProp1));
-							t.is("text", obj.strProp1);
-							
-							// make sure that you override a string value like "foo" to a blank value
-							t.t(dojo.isString(obj.strProp2));
-							t.is("", obj.strProp2);
-						},
-						function testIntProp(t){
-							t.is("number", (typeof obj.intProp));
-							t.is(5, obj.intProp);
-						},
-						function testArrProp(t){
-							t.is(3, obj.arrProp.length);
-							t.is(3, obj.arrProp[1].length);
-							t.is(["foo", "bar", "baz"], obj.arrProp);
+					// Attribute parsing tests
+					function testStrProp(t){
+						// normal string parameter
+						t.t(dojo.isString(obj.strProp1));
+						t.is("text", obj.strProp1);
+						
+						// make sure that you override a string value like "foo" to a blank value
+						t.t(dojo.isString(obj.strProp2));
+						t.is("", obj.strProp2);
+					},
+					function testIntProp(t){
+						t.is("number", (typeof obj.intProp));
+						t.is(5, obj.intProp);
+					},
+					function testArrProp(t){
+						t.is(3, obj.arrProp.length);
+						t.is(3, obj.arrProp[1].length);
+						t.is(["foo", "bar", "baz"], obj.arrProp);
 
-							// make sure empty arrays are possible
-							t.is([], obj.arrProp2);
-						},
-						function testBoolProp(t){
-							// make sure that both true and false get read correctly,
-							// and that unspecified attributes' values don't change
-							
-							// boolProp1 specified at true
-							t.is("boolean", (typeof obj.boolProp1));
-							t.t(obj.boolProp1);
-							
-							// boolProp2 specified as false
-							t.is("boolean", (typeof obj.boolProp2));
-							t.f(obj.boolProp2);
-							
-							// boolProp3 not specified (prototype says false)
-							t.is("boolean", (typeof obj.boolProp3));
-							t.f(obj.boolProp3);
-							
-							// boolProp4 not specified (prototype says true)
-							t.is("boolean", (typeof obj.boolProp4));
-							t.t(obj.boolProp4);
-						},
-						function testDateProp(t){
-							// dateProp1 specified as 2006-1-1
-							t.is("2006-01-01", dojo.date.stamp.toISOString(obj.dateProp1, {selector: 'date'}));
-							
-							// dateProp2="", should map to NaN (a blank value on DateTextBox)
-							t.t(isNaN(obj.dateProp2));
-							
-							// dateProp3="now", should map to current date
-							t.is(dojo.date.stamp.toISOString(new Date(), {selector: 'date'}),
-								dojo.date.stamp.toISOString(obj.dateProp3, {selector: 'date'}));
-						},
-						function testUnwantedParams(t){
-							// Make sure that parser doesn't pass any unwanted parameters to
-							// widget constructor, especially "toString" or "constructor".
-							// Make exception for dir/lang which parser gleans from document itself.
-							for(var param in obj.params){
-								doh.t(dojo.indexOf(
-									["strProp1", "strProp2",
-									"intProp",
-									"arrProp", "arrProp2",
-									"boolProp1", "boolProp2",
-									"dateProp1", "dateProp2", "dateProp3",
-									"funcProp2", "funcProp3",
-									"preamble",
+						// make sure empty arrays are possible
+						t.is([], obj.arrProp2);
+					},
+					function testBoolProp(t){
+						// make sure that both true and false get read correctly,
+						// and that unspecified attributes' values don't change
+						
+						// boolProp1 specified at true
+						t.is("boolean", (typeof obj.boolProp1));
+						t.t(obj.boolProp1);
+						
+						// boolProp2 specified as false
+						t.is("boolean", (typeof obj.boolProp2));
+						t.f(obj.boolProp2);
+						
+						// boolProp3 not specified (prototype says false)
+						t.is("boolean", (typeof obj.boolProp3));
+						t.f(obj.boolProp3);
+						
+						// boolProp4 not specified (prototype says true)
+						t.is("boolean", (typeof obj.boolProp4));
+						t.t(obj.boolProp4);
+					},
+					function testDateProp(t){
+						// dateProp1 specified as 2006-1-1
+						t.is("2006-01-01", dojo.date.stamp.toISOString(obj.dateProp1, {selector: 'date'}));
+						
+						// dateProp2="", should map to NaN (a blank value on DateTextBox)
+						t.t(isNaN(obj.dateProp2));
+						
+						// dateProp3="now", should map to current date
+						t.is(dojo.date.stamp.toISOString(new Date(), {selector: 'date'}),
+							dojo.date.stamp.toISOString(obj.dateProp3, {selector: 'date'}));
+					},
+					function testUnwantedParams(t){
+						// Make sure that parser doesn't pass any unwanted parameters to
+						// widget constructor, especially "toString" or "constructor".
+						// Make exception for dir/lang which parser gleans from document itself.
+						for(var param in obj.params){
+							doh.t(dojo.indexOf(
+								["strProp1", "strProp2",
+								"intProp",
+								"arrProp", "arrProp2",
+								"boolProp1", "boolProp2",
+								"dateProp1", "dateProp2", "dateProp3",
+								"funcProp2", "funcProp3",
+								"preamble",
 									"callInc1", "callInc2", "dir", "lang", "textDir"],
-									param) >= 0, param);
-							}
-						},
-						function testDisabledFlag(t){
+								param) >= 0, param);
+						}
+					},
+					function testDisabledFlag(t){
 							t.is("boolean", typeof disabledObj.disabled, "typeof disabled");
 							t.t(disabledObj.disabled, "disabled");
 							t.f(disabledObj.checked, "checked");
-						},
-						function testCheckedFlag(t){
+					},
+					function testCheckedFlag(t){
 							t.is("boolean", typeof checkedObj.checked, "typeof checked");
 							t.f(checkedObj.disabled, "disabled");
 							t.t(checkedObj.checked, "checked");
-						},
-						function testFunctionProp(t){
-							// make sure that unspecified functions (even with common names)
-							// don't get overridden (bug #3074)
-							obj.onclick();
-							t.t(obj.prototypeOnclick);
-							
-							// funcProp2="foo"
-							obj.funcProp2();
-							t.t(obj.fooCalled);
-							
-							// funcProp3="this.func3Called=true;"
-							obj.funcProp3();
-							t.t(obj.func3Called);
-						},
-
-						// test script tags inside innerHTML of source node
-						"t.is(4, obj.preambleTestProp);",
-						"t.is(deepTestProp, obj.deepProp);",
-						function testConnect(t){
-							obj.callInc();
-							t.is(2, obj.callCount);
-						},
-						function testFunctionAssignment(t){
-							obj.callInc2();
-							t.is(1, obj.callCount2);
-						},
-						function testSubNodeParse(t){
-							t.f(dojo.exists("obj2"));
-							var toParse = dojo.byId("toParse");
-							toParse.setAttribute("dojoType", toParse.getAttribute("type"));
-							dojo.parser.parse(toParse.parentNode);
-							t.t(dojo.exists("obj2"));
-							t.is("tests.parser.Class1", obj2.declaredClass);
-						},
-						function testMarkupFactory(t){
-							t.t(dojo.exists("obj3"));
-							t.t(obj3.fromMarkup);
-						},
-						function testMarkupFactoryClass(t){
-							t.t(dojo.exists("obj4"));
-							t.is(obj4.classCtor, tests.parser.Class3);
-							t.t(obj4 instanceof tests.parser.Class3);
-							t.t(obj4 instanceof tests.parser.Class2);
-						},
-						function testnostart(t){
-						  
-							var started = false;
-							dojo.declare("SampleThinger", null, {
-								startup: function(){
-									started = true;
-								}
-							});
-						  
-							dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
-							dojo.parser.parse("parsertest", { noStart:true });
-							
-							t.f(started);
-
-							dojo.empty("parsertest");
-							
-							started = false;
-							
-							dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
-							dojo.parser.parse({ noStart:true, rootNode:"parsertest" });
-			  				
-							t.f(started);
-						},
+					},
+					function testFunctionProp(t){
+						// make sure that unspecified functions (even with common names)
+						// don't get overridden (bug #3074)
+						obj.onclick();
+						t.t(obj.prototypeOnclick);
 						
-						// test the various iterations of parser test
-						function rootTest(t){
-						  
-							var handle = function(sel, root){
-								t.is("parsertest2", root);
+						// funcProp2="foo"
+						obj.funcProp2();
+						t.t(obj.fooCalled);
+						
+						// funcProp3="this.func3Called=true;"
+						obj.funcProp3();
+						t.t(obj.func3Called);
+					},
+
+					// test script tags inside innerHTML of source node
+					"t.is(4, obj.preambleTestProp);",
+					"t.is(deepTestProp, obj.deepProp);",
+					function testConnect(t){
+						obj.callInc();
+						t.is(2, obj.callCount);
+					},
+					function testFunctionAssignment(t){
+						obj.callInc2();
+						t.is(1, obj.callCount2);
+					},
+					function testSubNodeParse(t){
+						t.f(dojo.exists("obj2"));
+						var toParse = dojo.byId("toParse");
+						toParse.setAttribute("dojoType", toParse.getAttribute("type"));
+						dojo.parser.parse(toParse.parentNode);
+						t.t(dojo.exists("obj2"));
+						t.is("tests.parser.Class1", obj2.declaredClass);
+					},
+					function testMarkupFactory(t){
+						t.t(dojo.exists("obj3"));
+						t.t(obj3.fromMarkup);
+					},
+					function testMarkupFactoryClass(t){
+						t.t(dojo.exists("obj4"));
+						t.is(obj4.classCtor, tests.parser.Class3);
+						t.t(obj4 instanceof tests.parser.Class3);
+						t.t(obj4 instanceof tests.parser.Class2);
+					},
+					function testnostart(t){
+						
+						var started = false;
+						dojo.declare("SampleThinger", null, {
+							startup: function(){
+								started = true;
 							}
-							var tmp = dojo.connect(dojo, "query", handle);
-							
-							dojo.parser.parse("parsertest2");
-							dojo.parser.parse({ rootNode: "parsertest2" });
-							dojo.parser.parse("parsertest2", { noStart:true });
-							
-							dojo.disconnect(tmp);
-							
-						},
-
-						// Test that when BorderContainer etc. extends _Widget,
-						// parser is aware of the new parameters added (to _Widget
-						// and all of it's subclasses)
-						function cacheRefresh(t){
-							// Add new node to be parsed, referencing a widget that the parser has already
-							// dealt with (and thus cached)
-							var wrapper = dojo.place("<div><div dojoType='tests.parser.Class3' newParam=12345>hi</div></div>", dojo.body(), "last");
-							
-							// Modify Class3's superclass widget to have new parameter (thus Class3 inherits it)
-							dojo.extend(tests.parser.Class2, {
-								newParam: 0
-							});
-							
-							// Run the parser and see if it reads in newParam
-							var widgets = dojo.parser.parse({rootNode: wrapper});
-							doh.is(1, widgets.length, "parsed newly inserted parserTest widget");
-							doh.is(12345, widgets[0].params.newParam, "new parameter parsed");
-						},
-
-						// Test that parser recurses correctly, except when there's a stopParser flag not to
-						function recurse(){
-							doh.t(container1, "normal container created");
-							doh.t(container1.incr, "script tag works too")
-							doh.t(window.contained1, "child widget also created");
-							doh.t(window.contained2, "child widget 2 also created");
-
-							doh.t(container2, "shielded container created");
-							doh.t(container2.incr, "script tag works too")
-							doh.f(window.contained3, "child widget not created");
-							doh.f(window.contained4, "child widget 2 not created");
-						},
+						});
 						
-						function simpleHTML5(){
-							doh.t(typeof html5simple == "object", "data-dojo-id export");
-							doh.t(typeof html5simple2 == "object", "data-dojo-id export");
-							
-							doh.t(html5simple.simple, "default respecified in props=''");
-							doh.f(html5simple2.simple, "default overridden by props=''");
-							
-							// test data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
-							var it = html5simple2;
-							doh.is(1, it.a, "number in param");
-							doh.is("two", it.b, "string in param");
-							doh.t(dojo.isArray(it.c), "array in param");
-							doh.is(3, it.c.length, "array sanity");
-							doh.is("g", it.e.f, "nested object with string");
-							
-							// test the function
-							doh.is(it, it.d(), "simple 'return this' function");
-							
-						},
+						dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
+						dojo.parser.parse("parsertest", { noStart:true });
 						
-						function html5inherited(){
-							doh.t(typeof html5simple3 == "object");
-							var val = html5simple3.afn();
-							doh.is(html5simple3.a * 2, val, "afn() overrides default but calls inherited")
-						},
+						t.f(started);
+
+						dojo.empty("parsertest");
 						
-						function html5withMethod(){
-							// testing data-dojo-event and data-dojo-args support for dojo/method and dojo/connect
-							doh.t(typeof htmldojomethod == "object");
-							doh.t(htmldojomethod._methodRan, "plain dojo/method ran");
+						started = false;
+						
+						dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
+						dojo.parser.parse({ noStart:true, rootNode:"parsertest" });
 							
-							var x = htmldojomethod.someMethod(2, 2);
-							doh.is(14, x, "overridden dojo/method");
-                            
-							htmldojomethod.diffMethod(2);
-							doh.t(htmldojomethod._ran, "ensures original was called first");
-							doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");
+						t.f(started);
+					},
+					
+					// test the various iterations of parser test
+					function rootTest(t){
+						
+						var handle = function(sel, root){
+							t.is("parsertest2", root);
 						}
-					]
-				);
+						var tmp = dojo.connect(dojo, "query", handle);
+						
+						dojo.parser.parse("parsertest2");
+						dojo.parser.parse({ rootNode: "parsertest2" });
+						dojo.parser.parse("parsertest2", { noStart:true });
+						
+						dojo.disconnect(tmp);
+						
+					},
+
+					// Test that when BorderContainer etc. extends _Widget,
+					// parser is aware of the new parameters added (to _Widget
+					// and all of it's subclasses)
+					function cacheRefresh(t){
+						// Add new node to be parsed, referencing a widget that the parser has already
+						// dealt with (and thus cached)
+						var wrapper = dojo.place("<div><div dojoType='tests.parser.Class3' newParam=12345>hi</div></div>", dojo.body(), "last");
+						
+						// Modify Class3's superclass widget to have new parameter (thus Class3 inherits it)
+						dojo.extend(tests.parser.Class2, {
+							newParam: 0
+						});
+						
+						// Run the parser and see if it reads in newParam
+						var widgets = dojo.parser.parse({rootNode: wrapper});
+						doh.is(1, widgets.length, "parsed newly inserted parserTest widget");
+						doh.is(12345, widgets[0].params.newParam, "new parameter parsed");
+					},
+
+					// Test that parser recurses correctly, except when there's a stopParser flag not to
+					function recurse(){
+						doh.t(container1, "normal container created");
+						doh.t(container1.incr, "script tag works too")
+						doh.t(window.contained1, "child widget also created");
+						doh.t(window.contained2, "child widget 2 also created");
+
+						doh.t(container2, "shielded container created");
+						doh.t(container2.incr, "script tag works too")
+						doh.f(window.contained3, "child widget not created");
+						doh.f(window.contained4, "child widget 2 not created");
+					},
+					
+					function simpleHTML5(){
+						doh.t(typeof html5simple == "object", "data-dojo-id export");
+						doh.t(typeof html5simple2 == "object", "data-dojo-id export");
+						
+						doh.t(html5simple.simple, "default respecified in props=''");
+						doh.f(html5simple2.simple, "default overridden by props=''");
+						
+						// test data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
+						var it = html5simple2;
+						doh.is(1, it.a, "number in param");
+						doh.is("two", it.b, "string in param");
+						doh.t(dojo.isArray(it.c), "array in param");
+						doh.is(3, it.c.length, "array sanity");
+						doh.is("g", it.e.f, "nested object with string");
+						
+						// test the function
+						doh.is(it, it.d(), "simple 'return this' function");
+						
+					},
+					
+					function html5inherited(){
+						doh.t(typeof html5simple3 == "object");
+						var val = html5simple3.afn();
+						doh.is(html5simple3.a * 2, val, "afn() overrides default but calls inherited")
+					},
+					
+					function html5withMethod(){
+						// testing data-dojo-event and data-dojo-args support for dojo/method and dojo/connect
+						doh.t(typeof htmldojomethod == "object");
+						doh.t(htmldojomethod._methodRan, "plain dojo/method ran");
+						
+						var x = htmldojomethod.someMethod(2, 2);
+						doh.is(14, x, "overridden dojo/method");
+													
+						htmldojomethod.diffMethod(2);
+						doh.t(htmldojomethod._ran, "ensures original was called first");
+						doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");
+					}
+				]
+			);
 
 				doh.register("BIDI", [
 					// Test that dir=rtl or dir=ltr setting trickles down from root node
@@ -538,7 +536,7 @@
 					doh.is("custom title", mixedObj.title, "data-dojo-props overrides native");
 				});
 
-				doh.run();
+			doh.run();
 			})
 		});
 		</script>
@@ -547,112 +545,112 @@
 		<h1>Parser Unit Test</h1>
 
 		<div id=main>
-			<script>
-				function foo(){ this.fooCalled=true; }
+		<script>
+			function foo(){ this.fooCalled=true; }
+		</script>
+		<div dojoType="tests.parser.Class1" data-dojo-id="obj" 
+			strProp1="text" strProp2=""
+			intProp="5"
+			arrProp="foo, bar, baz"
+			arrProp2=""
+			boolProp1="true" boolProp2="false"
+			dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+			funcProp2="foo" funcProp3="this.func3Called=true;"
+		>
+			<script type="dojo/method" event="preamble">
+				this.preambleTestProp = 3;
 			</script>
-			<div dojoType="tests.parser.Class1" data-dojo-id="obj"
-				strProp1="text" strProp2=""
-				intProp="5"
-				arrProp="foo, bar, baz"
-				arrProp2=""
-				boolProp1="true" boolProp2="false"
-				dateProp1="2006-01-01" dateProp2="" dateProp3="now"
-				funcProp2="foo" funcProp3="this.func3Called=true;"
-			>
-				<script type="dojo/method" event="preamble">
-					this.preambleTestProp = 3;
-				</script>
-				<script type="dojo/method">
-					// this should be run immediately
-					this.deepProp = deepTestProp;
-				</script>
-				<script type="dojo/connect" event="callInc">
-					this.callCount++;
-				</script>
-				<script type="dojo/method" event="callInc2">
-					this.callCount2++;
-				</script>
+			<script type="dojo/method">
+				// this should be run immediately
+				this.deepProp = deepTestProp;
+			</script>
+			<script type="dojo/connect" event="callInc">
+				this.callCount++;
+			</script>
+			<script type="dojo/method" event="callInc2">
+				this.callCount2++;
+			</script>
+		</div>
+		<div>
+			<div type="tests.parser.Class1" jsId="obj2" id="toParse">
 			</div>
-			<div>
-				<div type="tests.parser.Class1" jsId="obj2" id="toParse">
-				</div>
-			</div>
-			<div dojoType="tests.parser.Class2" jsId="obj3">
-			</div>
-			<div dojoType="tests.parser.Class3" jsId="obj4">
-			</div>
+		</div>
+		<div dojoType="tests.parser.Class2" jsId="obj3">
+		</div>
+		<div dojoType="tests.parser.Class3" jsId="obj4">
+		</div>
 			<input dojoType="tests.parser.InputClass" jsId="checkedObj" checked type="checkbox">
 			<button dojoType="tests.parser.InputClass" jsId="disabledObj" disabled>hi</button>
+		
+		<div id="parsertest"></div>
+		<div id="parsertest2"></div>
 
-			<div id="parsertest"></div>
-			<div id="parsertest2"></div>
-
-			<!-- section for testing parser recursion -->
-			<div>
-				<div dojoType="tests.parser.NormalContainer" jsId="container1">
-					<!-- this script tag should get passed as param to NormalContainer constructor -->
-					<script type="dojo/method" event="incr" args="x">
-						return x+1;
-					</script>
-
-					<!-- and these contained widgets should get instantiated -->
-					<div dojoType="tests.parser.Class1" jsId="contained1"></div>
-					<div>
-						<div dojoType="tests.parser.Class1" jsId="contained2"></div>
-					</div>
+		<!-- section for testing parser recursion -->
+		<div>
+			<div dojoType="tests.parser.NormalContainer" jsId="container1">
+				<!-- this script tag should get passed as param to NormalContainer constructor -->
+				<script type="dojo/method" event="incr" args="x">
+					return x+1;
+				</script>
+				
+				<!-- and these contained widgets should get instantiated -->
+				<div dojoType="tests.parser.Class1" jsId="contained1"></div>
+				<div>
+					<div dojoType="tests.parser.Class1" jsId="contained2"></div>			
 				</div>
 			</div>
+		</div>
 
-			<div>
-				<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
-					<!-- this script tag should get passed as param to NormalContainer constructor -->
-					<script type="dojo/method" event="incr" args="x">
-						return x+1;
-					</script>
-
-					<!-- but these contained widgets should *not* get instantiated -->
-					<div dojoType="tests.parser.Class1" jsId="contained3"></div>
-					<div>
-						<div dojoType="tests.parser.Class1" jsId="contained4"></div>
-					</div>
+		<div>
+			<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
+				<!-- this script tag should get passed as param to NormalContainer constructor -->
+				<script type="dojo/method" event="incr" args="x">
+					return x+1;
+				</script>
+				
+				<!-- but these contained widgets should *not* get instantiated -->
+				<div dojoType="tests.parser.Class1" jsId="contained3"></div>
+				<div>
+					<div dojoType="tests.parser.Class1" jsId="contained4"></div>			
 				</div>
 			</div>
+		</div>
 
 			<!-- tests for new data-dojo-type / data-dojo-props syntax -->
-			<div>
-				<div data-dojo-id="html5simple" data-dojo-type="tests.parser.HTML5Props" data-dojo-props="simple:true"></div>
-				<div data-dojo-id="html5simple2" data-dojo-type="tests.parser.HTML5Props"
-					data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
-				></div>
-				<!-- note needing to use a named inherited lookup because we're just mixing in -->
-				<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
-					data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
-				></div>
-
-				<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->
-				<div data-dojo-id="html5fromobjectns" data-dojo-type="tests.parser.HTML5Props"
-					data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
-				></div>
-				<div data-dojo-id="html5fromobjectns2" data-dojo-type="tests.parser.HTML5Props"
-					data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
-				></div>
-
+		<div>
+			<div data-dojo-id="html5simple" data-dojo-type="tests.parser.HTML5Props" data-dojo-props="simple:true"></div>
+			<div data-dojo-id="html5simple2" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
+			></div>
+			<!-- note needing to use a named inherited lookup because we're just mixing in -->
+			<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
+			></div>
+			
+			<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->
+			<div data-dojo-id="html5fromobjectns" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
+			></div>
+			<div data-dojo-id="html5fromobjectns2" data-dojo-type="tests.parser.HTML5Props"
+				data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
+			></div>
+			
+		</div>
+		
+		<div>
+			<div data-dojo-id="htmldojomethod" data-dojo-type="tests.parser.HTML5withMethod">
+				<p>Some random markup</p>
+				<script type="dojo/method" data-dojo-event="someMethod" data-dojo-args="a, b">
+					return this.baseValue + a + b;
+				</script>
+				<script type="dojo/connect" data-dojo-event="diffMethod" data-dojo-args="a">
+					this._fromvalue = a;
+				</script>
+				<script type="dojo/method">
+					this._methodRan = true;
+				</script>
 			</div>
-
-			<div>
-				<div data-dojo-id="htmldojomethod" data-dojo-type="tests.parser.HTML5withMethod">
-					<p>Some random markup</p>
-					<script type="dojo/method" data-dojo-event="someMethod" data-dojo-args="a, b">
-						return this.baseValue + a + b;
-					</script>
-					<script type="dojo/connect" data-dojo-event="diffMethod" data-dojo-args="a">
-						this._fromvalue = a;
-					</script>
-					<script type="dojo/method">
-						this._methodRan = true;
-					</script>
-				</div>
-			</div>
+		</div>
 		</div> <!-- end of <div id=main> -->
 
 		<!-- section for testing that dir, lang attribute trickles down from ancestor -->
@@ -722,7 +720,7 @@
 		<!-- tests for when parameters are specified both natively and in data-dojo-props. -->
 		<div id="mixedContainer">
 			<input data-dojo-type="tests.parser.InputClass" data-dojo-id="mixedObj"
-				  value="mixedValue" title="native title" data-dojo-props="custom1: 999, title: 'custom title'">
+					value="mixedValue" title="native title" data-dojo-props="custom1: 999, title: 'custom title'">
 		</div>
 
 	</body>

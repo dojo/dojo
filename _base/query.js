@@ -1,5 +1,124 @@
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
+	if(typeof define!="function"){
+		// a self-sufficient query impl
+		var acme = {
+			trim: function(/*String*/ str){
+				// summary:
+				//		trims whitespaces from both sides of the string
+				str = str.replace(/^\s+/, '');
+				for(var i = str.length - 1; i >= 0; i--){
+					if(/\S/.test(str.charAt(i))){
+						str = str.substring(0, i + 1);
+						break;
+					}
+				}
+				return str;	// String
+			},
+			forEach: function(/*String*/ arr, /*Function*/ callback, /*Object?*/ thisObject){
+				//	summary:
+				//		an iterator function that passes items, indexes,
+				//		and the array to a callback
+				if(!arr || !arr.length){ return; }
+				for(var i=0,l=arr.length; i<l; ++i){
+					callback.call(thisObject||window, arr[i], i, arr);
+				}
+			},
+			byId: function(id, doc){
+				//	summary:
+				//		a function that return an element by ID, but also
+				//		accepts nodes safely
+				if(typeof id == "string"){
+					return (doc||document).getElementById(id); // DomNode
+				}else{
+					return id; // DomNode
+				}
+			},
+			// the default document to search
+			doc: document,
+			// the constructor for node list objects returned from query()
+			NodeList: Array
+		};
+	
+		// define acme.isIE, acme.isSafari, acme.isOpera, etc.
+		var n = navigator;
+		var dua = n.userAgent;
+		var dav = n.appVersion;
+		var tv = parseFloat(dav);
+		acme.isOpera = (dua.indexOf("Opera") >= 0) ? tv: undefined;
+		acme.isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : undefined;
+		acme.isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
+		acme.isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
+		var index = Math.max(dav.indexOf("WebKit"), dav.indexOf("Safari"), 0);
+		if(index && !acme.isChrome){
+			acme.isSafari = parseFloat(dav.split("Version/")[1]);
+			if(!acme.isSafari || parseFloat(dav.substr(index + 7)) <= 419.3){
+				acme.isSafari = 2;
+			}
+		}
+		if(document.all && !acme.isOpera){
+			acme.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
+		}
+	
+		Array._wrap = function(arr){ return arr; };
+
+		define= function(deps, factory) {
+			factory(this.queryPortability || (this.acme= acme), function(){return acme.isWebKit;});
+		};
+		define.dojoQueryFakeShim= 1;
+	}
+})();
+
+
+define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], function(dojo, has){
+	//	module:
+	//		dojo/_base/query
+	//	summary:
+	//		This module defines dojo.query.
+
+	var d= dojo;
+
+	var ctr = 0;
+	if(has("webkit")){
+		d.query= function(query, root){
+			d._NodeListCtor = dojo.NodeList;
+			if(!query){
+				return new d._NodeListCtor();
+			}
+
+			if(query.constructor == d._NodeListCtor){
+				return query;
+			}
+
+			if(typeof query != "string"){ // inline'd type check
+				return new d._NodeListCtor(query); // dojo.NodeList
+			}
+
+			if(typeof root == "string"){ // inline'd type check
+				root = dojo.byId(root);
+				if(!root){ return new d._NodeListCtor(); }
+			}
+
+			root = root||dojo.doc;
+			var rootIsDoc = (root.nodeType == 9);
+			var doc = rootIsDoc ? root : (root.ownerDocument||dojo.doc);
+			// rewrite the query to be ID rooted
+			if(!rootIsDoc || (">~+".indexOf(query.charAt(0)) >= 0)){
+				root.id = root.id||("qUnique"+(ctr++));
+				query = "#"+root.id+" "+query;
+			}
+			// rewrite the query to not choke on something like ".yada.yada >"
+			// by adding a final descendant component
+
+			if(">~+".indexOf(query.slice(-1)) >= 0){
+				query += " *";
+			}
+			return d._NodeListCtor._wrap(
+				Array.prototype.slice.call(
+					doc.querySelectorAll(query)
+				)
+			);
+		};
+	}
 
 /*
 	dojo.query() architectural overview:
@@ -17,25 +136,22 @@
 				- native (FF3.1+, Safari 3.1+, IE 8+)
 			3.) tokenize and convert to executable "query dispatcher"
 				- this is where the lion's share of the complexity in the
-				  system lies. In the DOM version, the query dispatcher is
-				  assembled as a chain of "yes/no" test functions pertaining to
-				  a section of a simple query statement (".blah:nth-child(odd)"
-				  but not "div div", which is 2 simple statements). Individual
-				  statement dispatchers are cached (to prevent re-definition)
-				  as are entire dispatch chains (to make re-execution of the
-				  same query fast)
+					system lies. In the DOM version, the query dispatcher is
+					assembled as a chain of "yes/no" test functions pertaining to
+					a section of a simple query statement (".blah:nth-child(odd)"
+					but not "div div", which is 2 simple statements). Individual
+					statement dispatchers are cached (to prevent re-definition)
+					as are entire dispatch chains (to make re-execution of the
+					same query fast)
 			4.) the resulting query dispatcher is called in the passed scope
-			    (by default the top-level document)
+					(by default the top-level document)
 				- for DOM queries, this results in a recursive, top-down
-				  evaluation of nodes based on each simple query section
+					evaluation of nodes based on each simple query section
 				- for native implementations, this may mean working around spec
-				  bugs. So be it.
+					bugs. So be it.
 			5.) matched nodes are pruned to ensure they are unique (if necessary)
 */
 
-var defineQuery= function(d){
-	// define everything in a closure for compressability reasons. "d" is an
-	// alias to "dojo" (or the toolkit alias object, e.g., "acme").
 
 	////////////////////////////////////////////////////////////////////////
 	// Toolkit aliases
@@ -45,14 +161,14 @@ var defineQuery= function(d){
 	// need to provide these methods and properties. No other porting should be
 	// necessary, save for configuring the system to use a class other than
 	// dojo.NodeList as the return instance instantiator
-	var trim = 			d.trim;
-	var each = 			d.forEach;
-	// 					d.isIE; // float
-	// 					d.isSafari; // float
-	// 					d.isOpera; // float
-	// 					d.isWebKit; // float
-	// 					d.doc ; // document element
-	var qlc = (d._NodeListCtor = 		d.NodeList);
+	var trim =			d.trim;
+	var each =			d.forEach;
+	//					d.isIE; // float
+	//					d.isSafari; // float
+	//					d.isOpera; // float
+	//					d.isWebKit; // float
+	//					d.doc ; // document element
+	var qlc = (d._NodeListCtor =		d.NodeList);
 
 	var getDoc = function(){ return d.doc; };
 	// NOTE(alex): the spec is idiotic. CSS queries should ALWAYS be case-sensitive, but nooooooo
@@ -101,7 +217,7 @@ var defineQuery= function(d){
 
 		// NOTE:
 		//		this code is designed to run fast and compress well. Sacrifices
-		//		to readability and maintainability have been made.  Your best
+		//		to readability and maintainability have been made.	Your best
 		//		bet when hacking the tokenizer is to put The Donnas on *really*
 		//		loud (may we recommend their "Spend The Night" release?) and
 		//		just assume you're gonna make mistakes. Keep the unit tests
@@ -274,11 +390,11 @@ var defineQuery= function(d){
 				currentPart = {
 					query: null, // the full text of the part's rule
 					pseudos: [], // CSS supports multiple pseud-class matches in a single rule
-					attrs: [], 	// CSS supports multi-attribute match, so we need an array
+					attrs: [],	// CSS supports multi-attribute match, so we need an array
 					classes: [], // class matches may be additive, e.g.: .thinger.blah.howdy
-					tag: null, 	// only one tag...
+					tag: null,	// only one tag...
 					oper: null, // ...or operator per component. Note that these wind up being exclusive.
-					id: null, 	// the id component of a rule
+					id: null,		// the id component of a rule
 					getTag: function(){
 						return (caseSensitive) ? this.otag : this.tag;
 					}
@@ -309,7 +425,7 @@ var defineQuery= function(d){
 						// try to strip quotes from the matchFor value. We want
 						// [attrName=howdy] to match the same
 						//	as [attrName = 'howdy' ]
-						if(	(cmf.charAt(0) == '"') || (cmf.charAt(0)  == "'") ){
+						if(	(cmf.charAt(0) == '"') || (cmf.charAt(0)	== "'") ){
 							_cp.matchFor = cmf.slice(1, -1);
 						}
 					}
@@ -535,13 +651,13 @@ var defineQuery= function(d){
 				te["_i"] = ++i;
 				if(node === te){
 					// NOTE:
-					// 	shortcutting the return at this step in indexing works
-					// 	very well for benchmarking but we avoid it here since
-					// 	it leads to potential O(n^2) behavior in sequential
-					// 	getNodexIndex operations on a previously un-indexed
-					// 	parent. We may revisit this at a later time, but for
-					// 	now we just want to get the right answer more often
-					// 	than not.
+					//	shortcutting the return at this step in indexing works
+					//	very well for benchmarking but we avoid it here since
+					//	it leads to potential O(n^2) behavior in sequential
+					//	getNodexIndex operations on a previously un-indexed
+					//	parent. We may revisit this at a later time, but for
+					//	now we just want to get the right answer more often
+					//	than not.
 					ci = i;
 				}
 			}
@@ -657,7 +773,7 @@ var defineQuery= function(d){
 		}
 	};
 
-	var defaultGetter = (d.isIE < 9 || (dojo.isIE && dojo.isQuirks)) ? function(cond){
+	var defaultGetter = (d.isIE && (d.isIE < 9 || dojo.isQuirks)) ? function(cond){
 		var clc = cond.toLowerCase();
 		if(clc == "class"){ cond = "className"; }
 		return function(elem){
@@ -838,7 +954,7 @@ var defineQuery= function(d){
 
 		// NOTE:
 		//		this function returns a function that searches for nodes and
-		//		filters them.  The search may be specialized by infix operators
+		//		filters them.	 The search may be specialized by infix operators
 		//		(">", "~", or "+") else it will default to searching all
 		//		descendants (the " " selector). Once a group of children is
 		//		found, a test function is applied to weed out the ones we
@@ -1064,19 +1180,19 @@ var defineQuery= function(d){
 
 	// NOTES:
 	//	* we can't trust QSA for anything but document-rooted queries, so
-	//	  caching is split into DOM query evaluators and QSA query evaluators
+	//		caching is split into DOM query evaluators and QSA query evaluators
 	//	* caching query results is dirty and leak-prone (or, at a minimum,
-	//	  prone to unbounded growth). Other toolkits may go this route, but
-	//	  they totally destroy their own ability to manage their memory
-	//	  footprint. If we implement it, it should only ever be with a fixed
-	//	  total element reference # limit and an LRU-style algorithm since JS
-	//	  has no weakref support. Caching compiled query evaluators is also
-	//	  potentially problematic, but even on large documents the size of the
-	//	  query evaluators is often < 100 function objects per evaluator (and
-	//	  LRU can be applied if it's ever shown to be an issue).
+	//		prone to unbounded growth). Other toolkits may go this route, but
+	//		they totally destroy their own ability to manage their memory
+	//		footprint. If we implement it, it should only ever be with a fixed
+	//		total element reference # limit and an LRU-style algorithm since JS
+	//		has no weakref support. Caching compiled query evaluators is also
+	//		potentially problematic, but even on large documents the size of the
+	//		query evaluators is often < 100 function objects per evaluator (and
+	//		LRU can be applied if it's ever shown to be an issue).
 	//	* since IE's QSA support is currently only for HTML documents and even
-	//	  then only in IE 8's "standards mode", we have to detect our dispatch
-	//	  route at query time and keep 2 separate caches. Ugg.
+	//		then only in IE 8's "standards mode", we have to detect our dispatch
+	//		route at query time and keep 2 separate caches. Ugg.
 
 	// we need to determine if we think we can run a given query via
 	// querySelectorAll or if we'll need to fall back on DOM queries to get
@@ -1107,7 +1223,7 @@ var defineQuery= function(d){
 
 	//Don't bother with n+3 type of matches, IE complains if we modify those.
 	var infixSpaceRe = /n\+\d|([^ ])?([>~+])([^ =])?/g;
-	var infixSpaceFunc = function(match, pre, ch, post){
+	var infixSpaceFunc = function(match, pre, ch, post) {
 		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};
 
@@ -1179,7 +1295,7 @@ var defineQuery= function(d){
 				try{
 					// the QSA system contains an egregious spec bug which
 					// limits us, effectively, to only running QSA queries over
-					// entire documents.  See:
+					// entire documents.	See:
 					//		http://ejohn.org/blog/thoughts-on-queryselectorall/
 					//	despite this, we can also handle QSA runs on simple
 					//	selectors, but we don't want detection to be expensive
@@ -1357,7 +1473,7 @@ var defineQuery= function(d){
 		//			|	* `:root`, `:lang()`, `:target`, `:focus`
 		//			* all visual and state selectors:
 		//			|	* `:root`, `:active`, `:hover`, `:visisted`, `:link`,
-		//				  `:enabled`, `:disabled`
+		//					`:enabled`, `:disabled`
 		//			* `:*-of-type` pseudo selectors
 		//
 		//		dojo.query and XML Documents:
@@ -1470,8 +1586,8 @@ var defineQuery= function(d){
 		// throw the big case sensitivity switch
 
 		// NOTE:
-		// 		Opera in XHTML mode doesn't detect case-sensitivity correctly
-		// 		and it's not clear that there's any way to test for it
+		//		Opera in XHTML mode doesn't detect case-sensitivity correctly
+		//		and it's not clear that there's any way to test for it
 		caseSensitive = (root.contentType && root.contentType=="application/xml") ||
 						(d.isOpera && (root.doctype || od.toString() == "[object XMLDocument]")) ||
 						(!!od) &&
@@ -1501,7 +1617,7 @@ var defineQuery= function(d){
 			filterFunc =
 				(parts.length == 1 && !/[^\w#\.]/.test(filter)) ?
 				getSimpleFilterFunc(parts[0]) :
-				function(node){
+				function(node) {
 					return dojo.query(filter, root).indexOf(node) != -1;
 				};
 		for(var x = 0, te; te = nodeList[x]; x++){
@@ -1509,160 +1625,11 @@ var defineQuery= function(d){
 		}
 		return tmpNodeList;
 	}
-};//end defineQuery
 
-var defineAcme= function(){
-	// a self-sufficient query impl
-	acme = {
-		trim: function(/*String*/ str){
-			// summary:
-			//		trims whitespaces from both sides of the string
-			str = str.replace(/^\s+/, '');
-			for(var i = str.length - 1; i >= 0; i--){
-				if(/\S/.test(str.charAt(i))){
-					str = str.substring(0, i + 1);
-					break;
-				}
-			}
-			return str;	// String
-		},
-		forEach: function(/*String*/ arr, /*Function*/ callback, /*Object?*/ thisObject){
-			//	summary:
-			// 		an iterator function that passes items, indexes,
-			// 		and the array to a callback
-			if(!arr || !arr.length){ return; }
-			for(var i=0,l=arr.length; i<l; ++i){
-				callback.call(thisObject||window, arr[i], i, arr);
-			}
-		},
-		byId: function(id, doc){
-			// 	summary:
-			//		a function that return an element by ID, but also
-			//		accepts nodes safely
-			if(typeof id == "string"){
-				return (doc||document).getElementById(id); // DomNode
-			}else{
-				return id; // DomNode
-			}
-		},
-		// the default document to search
-		doc: document,
-		// the constructor for node list objects returned from query()
-		NodeList: Array
-	};
+});
 
-	// define acme.isIE, acme.isSafari, acme.isOpera, etc.
-	var n = navigator;
-	var dua = n.userAgent;
-	var dav = n.appVersion;
-	var tv = parseFloat(dav);
-	acme.isOpera = (dua.indexOf("Opera") >= 0) ? tv: undefined;
-	acme.isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : undefined;
-	acme.isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
-	acme.isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
-	var index = Math.max(dav.indexOf("WebKit"), dav.indexOf("Safari"), 0);
-	if(index && !acme.isChrome){
-		acme.isSafari = parseFloat(dav.split("Version/")[1]);
-		if(!acme.isSafari || parseFloat(dav.substr(index + 7)) <= 419.3){
-			acme.isSafari = 2;
-		}
-	}
-	if(document.all && !acme.isOpera){
-		acme.isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
-	}
-
-	Array._wrap = function(arr){ return arr; };
-  return acme;
-};
-
-//>>includeStart("amdLoader", kwArgs.asynchLoader);
-if(typeof define == "function"){
-	define("dojo/_base/query", ["dojo/lib/kernel", "dojo/_base/NodeList", "dojo/_base/lang", "dojo/_base/window"], function(dojo){
-		defineQuery(this["queryPortability"]||this["acme"]||dojo);
-	});
-}
-if(typeof define != "function"){
-//>>includeEnd("amdLoader");
-	//prefers queryPortability, then acme, then dojo
-	if(this["dojo"]){
-		dojo.provide("dojo._base.query");
-		dojo.require("dojo._base.NodeList");
-		dojo.require("dojo._base.lang");
-		defineQuery(this["queryPortability"]||this["acme"]||dojo);
-	}else{
-		defineQuery(this["queryPortability"]||this["acme"]||defineAcme());
-	}
-//>>includeStart("amdLoader", kwArgs.asynchLoader);
-}
-//>>includeEnd("amdLoader");
-
-})();
-//>>excludeEnd("webkitMobile");
-
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-/*
-//>>excludeEnd("webkitMobile");
-//>>includeStart("webkitMobile", kwArgs.webkitMobile);
 (function(){
-	function qdef(){
-		if(dojo.query){
-			return;
-    	}
-
-		var ctr = 0;
-		// QSA-only for webkit mobile. Welcome to the future.
-		dojo.query = function(query, root){
-			d._NodeListCtor = dojo.NodeList;
-			if(!query){
-				return new d._NodeListCtor();
-			}
-
-			if(query.constructor == d._NodeListCtor){
-				return query;
-			}
-
-			if(typeof query != "string"){ // inline'd type check
-				return new d._NodeListCtor(query); // dojo.NodeList
-			}
-
-			if(typeof root == "string"){ // inline'd type check
-				root = dojo.byId(root);
-				if(!root){ return new d._NodeListCtor(); }
-			}
-
-			root = root||dojo.doc;
-			var rootIsDoc = (root.nodeType == 9);
-			var doc = rootIsDoc ? root : (root.ownerDocument||dojo.doc);
-			// rewrite the query to be ID rooted
-			if(!rootIsDoc || (">~+".indexOf(query.charAt(0)) >= 0)){
-				root.id = root.id||("qUnique"+(ctr++));
-				query = "#"+root.id+" "+query;
-			}
-			// rewrite the query to not choke on something like ".yada.yada >"
-			// by adding a final descendant component
-
-			if(">~+".indexOf(query.slice(-1)) >= 0){
-				query += " *";
-			}
-			return d._NodeListCtor._wrap(
-				Array.prototype.slice.call(
-					doc.querySelectorAll(query)
-				)
-			);
-		};
+	if(define.dojoQueryFakeShim){
+		delete define;
 	}
-
-	if(typeof define != "undefined"){
-		define("dojo/_base/query", ["dojo", "dojo/_base/NodeList", "dojo/_base/lang"], qdef);
-	}else{
-		dojo.provide("dojo._base.query");
-		dojo.require("dojo._base.NodeList");
-		dojo.require("dojo._base.lang");
-		qdef();
-  	}
 })();
-
-//>>includeEnd("webkitMobile");
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-*/
-//>>excludeEnd("webkitMobile");

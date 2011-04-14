@@ -1,4 +1,9 @@
-define("dojo/store/DataStore", ["dojo", "dojo/store/util/QueryResults"], function(dojo) {
+define(["..", "./util/QueryResults"], function(dojo) {
+	//  module:
+	//    dojo/store/DataStore
+	//	summary:
+	//		TODOC:This module defines 
+
 
 dojo.declare("dojo.store.DataStore", null, {
 	target: "",

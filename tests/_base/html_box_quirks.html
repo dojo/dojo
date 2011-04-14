@@ -7,11 +7,9 @@
 		<style type="text/css">
 			/*@import "../../resources/dojo.css";*/
 		</style>
-		<script type="text/javascript" 
-			src="../../dojo.js" 
-			djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
+			require(["dojo", "doh", "*ready"], function(dojo, doh){
 			
 			var margin = '1px';
 			var border = '3px solid black';
@@ -94,7 +92,7 @@
 			}
 			
 			function testAndCallback(inTest, inAssert, inComment, inOk, inErr) {
-				inTest.assertTrue('/* ' + inComment +  '*/' + inAssert);
+				inTest.assertTrue('/* ' + inComment +	 '*/' + inAssert);
 				if (inAssert)
 					inOk&&inOk();
 				else
@@ -153,42 +151,41 @@
 				});
 			}
 			
-			dojo.addOnLoad(function(){
-				doh.register("t", 
-					[
-						function reciprocalTests(t) {
-							createStyledNodes([], function(n) {
-								testAndCallback(t, reciprocalMarginBoxTest(n), '', function() {removeTestNode(n); });
-							});
-						},
-						function fitTests(t) {
-							runFitTest(t, null, dojo.mixin({}, defaultChildStyles));
-						},
-						function fitTestsOverflow(t) {
-							runFitTest(t, null, dojo.mixin({overflow:'hidden'}, defaultChildStyles));
-							runFitTest(t, {overflow: 'hidden'}, dojo.mixin({}, defaultChildStyles));
-							runFitTest(t, {overflow: 'hidden'}, dojo.mixin({overflow:'hidden'}, defaultChildStyles));
-						},
-						function fitTestsFloat(t) {
-							runFitTest(t, null, dojo.mixin({float: 'left'}, defaultChildStyles));
-							runFitTest(t, {float: 'left'}, dojo.mixin({}, defaultChildStyles));
-							runFitTest(t, {float: 'left'}, dojo.mixin({float: 'left'}, defaultChildStyles));
-						},
-						function reciprocalTestsInline(t) {
-							createStyledParentChild([], [{}, null, 'span'], function(p, c) {
-								c.innerHTML = 'Hello World';
-								testAndCallback(t, reciprocalMarginBoxTest(c), '', function() {removeTestNode(c); });
-							});
-						},
-						function reciprocalTestsButtonChild(t) {
-							createStyledParentChild([], [{}, null, 'button'], function(p, c) {
-								c.innerHTML = 'Hello World';
-								testAndCallback(t, reciprocalMarginBoxTest(c), '', function() {removeTestNode(c); });
-							});
-						}
-					]
-				);
-				doh.run();
+			doh.register("t", 
+				[
+					function reciprocalTests(t) {
+						createStyledNodes([], function(n) {
+							testAndCallback(t, reciprocalMarginBoxTest(n), '', function() {removeTestNode(n); });
+						});
+					},
+					function fitTests(t) {
+						runFitTest(t, null, dojo.mixin({}, defaultChildStyles));
+					},
+					function fitTestsOverflow(t) {
+						runFitTest(t, null, dojo.mixin({overflow:'hidden'}, defaultChildStyles));
+						runFitTest(t, {overflow: 'hidden'}, dojo.mixin({}, defaultChildStyles));
+						runFitTest(t, {overflow: 'hidden'}, dojo.mixin({overflow:'hidden'}, defaultChildStyles));
+					},
+					function fitTestsFloat(t) {
+						runFitTest(t, null, dojo.mixin({float: 'left'}, defaultChildStyles));
+						runFitTest(t, {float: 'left'}, dojo.mixin({}, defaultChildStyles));
+						runFitTest(t, {float: 'left'}, dojo.mixin({float: 'left'}, defaultChildStyles));
+					},
+					function reciprocalTestsInline(t) {
+						createStyledParentChild([], [{}, null, 'span'], function(p, c) {
+							c.innerHTML = 'Hello World';
+							testAndCallback(t, reciprocalMarginBoxTest(c), '', function() {removeTestNode(c); });
+						});
+					},
+					function reciprocalTestsButtonChild(t) {
+						createStyledParentChild([], [{}, null, 'button'], function(p, c) {
+							c.innerHTML = 'Hello World';
+							testAndCallback(t, reciprocalMarginBoxTest(c), '', function() {removeTestNode(c); });
+						});
+					}
+				]
+			);
+			doh.runOnLoad();
 			});
 		</script>
 		<style type="text/css">

@@ -1,4 +1,9 @@
-define("dojo/data/util/sorter", ["dojo"], function(dojo) {
+define(["../.."], function(dojo) {
+	//  module:
+	//    dojo/data/util/sorter
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("data.util.sorter", true, dojo);
 
 dojo.data.util.sorter.basicComparator = function(	/*anything*/ a,

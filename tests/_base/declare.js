@@ -1,12 +1,13 @@
-dojo.provide("tests._base.declare");
+// FIXME: this test assumes the existence of the global object "tests"
+tests= typeof tests=="undefined" ? {} : tests;
 
-tests.register("tests._base.declare",
-	[
+define(["../..", "doh"], function(dojo, doh){
+	doh.register("doh._base.declare", [
 		function smokeTest(t){
 			dojo.declare("tests._base.declare.tmp", null);
 			var tmp = new tests._base.declare.tmp();
 			dojo.declare("testsFoo", null);
-			var tmp = new testsFoo();
+			tmp = new testsFoo();
 		},
 		function smokeTest2(t){
 			dojo.declare("tests._base.declare.foo", null, {
@@ -71,7 +72,7 @@ tests.register("tests._base.declare",
 			dojo.declare("tests._base.declare.tmp9",
 				[
 					tests._base.declare.tmp7, // prototypal
-					tests._base.declare.tmp8  // mixin
+					tests._base.declare.tmp8	// mixin
 				]);
 			var tmp2 = new tests._base.declare.tmp9();
 			t.is("blah", tmp2.foo);
@@ -194,11 +195,11 @@ tests.register("tests._base.declare",
 
 			var Thing = function(args){
 				dojo.mixin(this, args);
-			}
+			};
 			Thing.prototype.method = function(){
 				t.t(true);
 				d.callback(true);
-			}
+			};
 
 			dojo.declare("Thinger", Thing, {
 				method: function(){
@@ -247,7 +248,7 @@ tests.register("tests._base.declare",
 				a = 1;
 				++this.flag;
 				old.call(this);
-			}
+			};
 			x.bar();
 			t.is(3, x.flag);
 			t.is(1, a);
@@ -258,7 +259,7 @@ tests.register("tests._base.declare",
 				a = 1;
 				++this.flag;
 				this.inherited("baz", arguments);
-			}
+			};
 			x.baz();
 			t.is(2, x.flag);
 			t.is(1, a);
@@ -466,5 +467,5 @@ tests.register("tests._base.declare",
 		// FIXME: there are still some permutations to test like:
 		//	- ctor arguments
 		//	- multi-level inheritance + L/R conflict checks
-	]
-);
+	]);
+});

@@ -1,9 +1,6 @@
-dojo.provide("tests.hash");
-dojo.require("dojo.hash");
+define(["..", "doh", "../hash"], function(dojo, doh){
 
-(function(){
-
-// utilities for the tests:
+	// utilities for the tests:
 	function setHash(h){
 		h = h || "";
 		location.replace('#'+h);
@@ -14,7 +11,7 @@ dojo.require("dojo.hash");
 		return (i >= 0) ? h.substring(i + 1) : "";
 	}
 
-	tests.register("tests.hash", [
+	doh.register("tests.hash", [
 		// hash as an empty string.
 		{
 			name: "Getting an empty hash",
@@ -321,4 +318,4 @@ dojo.require("dojo.hash");
 			}
 		}
 	]);
-})();
+});

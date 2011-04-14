@@ -1,4 +1,9 @@
-define("dojo/date/stamp", ["dojo"], function(dojo) {
+define([".."], function(dojo) {
+	//  module:
+	//    dojo/date/stamp
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("date.stamp", true, dojo);
 
 // Methods to convert dates to or from a wire (string) format using well-known conventions

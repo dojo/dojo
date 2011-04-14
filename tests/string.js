@@ -1,8 +1,6 @@
-dojo.provide("tests.string");
+define(["..", "doh", "../string"], function(dojo, doh){
 
-dojo.require("dojo.string");
-
-tests.register("tests.string",
+doh.register("tests.string",
 	[
 		function test_string_pad(t){
 			t.is("00001", dojo.string.pad("1", 5));
@@ -75,11 +73,11 @@ tests.register("tests.string",
 		},
 		
 		function test_string_trim(t){
-			t.is("astoria", dojo.string.trim("   \f\n\r\t      astoria           "));
-			t.is("astoria", dojo.string.trim("astoria                            "));
-			t.is("astoria", dojo.string.trim("                            astoria"));
+			t.is("astoria", dojo.string.trim("	 \f\n\r\t			 astoria					 "));
+			t.is("astoria", dojo.string.trim("astoria														 "));
+			t.is("astoria", dojo.string.trim("														astoria"));
 			t.is("astoria", dojo.string.trim("astoria"));
-			t.is("a", dojo.string.trim("   a   "));
+			t.is("a", dojo.string.trim("	 a	 "));
 		},
 		
 		function test_string_rep(t){
@@ -90,3 +88,5 @@ tests.register("tests.string",
 		}
 	]
 );
+
+});

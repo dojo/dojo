@@ -1,4 +1,9 @@
-define("dojo/store/util/QueryResults", ["dojo"], function(dojo) {
+define(["../.."], function(dojo) {
+	//  module:
+	//    dojo/store/util/QueryResults
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("store.util", true, dojo);
 
 dojo.store.util.QueryResults = function(results){

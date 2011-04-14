@@ -1,7 +1,6 @@
-dojo.provide("tests._base.lang");
+define(["dojo", "doh"], function(dojo, doh){
 
-tests.register("tests._base.lang",
-	[
+	doh.register("tests._base.lang", [
 		function mixin(t){
 			t.assertEqual("object", typeof dojo.mixin());
 			t.assertEqual("object", typeof dojo.mixin(undefined));
@@ -240,9 +239,9 @@ tests.register("tests._base.lang",
 				{
 					nick: "Bob",
 					name: {
-						first:  "Robert",
+						first:	"Robert",
 						middle: "X",
-						last:   "Cringely"
+						last:		"Cringely"
 					}
 				});
 			t.is("Hello, Robert Cringely AKA Bob!", s1);
@@ -262,10 +261,10 @@ tests.register("tests._base.lang",
 					function(_, key){
 						switch(key){
 							case "count": return this.payments.length;
-							case "min":   return Math.min.apply(Math, this.payments);
-							case "max":   return Math.max.apply(Math, this.payments);
-							case "sum":   return sum(this.payments);
-							case "avg":   return sum(this.payments) / this.payments.length;
+							case "min":		return Math.min.apply(Math, this.payments);
+							case "max":		return Math.max.apply(Math, this.payments);
+							case "sum":		return sum(this.payments);
+							case "avg":		return sum(this.payments) / this.payments.length;
 						}
 						return "";
 					}
@@ -276,4 +275,5 @@ tests.register("tests._base.lang",
 			t.is("Hello, Robert Cringely!", s4);
 		}
 	]
-);
+	);
+});

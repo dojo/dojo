@@ -1,4 +1,9 @@
-define("dojo/fx", ["dojo", "dojo/fx/Toggler"], function(dojo) {
+define([".", "./fx/Toggler"], function(dojo) {
+	//  module:
+	//    dojo/fx
+	//	summary:
+	//		TODOC:This module defines 
+
 
 /*=====
 dojo.fx = {

@@ -1,10 +1,6 @@
-dojo.provide("tests.cache");
-
-dojo.require("dojo.cache");
-
-tests.register("tests.cache",
-	[
-		{
+define(["..", "doh", "../cache"], function(dojo, doh) {
+	doh.register("tests.cache",	[{
+			name: "dojo.cache",
 			runTest: function(t){
 				var expected = "<h1>Hello World</h1>";
 
@@ -29,5 +25,5 @@ tests.register("tests.cache",
 				t.is("", dojo.cache("dojo.tests.cache", "regular.html"));
 			}
 		}
-	]
-);
+	]);
+});

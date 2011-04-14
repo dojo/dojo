@@ -1,4 +1,9 @@
-define("dojo/rpc/RpcService", ["dojo"], function(dojo) {
+define([".."], function(dojo) {
+	//  module:
+	//    dojo/rpc/RpcService
+	//	summary:
+	//		TODOC:This module defines 
+
 
 dojo.declare("dojo.rpc.RpcService", null, {
 	constructor: function(args){

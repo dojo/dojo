@@ -6,13 +6,9 @@
 		<style type="text/css">
 			@import "../resources/dojo.css";
 		</style>
-		<script type="text/javascript" 
-			src="../dojo.js" djConfig="isDebug: true, popup: true"></script>
+		<script type="text/javascript" src="../dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-			dojo.require("dojo.NodeList-fx");
-
-			dojo.addOnLoad(function(){
+			require(["dojo", "doh", "dojo/NodeList-fx", "*ready"], function(dojo, doh){
 				doh.register("NodeList-fx", 
 					[
 						function fadeOut(){
@@ -131,7 +127,7 @@
 	<body>
 		<p>
 		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean semper
-		sagittis velit. Cras in mi. Duis porta mauris ut ligula.  Proin porta
+		sagittis velit. Cras in mi. Duis porta mauris ut ligula.	Proin porta
 		rutrum lacus. Etiam consequat scelerisque quam. Nulla facilisi.
 		Maecenas luctus venenatis nulla. In sit amet dui non mi semper iaculis.
 		Sed molestie tortor at ipsum. Morbi dictum rutrum magna. Sed vitae

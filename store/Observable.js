@@ -1,4 +1,9 @@
-define("dojo/store/Observable", ["dojo"], function(dojo) {
+define([".."], function(dojo) {
+	//  module:
+	//    dojo/store/Observable
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("store", true, dojo);
 
 dojo.store.Observable = function(store){

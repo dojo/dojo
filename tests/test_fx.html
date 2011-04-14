@@ -40,11 +40,10 @@
 				/* position: absolute; */
 			}
 		</style>
-		<script type="text/javascript" src="../dojo.js" djConfig="isDebug: true"></script>
-		<script type="text/javascript" src="../fx.js"></script>
+
+		<script type="text/javascript" src="../dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("dojo.fx");
-			dojo.addOnLoad(function(){
+			require(["dojo", "doh", "dojo/fx", "*ready"], function(dojo, doh){
 				dojo.byId("foo").style.height = "0px";
 				var w1 = dojo.fx.wipeIn({
 					node: "foo",
@@ -84,8 +83,8 @@
 			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
 			semper sagittis velit. Cras in mi. Duis porta mauris ut ligula.
 			Proin porta rutrum lacus. Etiam consequat scelerisque quam. Nulla
-			facilisi.  Maecenas luctus venenatis nulla. In sit amet dui non mi
-			semper iaculis.  Sed molestie tortor at ipsum. Morbi dictum rutrum
+			facilisi.	 Maecenas luctus venenatis nulla. In sit amet dui non mi
+			semper iaculis.	 Sed molestie tortor at ipsum. Morbi dictum rutrum
 			magna. Sed vitae risus.
 			</p>
 			<p>

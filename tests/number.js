@@ -1,7 +1,5 @@
-dojo.provide("tests.number");
-
-dojo.require("dojo.number");
-
+define(["..", "doh", "../number", "../i18n"], function(dojo, doh){
+var tests= {number:{}};
 /**
  * Refer to ICU4J's NumberFormatTest.expect(...)
  */
@@ -30,17 +28,17 @@ tests.number.checkFormatParseCycle=function(t,options,sourceInput,expectResult,
 	var result = dojo.number.format(sourceInput,options);
 	//print("result:" + result);
 	if(null != expectResult){
-	    t.is(expectResult,result);
+			t.is(expectResult,result);
 	}
 	if(backwardCheck){
 		var resultParsed = dojo.number.parse(result,options);
 		//print("resultParsed:" + resultParsed);
 		if(!tests.number._decimalNumberDiff(sourceInput,resultParsed)){
-		    t.is(sourceInput,resultParsed);
+				t.is(sourceInput,resultParsed);
 		}
 		var resultParsedReformatted = dojo.number.format(resultParsed,options);
 		//print("resultParsedReformatted:" + resultParsedReformatted);
-	    if(!tests.number._decimalNumberDiff(result,resultParsedReformatted)){
+			if(!tests.number._decimalNumberDiff(result,resultParsedReformatted)){
 			t.is(result,resultParsedReformatted);
 		}
 	}
@@ -58,7 +56,7 @@ tests.number.checkParse=function(t,options,sourceInput,expectResult){
 	var result = dojo.number.parse(sourceInput,options);
 	//print("result :" + result);
 	if(null != expectResult){
-	    t.is(expectResult,result);
+			t.is(expectResult,result);
 	}
 }
 
@@ -126,9 +124,9 @@ tests.number._decimalNumberDiff = function(num1,num2){
 		return (new Number(s[1])< diffBound);
 	}
 	return false;
-}
+};
 
-tests.register("tests.number",
+doh.register("tests.number",
 	[
 		{
 			// Test formatting and parsing of currencies in various locales pre-built in dojo.cldr
@@ -139,22 +137,22 @@ tests.register("tests.number",
 			runTest: function(t){
 				var partLocaleList = ["en-us", "fr-fr", "de-de"];
 				tests.number.locale = "en-us";
-        if(dojo.global.define && define.vendor!="dojotoolkit.org"){ //tests for the asynchronous loader machinery
-            var
-              def = new doh.Deferred(),
-              deps= [];
-            dojo.forEach(partLocaleList, function(locale){
-              deps.push(dojo.getL10nName("dojo/cldr", "number", locale));
-            });
-            define(deps, function(){
+				if(require.async){
+						var
+							def = new doh.Deferred(),
+							deps= [];
+						dojo.forEach(partLocaleList, function(locale){
+							deps.push(dojo.getL10nName("dojo/cldr", "number", locale));
+						});
+						require(deps, function(){
 							def.callback(true);
-            });
-            return def;
-        }else{ // tests for the v1.x loader/i18n machinery
-  				for(var i = 0 ; i < partLocaleList.length; i ++){
-	  				dojo.requireLocalization("dojo.cldr","number",partLocaleList[i]);
-		  		}
-        }
+						});
+						return def;
+				}else{ // tests for the v1.x loader/i18n machinery
+					for(var i = 0 ; i < partLocaleList.length; i ++){
+						dojo.i18n.getLocalization("dojo.cldr","number",partLocaleList[i]);
+					}
+				}
 			}
 		},
 		{
@@ -203,29 +201,29 @@ tests.register("tests.number",
 				t.is(12345, dojo.number.round(12345 + -0.00001), "radx203");
 				t.is(12345, dojo.number.round(12345 + -0.000001), "radx204");
 				t.is(12345, dojo.number.round(12345 + -0.0000001), "radx205");
-				t.is(12345, dojo.number.round(12345 +  0), "radx206");
-				t.is(12345, dojo.number.round(12345 +  0.0000001), "radx207");
-				t.is(12345, dojo.number.round(12345 +  0.000001), "radx208");
-				t.is(12345, dojo.number.round(12345 +  0.00001), "radx209");
-				t.is(12345, dojo.number.round(12345 +  0.0001), "radx210");
-				t.is(12345, dojo.number.round(12345 +  0.001), "radx211");
-				t.is(12345, dojo.number.round(12345 +  0.01), "radx212");
-				t.is(12345, dojo.number.round(12345 +  0.1), "radx213");
+				t.is(12345, dojo.number.round(12345 +	 0), "radx206");
+				t.is(12345, dojo.number.round(12345 +	 0.0000001), "radx207");
+				t.is(12345, dojo.number.round(12345 +	 0.000001), "radx208");
+				t.is(12345, dojo.number.round(12345 +	 0.00001), "radx209");
+				t.is(12345, dojo.number.round(12345 +	 0.0001), "radx210");
+				t.is(12345, dojo.number.round(12345 +	 0.001), "radx211");
+				t.is(12345, dojo.number.round(12345 +	 0.01), "radx212");
+				t.is(12345, dojo.number.round(12345 +	 0.1), "radx213");
 
-				t.is(12346, dojo.number.round(12346 +  0.49999), "radx215");
-				t.is(12347, dojo.number.round(12346 +  0.5), "radx216");
-				t.is(12347, dojo.number.round(12346 +  0.50001), "radx217");
+				t.is(12346, dojo.number.round(12346 +	 0.49999), "radx215");
+				t.is(12347, dojo.number.round(12346 +	 0.5), "radx216");
+				t.is(12347, dojo.number.round(12346 +	 0.50001), "radx217");
 				
-				t.is(12345, dojo.number.round(12345 +  0.4), "radx220");
-				t.is(12345, dojo.number.round(12345 +  0.49), "radx221");
-				t.is(12345, dojo.number.round(12345 +  0.499), "radx222");
-				t.is(12345, dojo.number.round(12345 +  0.49999), "radx223");
-				t.is(12346, dojo.number.round(12345 +  0.5), "radx224");
-				t.is(12346, dojo.number.round(12345 +  0.50001), "radx225");
-				t.is(12346, dojo.number.round(12345 +  0.5001), "radx226");
-				t.is(12346, dojo.number.round(12345 +  0.501), "radx227");
-				t.is(12346, dojo.number.round(12345 +  0.51), "radx228");
-				t.is(12346, dojo.number.round(12345 +  0.6), "radx229");
+				t.is(12345, dojo.number.round(12345 +	 0.4), "radx220");
+				t.is(12345, dojo.number.round(12345 +	 0.49), "radx221");
+				t.is(12345, dojo.number.round(12345 +	 0.499), "radx222");
+				t.is(12345, dojo.number.round(12345 +	 0.49999), "radx223");
+				t.is(12346, dojo.number.round(12345 +	 0.5), "radx224");
+				t.is(12346, dojo.number.round(12345 +	 0.50001), "radx225");
+				t.is(12346, dojo.number.round(12345 +	 0.5001), "radx226");
+				t.is(12346, dojo.number.round(12345 +	 0.501), "radx227");
+				t.is(12346, dojo.number.round(12345 +	 0.51), "radx228");
+				t.is(12346, dojo.number.round(12345 +	 0.6), "radx229");
 				
 				//negatives
 				t.is(-12345, dojo.number.round(-12345 + -0.1), "rsux200");
@@ -234,70 +232,70 @@ tests.register("tests.number",
 				t.is(-12345, dojo.number.round(-12345 + -0.00001), "rsux203");
 				t.is(-12345, dojo.number.round(-12345 + -0.000001), "rsux204");
 				t.is(-12345, dojo.number.round(-12345 + -0.0000001), "rsux205");
-				t.is(-12345, dojo.number.round(-12345 +  0), "rsux206");
-				t.is(-12345, dojo.number.round(-12345 +  0.0000001), "rsux207");
-				t.is(-12345, dojo.number.round(-12345 +  0.000001), "rsux208");
-				t.is(-12345, dojo.number.round(-12345 +  0.00001), "rsux209");
-				t.is(-12345, dojo.number.round(-12345 +  0.0001), "rsux210");
-				t.is(-12345, dojo.number.round(-12345 +  0.001), "rsux211");
-				t.is(-12345, dojo.number.round(-12345 +  0.01), "rsux212");
-				t.is(-12345, dojo.number.round(-12345 +  0.1), "rsux213");
+				t.is(-12345, dojo.number.round(-12345 +	 0), "rsux206");
+				t.is(-12345, dojo.number.round(-12345 +	 0.0000001), "rsux207");
+				t.is(-12345, dojo.number.round(-12345 +	 0.000001), "rsux208");
+				t.is(-12345, dojo.number.round(-12345 +	 0.00001), "rsux209");
+				t.is(-12345, dojo.number.round(-12345 +	 0.0001), "rsux210");
+				t.is(-12345, dojo.number.round(-12345 +	 0.001), "rsux211");
+				t.is(-12345, dojo.number.round(-12345 +	 0.01), "rsux212");
+				t.is(-12345, dojo.number.round(-12345 +	 0.1), "rsux213");
 				
-				t.is(-12346, dojo.number.round(-12346 +  0.49999), "rsux215");
-				t.is(-12346, dojo.number.round(-12346 +  0.5), "rsux216");
-				t.is(-12345, dojo.number.round(-12346 +  0.50001   ), "rsux217");
+				t.is(-12346, dojo.number.round(-12346 +	 0.49999), "rsux215");
+				t.is(-12346, dojo.number.round(-12346 +	 0.5), "rsux216");
+				t.is(-12345, dojo.number.round(-12346 +	 0.50001	 ), "rsux217");
 				
-				t.is(-12345, dojo.number.round(-12345 +  0.4), "rsux220");
-				t.is(-12345, dojo.number.round(-12345 +  0.49), "rsux221");
-				t.is(-12345, dojo.number.round(-12345 +  0.499), "rsux222");
-				t.is(-12345, dojo.number.round(-12345 +  0.49999), "rsux223");
-				t.is(-12345, dojo.number.round(-12345 +  0.5), "rsux224");
-				t.is(-12344, dojo.number.round(-12345 +  0.50001), "rsux225");
-				t.is(-12344, dojo.number.round(-12345 +  0.5001), "rsux226");
-				t.is(-12344, dojo.number.round(-12345 +  0.501), "rsux227");
-				t.is(-12344, dojo.number.round(-12345 +  0.51), "rsux228");
-				t.is(-12344, dojo.number.round(-12345 +  0.6), "rsux229");
+				t.is(-12345, dojo.number.round(-12345 +	 0.4), "rsux220");
+				t.is(-12345, dojo.number.round(-12345 +	 0.49), "rsux221");
+				t.is(-12345, dojo.number.round(-12345 +	 0.499), "rsux222");
+				t.is(-12345, dojo.number.round(-12345 +	 0.49999), "rsux223");
+				t.is(-12345, dojo.number.round(-12345 +	 0.5), "rsux224");
+				t.is(-12344, dojo.number.round(-12345 +	 0.50001), "rsux225");
+				t.is(-12344, dojo.number.round(-12345 +	 0.5001), "rsux226");
+				t.is(-12344, dojo.number.round(-12345 +	 0.501), "rsux227");
+				t.is(-12344, dojo.number.round(-12345 +	 0.51), "rsux228");
+				t.is(-12344, dojo.number.round(-12345 +	 0.6), "rsux229");
 				
-				t.is(12345, dojo.number.round(  12345 /  1), "rdvx401");
-				t.is(12344, dojo.number.round(  12345 /  1.0001), "rdvx402");
-				t.is(12333, dojo.number.round(  12345 /  1.001), "rdvx403");
-				t.is(12223, dojo.number.round(  12345 /  1.01), "rdvx404");
-				t.is(11223, dojo.number.round(  12345 /  1.1), "rdvx405");
+				t.is(12345, dojo.number.round(	12345 /	 1), "rdvx401");
+				t.is(12344, dojo.number.round(	12345 /	 1.0001), "rdvx402");
+				t.is(12333, dojo.number.round(	12345 /	 1.001), "rdvx403");
+				t.is(12223, dojo.number.round(	12345 /	 1.01), "rdvx404");
+				t.is(11223, dojo.number.round(	12345 /	 1.1), "rdvx405");
 
-				t.is(3088.8, dojo.number.round( 12355 /  4, 1), "rdvx406");
-				t.is(3086.3, dojo.number.round( 12345 /  4, 1), "rdvx407");
-				t.is(3088.7, dojo.number.round( 12355 /  4.0001, 1), "rdvx408");
-				t.is(3086.2, dojo.number.round( 12345 /  4.0001, 1), "rdvx409");
-				t.is(2519.4, dojo.number.round( 12345 /  4.9, 1), "rdvx410");
-				t.is(2473.9, dojo.number.round( 12345 /  4.99, 1), "rdvx411");
-				t.is(2469.5, dojo.number.round( 12345 /  4.999, 1), "rdvx412");
-				t.is(2469.0, dojo.number.round( 12345 /  4.9999, 1), "rdvx413");
-				t.is(2469, dojo.number.round( 12345 /  5, 1), "rdvx414");
-				t.is(2469.0, dojo.number.round( 12345 /  5.0001, 1), "rdvx415");
-				t.is(2468.5, dojo.number.round( 12345 /  5.001, 1), "rdvx416");
-				t.is(2464.1, dojo.number.round( 12345 /  5.01, 1), "rdvx417");
-				t.is(2420.6, dojo.number.round( 12345 /  5.1, 1), "rdvx418");
+				t.is(3088.8, dojo.number.round( 12355 /	 4, 1), "rdvx406");
+				t.is(3086.3, dojo.number.round( 12345 /	 4, 1), "rdvx407");
+				t.is(3088.7, dojo.number.round( 12355 /	 4.0001, 1), "rdvx408");
+				t.is(3086.2, dojo.number.round( 12345 /	 4.0001, 1), "rdvx409");
+				t.is(2519.4, dojo.number.round( 12345 /	 4.9, 1), "rdvx410");
+				t.is(2473.9, dojo.number.round( 12345 /	 4.99, 1), "rdvx411");
+				t.is(2469.5, dojo.number.round( 12345 /	 4.999, 1), "rdvx412");
+				t.is(2469.0, dojo.number.round( 12345 /	 4.9999, 1), "rdvx413");
+				t.is(2469, dojo.number.round( 12345 /	 5, 1), "rdvx414");
+				t.is(2469.0, dojo.number.round( 12345 /	 5.0001, 1), "rdvx415");
+				t.is(2468.5, dojo.number.round( 12345 /	 5.001, 1), "rdvx416");
+				t.is(2464.1, dojo.number.round( 12345 /	 5.01, 1), "rdvx417");
+				t.is(2420.6, dojo.number.round( 12345 /	 5.1, 1), "rdvx418");
 
-				t.is(12345, dojo.number.round(  12345 *  1), "rmux401");
-				t.is(12346, dojo.number.round(  12345 *  1.0001), "rmux402");
-				t.is(12357, dojo.number.round(  12345 *  1.001), "rmux403");
-				t.is(12468, dojo.number.round(  12345 *  1.01), "rmux404");
-				t.is(13580, dojo.number.round(  12345 *  1.1), "rmux405");
-				t.is(49380, dojo.number.round(  12345 *  4), "rmux406");
-				t.is(49381, dojo.number.round(  12345 *  4.0001), "rmux407");
-				t.is(60491, dojo.number.round(  12345 *  4.9), "rmux408");
-				t.is(61602, dojo.number.round(  12345 *  4.99), "rmux409");
-				t.is(61713, dojo.number.round(  12345 *  4.999), "rmux410");
-				t.is(61724, dojo.number.round(  12345 *  4.9999), "rmux411");
-				t.is(61725, dojo.number.round(  12345 *  5), "rmux412");
-				t.is(61726, dojo.number.round(  12345 *  5.0001), "rmux413");
-				t.is(61737, dojo.number.round(  12345 *  5.001), "rmux414");
-				t.is(61848, dojo.number.round(  12345 *  5.01), "rmux415");
+				t.is(12345, dojo.number.round(	12345 *	 1), "rmux401");
+				t.is(12346, dojo.number.round(	12345 *	 1.0001), "rmux402");
+				t.is(12357, dojo.number.round(	12345 *	 1.001), "rmux403");
+				t.is(12468, dojo.number.round(	12345 *	 1.01), "rmux404");
+				t.is(13580, dojo.number.round(	12345 *	 1.1), "rmux405");
+				t.is(49380, dojo.number.round(	12345 *	 4), "rmux406");
+				t.is(49381, dojo.number.round(	12345 *	 4.0001), "rmux407");
+				t.is(60491, dojo.number.round(	12345 *	 4.9), "rmux408");
+				t.is(61602, dojo.number.round(	12345 *	 4.99), "rmux409");
+				t.is(61713, dojo.number.round(	12345 *	 4.999), "rmux410");
+				t.is(61724, dojo.number.round(	12345 *	 4.9999), "rmux411");
+				t.is(61725, dojo.number.round(	12345 *	 5), "rmux412");
+				t.is(61726, dojo.number.round(	12345 *	 5.0001), "rmux413");
+				t.is(61737, dojo.number.round(	12345 *	 5.001), "rmux414");
+				t.is(61848, dojo.number.round(	12345 *	 5.01), "rmux415");
 /*
-				t.is(1.4814E+5, dojo.number.round(  12345 *  12), "rmux416");
-				t.is(1.6049E+5, dojo.number.round(  12345 *  13), "rmux417");
-				t.is(1.4826E+5, dojo.number.round(  12355 *  12), "rmux418");
-				t.is(1.6062E+5, dojo.number.round(  12355 *  13), "rmux419");
+				t.is(1.4814E+5, dojo.number.round(	12345 *	 12), "rmux416");
+				t.is(1.6049E+5, dojo.number.round(	12345 *	 13), "rmux417");
+				t.is(1.4826E+5, dojo.number.round(	12355 *	 12), "rmux418");
+				t.is(1.6062E+5, dojo.number.round(	12355 *	 13), "rmux419");
 */
 			}
 		},
@@ -370,7 +368,7 @@ tests.register("tests.number",
 	t.is(1.23456789, dojo.number.parse("1.23456789", {locale: "en-us"}));
 
 	//test whitespace
-//	t.is(-1234567, dojo.number.parse("  -1,234,567  ", {locale: "en-us"}));
+//	t.is(-1234567, dojo.number.parse("	-1,234,567	", {locale: "en-us"}));
 
 //	t.t(dojo.number.parse("9.1093826E-31"));
 	t.is(1.23, dojo.number.parse("123%", {locale: "en-us", type: "percent"}));
@@ -410,12 +408,12 @@ tests.register("tests.number",
  *
  * !!Failed cases are as follows:
  * 1.1234567890987654321234567890987654321 should be formatted as
- *   1,234,567,890,987,654,321,234,567,890,987,654,321 with all the default parameters,
- *   but got 1.234 instead, may due to the unimplemeted exponent.
+ *	 1,234,567,890,987,654,321,234,567,890,987,654,321 with all the default parameters,
+ *	 but got 1.234 instead, may due to the unimplemeted exponent.
  * 2.\u00a4 and ' are not replaced
- * 	 with pattern "'*&'' '\u00a4' ''&*' #,##0.00"
- *   1.0 should be formatted to "*&' Re. '&* 1.00",but got "'*&'' '\u00a4' ''&*' 1.00" instead
- *   etc.
+ *	 with pattern "'*&'' '\u00a4' ''&*' #,##0.00"
+ *	 1.0 should be formatted to "*&' Re. '&* 1.00",but got "'*&'' '\u00a4' ''&*' 1.00" instead
+ *	 etc.
  *
  */
 	//print("test_number_format_icu4j3_6() start..............");
@@ -466,11 +464,11 @@ tests.register("tests.number",
 	
 	//!!Failed case
 	//In ICU4J:
-	//        unquoted special characters in the suffix are illegal
-	//        so "000.000|###" is illegal; "000.000'|###'" is legal
+	//				unquoted special characters in the suffix are illegal
+	//				so "000.000|###" is illegal; "000.000'|###'" is legal
 	//dojo.number.format:
-	//        when formatting 1.2 with illegal pattern "000.000|###"
-	//		  no exception was thrown but got "001.200|###" instead.
+	//				when formatting 1.2 with illegal pattern "000.000|###"
+	//			no exception was thrown but got "001.200|###" instead.
 	
 	/*
 	patterns = (["000.000|###","000.000'|###'"]);
@@ -488,7 +486,7 @@ tests.register("tests.number",
 		if(exception && i==1){
 			throw "["+i+"]Failed when formatting 1.2 using legal pattern " + patterns[i];
 		}else if(!exception && i==0){
-			throw "["+i+"]Failed when formatting 1.2 using illegal pattern  " + patterns[i];
+			throw "["+i+"]Failed when formatting 1.2 using illegal pattern	" + patterns[i];
 		}
 	}*/
 	//print("test_number_format_Patterns() end..............\n");
@@ -566,14 +564,14 @@ tests.register("tests.number",
 	var result;
 	var expectResult;
 	
-    //TODO: !!Failed case - ###.###\u2030(\u2030 is ‰)
+		//TODO: !!Failed case - ###.###\u2030(\u2030 is ‰)
 	//Pattern ###.###\u2030 should format 0.4857 as 485.7\u2030,but got 485.700\u2030 instead
 	pattern = "###.###\u2030";
 	expectResult = "485.7\u2030";
 	result = dojo.number.format(0.4857,{pattern:pattern, locale: 'en-us'});
 	t.is(expectResult,result);
 
-    //TODO: !!Failed mile percent case - ###.###m
+		//TODO: !!Failed mile percent case - ###.###m
 	//Pattern "###.###m" should format 0.4857 to 485.7m, but got 0.485m instead
 	/*
 	pattern = "###.###m";
@@ -600,7 +598,7 @@ tests.register("tests.number",
 	//step1: 123456789 formated=> 12,34,56,789
 	//step2:12,34,56,789 parsed=> 123456789 => formated => 12,34,56,789
 	tests.number.checkFormatParseCycle(t, options,sourceInput,expectResult,true);
-						  
+							
 	//TODO: sencondary grouping not implemented yet ?
 	//Pattern "#,###" and secondaryGroupingSize=4 should format 123456789 to "12,3456,789"
 	
@@ -622,30 +620,30 @@ tests.register("tests.number",
  * TODO:!!Failed cases:
  * According to ICU4J test criteria:
  * 1.with pattern "*^##.##":
- * 	 0 should be formatted to "^^^^0",but got "*^0" instead,
- *   -1.3 should be formatted to "^-1.3",but got "-*^1.3" instead.
+ *	 0 should be formatted to "^^^^0",but got "*^0" instead,
+ *	 -1.3 should be formatted to "^-1.3",but got "-*^1.3" instead.
  *
  * 2.with pattern "##0.0####*_ 'g-m/s^2'" :
- *   0 should be formatted to "0.0______ g-m/s^2",but got ":0.0*_ 'g-m/s^2'" instead
- *   1.0/3 should be formatted to "0.33333__ g-m/s^2",but got "0.33333*_ 'g-m/s^2'" instead
+ *	 0 should be formatted to "0.0______ g-m/s^2",but got ":0.0*_ 'g-m/s^2'" instead
+ *	 1.0/3 should be formatted to "0.33333__ g-m/s^2",but got "0.33333*_ 'g-m/s^2'" instead
  *
  * 3.with pattern "*x#,###,###,##0.0#;*x(###,###,##0.0#)":
- * 	 -10 should be formatted to "xxxxxxxxxx(10.0)",but got "*x(10.0)" instead.
- *   10 should be formatted to "xxxxxxxxxxxx10.0",but got "*x10.0" instead.
- *   ......
- *   -1120456.37 should be formatted to "xx(1,120,456.37)",but got "*x(1,120,456.37)" instead.
- *   1120456.37 should be formatted to "xxxx1,120,456.37",but got "*x1,120,456.37" instead.
- *   -1252045600.37 should be formatted to "(1,252,045,600.37)",but got "*x(1,252,045,600.37)" instead.
- *   1252045600.37 should be formatted to "10,252,045,600.37",but got "*x10,252,045,600.37" instead.
+ *	 -10 should be formatted to "xxxxxxxxxx(10.0)",but got "*x(10.0)" instead.
+ *	 10 should be formatted to "xxxxxxxxxxxx10.0",but got "*x10.0" instead.
+ *	 ......
+ *	 -1120456.37 should be formatted to "xx(1,120,456.37)",but got "*x(1,120,456.37)" instead.
+ *	 1120456.37 should be formatted to "xxxx1,120,456.37",but got "*x1,120,456.37" instead.
+ *	 -1252045600.37 should be formatted to "(1,252,045,600.37)",but got "*x(1,252,045,600.37)" instead.
+ *	 1252045600.37 should be formatted to "10,252,045,600.37",but got "*x10,252,045,600.37" instead.
  *
  * 4.with pattern "#,###,###,##0.0#*x;(###,###,##0.0#*x)"
- * 	 -10 should be formatted to (10.0xxxxxxxxxx),but got "(10.0*x)" instead.
- *   10 should be formatted to "10.0xxxxxxxxxxxx",but got "10.0*x" instead.
- *   ......
- *   -1120456.37 should be formatted to "(1,120,456.37xx)",but got "(1,120,456.37*x)" instead.
- *   1120456.37 should be formatted to "xxxx1,120,456.37",but got "1,120,456.37*x" instead.
- *   -1252045600.37 should be formatted to "(1,252,045,600.37)",but got "(1,252,045,600.37*x)" instead.
- *   1252045600.37 should be formatted to ""10,252,045,600.37"",but got "10,252,045,600.37*x" instead.*
+ *	 -10 should be formatted to (10.0xxxxxxxxxx),but got "(10.0*x)" instead.
+ *	 10 should be formatted to "10.0xxxxxxxxxxxx",but got "10.0*x" instead.
+ *	 ......
+ *	 -1120456.37 should be formatted to "(1,120,456.37xx)",but got "(1,120,456.37*x)" instead.
+ *	 1120456.37 should be formatted to "xxxx1,120,456.37",but got "1,120,456.37*x" instead.
+ *	 -1252045600.37 should be formatted to "(1,252,045,600.37)",but got "(1,252,045,600.37*x)" instead.
+ *	 1252045600.37 should be formatted to ""10,252,045,600.37"",but got "10,252,045,600.37*x" instead.*
  *
  * Refer to ICU4J's NumberFormatTest.TestPad()
  */
@@ -746,20 +744,20 @@ function test_number_format_pad(){
 	 * [7]-".00",[9]-"12345, ",[10]-"1,234, ",[12]-"0E"
 	 */
 	var passData = ([
-		"0",           //[0] single zero before end of text is not leading
-        //"0 ",        //[1] single zero at end of number is not leading
-        //"0.",        //[2] single zero before period (or decimal, it's ambiguous) is not leading
-        //"0,",          //[3] single zero before comma (not group separator) is not leading
-        "0.0",         //[4] single zero before decimal followed by digit is not leading
-        //"0. ",       //[5] same as above before period (or decimal) is not leading
-        //"0.100,5",   //[6] comma stops parse of decimal (no grouping)
-        //".00",       //[7] leading decimal is ok, even with zeros
-        "1234567",     //[8] group separators are not required
-        //"12345, ",   //[9] comma not followed by digit is not a group separator, but end of number
-        //"1,234, ",   //[10] if group separator is present, group sizes must be appropriate
-        "1,234,567"   //[11] ...secondary too
-        //,"0E"         //[12]not implemented yet,an exponnent not followed by zero or digits is not an exponent
-         ]);
+		"0",					 //[0] single zero before end of text is not leading
+				//"0 ",				 //[1] single zero at end of number is not leading
+				//"0.",				 //[2] single zero before period (or decimal, it's ambiguous) is not leading
+				//"0,",					 //[3] single zero before comma (not group separator) is not leading
+				"0.0",				 //[4] single zero before decimal followed by digit is not leading
+				//"0. ",			 //[5] same as above before period (or decimal) is not leading
+				//"0.100,5",	 //[6] comma stops parse of decimal (no grouping)
+				//".00",			 //[7] leading decimal is ok, even with zeros
+				"1234567",		 //[8] group separators are not required
+				//"12345, ",	 //[9] comma not followed by digit is not a group separator, but end of number
+				//"1,234, ",	 //[10] if group separator is present, group sizes must be appropriate
+				"1,234,567"		//[11] ...secondary too
+				//,"0E"					//[12]not implemented yet,an exponnent not followed by zero or digits is not an exponent
+				 ]);
 	runBatchParse(options,passData,true/*tolerant parse*/);
 	
 	/*
@@ -769,21 +767,21 @@ function test_number_format_pad(){
 	 */
 	var failData = ([
 // leading zeros without separators are tolerated #6933
-//		"00",          //[0] leading zero before zero
-//		"012",         //[1] leading zero before digit
-        "0,456",       //[2] leading zero before group separator
-        "1,2",         //[3] wrong number of digits after group separator
-        ",0",          //[4] leading group separator before zero
-        ",1",          //[5] leading group separator before digit
-        ",.02",        //[6] leading group separator before decimal
-        "1,.02",       //[7] group separator before decimal
-        "1,,200",      //[8] multiple group separators
-        "1,45",        //[9] wrong number of digits in primary group
-        //"1,45 that",   //[10] wrong number of digits in primary group
-        "1,45.34",     //[11] wrong number of digits in primary group
-        "1234,567",    //[12] wrong number of digits in secondary group
-        "12,34,567",   //[13] wrong number of digits in secondary group
-        "1,23,456,7890" //[14] wrong number of digits in primary and secondary groups
+//		"00",					 //[0] leading zero before zero
+//		"012",				 //[1] leading zero before digit
+				"0,456",			 //[2] leading zero before group separator
+				"1,2",				 //[3] wrong number of digits after group separator
+				",0",					 //[4] leading group separator before zero
+				",1",					 //[5] leading group separator before digit
+				",.02",				 //[6] leading group separator before decimal
+				"1,.02",			 //[7] group separator before decimal
+				"1,,200",			 //[8] multiple group separators
+				"1,45",				 //[9] wrong number of digits in primary group
+				//"1,45 that",	 //[10] wrong number of digits in primary group
+				"1,45.34",		 //[11] wrong number of digits in primary group
+				"1234,567",		 //[12] wrong number of digits in secondary group
+				"12,34,567",	 //[13] wrong number of digits in secondary group
+				"1,23,456,7890" //[14] wrong number of digits in primary and secondary groups
 		]);
 	runBatchParse(options,failData,false);
 	
@@ -795,10 +793,10 @@ function test_number_format_pad(){
 	 * should be parsed to 1234567,but NaN instead
 	 */
 	var mixedPassData = ([
-		"12,34,567"    	//[0]
-        //,"12,34,567,"		//[1]
-        //"12,34,567, that",//[2]
-        //"12,34,567 that"	//[3]
+		"12,34,567"			//[0]
+				//,"12,34,567,"		//[1]
+				//"12,34,567, that",//[2]
+				//"12,34,567 that"	//[3]
 		]);
 	runBatchParse(options,mixedPassData,true/*tolerant parse*/);
 	
@@ -808,10 +806,10 @@ function test_number_format_pad(){
 	 * "12,34,56, that " and [3]-"12,34,56 that" should be parsed to 123456,but NaN instead
 	 */
 	var mixedFailData = ([
-        "12,34,56",			//[0]
-        "12,34,56,"		//[1]
-        //,"12,34,56, that ",//[2]
-        //"12,34,56 that",	//[3]
+				"12,34,56",			//[0]
+				"12,34,56,"		//[1]
+				//,"12,34,56, that ",//[2]
+				//"12,34,56 that",	//[3]
 		]);
 	runBatchParse(options,mixedFailData,false);
 	
@@ -820,13 +818,13 @@ function test_number_format_pad(){
 	 * TODO:May need to test strict parsing in the future?
 	 * e.g. A strict parsing like (with pattern "#,##0.#")
 	 * 1.Leading zeros
-	 * 		'00', '0123' fail the parse, but '0' and '0.001' pass
+	 *		'00', '0123' fail the parse, but '0' and '0.001' pass
 	 * 2.Leading or doubled grouping separators
-	 * 		',123' and '1,,234" fail
+	 *		',123' and '1,,234" fail
 	 * 3.Groups of incorrect length when grouping is used
-	 * 		'1,23' and '1234,567' fail, but '1234' passes
+	 *		'1,23' and '1234,567' fail, but '1234' passes
 	 * 4.Grouping separators used in numbers followed by exponents
-	 * 		'1,234E5' fails, but '1234E5' and '1,234E' pass
+	 *		'1,234E5' fails, but '1234E5' and '1,234E' pass
 	 */
 	//options={locale:"en",strict:true};
 	//runBatchParse(options,passData,false/*strict parse*/);
@@ -844,24 +842,24 @@ function test_number_format_pad(){
 			runTest: function(t){
 /**
  * TODO:!!Failed case
- * With pattern "a  b#0c  ",both "a b3456c " and and "a   b1234c   " should be parsed to 3456,but got NaN instead.
+ * With pattern "a	b#0c	",both "a b3456c " and and "a		b1234c	 " should be parsed to 3456,but got NaN instead.
  *
  * Refer to ICU4J's NumberFormatTest.TestWhiteSpaceParsing
  */
-    /*
+		/*
 	print("test_number_parse_WhiteSpace() start..............");
-   	var pattern = "a  b#0c  ";
+		var pattern = "a	b#0c	";
 	var expectResult = 3456;
-	result =  dojo.number.parse("a b3456c ",{pattern:pattern,locale:"en-us"});
-   	t.is(expectResult,result);
-	result =  dojo.number.parse("a   b3456c   ",{pattern:pattern,locale:"en-us"});
+	result =	dojo.number.parse("a b3456c ",{pattern:pattern,locale:"en-us"});
+		t.is(expectResult,result);
+	result =	dojo.number.parse("a	 b3456c		",{pattern:pattern,locale:"en-us"});
 	t.is(expectResult,result);
 	print("test_number_parse_WhiteSpace() end..............\n");
 	*/
 			}
 		},
 /*************************************************************************************************
- *                            Regression test cases
+ *														Regression test cases
  * These test cases are referred to ICU4J's NumberFormatRegressionTest and NumberFormatRegression.
  * The regression cases in ICU4J are used as unit test cases for bug fixing,
  * They are inluced here so that dojo.number may avoid those similar bugs.
@@ -883,27 +881,27 @@ function test_number_format_pad(){
  * Refer to ICU4J's NumberFormatRegressionTest.Test4408066()
  */
 	/*
-	var data =   ([-3.75, -2.5, -1.5,
-                   -1.25, 0,    1.0,
-                   1.25,  1.5,  2.5,
-                   3.75,  10.0, 255.5]);
+	var data =	 ([-3.75, -2.5, -1.5,
+									 -1.25, 0,		1.0,
+									 1.25,	1.5,	2.5,
+									 3.75,	10.0, 255.5]);
 	var expected = (["-4", "-2", "-2",
-                    "-1", "0",  "1",
-                	"1",  "2",  "2",
-                	"4",  "10", "256"]);
+										"-1", "0",	"1",
+									"1",	"2",	"2",
+									"4",	"10", "256"]);
 	var options = {locale:"zh-cn",round:true};
 	for(var i =0; i < data.length; i++){
 		tests.number.checkFormatParseCycle(t, options,data[i],expected[i],false);
 	}
 
-	data = ([ 	"-3.75", "-2.5", "-1.5",
-              	"-1.25", "0",    "1.0",
-              	"1.25",  "1.5",  "2.5",
-              	"3.75",  "10.0", "255.5"]);
+	data = ([		"-3.75", "-2.5", "-1.5",
+								"-1.25", "0",		 "1.0",
+								"1.25",	 "1.5",	 "2.5",
+								"3.75",	 "10.0", "255.5"]);
 	expected =([ -3, -2, -1,
-                 -1, 0,  1,
-                 1,  1,  2,
-                 3,  10, 255]);
+								 -1, 0,	 1,
+								 1,	 1,	 2,
+								 3,	 10, 255]);
 	
 	for(var i =0; i < data.length; i++){
 		tests.number.checkParse(t, options,data[i],expected[i]);
@@ -978,7 +976,7 @@ function test_number_format_pad(){
 	pattern = "#,###.00;(#,###.00)";
 	options = {pattern:pattern,locale:locale};
 	tests.number.checkFormatParseCycle(t, options,1234,"1\u00a0234,00",false);// Expect 1 234,00
-	tests.number.checkFormatParseCycle(t, options,-1234,"(1\u00a0234,00)",false);  // Expect (1 234,00)
+	tests.number.checkFormatParseCycle(t, options,-1234,"(1\u00a0234,00)",false);	 // Expect (1 234,00)
 			}
 		},
 		{
@@ -998,12 +996,12 @@ function test_number_format_pad(){
 /**
  * !!Failed case
  * 1.with pattern "#,#00.00 p''ieces;-#,#00.00 p''ieces"
- *   3456.78 should be formated to "3,456.78 p'ieces",
- *   but got "3,456.78 p''ieces","''" should be replaced with "'"
+ *	 3456.78 should be formated to "3,456.78 p'ieces",
+ *	 but got "3,456.78 p''ieces","''" should be replaced with "'"
  * 2.with illegal pattern "000.0#0"
- * 	 no error for the illegal pattern, and 3456.78 is formatted to 456.780
+ *	 no error for the illegal pattern, and 3456.78 is formatted to 456.780
  * 3.with illegal pattern "0#0.000"
- * 	 no error for the illegal pattern, and 3456.78 is formatted to 3456.780
+ *	 no error for the illegal pattern, and 3456.78 is formatted to 3456.780
  *
  * Refer to ICU4J's NumberRegression.Test4092480(),Test4074454()
  */
@@ -1051,7 +1049,7 @@ function test_number_format_pad(){
 	tests.number.checkFormatParseCycle(t, {pattern:"##,###,###.00", locale: 'en-us'},9.02,"9.02",false);
 	
 	var patterns =(["#.00", "0.00", "00.00", "#0.0#", "#0.00"]);
-	var expect =  (["1.20", "1.20", "01.20", "1.2",   "1.20" ]);
+	var expect =	(["1.20", "1.20", "01.20", "1.2",		"1.20" ]);
 	for(var i =0 ; i < patterns.length; i ++){
 		tests.number.checkFormatParseCycle(t, {pattern:patterns[i], locale: 'en-us'},1.2,expect[i],false);
 	}
@@ -1072,7 +1070,7 @@ function test_number_format_pad(){
  * pattern:'%'#0'%'; expect:"%123%"; but got "'%'12300'%'" instead
  * pattern:'#'#0'#'; expect:"#123#"; but got "'123'#0'#'" instead
  * pattern:';'#0';'; expect:";123;"; but got "[dojo-test] FATAL exception raised:
- * 											  unable to find a number expression in pattern: '"
+ *												unable to find a number expression in pattern: '"
  * pattern:'E'#0'E'; expect:"E123E"; not implemeted yet
  * pattern:'*'#0'*'; expect:"*123*"; but got "'*'123'*'" instead
  * pattern:'+'#0'+'; expect:"+123+"; but got "'+'123'+'" instead
@@ -1089,7 +1087,7 @@ function test_number_format_pad(){
 	
 	for(var i=0; i < specials.length; i ++){
 		pattern = "'" + specials[i] + "'#0'" + specials[i] + "'";
-		expect = "" +  specials[i] + "123" +  specials[i];
+		expect = "" +	 specials[i] + "123" +	specials[i];
 		tests.number.checkFormatParseCycle(t, {pattern:pattern,locale:"en-us"},123,expect,false);
 	}
 */
@@ -1109,17 +1107,17 @@ function test_number_format_pad(){
  */
 /*
 	var input = ([ .019, .009, .015, .016, .014,
-                	.004, .005, .006, .007, .008,
-                	.5, 1.5, .05, .15, .005,
-                	.015, .0005, .0015]);
+									.004, .005, .006, .007, .008,
+									.5, 1.5, .05, .15, .005,
+									.015, .0005, .0015]);
 	var patterns = (["##0%", "##0%", "##0%", "##0%", "##0%",
-                	 "##0%", "##0%", "##0%", "##0%", "##0%",
-                	 "#,##0", "#,##0", "#,##0.0", "#,##0.0", "#,##0.00",
-                	 "#,##0.00", "#,##0.000", "#,##0.000"]);
-	var expect =([   "2%", "1%", "2%", "2%", "1%",
-                	 "0%", "0%", "1%", "1%", "1%",
-                	 "0", "2", "0.0", "0.2", "0.00",
-                	 "0.02", "0.000", "0.002"]);
+									 "##0%", "##0%", "##0%", "##0%", "##0%",
+									 "#,##0", "#,##0", "#,##0.0", "#,##0.0", "#,##0.00",
+									 "#,##0.00", "#,##0.000", "#,##0.000"]);
+	var expect =([	 "2%", "1%", "2%", "2%", "1%",
+									 "0%", "0%", "1%", "1%", "1%",
+									 "0", "2", "0.0", "0.2", "0.00",
+									 "0.02", "0.000", "0.002"]);
 	for(var i = 0; i <input.length; i ++){
 		tests.number.checkFormatParseCycle(t, {pattern:patterns[i],round:true},input[i],expect[i],false);
 	}
@@ -1128,3 +1126,4 @@ function test_number_format_pad(){
 		}
 	]
 );
+});

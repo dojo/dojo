@@ -1,12 +1,6 @@
-dojo.provide("tests.rpc");
+define(["..", "doh", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"], function(dojo, doh){
 
-dojo.require("dojo.rpc.RpcService");
-dojo.require("dojo.rpc.JsonService");
-dojo.require("dojo.rpc.JsonpService");
-
-doh.register("tests.rpc",
-	[
-
+	doh.register("tests.rpc", [
 		{
 			name: "JsonRPC-EchoTest",
 			timeout: 2000,
@@ -25,7 +19,7 @@ doh.register("tests.rpc",
 							]
 						}
 					]
-				}
+				};
 			
 				this.svc = new dojo.rpc.JsonService(testSmd);
 			},
@@ -63,7 +57,7 @@ doh.register("tests.rpc",
 				var testSmd={
 					serviceURL:"../../dojo/tests/resources/test_JsonRPCMediator.php",
 					methods:[ { name:"contentB" } ]
-				}
+				};
 			
 				this.svc = new dojo.rpc.JsonService(testSmd);
 			},
@@ -141,7 +135,9 @@ doh.register("tests.rpc",
 				return d;
 			}
 		}
-	]
-);
+	]);
+
+});
+
 
 

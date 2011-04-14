@@ -3,13 +3,9 @@
 <html>
 	<head>
 		<title>Testing dojo.fx</title>
-		<script type="text/javascript" src="../dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-			dojo.require("dojo.fx");
-			dojo.require("dojo.fx.easing");
-
-			dojo.addOnLoad(function(){
+			require(["dojo", "doh", "dojo/fx", "dojo/fx/easing", "*ready"], function(dojo, doh){
 				doh.register("t", 
 					[
 						function slideTo(t){
@@ -52,7 +48,7 @@
 									node: "foo", 
 									onEnd: function(){
 										console.debug(dojo.style("foo", "height"));
-										doh.t(dojo.style("foo", "height") >  10);
+										doh.t(dojo.style("foo", "height") >	 10);
 										d.callback(true);
 									}
 								}).play();
@@ -259,8 +255,8 @@
 						function Toggler(){
 							var d = new doh.Deferred();
 							var t = new dojo.fx.Toggler({
-							    node: "foo",
-							    hideDuration: 100,
+									node: "foo",
+									hideDuration: 100,
 								hideFunc: dojo.fx.wipeOut,
 								showFunc: dojo.fx.wipeIn 
 							});
@@ -456,8 +452,8 @@
 			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
 			semper sagittis velit. Cras in mi. Duis porta mauris ut ligula.
 			Proin porta rutrum lacus. Etiam consequat scelerisque quam. Nulla
-			facilisi.  Maecenas luctus venenatis nulla. In sit amet dui non mi
-			semper iaculis.  Sed molestie tortor at ipsum. Morbi dictum rutrum
+			facilisi.	 Maecenas luctus venenatis nulla. In sit amet dui non mi
+			semper iaculis.	 Sed molestie tortor at ipsum. Morbi dictum rutrum
 			magna. Sed vitae risus.
 			</p>
 			<p>

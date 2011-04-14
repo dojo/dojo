@@ -1,4 +1,9 @@
-define("dojo/hash", ["dojo"], function(dojo) {
+define(["."], function(dojo) {
+	//  module:
+	//    dojo/hash
+	//	summary:
+	//		TODOC:This module defines 
+
 
 //TODOC: where does this go?
 // summary:

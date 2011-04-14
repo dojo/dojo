@@ -1,10 +1,11 @@
-define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(dojo){
+define(["./kernel", "./connect"], function(dojo){
+	//	module:
+	//		dojo/_base/event
+	//	summary:
+	//		This module defines dojo DOM event API.
+	//	notes:
+	//		This file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
-// this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
-
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-(function(){
-//>>excludeEnd("webkitMobile");
 	// DOM event listener machinery
 	var del = (dojo._event_listener = {
 		add: function(/*DOMNode*/ node, /*String*/ name, /*Function*/ fp){
@@ -231,13 +232,13 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 	dojo.mouseButtons = {
 		// LEFT: Number
 		//		Numeric value of the left mouse button for the platform.
-		LEFT:   0,
+		LEFT:		0,
 		// MIDDLE: Number
 		//		Numeric value of the middle mouse button for the platform.
 		MIDDLE: 1,
 		// RIGHT: Number
 		//		Numeric value of the right mouse button for the platform.
-		RIGHT:  2,
+		RIGHT:	2,
 	
 		isButton: function(e, button){
 			// summary:
@@ -275,26 +276,26 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks)){
 		dojo.mouseButtons = {
-			LEFT:   1,
+			LEFT:		1,
 			MIDDLE: 4,
-			RIGHT:  2,
+			RIGHT:	2,
 			// helper functions
 			isButton: function(e, button){ return e.button & button; },
-			isLeft:   function(e){ return e.button & 1; },
+			isLeft:		function(e){ return e.button & 1; },
 			isMiddle: function(e){ return e.button & 4; },
-			isRight:  function(e){ return e.button & 2; }
+			isRight:	function(e){ return e.button & 2; }
 		};
 	}else{
 	//>>excludeEnd("webkitMobile");
 		dojo.mouseButtons = {
-			LEFT:   0,
+			LEFT:		0,
 			MIDDLE: 1,
-			RIGHT:  2,
+			RIGHT:	2,
 			// helper functions
 			isButton: function(e, button){ return e.button == button; },
-			isLeft:   function(e){ return e.button == 0; },
+			isLeft:		function(e){ return e.button == 0; },
 			isMiddle: function(e){ return e.button == 1; },
-			isRight:  function(e){ return e.button == 2; }
+			isRight:	function(e){ return e.button == 2; }
 		};
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}
@@ -479,7 +480,7 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 					var faux = del._synthesizeEvent(evt, {type: 'keypress', faux: true, charCode: c});
 					kp.call(evt.currentTarget, faux);
 					if(dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks)){
-						evt.cancelBubble = faux.cancelBubble;
+					evt.cancelBubble = faux.cancelBubble;
 					}
 					evt.returnValue = faux.returnValue;
 					_trySetKeyCode(evt, faux.keyCode);
@@ -615,9 +616,6 @@ define("dojo/_base/event", ["dojo/lib/kernel", "dojo/_base/connect"], function(d
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}
 	//>>excludeEnd("webkitMobile");
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-})();
-//>>excludeEnd("webkitMobile");
 
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 if(dojo.isIE){

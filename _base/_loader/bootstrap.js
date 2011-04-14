@@ -1,3 +1,4 @@
+//>>not-amd pragma for docscript to say this is not an amd module 
 //>>includeStart("amdLoader", kwArgs.asynchLoader);
 (function(){
 

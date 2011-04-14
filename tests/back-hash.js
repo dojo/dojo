@@ -1,9 +1,5 @@
-dojo.provide("tests.back-hash");
-
-dojo.require("dojo.back");
-
-(function(){
-	tests.register("tests.back.hash", [
+define(["..", "doh", "../back"], function(dojo, doh){
+	doh.register("tests.back.hash", [
 		function getAndSet(t) {
 			var cases = [
 				"test",
@@ -26,4 +22,4 @@ dojo.require("dojo.back");
 			dojo.forEach(cases, verify);
 		}
 	]);
-})();
+});

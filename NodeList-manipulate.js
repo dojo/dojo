@@ -1,4 +1,9 @@
-define("dojo/NodeList-manipulate", ["dojo"], function(dojo) {
+define(["."], function(dojo) {
+	//  module:
+	//    dojo/NodeList-manipulate
+	//	summary:
+	//		TODOC:This module defines 
+
 
 /*=====
 dojo["NodeList-manipulate"] = {

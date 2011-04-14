@@ -1,4 +1,9 @@
-define("dojo/NodeList-traverse", ["dojo"], function(dojo) {
+define(["."], function(dojo) {
+	//  module:
+	//    dojo/NodeList-traverse
+	//	summary:
+	//		TODOC:This module defines 
+
 
 /*=====
 dojo["NodeList-traverse"] = {

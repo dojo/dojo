@@ -1,10 +1,7 @@
-dojo.provide("tests.uacss");
+define(["doh", "require"], function(doh, require){
 
-// Run tests for sniffer browser and setting corresponding class name on <html>
+	doh.register(require.nameToUrl("./uacss/sniffQuirks.html"));
+	doh.register(require.nameToUrl("./uacss/sniffStandards.html"));
 
-try{
-	doh.registerUrl("tests.uacss.sniffQuirks", dojo.moduleUrl("dojo", "tests/uacss/sniffQuirks.html"));
-	doh.registerUrl("tests.uacss.sniffStandards", dojo.moduleUrl("dojo", "tests/uacss/sniffStandards.html"));
-}catch(e){
-	doh.debug(e);
-}
+});
+

@@ -4,27 +4,20 @@
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
-		<script type="text/javascript" src="../../dojo.js" 
-			djConfig="isDebug: true, debugAtAllCosts: false, popup: false, noFirebugLite: true"></script>
-		<!--
-		<script type="text/javascript" src="../_base/query.js"></script>
-		-->
-		<script type="text/javascript" src="../../../util/doh/runner.js"></script>
+		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-			dojo.require("dojo.io.iframe");
+			require(["dojo", "doh", "dojo/io/iframe", "*ready"], function(dojo, doh){
 
-			function createDocument(xml){
-				var fauxXhr = { responseText: xml };
-				if("DOMParser" in dojo.global){
-					var parser = new DOMParser();
-					fauxXhr.responseXML = parser.parseFromString(xml, "text/xml");
+				function createDocument(xml){
+					var fauxXhr = { responseText: xml };
+					if("DOMParser" in dojo.global){
+						var parser = new DOMParser();
+						fauxXhr.responseXML = parser.parseFromString(xml, "text/xml");
+					}
+					// kludge: use dojo.xhr contentHandler for XML to process IE XMLDOC as needed
+					return dojo._contentHandlers["xml"](fauxXhr); // DOMDocument
 				}
-				// kludge: use dojo.xhr contentHandler for XML to process IE XMLDOC as needed
-				return dojo._contentHandlers["xml"](fauxXhr); // DOMDocument
-			}
 
-			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
 						// "doh.t(false, 'howdy!')",
@@ -267,7 +260,7 @@
 						}
 					]
 				);
-				doh.run();
+				doh.runOnLoad();
 			});
 		</script>
 	</head>

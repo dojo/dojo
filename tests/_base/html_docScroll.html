@@ -3,13 +3,10 @@
 <html>
 	<head>
 		<title>testing Core _docScroll function</title>
-		<script type="text/javascript" 
-			src="../../dojo.js" 
-			djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
+			require(["dojo", "doh", "*ready"], function(dojo, doh){
 			
-			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
 						function testNonScrolled(t){
@@ -45,20 +42,20 @@
 						function testSpeed(t){
 							var d = dojo;
 							var old_docScroll = function(){
-							        var
-							                _b = d.body(),
-							                _w = d.global,
-							                de = d.doc.documentElement;
-							        return {
-							                y: (_w.pageYOffset || de.scrollTop || _b.scrollTop || 0),
-							                x: (_w.pageXOffset || d._fixIeBiDiScrollLeft(de.scrollLeft) || _b.scrollLeft || 0)
-							        };
+											var
+															_b = d.body(),
+															_w = d.global,
+															de = d.doc.documentElement;
+											return {
+															y: (_w.pageYOffset || de.scrollTop || _b.scrollTop || 0),
+															x: (_w.pageXOffset || d._fixIeBiDiScrollLeft(de.scrollLeft) || _b.scrollLeft || 0)
+											};
 							};
 							var count = 10000; // initial guess
 							var new_docScroll = dojo._docScroll;
 							var t0 = new Date().getTime();
 							for (var i=0; i < count; i++){
-							        var j = new_docScroll();
+											var j = new_docScroll();
 							}
 							t0 = new Date().getTime() - t0;
 							// modify guess to get about 1 second of CPU crunching
@@ -69,12 +66,12 @@
 							}
 							t0 = new Date().getTime();
 							for (i=0; i < count; i++){
-							        j = new_docScroll();
+											j = new_docScroll();
 							}
 							t0 = new Date().getTime() - t0;
 							var t1 = new Date().getTime();
 							for (var i=0; i < count; i++){
-							        j = old_docScroll();
+											j = old_docScroll();
 							}
 							t1 = new Date().getTime() - t1;
 							console.log(Math.floor(100*(t1-t0)/t1)+"% speed improvement");
@@ -82,7 +79,7 @@
 						}
 					]
 				);
-				doh.run();
+				doh.runOnLoad();
 			});
 		</script>
 	</head>
@@ -93,9 +90,11 @@
 		</div>
 		<script type="text/javascript">
 			// make sure div is too big to display
-			var div = dojo.byId('div');
-			div.style.height = (dojo.doc.documentElement.clientHeight + 2) + "px";
-			div.style.width = (dojo.doc.documentElement.clientWidth + 1) + "px";
+			require(["dojo"], function(dojo) {
+				var div = dojo.byId('div');
+				div.style.height = (dojo.doc.documentElement.clientHeight + 2) + "px";
+				div.style.width = (dojo.doc.documentElement.clientWidth + 1) + "px";
+			});
 		</script>
 	</body>
 </html>

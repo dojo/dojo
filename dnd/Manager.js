@@ -1,4 +1,9 @@
-define("dojo/dnd/Manager", ["dojo", "dojo/dnd/common", "dojo/dnd/autoscroll", "dojo/dnd/Avatar"], function(dojo) {
+define(["..", "./common", "./autoscroll", "./Avatar"], function(dojo) {
+	//  module:
+	//    dojo/dnd/Manager
+	//	summary:
+	//		TODOC:This module defines 
+
 
 dojo.declare("dojo.dnd.Manager", null, {
 	// summary:

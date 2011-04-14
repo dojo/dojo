@@ -1,4 +1,5 @@
-dojo.provide("tests.NodeList-traverse");
-if(dojo.isBrowser){
-	doh.registerUrl("tests.NodeList-traverse", dojo.moduleUrl("tests", "NodeList-traverse.html"));
-}
+define(["doh", "require"], function(doh, require){
+	if(doh.isBrowser){
+		doh.register(require.nameToUrl("./NodeList-traverse.html"), 30000);
+	}
+});

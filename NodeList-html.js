@@ -1,4 +1,9 @@
-define("dojo/NodeList-html", ["dojo", "dojo/html"], function(dojo) {
+define([".", "./html"], function(dojo) {
+	//  module:
+	//    dojo/NodeList-html
+	//	summary:
+	//		TODOC:This module defines 
+
 
 /*=====
 dojo["NodeList-html"] = {

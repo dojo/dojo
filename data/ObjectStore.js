@@ -1,4 +1,9 @@
-define("dojo/data/ObjectStore", ["dojo", "dojo/regexp"], function(dojo) {
+define(["..", "../regexp"], function(dojo) {
+	//  module:
+	//    dojo/data/ObjectStore
+	//	summary:
+	//		TODOC:This module defines 
+
 
 
 dojo.declare("dojo.data.ObjectStore", null,{

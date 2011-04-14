@@ -1,4 +1,5 @@
-dojo.provide("tests.io.script");
-if(dojo.isBrowser){
-	doh.registerUrl("tests.io.script", dojo.moduleUrl("tests.io", "script.html"));
-}
+define(["doh", "require"], function(doh, require){
+	if(doh.isBrowser){
+		doh.register(require.nameToUrl("./script.html"));
+	}
+});

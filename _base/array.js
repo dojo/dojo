@@ -1,26 +1,29 @@
-define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo){
+define(["./kernel", "./lang"], function(dojo){
+	//	module:
+	//		dojo/_base/array
+	//	summary:
+	//		This module defines the Javascript v1.6 array extensions.
 
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-(function(){
-	var _getParts = function(arr, obj, cb){
-		return [
-			(typeof arr == "string") ? arr.split("") : arr,
-			obj || dojo.global,
-			// FIXME: cache the anonymous functions we create here?
-			(typeof cb == "string") ? new Function("item", "index", "array", cb) : cb
-		];
-	};
+	var 
+		getParts = function(arr, obj, cb){
+			return [
+				(typeof arr == "string") ? arr.split("") : arr,
+				obj || dojo.global,
+				// FIXME: cache the anonymous functions we create here?
+				(typeof cb == "string") ? new Function("item", "index", "array", cb) : cb
+			];
+		},
 
-	var everyOrSome = function(/*Boolean*/every, /*Array|String*/arr, /*Function|String*/callback, /*Object?*/thisObject){
-		var _p = _getParts(arr, thisObject, callback); arr = _p[0];
-		for(var i=0,l=arr.length; i<l; ++i){
-			var result = !!_p[2].call(_p[1], arr[i], i, arr);
-			if(every ^ result){
-				return result; // Boolean
+		everyOrSome = function(/*Boolean*/every, /*Array|String*/arr, /*Function|String*/callback, /*Object?*/thisObject){
+			var _p = getParts(arr, thisObject, callback); arr = _p[0];
+			for(var i=0,l=arr.length; i<l; ++i){
+				var result = !!_p[2].call(_p[1], arr[i], i, arr);
+				if(every ^ result){
+					return result; // Boolean
+				}
 			}
-		}
-		return every; // Boolean
-	};
+			return every; // Boolean
+		};
 
 	dojo.mixin(dojo, {
 		indexOf: function(	/*Array*/		array,
@@ -60,7 +63,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript
 			//		1.6's lastIndexOf skips the holes in the sparse array.
 			//		For details on this method, see:
-			// 			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/lastIndexOf
+			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/lastIndexOf
 			return dojo.indexOf(array, value, fromIndex, true); // Number
 		},
 
@@ -82,50 +85,50 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		For more details, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/forEach
 			//	example:
-			//	|	// log out all members of the array:
-			//	|	dojo.forEach(
+			//	| // log out all members of the array:
+			//	| dojo.forEach(
 			//	|		[ "thinger", "blah", "howdy", 10 ],
 			//	|		function(item){
 			//	|			console.log(item);
 			//	|		}
-			//	|	);
+			//	| );
 			//	example:
-			//	|	// log out the members and their indexes
-			//	|	dojo.forEach(
+			//	| // log out the members and their indexes
+			//	| dojo.forEach(
 			//	|		[ "thinger", "blah", "howdy", 10 ],
 			//	|		function(item, idx, arr){
 			//	|			console.log(item, "at index:", idx);
 			//	|		}
-			//	|	);
+			//	| );
 			//	example:
-			//	|	// use a scoped object member as the callback
+			//	| // use a scoped object member as the callback
 			//	|
-			//	|	var obj = {
+			//	| var obj = {
 			//	|		prefix: "logged via obj.callback:",
 			//	|		callback: function(item){
 			//	|			console.log(this.prefix, item);
 			//	|		}
-			//	|	};
+			//	| };
 			//	|
-			//	|	// specifying the scope function executes the callback in that scope
-			//	|	dojo.forEach(
+			//	| // specifying the scope function executes the callback in that scope
+			//	| dojo.forEach(
 			//	|		[ "thinger", "blah", "howdy", 10 ],
 			//	|		obj.callback,
 			//	|		obj
-			//	|	);
+			//	| );
 			//	|
-			//	|	// alternately, we can accomplish the same thing with dojo.hitch()
-			//	|	dojo.forEach(
+			//	| // alternately, we can accomplish the same thing with dojo.hitch()
+			//	| dojo.forEach(
 			//	|		[ "thinger", "blah", "howdy", 10 ],
 			//	|		dojo.hitch(obj, "callback")
-			//	|	);
+			//	| );
 
 			// match the behavior of the built-in forEach WRT empty arrs
 			if(!arr || !arr.length){ return; }
 
 			// FIXME: there are several ways of handilng thisObject. Is
 			// dojo.global always the default context?
-			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
+			var _p = getParts(arr, thisObject, callback); arr = _p[0];
 			for(var i=0,l=arr.length; i<l; ++i){
 				_p[2].call(_p[1], arr[i], i, arr);
 			}
@@ -149,11 +152,11 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		For more details, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/every
 			// example:
-			//	|	// returns false
-			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>1; });
+			//	| // returns false
+			//	| dojo.every([1, 2, 3, 4], function(item){ return item>1; });
 			// example:
-			//	|	// returns true
-			//	|	dojo.every([1, 2, 3, 4], function(item){ return item>0; });
+			//	| // returns true
+			//	| dojo.every([1, 2, 3, 4], function(item){ return item>0; });
 			return everyOrSome(true, arr, callback, thisObject); // Boolean
 		},
 
@@ -175,11 +178,11 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		For more details, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/some
 			// example:
-			//	|	// is true
-			//	|	dojo.some([1, 2, 3, 4], function(item){ return item>1; });
+			//	| // is true
+			//	| dojo.some([1, 2, 3, 4], function(item){ return item>1; });
 			// example:
-			//	|	// is false
-			//	|	dojo.some([1, 2, 3, 4], function(item){ return item<1; });
+			//	| // is false
+			//	| dojo.some([1, 2, 3, 4], function(item){ return item<1; });
 			return everyOrSome(false, arr, callback, thisObject); // Boolean
 		},
 
@@ -192,7 +195,7 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		individual characters.
 			// callback:
 			//		a function is invoked with three arguments, (item, index,
-			//		array),  and returns a value
+			//		array),	 and returns a value
 			// thisObject:
 			//		may be used to scope the call to callback
 			// description:
@@ -202,10 +205,10 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		For more details, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
 			// example:
-			//	|	// returns [2, 3, 4, 5]
-			//	|	dojo.map([1, 2, 3, 4], function(item){ return item+1 });
+			//	| // returns [2, 3, 4, 5]
+			//	| dojo.map([1, 2, 3, 4], function(item){ return item+1 });
 
-			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
+			var _p = getParts(arr, thisObject, callback); arr = _p[0];
 			var outArr = (arguments[3] ? (new arguments[3]()) : []);
 			for(var i=0,l=arr.length; i<l; ++i){
 				outArr.push(_p[2].call(_p[1], arr[i], i, arr));
@@ -233,10 +236,10 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			//		For more details, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
 			// example:
-			//	|	// returns [2, 3, 4]
-			//	|	dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
+			//	| // returns [2, 3, 4]
+			//	| dojo.filter([1, 2, 3, 4], function(item){ return item>1; });
 
-			var _p = _getParts(arr, thisObject, callback); arr = _p[0];
+			var _p = getParts(arr, thisObject, callback); arr = _p[0];
 			var outArr = [];
 			for(var i=0,l=arr.length; i<l; ++i){
 				if(_p[2].call(_p[1], arr[i], i, arr)){
@@ -246,26 +249,6 @@ define("dojo/_base/array", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo
 			return outArr; // Array
 		}
 	});
-})();
-//>>excludeEnd("webkitMobile");
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-/*
-//>>excludeEnd("webkitMobile");
-//>>includeStart("webkitMobile", kwArgs.webkitMobile);
-["indexOf", "lastIndexOf", "forEach", "map", "some", "every", "filter"].forEach(
-	function(name, idx){
-		dojo[name] = function(arr, callback, thisObj){
-			if((idx > 1) && (typeof callback == "string")){
-				callback = new Function("item", "index", "array", callback);
-			}
-			return Array.prototype[name].call(arr, callback, thisObj);
-		}
-	}
-);
-//>>includeEnd("webkitMobile");
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-*/
-//>>excludeEnd("webkitMobile");
 
-return dojo;
+	return dojo;
 });

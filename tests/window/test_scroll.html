@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-                "http://www.w3.org/TR/html4/strict.dtd">
+								"http://www.w3.org/TR/html4/strict.dtd">
 <html style="overflow-y:scroll;border:0px none;padding:0;margin:0;">
 <head>
-        <title>dojo.window.scrollIntoView Test</title>
+				<title>dojo.window.scrollIntoView Test</title>
 
 	<style type="text/css">
 		@import "../../resources/dojo.css";
@@ -13,19 +13,18 @@
 		djConfig="isDebug: true"></script>
 
 	<script type="text/javascript">
-		dojo.require("doh.runner");
-		dojo.require("dojo.window");
+		require(["dojo", "doh", "dojo/window", "*ready"], function(dojo, doh) {
 
-		var usingNative = !(dojo.isMoz || dojo.isIE || dojo.isWebKit || dojo.isOpera);
-		var loading = new doh.Deferred();
-		var count = 0;
-		dojo.addOnLoad(function(){
+			var usingNative = !(dojo.isMoz || dojo.isIE || dojo.isWebKit || dojo.isOpera);
+			var loading = new doh.Deferred();
+			var count = 0;
+
 			innerScrollBarSize = dojo.byId("nonscroll").clientWidth - dojo.byId("withscroll").clientWidth;
 			console.debug('inner scrollbar size = ' + innerScrollBarSize);
 			outerScrollBarSize = (dojo.isIE >= 9) ? ((dojo.position(document.documentElement).w - document.documentElement.clientWidth) || innerScrollBarSize) : innerScrollBarSize;
 			console.debug('outer scrollbar size = ' + outerScrollBarSize);
-		        doh.register("dojo.window.scroll",
-	                [
+						doh.register("dojo.window.scroll",
+									[
 				{
 					name: "wait for iframes to load",
 					timeout: 20000,
@@ -226,42 +225,42 @@
 					generateTest('htmlPadding_quirks_rtl', "(0,-"+(maxScroll-fudge)+")", "(0,+"+(minScroll-fudge)+")");
 				}
 			]);
-		        doh.run();
-		});
-		function generateTest(id, maxVal, minVal){
-			var compare = usingNative? "isNot" : "is";
-			with(dojo.byId(id)){
-				scrollMin();
-				scrollMax();
-				scrollIntoView();
-				var maxActualScroll = getScroll();
-				var maxExpectedScroll = usingNative? "(-1,-1)" : maxVal;
-				scrollIntoView(); // make sure the value sticks
-				var repMaxActualScroll = getScroll();
-				scrollMin();
-				scrollIntoView();
-				var minActualScroll = getScroll();
-				var minExpectedScroll = usingNative? "(+1,+1)" : minVal;
-				dojo.byId(id).style.visibility = 'visible';
-				doh[compare](maxExpectedScroll, maxActualScroll, id+" max failed");
-				doh[compare](maxExpectedScroll, repMaxActualScroll, id+" repeat max failed");
-				doh[compare](minExpectedScroll, minActualScroll, id+" min failed");
+			function generateTest(id, maxVal, minVal){
+				var compare = usingNative? "isNot" : "is";
+				with(dojo.byId(id)){
+					scrollMin();
+					scrollMax();
+					scrollIntoView();
+					var maxActualScroll = getScroll();
+					var maxExpectedScroll = usingNative? "(-1,-1)" : maxVal;
+					scrollIntoView(); // make sure the value sticks
+					var repMaxActualScroll = getScroll();
+					scrollMin();
+					scrollIntoView();
+					var minActualScroll = getScroll();
+					var minExpectedScroll = usingNative? "(+1,+1)" : minVal;
+					dojo.byId(id).style.visibility = 'visible';
+					doh[compare](maxExpectedScroll, maxActualScroll, id+" max failed");
+					doh[compare](maxExpectedScroll, repMaxActualScroll, id+" repeat max failed");
+					doh[compare](minExpectedScroll, minActualScroll, id+" min failed");
+				}
 			}
-		}
-		function generateTestXY(id, maxScrollX, maxScrollY, minScrollX, minScrollY){
-			if(typeof maxScrollX == "number" && maxScrollX > 0){ maxScrollX = "+" + maxScrollX; }
-			if(typeof maxScrollY == "number" && maxScrollY > 0){ maxScrollY = "+" + maxScrollY; }
-			if(typeof minScrollX == "number" && minScrollX > 0){ minScrollX = "+" + minScrollX; }
-			if(typeof minScrollY == "number" && minScrollY > 0){ minScrollY = "+" + minScrollY; }
-			generateTest(id, "("+maxScrollX+","+maxScrollY+")", "("+minScrollX+","+minScrollY+")");
-		}
+			function generateTestXY(id, maxScrollX, maxScrollY, minScrollX, minScrollY){
+				if(typeof maxScrollX == "number" && maxScrollX > 0){ maxScrollX = "+" + maxScrollX; }
+				if(typeof maxScrollY == "number" && maxScrollY > 0){ maxScrollY = "+" + maxScrollY; }
+				if(typeof minScrollX == "number" && minScrollX > 0){ minScrollX = "+" + minScrollX; }
+				if(typeof minScrollY == "number" && minScrollY > 0){ minScrollY = "+" + minScrollY; }
+				generateTest(id, "("+maxScrollX+","+maxScrollY+")", "("+minScrollX+","+minScrollY+")");
+			}
+			doh.run();
+		});
 	</script>
 </head>
 <body>
 <h1>Automated scrollIntoView tests with 3 different DOCTYPEs as well as right-to-left</h1>
 <!-- compute scrollbar size for test result computations -->
 <table style="visibility:hidden;table-layout:fixed;">
-<tr><td><div id="nonscroll"  style="width:100px;overflow:hidden;border:1px solid blue;">&nbsp;</div></td></tr>
+<tr><td><div id="nonscroll"	 style="width:100px;overflow:hidden;border:1px solid blue;">&nbsp;</div></td></tr>
 <tr><td><div id="withscroll" style="width:100px;overflow-x:hidden;overflow-y:scroll;border:1px solid red;">&nbsp;</div></td></tr>
 </table>
 <!--	The test templates are below -->

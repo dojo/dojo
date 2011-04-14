@@ -1,4 +1,9 @@
-define("dojo/cookie", ["dojo", "dojo/regexp"], function(dojo) {
+define([".", "./regexp"], function(dojo) {
+	//  module:
+	//    dojo/cookie
+	//	summary:
+	//		TODOC:This module defines 
+
 
 /*=====
 dojo.__cookieProps = function(){

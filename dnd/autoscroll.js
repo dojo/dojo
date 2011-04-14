@@ -1,4 +1,9 @@
-define("dojo/dnd/autoscroll", ["dojo", "dojo/window"], function(dojo) {
+define(["..", "../window"], function(dojo) {
+	//  module:
+	//    dojo/dnd/autoscroll
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("dnd", true, dojo);
 
 dojo.dnd.getViewport = dojo.window.getBox;

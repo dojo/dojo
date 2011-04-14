@@ -1,6 +1,9 @@
-define("dojo/_base/declare", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base/array"], function(dojo){
+define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
+  //  module:
+  //    dojo/_base/declare
+  //  summary:
+  //    This module defines dojo.declare.
 
-(function(){
 	var d = dojo, mix = d._mixin, op = Object.prototype, opts = op.toString,
 		xtor = new Function, counter = 0, cname = "constructor";
 
@@ -209,25 +212,25 @@ define("dojo/_base/declare", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base/
 	}
 
 	function mixOwn(target, source){
-		var name, i = 0, l = d._extraNames.length;
 		// add props adding metadata for incoming functions skipping a constructor
-		for(name in source){
+		for(var name in source){
 			if(name != cname && source.hasOwnProperty(name)){
 				target[name] = source[name];
 			}
 		}
-		// process unenumerable methods on IE
-		for(; i < l; ++i){
-			name = d._extraNames[i];
-			if(name != cname && source.hasOwnProperty(name)){
-				target[name] = source[name];
-			}
-		}
+    if (has("bug-for-in-skips-shadowed")){
+	  	for(var extraNames= d._extraNames, i= extraNames.length; i;){
+		  	name = extraNames[--i];
+			  if(name != cname && source.hasOwnProperty(name)){
+				  target[name] = source[name];
+			  }
+		  }
+    }
 	}
 
 	// implementation of safe mixin function
 	function safeMixin(target, source){
-		var name, t, i = 0, l = d._extraNames.length;
+		var name, t;
 		// add props adding metadata for incoming functions skipping a constructor
 		for(name in source){
 			t = source[name];
@@ -239,18 +242,19 @@ define("dojo/_base/declare", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base/
 				target[name] = t;
 			}
 		}
-		// process unenumerable methods on IE
-		for(; i < l; ++i){
-			name = d._extraNames[i];
-			t = source[name];
-			if((t !== op[name] || !(name in op)) && name != cname){
-				if(opts.call(t) == "[object Function]"){
-					// non-trivial function method => attach its name
-					t.nom = name;
-				}
-				target[name] = t;
-			}
-		}
+    if (has("bug-for-in-skips-shadowed")){
+	  	for(var extraNames= d._extraNames, i= extraNames.length; i;){
+  			name = extraNames[--i];
+	  		t = source[name];
+		  	if((t !== op[name] || !(name in op)) && name != cname){
+			  	if(opts.call(t) == "[object Function]"){
+				  	// non-trivial function method => attach its name
+					  t.nom = name;
+  				}
+	  			target[name] = t;
+		  	}
+  		}
+    }
 		return target;
 	}
 
@@ -1031,7 +1035,6 @@ define("dojo/_base/declare", ["dojo/lib/kernel", "dojo/_base/lang", "dojo/_base/
 		//	|	});
 	};
 	=====*/
-})();
 
-return dojo.declare;
+  return dojo.declare;
 });

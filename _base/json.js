@@ -1,14 +1,14 @@
-define("dojo/_base/json", ["dojo/lib/kernel", "dojo/json"], function(dojo, json){
+define(["./kernel", "../json"], function(dojo, json){
 
 dojo.fromJson = function(/*String*/ js){
 	// summary:
-	// 		Parses a JavaScript expression and returns a JavaScript value.
+	//		Parses a JavaScript expression and returns a JavaScript value.
 	// description:
-	// 		Throws for invalid JavaScript expressions. It does not use a strict JSON parser. It
-	// 		always delegates to eval().  The content passed to this method must therefore come
+	//		Throws for invalid JavaScript expressions. It does not use a strict JSON parser. It
+	//		always delegates to eval().	 The content passed to this method must therefore come
 	//		from a trusted source.
 	//		It is recommend that you use dojo/json's parse function for an
-	// 		implementation uses the (faster) native JSON parse when available.
+	//		implementation uses the (faster) native JSON parse when available.
 	// js:
 	//		a string literal of a JavaScript expression, for instance:
 	//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
@@ -34,8 +34,8 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	//		Returns a [JSON](http://json.org) serialization of an object.
 	//		Note that this doesn't check for infinite recursion, so don't do that!
 	//		It is recommend that you use dojo/json's stringify function for an lighter 
-	// 		and faster implementation that matches the native JSON API and uses the 
-	// 		native JSON serializer when available.
+	//		and faster implementation that matches the native JSON API and uses the 
+	//		native JSON serializer when available.
 	//	it:
 	//		an object to be serialized. Objects may define their own
 	//		serialization via a special "__json__" or "json" function

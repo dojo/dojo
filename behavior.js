@@ -1,4 +1,9 @@
-define("dojo/behavior", ["dojo"], function(dojo) {
+define(["."], function(dojo) {
+	//  module:
+	//    dojo/behavior
+	//	summary:
+	//		TODOC:This module defines 
+
 
 dojo.behavior = new function(){
 	// summary:

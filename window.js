@@ -1,4 +1,9 @@
-define("dojo/window", ["dojo"], function(dojo) {
+define(["."], function(dojo) {
+	//  module:
+	//    dojo/window
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("window", true, dojo);
 
 dojo.window.getBox = function(){

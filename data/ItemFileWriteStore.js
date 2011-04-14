@@ -1,4 +1,9 @@
-define("dojo/data/ItemFileWriteStore", ["dojo", "dojo/data/ItemFileReadStore"], function(dojo) {
+define(["..", "./ItemFileReadStore"], function(dojo) {
+	//  module:
+	//    dojo/data/ItemFileWriteStore
+	//	summary:
+	//		TODOC:This module defines 
+
 
 dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 	constructor: function(/* object */ keywordParameters){

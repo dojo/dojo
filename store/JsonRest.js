@@ -1,4 +1,9 @@
-define("dojo/store/JsonRest", ["dojo", "dojo/store/util/QueryResults"], function(dojo) {
+define(["..", "./util/QueryResults"], function(dojo) {
+	//  module:
+	//    dojo/store/JsonRest
+	//	summary:
+	//		TODOC:This module defines 
+
 
 dojo.declare("dojo.store.JsonRest", null, {
 	constructor: function(/*dojo.store.JsonRest*/ options){

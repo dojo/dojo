@@ -1,4 +1,5 @@
-dojo.provide("tests.parser");
-if(dojo.isBrowser){
-	doh.registerUrl("tests.parser", dojo.moduleUrl("tests", "parser.html"));
-}
+define(["doh", "require"], function(doh, require){
+	if(doh.isBrowser){
+		doh.register(require.nameToUrl("./parser.html"), 30000);
+	}
+});

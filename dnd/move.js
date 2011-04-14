@@ -1,4 +1,9 @@
-define("dojo/dnd/move", ["dojo", "dojo/dnd/Mover", "dojo/dnd/Moveable"], function(dojo) {
+define(["..", "./Mover", "./Moveable"], function(dojo) {
+	//  module:
+	//    dojo/dnd/move
+	//	summary:
+	//		TODOC:This module defines 
+
 
 /*=====
 dojo.declare("dojo.dnd.move.__constrainedMoveableArgs", [dojo.dnd.__MoveableArgs], {

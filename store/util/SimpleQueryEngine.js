@@ -1,4 +1,9 @@
-define("dojo/store/util/SimpleQueryEngine", ["dojo"], function(dojo) {
+define(["../.."], function(dojo) {
+	//  module:
+	//    dojo/store/util/SimpleQueryEngine
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("store.util", true, dojo);
 
 dojo.store.util.SimpleQueryEngine = function(query, options){

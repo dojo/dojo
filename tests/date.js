@@ -1,9 +1,5 @@
-dojo.provide("tests.date");
-
-dojo.require("dojo.date");
-
-tests.register("tests.date.util",
-	[
+define(["..", "doh", "../date"], function(dojo, doh){
+doh.register("tests.date.util", [
 
 /* Informational Functions
  **************************/
@@ -103,7 +99,7 @@ function test_date_getTimezoneName(t){
 	]
 );
 
-tests.register("tests.date.math",
+doh.register("tests.date.math",
 	[
 function test_date_compare(t){
 	var d1=new Date();
@@ -707,6 +703,4 @@ function test_date_add_diff_second(t){
 }
 	]
 );
-
-dojo.require("tests.date.locale");
-dojo.require("tests.date.stamp");
+});

@@ -1,4 +1,8 @@
-define("dojo/_base/window", ["dojo/lib/kernel"], function(dojo){
+define(["./kernel"], function(dojo){
+	//	module:
+	//		dojo/window
+	//	summary:
+	//		This module provides an API to save/set/restore the global/document scope.
 
 /*=====
 dojo.doc = {
@@ -6,11 +10,11 @@ dojo.doc = {
 	//		Alias for the current document. 'dojo.doc' can be modified
 	//		for temporary context shifting. Also see dojo.withDoc().
 	// description:
-	//    Refer to dojo.doc rather
-	//    than referring to 'window.document' to ensure your code runs
-	//    correctly in managed contexts.
+	//		Refer to dojo.doc rather
+	//		than referring to 'window.document' to ensure your code runs
+	//		correctly in managed contexts.
 	// example:
-	// 	|	n.appendChild(dojo.doc.createElement('div'));
+	//	|	n.appendChild(dojo.doc.createElement('div'));
 }
 =====*/
 dojo.doc = window["document"] || null;
@@ -20,7 +24,7 @@ dojo.body = function(){
 	//		Return the body element of the document
 	//		return the body object associated with dojo.doc
 	// example:
-	// 	|	dojo.body().appendChild(dojo.doc.createElement('div'));
+	//	|	dojo.body().appendChild(dojo.doc.createElement('div'));
 
 	// Note: document.body is not defined for a strict xhtml document
 	// Would like to memoize this, but dojo.doc can change vi dojo.withDoc().

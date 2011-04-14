@@ -1,14 +1,14 @@
-define("dojo/_base/fx", ["dojo/lib/kernel", "dojo/_base/Color", "dojo/_base/connect", "dojo/_base/lang", "dojo/_base/html"], function(dojo){
+define(["./kernel", "./Color", "./connect", "./lang", "./html"], function(dojo){
+	//	module:
+	//		dojo/_base/fx
+	//	summary:
+	//		This module defines the base dojo.fx implementation.
+	//	notes:
+	//		Animation loosely package based on Dan Pupius' work, contributed under CLA; see
+	//		http://pupius.co.uk/js/Toolkit.Drawing.js
 
-/*
-	Animation loosely package based on Dan Pupius' work, contributed under CLA:
-		http://pupius.co.uk/js/Toolkit.Drawing.js
-*/
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-(function(){
-	var d = dojo;
-//>>excludeEnd("webkitMobile");
-	var _mixin = d._mixin;
+	var d = dojo,
+			_mixin = dojo._mixin;
 
 	dojo._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:
@@ -126,10 +126,10 @@ define("dojo/_base/fx", ["dojo/lib/kernel", "dojo/_base/Color", "dojo/_base/conn
 		},
 		_fire: function(/*Event*/ evt, /*Array?*/ args){
 			//	summary:
-			//		Convenience function.  Fire event "evt" and pass it the
+			//		Convenience function.	 Fire event "evt" and pass it the
 			//		arguments specified in "args".
 			//	description:
-			//		Convenience function.  Fire event "evt" and pass it the
+			//		Convenience function.	 Fire event "evt" and pass it the
 			//		arguments specified in "args".
 			//		Fires the callback in the scope of the `dojo.Animation`
 			//		instance.
@@ -409,7 +409,7 @@ define("dojo/_base/fx", ["dojo/lib/kernel", "dojo/_base/Color", "dojo/_base/conn
 		return d._fade(_mixin({ end: 1 }, args)); // dojo.Animation
 	};
 
-	dojo.fadeOut = function(/*dojo.__FadeArgs*/  args){
+	dojo.fadeOut = function(/*dojo.__FadeArgs*/	 args){
 		// summary:
 		//		Returns an animation that will fade node defined in 'args'
 		//		from its current opacity to fully transparent.
@@ -615,7 +615,7 @@ define("dojo/_base/fx", ["dojo/lib/kernel", "dojo/_base/Color", "dojo/_base/conn
 		//		immediately, unlike nearly every other Dojo animation API.
 		//	description:
 		//		`dojo.anim` is a simpler (but somewhat less powerful) version
-		//		of `dojo.animateProperty`.  It uses defaults for many basic properties
+		//		of `dojo.animateProperty`.	It uses defaults for many basic properties
 		//		and allows for positional parameters to be used in place of the
 		//		packed "property bag" which is used for other Dojo animation
 		//		methods.
@@ -655,9 +655,6 @@ define("dojo/_base/fx", ["dojo/lib/kernel", "dojo/_base/Color", "dojo/_base/conn
 			onEnd: onEnd
 		}).play(delay || 0);
 	};
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-})();
-//>>excludeEnd("webkitMobile");
 
-return dojo.animateProperty;
+	return dojo.animateProperty;
 });

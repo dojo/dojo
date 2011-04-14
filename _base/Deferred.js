@@ -1,13 +1,16 @@
-define("dojo/_base/Deferred", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo){
+define(["./kernel", "./lang"], function(dojo){
+	//	module:
+	//		dojo/_base/Deferred
+	//	summary:
+	//		This module defines dojo.Deferred.
 
-(function(){
 	var mutator = function(){};
 	var freeze = Object.freeze || function(){};
 	// A deferred provides an API for creating and resolving a promise.
 	dojo.Deferred = function(/*Function?*/canceller){
 	// summary:
 	//		Deferreds provide a generic means for encapsulating an asynchronous
-	// 		operation and notifying users of the completion and result of the operation.
+	//		operation and notifying users of the completion and result of the operation.
 	// description:
 	//		The dojo.Deferred API is based on the concept of promises that provide a
 	//		generic interface into the eventual completion of an asynchronous action.
@@ -23,12 +26,12 @@ define("dojo/_base/Deferred", ["dojo/lib/kernel", "dojo/_base/lang"], function(d
 	//		separated from the concerns of asynchronous interaction (which are
 	//		handled by the promise).
 	//
-	//  	The dojo.Deferred is a type of promise that provides methods for fulfilling the
-	// 		promise with a successful result or an error. The most important method for
-	// 		working with Dojo's promises is the then() method, which follows the
-	// 		CommonJS proposed promise API. An example of using a Dojo promise:
+	//		The dojo.Deferred is a type of promise that provides methods for fulfilling the
+	//		promise with a successful result or an error. The most important method for
+	//		working with Dojo's promises is the then() method, which follows the
+	//		CommonJS proposed promise API. An example of using a Dojo promise:
 	//
-	//		| 	var resultingPromise = someAsyncOperation.then(function(result){
+	//		|		var resultingPromise = someAsyncOperation.then(function(result){
 	//		|		... handle result ...
 	//		|	},
 	//		|	function(error){
@@ -36,7 +39,7 @@ define("dojo/_base/Deferred", ["dojo/lib/kernel", "dojo/_base/lang"], function(d
 	//		|	});
 	//
 	//		The .then() call returns a new promise that represents the result of the
-	// 		execution of the callback. The callbacks will never affect the original promises value.
+	//		execution of the callback. The callbacks will never affect the original promises value.
 	//
 	//		The dojo.Deferred instances also provide the following functions for backwards compatibility:
 	//
@@ -48,7 +51,7 @@ define("dojo/_base/Deferred", ["dojo/lib/kernel", "dojo/_base/lang"], function(d
 	//		Callbacks are allowed to return promises themselves, so
 	//		you can build complicated sequences of events with ease.
 	//
-	//		The creator of the Deferred may specify a canceller.  The canceller
+	//		The creator of the Deferred may specify a canceller.	The canceller
 	//		is a function that will be called if Deferred.cancel is called
 	//		before the Deferred fires. You can use this to implement clean
 	//		aborting of an XMLHttpRequest, etc. Note that cancel will fire the
@@ -231,26 +234,26 @@ define("dojo/_base/Deferred", ["dojo/lib/kernel", "dojo/_base/lang"], function(d
 		// provide the implementation of the promise
 		this.then = promise.then = function(/*Function?*/resolvedCallback, /*Function?*/errorCallback, /*Function?*/progressCallback){
 			// summary:
-			// 		Adds a fulfilledHandler, errorHandler, and progressHandler to be called for
-			// 		completion of a promise. The fulfilledHandler is called when the promise
-			// 		is fulfilled. The errorHandler is called when a promise fails. The
-			// 		progressHandler is called for progress events. All arguments are optional
-			// 		and non-function values are ignored. The progressHandler is not only an
-			// 		optional argument, but progress events are purely optional. Promise
-			// 		providers are not required to ever create progress events.
+			//		Adds a fulfilledHandler, errorHandler, and progressHandler to be called for
+			//		completion of a promise. The fulfilledHandler is called when the promise
+			//		is fulfilled. The errorHandler is called when a promise fails. The
+			//		progressHandler is called for progress events. All arguments are optional
+			//		and non-function values are ignored. The progressHandler is not only an
+			//		optional argument, but progress events are purely optional. Promise
+			//		providers are not required to ever create progress events.
 			//
-			// 		This function will return a new promise that is fulfilled when the given
-			// 		fulfilledHandler or errorHandler callback is finished. This allows promise
-			// 		operations to be chained together. The value returned from the callback
-			// 		handler is the fulfillment value for the returned promise. If the callback
-			// 		throws an error, the returned promise will be moved to failed state.
+			//		This function will return a new promise that is fulfilled when the given
+			//		fulfilledHandler or errorHandler callback is finished. This allows promise
+			//		operations to be chained together. The value returned from the callback
+			//		handler is the fulfillment value for the returned promise. If the callback
+			//		throws an error, the returned promise will be moved to failed state.
 			//
 			// example:
-			// 		An example of using a CommonJS compliant promise:
-  			//		|	asyncComputeTheAnswerToEverything().
+			//		An example of using a CommonJS compliant promise:
+				//		|	asyncComputeTheAnswerToEverything().
 			//		|		then(addTwo).
 			//		|		then(printResult, onError);
-  			//		|	>44
+				//		|	>44
 			//
 			var returnDeferred = progressCallback == mutator ? this : new dojo.Deferred(promise.cancel);
 			var listener = {
@@ -302,35 +305,35 @@ define("dojo/_base/Deferred", ["dojo/lib/kernel", "dojo/_base/lang"], function(d
 		},
 		fired: -1
 	});
-})();
-dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback, /*Function?*/progressHandler){
-	// summary:
-	//		This provides normalization between normal synchronous values and
-	//		asynchronous promises, so you can interact with them in a common way
-	//	example:
-	//		|	function printFirstAndList(items){
-	//		|		dojo.when(findFirst(items), console.log);
-	//		|		dojo.when(findLast(items), console.log);
-	//		|	}
-	//		|	function findFirst(items){
-	//		|		return dojo.when(items, function(items){
-	//		|			return items[0];
-	//		|		});
-	//		|	}
-	//		|	function findLast(items){
-	//		|		return dojo.when(items, function(items){
-	//		|			return items[items.length];
-	//		|		});
-	//		|	}
-	//		And now all three of his functions can be used sync or async.
-	//		|	printFirstAndLast([1,2,3,4]) will work just as well as
-	//		|	printFirstAndLast(dojo.xhrGet(...));
-	
-	if(promiseOrValue && typeof promiseOrValue.then === "function"){
-		return promiseOrValue.then(callback, errback, progressHandler);
-	}
-	return callback(promiseOrValue);
-};
 
-return dojo.Deferred;
+	dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback, /*Function?*/progressHandler){
+		// summary:
+		//		This provides normalization between normal synchronous values and
+		//		asynchronous promises, so you can interact with them in a common way
+		//	example:
+		//		|	function printFirstAndList(items){
+		//		|		dojo.when(findFirst(items), console.log);
+		//		|		dojo.when(findLast(items), console.log);
+		//		|	}
+		//		|	function findFirst(items){
+		//		|		return dojo.when(items, function(items){
+		//		|			return items[0];
+		//		|		});
+		//		|	}
+		//		|	function findLast(items){
+		//		|		return dojo.when(items, function(items){
+		//		|			return items[items.length];
+		//		|		});
+		//		|	}
+		//		And now all three of his functions can be used sync or async.
+		//		|	printFirstAndLast([1,2,3,4]) will work just as well as
+		//		|	printFirstAndLast(dojo.xhrGet(...));
+		
+		if(promiseOrValue && typeof promiseOrValue.then === "function"){
+			return promiseOrValue.then(callback, errback, progressHandler);
+		}
+		return callback(promiseOrValue);
+	};
+
+	return dojo.Deferred;
 });

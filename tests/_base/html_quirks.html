@@ -7,12 +7,9 @@
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
-		<script type="text/javascript" 
-			src="../../dojo.js" 
-			djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-			dojo.addOnLoad(function(){
+			require(["dojo", "doh", "*ready"], function(dojo, doh){
 				doh.register("t", 
 					[
 						"t.is(100, dojo.marginBox('sq100').w);",
@@ -138,7 +135,7 @@
 					);
 				}
 
-				doh.run();
+				doh.runOnLoad();
 			});
 		</script>
 		<style type="text/css">

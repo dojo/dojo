@@ -1,4 +1,8 @@
-define("dojo/_base/connect", ["dojo/lib/kernel", "dojo/_base/lang"], function(dojo){
+define(["./kernel", "./lang"], function(dojo){
+	//	module:
+	//		dojo/_base/connect
+	//	summary:
+	//		This module defines the dojo.connect API.
 
 // this file courtesy of the TurboAjax Group, licensed under a Dojo CLA
 
@@ -9,9 +13,9 @@ dojo._listener = {
 		// following comments pulled out-of-line to prevent cloning them
 		// in the returned function.
 		// - indices (i) that are really in the array of listeners (ls) will
-		//   not be in Array.prototype. This is the 'sparse array' trick
-		//   that keeps us safe from libs that take liberties with built-in
-		//   objects
+		//	 not be in Array.prototype. This is the 'sparse array' trick
+		//	 that keeps us safe from libs that take liberties with built-in
+		//	 objects
 		// - listener is invoked with current scope (this)
 		return function(){
 			var ap = Array.prototype, c = arguments.callee, ls = c._listeners, t = c.target,
@@ -242,9 +246,9 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 
 dojo.unsubscribe = function(/*Handle*/ handle){
 	//	summary:
-	//	 	Remove a topic listener.
+	//		Remove a topic listener.
 	//	handle:
-	//	 	The handle returned from a call to subscribe.
+	//		The handle returned from a call to subscribe.
 	//	example:
 	//	|	var alerter = dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
 	//	|	...
@@ -256,18 +260,18 @@ dojo.unsubscribe = function(/*Handle*/ handle){
 
 dojo.publish = function(/*String*/ topic, /*Array*/ args){
 	//	summary:
-	//	 	Invoke all listener method subscribed to topic.
+	//		Invoke all listener method subscribed to topic.
 	//	topic:
-	//	 	The name of the topic to publish.
+	//		The name of the topic to publish.
 	//	args:
-	//	 	An array of arguments. The arguments will be applied
-	//	 	to each topic subscriber (as first class parameters, via apply).
+	//		An array of arguments. The arguments will be applied
+	//		to each topic subscriber (as first class parameters, via apply).
 	//	example:
 	//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
 	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);
 
 	// Note that args is an array, which is more efficient vs variable length
-	// argument list.  Ideally, var args would be implemented via Array
+	// argument list.	 Ideally, var args would be implemented via Array
 	// throughout the APIs.
 	var f = dojo._topics[topic];
 	if(f){
@@ -279,18 +283,18 @@ dojo.connectPublisher = function(	/*String*/ topic,
 									/*Object|null*/ obj,
 									/*String*/ event){
 	//	summary:
-	//	 	Ensure that every time obj.event() is called, a message is published
-	//	 	on the topic. Returns a handle which can be passed to
-	//	 	dojo.disconnect() to disable subsequent automatic publication on
-	//	 	the topic.
+	//		Ensure that every time obj.event() is called, a message is published
+	//		on the topic. Returns a handle which can be passed to
+	//		dojo.disconnect() to disable subsequent automatic publication on
+	//		the topic.
 	//	topic:
-	//	 	The name of the topic to publish.
+	//		The name of the topic to publish.
 	//	obj:
-	//	 	The source object for the event function. Defaults to dojo.global
-	//	 	if null.
+	//		The source object for the event function. Defaults to dojo.global
+	//		if null.
 	//	event:
-	//	 	The name of the event function in obj.
-	//	 	I.e. identifies a property obj[event].
+	//		The name of the event function in obj.
+	//		I.e. identifies a property obj[event].
 	//	example:
 	//	|	dojo.connectPublisher("/ajax/start", dojo, "xhrGet");
 	var pf = function(){ dojo.publish(topic, arguments); }

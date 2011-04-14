@@ -7,36 +7,31 @@
 		@import "../../../dojo/resources/dojo.css";
 		html, body { margin: 0px; padding: 0px; }
 	</style>
-	<script type="text/javascript" src="../../../dojo/dojo.js"
-		djConfig="isDebug: true, parseOnLoad: false"></script>
+	<script type="text/javascript" src="../../../dojo/dojo.js"></script>
 
 	<script type="text/javascript">
-		dojo.require("doh.runner");
-		dojo.require("dojo.window");
-
-		function compute(){
-			var d = dojo.marginBox(dojo.byId("documentBorder")),
-				v = dojo.window.getBox();
-			dojo.byId("results").innerHTML +=
-				"Document is " + d.w + "px x " + d.h + "px" +
-				", viewport is " + v.w + "px x " + v.h + "px" +
-				 ", with scroll offset of (" + v.l + ", " + v.t + ")<br>";
-		}
-
-		function addText(){
-			dojo.byId("results").innerHTML += "Adding text...<br><br>";
-			var text=[];
-			for(var i=0;i<100;i++){
-				text.push("<span style='white-space: nowrap'>");
-				for(var j=0;j<3;j++){ text.push("Now is the time for all good men to come to the aid of their country."); }
-				text.push("</span><br>");
+		require(["dojo", "doh", "dojo/window", "*ready"], function(dojo, doh){
+			function compute(){
+				var d = dojo.marginBox(dojo.byId("documentBorder")),
+					v = dojo.window.getBox();
+				dojo.byId("results").innerHTML +=
+					"Document is " + d.w + "px x " + d.h + "px" +
+					", viewport is " + v.w + "px x " + v.h + "px" +
+					 ", with scroll offset of (" + v.l + ", " + v.t + ")<br>";
 			}
-			dojo.byId("documentBorder").innerHTML += text.join("\n");
-		}
+	
+			function addText(){
+				dojo.byId("results").innerHTML += "Adding text...<br><br>";
+				var text=[];
+				for(var i=0;i<100;i++){
+					text.push("<span style='white-space: nowrap'>");
+					for(var j=0;j<3;j++){ text.push("Now is the time for all good men to come to the aid of their country."); }
+					text.push("</span><br>");
+				}
+				dojo.byId("documentBorder").innerHTML += text.join("\n");
+			}
 
-		dojo.addOnLoad(function(){
-			doh.register("dojo.window.viewport",
-				[
+			doh.register("dojo.window.viewport", [
 					function initial(t){
 						console.log("calling compute");
 						compute();
@@ -56,11 +51,9 @@
 						doh.t(v2.h+20 >= v.h, "test that viewport didn't shrink, except for space taken by scrollbars");
 						console.log("end");
 					}
-				]
-			);
+			]);
 			doh.run();
 		});
-
 	</script>
 </head>
 <body>

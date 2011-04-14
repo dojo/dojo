@@ -1,5 +1,6 @@
-dojo.provide("tests._base.query");
-if(dojo.isBrowser){
-	doh.registerUrl("tests._base.query", dojo.moduleUrl("tests", "_base/query.html"), 60000);
-	doh.registerUrl("tests._base.NodeList", dojo.moduleUrl("tests", "_base/NodeList.html"), 60000);
-}
+define(["doh", "require"], function(doh, require){
+	if(doh.isBrowser){
+		doh.register(require.nameToUrl("./query.html"), 60000);
+		doh.register(require.nameToUrl("./NodeList.html"), 60000);
+	}
+});

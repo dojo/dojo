@@ -1,7 +1,5 @@
-dojo.provide("tests._base.window");
-
-tests.register("tests._base.window",
-	[
+define(["../..", "doh"], function(dojo, doh){
+	doh.register("tests._base.window", [
 		function withGlobal(t){
 			var arg1, arg2, innerThis, innerGlobal, innerDoc, finished,
 				globalObj = {test: "myGlobal", document: {test: "myDoc"}},
@@ -47,6 +45,6 @@ tests.register("tests._base.window",
 			t.assertEqual("myThis", innerThis);
 			t.assertEqual("myDoc", innerDoc);
 		}
-	]
-);
+	]);
+});
 

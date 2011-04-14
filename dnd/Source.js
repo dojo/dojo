@@ -1,4 +1,9 @@
-define("dojo/dnd/Source", ["dojo", "dojo/dnd/Selector", "dojo/dnd/Manager"], function(dojo) {
+define(["..", "./Selector", "./Manager"], function(dojo) {
+	//  module:
+	//    dojo/dnd/Source
+	//	summary:
+	//		TODOC:This module defines 
+
 
 /*
 	Container property:

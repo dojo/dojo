@@ -1,4 +1,5 @@
-dojo.provide("tests.io.iframe");
-if(dojo.isBrowser){
-	doh.registerUrl("tests.io.iframe", dojo.moduleUrl("tests.io", "iframe.html"));
-}
+define(["doh", "require"], function(doh, require){
+	if(doh.isBrowser){
+		doh.register(require.nameToUrl("./iframe.html"));
+	}
+});

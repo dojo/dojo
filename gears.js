@@ -1,4 +1,9 @@
-define("dojo/gears", ["dojo"], function(dojo) {
+define(["."], function(dojo) {
+	//  module:
+	//    dojo/gears
+	//	summary:
+	//		TODOC:This module defines 
+
 dojo.getObject("gears", true, dojo);
 
 dojo.gears._gearsObject = function(){

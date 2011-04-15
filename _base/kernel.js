@@ -108,6 +108,13 @@ define(["../has", "./config", "require"], function(has, config, require){
 		require(["dojo/_firebug/firebug"]);
 	}
 
+  // notice that modulePaths won't be applied to any require's before the dojo/_base/kernel factory is run;
+  // this is the v1.6- behavior. Going forward from 1.7+, consider modulePaths deprecated and
+  // configure the loader directly.
+  if(config.modulePaths){
+    require({paths:config.modulePaths});
+  }
+
 	dojo.isAsync= function() {
 		return require.vendor!="dojotoolkit.org" || require.async;
 	};

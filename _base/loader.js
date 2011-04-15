@@ -25,6 +25,41 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 		f();
 	};
 
+
+	dojo.registerModulePath = function(/*String*/module, /*String*/prefix){
+		//	summary:
+		//		Maps a module name to a path
+		//	description:
+		//		An unregistered module is given the default path of ../[module],
+		//		relative to Dojo root. For example, module acme is mapped to
+		//		../acme.  If you want to use a different module name, use
+		//		dojo.registerModulePath.
+		//	example:
+		//		If your dojo.js is located at this location in the web root:
+		//	|	/myapp/js/dojo/dojo/dojo.js
+		//		and your modules are located at:
+		//	|	/myapp/js/foo/bar.js
+		//	|	/myapp/js/foo/baz.js
+		//	|	/myapp/js/foo/thud/xyzzy.js
+		//		Your application can tell Dojo to locate the "foo" namespace by calling:
+		//	|	dojo.registerModulePath("foo", "../../foo");
+		//		At which point you can then use dojo.require() to load the
+		//		modules (assuming they provide() the same things which are
+		//		required). The full code might be:
+		//	|	<script type="text/javascript"
+		//	|		src="/myapp/js/dojo/dojo/dojo.js"></script>
+		//	|	<script type="text/javascript">
+		//	|		dojo.registerModulePath("foo", "../../foo");
+		//	|		dojo.require("foo.bar");
+		//	|		dojo.require("foo.baz");
+		//	|		dojo.require("foo.thud.xyzzy");
+		//	|	</script>
+    var paths= {};
+    paths[module]= prefix;
+    require({paths:paths});
+	};
+	
+
 	dojo.requireLocalization= function(moduleName, bundleName, locale){
 		// This function doesn't really do anything for the user since he must
 		// call dojo.i18n.getLocalization to get access to a bundle. Therefore, just

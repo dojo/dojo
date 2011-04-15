@@ -4,12 +4,12 @@
 ){
 	// summary:
 	//	 This is the "source loader" and is the entry point for Dojo during development. You may also load Dojo with 
-	//	 any AMD-compliant loader via the package main module dojo/main.js.
+	//	 any AMD-compliant loader via the package main module dojo/main.
 	// description:
 	//	 This is the "source loader" for Dojo. It provides an AMD-compliant loader that can be configured
 	//	 to operate in either synchronous or asynchronous modes. After the loader is defined, dojo is loaded
-	//	 IAW the package main module dojo/main.js. In the event you wish to use a foreign loader, you may load dojo as a package
-	//	 via the package main module dojo/main.js and this loader is not required; see dojo/package.json for details.
+	//	 IAW the package main module dojo/main. In the event you wish to use a foreign loader, you may load dojo as a package
+	//	 via the package main module dojo/main and this loader is not required; see dojo/package.json for details.
 	// 
 	//	 In order to keep compatibility with the v1.x line, this loader includes additional machinery that enables
 	//	 the dojo.provide/dojo.require etc. API. This machinery is loaded by default, but may be dynamically removed
@@ -37,20 +37,20 @@
 	//	 1. Small library for use implementing the loader.
 	//	 2. Define the has.js API; this is used throughout the loader to bracket features.
 	//	 3. Define the node.js and rhino sniffs and sniff.
-	//	 4. Define the loader's data
+	//	 4. Define the loader's data.
 	//	 5. Define the configuration machinery.
 	//	 6. Define the script element sniffing machinery and sniff for configuration data.
 	//	 7. Configure the loader IAW the provided user, default, and sniffing data.
 	//	 8. Define the global require function.
 	//	 9. Define the module resolution machinery.
-	//	10. Define the main module and plugin module definition machinery
+	//	10. Define the module and plugin module definition machinery
 	//	11. Define the script injection machinery.
 	//	12. Define the DOMContentLoad detection and ready API.
 	//	13. Define the logging API.
 	//	14. Define the tracing API.
 	//	15. Define the error API.
 	//	16. Define the AMD define function.
-	//	17. Define the dojo v1.x provide/require machinery
+	//	17. Define the dojo v1.x provide/require machinery.
 	//	18. Publish global variables.
 	// 
 	// Language and Acronyms and Idioms
@@ -345,6 +345,9 @@
 			packageInfo.mapProg = computeMapProg(packageInfo.packageMap);
 			var name = packageInfo.name;
 
+      // allow paths to be specified in the package info
+      mix(paths, packageInfo.paths);
+
 			// now that we've got a fully-resolved package object, push it into the configuration
 			packages[name] = packageInfo;
 			packageMap[name] = name;
@@ -382,11 +385,11 @@
 				pathTransforms.push(transforms[i]);
 			}
 
-			// push in any paths and recompute the internal pathmap
-			pathsMapProg = computeMapProg(mix(paths, config.paths));
-
 			// for each package found in any packages config item, augment the packages map owned by the loader
 			forEach(config.packages, fixupPackageInfo);
+
+			// push in any paths and recompute the internal pathmap
+			pathsMapProg = computeMapProg(mix(paths, config.paths));
 
 			// for each packagePath found in any packagePaths config item, augment the packages map owned by the loader
 			for(baseUrl in config.packagePaths){
@@ -646,25 +649,30 @@
 					return alwaysCreate ? makeModuleInfo(result.pid, result.mid, result.pqn, result.pack, result.path, result.url) : modules[pqn];
 				}
 			}
-			// get here iff the sought-after module does not yet exist; therefore, we need 
-			// to compute the URL url= pathsMap(default) || transformPath(default) || default
-			if(pid){
-				pack = packages[pid];
-				path = pid + "/" + (mid || pack.main);
-				url = pack.location + "/" + (mid && pack.lib ? pack.lib + "/" : "") + (mid || pack.main);
-				mapItem = runMapProg(url, pathsMapProg);
-				if(mapItem){
-					url = mapItem[1] + url.substring(mapItem[3] - 1);
-				}else{
-					url = transformPath(path, pack.pathTransforms) || url;
-				}
-			}else{
-				mapItem = runMapProg(path, pathsMapProg);
-				if(mapItem){
+			// get here iff the sought-after module does not yet exist; therefore, we need to compute the URL given the
+      // fully resolved (i.e., all relative indicators resolved) module id (note the first segment of mid may be a package name):
+      // 
+      //   1. if the mid is mapped by paths, then apply the transform; otherwise,
+      //   2. if the mid is a member of a package, then...
+      //        a.  if the mid is mapped by the path transforms specific to the package, then apply the map; otherwise,
+      //        b.  decorate the mid as indicated by the package location, lib, and main properties
+      //   3. if the mid is *not* a member of a package and is mapped by the path transforms for the default package, then apply the map
+      //   4. if the url computed so far is still relative, then decorate with the baseUrl prefix
+      //   5. append the ".js" filetype
+      //
+      // WARNING: it is impossible to use paths to map the package main module; but that's what the package.main property is for
+		  mapItem = runMapProg(path, pathsMapProg);
+      if(mapItem){
 					url = mapItem[1] + path.substring(mapItem[3] - 1);
-				}else{
-					url = transformPath(path, pathTransforms) || path;
-				}
+      }else if(pid){
+				pack = packages[pid];
+				url = transformPath(path, pack.pathTransforms);
+        if(!url){
+	  			path = pid + "/" + (mid || pack.main);
+		  		url = pack.location + "/" + (mid && pack.lib ? pack.lib + "/" : "") + (mid || pack.main);
+        }
+			}else{
+  			url = transformPath(path, pathTransforms) || path;
 			}
 			// if result is not absolute, add baseUrl
 			if(!(/(^\/)|(\:)/.test(url))){

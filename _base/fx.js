@@ -1,4 +1,4 @@
-define(["./kernel", "./Color", "./connect", "./lang", "./html"], function(dojo){
+define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], function(dojo){
 	//	module:
 	//		dojo/_base/fx
 	//	summary:

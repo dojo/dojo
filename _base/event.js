@@ -1,4 +1,4 @@
-define(["./kernel", "./connect"], function(dojo){
+define(["./kernel", "./connect", "./sniff"], function(dojo){
 	//	module:
 	//		dojo/_base/event
 	//	summary:

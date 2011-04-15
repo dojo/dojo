@@ -1,4 +1,4 @@
-define(["./kernel", "./lang"], function(dojo){
+define(["./kernel", "./lang", "./sniff"], function(dojo){
 	//	module:
 	//		dojo/_base/html
 	//	summary:

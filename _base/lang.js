@@ -212,7 +212,6 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has){
 	};
 	//>>excludeEnd("webkitMobile");
 
-	console.log("defining dojo._toArray, d.isIE = " + d.isIE);
 	dojo._toArray =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		d.isIE ?	function(obj){

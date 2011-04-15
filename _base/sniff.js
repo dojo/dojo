@@ -89,7 +89,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	has.add("mac ", dojo.isMac = isMac );
 	has.add("safari", dojo.isSafari= isSafari);
 	has.add("mozilla ", dojo.isMozilla = dojo.isMoz = isMozilla );
-	has.add("ie ", dojo.isIE = isIE );
+	has.add("ie", dojo.isIE = isIE );
 	has.add("ff", dojo.isFF= isFF);
 	has.add("quirks", dojo.isQuirks= isQuirks);
 

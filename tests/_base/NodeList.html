@@ -311,13 +311,13 @@
 							tnl.removeClass();
 							doh.is("", s.className);
 							doh.is("", t.className);
-							tnl.addClass("		a");
+							tnl.addClass("    a");
 							doh.is("a", s.className);
 							doh.is("a", t.className);
-							tnl.addClass(" a	b ");
+							tnl.addClass(" a  b ");
 							doh.is("a b", s.className);
 							doh.is("a b", t.className);
-							tnl.addClass(" c	b a ");
+							tnl.addClass(" c  b a ");
 							doh.is("a b c", s.className);
 							doh.is("a b c", t.className);
 							tnl.removeClass(" b");
@@ -430,8 +430,8 @@
 							doh.is("addContent1", nl[0].lastChild.id);
 
 							//put in multiple content/clone node
-							tn.innerHTML = '<select><option name="second"	 value="second" selected>second</option></select>'
-														 '<select><option name="second"	 value="second" selected>second</option></select>';
+							tn.innerHTML = '<select><option name="second"  value="second" selected>second</option></select>'
+							               '<select><option name="second"  value="second" selected>second</option></select>';
 							nl = dojo.query("select", tn).addContent('<option name="first" value="first">first</option>', "first");
 							nl.forEach(function(node){
 								doh.is("first", node.options[0].value);

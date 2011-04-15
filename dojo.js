@@ -133,7 +133,7 @@
 			},
 
 		// this will be the global require function; define it immediately so we can start hanging things off of it
-		req= function(
+		req = function(
 			config,				//(object, optional) hash of configuration properties
 			dependencies, //(array of commonjs.moduleId, optional) list of modules to be loaded before applying callback
 			callback			//(function, optional) lamda expression to apply to module values implied by dependencies
@@ -491,7 +491,7 @@
 					mid = a1[i++];
 					if(mid == "*ready"){
 						callback = function(){
-							for(var args= arguments, aargs= [], i= 0; i<args.length; aargs.push(args[i++])){}
+							for(var args = arguments, aargs = [], i = 0; i < args.length; aargs.push(args[i++])){}
 							req.ready(function(){
 								a2.apply(null, aargs);
 							});
@@ -894,7 +894,7 @@
 
 	if(has("loader-injectApi")){
 		var
-			injectPlugin= function(
+			injectPlugin = function(
 				module,
 				immediate // this is consequent to a require call like require(["text!some/text"])
 				){
@@ -1250,7 +1250,7 @@
 				}
 			};
 
-		req.ready= function(
+		req.ready = function(
 			priority,//(integer, optional) The order in which to exec this callback relative to other callbacks, defaults to 1000
 			context, //(object) The context in which to run execute callback
 							 //(function) callback, if context missing
@@ -1291,8 +1291,8 @@
 
 	if(has("loader-traceApi")){
 		req.trace= req.trace || function(
-			group, // the trace group to which this application belongs
-			args	 // the contents of the trace
+			group,	// the trace group to which this application belongs
+			args	// the contents of the trace
 		){
 			///
 			// Tracing interface by group.
@@ -1325,7 +1325,7 @@
 		// If the error was an uncaught exception, then if some subscriber signals that it has taken actions to recover 
 		// and it is OK to continue by returning truthy, the exception is quashed; otherwise, the exception is rethrown. 
 		// Other error conditions are handled as applicable for the particular error.
-		var onError=
+		var onError =
 			function(
 				messageId, //(string) The topic to publish
 				args			 //(array of anything, optional, undefined) The arguments to be applied to each subscriber.
@@ -1359,7 +1359,7 @@
 		req.onError = noop;
 	}
 
-	var def= function(
+	var def = function(
 		mid,					//(commonjs.moduleId, optional) list of modules to be loaded before running factory
 		dependencies, //(array of commonjs.moduleId, optional)
 		factory				//(any)

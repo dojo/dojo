@@ -4,8 +4,6 @@ define([".."], function(dojo) {
   //  summary:
 	//		TODOC:This module defines 
 
-
-	
 // FIREBUG LITE
 	// summary: Firebug Lite, the baby brother to Joe Hewitt's Firebug for Mozilla Firefox
 	// description:
@@ -32,9 +30,6 @@ define([".."], function(dojo) {
 	//		|	var djConfig = {isDebug: true, debugHeight:100 }
 
 
-
-(function(){
-
 	var isNewIE = (/Trident/.test(window.navigator.userAgent));
 	if(isNewIE){
 		// Fixing IE's console
@@ -55,19 +50,20 @@ define([".."], function(dojo) {
 		// If closed it throws an error
 		try{ console.clear(); }catch(e){}
 	}
-	
-	if(
-		!dojo.isFF &&								// Firefox has Firebug
-		!dojo.isChrome &&							// Chrome 3+ has a console
-		!dojo.isSafari &&							// Safari 4 has a console
-		!isNewIE &&									// Has the new IE console
-		!window.firebug &&							// Testing for mozilla firebug lite
-		(typeof console != "undefined" && !console.firebug) && //A console that is not firebug's
-		!dojo.config.useCustomLogger &&				// Allow custom loggers
-		!dojo.isAIR									// isDebug triggers AIRInsector, not Firebug
+
+  if(
+		dojo.isFF ||								// Firefox has Firebug
+		dojo.isChrome ||							// Chrome 3+ has a console
+		dojo.isSafari ||							// Safari 4 has a console
+		isNewIE ||									// Has the new IE console
+		window.firebug ||							// Testing for mozilla firebug lite
+		(typeof console != "undefined" && console.firebug) || //The firebug console
+		dojo.config.useCustomLogger ||				// Allow custom loggers
+		dojo.isAIR									// isDebug triggers AIRInsector, not Firebug
 	){
-	
-	
+		return;
+	}
+
 	// don't build firebug in iframes
 	try{
 		if(window != window.parent){
@@ -1180,9 +1176,5 @@ define([".."], function(dojo) {
 		window.onFirebugResize = null;
 		window.console = null;
 	});
-}
 
-})();
-
-return dojo;
 });

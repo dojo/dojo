@@ -1,10 +1,6 @@
-define(["."], function(dojo) {
-	//	module:
+define(["."], function(dojo){
+	// module:
 	//		dojo/uacss
-	//	summary:
-	//		TODOC:This module defines 
-
-
 	// summary:
 	//		Applies pre-set CSS classes to the top-level HTML node, based on:
 	//			- browser (ex: dj_ie)
@@ -61,6 +57,7 @@ define(["."], function(dojo) {
 	// priority is 90 to run ahead of parser priority of 100
 	dojo.ready(90, function(){
 		if(!dojo._isBodyLtr()){
+			var rtlClassStr = "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl ")
 			html.className = dojo.trim(html.className + " " + rtlClassStr + "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl "));
 		}
 	});

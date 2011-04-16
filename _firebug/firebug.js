@@ -37,6 +37,10 @@ define([".."], function(dojo) {
 		var calls = ["log", "info", "debug", "warn", "error"];
 		for(var i=0;i<calls.length;i++){
 			var m = calls[i];
+			if(!console[m] ||console[m]._fake){
+				// IE9 doesn't have console.debug method, a fake one is added later
+				continue;
+			}
 			var n = "_"+calls[i];
 			console[n] = console[m];
 			console[m] = (function(){

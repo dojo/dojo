@@ -1,13 +1,13 @@
 // FIXME: this test assumes the existence of the global object "tests"
 define([
-	"dojo", 
-	"doh", 
-	"tests/data/readOnlyItemFileTestTemplates", 
-	"dojo/data/ItemFileWriteStore", 
-	"dojo/data/api/Read", 
-	"dojo/data/api/Identity", 
-	"dojo/data/api/Write", 
-	"dojo/data/api/Notification"], function(dojo, doh) {
+  "dojo", 
+  "doh", 
+  "tests/data/readOnlyItemFileTestTemplates", 
+  "dojo/data/ItemFileWriteStore", 
+  "dojo/data/api/Read", 
+  "dojo/data/api/Identity", 
+  "dojo/data/api/Write", 
+  "dojo/data/api/Notification"], function(dojo, doh) {
 
 dojo.getObject("data.ItemFileWriteStore", true, tests);
 
@@ -94,15 +94,15 @@ doh.register("tests.data.ItemFileWriteStore",
 				doh.assertTrue(store.containsValue(item, "capital", "Cairo"));
 				
 				// FIXME:
-				//		Okay, so this seems very odd.	 Maybe I'm just being dense.
-				//		These tests works:
+				//    Okay, so this seems very odd.  Maybe I'm just being dense.
+				//    These tests works:
 				doh.assertEqual(store.isDirty(item), false);
 				doh.assertTrue(store.isDirty(item) === false);
-				//		But these seemingly equivalent tests will not work:
+				//    But these seemingly equivalent tests will not work:
 				// doh.assertFalse(store.isDirty(item));
 				// doh.assertTrue(!(store.isDirty(item)));
 				//
-				//		All of which seems especially weird, given that this *does* work:
+				//    All of which seems especially weird, given that this *does* work:
 				doh.assertFalse(store.isDirty());
 				
 				doh.assertTrue(store.isDirty(item) === false);
@@ -459,8 +459,8 @@ doh.register("tests.data.ItemFileWriteStore",
 			function onItem(item){
 				store.setValue(item, "capital", "New Cairo");
 				function onComplete() {
-					//Check internal state.	 Note:	Users should NOT do this, this is a UT verification
-					//of internals in this case.	Ref tracker: #4394
+					//Check internal state.  Note:  Users should NOT do this, this is a UT verification
+					//of internals in this case.  Ref tracker: #4394
 					doh.assertTrue(!store._saveInProgress);
 					deferred.callback(true);
 				}
@@ -591,7 +591,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			//	description:
 			//		Simple test of the save API	with a non-atomic type (dojo.Color) that has a type mapping.
 
-			//Set up the store basics:	What data it has, and what to do when save is called for saveEverything
+			//Set up the store basics:  What data it has, and what to do when save is called for saveEverything
 			//And how to map the 'Color' type in and out of the format.
 			//(Test of saving all to a some location...)
 			var dataset = {
@@ -630,7 +630,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			};
 
 			//Add a new item with a color type, then save it.
-						var onError = function(error){
+            var onError = function(error){
 				deferred.errback(error);
 			};
 			var onComplete = function() {
@@ -647,7 +647,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			//	description:
 			//		Simple test of the save API	with a non-atomic type (dojo.Color) that has a type mapping.
 
-			//Set up the store basics:	What data it has, and what to do when save is called for saveEverything
+			//Set up the store basics:  What data it has, and what to do when save is called for saveEverything
 			//And how to map the 'Color' type in and out of the format.
 			//(Test of saving all to a some location...)
 			var dataset = {
@@ -658,7 +658,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				]
 			};
 
-			var customTypeMap = {'Color':		{
+			var customTypeMap = {'Color': 	{
 												type: dojo.Color,
 												deserialize: function(value){
 													return new dojo.Color(value);
@@ -693,7 +693,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			};
 
 			//Add a new item with a color type, then save it.
-						var onError = function(error){
+            var onError = function(error){
 				deferred.errback(error);
 			};
 			var onComplete = function() {
@@ -706,8 +706,8 @@ doh.register("tests.data.ItemFileWriteStore",
 		},
 		function testWriteAPI_newItem_revert(){
 			//	summary:
-			//		Test for bug #5357.	 Ensure that the revert properly nulls the identity position
-			//			for a new item after revert.
+			//		Test for bug #5357.  Ensure that the revert properly nulls the identity position
+			//      for a new item after revert.
 			var args = {data: {
 				label:"name",
 				items:[
@@ -724,7 +724,7 @@ doh.register("tests.data.ItemFileWriteStore",
 
 			var newCountry = store.newItem({name: "Utopia", capitol: "Perfect"});
 
-			//DO NOT ACCESS THIS WAY.	 THESE ARE INTERNAL VARIABLES.	DOING THIS FOR TEST PURPOSES.
+			//DO NOT ACCESS THIS WAY.  THESE ARE INTERNAL VARIABLES.  DOING THIS FOR TEST PURPOSES.
 			var itemEntryNum = newCountry[store._itemNumPropName];
 			doh.assertTrue(store._arrayOfAllItems[itemEntryNum] === newCountry);
 			store.revert();
@@ -732,9 +732,9 @@ doh.register("tests.data.ItemFileWriteStore",
 		},
 		function testWriteAPI_new_modify_revert(){
 			//	summary:
-			//		Test of a new item, modify it, then revert, to ensure the state remains consistent.	 Added due to #9022.
+			//		Test of a new item, modify it, then revert, to ensure the state remains consistent.  Added due to #9022.
 			//	description:
-			//		Test of a new item, modify it, then revert, to ensure the state remains consistent.	 Added due to #9022.
+			//		Test of a new item, modify it, then revert, to ensure the state remains consistent.  Added due to #9022.
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
@@ -766,9 +766,9 @@ doh.register("tests.data.ItemFileWriteStore",
 		},
 		function testWriteAPI_new_modify_delete_revert(){
 			//	summary:
-			//		Test of a new item, modify it, delete it, then revert, to ensure the state remains consistent.	Added due to #9022.
+			//		Test of a new item, modify it, delete it, then revert, to ensure the state remains consistent.  Added due to #9022.
 			//	description:
-			//		Test of a new item, modify it, delete it, then revert, to ensure the state remains consistent.	Added due to #9022.
+			//		Test of a new item, modify it, delete it, then revert, to ensure the state remains consistent.  Added due to #9022.
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var i;
 			var found = false;
@@ -808,7 +808,7 @@ doh.register("tests.data.ItemFileWriteStore",
 						}else{
 							store.revert();
 							//Check that after revert, we still have the same item count as the
-							//original fetch.	 Also verify the item with abbr of ca is gone.
+							//original fetch.  Also verify the item with abbr of ca is gone.
 							var afterRevertFetch = function(items, request){
 								var afterRevertCount = items.length;
 								doh.assertEqual(afterRevertCount, initialCount);
@@ -907,9 +907,9 @@ doh.register("tests.data.ItemFileWriteStore",
 		},
 		function testReadAPI_functionConformanceToo(){
 			//	summary:
-			//		Simple test read API conformance.	 Checks to see all declared functions are actual functions on the instances.
+			//		Simple test read API conformance.  Checks to see all declared functions are actual functions on the instances.
 			//	description:
-			//		Simple test read API conformance.	 Checks to see all declared functions are actual functions on the instances.
+			//		Simple test read API conformance.  Checks to see all declared functions are actual functions on the instances.
 			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var readApi = new dojo.data.api.Read();
 			var passed = true;
@@ -929,9 +929,9 @@ doh.register("tests.data.ItemFileWriteStore",
 		},
 		function testWriteAPI_functionConformance(){
 			//	summary:
-			//		Simple test write API conformance.	Checks to see all declared functions are actual functions on the instances.
+			//		Simple test write API conformance.  Checks to see all declared functions are actual functions on the instances.
 			//	description:
-			//		Simple test write API conformance.	Checks to see all declared functions are actual functions on the instances.
+			//		Simple test write API conformance.  Checks to see all declared functions are actual functions on the instances.
 			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var writeApi = new dojo.data.api.Write();
 			var passed = true;
@@ -951,9 +951,9 @@ doh.register("tests.data.ItemFileWriteStore",
 		},
 		function testNotificationAPI_functionConformance(){
 			//	summary:
-			//		Simple test Notification API conformance.	 Checks to see all declared functions are actual functions on the instances.
+			//		Simple test Notification API conformance.  Checks to see all declared functions are actual functions on the instances.
 			//	description:
-			//		Simple test Notification API conformance.	 Checks to see all declared functions are actual functions on the instances.
+			//		Simple test Notification API conformance.  Checks to see all declared functions are actual functions on the instances.
 			var testStore = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 			var api = new dojo.data.api.Notification();
 			var passed = true;
@@ -1026,7 +1026,7 @@ doh.register("tests.data.ItemFileWriteStore",
 		},
 		function testIdentityAPI_noIdentifierSpecified_revert(){
 			//	summary:
-			//		Test for bug #4691	Given a datafile that does not specify an
+			//		Test for bug #4691  Given a datafile that does not specify an
 			//		identifier, make sure ItemFileWriteStore auto-creates identities
 			//		that are unique even after calls to deleteItem() and newItem()
 			var args = {data: {
@@ -1099,9 +1099,9 @@ doh.register("tests.data.ItemFileWriteStore",
 			var onComplete = function(items, request){
 
 				var item10 = null;
-				var item1	 = null;
-				var item3	 = null;
-				var item5	 = null;
+				var item1  = null;
+				var item3  = null;
+				var item5  = null;
 
 				var i;
 				for (i = 0; i < items.length; i++) {
@@ -1190,7 +1190,7 @@ doh.register("tests.data.ItemFileWriteStore",
 									}catch(e){/*Not an item, even a dead one, just eat it.*/}
 								}
 								if(badRef){
-									deferred.errback(new Error("Found a reference remaining to a deleted item.	Failure."));
+									deferred.errback(new Error("Found a reference remaining to a deleted item.  Failure."));
 									passed = false;
 									break;
 								}
@@ -1277,7 +1277,7 @@ doh.register("tests.data.ItemFileWriteStore",
 					store.deleteItem(egypt);
 					store.deleteItem(nairobi);
 					try{
-						//Revert, then do a fetch.	If the internals have been damaged, this will generally
+						//Revert, then do a fetch.  If the internals have been damaged, this will generally
 						//cause onError to fire instead of onComplete.
 						store.revert();
 						function onComplete(items, request){
@@ -1322,7 +1322,7 @@ doh.register("tests.data.ItemFileWriteStore",
 						//Assert there is no reference to item 10 in item 11's attribute 'friends'.
 						doh.assertTrue(!refMap["11"]["friends"]);
 						store.setValues(item, "siblings", [0, 1, 2]);
-						//Assert there are no more references to 10 in 11.	Ergo, "11"	should be a 'undefined' attribute for the map of items referencing '10'..
+						//Assert there are no more references to 10 in 11.  Ergo, "11"  should be a 'undefined' attribute for the map of items referencing '10'..
 						doh.assertTrue(!refMap["11"]);
 						deferred.callback(true);
 					}
@@ -1373,7 +1373,7 @@ doh.register("tests.data.ItemFileWriteStore",
 									}catch(e){/*Not an item, even a dead one, just eat it.*/}
 								}
 								if(badRef){
-									deferred.errback(new Error("Found a reference remaining to a deleted item.	Failure."));
+									deferred.errback(new Error("Found a reference remaining to a deleted item.  Failure."));
 									passed = false;
 									break;
 								}

@@ -3,37 +3,37 @@
 	defaultConfig
 ){
 	// summary:
-	//	 This is the "source loader" and is the entry point for Dojo during development. You may also load Dojo with 
-	//	 any AMD-compliant loader via the package main module dojo/main.
+	//		This is the "source loader" and is the entry point for Dojo during development. You may also load Dojo with
+	//		any AMD-compliant loader via the package main module dojo/main.
 	// description:
-	//	 This is the "source loader" for Dojo. It provides an AMD-compliant loader that can be configured
-	//	 to operate in either synchronous or asynchronous modes. After the loader is defined, dojo is loaded
-	//	 IAW the package main module dojo/main. In the event you wish to use a foreign loader, you may load dojo as a package
-	//	 via the package main module dojo/main and this loader is not required; see dojo/package.json for details.
-	// 
-	//	 In order to keep compatibility with the v1.x line, this loader includes additional machinery that enables
-	//	 the dojo.provide/dojo.require etc. API. This machinery is loaded by default, but may be dynamically removed
-	//	 via the has.js API and statically removed via the build system.
-	// 
-	//	 This loader includes sniffing machinery to determine the environment; the following environments are supported:
-	// 
-	//		 * browser
-	//		 * node.js
-	//		 * rhino
-	// 
-	//	 This is the so-called "source loader". As such, it includes many optional features that may be discarded by
-	//	 building a customized verion with the build system.
+	//		This is the "source loader" for Dojo. It provides an AMD-compliant loader that can be configured
+	//		to operate in either synchronous or asynchronous modes. After the loader is defined, dojo is loaded
+	//		IAW the package main module dojo/main. In the event you wish to use a foreign loader, you may load dojo as a package
+	//		via the package main module dojo/main and this loader is not required; see dojo/package.json for details.
+	//
+	//		In order to keep compatibility with the v1.x line, this loader includes additional machinery that enables
+	//		the dojo.provide/dojo.require etc. API. This machinery is loaded by default, but may be dynamically removed
+	//		via the has.js API and statically removed via the build system.
+	//
+	//		This loader includes sniffing machinery to determine the environment; the following environments are supported:
+	//
+	//			* browser
+	//			* node.js
+	//			* rhino
+	//
+	//		This is the so-called "source loader". As such, it includes many optional features that may be discarded by
+	//		building a customized verion with the build system.
 
 	// Design and Implementation Notes
-	// 
+	//
 	// This is a dojo-specific adaption of bdLoad, donated to the dojo foundation by Altoviso LLC.
-	// 
+	//
 	// This function defines an AMD-compliant (http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition)
-	// loader that can be configured to operate in either synchronous or asynchronous modes. 
-	// 
+	// loader that can be configured to operate in either synchronous or asynchronous modes.
+	//
 	// Since this machinery implements a loader, it does not have the luxury of using a load system and/or
 	// leveraging a utility library. This results in an unpleasantly long file; here is a roadmap of the contents:
-	// 
+	//
 	//	 1. Small library for use implementing the loader.
 	//	 2. Define the has.js API; this is used throughout the loader to bracket features.
 	//	 3. Define the node.js and rhino sniffs and sniff.
@@ -52,9 +52,9 @@
 	//	16. Define the AMD define function.
 	//	17. Define the dojo v1.x provide/require machinery.
 	//	18. Publish global variables.
-	// 
+	//
 	// Language and Acronyms and Idioms
-	// 
+	//
 	// moduleId: a CJS module identifier, (used for public APIs)
 	// mid: moduleId (used internally)
 	// packageId: a package identifier (used for public APIs)
@@ -63,7 +63,7 @@
 	// pqn: package-qualified name
 	// pack: package is used internally to reference a package object (since javascript has reserved words including "package")
 	// The integer constant 1 is used in place of true and 0 in place of false.
-	// 
+	//
 	// WARNING: TODO: inline commentary is slightly stale; trust the code, not the comments
 
 	var
@@ -271,7 +271,7 @@
 		modules =
 			// A hash:(pqn) --> (module-object). module objects are simple JavaScript objects with the
 			// following properties:
-			// 
+			//
 			//	 pid: the package identifier to which the module belongs; "" indicates the system or default package
 			//	 id: the module identifier without the package identifier
 			//	 pqn: the full context-qualified name
@@ -285,20 +285,20 @@
 			//	 injected: (requested | arrived | nonmodule) the status of the module; nonmodule means the resource did not call define
 			//	 ready: 1 <==> all prerequisite fullfilled to execute the module
 			//	 load: plugin load function; applicable only for plugins
-			// 
+			//
 			// Modules go through several phases in creation:
-			// 
+			//
 			// 1. Requested: some other module's definition contains the requested module in
 			//		its dependency vector or executing code explicitly demands a module via req.require.
-			// 
+			//
 			// 2. Injected: a script element has been appended to the head element demanding the resource implied by the URL
-			// 
+			//
 			// 3. Loaded: the resource injected in [2] has been evaluated.
-			// 
+			//
 			// 4. Defined: the resource contained a define statement that advised the loader
 			//		about the module. Notice that some resources may just contain a bundle of code
 			//		and never formally define a module via define
-			// 
+			//
 			// 5. Evaluated: the module was defined via define and the loader has evaluated the factory and computed a result.
 			{},
 
@@ -310,18 +310,18 @@
 			// and evaluated by the host environment
 			{},
 
-		//	
+		//
 		// configuration machinery
 		//
 
 		computeMapProg = function(map){
-			// This routine takes a map target-prefix(string)-->replacement(string) into a vector 
+			// This routine takes a map target-prefix(string)-->replacement(string) into a vector
 			// of quads (target-prefix, replacement, regex-for-target-prefix, length-of-target-prefix)
-			// 
+			//
 			// The loader contains processes that map one string prefix to another. These
 			// are encountered when applying the requirejs paths configuration and when mapping
 			// package names. We can make the mapping and any replacement easier and faster by
-			// replacing the map with a vector of quads and then using this structure in simple machine.
+			// replacing the map with a vector of quads and then using this structure in the simple machine runMapProg.
 			var p, i, item, mapProg = [];
 			for(p in map){
 				mapProg.push([p, map[p]]);
@@ -650,29 +650,29 @@
 				}
 			}
 			// get here iff the sought-after module does not yet exist; therefore, we need to compute the URL given the
-      // fully resolved (i.e., all relative indicators resolved) module id (note the first segment of mid may be a package name):
-      // 
-      //   1. if the mid is mapped by paths, then apply the transform; otherwise,
-      //   2. if the mid is a member of a package, then...
-      //        a.  if the mid is mapped by the path transforms specific to the package, then apply the map; otherwise,
-      //        b.  decorate the mid as indicated by the package location, lib, and main properties
-      //   3. if the mid is *not* a member of a package and is mapped by the path transforms for the default package, then apply the map
-      //   4. if the url computed so far is still relative, then decorate with the baseUrl prefix
-      //   5. append the ".js" filetype
-      //
-      // WARNING: it is impossible to use paths to map the package main module; but that's what the package.main property is for
-		  mapItem = runMapProg(path, pathsMapProg);
-      if(mapItem){
+			// fully resolved (i.e., all relative indicators resolved) module id (note the first segment of mid may be a package name):
+			//
+			//	 1. if the mid is mapped by paths, then apply the transform; otherwise,
+			//	 2. if the mid is a member of a package, then...
+			//				a.	if the mid is mapped by the path transforms specific to the package, then apply the map; otherwise,
+			//				b.	decorate the mid as indicated by the package location, lib, and main properties
+			//	 3. if the mid is *not* a member of a package and is mapped by the path transforms for the default package, then apply the map
+			//	 4. if the url computed so far is still relative, then decorate with the baseUrl prefix
+			//	 5. append the ".js" filetype
+			//
+			// WARNING: it is impossible to use paths to map the package main module; but that's what the package.main property is for
+			mapItem = runMapProg(path, pathsMapProg);
+			if(mapItem){
 					url = mapItem[1] + path.substring(mapItem[3] - 1);
-      }else if(pid){
+			}else if(pid){
 				pack = packages[pid];
 				url = transformPath(path, pack.pathTransforms);
-        if(!url){
-	  			path = pid + "/" + (mid || pack.main);
-		  		url = pack.location + "/" + (mid && pack.lib ? pack.lib + "/" : "") + (mid || pack.main);
-        }
+				if(!url){
+					path = pid + "/" + (mid || pack.main);
+					url = pack.location + "/" + (mid && pack.lib ? pack.lib + "/" : "") + (mid || pack.main);
+				}
 			}else{
-  			url = transformPath(path, pathTransforms) || path;
+				url = transformPath(path, pathTransforms) || path;
 			}
 			// if result is not absolute, add baseUrl
 			if(!(/(^\/)|(\:)/.test(url))){
@@ -758,7 +758,7 @@
 				// for circular dependencies, assume the first module encountered was executed OK
 				// modules that circularly depend on a module that has not run its factory will get
 				// the premade cjs.exports===module.result. They can take a reference to this object and/or
-				// add properties to it. When the module finally runs its factory, the factory can 
+				// add properties to it. When the module finally runs its factory, the factory can
 				// read/write/replace this object. Notice that so long as the object isn't replaced, any
 				// reference taken earlier while walking the deps list is still valid.
 				module.executed = executing;
@@ -951,7 +951,7 @@
 			injecting = [],
 
 			injectModule = function(module){
-				// Inject the module. In the browser environment, this means appending a script element into 
+				// Inject the module. In the browser environment, this means appending a script element into
 				// the head; in other environments, it means loading a file.
 				//
 				// If in synchronous mode (syncDepth>0), then get the module synchronously if it's not xdomain.
@@ -1057,7 +1057,7 @@
 
 				setDel(waiting, pqn);
 
-				// don't inject dependencies; wait until the current script has completed executing and then inject. 
+				// don't inject dependencies; wait until the current script has completed executing and then inject.
 				// This allows several definitions to be contained within one script without prematurely requesting
 				// resources from the server.
 
@@ -1116,7 +1116,7 @@
 
 	if(has("dom") && (has("loader-pageLoadApi") || has("loader-injectApi"))){
 		var on = function(node, eventName, handler, useCapture, ieEventName){
-			// Add an event listener to a DOM node using the API appropriate for the current browser; 
+			// Add an event listener to a DOM node using the API appropriate for the current browser;
 			// return a function that will disconnect the listener.
 			if(has("dom-addEventListener")){
 				node.addEventListener(eventName, handler, !!useCapture);
@@ -1140,7 +1140,7 @@
 	if(has("dom") && has("loader-injectApi")){
 		var head = doc.getElementsByTagName("head")[0] || doc.getElementsByTagName("html")[0];
 		req.injectUrl = req.injectUrl || function(url, callback){
-			// Append a script element to the head element with src=url; apply callback upon 
+			// Append a script element to the head element with src=url; apply callback upon
 			// detecting the script has loaded.
 			var
 				node = doc.createElement("script"),
@@ -1304,7 +1304,7 @@
 		){
 			///
 			// Tracing interface by group.
-			// 
+			//
 			// Sends the contents of args to the console iff require.trace[group] is truthy.
 
 			if(req.traceSet[group]){
@@ -1328,10 +1328,10 @@
 		// * The loader may timeout (after the period set by require.timeout) waiting for a resource to be delivered.
 		// * Executing a module may cause an exception to be thrown.
 		// * Executing the onLoad queue may cause an exception to be thrown.
-		// 
+		//
 		// In all these cases, the loader publishes the problem to interested subscribers via the function require.onError.
-		// If the error was an uncaught exception, then if some subscriber signals that it has taken actions to recover 
-		// and it is OK to continue by returning truthy, the exception is quashed; otherwise, the exception is rethrown. 
+		// If the error was an uncaught exception, then if some subscriber signals that it has taken actions to recover
+		// and it is OK to continue by returning truthy, the exception is quashed; otherwise, the exception is rethrown.
 		// Other error conditions are handled as applicable for the particular error.
 		var onError =
 			function(
@@ -1342,11 +1342,11 @@
 				// Publishes messageId to all subscribers, passing args; returns result as affected by subscribers.
 				///
 				// A listener subscribes by writing
-				// 
+				//
 				//code
 				// require.onError.listeners.push(myListener);
 				///
-				// The listener signature must be `function(messageId, args`) where messageId indentifies 
+				// The listener signature must be `function(messageId, args`) where messageId indentifies
 				// where the exception was caught and args is an array of information gathered by the catch
 				// clause. If the listener has taken corrective actions and want to stop the exception and
 				// let the loader continue, it must return truthy. If no listener returns truthy, then
@@ -1408,11 +1408,11 @@
 			// In such cases, there is nothing to trigger the defQ and the dependencies are never requested; therefore, do it here.
 			injectDependencies(defineModule(getModule(args[0]), args[1], args[2]));
 		}else if(has("dom-addEventListener") || !has("host-browser")){
-			// anonymous module and therefore must have been injected and not IE; therefore, onLoad will fire immediately 
+			// anonymous module and therefore must have been injected and not IE; therefore, onLoad will fire immediately
 			// after script finishes being evaluated and the defQ can be run from that callback to detect the module id
 			defQ.push(args);
 		}else{
-			// anonymous module and therefore must have been injected and IE; therefore, cannot depend on 1-to-1, 
+			// anonymous module and therefore must have been injected and IE; therefore, cannot depend on 1-to-1,
 			// in-order exec of onLoad with script eval and must manually detect here
 			var
 				length = injecting.length,

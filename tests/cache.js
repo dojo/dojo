@@ -1,12 +1,12 @@
 define(["..", "doh", "../cache"], function(dojo, doh) {
-	doh.register("tests.cache",	[{
+	doh.register("tests.cache", [{
 			name: "dojo.cache",
 			runTest: function(t){
 				var expected = "<h1>Hello World</h1>";
 
 				t.is(expected, dojo.trim(dojo.cache("dojo.tests.cache", "regular.html")));
 				t.is(expected, dojo.trim(dojo.cache("dojo.tests.cache", "sanitized.html", {sanitize: true})));
-				
+
 				//Test object variant for module.
 				var objPath = dojo.moduleUrl("dojo.tests.cache", "object.html").toString();
 				t.is(expected, dojo.trim(dojo.cache(new dojo._Url(objPath), {sanitize: true})));

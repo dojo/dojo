@@ -73,11 +73,11 @@ doh.register("tests.string",
 		},
 		
 		function test_string_trim(t){
-			t.is("astoria", dojo.string.trim("	 \f\n\r\t			 astoria					 "));
-			t.is("astoria", dojo.string.trim("astoria														 "));
-			t.is("astoria", dojo.string.trim("														astoria"));
+			t.is("astoria", dojo.string.trim("   \f\n\r\t      astoria           "));
+			t.is("astoria", dojo.string.trim("astoria                            "));
+			t.is("astoria", dojo.string.trim("                            astoria"));
 			t.is("astoria", dojo.string.trim("astoria"));
-			t.is("a", dojo.string.trim("	 a	 "));
+			t.is("a", dojo.string.trim("   a   "));
 		},
 		
 		function test_string_rep(t){

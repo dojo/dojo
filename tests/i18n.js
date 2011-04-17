@@ -42,7 +42,7 @@ define(["..", "doh", "../i18n"], function(dojo, doh){
 			getFixture("en-us-new_york-brooklyn", "Yo"),
 			// Locale which does not have any translation available
 			getFixture("xx", "Hello"),
-			// A double-byte string.	Everything should be read in as UTF-8 and treated as unicode within Javascript.
+			// A double-byte string. Everything should be read in as UTF-8 and treated as unicode within Javascript.
 			getFixture("zh-cn", "\u4f60\u597d")
 		];
 	doh.register("tests.i18n", testSet);

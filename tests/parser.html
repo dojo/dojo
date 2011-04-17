@@ -7,7 +7,7 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/parser", "*ready"], function(){
+		require(["dojo", "doh", "dojo/parser", "*ready"], function(){
 
 			dojo.declare("tests.parser.Widget", null, {
 				constructor: function(args, node){
@@ -150,8 +150,7 @@
 			});
 
 			dojo.addOnLoad(function(){
-				doh.register("basic tests",
-				[
+				doh.register("basic tests", [
 					function parse(){
 						// Running the parser here so that failures appear in test log
 							dojo.parser.parse(dojo.byId("main"));
@@ -397,8 +396,7 @@
 						doh.t(htmldojomethod._ran, "ensures original was called first");
 						doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");
 					}
-				]
-			);
+				]);
 
 				doh.register("BIDI", [
 					// Test that dir=rtl or dir=ltr setting trickles down from root node
@@ -536,7 +534,7 @@
 					doh.is("custom title", mixedObj.title, "data-dojo-props overrides native");
 				});
 
-			doh.run();
+				doh.run();
 			})
 		});
 		</script>
@@ -545,112 +543,112 @@
 		<h1>Parser Unit Test</h1>
 
 		<div id=main>
-		<script>
-			function foo(){ this.fooCalled=true; }
-		</script>
-		<div dojoType="tests.parser.Class1" data-dojo-id="obj" 
-			strProp1="text" strProp2=""
-			intProp="5"
-			arrProp="foo, bar, baz"
-			arrProp2=""
-			boolProp1="true" boolProp2="false"
-			dateProp1="2006-01-01" dateProp2="" dateProp3="now"
-			funcProp2="foo" funcProp3="this.func3Called=true;"
-		>
-			<script type="dojo/method" event="preamble">
-				this.preambleTestProp = 3;
+			<script>
+				function foo(){ this.fooCalled=true; }
 			</script>
-			<script type="dojo/method">
-				// this should be run immediately
-				this.deepProp = deepTestProp;
-			</script>
-			<script type="dojo/connect" event="callInc">
-				this.callCount++;
-			</script>
-			<script type="dojo/method" event="callInc2">
-				this.callCount2++;
-			</script>
-		</div>
-		<div>
-			<div type="tests.parser.Class1" jsId="obj2" id="toParse">
-			</div>
-		</div>
-		<div dojoType="tests.parser.Class2" jsId="obj3">
-		</div>
-		<div dojoType="tests.parser.Class3" jsId="obj4">
-		</div>
-			<input dojoType="tests.parser.InputClass" jsId="checkedObj" checked type="checkbox">
-			<button dojoType="tests.parser.InputClass" jsId="disabledObj" disabled>hi</button>
-		
-		<div id="parsertest"></div>
-		<div id="parsertest2"></div>
-
-		<!-- section for testing parser recursion -->
-		<div>
-			<div dojoType="tests.parser.NormalContainer" jsId="container1">
-				<!-- this script tag should get passed as param to NormalContainer constructor -->
-				<script type="dojo/method" event="incr" args="x">
-					return x+1;
-				</script>
-				
-				<!-- and these contained widgets should get instantiated -->
-				<div dojoType="tests.parser.Class1" jsId="contained1"></div>
-				<div>
-					<div dojoType="tests.parser.Class1" jsId="contained2"></div>			
-				</div>
-			</div>
-		</div>
-
-		<div>
-			<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
-				<!-- this script tag should get passed as param to NormalContainer constructor -->
-				<script type="dojo/method" event="incr" args="x">
-					return x+1;
-				</script>
-				
-				<!-- but these contained widgets should *not* get instantiated -->
-				<div dojoType="tests.parser.Class1" jsId="contained3"></div>
-				<div>
-					<div dojoType="tests.parser.Class1" jsId="contained4"></div>			
-				</div>
-			</div>
-		</div>
-
-			<!-- tests for new data-dojo-type / data-dojo-props syntax -->
-		<div>
-			<div data-dojo-id="html5simple" data-dojo-type="tests.parser.HTML5Props" data-dojo-props="simple:true"></div>
-			<div data-dojo-id="html5simple2" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
-			></div>
-			<!-- note needing to use a named inherited lookup because we're just mixing in -->
-			<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
-			></div>
-			
-			<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->
-			<div data-dojo-id="html5fromobjectns" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
-			></div>
-			<div data-dojo-id="html5fromobjectns2" data-dojo-type="tests.parser.HTML5Props"
-				data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
-			></div>
-			
-		</div>
-		
-		<div>
-			<div data-dojo-id="htmldojomethod" data-dojo-type="tests.parser.HTML5withMethod">
-				<p>Some random markup</p>
-				<script type="dojo/method" data-dojo-event="someMethod" data-dojo-args="a, b">
-					return this.baseValue + a + b;
-				</script>
-				<script type="dojo/connect" data-dojo-event="diffMethod" data-dojo-args="a">
-					this._fromvalue = a;
+			<div dojoType="tests.parser.Class1" data-dojo-id="obj"
+				strProp1="text" strProp2=""
+				intProp="5"
+				arrProp="foo, bar, baz"
+				arrProp2=""
+				boolProp1="true" boolProp2="false"
+				dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+				funcProp2="foo" funcProp3="this.func3Called=true;"
+			>
+				<script type="dojo/method" event="preamble">
+					this.preambleTestProp = 3;
 				</script>
 				<script type="dojo/method">
-					this._methodRan = true;
+					// this should be run immediately
+					this.deepProp = deepTestProp;
+				</script>
+				<script type="dojo/connect" event="callInc">
+					this.callCount++;
+				</script>
+				<script type="dojo/method" event="callInc2">
+					this.callCount2++;
 				</script>
 			</div>
-		</div>
+			<div>
+				<div type="tests.parser.Class1" jsId="obj2" id="toParse">
+				</div>
+			</div>
+			<div dojoType="tests.parser.Class2" jsId="obj3">
+			</div>
+			<div dojoType="tests.parser.Class3" jsId="obj4">
+			</div>
+			<input dojoType="tests.parser.InputClass" jsId="checkedObj" checked type="checkbox">
+			<button dojoType="tests.parser.InputClass" jsId="disabledObj" disabled>hi</button>
+
+			<div id="parsertest"></div>
+			<div id="parsertest2"></div>
+
+			<!-- section for testing parser recursion -->
+			<div>
+				<div dojoType="tests.parser.NormalContainer" jsId="container1">
+					<!-- this script tag should get passed as param to NormalContainer constructor -->
+					<script type="dojo/method" event="incr" args="x">
+						return x+1;
+					</script>
+
+					<!-- and these contained widgets should get instantiated -->
+					<div dojoType="tests.parser.Class1" jsId="contained1"></div>
+					<div>
+						<div dojoType="tests.parser.Class1" jsId="contained2"></div>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
+					<!-- this script tag should get passed as param to NormalContainer constructor -->
+					<script type="dojo/method" event="incr" args="x">
+						return x+1;
+					</script>
+
+					<!-- but these contained widgets should *not* get instantiated -->
+					<div dojoType="tests.parser.Class1" jsId="contained3"></div>
+					<div>
+						<div dojoType="tests.parser.Class1" jsId="contained4"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- tests for new data-dojo-type / data-dojo-props syntax -->
+			<div>
+				<div data-dojo-id="html5simple" data-dojo-type="tests.parser.HTML5Props" data-dojo-props="simple:true"></div>
+				<div data-dojo-id="html5simple2" data-dojo-type="tests.parser.HTML5Props"
+					data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
+				></div>
+				<!-- note needing to use a named inherited lookup because we're just mixing in -->
+				<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
+					data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
+				></div>
+
+				<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->
+				<div data-dojo-id="html5fromobjectns" data-dojo-type="tests.parser.HTML5Props"
+					data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
+				></div>
+				<div data-dojo-id="html5fromobjectns2" data-dojo-type="tests.parser.HTML5Props"
+					data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
+				></div>
+
+			</div>
+
+			<div>
+				<div data-dojo-id="htmldojomethod" data-dojo-type="tests.parser.HTML5withMethod">
+					<p>Some random markup</p>
+					<script type="dojo/method" data-dojo-event="someMethod" data-dojo-args="a, b">
+						return this.baseValue + a + b;
+					</script>
+					<script type="dojo/connect" data-dojo-event="diffMethod" data-dojo-args="a">
+						this._fromvalue = a;
+					</script>
+					<script type="dojo/method">
+						this._methodRan = true;
+					</script>
+				</div>
+			</div>
 		</div> <!-- end of <div id=main> -->
 
 		<!-- section for testing that dir, lang attribute trickles down from ancestor -->

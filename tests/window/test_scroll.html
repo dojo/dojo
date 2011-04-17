@@ -12,11 +12,15 @@
 	<script type="text/javascript" src="../../dojo.js"
 		djConfig="isDebug: true"></script>
 
-	<script type="text/javascript">t
+	<script type="text/javascript">
+		var loading; //global
+		require(["doh"], function(doh){
+			loading = new doh.Deferred();
+		});
+
 		require(["dojo", "doh", "dojo/window", "*ready"], function(dojo, doh) {
 
 			var usingNative = !(dojo.isMoz || dojo.isIE || dojo.isWebKit || dojo.isOpera);
-			var loading = new doh.Deferred();
 			var count = 0;
 
 			innerScrollBarSize = dojo.byId("nonscroll").clientWidth - dojo.byId("withscroll").clientWidth;

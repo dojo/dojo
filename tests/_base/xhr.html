@@ -368,7 +368,7 @@
 							var form = dojo.byId("f4");
 
 							//Make sure we can send a form to its 
-							//action URL.		See trac: #2844.
+							//action URL.   See trac: #2844.
 							var td = dojo.xhrPost({
 								form: form
 							});
@@ -483,13 +483,13 @@
 		<form id="f1" style="border: 1px solid black;">
 			<input id="f1_blah" type="text" name="blah" value="blah">
 			<input id="f1_no_value" type="text" name="no_value" value="blah" disabled>
-			<input	id="f1_no_value2" type="button" name="no_value2" value="blah">
+			<input  id="f1_no_value2" type="button" name="no_value2" value="blah">
 		</form>
 		<form id="f2" style="border: 1px solid black;">
 			<input id="f2_blah" type="text" name="blah" value="blah">
 			<input id="f2_no_value" type="text" name="no_value" value="blah" disabled>
-			<input	id="f2_no_value2" type="button" name="no_value2" value="blah">
-			<select	 id="f2_multi" type="select" multiple name="multi" size="5">
+			<input  id="f2_no_value2" type="button" name="no_value2" value="blah">
+			<select  id="f2_multi" type="select" multiple name="multi" size="5">
 				<option value="blah">blah</option>
 				<option value="thud" selected>thud</option>
 				<option value="thonk" selected>thonk</option>

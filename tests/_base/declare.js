@@ -72,7 +72,7 @@ define(["../..", "doh"], function(dojo, doh){
 			dojo.declare("tests._base.declare.tmp9",
 				[
 					tests._base.declare.tmp7, // prototypal
-					tests._base.declare.tmp8	// mixin
+					tests._base.declare.tmp8  // mixin
 				]);
 			var tmp2 = new tests._base.declare.tmp9();
 			t.is("blah", tmp2.foo);
@@ -401,7 +401,7 @@ define(["../..", "doh"], function(dojo, doh){
 			}
 			t.t(flag);
 		},
-		
+
 		function noNew(t){
 			// all of the classes I create will use this as their
 			// pseudo-constructor function

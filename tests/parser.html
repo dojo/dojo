@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Parser Unit Test</title>
-		<style type="text/css">			
+		<style type="text/css">     
 			@import "../resources/dojo.css";
 		</style>
 		<script type="text/javascript" src="../dojo.js"></script>
@@ -288,14 +288,14 @@
 						t.t(obj4 instanceof tests.parser.Class2);
 					},
 					function testnostart(t){
-						
+					 
 						var started = false;
 						dojo.declare("SampleThinger", null, {
 							startup: function(){
 								started = true;
 							}
 						});
-						
+					 
 						dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
 						dojo.parser.parse("parsertest", { noStart:true });
 						
@@ -313,7 +313,7 @@
 					
 					// test the various iterations of parser test
 					function rootTest(t){
-						
+					 
 						var handle = function(sel, root){
 							t.is("parsertest2", root);
 						}
@@ -392,7 +392,7 @@
 						
 						var x = htmldojomethod.someMethod(2, 2);
 						doh.is(14, x, "overridden dojo/method");
-													
+												 
 						htmldojomethod.diffMethod(2);
 						doh.t(htmldojomethod._ran, "ensures original was called first");
 						doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");
@@ -720,7 +720,7 @@
 		<!-- tests for when parameters are specified both natively and in data-dojo-props. -->
 		<div id="mixedContainer">
 			<input data-dojo-type="tests.parser.InputClass" data-dojo-id="mixedObj"
-					value="mixedValue" title="native title" data-dojo-props="custom1: 999, title: 'custom title'">
+				  value="mixedValue" title="native title" data-dojo-props="custom1: 999, title: 'custom title'">
 		</div>
 
 	</body>

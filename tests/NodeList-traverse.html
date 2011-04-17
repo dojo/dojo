@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
+  "http://www.w3.org/TR/html4/strict.dtd">
 <html id="html">
-	<head>
+  <head>
 		<title>Testing dojo.NodeList-traverse extensions to dojo.NodeList</title>
 		<style type="text/css">
 			@import "../resources/dojo.css";
@@ -52,7 +52,7 @@
 						var topBar = bang.closest("> .bar", "level3");
 						verify(topBar, ["level4"], "> .bar query relative to level3");
 
-						// negative test that scope argument works:	 .foo > .bar relative to level3
+						// negative test that scope argument works:  .foo > .bar relative to level3
 						// doesn't match since .foo is level3, rather than a child of level3
 						closestFooBar = bang.closest(".foo > .bar", "level3");
 						verify(closestFooBar, [], ".foo > .bar query relative to level3");
@@ -63,7 +63,7 @@
 						// closest(".foo") should result in list of just two elements
 						var closestFoo = dojo.query("div").closest(".foo");
 						verify(closestFoo, ["level1", "level3"], ".foo from div");
-						
+					 
 					},
 
 					function parent(t){
@@ -126,35 +126,35 @@
 				doh.runOnLoad();
 			});
 		</script>
-	</head>
-	<body id="body" class="classy">
-		<h1 id="firstH1">testing dojo.NodeList-traverse</h1>
-		<div id="sq100" class="testDiv">
-			100px square, abs
-		</div>
-		<div id="t" class="testDiv">
-			<span id="c1">c1</span>
-		</div>
-		<div id="third" class="third testDiv">
-			<!-- This is the third top level div -->
-			<span id="crass">Crass, baby</span>
-			The third div
-			<span id="classy" class="classy">Classy, baby</span>
-			The third div, again
-			<!-- Another comment -->
-			<span id="yeah">Yeah, baby</span>
-		</div>
-		<div id="level1" class="foo">
-			<div id="level2" class="bar">
-				<div id="level3" class="foo">
-					<div id="level4" class="bar">
-						<div id="level5" class="bar">
-							<div id="level6" class="bang">foo bar bar bang</div>
-						</div>
-					</div>			
-				</div>
-			</div>
-		</div>
-	</body>
+ </head>
+  <body id="body" class="classy">
+    <h1 id="firstH1">testing dojo.NodeList-traverse</h1>
+    <div id="sq100" class="testDiv">
+      100px square, abs
+    </div>
+    <div id="t" class="testDiv">
+      <span id="c1">c1</span>
+    </div>
+    <div id="third" class="third testDiv">
+      <!-- This is the third top level div -->
+      <span id="crass">Crass, baby</span>
+      The third div
+      <span id="classy" class="classy">Classy, baby</span>
+      The third div, again
+      <!-- Another comment -->
+      <span id="yeah">Yeah, baby</span>
+    </div>
+    <div id="level1" class="foo">
+      <div id="level2" class="bar">
+        <div id="level3" class="foo">
+          <div id="level4" class="bar">
+            <div id="level5" class="bar">
+              <div id="level6" class="bang">foo bar bar bang</div>
+            </div>
+          </div>      
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
 

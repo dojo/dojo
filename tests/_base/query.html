@@ -6,17 +6,17 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/io/iframe", "*ready"], function(dojo, doh){
+      require(["dojo", "doh", "dojo/io/iframe", "*ready"], function(dojo, doh){
 
-				function createDocument(xml){
-					var fauxXhr = { responseText: xml };
-					if("DOMParser" in dojo.global){
-						var parser = new DOMParser();
-						fauxXhr.responseXML = parser.parseFromString(xml, "text/xml");
-					}
-					// kludge: use dojo.xhr contentHandler for XML to process IE XMLDOC as needed
-					return dojo._contentHandlers["xml"](fauxXhr); // DOMDocument
-				}
+  			function createDocument(xml){
+  				var fauxXhr = { responseText: xml };
+  				if("DOMParser" in dojo.global){
+  					var parser = new DOMParser();
+  					fauxXhr.responseXML = parser.parseFromString(xml, "text/xml");
+  				}
+  				// kludge: use dojo.xhr contentHandler for XML to process IE XMLDOC as needed
+  				return dojo._contentHandlers["xml"](fauxXhr); // DOMDocument
+  			}
 
 				doh.register("t", 
 					[

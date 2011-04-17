@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
+  "http://www.w3.org/TR/html4/strict.dtd">
 <html id="html">
-	<head>
+  <head>
 		<title>Testing dojo.NodeList-manipulate extensions to dojo.NodeList</title>
 		<style type="text/css">
 			@import "../resources/dojo.css";
@@ -59,7 +59,7 @@
 						//Input text test.
 						dojo.query('[type="text"]').val("Hello");
 						doh.is("Hello", dojo.byId("inputText").value);
-						
+					 
 						//Textarea test.
 						dojo.query('textarea', "inputForm").val("World");
 						doh.is("World", dojo.byId("inputTextArea").value);
@@ -68,12 +68,12 @@
 						dojo.query('[type="radio"]').val("radio2");
 						doh.f(dojo.byId("inputRadio1").checked);
 						doh.t(dojo.byId("inputRadio2").checked);
-						
+					 
 						//Checkbox test
 						dojo.query('[type="checkbox"]').val("checkbox2");
 						doh.f(dojo.byId("inputCheckBox1").checked);
 						doh.t(dojo.byId("inputCheckBox2").checked);
-						
+					 
 						var selects = dojo.query('select', 'inputForm');
 
 						//Single select test.
@@ -86,7 +86,7 @@
 								doh.f(node.selected);
 							}
 						});
-						
+					 
 						//Multiple select test.
 						selects.at(1).val(["four", "six"]);
 						dojo.query("option", "inputSelect2").forEach(function(node){
@@ -96,7 +96,7 @@
 								doh.f(node.selected);
 							}
 						});
-						
+					 
 					},
 
 					function append(t){
@@ -106,10 +106,10 @@
 								doh.is(3, node.childNodes.length);
 								doh.is("foo", node.childNodes[1].className);
 								doh.is("bar", node.childNodes[2].className);
-								
+							 
 							}
 						);
-						
+					 
 						//Test DOMNode content
 						divs.append(dojo.query("h1")[0]).forEach(function(node){
 							doh.is(4, node.childNodes.length);
@@ -144,7 +144,7 @@
 							doh.is("foo", node.childNodes[2].className);
 							doh.is("foo", node.childNodes[3].className);
 						});
-						
+					 
 						dojo.query("body").append('<p class="bands"></p><p class="drummer">john</p><p class="drummer">bonham</p>');
 						var bands = dojo.query(".bands");
 						dojo.query(".drummer").appendTo(bands);
@@ -152,15 +152,15 @@
 							doh.is(2, node.childNodes.length);
 							doh.is("drummer", node.childNodes[0].className);
 							doh.is("drummer", node.childNodes[1].className);
-							
+						 
 						});
-						
+					 
 						dojo.query("body").append('<p class="guitarist">jimmy</p><p class="guitarist">page</p>');
 						dojo.query(".guitarist").appendTo(bands[0]);
 						bands.forEach(function(node){
 							doh.is(4, node.childNodes.length);
 							doh.is("guitarist", node.childNodes[2].className);
-							doh.is("guitarist", node.childNodes[3].className);								
+							doh.is("guitarist", node.childNodes[3].className);                
 						});
 
 						//Get rid of bands
@@ -189,19 +189,19 @@
 							doh.is("bar", node.childNodes[1].className);
 							doh.is("bar", node.childNodes[2].className);
 						});
-						
+					 
 						//Clean up
 						dojo.query("p").remove();
 					},
-					
-					
+				 
+				 
 					function after(t){
 						divs.after('<span class="after">after</span>')
 							.forEach(function(node){
 								doh.is("after", node.nextSibling.className);
 							}
 						);
-						
+					 
 						dojo.query("form").after(dojo.query(".after")).forEach(function(node){
 							for(var i = 0; i < 3; i++){
 								doh.is("after", node.nextSibling.className);
@@ -229,7 +229,7 @@
 								doh.is("before", node.previousSibling.className);
 							}
 						);
-						
+					 
 						dojo.query("form").before(dojo.query(".before")).forEach(function(node){
 							for(var i = 0; i < 3; i++){
 								doh.is("before", node.previousSibling.className);
@@ -249,36 +249,36 @@
 							}
 						});
 					},
-					
+				 
 					function remove(t){
 						//Already did some removes, make sure they are not still here.
 						//This is also just an alias for orphan which has its own tests.
 						doh.is(0, dojo.query("p").length);
 					},
-					
+				 
 					function wrap(t){
 						dojo.query(".before").wrap("<b><i></i></b>").forEach(function(node){
 							doh.is("i", node.parentNode.nodeName.toLowerCase());
 							doh.is("b", node.parentNode.parentNode.nodeName.toLowerCase());
 						});
-						
+					 
 						dojo.query("b").wrap(dojo.query("h1")[0]).forEach(function(node){
 							doh.is("h1", node.parentNode.nodeName.toLowerCase());
 							doh.is(4, dojo.query("h1").length);
 						});
 					},
-					
+				 
 					function wrapAll(t){
 						dojo.query("h1").wrapAll('<h4></h4>');
 						var h4s = dojo.query("h4");
 						doh.is(1, h4s.length);
-						
+					 
 						var h4 = h4s[0];
 						doh.is(4, h4.childNodes.length);
 						dojo.query("h1").forEach(function(node){
-							doh.is("h4", node.parentNode.nodeName.toLowerCase());					
+							doh.is("h4", node.parentNode.nodeName.toLowerCase());         
 						});
-						
+					 
 						//Complicated test that test for cloning of the wrap nodes in the right
 						//situation.
 						var div = dojo.create("div", {"class": "myClass"});
@@ -294,17 +294,17 @@
 						dojo.query("h4").wrapInner('<h3></h3>');
 						var h3s = dojo.query("h3");
 						doh.is(1, h3s.length);
-						
+					 
 						var h3 = h3s[0];
 						doh.is(4, h3.childNodes.length);
 						dojo.query("h1").forEach(function(node){
-							doh.is("h3", node.parentNode.nodeName.toLowerCase());					
+							doh.is("h3", node.parentNode.nodeName.toLowerCase());         
 						});
 					},
-					
+				 
 					function replaceWith(t){
 						dojo.query("h1").replaceWith('<span class="replace">replace</span><b>hello</b>');
-						
+					 
 						dojo.query("h3").forEach(function(node){
 							doh.is(8, node.childNodes.length);
 							doh.is("replace", node.childNodes[0].className);
@@ -323,7 +323,7 @@
 						doh.is(0, dojo.query(".after").length);
 						doh.is(3, dojo.query(".italics").length);
 					},
-					
+				 
 					function clone(t){
 						dojo.query(".italics").clone().appendTo("body");
 						doh.is(6, dojo.query(".italics").length);
@@ -332,42 +332,42 @@
 				doh.runOnLoad();
 			});
 		</script>
-	</head>
-	<body id="body" class="classy">
-		<h1>testing dojo.NodeList-manipulate</h1>
-		<div id="sq100" class="testDiv">
-			100px square, abs
-		</div>
-		<div id="t" class="testDiv">
-			<span id="c1">c1</span>
-		</div>
-		<div id="third" class="third testDiv">
-			<!-- This is the third top level div -->
-			<span id="crass">Crass, baby</span>
-			The third div
-			<span id="classy" class="classy">Classy, baby</span>
-			The third div, again
-			<!-- Another comment -->
-			<span id="yeah">Yeah, baby</span>
-		</div>
-		<form id="inputForm">
-			<input type="text" id="inputText">
-			<textarea id="inputTextArea"></textarea>
-			<input type="radio" name="inputRadio" id="inputRadio1" value="radio1" checked>
-			<input type="radio" name="inputRadio" id="inputRadio2" value="radio2">
-			<input type="checkbox" id="inputCheckBox1" value="checkbox1" checked>
-			<input type="checkbox" id="inputCheckBox2" value="checkbox2">
-			<select id="inputSelect1">
-				<option value="one">One</option>
-				<option value="two">Two</option>
-				<option value="three" selected>Three</option>
-			</select>
-			<select id="inputSelect2" multiple>
-				<option value="four">Four</option>
-				<option value="five" selected>Five</option>
-				<option value="six">Six</option>
-			</select>
-		</form>
-	</body>
+ </head>
+  <body id="body" class="classy">
+    <h1>testing dojo.NodeList-manipulate</h1>
+    <div id="sq100" class="testDiv">
+      100px square, abs
+    </div>
+    <div id="t" class="testDiv">
+      <span id="c1">c1</span>
+    </div>
+    <div id="third" class="third testDiv">
+      <!-- This is the third top level div -->
+      <span id="crass">Crass, baby</span>
+      The third div
+      <span id="classy" class="classy">Classy, baby</span>
+      The third div, again
+      <!-- Another comment -->
+      <span id="yeah">Yeah, baby</span>
+    </div>
+    <form id="inputForm">
+      <input type="text" id="inputText">
+      <textarea id="inputTextArea"></textarea>
+      <input type="radio" name="inputRadio" id="inputRadio1" value="radio1" checked>
+      <input type="radio" name="inputRadio" id="inputRadio2" value="radio2">
+      <input type="checkbox" id="inputCheckBox1" value="checkbox1" checked>
+      <input type="checkbox" id="inputCheckBox2" value="checkbox2">
+      <select id="inputSelect1">
+        <option value="one">One</option>
+        <option value="two">Two</option>
+        <option value="three" selected>Three</option>
+      </select>
+      <select id="inputSelect2" multiple>
+        <option value="four">Four</option>
+        <option value="five" selected>Five</option>
+        <option value="six">Six</option>
+      </select>
+    </form>
+  </body>
 </html>
 

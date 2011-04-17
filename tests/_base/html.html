@@ -19,7 +19,7 @@
 					var doc = iframeNode.contentDocument || // W3
 						(
 							(iframeNode.contentWindow)&&(iframeNode.contentWindow.document)
-						) ||	// IE
+						) ||  // IE
 						(
 							(iframeNode.name)&&(document.frames[iframeNode.name])&&
 							(documendoh.frames[iframeNode.name].document)
@@ -290,7 +290,7 @@
 							dojo.addClass(node, "b a");
 							dojo.replaceClass(node, "c", "");
 							t.is("b a c", node.className, 
-								"The className is	 is 'b a c' after using an empty string in replaceClass");
+								"The className is  is 'b a c' after using an empty string in replaceClass");
 							
 						},
 						function testAddRemoveClassMultiple(t){
@@ -308,7 +308,7 @@
 							t.is("b", node.className, "class is b");
 							dojo.removeClass(node);
 							t.is("", node.className, "empty class");
-							dojo.addClass(node, "	 c	 b	 a ");
+							dojo.addClass(node, "  c   b   a ");
 							t.is("c b a", node.className, "class is c b a");
 							dojo.removeClass(node, " c b ");
 							t.is("a", node.className, "class is a");
@@ -810,14 +810,14 @@
 		<script type="text/javascript">
 		var reloaded = false;
 		function iframe10095loaded() {
-			require(["dojo"], function(dojo) {
-				var iframeWin = dojo.byId('10095_iframe').win;
-				dojo.withGlobal(iframeWin, function(){ dojo.destroy(dojo.byId('10095_textbox')) });
-				if(!reloaded){
-					reloaded = true;
-					dojo.byId('10095_iframe').src=iframeWin.frameElement.src;
-				}
-			});
+      require(["dojo"], function(dojo) {
+  			var iframeWin = dojo.byId('10095_iframe').win;
+  			dojo.withGlobal(iframeWin, function(){ dojo.destroy(dojo.byId('10095_textbox')) });
+  			if(!reloaded){
+  				reloaded = true;
+  				dojo.byId('10095_iframe').src=iframeWin.frameElement.src;
+  			}
+      });
 		}
 		</script>
 		<iframe id="10095_iframe" style="display:none;" src="javascript:'&lt;html&gt;&lt;head&gt;&lt;script&gt;frameElement.win=window&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;input id=10095_textbox&gt;&lt;/body&gt;&lt;/html&gt;'" onload="require.ready(iframe10095loaded)"></iframe>

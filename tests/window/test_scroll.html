@@ -2,7 +2,7 @@
                 "http://www.w3.org/TR/html4/strict.dtd">
 <html style="overflow-y:scroll;border:0px none;padding:0;margin:0;">
 <head>
-				<title>dojo.window.scrollIntoView Test</title>
+	<title>dojo.window.scrollIntoView Test</title>
 
 	<style type="text/css">
 		@import "../../resources/dojo.css";
@@ -27,8 +27,7 @@
 			console.debug('inner scrollbar size = ' + innerScrollBarSize);
 			outerScrollBarSize = (dojo.isIE >= 9) ? ((dojo.position(document.documentElement).w - document.documentElement.clientWidth) || innerScrollBarSize) : innerScrollBarSize;
 			console.debug('outer scrollbar size = ' + outerScrollBarSize);
-						doh.register("dojo.window.scroll",
-									[
+			doh.register("dojo.window.scroll",[
 				{
 					name: "wait for iframes to load",
 					timeout: 20000,

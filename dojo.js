@@ -1256,21 +1256,23 @@
 			///
 			// Add a function to execute on DOM content loaded and all requests have arrived and been evaluated.
 			if(typeof priority != "number"){
-				callback = context,context = priority,priority = 1000;
+				callback = context, context = priority, priority = 1000;
 			}
-			var cb = isString(callback) ?
-				function(){
+			var cb = function(){
+				if(isString(callback)){
 					context[callback]();
-				} :
-				function(){
+				}else if(isFunction(callback)){
+					callback.call(context);
+				}else{
 					context();
-				};
+				}
+			};
 			cb.priority = priority;
 			for(var i = 0; i < loadQ.length && priority >= loadQ[i].priority; i++){}
 			loadQ.splice(i, 0, cb);
 			onLoad();
 		};
-	}
+	};
 
 	if(has("loader-logApi")){
 		req.log = req.log || function(){

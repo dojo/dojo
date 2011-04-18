@@ -1,7 +1,5 @@
 define(["./_base/kernel"], function(dojo){
-//TODO remove scope protection
-(function(){
-  var result;
+	var result;
 	var hasJSON = typeof JSON != "undefined";
 	var features = {
 		"json-parse": hasJSON, // all the parsers work fine
@@ -12,9 +10,8 @@ define(["./_base/kernel"], function(dojo){
 		return features[feature];
 	}
 	if(has("json-stringify")){
-		result= JSON;
-	}
-	else{
+		result = JSON;
+	}else{
 		var escapeString = function(/*String*/str){
 			//summary:
 			//		Adds escape sequences for non-visual characters, double quote and
@@ -24,7 +21,7 @@ define(["./_base/kernel"], function(dojo){
 				replace(/[\f]/g, "\\f").replace(/[\b]/g, "\\b").replace(/[\n]/g, "\\n").
 				replace(/[\t]/g, "\\t").replace(/[\r]/g, "\\r"); // string
 		};
-		result= {
+		result = {
 			parse: has("json-parse") ? JSON.parse : function(str){
 				// summary:
 				// 		Parses a [JSON](http://json.org) string to return a JavaScript object.
@@ -135,7 +132,6 @@ define(["./_base/kernel"], function(dojo){
 			}
 		};
 	}
-  dojo.json= result;
+  dojo.json = result;
   return result; // AMD-result
-})();
 });

@@ -4,6 +4,9 @@ define(["./kernel", "../has"], function(dojo, has){
 	// summary:
 	//		This module populates the dojo browser version sniffing properties.
 
+	if(!has("host-browser")){
+		return dojo;
+	}
 	var
 		n = navigator,
 		dua = n.userAgent,

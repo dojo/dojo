@@ -59,7 +59,6 @@
 				}
 			});
 
-
 			dojo.declare("tests.parser.Class3", tests.parser.Class2, {
 				fromMarkup: false,
 				markupFactory: function(args, node, classCtor){
@@ -69,7 +68,7 @@
 					return i;
 				}
 			});
-			
+
 			dojo.declare("tests.parser.InputClass", null, {
 				constructor: function(args, node){
 					this.params = args;
@@ -107,7 +106,7 @@
 			});
 			dojo.declare("tests.parser.ShieldedContainer", null, {
 				constructor: function(args, node){ dojo.mixin(this, args); },
-				
+
 				// flag to tell parser not to instantiate nodes inside of me
 				stopParser: true
 			});
@@ -121,7 +120,7 @@
 					return this.a * 2;
 				}
 			});
-			
+
 			// not on .prototype:
 			tests.parser.HTML5Props._aDefaultObj = {
 				a:1, b:2, simple:true
@@ -137,7 +136,6 @@
 					this._ran = true;
 				}
 			});
-			
 
 			deepTestProp = {
 				blah: {
@@ -167,7 +165,7 @@
 						// normal string parameter
 						t.t(dojo.isString(obj.strProp1));
 						t.is("text", obj.strProp1);
-						
+
 						// make sure that you override a string value like "foo" to a blank value
 						t.t(dojo.isString(obj.strProp2));
 						t.is("", obj.strProp2);
@@ -187,19 +185,19 @@
 					function testBoolProp(t){
 						// make sure that both true and false get read correctly,
 						// and that unspecified attributes' values don't change
-						
+
 						// boolProp1 specified at true
 						t.is("boolean", (typeof obj.boolProp1));
 						t.t(obj.boolProp1);
-						
+
 						// boolProp2 specified as false
 						t.is("boolean", (typeof obj.boolProp2));
 						t.f(obj.boolProp2);
-						
+
 						// boolProp3 not specified (prototype says false)
 						t.is("boolean", (typeof obj.boolProp3));
 						t.f(obj.boolProp3);
-						
+
 						// boolProp4 not specified (prototype says true)
 						t.is("boolean", (typeof obj.boolProp4));
 						t.t(obj.boolProp4);
@@ -207,10 +205,10 @@
 					function testDateProp(t){
 						// dateProp1 specified as 2006-1-1
 						t.is("2006-01-01", dojo.date.stamp.toISOString(obj.dateProp1, {selector: 'date'}));
-						
+
 						// dateProp2="", should map to NaN (a blank value on DateTextBox)
 						t.t(isNaN(obj.dateProp2));
-						
+
 						// dateProp3="now", should map to current date
 						t.is(dojo.date.stamp.toISOString(new Date(), {selector: 'date'}),
 							dojo.date.stamp.toISOString(obj.dateProp3, {selector: 'date'}));
@@ -247,11 +245,11 @@
 						// don't get overridden (bug #3074)
 						obj.onclick();
 						t.t(obj.prototypeOnclick);
-						
+
 						// funcProp2="foo"
 						obj.funcProp2();
 						t.t(obj.fooCalled);
-						
+
 						// funcProp3="this.func3Called=true;"
 						obj.funcProp3();
 						t.t(obj.func3Called);
@@ -287,43 +285,43 @@
 						t.t(obj4 instanceof tests.parser.Class2);
 					},
 					function testnostart(t){
-					 
+
 						var started = false;
 						dojo.declare("SampleThinger", null, {
 							startup: function(){
 								started = true;
 							}
 						});
-					 
+
 						dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
 						dojo.parser.parse("parsertest", { noStart:true });
-						
+
 						t.f(started);
 
 						dojo.empty("parsertest");
-						
+
 						started = false;
-						
+
 						dojo.create("div", { dojoType:"SampleThinger" }, "parsertest");
 						dojo.parser.parse({ noStart:true, rootNode:"parsertest" });
-							
+
 						t.f(started);
 					},
-					
+
 					// test the various iterations of parser test
 					function rootTest(t){
-					 
+
 						var handle = function(sel, root){
 							t.is("parsertest2", root);
 						}
 						var tmp = dojo.connect(dojo, "query", handle);
-						
+
 						dojo.parser.parse("parsertest2");
 						dojo.parser.parse({ rootNode: "parsertest2" });
 						dojo.parser.parse("parsertest2", { noStart:true });
-						
+
 						dojo.disconnect(tmp);
-						
+
 					},
 
 					// Test that when BorderContainer etc. extends _Widget,
@@ -333,12 +331,12 @@
 						// Add new node to be parsed, referencing a widget that the parser has already
 						// dealt with (and thus cached)
 						var wrapper = dojo.place("<div><div dojoType='tests.parser.Class3' newParam=12345>hi</div></div>", dojo.body(), "last");
-						
+
 						// Modify Class3's superclass widget to have new parameter (thus Class3 inherits it)
 						dojo.extend(tests.parser.Class2, {
 							newParam: 0
 						});
-						
+
 						// Run the parser and see if it reads in newParam
 						var widgets = dojo.parser.parse({rootNode: wrapper});
 						doh.is(1, widgets.length, "parsed newly inserted parserTest widget");
@@ -357,14 +355,14 @@
 						doh.f(window.contained3, "child widget not created");
 						doh.f(window.contained4, "child widget 2 not created");
 					},
-					
+
 					function simpleHTML5(){
 						doh.t(typeof html5simple == "object", "data-dojo-id export");
 						doh.t(typeof html5simple2 == "object", "data-dojo-id export");
-						
+
 						doh.t(html5simple.simple, "default respecified in props=''");
 						doh.f(html5simple2.simple, "default overridden by props=''");
-						
+
 						// test data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
 						var it = html5simple2;
 						doh.is(1, it.a, "number in param");
@@ -372,26 +370,26 @@
 						doh.t(dojo.isArray(it.c), "array in param");
 						doh.is(3, it.c.length, "array sanity");
 						doh.is("g", it.e.f, "nested object with string");
-						
+
 						// test the function
 						doh.is(it, it.d(), "simple 'return this' function");
-						
+
 					},
-					
+
 					function html5inherited(){
 						doh.t(typeof html5simple3 == "object");
 						var val = html5simple3.afn();
 						doh.is(html5simple3.a * 2, val, "afn() overrides default but calls inherited")
 					},
-					
+
 					function html5withMethod(){
 						// testing data-dojo-event and data-dojo-args support for dojo/method and dojo/connect
 						doh.t(typeof htmldojomethod == "object");
 						doh.t(htmldojomethod._methodRan, "plain dojo/method ran");
-						
+
 						var x = htmldojomethod.someMethod(2, 2);
 						doh.is(14, x, "overridden dojo/method");
-												 
+
 						htmldojomethod.diffMethod(2);
 						doh.t(htmldojomethod._ran, "ensures original was called first");
 						doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");

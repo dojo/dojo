@@ -137,22 +137,22 @@ doh.register("tests.number",
 			runTest: function(t){
 				var partLocaleList = ["en-us", "fr-fr", "de-de"];
 				tests.number.locale = "en-us";
-        if(require.async){
-            var
-              def = new doh.Deferred(),
-              deps= [];
-            dojo.forEach(partLocaleList, function(locale){
-              deps.push(dojo.getL10nName("dojo/cldr", "number", locale));
-            });
-            require(deps, function(){
-							def.callback(true);
-            });
-            return def;
-        }else{ // tests for the v1.x loader/i18n machinery
-  				for(var i = 0 ; i < partLocaleList.length; i ++){
-	  				dojo.i18n.getLocalization("dojo.cldr","number",partLocaleList[i]);
-		  		}
-        }
+				if(require.async){
+					var
+						def = new doh.Deferred(),
+						deps = [];
+					dojo.forEach(partLocaleList, function(locale){
+						deps.push(dojo.getL10nName("dojo/cldr", "number", locale));
+					});
+					require(deps, function(){
+						def.callback(true);
+					});
+					return def;
+				}else{ // tests for the v1.x loader/i18n machinery
+					for(var i = 0 ; i < partLocaleList.length; i ++){
+						dojo.i18n.getLocalization("dojo.cldr","number",partLocaleList[i]);
+					}
+				}
 			}
 		},
 		{

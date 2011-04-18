@@ -138,6 +138,3 @@ define(["..", "doh", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpSer
 	]);
 
 });
-
-
-

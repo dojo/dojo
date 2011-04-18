@@ -31,7 +31,6 @@
 						doh.is("<ul><li>test</li></ul>", divs.innerHTML().toLowerCase().replace(/[\r\n]/g, ""));
 					},
 
-
 					function html(t){
 						divs.html("<ul><li>Test</li></ul>");
 						dojo.forEach(divs, function(node){
@@ -59,7 +58,7 @@
 						//Input text test.
 						dojo.query('[type="text"]').val("Hello");
 						doh.is("Hello", dojo.byId("inputText").value);
-					 
+
 						//Textarea test.
 						dojo.query('textarea', "inputForm").val("World");
 						doh.is("World", dojo.byId("inputTextArea").value);
@@ -68,12 +67,12 @@
 						dojo.query('[type="radio"]').val("radio2");
 						doh.f(dojo.byId("inputRadio1").checked);
 						doh.t(dojo.byId("inputRadio2").checked);
-					 
+
 						//Checkbox test
 						dojo.query('[type="checkbox"]').val("checkbox2");
 						doh.f(dojo.byId("inputCheckBox1").checked);
 						doh.t(dojo.byId("inputCheckBox2").checked);
-					 
+
 						var selects = dojo.query('select', 'inputForm');
 
 						//Single select test.
@@ -86,7 +85,7 @@
 								doh.f(node.selected);
 							}
 						});
-					 
+
 						//Multiple select test.
 						selects.at(1).val(["four", "six"]);
 						dojo.query("option", "inputSelect2").forEach(function(node){
@@ -96,7 +95,7 @@
 								doh.f(node.selected);
 							}
 						});
-					 
+
 					},
 
 					function append(t){
@@ -106,10 +105,10 @@
 								doh.is(3, node.childNodes.length);
 								doh.is("foo", node.childNodes[1].className);
 								doh.is("bar", node.childNodes[2].className);
-							 
+
 							}
 						);
-					 
+
 						//Test DOMNode content
 						divs.append(dojo.query("h1")[0]).forEach(function(node){
 							doh.is(4, node.childNodes.length);
@@ -144,7 +143,7 @@
 							doh.is("foo", node.childNodes[2].className);
 							doh.is("foo", node.childNodes[3].className);
 						});
-					 
+
 						dojo.query("body").append('<p class="bands"></p><p class="drummer">john</p><p class="drummer">bonham</p>');
 						var bands = dojo.query(".bands");
 						dojo.query(".drummer").appendTo(bands);
@@ -152,9 +151,8 @@
 							doh.is(2, node.childNodes.length);
 							doh.is("drummer", node.childNodes[0].className);
 							doh.is("drummer", node.childNodes[1].className);
-						 
 						});
-					 
+
 						dojo.query("body").append('<p class="guitarist">jimmy</p><p class="guitarist">page</p>');
 						dojo.query(".guitarist").appendTo(bands[0]);
 						bands.forEach(function(node){
@@ -189,19 +187,18 @@
 							doh.is("bar", node.childNodes[1].className);
 							doh.is("bar", node.childNodes[2].className);
 						});
-					 
+
 						//Clean up
 						dojo.query("p").remove();
 					},
-				 
-				 
+
 					function after(t){
 						divs.after('<span class="after">after</span>')
 							.forEach(function(node){
 								doh.is("after", node.nextSibling.className);
 							}
 						);
-					 
+
 						dojo.query("form").after(dojo.query(".after")).forEach(function(node){
 							for(var i = 0; i < 3; i++){
 								doh.is("after", node.nextSibling.className);
@@ -229,7 +226,7 @@
 								doh.is("before", node.previousSibling.className);
 							}
 						);
-					 
+
 						dojo.query("form").before(dojo.query(".before")).forEach(function(node){
 							for(var i = 0; i < 3; i++){
 								doh.is("before", node.previousSibling.className);
@@ -249,36 +246,36 @@
 							}
 						});
 					},
-				 
+
 					function remove(t){
 						//Already did some removes, make sure they are not still here.
 						//This is also just an alias for orphan which has its own tests.
 						doh.is(0, dojo.query("p").length);
 					},
-				 
+
 					function wrap(t){
 						dojo.query(".before").wrap("<b><i></i></b>").forEach(function(node){
 							doh.is("i", node.parentNode.nodeName.toLowerCase());
 							doh.is("b", node.parentNode.parentNode.nodeName.toLowerCase());
 						});
-					 
+
 						dojo.query("b").wrap(dojo.query("h1")[0]).forEach(function(node){
 							doh.is("h1", node.parentNode.nodeName.toLowerCase());
 							doh.is(4, dojo.query("h1").length);
 						});
 					},
-				 
+
 					function wrapAll(t){
 						dojo.query("h1").wrapAll('<h4></h4>');
 						var h4s = dojo.query("h4");
 						doh.is(1, h4s.length);
-					 
+
 						var h4 = h4s[0];
 						doh.is(4, h4.childNodes.length);
 						dojo.query("h1").forEach(function(node){
 							doh.is("h4", node.parentNode.nodeName.toLowerCase());         
 						});
-					 
+
 						//Complicated test that test for cloning of the wrap nodes in the right
 						//situation.
 						var div = dojo.create("div", {"class": "myClass"});
@@ -294,17 +291,17 @@
 						dojo.query("h4").wrapInner('<h3></h3>');
 						var h3s = dojo.query("h3");
 						doh.is(1, h3s.length);
-					 
+
 						var h3 = h3s[0];
 						doh.is(4, h3.childNodes.length);
 						dojo.query("h1").forEach(function(node){
 							doh.is("h3", node.parentNode.nodeName.toLowerCase());         
 						});
 					},
-				 
+
 					function replaceWith(t){
 						dojo.query("h1").replaceWith('<span class="replace">replace</span><b>hello</b>');
-					 
+
 						dojo.query("h3").forEach(function(node){
 							doh.is(8, node.childNodes.length);
 							doh.is("replace", node.childNodes[0].className);
@@ -323,7 +320,7 @@
 						doh.is(0, dojo.query(".after").length);
 						doh.is(3, dojo.query(".italics").length);
 					},
-				 
+
 					function clone(t){
 						dojo.query(".italics").clone().appendTo("body");
 						doh.is(6, dojo.query(".italics").length);
@@ -370,4 +367,3 @@
 		</form>
 	</body>
 </html>
-

@@ -6,11 +6,10 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-		require(["dojo", "doh", "*ready"], function(dojo, doh){
-			var duration = 500;
-			var timeout = 750;
-			doh.register("t", 
-				[
+			require(["dojo", "doh", "*ready"], function(dojo, doh){
+				var duration = 500;
+				var timeout = 750;
+				doh.register("t", [
 					{
 						name: "fadeOut",
 						timeout: timeout,
@@ -452,12 +451,9 @@
 							return d;
 						}
 					}
-					
-				
-					
-				]
-			);
-			doh.runOnLoad();
+				]);
+
+				doh.runOnLoad();
 			});
 		</script>
 		<style type="text/css">
@@ -494,8 +490,8 @@
 	<body>
 		<h1>testing Core FX</h1>
 		<form name="testForm">
-		<input type="button" onClick="dojo.fadeOut({ node: 'foo', duration: 1000 }).play()" value="fade out"></input>
-		<input type="button" onClick="dojo.fadeIn({ node: 'foo', duration: 1000 }).play()" value="fade in"></input>
+		<input type="button" onClick="dojo.fadeOut({ node: 'foo', duration: 1000 }).play()" value="fade out"/>
+		<input type="button" onClick="dojo.fadeIn({ node: 'foo', duration: 1000 }).play()" value="fade in"/>
 		</form>
 		<div id="foo" class="box" style="float: left;">
 			<p>

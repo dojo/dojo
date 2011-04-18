@@ -810,14 +810,14 @@
 		<script type="text/javascript">
 		var reloaded = false;
 		function iframe10095loaded() {
-      require(["dojo"], function(dojo) {
-  			var iframeWin = dojo.byId('10095_iframe').win;
-  			dojo.withGlobal(iframeWin, function(){ dojo.destroy(dojo.byId('10095_textbox')) });
-  			if(!reloaded){
-  				reloaded = true;
-  				dojo.byId('10095_iframe').src=iframeWin.frameElement.src;
-  			}
-      });
+			require(["dojo"], function(dojo) {
+				var iframeWin = dojo.byId('10095_iframe').win;
+				dojo.withGlobal(iframeWin, function(){ dojo.destroy(dojo.byId('10095_textbox')) });
+				if(!reloaded){
+					reloaded = true;
+					dojo.byId('10095_iframe').src=iframeWin.frameElement.src;
+				}
+			});
 		}
 		</script>
 		<iframe id="10095_iframe" style="display:none;" src="javascript:'&lt;html&gt;&lt;head&gt;&lt;script&gt;frameElement.win=window&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;input id=10095_textbox&gt;&lt;/body&gt;&lt;/html&gt;'" onload="require.ready(iframe10095loaded)"></iframe>

@@ -18,15 +18,15 @@
 							timeoutSeconds: 5,
 							preventCache: true,
 							handle: function(res, ioArgs){
-								if(!(res instanceof Error) && 
+								if(!(res instanceof Error) &&
 									t.is("iframe succeeded", res)){
 									d.callback(true);
 								}else{
 									d.errback(false);
-								}               
+								}
 							}
 						});
-						return d;             
+						return d;
 					},
 
 					function ioIframeGetJson(t){
@@ -38,15 +38,15 @@
 							preventCache: true,
 							handleAs: "json",
 							handle: function(res, ioArgs){
-								if(!(res instanceof Error) && 
+								if(!(res instanceof Error) &&
 									t.is("blue", res.color)){
 									d.callback(true);
 								}else{
 									d.errback(false);
-								}               
+								}
 							}
 						});
-						return d;             
+						return d;
 					},
 
 					function ioIframeGetJavascript(t){
@@ -59,15 +59,15 @@
 							handleAs: "javascript",
 							handle: function(res, ioArgs){
 								console.log("RES: ", res);
-								if(!(res instanceof Error) && 
+								if(!(res instanceof Error) &&
 									t.is(42, window.iframeTestingFunction())){
 									d.callback(true);
 								}else{
 									d.errback(false);
-								}               
+								}
 							}
 						});
-						return d;             
+						return d;
 					},
 
 					function ioIframeGetHtml(t){
@@ -79,15 +79,15 @@
 							preventCache: true,
 							handleAs: "html",
 							handle: function(res, ioArgs){
-								if(!(res instanceof Error) && 
+								if(!(res instanceof Error) &&
 									t.is("SUCCESSFUL HTML response", res.getElementsByTagName("h1")[0].innerHTML)){
 									d.callback(true);
 								}else{
 									d.errback(false);
-								}               
+								}
 							}
 						});
-						return d;             
+						return d;
 					},
 
 					function ioIframeGetXml(t){
@@ -99,7 +99,7 @@
 							preventCache: true,
 							handleAs: "xml",
 							handle: function(res, ioArgs){
-								if(!(res instanceof Error) 
+								if(!(res instanceof Error)
 									&& t.is(4, res.documentElement.getElementsByTagName("child").length)
 								){
 									d.callback(true);
@@ -137,12 +137,12 @@
 						timeoutSeconds: 5,
 						preventCache: true,
 						handle: function(res, ioArgs){
-							if(!(res instanceof Error) && 
+							if(!(res instanceof Error) &&
 								"iframe succeeded" == res){
 								console.debug("OK");
 							}else{
 								console.debug("Error", res);
-							}               
+							}
 						}
 					});
 				});

@@ -7,11 +7,6 @@ define(["../has", "./config", "require"], function(has, config, require){
 	// summary:
 	//		This module is the foundational module of the dojo boot sequence; it defines the dojo object.
 
-	has.add("dojo-load-firebug-console",
-		// the firebug 2.0 console
-		!!this["loadFirebugConsole"]
-	);
-
 	has.add("dojo-debug-messages",
 		// include dojo.deprecated/dojo.experimental implementations
 		1
@@ -99,15 +94,6 @@ define(["../has", "./config", "require"], function(has, config, require){
 		}
 	};
 
-	// the preferred way to load the dojo firebug console is by setting has("dojo-firebug") true before boot
-	// the isDebug config switch is for backcompat and will work fine in sync loading mode; it works in
-	// async mode too, but there's no guarantee when the module is loaded; therefore, if you need a firebug
-	// console guarnanteed at a particular spot in an app, either set config.has["dojo-firebug"] true before
-	// loading dojo.js or explicitly include dojo/_firebug/firebug in a dependency list.
-	if(config.isDebug){
-		require(["dojo/_firebug/firebug"]);
-	}
-
 	// notice that modulePaths won't be applied to any require's before the dojo/_base/kernel factory is run;
 	// this is the v1.6- behavior. Going forward from 1.7+, consider modulePaths deprecated and
 	// configure the loader directly.
@@ -128,11 +114,6 @@ define(["../has", "./config", "require"], function(has, config, require){
 		dojo.exit = function(exitcode){
 			quit(exitcode);
 		};
-	}
-
-	if(has("dojo-load-firebug-console")){
-//TODO: look at this
-		loadFirebugConsole();
 	}
 
 	if(has("dojo-guarantee-console")){

@@ -57,7 +57,7 @@ define(["."], function(dojo){
 	// priority is 90 to run ahead of parser priority of 100
 	dojo.ready(90, function(){
 		if(!dojo._isBodyLtr()){
-			var rtlClassStr = "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl ")
+			var rtlClassStr = "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl ");
 			html.className = dojo.trim(html.className + " " + rtlClassStr + "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl "));
 		}
 	});

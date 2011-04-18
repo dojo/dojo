@@ -1,4 +1,4 @@
-define([".."], function(dojo) {
+define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/event", "../_base/url", "../_base/unload"], function(dojo) {
 	// module:
 	//		dojo/_firebug/firebug
 	// summary:
@@ -456,7 +456,7 @@ define([".."], function(dojo) {
 		}
 
 		var styleElement = _firebugDoc.createElement("link");
-		styleElement.href = dojo.moduleUrl("dojo._firebug", "firebug.css");
+		styleElement.href = dojo.moduleUrl("dojo._firebug", "firebug.css")+"";
 		styleElement.rel = "stylesheet";
 		styleElement.type = "text/css";
 		var styleParent = _firebugDoc.getElementsByTagName("head");
@@ -517,8 +517,11 @@ define([".."], function(dojo) {
 		consoleObjectInspector = _firebugDoc.getElementById("objectLog");
 		consoleDomInspector = _firebugDoc.getElementById("domInspect");
 		fireBugTabs = _firebugDoc.getElementById("fireBugTabs");
-		layout();
-		flush();
+		window.setTimeout(function(){
+			// FIXME: this is hack against the race condition that uses a timer to add the style sheet for IE above; it won't always work
+			layout();
+			flush();
+		}, 20);
 	}
 
 	dojo.addOnLoad(createFrame);
@@ -562,6 +565,9 @@ define([".."], function(dojo) {
 		var height = h ?
 			h  - (tHeight + commandLine.offsetHeight +25 + (h*.01)) + "px" :
 			(consoleFrame.offsetHeight - tHeight - commandLine.offsetHeight) + "px";
+
+		//FIXME: this is a hack until we figure out why commandLine.offsetHieght is wrong onReady
+		height = height>0 ? height : 18;
 
 		consoleBody.style.top = tHeight + "px";
 		consoleBody.style.height = height;

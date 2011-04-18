@@ -23,7 +23,7 @@ define([
 	// console guarnanteed at a particular spot in an app, either set config.has["dojo-firebug"] true before
 	// loading dojo.js or explicitly include dojo/_firebug/firebug in a dependency list.
 	if(dojo.config.isDebug){
-		//require(["dojo/_firebug/firebug"]);
+		require(["dojo/_firebug/firebug"]);
 	}
 
 	has.add("dojo-load-firebug-console",

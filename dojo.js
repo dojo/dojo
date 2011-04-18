@@ -134,9 +134,9 @@
 
 		// this will be the global require function; define it immediately so we can start hanging things off of it
 		req = function(
-			config,				//(object, optional) hash of configuration properties
+			config,       //(object, optional) hash of configuration properties
 			dependencies, //(array of commonjs.moduleId, optional) list of modules to be loaded before applying callback
-			callback			//(function, optional) lamda expression to apply to module values implied by dependencies
+			callback      //(function, optional) lamda expression to apply to module values implied by dependencies
 		){
 			return contextRequire(config, dependencies, callback, 0, req);
 		},
@@ -185,10 +185,6 @@
 
 	// userConfig has tests override defaultConfig has tests...
 	for(var p in userConfig.has){
-		has.add(p, userConfig.has[p], 0, 1);
-	}
-
-	for(p in userConfig.has){
 		has.add(p, userConfig.has[p], 0, 1);
 	}
 
@@ -345,8 +341,8 @@
 			packageInfo.mapProg = computeMapProg(packageInfo.packageMap);
 			var name = packageInfo.name;
 
-      // allow paths to be specified in the package info
-      mix(paths, packageInfo.paths);
+			// allow paths to be specified in the package info
+			mix(paths, packageInfo.paths);
 
 			// now that we've got a fully-resolved package object, push it into the configuration
 			packages[name] = packageInfo;
@@ -528,9 +524,6 @@
 				result = function(a1, a2, a3){
 					return contextRequire(a1, a2, a3, module, result);
 				};
-				//for(var p in req){
-				//	result[p]= req[p];
-				//}
 				module.require = mix(result, req);
 				result.nameToUrl = result.toUrl = function(name, ext){
 					return nameToUrl(name, ext, module);
@@ -724,13 +717,10 @@
 		cjsModuleModule = mix(getModule("module"), cjsModuleInfo),
 
 		// this is a flag to say at least one factory was run during a deps tree traversal
-		signalFactoryRan = 0,
 		runFactory = function(pqn, factory, args, cjs){
 			if(has("loader-traceApi")){
 				req.trace("loader-runFactory", [pqn]);
 			}
-
-			signalFactoryRan = 1;
 			return isFunction(factory) ? (factory.apply(null, args) || (cjs && cjs.exports)) : factory;
 		},
 
@@ -744,8 +734,7 @@
 				if(!module.def){
 					return abortExec;
 				}
-				var
-					pqn = module.pqn,
+				var pqn = module.pqn,
 					deps = module.deps || [],
 					arg, argResult,
 					args = [],
@@ -765,9 +754,9 @@
 				while(i < deps.length){
 					arg = deps[i++];
 					argResult = ((arg === cjsRequireModule) ? createRequire(module) :
-						((arg === cjsExportsModule) ? module.exports :
-							((arg === cjsModuleModule) ? module :
-								execModule(arg))));
+									((arg === cjsExportsModule) ? module.exports :
+										((arg === cjsModuleModule) ? module :
+											execModule(arg))));
 					if(argResult === abortExec){
 						module.executed = 0;
 						return abortExec;
@@ -1451,10 +1440,7 @@
 							return true;
 						}
 					}
-					if(fileProtocol){
-						return false;
-					}
-					if(/^\./.test(path)){
+					if(fileProtocol || /^\./.test(path)){
 						// begins with a dot is always relative to page URL; therefore not xdomain
 						return false;
 					}

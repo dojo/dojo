@@ -75,7 +75,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 	//	summary:
 	//		This module defines dojo.query.
 
-	var d= dojo;
+	var d = dojo;
 
 	var ctr = 0;
 	if(has("webkit")){
@@ -217,7 +217,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 
 		// NOTE:
 		//		this code is designed to run fast and compress well. Sacrifices
-		//		to readability and maintainability have been made.	Your best
+		//		to readability and maintainability have been made.  Your best
 		//		bet when hacking the tokenizer is to put The Donnas on *really*
 		//		loud (may we recommend their "Spend The Night" release?) and
 		//		just assume you're gonna make mistakes. Keep the unit tests
@@ -394,7 +394,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 					classes: [], // class matches may be additive, e.g.: .thinger.blah.howdy
 					tag: null,	// only one tag...
 					oper: null, // ...or operator per component. Note that these wind up being exclusive.
-					id: null,		// the id component of a rule
+					id: null,	// the id component of a rule
 					getTag: function(){
 						return (caseSensitive) ? this.otag : this.tag;
 					}
@@ -425,7 +425,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 						// try to strip quotes from the matchFor value. We want
 						// [attrName=howdy] to match the same
 						//	as [attrName = 'howdy' ]
-						if(	(cmf.charAt(0) == '"') || (cmf.charAt(0)	== "'") ){
+						if(	(cmf.charAt(0) == '"') || (cmf.charAt(0) == "'") ){
 							_cp.matchFor = cmf.slice(1, -1);
 						}
 					}
@@ -954,7 +954,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 
 		// NOTE:
 		//		this function returns a function that searches for nodes and
-		//		filters them.	 The search may be specialized by infix operators
+		//		filters them.  The search may be specialized by infix operators
 		//		(">", "~", or "+") else it will default to searching all
 		//		descendants (the " " selector). Once a group of children is
 		//		found, a test function is applied to weed out the ones we
@@ -1180,19 +1180,19 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 
 	// NOTES:
 	//	* we can't trust QSA for anything but document-rooted queries, so
-	//		caching is split into DOM query evaluators and QSA query evaluators
+	//	  caching is split into DOM query evaluators and QSA query evaluators
 	//	* caching query results is dirty and leak-prone (or, at a minimum,
-	//		prone to unbounded growth). Other toolkits may go this route, but
-	//		they totally destroy their own ability to manage their memory
-	//		footprint. If we implement it, it should only ever be with a fixed
-	//		total element reference # limit and an LRU-style algorithm since JS
-	//		has no weakref support. Caching compiled query evaluators is also
-	//		potentially problematic, but even on large documents the size of the
-	//		query evaluators is often < 100 function objects per evaluator (and
-	//		LRU can be applied if it's ever shown to be an issue).
+	//	  prone to unbounded growth). Other toolkits may go this route, but
+	//	  they totally destroy their own ability to manage their memory
+	//	  footprint. If we implement it, it should only ever be with a fixed
+	//	  total element reference # limit and an LRU-style algorithm since JS
+	//	  has no weakref support. Caching compiled query evaluators is also
+	//	  potentially problematic, but even on large documents the size of the
+	//	  query evaluators is often < 100 function objects per evaluator (and
+	//	  LRU can be applied if it's ever shown to be an issue).
 	//	* since IE's QSA support is currently only for HTML documents and even
-	//		then only in IE 8's "standards mode", we have to detect our dispatch
-	//		route at query time and keep 2 separate caches. Ugg.
+	//	  then only in IE 8's "standards mode", we have to detect our dispatch
+	//	  route at query time and keep 2 separate caches. Ugg.
 
 	// we need to determine if we think we can run a given query via
 	// querySelectorAll or if we'll need to fall back on DOM queries to get
@@ -1223,7 +1223,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 
 	//Don't bother with n+3 type of matches, IE complains if we modify those.
 	var infixSpaceRe = /n\+\d|([^ ])?([>~+])([^ =])?/g;
-	var infixSpaceFunc = function(match, pre, ch, post) {
+	var infixSpaceFunc = function(match, pre, ch, post){
 		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};
 
@@ -1295,7 +1295,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 				try{
 					// the QSA system contains an egregious spec bug which
 					// limits us, effectively, to only running QSA queries over
-					// entire documents.	See:
+					// entire documents.  See:
 					//		http://ejohn.org/blog/thoughts-on-queryselectorall/
 					//	despite this, we can also handle QSA runs on simple
 					//	selectors, but we don't want detection to be expensive
@@ -1473,7 +1473,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 		//			|	* `:root`, `:lang()`, `:target`, `:focus`
 		//			* all visual and state selectors:
 		//			|	* `:root`, `:active`, `:hover`, `:visisted`, `:link`,
-		//					`:enabled`, `:disabled`
+		//				  `:enabled`, `:disabled`
 		//			* `:*-of-type` pseudo selectors
 		//
 		//		dojo.query and XML Documents:
@@ -1617,7 +1617,7 @@ define(["./kernel", "../has", "./sniff", "./NodeList", "./lang", "./window"], fu
 			filterFunc =
 				(parts.length == 1 && !/[^\w#\.]/.test(filter)) ?
 				getSimpleFilterFunc(parts[0]) :
-				function(node) {
+				function(node){
 					return dojo.query(filter, root).indexOf(node) != -1;
 				};
 		for(var x = 0, te; te = nodeList[x]; x++){

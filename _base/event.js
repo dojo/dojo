@@ -288,14 +288,14 @@ define(["./kernel", "./connect", "./sniff"], function(dojo){
 	}else{
 	//>>excludeEnd("webkitMobile");
 		dojo.mouseButtons = {
-			LEFT:		0,
+			LEFT:   0,
 			MIDDLE: 1,
-			RIGHT: 2,
+			RIGHT:  2,
 			// helper functions
 			isButton: function(e, button){ return e.button == button; },
-			isLeft: function(e){ return e.button == 0; },
+			isLeft:   function(e){ return e.button == 0; },
 			isMiddle: function(e){ return e.button == 1; },
-			isRight: function(e){ return e.button == 2; }
+			isRight:  function(e){ return e.button == 2; }
 		};
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}
@@ -480,7 +480,7 @@ define(["./kernel", "./connect", "./sniff"], function(dojo){
 					var faux = del._synthesizeEvent(evt, {type: 'keypress', faux: true, charCode: c});
 					kp.call(evt.currentTarget, faux);
 					if(dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks)){
-					evt.cancelBubble = faux.cancelBubble;
+						evt.cancelBubble = faux.cancelBubble;
 					}
 					evt.returnValue = faux.returnValue;
 					_trySetKeyCode(evt, faux.keyCode);
@@ -617,41 +617,41 @@ define(["./kernel", "./connect", "./sniff"], function(dojo){
 	}
 	//>>excludeEnd("webkitMobile");
 
-//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-if(dojo.isIE){
-	// keep this out of the closure
-	// closing over 'iel' or 'ieh' b0rks leak prevention
-	// ls[i] is an index into the master handler array
-	dojo._ieDispatcher = function(args, sender){
-		var ap = Array.prototype,
-			h = dojo._ie_listener.handlers,
-			c = args.callee,
-			ls = c[dojo._ieListenersName],
-			t = h[c.target];
-		// return value comes from original target function
-		var r = t && t.apply(sender, args);
-		// make local copy of listener array so it's immutable during processing
-		var lls = [].concat(ls);
-		// invoke listeners after target function
-		for(var i in lls){
-			var f = h[lls[i]];
-			if(!(i in ap) && f){
-				f.apply(sender, args);
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+	if(dojo.isIE){
+		// keep this out of the closure
+		// closing over 'iel' or 'ieh' b0rks leak prevention
+		// ls[i] is an index into the master handler array
+		dojo._ieDispatcher = function(args, sender){
+			var ap = Array.prototype,
+				h = dojo._ie_listener.handlers,
+				c = args.callee,
+				ls = c[dojo._ieListenersName],
+				t = h[c.target];
+			// return value comes from original target function
+			var r = t && t.apply(sender, args);
+			// make local copy of listener array so it's immutable during processing
+			var lls = [].concat(ls);
+			// invoke listeners after target function
+			for(var i in lls){
+				var f = h[lls[i]];
+				if(!(i in ap) && f){
+					f.apply(sender, args);
+				}
 			}
-		}
-		return r;
-	};
-	dojo._getIeDispatcher = function(){
-		// ensure the returned function closes over nothing ("new Function" apparently doesn't close)
-		return new Function(dojo._scopeName + "._ieDispatcher(arguments, this)"); // function
-	};
-	// keep this out of the closure to reduce RAM allocation
-	dojo._event_listener._fixCallback = function(fp){
-		var f = dojo._event_listener._fixEvent;
-		return function(e){ return fp.call(this, f(e, this)); };
-	};
-}
-//>>excludeEnd("webkitMobile");
+			return r;
+		};
+		dojo._getIeDispatcher = function(){
+			// ensure the returned function closes over nothing ("new Function" apparently doesn't close)
+			return new Function(dojo._scopeName + "._ieDispatcher(arguments, this)"); // function
+		};
+		// keep this out of the closure to reduce RAM allocation
+		dojo._event_listener._fixCallback = function(fp){
+			var f = dojo._event_listener._fixEvent;
+			return function(e){ return fp.call(this, f(e, this)); };
+		};
+	}
+	//>>excludeEnd("webkitMobile");
 
-return dojo.connect;
+	return dojo.connect;
 });

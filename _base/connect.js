@@ -271,7 +271,7 @@ dojo.publish = function(/*String*/ topic, /*Array*/ args){
 	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);
 
 	// Note that args is an array, which is more efficient vs variable length
-	// argument list.	 Ideally, var args would be implemented via Array
+	// argument list.  Ideally, var args would be implemented via Array
 	// throughout the APIs.
 	var f = dojo._topics[topic];
 	if(f){

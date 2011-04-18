@@ -218,14 +218,14 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 				target[name] = source[name];
 			}
 		}
-    if (has("bug-for-in-skips-shadowed")){
-	  	for(var extraNames= d._extraNames, i= extraNames.length; i;){
-		  	name = extraNames[--i];
-			  if(name != cname && source.hasOwnProperty(name)){
-				  target[name] = source[name];
-			  }
-		  }
-    }
+		if(has("bug-for-in-skips-shadowed")){
+			for(var extraNames= d._extraNames, i= extraNames.length; i;){
+				name = extraNames[--i];
+				if(name != cname && source.hasOwnProperty(name)){
+					  target[name] = source[name];
+				}
+			}
+		}
 	}
 
 	// implementation of safe mixin function
@@ -242,19 +242,19 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 				target[name] = t;
 			}
 		}
-    if (has("bug-for-in-skips-shadowed")){
-	  	for(var extraNames= d._extraNames, i= extraNames.length; i;){
-  			name = extraNames[--i];
-	  		t = source[name];
-		  	if((t !== op[name] || !(name in op)) && name != cname){
-			  	if(opts.call(t) == "[object Function]"){
-				  	// non-trivial function method => attach its name
-					  t.nom = name;
-  				}
-	  			target[name] = t;
-		  	}
-  		}
-    }
+		if(has("bug-for-in-skips-shadowed")){
+			for(var extraNames= d._extraNames, i= extraNames.length; i;){
+				name = extraNames[--i];
+				t = source[name];
+				if((t !== op[name] || !(name in op)) && name != cname){
+					if(opts.call(t) == "[object Function]"){
+						// non-trivial function method => attach its name
+						  t.nom = name;
+					}
+					target[name] = t;
+				}
+			}
+		}
 		return target;
 	}
 
@@ -1036,5 +1036,5 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 	};
 	=====*/
 
-  return dojo.declare;
+	return dojo.declare;
 });

@@ -51,7 +51,7 @@ define(["./kernel", "./lang"], function(dojo){
 	//		Callbacks are allowed to return promises themselves, so
 	//		you can build complicated sequences of events with ease.
 	//
-	//		The creator of the Deferred may specify a canceller.	The canceller
+	//		The creator of the Deferred may specify a canceller.  The canceller
 	//		is a function that will be called if Deferred.cancel is called
 	//		before the Deferred fires. You can use this to implement clean
 	//		aborting of an XMLHttpRequest, etc. Note that cancel will fire the

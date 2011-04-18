@@ -44,13 +44,13 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 	// adapters
 
 	var adaptAsForEach = function(f, o){
-		//	summary:
+		// summary:
 		//		adapts a single node function to be used in the forEach-type
 		//		actions. The initial object is returned from the specialized
 		//		function.
-		//	f: Function
+		// f: Function
 		//		a function to adapt
-		//	o: Object?
+		// o: Object?
 		//		an optional context for f
 		return function(){
 			this.forEach(loopBody(f, arguments, o));
@@ -59,12 +59,12 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 	};
 
 	var adaptAsMap = function(f, o){
-		//	summary:
+		// summary:
 		//		adapts a single node function to be used in the map-type
 		//		actions. The return is a new array of values, as via `dojo.map`
-		//	f: Function
+		// f: Function
 		//		a function to adapt
-		//	o: Object?
+		// o: Object?
 		//		an optional context for f
 		return function(){
 			return this.map(loopBody(f, arguments, o));
@@ -72,11 +72,11 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 	};
 
 	var adaptAsFilter = function(f, o){
-		//	summary:
+		// summary:
 		//		adapts a single node function to be used in the filter-type actions
-		//	f: Function
+		// f: Function
 		//		a function to adapt
-		//	o: Object?
+		// o: Object?
 		//		an optional context for f
 		return function(){
 			return this.filter(loopBody(f, arguments, o));
@@ -84,14 +84,14 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 	};
 
 	var adaptWithCondition = function(f, g, o){
-		//	summary:
+		// summary:
 		//		adapts a single node function to be used in the map-type
 		//		actions, behaves like forEach() or map() depending on arguments
-		//	f: Function
+		// f: Function
 		//		a function to adapt
-		//	g: Function
+		// g: Function
 		//		a condition function, if true runs as map(), otherwise runs as forEach()
-		//	o: Object?
+		// o: Object?
 		//		an optional context for f and g
 		return function(){
 			var a = arguments, body = loopBody(f, a, o);
@@ -104,13 +104,13 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 	};
 
 	var magicGuard = function(a){
-		//	summary:
+		// summary:
 		//		the guard function for dojo.attr() and dojo.style()
 		return a.length == 1 && (typeof a[0] == "string"); // inline'd type check
 	};
 
 	var orphan = function(node){
-		//	summary:
+		// summary:
 		//		function to orphan nodes
 		var p = node.parentNode;
 		if(p){
@@ -120,28 +120,28 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 	// FIXME: should we move orphan() to dojo.html?
 
 	dojo.NodeList = function(){
-		//	summary:
+		// summary:
 		//		dojo.NodeList is an of Array subclass which adds syntactic
 		//		sugar for chaining, common iteration operations, animation, and
 		//		node manipulation. NodeLists are most often returned as the
 		//		result of dojo.query() calls.
-		//	description:
+		// description:
 		//		dojo.NodeList instances provide many utilities that reflect
 		//		core Dojo APIs for Array iteration and manipulation, DOM
 		//		manipulation, and event handling. Instead of needing to dig up
 		//		functions in the dojo.* namespace, NodeLists generally make the
 		//		full power of Dojo available for DOM manipulation tasks in a
 		//		simple, chainable way.
-		//	example:
+		// example:
 		//		create a node list from a node
 		//		|	new dojo.NodeList(dojo.byId("foo"));
-		//	example:
+		// example:
 		//		get a NodeList from a CSS query and iterate on it
 		//		|	var l = dojo.query(".thinger");
 		//		|	l.forEach(function(node, index, nodeList){
 		//		|		console.log(index, node.innerHTML);
 		//		|	});
-		//	example:
+		// example:
 		//		use native and Dojo-provided array methods to manipulate a
 		//		NodeList without needing to use dojo.* functions explicitly:
 		//		|	var l = dojo.query(".thinger");
@@ -160,7 +160,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		//		|	// function to get specific items wrapped in a new NodeList:
 		//		|	var node = l[3]; // the 4th element
 		//		|	var newList = l.at(1, 3); // the 2nd and 4th elements
-		//	example:
+		// example:
 		//		the style functions you expect are all there too:
 		//		|	// style() as a getter...
 		//		|	var borders = dojo.query(".thinger").style("border");
@@ -170,7 +170,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		//		|	dojo.query("li:nth-child(even)").addClass("even");
 		//		|	// even getting the coordinates of all the items
 		//		|	var coords = dojo.query(".thinger").coords();
-		//	example:
+		// example:
 		//		DOM manipulation functions from the dojo.* namespace area also
 		//		available:
 		//		|	// remove all of the elements in the list from their
@@ -178,7 +178,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		//		|	dojo.query(".thinger").orphan();
 		//		|	// place all elements in the list at the front of #foo
 		//		|	dojo.query(".thinger").place("foo", "first");
-		//	example:
+		// example:
 		//		Event handling couldn't be easier. `dojo.connect` is mapped in,
 		//		and shortcut handlers are provided for most DOM events:
 		//		|	// like dojo.connect(), but with implicit scope
@@ -190,7 +190,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		//		|	dojo.query("p")
 		//		|		.onmouseenter(toggleHovered)
 		//		|		.onmouseleave(toggleHovered);
-		//	example:
+		// example:
 		//		chainability is a key advantage of NodeLists:
 		//		|	dojo.query(".thinger")
 		//		|		.onclick(function(e){ /* ... */ })
@@ -211,7 +211,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 	nl._wrap = nlp._wrap = tnl;
 	nl._adaptAsMap = adaptAsMap;
 	nl._adaptAsForEach = adaptAsForEach;
-	nl._adaptAsFilter	 = adaptAsFilter;
+	nl._adaptAsFilter  = adaptAsFilter;
 	nl._adaptWithCondition = adaptWithCondition;
 
 	// mass assignment
@@ -258,7 +258,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 			//		(if dojo.parser has been dojo.required elsewhere).
 
 			//Wanted to just use a DocumentFragment, but for the array/NodeList
-			//case that meant	 using cloneNode, but we may not want that.
+			//case that meant using cloneNode, but we may not want that.
 			//Cloning should only happen if the node operations span
 			//multiple refNodes. Also, need a real array, not a NodeList from the
 			//DOM since the node movements could change those NodeLists.
@@ -458,18 +458,18 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		indexOf: function(value, fromIndex){
-			//	summary:
+			// summary:
 			//		see dojo.indexOf(). The primary difference is that the acted-on
 			//		array is implicitly this NodeList
 			// value: Object:
 			//		The value to search for.
 			// fromIndex: Integer?:
 			//		The location to start searching from. Optional. Defaults to 0.
-			//	description:
+			// description:
 			//		For more details on the behavior of indexOf, see Mozilla's
 			//		(indexOf
 			//		docs)[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf]
-			//	returns:
+			// returns:
 			//		Positive Integer or 0 for a match, -1 of not found.
 			return d.indexOf(this, value, fromIndex); // Integer
 		},
@@ -478,7 +478,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 			// summary:
 			//		see dojo.lastIndexOf(). The primary difference is that the
 			//		acted-on array is implicitly this NodeList
-			//	description:
+			// description:
 			//		For more details on the behavior of lastIndexOf, see
 			//		Mozilla's (lastIndexOf
 			//		docs)[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:lastIndexOf]
@@ -492,7 +492,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		every: function(callback, thisObject){
-			//	summary:
+			// summary:
 			//		see `dojo.every()` and the (Array.every
 			//		docs)[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every].
 			//		Takes the same structure of arguments and returns as
@@ -504,10 +504,10 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		some: function(callback, thisObject){
-			//	summary:
+			// summary:
 			//		Takes the same structure of arguments and returns as
 			//		`dojo.some()` with the caveat that the passed array is
-			//		implicitly this NodeList.	 See `dojo.some()` and Mozilla's
+			//		implicitly this NodeList.  See `dojo.some()` and Mozilla's
 			//		(Array.some
 			//		documentation)[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some].
 			// callback: Function: the callback
@@ -553,7 +553,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		map: function(/*Function*/ func, /*Function?*/ obj){
-			//	summary:
+			// summary:
 			//		see dojo.map(). The primary difference is that the acted-on
 			//		array is implicitly this NodeList and the return is a
 			//		dojo.NodeList (a subclass of Array)
@@ -562,7 +562,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		forEach: function(callback, thisObj){
-			//	summary:
+			// summary:
 			//		see `dojo.forEach()`. The primary difference is that the acted-on
 			//		array is implicitly this NodeList. If you want the option to break out
 			//		of the forEach loop, use every() or some() instead.
@@ -573,7 +573,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 
 		/*=====
 		coords: function(){
-			//	summary:
+			// summary:
 			//		Returns the box objects of all elements in a node list as
 			//		an Array (*not* a NodeList). Acts like `dojo.coords`, though assumes
 			//		the node passed is each node in this list.
@@ -582,7 +582,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		position: function(){
-			//	summary:
+			// summary:
 			//		Returns border-box objects (x/y/w/h) of all elements in a node list
 			//		as an Array (*not* a NodeList). Acts like `dojo.position`, though
 			//		assumes the node passed is each node in this list.
@@ -591,23 +591,23 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		attr: function(property, value){
-			//	summary:
+			// summary:
 			//		gets or sets the DOM attribute for every element in the
 			//		NodeList. See also `dojo.attr`
-			//	property: String
+			// property: String
 			//		the attribute to get/set
-			//	value: String?
+			// value: String?
 			//		optional. The value to set the property to
-			//	returns:
+			// returns:
 			//		if no value is passed, the result is an array of attribute values
 			//		If a value is passed, the return is this NodeList
-			//	example:
+			// example:
 			//		Make all nodes with a particular class focusable:
 			//	|	dojo.query(".focusable").attr("tabIndex", -1);
-			//	example:
+			// example:
 			//		Disable a group of buttons:
 			//	|	dojo.query("button.group").attr("disabled", true);
-			//	example:
+			// example:
 			//		innerHTML can be assigned or retrieved as well:
 			//	|	// get the innerHTML (as an array) for each list item
 			//	|	var ih = dojo.query("li.replaceable").attr("innerHTML");
@@ -616,14 +616,14 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		style: function(property, value){
-			//	summary:
+			// summary:
 			//		gets or sets the CSS property for every element in the NodeList
-			//	property: String
+			// property: String
 			//		the CSS property to get/set, in JavaScript notation
 			//		("lineHieght" instead of "line-height")
-			//	value: String?
+			// value: String?
 			//		optional. The value to set the property to
-			//	returns:
+			// returns:
 			//		if no value is passed, the result is an array of strings.
 			//		If a value is passed, the return is this NodeList
 			return; // dojo.NodeList
@@ -631,54 +631,54 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		addClass: function(className){
-			//	summary:
+			// summary:
 			//		adds the specified class to every node in the list
-			//	className: String|Array
+			// className: String|Array
 			//		A String class name to add, or several space-separated class names,
 			//		or an array of class names.
 			return; // dojo.NodeList
 		},
 
 		removeClass: function(className){
-			//	summary:
+			// summary:
 			//		removes the specified class from every node in the list
-			//	className: String|Array?
+			// className: String|Array?
 			//		An optional String class name to remove, or several space-separated
 			//		class names, or an array of class names. If omitted, all class names
 			//		will be deleted.
-			//	returns:
+			// returns:
 			//		dojo.NodeList, this list
 			return; // dojo.NodeList
 		},
 
 		toggleClass: function(className, condition){
-			//	summary:
+			// summary:
 			//		Adds a class to node if not present, or removes if present.
 			//		Pass a boolean condition if you want to explicitly add or remove.
-			//	condition: Boolean?
+			// condition: Boolean?
 			//		If passed, true means to add the class, false means to remove.
-			//	className: String
+			// className: String
 			//		the CSS class to add
 			return; // dojo.NodeList
 		},
 
 		connect: function(methodName, objOrFunc, funcName){
-			//	summary:
+			// summary:
 			//		attach event handlers to every item of the NodeList. Uses dojo.connect()
 			//		so event properties are normalized
-			//	methodName: String
+			// methodName: String
 			//		the name of the method to attach to. For DOM events, this should be
 			//		the lower-case name of the event
-			//	objOrFunc: Object|Function|String
+			// objOrFunc: Object|Function|String
 			//		if 2 arguments are passed (methodName, objOrFunc), objOrFunc should
 			//		reference a function or be the name of the function in the global
 			//		namespace to attach. If 3 arguments are provided
 			//		(methodName, objOrFunc, funcName), objOrFunc must be the scope to
 			//		locate the bound function in
-			//	funcName: String?
+			// funcName: String?
 			//		optional. A string naming the function in objOrFunc to bind to the
 			//		event. May also be a function reference.
-			//	example:
+			// example:
 			//		add an onclick handler to every button on the page
 			//		|	dojo.query("div:nth-child(odd)").connect("onclick", function(e){
 			//		|		console.log("clicked!");
@@ -689,7 +689,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		empty: function(){
-			//	summary:
+			// summary:
 			//		clears all content from each node in the list. Effectively
 			//		equivalent to removing all child nodes from every item in
 			//		the list.
@@ -706,22 +706,22 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 
 		/*
 		destroy: function(){
-			//	summary:
-			//		destroys every item in	the list.
+			// summary:
+			//		destroys every item in the list.
 			this.forEach(d.destroy);
 			// FIXME: should we be checking for and/or disposing of widgets below these nodes?
 		},
 		*/
 
 		place: function(/*String||Node*/ queryOrNode, /*String*/ position){
-			//	summary:
+			// summary:
 			//		places elements of this node list relative to the first element matched
 			//		by queryOrNode. Returns the original NodeList. See: `dojo.place`
-			//	queryOrNode:
+			// queryOrNode:
 			//		may be a string representing any valid CSS3 selector or a DOM node.
 			//		In the selector case, only the first matching element will be used
 			//		for relative positioning.
-			//	position:
+			// position:
 			//		can be one of:
 			//		|	"last" (default)
 			//		|	"first"
@@ -735,26 +735,26 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		orphan: function(/*String?*/ filter){
-			//	summary:
+			// summary:
 			//		removes elements in this list that match the filter
 			//		from their parents and returns them as a new NodeList.
-			//	filter:
+			// filter:
 			//		CSS selector like ".foo" or "div > span"
-			//	returns:
+			// returns:
 			//		`dojo.NodeList` containing the orphaned elements
 			return (filter ? d._filterQueryResult(this, filter) : this).forEach(orphan); // dojo.NodeList
 		},
 
 		adopt: function(/*String||Array||DomNode*/ queryOrListOrNode, /*String?*/ position){
-			//	summary:
+			// summary:
 			//		places any/all elements in queryOrListOrNode at a
 			//		position relative to the first element in this list.
 			//		Returns a dojo.NodeList of the adopted elements.
-			//	queryOrListOrNode:
+			// queryOrListOrNode:
 			//		a DOM node or a query string or a query result.
 			//		Represents the nodes to be adopted relative to the
 			//		first element of this NodeList.
-			//	position:
+			// position:
 			//		can be one of:
 			//		|	"last" (default)
 			//		|	"first"
@@ -768,11 +768,11 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 
 		// FIXME: do we need this?
 		query: function(/*String*/ queryStr){
-			//	summary:
+			// summary:
 			//		Returns a new list whose members match the passed query,
 			//		assuming elements of the current NodeList as the root for
 			//		each search.
-			//	example:
+			// example:
 			//		assume a DOM created by this markup:
 			//	|	<div id="foo">
 			//	|		<p>
@@ -786,7 +786,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 			//	|	var l = new dojo.NodeList(dojo.byId("foo"), dojo.byId("bar"));
 			//		it's possible to find all span elements under paragraphs
 			//		contained by these elements with this sub-query:
-			//	|		var spans = l.query("p span");
+			//	|	var spans = l.query("p span");
 
 			// FIXME: probably slow
 			if(!queryStr){ return this; }
@@ -798,14 +798,14 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		filter: function(/*String|Function*/ filter){
-			//	summary:
+			// summary:
 			//		"masks" the built-in javascript filter() method (supported
 			//		in Dojo via `dojo.filter`) to support passing a simple
 			//		string filter in addition to supporting filtering function
 			//		objects.
-			//	filter:
+			// filter:
 			//		If a string, a CSS rule like ".thinger" or "div > span".
-			//	example:
+			// example:
 			//		"regular" JS filter syntax as exposed in dojo.filter:
 			//		|	dojo.query("*").filter(function(item){
 			//		|		// highlight every paragraph
@@ -838,15 +838,15 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		*/
 
 		addContent: function(/*String||DomNode||Object||dojo.NodeList*/ content, /*String||Integer?*/ position){
-			//	summary:
+			// summary:
 			//		add a node, NodeList or some HTML as a string to every item in the
-			//		list.	 Returns the original list.
-			//	description:
+			//		list.  Returns the original list.
+			// description:
 			//		a copy of the HTML content is added to each item in the
 			//		list, with an optional position argument. If no position
 			//		argument is provided, the content is appended to the end of
 			//		each item.
-			//	content:
+			// content:
 			//		DOM node, HTML in string format, a NodeList or an Object. If a DOM node or
 			//		NodeList, the content will be cloned if the current NodeList has more than one
 			//		element. Only the DOM nodes are cloned, no event handlers. If it is an Object,
@@ -857,7 +857,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 			//		string should be parsed for widgets (dojo.require("dojo.parser") to get that
 			//		option to work), and "templateFunc" if a template function besides dojo.string.substitute
 			//		should be used to transform the "template".
-			//	position:
+			// position:
 			//		can be one of:
 			//		|	"last"||"end" (default)
 			//		|	"first||"start"
@@ -866,21 +866,21 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 			//		|	"replace" (replaces nodes in this NodeList with new content)
 			//		|	"only" (removes other children of the nodes so new content is the only child)
 			//		or an offset in the childNodes property
-			//	example:
+			// example:
 			//		appends content to the end if the position is omitted
 			//	|	dojo.query("h3 > p").addContent("hey there!");
-			//	example:
+			// example:
 			//		add something to the front of each element that has a
 			//		"thinger" property:
 			//	|	dojo.query("[thinger]").addContent("...", "first");
-			//	example:
+			// example:
 			//		adds a header before each element of the list
 			//	|	dojo.query(".note").addContent("<h4>NOTE:</h4>", "before");
-			//	example:
+			// example:
 			//		add a clone of a DOM node to the end of every element in
 			//		the list, removing it from its existing parent.
 			//	|	dojo.query(".note").addContent(dojo.byId("foo"));
-			//	example:
+			// example:
 			//		Append nodes from a templatized string.
 			//		dojo.require("dojo.string");
 			//		dojo.query(".note").addContent({
@@ -888,7 +888,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 			//			id: "user332",
 			//			name: "Mr. Anderson"
 			//		});
-			//	example:
+			// example:
 			//		Append nodes from a templatized string that also has widgets parsed.
 			//		dojo.require("dojo.string");
 			//		dojo.require("dojo.parser");
@@ -905,11 +905,11 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		instantiate: function(/*String|Object*/ declaredClass, /*Object?*/ properties){
-			//	summary:
+			// summary:
 			//		Create a new instance of a specified class, using the
 			//		specified properties and each node in the nodeList as a
 			//		srcNodeRef.
-			//	example:
+			// example:
 			//		Grabs all buttons in the page and converts them to diji.form.Buttons.
 			//	|	var buttons = dojo.query("button").instantiate("dijit.form.Button", {showLabel: true});
 			var c = d.isFunction(declaredClass) ? declaredClass : d.getObject(declaredClass);
@@ -920,31 +920,31 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		},
 
 		at: function(/*===== index =====*/){
-			//	summary:
+			// summary:
 			//		Returns a new NodeList comprised of items in this NodeList
 			//		at the given index or indices.
 			//
-			//	index: Integer...
+			// index: Integer...
 			//		One or more 0-based indices of items in the current
 			//		NodeList. A negative index will start at the end of the
 			//		list and go backwards.
 			//
-			//	example:
+			// example:
 			//	Shorten the list to the first, second, and third elements
 			//	|	dojo.query("a").at(0, 1, 2).forEach(fn);
 			//
-			//	example:
+			// example:
 			//	Retrieve the first and last elements of a unordered list:
 			//	|	dojo.query("ul > li").at(0, -1).forEach(cb);
 			//
-			//	example:
+			// example:
 			//	Do something for the first element only, but end() out back to
 			//	the original list and continue chaining:
 			//	|	dojo.query("a").at(0).onclick(fn).end().forEach(function(n){
 			//	|		console.log(n); // all anchors on the page.
 			//	|	})
 			//
-			//	returns:
+			// returns:
 			//		dojo.NodeList
 			var t = new this._NodeListCtor();
 			d.forEach(arguments, function(i){

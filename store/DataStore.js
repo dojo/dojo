@@ -1,8 +1,8 @@
 define(["..", "./util/QueryResults"], function(dojo) {
-	//  module:
-	//    dojo/store/DataStore
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/store/DataStore
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.store.DataStore", null, {

@@ -1,8 +1,8 @@
 define([".", "./date/stamp"], function(dojo) {
-	//	module:
+	// module:
 	//		dojo/parser
-	//	summary:
-	//		TODOC:This module defines 
+	// summary:
+	//		TODOC
 
 new Date("X"); // workaround for #11279, new Date("") == NaN
 
@@ -134,7 +134,7 @@ dojo.parser = new function(){
 			// settings inherited from ancestors ("dir" and "lang").
 			// Inherited setting may later be overridden by explicit settings on node itself.
 			var params = {};
-				
+
 			if(args.defaults){
 				// settings for the document itself (or whatever subtree is being parsed)
 				d._mixin(params, args.defaults);

@@ -1,8 +1,8 @@
 define(["..", "./Selector", "./Manager"], function(dojo) {
-	//  module:
-	//    dojo/dnd/Source
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/dnd/Source
+	// summary:
+	//		TODOC
 
 
 /*
@@ -67,7 +67,7 @@ dojo.dnd.__SourceArgs = function(){
 dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	// summary:
 	//		a Source object, which can be used as a DnD source, or a DnD target
-	
+
 	// object attributes (for markup)
 	isSource: true,
 	horizontal: false,
@@ -80,7 +80,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	delay: 0, // pixels
 	accept: ["text"],
 	generateText: true,
-	
+
 	constructor: function(/*DOMNode|String*/node, /*dojo.dnd.__SourceArgs?*/params){
 		// summary:
 		//		a constructor of the Source
@@ -125,7 +125,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			dojo.subscribe("/dnd/cancel", this, "onDndCancel")
 		];
 	},
-	
+
 	// methods
 	checkAcceptance: function(source, nodes){
 		// summary:
@@ -161,7 +161,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//		the "copy" key was pressed
 		// self: Boolean?
 		//		optional flag that means that we are about to drop on itself
-		
+
 		if(keyPressed){ return true; }
 		if(arguments.length < 2){
 			self = this == dojo.dnd.manager().target;
@@ -248,7 +248,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			dojo.dnd.Source.superclass.onMouseUp.call(this, e);
 		}
 	},
-	
+
 	// topic event processors
 	onDndSourceOver: function(source){
 		// summary:
@@ -315,7 +315,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this._changeState("Source", "");
 		this._changeState("Target", "");
 	},
-	
+
 	// local events
 	onDrop: function(source, nodes, copy){
 		// summary:
@@ -326,7 +326,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//		the list of transferred items
 		// copy: Boolean
 		//		copy items, if true, move items otherwise
-		
+
 		if(this != source){
 			this.onDropExternal(source, nodes, copy);
 		}else{
@@ -343,7 +343,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//		the list of transferred items
 		// copy: Boolean
 		//		copy items, if true, move items otherwise
-		
+
 		var oldCreator = this._normalizedCreator;
 		// transferring nodes from the source to the target
 		if(this.creator){
@@ -388,7 +388,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//		the list of transferred items
 		// copy: Boolean
 		//		copy items, if true, move items otherwise
-		
+
 		var oldCreator = this._normalizedCreator;
 		// transferring nodes within the single source
 		if(this.current && this.current.id in this.selection){
@@ -435,7 +435,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//		called during the active DnD operation, when items
 		//		are dragged away from this target, and it is not disabled
 	},
-	
+
 	// utilities
 	onOverEvent: function(){
 		// summary:
@@ -490,12 +490,12 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//		checks if user clicked on "approved" items
 		// e: Event
 		//		mouse event
-		
+
 		// accept only the left mouse button
 		if(!dojo.mouseButtons.isLeft(e)){ return false; }
-		
+
 		if(!this.withHandles){ return true; }
-		
+
 		// check for handles
 		for(var node = e.target; node && node !== this.node; node = node.parentNode){
 			if(dojo.hasClass(node, "dojoDndHandle")){ return true; }
@@ -507,7 +507,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 
 dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
 	// summary: a Target object, which can be used as a DnD target
-	
+
 	constructor: function(node, params){
 		// summary:
 		//		a constructor of the Target --- see the `dojo.dnd.Source.constructor` for details
@@ -525,7 +525,7 @@ dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
 dojo.declare("dojo.dnd.AutoSource", dojo.dnd.Source, {
 	// summary:
 	//		a source that syncs its DnD nodes by default
-	
+
 	constructor: function(node, params){
 		// summary:
 		//		constructor of the AutoSource --- see the Source constructor for details

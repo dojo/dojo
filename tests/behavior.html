@@ -12,11 +12,11 @@
 				var applyCount = 0;
  
 				var behaviorObj = {
-					".bar": 		function(elem){ 
+					".bar":function(elem){ 
 						dojo.style(elem, "opacity", 0.5);
 						applyCount++;
 					},
-					".foo > span":	function(elem){ 
+					".foo > span":function(elem){ 
 						elem.style.fontStyle = "italic";
 						applyCount++;
 					}

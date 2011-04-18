@@ -1,8 +1,8 @@
 define(["../.."], function(dojo) {
-	//  module:
-	//    dojo/data/util/filter
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/data/util/filter
+	// summary:
+	//		TODOC
 
 dojo.getObject("data.util.filter", true, dojo);
 
@@ -67,7 +67,7 @@ dojo.data.util.filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/
 	}else{
 		return new RegExp(rxp,"m"); //RegExp
 	}
-	
+
 };
 
 return dojo.data.util.filter;

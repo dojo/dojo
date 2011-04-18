@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/colors
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/colors
+	// summary:
+	//		TODOC
 
 dojo.getObject("colors", true, dojo);
 
@@ -25,7 +25,7 @@ dojo.colors = {
 		if(3 * h < 2){ return m1 + (m2 - m1) * (2 / 3 - h) * 6; }
 		return m1;
 	};
-	
+
 	dojo.colorFromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
 		// summary:
 		//		get rgb(a) array from css-style color declarations
@@ -68,7 +68,7 @@ dojo.colors = {
 		}
 		return null;	// dojo.Color
 	};
-	
+
 	var confine = function(c, low, high){
 		// summary:
 		//		sanitize a color component by making sure it is a number,
@@ -76,7 +76,7 @@ dojo.colors = {
 		c = Number(c);
 		return isNaN(c) ? high : c < low ? low : c > high ? high : c;	// Number
 	};
-	
+
 	dojo.Color.prototype.sanitize = function(){
 		// summary: makes sure that the object has correct attributes
 		var t = this;

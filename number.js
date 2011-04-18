@@ -1,8 +1,8 @@
 define([".", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"], function(dojo) {
-	//  module:
-	//    dojo/number
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/number
+	// summary:
+	//		TODOC
 
 dojo.getObject("number", true, dojo);
 
@@ -99,7 +99,7 @@ dojo.number._applyPattern = function(/*Number*/value, /*String*/pattern, /*dojo.
 	}else if(pattern.indexOf('E') != -1){
 		throw new Error("exponential notation not supported");
 	}
-	
+
 	//TODO: support @ sig figs?
 	var numberPatternRE = dojo.number._numberPatternRE;
 	var numberPattern = positivePattern.match(numberPatternRE);

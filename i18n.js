@@ -1,9 +1,9 @@
 define([".", "require", "./has"], function(dojo, require, has) {
-	//	module:
+	// module:
 	//		dojo/i18n
-	//	summary:
+	// summary:
 	//		This module implements the !dojo/i18n plugin and the v1.6- i18n API
-	//	description:
+	// description:
 	//		We choose to include our own plugin to leverage functionality already contained in dojo
 	//		and thereby reduce the size of the plugin compared to various loader implementations. Also, this
 	//		allows foreign AMD loaders to be used without their plugins.
@@ -26,7 +26,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 			// so, if match[5] is blank, it means this is the top bundle definition.
 			// courtesy of http://requirejs.org
 			/(^.*(^|\/)nls(\/|$))([^\/]*)\/?([^\/]*)/,
-		
+
 		getAvailableLocales= function(
 			root,
 			locale,
@@ -71,13 +71,13 @@ define([".", "require", "./has"], function(dojo, require, has) {
 				bundlePathAndName= bundlePath + bundleName,
 				locale= (match[5] && match[4]) || dojo.locale,
 				target= bundlePathAndName + "/" + locale;
-	
+
 			// if we've already resolved this request, just return it
 			if (cache[target]) {
 				load(cache[target]);
 				return;
 			}
-	
+
 			// get the root bundle which instructs which other bundles are required to contruct the localized bundle
 			require([bundlePathAndName], function(root){
 				var
@@ -95,7 +95,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 		};
 
 
-	has.add("dojo-v1x-i18n-Api", 
+	has.add("dojo-v1x-i18n-Api",
 		// if true, define the v1.x i18n functions
 		1
 	);
@@ -119,8 +119,8 @@ define([".", "require", "./has"], function(dojo, require, has) {
 						url:url,
 						sync:true,
 						load:function(text){
-							var define= function(bundle){ 
-								results.push(cache[url]= bundle); 
+							var define= function(bundle){
+								results.push(cache[url]= bundle);
 							};
 							eval(text);
 						}
@@ -134,7 +134,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 		};
 
 		thisModule.getLocalization= function(moduleName, bundleName, locale){
-			var 
+			var
 				result,
 				l10nName= getL10nName(moduleName, bundleName, locale);
 			load(l10nName.substring(10), syncRequire, function(result_){ result= result_; });

@@ -1,8 +1,8 @@
 define(["..", "./RpcService"], function(dojo) {
-	//  module:
-	//    dojo/rpc/JsonService
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/rpc/JsonService
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
@@ -53,7 +53,7 @@ dojo.declare("dojo.rpc.JsonService", dojo.rpc.RpcService, {
 			//		The name of the method we are creating the requst for
 			//	params: array
 			//		The array of parameters for this request;
-			
+
 			var req = { "params": params, "method": method, "id": ++this.lastSubmissionId };
 			var data = dojo.toJson(req);
 			return data;

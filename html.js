@@ -1,8 +1,8 @@
 define([".", "./parser"], function(dojo) {
-	//  module:
-	//    dojo/html
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/html
+	// summary:
+	//		TODOC
 
 dojo.getObject("html", true, dojo);
 
@@ -12,7 +12,7 @@ dojo.getObject("html", true, dojo);
 	// idCounter is incremented with each instantiation to allow asignment of a unique id for tracking, logging purposes
 	var idCounter = 0,
 		d = dojo;
-	
+
 	dojo.html._secureForInnerHtml = function(/*String*/ cont){
 		// summary:
 		//		removes !DOCTYPE and title elements from the html string.
@@ -43,7 +43,7 @@ dojo.getObject("html", true, dojo);
 		//	content:
 		//		the content to be set on the parent element.
 		//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
-		
+
 		// always empty
 		d.empty(node);
 
@@ -76,7 +76,7 @@ dojo.getObject("html", true, dojo);
 			// content: String|DomNode|DomNode[]
 			//		The content to be placed in the node. Can be an HTML string, a node reference, or a enumerable list of nodes
 			content: "",
-			
+
 			// id: String?
 			//		Usually only used internally, and auto-generated with each instance
 			id: "",
@@ -85,7 +85,7 @@ dojo.getObject("html", true, dojo);
 			//		Should the content be treated as a full html document,
 			//		and the real content stripped of <html>, <body> wrapper before injection
 			cleanContent: false,
-			
+
 			// extractContent: Boolean
 			//		Should the content be treated as a full html document, and the real content stripped of <html>, <body> wrapper before injection
 			extractContent: false,
@@ -104,20 +104,20 @@ dojo.getObject("html", true, dojo);
 			// startup: Boolean
 			//		Start the child widgets after parsing them.   Only obeyed if parseContent is true.
 			startup: true,
-			
+
 			// lifecyle methods
 			constructor: function(/* Object */params, /* String|DomNode */node){
 				//	summary:
 				//		Provides a configurable, extensible object to wrap the setting on content on a node
 				//		call the set() method to actually set the content..
- 
+
 				// the original params are mixed directly into the instance "this"
 				dojo.mixin(this, params || {});
 
 				// give precedence to params.node vs. the node argument
 				// and ensure its a node, not an id string
 				node = this.node = dojo.byId( this.node || node );
-	
+
 				if(!this.id){
 					this.id = [
 						"Setter",
@@ -160,7 +160,7 @@ dojo.getObject("html", true, dojo);
 				}catch(e){
 					// check if a domfault occurs when we are appending this.errorMessage
 					// like for instance if domNode is a UL and we try append a DIV
-	
+
 					// FIXME: need to allow the user to provide a content error message string
 					var errMess = this.onContentError(e);
 					try{
@@ -172,7 +172,7 @@ dojo.getObject("html", true, dojo);
 				// always put back the node for the next method
 				this.node = node; // DomNode
 			},
-			
+
 			empty: function() {
 				// summary
 				//	cleanly empty out existing content
@@ -192,7 +192,7 @@ dojo.getObject("html", true, dojo);
 				// override empty to skip this step
 				dojo.html._emptyNode(this.node);
 			},
-	
+
 			onBegin: function(){
 				// summary
 				//		Called after instantiation, but before set();
@@ -201,12 +201,12 @@ dojo.getObject("html", true, dojo);
 				//		This default implementation checks for cleanContent and extractContent flags to
 				//		optionally pre-process html string content
 				var cont = this.content;
-	
+
 				if(dojo.isString(cont)){
 					if(this.cleanContent){
 						cont = dojo.html._secureForInnerHtml(cont);
 					}
-  
+
 					if(this.extractContent){
 						var match = cont.match(/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im);
 						if(match){ cont = match[1]; }
@@ -215,11 +215,11 @@ dojo.getObject("html", true, dojo);
 
 				// clean out the node and any cruft associated with it - like widgets
 				this.empty();
-				
+
 				this.content = cont;
 				return this.node; /* DomNode */
 			},
-	
+
 			onEnd: function(){
 				// summary
 				//		Called after set(), when the new content has been pushed into the node
@@ -231,7 +231,7 @@ dojo.getObject("html", true, dojo);
 				}
 				return this.node; /* DomNode */
 			},
-	
+
 			tearDown: function(){
 				// summary
 				//		manually reset the Setter instance if its being re-used for example for another set()
@@ -243,11 +243,11 @@ dojo.getObject("html", true, dojo);
 				delete this.node;
 				delete this.content;
 			},
-  
+
 			onContentError: function(err){
 				return "Error occured setting content: " + err;
 			},
-			
+
 			_mixin: function(params){
 				// mix properties/methods into the instance
 				// TODO: the intention with tearDown is to put the Setter's state
@@ -285,7 +285,7 @@ dojo.getObject("html", true, dojo);
 					this._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);
 				}
 			},
-  
+
 			_onError: function(type, err, consoleText){
 				// summary:
 				//		shows user the string that is returned by on[type]Error

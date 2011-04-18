@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/hash
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/hash
+	// summary:
+	//		TODOC
 
 
 //TODOC: where does this go?
@@ -32,7 +32,7 @@ define(["."], function(dojo) {
 		//	returns:
 		//		when used as a getter, returns the current hash string.
 		//		when used as a setter, returns the new hash string.
-		
+
 		// getter
 		if(!arguments.length){
 			return _getHash();
@@ -58,7 +58,7 @@ define(["."], function(dojo) {
 		var i = str.indexOf(delimiter);
 		return (i >= 0) ? str.substring(i+1) : "";
 	}
-	
+
 	function _getHash(){
 		return _getSegment(location.href, "#");
 	}
@@ -74,7 +74,7 @@ define(["."], function(dojo) {
 		_recentHash = _getHash();
 		_dispatchEvent();
 	}
-	
+
 	function _replace(hash){
 		if(_ieUriMonitor){
 			if(_ieUriMonitor.isTransitioning()){
@@ -169,7 +169,7 @@ define(["."], function(dojo) {
 		this.isTransitioning = function(){
 			return transitioning;
 		};
-		
+
 		this.pollLocation = function(){
 			if(!ifrOffline) {
 				try{

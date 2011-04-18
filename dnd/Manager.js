@@ -1,8 +1,8 @@
 define(["..", "./common", "./autoscroll", "./Avatar"], function(dojo) {
-	//  module:
-	//    dojo/dnd/Manager
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/dnd/Manager
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.dnd.Manager", null, {
@@ -21,7 +21,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 	// avatar's offset from the mouse
 	OFFSET_X: 16,
 	OFFSET_Y: 16,
-	
+
 	// methods
 	overSource: function(source){
 		// summary:
@@ -108,7 +108,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 		//		updates the avatar; it is separate to be overwritten dynamically, if needed
 		this.avatar.update();
 	},
-	
+
 	// mouse event processors
 	onMouseMove: function(e){
 		// summary:
@@ -145,7 +145,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			this.stopDrag();
 		}
 	},
-	
+
 	// keyboard event processors
 	onKeyDown: function(e){
 		// summary:
@@ -180,7 +180,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 			}
 		}
 	},
-	
+
 	// utilities
 	_setCopyStatus: function(copy){
 		// summary:

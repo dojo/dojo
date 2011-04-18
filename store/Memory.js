@@ -1,8 +1,8 @@
 define(["..", "./util/QueryResults", "./util/SimpleQueryEngine"], function(dojo) {
-	//  module:
-	//    dojo/store/Memory
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/store/Memory
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.store.Memory", null, {

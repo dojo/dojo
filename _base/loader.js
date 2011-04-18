@@ -1,7 +1,7 @@
 define(["./kernel", "../has", "require"], function(dojo, has, require) {
-	//	module:
+	// module:
 	//		dojo/_base/lader
-	//	summary:
+	// summary:
 	//		This module defines the v1.x synchronous loader API.
 
 	if (require.vendor!="dojotoolkit.org") {
@@ -12,7 +12,7 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 	has.add("dojo-loader", 1, 0, 1);
 
 	var dojoRequire= require.getDojoLoader(dojo, dojo.dijit, dojo.dojox);
-		
+
 	dojo.require= function(moduleName, omitModuleCheck) {
 		var result= dojoRequire(moduleName);
 		if (!omitModuleCheck && !result) {
@@ -58,7 +58,7 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
     paths[module]= prefix;
     require({paths:paths});
 	};
-	
+
 
 	dojo.requireLocalization= function(moduleName, bundleName, locale){
 		// This function doesn't really do anything for the user since he must
@@ -110,7 +110,7 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 		//
 		// example:
 		//	|	dojo.requireIf(dojo.isBrowser, "my.special.Module");
-		
+
 		if(condition){
 			dojo.require(resourceName, omitModuleCheck);
 		}

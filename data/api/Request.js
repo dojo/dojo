@@ -1,8 +1,8 @@
 define(["../.."], function(dojo) {
-	//  module:
-	//    dojo/data/api/Request
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/data/api/Request
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.data.api.Request", null, {

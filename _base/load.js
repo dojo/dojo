@@ -1,14 +1,14 @@
 define(["./kernel", "../has", "require", "./lang"], function(dojo, has, require) {
-	//	module:
+	// module:
 	//		dojo/_base/load
-	//	summary:
+	// summary:
 	//		This module defines the DOM content loaded && code loaded detection API.
 
 	// define dojo.addOnLoad/ready in terms of the DOMContentLoaded detection available from the AMD loaders.
 	// Note that the AMD specification says nothing about this functionality. However, the dojo loader, bdLoad,
 	// and RequireJS are known to provide and intend to maintain support for this feature.
 
-	has.add("loader-priority-readyApi", 
+	has.add("loader-priority-readyApi",
 		// if true, define the ready queue to include priority attributes
 		0
 	);
@@ -18,7 +18,7 @@ define(["./kernel", "../has", "require", "./lang"], function(dojo, has, require)
 	}else{
 	 // Currently, RequireJS does not support priority onLoad queues which are required for dojo, so if that's
 	 // the loader we're under, then we have to implement this feature ourselves.
-		var 
+		var
 			loadQ= [],
 			set= 0,
 			onReady= function() {

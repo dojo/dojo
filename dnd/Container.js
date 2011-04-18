@@ -1,8 +1,8 @@
 define(["..", "./common", "../parser"], function(dojo) {
-	//  module:
-	//    dojo/dnd/Container
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/dnd/Container
+	// summary:
+	//		TODOC
 
 
 /*
@@ -48,7 +48,7 @@ dojo.dnd.Item = function(){
 	//		If the drag object's type is "text" then data is a String,
 	//		if it's another type then data could be a different Object,
 	//		perhaps a name/value hash.
-	
+
 	this.type = type;
 	this.data = data;
 }
@@ -58,21 +58,21 @@ dojo.declare("dojo.dnd.Container", null, {
 	// summary:
 	//		a Container object, which knows when mouse hovers over it,
 	//		and over which element it hovers
-	
+
 	// object attributes (for markup)
 	skipForm: false,
-	
+
 	/*=====
 	// current: DomNode
 	//		The DOM node the mouse is currently hovered over
 	current: null,
-	
+
 	// map: Hash<String, dojo.dnd.Item>
 	//		Map from an item's id (which is also the DOMNode's id) to
 	//		the dojo.dnd.Item itself.
 	map: {},
 	=====*/
-	
+
 	constructor: function(node, params){
 		// summary:
 		//		a constructor of the Container
@@ -85,7 +85,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		this.creator = params.creator || null;
 		this.skipForm = params.skipForm;
 		this.parent = params.dropParent && dojo.byId(params.dropParent);
-		
+
 		// class-specific variables
 		this.map = {};
 		this.current = null;
@@ -93,7 +93,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		// states
 		this.containerState = "";
 		dojo.addClass(this.node, "dojoDndContainer");
-		
+
 		// mark up children
 		if(!(params && params._skipStartup)){
 			this.startup();
@@ -108,13 +108,13 @@ dojo.declare("dojo.dnd.Container", null, {
 			dojo.connect(this.node, "onselectstart", this, "onSelectStart")
 		];
 	},
-	
+
 	// object attributes (for markup)
 	creator: function(){
 		// summary:
 		//		creator function, dummy at the moment
 	},
-	
+
 	// abstract access to the map
 	getItem: function(/*String*/ key){
 		// summary:
@@ -148,7 +148,7 @@ dojo.declare("dojo.dnd.Container", null, {
 		//		removes all data items from the map
 		this.map = {};
 	},
-	
+
 	// methods
 	getAllNodes: function(){
 		// summary:
@@ -230,7 +230,7 @@ dojo.declare("dojo.dnd.Container", null, {
 	startup: function(){
 		// summary:
 		//		collects valid child items and populate the map
-		
+
 		// set up the real parent node
 		if(!this.parent){
 			// use the standard algorithm, if not assigned
@@ -300,7 +300,7 @@ dojo.declare("dojo.dnd.Container", null, {
 			dojo.stopEvent(e);
 		}
 	},
-	
+
 	// utilities
 	onOverEvent: function(){
 		// summary:

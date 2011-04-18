@@ -1,8 +1,8 @@
 define([".", "./regexp"], function(dojo) {
-	//  module:
-	//    dojo/cookie
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/cookie
+	// summary:
+	//		TODOC
 
 
 /*=====

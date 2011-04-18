@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/DeferredList
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/DeferredList
+	// summary:
+	//		TODOC
 
 
 dojo.DeferredList = function(/*Array*/ list, /*Boolean?*/ fireOnOneCallback, /*Boolean?*/ fireOnOneErrback, /*Boolean?*/ consumeErrors, /*Function?*/ canceller){
@@ -55,7 +55,7 @@ dojo.DeferredList = function(/*Array*/ list, /*Boolean?*/ fireOnOneCallback, /*B
 			if(finished === list.length){
 				self.resolve(resultList);
 			}
-			
+
 		}
 	});
 };

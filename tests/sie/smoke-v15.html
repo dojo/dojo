@@ -2,22 +2,22 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
-    <title>hello dojo-sie</title>
-    <script type="text/javaScript">
-      var start= (new Date()).getTime();
-    </script>
-    <script type="text/javascript" src="../../dojo.js"></script>
-    <script type="text/javaScript">
-      dojo.addOnLoad(function() {
-        dojo.byId("status").innerHTML= "dojo-sie v15 synchronous loader fired onLoad queue."
-        dojo.byId("time").innerHTML= (((new Date()).getTime() - start) / 1000) + "s";
-        var moduleList= [];
-        for (var p in dojo._loadedModules) moduleList.push(p);
-        moduleList.sort();
-        dojo.byId("modules").innerHTML= moduleList.join("<br/>");
-      });
-    </script>
-  </head>
+		<title>hello dojo-sie</title>
+		<script type="text/javaScript">
+			var start= (new Date()).getTime();
+		</script>
+		<script type="text/javascript" src="../../dojo.js"></script>
+		<script type="text/javaScript">
+			dojo.addOnLoad(function() {
+				dojo.byId("status").innerHTML= "dojo-sie v15 synchronous loader fired onLoad queue."
+				dojo.byId("time").innerHTML= (((new Date()).getTime() - start) / 1000) + "s";
+				var moduleList= [];
+				for (var p in dojo._loadedModules) moduleList.push(p);
+				moduleList.sort();
+				dojo.byId("modules").innerHTML= moduleList.join("<br/>");
+			});
+		</script>
+ </head>
   <body class="tundra">
     <h1>Status</h1>
     <p id="status">loading</p>

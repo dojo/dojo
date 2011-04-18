@@ -1,8 +1,8 @@
 define(["../.."], function(dojo) {
-	//  module:
-	//    dojo/store/util/QueryResults
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/store/util/QueryResults
+	// summary:
+	//		TODOC
 
 dojo.getObject("store.util", true, dojo);
 
@@ -29,7 +29,7 @@ dojo.store.util.QueryResults = function(results){
 	//	|	store.query({ prime: true }).forEach(function(item){
 	//	|		//	do something
 	//	|	});
-	
+
 	if(!results){
 		return results;
 	}

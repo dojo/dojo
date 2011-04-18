@@ -1,7 +1,7 @@
 define(["dojo", "dojo/text"], function(dojo){
-	//	module:
+	// module:
 	//		dojo/cache
-	//	summary:
+	// summary:
 	//		The module defines dojo.cache by loading dojo/text.
 
 	return dojo.cache;

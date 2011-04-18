@@ -1,7 +1,7 @@
 define(["./kernel"], function(dojo) {
-	//	module:
+	// module:
 	//		dojo/url
-	//	summary:
+	// summary:
 	//		This module contains dojo._Url
 
 	var

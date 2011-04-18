@@ -1,7 +1,7 @@
 define(["./kernel", "./lang", "./sniff"], function(dojo){
-	//	module:
+	// module:
 	//		dojo/_base/html
-	//	summary:
+	// summary:
 	//		This module defines the core dojo DOM API.
 
 // FIXME: need to add unit tests for all the semi-public methods
@@ -826,7 +826,7 @@ if(dojo.isIE){
 			h: node.offsetHeight + me.h
 		};
 	}
-	
+
 	dojo._getMarginSize = function(/*DomNode*/node, /*Object*/computedStyle){
 		// summary:
 		//	returns an object that encodes the width and height of
@@ -1023,7 +1023,7 @@ if(dojo.isIE){
 		//	Set a node's marginbox to the size of another node
 		//	|	var box = dojo.marginBox("someNodeId");
 		//	|	dojo.marginBox("someOtherNode", box);
-		
+
 		var n = byId(node), s = gcs(n), b = box;
 		return !b ? d._getMarginBox(n, s) : d._setMarginBox(n, b.l, b.t, b.w, b.h, s); // Object
 	};

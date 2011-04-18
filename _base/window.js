@@ -1,7 +1,7 @@
 define(["./kernel"], function(dojo){
-	//	module:
+	// module:
 	//		dojo/window
-	//	summary:
+	// summary:
 	//		This module provides an API to save/set/restore the global/document scope.
 
 /*=====

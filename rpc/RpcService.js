@@ -1,8 +1,8 @@
 define([".."], function(dojo) {
-	//  module:
-	//    dojo/rpc/RpcService
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/rpc/RpcService
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.rpc.RpcService", null, {
@@ -35,7 +35,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 					handleAs: "json-comment-optional",
 					sync: true
 				});
-				
+
 				def.addCallback(this, "processSmd");
 				def.addErrback(function() {
 					throw new Error("Unable to load SMD from " + args);

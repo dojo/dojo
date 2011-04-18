@@ -1,7 +1,7 @@
 define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
-	//	module:
+	// module:
 	//		dojo/_base/NodeList
-	//	summary:
+	// summary:
 	//		This module defines dojo.NodeList.
 
 	var d = dojo;
@@ -963,7 +963,7 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 		"keyup", "load", "mousedown", "mouseenter", "mouseleave", "mousemove",
 		"mouseout", "mouseover", "mouseup", "submit"
 	];
-	
+
 	// FIXME: pseudo-doc the above automatically generated on-event functions
 
 	// syntactic sugar for DOM events

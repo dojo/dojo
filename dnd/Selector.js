@@ -1,8 +1,8 @@
 define(["..", "./common", "./Container"], function(dojo) {
-	//  module:
-	//    dojo/dnd/Selector
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/dnd/Selector
+	// summary:
+	//		TODOC
 
 
 /*
@@ -27,7 +27,7 @@ dojo.declare("dojo.dnd.__SelectorArgs", [dojo.dnd.__ContainerArgs], {
 dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 	// summary:
 	//		a Selector object, which knows how to select its children
-	
+
 	/*=====
 	// selection: Set<String>
 	//		The set of id's that are currently selected, such that this.selection[id] == 1
@@ -55,10 +55,10 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 			dojo.connect(this.node, "onmousedown", this, "onMouseDown"),
 			dojo.connect(this.node, "onmouseup",   this, "onMouseUp"));
 	},
-	
+
 	// object attributes (for markup)
 	singular: false,	// is singular property
-	
+
 	// methods
 	getSelectedNodes: function(){
 		// summary:
@@ -113,16 +113,16 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 	sync: function(){
 		// summary:
 		//		sync up the node list with the data map
-		
+
 		dojo.dnd.Selector.superclass.sync.call(this);
-		
+
 		// fix the anchor
 		if(this.anchor){
 			if(!this.getItem(this.anchor.id)){
 				this.anchor = null;
 			}
 		}
-		
+
 		// fix the selection
 		var t = [], e = dojo.dnd._empty;
 		for(var i in this.selection){
@@ -134,7 +134,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		dojo.forEach(t, function(i){
 			delete this.selection[i];
 		}, this);
-		
+
 		return this;	// self
 	},
 	insertNodes: function(addSelected, data, before, anchor){
@@ -292,7 +292,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		//		mouse event
 		this.simpleSelection = false;
 	},
-	
+
 	// utilities
 	onOverEvent: function(){
 		// summary:

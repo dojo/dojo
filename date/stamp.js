@@ -1,8 +1,8 @@
 define([".."], function(dojo) {
-	//  module:
-	//    dojo/date/stamp
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/date/stamp
+	// summary:
+	//		TODOC
 
 dojo.getObject("date.stamp", true, dojo);
 

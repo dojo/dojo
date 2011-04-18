@@ -1,14 +1,14 @@
 define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], function(dojo){
-	//	module:
+	// module:
 	//		dojo/_base/fx
-	//	summary:
+	// summary:
 	//		This module defines the base dojo.fx implementation.
-	//	notes:
+	// notes:
 	//		Animation loosely package based on Dan Pupius' work, contributed under CLA; see
 	//		http://pupius.co.uk/js/Toolkit.Drawing.js
 
 	var d = dojo,
-			_mixin = dojo._mixin;
+		_mixin = dojo._mixin;
 
 	dojo._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:
@@ -126,10 +126,10 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		},
 		_fire: function(/*Event*/ evt, /*Array?*/ args){
 			//	summary:
-			//		Convenience function.	 Fire event "evt" and pass it the
+			//		Convenience function. Fire event "evt" and pass it the
 			//		arguments specified in "args".
 			//	description:
-			//		Convenience function.	 Fire event "evt" and pass it the
+			//		Convenience function. Fire event "evt" and pass it the
 			//		arguments specified in "args".
 			//		Fires the callback in the scope of the `dojo.Animation`
 			//		instance.
@@ -615,7 +615,7 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		//		immediately, unlike nearly every other Dojo animation API.
 		//	description:
 		//		`dojo.anim` is a simpler (but somewhat less powerful) version
-		//		of `dojo.animateProperty`.	It uses defaults for many basic properties
+		//		of `dojo.animateProperty`. It uses defaults for many basic properties
 		//		and allows for positional parameters to be used in place of the
 		//		packed "property bag" which is used for other Dojo animation
 		//		methods.

@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/window
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/window
+	// summary:
+	//		TODOC
 
 dojo.getObject("window", true, dojo);
 
@@ -44,7 +44,7 @@ dojo.window.get = function(doc){
 dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 	// summary:
 	//		Scroll the passed node into view, if it is not already.
-	
+
 	// don't rely on node.scrollIntoView working just because the function is there
 
 	try{ // catch unexpected/unrecreatable errors (#7808) since we can recover using a semi-acceptable native method
@@ -77,7 +77,7 @@ dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 			if(el == body){ el = scrollRoot; }
 			var elPos = dojo.position(el),
 				fixedPos = isFixed(el);
-	
+
 			if(el == scrollRoot){
 				elPos.w = rootWidth; elPos.h = rootHeight;
 				if(scrollRoot == html && isIE && rtl){ elPos.x += scrollRoot.offsetWidth-elPos.w; } // IE workaround where scrollbar causes negative x

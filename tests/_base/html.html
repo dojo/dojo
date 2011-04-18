@@ -186,7 +186,7 @@
 									dojo.withGlobal(dojo.byId('iframe_quirks').win, function(){
 										doh.t(dojo.isQuirks, "isQuirks == true in quirks/iframe");
 										doh.f(dojo._isBodyLtr(), "isBodyLtr == false in RTL/iframe");
-													var pos = dojo.position('iframe_00_quirks');
+										var pos = dojo.position('iframe_00_quirks');
 										doh.t(pos.x===0, "quirks iframe element x == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
 										doh.t(pos.y===0, "quirks iframe element y == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
 										doh.t(pos.w>0, "quirks iframe element w > 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
@@ -195,7 +195,7 @@
 									dojo.withGlobal(dojo.byId('iframe_strict').win, function(){
 										doh.f(dojo.isQuirks, "isQuirks == false in strict/ifraee");
 										doh.f(dojo._isBodyLtr(), "isBodyLtr == false in RTL/iframe");
-													var pos = dojo.position('iframe_00_strict');
+										var pos = dojo.position('iframe_00_strict');
 										doh.t(pos.x===0, "strict iframe element x == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
 										doh.t(pos.y===0, "strict iframe element y == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
 										doh.t(pos.w>0, "strict iframe element w > 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");

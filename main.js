@@ -12,9 +12,9 @@ define([
 	"./_base/Color",
 	"./has!dojo-firebug?./_firebug/firebug",
 	"./has!host-browser?./_base/browser"], function(dojo, has){
-	//	module:
+	// module:
 	//		dojo/main
-	//	summary:
+	// summary:
 	//		This is the package main module for the dojo package; it loads dojo base appropriate for the execution environment.
 
 	has.add("dojo-config-require", 1);

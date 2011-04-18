@@ -23,26 +23,26 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 	};
 
 	// FIXME:
-	//	there's got to be a more space-efficient way to encode or discover
-	//	these!!	 Use hex?
+	// there's got to be a more space-efficient way to encode or discover
+	// these!! Use hex?
 	dojo.Color.named = {
-		black:			[0,0,0],
-		silver:			[192,192,192],
-		gray:				[128,128,128],
-		white:			[255,255,255],
-		maroon:		[128,0,0],
-		red:				[255,0,0],
-		purple:		[128,0,128],
-		fuchsia:	[255,0,255],
-		green:			[0,128,0],
-		lime:			[0,255,0],
-		olive:		[128,128,0],
-		yellow:		[255,255,0],
-		navy:				[0,0,128],
-		blue:				[0,0,255],
-		teal:		[0,128,128],
-		aqua:		[0,255,255],
-		transparent: dojo.config.transparentColor || [255,255,255]
+        black:  [0,0,0],
+        silver: [192,192,192],
+        gray:   [128,128,128],
+        white:  [255,255,255],
+        maroon: [128,0,0],
+        red:    [255,0,0],
+        purple: [128,0,128],
+        fuchsia:[255,0,255],
+        green:  [0,128,0],
+        lime:   [0,255,0],
+        olive:  [128,128,0],
+        yellow: [255,255,0],
+        navy:   [0,0,128],
+        blue:   [0,0,255],
+        teal:   [0,128,128],
+        aqua:   [0,255,255],
+        transparent: dojo.config.transparentColor || [255,255,255]
 	};
 
 	dojo.extend(dojo.Color, {
@@ -82,7 +82,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 			//		Returns 3 component array of rgb values
 			// example:
 			//	|	var c = new dojo.Color("#000000");
-			//	|		console.log(c.toRgb()); // [0,0,0]
+			//	|	console.log(c.toRgb()); // [0,0,0]
 			var t = this;
 			return [t.r, t.g, t.b];	// Array
 		},
@@ -97,7 +97,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 			// summary:
 			//		Returns a CSS color string in hexadecimal representation
 			// example:
-			//	|		console.log(new dojo.Color([0,0,0]).toHex()); // #000000
+			//	|	console.log(new dojo.Color([0,0,0]).toHex()); // #000000
 			var arr = dojo.map(["r", "g", "b"], function(x){
 				var s = this[x].toString(16);
 				return s.length < 2 ? "0" + s : s;

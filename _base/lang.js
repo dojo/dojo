@@ -1,11 +1,10 @@
 define(["./kernel", "../has", "./sniff"], function(dojo, has){
-	//	module:
+	// module:
 	//		dojo/_base/lang
-	//	summary:
+	// summary:
 	//		This module defines the dojo core Javascript language extensions.
 
-	var d = dojo,
-			opts = Object.prototype.toString;
+	var d = dojo, opts = Object.prototype.toString;
 
 	// Crockford (ish) functions
 
@@ -118,7 +117,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has){
 		//	|	var foo = { bar: 2 };
 		//	|	dojo.hitch(foo, function(){ this.bar = 10; })();
 		//		execute an anonymous function in scope of foo
-		
+
 		if(arguments.length > 2){
 			return d._hitchArgs.apply(d, arguments); // Function
 		}

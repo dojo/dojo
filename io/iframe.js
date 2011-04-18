@@ -1,8 +1,8 @@
 define([".."], function(dojo) {
-	//  module:
-	//    dojo/io/iframe
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/io/iframe
+	// summary:
+	//		TODOC
 
 dojo.getObject("io", true, dojo);
 
@@ -48,7 +48,7 @@ dojo.declare("dojo.io.iframe.__ioArgs", dojo.__IoArgs, {
 dojo.io.iframe = {
 	// summary:
 	//		Sends an Ajax I/O call using and Iframe (for instance, to upload files)
-	
+
 	create: function(/*String*/fname, /*String*/onloadstr, /*String?*/uri){
 		//	summary:
 		//		Creates a hidden iframe in the page. Used mostly for IO
@@ -106,7 +106,7 @@ dojo.io.iframe = {
 				}else{ //  if(d.isMozilla){
 					idoc = iframe.contentWindow;
 				}
-	
+
 				//For Safari (at least 2.0.3) and Opera, if the iframe
 				//has just been created but it doesn't have content
 				//yet, then iframe.document may be null. In that case,
@@ -218,7 +218,7 @@ dojo.io.iframe = {
 
 		this._dfdQueue.push(dfd);
 		this._fireNextRequest();
-		
+
 		//Add it the IO watch queue, to get things like timeout support.
 		dojo._ioWatch(
 			dfd,
@@ -343,7 +343,7 @@ dojo.io.iframe = {
 		var ioArgs = dfd.ioArgs;
 		var args = ioArgs.args;
 		var fNode = dojo.byId(args.form);
-	
+
 		if(fNode){
 			// remove all the hidden content inputs
 			var toClean = ioArgs._contentToClean;

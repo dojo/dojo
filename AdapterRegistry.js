@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/AdapterRegistry
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/AdapterRegistry
+	// summary:
+	//		TODOC
 
 
 dojo.AdapterRegistry = function(/*Boolean?*/ returnWrappers){

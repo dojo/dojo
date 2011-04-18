@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/back
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/back
+	// summary:
+	//		TODOC
 
 dojo.getObject("back", true, dojo);
 
@@ -23,7 +23,7 @@ dojo.back = {
 		if(h.charAt(0) == "#"){ h = h.substring(1); }
 		return dojo.isMozilla ? h : decodeURIComponent(h);
 	},
-	
+
 	setHash= back.setHash= function(h){
 		if(!h){ h = ""; }
 		window.location.hash = encodeURIComponent(h);
@@ -98,7 +98,7 @@ dojo.back = {
 			return segments[1]; //String
 		}
 	}
-	
+
 	function loadIframeHistory(){
 		//summary: private method. Do not call this directly.
 		var url = (dojo.config["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?" + (new Date()).getTime();
@@ -114,7 +114,7 @@ dojo.back = {
 	function checkLocation(){
 		if(!changingUrl){
 			var hsl = historyStack.length;
-			
+
 			var hash = getHash();
 
 			if((hash === initialHash||window.location.href == initialHref)&&(hsl == 1)){
@@ -124,7 +124,7 @@ dojo.back = {
 				handleBackButton();
 				return;
 			}
-			
+
 			// first check to see if we could have gone forward. We always halt on
 			// a no-hash item.
 			if(forwardStack.length > 0){
@@ -133,7 +133,7 @@ dojo.back = {
 					return;
 				}
 			}
-	
+
 			// ok, that didn't work, try someplace back in the history stack
 			if((hsl >= 2)&&(historyStack[hsl-2])){
 				if(historyStack[hsl-2].urlHash === hash){
@@ -143,7 +143,7 @@ dojo.back = {
 			}
 		}
 	};
-	
+
 	back.init = function(){
 		//summary: Initializes the undo stack. This must be called from a <script>
 		//         block that lives inside the <body> tag to prevent bugs on IE.
@@ -179,7 +179,7 @@ dojo.back = {
 	//FIXME: is there a slight race condition in moz using change URL with the timer check and when
 	//       the hash gets set? I think I have seen a back/forward call in quick succession, but not consistent.
 
-	
+
 	/*=====
 	dojo.__backArgs = function(kwArgs){
 		// back: Function?
@@ -277,7 +277,7 @@ dojo.back = {
 		}
 		if(args["changeUrl"]){
 			hash = ""+ ((args["changeUrl"]!==true) ? args["changeUrl"] : (new Date()).getTime());
-			
+
 			//If the current hash matches the new one, just replace the history object with
 			//this new one. It doesn't make sense to track different state objects for the same
 			//logical URL. This matches the browser behavior of only putting in one history
@@ -299,7 +299,7 @@ dojo.back = {
 					changingUrl = false;
 				}, 1);
 			bookmarkAnchor.href = hash;
-			
+
 			if(dojo.isIE){
 				url = loadIframeHistory();
 
@@ -315,7 +315,7 @@ dojo.back = {
 					//Use apply to set "this" to args, and to try to avoid memory leaks.
 					oldCB.apply(this, [handleName]);
 				};
-		
+
 				//Set interceptor function in the right place.
 				if(args["back"]){
 					args.back = tcb;
@@ -324,9 +324,9 @@ dojo.back = {
 				}else if(args["handle"]){
 					args.handle = tcb;
 				}
-		
+
 				var oldFW = args["forward"]||args["forwardButton"]||args["handle"];
-		
+
 				//The function takes handleName as a parameter, in case the
 				//callback we are overriding was "handle". In that case,
 				//we will need to pass the handle name to handle.
@@ -354,7 +354,7 @@ dojo.back = {
 				if(!locationTimer){
 					locationTimer = setInterval(checkLocation, 200);
 				}
-				
+
 			}
 		}else{
 			url = loadIframeHistory();
@@ -380,7 +380,7 @@ dojo.back = {
 			moveForward = false;
 			return;
 		}
-	
+
 		//Check the back stack first, since it is more likely.
 		//Note that only one step back or forward is supported.
 		if(historyStack.length >= 2 && query == getUrlQuery(historyStack[historyStack.length-2].url)){

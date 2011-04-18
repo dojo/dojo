@@ -1,7 +1,7 @@
 define(["./kernel", "./event"], function(dojo) {
-	//	module:
+	// module:
 	//		dojo/unload
-	//	summary:
+	// summary:
 	//		This module contains the document and window unload detection API.
 
 	var win = window;

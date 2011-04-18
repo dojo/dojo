@@ -1,8 +1,8 @@
 define([".", "./fx"], function(dojo) {
-	//  module:
-	//    dojo/NodeList-fx
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/NodeList-fx
+	// summary:
+	//		TODOC
 
 
 /*=====

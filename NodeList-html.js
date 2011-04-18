@@ -1,8 +1,8 @@
 define([".", "./html"], function(dojo) {
-	//  module:
-	//    dojo/NodeList-html
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/NodeList-html
+	// summary:
+	//		TODOC
 
 
 /*=====

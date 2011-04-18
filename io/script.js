@@ -1,8 +1,8 @@
 define([".."], function(dojo) {
-	//  module:
-	//    dojo/io/script
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/io/script
+	// summary:
+	//		TODOC
 
 dojo.getObject("io", true, dojo);
 
@@ -51,7 +51,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			var dfd = this._makeScriptDeferred(args);
 			var ioArgs = dfd.ioArgs;
 			dojo._ioAddQueryToUrl(ioArgs);
-	
+
 			dojo._ioNotifyStart(dfd);
 
 			if(this._canAttach(ioArgs)){
@@ -72,7 +72,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			dojo._ioWatch(dfd, this._validCheck, this._ioCheck, this._resHandle);
 			return dfd;
 		},
-	
+
 		attach: function(/*String*/id, /*String*/url, /*Document?*/frameDocument){
 			//	summary:
 			//		creates a new <script> tag pointing to the specified URL and
@@ -89,27 +89,27 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			element.charset = "utf-8";
 			return doc.getElementsByTagName("head")[0].appendChild(element);
 		},
-	
+
 		remove: function(/*String*/id, /*Document?*/frameDocument){
 			//summary: removes the script element with the given id, from the given frameDocument.
 			//If no frameDocument is passed, the current document is used.
 			dojo.destroy(dojo.byId(id, frameDocument));
-			
+
 			//Remove the jsonp callback on dojo.io.script, if it exists.
 			if(this["jsonp_" + id]){
 				delete this["jsonp_" + id];
 			}
 		},
-	
+
 		_makeScriptDeferred: function(/*Object*/args){
 			//summary:
 			//		sets up a Deferred object for an IO request.
 			var dfd = dojo._ioSetArgs(args, this._deferredCancel, this._deferredOk, this._deferredError);
-	
+
 			var ioArgs = dfd.ioArgs;
 			ioArgs.id = dojo._scopeName + "IoScript" + (this._counter++);
 			ioArgs.canDelete = false;
-	
+
 			//Special setup for jsonp case
 			ioArgs.jsonp = args.callbackParamName || args.jsonp;
 			if(ioArgs.jsonp){
@@ -122,9 +122,9 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 					+ "="
 					+ (args.frameDoc ? "parent." : "")
 					+ dojo._scopeName + ".io.script.jsonp_" + ioArgs.id + "._jsonpCallback";
-	
+
 				ioArgs.frameDoc = args.frameDoc;
-	
+
 				//Setup the Deferred to have the jsonp callback.
 				ioArgs.canDelete = true;
 				dfd._jsonpCallback = this._jsonpCallback;
@@ -132,38 +132,38 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			}
 			return dfd; // dojo.Deferred
 		},
-		
+
 		_deferredCancel: function(/*Deferred*/dfd){
 			//summary: canceller function for dojo._ioSetArgs call.
-	
+
 			//DO NOT use "this" and expect it to be dojo.io.script.
 			dfd.canceled = true;
 			if(dfd.ioArgs.canDelete){
 				dojo.io.script._addDeadScript(dfd.ioArgs);
 			}
 		},
-	
+
 		_deferredOk: function(/*Deferred*/dfd){
 			//summary: okHandler function for dojo._ioSetArgs call.
-	
+
 			//DO NOT use "this" and expect it to be dojo.io.script.
 			var ioArgs = dfd.ioArgs;
-	
+
 			//Add script to list of things that can be removed.
 			if(ioArgs.canDelete){
 				dojo.io.script._addDeadScript(ioArgs);
 			}
-	
+
 			//Favor JSONP responses, script load events then lastly ioArgs.
 			//The ioArgs are goofy, but cannot return the dfd since that stops
 			//the callback chain in Deferred. The return value is not that important
 			//in that case, probably a checkString case.
 			return ioArgs.json || ioArgs.scriptLoaded || ioArgs;
 		},
-	
+
 		_deferredError: function(/*Error*/error, /*Deferred*/dfd){
 			//summary: errHandler function for dojo._ioSetArgs call.
-	
+
 			if(dfd.ioArgs.canDelete){
 				//DO NOT use "this" and expect it to be dojo.io.script.
 				if(error.dojoType == "timeout"){
@@ -177,20 +177,20 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			console.log("dojo.io.script error", error);
 			return error;
 		},
-	
+
 		_deadScripts: [],
 		_counter: 1,
-	
+
 		_addDeadScript: function(/*Object*/ioArgs){
 			//summary: sets up an entry in the deadScripts array.
 			dojo.io.script._deadScripts.push({id: ioArgs.id, frameDoc: ioArgs.frameDoc});
 			//Being extra paranoid about leaks:
 			ioArgs.frameDoc = null;
 		},
-	
+
 		_validCheck: function(/*Deferred*/dfd){
 			//summary: inflight check function to see if dfd is still valid.
-	
+
 			//Do script cleanup here. We wait for one inflight pass
 			//to make sure we don't get any weird things by trying to remove a script
 			//tag that is part of the call chain (IE 6 has been known to
@@ -205,10 +205,10 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 				}
 				dojo.io.script._deadScripts = [];
 			}
-	
+
 			return true;
 		},
-	
+
 		_ioCheck: function(/*Deferred*/dfd){
 			//summary: inflight check function to see if IO finished.
 			var ioArgs = dfd.ioArgs;
@@ -216,16 +216,16 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			if(ioArgs.json || (ioArgs.scriptLoaded && !ioArgs.args.checkString)){
 				return true;
 			}
-	
+
 			//Check for finished "checkString" case.
 			var checkString = ioArgs.args.checkString;
 			if(checkString && eval("typeof(" + checkString + ") != 'undefined'")){
 				return true;
 			}
-	
+
 			return false;
 		},
-	
+
 		_resHandle: function(/*Deferred*/dfd){
 			//summary: inflight function to handle a completed response.
 			if(dojo.io.script._ioCheck(dfd)){
@@ -236,13 +236,13 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 				dfd.errback(new Error("inconceivable dojo.io.script._resHandle error"));
 			}
 		},
-	
+
 		_canAttach: function(/*Object*/ioArgs){
 			//summary: A method that can be overridden by other modules
 			//to control when the script attachment occurs.
 			return true;
 		},
-		
+
 		_jsonpCallback: function(/*JSON Object*/json){
 			//summary:
 			//		generic handler for jsonp callback. A pointer to this function

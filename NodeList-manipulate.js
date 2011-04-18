@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/NodeList-manipulate
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/NodeList-manipulate
+	// summary:
+	//		TODOC
 
 
 /*=====
@@ -230,7 +230,7 @@ dojo["NodeList-manipulate"] = {
 					var name = node.nodeName.toUpperCase();
 					var type = node.type;
 					var newValue = isArray ? value[index] : value;
-	
+
 					if(name == "SELECT"){
 						var opts = node.options;
 						for(var i = 0; i < opts.length; i++){
@@ -592,7 +592,7 @@ dojo["NodeList-manipulate"] = {
 					//the "this" nodes, then on the clone of html it will contain
 					//that "this" node, and that would be bad.
 					var clone = this._cloneNode(html);
-					
+
 					//Need to convert the childNodes to an array since wrapAll modifies the
 					//DOM and can change the live childNodes NodeList.
 					this._wrap(dojo._toArray(this[i].childNodes), null, this._NodeListCtor).wrapAll(clone);

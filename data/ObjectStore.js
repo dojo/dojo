@@ -1,9 +1,8 @@
 define(["..", "../regexp"], function(dojo) {
-	//  module:
-	//    dojo/data/ObjectStore
-	//	summary:
-	//		TODOC:This module defines 
-
+	// module:
+	//		dojo/data/ObjectStore
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.data.ObjectStore", null,{
@@ -30,7 +29,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//		property to look up value for
 			//	defaultValue:
 			//		the default value
-			
+
 			return typeof item.get === "function" ? item.get(property) :
 				property in item ?
 					item[property] : defaultValue;
@@ -145,7 +144,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			// summary:
 			//		See dojo.data.api.Read.fetch
 			//
-			
+
 			args = dojo.delegate(args, args && args.queryOptions);
 			var self = this;
 			var scope = args.scope || self;
@@ -160,7 +159,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					}
 				}
 			}
-			
+
 			var results = this.objectStore.query(query, args);
 			dojo.when(results.total, function(totalCount){
 				dojo.when(results, function(results){
@@ -269,7 +268,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			);
 			return item;
 		},
-		
+
 		newItem: function(data, parentInfo){
 			// summary:
 			//		adds a new item to the store at the specified point.
@@ -333,9 +332,9 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			delete item[attribute];
 			this.onSet(item,attribute,old,undefined);
 		},
-		
+
 		_dirtyObjects: [],
-		
+
 		changing: function(object,_deleting){
 			// summary:
 			//		adds an object to the list of dirty objects.  This object
@@ -366,7 +365,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			}
 			this._dirtyObjects.push({object: !_deleting && object, old: old, save: !this._saveNotNeeded});
 		},
-		
+
 		save: function(kwArgs){
 			// summary:
 			//		Saves the dirty data using object store provider. See dojo.data.api.Write for API.
@@ -423,12 +422,12 @@ dojo.declare("dojo.data.ObjectStore", null,{
 							}
 						}
 					},function(value){
-						
+
 						// on an error we want to revert, first we want to separate any changes that were made since the commit
 						left = -1; // first make sure that success isn't called
 						kwArgs.onError.call(kwArgs.scope, value);
 					});
-					
+
 				}
 				if(transaction){
 					transaction.commit();
@@ -436,8 +435,8 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			}catch(e){
 				kwArgs.onError.call(kwArgs.scope, value);
 			}
-			
-			
+
+
 		},
 
 		revert: function(kwArgs){
@@ -474,8 +473,8 @@ dojo.declare("dojo.data.ObjectStore", null,{
 				delete (object || old).__isDirty;
 				dirtyObjects.splice(i, 1);
 			}
-			
-			
+
+
 		},
 		isDirty: function(item){
 			// summary
@@ -492,7 +491,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		onDelete: 	function(){},
 		// an extra to get result sets
 		onFetch: function(results){}
-		
+
 	}
 );
 

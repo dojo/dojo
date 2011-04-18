@@ -1,8 +1,8 @@
 define(["..", "./Mover", "./Moveable"], function(dojo) {
-	//  module:
-	//    dojo/dnd/move
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/dnd/move
+	// summary:
+	//		TODOC
 
 
 /*=====
@@ -22,7 +22,7 @@ dojo.declare("dojo.dnd.move.constrainedMoveable", dojo.dnd.Moveable, {
 	// object attributes (for markup)
 	constraints: function(){},
 	within: false,
-	
+
 	// markup methods
 	markupFactory: function(params, node){
 		return new dojo.dnd.move.constrainedMoveable(node, params);
@@ -79,7 +79,7 @@ dojo.declare("dojo.dnd.move.boxConstrainedMoveable", dojo.dnd.move.constrainedMo
 	// box:
 	//		object attributes (for markup)
 	box: {},
-	
+
 	// markup methods
 	markupFactory: function(params, node){
 		return new dojo.dnd.move.boxConstrainedMoveable(node, params);

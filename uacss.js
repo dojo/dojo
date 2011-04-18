@@ -9,7 +9,7 @@ define(["."], function(dojo){
 	//			- text direction (ex: dijitRtl)
 	//
 	//		In addition, browser, browser version, and box model are
-	//		combined with an RTL flag when browser text is RTL.	 ex: dj_ie-rtl.
+	//		combined with an RTL flag when browser text is RTL. ex: dj_ie-rtl.
 
 	var
 		html = dojo.doc.documentElement,

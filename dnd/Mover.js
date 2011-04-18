@@ -1,8 +1,8 @@
 define(["..", "./common", "./autoscroll"], function(dojo) {
-	//  module:
-	//    dojo/dnd/Mover
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/dnd/Mover
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.dnd.Mover", null, {
@@ -102,7 +102,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		if(h && h.onFirstMove){
 			h.onFirstMove(this, e);
 		}
-		
+
 		// Disconnect onmousemove and ontouchmove events that call this function
 		dojo.disconnect(this.events.shift());
 		dojo.disconnect(this.events.shift());

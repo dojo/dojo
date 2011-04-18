@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/regexp
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/regexp
+	// summary:
+	//		TODOC
 
 dojo.getObject("regexp", true, dojo);
 

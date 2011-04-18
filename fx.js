@@ -1,8 +1,8 @@
 define([".", "./fx/Toggler"], function(dojo) {
-	//  module:
-	//    dojo/fx
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/fx
+	// summary:
+	//		TODOC
 
 
 /*=====
@@ -11,7 +11,7 @@ dojo.fx = {
 };
 =====*/
 (function(){
-	
+
 	var d = dojo,
 		_baseObj = {
 			_fire: function(evt, args){
@@ -163,7 +163,7 @@ dojo.fx = {
 			if(this.duration < duration){ this.duration = duration; }
 			this._connects.push(d.connect(a, "onEnd", this, "_onEnd"));
 		}, this);
-		
+
 		this._pseudoAnimation = new d.Animation({curve: [0, 1], duration: this.duration});
 		var self = this;
 		d.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"],
@@ -323,9 +323,9 @@ dojo.fx = {
 		//
 		// example:
 		//	|	dojo.fx.wipeOut({ node:"someId" }).play()
-		
+
 		var node = args.node = d.byId(args.node), s = node.style, o;
-		
+
 		var anim = d.animateProperty(d.mixin({
 			properties: {
 				height: {

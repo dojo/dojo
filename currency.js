@@ -1,8 +1,8 @@
 define([".", "./number", "./i18n", "./i18n!./cldr/nls/currency", "./cldr/monetary"], function(dojo) {
-	//  module:
-	//    dojo/currency
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/currency
+	// summary:
+	//		TODOC
 
 dojo.getObject("currency", true, dojo);
 

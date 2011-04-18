@@ -1,8 +1,8 @@
 define(["..", "../date", "../cldr/supplemental", "../regexp", "../string", "../i18n!../cldr/nls/gregorian"], function(dojo) {
-  //  module:
-  //    dojo/date/local
-  //  summary:
-  //    This modules defines dojo.date.locale, localization methods for Date.
+	// module:
+	//		dojo/date/local
+	// summary:
+	//		This modules defines dojo.date.locale, localization methods for Date.
 
 dojo.getObject("date.locale", true, dojo);
 
@@ -547,7 +547,7 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				break;
 			case 'a':
 				var am = options.am || bundle['dayPeriods-format-wide-am'],
-						pm = options.pm || bundle['dayPeriods-format-wide-pm'];
+					pm = options.pm || bundle['dayPeriods-format-wide-pm'];
 					s = am + '|' + pm;
 				if(!options.strict){
 					if(am != am.toLowerCase()){ s += '|' + am.toLowerCase(); }

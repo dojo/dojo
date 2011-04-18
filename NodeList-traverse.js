@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/NodeList-traverse
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/NodeList-traverse
+	// summary:
+	//		TODOC
 
 
 /*=====

@@ -1,8 +1,8 @@
 define(["..", "./common"], function(dojo) {
-	//  module:
-	//    dojo/dnd/Avatar
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/dnd/Avatar
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.dnd.Avatar", null, {

@@ -1,9 +1,9 @@
 define(["dojo", "require", "./has"], function(dojo, require, has){
-	//	module:
+	// module:
 	//		dojo/text
-	//	summary:
+	// summary:
 	//		This module implements the !dojo/text plugin and the dojo.cache API.
-	//	description:
+	// description:
 	//		We choose to include our own plugin to leverage functionality already contained in dojo
 	//		and thereby reduce the size of the plugin compared to various loader implementations. Also, this
 	//		allows foreign AMD loaders to be used without their plugins.
@@ -66,7 +66,7 @@ define(["dojo", "require", "./has"], function(dojo, require, has){
 				// id is something like:
 				//	 * "path/to/text.html
 				//	 * "path/to/text.html!strip
-				var 
+				var
 					parts= id.split("!"),
 					resourceId= parts[0],
 					cacheId= getCacheId(resourceId),
@@ -86,7 +86,7 @@ define(["dojo", "require", "./has"], function(dojo, require, has){
 					load(strip ? strip(theCache[url]) : theCache[url]);
 				});
 			},
-	
+
 			cache:function(cacheId, mid, type, value) {
 				cache(cacheId, require.nameToUrl(mid) + type, value);
 			}
@@ -95,7 +95,7 @@ define(["dojo", "require", "./has"], function(dojo, require, has){
 		dojo.cache= function(/*String||Object*/module, /*String*/url, /*String||Object?*/value){
 			//	 * (string string [value]) => (module, url, value)
 			//	 * (object [value])				 => (module, value), url defaults to ""
-			// 
+			//
 			//	 * if module is an object, then it must be convertable to a string
 			//	 * (module, url) must be legal arguments (once converted to strings iff required) to dojo.moduleUrl
 			//	 * value may be a string or an object; if an object then may have the properties "value" and/or "sanitize"
@@ -105,11 +105,11 @@ define(["dojo", "require", "./has"], function(dojo, require, has){
 			}else{
 				key = module+"";
 				value = url;
-			}	 
-			var 
+			}
+			var
 				val = (value != undefined && !dojo.isString(value)) ? value.value : value,
 				sanitize = value && value.sanitize;
-	
+
 			if(typeof val == "string"){
 				//We have a string, set cache value
 				theCache[key] = val;

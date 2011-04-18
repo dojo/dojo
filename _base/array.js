@@ -1,10 +1,10 @@
 define(["./kernel", "./lang"], function(dojo){
-	//	module:
+	// module:
 	//		dojo/_base/array
-	//	summary:
+	// summary:
 	//		This module defines the Javascript v1.6 array extensions.
 
-	var 
+	var
 		getParts = function(arr, obj, cb){
 			return [
 				(typeof arr == "string") ? arr.split("") : arr,

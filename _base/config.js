@@ -1,10 +1,10 @@
 define(["../has", "require"], function(has, require){
-	//	module:
+	// module:
 	//		dojo/_base/config
-	//	summary:
+	// summary:
 	//		This module processes the user configuration during bootstrap.
 
-	has.add("dojo-sniff", 
+	has.add("dojo-sniff",
 		// inspect script elements for data-dojo-config during bootstrap
 		has("dom") ? 1 : 0
 	);
@@ -19,7 +19,7 @@ define(["../has", "require"], function(has, require){
 				if(match[2]=="dojo"){
 					result.baseUrl= match[1];
 				}
-	 
+
 				// see if there's a dojo configuration stuffed into the node
 				config= (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
 				if(config){

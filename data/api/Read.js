@@ -1,8 +1,8 @@
 define(["../..", "./Request"], function(dojo) {
-	//  module:
-	//    dojo/data/api/Read
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/data/api/Read
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.data.api.Read", null, {
@@ -181,7 +181,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		//	The *item* parameter.
 		//		The item parameter is an object that represents the item in question that should be
 		//		contained by the store.  This attribute is required.
-		
+
 		//	The *onItem* parameter.
 		//		Function(item)
 		//		The onItem parameter is the callback to invoke when the item has been loaded.  It takes only one

@@ -1,8 +1,8 @@
 define(["../.."], function(dojo) {
-	//  module:
-	//    dojo/data/util/sorter
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/data/util/sorter
+	// summary:
+	//		TODOC
 
 dojo.getObject("data.util.sorter", true, dojo);
 
@@ -14,7 +14,7 @@ dojo.data.util.sorter.basicComparator = function(	/*anything*/ a,
 	//		returns 1 if a > b, -1 if a < b, 0 if equal.
 	//		'null' values (null, undefined) are treated as larger values so that they're pushed to the end of the list.
 	//		And compared to each other, null is equivalent to undefined.
-	
+
 	//null is a problematic compare, so if null, we set to undefined.
 	//Makes the check logic simple, compact, and consistent
 	//And (null == undefined) === true, so the check later against null

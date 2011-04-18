@@ -1,8 +1,8 @@
 define(["."], function(dojo) {
-	//  module:
-	//    dojo/Stateful
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/Stateful
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.Stateful", null, {
@@ -20,7 +20,7 @@ dojo.declare("dojo.Stateful", null, {
 			dojo.mixin(this, mixin);
 		}
 	},
-	
+
 	get: function(/*String*/name){
 		// summary:
 		//		Get a property on a Stateful instance.
@@ -34,7 +34,7 @@ dojo.declare("dojo.Stateful", null, {
 		//	|	stateful = new dojo.Stateful({foo: 3});
 		//	|	stateful.get("foo") // returns 3
 		//	|	stateful.foo // returns 3
-		
+
 		return this[name];
 	},
 	set: function(/*String*/name, /*Object*/value){
@@ -89,7 +89,7 @@ dojo.declare("dojo.Stateful", null, {
 		//		the property has been changed. The callback will be called with the |this|
 		//		set to the instance, the first argument as the name of the property, the
 		// 		second argument as the old value and the third argument as the new value.
-		
+
 		var callbacks = this._watchCallbacks;
 		if(!callbacks){
 			var self = this;
@@ -130,7 +130,7 @@ dojo.declare("dojo.Stateful", null, {
 			}
 		};
 	}
-	
+
 });
 
 return dojo.Stateful;

@@ -1,8 +1,8 @@
 define(["..", "../i18n"], function(dojo) {
-	//  module:
-	//    dojo/cldr/supplemental
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/cldr/supplemental
+	// summary:
+	//		TODOC
 
 dojo.getObject("cldr.supplemental", true, dojo);
 

@@ -1,8 +1,8 @@
 define(["..", "./util/QueryResults"], function(dojo) {
-	//  module:
-	//    dojo/store/JsonRest
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/store/JsonRest
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.store.JsonRest", null, {

@@ -1,7 +1,7 @@
 define(["./kernel", "./lang"], function(dojo){
-	//	module:
+	// module:
 	//		dojo/_base/Deferred
-	//	summary:
+	// summary:
 	//		This module defines dojo.Deferred.
 
 	var mutator = function(){};
@@ -31,7 +31,7 @@ define(["./kernel", "./lang"], function(dojo){
 	//		working with Dojo's promises is the then() method, which follows the
 	//		CommonJS proposed promise API. An example of using a Dojo promise:
 	//
-	//		|		var resultingPromise = someAsyncOperation.then(function(result){
+	//		|	var resultingPromise = someAsyncOperation.then(function(result){
 	//		|		... handle result ...
 	//		|	},
 	//		|	function(error){
@@ -151,7 +151,7 @@ define(["./kernel", "./lang"], function(dojo){
 	//		handle the asynchronous case.
 		var result, finished, isError, head, nextListener;
 		var promise = (this.promise = {});
-		
+
 		function complete(value){
 			if(finished){
 				throw new Error("This deferred has already been resolved");
@@ -202,8 +202,8 @@ define(["./kernel", "./lang"], function(dojo){
 			this.results = [value, null];
 			complete(value);
 		};
-		
-		
+
+
 		// calling error will indicate that the promise failed
 		this.reject = this.errback = function(error){
 			// summary:
@@ -250,10 +250,10 @@ define(["./kernel", "./lang"], function(dojo){
 			//
 			// example:
 			//		An example of using a CommonJS compliant promise:
-				//		|	asyncComputeTheAnswerToEverything().
+			//		|	asyncComputeTheAnswerToEverything().
 			//		|		then(addTwo).
 			//		|		then(printResult, onError);
-				//		|	>44
+			//		|	>44
 			//
 			var returnDeferred = progressCallback == mutator ? this : new dojo.Deferred(promise.cancel);
 			var listener = {
@@ -294,11 +294,11 @@ define(["./kernel", "./lang"], function(dojo){
 		addCallback: function (/*Function*/callback) {
 			return this.addCallbacks(dojo.hitch.apply(dojo, arguments));
 		},
-	
+
 		addErrback: function (/*Function*/errback) {
 			return this.addCallbacks(null, dojo.hitch.apply(dojo, arguments));
 		},
-	
+
 		addBoth: function (/*Function*/callback) {
 			var enclosed = dojo.hitch.apply(dojo, arguments);
 			return this.addCallbacks(enclosed, enclosed);
@@ -310,7 +310,7 @@ define(["./kernel", "./lang"], function(dojo){
 		// summary:
 		//		This provides normalization between normal synchronous values and
 		//		asynchronous promises, so you can interact with them in a common way
-		//	example:
+		// example:
 		//		|	function printFirstAndList(items){
 		//		|		dojo.when(findFirst(items), console.log);
 		//		|		dojo.when(findLast(items), console.log);
@@ -328,7 +328,7 @@ define(["./kernel", "./lang"], function(dojo){
 		//		And now all three of his functions can be used sync or async.
 		//		|	printFirstAndLast([1,2,3,4]) will work just as well as
 		//		|	printFirstAndLast(dojo.xhrGet(...));
-		
+
 		if(promiseOrValue && typeof promiseOrValue.then === "function"){
 			return promiseOrValue.then(callback, errback, progressHandler);
 		}

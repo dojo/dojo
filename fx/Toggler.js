@@ -1,8 +1,8 @@
 define([".."], function(dojo) {
-	//  module:
-	//    dojo/fx/Toggler
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/fx/Toggler
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.fx.Toggler", null, {

@@ -1,8 +1,8 @@
 define(["../..", "./sorter"], function(dojo) {
-	//  module:
-	//    dojo/data/util/simpleFetch
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/data/util/simpleFetch
+	// summary:
+	//		TODOC
 
 dojo.getObject("data.util.simpleFetch", true, dojo);
 

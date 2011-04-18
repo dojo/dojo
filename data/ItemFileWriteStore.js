@@ -1,8 +1,8 @@
 define(["..", "./ItemFileReadStore"], function(dojo) {
-	//  module:
-	//    dojo/data/ItemFileWriteStore
-	//	summary:
-	//		TODOC:This module defines 
+	// module:
+	//		dojo/data/ItemFileWriteStore
+	// summary:
+	//		TODOC
 
 
 dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
@@ -28,7 +28,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		// ItemFileWriteStore extends ItemFileReadStore to implement these additional dojo.data APIs
 		this._features['dojo.data.api.Write'] = true;
 		this._features['dojo.data.api.Notification'] = true;
-		
+
 		// For keeping track of changes so that we can implement isDirty and revert
 		this._pending = {
 			_newItems:{},
@@ -63,8 +63,8 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		// this._assert((identifierAttribute === Number) || (dojo.isString(identifierAttribute)));
 		return identifierAttribute;
 	},
-	
-	
+
+
 /* dojo.data.api.Write */
 
 	newItem: function(/* Object? */ keywordArgs, /* Object? */ parentInfo){
@@ -94,7 +94,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				throw new Error("newItem() was not passed an single-valued identity");
 			}
 		}
-		
+
 		// make sure this identity is not already in use by another item, if identifiers were
 		// defined in the file.  Otherwise it would be the item count,
 		// which should always be unique in this case.
@@ -103,7 +103,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}
 		this._assert(typeof this._pending._newItems[newIdentity] === "undefined");
 		this._assert(typeof this._pending._deletedItems[newIdentity] === "undefined");
-		
+
 		var newItem = {};
 		newItem[this._storeRefPropName] = this;
 		newItem[this._itemNumPropName] = this._arrayOfAllItems.length;
@@ -117,7 +117,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 
 		//We need to construct some data for the onNew call too...
 		var pInfo = null;
-		
+
 		// Now we need to check to see where we want to assign this thingm if any.
 		if(parentInfo && parentInfo.parent && parentInfo.attribute){
 			pInfo = {
@@ -149,9 +149,9 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			newItem[this._rootItemPropName]=true;
 			this._arrayOfTopLevelItems.push(newItem);
 		}
-		
+
 		this._pending._newItems[newIdentity] = newItem;
-		
+
 		//Clone over the properties to the new item
 		for(var key in keywordArgs){
 			if(key === this._storeRefPropName || key === this._itemNumPropName){
@@ -186,7 +186,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		this.onNew(newItem, pInfo); // dojo.data.api.Notification call
 		return newItem; // item
 	},
-	
+
 	_removeArrayElement: function(/* Array */ array, /* anything */ element){
 		var index = dojo.indexOf(array, element);
 		if(index != -1){
@@ -195,7 +195,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}
 		return false;
 	},
-	
+
 	deleteItem: function(/* item */ item){
 		// summary: See dojo.data.api.Write.deleteItem()
 		this._assert(!this._saveInProgress);
@@ -220,7 +220,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			if(item[this._reverseRefMap]){
 				item["backup_" + this._reverseRefMap] = dojo.clone(item[this._reverseRefMap]);
 			}
-			
+
 			//TODO:  This causes a reversion problem.  This list won't be restored on revert since it is
 			//attached to the 'value'. item, not ours.  Need to back tese up somehow too.
 			//Maybe build a map of the backup of the entries and attach it to the deleted item to be restored
@@ -275,7 +275,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			delete this._itemsByIdentity[identity];
 		}
 		this._pending._deletedItems[identity] = item;
-		
+
 		//Remove from the toplevel items, if necessary...
 		if(item[this._rootItemPropName]){
 			this._removeArrayElement(this._arrayOfTopLevelItems, item);
@@ -288,20 +288,20 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		// summary: See dojo.data.api.Write.set()
 		return this._setValueOrValues(item, attribute, value, true); // boolean
 	},
-	
+
 	setValues: function(/* item */ item, /* attribute-name-string */ attribute, /* array */ values){
 		// summary: See dojo.data.api.Write.setValues()
 		return this._setValueOrValues(item, attribute, values, true); // boolean
 	},
-	
+
 	unsetAttribute: function(/* item */ item, /* attribute-name-string */ attribute){
 		// summary: See dojo.data.api.Write.unsetAttribute()
 		return this._setValueOrValues(item, attribute, [], true);
 	},
-	
+
 	_setValueOrValues: function(/* item */ item, /* attribute-name-string */ attribute, /* anything */ newValueOrValues, /*boolean?*/ callOnSet){
 		this._assert(!this._saveInProgress);
-		
+
 		// Check for valid arguments
 		this._assertIsItem(item);
 		this._assert(dojo.isString(attribute));
@@ -338,12 +338,12 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			// Now mark the item as dirty, and save the copy of the original state
 			this._pending._modifiedItems[identity] = copyOfItemState;
 		}
-		
+
 		// Okay, now we can actually change this attribute on the item
 		var success = false;
-		
+
 		if(dojo.isArray(newValueOrValues) && newValueOrValues.length === 0){
-			
+
 			// If we were passed an empty array as the value, that counts
 			// as "unsetting" the attribute, so we need to remove this
 			// attribute from the item.
@@ -450,7 +450,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		//		The item that holds the new reference to refItem.
 		//	attribute:
 		//		The attribute on parentItem that contains the new reference.
-		 
+
 		var parentId = this.getIdentity(parentItem);
 		var references = refItem[this._reverseRefMap];
 
@@ -509,7 +509,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			}
 		}
 	},
-	
+
 	_getValueOrValues: function(/* item */ item, /* attribute-name-string */ attribute){
 		var valueOrValues = undefined;
 		if(this.hasAttribute(item, attribute)){
@@ -522,7 +522,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}
 		return valueOrValues;
 	},
-	
+
 	_flatten: function(/* anything */ value){
 		if(this.isItem(value)){
 			var item = value;
@@ -555,14 +555,14 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			return value;
 		}
 	},
-	
+
 	_getNewFileContentString: function(){
 		// summary:
 		//		Generate a string that can be saved to a file.
 		//		The result should look similar to:
 		//		http://trac.dojotoolkit.org/browser/dojo/trunk/tests/data/countries.json
 		var serializableStructure = {};
-		
+
 		var identifierAttribute = this._getIdentifierAttribute();
 		if(identifierAttribute !== Number){
 			serializableStructure.identifier = identifierAttribute;
@@ -616,14 +616,14 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}
 		return empty; //boolean
 	},
-	
+
 	save: function(/* object */ keywordArgs){
 		// summary: See dojo.data.api.Write.save()
 		this._assert(!this._saveInProgress);
-		
+
 		// this._saveInProgress is set to true, briefly, from when save is first called to when it completes
 		this._saveInProgress = true;
-		
+
 		var self = this;
 		var saveCompleteCallback = function(){
 			self._pending = {
@@ -645,7 +645,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				keywordArgs.onError.call(scope, err);
 			}
 		};
-		
+
 		if(this._saveEverything){
 			var newFileContentString = this._getNewFileContentString();
 			this._saveEverything(saveCompleteCallback, saveFailedCallback, newFileContentString);
@@ -660,7 +660,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			saveCompleteCallback();
 		}
 	},
-	
+
 	revert: function(){
 		// summary: See dojo.data.api.Write.revert()
 		this._assert(!this._saveInProgress);
@@ -675,7 +675,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			}else{
 				modifiedItem = this._arrayOfAllItems[identity];
 			}
-	
+
 			// Restore the original item into a full-fledged item again, we want to try to
 			// keep the same object instance as if we don't it, causes bugs like #9022.
 			copyOfItemState[this._storeRefPropName] = this;
@@ -742,7 +742,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		};
 		return true; // boolean
 	},
-	
+
 	isDirty: function(/* item? */ item){
 		// summary: See dojo.data.api.Write.isDirty()
 		if(item){
@@ -770,21 +770,21 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 					/*object | array*/ oldValue,
 					/*object | array*/ newValue){
 		// summary: See dojo.data.api.Notification.onSet()
-		
+
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.
 	},
 
 	onNew: function(/* item */ newItem, /*object?*/ parentInfo){
 		// summary: See dojo.data.api.Notification.onNew()
-		
+
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.
 	},
 
 	onDelete: function(/* item */ deletedItem){
 		// summary: See dojo.data.api.Notification.onDelete()
-		
+
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.
 	},

@@ -1,5 +1,6 @@
 define([
 	//"dojo/tests/_base/url",
+	"dojo/tests/_base/loader",
 	"dojo/tests/_base/array",
 	"dojo/tests/_base/Color",
 	"dojo/tests/_base/lang",
@@ -16,10 +17,10 @@ define([
 
 	// TODO bootstrap tests
 	//dojo.require("tests._base._loader.bootstrap");
-	// 
+	//
 	// TODO loader tests
 	//dojo.require("tests._base._loader.loader");
-	// 
+	//
 	// TODO platform boot tests
 	//dojo.platformRequire({
 	//	browser: ["tests._base._loader.hostenv_browser"],

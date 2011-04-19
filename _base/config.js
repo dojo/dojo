@@ -10,16 +10,11 @@ define(["../has", "require"], function(has, require){
 	);
 
 	var result= this.dojoConfig || this.djConfig || {};
-	if(has("dom") && has("dojo-sniff")){
+	if(has("dom") && has("dojo-sniff") && !has("loader-isDojo")){
+		// if we're not under the dojo loader, then assume the user doesn't want to sniff the baseUrl from the loader (since it must already be set)
 		// notice this loop breaks on first match
 		for (var config, src, match, scripts = document.getElementsByTagName("script"), i= 0; i<scripts.length && !match; i++) {
 			if ((src = scripts[i].getAttribute("src")) && (match = src.match(/(.*)\/?(dojo|require)\.js(\W|$)/i))) {
-				// consider baseUrl iff this is a dojo built-in AMD loader; otherwise it's just the location of the
-				// loader and may have nothing to do with dojo
-				if(match[2]=="dojo"){
-					result.baseUrl= match[1];
-				}
-
 				// see if there's a dojo configuration stuffed into the node
 				config= (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
 				if(config){
@@ -31,9 +26,10 @@ define(["../has", "require"], function(has, require){
 			}
 		}
 	}else{
-		var p, sniffedConfig= require.dojoConfig || {};
-		for(p in sniffedConfig){
-			result[p]= sniffedConfig[p];
+		// if this is the dojo loader, then the aggregate of dojoConfig + djConfig + sniffed config will be in require.rawConfig
+		var p, rawConfig= require.rawConfig || {};
+		for(p in rawConfig){
+			result[p]= rawConfig[p];
 		}
 	}
 	return result;
@@ -50,7 +46,7 @@ define(["../has", "require"], function(has, require){
 dojoConfig = {
 	// summary:
 	//		Application code can set the global 'dojoConfig' prior to loading
-	//		the library to controll certain global settings for how dojo works.
+	//		the library to control certain global settings for how dojo works.
 	//
 	// isDebug: Boolean
 	//		Defaults to `false`. If set to `true`, ensures that Dojo provides

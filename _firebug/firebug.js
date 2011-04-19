@@ -54,7 +54,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 		try{ console.clear(); }catch(e){}
 	}
 
-  if(
+	if(
 		dojo.isFF ||								// Firefox has Firebug
 		dojo.isChrome ||							// Chrome 3+ has a console
 		dojo.isSafari ||							// Safari 4 has a console
@@ -436,7 +436,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 		if(consoleFrame){
 			return;
 		}
-
+		toggleConsole(true);
 		if(dojo.config.popup){
 			var containerHeight = "100%";
 			var cookieMatch = document.cookie.match(/(?:^|; )_firebugPosition=([^;]*)/);
@@ -517,11 +517,8 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 		consoleObjectInspector = _firebugDoc.getElementById("objectLog");
 		consoleDomInspector = _firebugDoc.getElementById("domInspect");
 		fireBugTabs = _firebugDoc.getElementById("fireBugTabs");
-		window.setTimeout(function(){
-			// FIXME: this is hack against the race condition that uses a timer to add the style sheet for IE above; it won't always work
-			layout();
-			flush();
-		}, 20);
+		layout();
+		flush();
 	}
 
 	dojo.addOnLoad(createFrame);
@@ -565,9 +562,6 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 		var height = h ?
 			h  - (tHeight + commandLine.offsetHeight +25 + (h*.01)) + "px" :
 			(consoleFrame.offsetHeight - tHeight - commandLine.offsetHeight) + "px";
-
-		//FIXME: this is a hack until we figure out why commandLine.offsetHieght is wrong onReady
-		height = height>0 ? height : 18;
 
 		consoleBody.style.top = tHeight + "px";
 		consoleBody.style.height = height;

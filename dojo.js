@@ -355,18 +355,31 @@
 		},
 
 		config = function(config, booting){
-			// mix config into require, but don't trash the pathTransforms
+			// mix config into require
 			var p, i, transforms;
 
-			//note: bdLoad ignores requirejs waitSecond; change your code to use "timeout" if required
-
-			// push config into require, but don't step on certain properties that are expected and/or
-			// require special processing; notice that client code can use config to hold client
-			// configuration switches that have nothing to do with require
+			// async, urlArgs, and baseUrl just replace whatever is already there
+			// async is only meaningful if it's set before booting the loader
 			for(p in config){
-				if(!/pathTransforms|paths|packages|packageMap|packagePaths|cache|ready/.test(p)){
-					req[p] = config[p];
+				if(/async|waitSeconds|urlArgs|baseUrl|locale/.test(p)){
+					req[p] = p=="waitSeconds" ? config[p] * 1000 : config[p];
 				}
+				// accumulate raw config info for client apps which can use this to pass their own config
+				req.rawConfig[p]= config[p];
+			}
+
+			// config.override allows overriding any loader data/variable; this is an advanced option
+			// to be used with care and "at your own risk"; its main use is to replace log, traceSet, trace, and onError
+			if(has("loader-overrideApi")){
+				for(p in config.override){
+					req[p] = config.override[p];
+				}
+			}
+
+			// now do the special work for has, pathTransforms, packagePaths, packages, paths, deps, callback, and ready
+
+			for(p in config.has){
+				has.add(p, config.has[p], 0, 1);
 			}
 
 			// make sure baseUrl ends with a slash
@@ -384,9 +397,6 @@
 			// for each package found in any packages config item, augment the packages map owned by the loader
 			forEach(config.packages, fixupPackageInfo);
 
-			// push in any paths and recompute the internal pathmap
-			pathsMapProg = computeMapProg(mix(paths, config.paths));
-
 			// for each packagePath found in any packagePaths config item, augment the packages map owned by the loader
 			for(baseUrl in config.packagePaths){
 				forEach(config.packagePaths[baseUrl], function(packageInfo){
@@ -394,33 +404,37 @@
 				});
 			}
 
+			// push in any paths and recompute the internal pathmap
+			// warning: this cann't be done until the package config is processed since packages may include path info
+			pathsMapProg = computeMapProg(mix(paths, config.paths));
+
 			// mix any packageMap config item and recompute the internal packageMapProg
 			packageMapProg = computeMapProg(mix(packageMap, config.packageMap));
 
 			// push in any new cache values
 			mix(cache, config.cache);
 
-			if(!booting){
+			if(booting){
+				// TODO: reverse these to prefer config
+				req.deps= req.deps || config.deps;
+				req.callback= req.callback || config.callback;
+			}else{
 				doWork(config.deps, config.callback, config.ready);
 			}
 		};
 
 	//
-	// configure the loader
+	// execute the various sniffs
 	//
 
 	if(has("loader-sniff")){
-		for(var src, match, dataMain, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length; i++){
-			src = scripts[i].getAttribute("src") || "";
-			if((match = src.match(/require\.js$/))){
+		for(var src, match, dataMain, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
+			if((src = scripts[i].getAttribute("src")) && (match = src.match(/require\.js$/))){
 				req.baseUrl = src.substring(0, match.index) || "./";
 				dataMain = scripts[i].getAttribute("data-main");
 				if(dataMain){
 					req.deps = req.deps || [dataMain];
 				}
-				// remember the base node so other machinery can use it to pass parameters (e.g., djConfig)
-				req.baseNode = scripts[i];
-				break;
 			}
 		}
 	}
@@ -429,12 +443,13 @@
 	if(has("dojo-sniff")){
 		for(var src, match, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
 			if((src = scripts[i].getAttribute("src")) && (match = src.match(/(.*)\/?dojo\.js(\W|$)/i))){
-				req.baseUrl = req.baseUrl || match[1];
+                // if baseUrl wasn't explicitly set, set it here to the dojo directory; this is the 1.6- behavior
+				userConfig.baseUrl = userConfig.baseUrl || defaultConfig.baseUrl || match[1];
 
 				// see if there's a dojo configuration stuffed into the node
 				src = (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
 				if(src){
-					req.dojoConfig = dojoSniffConfig = reqEval("({ " + src + " })", "dojo/data-dojo-config");
+					dojoSniffConfig = reqEval("({ " + src + " })", "dojo/data-dojo-config");
 				}
 			}
 		}
@@ -451,6 +466,7 @@
 	}
 
 	// configure the loader; let the user override defaults
+	req.rawConfig= {};
 	config(defaultConfig, 1);
 	config(userConfig, 1);
 	config(dojoSniffConfig, 1);
@@ -795,6 +811,7 @@
 		checkComplete = function(){
 			// keep going through the execQ as long as at least one factory is executed
 			// plugins, recursion, cached modules all make for many execution path possibilities
+			isEmpty(waiting) && clearTimer();
 			for(var result, module, i = 0; i < execQ.length; i++){
 				module = execQ[i];
 				execModule(module);
@@ -809,7 +826,6 @@
 					}
 				}
 			}
-
 			if(has("loader-priority-readyApi")){
 				onLoad();
 			}
@@ -1088,10 +1104,10 @@
 
 			startTimer = function(){
 				clearTimer();
-				req.timeout && (timerId = setTimeout(function(){
+				req.waitSeconds && (timerId = setTimeout(function(){
 					clearTimer();
 					req.onError("loader/timeout", [waiting]);
-				}, req.timeout));
+				}, req.waitSeconds));
 			};
 	}else{
 		var
@@ -1561,6 +1577,7 @@
 		hasCache:{
 			"host-browser":1,
 			"dom":1,
+			"loader-isDojo":1,
 			"loader-hasApi":1,
 			"loader-provides-xhr":1,
 			"loader-injectApi":1,
@@ -1573,6 +1590,7 @@
 			"loader-errorApi":1,
 			"loader-publish-privates":1,
 			"loader-getTextApi":1,
+			"loader-overrideApi":1,
 			"dojo-sniff":1,
 			"dojo-loader":1,
 			"dojo-boot":1,
@@ -1616,7 +1634,7 @@
 		},
 		async:0
 	}
-		);
+);
 
 (function(){
 	// must use this.require to make this work in node.jsg

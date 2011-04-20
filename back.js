@@ -1,4 +1,4 @@
-define(["."], function(dojo) {
+define([".", "require"], function(dojo, require) {
 	// module:
 	//		dojo/back
 	// summary:
@@ -101,7 +101,7 @@ dojo.back = {
 
 	function loadIframeHistory(){
 		//summary: private method. Do not call this directly.
-		var url = (dojo.config["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html")) + "?" + (new Date()).getTime();
+		var url = (dojo.config["dojoIframeHistoryUrl"] || require.nameToUrl("./resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
         if(historyIframe){
 		    dojo.isWebKit ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
@@ -152,7 +152,7 @@ dojo.back = {
 		// 		it will not work. Be careful with xdomain loading or djConfig.debugAtAllCosts scenarios,
 		// 		in order for this method to work, dojo.back will need to be part of a build layer.
 		if(dojo.byId("dj_history")){ return; } // prevent reinit
-		var src = dojo.config["dojoIframeHistoryUrl"] || dojo.moduleUrl("dojo", "resources/iframe_history.html");
+		var src = dojo.config["dojoIframeHistoryUrl"] || require.nameToUrl("./resources/iframe_history.html");
 		if (dojo._postLoad) {
 			console.error("dojo.back.init() must be called before the DOM has loaded. "
 			            + "If using xdomain loading or djConfig.debugAtAllCosts, include dojo.back "

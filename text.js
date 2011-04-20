@@ -101,7 +101,8 @@ define(["dojo", "require", "./has"], function(dojo, require, has){
 			//	 * value may be a string or an object; if an object then may have the properties "value" and/or "sanitize"
 			var key;
 			if(typeof module == "string"){
-				key = dojo.moduleUrl(module, url);
+				module = (module.replace(/\./g, "/") + (url ? ("/" + url) : "")).replace(/^dojo\//, "./");
+				key = require.nameToUrl(module);
 			}else{
 				key = module+"";
 				value = url;

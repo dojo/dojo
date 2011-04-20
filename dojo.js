@@ -443,7 +443,7 @@
 		if(has("dojo-sniff")){
 			for(var src, match, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
 				if((src = scripts[i].getAttribute("src")) && (match = src.match(/(.*)\/?dojo\.js(\W|$)/i))){
-	                // if baseUrl wasn't explicitly set, set it here to the dojo directory; this is the 1.6- behavior
+					// if baseUrl wasn't explicitly set, set it here to the dojo directory; this is the 1.6- behavior
 					userConfig.baseUrl = userConfig.baseUrl || defaultConfig.baseUrl || match[1];
 
 					// see if there's a dojo configuration stuffed into the node

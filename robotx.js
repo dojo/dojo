@@ -1,4 +1,4 @@
-define("dojo/robotx", ["dojo", "dojo/robot"], function(dojo) {
+define(["dojo", "dojo/robot"], function(dojo) {
 
 dojo.experimental("dojo.robotx");
 
@@ -106,7 +106,7 @@ dojo.mixin(doh.robot,{
 			// allow the tests to subscribe to topics published by the iframe
 			dojo._topics = win.dojo._topics;
 		}
-		 
+
 	},
 
 	initRobot: function(/*String*/ url){
@@ -121,7 +121,7 @@ dojo.mixin(doh.robot,{
 		// see above note about race conditions
 		if(robotReady){
 			attachIframe();
-			
+
 		}
 	},
 

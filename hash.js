@@ -1,4 +1,4 @@
-define(["."], function(dojo) {
+define([".", "require"], function(dojo, require) {
 	// module:
 	//		dojo/hash
 	// summary:
@@ -142,7 +142,7 @@ define(["."], function(dojo) {
 		// create and append iframe
 		var ifr = document.createElement("iframe"),
 			IFRAME_ID = "dojo-hash-iframe",
-			ifrSrc = dojo.config.dojoBlankHtmlUrl || dojo.moduleUrl("dojo", "resources/blank.html");
+			ifrSrc = dojo.config.dojoBlankHtmlUrl || require.nameToUrl("./resources/blank.html");
 
 		if(dojo.config.useXDomain && !dojo.config.dojoBlankHtmlUrl){
 			console.warn("dojo.hash: When using cross-domain Dojo builds,"

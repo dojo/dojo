@@ -1,4 +1,4 @@
-define([".."], function(dojo) {
+define(["..", "require"], function(dojo, require) {
 	// module:
 	//		dojo/io/iframe
 	// summary:
@@ -74,7 +74,7 @@ dojo.io.iframe = {
 					+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
 					+ " to the path on your domain to blank.html");
 			}
-			turi = (dojo.config["dojoBlankHtmlUrl"]||dojo.moduleUrl("dojo", "resources/blank.html"));
+			turi = (dojo.config["dojoBlankHtmlUrl"]||require.nameToUrl("../resources/blank.html"));
 		}
 		var cframe = dojo.place(
 			'<iframe id="'+fname+'" name="'+fname+'" src="'+turi+'" onload="'+onloadstr+

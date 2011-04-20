@@ -3,7 +3,7 @@
 <html>
 <head>
 	<style type="text/css">
-		@import "../../dojo/resources/dojo.css";
+		@import "../../resources/dojo.css";
 	</style>
 	
 	<script type="text/javascript" djConfig="isDebug: true" src="../../dojo.js"></script>
@@ -16,7 +16,7 @@
 			kp1 = dojo.connect(dojo.byId("typer"), "onkeypress", function(evt){
 
 				// Keep log of events on <input>, skipping pressing of the control/shift/meta, since that's
-				// browsser dependent
+				// browser dependent
 				if(evt.keyCode == dojo.keys.CTRL || evt.keyCode == dojo.keys.SHIFT || evt.keyCode == dojo.keys.META){
 					return;
 				}

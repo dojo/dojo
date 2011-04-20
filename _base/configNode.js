@@ -19,7 +19,7 @@ exports.config= function(config) {
 	//	global.require= {};
 	//}
 
-	// reset the has cache with node-appropriate values; 
+	// reset the has cache with node-appropriate values;
 	var hasCache= {
 		"host-node":1,
 		"host-browser":0,
@@ -49,10 +49,10 @@ exports.config= function(config) {
 	// reset some configuration switches with node-appropriate values
 	var nodeConfig= {
 		baseUrl: __dirname.match(/(.+)\/_base$/)[1],
-		isBrowser:0,
 		commandLineArgs:args,
 		deps:deps,
-	
+		timeout:0,
+
 		// TODO: really get the locale
 		locale:"us-en",
 
@@ -75,8 +75,6 @@ exports.config= function(config) {
 				console.log(e);
 			}
 		},
-
-		getXhr: 0,
 
 		getText: function(url, sync, onLoad){
 			// TODO: implement async and http/https handling

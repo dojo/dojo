@@ -3,7 +3,7 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 	//		This module provides bootstrap configuration for running dojo in rhino.
 
 	// TODO: v1.6 tries to set dojo.doc and dojo.body in rhino; why?
- 
+
 	// get a minimal console up
 	var log= function(hint, args) {
 		print((hint ? hint + ":" : "") + args[0]);
@@ -33,12 +33,12 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 			if(!timeouts[idx]){ return; }
 			timeouts[idx].stop();
 		};
-	
+
 		setTimeout = function(func, delay){
 			var def={
 				sleepTime:delay,
 				hasSlept:false,
-			
+
 				run:function(){
 					if(!this.hasSlept){
 						this.hasSlept=true;
@@ -51,7 +51,7 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 					}
 				}
 			};
-		
+
 			var runnable = new java.lang.Runnable(def);
 			var thread = new java.lang.Thread(runnable);
 			thread.start();
@@ -63,12 +63,7 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 		return (new java.io.File(url)).exists();
 	};
 
-	// make sure global require exists
-	//if (typeof require=="undefined") {
-	//	require= {};
- // }
-
-	// reset the has cache with node-appropriate values; 
+	// reset the has cache with node-appropriate values;
 	var hasCache= {
 		"host-rhino":1,
 		"host-browser":0,
@@ -97,7 +92,6 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 	// reset some configuration switches with rhino-appropriate values
 	var rhinoConfig= {
 		baseUrl:baseUrl,
-		isBrowser:0,
 		commandLineArgs:rhinoArgs,
 		deps:deps,
 		timeout:0,
@@ -116,8 +110,6 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 				console.log(e);
 			}
 		},
-
-		getXhr: 0,
 
 		getText: function(url, sync, onLoad) {
 			// TODO: test https://bugzilla.mozilla.org/show_bug.cgi?id=471005; see v1.6 hostenv_rhino

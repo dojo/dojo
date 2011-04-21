@@ -55,7 +55,7 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 		//	|		dojo.require("foo.thud.xyzzy");
 		//	|	</script>
     var paths= {};
-    paths[module]= prefix;
+    paths[module.replace(/\./g, "/")]= prefix;
     require({paths:paths});
 	};
 

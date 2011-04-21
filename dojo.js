@@ -1003,6 +1003,9 @@
 							++syncDepth;
 							try{
 								// always synchronous...
+								if(has("loader-traceApi")){
+									req.trace("loader-inject", [module.pqn, url]);
+								}
 								getText(url, 0, function(text){
 									injecting.push(module);
 									reqEval(text, module.path);

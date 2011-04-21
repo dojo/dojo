@@ -258,7 +258,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 			}else{
 				p= parts[i++];
 				try{
-					context= (scopeMap[p] && require(scopeMap[p])) || require(p);
+					context= (scopeMap[p] && require(scopeMap[p]));
 				}catch(e){}
 				context= context || (p in dojoGlobal ? dojoGlobal[p] : (create ? dojoGlobal[p] = {} : undefined));
 			}

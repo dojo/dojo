@@ -35,6 +35,10 @@ define([
 		loadFirebugConsole();
 	}
 
+	if(dojo.config.debugAtAllCosts){
+		require.debugAtAllCosts();
+	}
+
 	// dojoConfig.require is deprecated; use the loader configuration property deps
 	has.add("dojo-config-require", 1);
 	if(has("dojo-config-require")){

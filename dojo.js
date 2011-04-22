@@ -79,20 +79,17 @@
 		},
 
 		toString = {}.toString,
-		functionMarker = "[object Function]",
-		arrayMarker = "[object Array]",
-		stringMarker = "[object String]",
 
 		isFunction = function(it){
-			return toString.call(it) == functionMarker;
+			return toString.call(it) == "[object Function]";
 		},
 
 		isString = function(it){
-			return toString.call(it) == stringMarker;
+			return toString.call(it) == "[object String]";
 		},
 
 		isArray = function(it){
-			return toString.call(it) == arrayMarker;
+			return toString.call(it) == "[object Array]";
 		},
 
 		forEach = function(vector, callback){
@@ -148,7 +145,7 @@
 
 		element = doc && doc.createElement("DiV"),
 
-		has = function(name){
+		has = req.has = function(name){
 			return hasCache[name] = isFunction(hasCache[name]) ? hasCache[name](global, doc, element) : hasCache[name];
 		},
 
@@ -183,7 +180,8 @@
 		rhinoDojoConfig(defaultConfig, baseUrl, rhinoArgs);
 	}
 
-	// userConfig has tests override defaultConfig has tests...
+	// userConfig has tests override defaultConfig has tests; do this after the environment detection because
+	// the environment detection usually sets some has feature values in the hasCache.
 	for(var p in userConfig.has){
 		has.add(p, userConfig.has[p], 0, 1);
 	}
@@ -199,10 +197,10 @@
 		arrived = 2,
 		nonmodule = 3,
 		executing = 4,
-		executed = 5;
+		executed = 5,
+		execThrew = 6;
 
 	if(has("loader-traceApi")){
-		// these make debugging nice
 		// TODO: consider moving the symbol table to a public API offered by the loader
 		var
 			symbols =
@@ -212,32 +210,29 @@
 				return symbols[name] || (symbols[name] = {value:name});
 			};
 
+		// these make debugging nice
 		requested = symbol("requested");
 		arrived = symbol("arrived");
 		nonmodule = symbol("not-a-module");
-
 		executing = symbol("executing");
 		executed = symbol("executed");
+		execThrew = symbol("exec-threw");
 	}
 
 	// lexical variables that hold key loader data structures; may be completely initialized by
-	// defaultConfig for optimized/built versions of the loader
-	// the packages property is deleted because packages config info is cleaned up and stuffed into the packs property later
+	// defaultConfig for optimized/built versions of the loader. The packages property is deleted
+	// because it is not used by the loader (package config info is cleaned up and stuffed into
+	// the packs property) and keeping can lead to confusion when inspecting loader props while debuggin
 	var reqEval, pathTransforms, paths, pathsMapProg, packs, packageMap, packageMapProg, modules, cache;
 	mix(req, defaultConfig);
 	delete req.packages;
-
 	if(!has("loader-auto-initialization")){
-		// use the function constructor so our eval is scoped in the global space
-		// note: do this definition as a two-step since the Function constructor has problems with the firebug hint
-		var eval = new Function("__text", "return eval(__text);");
-
-		reqEval = req.eval = req.eval || function(text, hint){
-			return eval(text + "\r\n//@ sourceURL=" + hint);
-		};
+		reqEval= req.eval= req.eval ||
+			// use the function constructor so our eval is scoped in the global space
+			new Function("__text", "__hint", 'return eval(__text + "\\r\\n//@ sourceURL=" + __hint);');
 
 		pathTransforms = req.pathTransforms = req.pathTransforms ||
-			// list of functions from URL(string) to URL(string)
+			// list of functions from URL(string) to (URL(string) | falsy)
 			[];
 
 		paths = req.paths = req.paths ||
@@ -250,7 +245,7 @@
 			[];
 
 		packs = req.packs = req.packs ||
-			// a map from packageId to package configuration object
+			// a map from packageId to package configuration object; see fixupPackageInfo
 			{};
 
 		packageMap = req.packageMap = req.packageMap ||
@@ -266,32 +261,30 @@
 			// A hash:(pqn) --> (module-object). module objects are simple JavaScript objects with the
 			// following properties:
 			//
-			//	 pid: the package identifier to which the module belongs; "" indicates the system or default package
-			//	 id: the module identifier without the package identifier
-			//	 pqn: the full context-qualified name
+			//	 pid: the package identifier to which the module belongs (e.g., "dojo"); "" indicates the system or default package
+			//	 id: the module identifier without the package identifier (e.g., "io/script")
+			//	 pqn: the full package-qualified name (e.g., "dojo*io/script")
 			//	 url: the URL from which the module was retrieved
 			//	 pack: the package object of the package to which the module belongs
-			//	 path: the full module name (package + path) resolved with respect to the loader (i.e., mappings have been applied)
-			//	 executed: 1 <==> the factory has been executed
+			//	 path: the full module name (package + path) resolved with respect to the loader (i.e., mappings have been applied) (e.g., dojo/io/script)
+			//	 executed: 0 => not executed; executing => in the process of tranversing deps and running factory; executed => factory has been executed
 			//	 deps: the dependency vector for this module (vector of modules objects)
 			//	 def: the factory for this module
 			//	 result: the result of the running the factory for this module
 			//	 injected: (requested | arrived | nonmodule) the status of the module; nonmodule means the resource did not call define
-			//	 ready: 1 <==> all prerequisite fullfilled to execute the module
 			//	 load: plugin load function; applicable only for plugins
 			//
 			// Modules go through several phases in creation:
 			//
-			// 1. Requested: some other module's definition contains the requested module in
-			//		its dependency vector or executing code explicitly demands a module via req.require.
+			// 1. Requested: some other module's definition or a require application contained the requested module in
+			//    its dependency vector or executing code explicitly demands a module via req.require.
 			//
 			// 2. Injected: a script element has been appended to the head element demanding the resource implied by the URL
 			//
 			// 3. Loaded: the resource injected in [2] has been evalated.
 			//
-			// 4. Defined: the resource contained a define statement that advised the loader
-			//		about the module. Notice that some resources may just contain a bundle of code
-			//		and never formally define a module via define
+			// 4. Defined: the resource contained a define statement that advised the loader about the module. Notice that some
+			//    resources may just contain a bundle of code and never formally define a module via define
 			//
 			// 5. Evaluated: the module was defined via define and the loader has evaluated the factory and computed a result.
 			{},
@@ -306,7 +299,7 @@
 	}
 
 	//
-	// configuration machinery (with an optimized, built defaultConfig, this can be discarded)
+	// configuration machinery (with an optimized/built defaultConfig, this can be discarded)
 	//
 	if(has("loader-configApi")){
 		var
@@ -349,11 +342,6 @@
 				packageMap[name] = name;
 			},
 
-			doWork = function(deps, callback, onLoadCallback){
-				((deps && deps.length) || callback) && req(deps || [], callback || noop);
-				onLoadCallback && req.ready(onLoadCallback);
-			},
-
 			config = function(config, booting){
 				// mix config into require
 				var p, i, transforms;
@@ -366,14 +354,6 @@
 					}
 					// accumulate raw config info for client apps which can use this to pass their own config
 					req.rawConfig[p]= config[p];
-				}
-
-				// config.override allows overriding any loader data/variable; this is an advanced option
-				// to be used with care and "at your own risk"; its main use is to replace log, traceSet, trace, and onError
-				if(has("loader-overrideApi")){
-					for(p in config.override){
-						req[p] = config.override[p];
-					}
 				}
 
 				// now do the special work for has, pathTransforms, packagePaths, packages, paths, deps, callback, and ready
@@ -419,7 +399,10 @@
 					req.deps= req.deps || config.deps;
 					req.callback= req.callback || config.callback;
 				}else{
-					doWork(config.deps, config.callback, config.ready);
+					(function(deps, callback, readyCallback){
+						((deps && deps.length) || callback) && req(deps || [], callback || noop);
+						readyCallback && req.ready(readyCallback);
+					})(config.deps, config.callback, config.ready);
 				}
 			};
 
@@ -574,6 +557,10 @@
 			// The list of modules that need to be evaluated.
 			[],
 
+		defQ =
+			// The queue of define arguments sent to loader.
+			[],
+
 		waiting =
 			// The set of modules upon which the loader is waiting for definition to arrive
 			{},
@@ -581,7 +568,7 @@
 		execComplete =
 			// says the loader has completed (or not) its work
 			function(){
-				return syncDepth == syncLoadComplete && defQ && !defQ.length && isEmpty(waiting) && !execQ.length;
+				return syncDepth == syncLoadComplete && !defQ.length && isEmpty(waiting) && !execQ.length;
 			},
 
 		runMapProg = function(targetMid, map){
@@ -624,7 +611,7 @@
 		},
 
 		getModuleInfo = function(mid, referenceModule, packs, modules, baseUrl, pageUrl, packageMapProg, pathsMapProg, pathTransforms, alwaysCreate){
-			// arguments are passed instead of using lexical variables so that this function my be used independent of bdLoad (e.g., in bdBuild)
+			// arguments are passed instead of using lexical variables so that this function my be used independent of the loader (e.g., the builder)
 			// alwaysCreate is useful in this case so that getModuleInfo never returns references to real modules owned by the loader
 			var pid, pack, pqn, mapProg, mapItem, path, url, result;
 			if(/(^\/)|(\:)/.test(mid)){
@@ -780,11 +767,13 @@
 					}
 					args.push(argResult);
 				}
-				module.executed = executed;
+				module.evalOrder = evalOrder++;
 				if(has("loader-catchApi")){
 					try{
 						module.result = runFactory(pqn, module.def, args, module.cjs);
+						module.executed = executed;
 					}catch(e){
+						module.executed = execThrew;
 						if(!has("loader-errorApi") || !req.onError("loader/exec", [e, pqn].concat(args))){
 							throw e;
 						}
@@ -792,7 +781,6 @@
 				}else{
 					module.result = runFactory(pqn, module.def, args, module.cjs);
 				}
-				module.evalOrder = evalOrder++;
 				if(module.loadQ){
 					// this was a plugin module
 					var
@@ -813,7 +801,7 @@
 			// keep going through the execQ as long as at least one factory is executed
 			// plugins, recursion, cached modules all make for many execution path possibilities
 			isEmpty(waiting) && clearTimer();
-			for(var result, module, i = 0; i < execQ.length; i++){
+			for(var result, module, i = 0; i < execQ.length;){
 				module = execQ[i];
 				execModule(module);
 				if(module.executed === executed){
@@ -825,6 +813,8 @@
 							break;
 						}
 					}
+				}else{
+					i++;
 				}
 			}
 			if(has("loader-priority-readyApi")){
@@ -908,7 +898,7 @@
 		var
 			injectPlugin = function(
 				module,
-				immediate // this is consequent to a require call like require(["text!some/text"])
+				immediate // this is consequent to a require call like require("text!some/text")
 				){
 				// injects the plugin module given by module; may have to inject the plugin itself
 				var plugin = module.plugin;
@@ -1028,10 +1018,6 @@
 				}
 			},
 
-			defQ =
-				// The queue of define arguments sent to loader.
-				[],
-
 			defineModule = function(module, deps, def){
 				if(has("loader-traceApi")){
 					req.trace("loader-defineModule", [module.pqn, deps]);
@@ -1062,10 +1048,6 @@
 				}
 
 				setDel(waiting, pqn);
-
-				// don't inject dependencies; wait until the current script has completed executing and then inject.
-				// This allows several definitions to be contained within one script without prematurely requesting
-				// resources from the server.
 
 				if(!deps.length){
 					execModule(module);
@@ -1165,8 +1147,7 @@
 	}
 
 	if(has("loader-pageLoadApi")){
-		//warn
-		// document.readyState does not work with Firefox before 3.6. To support
+		// WARNING: document.readyState does not work with Firefox before 3.6. To support
 		// those browsers, manually init require.pageLoaded in configuration.
 
 		// require.pageLoaded can be set truthy to indicate the app "knows" the page is loaded and/or just wants it to behave as such
@@ -1202,19 +1183,14 @@
 
 			if(!has("dom-addEventListener")){
 				// note: this code courtesy of James Burke (https://github.com/jrburke/requirejs)
-				//DOMContentLoaded approximation, as found by Diego Perini:
-				//http://javascript.nwbox.com/IEContentLoaded/
+				// DOMContentLoaded approximation, as found by Diego Perini: http://javascript.nwbox.com/IEContentLoaded/
 				if(self === self.top){
 					scrollIntervalId = setInterval(function (){
 						try{
-							//From this ticket:
-							//http://bugs.dojotoolkit.org/ticket/11106,
-							//In IE HTML Application (HTA), such as in a selenium test,
-							//javascript in the iframe can't see anything outside
-							//of it, so self===self.top is true, but the iframe is
-							//not the top window and doScroll will be available
-							//before document.body is set. Test document.body
-							//before trying the doScroll trick.
+							// From this ticket: http://bugs.dojotoolkit.org/ticket/11106. In IE HTML Application (HTA),
+							// such as in a selenium test, javascript in the iframe can't see anything outside of it,
+							// so self===self.top is true, but the iframe is not the top window and doScroll will be
+							// available before document.body is set. Test document.body before trying the doScroll trick.
 							if(doc.body){
 								doc.documentElement.doScroll("left");
 								detectPageLoaded();
@@ -1262,7 +1238,7 @@
 		req.ready = function(
 			priority,//(integer, optional) The order in which to exec this callback relative to other callbacks, defaults to 1000
 			context, //(object) The context in which to run execute callback
-							 //(function) callback, if context missing
+					 //(function) callback, if context missing
 			callback //(function) The function to execute.
 		){
 			///
@@ -1411,12 +1387,12 @@
 			// In such cases, there is nothing to trigger the defQ and the dependencies are never requested; therefore, do it here.
 			injectDependencies(defineModule(getModule(args[0]), args[1], args[2]));
 		}else if(has("dom-addEventListener") || !has("host-browser")){
-			// anonymous module and therefore must have been injected and not IE; therefore, onLoad will fire immediately
+			// not IE path: anonymous module and therefore must have been injected; therefore, onLoad will fire immediately
 			// after script finishes being evaluated and the defQ can be run from that callback to detect the module id
 			defQ.push(args);
 		}else{
-			// anonymous module and therefore must have been injected and IE; therefore, cannot depend on 1-to-1,
-			// in-order exec of onLoad with script eval and must manually detect here
+			// IE path: anonymous module and therefore must have been injected; therefore, cannot depend on 1-to-1,
+			// in-order exec of onLoad with script eval (since its IE) and must manually detect here
 			var
 				length = injecting.length,
 				targetModule = length && injecting[length - 1],
@@ -1436,6 +1412,9 @@
 				req.onError("loader/define-ie");
 			}
 		}
+	};
+	def.amd = {
+		vendor:"dojotoolkit.org"
 	};
 
 	if(has("loader-requirejsApi")){
@@ -1469,6 +1448,10 @@
 			};
 		}
 
+		req.debugAtAllCosts= function(){
+			syncDepth= syncLoadComplete = 0;
+		};
+
 		req.getDojoLoader = function(dojo, dijit, dojox){
 			var
 				slashName = function(name){
@@ -1480,17 +1463,18 @@
 				require = createRequire(referenceModule);
 
 			dojo.provide = function(mid){
-				// kernel provide
-				return mix(getModule(slashName(mid), referenceModule), {
+				var module= getModule(slashName(mid), referenceModule);
+                module.executed!==executed && mix(module, {
 					injected: arrived,
 					deps: [],
 					executed: executed,
 					result: dojo.getObject(mid.replace(/\//g, "."), true)
-				}).result;
+				});
+				return module.result;
 			};
 
 			return function(mid){
-				// kernel require
+				// dojo.provide
 				mid = slashName(mid);
 				var
 					module = getModule(mid, referenceModule),
@@ -1513,10 +1497,6 @@
 
 	if(has("loader-publish-privates")){
 		mix(req, {
-			// standard API
-			vendor:"dojotoolkit.org",
-			has:has,
-
 			// these may be interesting for other modules to use
 			isEmpty:isEmpty,
 			isFunction:isFunction,
@@ -1536,7 +1516,7 @@
 			loadQ:loadQ,
 			checkComplete:checkComplete,
 
-			// these are used by bdBuild (at least)
+			// these are used by the builder (at least)
 			computeMapProg:computeMapProg,
 			runMapProg:runMapProg,
 			compactPath:compactPath,

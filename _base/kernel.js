@@ -1,5 +1,3 @@
-
-
 (function(eval) {
 define(["../has", "./config", "require"], function(has, config, require){
 	// module:
@@ -99,8 +97,10 @@ define(["../has", "./config", "require"], function(has, config, require){
 		require({paths:config.modulePaths});
 	}
 
+	dojo.isDojoLoader= define.amd && define.amd.vendor=="dojotoolkit.org";
+
 	dojo.isAsync= function() {
-		return require.vendor!="dojotoolkit.org" || require.async;
+		return !dojo.isDojoLoader || require.async;
 	};
 
 

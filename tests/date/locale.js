@@ -12,7 +12,7 @@ tests.register("tests.date.locale",
 			name: "date.locale",
 			runTest: function(t){
 				var partLocaleList = ["en-us", "fr-fr", "es", "de-at", "ja-jp", "zh-cn"];
-        if(dojo.global.define && define.vendor!="dojotoolkit.org"){ //tests for the AMD loader
+        if(dojo.isAsync){
             var
               def = new doh.Deferred(),
               deps = [];
@@ -187,7 +187,7 @@ tests.register("tests.date.locale",
 	//nichi (day): \u65e5
 	//kinyoubi (Friday): \u91d1\u66dc\u65e5
 	//zenkaku space: \u3000
-	
+
 	//ja: 'short' fmt: yy/MM/dd (note: the "short" fmt isn't actually defined in the CLDR data...)
 	t.is( aug_11_2006, dojo.date.locale.parse("06/08/11", {formatLength:'short', selector:'date', locale:'ja'}));
 	t.is( aug_11_2006, dojo.date.locale.parse("06/8/11", {formatLength:'short', selector:'date', locale:'ja'}));
@@ -257,7 +257,7 @@ tests.register("tests.date.locale",
 			runTest: function(t){
 				var time = new Date(2006, 7, 11, 12, 30);
 				var tformat = {selector:'time', strict:true, timePattern:"h:mm a", locale:'en'};
-			
+
 				t.is(time.getHours(), dojo.date.locale.parse("12:30 PM", tformat).getHours());
 				t.is(time.getMinutes(), dojo.date.locale.parse("12:30 PM", tformat).getMinutes());
 			}
@@ -397,7 +397,7 @@ function test_validate_datetime_is24HourTime(){
 }
 
 function test_validate_datetime_isValidDate(){
-	
+
 	// Month date year
 	jum.assertTrue("test1", dojo_validate_isValidDate("08/06/2005", "MM/dd/yyyy"));
 	jum.assertTrue("test2", dojo_validate_isValidDate("08.06.2005", "MM.dd.yyyy"));

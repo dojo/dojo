@@ -26,7 +26,7 @@ define(["../has", "require"], function(has, require){
 			}
 		}
 	}else{
-		// if this is the dojo loader, then the aggregate of dojoConfig + djConfig + sniffed config will be in require.rawConfig
+		// if this is the dojo loader, then the aggregate of defaultConfig + (dojoConfig | djConfig | require) + sniffed config will be in require.rawConfig
 		var p, rawConfig= require.rawConfig || {};
 		for(p in rawConfig){
 			result[p]= rawConfig[p];

@@ -217,12 +217,13 @@ if(typeof window != 'undefined'){
 		}
 
 		d._isDocumentOk = function(http){
-			var stat = http.status || 0;
+			var stat = http.status || 0,
+				lp = location.protocol;
 			return (stat >= 200 && stat < 300) || 	// Boolean
 				stat == 304 ||			// allow any 2XX response code
 				stat == 1223 ||			// get it out of the cache
-								// Internet Explorer mangled the status code
-				!stat; // OR we're Titanium/browser chrome/chrome extension requesting a local file
+				// Internet Explorer mangled the status code OR we're Titanium/browser chrome/chrome extension requesting a local file
+				(!stat && (lp == "file:" || lp == "chrome:" || lp == "chrome-extension:" || lp == "app:"));
 		}
 
 		//See if base tag is in use.

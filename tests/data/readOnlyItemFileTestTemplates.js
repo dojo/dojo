@@ -588,7 +588,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
-			
+
 			var d = new doh.Deferred();
 			function completedAll(items, request){
 				t.is(7, items.length);
@@ -618,7 +618,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				}
 				var store = new datastore(storeParams);
 				console.log(store);
-                
+
 				var d = new doh.Deferred();
 				var completedAll = function(items, request){
 					d.errback(new Error("Should not be here, should have failed load."));
@@ -643,7 +643,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//Can only async abort in a browser, so disable this test from rhino
 			if(dojo.isBrowser){
 				var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
-			
+
 				var d = new doh.Deferred();
 				var abortCalled = false;
 				function completedAll(items, request){
@@ -681,7 +681,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore and with a count of Infinity.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
-			
+
 			var d = new doh.Deferred();
 			function completedAll(items, request){
 				t.is(7, items.length);
@@ -707,7 +707,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			var args = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
 			args.urlPreventCache = true;
 			var store = new datastore(args);
-			
+
 			var d = new doh.Deferred();
 			function completedAll(items, request){
 				t.is(7, items.length);
@@ -731,7 +731,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore of a single item.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(items.length, 1);
@@ -756,7 +756,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore of only toplevel items.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(items.length, 2);
@@ -782,7 +782,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Tests that multiple fetches at the same time queue up properly and do not clobber each other on initial load.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
-			
+
 			var d = new doh.Deferred();
 			var done = [false, false];
 
@@ -827,7 +827,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Tests that multiple fetches at the same time queue up properly and do not clobber each other on initial load.
 			//		Tests an item fetch and an identity fetch.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
-			
+
 			var d = new doh.Deferred();
 			var done = [false, false];
 
@@ -843,7 +843,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				t.assertTrue(item !== null);
 				var name = store.getValue(item,"name");
 				t.assertEqual(name, "El Salvador");
-				
+
 				if(done[0] && done[1]){
 					d.callback(true);
 				}
@@ -852,13 +852,13 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				t.assertTrue(false);
 				d.errback(errData);
 			}
-			
+
 			//Find all items starting with A, only toplevel (root) items.
 			store.fetch({ 	query: {name: "El*"},
 									onComplete: onComplete,
 									onError: onError
 								});
-			
+
 			store.fetchItemByIdentity({identity: "sv", onItem: onItem, onError: onError});
 			return d;
 		}
@@ -871,7 +871,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch on ItemFileReadStore of all items (including children (nested))
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(items.length, 4);
@@ -902,10 +902,10 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		This should turn off processing child objects as data store items.  It will still process
 			//		references and type maps.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("geography_hierarchy_small"));
-			
+
 			//Set this as hierarchy off before fetch to make sure it traps and configs right.
 			store.hierarchical = false;
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				//With hierarchy off, this should only match 2, as only two data store items
@@ -960,10 +960,10 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		This should turn off processing child objects as data store items.  It will still process
 			//		references and type maps.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_references"));
-			
+
 			//Set this as hierarchy off before fetch to make sure it traps and configs right.
 			store.hierarchical = false;
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				//With hierarchy off, this should only match 2, as only two data store items
@@ -1045,7 +1045,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of a basic fetch on ItemFileReadStore of a single item where some attributes are null.
 			//		Introduced because of tracker: #3153
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withNull"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(4, items.length);
@@ -1108,7 +1108,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Test of multiple fetches on a single result.  Paging, if you will.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
-			
+
 			var d = new doh.Deferred();
 			function dumpFirstFetch(items, request){
 				t.assertEqual(items.length, 5);
@@ -1180,7 +1180,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of a basic fetch againct an attribute that has different types for the value across items
 			//		Introduced because of tracker: #4931
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("data_multitype"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(4, items.length);
@@ -1205,7 +1205,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch using a RegExp works with IFRS
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("data_multitype"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(4, items.length);
@@ -1230,7 +1230,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of a basic fetch using a RegExp works with IFRS
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("data_multitype"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(4, items.length);
@@ -1256,7 +1256,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Simple test of a basic fetch againct an attribute that has different types for the value across items
 			//		Introduced because of tracker: #4931
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("data_multitype"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(7, items.length);
@@ -1281,7 +1281,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of the getLabel function against a store set that has a label defined.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(items.length, 1);
@@ -1309,7 +1309,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//	description:
 			//		Simple test of the getLabelAttributes function against a store set that has a label defined.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
-			
+
 			var d = new doh.Deferred();
 			function onComplete(items, request){
 				t.assertEqual(items.length, 1);
@@ -1423,7 +1423,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			var d = new doh.Deferred();
 			function onItem1(item1){
 				t.assertTrue(item1 !== null);
-				
+
 				function onItem2(item2){
 					t.assertTrue(item1 !== null);
 					t.assertTrue(item2 !== null);
@@ -1615,7 +1615,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												 ]
 										}
 								 });
-			
+
 			var d = new doh.Deferred();
 			function completed(items, request){
 				t.assertEqual(items.length, 2);
@@ -1706,7 +1706,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												 ]
 										}
 								 });
-			
+
 			var d = new doh.Deferred();
 			function completed(items, request){
 				t.assertEqual(1, items.length);
@@ -1749,7 +1749,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												 ]
 										}
 								 });
-			
+
 			var d = new doh.Deferred();
 			function completed(items, request){
 				t.assertEqual(items.length, 2);
@@ -1783,7 +1783,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test sorting numerically.
 			//	description:
 			//		Function to test sorting numerically.
-			
+
 			var store = new datastore({data: { identifier: "uniqueId",
 											  items: [ {uniqueId: 0, value:"fo|o*b.ar"},
 												   {uniqueId: 1, value:"ba|r*foo"},
@@ -1888,7 +1888,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test sorting numerically in descending order, returning only a specified number of them.
 			//	description:
 			//		Function to test sorting numerically in descending order, returning only a specified number of them.
-		
+
 			var store = new datastore({data: { identifier: "uniqueId",
 											 items: [ {uniqueId: 0, value:"fo|o*b.ar"},
 												  {uniqueId: 1, value:"ba|r*foo"},
@@ -1904,7 +1904,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												]
 									   }
 								});
-			
+
 			var d = new doh.Deferred();
 			function completed(items, request){
 				t.assertEqual(items.length, 5);
@@ -1925,12 +1925,12 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
-		
+
 			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);
 			}
-		
+
 			var sortAttributes = [{attribute: "uniqueId", descending: true}];
 			store.fetch({onComplete: completed, onError: error, sort: sortAttributes, count: 5});
 			return d;
@@ -1943,7 +1943,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test sorting alphabetic ordering.
 			//	description:
 			//		Function to test sorting alphabetic ordering.
-		
+
 			var store = new datastore({data: { identifier: "uniqueId",
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"},
@@ -1956,11 +1956,11 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												  {uniqueId: 8, value:""},
 												  {uniqueId: 9, value:"seaweed"},
 												  {uniqueId: 10, value:"123abc"}
-		
+
 												]
 									   }
 								});
-			
+
 			var d = new doh.Deferred();
 			function completed(items, request){
 				//Output should be in this order...
@@ -1992,12 +1992,12 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
-		
+
 			function error(error, request) {
 				t.assertTrue(false);
 				d.errback(error);
 			}
-		
+
 			var sortAttributes = [{attribute: "value"}];
 			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
@@ -2010,7 +2010,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test sorting alphabetic ordering in descending mode.
 			//	description:
 			//		Function to test sorting alphabetic ordering in descending mode.
-		
+
 			var store = new datastore({data: { identifier: "uniqueId",
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"},
@@ -2023,7 +2023,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												  {uniqueId: 8, value:""},
 												  {uniqueId: 9, value:"seaweed"},
 												  {uniqueId: 10, value:"123abc"}
-		
+
 												]
 									   }
 								});
@@ -2060,12 +2060,12 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
-		
+
 			function error(error, request) {
 				t.assertTrue(false);
 				d.errback(error);
 			}
-		
+
 			var sortAttributes = [{attribute: "value", descending: true}];
 			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
@@ -2078,7 +2078,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test sorting date.
 			//	description:
 			//		Function to test sorting date.
-		
+
 			var store = new datastore({data: { identifier: "uniqueId",
 											 items: [ {uniqueId: 0, value: new Date(0)},
 												  {uniqueId: 1, value: new Date(100)},
@@ -2091,11 +2091,11 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												  {uniqueId: 8, value:new Date(7000)},
 												  {uniqueId: 9, value:new Date(8000)},
 												  {uniqueId: 10, value:new Date(9000)}
-		
+
 												]
 									   }
 								});
-			
+
 			var d = new doh.Deferred();
 			function completed(items,request){
 				var orderedArray =	[0,100,1000,2000,3000,4000,5000,6000,7000,8000,9000];
@@ -2115,12 +2115,12 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
-		
+
 			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);
 			}
-		
+
 			var sortAttributes = [{attribute: "value"}];
 			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
@@ -2133,7 +2133,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test sorting date in descending order.
 			//	description:
 			//		Function to test sorting date in descending order.
-		
+
 			var store = new datastore({data: { identifier: "uniqueId",
 											 items: [ {uniqueId: 0, value: new Date(0)},
 												  {uniqueId: 1, value: new Date(100)},
@@ -2146,11 +2146,11 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												  {uniqueId: 8, value:new Date(7000)},
 												  {uniqueId: 9, value:new Date(8000)},
 												  {uniqueId: 10, value:new Date(9000)}
-		
+
 												]
 									   }
 								});
-		
+
 			var d = new doh.Deferred();
 			function completed(items,request){
 				var orderedArray =	[0,100,1000,2000,3000,4000,5000,6000,7000,8000,9000];
@@ -2171,12 +2171,12 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
-		
+
 			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);
 			}
-		
+
 			var sortAttributes = [{attribute: "value", descending: true}];
 			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
@@ -2189,7 +2189,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test sorting on multiple attributes.
 			//	description:
 			//		Function to test sorting on multiple attributes.
-			
+
 			var store = new datastore({data: { identifier: "uniqueId",
 											 items: [ {uniqueId: 1, value:"fo|o*b.ar"},
 												  {uniqueId: 2, value:"ba|r*foo"},
@@ -2206,7 +2206,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												]
 									   }
 								});
-		
+
 			var d = new doh.Deferred();
 			function completed(items, request){
 				var orderedArray0 = [7,2,4,3,1,6,5,12,10,9,8,11];
@@ -2240,12 +2240,12 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
-		
+
 			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);
 			}
-		
+
 			var sortAttributes = [{ attribute: "value"}, { attribute: "uniqueId", descending: true}];
 			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
@@ -2275,8 +2275,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												]
 									   }
 								});
-		
-		
+
+
 			store.comparatorMap = {};
 			store.comparatorMap["status"] = function(a,b) {
 				var ret = 0;
@@ -2291,9 +2291,9 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				}
 				return ret;
 			};
-		
+
 			var sortAttributes = [{attribute: "status", descending: true}, { attribute: "uniqueId", descending: true}];
-		
+
 			var d = new doh.Deferred();
 			function completed(items, findResult){
 				var orderedArray = [11,6,2,12,10,4,8,7,3,9,5,1];
@@ -2312,7 +2312,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
-		
+
 			function error(errData, request){
 				t.assertTrue(false);
 				d.errback(errData);
@@ -2328,7 +2328,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Function to test sorting alphabetic ordering.
 			//	description:
 			//		Function to test sorting alphabetic ordering.
-		
+
 			var store = new datastore({data: { identifier: "uniqueId",
 											 items: [ {uniqueId: 0, value:"abc"},
 												  {uniqueId: 1, value:"bca"},
@@ -2341,11 +2341,11 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 												  {uniqueId: 8 },  //Deliberate undefined value
 												  {uniqueId: 9, value:"seaweed"},
 												  {uniqueId: 10, value:"123abc"}
-		
+
 												]
 									   }
 								});
-			
+
 			var d = new doh.Deferred();
 			function completed(items, request){
 				//Output should be in this order...
@@ -2365,12 +2365,12 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected sorting order found, sort failure."));
 				}
 			}
-		
+
 			function error(error, request) {
 				t.assertTrue(false);
 				d.errback(error);
 			}
-		
+
 			var sortAttributes = [{attribute: "value"}];
 			store.fetch({onComplete: completed, onError: error, sort: sortAttributes});
 			return d;
@@ -2400,7 +2400,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				t.assertTrue(false);
 				d.callback(false);
 			}
-		
+
 			function reportError(errData, request){
 				//This is good if this fires, it is expected.
 				t.assertTrue(true);
@@ -2444,7 +2444,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
  		runTest: function(datastore, t){
 			//var store = new datastore(tests.data.readOnlyItemFileTestTemplates.testFile["countries_withDates"]);
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withDates"));
-			
+
 			var d = new doh.Deferred();
 			function onItem(item){
 				t.assertTrue(item !== null);
@@ -2746,7 +2746,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				onComplete: onComplete,
 				onError: onError
 			});
-			
+
 			return d; // Deferred
 		}
 	},
@@ -2815,7 +2815,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 						//Check some internals here.  Do not normally access these!
 						t.assertTrue(store._arrayOfAllItems.length === 0);
 						t.assertTrue(store._loadFinished === false);
-						
+
 						store.url = dojo.moduleUrl("tests", "data/countries_withNull.json").toString();
 						function onItem2 (item){
 							var err;
@@ -2872,7 +2872,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 						//Check some internals here.  Do not normally access these!
 						t.assertTrue(store._arrayOfAllItems.length === 0);
 						t.assertTrue(store._loadFinished === false);
-						
+
 						store.url = dojo.moduleUrl("tests", "data/countries_withNull.json").toString();
 						function onComplete (items){
                             var err;
@@ -2931,7 +2931,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 						//Check some internals here.  Do not normally access these!
 						t.assertTrue(store._arrayOfAllItems.length === 0);
 						t.assertTrue(store._loadFinished === false);
-						
+
 						store._jsonFileUrl = dojo.moduleUrl("tests", "data/countries_withNull.json").toString();
 						function onItem2 (item){
 							var err;

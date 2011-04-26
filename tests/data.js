@@ -1,8 +1,8 @@
 define([
-	"dojo", 
-	"tests/data/utils", 
-	"tests/data/ItemFileReadStore", 
-	"tests/data/ItemFileWriteStore"], function(dojo) {
+	"dojo",
+	"./data/utils",
+	"./data/ItemFileReadStore",
+	"./data/ItemFileWriteStore"], function(dojo) {
 		dojo.config.usePlainJson = true;
 });
 

@@ -7,6 +7,10 @@ define(["doh", "require"], function(doh, require){
 		doh.register(require.nameToUrl("./loader/config.html")+"?djConfig-require");
 		doh.register(require.nameToUrl("./loader/config.html")+"?djConfig");
 		doh.register(require.nameToUrl("./loader/config.html")+"?require");
+		doh.register(require.nameToUrl("./loader/configApi.html"));
 		doh.register(require.nameToUrl("./loader/config-sniff.html"));
+		doh.register(require.nameToUrl("./loader/config-sniff-djConfig.html"));
+		doh.register(require.nameToUrl("./loader/errorApi.html"));
+		doh.register(require.nameToUrl("./loader/errorApi.html")+"?noCatch");
 	}
 });

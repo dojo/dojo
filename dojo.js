@@ -694,7 +694,7 @@
 					url = pack.location + "/" + (mid && pack.lib ? pack.lib + "/" : "") + (mid || pack.main);
 				}
 			}else{
-				url = transformPath(path, pathTransforms) || path;
+				url = transformPath(path, pathTransforms) || "../" + path;
 			}
 			// if result is not absolute, add baseUrl
 			if(!(/(^\/)|(\:)/.test(url))){

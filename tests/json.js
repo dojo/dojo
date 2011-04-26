@@ -34,7 +34,12 @@ define(["..", "doh", "../json"], function(dojo, doh, JSON){
 		function badUnbalanced(t){ mustThrow('[')},
 		function badUnbalanced2(t){ mustThrow('}')},
 		function badType(t){ mustThrow('["foo":"bar"]')},
-		function badUnbalanced2(t){ mustThrow('}')}
+		function badUnbalanced2(t){ mustThrow('}')},
+		function serializeString(t){ t.is('{"foo":"bar"}', JSON.stringify({"foo":"bar"}))},
+		function serializeNull(t){ t.is('{"foo":null}', JSON.stringify({"foo":null}))},
+		function serializeFunction(t){ t.is('{}', JSON.stringify({"foo":function(){}}))},
+		function serializeNaN(t){ t.is('{"foo":null}', JSON.stringify({"foo":NaN}))},
+		function serializeInfinity(t){ t.is('{"foo":null}', JSON.stringify({"foo":Infinity}))}
 	]);
 
 var smallDataSet = {

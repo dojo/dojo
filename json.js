@@ -70,7 +70,10 @@ define(["./_base/kernel", "./has"], function(dojo, has){
 						it = replacer(key, it);
 					}
 					var val, objtype = typeof it;
-					if(objtype == "number" || objtype == "boolean"){
+					if(objtype == "number"){
+						return isFinite(it) ? it + "" : "null";
+					}
+					if(objtype == "boolean"){
 						return it + "";
 					}
 					if(it === null){

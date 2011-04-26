@@ -177,12 +177,11 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				var listeners = dojo.global.__ieListeners__; 
 				if(!listeners){
 					dojo.global.__ieListeners__ = listeners = [];
-					
 				}
 				var dispatcher = target[type];
 				if(!dispatcher || !dispatcher.listeners){
 					var oldListener = dispatcher;
-					target[type] = dispatcher = Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = dojo.global.__ieListeners__[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
+					target[type] = dispatcher = dojo.global.Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = __ieListeners__[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
 					dispatcher.listeners = [];
 					if(oldListener){
 						dispatcher.listeners.push(listeners.push(oldListener) - 1);
@@ -395,15 +394,15 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			}
 		};
 		var cleanupNode = function (){
-			var usedEventsArray = cleanupNode.usedEventsArray;
+			var i, usedEventsArray = cleanupNode.usedEventsArray;
 			if(!usedEventsArray){
 				// it is from the higher scope so it is cached
 				cleanupNode.usedEventsArray = usedEventsArray = [];
-				for(var i in cleanupNode.usedEvents){
+				for(i in cleanupNode.usedEvents){
 					usedEventsArray.push("on" + i);
 				}
 			}
-			for(var i = 0, l = usedEventsArray.length; i < l; i++){
+			for(i = 0, l = usedEventsArray.length; i < l; i++){
 				if(this[usedEventsArray[i]]){
 					this[usedEventsArray[i]] = null;
 				}
@@ -450,7 +449,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				}
 				if(type == 'resize'){
 					if(windowOrientation == window.orientation){ 
-						return;//double tap causes an unexpected 'resize' in Andriod 
+						return null;//double tap causes an unexpected 'resize' in Andriod 
 					} 
 					windowOrientation = window.orientation;
 					event.type = "orientationchange"; 

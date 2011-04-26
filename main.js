@@ -7,7 +7,7 @@ define([
 	"./_base/lang",
 	"./_base/array",
 	"./_base/declare",
-	"./_base/connect",
+	//"./_base/connect", // until we decide if connect is going back into non-browser environments
 	"./_base/Deferred",
 	"./_base/json",
 	"./_base/Color",

@@ -152,7 +152,7 @@
 						},
 						function formToJson(t){
 							t.is(f1foJson, dojo.formToJson("f1"));
-							t.is(f5foJson, dojo.formToJson("f5"));
+							t.is(dojo.fromJson(f5foJson), dojo.fromJson(dojo.formToJson("f5")));
 						},
 						function formToJsonArr(t){
 							t.is(f2foJson, dojo.formToJson("f2"));

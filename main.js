@@ -3,7 +3,7 @@ define([
 	"./has",
 	"require",
 	"./_base/load",
-	"./_base/loader",
+	"./has!dojo-sync-loader?./_base/loader",
 	"./_base/lang",
 	"./_base/array",
 	"./_base/declare",

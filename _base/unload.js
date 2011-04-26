@@ -1,4 +1,4 @@
-define(["./kernel", "./event"], function(dojo) {
+define(["./kernel", "./connect"], function(dojo) {
 	// module:
 	//		dojo/unload
 	// summary:

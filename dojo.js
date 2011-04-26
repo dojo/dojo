@@ -181,7 +181,7 @@
 	}
 
 	// userConfig has tests override defaultConfig has tests; do this after the environment detection because
-	// the environment detection usually sets some has feature values in the hasCache.
+    // the environment detection usually sets some has feature values in the hasCache.
 	for(var p in userConfig.has){
 		has.add(p, userConfig.has[p], 0, 1);
 	}
@@ -287,7 +287,7 @@
 			//    resources may just contain a bundle of code and never formally define a module via define
 			//
 			// 5. Evaluated: the module was defined via define and the loader has evaluated the factory and computed a result.
-			{},
+			{};
 
 		cache = req.cache = req.cache ||
 			///
@@ -342,6 +342,10 @@
 				packageMap[name] = name;
 			},
 
+			configListeners=
+				// vector of registered listener functions for config changes
+				[],
+
 			config = function(config, booting){
 				// mix config into require
 				var p, i, transforms;
@@ -394,17 +398,26 @@
 				// push in any new cache values
 				mix(cache, config.cache);
 
-				if(booting){
-					// TODO: reverse these to prefer config
-					req.deps= req.deps || config.deps;
-					req.callback= req.callback || config.callback;
-				}else{
-					(function(deps, callback, readyCallback){
-						((deps && deps.length) || callback) && req(deps || [], callback || noop);
+				(function(deps, callback, readyCallback){
+					var args= ((deps && deps.length) || callback) && [deps || [], callback || noop];
+					if(booting){
+						args && (req.bootRequire= args);
+						readyCallback && (req.bootReady= readyCallback);
+					}else{
+						args && req(args[0], args[1]);
 						readyCallback && req.ready(readyCallback);
-					})(config.deps, config.callback, config.ready);
-				}
+					}
+				})(config.deps, config.callback, config.ready);
+
+				forEach(configListeners, function(listener){
+					listener(config, req.rawConfig);
+				});
 			};
+
+
+		req.onConfig= function(listener){
+			return registerCallback(listener, configListeners);
+		};
 
 		//
 		// execute the various sniffs
@@ -441,7 +454,7 @@
 		if(has("dojo-test-sniff")){
 			// pass down doh.testConfig from parent as if it were a data-dojo-config
 			try{
-				if(window.parent != window && window.parent.require){
+				if(window.parent!=window && window.parent.require){
 					var doh = window.parent.require("doh");
 					doh && mix(dojoSniffConfig, doh.testConfig);
 				}
@@ -460,6 +473,20 @@
 	//
 
 	var
+		registerCallback= has("loader-configApi") || has("loader-errorApi") ?
+			// this cruft feels uncomfortable; consider doing something else
+			function(callback, queue){
+				queue.push(callback);
+				return function(){
+					for(var i= 0; i<queue.length; i++){
+						if(queue[i]===callback){
+							queue.splice(i, 1);
+							return;
+						}
+					}
+				};
+			} : noop,
+
 		injectDependencies = function(module){
 			forEach(module.deps, injectModule);
 		},
@@ -658,7 +685,7 @@
 			// WARNING: it is impossible to use paths to map the package main module; but that's what the package.main property is for
 			mapItem = runMapProg(path, pathsMapProg);
 			if(mapItem){
-					url = mapItem[1] + path.substring(mapItem[3] - 1);
+				url = mapItem[1] + path.substring(mapItem[3] - 1);
 			}else if(pid){
 				pack = packs[pid];
 				url = transformPath(path, pack.pathTransforms);
@@ -722,9 +749,7 @@
 
 		// this is a flag to say at least one factory was run during a deps tree traversal
 		runFactory = function(pqn, factory, args, cjs){
-			if(has("loader-traceApi")){
-				req.trace("loader-runFactory", [pqn]);
-			}
+			req.trace("loader-runFactory", [pqn]);
 			return isFunction(factory) ? (factory.apply(null, args) || (cjs && cjs.exports)) : factory;
 		},
 
@@ -744,9 +769,7 @@
 					args = [],
 					i = 0;
 
-				if(has("loader-traceApi")){
-					req.trace("loader-execModule", [pqn]);
-				}
+				req.trace("loader-execModule", ["exec", pqn]);
 
 				// for circular dependencies, assume the first module encountered was executed OK
 				// modules that circularly depend on a module that has not run its factory will get
@@ -763,6 +786,7 @@
 											execModule(arg))));
 					if(argResult === abortExec){
 						module.executed = 0;
+						req.trace("loader-execModule", ["abort", pqn]);
 						return abortExec;
 					}
 					args.push(argResult);
@@ -771,10 +795,9 @@
 				if(has("loader-catchApi")){
 					try{
 						module.result = runFactory(pqn, module.def, args, module.cjs);
-						module.executed = executed;
 					}catch(e){
 						module.executed = execThrew;
-						if(!has("loader-errorApi") || !req.onError("loader/exec", [e, pqn].concat(args))){
+						if(!req.error("loader/exec", [module, e, pqn].concat(args))){
 							throw e;
 						}
 					}
@@ -782,6 +805,7 @@
 					module.result = runFactory(pqn, module.def, args, module.cjs);
 					module.executed = executed;
 				}
+				module.executed = executed;
 				if(module.loadQ){
 					// this was a plugin module
 					var
@@ -791,9 +815,7 @@
 						load.apply(null, q.shift());
 					}
 				}
-				if(has("loader-traceApi")){
-					req.trace("loader-execModule-out", [pqn]);
-				}
+				req.trace("loader-execModule", ["complete", pqn]);
 			}
 			return module.result;
 		},
@@ -827,7 +849,7 @@
 
 
 	// the dojo loader needs/optionally provides an XHR factory
-	if(has("dojo-loader") || has("loader-provides-xhr")){
+	if(has("dojo-sync-loader") || has("loader-provides-xhr")){
 		has.add("native-xhr", typeof XMLHttpRequest != "undefined");
 		if(has("native-xhr")){
 			getXhr = function(){
@@ -856,7 +878,7 @@
 	}
 
 	// the dojo loader needs/optionally provides a getText API
-	if(has("dojo-loader") || has("loader-getTextApi")){
+	if(has("dojo-sync-loader") || has("loader-getTextApi")){
 		var getText = req.getText = req.getText || function(url, async, onLoad){
 			var xhr = getXhr();
 			if(async){
@@ -874,7 +896,7 @@
 						onLoad(xhr.responseText, async);
 					}
 				}else{
-					throw new Error("synchronous XHR failed");
+					throw new Error("XHR failed:" + xhr.status);
 				}
 				return xhr.responseText;
 			}
@@ -905,8 +927,8 @@
 				var plugin = module.plugin;
 				plugin.isPlugin = 1;
 
-				if(has("dojo-loader")){
-					// in synchronous mode; instantiate the plugin before trying to	 load a plugin resource
+				if(has("dojo-sync-loader")){
+					// in synchronous mode; instantiate the plugin before trying to	load a plugin resource
 					syncDepth && !plugin.executed && injectModule(plugin);
 				}
 
@@ -967,6 +989,10 @@
 				} // else a normal module (not a plugin)
 
 				var url = module.url;
+				if(req.urlArgs){
+					url+= (/\?/.test(url) ? "&" : "?") + req.urlArgs;
+				}
+
 				module.injected = requested;
 				setIns(waiting, pqn);
 
@@ -988,50 +1014,56 @@
 					cache[pqn].call(null);
 					onLoadCallback();
 				}else{
-					if(has("dojo-loader")){
+					if(has("dojo-sync-loader")){
 						if(syncDepth && !isXdPath(url)){
 							execQ.push(module);
 							++syncDepth;
-							// always synchronous...
-							if(has("loader-traceApi")){
-								req.trace("loader-inject", [module.pqn, url]);
-							}
-							var onTextLoad = function(text){
-								injecting.push(module);
-								reqEval(text, module.path);
-							};
+							req.trace("loader-inject", ["sync", module.pqn, url]);
 							if(has("loader-catchApi")){
 								try{
-									getText(url, 0, onTextLoad);
+									// always synchronous...
+									getText(url, 0, function(text){
+										injecting.push(module);
+										reqEval(text, module.path);
+									});
+									--syncDepth;
+									injecting.pop();
+									setDel(waiting, pqn);
 								}catch(e){
-									req.onError("loader/failed-sync", [pqn, url, e]);
+									--syncDepth;
+									injecting.pop();
+									setDel(waiting, pqn);
+									if(!req.error("loader/sync-inject", [pqn, url, e])){
+										throw e;
+									}
 								}
 							}else{
-								getText(url, 0, onTextLoad);
+								// always synchronous...
+								getText(url, 0, function(text){
+									injecting.push(module);
+									reqEval(text, module.path);
+								});
+								--syncDepth;
+								injecting.pop();
+								setDel(waiting, pqn);
 							}
-							--syncDepth;
-							injecting.pop();
 							onLoadCallback(1);
 							return;
 						}
 					}
 					injecting.push(module);
-					if(has("loader-traceApi")){
-						req.trace("loader-inject", [module.pqn, url]);
-					}
+					req.trace("loader-inject", [module.pqn, url]);
 					module.node = req.injectUrl(url, onLoadCallback);
 					injecting.pop();
 				}
 			},
 
 			defineModule = function(module, deps, def){
-				if(has("loader-traceApi")){
-					req.trace("loader-defineModule", [module.pqn, deps]);
-				}
+				req.trace("loader-defineModule", [module.pqn, deps]);
 
 				var pqn = module.pqn;
 				if(module.injected == arrived){
-					req.onError("loader/multiple-define", [pqn]);
+					req.error("loader/multiple-define", [pqn]);
 					return module;
 				}
 				mix(module, {
@@ -1054,11 +1086,6 @@
 				}
 
 				setDel(waiting, pqn);
-
-				if(!deps.length){
-					execModule(module);
-				}
-
 				return module;
 			},
 
@@ -1094,7 +1121,7 @@
 			clearTimer();
 			req.waitSeconds && (timerId = setTimeout(function(){
 				clearTimer();
-				req.onError("loader/timeout", [waiting]);
+				req.error("loader/timeout", [waiting]);
 			}, req.waitSeconds));
 		};
 	}
@@ -1215,22 +1242,20 @@
 			loadQ =
 				// The queue of functions waiting to execute as soon as all conditions given
 				// in require.onLoad are satisfied; see require.onLoad
-				// at this point req.ready is as given by the configuration, so it may be
-				// a function to call upon the ready condition
-				userConfig.ready ? [userConfig.ready] : [],
+				[],
 
 			onLoadRecursiveGuard = 0,
 			onLoad = function(){
 				while(execComplete() && !onLoadRecursiveGuard && req.pageLoaded && loadQ.length){
 					//guard against recursions into this function
-					onLoadRecursiveGuard = true;
+					onLoadRecursiveGuard = 1;
 					var f = loadQ.shift();
 					if(has("loader-catchApi")){
 						try{
 							f();
 						}catch(e){
 							onLoadRecursiveGuard = 0;
-							if(!req.onError("loader/onLoad", [e])){
+							if(!req.error("loader/onLoad", [e])){
 								throw e;
 							}
 						}
@@ -1283,21 +1308,40 @@
 	}
 
 	if(has("loader-traceApi")){
-		req.trace= req.trace || function(
+		var trace= function(
 			group,	// the trace group to which this application belongs
 			args	// the contents of the trace
 		){
 			///
 			// Tracing interface by group.
 			//
-			// Sends the contents of args to the console iff require.trace[group] is truthy.
+			// Sends the contents of args to the console iff (req.trace.on && req.trace[group])
 
-			if(req.traceSet[group]){
-				args[0] = group + ":" + args[0];
-				req.log.apply(req, args);
+			if(trace.on && trace.group[group]){
+				for(var text= group + ":" + args[0], i= 1; i<args.length && isString(args[i]);){
+					text+= ", " + args[i++];
+				}
+				req.log(text);
+				while(i<args.length){
+					req.log(args[i++]);
+				}
 			}
 		};
-		req.traceSet = req.traceSet || {};
+        mix(trace, {
+			on:1,
+			group:{},
+			set:function(group, value){
+				if(isString(group)){
+					trace.group[group]= value;
+				}else{
+					mix(trace.group, group);
+				}
+			}
+		});
+		trace.set(defaultConfig.trace);
+		trace.set(userConfig.trace);
+		trace.set(dojoSniffConfig.trace);
+		req.trace= trace;
 	}else{
 		req.trace = noop;
 	}
@@ -1314,42 +1358,35 @@
 		// * Executing a module may cause an exception to be thrown.
 		// * Executing the onLoad queue may cause an exception to be thrown.
 		//
-		// In all these cases, the loader publishes the problem to interested subscribers via the function require.onError.
+		// In all these cases, the loader publishes the problem to interested subscribers via the function require.error.
 		// If the error was an uncaught exception, then if some subscriber signals that it has taken actions to recover
 		// and it is OK to continue by returning truthy, the exception is quashed; otherwise, the exception is rethrown.
 		// Other error conditions are handled as applicable for the particular error.
-		var onError =
-			function(
-				messageId, //(string) The topic to publish
-				args			 //(array of anything, optional, undefined) The arguments to be applied to each subscriber.
-			){
-				///
-				// Publishes messageId to all subscribers, passing args; returns result as affected by subscribers.
-				///
-				// A listener subscribes by writing
-				//
-				//code
-				// require.onError.listeners.push(myListener);
-				///
-				// The listener signature must be `function(messageId, args`) where messageId indentifies
-				// where the exception was caught and args is an array of information gathered by the catch
-				// clause. If the listener has taken corrective actions and want to stop the exception and
-				// let the loader continue, it must return truthy. If no listener returns truthy, then
-				// the exception is rethrown.
-				for(var errorbacks = onError.listeners, result = false, i = 0; i < errorbacks.length; i++){
-					result = result || errorbacks[i](messageId, args);
-				}
-				if(has("loader-logApi")){
-					req.log.apply(req, [messageId].concat(args));
-				}
-				onError.log.push(args);
-				return result;
-			};
-		onError.listeners = [];
-		onError.log = [];
-		req.onError = req.onError || onError;
+		var errorListeners= [];
+		req.error = function(
+			messageId, //(string) The topic to publish
+			args       //(array of anything, optional, undefined) The arguments to be applied to each subscriber.
+		){
+			///
+			// Publishes messageId to all subscribers, passing args; returns result as affected by subscribers.
+			///
+			// A listener subscribes by calling require.onError(listener), where the listener signature
+			// must be `function(messageId, args`) where messageId indentifies
+			// where the exception was caught and args is an array of information gathered by the catch
+			// clause. If the listener has taken corrective actions and wants to stop the exception and
+			// let the loader continue, it must return truthy. If no listener returns truthy, then
+			// the exception is rethrown.
+			for(var result = false, i = 0; i < errorListeners.length; i++){
+				result = result || errorListeners[i](messageId, args);
+			}
+			req.log.apply(req, [messageId].concat(args));
+			return result;
+		};
+		req.onError= function(listener){
+ 			return registerCallback(listener, errorListeners);
+		};
 	}else{
-		req.onError = noop;
+		req.error = req.error || noop;
 	}
 
 	var def = function(
@@ -1384,9 +1421,7 @@
 				(arity == 2 ? (isArray(mid) ? [0, mid, dependencies] : [mid, defaultDeps, dependencies]) :
 					[mid, dependencies, factory]);
 		}
-		if(has("loader-traceApi")){
-			req.trace("loader-define", args.slice(0, 2));
-		}
+		req.trace("loader-define", args.slice(0, 2));
 		if(args[0]){
 			// if given a mid, always define the module immediately since it is possible to define a module through means
 			// other than a deps list being injected. For example, code may define modules on-the-fly due to some user stimulus.
@@ -1415,7 +1450,7 @@
 			if(targetModule){
 				injectDependencies(defineModule(targetModule, args[1], args[2]));
 			}else{
-				req.onError("loader/define-ie");
+				req.error("loader/define-ie");
 			}
 		}
 	};
@@ -1427,7 +1462,7 @@
 		req.def = def;
 	}
 
-	if(has("dojo-loader")){
+	if(has("dojo-sync-loader")){
 		var isXdPath = noop;
 		if(has("dom")){
 			var
@@ -1435,11 +1470,6 @@
 				locationHost = location.host,
 				fileProtocol = !locationHost;
 			isXdPath = function(path){
-				if(has("dojo-test-xd")){
-					if(/_xd/.test(path)){
-						return true;
-					}
-				}
 				if(fileProtocol || /^\./.test(path)){
 					// begins with a dot is always relative to page URL; therefore not xdomain
 					return false;
@@ -1480,7 +1510,7 @@
 			};
 
 			return function(mid){
-				// dojo.provide
+				// basic dojo.require
 				mid = slashName(mid);
 				var
 					module = getModule(mid, referenceModule),
@@ -1491,7 +1521,6 @@
 
 				if(syncDepth && !isXdPath(url)){
 					injectModule(module);
-					execModule(module);
 				}else{
 					require([mid]);
 				}
@@ -1516,6 +1545,9 @@
 			on:on,
 
 			// these may be interesting to look at when debugging
+			configListeners:configListeners,
+			errorListeners:errorListeners,
+			syncDepth:syncDepth,
 			execQ:execQ,
 			defQ:defQ,
 			waiting:waiting,
@@ -1566,18 +1598,20 @@
 			"loader-errorApi":1,
 			"loader-publish-privates":1,
 			"loader-getTextApi":1,
-			"loader-overrideApi":1,
 			"loader-configApi":1,
 			"dojo-sniff":1,
-			"dojo-loader":1,
+			"dojo-sync-loader":1,
 			"dojo-boot":1,
-			"dojo-test-xd":1,
 			"dojo-test-sniff":1
 		},
 		packages:[{
 			// note: like v1.6-, this bootstrap computes baseUrl to be the dojo directory
 			name:'dojo',
 			location:'.',
+			lib:'.'
+		},{
+			name:'tests',
+			location:'./tests',
 			lib:'.'
 		},{
 			name:'dijit',
@@ -1600,13 +1634,12 @@
 			location:'../demos',
 			lib:'.'
 		}],
-		traceSet:{
+		trace:{
 			// these are listed so it's simple to turn them on/off while debugging loading
 			"loader-inject":0,
 			"loader-define":0,
 			"loader-runFactory":0,
 			"loader-execModule":0,
-			"loader-execModule-out":0,
 			"loader-defineModule":0
 		},
 		async:0
@@ -1615,13 +1648,9 @@
 
 (function(){
 	// must use this.require to make this work in node.js
-	var require = this.require;
-	if(require.has("dojo-boot")){
-		require(["dojo"]);
-	}
-	require({
-		deps:require.deps,
-		callback:require.callback
-	});
+	var require= this.require;
+	require.has("dojo-boot") && require(["dojo"]);
+	require.bootRequire && require.apply(null, require.bootRequire);
+	require.bootReady && require.ready(require.bootReady);
 })();
 //>>excludeEnd("replaceLoaderConfig")

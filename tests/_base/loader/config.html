@@ -3,7 +3,6 @@
 	<script type="text/javascript">
 		var hasAlias;
 		var _dojoConfig= {
-			async:1,
 			baseUrl:"../../../../dojo",
 			waitSeconds:5,
 			urlArgs:"?123",
@@ -13,14 +12,12 @@
 			}
 		};
 		function expectDojoConfig(t) {
-			t.is(require.rawConfig.async, 1);
 			t.is(require.rawConfig.baseUrl, "../../../../dojo");
 			t.is(require.rawConfig.waitSeconds, 5);
 			t.is(require.rawConfig.urlArgs, "?123");
 			t.is(require.rawConfig.locale,"us-en1");
 			t.is(require.rawConfig.has, _dojoConfig.has);
 
-			t.is(require.async, 1);
 			t.is(require.baseUrl, "../../../../dojo/");
 			t.is(require.waitSeconds, 5000);
 			t.is(require.urlArgs, "?123");
@@ -29,7 +26,6 @@
 		}
 
 		var _djConfig= {
-			async:2,
 			baseUrl:"../../../../dojo",
 			waitSeconds:6,
 			urlArgs:"?456",
@@ -39,14 +35,12 @@
 			}
 		};
 		function expectDjConfig(t) {
-			t.is(require.rawConfig.async, 2);
 			t.is(require.rawConfig.baseUrl, "../../../../dojo");
 			t.is(require.rawConfig.waitSeconds, 6);
 			t.is(require.rawConfig.urlArgs, "?456");
 			t.is(require.rawConfig.locale,"us-en2");
 			t.is(require.rawConfig.has, _djConfig.has);
 
-			t.is(require.async, 2);
 			t.is(require.baseUrl, "../../../../dojo/");
 			t.is(require.waitSeconds, 6000);
 			t.is(require.urlArgs, "?456");
@@ -55,7 +49,6 @@
 		}
 
 		var _require= {
-			async:3,
 			baseUrl:"../../../../dojo",
 			waitSeconds:7,
 			urlArgs:"?789",
@@ -65,14 +58,12 @@
 			}
 		};
 		function expectRequireConfig(t) {
-			t.is(require.rawConfig.async, 3);
 			t.is(require.rawConfig.baseUrl, "../../../../dojo");
 			t.is(require.rawConfig.waitSeconds, 7);
 			t.is(require.rawConfig.urlArgs, "?789");
 			t.is(require.rawConfig.locale,"us-en3");
 			t.is(require.rawConfig.has, _require.has);
 
-			t.is(require.async, 3);
 			t.is(require.baseUrl, "../../../../dojo/");
 			t.is(require.waitSeconds, 7000);
 			t.is(require.urlArgs, "?789");
@@ -111,13 +102,12 @@
 				expect= expectRequireConfig;
 				break;
 			case "?dojoConfig":
-			default:
 				dojoConfig= _dojoConfig;
 				expect= expectDojoConfig;
 				break;
 		}
 	</script>
-	<script type="text/javascript" src="../../../dojo.js"></script>
+	<script type="text/javascript" src="../../../dojo.js" data-dojo-config="isDebug:1, async:1"></script>
 	<script type="text/javascript">
 		require(["dojo", "doh", "dojo/has"], function(dojo, doh, has) {
 			dojo.ready(function() {

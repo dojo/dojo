@@ -15,10 +15,6 @@ define(["../has", "./config", "require"], function(has, config, require){
 		1
 	);
 
-	has.add("dojo-register-openAjax",
-		// register dojo with the OpenAjax hub
-		typeof OpenAjax != "undefined"
-	);
 
 	// loop variables for this module
 	var i, p;
@@ -139,6 +135,10 @@ define(["../has", "./config", "require"], function(has, config, require){
 		}
 	}
 
+	has.add("dojo-register-openAjax",
+		// register dojo with the OpenAjax hub
+		typeof OpenAjax != "undefined"
+	);
 	if (has("dojo-register-openAjax")) {
 		// Register with the OpenAjax hub
 		OpenAjax.hub.registerLibrary(dojo._scopeName, "http://dojotoolkit.org", dojo.version.toString());

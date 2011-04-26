@@ -32,8 +32,8 @@
 		<title>testing dojo.NodeList</title>
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/string", "dojo/parser", "*ready"], function(dojo, doh){
-
+			require(["dojo", "doh", "dojo/listen", "dojo/string", "dojo/parser", "*ready"], function(dojo, doh, listen){
+				var tn;
 				var c = dojo.byId("c1");
 				var t = dojo.byId("t");
 				var s = dojo.byId("sq100");
@@ -498,7 +498,7 @@
 						function connect(){
 							var ih = "<div><span></span></div><span class='thud'><button>blah</button></span>";
 
-							var tn = document.createElement("div");
+							tn = document.createElement("div");
 							tn.innerHTML = ih;
 							dojo.body().appendChild(tn);
 
@@ -511,6 +511,73 @@
 							nl[0].click();
 							nl[0].click();
 							doh.is(3, ctr);
+						},
+						function on(){
+							var ctr = 0;
+							dojo.body().appendChild(tn);
+							var nl = dojo.query("button", tn);
+							var handle = nl.on("click", function(){
+								ctr++;
+							});
+							nl[0].click();
+							doh.is(1, ctr);
+							var inButton = nl[0].appendChild(document.createElement("span"));
+							listen.dispatch(nl[0], "click", {
+							});
+							listen.dispatch(inButton, "click", {
+								bubbles: true
+							});
+							listen.dispatch(inButton, "click", {
+								bubbles: false
+							});
+							doh.is(3, ctr);
+							handle.cancel();
+							listen.dispatch(nl[0], "click", {
+							});
+							doh.is(3, ctr);
+						},
+						function onDelegate(){
+							var ctr = 0;
+							dojo.body().appendChild(tn);
+							var nl = dojo.query(".thud", tn);
+							var bl = dojo.query("button", tn);
+							var handle = nl.on("button:click", function(){
+								doh.is(this, bl[0]);
+								ctr++;
+							});
+							doh.is(0, ctr);
+							listen.dispatch(nl[0], "click", {
+							});
+							listen.dispatch(bl[0], "click", {
+								bubbles: true
+							});
+							doh.is(1, ctr);
+							handle.cancel();
+							listen.dispatch(bl[0], "click", {
+								bubbles: true
+							});
+							doh.is(1, ctr);
+							dojo.query(tn).on(".thud:click, .thud button:custom", function(){
+								ctr++;
+							});
+							listen.dispatch(bl[0], "click", {
+								bubbles: true
+							});
+							doh.is(2, ctr);
+							listen.dispatch(bl[0], "click", {
+								bubbles: false
+							});
+							doh.is(2, ctr);
+							listen.dispatch(bl[0], "custom", {
+								bubbles: true
+							});
+							doh.is(3, ctr);
+							listen.dispatch(bl[0], "mouseout", {
+								bubbles: true
+							});
+							doh.is(3, ctr);
+							bl[0].click();
+							doh.is(4, ctr);
 						},
 
 						function at(){

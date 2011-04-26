@@ -216,6 +216,21 @@ tests.register("tests._base.connect",
 		},
 		function publishSubscribe1000(t){
 			t.is(markAndSweepSubscribersTest(1000), 0);
+		},
+		function performanceAdd(){
+			function listener(){}
+			for(var i = 0;i < 1000; i++){
+				var foo = {};
+				dojo.connect(foo, "bar", listener);
+			}
+		},
+		function performanceFire(){
+			var foo = {};
+			function listener(){}
+			dojo.connect(foo, "bar", listener);
+			for(var i = 0;i < 100000; i++){
+				foo.bar();
+			}
 		}
 	]
 );

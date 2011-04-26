@@ -1,8 +1,8 @@
-define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
-	// module:
-	//		dojo/_base/NodeList
-	// summary:
-	//		This module defines dojo.NodeList.
+define(["./kernel", "../listen", "./lang", "./array", "./html"], function(dojo, listen){
+  //  module:
+  //    dojo/_base/NodeList
+  //  summary:
+  //    This module defines dojo.NodeList.
 
 	var d = dojo;
 
@@ -239,10 +239,14 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 	});
 
 	// add forEach actions
-	d.forEach(["connect", "addClass", "removeClass", "replaceClass", "toggleClass", "empty", "removeAttr"], function(name){
+	d.forEach(["addClass", "removeClass", "replaceClass", "toggleClass", "empty", "removeAttr"], function(name){
 		nlp[name] = adaptAsForEach(d[name]);
 	});
-
+	// don't bind early to dojo.connect since we no longer explicitly depend on it
+	nlp.connect = adaptAsForEach(function(){
+		return d.connect.apply(this, arguments);
+	});
+	
 	dojo.extend(dojo.NodeList, {
 		_normalize: function(/*String||Element||Object||NodeList*/content, /*DOMNode?*/refNode){
 			// summary:
@@ -370,6 +374,27 @@ define(["./kernel", "./lang", "./array", "./connect", "./html"], function(dojo){
 			//
 			this._parent = parent;
 			return this; //dojo.NodeList
+		},
+
+		on: function(eventName, listener){
+			// summary:
+			//		Listen for events on the nodes in the NodeList. Basic usage is:
+			//		| query(".my-class").on("click", listener);
+			// 		This supports event delegation by using selectors as the first argument with the event names as 
+			//		pseudo selectors. For example:
+			//		| dojo.query("#my-list").on("li:click", listener);
+			//		This will listen for click events within <li> elements that are inside the #my-list element.
+			//		Because on supports CSS selector syntax, we can use comma-delimited events as well:
+			//		| dojo.query("#my-list").on("li button:mouseover, li:click", listener);
+			var handles = this.map(function(node){
+				return listen(node, eventName, listener); // TODO: apply to the NodeList so the same selector engine is used for matches
+			});
+			handles.cancel = function(){
+				for(var i = 0; i < handles.length; i++){
+					handles[i].cancel();
+				}
+			};
+			return handles;
 		},
 
 		end: function(){

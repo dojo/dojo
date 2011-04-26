@@ -7,7 +7,7 @@ define([
 	"./event",
 	"./html",
 	"./NodeList",
-	"./query",
+	"../query",
 	"./xhr",
 	"./fx"], function(dojo) {
 	// module:

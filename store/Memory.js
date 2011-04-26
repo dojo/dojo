@@ -1,11 +1,11 @@
-define(["..", "./util/QueryResults", "./util/SimpleQueryEngine"], function(dojo) {
-	// module:
-	//		dojo/store/Memory
-	// summary:
-	//		TODOC
+define(["../_base/declare", "./util/QueryResults", "./util/SimpleQueryEngine"], function(declare, QueryResults, SimpleQueryEngine) {
+  //  module:
+  //    dojo/store/Memory
+  //  summary:
+  //    The module defines an in-memory object store.
 
 
-dojo.declare("dojo.store.Memory", null, {
+return declare("dojo.store.Memory", null, {
 	// summary:
 	//		This is a basic in-memory object store. It implements dojo.store.api.Store.
 	constructor: function(/*dojo.store.Memory*/ options){
@@ -15,7 +15,9 @@ dojo.declare("dojo.store.Memory", null, {
 		//		This provides any configuration information that will be mixed into the store.
 		// 		This should generally include the data property to provide the starting set of data.
 		this.index = {};
-		dojo.mixin(this, options);
+		for(var i in options){
+			this[i] = options[i];
+		}
 		this.setData(this.data || []);
 	},
 	// data: Array
@@ -33,7 +35,7 @@ dojo.declare("dojo.store.Memory", null, {
 
 	// queryEngine: Function
 	//		Defines the query engine to use for querying the data store
-	queryEngine: dojo.store.util.SimpleQueryEngine,
+	queryEngine: SimpleQueryEngine,
 	get: function(id){
 		//	summary:
 		//		Retrieves an object by its identity
@@ -132,7 +134,7 @@ dojo.declare("dojo.store.Memory", null, {
 		//	...or find all items where "even" is true:
 		//
 		//	|	var results = store.query({ even: true });
-		return dojo.store.util.QueryResults(this.queryEngine(query, options)(this.data));
+		return QueryResults(this.queryEngine(query, options)(this.data));
 	},
 	setData: function(data){
 		// 	summary:
@@ -154,5 +156,4 @@ dojo.declare("dojo.store.Memory", null, {
 	}
 });
 
-return dojo.store.Memory;
 });

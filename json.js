@@ -1,17 +1,13 @@
-define(["./_base/kernel"], function(dojo){
-	var result;
+define(["./_base/kernel", "./has"], function(dojo, has){
+	"use strict";
 	var hasJSON = typeof JSON != "undefined";
-	var features = {
-		"json-parse": hasJSON, // all the parsers work fine
+	has.add("json-parse", hasJSON); // all the parsers work fine
 		// Firefox 3.5/Gecko 1.9 fails to use replacer in stringify properly https://bugzilla.mozilla.org/show_bug.cgi?id=509184
-		"json-stringify": hasJSON && JSON.stringify({a:0}, function(k,v){return v||1;}) == '{"a":1}' 
-	};
-	function has(feature){
-		return features[feature];
-	}
+	has.add("json-stringify", hasJSON && JSON.stringify({a:0}, function(k,v){return v||1;}) == '{"a":1}'); 
 	if(has("json-stringify")){
-		result = JSON;
-	}else{
+		return JSON;
+	}
+	else{
 		var escapeString = function(/*String*/str){
 			//summary:
 			//		Adds escape sequences for non-visual characters, double quote and
@@ -21,18 +17,28 @@ define(["./_base/kernel"], function(dojo){
 				replace(/[\f]/g, "\\f").replace(/[\b]/g, "\\b").replace(/[\n]/g, "\\n").
 				replace(/[\t]/g, "\\t").replace(/[\r]/g, "\\r"); // string
 		};
-		result = {
-			parse: has("json-parse") ? JSON.parse : function(str){
+		return {
+			parse: has("json-parse") ? JSON.parse : function(str, strict){
 				// summary:
 				// 		Parses a [JSON](http://json.org) string to return a JavaScript object.
 				// description:
 				//		This function follows [native JSON API](https://developer.mozilla.org/en/JSON)
 				// 		Throws for invalid JSON strings. This delegates to eval() if native JSON
-				// 		support is not available.  The content passed to this method must therefore come
+				// 		support is not available. By default this will evaluate any valid JS expression.
+				//		With the strict parameter set to true, the parser will ensure that only
+				//		valid JSON strings are parsed (otherwise throwing an error). Without the strict
+				// 		parameter, the content passed to this method must come
 				//		from a trusted source.
-				// json:
+				// str:
 				//		a string literal of a JSON item, for instance:
 				//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
+				//	strict: 
+				//		When set to true, this will ensure that only valid, secure JSON is ever parsed.
+				// 		Make sure this is set to true for untrusted content. Note that on browsers/engines
+				//		without native JSON support, setting this to true will run slower.
+				if(strict && !/^([\s\[\{]*(?:"(?:\\.|[^"])+"|-?\d[\d\.]*(?:[Ee][+-]?\d+)?|null|true|false|)[\s\]\}]*(?:,|:|$))+$/.test(str)){
+					throw new SyntaxError("Invalid characters in JSON");
+				}
 				return eval('(' + str + ')');
 			},
 			stringify: function(value, replacer, spacer){
@@ -94,8 +100,8 @@ define(["./_base/kernel"], function(dojo){
 				
 					// array
 					if(it instanceof Array){
-						var itl, res = [];
-						for(key = 0, itl = it.length; key < itl; key++){
+						var itl = it.length, res = [];
+						for(key = 0; key < itl; key++){
 							var obj = it[key];
 							val = stringify(obj, nextIndent, key);
 							if(typeof val != "string"){
@@ -132,6 +138,4 @@ define(["./_base/kernel"], function(dojo){
 			}
 		};
 	}
-  dojo.json = result;
-  return result; // AMD-result
 });

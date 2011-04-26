@@ -1,5 +1,5 @@
-define(["./kernel", "../has", "require", "./sniff", "./Deferred", "./json", "./lang", "./query"], function(dojo, has, require){
-	// module:
+define(["./kernel", "../has", "require", "./sniff", "./Deferred", "./json", "./lang"], function(dojo, has, require){
+	//	module:
 	//		dojo/_base.xhr
 	// summary:
 	//		This modules defines the dojo.xhr* API.
@@ -87,11 +87,13 @@ define(["./kernel", "../has", "require", "./sniff", "./Deferred", "./json", "./l
 					if(item.checked){ ret = item.value; }
 				}else if(item.multiple){
 					ret = [];
-					_d.query("option", item).forEach(function(opt){
+					var options = item.getElementsByTagName("option");
+					for(var i = 0; i < options.length; i++){
+						var opt = options[i];
 						if(opt.selected){
 							ret.push(opt.value);
 						}
-					});
+					}
 				}else{
 					ret = item.value;
 				}

@@ -25,7 +25,9 @@
 				return;
 			}
 		}
-
+		if(typeof CollectGarbage != "undefined"){
+			CollectGarbage(); // collect garbage in IE to make it easy to read the memory levels
+		}
 		dojo.byId("log").innerHTML = "Finished " + testName + ", elapsed time = " + ((new Date()) - start)/1000 + "s";
 	}
 
@@ -49,6 +51,17 @@
 		dojo.connect(button, "onclick", func);
 		dojo.destroy(button);
 	}
+	function removeTest(){
+		var button = dojo.place("<button>test button</button>", dojo.body());
+		dojo.connect(button, "onclick", func);
+		button.parentNode.removeChild(button);
+	}
+	function iframeTest(){
+		var iframe = dojo.place("<iframe style='display:none' src='../../../dijit/tests/test_Leak.html'></iframe>", dojo.body());
+		setTimeout(function(){
+			dojo.destroy(iframe);
+		}, 1000);
+	}
 
 </script>
 </head>
@@ -56,8 +69,10 @@
 <body class="tundra">
 	<h1>Memory leak tests</h1>
 	<p>Monitor memory usage in IE6/7 (or any browser) before/after pressing buttons below</p>
-	<button onclick="repeat('disconnect test', disconnectTest, 100000);">dojo.disconnect() test</button>
-	<button onclick="repeat('destroy test', destroyTest, 100000);">dojo.destroy() test</button>
+	<button onclick="repeat('disconnect test', disconnectTest, 10000);">dojo.disconnect() test</button>
+	<button onclick="repeat('destroy test', destroyTest, 10000);">dojo.destroy() test</button>
+	<button onclick="repeat('remove test', removeTest, 10000);">remove node test</button>
+	<button onclick="repeat('iframe test', iframeTest, 10);">iframe test</button>
 	<div id="log"></div>
 	<input id='ipt' value='connect target' type=button />
 </body>

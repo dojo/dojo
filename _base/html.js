@@ -25,7 +25,7 @@ dojo.byId = function(id, doc){
 	//		if not found. If `id` is a DomNode, this function is a no-op.
 	//
 	// id: String|DOMNode
-	//		A string to match an HTML id attribute or a reference to a DOM Node
+	//	 	A string to match an HTML id attribute or a reference to a DOM Node
 	//
 	// doc: Document?
 	//		Document to work in. Defaults to the current value of
@@ -95,13 +95,6 @@ if(dojo.isIE){
 //>>excludeEnd("webkitMobile");
 	var byId = d.byId;
 
-	var _destroyContainer = null,
-		_destroyDoc;
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	d.addOnWindowUnload(function(){
-		_destroyContainer = null; //prevent IE leak
-	});
-	//>>excludeEnd("webkitMobile");
 
 /*=====
 	dojo._destroyElement = function(node){
@@ -131,19 +124,10 @@ if(dojo.isIE){
 		//	|	dojo.query(".someNode").forEach(dojo.destroy);
 
 		node = byId(node);
-		try{
-			var doc = node.ownerDocument;
-			// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
-			if(!_destroyContainer || _destroyDoc != doc){
-				_destroyContainer = doc.createElement("div");
-				_destroyDoc = doc;
-			}
-			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
-			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
-			_destroyContainer.innerHTML = "";
-		}catch(e){
-			/* squelch */
+		if(dojo._cleanup){
+			dojo._cleanup(node);
 		}
+		node.parentNode ? node.parentNode.removeChild(node) : node
 	};
 
 	dojo.isDescendant = function(/*DomNode|String*/node, /*DomNode|String*/ancestor){
@@ -1650,7 +1634,6 @@ if(dojo.isIE){
 	d._toDom = function(frag, doc){
 		// summary:
 		//		converts HTML string into DOM nodes.
-
 		doc = doc || d.doc;
 		var masterId = doc[masterName];
 		if(!masterId){

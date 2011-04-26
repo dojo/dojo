@@ -780,6 +780,7 @@
 					}
 				}else{
 					module.result = runFactory(pqn, module.def, args, module.cjs);
+					module.executed = executed;
 				}
 				if(module.loadQ){
 					// this was a plugin module
@@ -991,17 +992,22 @@
 						if(syncDepth && !isXdPath(url)){
 							execQ.push(module);
 							++syncDepth;
-							try{
-								// always synchronous...
-								if(has("loader-traceApi")){
-									req.trace("loader-inject", [module.pqn, url]);
+							// always synchronous...
+							if(has("loader-traceApi")){
+								req.trace("loader-inject", [module.pqn, url]);
+							}
+							var onTextLoad = function(text){
+								injecting.push(module);
+								reqEval(text, module.path);
+							};
+							if(has("loader-catchApi")){
+								try{
+									getText(url, 0, onTextLoad);
+								}catch(e){
+									req.onError("loader/failed-sync", [pqn, url, e]);
 								}
-								getText(url, 0, function(text){
-									injecting.push(module);
-									reqEval(text, module.path);
-								});
-							}catch(e){
-								req.onError("loader/failed-sync", [pqn, url, e]);
+							}else{
+								getText(url, 0, onTextLoad);
 							}
 							--syncDepth;
 							injecting.pop();
@@ -1094,14 +1100,14 @@
 	}
 
 	if(has("dom")){
-		has.add("dom-addEventListener", !!doc.addEventListener);
+		has.add("dom-addeventlistener", !!doc.addEventListener);
 	}
 
 	if(has("dom") && (has("loader-pageLoadApi") || has("loader-injectApi"))){
 		var on = function(node, eventName, handler, useCapture, ieEventName){
 			// Add an event listener to a DOM node using the API appropriate for the current browser;
 			// return a function that will disconnect the listener.
-			if(has("dom-addEventListener")){
+			if(has("dom-addeventlistener")){
 				node.addEventListener(eventName, handler, !!useCapture);
 				return function(){
 					node.removeEventListener(eventName, handler, !!useCapture);
@@ -1181,7 +1187,7 @@
 				DOMContentLoadedDisconnector = on(doc, "DOMContentLoaded", detectPageLoaded, false, false);
 			}
 
-			if(!has("dom-addEventListener")){
+			if(!has("dom-addeventlistener")){
 				// note: this code courtesy of James Burke (https://github.com/jrburke/requirejs)
 				// DOMContentLoaded approximation, as found by Diego Perini: http://javascript.nwbox.com/IEContentLoaded/
 				if(self === self.top){
@@ -1386,7 +1392,7 @@
 			// other than a deps list being injected. For example, code may define modules on-the-fly due to some user stimulus.
 			// In such cases, there is nothing to trigger the defQ and the dependencies are never requested; therefore, do it here.
 			injectDependencies(defineModule(getModule(args[0]), args[1], args[2]));
-		}else if(has("dom-addEventListener") || !has("host-browser")){
+		}else if(has("dom-addeventlistener") || !has("host-browser")){
 			// not IE path: anonymous module and therefore must have been injected; therefore, onLoad will fire immediately
 			// after script finishes being evaluated and the defQ can be run from that callback to detect the module id
 			defQ.push(args);
@@ -1554,7 +1560,7 @@
 			"loader-timeoutApi":1,
 			"loader-traceApi":1,
 			"loader-logApi":1,
-			"loader-catchApi":1,
+			"loader-catchApi":0,
 			"loader-pageLoadApi":1,
 			"loader-priority-readyApi":1,
 			"loader-errorApi":1,

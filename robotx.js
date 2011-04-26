@@ -102,9 +102,11 @@ dojo.mixin(doh.robot,{
 	_updateDocument: function(){
 		dojo.setContext(iframe.contentWindow, iframe.contentWindow.document);
 		var win = dojo.global;
-		if(win["dojo"]){
+		if(win.dojo){
 			// allow the tests to subscribe to topics published by the iframe
-			dojo._topics = win.dojo._topics;
+			dojo.publish = win.dojo.publish;
+			dojo.subscribe = win.dojo.subscribe;
+			dojo.connectPublisher = win.dojo.connectPublisher;  
 		}
 
 	},

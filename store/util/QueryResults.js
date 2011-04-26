@@ -1,8 +1,8 @@
-define(["../.."], function(dojo) {
-	// module:
-	//		dojo/store/util/QueryResults
-	// summary:
-	//		TODOC
+define(["../../_base/kernel", "../../_base/lang", "../../_base/Deferred"], function(dojo) {
+  //  module:
+  //    dojo/store/util/QueryResults
+  //  summary:
+  //    The module defines a query results wrapper 
 
 dojo.getObject("store.util", true, dojo);
 

@@ -13,9 +13,9 @@ define(["require"], function(require) {
 	//		This module adopted from https://github.com/phiggins42/has.js; thanks has.js team!
 
 	// try to pull the has implementation from the loader; both the dojo loader and bdLoad provide one
-	var has = require.has;
-
-	if(!has("loader-hasApi") && typeof has=="function"){
+	// WARNING: if a foreign loader defines require.has to be something other than the has.js API, then this implementation fail
+	var has = require.has || function(){};
+	if(!has("loader-hasApi")){
 		// notice the condition is written so that if has("loader-hasApi") is transformed to 1 during a build
 		// the conditional will be (!1 && typeof has=="function") which is statically false and the closure
 		// compiler will discard the block.
@@ -102,13 +102,16 @@ define(["require"], function(require) {
 		has.add("loader-pageLoadApi", 1);
 		has.add("dojo-sniff", 1);
 	}
-	var agent = navigator.userAgent;
-	// Common application level tests
-	has.add("touch", "ontouchstart" in document);
+
+	if(has("host-browser")){
+		var agent = navigator.userAgent;
+		// Common application level tests
+		has.add("touch", "ontouchstart" in document);
 		// I don't know if any of these tests are really correct, just a rough guess
-	has.add("device-width", screen.availWidth || innerWidth);
-	has.add("agent-ios", !!agent.match(/iPhone|iP[ao]d/));
-	has.add("agent-android", agent.indexOf("android") > 1);
+		has.add("device-width", screen.availWidth || innerWidth);
+		has.add("agent-ios", !!agent.match(/iPhone|iP[ao]d/));
+		has.add("agent-android", agent.indexOf("android") > 1);
+	}
 
 	has.clearElement= function(element) {
 		// summary:

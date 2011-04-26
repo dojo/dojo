@@ -98,7 +98,6 @@ define(["require"], function(require) {
 		// can optimize these away iff desired
 		has.add("host-browser", isBrowser);
 		has.add("dom", isBrowser);
-		has.add("dom-addeventlistener", !!document.addEventListener);
 		has.add("loader-pageLoadApi", 1);
 		has.add("dojo-sniff", 1);
 	}
@@ -106,6 +105,7 @@ define(["require"], function(require) {
 	if(has("host-browser")){
 		var agent = navigator.userAgent;
 		// Common application level tests
+		has.add("dom-addeventlistener", !!document.addEventListener);
 		has.add("touch", "ontouchstart" in document);
 		// I don't know if any of these tests are really correct, just a rough guess
 		has.add("device-width", screen.availWidth || innerWidth);

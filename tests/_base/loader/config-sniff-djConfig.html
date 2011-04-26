@@ -1,0 +1,37 @@
+<html>
+<head>
+	<script type="text/javascript">
+		var hasAlias;
+		var dojoConfig= {
+			async:1,
+			waitSeconds:5
+		};
+	</script>
+	<script 
+		type="text/javascript" 
+		src="../../../dojo.js"
+		djConfig="isDebug:1, async:2, waitSeconds:6, baseUrl:'../../../../dojo'"></script>
+	<script type="text/javascript">
+		require(["dojo", "doh", "dojo/has"], function(dojo, doh, has) {
+			dojo.ready(function() {
+				hasAlias= has;
+				doh.register("dojoConfig-sniff-test", [
+					function expectDojoConfig(t) {
+						// show that sniff overrides dojoConfig
+						t.is(require.rawConfig.async, 2);
+						t.is(require.rawConfig.baseUrl, "../../../../dojo");
+						t.is(require.rawConfig.waitSeconds, 6);
+
+						t.is(require.async, 2);
+						t.is(require.baseUrl, "../../../../dojo/");
+						t.is(require.waitSeconds, 6000);
+					}
+				]);
+				doh.runOnLoad();
+			});
+		});
+	</script>
+</head>
+<body>
+</body>
+</html>

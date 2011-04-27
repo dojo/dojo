@@ -219,6 +219,14 @@
 		execThrew = symbol("exec-threw");
 	}
 
+	if(has("loader-comboApi")){
+		req.combo= {add:noop};
+		var
+			comboPending= 0,
+			combosPending= [];
+	}
+
+
 	// lexical variables that hold key loader data structures; may be completely initialized by
 	// defaultConfig for optimized/built versions of the loader. The packages property is deleted
 	// because it is not used by the loader (package config info is cleaned up and stuffed into
@@ -261,18 +269,18 @@
 			// A hash:(pqn) --> (module-object). module objects are simple JavaScript objects with the
 			// following properties:
 			//
-			//	 pid: the package identifier to which the module belongs (e.g., "dojo"); "" indicates the system or default package
-			//	 id: the module identifier without the package identifier (e.g., "io/script")
-			//	 pqn: the full package-qualified name (e.g., "dojo*io/script")
-			//	 url: the URL from which the module was retrieved
-			//	 pack: the package object of the package to which the module belongs
-			//	 path: the full module name (package + path) resolved with respect to the loader (i.e., mappings have been applied) (e.g., dojo/io/script)
-			//	 executed: 0 => not executed; executing => in the process of tranversing deps and running factory; executed => factory has been executed
-			//	 deps: the dependency vector for this module (vector of modules objects)
-			//	 def: the factory for this module
-			//	 result: the result of the running the factory for this module
-			//	 injected: (requested | arrived | nonmodule) the status of the module; nonmodule means the resource did not call define
-			//	 load: plugin load function; applicable only for plugins
+			//  pid: the package identifier to which the module belongs (e.g., "dojo"); "" indicates the system or default package
+			//  id: the module identifier without the package identifier (e.g., "io/script")
+			//  pqn: the full package-qualified name (e.g., "dojo*io/script")
+			//  url: the URL from which the module was retrieved
+			//  pack: the package object of the package to which the module belongs
+			//  path: the full module name (package + path) resolved with respect to the loader (i.e., mappings have been applied) (e.g., dojo/io/script)
+			//  executed: 0 => not executed; executing => in the process of tranversing deps and running factory; executed => factory has been executed
+			//  deps: the dependency vector for this module (vector of modules objects)
+			//  def: the factory for this module
+			//  result: the result of the running the factory for this module
+			//  injected: (requested | arrived | nonmodule) the status of the module; nonmodule means the resource did not call define
+			//  load: plugin load function; applicable only for plugins
 			//
 			// Modules go through several phases in creation:
 			//
@@ -346,6 +354,8 @@
 				// vector of registered listener functions for config changes
 				[],
 
+			configVariableNames ={async:1, waitSeconds:1, urlArgs:1, baseUrl:1, locale:1, combo:1},
+
 			config = function(config, booting){
 				// mix config into require
 				var p, i, transforms;
@@ -353,7 +363,7 @@
 				// async, urlArgs, and baseUrl just replace whatever is already there
 				// async is only meaningful if it's set before booting the loader
 				for(p in config){
-					if(/async|waitSeconds|urlArgs|baseUrl|locale/.test(p)){
+					if(configVariableNames[p]){
 						req[p] = p=="waitSeconds" ? config[p] * 1000 : config[p];
 					}
 					// accumulate raw config info for client apps which can use this to pass their own config
@@ -454,7 +464,7 @@
 		if(has("dojo-test-sniff")){
 			// pass down doh.testConfig from parent as if it were a data-dojo-config
 			try{
-				if(window.parent!=window && window.parent.require){
+				if(window.parent != window && window.parent.require){
 					var doh = window.parent.require("doh");
 					doh && mix(dojoSniffConfig, doh.testConfig);
 				}
@@ -489,6 +499,19 @@
 
 		injectDependencies = function(module){
 			forEach(module.deps, injectModule);
+			if(has("loader-comboApi") && comboPending){
+				comboPending= 0;
+				req.combo.done(function(mids, url) {
+					var onLoadCallback= function(){
+						// defQ is a vector of module definitions 1-to-1, onto mids
+						runDefQ(0, mids);
+					};
+					combosPending.push(mids);
+					injecting.push(mids);
+					mids.node = req.injectUrl(url, onLoadCallback);
+					injecting.pop();
+				}, req);
+			}
 		},
 
 		contextRequire = function(a1, a2, a3, referenceModule, contextRequire){
@@ -750,7 +773,8 @@
 		// this is a flag to say at least one factory was run during a deps tree traversal
 		runFactory = function(pqn, factory, args, cjs){
 			req.trace("loader-runFactory", [pqn]);
-			return isFunction(factory) ? (factory.apply(null, args) || (cjs && cjs.exports)) : factory;
+			var result= isFunction(factory) ? factory.apply(null, args) : factory;
+			return result===undefined && cjs ? cjs.exports : result;
 		},
 
 		abortExec = {},
@@ -781,8 +805,8 @@
 				while(i < deps.length){
 					arg = deps[i++];
 					argResult = ((arg === cjsRequireModule) ? createRequire(module) :
-									((arg === cjsExportsModule) ? module.exports :
-										((arg === cjsModuleModule) ? module :
+									((arg === cjsExportsModule) ? module.cjs.exports :
+										((arg === cjsModuleModule) ? module.cjs :
 											execModule(arg))));
 					if(argResult === abortExec){
 						module.executed = 0;
@@ -928,7 +952,7 @@
 				plugin.isPlugin = 1;
 
 				if(has("dojo-sync-loader")){
-					// in synchronous mode; instantiate the plugin before trying to	load a plugin resource
+					// in synchronous mode; instantiate the plugin before trying to load a plugin resource
 					syncDepth && !plugin.executed && injectModule(plugin);
 				}
 
@@ -995,6 +1019,11 @@
 
 				module.injected = requested;
 				setIns(waiting, pqn);
+
+				if(has("loader-comboApi") && req.combo.add(0, module.path, module.url, req)){
+					comboPending= 1;
+					return;
+				}
 
 				// the url implied by module has not been requested or it's been requested
 				// asynchronously and is now being requested synchronously.
@@ -1089,13 +1118,15 @@
 				return module;
 			},
 
-			runDefQ = function(referenceModule){
-				//defQ is an array of [id, dependencies, factory]
+			runDefQ = function(referenceModule, mids){
+				// defQ is an array of [id, dependencies, factory]
+				// mids (if any) is a vector of mids given by a combo service
 				var
 					definedModules = [],
 					module, args;
 				while(defQ.length){
 					args = defQ.shift();
+					mids && (args[0]= mids.shift());
 					// explicit define indicates possible multiple modules in a single file; delay injecting dependencies until defQ fully
 					// processed since modules earlier in the queue depend on already-arrived modules that are later in the queue
 					// TODO: what if no args[0] and no referenceModule
@@ -1269,7 +1300,7 @@
 		req.ready = function(
 			priority,//(integer, optional) The order in which to exec this callback relative to other callbacks, defaults to 1000
 			context, //(object) The context in which to run execute callback
-					 //(function) callback, if context missing
+			         //(function) callback, if context missing
 			callback //(function) The function to execute.
 		){
 			///
@@ -1446,8 +1477,22 @@
 						break;
 					}
 				}
+				if(has("loader-comboApi") && !targetModule){
+					for(var i= 0; i<combosPending.length; i++){
+						targetModule= combosPending[i];
+						if(targetModule.node && targetModule.node.readyState === 'interactive'){
+							break;
+						}
+						targetModule= 0;
+					}
+				}
 			}
-			if(targetModule){
+			if(has("loader-comboApi") && isArray(targetModule)){
+				injectDependencies(defineModule(targetModule.shift(), args[1], args[2]));
+				if(!targetModule.length){
+					combosPending.splice(i, 1);
+				}
+			}else if(targetModule){
 				injectDependencies(defineModule(targetModule, args[1], args[2]));
 			}else{
 				req.error("loader/define-ie");
@@ -1585,6 +1630,7 @@
 		hasCache:{
 			"host-browser":1,
 			"dom":1,
+			"loader-amdFactoryScan":1,
 			"loader-isDojo":1,
 			"loader-hasApi":1,
 			"loader-provides-xhr":1,
@@ -1648,7 +1694,7 @@
 
 (function(){
 	// must use this.require to make this work in node.js
-	var require= this.require;
+	var require = this.require;
 	require.has("dojo-boot") && require(["dojo"]);
 	require.bootRequire && require.apply(null, require.bootRequire);
 	require.bootReady && require.ready(require.bootReady);

@@ -76,7 +76,7 @@
 						});
 						t.is(callbackCalled, 1);
 
-						// insert and error handler that fixes the error and signals to continue...
+						// insert an error handler that fixes the error and signals to continue...
 						if(has("loader-errorApi")){
 							function handler(messageId, args){
 								t.is(messageId, "loader/exec");

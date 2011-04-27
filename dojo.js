@@ -152,7 +152,7 @@
 		hasCache = has.cache = defaultConfig.hasCache;
 
 	has.add = function(name, test, now, force){
-		(typeof hasCache[name] == "undefined" || force) && (hasCache[name] = test);
+		(hasCache[name]===undefined || force) && (hasCache[name] = test);
 		return now && has(name);
 	};
 
@@ -368,12 +368,13 @@
 					}
 					// accumulate raw config info for client apps which can use this to pass their own config
 					req.rawConfig[p]= config[p];
+					has.add("config-"+p, config[p]);
 				}
 
 				// now do the special work for has, pathTransforms, packagePaths, packages, paths, deps, callback, and ready
 
 				for(p in config.has){
-					has.add(p, config.has[p], 0, 1);
+					has.add(p, config.has[p], 0, booting);
 				}
 
 				// make sure baseUrl ends with a slash

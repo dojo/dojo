@@ -13,6 +13,7 @@ define([
 		doh.register(require.nameToUrl("./loader/configApi.html"));
 		doh.register(require.nameToUrl("./loader/config-sniff.html"));
 		doh.register(require.nameToUrl("./loader/config-sniff-djConfig.html"));
+		doh.register(require.nameToUrl("./loader/config-has.html"));
 		doh.register(require.nameToUrl("./loader/errorApi.html"));
 		doh.register(require.nameToUrl("./loader/errorApi.html")+"?noCatch");
 	}

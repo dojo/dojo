@@ -1,52 +1,24 @@
-(function(eval) {
 define(["../has", "./config", "require"], function(has, config, require){
 	// module:
 	//		dojo/_base/kernel
 	// summary:
 	//		This module is the foundational module of the dojo boot sequence; it defines the dojo object.
 
-	has.add("dojo-debug-messages",
-		// include dojo.deprecated/dojo.experimental implementations
-		1
-	);
-
-	has.add("dojo-guarantee-console",
-		// ensure that console.log, console.warn, etc. are defined
-		1
-	);
-
-
-	// loop variables for this module
-	var i, p;
-
-	// this is the first opportunity for has and config to get together...
-	// allow the configuration to have the final say on has feature tests; this allows (e.g.)
-	// hard-setting a has feature test to force an execution path that may be different than
-	// actually indicated in the environment.
-	for (p in config.has) {
-		has.add(p, config.has[p], 0, 1);
-	}
-
 	var
-		guidRoot= (new Date()).getTime() + "",
-		guidId= 1,
-		getGuid= function(prefix){
-			return prefix + guidRoot + guidId++;
-		};
+		// loop variables for this module
+		i, p,
 
-
-    // create dojo, dijit, and dojox; initialize _scopeName and possibly publish to the global
-    // namespace: three possible cases:
-    //
-    //   1. The namespace is not mentioned in config.scopeMap: _scopeName is set to the default
-    //      name (dojo, dijit, or dojox), and the object is published to the global namespace
-    //
-    //   2. The namespace is mentioned with a nonempty name: _scopeName is set to the name given
-    //      and the object is published to the global namespace under that name
-    //
-    //   3. Then namespace is mentioned, but the value is falsy (e.g., ""): _scopeName is set to
-    //       _(dojo|dijit|dojox)<reasonably-unque-number> and the object is *not* published to the global namespace
-	var
+	    // create dojo, dijit, and dojox; initialize _scopeName and possibly publish to the global
+	    // namespace: three possible cases:
+	    //
+	    //   1. The namespace is not mentioned in config.scopeMap: _scopeName is set to the default
+	    //      name (dojo, dijit, or dojox), and the object is published to the global namespace
+	    //
+	    //   2. The namespace is mentioned with a nonempty name: _scopeName is set to the name given
+	    //      and the object is published to the global namespace under that name
+	    //
+	    //   3. Then namespace is mentioned, but the value is falsy (e.g., ""): _scopeName is set to
+	    //       _(dojo|dijit|dojox)<reasonably-unque-number> and the object is *not* published to the global namespace
 		dojo={
 			config: {},
 			global:this,
@@ -71,11 +43,48 @@ define(["../has", "./config", "require"], function(has, config, require){
 	// the passed in config yet ultimately return the config object as we received it. After
 	// the main module is defined and config is cloned, dojo's config object is completely
 	// independend of the passed config object.
+	//
+	// allow the configuration to overwrite existing has feature tests during this bootstrap;
+	// this allows (e.g.) hard-setting a has feature test to force an execution path that may
+	// be different than actually indicated in the environment. However, after bootstrap, config
+	// can't overwrite has tests.
 	dojo.config= {};
 	for(p in config){
 		dojo.config[p]= config[p];
+		has.add(p, config[p], 0, 1);
+	}
+	for(p in config.has){
+		has.add(p, config.has[p], 0, 1);
+	}
+	if(has("loader-isDojo") && has("loader-configApi")){
+		require.onConfig(function(config){
+			for(p in config){
+				has.add(p, config[p]);
+			}
+		});
 	}
 
+	/*=====
+		dojo.version = function(){
+			// summary:
+			//		Version number of the Dojo Toolkit
+			// major: Integer
+			//		Major version. If total version is "1.2.0beta1", will be 1
+			// minor: Integer
+			//		Minor version. If total version is "1.2.0beta1", will be 2
+			// patch: Integer
+			//		Patch version. If total version is "1.2.0beta1", will be 0
+			// flag: String
+			//		Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
+			// revision: Number
+			//		The SVN rev from which dojo was pulled
+			this.major = 0;
+			this.minor = 0;
+			this.patch = 0;
+			this.flag = "";
+			this.revision = 0;
+		}
+	=====*/
 	var rev = "$Rev: 23930 $".match(/\d+/);
 	dojo.version= {
 		major: 1, minor: 7, patch: 0, flag: "dev",
@@ -87,21 +96,21 @@ define(["../has", "./config", "require"], function(has, config, require){
 	};
 
 	// notice that modulePaths won't be applied to any require's before the dojo/_base/kernel factory is run;
-	// this is the v1.6- behavior. Going forward from 1.7+, consider modulePaths deprecated and
+	// this is the v1.6- behavior. Going forward from 1.7, consider modulePaths deprecated and
 	// configure the loader directly.
 	if(config.modulePaths){
 		require({paths:config.modulePaths});
 	}
 
-	dojo.isDojoLoader= define.amd && define.amd.vendor=="dojotoolkit.org";
-
 	dojo.isAsync= function() {
-		return !dojo.isDojoLoader || require.async;
+		return !has("loader-isDojo") || require.async;
 	};
 
-
+	// define dojo's eval method so that an almost-pristine environment is provided
+	// (only the variables __scope and __text shadow globals)
+	var dojoEval= new Function("__scope", "__text", "return (__scope.eval || eval)(__text);");
 	dojo.eval= function(text){
-		return eval(dojo.global, text);
+		return dojoEval(dojo.global, text);
 	};
 
 	if (!has("host-rhino")) {
@@ -110,6 +119,10 @@ define(["../has", "./config", "require"], function(has, config, require){
 		};
 	}
 
+	has.add("dojo-guarantee-console",
+		// ensure that console.log, console.warn, etc. are defined
+		1
+	);
 	if(has("dojo-guarantee-console")){
 		// intentional global console
 		typeof console!="undefined" || (console= {});
@@ -143,7 +156,6 @@ define(["../has", "./config", "require"], function(has, config, require){
 		// Register with the OpenAjax hub
 		OpenAjax.hub.registerLibrary(dojo._scopeName, "http://dojotoolkit.org", dojo.version.toString());
 	}
-
 
 	has.add("bug-for-in-skips-shadowed", function() {
 		// if true, the for-in interator skips object properties that exist in Object's prototype (IE 6 - ?)
@@ -343,8 +355,12 @@ define(["../has", "./config", "require"], function(has, config, require){
 		return dojo.getObject(name, false, obj) !== undefined; // Boolean
 	};
 
-	/*=====
-		dojo.deprecated = function(behaviour, extra, removal){
+	has.add("dojo-debug-messages",
+		// include dojo.deprecated/dojo.experimental implementations
+		1
+	);
+	if (has("dojo-debug-messages")) {
+		dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
 			//	summary:
 			//		Log a debug message to indicate that a behavior has been
 			//		deprecated.
@@ -360,9 +376,14 @@ define(["../has", "./config", "require"], function(has, config, require){
 			//		removed. Usually a version number.
 			//	example:
 			//	| dojo.deprecated("myApp.getTemp()", "use myApp.getLocaleTemp() instead", "1.0");
-		}
 
-		dojo.experimental = function(moduleName, extra){
+			var message = "DEPRECATED: " + behaviour;
+			if(extra){ message += " " + extra; }
+			if(removal){ message += " -- will be removed in version: " + removal; }
+			console.warn(message);
+		};
+
+		dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 			//	summary: Marks code as experimental.
 			//	description:
 			//		This can be used to mark a function, file, or module as
@@ -379,18 +400,6 @@ define(["../has", "./config", "require"], function(has, config, require){
 			//	| dojo.experimental("dojo.data.Result");
 			//	example:
 			//	| dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
-		}
-	=====*/
-
-	if (has("dojo-debug-messages")) {
-		dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
-			var message = "DEPRECATED: " + behaviour;
-			if(extra){ message += " " + extra; }
-			if(removal){ message += " -- will be removed in version: " + removal; }
-			console.warn(message);
-		};
-
-		dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
 			var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
 			if(extra){ message += " " + extra; }
 			console.warn(message);
@@ -401,32 +410,3 @@ define(["../has", "./config", "require"], function(has, config, require){
 
 	return dojo;
 });
-})(
-	function(__scope, __text) {
-		// define dojo's eval method so that an almost-pristine environment is provided
-		// (only the variables __scope and __text shadow globals)
-		return (__scope.eval || eval)(__text);
-	}
-);
-
-/*=====
-	dojo.version = function(){
-		// summary:
-		//		Version number of the Dojo Toolkit
-		// major: Integer
-		//		Major version. If total version is "1.2.0beta1", will be 1
-		// minor: Integer
-		//		Minor version. If total version is "1.2.0beta1", will be 2
-		// patch: Integer
-		//		Patch version. If total version is "1.2.0beta1", will be 0
-		// flag: String
-		//		Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
-		// revision: Number
-		//		The SVN rev from which dojo was pulled
-		this.major = 0;
-		this.minor = 0;
-		this.patch = 0;
-		this.flag = "";
-		this.revision = 0;
-	}
-=====*/

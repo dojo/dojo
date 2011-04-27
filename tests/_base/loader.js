@@ -1,4 +1,7 @@
-define(["doh", "require"], function(doh, require){
+define([
+	"doh",
+	"require",
+	"./loader/modules"], function(doh, require){
 	if(doh.isBrowser){
 		doh.register(require.nameToUrl("./loader/config.html")+"?dojoConfig-djConfig-require");
 		doh.register(require.nameToUrl("./loader/config.html")+"?dojoConfig-require");

@@ -394,7 +394,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			}
 		};
 		var cleanupNode = function (){
-			var i, usedEventsArray = cleanupNode.usedEventsArray;
+			var i, l, usedEventsArray = cleanupNode.usedEventsArray;
 			if(!usedEventsArray){
 				// it is from the higher scope so it is cached
 				cleanupNode.usedEventsArray = usedEventsArray = [];

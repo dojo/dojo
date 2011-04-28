@@ -167,7 +167,9 @@ dojo.disconnect = function(/*Handle*/ handle){
 	//		Removes the connection between event and the method referenced by handle.
 	// handle:
 	//		the return value of the dojo.connect call that created the connection.
-	handle.cancel();
+	if(handle){
+		handle.cancel();
+	}
 };
 
 // topic publish/subscribe

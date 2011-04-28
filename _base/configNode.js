@@ -32,7 +32,7 @@ exports.config= function(config) {
 		"dojo-loader-catches":1,
 		"dojo-domloaded-api":0,
 		"dojo-ready-api":1,
-		"dojo-errorApi":1,
+		"dojo-error-api":1,
 		"dojo-publish-privates":1,
 		"dojo-gettext-api":1,
 		"dojo-sniff":0,

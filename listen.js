@@ -295,7 +295,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			this.handle = handle;
 		};
 		IESignal.prototype.cancel = function(){
-	 		delete dojo.global.__ieListeners__[this.handle];		
+	 		delete _dojoIEListeners_[this.handle];		
 		}
 		var fixListener = function(target, type, listener){
 			var fixedListener = function(evt){
@@ -307,21 +307,20 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 					!has("config-_allow_leaks")){
 				// IE will leak memory on certain handlers in frames (IE8 and earlier) and in unattached DOM nodes for JScript 5.7 and below.
 				// Here we use global redirection to solve the memory leaks
-				var listeners = dojo.global.__ieListeners__; 
-				if(!listeners){
-					dojo.global.__ieListeners__ = listeners = [];
+				if(typeof _dojoIEListeners_ == "undefined"){ 
+					_dojoIEListeners_ = [];
 				}
 				var dispatcher = target[type];
 				if(!dispatcher || !dispatcher.listeners){
 					var oldListener = dispatcher;
-					target[type] = dispatcher = dojo.global.Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = __ieListeners__[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
+					target[type] = dispatcher = Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = _dojoIEListeners_[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
 					dispatcher.listeners = [];
 					if(oldListener){
-						dispatcher.listeners.push(listeners.push(oldListener) - 1);
+						dispatcher.listeners.push(_dojoIEListeners_.push(oldListener) - 1);
 					}
 				}
 				var handle;
-				dispatcher.listeners.push(handle = (listeners.push(fixedListener) - 1));
+				dispatcher.listeners.push(handle = (_dojoIEListeners_.push(fixedListener) - 1));
 				return new IESignal(handle);
 			}
 			return after(target, type, fixedListener, true);

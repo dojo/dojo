@@ -39,7 +39,8 @@ define(["..", "doh", "../json"], function(dojo, doh, JSON){
 		function serializeNull(t){ t.is('{"foo":null}', JSON.stringify({"foo":null}))},
 		function serializeFunction(t){ t.is('{}', JSON.stringify({"foo":function(){}}))},
 		function serializeNaN(t){ t.is('{"foo":null}', JSON.stringify({"foo":NaN}))},
-		function serializeInfinity(t){ t.is('{"foo":null}', JSON.stringify({"foo":Infinity}))}
+		function serializeInfinity(t){ t.is('{"foo":null}', JSON.stringify({"foo":Infinity}))},
+		function serializeToJSON(t){ t.is('{"foo":{"name":"foo"}}', JSON.stringify({foo:{toJSON:function(key){return {name:key};}}}))}
 	]);
 
 var smallDataSet = {

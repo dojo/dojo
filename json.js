@@ -88,7 +88,7 @@ define(["./_base/kernel", "./has"], function(dojo, has){
 					// short-circuit for objects that support "json" serialization
 					// if they return "self" then just pass-through...
 					if(typeof it.toJSON == "function"){
-						return stringify(tf.call(it.toJSON, key), indent, key);
+						return stringify(it.toJSON(key), indent, key);
 					}
 					var nextIndent= spacer ? (indent + spacer) : "";
 					if(it.nodeType && it.cloneNode){ // isNode

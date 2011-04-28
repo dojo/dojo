@@ -48,7 +48,6 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	var after = aspect.after;
 	if(typeof window != "undefined"){ // check to make sure we are in a browser, this module should work anywhere
 		var major = window.ScriptEngineMajorVersion;
-		has.add("config-allow-leaks", dojo.config._allow_leaks); // TODO: I think we can have config settings be assigned in kernel or bootstrap
 		has.add("jscript", major && (major() + ScriptEngineMinorVersion() / 10));
 		has.add("event-orientationchange", has("touch") && !dojo.isAndroid); // TODO: how do we detect this?
 	}
@@ -85,12 +84,6 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	var prototype = (listen.Evented = function(){}).prototype;
 	prototype.on = function(type, listener, dontFix){
 		return addListener(this, type, listener, dontFix, this);
-	}
-	function IESignal(handle){
-		this.handle = handle;
-	}
-	IESignal.prototype.cancel = function(){
- 		delete dojo.global.__ieListeners__[this.handle];		
 	}
 	var touchEvents = /^touch/;
 	function addListener(target, type, listener, dontFix, matchesTarget){
@@ -164,37 +157,8 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			return signal;
 		}
 		type = "on" + type;
-		if(cleanupNode && (target.uniqueID || target.Math)){
-			if(has("config-use-passive-memory-management")){
-				// we set the onpage function to indicate it is a node that needs cleanup. onpage is an unused event in IE, and non-existent elsewhere
-				var onpage = target.onpage; 
-				if(!onpage){
-					target.onpage = onpage = cleanupNode;
-				}
-				onpage.usedEvents[type] = true; // register it as one of the used events
-				onpage.usedEventsArray = null; // empty cache*/
-			}else{
-				var listeners = dojo.global.__ieListeners__; 
-				if(!listeners){
-					dojo.global.__ieListeners__ = listeners = [];
-				}
-				var dispatcher = target[type];
-				if(!dispatcher || !dispatcher.listeners){
-					var oldListener = dispatcher;
-					target[type] = dispatcher = dojo.global.Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = __ieListeners__[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
-					dispatcher.listeners = [];
-					if(oldListener){
-						dispatcher.listeners.push(listeners.push(oldListener) - 1);
-					}
-				}
-				var handle;
-				
-				dispatcher.listeners.push(handle = (listeners.push(fixListener(listener)) - 1));
-				return new IESignal(handle);
-			}
-		}
 		if(fixListener && target.attachEvent){
-			listener = fixListener(listener);
+			return fixListener(target, type, listener);
 		}
 	 // use aop
 		return after(target, type, listener, true);
@@ -327,11 +291,40 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			}
 			return evt;
 		}
-		var fixListener = function(listener){
-			return function(evt){
+		var IESignal = function(handle){
+			this.handle = handle;
+		};
+		IESignal.prototype.cancel = function(){
+	 		delete dojo.global.__ieListeners__[this.handle];		
+		}
+		var fixListener = function(target, type, listener){
+			var fixedListener = function(evt){
 				evt = listen._fixEvent(evt, this);
 				return listener.call(this, evt);
 			};
+			if(((target.ownerDocument ? target.ownerDocument.parentWindow : target.parentWindow || target.window || window) != top || 
+						has("jscript") < 5.8) && 
+					!has("config-_allow_leaks")){
+				// IE will leak memory on certain handlers in frames (IE8 and earlier) and in unattached DOM nodes for JScript 5.7 and below.
+				// Here we use global redirection to solve the memory leaks
+				var listeners = dojo.global.__ieListeners__; 
+				if(!listeners){
+					dojo.global.__ieListeners__ = listeners = [];
+				}
+				var dispatcher = target[type];
+				if(!dispatcher || !dispatcher.listeners){
+					var oldListener = dispatcher;
+					target[type] = dispatcher = dojo.global.Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = __ieListeners__[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
+					dispatcher.listeners = [];
+					if(oldListener){
+						dispatcher.listeners.push(listeners.push(oldListener) - 1);
+					}
+				}
+				var handle;
+				dispatcher.listeners.push(handle = (listeners.push(fixedListener) - 1));
+				return new IESignal(handle);
+			}
+			return after(target, type, fixedListener, true);
 		};
 
 		var _setKeyChar = function(evt){
@@ -361,65 +354,6 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			this.returnValue = false;
 		};
 	}
-
-
-	if(has("jscript") < 6 && !has("config-allow-leaks")){ 
-		// JScript 5.8 and earlier is very leaky, by default we memory 
-		// manage IE for JScript < 6, but users can opt-out. The code below is executed
-		//	node destroys (dojo.destroy) or on unload and will clear all the event handlers so
-		// that the nodes GC'ed.
-		// The previous dojo.connect code included some code to help protect against notorious memory leaks in IE with 
-		// reference cycles. This worked by adding the global object into the reference chain that often is cyclic. The 
-		// global object is basically always destroyed on page unload, and this break the cycle allowing nodes and 
-		// references to be properly GC'ed. This hels prevent memory leaks on page transitions for earlier versions of IE. This mechanism 
-		// isn't ideal. Adding the global into the reference chain effectively pins the reference cycle in memory. This 
-		// actually introduces a memory leak for in page actions, as the reference won't be eliminated until the 
-		// page is unloaded even when no cycles are present and GC is working properly.
-		// This memory management mechanism (clearing event handlers on unload/destroy)
-		// avoids adding extra memory leaks while still helping to prevent page transition leaks.
-		var cleanup = dojo._cleanup = function(node){
-			// top level, need to create array and recurse down
-			if(node.getElementsByTagName){
-				var children = node.getElementsByTagName("*");
-				i = children.length;
-				var element;
-				while(element = children[--i]){
-					if(element.onpage){ // the indicator that it has events, don't go in the loop unless it is there to move along faster
-						element.onpage();
-					}
-				}
-				if(node.onpage){
-					node.onpage();
-				}
-			}
-		};
-		var cleanupNode = function (){
-			var i, l, usedEventsArray = cleanupNode.usedEventsArray;
-			if(!usedEventsArray){
-				// it is from the higher scope so it is cached
-				cleanupNode.usedEventsArray = usedEventsArray = [];
-				for(i in cleanupNode.usedEvents){
-					usedEventsArray.push("on" + i);
-				}
-			}
-			for(i = 0, l = usedEventsArray.length; i < l; i++){
-				if(this[usedEventsArray[i]]){
-					this[usedEventsArray[i]] = null;
-				}
-			}
-		}
-		cleanupNode.usedEvents = {page:true};
-		// register to cleanup afterwards
-		listen(window, "unload", function(){
-			cleanup(document);
-		});
-		listen.destroy = function(node, listener){
-			// overriding default impl to add onpage listeners after this memory managing one is created
-			return listen(node, "page", listener);
-		}
-	}
-	
-
 	if(has("touch")){ 
 		var windowOrientation = window.orientation; 
 		var Event = function (){};

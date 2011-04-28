@@ -10,7 +10,7 @@ define(["../has", "require"], function(has, require){
 	);
 
 	var result= this.dojoConfig || this.djConfig || {};
-	if(has("dom") && has("dojo-sniff") && !has("loader-isDojo")){
+	if(has("dom") && has("dojo-sniff") && !has("dojo-loader")){
 		// if we're not under the dojo loader, then assume the user doesn't want to sniff the baseUrl from the loader (since it must already be set)
 		// notice this loop breaks on first match
 		for (var config, src, match, scripts = document.getElementsByTagName("script"), i= 0; i<scripts.length && !match; i++) {

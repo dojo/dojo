@@ -15,8 +15,8 @@ define(["require"], function(require) {
 	// try to pull the has implementation from the loader; both the dojo loader and bdLoad provide one
 	// WARNING: if a foreign loader defines require.has to be something other than the has.js API, then this implementation fail
 	var has = require.has || function(){};
-	if(!has("loader-hasApi")){
-		// notice the condition is written so that if has("loader-hasApi") is transformed to 1 during a build
+	if(!has("dojo-has-api")){
+		// notice the condition is written so that if has("dojo-has-api") is transformed to 1 during a build
 		// the conditional will be (!1 && typeof has=="function") which is statically false and the closure
 		// compiler will discard the block.
 		var
@@ -98,7 +98,7 @@ define(["require"], function(require) {
 		// can optimize these away iff desired
 		has.add("host-browser", isBrowser);
 		has.add("dom", isBrowser);
-		has.add("loader-pageLoadApi", 1);
+		has.add("dojo-domloaded-api", 1);
 		has.add("dojo-sniff", 1);
 	}
 

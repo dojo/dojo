@@ -9,11 +9,11 @@
 			}
 		};
 		if(location.search=="?noCatch"){
-			dojoConfig.has["loader-catchApi"]= 0;
-			dojoConfig.has["loader-errorApi"]= 0;
+			dojoConfig.has["dojo-loader-catches"]= 0;
+			dojoConfig.has["dojo-error-api"]= 0;
 		}else{
-			dojoConfig.has["loader-catchApi"]= 1;
-			dojoConfig.has["loader-errorApi"]= 1;
+			dojoConfig.has["dojo-loader-catches"]= 1;
+			dojoConfig.has["dojo-error-api"]= 1;
 		}
 	</script>
 	<script type="text/javascript" src="../../../dojo.js" data-dojo-config="isDebug:1, async:1"></script>
@@ -59,7 +59,7 @@
 
 						t.is(callbackCalled, 0);
 						t.is(require("dojo/tests/_base/loader/OkModule1"), "OkModule1");
-						if(has("loader-catchApi")){
+						if(has("dojo-loader-catches")){
 							t.is(require.modules["dojo*tests/_base/loader/throwModule"].executed.value, "exec-threw");
 						}else{
 							t.is(require.modules["dojo*tests/_base/loader/throwModule"].executed.value, "executing");
@@ -77,7 +77,7 @@
 						t.is(callbackCalled, 1);
 
 						// insert an error handler that fixes the error and signals to continue...
-						if(has("loader-errorApi")){
+						if(has("dojo-error-api")){
 							function handler(messageId, args){
 								t.is(messageId, "loader/exec");
 								t.is(args[0].pqn, "dojo*tests/_base/loader/throwModule1");

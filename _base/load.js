@@ -8,12 +8,12 @@ define(["./kernel", "../has", "require", "./lang"], function(dojo, has, require)
 	// Note that the AMD specification says nothing about this functionality. However, the dojo loader, bdLoad,
 	// and RequireJS are known to provide and intend to maintain support for this feature.
 
-	has.add("loader-priority-readyApi",
+	has.add("dojo-ready-api",
 		// if true, define the ready queue to include priority attributes
 		0
 	);
 	var ready;
-	if(has("loader-priority-readyApi")){
+	if(has("dojo-ready-api")){
 		ready= require.ready;
 	}else{
 	 // Currently, RequireJS does not support priority onLoad queues which are required for dojo, so if that's

@@ -63,8 +63,6 @@
 	// pqn: package-qualified name
 	// pack: package is used internally to reference a package object (since javascript has reserved words including "package")
 	// The integer constant 1 is used in place of true and 0 in place of false.
-	//
-	// WARNING: TODO: inline commentary is slightly stale; trust the code, not the comments
 
 	var
 		// define a minimal library to help build the loader
@@ -200,7 +198,7 @@
 		executed = 5,
 		execThrew = 6;
 
-	if(has("loader-traceApi")){
+	if(has("dojo-trace-api")){
 		// TODO: consider moving the symbol table to a public API offered by the loader
 		var
 			symbols =
@@ -219,7 +217,7 @@
 		execThrew = symbol("exec-threw");
 	}
 
-	if(has("loader-comboApi")){
+	if(has("dojo-combo-api")){
 		req.combo= {add:noop};
 		var
 			comboPending= 0,
@@ -234,7 +232,7 @@
 	var reqEval, pathTransforms, paths, pathsMapProg, packs, packageMap, packageMapProg, modules, cache;
 	mix(req, defaultConfig);
 	delete req.packages;
-	if(!has("loader-auto-initialization")){
+	if(!has("dojo-auto-init")){
 		reqEval= req.eval= req.eval ||
 			// use the function constructor so our eval is scoped in the global space
 			new Function("__text", "__hint", 'return eval(__text + "\\r\\n//@ sourceURL=" + __hint);');
@@ -309,7 +307,7 @@
 	//
 	// configuration machinery (with an optimized/built defaultConfig, this can be discarded)
 	//
-	if(has("loader-configApi")){
+	if(has("dojo-config-api")){
 		var
 			computeMapProg = function(map){
 				// This routine takes a map target-prefix(string)-->replacement(string) into a vector
@@ -434,7 +432,7 @@
 		// execute the various sniffs
 		//
 
-		if(has("loader-sniff")){
+		if(has("dojo-sniff")){
 			for(var src, match, dataMain, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
 				if((src = scripts[i].getAttribute("src")) && (match = src.match(/require\.js$/))){
 					req.baseUrl = src.substring(0, match.index) || "./";
@@ -484,7 +482,7 @@
 	//
 
 	var
-		registerCallback= has("loader-configApi") || has("loader-errorApi") ?
+		registerCallback= has("dojo-config-api") || has("dojo-error-api") ?
 			// this cruft feels uncomfortable; consider doing something else
 			function(callback, queue){
 				queue.push(callback);
@@ -500,7 +498,7 @@
 
 		injectDependencies = function(module){
 			forEach(module.deps, injectModule);
-			if(has("loader-comboApi") && comboPending){
+			if(has("dojo-combo-api") && comboPending){
 				comboPending= 0;
 				req.combo.done(function(mids, url) {
 					var onLoadCallback= function(){
@@ -582,7 +580,7 @@
 				result.toAbsMid = function(mid){
 					return getModuleInfo(mid, module, packs, modules, req.baseUrl, ".", packageMapProg, pathsMapProg, pathTransforms).path;
 				};
-				if(has("loader-undefApi")){
+				if(has("dojo-undef-api")){
 					result.undef = function(moduleId){
 						// In order to reload a module, it must be undefined (this routine) and then re-requested.
 						// This is useful for testing frameworks (at least).
@@ -773,7 +771,7 @@
 
 		// this is a flag to say at least one factory was run during a deps tree traversal
 		runFactory = function(pqn, factory, args, cjs){
-			req.trace("loader-runFactory", [pqn]);
+			req.trace("loader-run-factory", [pqn]);
 			var result= isFunction(factory) ? factory.apply(null, args) : factory;
 			return result===undefined && cjs ? cjs.exports : result;
 		},
@@ -794,7 +792,7 @@
 					args = [],
 					i = 0;
 
-				req.trace("loader-execModule", ["exec", pqn]);
+				req.trace("loader-exec-module", ["exec", pqn]);
 
 				// for circular dependencies, assume the first module encountered was executed OK
 				// modules that circularly depend on a module that has not run its factory will get
@@ -811,13 +809,13 @@
 											execModule(arg))));
 					if(argResult === abortExec){
 						module.executed = 0;
-						req.trace("loader-execModule", ["abort", pqn]);
+						req.trace("loader-exec-module", ["abort", pqn]);
 						return abortExec;
 					}
 					args.push(argResult);
 				}
 				module.evalOrder = evalOrder++;
-				if(has("loader-catchApi")){
+				if(has("dojo-loader-catches")){
 					try{
 						module.result = runFactory(pqn, module.def, args, module.cjs);
 					}catch(e){
@@ -840,7 +838,7 @@
 						load.apply(null, q.shift());
 					}
 				}
-				req.trace("loader-execModule", ["complete", pqn]);
+				req.trace("loader-exec-module", ["complete", pqn]);
 			}
 			return module.result;
 		},
@@ -865,7 +863,7 @@
 					i++;
 				}
 			}
-			if(has("loader-priority-readyApi")){
+			if(has("dojo-ready-api")){
 				onLoad();
 			}
 		},
@@ -874,7 +872,7 @@
 
 
 	// the dojo loader needs/optionally provides an XHR factory
-	if(has("dojo-sync-loader") || has("loader-provides-xhr")){
+	if(has("dojo-sync-loader") || has("dojo-xhr-factory")){
 		has.add("native-xhr", typeof XMLHttpRequest != "undefined");
 		if(has("native-xhr")){
 			getXhr = function(){
@@ -903,7 +901,7 @@
 	}
 
 	// the dojo loader needs/optionally provides a getText API
-	if(has("dojo-sync-loader") || has("loader-getTextApi")){
+	if(has("dojo-sync-loader") || has("dojo-gettext-api")){
 		var getText = req.getText = req.getText || function(url, async, onLoad){
 			var xhr = getXhr();
 			if(async){
@@ -932,7 +930,7 @@
 		return id;
 	};
 
-	if(has("loader-undefApi")){
+	if(has("dojo-undef-api")){
 		req.undef = function(moduleId){
 			// In order to reload a module, it must be undefined (this routine) and then re-requested.
 			// This is useful for testing frameworks (at least).
@@ -942,7 +940,7 @@
 		};
 	}
 
-	if(has("loader-injectApi")){
+	if(has("dojo-inject-api")){
 		var
 			injectPlugin = function(
 				module,
@@ -1021,7 +1019,7 @@
 				module.injected = requested;
 				setIns(waiting, pqn);
 
-				if(has("loader-comboApi") && req.combo.add(0, module.path, module.url, req)){
+				if(has("dojo-combo-api") && req.combo.add(0, module.path, module.url, req)){
 					comboPending= 1;
 					return;
 				}
@@ -1049,7 +1047,7 @@
 							execQ.push(module);
 							++syncDepth;
 							req.trace("loader-inject", ["sync", module.pqn, url]);
-							if(has("loader-catchApi")){
+							if(has("dojo-loader-catches")){
 								try{
 									// always synchronous...
 									getText(url, 0, function(text){
@@ -1082,14 +1080,14 @@
 						}
 					}
 					injecting.push(module);
-					req.trace("loader-inject", [module.pqn, url]);
+					req.trace("dojo-inject", [module.pqn, url]);
 					module.node = req.injectUrl(url, onLoadCallback);
 					injecting.pop();
 				}
 			},
 
 			defineModule = function(module, deps, def){
-				req.trace("loader-defineModule", [module.pqn, deps]);
+				req.trace("loader-define-module", [module.pqn, deps]);
 
 				var pqn = module.pqn;
 				if(module.injected == arrived){
@@ -1142,7 +1140,7 @@
 		timerId = 0,
 		clearTimer = noop,
 		startTimer = noop;
-	if(has("loader-timeoutApi")){
+	if(has("dojo-timeout-api")){
 		// Timer machinery that monitors how long the loader is waiting and signals an error when the timer runs out.
 		clearTimer = function(){
 			timerId && clearTimeout(timerId);
@@ -1162,7 +1160,7 @@
 		has.add("dom-addeventlistener", !!doc.addEventListener);
 	}
 
-	if(has("dom") && (has("loader-pageLoadApi") || has("loader-injectApi"))){
+	if(has("dom") && (has("dojo-domloaded-api") || has("dojo-inject-api"))){
 		var on = function(node, eventName, handler, useCapture, ieEventName){
 			// Add an event listener to a DOM node using the API appropriate for the current browser;
 			// return a function that will disconnect the listener.
@@ -1185,7 +1183,7 @@
 		};
 	}
 
-	if(has("dom") && has("loader-injectApi")){
+	if(has("dom") && has("dojo-inject-api")){
 		var head = doc.getElementsByTagName("head")[0] || doc.getElementsByTagName("html")[0];
 		req.injectUrl = req.injectUrl || function(url, callback){
 			// Append a script element to the head element with src=url; apply callback upon
@@ -1211,7 +1209,7 @@
 		};
 	}
 
-	if(has("loader-pageLoadApi")){
+	if(has("dojo-domloaded-api")){
 		// WARNING: document.readyState does not work with Firefox before 3.6. To support
 		// those browsers, manually init require.pageLoaded in configuration.
 
@@ -1269,7 +1267,7 @@
 		req.pageLoaded = 1;
 	}
 
-	if(has("loader-priority-readyApi")){
+	if(has("dojo-ready-api")){
 		var
 			loadQ =
 				// The queue of functions waiting to execute as soon as all conditions given
@@ -1282,7 +1280,7 @@
 					//guard against recursions into this function
 					onLoadRecursiveGuard = 1;
 					var f = loadQ.shift();
-					if(has("loader-catchApi")){
+					if(has("dojo-loader-catches")){
 						try{
 							f();
 						}catch(e){
@@ -1325,7 +1323,7 @@
 		};
 	};
 
-	if(has("loader-logApi")){
+	if(has("dojo-log-api")){
 		req.log = req.log || function(){
 			// we're not going to mess around in defective environments
 			if(typeof console == "undefined" || typeof console.log != "function"){
@@ -1339,7 +1337,7 @@
 		req.log = noop;
 	}
 
-	if(has("loader-traceApi")){
+	if(has("dojo-trace-api")){
 		var trace= function(
 			group,	// the trace group to which this application belongs
 			args	// the contents of the trace
@@ -1378,7 +1376,7 @@
 		req.trace = noop;
 	}
 
-	if(has("loader-errorApi")){
+	if(has("dojo-error-api")){
 		//
 		// Error Detection and Recovery
 		//
@@ -1437,7 +1435,7 @@
 			args = 0,
 			defaultDeps = ["require", "exports", "module"];
 
-		if(has("loader-amdFactoryScan")){
+		if(has("dojo-amd-factory-scan")){
 			if(arity == 1){
 				dependencies = [];
 				mid.toString()
@@ -1478,7 +1476,7 @@
 						break;
 					}
 				}
-				if(has("loader-comboApi") && !targetModule){
+				if(has("dojo-combo-api") && !targetModule){
 					for(var i= 0; i<combosPending.length; i++){
 						targetModule= combosPending[i];
 						if(targetModule.node && targetModule.node.readyState === 'interactive'){
@@ -1488,7 +1486,7 @@
 					}
 				}
 			}
-			if(has("loader-comboApi") && isArray(targetModule)){
+			if(has("dojo-combo-api") && isArray(targetModule)){
 				injectDependencies(defineModule(targetModule.shift(), args[1], args[2]));
 				if(!targetModule.length){
 					combosPending.splice(i, 1);
@@ -1504,7 +1502,7 @@
 		vendor:"dojotoolkit.org"
 	};
 
-	if(has("loader-requirejsApi")){
+	if(has("dojo-requirejs-api")){
 		req.def = def;
 	}
 
@@ -1576,7 +1574,7 @@
 		};
 	}
 
-	if(has("loader-publish-privates")){
+	if(has("dojo-publish-privates")){
 		mix(req, {
 			// these may be interesting for other modules to use
 			isEmpty:isEmpty,
@@ -1612,7 +1610,7 @@
 	// the loader can be defined exactly once; look for global define which is the symbol AMD loaders are
 	// *required* to define (as opposed to require, which is optional)
 	if(global.define){
-		if(has("loader-logApi")){
+		if(has("dojo-log-api")){
 			req.log("global define already defined; did you try to load multiple AMD loaders?");
 		}
 	}else{
@@ -1631,24 +1629,23 @@
 		hasCache:{
 			"host-browser":1,
 			"dom":1,
-			"loader-amdFactoryScan":1,
-			"loader-isDojo":1,
-			"loader-hasApi":1,
-			"loader-provides-xhr":1,
-			"loader-injectApi":1,
-			"loader-timeoutApi":1,
-			"loader-traceApi":1,
-			"loader-logApi":1,
-			"loader-catchApi":0,
-			"loader-pageLoadApi":1,
-			"loader-priority-readyApi":1,
-			"loader-errorApi":1,
-			"loader-publish-privates":1,
-			"loader-getTextApi":1,
-			"loader-configApi":1,
+			"dojo-amd-factory-scan":1,
+			"dojo-loader":1,
+			"dojo-has-api":1,
+			"dojo-xhr-factory":1,
+			"dojo-inject-api":1,
+			"dojo-timeout-api":1,
+			"dojo-trace-api":1,
+			"dojo-log-api":1,
+			"dojo-loader-catches":0,
+			"dojo-domloaded-api":1,
+			"dojo-ready-api":1,
+			"dojo-error-api":1,
+			"dojo-publish-privates":1,
+			"dojo-gettext-api":1,
+			"dojo-config-api":1,
 			"dojo-sniff":1,
 			"dojo-sync-loader":1,
-			"dojo-boot":1,
 			"dojo-test-sniff":1
 		},
 		packages:[{
@@ -1685,9 +1682,9 @@
 			// these are listed so it's simple to turn them on/off while debugging loading
 			"loader-inject":0,
 			"loader-define":0,
-			"loader-runFactory":0,
-			"loader-execModule":0,
-			"loader-defineModule":0
+			"loader-run-factory":0,
+			"loader-exec-module":0,
+			"loader-define-module":0
 		},
 		async:0
 	}
@@ -1696,7 +1693,7 @@
 (function(){
 	// must use this.require to make this work in node.js
 	var require = this.require;
-	require.has("dojo-boot") && require(["dojo"]);
+	!require.async && require(["dojo"]);
 	require.bootRequire && require.apply(null, require.bootRequire);
 	require.bootReady && require.ready(require.bootReady);
 })();

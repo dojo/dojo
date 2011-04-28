@@ -56,7 +56,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 	for(p in config.has){
 		has.add(p, config.has[p], 0, 1);
 	}
-	if(has("loader-isDojo") && has("loader-configApi")){
+	if(has("dojo-loader") && has("dojo-config-api")){
 		require.onConfig(function(config){
 			for(p in config){
 				has.add(p, config[p]);
@@ -103,7 +103,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 	}
 
 	dojo.isAsync= function() {
-		return !has("loader-isDojo") || require.async;
+		return !has("dojo-loader") || require.async;
 	};
 
 	// define dojo's eval method so that an almost-pristine environment is provided

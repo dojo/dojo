@@ -19,7 +19,7 @@ define(["./kernel", "../has", "require", "./sniff", "./Deferred", "./json", "./l
 				throw new Error("XMLHTTP not available: "+e);
 			}
 		};
-	}else if(has("loader-provides-xhr")){
+	}else if(has("dojo-xhr-factory")){
 		dojo._xhrObj = require.getXhr;
 	}else{
 		// PROGIDs are in order of decreasing likelihood; this will change in time.

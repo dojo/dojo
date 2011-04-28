@@ -578,6 +578,7 @@
 					return nameToUrl(name, ext, module);
 				};
 				result.toAbsMid = function(mid){
+					// FIXME: the .path is wrong for a package main module
 					return getModuleInfo(mid, module, packs, modules, req.baseUrl, ".", packageMapProg, pathsMapProg, pathTransforms).path;
 				};
 				if(has("dojo-undef-api")){
@@ -710,13 +711,13 @@
 				url = mapItem[1] + path.substring(mapItem[3] - 1);
 			}else if(pid){
 				pack = packs[pid];
+				path = pid + "/" + (mid || "main");
 				url = transformPath(path, pack.pathTransforms);
 				if(!url){
-					path = pid + "/" + (mid || pack.main);
 					url = pack.location + "/" + (mid && pack.lib ? pack.lib + "/" : "") + (mid || pack.main);
 				}
 			}else{
-				url = transformPath(path, pathTransforms) || "../" + path;
+				url = transformPath(path, pathTransforms) || path;
 			}
 			// if result is not absolute, add baseUrl
 			if(!(/(^\/)|(\:)/.test(url))){

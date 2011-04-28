@@ -1,4 +1,4 @@
-define(["dojo", "require", "./has"], function(dojo, require, has){
+define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr, require, has){
 	// module:
 	//		dojo/text
 	// summary:
@@ -16,7 +16,7 @@ define(["dojo", "require", "./has"], function(dojo, require, has){
 	//		loader. This feature is outside the scope of the CommonJS plugins specification.
 
 	var getText= function(url, sync, load){
-		dojo.xhrGet({url:url, sync:sync, load:load});
+		xhr("GET", {url:url, sync:sync, load:load});
 	};
 	if(!has("host-browser")){
 		// TODOC: only works for dojo AMD loader
@@ -108,7 +108,7 @@ define(["dojo", "require", "./has"], function(dojo, require, has){
 				value = url;
 			}
 			var
-				val = (value != undefined && !dojo.isString(value)) ? value.value : value,
+				val = (value != undefined && typeof value != "string") ? value.value : value,
 				sanitize = value && value.sanitize;
 
 			if(typeof val == "string"){

@@ -99,7 +99,11 @@ define(["../has", "./config", "require"], function(has, config, require){
 	// this is the v1.6- behavior. Going forward from 1.7, consider modulePaths deprecated and
 	// configure the loader directly.
 	if(config.modulePaths){
-		require({paths:config.modulePaths});
+		var paths= {};
+		for(p in config.modulePaths){
+			paths[p.replace(/\./g, "/")]= config.modulePaths[p];
+		}
+		require({paths:paths});
 	}
 
 	dojo.isAsync= function() {

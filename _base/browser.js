@@ -1,3 +1,7 @@
+if(!dojo.config.selectorEngine){
+	//unless the user has specified something else, we will default to always using the Acme selector engine, for back-compat in base
+	require({"selectorEngine":"acme"});
+}
 define([
 	"./kernel",
 	"./sniff",

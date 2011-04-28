@@ -19,7 +19,7 @@ var acme = "./selector/acme", lite = "./selector/lite";
 return {
 	load: function(id, parentRequire, loaded, config){
 		// here we implement the default logic for choosing a selector engine
-		id = id == "default" ? "acme"/*has("dojo-query-selector")*/ || "css3" : id;
+		id = id == "default" ? has("config-selectorEngine") || "css3" : id;
 		id = id == "css2" || id == "lite" ? lite : 
 				id == "css2.1" ? has("dom-qsa2.1") ? lite : acme :
 				id == "css3" ? has("dom-qsa3") ? lite : acme :

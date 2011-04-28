@@ -51,6 +51,9 @@ tests.register("tests._base.json",
 			var testObj = dojo.fromJson(testStr);
 			t.is("function", typeof testObj.func);
 			t.is("number", typeof testObj.number);			
+		},
+		function toJsonStringObject(t){
+			t.is('"hello"', dojo.toJson(new String("hello")));
 		}
 	]
 );

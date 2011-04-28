@@ -90,6 +90,10 @@ define(["./_base/kernel", "./has"], function(dojo, has){
 					if(typeof it.toJSON == "function"){
 						return stringify(it.toJSON(key), indent, key);
 					}
+					if(it.valueOf() !== it){
+						// primitive wrapper, try again unwrapped:
+						return stringify(it.valueOf(), indent, key);
+					}
 					var nextIndent= spacer ? (indent + spacer) : "";
 					if(it.nodeType && it.cloneNode){ // isNode
 						// we can't seriailize DOM nodes as regular objects because they have cycles

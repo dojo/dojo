@@ -58,15 +58,15 @@ define("dojo/aspect",[], function(){
 //		This is function to be called before, after, or around the original method
 //		
  	"use strict";
-	var undef;
 	function advise(dispatcher, type, advice, receiveArguments){
 		var previous = dispatcher[type];
 		var around = type == "around";
+		var signal;
 		if(around){
 			var advised = advice(function(){
 				return previous.advice(this, arguments);
 			});
-			var signal = {
+			signal = {
 				cancel: function(){
 					signal.cancelled = true;
 				},
@@ -78,7 +78,7 @@ define("dojo/aspect",[], function(){
 			};
 		}else{
 			// create the cancel handler
-			var signal = {
+			signal = {
 				cancel: function(){
 					var previous = signal.previous;
 					var next = signal.next;

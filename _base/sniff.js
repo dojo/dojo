@@ -21,7 +21,7 @@ define(["./kernel", "../has"], function(dojo, has){
 		isSafari,
 		isMozilla ,
 		isMoz,
-		isIE ,
+		isIE,
 		isFF,
 		isQuirks;
 

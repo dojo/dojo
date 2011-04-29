@@ -366,7 +366,7 @@
 					}
 					// accumulate raw config info for client apps which can use this to pass their own config
 					req.rawConfig[p]= config[p];
-					has.add("config-"+p, config[p]);
+					has.add("config-"+p, config[p], 0, booting);
 				}
 
 				// now do the special work for has, pathTransforms, packagePaths, packages, paths, deps, callback, and ready
@@ -717,7 +717,7 @@
 					url = pack.location + "/" + (mid && pack.lib ? pack.lib + "/" : "") + (mid || pack.main);
 				}
 			}else{
-				url = transformPath(path, pathTransforms) || path;
+				url = transformPath(path, pathTransforms) || (has("config-tlmSiblingOfDojo") ? "../" : "") + path;
 			}
 			// if result is not absolute, add baseUrl
 			if(!(/(^\/)|(\:)/.test(url))){
@@ -871,10 +871,9 @@
 
 		getXhr = 0;
 
-
 	// the dojo loader needs/optionally provides an XHR factory
 	if(has("dojo-sync-loader") || has("dojo-xhr-factory")){
-		has.add("dojo-force-activex-xhr", !doc.addEventListener && window.location.protocol == "file:");
+		has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");
 		has.add("native-xhr", typeof XMLHttpRequest != "undefined");
 		if(has("native-xhr") && !has("dojo-force-activex-xhr")){
 			getXhr = function(){
@@ -1647,6 +1646,7 @@
 			"dojo-gettext-api":1,
 			"dojo-config-api":1,
 			"dojo-sniff":1,
+			"config-tlmSiblingOfDojo":1,
 			"dojo-sync-loader":1,
 			"dojo-test-sniff":1
 		},

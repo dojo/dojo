@@ -9,7 +9,9 @@ define(["./kernel", "../has", "require", "./sniff", "./Deferred", "./json", "./l
 		return !!XMLHttpRequest;
 	});
 
-	if (has("native-xhr")){
+	if(has("dojo-xhr-factory")){
+		dojo._xhrObj = require.getXhr;
+	}else if (has("native-xhr")){
 		dojo._xhrObj = function(){
 			// summary:
 			//		does the work of portably generating a new XMLHTTPRequest object.
@@ -19,8 +21,6 @@ define(["./kernel", "../has", "require", "./sniff", "./Deferred", "./json", "./l
 				throw new Error("XMLHTTP not available: "+e);
 			}
 		};
-	}else if(has("dojo-xhr-factory")){
-		dojo._xhrObj = require.getXhr;
 	}else{
 		// PROGIDs are in order of decreasing likelihood; this will change in time.
 		for(var XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'], progid, i = 0; i<3;){

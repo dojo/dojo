@@ -874,8 +874,9 @@
 
 	// the dojo loader needs/optionally provides an XHR factory
 	if(has("dojo-sync-loader") || has("dojo-xhr-factory")){
+		has.add("dojo-force-activex-xhr", !doc.addEventListener && window.location.protocol == "file:");
 		has.add("native-xhr", typeof XMLHttpRequest != "undefined");
-		if(has("native-xhr")){
+		if(has("native-xhr") && !has("dojo-force-activex-xhr")){
 			getXhr = function(){
 				return new XMLHttpRequest();
 			};

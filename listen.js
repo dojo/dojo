@@ -179,11 +179,36 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		// summary:
 		//		Fires an event on the target object.
 		//	target:
-		//		The target object to fire the event on
+		//		The target object to fire the event on. This can be a DOM element or a plain 
+		// 		JS object. If the target is a DOM element, native event dispatching mechanisms
+		//		are used when possible.
 		//	type:
-		//		The event type name
+		//		The event type name. You can emulate standard native events like "click" and 
+		// 		"mouseover" or create custom events like "open" or "finish".
 		//	event:
-		//		An object to use as the event. See https://developer.mozilla.org/en/DOM/event.initEvent for some of the properties.
+		//		An object that provides the properties for the event. See https://developer.mozilla.org/en/DOM/event.initEvent 
+		// 		for some of the properties. These properties are copied to the event object.
+		//		Of particular importance are the cancelable and bubbles properties. The
+		//		cancelable property indicates whether or not the event has a default action
+		// 		that can be cancelled. The event is cancelled by calling preventDefault() on
+		// 		the event object. The bubbles property indicates whether or not the
+		//		event will bubble up the DOM tree. If bubbles is true, the event will be called
+		//		on the target and then each parent successively until the top of the tree
+		//		is reached or stopPropagation() is called. Both bubbles and cancelable 
+		// 		default to false.
+		//	returns:
+		//		If the event is cancelable and the event is not cancelled,
+		// 		dispatch will return true. If the event is cancelable and the event is cancelled,
+		// 		dispatch will return false.
+		//	details:
+		//		Note that this is designed to dispatch events for listeners registered through
+		//		dojo/listen. It should actually work with any event listener except those
+		// 		added through IE's attachEvent (IE8 and below's non-W3C event dispatching
+		// 		doesn't support custom event types). It should work with all events registered
+		// 		through dojo/listen. Also note that the dispatch method does do any default
+		// 		action, it only returns a value to indicate if the default action should take
+		// 		place. For example, dispatching a keypress event would not cause a character
+		// 		to appear in a textbox.
 		//	example:
 		//		To fire our own click event
 		//	|	listen.dispatch(dojo.byId("button"), "click", {
@@ -193,7 +218,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		//	|		screenY: 44
 		//	|	});
 		//		We can also fire our own custom events:
-		//	|	listen.dispatch(dojo.byId("slider"), "swipe", {
+		//	|	listen.dispatch(dojo.byId("slider"), "slide", {
 		//	|		cancelable: true,
 		//	|		bubbles: true,
 		//	|		direction: "left-to-right"

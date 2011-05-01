@@ -791,7 +791,7 @@ if(dojo.isIE){
 					}
 				}
 			}
-		}else if(d.isOpera || (d.isIE > 7 && !d.isQuirks)){
+		}else if(d.isOpera || (d.isIE == 8 && !d.isQuirks)){
 			// On Opera and IE 8, offsetLeft/Top includes the parent's border
 			if(p){
 				be = d._getBorderExtents(p);

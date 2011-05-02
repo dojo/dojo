@@ -1,4 +1,4 @@
-define(["./kernel", "../has", "require", "./sniff", "./Deferred", "./json", "./lang"], function(dojo, has, require){
+define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "./json", "./lang"], function(dojo, has, require, listen){
 	//	module:
 	//		dojo/_base.xhr
 	// summary:
@@ -748,7 +748,7 @@ define(["./kernel", "../has", "require", "./sniff", "./Deferred", "./json", "./l
 	//Automatically call cancel all io calls on unload
 	//in IE for trac issue #2357.
 	if(has("ie")){
-		_d.addOnWindowUnload(_d._ioCancelAll);
+		listen(window, "unload", _d._ioCancelAll);
 	}
 
 	_d._ioNotifyStart = function(/*Deferred*/dfd){

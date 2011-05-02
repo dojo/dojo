@@ -152,7 +152,7 @@ dojo.parser = new function(){
 			}else{
 				// Special path for IE, avoid (sometimes >100) bogus entries in node.attributes
 				var clone = /^input$|^img$/i.test(node.nodeName) ? node : node.cloneNode(false),
-					attrs = clone.outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g, "").replace(/^\s*<[a-zA-Z]*/, "").replace(/>.*$/, "");
+					attrs = clone.outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g, "").replace(/^\s*<[a-zA-Z0-9]*/, "").replace(/>.*$/, "");
 
 				attributes = dojo.map(attrs.split(/\s+/), function(name){
 					var lcName = name.toLowerCase();

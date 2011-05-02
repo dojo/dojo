@@ -532,6 +532,30 @@
 					doh.is("custom title", mixedObj.title, "data-dojo-props overrides native");
 				});
 
+				doh.register("functions", function onclick(){
+					// Create objects referenced from markup inside of "functions" div
+					dojo.declare("tests.parser.Button", null, {
+						onClick: function(){
+							console.log("prototype click");
+						},
+						constructor: function(args, node){
+							dojo.mixin(this, args);
+							this.domNode = node;
+							dojo.connect(this.domNode, "onclick", this, "onClick");
+						}
+					});
+					buttonClicked = function(){
+						console.log("markup click");
+					};	// markup says onClick="buttonClicked"
+
+					// Parse markup inside "functions" div
+					dojo.parser.parse("functions");
+
+					// Should have created an instance called "button" where button.onClick == buttonClicked
+					doh.is("object", typeof button, "widget created");
+					doh.is("function", typeof button.onClick, "created as function");
+					doh.t(buttonClicked == button.onClick, "points to specified function");
+				})
 				doh.run();
 			})
 		});
@@ -717,6 +741,11 @@
 		<div id="mixedContainer">
 			<input data-dojo-type="tests.parser.InputClass" data-dojo-id="mixedObj"
 				  value="mixedValue" title="native title" data-dojo-props="custom1: 999, title: 'custom title'">
+		</div>
+
+		<!-- tests for function names native to HTML, specifically an issue on IE<8 -->
+		<div id="functions">
+			<button dojoType="tests.parser.Button" onClick="buttonClicked" jsId="button">Click me</button>
 		</div>
 
 	</body>

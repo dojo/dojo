@@ -160,8 +160,8 @@ dojo.parser = new function(){
 						name: name,
 						// getAttribute() doesn't work for button.value, returns innerHTML of button.
 						// but getAttributeNode().value doesn't work for the form.encType or li.value
-						value: node.nodeName.match(/^BUTTON$|^TEXTAREA$/) && name == "value" ?
-								node.getAttributeNode(lcName).value : node.getAttribute(lcName),
+						value: (node.nodeName == "LI" && name == "value") || lcName == "enctype" ?
+								node.getAttribute(lcName) : node.getAttributeNode(lcName).value,
 						specified: true
 					};
 				});
@@ -222,7 +222,7 @@ dojo.parser = new function(){
 					}
 
 					// Set params[name] to value, doing type conversion
-					if(typeof value == "string" && name in proto){
+					if(name in proto){
 						switch(typeof proto[name]){
 						case "string":
 							params[name] = value;
@@ -232,26 +232,17 @@ dojo.parser = new function(){
 							break;
 						case "boolean":
 							// for checked/disabled value might be "" or "checked".	 interpret as true.
-							params[name] = typeof value == "boolean" ? value : !(value.toLowerCase()=="false");
+							params[name] = value.toLowerCase() != "false";
 							break;
 						case "function":
-							if(d.isFunction(value)){
-								// IE gives us a function, even when we say something like onClick="foo"
-								// (in which case it gives us an invalid function "function(){ foo }").
-								//	Therefore, convert to string
-								value=value.toString();
-								value=d.trim(value.substring(value.indexOf('{')+1, value.length-1));
+							if(value === "" || value.search(/[^\w\.]+/i) != -1){
+								// The user has specified some text for a function like "return x+5"
+								params[name] = new Function(value);
+							}else{
+								// The user has specified the name of a function like "myOnClick"
+								// or a single word function "return"
+								params[name] = d.getObject(value, false) || new Function(value);
 							}
-							try{
-								if(value === "" || value.search(/[^\w\.]+/i) != -1){
-									// The user has specified some text for a function like "return x+5"
-									params[name] = new Function(value);
-								}else{
-									// The user has specified the name of a function like "myOnClick"
-									// or a single word function "return"
-									params[name] = d.getObject(value, false) || new Function(value);
-								}
-							}catch(e){ params[name] = new Function(); }
 							break;
 						default:
 							var pVal = proto[name];

@@ -55,9 +55,6 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		has.add("jscript", major && (major() + ScriptEngineMinorVersion() / 10));
 		has.add("event-orientationchange", has("touch") && !dojo.isAndroid); // TODO: how do we detect this?
 	}
-	var undefinedThis = (function(){
-		return this; // this depends on strict mode
-	})();
 	var listen = function(target, type, listener, dontFix){
 		if(!listener){
 			// two args, do pub/sub
@@ -253,12 +250,9 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			target[method] && target[method].call(target, event);
 			// and then continue up the parent node chain if it is still bubbling (if started as bubbles and stopPropagation hasn't been called)
 		}while(event.bubbles && (target = target.parentNode));
-		return event.cancelable && event; // if it is still true (was cancelable and was cancelled, return the event to indicate default action should happen)
+		return event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
 	};
 
-	var undefinedThis = (function(){
-			return this; // this depends on strict mode
-		})();
 	if(has("dom-addeventlistener")){
 		// dispatcher that works with native event handling
 		listen.dispatch = function(target, type, event){

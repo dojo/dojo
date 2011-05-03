@@ -1,4 +1,4 @@
-define(["../has"], 
+define(["../has"],
 		function(has){
 // summary:
 //		This module handles loading the appropriate selector engine for the given browser
@@ -10,7 +10,7 @@ has.add("dom-qsa3", function(){
 			try{
 				testDiv.innerHTML = "<p class='TEST'></p>"; // test kind of from sizzle
 				// Safari can't handle uppercase or unicode characters when
-				// in quirks mode, IE8 can't handle pseudos like :empty 
+				// in quirks mode, IE8 can't handle pseudos like :empty
 				return testDiv.querySelectorAll(".TEST:empty").length == 1;
 			}catch(e){}
 		});
@@ -19,8 +19,9 @@ var acme = "./selector/acme", lite = "./selector/lite";
 return {
 	load: function(id, parentRequire, loaded, config){
 		// here we implement the default logic for choosing a selector engine
+		has.add("config-selectorEngine", "acme");
 		id = id == "default" ? has("config-selectorEngine") || "css3" : id;
-		id = id == "css2" || id == "lite" ? lite : 
+		id = id == "css2" || id == "lite" ? lite :
 				id == "css2.1" ? has("dom-qsa2.1") ? lite : acme :
 				id == "css3" ? has("dom-qsa3") ? lite : acme :
 				id == "acme" ? acme : id;
@@ -28,7 +29,7 @@ return {
 			id = id.substring(0,id.length - 1);
 			var optionalLoad = true;
 		}
-		// the query engine is optional, only load it if a native one is not available or existing one has not been loaded 
+		// the query engine is optional, only load it if a native one is not available or existing one has not been loaded
 		if(optionalLoad && (has("dom-compliant-qsa") || fullEngine)){
 			return loaded(fullEngine);
 		}

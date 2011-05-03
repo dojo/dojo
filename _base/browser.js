@@ -1,3 +1,4 @@
+require.has.add("config-selectorEngine", "acme");
 define([
 	"./kernel",
 	"./sniff",

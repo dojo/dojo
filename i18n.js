@@ -44,7 +44,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 			//
 			// If root===false indicates we're working with a pre-AMD i18n bundle that doesn't tell about the available locales;
 			// therefore, assume everything is available and get 404 errors that indicate a particular localization is not available
-            //
+			//
 
 			for(var result= [bundlePath + bundleName], localeParts= locale.split("-"), current= "", i= 0; i<localeParts.length; i++){
 				current+= (current ? "-" : "") + localeParts[i];
@@ -93,7 +93,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 					}
 					// target may not have been resolve (e.g., maybe only "fr" exists when "fr-ca" was requested)
 					cache[target]= current;
-					load(current);
+					load(dojo.delegate(current));
 				});
 			});
 		};

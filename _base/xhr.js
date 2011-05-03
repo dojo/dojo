@@ -278,11 +278,11 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		//	|		load: function(data){ /* data is a toUpper version of foo.txt */ }
 		//	|	});
 
-		text: function(xhr){
+		"text": function(xhr){
 			// summary: A contentHandler which simply returns the plaintext response data
 			return xhr.responseText;
 		},
-		json: function(xhr){
+		"json": function(xhr){
 			// summary: A contentHandler which returns a JavaScript object created from the response data
 			return _d.fromJson(xhr.responseText || null);
 		},
@@ -315,13 +315,13 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 			}
 			return _d.fromJson(value.substring(cStartIdx+2, cEndIdx));
 		},
-		javascript: function(xhr){
+		"javascript": function(xhr){
 			// summary: A contentHandler which evaluates the response data, expecting it to be valid JavaScript
 
 			// FIXME: try Moz and IE specific eval variants?
 			return _d.eval(xhr.responseText);
 		},
-		xml: function(xhr){
+		"xml": function(xhr){
 			// summary: A contentHandler returning an XML Document parsed from the response data
 			var result = xhr.responseXML;
 

@@ -119,10 +119,12 @@ define([".", "require", "./has"], function(dojo, require, has) {
 						url:url,
 						sync:true,
 						load:function(text){
-							var define= function(bundle){
-								results.push(cache[url]= bundle);
+							var __result;
+							// TODO: make sure closure compiler does not stop on this function name
+							function define(bundle){
+							  __result= bundle;
 							};
-							eval(text);
+							results.push(cache[url]= (eval(text) || __result));
 						}
 					});
 				}

@@ -41,10 +41,14 @@ define([".", "require", "./has"], function(dojo, require, has) {
 			// Then a locale argument of "fr-ca" would return
 			//	 ["myPackage/nls/myBundle", "myPackage/nls/fr/myBundle", "myPackage/nls/fr-ca/myBundle"]
 			// Notice that bundles are returned least-specific to most-specific, starting with the root.
+			//
+			// If root===false indicates we're working with a pre-AMD i18n bundle that doesn't tell about the available locales;
+			// therefore, assume everything is available and get 404 errors that indicate a particular localization is not available
+            //
 
 			for(var result= [bundlePath + bundleName], localeParts= locale.split("-"), current= "", i= 0; i<localeParts.length; i++){
 				current+= (current ? "-" : "") + localeParts[i];
-				if(root[current]){
+				if(!root || root[current]){
 					result.push(bundlePath + current + "/" + bundleName);
 				}
 			}
@@ -82,7 +86,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 			require([bundlePathAndName], function(root){
 				var
 					current= cache[bundlePathAndName + "/"]= dojo.clone(root.root),
-					availableLocales= getAvailableLocales(root, locale, bundlePath, bundleName);
+					availableLocales= getAvailableLocales(!root._v1x && root, locale, bundlePath, bundleName);
 				require(availableLocales, function(){
 					for (var i= 1; i<availableLocales.length; i++){
 						cache[bundlePathAndName + "/" + availableLocales[i]]= current= dojo.mixin(dojo.clone(current), arguments[i]);
@@ -119,12 +123,20 @@ define([".", "require", "./has"], function(dojo, require, has) {
 						url:url,
 						sync:true,
 						load:function(text){
-							var __result;
-							// TODO: make sure closure compiler does not stop on this function name
+							var
+								__result,
+								__fixup= function(bundle){
+									return bundle ? {root:bundle, _v1x:1} : __result;
+								};
+
+							// TODO: make sure closure compiler does not stomp on this function name
 							function define(bundle){
 							  __result= bundle;
 							};
-							results.push(cache[url]= (eval(text) || __result));
+							results.push(cache[url]= (__fixup(eval(text))));
+						},
+						error:function(){
+							results.push(cache[url]= {});
 						}
 					});
 				}

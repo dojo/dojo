@@ -51,6 +51,7 @@ doh.register("tests.listen",
 			var order = [];
 			var signal = listen(div,"custom", function(event){
 				order.push(event.a);
+				event.addedProp = "value";
 			});
 			listen.dispatch(div, "custom", {
 				a: 0
@@ -58,11 +59,11 @@ doh.register("tests.listen",
 			listen.dispatch(div, "otherevent", {
 				a: 0
 			});
-			t.t(listen.dispatch(span, "custom", { 
+			t.is(listen.dispatch(span, "custom", { 
 				a: 1,
 				bubbles: true,
 				cancelable: true
-			}));
+			}).addedProp, "value");
 			t.t(listen.dispatch(span, "custom", {
 				a: 1,
 				bubbles: false,
@@ -78,11 +79,11 @@ doh.register("tests.listen",
 				cancelable: true
 			}));
 			signal2.pause();
-			t.t(listen.dispatch(span, "custom", {
+			t.is(listen.dispatch(span, "custom", {
 				a: 4,
 				bubbles: true,
 				cancelable: true
-			}));
+			}).type, "custom");
 			signal2.resume();
 			signal.cancel();
 			t.f(listen.dispatch(span, "custom", {
@@ -118,6 +119,37 @@ doh.register("tests.listen",
 			}
 			t.is(order, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
 		},
+		function extensionEvent(t){
+			var div = document.body.appendChild(document.createElement("div"));
+			var span = div.appendChild(document.createElement("span"));
+			span.setAttribute("foo", 2);
+			var order = [];
+			var customEvent = function(target, listener){
+				return listen(target, "custom", listener);
+			}
+			var signal = listen(div, customEvent, function(event){
+				order.push(event.a);
+			});
+			var signal = listen(div, listen.selector("span", customEvent), function(event){
+				order.push(+this.getAttribute("foo"));
+			});
+			listen.dispatch(div, "custom", {
+				a: 0
+			});
+			// should trigger selector
+			t.t(listen.dispatch(span, "custom", { 
+				a: 1,
+				bubbles: true,
+				cancelable: true
+			}));
+			// shouldn't trigger selector
+			t.t(listen.dispatch(div, "custom", { 
+				a: 3,
+				bubbles: true,
+				cancelable: true
+			}));
+			t.is(order, [0, 1, 2, 3]);
+		},		
 		function Evented(t){
 			var MyClass = dojo.declare([listen.Evented],{
 				

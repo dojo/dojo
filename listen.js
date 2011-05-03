@@ -4,18 +4,18 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 //		The export of this module is a function that provides core event listening functionality. With this function
 //		you can provide a target, event type, and listener to be notified of 
 //		future matching events that are fired.
-//	target:
-//		This is the target object or DOM node that to receive events from
-// type:
-// 		This is the name of the event to listen for.
-// listener:
+//	target: Element|Object
+//		This is the target object or DOM element that to receive events from
+// type: String|Function
+// 		This is the name of the event to listen for or an extension event type.
+// listener: Function
 // 		This is the function that should be called when the event fires.
-// returns:
+// returns: Object
 // 		An object with a cancel() method that can be used to stop listening for this
 // 		event.
 // description:
 // 		To listen for "click" events on a button node, we can do:
-// 		|	define("dojo/listen", function(listen){
+// 		|	define(["dojo/listen"], function(listen){
 // 		|		listen(button, "click", clickHandler);
 //		|		...
 //  	Plain JavaScript objects can also have their own events.
@@ -23,6 +23,10 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 //		|	listen(obj, "foo", fooHandler);
 //		And then we could publish a "foo" event:
 //		|	listen.dispatch(obj, "foo", {key: "value"});
+//		We can use extension events as well. For example, you could listen for a tap gesture:
+// 		|	define(["dojo/listen", "dojo/gesture/tap", function(listen, tap){
+// 		|		listen(button, tap, tapHandler);
+//		|		...
 //		which would trigger fooHandler. Note that for a simple object this is equivalent to calling:
 //		|	obj.onfoo({key:"value"});
 //		If you use listen.dispatch on a DOM node, it will use native event dispatching when possible.
@@ -90,7 +94,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		if(type.call){
 			// event handler function
 			// listen(node, dojo.touch.press, touchListener);
-			return type.call(null, target, listener);
+			return type.call(matchesTarget, target, listener);
 		}
 
 		if(type.indexOf(",") > -1){
@@ -116,20 +120,8 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		if(selector){
 			type = selector[2];
 			selector = selector[1];
-			var rawListener = listener;
-			listener = function(event){
-				var eventTarget = event.target;
-				// see if we have a valid matchesTarget or default to dojo.query 
-				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
-				// there is a selector, so make sure it matches
-				while(!matchesTarget.matches(eventTarget, selector, target)){
-					if(eventTarget == target || !eventTarget){
-						return;
-					}
-					eventTarget = eventTarget.parentNode;
-				}
-				return rawListener.call(eventTarget, event);
-			};
+			// create the extension event for selectors and directly call it
+			return listen.selector(selector, type).call(matchesTarget, target, listener);
 		}
 		// test to see if it a touch event right now, so we don't have to do it every time it fires
 		if(has("touch")){
@@ -163,10 +155,35 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	 // use aop
 		return after(target, type, listener, true);
 	}
-	listen.destroy = function(node, listener){
+
+	listen.selector = function(selector, eventType){
 		// summary:
-		//		Extension event that is fired when a node is destroyed (through dojo.destroy)
-		return after(node, "onpage", listener);
+		//		Creates a new extension event with event delegation. This is based on 
+		// 		the provided event type (can be extension event) that 
+		// 		only calls the listener when the CSS selector matches the target of the event.
+		//	selector:
+		//		The CSS selector to use for filter events and determine the |this| of the event listener.
+		//	eventType:
+		//		The event to listen for
+		//	example:
+		//		define(["dojo/listen", "dojo/mouse"], function(listen, mouse){
+		//			listen(node, listen.selector(".my-class", mouse.enter), handlerForMyHover); 
+		return function(target, listener){
+			var matchesTarget = this;
+			return listen(target, eventType, function(event){
+				var eventTarget = event.target;
+				// see if we have a valid matchesTarget or default to dojo.query 
+				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
+				// there is a selector, so make sure it matches
+				while(!matchesTarget.matches(eventTarget, selector, target)){
+					if(eventTarget == target || !eventTarget){
+						return;
+					}
+					eventTarget = eventTarget.parentNode;
+				}
+				return listener.call(eventTarget, event);
+			});
+		};
 	}
 
 	function syntheticPreventDefault(){
@@ -236,7 +253,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			target[method] && target[method].call(target, event);
 			// and then continue up the parent node chain if it is still bubbling (if started as bubbles and stopPropagation hasn't been called)
 		}while(event.bubbles && (target = target.parentNode));
-		return event.cancelable; // if it is still true (was cancelable and was cancelled, return true to indicate default action should happen)
+		return event.cancelable && event; // if it is still true (was cancelable and was cancelled, return the event to indicate default action should happen)
 	};
 
 	var undefinedThis = (function(){
@@ -261,7 +278,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 						nativeEvent[i] = event[i];
 					}
 				}
-				return target.dispatchEvent(nativeEvent);
+				return target.dispatchEvent(nativeEvent) && nativeEvent;
 			}
 			return syntheticDispatch(target, type, event); // dispatch for a non-node
 		};

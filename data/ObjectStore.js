@@ -156,6 +156,11 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					var required = query[i];
 					if(typeof required == "string"){
 						query[i] = RegExp("^" + dojo.regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.ignoreCase ? "mi" : "m");
+						query[i].toString = (function(original){
+							return function(){
+								return original;
+							}
+						})(required);
 					}
 				}
 			}

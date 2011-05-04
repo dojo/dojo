@@ -106,6 +106,8 @@ define(["../has", "./config", "require"], function(has, config, require){
 		require({paths:paths});
 	}
 
+	config.locale && (dojo.locale = config.locale);
+
 	dojo.isAsync= function() {
 		return !has("dojo-loader") || require.async;
 	};

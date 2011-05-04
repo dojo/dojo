@@ -79,7 +79,7 @@ define(["./kernel", "../has"], function(dojo, has){
 			dojo.config.ieForceActiveXXhr=true;
 		}
 	}
-	dojo.locale = (isIE ? n.userLanguage : n.language).toLowerCase();
+	dojo.locale = dojo.locale || (isIE ? n.userLanguage : n.language).toLowerCase();
 
 	isQuirks = document.compatMode == "BackCompat";
 

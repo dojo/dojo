@@ -998,6 +998,11 @@
 				// If in synchronous mode (syncDepth>0), then get the module synchronously if it's not xdomain.
 				// Note: it's possible to have already requested the module asynchronously but it hasn't arrived.
 
+				if(module.plugin){
+					injectPlugin(module);
+					return;
+				} // else a normal module (not a plugin)
+
 				if(module.executed){
 					return;
 				}
@@ -1006,11 +1011,6 @@
 				if(module.injected || waiting[pqn] && !syncDepth){
 					return;
 				}
-
-				if(module.plugin){
-					injectPlugin(module);
-					return;
-				} // else a normal module (not a plugin)
 
 				var url = module.url;
 				if(req.urlArgs){

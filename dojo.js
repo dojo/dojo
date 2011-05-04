@@ -1327,7 +1327,7 @@
 	if(has("dojo-log-api")){
 		req.log = req.log || function(){
 			// we're not going to mess around in defective environments
-			if(typeof console == "undefined" || typeof console.log != "function"){
+			if(typeof console == "undefined" || !console.log){
 				return;
 			}
 			for(var args = arguments, i = 0; i < args.length; i++){

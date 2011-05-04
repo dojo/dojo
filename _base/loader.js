@@ -11,22 +11,21 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 
 	has.add("dojo-loader", 1, 0, 1);
 
-	var dojoRequire= require.getDojoLoader(dojo, dojo.dijit, dojo.dojox);
+	var dojoRequire = require.getDojoLoader(dojo, dojo.dijit, dojo.dojox);
 
-	dojo.require= function(moduleName, omitModuleCheck) {
-		var result= dojoRequire(moduleName);
+	dojo.require = function(moduleName, omitModuleCheck) {
+		var result = dojoRequire(moduleName);
 		if (!omitModuleCheck && !result) {
 			// TODO throw?
 		}
 		return result;
 	};
 
-	dojo.loadInit= function(f) {
+	dojo.loadInit = function(f) {
 		f();
 	};
 
-
-	dojo.registerModulePath = function(/*String*/module, /*String*/prefix){
+	dojo.registerModulePath = function(/*String*/moduleName, /*String*/prefix){
 		//	summary:
 		//		Maps a module name to a path
 		//	description:
@@ -55,16 +54,9 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 		//	|		dojo.require("foo.thud.xyzzy");
 		//	|	</script>
 
-		var paths= {};
-		paths[module.replace(/\./g, "/")]= prefix;
+		var paths = {};
+		paths[moduleName.replace(/\./g, "/")] = prefix;
 		require({paths:paths});
-	};
-
-
-	dojo.requireLocalization= function(moduleName, bundleName, locale){
-		// This function doesn't really do anything for the user since he must
-		// call dojo.i18n.getLocalization to get access to a bundle. Therefore, just
-		// no-op this API and implement sync fallback in dojo.i18n.getLocalization;
 	};
 
 	dojo.platformRequire = function(/*Object*/modMap){
@@ -97,14 +89,14 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 		for(var x=0; x<result.length; x++){
 			var curr = result[x];
 			if(curr.constructor == Array){
-				dojo.require.apply(d, curr);
+				dojo.require.apply(dojo, curr);
 			}else{
 				dojo.require(curr);
 			}
 		}
 	};
 
-	dojo.requireIf = dojo.requireAfterIf = function(/*Boolean*/ condition, /*String*/ resourceName, /*Boolean?*/omitModuleCheck){
+	dojo.requireIf = dojo.requireAfterIf = function(/*Boolean*/ condition, /*String*/ moduleName, /*Boolean?*/omitModuleCheck){
 		// summary:
 		//		If the condition is true then call `dojo.require()` for the specified
 		//		resource
@@ -113,16 +105,16 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 		//	|	dojo.requireIf(dojo.isBrowser, "my.special.Module");
 
 		if(condition){
-			dojo.require(resourceName, omitModuleCheck);
+			dojo.require(moduleName, omitModuleCheck);
 		}
 	};
 
-	if (!dojo.requireLocalization) {
-		dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale, /*String?*/availableFlatLocales){
-			return dojo.require("dojo.i18n").getLocalization(moduleName, bundleName, locale);
-		};
-	}
+	dojo.requireLocalization = function(/*String*/moduleName, /*String*/bundleName, /*String?*/locale){
+		require(["../i18n"], function(i18n){
+			i18n.getLocalization(moduleName, bundleName, locale);
+		});
+	};
 
 	// FIXME: this dependency needs to be removed from the demos
-	dojo._getText= require.getText;
+	dojo._getText = require.getText;
 });

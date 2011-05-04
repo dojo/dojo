@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+<title>Dojo Touch Testing</title>
+<script type="text/javascript" src="../dojo.js" djConfig="parseOnLoad: true"></script>
+<script>
+dojo.require("dojo.touch");
+//	var ua = navigator.userAgent
+//	var v = navigator.appVersion;
+//	alert("agent="+ua + " | version="+v);
+
+dojo.addOnLoad(function(){  
+	var action = function(e){
+		dojo.stopEvent(e);
+		dojo.byId("log").innerHTML = "";
+		var info = "[Touch Event]: " + e.type + "<br/> ------ Event Properties: ------<br/>";
+		for(var i in e){
+		  if(i == "touches" || i == "targetTouches" || i == "changedTouches"){
+		    info += i + ": " + e[i].length + "<br/>";
+		  }else{
+		    if(typeof e[i] != "function"){
+		      info += " " + i + ": " + e[i] + "<br/>";
+		    }
+		  }
+		}
+		dojo.byId("log").innerHTML += info + "<br/>";
+	};
+
+	
+	var node = dojo.byId("test");
+	//  dojo.connect(node, 'touchstart', function(e){ alert(e.type);});
+	//  
+	//  var e = document.createEvent("TouchEvent");
+	//  e.initTouchEvent('touchstart', true, true, window,
+	//    0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	//  node.dispatchEvent(e);
+	
+	//1. should work well on PC and touch devices 
+	dojo.connect(node, dojo.touch.press, action);
+	dojo.connect(node, dojo.touch.move, action);
+	dojo.connect(node, dojo.touch.release, action);
+	
+	//2. should work well across touch devices
+//	dojo.connect(node, "ontouchstart", action);
+//	dojo.connect(node, "ontouchmove", action);
+//	dojo.connect(node, "ontouchend", action);
+//	dojo.connect(node, "ontouchcancel", action);
+//	dojo.connect(node, "onorientationchange", action);
+
+	//3. we can also isolate mouse/touch handlers
+//	dojo.connect(node, "ontouchstart", function(){alert("touch handler");});
+//	dojo.connect(node, "onmousedown", function(){alert("mouse handler");});
+})
+</script>
+</head>
+<body>
+<p>[TODO - Add DoH testing senario]</p>	
+<div id="test" style="width:300px;height:150px;border:1px solid #7FB0DB; background-color: #7FB0DB"></div>
+<div id="log" style="width:300px;height:200px;"></div>
+</body>
+</html>

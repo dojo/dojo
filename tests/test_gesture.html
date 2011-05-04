@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+<title>Dojo Gesture Testing</title>
+<script type="text/javascript" src="../dojo.js" djConfig="parseOnLoad: true"></script>
+<script>
+dojo.require("dojo.gesture.tap");
+dojo.require("dojo.gesture.swipe");
+
+dojo.addOnLoad(function(){
+	var action = function(e){
+		dojo.byId("log").innerHTML = "";
+		var info = "[Gesture Event]: " + (e.currentTarget? e.currentTarget : e.target).id + "." + e.type + "<br/> ------ Native Event Properties: ------<br/>";
+		for(var i in e){
+		    if(typeof e[i] != "function"){
+		      info += "- " + i + ": " + e[i] + (e[i] && e[i]['id'] ? ' id = '+e[i]['id'] : '') + "<br/>";
+		    }
+		}
+		dojo.byId("log").innerHTML += info + "<br/>";
+	};
+	
+//  tap and swipe gestures both work well both on PC and touch devices
+	var inner = dojo.byId("inner");
+	dojo.connect(inner, dojo.gesture.tap, action);
+	dojo.connect(inner, dojo.gesture.tap.hold, action);
+	dojo.connect(inner, dojo.gesture.tap.doubletap, action);
+	dojo.connect(inner, dojo.gesture.swipe, action);
+	
+	//Test gesture events bubbling from inner div
+	var outter = dojo.byId("outter");
+	dojo.connect(outter, dojo.gesture.tap, action);
+	dojo.connect(outter, dojo.gesture.tap.hold, action);
+	dojo.connect(outter, dojo.gesture.tap.doubletap, action);
+	dojo.connect(outter, dojo.gesture.swipe.up, action);
+	dojo.connect(outter, dojo.gesture.swipe.down, action);
+	dojo.connect(outter, dojo.gesture.swipe.left, action);
+	dojo.connect(outter, dojo.gesture.swipe.right, action);
+	
+	//dojo.connect(outter, dojo.touch.press, function(){alert('outer.touch.press!');});
+	
+	dojo.connect(dojo.doc, "orientationchange", function(e){dojo.byId("log").innerHTML="";});
+});
+</script>
+</head>
+<body>
+<p>[TODO - Add DoH testing senario]</p>	
+<div id="outter" style="width:350px;height:200px;border:1px solid #54A201; background-color: #54A201">outter
+	<div id="inner" style="width:250px;height:80px;border:1px solid #7FB0DB; background-color: #7FB0DB">inner</div>
+</div>
+<div id="log" style="width:350px;height:200px;"></div>
+</body>
+</html>

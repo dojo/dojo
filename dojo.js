@@ -960,6 +960,11 @@
 					plugin.load = plugin.result.load;
 				}
 
+				if(module.executed){
+					// let the plugin decide if it wants to use the existing value or provide a new value
+					module.executed = 0;
+				}
+
 				var
 					pqn = module.pqn,
 					onload = function(def){

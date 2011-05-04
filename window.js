@@ -14,7 +14,8 @@ dojo.window.getBox = function(){
 
 	// get scroll position
 	var scroll = dojo._docScroll(); // scrollRoot.scrollTop/Left should work
-	return { w: scrollRoot.clientWidth, h: scrollRoot.clientHeight, l: scroll.x, t: scroll.y };
+	// dojo.global.innerWidth||dojo.global.innerHeight is for mobile
+	return { w: dojo.global.innerWidth || scrollRoot.clientWidth, h: dojo.global.innerHeight || scrollRoot.clientHeight, l: scroll.x, t: scroll.y };
 };
 
 dojo.window.get = function(doc){

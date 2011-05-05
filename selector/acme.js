@@ -1,4 +1,4 @@
-define(["../_base/kernel", "../has", "../_base/sniff", "../_base/lang", "../_base/window"], function(dojo, has){
+define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/window"], function(dojo, has){
   //  module:
   //    dojo/selector/acme
   //  summary:
@@ -14,7 +14,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/lang", "../_bas
 		designed to take any valid CSS3 selector and return the nodes matching
 		the selector. To do this quickly, it processes queries in several
 		steps, applying caching where profitable.
-		
+
 		The steps (roughly in reverse order of the way they appear in the code):
 			1.) check to see if we already have a "query dispatcher"
 				- if so, use that with the given parameterization. Skip to step 4.
@@ -383,7 +383,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/lang", "../_bas
 		}
 		return queryParts;
 	};
-	
+
 
 	////////////////////////////////////////////////////////////////////////
 	// DOM query infrastructure
@@ -808,7 +808,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/lang", "../_bas
 			return ret;
 		};
 	};
-	
+
 	/*
 	// thanks, Dean!
 	var itemIsAfterRoot = d.isIE ? function(item, root){
@@ -1266,7 +1266,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/lang", "../_bas
 		if(arr.length < 2){ return ret; }
 
 		_zipIdx++;
-		
+
 		// we have to fork here for IE and XML docs because we can't set
 		// expandos on their nodes (apparently). *sigh*
 		if(d.isIE && caseSensitive){

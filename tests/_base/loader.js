@@ -16,5 +16,6 @@ define([
 		doh.register(require.nameToUrl("./loader/config-has.html"));
 		doh.register(require.nameToUrl("./loader/errorApi.html"));
 		doh.register(require.nameToUrl("./loader/errorApi.html")+"?noCatch");
+		doh.register(require.nameToUrl("./loader/cdnTest.html"));
 	}
 });

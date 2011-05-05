@@ -352,7 +352,7 @@
 				// vector of registered listener functions for config changes
 				[],
 
-			configVariableNames ={async:1, waitSeconds:1, urlArgs:1, baseUrl:1, locale:1, combo:1},
+			configVariableNames ={async:1, xd:1, waitSeconds:1, urlArgs:1, baseUrl:1, locale:1, combo:1},
 
 			config = function(config, booting){
 				// mix config into require
@@ -454,7 +454,7 @@
 					// see if there's a dojo configuration stuffed into the node
 					src = (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
 					if(src){
-						dojoSniffConfig = reqEval("({ " + src + " })", "dojo/data-dojo-config");
+						dojoSniffConfig = reqEval("({ " + src + " })", "data-dojo-config");
 					}
 				}
 			}
@@ -559,7 +559,7 @@
 				modules[module.pqn] = module;
 				injectDependencies(module);
 				// try to immediately execute
-				if(execModule(module) === abortExec){
+				if(execModule(module, 1) === abortExec){
 					// some deps weren't on board; therefore, push into the execQ
 					execQ.push(module);
 				}
@@ -594,10 +594,14 @@
 			return result;
 		},
 
+		xdomain =
+			req.async=="xd",
+
 		syncDepth =
 			///
-			// TODOC
-			req.async ? 0 : 1,
+			// syncDepth==0 iff async AMD mode; otherwise either synchronous or xdomain mode; if > 1, then syncDepth-1 gives
+			// the recursive depth while loading a resource
+			req.async && !xdomain ? 0 : 1,
 
 		syncLoadComplete =
 			syncDepth,
@@ -781,10 +785,10 @@
 
 		evalOrder = 0,
 
-		execModule = function(module){
+		execModule = function(module, strict){
 			// run the dependency vector, then run the factory for module
 			if(!module.executed){
-				if(!module.def){
+				if(!module.def || (strict && module.executing)){
 					return abortExec;
 				}
 				var pqn = module.pqn,
@@ -1001,7 +1005,6 @@
 				// the head; in other environments, it means loading a file.
 				//
 				// If in synchronous mode (syncDepth>0), then get the module synchronously if it's not xdomain.
-				// Note: it's possible to have already requested the module asynchronously but it hasn't arrived.
 
 				if(module.plugin){
 					injectPlugin(module);
@@ -1012,12 +1015,13 @@
 					return;
 				}
 
-				var pqn = module.pqn;
+				var
+					pqn = module.pqn,
+					url = module.url;
 				if(module.injected || waiting[pqn] && !syncDepth){
 					return;
 				}
 
-				var url = module.url;
 				if(req.urlArgs){
 					url+= (/\?/.test(url) ? "&" : "?") + req.urlArgs;
 				}
@@ -1030,9 +1034,7 @@
 					return;
 				}
 
-				// the url implied by module has not been requested or it's been requested
-				// asynchronously and is now being requested synchronously.
-				var onLoadCallback = function(synchronous){
+				var onLoadCallback = function(){
 					setDel(waiting, pqn);
 					runDefQ(module);
 					if(module.injected !== arrived){
@@ -1050,33 +1052,30 @@
 				}else{
 					if(has("dojo-sync-loader")){
 						if(syncDepth && !isXdPath(url)){
-							execQ.push(module);
+							// always synchronous...
+							var xhrCallback= function(text){
+								if(xdomain){
+									text= transformToDefine(text, module.path);
+								}
+								reqEval(text, module.path);
+							};
+							injecting.push(module);
 							++syncDepth;
 							req.trace("loader-inject", ["sync", module.pqn, url]);
 							if(has("dojo-loader-catches")){
 								try{
-									// always synchronous...
-									getText(url, 0, function(text){
-										injecting.push(module);
-										reqEval(text, module.path);
-									});
-									--syncDepth;
-									injecting.pop();
-									setDel(waiting, pqn);
+									getText(url, 0, xhrCallback);
 								}catch(e){
-									--syncDepth;
-									injecting.pop();
-									setDel(waiting, pqn);
 									if(!req.error("loader/sync-inject", [pqn, url, e])){
 										throw e;
 									}
+								}finally{
+									--syncDepth;
+									injecting.pop();
+									setDel(waiting, pqn);
 								}
 							}else{
-								// always synchronous...
-								getText(url, 0, function(text){
-									injecting.push(module);
-									reqEval(text, module.path);
-								});
+								getText(url, 0, xhrCallback);
 								--syncDepth;
 								injecting.pop();
 								setDel(waiting, pqn);
@@ -1513,26 +1512,12 @@
 	}
 
 	if(has("dojo-sync-loader")){
-		var isXdPath = noop;
-		if(has("dom")){
-			var
-				locationProtocol = location.protocol,
-				locationHost = location.host,
-				fileProtocol = !locationHost;
-			isXdPath = function(path){
-				if(fileProtocol || /^\./.test(path)){
-					// begins with a dot is always relative to page URL; therefore not xdomain
-					return false;
-				}
-				if(/^\/\//.test(path)){
-					// for v1.6- backcompat, path starting with // indicates xdomain
-					return true;
-				}
-				// get protocol and host
-				var match = path.match(/^([^\/\:]+\:)\/\/([^\/]+)/);
-				return match && (match[1] != locationProtocol || match[2] != locationhost);
-			};
-		}
+		var
+			slashName = function(name){
+				return name.replace(/\./g, "/");
+			},
+
+			isXdPath = noop;
 
 		req.debugAtAllCosts= function(){
 			syncDepth= syncLoadComplete = 0;
@@ -1540,10 +1525,6 @@
 
 		req.getDojoLoader = function(dojo, dijit, dojox){
 			var
-				slashName = function(name){
-					return name.replace(/\./g, "/");
-				},
-
 				referenceModule = getModule(slashName(dojo._scopeName)),
 
 				require = createRequire(referenceModule);
@@ -1569,15 +1550,162 @@
 					return module.result;
 				}
 
-				if(syncDepth && !isXdPath(url)){
-					injectModule(module);
-				}else{
-					require([mid]);
-				}
+				execQ.push(module);
+				injectModule(module);
 				checkComplete();
 				return module.result;
 			};
 		};
+
+		if(has("dom")){
+			var
+				locationProtocol = location.protocol,
+				locationHost = location.host,
+				fileProtocol = !locationHost;
+			isXdPath = function(path){
+				if(fileProtocol || /^\./.test(path)){
+					// begins with a dot is always relative to page URL; therefore not xdomain
+					return false;
+				}
+				if(/^\/\//.test(path)){
+					// for v1.6- backcompat, path starting with // indicates xdomain
+					return true;
+				}
+				// get protocol and host
+				var match = path.match(/^([^\/\:]+\:)\/\/([^\/]+)/);
+				return match && (match[1] != locationProtocol || match[2] != locationHost);
+			};
+
+			var
+				extractApplication = function(
+					text,             // the text to search
+					startSearch,      // the position in text to start looking for the closing paren
+					startApplication  // the position in text where the function application expression starts
+				){
+					// find end of the call by finding the matching end paren
+					var
+						parenRe = /\(|\)/g,
+						matchCount = 1,
+						match;
+					parenRe.lastIndex = startSearch;
+					while((match = parenRe.exec(text))){
+						if(match[0] == ")"){
+							matchCount -= 1;
+						}else{
+							matchCount += 1;
+						}
+						if(matchCount == 0){
+							break;
+						}
+					}
+
+					if(matchCount != 0){
+						throw "unmatched paren around character " + parenRe.lastIndex + " in: " + text;
+					}
+
+					//Put the master matching string in the results.
+					return [text.substring(startApplication, parenRe.lastIndex), parenRe.lastIndex];
+				},
+
+				transformToDefine= function(text, mid){
+					// This is roughly the equivalent of dojo._xdCreateResource in 1.6-; however, it expresses a v1.6- dojo
+					// module in terms of AMD define instead of creating the dojo proprietary xdomain module expression.
+
+					var
+						resultText = text,
+						evalText =  [],
+						loadInitFound = 0,
+						loadInitRe = /dojo.loadInit\s*\(/g,
+						syncLoaderApiRe = /dojo\.(require|requireIf|provide|requireAfterIf|platformRequire|requireLocalization)\s*\(/mg,
+						match, startSearch, startApplication, extractResult;
+
+					// Remove comments; this is the regex that comes with v1.5-, but notice that [e.g.], then string literal "/*" would cause failure
+					text = text.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg , "");
+
+					// extract all dojo.loadInit applications; remove them from text
+					while((match = loadInitRe.exec(text))){
+						loadInitFound = 1;
+						startSearch= loadInitRe.lastIndex;
+						startApplication = startSearch  - match[0].length;
+						extractResult= extractApplication(text, startSearch, startApplication);
+						evalText.push(extractResult[0]);
+						text= text.substring(0, startApplication) + text.substring(extractResult[1]);
+						loadInitRe.lastIndex = startApplication;
+					}
+
+					// extract all sync loader function applications, but don't remove them from the text
+					while((match = syncLoaderApiRe.exec(text)) != null){
+						startSearch= syncLoaderApiRe.lastIndex;
+						startApplication = startSearch  - match[0].length;
+						extractResult= extractApplication(text, startSearch, startApplication);
+						evalText.push(extractResult[0]);
+						syncLoaderApiRe.lastIndex = extractResult[1];
+					}
+
+					if(evalText.length){
+						evalText= evalText.join(";\n") + "\n";
+						// hijack the dojo sync loader API; evaluate the extracted code; restore the API; use synthesized results to create an AMD module
+						var
+							requires = [],
+							requireIfs = [],
+							provides = [],
+							hold = {},
+							syncLoaderApi = {
+								provide:function(moduleName){
+									provides.push(slashName(moduleName));
+								},
+								require:function(moduleName){
+									requires.push(slashName(moduleName));
+								},
+								requireIf:function(condition, moduleName){
+									condition && requireIfs.push(slashName(moduleName));
+								},
+								requireAfterIf:function(condition, moduleName){
+									condition && requireIfs.push(slashName(moduleName));
+								},
+								requireLocalization:function(moduleName, bundleName, locale){
+									var i18nMid= dojo.getL10nName(moduleName, bundleName, locale);
+									if(isXdPath(nameToUrl(i18nMid))){
+										dojo.require(i18nMid);
+									}// else the bundle will be loaded synchronously when needed via dojo.getLocalization(moduleName, bundleName, locale)
+								}
+							};
+
+						try{
+							for(var p in syncLoaderApi){
+								hold[p] = dojo[p];
+								dojo[p] = syncLoaderApi[p];
+							}
+							reqEval(evalText, "__deps-trace/" + mid);
+						}catch(e){
+							req.log("failed to evaluate extracted dojo sync API statements(" + mid + ")\n" + evalText);
+							req.log(e);
+						}finally{
+							for(p in syncLoaderApi){
+								dojo[p] = hold[p];
+							}
+
+						}
+
+						resultText= "define(" + dojo.toJson(requires) + ", function(){\n" + (loadInitFound ? text : resultText) + "\n});\n";;
+						if(requireIfs.length){
+							// make a fake module that demands all of the requireIfs; it's never defined
+							injectDependencies(defineModule(getModule(mid + "/requireIfs"), requireIfs, noop));
+						}
+					}
+					return resultText;
+				};
+		}
+
+		if(has("dojo-xdomain-test-api")){
+			req.xdomainTest= function(isXdPathReplacement){
+				xdomain = true;
+				req.async = "xd";
+				if(isXdPathReplacement){
+					isXdPath= isXdPathReplacement;
+				}
+			};
+		}
 	}
 
 	if(has("dojo-publish-privates")){
@@ -1653,7 +1781,8 @@
 			"dojo-sniff":1,
 			"config-tlmSiblingOfDojo":1,
 			"dojo-sync-loader":1,
-			"dojo-test-sniff":1
+			"dojo-test-sniff":1,
+			"dojo-xdomain-test-api":1
 		},
 		packages:[{
 			// note: like v1.6-, this bootstrap computes baseUrl to be the dojo directory

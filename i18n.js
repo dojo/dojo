@@ -89,7 +89,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 					availableLocales= getAvailableLocales(!root._v1x && root, locale, bundlePath, bundleName);
 				require(availableLocales, function(){
 					for (var i= 1; i<availableLocales.length; i++){
-						cache[bundlePathAndName + "/" + availableLocales[i]]= current= dojo.mixin(dojo.clone(current), arguments[i]);
+						cache[availableLocales[i]]= current= dojo.mixin(dojo.clone(current), arguments[i]);
 					}
 					// target may not have been resolve (e.g., maybe only "fr" exists when "fr-ca" was requested)
 					cache[target]= current;
@@ -126,7 +126,8 @@ define([".", "require", "./has"], function(dojo, require, has) {
 							var
 								__result,
 								__fixup= function(bundle){
-									return bundle ? {root:bundle, _v1x:1} : __result;
+									// nls/<locale>/<bundle-name> indicates not the root.
+									return bundle ? (/nls\/[^\/]+\/[^\/]+$/.test(url) ? bundle : {root:bundle, _v1x:1}) : __result;
 								};
 
 							// TODO: make sure closure compiler does not stomp on this function name

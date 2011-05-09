@@ -90,17 +90,18 @@ define(["./_base/kernel", "./has"], function(dojo, has){
 					if(typeof it.toJSON == "function"){
 						return stringify(it.toJSON(key), indent, key);
 					}
+					if(it instanceof Date){
+						return '"{FullYear}-{Month+}-{Date}T{Hours}:{Minutes}:{Seconds}Z"'.replace(/\{(\w+)(\+)?\}/g, function(t, prop, plus){
+							var num = it["getUTC" + prop]() + (plus ? 1 : 0);
+							return num < 10 ? "0" + num : num;
+						});
+					}
 					if(it.valueOf() !== it){
 						// primitive wrapper, try again unwrapped:
 						return stringify(it.valueOf(), indent, key);
 					}
 					var nextIndent= spacer ? (indent + spacer) : "";
-					if(it.nodeType && it.cloneNode){ // isNode
-						// we can't seriailize DOM nodes as regular objects because they have cycles
-						// DOM nodes could be serialized with something like outerHTML, but
-						// that can be provided by users in the form of .json or .__json__ function.
-						throw new Error("Can't serialize DOM nodes");
-					}
+					/* we used to test for DOM nodes and throw, but FF serializes them as {}, so cross-browser consistency is probably not efficiently attainable */ 
 				
 					var sep = spacer ? " " : "";
 					var newLine = spacer ? "\n" : "";

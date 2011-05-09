@@ -439,7 +439,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		return success; // boolean
 	},
 
-	_addReferenceToMap: function(/*item*/ refItem, /*item*/ parentItem, /*string*/ attribute){
+	_addReferenceToMap: function(/* item */ refItem, /* item */ parentItem, /* string */ attribute){
 		//	summary:
 		//		Method to add an reference map entry for an item and attribute.
 		//	description:
@@ -464,7 +464,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		itemRef[attribute] = true;
 	},
 
-	_removeReferenceFromMap: function(/* item */ refItem, /* item */ parentItem, /*strin*/ attribute){
+	_removeReferenceFromMap: function(/* item */ refItem, /* item */ parentItem, /* string */ attribute){
 		//	summary:
 		//		Method to remove an reference map entry for an item and attribute.
 		//	description:
@@ -679,7 +679,7 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 			// Restore the original item into a full-fledged item again, we want to try to
 			// keep the same object instance as if we don't it, causes bugs like #9022.
 			copyOfItemState[this._storeRefPropName] = this;
-			for(key in modifiedItem){
+			for(var key in modifiedItem){
 				delete modifiedItem[key];
 			}
 			dojo.mixin(modifiedItem, copyOfItemState);

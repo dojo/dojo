@@ -51,9 +51,15 @@ doh.register("tests.listen",
 			var order = [];
 			var signal = listen(div,"custom", function(event){
 				order.push(event.a);
-				event.addedProp = "value";
+				event.addedProp += "ue";
+			});
+			listen(span,"custom", function(event){
+				event.addedProp = "val";
 			});
 			listen.dispatch(div, "custom", {
+				target: div,
+				currentTarget:div,
+				relatedTarget: div,
 				a: 0
 			});
 			listen.dispatch(div, "otherevent", {

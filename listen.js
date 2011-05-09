@@ -269,7 +269,11 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				for(var i in event){
 					var value = event[i];
 					if(value !== nativeEvent[i]){
-						nativeEvent[i] = event[i];
+						try{
+							nativeEvent[i] = event[i];
+						}catch(e){
+							// suppress failures, FF won't allow target properties to be set (which will be overriden by the dispatch anyway).
+						}
 					}
 				}
 				return target.dispatchEvent(nativeEvent) && nativeEvent;

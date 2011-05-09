@@ -201,7 +201,7 @@ if(dojo.isIE){
 		}
 	};
 
-	dojo.place = function(node, refNode, position){
+	dojo.place = function(/*String|DomNode*/node, /*String|DomNode*/refNode, /*String|Number?*/position){
 		// summary:
 		//		Attempt to insert node into the DOM, choosing from various positioning options.
 		//		Returns the first argument resolved to a DOM node.
@@ -944,7 +944,7 @@ if(dojo.isIE){
 
 	dojo._setMarginBox = function(/*DomNode*/node,	/*Number?*/leftPx, /*Number?*/topPx,
 													/*Number?*/widthPx, /*Number?*/heightPx,
-													/*Object*/computedStyle){
+													/*Object?*/computedStyle){
 		// summary:
 		//		sets the size of the node's margin box and placement
 		//		(left/top), irrespective of box model. Think of it as a
@@ -1468,7 +1468,7 @@ if(dojo.isIE){
 		return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
 	};
 
-	dojo.create = function(tag, attrs, refNode, pos){
+	dojo.create = function(/*String|DomNode*/tag, /*Object*/attrs, /*String?|DomNode?*/refNode, /*String?*/pos){
 		// summary:
 		//		Create an element, allowing for optional attribute decoration
 		//		and placement.

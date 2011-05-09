@@ -206,7 +206,7 @@ dojo.unsubscribe = function(/*Handle*/ handle){
 	}
 };
 
-dojo.publish = function(/*String*/ topic, /*Array*/ args){
+dojo.publish = function(/*String*/ topic, /*Array?*/ args){
 	//	summary:
 	//		Invoke all listener method subscribed to topic.
 	//	topic:

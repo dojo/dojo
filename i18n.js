@@ -1,4 +1,4 @@
-define([".", "require", "./has"], function(dojo, require, has) {
+define(["./main", "require", "./has"], function(dojo, require, has) {
 	// module:
 	//		dojo/i18n
 	// summary:
@@ -25,7 +25,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 			// ["foo/bar/baz/nls/foo", "foo/bar/baz/nls/", "/", "/", "foo", ""]
 			// so, if match[5] is blank, it means this is the top bundle definition.
 			// courtesy of http://requirejs.org
-			/(^.*(^|\/)nls(\/|$))([^\/]*)\/?([^\/]*)/,
+			/(^.*(^|\/)nls)(\/|$)([^\/]*)\/?([^\/]*)/,
 
 		getAvailableLocales= function(
 			root,
@@ -70,7 +70,7 @@ define([".", "require", "./has"], function(dojo, require, has) {
 			// note: id may be relative
 			var
 				match= nlsRe.exec(id),
-				bundlePath= (require.toAbsMid && require.toAbsMid(match[1])) || match[1],
+				bundlePath= ((require.toAbsMid && require.toAbsMid(match[1])) || match[1]) + "/",
 				bundleName= match[5] || match[4],
 				bundlePathAndName= bundlePath + bundleName,
 				locale= (match[5] && match[4]) || dojo.locale,

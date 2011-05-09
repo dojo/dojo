@@ -70,20 +70,20 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 					parts= id.split("!"),
 					resourceId= parts[0],
 					cacheId= getCacheId(resourceId),
-					strip= parts.length>1,
+					stripFlag= parts.length>1,
 					url;
 				if(cacheId in theCache){
-					load(strip ? strip(theCache[cacheId]) : theCache[cacheId]);
+					load(stripFlag ? strip(theCache[cacheId]) : theCache[cacheId]);
 					return;
 				}
 				url= require.toUrl(resourceId);
 				if(url in theCache){
-					load(strip ? strip(theCache[url]) : theCache[url]);
+					load(stripFlag ? strip(theCache[url]) : theCache[url]);
 					return;
 				}
 				getText(url, !require.async, function(text){
 					cache(cacheId, url, text);
-					load(strip ? strip(theCache[url]) : theCache[url]);
+					load(stripFlag ? strip(theCache[url]) : theCache[url]);
 				});
 			},
 

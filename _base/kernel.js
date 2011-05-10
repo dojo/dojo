@@ -63,6 +63,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 			}
 		});
 	}
+	dojo.baseUrl= dojo.config.baseUrl= require.baseUrl;
 
 	/*=====
 		dojo.version = function(){

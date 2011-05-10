@@ -1,8 +1,5 @@
-dojo.provide("tests._base._loader.bootstrap");
-
-tests.register("tests._base._loader.bootstrap",
-	[
-
+define(["dojo", "doh"], function(dojo, doh){
+	doh.register("tests._base._loader.bootstrap", [
 		function hasConsole(t){
 			t.assertTrue("console" in dojo.global);
 			t.assertTrue("assert" in console);
@@ -17,7 +14,7 @@ tests.register("tests._base._loader.bootstrap",
 					color: "blue",
 					size: 20
 				};
-				
+
 				//Set up an object in a specific scope.
 				this.foo = {
 					bar: {
@@ -33,19 +30,19 @@ tests.register("tests._base._loader.bootstrap",
 				t.assertEqual("blue", globalVar.color);
 				t.assertEqual(20, globalVar.size);
 				t.assertEqual("blue", dojo.getObject("globalValue.color"));
-				
+
 				//Test for non-existent object using global as root path.
 				//Then create it.
 				t.assertFalse(dojo.getObject("something.thatisNew"));
 				t.assertTrue(typeof(dojo.getObject("something.thatisNew", true)) == "object");
-				
+
 				//Test for existing object using another object as root path.
 				var scopedVar = dojo.getObject("foo.bar", false, this);
 				t.assertTrue(typeof(scopedVar) == "object");
 				t.assertEqual("red", scopedVar.color);
 				t.assertEqual(100, scopedVar.size);
 				t.assertEqual("red", dojo.getObject("foo.bar.color", true, this));
-				
+
 				//Test for existing object using another object as root path.
 				//Then create it.
 				t.assertFalse(dojo.getObject("something.thatisNew", false, this));
@@ -60,7 +57,7 @@ tests.register("tests._base._loader.bootstrap",
 				}catch(e){}
 			}
 		},
-		
+
 		{
 			name: "exists",
 			setUp: function(){
@@ -89,7 +86,7 @@ tests.register("tests._base._loader.bootstrap",
 			t.assertTrue(dojo.eval("(true)"));
 			t.assertFalse(dojo.eval("(false)"));
 		},
-		
+
 		function _mixin(t){
 			var a = {
 				x: 1,
@@ -130,5 +127,5 @@ tests.register("tests._base._loader.bootstrap",
 			t.t("u" in a);
 			t.is(undefined, a.u);
 		}
-	]
-);
+	]);
+});

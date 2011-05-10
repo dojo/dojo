@@ -1,0 +1,20 @@
+<html>
+<head>
+	<script type="text/javascript" src="../../../dojo.js"></script>
+	<script type="text/javascript">
+		require({paths:{myModule:"./tests/_base/loader/myModule"}});
+		require(["myModule", "doh"], function(myModule, doh){
+			doh.register("paths", [
+				function(t){
+					t.is(myModule.name, "myModule");
+					t.is(myModule.sibling, "siblingModule");
+					t.is(myModule.child, "childModule");
+				}
+			]);
+			doh.runOnLoad();
+		});
+	</script>
+</head>
+<body>
+</body>
+</html>

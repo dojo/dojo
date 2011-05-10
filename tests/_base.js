@@ -1,5 +1,5 @@
 define([
-	//"dojo/tests/_base/url",
+	//TODO: "dojo/tests/_base/url",
 	"dojo/tests/_base/loader",
 	"dojo/tests/_base/array",
 	"dojo/tests/_base/Color",
@@ -15,13 +15,7 @@ define([
 	"dojo/has!host-browser?dojo/tests/_base/xhr",
 	"dojo/has!host-browser?dojo/tests/_base/window"], 1);
 
-	// TODO bootstrap tests
-	//dojo.require("tests._base._loader.bootstrap");
-	//
-	// TODO loader tests
-	//dojo.require("tests._base._loader.loader");
-	//
-	// TODO platform boot tests
+	// TODO: platform boot tests
 	//dojo.platformRequire({
 	//	browser: ["tests._base._loader.hostenv_browser"],
 	//	rhino: ["tests._base._loader.hostenv_rhino"],

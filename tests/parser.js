@@ -1,5 +1,5 @@
 define(["doh", "require"], function(doh, require){
 	if(doh.isBrowser){
-		doh.register(require.nameToUrl("./parser.html"), 30000);
+		doh.register("tests.parser", require.nameToUrl("./parser.html"), 30000);
 	}
 });

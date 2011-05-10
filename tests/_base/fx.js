@@ -1,5 +1,5 @@
 define(["doh", "require"], function(doh, require){
 	if(doh.isBrowser){
-		doh.register(require.nameToUrl("./fx.html"), 15000);
+		doh.register("tests._base.fx", require.nameToUrl("./fx.html"), 15000);
 	}
 });

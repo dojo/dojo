@@ -20,6 +20,9 @@ define([
 		doh.register("error-api", require.nameToUrl("./loader/errorApi.html")+"?noCatch");
 		doh.register("cdn-load", require.nameToUrl("./loader/cdnTest.html"));
 
+		doh.register("publish-require-result", require.nameToUrl("./loader/publishRequireResult.html"));
+		doh.register("no-publish-require-result", require.nameToUrl("./loader/publishRequireResult.html")+"?do-not-publish");
+
 		// the requirejs test suite. The following tests are not used:
 		//
 		//   * baseUrl: dojo's baseUrl is different--it defaults to the dojo tree. See TODO

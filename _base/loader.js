@@ -13,10 +13,14 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 
 	var dojoRequire = require.getDojoLoader(dojo, dojo.dijit, dojo.dojox);
 
+	has.add("config-publishRequireResult", 1, 0, 0);
 	dojo.require = function(moduleName, omitModuleCheck) {
 		var result = dojoRequire(moduleName);
 		if (!omitModuleCheck && !result) {
 			// TODO throw?
+		}
+		if(has("config-publishRequireResult") && !dojo.exists(moduleName) && result!==undefined){
+			dojo.setObject(moduleName, result);
 		}
 		return result;
 	};

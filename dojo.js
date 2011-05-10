@@ -501,11 +501,12 @@
 					var onLoadCallback= function(){
 						// defQ is a vector of module definitions 1-to-1, onto mids
 						runDefQ(0, mids);
+						checkComplete();
 					};
 					combosPending.push(mids);
-					injecting.push(mids);
+					injectingModule = mids;
 					mids.node = req.injectUrl(url, onLoadCallback);
-					injecting.pop();
+					injectingModule = 0;
 				}, req);
 			}
 		},
@@ -833,15 +834,24 @@
 			return module.result;
 		},
 
+		checkCompleteGuard = 0,
+
 		checkComplete = function(){
 			// keep going through the execQ as long as at least one factory is executed
 			// plugins, recursion, cached modules all make for many execution path possibilities
+
+			if(checkCompleteGuard){
+				checkCompleteGuard++;
+				return;
+			}
 			isEmpty(waiting) && clearTimer();
 			for(var result, module, i = 0; i < execQ.length;){
+				checkCompleteGuard = 1;
 				module = execQ[i];
 				execModule(module);
 				if(module.executed === executed){
-					// adjust the execQ and recheck
+					// adjust the execQ and recheck; executing a module may result in pushing a plugin
+					// to the front, so we've got to find the module in the execQ the hard way...
 					for(i = 0; i < execQ.length; i++){
 						if(execQ[i] === module){
 							execQ.splice(i, 1);
@@ -849,19 +859,24 @@
 							break;
 						}
 					}
-				if(module.loadQ){
-					// this was a plugin module
-					var
-						q = module.loadQ,
-						load = module.load = module.result.load;
-					while(q.length){
-						load.apply(null, q.shift());
+					if(module.loadQ){
+						// this was a plugin module
+						var
+							q = module.loadQ,
+							load = module.load = module.result.load;
+						while(q.length){
+							load.apply(null, q.shift());
+						}
 					}
-				}
+				}else if(checkCompleteGuard>1){
+					// executing the module caused a recursive call to checkComplete; restart the check
+					i = 0;
 				}else{
+					// nothing happended; check the next module in the exec queue
 					i++;
 				}
 			}
+			checkCompleteGuard = 0;
 			if(has("dojo-ready-api")){
 				onLoad();
 			}
@@ -992,7 +1007,7 @@
 
 			// for IE, injecting a module may result in a recursive execution if the module is in the cache
 			// the injecting stack informs define what is currently being injected in such cases
-			injecting = [],
+			injectingModule = 0,
 
 			injectModule = function(module){
 				// Inject the module. In the browser environment, this means appending a script element into
@@ -1053,7 +1068,7 @@
 								}
 								reqEval(text, module.path);
 							};
-							injecting.push(module);
+							injectingModule= module;
 							++syncDepth;
 							req.trace("loader-inject", ["sync", module.pqn, url]);
 							if(has("dojo-loader-catches")){
@@ -1065,23 +1080,24 @@
 									}
 								}finally{
 									--syncDepth;
-									injecting.pop();
+									injectingModule= 0;
 									setDel(waiting, pqn);
 								}
 							}else{
 								getText(url, 0, xhrCallback);
 								--syncDepth;
-								injecting.pop();
+								injectingModule= 0;
 								setDel(waiting, pqn);
 							}
 							onLoadCallback();
 							return;
 						}
 					}
-					injecting.push(module);
 					req.trace("dojo-inject", [module.pqn, url]);
+					injectingModule= module;
 					module.node = req.injectUrl(url, onLoadCallback);
-					injecting.pop();
+					injectingModule= 0;
+
 				}
 			},
 
@@ -1451,11 +1467,15 @@
 					[mid, dependencies, factory]);
 		}
 		req.trace("loader-define", args.slice(0, 2));
-		if(args[0]){
-			// if given a mid, always define the module immediately since it is possible to define a module through means
-			// other than a deps list being injected. For example, code may define modules on-the-fly due to some user stimulus.
-			// In such cases, there is nothing to trigger the defQ and the dependencies are never requested; therefore, do it here.
-			injectDependencies(defineModule(getModule(args[0]), args[1], args[2]));
+		var
+			targetModule = args[0] && getModule(args[0]),
+			pqn, module;
+		if(targetModule && !waiting[targetModule.pqn]){
+			// given a mid that hasn't been requested; therefore, defined through means other than injecting (for
+			// example, code may define modules on-the-fly due to some user stimulus) and no callback waiting to
+			// finish processing. In such cases, there is nothing to trigger the defQ and the dependencies are
+			// never requested; therefore, do it here.
+			injectDependencies(defineModule(targetModule, args[1], args[2]));
 		}else if(has("dom-addeventlistener") || !has("host-browser")){
 			// not IE path: anonymous module and therefore must have been injected; therefore, onLoad will fire immediately
 			// after script finishes being evaluated and the defQ can be run from that callback to detect the module id
@@ -1463,24 +1483,23 @@
 		}else{
 			// IE path: anonymous module and therefore must have been injected; therefore, cannot depend on 1-to-1,
 			// in-order exec of onLoad with script eval (since its IE) and must manually detect here
-			var
-				length = injecting.length,
-				targetModule = length && injecting[length - 1],
-				pqn, module;
-			for(pqn in waiting){
-				module = modules[pqn];
-				if(module && module.node && module.node.readyState === 'interactive'){
-					targetModule = module;
-					break;
-				}
-			}
-			if(has("dojo-combo-api") && !targetModule){
-				for(var i= 0; i<combosPending.length; i++){
-					targetModule= combosPending[i];
-					if(targetModule.node && targetModule.node.readyState === 'interactive'){
+			targetModule = injectingModule;
+			if(!targetModule){
+				for(pqn in waiting){
+					module = modules[pqn];
+					if(module && module.node && module.node.readyState === 'interactive'){
+						targetModule = module;
 						break;
 					}
-					targetModule= 0;
+				}
+				if(has("dojo-combo-api") && !targetModule){
+					for(var i= 0; i<combosPending.length; i++){
+						targetModule= combosPending[i];
+						if(targetModule.node && targetModule.node.readyState === 'interactive'){
+							break;
+						}
+						targetModule= 0;
+					}
 				}
 			}
 			if(has("dojo-combo-api") && isArray(targetModule)){
@@ -1493,6 +1512,7 @@
 			}else{
 				req.error("loader/define-ie");
 			}
+			checkComplete();
 		}
 	};
 	def.amd = {
@@ -1523,7 +1543,7 @@
 
 			dojo.provide = function(mid){
 				var module= getModule(slashName(mid), referenceModule);
-                module.executed!==executed && mix(module, {
+				module.executed!==executed && mix(module, {
 					injected: arrived,
 					deps: [],
 					executed: executed,

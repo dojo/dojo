@@ -3,7 +3,7 @@
 	"directories": {
 		"lib": "."
 	},
-	"main":"./main",
+	"main": "main",
 	"description": "Dojo core is a powerful, lightweight library that makes common tasks quicker and easier. Animate elements, manipulate the DOM, and query with easy CSS syntax, all without sacrificing performance.",
 	"licenses": [
 		 {
@@ -21,11 +21,10 @@
 	"dojoBuild": {
 		"resourceTags":{
 			"test": [".*/dojo/tests.*", ".*dojo/robot.*"],
-			"amd": [".*\.js$", "!", ".*/nls/.*", "!", "/_base/config.+", "!", "OpenAjax.js$", "!", "resources/_modules.js"]
+			"amd": "return /\\.js$/.test(name) && !/\\/nls\\//.test(name) && !/_base\\/config.+/.test(name) && !/OpenAjax\\.js$/.test(name) && !/resources\\/_modules\\.js/.test(name);"
 		},
-		"trees":[
-			// don't discover hidden (e.g., .svn), the 1.6- AMD layer, query-sizzle, or any of the old loader
-			[".", ".", "/\\.", "query-sizzle", "/dojo/_base/_loader/"]
+		"trees": [
+			[".", ".", "/\\.", "/dojo/_base/_loader/", "/dojo/lib/"]
 		]
 	}
 }

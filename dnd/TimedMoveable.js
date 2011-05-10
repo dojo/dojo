@@ -1,4 +1,4 @@
-define(["..", "./Moveable"], function(dojo) {
+define(["../main", "./Moveable"], function(dojo) {
 	// module:
 	//		dojo/dnd/TimedMoveable
 	// summary:

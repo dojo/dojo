@@ -1,4 +1,4 @@
-define([".", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"], function(dojo) {
+define(["./main", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"], function(dojo) {
 	// module:
 	//		dojo/number
 	// summary:

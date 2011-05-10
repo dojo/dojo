@@ -1,4 +1,4 @@
-define(["..", "doh", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"], function(dojo, doh){
+define(["../main", "doh", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"], function(dojo, doh){
 
 	doh.register("tests.rpc", [
 		{
@@ -20,7 +20,7 @@ define(["..", "doh", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpSer
 						}
 					]
 				};
-			
+
 				this.svc = new dojo.rpc.JsonService(testSmd);
 			},
 			runTest: function(){
@@ -58,7 +58,7 @@ define(["..", "doh", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpSer
 					serviceURL:"../../dojo/tests/resources/test_JsonRPCMediator.php",
 					methods:[ { name:"contentB" } ]
 				};
-			
+
 				this.svc = new dojo.rpc.JsonService(testSmd);
 			},
 			runTest: function(){

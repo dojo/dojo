@@ -1,4 +1,4 @@
-define(["..", "doh", "../DeferredList"], function(dojo, doh){
+define(["../main", "doh", "../DeferredList"], function(dojo, doh){
 	doh.register("tests.DeferredList", [
 		function callback(t){
 			var d1 = new dojo.Deferred();

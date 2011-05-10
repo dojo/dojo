@@ -1,4 +1,4 @@
-define(["..", "doh", "../string"], function(dojo, doh){
+define(["../main", "doh", "../string"], function(dojo, doh){
 
 doh.register("tests.string",
 	[
@@ -27,7 +27,7 @@ doh.register("tests.string",
 			// Verify that an error is thrown!
 			t.assertError(Error, dojo.string, "substitute", ["${x}", {y:1}]);
 		},
-		
+
 		function test_string_substitute_transform(t){
 			var getPrefix = function(str){
 				// try to figure out the type
@@ -71,7 +71,7 @@ doh.register("tests.string",
 				)
 			);
 		},
-		
+
 		function test_string_trim(t){
 			t.is("astoria", dojo.string.trim("   \f\n\r\t      astoria           "));
 			t.is("astoria", dojo.string.trim("astoria                            "));
@@ -79,7 +79,7 @@ doh.register("tests.string",
 			t.is("astoria", dojo.string.trim("astoria"));
 			t.is("a", dojo.string.trim("   a   "));
 		},
-		
+
 		function test_string_rep(t){
 			t.is("aaaaa", dojo.string.rep("a", 5));
 			t.is("abababab", dojo.string.rep("ab", 4));

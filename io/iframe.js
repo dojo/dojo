@@ -1,4 +1,4 @@
-define(["..", "require"], function(dojo, require) {
+define(["../main", "require"], function(dojo, require) {
 	// module:
 	//		dojo/io/iframe
 	// summary:

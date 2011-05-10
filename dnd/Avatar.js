@@ -1,4 +1,4 @@
-define(["..", "./common"], function(dojo) {
+define(["../main", "./common"], function(dojo) {
 	// module:
 	//		dojo/dnd/Avatar
 	// summary:

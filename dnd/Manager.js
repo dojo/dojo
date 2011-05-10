@@ -1,4 +1,4 @@
-define(["..", "./common", "./autoscroll", "./Avatar"], function(dojo) {
+define(["../main", "./common", "./autoscroll", "./Avatar"], function(dojo) {
 	// module:
 	//		dojo/dnd/Manager
 	// summary:

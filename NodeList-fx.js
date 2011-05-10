@@ -1,4 +1,4 @@
-define([".", "./fx"], function(dojo) {
+define(["./main", "./fx"], function(dojo) {
 	// module:
 	//		dojo/NodeList-fx
 	// summary:

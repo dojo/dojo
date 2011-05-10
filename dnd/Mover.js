@@ -1,4 +1,4 @@
-define(["..", "./common", "./autoscroll"], function(dojo) {
+define(["../main", "./common", "./autoscroll"], function(dojo) {
 	// module:
 	//		dojo/dnd/Mover
 	// summary:

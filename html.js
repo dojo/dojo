@@ -1,4 +1,4 @@
-define([".", "./parser"], function(dojo) {
+define(["./main", "./parser"], function(dojo) {
 	// module:
 	//		dojo/html
 	// summary:

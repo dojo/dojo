@@ -1,4 +1,4 @@
-define([".", "./date/stamp"], function(dojo) {
+define(["./main", "./date/stamp"], function(dojo) {
 	// module:
 	//		dojo/parser
 	// summary:

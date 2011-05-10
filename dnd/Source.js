@@ -1,4 +1,4 @@
-define(["..", "./Selector", "./Manager"], function(dojo) {
+define(["../main", "./Selector", "./Manager"], function(dojo) {
 	// module:
 	//		dojo/dnd/Source
 	// summary:

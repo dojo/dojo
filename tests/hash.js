@@ -1,11 +1,11 @@
-define(["..", "doh", "../hash"], function(dojo, doh){
+define(["../main", "doh", "../hash"], function(dojo, doh){
 
 	// utilities for the tests:
 	function setHash(h){
 		h = h || "";
 		location.replace('#'+h);
 	}
-	
+
 	function getHash(){
 		var h = location.href, i = h.indexOf("#");
 		return (i >= 0) ? h.substring(i + 1) : "";
@@ -156,7 +156,7 @@ define(["..", "doh", "../hash"], function(dojo, doh){
 				setHash();
 			}
 		},
-		
+
 		// hash with trailing space:
 		{
 			name: "Getting the hash of 'trailingSpace%20'",
@@ -293,7 +293,7 @@ define(["..", "doh", "../hash"], function(dojo, doh){
 		},
 		{
 			_s: null, // used for the subscriber.
-		
+
 			name: "Hash change publishes to '/dojo/hashchange'",
 			setUp: function(t){
 				setHash();
@@ -308,7 +308,7 @@ define(["..", "doh", "../hash"], function(dojo, doh){
 						d.errback(e);
 					}
 				});
-				
+
 				dojo.hash('test');
 				return d;
 			},

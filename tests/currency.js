@@ -1,4 +1,4 @@
-define(["..", "doh", "require", "../currency"], function(dojo, doh, require){
+define(["../main", "doh", "require", "../currency"], function(dojo, doh, require){
 
 	var runTest= function(dojo, t) {
 		t.is("\u20ac123.45", dojo.currency.format(123.45, {currency: "EUR", locale: "en-us"}));
@@ -26,7 +26,7 @@ define(["..", "doh", "require", "../currency"], function(dojo, doh, require){
 	};
 
 	if(require.async){
-		require(["..", "../currency", "../i18n"], function(dojo){
+		require(["../main", "../currency", "../i18n"], function(dojo){
 			doh.register("tests.currency", {
 				name: "currency",
 				timeout: 2000,

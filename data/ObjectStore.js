@@ -1,4 +1,4 @@
-define(["..", "../regexp"], function(dojo) {
+define(["../main", "../regexp"], function(dojo) {
 	// module:
 	//		dojo/data/ObjectStore
 	// summary:

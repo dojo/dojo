@@ -1,4 +1,4 @@
-define(["..", "./common", "../parser"], function(dojo) {
+define(["../main", "./common", "../parser"], function(dojo) {
 	// module:
 	//		dojo/dnd/Container
 	// summary:

@@ -1,4 +1,4 @@
-define(["..", "./Mover"], function(dojo) {
+define(["../main", "./Mover"], function(dojo) {
 	// module:
 	//		dojo/dnd/Moveable
 	// summary:

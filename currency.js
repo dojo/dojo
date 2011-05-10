@@ -1,4 +1,4 @@
-define([".", "./number", "./i18n", "./i18n!./cldr/nls/currency", "./cldr/monetary"], function(dojo) {
+define(["./main", "./number", "./i18n", "./i18n!./cldr/nls/currency", "./cldr/monetary"], function(dojo) {
 	// module:
 	//		dojo/currency
 	// summary:

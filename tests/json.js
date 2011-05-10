@@ -1,4 +1,4 @@
-define(["..", "doh", "../json"], function(dojo, doh, JSON){
+define(["../main", "doh", "../json"], function(dojo, doh, JSON){
 
 	var mustThrow = function(json){
 		try{
@@ -42,7 +42,7 @@ define(["..", "doh", "../json"], function(dojo, doh, JSON){
 		function serializeInfinity(t){ t.is('{"foo":null}', JSON.stringify({"foo":Infinity}))},
 		// there is differences in how many decimals of accuracies in seconds in how Dates are serialized between browsers
 		function serializeDate(t){ debugger;t.t(/1970-01-01T00:00:00.*Z/.test(JSON.parse(JSON.stringify({"foo":new Date(1)})).foo));},
-		function serializeCircular(t){ 
+		function serializeCircular(t){
 			try{
 				var a = {};
 				a.a = a;
@@ -51,7 +51,7 @@ define(["..", "doh", "../json"], function(dojo, doh, JSON){
 				return;
 			}
 			throw new Error("stringify must throw for circular references");
-			
+
 		},
 		/*Apparently Firefox doesn't pass the key to the toJSON method*/
 		function serializeToJSON(t){ t.is('{"foo":{"name":"value"}}', JSON.stringify({foo:{toJSON:function(key){return {name:"value"};}}}))}

@@ -1,4 +1,4 @@
-define(["..", "./util/QueryResults"], function(dojo) {
+define(["../main", "./util/QueryResults"], function(dojo) {
 	// module:
 	//		dojo/store/DataStore
 	// summary:

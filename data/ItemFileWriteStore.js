@@ -1,4 +1,4 @@
-define(["..", "./ItemFileReadStore"], function(dojo) {
+define(["../main", "./ItemFileReadStore"], function(dojo) {
 	// module:
 	//		dojo/data/ItemFileWriteStore
 	// summary:

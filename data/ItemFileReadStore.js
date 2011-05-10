@@ -1,4 +1,4 @@
-define(["..", "./util/filter", "./util/simpleFetch", "../date/stamp"], function(dojo) {
+define(["../main", "./util/filter", "./util/simpleFetch", "../date/stamp"], function(dojo) {
 	// module:
 	//		dojo/data/ItemFileReadStore
 	// summary:

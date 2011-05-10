@@ -1,4 +1,4 @@
-define(["..", "../window"], function(dojo) {
+define(["../main", "../window"], function(dojo) {
 	// module:
 	//		dojo/dnd/autoscroll
 	// summary:

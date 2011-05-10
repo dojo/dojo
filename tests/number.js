@@ -1,4 +1,4 @@
-define(["..", "doh", "../number", "../i18n"], function(dojo, doh){
+define(["../main", "doh", "../number", "../i18n"], function(dojo, doh){
 var tests= {number:{}};
 /**
  * Refer to ICU4J's NumberFormatTest.expect(...)
@@ -20,7 +20,7 @@ tests.number.checkFormatParseCycle=function(t,options,sourceInput,expectResult,
 		var locale = options.locale;
 		//TODO: add more fields
 	}
-	
+
 	//print("\n");
 	var str = null==pattern?"default":pattern;
 	//print("pattern:" + str + "| locale:" + locale);
@@ -78,7 +78,7 @@ function runBatchParse(options,dataArray/*array*/,pass/*boolean*/){
 	var result;
 	var i=0;
 	var str = (null==options.pattern)?"default":options.pattern;
-	
+
 	//print("\n");
 	for(; i<dataArray.length; i++){
 		try{
@@ -93,7 +93,7 @@ function runBatchParse(options,dataArray/*array*/,pass/*boolean*/){
 			break;
 		}
 	}
-		
+
 	if(!pass && (exception == null)) {
 		throw "runBatchParse() - stric parse failed, no exception when parsing illegal data";
 	}else if(exception != null){
@@ -213,7 +213,7 @@ doh.register("tests.number",
 				t.is(12346, dojo.number.round(12346 +  0.49999), "radx215");
 				t.is(12347, dojo.number.round(12346 +  0.5), "radx216");
 				t.is(12347, dojo.number.round(12346 +  0.50001), "radx217");
-				
+
 				t.is(12345, dojo.number.round(12345 +  0.4), "radx220");
 				t.is(12345, dojo.number.round(12345 +  0.49), "radx221");
 				t.is(12345, dojo.number.round(12345 +  0.499), "radx222");
@@ -224,7 +224,7 @@ doh.register("tests.number",
 				t.is(12346, dojo.number.round(12345 +  0.501), "radx227");
 				t.is(12346, dojo.number.round(12345 +  0.51), "radx228");
 				t.is(12346, dojo.number.round(12345 +  0.6), "radx229");
-				
+
 				//negatives
 				t.is(-12345, dojo.number.round(-12345 + -0.1), "rsux200");
 				t.is(-12345, dojo.number.round(-12345 + -0.01), "rsux201");
@@ -240,11 +240,11 @@ doh.register("tests.number",
 				t.is(-12345, dojo.number.round(-12345 +  0.001), "rsux211");
 				t.is(-12345, dojo.number.round(-12345 +  0.01), "rsux212");
 				t.is(-12345, dojo.number.round(-12345 +  0.1), "rsux213");
-				
+
 				t.is(-12346, dojo.number.round(-12346 +  0.49999), "rsux215");
 				t.is(-12346, dojo.number.round(-12346 +  0.5), "rsux216");
 				t.is(-12345, dojo.number.round(-12346 +  0.50001   ), "rsux217");
-				
+
 				t.is(-12345, dojo.number.round(-12345 +  0.4), "rsux220");
 				t.is(-12345, dojo.number.round(-12345 +  0.49), "rsux221");
 				t.is(-12345, dojo.number.round(-12345 +  0.499), "rsux222");
@@ -255,7 +255,7 @@ doh.register("tests.number",
 				t.is(-12344, dojo.number.round(-12345 +  0.501), "rsux227");
 				t.is(-12344, dojo.number.round(-12345 +  0.51), "rsux228");
 				t.is(-12344, dojo.number.round(-12345 +  0.6), "rsux229");
-				
+
 				t.is(12345, dojo.number.round(  12345 /  1), "rdvx401");
 				t.is(12344, dojo.number.round(  12345 /  1.0001), "rdvx402");
 				t.is(12333, dojo.number.round(  12345 /  1.001), "rdvx403");
@@ -383,7 +383,7 @@ doh.register("tests.number",
 	t.is(-123.4, dojo.number.parse("(123.4)", {pattern: "#0.#;(#0.#)", locale: 'en-us'}));
 
 	t.is(null, dojo.number.format("abcd", {pattern: "0000"}));
-	
+
 	t.is(123, dojo.number.parse("123", {places:0}));
 	t.is(123, dojo.number.parse("123", {places:'0'}));
 	t.is(123.4, dojo.number.parse("123.4", {places:1, locale: 'en-us'}));
@@ -423,12 +423,12 @@ doh.register("tests.number",
 	var expectResult = "1,234,567,890,987,654,321,234,567,890,987,654,321";
 	tests.number.checkFormatParseCycle(t, null,bigNum,expectResult,false);
 	*/
-	
+
 	//in icu4j should throw out an exception when formatting a string,
 	//but it seems dojo.number.format can deal with strings
 	//return 123,456,789
 	dojo.number.format("123456789");
-	
+
 	//!!Failed case, \u00a4 and ' are not replaced
 	/*
 	var options = {pattern:"'*&'' '\u00a4' ''&*' #,##0.00",locale:"en-us"};
@@ -461,7 +461,7 @@ doh.register("tests.number",
 		options = {pattern:patterns[i], locale: 'en-us'};
 		tests.number.checkFormatParseCycle(t, options,0,num[i],false);
 	}
-	
+
 	//!!Failed case
 	//In ICU4J:
 	//        unquoted special characters in the suffix are illegal
@@ -469,7 +469,7 @@ doh.register("tests.number",
 	//dojo.number.format:
 	//        when formatting 1.2 with illegal pattern "000.000|###"
 	//		  no exception was thrown but got "001.200|###" instead.
-	
+
 	/*
 	patterns = (["000.000|###","000.000'|###'"]);
 	var exception = false;
@@ -510,7 +510,7 @@ doh.register("tests.number",
  */
 	//print("test_number_format_Quotes() start..............");
 	//TODO: add more locales
-	
+
 	//TODO:!!Failed case
 	//Pattern "s'aa''s'c#" should format 6666 to "saa'sc6666", but got s'aa''s'c6666 instead
 	// is this case necessary?
@@ -535,9 +535,9 @@ doh.register("tests.number",
 	tests.number.rounding(t,17.6995, 3, "17.7");
 	tests.number.rounding(t,15.3999, 0, "15");
 	tests.number.rounding(t,-29.6, 0, "-30");
-	
+
 	//TODO refer to NumberFormatTest.TestRounding()
-	
+
 	//print("test_number_format_rounding() end..............");
 			}
 		},
@@ -563,7 +563,7 @@ doh.register("tests.number",
 	var pattern;
 	var result;
 	var expectResult;
-	
+
     //TODO: !!Failed case - ###.###\u2030(\u2030 is ‰)
 	//Pattern ###.###\u2030 should format 0.4857 as 485.7\u2030,but got 485.700\u2030 instead
 	pattern = "###.###\u2030";
@@ -598,10 +598,10 @@ doh.register("tests.number",
 	//step1: 123456789 formated=> 12,34,56,789
 	//step2:12,34,56,789 parsed=> 123456789 => formated => 12,34,56,789
 	tests.number.checkFormatParseCycle(t, options,sourceInput,expectResult,true);
-						  
+
 	//TODO: sencondary grouping not implemented yet ?
 	//Pattern "#,###" and secondaryGroupingSize=4 should format 123456789 to "12,3456,789"
-	
+
 	//Special case for "en-in" locale
 	//1876543210 should be formated as 1,87,65,43,210 in "en-in" (India)
 /*
@@ -655,17 +655,17 @@ function test_number_format_pad(){
 
 	tests.number.check(t, options,0,"^^^^0");
 	tests.number.check(t, options,-1.3,"^-1.3");
-	
-	
+
+
 	options = {pattern:"##0.0####*_ 'g-m/s^2'",locale:locale};
 	tests.number.check(t, options,0,"0.0______ g-m/s^2");
 	tests.number.checkFormatParseCycle(t, options,1.0/3,"0.33333__ g-m/s^2",true);
-	
+
 	//exponent not implemented
 	//options = {pattern:"##0.0####E0*_ 'g-m/s^2'",locale:locale};
 	//tests.number.check(t, options,0,"0.0E0______ g-m/s^2");
 	//tests.number.checkFormatParseCycle(t, options,1.0/3,"333.333E-3_ g-m/s^2",true);
-	
+
 	// Test padding before a sign
 	options = {pattern:"*x#,###,###,##0.0#;*x(###,###,##0.0#)",locale:locale};
 
@@ -707,7 +707,7 @@ function test_number_format_pad(){
 	tests.number.check(t, options, 1120456.37, "1,120,456.37xxxx");
 	tests.number.check(t, options, 112045600.37, "112,045,600.37xx");
 	tests.number.check(t, options, 10252045600.37, "10,252,045,600.37");
-	
+
 	//Not implemented yet,refer to NumberFormatTest.TestPatterns2()
 	//For future use - maily test pad patterns
 	print("test_number_format_Pad() end..............");
@@ -759,7 +759,7 @@ function test_number_format_pad(){
         //,"0E"         //[12]not implemented yet,an exponnent not followed by zero or digits is not an exponent
          ]);
 	runBatchParse(options,passData,true/*tolerant parse*/);
-	
+
 	/*
 	 * TODO:!!Failed case,should all pass,
 	 * but the following failed,
@@ -784,11 +784,11 @@ function test_number_format_pad(){
         "1,23,456,7890" //[14] wrong number of digits in primary and secondary groups
 		]);
 	runBatchParse(options,failData,false);
-	
+
 	 options = {pattern:"#,##,##0.#",locale:"en-us"};
 	/*
 	 * TODO:!!Failed case,shoudl all pass.
-	 
+
 	 * but [1] [2] and [3] failed
 	 * should be parsed to 1234567,but NaN instead
 	 */
@@ -799,7 +799,7 @@ function test_number_format_pad(){
         //"12,34,567 that"	//[3]
 		]);
 	runBatchParse(options,mixedPassData,true/*tolerant parse*/);
-	
+
 	/*
 	 * TODO:!!Failed case,should all pass,
 	 * but actually mixedFailData[2] and mixedFailData[3] passed.
@@ -812,7 +812,7 @@ function test_number_format_pad(){
         //"12,34,56 that",	//[3]
 		]);
 	runBatchParse(options,mixedFailData,false);
-	
+
 
 	/**************************************** strict parse ******************************************
 	 * TODO:May need to test strict parsing in the future?
@@ -829,7 +829,7 @@ function test_number_format_pad(){
 	//options={locale:"en",strict:true};
 	//runBatchParse(options,passData,false/*strict parse*/);
 	//runBatchParse(options,failData,false/*strict parse*/);
-	
+
 	//options = {pattern:"#,##,##0.#",locale:"en-us",strict:true};
 	//runBatchParse(options,mixedPassData,false/*strict parse*/);
 	//runBatchParse(options,mixedFailData,false/*strict parse*/);
@@ -902,7 +902,7 @@ function test_number_format_pad(){
                  -1, 0,  1,
                  1,  1,  2,
                  3,  10, 255]);
-	
+
 	for(var i =0; i < data.length; i++){
 		tests.number.checkParse(t, options,data[i],expected[i]);
 	}
@@ -921,7 +921,7 @@ function test_number_format_pad(){
 	tests.number.checkParse(t, {pattern:"#0.#####", locale: 'en-us'},123.55456,123.55456);
 //!! fails because default pattern only has 3 decimal places
 //	tests.number.checkParse(t, null,123.55456,123.55456);
-	
+
 	//See whether it fails first format 0.0 ,parse "99.99",and then reformat 0.0
 	tests.number.checkFormatParseCycle(t, {pattern:"#.#"},0.0,"0",false);
 	tests.number.checkParse(t, {locale: 'en-us'},"99.99",99.99);
@@ -939,10 +939,10 @@ function test_number_format_pad(){
  * Refer to ICU4J's NumberRegression.Test4088503() and Test4106658()
  */
 	tests.number.checkFormatParseCycle(t, {places:0},123,"123",false);
-	
+
 	//TODO: differernt from ICU where -0.0 is formatted to "-0"
 	tests.number.checkFormatParseCycle(t, {locale:"en-us"},-0.0,"0",false);
-	
+
 	//TODO: differernt from ICU where -0.0001 is formatted to "-0"
 	tests.number.checkFormatParseCycle(t, {locale:"en-us",places:6},-0.0001,"-0.000100",false);
 			}
@@ -967,11 +967,11 @@ function test_number_format_pad(){
 	var pattern = "###.00;(###.00)";
 	var locale = "fr";
 	var options = {pattern:pattern,locale:locale};
-	
+
 	//no group separator
 	tests.number.checkFormatParseCycle(t, options,1234,"1234,00",false);
 	tests.number.checkFormatParseCycle(t, options,-1234,"(1234,00)",false);
-	
+
 	//space as group separator
 	pattern = "#,###.00;(#,###.00)";
 	options = {pattern:pattern,locale:locale};
@@ -1007,12 +1007,12 @@ function test_number_format_pad(){
  */
 	var patterns = (["#0000","#000","#00","#0","#"]);
 	var expect = (["0042","042","42","42","42"]);
-	
+
 	for(var i =0; i < patterns.length; i ++){
 		tests.number.checkFormatParseCycle(t, {pattern:patterns[i]},42,expect[i],false);
 		tests.number.checkFormatParseCycle(t, {pattern:patterns[i]},-42,"-"+expect[i],false);
 	}
-	
+
 	tests.number.checkFormatParseCycle(t, {pattern:"#,#00.00;-#.#", locale: 'en-us'},3456.78,"3,456.78",false);
 	//!!Failed case
 	//tests.number.checkFormatParseCycle(t, {pattern:"#,#00.00 p''ieces;-#,#00.00 p''ieces"},3456.78,"3,456.78 p'ieces",false);
@@ -1029,11 +1029,11 @@ function test_number_format_pad(){
  */
 	//TODO:only got NaN,need an illegal pattern exception?
 	tests.number.checkParse(t, {pattern:"#,#00.00"},"abc3");
-	
+
 	//TODO: got NaN instead of 1.222, is it ok?
 	//tests.number.checkParse(t, {pattern:"#,##0.###",locale:"en-us"},"1.222,111",1.222);
 	//tests.number.checkParse(t, {pattern:"#,##0.###",locale:"en-us"},"1.222x111",1.222);
-	
+
 	//got NaN for illeal input,ok
 	tests.number.checkParse(t, null,"hello: ,.#$@^&**10x");
 			}
@@ -1047,7 +1047,7 @@ function test_number_format_pad(){
 	tests.number.checkFormatParseCycle(t, {pattern:"000.00", locale: 'en-us'},12.34,"012.34",false);
 	tests.number.checkFormatParseCycle(t, {pattern:"+000.00%;-000.00%", locale: 'en-us'},0.1234,"+012.34%",false);
 	tests.number.checkFormatParseCycle(t, {pattern:"##,###,###.00", locale: 'en-us'},9.02,"9.02",false);
-	
+
 	var patterns =(["#.00", "0.00", "00.00", "#0.0#", "#0.00"]);
 	var expect =  (["1.20", "1.20", "01.20", "1.2",   "1.20" ]);
 	for(var i =0 ; i < patterns.length; i ++){
@@ -1084,7 +1084,7 @@ function test_number_format_pad(){
 	var specials = ([ '0', ',', '.', '\u2030', '%', '#',';', 'E', '*', '+', '-']);
 	var pattern;
 	var expect;
-	
+
 	for(var i=0; i < specials.length; i ++){
 		pattern = "'" + specials[i] + "'#0'" + specials[i] + "'";
 		expect = "" +  specials[i] + "123" +  specials[i];

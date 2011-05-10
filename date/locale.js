@@ -1,4 +1,4 @@
-define(["..", "../date", "../cldr/supplemental", "../regexp", "../string", "../i18n!../cldr/nls/gregorian"], function(dojo) {
+define(["../main", "../date", "../cldr/supplemental", "../regexp", "../string", "../i18n!../cldr/nls/gregorian"], function(dojo) {
 	// module:
 	//		dojo/date/local
 	// summary:

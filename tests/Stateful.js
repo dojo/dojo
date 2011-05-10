@@ -1,4 +1,4 @@
-define(["..", "doh", "../Stateful"], function(dojo, doh){
+define(["../main", "doh", "../Stateful"], function(dojo, doh){
 
 doh.register("tests.Stateful", [
 	function getSetWatch(t){

@@ -1,4 +1,4 @@
-define(["..", "doh", "../AdapterRegistry"], function(dojo, doh){
+define(["../main", "doh", "../AdapterRegistry"], function(dojo, doh){
 
 doh.register("tests.AdapterRegistry",
 	[

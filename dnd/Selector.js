@@ -1,4 +1,4 @@
-define(["..", "./common", "./Container"], function(dojo) {
+define(["../main", "./common", "./Container"], function(dojo) {
 	// module:
 	//		dojo/dnd/Selector
 	// summary:

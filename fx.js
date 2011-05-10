@@ -1,4 +1,4 @@
-define([".", "./fx/Toggler"], function(dojo) {
+define(["./main", "./fx/Toggler"], function(dojo) {
 	// module:
 	//		dojo/fx
 	// summary:

@@ -604,7 +604,7 @@ dojo.date.locale.getNames = function(/*String*/item, /*String*/type, /*String?*/
 	// item:
 	//	'months' || 'days'
 	// type:
-	//	'wide' || 'narrow' || 'abbr' (e.g. "Monday", "Mon", or "M" respectively, in English)
+	//	'wide' || 'abbr' || 'narrow' (e.g. "Monday", "Mon", or "M" respectively, in English)
 	// context:
 	//	'standAlone' || 'format' (default)
 	// locale:

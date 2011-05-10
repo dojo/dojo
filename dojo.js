@@ -235,7 +235,7 @@
 	if(!has("dojo-auto-init")){
 		reqEval= req.eval= req.eval ||
 			// use the function constructor so our eval is scoped in the global space
-			new Function("__text", "__hint", 'return eval(__text + "\\r\\n//@ sourceURL=" + __hint);');
+			new Function("__text", "__hint", 'return eval(__text + "\\r\\n////@ sourceURL=" + __hint);');
 
 		paths = req.paths = req.paths ||
 			// CommonJS paths

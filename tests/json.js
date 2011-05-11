@@ -41,7 +41,7 @@ define(["../main", "doh", "../json"], function(dojo, doh, JSON){
 		function serializeNaN(t){ t.is('{"foo":null}', JSON.stringify({"foo":NaN}))},
 		function serializeInfinity(t){ t.is('{"foo":null}', JSON.stringify({"foo":Infinity}))},
 		// there is differences in how many decimals of accuracies in seconds in how Dates are serialized between browsers
-		function serializeDate(t){ debugger;t.t(/1970-01-01T00:00:00.*Z/.test(JSON.parse(JSON.stringify({"foo":new Date(1)})).foo));},
+		function serializeDate(t){ t.t(/1970-01-01T00:00:00.*Z/.test(JSON.parse(JSON.stringify({"foo":new Date(1)})).foo));},
 		function serializeCircular(t){
 			try{
 				var a = {};

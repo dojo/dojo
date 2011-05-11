@@ -32,7 +32,7 @@
 		<title>testing dojo.NodeList</title>
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/listen", "dojo/string", "dojo/parser", "*ready"], function(dojo, doh, listen){
+			require.ready(["dojo", "doh", "dojo/listen", "dojo/string", "dojo/parser"], function(dojo, doh, listen){
 				var tn;
 				var c = dojo.byId("c1");
 				var t = dojo.byId("t");

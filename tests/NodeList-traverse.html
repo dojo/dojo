@@ -8,7 +8,7 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug: true, popup: true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/NodeList-traverse", "*ready"], function(dojo, doh){
+			require.ready(["dojo", "doh", "dojo/NodeList-traverse"], function(dojo, doh){
 
 				function verify(/*dojo.NodeList*/nl, /*Array*/ids, /*String*/ comment){
 					comment = comment || "verify";

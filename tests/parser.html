@@ -7,7 +7,7 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-		require(["dojo", "doh", "dojo/parser", "*ready"], function(){
+		require.ready(["dojo", "doh", "dojo/parser"], function(){
 
 			dojo.declare("tests.parser.Widget", null, {
 				constructor: function(args, node){

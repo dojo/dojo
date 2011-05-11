@@ -533,18 +533,8 @@
 				// signature is (requestList [,callback])
 
 				// resolve the request list with respect to the reference module
-				for(var callback = a2, deps = [], mid, i = 0; i < a1.length;){
-					mid = a1[i++];
-					if(mid == "*ready"){
-						callback = function(){
-							for(var args = arguments, aargs = [], i = 0; i < args.length; aargs.push(args[i++])){}
-							req.ready(function(){
-								a2.apply(null, aargs);
-							});
-						};
-					}else{
-						deps.push(getModule(mid, referenceModule, 1));
-					}
+				for(var callback = a2, deps = [], i = 0; i < a1.length;){
+					deps.push(getModule(a1[i++], referenceModule, 1));
 				}
 
 				// construct a synthetic module to control execution of the requestList, and, optionally, callback
@@ -1175,7 +1165,7 @@
 		has.add("dom-addeventlistener", !!doc.addEventListener);
 	}
 
-	if(has("dom") && (has("dojo-domloaded-api") || has("dojo-inject-api"))){
+	if(has("dom") && (has("dojo-dom-ready-api") || has("dojo-inject-api"))){
 		var on = function(node, eventName, handler, useCapture, ieEventName){
 			// Add an event listener to a DOM node using the API appropriate for the current browser;
 			// return a function that will disconnect the listener.
@@ -1224,7 +1214,23 @@
 		};
 	}
 
-	if(has("dojo-domloaded-api")){
+	var domReadyPluginCallbackQueue = [];
+	if(has("dojo-dom-ready-plugin")){
+		var	domReadyPluginLoad = function(id, require, cb){
+			if(req.pageLoaded){
+				cb(1);
+			}else{
+				domReadyPluginCallbackQueue.push(cb);
+			}
+		};
+		mix(getModule("domReady"), {
+			injected: arrived,
+			executed: executed,
+			load:domReadyPluginLoad
+		});
+	}
+
+	if(has("dojo-dom-ready-api")){
 		// WARNING: document.readyState does not work with Firefox before 3.6. To support
 		// those browsers, manually init require.pageLoaded in configuration.
 
@@ -1251,6 +1257,11 @@
 					loadDisconnector && loadDisconnector();
 					DOMContentLoadedDisconnector && DOMContentLoadedDisconnector();
 					req.pageLoaded = true;
+					if(has("dojo-dom-ready-plugin")){
+						while(domReadyPluginCallbackQueue.length){
+							(domReadyPluginCallbackQueue.shift())();
+						}
+					}
 					onLoad();
 				};
 
@@ -1319,6 +1330,17 @@
 		){
 			///
 			// Add a function to execute on DOM content loaded and all requests have arrived and been evaluated.
+
+			if(isArray(priority)){
+				// signature is (deps, callback); require deps, but hold callback until ready condition
+				req(priority, function(){
+					for(var args = arguments, aargs = [], i = 0; i < args.length; aargs.push(args[i++])){}
+					req.ready(function(){
+						context.apply(null, aargs);
+					});
+				});
+				return;
+			}
 			if(typeof priority != "number"){
 				callback = context, context = priority, priority = 1000;
 			}
@@ -1336,7 +1358,7 @@
 			loadQ.splice(i, 0, cb);
 			onLoad();
 		};
-	};
+	}
 
 	if(has("dojo-log-api")){
 		req.log = req.log || function(){
@@ -1783,7 +1805,8 @@
 			"dojo-trace-api":1,
 			"dojo-log-api":1,
 			"dojo-loader-catches":0,
-			"dojo-domloaded-api":1,
+			"dojo-dom-ready-api":1,
+			"dojo-dom-ready-plugin":1,
 			"dojo-ready-api":1,
 			"dojo-error-api":1,
 			"dojo-publish-privates":1,

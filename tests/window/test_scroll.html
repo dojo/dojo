@@ -18,7 +18,7 @@
 			loading = new doh.Deferred();
 		});
 
-		require(["dojo", "doh", "dojo/window", "*ready"], function(dojo, doh) {
+		require.ready(["dojo", "doh", "dojo/window"], function(dojo, doh) {
 
 			var usingNative = !(dojo.isMoz || dojo.isIE || dojo.isWebKit || dojo.isOpera);
 			var count = 0;

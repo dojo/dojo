@@ -6,7 +6,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh"], function(dojo, doh){
+			require(["dojo", "doh", "domReady!"], function(dojo, doh){
 				var duration = 500;
 				var timeout = 750;
 				doh.register("t", [
@@ -453,7 +453,7 @@
 					}
 				]);
 
-				doh.runOnLoad();
+				doh.run();
 			});
 		</script>
 		<style type="text/css">

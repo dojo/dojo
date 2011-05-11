@@ -1,3 +1,6 @@
+// TODO: this file needs to be converted to the v1.7 loader
+
+
 /*
  * SpiderMonkey host environment
  */

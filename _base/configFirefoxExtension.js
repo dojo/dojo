@@ -1,3 +1,5 @@
+// TODO: this file needs to be converted to the v1.7 loader
+
 // a host environment specifically built for Mozilla extensions, but derived
 // from the browser host environment
 if(typeof window != 'undefined'){
@@ -138,9 +140,9 @@ if(typeof window != 'undefined'){
 				return http.responseText; // String
 			}
 		}
-		
+
 		d._windowUnloaders = [];
-		
+
 		// FIXME: PORTME
 		d.windowUnloaded = function(){
 			// summary:
@@ -165,7 +167,7 @@ if(typeof window != 'undefined'){
 			//	|	dojo.addOnWindowUnload(functionPointer)
 			//	|	dojo.addOnWindowUnload(object, "functionName")
 			//	|	dojo.addOnWindowUnload(object, function(){ /* ... */});
-	
+
 			d._onto(d._windowUnloaders, obj, functionName);
 		}
 
@@ -287,7 +289,7 @@ if(typeof window != 'undefined'){
 		_handleNodeEvent("onunload", function() { dojo.windowUnloaded(); });
 	})();
 	*/
-	
+
 
 	//	FIXME: PORTME
 	// 		this event fires a lot, namely for all plugin XUL overlays and for

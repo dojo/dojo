@@ -717,7 +717,7 @@
 		getModule = function(mid, referenceModule, fromRequire){
 			// compute and optionally construct (if necessary) the module implied by the mid with respect to referenceModule
 			var match, plugin, pluginResource, result, existing, pqn, syntheticMid;
-			match = mid.match(/^(.+?)\!(.+)$/);
+			match = mid.match(/^(.+?)\!(.*)$/);
 			//TODO: change the regex above to this and test...match= mid.match(/^([^\!]+)\!(.+)$/);
 			if(match){
 				// name was <plugin-module>!<plugin-resource>
@@ -1214,13 +1214,13 @@
 		};
 	}
 
-	var domReadyPluginCallbackQueue = [];
+	var domReadyQ = [];
 	if(has("dojo-dom-ready-plugin")){
 		var	domReadyPluginLoad = function(id, require, cb){
 			if(req.pageLoaded){
 				cb(1);
 			}else{
-				domReadyPluginCallbackQueue.push(cb);
+				domReadyQ.push(cb);
 			}
 		};
 		mix(getModule("domReady"), {
@@ -1258,8 +1258,8 @@
 					DOMContentLoadedDisconnector && DOMContentLoadedDisconnector();
 					req.pageLoaded = true;
 					if(has("dojo-dom-ready-plugin")){
-						while(domReadyPluginCallbackQueue.length){
-							(domReadyPluginCallbackQueue.shift())();
+						while(domReadyQ.length){
+							(domReadyQ.shift())();
 						}
 					}
 					onLoad();

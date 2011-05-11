@@ -46,6 +46,8 @@ exports.config= function(config) {
 		config.hasCache[p]= hasCache[p];
 	}
 
+	var vm= require('vm');
+
 
 	// reset some configuration switches with node-appropriate values
 	var nodeConfig= {
@@ -64,12 +66,12 @@ exports.config= function(config) {
 		},
 
 		eval: function(__text, __urlHint) {
-			return process.compile(__text, __urlHint);
+			return vm.runInThisContext(__text, __urlHint);
 		},
 
 		injectUrl: function(url, callback) {
 			try {
-				process.compile(fs.readFileSync(url, "utf8"), url);
+				vm.runInThisContext(fs.readFileSync(url, "utf8"), url);
 				callback();
 			} catch(e) {
 				console.log("failed to load resource (" + url + ")");

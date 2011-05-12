@@ -18,7 +18,7 @@ define([
 		doh.register("config", require.nameToUrl("./loader/config-has.html"));
 		doh.register("error-api", require.nameToUrl("./loader/errorApi.html"));
 		doh.register("error-api", require.nameToUrl("./loader/errorApi.html")+"?noCatch");
-		doh.register("cdn-load", require.nameToUrl("./loader/cdnTest.html"));
+		//TODO: doh.register("cdn-load", require.nameToUrl("./loader/cdnTest.html"));
 
 		doh.register("publish-require-result", require.nameToUrl("./loader/publishRequireResult.html"));
 		doh.register("no-publish-require-result", require.nameToUrl("./loader/publishRequireResult.html")+"?do-not-publish");

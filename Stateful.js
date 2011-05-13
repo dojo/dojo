@@ -1,11 +1,11 @@
-define(["."], function(dojo) {
+define(["./_base/declare"], function(declare) {
 	// module:
 	//		dojo/Stateful
 	// summary:
 	//		TODOC
 
 
-dojo.declare("dojo.Stateful", null, {
+return declare("dojo.Stateful", null, {
 	// summary:
 	//		Base class for objects that provide named properties with optional getter/setter
 	//		control and the ability to watch for property changes
@@ -132,6 +132,4 @@ dojo.declare("dojo.Stateful", null, {
 	}
 
 });
-
-return dojo.Stateful;
 });

@@ -1,4 +1,4 @@
-define("dojo/aspect",[], function(){
+define([], function(){
 // summary:
 //		dojo/aspect provides aspect oriented programming functionality, allowing for
 //		one to add before, around, or after advice on existing methods.
@@ -8,7 +8,7 @@ define("dojo/aspect",[], function(){
 //		|		var signal = aspect.after(targetObject, "methodName", function(someArgument){
 // 		|			this will be called when targetObject.methodName() is called, after the original function is called
 //		|		});
-//		The returned signal object can be used to cancel the advice. 
+//		The returned signal object can be used to cancel the advice.
 //		|	signal.cancel(); // this will stop the advice from being executed anymore
 //		|	aspect.before(targetObject, "methodName", function(someArgument){
 //		|		// this will be called when targetObject.methodName() is called, before the original function is called
@@ -33,11 +33,11 @@ define("dojo/aspect",[], function(){
 //	around(target, methodName, advisor);
 //		The "around" export of the aspect module is a function that can be used to attach
 //		"around" advice to a method. The advisor function is immediately executed when
-// 		the around() is called, is passed a single argument that is a function that can be 
+// 		the around() is called, is passed a single argument that is a function that can be
 // 		called to continue execution of the original method (or the next around advisor).
 // 		The advisor function should return a function, and this function will be called whenever
 // 		the method is called. It will be called with the arguments used to call the method.
-//		Whatever this function returns will be returned as the result of the method call (unless after advise changes it). 
+//		Whatever this function returns will be returned as the result of the method call (unless after advise changes it).
 //		If there are multiple "around" advisors, the most recent one is executed first,
 //		which can then delegate to the next one and so on. For example:
 //		|	around(obj, "foo", function(originalFoo){
@@ -56,7 +56,7 @@ define("dojo/aspect",[], function(){
 //		This is the name of the method to attach to.
 //	advice:
 //		This is function to be called before, after, or around the original method
-//		
+//
  	"use strict";
 	function advise(dispatcher, type, advice, receiveArguments){
 		var previous = dispatcher[type];
@@ -134,7 +134,7 @@ define("dojo/aspect",[], function(){
 						args = before.advice.apply(this, args) || args;
 						before = before.next;
 					}
-					// around advice 
+					// around advice
 					if(typeof dispatcher.around == "object"){
 						var results = dispatcher.around.advice(this, args);
 					}

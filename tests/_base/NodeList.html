@@ -522,17 +522,17 @@
 							nl[0].click();
 							doh.is(1, ctr);
 							var inButton = nl[0].appendChild(document.createElement("span"));
-							listen.dispatch(nl[0], "click", {
+							listen.emit(nl[0], "click", {
 							});
-							listen.dispatch(inButton, "click", {
+							listen.emit(inButton, "click", {
 								bubbles: true
 							});
-							listen.dispatch(inButton, "click", {
+							listen.emit(inButton, "click", {
 								bubbles: false
 							});
 							doh.is(3, ctr);
 							handle.cancel();
-							listen.dispatch(nl[0], "click", {
+							listen.emit(nl[0], "click", {
 							});
 							doh.is(3, ctr);
 						},
@@ -546,33 +546,33 @@
 								ctr++;
 							});
 							doh.is(0, ctr);
-							listen.dispatch(nl[0], "click", {
+							listen.emit(nl[0], "click", {
 							});
-							listen.dispatch(bl[0], "click", {
+							listen.emit(bl[0], "click", {
 								bubbles: true
 							});
 							doh.is(1, ctr);
 							handle.cancel();
-							listen.dispatch(bl[0], "click", {
+							listen.emit(bl[0], "click", {
 								bubbles: true
 							});
 							doh.is(1, ctr);
 							dojo.query(tn).on(".thud:click, .thud button:custom", function(){
 								ctr++;
 							});
-							listen.dispatch(bl[0], "click", {
+							listen.emit(bl[0], "click", {
 								bubbles: true
 							});
 							doh.is(2, ctr);
-							listen.dispatch(bl[0], "click", {
+							listen.emit(bl[0], "click", {
 								bubbles: false
 							});
 							doh.is(2, ctr);
-							listen.dispatch(bl[0], "custom", {
+							listen.emit(bl[0], "custom", {
 								bubbles: true
 							});
 							doh.is(3, ctr);
-							listen.dispatch(bl[0], "mouseout", {
+							listen.emit(bl[0], "mouseout", {
 								bubbles: true
 							});
 							doh.is(3, ctr);

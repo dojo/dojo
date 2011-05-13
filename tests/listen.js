@@ -20,19 +20,19 @@ doh.register("tests.listen",
 			var signal2 = listen(obj, "custom, foo", function(event){
 				order.push(event.a);
 			});
-			listen.dispatch(obj, "custom", {
+			listen.emit(obj, "custom", {
 				a: 3
 			});
 			signal.pause();
 			var signal3 = listen(obj, "custom", function(a){
 				order.push(3);
 			}, true);
-			listen.dispatch(obj, "custom", {
+			listen.emit(obj, "custom", {
 				a: 3
 			});
 			signal2.cancel();
 			signal.resume();
-			listen.dispatch(obj, "custom", {
+			listen.emit(obj, "custom", {
 				a: 6
 			});
 			signal3.cancel();
@@ -40,7 +40,7 @@ doh.register("tests.listen",
 				order.push(4);
 			}, true);
 			signal.cancel();
-			listen.dispatch(obj, "custom", {
+			listen.emit(obj, "custom", {
 				a: 7
 			});
 			t.is(order, [0,0,3,0,3,3,3,3,6,0,3,7,4]);
@@ -56,21 +56,21 @@ doh.register("tests.listen",
 			listen(span,"custom", function(event){
 				event.addedProp = "val";
 			});
-			listen.dispatch(div, "custom", {
+			listen.emit(div, "custom", {
 				target: div,
 				currentTarget:div,
 				relatedTarget: div,
 				a: 0
 			});
-			listen.dispatch(div, "otherevent", {
+			listen.emit(div, "otherevent", {
 				a: 0
 			});
-			t.is(listen.dispatch(span, "custom", { 
+			t.is(listen.emit(span, "custom", { 
 				a: 1,
 				bubbles: true,
 				cancelable: true
 			}).addedProp, "value");
-			t.t(listen.dispatch(span, "custom", {
+			t.t(listen.emit(span, "custom", {
 				a: 1,
 				bubbles: false,
 				cancelable: true
@@ -79,20 +79,20 @@ doh.register("tests.listen",
 				order.push(event.a + 1);
 				event.preventDefault();
 			});
-			t.f(listen.dispatch(span, "custom", {
+			t.f(listen.emit(span, "custom", {
 				a: 2,
 				bubbles: true,
 				cancelable: true
 			}));
 			signal2.pause();
-			t.is(listen.dispatch(span, "custom", {
+			t.is(listen.emit(span, "custom", {
 				a: 4,
 				bubbles: true,
 				cancelable: true
 			}).type, "custom");
 			signal2.resume();
 			signal.cancel();
-			t.f(listen.dispatch(span, "custom", {
+			t.f(listen.emit(span, "custom", {
 				a: 4,
 				bubbles: true,
 				cancelable: true
@@ -101,7 +101,7 @@ doh.register("tests.listen",
 				order.push(6);
 				event.stopPropagation();
 			});
-			t.t(listen.dispatch(span, "custom", {
+			t.t(listen.emit(span, "custom", {
 				a: 1,
 				bubbles: true,
 				cancelable: true
@@ -139,17 +139,17 @@ doh.register("tests.listen",
 			var signal = listen(div, listen.selector("span", customEvent), function(event){
 				order.push(+this.getAttribute("foo"));
 			});
-			listen.dispatch(div, "custom", {
+			listen.emit(div, "custom", {
 				a: 0
 			});
 			// should trigger selector
-			t.t(listen.dispatch(span, "custom", { 
+			t.t(listen.emit(span, "custom", { 
 				a: 1,
 				bubbles: true,
 				cancelable: true
 			}));
 			// shouldn't trigger selector
-			t.t(listen.dispatch(div, "custom", { 
+			t.t(listen.emit(div, "custom", { 
 				a: 3,
 				bubbles: true,
 				cancelable: true
@@ -176,7 +176,7 @@ doh.register("tests.listen",
 					t.t("rotation" in event);
 					t.t("pageX" in event);
 				});
-				listen.dispatch(div, "touchstart", {changedTouches: [{pageX:100}]});
+				listen.emit(div, "touchstart", {changedTouches: [{pageX:100}]});
 			}
 		}
 	]

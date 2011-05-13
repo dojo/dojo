@@ -105,6 +105,7 @@ define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
 			};
 		};
 		return {
+			mouseButtons: mouseButtons,
 			enter: eventHandler("mouseenter"),
 			leave: eventHandler("mouseleave") 
 		};
@@ -121,6 +122,7 @@ define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
 			};
 		};
 		return {
+			mouseButtons: mouseButtons,
 			enter: eventHandler("mouseover"),
 			leave: eventHandler("mouseout")
 		};

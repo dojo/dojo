@@ -335,16 +335,14 @@
 				packageInfo.location = baseUrl + (packageInfo.location ? packageInfo.location : packageInfo.name);
 				packageInfo.mapProg = computeMapProg(packageInfo.packageMap);
 
-				if(!packageInfo.main.indexOf("./")){
-					packageInfo.main= packageInfo.main.substring(2);
-				}
-
-				if(!/\/$/.test(packageInfo.lib)){
-					packageInfo.lib= packageInfo.lib + "/";
-				}
-				if(packageInfo.lib=="./"){
-					packageInfo.lib= "";
-				}
+				var
+					trimJunk= function(path){
+						return path=="." ? "" : (path.indexOf("./") ? path : path.substring(2));
+					},
+					lib= trimJunk(packageInfo.lib);
+				// non-empty lib must end in "/" for our purposes
+				packageInfo.lib= lib + (/.+[^\/]$/.test(lib) ? "/" : "");
+				packageInfo.main= trimJunk(packageInfo.main);
 
 				// allow paths to be specified in the package info
 				mix(paths, packageInfo.paths);
@@ -650,7 +648,7 @@
 			var pid, pack, pqn, mapProg, mapItem, path, url, result, isRelative, requestedMid;
 			requestedMid= mid;
 			isRelative= /^\./.test(mid);
-			if(/(^\/)|(\:)/.test(mid) || (isRelative && !referenceModule)){
+			if(/(^\/)|(\:)|(\.js$)/.test(mid) || (isRelative && !referenceModule)){
 				// absolute path or protocol, or relative path but no reference module and therefore relative to page
 				// whatever it is, it's not a module but just a URL or some sort
 				return makeModuleInfo(0, mid, "*" + mid, 0, mid, mid);
@@ -1403,6 +1401,14 @@
 				}else{
 					mix(trace.group, group);
 				}
+			},
+			showUnexecuted:function(){
+				trace.result= {};
+				for(var p in modules){
+					if(modules[p].executed!==executed){
+						trace.result[p]= modules[p];
+					}
+				}
 			}
 		});
 		trace.set(defaultConfig.trace);
@@ -1764,6 +1770,7 @@
 			defQ:defQ,
 			waiting:waiting,
 			loadQ:loadQ,
+			runDefQ:runDefQ,
 			checkComplete:checkComplete,
 
 			// these are used by the builder (at least)

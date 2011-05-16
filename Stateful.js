@@ -1,4 +1,4 @@
-define(["./_base/declare"], function(declare) {
+define(["./_base/kernel", "./_base/declare"], function(dojo, declare) {
 	// module:
 	//		dojo/Stateful
 	// summary:

@@ -1,4 +1,4 @@
-define(["dojo/_base/declare"], function() {
+define([], function() {
 	// module:
 	//		dojo/store/api/Store
 	// summary:

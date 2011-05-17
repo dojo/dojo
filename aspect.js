@@ -1,4 +1,4 @@
-define([], function(){
+define(["."], function(){
 // summary:
 //		dojo/aspect provides aspect oriented programming functionality, allowing for
 //		one to add before, around, or after advice on existing methods.

@@ -742,7 +742,7 @@
 				moduleInfo = getModuleInfo((match && match[1]) || name, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg),
 				url= moduleInfo.url;
 			// recall, getModuleInfo always returns a url with a ".js" suffix iff pid; therefore, we've got to trim it
-			url= moduleInfo.pid ? url.substring(0, url.length - 3) : url;
+			url= typeof moduleInfo.pid == "string" ? url.substring(0, url.length - 3) : url;
 			return url + (ext ? ext : (match ? match[2] : ""));
 		},
 
@@ -1041,6 +1041,7 @@
 						// wasn't marked as executed by dojo.provide (so it wasn't a v1.6- module);
 						// therefore, it must not have been a module (it was just some code); adjust state accordingly
 						mix(module, nonModuleProps);
+						module.result = dojo.getObject(module.path.replace(/\//g,'.')) || module.result;
 					}
 					checkComplete();
 				};
@@ -1078,7 +1079,13 @@
 								injectingModule= 0;
 								setDel(waiting, pqn);
 							}
-							onLoadCallback();
+							var wasAsync = require.async;
+							require.async = 0;
+							try{
+								onLoadCallback();
+							}finally{
+								require.async = wasAsync;
+							}
 							return;
 						}
 					}
@@ -1576,9 +1583,7 @@
 			dojo.provide = function(mid){
 				var module= getModule(slashName(mid), referenceModule);
 				module.executed!==executed && mix(module, {
-					injected: arrived,
 					deps: [],
-					executed: executed,
 					result: dojo.getObject(mid.replace(/\//g, "."), true)
 				});
 				return module.result;
@@ -1587,17 +1592,24 @@
 			return function(mid){
 				// basic dojo.require
 				mid = slashName(mid);
-				var
-					module = getModule(mid, referenceModule),
-					url = module.url;
-				if(module.executed){
-					return module.result;
-				}
+				syncDepth++;
+				require.async = false;
+				try{
+					var
+						module = getModule(mid, referenceModule),
+						url = module.url;
+					if(module.executed){
+						return module.result;
+					}
+	
+					execQ.push(module);
+					injectModule(module);
 
-				execQ.push(module);
-				injectModule(module);
-				checkComplete();
-				return module.result;
+					checkComplete();
+					return module.result;
+				}finally{
+					syncDepth--;
+				}
 			};
 		};
 

@@ -202,7 +202,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 
 	function inherited__debug(args, a){
 		var f = this.getInherited(args, a);
-		if(f){ return func.apply(this, a || args); }
+		if(f){ return f.apply(this, a || args); }
 		// intentionally no return if a super method was not found
 	}
 

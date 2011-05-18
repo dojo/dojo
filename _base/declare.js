@@ -1,8 +1,8 @@
 define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
-  // module:
-  //		dojo/_base/declare
-  // summary:
-  //		This module defines dojo.declare.
+	// module:
+	//		dojo/_base/declare
+	// summary:
+	//		This module defines dojo.declare.
 
 	var d = dojo, mix = d._mixin, op = Object.prototype, opts = op.toString,
 		xtor = new Function, counter = 0, cname = "constructor";
@@ -190,15 +190,23 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 		if(f){
 			return a === true ? f : f.apply(this, a || args);
 		}
-		// intentionally if a super method was not found
+		// intentionally no return if a super method was not found
 	}
 
 	function getInherited(name, args){
 		if(typeof name == "string"){
-			return this.inherited(name, args, true);
+			return this.__inherited(name, args, true);
 		}
-		return this.inherited(name, true);
+		return this.__inherited(name, true);
 	}
+
+	function inherited__debug(args, a){
+		var f = this.getInherited(args, a);
+		if(f){ return func.apply(this, a || args); }
+		// intentionally no return if a super method was not found
+	}
+
+	var inheritedImpl = dojo.config.isDebug ? inherited__debug : inherited;
 
 	// emulation of "instanceof"
 	function isInstanceOf(cls){
@@ -527,8 +535,9 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 
 		// add "standard" methods to the prototype
 		proto.getInherited = getInherited;
-		proto.inherited = inherited;
 		proto.isInstanceOf = isInstanceOf;
+		proto.inherited    = inheritedImpl;
+		proto.__inherited  = inherited;
 
 		// add name if specified
 		if(className){

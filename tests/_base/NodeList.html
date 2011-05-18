@@ -557,7 +557,8 @@
 								bubbles: true
 							});
 							doh.is(1, ctr);
-							dojo.query(tn).on(".thud:click, .thud button:custom", function(){
+							// listen and on should behave the same
+							dojo.query(tn).listen(".thud:click, .thud button:custom", function(){
 								ctr++;
 							});
 							listen.emit(bl[0], "click", {

@@ -981,6 +981,8 @@ define(["./kernel", "../listen", "./lang", "./array", "./html"], function(dojo, 
 
 	});
 
+	nlp.listen = nlp.on; // alias listen to on
+	
 	nl.events = [
 		// summary:
 		//		list of all DOM events used in NodeList

@@ -47,42 +47,63 @@ dojo.dnd.autoScrollNodes = function(e){
 	//		onmousemove event
 
 	// FIXME: needs more docs!
+
+	var b, t, w, h, rx, ry, dx = 0, dy = 0, oldLeft, oldTop;
+
 	for(var n = e.target; n;){
 		if(n.nodeType == 1 && (n.tagName.toLowerCase() in dojo.dnd._validNodes)){
-			var s = dojo.getComputedStyle(n);
-			if(s.overflow.toLowerCase() in dojo.dnd._validOverflow){
-				var b = dojo._getContentBox(n, s), t = dojo.position(n, true);
-				//console.log(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
-				var w = Math.min(dojo.dnd.H_TRIGGER_AUTOSCROLL, b.w / 2),
-					h = Math.min(dojo.dnd.V_TRIGGER_AUTOSCROLL, b.h / 2),
-					rx = e.pageX - t.x, ry = e.pageY - t.y, dx = 0, dy = 0;
+			var s = dojo.getComputedStyle(n),
+				overflow = (s.overflow.toLowerCase() in dojo.dnd._validOverflow),
+				overflowX = (s.overflowX.toLowerCase() in dojo.dnd._validOverflow),
+				overflowY = (s.overflowY.toLowerCase() in dojo.dnd._validOverflow);
+			if(overflow || overflowX || overflowY){
+				b = dojo._getContentBox(n, s);
+				t = dojo.position(n, true);
+			}
+			// overflow-x
+			if(overflow || overflowX){
+				w = Math.min(dojo.dnd.H_TRIGGER_AUTOSCROLL, b.w / 2);
+				rx = e.pageX - t.x;
 				if(dojo.isWebKit || dojo.isOpera){
 					// FIXME: this code should not be here, it should be taken into account
 					// either by the event fixing code, or the dojo.position()
 					// FIXME: this code doesn't work on Opera 9.5 Beta
 					rx += dojo.body().scrollLeft;
-					ry += dojo.body().scrollTop;
 				}
+				dx = 0;
 				if(rx > 0 && rx < b.w){
 					if(rx < w){
 						dx = -w;
 					}else if(rx > b.w - w){
 						dx = w;
 					}
+					oldLeft = n.scrollLeft;
+					n.scrollLeft = n.scrollLeft + dx;
 				}
-				//console.log("ry =", ry, "b.h =", b.h, "h =", h);
+			}
+			// overflow-y
+			if(overflow || overflowY){
+				//console.log(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
+				h = Math.min(dojo.dnd.V_TRIGGER_AUTOSCROLL, b.h / 2);
+				ry = e.pageY - t.y;
+				if(dojo.isWebKit || dojo.isOpera){
+					// FIXME: this code should not be here, it should be taken into account
+					// either by the event fixing code, or the dojo.position()
+					// FIXME: this code doesn't work on Opera 9.5 Beta
+					ry += dojo.body().scrollTop;
+				}
+				dy = 0;
 				if(ry > 0 && ry < b.h){
 					if(ry < h){
 						dy = -h;
 					}else if(ry > b.h - h){
 						dy = h;
 					}
+					oldTop = n.scrollTop;
+					n.scrollTop  = n.scrollTop  + dy;
 				}
-				var oldLeft = n.scrollLeft, oldTop = n.scrollTop;
-				n.scrollLeft = n.scrollLeft + dx;
-				n.scrollTop  = n.scrollTop  + dy;
-				if(oldLeft != n.scrollLeft || oldTop != n.scrollTop){ return; }
 			}
+			if(dx || dy){ return; }
 		}
 		try{
 			n = n.parentNode;
@@ -93,5 +114,5 @@ dojo.dnd.autoScrollNodes = function(e){
 	dojo.dnd.autoScroll(e);
 };
 
-return dojo.dnd;
+	return dojo.dnd;
 });

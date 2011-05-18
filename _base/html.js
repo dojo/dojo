@@ -1368,58 +1368,56 @@ if(dojo.isIE){
 			attrName = _attrNames[lc] || name;
 		if(args == 3){
 			// setter
-			do{
-				if(propName == "style" && typeof value != "string"){ // inline'd type check
-					// special case: setting a style
-					d.style(node, value);
-					break;
-				}
-				if(propName == "innerHTML"){
-					// special case: assigning HTML
-					//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-					if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
-						d.empty(node);
-						node.appendChild(d._toDom(value, node.ownerDocument));
-					}else{
-					//>>excludeEnd("webkitMobile");
-						node[propName] = value;
-					//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-					}
-					//>>excludeEnd("webkitMobile");
-					break;
-				}
-				if(d.isFunction(value)){
-					// special case: assigning an event handler
-					// clobber if we can
-					var attrId = d.attr(node, _attrId);
-					if(!attrId){
-						attrId = _ctr++;
-						d.attr(node, _attrId, attrId);
-					}
-					if(!_evtHdlrMap[attrId]){
-						_evtHdlrMap[attrId] = {};
-					}
-					var h = _evtHdlrMap[attrId][propName];
-					if(h){
-						d.disconnect(h);
-					}else{
-						try{
-							delete node[propName];
-						}catch(e){}
-					}
-					// ensure that event objects are normalized, etc.
-					_evtHdlrMap[attrId][propName] = d.connect(node, propName, value);
-					break;
-				}
-				if(forceProp || typeof value == "boolean"){
-					// special case: forcing assignment to the property
-					// special case: setting boolean to a property instead of attribute
+			if(propName == "style" && typeof value != "string"){ // inline'd type check
+				// special case: setting a style
+				d.style(node, value);
+				return node; // DomNode
+			}
+			if(propName == "innerHTML"){
+				// special case: assigning HTML
+				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+				if(d.isIE && node.tagName.toLowerCase() in _roInnerHtml){
+					d.empty(node);
+					node.appendChild(d._toDom(value, node.ownerDocument));
+				}else{
+				//>>excludeEnd("webkitMobile");
 					node[propName] = value;
-					break;
+				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 				}
-				// node's attribute
-				node.setAttribute(attrName, value);
-			}while(false);
+				//>>excludeEnd("webkitMobile");
+				return node; // DomNode
+			}
+			if(d.isFunction(value)){
+				// special case: assigning an event handler
+				// clobber if we can
+				var attrId = d.attr(node, _attrId);
+				if(!attrId){
+					attrId = _ctr++;
+					d.attr(node, _attrId, attrId);
+				}
+				if(!_evtHdlrMap[attrId]){
+					_evtHdlrMap[attrId] = {};
+				}
+				var h = _evtHdlrMap[attrId][propName];
+				if(h){
+					d.disconnect(h);
+				}else{
+					try{
+						delete node[propName];
+					}catch(e){}
+				}
+				// ensure that event objects are normalized, etc.
+				_evtHdlrMap[attrId][propName] = d.connect(node, propName, value);
+				return node; // DomNode
+			}
+			if(forceProp || typeof value == "boolean"){
+				// special case: forcing assignment to the property
+				// special case: setting boolean to a property instead of attribute
+				node[propName] = value;
+				return node; // DomNode
+			}
+			// node's attribute
+			node.setAttribute(attrName, value);
 			return node; // DomNode
 		}
 		// getter

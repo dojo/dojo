@@ -740,9 +740,11 @@
 			// a filetype. This is a requirejs artifact which we don't like.
 			var
 				match = !ext && name.match(/(.+)(\.[^\/]+?)$/),
-				url = getModuleInfo((match && match[1]) || name, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg).url;
-			// recall, getModuleInfo always returns a url with a ".js" suffix; therefore, we've got to trim it
-			return url.substring(0, url.length - 3) + (ext ? ext : (match ? match[2] : ""));
+				moduleInfo = getModuleInfo((match && match[1]) || name, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg),
+				url= moduleInfo.url;
+			// recall, getModuleInfo always returns a url with a ".js" suffix iff pid; therefore, we've got to trim it
+			url= moduleInfo.pid ? url.substring(0, url.length - 3) : url;
+			return url + (ext ? ext : (match ? match[2] : ""));
 		},
 
 		nonModuleProps = {

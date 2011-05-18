@@ -175,7 +175,7 @@ if(dojo.isIE){
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		}else if(d.isIE){
 			var v = (node.unselectable = selectable ? "" : "on");
-			d.query("*", node).forEach("item.unselectable = '"+v+"'");
+			d.forEach(node.getElementsByTagName("*"), function(item){ item.unselectable = v; });
 		}
 		//>>excludeEnd("webkitMobile");
 		//FIXME: else?  Opera?
@@ -506,8 +506,8 @@ if(dojo.isIE){
 			af(node, 1).Enabled = !opaque;
 
 			if(node.nodeName.toLowerCase() == "tr"){
-				d.query("> td", node).forEach(function(i){
-					d._setOpacity(i, opacity);
+				d.forEach(node.childNodes, function(n){
+					n.tagName && n.tagName.toLowerCase() == "td" && d._setOpacity(n, opacity);
 				});
 			}
 			return opacity;

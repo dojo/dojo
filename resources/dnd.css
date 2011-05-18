@@ -1,6 +1,6 @@
 /* DnD avatar-specific settings */
 .dojoDndAvatar			{font-size: 75%; color: black;}
-.dojoDndAvatarHeader td	{padding-left: 20px; padding-right: 4px;}
+.dojoDndAvatarHeader td	{padding-left: 20px; padding-right: 4px;  height: 16px;}
 .dojoDndAvatarHeader	{background: #ccc;}
 .dojoDndAvatarItem		{background: #eee;}
 .dojoDndMove .dojoDndAvatarHeader	{background-image: url(images/dndNoMove.png); background-repeat: no-repeat;}

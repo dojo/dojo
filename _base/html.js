@@ -409,23 +409,21 @@ if(dojo.isIE){
 			// style values can be floats, client code may
 			// want to round this value for integer pixels.
 			if(avalue.slice && avalue.slice(-2) == 'px'){ return parseFloat(avalue); }
-			with(element){
-				var sLeft = style.left;
-				var rsLeft = runtimeStyle.left;
-				runtimeStyle.left = currentStyle.left;
-				try{
-					// 'avalue' may be incompatible with style.left, which can cause IE to throw
-					// this has been observed for border widths using "thin", "medium", "thick" constants
-					// those particular constants could be trapped by a lookup
-					// but perhaps there are more
-					style.left = avalue;
-					avalue = style.pixelLeft;
-				}catch(e){
-					avalue = 0;
-				}
-				style.left = sLeft;
-				runtimeStyle.left = rsLeft;
+			var s = element.style, rs = element.runtimeStyle, cs = element.currentStyle,
+				sLeft = s.left, rsLeft = rs.left;
+			rs.left = cs.left;
+			try{
+				// 'avalue' may be incompatible with style.left, which can cause IE to throw
+				// this has been observed for border widths using "thin", "medium", "thick" constants
+				// those particular constants could be trapped by a lookup
+				// but perhaps there are more
+				s.left = avalue;
+				avalue = s.pixelLeft;
+			}catch(e){
+				avalue = 0;
 			}
+			s.left = sLeft;
+			rs.left = rsLeft;
 			return avalue;
 		};
 	}

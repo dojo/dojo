@@ -24,7 +24,7 @@
 			"amd": "return /\\.js$/.test(name) && !/\\/nls\\//.test(name) && !/_base\\/config.+/.test(name) && !/OpenAjax\\.js$/.test(name) && !/resources\\/_modules\\.js/.test(name);"
 		},
 		"trees": [
-			[".", ".", "/\\.", "/dojo/_base/_loader/", "/dojo/lib/"]
+			[".", ".", "/\\.", "~$"]
 		]
 	}
 }

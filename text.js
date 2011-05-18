@@ -30,7 +30,7 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 	var
 		theCache= {},
 
-		getCacheId= function(resourceId) {
+		getCacheId= function(resourceId, require) {
 			if(require.toAbsMid){
 				var match= resourceId.match(/(.+)(\.[^\/\.]+)$/);
 				return match ? require.toAbsMid(match[1]) + match[2] : require.toAbsMid(resourceId);
@@ -69,7 +69,7 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 				var
 					parts= id.split("!"),
 					resourceId= parts[0],
-					cacheId= getCacheId(resourceId),
+					cacheId= getCacheId(resourceId, require),
 					stripFlag= parts.length>1,
 					url;
 				if(cacheId in theCache){
@@ -81,10 +81,20 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 					load(stripFlag ? strip(theCache[url]) : theCache[url]);
 					return;
 				}
-				getText(url, !require.async, function(text){
-					cache(cacheId, url, text);
-					load(stripFlag ? strip(theCache[url]) : theCache[url]);
-				});
+				var
+					inject= function(text){
+						cache(cacheId, url, text);
+						load(stripFlag ? strip(theCache[url]) : theCache[url]);
+					},
+					text;
+				try{
+					text= require("*text/" + cacheId);
+					if(text!==undefined){
+						inject(text);
+						return;
+					}
+				}catch(e){}
+				getText(url, !require.async, inject);
 			},
 
 			cache:function(cacheId, mid, type, value) {

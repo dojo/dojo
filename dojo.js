@@ -714,7 +714,7 @@
 
 		getModule = function(mid, referenceModule, fromRequire){
 			// compute and optionally construct (if necessary) the module implied by the mid with respect to referenceModule
-			var match, plugin, pluginResource, result, existing, pqn, syntheticMid;
+			var match, plugin, pluginResource, result, existing, pqn;
 			match = mid.match(/^(.+?)\!(.*)$/);
 			//TODO: change the regex above to this and test...match= mid.match(/^([^\!]+)\!(.+)$/);
 			if(match){
@@ -725,10 +725,9 @@
 				return modules[pqn] || (modules[pqn] = {plugin:plugin, mid:pluginResource, req:(referenceModule ? createRequire(referenceModule) : req), pqn:pqn});
 			}else{
 				if(fromRequire && /^.*[^\/\.]+\.[^\/\.]+$/.test(mid)){
-					// anything* anything-other-than-a-dot+ dot anything-other-than-a-dot+ => a url that ends with a filetype
-					syntheticMid = uid(),
-					pqn = "*" + syntheticMid;
-					return modules[pqn]= makeModuleInfo(0, syntheticMid, pqn, 0, mid, mid);
+					// anything* anything-other-than-a-dot+ dot anything-other-than-a-dot-or-slash+ => a url that ends with a filetype
+					pqn = "*" + mid;
+					return modules[pqn]= modules[pqn] || makeModuleInfo(0, mid, pqn, 0, mid, mid);
 				}
 				result = getModuleInfo(mid, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg);
 				return modules[result.pqn] || (modules[result.pqn] = result);
@@ -1112,6 +1111,9 @@
 						}
 					}
 				});
+				if(!isFunction(def) && !deps.length){
+					mix(module, {result:def, executed:executed});
+				}
 
 				// resolve deps with respect to pid
 				for(var i = 0; i < deps.length; i++){

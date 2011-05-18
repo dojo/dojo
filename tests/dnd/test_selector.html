@@ -9,11 +9,13 @@
 		body { padding: 20px; }
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+	<!--
 	<script type="text/javascript" src="../../dnd/common.js"></script>
 	<script type="text/javascript" src="../../dnd/Container.js"></script>
 	<script type="text/javascript" src="../../dnd/Selector.js"></script>
+	-->
 	<script type="text/javascript">
-		//dojo.require("dojo.dnd.Selector");
+		dojo.require("dojo.dnd.Selector");
 		var c1, c2, c3, c4, c5;
 		var init = function(){
 			c1 = new dojo.dnd.Selector(dojo.byId("container1"), {singular: true});

@@ -225,9 +225,9 @@ dojo.gesture = {
 				if(!has("touch")){
 					e.locking = true;
 				}else{
-					if(Object.getPrototypeOf){
+					if(e.__proto__){
 						//not use e.constructor.prototype to lock in object scope rather TouchEvent.prototype
-						Object.getPrototypeOf(e).locking = true;
+						e.__proto__.locking = true;
 					}
 				}
 				gesture[type](element, e);

@@ -210,7 +210,7 @@ if(!has("dom-qsa")){
 		var unique = {};
 		// add all results and keep unique ones
 		for(var i = 0; i < selector.length; i++){
-			var results = defaultEngine(selector[i], root);
+			var results = liteEngine(selector[i], root);
 			for(var j = 0, l = results.length; j < l; j++){
 				var node = results[j];
 				var id = node.uniqueID;

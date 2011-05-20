@@ -234,8 +234,8 @@
 	delete req.packages;
 	if(!has("dojo-auto-init")){
 		reqEval= req.eval= req.eval ||
-			// use the function constructor so our eval is scoped in the global space
-			new Function("__text", "__hint", 'return eval(__text + "\\r\\n////@ sourceURL=" + __hint);');
+			// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
+			new Function("__text", "__hint", 'return eval(__text + "\\r\\n////@ sourceURL=" + __hint);'),
 
 		paths = req.paths = req.paths ||
 			// CommonJS paths
@@ -329,20 +329,15 @@
 			},
 
 			fixupPackageInfo = function(packageInfo, baseUrl){
-				// calculate the precise (name, baseUrl, lib, main, mappings) for a package
+				// calculate the precise (name, baseUrl, main, mappings) for a package
 				baseUrl = baseUrl || "";
-				packageInfo = mix({lib:"lib", main:"main"}, (isString(packageInfo) ? {name:packageInfo} : packageInfo));
+				packageInfo = mix({main:"main"}, (isString(packageInfo) ? {name:packageInfo} : packageInfo));
 				packageInfo.location = baseUrl + (packageInfo.location ? packageInfo.location : packageInfo.name);
 				packageInfo.mapProg = computeMapProg(packageInfo.packageMap);
 
-				var
-					trimJunk= function(path){
-						return path=="." ? "" : (path.indexOf("./") ? path : path.substring(2));
-					},
-					lib= trimJunk(packageInfo.lib);
-				// non-empty lib must end in "/" for our purposes
-				packageInfo.lib= lib + (/.+[^\/]$/.test(lib) ? "/" : "");
-				packageInfo.main= trimJunk(packageInfo.main);
+				packageInfo.main= (function(path){
+					return path=="." ? "" : (path.indexOf("./") ? path : path.substring(2));
+				})(packageInfo.main);
 
 				// allow paths to be specified in the package info
 				mix(paths, packageInfo.paths);
@@ -650,7 +645,7 @@
 			isRelative= /^\./.test(mid);
 			if(/(^\/)|(\:)|(\.js$)/.test(mid) || (isRelative && !referenceModule)){
 				// absolute path or protocol, or relative path but no reference module and therefore relative to page
-				// whatever it is, it's not a module but just a URL or some sort
+				// whatever it is, it's not a module but just a URL of some sort
 				return makeModuleInfo(0, mid, "*" + mid, 0, mid, mid);
 			}else{
 				// relative module ids are relative to the referenceModule; get rid of any dots
@@ -665,15 +660,12 @@
 				mapItem = (mapProg && runMapProg(path, mapProg)) || runMapProg(path, packageMapProg);
 				if(mapItem){
 					// mid specified a module that's a member of a package; figure out the package id and module id
-					// notice we expect config to have pack.lib either "" or end with a slash and pack.main to be valid with no pre or post slash
+					// notice we expect pack.main to be valid with no pre or post slash
 					pid = mapItem[1];
 					mid = path.substring(mapItem[3]);
 					pack = packs[pid];
 					if(!mid){
 						mid= pack.main;
-					}else if(!isRelative){
-						// mid was something like "myPackage/myModule"; do any required mapping
-						mid = pack.lib + mid;
 					}
 					path = pid + "/" + mid;
 				}else{
@@ -1601,7 +1593,7 @@
 					if(module.executed){
 						return module.result;
 					}
-	
+
 					execQ.push(module);
 					injectModule(module);
 
@@ -1839,37 +1831,31 @@
 			"config-tlmSiblingOfDojo":1,
 			"dojo-sync-loader":1,
 			"dojo-test-sniff":1,
+			"dojo-eval":1,
 			"dojo-xdomain-test-api":1
 		},
 		packages:[{
 			// note: like v1.6-, this bootstrap computes baseUrl to be the dojo directory
 			name:'dojo',
-			location:'.',
-			lib:'.'
+			location:'.'
 		},{
 			name:'tests',
-			location:'./tests',
-			lib:'.'
+			location:'./tests'
 		},{
 			name:'dijit',
-			location:'../dijit',
-			lib:'.'
+			location:'../dijit'
 		},{
 			name:'build',
-			location:'../util/build',
-			lib:'.'
+			location:'../util/build'
 		},{
 			name:'doh',
-			location:'../util/doh',
-			lib:'.'
+			location:'../util/doh'
 		},{
 			name:'dojox',
-			location:'../dojox',
-			lib:'.'
+			location:'../dojox'
 		},{
 			name:'demos',
-			location:'../demos',
-			lib:'.'
+			location:'../demos'
 		}],
 		trace:{
 			// these are listed so it's simple to turn them on/off while debugging loading
@@ -1891,3 +1877,4 @@
 	require.bootReady && require.ready(require.bootReady);
 })();
 //>>excludeEnd("replaceLoaderConfig")
+

@@ -24,16 +24,14 @@ define(["doh", "dojo"], function(doh, dojo){
 					name:"pack1",
 					location:"../packages/pack1Root"
 				}, {
-					// nonstandard main and lib
+					// nonstandard main
 					name:"pack2",
 					main:"pack2Main",
-					lib:".",
 					location:"/pack2Root"
 				}, {
-					// nonstandard main and lib
+					// nonstandard main
 					name:"pack3",
 					main:"public/main",
-					lib:"public",
 					location:"/pack3Root"
 				}]
 			});
@@ -57,10 +55,10 @@ define(["doh", "dojo"], function(doh, dojo){
 			check(get("pack2"), "pack2", "pack2Main", "/pack2Root/pack2Main");
 			check(get("pack3"), "pack3", "public/main", "/pack3Root/public/main");
 
-			// the various libs...
-			check(get("pack1/myModule"), "pack1", "lib/myModule", pack1Root + "lib/myModule");
+			// modules...
+			check(get("pack1/myModule"), "pack1", "myModule", pack1Root + "myModule");
 			check(get("pack2/myModule"), "pack2", "myModule", "/pack2Root/myModule");
-			check(get("pack3/myModule"), "pack3", "public/myModule", "/pack3Root/public/myModule");
+			check(get("pack3/myModule"), "pack3", "myModule", "/pack3Root/myModule");
 
 			// relative module id resolution; relative to module in top-level
 			var refmod= {path:"pack1/main", pack:require.packageMap.pack1};
@@ -68,46 +66,13 @@ define(["doh", "dojo"], function(doh, dojo){
 			check(get("./myModule", refmod), "pack1", "myModule", pack1Root + "myModule");
 			check(get("./myModule/mySubmodule", refmod), "pack1", "myModule/mySubmodule", pack1Root + "myModule/mySubmodule");
 
-			// relative module id resolution; relative to module in lib
-			refmod= {path:"pack1/lib/publicModule", pack:require.packageMap.pack1};
-			check(get(".", refmod), "pack1", "lib", pack1Root + "lib");
-			check(get("./myModule", refmod), "pack1", "lib/myModule", pack1Root + "lib/myModule");
+			// relative module id resolution; relative to module
+			refmod= {path:"pack1/sub/publicModule", pack:require.packageMap.pack1};
+			check(get(".", refmod), "pack1", "sub", pack1Root + "sub");
+			check(get("./myModule", refmod), "pack1", "sub/myModule", pack1Root + "sub/myModule");
 			check(get("..", refmod), "pack1", "main", pack1Root + "main");
 			check(get("../myModule", refmod), "pack1", "myModule", pack1Root + "myModule");
 			check(get("../util/myModule", refmod), "pack1", "util/myModule", pack1Root + "util/myModule");
-
-			// studies by courtesy of Ben Hockey
-			require({
-				packages:[{
-					// ben case 1, 2
-					name: 'pkg',
-					location: '/path/to/pkg',
-					lib: 'lib',
-					main: 'main'
-				}]
-			});
-
-			// case 1
-			refmod= {path:"pkg/main", pack:require.packageMap.pkg};
-			check(get("./util/b", refmod), "pkg", "util/b", "/path/to/pkg/util/b");
-
-			// case 2
-			refmod= {path:"pkg/lib/a", pack:require.packageMap.pkg};
-			check(get("../util/b", refmod), "pkg", "util/b", "/path/to/pkg/util/b");
-
-			require({
-				packages:[{
-					// ben case 3
-					name: 'pkg',
-					location: '/path/to/pkg',
-					lib: 'lib',
-					main: 'lib/main'
-				}]
-			});
-
-			// case 3
-			refmod= {path:"pkg/lib/a", pack:require.packageMap.pkg};
-			check(get(".", refmod), "pkg", "lib", "/path/to/pkg/lib");
 		},
 
 		function baseUrl(t){

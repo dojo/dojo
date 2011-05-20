@@ -1,5 +1,5 @@
-define(["../has"],
-		function(has){
+define(["../has", "require"],
+		function(has, require){
 // summary:
 //		This module handles loading the appropriate selector engine for the given browser
 "use strict";
@@ -15,15 +15,16 @@ has.add("dom-qsa3", function(){
 			}catch(e){}
 		});
 var fullEngine;
-var acme = "./selector/acme", lite = "./selector/lite";
+var acme = "./acme", lite = "./lite";
 return {
 	load: function(id, parentRequire, loaded, config){
+		var req = require;
 		// here we implement the default logic for choosing a selector engine
 		id = id == "default" ? has("config-selectorEngine") || "css3" : id;
 		id = id == "css2" || id == "lite" ? lite :
 				id == "css2.1" ? has("dom-qsa2.1") ? lite : acme :
 				id == "css3" ? has("dom-qsa3") ? lite : acme :
-				id == "acme" ? acme : id;
+				id == "acme" ? acme : (req = parentRequire) && id;
 		if(id.charAt(id.length-1) == '?'){
 			id = id.substring(0,id.length - 1);
 			var optionalLoad = true;
@@ -33,7 +34,7 @@ return {
 			return loaded(fullEngine);
 		}
 		// load the referenced selector engine
-		parentRequire([id], function(engine){
+		req([id], function(engine){
 			if(id != "./lite"){
 				fullEngine = engine;
 			}

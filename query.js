@@ -90,19 +90,12 @@ function queryForEngine(engine){
 			return dojo.indexOf(nodes, node) > -1;
 		});
 	};
-	query.setEngine = function(newEngine){
-		// replace parent engine
-		engine = typeof newEngine == "function" ? newEngine : function(selector, root){
+	if(typeof engine != "function"){
+		var search = engine.search;
+		engine = function(selector, root){
 			// Slick does it backwards
-			return newEngine.search(root || document, selector);
+			return search(root || document, selector);
 		};
-		if(engine.filter){
-			query.filter = engine.filter;
-		}
-		if(engine.match){
-			query.matches = engine.match;
-		}
-		return queryForEngine(engine);
 	}
 	return query;
 };
@@ -111,7 +104,7 @@ var query = dojo.query = queryForEngine(defaultEngine);
 query.load = function(id, parentRequire, loaded, config){
 	// can be used a AMD plugin to conditionally load new query engine
 	loader.load(id, parentRequire, function(engine){
-		loaded(query.setEngine(engine));
+		loaded(queryForEngine(engine));
 	});
 };
 dojo._filterQueryResult = function(nodes, selector, root){

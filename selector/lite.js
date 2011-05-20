@@ -6,10 +6,8 @@ define(["../has"],
 var testDiv = document.createElement("div");
 var matchesSelector = testDiv.matchesSelector || testDiv.webkitMatchesSelector || testDiv.mozMatchesSelector || testDiv.msMatchesSelector || testDiv.oMatchesSelector; // IE9, WebKit, Firefox have this, but not Opera yet
 var querySelectorAll = testDiv.querySelectorAll;
-has.add({
-	"dom-matches-selector": !!matchesSelector,
-	"dom-qsa": !!querySelectorAll 
-});
+has.add("dom-matches-selector", !!matchesSelector);
+has.add("dom-qsa", !!querySelectorAll); 
 
 // this is a simple query engine. It has handles basic selectors, and for simple
 // common selectors is extremely fast
@@ -18,31 +16,43 @@ var liteEngine = function(selector, root){
 		return combine(selector, root);
 	}
 	var match = (querySelectorAll ? 
-		/^#([\w\-]+$)|^(\.)([\w\-\*]+$)|^(\w+$)/ : // this one only matches on simple queries where we can beat qSA with specific methods
-		/^#([\w\-]+)(?:\s+(.*))?$|(?:^|(.+\s+))([\w\-\*]+)(\S*$)/) // this one matches parts of the query that we can use to speed up manual filtering
+		/^([\w]*)#([\w\-]+$)|^(\.)([\w\-\*]+$)|^(\w+$)/ : // this one only matches on simple queries where we can beat qSA with specific methods
+		/^([\w]*)#([\w\-]+)(?:\s+(.*))?$|(?:^|(.+\s+))([\w\-\*]+)(\S*$)/) // this one matches parts of the query that we can use to speed up manual filtering
 			.exec(selector);
 	root = root || document;
 	if(match){
 		// fast path regardless of whether or not querySelectorAll exists
-		if(match[1] && root == document){
+		if(match[2]){
 			// an #id
-			root = root.getElementById(match[1]);
-			return root && root.parentNode ? 
-				match[2] ?
-					liteEngine(match[2], root) 
-					: [root] 
-						: [];
+			var found = document.getElementById(match[2]);
+			if(!found || (match[1] && match[1] != found.tagName.toLowerCase())){
+				// if there is a tag qualifer and it doesn't match, no matches
+				return [];
+			}
+			if(root != document){
+				// there is a root element, make sure we are child of it
+				var parent = found;
+				while(parent != root){
+					parent = parent.parentNode;
+					if(!parent){
+						return [];
+					}
+				}
+			}
+			return match[3] ?
+					liteEngine(match[3], found) 
+					: [root];
 		}
-		if(match[2] && root.getElementsByClassName){
+		if(match[3] && root.getElementsByClassName){
 			// a .class
 			return root.getElementsByClassName(match[3]);
 		}
 		var found;
-		if(match[4]){
+		if(match[5]){
 			// a tag
-			found = root.getElementsByTagName(match[4]);
-			if(match[3] || match[5]){
-				selector = (match[3] || "") + match[5];
+			found = root.getElementsByTagName(match[5]);
+			if(match[4] || match[6]){
+				selector = (match[4] || "") + match[6];
 			}else{
 				// that was the entirety of the query, return results
 				return found;
@@ -170,7 +180,7 @@ if(!has("dom-matches-selector")){
 			if(!matcher){
 				// create a matcher function for the given selector
 				// parse the selectors
-				if(selector.replace(/(\s*>\s*)|(\s+)|(.)?([\w-]+)|\[([\w-]+)\s*(.?=)?\s*([^\]]*)\]/g, function(t, desc, space, type, value, attrName, attrType, attrValue){
+				if(selector.replace(/(\s*>\s*)|(\s+)|(\.)?([\w-]+)|\[([\w-]+)\s*(.?=)?\s*([^\]]*)\]/g, function(t, desc, space, type, value, attrName, attrType, attrValue){
 					if(value){
 						if(type == "."){
 							matcher = and(matcher, className(value));

@@ -91,8 +91,10 @@
 		},
 
 		forEach = function(vector, callback){
-			for(var i = 0; vector && i < vector.length;){
-				callback(vector[i++]);
+			if(vector){
+				for(var i = 0; i < vector.length;){
+					callback(vector[i++]);
+				}
 			}
 		},
 
@@ -364,9 +366,11 @@
 					if(configVariableNames[p]){
 						req[p] = config[p];
 					}
-					// accumulate raw config info for client apps which can use this to pass their own config
-					req.rawConfig[p]= config[p];
-					has.add("config-"+p, config[p], 0, booting);
+					if(config[p]!==hasCache){
+						// accumulate raw config info for client apps which can use this to pass their own config
+						req.rawConfig[p]= config[p];
+						has.add("config-"+p, config[p], 0, booting);
+					}
 				}
 				req.waitms= (req.waitSeconds || 0) * 1000;
 

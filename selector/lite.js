@@ -17,20 +17,21 @@ var liteEngine = function(selector, root){
 	}
 	var match = (querySelectorAll ? 
 		/^([\w]*)#([\w\-]+$)|^(\.)([\w\-\*]+$)|^(\w+$)/ : // this one only matches on simple queries where we can beat qSA with specific methods
-		/^([\w]*)#([\w\-]+)(?:\s+(.*))?$|(?:^|(.+\s+))([\w\-\*]+)(\S*$)/) // this one matches parts of the query that we can use to speed up manual filtering
+		/^([\w]*)#([\w\-]+)(?:\s+(.*))?$|(?:^|(>|.+\s+))([\w\-\*]+)(\S*$)/) // this one matches parts of the query that we can use to speed up manual filtering
 			.exec(selector);
 	root = root || document;
 	if(match){
 		// fast path regardless of whether or not querySelectorAll exists
 		if(match[2]){
 			// an #id
+			// TODO: Consider using the dojo.byId's id bug fix, not sure if it is worth the decreased performance though
 			var found = document.getElementById(match[2]);
 			if(!found || (match[1] && match[1] != found.tagName.toLowerCase())){
 				// if there is a tag qualifer and it doesn't match, no matches
 				return [];
 			}
 			if(root != document){
-				// there is a root element, make sure we are child of it
+				// there is a root element, make sure we are a child of it
 				var parent = found;
 				while(parent != root){
 					parent = parent.parentNode;
@@ -45,7 +46,7 @@ var liteEngine = function(selector, root){
 		}
 		if(match[3] && root.getElementsByClassName){
 			// a .class
-			return root.getElementsByClassName(match[3]);
+			return root.getElementsByClassName(match[4]);
 		}
 		var found;
 		if(match[5]){
@@ -78,7 +79,7 @@ var liteEngine = function(selector, root){
 	var results = [];
 	for(var i = 0, l = found.length; i < l; i++){
 		var node = found[i];
-		if(jsMatchesSelector(node, selector, root)){
+		if(node.nodeType == 1 && jsMatchesSelector(node, selector, root)){
 			// keep the nodes that match the selector
 			results.push(node);
 		}
@@ -130,23 +131,35 @@ if(!has("dom-matches-selector")){
 				return node.className.indexOf(className) > -1 && (' ' + node.className + ' ').indexOf(classNameSpaced) > -1;
 			}
 		}
+		var attrComparators = {
+			"^=": function(attrValue, value){
+				return attrValue.indexOf(value) == 0;
+			},
+			"*=": function(attrValue, value){
+				return attrValue.indexOf(value) > -1;
+			},
+			"$=": function(attrValue, value){
+				return attrValue.substring(attrValue.length - value.length, attrValue.length) == value;
+			},
+			"~=": function(attrValue, value){
+				return (' ' + attrValue + ' ').indexOf(' ' + value + ' ') > -1;
+			},
+			"|=": function(attrValue, value){
+				return (attrValue + '-').indexOf(value + '-') == 0;
+			},
+			"=": function(attrValue, value){
+				return attrValue == value;
+			},
+			"": function(attrValue, value){
+				return true;
+			}
+		};
 		function attr(name, value, type){
 			value = value.replace(/'|"/g,''); // what are you supposed to do with quotes, do they follow JS rules for escaping?
-			return type == "^=" ? function(node){
-				var thisValue = node.getAttribute(name);
-				return thisValue && thisValue.substring(0, value.length) == value;
-			} :
-			type == "$=" ? function(node){
-				var thisValue = node.getAttribute(name);
-				return thisValue && thisValue.substring(thisValue.length - value.length, thisValue.length) == value;
-			} :
-			type == "=" ? function(node){
-				return node.getAttribute(name) == value;
-			}:
-			!type ? function(node){
-				return node.getAttribute(name);
-			} : function(){
-				throw new Error("Unknown attribute comparison " + type);
+			var comparator = attrComparators[type];
+			return function(node){
+				var attrValue = node.getAttribute(name);
+				return attrValue && comparator(attrValue, value);
 			}
 		}
 		function ancestor(matcher){

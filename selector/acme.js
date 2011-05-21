@@ -472,9 +472,9 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			//		an E element whose "hreflang" attribute has a
 			//		hyphen-separated list of values beginning (from the
 			//		left) with "en"
-			var valueDash = " "+value+"-";
+			var valueDash = value+"-";
 			return function(elem){
-				var ea = " "+_getAttr(elem, attr);
+				var ea = _getAttr(elem, attr);
 				return (
 					(ea == value) ||
 					(ea.indexOf(valueDash)==0)

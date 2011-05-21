@@ -1,5 +1,5 @@
-define(["../has"], 
-		function(has){	
+define(["../has", "../_base/kernel"], 
+		function(has, dojo){	
 "use strict";
 // summary:
 //		A small lightweight query selector engine
@@ -24,8 +24,8 @@ var liteEngine = function(selector, root){
 		// fast path regardless of whether or not querySelectorAll exists
 		if(match[2]){
 			// an #id
-			// TODO: Consider using the dojo.byId's id bug fix, not sure if it is worth the decreased performance though
-			var found = document.getElementById(match[2]);
+			// use dojo.byId if available as it fixes the id retrieval in IE
+			var found = dojo.byId ? dojo.byId(match[2]) : document.getElementById(match[2]);
 			if(!found || (match[1] && match[1] != found.tagName.toLowerCase())){
 				// if there is a tag qualifer and it doesn't match, no matches
 				return [];
@@ -42,7 +42,7 @@ var liteEngine = function(selector, root){
 			}
 			return match[3] ?
 					liteEngine(match[3], found) 
-					: [root];
+					: [found];
 		}
 		if(match[3] && root.getElementsByClassName){
 			// a .class

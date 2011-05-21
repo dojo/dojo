@@ -79,8 +79,7 @@
 						"doh.is('child3', queryLite('> [qux]', 'container')[1].id);",
 						"doh.is(3, queryLite('> *', 'container').length);",
 						"doh.is(3, queryLite('>*', 'container').length);",
-						// TODO: might want to fix this
-						//"doh.is('passed', queryLite('#bug')[0].value);",
+						"doh.is('passed', queryLite('#bug')[0].value);",
 
 						// bug 9071
 						"doh.is(2, (queryLite('a', 't4')).length);",

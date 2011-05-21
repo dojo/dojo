@@ -1,8 +1,12 @@
-define(["./main", "./date/stamp"], function(dojo) {
-	// module:
-	//		dojo/parser
-	// summary:
-	//		TODOC
+define(
+	["./_base/kernel", "./_base/lang", "./_base/array", "./_base/html", "./_base/window", "./_base/url",
+		"./_base/json", "./aspect", "./date/stamp", "./query"],
+	function(dojo, dlang, darray, dhtml, dwindow, _Url, djson, aspect, dates, query){
+
+// module:
+//		dojo/parser
+// summary:
+//		The Dom/Widget parsing package
 
 new Date("X"); // workaround for #11279, new Date("") == NaN
 
@@ -19,8 +23,6 @@ function has(feature){
 dojo.parser = new function(){
 	// summary:
 	//		The Dom/Widget parsing package
-
-	var d = dojo;
 
 	var _nameMap = {
 		// Map from widget name (ex: "dijit.form.Button") to structure mapping
@@ -43,7 +45,7 @@ dojo.parser = new function(){
 	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
 	// If BorderContainer is loaded after _Widget's parameter list has been cached,
 	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
-	d.connect(d, "extend", function(){
+	aspect.after(dlang, "extend", function(){
 		_nameMap = {};
 	});
 
@@ -63,13 +65,13 @@ dojo.parser = new function(){
 		var suffix = "";
 		var argsStr = (script.getAttribute(attrData + "args") || script.getAttribute("args"));
 		if(argsStr){
-			d.forEach(argsStr.split(/\s*,\s*/), function(part, idx){
+			darray.forEach(argsStr.split(/\s*,\s*/), function(part, idx){
 				preamble += "var "+part+" = arguments["+idx+"]; ";
 			});
 		}
 		var withStr = script.getAttribute("with");
 		if(withStr && withStr.length){
-			d.forEach(withStr.split(/\s*,\s*/), function(part){
+			darray.forEach(withStr.split(/\s*,\s*/), function(part){
 				preamble += "with("+part+"){";
 				suffix += "}";
 			});
@@ -104,8 +106,8 @@ dojo.parser = new function(){
 
 		// Precompute names of special attributes we are looking for
 		// TODO: for 2.0 default to data-dojo- regardless of scopeName (or maybe scopeName won't exist in 2.0)
-		var dojoType = (args.scope || d._scopeName) + "Type",		// typically "dojoType"
-			attrData = "data-" + (args.scope || d._scopeName) + "-",// typically "data-dojo-"
+		var dojoType = (args.scope || dojo._scopeName) + "Type",		// typically "dojoType"
+			attrData = "data-" + (args.scope || dojo._scopeName) + "-",// typically "data-dojo-"
 			dataDojoType = attrData + "type",						// typically "data-dojo-type"
 			dataDojoProps = attrData + "props",						// typically "data-dojo-props"
 			dataDojoAttachPoint = attrData + "attach-point",
@@ -114,12 +116,12 @@ dojo.parser = new function(){
 
 		// And make hash to quickly check if a given attribute is special, and to map the name to something friendly
 		var specialAttrs = {};
-		dojo.forEach([dataDojoProps, dataDojoType, dojoType, dataDojoId, "jsId", dataDojoAttachPoint,
+		darray.forEach([dataDojoProps, dataDojoType, dojoType, dataDojoId, "jsId", dataDojoAttachPoint,
 				dataDojoAttachEvent, "dojoAttachPoint", "dojoAttachEvent", "class", "style"], function(name){
 			specialAttrs[name.toLowerCase()] = name.replace(args.scope, "dojo");
 		});
 
-		d.forEach(nodes, function(obj){
+		darray.forEach(nodes, function(obj){
 			if(!obj){ return; }
 
 			var node = obj.node || obj,
@@ -137,11 +139,11 @@ dojo.parser = new function(){
 
 			if(args.defaults){
 				// settings for the document itself (or whatever subtree is being parsed)
-				d._mixin(params, args.defaults);
+				dojo._mixin(params, args.defaults);
 			}
 			if(obj.inherited){
 				// settings from dir=rtl or lang=... on a node above this node
-				d._mixin(params, obj.inherited);
+				dojo._mixin(params, obj.inherited);
 			}
 
 			// Get list of attributes explicitly listed in the markup
@@ -154,7 +156,7 @@ dojo.parser = new function(){
 				var clone = /^input$|^img$/i.test(node.nodeName) ? node : node.cloneNode(false),
 					attrs = clone.outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g, "").replace(/^\s*<[a-zA-Z0-9]*/, "").replace(/>.*$/, "");
 
-				attributes = dojo.map(attrs.split(/\s+/), function(name){
+				attributes = darray.map(attrs.split(/\s+/), function(name){
 					var lcName = name.toLowerCase();
 					return {
 						name: name,
@@ -241,7 +243,7 @@ dojo.parser = new function(){
 							}else{
 								// The user has specified the name of a function like "myOnClick"
 								// or a single word function "return"
-								params[name] = d.getObject(value, false) || new Function(value);
+								params[name] = dojo.getObject(value, false) || new Function(value);
 							}
 							break;
 						default:
@@ -251,9 +253,9 @@ dojo.parser = new function(){
 									(pVal instanceof Date) ?
 										(value == "" ? new Date("") :	// the NaN of dates
 										value == "now" ? new Date() :	// current date
-										d.date.stamp.fromISOString(value)) :
-								(pVal instanceof d._Url) ? (d.baseUrl + value) :
-								d.fromJson(value);
+										dates.fromISOString(value)) :
+								(pVal instanceof _Url) ? (dojo.baseUrl + value) :
+								djson.fromJson(value);
 						}
 					}else{
 						params[name] = value;
@@ -264,8 +266,8 @@ dojo.parser = new function(){
 			// Mix things found in data-dojo-props into the params, overriding any direct settings
 			if(extra){
 				try{
-					extra = d.fromJson.call(args.propsThis, "{" + extra + "}");
-					d._mixin(params, extra);
+					extra = djson.fromJson.call(args.propsThis, "{" + extra + "}");
+					dojo._mixin(params, extra);
 				}catch(e){
 					// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
 					throw new Error(e.toString() + " in data-dojo-props='" + extra + "'");
@@ -273,10 +275,10 @@ dojo.parser = new function(){
 			}
 
 			// Any parameters specified in "mixin" override everything else.
-			d._mixin(params, mixin);
+			dojo._mixin(params, mixin);
 
 			var scripts = obj.node ? obj.scripts : (ctor && (ctor._noScript || proto._noScript) ? [] :
-						d.query("> script[type^='dojo/']", node));
+						query("> script[type^='dojo/']", node));
 
 			// Process <script type="dojo/*"> script tags
 			// <script type="dojo/method" event="foo"> tags are added to params, and passed to
@@ -314,12 +316,12 @@ dojo.parser = new function(){
 
 			// map it to the JS namespace if that makes sense
 			if(jsname){
-				d.setObject(jsname, instance);
+				dojo.setObject(jsname, instance);
 			}
 
 			// process connections and startup functions
 			for(i=0; i<connects.length; i++){
-				d.connect(instance, connects[i].event, null, connects[i].func);
+				aspect.after(instance, connects[i].event, dojo.hitch(instance, connects[i].func), true);
 			}
 			for(i=0; i<calls.length; i++){
 				calls[i].call(instance);
@@ -335,9 +337,9 @@ dojo.parser = new function(){
 			// Note that will  require a parse() call from ContentPane setting a param that the
 			// ContentPane is the parent widget (so that the parse doesn't call startup() on the
 			// ContentPane's children)
-			d.forEach(thelist, function(instance){
+			darray.forEach(thelist, function(instance){
 				if( !args.noStart && instance  &&
-					dojo.isFunction(instance.startup) &&
+					dlang.isFunction(instance.startup) &&
 					!instance._started &&
 					(!instance.getParent || !instance.getParent())
 				){
@@ -427,11 +429,11 @@ dojo.parser = new function(){
 		}else{
 			root = rootNode;
 		}
-		root = root ? dojo.byId(root) : dojo.body();
+		root = root ? dhtml.byId(root) : dwindow.body();
 		args = args || {};
 
-		var dojoType = (args.scope || d._scopeName) + "Type",		// typically "dojoType"
-			attrData = "data-" + (args.scope || d._scopeName) + "-",	// typically "data-dojo-"
+		var dojoType = (args.scope || dojo._scopeName) + "Type",		// typically "dojoType"
+			attrData = "data-" + (args.scope || dojo._scopeName) + "-",	// typically "data-dojo-"
 			dataDojoType = attrData + "type",						// typically "data-dojo-type"
 			dataDojoTextDir = attrData + "textdir";					// typically "data-dojo-textdir"
 
@@ -449,7 +451,7 @@ dojo.parser = new function(){
 		if(!inherited){
 			function findAncestorAttr(node, attr){
 				return (node.getAttribute && node.getAttribute(attr)) ||
-					(node !== d.doc && node !== d.doc.documentElement && node.parentNode ? findAncestorAttr(node.parentNode, attr) : null);
+					(node !== dwindow.doc && node !== dwindow.doc.documentElement && node.parentNode ? findAncestorAttr(node.parentNode, attr) : null);
 			}
 			inherited = {
 				dir: findAncestorAttr(root, "dir"),

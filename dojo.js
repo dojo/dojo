@@ -1037,7 +1037,11 @@
 						// wasn't marked as executed by dojo.provide (so it wasn't a v1.6- module);
 						// therefore, it must not have been a module (it was just some code); adjust state accordingly
 						mix(module, nonModuleProps);
-						module.result = dojo.getObject(module.path.replace(/\//g,'.')) || module.result;
+						var result = window, part, namespace = module.path.split("/");
+						while(part = namespace.shift()){
+							result = result && result[part];
+						}
+						module.result = result || module.result;
 					}
 					checkComplete();
 				};

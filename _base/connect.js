@@ -1,4 +1,4 @@
-define(["./kernel", "../listen", "../aspect", "./event", "../mouse", "../has", "./lang"], function(dojo, listen, aspect, eventModule, mouse, has){
+define(["./kernel", "../on", "../aspect", "./event", "../mouse", "../has", "./lang"], function(dojo, on, aspect, eventModule, mouse, has){
 //  module:
 //    dojo/_base/connect
 //  summary:
@@ -157,7 +157,7 @@ dojo._connect = function(obj, event, context, method, dontFix){
 				break;
 		}
 	}
-	return listen(obj, event, dojo.hitch(context, method), dontFix);
+	return on(obj, event, dojo.hitch(context, method), dontFix);
 };
 
 dojo.disconnect = function(/*Handle*/ handle){
@@ -189,7 +189,7 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);
 
 	// support for 2 argument invocation (omitting context) depends on hitch
-	return listen(listen, topic, dojo.hitch(context, method));
+	return on(on, topic, dojo.hitch(context, method));
 };
 
 dojo.unsubscribe = function(/*Handle*/ handle){
@@ -222,7 +222,7 @@ dojo.publish = function(/*String*/ topic, /*Array?*/ args){
 	// argument list.  Ideally, var args would be implemented via Array
 	// throughout the APIs.
 	topic = "on" + topic;
-	listen[topic] && listen[topic].apply(this, args || []);
+	on[topic] && on[topic].apply(this, args || []);
 };
 
 dojo.connectPublisher = function(	/*String*/ topic,
@@ -371,7 +371,7 @@ if(has("events-keypress-typed")){
 		}
 	};
 	keypress = function(object, listener){
-		var keydownSignal = listen(object, "keydown", function(evt){
+		var keydownSignal = on(object, "keydown", function(evt){
 			// munge key/charCode
 			var k=evt.keyCode;
 			// These are Windows Virtual Key Codes
@@ -399,7 +399,7 @@ if(has("events-keypress-typed")){
 				}
 			}
 		});
-		var keypressSignal = listen(object, "keypress", function(evt){
+		var keypressSignal = on(object, "keypress", function(evt){
 			var c = evt.charCode;
 			c = c>=32 ? c : 0;
 			evt = _synthesizeEvent(evt, {charCode: c, faux: true});
@@ -416,7 +416,7 @@ if(has("events-keypress-typed")){
 else{
 	if(dojo.isOpera){ // TODO: how to feature detect this behavior?
 		keypress = function(object, listener){
-			return listen(object, "keypress", function(evt){
+			return on(object, "keypress", function(evt){
 				var c = evt.which;
 				if(c==3){
 					c=99; // Mozilla maps CTRL-BREAK to CTRL-c
@@ -433,7 +433,7 @@ else{
 		};
 	}else{
 		keypress = function(object, listener){ 		
-			return listen(object, "keypress", function(evt){
+			return on(object, "keypress", function(evt){
 				setKeyChar(evt);
 				return listener.call(this, evt);
 			});

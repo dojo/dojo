@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./listen", "./touch", "./has"], function(dojo, listen, touch, has){
+define(["./_base/kernel", "./on", "./touch", "./has"], function(dojo, on, touch, has){
 // module:
 //		dojo/gesture
 //
@@ -17,10 +17,10 @@ define(["./_base/kernel", "./listen", "./touch", "./has"], function(dojo, listen
 //
 // handle(eventType):
 //		Bind a static listen handler for the given gesture event, 
-//		the handle will be internally used by listen(), e.g.
+//		the handle will be internally used by on(), e.g.
 //		|	var dojo.gesture.tap = handle('tap');
 //		|	//so that listen can use it
-//		|	listen(node, dojo.gesture.tap, func(e){});
+//		|	on(node, dojo.gesture.tap, func(e){});
 //		|	//or used directly as
 //		|	dojo.gesture.tap(node, func(e){});
 //
@@ -38,11 +38,11 @@ define(["./_base/kernel", "./listen", "./touch", "./has"], function(dojo, listen
 //		|	dojo.connect(node, dojo.gesture.tap.hold, function(e){});
 //		|	dojo.connect(node, dojo.gesture.tap.doubletap, function(e){});		
 //
-//		B. Used with dojo.listen
-//		|	define(["dojo/listen", "dojo/gesture/tap"], function(listen, tap){
-//		|		listen(node, tap, function(e){});
-//		|		listen(node, tap.hold, function(e){});
-//		|		listen(node, tap.doubletap, function(e){});
+//		B. Used with dojo.on
+//		|	define(["dojo/on", "dojo/gesture/tap"], function(on, tap){
+//		|		on(node, tap, function(e){});
+//		|		on(node, tap.hold, function(e){});
+//		|		on(node, tap.doubletap, function(e){});
 //
 //		C. Used with dojo.gesture.tap.* directly
 //		|	dojo.gesture.tap(node, function(e){});
@@ -105,9 +105,9 @@ dojo.gesture = {
 	handle: function(/*String*/eventType){
 		// summary:
 		//		Bind a static listen handler for the given gesture event,
-		//		the handle will be used internally by listen()
+		//		the handle will be used internally by on()
 		var self = this;
-		return function(node, listener){//called by listen(), see dojo.listen
+		return function(node, listener){//called by on(), see dojo.on
 			//normalize, arguments might be (null, node, listener)
 			var a = arguments;
 			if(a.length > 2){
@@ -116,7 +116,7 @@ dojo.gesture = {
 			}
 			var isNode = node && (node.nodeType || node.attachEvent || node.addEventListener);
 			if(!isNode || !self.isGestureEvent(eventType)){
-				return listen(node, eventType, listener);
+				return on(node, eventType, listener);
 			}else{
 				var signal = {
 					resume: function(){
@@ -163,9 +163,9 @@ dojo.gesture = {
 			//TBD - disconnect element.press | move | release?
 			var touchOnly = this.events[type].touchOnly;
 			if(touchOnly){
-				element.press = listen(node, 'touchstart', _press);
-				element.move = listen(node, 'touchmove', _move);
-				element.release = listen(node, 'touchend', _release);
+				element.press = on(node, 'touchstart', _press);
+				element.move = on(node, 'touchmove', _move);
+				element.release = on(node, 'touchend', _release);
 			}else{
 				element.press = touch.press(node, _press);
 				element.move = touch.move(node, _move);
@@ -173,7 +173,7 @@ dojo.gesture = {
 			}
 			if(has("touch")){
 				var _cancel = dojo.hitch(this, "_cancel", element);
-				element.cancel = listen(node, 'touchcancel', _cancel);
+				element.cancel = on(node, 'touchcancel', _cancel);
 			}
 			element.listening = true;
 		}

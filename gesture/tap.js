@@ -12,11 +12,11 @@ define(["dojo", "../gesture"], function(dojo, gesture){
 //		|	dojo.connect(node, dojo.gesture.tap.hold, function(e){});
 //		|	dojo.connect(node, dojo.gesture.tap.doubletap, function(e){});		
 //
-//		B. Used with dojo.listen
-//		|	define(["dojo/listen", "dojo/gesture/tap"], function(listen, tap){
-//		|		listen(node, tap, function(e){});
-//		|		listen(node, tap.hold, function(e){});
-//		|		listen(node, tap.doubletap, function(e){});
+//		B. Used with dojo.on
+//		|	define(["dojo/on", "dojo/gesture/tap"], function(on, tap){
+//		|		on(node, tap, function(e){});
+//		|		on(node, tap.hold, function(e){});
+//		|		on(node, tap.doubletap, function(e){});
 //
 //		C. Used with dojo.gesture.tap.* directly
 //		|	dojo.gesture.tap(node, function(e){});

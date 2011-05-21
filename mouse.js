@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
+define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 	// summary:
 	// 		This module provide mouse event handling utility functions and exports
 	// 		mouseenter and mouseleave event emulation.
@@ -10,11 +10,11 @@ define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
 	//		behavior on other browsers.
 	// example:
 	//		To use these events, you register a mouseenter like this:
-	//		|	define(["dojo/listen", dojo/mouse"], function(listen, mouse){
-	//		|		listen(targetNode, mouse.enter, function(event){
+	//		|	define(["dojo/on", dojo/mouse"], function(on, mouse){
+	//		|		on(targetNode, mouse.enter, function(event){
 	// 		|			dojo.addClass(targetNode, "highlighted");
 	//		|		});
-	//		|		listen(targetNode, mouse.leave, function(event){
+	//		|		on(targetNode, mouse.leave, function(event){
 	// 		|			dojo.removeClass(targetNode, "highlighted");
 	//		|		});
 	has.add("dom-quirks", document.compatMode == "BackCompat");
@@ -45,7 +45,7 @@ define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
 	}
 	function eventRedirect(type, callback){
 		return function(node, listener){
-			return listen(node, type, function(evt){
+			return on(node, type, function(evt){
 				return callback(node, evt, listener);
 			});
 		}
@@ -101,7 +101,7 @@ define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
 		var eventHandler = function(type){
 			// essentially a pass through, the browser already has mouseenter/leave
 			return function(node, listener){
-				return listen(node, type, listener);
+				return on(node, type, listener);
 			};
 		};
 		return {
@@ -114,7 +114,7 @@ define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
 		var eventHandler = function(type){
 			// emulation of mouseenter/leave with mouseover/out using descendant checking
 			return function(node, listener){
-				return listen(node, type, function(evt){
+				return on(node, type, function(evt){
 					if(!dojo.isDescendant(evt.relatedTarget, node)){
 						return listener.call(this, evt);
 					}					

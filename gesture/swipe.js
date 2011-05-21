@@ -13,10 +13,10 @@ define(["dojo", "../gesture"], function(dojo, gesture){
 //		|	dojo.connect(node, dojo.gesture.swipe, function(e){});
 //		|	dojo.connect(node, dojo.gesture.swipe.up|down|left|right, function(e){});
 //
-//		B. Used with dojo.listen
-//		|	define(["dojo/listen", "dojo/gesture/swipe"], function(listen, swipe){
-//		|		listen(node, swipe, function(e){});
-//		|		listen(node, swipe.up|down|left|right, function(e){});
+//		B. Used with dojo.on
+//		|	define(["dojo/on", "dojo/gesture/swipe"], function(on, swipe){
+//		|		on(node, swipe, function(e){});
+//		|		on(node, swipe.up|down|left|right, function(e){});
 //
 //		C. Used with dojo.gesture.swipe.* directly
 //		|	dojo.gesture.swipe(node, function(e){});

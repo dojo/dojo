@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
+define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 // module:
 //		dojo/touch
 // summary:
@@ -16,11 +16,11 @@ define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
 //		|	dojo.connect(node, dojo.touch.move, function(e){});
 //		|	dojo.connect(node, dojo.touch.release, function(e){});
 //
-//		2. Used with dojo.listen
-//		|	define(["dojo/listen", "dojo/touch"], function(listen, touch){
-//		|		listen(node, touch.press, function(e){});
-//		|		listen(node, touch.move, function(e){});
-//		|		listen(node, touch.release, function(e){});
+//		2. Used with dojo.on
+//		|	define(["dojo/on", "dojo/touch"], function(on, touch){
+//		|		on(node, touch.press, function(e){});
+//		|		on(node, touch.move, function(e){});
+//		|		on(node, touch.release, function(e){});
 //
 //		3. Used with dojo.touch directly
 //		|	dojo.touch.press(node, function(e){});
@@ -28,8 +28,8 @@ define(["./_base/kernel", "./listen", "./has"], function(dojo, listen, has){
 //		|	dojo.touch.release(node, function(e){});
 		
 	function _handle(/*String - press | move | release*/type){
-		return function(node, listener){//called by listen(), see dojo.listen
-			return listen(node, type, listener);
+		return function(node, listener){//called by on(), see dojo.on
+			return on(node, type, listener);
 		};
 	}
 	var touch = has("touch");

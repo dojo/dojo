@@ -1,13 +1,13 @@
-define(["./kernel", "../listen", "../has"], function(dojo, listen, has){
+define(["./kernel", "../on", "../has"], function(dojo, on, has){
   //  module:
   //    dojo/_base/event
   //  summary:
   //    This module defines dojo DOM event API.
 	has.add("dom-addeventlistener", !!document.addEventListener); 
-	if(listen._fixEvent){
-		var fixEvent = listen._fixEvent;
-		listen._fixEvent = function(evt, se){
-			// add some additional normalization for back-compat, this isn't in listen.js because it is somewhat more expensive
+	if(on._fixEvent){
+		var fixEvent = on._fixEvent;
+		on._fixEvent = function(evt, se){
+			// add some additional normalization for back-compat, this isn't in on.js because it is somewhat more expensive
 			evt = fixEvent(evt, se);
 			if(evt){
 				// FIXME: scroll position query is duped from dojo.html to
@@ -32,8 +32,8 @@ define(["./kernel", "../listen", "../has"], function(dojo, listen, has){
 		//		native event object
 		// sender: DOMNode
 		//		node to treat as "currentTarget"
-		if(listen._fixEvent){
-			return listen._fixEvent(evt, sender);
+		if(on._fixEvent){
+			return on._fixEvent(evt, sender);
 		}
 		return evt;
 	};
@@ -50,7 +50,7 @@ define(["./kernel", "../listen", "../has"], function(dojo, listen, has){
 		}else{
 			evt = evt || window.event;
 			evt.cancelBubble = true;
-			listen._preventDefault.call(evt);
+			on._preventDefault.call(evt);
 		}
 	};
 

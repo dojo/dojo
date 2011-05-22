@@ -47,7 +47,7 @@ dojo.parser = new function(){
 	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
 	aspect.after(dlang, "extend", function(){
 		_nameMap = {};
-	});
+	}, true);
 
 	// Map from widget name (ex: "dijit.form.Button") to constructor
 	var _ctorMap = {};
@@ -254,7 +254,7 @@ dojo.parser = new function(){
 										(value == "" ? new Date("") :	// the NaN of dates
 										value == "now" ? new Date() :	// current date
 										dates.fromISOString(value)) :
-								(pVal instanceof _Url) ? (dojo.baseUrl + value) :
+								(pVal instanceof dojo._Url) ? (dojo.baseUrl + value) :
 								djson.fromJson(value);
 						}
 					}else{

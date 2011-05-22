@@ -22,17 +22,23 @@ var temp = function(){
 				t.is(store.get(4).name, "four");
 				t.t(store.get(5).prime);
 			},
-			function testQuery(t){
-				store.query({prime: true}).then(function(results){
+			function testQuery1(t){
+				var d = new doh.Deferred();
+				store.query({prime: true}).then(d.getTestCallback(function(results){
 					t.is(results.length, 3);
-				});
-				store.query({even: true}).map(function(object){
+				}));
+				return d;
+			},
+			function testQuery2(t){
+				var d = new doh.Deferred();
+				store.query({even: true}).map(d.getTestErrback(function(object){
 					for(var i in object){
-						t.is(object[i], (object.id == 2 ? two : four)[i]);
+						t.is(object[i], (object.id == 2 ? two : four)[i], "map of " + i);
 					}
-				}).then(function(results){
-					t.is(results[1].name, "four");
-				});
+				})).then(d.getTestCallback(function(results){
+					t.is("four", results[1].name, "then");
+				}));
+				return d;
 			},
 			function testPutUpdate(t){
 				var four = store.get(4);

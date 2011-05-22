@@ -69,7 +69,7 @@ if(typeof window != 'undefined'){
 			return (stat >= 200 && stat < 300) || 	// Boolean
 				stat == 304 || 						// allow any 2XX response code
 				stat == 1223 || 						// get it out of the cache
-				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") );
+				(!stat && (location.protocol == "file:" || location.protocol == "chrome:") );
 		};
 
 		// FIXME: PORTME
@@ -299,7 +299,7 @@ if(typeof window != 'undefined'){
 	// 		Dojo's to fire once..but we might care if pages navigate. We'll
 	// 		probably need an extension-specific API
 	if(!dojo.config.afterOnLoad){
-		window.addEventListener("DOMContentLoaded",function(e){
+		window.addEventListener("DOMContentLoaded", function(e){
 			dojo._loadInit(e);
 			// console.log("DOM content loaded", e);
 		}, false);

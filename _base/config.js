@@ -9,16 +9,16 @@ define(["../has", "require"], function(has, require){
 		has("dom") ? 1 : 0
 	);
 
-	var result= this.dojoConfig || this.djConfig || {};
+	var result = this.dojoConfig || this.djConfig || {};
 	if(has("dom") && has("dojo-sniff") && !has("dojo-loader")){
 		// if we're not under the dojo loader, then assume the user doesn't want to sniff the baseUrl from the loader (since it must already be set)
 		// notice this loop breaks on first match
-		for (var config, src, match, scripts = document.getElementsByTagName("script"), i= 0; i<scripts.length && !match; i++) {
-			if ((src = scripts[i].getAttribute("src")) && (match = src.match(/(.*)\/?(dojo|require)\.js(\W|$)/i))) {
+		for(var config, src, match, scripts = document.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
+			if((src = scripts[i].getAttribute("src")) && (match = src.match(/(.*)\/?(dojo|require)\.js(\W|$)/i))){
 				// see if there's a dojo configuration stuffed into the node
-				config= (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
+				config = (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
 				if(config){
-					config= eval("({ "+config+" })\r\n//@ sourceURL=dojo/config/data-dojo-config");
+					config = eval("({ " + config + " })\r\n//@ sourceURL=dojo/config/data-dojo-config");
 					for(var p in config){
 						result[p] = config[p];
 					}
@@ -27,9 +27,9 @@ define(["../has", "require"], function(has, require){
 		}
 	}else{
 		// if this is the dojo loader, then the aggregate of defaultConfig + (dojoConfig | djConfig | require) + sniffed config will be in require.rawConfig
-		var p, rawConfig= require.rawConfig || {};
+		var p, rawConfig = require.rawConfig || {};
 		for(p in rawConfig){
-			result[p]= rawConfig[p];
+			result[p] = rawConfig[p];
 		}
 	}
 	return result;

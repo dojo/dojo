@@ -1,13 +1,13 @@
-function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
+function rhinoDojoConfig(config, baseUrl, rhinoArgs){
 	//	summary:
 	//		This module provides bootstrap configuration for running dojo in rhino.
 
 	// TODO: v1.6 tries to set dojo.doc and dojo.body in rhino; why?
 
 	// get a minimal console up
-	var log= function(hint, args) {
+	var log = function(hint, args){
 		print((hint ? hint + ":" : "") + args[0]);
-		for (var i= 1; i<args.length; i++) {
+		for(var i = 1; i < args.length; i++){
 			print(", " + args[i]);
 		}
 	};
@@ -19,9 +19,9 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 	};
 
 	// any command line arguments with the load flag are pushed into deps
-	for (var deps= [], i= 0; i<rhinoArgs.length; i++) {
-		var arg= (rhinoArgs[i]+"").split("=");
-		if (arg[0]=="load") {
+	for(var deps = [], i = 0; i < rhinoArgs.length; i++){
+		var arg = (rhinoArgs[i] + "").split("=");
+		if(arg[0] == "load"){
 			deps.push(arg[1]);
 		}
 	}
@@ -35,13 +35,13 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 		};
 
 		setTimeout = function(func, delay){
-			var def={
+			var def = {
 				sleepTime:delay,
 				hasSlept:false,
 
 				run:function(){
 					if(!this.hasSlept){
-						this.hasSlept=true;
+						this.hasSlept = true;
 						java.lang.Thread.currentThread().sleep(this.sleepTime);
 					}
 					try{
@@ -55,16 +55,16 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 			var runnable = new java.lang.Runnable(def);
 			var thread = new java.lang.Thread(runnable);
 			thread.start();
-			return timeouts.push(thread)-1;
+			return timeouts.push(thread) - 1;
 		};
 	}
 
-	var isLocal= function(url) {
+	var isLocal = function(url){
 		return (new java.io.File(url)).exists();
 	};
 
 	// reset the has cache with node-appropriate values;
-	var hasCache= {
+	var hasCache = {
 		"host-rhino":1,
 		"host-browser":0,
 		"dom":0,
@@ -86,39 +86,39 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs) {
 		"dojo-test-xd":0,
 		"dojo-test-sniff":0
 	};
-	for (var p in hasCache) {
-		config.hasCache[p]= hasCache[p];
+	for(var p in hasCache){
+		config.hasCache[p] = hasCache[p];
 	}
 
 	// reset some configuration switches with rhino-appropriate values
-	var rhinoConfig= {
+	var rhinoConfig = {
 		baseUrl:baseUrl,
 		commandLineArgs:rhinoArgs,
 		deps:deps,
 		timeout:0,
-		locale:String(java.util.Locale.getDefault().toString().replace('_','-').toLowerCase()),
+		locale:String(java.util.Locale.getDefault().toString().replace('_', '-').toLowerCase()),
 
-		injectUrl: function(url, callback) {
-			try {
-				if (isLocal(url)) {
+		injectUrl: function(url, callback){
+			try{
+				if(isLocal(url)){
 					load(url);
-				} else {
+				}else{
 					require.eval(readUrl(url, "UTF-8"));
 				}
 				callback();
-			} catch(e) {
+			}catch(e){
 				console.log("failed to load resource (" + url + ")");
 				console.log(e);
 			}
 		},
 
-		getText: function(url, sync, onLoad) {
+		getText: function(url, sync, onLoad){
 			// TODO: test https://bugzilla.mozilla.org/show_bug.cgi?id=471005; see v1.6 hostenv_rhino
 			// note: async mode not supported in rhino
 			onLoad(isLocal(url) ? readFile(url, "UTF-8") : readUrl(url, "UTF-8"));
 		}
 	};
-	for (p in rhinoConfig) {
-		config[p]= rhinoConfig[p];
+	for(p in rhinoConfig){
+		config[p] = rhinoConfig[p];
 	}
 }

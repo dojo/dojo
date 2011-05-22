@@ -45,7 +45,7 @@ dojo._spidermonkeyCurrentFile = function(depth){
 	var s = '';
 	try{
 		throw Error("whatever");
-	} catch(e){
+	}catch(e){
 		s = e.stack;
 	}
 	// lines are like: bu_getCurrentScriptURI_spidermonkey("ScriptLoader.js")@burst/Runtime.js:101

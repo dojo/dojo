@@ -8,33 +8,33 @@ define(["../has", "./config", "require"], function(has, config, require){
 		// loop variables for this module
 		i, p,
 
-	    // create dojo, dijit, and dojox; initialize _scopeName and possibly publish to the global
-	    // namespace: three possible cases:
-	    //
-	    //   1. The namespace is not mentioned in config.scopeMap: _scopeName is set to the default
-	    //      name (dojo, dijit, or dojox), and the object is published to the global namespace
-	    //
-	    //   2. The namespace is mentioned with a nonempty name: _scopeName is set to the name given
-	    //      and the object is published to the global namespace under that name
-	    //
-	    //   3. Then namespace is mentioned, but the value is falsy (e.g., ""): _scopeName is set to
-	    //       _(dojo|dijit|dojox)<reasonably-unque-number> and the object is *not* published to the global namespace
-		dojo={
+		// create dojo, dijit, and dojox; initialize _scopeName and possibly publish to the global
+		// namespace: three possible cases:
+		//
+		//   1. The namespace is not mentioned in config.scopeMap: _scopeName is set to the default
+		//      name (dojo, dijit, or dojox), and the object is published to the global namespace
+		//
+		//   2. The namespace is mentioned with a nonempty name: _scopeName is set to the name given
+		//      and the object is published to the global namespace under that name
+		//
+		//   3. Then namespace is mentioned, but the value is falsy (e.g., ""): _scopeName is set to
+		//       _(dojo|dijit|dojox)<reasonably-unque-number> and the object is *not* published to the global namespace
+		dojo = {
 			config: {},
 			global:this,
 			dijit:{},
 			dojox:{}
 		},
-		temp= {dojo:dojo, dijit:dojo.dijit, dojox:dojo.dojox},
-		scopeMap= {dojo:"dojo", dijit:"dijit", dojox:"dojox"},
-		configScopeMap= config.scopeMap || [];
-	for(i= 0; i<configScopeMap.length; i++){
-		scopeMap[configScopeMap[i][0]]= configScopeMap[i][1];
+		temp = {dojo:dojo, dijit:dojo.dijit, dojox:dojo.dojox},
+		scopeMap = {dojo:"dojo", dijit:"dijit", dojox:"dojox"},
+		configScopeMap = config.scopeMap || [];
+	for(i = 0; i < configScopeMap.length; i++){
+		scopeMap[configScopeMap[i][0]] = configScopeMap[i][1];
 	}
 	for(p in temp){
-		temp[p]._scopeName= scopeMap[p];
+		temp[p]._scopeName = scopeMap[p];
 		if(!config.noGlobals){
-			dojo.global[scopeMap[p]]= temp[p];
+			dojo.global[scopeMap[p]] = temp[p];
 		}
 	}
 
@@ -48,9 +48,9 @@ define(["../has", "./config", "require"], function(has, config, require){
 	// this allows (e.g.) hard-setting a has feature test to force an execution path that may
 	// be different than actually indicated in the environment. However, after bootstrap, config
 	// can't overwrite has tests.
-	dojo.config= {};
+	dojo.config = {};
 	for(p in config){
-		dojo.config[p]= config[p];
+		dojo.config[p] = config[p];
 		has.add(p, config[p], 0, 1);
 	}
 	for(p in config.has){
@@ -63,7 +63,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 			}
 		});
 	}
-	dojo.baseUrl= dojo.config.baseUrl= require.baseUrl;
+	dojo.baseUrl = dojo.config.baseUrl = require.baseUrl;
 
 	/*=====
 		dojo.version = function(){
@@ -87,11 +87,11 @@ define(["../has", "./config", "require"], function(has, config, require){
 		}
 	=====*/
 	var rev = "$Rev: 23930 $".match(/\d+/);
-	dojo.version= {
+	dojo.version = {
 		major: 1, minor: 7, patch: 0, flag: "dev",
 		revision: rev ? +rev[0] : NaN,
 		toString: function(){
-			var v= dojo.version;
+			var v = dojo.version;
 			return v.major + "." + v.minor + "." + v.patch + v.flag + " (" + v.revision + ")";	// String
 		}
 	};
@@ -100,27 +100,27 @@ define(["../has", "./config", "require"], function(has, config, require){
 	// this is the v1.6- behavior. Going forward from 1.7, consider modulePaths deprecated and
 	// configure the loader directly.
 	if(config.modulePaths){
-		var paths= {};
+		var paths = {};
 		for(p in config.modulePaths){
-			paths[p.replace(/\./g, "/")]= config.modulePaths[p];
+			paths[p.replace(/\./g, "/")] = config.modulePaths[p];
 		}
 		require({paths:paths});
 	}
 
 	config.locale && (dojo.locale = config.locale);
 
-	dojo.isAsync= function() {
+	dojo.isAsync = function(){
 		return !has("dojo-loader") || require.async;
 	};
 
 	// define dojo's eval method so that an almost-pristine environment is provided
 	// (only the variables __scope and __text shadow globals)
-	var dojoEval= new Function("__scope", "__text", "return (__scope.eval || eval)(__text);");
-	dojo.eval= function(text){
+	var dojoEval = new Function("__scope", "__text", "return (__scope.eval || eval)(__text);");
+	dojo.eval = function(text){
 		return dojoEval(dojo.global, text);
 	};
 
-	if (!has("host-rhino")) {
+	if(!has("host-rhino")){
 		dojo.exit = function(exitcode){
 			quit(exitcode);
 		};
@@ -132,7 +132,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 	);
 	if(has("dojo-guarantee-console")){
 		// intentional global console
-		typeof console!="undefined" || (console= {});
+		typeof console != "undefined" || (console = {});
 		//	Be careful to leave 'log' always at the end
 		var cn = [
 			"assert", "count", "debug", "dir", "dirxml", "error", "group",
@@ -140,13 +140,13 @@ define(["../has", "./config", "require"], function(has, config, require){
 			"trace", "warn", "log"
 		];
 		var i = 0, tn;
-		while((tn=cn[i++])){
+		while((tn = cn[i++])){
 			if(!console[tn]){
 				(function(){
-					var tcn = tn+"";
+					var tcn = tn + "";
 					console[tcn] = ('log' in console) ? function(){
 						var a = Array.apply({}, arguments);
-						a.unshift(tcn+":");
+						a.unshift(tcn + ":");
 						console["log"](a.join(" "));
 					} : function(){};
 					console[tcn]._fake = true;
@@ -159,24 +159,24 @@ define(["../has", "./config", "require"], function(has, config, require){
 		// register dojo with the OpenAjax hub
 		typeof OpenAjax != "undefined"
 	);
-	if (has("dojo-register-openAjax")) {
+	if(has("dojo-register-openAjax")){
 		// Register with the OpenAjax hub
 		OpenAjax.hub.registerLibrary(dojo._scopeName, "http://dojotoolkit.org", dojo.version.toString());
 	}
 
-	has.add("bug-for-in-skips-shadowed", function() {
+	has.add("bug-for-in-skips-shadowed", function(){
 		// if true, the for-in interator skips object properties that exist in Object's prototype (IE 6 - ?)
 		for(var i in {toString: 1}){
 			return 0;
 		}
 		return 1;
 	});
-	if (has("bug-for-in-skips-shadowed")){
+	if(has("bug-for-in-skips-shadowed")){
 		var
 			extraNames = dojo._extraNames = "hasOwnProperty.valueOf.isPrototypeOf.propertyIsEnumerable.toLocaleString.toString.constructor".split("."),
-			extraLen= extraNames.length;
+			extraLen = extraNames.length;
 	}
-	var empty= {};
+	var empty = {};
 	dojo._mixin = function(/*Object*/ target, /*Object*/ source){
 		// summary:
 		//		Adds all properties and methods of source to target. This addition
@@ -194,7 +194,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 			}
 		}
 
-		if (has("bug-for-in-skips-shadowed")){
+		if(has("bug-for-in-skips-shadowed")){
 			if(source){
 				for(i = 0; i < extraLen; ++i){
 					name = extraNames[i];
@@ -263,23 +263,23 @@ define(["../has", "./config", "require"], function(has, config, require){
 		//	| // will print "true"
 		//	| console.log(flattened.braces);
 		if(!obj){ obj = {}; }
-		for(var i=1, l=arguments.length; i<l; i++){
+		for(var i = 1, l = arguments.length; i < l; i++){
 			dojo._mixin(obj, arguments[i]);
 		}
 		return obj; // Object
 	};
 
 	var getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
-		var p, i = 0, dojoGlobal= dojo.global;
+		var p, i = 0, dojoGlobal = dojo.global;
 		if(!context){
 			if(!parts.length){
 				return dojoGlobal;
 			}else{
-				p= parts[i++];
+				p = parts[i++];
 				try{
-					context= (scopeMap[p] && require(scopeMap[p]));
+					context = (scopeMap[p] && require(scopeMap[p]));
 				}catch(e){}
-				context= context || (p in dojoGlobal ? dojoGlobal[p] : (create ? dojoGlobal[p] = {} : undefined));
+				context = context || (p in dojoGlobal ? dojoGlobal[p] : (create ? dojoGlobal[p] = {} : undefined));
 			}
 		}
 		while(context && (p = parts[i++])){
@@ -309,13 +309,13 @@ define(["../has", "./config", "require"], function(has, config, require){
 		//		without `dojo.setObject`, we often see code like this:
 		//	| // ensure that intermediate objects are available
 		//	| if(!obj["parent"]){ obj.parent = {}; }
-		//	| if(!obj.parent["child"]){ obj.parent.child= {}; }
+		//	| if(!obj.parent["child"]){ obj.parent.child = {}; }
 		//	| // now we can safely set the property
 		//	| obj.parent.child.prop = "some value";
-		//		wheras with `dojo.setObject`, we can shorten that to:
+		//		whereas with `dojo.setObject`, we can shorten that to:
 		//	| dojo.setObject("parent.child.prop", "some value", obj);
-		var parts=name.split("."), p=parts.pop(), obj=getProp(parts, true, context);
-		return obj && p ? (obj[p]=value) : undefined; // Object
+		var parts = name.split("."), p = parts.pop(), obj = getProp(parts, true, context);
+		return obj && p ? (obj[p] = value) : undefined; // Object
 	};
 
 	dojo.getObject = function(/*String*/name, /*Boolean?*/create, /*Object?*/context){
@@ -366,7 +366,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 		// include dojo.deprecated/dojo.experimental implementations
 		1
 	);
-	if (has("dojo-debug-messages")) {
+	if(has("dojo-debug-messages")){
 		dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
 			//	summary:
 			//		Log a debug message to indicate that a behavior has been
@@ -411,8 +411,8 @@ define(["../has", "./config", "require"], function(has, config, require){
 			if(extra){ message += " " + extra; }
 			console.warn(message);
 		};
-	} else {
-		dojo.deprecated= dojo.experimental= function(){};
+	}else{
+		dojo.deprecated = dojo.experimental = function(){};
 	}
 
 	return dojo;

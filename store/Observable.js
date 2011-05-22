@@ -63,7 +63,7 @@ return dojo.store.Observable = function(store){
 					queryUpdaters.push(queryUpdater = function(changed, existingId){
 						dojo.when(results, function(resultsArray){
 							var atEnd = resultsArray.length != options.count;
-							var i;
+							var i, l;
 							if(++queryRevision != revision){
 								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
 							}

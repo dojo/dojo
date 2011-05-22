@@ -126,7 +126,7 @@ dojo.parser = new function(){
 
 			var node = obj.node || obj,
 				type = dojoType in mixin ? mixin[dojoType] : obj.node ? obj.type : (node.getAttribute(dataDojoType) || node.getAttribute(dojoType)),
-				ctor = _ctorMap[type] || (_ctorMap[type] = dojo.getObject(type));
+				ctor = _ctorMap[type] || (_ctorMap[type] = dojo.getObject(type)),
 				proto = ctor && ctor.prototype;
 			if(!ctor){
 				throw new Error("Could not load class '" + type);

@@ -55,7 +55,6 @@ dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 		//	|	var identifiers = store.getIdentityAttributes(itemId);
 		//	|	assert(typeof identifiers === "array" || identifiers === null);
 		throw new Error('Unimplemented API: dojo.data.api.Identity.getIdentityAttributes');
-		return null; // string
 	},
 
 

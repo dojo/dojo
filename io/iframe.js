@@ -113,7 +113,6 @@ dojo.io.iframe = {
 				//use iframe.location and return.
 				if(!idoc){
 					iframe.location = src;
-					return;
 				}else{
 					idoc.location.replace(src);
 				}

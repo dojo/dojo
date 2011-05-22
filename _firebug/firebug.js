@@ -1062,7 +1062,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 			cnt++;
 			if(cnt==length){br = "\n";}
 			if(o[nm] === window || o[nm] === document){
-				continue;
+				// do nothing
 			}else if(o[nm] === null){
 				txt += i+nm + " : NULL" + br;
 			}else if(o[nm] && o[nm].nodeType){

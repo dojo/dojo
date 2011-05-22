@@ -219,11 +219,9 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 
 			//Check for finished "checkString" case.
 			var checkString = ioArgs.args.checkString;
-			if(checkString && eval("typeof(" + checkString + ") != 'undefined'")){
-				return true;
-			}
+			return checkString && eval("typeof(" + checkString + ") != 'undefined'");
 
-			return false;
+
 		},
 
 		_resHandle: function(/*Deferred*/dfd){

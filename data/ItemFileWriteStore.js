@@ -754,12 +754,9 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}else{
 			// return true if the store is dirty -- which means return true
 			// if there are any new items, dirty items, or modified items
-			if(!this._isEmpty(this._pending._newItems) ||
+			return !this._isEmpty(this._pending._newItems) ||
 				!this._isEmpty(this._pending._modifiedItems) ||
-				!this._isEmpty(this._pending._deletedItems)){
-				return true;
-			}
-			return false; // boolean
+				!this._isEmpty(this._pending._deletedItems); // boolean
 		}
 	},
 

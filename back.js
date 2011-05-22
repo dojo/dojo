@@ -138,7 +138,6 @@ dojo.back = {
 			if((hsl >= 2)&&(historyStack[hsl-2])){
 				if(historyStack[hsl-2].urlHash === hash){
 					handleBackButton();
-					return;
 				}
 			}
 		}

@@ -729,7 +729,6 @@ define(["./kernel", "../has", "require", "../on", "./sniff", "./Deferred", "./js
 		if(!_inFlight.length){
 			clearInterval(_inFlightIntvl);
 			_inFlightIntvl = null;
-			return;
 		}
 	};
 

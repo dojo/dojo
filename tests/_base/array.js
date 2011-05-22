@@ -112,7 +112,6 @@ tests.register("tests._base.array",
 				caughtException = true;
 			}
 			t.assertTrue(caughtException);
-			return;
 		},
 
 		// FIXME: test forEach w/ a NodeList()?
@@ -190,8 +189,8 @@ tests.register("tests._base.array",
 
 			t.assertTrue(
 				dojo.some(foo, function(elt, idx, array){
-					if(idx < 1){ return true; }
-					return false;
+					return idx < 1;
+
 				})
 			);
 

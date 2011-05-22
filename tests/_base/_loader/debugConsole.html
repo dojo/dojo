@@ -5,11 +5,7 @@
 		<title>testing debugging and logging functions</title>
 		<script type="text/javascript">
 			djConfig = {};
-			if( document.location.href.match(/\?ON/)) {
-				djConfig.isDebug = true;
-			} else {
-				djConfig.isDebug = false;
-			}
+			djConfig.isDebug = document.location.href.match(/\?ON/);
 		</script>
 		<script type="text/javascript" src="../../../dojo.js"></script>
 		<script type="text/javascript">

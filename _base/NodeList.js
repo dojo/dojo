@@ -267,7 +267,7 @@ define(["./kernel", "../on", "./lang", "./array", "./html"], function(dojo, on){
 			//multiple refNodes. Also, need a real array, not a NodeList from the
 			//DOM since the node movements could change those NodeLists.
 
-			var parse = content.parse === true ? true : false;
+			var parse = content.parse === true;
 
 			//Do we have an object that needs to be run through a template?
 			if(typeof content.template == "string"){

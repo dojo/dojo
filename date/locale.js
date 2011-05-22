@@ -320,9 +320,8 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 						//of 80 years before and 20 years after present year
 						var year = '' + new Date().getFullYear(),
 							century = year.substring(0, 2) * 100,
-							cutoff = Math.min(Number(year.substring(2, 4)) + 20, 99),
-							num = (v < cutoff) ? century + v : century - 100 + v;
-						result[0] = num;
+							cutoff = Math.min(Number(year.substring(2, 4)) + 20, 99);
+						result[0] = (v < cutoff) ? century + v : century - 100 + v;
 					}else{
 						//we expected 2 digits and got more...
 						if(options.strict){

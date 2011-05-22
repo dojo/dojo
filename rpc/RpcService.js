@@ -95,7 +95,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 		//	deferredRequestHandler: Deferred
 		//		The deferred object handling a request.
 
-		var tf = dojo.hitch(this,
+		return dojo.hitch(this,
 			function(obj){
 				if(obj.error!=null){
 					var err;
@@ -114,7 +114,6 @@ dojo.declare("dojo.rpc.RpcService", null, {
 				}
 			}
 		);
-		return tf;
 	},
 
 	generateMethod: function(/*string*/ method, /*array*/ parameters, /*string*/ url){

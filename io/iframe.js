@@ -124,7 +124,7 @@ dojo.io.iframe = {
 
 	doc: function(/*DOMNode*/iframeNode){
 		//summary: Returns the document object associated with the iframe DOM Node argument.
-		var doc = iframeNode.contentDocument || // W3
+		return iframeNode.contentDocument || // W3
 			(
 				(
 					(iframeNode.name) && (iframeNode.document) &&
@@ -136,7 +136,6 @@ dojo.io.iframe = {
 				(iframeNode.name)&&(dojo.doc.frames[iframeNode.name])&&
 				(dojo.doc.frames[iframeNode.name].document)
 			) || null;
-		return doc;
 	},
 
 	send: function(/*dojo.io.iframe.__ioArgs*/args){

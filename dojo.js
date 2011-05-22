@@ -530,7 +530,7 @@
 				// signature is (requestList [,callback])
 
 				// resolve the request list with respect to the reference module
-				for(var callback = a2, deps = [], i = 0; i < a1.length;){
+				for(var deps = [], i = 0; i < a1.length;){
 					deps.push(getModule(a1[i++], referenceModule, 1));
 				}
 
@@ -539,7 +539,7 @@
 				module = mix(makeModuleInfo("", syntheticMid, "*" + syntheticMid, 0, "", ""), {
 					injected:arrived,
 					deps:deps,
-					def:callback || noop
+					def:a2 || noop
 				});
 				modules[module.pqn] = module;
 				injectDependencies(module);
@@ -637,8 +637,7 @@
 		},
 
 		makeModuleInfo = function(pid, mid, pqn, pack, path, url){
-			var result = {pid:pid, mid:mid, pqn:pqn, pack:pack, path:path, url:url, executed:0, def:0};
-			return result;
+			return {pid:pid, mid:mid, pqn:pqn, pack:pack, path:path, url:url, executed:0, def:0};
 		},
 
 		getModuleInfo = function(mid, referenceModule, packs, modules, baseUrl, packageMapProg, pathsMapProg, alwaysCreate){
@@ -1343,7 +1342,8 @@
 			if(isArray(priority)){
 				// signature is (deps, callback); require deps, but hold callback until ready condition
 				req(priority, function(){
-					for(var args = arguments, aargs = [], i = 0; i < args.length; aargs.push(args[i++])){}
+					for(var aargs = [], i = 0; i < arguments.length; aargs.push(arguments[i++])){
+					}
 					req.ready(function(){
 						context.apply(null, aargs);
 					});
@@ -1375,8 +1375,8 @@
 			if(typeof console == "undefined" || !console.log){
 				return;
 			}
-			for(var args = arguments, i = 0; i < args.length; i++){
-				console.log(args[i]);
+			for(var i = 0; i < arguments.length; i++){
+				console.log(arguments[i]);
 			}
 		};
 	}else{

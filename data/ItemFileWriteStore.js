@@ -59,9 +59,8 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 	},
 
 	_getIdentifierAttribute: function(){
-		var identifierAttribute = this.getFeatures()['dojo.data.api.Identity'];
 		// this._assert((identifierAttribute === Number) || (dojo.isString(identifierAttribute)));
-		return identifierAttribute;
+		return this.getFeatures()['dojo.data.api.Identity'];
 	},
 
 
@@ -365,9 +364,8 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 		}else{
 			var newValueArray;
 			if(dojo.isArray(newValueOrValues)){
-				var newValues = newValueOrValues;
 				// Unfortunately, it's not safe to just do this:
-				//    newValueArray = newValues;
+				//    newValueArray = newValueOrValues;
 				// Instead, we need to copy the array, which slice() does very nicely.
 				// This is so that our internal data structure won't
 				// get corrupted if the user mucks with the values array *after*
@@ -525,16 +523,13 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 
 	_flatten: function(/* anything */ value){
 		if(this.isItem(value)){
-			var item = value;
 			// Given an item, return an serializable object that provides a
 			// reference to the item.
 			// For example, given kermit:
 			//    var kermit = store.newItem({id:2, name:"Kermit"});
 			// we want to return
 			//    {_reference:2}
-			var identity = this.getIdentity(item);
-			var referenceObject = {_reference: identity};
-			return referenceObject;
+			return {_reference: this.getIdentity(value)};
 		}else{
 			if(typeof value === "object"){
 				for(var type in this._datatypeMap){
@@ -577,15 +572,14 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 				var serializableItem = {};
 				for(var key in item){
 					if(key !== this._storeRefPropName && key !== this._itemNumPropName && key !== this._reverseRefMap && key !== this._rootItemPropName){
-						var attribute = key;
-						var valueArray = this.getValues(item, attribute);
+						var valueArray = this.getValues(item, key);
 						if(valueArray.length == 1){
-							serializableItem[attribute] = this._flatten(valueArray[0]);
+							serializableItem[key] = this._flatten(valueArray[0]);
 						}else{
 							var serializableArray = [];
 							for(var j = 0; j < valueArray.length; ++j){
 								serializableArray.push(this._flatten(valueArray[j]));
-								serializableItem[attribute] = serializableArray;
+								serializableItem[key] = serializableArray;
 							}
 						}
 					}

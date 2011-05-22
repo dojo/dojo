@@ -569,9 +569,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		"last-child": function(){ return _lookRight; },
 		"only-child": function(name, condition){
 			return function(node){
-				if(!_lookLeft(node)){ return false; }
-				if(!_lookRight(node)){ return false; }
-				return true;
+				return _lookLeft(node) && _lookRight(node);
 			};
 		},
 		"empty": function(name, condition){

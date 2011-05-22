@@ -130,7 +130,7 @@ dojo.connect = function(/*Object|null*/ obj,
 	// absorb any additional arguments
 	for(var l=a.length; i<l; i++){	args.push(a[i]); }
 	return dojo._connect.apply(this, args);
-}
+};
 
 dojo._connect = function(obj, event, context, method, dontFix){
 	if(typeof event == "string" && event.substring(0, 2) == "on"){
@@ -243,7 +243,7 @@ dojo.connectPublisher = function(	/*String*/ topic,
 	//		I.e. identifies a property obj[event].
 	//	example:
 	//	|	dojo.connectPublisher("/ajax/start", dojo, "xhrGet");
-	var pf = function(){ dojo.publish(topic, arguments); }
+	var pf = function(){ dojo.publish(topic, arguments); };
 	return event ? dojo.connect(obj, event, pf) : dojo.connect(obj, pf); //Handle
 };
 

@@ -448,7 +448,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				return listener.call(this, event); 
 			}; 
 		}; 
-	}; 
+	}
 	on.publish = prototype.emit = function(type, event){
 		type = "on" + type;
 		this[type] && this[type](event);

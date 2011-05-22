@@ -54,7 +54,7 @@ if(typeof window != 'undefined'){
 				//		http://developer.mozilla.org/en/mozIJSSubScriptLoader
 				var l = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
 					.getService(Components.interfaces.mozIJSSubScriptLoader);
-				var value = l.loadSubScript(uri, d.global)
+				var value = l.loadSubScript(uri, d.global);
 				if(cb){ cb(value); }
 				return true;
 			}else{
@@ -70,7 +70,7 @@ if(typeof window != 'undefined'){
 				stat == 304 || 						// allow any 2XX response code
 				stat == 1223 || 						// get it out of the cache
 				(!stat && (location.protocol=="file:" || location.protocol=="chrome:") );
-		}
+		};
 
 		// FIXME: PORTME
 		// var owloc = window.location+"";

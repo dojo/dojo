@@ -841,7 +841,7 @@ if(dojo.isIE){
 		}
 		// On Opera, offsetLeft includes the parent's border
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(d.isOpera){ pe.l += be.l; pe.t += be.t; };
+		if(d.isOpera){ pe.l += be.l; pe.t += be.t; }
 		//>>excludeEnd("webkitMobile");
 		return {
 			l: pe.l,

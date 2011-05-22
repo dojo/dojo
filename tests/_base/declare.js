@@ -2,7 +2,7 @@
 tests= typeof tests=="undefined" ? {} : tests;
 
 define(["../..", "doh"], function(dojo, doh){
-	doh.register("doh._base.declare", [
+	doh.register("tests._base.declare", [
 		function smokeTest(t){
 			dojo.declare("tests._base.declare.tmp", null);
 			var tmp = new tests._base.declare.tmp();

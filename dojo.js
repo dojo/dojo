@@ -358,7 +358,7 @@
 
 			config = function(config, booting){
 				// mix config into require
-				var p, i;
+				var p;
 
 				// async, urlArgs, and baseUrl just replace whatever is already there
 				// async is only meaningful if it's set before booting the loader
@@ -709,7 +709,7 @@
 
 		getModule = function(mid, referenceModule, fromRequire){
 			// compute and optionally construct (if necessary) the module implied by the mid with respect to referenceModule
-			var match, plugin, pluginResource, result, existing, pqn;
+			var match, plugin, pluginResource, result, pqn;
 			match = mid.match(/^(.+?)\!(.*)$/);
 			//TODO: change the regex above to this and test...match= mid.match(/^([^\!]+)\!(.+)$/);
 			if(match){
@@ -829,7 +829,7 @@
 				return;
 			}
 			isEmpty(waiting) && clearTimer();
-			for(var result, module, i = 0; i < execQ.length;){
+			for(var module, i = 0; i < execQ.length;){
 				checkCompleteGuard = 1;
 				module = execQ[i];
 				execModule(module);
@@ -1595,9 +1595,7 @@
 				syncDepth++;
 				require.async = false;
 				try{
-					var
-						module = getModule(mid, referenceModule),
-						url = module.url;
+					var module = getModule(mid, referenceModule);
 					if(module.executed){
 						return module.result;
 					}

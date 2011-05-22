@@ -66,7 +66,6 @@ dojo.io.iframe = {
 		//		used.
 		if(window[fname]){ return window[fname]; }
 		if(window.frames[fname]){ return window.frames[fname]; }
-		var cframe = null;
 		var turi = uri;
 		if(!turi){
 			if(dojo.config["useXDomain"] && !dojo.config["dojoBlankHtmlUrl"]){

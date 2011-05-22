@@ -107,7 +107,7 @@ dojo.declare("dojo.store.DataStore", null, {
 		//		Optional options object as used by the underlying dojo.data Store.
 		// returns: dojo.store.util.QueryResults
 		//		A query results object that can be used to iterate over results.
-		var returnedObject, returnedError, fetchHandle;
+		var fetchHandle;
 		var deferred = new dojo.Deferred(function(){ fetchHandle.abort && fetchHandle.abort(); });
 		deferred.total = new dojo.Deferred();
 		var converter = this._objectConverter(function(object){return object;});

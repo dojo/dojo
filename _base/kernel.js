@@ -270,7 +270,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 	};
 
 	var getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
-		var p, amdMid, i = 0, dojoGlobal= dojo.global;
+		var p, i = 0, dojoGlobal= dojo.global;
 		if(!context){
 			if(!parts.length){
 				return dojoGlobal;

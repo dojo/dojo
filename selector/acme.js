@@ -6,7 +6,6 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 
 	var d = dojo;
 
-	var ctr = 0;
 /*
 	acme architectural overview:
 
@@ -450,7 +449,6 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			// E[foo$="bar"]
 			//		an E element whose "foo" attribute value ends exactly
 			//		with the string "bar"
-			var tval = " "+value;
 			return function(elem){
 				var ea = " "+_getAttr(elem, attr);
 				return (ea.lastIndexOf(value)==(ea.length-value.length));

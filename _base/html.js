@@ -1036,25 +1036,6 @@ if(dojo.isIE){
 	// Positioning
 	// =============================
 
-	var _sumAncestorProperties = function(node, prop){
-		if(!(node = (node||0).parentNode)){return 0;}
-		var val, retVal = 0, _b = d.body();
-		while(node && node.style){
-			if(gcs(node).position == "fixed"){
-				return 0;
-			}
-			val = node[prop];
-			if(val){
-				retVal += val - 0;
-				// opera and khtml #body & #html has the same values, we only
-				// need one value
-				if(node == _b){ break; }
-			}
-			node = node.parentNode;
-		}
-		return retVal;	//	integer
-	};
-
 	dojo._docScroll = function(){
 		var n = d.global;
 		return "pageXOffset" in n
@@ -1352,7 +1333,7 @@ if(dojo.isIE){
 		//	|	dojo.style("someNode", obj);
 
 		node = byId(node);
-		var args = arguments.length, prop;
+		var args = arguments.length;
 		if(args == 2 && typeof name != "string"){ // inline'd type check
 			// the object form of setter: the 2nd argument is a dictionary
 			for(var x in name){

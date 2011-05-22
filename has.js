@@ -138,7 +138,7 @@ define(["require"], function(require) {
 		var
 			tokens = id.match(/[\?:]|[^:\?]*/g), i = 0,
 			get = function(skip){
-				var operator, term = tokens[i++];
+				var term = tokens[i++];
 				if(term == ":"){
 					// empty string module name, resolves to undefined
 					return undefined;

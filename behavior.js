@@ -152,7 +152,6 @@ dojo.behavior = new function(){
 		//	|	});
 		//
 
-		var tmpObj = {};
 		forIn(behaviorObj, this, function(behavior, name){
 			var tBehavior = arrIn(this._behaviors, name);
 			if(typeof tBehavior["id"] != "number"){

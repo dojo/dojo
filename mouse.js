@@ -43,13 +43,6 @@ define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 			isRight:  function(e){ return e.button == 2; }
 		};
 	}
-	function eventRedirect(type, callback){
-		return function(node, listener){
-			return on(node, type, function(evt){
-				return callback(node, evt, listener);
-			});
-		}
-	}
 	dojo.mouseButtons = mouseButtons;
 
 /*=====

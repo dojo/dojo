@@ -424,10 +424,10 @@
 							// testing vanilla inheritance
 							fx.NThinger = function(args){
 								dojo.mixin(this, args);
-							}
+							};
 							fx.NThinger.prototype.method = function(){
 								d.callback(true);
-							}
+							};
 							
 							
 							dojo.declare("fx.ThingerThree", fx.NThinger, {

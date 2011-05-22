@@ -777,7 +777,7 @@ if(dojo.isIE){
 			// computed left/top which is more stable.
 			var sl = parseFloat(s.left), st = parseFloat(s.top);
 			if(!isNaN(sl) && !isNaN(st)){
-				l = sl, t = st;
+				l = sl,t = st;
 			}else{
 				// If child's computed left/top are not parseable as a number (e.g. "auto"), we
 				// have no choice but to examine the parent's computed style.
@@ -785,7 +785,7 @@ if(dojo.isIE){
 					var pcs = gcs(p);
 					if(pcs.overflow != "visible"){
 						var be = d._getBorderExtents(p, pcs);
-						l += be.l, t += be.t;
+						l += be.l,t += be.t;
 					}
 				}
 			}
@@ -804,7 +804,7 @@ if(dojo.isIE){
 			w: node.offsetWidth + me.w,
 			h: node.offsetHeight + me.h
 		};
-	}
+	};
 
 	dojo._getMarginSize = function(/*DomNode*/node, /*Object*/computedStyle){
 		// summary:
@@ -818,7 +818,7 @@ if(dojo.isIE){
 			w: (size.right - size.left) + me.w,
 			h: (size.bottom - size.top) + me.h
 		}
-	}
+	};
 
 	dojo._getContentBox = function(node, computedStyle){
 		// summary:

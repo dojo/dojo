@@ -41,7 +41,7 @@ if(typeof window != 'undefined'){
 
 		d._xhrObj = function(){
 			return new XMLHttpRequest();
-		}
+		};
 
 		// monkey-patch _loadUri to handle file://, chrome://, and resource:// url's
 		var oldLoadUri = d._loadUri;
@@ -61,7 +61,7 @@ if(typeof window != 'undefined'){
 				// otherwise, call the pre-existing version
 				return oldLoadUri.apply(d, arguments);
 			}
-		}
+		};
 
 		// FIXME: PORTME
 		d._isDocumentOk = function(http){
@@ -100,7 +100,7 @@ if(typeof window != 'undefined'){
 			if(d.config.cacheBust){
 				//Make sure we have a string before string methods are used on uri
 				uri += "";
-				uri += (uri.indexOf("?") == -1 ? "?" : "&") + String(d.config.cacheBust).replace(/\W+/g,"");
+				uri += (uri.indexOf("?") == -1 ? "?" : "&") + String(d.config.cacheBust).replace(/\W+/g, "");
 			}
 			var handleLocal = ["file:", "chrome:", "resource:"].some(function(prefix){
 				return String(uri).indexOf(prefix) == 0;
@@ -110,7 +110,7 @@ if(typeof window != 'undefined'){
 				//		http://forums.mozillazine.org/viewtopic.php?p=921150#921150
 				var ioService = Components.classes["@mozilla.org/network/io-service;1"]
 					.getService(Components.interfaces.nsIIOService);
-				var scriptableStream=Components
+				var scriptableStream = Components
 					.classes["@mozilla.org/scriptableinputstream;1"]
 					.getService(Components.interfaces.nsIScriptableInputStream);
 
@@ -127,19 +127,21 @@ if(typeof window != 'undefined'){
 					http.send(null);
 					// alert(http);
 					if(!d._isDocumentOk(http)){
-						var err = Error("Unable to load "+uri+" status:"+ http.status);
+						var err = Error("Unable to load " + uri + " status:" + http.status);
 						err.status = http.status;
 						err.responseText = http.responseText;
 						throw err;
 					}
 				}catch(e){
-					if(fail_ok){ return null; } // null
+					if(fail_ok){
+						return null;
+					} // null
 					// rethrow the exception
 					throw e;
 				}
 				return http.responseText; // String
 			}
-		}
+		};
 
 		d._windowUnloaders = [];
 
@@ -153,7 +155,7 @@ if(typeof window != 'undefined'){
 			while(mll.length){
 				(mll.pop())();
 			}
-		}
+		};
 
 		// FIXME: PORTME
 		d.addOnWindowUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
@@ -169,7 +171,7 @@ if(typeof window != 'undefined'){
 			//	|	dojo.addOnWindowUnload(object, function(){ /* ... */});
 
 			d._onto(d._windowUnloaders, obj, functionName);
-		}
+		};
 
 		// XUL specific APIs
 		var contexts = [];
@@ -266,7 +268,7 @@ if(typeof window != 'undefined'){
 		if(dojo._inFlightCount == 0){
 			dojo._modulesLoaded();
 		}
-	}
+	};
 
 	/*
 	(function(){
@@ -323,11 +325,11 @@ if(dojo.config.isDebug){
 	console.log = function(m){
 		var s = Components.classes["@mozilla.org/consoleservice;1"].getService(
 			Components.interfaces.nsIConsoleService
-		);
+			);
 		s.logStringMessage(m);
-	}
+	};
 	console.debug = function(){
 		console.log(dojo._toArray(arguments).join(" "));
-	}
+	};
 	// FIXME: what about the rest of the console.* methods? And is there any way to reach into firebug and log into it directly?
 }

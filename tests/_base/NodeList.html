@@ -256,7 +256,7 @@
 
 						// layout DOM functions
 						function coords(){
-							var tnl = new dojo.NodeList(dojo.byId('sq100'))
+							var tnl = new dojo.NodeList(dojo.byId('sq100'));
 							doh.t(dojo.isArray(tnl));
 							doh.is(100, tnl.coords()[0].w);
 							doh.is(100, tnl.coords()[0].h);
@@ -430,8 +430,7 @@
 							doh.is("addContent1", nl[0].lastChild.id);
 
 							//put in multiple content/clone node
-							tn.innerHTML = '<select><option name="second"  value="second" selected>second</option></select>'
-										   '<select><option name="second"  value="second" selected>second</option></select>';
+							tn.innerHTML = '<select><option name="second"  value="second" selected>second</option></select>';
 							nl = dojo.query("select", tn).addContent('<option name="first" value="first">first</option>', "first");
 							nl.forEach(function(node){
 								doh.is("first", node.options[0].value);

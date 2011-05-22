@@ -124,7 +124,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			// take an index to start a string slice from and an end position
 			// and return a trimmed copy of that sub-string
 			return trim(query.slice(s, e));
-		}
+		};
 
 		// the overall data graph of the full query, as represented by queryPart objects
 		var queryParts = [];
@@ -162,7 +162,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 				currentPart[ (specials.indexOf(tv) < 0) ? "tag" : "oper" ] = tv;
 				inTag = -1;
 			}
-		}
+		};
 
 		var endId = function(){
 			// called when the tokenizer might be at the end of an ID portion of a match
@@ -170,27 +170,29 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 				currentPart.id = ts(inId, x).replace(/\\/g, "");
 				inId = -1;
 			}
-		}
+		};
 
 		var endClass = function(){
 			// called when the tokenizer might be at the end of a class name
 			// match. CSS allows for multiple classes, so we augment the
 			// current item with another class in its list
 			if(inClass >= 0){
-				currentPart.classes.push(ts(inClass+1, x).replace(/\\/g, ""));
+				currentPart.classes.push(ts(inClass + 1, x).replace(/\\/g, ""));
 				inClass = -1;
 			}
-		}
+		};
 
 		var endAll = function(){
 			// at the end of a simple fragment, so wall off the matches
-			endId(); endTag(); endClass();
-		}
+			endId();
+			endTag();
+			endClass();
+		};
 
 		var endPart = function(){
 			endAll();
 			if(inPseudo >= 0){
-				currentPart.pseudos.push({ name: ts(inPseudo+1, x) });
+				currentPart.pseudos.push({ name: ts(inPseudo + 1, x) });
 			}
 			// hint to the selector engine to tell it whether or not it
 			// needs to do any iteration. Many simple selectors don't, and
@@ -237,7 +239,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			queryParts.push(currentPart);
 
 			currentPart = null;
-		}
+		};
 
 		// iterate over the query, character by character, building up a
 		// list of query part objects
@@ -368,7 +370,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 					_cp = {
 						name: ts(inPseudo+1, x),
 						value: null
-					}
+					};
 					currentPart.pseudos.push(_cp);
 				}
 				inParens = x;
@@ -1454,7 +1456,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		caseSensitive = (root.contentType && root.contentType=="application/xml") ||
 						(d.isOpera && (root.doctype || od.toString() == "[object XMLDocument]")) ||
 						(!!od) &&
-						(d.isIE ? od.xml : (root.xmlVersion||od.xmlVersion));
+				(d.isIE ? od.xml : (root.xmlVersion || od.xmlVersion));
 
 		// NOTE:
 		//		adding "true" as the 2nd argument to getQueryFunc is useful for
@@ -1468,7 +1470,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			return r;
 		}
 		return _zip(r); // dojo.NodeList
-	}
+	};
 	query.filter = function(/*Node[]*/ nodeList, /*String*/ filter, /*String|DOMNode?*/ root){
 		// summary:
 		// 		function for filtering a NodeList based on a selector, optimized for simple selectors

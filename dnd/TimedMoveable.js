@@ -51,7 +51,7 @@ dojo.declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
 		onMoveStop: function(/* dojo.dnd.Mover */ mover){
 			if(mover._timer){
 				// stop timer
-				clearTimeout(mover._timer)
+				clearTimeout(mover._timer);
 				// reflect the last received position
 				oldOnMove.call(this, mover, mover._leftTop)
 			}

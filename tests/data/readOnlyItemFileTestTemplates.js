@@ -331,7 +331,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 
 			var d = new doh.Deferred();
 			function onItem(item){
-				t.assertTrue(item !== null)
+				t.assertTrue(item !== null);
 				var identifiers = store.getIdentityAttributes(item);
 				t.assertTrue(dojo.isArray(identifiers));
 				t.assertEqual(1, identifiers.length);
@@ -615,17 +615,17 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				var storeParams = {
 					url: "noSuchUrl",
 					failOk: true
-				}
+				};
 				var store = new datastore(storeParams);
 				console.log(store);
 
 				var d = new doh.Deferred();
 				var completedAll = function(items, request){
 					d.errback(new Error("Should not be here, should have failed load."));
-				}
+				};
 				var error = function(errData, request){
 					d.callback(true);
-				}
+				};
 
 				//Get everything...
 				store.fetch({ onComplete: completedAll, onError: error});
@@ -3033,7 +3033,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				//Set the store clearing options and the new data
 				store.clearOnClose = true;
 				store.data = { identifier: "uniqueId",
-					items: [ {uniqueId: 1, value:"foo*bar"},
+					items: [
+						{uniqueId: 1, value:"foo*bar"},
 						{uniqueId: 2, value:"bar*foo"},
 						{uniqueId: 3, value:"boomBam"},
 						{uniqueId: 4, value:"bit$Bite"},
@@ -3044,7 +3045,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 						{uniqueId: 9, value:"jfq4@#!$!@Rf14r14i5u"}
 					]
 				};
-                store.close();
+				store.close();
 
 				//Do the next fetch and verify that the next item you get is not
 				//a reference to the same item (data cleared and reloaded.
@@ -3061,7 +3062,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					}
 				}
 				store.fetch({query: {value: "bar\*foo"}, onComplete: secondComplete, onError: error});
-			}
+			};
 			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);

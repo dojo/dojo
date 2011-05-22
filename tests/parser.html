@@ -350,12 +350,12 @@
 					// Test that parser recurses correctly, except when there's a stopParser flag not to
 					function recurse(){
 						doh.t(container1, "normal container created");
-						doh.t(container1.incr, "script tag works too")
+						doh.t(container1.incr, "script tag works too");
 						doh.t(window.contained1, "child widget also created");
 						doh.t(window.contained2, "child widget 2 also created");
 
 						doh.t(container2, "shielded container created");
-						doh.t(container2.incr, "script tag works too")
+						doh.t(container2.incr, "script tag works too");
 						doh.f(window.contained3, "child widget not created");
 						doh.f(window.contained4, "child widget 2 not created");
 					},
@@ -531,7 +531,7 @@
 				doh.register("mixed attribute specification", function mixed(){
 					parser.parse(dhtml.byId("mixedContainer"));
 					doh.is("object", typeof mixedObj, "widget created");
-					doh.is("mixedValue", mixedObj.value, "native attribute")
+					doh.is("mixedValue", mixedObj.value, "native attribute");
 					doh.is(999, mixedObj.custom1, "data-dojo-props attribute");
 					doh.is("custom title", mixedObj.title, "data-dojo-props overrides native");
 				});
@@ -559,7 +559,7 @@
 					doh.is("object", typeof button, "widget created");
 					doh.is("function", typeof button.onClick, "created as function");
 					doh.t(buttonClicked == button.onClick, "points to specified function");
-				})
+				});
 				doh.run();
 			})
 		});

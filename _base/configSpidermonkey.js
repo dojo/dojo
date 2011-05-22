@@ -22,7 +22,7 @@ dojo.isSpidermonkey = {
 dojo.isSpidermonkey = true;
 dojo.exit = function(exitcode){
 	quit(exitcode);
-}
+};
 
 if(typeof print == "function"){
 	console.debug = print;
@@ -42,24 +42,24 @@ dojo._spidermonkeyCurrentFile = function(depth){
 	//	the stack, but that does require that you know how deep your stack is when you are
 	//	calling.
 	//
-    var s = '';
-    try{
+	var s = '';
+	try{
 		throw Error("whatever");
-	}catch(e){
+	} catch(e){
 		s = e.stack;
 	}
-    // lines are like: bu_getCurrentScriptURI_spidermonkey("ScriptLoader.js")@burst/Runtime.js:101
-    var matches = s.match(/[^@]*\.js/gi);
-    if(!matches){
+	// lines are like: bu_getCurrentScriptURI_spidermonkey("ScriptLoader.js")@burst/Runtime.js:101
+	var matches = s.match(/[^@]*\.js/gi);
+	if(!matches){
 		throw Error("could not parse stack string: '" + s + "'");
 	}
-    var fname = (typeof depth != 'undefined' && depth) ? matches[depth + 1] : matches[matches.length - 1];
-    if(!fname){
+	var fname = (typeof depth != 'undefined' && depth) ? matches[depth + 1] : matches[matches.length - 1];
+	if(!fname){
 		throw Error("could not find file name in stack string '" + s + "'");
 	}
-    //print("SpiderMonkeyRuntime got fname '" + fname + "' from stack string '" + s + "'");
-    return fname;
-}
+	//print("SpiderMonkeyRuntime got fname '" + fname + "' from stack string '" + s + "'");
+	return fname;
+};
 
 // print(dojo._spidermonkeyCurrentFile(0));
 
@@ -71,7 +71,7 @@ dojo._loadUri = function(uri){
 	var ok = load(uri);
 	// console.log("spidermonkey load(", uri, ") returned ", ok);
 	return 1;
-}
+};
 
 //Register any module paths set up in djConfig. Need to do this
 //in the hostenvs since hostenv_browser can read djConfig from a

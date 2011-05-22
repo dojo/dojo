@@ -1,6 +1,6 @@
 dojo.provide("dojo.tests.store.DataStore");
 dojo.require("dojo.store.DataStore");
-dojo.require("dojo.data.ItemFileWriteStore")
+dojo.require("dojo.data.ItemFileWriteStore");
 var temp = function(){
 	var two, four;
 	var dataStore = new dojo.data.ItemFileWriteStore({data:{

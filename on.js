@@ -85,7 +85,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	var prototype = (on.Evented = function(){}).prototype;
 	prototype.on = function(type, listener, dontFix){
 		return addListener(this, type, listener, dontFix, this);
-	}
+	};
 	var touchEvents = /^touch/;
 	function addListener(target, type, listener, dontFix, matchesTarget){
 		if(type.call){
@@ -155,8 +155,8 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 
 	on.selector = function(selector, eventType){
 		// summary:
-		//		Creates a new extension event with event delegation. This is based on 
-		// 		the provided event type (can be extension event) that 
+		//		Creates a new extension event with event delegation. This is based on
+		// 		the provided event type (can be extension event) that
 		// 		only calls the listener when the CSS selector matches the target of the event.
 		//	selector:
 		//		The CSS selector to use for filter events and determine the |this| of the event listener.
@@ -164,12 +164,12 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		//		The event to listen for
 		//	example:
 		//		define(["dojo/on", "dojo/mouse"], function(listen, mouse){
-		//			on(node, on.selector(".my-class", mouse.enter), handlerForMyHover); 
+		//			on(node, on.selector(".my-class", mouse.enter), handlerForMyHover);
 		return function(target, listener){
 			var matchesTarget = this;
 			return on(target, eventType, function(event){
 				var eventTarget = event.target;
-				// see if we have a valid matchesTarget or default to dojo.query 
+				// see if we have a valid matchesTarget or default to dojo.query
 				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
 				// there is a selector, so make sure it matches
 				while(!matchesTarget.matches(eventTarget, selector, target)){
@@ -181,7 +181,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				return listener.call(eventTarget, event);
 			});
 		};
-	}
+	};
 
 	function syntheticPreventDefault(){
 		this.cancelable = false;
@@ -306,7 +306,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				if(evt.type == "mouseout"){
 					evt.relatedTarget = evt.toElement;
 				}
-				if (!evt.stopPropagation) {
+				if(!evt.stopPropagation){
 					evt.stopPropagation = stopPropagation;
 					evt.preventDefault = preventDefault;
 				}
@@ -330,13 +330,13 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				}
 			}
 			return evt;
-		}
+		};
 		var IESignal = function(handle){
 			this.handle = handle;
 		};
 		IESignal.prototype.cancel = function(){
-	 		delete _dojoIEListeners_[this.handle];		
-		}
+			delete _dojoIEListeners_[this.handle];
+		};
 		var fixListener = function(target, type, listener){
 			var fixedListener = function(evt){
 				evt = on._fixEvent(evt, this);
@@ -415,10 +415,10 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 						// have to delegate methods to make them work
 						event.preventDefault = function(){
 							originalEvent.preventDefault();
-						}
+						};
 						event.stopPropagation = function(){
 							originalEvent.stopPropagation();
-						}
+						};
 					}else{
 						// deletion worked, use property as is
 						event = originalEvent;

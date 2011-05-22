@@ -6,7 +6,7 @@ var tests= {number:{}};
 tests.number.check=function(t,options,sourceInput,expectResult){
 	tests.number.checkFormatParseCycle(t, t,options,sourceInput,expectResult,false);
 	tests.number.checkParse(t, t,options,expectResult,sourceInput);
-}
+};
 
 /**
  * Perform a single formatting check or a backward check
@@ -42,7 +42,7 @@ tests.number.checkFormatParseCycle=function(t,options,sourceInput,expectResult,
 			t.is(result,resultParsedReformatted);
 		}
 	}
-}
+};
 
 /**
  * Perform a single parsing check
@@ -58,7 +58,7 @@ tests.number.checkParse=function(t,options,sourceInput,expectResult){
 	if(null != expectResult){
 	    t.is(expectResult,result);
 	}
-}
+};
 
 /**
  * //TODO:Round a given number
@@ -68,7 +68,7 @@ tests.number.rounding = function(t,number,maxFractionDigits,expected){
 	for(var i=0; i<maxFractionDigits; i++){pattern += "#";}
 	var result = dojo.number.format(number,{locale:tests.number.locale, pattern:pattern});
 	t.is(expected,result);
-}
+};
 
 /**
  * Run a batch parsing

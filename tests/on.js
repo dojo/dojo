@@ -132,7 +132,7 @@ doh.register("tests.on",
 			var order = [];
 			var customEvent = function(target, listener){
 				return on(target, "custom", listener);
-			}
+			};
 			var signal = on(div, customEvent, function(event){
 				order.push(event.a);
 			});

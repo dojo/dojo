@@ -148,7 +148,7 @@ dojo.fx = {
 		//	|		dojo.fadeOut({ node:otherNode })
 		//	|	]).play();
 		//
-		return new _chain(animations) // dojo.Animation
+		return new _chain(animations); // dojo.Animation
 	};
 
 	var _combine = function(animations){

@@ -11,7 +11,7 @@ define(["../..", "doh"], function(dojo, doh){
 					arg2 = a2;
 					innerThis = this.test;
 					innerGlobal = dojo.global.test;
-					innerDoc = dojo.doc.test
+					innerDoc = dojo.doc.test;
 					finished = true;
 				}, thisObj, [1, 2])
 			}catch(e){}
@@ -34,7 +34,7 @@ define(["../..", "doh"], function(dojo, doh){
 					arg1 = a1;
 					arg2 = a2;
 					innerThis = this.test;
-					innerDoc = dojo.doc.test
+					innerDoc = dojo.doc.test;
 					finished = true;
 				}, thisObj, [1, 2])
 			}catch(e){}

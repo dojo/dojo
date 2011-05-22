@@ -38,14 +38,16 @@ var attachIframe = function(){
 var robotReady=false;
 var robotFrame=null;
 var _run=doh.robot._run;
-doh.robot._run=function(frame){
+doh.robot._run = function(frame){
 	// Called from robot when the robot completed its initialization.
 	robotReady = true;
 	robotFrame = frame;
-	doh.robot._run=_run;
+	doh.robot._run = _run;
 	// If initRobot was already called, then attach the iframe.
-	if(iframe.src){ attachIframe(); }
-}
+	if(iframe.src){
+		attachIframe();
+	}
+};
 
 var onIframeLoad=function(){
 	// initial load handler: update the document and start the tests

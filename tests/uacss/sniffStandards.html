@@ -26,7 +26,7 @@
 	<script type="text/javascript">
 		require.ready(["dojo", "doh", "dojo/uacss"], function(dojo, doh){
 			var node = dojo.byId("box1");
-			var reportNode = dojo.byId("log")
+			var reportNode = dojo.byId("log");
 			var inner = (reportNode.textContent) ? "textContent": "innerText";
 			reportNode.innerHTML = dojo.toJson({
 				boxModel: dojo.boxModel,

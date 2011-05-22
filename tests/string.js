@@ -36,7 +36,7 @@ doh.register("tests.string",
 					prefix = this.____prefix + prefix;
 				}
 				return prefix + " '" + str + "'";
-			}
+			};
 
 			var obj = {
 				____prefix: "...",

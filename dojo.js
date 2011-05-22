@@ -1743,7 +1743,7 @@
 
 						}
 
-						resultText= "define(" + dojo.toJson(requires) + ", function(){\n" + (loadInitFound ? text : resultText) + "\n});\n";;
+						resultText= "define(" + dojo.toJson(requires) + ", function(){\n" + (loadInitFound ? text : resultText) + "\n});\n";
 						if(requireIfs.length){
 							// make a fake module that demands all of the requireIfs; it's never defined
 							injectDependencies(defineModule(getModule(mid + "/requireIfs"), requireIfs, noop));

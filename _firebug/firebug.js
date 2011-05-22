@@ -1022,7 +1022,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 			d.setMonth(d.getMonth()+1);
 			document.cookie = name + "=" + encodeURIComponent(value) + ((d.toUtcString) ? "; expires=" + d.toUTCString() : "");
 		}
-	};
+	}
 
 	function isArray(it){
 		return it && it instanceof Array || typeof it == "array";

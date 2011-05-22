@@ -18,22 +18,13 @@
 	</style>
 
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
-<!--
-	<script type="text/javascript" src="../../dnd/Container.js"></script>
-	<script type="text/javascript" src="../../dnd/Selector.js"></script>
-	<script type="text/javascript" src="../../dnd/Source.js"></script>
-	<script type="text/javascript" src="../../dnd/Avatar.js"></script>
-	<script type="text/javascript" src="../../dnd/Manager.js"></script>
--->
 	<script type="text/javascript">
 		dojo.require("dojo.parser");
-		//dojo.require("dojo.dnd.Source");
-		//dojo.require("dojo.dnd.Manager");
-	
+		dojo.require("dojo.dnd.Source");
+
 		var c1, c2;
 	
-		function init(){
-
+		dojo.ready(function(){
 			c1 = new dojo.dnd.Source("container1");
 			c1.insertNodes(false, [1, 2, 3, 4, 5, 6, [1, 2, 3], function(x){ return x + x; }]);
 			c2 = new dojo.dnd.Target("container2", {accept: ["money"]});
@@ -42,9 +33,7 @@
 			dojo.subscribe("/dnd/start",function(foo){
 				console.debug(foo);
 			});
-
-		};
-		dojo.addOnLoad(init);
+		});
 	</script>
 </head>
 <body>

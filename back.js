@@ -141,7 +141,7 @@ dojo.back = {
 				}
 			}
 		}
-	};
+	}
 
 	back.init = function(){
 		//summary: Initializes the undo stack. This must be called from a <script>

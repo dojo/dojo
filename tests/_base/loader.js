@@ -56,7 +56,7 @@ define([
 				} // else ignore "."
 			}
 			return result.join("/");
-		};
+		}
 		var
 			qstart= location.href.indexOf(location.search),
 		    root= qstart!=-1 ? location.href.substring(0, qstart) : location.href,

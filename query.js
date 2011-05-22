@@ -98,7 +98,7 @@ function queryForEngine(engine){
 		};
 	}
 	return query;
-};
+}
 var query = dojo.query = queryForEngine(defaultEngine);
 
 query.load = function(id, parentRequire, loaded, config){

@@ -133,7 +133,7 @@ define(["./main", "require", "./has"], function(dojo, require, has) {
 							// TODO: make sure closure compiler does not stomp on this function name
 							function define(bundle){
 							  __result= bundle;
-							};
+							}
 							results.push(cache[url]= (__fixup(eval(text))));
 						},
 						error:function(){

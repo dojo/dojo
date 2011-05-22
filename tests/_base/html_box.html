@@ -113,9 +113,9 @@
 					args[1] = inMix[1];
 				args[2] = inArgs[2];
 				args[3] = inArgs[3];
-				return args;	
-			};
-			
+				return args;
+			}
+
 			function createStyledNodes(inArgs, inFunc) {
 				for (var i=0, n; (s=testStyles[i]); i++) {
 					n = createStyledElement.apply(this, mixCreateElementArgs([styleIncTop(s)], inArgs));

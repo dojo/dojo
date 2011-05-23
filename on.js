@@ -58,7 +58,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	var on = function(target, type, listener, dontFix){
 		if(!listener){
 			// two args, do pub/sub
-			return on(listen, target, type);
+			return on(on, target, type);
 		}
 		if(target.on){ 
 			// delegate to the target's on() method, so it can handle it's own listening if it wants

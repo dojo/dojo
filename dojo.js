@@ -1490,7 +1490,7 @@
 			defaultDeps = ["require", "exports", "module"];
 
 		if(has("dojo-amd-factory-scan")){
-			if(arity == 1){
+			if(arity == 1 && isFunction(mid)){
 				dependencies = [];
 				mid.toString()
 					.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg, "")
@@ -1502,7 +1502,7 @@
 		}
 		if(!args){
 			args = arity == 1 ? [0, defaultDeps, mid] :
-				(arity == 2 ? (isArray(mid) ? [0, mid, dependencies] : [mid, defaultDeps, dependencies]) :
+				(arity == 2 ? (isArray(mid) ? [0, mid, dependencies] : (isFunction(dependencies) ? [mid, defaultDeps, dependencies] : [mid, [], dependencies])) :
 					[mid, dependencies, factory]);
 		}
 		req.trace("loader-define", args.slice(0, 2));

@@ -168,6 +168,15 @@ doh.register("tests.on",
 			myObject.emit("custom", {a:0});
 			t.is(order, [0]);
 		},
+		function pubsub(t){
+			var fooCount = 0;
+			on("/test/foo", function(event){
+				t.is("value", event.foo);
+				fooCount++;
+			});
+			on.publish("/test/foo", {foo: "value"});
+			t.is(1, fooCount);
+		},		
 		function touch(t){
 			console.log("has", has);
 			if(has("touch")){

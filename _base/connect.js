@@ -160,7 +160,7 @@ dojo._connect = function(obj, event, context, method, dontFix){
 	return on(obj, event, dojo.hitch(context, method), dontFix);
 };
 
-dojo.disconnect = function(/*Handle*/ handle){
+dojo.disconnect = dojo.unsubscribe = function(/*Handle*/ handle){
 	// summary:
 	//		Remove a link created by dojo.connect.
 	// description:
@@ -173,7 +173,6 @@ dojo.disconnect = function(/*Handle*/ handle){
 };
 
 // topic publish/subscribe
-
 dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Function*/ method){
 	//	summary:
 	//		Attach a listener to a named topic. The listener function is invoked whenever the
@@ -189,10 +188,10 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 	//	|	dojo.publish("alerts", [ "read this", "hello world" ]);
 
 	// support for 2 argument invocation (omitting context) depends on hitch
-	return on(on, topic, dojo.hitch(context, method));
+	return on(topic, dojo.hitch(context, method));
 };
-
-dojo.unsubscribe = function(/*Handle*/ handle){
+/*=====
+dojo.unsubscribe = function(/*Handle handle){
 	//	summary:
 	//		Remove a topic listener.
 	//	handle:
@@ -205,6 +204,7 @@ dojo.unsubscribe = function(/*Handle*/ handle){
 		handle.cancel();
 	}
 };
+=====*/
 
 dojo.publish = function(/*String*/ topic, /*Array?*/ args){
 	//	summary:

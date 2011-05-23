@@ -196,6 +196,16 @@ tests.register("tests._base.connect",
 			t.is(true, foo.ok);
 			t.is(false, bar.ok);
 		},
+		function pubsub(t){
+			var count = 0;
+			dojo.subscribe("/test/blah", function(first, second){
+				t.is("first", first);
+				t.is("second", second);
+				count++;
+			});
+			dojo.publish("/test/blah", ["first", "second"]);
+			t.is(1, count);
+		},
 		function connectPublisher(t){
 			var foo = { inc: 0, foo: function(){ this.inc++; } };
 			var bar = { inc: 0, bar: function(){ this.inc++; } };

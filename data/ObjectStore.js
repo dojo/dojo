@@ -399,7 +399,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 						self._dirtyObjects = postCommitDirtyObjects;
 					}
 					else{
-						self._dirtyObjects = dirtyObject.concat(savingObjects);
+						self._dirtyObjects = dirtyObjects.concat(savingObjects);
 					}
 				});
 				if(this.objectStore.transaction){

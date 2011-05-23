@@ -2,7 +2,8 @@ define(["../has", "../_base/kernel"],
 		function(has, dojo){	
 "use strict";
 // summary:
-//		A small lightweight query selector engine
+//		A small lightweight query selector engine that implements CSS2.1 selectors 
+// 		minus pseudo-classes, plus CSS3 attribute selectors
 var testDiv = document.createElement("div");
 var matchesSelector = testDiv.matchesSelector || testDiv.webkitMatchesSelector || testDiv.mozMatchesSelector || testDiv.msMatchesSelector || testDiv.oMatchesSelector; // IE9, WebKit, Firefox have this, but not Opera yet
 var querySelectorAll = testDiv.querySelectorAll;
@@ -155,7 +156,10 @@ if(!has("dom-matches-selector")){
 			}
 		};
 		function attr(name, value, type){
-			value = value.replace(/'|"/g,''); // what are you supposed to do with quotes, do they follow JS rules for escaping?
+			if(value.match(/['"]/)){
+				// it is quoted, do an eval to parse the string (CSS and JS parsing are close enough)
+				value = eval(value);
+			}
 			var comparator = attrComparators[type];
 			return function(node){
 				var attrValue = node.getAttribute(name);
@@ -193,7 +197,7 @@ if(!has("dom-matches-selector")){
 			if(!matcher){
 				// create a matcher function for the given selector
 				// parse the selectors
-				if(selector.replace(/(\s*>\s*)|(\s+)|(\.)?([\w-]+)|\[([\w-]+)\s*(.?=)?\s*([^\]]*)\]/g, function(t, desc, space, type, value, attrName, attrType, attrValue){
+				if(selector.replace(/(?:\s*([> ])\s*)|(\.)?([\w-]+)|\[([\w-]+)\s*(.?=)?\s*([^\]]*)\]/g, function(t, combinator, type, value, attrName, attrType, attrValue){
 					if(value){
 						if(type == "."){
 							matcher = and(matcher, className(value));
@@ -202,11 +206,8 @@ if(!has("dom-matches-selector")){
 							matcher = and(matcher, tag(value));
 						}
 					}
-					else if(space){
-						matcher = ancestor(matcher);
-					}
-					else if(desc){
-						matcher = parent(matcher);
+					else if(combinator){
+						matcher = (combinator == " " ? ancestor : parent)(matcher);
 					}
 					else if(attrName){
 						matcher = and(matcher, attr(attrName, attrValue, attrType));
@@ -229,20 +230,21 @@ if(!has("dom-qsa")){
 	var combine = function(selector, root){
 		// combined queries
 		selector = selector.split(/\s*,\s*/);
-		var totalResults = [];
-		var unique = {};
-		// add all results and keep unique ones
+		var indexed = [];
+		// add all results and keep unique ones, this only runs in IE, so we take advantage 
+		// of known IE features, particularly sourceIndex which is unique and allows us to 
+		// order the results 
 		for(var i = 0; i < selector.length; i++){
 			var results = liteEngine(selector[i], root);
 			for(var j = 0, l = results.length; j < l; j++){
 				var node = results[j];
-				var id = node.uniqueID;
-				// only add it if unique
-				if(!(id in unique)){
-					totalResults.push(node);
-					unique[id] = true;
-				}
+				indexed[node.sourceIndex] = node;
 			}
+		}
+		// now convert from a sparse array to a dense array
+		var totalResults = [];
+		for(i in indexed){
+			totalResults.push(indexed[i]);
 		}
 		return totalResults;
 	};

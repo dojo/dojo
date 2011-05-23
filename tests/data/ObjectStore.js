@@ -4,7 +4,7 @@ dojo.require("dojo.store.JsonRest");
 dojo.require("dojo.store.Memory");
 
 (function(){
-var restStore = new dojo.store.JsonRest({target: dojo.moduleUrl("dojo.tests.store", "")});
+var restStore = new dojo.store.JsonRest({target: dojo.moduleUrl("dojo.tests.store", "/")});
 var memoryStore = new dojo.store.Memory({
 	data: [
 		{id: 1, name: "one", prime: false},
@@ -45,6 +45,9 @@ tests.register("tests.data.ObjectStore",
 			});
 			memoryDataStore.setValue(newItem, "prop1", 1);
 			memoryDataStore.save();
+			memoryDataStore.setValue(newItem, "prop1", 10);
+			memoryDataStore.revert();
+			t.is(memoryDataStore.getValue(newItem, "prop1"), 1);
 			memoryDataStore.fetchItemByIdentity({
 				identity: memoryDataStore.getIdentity(newItem),
 				onItem: function(item){

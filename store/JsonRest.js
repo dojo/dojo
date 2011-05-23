@@ -15,9 +15,7 @@ return declare("dojo.store.JsonRest", null, {
 		//		formatted data.
 		// options:
 		//		This provides any configuration information that will be mixed into the store
-		for(var i in options){
-			this[i] = options[i];
-		}
+		dojo.safeMixin(this, options);
 	},
 	// target: String
 	//		The target base URL to use for all requests to the server. This string will be

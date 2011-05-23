@@ -386,9 +386,8 @@ dojo.declare("dojo.data.ObjectStore", null,{
 
 			kwArgs = kwArgs || {};
 			var result, actions = [];
-			var alreadyRecorded = {};
 			var savingObjects = [];
-			var self;
+			var self = this;
 			var dirtyObjects = this._dirtyObjects;
 			var left = dirtyObjects.length;// this is how many changes are remaining to be received from the server
 			try{
@@ -396,8 +395,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					if(kwArgs.revertOnError !== false){
 						var postCommitDirtyObjects = dirtyObjects;
 						dirtyObjects = savingObjects;
-						var numDirty = 0; // make sure this does't do anything if it is called again
-						jr.revert(); // revert if there was an error
+						self.revert(); // revert if there was an error
 						self._dirtyObjects = postCommitDirtyObjects;
 					}
 					else{

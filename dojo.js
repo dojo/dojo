@@ -337,9 +337,9 @@
 				packageInfo.location = baseUrl + (packageInfo.location ? packageInfo.location : packageInfo.name);
 				packageInfo.mapProg = computeMapProg(packageInfo.packageMap);
 
-				packageInfo.main= (function(path){
-					return path=="." ? "" : (path.indexOf("./") ? path : path.substring(2));
-				})(packageInfo.main);
+				if(!packageInfo.main.indexOf("./")){
+					packageInfo.main = packageInfo.main.substring(2);
+				}
 
 				// allow paths to be specified in the package info
 				mix(paths, packageInfo.paths);

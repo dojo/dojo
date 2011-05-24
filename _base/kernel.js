@@ -415,5 +415,50 @@ define(["../has", "./config", "require"], function(has, config, require){
 		dojo.deprecated = dojo.experimental = function(){};
 	}
 
+
+	has.add("dojo-moduleUrl",
+		// include dojo.moduleUrl
+		1
+	);
+	if(has("dojo-debug-messages")){
+		dojo.moduleUrl = function(/*String*/module, /*String?*/url){
+			//	summary:
+			//		Returns a URL relative to a module.
+			//	example:
+			//	|	var pngPath = dojo.moduleUrl("acme","images/small.png");
+			//	|	console.dir(pngPath); // list the object properties
+			//	|	// create an image and set it's source to pngPath's value:
+			//	|	var img = document.createElement("img");
+			//	|	img.src = pngPath;
+			//	|	// add our image to the document
+			//	|	dojo.body().appendChild(img);
+			//	example:
+			//		you may de-reference as far as you like down the package
+			//		hierarchy.  This is sometimes handy to avoid lenghty relative
+			//		urls or for building portable sub-packages. In this example,
+			//		the `acme.widget` and `acme.util` directories may be located
+			//		under different roots (see `dojo.registerModulePath`) but the
+			//		the modules which reference them can be unaware of their
+			//		relative locations on the filesystem:
+			//	|	// somewhere in a configuration block
+			//	|	dojo.registerModulePath("acme.widget", "../../acme/widget");
+			//	|	dojo.registerModulePath("acme.util", "../../util");
+			//	|
+			//	|	// ...
+			//	|
+			//	|	// code in a module using acme resources
+			//	|	var tmpltPath = dojo.moduleUrl("acme.widget","templates/template.html");
+			//	|	var dataPath = dojo.moduleUrl("acme.util","resources/data.json");
+
+			// TODOC v1.6- returns a trailing slash if url is missing; v1.7+ does not
+			// TODOC v1.6- returns null iff module is falsy
+
+			// require.toUrl requires a filetype; therefore, just append the suffix "/x.y" to guarantee a filetype, then
+			// remove the suffix from the result. This way clients can request a url w/out a filetype. This should be
+			// rare, but it maintains backcompat for the v1.x line (note: dojo.moduleUrl will be removed in v2.0)
+			return require.toUrl(module.replace(/\./g, "/") + (url ? ("/" + url) : "") + "/x.y").match(/(.+)\/x\.\y$/)[1];
+		};
+	}
+
 	return dojo;
 });

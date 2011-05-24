@@ -108,7 +108,7 @@ define(["./main", "require", "./has"], function(dojo, require, has) {
 		var syncRequire= function(deps, callback){
 			var results= [];
 			dojo.forEach(deps, function(mid){
-				var url= require.nameToUrl(mid) + ".js";
+				var url= require.toUrl(mid + ".js");
 				if(cache[url]){
 					results.push(cache[url]);
 				}else{

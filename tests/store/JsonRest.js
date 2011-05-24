@@ -1,5 +1,5 @@
-define(["dojo", "doh", "dojo/store/JsonRest"], function(dojo, doh){
-	var store = new dojo.store.JsonRest({target: dojo.moduleUrl("dojo.tests.store", "")+"/"});
+define(["dojo", "doh", "require", "dojo/store/JsonRest"], function(dojo, doh, require){
+	var store = new dojo.store.JsonRest({target: require.toUrl("dojo/tests/store/x.y").match(/(.+)x\.y$/)[1]});
 	doh.register("tests.store.JsonRest",
 		[
 			function testGet(t){

@@ -6,7 +6,6 @@ define([
 	"./sniff",
 	"./connect", // until we decide if connect is going back into non-browser environments
 	"./unload",
-	"./url",
 	"./window",
 	"./event",
 	"./html",

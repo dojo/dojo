@@ -98,21 +98,21 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 			},
 
 			cache:function(cacheId, mid, type, value) {
-				cache(cacheId, require.nameToUrl(mid) + type, value);
+				cache(cacheId, require.toUrl(mid + type), value);
 			}
 		};
 
 		dojo.cache= function(/*String||Object*/module, /*String*/url, /*String||Object?*/value){
 			//	 * (string string [value]) => (module, url, value)
-			//	 * (object [value])				 => (module, value), url defaults to ""
+			//	 * (object [value])        => (module, value), url defaults to ""
 			//
 			//	 * if module is an object, then it must be convertable to a string
-			//	 * (module, url) must be legal arguments (once converted to strings iff required) to dojo.moduleUrl
+			//	 * (module, url) module + (url ? ("/" + url) : "") must be a legal argument to require.toUrl
 			//	 * value may be a string or an object; if an object then may have the properties "value" and/or "sanitize"
 			var key;
 			if(typeof module == "string"){
 				module = (module.replace(/\./g, "/") + (url ? ("/" + url) : "")).replace(/^dojo\//, "./");
-				key = require.nameToUrl(module);
+				key = require.toUrl(module);
 			}else{
 				key = module+"";
 				value = url;

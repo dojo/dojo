@@ -1,5 +1,4 @@
 define([
-	//TODO: "dojo/tests/_base/url",
 	"dojo/tests/_base/loader",
 	"dojo/tests/_base/array",
 	"dojo/tests/_base/Color",

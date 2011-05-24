@@ -2,12 +2,13 @@
 define([
   "dojo",
   "doh",
+  "require",
   "./readOnlyItemFileTestTemplates",
   "dojo/data/ItemFileWriteStore",
   "dojo/data/api/Read",
   "dojo/data/api/Identity",
   "dojo/data/api/Write",
-  "dojo/data/api/Notification"], function(dojo, doh) {
+  "dojo/data/api/Notification"], function(dojo, doh, require) {
 
 dojo.getObject("data.ItemFileWriteStore", true, tests);
 
@@ -19,7 +20,7 @@ tests.data.ItemFileWriteStore.getTestData = function(name){
 	var data = {};
 	if(name === "reference_integrity"){
 		if(dojo.isBrowser){
-			data = {url: dojo.moduleUrl("tests", "data/reference_integrity.json").toString() };
+			data = {url: require.toUrl("tests/data/reference_integrity.json")};
 		}else{
 			data =
 				{ data: {

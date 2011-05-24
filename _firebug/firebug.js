@@ -1,4 +1,4 @@
-define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/event", "../_base/url", "../_base/unload"], function(dojo) {
+define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/event", "../_base/unload"], function(dojo, require) {
 	// module:
 	//		dojo/_firebug/firebug
 	// summary:
@@ -456,7 +456,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 		}
 
 		var styleElement = _firebugDoc.createElement("link");
-		styleElement.href = dojo.moduleUrl("dojo._firebug", "firebug.css")+"";
+		styleElement.href = require.toUrl("./firebug.css");
 		styleElement.rel = "stylesheet";
 		styleElement.type = "text/css";
 		var styleParent = _firebugDoc.getElementsByTagName("head");

@@ -559,8 +559,8 @@
 					return contextRequire(a1, a2, a3, module, result);
 				};
 				module.require = mix(result, req);
-				result.nameToUrl = result.toUrl = function(name, ext){
-					return nameToUrl(name, ext, module);
+				result.toUrl = function(name){
+					return toUrl(name, module);
 				};
 				result.toAbsMid = function(mid){
 					// FIXME: the .path is wrong for a package main module
@@ -729,16 +729,17 @@
 			}
 		},
 
-		nameToUrl = req.nameToUrl = req.toUrl = function(name, ext, referenceModule){
-			// slightly different algorithm depending upon whether or not name contains
-			// a filetype. This is a requirejs artifact which we don't like.
+		toUrl = req.toUrl = function(name, referenceModule){
+			// name must include a filetype; fault tolerate to allow no filetype (but things like "path/to/version2.13" will assume filetype of ".13")
 			var
-				match = !ext && name.match(/(.+)(\.[^\/]+?)$/),
-				moduleInfo = getModuleInfo((match && match[1]) || name, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg),
+				match = name.match(/(.+)(\.[^\/\.]+?)$/),
+				root = (match && match[1]) || name,
+				ext = (match && match[2]) || "",
+				moduleInfo = getModuleInfo(root, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg),
 				url= moduleInfo.url;
 			// recall, getModuleInfo always returns a url with a ".js" suffix iff pid; therefore, we've got to trim it
 			url= typeof moduleInfo.pid == "string" ? url.substring(0, url.length - 3) : url;
-			return url + (ext ? ext : (match ? match[2] : ""));
+			return url + ext;
 		},
 
 		nonModuleProps = {
@@ -1719,7 +1720,7 @@
 								},
 								requireLocalization:function(moduleName, bundleName, locale){
 									var i18nMid= dojo.getL10nName(moduleName, bundleName, locale);
-									if(isXdPath(nameToUrl(i18nMid))){
+									if(isXdPath(toUrl(i18nMid + ".js"))){
 										dojo.require(i18nMid);
 									}// else the bundle will be loaded synchronously when needed via dojo.getLocalization(moduleName, bundleName, locale)
 								}

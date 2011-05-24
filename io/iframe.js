@@ -73,7 +73,7 @@ dojo.io.iframe = {
 					+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
 					+ " to the path on your domain to blank.html");
 			}
-			turi = (dojo.config["dojoBlankHtmlUrl"]||require.nameToUrl("../resources/blank.html"));
+			turi = (dojo.config["dojoBlankHtmlUrl"]||require.toUrl("../resources/blank.html"));
 		}
 		var cframe = dojo.place(
 			'<iframe id="'+fname+'" name="'+fname+'" src="'+turi+'" onload="'+onloadstr+

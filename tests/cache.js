@@ -1,4 +1,4 @@
-define(["../main", "doh", "../cache"], function(dojo, doh) {
+define(["../main", "doh", "require", "../cache"], function(dojo, doh, require) {
 	doh.register("tests.cache", [{
 			name: "dojo.cache",
 			runTest: function(t){
@@ -8,7 +8,7 @@ define(["../main", "doh", "../cache"], function(dojo, doh) {
 				t.is(expected, dojo.trim(dojo.cache("dojo.tests.cache", "sanitized.html", {sanitize: true})));
 
 				//Test object variant for module.
-				var objPath = dojo.moduleUrl("dojo.tests.cache", "object.html").toString();
+				var objPath = require.toUrl("dojo/tests/cache/object.html");
 				t.is(expected, dojo.trim(dojo.cache(new dojo._Url(objPath), {sanitize: true})));
 
 				//Just a couple of other passes just to make sure on manual inspection that the

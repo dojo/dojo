@@ -250,6 +250,10 @@ tests.register("tests.date.locale",
 
 	t.is( new Date(2006, 7, 31), dojo.date.locale.parse("31Aug2006", {datePattern:"ddMMMyyyy", selector:"date", locale:'en'}));
 
+	t.is(new Date(1970,0,7), dojo.date.locale.parse("007", {datePattern:'DDD',selector:'date'}));
+	t.is(new Date(1970,0,31), dojo.date.locale.parse("031", {datePattern:'DDD',selector:'date'}));
+	t.is(new Date(1970,3,10), dojo.date.locale.parse("100", {datePattern:'DDD',selector:'date'}));
+
 			}
 		},
 		{

@@ -1,4 +1,4 @@
-define(["../main", "doh", "../date"], function(dojo, doh){
+define(["../main", "doh", "../date", "./date/locale", "./date/stamp"], function(dojo, doh){
 doh.register("tests.date.util", [
 
 /* Informational Functions

@@ -45,7 +45,6 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 		},
 
 		strip= function(text){
-			//note: this function courtesy of James Burke (https://github.com/jrburke/requirejs)
 			//Strips <?xml ...?> declarations so that external SVG and XML
 			//documents can be added to a document without worry. Also, if the string
 			//is an HTML document, only the part inside the body tag is returned.
@@ -124,7 +123,7 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 			if(typeof val == "string"){
 				//We have a string, set cache value
 				theCache[key] = val;
-				return strip ? strip(val) : val;
+				return sanitize ? strip(val) : val;
 			}else if(val === null){
 				//Remove cached value
 				delete theCache[key];
@@ -137,7 +136,7 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 						cache(0, key, text);
 					});
 				}
-				return strip ? strip(theCache[key]) : theCache[key];
+				return sanitize ? strip(theCache[key]) : theCache[key];
 			}
 		};
 

@@ -46,7 +46,7 @@ define([
 		if(deps){
 			// dojo.config.require may be dot notation
 			deps= dojo.map(dojo.isArray(deps) ? deps : [deps], function(item){ return item.replace(/\./g, "/"); });
-			if(has("config-isAsync")){
+			if(dojo.isAsync){
 				require(deps);
 			}else{
 				// this is a bit janky; in 1.6- dojo is defined before these requires are applied; but in 1.7+

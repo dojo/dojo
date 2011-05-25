@@ -109,9 +109,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 
 	config.locale && (dojo.locale = config.locale);
 
-	dojo.isAsync = function(){
-		return !has("dojo-loader") || require.async;
-	};
+	dojo.isAsync = !has("dojo-loader") || require.async;
 
 	// define dojo's eval method so that an almost-pristine environment is provided
 	// (only the variables __scope and __text shadow globals)
@@ -153,15 +151,6 @@ define(["../has", "./config", "require"], function(has, config, require){
 				})();
 			}
 		}
-	}
-
-	has.add("dojo-register-openAjax",
-		// register dojo with the OpenAjax hub
-		typeof OpenAjax != "undefined"
-	);
-	if(has("dojo-register-openAjax")){
-		// Register with the OpenAjax hub
-		OpenAjax.hub.registerLibrary(dojo._scopeName, "http://dojotoolkit.org", dojo.version.toString());
 	}
 
 	has.add("bug-for-in-skips-shadowed", function(){
@@ -420,7 +409,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 		// include dojo.moduleUrl
 		1
 	);
-	if(has("dojo-debug-messages")){
+	if(has("dojo-moduleUrl")){
 		dojo.moduleUrl = function(/*String*/module, /*String?*/url){
 			//	summary:
 			//		Returns a URL relative to a module.

@@ -124,7 +124,19 @@ if(dojo.isIE){
 		//	|	dojo.query(".someNode").forEach(dojo.destroy);
 
 		node = byId(node);
-		node.parentNode ? node.parentNode.removeChild(node) : node
+		try{
+			var doc = node.ownerDocument;
+			// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
+			if(!_destroyContainer || _destroyDoc != doc){
+				_destroyContainer = doc.createElement("div");
+				_destroyDoc = doc;
+			}
+			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
+			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
+			_destroyContainer.innerHTML = "";
+		}catch(e){
+			/* squelch */
+		}
 	};
 
 	dojo.isDescendant = function(/*DomNode|String*/node, /*DomNode|String*/ancestor){

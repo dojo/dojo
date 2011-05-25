@@ -82,7 +82,6 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs){
 		"dojo-gettext-api":1,
 		"dojo-sniff":0,
 		"dojo-loader":1,
-		"dojo-boot":1,
 		"dojo-test-xd":0,
 		"dojo-test-sniff":0
 	};

@@ -655,8 +655,7 @@
 				path = compactPath(isRelative ? (referenceModule.path + "/../" + mid) : mid);
 				if(/^\./.test(path)){
 					// the path is irrational
-					pid= "badMid" + uid();
-					return mix(makeModuleInfo(pid, mid, pid + "*" + mid, 0, referenceModule && referenceModule.path, ""), nonModuleProps);
+					throw new Error("The path " + path + " is irrational");
 				}
 				// find the package indicated by the path, if any
 				mapProg = referenceModule && referenceModule.pack && referenceModule.pack.mapProg;

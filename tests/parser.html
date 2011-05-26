@@ -325,7 +325,7 @@
 						parser.parse({ rootNode: "parsertest2" });
 						parser.parse("parsertest2", { noStart:true });
 
-						tmp.cancel();
+						tmp.remove();
 					},
 
 					// Test that when BorderContainer etc. extends _Widget,

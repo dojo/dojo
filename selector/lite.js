@@ -3,7 +3,7 @@ define(["../has", "../_base/kernel"],
 "use strict";
 // summary:
 //		A small lightweight query selector engine that implements CSS2.1 selectors 
-// 		minus pseudo-classes, plus CSS3 attribute selectors
+// 		minus pseudo-classes and the sibling combinator, plus CSS3 attribute selectors
 var testDiv = document.createElement("div");
 var matchesSelector = testDiv.matchesSelector || testDiv.webkitMatchesSelector || testDiv.mozMatchesSelector || testDiv.msMatchesSelector || testDiv.oMatchesSelector; // IE9, WebKit, Firefox have this, but not Opera yet
 var querySelectorAll = testDiv.querySelectorAll;

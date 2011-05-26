@@ -389,9 +389,9 @@ define(["./kernel", "../on", "./lang", "./array", "./html"], function(dojo, on){
 			var handles = this.map(function(node){
 				return on(node, eventName, listener); // TODO: apply to the NodeList so the same selector engine is used for matches
 			});
-			handles.cancel= function(){
+			handles.remove = function(){
 				for(var i = 0; i < handles.length; i++){
-					handles[i].cancel();
+					handles[i].remove();
 				}
 			};
 			return handles;

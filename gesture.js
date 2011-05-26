@@ -185,7 +185,7 @@ dojo.gesture = {
 //		TBD - when element.count == 0
 //		dojo.forEach(['press', 'move', 'release', 'cancel'], function(type){
 //			if(element[type] && element[type].cancel){
-//				element[type].cancel();//disconnect native listeners
+//				element[type].remove();//disconnect native listeners
 //			}
 //		});
 	},

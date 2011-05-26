@@ -530,7 +530,7 @@
 								bubbles: false
 							});
 							doh.is(3, ctr);
-							handle.cancel();
+							handle.remove();
 							listen.emit(nl[0], "click", {
 							});
 							doh.is(3, ctr);
@@ -551,7 +551,7 @@
 								bubbles: true
 							});
 							doh.is(1, ctr);
-							handle.cancel();
+							handle.remove();
 							listen.emit(bl[0], "click", {
 								bubbles: true
 							});

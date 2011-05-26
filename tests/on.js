@@ -30,16 +30,16 @@ doh.register("tests.on",
 			on.emit(obj, "custom", {
 				a: 3
 			});
-			signal2.cancel();
+			signal2.remove();
 			signal.resume();
 			on.emit(obj, "custom", {
 				a: 6
 			});
-			signal3.cancel();
+			signal3.remove();
 			var signal4 = on(obj, "foo, custom", function(a){
 				order.push(4);
 			}, true);
-			signal.cancel();
+			signal.remove();
 			on.emit(obj, "custom", {
 				a: 7
 			});
@@ -91,7 +91,7 @@ doh.register("tests.on",
 				cancelable: true
 			}).type, "custom");
 			signal2.resume();
-			signal.cancel();
+			signal.remove();
 			t.f(on.emit(span, "custom", {
 				a: 4,
 				bubbles: true,
@@ -112,7 +112,7 @@ doh.register("tests.on",
 				order.push(7);
 			});
 			button.click();
-			signal.cancel();
+			signal.remove();
 			// test out event delegation
 			if(dojo.query){
 				// if dojo.query is loaded, test event delegation

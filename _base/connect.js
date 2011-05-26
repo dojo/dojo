@@ -168,7 +168,7 @@ dojo.disconnect = dojo.unsubscribe = function(/*Handle*/ handle){
 	// handle:
 	//		the return value of the dojo.connect call that created the connection.
 	if(handle){
-		handle.cancel();
+		handle.remove();
 	}
 };
 
@@ -201,7 +201,7 @@ dojo.unsubscribe = function(/*Handle handle){
 	//	|	...
 	//	|	dojo.unsubscribe(alerter);
 	if(handle){
-		handle.cancel();
+		handle.remove();
 	}
 };
 =====*/
@@ -407,8 +407,8 @@ if(has("events-keypress-typed")){
 		});
 		return {
 			cancel: function(){
-				keydownSignal.cancel();
-				keypressSignal.cancel();
+				keydownSignal.remove();
+				keypressSignal.remove();
 			}
 		};
 	};

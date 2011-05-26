@@ -22,9 +22,9 @@ doh.register("tests.aspect",
 				return [a+1];
 			});
 			obj.method(4);
-			signal.cancel();
+			signal.remove();
 			obj.method(7);
-			signal2.cancel();
+			signal2.remove();
 			obj.method(9);
 			t.is(order, [0,1,2,3,4,5,6,7,8,9]);
 		},
@@ -50,13 +50,13 @@ doh.register("tests.aspect",
 				order.push(3);
 			}, true);
 			obj.method(3);
-			signal2.cancel();
+			signal2.remove();
 			obj.method(6);
-			signal3.cancel();
+			signal3.remove();
 			var signal4 = aspect.after(obj, "method", function(a){
 				order.push(4);
 			}, true);
-			signal.cancel();
+			signal.remove();
 			obj.method(7);
 			t.is(order, [0, 0, 3, 0, 5, 3, 0, 5, 3, 6, 0, 3, 7, 4]);
 		},

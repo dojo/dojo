@@ -11,7 +11,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 // listener: Function
 // 		This is the function that should be called when the event fires.
 // returns: Object
-// 		An object with a cancel() method that can be used to stop listening for this
+// 		An object with a remove() method that can be used to stop listening for this
 // 		event.
 // description:
 // 		To listen for "click" events on a button node, we can do:
@@ -103,9 +103,9 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			while(eventName = events[i++]){
 				handles.push(addListener(target, eventName, listener, dontFix, matchesTarget));
 			}
-			handles.cancel = function(){
+			handles.remove = function(){
 				for(var i = 0; i < handles.length; i++){
-					handles[i].cancel();
+					handles[i].remove();
 				}
 			};
 			return handles;
@@ -138,7 +138,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		if(target.addEventListener){
 			// the target has addEventListener, which should be used if available (might or might not be a node, non-nodes can implement this method as well)
 			var signal = {
-				cancel: function(){
+				remove: function(){
 					target.removeEventListener(type, listener, false);
 				}
 			};
@@ -334,7 +334,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		var IESignal = function(handle){
 			this.handle = handle;
 		};
-		IESignal.prototype.cancel = function(){
+		IESignal.prototype.remove = function(){
 			delete _dojoIEListeners_[this.handle];
 		};
 		var fixListener = function(target, type, listener){

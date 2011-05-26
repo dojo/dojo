@@ -9,7 +9,7 @@ define([], function(){
 // 		|			this will be called when targetObject.methodName() is called, after the original function is called
 //		|		});
 //		The returned signal object can be used to cancel the advice.
-//		|	signal.cancel(); // this will stop the advice from being executed anymore
+//		|	signal.remove(); // this will stop the advice from being executed anymore
 //		|	aspect.before(targetObject, "methodName", function(someArgument){
 //		|		// this will be called when targetObject.methodName() is called, before the original function is called
 //		|	 });
@@ -67,7 +67,7 @@ define([], function(){
 				return previous.advice(this, arguments);
 			});
 			signal = {
-				cancel: function(){
+				remove: function(){
 					signal.cancelled = true;
 				},
 				advice: function(target, args){
@@ -77,9 +77,9 @@ define([], function(){
 				}
 			};
 		}else{
-			// create the cancel handler
+			// create the remove handler
 			signal = {
-				cancel: function(){
+				remove: function(){
 					var previous = signal.previous;
 					var next = signal.next;
 					if(!next && !previous){

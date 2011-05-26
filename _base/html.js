@@ -1,4 +1,4 @@
-define(["./kernel", "./lang", "./sniff", "./window"], function(dojo){
+define(["./kernel", "./lang", "./sniff", "./unload", "./window"], function(dojo){
 	// module:
 	//		dojo/_base/html
 	// summary:

@@ -1,4 +1,4 @@
-define(["./kernel", "./lang", "./sniff", "./unload", "./window"], function(dojo){
+define(["./kernel", "../on", "./lang", "./sniff", "./window"], function(dojo, on){
 	// module:
 	//		dojo/_base/html
 	// summary:
@@ -97,7 +97,7 @@ if(dojo.isIE){
 	var _destroyContainer = null,
 		_destroyDoc;
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	d.addOnWindowUnload(function(){
+	on(window, "unload", function(){
 		_destroyContainer = null; //prevent IE leak
 	});
 

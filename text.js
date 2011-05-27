@@ -109,11 +109,17 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 			//	 * (module, url) module + (url ? ("/" + url) : "") must be a legal argument to require.toUrl
 			//	 * value may be a string or an object; if an object then may have the properties "value" and/or "sanitize"
 			var key;
-			if(typeof module == "string"){
-				module = (module.replace(/\./g, "/") + (url ? ("/" + url) : "")).replace(/^dojo\//, "./");
-				key = require.toUrl(module);
+			if(typeof module=="string"){
+				if(/\//.test(module)){
+					// module is a version 1.7+ resolved path
+					key = module;
+					value = url;
+				}else{
+					// module is a version 1.6- argument to dojo.moduleUrl
+					key = require.toUrl(module.replace(/\./g, "/") + (url ? ("/" + url) : ""));
+				}
 			}else{
-				key = module+"";
+				key = module + "";
 				value = url;
 			}
 			var
@@ -144,12 +150,16 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 });
 
 /*=====
-dojo.cache = function(className, superclass, props){
+dojo.cache = function(module, url, value){
 	// summary:
 	//		A getter and setter for storing the string content associated with the
 	//		module and url arguments.
 	// description:
-	//		module and url are used to call `dojo.moduleUrl()` to generate a module URL.
+	//		If module is a string that contains slashes, then it is interpretted as a fully
+	//		resolved path (typically a result returned by require.toUrl), and url should not be
+	//		provided. This is the preferred signature. If module is a string that does not
+	//		contain slashes, then url must also be provided and module and url are used to
+	//		call `dojo.moduleUrl()` to generate a module URL. This signature is deprecated.
 	//		If value is specified, the cache value for the moduleUrl will be set to
 	//		that value. Otherwise, dojo.cache will fetch the moduleUrl and store it
 	//		in its internal cache and return that cached value for the URL. To clear
@@ -157,7 +167,8 @@ dojo.cache = function(className, superclass, props){
 	//		the URL contents, only modules on the same domain of the page can use this capability.
 	//		The build system can inline the cache values though, to allow for xdomain hosting.
 	// module: String||Object
-	//		If a String, the module name to use for the base part of the URL, similar to module argument
+	//		If a String with slashes, a fully resolved path; if a String without slashes, the
+	//		module name to use for the base part of the URL, similar to module argument
 	//		to `dojo.moduleUrl`. If an Object, something that has a .toString() method that
 	//		generates a valid path for the cache item. For example, a dojo._Url object.
 	// url: String

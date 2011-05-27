@@ -6,6 +6,7 @@
 <title>Dojo Gesture Testing</title>
 <script type="text/javascript" src="../dojo.js" djConfig="parseOnLoad: true"></script>
 <script>
+dojo.require("dojo.touch");
 dojo.require("dojo.gesture.tap");
 dojo.require("dojo.gesture.swipe");
 
@@ -29,16 +30,16 @@ dojo.addOnLoad(function(){
 	dojo.connect(inner, dojo.gesture.swipe, action);
 	
 	//Test gesture events bubbling from inner div
-	var outter = dojo.byId("outter");
-	dojo.connect(outter, dojo.gesture.tap, action);
-	dojo.connect(outter, dojo.gesture.tap.hold, action);
-	dojo.connect(outter, dojo.gesture.tap.doubletap, action);
-	dojo.connect(outter, dojo.gesture.swipe.up, action);
-	dojo.connect(outter, dojo.gesture.swipe.down, action);
-	dojo.connect(outter, dojo.gesture.swipe.left, action);
-	dojo.connect(outter, dojo.gesture.swipe.right, action);
+	var outer = dojo.byId("outer");
+	dojo.connect(outer, dojo.gesture.tap, action);
+	dojo.connect(outer, dojo.gesture.tap.hold, action);
+	dojo.connect(outer, dojo.gesture.tap.doubletap, action);
+	dojo.connect(outer, dojo.gesture.swipe.up, action);
+	dojo.connect(outer, dojo.gesture.swipe.down, action);
+	dojo.connect(outer, dojo.gesture.swipe.left, action);
+	dojo.connect(outer, dojo.gesture.swipe.right, action);
 	
-	//dojo.connect(outter, dojo.touch.press, function(){alert('outer.touch.press!');});
+	//dojo.connect(outer, dojo.touch.press, function(){alert('outer.touch.press!');});
 	
 	dojo.connect(dojo.doc, "orientationchange", function(e){dojo.byId("log").innerHTML="";});
 });
@@ -46,7 +47,7 @@ dojo.addOnLoad(function(){
 </head>
 <body>
 <p>[TODO - Add DoH testing senario]</p>	
-<div id="outter" style="width:350px;height:200px;border:1px solid #54A201; background-color: #54A201">outter
+<div id="outer" style="width:350px;height:200px;border:1px solid #54A201; background-color: #54A201">outer
 	<div id="inner" style="width:250px;height:80px;border:1px solid #7FB0DB; background-color: #7FB0DB">inner</div>
 </div>
 <div id="log" style="width:350px;height:200px;"></div>

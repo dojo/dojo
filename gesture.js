@@ -222,14 +222,7 @@ dojo.gesture = {
 			if(gesture[type] && dojo.indexOf(visited, gesture) < 0){
 				//add a lock attr indicating the event is being processed by the most inner node,
 				//so that we can do gesture bubbling manually				
-				if(!has("touch")){
-					e.locking = true;
-				}else{
-					if(e.__proto__){
-						//not use e.constructor.prototype to lock in object scope rather TouchEvent.prototype
-						e.__proto__.locking = true;
-					}
-				}
+				e.locking = true;
 				gesture[type](element, e);
 				visited.push(gesture);
 			}
@@ -278,6 +271,7 @@ dojo.gesture = {
 	_createEvent: function(e, info){
 		var newEvt = {
 			target: e.target,
+			currentTarget: e.currentTarget,
 			srcEvent: e,
 			preventDefault: function(){
 				e.preventDefault();

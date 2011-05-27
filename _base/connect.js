@@ -406,14 +406,13 @@ if(has("events-keypress-typed")){
 			return listener.call(this, evt);
 		});
 		return {
-			cancel: function(){
+			remove: function(){
 				keydownSignal.remove();
 				keypressSignal.remove();
 			}
 		};
 	};
-}
-else{
+}else{
 	if(dojo.isOpera){ // TODO: how to feature detect this behavior?
 		keypress = function(object, listener){
 			return on(object, "keypress", function(evt){

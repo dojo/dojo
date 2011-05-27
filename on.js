@@ -146,8 +146,8 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			return signal;
 		}
 		type = "on" + type;
-		if(fixListener && target.attachEvent){
-			return fixListener(target, type, listener);
+		if(fixAttach && target.attachEvent){
+			return fixAttach(target, type, listener);
 		}
 	 // use aop
 		return after(target, type, listener, true);
@@ -337,17 +337,21 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		IESignal.prototype.remove = function(){
 			delete _dojoIEListeners_[this.handle];
 		};
-		var fixListener = function(target, type, listener){
-			var fixedListener = function(evt){
+		var fixListener = function(listener){
+			// this is a minimal function for closing on the previous listener with as few as variables as possible
+			return function(evt){
 				evt = on._fixEvent(evt, this);
 				return listener.call(this, evt);
-			};
+			}
+		}
+		var fixAttach = function(target, type, listener){
+			listener = fixListener(listener);
 			if(((target.ownerDocument ? target.ownerDocument.parentWindow : target.parentWindow || target.window || window) != top || 
 						has("jscript") < 5.8) && 
 					!has("config-_allow_leaks")){
 				// IE will leak memory on certain handlers in frames (IE8 and earlier) and in unattached DOM nodes for JScript 5.7 and below.
 				// Here we use global redirection to solve the memory leaks
-				if(typeof _dojoIEListeners_ == "undefined"){ 
+				if(typeof _dojoIEListeners_ == "undefined"){
 					_dojoIEListeners_ = [];
 				}
 				var emiter = target[type];
@@ -360,10 +364,10 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 					}
 				}
 				var handle;
-				emiter.listeners.push(handle = (_dojoIEListeners_.push(fixedListener) - 1));
+				emiter.listeners.push(handle = (_dojoIEListeners_.push(listener) - 1));
 				return new IESignal(handle);
 			}
-			return after(target, type, fixedListener, true);
+			return after(target, type, listener, true);
 		};
 
 		var _setKeyChar = function(evt){

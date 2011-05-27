@@ -100,7 +100,7 @@ if(dojo.isIE){
 	on(window, "unload", function(){
 		_destroyContainer = null; //prevent IE leak
 	});
-
+	//>>excludeEnd("webkitMobile");
 
 /*=====
 	dojo._destroyElement = function(node){

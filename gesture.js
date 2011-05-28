@@ -119,14 +119,11 @@ dojo.gesture = {
 				return on(node, eventType, listener);
 			}else{
 				var signal = {
-					resume: function(){
-						self._add(node, eventType, listener);
-					},
-					cancel: function(){
+					remove: function(){
 						self._remove(node, eventType, listener);
 					}			
 				};
-				signal.resume();
+				self._add(node, eventType, listener);
 				return signal;
 			}
 		};

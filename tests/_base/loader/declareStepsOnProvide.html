@@ -1,0 +1,16 @@
+<html>
+<head>
+	<script type="text/javascript" src="../../../dojo.js"></script>
+	<script type="text/javascript">
+		require(["dojo", "doh", "dojo/tests/_base/loader/declareStepsOnProvideAmd"], function(dojo, doh, declareStepsOnProvide) {
+			doh.register("loader.declareStepsOnProvide", function(t){
+				var instance= new declareStepsOnProvide();
+				t.is(instance.status(), "OK");
+			});
+			doh.runOnLoad();
+		});
+	</script>
+</head>
+<body>
+</body>
+</html>

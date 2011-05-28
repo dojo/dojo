@@ -232,7 +232,7 @@
 	// because it is not used by the loader (package config info is cleaned up and stuffed into
 	// the packs property) and keeping can lead to confusion when inspecting loader props while debuggin
 	var reqEval, paths, pathsMapProg, packs, packageMap, packageMapProg, modules, cache;
-	mix(req, defaultConfig);
+		mix(req, defaultConfig);
 	delete req.packages;
 	if(!has("dojo-auto-init")){
 		reqEval= req.eval= req.eval ||
@@ -1013,7 +1013,7 @@
 					url = module.url;
 				if(module.injected || waiting[pqn] && !syncDepth){
 					return;
-				}
+ 				}
 
 				if(req.urlArgs){
 					url+= (/\?/.test(url) ? "&" : "?") + req.urlArgs;
@@ -1036,11 +1036,9 @@
 						// wasn't marked as executed by dojo.provide (so it wasn't a v1.6- module);
 						// therefore, it must not have been a module (it was just some code); adjust state accordingly
 						mix(module, nonModuleProps);
-						var result = window, part, namespace = module.path.split("/");
-						while(part = namespace.shift()){
-							result = result && result[part];
-						}
-						module.result = result || module.result;
+					}
+					if(has("dojo-sync-loader")){
+						module.fixup && module.fixup();
 					}
 					checkComplete();
 				};
@@ -1078,13 +1076,7 @@
 								injectingModule= 0;
 								setDel(waiting, pqn);
 							}
-							var wasAsync = require.async;
-							require.async = 0;
-							try{
-								onLoadCallback();
-							}finally{
-								require.async = wasAsync;
-							}
+							onLoadCallback();
 							return;
 						}
 					}
@@ -1581,33 +1573,36 @@
 				require = createRequire(referenceModule);
 
 			dojo.provide = function(mid){
-				var module= getModule(slashName(mid), referenceModule);
+				var
+					module= getModule(slashName(mid), referenceModule),
+					dottedMid= mid.replace(/\//g, ".");
 				module.executed!==executed && mix(module, {
+					injected:arrived,
+					executed:executed,
 					deps: [],
-					result: dojo.getObject(mid.replace(/\//g, "."), true)
+					result: dojo.getObject(dottedMid, true)
 				});
+				module.fixup= function(){
+					module.fixup= 0;
+					module.result= dojo.getObject(dottedMid);
+				};
 				return module.result;
 			};
 
 			return function(mid){
 				// basic dojo.require
 				mid = slashName(mid);
-				syncDepth++;
-				require.async = false;
-				try{
-					var module = getModule(mid, referenceModule);
-					if(module.executed){
-						return module.result;
-					}
-
-					execQ.push(module);
-					injectModule(module);
-
-					checkComplete();
+				var
+					module = getModule(mid, referenceModule),
+					url = module.url;
+				if(module.executed){
 					return module.result;
-				}finally{
-					syncDepth--;
 				}
+
+				execQ.push(module);
+				injectModule(module);
+				checkComplete();
+				return module.result;
 			};
 		};
 

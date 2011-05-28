@@ -20,6 +20,8 @@ define([
 		doh.register("error-api", require.toUrl("./loader/errorApi.html")+"?noCatch");
 		//TODO: doh.register("cdn-load", require.toUrl("./loader/cdnTest.html"));
 
+		doh.register("loader-declareStepsOnProvide", require.toUrl("./loader/declareStepsOnProvide.html"));
+
 		doh.register("publish-require-result", require.toUrl("./loader/publishRequireResult.html"));
 		doh.register("no-publish-require-result", require.toUrl("./loader/publishRequireResult.html")+"?do-not-publish");
 

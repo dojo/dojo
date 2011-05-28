@@ -228,55 +228,56 @@
 
 
 	// lexical variables that hold key loader data structures; may be completely initialized by
-	// defaultConfig for optimized/built versions of the loader. The packages property is deleted
-	// because it is not used by the loader (package config info is cleaned up and stuffed into
-	// the packs property) and keeping can lead to confusion when inspecting loader props while debuggin
+	// defaultConfig for optimized/built versions of the loader.
 	var reqEval, paths, pathsMapProg, packs, packageMap, packageMapProg, modules, cache;
+	if(has("dojo-auto-init")){
 		mix(req, defaultConfig);
-	delete req.packages;
-	if(!has("dojo-auto-init")){
-		reqEval= req.eval= req.eval ||
-			// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
-			new Function("__text", "__hint", 'return eval(__text + "\\r\\n////@ sourceURL=" + __hint);'),
-
-		paths = req.paths = req.paths ||
+		paths = req.paths;
+		pathsMapProg = req.pathsMapProg;
+		packs = req.packs;
+		packageMap = req.packageMap;
+		packageMapProg = req.packageMapProg;
+		modules = req.modules;
+		cache = req.cache;
+	}else{
+		paths =
 			// CommonJS paths
 			{};
 
-		pathsMapProg = req.pathsMapProg = req.pathsMapProg ||
+		pathsMapProg =
 			// list of (from-path, to-path, regex, length) derived from paths;
 			// a "program" to apply paths; see computeMapProg
 			[];
 
-		packs = req.packs = req.packs ||
+		packs =
 			// a map from packageId to package configuration object; see fixupPackageInfo
 			{};
 
-		packageMap = req.packageMap = req.packageMap ||
+		packageMap =
 			// map from package name to local-installed package name
 			{};
 
-		packageMapProg = req.packageMapProg = req.packageMapProg ||
+		packageMapProg =
 			// list of (from-package, to-package, regex, length) derived from packageMap;
 			// a "program" to apply paths; see computeMapProg
 			[];
 
-		modules = req.modules = req.modules ||
+		modules =
 			// A hash:(pqn) --> (module-object). module objects are simple JavaScript objects with the
 			// following properties:
 			//
-			//  pid: the package identifier to which the module belongs (e.g., "dojo"); "" indicates the system or default package
-			//  id: the module identifier without the package identifier (e.g., "io/script")
-			//  pqn: the full package-qualified name (e.g., "dojo*io/script")
-			//  url: the URL from which the module was retrieved
-			//  pack: the package object of the package to which the module belongs
-			//  path: the full module name (package + path) resolved with respect to the loader (i.e., mappings have been applied) (e.g., dojo/io/script)
-			//  executed: 0 => not executed; executing => in the process of tranversing deps and running factory; executed => factory has been executed
-			//  deps: the dependency vector for this module (vector of modules objects)
-			//  def: the factory for this module
-			//  result: the result of the running the factory for this module
-			//  injected: (requested | arrived | nonmodule) the status of the module; nonmodule means the resource did not call define
-			//  load: plugin load function; applicable only for plugins
+			// pid: the package identifier to which the module belongs (e.g., "dojo"); "" indicates the system or default package
+			// id: the module identifier without the package identifier (e.g., "io/script")
+			// pqn: the full package-qualified name (e.g., "dojo*io/script")
+			// url: the URL from which the module was retrieved
+			// pack: the package object of the package to which the module belongs
+			// path: the full module name (package + path) resolved with respect to the loader (i.e., mappings have been applied) (e.g., dojo/io/script)
+			// executed: 0 => not executed; executing => in the process of tranversing deps and running factory; executed => factory has been executed
+			// deps: the dependency vector for this module (vector of modules objects)
+			// def: the factory for this module
+			// result: the result of the running the factory for this module
+			// injected: (requested | arrived | nonmodule) the status of the module; nonmodule means the resource did not call define
+			// load: plugin load function; applicable only for plugins
 			//
 			// Modules go through several phases in creation:
 			//
@@ -293,7 +294,7 @@
 			// 5. Evaluated: the module was defined via define and the loader has evaluated the factory and computed a result.
 			{};
 
-		cache = req.cache = req.cache ||
+		cache =
 			///
 			// hash:(pqn)-->(function)
 			///
@@ -302,12 +303,16 @@
 			{};
 	}
 
+	reqEval = req.eval ||
+		// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
+		new Function("__text", "__hint", 'return eval(__text + "\\r\\n////@ sourceURL=" + __hint);');
+
 	//
 	// configuration machinery (with an optimized/built defaultConfig, this can be discarded)
 	//
 	if(has("dojo-config-api")){
 		var
-			computeMapProg = function(map){
+			computeMapProg = function(map, dest){
 				// This routine takes a map target-prefix(string)-->replacement(string) into a vector
 				// of quads (target-prefix, replacement, regex-for-target-prefix, length-of-target-prefix)
 				//
@@ -315,27 +320,27 @@
 				// are encountered when applying the requirejs paths configuration and when mapping
 				// package names. We can make the mapping and any replacement easier and faster by
 				// replacing the map with a vector of quads and then using this structure in the simple machine runMapProg.
-				var p, i, item, mapProg = [];
+				dest.splice(0, dest.length);
+				var p, i, item;
 				for(p in map){
-					mapProg.push([p, map[p]]);
+					dest.push([p, map[p]]);
 				}
-				mapProg.sort(function(lhs, rhs){
+				dest.sort(function(lhs, rhs){
 					return rhs[0].length - lhs[0].length;
 				});
-				for(i = 0; i < mapProg.length;){
-					item = mapProg[i++];
+				for(i = 0; i < dest.length;){
+					item = dest[i++];
 					item[2] = new RegExp("^" + escapeRegEx(item[0]) + "(\/|$)");
 					item[3] = item[0].length + 1;
 				}
-				return mapProg;
 			},
 
 			fixupPackageInfo = function(packageInfo, baseUrl){
 				// calculate the precise (name, baseUrl, main, mappings) for a package
 				baseUrl = baseUrl || "";
-				packageInfo = mix({main:"main"}, (isString(packageInfo) ? {name:packageInfo} : packageInfo));
+				packageInfo = mix({main:"main", mapProg:[]}, (isString(packageInfo) ? {name:packageInfo} : packageInfo));
 				packageInfo.location = baseUrl + (packageInfo.location ? packageInfo.location : packageInfo.name);
-				packageInfo.mapProg = computeMapProg(packageInfo.packageMap);
+				computeMapProg(packageInfo.packageMap, packageInfo.mapProg);
 
 				if(!packageInfo.main.indexOf("./")){
 					packageInfo.main = packageInfo.main.substring(2);
@@ -399,10 +404,10 @@
 
 				// push in any paths and recompute the internal pathmap
 				// warning: this cann't be done until the package config is processed since packages may include path info
-				pathsMapProg = req.pathsMapProg = computeMapProg(mix(paths, config.paths));
+				computeMapProg(mix(paths, config.paths), pathsMapProg);
 
 				// mix any packageMap config item and recompute the internal packageMapProg
-				packageMapProg = req.packageMapProg = computeMapProg(mix(packageMap, config.packageMap));
+				computeMapProg(mix(packageMap, config.packageMap), packageMapProg);
 
 				// push in any new cache values
 				mix(cache, config.cache);
@@ -856,7 +861,7 @@
 					// executing the module caused a recursive call to checkComplete; restart the check
 					i = 0;
 				}else{
-					// nothing happended; check the next module in the exec queue
+					// nothing happend; check the next module in the exec queue
 					i++;
 				}
 			}
@@ -1038,7 +1043,7 @@
 						mix(module, nonModuleProps);
 					}
 					if(has("dojo-sync-loader")){
-						module.fixup && module.fixup();
+					module.fixup && module.fixup();
 					}
 					checkComplete();
 				};
@@ -1592,17 +1597,17 @@
 			return function(mid){
 				// basic dojo.require
 				mid = slashName(mid);
-				var
-					module = getModule(mid, referenceModule),
-					url = module.url;
-				if(module.executed){
-					return module.result;
-				}
+					var
+						module = getModule(mid, referenceModule),
+						url = module.url;
+					if(module.executed){
+						return module.result;
+					}
 
-				execQ.push(module);
-				injectModule(module);
-				checkComplete();
-				return module.result;
+					execQ.push(module);
+					injectModule(module);
+					checkComplete();
+					return module.result;
 			};
 		};
 
@@ -1772,15 +1777,15 @@
 			on:on,
 
 			// these may be interesting to look at when debugging
-			configListeners:configListeners,
-			errorListeners:errorListeners,
+			paths:paths,
+			packs:packs,
+			packageMap:packageMap,
+			modules:modules,
 			syncDepth:syncDepth,
 			execQ:execQ,
 			defQ:defQ,
 			waiting:waiting,
 			loadQ:loadQ,
-			runDefQ:runDefQ,
-			checkComplete:checkComplete,
 
 			// these are used by the builder (at least)
 			computeMapProg:computeMapProg,
@@ -1789,6 +1794,7 @@
 			getModuleInfo:getModuleInfo
 		});
 	}
+
 
 	// the loader can be defined exactly once; look for global define which is the symbol AMD loaders are
 	// *required* to define (as opposed to require, which is optional)

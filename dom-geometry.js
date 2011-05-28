@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(dojo, win, dom, style){
+define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-style"], function(dojo, sniff, win, dom, style){
 	// module:
 	//		dojo/_base/html
 	// summary:
@@ -23,7 +23,7 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 	// Opera guys, this is really confusing. Opera being broken in quirks mode is not our fault.
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(dojo.isIE /*|| dojo.isOpera*/){
+	if(sniff.isIE /*|| sniff.isOpera*/){
 		// client code may have to adjust if compatMode varies across iframes
 		dojo.boxModel = document.compatMode == "BackCompat" ? "border-box" : "content-box";
 	}
@@ -118,7 +118,7 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 			t = px(n, s.marginTop),
 			r = px(n, s.marginRight),
 			b = px(n, s.marginBottom);
-		if(dojo.isWebKit && (s.position != "absolute")){
+		if(sniff.isWebKit && (s.position != "absolute")){
 			// FIXME: Safari's version of the computed right margin
 			// is the space between our right edge and the right edge
 			// of our offsetParent.
@@ -152,7 +152,7 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 		var s = computedStyle || style.getComputedStyle(node), me = dojo._getMarginExtents(node, s),
 			l = node.offsetLeft - me.l, t = node.offsetTop - me.t, p = node.parentNode;
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(dojo.isMoz){
+		if(sniff.isMoz){
 			// Mozilla:
 			// If offsetParent has a computed overflow != visible, the offsetLeft is decreased
 			// by the parent's border.
@@ -172,7 +172,7 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 					}
 				}
 			}
-		}else if(dojo.isOpera || (dojo.isIE == 8 && !dojo.isQuirks)){
+		}else if(sniff.isOpera || (sniff.isIE == 8 && !sniff.isQuirks)){
 			// On Opera and IE 8, offsetLeft/Top includes the parent's border
 			if(p){
 				be = dojo._getBorderExtents(p);
@@ -203,7 +203,7 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 		}
 		// On Opera, offsetLeft includes the parent's border
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(dojo.isOpera){ pe.l += be.l; pe.t += be.t; }
+		if(sniff.isOpera){ pe.l += be.l; pe.t += be.t; }
 		//>>excludeEnd("webkitMobile");
 		return {l: pe.l, t: pe.t, w: w - pe.w - be.w, h: h - pe.h - be.h};
 	}
@@ -299,7 +299,7 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 			bb = _usesBorderBox(node),
 			pb = bb ? _nilExtents : dojo._getPadBorderExtents(node, s)
 		;
-		if(dojo.isWebKit){
+		if(sniff.isWebKit){
 			// on Safari (3.1.2), button nodes with no explicit size have a default margin
 			// setting an explicit size eliminates the margin.
 			// We have to swizzle the width to get correct margin reading.
@@ -388,7 +388,7 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 	dojo._docScroll = function(){
 		var n = win.global;
 		return "pageXOffset" in n ? {x: n.pageXOffset, y: n.pageYOffset } :
-			(n = browser.isQuirks? win.body() : win.doc().documentElement,
+			(n = sniff.isQuirks? win.body() : win.doc.documentElement,
 				{x: dojo._fixIeBiDiScrollLeft(n.scrollLeft || 0), y: n.scrollTop || 0 });
 	};
 
@@ -412,12 +412,12 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 
 		//NOTE: assumes we're being called in an IE browser
 
-		var de = win.doc().documentElement; // only deal with HTML element here, position() handles body/quirks
+		var de = win.doc.documentElement; // only deal with HTML element here, position() handles body/quirks
 
-		if(dojo.isIE < 8){
+		if(sniff.isIE < 8){
 			var r = de.getBoundingClientRect(), // works well for IE6+
 				l = r.left, t = r.top;
-			if(dojo.isIE < 7){
+			if(sniff.isIE < 7){
 				l += de.clientLeft;	// scrollbar size in strict/RTL, or,
 				t += de.clientTop;	// HTML border size in strict
 			}
@@ -441,9 +441,9 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 		// will offset to right when there is a horizontal scrollbar.
 
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(dojo.isIE && !dojo._isBodyLtr()){
-			var de = dojo.isQuirks ? win.body() : win.doc().documentElement;
-			return (dojo.isIE < 8 || dojo.isQuirks) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
+		if(sniff.isIE && !dojo._isBodyLtr()){
+			var de = sniff.isQuirks ? win.body() : win.doc.documentElement;
+			return (sniff.isIE < 8 || sniff.isQuirks) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
 		}
 		//>>excludeEnd("webkitMobile");
 		return scrollLeft; // Integer
@@ -471,14 +471,14 @@ define(["./_base/kernel", "./_base/window","./dom", "./dom-style"], function(doj
 			ret = node.getBoundingClientRect();
 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(dojo.isIE){
+		if(sniff.isIE){
 			// On IE there's a 2px offset that we need to adjust for, see dojo._getIeDocumentElementOffset()
 			var offset = dojo._getIeDocumentElementOffset();
 
 			// fixes the position in IE, quirks mode
-			ret.x -= offset.x + (dojo.isQuirks ? db.clientLeft + db.offsetLeft : 0);
-			ret.y -= offset.y + (dojo.isQuirks ? db.clientTop + db.offsetTop : 0);
-		}else if(dojo.isFF == 3){
+			ret.x -= offset.x + (sniff.isQuirks ? db.clientLeft + db.offsetLeft : 0);
+			ret.y -= offset.y + (sniff.isQuirks ? db.clientTop + db.offsetTop : 0);
+		}else if(sniff.isFF == 3){
 			// In FF3 you have to subtract the document element margins.
 			// Fixed in FF3.5 though.
 			var cs = style.getComputedStyle(dh), px = style._toPixelValue;

@@ -209,14 +209,17 @@
 							}
 						},
 						"doh.is(1, dojo.style('sq100nopos', 'opacity'));",
-						"doh.is(0.1, dojo.style('sq100nopos', 'opacity', 0.1));",
-						"doh.is(0.8, dojo.style('sq100nopos', 'opacity', 0.8));",
+
+						// never compare floating numbers directly!
+						"doh.is((0.1).toFixed(4), Number(dojo.style('sq100nopos', 'opacity', 0.1)).toFixed(4));",
+						"doh.is((0.8).toFixed(4), Number(dojo.style('sq100nopos', 'opacity', 0.8)).toFixed(4));",
 						function styleObject(){
 							dojo.style('sq100nopos', { 'opacity': 0.1 });
-							doh.is(0.1, dojo.style('sq100nopos', 'opacity'));
+							doh.is((0.1).toFixed(4), Number(dojo.style('sq100nopos', 'opacity')).toFixed(4));
 							dojo.style('sq100nopos', { 'opacity': 0.8 });
-							doh.is(0.8, dojo.style('sq100nopos', 'opacity'));
+							doh.is((0.8).toFixed(4), Number(dojo.style('sq100nopos', 'opacity')).toFixed(4));
 						},
+
 						"doh.is('static', dojo.style('sq100nopos', 'position'));",
 						function getBgcolor(t){
 							var bgc = dojo.style('sq100nopos', 'backgroundColor');

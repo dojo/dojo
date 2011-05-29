@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/lang", "./_base/window"], function(dojo, lang, win){
+define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"], function(dojo, sniff, lang, win){
 	// module:
 	//		dojo/dom
 	// summary:
@@ -50,7 +50,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/window"], function(dojo, lang
 	=====*/
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(dojo.isIE){
+	if(sniff.isIE){
 		dojo.byId = function(id, doc){
 			if(typeof id != "string"){
 				return id;
@@ -131,13 +131,13 @@ define(["./_base/kernel", "./_base/lang", "./_base/window"], function(dojo, lang
 		//	|	dojo.setSelectable("bar", true);
 		node = dojo.byId(node);
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(dojo.isMozilla){
+		if(sniff.isMozilla){
 			node.style.MozUserSelect = selectable ? "" : "none";
-		}else if(dojo.isKhtml || dojo.isWebKit){
+		}else if(sniff.isKhtml || sniff.isWebKit){
 		//>>excludeEnd("webkitMobile");
 			node.style.KhtmlUserSelect = selectable ? "auto" : "none";
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		}else if(dojo.isIE){
+		}else if(sniff.isIE){
 			var v = (node.unselectable = selectable ? "" : "on");
 			// TODO: redo as a loop to reduce dependencies
 			lang.forEach(node.getElementsByTagName("*"), function(item){ item.unselectable = v; });

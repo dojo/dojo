@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/lang", "./_base/window", "./dom", "./dom-style"], function(dojo, lang, win, dom, style){
+define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window", "./dom", "./dom-style"], function(dojo, sniff, lang, win, dom, style){
 	// module:
 	//		dojo/dom
 	// summary:
@@ -37,7 +37,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/window", "./dom", "./dom-styl
 		_forcePropNames = {
 			innerHTML:	1,
 			className:	1,
-			htmlFor:	dojo.isIE,
+			htmlFor:	sniff.isIE,
 			value:		1
 		};
 
@@ -181,7 +181,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/window", "./dom", "./dom-styl
 			if(propName == "innerHTML"){
 				// special case: assigning HTML
 				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-				if(dojo.isIE && node.tagName.toLowerCase() in _roInnerHtml){
+				if(sniff.isIE && node.tagName.toLowerCase() in _roInnerHtml){
 					dojo.empty(node);
 					node.appendChild(dojo._toDom(value, node.ownerDocument));
 				}else{
@@ -192,7 +192,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/window", "./dom", "./dom-styl
 				//>>excludeEnd("webkitMobile");
 				return node; // DomNode
 			}
-			if(dojo.isFunction(value)){
+			if(lang.isFunction(value)){
 				// special case: assigning an event handler
 				// clobber if we can
 				var attrId = dojo.attr(node, _attrId);

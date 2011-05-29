@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./dom"], function(dojo, dom){
+define(["./_base/kernel", "./_base/sniff", "./dom"], function(dojo, sniff, dom){
 	// module:
 	//		dojo/dom-style
 	// summary:
@@ -59,7 +59,7 @@ define(["./_base/kernel", "./dom"], function(dojo, dom){
 	// though it is not Element.
 	var getComputedStyle;
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(dojo.isWebKit){
+	if(sniff.isWebKit){
 	//>>excludeEnd("webkitMobile");
 		getComputedStyle = function(/*DomNode*/node){
 			var s;
@@ -74,7 +74,7 @@ define(["./_base/kernel", "./dom"], function(dojo, dom){
 			return s || {};
 		};
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	}else if(dojo.isIE){
+	}else if(sniff.isIE){
 		getComputedStyle = function(node){
 			// IE (as of 7) doesn't expose Element like sane browsers
 			return node.nodeType == 1 /* ELEMENT_NODE*/ ? node.currentStyle : {};
@@ -90,7 +90,7 @@ define(["./_base/kernel", "./dom"], function(dojo, dom){
 
 	var toPixel;
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(!dojo.isIE){
+	if(!sniff.isIE){
 	//>>excludeEnd("webkitMobile");
 		toPixel = function(element, value){
 			// style values can be floats, client code may want
@@ -155,7 +155,7 @@ define(["./_base/kernel", "./dom"], function(dojo, dom){
 	//>>excludeEnd("webkitMobile");
 	var _getOpacity =
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks) ? function(node){
+		sniff.isIE < 9 || (sniff.isIE && sniff.isQuirks) ? function(node){
 			try{
 				return af(node).Opacity / 100; // Number
 			}catch(e){
@@ -185,7 +185,7 @@ define(["./_base/kernel", "./dom"], function(dojo, dom){
 
 	var _setOpacity =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks) ? function(/*DomNode*/node, /*Number*/opacity){
+		sniff.isIE < 9 || (sniff.isIE && sniff.isQuirks) ? function(/*DomNode*/node, /*Number*/opacity){
 			var ov = opacity * 100, opaque = opacity == 1;
 			node.style.zoom = opaque ? "" : 1;
 
@@ -224,7 +224,7 @@ define(["./_base/kernel", "./dom"], function(dojo, dom){
 		//TODO: should we really be doing string case conversion here? Should we cache it? Need to profile!
 		type = type.toLowerCase();
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(dojo.isIE){
+		if(sniff.isIE){
 			if(value == "auto"){
 				if(type == "height"){ return node.offsetHeight; }
 				if(type == "width"){ return node.offsetWidth; }
@@ -244,7 +244,7 @@ define(["./_base/kernel", "./dom"], function(dojo, dom){
 		return _pixelNamesCache[type] ? toPixel(node, value) : value;
 	}
 
-	var _floatStyle = dojo.isIE ? "styleFloat" : "cssFloat",
+	var _floatStyle = sniff.isIE ? "styleFloat" : "cssFloat",
 		_floatAliases = { "cssFloat": _floatStyle, "styleFloat": _floatStyle, "float": _floatStyle };
 
 	// public API

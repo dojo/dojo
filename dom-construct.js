@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/window", "./dom", "./dom-prop", "./on"], function(dojo, win, dom, prop, on){
+define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-prop", "./on"], function(dojo, sniff, win, dom, prop, on){
 	// module:
 	//		dojo/dom
 	// summary:
@@ -299,7 +299,7 @@ define(["./_base/kernel", "./_base/window", "./dom", "./dom-prop", "./on"], func
 
 	dojo.empty =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		dojo.isIE ? function(node){
+		sniff.isIE ? function(node){
 			node = dom.byId(node);
 			for(var c; c = node.lastChild;){ // intentional assignment
 				dojo.destroy(c);

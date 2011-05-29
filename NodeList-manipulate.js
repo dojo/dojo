@@ -14,7 +14,6 @@ dojo["NodeList-manipulate"] = {
 
 //TODO: add a way to parse for widgets in the injected markup?
 
-(function(){
 	function getText(/*DOMNode*/node){
 		// summary:
 		// 		recursion method for text() to use. Gets text value for a node.
@@ -722,7 +721,6 @@ dojo["NodeList-manipulate"] = {
 	if(!dojo.NodeList.prototype.html){
 		dojo.NodeList.prototype.html = dojo.NodeList.prototype.innerHTML;
 	}
-})();
 
 return dojo.NodeList;
 });

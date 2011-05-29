@@ -4,8 +4,7 @@ define(["./_base/kernel", "./_base/declare", "./_base/array"], function(dojo, de
 	// summary:
 	//		TODOC
 
-
-return declare("dojo.Stateful", null, {
+return dojo.declare("dojo.Stateful", null, {
 	// summary:
 	//		Base class for objects that provide named properties with optional getter/setter
 	//		control and the ability to watch for property changes
@@ -132,4 +131,5 @@ return declare("dojo.Stateful", null, {
 	}
 
 });
+
 });

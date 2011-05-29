@@ -20,12 +20,12 @@ define(["require"], function(require) {
 		// the conditional will be (!1 && typeof has=="function") which is statically false and the closure
 		// compiler will discard the block.
 		var
-			isBrowser=
+			isBrowser =
 				// the most fundamental decision: are we in the browser?
-				typeof window!="undefined" &&
-				typeof location!="undefined" &&
-				typeof document!="undefined" &&
-				window.location==location && window.document==document,
+				typeof window != "undefined" &&
+				typeof location != "undefined" &&
+				typeof document != "undefined" &&
+				window.location == location && window.document == document,
 
 			// has API variables
 			global = this,
@@ -33,7 +33,7 @@ define(["require"], function(require) {
 			element = doc && doc.createElement("DiV"),
 			cache = {};
 
-		has = function(name){
+		has = /*===== dojo.has= =====*/ function(name){
 			//	summary:
 			//		Return the current value of the named feature.
 			//
@@ -44,12 +44,12 @@ define(["require"], function(require) {
 			//		Returns the value of the feature named by name. The feature must have been
 			//		previously added to the cache by has.add.
 
-			return cache[name] = typeof cache[name]=="function" ? cache[name](global, doc, element) : cache[name]; // Boolean
+			return cache[name] = typeof cache[name] == "function" ? cache[name](global, doc, element) : cache[name]; // Boolean
 		};
 
 		has.cache = cache;
 
-		has.add = function(name, test, now, force){
+		has.add = /*====== dojo.has.add= ======*/ function(name, test, now, force){
 			// summary:
 			//	 Register a new feature test for some named feature.
 			//
@@ -113,26 +113,26 @@ define(["require"], function(require) {
 		has.add("agent-android", agent.indexOf("android") > 1);
 	}
 
-	has.clearElement= function(element) {
+	has.clearElement = /*===== dojo.has.clearElement= ======*/ function(element) {
 		// summary:
 		//	 Deletes the contents of the element passed to test functions.
 		element.innerHTML= "";
 		return element;
 	};
 
-	has.load= function(id, parentRequire, loaded){
+	has.load = /*===== dojo.has.load= ======*/ function(id, parentRequire, loaded){
 		// summary:
 		//	 Conditional loading of AMD modules based on a has feature test value.
 		//
-		// mid: String
+		// id: String
 		//	 Gives the has feature name, a module to load when the feature exists, and optionally a module
 		//	 to load when the feature is false. The string had the format `"feature-name!path/to/module!path/to/other/module"`
 		//
-		// require: Function
+		// parentRequire: Function
 		//	 The loader require function with respect to the module that contained the plugin resource in it's
 		//	 dependency list.
 		//
-		// load: Function
+		// loaded: Function
 		//	 Callback to loader that consumes result of plugin demand.
 
 		var

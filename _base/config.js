@@ -43,6 +43,8 @@ define(["../has", "require"], function(has, require){
 //		Setting any of these variables *after* the library has loaded does
 //		nothing at all.
 
+// FIXME: can we document these on dojo.config object and explain they must be set via djConfig/dojoConfig global prior to loading dojo.js 
+
 dojoConfig = {
 	// summary:
 	//		Application code can set the global 'dojoConfig' prior to loading

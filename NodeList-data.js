@@ -4,8 +4,6 @@ define(["./main"], function(dojo) {
 	// summary:
 	//		TODOC
 
-(function(d){
-
 /*=====
 	dojo.NodeList.prototype.data = function(key, value){
 		// summary: stash or get some arbitrary data on/from these nodes.
@@ -71,7 +69,7 @@ define(["./main"], function(dojo) {
 
 =====*/
 
-	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid", nl = d.NodeList,
+	var d = dojo, dataCache = {}, x = 0, dataattr = "data-dojo-dataid", nl = d.NodeList,
 		dopid = function(node){
 			// summary: Return a uniqueish ID for the passed node reference
 			var pid = d.attr(node, dataattr);
@@ -169,7 +167,6 @@ define(["./main"], function(dojo) {
 //		return r; // dojo.NodeList|Array|SingleItem
 //	};
 
-})(dojo);
-
 return dojo.NodeList;
+
 });

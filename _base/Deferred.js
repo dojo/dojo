@@ -218,7 +218,7 @@ define(["./kernel", "./lang"], function(dojo){
 		};
 		// call progress to provide updates on the progress on the completion of the promise
 		this.progress = function(update){
-			// summary
+			// summary:
 			//		Send progress events to all listeners
 			var listener = nextListener;
 			while(listener){

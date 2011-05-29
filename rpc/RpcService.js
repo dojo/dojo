@@ -70,10 +70,10 @@ dojo.declare("dojo.rpc.RpcService", null, {
 	serviceUrl: "",
 
 	parseResults: function(obj){
-		// summary
-		// 		parse the results coming back from an rpc request.  this
-		// 		base implementation, just returns the full object
-		// 		subclasses should parse and only return the actual results
+		// summary:
+		//		parse the results coming back from an rpc request.  this
+		//		base implementation, just returns the full object
+		//		subclasses should parse and only return the actual results
 		//	obj: Object
 		//		Object that is the return results from an rpc request
 		return obj;
@@ -91,7 +91,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 
 	resultCallback: function(/* dojo.Deferred */ deferredRequestHandler){
 		// summary:
-		// 		create callback that calls the Deferred's callback method
+		//		create callback that calls the Deferred's callback method
 		//	deferredRequestHandler: Deferred
 		//		The deferred object handling a request.
 
@@ -118,7 +118,7 @@ dojo.declare("dojo.rpc.RpcService", null, {
 
 	generateMethod: function(/*string*/ method, /*array*/ parameters, /*string*/ url){
 		// summary:
-		// 		generate the local bind methods for the remote object
+		//		generate the local bind methods for the remote object
 		//	method: string
 		//		The name of the method we are generating
 		//	parameters: array
@@ -146,8 +146,8 @@ dojo.declare("dojo.rpc.RpcService", null, {
 
 	processSmd: function(object){
 		// summary:
-		// 		callback method for reciept of a smd object.  Parse the smd
-		// 		and generate functions based on the description
+		//		callback method for reciept of a smd object.  Parse the smd
+		//		and generate functions based on the description
 		//	object:
 		//		smd object defining this service.
 

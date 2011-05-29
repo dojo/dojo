@@ -383,7 +383,7 @@ define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_ba
 	}
 
 	function createResizeHandler(wn){
-		// summary
+		// summary:
 		//		Creates handle for onresize window. Called from script in popup's body tag (so that it will work with IE).
 		//
 

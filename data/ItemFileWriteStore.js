@@ -758,8 +758,8 @@ dojo.declare("dojo.data.ItemFileWriteStore", dojo.data.ItemFileReadStore, {
 
 	onSet: function(/* item */ item,
 					/*attribute-name-string*/ attribute,
-					/*object | array*/ oldValue,
-					/*object | array*/ newValue){
+					/*object|array*/ oldValue,
+					/*object|array*/ newValue){
 		// summary: See dojo.data.api.Notification.onSet()
 
 		// No need to do anything. This method is here just so that the

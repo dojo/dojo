@@ -286,7 +286,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		}
 	},
 	onMouseMove: function(e){
-		// summary
+		// summary:
 		//		event processor for onmousemove
 		// e: Event
 		//		mouse event

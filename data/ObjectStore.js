@@ -37,7 +37,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		getValues: function(item, property){
 			// summary:
 			//		Gets the value of an item's 'property' and returns
-			//		it.	If this value is an array it is just returned,
+			//		it. If this value is an array it is just returned,
 			//		if not, the value is added to an array and that is returned.
 			//
 			//	item: /* object */
@@ -92,7 +92,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//	attribute: /* string */
 
 			// we have no way of determining if it belongs, we just have object returned from
-			// 	service queries
+			//	service queries
 			return (typeof item == 'object') && item && !(item instanceof Date);
 		},
 
@@ -107,17 +107,17 @@ dojo.declare("dojo.data.ObjectStore", null,{
 
 		loadItem: function(args){
 			// summary:
-			// 		Loads an item and calls the callback handler. Note, that this will call the callback
-			// 		handler even if the item is loaded. Consequently, you can use loadItem to ensure
-			// 		that an item is loaded is situations when the item may or may not be loaded yet.
-			// 		If you access a value directly through property access, you can use this to load
-			// 		a lazy value as well (doesn't need to be an item).
+			//		Loads an item and calls the callback handler. Note, that this will call the callback
+			//		handler even if the item is loaded. Consequently, you can use loadItem to ensure
+			//		that an item is loaded is situations when the item may or may not be loaded yet.
+			//		If you access a value directly through property access, you can use this to load
+			//		a lazy value as well (doesn't need to be an item).
 			//
 			//	example:
 			//		store.loadItem({
 			//			item: item, // this item may or may not be loaded
 			//			onItem: function(item){
-			// 				// do something with the item
+			//				// do something with the item
 			//			}
 			//		});
 
@@ -218,7 +218,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		},
 		getFeatures: function(){
 			// summary:
-			// 		return the store feature set
+			//		return the store feature set
 
 			return {
 				"dojo.data.api.Read": !!this.objectStore.get,
@@ -279,8 +279,10 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//		adds a new item to the store at the specified point.
 			//		Takes two parameters, data, and options.
 			//
-			//	data: /* object */
+			//	data: Object
 			//		The data to be added in as an item.
+			
+			// TODOC: parentInfo
 			if(parentInfo){
 				// get the previous value or any empty array
 				var values = this.getValue(parentInfo.parent,parentInfo.attribute,[]);
@@ -377,13 +379,14 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//
 			//	kwArgs.global:
 			//		This will cause the save to commit the dirty data for all
-			// 		ObjectStores as a single transaction.
+			//		ObjectStores as a single transaction.
 			//
 			//	kwArgs.revertOnError
 			//		This will cause the changes to be reverted if there is an
 			//		error on the save. By default a revert is executed unless
 			//		a value of false is provide for this parameter.
 
+			// TODOC: kwArgs pseudo
 			kwArgs = kwArgs || {};
 			var result, actions = [];
 			var savingObjects = [];
@@ -443,7 +446,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		},
 
 		revert: function(kwArgs){
-			// summary
+			// summary:
 			//		returns any modified data to its original state prior to a save();
 			//
 			var dirtyObjects = this._dirtyObjects;
@@ -477,10 +480,9 @@ dojo.declare("dojo.data.ObjectStore", null,{
 				dirtyObjects.splice(i, 1);
 			}
 
-
 		},
 		isDirty: function(item){
-			// summary
+			// summary:
 			//		returns true if the item is marked as dirty or true if there are any dirty items
 			if(!item){
 				return !!this._dirtyObjects.length;
@@ -491,7 +493,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 
 		onSet: function(){},
 		onNew: function(){},
-		onDelete: 	function(){},
+		onDelete:	function(){},
 		// an extra to get result sets
 		onFetch: function(results){}
 

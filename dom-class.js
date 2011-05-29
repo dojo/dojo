@@ -26,7 +26,7 @@ define(["./_base/kernel", "./_base/lang", "./dom"], function(dojo, lang, dom){
 		//		Do something if a node with id="someNode" has class="aSillyClassName" present
 		//	|	if(dojo.hasClass("someNode","aSillyClassName")){ ... }
 
-		return ((" "+ dom.byId(node)[_className] +" ").indexOf(" " + classStr + " ") >= 0); // Boolean
+		return ((" " + dom.byId(node)[_className] + " ").indexOf(" " + classStr + " ") >= 0); // Boolean
 	};
 
 	var spaces = /\s+/, a1 = [""],
@@ -159,6 +159,8 @@ define(["./_base/kernel", "./_base/lang", "./dom"], function(dojo, lang, dom){
 		// example:
 		//	Available in `dojo.NodeList()` for multiple toggles
 		//	|	dojo.query(".findMe").replaceClass("addMe", "removeMe");
+
+		node = dom.byId(node);
 		fakeNode[_className] = node[_className];
 
 		dojo.removeClass(fakeNode, removeClassStr);

@@ -1,6 +1,6 @@
 define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window", "./dom", "./dom-style"], function(dojo, sniff, lang, win, dom, style){
 	// module:
-	//		dojo/dom
+	//		dojo/dom-prop
 	// summary:
 	//		This module defines the core dojo DOM properties and attributes API.
 
@@ -159,7 +159,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window", "./
 		//	|	dojo.style("someNode", obj);
 
 		node = dom.byId(node);
-		var l = arguments.length, prop;
+		var l = arguments.length;
 		if(l == 2 && typeof name != "string"){ // inline'd type check
 			// the object form of setter: the 2nd argument is a dictionary
 			for(var x in name){

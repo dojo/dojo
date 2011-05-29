@@ -1,4 +1,9 @@
 define(["./_base/kernel", "./_base/lang", "./dom"], function(dojo, lang, dom){
+	// module:
+	//		dojo/dom-class
+	// summary:
+	//		This module defines the core dojo DOM class API.
+
 	//TODO: use HTML5 class list methods, example: http://github.com/uxebu/embedjs/blob/master/src/html/classList.js
 
 	// =============================
@@ -89,7 +94,7 @@ define(["./_base/kernel", "./_base/lang", "./dom"], function(dojo, lang, dom){
 		//		check is required.
 		//
 		// node:
-		// 		String ID or DomNode reference to remove the class from.
+		//		String ID or DomNode reference to remove the class from.
 		//
 		// classStr:
 		//		An optional String class name to remove, or several space-separated
@@ -136,7 +141,7 @@ define(["./_base/kernel", "./_base/lang", "./dom"], function(dojo, lang, dom){
 		//		Replaces one or more classes on a node if not present.
 		//		Operates more quickly than calling dojo.removeClass and dojo.addClass
 		// node:
-		// 		String ID or DomNode reference to remove the class from.
+		//		String ID or DomNode reference to remove the class from.
 		// addClassStr:
 		//		A String class name to add, or several space-separated class names,
 		//		or an array of class names.
@@ -190,5 +195,5 @@ define(["./_base/kernel", "./_base/lang", "./dom"], function(dojo, lang, dom){
 		return condition;   // Boolean
 	};
 
-	return  dojo;
+	return dojo;
 });

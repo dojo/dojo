@@ -1,8 +1,8 @@
 define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-style"], function(dojo, sniff, win, dom, style){
 	// module:
-	//		dojo/_base/html
+	//		dojo/dom-geometry
 	// summary:
-	//		This module defines the core dojo DOM API.
+	//		This module defines the core dojo DOM geometry API.
 
 	// Box functions will assume this model.
 	// On IE/Opera, BORDER_BOX will be set if the primary document is in quirks mode.
@@ -51,7 +51,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			l = px(n, s.paddingLeft),
 			t = px(n, s.paddingTop);
 		return {l: l, t: t, w: l + px(n, s.paddingRight), h: t + px(n, s.paddingBottom)};
-	}
+	};
 
 	dojo._getBorderExtents = function(/*DomNode*/n, /*Object*/computedStyle){
 		// summary:
@@ -75,7 +75,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			w: bl + (s.borderRightStyle != ne ? px(n, s.borderRightWidth) : 0),
 			h: bt + (s.borderBottomStyle != ne ? px(n, s.borderBottomWidth) : 0)
 		};
-	}
+	};
 
 	dojo._getPadBorderExtents = function(/*DomNode*/n, /*Object*/computedStyle){
 		// summary:
@@ -98,7 +98,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			w: p.w + b.w,
 			h: p.h + b.h
 		};
-	}
+	};
 
 	dojo._getMarginExtents = function(n, computedStyle){
 		// summary:
@@ -128,7 +128,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			r = l;
 		}
 		return {l: l, t: t, w: l + r, h: t + b};
-	}
+	};
 
 	// Box getters work in any box context because offsetWidth/clientWidth
 	// are invariant wrt box context
@@ -182,7 +182,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		}
 		//>>excludeEnd("webkitMobile");
 		return {l: l, t: t, w: node.offsetWidth + me.w, h: node.offsetHeight + me.h};
-	}
+	};
 
 	dojo._getContentBox = function(node, computedStyle){
 		// summary:
@@ -206,7 +206,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		if(sniff.isOpera){ pe.l += be.l; pe.t += be.t; }
 		//>>excludeEnd("webkitMobile");
 		return {l: pe.l, t: pe.t, w: w - pe.w - be.w, h: h - pe.h - be.h};
-	}
+	};
 
 	// Box setters depend on box context because interpretation of width/height styles
 	// vary wrt box context.
@@ -282,7 +282,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			if(heightPx >= 0){ heightPx += pb.h; }
 		}
 		dojo._setBox(node, NaN, NaN, widthPx, heightPx);
-	}
+	};
 
 	dojo._setMarginBox = function(/*DomNode*/node, /*Number?*/leftPx, /*Number?*/topPx, /*Number?*/widthPx,
 							/*Number?*/heightPx, /*Object*/computedStyle){
@@ -313,7 +313,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		if(widthPx >= 0){ widthPx = Math.max(widthPx - pb.w - mb.w, 0); }
 		if(heightPx >= 0){ heightPx = Math.max(heightPx - pb.h - mb.h, 0); }
 		dojo._setBox(node, leftPx, topPx, widthPx, heightPx);
-	}
+	};
 
 	var _nilExtents = {l: 0, t: 0, w: 0, h: 0};
 
@@ -398,17 +398,17 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		returns the offset in x and y from the document body to the
 		//		visual edge of the page
 		// description:
-		// The following values in IE contain an offset:
+		//		The following values in IE contain an offset:
 		//	|		event.clientX
 		//	|		event.clientY
 		//	|		node.getBoundingClientRect().left
 		//	|		node.getBoundingClientRect().top
-		//	 	But other position related values do not contain this offset,
-		//	 	such as node.offsetLeft, node.offsetTop, node.style.left and
-		//	 	node.style.top. The offset is always (2, 2) in LTR direction.
-		//	 	When the body is in RTL direction, the offset counts the width
-		//	 	of left scroll bar's width.  This function computes the actual
-		//	 	offset.
+		//		But other position related values do not contain this offset,
+		//		such as node.offsetLeft, node.offsetTop, node.style.left and
+		//		node.style.top. The offset is always (2, 2) in LTR direction.
+		//		When the body is in RTL direction, the offset counts the width
+		//		of left scroll bar's width.  This function computes the actual
+		//		offset.
 
 		//NOTE: assumes we're being called in an IE browser
 
@@ -431,7 +431,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 				y: 0
 			};
 		}
-	}
+	};
 	//>>excludeEnd("webkitMobile");
 
 	dojo._fixIeBiDiScrollLeft = function(/*Integer*/ scrollLeft){

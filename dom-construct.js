@@ -1,6 +1,6 @@
 define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-prop", "./on"], function(dojo, sniff, win, dom, prop, on){
 	// module:
-	//		dojo/dom
+	//		dojo/dom-construct
 	// summary:
 	//		This module defines the core dojo DOM construction API.
 

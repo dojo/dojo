@@ -306,7 +306,7 @@ define(["./kernel", "./lang"], function(dojo){
 		fired: -1
 	});
 
-	dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback, /*Function?*/progressHandler){
+	dojo.Deferred.when = dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback, /*Function?*/progressHandler){
 		// summary:
 		//		This provides normalization between normal synchronous values and
 		//		asynchronous promises, so you can interact with them in a common way

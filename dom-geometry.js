@@ -441,9 +441,14 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		// will offset to right when there is a horizontal scrollbar.
 
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(sniff.isIE && !dojo._isBodyLtr()){
-			var de = sniff.isQuirks ? win.body() : win.doc.documentElement;
-			return (sniff.isIE < 8 || sniff.isQuirks) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
+		var ie = sniff.isIE;
+		if(ie && !dojo._isBodyLtr()){
+			var qk = sniff.isQuirks,
+				de = qk ? win.body() : win.doc.documentElement;
+			if(ie == 6 && !qk && dojo.global.frameElement && de.scrollHeight > de.clientHeight){
+				scrollLeft += de.clientLeft; // workaround ie6+strict+rtl+iframe+vertical-scrollbar bug where clientWidth is too small by clientLeft pixels
+			}
+			return (ie < 8 || qk) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
 		}
 		//>>excludeEnd("webkitMobile");
 		return scrollLeft; // Integer

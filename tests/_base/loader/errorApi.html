@@ -84,7 +84,7 @@
 								args[0].result= "result provided by error handler";
 								return true;
 							}
-							var handle= require.onError(handler);
+							var handle= require.on("error", handler);
 
 							t.is(require.errorListeners.length, 1);
 							t.is(require.errorListeners[0], handler);
@@ -93,7 +93,7 @@
 								t.is(m, "result provided by error handler");
 							});
 
-							handle();
+							handle.remove();
 							t.is(require.errorListeners.length, 0);
 						}
 					}

@@ -1,4 +1,4 @@
-define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./_base/load", "./_base/sniff", "./_base/window"], function(dojo, require) {
+define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"], function(dojo, require) {
 	// module:
 	//		dojo/hash
 	// summary:

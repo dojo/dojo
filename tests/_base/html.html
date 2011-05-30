@@ -12,7 +12,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
 
 				function getIframeDocument(/*DOMNode*/iframeNode){
 					//summary: Returns the document object associated with the iframe DOM Node argument.
@@ -813,7 +813,7 @@
 		<script type="text/javascript">
 		var reloaded = false;
 		function iframe10095loaded() {
-			require(["dojo"], function(dojo) {
+			require(["dojo", "dojo/domReady!"], function(dojo) {
 				var iframeWin = dojo.byId('10095_iframe').win;
 				dojo.withGlobal(iframeWin, function(){ dojo.destroy(dojo.byId('10095_textbox')) });
 				if(!reloaded){
@@ -823,7 +823,7 @@
 			});
 		}
 		</script>
-		<iframe id="10095_iframe" style="display:none;" src="javascript:'&lt;html&gt;&lt;head&gt;&lt;script&gt;frameElement.win=window&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;input id=10095_textbox&gt;&lt;/body&gt;&lt;/html&gt;'" onload="require.ready(iframe10095loaded)"></iframe>
+		<iframe id="10095_iframe" style="display:none;" src="javascript:'&lt;html&gt;&lt;head&gt;&lt;script&gt;frameElement.win=window&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;input id=10095_textbox&gt;&lt;/body&gt;&lt;/html&gt;'" onload="iframe10095loaded()"></iframe>
 
 		<div id='iframe_div' style="position:absolute;top:0;left:500px;"></div>
 

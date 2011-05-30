@@ -8,7 +8,7 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug: true, popup: true"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh", "dojo/behavior"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/behavior", "dojo/domReady!"], function(dojo, doh){
 				var applyCount = 0;
  
 				var behaviorObj = {

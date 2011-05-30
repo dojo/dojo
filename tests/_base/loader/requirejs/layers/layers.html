@@ -54,13 +54,7 @@
 	                master.callback(true);
 	            };
 	
-	            //Account for requirening this test with a version of require.js that
-	            //does not have require.ready built in.
-	            if (require.ready) {
-	                require.ready(verifyFunc);
-	            } else {
-	                setTimeout(verifyFunc, 3000);
-	            }
+                setTimeout(verifyFunc, 3000);
 	        }
 	    );
 	  });

@@ -8,7 +8,7 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug: true, popup: true"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh", "dojo/NodeList-fx"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/NodeList-fx", "dojo/domReady!"], function(dojo, doh){
 				doh.register("NodeList-fx", 
 					[
 						function fadeOut(){

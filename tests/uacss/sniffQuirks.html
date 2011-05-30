@@ -25,7 +25,7 @@
 	</style>
 	<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 	<script type="text/javascript">
-		require.ready(["dojo", "doh", "dojo/uacss"], function(dojo, doh){
+		require(["dojo", "doh", "dojo/uacss", "dojo/domReady!"], function(dojo, doh){
 			var node = dojo.byId("box1");
 			var reportNode = dojo.byId("log");
 			var inner = (reportNode.textContent) ? "textContent": "innerText";

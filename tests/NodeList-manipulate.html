@@ -8,7 +8,7 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh", "dojo/NodeList-manipulate"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/NodeList-manipulate", "dojo/domReady!"], function(dojo, doh){
 
 				function verify(/*dojo.NodeList*/nl, /*Array*/ids){
 					for(var i = 0, node; node = nl[i]; i++){

@@ -307,11 +307,47 @@
 		// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
 		new Function("__text", "__hint", 'return eval(__text + "\\r\\n////@ sourceURL=" + __hint);');
 
+	var listenerConnection= function(listener, queue){
+		queue.push(listener);
+		this.l= listener;
+		this.q= queue;
+	};
+	listenerConnection.prototype.remove= function(){
+		for(var queue= this.q, listener= this.l, i= 0; i<queue.length; i++){
+			if(queue[i]===listener){
+				queue.splice(i, 1);
+				return;
+			}
+		}
+	};
+
+	var
+		listenerQueues= {},
+		idleListeners= listenerQueues.idle= [],
+		signal= function(queue, args){
+			// notice we run a copy of the queue; this allows listeners to add/remove
+			// other listeners without affecting this particular signal
+			forEach(queue.slice(0), function(listener){
+				listener.apply(null, args);
+			});
+		};
+	req.on= function(type, listener){
+		// notice that connecting to a nonexisting type just results in a connection that will never
+		// get signaled yet still has a valid remove method. This allows client code to make connections
+		// to queues that may or may not exist (say, depending on config or build options) and later call
+		// remove safely.
+		return new listenerConnection(listener, listenerQueues[type] || []);
+	};
+
 	//
 	// configuration machinery (with an optimized/built defaultConfig, this can be discarded)
 	//
 	if(has("dojo-config-api")){
 		var
+			configListeners = listenerQueues.config=
+				// vector of registered listener functions for config changes
+				[],
+
 			computeMapProg = function(map, dest){
 				// This routine takes a map target-prefix(string)-->replacement(string) into a vector
 				// of quads (target-prefix, replacement, regex-for-target-prefix, length-of-target-prefix)
@@ -354,10 +390,6 @@
 				packs[name] = packageInfo;
 				packageMap[name] = name;
 			},
-
-			configListeners=
-				// vector of registered listener functions for config changes
-				[],
 
 			configVariableNames ={async:1, xd:1, waitSeconds:1, urlArgs:1, baseUrl:1, locale:1, combo:1},
 
@@ -412,26 +444,18 @@
 				// push in any new cache values
 				mix(cache, config.cache);
 
-				(function(deps, callback, readyCallback){
+				(function(deps, callback){
 					var args= ((deps && deps.length) || callback) && [deps || [], callback || noop];
 					if(booting){
 						args && (req.bootRequire= args);
-						readyCallback && (req.bootReady= readyCallback);
 					}else{
 						args && req(args[0], args[1]);
-						readyCallback && req.ready(readyCallback);
 					}
-				})(config.deps, config.callback, config.ready);
+				})(config.deps, config.callback);
 
-				forEach(configListeners, function(listener){
-					listener(config, req.rawConfig);
-				});
+				signal(configListeners, [config, req.rawConfig]);
 			};
 
-
-		req.onConfig= function(listener){
-			return registerCallback(listener, configListeners);
-		};
 
 		//
 		// execute the various sniffs
@@ -481,20 +505,6 @@
 	//
 
 	var
-		registerCallback= has("dojo-config-api") || has("dojo-error-api") ?
-			// this cruft feels uncomfortable; consider doing something else
-			function(callback, queue){
-				queue.push(callback);
-				return function(){
-					for(var i= 0; i<queue.length; i++){
-						if(queue[i]===callback){
-							queue.splice(i, 1);
-							return;
-						}
-					}
-				};
-			} : noop,
-
 		injectDependencies = function(module){
 			forEach(module.deps, injectModule);
 			if(has("dojo-combo-api") && comboPending){
@@ -609,7 +619,7 @@
 			// The set of modules upon which the loader is waiting for definition to arrive
 			{},
 
-		execComplete =
+		execComplete = req.idle =
 			// says the loader has completed (or not) its work
 			function(){
 				return syncDepth == syncLoadComplete && !defQ.length && isEmpty(waiting) && !execQ.length;
@@ -866,8 +876,8 @@
 				}
 			}
 			checkCompleteGuard = 0;
-			if(has("dojo-ready-api")){
-				onLoad();
+			if(execComplete()){
+				signal(idleListeners, []);
 			}
 		},
 
@@ -1170,7 +1180,7 @@
 		has.add("dom-addeventlistener", !!doc.addEventListener);
 	}
 
-	if(has("dom") && (has("dojo-dom-ready-api") || has("dojo-inject-api"))){
+	if(has("dom") && has("dojo-inject-api")){
 		var on = function(node, eventName, handler, useCapture, ieEventName){
 			// Add an event listener to a DOM node using the API appropriate for the current browser;
 			// return a function that will disconnect the listener.
@@ -1216,153 +1226,6 @@
 			node.charset = "utf-8";
 			head.appendChild(node);
 			return node;
-		};
-	}
-
-	var domReadyQ = [];
-	if(has("dojo-dom-ready-plugin")){
-		var	domReadyPluginLoad = function(id, require, cb){
-			if(req.pageLoaded){
-				cb(1);
-			}else{
-				domReadyQ.push(cb);
-			}
-		};
-		mix(getModule("domReady"), {
-			injected: arrived,
-			executed: executed,
-			load:domReadyPluginLoad
-		});
-	}
-
-	if(has("dojo-dom-ready-api")){
-		// WARNING: document.readyState does not work with Firefox before 3.6. To support
-		// those browsers, manually init require.pageLoaded in configuration.
-
-		// require.pageLoaded can be set truthy to indicate the app "knows" the page is loaded and/or just wants it to behave as such
-		req.pageLoaded = req.pageLoaded || doc.readyState == "complete";
-
-		// no need to detect if we already know...
-		if(!req.pageLoaded){
-			var
-				loadDisconnector = 0,
-				DOMContentLoadedDisconnector = 0,
-				scrollIntervalId = 0,
-				detectPageLoadedFired = 0,
-				detectPageLoaded = function(){
-					if(detectPageLoadedFired){
-						return;
-					}
-					detectPageLoadedFired = 1;
-
-					if(scrollIntervalId){
-						clearInterval(scrollIntervalId);
-						scrollIntervalId = 0;
-					}
-					loadDisconnector && loadDisconnector();
-					DOMContentLoadedDisconnector && DOMContentLoadedDisconnector();
-					req.pageLoaded = true;
-					if(has("dojo-dom-ready-plugin")){
-						while(domReadyQ.length){
-							(domReadyQ.shift())();
-						}
-					}
-					onLoad();
-				};
-
-			if(!req.pageLoaded){
-				loadDisconnector = on(window, "load", detectPageLoaded, false);
-				DOMContentLoadedDisconnector = on(doc, "DOMContentLoaded", detectPageLoaded, false, false);
-			}
-
-			if(!has("dom-addeventlistener")){
-				// note: this code courtesy of James Burke (https://github.com/jrburke/requirejs)
-				// DOMContentLoaded approximation, as found by Diego Perini: http://javascript.nwbox.com/IEContentLoaded/
-				if(self === self.top){
-					scrollIntervalId = setInterval(function (){
-						try{
-							// From this ticket: http://bugs.dojotoolkit.org/ticket/11106. In IE HTML Application (HTA),
-							// such as in a selenium test, javascript in the iframe can't see anything outside of it,
-							// so self===self.top is true, but the iframe is not the top window and doScroll will be
-							// available before document.body is set. Test document.body before trying the doScroll trick.
-							if(doc.body){
-								doc.documentElement.doScroll("left");
-								detectPageLoaded();
-							}
-						}catch(e){}
-					}, 30);
-				}
-			}
-		}
-	}else{
-		req.pageLoaded = 1;
-	}
-
-	if(has("dojo-ready-api")){
-		var
-			loadQ =
-				// The queue of functions waiting to execute as soon as all conditions given
-				// in require.onLoad are satisfied; see require.onLoad
-				[],
-
-			onLoadRecursiveGuard = 0,
-			onLoad = function(){
-				while(execComplete() && !onLoadRecursiveGuard && req.pageLoaded && loadQ.length){
-					//guard against recursions into this function
-					onLoadRecursiveGuard = 1;
-					var f = loadQ.shift();
-					if(has("dojo-loader-catches")){
-						try{
-							f();
-						}catch(e){
-							onLoadRecursiveGuard = 0;
-							if(!req.error("loader/onLoad", [e])){
-								throw e;
-							}
-						}
-					}else{
-						f();
-					}
-					onLoadRecursiveGuard = 0;
-				}
-			};
-
-		req.ready = function(
-			priority,//(integer, optional) The order in which to exec this callback relative to other callbacks, defaults to 1000
-			context, //(object) The context in which to run execute callback
-			         //(function) callback, if context missing
-			callback //(function) The function to execute.
-		){
-			///
-			// Add a function to execute on DOM content loaded and all requests have arrived and been evaluated.
-
-			if(isArray(priority)){
-				// signature is (deps, callback); require deps, but hold callback until ready condition
-				req(priority, function(){
-					for(var aargs = [], i = 0; i < arguments.length; aargs.push(arguments[i++])){
-					}
-					req.ready(function(){
-						context.apply(null, aargs);
-					});
-				});
-				return;
-			}
-			if(typeof priority != "number"){
-				callback = context, context = priority, priority = 1000;
-			}
-			var cb = function(){
-				if(isString(callback)){
-					context[callback]();
-				}else if(isFunction(callback)){
-					callback.call(context);
-				}else{
-					context();
-				}
-			};
-			cb.priority = priority;
-			for(var i = 0; i < loadQ.length && priority >= loadQ[i].priority; i++){}
-			loadQ.splice(i, 0, cb);
-			onLoad();
 		};
 	}
 
@@ -1443,7 +1306,7 @@
 		// If the error was an uncaught exception, then if some subscriber signals that it has taken actions to recover
 		// and it is OK to continue by returning truthy, the exception is quashed; otherwise, the exception is rethrown.
 		// Other error conditions are handled as applicable for the particular error.
-		var errorListeners= [];
+		listenerQueues.error= [];
 		req.error = function(
 			messageId, //(string) The topic to publish
 			args       //(array of anything, optional, undefined) The arguments to be applied to each subscriber.
@@ -1457,14 +1320,11 @@
 			// clause. If the listener has taken corrective actions and wants to stop the exception and
 			// let the loader continue, it must return truthy. If no listener returns truthy, then
 			// the exception is rethrown.
-			for(var result = false, i = 0; i < errorListeners.length; i++){
+			for(var result = 0, i = 0, errorListeners= listenerQueues.error.slice(0); i < errorListeners.length; i++){
 				result = result || errorListeners[i](messageId, args);
 			}
 			req.log.apply(req, [messageId].concat(args));
 			return result;
-		};
-		req.onError= function(listener){
- 			return registerCallback(listener, errorListeners);
 		};
 	}else{
 		req.error = req.error || noop;
@@ -1765,16 +1625,7 @@
 	if(has("dojo-publish-privates")){
 		mix(req, {
 			// these may be interesting for other modules to use
-			isEmpty:isEmpty,
-			isFunction:isFunction,
-			isString:isString,
-			isArray:isArray,
-			forEach:forEach,
-			setIns:setIns,
-			setDel:setDel,
-			mix:mix,
 			uid:uid,
-			on:on,
 
 			// these may be interesting to look at when debugging
 			paths:paths,
@@ -1785,7 +1636,14 @@
 			execQ:execQ,
 			defQ:defQ,
 			waiting:waiting,
-			loadQ:loadQ,
+
+			// these are used for testing
+			// TODO: move testing infrastructure to a different has feature
+			pathsMapProg:pathsMapProg,
+			packageMapProg:packageMapProg,
+			configListeners:configListeners,
+			errorListeners:listenerQueues.error,
+
 
 			// these are used by the builder (at least)
 			computeMapProg:computeMapProg,
@@ -1881,7 +1739,6 @@
 	var require = this.require;
 	!require.async && require(["dojo"]);
 	require.bootRequire && require.apply(null, require.bootRequire);
-	require.bootReady && require.ready(require.bootReady);
 })();
 //>>excludeEnd("replaceLoaderConfig")
 

@@ -57,7 +57,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 		has.add(p, config.has[p], 0, 1);
 	}
 	if(has("dojo-loader") && has("dojo-config-api")){
-		require.onConfig(function(config){
+		require.on("config", function(config){
 			for(p in config){
 				has.add(p, config[p]);
 			}

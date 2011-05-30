@@ -22,8 +22,8 @@
 							};
 						var 
 							listenerCount= require.configListeners.length,
-							h1= require.onConfig(configListener1),
-							h2= require.onConfig(configListener2);
+							h1= require.on("config", configListener1),
+							h2= require.on("config", configListener2);
 						t.is(require.configListeners.length, listenerCount+2);
 						t.is(require.configListeners[listenerCount], configListener1);
 						t.is(require.configListeners[listenerCount+1], configListener2);
@@ -35,7 +35,7 @@
 						t.t(called1);
 						t.t(called2);
 
-						h1();
+						h1.remove();
 						t.is(require.configListeners.length, listenerCount+1);
 						t.is(require.configListeners[listenerCount], configListener2);
 						expectedConfig1= expectedConfig2= {

@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="../../../dojo/dojo.js" data-dojo-config="isDebug:true"></script>
 
 	<script type="text/javascript">
-		require.ready(["dojo", "doh", "dojo/window"], function(dojo, doh){
+		require(["dojo", "doh", "dojo/window", "dojo/domReady!"], function(dojo, doh){
 			function compute(){
 				var d = dojo.marginBox(dojo.byId("documentBorder")),
 					v = dojo.window.getBox();

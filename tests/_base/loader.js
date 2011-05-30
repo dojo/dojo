@@ -5,19 +5,19 @@ define([
 	"./loader/moduleIds",
 	"./loader/bootstrap"], function(doh, require){
 	if(doh.isBrowser){
-		doh.register("config", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig-require");
-		doh.register("config", require.toUrl("./loader/config.html")+"?dojoConfig-require");
-		doh.register("config", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig");
-		doh.register("config", require.toUrl("./loader/config.html")+"?dojoConfig");
-		doh.register("config", require.toUrl("./loader/config.html")+"?djConfig-require");
-		doh.register("config", require.toUrl("./loader/config.html")+"?djConfig");
-		doh.register("config", require.toUrl("./loader/config.html")+"?require");
-		doh.register("config", require.toUrl("./loader/configApi.html"));
-		doh.register("config", require.toUrl("./loader/config-sniff.html"));
-		doh.register("config", require.toUrl("./loader/config-sniff-djConfig.html"));
-		doh.register("config", require.toUrl("./loader/config-has.html"));
-		doh.register("error-api", require.toUrl("./loader/errorApi.html"));
-		doh.register("error-api", require.toUrl("./loader/errorApi.html")+"?noCatch");
+		doh.register("config?dojoConfig-djConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig-require");
+		doh.register("config?dojoConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-require");
+		doh.register("config?dojoConfig-djConfig", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig");
+		doh.register("config?dojoConfig", require.toUrl("./loader/config.html")+"?dojoConfig");
+		doh.register("config?djConfig-require", require.toUrl("./loader/config.html")+"?djConfig-require");
+		doh.register("config?djConfig", require.toUrl("./loader/config.html")+"?djConfig");
+		doh.register("config?require", require.toUrl("./loader/config.html")+"?require");
+		doh.register("config?configApi.html", require.toUrl("./loader/configApi.html"));
+		doh.register("config?config-sniff.html", require.toUrl("./loader/config-sniff.html"));
+		doh.register("config?config-sniff-djConfig.html", require.toUrl("./loader/config-sniff-djConfig.html"));
+		doh.register("config?config-has.html", require.toUrl("./loader/config-has.html"));
+		doh.register("errorApi.html", require.toUrl("./loader/errorApi.html"));
+		doh.register("errorApi.html?noCatch", require.toUrl("./loader/errorApi.html")+"?noCatch");
 		//TODO: doh.register("cdn-load", require.toUrl("./loader/cdnTest.html"));
 
 		doh.register("loader-declareStepsOnProvide", require.toUrl("./loader/declareStepsOnProvide.html"));

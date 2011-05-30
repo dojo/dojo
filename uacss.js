@@ -1,4 +1,4 @@
-define(["./main"], function(dojo){
+define(["./_base/kernel", "./dom-geometry", "./_base/lang", "./_base/load", "./_base/sniff", "./_base/window"], function(dojo){
 	// module:
 	//		dojo/uacss
 	// summary:

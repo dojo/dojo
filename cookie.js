@@ -1,4 +1,4 @@
-define(["./main", "./regexp"], function(dojo) {
+define(["./_base/kernel", "./regexp"], function(dojo, regexp) {
 	// module:
 	//		dojo/cookie
 	// summary:
@@ -52,7 +52,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 	//	|	dojo.cookie("configObj", null, {expires: -1});
 	var c = document.cookie;
 	if(arguments.length == 1){
-		var matches = c.match(new RegExp("(?:^|; )" + dojo.regexp.escapeString(name) + "=([^;]*)"));
+		var matches = c.match(new RegExp("(?:^|; )" + regexp.escapeString(name) + "=([^;]*)"));
 		return matches ? decodeURIComponent(matches[1]) : undefined; // String or undefined
 	}else{
 		props = props || {};

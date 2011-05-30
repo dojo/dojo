@@ -1,4 +1,4 @@
-define(["./main"], function(dojo) {
+define(["./_base/kernel"], function(dojo) {
 	// module:
 	//		dojo/regexp
 	// summary:

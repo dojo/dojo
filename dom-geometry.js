@@ -386,7 +386,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	};
 
 	dojo._docScroll = function(){
-		var n = dojo.global;
+		var n = win.global;
 		return "pageXOffset" in n ? {x: n.pageXOffset, y: n.pageYOffset } :
 			(n = sniff.isQuirks? win.body() : win.doc.documentElement,
 				{x: dojo._fixIeBiDiScrollLeft(n.scrollLeft || 0), y: n.scrollTop || 0 });

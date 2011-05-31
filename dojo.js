@@ -442,6 +442,9 @@
 					});
 				}
 
+				// backcompat
+				config.modulePaths && !config.paths && (config.paths= config.modulePaths);
+
 				// push in any paths and recompute the internal pathmap
 				// warning: this cann't be done until the package config is processed since packages may include path info
 				computeMapProg(mix(paths, config.paths), pathsMapProg);

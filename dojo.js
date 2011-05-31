@@ -1065,7 +1065,7 @@
 						mix(module, nonModuleProps);
 					}
 					if(has("dojo-sync-loader")){
-					module.fixup && module.fixup();
+						module.fixup && module.fixup();
 					}
 					checkComplete();
 				};
@@ -1480,17 +1480,16 @@
 			return function(mid){
 				// basic dojo.require
 				mid = slashName(mid);
-					var
-						module = getModule(mid, referenceModule),
-						url = module.url;
-					if(module.executed){
-						return module.result;
-					}
-
-					execQ.push(module);
-					injectModule(module);
-					checkComplete();
+				var
+					module = getModule(mid, referenceModule),
+					url = module.url;
+				if(module.executed){
 					return module.result;
+				}
+				execQ.push(module);
+				injectModule(module);
+				checkComplete();
+				return module.result;
 			};
 		};
 

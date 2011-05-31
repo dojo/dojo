@@ -147,5 +147,9 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/array", "./_
 		//FIXME: else?  Opera?
 	};
 
-	return dojo;
+	return {
+		byId:          dojo.byId,
+		isDescendant:  dojo.isDescendant,
+		setSelectable: dojo.setSelectable   // TODO: it looks very specialized? do we need it here?
+	};
 });

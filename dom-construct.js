@@ -5,7 +5,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-pro
 	//		This module defines the core dojo DOM construction API.
 
 	/*=====
-	dojo._toDom = function(frag, doc){
+	dojo.toDom = function(frag, doc){
 			// summary:
 			//		instantiates an HTML fragment returning the corresponding DOM.
 			// frag: String
@@ -17,11 +17,11 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-pro
 			//
 			// example:
 			//		Create a table row:
-			//	|	var tr = dojo._toDom("<tr><td>First!</td></tr>");
+			//	|	var tr = dojo.toDom("<tr><td>First!</td></tr>");
 	}
 	=====*/
 
-	// support stuff for dojo._toDom
+	// support stuff for dojo.toDom
 	var tagWrap = {
 			option: ["select"],
 			tbody: ["table"],
@@ -52,7 +52,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-pro
 		}
 	}
 
-	dojo._toDom = function(frag, doc){
+	dojo.toDom = dojo._toDom = function(frag, doc){
 		// summary:
 		//		converts HTML string into DOM nodes.
 
@@ -161,7 +161,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-pro
 
 		refNode = dom.byId(refNode);
 		if(typeof node == "string"){ // inline'd type check
-			node = /^\s*</.test(node) ? dojo._toDom(node, refNode.ownerDocument) : dom.byId(node);
+			node = /^\s*</.test(node) ? dojo.toDom(node, refNode.ownerDocument) : dom.byId(node);
 		}
 		if(typeof position == "number"){ // inline'd type check
 			var cn = refNode.childNodes;
@@ -361,5 +361,11 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-pro
 		}
 	};
 
-	return dojo;
+	return {
+		toDom:   dojo.toDom,
+		place:   dojo.place,
+		create:  dojo.create,
+		empty:   dojo.empty,
+		destroy: dojo.destroy
+	};
 });

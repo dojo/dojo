@@ -47,7 +47,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
 		var s = computedStyle || style.getComputedStyle(n),
-			px = style._toPixelValue,
+			px = style.toPixelValue,
 			l = px(n, s.paddingLeft),
 			t = px(n, s.paddingTop);
 		return {l: l, t: t, w: l + px(n, s.paddingRight), h: t + px(n, s.paddingBottom)};
@@ -65,7 +65,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
-		var ne = "none", px = style._toPixelValue,
+		var ne = "none", px = style.toPixelValue,
 			s = computedStyle || style.getComputedStyle(n),
 			bl = (s.borderLeftStyle != ne ? px(n, s.borderLeftWidth) : 0),
 			bt = (s.borderTopStyle != ne ? px(n, s.borderTopWidth) : 0);
@@ -113,7 +113,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
 		var s = computedStyle || style.getComputedStyle(n),
-			px = style._toPixelValue,
+			px = style.toPixelValue,
 			l = px(n, s.marginLeft),
 			t = px(n, s.marginTop),
 			r = px(n, s.marginRight),
@@ -454,7 +454,6 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		return scrollLeft; // Integer
 	};
 
-	// FIXME: need a setter for coords or a moveTo!!
 	dojo.position = function(/*DomNode*/node, /*Boolean?*/includeScroll){
 		// summary:
 		//		Gets the position and size of the passed element relative to
@@ -486,7 +485,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		}else if(sniff.isFF == 3){
 			// In FF3 you have to subtract the document element margins.
 			// Fixed in FF3.5 though.
-			var cs = style.getComputedStyle(dh), px = style._toPixelValue;
+			var cs = style.getComputedStyle(dh), px = style.toPixelValue;
 			ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
 			ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);
 		}
@@ -518,7 +517,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//|			{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }
 		//		Does not act as a setter. If includeScroll is passed, the x and
 		//		y params are affected as one would expect in dojo.position().
-		dojo.deprecated("dojo.coords()", "Use dojo.position() or dojo.getMarginBox().");
+		dojo.deprecated("dojo.coords()", "Use dojo.position() or dojo.marginBox().");
 		var n = dom.byId(node), s = style.getComputedStyle(n), mb = dojo._getMarginBox(n, s);
 		var abs = dojo.position(n, includeScroll);
 		mb.x = abs.x;
@@ -542,5 +541,15 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		}
 	};
 
-	return dojo;
+	// TODO: add getters/setters for dojo.boxModel, so it can be exported
+	// TODO: add getters/setters for marginBox(), contentBox(), and a setter for position()?
+	// TODO: evaluate separate getters/setters for position and sizes?
+
+	return {
+		marginBox:  dojo.marginBox,
+		contentBox: dojo.contentBox,
+		position:   dojo.position,
+		isBodyLtr:  dojo._isBodyLtr,    // TODO: make it public?
+		docScroll:  dojo._docScroll     // TODO: make it public?
+	};
 });

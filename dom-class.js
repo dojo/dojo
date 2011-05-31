@@ -197,5 +197,11 @@ define(["./_base/kernel", "./_base/lang", "./dom"], function(dojo, lang, dom){
 		return condition;   // Boolean
 	};
 
-	return dojo;
+	return {
+		has:     dojo.hasClass,
+		add:     dojo.addClass,
+		remove:  dojo.removeClass,
+		replace: dojo.replaceClass,
+		toggle:  dojo.toggleClass
+	};
 });

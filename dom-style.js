@@ -333,5 +333,11 @@ define(["./_base/kernel", "./_base/sniff", "./dom"], function(dojo, sniff, dom){
 		return (l == 1) ? s : _toStyleValue(n, style, s[style] || n.style[style]); /* CSS2Properties||String||Number */
 	};
 
-	return dojo;
+	// TODO: add getters/setters for style()?
+
+	return {
+		style:            dojo.style,
+		getComputedStyle: dojo.getComputedStyle,
+		toPixelValue:     dojo._toPixelValue    // TODO: make it public?
+	};
 });

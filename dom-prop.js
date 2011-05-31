@@ -270,5 +270,13 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window", "./
 		return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
 	};
 
-	return dojo;
+	// TODO: add a setter for DOM properties as it was discussed before?
+	// TODO: add getters/setters for attr()?
+
+	return {
+		has:     dojo.hasAttr,
+		attr:    dojo.attr,
+		remove:  dojo.removeAttr,
+		getProp: dojo.getNodeProp
+	};
 });

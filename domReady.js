@@ -22,8 +22,6 @@ define(['./has'], function(has){
 			while(readyQ.length){
 				(readyQ.shift())();
 			}
-
-			console.log(evt.type || evt);
 		};
 
 		if(has("dom-addeventlistener")){

@@ -1,4 +1,5 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"], function(dojo, sniff, lang, win){
+define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/array", "./_base/window"],
+	function(dojo, sniff, lang, array, win){
 	// module:
 	//		dojo/dom
 	// summary:
@@ -140,7 +141,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"], fu
 		}else if(sniff.isIE){
 			var v = (node.unselectable = selectable ? "" : "on");
 			// TODO: redo as a loop to reduce dependencies
-			lang.forEach(node.getElementsByTagName("*"), function(item){ item.unselectable = v; });
+			array.forEach(node.getElementsByTagName("*"), function(item){ item.unselectable = v; });
 		}
 		//>>excludeEnd("webkitMobile");
 		//FIXME: else?  Opera?

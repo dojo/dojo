@@ -3,63 +3,58 @@ define(['./has'], function(has){
 		doc = document,
 		readyStates = { 'loaded': 1, 'complete': 1 },
 		fixReadyState = typeof doc.readyState != "string",
-		ready = /*require.pageLoaded || */!!readyStates[doc.readyState],
-		tests = [],
-		readyQ, div, on, detectReady, detectDoScroll, poller;
+		ready = require.pageLoaded || !!readyStates[doc.readyState];
 
 	// For FF <= 3.5
 	if(fixReadyState){ doc.readyState = "loading"; }
 
 	if(!ready){
-		detectReady = function(evt){
-			if(ready){ return; }
-			if(evt && evt.type == "readystatechange" && !readyStates[doc.readyState]){ return; }
-			ready = 1;
+		var readyQ = [], tests = [],
+			detectReady = function(evt){
+				evt = evt || global.event;
+				if(ready || (evt.type == "readystatechange" && !readyStates[doc.readyState])){ return; }
+				ready = 1;
 
-			// For FF <= 3.5
-			if(fixReadyState){ doc.readyState = "complete"; }
+				// For FF <= 3.5
+				if(fixReadyState){ doc.readyState = "complete"; }
 
-			while(readyQ.length){
-				(readyQ.shift())();
-			}
-		};
-
-		if(has("dom-addeventlistener")){
+				while(readyQ.length){
+					(readyQ.shift())();
+				}
+			},
+			add = "addEventListener", remove = "removeEventListener", prefix = "",
 			on = function(node, event){
-				node.addEventListener(event, detectReady, false);
-				return function(){ node.removeEventListener(event, detectReady, false); };
-			};
-		}else{
-			on = function(node, event){
-				event = 'on' + event;
-				node.attachEvent(event, detectReady);
-				return function(){ node.detachEvent(event, detectReady); };
+				event = prefix + event;
+				node[add](event, detectReady, false);
+				readyQ.push(function(){ node[remove](event, detectReady, false); });
 			};
 
-			div = doc.createElement("div");
-			detectDoScroll = function(){
-				// Derived with permission from Diego Perini's IEContentLoaded
-				// http://javascript.nwbox.com/IEContentLoaded/
-				try{
-					div.doScroll("left");
-					return 1;
-				}catch(e){}
-			};
+		if(!has("dom-addeventlistener")){
+			add = "attachEvent";
+			remove = "detachEvent";
+			prefix = "on";
 
-			// only do the doScroll poll if doScroll exists and if
-			// it throws when it's called; otherwise it's useless
-			if(div.doScroll && !detectDoScroll()){
-				tests.push(detectDoScroll);
-			}
+			var div = doc.createElement("div");
+			try{
+				if(div.doScroll && global.frameElement === null){
+					// the doScroll test is only useful if we're in the top-most frame
+					tests.push(function(){
+						// Derived with permission from Diego Perini's IEContentLoaded
+						// http://javascript.nwbox.com/IEContentLoaded/
+						try{
+							div.doScroll("left");
+							return 1;
+						}catch(e){}
+					});
+				}
+			}catch(e){}
 		}
 
-		readyQ = [
-			on(doc, "DOMContentLoaded"),
-			on(global, "load")
-		];
+		on(doc, "DOMContentLoaded");
+		on(global, "load");
 
 		if("onreadystatechange" in doc){
-			readyQ.push(on(doc, "readystatechange"));
+			on(doc, "readystatechange");
 		}else if(!fixReadyState){
 			// if the ready state property exists and there's
 			// no readystatechange event, poll for the state
@@ -70,7 +65,7 @@ define(['./has'], function(has){
 		}
 
 		if(tests.length){
-			poller = function(){
+			var poller = function(){
 				if(ready){ return; }
 				var i = tests.length;
 				while(i--){

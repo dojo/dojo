@@ -1180,27 +1180,32 @@
 		has.add("dom-addeventlistener", !!doc.addEventListener);
 	}
 
-	if(has("dom") && has("dojo-inject-api")){
-		var on = function(node, eventName, handler, useCapture, ieEventName){
-			// Add an event listener to a DOM node using the API appropriate for the current browser;
-			// return a function that will disconnect the listener.
-			if(has("dom-addeventlistener")){
-				node.addEventListener(eventName, handler, !!useCapture);
-				return function(){
-					node.removeEventListener(eventName, handler, !!useCapture);
-				};
-			}else{
-				if(ieEventName !== false){
-					eventName = ieEventName || "on" + eventName;
-					node.attachEvent(eventName, handler);
+	if(has("dom") && (has("dojo-inject-api") && has("dojo-dom-ready-api"))){
+		var
+			on = function(node, eventName, handler, useCapture, ieEventName){
+				// Add an event listener to a DOM node using the API appropriate for the current browser;
+				// return a function that will disconnect the listener.
+				if(has("dom-addeventlistener")){
+					node.addEventListener(eventName, handler, !!useCapture);
 					return function(){
-						node.detachEvent(eventName, handler);
+						node.removeEventListener(eventName, handler, !!useCapture);
 					};
 				}else{
-					return noop;
+					if(ieEventName !== false){
+						eventName = ieEventName || "on" + eventName;
+						node.attachEvent(eventName, handler);
+						return function(){
+							node.detachEvent(eventName, handler);
+						};
+					}else{
+						return noop;
+					}
 				}
-			}
-		};
+			},
+			windowOnLoadListener= on(window, "load", function(){
+				req.pageLoaded= 1;
+				windowOnLoadListener();
+			});
 	}
 
 	if(has("dom") && has("dojo-inject-api")){

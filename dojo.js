@@ -285,7 +285,7 @@
 			// 1. Requested: some other module's definition or a require application contained the requested module in
 			//    its dependency vector or executing code explicitly demands a module via req.require.
 			//
-			// 2. Injected: a script element has been appended to the head element demanding the resource implied by the URL
+			// 2. Injected: a script element has been appended to the insert-point element demanding the resource implied by the URL
 			//
 			// 3. Loaded: the resource injected in [2] has been evalated.
 			//
@@ -1023,7 +1023,7 @@
 
 			injectModule = function(module){
 				// Inject the module. In the browser environment, this means appending a script element into
-				// the head; in other environments, it means loading a file.
+				// the document; in other environments, it means loading a file.
 				//
 				// If in synchronous mode (syncDepth>0), then get the module synchronously if it's not xdomain.
 
@@ -1218,10 +1218,16 @@
 	}
 
 	if(has("dom") && has("dojo-inject-api")){
-		var head = doc.getElementsByTagName("head")[0] || doc.getElementsByTagName("html")[0];
+		var
+			// if the loader is on the page, there must be at least one script element
+			// getting its parent and then doing insertBefore solves the "Operation Aborted"
+			// error in IE from appending to a node that isn't properly closed; see
+			// dojo/tests/_base/loader/requirejs/simple-badbase.html for an example
+			sibling = doc.getElementsByTagName("script")[0],
+			insertPoint= sibling.parentNode;
 		req.injectUrl = req.injectUrl || function(url, callback){
-			// Append a script element to the head element with src=url; apply callback upon
-			// detecting the script has loaded.
+			// insert a script element to the insert-point element with src=url;
+			// apply callback upon detecting the script has loaded.
 
 			startTimer();
 			var
@@ -1235,10 +1241,10 @@
 					}
 				},
 				disconnector = on(node, "load", onLoad, false, "onreadystatechange");
-			node.src = url;
 			node.type = "text/javascript";
 			node.charset = "utf-8";
-			head.appendChild(node);
+			node.src = url;
+			insertPoint.insertBefore(node, sibling);
 			return node;
 		};
 	}

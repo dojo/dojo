@@ -1,9 +1,10 @@
 define([
+	"dojo",
 	"doh",
 	"require",
 	"./loader/modules",
 	"./loader/moduleIds",
-	"./loader/bootstrap"], function(doh, require){
+	"./loader/bootstrap"], function(dojo, doh, require){
 	if(doh.isBrowser){
 		doh.register("tests._base.loader.config?dojoConfig-djConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig-require");
 		doh.register("tests._base.loader.config?dojoConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-require");
@@ -64,12 +65,14 @@ define([
 		    root= qstart!=-1 ? location.href.substring(0, qstart) : location.href,
 			setup= compactPath(root + "/../" + require.toUrl("./loader/requirejs/requirejs-setup.js")),
 			baseUrl= setup.substring(0, setup.length - "/requirejs-setup.js".length);
-		doh.register("tests._base.loader.requirejs-simple-badbase-sync", require.toUrl("./loader/requirejs/simple-badbase.html"), {
-			async:0,
-			baseUrl:baseUrl,
-			setup:setup,
-			dojo:compactPath(root + "/../" + require.toUrl("../../dojo.js"))
-		});
+		if(dojo.isIE>6){
+			doh.register("tests._base.loader.requirejs-simple-badbase-sync", require.toUrl("./loader/requirejs/simple-badbase.html"), {
+				async:0,
+				baseUrl:baseUrl,
+				setup:setup,
+				dojo:compactPath(root + "/../" + require.toUrl("../../dojo.js"))
+			});
+		}
 		doh.register("tests._base.loader.requirejs-simple-badbase-async", require.toUrl("./loader/requirejs/simple-badbase.html"), {
 			async:1,
 			baseUrl:baseUrl,

@@ -1,4 +1,4 @@
-define(["./main"], function(dojo) {
+define(["./_base/kernel", "./_base/Deferred", "./_base/array"], function(dojo) {
 	// module:
 	//		dojo/DeferredList
 	// summary:

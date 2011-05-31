@@ -706,9 +706,6 @@
 			// get here iff the sought-after module does not yet exist; therefore, we need to compute the URL given the
 			// fully resolved (i.e., all relative indicators and package mapping resolved) module id
 
-			if(has("dojo-requirejs-api") && isRelative){
-				url= compactPath(referenceModule.url.match(/^(.*?)[^\/]+$/)[1] + requestedMid) + ".js";
-			}
 			if(!url){
 				mapItem = runMapProg(path, pathsMapProg);
 				if(mapItem){

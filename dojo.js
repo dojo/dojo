@@ -229,9 +229,10 @@
 
 	// lexical variables that hold key loader data structures; may be completely initialized by
 	// defaultConfig for optimized/built versions of the loader.
+	mix(req, defaultConfig);
+	delete req.packages;
 	var reqEval, paths, pathsMapProg, packs, packageMap, packageMapProg, modules, cache, cacheBust;
 	if(has("dojo-auto-init")){
-		mix(req, defaultConfig);
 		paths = req.paths;
 		pathsMapProg = req.pathsMapProg;
 		packs = req.packs;

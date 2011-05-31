@@ -977,9 +977,11 @@
 				var plugin = module.plugin;
 				plugin.isPlugin = 1;
 
-				if(has("dojo-sync-loader")){
+				if(has("dojo-sync-loader") && syncDepth && !plugin.executed){
 					// in synchronous mode; instantiate the plugin before trying to load a plugin resource
-					syncDepth && !plugin.executed && injectModule(plugin);
+					execQ.unshift(plugin);
+					injectModule(plugin);
+					checkComplete();
 				}
 
 				if(plugin.executed === executed && !plugin.load){

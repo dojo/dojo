@@ -7,7 +7,7 @@ define(["doh", "require"], function(doh, require){
 		doh.register("tests._base.html_quirks", require.toUrl("./html_quirks.html"), 15000);
 		doh.register("tests._base.html_box", require.toUrl("./html_box.html"), 35000);
 		doh.register("tests._base.html_box_quirks", require.toUrl("./html_box_quirks.html"), 35000);
-		doh.register("tests._base.html_isBoyLtr", require.toUrl("./html_isBodyLtr.html"), 35000);
+		doh.register("tests._base.html_isBodyLtr", require.toUrl("./html_isBodyLtr.html"), 35000);
 		doh.register("tests._base.html_docScroll", require.toUrl("./html_docScroll.html"), 35000);
 	}
 });

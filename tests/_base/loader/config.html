@@ -5,7 +5,7 @@
 		var _dojoConfig= {
 			baseUrl:"../../../../dojo",
 			waitSeconds:5,
-			urlArgs:"?123",
+			cacheBust:"123",
 			locale:"us-en1",
 			has:{
 				configTestHas1:1
@@ -14,13 +14,13 @@
 		function expectDojoConfig(t) {
 			t.is(require.rawConfig.baseUrl, "../../../../dojo");
 			t.is(require.rawConfig.waitSeconds, 5);
-			t.is(require.rawConfig.urlArgs, "?123");
+			t.is(require.rawConfig.cacheBust, "123");
 			t.is(require.rawConfig.locale,"us-en1");
 			t.is(require.rawConfig.has, _dojoConfig.has);
 
 			t.is(require.baseUrl, "../../../../dojo/");
 			t.is(require.waitSeconds, 5);
-			t.is(require.urlArgs, "?123");
+			t.is(require.cacheBust, "123");
 			t.is(require.locale,"us-en1");
 			t.t(hasAlias("configTestHas1"));
 		}
@@ -28,7 +28,7 @@
 		var _djConfig= {
 			baseUrl:"../../../../dojo",
 			waitSeconds:6,
-			urlArgs:"?456",
+			cacheBust:"456",
 			locale:"us-en2",
 			has:{
 				configTestHas2:1
@@ -37,13 +37,13 @@
 		function expectDjConfig(t) {
 			t.is(require.rawConfig.baseUrl, "../../../../dojo");
 			t.is(require.rawConfig.waitSeconds, 6);
-			t.is(require.rawConfig.urlArgs, "?456");
+			t.is(require.rawConfig.cacheBust, "456");
 			t.is(require.rawConfig.locale,"us-en2");
 			t.is(require.rawConfig.has, _djConfig.has);
 
 			t.is(require.baseUrl, "../../../../dojo/");
 			t.is(require.waitSeconds, 6);
-			t.is(require.urlArgs, "?456");
+			t.is(require.cacheBust, "456");
 			t.is(require.locale,"us-en2");
 			t.t(hasAlias("configTestHas2"));
 		}
@@ -51,7 +51,7 @@
 		var _require= {
 			baseUrl:"../../../../dojo",
 			waitSeconds:7,
-			urlArgs:"?789",
+			cacheBust:"789",
 			locale:"us-en3",
 			has:{
 				configTestHas3:1
@@ -60,13 +60,13 @@
 		function expectRequireConfig(t) {
 			t.is(require.rawConfig.baseUrl, "../../../../dojo");
 			t.is(require.rawConfig.waitSeconds, 7);
-			t.is(require.rawConfig.urlArgs, "?789");
+			t.is(require.rawConfig.cacheBust, "789");
 			t.is(require.rawConfig.locale,"us-en3");
 			t.is(require.rawConfig.has, _require.has);
 
 			t.is(require.baseUrl, "../../../../dojo/");
 			t.is(require.waitSeconds, 7);
-			t.is(require.urlArgs, "?789");
+			t.is(require.cacheBust, "789");
 			t.is(require.locale,"us-en3");
 			t.t(hasAlias("configTestHas3"));
 		}

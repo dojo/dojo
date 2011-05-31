@@ -229,7 +229,7 @@
 
 	// lexical variables that hold key loader data structures; may be completely initialized by
 	// defaultConfig for optimized/built versions of the loader.
-	var reqEval, paths, pathsMapProg, packs, packageMap, packageMapProg, modules, cache;
+	var reqEval, paths, pathsMapProg, packs, packageMap, packageMapProg, modules, cache, cacheBust;
 	if(has("dojo-auto-init")){
 		mix(req, defaultConfig);
 		paths = req.paths;
@@ -239,6 +239,7 @@
 		packageMapProg = req.packageMapProg;
 		modules = req.modules;
 		cache = req.cache;
+		cacheBust = req.cacheBust;
 	}else{
 		paths =
 			// CommonJS paths
@@ -301,6 +302,9 @@
 			// Gives the contents of a cached resource; function should cause the same actions as if the given pqn was downloaded
 			// and evaluated by the host environment
 			{};
+
+		cacheBust =
+			"";
 	}
 
 	reqEval = req.eval ||
@@ -391,13 +395,13 @@
 				packageMap[name] = name;
 			},
 
-			configVariableNames ={async:1, xd:1, waitSeconds:1, urlArgs:1, baseUrl:1, locale:1, combo:1},
+			configVariableNames ={async:1, xd:1, waitSeconds:1, cacheBust:1, baseUrl:1, locale:1, combo:1},
 
 			config = function(config, booting){
 				// mix config into require
 				var p;
 
-				// async, urlArgs, and baseUrl just replace whatever is already there
+				// async, cacheBust, and baseUrl just replace whatever is already there
 				// async is only meaningful if it's set before booting the loader
 				for(p in config){
 					if(configVariableNames[p]){
@@ -409,7 +413,10 @@
 						has.add("config-"+p, config[p], 0, booting);
 					}
 				}
-				req.waitms= (req.waitSeconds || 0) * 1000;
+				req.waitms = (req.waitSeconds || 0) * 1000;
+
+				// TODO: why do we need the toString and replace...can't the config be assumed correct?
+				cacheBust = ((req.cacheBust || "")+"").replace(/\W+/g,"");
 
 				// now do the special work for has, packagePaths, packages, paths, deps, callback, and ready
 
@@ -916,6 +923,7 @@
 	// the dojo loader needs/optionally provides a getText API
 	if(has("dojo-sync-loader") || has("dojo-gettext-api")){
 		var getText = req.getText = req.getText || function(url, async, onLoad){
+			url= fixupUrl(url);
 			var xhr = getXhr();
 			if(async){
 				xhr.open('GET', url, true);
@@ -955,6 +963,11 @@
 
 	if(has("dojo-inject-api")){
 		var
+			fixupUrl= function(url){
+				url += "";
+				return url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");
+			},
+
 			injectPlugin = function(
 				module,
 				immediate // this is consequent to a require call like require("text!some/text")
@@ -1030,10 +1043,6 @@
 					return;
  				}
 
-				if(req.urlArgs){
-					url+= (/\?/.test(url) ? "&" : "?") + req.urlArgs;
-				}
-
 				module.injected = requested;
 				setIns(waiting, pqn);
 
@@ -1097,7 +1106,7 @@
 					}
 					req.trace("dojo-inject", [module.pqn, url]);
 					injectingModule= module;
-					module.node = req.injectUrl(url, onLoadCallback);
+					module.node = req.injectUrl(fixupUrl(url), onLoadCallback);
 					injectingModule= 0;
 
 				}

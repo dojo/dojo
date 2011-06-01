@@ -24,6 +24,7 @@ define(["./kernel", "../has"], function(dojo, has){
 		isIE,
 		isFF,
 		isQuirks,
+		isIos,
 		isWii;
 
 	/*=====
@@ -90,6 +91,13 @@ define(["./kernel", "../has"], function(dojo, has){
 		isChrome: 0
 		//	isMac: Boolean
 		//		True if the client runs on Mac
+		isMac: 0,
+		// isIos: Boolean
+		//		True if client is iPhone, iPod, or iPad
+		isIos: 0
+		// isWii: Boolean
+		//		True if client is Wii
+		isWii: 0
 	});
 	=====*/
 
@@ -103,6 +111,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
 	isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
 	isMac = dav.indexOf("Macintosh") >= 0;
+	isIos = /iPhone|iPod|iPad/.test(dua);
 	isWii = typeof opera != "undefined" && opera.wiiremote;
 
 	// safari detection derived from:
@@ -164,7 +173,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	has.add("ie", dojo.isIE = isIE );
 	has.add("ff", dojo.isFF= isFF);
 	has.add("quirks", dojo.isQuirks= isQuirks);
-
+	has.add("ios", dojo.isIos= isIos);
 	dojo._isDocumentOk = function(http){
 		var stat = http.status || 0;
 		return (stat >= 200 && stat < 300) ||	 // Boolean

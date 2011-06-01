@@ -467,7 +467,6 @@
 				signal(configListeners, [config, req.rawConfig]);
 			};
 
-
 		//
 		// execute the various sniffs
 		//
@@ -1024,6 +1023,10 @@
 			// the injecting stack informs define what is currently being injected in such cases
 			injectingModule = 0,
 
+
+			injectingCachedModule = 0,
+
+
 			injectModule = function(module){
 				// Inject the module. In the browser environment, this means appending a script element into
 				// the document; in other environments, it means loading a file.
@@ -1070,7 +1073,9 @@
 					checkComplete();
 				};
 				if(cache[pqn]){
+					injectingCachedModule = 1;
 					cache[pqn].call(null);
+					injectingCachedModule = 0;
 					onLoadCallback();
 				}else{
 					if(has("dojo-sync-loader")){
@@ -1192,7 +1197,7 @@
 		has.add("dom-addeventlistener", !!doc.addEventListener);
 	}
 
-	if(has("dom") && (has("dojo-inject-api") && has("dojo-dom-ready-api"))){
+	if(has("dom") && (has("dojo-inject-api") || has("dojo-dom-ready-api"))){
 		var
 			on = function(node, eventName, handler, useCapture, ieEventName){
 				// Add an event listener to a DOM node using the API appropriate for the current browser;
@@ -1395,7 +1400,7 @@
 			// finish processing. In such cases, there is nothing to trigger the defQ and the dependencies are
 			// never requested; therefore, do it here.
 			injectDependencies(defineModule(targetModule, args[1], args[2]));
-		}else if(has("dom-addeventlistener") || !has("host-browser")){
+		}else if(has("dom-addeventlistener") || !has("host-browser") || injectingCachedModule){
 			// not IE path: anonymous module and therefore must have been injected; therefore, onLoad will fire immediately
 			// after script finishes being evaluated and the defQ can be run from that callback to detect the module id
 			defQ.push(args);

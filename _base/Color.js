@@ -22,13 +22,13 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 		if(color){ this.setColor(color); }
 	};
 
-    /*===== 
-    dojo.mixin(dojo.Color, 
-        named = {
-            // summary: Dictionary list of all CSS named colors, by name. Values are 3-item arrays with corresponding RG and B values. 
-        }
-    });
-    =====*/
+	/*===== 
+	dojo.mixin(dojo.Color,{
+		named:{
+			// summary: Dictionary list of all CSS named colors, by name. Values are 3-item arrays with corresponding RG and B values. 
+		}
+	});
+	=====*/
 
 	// FIXME:
 	// there's got to be a more space-efficient way to encode or discover
@@ -92,7 +92,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 			//	|	var c = new dojo.Color("#000000");
 			//	|	console.log(c.toRgb()); // [0,0,0]
 			var t = this;
-			return [t.r, t.g, t.b];	// Array
+			return [t.r, t.g, t.b]; // Array
 		},
 		toRgba: function(){
 			// summary:

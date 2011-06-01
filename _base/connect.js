@@ -191,10 +191,10 @@ dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Fu
 	return on(topic, dojo.hitch(context, method));
 };
 /*=====
-dojo.unsubscribe = function(/*Handle handle){
+dojo.unsubscribe = function(handle){
 	//	summary:
 	//		Remove a topic listener.
-	//	handle:
+	//	handle: Handle
 	//		The handle returned from a call to subscribe.
 	//	example:
 	//	|	var alerter = dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };

@@ -1,4 +1,4 @@
-define(["../main"], function(dojo) {
+define(["../main", "../_base/url"], function(dojo) {
 	// module:
 	//		dojo/rpc/RpcService
 	// summary:

@@ -159,7 +159,7 @@ if(!has("dom-matches-selector")){
 				// it is quoted, do an eval to parse the string (CSS and JS parsing are close enough)
 				value = eval(value);
 			}
-			var comparator = attrComparators[type];
+			var comparator = attrComparators[type || ""];
 			return function(node){
 				var attrValue = node.getAttribute(name);
 				return attrValue && comparator(attrValue, value);

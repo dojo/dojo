@@ -23,7 +23,8 @@ define(["./kernel", "../has"], function(dojo, has){
 		isMoz,
 		isIE,
 		isFF,
-		isQuirks;
+		isQuirks,
+		isWii;
 
 	/*=====
 	dojo.isBrowser = {
@@ -102,6 +103,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;
 	isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
 	isMac = dav.indexOf("Macintosh") >= 0;
+	isWii = typeof opera != "undefined" && opera.wiiremote;
 
 	// safari detection derived from:
 	//		http://developer.apple.com/internet/safari/faq.html#anchor2

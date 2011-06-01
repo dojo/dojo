@@ -315,6 +315,10 @@ dojo.keys = {
 	F15: 126,
 	NUM_LOCK: 144,
 	SCROLL_LOCK: 145,
+	UP_DPAD: 175,
+	DOWN_DPAD: 176,
+	LEFT_DPAD: 177,
+	RIGHT_DPAD: 178,
 	// virtual key mapping
 	copyKey: dojo.isMac && !dojo.isAIR ? (dojo.isSafari ? 91 : 224 ) : 17
 };

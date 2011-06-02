@@ -848,6 +848,10 @@ define(["./kernel", "../has", "require", "../on", "./sniff", "./Deferred", "./js
 			//		false is default. Indicates whether a request should be
 			//		allowed to fail (and therefore no console error message in
 			//		the event of a failure)
+			//	contentType: String|Boolean
+			//		"application/x-www-form-urlencoded" is default. Set to false to
+			//		prevent a Content-Type header from being sent, or to a string
+			//		to send a different Content-Type.
 			this.handleAs = handleAs;
 			this.sync = sync;
 			this.headers = headers;
@@ -910,7 +914,9 @@ define(["./kernel", "../has", "require", "../on", "./sniff", "./Deferred", "./js
 			}
 		}
 		// FIXME: is this appropriate for all content types?
-		xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
+		if(args.contentType !== false){
+			xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
+		}
 		if(!args.headers || !("X-Requested-With" in args.headers)){
 			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		}

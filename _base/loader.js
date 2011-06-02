@@ -11,7 +11,7 @@ define(["./kernel", "../has", "require"], function(dojo, has, require) {
 
 	has.add("dojo-loader", 1, 0, 1);
 
-	var dojoRequire = require.getDojoLoader(dojo, dojo.dijit, dojo.dojox);
+	var dojoRequire = require.getDojoLoader(dojo);
 
 	has.add("config-publishRequireResult", 1, 0, 0);
 	dojo.require = function(moduleName, omitModuleCheck) {

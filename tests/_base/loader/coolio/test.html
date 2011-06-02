@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css"
+			  href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/claro/claro.css" />
+
+		<script type="text/javascript">
+			dojoConfig = {coolioRoot:"./tests/_base/loader/coolioBuilt"};
+			if(/async/.test(location.search)){
+				dojoConfig.async = 1;
+			}
+			if(/dev/.test(location.search)){
+				dojoConfig.coolioDojoRoot = "..";
+			}
+		</script>
+		<script type="text/javascript" src="../../../../dojo.js"></script>
+		<script type="text/javascript" src="coolio.js"></script>
+		<script type="text/javascript">
+			if(location.search.length){
+				require(["dojo", "dijit/Calendar", "dojo/parser", "coolio/calendar1", "dojo/domReady!"], function(dojo){
+					dojo.parser.parse();
+					coolio.calendar1("c1");
+				});
+			}else{
+				dojo.require("dijit.Calendar");
+				dojo.require("dojo.parser");
+				dojo.require("coolio.calendar1");
+				dojo.ready(function(){
+					coolio.calendar1("c1");
+					dojo.parser.parse();
+				});
+			}
+		</script>
+	</head>
+	<body class=" claro ">
+		<p>A Coolio Calendar</p>
+		<div id="c1"></div>
+		<p>A Dijit Calendar</p>
+		<div dojoType="dijit.Calendar" onChange="dojo.byId('formatted').innerHTML=dojo.date.locale.format(arguments[0], {formatLength: 'full', selector:'date'})"> </div>
+	</body>
+</html>

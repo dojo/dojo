@@ -378,9 +378,14 @@
 
 			fixupPackageInfo = function(packageInfo, baseUrl){
 				// calculate the precise (name, baseUrl, main, mappings) for a package
-				baseUrl = baseUrl || "";
-				packageInfo = mix({main:"main", mapProg:[]}, (isString(packageInfo) ? {name:packageInfo} : packageInfo));
-				packageInfo.location = baseUrl + (packageInfo.location ? packageInfo.location : packageInfo.name);
+				var name = packageInfo.name;
+				if(!name){
+					// packageInfo must be a string that gives the name
+					name = packageInfo;
+					packageInfo= {name:name};
+				}
+				packageInfo = mix({main:"main", mapProg:[]}, packageInfo);
+				packageInfo.location = (baseUrl || "") + (packageInfo.location ? packageInfo.location : name);
 				computeMapProg(packageInfo.packageMap, packageInfo.mapProg);
 
 				if(!packageInfo.main.indexOf("./")){
@@ -391,7 +396,6 @@
 				mix(paths, packageInfo.paths);
 
 				// now that we've got a fully-resolved package object, push it into the configuration
-				var name = packageInfo.name;
 				packs[name] = packageInfo;
 				packageMap[name] = name;
 			},
@@ -1023,9 +1027,7 @@
 			// the injecting stack informs define what is currently being injected in such cases
 			injectingModule = 0,
 
-
 			injectingCachedModule = 0,
-
 
 			injectModule = function(module){
 				// Inject the module. In the browser environment, this means appending a script element into
@@ -1459,11 +1461,15 @@
 			syncDepth= syncLoadComplete = 0;
 		};
 
-		req.getDojoLoader = function(dojo, dijit, dojox){
-			var
-				referenceModule = getModule(slashName(dojo._scopeName)),
-
-				require = createRequire(referenceModule);
+		req.getDojoLoader = function(dojo){
+			var p, referenceModule, require;
+			for(p in modules){
+				if(modules[p].result===dojo){
+					break;
+				}
+			}
+			referenceModule = modules[p];
+			require = createRequire(referenceModule);
 
 			dojo.provide = function(mid){
 				var
@@ -1663,6 +1669,7 @@
 			execQ:execQ,
 			defQ:defQ,
 			waiting:waiting,
+			cache:cache,
 
 			// these are used for testing
 			// TODO: move testing infrastructure to a different has feature
@@ -1670,7 +1677,6 @@
 			packageMapProg:packageMapProg,
 			configListeners:configListeners,
 			errorListeners:listenerQueues.error,
-
 
 			// these are used by the builder (at least)
 			computeMapProg:computeMapProg,

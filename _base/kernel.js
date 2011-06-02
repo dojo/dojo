@@ -1,9 +1,8 @@
-define(["../has", "./config", "require"], function(has, config, require){
+define(["../has", "./config", "require", "module"], function(has, config, require, module){
 	// module:
 	//		dojo/_base/kernel
 	// summary:
 	//		This module is the foundational module of the dojo boot sequence; it defines the dojo object.
-
 	var
 		// loop variables for this module
 		i, p,
@@ -27,7 +26,9 @@ define(["../has", "./config", "require"], function(has, config, require){
 		},
 		temp = {dojo:dojo, dijit:dojo.dijit, dojox:dojo.dojox},
 		scopeMap = {dojo:"dojo", dijit:"dijit", dojox:"dojox"},
-		configScopeMap = config.scopeMap || [];
+		match = module.id.match(/[^\/]+/),
+		thisDojoName = match && match[0],
+		configScopeMap = config[thisDojoName + "Scope"] || config.scopeMap || [];
 	for(i = 0; i < configScopeMap.length; i++){
 		scopeMap[configScopeMap[i][0]] = configScopeMap[i][1];
 	}
@@ -266,7 +267,7 @@ define(["../has", "./config", "require"], function(has, config, require){
 			}else{
 				p = parts[i++];
 				try{
-					context = (scopeMap[p] && require(scopeMap[p]));
+					context = (scopeMap[p] && dojo.global[scopeMap[p]]);
 				}catch(e){}
 				context = context || (p in dojoGlobal ? dojoGlobal[p] : (create ? dojoGlobal[p] = {} : undefined));
 			}

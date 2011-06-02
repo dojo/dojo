@@ -69,13 +69,13 @@ define(["./main"], function(dojo) {
 
 =====*/
 
-	var d = dojo, dataCache = {}, x = 0, dataattr = "data-dojo-dataid", nl = d.NodeList,
+	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid", nl = dojo.NodeList,
 		dopid = function(node){
 			// summary: Return a uniqueish ID for the passed node reference
-			var pid = d.attr(node, dataattr);
+			var pid = dojo.attr(node, dataattr);
 			if(!pid){
 				pid = "pid" + (x++);
-				d.attr(node, dataattr, pid);
+				dojo.attr(node, dataattr, pid);
 			}
 			return pid;
 		}
@@ -83,10 +83,10 @@ define(["./main"], function(dojo) {
 
 	//>>excludeStart("debugging", true);
 	// exposed for unit tests:
-	d._nodeDataCache = dataCache;
+	dojo._nodeDataCache = dataCache;
 	//>>excludeEnd("debugging");
 
-	var dodata = d._nodeData = function(node, key, value){
+	var dodata = dojo._nodeData = function(node, key, value){
 
 		var pid = dopid(node), r;
 		if(!dataCache[pid]){ dataCache[pid] = {}; }
@@ -103,13 +103,13 @@ define(["./main"], function(dojo) {
 		}else{
 			// must be a setter, mix `value` into data hash
 			// API discrepency: using object as setter works here
-			r = d._mixin(dataCache[pid], key);
+			r = dojo._mixin(dataCache[pid], key);
 		}
 
 		return r; // Object|Anything|Nothing
 	};
 
-	var removeData = d._removeNodeData = function(node, key){
+	var removeData = dojo._removeNodeData = function(node, key){
 		// summary: Remove some data from this node
 		// node: String|DomNode
 		//		The node reference to remove data from
@@ -126,7 +126,7 @@ define(["./main"], function(dojo) {
 		}
 	};
 
-	d._gcNodeData = function(){
+	dojo._gcNodeData = function(){
 		// summary: super expensive: GC all data in the data for nodes that no longer exist in the dom.
 		// description:
 		//		super expensive: GC all data in the data for nodes that no longer exist in the dom.
@@ -142,7 +142,7 @@ define(["./main"], function(dojo) {
 	};
 
 	// make nodeData and removeNodeData public on dojo.NodeList:
-	d.extend(nl, {
+	dojo.extend(nl, {
 		data: nl._adaptWithCondition(dodata, function(a){
 			return a.length === 0 || a.length == 1 && (typeof a[0] == "string");
 		}),

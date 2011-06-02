@@ -40,16 +40,15 @@
 							t.is(20, s.y);
 						},
 						function testSpeed(t){
-							var d = dojo;
 							var old_docScroll = function(){
-											var
-															_b = d.body(),
-															_w = d.global,
-															de = d.doc.documentElement;
-											return {
-															y: (_w.pageYOffset || de.scrollTop || _b.scrollTop || 0),
-															x: (_w.pageXOffset || d._fixIeBiDiScrollLeft(de.scrollLeft) || _b.scrollLeft || 0)
-											};
+								var
+									_b = dojo.body(),
+									_w = dojo.global,
+									de = dojo.doc.documentElement;
+								return {
+									y: (_w.pageYOffset || de.scrollTop || _b.scrollTop || 0),
+									x: (_w.pageXOffset || dojo._fixIeBiDiScrollLeft(de.scrollLeft) || _b.scrollLeft || 0)
+								};
 							};
 							var count = 10000; // initial guess
 							var new_docScroll = dojo._docScroll;

@@ -13,13 +13,12 @@ if(typeof window != 'undefined'){
 
 	// attempt to figure out the path to dojo if it isn't set in the config
 	(function(){
-		var d = dojo;
 		// this is a scope protection closure. We set browser versions and grab
 		// the URL we were loaded from here.
 
 		// FIXME: need to probably use a different reference to "document" to get the hosting XUL environment
 
-		d.baseUrl = d.config.baseUrl;
+		dojo.baseUrl = dojo.config.baseUrl;
 
 		// fill in the rendering support information in dojo.render.*
 		var n = navigator;
@@ -27,25 +26,25 @@ if(typeof window != 'undefined'){
 		var dav = n.appVersion;
 		var tv = parseFloat(dav);
 
-		d.isMozilla = d.isMoz = tv;
-		if(d.isMoz){
-			d.isFF = parseFloat(dua.split("Firefox/")[1]) || undefined;
+		dojo.isMozilla = dojo.isMoz = tv;
+		if(dojo.isMoz){
+			dojo.isFF = parseFloat(dua.split("Firefox/")[1]) || undefined;
 		}
 
 		// FIXME
-		d.isQuirks = document.compatMode == "BackCompat";
+		dojo.isQuirks = document.compatMode == "BackCompat";
 
 		// FIXME
 		// TODO: is the HTML LANG attribute relevant?
-		d.locale = dojo.config.locale || n.language.toLowerCase();
+		dojo.locale = dojo.config.locale || n.language.toLowerCase();
 
-		d._xhrObj = function(){
+		dojo._xhrObj = function(){
 			return new XMLHttpRequest();
 		};
 
 		// monkey-patch _loadUri to handle file://, chrome://, and resource:// url's
-		var oldLoadUri = d._loadUri;
-		d._loadUri = function(uri, cb){
+		var oldLoadUri = dojo._loadUri;
+		dojo._loadUri = function(uri, cb){
 			var handleLocal = ["file:", "chrome:", "resource:"].some(function(prefix){
 				return String(uri).indexOf(prefix) == 0;
 			});
@@ -54,17 +53,17 @@ if(typeof window != 'undefined'){
 				//		http://developer.mozilla.org/en/mozIJSSubScriptLoader
 				var l = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
 					.getService(Components.interfaces.mozIJSSubScriptLoader);
-				var value = l.loadSubScript(uri, d.global);
+				var value = l.loadSubScript(uri, dojo.global);
 				if(cb){ cb(value); }
 				return true;
 			}else{
 				// otherwise, call the pre-existing version
-				return oldLoadUri.apply(d, arguments);
+				return oldLoadUri.apply(dojo, arguments);
 			}
 		};
 
 		// FIXME: PORTME
-		d._isDocumentOk = function(http){
+		dojo._isDocumentOk = function(http){
 			var stat = http.status || 0;
 			return (stat >= 200 && stat < 300) || 	// Boolean
 				stat == 304 || 						// allow any 2XX response code
@@ -78,7 +77,7 @@ if(typeof window != 'undefined'){
 		// var hasBase = (base && base.length > 0);
 		var hasBase = false;
 
-		d._getText = function(/*URI*/ uri, /*Boolean*/ fail_ok){
+		dojo._getText = function(/*URI*/ uri, /*Boolean*/ fail_ok){
 			// summary: Read the contents of the specified uri and return those contents.
 			// uri:
 			//		A relative or absolute uri. If absolute, it still must be in
@@ -92,15 +91,15 @@ if(typeof window != 'undefined'){
 			// alert("_getText: " + uri);
 
 			// NOTE: must be declared before scope switches ie. this._xhrObj()
-			var http = d._xhrObj();
+			var http = dojo._xhrObj();
 
 			if(!hasBase && dojo._Url){
 				uri = (new dojo._Url(uri)).toString();
 			}
-			if(d.config.cacheBust){
+			if(dojo.config.cacheBust){
 				//Make sure we have a string before string methods are used on uri
 				uri += "";
-				uri += (uri.indexOf("?") == -1 ? "?" : "&") + String(d.config.cacheBust).replace(/\W+/g, "");
+				uri += (uri.indexOf("?") == -1 ? "?" : "&") + String(dojo.config.cacheBust).replace(/\W+/g, "");
 			}
 			var handleLocal = ["file:", "chrome:", "resource:"].some(function(prefix){
 				return String(uri).indexOf(prefix) == 0;
@@ -126,7 +125,7 @@ if(typeof window != 'undefined'){
 				try{
 					http.send(null);
 					// alert(http);
-					if(!d._isDocumentOk(http)){
+					if(!dojo._isDocumentOk(http)){
 						var err = Error("Unable to load " + uri + " status:" + http.status);
 						err.status = http.status;
 						err.responseText = http.responseText;
@@ -143,22 +142,22 @@ if(typeof window != 'undefined'){
 			}
 		};
 
-		d._windowUnloaders = [];
+		dojo._windowUnloaders = [];
 
 		// FIXME: PORTME
-		d.windowUnloaded = function(){
+		dojo.windowUnloaded = function(){
 			// summary:
 			//		signal fired by impending window destruction. You may use
 			//		dojo.addOnWIndowUnload() or dojo.connect() to this method to perform
 			//		page/application cleanup methods. See dojo.addOnWindowUnload for more info.
-			var mll = d._windowUnloaders;
+			var mll = dojo._windowUnloaders;
 			while(mll.length){
 				(mll.pop())();
 			}
 		};
 
 		// FIXME: PORTME
-		d.addOnWindowUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
+		dojo.addOnWindowUnload = function(/*Object?*/obj, /*String|Function?*/functionName){
 			// summary:
 			//		registers a function to be triggered when window.onunload fires.
 			//		Be careful trying to modify the DOM or access JavaScript properties
@@ -170,7 +169,7 @@ if(typeof window != 'undefined'){
 			//	|	dojo.addOnWindowUnload(object, "functionName")
 			//	|	dojo.addOnWindowUnload(object, function(){ /* ... */});
 
-			d._onto(d._windowUnloaders, obj, functionName);
+			dojo._onto(dojo._windowUnloaders, obj, functionName);
 		};
 
 		// XUL specific APIs

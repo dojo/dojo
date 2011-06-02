@@ -2,7 +2,6 @@ define(["dojo", "doh/robot", "dojo/window"], function(dojo) {
 
 dojo.experimental("dojo.robot");
 
-(function(){
 // users who use doh+dojo get the added convenience of dojo.mouseMoveAt,
 // instead of computing the absolute coordinates of their elements themselves
 dojo.mixin(doh.robot,{
@@ -18,15 +17,14 @@ dojo.mixin(doh.robot,{
 	_scrollIntoView: function(/*Node*/ n){
 		// scrolls the passed node into view, scrolling all ancester frames/windows as well.
 		// Assumes parent iframes can be made fully visible given the current browser window size
-		var d = dojo,
-			dr = doh.robot,
+		var dr = doh.robot,
 			p = null;
-		d.forEach(dr._getWindowChain(n), function(w){
-			d.withGlobal(w, function(){
+		dojo.forEach(dr._getWindowChain(n), function(w){
+			dojo.withGlobal(w, function(){
 				// get the position of the node wrt its parent window
 				// if it is a parent frame, its padding and border extents will get added in
-				var p2 = d.position(n, false),
-					b = d._getPadBorderExtents(n),
+				var p2 = dojo.position(n, false),
+					b = dojo._getPadBorderExtents(n),
 					oldp = null;
 				// if p2 is the position of the original passed node, store the position away as p
 				// otherwise, node is actually an iframe. in this case, add the iframe's position wrt its parent window and also the iframe's padding and border extents
@@ -43,7 +41,7 @@ dojo.mixin(doh.robot,{
 				// scroll the parent window so that the node translated into the parent window's coordinate space is in view
 				dojo.window.scrollIntoView(n,p);
 				// adjust position for the new scroll offsets
-				p2 = d.position(n, false);
+				p2 = dojo.position(n, false);
 				if(!oldp){
 					p = p2;
 				}else{
@@ -62,20 +60,20 @@ dojo.mixin(doh.robot,{
 		// Returns the dojo.position of the passed node wrt the passed window's viewport,
 		// following any parent iframes containing the node and clipping the node to each iframe.
 		// precondition: _scrollIntoView already called
-		var d = dojo, p = null, M = Math.max, m = Math.min;
+		var p = null, M = Math.max, m = Math.min;
 		// p: the returned position of the node
-		d.forEach(doh.robot._getWindowChain(n), function(w){
-			d.withGlobal(w, function(){
+		dojo.forEach(doh.robot._getWindowChain(n), function(w){
+			dojo.withGlobal(w, function(){
 				// get the position of the node wrt its parent window
 				// if it is a parent frame, its padding and border extents will get added in
-				var p2 = d.position(n, false), b = d._getPadBorderExtents(n);
+				var p2 = dojo.position(n, false), b = dojo._getPadBorderExtents(n);
 				// if p2 is the position of the original passed node, store the position away as p
 				// otherwise, node is actually an iframe. in this case, add the iframe's position wrt its parent window and also the iframe's padding and border extents
 				if(!p){
 					p = p2;
 				}else{
 					var view;
-					d.withGlobal(n.contentWindow,function(){
+					dojo.withGlobal(n.contentWindow,function(){
 						view=dojo.window.getBox();
 					});
 					p2.r = p2.x+view.w;
@@ -169,8 +167,6 @@ dojo.mixin(doh.robot,{
 		}, delay, duration);
 	}
 });
-
-})();
 
 return doh.robot;
 });

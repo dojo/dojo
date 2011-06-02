@@ -1,24 +1,22 @@
-define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr, require, has){
+define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"], function(dojo, require, has, xhr){
 	// module:
 	//		dojo/text
 	// summary:
 	//		This module implements the !dojo/text plugin and the dojo.cache API.
 	// description:
 	//		We choose to include our own plugin to leverage functionality already contained in dojo
-	//		and thereby reduce the size of the plugin compared to various loader implementations. Also, this
-	//		allows foreign AMD loaders to be used without their plugins.
+	//		and thereby reduce the size of the plugin compared to various foreign loader implementations.
+	//		Also, this allows foreign AMD loaders to be used without their plugins.
 	//
-	//		CAUTION: this module may return improper results if the AMD loader does not support toAbsMid and client
-	//		code passes relative plugin resource module ids. In that case, you should consider using the text! plugin
-	//		that comes with your loader.
-	//
-	//		CAUTION: this module is designed to optional function synchronously to support the dojo v1.x synchronous
+	//		CAUTION: this module is designed to optionally function synchronously to support the dojo v1.x synchronous
 	//		loader. This feature is outside the scope of the CommonJS plugins specification.
 
-	var getText= function(url, sync, load){
-		xhr("GET", {url:url, sync:sync, load:load});
-	};
-	if(!has("host-browser")){
+	var getText;
+	if(has("host-browser")){
+		getText= function(url, sync, load){
+			xhr("GET", {url:url, sync:sync, load:load});
+		};
+	}else{
 		// TODOC: only works for dojo AMD loader
 		if(require.getText){
 			getText= require.getText;
@@ -30,19 +28,14 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 	var
 		theCache= {},
 
-		getCacheId= function(resourceId, require) {
-			if(require.toAbsMid){
-				var match= resourceId.match(/(.+)(\.[^\/\.]+)$/);
-				return match ? require.toAbsMid(match[1]) + match[2] : require.toAbsMid(resourceId);
-			}
-			return resourceId;
-		},
-
-		cache= function(cacheId, url, value){
-			// if cacheId is not given, just use a trash location
-			cacheId= cacheId || "*garbage*";
-			theCache[cacheId]= theCache[url]= value;
-		},
+		toAbsMid= has("dojo-loader") ?
+			function(id, require){
+				var result = require.toAbsMid(id + "/x");
+				return result.substring(0, result.length-2);
+			} :
+			function(id, require){
+				return require.toUrl(id);
+			},
 
 		strip= function(text){
 			//Strips <?xml ...?> declarations so that external SVG and XML
@@ -60,44 +53,36 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 			return text;
 		},
 
+		notFound = {},
+
 		result= {
 			load:function(id, require, load){
-				// id is something like:
-				//	 * "path/to/text.html
-				//	 * "path/to/text.html!strip
+				// id is something like (path may be relative):
+				//
+				//	 "path/to/text.html"
+				//	 "path/to/text.html!strip"
 				var
 					parts= id.split("!"),
-					resourceId= parts[0],
-					cacheId= getCacheId(resourceId, require),
 					stripFlag= parts.length>1,
-					url;
-				if(cacheId in theCache){
-					load(stripFlag ? strip(theCache[cacheId]) : theCache[cacheId]);
-					return;
+					absMid= toAbsMid(parts[0], require),
+					url = require.toUrl(parts[0]),
+					text = notFound,
+					finish = function(text){
+						theCache[absMid]= theCache[url]= text;
+						load(stripFlag ? strip(text) : text);
+					};
+				if(absMid in theCache){
+					text = theCache[absMid];
+				}else if(absMid in require.cache){
+					text = require.cache[absMid];
+				}else if(url in theCache){
+					text = theCache[url];
 				}
-				url= require.toUrl(resourceId);
-				if(url in theCache){
-					load(stripFlag ? strip(theCache[url]) : theCache[url]);
-					return;
+				if(text===notFound){
+					getText(url, !require.async, finish);
+				}else{
+					finish(text);
 				}
-				var
-					inject= function(text){
-						cache(cacheId, url, text);
-						load(stripFlag ? strip(theCache[url]) : theCache[url]);
-					},
-					text;
-				try{
-					text= require("*text/" + cacheId);
-					if(text!==undefined){
-						inject(text);
-						return;
-					}
-				}catch(e){}
-				getText(url, !require.async, inject);
-			},
-
-			cache:function(cacheId, mid, type, value) {
-				cache(cacheId, require.toUrl(mid + type), value);
 			}
 		};
 
@@ -139,7 +124,7 @@ define(["./_base/kernel", "./_base/xhr", "require", "./has"], function(dojo, xhr
 				//not exist, fetch it.
 				if(!(key in theCache)){
 					getText(key, true, function(text){
-						cache(0, key, text);
+						theCache[key]= text;
 					});
 				}
 				return sanitize ? strip(theCache[key]) : theCache[key];

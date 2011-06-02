@@ -14,9 +14,8 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 //
 //		function callback (hashValue){
 //			// do something based on the hash value.
-// 		}
+//		}
 
-(function(){
 	dojo.hash = function(/* String? */ hash, /* Boolean? */ replace){
 		//	summary:
 		//		Gets or sets the hash string.
@@ -99,7 +98,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 		//	description:
 		//		IE doesn't add changes to the URI's hash into the history unless the hash
 		//		value corresponds to an actual named anchor in the document. To get around
-		//      this IE difference, we use a background IFrame to maintain a back-forward
+		//		this IE difference, we use a background IFrame to maintain a back-forward
 		//		history, by updating the IFrame's query string to correspond to the
 		//		value of the main browser location's hash value.
 		//
@@ -131,7 +130,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 		//			case we do nothing because we need to wait for the iframe's
 		//			location to reflect its actual state.
 		//			Transitions: s4, s5
-		//		s5:	IEUriMonitor has programmatically changed the location of the
+		//		s5: IEUriMonitor has programmatically changed the location of the
 		//			background iframe, and the iframe's location has caught up with
 		//			reality. In this case we need to transition to s1.
 		//			Transitions: s1
@@ -208,7 +207,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 					transitioning = true;
 					expectedIFrameQuery = hash;
 					ifr.src = ifrSrc + "?" + expectedIFrameQuery;
-					ifrOffline = false;	//we're updating the iframe src - set offline to false so we can check again on next poll.
+					ifrOffline = false; //we're updating the iframe src - set offline to false so we can check again on next poll.
 					setTimeout(dojo.hitch(this,this.pollLocation),0); //yielded transition to s4 while iframe reloads.
 					return;
 				}else if(!ifrOffline){
@@ -237,7 +236,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 			// else non-supported browser, do nothing.
 		}
 	});
-})();
 
-  return dojo.hash;
+	return dojo.hash;
+
 });

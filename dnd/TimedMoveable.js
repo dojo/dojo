@@ -4,17 +4,15 @@ define(["../main", "./Moveable"], function(dojo) {
 	// summary:
 	//		TODOC
 
+	/*=====
+	dojo.declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
+		// timeout: Number
+		//		delay move by this number of ms,
+		//		accumulating position changes during the timeout
+		timeout: 0
+	});
+	=====*/
 
-/*=====
-dojo.declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
-	// timeout: Number
-	//		delay move by this number of ms,
-	//		accumulating position changes during the timeout
-	timeout: 0
-});
-=====*/
-
-(function(){
 	// precalculate long expressions
 	var oldOnMove = dojo.dnd.Moveable.prototype.onMove;
 
@@ -70,7 +68,7 @@ dojo.declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
 			}
 		}
 	});
-})();
 
-return dojo.dnd.TimedMoveable;
+	return dojo.dnd.TimedMoveable;
+	
 });

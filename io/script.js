@@ -4,7 +4,7 @@ define(["../main"], function(dojo) {
 	// summary:
 	//		TODOC
 
-dojo.getObject("io", true, dojo);
+	dojo.getObject("io", true, dojo);
 
 /*=====
 dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
@@ -18,7 +18,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 		//		the body of the script that was attached.
 		//	callbackParamName: String
 		//		Deprecated as of Dojo 1.4 in favor of "jsonp", but still supported for
-		// 		legacy code. See notes for jsonp property.
+		//		legacy code. See notes for jsonp property.
 		//	jsonp: String
 		//		The URL parameter name that indicates the JSONP callback string.
 		//		For instance, when using Yahoo JSONP calls it is normally,
@@ -40,7 +40,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 	}
 });
 =====*/
-(function(){
+
 	var loadEvent = dojo.isIE ? "onreadystatechange" : "load",
 		readyRegExp = /complete|loaded/;
 
@@ -78,7 +78,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			//		creates a new <script> tag pointing to the specified URL and
 			//		adds it to the document.
 			//	description:
-			//		Attaches the script element to the DOM.  Use this method if you
+			//		Attaches the script element to the DOM.	 Use this method if you
 			//		just want to attach a script to the DOM and do not care when or
 			//		if it loads.
 			var doc = (frameDocument || dojo.doc);
@@ -250,7 +250,6 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			this.ioArgs.json = json;
 		}
 	};
-})();
 
-return dojo.io.script;
+	return dojo.io.script;
 });

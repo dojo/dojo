@@ -4,10 +4,9 @@ define(["./main", "./parser"], function(dojo) {
 	// summary:
 	//		TODOC
 
-dojo.getObject("html", true, dojo);
+	dojo.getObject("html", true, dojo);
 
-// the parser might be needed..
-(function(){ // private scope, sort of a namespace
+	// the parser might be needed..
 
 	// idCounter is incremented with each instantiation to allow asignment of a unique id for tracking, logging purposes
 	var idCounter = 0,
@@ -95,14 +94,14 @@ dojo.getObject("html", true, dojo);
 			parseContent: false,
 
 			// parserScope: String
-			//		Flag passed to parser.  Root for attribute names to search for.   If scopeName is dojo,
+			//		Flag passed to parser.	Root for attribute names to search for.	  If scopeName is dojo,
 			//		will search for data-dojo-type (or dojoType).  For backwards compatibility
 			//		reasons defaults to dojo._scopeName (which is "dojo" except when
 			//		multi-version support is used, when it will be something like dojo16, dojo20, etc.)
 			parserScope: dojo._scopeName,
 
 			// startup: Boolean
-			//		Start the child widgets after parsing them.   Only obeyed if parseContent is true.
+			//		Start the child widgets after parsing them.	  Only obeyed if parseContent is true.
 			startup: true,
 
 			// lifecyle methods
@@ -152,7 +151,7 @@ dojo.getObject("html", true, dojo);
 
 				var node = this.node;
 				if(!node) {
-				    // can't proceed
+					// can't proceed
 					throw new Error(this.declaredClass + ": setContent given no node");
 				}
 				try{
@@ -339,7 +338,6 @@ dojo.getObject("html", true, dojo);
 			return op.set();
 		}
 	};
-})();
 
-return dojo.html;
+	return dojo.html;
 });

@@ -140,16 +140,14 @@ dojo.number.round = function(/*Number*/value, /*Number?*/places, /*Number?*/incr
 if((0.9).toFixed() == 0){
 	// (isIE) toFixed() bug workaround: Rounding fails on IE when most significant digit
 	// is just after the rounding place and is >=5
-	(function(){
-		var round = dojo.number.round;
-		dojo.number.round = function(v, p, m){
-			var d = Math.pow(10, -p || 0), a = Math.abs(v);
-			if(!v || a >= d || a * Math.pow(10, p + 1) < 5){
-				d = 0;
-			}
-			return round(v, p, m) + (v > 0 ? d : -d);
-		};
-	})();
+	var round = dojo.number.round;
+	dojo.number.round = function(v, p, m){
+		var d = Math.pow(10, -p || 0), a = Math.abs(v);
+		if(!v || a >= d || a * Math.pow(10, p + 1) < 5){
+			d = 0;
+		}
+		return round(v, p, m) + (v > 0 ? d : -d);
+	};
 }
 
 /*=====

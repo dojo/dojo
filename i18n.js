@@ -105,45 +105,47 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 	);
 
 	if(has("dojo-v1x-i18n-Api")){
-		var syncRequire= function(deps, callback){
-			var results= [];
-			dojo.forEach(deps, function(mid){
-				var url= require.toUrl(mid + ".js");
-				if(cache[url]){
-					results.push(cache[url]);
-				}else{
-					try {
-						var bundle= require(mid);
-						if(bundle){
-							results.push(bundle);
-							return;
-						}
-					}catch(e){}
-					dojo.xhrGet({
-						url:url,
-						sync:true,
-						load:function(text){
-							var
-								__result,
-								__fixup= function(bundle){
-									// nls/<locale>/<bundle-name> indicates not the root.
-									return bundle ? (/nls\/[^\/]+\/[^\/]+$/.test(url) ? bundle : {root:bundle, _v1x:1}) : __result;
-								};
+		var
+			evalBundle=
+				// keep the minifiers off our define!
+				// if bundle is an AMD bundle, then __amdResult will be defined; otherwise it's a pre-amd bundle and the bundle value is returned by eval
+				new Function("bundle", "var __preAmdResult, __amdResult; function define(bundle){__amdResult= bundle;} __preAmdResult= eval(bundle); return [__preAmdResult, __amdResult];"),
 
-							// TODO: make sure closure compiler does not stomp on this function name
-							function define(bundle){
-							  __result= bundle;
+			fixup= function(url, preAmdResult, amdResult){
+				// nls/<locale>/<bundle-name> indicates not the root.
+				return preAmdResult ? (/nls\/[^\/]+\/[^\/]+$/.test(url) ? preAmdResult : {root:preAmdResult, _v1x:1}) : amdResult;
+			},
+
+			syncRequire= function(deps, callback){
+				var results= [];
+				dojo.forEach(deps, function(mid){
+					var url= require.toUrl(mid + ".js");
+					if(cache[url]){
+						results.push(cache[url]);
+					}else{
+						try {
+							var bundle= require(mid);
+							if(bundle){
+								results.push(bundle);
+								return;
 							}
-							results.push(cache[url]= (__fixup(eval(text))));
-						},
-						error:function(){
-							results.push(cache[url]= {});
-						}
-					});
-				}
-			});
-			callback.apply(callback, results);
-		};
+						}catch(e){}
+						dojo.xhrGet({
+							url:url,
+							sync:true,
+							load:function(text){
+								var result = evalBundle(text);
+								results.push(cache[url]= fixup(url, result[0], result[1]));
+							},
+							error:function(){
+								results.push(cache[url]= {});
+							}
+						});
+					}
+				});
+				callback.apply(callback, results);
+			};
+
 		syncRequire.toAbsMid= function(mid){
 			return require.toAbsMid(mid);
 		};

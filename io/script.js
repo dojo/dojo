@@ -86,6 +86,7 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			element.type = "text/javascript";
 			element.src = url;
 			element.id = id;
+			element.async = true;
 			element.charset = "utf-8";
 			return doc.getElementsByTagName("head")[0].appendChild(element);
 		},

@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/array"], function(dojo) {
+define(["./_base/kernel", "./_base/Color", "./_base/array"], function(dojo) {
 	// module:
 	//		dojo/colors
 	// summary:

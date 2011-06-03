@@ -1152,6 +1152,10 @@
 					deps[i] = getModule(deps[i], module);
 				}
 
+				if(has("dojo-sync-loader") || req.async=="xd"){
+					execQ.push(module);
+				}
+
 				setDel(waiting, pqn);
 				return module;
 			},
@@ -1631,7 +1635,6 @@
 							for(p in syncLoaderApi){
 								dojo[p] = hold[p];
 							}
-
 						}
 
 						resultText= "define(" + dojo.toJson(requires) + ", function(){\n" + (loadInitFound ? text : resultText) + "\n});\n";

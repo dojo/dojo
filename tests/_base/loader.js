@@ -2,7 +2,7 @@ define([
 	"dojo",
 	"doh",
 	"require",
-	"./loader/modules",
+	"dojo/has!dojo-amd-factory-scan?./loader/modules",
 	"./loader/moduleIds",
 	"./loader/bootstrap"], function(dojo, doh, require){
 	if(doh.isBrowser){

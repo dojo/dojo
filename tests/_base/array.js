@@ -1,11 +1,11 @@
-dojo.provide("tests._base.array");
+dojo.provide("dojo.tests._base.array");
 
 tests.register("tests._base.array",
 	[
 		function testIndexOf(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];
-			
+
 			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56));
 			t.assertEqual(1, dojo.indexOf([Number, String, Date], String));
 			t.assertEqual(1, dojo.indexOf(foo, foo[1]));
@@ -21,7 +21,7 @@ tests.register("tests._base.array",
 		function testIndexOfFromIndex(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];
-			
+
 			t.assertEqual(-1, dojo.indexOf([45, 56, 85], 56, 2));
 			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, 1));
 			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, -1));
@@ -32,7 +32,7 @@ tests.register("tests._base.array",
 		function testLastIndexOf(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "aaa", "ccc"];
-			
+
 			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56));
 			t.assertEqual(1, dojo.indexOf([Number, String, Date], String));
 			t.assertEqual(1, dojo.lastIndexOf(foo, foo[1]));

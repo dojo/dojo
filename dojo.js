@@ -1514,10 +1514,7 @@
 			}else{
 				req.error("loader/define-ie");
 			}
-// FIXME this looks like nonsense; deleted in comments; delete permanently
-			//if(!has("dojo-sync-loader")){
-			//	!syncDepth && checkComplete();
-			//}
+			!syncDepth && checkComplete();
 		}
 	};
 	def.amd = {

@@ -11,7 +11,7 @@ dojo.__cookieProps = function(){
 	//		If a number, the number of days from today at which the cookie
 	//		will expire. If a date, the date past which the cookie will expire.
 	//		If expires is in the past, the cookie will be deleted.
-	//		If expires is omitted or is 0, the cookie will expire when the browser closes. << FIXME: 0 seems to disappear right away? FF3.
+	//		If expires is omitted or is 0, the cookie will expire when the browser closes.
 	//	path: String?
 	//		The path to use for the cookie.
 	//	domain: String?

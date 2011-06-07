@@ -1272,6 +1272,7 @@
 
 	if(has("dom")){
 		has.add("dom-addeventlistener", !!doc.addEventListener);
+		has.add("ie-event-behavior", doc.attachEvent && (typeof opera === "undefined" || opera.toString() != "[object Opera]"));
 	}
 
 	if(has("dom") && (has("dojo-inject-api") || has("dojo-dom-ready-api"))){
@@ -1279,7 +1280,7 @@
 			on = function(node, eventName, handler, useCapture, ieEventName){
 				// Add an event listener to a DOM node using the API appropriate for the current browser;
 				// return a function that will disconnect the listener.
-				if(has("dom-addeventlistener")){
+				if(!has("ie-event-behavior")){
 					node.addEventListener(eventName, handler, !!useCapture);
 					return function(){
 						node.removeEventListener(eventName, handler, !!useCapture);
@@ -1478,7 +1479,7 @@
 			// there is no callback waiting to finish processing and nothing to trigger the defQ and the
 			// dependencies are never requested; therefore, do it here.
 			injectDependencies(defineModule(targetModule, args[1], args[2]));
-		}else if(has("dom-addeventlistener") || !has("host-browser") || injectingCachedModule){
+		}else if(!has("ie-event-behavior") || !has("host-browser") || injectingCachedModule){
 			// not IE path: anonymous module and therefore must have been injected; therefore, onLoad will fire immediately
 			// after script finishes being evaluated and the defQ can be run from that callback to detect the module id
 			defQ.push(args);

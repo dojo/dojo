@@ -100,5 +100,22 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 		}
 	});
 
+	has.add("dojo-config-addOnLoad", 1);
+	if(has("dojo-config-addOnLoad")){
+		var addOnLoad= dojo.config.addOnLoad;
+		if(addOnLoad){
+			dojo.ready(dojo.isArray(addOnLoad) ? dojo.hitch.apply(dojo, addOnLoad) : addOnLoad);
+		}
+	}
+
+	if(has("dojo-sync-loader") && dojo.config.parseOnLoad && !dojo.isAsync){
+		ready(99, function(){
+            if(!dojo.parser){
+                dojo.deprecated("Add explicit dojo.require('dojo.parser');", "", "2.0");
+                dojo.require("dojo.parser");
+            }
+		});
+	}
+
 	return ready;
 });

@@ -56,14 +56,5 @@ define([
 		}
 	}
 
-	// dojoConfig.addOnLoad is deprecated; use require.ready
-	has.add("dojo-config-addOnLoad", 1);
-	if(has("dojo-config-addOnLoad")){
-		var addOnLoad= dojo.config.addOnLoad;
-		if(addOnLoad){
-			dojo.ready(dojo.isArray(addOnLoad) ? dojo.hitch.apply(dojo, addOnLoad) : addOnLoad);
-		}
-	}
-
 	return dojo;
 });

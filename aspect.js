@@ -155,7 +155,7 @@ define([], function(){
 	function aspect(type){
 		return function(target, methodName, advice, receiveArguments){
 			var existing = target[methodName], dispatcher;
-			if(!existing || !existing.around){
+			if(!existing || existing.target != target){
 				// no dispatcher in place
 				dispatcher = target[methodName] = function(){
 					// before advice
@@ -166,7 +166,7 @@ define([], function(){
 						before = before.next;
 					}
 					// around advice
-					if(typeof dispatcher.around == "object"){
+					if(dispatcher.around){
 						var results = dispatcher.around.advice(this, args);
 					}
 					// after advice
@@ -178,10 +178,12 @@ define([], function(){
 					}
 					return results;
 				};
-				target = null; // make sure we don't have cycles for IE
-				dispatcher.around = existing ? {advice: function(target, args){
-					return existing.apply(target, args);
-				}} : "none";
+				if(existing){
+					dispatcher.around = {advice: function(target, args){
+						return existing.apply(target, args);
+					}};
+				}
+				dispatcher.target = target;
 			}
 			var results = advise((dispatcher || existing), type, advice, receiveArguments);
 			advice = null;

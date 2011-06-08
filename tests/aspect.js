@@ -82,6 +82,38 @@ doh.register("tests.aspect",
 			order.push(obj.method(0));
 			obj.method(4);
 			t.is(order, [0,1,2,3,4,5,6]);
+		},
+		function delegation(t){
+			var order = [];
+			var proto = {
+				foo: function(x){
+					order.push(x);
+					return x;
+				},
+				bar: function(){
+				}
+			};
+			aspect.after(proto, "foo", function(x){
+				order.push(x + 1);
+				return x;
+			});
+			aspect.after(proto, "bar", function(x){
+				t.t(this.isInstance);
+			});
+			proto.foo(0);
+			function Class(){
+			}
+			Class.prototype = proto;
+			var instance = new Class();
+			instance.isInstance = true;
+			aspect.after(instance, "foo", function(x){
+				order.push(x + 2);
+				return x;
+			});
+			instance.bar();
+			instance.foo(2);
+			proto.foo(5);
+			t.is(order, [0,1,2,3,4,5,6]);
 		}
 	]
 );

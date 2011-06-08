@@ -7,7 +7,7 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 	// note:
 	//		This module should be unnecessary in dojo 2.0
 	var
-		// truthy iff DOMContentLoaded or better (e.g., window.onload fired) has been achieved
+		// truthy if DOMContentLoaded or better (e.g., window.onload fired) has been achieved
 		isDomReady = 0,
 
 		// a function to call to cause onLoad to be called when all requested modules have been loaded
@@ -48,31 +48,53 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 	// define requireCompleteSignal; impl depends on loader
 	if(has("dojo-loader")){
 		require.on("idle", onLoad);
-		requestCompleteSignal= function(){
+		requestCompleteSignal = function(){
 			if(require.idle()){
 				onLoad();
 			} // else do nothing, onLoad will be called with the next idle signal
 		};
 	}else{
 		// RequireJS or similar
-		requestCompleteSignal= function(){
+		requestCompleteSignal = function(){
 			// the next function call will fail if you don't have a loader with require.ready
 			// in that case, either fix your loader, use dojo's loader, or don't call dojo.ready;
 			require.ready(onLoad);
 		};
 	}
 
-	var ready= dojo.ready= dojo.addOnLoad= function(
-		priority,//(integer, optional) The order in which to exec this callback relative to other callbacks, defaults to 1000
-		context, //(object) The context in which to run execute callback
-		         //(function) callback, if context missing
-		callback //(function) The function to execute.
-	){
-		///
-		// Add a function to execute on DOM content loaded and all requested modules have arrived and been evaluated.
-		var hitchArgs= lang._toArray(arguments);
+	var ready = dojo.ready = dojo.addOnLoad = function(priority, context, callback){
+		// summary: Add a function to execute on DOM content loaded and all requested modules have arrived and been evaluated.
+		// priority: Integer?
+		//		The order in which to exec this callback relative to other callbacks, defaults to 1000
+		// context: Object?|Function
+		//		The context in which to run execute callback, or a callback if not using context
+		// callback: Function?
+		//		The function to execute. 
+		//
+		// example:
+		//	Simple DOM and Modules ready syntax
+		//	|	dojo.ready(function(){ alert("Dom ready!"); });
+		//
+		// example:
+		//	Using a priority
+		//	|	dojo.ready(2, function(){ alert("low priority ready!"); })
+		//
+		// example:
+		//	Using context
+		//	|	dojo.ready(foo, function(){
+		//	|		// in here, this == foo
+		//	|	})
+		//
+		// example:
+		//	Using dojo.hitch style args:
+		//	|	var foo = { dojoReady: function(){ console.warn(this, "dojo dom and modules ready."); } };
+		//	|	dojo.ready(foo, "dojoReady");
+		
+		var hitchArgs = lang._toArray(arguments);
 		if(typeof priority != "number"){
-			callback = context, context = priority, priority = 1000;
+			callback = context;
+			context = priority;
+			priority = 1000;
 		}else{
 			hitchArgs.shift();
 		}
@@ -93,7 +115,7 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 	}
 
 	domReady(function(){
-		isDomReady= 1;
+		isDomReady = 1;
 		dojo._postLoad = dojo.config.afterOnLoad = true;
 		if(loadQ.length){
 			requestCompleteSignal(onLoad);
@@ -110,10 +132,10 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 
 	if(has("dojo-sync-loader") && dojo.config.parseOnLoad && !dojo.isAsync){
 		ready(99, function(){
-            if(!dojo.parser){
-                dojo.deprecated("Add explicit dojo.require('dojo.parser');", "", "2.0");
-                dojo.require("dojo.parser");
-            }
+			if(!dojo.parser){
+				dojo.deprecated("Add explicit dojo.require('dojo.parser');", "", "2.0");
+				dojo.require("dojo.parser");
+			}
 		});
 	}
 

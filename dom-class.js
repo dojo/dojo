@@ -197,6 +197,7 @@ define(["./_base/kernel", "./_base/lang", "./dom"], function(dojo, lang, dom){
 		return condition;   // Boolean
 	};
 
+	// FIXME: module return names don't match globals. how TODOC
 	return {
 		has:     dojo.hasClass,
 		add:     dojo.addClass,

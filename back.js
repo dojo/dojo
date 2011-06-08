@@ -16,13 +16,13 @@ dojo.back = {
 
 	// everyone deals with encoding the hash slightly differently
 
-	getHash= back.getHash= function(){
+	getHash = back.getHash = function(){
 		var h = window.location.hash;
 		if(h.charAt(0) == "#"){ h = h.substring(1); }
 		return dojo.isMozilla ? h : decodeURIComponent(h);
 	},
 
-	setHash= back.setHash= function(h){
+	setHash = back.setHash = function(h){
 		if(!h){ h = ""; }
 		window.location.hash = encodeURIComponent(h);
 		historyCounter = history.length;

@@ -240,7 +240,7 @@ dojo.behavior = new function(){
 	};
 };
 
-dojo.addOnLoad(dojo.behavior, "apply");
+dojo.ready(dojo.behavior, "apply"); // FIXME: should this use a priority? before/after parser priority?
 
 return dojo.behavior;
 });

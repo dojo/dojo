@@ -50,10 +50,10 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 	//	example:
 	//		delete a cookie:
 	//	|	dojo.cookie("configObj", null, {expires: -1});
-	var c = document.cookie;
+	var c = document.cookie, ret;
 	if(arguments.length == 1){
 		var matches = c.match(new RegExp("(?:^|; )" + regexp.escapeString(name) + "=([^;]*)"));
-		return matches ? decodeURIComponent(matches[1]) : undefined; // String or undefined
+		ret = matches ? decodeURIComponent(matches[1]) : undefined; 
 	}else{
 		props = props || {};
 // FIXME: expires=0 seems to disappear right away, not on close? (FF3)  Change docs?
@@ -74,6 +74,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 		}
 		document.cookie = updatedCookie;
 	}
+	return ret; // String|undefined
 };
 
 dojo.cookie.isSupported = function(){

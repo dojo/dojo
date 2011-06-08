@@ -61,7 +61,7 @@ dojo.DeferredList = function(/*Array*/ list, /*Boolean?*/ fireOnOneCallback, /*B
 };
 dojo.DeferredList.prototype = new dojo.Deferred();
 
-dojo.DeferredList.prototype.gatherResults= function(deferredList){
+dojo.DeferredList.prototype.gatherResults = function(deferredList){
 	// summary:
 	//	Gathers the results of the deferreds for packaging
 	//	as the parameters to the Deferred Lists' callback

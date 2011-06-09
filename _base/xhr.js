@@ -6,7 +6,7 @@ define(["./kernel", "../has", "require", "../on", "./sniff", "./Deferred", "./js
 
 	has.add("native-xhr", function() {
 		// if true, the environment has a native XHR implementation
-		return !!XMLHttpRequest;
+		return typeof XMLHttpRequest !== 'undefined';
 	});
 
 	if(has("dojo-xhr-factory")){

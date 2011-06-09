@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>loader-only</title>
+    <script type="text/javascript" data-dojo-config="async:true" src="../../../dojo.js"></script>
+    <script type="text/javascript">
+    require(["dojo", "doh"], function(dojo, doh) {
+    	require(["dojo/tests/_base/loader/syncModule"], function(syncModule){
+			dojo.ready(function() {
+				doh.register("asyncWithDojoRequire", [function loadSyncModule(t){
+					t.is(syncModule.status, "OK");
+				}]);
+				doh.runOnLoad();
+			});
+		});
+	});
+    </script>
+  </head>
+  <body>
+    <h1>Description: Async Dojo loading 1.6 module</h1>
+  </body>
+</html>

@@ -6,6 +6,7 @@ define([
 	"./loader/moduleIds",
 	"./loader/bootstrap"], function(dojo, doh, require){
 	if(doh.isBrowser){
+		doh.register("tests._base.loader.asyncWithDojoRequire", require.toUrl("./loader/asyncWithDojoRequire.html"));
 		doh.register("tests._base.loader.config?dojoConfig-djConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig-require");
 		doh.register("tests._base.loader.config?dojoConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-require");
 		doh.register("tests._base.loader.config?dojoConfig-djConfig", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig");

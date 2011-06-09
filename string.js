@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/lang", "./_base/window"], function(dojo) {
+define(["./_base/kernel", "./_base/lang"], function(dojo) {
 	// module:
 	//		dojo/string
 	// summary:

@@ -69,7 +69,7 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 		// context: Object?|Function
 		//		The context in which to run execute callback, or a callback if not using context
 		// callback: Function?
-		//		The function to execute. 
+		//		The function to execute.
 		//
 		// example:
 		//	Simple DOM and Modules ready syntax
@@ -89,7 +89,7 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 		//	Using dojo.hitch style args:
 		//	|	var foo = { dojoReady: function(){ console.warn(this, "dojo dom and modules ready."); } };
 		//	|	dojo.ready(foo, "dojoReady");
-		
+
 		var hitchArgs = lang._toArray(arguments);
 		if(typeof priority != "number"){
 			callback = context;
@@ -109,9 +109,12 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 		requestCompleteSignal();
 	};
 
-	var dca = dojo.config.addOnLoad;
-	if(dca){
-		ready[(lang.isArray(dca) ? "apply" : "call")](dojo, dca);
+	has.add("dojo-config-addOnLoad", 1);
+	if(has("dojo-config-addOnLoad")){
+		var dca = dojo.config.addOnLoad;
+		if(dca){
+			ready[(lang.isArray(dca) ? "apply" : "call")](dojo, dca);
+		}
 	}
 
 	domReady(function(){
@@ -121,14 +124,6 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 			requestCompleteSignal(onLoad);
 		}
 	});
-
-	has.add("dojo-config-addOnLoad", 1);
-	if(has("dojo-config-addOnLoad")){
-		var addOnLoad= dojo.config.addOnLoad;
-		if(addOnLoad){
-			dojo.ready(dojo.isArray(addOnLoad) ? dojo.hitch.apply(dojo, addOnLoad) : addOnLoad);
-		}
-	}
 
 	if(has("dojo-sync-loader") && dojo.config.parseOnLoad && !dojo.isAsync){
 		ready(99, function(){

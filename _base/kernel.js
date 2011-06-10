@@ -52,7 +52,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	dojo.config = {};
 	for(p in config){
 		dojo.config[p] = config[p];
-		has.add(p, config[p], 0, 1);
+		has.add("config-"+p, config[p], 0, 1);
 	}
 	for(p in config.has){
 		has.add(p, config.has[p], 0, 1);
@@ -60,7 +60,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	if(has("dojo-loader") && has("dojo-config-api")){
 		require.on("config", function(config){
 			for(p in config){
-				has.add(p, config[p]);
+				has.add("config-"+p, config[p]);
 			}
 		});
 	}
@@ -138,7 +138,8 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
 			"trace", "warn", "log"
 		];
-		var i = 0, tn;
+		var tn;
+		i = 0;
 		while((tn = cn[i++])){
 			if(!console[tn]){
 				(function(){

@@ -250,5 +250,13 @@ define(["./kernel", "./lang"], function(dojo){
 		}
 	});
 
-	return dojo;
+	return {
+		indexOf: dojo.indexOf,
+		lastIndexOf: dojo.lastIndexOf,
+		forEach: dojo.forEach,
+		every: dojo.every,
+		some: dojo.some,
+		map: dojo.map,
+		filter: dojo.filter
+	};
 });

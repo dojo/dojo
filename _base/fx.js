@@ -655,5 +655,14 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		}).play(delay || 0);
 	};
 
-	return dojo.animateProperty;
+	return {
+		_Line: dojo._Line,
+		Animation: dojo.Animation,
+		_fade: dojo._fade,
+		fadeIn: dojo.fadeIn,
+		fadeOut: dojo.fadeOut,
+		_defaultEasing: dojo._defaultEasing,
+		animateProperty: dojo.animateProperty,
+		anim: dojo.anim
+	};
 });

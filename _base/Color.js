@@ -128,7 +128,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 		}
 	});
 
-	dojo.blendColors = function(
+	dojo.Color.blendColors = dojo.blendColors = function(
 		/*dojo.Color*/ start,
 		/*dojo.Color*/ end,
 		/*Number*/ weight,
@@ -145,7 +145,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 		return t.sanitize();	// dojo.Color
 	};
 
-	dojo.colorFromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
+	dojo.Color.fromRgb = dojo.colorFromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
 		// summary:
 		//		Returns a `dojo.Color` instance from a string of the form
 		//		"rgb(...)" or "rgba(...)". Optionally accepts a `dojo.Color`
@@ -157,7 +157,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 		return m && dojo.colorFromArray(m[1].split(/\s*,\s*/), obj);	// dojo.Color
 	};
 
-	dojo.colorFromHex = function(/*String*/ color, /*dojo.Color?*/ obj){
+	dojo.Color.fromHex = dojo.colorFromHex = function(/*String*/ color, /*dojo.Color?*/ obj){
 		// summary:
 		//		Converts a hex string with a '#' prefix to a color object.
 		//		Supports 12-bit #rgb shorthand. Optionally accepts a
@@ -187,7 +187,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 		return t;	// dojo.Color
 	};
 
-	dojo.colorFromArray = function(/*Array*/ a, /*dojo.Color?*/ obj){
+	dojo.Color.fromArray = dojo.colorFromArray = function(/*Array*/ a, /*dojo.Color?*/ obj){
 		// summary:
 		//		Builds a `dojo.Color` from a 3 or 4 element array, mapping each
 		//		element in sequence to the rgb(a) values of the color.
@@ -201,7 +201,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 		return t.sanitize();	// dojo.Color
 	};
 
-	dojo.colorFromString = function(/*String*/ str, /*dojo.Color?*/ obj){
+	dojo.Color.fromString = dojo.colorFromString = function(/*String*/ str, /*dojo.Color?*/ obj){
 		// summary:
 		//		Parses `str` for a color value. Accepts hex, rgb, and rgba
 		//		style color values.

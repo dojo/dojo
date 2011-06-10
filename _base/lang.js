@@ -389,5 +389,21 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has){
 			map : function(_, k){ return dojo.getObject(k, false, map); });
 	};
 
-	return dojo;
+	return {
+		isString: dojo.isString,
+		isArray: dojo.isArray,
+		isFunction: dojo.isFunction,
+		isObject: dojo.isObject,
+		isArrayLike: dojo.isArrayLike,
+		isAlien: dojo.isAlien,
+		extend: dojo.extend,
+		_hitchArgs: dojo._hitchArgs,
+		hitch: dojo.hitch,
+		delegate: dojo.delegate,
+		_toArray: dojo._toArray,
+		partial: dojo.partial,
+		clone: dojo.clone,
+		trim: dojo.trim,
+		replace: dojo.replace
+	};
 });

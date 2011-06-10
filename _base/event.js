@@ -54,5 +54,8 @@ define(["./kernel", "../on", "../has"], function(dojo, on, has){
 		}
 	};
 
-return dojo.connect;
+	return {
+		fixEvent: dojo.fixEvent,
+		stopEvent: dojo.stopEvent
+	};
 });

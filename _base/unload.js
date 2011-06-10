@@ -73,4 +73,9 @@ define(["./kernel", "./connect"], function(dojo) {
 
 		dojo.connect(win, "beforeunload", obj, functionName);
 	};
+
+	return {
+		addOnWindowUnload: dojo.addOnWindowUnload,
+		addOnUnload: dojo.addOnUnload
+	};
 });

@@ -979,5 +979,26 @@ define(["./kernel", "../has", "require", "../on", "./sniff", "./Deferred", "./js
 	}
 	*/
 
-return dojo.xhr;
+	// Add aliases for static functions to dojo.xhr since dojo.xhr is what's returned from this module
+	dojo.mixin(dojo.xhr, {
+		_xhrObj: dojo._xhrObj,
+		fieldToObject: dojo.fieldToObject,
+		formToObject: dojo.formToObject,
+		objectToQuery: dojo.objectToQuery,
+		formToQuery: dojo.formToQuery,
+		formToJson: dojo.formToJson,
+		queryToObject: dojo.queryToObject,
+		contentHandlers: handlers,
+		_ioSetArgs: dojo._ioSetArgs,
+		_ioCancelAll: dojo._ioCancelAll,
+		_ioNotifyStart: dojo._ioNotifyStart,
+		_ioWatch: dojo._ioWatch,
+		_ioAddQueryToUrl: dojo._ioAddQueryToUrl,
+		get: dojo.xhrGet,
+		post: dojo.xhrPost,
+		put: dojo.xhrPut,
+		del: dojo.xhrDelete	// because "delete" is a reserved word
+	});
+
+	return dojo.xhr;
 });

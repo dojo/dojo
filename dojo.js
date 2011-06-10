@@ -127,7 +127,7 @@
 		},
 
 		// FIXME: how to doc window.require() api
-		
+
 		// this will be the global require function; define it immediately so we can start hanging things off of it
 		req = function(
 			config,       //(object, optional) hash of configuration properties
@@ -294,10 +294,9 @@
 		///
 		// Gives the contents of a cached resource; function should cause the same actions as if the given pqn was downloaded
 		// and evaluated by the host environment
-		cache = {}
+		cache = {};
 
 		cacheBust = "";
-
 	}
 
 	reqEval = req.eval ||
@@ -309,7 +308,7 @@
 		this.l = listener;
 		this.q = queue;
 	};
-	
+
 	listenerConnection.prototype.remove= function(){
 		for(var queue = this.q, listener = this.l, i = 0; i<queue.length; i++){
 			if(queue[i]===listener){
@@ -329,7 +328,7 @@
 				listener.apply(null, args);
 			});
 		};
-		
+
 	req.on = function(type, listener){
 		// notice that connecting to a nonexisting type just results in a connection that will never
 		// get signaled yet still has a valid remove method. This allows client code to make connections
@@ -816,6 +815,7 @@
 
 		execModule = function(module, strict){
 			// run the dependency vector, then run the factory for module
+			module.finish && module.finish();
 			if(!module.executed){
 				if(!module.def || (strict && module.executed===executing)){
 					return abortExec;
@@ -1264,7 +1264,6 @@
 	}
 
 	if(has("dom")){
-		has.add("dom-addeventlistener", !!doc.addEventListener);
 		has.add("ie-event-behavior", doc.attachEvent && (typeof opera === "undefined" || opera.toString() != "[object Opera]"));
 	}
 
@@ -1591,9 +1590,13 @@
 				mix(module, {
 					injected:arrived,
 					deps: [],
-					result: dojo.getObject(mid, true)
+					result: dojo.getObject(mid, true),
+					finish: function(){
+						module.finish= 0;
+						module.result= dojo.getObject(mid);
+						finishExec(module);
+					}
 				});
-				finishExec(module);
 				return module.result;
 			};
 

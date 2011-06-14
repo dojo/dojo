@@ -35,7 +35,7 @@ return dojo.store.Observable = function(store){
 	//
 	//		See the Observable tests for more information.
 
-	var queryUpdaters = [], revision = 0;
+	var undef, queryUpdaters = [], revision = 0;
 	// a Comet driven store could directly call notify to notify observers when data has
 	// changed on the backend
 	store.notify = function(object, existingId){
@@ -68,7 +68,7 @@ return dojo.store.Observable = function(store){
 								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
 							}
 							var removedObject, removedFrom = -1, insertedInto = -1;
-							if(existingId){
+							if(existingId !== undef){
 								// remove the old one
 								for(i = 0, l = resultsArray.length; i < l; i++){
 									var object = resultsArray[i];

@@ -4,6 +4,7 @@ dojo.require("dojo.store.Observable");
 (function(){
 	var store = dojo.store.Observable(new dojo.store.Memory({
 		data: [
+			{id: 0, name: "zero", even: true, prime: false},
 			{id: 1, name: "one", prime: false},
 			{id: 2, name: "two", even: true, prime: true},
 			{id: 3, name: "three", prime: true},
@@ -86,7 +87,19 @@ dojo.require("dojo.store.Observable");
 					id:11, name:"eleven", prime:true
 				});
 				t.is(changes, expectedChanges);
-			}
+			},
+			function testQueryWithZeroId(t){
+                var results = store.query({});
+                t.is(results.length, 8);
+                var observer = results.observe(function(object, previousIndex, newIndex){
+                        // we only do puts so previous & new indices must always been the same
+                        // unfortunately if id = 0, the previousIndex
+                        console.log("called with: "+previousIndex+", "+newIndex);
+                        t.is(previousIndex, newIndex);
+                }, true);
+                store.put({id: 5, name: "-FIVE-", prime: true});
+                store.put({id: 0, name: "-ZERO-", prime: false});
+            }			
 		]
 	);
 })();

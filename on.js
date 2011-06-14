@@ -68,6 +68,11 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		return addListener(target, type, listener, dontFix, this);
 	};
 	on.pausable =  function(target, type, listener, dontFix){
+		// summary:
+		//		This function acts the same as on(), but with pausable functionality. The
+		// 		returned signal object has pause() and resume() functions. Calling the
+		//		pause() method will cause the listener to not be called for future events. Calling the
+		//		resume() method will cause the listener to again be called for future events.
 		var paused;
 		var signal = on(target, type, function(){
 			if(!paused){
@@ -80,6 +85,19 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		signal.resume = function(){
 			paused = false;
 		};
+		return signal;
+	};
+	on.once = function(target, type, listener, dontFix){
+		// summary:
+		//		This function acts the same as on(), but will only call the listener once. The 
+		// 		listener will be called for the first
+		//		event that takes place and then listener will automatically be removed.
+		var signal = on(target, type, function(){
+			// remove this listener
+			signal.remove();
+			// proceed to call the listener
+			return listener.apply(this, arguments);
+		});
 		return signal;
 	};
 	var prototype = (on.Evented = function(){}).prototype;

@@ -45,6 +45,20 @@ doh.register("tests.on",
 			});
 			t.is(order, [0,0,3,0,3,3,3,3,6,0,3,7,4]);
 		},
+		function once(t){
+			var order = [];
+			var obj = {
+				oncustom: function(event){
+					order.push(event.a);
+				}
+			};
+			var signal = on.once(obj, "custom", function(event){
+				order.push(1);
+			});
+			obj.oncustom({a:0});
+			obj.oncustom({a:2}); // should call original method, but not listener
+			t.is(order, [0,1,2]);
+		},
 		function dom(t){
 			var div = document.body.appendChild(document.createElement("div"));
 			var span = div.appendChild(document.createElement("span"));

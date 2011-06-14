@@ -18,7 +18,7 @@ define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 	// 		|			dojo.removeClass(targetNode, "highlighted");
 	//		|		});
 	has.add("dom-quirks", document.compatMode == "BackCompat");
-	has.add("events-mouseenter", "onmouseenter" in document);
+	has.add("events-mouseenter", "onmouseenter" in document.createElement("div"));
 	var mouseButtons;
 	if(has("dom-quirks") || !has("dom-addeventlistener")){
 		mouseButtons = {

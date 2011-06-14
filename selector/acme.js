@@ -62,11 +62,6 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 	////////////////////////////////////////////////////////////////////////
 
 
-	// on browsers that support the "children" collection we can avoid a lot of
-	// iteration on chaff (non-element) nodes.
-	// why.
-	var childNodesName = !!getDoc().firstChild["children"] ? "children" : "childNodes";
-
 	var specials = ">~+";
 
 	// global thunk to determine whether we should treat the current query as
@@ -512,7 +507,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 	var getNodeIndex = function(node){
 		var root = node.parentNode;
 		var i = 0,
-			tret = root[childNodesName],
+			tret = root.children || root.childNodes,
 			ci = (node["_i"]||-1),
 			cl = (root["_l"]||-1);
 
@@ -791,7 +786,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		filterFunc = filterFunc||yesman;
 		return function(root, ret, bag){
 			// get an array of child elements, skipping text and comment nodes
-			var te, x = 0, tret = root[childNodesName];
+			var te, x = 0, tret = root.children || root.childNodes;
 			while(te = tret[x++]){
 				if(
 					_simpleNodeTest(te) &&

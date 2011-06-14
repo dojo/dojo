@@ -318,8 +318,8 @@
 						function xml_attrs(){
 							var doc = createDocument([
 								"<ResultSet>",
-									"<RESULT thinger='blah'>Two</RESULT>",
-									"<RESULT thinger='gadzooks'>Two</RESULT>",
+									"<RESULT thinger='blah'>ONE</RESULT>",
+									"<RESULT thinger='gadzooks'><CHILD>Two</CHILD></RESULT>",
 								"</ResultSet>"
 							].join(""));
 							var de = doc.documentElement;
@@ -328,6 +328,7 @@
 							doh.is(0, dojo.query("RESULT[THINGER]", de).length, "result elements with attrs (wrong)");
 							doh.is(2, dojo.query("RESULT[thinger]", de).length, "result elements with attrs");
 							doh.is(1, dojo.query("RESULT[thinger=blah]", de).length, "result elements with attr value");
+							doh.is(1, dojo.query("RESULT > CHILD", de).length, "Using child operator");
 						},
 						function sort(){
 							var i = dojo.query("div");

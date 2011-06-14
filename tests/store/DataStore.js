@@ -2,13 +2,15 @@ dojo.provide("dojo.tests.store.DataStore");
 dojo.require("dojo.store.DataStore");
 dojo.require("dojo.data.ItemFileWriteStore");
 var temp = function(){
-	var two, four;
+	var two = {id: 2, name: "two", even: true, prime: true},
+			four = {id: 4, name: "four", even: true, prime: false};
+	
 	var dataStore = new dojo.data.ItemFileWriteStore({data:{
 		items: [
 			{id: 1, name: "one", prime: false},
-			two = {id: 2, name: "two", even: true, prime: true},
+			{id: 2, name: "two", even: true, prime: true},
 			{id: 3, name: "three", prime: true},
-			four = {id: 4, name: "four", even: true, prime: false},
+			{id: 4, name: "four", even: true, prime: false},
 			{id: 5, name: "five", prime: true}
 		],
 		identifier:"id"
@@ -31,11 +33,13 @@ var temp = function(){
 			},
 			function testQuery2(t){
 				var d = new doh.Deferred();
-				store.query({even: true}).map(d.getTestErrback(function(object){
+				var result = store.query({even: true});
+				result.map(d.getTestErrback(function(object){
 					for(var i in object){
 						t.is(object[i], (object.id == 2 ? two : four)[i], "map of " + i);
 					}
-				})).then(d.getTestCallback(function(results){
+				}));
+				result.then(d.getTestCallback(function(results){
 					t.is("four", results[1].name, "then");
 				}));
 				return d;

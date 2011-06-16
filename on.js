@@ -1,53 +1,52 @@
 
 define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
-// summary:
-//		The export of this module is a function that provides core event listening functionality. With this function
-//		you can provide a target, event type, and listener to be notified of 
-//		future matching events that are fired.
-//	target: Element|Object
-//		This is the target object or DOM element that to receive events from
-// type: String|Function
-// 		This is the name of the event to listen for or an extension event type.
-// listener: Function
-// 		This is the function that should be called when the event fires.
-// returns: Object
-// 		An object with a remove() method that can be used to stop listening for this
-// 		event.
-// description:
-// 		To listen for "click" events on a button node, we can do:
-// 		|	define(["dojo/on"], function(listen){
-// 		|		on(button, "click", clickHandler);
-//		|		...
-//  	Plain JavaScript objects can also have their own events.
-// 		|	var obj = {};
-//		|	on(obj, "foo", fooHandler);
-//		And then we could publish a "foo" event:
-//		|	on.emit(obj, "foo", {key: "value"});
-//		We can use extension events as well. For example, you could listen for a tap gesture:
-// 		|	define(["dojo/on", "dojo/gesture/tap", function(listen, tap){
-// 		|		on(button, tap, tapHandler);
-//		|		...
-//		which would trigger fooHandler. Note that for a simple object this is equivalent to calling:
-//		|	obj.onfoo({key:"value"});
-//		If you use on.emit on a DOM node, it will use native event dispatching when possible.
-//		You can also use listen function itself as a pub/sub hub:
-//		| 	on("some/topic", function(event){
-//		|	... do something with event
-//		|	});
-//		|	on.publish("some/topic", {name:"some event", ...});
-// Evented: 
-// 		The "Evented" property of the export of this module can be used as a mixin or base class, to add on() and emit() methods to a class
-// 		for listening for events and emiting events:
-// 		|	var Evented = on.Evented;
-// 		|	var EventedWidget = dojo.declare([Evented, dijit._Widget], {...});
-//		|	widget = new EventedWidget();
-//		|	widget.on("open", function(event){
-//		|	... do something with event
-//		|	 });
-//		|
-//		|	widget.emit("open", {name:"some event", ...});
-//
-//
+	// summary:
+	//		The export of this module is a function that provides core event listening functionality. With this function
+	//		you can provide a target, event type, and listener to be notified of
+	//		future matching events that are fired.
+	// target: Element|Object
+	//		This is the target object or DOM element that to receive events from
+	// type: String|Function
+	// 		This is the name of the event to listen for or an extension event type.
+	// listener: Function
+	// 		This is the function that should be called when the event fires.
+	// returns: Object
+	// 		An object with a remove() method that can be used to stop listening for this
+	// 		event.
+	// description:
+	// 		To listen for "click" events on a button node, we can do:
+	// 		|	define(["dojo/on"], function(listen){
+	// 		|		on(button, "click", clickHandler);
+	//		|		...
+	//  	Plain JavaScript objects can also have their own events.
+	// 		|	var obj = {};
+	//		|	on(obj, "foo", fooHandler);
+	//		And then we could publish a "foo" event:
+	//		|	on.emit(obj, "foo", {key: "value"});
+	//		We can use extension events as well. For example, you could listen for a tap gesture:
+	// 		|	define(["dojo/on", "dojo/gesture/tap", function(listen, tap){
+	// 		|		on(button, tap, tapHandler);
+	//		|		...
+	//		which would trigger fooHandler. Note that for a simple object this is equivalent to calling:
+	//		|	obj.onfoo({key:"value"});
+	//		If you use on.emit on a DOM node, it will use native event dispatching when possible.
+	//		You can also use listen function itself as a pub/sub hub:
+	//		| 	on("some/topic", function(event){
+	//		|	... do something with event
+	//		|	});
+	//		|	on.publish("some/topic", {name:"some event", ...});
+	// Evented:
+	// 		The "Evented" property of the export of this module can be used as a mixin or base class, to add on() and emit() methods to a class
+	// 		for listening for events and emiting events:
+	// 		|	var Evented = on.Evented;
+	// 		|	var EventedWidget = dojo.declare([Evented, dijit._Widget], {...});
+	//		|	widget = new EventedWidget();
+	//		|	widget.on("open", function(event){
+	//		|	... do something with event
+	//		|	 });
+	//		|
+	//		|	widget.emit("open", {name:"some event", ...});
+
  	"use strict";
 	var after = aspect.after;
 	if(typeof window != "undefined"){ // check to make sure we are in a browser, this module should work anywhere

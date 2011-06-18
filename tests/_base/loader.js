@@ -8,6 +8,7 @@ define([
 	if(doh.isBrowser){
 		doh.register("tests._base.loader.asyncWithDojoRequire", require.toUrl("./loader/asyncWithDojoRequire.html"));
 		doh.register("tests._base.loader.config?dojoConfig-djConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig-require");
+
 		doh.register("tests._base.loader.config?dojoConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-require");
 		doh.register("tests._base.loader.config?dojoConfig-djConfig", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig");
 		doh.register("tests._base.loader.config?dojoConfig", require.toUrl("./loader/config.html")+"?dojoConfig");
@@ -18,14 +19,17 @@ define([
 		doh.register("tests._base.loader.config?config-sniff.html", require.toUrl("./loader/config-sniff.html"));
 		doh.register("tests._base.loader.config?config-sniff-djConfig.html", require.toUrl("./loader/config-sniff-djConfig.html"));
 		doh.register("tests._base.loader.config?config-has.html", require.toUrl("./loader/config-has.html"));
-		doh.register("tests._base.loader.errorApi.html", require.toUrl("./loader/errorApi.html"));
-		doh.register("tests._base.loader.errorApi.html?noCatch", require.toUrl("./loader/errorApi.html")+"?noCatch");
 		//TODO: doh.register("tests._base.loader.cdn-load", require.toUrl("./loader/cdnTest.html"));
-
 		doh.register("tests._base.loader.loader-declareStepsOnProvide", require.toUrl("./loader/declareStepsOnProvide.html"));
 
 		doh.register("tests._base.loader.publish-require-result", require.toUrl("./loader/publishRequireResult.html"));
 		doh.register("tests._base.loader.no-publish-require-result", require.toUrl("./loader/publishRequireResult.html")+"?do-not-publish");
+
+		doh.register("tests._base.loader.top-level-module-by-paths", require.toUrl("./loader/paths.html"));
+		doh.register("tests._base.loader.xdomin-sync-1", require.toUrl("./loader/xdomain/xdomain.html"), {async:0, variation:1});
+		doh.register("tests._base.loader.xdomin-sync-2", require.toUrl("./loader/xdomain/xdomain.html"), {async:0, variation:2});
+		doh.register("tests._base.loader.xdomin-async-1", require.toUrl("./loader/xdomain/xdomain.html"), {async:"async", variation:1});
+		doh.register("tests._base.loader.xdomin-async-2", require.toUrl("./loader/xdomain/xdomain.html"), {async:"async", variation:2});
 
 		// the requirejs test suite. The following tests are not used:
 		//
@@ -81,7 +85,7 @@ define([
 			dojo:compactPath(root + "/../" + require.toUrl("../../dojo.js"))
 		});
 
-		doh.register("tests._base.loader.requirejs-circular-sync", require.toUrl("./loader/requirejs/circular.html"), {async:0});
+		//doh.register("tests._base.loader.requirejs-circular-sync", require.toUrl("./loader/requirejs/circular.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-circular-async", require.toUrl("./loader/requirejs/circular.html"), {async:1});
 
 		doh.register("tests._base.loader.requirejs-depoverlap-sync", require.toUrl("./loader/requirejs/depoverlap.html"), {async:0});

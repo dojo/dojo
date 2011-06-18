@@ -48,6 +48,39 @@
 						t.t(called2);
 						t.is(savedRawConfig.someFeature, 0);
 						t.is(savedRawConfig.someOtherFeature, 1);
+						h2.remove();
+
+						require({async:1});
+						t.is(require.async, true);
+						t.is(require.legacyMode, false);
+
+						require({async:true});
+						t.is(require.async, true);
+						t.is(require.legacyMode, false);
+
+						require({async:2});
+						t.is(require.async, true);
+						t.is(require.legacyMode, false);
+
+						require({async:"nonsense"});
+						t.is(require.async, true);
+						t.is(require.legacyMode, false);
+
+						require({async:0});
+						t.is(require.async, false);
+						t.is(require.legacyMode, "sync");
+
+						require({async:false});
+						t.is(require.async, false);
+						t.is(require.legacyMode, "sync");
+
+						require({async:"sync"});
+						t.is(require.async, false);
+						t.is(require.legacyMode, "sync");
+
+						require({async:"async"});
+						t.is(require.async, false);
+						t.is(require.legacyMode, "async");
 					}
 				]);
 				doh.runOnLoad();

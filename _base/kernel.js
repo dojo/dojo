@@ -7,43 +7,97 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		// loop variables for this module
 		i, p,
 
-		// create dojo, dijit, and dojox; initialize _scopeName and possibly publish to the global
-		// namespace: three possible cases:
-		//
-		//   1. The namespace is not mentioned in config.scopeMap: _scopeName is set to the default
-		//      name (dojo, dijit, or dojox), and the object is published to the global namespace
-		//
-		//   2. The namespace is mentioned with a nonempty name: _scopeName is set to the name given
-		//      and the object is published to the global namespace under that name
-		//
-		//   3. Then namespace is mentioned, but the value is falsy (e.g., ""): _scopeName is set to
-		//       _(dojo|dijit|dojox)<reasonably-unque-number> and the object is *not* published to the global namespace
+		// create dojo, dijit, and dojox
+		// FIXME: in 2.0 remove dijit, dojox being created by dojo
+		dijit = {},
+		dojox = {},
 		dojo = {
 			config: {},
 			global:this,
-			dijit:{},
-			dojox:{}
+			dijit:dijit,
+			dojox:dojox
 		},
-		temp = {dojo:dojo, dijit:dojo.dijit, dojox:dojo.dojox},
-		scopeMap = {dojo:"dojo", dijit:"dijit", dojox:"dojox"},
-		match = module.id.match(/[^\/]+/),
-		thisDojoName = match && match[0],
-		configScopeMap = config[thisDojoName + "Scope"] || config.scopeMap || [];
+
+		// Configure the scope map. For a 100% AMD application, the scope map is not needed other than to provide
+		// a _scopeName property for the dojo, dijit, and dojox root object so those packages can create
+		// unique names in the global space.
+		//
+		// Built, legacy modules use the scope map to allow those modules to be expressed as if dojo, dijit, and dojox,
+		// where global when in fact they are either global under different names or not global at all.  For example,
+		// if a legacy module looks like this:
+		//
+		// dojo.provide("myModule");
+		// dojo.connect("myNode", "click", function(){//...
+		//
+		// When it is built, it will look like this
+		//
+		// define(["dojo/scope!dojo", "dojo"], function(dojo){
+		//   dojo.provide("myModule");
+		//   dojo.connect("myNode", "click", function(){//...
+		//
+		//   // some other stuff omitted
+		// });
+		//
+		// This module can be loaded with dojo relocated to another global name (or not named in the global namespace at all).
+		//
+		// The configuration can contain a scope map of triples (name, global-name, target-object) which gives a name used
+		// internally by legacy modules (name) for a top-level object, the global name (global-name) at which the top-level
+		// object resides (if any) and the value of the top-level object. If no value if given for the top-level object,
+		// it is initialized to {}. Any value provided for dojo, dijit, and/or dojox is ignored (the packages take responsibility
+		// for initializing their own objects).  If no global name is provided for a particular top-level name, then a
+		// reasonably-random unique name is manufactured.
+		//
+		// By default, we have
+		//
+		// dojo.scopeMap.dojo[0]==="dojo" and dojo.scopeMap.dojo[1]===dojo
+		// dojo.scopeMap.dijit[0]==="dijit" and dojo.scopeMap.dijit[1]===dojo.dijit
+		// dojo.scopeMap.dojox[0]==="dojox" and dojo.scopeMap.dojox[1]===dojo.dojox
+		//
+		// The config scope map of  [["dojo", "myDojo"], ["dijit"], , ["dojox"]] would generate something like this:
+		//
+		// dojo.scopeMap.dojo[0]==="myDojo" and dojo.scopeMap.dojo[1]===dojo
+		// dojo.scopeMap.dijit[0]==="dijit_1308291332419" and dojo.scopeMap.dijit[1]===dojo.dijit
+		// dojo.scopeMap.dojox[0]==="dojox_1308291332420" and dojo.scopeMap.dojox[1]===dojo.dojox
+		//
+		scopeMap =
+			// a map from a name used in a legacy module to the the global variable name and object addressed by that name
+			{dojo:["dojo", dojo], dijit:["dijit", dijit], dojox:["dojox", dojox]},
+
+		thisDojoName =
+			// the top-level name known to the loader that this instance of dojo is being loaded at
+			module.id.match(/[^\/]+/)[0],
+
+		configScopeMap =
+			// configuration to edit or expand scopeMap; given as tripples [name, globalName, object]
+			config[thisDojoName + "Scope"] || config.scopeMap || [],
+
+		seed =
+			// seed used to create unique scope names
+			(new Date).getTime(),
+
+		item, name, globalName, theObject;
+
 	for(i = 0; i < configScopeMap.length; i++){
-		scopeMap[configScopeMap[i][0]] = configScopeMap[i][1];
+		item = configScopeMap[i],
+		name = item[0],
+		globalName = item[1] || (name + "_" + i + seed),
+		theObject = {dojo:dojo, dijit:dijit, dojox:dojox}[name] || item[2] || {};
+		scopeMap[item] = [globalName, theObject];
 	}
-	for(p in temp){
-		temp[p]._scopeName = scopeMap[p];
+	for(p in scopeMap){
+		item = scopeMap[p];
+		item[1]._scopeName = item[0];
 		if(!config.noGlobals){
-			dojo.global[scopeMap[p]] = temp[p];
+			this[item[0]] = item[1];
 		}
 	}
+	dojo.scopeMap = scopeMap;
 
 	// copy the configuration, but only one-level deep; we'll clone it in the main module
 	// after dojo.clone is defined. This technique will allow us to do some clean up on
 	// the passed in config yet ultimately return the config object as we received it. After
 	// the main module is defined and config is cloned, dojo's config object is completely
-	// independend of the passed config object.
+	// independent of the passed config object.
 	//
 	// allow the configuration to overwrite existing has feature tests during this bootstrap;
 	// this allows (e.g.) hard-setting a has feature test to force an execution path that may

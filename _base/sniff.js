@@ -161,7 +161,6 @@ define(["./kernel", "../has"], function(dojo, has){
 
 	isQuirks = document.compatMode == "BackCompat";
 
-	has.add("browser", 1);
 	has.add("opera", dojo.isOpera= isOpera);
 	has.add("air", dojo.isAIR= isAIR);
 	has.add("khtml", dojo.isKhtml= isKhtml);

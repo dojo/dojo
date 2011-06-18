@@ -1,9 +1,20 @@
-define(["dojo", "doh"], function(dojo, doh){
+define(["dojo", "doh", "require"], function(dojo, doh, require){
 	doh.register("tests._base._loader.bootstrap", [
 		function hasConsole(t){
 			t.assertTrue("console" in dojo.global);
 			t.assertTrue("assert" in console);
 			t.assertEqual("function", typeof console.assert);
+		},
+
+		function getText(t){
+			if(require.getText){
+				var text = require.getText(require.toUrl("dojo/tests/_base/loader/getText.txt"));
+				t.assertEqual("dojo._getText() test data", text);
+				if(dojo._getText){
+					text = dojo._getText(require.toUrl("dojo/tests/_base/loader/getText.txt"));
+					t.assertEqual("dojo._getText() test data", text);
+				}
+			}
 		},
 
 		{

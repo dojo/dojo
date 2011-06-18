@@ -153,8 +153,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 		thisModule.getLocalization= function(moduleName, bundleName, locale){
 			var
 				result,
-				l10nName= getL10nName(moduleName, bundleName, locale);
-			load(l10nName.substring(10), syncRequire, function(result_){ result= result_; });
+				l10nName= getL10nName(moduleName, bundleName, locale).substring(10),
+				isXd = require.isXdUrl(require.toUrl(l10nName + ".js"));
+			load(l10nName, isXd ? require : syncRequire, function(result_){ result= result_; });
 			return result;
 		};
 

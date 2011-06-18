@@ -4,7 +4,6 @@ if(require.has){
 define([
 	"../ready",
 	"./kernel",
-	"./sniff",
 	"./connect", // until we decide if connect is going back into non-browser environments
 	"./unload",
 	"./window",

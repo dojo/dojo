@@ -2,13 +2,12 @@
 <head>
 	<script type="text/javascript" src="../../../dojo.js"></script>
 	<script type="text/javascript">
-		require({paths:{myModule:"./tests/_base/loader/myModule"}});
-		require(["myModule", "doh"], function(myModule, doh){
-			doh.register("paths", [
+		require({paths:{myTopLevelModule:"./tests/_base/loader/myTopLevelModule"}});
+		require(["myTopLevelModule", "doh"], function(myModule, doh){
+			doh.register("top-level-module-via-paths", [
 				function(t){
-					t.is(myModule.name, "myModule");
-					t.is(myModule.sibling, "siblingModule");
-					t.is(myModule.child, "childModule");
+					t.is(myTopLevelModule.name, "myTopLevelModule");
+					t.is(myTopLevelModule.myModule.name, "myTopLevelModule.myModule");
 				}
 			]);
 			doh.runOnLoad();

@@ -2,7 +2,7 @@ define([
 	"./_base/kernel",
 	"./has",
 	"require",
-	"./has!dojo-sync-loader?./_base/loader",
+	"./_base/sniff",
 	"./_base/lang",
 	"./_base/array",
 	"./_base/declare",
@@ -11,7 +11,8 @@ define([
 	"./_base/json",
 	"./_base/Color",
 	"./has!dojo-firebug?./_firebug/firebug",
-	"./has!host-browser?./_base/browser"], function(dojo, has, require){
+	"./has!host-browser?./_base/browser",
+	"./has!dojo-sync-loader?./_base/loader"], function(dojo, has, require){
 	// module:
 	//		dojo/main
 	// summary:

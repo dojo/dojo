@@ -128,8 +128,8 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 	if(has("dojo-sync-loader") && dojo.config.parseOnLoad && !dojo.isAsync){
 		ready(99, function(){
 			if(!dojo.parser){
-				dojo.deprecated("Add explicit dojo.require('dojo.parser');", "", "2.0");
-				dojo.require("dojo.parser");
+				dojo.deprecated("Add explicit require(['dojo/parser']);", "", "2.0");
+				require(["dojo/parser"]);
 			}
 		});
 	}

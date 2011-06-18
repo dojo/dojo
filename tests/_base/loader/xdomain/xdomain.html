@@ -5,15 +5,15 @@
 
 	  // for test debuggin...
 	  //dohArgs = {async:0, variation:1}
-	  //dohArgs = {async:"async", variation:1}
+	  //dohArgs = {async:"legacyAsync", variation:1}
 	  //dohArgs = {async:0, variation:2}
-	  //dohArgs = {async:"async", variation:2}
+	  //dohArgs = {async:"legacyAsync", variation:2}
 
 	  var dojoConfig = {
 		async:dohArgs.async
 	  }
 	  var expectedSequence;
-	  if(dohArgs.async=="async" && dohArgs.variation==2){
+	  if(dohArgs.async=="legacyAsync" && dohArgs.variation==2){
 		expectedSequence = [
 			"local1-5",
 			"local1-17",
@@ -108,7 +108,7 @@
 			"dojo.tests._base.loader.xdomain.local1-browser-1",
 			"dojo.tests._base.loader.xdomain.local1-browser-2",
 			"dojo.tests._base.loader.xdomain.local1-browser-skip-1"].join(";");
-	  }else if(dohArgs.async=="async" && dohArgs.variation==1){
+	  }else if(dohArgs.async=="legacyAsync" && dohArgs.variation==1){
 		expectedSequence = [
 			"local1-5",
 			"local1-17",

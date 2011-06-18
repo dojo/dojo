@@ -28,8 +28,8 @@ define([
 		doh.register("tests._base.loader.top-level-module-by-paths", require.toUrl("./loader/paths.html"));
 		doh.register("tests._base.loader.xdomin-sync-1", require.toUrl("./loader/xdomain/xdomain.html"), {async:0, variation:1});
 		doh.register("tests._base.loader.xdomin-sync-2", require.toUrl("./loader/xdomain/xdomain.html"), {async:0, variation:2});
-		doh.register("tests._base.loader.xdomin-async-1", require.toUrl("./loader/xdomain/xdomain.html"), {async:"async", variation:1});
-		doh.register("tests._base.loader.xdomin-async-2", require.toUrl("./loader/xdomain/xdomain.html"), {async:"async", variation:2});
+		doh.register("tests._base.loader.xdomin-async-1", require.toUrl("./loader/xdomain/xdomain.html"), {async:"legacyAsync", variation:1});
+		doh.register("tests._base.loader.xdomin-async-2", require.toUrl("./loader/xdomain/xdomain.html"), {async:"legacyAsync", variation:2});
 
 		// the requirejs test suite. The following tests are not used:
 		//

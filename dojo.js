@@ -405,12 +405,12 @@
 				if(has("dojo-sync-loader")){
 					// falsy or "sync" => legacy sync loader
 					// "xd" => sync but loading xdomain tree and therefore loading asynchronously (not configurable, set automatically by the loader)
-					// "async" => permanently in "xd" by choice
+					// "legacyAsync" => permanently in "xd" by choice
 					// "debugAtAllCosts" => trying to load everything via script injection (not implemented)
 					// otherwise, must be truthy => AMD
 					var mode = config.async;
 					if(mode!==undefined){
-						req.legacyMode = legacyMode = (isString(mode) && /sync|async/.test(mode) ? mode : (!mode ? "sync" : false));
+						req.legacyMode = legacyMode = (isString(mode) && /sync|legacyAsync/.test(mode) ? mode : (!mode ? "sync" : false));
 						req.async = !legacyMode;
 					}
 				}

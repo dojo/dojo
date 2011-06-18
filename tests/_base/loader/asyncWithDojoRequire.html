@@ -85,7 +85,7 @@
 			// dojo must be loaded for legacy modes to work
 			require({async:"sync"}, ["dojo"]);
 			// now we can switch to legacy async mode
-			require({async:"async"});
+			require({async:"legacyAsync"});
 		}
 		require(["dojo", "doh", mid], function(dojo, doh, syncModule) {
 			dojo.ready(function() {

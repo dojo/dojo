@@ -78,9 +78,9 @@
 						t.is(require.async, false);
 						t.is(require.legacyMode, "sync");
 
-						require({async:"async"});
+						require({async:"legacyAsync"});
 						t.is(require.async, false);
-						t.is(require.legacyMode, "async");
+						t.is(require.legacyMode, "legacyAsync");
 					}
 				]);
 				doh.runOnLoad();

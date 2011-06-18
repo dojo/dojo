@@ -1267,6 +1267,7 @@
 			},
 			windowOnLoadListener = on(window, "load", "onload", function(){
 				req.pageLoaded = 1;
+				doc.readyState!="complete" && (doc.readyState = "complete");
 				windowOnLoadListener();
 			});
 	}

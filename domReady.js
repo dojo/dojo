@@ -3,7 +3,7 @@ define(['./has'], function(has){
 		doc = document,
 		readyStates = { 'loaded': 1, 'complete': 1 },
 		fixReadyState = typeof doc.readyState != "string",
-		ready = require.pageLoaded || !!readyStates[doc.readyState];
+		ready = !!readyStates[doc.readyState];
 
 	// For FF <= 3.5
 	if(fixReadyState){ doc.readyState = "loading"; }

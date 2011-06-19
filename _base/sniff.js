@@ -105,7 +105,14 @@ define(["./kernel", "../has"], function(dojo, has){
 	dojo._name = "browser";
 
 	// fill in the rendering support information in dojo.render.*
-	if(dua.indexOf("Opera") >= 0){ isOpera = tv; }
+	if(dua.indexOf("Opera") >= 0){
+		isOpera = tv;
+		// see http://dev.opera.com/articles/view/opera-ua-string-changes and http://www.useragentstring.com/pages/Opera/
+		// 9.8 has both styles; <9.8, 9.9 only old style
+		if(isOpera >= 9.8){
+			isOpera = parseFloat(dua.split("Version/")[1]) || tv;
+		}
+	}
 	if(dua.indexOf("AdobeAIR") >= 0){ isAIR = 1; }
 	isKhtml = (dav.indexOf("Konqueror") >= 0) ? tv : 0;
 	isWebKit = parseFloat(dua.split("WebKit/")[1]) || undefined;

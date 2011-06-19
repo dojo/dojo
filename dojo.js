@@ -1090,9 +1090,12 @@
 					}
 				};
 				if(cache[pqn]){
+					req.trace("loader-inject", ["cache", module.pqn, url]);
 					evalModuleText(0, module);
 					onLoadCallback();
-				}else if(has("dojo-sync-loader") && legacyMode){
+					return;
+				}
+				if(has("dojo-sync-loader") && legacyMode){
 					if(module.isXd){
 						// switch to async mode temporarily?
 						legacyMode==sync && (legacyMode = xd);

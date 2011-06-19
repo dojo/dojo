@@ -17,6 +17,21 @@ define(["doh", "dojo", "dojo/_base/url"], function(doh, dojo){
 	};
 
 	doh.register("dojo.tests._base._loader.modulesIds", [
+		function compactPath(t){
+			var compactPath = require.compactPath;
+			t.is(compactPath("../../dojo/../../mytests"), "../../../mytests");
+			t.is(compactPath("module"), "module");
+			t.is(compactPath("a/./b"), "a/b");
+			t.is(compactPath("a/../b"), "b");
+			t.is(compactPath("a/./b/./c/./d"), "a/b/c/d");
+			t.is(compactPath("a/../b/../c/../d"), "d");
+			t.is(compactPath("a/b/c/../../d"), "a/d");
+			t.is(compactPath("a/b/c/././d"), "a/b/c/d");
+			t.is(compactPath("./a/b"), "a/b");
+			t.is(compactPath("../a/b"), "../a/b");
+			t.is(compactPath(""), "");
+		},
+
 		function testModuleIds(t){
 			require({
 				packages:[{

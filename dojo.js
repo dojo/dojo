@@ -186,8 +186,7 @@
 		arrived = 2,
 		nonmodule = 3,
 		executing = 4,
-		executed = 5,
-		special = 7;
+		executed = 5;
 
 	if(has("dojo-trace-api")){
 		// these make debugging nice; but using strings for symbols is a gross rookie error; don't do it for production code
@@ -196,7 +195,6 @@
 		nonmodule = "not-a-module";
 		executing = "executing";
 		executed = "executed";
-		special = "special";
 	}
 
 	if(has("dojo-combo-api")){
@@ -638,6 +636,7 @@
 				segment = path.shift();
 				if(segment==".." && result.length && lastSegment!=".."){
 					result.pop();
+					lastSegment = result[result.length - 1];
 				}else if(segment!="."){
 					result.push(lastSegment= segment);
 				} // else ignore "."
@@ -766,14 +765,14 @@
 			result: nonmodule
 		},
 
-		makeSpecial = function(id){
+		makeCjs = function(id){
 			var pqn = "*" + id;
 			return modules[pqn] = mix({pqn:pqn}, nonModuleProps);
 		},
 
-		cjsRequireModule = makeSpecial("require"),
-		cjsExportsModule = makeSpecial("exports"),
-		cjsModuleModule = makeSpecial("module"),
+		cjsRequireModule = makeCjs("require"),
+		cjsExportsModule = makeCjs("exports"),
+		cjsModuleModule = makeCjs("module"),
 
 		// this is a flag to say at least one factory was run during a deps tree traversal
 		runFactory = function(pqn, factory, args, cjs){

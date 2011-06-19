@@ -495,13 +495,17 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			//	|	var tmpltPath = dojo.moduleUrl("acme.widget","templates/template.html");
 			//	|	var dataPath = dojo.moduleUrl("acme.util","resources/data.json");
 
-			// TODOC v1.6- returns a trailing slash if url is missing; v1.7+ does not
-			// TODOC v1.6- returns null iff module is falsy
+			dojo.deprecated("require.toUrl()", "use require.toUrl", "2.0");
 
-			// require.toUrl requires a filetype; therefore, just append the suffix "/x.y" to guarantee a filetype, then
+			// require.toUrl requires a filetype; therefore, just append the suffix "/*.*" to guarantee a filetype, then
 			// remove the suffix from the result. This way clients can request a url w/out a filetype. This should be
-			// rare, but it maintains backcompat for the v1.x line (note: dojo.moduleUrl will be removed in v2.0)
-			return require.toUrl(module.replace(/\./g, "/") + (url ? ("/" + url) : "") + "/x.y").match(/(.+)\/x\.\y$/)[1];
+			// rare, but it maintains backcompat for the v1.x line (note: dojo.moduleUrl will be removed in v2.0).
+			// Notice * is an illegal filename so it won't conflict with any real path map that may exist the paths config.
+			var result = null;
+			if(module){
+				result = require.toUrl(module.replace(/\./g, "/") + (url ? ("/" + url) : "") + "/*.*").match(/(.+)\/\*\.\*$/)[1] + (url ? "" : "/");
+			}
+			return result;
 		};
 	}
 

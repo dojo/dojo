@@ -96,13 +96,23 @@ define(["doh", "dojo", "dojo/_base/url"], function(doh, dojo){
 			t.assertEqual(originalBaseUrl, dojo.baseUrl);
 		},
 
+		function moduleUrl(t){
+			var expected = require.toUrl("dojo/tests/myTest.html");
+			t.is(null, dojo.moduleUrl());
+			t.is(null, dojo.moduleUrl(null));
+			t.is(null, dojo.moduleUrl(null, "myTest.html"));
+			// note we expect a trailing slash
+			t.is(expected.substring(0, expected.length - 11), dojo.moduleUrl("dojo.tests"));
+			t.is(expected, dojo.moduleUrl("dojo.tests", "myTest.html"));
+		},
+
 		function modulePaths(t){
 			dojo.registerModulePath("mycoolmod", "../some/path/mycoolpath");
 			dojo.registerModulePath("mycoolmod.widget", "http://some.domain.com/another/path/mycoolpath/widget");
 
-			t.assertEqual(compactPath(require.baseUrl + "../some/path/mycoolpath/util"), dojo.moduleUrl("mycoolmod.util"));
-			t.assertEqual("http://some.domain.com/another/path/mycoolpath/widget", dojo.moduleUrl("mycoolmod.widget"));
-			t.assertEqual("http://some.domain.com/another/path/mycoolpath/widget/thingy", dojo.moduleUrl("mycoolmod.widget.thingy"));
+			t.assertEqual(compactPath(require.baseUrl + "../some/path/mycoolpath/util/"), dojo.moduleUrl("mycoolmod.util"));
+			t.assertEqual("http://some.domain.com/another/path/mycoolpath/widget/", dojo.moduleUrl("mycoolmod.widget"));
+			t.assertEqual("http://some.domain.com/another/path/mycoolpath/widget/thingy/", dojo.moduleUrl("mycoolmod.widget.thingy"));
 		},
 
 		function moduleUrls(t){

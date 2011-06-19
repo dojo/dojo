@@ -495,7 +495,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			//	|	var tmpltPath = dojo.moduleUrl("acme.widget","templates/template.html");
 			//	|	var dataPath = dojo.moduleUrl("acme.util","resources/data.json");
 
-			dojo.deprecated("require.toUrl()", "use require.toUrl", "2.0");
+			dojo.deprecated("dojo.moduleUrl()", "use require.toUrl", "2.0");
 
 			// require.toUrl requires a filetype; therefore, just append the suffix "/*.*" to guarantee a filetype, then
 			// remove the suffix from the result. This way clients can request a url w/out a filetype. This should be

@@ -114,7 +114,7 @@ function queryForEngine(engine){
 	if(typeof engine != "function"){
 		var search = engine.search;
 		engine = function(selector, root){
-			// Slick does it backwards
+			// Slick does it backwards (or everyone else does it backwards, probably the latter)
 			return search(root || document, selector);
 		};
 	}

@@ -190,10 +190,9 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
 				// there is a selector, so make sure it matches
 				while(!matchesTarget.matches(eventTarget, selector, target)){
-					if(eventTarget == target || !eventTarget){
+					if(eventTarget == target || !(eventTarget = eventTarget.parentNode)){ // intentional assignment
 						return;
 					}
-					eventTarget = eventTarget.parentNode;
 				}
 				return listener.call(eventTarget, event);
 			});

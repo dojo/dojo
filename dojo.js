@@ -1467,11 +1467,13 @@
 				return result.executed===executed && result;
 			},
 
+			buildDetectRe = /^require\.built/,
+
 			hookProvides = function(module, text, dojo){
 				// module may or may not be a sync module (we can't tell); however, if its a sync module,
 				// we need to make sure the the dojo.provides are processed properly when the module is
 				// finally evaluated. Alse, old modules may have multiple dojo.provide applications.
-				if(dojo || getDojoKernelModule(module)){
+				if((dojo || getDojoKernelModule(module)) &&  !buildDetectRe.test(text)){
 					var match, pattern = /(\W|^)dojo\.provide\s*\(([\w\W]+?)\)/g;
 					while((match = pattern.exec(text))){
 						text+= "require.provideFinish(" + match[2] + ",'" + module.pqn + "');\n";
@@ -1530,6 +1532,11 @@
 				}
 				return foundAtLeastOne;
 			};
+
+		req.built =
+			// this provides a method for a module to signal that it's a built module which won't be stripped
+			// by minifiers; see buildDetectRe
+			noop;
 
 		req.provideFinish = function(mid, referenceModulePqn){
 			var module = getModule(slashName(mid), modules[referenceModulePqn]);
@@ -1696,6 +1703,11 @@
 					if(!dojoModule){
 						// trying to convert a module during the bootstrap; definitely not a legacy module
 						return 0;
+					}
+
+					if(buildDetectRe.test(text)){
+						// don't convert modules explicitly marked as built
+						return text;
 					}
 
 					// Remove comments; this is the regex that comes with v1.6-, but notice that [e.g.], then string literal "/*" would cause failure

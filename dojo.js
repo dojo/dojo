@@ -1027,6 +1027,9 @@
 			},
 
 			// for IE, injecting a module may result in a recursive execution if the module is in the cache
+
+			cached = {},
+
 			injectingModule = 0,
 
 			injectingCachedModule = 0,
@@ -1035,10 +1038,10 @@
 				// see def() for the injectingCachedModule bracket; it simply causes a short, safe curcuit
 				try{
 					injectingCachedModule = 1;
-					if(text){
-						reqEval(text, module.path);
-					}else{
+					if(text===cached){
 						cache[module.pqn].call(null);
+					}else{
+						reqEval(text, module.path);
 					}
 				}finally{
 					injectingCachedModule = 0;
@@ -1091,7 +1094,7 @@
 				};
 				if(cache[pqn]){
 					req.trace("loader-inject", ["cache", module.pqn, url]);
-					evalModuleText(0, module);
+					evalModuleText(cached, module);
 					onLoadCallback();
 					return;
 				}
@@ -1461,6 +1464,48 @@
 				return name.replace(/\./g, "/");
 			},
 
+			// 1: double quote; 2: single quote; 3: /*-style comment; 4: //-style comment; 5: regexp (or division)
+			//                     1   2   3                  4         5
+			specialSectionStart = /(")|(')|(\/\*[\s\S]*?\*\/)|(\/\/.*$)|(\/([^\\\n\r]|\\.)*?\/)/m,
+			dQuoteStringRe = /"([^\\\n\r]|\\.)*?"/, // double-quote string
+			sQuoteStringRe = /'([^\\\n\r]|\\.)*?'/, // single-quote string
+
+			removeComments = function(text){
+				// removes comments using a fairly intelligent (and long) algorithm that accounts for strings and regexs
+				// also abfuscates the character sequence "dojo." inside a string
+				if(text){
+					var match, end, result = "";
+					while((match= text.match(specialSectionStart))){
+						if(match[1] || match[2]){
+							// some kind of quoted string
+							result+= text.substring(0, match.index);
+							text= text.substring(match.index);
+							match = text.match(match[1] ? dQuoteStringRe : sQuoteStringRe);
+							if(!match){
+								throw new Error("unterminated string in code text");
+							}
+							result+= match[0].replace(/dojo\./g, "dojo\u0006");
+							text= text.substring(match[0].length);
+						}else if(match[5]){
+							// a regex (or division)
+							end = match.index + match[5].length;
+							result+= text.substring(0, end);
+							text= text.substring(end);
+						}else{
+							// comments
+							result+= text.substring(0, match.index);
+							text= text.substring(match.index + (match[3] || match[4]).length);
+						}
+					}
+					result+= text;
+				}
+				return result;
+			},
+
+			unobfuscateDojoDot = function(text){
+				return text.replace(/dojo\u0006/g, "dojo.");
+			},
+
 			getDojoKernelModule = function(module){
 				// return false during while bootstrapping; bootstrap modules are all AMD anyway
 				var result = getModule("dojo/_base/loader", module);
@@ -1475,9 +1520,11 @@
 				// finally evaluated. Alse, old modules may have multiple dojo.provide applications.
 				if((dojo || getDojoKernelModule(module)) &&  !buildDetectRe.test(text)){
 					var match, pattern = /(\W|^)dojo\.provide\s*\(([\w\W]+?)\)/g;
+					text = removeComments(text);
 					while((match = pattern.exec(text))){
 						text+= "require.provideFinish(" + match[2] + ",'" + module.pqn + "');\n";
 					}
+					text = unobfuscateDojoDot(text);
 				}
 				return text;
 			},
@@ -1709,9 +1756,7 @@
 						// don't convert modules explicitly marked as built
 						return text;
 					}
-
-					// Remove comments; this is the regex that comes with v1.6-, but notice that [e.g.], then string literal "/*" would cause failure
-					text = text.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg , "");
+					text = removeComments(text);
 
 					// find and extract all dojo.loadInit applications
 					while((match = loadInitRe.exec(text))){
@@ -1733,11 +1778,14 @@
 						syncLoaderApiRe.lastIndex = extractResult[1];
 					}
 
+					// now that we're done search for dojo sync loader API applications...
+					text = unobfuscateDojoDot(text);
+					evalText = unobfuscateDojoDot(evalText);
+
 					if(!evalText.length && /\s*define\s*\(/.test(text)){
 						// module had no dojo sync API and started with a define application; assume it's AMD
 						return 0;
 					}
-
 					var provides = "",
 						moduleResult = "",
 						syncDeps = ["require"],
@@ -1823,12 +1871,14 @@
 			packageMapProg:packageMapProg,
 			configListeners:configListeners,
 			errorListeners:listenerQueues.error,
+			hookProvides:hookProvides,
 
 			// these are used by the builder (at least)
 			computeMapProg:computeMapProg,
 			runMapProg:runMapProg,
 			compactPath:compactPath,
-			getModuleInfo:getModuleInfo_
+			getModuleInfo:getModuleInfo_,
+			removeComments:removeComments
 		});
 	}
 

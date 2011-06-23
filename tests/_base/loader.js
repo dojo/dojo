@@ -2,6 +2,7 @@ define([
 	"dojo",
 	"doh",
 	"require",
+	"./loader/core",
 	"dojo/has!dojo-amd-factory-scan?./loader/modules",
 	"./loader/moduleIds",
 	"./loader/bootstrap"], function(dojo, doh, require){

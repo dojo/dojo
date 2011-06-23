@@ -1,4 +1,4 @@
-define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "./_base/xhr"], function(dojo, require, has) {
+define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "./_base/xhr"], function(dojo, require, has, array, lang) {
 	// module:
 	//		dojo/i18n
 	// summary:
@@ -66,22 +66,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 				(moduleName + "/nls/"	 + locale + "/" + bundleName);
 		},
 
-		load= function(id, require, load){
-			// note: id may be relative
-			var
-				match= nlsRe.exec(id),
-				bundlePath= ((require.toAbsMid && require.toAbsMid(match[1])) || match[1]) + "/",
-				bundleName= match[5] || match[4],
-				bundlePathAndName= bundlePath + bundleName,
-				locale= (match[5] && match[4]) || dojo.locale,
-				target= bundlePathAndName + "/" + locale;
-
-			// if we've already resolved this request, just return it
-			if (cache[target]) {
-				load(cache[target]);
-				return;
-			}
-
+		doLoad = function(bundlePathAndName, bundlePath, bundleName, locale, load){
 			// get the root bundle which instructs which other bundles are required to contruct the localized bundle
 			require([bundlePathAndName], function(root){
 				var
@@ -92,9 +77,42 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 						cache[availableLocales[i]]= current= dojo.mixin(dojo.clone(current), arguments[i]);
 					}
 					// target may not have been resolve (e.g., maybe only "fr" exists when "fr-ca" was requested)
+					var target= bundlePathAndName + "/" + locale;
 					cache[target]= current;
-					load(dojo.delegate(current));
+					load && load(dojo.delegate(current));
 				});
+			});
+		},
+
+		load= function(id, require, load){
+			// note: id may be relative
+			var
+				match= nlsRe.exec(id),
+				bundlePath= ((require.toAbsMid && require.toAbsMid(match[1])) || match[1]) + "/",
+				bundleName= match[5] || match[4],
+				bundlePathAndName= bundlePath + bundleName,
+				localeSpecified = (match[5] && match[4]),
+				targetLocale=  localeSpecified || dojo.locale,
+				target= bundlePathAndName + "/" + targetLocale;
+
+			if(localeSpecified){
+				if(cache[target]){
+					// a request for a specific local that has already been loaded; just return it
+					load(cache[target]);
+				}else{
+					// a request for a specific local that has not been loaded; load and return just that locale
+					doLoad(bundlePathAndName, bundlePath, bundleName, targetLocale, load);
+				}
+				return;
+			}// else a non-locale-specific request; therefore always load dojo.locale + dojo.config.extraLocale
+
+			// notice the subtle algorithm that loads targeLocal last, which is the only doLoad application that passes a value for the load callback
+			// this makes the sync loader follow a clean code path that loads extras first and then proceeds with tracing the current deps graph
+			var extra = dojo.config.extraLocale || [];
+			extra = lang.isArray(extra) ? extra : [extra];
+			extra.push(targetLocale);
+			array.forEach(extra, function(locale){
+				doLoad(bundlePathAndName, bundlePath, bundleName, locale, locale==targetLocale && load);
 			});
 		};
 

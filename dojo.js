@@ -277,9 +277,14 @@
 		cacheBust = "";
 	}
 
-	reqEval = req.eval ||
+	var eval_ =
 		// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
-		new Function("__text", "__hint", 'return eval(__text + "\\r\\n////@ sourceURL=" + __hint);');
+		new Function("__text", 'return eval(__text);');
+
+	reqEval = req.eval ||
+		function(text, hint){
+			return eval_(text + "\r\n////@ sourceURL=" + hint);
+		};
 
 	var listenerConnection= function(listener, queue){
 		queue.push(listener);
@@ -1464,46 +1469,19 @@
 				return name.replace(/\./g, "/");
 			},
 
-			// 1: double quote; 2: single quote; 3: /*-style comment; 4: //-style comment; 5: regexp (or division)
-			//                     1   2   3                  4         5
-			specialSectionStart = /(")|(')|(\/\*[\s\S]*?\*\/)|(\/\/.*$)|(\/([^\\\n\r]|\\.)*?\/)/m,
-			dQuoteStringRe = /"([^\\\n\r]|\\.)*?"/, // double-quote string
-			sQuoteStringRe = /'([^\\\n\r]|\\.)*?'/, // single-quote string
-
 			removeComments = function(text){
-				// removes comments using a fairly intelligent (and long) algorithm that accounts for strings and regexs
-				// also abfuscates the character sequence "dojo." inside a string
-				if(text){
-					var match, end, result = "";
-					while((match= text.match(specialSectionStart))){
-						if(match[1] || match[2]){
-							// some kind of quoted string
-							result+= text.substring(0, match.index);
-							text= text.substring(match.index);
-							match = text.match(match[1] ? dQuoteStringRe : sQuoteStringRe);
-							if(!match){
-								throw new Error("unterminated string in code text");
-							}
-							result+= match[0].replace(/dojo\./g, "dojo\u0006");
-							text= text.substring(match[0].length);
-						}else if(match[5]){
-							// a regex (or division)
-							end = match.index + match[5].length;
-							result+= text.substring(0, end);
-							text= text.substring(end);
-						}else{
-							// comments
-							result+= text.substring(0, match.index);
-							text= text.substring(match.index + (match[3] || match[4]).length);
-						}
-					}
-					result+= text;
-				}
-				return result;
-			},
-
-			unobfuscateDojoDot = function(text){
-				return text.replace(/dojo\u0006/g, "dojo.");
+				// the following regex is taken from 1.6. It is a very poor technique to remove comments and
+				// will fail in some cases; for example, consider the code...
+				//
+				//    var message = "Category-1 */* Category-2";
+				//
+				// The regex that follows will see a /* comment and trash the code accordingly. In fact, there are all
+				// kinds of cases like this with strings and regexs that will cause this design to fail miserably.
+				//
+				// Alternative regex designs exist that will result in fewer failures, but will still fail in many cases.
+				// The only solution that is likely 100% correct is to parse the code and that seems overkill for this
+				// backcompat/unbuilt-xdomain layer. In the end, since it's been this way for a while, we won't change it.
+				return text.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg , "");
 			},
 
 			getDojoKernelModule = function(module){
@@ -1512,19 +1490,17 @@
 				return result.executed===executed && result;
 			},
 
-			buildDetectRe = /^require\.built/,
+			buildDetectRe = /\/\/>>built/,
 
 			hookProvides = function(module, text, dojo){
 				// module may or may not be a sync module (we can't tell); however, if its a sync module,
 				// we need to make sure the the dojo.provides are processed properly when the module is
-				// finally evaluated. Alse, old modules may have multiple dojo.provide applications.
+				// finally evaluated. Also, old modules may have multiple dojo.provide applications.
 				if((dojo || getDojoKernelModule(module)) &&  !buildDetectRe.test(text)){
 					var match, pattern = /(\W|^)dojo\.provide\s*\(([\w\W]+?)\)/g;
-					text = removeComments(text);
 					while((match = pattern.exec(text))){
 						text+= "require.provideFinish(" + match[2] + ",'" + module.pqn + "');\n";
 					}
-					text = unobfuscateDojoDot(text);
 				}
 				return text;
 			},
@@ -1579,11 +1555,6 @@
 				}
 				return foundAtLeastOne;
 			};
-
-		req.built =
-			// this provides a method for a module to signal that it's a built module which won't be stripped
-			// by minifiers; see buildDetectRe
-			noop;
 
 		req.provideFinish = function(mid, referenceModulePqn){
 			var module = getModule(slashName(mid), modules[referenceModulePqn]);
@@ -1779,8 +1750,6 @@
 					}
 
 					// now that we're done search for dojo sync loader API applications...
-					text = unobfuscateDojoDot(text);
-					evalText = unobfuscateDojoDot(evalText);
 
 					if(!evalText.length && /\s*define\s*\(/.test(text)){
 						// module had no dojo sync API and started with a define application; assume it's AMD

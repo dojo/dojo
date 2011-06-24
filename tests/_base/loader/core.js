@@ -26,7 +26,7 @@ console.log(hookProvidesBefore);
 			t.is(compactPath("./a/b"), "a/b");
 			t.is(compactPath("../a/b"), "../a/b");
 			t.is(compactPath(""), "");
-		},
+		}/*,
 
 		function removeComments(t){
 			t.is(commentAfter, require.removeComments(commentBefore));
@@ -35,5 +35,6 @@ console.log(hookProvidesBefore);
 		function hookProvides(t){
 			t.is(hookProvidesAfter, require.hookProvides({pqn:"path/to/reference/module"}, hookProvidesBefore, true));
 		}
+*/
 	]);
 });

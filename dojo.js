@@ -1499,7 +1499,7 @@
 				if((dojo || getDojoKernelModule(module)) &&  !buildDetectRe.test(text)){
 					var match, pattern = /(\W|^)dojo\.provide\s*\(([\w\W]+?)\)/g;
 					while((match = pattern.exec(text))){
-						text+= "require.provideFinish(" + match[2] + ",'" + module.pqn + "');\n";
+						text+= "\nrequire.provideFinish(" + match[2] + ",'" + module.pqn + "');\n";
 					}
 				}
 				return text;

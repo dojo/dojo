@@ -66,7 +66,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 				(moduleName + "/nls/"	 + locale + "/" + bundleName);
 		},
 
-		doLoad = function(bundlePathAndName, bundlePath, bundleName, locale, load){
+		doLoad = function(require, bundlePathAndName, bundlePath, bundleName, locale, load){
 			// get the root bundle which instructs which other bundles are required to contruct the localized bundle
 			require([bundlePathAndName], function(root){
 				var
@@ -101,7 +101,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 					load(cache[target]);
 				}else{
 					// a request for a specific local that has not been loaded; load and return just that locale
-					doLoad(bundlePathAndName, bundlePath, bundleName, targetLocale, load);
+					doLoad(require, bundlePathAndName, bundlePath, bundleName, targetLocale, load);
 				}
 				return;
 			}// else a non-locale-specific request; therefore always load dojo.locale + dojo.config.extraLocale
@@ -112,7 +112,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 			extra = lang.isArray(extra) ? extra : [extra];
 			extra.push(targetLocale);
 			array.forEach(extra, function(locale){
-				doLoad(bundlePathAndName, bundlePath, bundleName, locale, locale==targetLocale && load);
+				doLoad(require, bundlePathAndName, bundlePath, bundleName, locale, locale==targetLocale && load);
 			});
 		};
 

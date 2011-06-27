@@ -4,9 +4,9 @@
 		<!-- gotta do this in a separate page since clearing all the caches in the loader and dojo/i18n is too error-prone -->
 
 		<script type="text/javascript">
-			var dohArgs= (window.parent.doh && window.parent.doh.dohArgs) || {async:1};
+			var dohArgs= (window.parent.doh && window.parent.doh.dohArgs) || {async:0};
 			var dojoConfig = {
-				async:1,
+				async:dohArgs.async,
 				extraLocale:['en-us-hawaii', 'en-us-new_york-brooklyn']
 			};
 		</script>
@@ -21,10 +21,10 @@
 					t.is(require("dojo/i18n!dojo/tests/nls/en-us-hawaii/salutations").hello, "Aloha");
 					t.is(require("dojo/i18n!dojo/tests/nls/en-us-new_york-brooklyn/salutations").hello, "Yo");
 					try{
-						var result = require("dojo/i18n!/dojo/tests/nls/ar/salutations");
+						var result = require("dojo/i18n!dojo/tests/nls/ar/salutations");
 						t.f(true, "should have thrown");
 					}catch(e){
-						t.t(/has not been requested/.test(e));
+						t.t(true);
 					}
 				});
 			}else{
@@ -32,15 +32,22 @@
 					t.is(dojo.i18n.getLocalization("dojo/tests", "salutations", "en-us-hawaii").hello, "Aloha");
 					t.is(dojo.i18n.getLocalization("dojo/tests", "salutations", "en-us-new_york-brooklyn").hello, "Yo");
 					try{
-						var result = require("dojo/i18n!/dojo/tests/nls/ar/salutations");
-						t.f(true, "should have thrown");
+						t.is(dojo.i18n.getLocalization("dojo/tests", "salutations", "en-au").hello, "G'day");
 					}catch(e){
-						t.t(/has not been requested/.test(e));
+						t.f("synchronous get should work if not xdomain");
 					}
 				});
 			}
 			doh.runOnLoad();
 		});
+		if(!require.async){
+			dojo.requireLocalization("dojo.tests._base.loader", "syncBundle", "ab-cd-ef");
+			dojo.requireLocalization("dojo.tests._base.loader", "amdBundle", "ab-cd-ef");
+			doh.register(function oldAndNewBundleStyles(t){
+				t.is(dojo.i18n.getLocalization("dojo.tests._base.loader", "syncBundle", "ab-cd-ef").syncBundle, "syncBundle-ab-cd-ef");
+				t.is(dojo.i18n.getLocalization("dojo.tests._base.loader", "amdBundle", "ab-cd-ef").amdBundle, "amdBundle-ab-cd-ef");
+			});
+		}
 		</script>
 	</head>
 	<body>

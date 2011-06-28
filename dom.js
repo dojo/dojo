@@ -56,7 +56,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 			if(typeof id != "string"){
 				return id;
 			}
-			var _d = doc || win.doc, te = _d.getElementById(id);
+			var _d = doc || win.doc, te = id && _d.getElementById(id);
 			// attributes.id.value is better than just id in case the
 			// user has a name=id inside a form
 			if(te && (te.attributes.id.value == id || te.id == id)){

@@ -209,6 +209,6 @@ define(["./kernel", "../has"], function(dojo, has){
 		}catch(e){}
 	}
 
-	return dojo;
+	return has;
 
 });

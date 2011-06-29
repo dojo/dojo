@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-prop", "./on"], function(dojo, sniff, win, dom, prop, on){
+define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-attr", "./on"], function(dojo, sniff, win, dom, attr, on){
 	// module:
 	//		dojo/dom-construct
 	// summary:
@@ -276,7 +276,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-pro
 		if(typeof tag == "string"){ // inline'd type check
 			tag = doc.createElement(tag);
 		}
-		if(attrs){ prop.attr(tag, attrs); }
+		if(attrs){ attr.attr(tag, attrs); }
 		if(refNode){ dojo.place(tag, refNode, pos); }
 		return tag; // DomNode
 	};

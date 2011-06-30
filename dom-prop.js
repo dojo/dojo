@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./_base/connect"], function(dojo, sniff, lang, dom, style, connect){
+define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./_base/connect"], function(dojo, has, lang, dom, style, connect){
 	// module:
 	//		dojo/dom-prop
 	// summary:
@@ -234,7 +234,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 		if(propName == "innerHTML"){
 			// special case: assigning HTML
 			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			if(sniff.isIE && node.tagName.toLowerCase() in _roInnerHtml){
+			if(has("ie") && node.tagName.toLowerCase() in _roInnerHtml){
 				dojo.empty(node);
 				node.appendChild(dojo._toDom(value, node.ownerDocument));
 			}else{

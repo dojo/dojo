@@ -1,5 +1,5 @@
 define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
-	function(dojo, sniff, lang, win){
+	function(dojo, has, lang, win){
 	// module:
 	//		dojo/dom
 	// summary:
@@ -51,7 +51,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 	=====*/
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(sniff.isIE){
+	if(has("ie")){
 		dojo.byId = function(id, doc){
 			if(typeof id != "string"){
 				return id;
@@ -132,13 +132,13 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 		//	|	dojo.setSelectable("bar", true);
 		node = dojo.byId(node);
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(sniff.isMozilla){
+		if(has("mozilla")){
 			node.style.MozUserSelect = selectable ? "" : "none";
-		}else if(sniff.isKhtml || sniff.isWebKit){
+		}else if(has("khtml") || has("webKit")){
 		//>>excludeEnd("webkitMobile");
 			node.style.KhtmlUserSelect = selectable ? "auto" : "none";
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		}else if(sniff.isIE){
+		}else if(has("ie")){
 			var v = (node.unselectable = selectable ? "" : "on"),
 				cs = node.getElementsByTagName("*"), i = 0, l = cs.length;
 			for(; i < l; ++i){

@@ -1,4 +1,4 @@
-define(["../main", "../i18n"], function(dojo) {
+define(["../_base/kernel", "../i18n"], function(dojo) {
 	// module:
 	//		dojo/cldr/supplemental
 	// summary:

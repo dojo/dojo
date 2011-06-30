@@ -5,7 +5,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	//		This module populates the dojo browser version sniffing properties.
 
 	if(!has("host-browser")){
-		return dojo;
+		return has;
 	}
 	var
 		n = navigator,

@@ -1,6 +1,15 @@
-define(["../main", "../date", "../cldr/supplemental", "../regexp", "../string", "../i18n!../cldr/nls/gregorian"], function(dojo) {
+define([
+	"../_base/kernel",
+	"../_base/array",
+	"../_base/lang",
+	"../date",
+	"../cldr/supplemental",
+	"../regexp",
+	"../string",
+	"../i18n!../cldr/nls/gregorian"
+], function(dojo) {
 	// module:
-	//		dojo/date/local
+	//		dojo/date/locale
 	// summary:
 	//		This modules defines dojo.date.locale, localization methods for Date.
 

@@ -172,7 +172,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 					}
 				}
 			}
-		}else if(has("opera") || (has("ie") == 8 && !has("quirks"))){
+		}else if(has("opera") || (has("ie") == 8 && !dojo.isQuirks)){
 			// On Opera and IE 8, offsetLeft/Top includes the parent's border
 			if(p){
 				be = dojo._getBorderExtents(p);
@@ -388,7 +388,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	dojo._docScroll = function(){
 		var n = win.global;
 		return "pageXOffset" in n ? {x: n.pageXOffset, y: n.pageYOffset } :
-			(n = has("quirks")? win.body() : win.doc.documentElement,
+			(n = dojo.isQuirks? win.body() : win.doc.documentElement,
 				{x: dojo._fixIeBiDiScrollLeft(n.scrollLeft || 0), y: n.scrollTop || 0 });
 	};
 
@@ -443,7 +443,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		var ie = has("ie");
 		if(ie && !dojo._isBodyLtr()){
-			var qk = has("quirks"),
+			var qk = dojo.isQuirks,
 				de = qk ? win.body() : win.doc.documentElement;
 			if(ie == 6 && !qk && dojo.global.frameElement && de.scrollHeight > de.clientHeight){
 				scrollLeft += de.clientLeft; // workaround ie6+strict+rtl+iframe+vertical-scrollbar bug where clientWidth is too small by clientLeft pixels
@@ -480,8 +480,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			var offset = dojo._getIeDocumentElementOffset();
 
 			// fixes the position in IE, quirks mode
-			ret.x -= offset.x + (has("quirks") ? db.clientLeft + db.offsetLeft : 0);
-			ret.y -= offset.y + (has("quirks") ? db.clientTop + db.offsetTop : 0);
+			ret.x -= offset.x + (dojo.isQuirks ? db.clientLeft + db.offsetLeft : 0);
+			ret.y -= offset.y + (dojo.isQuirks ? db.clientTop + db.offsetTop : 0);
 		}else if(has("ff") == 3){
 			// In FF3 you have to subtract the document element margins.
 			// Fixed in FF3.5 though.

@@ -1,4 +1,4 @@
-define(["../main", "./common", "./autoscroll"], function(dojo) {
+define(["../main", "../touch", "./common", "./autoscroll"], function(dojo, touch) {
 	// module:
 	//		dojo/dnd/Mover
 	// summary:
@@ -19,23 +19,19 @@ dojo.declare("dojo.dnd.Mover", null, {
 		//		object which implements the functionality of the move,
 		//	 	and defines proper events (onMoveStart and onMoveStop)
 		this.node = dojo.byId(node);
-		var pos = e.touches ? e.touches[0] : e;
-		this.marginBox = {l: pos.pageX, t: pos.pageY};
+		this.marginBox = {l: e.pageX, t: e.pageY};
 		this.mouseButton = e.button;
 		var h = (this.host = host), d = node.ownerDocument;
 		this.events = [
 			// At the start of a drag, onFirstMove is called, and then the following two
 			// connects are disconnected
-			dojo.connect(d, "onmousemove", this, "onFirstMove"),
-			dojo.connect(d, "ontouchmove", this, "onFirstMove"),
+			dojo.connect(d, touch.move, this, "onFirstMove"),
 
 			// These are called continually during the drag
-			dojo.connect(d, "onmousemove", this, "onMouseMove"),
-			dojo.connect(d, "ontouchmove", this, "onMouseMove"),
+			dojo.connect(d, touch.move, this, "onMouseMove"),
 
 			// And these are called at the end of the drag
-			dojo.connect(d, "onmouseup",   this, "onMouseUp"),
-			dojo.connect(d, "ontouchend", this, "onMouseUp"),
+			dojo.connect(d, touch.release,   this, "onMouseUp"),
 
 			// cancel text selection and text dragging
 			dojo.connect(d, "ondragstart",   dojo.stopEvent),
@@ -53,9 +49,8 @@ dojo.declare("dojo.dnd.Mover", null, {
 		// e: Event
 		//		mouse/touch event
 		dojo.dnd.autoScroll(e);
-		var m = this.marginBox,
-			pos = e.touches ? e.touches[0] : e;
-		this.host.onMove(this, {l: m.l + pos.pageX, t: m.t + pos.pageY}, e);
+		var m = this.marginBox;
+		this.host.onMove(this, {l: m.l + e.pageX, t: m.t + e.pageY}, e);
 		dojo.stopEvent(e);
 	},
 	onMouseUp: function(e){
@@ -104,7 +99,6 @@ dojo.declare("dojo.dnd.Mover", null, {
 		}
 
 		// Disconnect onmousemove and ontouchmove events that call this function
-		dojo.disconnect(this.events.shift());
 		dojo.disconnect(this.events.shift());
 	},
 	destroy: function(){

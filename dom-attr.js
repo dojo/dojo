@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"], function(dojo, sniff, lang, dom, style, prop){
+define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"], function(dojo, has, lang, dom, style, prop){
 	// module:
 	//		dojo/dom-attr
 	// summary:
@@ -19,7 +19,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 	var forcePropNames = {
 			innerHTML:	1,
 			className:	1,
-			htmlFor:	sniff.isIE,
+			htmlFor:	dojo.isIE,
 			value:		1
 		},
 		attrNames = {

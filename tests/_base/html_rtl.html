@@ -39,16 +39,16 @@
 								var
 								d = new doh.Deferred(),
 								rect = dojo.byId("rect100"),
-								handler = dojo.connect(dojo.body(), "onclick", null,
+								handler = dojo.connect(rect.offsetParent, "onclick", null,
 									function(e){
 										// move the rectangle to the mouse point
 										dojo.disconnect(handler);
 										rect.style.left = e.pageX + "px";
 										rect.style.top = e.pageY + "px";
 										handler = dojo.connect(rect, 'ondblclick', null,
-											function(){
-												var offsetX = event.offsetX,
-													offsetY = event.offsetY;
+											function(e){
+												var offsetX = (event||e).offsetX,
+													offsetY = (event||e).offsetY;
 												dojo.disconnect(handler);
 												d.getTestCallback(function(){
 													t.is(0, offsetX);
@@ -56,11 +56,24 @@
 												})();
 											});
 										setTimeout(function(){
-											rect.fireEvent('ondblclick');
+											if(!document.createEvent){
+												rect.fireEvent('ondblclick');
+											}else{
+												var clickEvent = document.createEvent("MouseEvent");
+												clickEvent.initMouseEvent("dblclick", true, true, window, 0,0,0,0,0,0,0,0,0,0,null);
+												rect.dispatchEvent(clickEvent);
+											}
 										}, 100); // time to move rect to cursor position
 									});
 								setTimeout(function(){
-									dojo.body().fireEvent('onclick');
+									if(!document.createEvent){
+										rect.offsetParent.fireEvent('onclick');
+									}else{
+										var clickEvent = document.createEvent("MouseEvent");
+										clickEvent.initMouseEvent("click", true, true, window, 0,0,0,0,0,0,0,0,0,0,null);
+										rect.offsetParent.dispatchEvent(clickEvent);
+									}
+
 								}, 100); // time to finish any pre-scrolling
 								return d;
 							}
@@ -89,7 +102,7 @@
 							var id = "scrolling" + doctype + "Iframe" + scroll + size;
 							doh.register(id, {
 								name: "test_" + id,
-								timeout: 3000,
+								timeout: 4000,
 								runTest: function(t){
 									var d = new doh.Deferred(),
 										s = document.createElement('SPAN');

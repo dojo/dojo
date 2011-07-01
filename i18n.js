@@ -1,4 +1,4 @@
-define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "./_base/xhr"], function(dojo, require, has, array, lang) {
+define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "./has!dojo-v1x-i18n-Api?./_base/xhr"], function(dojo, require, has, array, lang) {
 	// module:
 	//		dojo/i18n
 	// summary:

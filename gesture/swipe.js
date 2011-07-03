@@ -38,10 +38,8 @@ var clz = dojo.declare(null, {
 	
 	swipeRange: 60,
 	
-	swipeDirection: {none:0, up:1, down:2, left:4, right:8},
+	swipeDirection: {none: 0, up: 1, down: 2, left: 4, right: 8},
 	
-	swipeContext: {x:0,y:0,t:0},
-
 	defaultEvent: 'swipe',
 	
 	subEvents: ['up', 'right', 'down', 'left'],
@@ -49,19 +47,22 @@ var clz = dojo.declare(null, {
 	constructor: function(args){
 		dojo.mixin(this, args);
 	},
-	press: function(gestureElement, e){
-		this.swipeContext.t = new Date().getTime();
-		this.swipeContext.x = e.screenX;
-		this.swipeContext.y = e.screenY;
+	press: function(data, e){
+		if(!data.swipeContext){
+			data.swipeContext = {x: 0, y: 0, t: 0};
+		}
+		data.swipeContext.t = new Date().getTime();
+		data.swipeContext.x = e.screenX;
+		data.swipeContext.y = e.screenY;
 	},
-	release: function(gestureElement, e){
-		var t = (new Date().getTime() - this.swipeContext.t);
+	release: function(data, e){
+		var t = (new Date().getTime() - data.swipeContext.t);
 		if(t > this.swipeTimeout){
 			// gesture is too long
 			return;
 		}
-		var dx = e.screenX - this.swipeContext.x,
-			dy = e.screenY - this.swipeContext.y,
+		var dx = e.screenX - data.swipeContext.x,
+			dy = e.screenY - data.swipeContext.y,
 			dirx = (dx > 0 ? this.swipeDirection.right : dx < 0 ? this.swipeDirection.left : this.swipeDirection.none),
 			diry = (dy > 0 ? this.swipeDirection.down : dy < 0 ? this.swipeDirection.up : this.swipeDirection.none);
 		if(dirx === this.swipeDirection.none && diry === this.swipeDirection.none){
@@ -70,17 +71,18 @@ var clz = dojo.declare(null, {
 		}
 		dx = Math.abs(dx);
 		dy = Math.abs(dy);
-		if(dx > dy){
+		var target = e.currentTarget;
+		if(dx >= dy){
 			if(dx/t*1000 < this.swipeSpeed){
 				// gesture is too slow
 				return;
 			}
 			switch(dy > this.swipeRange ? this.swipeDirection.none : dirx){
 			case this.swipeDirection.left:
-				gesture.fire(gestureElement, "swipe.left", e);
+				gesture.fire(target, "swipe.left");
 				break;
 			case this.swipeDirection.right:
-				gesture.fire(gestureElement, "swipe.right", e);
+				gesture.fire(target, "swipe.right");
 				break;
 			default: 
 				// not a swipe
@@ -93,18 +95,19 @@ var clz = dojo.declare(null, {
 			}
 			switch(dx > this.swipeRange ? this.swipeDirection.none : diry){
 			case this.swipeDirection.up:
-				gesture.fire(gestureElement, "swipe.up", e);
+				gesture.fire(target, "swipe.up");
 				break;
 			case this.swipeDirection.down:
-				gesture.fire(gestureElement, "swipe.down", e);
+				gesture.fire(target, "swipe.down");
 				break;
 			default:
 				// not a swipe
 				return;
 			}
 		}
-		gesture.fire(gestureElement, 'swipe', e);
-	}
+		gesture.fire(target, 'swipe');
+	},
+	destroy: function(){}
 });
 
 //register a default singleton Swipe instance

@@ -59,6 +59,17 @@ define(["./_base/kernel", "./on", "./touch", "./has"], function(dojo, on, touch,
 //		
 //		Please refer to dojo/gesture/* for more gesture usages
 
+function isEmpty(obj){
+	var existed, x;
+	for(x in obj){
+		if(x){
+			existed = true;
+			break;
+		}
+	}
+	return !existed;
+}
+
 //singleton gesture manager
 dojo.gesture = {
 	events: {},//<event, gesture> map, e.g {'taphold': xxx, 'rotate': xxx}
@@ -92,15 +103,29 @@ dojo.gesture = {
 		//		Un-register the given singleton gesture instance
 		// description:
 		//		The gesture event list will also be removed
+		var self = this;
+		function _remove(node, evt){
+			if(self.events[evt]){
+				delete self.events[evt];
+			}
+			self._remove(node, evt, null, true);
+		}
+		dojo.forEach(this._gestureElements, function(element){
+			_remove(element.target, gesture.defaultEvent);
+			dojo.forEach(gesture.subEvents, function(type){
+				_remove(element.target, gesture.defaultEvent + '.' + type);
+			}, this);
+		}, this);
+		this._gestureElements = dojo.filter(this._gestureElements, function(element){
+			return !isEmpty(element.gestures);//remove empty ones
+		});
 		var i = dojo.indexOf(this.gestures, gesture);
 		if(i >= 0){
 			this.gestures.splice(i, 1);
 		}
-		var evt = gesture.defaultEvent;
-		delete this.events[evt];
-		dojo.forEach(gesture.subEvents, function(type){
-			delete this.events[evt + '.' + type];
-		}, this);
+		if(gesture.destroy){
+			gesture.destroy();
+		}
 	},
 	handle: function(/*String*/eventType){
 		// summary:
@@ -179,16 +204,36 @@ dojo.gesture = {
 			element.listening = true;
 		}
 	},
-	_remove: function(node, type, listener){
+	_remove: function(node, type, listener, keepElement){
 		var element = this.getGestureElement(node);
-		var i = dojo.indexOf(element.gestures[type].callbacks, listener);
-		element.gestures[type].callbacks.splice(i, 1);
-//		TBD - when element.count == 0
-//		dojo.forEach(['press', 'move', 'release', 'cancel'], function(type){
-//			if(element[type] && element[type].cancel){
-//				element[type].remove();//disconnect native listeners
-//			}
-//		});
+		if(!element){ return; }
+		var callbacks = (element.gestures[type] || {}).callbacks;
+		if(!callbacks){ return; }
+		var i;
+		if(listener){
+			i = dojo.indexOf(callbacks, listener);
+			if(i >= 0){
+				callbacks.splice(i, 1);
+			}
+		}
+		if(callbacks.length === 0 || !listener){
+			//clear if not listened anymore
+			delete element.gestures[type];
+		}
+		if(isEmpty(element.gestures)){
+			// no more gestures are being listened for the element
+			// so disconnect native listeners
+			dojo.forEach(['press', 'move', 'release', 'cancel'], function(type){
+				if(element[type] && element[type].remove){
+					element[type].remove();
+				}
+			});
+			//also release the element if needed
+			i = dojo.indexOf(this._gestureElements, element);
+			if(i >= 0 && !keepElement){
+				this._gestureElements.splice(i, 1);
+			}	
+		}
 	},
 	getGestureElement: function(node){
 		var i;

@@ -178,7 +178,7 @@ define(["../has", "../_base/lang", "./dom"], function(has, lang, dom){
 		return s || [];
 	}
 
-	if(has("dom-classList")){
+	if(!has("dom-classList")){
 		// regular DOM version
 		var fakeNode = {};  // for effective replacement
 		cls = {

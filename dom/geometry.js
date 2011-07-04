@@ -300,7 +300,6 @@ define(["../_base/kernel", "../_base/sniff", "../_base/window","./dom", "./style
 			}
 		}
 		setBox(node, NaN, NaN, widthPx, heightPx);
-		return node;
 	};
 
 	var nilExtents = {l: 0, t: 0, w: 0, h: 0};
@@ -341,7 +340,6 @@ define(["../_base/kernel", "../_base/sniff", "../_base/window","./dom", "./style
 			heightPx = Math.max(heightPx - pb.h - mb.h, 0);
 		}
 		setBox(node, leftPx, topPx, widthPx, heightPx);
-		return node;
 	};
 
 	dojo.marginBox = function marginBox(/*DomNode|String*/node, /*Object?*/box){

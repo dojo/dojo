@@ -408,7 +408,7 @@ define(["../_base/kernel", "../_base/sniff", "../_base/window","./dom", "./style
 	};
 
 	dojo.docScroll = dojo._docScroll = function docScroll(){
-		var node = win.global;
+		var node = win.doc.parentWindow || win.doc.defaultView;   // use UI window, not dojo.global window
 		return "pageXOffset" in node ? {x: node.pageXOffset, y: node.pageYOffset } :
 			(node = dojo.isQuirks ? win.body() : win.doc.documentElement,
 				{x: dojo.fixIeBiDiScrollLeft(node.scrollLeft || 0), y: node.scrollTop || 0 });

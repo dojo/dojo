@@ -71,6 +71,12 @@
 					var innerDoH = dojo.byId('innerDoH');
 					dojo.style(outerDoH, {display: 'block'});
 					
+					function isEmpty(o){
+						for(var x in o){
+							return false;
+						}
+						return true;
+					}
 					function checkRemoved(evts){
 						var remained;
 						dojo.forEach(dojo.gesture._gestureElements, function(element){
@@ -148,7 +154,7 @@
 							on.emit(innerDoH, 'mousedown', {screenX: 0, screenY: 50});
 							on.emit(innerDoH, 'mouseup', {screenX: 0, screenY: 0});
 							doh.t(executed, 'dojo.gesture.swipe.up not fired');
-						},						
+						},
 						//test dojo.gesture.tap					
 						function taphold(){
 							var d = new doh.Deferred(), executed;
@@ -164,7 +170,7 @@
 								d.callback(true);
 							}, dojo.gesture.tap.holdThreshold);//T1
 							return d;
-						},					
+						},
 						function tap(){
 							var d = new doh.Deferred();
 							setTimeout(function(){
@@ -203,10 +209,6 @@
 							}, dojo.gesture.tap.doubleTapTimeout);//T3
 							return d;							
 						},
-						//test gesture bubbling
-						function gestureBubbling(){
-							//TODO
-						},						
 						//test disconnect a gesture
 						function disConnectGesture(){
 							var d = new doh.Deferred(), executed;
@@ -267,6 +269,71 @@
 								d.callback(true);
 							}, 100);
 							return d;							
+						},
+						//test reseting dojo.gesture
+						function reset(){
+							dojo.gesture.reset();
+							doh.t(dojo.gesture.gestures.length === 0, 'dojo.gesture.gestures[] not cleared');
+							doh.t(dojo.gesture._gestureElements.length === 0, 'dojo.gesture._gestureElements[] not cleared');
+							doh.t(isEmpty(dojo.gesture.events), 'dojo.gesture.events{} not cleared');							
+							//add them back
+							dojo.gesture.register(dojo.gesture.tap);
+							dojo.gesture.register(dojo.gesture.swipe);									
+							//see if we can still use them after reset -> connected
+							var executed;
+							dojo.connect(outerDoH, dojo.gesture.tap, function(e){
+								executed = true;
+								doh.is('tap', e.type);
+								doh.is(outerDoH, e.target);
+							});
+							on.emit(outerDoH, 'mousedown', {});
+							on.emit(outerDoH, 'mouseup', {});
+							doh.t(executed, 'dojo.gesture.tap not fired after reset -> added!');
+						},
+						//test destroying dojo.gesture
+						function destroy(){
+							dojo.gesture.destroy();
+							doh.t(dojo.gesture.gestures.length === 0, 'dojo.gesture.gestures[] not cleared');
+							doh.t(dojo.gesture._gestureElements.length === 0, 'dojo.gesture._gestureElements[] not cleared');
+							doh.t(isEmpty(dojo.gesture.events), 'dojo.gesture.events{} not cleared');
+						},
+						//test gesture bubbling
+						function gestureBubbling(){
+							dojo.gesture.register(dojo.gesture.tap);
+							var outerExecuted;
+							var c1 = dojo.connect(innerDoH, dojo.gesture.tap, function(e){
+								e.innerAdded = true;
+								doh.is('tap', e.type);
+								doh.is(innerDoH, e.target);
+							});
+							var c2 = dojo.connect(outerDoH, dojo.gesture.tap, function(e){
+								outerExecuted = true;
+								doh.t(e.innerAdded, 'e.innerAdded missed in outter handler');
+								doh.is('tap', e.type);
+								doh.is(outerDoH, e.target);
+							});
+							on.emit(innerDoH, 'mousedown', {});
+							on.emit(innerDoH, 'mouseup', {});
+							doh.t(outerExecuted, 'tap not bubbled up to outer div!');
+							
+							dojo.disconnect(c1);
+							dojo.disconnect(c2);
+							
+							//tap event is stopped in inner handler
+							//so it shouldn't be fired in outer div
+							outerExecuted = false;
+							var c3 = dojo.connect(innerDoH, dojo.gesture.tap, function(e){
+								dojo.stopEvent(e);
+							});
+							var c4 = dojo.connect(outerDoH, dojo.gesture.tap, function(e){
+								outerExecuted = true;//shouldn't go there
+							});
+							on.emit(innerDoH, 'mousedown', {});
+							on.emit(innerDoH, 'mouseup', {});
+							doh.f(outerExecuted, 'tap fired in outer though dojo.stopEvent(e) in inner!');
+							
+							dojo.disconnect(c3);
+							dojo.disconnect(c4);
 						}
 					]);
 					doh.run();

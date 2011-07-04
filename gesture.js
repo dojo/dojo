@@ -59,15 +59,11 @@ define(["./_base/kernel", "./on", "./touch", "./has"], function(dojo, on, touch,
 //		
 //		Please refer to dojo/gesture/* for more gesture usages
 
-function isEmpty(obj){
-	var existed, x;
-	for(x in obj){
-		if(x){
-			existed = true;
-			break;
-		}
+function isEmpty(o){
+	for(var x in o){
+		return false;
 	}
-	return !existed;
+	return true;
 }
 
 //singleton gesture manager
@@ -81,6 +77,7 @@ dojo.gesture = {
 		//		Register a new singleton gesture instance
 		// description:
 		//		The gesture event list will be added for listening.
+		if(!gesture){ return; }
 		if(!has("touch") && gesture.touchOnly){
 			console.warn("Gestures:[", gesture.defaultEvent, "] is only supported on touch devices!");
 			return;
@@ -103,6 +100,7 @@ dojo.gesture = {
 		//		Un-register the given singleton gesture instance
 		// description:
 		//		The gesture event list will also be removed
+		if(!gesture){ return; }
 		var self = this;
 		function _remove(node, evt){
 			if(self.events[evt]){
@@ -232,7 +230,7 @@ dojo.gesture = {
 			i = dojo.indexOf(this._gestureElements, element);
 			if(i >= 0 && !keepElement){
 				this._gestureElements.splice(i, 1);
-			}	
+			}
 		}
 	},
 	getGestureElement: function(node){
@@ -267,7 +265,7 @@ dojo.gesture = {
 			var gesture = this.events[x];
 			if(gesture[type] && dojo.indexOf(visited, gesture) < 0){
 				//add a lock attr indicating the event is being processed by the most inner node,
-				//so that we can do gesture bubbling manually				
+				//so that we can do gesture bubbling manually
 				e.locking = true;
 				gesture[type](element.data[gesture.defaultEvent], e);
 				visited.push(gesture);
@@ -318,6 +316,15 @@ dojo.gesture = {
 				this._fire(parentNode, eventType, e);
 			}
 		}
+	},
+	reset: function(){
+		var g;
+		while(g = this.gestures.pop()){
+			this.unRegister(g);
+		}
+	},
+	destroy: function(){
+		this.reset();
 	}
 };
 

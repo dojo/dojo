@@ -1,8 +1,10 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./_base/connect"], function(dojo, has, lang, dom, style, connect){
+define(["../_base/kernel", "../_base/sniff", "../_base/lang", "./dom", "./style", "../_base/connect"],
+		function(dojo, has, lang, dom, style, connect){
 	// module:
 	//		dojo/dom-prop
 	// summary:
 	//		This module defines the core dojo DOM properties API.
+	//      Indirectly depends on dojo.empty() and dojo.toDom().
 
 	// =============================
 	// Element properties Functions
@@ -147,7 +149,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 		node = dom.byId(node);
 		var lc = name.toLowerCase(), propName = prop.names[lc] || name;
 		return node[propName];	// Anything
-	}
+	};
 
 	prop.set = function setProp(/*DomNode|String*/node, /*String|Object*/name, /*String?*/value){
 		// summary:
@@ -236,7 +238,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			if(has("ie") && node.tagName.toLowerCase() in _roInnerHtml){
 				dojo.empty(node);
-				node.appendChild(dojo._toDom(value, node.ownerDocument));
+				node.appendChild(dojo.toDom(value, node.ownerDocument));
 			}else{
 			//>>excludeEnd("webkitMobile");
 				node[propName] = value;
@@ -274,7 +276,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 		}
 		node[propName] = value;
 		return node;	// DomNode
-	}
+	};
 
 	return prop;
 });

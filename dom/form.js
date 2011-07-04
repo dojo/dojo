@@ -1,4 +1,4 @@
-define(["./_base/lang", "./dom", "./io-query", "./json"], function(lang, dom, ioq, json){
+define(["../_base/lang", "./dom", "../io-query", "../json"], function(lang, dom, ioq, json){
 	// module:
 	//		dojo/dom-form
 	// summary:

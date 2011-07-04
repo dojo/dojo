@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./dom", "./dom-geometry", "./dom-style", "./_base/sniff", "./_base/window"], function(dojo) {
+define(["./_base/kernel", "./dom/dom", "./dom/geometry", "./dom/style", "./_base/sniff", "./_base/window"], function(dojo) {
 	// module:
 	//		dojo/window
 	// summary:

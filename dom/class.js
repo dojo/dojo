@@ -1,4 +1,4 @@
-define(["../has", "../_base/lang", "./dom"], function(has, lang, dom){
+define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lang, array, dom){
 	// module:
 	//		dojo/dom-class
 	// summary:
@@ -167,15 +167,24 @@ define(["../has", "../_base/lang", "./dom"], function(has, lang, dom){
 
 	function str2array(s){
 		if(typeof s == "string" || s instanceof String){
-			if(s.indexOf(" ") < 0){
+			if(s && !spaces.test(s)){
 				a1[0] = s;
 				return a1;
-			}else{
-				return s.split(spaces);
 			}
+			var a = s.split(spaces);
+			if(a.length && !a[0]){
+				a.shift();
+			}
+			if(a.length && !a[a.length - 1]){
+				a.pop();
+			}
+			return a;
 		}
 		// assumed to be an array
-		return s || [];
+		if(!s){
+			return [];
+		}
+		return array.filter(s, function(x){ return x; });
 	}
 
 	if(!has("dom-classList")){
@@ -247,7 +256,7 @@ define(["../has", "../_base/lang", "./dom"], function(has, lang, dom){
 		// new classList version
 		cls = {
 			contains: function containsClass(/*DomNode|String*/node, /*String*/classStr){
-				return dom.byId(node)[classList].contains(classStr); // Boolean
+				return classStr && dom.byId(node)[classList].contains(classStr); // Boolean
 			},
 
 			add: function addClass(/*DomNode|String*/node, /*String|Array*/classStr){
@@ -260,21 +269,29 @@ define(["../has", "../_base/lang", "./dom"], function(has, lang, dom){
 
 			remove: function removeClass(/*DomNode|String*/node, /*String|Array?*/classStr){
 				node = dom.byId(node);
-				classStr = str2array(classStr);
-				for(var i = 0, len = classStr.length; i < len; ++i){
-					node[classList].remove(classStr[i]);
+				if(classStr === undefined){
+					node[className] = "";
+				}else{
+					classStr = str2array(classStr);
+					for(var i = 0, len = classStr.length; i < len; ++i){
+						node[classList].remove(classStr[i]);
+					}
 				}
 			},
 
 			replace: function replaceClass(/*DomNode|String*/node, /*String|Array*/addClassStr, /*String|Array?*/removeClassStr){
 				node = dom.byId(node);
-				removeClassStr = str2array(removeClassStr);
-				for(var i = 0, len = removeClassStr.length; i < len; ++i){
-					node[classList].remove(removeClassStr[i]);
+				if(removeClassStr === undefined){
+					node[className] = "";
+				}else{
+					removeClassStr = str2array(removeClassStr);
+					for(var i = 0, len = removeClassStr.length; i < len; ++i){
+						node[classList].remove(removeClassStr[i]);
+					}
 				}
 				addClassStr = str2array(addClassStr);
 				for(i = 0, len = addClassStr.length; i < len; ++i){
-					node[classList].remove(addClassStr[i]);
+					node[classList].add(addClassStr[i]);
 				}
 			},
 

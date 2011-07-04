@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./dom-geometry", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"], function(dojo){
+define(["./_base/kernel", "./dom/geometry", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"], function(dojo){
 	// module:
 	//		dojo/uacss
 	// summary:

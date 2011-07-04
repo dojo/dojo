@@ -167,8 +167,8 @@ define(["../_base/kernel", "../_base/sniff", "../_base/window","./dom", "./style
 				if(p && p.style){
 					pcs = style.getComputedStyle(p);
 					if(pcs.overflow != "visible"){
-						l += (s.borderLeftStyle != none ? px(n, s.borderLeftWidth) : 0);
-						t += (s.borderTopStyle != none ? px(n, s.borderTopWidth) : 0);
+						l += (s.borderLeftStyle != none ? px(node, s.borderLeftWidth) : 0);
+						t += (s.borderTopStyle != none ? px(node, s.borderTopWidth) : 0);
 					}
 				}
 			}
@@ -176,8 +176,8 @@ define(["../_base/kernel", "../_base/sniff", "../_base/window","./dom", "./style
 			// On Opera and IE 8, offsetLeft/Top includes the parent's border
 			if(p){
 				pcs = style.getComputedStyle(p);
-				l -= (s.borderLeftStyle != none ? px(n, s.borderLeftWidth) : 0);
-				t -= (s.borderTopStyle != none ? px(n, s.borderTopWidth) : 0);
+				l -= (s.borderLeftStyle != none ? px(node, s.borderLeftWidth) : 0);
+				t -= (s.borderTopStyle != none ? px(node, s.borderTopWidth) : 0);
 			}
 		}
 		//>>excludeEnd("webkitMobile");

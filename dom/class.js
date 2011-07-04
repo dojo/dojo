@@ -187,7 +187,63 @@ define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lan
 		return array.filter(s, function(x){ return x; });
 	}
 
-	if(!has("dom-classList")){
+	if(has("dom-classList")){
+		// new classList version
+		cls = {
+			contains: function containsClass(/*DomNode|String*/node, /*String*/classStr){
+				return classStr && dom.byId(node)[classList].contains(classStr); // Boolean
+			},
+
+			add: function addClass(/*DomNode|String*/node, /*String|Array*/classStr){
+				node = dom.byId(node);
+				classStr = str2array(classStr);
+				for(var i = 0, len = classStr.length; i < len; ++i){
+					node[classList].add(classStr[i]);
+				}
+			},
+
+			remove: function removeClass(/*DomNode|String*/node, /*String|Array?*/classStr){
+				node = dom.byId(node);
+				if(classStr === undefined){
+					node[className] = "";
+				}else{
+					classStr = str2array(classStr);
+					for(var i = 0, len = classStr.length; i < len; ++i){
+						node[classList].remove(classStr[i]);
+					}
+				}
+			},
+
+			replace: function replaceClass(/*DomNode|String*/node, /*String|Array*/addClassStr, /*String|Array?*/removeClassStr){
+				node = dom.byId(node);
+				if(removeClassStr === undefined){
+					node[className] = "";
+				}else{
+					removeClassStr = str2array(removeClassStr);
+					for(var i = 0, len = removeClassStr.length; i < len; ++i){
+						node[classList].remove(removeClassStr[i]);
+					}
+				}
+				addClassStr = str2array(addClassStr);
+				for(i = 0, len = addClassStr.length; i < len; ++i){
+					node[classList].add(addClassStr[i]);
+				}
+			},
+
+			toggle: function toggleClass(/*DomNode|String*/node, /*String|Array*/classStr, /*Boolean?*/condition){
+				node = dom.byId(node);
+				if(condition === undefined){
+					classStr = str2array(classStr);
+					for(var i = 0, len = classStr.length; i < len; ++i){
+						node[classList].toggle(classStr[i]);
+					}
+				}else{
+					cls[condition ? "add" : "remove"](node, classStr);
+				}
+				return condition;   // Boolean
+			}
+		}
+	}else{
 		// regular DOM version
 		var fakeNode = {};  // for effective replacement
 		cls = {
@@ -252,62 +308,6 @@ define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lan
 				return condition;   // Boolean
 			}
 		};
-	}else{
-		// new classList version
-		cls = {
-			contains: function containsClass(/*DomNode|String*/node, /*String*/classStr){
-				return classStr && dom.byId(node)[classList].contains(classStr); // Boolean
-			},
-
-			add: function addClass(/*DomNode|String*/node, /*String|Array*/classStr){
-				node = dom.byId(node);
-				classStr = str2array(classStr);
-				for(var i = 0, len = classStr.length; i < len; ++i){
-					node[classList].add(classStr[i]);
-				}
-			},
-
-			remove: function removeClass(/*DomNode|String*/node, /*String|Array?*/classStr){
-				node = dom.byId(node);
-				if(classStr === undefined){
-					node[className] = "";
-				}else{
-					classStr = str2array(classStr);
-					for(var i = 0, len = classStr.length; i < len; ++i){
-						node[classList].remove(classStr[i]);
-					}
-				}
-			},
-
-			replace: function replaceClass(/*DomNode|String*/node, /*String|Array*/addClassStr, /*String|Array?*/removeClassStr){
-				node = dom.byId(node);
-				if(removeClassStr === undefined){
-					node[className] = "";
-				}else{
-					removeClassStr = str2array(removeClassStr);
-					for(var i = 0, len = removeClassStr.length; i < len; ++i){
-						node[classList].remove(removeClassStr[i]);
-					}
-				}
-				addClassStr = str2array(addClassStr);
-				for(i = 0, len = addClassStr.length; i < len; ++i){
-					node[classList].add(addClassStr[i]);
-				}
-			},
-
-			toggle: function toggleClass(/*DomNode|String*/node, /*String|Array*/classStr, /*Boolean?*/condition){
-				node = dom.byId(node);
-				if(condition === undefined){
-					classStr = str2array(classStr);
-					for(var i = 0, len = classStr.length; i < len; ++i){
-						node[classList].toggle(classStr[i]);
-					}
-				}else{
-					cls[condition ? "add" : "remove"](node, classStr);
-				}
-				return condition;   // Boolean
-			}
-		}
 	}
 
 	return cls;

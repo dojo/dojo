@@ -191,7 +191,8 @@ define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lan
 		// new classList version
 		cls = {
 			contains: function containsClass(/*DomNode|String*/node, /*String*/classStr){
-				return classStr && dom.byId(node)[classList].contains(classStr); // Boolean
+				var clslst = classStr && dom.byId(node)[classList];
+				return clslst && clslst.contains(classStr); // Boolean
 			},
 
 			add: function addClass(/*DomNode|String*/node, /*String|Array*/classStr){

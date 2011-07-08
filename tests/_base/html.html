@@ -295,6 +295,7 @@
 							t.is("b a c", node.className, 
 								"The className is  is 'b a c' after using an empty string in replaceClass");
 							
+							t.f(dojo.hasClass(document, "ab"), "hasClass on document should not throw error");
 						},
 						function testAddRemoveClassMultiple(t){
 							var node = dojo.byId("sq100");

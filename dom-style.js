@@ -1,4 +1,4 @@
-define(["../_base/kernel", "../_base/sniff", "./dom"], function(dojo, has, dom){
+define(["./_base/kernel", "./_base/sniff", "./dom"], function(dojo, has, dom){
 	// module:
 	//		dojo/dom-style
 	// summary:

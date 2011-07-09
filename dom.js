@@ -1,4 +1,4 @@
-define(["../_base/kernel", "../_base/sniff", "../_base/lang", "../_base/window"],
+define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 		function(dojo, has, lang, win){
 	// module:
 	//		dojo/dom

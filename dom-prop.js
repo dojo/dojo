@@ -1,4 +1,4 @@
-define(["../_base/kernel", "../_base/sniff", "../_base/lang", "./dom", "./style", "../_base/connect"],
+define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./_base/connect"],
 		function(dojo, has, lang, dom, style, connect){
 	// module:
 	//		dojo/dom-prop

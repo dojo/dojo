@@ -1,4 +1,4 @@
-define(["../_base/kernel", "../_base/sniff", "../_base/window", "./dom", "./attr", "../on"],
+define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-attr", "./on"],
 		function(dojo, has, win, dom, attr, on){
 	// module:
 	//		dojo/dom-construct

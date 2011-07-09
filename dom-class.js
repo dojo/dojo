@@ -1,14 +1,17 @@
-define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lang, array, dom){
+define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 	// module:
 	//		dojo/dom-class
 	// summary:
 	//		This module defines the core dojo DOM class API.
 
-	var className = "className", classList = "classList";
+	var className = "className";
 
+	/* Part I of classList-based implementation is preserved here for posterity
+	var classList = "classList";
 	has.add("dom-classList", function(){
 		return classList in document.createElement("p");
 	});
+	*/
 
 	// =============================
 	// (CSS) Class Functions
@@ -187,15 +190,16 @@ define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lan
 		return array.filter(s, function(x){ return x; });
 	}
 
+	/* Part II of classList-based implementation is preserved here for posterity
 	if(has("dom-classList")){
 		// new classList version
 		cls = {
-			contains: function containsClass(/*DomNode|String*/node, /*String*/classStr){
+			contains: function containsClass(node, classStr){
 				var clslst = classStr && dom.byId(node)[classList];
 				return clslst && clslst.contains(classStr); // Boolean
 			},
 
-			add: function addClass(/*DomNode|String*/node, /*String|Array*/classStr){
+			add: function addClass(node, classStr){
 				node = dom.byId(node);
 				classStr = str2array(classStr);
 				for(var i = 0, len = classStr.length; i < len; ++i){
@@ -203,7 +207,7 @@ define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lan
 				}
 			},
 
-			remove: function removeClass(/*DomNode|String*/node, /*String|Array?*/classStr){
+			remove: function removeClass(node, classStr){
 				node = dom.byId(node);
 				if(classStr === undefined){
 					node[className] = "";
@@ -215,7 +219,7 @@ define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lan
 				}
 			},
 
-			replace: function replaceClass(/*DomNode|String*/node, /*String|Array*/addClassStr, /*String|Array?*/removeClassStr){
+			replace: function replaceClass(node, addClassStr, removeClassStr){
 				node = dom.byId(node);
 				if(removeClassStr === undefined){
 					node[className] = "";
@@ -231,7 +235,7 @@ define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lan
 				}
 			},
 
-			toggle: function toggleClass(/*DomNode|String*/node, /*String|Array*/classStr, /*Boolean?*/condition){
+			toggle: function toggleClass(node, classStr, condition){
 				node = dom.byId(node);
 				if(condition === undefined){
 					classStr = str2array(classStr);
@@ -244,72 +248,73 @@ define(["../has", "../_base/lang", "../_base/array", "./dom"], function(has, lan
 				return condition;   // Boolean
 			}
 		}
-	}else{
-		// regular DOM version
-		var fakeNode = {};  // for effective replacement
-		cls = {
-			contains: function containsClass(/*DomNode|String*/node, /*String*/classStr){
-				return ((" " + dom.byId(node)[className] + " ").indexOf(" " + classStr + " ") >= 0); // Boolean
-			},
+	}
+	*/
 
-			add: function addClass(/*DomNode|String*/node, /*String|Array*/classStr){
-				node = dom.byId(node);
+	// regular DOM version
+	var fakeNode = {};  // for effective replacement
+	cls = {
+		contains: function containsClass(/*DomNode|String*/node, /*String*/classStr){
+			return ((" " + dom.byId(node)[className] + " ").indexOf(" " + classStr + " ") >= 0); // Boolean
+		},
+
+		add: function addClass(/*DomNode|String*/node, /*String|Array*/classStr){
+			node = dom.byId(node);
+			classStr = str2array(classStr);
+			var cls = node[className], oldLen;
+			cls = cls ? " " + cls + " " : " ";
+			oldLen = cls.length;
+			for(var i = 0, len = classStr.length, c; i < len; ++i){
+				c = classStr[i];
+				if(c && cls.indexOf(" " + c + " ") < 0){
+					cls += c + " ";
+				}
+			}
+			if(oldLen < cls.length){
+				node[className] = cls.substr(1, cls.length - 2);
+			}
+		},
+
+		remove: function removeClass(/*DomNode|String*/node, /*String|Array?*/classStr){
+			node = dom.byId(node);
+			var cls;
+			if(classStr !== undefined){
 				classStr = str2array(classStr);
-				var cls = node[className], oldLen;
-				cls = cls ? " " + cls + " " : " ";
-				oldLen = cls.length;
+				cls = " " + node[className] + " ";
+				for(var i = 0, len = classStr.length; i < len; ++i){
+					cls = cls.replace(" " + classStr[i] + " ", " ");
+				}
+				cls = lang.trim(cls);
+			}else{
+				cls = "";
+			}
+			if(node[className] != cls){ node[className] = cls; }
+		},
+
+		replace: function replaceClass(/*DomNode|String*/node, /*String|Array*/addClassStr, /*String|Array?*/removeClassStr){
+			node = dom.byId(node);
+			fakeNode[className] = node[className];
+			cls.remove(fakeNode, removeClassStr);
+			cls.add(fakeNode, addClassStr);
+			if(node[className] !== fakeNode[className]){
+				node[className] = fakeNode[className];
+			}
+		},
+
+		toggle: function toggleClass(/*DomNode|String*/node, /*String|Array*/classStr, /*Boolean?*/condition){
+			node = dom.byId(node);
+			if(condition === undefined){
+				classStr = str2array(classStr);
 				for(var i = 0, len = classStr.length, c; i < len; ++i){
 					c = classStr[i];
-					if(c && cls.indexOf(" " + c + " ") < 0){
-						cls += c + " ";
-					}
+					cls[cls.contains(node, c) ? "remove" : "add"](node, c);
 				}
-				if(oldLen < cls.length){
-					node[className] = cls.substr(1, cls.length - 2);
-				}
-			},
-
-			remove: function removeClass(/*DomNode|String*/node, /*String|Array?*/classStr){
-				node = dom.byId(node);
-				var cls;
-				if(classStr !== undefined){
-					classStr = str2array(classStr);
-					cls = " " + node[className] + " ";
-					for(var i = 0, len = classStr.length; i < len; ++i){
-						cls = cls.replace(" " + classStr[i] + " ", " ");
-					}
-					cls = lang.trim(cls);
-				}else{
-					cls = "";
-				}
-				if(node[className] != cls){ node[className] = cls; }
-			},
-
-			replace: function replaceClass(/*DomNode|String*/node, /*String|Array*/addClassStr, /*String|Array?*/removeClassStr){
-				node = dom.byId(node);
-				fakeNode[className] = node[className];
-				cls.remove(fakeNode, removeClassStr);
-				cls.add(fakeNode, addClassStr);
-				if(node[className] !== fakeNode[className]){
-					node[className] = fakeNode[className];
-				}
-			},
-
-			toggle: function toggleClass(/*DomNode|String*/node, /*String|Array*/classStr, /*Boolean?*/condition){
-				node = dom.byId(node);
-				if(condition === undefined){
-					classStr = str2array(classStr);
-					for(var i = 0, len = classStr.length, c; i < len; ++i){
-						c = classStr[i];
-						cls[cls.contains(node, c) ? "remove" : "add"](node, c);
-					}
-				}else{
-					cls[condition ? "add" : "remove"](node, classStr);
-				}
-				return condition;   // Boolean
+			}else{
+				cls[condition ? "add" : "remove"](node, classStr);
 			}
-		};
-	}
+			return condition;   // Boolean
+		}
+	};
 
 	return cls;
 });

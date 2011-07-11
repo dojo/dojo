@@ -62,10 +62,10 @@ return declare("dojo.store.Memory", null, {
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		//	returns: Number
-		var id = options && options.id || object[this.idProperty] || Math.random();
-		this.index[id] = object;
 		var data = this.data,
 			idProperty = this.idProperty;
+		var id = (options && "id" in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
+		this.index[id] = object;
 		for(var i = 0, l = data.length; i < l; i++){
 			if(data[i][idProperty] == id){
 				data[i] = object;
@@ -84,7 +84,7 @@ return declare("dojo.store.Memory", null, {
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		//	returns: Number
-		if(this.index[options && options.id || object[this.idProperty]]){
+		if(this.index[(options && "id" in options) ? options.id : object[this.idProperty]]){
 			throw new Error("Object already exists");
 		}
 		return this.put(object, options);

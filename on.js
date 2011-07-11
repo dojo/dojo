@@ -256,17 +256,21 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		var method = "on" + type;
 		if("parentNode" in target){
 			// node (or node-like), create event controller methods
-			event.preventDefault = syntheticPreventDefault;
-			event.stopPropagation = syntheticStopPropagation;
-			event.target = target;
-			event.type = type;
+			var newEvent = {};
+			for(var i in event){
+				newEvent[i] = event[i];
+			}
+			newEvent.preventDefault = syntheticPreventDefault;
+			newEvent.stopPropagation = syntheticStopPropagation;
+			newEvent.target = target;
+			newEvent.type = type;
 		}
 		do{
 			// call any node which has a handler (note that ideally we would try/catch to simulate normal event propagation but that causes too much pain for debugging)
-			target[method] && target[method].call(target, event);
+			target[method] && target[method].call(target, newEvent);
 			// and then continue up the parent node chain if it is still bubbling (if started as bubbles and stopPropagation hasn't been called)
 		}while(event.bubbles && (target = target.parentNode));
-		return event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
+		return event.cancelable && newEvent; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
 	};
 
 	if(has("dom-addeventlistener")){
@@ -414,8 +418,8 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		};
 	}
 	if(has("touch")){ 
-		var windowOrientation = window.orientation; 
 		var Event = function (){};
+		var windowOrientation = window.orientation; 
 		var fixTouchListener = function(listener){ 
 			return function(originalEvent){ 
 				//Event normalization(for ontouchxxx and resize): 

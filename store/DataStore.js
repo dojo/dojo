@@ -16,17 +16,35 @@ dojo.declare("dojo.store.DataStore", null, {
 		//		This provides any configuration information that will be mixed into the store,
 		//		including a reference to the Dojo data store under the property "store".
 		dojo.mixin(this, options);
+ 		if(!"idProperty" in options){
+			var idAttribute; 
+			try{
+				idAttribute = this.store.getIdentityAttributes(); 
+			}catch(e){ 
+	 		// some store are not requiring an item instance to give us the ID attributes 
+	 		// but some other do and throw errors in that case. 
+			} 
+			// if no idAttribute we have implicit id 
+			this.idProperty = (!idAttribute || !idAttributes[0]) || this.idProperty; 
+		} 
 	},
+	// idProperty: String
+	//		The object property to use to store the identity of the store items.
+	idProperty: "id",
 	// store:
 	//		The object store to convert to a data store
 	store: null,
 	_objectConverter: function(callback){
 		var store = this.store;
+		var idProperty = this.idProperty;
 		return function(item){
 			var object = {};
 			var attributes = store.getAttributes(item);
 			for(var i = 0; i < attributes.length; i++){
 				object[attributes[i]] = store.getValue(item, attributes[i]);
+			}
+			if(!(idProperty in object)){
+				object[idProperty] = store.getIdentity(item);
 			}
 			return callback(object);
 		};
@@ -66,6 +84,7 @@ dojo.declare("dojo.store.DataStore", null, {
 		//		that the object may be stored with (i.e. { id: "foo" }).
 		var id = options && typeof options.id != "undefined" || this.getIdentity(object);
 		var store = this.store;
+		var idProperty = this.idProperty;
 		if(typeof id == "undefined"){
 			store.newItem(object);
 		}else{
@@ -74,7 +93,8 @@ dojo.declare("dojo.store.DataStore", null, {
 				onItem: function(item){
 					if(item){
 						for(var i in object){
-							if(store.getValue(item, i) != object[i]){
+							if(i != idProperty && // don't copy id properties since they are immutable and should be omitted for implicit ids 
+									store.getValue(item, i) != object[i]){
 								store.setValue(item, i, object[i]);
 							}
 						}
@@ -132,7 +152,7 @@ dojo.declare("dojo.store.DataStore", null, {
 		//		The data object to get the identity from.
 		// returns: Number
 		//		The id of the given object.
-		return object[this.idProperty || this.store.getIdentityAttributes()[0]];
+		return object[this.idProperty];
 	}
 });
 

@@ -213,8 +213,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 
 	return {
 		attr:   dojo.attr,
-		has:    dojo.has,
-		remove: dojo.remove,
+		has:    dojo.hasAttr,
+		remove: dojo.removeAttr,
 		getNodeProp: dojo.getNodeProp
 	};
 });

@@ -50,7 +50,7 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 		"blue":	  [0,0,255],
 		"teal":	  [0,128,128],
 		"aqua":	  [0,255,255],
-		"transparent": dojo.config.transparentColor || [255,255,255]
+		"transparent": dojo.config.transparentColor || [0,0,0,0]
 	};
 
 	dojo.extend(dojo.Color, {

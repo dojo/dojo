@@ -221,7 +221,6 @@ define(["./_base/kernel", "./_base/Color", "./_base/array"], function(dojo) {
 		"tan":	[210,180,140],
 		"thistle":	[216,191,216],
 		"tomato":	[255,99,71],
-		"transparent":	[0, 0, 0, 0],
 		"turquoise":	[64,224,208],
 		"violet":	[238,130,238],
 		"wheat":	[245,222,179],

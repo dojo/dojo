@@ -1,4 +1,4 @@
-dojo.provide("tests._base.Deferred");
+dojo.provide("dojo.tests._base.Deferred");
 
 var delay = function(ms){
 	var d = new dojo.Deferred();

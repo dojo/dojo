@@ -1,4 +1,4 @@
-dojo.provide("tests._base.connect");
+dojo.provide("dojo.tests._base.connect");
 
 hub = function(){
 };

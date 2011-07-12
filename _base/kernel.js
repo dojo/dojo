@@ -61,7 +61,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		//
 		scopeMap =
 			// a map from a name used in a legacy module to the the global variable name and object addressed by that name
-			{dojo:["dojo", dojo], dijit:["dijit", dijit], dojox:["dojox", dojox]},
+			{dojo:["dojo", dojo]},
 
 		thisDojoName =
 			// the top-level name known to the loader that this instance of dojo is being loaded at
@@ -69,7 +69,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 		configScopeMap =
 			// configuration to edit or expand scopeMap; given as tripples [name, globalName, object]
-			config[thisDojoName + "Scope"] || config.scopeMap || [],
+			config[thisDojoName + "Scope"] || config.scopeMap || [["dijit", "dijit"], ["dojox", "dojox"]],
 
 		seed =
 			// seed used to create unique scope names
@@ -82,7 +82,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		name = item[0],
 		globalName = item[1] || (name + "_" + i + seed),
 		theObject = {dojo:dojo, dijit:dijit, dojox:dojox}[name] || item[2] || {};
-		scopeMap[item] = [globalName, theObject];
+		scopeMap[name] = [globalName, theObject];
 	}
 	for(p in scopeMap){
 		item = scopeMap[p];
@@ -322,7 +322,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			}else{
 				p = parts[i++];
 				try{
-					context = (scopeMap[p] && dojo.global[scopeMap[p]]);
+					context = scopeMap[p] && scopeMap[p][1];
 				}catch(e){}
 				context = context || (p in dojoGlobal ? dojoGlobal[p] : (create ? dojoGlobal[p] = {} : undefined));
 			}

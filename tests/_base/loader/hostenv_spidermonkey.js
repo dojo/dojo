@@ -1,4 +1,4 @@
-dojo.provide("tests._base._loader.hostenv_spidermonkey");
+dojo.provide("dojo.tests._base._loader.hostenv_spidermonkey");
 
 tests.register("tests._base._loader.hostenv_spidermonkey",
 	[

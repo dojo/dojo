@@ -23,7 +23,7 @@ define(["./kernel", "./sniff", "require", "../on", "../io-query", "../dom-form",
 		};
 	}else{
 		// PROGIDs are in order of decreasing likelihood; this will change in time.
-		for(var XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'], progid, i = 0; i<3;){
+		for(var XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'], progid, i = 0; i < 3;){
 			try{
 				progid = XMLHTTP_PROGIDS[i++];
 				if (new ActiveXObject(progid)) {
@@ -37,11 +37,7 @@ define(["./kernel", "./sniff", "require", "../on", "../io-query", "../dom-form",
 			}
 		}
 		dojo._xhrObj= function() {
-			try{
-				return new ActiveXObject(progid);
-			}catch(e){
-				throw new Error("XMLHTTP not available: "+e);
-			}
+			return new ActiveXObject(progid);
 		};
 	}
 

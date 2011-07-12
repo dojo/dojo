@@ -1,4 +1,4 @@
-dojo.provide("tests.on");
+dojo.provide("dojo.tests.on");
 
 var on = dojo.require("dojo.on");
 var has = dojo.require("dojo.has");
@@ -79,7 +79,7 @@ doh.register("tests.on",
 			on.emit(div, "otherevent", {
 				a: 0
 			});
-			t.is(on.emit(span, "custom", { 
+			t.is(on.emit(span, "custom", {
 				a: 1,
 				bubbles: true,
 				cancelable: true
@@ -157,22 +157,22 @@ doh.register("tests.on",
 				a: 0
 			});
 			// should trigger selector
-			t.t(on.emit(span, "custom", { 
+			t.t(on.emit(span, "custom", {
 				a: 1,
 				bubbles: true,
 				cancelable: true
 			}));
 			// shouldn't trigger selector
-			t.t(on.emit(div, "custom", { 
+			t.t(on.emit(div, "custom", {
 				a: 3,
 				bubbles: true,
 				cancelable: true
 			}));
 			t.is(order, [0, 1, 2, 3]);
-		},		
+		},
 		function Evented(t){
 			var MyClass = dojo.declare([on.Evented],{
-				
+
 			});
 			var order = [];
 			myObject = new MyClass;
@@ -190,7 +190,7 @@ doh.register("tests.on",
 			});
 			on.publish("/test/foo", {foo: "value"});
 			t.is(1, fooCount);
-		},		
+		},
 		function touch(t){
 			console.log("has", has);
 			if(has("touch")){

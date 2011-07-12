@@ -8,8 +8,8 @@ define([
 	"./loader/bootstrap"], function(dojo, doh, require){
 	if(doh.isBrowser){
 		doh.register("tests._base.loader.asyncWithDojoRequire", require.toUrl("./loader/asyncWithDojoRequire.html"));
-		doh.register("tests._base.loader.config?dojoConfig-djConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig-require");
 
+		doh.register("tests._base.loader.config?dojoConfig-djConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig-require");
 		doh.register("tests._base.loader.config?dojoConfig-require", require.toUrl("./loader/config.html")+"?dojoConfig-require");
 		doh.register("tests._base.loader.config?dojoConfig-djConfig", require.toUrl("./loader/config.html")+"?dojoConfig-djConfig");
 		doh.register("tests._base.loader.config?dojoConfig", require.toUrl("./loader/config.html")+"?dojoConfig");
@@ -31,7 +31,6 @@ define([
 		doh.register("tests._base.loader.xdomin-sync-2", require.toUrl("./loader/xdomain/xdomain.html"), {async:0, variation:2});
 		doh.register("tests._base.loader.xdomin-async-1", require.toUrl("./loader/xdomain/xdomain.html"), {async:"legacyAsync", variation:1});
 		doh.register("tests._base.loader.xdomin-async-2", require.toUrl("./loader/xdomain/xdomain.html"), {async:"legacyAsync", variation:2});
-
 		// the requirejs test suite. The following tests are not used:
 		//
 		//   * baseUrl: dojo's baseUrl is different--it defaults to the dojo tree. See TODO
@@ -124,6 +123,8 @@ define([
 
 		doh.register("tests._base.loader.requirejs-text-sync", require.toUrl("./loader/requirejs/text/text.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-text-async", require.toUrl("./loader/requirejs/text/text.html"), {async:1});
+		doh.register("tests._base.loader.requirejs-text-sync", require.toUrl("./loader/requirejs/text/text.html"), {async:0, aliasTest:1});
+		doh.register("tests._base.loader.requirejs-text-async", require.toUrl("./loader/requirejs/text/text.html"), {async:1, aliasTest:1});
 
 		doh.register("tests._base.loader.requirejs-textOnly-sync", require.toUrl("./loader/requirejs/text/textOnly.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-textOnly-async", require.toUrl("./loader/requirejs/text/textOnly.html"), {async:1});

@@ -13,7 +13,12 @@
 		async:dohArgs.async
 	  }
 	  var expectedSequence;
-	  if(dohArgs.async=="legacyAsync" && dohArgs.variation==2){
+	  
+	  var built = 1;
+	  //>>excludeStart("srcVersion", kwArgs.copyTests=="build");
+	  built = 0;
+	  //>>excludeEnd("srcVersion");
+	  if((dohArgs.async=="legacyAsync" || built) && dohArgs.variation==2){
 		expectedSequence = [
 			"local1-5",
 			"local1-17",
@@ -81,6 +86,33 @@
 			"local1-16",
 			"local1-18",
 			"local3-3"].join(";");
+	  }else if((dohArgs.async=="legacyAsync" || built) && dohArgs.variation==1){
+		expectedSequence = [
+			"local1-5",
+			"local1-17",
+			"local1-1",
+			"local1-2",
+			"local1-3",
+			"local1-dep-1",
+			"local1-dep-2",
+			"local1-4",
+			"local1-6",
+			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-1",
+			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-2",
+			"local1-7",
+			"local1-8",
+			"dojo.tests._base.loader.xdomain.local1-browser-1",
+			"dojo.tests._base.loader.xdomain.local1-browser-2",
+			"dojo.tests._base.loader.xdomain.local1-browser-skip-1",
+			"local1-9",
+			"local1-10",
+			"local1-11",
+			"local1-12",
+			"local1-13",
+			"local1-14",
+			"local1-15",
+			"local1-16",
+			"local1-18"].join(";");
 	  }else if(dohArgs.async==0 && dohArgs.variation==1){
 		expectedSequence = [
 			"local1-1",
@@ -108,52 +140,27 @@
 			"dojo.tests._base.loader.xdomain.local1-browser-1",
 			"dojo.tests._base.loader.xdomain.local1-browser-2",
 			"dojo.tests._base.loader.xdomain.local1-browser-skip-1"].join(";");
-	  }else if(dohArgs.async=="legacyAsync" && dohArgs.variation==1){
-		expectedSequence = [
-			"local1-5",
-			"local1-17",
-			"local1-1",
-			"local1-2",
-			"local1-3",
-			"local1-dep-1",
-			"local1-dep-2",
-			"local1-4",
-			"local1-6",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-1",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-2",
-			"local1-7",
-			"local1-8",
-			"dojo.tests._base.loader.xdomain.local1-browser-1",
-			"dojo.tests._base.loader.xdomain.local1-browser-2",
-			"dojo.tests._base.loader.xdomain.local1-browser-skip-1",
-			"local1-9",
-			"local1-10",
-			"local1-11",
-			"local1-12",
-			"local1-13",
-			"local1-14",
-			"local1-15",
-			"local1-16",
-			"local1-18"].join(";");
 	  }
 	</script>
 	<script type="text/javascript" src="../../../../dojo.js"></script>
 	<script type="text/javascript">
+	    define("dijit", ["dojo"], function(dojo){ return dojo.dijit; });
+	    define("dojox", ["dojo"], function(dojo){ return dojo.dojox; });
+
+
+
 		var xdomainLog= [], xdomainExecSequence= [];
 
 		require(["dojo", "doh", "dojo/has"], function(dojo, doh, has){ 
-			if(!has("dojo-xdomain-test-api") || !has("dojo-sync-loader")){
+			if(!("legacyMode" in require) || !("xdomainTest" in require)){
 				doh.register("xdomain", function(t){
 					t.is("dojotoolkit.org", define.vendor);
-					t.is(true, !!has("dojo-sync-loader"));
-					t.is(true, !!has("dojo-xdomain-test-api"));
+					t.is(true, "legacyMode" in require);
+					t.is(true, "xdomainTest" in require);
 				});
 				doh.runOnLoad();
 				return;
 		    }
-
-			console.log("require.asyc: " + require.async);
-			console.log("require.legacyMode: " + require.legacyMode);
 
 			// pretend that everything except the stuff in dojo/tests/_base/loader/xdomain is xdomain
 			require.xdomainTest(function(url){
@@ -166,6 +173,7 @@
 			// the loader is already in xdomain when that module is demanded
 			if(dohArgs.variation==1){
 				dojo.require("dojo.tests._base.loader.xdomain.local1");
+				//>>excludeStart("srcVersion", kwArgs.copyTests=="build");
 				if(dohArgs.async==0){
 					// can't stop the local module from completely executing...
 					xdomainLog.push(11, dojo.tests._base.loader.xdomain.local1==="stepOnLocal1");
@@ -174,8 +182,10 @@
 				}else{
 					xdomainLog.push(11, dojo.getObject("dojo.tests._base.loader.xdomain.local1")===undefined);
 				}
+				//>>excludeEnd("srcVersion");
 			}else{
 				dojo.require("dojo.tests._base.loader.xdomain.local2");
+				//>>excludeStart("srcVersion", kwArgs.copyTests=="build");
 				if(dohArgs.async==0){
 					// can't stop the local module from completely executing...
 					xdomainLog.push(11, dojo.tests._base.loader.xdomain.local2.status==="local2-loaded");
@@ -191,6 +201,7 @@
 				}catch(e){
 					xdomainLog.push(19, true);
 				}
+				//>>excludeEnd("srcVersion");
 			}
 
 

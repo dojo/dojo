@@ -1,4 +1,4 @@
-dojo.provide("tests._base._loader.hostenv_rhino");
+dojo.provide("dojo.tests._base._loader.hostenv_rhino");
 
 tests.register("tests._base._loader.hostenv_rhino",
 	[

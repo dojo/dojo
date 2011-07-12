@@ -1,17 +1,4 @@
-define([
-	"doh",
-	"dojo/text!./commentChallengeBefore.js",
-	"dojo/text!./commentChallengeAfter.js",
-	"dojo/text!./hookProvidesChallengeBefore.js",
-	"dojo/text!./hookProvidesChallengeAfter.js"
-	], function(
-		doh,
-		commentBefore,
-		commentAfter,
-		hookProvidesBefore,
-		hookProvidesAfter){
-
-console.log(hookProvidesBefore);
+define(["doh"], function(doh){
 	doh.register("dojo.tests._base._loader.internals", [
 		function compactPath(t){
 			var compactPath = require.compactPath;
@@ -26,15 +13,6 @@ console.log(hookProvidesBefore);
 			t.is(compactPath("./a/b"), "a/b");
 			t.is(compactPath("../a/b"), "../a/b");
 			t.is(compactPath(""), "");
-		}/*,
-
-		function removeComments(t){
-			t.is(commentAfter, require.removeComments(commentBefore));
-		},
-
-		function hookProvides(t){
-			t.is(hookProvidesAfter, require.hookProvides({pqn:"path/to/reference/module"}, hookProvidesBefore, true));
 		}
-*/
 	]);
 });

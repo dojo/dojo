@@ -38,11 +38,11 @@ dojo.platformRequire({
 
 // these are xd bundles which should be loaded async
 xdomainExecSequence.push("local1-9");
-dojo.requireLocalization("dijit", "loading");
+dojo.requireLocalization("dojo", "colors");
 xdomainExecSequence.push("local1-10");
-dojo.requireLocalization("dijit", "loading", "fr");
+dojo.requireLocalization("dojo", "colors", "fr");
 xdomainExecSequence.push("local1-11");
-dojo.requireLocalization("dijit", "loading");
+dojo.requireLocalization("dojo", "colors");
 xdomainExecSequence.push("local1-12");
 
 // these are not xd bundles which should be loaded sync

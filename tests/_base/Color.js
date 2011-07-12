@@ -1,4 +1,4 @@
-dojo.provide("tests._base.Color");
+dojo.provide("dojo.tests._base.Color");
 
 (function(){
 	var white  = dojo.colorFromString("white").toRgba();

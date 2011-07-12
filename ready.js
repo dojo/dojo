@@ -25,19 +25,13 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 				//guard against recursions into this function
 				onLoadRecursiveGuard = 1;
 				var f = loadQ.shift();
-				if(has("dojo-loader-catches")){
 					try{
 						f();
 					}catch(e){
-						if(!require.error("loader/onLoad", [e])){
-							throw e;
-						}
+						// FIXME: signal the error via require.on
 					}finally{
 						onLoadRecursiveGuard = 0;
 					}
-				}else{
-					f();
-				}
 				onLoadRecursiveGuard = 0;
 				if(loadQ.length){
 					requestCompleteSignal(onLoad);

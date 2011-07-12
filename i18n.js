@@ -63,7 +63,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 			bundleName = bundleName.replace(/\./g, "/");
 			return (/root/i.test(locale)) ?
 				(moduleName + "/nls/" + bundleName) :
-				(moduleName + "/nls/"	 + locale + "/" + bundleName);
+				(moduleName + "/nls/" + locale + "/" + bundleName);
 		},
 
 		doLoad = function(require, bundlePathAndName, bundlePath, bundleName, locale, load){
@@ -141,6 +141,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 					if(cache[url]){
 						results.push(cache[url]);
 					}else{
+
 						try {
 							var bundle= require(mid);
 							if(bundle){
@@ -148,6 +149,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 								return;
 							}
 						}catch(e){}
+
 						dojo.xhrGet({
 							url:url,
 							sync:true,
@@ -161,7 +163,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 						});
 					}
 				});
-				callback.apply(callback, results);
+				callback.apply(null, results);
 			};
 
 		syncRequire.toAbsMid= function(mid){

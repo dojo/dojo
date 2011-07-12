@@ -19,13 +19,5 @@
 	"bugs": "http://bugs.dojotoolkit.org/",
 	"keywords": ["JavaScript", "Dojo", "Toolkit"],
 	"homepage": "http://dojotoolkit.org/",
-	"dojoBuild": {
-		"resourceTags":{
-			"test": [".*/dojo/tests.*", ".*dojo/robot.*"],
-			"amd": "return /\\.js$/.test(name) && !/\\/nls\\//.test(name) && !/_base\\/config.+/.test(name) && !/OpenAjax\\.js$/.test(name) && !/resources\\/_modules\\.js/.test(name);"
-		},
-		"trees": [
-			[".", ".", "/\\.", "~$"]
-		]
-	}
+	"dojoBuild": "dojo.profile.js"
 }

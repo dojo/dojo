@@ -1,4 +1,4 @@
-dojo.provide("tests.aspect");
+dojo.provide("dojo.tests.aspect");
 
 var aspect = dojo.require("dojo.aspect");
 

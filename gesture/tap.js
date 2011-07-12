@@ -23,18 +23,15 @@ define(["dojo", "../gesture"], function(dojo, gesture){
 //		|	dojo.gesture.tap.hold(node, function(e){});
 //		|	dojo.gesture.tap.doubletap(node, function(e){});
 //
-//		Though there is always a default singleton gesture instance if required e.g. require("dojo.gesture.tap")
-//		It's possible to create a new one with different parameters to overwrite it
+//		Though there is always a default singleton gesture instance after being required, e.g 
+//		|	require(["dojo/gesture/tap"], function(){...});
+//		It's possible to unRegister it and create a new one with different parameter setting:
+//		|	dojo.gesture.unRegister(dojo.gesture.tap);
 //		|	var myTap = new dojo.gesture.tap.Tap({holdThreshold: 300});
 //		|	dojo.gesture.register(myTap);
 //		|	dojo.connect(node, myTap, function(e){});
 //		|	dojo.connect(node, myTap.hold, function(e){});
 //		|	dojo.connect(node, myTap.doubletap, function(e){});
-
-function clearTimer(timer){
-	clearTimeout(timer);
-	delete timer;
-}
 
 var clz = dojo.declare(null, {
 	
@@ -42,7 +39,7 @@ var clz = dojo.declare(null, {
 	
 	doubleTapTimeout: 250,
 	
-	tapRadius: 8,
+	tapRadius: 10,
 	
 	defaultEvent: 'tap',
 	
@@ -52,28 +49,38 @@ var clz = dojo.declare(null, {
 		dojo.mixin(this, args);
 	},
 	press: function(data, e){
+		if(e.touches && e.touches.length >= 2){
+			//tap gesture is only for single touch
+			delete data.tapContext;
+			return;
+		}
 		var target = e.currentTarget;
 		this._initTap(data, e);
-		clearTimer(data.tapTimeOut);
+		clearTimeout(data.tapTimeOut);
 		data.tapTimeOut = setTimeout(dojo.hitch(this, function(){
 			if(this._isTap(data, e)){
 				gesture.fire(target, 'tap.hold');
 			}
-			clearTimer(data.tapTimeOut);
-			data.tapContext.t = 0;
-			data.tapContext.c = 0;
+			clearTimeout(data.tapTimeOut);
+			delete data.tapContext;
 		}), this.holdThreshold);
 	},
 	release: function(data, e){
+		if(!data.tapContext){
+			clearTimeout(data.tapTimeOut);
+			return;
+		}
 		switch(data.tapContext.c){
 		case 1: 
 			gesture.fire(e.currentTarget, 'tap');
 			break;
 		case 2:
-			gesture.fire(e.currentTarget, 'tap.doubletap');
+			if(this._isTap(data, e)){
+				gesture.fire(e.currentTarget, 'tap.doubletap');
+			}
 			break;
 		}
-		clearTimer(data.tapTimeOut);
+		clearTimeout(data.tapTimeOut);
 	},
 	_initTap: function(data, e){
 		if(!data.tapContext){

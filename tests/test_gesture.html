@@ -61,7 +61,7 @@
 					
 					//dojo.connect(outer, dojo.touch.press, function(){alert('outer.touch.press!');});
 					
-					//dojo.connect(dojo.doc, "orientationchange", function(e){dojo.byId("log").innerHTML="";});
+					dojo.connect(dojo.doc, "orientationchange", function(e){dojo.byId("log").innerHTML="";});
 					
 					//================================= DoH tests - only running on desktop ======================
 					if(has("touch")){
@@ -199,11 +199,11 @@
 									doh.is(innerDoH, e.target);
 								});
 								//first tap
-								on.emit(innerDoH, 'mousedown', {});
-								on.emit(innerDoH, 'mouseup', {});
+								on.emit(innerDoH, 'mousedown', {screenX: 0, screenY: 0});
+								on.emit(innerDoH, 'mouseup', {screenX: 0, screenY: 0});
 								//second tap
-								on.emit(innerDoH, 'mousedown', {});
-								on.emit(innerDoH, 'mouseup', {});
+								on.emit(innerDoH, 'mousedown', {screenX: 0, screenY: 0});
+								on.emit(innerDoH, 'mouseup', {screenX: 0, screenY: 0});
 								doh.t(executed, 'dojo.gesture.tap.doubletap not fired!');
 								d.callback(true);
 							}, dojo.gesture.tap.doubleTapTimeout);//T3

@@ -19,7 +19,7 @@ define(["./_base/kernel", "./on", "./touch", "./has"], function(dojo, on, touch,
 //		Bind a static listen handler for the given gesture event, 
 //		the handle will be internally used by on(), e.g.
 //		|	var dojo.gesture.tap = handle('tap');
-//		|	//so that listen can use it
+//		|	//so that we can use it with on
 //		|	on(node, dojo.gesture.tap, func(e){});
 //		|	//or used directly as
 //		|	dojo.gesture.tap(node, func(e){});
@@ -49,8 +49,10 @@ define(["./_base/kernel", "./on", "./touch", "./has"], function(dojo, on, touch,
 //		|	dojo.gesture.tap.hold(node, function(e){});
 //		|	dojo.gesture.tap.doubletap(node, function(e){});
 //
-//		Though there is always a default singleton gesture instance after required e.g. require("dojo.gesture.tap")
-//		It's possible to create a new one with different parameters to overwrite it
+//		Though there is always a default singleton gesture instance after being required, e.g 
+//		|	require(["dojo/gesture/tap"], function(){...});
+//		It's possible to unRegister it and create a new one with different parameter setting:
+//		|	dojo.gesture.unRegister(dojo.gesture.tap);
 //		|	var myTap = new dojo.gesture.tap.Tap({holdThreshold: 300});
 //		|	dojo.gesture.register(myTap);
 //		|	dojo.connect(node, myTap, function(e){});
@@ -226,9 +228,12 @@ dojo.gesture = {
 					element[type].remove();
 				}
 			});
+			if(keepElement){
+				return;
+			}
 			//also release the element if needed
 			i = dojo.indexOf(this._gestureElements, element);
-			if(i >= 0 && !keepElement){
+			if(i >= 0){
 				this._gestureElements.splice(i, 1);
 			}
 		}

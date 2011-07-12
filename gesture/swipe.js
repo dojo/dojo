@@ -23,8 +23,10 @@ define(["dojo", "../gesture"], function(dojo, gesture){
 //		|	dojo.gesture.swipe.up(node, function(e){});
 //		|	...
 //
-//		Though there is always a default singleton gesture instance if required e.g. require("dojo.gesture.swipe")
-//		It's possible to create a new one with different parameters to overwrite it
+//		Though there is always a default singleton gesture instance after required, e.g 
+//		|	require(["dojo/gesture/swipe"], function(){...});
+//		It's possible to unRegister it and create a new one with different parameter setting:
+//		|	dojo.gesture.unRegister(dojo.gesture.swipe);
 //		|	var mySwipe = new dojo.gesture.swipe.Swipe({swipeRange: 300});
 //		|	dojo.gesture.register(mySwipe);
 //		|	dojo.connect(node, mySwipe, function(e){});
@@ -48,6 +50,11 @@ var clz = dojo.declare(null, {
 		dojo.mixin(this, args);
 	},
 	press: function(data, e){
+		if(e.touches && e.touches.length >= 2){
+			//currently only support single-touch swipe
+			delete data.swipeContext;
+			return;
+		}
 		if(!data.swipeContext){
 			data.swipeContext = {x: 0, y: 0, t: 0};
 		}
@@ -56,6 +63,9 @@ var clz = dojo.declare(null, {
 		data.swipeContext.y = e.screenY;
 	},
 	release: function(data, e){
+		if(!data.swipeContext){
+			return;
+		}
 		var t = (new Date().getTime() - data.swipeContext.t);
 		if(t > this.swipeTimeout){
 			// gesture is too long

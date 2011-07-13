@@ -1,4 +1,4 @@
-define(["./main", "./fx"], function(dojo) {
+define(["./_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./fx", "./_base/kernel"], function(NodeList, lang, connect, fx, dfx, dojo) {
 	// module:
 	//		dojo/NodeList-fx
 	// summary:
@@ -11,10 +11,10 @@ dojo["NodeList-fx"] = {
 };
 =====*/
 
-dojo.extend(dojo.NodeList, {
+lang.extend(NodeList, {
 	_anim: function(obj, method, args){
 		args = args||{};
-		var a = dojo.fx.combine(
+		var a = dfx.combine(
 			this.map(function(item){
 				var tmpArgs = { node: item };
 				dojo.mixin(tmpArgs, args);
@@ -45,7 +45,7 @@ dojo.extend(dojo.NodeList, {
 		//		Utilizing `auto` to get the NodeList back:
 		//		|	dojo.query(".titles").wipeIn({ auto:true }).onclick(someFunction);
 		//
-		return this._anim(dojo.fx, "wipeIn", args); // dojo.Animation|dojo.NodeList
+		return this._anim(dfx, "wipeIn", args); // dojo.Animation|dojo.NodeList
 	},
 
 	wipeOut: function(args){
@@ -64,7 +64,7 @@ dojo.extend(dojo.NodeList, {
 		//	example:
 		//		Wipe out all tables with class "blah":
 		//		|	dojo.query("table.blah").wipeOut().play();
-		return this._anim(dojo.fx, "wipeOut", args); // dojo.Animation|dojo.NodeList
+		return this._anim(dfx, "wipeOut", args); // dojo.Animation|dojo.NodeList
 	},
 
 	slideTo: function(args){
@@ -86,7 +86,7 @@ dojo.extend(dojo.NodeList, {
 		//		|		left: 40,
 		//		|		top: 50
 		//		|	}).play();
-		return this._anim(dojo.fx, "slideTo", args); // dojo.Animation|dojo.NodeList
+		return this._anim(dfx, "slideTo", args); // dojo.Animation|dojo.NodeList
 	},
 
 
@@ -106,7 +106,7 @@ dojo.extend(dojo.NodeList, {
 		//	example:
 		//		Fade in all tables with class "blah":
 		//		|	dojo.query("table.blah").fadeIn().play();
-		return this._anim(dojo, "fadeIn", args); // dojo.Animation|dojo.NodeList
+		return this._anim(fx, "fadeIn", args); // dojo.Animation|dojo.NodeList
 	},
 
 	fadeOut: function(args){
@@ -134,7 +134,7 @@ dojo.extend(dojo.NodeList, {
 		//		Using `auto`:
 		//		|	dojo.query("li").fadeOut({ auto:true }).filter(filterFn).forEach(doit);
 		//
-		return this._anim(dojo, "fadeOut", args); // dojo.Animation|dojo.NodeList
+		return this._anim(fx, "fadeOut", args); // dojo.Animation|dojo.NodeList
 	},
 
 	animateProperty: function(args){
@@ -163,7 +163,7 @@ dojo.extend(dojo.NodeList, {
 		//	|			height:240
 		//	|		}
 		//	|	}).onclick(handler);
-		return this._anim(dojo, "animateProperty", args); // dojo.Animation|dojo.NodeList
+		return this._anim(fx, "animateProperty", args); // dojo.Animation|dojo.NodeList
 	},
 
 	anim: function( /*Object*/			properties,
@@ -193,9 +193,9 @@ dojo.extend(dojo.NodeList, {
 		//		animate all elements with the "thigner" class to a width of 500
 		//		pixels over half a second
 		//	|	dojo.query(".thinger").anim({ width: 500 }, 700);
-		var canim = dojo.fx.combine(
+		var canim = dfx.combine(
 			this.map(function(item){
-				return dojo.animateProperty({
+				return fx.animateProperty({
 					node: item,
 					properties: properties,
 					duration: duration||350,
@@ -204,11 +204,11 @@ dojo.extend(dojo.NodeList, {
 			})
 		);
 		if(onEnd){
-			dojo.connect(canim, "onEnd", onEnd);
+			connect(canim, "onEnd", onEnd);
 		}
 		return canim.play(delay||0); // dojo.Animation
 	}
 });
 
-return dojo.NodeList;
+return NodeList;
 });

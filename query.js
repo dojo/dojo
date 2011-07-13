@@ -134,7 +134,7 @@ query.load = /*===== dojo.query.load= ======*/ function(id, parentRequire, loade
 	});
 };
 
-dojo._filterQueryResult = function(nodes, selector, root){
+dojo._filterQueryResult = query._filterResult = function(nodes, selector, root){
 	return NodeList._wrap(query.filter(nodes, selector, root));
 };
 return query;

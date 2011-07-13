@@ -1,4 +1,4 @@
-define(["./main"], function(dojo) {
+define(["./_base/NodeList", "./_base/lang", "./_base/array", "./query", "./dom-construct"], function(NodeList, lang, array, dquery, construct) {
 	// module:
 	//		dojo/NodeList-manipulate
 	// summary:
@@ -49,7 +49,7 @@ dojo["NodeList-manipulate"] = {
 		// summary:
 		// 		convert HTML into nodes if it is not already a node.
 		if(typeof html == "string"){
-			html = dojo._toDom(html, (refNode && refNode.ownerDocument));
+			html = construct.toDom(html, (refNode && refNode.ownerDocument));
 			if(html.nodeType == 11){
 				//DocumentFragment cannot handle cloneNode, so choose first child.
 				html = html.childNodes[0];
@@ -61,13 +61,13 @@ dojo["NodeList-manipulate"] = {
 		return html; /*DOMNode*/
 	}
 
-	dojo.extend(dojo.NodeList, {
+	lang.extend(NodeList, {
 		_placeMultiple: function(/*String||Node||NodeList*/query, /*String*/position){
 			// summary:
 			// 		private method for inserting queried nodes into all nodes in this NodeList
 			// 		at different positions. Differs from NodeList.place because it will clone
 			// 		the nodes in this NodeList if the query matches more than one element.
-			var nl2 = typeof query == "string" || query.nodeType ? dojo.query(query) : query;
+			var nl2 = typeof query == "string" || query.nodeType ? dquery(query) : query;
 			var toAdd = [];
 			for(var i = 0; i < nl2.length; i++){
 				//Go backwards in DOM to make dom insertions easier via insertBefore
@@ -82,7 +82,7 @@ dojo["NodeList-manipulate"] = {
 						toAdd.unshift(item);
 					}
 					if(j == length - 1){
-						dojo.place(item, refNode, position);
+						construct.place(item, refNode, position);
 					}else{
 						refNode.parentNode.insertBefore(item, refNode);
 					}
@@ -184,7 +184,7 @@ dojo["NodeList-manipulate"] = {
 			if(arguments.length){
 				for(var i = 0, node; node = this[i]; i++){
 					if(node.nodeType == 1){
-						dojo.empty(node);
+						construct.empty(node);
 						node.appendChild(node.ownerDocument.createTextNode(value));
 					}
 				}
@@ -224,7 +224,7 @@ dojo["NodeList-manipulate"] = {
 
 			//Special work for input elements.
 			if(arguments.length){
-				var isArray = dojo.isArray(value);
+				var isArray = lang.isArray(value);
 				for(var index = 0, node; node = this[index]; index++){
 					var name = node.nodeName.toUpperCase();
 					var type = node.type;
@@ -235,7 +235,7 @@ dojo["NodeList-manipulate"] = {
 						for(var i = 0; i < opts.length; i++){
 							var opt = opts[i];
 							if(node.multiple){
-								opt.selected = (dojo.indexOf(value, opt.value) != -1);
+								opt.selected = (array.indexOf(value, opt.value) != -1);
 							}else{
 								opt.selected = (opt.value == newValue);
 							}
@@ -474,7 +474,7 @@ dojo["NodeList-manipulate"] = {
 			return; // dojo.NodeList
 		},
 		=====*/
-		remove: dojo.NodeList.prototype.orphan,
+		remove: NodeList.prototype.orphan,
 
 		wrap: function(/*String||DOMNode*/html){
 			// summary:
@@ -594,7 +594,7 @@ dojo["NodeList-manipulate"] = {
 
 					//Need to convert the childNodes to an array since wrapAll modifies the
 					//DOM and can change the live childNodes NodeList.
-					this._wrap(dojo._toArray(this[i].childNodes), null, this._NodeListCtor).wrapAll(clone);
+					this._wrap(lang._toArray(this[i].childNodes), null, this._NodeListCtor).wrapAll(clone);
 				}
 			}
 			return this; //dojo.NodeList
@@ -672,7 +672,7 @@ dojo["NodeList-manipulate"] = {
 			// 	|		<div class="red">Red One</div>
 			// 	|		<div class="red">Red Two</div>
 			//	|	</div>
-			var nl = dojo.query(query);
+			var nl = dquery(query);
 			var content = this._normalize(this, this[0]);
 			for(var i = 0, node; node = nl[i]; i++){
 				this._place(content, node, "before", i > 0);
@@ -718,9 +718,9 @@ dojo["NodeList-manipulate"] = {
 	});
 
 	//set up html method if one does not exist
-	if(!dojo.NodeList.prototype.html){
-		dojo.NodeList.prototype.html = dojo.NodeList.prototype.innerHTML;
+	if(!NodeList.prototype.html){
+		NodeList.prototype.html = NodeList.prototype.innerHTML;
 	}
 
-return dojo.NodeList;
+return NodeList;
 });

@@ -1,4 +1,4 @@
-define([".", "./html"], function(dojo) {
+define(["./_base/NodeList", "./_base/lang", "./html"], function(NodeList, lang, html) {
 	// module:
 	//		dojo/NodeList-html
 	// summary:
@@ -11,7 +11,7 @@ dojo["NodeList-html"] = {
 };
 =====*/
 
-dojo.extend(dojo.NodeList, {
+lang.extend(NodeList, {
 	html: function(content, /* Object? */params){
 		//	summary:
 		//		see `dojo.html.set()`. Set the content of all elements of this NodeList
@@ -31,7 +31,7 @@ dojo.extend(dojo.NodeList, {
 		//	| 	}
 		//	| }).removeClass("notdone").addClass("done");
 
-		var dhs = new dojo.html._ContentSetter(params || {});
+		var dhs = new html._ContentSetter(params || {});
 		this.forEach(function(elm){
 			dhs.node = elm;
 			dhs.set(content);
@@ -41,5 +41,5 @@ dojo.extend(dojo.NodeList, {
 	}
 });
 
-return dojo.NodeList;
+return NodeList;
 });

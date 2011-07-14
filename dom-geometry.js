@@ -588,6 +588,29 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		docScroll:           dojo._docScroll,
 		// IE-specific
 		getIeDocumentElementOffset: dojo._getIeDocumentElementOffset,
-		fixIeBiDiScrollLeft:        dojo._fixIeBiDiScrollLeft
+		fixIeBiDiScrollLeft:        dojo._fixIeBiDiScrollLeft,
+		normalizeEvent: function(event){
+			// summary:
+			// 		Normalizes the geometry of a DOM event, normalizing the pageX, pageY,
+			// 		offsetX, offsetY, layerX, and layerX properties
+			if(!"layerX" in event){
+				event.layerX = event.offsetX;
+				event.layerY = event.offsetY;
+			}
+			if(!has("dom-addeventlistener")){
+				// old IE version
+				// FIXME: scroll position query is duped from dojo.html to
+				// avoid dependency on that entire module. Now that HTML is in
+				// Base, we should convert back to something similar there.
+				var se = event.target;
+				var doc = (se && se.ownerDocument) || document;
+				// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
+				// here rather than document.body
+				var docBody = has("quirks") ? doc.body : doc.documentElement;
+				var offset = dojo._getIeDocumentElementOffset();
+				event.pageX = event.clientX + dojo._fixIeBiDiScrollLeft(docBody.scrollLeft || 0) - offset.x;
+				event.pageY = event.clientY + (docBody.scrollTop || 0) - offset.y;
+			}				 
+		}
 	};
 });

@@ -184,11 +184,12 @@ doh.register("tests.on",
 		},
 		function pubsub(t){
 			var fooCount = 0;
-			on("/test/foo", function(event){
+			on("/test/foo", function(event, secondArg){
 				t.is("value", event.foo);
+				t.is("second", secondArg);
 				fooCount++;
 			});
-			on.publish("/test/foo", {foo: "value"});
+			on.emit("/test/foo", {foo: "value"}, "second");
 			t.is(1, fooCount);
 		},
 		function touch(t){

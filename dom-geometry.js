@@ -593,7 +593,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			// summary:
 			// 		Normalizes the geometry of a DOM event, normalizing the pageX, pageY,
 			// 		offsetX, offsetY, layerX, and layerX properties
-			if(!"layerX" in event){
+			if(!("layerX" in event)){
 				event.layerX = event.offsetX;
 				event.layerY = event.offsetY;
 			}

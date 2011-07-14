@@ -1,4 +1,4 @@
-define(["./_base/kernel"], function(dojo) {
+define(["./_base/kernel", "./_base/sniff"], function(dojo, has) {
 	// module:
 	//		dojo/keys
 	// summary:
@@ -18,7 +18,7 @@ return dojo.keys = {
 	SHIFT: 16,
 	CTRL: 17,
 	ALT: 18,
-	META: dojo.isSafari ? 91 : 224,		// the apple key on macs
+	META: has("safari") ? 91 : 224,		// the apple key on macs
 	PAUSE: 19,
 	CAPS_LOCK: 20,
 	ESCAPE: 27,
@@ -75,6 +75,6 @@ return dojo.keys = {
 	LEFT_DPAD: 177,
 	RIGHT_DPAD: 178,
 	// virtual key mapping
-	copyKey: dojo.isMac && !dojo.isAIR ? (dojo.isSafari ? 91 : 224 ) : 17
+	copyKey: has("mac") && !has("air") ? (has("safari") ? 91 : 224 ) : 17
 };
 });

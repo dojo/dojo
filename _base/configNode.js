@@ -52,7 +52,7 @@ exports.config = function(config){
 		timeout:0,
 
 		// TODO: really get the locale
-		locale:"us-en",
+		locale:"en-us",
 
 		debug: function(item){
 			// define debug for console messages during dev instead of console.log

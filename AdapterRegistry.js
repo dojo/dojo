@@ -4,7 +4,6 @@ define(["./_base/kernel", "./_base/lang"], function(dojo, lang) {
 	// summary:
 	//		TODOC
 
-
 var AdapterRegistry = dojo.AdapterRegistry = function(/*Boolean?*/ returnWrappers){
 	//	summary:
 	//		A registry to make contextual calling/searching easier.
@@ -37,6 +36,11 @@ var AdapterRegistry = dojo.AdapterRegistry = function(/*Boolean?*/ returnWrapper
 	this.pairs = [];
 	this.returnWrappers = returnWrappers || false; // Boolean
 };
+
+/*=====
+// doc alias helpers:
+var lang = dojo, AdapterRegistry = dojo.AdapterRegistry;
+=====*/
 
 lang.extend(AdapterRegistry, {
 	register: function(/*String*/ name, /*Function*/ check, /*Function*/ wrap, /*Boolean?*/ directReturn, /*Boolean?*/ override){

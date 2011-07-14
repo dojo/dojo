@@ -9,6 +9,9 @@ define(["./_base/NodeList", "./_base/lang", "./_base/array", "./query"], functio
 dojo["NodeList-traverse"] = {
 	// summary: Adds a chainable methods to dojo.query() / Nodelist instances for traversing the DOM
 };
+
+// doc alias helpers:
+var lang = dojo, NodeList = dojo.NodeList;
 =====*/
 
 lang.extend(NodeList, {

@@ -10,6 +10,9 @@ dojo["NodeList-manipulate"] = {
 	// summary: Adds a chainable methods to dojo.query() / Nodelist instances for manipulating HTML
 	// and DOM nodes and their properties.
 };
+
+// doc alias helpers:
+var lang = dojo, NodeList = dojo.NodeList;
 =====*/
 
 //TODO: add a way to parse for widgets in the injected markup?

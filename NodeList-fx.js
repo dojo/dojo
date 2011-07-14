@@ -9,6 +9,9 @@ define(["./_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./
 dojo["NodeList-fx"] = {
 	// summary: Adds dojo.fx animation support to dojo.query()
 };
+
+// doc alias helpers:
+var lang = dojo, NodeList = dojo.NodeList;
 =====*/
 
 lang.extend(NodeList, {

@@ -1,4 +1,6 @@
 define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
+	
+	/*===== dojo.mouse = {
 	// summary:
 	// 		This module provide mouse event handling utility functions and exports
 	// 		mouseenter and mouseleave event emulation.
@@ -17,6 +19,10 @@ define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 	//		|		on(targetNode, mouse.leave, function(event){
 	// 		|			dojo.removeClass(targetNode, "highlighted");
 	//		|		});
+	
+	};
+	======*/
+	
 	has.add("dom-quirks", document.compatMode == "BackCompat");
 	has.add("events-mouseenter", "onmouseenter" in document.createElement("div"));
 	var mouseButtons;

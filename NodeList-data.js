@@ -1,4 +1,6 @@
-define(["./_base/kernel", "./_base/NodeList", "./_base/lang", "./_base/array", "./query", "./dom-attr"], function(dojo, NodeList, lang, array, query, attr) {
+define([
+	"./_base/kernel", "./_base/NodeList", "./_base/lang", "./_base/array", "./query", "./dom-attr"
+], function(dojo, NodeList, lang, array, query, attr) {
 	// module:
 	//		dojo/NodeList-data
 	// summary:
@@ -87,7 +89,20 @@ define(["./_base/kernel", "./_base/NodeList", "./_base/lang", "./_base/array", "
 	//>>excludeEnd("debugging");
 
 	var dodata = dojo._nodeData = function(node, key, value){
-
+		// summary: Private helper for dojo.NodeList.data for single node data access. Refer to NodeList.data 
+		//		documentation for more information.
+		//
+		// node: String|DomNode
+		//		The node to associate data with
+		//
+		// key: Object?|String?
+		//		If an object, act as a setter and iterate over said object setting data items as defined.
+		//		If a string, and `value` present, set the data for defined `key` to `value`
+		//		If a string, and `value` absent, act as a getter, returning the data associated with said `key`
+		//
+		// value: Anything?
+		//		The value to set for said `key`, provided `key` is a string (and not an object)
+		//
 		var pid = dopid(node), r;
 		if(!dataCache[pid]){ dataCache[pid] = {}; }
 
@@ -167,6 +182,6 @@ define(["./_base/kernel", "./_base/NodeList", "./_base/lang", "./_base/array", "
 //		return r; // dojo.NodeList|Array|SingleItem
 //	};
 
-return NodeList;
+	return NodeList;
 
 });

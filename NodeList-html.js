@@ -9,6 +9,9 @@ define(["./_base/NodeList", "./_base/lang", "./html"], function(NodeList, lang, 
 dojo["NodeList-html"] = {
 	// summary: Adds a chainable html method to dojo.query() / Nodelist instances for setting/replacing node content
 };
+
+// doc helper aliases:
+var lang = dojo, NodeList = dojo.NodeList;
 =====*/
 
 lang.extend(NodeList, {

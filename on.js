@@ -279,8 +279,8 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			// call any node which has a handler (note that ideally we would try/catch to simulate normal event propagation but that causes too much pain for debugging)
 			target[method] && target[method].apply(target, args);
 			// and then continue up the parent node chain if it is still bubbling (if started as bubbles and stopPropagation hasn't been called)
-		}while(event.bubbles && (target = target.parentNode));
-		return event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
+		}while(event && event.bubbles && (target = target.parentNode));
+		return event && event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
 	};
 
 	if(has("dom-addeventlistener")){

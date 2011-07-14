@@ -328,8 +328,6 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			if(!evt.target){ // check to see if it has been fixed yet
 				evt.target = evt.srcElement;
 				evt.currentTarget = (sender || evt.srcElement);
-				evt.layerX = evt.offsetX;
-				evt.layerY = evt.offsetY;
 				if(evt.type == "mouseover"){
 					evt.relatedTarget = evt.fromElement;
 				}

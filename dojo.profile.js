@@ -29,10 +29,6 @@
 
 			amd: function(filename, mid){
 				return !testResourceRe.test(mid) && !copyOnly(mid) && /\.js$/.test(filename);
-			},
-
-			miniExclude: function(filename, mid){
-				return /^dijit\/bench\//.test(mid) || /^dijit\/themes\/themeTest/.test(mid);
 			}
 		},
 

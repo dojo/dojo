@@ -1,19 +1,19 @@
 define([
 	"../_base/kernel",
-	"../_base/array",
 	"../_base/lang",
+	"../_base/array",
 	"../date",
 	"../cldr/supplemental",
 	"../regexp",
 	"../string",
 	"../i18n!../cldr/nls/gregorian"
-], function(dojo) {
+], function(dojo, lang, array) {
 	// module:
 	//		dojo/date/locale
 	// summary:
 	//		This modules defines dojo.date.locale, localization methods for Date.
 
-dojo.getObject("date.locale", true, dojo);
+lang.getObject("date.locale", true, dojo);
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
 
@@ -598,7 +598,7 @@ dojo.date.locale._getGregorianBundle = function(/*String*/locale){
 	var gregorian = {};
 	dojo.forEach(_customFormats, function(desc){
 		var bundle = dojo.i18n.getLocalization(desc.pkg, desc.name, locale);
-		gregorian = dojo.mixin(gregorian, bundle);
+		gregorian = lang.mixin(gregorian, bundle);
 	}, this);
 	return gregorian; /*Object*/
 };

@@ -1,4 +1,4 @@
-define(["./kernel", "./lang"], function(dojo){
+define(["./kernel", "./lang"], function(dojo, lang){
 	// module:
 	//		dojo/_base/array
 	// summary:
@@ -25,7 +25,7 @@ define(["./kernel", "./lang"], function(dojo){
 			return every; // Boolean
 		};
 
-	dojo.mixin(dojo, {
+	lang.mixin(dojo, {
 		indexOf: function(	/*Array*/		array,
 							/*Object*/		value,
 							/*Integer?*/	fromIndex,

@@ -1,4 +1,4 @@
-define(["./kernel", "./array", "./lang"], function(dojo){
+define(["./kernel", "./lang", "./array"], function(dojo, lang){
 
 	dojo.Color = function(/*Array|String|Object*/ color){
 		// summary:
@@ -22,10 +22,10 @@ define(["./kernel", "./array", "./lang"], function(dojo){
 		if(color){ this.setColor(color); }
 	};
 
-	/*===== 
-	dojo.mixin(dojo.Color,{
+	/*=====
+	lang.mixin(dojo.Color,{
 		named:{
-			// summary: Dictionary list of all CSS named colors, by name. Values are 3-item arrays with corresponding RG and B values. 
+			// summary: Dictionary list of all CSS named colors, by name. Values are 3-item arrays with corresponding RG and B values.
 		}
 	});
 	=====*/

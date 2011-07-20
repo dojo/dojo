@@ -1,4 +1,4 @@
-define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], function(dojo){
+define(["./kernel", "./lang", "./Color", "./connect", "./lang", "./html", "./sniff"], function(dojo, lang){
 	// module:
 	//		dojo/_base/fx
 	// summary:
@@ -7,7 +7,7 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 	//		Animation loosely package based on Dan Pupius' work, contributed under CLA; see
 	//		http://pupius.co.uk/js/Toolkit.Drawing.js
 
-	var _mixin = dojo._mixin;
+	var _mixin = lang.mixin;
 
 	dojo._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:

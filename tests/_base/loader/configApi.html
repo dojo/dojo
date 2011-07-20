@@ -21,12 +21,13 @@
 								t.is(config, expectedConfig2);
 							};
 						var 
-							listenerCount= require.configListeners.length,
+							configListeners = require.listenerQueues.config;
+							listenerCount= configListeners.length,
 							h1= require.on("config", configListener1),
 							h2= require.on("config", configListener2);
-						t.is(require.configListeners.length, listenerCount+2);
-						t.is(require.configListeners[listenerCount], configListener1);
-						t.is(require.configListeners[listenerCount+1], configListener2);
+						t.is(configListeners.length, listenerCount+2);
+						t.is(configListeners[listenerCount], configListener1);
+						t.is(configListeners[listenerCount+1], configListener2);
 						expectedConfig1= expectedConfig2= {
 							someFeature:1
 						};						
@@ -36,8 +37,8 @@
 						t.t(called2);
 
 						h1.remove();
-						t.is(require.configListeners.length, listenerCount+1);
-						t.is(require.configListeners[listenerCount], configListener2);
+						t.is(configListeners.length, listenerCount+1);
+						t.is(configListeners[listenerCount], configListener2);
 						expectedConfig1= expectedConfig2= {
 							someFeature:0,
 							someOtherFeature:1

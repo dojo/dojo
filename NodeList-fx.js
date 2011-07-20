@@ -20,7 +20,7 @@ lang.extend(NodeList, {
 		var a = dfx.combine(
 			this.map(function(item){
 				var tmpArgs = { node: item };
-				dojo.mixin(tmpArgs, args);
+				lang.mixin(tmpArgs, args);
 				return obj[method](tmpArgs);
 			})
 		);

@@ -144,7 +144,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			//     names:["dojo", "dijit", "dojox"],
 			//     def: function(){
 			//       dojo.loadInit(function(){
-			//         var gfx = dojo.getObject("dojox.gfx", true);
+			//         var gfx = lang.getObject("dojox.gfx", true);
 			//
 			//         //
 			//         // code required to set gfx properties ommitted...
@@ -165,7 +165,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			//     dojo.require("dojox.gfx.matrix");
 			//     dojo.require("dojox.gfx._base");
 			//     dojo.require("dojox.gfx." + gfx.renderer);
-			//     return dojo.getObject("dojo.gfx");
+			//     return lang.getObject("dojo.gfx");
 			//   });
 			//  })();
 			//
@@ -232,7 +232,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 						}
 						bundle.def.apply(null, args);
 					}catch(e){
-						signal(errorListeners, [makeErrorToken("failedDojoLoadInit"), e]);
+						signal("error", [makeErrorToken("failedDojoLoadInit"), e]);
 					}finally{
 						for(p in syncLoaderApi){
 							dojo[p] = hold[p];
@@ -444,9 +444,6 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		execQ =
 			loaderVars.execQ,
 
-		errorListeners =
-			loaderVars.errorListeners,
-
 		fixupUrl =
 			loaderVars.fixupUrl,
 
@@ -473,14 +470,14 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 
 	dojo.provide = function(mid){
 		var executingModule = syncExecStack[0],
-			module = dojo.mixin(getModule(slashName(mid), require.module), {
+			module = lang.mixin(getModule(slashName(mid), require.module), {
 				executed:executing,
-				result:dojo.getObject(mid, true)
+				result:lang.getObject(mid, true)
 			});
 		setArrived(module);
 		if(executingModule){
 			(executingModule.provides || (executingModule.provides = [])).push(function(){
-				module.result = dojo.getObject(mid);
+				module.result = lang.getObject(mid);
 				delete module.provides;
 				module.executed!==executed && finishExec(module);
 			});
@@ -631,8 +628,8 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		};
 
 		var result = doRequire(moduleName);
-		if(has("config-publishRequireResult") && !dojo.exists(moduleName) && result!==undefined){
-			dojo.setObject(moduleName, result);
+		if(has("config-publishRequireResult") && !lang.exists(moduleName) && result!==undefined){
+			lang.setObject(moduleName, result);
 		}
 		return result;
 	};

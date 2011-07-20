@@ -1,10 +1,10 @@
-define(["./_base/kernel", "./_base/html", "./_base/sniff", "./_base/window"], function(dojo) {
+define(["./_base/kernel", "./_base/lang", "./_base/html", "./_base/sniff", "./_base/window"], function(dojo, lang) {
 	// module:
 	//		dojo/window
 	// summary:
 	//		TODOC
 
-dojo.getObject("window", true, dojo);
+lang.getObject("window", true, dojo);
 
 dojo.window.getBox = function(){
 	// summary:

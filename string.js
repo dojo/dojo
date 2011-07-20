@@ -1,10 +1,10 @@
-define(["./_base/kernel", "./_base/lang"], function(dojo) {
+define(["./_base/kernel", "./_base/lang"], function(dojo, lang) {
 	// module:
 	//		dojo/string
 	// summary:
 	//		TODOC
 
-dojo.getObject("string", true, dojo);
+lang.getObject("string", true, dojo);
 
 /*=====
 dojo.string = {
@@ -121,9 +121,9 @@ dojo.string.substitute = function(	/*String*/		template,
 
 	return template.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g,
 		function(match, key, format){
-			var value = dojo.getObject(key, false, map);
+			var value = lang.getObject(key, false, map);
 			if(format){
-				value = dojo.getObject(format, false, thisObject).call(thisObject, value, key);
+				value = lang.getObject(format, false, thisObject).call(thisObject, value, key);
 			}
 			return transform(value, key).toString();
 		}); // String

@@ -1,10 +1,10 @@
-define(["./_base/kernel", "./_base/array", "./number", "./i18n", "./i18n!./cldr/nls/currency", "./cldr/monetary"], function(dojo) {
+define(["./_base/kernel", "./_base/lang", "./_base/array", "./number", "./i18n", "./i18n!./cldr/nls/currency", "./cldr/monetary"], function(dojo, lang) {
 	// module:
 	//		dojo/currency
 	// summary:
 	//		TODOC
 
-dojo.getObject("currency", true, dojo);
+lang.getObject("currency", true, dojo);
 
 /*=====
 dojo.currency = {
@@ -38,7 +38,7 @@ dojo.currency._mixInDefaults = function(options){
 	data.fractional = [true, false];
 
 	// Mixin with provided options
-	return dojo.mixin(data, options);
+	return lang.mixin(data, options);
 };
 
 /*=====

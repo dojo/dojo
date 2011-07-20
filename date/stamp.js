@@ -1,10 +1,10 @@
-define(["../_base/kernel", "../_base/array"], function(dojo) {
+define(["../_base/kernel", "../_base/lang", "../_base/array"], function(dojo, lang) {
 	// module:
 	//		dojo/date/stamp
 	// summary:
 	//		TODOC
 
-dojo.getObject("date.stamp", true, dojo);
+lang.getObject("date.stamp", true, dojo);
 
 // Methods to convert dates to or from a wire (string) format using well-known conventions
 

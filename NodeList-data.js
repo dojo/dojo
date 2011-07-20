@@ -118,7 +118,7 @@ define([
 		}else{
 			// must be a setter, mix `value` into data hash
 			// API discrepency: using object as setter works here
-			r = dojo._mixin(dataCache[pid], key);
+			r = lang.mixin(dataCache[pid], key);
 		}
 
 		return r; // Object|Anything|Nothing

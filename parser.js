@@ -126,7 +126,7 @@ dojo.parser = new function(){
 
 			var node = obj.node || obj,
 				type = dojoType in mixin ? mixin[dojoType] : obj.node ? obj.type : (node.getAttribute(dataDojoType) || node.getAttribute(dojoType)),
-				ctor = _ctorMap[type] || (_ctorMap[type] = dojo.getObject(type)),
+				ctor = _ctorMap[type] || (_ctorMap[type] = dlang.getObject(type)),
 				proto = ctor && ctor.prototype;
 			if(!ctor){
 				throw new Error("Could not load class '" + type);
@@ -139,11 +139,11 @@ dojo.parser = new function(){
 
 			if(args.defaults){
 				// settings for the document itself (or whatever subtree is being parsed)
-				dojo._mixin(params, args.defaults);
+				dlang.mixin(params, args.defaults);
 			}
 			if(obj.inherited){
 				// settings from dir=rtl or lang=... on a node above this node
-				dojo._mixin(params, obj.inherited);
+				dlang.mixin(params, obj.inherited);
 			}
 
 			// Get list of attributes explicitly listed in the markup
@@ -243,7 +243,7 @@ dojo.parser = new function(){
 							}else{
 								// The user has specified the name of a function like "myOnClick"
 								// or a single word function "return"
-								params[name] = dojo.getObject(value, false) || new Function(value);
+								params[name] = dlang.getObject(value, false) || new Function(value);
 							}
 							break;
 						default:
@@ -267,7 +267,7 @@ dojo.parser = new function(){
 			if(extra){
 				try{
 					extra = djson.fromJson.call(args.propsThis, "{" + extra + "}");
-					dojo._mixin(params, extra);
+					dlang.mixin(params, extra);
 				}catch(e){
 					// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
 					throw new Error(e.toString() + " in data-dojo-props='" + extra + "'");
@@ -275,7 +275,7 @@ dojo.parser = new function(){
 			}
 
 			// Any parameters specified in "mixin" override everything else.
-			dojo._mixin(params, mixin);
+			dlang.mixin(params, mixin);
 
 			var scripts = obj.node ? obj.scripts : (ctor && (ctor._noScript || proto._noScript) ? [] :
 						query("> script[type^='dojo/']", node));
@@ -316,7 +316,7 @@ dojo.parser = new function(){
 
 			// map it to the JS namespace if that makes sense
 			if(jsname){
-				dojo.setObject(jsname, instance);
+				dlang.setObject(jsname, instance);
 			}
 
 			// process connections and startup functions
@@ -547,7 +547,7 @@ dojo.parser = new function(){
 			};
 
 			// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate
-			var ctor = type && (_ctorMap[type] || (_ctorMap[type] = dojo.getObject(type))), // note: won't find classes declared via dojo.Declaration
+			var ctor = type && (_ctorMap[type] || (_ctorMap[type] = dlang.getObject(type))), // note: won't find classes declared via dojo.Declaration
 				childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
 			if(type){
 				list.push({

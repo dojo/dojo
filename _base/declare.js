@@ -1,10 +1,10 @@
-define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
+define(["./kernel", "../has", "./lang", "./array"], function(dojo, has, lang){
 	// module:
 	//		dojo/_base/declare
 	// summary:
 	//		This module defines dojo.declare.
 
-	var mix = dojo._mixin, op = Object.prototype, opts = op.toString,
+	var mix = lang.mixin, op = Object.prototype, opts = op.toString,
 		xtor = new Function, counter = 0, cname = "constructor";
 
 	function err(msg, cls){ throw new Error("declare" + (cls ? " " + cls : "") + ": " + msg); }
@@ -227,7 +227,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 			}
 		}
 		if(has("bug-for-in-skips-shadowed")){
-			for(var extraNames= dojo._extraNames, i= extraNames.length; i;){
+			for(var extraNames= lang._extraNames, i= extraNames.length; i;){
 				name = extraNames[--i];
 				if(name != cname && source.hasOwnProperty(name)){
 					  target[name] = source[name];
@@ -251,7 +251,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 			}
 		}
 		if(has("bug-for-in-skips-shadowed")){
-			for(var extraNames= dojo._extraNames, i= extraNames.length; i;){
+			for(var extraNames= lang._extraNames, i= extraNames.length; i;){
 				name = extraNames[--i];
 				t = source[name];
 				if((t !== op[name] || !(name in op)) && name != cname){
@@ -542,7 +542,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 		// add name if specified
 		if(className){
 			proto.declaredClass = className;
-			dojo.setObject(className, ctor);
+			lang.setObject(className, ctor);
 		}
 
 		// build chains and add them to the prototype
@@ -792,7 +792,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 		//	source: Object
 		//		Source object for new properties.
 		//	description:
-		//		This function is used to mix in properties like dojo._mixin does,
+		//		This function is used to mix in properties like lang.mixin does,
 		//		but it skips a constructor property and decorates functions like
 		//		dojo.declare does.
 		//

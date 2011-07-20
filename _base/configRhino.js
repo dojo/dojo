@@ -93,24 +93,26 @@ function rhinoDojoConfig(config, baseUrl, rhinoArgs){
 		timeout:0,
 		locale:String(java.util.Locale.getDefault().toString().replace('_', '-').toLowerCase()),
 
-		injectUrl: function(url, callback){
-			try{
-				if(isLocal(url)){
-					load(url);
-				}else{
-					require.eval(readUrl(url, "UTF-8"));
+		loaderPatch:{
+			injectUrl: function(url, callback){
+				try{
+					if(isLocal(url)){
+						load(url);
+					}else{
+						require.eval(readUrl(url, "UTF-8"));
+					}
+					callback();
+				}catch(e){
+					console.log("failed to load resource (" + url + ")");
+					console.log(e);
 				}
-				callback();
-			}catch(e){
-				console.log("failed to load resource (" + url + ")");
-				console.log(e);
-			}
-		},
+			},
 
-		getText: function(url, sync, onLoad){
-			// TODO: test https://bugzilla.mozilla.org/show_bug.cgi?id=471005; see v1.6 hostenv_rhino
-			// note: async mode not supported in rhino
-			onLoad(isLocal(url) ? readFile(url, "UTF-8") : readUrl(url, "UTF-8"));
+			getText: function(url, sync, onLoad){
+				// TODO: test https://bugzilla.mozilla.org/show_bug.cgi?id=471005; see v1.6 hostenv_rhino
+				// note: async mode not supported in rhino
+				onLoad(isLocal(url) ? readFile(url, "UTF-8") : readUrl(url, "UTF-8"));
+			}
 		}
 	};
 	for(p in rhinoConfig){

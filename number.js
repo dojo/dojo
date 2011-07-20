@@ -1,10 +1,10 @@
-define(["./_base/kernel", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"], function(dojo) {
+define(["./_base/kernel", "./_base/lang", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"], function(dojo, lang) {
 	// module:
 	//		dojo/number
 	// summary:
 	//		TODOC
 
-dojo.getObject("number", true, dojo);
+lang.getObject("number", true, dojo);
 
 /*=====
 dojo.number = {
@@ -50,7 +50,7 @@ dojo.number.format = function(/*Number*/value, /*dojo.number.__FormatOptions?*/o
 	// value:
 	//		the number to be formatted
 
-	options = dojo.mixin({}, options || {});
+	options = lang.mixin({}, options || {});
 	var locale = dojo.i18n.normalizeLocale(options.locale),
 		bundle = dojo.i18n.getLocalization("dojo.cldr", "number", locale);
 	options.customs = bundle;

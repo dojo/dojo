@@ -1,4 +1,4 @@
-define(["./kernel", "./sniff", "require", "../on", "../io-query", "../dom-form", "./Deferred", "./json", "./lang"], function(dojo, has, require, on, ioq, domForm){
+define(["./kernel", "./sniff", "require", "../on", "../io-query", "../dom-form", "./Deferred", "./json", "./lang"], function(dojo, has, require, on, ioq, domForm, deferred, json, lang){
 	//	module:
 	//		dojo/_base.xhr
 	// summary:
@@ -784,7 +784,7 @@ define(["./kernel", "./sniff", "require", "../on", "../io-query", "../dom-form",
 	*/
 
 	// Add aliases for static functions to dojo.xhr since dojo.xhr is what's returned from this module
-	dojo.mixin(dojo.xhr, {
+	lang.mixin(dojo.xhr, {
 		_xhrObj: dojo._xhrObj,
 		fieldToObject: dojo.fieldToObject,
 		formToObject: dojo.formToObject,

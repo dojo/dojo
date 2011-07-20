@@ -1,4 +1,4 @@
-define(["./kernel", "../on", "../aspect", "./event", "../mouse", "../has", "./lang", "../keys"], function(dojo, on, aspect, eventModule, mouse, has){
+define(["./kernel", "../on", "../aspect", "./event", "../mouse", "../has", "./lang", "../keys"], function(dojo, on, aspect, eventModule, mouse, has, lang){
 //  module:
 //    dojo/_base/connect
 //  summary:
@@ -23,7 +23,7 @@ function connect(obj, event, context, method, dontFix){
 		event = event.substring(2);
 	}else if(!obj || !(obj.addEventListener || obj.attachEvent)){
 		// it is a not a DOM node and we are using the dojo.connect style of treating a
-		// method like an event, must go right to aspect 
+		// method like an event, must go right to aspect
 		return aspect.after(obj || dojo.global, event, dojo.hitch(context, method), true);
 	}
 	if(!obj){
@@ -66,7 +66,7 @@ var evtCopyKey = dojo.isMac ? "metaKey" : "ctrlKey";
 
 
 var _synthesizeEvent = function(evt, props){
-	var faux = dojo.mixin({}, evt, props);
+	var faux = lang.mixin({}, evt, props);
 	setKeyChar(faux);
 	// FIXME: would prefer to use dojo.hitch: dojo.hitch(evt, evt.preventDefault);
 	// but it throws an error when preventDefault is invoked on Safari
@@ -152,7 +152,7 @@ if(has("events-keypress-typed")){
 			});
 		};
 	}else{
-		keypress = function(object, listener){ 		
+		keypress = function(object, listener){
 			return on(object, "keypress", function(evt){
 				setKeyChar(evt);
 				return listener.call(this, evt);
@@ -263,7 +263,7 @@ return {
 		//		with the same scope (this):
 		//	|	dojo.connect(null, "globalEvent", null, globalHandler);
 		//	|	dojo.connect("globalEvent", globalHandler); // same
-	
+
 		// normalize arguments
 		var a=arguments, args=[], i=0;
 		// if a[0] is a String, obj was omitted
@@ -275,8 +275,8 @@ return {
 		for(var l=a.length; i<l; i++){	args.push(a[i]); }
 		return connect.apply(this, args);
 	},
-	
-	
+
+
 	disconnect: dojo.disconnect = dojo.unsubscribe = function(/*Handle*/ handle){
 		// summary:
 		//		Remove a link created by dojo.connect.
@@ -288,7 +288,7 @@ return {
 			handle.remove();
 		}
 	},
-	
+
 	// topic publish/subscribe
 	subscribe: dojo.subscribe = function(/*String*/ topic, /*Object|null*/ context, /*String|Function*/ method){
 		//	summary:
@@ -303,10 +303,10 @@ return {
 		//	example:
 		//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); });
 		//	|	dojo.publish("alerts", [ "read this", "hello world" ]);
-	
+
 		// support for 2 argument invocation (omitting context) depends on hitch
 		return on(topic, dojo.hitch(context, method));
-	}, 
+	},
 /*=====
 dojo.unsubscribe = function(handle){
 	//	summary:
@@ -334,7 +334,7 @@ dojo.unsubscribe = function(handle){
 		//	example:
 		//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); };
 		//	|	dojo.publish("alerts", [ "read this", "hello world" ]);
-	
+
 		// Note that args is an array, which is more efficient vs variable length
 		// argument list.  Ideally, var args would be implemented via Array
 		// throughout the APIs.

@@ -1,4 +1,4 @@
-define(["./kernel", "../on", "./lang", "./array", "./html"], function(dojo, on){
+define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(dojo, lang, on){
   //  module:
   //    dojo/_base/NodeList
   //  summary:
@@ -25,7 +25,7 @@ define(["./kernel", "../on", "./lang", "./array", "./html"], function(dojo, on){
 		}
 		var ctor = NodeListCtor || this._NodeListCtor || dojo._NodeListCtor;
 		a.constructor = ctor;
-		dojo._mixin(a, ctor.prototype);
+		lang.mixin(a, ctor.prototype);
 		a._NodeListCtor = ctor;
 		return parent ? a._stash(parent) : a;
 	};
@@ -244,7 +244,7 @@ define(["./kernel", "../on", "./lang", "./array", "./html"], function(dojo, on){
 	nlp.connect = adaptAsForEach(function(){
 		return dojo.connect.apply(this, arguments);
 	});
-	
+
 	dojo.extend(dojo.NodeList, {
 		_normalize: function(/*String||Element||Object||NodeList*/content, /*DOMNode?*/refNode){
 			// summary:
@@ -378,7 +378,7 @@ define(["./kernel", "../on", "./lang", "./array", "./html"], function(dojo, on){
 			// summary:
 			//		Listen for events on the nodes in the NodeList. Basic usage is:
 			//		| query(".my-class").on("click", listener);
-			// 		This supports event delegation by using selectors as the first argument with the event names as 
+			// 		This supports event delegation by using selectors as the first argument with the event names as
 			//		pseudo selectors. For example:
 			//		| dojo.query("#my-list").on("li:click", listener);
 			//		This will listen for click events within <li> elements that are inside the #my-list element.
@@ -935,7 +935,7 @@ define(["./kernel", "../on", "./lang", "./array", "./html"], function(dojo, on){
 			// example:
 			//		Grabs all buttons in the page and converts them to diji.form.Buttons.
 			//	|	var buttons = dojo.query("button").instantiate("dijit.form.Button", {showLabel: true});
-			var c = dojo.isFunction(declaredClass) ? declaredClass : dojo.getObject(declaredClass);
+			var c = dojo.isFunction(declaredClass) ? declaredClass : lang.getObject(declaredClass);
 			properties = properties || {};
 			return this.forEach(function(node){
 				new c(properties, node);

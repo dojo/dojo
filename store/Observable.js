@@ -1,10 +1,10 @@
-define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/Deferred", "dojo/_base/array"], function(dojo) {
+define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/Deferred", "dojo/_base/array"], function(dojo, lang) {
 	// module:
 	//		dojo/store/Observable
 	// summary:
 	//		TODOC
 
-dojo.getObject("store", true, dojo);
+lang.getObject("store", true, dojo);
 
 return dojo.store.Observable = function(store){
 	// summary:
@@ -50,7 +50,7 @@ return dojo.store.Observable = function(store){
 		options = options || {};
 		var results = originalQuery.apply(this, arguments);
 		if(results && results.forEach){
-			var nonPagedOptions = dojo.mixin({}, options);
+			var nonPagedOptions = lang.mixin({}, options);
 			delete nonPagedOptions.start;
 			delete nonPagedOptions.count;
 

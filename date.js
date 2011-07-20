@@ -1,10 +1,10 @@
-define(["./_base/kernel"], function(dojo) {
+define(["./_base/kernel", "./_base/lang"], function(dojo, lang) {
 	// module:
 	//		dojo/date
 	// summary:
 	//		TODOC
 
-dojo.getObject("date", true, dojo);
+lang.getObject("date", true, dojo);
 
 /*=====
 dojo.date = {

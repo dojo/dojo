@@ -1,10 +1,10 @@
-define(["../../_base/kernel", "../../_base/lang", "../../_base/Deferred"], function(dojo) {
+define(["../../_base/kernel", "../../_base/lang", "../../_base/Deferred"], function(dojo, lang) {
   //  module:
   //    dojo/store/util/QueryResults
   //  summary:
-  //    The module defines a query results wrapper 
+  //    The module defines a query results wrapper
 
-dojo.getObject("store.util", true, dojo);
+lang.getObject("store.util", true, dojo);
 
 dojo.store.util.QueryResults = function(results){
 	// summary:
@@ -35,7 +35,7 @@ dojo.store.util.QueryResults = function(results){
 	}
 	// if it is a promise it may be frozen
 	if(results.then){
-		results = dojo.delegate(results);
+		results = lang.delegate(results);
 	}
 	function addIterativeMethod(method){
 		if(!results[method]){

@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/declare", "./_base/array"], function(dojo, declare) {
+define(["./_base/kernel", "./_base/declare", "./_base/lang", "./_base/array"], function(dojo, declare, lang) {
 	// module:
 	//		dojo/Stateful
 	// summary:
@@ -16,7 +16,7 @@ return dojo.declare("dojo.Stateful", null, {
 	//	|	obj.set("foo","bar");
 	postscript: function(mixin){
 		if(mixin){
-			dojo.mixin(this, mixin);
+			lang.mixin(this, mixin);
 		}
 	},
 

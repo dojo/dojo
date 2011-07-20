@@ -74,7 +74,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 					availableLocales= getAvailableLocales(!root._v1x && root, locale, bundlePath, bundleName);
 				require(availableLocales, function(){
 					for (var i= 1; i<availableLocales.length; i++){
-						cache[availableLocales[i]]= current= dojo.mixin(dojo.clone(current), arguments[i]);
+						cache[availableLocales[i]]= current= lang.mixin(dojo.clone(current), arguments[i]);
 					}
 					// target may not have been resolve (e.g., maybe only "fr" exists when "fr-ca" was requested)
 					var target= bundlePathAndName + "/" + locale;

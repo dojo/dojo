@@ -19,7 +19,7 @@
 					function expectDojoConfig(t) {
 						// show that sniff overrides dojoConfig
 						t.is(require.rawConfig.async, true);
-						t.is(require.rawConfig.baseUrl, "../../../../dojo/");
+						t.is(require.rawConfig.baseUrl, "../../../../dojo");
 						t.is(require.rawConfig.waitSeconds, 6);
 						t.is(require.rawConfig.cats, 'dojo-config-dogs');
 						t.is(require.rawConfig.a, 2);
@@ -27,13 +27,11 @@
 
 						t.is(require.async, true);
 						t.is(require.baseUrl, "../../../../dojo/");
-						t.is(require.waitSeconds, 6);
 						t.is(require.cats, undefined);
 						t.is(require.a, undefined);
 						t.is(require.b, undefined);
 
 						t.is(dojo.config.baseUrl, "../../../../dojo/");
-						t.is(dojo.config.waitSeconds, 6);
 						t.is(dojo.config.cats, 'dojo-config-dogs');
 						t.is(dojo.config.a, 2);
 						t.is(dojo.config.b, [3,4,5]);			

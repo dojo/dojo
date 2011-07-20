@@ -152,20 +152,19 @@
 		var xdomainLog= [], xdomainExecSequence= [];
 
 		require(["dojo", "doh", "dojo/has"], function(dojo, doh, has){ 
-			if(!("legacyMode" in require) || !("xdomainTest" in require)){
+			if(!("legacyMode" in require)){
 				doh.register("xdomain", function(t){
 					t.is("dojotoolkit.org", define.vendor);
 					t.is(true, "legacyMode" in require);
-					t.is(true, "xdomainTest" in require);
 				});
 				doh.runOnLoad();
 				return;
 		    }
 
 			// pretend that everything except the stuff in dojo/tests/_base/loader/xdomain is xdomain
-			require.xdomainTest(function(url){
+			require.isXdUrl = function(url){
 				return !/loader\/xdomain/.test(url);
-			});
+			};
 
 			// each of these dojo.requires a xdomain module which puts the loader in xdomain loading mode,
 		    // then dojo.requires a local tree of modules with various loading challenges. Many of the loading

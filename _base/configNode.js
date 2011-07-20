@@ -29,7 +29,6 @@ exports.config = function(config){
 		"dojo-inject-api":1,
 		"dojo-timeout-api":0,
 		"dojo-trace-api":1,
-		"dojo-loader-catches":1,
 		"dojo-dom-ready-api":0,
 		"dojo-publish-privates":1,
 		"dojo-sniff":0,
@@ -54,29 +53,31 @@ exports.config = function(config){
 		// TODO: really get the locale
 		locale:"en-us",
 
-		debug: function(item){
-			// define debug for console messages during dev instead of console.log
-			// (node's heavy async makes console.log confusing sometimes)
-			require("util").debug(item);
-		},
+		loaderPatch: {
+			log:function(item){
+				// define debug for console messages during dev instead of console.log
+				// (node's heavy async makes console.log confusing sometimes)
+				require("util").debug(item);
+			},
 
-		eval: function(__text, __urlHint){
-			return vm.runInThisContext(__text, __urlHint);
-		},
+			eval: function(__text, __urlHint){
+				return vm.runInThisContext(__text, __urlHint);
+			},
 
-		injectUrl: function(url, callback){
-			try{
-				vm.runInThisContext(fs.readFileSync(url, "utf8"), url);
-				callback();
-			}catch(e){
-				console.log("failed to load resource (" + url + ")");
-				console.log(e);
+			injectUrl: function(url, callback){
+				try{
+					vm.runInThisContext(fs.readFileSync(url, "utf8"), url);
+					callback();
+				}catch(e){
+					this.require.log("failed to load resource (" + url + ")");
+					this.require.log(e);
+				}
+			},
+
+			getText: function(url, sync, onLoad){
+				// TODO: implement async and http/https handling
+				onLoad(fs.readFileSync(url, "utf8"));
 			}
-		},
-
-		getText: function(url, sync, onLoad){
-			// TODO: implement async and http/https handling
-			onLoad(fs.readFileSync(url, "utf8"));
 		}
 	};
 	for(p in nodeConfig){

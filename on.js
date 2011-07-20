@@ -155,13 +155,13 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		// normal path, the target is |this|
 		if(target.addEventListener){
 			// the target has addEventListener, which should be used if available (might or might not be a node, non-nodes can implement this method as well)
-			var signal = {
+			var capture = type in captures;
+			target.addEventListener(capture ? captures[type] : type, listener, capture);
+			return {
 				remove: function(){
-					target.removeEventListener(type, listener, false);
+					target.removeEventListener(type, listener);
 				}
 			};
-			target.addEventListener(type, listener, false);
-			return signal;
 		}
 		type = "on" + type;
 		if(fixAttach && target.attachEvent){
@@ -284,6 +284,12 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	};
 
 	if(has("dom-addeventlistener")){
+		// normalize focusin and focusout
+		var captures = {
+			focusin: "focus",
+			focusout: "blur"
+		};
+
 		// emiter that works with native event handling
 		on.emit = function(target, type, event){
 			if(target.dispatchEvent && document.createEvent){
@@ -298,12 +304,8 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				// and copy all our properties over
 				for(var i in event){
 					var value = event[i];
-					if(value !== nativeEvent[i]){
-						try{
-							nativeEvent[i] = event[i];
-						}catch(e){
-							// suppress failures, FF won't allow target properties to be set (which will be overriden by the emit anyway).
-						}
+					if(!(i in nativeEvent)){
+						nativeEvent[i] = event[i];
 					}
 				}
 				return target.dispatchEvent(nativeEvent) && nativeEvent;

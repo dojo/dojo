@@ -289,6 +289,9 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			focusin: "focus",
 			focusout: "blur"
 		};
+		if(has("opera")){
+			captures.keydown = "keypress"; // this one needs to be transformed because Opera doesn't support repeating keys on keydown (and keypress works because it incorrectly fires on all keydown events)
+		}
 
 		// emiter that works with native event handling
 		on.emit = function(target, type, event){

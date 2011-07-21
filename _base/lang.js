@@ -48,7 +48,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 		mixin = function(dest, sources){
 			if(!dest){ dest = {}; }
 			for(var i = 1, l = arguments.length; i < l; i++){
-				_mixin(dest, arguments[i]);
+				lang._mixin(dest, arguments[i]);
 			}
 			return dest; // Object
 		},
@@ -82,7 +82,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 		},
 
 		exists = function(name, obj){
-			return getObject(name, false, obj) !== undefined; // Boolean
+			return lang.getObject(name, false, obj) !== undefined; // Boolean
 		},
 
 		opts = Object.prototype.toString,
@@ -103,32 +103,32 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 
 		isObject = function(it){
 			return it !== undefined &&
-				(it === null || typeof it == "object" || isArray(it) || isFunction(it)); // Boolean
+				(it === null || typeof it == "object" || lang.isArray(it) || lang.isFunction(it)); // Boolean
 		},
 
 		isArrayLike = function(it){
 			return it && it !== undefined && // Boolean
 				// keep out built-in constructors (Number, String, ...) which have length
 				// properties
-				!isString(it) && !isFunction(it) &&
+				!lang.isString(it) && !lang.isFunction(it) &&
 				!(it.tagName && it.tagName.toLowerCase() == 'form') &&
-				(isArray(it) || isFinite(it.length));
+				(lang.isArray(it) || isFinite(it.length));
 		},
 
 		isAlien = function(it){
-			return it && !isFunction(it) && /\{\s*\[native code\]\s*\}/.test(String(it)); // Boolean
+			return it && !lang.isFunction(it) && /\{\s*\[native code\]\s*\}/.test(String(it)); // Boolean
 		},
 
 		extend = function(constructor, props){
 			for(var i=1, l=arguments.length; i<l; i++){
-				_mixin(constructor.prototype, arguments[i]);
+				lang._mixin(constructor.prototype, arguments[i]);
 			}
 			return constructor; // Object
 		},
 
 		_hitchArgs = function(scope, method){
 			var pre = _toArray(arguments, 2);
-			var named = isString(method);
+			var named = lang.isString(method);
 			return function(){
 				// arrayify arguments
 				var args = _toArray(arguments);
@@ -141,13 +141,13 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 
 		hitch = function(scope, method){
 			if(arguments.length > 2){
-				return _hitchArgs.apply(dojo, arguments); // Function
+				return lang._hitchArgs.apply(dojo, arguments); // Function
 			}
 			if(!method){
 				method = scope;
 				scope = null;
 			}
-			if(isString(method)){
+			if(lang.isString(method)){
 				scope = scope || dojo.global;
 				if(!scope[method]){ throw(['dojo.hitch: scope["', method, '"] is null (scope="', scope, '")'].join('')); }
 				return function(){ return scope[method].apply(scope, arguments || []); }; // Function
@@ -163,7 +163,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 				var tmp = new TMP();
 				TMP.prototype = null;
 				if(props){
-					_mixin(tmp, props);
+					lang._mixin(tmp, props);
 				}
 				return tmp; // Object
 			};
@@ -190,11 +190,11 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 
 		partial = function(/*Function|String*/method /*, ...*/){
 			var arr = [ null ];
-			return hitch.apply(dojo, arr.concat(_toArray(arguments))); // Function
+			return lang.hitch.apply(dojo, arr.concat(lang._toArray(arguments))); // Function
 		},
 
 		clone = function(/*anything*/ src){
-			if(!src || typeof src != "object" || isFunction(src)){
+			if(!src || typeof src != "object" || lang.isFunction(src)){
 				// null, undefined, any non-object, or function
 				return src;	// anything
 			}
@@ -211,7 +211,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 				return new RegExp(src);   // RegExp
 			}
 			var r, i, l, s, name;
-			if(isArray(src)){
+			if(lang.isArray(src)){
 				// array
 				r = [];
 				for(i = 0, l = src.length; i < l; ++i){
@@ -227,7 +227,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 				// generic objects
 				r = src.constructor ? new src.constructor() : {};
 			}
-			return _mixin(r, src, clone);
+			return lang._mixin(r, src, clone);
 		},
 
 
@@ -239,7 +239,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 		_pattern = /\{([^\}]+)\}/g,
 
 		replace = function(tmpl, map, pattern){
-			return tmpl.replace(pattern || _pattern, isFunction(map) ?
+			return tmpl.replace(pattern || _pattern, lang.isFunction(map) ?
 				map : function(_, k){ return getObject(k, false, map); });
 		},
 
@@ -250,21 +250,21 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 			setObject:setObject,
 			getObject:getObject,
 			exists:exists,
-			isString: isString,
-			isArray: isArray,
-			isFunction: isFunction,
-			isObject: isObject,
-			isArrayLike: isArrayLike,
-			isAlien: isAlien,
-			extend: extend,
-			_hitchArgs: _hitchArgs,
-			hitch: hitch,
-			delegate: delegate,
-			_toArray: _toArray,
-			partial: partial,
-			clone: clone,
-			trim: trim,
-			replace: replace
+			isString:isString,
+			isArray:isArray,
+			isFunction:isFunction,
+			isObject:isObject,
+			isArrayLike:isArrayLike,
+			isAlien:isAlien,
+			extend:extend,
+			_hitchArgs:_hitchArgs,
+			hitch:hitch,
+			delegate:delegate,
+			_toArray:_toArray,
+			partial:partial,
+			clone:clone,
+			trim:trim,
+			replace:replace
 		};
 
 	has("dojo-1x-base") && mixin(dojo, lang);

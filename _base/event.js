@@ -45,7 +45,7 @@ define(["./kernel", "../on", "../has", "../dom-geometry"], function(dojo, on, ha
 	};
 
 	return {
-		fixEvent: dojo.fixEvent,
-		stopEvent: dojo.stopEvent
+		fix: dojo.fixEvent,
+		stop: dojo.stopEvent
 	};
 });

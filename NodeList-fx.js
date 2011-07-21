@@ -207,7 +207,7 @@ lang.extend(NodeList, {
 			})
 		);
 		if(onEnd){
-			connect(canim, "onEnd", onEnd);
+			connect.connect(canim, "onEnd", onEnd);
 		}
 		return canim.play(delay||0); // dojo.Animation
 	}

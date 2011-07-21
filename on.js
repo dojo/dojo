@@ -155,11 +155,13 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		// normal path, the target is |this|
 		if(target.addEventListener){
 			// the target has addEventListener, which should be used if available (might or might not be a node, non-nodes can implement this method as well)
+			// check for capture conversions
 			var capture = type in captures;
 			target.addEventListener(capture ? captures[type] : type, listener, capture);
+			// create and return the signal
 			return {
 				remove: function(){
-					target.removeEventListener(type, listener);
+					target.removeEventListener(type, listener, capture);
 				}
 			};
 		}

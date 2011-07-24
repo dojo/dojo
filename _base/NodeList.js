@@ -1,9 +1,17 @@
-define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(dojo, lang, on){
+define(["./kernel", "./lang", "../on", "../has", "./array", "./html"], function(dojo, lang, on, has){
   //  module:
   //    dojo/_base/NodeList
   //  summary:
   //    This module defines dojo.NodeList.
-
+	has.add("array-extensible", function(){
+		// test to see if we can extend an array (not supported in old IE)
+		function F(){}
+		F.prototype = [];
+		f = new F;
+		f.length = 1;
+		return f.length == 1;
+	});
+	
 	var ap = Array.prototype, aps = ap.slice, apc = ap.concat;
 
 	var tnl = function(/*Array*/ a, /*dojo.NodeList?*/ parent, /*Function?*/ NodeListCtor){
@@ -19,15 +27,9 @@ define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(
 		//		An optional constructor function to use for any
 		//		new NodeList calls. This allows a certain chain of
 		//		NodeList calls to use a different object than dojo.NodeList.
-		if(!a.sort){
-			// make sure it's a real array before we pass it on to be wrapped
-			a = aps.call(a, 0);
-		}
 		var ctor = NodeListCtor || this._NodeListCtor || dojo._NodeListCtor;
-		a.constructor = ctor;
-		lang.mixin(a, ctor.prototype);
-		a._NodeListCtor = ctor;
-		return parent ? a._stash(parent) : a;
+		var nodeList = new ctor(a);
+		return parent ? nodeList._stash(parent) : nodeList;
 	};
 
 	var loopBody = function(f, a, o){
@@ -117,9 +119,9 @@ define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(
 	};
 	// FIXME: should we move orphan() to dojo.html?
 
-	dojo.NodeList = function(){
+	dojo.NodeList = function(array){
 		// summary:
-		//		dojo.NodeList is an of Array subclass which adds syntactic
+		//		dojo.NodeList is an of Array-like object which adds syntactic
 		//		sugar for chaining, common iteration operations, animation, and
 		//		node manipulation. NodeLists are most often returned as the
 		//		result of dojo.query() calls.
@@ -195,14 +197,44 @@ define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(
 		//		|		.at(1, 3, 8) // get a subset
 		//		|			.style("padding", "5px")
 		//		|			.forEach(console.log);
-
-		return tnl(Array.apply(null, arguments));
+		var isNew = this instanceof nl && has("array-extensible");
+		if(typeof array == "number"){
+			array = Array(array);
+		}
+		var nodeArray = (array && "length" in array) ? array : arguments;
+		if(isNew || !nodeArray.sort){
+			// make sure it's a real array before we pass it on to be wrapped 
+			var target = isNew ? this : [];
+			target.length = nodeArray.length;
+			for(var i = 0, l = nodeArray.length; i < l; i++){
+				target[i] = nodeArray[i];
+			}
+			if(isNew){
+				// called with new operator, this means we are going to use this instance and push
+				// the nodes on to it. This is usually much faster since the NodeList properties
+				//	don't need to be copied (unless the list of nodes is extremely large).
+				return target;
+			}
+			nodeArray = target;
+		}
+		// called without new operator, use a real array and copy prototype properties,
+		// this is slower and exists for back-compat. Should be removed in 2.0.
+		dojo._mixin(nodeArray, nlp);
+		nodeArray._NodeListCtor = function(array){
+			// call without new operator to preserve back-compat behavior
+			return nl(array);
+		}
+		return nodeArray;
 	};
+
 
 	//Allow things that new up a NodeList to use a delegated or alternate NodeList implementation.
 	dojo._NodeListCtor = dojo.NodeList;
-
 	var nl = dojo.NodeList, nlp = nl.prototype;
+	if(has("array-extensible")){
+		// extend an array if it is extensible
+		nlp = nl.prototype = [];
+	}
 
 	// expose adapters and the wrapper as private functions
 
@@ -230,7 +262,7 @@ define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(
 		var f = dojo[name];
 		nlp[name] = function(){ return f.apply(dojo, [this].concat(aps.call(arguments, 0))); };
 	});
-
+	
 	// add conditional methods
 	dojo.forEach(["attr", "style"], function(name){
 		nlp[name] = adaptWithCondition(dojo[name], magicGuard);
@@ -246,6 +278,13 @@ define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(
 	});
 
 	dojo.extend(dojo.NodeList, {
+		// copy the constructors
+		constructor: nl,
+		_NodeListCtor: nl,
+		toString: function(){
+			// Array.prototype.toString can't be applied to objects, so we use join
+			return this.join(",");
+		},
 		_normalize: function(/*String||Element||Object||NodeList*/content, /*DOMNode?*/refNode){
 			// summary:
 			//		normalizes data to an array of items to insert.
@@ -415,7 +454,7 @@ define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(
 				return this._parent;
 			}else{
 				//Just return empty list.
-				return new this._NodeListCtor();
+				return new this._NodeListCtor(0);
 			}
 		},
 
@@ -813,11 +852,16 @@ define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(
 
 			// FIXME: probably slow
 			if(!queryStr){ return this; }
-			var ret = this.map(function(node){
+			var ret = new nl;
+			this.map(function(node){
 				// FIXME: why would we ever get undefined here?
-				return dojo.query(queryStr, node).filter(function(subNode){ return subNode !== undefined; });
+				dojo.query(queryStr, node).forEach(function(subNode){
+					if(subNode !== undefined){
+						ret.push(subNode);
+					}
+				});
 			});
-			return this._wrap(apc.apply([], ret), this);	// dojo.NodeList
+			return ret._stash(this);	// dojo.NodeList
 		},
 
 		filter: function(/*String|Function*/ filter){
@@ -969,7 +1013,7 @@ define(["./kernel", "./lang", "../on", "./lang", "./array", "./html"], function(
 			//
 			// returns:
 			//		dojo.NodeList
-			var t = new this._NodeListCtor();
+			var t = new this._NodeListCtor(0);
 			dojo.forEach(arguments, function(i){
 				if(i < 0){ i = this.length + i }
 				if(this[i]){ t.push(this[i]); }

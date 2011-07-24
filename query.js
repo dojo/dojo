@@ -72,7 +72,7 @@ dojo.query = function(selector, context){
 =====*/
 
 "use strict";
-function queryForEngine(engine){
+function queryForEngine(engine, NodeList){
 	var query = function(/*String*/ query, /*String|DOMNode?*/ root){
 		//	summary:
 		//		Returns nodes which match the given CSS selector, searching the
@@ -81,22 +81,15 @@ function queryForEngine(engine){
 		if(typeof root == "string"){
 			root = dojo.byId(root);
 			if(!root){
-				return NodeList._wrap([]);
+				return new NodeList([]);
 			}
 		}
 		var results = typeof query == "string" ? engine(query, root) : query.orphan ? query : [query];
-		if(!(results instanceof Array)){
-			// let selector engines directly return DOM NodeLists, we will convert them to arrays here if necessary 
-			var array = [];
-			for(var i = 0, l = results.length; i < l; i++){
-				array.push(results[i]);
-			}
-			results = array;
-		}else if(results.orphan){
+		if(results.orphan){
 			// already wrapped
 			return results; 
 		}
-		return NodeList._wrap(results);
+		return new NodeList(results);
 	};
 	query.matches = engine.match || function(node, selector, root){
 		// summary:
@@ -120,7 +113,16 @@ function queryForEngine(engine){
 	}
 	return query;
 }
-var query = dojo.query = queryForEngine(defaultEngine);
+var query = queryForEngine(defaultEngine, NodeList);
+// the query that is returned from this module is slightly different than dojo.query,
+// because dojo.query has to maintain backwards compatibility with returning a
+// true array which has performance problems. The query returned from the module
+// does not use true arrays, but rather inherits from Array, making it much faster to
+// instantiate.
+dojo.query = queryForEngine(defaultEngine, function(array){
+	// call it without the new operator to invoke the back-compat behavior that returns a true array
+	return NodeList(array);
+});
 
 query.load = /*===== dojo.query.load= ======*/ function(id, parentRequire, loaded, config){
 	// summary: can be used as AMD plugin to conditionally load new query engine
@@ -130,12 +132,12 @@ query.load = /*===== dojo.query.load= ======*/ function(id, parentRequire, loade
 	//	|		qsa("#foobar").forEach(...);
 	//	|	});
 	loader.load(id, parentRequire, function(engine){
-		loaded(queryForEngine(engine));
+		loaded(queryForEngine(engine, NodeList));
 	});
 };
 
 dojo._filterQueryResult = query._filterResult = function(nodes, selector, root){
-	return NodeList._wrap(query.filter(nodes, selector, root));
+	return new NodeList(query.filter(nodes, selector, root));
 };
 return query;
 });

@@ -1294,7 +1294,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		//	summary:
 		//		Returns nodes which match the given CSS3 selector, searching the
 		//		entire document by default but optionally taking a node to scope
-		//		the search by. Returns an instance of dojo.NodeList.
+		//		the search by. Returns an array.
 		//	description:
 		//		dojo.query() is the swiss army knife of DOM node manipulation in
 		//		Dojo. Much like Prototype's "$$" (bling-bling) function or JQuery's

@@ -17,7 +17,7 @@
 							timeout: 1000,
 							runTest: function(t){
 								var d = new doh.Deferred();
-								setTimeout(function(){ // allow browsers time to return the scroll point back to the last position
+								setTimeout(d.getTestCallback(function(){ // allow browsers time to return the scroll point back to the last position
 									scrollTo(100, 50); // scroll a little
 									scrollBy(-50, 0); // net 50px horizontal movement: back-n-forth scrolling helps with different browsers
 									setTimeout(d.getTestCallback(function(){ // time to scroll
@@ -25,7 +25,7 @@
 										t.is(100, pos.y, "y pos should be 100 after vertical scroll");
 										t.is(100, pos.x, "x pos should be 100 after horizontal scroll");
 									}), 100);
-								}, 100);
+								}), 100);
 								return d;
 							}
 						},

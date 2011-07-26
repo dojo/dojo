@@ -5,6 +5,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	// summary:
 	//		This module defines the core dojo DOM geometry API.
 
+	var geom = {};  // the result object
+
 	// Box functions will assume this model.
 	// On IE/Opera, BORDER_BOX will be set if the primary document is in quirks mode.
 	// Can be set to change behavior of box setters.
@@ -12,7 +14,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	// can be either:
 	//	"border-box"
 	//	"content-box" (default)
-	dojo.boxModel = "content-box";
+	geom.boxModel = "content-box";
 
 	// We punt per-node box mode testing completely.
 	// If anybody cares, we can provide an additional (optional) unit
@@ -26,7 +28,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(has("ie") /*|| has("opera")*/){
 		// client code may have to adjust if compatMode varies across iframes
-		dojo.boxModel = document.compatMode == "BackCompat" ? "border-box" : "content-box";
+		geom.boxModel = document.compatMode == "BackCompat" ? "border-box" : "content-box";
 	}
 	//>>excludeEnd("webkitMobile");
 
@@ -34,7 +36,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	// Box Functions
 	// =============================
 
-	dojo._getPadExtents = function getPadExtents(/*DomNode*/node, /*Object*/computedStyle){
+	/*=====
+	dojo.getPadExtents = function(node, computedStyle){
 		// summary:
 		//		Returns object with special values specifically useful for node
 		//		fitting.
@@ -47,15 +50,20 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
-		node = dom.byId(node);
-		var s = computedStyle || style.getComputedStyle(node), px = style.toPixelValue,
-			l = px(node, s.paddingLeft), t = px(node, s.paddingTop), r = px(node, s.paddingRight), b = px(node, s.paddingBottom);
-		return {l: l, t: t, r: r, b: b, w: l + r, h: t + b};
+		// node: DOMNode
+		// computedStyle: Object?
 	};
+	=====*/
 
-	var none = "none";
+	/*=====
+	dojo._getPadExtents = function(node, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.getPadExtents`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
 
-	dojo._getBorderExtents = function getBorderExtents(/*DomNode*/node, /*Object*/computedStyle){
+	/*=====
+	dojo.getBorderExtents = function(node, computedStyle){
 		// summary:
 		//		returns an object with properties useful for noting the border
 		//		dimensions.
@@ -67,16 +75,20 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
-		node = dom.byId(node);
-		var px = style.toPixelValue, s = computedStyle || style.getComputedStyle(node),
-			l = (s.borderLeftStyle != none ? px(node, s.borderLeftWidth) : 0),
-			t = (s.borderTopStyle != none ? px(node, s.borderTopWidth) : 0),
-			r = (s.borderRightStyle != none ? px(node, s.borderRightWidth) : 0),
-			b = (s.borderBottomStyle != none ? px(node, s.borderBottomWidth) : 0);
-		return {l: l, t: t, r: r, b: b, w: l + r, h: t + b};
+		// node: DOMNode
+		// computedStyle: Object?
 	};
+	=====*/
 
-	dojo._getPadBorderExtents = function getPadBorderExtents(/*DomNode*/node, /*Object*/computedStyle){
+	/*=====
+	dojo._getBorderExtents = function(node, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.getBorderExtents`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.getPadBorderExtents = function(node, computedStyle){
 		// summary:
 		//		Returns object with properties useful for box fitting with
 		//		regards to padding.
@@ -88,21 +100,20 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
-		node = dom.byId(node);
-		var s = computedStyle || style.getComputedStyle(node),
-			p = dojo._getPadExtents(node, s),
-			b = dojo._getBorderExtents(node, s);
-		return {
-			l: p.l + b.l,
-			t: p.t + b.t,
-			r: p.r + b.r,
-			b: p.b + b.b,
-			w: p.w + b.w,
-			h: p.h + b.h
-		};
+		// node: DOMNode
+		// computedStyle: Object?
 	};
+	=====*/
 
-	dojo._getMarginExtents = function getMarginExtents(node, computedStyle){
+	/*=====
+	dojo._getPadBorderExtents = function(node, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.getPadBorderExtents`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.getMarginExtents = function(node, computedStyle){
 		// summary:
 		//		returns object with properties useful for box fitting with
 		//		regards to box margins (i.e., the outer-box).
@@ -114,6 +125,244 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
 		//		directly, and will use the ...box... functions instead.
+		// node: DOMNode
+		// computedStyle: Object?
+	};
+	=====*/
+
+	/*=====
+	dojo._getMarginExtents = function(node, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.getMarginExtents`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.getMarginSize = function(node, computedStyle){
+		// summary:
+		//		returns an object that encodes the width and height of
+		//		the node's margin box
+		// node: DOMNode|String
+		// computedStyle: Object?
+	};
+	=====*/
+
+	/*=====
+	dojo._getMarginSize = function(node, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.getMarginSize`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.getMarginBox = function(node, computedStyle){
+		// summary:
+		//		returns an object that encodes the width, height, left and top
+		//		positions of the node's margin box.
+		// node: DOMNode
+		// computedStyle: Object?
+	};
+	=====*/
+
+	/*=====
+	dojo._getMarginBox = function(node, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.getMarginBox`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
+		// summary:
+		//		sets the size of the node's margin box and placement
+		//		(left/top), irrespective of box model. Think of it as a
+		//		passthrough to setBox that handles box-model vagaries for
+		//		you.
+		// node: DOMNode
+		// leftPx: Number?
+		// topPx: Number?
+		// widthPx: Number?
+		// heightPx: Number?
+		// computedStyle: Object?
+	};
+	=====*/
+
+	/*=====
+	dojo._setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.setMarginBox`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.getContentBox = function(node, computedStyle){
+		// summary:
+		//		Returns an object that encodes the width, height, left and top
+		//		positions of the node's content box, irrespective of the
+		//		current box model.
+		// node: DOMNode
+		// computedStyle: Object?
+	};
+	=====*/
+
+	/*=====
+	dojo._getContentBox = function(node, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.getContentBox`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.setContentSize = function(node, widthPx, heightPx, computedStyle){
+		// summary:
+		//		Sets the size of the node's contents, irrespective of margins,
+		//		padding, or borders.
+		// node: DOMNode
+		// widthPx: Number?
+		// heightPx: Number?
+		// computedStyle: Object?
+	};
+	=====*/
+
+	/*=====
+	dojo._setContentSize = function(node, widthPx, heightPx, computedStyle){
+		// summary:
+		//		Existing alias for `dojo.setContentSize`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.isBodyLtr = function(){
+		// summary:
+		//      Returns true if the current language is left-to-right, and false otherwise.
+		// returns: Boolean
+	};
+	=====*/
+
+	/*=====
+	dojo._isBodyLtr = function(){
+		// summary:
+		//		Existing alias for `dojo.isBodyLtr`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.docScroll = function(){
+		// summary:
+		//      Returns an object with {node, x, y} with corresponding offsets.
+		// returns: Object
+	};
+	=====*/
+
+	/*=====
+	dojo._docScroll = function(){
+		// summary:
+		//		Existing alias for `dojo.docScroll`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.getIeDocumentElementOffset = function(){
+		// summary:
+		//		returns the offset in x and y from the document body to the
+		//		visual edge of the page for IE
+		// description:
+		//		The following values in IE contain an offset:
+		//	|		event.clientX
+		//	|		event.clientY
+		//	|		node.getBoundingClientRect().left
+		//	|		node.getBoundingClientRect().top
+		//		But other position related values do not contain this offset,
+		//		such as node.offsetLeft, node.offsetTop, node.style.left and
+		//		node.style.top. The offset is always (2, 2) in LTR direction.
+		//		When the body is in RTL direction, the offset counts the width
+		//		of left scroll bar's width.  This function computes the actual
+		//		offset.
+	};
+	=====*/
+
+	/*=====
+	dojo._getIeDocumentElementOffset = function(){
+		// summary:
+		//		Existing alias for `dojo.getIeDocumentElementOffset`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.fixIeBiDiScrollLeft = function(scrollLeft){
+		// summary:
+		//      In RTL direction, scrollLeft should be a negative value, but IE
+		//      returns a positive one. All codes using documentElement.scrollLeft
+		//      must call this function to fix this error, otherwise the position
+		//      will offset to right when there is a horizontal scrollbar.
+		// scrollLeft: NUmber
+		// returns: Number
+	};
+	=====*/
+
+	/*=====
+	dojo._fixIeBiDiScrollLeft = function(scrollLeft){
+		// summary:
+		//		Existing alias for `dojo.fixIeBiDiScrollLeft`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	/*=====
+	dojo.position = function(node, includeScroll){
+		// summary:
+		//		Gets the position and size of the passed element relative to
+		//		the viewport (if includeScroll==false), or relative to the
+		//		document root (if includeScroll==true).
+		//
+		// description:
+		//		Returns an object of the form:
+		//			{ x: 100, y: 300, w: 20, h: 15 }
+		//		If includeScroll==true, the x and y values will include any
+		//		document offsets that may affect the position relative to the
+		//		viewport.
+		//		Uses the border-box model (inclusive of border and padding but
+		//		not margin).  Does not act as a setter.
+		// node: DOMNode|String
+		// includeScroll: Boolean?
+		// returns: Object
+	};
+	=====*/
+
+	geom.getPadExtents = function getPadExtents(/*DomNode*/node, /*Object*/computedStyle){
+		node = dom.byId(node);
+		var s = computedStyle || style.getComputedStyle(node), px = style.toPixelValue,
+			l = px(node, s.paddingLeft), t = px(node, s.paddingTop), r = px(node, s.paddingRight), b = px(node, s.paddingBottom);
+		return {l: l, t: t, r: r, b: b, w: l + r, h: t + b};
+	};
+
+	var none = "none";
+
+	geom.getBorderExtents = function getBorderExtents(/*DomNode*/node, /*Object*/computedStyle){
+		node = dom.byId(node);
+		var px = style.toPixelValue, s = computedStyle || style.getComputedStyle(node),
+			l = (s.borderLeftStyle != none ? px(node, s.borderLeftWidth) : 0),
+			t = (s.borderTopStyle != none ? px(node, s.borderTopWidth) : 0),
+			r = (s.borderRightStyle != none ? px(node, s.borderRightWidth) : 0),
+			b = (s.borderBottomStyle != none ? px(node, s.borderBottomWidth) : 0);
+		return {l: l, t: t, r: r, b: b, w: l + r, h: t + b};
+	};
+
+	geom.getPadBorderExtents = function getPadBorderExtents(/*DomNode*/node, /*Object*/computedStyle){
+		node = dom.byId(node);
+		var s = computedStyle || style.getComputedStyle(node),
+			p = geom.getPadExtents(node, s),
+			b = geom.getBorderExtents(node, s);
+		return {
+			l: p.l + b.l,
+			t: p.t + b.t,
+			r: p.r + b.r,
+			b: p.b + b.b,
+			w: p.w + b.w,
+			h: p.h + b.h
+		};
+	};
+
+	geom.getMarginExtents = function getMarginExtents(node, computedStyle){
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), px = style.toPixelValue,
 			l = px(node, s.marginLeft), t = px(node, s.marginTop), r = px(node, s.marginRight), b = px(node, s.marginBottom);
@@ -144,12 +393,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	// 2. factoring the shared code wastes cycles (function call overhead)
 	// 3. duplicating the shared code wastes bytes
 
-	dojo._getMarginBox = function getMarginBox(/*DomNode*/node, /*Object*/computedStyle){
+	geom.getMarginBox = function getMarginBox(/*DomNode*/node, /*Object*/computedStyle){
 		// summary:
 		//		returns an object that encodes the width, height, left and top
 		//		positions of the node's margin box.
 		node = dom.byId(node);
-		var s = computedStyle || style.getComputedStyle(node), me = dojo._getMarginExtents(node, s),
+		var s = computedStyle || style.getComputedStyle(node), me = geom.getMarginExtents(node, s),
 			l = node.offsetLeft - me.l, t = node.offsetTop - me.t, p = node.parentNode, px = style.toPixelValue, pcs;
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("moz")){
@@ -184,17 +433,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		return {l: l, t: t, w: node.offsetWidth + me.w, h: node.offsetHeight + me.h};
 	};
 
-	dojo._getContentBox = function getContentBox(node, computedStyle){
-		// summary:
-		//		Returns an object that encodes the width, height, left and top
-		//		positions of the node's content box, irrespective of the
-		//		current box model.
-
+	geom.getContentBox = function getContentBox(node, computedStyle){
 		// clientWidth/Height are important since the automatically account for scrollbars
 		// fallback to offsetWidth/Height for special cases (see #3378)
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), w = node.clientWidth, h,
-			pe = dojo._getPadExtents(node, s), be = dojo._getBorderExtents(node, s);
+			pe = geom.getPadExtents(node, s), be = geom.getBorderExtents(node, s);
 		if(!w){
 			w = node.offsetWidth;
 			h = node.offsetHeight;
@@ -280,10 +524,10 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		// If you have assigned a different box to either one via CSS then
 		// box functions will break.
 
-		return dojo.boxModel == "border-box" || node.tagName.toLowerCase() == "table" || isButtonTag(node); // boolean
+		return geom.boxModel == "border-box" || node.tagName.toLowerCase() == "table" || isButtonTag(node); // boolean
 	}
 
-	dojo._setContentSize = function setContentSize(/*DomNode*/node,
+	geom.setContentSize = function setContentSize(/*DomNode*/node,
 			/*Number*/widthPx, /*Number*/heightPx, /*Object*/computedStyle){
 		// summary:
 		//		Sets the size of the node's contents, irrespective of margins,
@@ -291,7 +535,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 
 		node = dom.byId(node);
 		if(usesBorderBox(node)){
-			var pb = dojo._getPadBorderExtents(node, computedStyle);
+			var pb = geom.getPadBorderExtents(node, computedStyle);
 			if(widthPx >= 0){
 				widthPx += pb.w;
 			}
@@ -304,20 +548,14 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 
 	var nilExtents = {l: 0, t: 0, w: 0, h: 0};
 
-	dojo._setMarginBox = function setMarginBox(/*DomNode*/node,
+	geom.setMarginBox = function setMarginBox(/*DomNode*/node,
 			/*Number?*/leftPx, /*Number?*/topPx, /*Number?*/widthPx, /*Number?*/heightPx, /*Object*/computedStyle){
-		// summary:
-		//		sets the size of the node's margin box and placement
-		//		(left/top), irrespective of box model. Think of it as a
-		//		passthrough to setBox that handles box-model vagaries for
-		//		you.
-
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node),
 		// Some elements have special padding, margin, and box-model settings.
 		// To use box functions you may need to set padding, margin explicitly.
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
-			pb = (usesBorderBox(node) ? nilExtents : dojo._getPadBorderExtents(node, s));
+			pb = (usesBorderBox(node) ? nilExtents : geom.getPadBorderExtents(node, s));
 		if(has("webKit")){
 			// on Safari (3.1.2), button nodes with no explicit size have a default margin
 			// setting an explicit size eliminates the margin.
@@ -332,7 +570,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 				}
 			}
 		}
-		var mb = dojo._getMarginExtents(node, s);
+		var mb = geom.getMarginExtents(node, s);
 		if(widthPx >= 0){
 			widthPx = Math.max(widthPx - pb.w - mb.w, 0);
 		}
@@ -342,94 +580,25 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		setBox(node, leftPx, topPx, widthPx, heightPx);
 	};
 
-	dojo.marginBox = function marginBox(/*DomNode|String*/node, /*Object?*/box){
-		// summary:
-		//		Getter/setter for the margin-box of node.
-		// description:
-		//		Getter/setter for the margin-box of node.
-		//		Returns an object in the expected format of box (regardless
-		//		if box is passed). The object might look like:
-		//			`{ l: 50, t: 200, w: 300: h: 150 }`
-		//		for a node offset from its parent 50px to the left, 200px from
-		//		the top with a margin width of 300px and a margin-height of
-		//		150px.
-		// node:
-		//		id or reference to DOM Node to get/set box for
-		// box:
-		//		If passed, denotes that dojo.marginBox() should
-		//		update/set the margin box for node. Box is an object in the
-		//		above format. All properties are optional if passed.
-		// example:
-		//		Retrieve the margin box of a passed node
-		//	|	var box = dojo.marginBox("someNodeId");
-		//	|	console.dir(box);
-		//
-		// example:
-		//		Set a node's margin box to the size of another node
-		//	|	var box = dojo.marginBox("someNodeId");
-		//	|	dojo.marginBox("someOtherNode", box);
-		return box ? dojo._setMarginBox(node, box.l, box.t, box.w, box.h) : dojo._getMarginBox(node); // Object
-	};
-
-	dojo.contentBox = function contentBox(/*DomNode|String*/node, /*Object?*/box){
-		// summary:
-		//		Getter/setter for the content-box of node.
-		// description:
-		//		Returns an object in the expected format of box (regardless if box is passed).
-		//		The object might look like:
-		//			`{ l: 50, t: 200, w: 300: h: 150 }`
-		//		for a node offset from its parent 50px to the left, 200px from
-		//		the top with a content width of 300px and a content-height of
-		//		150px. Note that the content box may have a much larger border
-		//		or margin box, depending on the box model currently in use and
-		//		CSS values set/inherited for node.
-		//		While the getter will return top and left values, the
-		//		setter only accepts setting the width and height.
-		// node:
-		//		id or reference to DOM Node to get/set box for
-		// box:
-		//		If passed, denotes that dojo.contentBox() should
-		//		update/set the content box for node. Box is an object in the
-		//		above format, but only w (width) and h (height) are supported.
-		//		All properties are optional if passed.
-		return box ? dojo._setContentSize(node, box.w, box.h) : dojo._getContentBox(node); // Object
-	};
-
 	// =============================
 	// Positioning
 	// =============================
 
-	dojo._isBodyLtr = function isBodyLtr(){
+	geom.isBodyLtr = function isBodyLtr(){
 		//TODO: we need to decide where to keep _bodyLtr
 		return "_bodyLtr" in dojo ? dojo._bodyLtr :
-			dojo._bodyLtr = (dojo.body().dir || win.doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean
+			dojo._bodyLtr = (win.body().dir || win.doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean
 	};
 
-	dojo._docScroll = function docScroll(){
+	geom.docScroll = function docScroll(){
 		var node = win.doc.parentWindow || win.doc.defaultView;   // use UI window, not dojo.global window
 		return "pageXOffset" in node ? {x: node.pageXOffset, y: node.pageYOffset } :
 			(node = dojo.isQuirks ? win.body() : win.doc.documentElement,
-				{x: dojo._fixIeBiDiScrollLeft(node.scrollLeft || 0), y: node.scrollTop || 0 });
+				{x: geom.fixIeBiDiScrollLeft(node.scrollLeft || 0), y: node.scrollTop || 0 });
 	};
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	dojo._getIeDocumentElementOffset = function getIeDocumentElementOffset(){
-		// summary:
-		//		returns the offset in x and y from the document body to the
-		//		visual edge of the page
-		// description:
-		//		The following values in IE contain an offset:
-		//	|		event.clientX
-		//	|		event.clientY
-		//	|		node.getBoundingClientRect().left
-		//	|		node.getBoundingClientRect().top
-		//		But other position related values do not contain this offset,
-		//		such as node.offsetLeft, node.offsetTop, node.style.left and
-		//		node.style.top. The offset is always (2, 2) in LTR direction.
-		//		When the body is in RTL direction, the offset counts the width
-		//		of left scroll bar's width.  This function computes the actual
-		//		offset.
-
+	geom.getIeDocumentElementOffset = function getIeDocumentElementOffset(){
 		//NOTE: assumes we're being called in an IE browser
 
 		var de = win.doc.documentElement; // only deal with HTML element here, position() handles body/quirks
@@ -454,7 +623,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	};
 	//>>excludeEnd("webkitMobile");
 
-	dojo._fixIeBiDiScrollLeft = function fixIeBiDiScrollLeft(/*Integer*/ scrollLeft){
+	geom.fixIeBiDiScrollLeft = function fixIeBiDiScrollLeft(/*Integer*/ scrollLeft){
 		// In RTL direction, scrollLeft should be a negative value, but IE
 		// returns a positive one. All codes using documentElement.scrollLeft
 		// must call this function to fix this error, otherwise the position
@@ -462,10 +631,10 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		var ie = has("ie");
-		if(ie && !dojo._isBodyLtr()){
+		if(ie && !geom.isBodyLtr()){
 			var qk = dojo.isQuirks,
 				de = qk ? win.body() : win.doc.documentElement;
-			if(ie == 6 && !qk && dojo.global.frameElement && de.scrollHeight > de.clientHeight){
+			if(ie == 6 && !qk && win.global.frameElement && de.scrollHeight > de.clientHeight){
 				scrollLeft += de.clientLeft; // workaround ie6+strict+rtl+iframe+vertical-scrollbar bug where clientWidth is too small by clientLeft pixels
 			}
 			return (ie < 8 || qk) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
@@ -474,21 +643,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		return scrollLeft; // Integer
 	};
 
-	dojo.position = function(/*DomNode*/node, /*Boolean?*/includeScroll){
-		// summary:
-		//		Gets the position and size of the passed element relative to
-		//		the viewport (if includeScroll==false), or relative to the
-		//		document root (if includeScroll==true).
-		//
-		// description:
-		//		Returns an object of the form:
-		//			{ x: 100, y: 300, w: 20, h: 15 }
-		//		If includeScroll==true, the x and y values will include any
-		//		document offsets that may affect the position relative to the
-		//		viewport.
-		//		Uses the border-box model (inclusive of border and padding but
-		//		not margin).  Does not act as a setter.
-
+	geom.position = function(/*DomNode*/node, /*Boolean?*/includeScroll){
 		node = dom.byId(node);
 		var	db = win.body(),
 			dh = db.parentNode,
@@ -496,8 +651,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("ie")){
-			// On IE there's a 2px offset that we need to adjust for, see dojo._getIeDocumentElementOffset()
-			var offset = dojo._getIeDocumentElementOffset();
+			// On IE there's a 2px offset that we need to adjust for, see dojo.getIeDocumentElementOffset()
+			var offset = geom.getIeDocumentElementOffset();
 
 			// fixes the position in IE, quirks mode
 			ret.x -= offset.x + (dojo.isQuirks ? db.clientLeft + db.offsetLeft : 0);
@@ -514,7 +669,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		// if offsetParent is used, ret value already includes scroll position
 		// so we may have to actually remove that value if !includeScroll
 		if(includeScroll){
-			var scroll = dojo._docScroll();
+			var scroll = geom.docScroll();
 			ret.x += scroll.x;
 			ret.y += scroll.y;
 		}
@@ -522,39 +677,11 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		return ret; // Object
 	};
 
-	dojo.coords = function(/*DomNode|String*/node, /*Boolean?*/includeScroll){
-		// summary:
-		//		Deprecated: Use position() for border-box x/y/w/h
-		//		or marginBox() for margin-box w/h/l/t.
-		//		Returns an object representing a node's size and position.
-		//
-		// description:
-		//		Returns an object that measures margin-box (w)idth/(h)eight
-		//		and absolute position x/y of the border-box. Also returned
-		//		is computed (l)eft and (t)op values in pixels from the
-		//		node's offsetParent as returned from marginBox().
-		//		Return value will be in the form:
-		//|			{ l: 50, t: 200, w: 300: h: 150, x: 100, y: 300 }
-		//		Does not act as a setter. If includeScroll is passed, the x and
-		//		y params are affected as one would expect in dojo.position().
-		dojo.deprecated("dojo.coords()", "Use dojo.position() or dojo.marginBox().");
-		node = dom.byId(node);
-		var s = style.getComputedStyle(node), mb = dojo._getMarginBox(node, s);
-		var abs = dojo.position(node, includeScroll);
-		mb.x = abs.x;
-		mb.y = abs.y;
-		return mb;
-	};
-
-
 	// random "private" functions wildly used throughout the toolkit
 
-	dojo._getMarginSize = function getMarginSize(/*DomNode*/node, /*Object*/computedStyle){
-		// summary:
-		//		returns an object that encodes the width and height of
-		//		the node's margin box
+	geom.getMarginSize = function getMarginSize(/*DomNode*/node, /*Object*/computedStyle){
 		node = dom.byId(node);
-		var me = dojo._getMarginExtents(node, computedStyle || style.getComputedStyle(node));
+		var me = geom.getMarginExtents(node, computedStyle || style.getComputedStyle(node));
 		var size = node.getBoundingClientRect();
 		return {
 			w: (size.right - size.left) + me.w,
@@ -562,55 +689,32 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		}
 	};
 
-	// TODO: add getters/setters for dojo.boxModel, so it can be exported
-	// TODO: add getters/setters for marginBox(), contentBox(), and a setter for position()?
-	// TODO: evaluate separate getters/setters for position and sizes?
-
-	return {
-		// extents
-		getPadExtents:       dojo._getPadExtents,
-		getBorderExtents:    dojo._getBorderExtents,
-		getPadBorderExtents: dojo._getPadBorderExtents,
-		getMarginExtents:    dojo._getMarginExtents,
-		getMarginSize:       dojo._getMarginSize,
-		// margin box
-		getMarginBox:        dojo._getMarginBox,
-		setMarginBox:        dojo._setMarginBox,
-		marginBox:           dojo.marginBox,
-		// content box
-		getContentBox:       dojo._getContentBox,
-		setContentSize:      dojo._setContentSize,
-		contentBox:          dojo.contentBox,
-		// position
-		position:            dojo.position,
-		// miscellaneous
-		isBodyLtr:           dojo._isBodyLtr,
-		docScroll:           dojo._docScroll,
-		// IE-specific
-		getIeDocumentElementOffset: dojo._getIeDocumentElementOffset,
-		fixIeBiDiScrollLeft:        dojo._fixIeBiDiScrollLeft,
-		normalizeEvent: function(event){
-			// summary:
-			// 		Normalizes the geometry of a DOM event, normalizing the pageX, pageY,
-			// 		offsetX, offsetY, layerX, and layerX properties
-			if(!("layerX" in event)){
-				event.layerX = event.offsetX;
-				event.layerY = event.offsetY;
-			}
-			if(!has("dom-addeventlistener")){
-				// old IE version
-				// FIXME: scroll position query is duped from dojo.html to
-				// avoid dependency on that entire module. Now that HTML is in
-				// Base, we should convert back to something similar there.
-				var se = event.target;
-				var doc = (se && se.ownerDocument) || document;
-				// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
-				// here rather than document.body
-				var docBody = has("quirks") ? doc.body : doc.documentElement;
-				var offset = dojo._getIeDocumentElementOffset();
-				event.pageX = event.clientX + dojo._fixIeBiDiScrollLeft(docBody.scrollLeft || 0) - offset.x;
-				event.pageY = event.clientY + (docBody.scrollTop || 0) - offset.y;
-			}				 
+	geom.normalizeEvent = function(event){
+		// summary:
+		// 		Normalizes the geometry of a DOM event, normalizing the pageX, pageY,
+		// 		offsetX, offsetY, layerX, and layerX properties
+		// event: Object
+		if(!("layerX" in event)){
+			event.layerX = event.offsetX;
+			event.layerY = event.offsetY;
+		}
+		if(!has("dom-addeventlistener")){
+			// old IE version
+			// FIXME: scroll position query is duped from dojo.html to
+			// avoid dependency on that entire module. Now that HTML is in
+			// Base, we should convert back to something similar there.
+			var se = event.target;
+			var doc = (se && se.ownerDocument) || document;
+			// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
+			// here rather than document.body
+			var docBody = dojo.isQuirks ? doc.body : doc.documentElement;
+			var offset = geom.getIeDocumentElementOffset();
+			event.pageX = event.clientX + geom.fixIeBiDiScrollLeft(docBody.scrollLeft || 0) - offset.x;
+			event.pageY = event.clientY + (docBody.scrollTop || 0) - offset.y;
 		}
 	};
+
+	// TODO: evaluate separate getters/setters for position and sizes?
+
+	return geom;
 });

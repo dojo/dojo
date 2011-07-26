@@ -7,123 +7,38 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 
 	/*=====
 	dojo.toDom = function(frag, doc){
-			// summary:
-			//		instantiates an HTML fragment returning the corresponding DOM.
-			// frag: String
-			//		the HTML fragment
-			// doc: DocumentNode?
-			//		optional document to use when creating DOM nodes, defaults to
-			//		dojo.doc if not specified.
-			// returns: DocumentFragment
-			//
-			// example:
-			//		Create a table row:
-			//	|	var tr = dojo.toDom("<tr><td>First!</td></tr>");
-	}
+		// summary:
+		//		instantiates an HTML fragment returning the corresponding DOM.
+		// frag: String
+		//		the HTML fragment
+		// doc: DocumentNode?
+		//		optional document to use when creating DOM nodes, defaults to
+		//		dojo.doc if not specified.
+		// returns: DocumentFragment
+		//
+		// example:
+		//		Create a table row:
+		//	|	var tr = dojo.toDom("<tr><td>First!</td></tr>");
+	};
 	=====*/
 
-	// support stuff for dojo.toDom
-	var tagWrap = {
-			option: ["select"],
-			tbody: ["table"],
-			thead: ["table"],
-			tfoot: ["table"],
-			tr: ["table", "tbody"],
-			td: ["table", "tbody", "tr"],
-			th: ["table", "thead", "tr"],
-			legend: ["fieldset"],
-			caption: ["table"],
-			colgroup: ["table"],
-			col: ["table", "colgroup"],
-			li: ["ul"]
-		},
-		reTag = /<\s*([\w\:]+)/,
-		masterNode = {}, masterNum = 0,
-		masterName = "__" + dojo._scopeName + "ToDomId";
-
-	// generate start/end tag strings to use
-	// for the injection for each special tag wrap case.
-	for(var param in tagWrap){
-		if(tagWrap.hasOwnProperty(param)){
-			var tw = tagWrap[param];
-			tw.pre = param == "option" ? '<select multiple="multiple">' : "<" + tw.join("><") + ">";
-			tw.post = "</" + tw.reverse().join("></") + ">";
-			// the last line is destructive: it reverses the array,
-			// but we don't care at this point
-		}
-	}
-
-	dojo.toDom = dojo._toDom = function(frag, doc){
+	/*=====
+	dojo._toDom = function(frag, doc){
 		// summary:
-		//		converts HTML string into DOM nodes.
-
-		doc = doc || win.doc;
-		var masterId = doc[masterName];
-		if(!masterId){
-			doc[masterName] = masterId = ++masterNum + "";
-			masterNode[masterId] = doc.createElement("div");
-		}
-
-		// make sure the frag is a string.
-		frag += "";
-
-		// find the starting tag, and get node wrapper
-		var match = frag.match(reTag),
-			tag = match ? match[1].toLowerCase() : "",
-			master = masterNode[masterId],
-			wrap, i, fc, df;
-		if(match && tagWrap[tag]){
-			wrap = tagWrap[tag];
-			master.innerHTML = wrap.pre + frag + wrap.post;
-			for(i = wrap.length; i; --i){
-				master = master.firstChild;
-			}
-		}else{
-			master.innerHTML = frag;
-		}
-
-		// one node shortcut => return the node itself
-		if(master.childNodes.length == 1){
-			return master.removeChild(master.firstChild); // DOMNode
-		}
-
-		// return multiple nodes as a document fragment
-		df = doc.createDocumentFragment();
-		while(fc = master.firstChild){ // intentional assignment
-			df.appendChild(fc);
-		}
-		return df; // DOMNode
+		//		Existing alias for `dojo.toDom`. Deprecated, will be removed in 2.0.
 	};
+	=====*/
 
-	function _insertBefore(/*DomNode*/node, /*DomNode*/ref){
-		var parent = ref.parentNode;
-		if(parent){
-			parent.insertBefore(node, ref);
-		}
-	}
-
-	function _insertAfter(/*DomNode*/node, /*DomNode*/ref){
-		// summary:
-		//		Try to insert node after ref
-		var parent = ref.parentNode;
-		if(parent){
-			if(parent.lastChild == ref){
-				parent.appendChild(node);
-			}else{
-				parent.insertBefore(node, ref.nextSibling);
-			}
-		}
-	}
-
-	dojo.place = function(/*String|DomNode*/node, /*String|DomNode*/refNode, /*String|Number?*/position){
+	/*=====
+	dojo.place = function(node, refNode, position){
 		// summary:
 		//		Attempt to insert node into the DOM, choosing from various positioning options.
 		//		Returns the first argument resolved to a DOM node.
 		//
-		// node: String|DomNode
+		// node: DOMNode|String
 		//		id or node reference, or HTML fragment starting with "<" to place relative to refNode
 		//
-		// refNode: String|DomNode
+		// refNode: DOMNode|String
 		//		id or node reference to use as basis for placement
 		//
 		// position: String|Number?
@@ -139,7 +54,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 		//		"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,
 		//		"only" replaces all children.  position defaults to "last" if not specified
 		//
-		// returns: DomNode
+		// returns: DOMNode
 		//		Returned values is the first argument resolved to a DOM node.
 		//
 		//		.place() is also a method of `dojo.NodeList`, allowing `dojo.query` node lookups.
@@ -159,47 +74,11 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 		// example:
 		//		Put a new LI as the first child of a list by id:
 		//	|	dojo.place("<li></li>", "someUl", "first");
-
-		refNode = dom.byId(refNode);
-		if(typeof node == "string"){ // inline'd type check
-			node = /^\s*</.test(node) ? dojo.toDom(node, refNode.ownerDocument) : dom.byId(node);
-		}
-		if(typeof position == "number"){ // inline'd type check
-			var cn = refNode.childNodes;
-			if(!cn.length || cn.length <= position){
-				refNode.appendChild(node);
-			}else{
-				_insertBefore(node, cn[position < 0 ? 0 : position]);
-			}
-		}else{
-			switch(position){
-				case "before":
-					_insertBefore(node, refNode);
-					break;
-				case "after":
-					_insertAfter(node, refNode);
-					break;
-				case "replace":
-					refNode.parentNode.replaceChild(node, refNode);
-					break;
-				case "only":
-					dojo.empty(refNode);
-					refNode.appendChild(node);
-					break;
-				case "first":
-					if(refNode.firstChild){
-						_insertBefore(node, refNode.firstChild);
-						break;
-					}
-					// else fallthrough...
-				default: // aka: last
-					refNode.appendChild(node);
-			}
-		}
-		return node; // DomNode
 	};
+	=====*/
 
-	dojo.create = function(/*String|DomNode*/tag, /*Object*/attrs, /*String?|DomNode?*/refNode, /*String?*/pos){
+	/*=====
+	dojo.create = function(tag, attrs, refNode, pos){
 		// summary:
 		//		Create an element, allowing for optional attribute decoration
 		//		and placement.
@@ -209,22 +88,22 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 		//		a fragment, and allowing for a convenient optional attribute setting step,
 		//		as well as an optional DOM placement reference.
 		//|
-		//		Attributes are set by passing the optional object through `dojo.attr`.
-		//		See `dojo.attr` for noted caveats and nuances, and API if applicable.
+		//		Attributes are set by passing the optional object through `dojo.setAttr`.
+		//		See `dojo.setAttr` for noted caveats and nuances, and API if applicable.
 		//|
 		//		Placement is done via `dojo.place`, assuming the new node to be the action
 		//		node, passing along the optional reference node and position.
 		//
-		// tag: String|DomNode
+		// tag: DOMNode|String
 		//		A string of the element to create (eg: "div", "a", "p", "li", "script", "br"),
 		//		or an existing DOM node to process.
 		//
 		// attrs: Object
 		//		An object-hash of attributes to set on the newly created node.
 		//		Can be null, if you don't want to set any attributes/styles.
-		//		See: `dojo.attr` for a description of available attributes.
+		//		See: `dojo.setAttr` for a description of available attributes.
 		//
-		// refNode: String?|DomNode?
+		// refNode: DOMNode?|String?
 		//		Optional reference node. Used by `dojo.place` to place the newly created
 		//		node somewhere in the dom relative to refNode. Can be a DomNode reference
 		//		or String ID of a node.
@@ -235,7 +114,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 		//		to further control the placement of the new node relative to the refNode.
 		//		'refNode' is required if a 'pos' is specified.
 		//
-		// returns: DomNode
+		// returns: DOMNode
 		//
 		// example:
 		//		Create a DIV:
@@ -268,19 +147,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 		//	|		.addClass("newDiv")
 		//	|		.onclick(function(e){ console.log('clicked', e.target) })
 		//	|		.place("#someNode"); // redundant, but cleaner.
-
-		var doc = win.doc;
-		if(refNode){
-			refNode = dom.byId(refNode);
-			doc = refNode.ownerDocument;
-		}
-		if(typeof tag == "string"){ // inline'd type check
-			tag = doc.createElement(tag);
-		}
-		if(attrs){ attr.attr(tag, attrs); }
-		if(refNode){ dojo.place(tag, refNode, pos); }
-		return tag; // DomNode
 	};
+	=====*/
 
 	/*=====
 	dojo.empty = function(node){
@@ -298,35 +166,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 	}
 	=====*/
 
-	dojo.empty =
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		has("ie") ? function(node){
-			node = dom.byId(node);
-			for(var c; c = node.lastChild;){ // intentional assignment
-				dojo.destroy(c);
-			}
-		} :
-		//>>excludeEnd("webkitMobile");
-		function(node){
-			dom.byId(node).innerHTML = "";
-		};
-
-	var _destroyContainer = null,
-		_destroyDoc;
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	on(window, "unload", function(){
-		_destroyContainer = null; //prevent IE leak
-	});
-	//>>excludeEnd("webkitMobile");
-
-/*=====
-	dojo._destroyElement = function(node){
-		// summary:
-		//		Existing alias for `dojo.destroy`. Deprecated, will be removed
-		//		in 2.0
-	}
-=====*/
-	dojo._destroyElement = dojo.destroy = function(/*String|DomNode*/node){
+	/*=====
+	dojo.destroy = function(node){
 		// summary:
 		//		Removes a node from its parent, clobbering it and all of its
 		//		children.
@@ -335,7 +176,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 		//		Removes a node from its parent, clobbering it and all of its
 		//		children. Function only works with DomNodes, and returns nothing.
 		//
-		// node:
+		// node: DOMNode|String
 		//		A String ID or DomNode reference of the element to be destroyed
 		//
 		// example:
@@ -345,28 +186,200 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 		// example:
 		//		Destroy all nodes in a list by reference:
 		//	|	dojo.query(".someNode").forEach(dojo.destroy);
+	};
+	=====*/
 
-		node = dom.byId(node);
-		try{
-			var doc = node.ownerDocument;
-			// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
-			if(!_destroyContainer || _destroyDoc != doc){
-				_destroyContainer = doc.createElement("div");
-				_destroyDoc = doc;
+	/*=====
+	dojo._destroyElement = function(node){
+		// summary:
+		//		Existing alias for `dojo.destroy`. Deprecated, will be removed in 2.0.
+	};
+	=====*/
+
+	// support stuff for dojo.toDom
+	var tagWrap = {
+			option: ["select"],
+			tbody: ["table"],
+			thead: ["table"],
+			tfoot: ["table"],
+			tr: ["table", "tbody"],
+			td: ["table", "tbody", "tr"],
+			th: ["table", "thead", "tr"],
+			legend: ["fieldset"],
+			caption: ["table"],
+			colgroup: ["table"],
+			col: ["table", "colgroup"],
+			li: ["ul"]
+		},
+		reTag = /<\s*([\w\:]+)/,
+		masterNode = {}, masterNum = 0,
+		masterName = "__" + dojo._scopeName + "ToDomId",
+		ctr; // the result object
+
+	// generate start/end tag strings to use
+	// for the injection for each special tag wrap case.
+	for(var param in tagWrap){
+		if(tagWrap.hasOwnProperty(param)){
+			var tw = tagWrap[param];
+			tw.pre = param == "option" ? '<select multiple="multiple">' : "<" + tw.join("><") + ">";
+			tw.post = "</" + tw.reverse().join("></") + ">";
+			// the last line is destructive: it reverses the array,
+			// but we don't care at this point
+		}
+	}
+
+	function _insertBefore(/*DomNode*/node, /*DomNode*/ref){
+		var parent = ref.parentNode;
+		if(parent){
+			parent.insertBefore(node, ref);
+		}
+	}
+
+	function _insertAfter(/*DomNode*/node, /*DomNode*/ref){
+		// summary:
+		//		Try to insert node after ref
+		var parent = ref.parentNode;
+		if(parent){
+			if(parent.lastChild == ref){
+				parent.appendChild(node);
+			}else{
+				parent.insertBefore(node, ref.nextSibling);
 			}
-			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
-			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
-			_destroyContainer.innerHTML = "";
-		}catch(e){
-			/* squelch */
+		}
+	}
+
+	var _destroyContainer = null,
+		_destroyDoc;
+	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+	on(window, "unload", function(){
+		_destroyContainer = null; //prevent IE leak
+	});
+	//>>excludeEnd("webkitMobile");
+
+	ctr = {
+		toDom: function toDom(frag, doc){
+			doc = doc || win.doc;
+			var masterId = doc[masterName];
+			if(!masterId){
+				doc[masterName] = masterId = ++masterNum + "";
+				masterNode[masterId] = doc.createElement("div");
+			}
+
+			// make sure the frag is a string.
+			frag += "";
+
+			// find the starting tag, and get node wrapper
+			var match = frag.match(reTag),
+				tag = match ? match[1].toLowerCase() : "",
+				master = masterNode[masterId],
+				wrap, i, fc, df;
+			if(match && tagWrap[tag]){
+				wrap = tagWrap[tag];
+				master.innerHTML = wrap.pre + frag + wrap.post;
+				for(i = wrap.length; i; --i){
+					master = master.firstChild;
+				}
+			}else{
+				master.innerHTML = frag;
+			}
+
+			// one node shortcut => return the node itself
+			if(master.childNodes.length == 1){
+				return master.removeChild(master.firstChild); // DOMNode
+			}
+
+			// return multiple nodes as a document fragment
+			df = doc.createDocumentFragment();
+			while(fc = master.firstChild){ // intentional assignment
+				df.appendChild(fc);
+			}
+			return df; // DOMNode
+		},
+
+		place: function place(/*DOMNode|String*/node, /*DOMNode|String*/refNode, /*String|Number?*/position){
+			refNode = dom.byId(refNode);
+			if(typeof node == "string"){ // inline'd type check
+				node = /^\s*</.test(node) ? ctr.toDom(node, refNode.ownerDocument) : dom.byId(node);
+			}
+			if(typeof position == "number"){ // inline'd type check
+				var cn = refNode.childNodes;
+				if(!cn.length || cn.length <= position){
+					refNode.appendChild(node);
+				}else{
+					_insertBefore(node, cn[position < 0 ? 0 : position]);
+				}
+			}else{
+				switch(position){
+					case "before":
+						_insertBefore(node, refNode);
+						break;
+					case "after":
+						_insertAfter(node, refNode);
+						break;
+					case "replace":
+						refNode.parentNode.replaceChild(node, refNode);
+						break;
+					case "only":
+						dojo.empty(refNode);
+						refNode.appendChild(node);
+						break;
+					case "first":
+						if(refNode.firstChild){
+							_insertBefore(node, refNode.firstChild);
+							break;
+						}
+						// else fallthrough...
+					default: // aka: last
+						refNode.appendChild(node);
+				}
+			}
+			return node; // DomNode
+		},
+
+		create: function create(/*DOMNode|String*/tag, /*Object*/attrs, /*DOMNode?|String?*/refNode, /*String?*/pos){
+			var doc = win.doc;
+			if(refNode){
+				refNode = dom.byId(refNode);
+				doc = refNode.ownerDocument;
+			}
+			if(typeof tag == "string"){ // inline'd type check
+				tag = doc.createElement(tag);
+			}
+			if(attrs){ attr.set(tag, attrs); }
+			if(refNode){ ctr.place(tag, refNode, pos); }
+			return tag; // DomNode
+		},
+
+		empty:
+			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+			has("ie") ? function(node){
+				node = dom.byId(node);
+				for(var c; c = node.lastChild;){ // intentional assignment
+					dojo.destroy(c);
+				}
+			} :
+			//>>excludeEnd("webkitMobile");
+			function(node){
+				dom.byId(node).innerHTML = "";
+			},
+
+		destroy: function destroy(/*DOMNode|String*/node){
+			node = dom.byId(node);
+			try{
+				var doc = node.ownerDocument;
+				// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
+				if(!_destroyContainer || _destroyDoc != doc){
+					_destroyContainer = doc.createElement("div");
+					_destroyDoc = doc;
+				}
+				_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
+				// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
+				_destroyContainer.innerHTML = "";
+			}catch(e){
+				/* squelch */
+			}
 		}
 	};
 
-	return {
-		toDom:   dojo.toDom,
-		place:   dojo.place,
-		create:  dojo.create,
-		empty:   dojo.empty,
-		destroy: dojo.destroy
-	};
+	return ctr;
 });

@@ -50,9 +50,46 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 		//	|	}
 	=====*/
 
+	/*=====
+	dojo.isDescendant = function(node, ancestor){
+		// summary:
+		//		Returns true if node is a descendant of ancestor
+		// node: DOMNode|String
+		//		string id or node reference to test
+		// ancestor: DOMNode|String
+		//		string id or node reference of potential parent to test against
+		//
+		// example:
+		//		Test is node id="bar" is a descendant of node id="foo"
+		//	|	if(dojo.isDescendant("bar", "foo")){ ... }
+	};
+	=====*/
+
+	// TODO: do we need this function in the base?
+
+	/*=====
+	dojo.setSelectable = function(node, selectable){
+		// summary:
+		//		Enable or disable selection on a node
+		// node: DOMNode|String
+		//		id or reference to node
+		// selectable: Boolean
+		//		state to put the node in. false indicates unselectable, true
+		//		allows selection.
+		// example:
+		//		Make the node id="bar" unselectable
+		//	|	dojo.setSelectable("bar");
+		// example:
+		//		Make the node id="bar" selectable
+		//	|	dojo.setSelectable("bar", true);
+	};
+	=====*/
+
+	var dom = {};   // the result object
+
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(has("ie")){
-		dojo.byId = function(id, doc){
+		dom.byId = function(id, doc){
 			if(typeof id != "string"){
 				return id;
 			}
@@ -67,10 +104,9 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 					eles = [eles];
 				}
 				// if more than 1, choose first with the correct id
-				var i=0;
-				while((te=eles[i++])){
-					if((te.attributes && te.attributes.id && te.attributes.id.value == id)
-						|| te.id == id){
+				var i = 0;
+				while((te = eles[i++])){
+					if((te.attributes && te.attributes.id && te.attributes.id.value == id) || te.id == id){
 						return te;
 					}
 				}
@@ -78,10 +114,10 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 		};
 	}else{
 	//>>excludeEnd("webkitMobile");
-		dojo.byId = function(id, doc){
+		dom.byId = function(id, doc){
 			// inline'd type check.
 			// be sure to return null per documentation, to match IE branch.
-			return ((typeof id == "string") ? (doc || win.doc).getElementById(id) : id) || null; // DomNode
+			return ((typeof id == "string") ? (doc || win.doc).getElementById(id) : id) || null; // DOMNode
 		};
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}
@@ -90,20 +126,10 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 	};
 	=====*/
 
-	dojo.isDescendant = function(/*DomNode|String*/node, /*DomNode|String*/ancestor){
-		// summary:
-		//		Returns true if node is a descendant of ancestor
-		// node:
-		//		string id or node reference to test
-		// ancestor:
-		//		string id or node reference of potential parent to test against
-		//
-		// example:
-		//		Test is node id="bar" is a descendant of node id="foo"
-		//	|	if(dojo.isDescendant("bar", "foo")){ ... }
+	dom.isDescendant = function(/*DOMNode|String*/node, /*DOMNode|String*/ancestor){
 		try{
-			node = dojo.byId(node);
-			ancestor = dojo.byId(ancestor);
+			node = dom.byId(node);
+			ancestor = dom.byId(ancestor);
 			while(node){
 				if(node == ancestor){
 					return true; // Boolean
@@ -116,20 +142,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 
 	// TODO: do we need this function in the base?
 
-	dojo.setSelectable = function(/*DomNode|String*/node, /*Boolean*/selectable){
-		// summary:
-		//		Enable or disable selection on a node
-		// node:
-		//		id or reference to node
-		// selectable:
-		//		state to put the node in. false indicates unselectable, true
-		//		allows selection.
-		// example:
-		//		Make the node id="bar" unselectable
-		//	|	dojo.setSelectable("bar");
-		// example:
-		//		Make the node id="bar" selectable
-		//	|	dojo.setSelectable("bar", true);
+	dom.setSelectable = function(/*DOMNode|String*/node, /*Boolean*/selectable){
 		node = dojo.byId(node);
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("mozilla")){
@@ -149,9 +162,5 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 		//FIXME: else?  Opera?
 	};
 
-	return {
-		byId:          dojo.byId,
-		isDescendant:  dojo.isDescendant,
-		setSelectable: dojo.setSelectable   // TODO: it looks very specialized? do we need it here?
-	};
+	return dom;
 });

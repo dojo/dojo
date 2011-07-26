@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/html", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"], function(dojo){
+define(["./_base/kernel", "./dom-geometry", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"], function(dojo, geometry){
 	// module:
 	//		dojo/uacss
 	// summary:
@@ -17,7 +17,7 @@ define(["./_base/kernel", "./_base/html", "./_base/lang", "./ready", "./_base/sn
 		opera = dojo.isOpera,
 		maj = Math.floor,
 		ff = dojo.isFF,
-		boxModel = dojo.boxModel.replace(/-/,''),
+		boxModel = geometry.boxModel.replace(/-/,''),
 
 		classes = {
 			"dj_ie": ie,

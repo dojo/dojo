@@ -11,7 +11,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 	// =============================
 
 	/*=====
-	prop.get = function getProp(/node, name){
+	prop.get = function(/node, name){
 		// summary:
 		//		Gets a property on an HTML element.
 		// description:
@@ -33,7 +33,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 	=====*/
 
 	/*=====
-	prop.set = function setProp(node, name, value){
+	prop.set = function(node, name, value){
 		// summary:
 		//		Sets a property on an HTML element.
 		// description:
@@ -126,13 +126,13 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 			valuetype: "valueType"
 		},
 
-		get: function get(/*DOMNode|String*/node, /*String*/name){
+		get: function getProp(/*DOMNode|String*/node, /*String*/name){
 			node = dom.byId(node);
 			var lc = name.toLowerCase(), propName = prop.names[lc] || name;
 			return node[propName];	// Anything
 		},
 
-		set: function set(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
+		set: function setProp(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
 			node = dom.byId(node);
 			var l = arguments.length;
 			if(l == 2 && typeof name != "string"){ // inline'd type check

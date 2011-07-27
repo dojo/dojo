@@ -173,12 +173,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 	// can return -1.
 
 	attr = {
-		has: function has(/*DOMNode|String*/node, /*String*/name){
+		has: function hasAttr(/*DOMNode|String*/node, /*String*/name){
 			var lc = name.toLowerCase();
 			return forcePropNames[prop.names[lc] || name] || _hasAttr(dom.byId(node), attrNames[lc] || name);	// Boolean
 		},
 
-		get: function get(/*DOMNode|String*/node, /*String*/name){
+		get: function getAttr(/*DOMNode|String*/node, /*String*/name){
 			node = dom.byId(node);
 			var lc = name.toLowerCase(),
 				propName = prop.names[lc] || name,
@@ -199,7 +199,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 			return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
 		},
 
-		set: function set(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
+		set: function setAttr(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
 			node = dom.byId(node);
 			if(arguments.length == 2){ // inline'd type check
 				// the object form of setter: the 2nd argument is a dictionary
@@ -224,7 +224,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 			return node; // DomNode
 		},
 
-		remove: function remove(/*DOMNode|String*/ node, /*String*/ name){
+		remove: function removeAttr(/*DOMNode|String*/ node, /*String*/ name){
 			dom.byId(node).removeAttribute(attrNames[name.toLowerCase()] || name);
 		},
 

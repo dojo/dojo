@@ -139,7 +139,7 @@ define(["./_base/lang", "./dom", "./io-query", "./json"], function(lang, dom, io
 			return ret; // Object
 		},
 
-		toObject: function toObject(/*DOMNode|String*/ formNode){
+		toObject: function formToObject(/*DOMNode|String*/ formNode){
 			var ret = {}, elems = dom.byId(formNode).elements;
 			for(var i = 0, l = elems.length; i < l; ++i){
 				var item = elems[i], _in = item.name, type = (item.type || "").toLowerCase();
@@ -153,11 +153,11 @@ define(["./_base/lang", "./dom", "./io-query", "./json"], function(lang, dom, io
 			return ret; // Object
 		},
 
-		toQuery: function toQuery(/*DOMNode|String*/ formNode){
+		toQuery: function formToQuery(/*DOMNode|String*/ formNode){
 			return ioq.objectToQuery(form.toObject(formNode)); // String
 		},
 
-		toJson: function toJson(/*DOMNode|String*/ formNode, /*Boolean?*/prettyPrint){
+		toJson: function formToJson(/*DOMNode|String*/ formNode, /*Boolean?*/prettyPrint){
 			return json.stringify(form.toObject(formNode), null, prettyPrint ? 4 : 0); // String
 		}
 	};

@@ -585,9 +585,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	// =============================
 
 	geom.isBodyLtr = function isBodyLtr(){
-		//TODO: we need to decide where to keep _bodyLtr
-		return "_bodyLtr" in dojo ? dojo._bodyLtr :
-			dojo._bodyLtr = (win.body().dir || win.doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean
+		return (win.body().dir || win.doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean
 	};
 
 	geom.docScroll = function docScroll(){

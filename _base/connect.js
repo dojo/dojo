@@ -1,4 +1,4 @@
-define(["./kernel", "../on", "../aspect", "./event", "../mouse", "./sniff", "./lang", "../keys"], function(dojo, on, aspect, eventModule, mouse, has, lang){
+define(["./kernel", "../on", "../aspect", "./event", "../mouse", "./sniff", "./lang", "../keys"], function(kernel, on, aspect, eventModule, mouse, has, lang){
 //  module:
 //    dojo/_base/connect
 //  summary:
@@ -15,7 +15,7 @@ has.add("events-keypress-typed", function(){ // keypresses should only occur a p
 		testKeyEvent = document.createEvent("KeyboardEvent");
 		(testKeyEvent.initKeyboardEvent || testKeyEvent.initKeyEvent).call(testKeyEvent, "keypress", true, true, null, false, false, false, false, 9, 3);
 	}catch(e){}
-	return testKeyEvent.charCode == 0 && !dojo.isOpera;
+	return testKeyEvent.charCode == 0 && !has("opera");
 });
 
 function connect_(obj, event, context, method, dontFix){
@@ -24,10 +24,10 @@ function connect_(obj, event, context, method, dontFix){
 	}else if(!obj || !(obj.addEventListener || obj.attachEvent)){
 		// it is a not a DOM node and we are using the dojo.connect style of treating a
 		// method like an event, must go right to aspect
-		return aspect.after(obj || dojo.global, event, lang.hitch(context, method), true);
+		return aspect.after(obj || kernel.global, event, lang.hitch(context, method), true);
 	}
 	if(!obj){
-		obj = dojo.global;
+		obj = kernel.global;
 	}
 	if(!dontFix){
 		switch(event){
@@ -97,7 +97,7 @@ if(has("events-keypress-typed")){
 			var k=evt.keyCode;
 			// These are Windows Virtual Key Codes
 			// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
-			var unprintable = (k!=13 || (dojo.isIE >= 9 && !dojo.isQuirks)) && k!=32 && (k!=27||!dojo.isIE) && (k<48||k>90) && (k<96||k>111) && (k<186||k>192) && (k<219||k>222) && k!=229;
+			var unprintable = (k!=13 || (has("ie") >= 9 && !has("quirks"))) && k!=32 && (k!=27||!has("ie")) && (k<48||k>90) && (k<96||k>111) && (k<186||k>192) && (k<219||k>222) && k!=229;
 			// synthesize keypress for most unprintables and CTRL-keys
 			if(unprintable||evt.ctrlKey){
 				var c = unprintable ? 0 : k;
@@ -229,7 +229,7 @@ dojo.connect = function(obj, event, context, method, dontFix){
 	//
 	//		When setting up a connection, the `event` parameter must be a
 	//		string that is the name of the method/event to be listened for. If
-	//		`obj` is null, `dojo.global` is assumed, meaning that connections
+	//		`obj` is null, `kernel.global` is assumed, meaning that connections
 	//		to global methods are supported but also that you may inadvertently
 	//		connect to a global by passing an incorrect object name or invalid
 	//		reference.
@@ -245,7 +245,7 @@ dojo.connect = function(obj, event, context, method, dontFix){
 	//
 	// obj: Object|null:
 	//		The source object for the event function.
-	//		Defaults to `dojo.global` if null.
+	//		Defaults to `kernel.global` if null.
 	//		If obj is a DOM node, the connection is delegated
 	//		to the DOM event manager (unless dontFix is true).
 	//
@@ -261,7 +261,7 @@ dojo.connect = function(obj, event, context, method, dontFix){
 	//
 	//		If method is a string then context must be the source
 	//		object object for method (context[method]). If context is null,
-	//		dojo.global is used.
+	//		kernel.global is used.
 	//
 	// method: String|Function:
 	//		A function reference, or name of a function in context.
@@ -375,7 +375,7 @@ dojo.connectPublisher = function(topic, obj, event){
 	//	topic: String:
 	//		The name of the topic to publish.
 	//	obj: Object|null:
-	//		The source object for the event function. Defaults to dojo.global
+	//		The source object for the event function. Defaults to kernel.global
 	//		if null.
 	//	event: String:
 	//		The name of the event function in obj.

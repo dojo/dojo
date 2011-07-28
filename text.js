@@ -73,8 +73,8 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 					};
 				if(absMid in theCache){
 					text = theCache[absMid];
-				}else if(absMid in require.cache){
-					text = require.cache[absMid];
+				}else if(url in require.cache){
+					text = require.cache[url];
 				}else if(url in theCache){
 					text = theCache[url];
 				}
@@ -132,7 +132,6 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 		};
 
 		return result;
-});
 
 /*=====
 dojo.cache = function(module, url, value){
@@ -192,3 +191,5 @@ dojo.cache = function(module, url, value){
 	return val; //String
 };
 =====*/
+});
+

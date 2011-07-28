@@ -27,18 +27,6 @@ define([
 		require(["./_firebug/firebug"]);
 	}
 
-	has.add("dojo-load-firebug-console",
-		// the firebug 2.0 console
-		!!this["loadFirebugConsole"]
-	);
-	if(has("dojo-load-firebug-console")){
-		loadFirebugConsole();
-	}
-
-	if(dojo.config.debugAtAllCosts){
-		require.debugAtAllCosts();
-	}
-
 	// dojoConfig.require is deprecated; use the loader configuration property deps
 	has.add("dojo-config-require", 1);
 	if(has("dojo-config-require")){

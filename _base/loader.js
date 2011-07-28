@@ -398,21 +398,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			    "define(" + dojo.toJson(names.concat(["dojo/loadInit!"+id])) + ", function(" + names.join(",") + "){\n" + extractResult[0] + "});";
 		},
 
-		getText = dojo._getText = xhr && function(url, async, onLoad){
-			// FIXME: dojo._getText should either go away or be renamed to getText
-			var result;
-			xhr.get({
-				url:fixupUrl(url),
-				sync:!async,
-				load:function(result_){
-					result = result_;
-					onLoad && onLoad(result_);
-				}
-			});
-			return result;
-		},
-
-		loaderVars = require.initSyncLoader({load:dojoRequirePlugin}, checkDojoRequirePlugin, transformToAmd, isXdUrl, getText),
+		loaderVars = require.initSyncLoader({load:dojoRequirePlugin}, checkDojoRequirePlugin, transformToAmd, isXdUrl),
 
 		sync =
 			loaderVars.sync,

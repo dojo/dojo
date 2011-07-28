@@ -102,8 +102,8 @@
 			return dest;
 		},
 
-		makeErrorToken = function(id){
-			return {src:"dojoLoader", id:id};
+		makeError = function(error, info){
+			return mix(new Error(error), {src:"dojoLoader", info:info});
 		},
 
 		uidSeed = 1,
@@ -281,7 +281,7 @@
 						onLoad(xhr.responseText, async);
 					}
 				}else{
-					throw new Error("XHR failed:" + xhr.status);
+					throw makeError("xhrFailed", xhr.status);
 				}
 				return xhr.responseText;
 			};
@@ -310,7 +310,7 @@
 			// notice we run a copy of the queue; this allows listeners to add/remove
 			// other listeners without affecting this particular signal
 			forEach(queue && queue.slice(0), function(listener){
-				listener.apply(null, args);
+				listener.apply(null, isArray(args) ? args : [args]);
 			});
 		},
 		on = req.on = function(type, listener){
@@ -416,7 +416,12 @@
 	if(has("dojo-config-api")){
 		var consumePendingCacheInsert = function(referenceModule){
 				for(var p in pendingCacheInsert){
-					cache[getModuleInfo(p, referenceModule).mid] = pendingCacheInsert[p];
+					var match = p.match(/^url\:(.+)/);
+					if(match){
+						cache[toUrl(match[1], referenceModule)] =  pendingCacheInsert[p];
+					}else{
+						cache[getModuleInfo(p, referenceModule).mid] = pendingCacheInsert[p];
+					}
 				}
 				pendingCacheInsert = {};
 			},
@@ -493,7 +498,7 @@
 					if(config[p]!==hasCache){
 						// accumulate raw config info for client apps which can use this to pass their own config
 						req.rawConfig[p] = config[p];
-						has.add("config-"+p, config[p], 0, booting);
+						p!="has" && has.add("config-"+p, config[p], 0, booting);
 					}
 				}
 
@@ -541,7 +546,6 @@
 				if(config.cache){
 					consumePendingCacheInsert();
 					pendingCacheInsert = config.cache;
-					pendingCacheInsert["*immediate"] && consumePendingCacheInsert();
 				}
 
 				signal("config", [config, req.rawConfig]);
@@ -626,14 +630,14 @@
 			var module, syntheticMid;
 			if(isString(a1)){
 				// signature is (moduleId)
-				module = getModule(a1, referenceModule, 1);
+				module = getModule(a1, referenceModule);
 				if(module.plugin){
 					injectPlugin(module, true);
 				}
 				if(module.executed){
 					return module.result;
 				}
-				throw new Error("module (" + a1 + ") has not been requested");
+				throw makeError("undefinedModule", a1);
 			}
 			if(!isArray(a1)){
 				// a1 is a configuration
@@ -647,8 +651,12 @@
 				// signature is (requestList [,callback])
 
 				// resolve the request list with respect to the reference module
-				for(var deps = [], i = 0; i < a1.length;){
-					deps.push(getModule(a1[i++], referenceModule, 1));
+				for(var mid, deps = [], i = 0; i < a1.length;){
+					mid = a1[i++];
+					if(mid in {exports:1, module:1}){
+						throw makeError("illegalModuleId", mid);
+					}
+					deps.push(getModule(mid, referenceModule));
 				}
 
 				// construct a synthetic module to control execution of the requestList, and, optionally, callback
@@ -656,20 +664,18 @@
 				module = mix(makeModuleInfo("", syntheticMid, 0, ""), {
 					injected: arrived,
 					deps: deps,
-					def: a2 || noop
+					def: a2 || noop,
+					require: referenceModule ? referenceModule.require : req
 				});
 				modules[module.mid] = module;
 				injectDependencies(module);
 				// try to immediately execute
-				try{
-					checkCompleteGuard++;
-					if(execModule(module, 1) === abortExec){
-						// some deps weren't on board; therefore, push into the execQ
-						execQ.push(module);
-					}
-				}finally{
-					checkCompleteGuard--;
+				checkCompleteGuard++;
+				if(execModule(module, 1) === abortExec){
+					// some deps weren't on board; therefore, push into the execQ
+					execQ.push(module);
 				}
+				checkCompleteGuard--;
 			}
 			return contextRequire;
 		},
@@ -771,14 +777,14 @@
 			requestedMid = mid;
 			isRelative = /^\./.test(mid);
 			if(/(^\/)|(\:)|(\.js$)/.test(mid) || (isRelative && !referenceModule)){
-				// absolute path or protocol, or relative path but no reference module and therefore relative to page
+				// absolute path or protocol of .js filetype, or relative path but no reference module and therefore relative to page
 				// whatever it is, it's not a module but just a URL of some sort
 				return makeModuleInfo(0, mid, 0, mid);
 			}else{
 				// relative module ids are relative to the referenceModule; get rid of any dots
 				mid = compactPath(isRelative ? (referenceModule.mid + "/../" + mid) : mid);
 				if(/^\./.test(mid)){
-					throw new Error("The path " + mid + " is irrational");
+					throw makeError("irrationalPath", mid);
 				}
 				// find the package indicated by the mid, if any
 				mapProg = referenceModule && referenceModule.pack && referenceModule.pack.mapProg;
@@ -843,7 +849,7 @@
 			return getModuleInfo_(mid, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg);
 		},
 
-		getModule = function(mid, referenceModule, fromRequire){
+		getModule = function(mid, referenceModule){
 			// compute and optionally construct (if necessary) the module implied by the mid with respect to referenceModule
 			var match, plugin, prid, result;
 			match = mid.match(/^(.+?)\!(.*)$/);
@@ -855,10 +861,6 @@
 				mid = plugin.mid + "!" + (referenceModule ? referenceModule.mid + "!" : "") + prid;
 				return modules[mid] || (modules[mid] = {plugin:plugin, mid:mid, req:(referenceModule ? createRequire(referenceModule) : req), prid:prid});
 			}else{
-				if(fromRequire && /^.*[^\/\.]+\.[^\/\.]+$/.test(mid)){
-					// anything* anything-other-than-a-dot+ dot anything-other-than-a-dot-or-slash+ => a url that ends with a filetype
-					return modules[mid]= modules[mid] || makeModuleInfo(0, "*" + mid, 0, mid);
-				}
 				result = getModuleInfo(mid, referenceModule);
 				return modules[result.mid] || (modules[result.mid] = result);
 			}
@@ -897,23 +899,20 @@
 
 		runFactory = function(module, args){
 			req.trace("loader-run-factory", [module.mid]);
-			var ok = 0,
-				factory = module.def,
+			var factory = module.def,
 				result;
-			try{
-				has("dojo-sync-loader") && syncExecStack.unshift(module);
-				result= isFunction(factory) ? factory.apply(null, args) : factory;
-				module.result = result===undefined && module.cjs ? module.cjs.exports : result;
-				ok = 1;
-			}finally{
-				has("dojo-sync-loader") && syncExecStack.shift(module);
-				if(!ok){
-					module.result = factoryThrew;
-					signal(error, [factoryThrew, module]);
+			has("dojo-sync-loader") && syncExecStack.unshift(module);
+			if(has("config-dojo-loader-catches")){
+				try{
+					result= isFunction(factory) ? factory.apply(null, args) : factory;
+				}catch(e){
+					signal(error, module.result = makeError("factoryThrew", [module, e]));
 				}
+			}else{
+				result= isFunction(factory) ? factory.apply(null, args) : factory;
 			}
-
-
+			module.result = result===undefined && module.cjs ? module.cjs.exports : result;
+			has("dojo-sync-loader") && syncExecStack.shift(module);
 		},
 
 		abortExec = {},
@@ -930,7 +929,15 @@
 				var	q = module.loadQ,
 					load = module.load = module.result.load;
 				while(q.length){
-					load.apply(null, q.shift());
+					if(has("config-dojo-loader-catches")){
+						try{
+							load.apply(null, q.shift());
+						}catch(e){
+							signal(error, makeError("pluginThrew", [module, e]));
+						}
+					}else{
+						load.apply(null, q.shift());
+					}
 				}
 				module.loadQ = 0;
 			}
@@ -943,8 +950,6 @@
 				}
 			}
 		},
-
-		factoryThrew = makeErrorToken("factoryThrew"),
 
 		execModule = function(module, strict){
 			// run the dependency vector, then run the factory for module
@@ -989,6 +994,7 @@
 			return module.result;
 		},
 
+
 		checkCompleteGuard =  0,
 
 		checkComplete = function(){
@@ -999,25 +1005,22 @@
 				return;
 			}
 			checkCompleteGuard++;
-			try{
-				checkDojoRequirePlugin();
-				for(var currentDefOrder, module, i = 0; i < execQ.length;){
-					currentDefOrder = defOrder;
-					module = execQ[i];
-					execModule(module);
-					if(currentDefOrder!=defOrder){
-						// defOrder was bumped one or more times indicating something was executed (note, this indicates
-						// the execQ was modified, maybe a lot (for example a later module causes an earlier module to execute)
-						checkDojoRequirePlugin();
-						i = 0;
-					}else{
-						// nothing happened; check the next module in the exec queue
-						i++;
-					}
+			checkDojoRequirePlugin();
+			for(var currentDefOrder, module, i = 0; i < execQ.length;){
+				currentDefOrder = defOrder;
+				module = execQ[i];
+				execModule(module);
+				if(currentDefOrder!=defOrder){
+					// defOrder was bumped one or more times indicating something was executed (note, this indicates
+					// the execQ was modified, maybe a lot (for example a later module causes an earlier module to execute)
+					checkDojoRequirePlugin();
+					i = 0;
+				}else{
+					// nothing happened; check the next module in the exec queue
+					i++;
 				}
-			}finally{
-				checkCompleteGuard--;
 			}
+			checkCompleteGuard--;
 			if(execComplete()){
 				signal("idle", []);
 			}
@@ -1098,16 +1101,25 @@
 
 			evalModuleText = function(text, module){
 				// see def() for the injectingCachedModule bracket; it simply causes a short, safe curcuit
-				try{
-					injectingCachedModule = 1;
+				injectingCachedModule = 1;
+				if(has("config-dojo-loader-catches")){
+					try{
+						if(text===cached){
+							cache[module.mid].call(null);
+						}else{
+							req.eval(text, module.mid);
+						}
+					}catch(e){
+						signal(error, makeError("evalModuleThrew", module));
+					}
+				}else{
 					if(text===cached){
 						cache[module.mid].call(null);
 					}else{
 						req.eval(text, module.mid);
 					}
-				}finally{
-					injectingCachedModule = 0;
 				}
+				injectingCachedModule = 0;
 			},
 
 			injectModule = function(module){
@@ -1224,12 +1236,14 @@
 						};
 
 						req.trace("loader-inject", ["xhr", module.mid, url, legacyMode!=sync]);
-						var ok = 0;
-						try{
+						if(has("config-dojo-loader-catches")){
+							try{
+								req.getText(url, legacyMode!=sync, xhrCallback);
+							}catch(e){
+								signal(error, makeError("xhrInjectFailed", [module, e]));
+							}
+						}else{
 							req.getText(url, legacyMode!=sync, xhrCallback);
-							ok = 1;
-						}finally{
-							!ok && signal(error, [makeErrorToken("xhrFailed"), module]);
 						}
 						return;
 					}
@@ -1245,7 +1259,7 @@
 
 				var mid = module.mid;
 				if(module.injected === arrived){
-					signal(error, [makeErrorToken("multipleDefine"), module]);
+					signal(error, makeError("multipleDefine", module));
 					return module;
 				}
 				mix(module, {
@@ -1315,7 +1329,7 @@
 			clearTimer();
 			req.waitms && (timerId = setTimeout(function(){
 				clearTimer();
-				signal(error, [makeErrorToken("timeout"), waiting]);
+				signal(error, makeError("timeout", waiting));
 			}, req.waitms));
 		};
 	}
@@ -1463,7 +1477,7 @@
 			module;
 		if(targetModule && !waiting[targetModule.mid]){
 			// given a mid that hasn't been requested; therefore, defined through means other than injecting
-			// consequent to a require() or define() application; examples in include defining modules on-the-fly
+			// consequent to a require() or define() application; examples include defining modules on-the-fly
 			// due to some code path or including a module in a script element. In any case,
 			// there is no callback waiting to finish processing and nothing to trigger the defQ and the
 			// dependencies are never requested; therefore, do it here.
@@ -1503,7 +1517,7 @@
 				consumePendingCacheInsert(targetModule);
 				injectDependencies(defineModule(targetModule, args[1], args[2]));
 			}else{
-				signal(error, [makeErrorToken("defineIe"), args]);
+				signal(error, makeError("ieDefineFailed", args));
 			}
 			checkComplete();
 		}
@@ -1521,25 +1535,28 @@
 	// also useful for testing and monkey patching loader
 	mix(req, mix(req, defaultConfig.loaderPatch), userConfig.loaderPatch);
 
-	// now that req.log won't change, we can hook it up to the error signal
+	// now that req is fully initialized and won't change, we can hook it up to the error signal
 	on(error, req.log);
+
+	// always publish these
+	mix(req, {
+		uid:uid,
+		cache:cache,
+		packs:packs
+	});
+
 
 	if(has("dojo-publish-privates")){
 		mix(req, {
-			// these may be interesting for other modules to use
-			uid:uid,
-
 			// these may be interesting to look at when debugging
 			paths:paths,
 			aliases:aliases,
-			packs:packs,
 			packageMap:packageMap,
 			modules:modules,
 			legacyMode:legacyMode,
 			execQ:execQ,
 			defQ:defQ,
 			waiting:waiting,
-			cache:cache,
 
 			// these are used for testing
 			// TODO: move testing infrastructure to a different has feature
@@ -1601,10 +1618,10 @@
 			"dojo-publish-privates":1,
 			"dojo-config-api":1,
 			"dojo-sniff":1,
-			"config-tlmSiblingOfDojo":1,
 			"dojo-sync-loader":1,
 			"dojo-test-sniff":1,
-			"dojo-1x-base":1
+			"dojo-1x-base":1,
+			"config-tlmSiblingOfDojo":1
 		},
 		packages:[{
 			// note: like v1.6-, this bootstrap computes baseUrl to be the dojo directory

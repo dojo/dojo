@@ -32,24 +32,19 @@ define(["../has", "require"], function(has, require){
 	//		|		// use as required
 	//		|	});
 
-	var adviseHas = function(featureSet, prefix, booting){
-			for(p in featureSet){
-				has.add(prefix + p, featureSet[p], 0, booting);
-			}
-		},
-		result;
+	var result = {};
 	if(has("dojo-config-api")){
 		// must be the dojo loader; take a shallow copy of require.rawConfig
-		var src = require.rawConfig, dest = {}, p;
+		var src = require.rawConfig, p;
 		for(p in src){
-			dest[p] = src[p];
+			result[p] = src[p];
 		}
-		result = dest;
-		require.on("config", function(config){
-			adviseHas(config, "config", 0);
-			adviseHas(config.has, "", 0);
-		});
 	}else{
+		var adviseHas = function(featureSet, prefix, booting){
+			for(p in featureSet){
+				p!="has" && has.add(prefix + p, featureSet[p], 0, booting);
+			}
+		};
 		result = has("dojo-loader") ?
 			// must be a built version of the dojo loader; all config stuffed in require.rawConfig
 			require.rawConfig :
@@ -59,7 +54,6 @@ define(["../has", "require"], function(has, require){
 		adviseHas(result.has, "", 1);
 	}
 	return result;
-});
 
 /*=====
 // note:
@@ -176,3 +170,5 @@ dojoConfig = {
 	skipIeDomLoaded: false
 }
 =====*/
+});
+

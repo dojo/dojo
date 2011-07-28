@@ -17,72 +17,52 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			global:this,
 			dijit:dijit,
 			dojox:dojox
-		},
+		};
 
-		getFirstSegment = function(id){
-			return id.match(/[^\/]+/)[0];
-		},
 
-		scopeMap =
-			// a map from a name used in a legacy module to the the global variable name and object addressed by that name
-			{dojo:[getFirstSegment(module.id), dojo]};
+	// Configure the scope map. For a 100% AMD application, the scope map is not needed other than to provide
+	// a _scopeName property for the dojo, dijit, and dojox root object so those packages can create
+	// unique names in the global space.
+	//
+	// Built, legacy modules use the scope map to allow those modules to be expressed as if dojo, dijit, and dojox,
+	// where global when in fact they are either global under different names or not global at all. In v1.6-, the
+	// config variable "scopeMap" was used to map names as used within a module to global names. This has been
+	// subsumed by the dojo packageMap configuration variable which relocates packages to different names. See
+	// http://livedocs.dojotoolkit.org/developer/design/loader#legacy-cross-domain-mode for details.
+	//
+	// The following computations contort the packageMap for this dojo instance into a scopeMap.
+	var scopeMap =
+			// a map from a name used in a legacy module to the (global variable name, object addressed by that name)
+			// always map dojo, dijit, and dojox
+			{
+				dojo:["dojo", dojo],
+				dijit:["dijit", dijit],
+				dojox:["dojox", dojox]
+			},
 
-	has.add("dojo-scopeMap",
-		// allow explicit setting of dojo.scopeMap
-		1
-	);
-	if(has("dojo-scopeMap")){
-		// Configure the scope map. For a 100% AMD application, the scope map is not needed other than to provide
-		// a _scopeName property for the dojo, dijit, and dojox root object so those packages can create
-		// unique names in the global space.
-		//
-		// Built, legacy modules use the scope map to allow those modules to be expressed as if dojo, dijit, and dojox,
-		// where global when in fact they are either global under different names or not global at all.  See
-		// http://livedocs.dojotoolkit.org/developer/design/loader#legacy-cross-domain-mode for details.
-		//
-		// A scopMap is composed of (name, global-name, target-object) triples which gives a name (name) used
-		// internally by legacy modules for a top-level object, the global name (global-name) at which the top-level
-		// object resides and the value (target-object) of the top-level object. If no value if given for the target-object object,
-		// it is initialized to {}. Any value provided for dojo, dijit, and/or dojox is ignored (these packages take responsibility
-		// for initializing their own objects).  If no global name is provided for a particular top-level name, then a
-		// reasonably-random unique name is manufactured.
-		//
-		// By default, we have
-		//
-		// dojo.scopeMap.dojo[0]==="dojo" and dojo.scopeMap.dojo[1]===dojo
-		// dojo.scopeMap.dijit[0]==="dijit" and dojo.scopeMap.dijit[1]===dojo.dijit
-		// dojo.scopeMap.dojox[0]==="dojox" and dojo.scopeMap.dojox[1]===dojo.dojox
-		//
-		// The config scope map of  [["dojo", "myDojo"], ["dijit"], , ["dojox"]] would generate something like this:
-		//
-		// dojo.scopeMap.dojo[0]==="myDojo" and dojo.scopeMap.dojo[1]===dojo
-		// dojo.scopeMap.dijit[0]==="dijit_1308291332419" and dojo.scopeMap.dijit[1]===dojo.dijit
-		// dojo.scopeMap.dojox[0]==="dojox_1308291332420" and dojo.scopeMap.dojox[1]===dojo.dojox
-		//
-		var
-			configScopeMap =
-				// configuration to edit or expand scopeMap; given as tripples [name, globalName, object]
-				config.scopeMap || [["dijit", getFirstSegment(require.toAbsMid("dijit"))], ["dojox", getFirstSegment(require.toAbsMid("dojox"))]],
+		packageMap =
+			// the package map for this dojo instance; note, a foreign loader or no pacakgeMap results in the above default config
+			(require.packs && require.packs[module.id.match(/[^\/]+/)[0]].packageMap) || {},
 
-			seed =
-				// seed used to create unique scope names
-				(new Date).getTime(),
+		item;
 
-			item, name, globalName, theObject;
-
-		for(i = 0; i < configScopeMap.length; i++){
-			item = configScopeMap[i],
-			name = item[0],
-			globalName = item[1] || (name + "_" + i + seed),
-			theObject = {dojo:dojo, dijit:dijit, dojox:dojox}[name] || item[2] || {};
-			scopeMap[name] = [globalName, theObject];
+	// process all mapped top-level names for this instance of dojo
+	for(p in packageMap){
+		if(scopeMap[p]){
+			// mapped dojo, dijit, or dojox
+			scopeMap[p][0] = packageMap[p];
+		}else{
+			// some other top-level name
+			scopeMap[p] = [packageMap[p], {}];
 		}
-		for(p in scopeMap){
-			item = scopeMap[p];
-			item[1]._scopeName = item[0];
-			if(!config.noGlobals){
-				this[item[0]] = item[1];
-			}
+	}
+
+	// publish those names to _scopeName and, optionally, the global namespace
+	for(p in scopeMap){
+		item = scopeMap[p];
+		item[1]._scopeName = item[0];
+		if(!config.noGlobals){
+			this[item[0]] = item[1];
 		}
 	}
 	dojo.scopeMap = scopeMap;
@@ -123,7 +103,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		}
 	};
 
-	if(has("host-loader")){
+	if(has("dojo-loader")){
 		dojo.eval = require.eval;
 	}else{
 		var eval_ =
@@ -150,27 +130,33 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		1
 	);
 	if(has("dojo-guarantee-console")){
-		// intentional global console
+		var fake = function(){},
+			fakeConsole = {
+				log:fake,
+				assert:fake,
+				count:fake,
+				debug:fake,
+				dir:fake,
+				dirxml:fake,
+				error:fake,
+				group:fake,
+				groupEnd:fake,
+				info:fake,
+				profile:fake,
+				profileEnd:fake,
+				time:fake,
+				timeEnd:fake,
+				trace:fake,
+				warn:fake};
+		fake._fake = 1;
+
+		// ensure there is a *global* console
 		typeof console != "undefined" || (console = {});
-		//	Be careful to leave 'log' always at the end
-		var cn = [
-			"assert", "count", "debug", "dir", "dirxml", "error", "group",
-			"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
-			"trace", "warn", "log"
-		];
-		var tn;
-		i = 0;
-		while((tn = cn[i++])){
-			if(!console[tn]){
-				(function(){
-					var tcn = tn + "";
-					console[tcn] = ('log' in console) ? function(){
-						var a = Array.apply({}, arguments);
-						a.unshift(tcn + ":");
-						console["log"](a.join(" "));
-					} : function(){};
-					console[tcn]._fake = true;
-				})();
+
+		// express any missing methods as fake; if you need and want real replacements, include dojo/_firebug/firebug
+		for(p in fakeConsole){
+			if(!console[p]){
+				console[p] = fakeConsole[p];
 			}
 		}
 	}
@@ -224,10 +210,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			if(extra){ message += " " + extra; }
 			console.warn(message);
 		};
-	}else{
-		dojo.deprecated = dojo.experimental = function(){};
 	}
-
 
 	has.add("dojo-modulePaths",
 		// consume dojo.modulePaths processing

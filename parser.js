@@ -1,7 +1,7 @@
 define(
 	["./_base/kernel", "./_base/lang", "./_base/array", "./_base/html", "./_base/window", "./_base/url",
-		"./_base/json", "./aspect", "./date/stamp", "./query"],
-	function(dojo, dlang, darray, dhtml, dwindow, _Url, djson, aspect, dates, query){
+		"./_base/json", "./aspect", "./date/stamp", "./query", "./on"],
+	function(dojo, dlang, darray, dhtml, dwindow, _Url, djson, aspect, dates, query, don){
 
 // module:
 //		dojo/parser
@@ -284,10 +284,14 @@ dojo.parser = new function(){
 			// <script type="dojo/method" event="foo"> tags are added to params, and passed to
 			// the widget on instantiation.
 			// <script type="dojo/method"> tags (with no event) are executed after instantiation
-			// <script type="dojo/connect" event="foo"> tags are dojo.connected after instantiation
+			// <script type="dojo/connect" data-dojo-event="foo"> tags are dojo.connected after instantiation
+			// <script type="dojo/watch" data-dojo-prop="foo"> tags are dojo.watch after instantiation
+			// <script type="dojo/on" data-dojo-event="foo"> tags are dojo.on after instantiation
 			// note: dojo/* script tags cannot exist in self closing widgets, like <input />
 			var connects = [],	// functions to connect after instantiation
-				calls = [];		// functions to call after instantiation
+				calls = [],		// functions to call after instantiation
+				watch = [],  //functions to watch after instantiation
+				on = []; //functions to on after instantiation
 
 			if(scripts){
 				for(i=0; i<scripts.length; i++){
@@ -295,14 +299,19 @@ dojo.parser = new function(){
 					node.removeChild(script);
 					// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
 					var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
+						prop = script.getAttribute(attrData + "prop"),
 						type = script.getAttribute("type"),
 						nf = this._functionFromScript(script, attrData);
 					if(event){
 						if(type == "dojo/connect"){
 							connects.push({event: event, func: nf});
+						}else if(type == "dojo/on"){
+							on.push({event: event, func: nf});
 						}else{
 							params[event] = nf;
 						}
+					}else if(type == "dojo/watch"){
+						watch.push({prop: prop, func: nf});
 					}else{
 						calls.push(nf);
 					}
@@ -325,6 +334,12 @@ dojo.parser = new function(){
 			}
 			for(i=0; i<calls.length; i++){
 				calls[i].call(instance);
+			}
+			for(i=0; i<watch.length; i++){
+				instance.watch(watch[i].prop, watch[i].func);
+			}
+			for(i=0; i<on.length; i++){
+				don(instance, on[i].event, on[i].func);
 			}
 		}, this);
 

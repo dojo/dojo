@@ -7,9 +7,9 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
 		<script type="text/javascript">
-		require(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/html",
+		require(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/html", "dojo/Stateful",
 				"doh", "dojo/date/stamp", "dojo/aspect", "dojo/parser", "dojo/domReady!"],
-				function(dojo, dlang, darray, declare, dhtml, doh, dstamp, aspect, parser){
+				function(dojo, dlang, darray, declare, dhtml, Stateful, doh, dstamp, aspect, parser){
 
 			var mixin = dojo.mixin,
 				extend = dojo.extend,
@@ -141,6 +141,14 @@
 				diffMethod: function(a){
 					this._ran = true;
 				}
+			});
+			
+			declare("tests.parser.StatefulClass", Stateful, {
+				strProp1: "",
+				objProp1: {},
+				boolProp1: false,
+				prototypeOnclick: false,
+				onclick: function() {this.prototypeOnclick=true;}
 			});
 
 			deepTestProp = {
@@ -397,6 +405,17 @@
 						htmldojomethod.diffMethod(2);
 						doh.t(htmldojomethod._ran, "ensures original was called first");
 						doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");
+					},
+					
+					function testOnWatch(){
+						// testing script-type dojo/watch and dojo/on
+						doh.t(typeof objOnWatch == "object");
+						objOnWatch.set("strProp1","newValue1");
+						doh.is("newValue1", objOnWatch.arrProp.newValue, "ensures watch executed");
+						
+						objOnWatch.onclick();
+						doh.t(objOnWatch.prototypeOnclick, "ensures original was called");
+						doh.t(objOnWatch.boolProp1, "ensure on executed in scope");
 					}
 				]);
 
@@ -673,6 +692,19 @@
 					</script>
 					<script type="dojo/method">
 						this._methodRan = true;
+					</script>
+				</div>
+			</div>
+			
+			<!-- section for testing dojo/on and dojo/watch scripts -->
+			<div>
+				<div data-dojo-id="objOnWatch" data-dojo-type="tests.parser.StatefulClass">
+					<script type="dojo/watch" data-dojo-prop="strProp1" data-dojo-args="prop,oldValue,newValue">
+						this.set("arrProp",{prop: prop, oldValue: oldValue, newValue: newValue});
+					</script>
+					<script type="dojo/on" data-dojo-event="click" data-dojo-args="e">
+						console.log("diffMethod on, this is ",this);
+						this.set("boolProp1",true);
 					</script>
 				</div>
 			</div>

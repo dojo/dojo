@@ -668,14 +668,16 @@
 					require: referenceModule ? referenceModule.require : req
 				});
 				modules[module.mid] = module;
+
+				// checkComplete!=0 holds the idle signal; we're not idle if we're injecting dependencies
+				checkCompleteGuard++;
 				injectDependencies(module);
 				// try to immediately execute
-				checkCompleteGuard++;
 				if(execModule(module, 1) === abortExec){
 					// some deps weren't on board; therefore, push into the execQ
 					execQ.push(module);
 				}
-				checkCompleteGuard--;
+				checkIdle();
 			}
 			return contextRequire;
 		},
@@ -732,7 +734,7 @@
 		execComplete = req.idle =
 			// says the loader has completed (or not) its work
 			function(){
-				return !defQ.length && isEmpty(waiting) && !execQ.length;
+				return !defQ.length && isEmpty(waiting) && !execQ.length && !checkCompleteGuard;
 			},
 
 		runMapProg = function(targetMid, map){
@@ -1020,11 +1022,16 @@
 					i++;
 				}
 			}
+			checkIdle();
+		},
+
+		checkIdle = function(){
 			checkCompleteGuard--;
 			if(execComplete()){
 				signal("idle", []);
 			}
 		};
+
 
 	if(has("dojo-undef-api")){
 		req.undef = function(moduleId, referenceModule){
@@ -1052,7 +1059,9 @@
 				if(has("dojo-sync-loader") && legacyMode==sync && !plugin.executed){
 					injectModule(plugin);
 					execQ.unshift(plugin);
+					checkCompleteGuard++;
 					execModule(plugin);
+					checkIdle();
 				}
 
 				if(plugin.executed === executed && !plugin.load){

@@ -14,7 +14,7 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 	var getText;
 	if(has("host-browser")){
 		getText= function(url, sync, load){
-			xhr("GET", {url:url, sync:sync, load:load});
+			xhr("GET", {url:url, sync:!!sync, load:load});
 		};
 	}else{
 		// TODOC: only works for dojo AMD loader

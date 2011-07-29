@@ -783,6 +783,14 @@ define(["./kernel", "./sniff", "require", "../on", "../io-query", "../dom-form",
 	}
 	*/
 
+	dojo._getText = function(url){
+		var result;
+		dojo.xhrGet({url:url, sync:true, load:function(text){
+			result = text;
+		}});
+		return result;
+	};
+
 	// Add aliases for static functions to dojo.xhr since dojo.xhr is what's returned from this module
 	lang.mixin(dojo.xhr, {
 		_xhrObj: dojo._xhrObj,

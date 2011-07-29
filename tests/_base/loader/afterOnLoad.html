@@ -13,8 +13,10 @@
 				//Create global dojoConfig object first. We cannot use the dojoConfig attribute
 				//on the script tag since it may not be visible in some browsers at the time
 				//dojo.js executes. This causes problems when the "require" property is used
-				//as part of djConfig. Also note that you have to set baseUrl directly, since
-				//it cannot be detected as part of script tag.
+				//as part of djConfig. 
+
+				//Previous versions of this test stated that baseUrl must be set explicitly because
+				//the sniffing code would not work. As of 1.7, this seems to be unnecessary
 
 				var startTime = (new Date()).getTime();
 

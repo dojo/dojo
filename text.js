@@ -55,6 +55,8 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 
 		notFound = {},
 
+		pending = {},
+
 		result= {
 			load:function(id, require, load){
 				// id is something like (path may be relative):
@@ -68,7 +70,6 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 					url = require.toUrl(parts[0]),
 					text = notFound,
 					finish = function(text){
-						theCache[absMid]= theCache[url]= text;
 						load(stripFlag ? strip(text) : text);
 					};
 				if(absMid in theCache){
@@ -79,7 +80,18 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 					text = theCache[url];
 				}
 				if(text===notFound){
-					getText(url, !require.async, finish);
+					if(pending[url]){
+						pending[url].push(finish);
+					}else{
+						var pendingList = pending[url] = [finish];
+						getText(url, !require.async, function(text){
+							theCache[absMid]= theCache[url]= text;
+							for(var i = 0; i<pendingList.length;){
+								pendingList[i++](text);
+							}
+							delete pending[url];
+						});
+					}
 				}else{
 					finish(text);
 				}

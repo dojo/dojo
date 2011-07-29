@@ -271,7 +271,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			// Notice * is an illegal filename so it won't conflict with any real path map that may exist the paths config.
 			var result = null;
 			if(module){
-				result = require.toUrl(module.replace(/\./g, "/") + (url ? ("/" + url) : "") + "/*.*").match(/(.+)\/\*\.\*$/)[1] + (url ? "" : "/");
+				result = require.toUrl(module.replace(/\./g, "/") + (url ? ("/" + url) : "") + "/*.*").replace(/\/\*\.\*/, "") + (url ? "" : "/");
 			}
 			return result;
 		};

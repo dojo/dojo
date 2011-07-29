@@ -881,7 +881,7 @@
 				url= moduleInfo.url;
 			// recall, getModuleInfo always returns a url with a ".js" suffix iff pid; therefore, we've got to trim it
 			url= typeof moduleInfo.pid == "string" ? url.substring(0, url.length - 3) : url;
-			return url + ext;
+			return fixupUrl(url + ext);
 		},
 
 		nonModuleProps = {

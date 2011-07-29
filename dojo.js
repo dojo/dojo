@@ -1424,11 +1424,17 @@
 
 			if(trace.on && trace.group[group]){
 				signal("trace", [group, args]);
-				for(var text= group + ":" + group, i= 1; i<args.length && isString(args[i]);){
-					text += ", " + args[i++];
+				for(var arg, dump = [], text= "trace:" + group + (args.length ? (":" + args[0]) : ""), i= 1; i<args.length;){
+					arg = args[i++];
+					if(isString(arg)){
+						text += ", " + arg;
+					}else{
+						dump.push(arg);
+					}
 				}
 				req.log(text);
-				req.log.apply(null, args);
+				dump.length && dump.push(".");
+				req.log.apply(req, dump);
 			}
 		};
 		mix(trace, {
@@ -1496,9 +1502,9 @@
 			// after script finishes being evaluated and the defQ can be run from that callback to detect the module id
 			defQ.push(args);
 		}else{
-			// IE path: anonymous module and therefore must have been injected; therefore, cannot depend on 1-to-1,
+			// IE path: possibly anonymous module and therefore injected; therefore, cannot depend on 1-to-1,
 			// in-order exec of onLoad with script eval (since its IE) and must manually detect here
-			targetModule = injectingModule;
+			targetModule = targetModule || injectingModule;
 			if(!targetModule){
 				for(mid in waiting){
 					module = modules[mid];
@@ -1526,7 +1532,7 @@
 				consumePendingCacheInsert(targetModule);
 				injectDependencies(defineModule(targetModule, args[1], args[2]));
 			}else{
-				signal(error, makeError("ieDefineFailed", args));
+				signal(error, makeError("ieDefineFailed", args[0]));
 			}
 			checkComplete();
 		}
@@ -1545,7 +1551,17 @@
 	mix(req, mix(req, defaultConfig.loaderPatch), userConfig.loaderPatch);
 
 	// now that req is fully initialized and won't change, we can hook it up to the error signal
-	on(error, req.log);
+	on(error, function(arg){
+		try{
+			console.error(arg);
+			if(arg instanceof Error){
+				for(var p in arg){
+					console.log(p + ":", arg[p]);
+				}
+				console.log(".");
+			}
+		}catch(e){}
+	});
 
 	// always publish these
 	mix(req, {
@@ -1585,7 +1601,7 @@
 	// *required* to define (as opposed to require, which is optional)
 	if(global.define){
 		if(has("dojo-log-api")){
-			req.log("global define already defined; dojo loader not loaded");
+			signal(error, makeError("defineAlreadyDefined", 0));
 		}
 	}else{
 		global.define = def;

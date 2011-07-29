@@ -30,7 +30,7 @@
                         var scripts = document.getElementsByTagName("script"),
                             i, counts = {}, url, props, something;
                         for (var i = scripts.length - 1; i > -1; i--) {
-                            url = scripts[i].href;
+                            url = scripts[i].src;
                             if (url) {
                                 if (!(url in counts)) {
                                     counts[url] = 0;
@@ -39,11 +39,16 @@
                             }
                         }
 
-                        //Now that we counted all the modules make sure count
-                        //is always one.
-                        for (prop in counts) {
-                            t.is(1, counts[prop]);
-                        }
+						if(require.modules){
+							// the dojo loader; looking at internal structures for this test
+							t.is(2, counts[require.modules["one"].node.src]);
+							t.is(2, counts[require.modules["three"].node.src]);							
+						}else{
+							// requirejs impl
+						    for (prop in counts) {
+								t.is(1, counts[prop]);
+	                        }
+						}
 
                         t.is("one", one.name);
                         t.is("one", two.oneName);

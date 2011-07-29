@@ -130,33 +130,26 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		1
 	);
 	if(has("dojo-guarantee-console")){
-		var fake = function(){},
-			fakeConsole = {
-				log:fake,
-				assert:fake,
-				count:fake,
-				debug:fake,
-				dir:fake,
-				dirxml:fake,
-				error:fake,
-				group:fake,
-				groupEnd:fake,
-				info:fake,
-				profile:fake,
-				profileEnd:fake,
-				time:fake,
-				timeEnd:fake,
-				trace:fake,
-				warn:fake};
-		fake._fake = 1;
-
-		// ensure there is a *global* console
 		typeof console != "undefined" || (console = {});
-
-		// express any missing methods as fake; if you need and want real replacements, include dojo/_firebug/firebug
-		for(p in fakeConsole){
-			if(!console[p]){
-				console[p] = fakeConsole[p];
+		//	Be careful to leave 'log' always at the end
+		var cn = [
+			"assert", "count", "debug", "dir", "dirxml", "error", "group",
+			"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
+			"trace", "warn", "log"
+		];
+		var tn;
+		i = 0;
+		while((tn = cn[i++])){
+			if(!console[tn]){
+				(function(){
+					var tcn = tn + "";
+					console[tcn] = ('log' in console) ? function(){
+						var a = Array.apply({}, arguments);
+						a.unshift(tcn + ":");
+						console["log"](a.join(" "));
+					} : function(){};
+					console[tcn]._fake = true;
+				})();
 			}
 		}
 	}

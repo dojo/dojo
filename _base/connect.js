@@ -203,7 +203,7 @@ var connect = {
 };
 connect.unsubscribe = connect.disconnect;
 
-has("dojo-1x-base") && lang.mixin(dojo, connect);
+has("dojo-1x-base") && lang.mixin(kernel, connect);
 return connect;
 
 /*=====

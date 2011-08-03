@@ -480,7 +480,7 @@
 						req.waitms = (config[p] || 0) * 1000;
 					}
 					if(p=="cacheBust"){
-						cacheBust = config[p] ? (new Date()).getTime() + "" : "";
+						cacheBust = config[p] ? (isString(config[p]) ? config[p] : (new Date()).getTime() + "") : "";
 					}
 					if(p=="baseUrl" || p=="combo"){
 						req[p] = config[p];

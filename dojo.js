@@ -990,6 +990,7 @@
 						req.trace("loader-exec-module", ["abort", mid]);
 						return abortExec;
 					}
+					req.trace && arg.executed===executing && req.log("circular dependency found (" + arg.mid + ", " + module.mid + ")");
 					args.push(argResult);
 				}
 				runFactory(module, args);

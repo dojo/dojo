@@ -51,7 +51,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	if(has("dom")){ // check to make sure we are in a browser, this module should work anywhere
 		var major = window.ScriptEngineMajorVersion;
 		has.add("jscript", major && (major() + ScriptEngineMinorVersion() / 10));
-		has.add("event-orientationchange", has("touch") && !dojo.isAndroid); // TODO: how do we detect this?
+		has.add("event-orientationchange", has("touch") && !has("android")); // TODO: how do we detect this?
 	}
 	var on = function(target, type, listener, dontFix){
 		if(!listener){

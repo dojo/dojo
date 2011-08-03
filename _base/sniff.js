@@ -29,6 +29,7 @@ define(["./kernel", "../has"], function(dojo, has){
 		isFF,
 		isQuirks,
 		isIos,
+		isAndroid,
 		isWii;
 
 	/*=====
@@ -112,6 +113,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
 	isMac = dav.indexOf("Macintosh") >= 0;
 	isIos = /iPhone|iPod|iPad/.test(dua);
+	isAndroid = /Android/.test(dua);
 	isWii = typeof opera != "undefined" && opera.wiiremote;
 
 	// safari detection derived from:
@@ -174,6 +176,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	hasAdd("ff", dojo.isFF = isFF);
 	hasAdd("quirks", dojo.isQuirks = isQuirks);
 	hasAdd("ios", dojo.isIos = isIos);
+	hasAdd("android", dojo.isAndroid = isAndroid);
 
 	dojo.locale = dojo.locale || (isIE ? n.userLanguage : n.language).toLowerCase();
 

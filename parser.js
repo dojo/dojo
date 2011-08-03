@@ -1,6 +1,6 @@
 define(
 	["./_base/kernel", "./_base/lang", "./_base/array", "./_base/html", "./_base/window", "./_base/url",
-		"./_base/json", "./aspect", "./date/stamp", "./query", "./on"],
+		"./_base/json", "./aspect", "./date/stamp", "./query", "./on", "./ready"],
 	function(dojo, dlang, darray, dhtml, dwindow, _Url, djson, aspect, dates, query, don){
 
 // module:

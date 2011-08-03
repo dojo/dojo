@@ -609,6 +609,8 @@
 
 	// build the loader machinery iaw configuration, including has feature tests
 	var	injectDependencies = function(module){
+			// checkComplete!=0 holds the idle signal; we're not idle if we're injecting dependencies
+			checkCompleteGuard++;
 			forEach(module.deps, injectModule);
 			if(has("dojo-combo-api") && comboPending){
 				comboPending = 0;
@@ -624,6 +626,7 @@
 					injectingModule = 0;
 				}, req);
 			}
+			checkIdle();
 		},
 
 		contextRequire = function(a1, a2, a3, referenceModule, contextRequire){
@@ -670,14 +673,13 @@
 				modules[module.mid] = module;
 
 				// checkComplete!=0 holds the idle signal; we're not idle if we're injecting dependencies
-				checkCompleteGuard++;
 				injectDependencies(module);
 				// try to immediately execute
 				if(execModule(module, 1) === abortExec){
 					// some deps weren't on board; therefore, push into the execQ
 					execQ.push(module);
 				}
-				checkIdle();
+				checkComplete();
 			}
 			return contextRequire;
 		},

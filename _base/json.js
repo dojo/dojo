@@ -56,6 +56,8 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	//		and native implementations vary on the exact spacing used in pretty printing.
 	//	_indentStr:
 	//		private variable for recursive calls when pretty printing, do not use.
+	// returns:
+	// 		A JSON string serialization of the passed-in object.
 	// example:
 	//		simple serialization of a trivial object
 	//		|	var jsonStr = dojo.toJson({ howdy: "stranger!", isStrange: true });
@@ -78,7 +80,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 			}
 		}
 		return value;
-	}, prettyPrint && dojo.toJsonIndentStr);
+	}, prettyPrint && dojo.toJsonIndentStr);	// String
 };
 
 return dojo;

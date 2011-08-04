@@ -207,7 +207,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		var abs = geom.position(node, includeScroll);
 		mb.x = abs.x;
 		mb.y = abs.y;
-		return mb;
+		return mb;	// Object
 	};
 
 	// mix-in dom-prop
@@ -332,6 +332,9 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		//		cross-browser concerns.  When setting a pixel value,
 		//		be sure to include "px" in the value. For instance, top: "200px".
 		//		Otherwise, in some cases, some browsers will not apply the style.
+		// returns:
+		//		when used as a getter, return the computed style of the node if passing in an ID or node,
+		//		or return the normalized, computed value for the property when passing in a node and a style property
 		// example:
 		//		Passing only an ID or node returns the computed style object of
 		//		the node:

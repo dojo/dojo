@@ -29,12 +29,18 @@ define([], function(){
 			//		The fourth (optional) argument can be set to true to so the function receives the original
 			//		arguments (from when the original method was called) rather than the return value.
 			//		If there are multiple "after" advisors, they are executed in the order they were registered.
-			// target:
+			// target: Object
 			//		This is the target object
-			// methodName:
+			// methodName: String
 			//		This is the name of the method to attach to.
-			// advice:
-			//		This is function to be called before, after, or around the original method
+			// advice: Function
+			//		This is function to be called after the original method
+			// receiveArguments: Boolean?
+			//		If this is set to true, the advice function receives the original arguments (from when the original mehtod
+			//		was called) rather than the return value of the original/previous method.
+			// returns:
+			//		A signal object that can be used to cancel the advice. If remove() is called on this signal object, it will
+			//		stop the advice function from being executed.
 		},
 		
 		before: function(target, methodName, advice){
@@ -47,12 +53,12 @@ define([], function(){
 			//		will be preserved.
 			//		If there are multiple "before" advisors, they are executed in the reverse order they were registered.
 			//
-			// target:
+			// target: Object
 			//		This is the target object
-			// methodName:
+			// methodName: String
 			//		This is the name of the method to attach to.
-			// advice:
-			//		This is function to be called before, after, or around the original method	 
+			// advice: Function
+			//		This is function to be called before the original method	 
 		},
 
 		around: function(target, methodName, advice){
@@ -77,12 +83,12 @@ define([], function(){
 			//		|		};
 			//		|	});
 			//
-			// target:
+			// target: Object
 			//		This is the target object
-			// methodName:
+			// methodName: String
 			//		This is the name of the method to attach to.
-			// advice:
-			//		This is function to be called before, after, or around the original method
+			// advice: Function
+			//		This is function to be called around the original method
 		}
 
 	};

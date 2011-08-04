@@ -1,4 +1,4 @@
-define(["./kernel", "./lang", "./array", "./config"], function(dojo, lang, arr, config){
+define(["./kernel", "./lang", "./array", "./config"], function(dojo, lang, ArrayUtil, config){
 
 	var Color = dojo.Color = function(/*Array|String|Object*/ color){
 		// summary:
@@ -106,7 +106,7 @@ define(["./kernel", "./lang", "./array", "./config"], function(dojo, lang, arr, 
 			//		Returns a CSS color string in hexadecimal representation
 			// example:
 			//	|	console.log(new dojo.Color([0,0,0]).toHex()); // #000000
-			var arr = arr.map(["r", "g", "b"], function(x){
+			var arr = ArrayUtil.map(["r", "g", "b"], function(x){
 				var s = this[x].toString(16);
 				return s.length < 2 ? "0" + s : s;
 			}, this);
@@ -138,7 +138,7 @@ define(["./kernel", "./lang", "./array", "./config"], function(dojo, lang, arr, 
 		//		Blend colors end and start with weight from 0 to 1, 0.5 being a 50/50 blend,
 		//		can reuse a previously allocated dojo.Color object for the result
 		var t = obj || new Color();
-		arr.forEach(["r", "g", "b", "a"], function(x){
+		ArrayUtil.forEach(["r", "g", "b", "a"], function(x){
 			t[x] = start[x] + (end[x] - start[x]) * weight;
 			if(x != "a"){ t[x] = Math.round(t[x]); }
 		});
@@ -178,7 +178,7 @@ define(["./kernel", "./lang", "./array", "./config"], function(dojo, lang, arr, 
 		if(isNaN(color)){
 			return null; // dojo.Color
 		}
-		arr.forEach(["b", "g", "r"], function(x){
+		ArrayUtil.forEach(["b", "g", "r"], function(x){
 			var c = color & mask;
 			color >>= bits;
 			t[x] = bits == 4 ? 17 * c : c;

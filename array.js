@@ -1,6 +1,4 @@
 define(["./_base/kernel"], function(dojo){
-	var array = {};
-
 	function _getParts(arr, obj, cb){
 		return [
 			(typeof arr == "string") ? arr.split("") : arr,
@@ -54,7 +52,7 @@ define(["./_base/kernel"], function(dojo){
 		return -1;
 	}
 
-	/*===== dojo.array.forEach = =====*/ 
+	/*===== dojo.array.lastIndexOf = =====*/ 
 	function lastIndexOf(/*Array*/arr, /*Object*/value, /*Integer?*/fromIndex){
 		// summary:
 		//		locates the last index of the provided value in the passed
@@ -84,6 +82,7 @@ define(["./_base/kernel"], function(dojo){
 		return -1;
 	}
 
+	/*===== dojo.array.forEach = =====*/
 	function forEach(/*Array|String*/arr, /*Function|String*/callback, /*Object?*/thisObject){
 		//	summary:
 		//		for every item in arr, callback is invoked. Return values are ignored.
@@ -270,7 +269,7 @@ define(["./_base/kernel"], function(dojo){
 		return outArr; // Array
 	}
 
-	array = {
+	var array = {
 		indexOf: indexOf,
 		lastIndexOf: lastIndexOf,
 		forEach: forEach,

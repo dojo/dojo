@@ -148,7 +148,10 @@ dojo.back = {
 		//		Only call this method before the page's DOM is finished loading. Otherwise
 		//		it will not work. Be careful with xdomain loading or djConfig.debugAtAllCosts scenarios,
 		//		in order for this method to work, dojo.back will need to be part of a build layer.
-		if(dojo.byId("dj_history")){ return; } // prevent reinit
+
+		// prevent reinit
+		if(dojo.byId("dj_history")){ return; } 
+
 		var src = dojo.config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html");
 		if (dojo._postLoad) {
 			console.error("dojo.back.init() must be called before the DOM has loaded. "
@@ -196,6 +199,8 @@ dojo.back = {
 	back.addToHistory = function(/*dojo.__backArgs*/ args){
 		//	summary:
 		//		adds a state object (args) to the history list.
+		//	args: dojo.__backArgs
+		//		The state object that will be added to the history list.
 		//	description:
 		//		To support getting back button notifications, the object
 		//		argument should implement a function called either "back",

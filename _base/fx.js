@@ -188,7 +188,7 @@ define(["./kernel", "./lang", "./Color", "./connect", "./lang", "./html", "./sni
 				return _t;
 			}
 			_p();
-			return _t;
+			return _t;	// dojo.Animation
 		},
 
 		_play: function(gotoStart){
@@ -417,7 +417,7 @@ define(["./kernel", "./lang", "./Color", "./connect", "./lang", "./html", "./sni
 
 	dojo._defaultEasing = function(/*Decimal?*/ n){
 		// summary: The default easing function for dojo.Animation(s)
-		return 0.5 + ((Math.sin((n + 1.5) * Math.PI)) / 2);
+		return 0.5 + ((Math.sin((n + 1.5) * Math.PI)) / 2);	// Decimal
 	};
 
 	var PropLine = function(properties){

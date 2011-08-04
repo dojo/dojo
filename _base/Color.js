@@ -213,7 +213,7 @@ define(["./kernel", "./lang", "./array", "./config"], function(dojo, lang, Array
 		// returns:
 		//		A dojo.Color object. If obj is passed, it will be the return value.
 		var a = Color.named[str];
-		return a && Color.fromArray(a, obj) || Color.fromRgb(str, obj) || Color.fromHex(str, obj);
+		return a && Color.fromArray(a, obj) || Color.fromRgb(str, obj) || Color.fromHex(str, obj);	// dojo.Color
 	};
 
 	return Color;

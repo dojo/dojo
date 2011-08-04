@@ -25,7 +25,7 @@ define(["./kernel", "../on", "../has", "../dom-geometry"], function(dojo, on, ha
 		if(on._fixEvent){
 			return on._fixEvent(evt, sender);
 		}
-		return evt;
+		return evt;	// Event
 	};
 	
 	dojo.stopEvent = function(/*Event*/ evt){

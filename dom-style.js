@@ -150,7 +150,7 @@ define(["./_base/kernel", "./_base/sniff", "./dom"], function(dojo, has, dom){
 	// though it is not Element.
 	var getComputedStyle, style = {};
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(has("webKit")){
+	if(has("webkit")){
 	//>>excludeEnd("webkitMobile");
 		getComputedStyle = function(/*DomNode*/node){
 			var s;

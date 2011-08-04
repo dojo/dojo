@@ -167,7 +167,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	hasAdd("opera", dojo.isOpera = isOpera);
 	hasAdd("air", dojo.isAIR = isAIR);
 	hasAdd("khtml", dojo.isKhtml = isKhtml);
-	hasAdd("webKit", dojo.isWebKit = isWebKit);
+	hasAdd("webkit", dojo.isWebKit = isWebKit);
 	hasAdd("chrome", dojo.isChrome = isChrome);
 	hasAdd("mac", dojo.isMac = isMac );
 	hasAdd("safari", dojo.isSafari = isSafari);

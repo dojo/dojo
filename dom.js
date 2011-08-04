@@ -147,7 +147,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("mozilla")){
 			node.style.MozUserSelect = selectable ? "" : "none";
-		}else if(has("khtml") || has("webKit")){
+		}else if(has("khtml") || has("webkit")){
 		//>>excludeEnd("webkitMobile");
 			node.style.KhtmlUserSelect = selectable ? "auto" : "none";
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);

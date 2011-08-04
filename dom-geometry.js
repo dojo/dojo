@@ -366,7 +366,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), px = style.toPixelValue,
 			l = px(node, s.marginLeft), t = px(node, s.marginTop), r = px(node, s.marginRight), b = px(node, s.marginBottom);
-		if(has("webKit") && (s.position != "absolute")){
+		if(has("webkit") && (s.position != "absolute")){
 			// FIXME: Safari's version of the computed right margin
 			// is the space between our right edge and the right edge
 			// of our offsetParent.
@@ -556,7 +556,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		// To use box functions you may need to set padding, margin explicitly.
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
 			pb = (usesBorderBox(node) ? nilExtents : geom.getPadBorderExtents(node, s));
-		if(has("webKit")){
+		if(has("webkit")){
 			// on Safari (3.1.2), button nodes with no explicit size have a default margin
 			// setting an explicit size eliminates the margin.
 			// We have to swizzle the width to get correct margin reading.

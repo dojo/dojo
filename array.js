@@ -1,10 +1,10 @@
-define(["./_base/window"], function(win){
+define(["./_base/kernel"], function(dojo){
 	var array = {};
 
 	function _getParts(arr, obj, cb){
 		return [
 			(typeof arr == "string") ? arr.split("") : arr,
-			obj || win.global,
+			obj || dojo.global,
 			// FIXME: cache the anonymous functions we create here?
 			(typeof cb == "string") ? new Function("item", "index", "array", cb) : cb
 		];

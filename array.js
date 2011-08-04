@@ -45,7 +45,7 @@ define(["./_base/kernel"], function(dojo){
 			i = i > 0 ? i : 0;
 		}
 		for(;i<end; i++){
-			if(arr[i] === value){
+			if(arr[i] == value){
 				return i;
 			}
 		}
@@ -75,7 +75,7 @@ define(["./_base/kernel"], function(dojo){
 			i = i + fromIndex;
 		}
 		for(;i>=end; i--){
-			if(arr[i] === value){
+			if(arr[i] == value){
 				return i;
 			}
 		}

@@ -48,7 +48,9 @@ dojo.behavior = new function(){
 		//	summary:
 		//		Add the specified behavior to the list of behaviors, ignoring existing
 		//		matches.
-		//
+		//	behaviorObj: Object
+		//		The behavior object that will be added to behaviors list. The behaviors
+		//		in the list will be applied the next time apply() is called.
 		//	description:
 		//		Add the specified behavior to the list of behaviors which will
 		//		be applied the next time apply() is called. Calls to add() for

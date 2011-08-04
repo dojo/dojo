@@ -25,6 +25,8 @@ return dojo.declare("dojo.Stateful", null, {
 		//		Get a property on a Stateful instance.
 		//	name:
 		//		The property to get.
+		//	returns:
+		//		The property value on this Stateful instance.
 		// description:
 		//		Get a named property on a Stateful object. The property may
 		//		potentially be retrieved via a getter method in subclasses. In the base class
@@ -34,7 +36,7 @@ return dojo.declare("dojo.Stateful", null, {
 		//	|	stateful.get("foo") // returns 3
 		//	|	stateful.foo // returns 3
 
-		return this[name];
+		return this[name]; //Any
 	},
 	set: function(/*String*/name, /*Object*/value){
 		// summary:
@@ -43,6 +45,8 @@ return dojo.declare("dojo.Stateful", null, {
 		//		The property to set.
 		//	value:
 		//		The value to set in the property.
+		//	returns:
+		//		The function returns this dojo.Stateful instance.
 		// description:
 		//		Sets named properties on a stateful object and notifies any watchers of
 		// 		the property. A programmatic setter may be defined in subclasses.
@@ -70,7 +74,7 @@ return dojo.declare("dojo.Stateful", null, {
 		if(this._watchCallbacks){
 			this._watchCallbacks(name, oldValue, value);
 		}
-		return this;
+		return this; //dojo.Stateful
 	},
 	watch: function(/*String?*/name, /*Function*/callback){
 		// summary:
@@ -127,7 +131,7 @@ return dojo.declare("dojo.Stateful", null, {
 			unwatch: function(){
 				propertyCallbacks.splice(dojo.indexOf(propertyCallbacks, callback), 1);
 			}
-		};
+		}; //Object
 	}
 
 });

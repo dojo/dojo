@@ -93,13 +93,13 @@ define(["./kernel", "../has"], function(dojo, has){
 		isSafari: 0,
 		//	isChrome: Number | undefined
 		//		Version as a Number if client is Chrome browser. undefined otherwise.
-		isChrome: 0
+		isChrome: 0,
 		//	isMac: Boolean
 		//		True if the client runs on Mac
 		isMac: 0,
 		// isIos: Boolean
 		//		True if client is iPhone, iPod, or iPad
-		isIos: 0
+		isIos: 0,
 		// isWii: Boolean
 		//		True if client is Wii
 		isWii: 0

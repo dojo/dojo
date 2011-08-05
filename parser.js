@@ -79,7 +79,7 @@ dojo.parser = new function(){
 		return new Function(preamble+script.innerHTML+suffix);
 	};
 
-	this.instantiate = function(nodes, mixin, args){
+	this.instantiate = /*====== dojo.parser.instantiate= ======*/function(nodes, mixin, args){
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
 		//		potentially calls a startup method to allow them to connect with
@@ -365,7 +365,7 @@ dojo.parser = new function(){
 		return thelist;
 	};
 
-	this.parse = function(rootNode, args){
+	this.parse = /*====== dojo.parser.parse= ======*/ function(rootNode, args){
 		// summary:
 		//		Scan the DOM for class instances, and instantiate them.
 		//

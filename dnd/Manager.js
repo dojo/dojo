@@ -5,7 +5,7 @@ define(["../main", "./common", "./autoscroll", "./Avatar"], function(dojo) {
 	//		TODOC
 
 
-dojo.declare("dojo.dnd.Manager", null, {
+var Manager = dojo.declare("dojo.dnd.Manager", null, {
 	// summary:
 	//		the manager of DnD operations (usually a singleton)
 	constructor: function(){
@@ -200,7 +200,7 @@ dojo.declare("dojo.dnd.Manager", null, {
 //		The manager singleton variable. Can be overwritten if needed.
 dojo.dnd._manager = null;
 
-dojo.dnd.manager = function(){
+Manager.manager = dojo.dnd.manager = function(){
 	// summary:
 	//		Returns the current DnD manager.  Creates one if it is not created yet.
 	if(!dojo.dnd._manager){
@@ -209,5 +209,5 @@ dojo.dnd.manager = function(){
 	return dojo.dnd._manager;	// Object
 };
 
-return dojo.dnd.Manager;
+return Manager;
 });

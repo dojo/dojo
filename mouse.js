@@ -1,15 +1,22 @@
 define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 	
-	/*===== dojo.mouse = {
+	/*=====
+	dojo.mouse = {
 	// summary:
 	// 		This module provide mouse event handling utility functions and exports
 	// 		mouseenter and mouseleave event emulation.
-	// enter:
+	// enter: Synthetic Event
 	//		This is an extension event for the mouseenter that IE provides, emulating the
 	//		behavior on other browsers.
-	// leave:
+	// leave: Synthetic Event
 	//		This is an extension event for the mouseleave that IE provides, emulating the
 	//		behavior on other browsers.
+	// isLeft: Function
+	//		Test an event object (from a mousedown event) to see if the left button was pressed.
+	// isMiddle: Function
+	//		Test an event object (from a mousedown event) to see if the middle button was pressed.
+	// isRight: Function
+	//		Test an event object (from a mousedown event) to see if the right button was pressed.
 	// example:
 	//		To use these events, you register a mouseenter like this:
 	//		|	define(["dojo/on", dojo/mouse"], function(on, mouse){
@@ -19,7 +26,6 @@ define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 	//		|		on(targetNode, mouse.leave, function(event){
 	// 		|			dojo.removeClass(targetNode, "highlighted");
 	//		|		});
-	
 	};
 	======*/
 	
@@ -96,21 +102,18 @@ define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 	};
 =====*/
 
+	var eventHandler, enter, leave;
 	if(has("events-mouseenter")){
-		var eventHandler = function(type){
+		eventHandler = function(type){
 			// essentially a pass through, the browser already has mouseenter/leave
 			return function(node, listener){
 				return on(node, type, listener);
 			};
 		};
-		return {
-			mouseButtons: mouseButtons,
-			enter: eventHandler("mouseenter"),
-			leave: eventHandler("mouseleave") 
-		};
-	}
-	else{
-		var eventHandler = function(type){
+		enter = eventHandler("mouseenter");
+		leave = eventHandler("mouseleave");
+	}else{
+		eventHandler = function(type){
 			// emulation of mouseenter/leave with mouseover/out using descendant checking
 			return function(node, listener){
 				return on(node, type, function(evt){
@@ -120,10 +123,14 @@ define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 				});
 			};
 		};
-		return {
-			mouseButtons: mouseButtons,
-			enter: eventHandler("mouseover"),
-			leave: eventHandler("mouseout")
-		};
+		enter = eventHandler("mouseover");
+		leave = eventHandler("mouseout");
 	}
+	return {
+		enter: enter,
+		leave: leave,
+		isLeft: mouseButtons.isLeft,
+		isMiddle: mouseButtons.isMiddle,
+		isRight: mouseButtons.isRight
+	};
 });

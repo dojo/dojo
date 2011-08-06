@@ -177,7 +177,7 @@ define(["./_base/kernel"], function(dojo){
 		return _everyOrSome(true, arr, callback, thisObject); // Boolean
 	}
 
-	/*===== dojo.array.lastIndexOf = =====*/ 
+	/*===== dojo.array.some = =====*/
 	function some(/*Array|String*/arr, /*Function|String*/callback, /*Object?*/thisObject){
 		// summary:
 		//		Determines whether or not any item in arr satisfies the

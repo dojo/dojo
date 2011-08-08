@@ -1,10 +1,10 @@
-define(["./main", "require"], function(dojo, require) {
+define(["./_base/kernel", "./_base/lang", "./_base/sniff", "./dom", "./dom-construct", "./_base/window", "require"], function(dojo, lang, sniff, dom, domConstruct, baseWindow, require) {
 	// module:
 	//		dojo/back
 	// summary:
 	//		TODOC
 
-	dojo.getObject("back", true, dojo);
+	lang.getObject("back", true, dojo);
 
 /*=====
 dojo.back = {
@@ -19,7 +19,7 @@ dojo.back = {
 	getHash = back.getHash = function(){
 		var h = window.location.hash;
 		if(h.charAt(0) == "#"){ h = h.substring(1); }
-		return dojo.isMozilla ? h : decodeURIComponent(h);
+		return sniff("mozilla") ? h : decodeURIComponent(h);
 	},
 
 	setHash = back.setHash = function(h){
@@ -102,7 +102,7 @@ dojo.back = {
 		var url = (dojo.config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
 		if(historyIframe){
-			dojo.isWebKit ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
+			sniff("webkit") ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
 		}else{
 			//console.warn("dojo.back: Not initialised. You need to call dojo.back.init() from a <script> block that lives inside the <body> tag.");
 		}
@@ -150,7 +150,7 @@ dojo.back = {
 		//		in order for this method to work, dojo.back will need to be part of a build layer.
 
 		// prevent reinit
-		if(dojo.byId("dj_history")){ return; } 
+		if(dom.byId("dj_history")){ return; } 
 
 		var src = dojo.config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html");
 		if (dojo._postLoad) {
@@ -275,7 +275,7 @@ dojo.back = {
 			historyIframe = window.frames["dj_history"];
 		}
 		if(!bookmarkAnchor){
-			bookmarkAnchor = dojo.create("a", {style: {display: "none"}}, dojo.body());
+			bookmarkAnchor = domConstruct.create("a", {style: {display: "none"}}, baseWindow.body());
 		}
 		if(args["changeUrl"]){
 			hash = ""+ ((args["changeUrl"]!==true) ? args["changeUrl"] : (new Date()).getTime());
@@ -302,7 +302,7 @@ dojo.back = {
 				}, 1);
 			bookmarkAnchor.href = hash;
 
-			if(dojo.isIE){
+			if(sniff("ie")){
 				url = loadIframeHistory();
 
 				var oldCB = args["back"]||args["backButton"]||args["handle"];
@@ -351,7 +351,7 @@ dojo.back = {
 					args.handle = tfw;
 				}
 
-			}else if(!dojo.isIE){
+			}else if(!sniff("ie")){
 				// start the timer
 				if(!locationTimer){
 					locationTimer = setInterval(checkLocation, 200);

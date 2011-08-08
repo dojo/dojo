@@ -10,8 +10,9 @@
 	<script type="text/javascript" 
 					src="../dojo.js" 
 					djConfig="isDebug:true, dojoIframeHistoryUrl: '../resources/iframe_history.html'"></script>
-	<script type="text/javascript" src="../back.js"></script>
-	<script type="text/javascript">	
+	<!--script type="text/javascript" src="../back.js"></script-->
+	<script type="text/javascript">
+		require(["dojo/main","dojo/back"], function(dojo, back){	
 		ApplicationState = function(stateData, outputDivId, backForwardOutputDivId, bookmarkValue){
 			this.stateData = stateData;
 			this.outputDivId = outputDivId;
@@ -50,7 +51,7 @@
 			link7: "This is data for link 7"
 		};
 
-		function goNav(id){
+		dojo.global.goNav = function goNav(id){
 			var appState = new ApplicationState(data[id], "output", "dataOutput", id);
 			appState.showStateData();
 			dojo.back.addToHistory(appState);
@@ -61,10 +62,13 @@
 			appState.showStateData();
 			dojo.back.setInitialState(appState);
 		});
+		});
 	</script>
 </head>
 <body>
-	<script type="text/javascript">dojo.back.init();</script>
+	<script type="text/javascript">
+		require(["dojo/back"], function(back){back.init();});
+	</script>
 	<div style="padding-bottom: 20px; width: 100%; border-bottom: 1px solid gray">
 	<h3>dojo.back test</h3>
 	

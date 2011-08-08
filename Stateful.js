@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/declare", "./_base/lang", "./_base/array"], function(dojo, declare, lang) {
+define(["./_base/kernel", "./_base/declare", "./_base/lang", "./_base/array"], function(dojo, declare, lang, array) {
 	// module:
 	//		dojo/Stateful
 	// summary:
@@ -129,7 +129,7 @@ return dojo.declare("dojo.Stateful", null, {
 		propertyCallbacks.push(callback);
 		return {
 			unwatch: function(){
-				propertyCallbacks.splice(dojo.indexOf(propertyCallbacks, callback), 1);
+				propertyCallbacks.splice(array.indexOf(propertyCallbacks, callback), 1);
 			}
 		}; //Object
 	}

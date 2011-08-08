@@ -26,7 +26,11 @@ return declare("dojo.store.JsonRest", null, {
 	//		Indicates the property to use as the identity property. The values of this
 	//		property should be unique.
 	idProperty: "id",
-
+	// sortParam: String
+	// 		The query parameter to used for holding sort information. If this is omitted, than
+	//		the sort information is included in a functional query token to avoid colliding 
+	// 		with the set of name/value pairs.
+	
 	get: function(id, options){
 		//	summary:
 		//		Retrieves an object by its identity. This will trigger a GET request to the server using
@@ -36,13 +40,16 @@ return declare("dojo.store.JsonRest", null, {
 		//	returns: Object
 		//		The object in the store that matches the given id.
 		var headers = options || {};
-		headers.Accept = "application/javascript, application/json";
+		headers.Accept = this.accepts;
 		return xhr("GET", {
 			url:this.target + id,
 			handleAs: "json",
 			headers: headers
 		});
 	},
+	// accepts: String
+	//		Defines the Accept header to use on HTTP requests
+	accepts: "application/javascript, application/json", 
 	getIdentity: function(object){
 		// summary:
 		//		Returns an object's identity
@@ -70,6 +77,7 @@ return declare("dojo.store.JsonRest", null, {
 				handleAs: "json",
 				headers:{
 					"Content-Type": "application/json",
+					Accept: this.accepts,
 					"If-Match": options.overwrite === true ? "*" : null,
 					"If-None-Match": options.overwrite === false ? "*" : null
 				}
@@ -107,7 +115,7 @@ return declare("dojo.store.JsonRest", null, {
 		//		The optional arguments to apply to the resultset.
 		//	returns: dojo.store.api.Store.QueryResults
 		//		The results of the query, extended with iterative methods.
-		var headers = {Accept: "application/javascript, application/json"};
+		var headers = {Accept: this.accepts};
 		options = options || {};
 
 		if(options.start >= 0 || options.count >= 0){
@@ -120,12 +128,15 @@ return declare("dojo.store.JsonRest", null, {
 			query = query ? "?" + query: "";
 		}
 		if(options && options.sort){
-			query += (query ? "&" : "?") + "sort(";
+			var sortParam = this.sortParam;
+			query += (query ? "&" : "?") + (sortParam ? sortParam + '=' : "sort(");
 			for(var i = 0; i<options.sort.length; i++){
 				var sort = options.sort[i];
 				query += (i > 0 ? "," : "") + (sort.descending ? '-' : '+') + encodeURIComponent(sort.attribute);
 			}
-			query += ")";
+			if(!sortParam){
+				query += ")";
+			}
 		}
 		var results = xhr("GET", {
 			url: this.target + (query || ""),

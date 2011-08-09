@@ -1,4 +1,15 @@
-define(["./main", "./fx/Toggler"], function(dojo) {
+define([
+	"./_base/kernel",
+	"./_base/lang",
+	"./_base/array",
+	"./_base/connect",
+	"./_base/fx",
+	"./dom",
+	"./dom-style",
+	"./dom-geometry",
+	"./fx/Toggler"	// TODO: this seems unneeded
+], function(dojo, lang, darray, connect, baseFx, dom, domStyle, geom, fxToggler) {
+
 	// module:
 	//		dojo/fx
 	// summary:
@@ -26,60 +37,60 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 		this._current = this._onAnimateCtx = this._onEndCtx = null;
 
 		this.duration = 0;
-		dojo.forEach(this._animations, function(a){
+		darray.forEach(this._animations, function(a){
 			this.duration += a.duration;
 			if(a.delay){ this.duration += a.delay; }
 		}, this);
 	};
-	dojo.extend(_chain, {
+	lang.extend(_chain, {
 		_onAnimate: function(){
 			this._fire("onAnimate", arguments);
 		},
 		_onEnd: function(){
-			dojo.disconnect(this._onAnimateCtx);
-			dojo.disconnect(this._onEndCtx);
+			connect.disconnect(this._onAnimateCtx);
+			connect.disconnect(this._onEndCtx);
 			this._onAnimateCtx = this._onEndCtx = null;
 			if(this._index + 1 == this._animations.length){
 				this._fire("onEnd");
 			}else{
 				// switch animations
 				this._current = this._animations[++this._index];
-				this._onAnimateCtx = dojo.connect(this._current, "onAnimate", this, "_onAnimate");
-				this._onEndCtx = dojo.connect(this._current, "onEnd", this, "_onEnd");
+				this._onAnimateCtx = connect.connect(this._current, "onAnimate", this, "_onAnimate");
+				this._onEndCtx = connect.connect(this._current, "onEnd", this, "_onEnd");
 				this._current.play(0, true);
 			}
 		},
 		play: function(/*int?*/ delay, /*Boolean?*/ gotoStart){
 			if(!this._current){ this._current = this._animations[this._index = 0]; }
 			if(!gotoStart && this._current.status() == "playing"){ return this; }
-			var beforeBegin = dojo.connect(this._current, "beforeBegin", this, function(){
+			var beforeBegin = connect.connect(this._current, "beforeBegin", this, function(){
 					this._fire("beforeBegin");
 				}),
-				onBegin = dojo.connect(this._current, "onBegin", this, function(arg){
+				onBegin = connect.connect(this._current, "onBegin", this, function(arg){
 					this._fire("onBegin", arguments);
 				}),
-				onPlay = dojo.connect(this._current, "onPlay", this, function(arg){
+				onPlay = connect.connect(this._current, "onPlay", this, function(arg){
 					this._fire("onPlay", arguments);
-					dojo.disconnect(beforeBegin);
-					dojo.disconnect(onBegin);
-					dojo.disconnect(onPlay);
+					connect.disconnect(beforeBegin);
+					connect.disconnect(onBegin);
+					connect.disconnect(onPlay);
 				});
 			if(this._onAnimateCtx){
-				dojo.disconnect(this._onAnimateCtx);
+				connect.disconnect(this._onAnimateCtx);
 			}
-			this._onAnimateCtx = dojo.connect(this._current, "onAnimate", this, "_onAnimate");
+			this._onAnimateCtx = connect.connect(this._current, "onAnimate", this, "_onAnimate");
 			if(this._onEndCtx){
-				dojo.disconnect(this._onEndCtx);
+				connect.disconnect(this._onEndCtx);
 			}
-			this._onEndCtx = dojo.connect(this._current, "onEnd", this, "_onEnd");
+			this._onEndCtx = connect.connect(this._current, "onEnd", this, "_onEnd");
 			this._current.play.apply(this._current, arguments);
 			return this;
 		},
 		pause: function(){
 			if(this._current){
-				var e = dojo.connect(this._current, "onPause", this, function(arg){
+				var e = connect.connect(this._current, "onPause", this, function(arg){
 						this._fire("onPause", arguments);
-						dojo.disconnect(e);
+						connect.disconnect(e);
 					});
 				this._current.pause();
 			}
@@ -89,7 +100,7 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 			this.pause();
 			var offset = this.duration * percent;
 			this._current = null;
-			dojo.some(this._animations, function(a){
+			darray.some(this._animations, function(a){
 				if(a.duration <= offset){
 					this._current = a;
 					return true;
@@ -110,9 +121,9 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 					}
 					this._current = this._animations[this._index];
 				}
-				var e = dojo.connect(this._current, "onStop", this, function(arg){
+				var e = connect.connect(this._current, "onStop", this, function(arg){
 						this._fire("onStop", arguments);
-						dojo.disconnect(e);
+						connect.disconnect(e);
 					});
 				this._current.stop();
 			}
@@ -122,11 +133,11 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 			return this._current ? this._current.status() : "stopped";
 		},
 		destroy: function(){
-			if(this._onAnimateCtx){ dojo.disconnect(this._onAnimateCtx); }
-			if(this._onEndCtx){ dojo.disconnect(this._onEndCtx); }
+			if(this._onAnimateCtx){ connect.disconnect(this._onAnimateCtx); }
+			if(this._onEndCtx){ connect.disconnect(this._onEndCtx); }
 		}
 	});
-	dojo.extend(_chain, _baseObj);
+	lang.extend(_chain, _baseObj);
 
 	dojo.fx.chain = function(/*dojo.Animation[]*/ animations){
 		// summary:
@@ -155,26 +166,26 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 		this._finished = 0;
 
 		this.duration = 0;
-		dojo.forEach(animations, function(a){
+		darray.forEach(animations, function(a){
 			var duration = a.duration;
 			if(a.delay){ duration += a.delay; }
 			if(this.duration < duration){ this.duration = duration; }
-			this._connects.push(dojo.connect(a, "onEnd", this, "_onEnd"));
+			this._connects.push(connect.connect(a, "onEnd", this, "_onEnd"));
 		}, this);
 
-		this._pseudoAnimation = new dojo.Animation({curve: [0, 1], duration: this.duration});
+		this._pseudoAnimation = new baseFx.Animation({curve: [0, 1], duration: this.duration});
 		var self = this;
-		dojo.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"],
+		darray.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"],
 			function(evt){
-				self._connects.push(dojo.connect(self._pseudoAnimation, evt,
+				self._connects.push(connect.connect(self._pseudoAnimation, evt,
 					function(){ self._fire(evt, arguments); }
 				));
 			}
 		);
 	};
-	dojo.extend(_combine, {
+	lang.extend(_combine, {
 		_doAction: function(action, args){
-			dojo.forEach(this._animations, function(a){
+			darray.forEach(this._animations, function(a){
 				a[action].apply(a, args);
 			});
 			return this;
@@ -201,7 +212,7 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 		},
 		gotoPercent: function(/*Decimal*/percent, /*Boolean?*/ andPlay){
 			var ms = this.duration * percent;
-			dojo.forEach(this._animations, function(a){
+			darray.forEach(this._animations, function(a){
 				a.gotoPercent(a.duration < ms ? 1 : (ms / a.duration), andPlay);
 			});
 			this._call("gotoPercent", arguments);
@@ -216,10 +227,10 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 			return this._pseudoAnimation.status();
 		},
 		destroy: function(){
-			dojo.forEach(this._connects, dojo.disconnect);
+			darray.forEach(this._connects, connect.disconnect);
 		}
 	});
-	dojo.extend(_combine, _baseObj);
+	lang.extend(_combine, _baseObj);
 
 	dojo.fx.combine = function(/*dojo.Animation[]*/ animations){
 		// summary:
@@ -269,9 +280,9 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 		//	|	dojo.fx.wipeIn({
 		//	|		node:"someId"
 		//	|	}).play()
-		var node = args.node = dojo.byId(args.node), s = node.style, o;
+		var node = args.node = dom.byId(args.node), s = node.style, o;
 
-		var anim = dojo.animateProperty(dojo.mixin({
+		var anim = baseFx.animateProperty(lang.mixin({
 			properties: {
 				height: {
 					// wrapped in functions so we wait till the last second to query (in case value has changed)
@@ -286,7 +297,7 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 							s.visibility = "";
 							return 1;
 						}else{
-							var height = dojo.style(node, "height");
+							var height = domStyle.get(node, "height");
 							return Math.max(height, 1);
 						}
 					},
@@ -301,8 +312,8 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 			s.height = "auto";
 			s.overflow = o;
 		};
-		dojo.connect(anim, "onStop", fini);
-		dojo.connect(anim, "onEnd", fini);
+		connect.connect(anim, "onStop", fini);
+		connect.connect(anim, "onEnd", fini);
 
 		return anim; // dojo.Animation
 	};
@@ -322,9 +333,9 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 		// example:
 		//	|	dojo.fx.wipeOut({ node:"someId" }).play()
 
-		var node = args.node = dojo.byId(args.node), s = node.style, o;
+		var node = args.node = dom.byId(args.node), s = node.style, o;
 
-		var anim = dojo.animateProperty(dojo.mixin({
+		var anim = baseFx.animateProperty(lang.mixin({
 			properties: {
 				height: {
 					end: 1 // 0 causes IE to display the whole panel
@@ -332,7 +343,7 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 			}
 		}, args));
 
-		dojo.connect(anim, "beforeBegin", function(){
+		connect.connect(anim, "beforeBegin", function(){
 			o = s.overflow;
 			s.overflow = "hidden";
 			s.display = "";
@@ -342,8 +353,8 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 			s.height = "auto";
 			s.display = "none";
 		};
-		dojo.connect(anim, "onStop", fini);
-		dojo.connect(anim, "onEnd", fini);
+		connect.connect(anim, "onStop", fini);
+		connect.connect(anim, "onEnd", fini);
 
 		return anim; // dojo.Animation
 	};
@@ -365,17 +376,17 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 		// example:
 		//	|	dojo.fx.slideTo({ node: node, left:"40", top:"50", units:"px" }).play()
 
-		var node = args.node = dojo.byId(args.node),
+		var node = args.node = dom.byId(args.node),
 			top = null, left = null;
 
 		var init = (function(n){
 			return function(){
-				var cs = dojo.getComputedStyle(n);
+				var cs = domStyle.getComputedStyle(n);
 				var pos = cs.position;
 				top = (pos == 'absolute' ? n.offsetTop : parseInt(cs.top) || 0);
 				left = (pos == 'absolute' ? n.offsetLeft : parseInt(cs.left) || 0);
 				if(pos != 'absolute' && pos != 'relative'){
-					var ret = dojo.position(n, true);
+					var ret = geom.position(n, true);
 					top = ret.y;
 					left = ret.x;
 					n.style.position="absolute";
@@ -386,13 +397,13 @@ define(["./main", "./fx/Toggler"], function(dojo) {
 		})(node);
 		init();
 
-		var anim = dojo.animateProperty(dojo.mixin({
+		var anim = baseFx.animateProperty(lang.mixin({
 			properties: {
 				top: args.top || 0,
 				left: args.left || 0
 			}
 		}, args));
-		dojo.connect(anim, "beforeBegin", anim, init);
+		connect.connect(anim, "beforeBegin", anim, init);
 
 		return anim; // dojo.Animation
 	};

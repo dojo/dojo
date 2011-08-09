@@ -462,7 +462,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has, sniff){
 	=====*/
 
 	/*=====
-	dojo.isStringisObject = function(it){
+	dojo.isObject = function(it){
 	// summary:
 	//		Returns true if it is a JavaScript object (or an Array, a Function
 	//		or null)

@@ -45,13 +45,13 @@ dojo.behavior = new function(){
 	// FIXME: need a better test so we don't exclude nightly Safari's!
 	this._behaviors = {};
 	this.add = function(/* Object */behaviorObj){
-		//	summary:
+		// summary:
 		//		Add the specified behavior to the list of behaviors, ignoring existing
 		//		matches.
-		//	behaviorObj: Object
+		// behaviorObj: Object
 		//		The behavior object that will be added to behaviors list. The behaviors
 		//		in the list will be applied the next time apply() is called.
-		//	description:
+		// description:
 		//		Add the specified behavior to the list of behaviors which will
 		//		be applied the next time apply() is called. Calls to add() for
 		//		an already existing behavior do not replace the previous rules,
@@ -75,7 +75,7 @@ dojo.behavior = new function(){
 		//
 		//		There are a variety of formats permitted in the behaviorObject
 		//
-		//	example:
+		// example:
 		//		Simple list of properties. "found" is special. "Found" is assumed if
 		//		no property object for a given selector, and property is a function.
 		//
@@ -93,7 +93,7 @@ dojo.behavior = new function(){
 		//	|		}
 		//	|	});
 		//
-		//	example:
+		// example:
 		//		 If property is a string, a dojo.publish will be issued on the channel:
 		//
 		//	|	dojo.behavior.add({
@@ -108,7 +108,7 @@ dojo.behavior = new function(){
 		//	|		// provided a newly matched node is found.
 		//	|	});
 		//
-		//	example:
+		// example:
 		//		Scoping can be accomplished by passing an object as a property to
 		//		a connection handle (on*):
 		//
@@ -120,7 +120,7 @@ dojo.behavior = new function(){
 		//	|			}
 		//	|	});
 		//
-		//	example:
+		// example:
 		//		Bahaviors match on CSS3 Selectors, powered by dojo.query. Example selectors:
 		//
 		//	|	dojo.behavior.add({

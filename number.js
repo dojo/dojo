@@ -1,4 +1,6 @@
-define(["./_base/kernel", "./_base/lang", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"], function(dojo, lang) {
+define(["./_base/kernel", "./_base/lang", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"],
+	function(dojo, lang, i18n, nlsNumber, dstring, dregexp) {
+
 	// module:
 	//		dojo/number
 	// summary:
@@ -51,8 +53,8 @@ dojo.number.format = function(/*Number*/value, /*dojo.number.__FormatOptions?*/o
 	//		the number to be formatted
 
 	options = lang.mixin({}, options || {});
-	var locale = dojo.i18n.normalizeLocale(options.locale),
-		bundle = dojo.i18n.getLocalization("dojo.cldr", "number", locale);
+	var locale = i18n.normalizeLocale(options.locale),
+		bundle = i18n.getLocalization("dojo.cldr", "number", locale);
 	options.customs = bundle;
 	var pattern = options.pattern || bundle[(options.type || "decimal") + "Format"];
 	if(isNaN(value) || Math.abs(value) == Infinity){ return null; } // null
@@ -201,7 +203,7 @@ dojo.number._formatAbsolute = function(/*Number*/value, /*String*/pattern, /*doj
 		// Pad fractional with trailing zeros
 		var pad = options.places !== undefined ? options.places : (patternParts[1] && patternParts[1].lastIndexOf("0") + 1);
 		if(pad > fractional.length){
-			valueParts[1] = dojo.string.pad(fractional, pad, '0', true);
+			valueParts[1] = dstring.pad(fractional, pad, '0', true);
 		}
 
 		// Truncate fractional
@@ -218,7 +220,7 @@ dojo.number._formatAbsolute = function(/*Number*/value, /*String*/pattern, /*doj
 	if(pad != -1){
 		pad = patternDigits.length - pad;
 		if(pad > valueParts[0].length){
-			valueParts[0] = dojo.string.pad(valueParts[0], pad);
+			valueParts[0] = dstring.pad(valueParts[0], pad);
 		}
 
 		// Truncate whole
@@ -288,8 +290,8 @@ dojo.number.regexp = function(/*dojo.number.__RegexpOptions?*/options){
 
 dojo.number._parseInfo = function(/*Object?*/options){
 	options = options || {};
-	var locale = dojo.i18n.normalizeLocale(options.locale),
-		bundle = dojo.i18n.getLocalization("dojo.cldr", "number", locale),
+	var locale = i18n.normalizeLocale(options.locale),
+		bundle = i18n.getLocalization("dojo.cldr", "number", locale),
 		pattern = options.pattern || bundle[(options.type || "decimal") + "Format"],
 //TODO: memoize?
 		group = bundle.group,
@@ -314,8 +316,8 @@ dojo.number._parseInfo = function(/*Object?*/options){
 		patternList.push("-" + patternList[0]);
 	}
 
-	var re = dojo.regexp.buildGroupRE(patternList, function(pattern){
-		pattern = "(?:"+dojo.regexp.escapeString(pattern, '.')+")";
+	var re = dregexp.buildGroupRE(patternList, function(pattern){
+		pattern = "(?:"+dregexp.escapeString(pattern, '.')+")";
 		return pattern.replace(dojo.number._numberPatternRE, function(format){
 			var flags = {
 				signed: false,
@@ -356,7 +358,7 @@ dojo.number._parseInfo = function(/*Object?*/options){
 		// substitute the currency symbol for the placeholder in the pattern
 		re = re.replace(/([\s\xa0]*)(\u00a4{1,3})([\s\xa0]*)/g, function(match, before, target, after){
 			var prop = ["symbol", "currency", "displayName"][target.length-1],
-				symbol = dojo.regexp.escapeString(options[prop] || options.currency || "");
+				symbol = dregexp.escapeString(options[prop] || options.currency || "");
 			before = before ? "[\\s\\xa0]" : "";
 			after = after ? "[\\s\\xa0]" : "";
 			if(!options.strict){
@@ -478,7 +480,7 @@ dojo.number._realNumberRegexp = function(/*dojo.number.__RealNumberRegexpFlags?*
 	if(!("eSigned" in flags)){ flags.eSigned = [true, false]; }
 
 	var integerRE = dojo.number._integerRegexp(flags),
-		decimalRE = dojo.regexp.buildGroupRE(flags.fractional,
+		decimalRE = dregexp.buildGroupRE(flags.fractional,
 		function(q){
 			var re = "";
 			if(q && (flags.places!==0)){
@@ -494,7 +496,7 @@ dojo.number._realNumberRegexp = function(/*dojo.number.__RealNumberRegexpFlags?*
 		true
 	);
 
-	var exponentRE = dojo.regexp.buildGroupRE(flags.exponent,
+	var exponentRE = dregexp.buildGroupRE(flags.exponent,
 		function(q){
 			if(q){ return "([eE]" + dojo.number._integerRegexp({ signed: flags.eSigned}) + ")"; }
 			return "";
@@ -541,18 +543,18 @@ dojo.number._integerRegexp = function(/*dojo.number.__IntegerRegexpFlags?*/flags
 		flags.groupSize = 3;
 	}
 
-	var signRE = dojo.regexp.buildGroupRE(flags.signed,
+	var signRE = dregexp.buildGroupRE(flags.signed,
 		function(q){ return q ? "[-+]" : ""; },
 		true
 	);
 
-	var numberRE = dojo.regexp.buildGroupRE(flags.separator,
+	var numberRE = dregexp.buildGroupRE(flags.separator,
 		function(sep){
 			if(!sep){
 				return "(?:\\d+)";
 			}
 
-			sep = dojo.regexp.escapeString(sep);
+			sep = dregexp.escapeString(sep);
 			if(sep == " "){ sep = "\\s"; }
 			else if(sep == "\xa0"){ sep = "\\s\\xa0"; }
 

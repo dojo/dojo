@@ -1,4 +1,5 @@
-define(["./_base/kernel", "./dom-geometry", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"], function(dojo, geometry){
+define(["./dom-geometry", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"],
+	function(geometry, lang, ready, has, baseWindow){
 	// module:
 	//		dojo/uacss
 	// summary:
@@ -12,11 +13,11 @@ define(["./_base/kernel", "./dom-geometry", "./_base/lang", "./ready", "./_base/
 	//		combined with an RTL flag when browser text is RTL. ex: dj_ie-rtl.
 
 	var
-		html = dojo.doc.documentElement,
-		ie = dojo.isIE,
-		opera = dojo.isOpera,
+		html = baseWindow.doc.documentElement,
+		ie = has("ie"),
+		opera = has("opera"),
 		maj = Math.floor,
-		ff = dojo.isFF,
+		ff = has("ff"),
 		boxModel = geometry.boxModel.replace(/-/,''),
 
 		classes = {
@@ -25,19 +26,19 @@ define(["./_base/kernel", "./dom-geometry", "./_base/lang", "./ready", "./_base/
 			"dj_ie7": maj(ie) == 7,
 			"dj_ie8": maj(ie) == 8,
 			"dj_ie9": maj(ie) == 9,
-			"dj_quirks": dojo.isQuirks,
-			"dj_iequirks": ie && dojo.isQuirks,
+			"dj_quirks": has("quirks"),
+			"dj_iequirks": ie && has("quirks"),
 
 			// NOTE: Opera not supported by dijit
 			"dj_opera": opera,
 
-			"dj_khtml": dojo.isKhtml,
+			"dj_khtml": has("khtml"),
 
-			"dj_webkit": dojo.isWebKit,
-			"dj_safari": dojo.isSafari,
-			"dj_chrome": dojo.isChrome,
+			"dj_webkit": has("webkit"),
+			"dj_safari": has("safari"),
+			"dj_chrome": has("chrome"),
 
-			"dj_gecko": dojo.isMozilla,
+			"dj_gecko": has("mozilla"),
 			"dj_ff3": maj(ff) == 3
 		}; // no dojo unsupported browsers
 
@@ -50,16 +51,16 @@ define(["./_base/kernel", "./dom-geometry", "./_base/lang", "./ready", "./_base/
 			classStr += clz + " ";
 		}
 	}
-	html.className = dojo.trim(html.className + " " + classStr);
+	html.className = lang.trim(html.className + " " + classStr);
 
 	// If RTL mode, then add dj_rtl flag plus repeat existing classes with -rtl extension.
 	// We can't run the code below until the <body> tag has loaded (so we can check for dir=rtl).
 	// priority is 90 to run ahead of parser priority of 100
-	dojo.ready(90, function(){
-		if(!dojo._isBodyLtr()){
+	ready(90, function(){
+		if(!geometry.isBodyLtr()){
 			var rtlClassStr = "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl ");
-			html.className = dojo.trim(html.className + " " + rtlClassStr + "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl "));
+			html.className = lang.trim(html.className + " " + rtlClassStr + "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl "));
 		}
 	});
-	return dojo;
+	return has;
 });

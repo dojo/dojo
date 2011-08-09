@@ -28,23 +28,23 @@ lang.extend(NodeList, {
 	},
 
 	wipeIn: function(args){
-		//	summary:
+		// summary:
 		//		wipe in all elements of this NodeList via `dojo.fx.wipeIn`
 		//
-		//	args: Object?
+		// args: Object?
 		//		Additional dojo.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		//	returns: dojo.Animation|dojo.NodeList
+		// returns: dojo.Animation|dojo.NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
 		//		If args.auto is present, the original dojo.NodeList will be returned for further
 		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
 		//
-		//	example:
+		// example:
 		//		Fade in all tables with class "blah":
 		//		|	dojo.query("table.blah").wipeIn().play();
 		//
-		//	example:
+		// example:
 		//		Utilizing `auto` to get the NodeList back:
 		//		|	dojo.query(".titles").wipeIn({ auto:true }).onclick(someFunction);
 		//
@@ -52,38 +52,38 @@ lang.extend(NodeList, {
 	},
 
 	wipeOut: function(args){
-		//	summary:
+		// summary:
 		//		wipe out all elements of this NodeList via `dojo.fx.wipeOut`
 		//
-		//	args: Object?
+		// args: Object?
 		//		Additional dojo.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		//	returns: dojo.Animation|dojo.NodeList
+		// returns: dojo.Animation|dojo.NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
 		//		If args.auto is present, the original dojo.NodeList will be returned for further
 		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
 		//
-		//	example:
+		// example:
 		//		Wipe out all tables with class "blah":
 		//		|	dojo.query("table.blah").wipeOut().play();
 		return this._anim(dfx, "wipeOut", args); // dojo.Animation|dojo.NodeList
 	},
 
 	slideTo: function(args){
-		//	summary:
+		// summary:
 		//		slide all elements of the node list to the specified place via `dojo.fx.slideTo`
 		//
-		//	args: Object?
+		// args: Object?
 		//		Additional dojo.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		//	returns: dojo.Animation|dojo.NodeList
+		// returns: dojo.Animation|dojo.NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
 		//		If args.auto is present, the original dojo.NodeList will be returned for further
 		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
 		//
-		//	example:
+		// example:
 		//		|	Move all tables with class "blah" to 300/300:
 		//		|	dojo.query("table.blah").slideTo({
 		//		|		left: 40,
@@ -94,46 +94,46 @@ lang.extend(NodeList, {
 
 
 	fadeIn: function(args){
-		//	summary:
+		// summary:
 		//		fade in all elements of this NodeList via `dojo.fadeIn`
 		//
-		//	args: Object?
+		// args: Object?
 		//		Additional dojo.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		//	returns: dojo.Animation|dojo.NodeList
+		// returns: dojo.Animation|dojo.NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
 		//		If args.auto is present, the original dojo.NodeList will be returned for further
 		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
 		//
-		//	example:
+		// example:
 		//		Fade in all tables with class "blah":
 		//		|	dojo.query("table.blah").fadeIn().play();
 		return this._anim(fx, "fadeIn", args); // dojo.Animation|dojo.NodeList
 	},
 
 	fadeOut: function(args){
-		//	summary:
+		// summary:
 		//		fade out all elements of this NodeList via `dojo.fadeOut`
 		//
-		//	args: Object?
+		// args: Object?
 		//		Additional dojo.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		//	returns: dojo.Animation|dojo.NodeList
+		// returns: dojo.Animation|dojo.NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
 		//		If args.auto is present, the original dojo.NodeList will be returned for further
 		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
 		//
-		//	example:
+		// example:
 		//		Fade out all elements with class "zork":
 		//		|	dojo.query(".zork").fadeOut().play();
-		//	example:
+		// example:
 		//		Fade them on a delay and do something at the end:
 		//		|	var fo = dojo.query(".zork").fadeOut();
 		//		|	dojo.connect(fo, "onEnd", function(){ /*...*/ });
 		//		|	fo.play();
-		//	example:
+		// example:
 		//		Using `auto`:
 		//		|	dojo.query("li").fadeOut({ auto:true }).filter(filterFn).forEach(doit);
 		//
@@ -141,16 +141,20 @@ lang.extend(NodeList, {
 	},
 
 	animateProperty: function(args){
-		//	summary:
+		// summary:
 		//		Animate all elements of this NodeList across the properties specified.
 		//		syntax identical to `dojo.animateProperty`
+		//
+		// args: Object?
+		//		Additional dojo.Animation arguments to mix into this set with the addition of
+		//		an `auto` parameter.
 		//
 		// returns: dojo.Animation|dojo.NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
 		//		If args.auto is present, the original dojo.NodeList will be returned for further
 		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
 		//
-		//	example:
+		// example:
 		//	|	dojo.query(".zork").animateProperty({
 		//	|		duration: 500,
 		//	|		properties: {
@@ -174,25 +178,25 @@ lang.extend(NodeList, {
 					/*Function?*/		easing,
 					/*Function?*/		onEnd,
 					/*Integer?*/		delay){
-		//	summary:
+		// summary:
 		//		Animate one or more CSS properties for all nodes in this list.
 		//		The returned animation object will already be playing when it
 		//		is returned. See the docs for `dojo.anim` for full details.
-		//	properties: Object
+		// properties: Object
 		//		the properties to animate. does NOT support the `auto` parameter like other
 		//		NodeList-fx methods.
-		//	duration: Integer?
+		// duration: Integer?
 		//		Optional. The time to run the animations for
-		//	easing: Function?
+		// easing: Function?
 		//		Optional. The easing function to use.
-		//	onEnd: Function?
+		// onEnd: Function?
 		//		A function to be called when the animation ends
-		//	delay:
+		// delay:
 		//		how long to delay playing the returned animation
-		//	example:
+		// example:
 		//		Another way to fade out:
 		//	|	dojo.query(".thinger").anim({ opacity: 0 });
-		//	example:
+		// example:
 		//		animate all elements with the "thigner" class to a width of 500
 		//		pixels over half a second
 		//	|	dojo.query(".thinger").anim({ width: 500 }, 700);

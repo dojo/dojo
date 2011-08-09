@@ -87,8 +87,14 @@ lang.extend(AdapterRegistry, {
 	},
 
 	unregister: function(name){
-		// summary: Remove a named adapter from the registry
-
+		// summary:
+		//		Remove a named adapter from the registry
+		// name: String
+		//		The name of the adapter.
+		// returns: Boolean
+		//		Returns true if operation is successful.
+		//		Returns false if operation fails.
+	
 		// FIXME: this is kind of a dumb way to handle this. On a large
 		// registry this will be slow-ish and we can use the name as a lookup
 		// should we choose to trade memory for speed.

@@ -52,6 +52,14 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		directly, and will use the ...box... functions instead.
 		// node: DOMNode
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
+
+
 	};
 	=====*/
 
@@ -77,6 +85,14 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		directly, and will use the ...box... functions instead.
 		// node: DOMNode
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
+
+
 	};
 	=====*/
 
@@ -102,6 +118,14 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		directly, and will use the ...box... functions instead.
 		// node: DOMNode
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
+
+
 	};
 	=====*/
 
@@ -127,6 +151,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		directly, and will use the ...box... functions instead.
 		// node: DOMNode
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
 	};
 	=====*/
 
@@ -144,6 +174,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		the node's margin box
 		// node: DOMNode|String
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
 	};
 	=====*/
 
@@ -161,6 +197,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		positions of the node's margin box.
 		// node: DOMNode
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
 	};
 	=====*/
 
@@ -184,6 +226,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		// widthPx: Number?
 		// heightPx: Number?
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
 	};
 	=====*/
 
@@ -202,6 +250,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		current box model.
 		// node: DOMNode
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
 	};
 	=====*/
 
@@ -221,6 +275,12 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		// widthPx: Number?
 		// heightPx: Number?
 		// computedStyle: Object?
+		// 		This parameter accepts computed styles object.
+		// 		If this parameter is omitted, the functions will call 
+		//		dojo.getComputedStyle to get one. It is a better way, calling 
+		//		dojo.computedStyle once, and then pass the reference to this 
+		//		computedStyle parameter. Wherever possible, reuse the returned 
+		//		object of dojo.getComputedStyle.
 	};
 	=====*/
 

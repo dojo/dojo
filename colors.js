@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], function(dojo, lang) {
+define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], function(dojo, lang, baseColor, darray) {
 	// module:
 	//		dojo/colors
 	// summary:
@@ -40,7 +40,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 				var r = c[0];
 				if(r.charAt(r.length - 1) == "%"){
 					// 3 rgb percentage values
-					a = dojo.map(c, function(x){
+					a = darray.map(c, function(x){
 						return parseFloat(x) * 2.56;
 					});
 					if(l == 4){ a[3] = c[3]; }
@@ -78,7 +78,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		return isNaN(c) ? high : c < low ? low : c > high ? high : c;	// Number
 	};
 
-	dojo.Color.prototype.sanitize = function(){
+	baseColor.prototype.sanitize = function(){
 		// summary: makes sure that the object has correct attributes
 		var t = this;
 		t.r = Math.round(confine(t.r, 0, 255));
@@ -94,7 +94,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 	};
 
 	// mixin all CSS3 named colors not already in _base, along with SVG 1.0 variant spellings
-	lang.mixin(dojo.Color.named, {
+	lang.mixin(baseColor.named, {
 		"aliceblue":	[240,248,255],
 		"antiquewhite": [250,235,215],
 		"aquamarine":	[127,255,212],

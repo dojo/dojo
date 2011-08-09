@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/lang", "./_base/html", "./_base/sniff", "./_base/window"], function(dojo, lang) {
+define(["./_base/kernel", "./_base/lang", "./_base/sniff", "./_base/window", "./dom", "./dom-geometry", "./dom-style"], function(dojo, lang, has, baseWindow, dom, geom, style) {
 	// module:
 	//		dojo/window
 	// summary:
@@ -10,12 +10,12 @@ dojo.window.getBox = function(){
 	// summary:
 	//		Returns the dimensions and scroll position of the viewable area of a browser window
 
-	var scrollRoot = (dojo.doc.compatMode == 'BackCompat') ? dojo.body() : dojo.doc.documentElement;
+	var scrollRoot = (baseWindow.doc.compatMode == 'BackCompat') ? baseWindow.body() : baseWindow.doc.documentElement;
 
 	// get scroll position
-	var scroll = dojo._docScroll(); // scrollRoot.scrollTop/Left should work
+	var scroll = geom.docScroll(); // scrollRoot.scrollTop/Left should work
 
-	var uiWindow = dojo.doc.parentWindow || dojo.doc.defaultView;   // use UI window, not dojo.global window
+	var uiWindow = baseWindow.doc.parentWindow || baseWindow.doc.defaultView;   // use UI window, not dojo.global window
 	// dojo.global.innerWidth||dojo.global.innerHeight is for mobile
 	return {
 		l: scroll.x,
@@ -33,7 +33,7 @@ dojo.window.get = function(doc){
 	// reference to the real window object (maybe a copy), so we must fix it as well
 	// We use IE specific execScript to attach the real window reference to
 	// document._parentWindow for later use
-	if(dojo.isIE && window !== document.parentWindow){
+	if(has("ie") && window !== document.parentWindow){
 		/*
 		In IE 6, only the variable "window" can be used to connect events (others
 		may be only copies).
@@ -56,13 +56,13 @@ dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 	// don't rely on node.scrollIntoView working just because the function is there
 
 	try{ // catch unexpected/unrecreatable errors (#7808) since we can recover using a semi-acceptable native method
-		node = dojo.byId(node);
-		var doc = node.ownerDocument || dojo.doc,
-			body = doc.body || dojo.body(),
+		node = dom.byId(node);
+		var doc = node.ownerDocument || baseWindow.doc,
+			body = doc.body || baseWindow.body(),
 			html = doc.documentElement || body.parentNode,
-			isIE = dojo.isIE, isWK = dojo.isWebKit;
+			isIE = has("ie"), isWK = has("webkit");
 		// if an untested browser, then use the native method
-		if((!(dojo.isMoz || isIE || isWK || dojo.isOpera) || node == body || node == html) && (typeof node.scrollIntoView != "undefined")){
+		if((!(has("mozilla") || isIE || isWK || has("opera")) || node == body || node == html) && (typeof node.scrollIntoView != "undefined")){
 			node.scrollIntoView(false); // short-circuit to native if possible
 			return;
 		}
@@ -73,17 +73,17 @@ dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 			scrollRoot = isWK ? body : clientAreaRoot,
 			rootWidth = clientAreaRoot.clientWidth,
 			rootHeight = clientAreaRoot.clientHeight,
-			rtl = !dojo._isBodyLtr(),
-			nodePos = pos || dojo.position(node),
+			rtl = !geom.isBodyLtr(),
+			nodePos = pos || geom.position(node),
 			el = node.parentNode,
 			isFixed = function(el){
-				return ((isIE <= 6 || (isIE && backCompat))? false : (dojo.style(el, 'position').toLowerCase() == "fixed"));
+				return ((isIE <= 6 || (isIE && backCompat))? false : (style.get(el, 'position').toLowerCase() == "fixed"));
 			};
 		if(isFixed(node)){ return; } // nothing to do
 
 		while(el){
 			if(el == body){ el = scrollRoot; }
-			var elPos = dojo.position(el),
+			var elPos = geom.position(el),
 				fixedPos = isFixed(el);
 
 			if(el == scrollRoot){
@@ -92,7 +92,7 @@ dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 				if(elPos.x < 0 || !isIE){ elPos.x = 0; } // IE can have values > 0
 				if(elPos.y < 0 || !isIE){ elPos.y = 0; }
 			}else{
-				var pb = dojo._getPadBorderExtents(el);
+				var pb = geom.getPadBorderExtents(el);
 				elPos.w -= pb.w; elPos.h -= pb.h; elPos.x += pb.l; elPos.y += pb.t;
 				var clientSize = el.clientWidth,
 					scrollBarSize = elPos.w - clientSize;

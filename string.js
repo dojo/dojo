@@ -13,11 +13,11 @@ dojo.string = {
 =====*/
 
 dojo.string.rep = function(/*String*/str, /*Integer*/num){
-	//	summary:
+	// summary:
 	//		Efficiently replicate a string `n` times.
-	//	str:
+	// str:
 	//		the string to replicate
-	//	num:
+	// num:
 	//		number of times to replicate the string
 
 	if(num <= 0 || !str){ return ""; }
@@ -34,19 +34,19 @@ dojo.string.rep = function(/*String*/str, /*Integer*/num){
 };
 
 dojo.string.pad = function(/*String*/text, /*Integer*/size, /*String?*/ch, /*Boolean?*/end){
-	//	summary:
+	// summary:
 	//		Pad a string to guarantee that it is at least `size` length by
 	//		filling with the character `ch` at either the start or end of the
 	//		string. Pads at the start, by default.
-	//	text:
+	// text:
 	//		the string to pad
-	//	size:
+	// size:
 	//		length to provide padding
-	//	ch:
+	// ch:
 	//		character to pad, defaults to '0'
-	//	end:
+	// end:
 	//		adds padding at the end if true, otherwise pads at start
-	//	example:
+	// example:
 	//	|	// Fill the string to length 10 with "+" characters on the right.  Yields "Dojo++++++".
 	//	|	dojo.string.pad("Dojo", 10, "+", true);
 
@@ -62,21 +62,21 @@ dojo.string.substitute = function(	/*String*/		template,
 									/*Object|Array*/map,
 									/*Function?*/	transform,
 									/*Object?*/		thisObject){
-	//	summary:
+	// summary:
 	//		Performs parameterized substitutions on a string. Throws an
 	//		exception if any parameter is unmatched.
-	//	template:
+	// template:
 	//		a string with expressions in the form `${key}` to be replaced or
 	//		`${key:format}` which specifies a format function. keys are case-sensitive.
-	//	map:
+	// map:
 	//		hash to search for substitutions
-	//	transform:
+	// transform:
 	//		a function to process all parameters before substitution takes
 	//		place, e.g. mylib.encodeXML
-	//	thisObject:
+	// thisObject:
 	//		where to look for optional format function; default to the global
 	//		namespace
-	//	example:
+	// example:
 	//		Substitutes two expressions in a string from an Array or Object
 	//	|	// returns "File 'foo.html' is not found in directory '/temp'."
 	//	|	// by providing substitution data in an Array
@@ -92,7 +92,7 @@ dojo.string.substitute = function(	/*String*/		template,
 	//	|		"File '${name}' is not found in directory '${info.dir}'.",
 	//	|		{ name: "foo.html", info: { dir: "/temp" } }
 	//	|	);
-	//	example:
+	// example:
 	//		Use a transform function to modify the values:
 	//	|	// returns "file 'foo.html' is not found in directory '/temp'."
 	//	|	dojo.string.substitute(
@@ -104,7 +104,7 @@ dojo.string.substitute = function(	/*String*/		template,
 	//	|			return prefix + " '" + str + "'";
 	//	|		}
 	//	|	);
-	//	example:
+	// example:
 	//		Use a formatter
 	//	|	// returns "thinger -- howdy"
 	//	|	dojo.string.substitute(
@@ -117,7 +117,7 @@ dojo.string.substitute = function(	/*String*/		template,
 
 	thisObject = thisObject || dojo.global;
 	transform = transform ?
-		dojo.hitch(thisObject, transform) : function(v){ return v; };
+		lang.hitch(thisObject, transform) : function(v){ return v; };
 
 	return template.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g,
 		function(match, key, format){
@@ -131,13 +131,13 @@ dojo.string.substitute = function(	/*String*/		template,
 
 /*=====
 dojo.string.trim = function(str){
-	//	summary:
+	// summary:
 	//		Trims whitespace from both sides of the string
-	//	str: String
+	// str: String
 	//		String to be trimmed
-	//	returns: String
+	// returns: String
 	//		Returns the trimmed string
-	//	description:
+	// description:
 	//		This version of trim() was taken from [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript).
 	//		The short yet performant version of this function is dojo.trim(),
 	//		which is part of Dojo base.  Uses String.prototype.trim instead, if available.
@@ -146,7 +146,7 @@ dojo.string.trim = function(str){
 =====*/
 
 dojo.string.trim = String.prototype.trim ?
-	dojo.trim : // aliasing to the native function
+	lang.trim : // aliasing to the native function
 	function(str){
 		str = str.replace(/^\s+/, '');
 		for(var i = str.length - 1; i >= 0; i--){

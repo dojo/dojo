@@ -1,12 +1,16 @@
 define([
-	"./_base/kernel", "./_base/NodeList", "./_base/lang", "./_base/array", "./query", "./dom-attr"
-], function(dojo, NodeList, lang, array, query, attr) {
+	"./_base/kernel", "./query", "./_base/lang", "./array", "./dom-attr"
+], function(dojo, query, lang, array, attr) {
 	// module:
 	//		dojo/NodeList-data
 	// summary:
 	//		TODOC
 
+var NodeList = query.NodeList;
 /*=====
+// doc alias helpers:
+var NodeList = dojo.NodeList;
+
 	dojo.NodeList.prototype.data = function(key, value){
 		// summary: stash or get some arbitrary data on/from these nodes.
 		//
@@ -74,10 +78,10 @@ define([
 	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid",
 		dopid = function(node){
 			// summary: Return a uniqueish ID for the passed node reference
-			var pid = attr.attr(node, dataattr);
+			var pid = attr.get(node, dataattr);
 			if(!pid){
 				pid = "pid" + (x++);
-				attr.attr(node, dataattr, pid);
+				attr.set(node, dataattr, pid);
 			}
 			return pid;
 		}

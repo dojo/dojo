@@ -1,9 +1,10 @@
-define(["./_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./fx", "./_base/kernel"], function(NodeList, lang, connect, fx, dfx, dojo) {
+define(["./query", "./_base/lang", "./_base/connect", "./_base/fx", "./fx", "./_base/kernel"], function(query, lang, connect, fx, dfx, dojo) {
 	// module:
 	//		dojo/NodeList-fx
 	// summary:
 	//		TODOC
 
+var NodeList = query.NodeList;
 
 /*=====
 dojo["NodeList-fx"] = {

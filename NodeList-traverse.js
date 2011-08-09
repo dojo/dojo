@@ -1,9 +1,10 @@
-define(["./_base/NodeList", "./_base/lang", "./_base/array", "./query"], function(NodeList, lang, array, dquery) {
+define(["./query", "./_base/lang", "./array"], function(dquery, lang, array) {
 	// module:
 	//		dojo/NodeList-traverse
 	// summary:
 	//		TODOC
 
+var NodeList = dquery.NodeList;
 
 /*=====
 dojo["NodeList-traverse"] = {

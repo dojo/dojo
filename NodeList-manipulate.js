@@ -1,9 +1,10 @@
-define(["./_base/NodeList", "./_base/lang", "./_base/array", "./query", "./dom-construct"], function(NodeList, lang, array, dquery, construct) {
+define(["./query", "./_base/lang", "./array", "./dom-construct", "./NodeList-dom"], function(dquery, lang, array, construct) {
 	// module:
 	//		dojo/NodeList-manipulate
 	// summary:
 	//		TODOC
 
+var NodeList = dquery.NodeList;
 
 /*=====
 dojo["NodeList-manipulate"] = {

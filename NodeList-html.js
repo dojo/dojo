@@ -1,9 +1,10 @@
-define(["./_base/NodeList", "./_base/lang", "./html"], function(NodeList, lang, html) {
+define(["./query", "./_base/lang", "./html"], function(query, lang, html) {
 	// module:
 	//		dojo/NodeList-html
 	// summary:
 	//		TODOC
 
+var NodeList = query.NodeList;
 
 /*=====
 dojo["NodeList-html"] = {

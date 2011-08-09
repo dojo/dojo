@@ -1,4 +1,5 @@
-define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"], function(dojo, require) {
+define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff"],
+	function(dojo, require, connect, lang, ready, has) {
 	// module:
 	//		dojo/hash
 	// summary:
@@ -63,7 +64,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 	}
 
 	function _dispatchEvent(){
-		dojo.publish("/dojo/hashchange", [_getHash()]);
+		connect.publish("/dojo/hashchange", [_getHash()]);
 	}
 
 	function _pollLocation(){
@@ -77,7 +78,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 	function _replace(hash){
 		if(_ieUriMonitor){
 			if(_ieUriMonitor.isTransitioning()){
-				setTimeout(dojo.hitch(null,_replace,hash), _pollFrequency);
+				setTimeout(lang.hitch(null,_replace,hash), _pollFrequency);
 				return;
 			}
 			var href = _ieUriMonitor.iframe.location.href;
@@ -193,7 +194,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 					_dispatchEvent();
 				}else{
 					// s4 (waiting for iframe to catch up to main window)
-					setTimeout(dojo.hitch(this,this.pollLocation),0);
+					setTimeout(lang.hitch(this,this.pollLocation),0);
 					return;
 				}
 			}else if(_recentHash === hash && (ifrOffline || recentIframeQuery === iframeSearch)){
@@ -208,7 +209,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 					expectedIFrameQuery = hash;
 					ifr.src = ifrSrc + "?" + expectedIFrameQuery;
 					ifrOffline = false; //we're updating the iframe src - set offline to false so we can check again on next poll.
-					setTimeout(dojo.hitch(this,this.pollLocation),0); //yielded transition to s4 while iframe reloads.
+					setTimeout(lang.hitch(this,this.pollLocation),0); //yielded transition to s4 while iframe reloads.
 					return;
 				}else if(!ifrOffline){
 					// s3 (iframe location changed via back/forward button), set main window url and transition to s1.
@@ -217,14 +218,14 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 					_dispatchEvent();
 				}
 			}
-			setTimeout(dojo.hitch(this,this.pollLocation), _pollFrequency);
+			setTimeout(lang.hitch(this,this.pollLocation), _pollFrequency);
 		};
 		resetState(); // initialize state (transition to s1)
-		setTimeout(dojo.hitch(this,this.pollLocation), _pollFrequency);
+		setTimeout(lang.hitch(this,this.pollLocation), _pollFrequency);
 	}
-	dojo.addOnLoad(function(){
-		if("onhashchange" in dojo.global && (!dojo.isIE || (dojo.isIE >= 8 && document.compatMode != "BackCompat"))){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
-			_connect = dojo.connect(dojo.global,"onhashchange",_dispatchEvent);
+	ready(function(){
+		if("onhashchange" in dojo.global && (!has("ie") || (has("ie") >= 8 && document.compatMode != "BackCompat"))){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
+			_connect = connect.connect(dojo.global,"onhashchange",_dispatchEvent);
 		}else{
 			if(document.addEventListener){ // Non-IE
 				_recentHash = _getHash();

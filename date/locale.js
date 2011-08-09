@@ -231,7 +231,7 @@ dojo.date.locale.format = function(/*Date*/dateObject, /*dojo.date.locale.__Form
 		formatLength = options.formatLength || 'short',
 		bundle = dojo.date.locale._getGregorianBundle(locale),
 		str = [],
-		sauce = dojo.hitch(this, formatPattern, dateObject, bundle, options);
+		sauce = lang.hitch(this, formatPattern, dateObject, bundle, options);
 	if(options.selector == "year"){
 		return _processPattern(bundle["dateFormatItem-yyyy"] || "yyyy", sauce);
 	}
@@ -274,7 +274,7 @@ dojo.date.locale._parseInfo = function(/*dojo.date.locale.__FormatOptions?*/opti
 	}
 
 	var tokens = [],
-		re = _processPattern(pattern, dojo.hitch(this, _buildDateTimeRE, tokens, bundle, options));
+		re = _processPattern(pattern, lang.hitch(this, _buildDateTimeRE, tokens, bundle, options));
 	return {regexp: re, tokens: tokens, bundle: bundle};
 };
 

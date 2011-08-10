@@ -1,3 +1,3 @@
-define(["./kernel", "../query", "./NodeList"], function(dojo, query){
+define(["./kernel", "../query", "./NodeList"], function(dojo){
 	return dojo.query;
 });

@@ -1,4 +1,4 @@
-define(["./kernel", "./connect"], function(dojo) {
+define(["./kernel", "./connect"], function(dojo, connect) {
 	// module:
 	//		dojo/unload
 	// summary:
@@ -41,9 +41,9 @@ define(["./kernel", "./connect"], function(dojo) {
 		//	| dojo.addOnWindowUnload(object, function(){ /* ... */});
 
 		if (!dojo.windowUnloaded) {
-			dojo.connect(win, "unload", (dojo.windowUnloaded= function(){}));
+			connect.connect(win, "unload", (dojo.windowUnloaded= function(){}));
 		}
-		dojo.connect(win, "unload", obj, functionName);
+		connect.connect(win, "unload", obj, functionName);
 	};
 
 	dojo.addOnUnload = function(/*Object?|Function?*/obj, /*String|Function?*/functionName){
@@ -71,7 +71,7 @@ define(["./kernel", "./connect"], function(dojo) {
 		//	| dojo.addOnUnload(object, "functionName")
 		//	| dojo.addOnUnload(object, function(){ /* ... */});
 
-		dojo.connect(win, "beforeunload", obj, functionName);
+		connect.connect(win, "beforeunload", obj, functionName);
 	};
 
 	return {

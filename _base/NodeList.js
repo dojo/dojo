@@ -47,16 +47,15 @@ var NodeList = query.NodeList;
 
 	 var NodeList = dojo.NodeList;
 	=====*/
-	var nl = NodeList,
-		nlp = nl.prototype;
+	var nlp = NodeList.prototype;
 
 	// don't bind early to dojo.connect since we no longer explicitly depend on it
-	nlp.connect = nl._adaptAsForEach(function(){
+	nlp.connect = NodeList._adaptAsForEach(function(){
 		return dojo.connect.apply(this, arguments);
 	});
-	nlp.coords = nl._adaptAsMap(dojo.coords);
+	nlp.coords = NodeList._adaptAsMap(dojo.coords);
 
-	nl.events = [
+	NodeList.events = [
 		// summary:
 		//		list of all DOM events used in NodeList
 		"blur", "focus", "change", "click", "error", "keydown", "keypress",
@@ -67,7 +66,7 @@ var NodeList = query.NodeList;
 	// FIXME: pseudo-doc the above automatically generated on-event functions
 
 	// syntactic sugar for DOM events
-	array.forEach(nl.events, function(evt){
+	array.forEach(NodeList.events, function(evt){
 			var _oe = "on" + evt;
 			nlp[_oe] = function(a, b){
 				return this.connect(_oe, a, b);
@@ -96,6 +95,6 @@ var NodeList = query.NodeList;
 		}
 	);
 
-	dojo.NodeList = nl;
+	dojo.NodeList = NodeList;
 	return dojo.NodeList;
 });

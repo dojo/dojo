@@ -44,7 +44,7 @@ function connect_(obj, event, context, method, dontFix){
 		}
 	}
 	return on(obj, event, lang.hitch(context, method), dontFix);
-};
+}
 
 var _punctMap = {
 	106:42,

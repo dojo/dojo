@@ -611,7 +611,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 				execQ.push(module);
 			}
 			return undefined;
-		};
+		}
 
 		var result = doRequire(moduleName);
 		if(has("config-publishRequireResult") && !lang.exists(moduleName) && result!==undefined){

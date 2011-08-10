@@ -1,4 +1,6 @@
-define(["./kernel", "./sniff", "require", "../io-query", "../dom", "../dom-form", "./Deferred", "./json", "./lang", "./array"], function(dojo, has, require, ioq, dom, domForm, deferred, json, lang, array){
+define([
+	"./kernel", "./sniff", "require", "../io-query", "../dom", "../dom-form", "./Deferred", "./json", "./lang", "./array", "../on"
+], function(dojo, has, require, ioq, dom, domForm, deferred, json, lang, array, on){
 	//	module:
 	//		dojo/_base.xhr
 	// summary:

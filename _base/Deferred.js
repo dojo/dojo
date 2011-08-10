@@ -174,7 +174,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 					try{
 						var newResult = func(result);
 						if (newResult && typeof newResult.then === "function"){
-							newResult.then(dojo.hitch(listener.deferred, "resolve"), dojo.hitch(listener.deferred, "reject"));
+							newResult.then(lang.hitch(listener.deferred, "resolve"), lang.hitch(listener.deferred, "reject"));
 							continue;
 						}
 						var unchanged = mutated && newResult === undefined;
@@ -292,15 +292,15 @@ define(["./kernel", "./lang"], function(dojo, lang){
 	};
 	lang.extend(dojo.Deferred, {
 		addCallback: function (/*Function*/callback){
-			return this.addCallbacks(dojo.hitch.apply(dojo, arguments));
+			return this.addCallbacks(lang.hitch.apply(dojo, arguments));
 		},
 
 		addErrback: function (/*Function*/errback){
-			return this.addCallbacks(null, dojo.hitch.apply(dojo, arguments));
+			return this.addCallbacks(null, lang.hitch.apply(dojo, arguments));
 		},
 
 		addBoth: function (/*Function*/callback){
-			var enclosed = dojo.hitch.apply(dojo, arguments);
+			var enclosed = lang.hitch.apply(dojo, arguments);
 			return this.addCallbacks(enclosed, enclosed);
 		},
 		fired: -1

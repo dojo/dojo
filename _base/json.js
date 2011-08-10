@@ -31,7 +31,7 @@ dojo._escapeString = function(){
 dojo._escapeString = json.stringify; // just delegate to json.stringify
 
 dojo.toJsonIndentStr = "\t";
-dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _indentStr){
+dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint){
 	// summary:
 	//		Returns a [JSON](http://json.org) serialization of an object.
 	// description:
@@ -54,8 +54,6 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	//		before calling dojo.toJson().
 	//		Note that if native JSON support is available, it will be used for serialization,
 	//		and native implementations vary on the exact spacing used in pretty printing.
-	//	_indentStr:
-	//		private variable for recursive calls when pretty printing, do not use.
 	// returns:
 	// 		A JSON string serialization of the passed-in object.
 	// example:

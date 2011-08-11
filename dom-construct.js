@@ -320,7 +320,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 						refNode.parentNode.replaceChild(node, refNode);
 						break;
 					case "only":
-						dojo.empty(refNode);
+						ctr.empty(refNode);
 						refNode.appendChild(node);
 						break;
 					case "first":
@@ -355,7 +355,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 			has("ie") ? function(node){
 				node = dom.byId(node);
 				for(var c; c = node.lastChild;){ // intentional assignment
-					dojo.destroy(c);
+					ctr.destroy(c);
 				}
 			} :
 			//>>excludeEnd("webkitMobile");

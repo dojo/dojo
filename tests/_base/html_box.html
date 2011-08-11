@@ -93,8 +93,8 @@
 				_testTopInc--;
 			}
 			
-			function testAndCallback(inTest, inAssert, inComment, inOk, inErr) {
-				inTest.assertTrue('/* ' + inComment +  '*/' + inAssert);
+			function testAndCallback(inTest, inAssert, inOk, inErr) {
+				inTest.assertTrue(inAssert);
 				if (inAssert)
 					inOk&&inOk();
 				else
@@ -149,7 +149,7 @@
 			
 			function runFitTest(inTest, inParentStyles, inChildStyles) {
 				createStyledParentChildren([inParentStyles], [inChildStyles], function(p, c) {
-					testAndCallback(inTest, fitTest(p, c), '', function() {removeTestNode(p); });
+					testAndCallback(inTest, fitTest(p, c), function() {removeTestNode(p); });
 				});
 			}
 			
@@ -157,7 +157,7 @@
 				[
 					function reciprocalTests(t) {
 						createStyledNodes([], function(n) {
-							testAndCallback(t, reciprocalMarginBoxTest(n), '', function() {removeTestNode(n); });
+							testAndCallback(t, reciprocalMarginBoxTest(n), function() {removeTestNode(n); });
 						});
 					},
 					function fitTests(t) {
@@ -176,13 +176,13 @@
 					function reciprocalTestsInline(t) {
 						createStyledParentChild([], [{}, null, 'span'], function(p, c) {
 							c.innerHTML = 'Hello World';
-							testAndCallback(t, reciprocalMarginBoxTest(c), '', function() {removeTestNode(c); });
+							testAndCallback(t, reciprocalMarginBoxTest(c), function() {removeTestNode(c); });
 						});
 					},
 					function reciprocalTestsButtonChild(t) {
 						createStyledParentChild([], [{}, null, 'button'], function(p, c) {
 							c.innerHTML = 'Hello World';
-							testAndCallback(t, reciprocalMarginBoxTest(c), '', function() {removeTestNode(c); });
+							testAndCallback(t, reciprocalMarginBoxTest(c), function() {removeTestNode(c); });
 						});
 					}
 				]

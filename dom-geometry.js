@@ -214,17 +214,16 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	=====*/
 
 	/*=====
-	dojo.setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
+	dojo.setMarginBox = function(node, box, computedStyle){
 		// summary:
 		//		sets the size of the node's margin box and placement
 		//		(left/top), irrespective of box model. Think of it as a
 		//		passthrough to setBox that handles box-model vagaries for
 		//		you.
 		// node: DOMNode
-		// leftPx: Number?
-		// topPx: Number?
-		// widthPx: Number?
-		// heightPx: Number?
+		// box: Object
+		//      hash with optional "l", "t", "w", and "h" properties for "left", "right", "width", and "height"
+		//      respectively. All specified properties should have numeric values in whole pixels.
 		// computedStyle: Object?
 		// 		This parameter accepts computed styles object.
 		// 		If this parameter is omitted, the functions will call 
@@ -267,13 +266,14 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	=====*/
 
 	/*=====
-	dojo.setContentSize = function(node, widthPx, heightPx, computedStyle){
+	dojo.setContentSize = function(node, box, computedStyle){
 		// summary:
 		//		Sets the size of the node's contents, irrespective of margins,
 		//		padding, or borders.
 		// node: DOMNode
-		// widthPx: Number?
-		// heightPx: Number?
+		// box: Object
+		//      hash with optional "w", and "h" properties for "width", and "height"
+		//      respectively. All specified properties should have numeric values in whole pixels.
 		// computedStyle: Object?
 		// 		This parameter accepts computed styles object.
 		// 		If this parameter is omitted, the functions will call 
@@ -400,10 +400,10 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	geom.getBorderExtents = function getBorderExtents(/*DomNode*/node, /*Object*/computedStyle){
 		node = dom.byId(node);
 		var px = style.toPixelValue, s = computedStyle || style.getComputedStyle(node),
-			l = (s.borderLeftStyle != none ? px(node, s.borderLeftWidth) : 0),
-			t = (s.borderTopStyle != none ? px(node, s.borderTopWidth) : 0),
-			r = (s.borderRightStyle != none ? px(node, s.borderRightWidth) : 0),
-			b = (s.borderBottomStyle != none ? px(node, s.borderBottomWidth) : 0);
+			l = s.borderLeftStyle != none ? px(node, s.borderLeftWidth) : 0,
+			t = s.borderTopStyle != none ? px(node, s.borderTopWidth) : 0,
+			r = s.borderRightStyle != none ? px(node, s.borderRightWidth) : 0,
+			b = s.borderBottomStyle != none ? px(node, s.borderBottomWidth) : 0;
 		return {l: l, t: t, r: r, b: b, w: l + r, h: t + b};
 	};
 
@@ -461,7 +461,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		var s = computedStyle || style.getComputedStyle(node), me = geom.getMarginExtents(node, s),
 			l = node.offsetLeft - me.l, t = node.offsetTop - me.t, p = node.parentNode, px = style.toPixelValue, pcs;
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(has("moz")){
+		if(has("mozilla")){
 			// Mozilla:
 			// If offsetParent has a computed overflow != visible, the offsetLeft is decreased
 			// by the parent's border.
@@ -476,8 +476,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 				if(p && p.style){
 					pcs = style.getComputedStyle(p);
 					if(pcs.overflow != "visible"){
-						l += (pcs.borderLeftStyle != none ? px(node, pcs.borderLeftWidth) : 0);
-						t += (pcs.borderTopStyle != none ? px(node, pcs.borderTopWidth) : 0);
+						l += pcs.borderLeftStyle != none ? px(node, pcs.borderLeftWidth) : 0;
+						t += pcs.borderTopStyle != none ? px(node, pcs.borderTopWidth) : 0;
 					}
 				}
 			}
@@ -485,8 +485,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			// On Opera and IE 8, offsetLeft/Top includes the parent's border
 			if(p){
 				pcs = style.getComputedStyle(p);
-				l -= (pcs.borderLeftStyle != none ? px(node, pcs.borderLeftWidth) : 0);
-				t -= (pcs.borderTopStyle != none ? px(node, pcs.borderTopWidth) : 0);
+				l -= pcs.borderLeftStyle != none ? px(node, pcs.borderLeftWidth) : 0;
+				t -= pcs.borderTopStyle != none ? px(node, pcs.borderTopWidth) : 0;
 			}
 		}
 		//>>excludeEnd("webkitMobile");
@@ -587,57 +587,56 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		return geom.boxModel == "border-box" || node.tagName.toLowerCase() == "table" || isButtonTag(node); // boolean
 	}
 
-	geom.setContentSize = function setContentSize(/*DomNode*/node,
-			/*Number*/widthPx, /*Number*/heightPx, /*Object*/computedStyle){
+	geom.setContentSize = function setContentSize(/*DomNode*/node, /*Object*/box, /*Object*/computedStyle){
 		// summary:
 		//		Sets the size of the node's contents, irrespective of margins,
 		//		padding, or borders.
 
 		node = dom.byId(node);
+		var w = box.w, h = box.h;
 		if(usesBorderBox(node)){
 			var pb = geom.getPadBorderExtents(node, computedStyle);
-			if(widthPx >= 0){
-				widthPx += pb.w;
+			if(w >= 0){
+				w += pb.w;
 			}
-			if(heightPx >= 0){
-				heightPx += pb.h;
+			if(h >= 0){
+				h += pb.h;
 			}
 		}
-		setBox(node, NaN, NaN, widthPx, heightPx);
+		setBox(node, NaN, NaN, w, h);
 	};
 
 	var nilExtents = {l: 0, t: 0, w: 0, h: 0};
 
-	geom.setMarginBox = function setMarginBox(/*DomNode*/node,
-			/*Number?*/leftPx, /*Number?*/topPx, /*Number?*/widthPx, /*Number?*/heightPx, /*Object*/computedStyle){
+	geom.setMarginBox = function setMarginBox(/*DomNode*/node, /*Object*/box, /*Object*/computedStyle){
 		node = dom.byId(node);
-		var s = computedStyle || style.getComputedStyle(node),
+		var s = computedStyle || style.getComputedStyle(node), w = box.w, h = box.h,
 		// Some elements have special padding, margin, and box-model settings.
 		// To use box functions you may need to set padding, margin explicitly.
 		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
-			pb = (usesBorderBox(node) ? nilExtents : geom.getPadBorderExtents(node, s));
+			pb = usesBorderBox(node) ? nilExtents : geom.getPadBorderExtents(node, s),
+			mb = geom.getMarginExtents(node, s);
 		if(has("webkit")){
 			// on Safari (3.1.2), button nodes with no explicit size have a default margin
 			// setting an explicit size eliminates the margin.
 			// We have to swizzle the width to get correct margin reading.
 			if(isButtonTag(node)){
 				var ns = node.style;
-				if(widthPx >= 0 && !ns.width){
+				if(w >= 0 && !ns.width){
 					ns.width = "4px";
 				}
-				if(heightPx >= 0 && !ns.height){
+				if(h >= 0 && !ns.height){
 					ns.height = "4px";
 				}
 			}
 		}
-		var mb = geom.getMarginExtents(node, s);
-		if(widthPx >= 0){
-			widthPx = Math.max(widthPx - pb.w - mb.w, 0);
+		if(w >= 0){
+			w = Math.max(w - pb.w - mb.w, 0);
 		}
-		if(heightPx >= 0){
-			heightPx = Math.max(heightPx - pb.h - mb.h, 0);
+		if(h >= 0){
+			h = Math.max(h - pb.h - mb.h, 0);
 		}
-		setBox(node, leftPx, topPx, widthPx, heightPx);
+		setBox(node, box.l, box.t, w, h);
 	};
 
 	// =============================

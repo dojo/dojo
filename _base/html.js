@@ -159,7 +159,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		//		Set a node's margin box to the size of another node
 		//	|	var box = dojo.marginBox("someNodeId");
 		//	|	dojo.marginBox("someOtherNode", box);
-		return box ? geom.setMarginBox(node, box.l, box.t, box.w, box.h) : geom.getMarginBox(node); // Object
+		return box ? geom.setMarginBox(node, box) : geom.getMarginBox(node); // Object
 	};
 
 	dojo.contentBox = function contentBox(/*DomNode|String*/node, /*Object?*/box){
@@ -183,7 +183,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		//		update/set the content box for node. Box is an object in the
 		//		above format, but only w (width) and h (height) are supported.
 		//		All properties are optional if passed.
-		return box ? geom.setContentSize(node, box.w, box.h) : geom.getContentBox(node); // Object
+		return box ? geom.setContentSize(node, box) : geom.getContentBox(node); // Object
 	};
 
 	dojo.coords = function(/*DomNode|String*/node, /*Boolean?*/includeScroll){

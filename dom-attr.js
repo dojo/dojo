@@ -1,11 +1,9 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"],
-		function(dojo, has, lang, dom, style, prop){
+define(["./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"],
+		function(has, lang, dom, style, prop){
 	// module:
 	//		dojo/dom-attr
 	// summary:
 	//		This module defines the core dojo DOM attributes API.
-
-	//TODO: split getters and setters? Examples: attr - getAttr/setAttr.
 
 	// =============================
 	// Element attribute Functions

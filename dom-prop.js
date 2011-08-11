@@ -1,10 +1,12 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./_base/connect"],
-		function(dojo, has, lang, dom, style, connect){
+define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", /*"./dom-construct",*/ "./_base/connect"],
+		function(dojo, has, lang, dom, style, /*ctr,*/ conn){
 	// module:
 	//		dojo/dom-prop
 	// summary:
 	//		This module defines the core dojo DOM properties API.
 	//      Indirectly depends on dojo.empty() and dojo.toDom().
+
+	// TODO: adding a link to dom-construct creates a loop, find a way to avoid it
 
 	// =============================
 	// Element properties Functions
@@ -152,6 +154,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 				// special case: assigning HTML
 				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 				if(has("ie") && node.tagName.toLowerCase() in _roInnerHtml){
+					// TODO: two next lines should use "ctr" instead of "dojo", but doing so causes a declaration loop
 					dojo.empty(node);
 					node.appendChild(dojo.toDom(value, node.ownerDocument));
 				}else{
@@ -175,7 +178,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 				}
 				var h = _evtHdlrMap[attrId][propName];
 				if(h){
-					dojo.disconnect(h);
+					//h.remove();
+					conn.disconnect(h);
 				}else{
 					try{
 						delete node[propName];
@@ -183,7 +187,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 				}
 				// ensure that event objects are normalized, etc.
 				if(value){
-					_evtHdlrMap[attrId][propName] = dojo.connect(node, propName, value);
+					//_evtHdlrMap[attrId][propName] = on(node, propName, value);
+					_evtHdlrMap[attrId][propName] = conn.connect(node, propName, value);
 				}else{
 					node[propName] = null;
 				}

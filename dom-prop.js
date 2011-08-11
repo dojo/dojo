@@ -11,7 +11,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 	// =============================
 
 	/*=====
-	prop.get = function(/node, name){
+	prop.get = function(node, name){
 		// summary:
 		//		Gets a property on an HTML element.
 		// description:

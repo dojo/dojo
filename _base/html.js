@@ -114,8 +114,8 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 	dojo._toDom = dojo.toDom = ctr.toDom;
 	dojo.place = ctr.place;
 	dojo.create = ctr.create;
-	dojo.empty = ctr.empty;
-	dojo._destroyElement = dojo.destroy = ctr.destroy;
+	dojo.empty = function(node){ ctr.empty(node); };
+	dojo._destroyElement = dojo.destroy = function(node){ ctr.destroy(node); };
 
 	// mix-in dom-geometry
 	dojo._getPadExtents = dojo.getPadExtents = geom.getPadExtents;

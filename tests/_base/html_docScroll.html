@@ -38,10 +38,7 @@
 							var s = dojo.withGlobal(win, "_docScroll", dojo);
 							t.is(10, s.x);
 							t.is(20, s.y);
-						}
-						/*
-						Disabling test due to hopefully spurious failures, see #11200 and #9617.
-						,
+						},
 
 						function testSpeed(t){
 							var old_docScroll = function(){
@@ -80,7 +77,6 @@
 							console.log(Math.floor(100*(t1-t0)/t1)+"% speed improvement");
 							t.is(true, t1 > t0);
 						}
-						*/
 					]
 				);
 				doh.runOnLoad();

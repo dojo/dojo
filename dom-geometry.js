@@ -235,13 +235,6 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	=====*/
 
 	/*=====
-	dojo._setMarginBox = function(node, leftPx, topPx, widthPx, heightPx, computedStyle){
-		// summary:
-		//		Existing alias for `dojo.setMarginBox`. Deprecated, will be removed in 2.0.
-	};
-	=====*/
-
-	/*=====
 	dojo.getContentBox = function(node, computedStyle){
 		// summary:
 		//		Returns an object that encodes the width, height, left and top
@@ -281,13 +274,6 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
 		//		object of dojo.getComputedStyle.
-	};
-	=====*/
-
-	/*=====
-	dojo._setContentSize = function(node, widthPx, heightPx, computedStyle){
-		// summary:
-		//		Existing alias for `dojo.setContentSize`. Deprecated, will be removed in 2.0.
 	};
 	=====*/
 

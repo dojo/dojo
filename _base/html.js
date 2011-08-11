@@ -124,9 +124,9 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 	dojo._getMarginExtents = dojo.getMarginExtents = geom.getMarginExtents;
 	dojo._getMarginSize = dojo.getMarginSize = geom.getMarginSize;
 	dojo._getMarginBox = dojo.getMarginBox = geom.getMarginBox;
-	dojo._setMarginBox = dojo.setMarginBox = geom.setMarginBox;
+	dojo.setMarginBox = geom.setMarginBox;
 	dojo._getContentBox = dojo.getContentBox = geom.getContentBox;
-	dojo._setContentSize = dojo.setContentSize = geom.setContentSize;
+	dojo.setContentSize = geom.setContentSize;
 	dojo._isBodyLtr = dojo.isBodyLtr = geom.isBodyLtr;
 	dojo._docScroll = dojo.docScroll = geom.docScroll;
 	dojo._getIeDocumentElementOffset = dojo.getIeDocumentElementOffset = geom.getIeDocumentElementOffset;

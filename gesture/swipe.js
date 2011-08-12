@@ -81,7 +81,7 @@ var clz = dojo.declare(null, {
 		}
 		dx = Math.abs(dx);
 		dy = Math.abs(dy);
-		var target = e.currentTarget;
+		var target = e.target, current = e.currentTarget;
 		if(dx >= dy){
 			if(dx/t*1000 < this.swipeSpeed){
 				// gesture is too slow
@@ -89,10 +89,10 @@ var clz = dojo.declare(null, {
 			}
 			switch(dy > this.swipeRange ? this.swipeDirection.none : dirx){
 			case this.swipeDirection.left:
-				gesture.fire(target, "swipe.left");
+				gesture.fire(current, target, "swipe.left");
 				break;
 			case this.swipeDirection.right:
-				gesture.fire(target, "swipe.right");
+				gesture.fire(current, target, "swipe.right");
 				break;
 			default: 
 				// not a swipe
@@ -105,17 +105,17 @@ var clz = dojo.declare(null, {
 			}
 			switch(dx > this.swipeRange ? this.swipeDirection.none : diry){
 			case this.swipeDirection.up:
-				gesture.fire(target, "swipe.up");
+				gesture.fire(current, target, "swipe.up");
 				break;
 			case this.swipeDirection.down:
-				gesture.fire(target, "swipe.down");
+				gesture.fire(current, target, "swipe.down");
 				break;
 			default:
 				// not a swipe
 				return;
 			}
 		}
-		gesture.fire(target, 'swipe');
+		gesture.fire(current, target, 'swipe');
 	},
 	destroy: function(){}
 });

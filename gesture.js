@@ -34,7 +34,7 @@ define([
 // isGestureEvent(event):
 //		Whether the given event is a supported gesture event
 //
-// fire(target, eventType, event):
+// fire(node, target, eventType, event):
 //		Used by gesture implementations to fire a recognized gesture event, fire() invokes appropriate callbacks
 //		with a wrapped gesture event with detail gesture information.
 //
@@ -284,47 +284,46 @@ dojo.gesture = {
 			}
 		}
 	},
-	fire: function(target, eventType, event){
+	fire: function(node, target, eventType, event){
 		// summary:
 		//		Used by gesture implementations to fire a recognized gesture event, invoking appropriate callbacks
 		//		with a wrapped gesture event
-		// target: DomNode
+		//		[TODO] - use on.emit() to fire gesture events
+		// node: DomNode
 		//		Target node to fire the gesture
+		// target: DomNode
+		//		Node that the event originated from
 		// event: Object
 		//		Simulated event containing gesture info e.g {type: 'tap.hold'|'swipe.left'), ...}
-
 		//gesture looks like {callbacks:[...], stopped:true|false}
-		var gesture =((this.getGestureElement(target) || {}).gestures || {})[eventType];
+		var gesture =((this.getGestureElement(node) || {}).gestures || {})[eventType];
 		if(!gesture){ return; }
 
 		if(!event){
 			event = {};
 		}
-		if(!event.type){
-			event.type = eventType;	
-		}
-		if(!event.target){
-			event.target = target;
-		}
+		event.type = eventType;	
+		event.target = target;
+		event.currentTarget = node;
 		event.preventDefault = function(){};
 		event.stopPropagation = function(){
 			gesture.stopped = true;
 		};
-		this._fire(target, eventType, event);
+		this._fire(node, eventType, event);
 	},
-	_fire: function(target, eventType, e){
-		var gesture =((this.getGestureElement(target) || {}).gestures || {})[eventType];
+	_fire: function(node, eventType, e){
+		var gesture =((this.getGestureElement(node) || {}).gestures || {})[eventType];
 		if(!gesture){ return;}
 		
 		array.forEach(gesture.callbacks, function(func){
-			func(e);
+			func.call(node, e);
 		});
 		
 		//gesture bubbling - also fire for parents unless stopped explicitly
 		if(!gesture.stopped){
-			var parentNode = target.parentNode;
+			var parentNode = node.parentNode;
 			if(parentNode){
-				e.target = parentNode;
+				e.currentTarget = parentNode;
 				this._fire(parentNode, eventType, e);
 			}
 		}

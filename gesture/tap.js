@@ -54,12 +54,12 @@ var clz = dojo.declare(null, {
 			delete data.tapContext;
 			return;
 		}
-		var target = e.currentTarget;
+		var target = e.target, current = e.currentTarget;
 		this._initTap(data, e);
 		clearTimeout(data.tapTimeOut);
 		data.tapTimeOut = setTimeout(dojo.hitch(this, function(){
 			if(this._isTap(data, e)){
-				gesture.fire(target, 'tap.hold');
+				gesture.fire(current, target, 'tap.hold');
 			}
 			clearTimeout(data.tapTimeOut);
 			delete data.tapContext;
@@ -72,11 +72,11 @@ var clz = dojo.declare(null, {
 		}
 		switch(data.tapContext.c){
 		case 1: 
-			gesture.fire(e.currentTarget, 'tap');
+			gesture.fire(e.currentTarget, e.target, 'tap');
 			break;
 		case 2:
 			if(this._isTap(data, e)){
-				gesture.fire(e.currentTarget, 'tap.doubletap');
+				gesture.fire(e.currentTarget, e.target, 'tap.doubletap');
 			}
 			break;
 		}

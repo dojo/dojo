@@ -1,5 +1,5 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
-		function(dojo, has, lang, win){
+define(["./_base/sniff", "./_base/lang", "./_base/window"],
+		function(has, lang, win){
 	// module:
 	//		dojo/dom
 	// summary:
@@ -143,7 +143,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./_base/window"],
 	// TODO: do we need this function in the base?
 
 	dom.setSelectable = function(/*DOMNode|String*/node, /*Boolean*/selectable){
-		node = dojo.byId(node);
+		node = dom.byId(node);
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("mozilla")){
 			node.style.MozUserSelect = selectable ? "" : "none";

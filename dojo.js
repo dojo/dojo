@@ -197,15 +197,15 @@
 			combosPending = [];
 	}
 
+	var legacyMode = 0,
+		sync = "sync",
+		xd = "xd",
+		syncExecStack = [],
+		dojoRequirePlugin = 0,
+		checkDojoRequirePlugin = noop,
+		transformToAmd = noop,
+		getXhr;
 	if(has("dojo-sync-loader")){
-		var legacyMode = 0,
-			sync = "sync",
-			xd = "xd",
-			syncExecStack = [],
-			dojoRequirePlugin = 0,
-			checkDojoRequirePlugin = noop,
-			transformToAmd = noop,
-			getXhr;
 
 		req.isXdUrl = noop;
 		req.initSyncLoader = function(dojoRequirePlugin_, checkDojoRequirePlugin_, transformToAmd_, isXdUrl_){
@@ -653,6 +653,8 @@
 			if(isArray(a1)){
 				// signature is (requestList [,callback])
 
+				syntheticMid = "require*" + uid();
+
 				// resolve the request list with respect to the reference module
 				for(var mid, deps = [], i = 0; i < a1.length;){
 					mid = a1[i++];
@@ -663,7 +665,6 @@
 				}
 
 				// construct a synthetic module to control execution of the requestList, and, optionally, callback
-				syntheticMid = "require*" + uid();
 				module = mix(makeModuleInfo("", syntheticMid, 0, ""), {
 					injected: arrived,
 					deps: deps,
@@ -674,12 +675,17 @@
 
 				// checkComplete!=0 holds the idle signal; we're not idle if we're injecting dependencies
 				injectDependencies(module);
+
 				// try to immediately execute
-				if(execModule(module, 1) === abortExec){
+				checkCompleteGuard++;
+				execModule(module, 1);
+				checkIdle();
+				if(!module.executed){
 					// some deps weren't on board; therefore, push into the execQ
 					execQ.push(module);
+				}else{
+					checkComplete();
 				}
-				checkComplete();
 			}
 			return contextRequire;
 		},
@@ -955,14 +961,20 @@
 			}
 		},
 
+		circleTrace = [],
+
 		execModule = function(module, strict){
 			// run the dependency vector, then run the factory for module
+			if(module.executed === executing){
+				req.trace("loader-circular-dependency", [circleTrace.concat(mid).join("->")]);
+				return (!module.def || strict) ? abortExec :  (module.cjs && module.cjs.exports);
+			}
+			// at this point the module is either not executed or fully executed
+
+
 			if(!module.executed){
-				if(!module.def || (strict && module.executed===executing)){
+				if(!module.def){
 					return abortExec;
-				}else if(module.executed===executing){
-					// FIXME: maybe try (module.cjs && module.cjs.exports)
-					return module.result;
 				}
 				var mid = module.mid,
 					deps = module.deps || [],
@@ -970,7 +982,10 @@
 					args = [],
 					i = 0;
 
-				req.trace("loader-exec-module", ["exec", mid]);
+				if(has("dojo-trace-api")){
+					circleTrace.push(mid);
+					req.trace("loader-exec-module", ["exec", circleTrace.length, mid]);
+				}
 
 				// for circular dependencies, assume the first module encountered was executed OK
 				// modules that circularly depend on a module that has not run its factory will get
@@ -985,17 +1000,20 @@
 									((arg === cjsExportsModule) ? module.cjs.exports :
 										((arg === cjsModuleModule) ? module.cjs :
 											execModule(arg, strict))));
-					if(argResult === abortExec || (strict && arg.executed===executing)){
+					if(argResult === abortExec){
 						module.executed = 0;
 						req.trace("loader-exec-module", ["abort", mid]);
+						has("dojo-trace-api") && circleTrace.pop();
 						return abortExec;
 					}
-					req.trace && arg.executed===executing && req.log("circular dependency found (" + arg.mid + ", " + module.mid + ")");
 					args.push(argResult);
 				}
 				runFactory(module, args);
 				finishExec(module);
 			}
+			// at this point the module is guaranteed fully executed
+
+			has("dojo-trace-api") && circleTrace.pop();
 			return module.result;
 		},
 
@@ -1005,7 +1023,6 @@
 		checkComplete = function(){
 			// keep going through the execQ as long as at least one factory is executed
 			// plugins, recursion, cached modules all make for many execution path possibilities
-
 			if(checkCompleteGuard){
 				return;
 			}
@@ -1681,7 +1698,8 @@
 			"loader-exec-module":0,
 			"loader-run-factory":0,
 			"loader-finish-exec":0,
-			"loader-define-module":0
+			"loader-define-module":0,
+			"loader-circular-dependency":0
 		},
 		async:0
 	}

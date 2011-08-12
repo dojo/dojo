@@ -49,7 +49,7 @@ define(["./kernel", "./lang", "../array"], function(dojo, lang, array){
 		//		may be used to scope the call to callback
 		//	description:
 		//		This function corresponds to the JavaScript 1.6 Array.forEach() method, with one difference: when
-		//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
+		//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 		//		the callback function with a value of undefined. JavaScript 1.6's forEach skips the holes in the sparse array.
 		//		For more details, see:
 		//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/forEach
@@ -109,7 +109,7 @@ define(["./kernel", "./lang", "../array"], function(dojo, lang, array){
 		// returns: Boolean
 		// description:
 		//		This function corresponds to the JavaScript 1.6 Array.every() method, with one difference: when
-		//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
+		//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 		//		the callback function with a value of undefined. JavaScript 1.6's every skips the holes in the sparse array.
 		//		For more details, see:
 		//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/every
@@ -134,7 +134,7 @@ define(["./kernel", "./lang", "../array"], function(dojo, lang, array){
 		// returns: Boolean
 		// description:
 		//		This function corresponds to the JavaScript 1.6 Array.some() method, with one difference: when
-		//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
+		//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 		//		the callback function with a value of undefined. JavaScript 1.6's some skips the holes in the sparse array.
 		//		For more details, see:
 		//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/some
@@ -160,7 +160,7 @@ define(["./kernel", "./lang", "../array"], function(dojo, lang, array){
 		// returns: Array
 		// description:
 		//		This function corresponds to the JavaScript 1.6 Array.map() method, with one difference: when
-		//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
+		//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 		//		the callback function with a value of undefined. JavaScript 1.6's map skips the holes in the sparse array.
 		//		For more details, see:
 		//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
@@ -184,7 +184,7 @@ define(["./kernel", "./lang", "../array"], function(dojo, lang, array){
 		// returns: Array
 		// description:
 		//		This function corresponds to the JavaScript 1.6 Array.filter() method, with one difference: when
-		//		run over sparse arrays, this implemenation passes the "holes" in the sparse array to
+		//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 		//		the callback function with a value of undefined. JavaScript 1.6's filter skips the holes in the sparse array.
 		//		For more details, see:
 		//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter

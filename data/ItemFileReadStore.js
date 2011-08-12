@@ -836,8 +836,9 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		//	summary:
 		//		Internal function to look an item up by its identity map.
 		var item = null;
-		if(this._itemsByIdentity &&
-		   Object.hasOwnProperty.call(this._itemsByIdentity, identity)){
+		if(this._itemsByIdentity){
+			// If this map is defined, we need to just try to get it.  If it fails
+			// the item does not exist.
 			item = this._itemsByIdentity[identity];
 		}else if (Object.hasOwnProperty.call(this._arrayOfAllItems, identity)){
 			item = this._arrayOfAllItems[identity];

@@ -455,14 +455,13 @@
 							doh.t(dojo.hasClass(input, "blah"), "hasClass of blah");
 							var def = new doh.Deferred();
 							input.focus();
-							setTimeout(def.getTestCallback(function(){
+							setTimeout(def.getTestErrback(function(){
 								doh.is(1, ctr, "onfocus ctr == 1");
 								input.blur();
 								input.focus();
-								setTimeout(function(){
+								setTimeout(def.getTestCallback(function(){
 									doh.is(2, ctr, "onfocus ctr == 2");
-									def.callback(true);
-								}, 10);
+								}), 10);
 							}), 10);
 							return def;
 						},
@@ -482,14 +481,13 @@
 							doh.is(0, ctr);
 							var def = new doh.Deferred();
 							input.focus();
-							setTimeout(def.getTestCallback(function(){
+							setTimeout(def.getTestErrback(function(){
 								doh.is(1, ctr);
 								input.blur();
 								input.focus();
-								setTimeout(function(){
+								setTimeout(def.getTestCallback(function(){
 									doh.is(2, ctr);
-									def.callback(true);
-								}, 10);
+								}), 10);
 							}), 10);
 							return def;
 						},

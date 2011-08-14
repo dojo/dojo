@@ -1,4 +1,4 @@
-define(["./query", "./_base/lang", "./array"], function(dquery, lang, array) {
+define(["./query", "./_base/lang", "./_base/array"], function(dquery, lang, array) {
 	// module:
 	//		dojo/NodeList-traverse
 	// summary:

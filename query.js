@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./has", "./on", "./array", "./_base/lang", "./selector/_loader", "./selector/_loader!default"], function(dojo, has, on, array, lang, loader, defaultEngine){
+define(["./_base/kernel", "./has", "./on", "./_base/array", "./_base/lang", "./selector/_loader", "./selector/_loader!default"], function(dojo, has, on, array, lang, loader, defaultEngine){
 "use strict";
 
 	has.add("array-extensible", function(){

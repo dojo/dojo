@@ -1,5 +1,5 @@
 define([
-	"./_base/kernel", "./query", "./_base/lang", "./array", "./dom-attr"
+	"./_base/kernel", "./query", "./_base/lang", "./_base/array", "./dom-attr"
 ], function(dojo, query, lang, array, attr) {
 	// module:
 	//		dojo/NodeList-data

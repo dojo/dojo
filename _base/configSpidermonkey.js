@@ -68,7 +68,8 @@ dojo._loadUri = function(uri){
 	// is what we want).
 	// TODO: sigh, load() does not return a useful value.
 	// Perhaps it is returning the value of the last thing evaluated?
-	var ok = load(uri);
+	// var ok =
+	load(uri);
 	// console.log("spidermonkey load(", uri, ") returned ", ok);
 	return 1;
 };

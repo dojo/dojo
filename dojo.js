@@ -678,7 +678,7 @@
 
 				// try to immediately execute
 				checkCompleteGuard++;
-				execModule(module, 1);
+				execModule(module, req.async);
 				checkIdle();
 				if(!module.executed){
 					// some deps weren't on board; therefore, push into the execQ

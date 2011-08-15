@@ -64,24 +64,36 @@
 							dojo.behavior.apply();
 							t.is(2, topicCount);
 
-							dojo.behavior.add({ ".foo": {
-									"onfocus": "/foo" 
-								}
-							});
-							dojo.behavior.apply();
-							t.is(2, topicCount);
-							dojo.byId("blah").focus();
-							dojo.byId("blah").blur();
-							dojo.byId("blah").focus();
-							setTimeout(function(){
-								// blur/focus event generation isn't synchronous on IE
-								try{
-									t.is(4, topicCount);
-									d.callback(true);
-								}catch(e){
-									d.errback(e);
-								}
-							}, 10);
+							// We are going to catch focus events on "thinger", so first move focus
+							// somewhere else.
+							dojo.byId("another").focus();
+
+							// use timeout because blur/focus event generation isn't synchronous on IE
+							setTimeout(d.getTestErrback(function(){
+
+								// setup listener for focus events
+								dojo.behavior.add({ ".foo": {
+										"onfocus": "/foo"
+									}
+								});
+								dojo.behavior.apply();
+								t.is(2, topicCount);
+
+								// focus blah, publishing /foo
+								dojo.byId("blah").focus();
+
+								setTimeout(d.getTestErrback(function(){
+									t.is(3, topicCount);
+
+									// blur and then refocus blah, publishing /foo again
+									dojo.byId("another").focus();
+									dojo.byId("blah").focus();
+
+									setTimeout(d.getTestCallback(function(){
+										t.is(4, topicCount);
+									}), 10);
+								}), 10);
+							}), 10);
 							return d;
 						}
 					]
@@ -97,6 +109,9 @@
 				<span>.foo &gt; .bar &gt; span</span>	
 			</div>
 		</div>
+
+		<!--for focus/topic tests -->
+		<input id="another" value="another">
 		<input type="text" id="blah" class="foo blah" name="thinger" value="thinger" tabIndex="0">
 	</body>
 </html>

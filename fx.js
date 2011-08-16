@@ -8,7 +8,7 @@ define([
 	"./dom-style",
 	"./dom-geometry",
 	"./fx/Toggler"	// TODO: this seems unneeded
-], function(lang, dojo, ArrayUtil, connect, baseFx, DOM, DOMStyle, geom, fxToggler) {
+], function(lang, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, fxToggler) {
 
 	// module:
 	//		dojo/fx
@@ -37,7 +37,7 @@ define([
 		this._current = this._onAnimateCtx = this._onEndCtx = null;
 
 		this.duration = 0;
-		ArrayUtil.forEach(this._animations, function(a){
+		arrayUtil.forEach(this._animations, function(a){
 			this.duration += a.duration;
 			if(a.delay){ this.duration += a.delay; }
 		}, this);
@@ -100,7 +100,7 @@ define([
 			this.pause();
 			var offset = this.duration * percent;
 			this._current = null;
-			ArrayUtil.some(this._animations, function(a){
+			arrayUtil.some(this._animations, function(a){
 				if(a.duration <= offset){
 					this._current = a;
 					return true;
@@ -166,7 +166,7 @@ define([
 		this._finished = 0;
 
 		this.duration = 0;
-		ArrayUtil.forEach(animations, function(a){
+		arrayUtil.forEach(animations, function(a){
 			var duration = a.duration;
 			if(a.delay){ duration += a.delay; }
 			if(this.duration < duration){ this.duration = duration; }
@@ -175,7 +175,7 @@ define([
 
 		this._pseudoAnimation = new baseFx.Animation({curve: [0, 1], duration: this.duration});
 		var self = this;
-		ArrayUtil.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"],
+		arrayUtil.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"],
 			function(evt){
 				self._connects.push(connect.connect(self._pseudoAnimation, evt,
 					function(){ self._fire(evt, arguments); }
@@ -185,7 +185,7 @@ define([
 	};
 	lang.extend(_combine, {
 		_doAction: function(action, args){
-			ArrayUtil.forEach(this._animations, function(a){
+			arrayUtil.forEach(this._animations, function(a){
 				a[action].apply(a, args);
 			});
 			return this;
@@ -212,7 +212,7 @@ define([
 		},
 		gotoPercent: function(/*Decimal*/percent, /*Boolean?*/ andPlay){
 			var ms = this.duration * percent;
-			ArrayUtil.forEach(this._animations, function(a){
+			arrayUtil.forEach(this._animations, function(a){
 				a.gotoPercent(a.duration < ms ? 1 : (ms / a.duration), andPlay);
 			});
 			this._call("gotoPercent", arguments);
@@ -227,7 +227,7 @@ define([
 			return this._pseudoAnimation.status();
 		},
 		destroy: function(){
-			ArrayUtil.forEach(this._connects, connect.disconnect);
+			arrayUtil.forEach(this._connects, connect.disconnect);
 		}
 	});
 	lang.extend(_combine, _baseObj);
@@ -280,7 +280,7 @@ define([
 		//	|	dojo.fx.wipeIn({
 		//	|		node:"someId"
 		//	|	}).play()
-		var node = args.node = DOM.byId(args.node), s = node.style, o;
+		var node = args.node = dom.byId(args.node), s = node.style, o;
 
 		var anim = baseFx.animateProperty(lang.mixin({
 			properties: {
@@ -297,7 +297,7 @@ define([
 							s.visibility = "";
 							return 1;
 						}else{
-							var height = DOMStyle.get(node, "height");
+							var height = domStyle.get(node, "height");
 							return Math.max(height, 1);
 						}
 					},
@@ -333,7 +333,7 @@ define([
 		// example:
 		//	|	dojo.fx.wipeOut({ node:"someId" }).play()
 
-		var node = args.node = DOM.byId(args.node), s = node.style, o;
+		var node = args.node = dom.byId(args.node), s = node.style, o;
 
 		var anim = baseFx.animateProperty(lang.mixin({
 			properties: {
@@ -376,12 +376,12 @@ define([
 		// example:
 		//	|	.slideTo({ node: node, left:"40", top:"50", units:"px" }).play()
 
-		var node = args.node = DOM.byId(args.node),
+		var node = args.node = dom.byId(args.node),
 			top = null, left = null;
 
 		var init = (function(n){
 			return function(){
-				var cs = DOMStyle.getComputedStyle(n);
+				var cs = domStyle.getComputedStyle(n);
 				var pos = cs.position;
 				top = (pos == 'absolute' ? n.offsetTop : parseInt(cs.top) || 0);
 				left = (pos == 'absolute' ? n.offsetLeft : parseInt(cs.left) || 0);

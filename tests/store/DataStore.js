@@ -57,6 +57,10 @@ var temp = function(){
 					perfect: true
 				});
 				t.t(store.get(6).perfect);
+			},
+			function testNoWriteFeature(t){
+				var readOnlyStore = new dojo.store.DataStore({store:new dojo.data.ItemFileReadStore({})});
+				t.f(readOnlyStore.put);
 			}
 		]
 	);

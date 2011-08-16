@@ -167,6 +167,7 @@
 
 						// descendant selectors
 						"doh.is(3, dojo.query('>', 'container').length);",
+						"doh.is(0, dojo.query('> .not-there').length);",
 						"doh.is(3, dojo.query('> *', 'container').length);",
 						"doh.is(2, dojo.query('> [qux]', 'container').length);",
 						"doh.is('child1', dojo.query('> [qux]', 'container')[0].id);",
@@ -334,6 +335,11 @@
 							var i = dojo.query("div");
 							// smoke test
 							i.sort(function(a,b){ return 1; })
+						},
+						function performanceTest(){
+							for(var i = 0; i < 10000; i++){
+								dojo.query('.foo');
+							}
 						}
 					]
 				);

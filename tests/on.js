@@ -139,6 +139,28 @@ doh.register("tests.on",
 			}
 			t.is(order, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
 		},
+/*
+ This only works if the test page has the focus, so you can enable if you want to test focus functionality and allow the test page to have focus  
+ 		function focus(t){
+			var div = document.body.appendChild(document.createElement("div"));
+			var input = div.appendChild(document.createElement("input"));
+			var order = [];
+			var signal = on(div,"input:focusin", function(event){
+				order.push('in');
+			});
+			var signal = on(div,"input:focusout", function(event){
+				order.push('out');
+			});
+			var otherInput = document.body.appendChild(document.createElement("input"));
+			input.focus();
+			otherInput.focus();
+			d = new doh.Deferred();
+			setTimeout(function(){
+				t.is(['in', 'out'], order);
+				d.callback(true);
+			}, 1);
+			return d;
+		},*/
 		function extensionEvent(t){
 			var div = document.body.appendChild(document.createElement("div"));
 			var span = div.appendChild(document.createElement("span"));

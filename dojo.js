@@ -685,7 +685,7 @@
 				execModule(module, req.async);
 				checkIdle();
 				if(!module.executed){
-					// some deps weren't on board or circular dependency detected and string; therefore, push into the execQ
+					// some deps weren't on board or circular dependency detected and strict; therefore, push into the execQ
 					execQ.push(module);
 				}
 				checkComplete();

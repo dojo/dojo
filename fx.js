@@ -22,7 +22,7 @@ define([
 	};
 	var coreFx = dojo.fx;
 	=====*/
-	var CoreFx = dojo.fx = {};
+	var coreFx = dojo.fx = {};
 
 	var _baseObj = {
 			_fire: function(evt, args){

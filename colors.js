@@ -1,10 +1,10 @@
-define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], function(dojo, lang, baseColor, darray) {
+define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], function(dojo, lang, Color, ArrayUtil) {
 	// module:
 	//		dojo/colors
 	// summary:
 	//		TODOC
 
-	lang.getObject("colors", true, dojo);
+	var ColorExt = lang.getObject("dojo.colors", true);
 
 //TODO: this module appears to break naming conventions
 
@@ -26,8 +26,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		if(3 * h < 2){ return m1 + (m2 - m1) * (2 / 3 - h) * 6; }
 		return m1;
 	};
-
-	dojo.colorFromRgb = dojo.colors.fromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
+	dojo.colorFromRgb = ColorExt.fromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
 		// summary:
 		//		get rgb(a) array from css-style color declarations
 		// description:
@@ -40,13 +39,13 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 				var r = c[0];
 				if(r.charAt(r.length - 1) == "%"){
 					// 3 rgb percentage values
-					a = darray.map(c, function(x){
+					a = ArrayUtil.map(c, function(x){
 						return parseFloat(x) * 2.56;
 					});
 					if(l == 4){ a[3] = c[3]; }
-					return dojo.colorFromArray(a, obj); // dojo.Color
+					return Color.fromArray(a, obj); // dojo.Color
 				}
-				return dojo.colorFromArray(c, obj); // dojo.Color
+				return Color.fromArray(c, obj); // dojo.Color
 			}
 			if((t == "hsl" && l == 3) || (t == "hsla" && l == 4)){
 				// normalize hsl values
@@ -64,7 +63,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 					1
 				];
 				if(l == 4){ a[3] = c[3]; }
-				return dojo.colorFromArray(a, obj); // dojo.Color
+				return Color.fromArray(a, obj); // dojo.Color
 			}
 		}
 		return null;	// dojo.Color
@@ -78,7 +77,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		return isNaN(c) ? high : c < low ? low : c > high ? high : c;	// Number
 	};
 
-	baseColor.prototype.sanitize = function(){
+	Color.prototype.sanitize = function(){
 		// summary: makes sure that the object has correct attributes
 		var t = this;
 		t.r = Math.round(confine(t.r, 0, 255));
@@ -88,13 +87,13 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		return this;	// dojo.Color
 	};
 
-	dojo.colors.makeGrey = function(/*Number*/ g, /*Number?*/ a){
+	ColorExt.makeGrey = function(/*Number*/ g, /*Number?*/ a){
 		// summary: creates a greyscale color with an optional alpha
-		return dojo.colorFromArray([g, g, g, a]);
+		return Color.fromArray([g, g, g, a]);
 	};
 
 	// mixin all CSS3 named colors not already in _base, along with SVG 1.0 variant spellings
-	lang.mixin(baseColor.named, {
+	lang.mixin(Color.named, {
 		"aliceblue":	[240,248,255],
 		"antiquewhite": [250,235,215],
 		"aquamarine":	[127,255,212],
@@ -228,6 +227,9 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		"yellowgreen":	[154,205,50]
 	});
 
-	return dojo.colors;
+// Override base Color.fromRgb with the impl in this module
+Color.fromRgb = dojo.colorFromRgb;
+
+	return Color;
 
 });

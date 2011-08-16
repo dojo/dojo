@@ -88,13 +88,15 @@ return dojo.store.Observable = function(store){
 										// if a matches function exists, use that (probably more efficient)
 										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){
 
-									if(removedFrom > -1){
-										// put back in the original slot so it doesn't move unless it needs to (relying on a stable sort below)
-										resultsArray.splice(removedFrom, 0, changed);
-									}else{
-										resultsArray.push(changed);
-									}
-									insertedInto = dojo.indexOf(results = queryExecutor(resultsArray), changed);
+									var firstInsertedInto = removedFrom > -1 ? 
+										removedFrom : // put back in the original slot so it doesn't move unless it needs to (relying on a stable sort below)
+										resultsArray.length;
+									resultsArray.splice(firstInsertedInto, 0, changed); // add the new item
+									insertedInto = dojo.indexOf(queryExecutor(resultsArray), changed); // sort it
+									// we now need to push the chagne back into the original results array
+									resultsArray.splice(firstInsertedInto, 1); // remove the inserted item from the previous index
+									resultsArray.splice(insertedInto, 0, changed); // and insert into the results array with the correct index
+									
 									if((options.start && insertedInto == 0) ||
 										(!atEnd && insertedInto == resultsArray.length -1)){
 										// if it is at the end of the page, assume it goes into the prev or next page

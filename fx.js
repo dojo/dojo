@@ -17,7 +17,7 @@ define([
 
 
 	/*=====
-	fx = {
+	dojo.fx = {
 		// summary: Effects library on top of Base animations
 	};
 	=====*/

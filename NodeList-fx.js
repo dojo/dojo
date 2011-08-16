@@ -1,14 +1,14 @@
-define(["./query", "./_base/lang", "./_base/connect", "./_base/fx", "./fx", "./_base/kernel"], function(query, lang, connect, fx, dfx, dojo) {
+define(["dojo/_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./fx"], 
+  function(NodeList, lang, Hub, BaseFx, CoreFx) {
 	// module:
 	//		dojo/NodeList-fx
 	// summary:
 	//		TODOC
 
-var NodeList = query.NodeList;
-
 /*=====
 dojo["NodeList-fx"] = {
-	// summary: Adds dojo.fx animation support to dojo.query()
+	// summary: Adds dojo.fx animation support to dojo.query() by extending the NodeList class
+	//		with additional FX functions.  NodeList is the array-like object used to hold query results.
 };
 
 // doc alias helpers:
@@ -18,7 +18,7 @@ var lang = dojo, NodeList = dojo.NodeList;
 lang.extend(NodeList, {
 	_anim: function(obj, method, args){
 		args = args||{};
-		var a = dfx.combine(
+		var a = CoreFx.combine(
 			this.map(function(item){
 				var tmpArgs = { node: item };
 				lang.mixin(tmpArgs, args);
@@ -49,7 +49,7 @@ lang.extend(NodeList, {
 		//		Utilizing `auto` to get the NodeList back:
 		//		|	dojo.query(".titles").wipeIn({ auto:true }).onclick(someFunction);
 		//
-		return this._anim(dfx, "wipeIn", args); // dojo.Animation|dojo.NodeList
+		return this._anim(CoreFx, "wipeIn", args); // dojo.Animation|dojo.NodeList
 	},
 
 	wipeOut: function(args){
@@ -68,7 +68,7 @@ lang.extend(NodeList, {
 		// example:
 		//		Wipe out all tables with class "blah":
 		//		|	dojo.query("table.blah").wipeOut().play();
-		return this._anim(dfx, "wipeOut", args); // dojo.Animation|dojo.NodeList
+		return this._anim(CoreFx, "wipeOut", args); // dojo.Animation|dojo.NodeList
 	},
 
 	slideTo: function(args){
@@ -90,7 +90,7 @@ lang.extend(NodeList, {
 		//		|		left: 40,
 		//		|		top: 50
 		//		|	}).play();
-		return this._anim(dfx, "slideTo", args); // dojo.Animation|dojo.NodeList
+		return this._anim(CoreFx, "slideTo", args); // dojo.Animation|dojo.NodeList
 	},
 
 
@@ -110,7 +110,7 @@ lang.extend(NodeList, {
 		// example:
 		//		Fade in all tables with class "blah":
 		//		|	dojo.query("table.blah").fadeIn().play();
-		return this._anim(fx, "fadeIn", args); // dojo.Animation|dojo.NodeList
+		return this._anim(BaseFx, "fadeIn", args); // dojo.Animation|dojo.NodeList
 	},
 
 	fadeOut: function(args){
@@ -138,7 +138,7 @@ lang.extend(NodeList, {
 		//		Using `auto`:
 		//		|	dojo.query("li").fadeOut({ auto:true }).filter(filterFn).forEach(doit);
 		//
-		return this._anim(fx, "fadeOut", args); // dojo.Animation|dojo.NodeList
+		return this._anim(BaseFx, "fadeOut", args); // dojo.Animation|dojo.NodeList
 	},
 
 	animateProperty: function(args){
@@ -171,7 +171,7 @@ lang.extend(NodeList, {
 		//	|			height:240
 		//	|		}
 		//	|	}).onclick(handler);
-		return this._anim(fx, "animateProperty", args); // dojo.Animation|dojo.NodeList
+		return this._anim(BaseFx, "animateProperty", args); // dojo.Animation|dojo.NodeList
 	},
 
 	anim: function( /*Object*/			properties,
@@ -201,9 +201,9 @@ lang.extend(NodeList, {
 		//		animate all elements with the "thigner" class to a width of 500
 		//		pixels over half a second
 		//	|	dojo.query(".thinger").anim({ width: 500 }, 700);
-		var canim = dfx.combine(
+		var canim = CoreFx.combine(
 			this.map(function(item){
-				return fx.animateProperty({
+				return BaseFx.animateProperty({
 					node: item,
 					properties: properties,
 					duration: duration||350,
@@ -212,7 +212,7 @@ lang.extend(NodeList, {
 			})
 		);
 		if(onEnd){
-			connect.connect(canim, "onEnd", onEnd);
+			Hub.connect(canim, "onEnd", onEnd);
 		}
 		return canim.play(delay||0); // dojo.Animation
 	}

@@ -26,7 +26,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		if(3 * h < 2){ return m1 + (m2 - m1) * (2 / 3 - h) * 6; }
 		return m1;
 	};
-	dojo.colorFromRgb = ColorExt.fromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
+	// Override base Color.fromRgb with the impl in this module
+	dojo.colorFromRgb = Color.fromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
 		// summary:
 		//		get rgb(a) array from css-style color declarations
 		// description:
@@ -87,7 +88,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		return this;	// dojo.Color
 	};
 
-	ColorExt.makeGrey = function(/*Number*/ g, /*Number?*/ a){
+	ColorExt.makeGrey = Color.makeGrey = function(/*Number*/ g, /*Number?*/ a){
 		// summary: creates a greyscale color with an optional alpha
 		return Color.fromArray([g, g, g, a]);
 	};
@@ -227,9 +228,5 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		"yellowgreen":	[154,205,50]
 	});
 
-// Override base Color.fromRgb with the impl in this module
-Color.fromRgb = dojo.colorFromRgb;
-
 	return Color;
-
 });

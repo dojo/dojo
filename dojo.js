@@ -677,15 +677,18 @@
 				injectDependencies(module);
 
 				// try to immediately execute
+				// if already traversing a factory tree, then strict causes circular dependency to abort the execution; maybe
+				// it's possible to execute this require later after the current traversal completes and avoid the circular dependency.
+				// ...but *always* insist on immediate in synch mode
+				var strict = checkCompleteGuard && req.async;
 				checkCompleteGuard++;
 				execModule(module, req.async);
 				checkIdle();
 				if(!module.executed){
-					// some deps weren't on board; therefore, push into the execQ
+					// some deps weren't on board or circular dependency detected and string; therefore, push into the execQ
 					execQ.push(module);
-				}else{
-					checkComplete();
 				}
+				checkComplete();
 			}
 			return contextRequire;
 		},

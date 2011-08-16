@@ -26,7 +26,18 @@ dojo.declare("dojo.store.DataStore", null, {
 			} 
 			// if no idAttribute we have implicit id 
 			this.idProperty = (!idAttribute || !idAttributes[0]) || this.idProperty; 
-		} 
+		}
+		var features = this.store.getFeatures();
+		// check the feature set and null out any methods that shouldn't be available
+		if(!features["dojo.data.api.Read"]){
+			this.get = null;
+		}
+		if(!features["dojo.data.api.Identity"]){
+			this.getIdentity = null;
+		}
+		if(!features["dojo.data.api.Write"]){
+			this.put = this.add = null;
+		}
 	},
 	// idProperty: String
 	//		The object property to use to store the identity of the store items.

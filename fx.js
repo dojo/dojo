@@ -20,7 +20,9 @@ define([
 	dojo.fx = {
 		// summary: Effects library on top of Base animations
 	};
+	var coreFx = dojo.fx;
 	=====*/
+	var CoreFx = dojo.fx = {};
 
 	var _baseObj = {
 			_fire: function(evt, args){
@@ -139,7 +141,7 @@ define([
 	});
 	lang.extend(_chain, _baseObj);
 
-	dojo.fx.chain = function(/*dojo.Animation[]*/ animations){
+	coreFx.chain = dojo.fx.chain = function(/*dojo.Animation[]*/ animations){
 		// summary:
 		//		Chain a list of `dojo.Animation`s to run in sequence
 		//
@@ -232,7 +234,7 @@ define([
 	});
 	lang.extend(_combine, _baseObj);
 
-	dojo.fx.combine = function(/*dojo.Animation[]*/ animations){
+	coreFx.combine = dojo.fx.combine = function(/*dojo.Animation[]*/ animations){
 		// summary:
 		//		Combine a list of `dojo.Animation`s to run in parallel
 		//
@@ -262,7 +264,7 @@ define([
 		return new _combine(animations); // dojo.Animation
 	};
 
-	dojo.fx.wipeIn = function(/*Object*/ args){
+	coreFx.wipeIn = dojo.fx.wipeIn = function(/*Object*/ args){
 		// summary:
 		//		Expand a node to it's natural height.
 		//
@@ -318,7 +320,7 @@ define([
 		return anim; // dojo.Animation
 	};
 
-	dojo.fx.wipeOut = function(/*Object*/ args){
+	coreFx.wipeOut = dojo.fx.wipeOut = function(/*Object*/ args){
 		// summary:
 		//		Shrink a node to nothing and hide it.
 		//
@@ -359,7 +361,7 @@ define([
 		return anim; // dojo.Animation
 	};
 
-	dojo.fx.slideTo = function(/*Object*/ args){
+	coreFx.slideTo = dojo.fx.slideTo = function(/*Object*/ args){
 		// summary:
 		//		Slide a node to a new top/left position
 		//
@@ -407,12 +409,6 @@ define([
 
 		return anim; // dojo.Animation
 	};
-	
-	return {
-		chain: dojo.fx.chain,
-		combine: dojo.fx.combine,
-		slideTo: dojo.fx.slideTo,
-		wipeOut: dojo.fx.wipeOut,
-		wipeIn: dojo.fx.wipeIn
-	};
+
+	return coreFx;
 });

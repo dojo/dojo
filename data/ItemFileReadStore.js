@@ -839,7 +839,9 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		if(this._itemsByIdentity){
 			// If this map is defined, we need to just try to get it.  If it fails
 			// the item does not exist.
-			item = this._itemsByIdentity[identity];
+			if(Object.hasOwnProperty.call(this._itemsByIdentity, identity)){
+				item = this._itemsByIdentity[identity];
+			}
 		}else if (Object.hasOwnProperty.call(this._arrayOfAllItems, identity)){
 			item = this._arrayOfAllItems[identity];
 		}

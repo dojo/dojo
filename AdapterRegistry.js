@@ -39,7 +39,7 @@ var AdapterRegistry = dojo.AdapterRegistry = function(/*Boolean?*/ returnWrapper
 
 /*=====
 // doc alias helpers:
-var lang = dojo, AdapterRegistry = dojo.AdapterRegistry;
+AdapterRegistry = dojo.AdapterRegistry;
 =====*/
 
 lang.extend(AdapterRegistry, {

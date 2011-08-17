@@ -12,7 +12,7 @@ dojo["NodeList-traverse"] = {
 };
 
 // doc alias helpers:
-var lang = dojo, NodeList = dojo.NodeList;
+NodeList = dojo.NodeList;
 =====*/
 
 lang.extend(NodeList, {

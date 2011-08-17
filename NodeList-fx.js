@@ -12,7 +12,7 @@ dojo["NodeList-fx"] = {
 };
 
 // doc alias helpers:
-var lang = dojo, NodeList = dojo.NodeList;
+NodeList = dojo.NodeList;
 =====*/
 
 lang.extend(NodeList, {

@@ -13,7 +13,7 @@ dojo["NodeList-manipulate"] = {
 };
 
 // doc alias helpers:
-var lang = dojo, NodeList = dojo.NodeList;
+NodeList = dojo.NodeList;
 =====*/
 
 //TODO: add a way to parse for widgets in the injected markup?

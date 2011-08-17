@@ -1,12 +1,10 @@
-define(["../main"], function(dojo) {
+define(["../_base/kernel","../_base/lang"], function(dojo, lang) {
 	// module:
 	//		dojo/fx/easing
 	// summary:
-	//		TODOC:This module defines
+	//		This module defines standard easing functions that are useful for animations.
 
-dojo.getObject("fx.easing", true, dojo);
-
-dojo.fx.easing = {
+var easingFuncs = dojo.fx.easing = {
 	// summary:
 	//		Collection of easing functions to use beyond the default
 	//		`dojo._defaultEasing` function.
@@ -280,5 +278,5 @@ dojo.fx.easing = {
 	}
 };
 
-return dojo.fx.easing;
+return easingFuncs;
 });

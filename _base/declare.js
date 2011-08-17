@@ -267,7 +267,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	}
 
 	function extend(source){
-		safeMixin(this.prototype, source);
+		declare.safeMixin(this.prototype, source);
 		return this;
 	}
 
@@ -450,7 +450,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		return t;
 	}
 
-	dojo.declare = function(className, superclass, props){
+	function declare(className, superclass, props){
 		// crack parameters
 		if(typeof className != "string"){
 			props = superclass;
@@ -501,7 +501,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			proto = {};
 		}
 		// add all properties
-		safeMixin(proto, props);
+		declare.safeMixin(proto, props);
 		// add constructor
 		t = props.constructor;
 		if(t !== op.constructor){
@@ -558,9 +558,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		// no need to chain "invisible" functions
 
 		return ctor;	// Function
-	};
-
-	dojo.safeMixin = safeMixin;
+	}
 
 	/*=====
 	dojo.declare = function(className, superclass, props){
@@ -1045,5 +1043,8 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	};
 	=====*/
 
-	return dojo.declare;
+	dojo.safeMixin = declare.safeMixin = safeMixin;
+	dojo.declare = declare;
+
+	return declare;
 });

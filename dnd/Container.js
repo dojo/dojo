@@ -223,9 +223,9 @@ dojo.declare("dojo.dnd.Container", null, {
 	},
 
 	// markup methods
-	markupFactory: function(params, node){
+	markupFactory: function(params, node, ctor){
 		params._skipStartup = true;
-		return new dojo.dnd.Container(node, params);
+		return new ctor(node, params);
 	},
 	startup: function(){
 		// summary:

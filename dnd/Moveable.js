@@ -55,8 +55,8 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	},
 
 	// markup methods
-	markupFactory: function(params, node){
-		return new dojo.dnd.Moveable(node, params);
+	markupFactory: function(params, node, ctor){
+		return new ctor(node, params);
 	},
 
 	// methods

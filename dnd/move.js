@@ -23,11 +23,6 @@ dojo.declare("dojo.dnd.move.constrainedMoveable", dojo.dnd.Moveable, {
 	constraints: function(){},
 	within: false,
 
-	// markup methods
-	markupFactory: function(params, node){
-		return new dojo.dnd.move.constrainedMoveable(node, params);
-	},
-
 	constructor: function(node, params){
 		// summary:
 		//		an object that makes a node moveable
@@ -80,11 +75,6 @@ dojo.declare("dojo.dnd.move.boxConstrainedMoveable", dojo.dnd.move.constrainedMo
 	//		object attributes (for markup)
 	box: {},
 
-	// markup methods
-	markupFactory: function(params, node){
-		return new dojo.dnd.move.boxConstrainedMoveable(node, params);
-	},
-
 	constructor: function(node, params){
 		// summary:
 		//		an object, which makes a node moveable
@@ -110,11 +100,6 @@ dojo.declare("dojo.dnd.move.parentConstrainedMoveable", dojo.dnd.move.constraine
 	// area:
 	//		object attributes (for markup)
 	area: "content",
-
-	// markup methods
-	markupFactory: function(params, node){
-		return new dojo.dnd.move.parentConstrainedMoveable(node, params);
-	},
 
 	constructor: function(node, params){
 		// summary:

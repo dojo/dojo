@@ -41,11 +41,6 @@ define(["../main", "./Moveable"], function(dojo) {
 			}
 		},
 
-		// markup methods
-		markupFactory: function(params, node){
-			return new dojo.dnd.TimedMoveable(node, params);
-		},
-
 		onMoveStop: function(/* dojo.dnd.Mover */ mover){
 			if(mover._timer){
 				// stop timer

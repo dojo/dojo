@@ -183,12 +183,6 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this.targetAnchor = null;
 	},
 
-	// markup methods
-	markupFactory: function(params, node){
-		params._skipStartup = true;
-		return new dojo.dnd.Source(node, params);
-	},
-
 	// mouse event processors
 	onMouseMove: function(e){
 		// summary:

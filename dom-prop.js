@@ -1,12 +1,10 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", /*"./dom-construct",*/ "./_base/connect"],
-		function(dojo, has, lang, dom, style, /*ctr,*/ conn){
+define(["exports", "./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-construct", "./_base/connect"],
+		function(exports, dojo, has, lang, dom, style, ctr, conn){
 	// module:
 	//		dojo/dom-prop
 	// summary:
 	//		This module defines the core dojo DOM properties API.
 	//      Indirectly depends on dojo.empty() and dojo.toDom().
-
-	// TODO: adding a link to dom-construct creates a loop, find a way to avoid it
 
 	// =============================
 	// Element properties Functions
@@ -114,90 +112,85 @@ define(["./_base/kernel", "./_base/sniff", "./_base/lang", "./dom", "./dom-style
 			table: 1, tbody: 1, tfoot: 1, thead: 1, tr: 1, title: 1};
 	//>>excludeEnd("webkitMobile");
 
-	var prop = {
-		names: {
-			// properties renamed to avoid clashes with reserved words
-			"class": "className",
-			"for": "htmlFor",
-			// properties written as camelCase
-			tabindex: "tabIndex",
-			readonly: "readOnly",
-			colspan: "colSpan",
-			frameborder: "frameBorder",
-			rowspan: "rowSpan",
-			valuetype: "valueType"
-		},
-
-		get: function getProp(/*DOMNode|String*/node, /*String*/name){
-			node = dom.byId(node);
-			var lc = name.toLowerCase(), propName = prop.names[lc] || name;
-			return node[propName];	// Anything
-		},
-
-		set: function setProp(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
-			node = dom.byId(node);
-			var l = arguments.length;
-			if(l == 2 && typeof name != "string"){ // inline'd type check
-				// the object form of setter: the 2nd argument is a dictionary
-				for(var x in name){
-					prop.set(node, x, name[x]);
-				}
-				return node; // DomNode
-			}
-			var lc = name.toLowerCase(), propName = prop.names[lc] || name;
-			if(propName == "style" && typeof value != "string"){ // inline'd type check
-				// special case: setting a style
-				style.style(node, value);
-				return node; // DomNode
-			}
-			if(propName == "innerHTML"){
-				// special case: assigning HTML
-				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-				if(has("ie") && node.tagName.toLowerCase() in _roInnerHtml){
-					// TODO: two next lines should use "ctr" instead of "dojo", but doing so causes a declaration loop
-					dojo.empty(node);
-					node.appendChild(dojo.toDom(value, node.ownerDocument));
-				}else{
-				//>>excludeEnd("webkitMobile");
-					node[propName] = value;
-				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-				}
-				//>>excludeEnd("webkitMobile");
-				return node; // DomNode
-			}
-			if(lang.isFunction(value)){
-				// special case: assigning an event handler
-				// clobber if we can
-				var attrId = node[_attrId];
-				if(!attrId){
-					attrId = _ctr++;
-					node[_attrId] = attrId;
-				}
-				if(!_evtHdlrMap[attrId]){
-					_evtHdlrMap[attrId] = {};
-				}
-				var h = _evtHdlrMap[attrId][propName];
-				if(h){
-					//h.remove();
-					conn.disconnect(h);
-				}else{
-					try{
-						delete node[propName];
-					}catch(e){}
-				}
-				// ensure that event objects are normalized, etc.
-				if(value){
-					//_evtHdlrMap[attrId][propName] = on(node, propName, value);
-					_evtHdlrMap[attrId][propName] = conn.connect(node, propName, value);
-				}else{
-					node[propName] = null;
-				}
-				return node; // DomNode
-			}
-			node[propName] = value;
-			return node;	// DomNode
-		}
+	exports.names = {
+		// properties renamed to avoid clashes with reserved words
+		"class": "className",
+		"for": "htmlFor",
+		// properties written as camelCase
+		tabindex: "tabIndex",
+		readonly: "readOnly",
+		colspan: "colSpan",
+		frameborder: "frameBorder",
+		rowspan: "rowSpan",
+		valuetype: "valueType"
 	};
 
-	return prop;
+	exports.get = function getProp(/*DOMNode|String*/node, /*String*/name){
+		node = dom.byId(node);
+		var lc = name.toLowerCase(), propName = exports.names[lc] || name;
+		return node[propName];	// Anything
+	};
+
+	exports.set = function setProp(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
+		node = dom.byId(node);
+		var l = arguments.length;
+		if(l == 2 && typeof name != "string"){ // inline'd type check
+			// the object form of setter: the 2nd argument is a dictionary
+			for(var x in name){
+				exports.set(node, x, name[x]);
+			}
+			return node; // DomNode
+		}
+		var lc = name.toLowerCase(), propName = exports.names[lc] || name;
+		if(propName == "style" && typeof value != "string"){ // inline'd type check
+			// special case: setting a style
+			style.style(node, value);
+			return node; // DomNode
+		}
+		if(propName == "innerHTML"){
+			// special case: assigning HTML
+			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+			if(has("ie") && node.tagName.toLowerCase() in _roInnerHtml){
+				ctr.empty(node);
+				node.appendChild(ctr.toDom(value, node.ownerDocument));
+			}else{
+			//>>excludeEnd("webkitMobile");
+				node[propName] = value;
+			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+			}
+			//>>excludeEnd("webkitMobile");
+			return node; // DomNode
+		}
+		if(lang.isFunction(value)){
+			// special case: assigning an event handler
+			// clobber if we can
+			var attrId = node[_attrId];
+			if(!attrId){
+				attrId = _ctr++;
+				node[_attrId] = attrId;
+			}
+			if(!_evtHdlrMap[attrId]){
+				_evtHdlrMap[attrId] = {};
+			}
+			var h = _evtHdlrMap[attrId][propName];
+			if(h){
+				//h.remove();
+				conn.disconnect(h);
+			}else{
+				try{
+					delete node[propName];
+				}catch(e){}
+			}
+			// ensure that event objects are normalized, etc.
+			if(value){
+				//_evtHdlrMap[attrId][propName] = on(node, propName, value);
+				_evtHdlrMap[attrId][propName] = conn.connect(node, propName, value);
+			}else{
+				node[propName] = null;
+			}
+			return node; // DomNode
+		}
+		node[propName] = value;
+		return node;	// DomNode
+	};
 });

@@ -1,5 +1,5 @@
-define(["./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"],
-		function(has, lang, dom, style, prop){
+define(["exports", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"],
+		function(exports, has, lang, dom, style, prop){
 	// module:
 	//		dojo/dom-attr
 	// summary:
@@ -157,8 +157,7 @@ define(["./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"],
 			// for IE
 			tabindex: "tabIndex",
 			readonly: "readOnly"
-		},
-		attr; // the result object
+		};
 
 	function _hasAttr(node, name){
 		var attr = node.getAttributeNode && node.getAttributeNode(name);
@@ -170,74 +169,70 @@ define(["./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"],
 	// but it is value is "false"; "tabIndex" of <div> returns 0 by default on IE, yet other browsers
 	// can return -1.
 
-	attr = {
-		has: function hasAttr(/*DOMNode|String*/node, /*String*/name){
-			var lc = name.toLowerCase();
-			return forcePropNames[prop.names[lc] || name] || _hasAttr(dom.byId(node), attrNames[lc] || name);	// Boolean
-		},
-
-		get: function getAttr(/*DOMNode|String*/node, /*String*/name){
-			node = dom.byId(node);
-			var lc = name.toLowerCase(),
-				propName = prop.names[lc] || name,
-				forceProp = forcePropNames[propName];
-			// should we access this attribute via a property or via getAttribute()?
-			value = node[propName];
-			if(forceProp && typeof value != "undefined"){
-				// node's property
-				return value;	// Anything
-			}
-			if(propName != "href" && (typeof value == "boolean" || lang.isFunction(value))){
-				// node's property
-				return value;	// Anything
-			}
-			// node's attribute
-			// we need _hasAttr() here to guard against IE returning a default value
-			var attrName = attrNames[lc] || name;
-			return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
-		},
-
-		set: function setAttr(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
-			node = dom.byId(node);
-			if(arguments.length == 2){ // inline'd type check
-				// the object form of setter: the 2nd argument is a dictionary
-				for(var x in name){
-					attr.set(node, x, name[x]);
-				}
-				return node; // DomNode
-			}
-			var lc = name.toLowerCase(),
-				propName = prop.names[lc] || name,
-				forceProp = forcePropNames[propName];
-			if(propName == "style" && typeof value != "string"){ // inline'd type check
-				// special case: setting a style
-				style.set(node, value);
-				return node; // DomNode
-			}
-			if(forceProp || typeof value == "boolean" || lang.isFunction(value)){
-				return prop.set(node, name, value)
-			}
-			// node's attribute
-			node.setAttribute(attrNames[lc] || name, value);
-			return node; // DomNode
-		},
-
-		remove: function removeAttr(/*DOMNode|String*/ node, /*String*/ name){
-			dom.byId(node).removeAttribute(attrNames[name.toLowerCase()] || name);
-		},
-
-		getNodeProp: function getNodeProp(/*DomNode|String*/ node, /*String*/ name){
-			node = dom.byId(node);
-			var lc = name.toLowerCase(), propName = prop.names[lc] || name;
-			if((propName in node) && propName != "href"){
-				// node's property
-				return node[propName];	// Anything
-			}
-			// node's attribute
-			var attrName = attrNames[lc] || name;
-			return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
-		}
+	exports.has = function hasAttr(/*DOMNode|String*/node, /*String*/name){
+		var lc = name.toLowerCase();
+		return forcePropNames[prop.names[lc] || name] || _hasAttr(dom.byId(node), attrNames[lc] || name);	// Boolean
 	};
 
-	return attr;
+	exports.get = function getAttr(/*DOMNode|String*/node, /*String*/name){
+		node = dom.byId(node);
+		var lc = name.toLowerCase(),
+			propName = prop.names[lc] || name,
+			forceProp = forcePropNames[propName];
+		// should we access this attribute via a property or via getAttribute()?
+		value = node[propName];
+		if(forceProp && typeof value != "undefined"){
+			// node's property
+			return value;	// Anything
+		}
+		if(propName != "href" && (typeof value == "boolean" || lang.isFunction(value))){
+			// node's property
+			return value;	// Anything
+		}
+		// node's attribute
+		// we need _hasAttr() here to guard against IE returning a default value
+		var attrName = attrNames[lc] || name;
+		return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
+	};
+
+	exports.set = function setAttr(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
+		node = dom.byId(node);
+		if(arguments.length == 2){ // inline'd type check
+			// the object form of setter: the 2nd argument is a dictionary
+			for(var x in name){
+				exports.set(node, x, name[x]);
+			}
+			return node; // DomNode
+		}
+		var lc = name.toLowerCase(),
+			propName = prop.names[lc] || name,
+			forceProp = forcePropNames[propName];
+		if(propName == "style" && typeof value != "string"){ // inline'd type check
+			// special case: setting a style
+			style.set(node, value);
+			return node; // DomNode
+		}
+		if(forceProp || typeof value == "boolean" || lang.isFunction(value)){
+			return prop.set(node, name, value)
+		}
+		// node's attribute
+		node.setAttribute(attrNames[lc] || name, value);
+		return node; // DomNode
+	};
+
+	exports.remove = function removeAttr(/*DOMNode|String*/ node, /*String*/ name){
+		dom.byId(node).removeAttribute(attrNames[name.toLowerCase()] || name);
+	};
+
+	exports.getNodeProp = function getNodeProp(/*DomNode|String*/ node, /*String*/ name){
+		node = dom.byId(node);
+		var lc = name.toLowerCase(), propName = prop.names[lc] || name;
+		if((propName in node) && propName != "href"){
+			// node's property
+			return node[propName];	// Anything
+		}
+		// node's attribute
+		var attrName = attrNames[lc] || name;
+		return _hasAttr(node, attrName) ? node.getAttribute(attrName) : null; // Anything
+	};
 });

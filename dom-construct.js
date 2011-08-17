@@ -1,5 +1,5 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-attr", "./on"],
-		function(dojo, has, win, dom, attr, on){
+define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-attr", "./on"],
+		function(exports, dojo, has, win, dom, attr, on){
 	// module:
 	//		dojo/dom-construct
 	// summary:
@@ -213,8 +213,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 		},
 		reTag = /<\s*([\w\:]+)/,
 		masterNode = {}, masterNum = 0,
-		masterName = "__" + dojo._scopeName + "ToDomId",
-		ctr; // the result object
+		masterName = "__" + dojo._scopeName + "ToDomId";
 
 	// generate start/end tag strings to use
 	// for the injection for each special tag wrap case.
@@ -256,130 +255,126 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-att
 	});
 	//>>excludeEnd("webkitMobile");
 
-	ctr = {
-		toDom: function toDom(frag, doc){
-			doc = doc || win.doc;
-			var masterId = doc[masterName];
-			if(!masterId){
-				doc[masterName] = masterId = ++masterNum + "";
-				masterNode[masterId] = doc.createElement("div");
-			}
-
-			// make sure the frag is a string.
-			frag += "";
-
-			// find the starting tag, and get node wrapper
-			var match = frag.match(reTag),
-				tag = match ? match[1].toLowerCase() : "",
-				master = masterNode[masterId],
-				wrap, i, fc, df;
-			if(match && tagWrap[tag]){
-				wrap = tagWrap[tag];
-				master.innerHTML = wrap.pre + frag + wrap.post;
-				for(i = wrap.length; i; --i){
-					master = master.firstChild;
-				}
-			}else{
-				master.innerHTML = frag;
-			}
-
-			// one node shortcut => return the node itself
-			if(master.childNodes.length == 1){
-				return master.removeChild(master.firstChild); // DOMNode
-			}
-
-			// return multiple nodes as a document fragment
-			df = doc.createDocumentFragment();
-			while(fc = master.firstChild){ // intentional assignment
-				df.appendChild(fc);
-			}
-			return df; // DOMNode
-		},
-
-		place: function place(/*DOMNode|String*/node, /*DOMNode|String*/refNode, /*String|Number?*/position){
-			refNode = dom.byId(refNode);
-			if(typeof node == "string"){ // inline'd type check
-				node = /^\s*</.test(node) ? ctr.toDom(node, refNode.ownerDocument) : dom.byId(node);
-			}
-			if(typeof position == "number"){ // inline'd type check
-				var cn = refNode.childNodes;
-				if(!cn.length || cn.length <= position){
-					refNode.appendChild(node);
-				}else{
-					_insertBefore(node, cn[position < 0 ? 0 : position]);
-				}
-			}else{
-				switch(position){
-					case "before":
-						_insertBefore(node, refNode);
-						break;
-					case "after":
-						_insertAfter(node, refNode);
-						break;
-					case "replace":
-						refNode.parentNode.replaceChild(node, refNode);
-						break;
-					case "only":
-						ctr.empty(refNode);
-						refNode.appendChild(node);
-						break;
-					case "first":
-						if(refNode.firstChild){
-							_insertBefore(node, refNode.firstChild);
-							break;
-						}
-						// else fallthrough...
-					default: // aka: last
-						refNode.appendChild(node);
-				}
-			}
-			return node; // DomNode
-		},
-
-		create: function create(/*DOMNode|String*/tag, /*Object*/attrs, /*DOMNode?|String?*/refNode, /*String?*/pos){
-			var doc = win.doc;
-			if(refNode){
-				refNode = dom.byId(refNode);
-				doc = refNode.ownerDocument;
-			}
-			if(typeof tag == "string"){ // inline'd type check
-				tag = doc.createElement(tag);
-			}
-			if(attrs){ attr.set(tag, attrs); }
-			if(refNode){ ctr.place(tag, refNode, pos); }
-			return tag; // DomNode
-		},
-
-		empty:
-			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			has("ie") ? function(node){
-				node = dom.byId(node);
-				for(var c; c = node.lastChild;){ // intentional assignment
-					ctr.destroy(c);
-				}
-			} :
-			//>>excludeEnd("webkitMobile");
-			function(node){
-				dom.byId(node).innerHTML = "";
-			},
-
-		destroy: function destroy(/*DOMNode|String*/node){
-			node = dom.byId(node);
-			try{
-				var doc = node.ownerDocument;
-				// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
-				if(!_destroyContainer || _destroyDoc != doc){
-					_destroyContainer = doc.createElement("div");
-					_destroyDoc = doc;
-				}
-				_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
-				// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
-				_destroyContainer.innerHTML = "";
-			}catch(e){
-				/* squelch */
-			}
+	exports.toDom = function toDom(frag, doc){
+		doc = doc || win.doc;
+		var masterId = doc[masterName];
+		if(!masterId){
+			doc[masterName] = masterId = ++masterNum + "";
+			masterNode[masterId] = doc.createElement("div");
 		}
+
+		// make sure the frag is a string.
+		frag += "";
+
+		// find the starting tag, and get node wrapper
+		var match = frag.match(reTag),
+			tag = match ? match[1].toLowerCase() : "",
+			master = masterNode[masterId],
+			wrap, i, fc, df;
+		if(match && tagWrap[tag]){
+			wrap = tagWrap[tag];
+			master.innerHTML = wrap.pre + frag + wrap.post;
+			for(i = wrap.length; i; --i){
+				master = master.firstChild;
+			}
+		}else{
+			master.innerHTML = frag;
+		}
+
+		// one node shortcut => return the node itself
+		if(master.childNodes.length == 1){
+			return master.removeChild(master.firstChild); // DOMNode
+		}
+
+		// return multiple nodes as a document fragment
+		df = doc.createDocumentFragment();
+		while(fc = master.firstChild){ // intentional assignment
+			df.appendChild(fc);
+		}
+		return df; // DOMNode
 	};
 
-	return ctr;
+	exports.place = function place(/*DOMNode|String*/node, /*DOMNode|String*/refNode, /*String|Number?*/position){
+		refNode = dom.byId(refNode);
+		if(typeof node == "string"){ // inline'd type check
+			node = /^\s*</.test(node) ? exports.toDom(node, refNode.ownerDocument) : dom.byId(node);
+		}
+		if(typeof position == "number"){ // inline'd type check
+			var cn = refNode.childNodes;
+			if(!cn.length || cn.length <= position){
+				refNode.appendChild(node);
+			}else{
+				_insertBefore(node, cn[position < 0 ? 0 : position]);
+			}
+		}else{
+			switch(position){
+				case "before":
+					_insertBefore(node, refNode);
+					break;
+				case "after":
+					_insertAfter(node, refNode);
+					break;
+				case "replace":
+					refNode.parentNode.replaceChild(node, refNode);
+					break;
+				case "only":
+					exports.empty(refNode);
+					refNode.appendChild(node);
+					break;
+				case "first":
+					if(refNode.firstChild){
+						_insertBefore(node, refNode.firstChild);
+						break;
+					}
+					// else fallthrough...
+				default: // aka: last
+					refNode.appendChild(node);
+			}
+		}
+		return node; // DomNode
+	};
+
+	exports.create = function create(/*DOMNode|String*/tag, /*Object*/attrs, /*DOMNode?|String?*/refNode, /*String?*/pos){
+		var doc = win.doc;
+		if(refNode){
+			refNode = dom.byId(refNode);
+			doc = refNode.ownerDocument;
+		}
+		if(typeof tag == "string"){ // inline'd type check
+			tag = doc.createElement(tag);
+		}
+		if(attrs){ attr.set(tag, attrs); }
+		if(refNode){ exports.place(tag, refNode, pos); }
+		return tag; // DomNode
+	};
+
+	exports.empty =
+		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+		has("ie") ? function(node){
+			node = dom.byId(node);
+			for(var c; c = node.lastChild;){ // intentional assignment
+				exports.destroy(c);
+			}
+		} :
+		//>>excludeEnd("webkitMobile");
+		function(node){
+			dom.byId(node).innerHTML = "";
+		};
+
+	exports.destroy = function destroy(/*DOMNode|String*/node){
+		node = dom.byId(node);
+		try{
+			var doc = node.ownerDocument;
+			// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
+			if(!_destroyContainer || _destroyDoc != doc){
+				_destroyContainer = doc.createElement("div");
+				_destroyDoc = doc;
+			}
+			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
+			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
+			_destroyContainer.innerHTML = "";
+		}catch(e){
+			/* squelch */
+		}
+	};
 });

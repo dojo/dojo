@@ -17,7 +17,7 @@
 							timeout: 1000,
 							runTest: function(t){
 								var d = new doh.Deferred();
-								setTimeout(d.getTestCallback(function(){ // allow browsers time to return the scroll point back to the last position
+								setTimeout(d.getTestErrback(function(){ // allow browsers time to return the scroll point back to the last position
 									scrollTo(100, 50); // scroll a little
 									scrollBy(-50, 0); // net 50px horizontal movement: back-n-forth scrolling helps with different browsers
 									setTimeout(d.getTestCallback(function(){ // time to scroll
@@ -40,22 +40,20 @@
 								d = new doh.Deferred(),
 								rect = dojo.byId("rect100"),
 								handler = dojo.connect(rect.offsetParent, "onclick", null,
-									function(e){
+									d.getTestErrback(function(e){
 										// move the rectangle to the mouse point
 										dojo.disconnect(handler);
 										rect.style.left = e.pageX + "px";
 										rect.style.top = e.pageY + "px";
 										handler = dojo.connect(rect, 'ondblclick', null,
-											function(e){
+											d.getTestCallback(function(e){
 												var offsetX = (event||e).offsetX,
 													offsetY = (event||e).offsetY;
 												dojo.disconnect(handler);
-												d.getTestCallback(function(){
-													t.is(0, offsetX);
-													t.is(0, offsetY);
-												})();
-											});
-										setTimeout(function(){
+												t.is(0, offsetX);
+												t.is(0, offsetY);
+											}));
+										setTimeout(d.getTestErrback(function(){
 											if(!document.createEvent){
 												rect.fireEvent('ondblclick');
 											}else{
@@ -63,9 +61,9 @@
 												clickEvent.initMouseEvent("dblclick", true, true, window, 0,0,0,0,0,0,0,0,0,0,null);
 												rect.dispatchEvent(clickEvent);
 											}
-										}, 100); // time to move rect to cursor position
-									});
-								setTimeout(function(){
+										}), 100); // time to move rect to cursor position
+									}));
+								setTimeout(d.getTestErrback(function(){
 									if(!document.createEvent){
 										rect.offsetParent.fireEvent('onclick');
 									}else{
@@ -74,7 +72,7 @@
 										rect.offsetParent.dispatchEvent(clickEvent);
 									}
 
-								}, 100); // time to finish any pre-scrolling
+								}), 100); // time to finish any pre-scrolling
 								return d;
 							}
 						},
@@ -94,7 +92,7 @@
 						}
 					]
 				);
-				
+
 				// test to make sure position() works with a variety of scrollbars
 				dojo.forEach(["None", "Horz", "Vert", "Both"], function(scroll){
 					dojo.forEach(["Quirks", "Strict"], function(doctype){

@@ -3,12 +3,12 @@ define([
 	"./_base/kernel",
 	"./_base/array",
 	"./_base/connect",
-	"./_base/fx",
+	"./_base/fx", // Compat: baseFx api's are included automatically for compat.
 	"./dom",
 	"./dom-style",
 	"./dom-geometry",
-	"./fx/Toggler"	// TODO: this seems unneeded
-], function(lang, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, fxToggler) {
+	"./fx/Toggler"	// Compat: Toggler api is included automatically when this module was required.
+], function(lang, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, Toggler) {
 
 	// module:
 	//		dojo/fx
@@ -22,7 +22,8 @@ define([
 	};
 	var coreFx = dojo.fx;
 	=====*/
-	var coreFx = dojo.fx = {};
+	var coreFx = {};
+	dojo.fx = baseFx;
 
 	var _baseObj = {
 			_fire: function(evt, args){
@@ -409,6 +410,8 @@ define([
 
 		return anim; // dojo.Animation
 	};
+	lang.mixin(dojo.fx, coreFx); // Add the core api's to the base fx api's for compat.
+	dojo.fx.Toggler = Toggler; // Add the Toggler api's for compat.
 
 	return coreFx;
 });

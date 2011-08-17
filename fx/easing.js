@@ -3,8 +3,8 @@ define(["../_base/kernel","../_base/lang"], function(dojo, lang) {
 	//		dojo/fx/easing
 	// summary:
 	//		This module defines standard easing functions that are useful for animations.
-
-var easingFuncs = dojo.fx.easing = {
+var fxEasing = lang.getObject("dojo.fx.easing",true);
+var easingFuncs = {
 	// summary:
 	//		Collection of easing functions to use beyond the default
 	//		`dojo._defaultEasing` function.
@@ -246,7 +246,7 @@ var easingFuncs = dojo.fx.easing = {
 	bounceIn: function(/* Decimal? */n){
 		// summary:
 		//		An easing function that 'bounces' near the beginning of an Animation
-		return (1 - dojo.fx.easing.bounceOut(1 - n)); // Decimal
+		return (1 - easingFuncs.bounceOut(1 - n)); // Decimal
 	},
 
 	bounceOut: function(/* Decimal? */n){
@@ -273,10 +273,10 @@ var easingFuncs = dojo.fx.easing = {
 	bounceInOut: function(/* Decimal? */n){
 		// summary:
 		//		An easing function that 'bounces' at the beginning and end of the Animation
-		if(n < 0.5){ return dojo.fx.easing.bounceIn(n * 2) / 2; }
-		return (dojo.fx.easing.bounceOut(n * 2 - 1) / 2) + 0.5; // Decimal
+		if(n < 0.5){ return easingFuncs.bounceIn(n * 2) / 2; }
+		return (easingFuncs.bounceOut(n * 2 - 1) / 2) + 0.5; // Decimal
 	}
 };
-
+lang.mixin(fxEasing,easingFuncs);
 return easingFuncs;
 });

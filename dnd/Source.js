@@ -1,9 +1,14 @@
-define(["../main", "./Selector", "./Manager"], function(dojo) {
+define(["../main", "./Selector", "./Manager"], function(dojo, Selector, Manager) {
 	// module:
 	//		dojo/dnd/Source
 	// summary:
 	//		TODOC
 
+
+/*=====
+Selector = dojo.dnd.Selector;
+Manager = dojo.dnd.Manager
+=====*/
 
 /*
 	Container property:
@@ -64,7 +69,7 @@ dojo.dnd.__SourceArgs = function(){
 }
 =====*/
 
-dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
+var Source = dojo.declare("dojo.dnd.Source", Selector, {
 	// summary:
 	//		a Source object, which can be used as a DnD source, or a DnD target
 
@@ -499,7 +504,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	}
 });
 
-dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
+var Target = dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
 	// summary: a Target object, which can be used as a DnD target
 
 	constructor: function(node, params){
@@ -507,16 +512,10 @@ dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
 		//		a constructor of the Target --- see the `dojo.dnd.Source.constructor` for details
 		this.isSource = false;
 		dojo.removeClass(this.node, "dojoDndSource");
-	},
-
-	// markup methods
-	markupFactory: function(params, node){
-		params._skipStartup = true;
-		return new dojo.dnd.Target(node, params);
 	}
 });
 
-dojo.declare("dojo.dnd.AutoSource", dojo.dnd.Source, {
+var AutoSource = dojo.declare("dojo.dnd.AutoSource", dojo.dnd.Source, {
 	// summary:
 	//		a source that syncs its DnD nodes by default
 
@@ -524,14 +523,12 @@ dojo.declare("dojo.dnd.AutoSource", dojo.dnd.Source, {
 		// summary:
 		//		constructor of the AutoSource --- see the Source constructor for details
 		this.autoSync = true;
-	},
-
-	// markup methods
-	markupFactory: function(params, node){
-		params._skipStartup = true;
-		return new dojo.dnd.AutoSource(node, params);
 	}
 });
 
-return dojo.dnd.Source;
+Source.Target = Target;
+Source.AutoSource = AutoSource;
+
+return Source;
+
 });

@@ -3,11 +3,9 @@ define([
 	"./_base/kernel",
 	"./_base/array",
 	"./_base/connect",
-	"./_base/fx", // Compat: baseFx api's are included automatically for compat.
 	"./dom",
 	"./dom-style",
-	"./dom-geometry",
-	"./fx/Toggler"	// Compat: Toggler api is included automatically when this module was required.
+	"./dom-geometry"
 ], function(lang, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, Toggler) {
 
 	// module:
@@ -22,6 +20,16 @@ define([
 	};
 	var coreFx = dojo.fx;
 	=====*/
+	
+	
+// For back-compat, remove in 2.0.
+if(dojo && dojo.ready && !dojo.isAsync){
+	dojo.ready(0, function(){
+		var requires = ["./_base/fx", "./fx/Toggler"];
+		require(requires);	// use indirection so modules not rolled into a build
+	})
+}
+
 	var coreFx = {};
 	dojo.fx = baseFx;
 

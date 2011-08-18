@@ -819,7 +819,7 @@ define([
 		_ioWatch: dojo._ioWatch,
 		_ioAddQueryToUrl: dojo._ioAddQueryToUrl,
 		_isDocumentOk: dojo._isDocumentOk,
-		_getText: dojo_getText,
+		_getText: dojo._getText,
 		get: dojo.xhrGet,
 		post: dojo.xhrPost,
 		put: dojo.xhrPut,

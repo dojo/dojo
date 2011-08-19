@@ -3,10 +3,12 @@ define([
 	"./_base/kernel",
 	"./_base/array",
 	"./_base/connect",
+	"./_base/fx",
 	"./dom",
 	"./dom-style",
-	"./dom-geometry"
-], function(lang, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, Toggler) {
+	"./dom-geometry",
+	"require" // for context sensitive loading of Toggler
+], function(lang, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, require) {
 
 	// module:
 	//		dojo/fx
@@ -21,11 +23,10 @@ define([
 	var coreFx = dojo.fx;
 	=====*/
 	
-	
 // For back-compat, remove in 2.0.
 if(dojo && dojo.ready && !dojo.isAsync){
 	dojo.ready(0, function(){
-		var requires = ["./_base/fx", "./fx/Toggler"];
+		var requires = ["./fx/Toggler"];
 		require(requires);	// use indirection so modules not rolled into a build
 	})
 }
@@ -419,7 +420,6 @@ if(dojo && dojo.ready && !dojo.isAsync){
 		return anim; // dojo.Animation
 	};
 	lang.mixin(dojo.fx, coreFx); // Add the core api's to the base fx api's for compat.
-	dojo.fx.Toggler = Toggler; // Add the Toggler api's for compat.
 
 	return coreFx;
 });

@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
+define(["./_base/kernel", "./on", "./has", "./dom"], function(dojo, on, has, dom){
 	
 	/*=====
 	dojo.mouse = {
@@ -117,7 +117,7 @@ define(["./_base/kernel", "./on", "./has"], function(dojo, on, has){
 			// emulation of mouseenter/leave with mouseover/out using descendant checking
 			return function(node, listener){
 				return on(node, type, function(evt){
-					if(!dojo.isDescendant(evt.relatedTarget, node)){
+					if(!dom.isDescendant(evt.relatedTarget, node)){
 						return listener.call(this, evt);
 					}					
 				});

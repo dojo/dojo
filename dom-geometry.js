@@ -467,7 +467,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 					}
 				}
 			}
-		}else if(has("opera") || (has("ie") == 8 && !dojo.isQuirks)){
+		}else if(has("opera") || (has("ie") == 8 && !has("quirks"))){
 			// On Opera and IE 8, offsetLeft/Top includes the parent's border
 			if(p){
 				pcs = style.getComputedStyle(p);
@@ -636,7 +636,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 	geom.docScroll = function docScroll(){
 		var node = win.doc.parentWindow || win.doc.defaultView;   // use UI window, not dojo.global window
 		return "pageXOffset" in node ? {x: node.pageXOffset, y: node.pageYOffset } :
-			(node = dojo.isQuirks ? win.body() : win.doc.documentElement,
+			(node = has("quirks") ? win.body() : win.doc.documentElement,
 				{x: geom.fixIeBiDiScrollLeft(node.scrollLeft || 0), y: node.scrollTop || 0 });
 	};
 
@@ -675,7 +675,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		var ie = has("ie");
 		if(ie && !geom.isBodyLtr()){
-			var qk = dojo.isQuirks,
+			var qk = has("quirks"),
 				de = qk ? win.body() : win.doc.documentElement;
 			if(ie == 6 && !qk && win.global.frameElement && de.scrollHeight > de.clientHeight){
 				scrollLeft += de.clientLeft; // workaround ie6+strict+rtl+iframe+vertical-scrollbar bug where clientWidth is too small by clientLeft pixels
@@ -698,8 +698,8 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			var offset = geom.getIeDocumentElementOffset();
 
 			// fixes the position in IE, quirks mode
-			ret.x -= offset.x + (dojo.isQuirks ? db.clientLeft + db.offsetLeft : 0);
-			ret.y -= offset.y + (dojo.isQuirks ? db.clientTop + db.offsetTop : 0);
+			ret.x -= offset.x + (has("quirks") ? db.clientLeft + db.offsetLeft : 0);
+			ret.y -= offset.y + (has("quirks") ? db.clientTop + db.offsetTop : 0);
 		}else if(has("ff") == 3){
 			// In FF3 you have to subtract the document element margins.
 			// Fixed in FF3.5 though.
@@ -750,7 +750,7 @@ define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-styl
 			var doc = (se && se.ownerDocument) || document;
 			// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
 			// here rather than document.body
-			var docBody = dojo.isQuirks ? doc.body : doc.documentElement;
+			var docBody = has("quirks") ? doc.body : doc.documentElement;
 			var offset = geom.getIeDocumentElementOffset();
 			event.pageX = event.clientX + geom.fixIeBiDiScrollLeft(docBody.scrollLeft || 0) - offset.x;
 			event.pageY = event.clientY + (docBody.scrollTop || 0) - offset.y;

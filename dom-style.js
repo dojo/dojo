@@ -233,7 +233,7 @@ define(["./_base/kernel", "./_base/sniff", "./dom"], function(dojo, has, dom){
 	//>>excludeEnd("webkitMobile");
 	var _getOpacity =
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		has("ie") < 9 || (has("ie") && dojo.isQuirks) ? function(node){
+		has("ie") < 9 || (has("ie") && has("quirks")) ? function(node){
 			try{
 				return af(node).Opacity / 100; // Number
 			}catch(e){
@@ -247,7 +247,7 @@ define(["./_base/kernel", "./_base/sniff", "./dom"], function(dojo, has, dom){
 
 	var _setOpacity =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		has("ie") < 9 || (has("ie") && dojo.isQuirks) ? function(/*DomNode*/node, /*Number*/opacity){
+		has("ie") < 9 || (has("ie") && has("quirks")) ? function(/*DomNode*/node, /*Number*/opacity){
 			var ov = opacity * 100, opaque = opacity == 1;
 			node.style.zoom = opaque ? "" : 1;
 

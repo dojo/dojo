@@ -311,7 +311,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 		//		This provides normalization between normal synchronous values and
 		//		asynchronous promises, so you can interact with them in a common way
 		// example:
-		//		|	function printFirstAndList(items){
+		//		|	function printFirstAndLast(items){
 		//		|		dojo.when(findFirst(items), console.log);
 		//		|		dojo.when(findLast(items), console.log);
 		//		|	}
@@ -322,7 +322,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 		//		|	}
 		//		|	function findLast(items){
 		//		|		return dojo.when(items, function(items){
-		//		|			return items[items.length];
+		//		|			return items[items.length - 1];
 		//		|		});
 		//		|	}
 		//		And now all three of his functions can be used sync or async.

@@ -22,17 +22,17 @@ define(['./has'], function(has){
 					(readyQ.shift())();
 				}
 			},
-			add = "addEventListener", remove = "removeEventListener", prefix = "",
 			on = function(node, event){
-				event = prefix + event;
-				node[add](event, detectReady, false);
-				readyQ.push(function(){ node[remove](event, detectReady, false); });
+				node.addEventListener(event, detectReady, false);
+				readyQ.push(function(){ node.removeEventListener(event, detectReady, false); });
 			};
 
 		if(!has("dom-addeventlistener")){
-			add = "attachEvent";
-			remove = "detachEvent";
-			prefix = "on";
+			on = function(node, event){
+				event = "on" + event;
+				node.attachEvent(event, detectReady);
+				readyQ.push(function(){ node.detachEvent(event, detectReady); });
+			};
 
 			var div = doc.createElement("div");
 			try{

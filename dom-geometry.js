@@ -1,5 +1,5 @@
-define(["./_base/kernel", "./_base/sniff", "./_base/window","./dom", "./dom-style"],
-		function(dojo, has, win, dom, style){
+define(["./_base/sniff", "./_base/window","./dom", "./dom-style"],
+		function(has, win, dom, style){
 	// module:
 	//		dojo/dom-geometry
 	// summary:

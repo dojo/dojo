@@ -1,4 +1,4 @@
-define(["./kernel"], function(dojo){
+define(["./kernel", "../has", "./sniff"], function(dojo, has){
 	// module:
 	//		dojo/window
 	// summary:
@@ -78,11 +78,27 @@ dojo.withDoc = function(	/*DocumentElement*/documentObject,
 	//		be restored to its previous state.
 
 	var oldDoc = dojo.doc,
-		oldQ = dojo.isQuirks;
+		oldQ = dojo.isQuirks,
+		oldIE = dojo.isIE, isIE, mode, pwin;
 
 	try{
 		dojo.doc = ret.doc = documentObject;
-		dojo.isQuirks = dojo.doc.compatMode == "BackCompat"; // no need to check for QuirksMode which was Opera 7 only
+		// update dojo.isQuirks and the value of the has feature "quirks"
+		dojo.isQuirks = has.add("quirks", dojo.doc.compatMode == "BackCompat", true, true); // no need to check for QuirksMode which was Opera 7 only
+		
+		if(has("ie")){
+			if((pwin = documentObject.parentWindow) && pwin.navigator){
+				// re-run IE detection logic and update dojo.isIE / has("ie")
+				// (the only time parentWindow/navigator wouldn't exist is if we were not
+				// passed an actual legitimate document object)
+				isIE = parseFloat(pwin.navigator.appVersion.split("MSIE ")[1]) || undefined;
+				mode = documentObject.documentMode;
+				if(mode && mode != 5 && Math.floor(isIE) != mode){
+					isIE = mode;
+				}
+				dojo.isIE = has.add("ie", isIE, true, true);
+			}
+		}
 
 		if(thisObject && typeof callback == "string"){
 			callback = thisObject[callback];
@@ -91,7 +107,8 @@ dojo.withDoc = function(	/*DocumentElement*/documentObject,
 		return callback.apply(thisObject, cbArguments || []);
 	}finally{
 		dojo.doc = ret.doc = oldDoc;
-		dojo.isQuirks = oldQ;
+		dojo.isQuirks = has.add("quirks", oldQ, true, true);
+		dojo.isIE = has.add("ie", oldIE, true, true);
 	}
 };
 

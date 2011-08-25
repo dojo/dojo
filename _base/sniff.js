@@ -100,6 +100,9 @@ define(["./kernel", "../has"], function(dojo, has){
 		// isIos: Boolean
 		//		True if client is iPhone, iPod, or iPad
 		isIos: 0,
+		// isAndroid: Number | undefined
+		//		Version as a Number if client is android browser. undefined otherwise.
+		isAndroid: 0,
 		// isWii: Boolean
 		//		True if client is Wii
 		isWii: 0
@@ -113,7 +116,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	isChrome = parseFloat(dua.split("Chrome/")[1]) || undefined;
 	isMac = dav.indexOf("Macintosh") >= 0;
 	isIos = /iPhone|iPod|iPad/.test(dua);
-	isAndroid = /Android/.test(dua);
+	isAndroid = parseFloat(dua.split("Android ")[1]) || undefined;
 	isWii = typeof opera != "undefined" && opera.wiiremote;
 
 	// safari detection derived from:

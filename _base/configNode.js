@@ -45,7 +45,7 @@ exports.config = function(config){
 
 	// reset some configuration switches with node-appropriate values
 	var nodeConfig = {
-		baseUrl: __dirname.match(/(.+)\/_base$/)[1],
+		baseUrl: __dirname.match(/(.+)[\/\\]_base$/)[1],
 		commandLineArgs:args,
 		deps:deps,
 		timeout:0,
@@ -70,8 +70,8 @@ exports.config = function(config){
 					vm.runInThisContext(fs.readFileSync(url, "utf8"), url);
 					callback();
 				}catch(e){
-					this.require.log("failed to load resource (" + url + ")");
-					this.require.log(e);
+					this.log("failed to load resource (" + url + ")");
+					this.log(e);
 				}
 			},
 

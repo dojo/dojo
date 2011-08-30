@@ -27,9 +27,9 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 				var f = loadQ.shift();
 					try{
 						f();
-					}catch(e){
+					}
 						// FIXME: signal the error via require.on
-					}finally{
+					finally{
 						onLoadRecursiveGuard = 0;
 					}
 				onLoadRecursiveGuard = 0;

@@ -284,10 +284,10 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		}while(event && event.bubbles && (target = target.parentNode));
 		return event && event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
 	};
-
+	var captures = {}; 
 	if(has("dom-addeventlistener")){
 		// normalize focusin and focusout
-		var captures = {
+		captures = {
 			focusin: "focus",
 			focusout: "blur"
 		};

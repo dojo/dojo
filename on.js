@@ -446,9 +446,11 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				var event = originalEvent.corrected;
 				if(!event){
 					var type = originalEvent.type;
-					delete originalEvent.type; // on some JS engines (android), deleting properties make them mutable 
+					try{
+						delete originalEvent.type; // on some JS engines (android), deleting properties make them mutable
+					}catch(e){} 
 					if(originalEvent.type){
-						// deleting properites doesn't work (older iOS), have to use delegation
+						// deleting properties doesn't work (older iOS), have to use delegation
 						Event.prototype = originalEvent;
 						var event = new Event;
 						// have to delegate methods to make them work

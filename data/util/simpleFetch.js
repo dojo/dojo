@@ -1,12 +1,13 @@
-define(["../..", "./sorter"], function(dojo) {
+define(["dojo/_base/lang", "dojo/_base/window", "./sorter"], 
+  function(lang, winUtil, sorter) {
 	// module:
 	//		dojo/data/util/simpleFetch
 	// summary:
 	//		TODOC
 
-dojo.getObject("data.util.simpleFetch", true, dojo);
+var simpleFetch = lang.getObject("dojo.data.util.simpleFetch", true);
 
-dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
+simpleFetch.fetch = function(/* Object? */ request){
 	//	summary:
 	//		The simpleFetch mixin is designed to serve as a set of function(s) that can
 	//		be mixed into other datastore implementations to accelerate their development.
@@ -41,7 +42,7 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 
 	var _errorHandler = function(errorData, requestObject){
 		if(requestObject.onError){
-			var scope = requestObject.scope || dojo.global;
+			var scope = requestObject.scope || winUtil.global;
 			requestObject.onError.call(scope, errorData, requestObject);
 		}
 	};
@@ -60,7 +61,7 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 			}
 		};
 
-		var scope = requestObject.scope || dojo.global;
+		var scope = requestObject.scope || winUtil.global;
 		if(!requestObject.store){
 			requestObject.store = self;
 		}
@@ -68,7 +69,7 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 			requestObject.onBegin.call(scope, items.length, requestObject);
 		}
 		if(requestObject.sort){
-			items.sort(dojo.data.util.sorter.createSortFunction(requestObject.sort, self));
+			items.sort(sorter.createSortFunction(requestObject.sort, self));
 		}
 		if(requestObject.onItem){
 			for(var i = startIndex; (i < items.length) && (i < endIndex); ++i){
@@ -90,5 +91,5 @@ dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 	return request;	// Object
 };
 
-return dojo.data.util.simpleFetch;
+return simpleFetch;
 });

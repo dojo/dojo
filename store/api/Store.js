@@ -1,10 +1,10 @@
-define([], function() {
+define(["dojo/_base/declare"], function(declare) {
 	// module:
 	//		dojo/store/api/Store
 	// summary:
 	//		The module defines the Dojo object store interface.
 
-dojo.declare("dojo.store.api.Store", null, {
+var Store = declare("dojo.store.api.Store", null, {
 	// summary:
 	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines methods signatures and intentionally leaves all the
@@ -133,7 +133,7 @@ dojo.declare("dojo.store.api.Store", null, {
 	}
 });
 
-dojo.store.api.Store.PutDirectives = function(id, before, parent, overwrite){
+Store.PutDirectives = function(id, before, parent, overwrite){
 	// summary:
 	//		Directives passed to put() and add() handlers for guiding the update and
 	//		creation of stored objects.
@@ -160,7 +160,7 @@ dojo.store.api.Store.PutDirectives = function(id, before, parent, overwrite){
 	this.overwrite = overwrite;
 };
 
-dojo.store.api.Store.SortInformation = function(attribute, descending){
+Store.SortInformation = function(attribute, descending){
 	// summary:
 	//		An object describing what attribute to sort on, and the direction of the sort.
 	// attribute: String
@@ -171,7 +171,7 @@ dojo.store.api.Store.SortInformation = function(attribute, descending){
 	this.descending = descending;
 };
 
-dojo.store.api.Store.QueryOptions = function(sort, start, count){
+Store.QueryOptions = function(sort, start, count){
 	// summary:
 	//		Optional object with additional parameters for query results.
 	// sort: dojo.store.api.Store.SortInformation[]?
@@ -189,7 +189,7 @@ dojo.store.api.Store.QueryOptions = function(sort, start, count){
 	this.count = count;
 };
 
-dojo.declare("dojo.store.api.Store.QueryResults", null, {
+declare("dojo.store.api.Store.QueryResults", null, {
 	// summary:
 	//		This is an object returned from query() calls that provides access to the results
 	//		of a query. Queries may be executed asynchronously.
@@ -275,7 +275,7 @@ dojo.declare("dojo.store.api.Store.QueryResults", null, {
 	total: 0
 });
 
-dojo.declare("dojo.store.api.Store.Transaction", null, {
+declare("dojo.store.api.Store.Transaction", null, {
 	// summary:
 	//		This is an object returned from transaction() calls that represents the current
 	//		transaction.
@@ -293,5 +293,5 @@ dojo.declare("dojo.store.api.Store.Transaction", null, {
 		//		or failure of the abort.
 	}
 });
-
+return Store;
 });

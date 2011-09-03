@@ -1,4 +1,5 @@
-define(["../_base/kernel", "../_base/xhr", "../json", "../_base/declare", "./util/QueryResults"], function(dojo, xhr, JSON, declare, QueryResults) {
+define(["../_base/xhr", "../json", "../_base/declare", "./util/QueryResults"
+], function(xhr, JSON, declare, QueryResults) {
   //  module:
   //    dojo/store/JsonRest
   //  summary:
@@ -15,7 +16,7 @@ return declare("dojo.store.JsonRest", null, {
 		//		formatted data.
 		// options:
 		//		This provides any configuration information that will be mixed into the store
-		dojo.safeMixin(this, options);
+		declare.safeMixin(this, options);
 	},
 	// target: String
 	//		The target base URL to use for all requests to the server. This string will be
@@ -124,7 +125,7 @@ return declare("dojo.store.JsonRest", null, {
 					(options.count + (options.start || 0) - 1) : '');
 		}
 		if(query && typeof query == "object"){
-			query = dojo.objectToQuery(query);
+			query = xhr.objectToQuery(query);
 			query = query ? "?" + query: "";
 		}
 		if(options && options.sort){

@@ -1,11 +1,12 @@
-define(["../main", "./util/QueryResults"], function(dojo) {
+define(["../_base/lang", "../_base/declare", "../_base/Deferred", "../_base/array", "./util/QueryResults"
+], function(lang,declare,Deferred,array,QueryResults) {
 	// module:
 	//		dojo/store/DataStore
 	// summary:
 	//		TODOC
 
 
-dojo.declare("dojo.store.DataStore", null, {
+return declare("dojo.store.DataStore", null, {
 	target: "",
 	constructor: function(options){
 		// summary:
@@ -15,7 +16,7 @@ dojo.declare("dojo.store.DataStore", null, {
 		// options: Object?
 		//		This provides any configuration information that will be mixed into the store,
 		//		including a reference to the Dojo data store under the property "store".
-		dojo.mixin(this, options);
+		lang.mixin(this, options);
  		if(!"idProperty" in options){
 			var idAttribute; 
 			try{
@@ -66,7 +67,7 @@ dojo.declare("dojo.store.DataStore", null, {
 		// id: Object?
 		//		The identity to use to lookup the object
 		var returnedObject, returnedError;
-		var deferred = new dojo.Deferred();
+		var deferred = new Deferred();
 		this.store.fetchItemByIdentity({
 			identity: id,
 			onItem: this._objectConverter(function(object){
@@ -139,22 +140,22 @@ dojo.declare("dojo.store.DataStore", null, {
 		// returns: dojo.store.util.QueryResults
 		//		A query results object that can be used to iterate over results.
 		var fetchHandle;
-		var deferred = new dojo.Deferred(function(){ fetchHandle.abort && fetchHandle.abort(); });
-		deferred.total = new dojo.Deferred();
+		var deferred = new Deferred(function(){ fetchHandle.abort && fetchHandle.abort(); });
+		deferred.total = new Deferred();
 		var converter = this._objectConverter(function(object){return object;});
-		fetchHandle = this.store.fetch(dojo.mixin({
+		fetchHandle = this.store.fetch(lang.mixin({
 			query: query,
 			onBegin: function(count){
 				deferred.total.resolve(count);
 			},
 			onComplete: function(results){
-				deferred.resolve(dojo.map(results, converter));
+				deferred.resolve(array.map(results, converter));
 			},
 			onError: function(error){
 				deferred.reject(error);
 			}
 		}, options));
-		return dojo.store.util.QueryResults(deferred);
+		return QueryResults(deferred);
 	},
 	getIdentity: function(object){
 		// summary:
@@ -166,6 +167,4 @@ dojo.declare("dojo.store.DataStore", null, {
 		return object[this.idProperty];
 	}
 });
-
-return dojo.store.DataStore;
 });

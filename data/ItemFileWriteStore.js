@@ -1,13 +1,13 @@
-define(["../_base/declare", "../_base/array", "../_base/json", "../_base/window", 
+define(["../_base/lang", "../_base/declare", "../_base/array", "../_base/json", "../_base/window", 
 	"./ItemFileReadStore", "../date/stamp"
-], function(declare, arrayUtil, jsonUtil, window, ItemFileReadStore, dateStamp) {
+], function(lang, declare, arrayUtil, jsonUtil, window, ItemFileReadStore, dateStamp) {
 	// module:
 	//		dojo/data/ItemFileWriteStore
 	// summary:
 	//		TODOC
 
 /*===== var ItemFileReadStore = dojo.data.ItemFileReadStore; =====*/
-declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
+return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	constructor: function(/* object */ keywordParameters){
 		//	keywordParameters: {typeMap: object)
 		//		The structure of the typeMap object is as follows:
@@ -802,5 +802,4 @@ declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	}
 });
 
-return ItemFileWriteStore;
 });

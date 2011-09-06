@@ -90,7 +90,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 
 	ColorExt.makeGrey = Color.makeGrey = function(/*Number*/ g, /*Number?*/ a){
 		// summary: creates a greyscale color with an optional alpha
-		return Color.fromArray([g, g, g, a]);
+		return Color.fromArray([g, g, g, a]);	// dojo.Color
 	};
 
 	// mixin all CSS3 named colors not already in _base, along with SVG 1.0 variant spellings

@@ -1,11 +1,11 @@
-define(["../main", "../touch", "./common", "./autoscroll"], function(dojo, touch) {
+define(["../main", "../Evented", "../touch", "./common", "./autoscroll"], function(dojo, Evented, touch) {
 	// module:
 	//		dojo/dnd/Mover
 	// summary:
 	//		TODOC
 
 
-dojo.declare("dojo.dnd.Mover", null, {
+dojo.declare("dojo.dnd.Mover", [Evented], {
 	constructor: function(node, e, host){
 		// summary:
 		//		an object which makes a node follow the mouse, or touch-drag on touch devices.

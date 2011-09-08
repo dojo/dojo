@@ -1,4 +1,4 @@
-define(["../main", "../touch", "./Mover"], function(dojo, touch) {
+define(["../main", "../Evented", "../touch", "./Mover"], function(dojo, Evented, touch) {
 	// module:
 	//		dojo/dnd/Moveable
 	// summary:
@@ -26,7 +26,7 @@ dojo.declare("dojo.dnd.__MoveableArgs", [], {
 });
 =====*/
 
-dojo.declare("dojo.dnd.Moveable", null, {
+dojo.declare("dojo.dnd.Moveable", [Evented], {
 	// object attributes (for markup)
 	handle: "",
 	delay: 0,

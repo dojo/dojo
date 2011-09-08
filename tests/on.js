@@ -2,15 +2,16 @@ dojo.provide("dojo.tests.on");
 
 var on = dojo.require("dojo.on");
 var has = dojo.require("dojo.has");
+var topic = dojo.require("dojo.topic");
+var Evented = dojo.require("dojo.Evented");
 doh.register("tests.on",
 	[
 		function object(t){
 			var order = [];
-			var obj = {
-				oncustom: function(event){
-					order.push(event.a);
-					return event.a+1;
-				}
+			var obj = new dojo.Evented();
+			obj.oncustom = function(event){
+				order.push(event.a);
+				return event.a+1;
 			};
 			var signal = on.pausable(obj, "custom", function(event){
 				order.push(0);
@@ -47,15 +48,14 @@ doh.register("tests.on",
 		},
 		function once(t){
 			var order = [];
-			var obj = {
-				oncustom: function(event){
-					order.push(event.a);
-				}
-			};
+			var obj = new dojo.Evented();
+			obj.on("custom", function(event){
+				order.push(event.a);
+			});
 			var signal = on.once(obj, "custom", function(event){
 				order.push(1);
 			});
-			obj.oncustom({a:0});
+			obj.emit("custom",{a:0});
 			obj.oncustom({a:2}); // should call original method, but not listener
 			t.is(order, [0,1,2]);
 		},
@@ -192,8 +192,8 @@ doh.register("tests.on",
 			}));
 			t.is(order, [0, 1, 2, 3]);
 		},
-		function Evented(t){
-			var MyClass = dojo.declare([on.Evented],{
+		function testEvented(t){
+			var MyClass = dojo.declare([Evented],{
 
 			});
 			var order = [];
@@ -206,12 +206,12 @@ doh.register("tests.on",
 		},
 		function pubsub(t){
 			var fooCount = 0;
-			on("/test/foo", function(event, secondArg){
+			topic.on("/test/foo", function(event, secondArg){
 				t.is("value", event.foo);
 				t.is("second", secondArg);
 				fooCount++;
 			});
-			on.emit("/test/foo", {foo: "value"}, "second");
+			topic.emit("/test/foo", {foo: "value"}, "second");
 			t.is(1, fooCount);
 		},
 		function touch(t){

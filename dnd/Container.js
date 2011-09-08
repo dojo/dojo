@@ -1,4 +1,4 @@
-define(["../main", "./common", "../parser"], function(dojo) {
+define(["../main", "../Evented", "./common", "../parser"], function(dojo, Evented) {
 	// module:
 	//		dojo/dnd/Container
 	// summary:
@@ -54,7 +54,7 @@ dojo.dnd.Item = function(){
 }
 =====*/
 
-dojo.declare("dojo.dnd.Container", null, {
+dojo.declare("dojo.dnd.Container", Evented, {
 	// summary:
 	//		a Container object, which knows when mouse hovers over it,
 	//		and over which element it hovers

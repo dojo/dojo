@@ -1,4 +1,4 @@
-define(["./kernel", "./lang", "./Color", "./connect", "./sniff", "../dom", "../dom-style"], function(dojo, lang, Color, connect, has, dom, style){
+define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "../dom", "../dom-style"], function(dojo, lang, Evented, Color, connect, has, dom, style){
 	// module:
 	//		dojo/_base/fx
 	// summary:
@@ -48,7 +48,7 @@ define(["./kernel", "./lang", "./Color", "./connect", "./sniff", "../dom", "../d
 		}
 
 	};
-
+	dojo.Animation.prototype = new Evented();
 	// Alias to drop come 2.0:
 	dojo._Animation = dojo.Animation;
 

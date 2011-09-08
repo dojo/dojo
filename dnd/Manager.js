@@ -1,11 +1,11 @@
-define(["../main", "./common", "./autoscroll", "./Avatar"], function(dojo) {
+define(["../main", "../Evented", "./common", "./autoscroll", "./Avatar"], function(dojo, Evented) {
 	// module:
 	//		dojo/dnd/Manager
 	// summary:
 	//		TODOC
 
 
-var Manager = dojo.declare("dojo.dnd.Manager", null, {
+var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 	// summary:
 	//		the manager of DnD operations (usually a singleton)
 	constructor: function(){

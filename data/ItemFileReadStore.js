@@ -1,13 +1,13 @@
 define(["../_base/kernel", "../_base/lang", "../_base/declare", "../_base/array", "../_base/xhr", 
-	"../_base/window", "./util/filter", "./util/simpleFetch", "../date/stamp"
-], function(kernel, lang, declare, array, xhr, window, filterUtil, simpleFetch, dateStamp) {
+	"../Evented", "../_base/window", "./util/filter", "./util/simpleFetch", "../date/stamp"
+], function(kernel, lang, declare, array, xhr, Evented, window, filterUtil, simpleFetch, dateStamp) {
 	// module:
 	//		dojo/data/ItemFileReadStore
 	// summary:
 	//		TODOC
 
 
-var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", null,{
+var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	//	summary:
 	//		The ItemFileReadStore implements the dojo.data.api.Read API and reads
 	//		data from JSON files that have contents in this format --

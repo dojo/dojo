@@ -1,4 +1,4 @@
-define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
+define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	// summary:
 	//		The export of this module is a function that provides core event listening functionality. With this function
 	//		you can provide a target, event type, and listener to be notified of
@@ -17,8 +17,8 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	// 		|	define(["dojo/on"], function(listen){
 	// 		|		on(button, "click", clickHandler);
 	//		|		...
-	//  	Plain JavaScript objects can also have their own events.
-	// 		|	var obj = {};
+	//  	Evented JavaScript objects can also have their own events.
+	// 		|	var obj = new Evented;
 	//		|	on(obj, "foo", fooHandler);
 	//		And then we could publish a "foo" event:
 	//		|	on.emit(obj, "foo", {key: "value"});
@@ -29,43 +29,20 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 	//		which would trigger fooHandler. Note that for a simple object this is equivalent to calling:
 	//		|	obj.onfoo({key:"value"});
 	//		If you use on.emit on a DOM node, it will use native event dispatching when possible.
-	//		You can also use listen function itself as a pub/sub hub:
-	//		| 	on("some/topic", function(event){
-	//		|	... do something with event
-	//		|	});
-	//		|	on.publish("some/topic", {name:"some event", ...});
-	// Evented:
-	// 		The "Evented" property of the export of this module can be used as a mixin or base class, to add on() and emit() methods to a class
-	// 		for listening for events and emiting events:
-	// 		|	var Evented = on.Evented;
-	// 		|	var EventedWidget = dojo.declare([Evented, dijit._Widget], {...});
-	//		|	widget = new EventedWidget();
-	//		|	widget.on("open", function(event){
-	//		|	... do something with event
-	//		|	 });
-	//		|
-	//		|	widget.emit("open", {name:"some event", ...});
 
  	"use strict";
-	var after = aspect.after;
 	if(has("dom")){ // check to make sure we are in a browser, this module should work anywhere
 		var major = window.ScriptEngineMajorVersion;
 		has.add("jscript", major && (major() + ScriptEngineMinorVersion() / 10));
 		has.add("event-orientationchange", has("touch") && !has("android")); // TODO: how do we detect this?
 	}
 	var on = function(target, type, listener, dontFix){
-		if(!listener){
-			// two args, do pub/sub or window listening
-			// if there is a window event for the given target, we will target the window
-			return on(has("dom") && ("on" + target) in window ? window : on, 
-				target, type);
-		}
 		if(target.on){ 
 			// delegate to the target's on() method, so it can handle it's own listening if it wants
 			return target.on(type, listener);
 		}
 		// delegate to main listener code
-		return addListener(target, type, listener, dontFix, this);
+		return on.parse(target, type, listener, addListener, dontFix, this);
 	};
 	on.pausable =  function(target, type, listener, dontFix){
 		// summary:
@@ -100,12 +77,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		});
 		return signal;
 	};
-	var prototype = (on.Evented = function(){}).prototype;
-	prototype.on = function(type, listener, dontFix){
-		return addListener(this, type, listener, dontFix, this);
-	};
-	var touchEvents = /^touch/;
-	function addListener(target, type, listener, dontFix, matchesTarget){
+	on.parse = function(target, type, listener, addListener, dontFix, matchesTarget){
 		if(type.call){
 			// event handler function
 			// on(node, dojo.touch.press, touchListener);
@@ -128,7 +100,10 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 			};
 			return handles;
 		}
-		
+		return addListener(target, type, listener, dontFix, matchesTarget)
+	};
+	var touchEvents = /^touch/;
+	function addListener(target, type, listener, dontFix, matchesTarget){		
 		// event delegation:
 		var selector = type.match(/(.*):(.*)/);
 		// if we have a selector:event, the last one is interpreted as an event, and we use event delegation
@@ -169,8 +144,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		if(fixAttach && target.attachEvent){
 			return fixAttach(target, type, listener);
 		}
-	 // use aop
-		return after(target, type, listener, true);
+	 	throw new Error("Target must be an event emitter");
 	}
 
 	on.selector = function(selector, eventType){
@@ -209,7 +183,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		this.bubbles = false;
 	}
 	var slice = [].slice,
-		syntheticDispatch = prototype.emit = on.emit = function(target, type, event){
+		syntheticDispatch = on.emit = function(target, type, event){
 		// summary:
 		//		Fires an event on the target object.
 		//	target:
@@ -258,12 +232,6 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		//	|		direction: "left-to-right"
 		//	|	});
 		var args = slice.call(arguments, 2);
-		if(typeof target == "string"){
-			// two argument case
-			args.unshift(event = type);
-			type = target;
-			target = this;
-		}
 		var method = "on" + type;
 		if("parentNode" in target){
 			// node (or node-like), create event controller methods
@@ -315,7 +283,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				}
 				return target.dispatchEvent(nativeEvent) && nativeEvent;
 			}
-			return syntheticDispatch.call(on, target, type, event); // emit for a non-node
+			return syntheticDispatch.apply(on, arguments); // emit for a non-node
 		};
 	}else{
 		// no addEventListener, basically old IE event normalization
@@ -402,7 +370,7 @@ define(["./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 				emiter.listeners.push(handle = (_dojoIEListeners_.push(listener) - 1));
 				return new IESignal(handle);
 			}
-			return after(target, type, listener, true);
+			return aspect.after(target, type, listener, true);
 		};
 
 		var _setKeyChar = function(evt){

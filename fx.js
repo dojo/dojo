@@ -1,5 +1,6 @@
 define([
 	"./_base/lang",
+	"./Evented",
 	"./_base/kernel",
 	"./_base/array",
 	"./_base/connect",
@@ -8,7 +9,7 @@ define([
 	"./dom-style",
 	"./dom-geometry",
 	"require" // for context sensitive loading of Toggler
-], function(lang, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, require) {
+], function(lang, Evented, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, require) {
 
 	// module:
 	//		dojo/fx
@@ -54,6 +55,7 @@ if(dojo && dojo.ready && !dojo.isAsync){
 			if(a.delay){ this.duration += a.delay; }
 		}, this);
 	};
+	_chain.prototype = new Evented();
 	lang.extend(_chain, {
 		_onAnimate: function(){
 			this._fire("onAnimate", arguments);

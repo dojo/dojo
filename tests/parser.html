@@ -7,9 +7,9 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
 		<script type="text/javascript">
-		require(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/html", "dojo/Stateful",
+		require(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/html", "dojo/Stateful", "dojo/Evented",
 				"doh", "dojo/date/stamp", "dojo/aspect", "dojo/parser", "dojo/domReady!"],
-				function(dojo, dlang, darray, declare, dhtml, Stateful, doh, dstamp, aspect, parser){
+				function(dojo, dlang, darray, declare, dhtml, Stateful, Evented, doh, dstamp, aspect, parser){
 
 			var mixin = dojo.mixin,
 				extend = dojo.extend,
@@ -143,7 +143,7 @@
 				}
 			});
 			
-			declare("tests.parser.StatefulClass", Stateful, {
+			declare("tests.parser.StatefulClass", [Evented, Stateful], {
 				strProp1: "",
 				objProp1: {},
 				boolProp1: false,

@@ -1,13 +1,13 @@
-define(["../_base/lang", "../_base/declare", "../_base/Deferred", "../_base/array", 
+define(["../_base/lang", "../Evented", "../_base/declare", "../_base/Deferred", "../_base/array", 
 	"../_base/connect", "../regexp"
-], function(lang, declare, Deferred, array, connect, regexp) {
+], function(lang, Evented, declare, Deferred, array, connect, regexp) {
 	// module:
 	//		dojo/data/ObjectStore
 	// summary:
 	//		TODOC
 
 
-return declare("dojo.data.ObjectStore", null,{
+dojo.declare("dojo.data.ObjectStore", [Evented],{
 		objectStore: null,
 		constructor: function(options){
 			// summary:
@@ -206,7 +206,7 @@ return declare("dojo.data.ObjectStore", null,{
 						}
 						else{
 							for(var i in object){
-								if(i != self.idProperty){
+								if(i != self.objectStore.idProperty){
 									self.onSet(object, i, null, object[i]);
 								}
 							}
@@ -249,7 +249,7 @@ return declare("dojo.data.ObjectStore", null,{
 
 
 		getIdentity: function(item){
-			return item.getId ? item.getId() : item[this.objectStore.idProperty || "id"];
+			return this.objectStore.getIdentity ? this.objectStore.getIdentity(item) : item[this.objectStore.idProperty || "id"];
 		},
 
 		getIdentityAttributes: function(item){
@@ -417,7 +417,7 @@ return declare("dojo.data.ObjectStore", null,{
 					if(object){
 						result = this.objectStore.put(object, {overwrite: !!old});
 					}
-					else{
+					else if(typeof old != "undefined"){
 						result = this.objectStore.remove(this.getIdentity(old));
 					}
 					savingObjects.push(dirty);

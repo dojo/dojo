@@ -56,6 +56,18 @@ tests.register("tests.data.ObjectStore",
 					t.is(memoryDataStore.getValue(item, "prop1"), 1);
 					t.is(memoryDataStore.getValue(item, "prop2"), 2);
 				}});
+			var newItem = memoryDataStore.newItem({
+				foo: "bar",
+				id: Math.random()
+			});
+			memoryDataStore.deleteItem(newItem);
+			memoryDataStore.save();
+			memoryDataStore.fetchItemByIdentity({
+				identity: memoryDataStore.getIdentity(newItem),
+				onItem: function(item){
+					t.is(item, null);
+				}
+			});
 		},
 		function testMemoryQuery(t){
 			var d = new doh.Deferred();

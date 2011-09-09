@@ -147,7 +147,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 	 	throw new Error("Target must be an event emitter");
 	}
 
-	on.selector = function(selector, eventType){
+	on.selector = function(selector, eventType, children){
 		// summary:
 		//		Creates a new extension event with event delegation. This is based on
 		// 		the provided event type (can be extension event) that
@@ -156,18 +156,29 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		The CSS selector to use for filter events and determine the |this| of the event listener.
 		//	eventType:
 		//		The event to listen for
+		// children:
+		//		Indicates if children elements of the selector should be allowed. This defaults to 
+		// 		true (except in the case of normally non-bubbling events like mouse.enter, in which case it defaults to false).
 		//	example:
 		//		define(["dojo/on", "dojo/mouse"], function(listen, mouse){
 		//			on(node, on.selector(".my-class", mouse.enter), handlerForMyHover);
 		return function(target, listener){
 			var matchesTarget = this;
+			var bubble = eventType.bubble;
+			if(bubble){
+				// the event type doesn't naturally bubble, but has a bubbling form, use that
+				eventType = bubble;
+			}else if(children !== false){
+				// for normal bubbling events we default to allowing children of the selector
+				children = true;
+			}
 			return on(target, eventType, function(event){
 				var eventTarget = event.target;
 				// see if we have a valid matchesTarget or default to dojo.query
 				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
 				// there is a selector, so make sure it matches
 				while(!matchesTarget.matches(eventTarget, selector, target)){
-					if(eventTarget == target || !(eventTarget = eventTarget.parentNode)){ // intentional assignment
+					if(eventTarget == target || !children || !(eventTarget = eventTarget.parentNode)){ // intentional assignment
 						return;
 					}
 				}

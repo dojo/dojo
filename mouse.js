@@ -103,32 +103,23 @@ define(["./_base/kernel", "./on", "./has", "./dom"], function(dojo, on, has, dom
 =====*/
 
 	var eventHandler, enter, leave;
-	if(has("events-mouseenter")){
-		eventHandler = function(type){
-			// essentially a pass through, the browser already has mouseenter/leave
-			return function(node, listener){
-				return on(node, type, listener);
-			};
+	function eventHandler(type, mustBubble){
+		// emulation of mouseenter/leave with mouseover/out using descendant checking
+		var handler = function(node, listener){
+			return on(node, type, function(evt){
+				if(!dom.isDescendant(evt.relatedTarget, mustBubble ? evt.target : node)){
+					return listener.call(this, evt);
+				}					
+			});
 		};
-		enter = eventHandler("mouseenter");
-		leave = eventHandler("mouseleave");
-	}else{
-		eventHandler = function(type){
-			// emulation of mouseenter/leave with mouseover/out using descendant checking
-			return function(node, listener){
-				return on(node, type, function(evt){
-					if(!dom.isDescendant(evt.relatedTarget, node)){
-						return listener.call(this, evt);
-					}					
-				});
-			};
-		};
-		enter = eventHandler("mouseover");
-		leave = eventHandler("mouseout");
+		if(!mustBubble){
+			handler.bubble = eventHandler(type, true);
+		}
+		return handler;
 	}
 	return {
-		enter: enter,
-		leave: leave,
+		enter: eventHandler("mouseover"),
+		leave: eventHandler("mouseout"),
 		isLeft: mouseButtons.isLeft,
 		isMiddle: mouseButtons.isMiddle,
 		isRight: mouseButtons.isRight

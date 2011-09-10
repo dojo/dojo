@@ -13,6 +13,7 @@ define([
 	"dojo/tests/currency",
 	"dojo/tests/AdapterRegistry",
 	"dojo/tests/regexp",
+	"dojo/tests/store",
 	"dojo/tests/string",
 	"dojo/tests/colors",
 	"dojo/tests/DeferredList",

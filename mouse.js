@@ -3,8 +3,8 @@ define(["./_base/kernel", "./on", "./has", "./dom"], function(dojo, on, has, dom
 	/*=====
 	dojo.mouse = {
 	// summary:
-	// 		This module provide mouse event handling utility functions and exports
-	// 		mouseenter and mouseleave event emulation.
+	//		This module provide mouse event handling utility functions and exports
+	//		mouseenter and mouseleave event emulation.
 	// enter: Synthetic Event
 	//		This is an extension event for the mouseenter that IE provides, emulating the
 	//		behavior on other browsers.
@@ -21,10 +21,10 @@ define(["./_base/kernel", "./on", "./has", "./dom"], function(dojo, on, has, dom
 	//		To use these events, you register a mouseenter like this:
 	//		|	define(["dojo/on", dojo/mouse"], function(on, mouse){
 	//		|		on(targetNode, mouse.enter, function(event){
-	// 		|			dojo.addClass(targetNode, "highlighted");
+	//		|			dojo.addClass(targetNode, "highlighted");
 	//		|		});
 	//		|		on(targetNode, mouse.leave, function(event){
-	// 		|			dojo.removeClass(targetNode, "highlighted");
+	//		|			dojo.removeClass(targetNode, "highlighted");
 	//		|		});
 	};
 	======*/
@@ -102,7 +102,6 @@ define(["./_base/kernel", "./on", "./has", "./dom"], function(dojo, on, has, dom
 	};
 =====*/
 
-	var eventHandler, enter, leave;
 	function eventHandler(type, mustBubble){
 		// emulation of mouseenter/leave with mouseover/out using descendant checking
 		var handler = function(node, listener){

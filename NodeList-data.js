@@ -67,12 +67,6 @@ var NodeList = dojo.NodeList;
 		//		If passed, remove the data item found at `key`
 	};
 
-	dojo._nodeDataCache = {
-		// summary: An alias to the private dataCache for NodeList-data. NEVER USE THIS!
-		//		This private is only exposed for the benefit of unit testing, and is
-		//		removed during the build process.
-	};
-
 =====*/
 
 	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid",
@@ -88,7 +82,9 @@ var NodeList = dojo.NodeList;
 	;
 
 	//>>excludeStart("debugging", true);
-	// exposed for unit tests:
+	// An alias to the private dataCache for NodeList-data. NEVER USE THIS!
+	// This private is only exposed for the benefit of unit testing, and is
+	// removed during the build process.
 	dojo._nodeDataCache = dataCache;
 	//>>excludeEnd("debugging");
 

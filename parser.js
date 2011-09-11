@@ -347,16 +347,10 @@ dojo.parser = new function(){
 		// widgets).  Parent widgets will recursively call startup on their
 		// (non-top level) children
 		if(!mixin._started){
-			// TODO: for 2.0, when old instantiate() API is desupported, store parent-child
-			// relationships in the nodes[] array so that no getParent() call is needed.
-			// Note that will  require a parse() call from ContentPane setting a param that the
-			// ContentPane is the parent widget (so that the parse doesn't call startup() on the
-			// ContentPane's children)
 			darray.forEach(thelist, function(instance){
 				if( !args.noStart && instance  &&
 					dlang.isFunction(instance.startup) &&
-					!instance._started &&
-					(!instance.getParent || !instance.getParent())
+					!instance._started
 				){
 					instance.startup();
 				}

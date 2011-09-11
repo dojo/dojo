@@ -7,7 +7,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 	var mutator = function(){};
 	var freeze = Object.freeze || function(){};
 	// A deferred provides an API for creating and resolving a promise.
-	dojo.Deferred = function(/*Function?*/canceller){
+	dojo.Deferred = function(/*Function?*/ canceller){
 		// summary:
 		//		Deferreds provide a generic means for encapsulating an asynchronous
 		//		operation and notifying users of the completion and result of the operation.
@@ -227,12 +227,20 @@ define(["./kernel", "./lang"], function(dojo, lang){
 				listener = listener.next;
 			}
 		};
-		this.addCallbacks = function(/*Function?*/callback, /*Function?*/errback){
+		this.addCallbacks = function(callback, errback){
+			// summary:
+			//		Adds callback and error callback for this deferred instance.
+			// callback: Function?
+			// 		The callback attached to this deferred object.
+			// errback: Function?
+			// 		The error callback attached to this deferred object.
+			// returns:
+			// 		Returns this deferred object.
 			this.then(callback, errback, mutator);
-			return this;
+			return this;	// dojo.Deferred
 		};
 		// provide the implementation of the promise
-		this.then = promise.then = function(/*Function?*/resolvedCallback, /*Function?*/errorCallback, /*Function?*/progressCallback){
+		promise.then = this.then = function(/*Function?*/resolvedCallback, /*Function?*/errorCallback, /*Function?*/progressCallback){
 			// summary:
 			//		Adds a fulfilledHandler, errorHandler, and progressHandler to be called for
 			//		completion of a promise. The fulfilledHandler is called when the promise
@@ -248,6 +256,9 @@ define(["./kernel", "./lang"], function(dojo, lang){
 			//		handler is the fulfillment value for the returned promise. If the callback
 			//		throws an error, the returned promise will be moved to failed state.
 			//
+			// returns: 
+			//		Returns a new promise that represents the result of the
+			//		execution of the callback. The callbacks will never affect the original promises value.
 			// example:
 			//		An example of using a CommonJS compliant promise:
 			//		|	asyncComputeTheAnswerToEverything().
@@ -271,10 +282,10 @@ define(["./kernel", "./lang"], function(dojo, lang){
 			if(finished){
 				notify();
 			}
-			return returnDeferred.promise;
+			return returnDeferred.promise; // Promise
 		};
 		var deferred = this;
-		this.cancel = promise.cancel = function (){
+		promise.cancel = this.cancel = function (){
 			// summary:
 			//		Cancels the asynchronous operation
 			if(!finished){
@@ -291,25 +302,41 @@ define(["./kernel", "./lang"], function(dojo, lang){
 		freeze(promise);
 	};
 	lang.extend(dojo.Deferred, {
-		addCallback: function (/*Function*/callback){
-			return this.addCallbacks(lang.hitch.apply(dojo, arguments));
+		addCallback: function (/*Function*/ callback){
+			// summary:
+			// 		Adds successful callback for this deferred instance.
+			// returns:
+			// 		Returns this deferred object.
+			return this.addCallbacks(lang.hitch.apply(dojo, arguments));	// dojo.Deferred
 		},
 
-		addErrback: function (/*Function*/errback){
-			return this.addCallbacks(null, lang.hitch.apply(dojo, arguments));
+		addErrback: function (/*Function*/ errback){
+			// summary:
+			// 		Adds error callback for this deferred instance.
+			// returns:
+			// 		Returns this deferred object.
+			return this.addCallbacks(null, lang.hitch.apply(dojo, arguments));	// dojo.Deferred
 		},
 
-		addBoth: function (/*Function*/callback){
+		addBoth: function (/*Function*/ callback){
+			// summary:
+			// 		Add handler as both successful callback and error callback for this deferred instance.
+			// returns:
+			// 		Returns this deferred object.
 			var enclosed = lang.hitch.apply(dojo, arguments);
-			return this.addCallbacks(enclosed, enclosed);
+			return this.addCallbacks(enclosed, enclosed);	// dojo.Deferred
 		},
 		fired: -1
 	});
 
-	dojo.Deferred.when = dojo.when = function(promiseOrValue, /*Function?*/callback, /*Function?*/errback, /*Function?*/progressHandler){
+	dojo.Deferred.when = dojo.when = function(promiseOrValue, /*Function?*/ callback, /*Function?*/ errback, /*Function?*/ progressHandler){
 		// summary:
 		//		This provides normalization between normal synchronous values and
 		//		asynchronous promises, so you can interact with them in a common way
+		// returns:
+		// 		Returns a new promise that represents the result of the execution of callback 
+		// 		when parameter "promiseOrValue" is promise.
+		// 		Returns the execution result of callback when parameter "promiseOrValue" is value.
 		// example:
 		//		|	function printFirstAndLast(items){
 		//		|		dojo.when(findFirst(items), console.log);
@@ -332,7 +359,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 		if(promiseOrValue && typeof promiseOrValue.then === "function"){
 			return promiseOrValue.then(callback, errback, progressHandler);
 		}
-		return callback(promiseOrValue);
+		return callback(promiseOrValue);	// Promise
 	};
 
 	return dojo.Deferred;

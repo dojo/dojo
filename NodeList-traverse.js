@@ -28,10 +28,10 @@ lang.extend(NodeList, {
 				ary = ary.concat(items);
 			}
 		}
-		return ary;
+		return ary;	//Array
 	},
 
-	_getUniqueAsNodeList: function(nodes){
+	_getUniqueAsNodeList: function(/*Array*/ nodes){
 		// summary:
 		// 		given a list of nodes, make sure only unique
 		// 		elements are returned as our NodeList object.
@@ -49,7 +49,7 @@ lang.extend(NodeList, {
 		return this._wrap(ary, null, this._NodeListCtor);	 //dojo.NodeList
 	},
 
-	_getUniqueNodeListWithParent: function(nodes, query){
+	_getUniqueNodeListWithParent: function(/*Array*/ nodes, /*String*/ query){
 		// summary:
 		// 		gets unique element nodes, filters them further
 		// 		with an optional query and then calls _stash to track parent NodeList.
@@ -58,7 +58,7 @@ lang.extend(NodeList, {
 		return ary._stash(this);  //dojo.NodeList
 	},
 
-	_getRelatedUniqueNodes: function(/*String?*/query, /*Function*/callback){
+	_getRelatedUniqueNodes: function(/*String?*/ query, /*Function*/ callback){
 		// summary:
 		// 		cycles over all the nodes and calls a callback
 		// 		to collect nodes for a possible inclusion in a result.
@@ -67,7 +67,7 @@ lang.extend(NodeList, {
 		return this._getUniqueNodeListWithParent(this._buildArrayFromCallback(callback), query);  //dojo.NodeList
 	},
 
-	children: function(/*String?*/query){
+	children: function(/*String?*/ query){
 		// summary:
 		// 		Returns all immediate child elements for nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the child elements.
@@ -98,7 +98,7 @@ lang.extend(NodeList, {
 		}); //dojo.NodeList
 	},
 
-	closest: function(/*String*/query, /*String|DOMNode?*/ root){
+	closest: function(/*String*/ query, /*String|DOMNode?*/ root){
 		// summary:
 		// 		Returns closest parent that matches query, including current node in this
 		// 		dojo.NodeList if it matches the query.
@@ -134,7 +134,7 @@ lang.extend(NodeList, {
 		}); //dojo.NodeList
 	},
 
-	parent: function(/*String?*/query){
+	parent: function(/*String?*/ query){
 		// summary:
 		// 		Returns immediate parent elements for nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the parent elements.
@@ -164,7 +164,7 @@ lang.extend(NodeList, {
 		}); //dojo.NodeList
 	},
 
-	parents: function(/*String?*/query){
+	parents: function(/*String?*/ query){
 		// summary:
 		// 		Returns all parent elements for nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the child elements.
@@ -200,7 +200,7 @@ lang.extend(NodeList, {
 		}); //dojo.NodeList
 	},
 
-	siblings: function(/*String?*/query){
+	siblings: function(/*String?*/ query){
 		// summary:
 		// 		Returns all sibling elements for nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the sibling elements.
@@ -239,7 +239,7 @@ lang.extend(NodeList, {
 		}); //dojo.NodeList
 	},
 
-	next: function(/*String?*/query){
+	next: function(/*String?*/ query){
 		// summary:
 		// 		Returns the next element for nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the next elements.
@@ -274,7 +274,7 @@ lang.extend(NodeList, {
 		}); //dojo.NodeList
 	},
 
-	nextAll: function(/*String?*/query){
+	nextAll: function(/*String?*/ query){
 		// summary:
 		// 		Returns all sibling elements that come after the nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the sibling elements.
@@ -312,7 +312,7 @@ lang.extend(NodeList, {
 		}); //dojo.NodeList
 	},
 
-	prev: function(/*String?*/query){
+	prev: function(/*String?*/ query){
 		// summary:
 		// 		Returns the previous element for nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the previous elements.
@@ -347,7 +347,7 @@ lang.extend(NodeList, {
 		}); //dojo.NodeList
 	},
 
-	prevAll: function(/*String?*/query){
+	prevAll: function(/*String?*/ query){
 		// summary:
 		// 		Returns all sibling elements that come before the nodes in this dojo.NodeList.
 		// 		Optionally takes a query to filter the sibling elements.
@@ -407,7 +407,7 @@ lang.extend(NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".second").prevAll().andSelf();
 		//		returns the two divs with class of "prev", as well as the div with class "second".
-		return this.concat(this._parent);
+		return this.concat(this._parent);	//dojo.NodeList
 	},
 
 	//Alternate methods for the :first/:last/:even/:odd pseudos.

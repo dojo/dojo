@@ -32,5 +32,6 @@ define([
 	"dojo/has!host-browser?dojo/tests/NodeList-manipulate",
 	"dojo/has!host-browser?dojo/tests/NodeList-data",
 	"dojo/has!host-browser?dojo/tests/uacss",
-	"dojo/has!host-browser?dojo/tests/window"
+	"dojo/has!host-browser?dojo/tests/window",
+	"dojo/has!host-browser?dojo/tests/touch"
 ], 1);

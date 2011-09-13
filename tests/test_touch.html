@@ -76,50 +76,59 @@
 					}
 					var dohDiv = html.byId('dohDiv');
 					domStyle.set(dohDiv, {display: 'block'});
+					
+					function setObj(obj, e){
+						obj.type = e.type;
+						obj.target = e.target;
+					}
+					function assert(obj, type, target){
+						doh.assertEqual(type, obj.type);
+						doh.assertEqual(target, obj.target);
+					}
 
 					doh.register("dojo.touch", [
 						function press(){
-							var executed;
+							var executed, obj = {};
 							on(dohDiv, touch.press, function(e){
 								//console.log(e.type);
 								executed = true;
-								doh.assertEqual('mousedown', e.type);
-								doh.assertEqual(dohDiv, e.target);
+								setObj(obj, e);
 							});
 							on.emit(dohDiv, 'mousedown', {});
 							doh.assertTrue(executed, 'dojo.touch.press not fired');
+							assert(obj, 'mousedown', dohDiv);							
 						},
 						function move(){
-							var executed;
+							var executed, obj = {};
 							on(dohDiv, touch.move, function(e){
 								//console.log(e.type);
 								executed = true;
-								doh.assertEqual('mousemove', e.type);
-								doh.assertEqual(dohDiv, e.target);
+								setObj(obj, e);
 							});
 							on.emit(dohDiv, 'mousemove', {});
 							doh.assertTrue(executed, 'dojo.touch.move not fired');
+							assert(obj, 'mousemove', dohDiv);
 						},
 						function release(){
-							var executed;
+							var executed, obj = {};
 							on(dohDiv, touch.release, function(e){
 								//console.log(e.type);
 								executed = true;
-								doh.assertEqual('mouseup', e.type);
-								doh.assertEqual(dohDiv, e.target);
+								setObj(obj, e);
 							});
 							on.emit(dohDiv, 'mouseup',  {screenX: 0, screenY: 50});
 							doh.assertTrue(executed, 'dojo.touch.release not fired');
+							assert(obj, 'mouseup', dohDiv);
 						},
 						function cancel(){
-							var executed;
+							var executed, obj = {};
 							on(dohDiv, touch.cancel, function(e){
 								executed = true;
-								doh.assertEqual('mouseout', e.type);
-								doh.assertEqual(dohDiv, e.target);
+								setObj(obj, e);
 							});
 							on.emit(dohDiv, 'mouseout',  {screenX: 0, screenY: 50});
 							doh.assertTrue(executed, 'dojo.touch.cancel not fired');
+							assert(obj, 'mouseout', dohDiv);
 						}
 					]);
 					doh.run();

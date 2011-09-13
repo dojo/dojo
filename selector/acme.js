@@ -1,4 +1,4 @@
-define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/window"], function(dojo, has){
+define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/window"], function(dojo, has, dom){
   //  module:
   //    dojo/selector/acme
   //  summary:
@@ -902,7 +902,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 					getSimpleFilterFunc(query, { el: 1, id: 1 });
 
 				retFunc = function(root, arr){
-					var te = dojo.byId(query.id, (root.ownerDocument||root));
+					var te = dom.byId(query.id, (root.ownerDocument||root));
 					if(!te || !filterFunc(te)){ return; }
 					if(9 == root.nodeType){ // if root's a doc, we just return directly
 						return getArr(te, arr);

@@ -7,7 +7,7 @@ define(["../_base/lang", "../Evented", "../_base/declare", "../_base/Deferred", 
 	//		TODOC
 
 
-dojo.declare("dojo.data.ObjectStore", [Evented],{
+return declare("dojo.data.ObjectStore", [Evented],{
 		objectStore: null,
 		constructor: function(options){
 			// summary:
@@ -196,6 +196,10 @@ dojo.declare("dojo.data.ObjectStore", [Evented],{
 				}
 			};
 			if(results.observe){
+				if(this.observing){
+					// if we were previously observing, cancel the last time to avoid multiple notifications. Just the best we can do for the impedance mismatch between APIs
+					this.observing.cancel();
+				}
 				results.observe(function(object, removedFrom, insertedInto){
 					if(array.indexOf(self._dirtyObjects, object) == -1){
 						if(removedFrom == -1){

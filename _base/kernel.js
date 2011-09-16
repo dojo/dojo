@@ -270,5 +270,6 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		};
 	}
 
+	dojo._hasResource = {}; // for backward compatibility with layers built with 1.6 tooling
 	return dojo;
 });

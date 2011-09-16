@@ -4,23 +4,10 @@ define(
 	"dateFormatItem-yM": "M.y",
 	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "odp.",
-	"eraNames": [
-		"př.Kr.",
-		"po Kr."
-	],
 	"dateFormatItem-MMMEd": "E, d. MMM",
 	"field-day-relative+-1": "Včera",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"field-day-relative+-2": "Předevčírem",
-	"days-standAlone-wide": [
-		"neděle",
-		"pondělí",
-		"úterý",
-		"středa",
-		"čtvrtek",
-		"pátek",
-		"sobota"
-	],
 	"months-standAlone-narrow": [
 		"l",
 		"ú",
@@ -36,12 +23,6 @@ define(
 		"p"
 	],
 	"dayPeriods-format-wide-am": "dop.",
-	"quarters-standAlone-abbr": [
-		"1. čtvrtletí",
-		"2. čtvrtletí",
-		"3. čtvrtletí",
-		"4. čtvrtletí"
-	],
 	"timeFormat-full": "H:mm:ss zzzz",
 	"dateFormatItem-yyyy": "y",
 	"months-standAlone-abbr": [
@@ -60,7 +41,6 @@ define(
 	],
 	"dateFormatItem-yMMM": "LLL y",
 	"field-day-relative+0": "Dnes",
-	"field-day-relative+1": "Zítra",
 	"days-standAlone-narrow": [
 		"N",
 		"P",
@@ -70,6 +50,7 @@ define(
 		"P",
 		"S"
 	],
+	"field-day-relative+1": "Zítra",
 	"eraAbbr": [
 		"př.Kr.",
 		"po Kr."
@@ -83,12 +64,6 @@ define(
 	"dateFormat-medium": "d.M.yyyy",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-yMd": "d.M.y",
-	"quarters-standAlone-wide": [
-		"1. čtvrtletí",
-		"2. čtvrtletí",
-		"3. čtvrtletí",
-		"4. čtvrtletí"
-	],
 	"months-standAlone-wide": [
 		"leden",
 		"únor",
@@ -106,28 +81,8 @@ define(
 	"dateFormatItem-MMMd": "d. MMM",
 	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-long": "H:mm:ss z",
-	"months-format-abbr": [
-		"ledna",
-		"února",
-		"března",
-		"dubna",
-		"května",
-		"června",
-		"července",
-		"srpna",
-		"září",
-		"října",
-		"listopadu",
-		"prosince"
-	],
 	"timeFormat-short": "H:mm",
 	"dateFormatItem-H": "H",
-	"quarters-format-abbr": [
-		"1. čtvrtletí",
-		"2. čtvrtletí",
-		"3. čtvrtletí",
-		"4. čtvrtletí"
-	],
 	"days-format-abbr": [
 		"ne",
 		"po",
@@ -137,39 +92,7 @@ define(
 		"pá",
 		"so"
 	],
-	"days-format-narrow": [
-		"N",
-		"P",
-		"Ú",
-		"S",
-		"Č",
-		"P",
-		"S"
-	],
 	"dateFormatItem-MEd": "E, d.M",
-	"months-format-narrow": [
-		"l",
-		"ú",
-		"b",
-		"d",
-		"k",
-		"č",
-		"č",
-		"s",
-		"z",
-		"ř",
-		"l",
-		"p"
-	],
-	"days-standAlone-abbr": [
-		"ne",
-		"po",
-		"út",
-		"st",
-		"čt",
-		"pá",
-		"so"
-	],
 	"dateFormat-short": "d.M.yy",
 	"dateFormatItem-yyyyM": "M.yyyy",
 	"dateFormatItem-yMMMEd": "EEE, d. MMM y",
@@ -205,10 +128,6 @@ define(
 		"čtvrtek",
 		"pátek",
 		"sobota"
-	],
-	"eraNarrow": [
-		"př.Kr.",
-		"po Kr."
 	]
 }
 //end v1.x content

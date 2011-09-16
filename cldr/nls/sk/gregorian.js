@@ -2,28 +2,15 @@ define(
 //begin v1.x content
 {
 	"field-dayperiod": "Časť dňa",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "popoludní",
+	"dateFormatItem-yQ": "Q yyyy",
 	"field-minute": "Minúta",
-	"eraNames": [
-		"pred n.l.",
-		"n.l."
-	],
 	"dateFormatItem-MMMEd": "E, d. MMM",
 	"field-day-relative+-1": "Včera",
-	"field-weekday": "Deň v týždni",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"field-day-relative+-2": "Predvčerom",
+	"field-weekday": "Deň v týždni",
 	"field-day-relative+-3": "Pred tromi dňami",
-	"days-standAlone-wide": [
-		"nedeľa",
-		"pondelok",
-		"utorok",
-		"streda",
-		"štvrtok",
-		"piatok",
-		"sobota"
-	],
 	"months-standAlone-narrow": [
 		"j",
 		"f",
@@ -38,27 +25,12 @@ define(
 		"n",
 		"d"
 	],
+	"dayPeriods-format-wide-am": "dopoludnia",
 	"field-era": "Éra",
 	"field-hour": "Hodina",
-	"dayPeriods-format-wide-am": "dopoludnia",
 	"timeFormat-full": "H:mm:ss zzzz",
-	"months-standAlone-abbr": [
-		"jan",
-		"feb",
-		"mar",
-		"apr",
-		"máj",
-		"jún",
-		"júl",
-		"aug",
-		"sep",
-		"okt",
-		"nov",
-		"dec"
-	],
 	"dateFormatItem-yMMM": "LLL y",
 	"field-day-relative+0": "Dnes",
-	"field-day-relative+1": "Zajtra",
 	"days-standAlone-narrow": [
 		"N",
 		"P",
@@ -68,6 +40,7 @@ define(
 		"P",
 		"S"
 	],
+	"field-day-relative+1": "Zajtra",
 	"eraAbbr": [
 		"pred n.l.",
 		"n.l."
@@ -83,12 +56,6 @@ define(
 	"dateFormat-medium": "d.M.yyyy",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-yyQQQQ": "QQQQ yy",
-	"quarters-standAlone-wide": [
-		"1. štvrťrok",
-		"2. štvrťrok",
-		"3. štvrťrok",
-		"4. štvrťrok"
-	],
 	"dateFormatItem-yMMMM": "LLLL y",
 	"dateFormatItem-ms": "mm:ss",
 	"field-year": "Rok",
@@ -145,41 +112,9 @@ define(
 		"so"
 	],
 	"dateFormatItem-mmss": "mm:ss",
-	"days-format-narrow": [
-		"N",
-		"P",
-		"U",
-		"S",
-		"Š",
-		"P",
-		"S"
-	],
 	"field-second": "Sekunda",
 	"field-day": "Deň",
 	"dateFormatItem-MEd": "E, d.M.",
-	"months-format-narrow": [
-		"j",
-		"f",
-		"m",
-		"a",
-		"m",
-		"j",
-		"j",
-		"a",
-		"s",
-		"o",
-		"n",
-		"d"
-	],
-	"days-standAlone-abbr": [
-		"ne",
-		"po",
-		"ut",
-		"st",
-		"št",
-		"pi",
-		"so"
-	],
 	"dateFormat-short": "d.M.yyyy",
 	"dateFormatItem-yyyyM": "M.yyyy",
 	"dateFormatItem-yMMMEd": "EEE, d. MMM y",
@@ -215,10 +150,6 @@ define(
 		"štvrtok",
 		"piatok",
 		"sobota"
-	],
-	"eraNarrow": [
-		"pred n.l.",
-		"n.l."
 	]
 }
 //end v1.x content

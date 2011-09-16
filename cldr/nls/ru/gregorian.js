@@ -4,16 +4,12 @@ define(
 	"dateFormatItem-yM": "M.y",
 	"field-dayperiod": "AM/PM",
 	"field-minute": "Минута",
-	"eraNames": [
-		"до н.э.",
-		"н.э."
-	],
 	"dateFormatItem-MMMEd": "ccc, d MMM",
 	"field-day-relative+-1": "Вчера",
-	"field-weekday": "День недели",
+	"dateFormatItem-MMdd": "dd.MM",
 	"dateFormatItem-yQQQ": "y QQQ",
 	"field-day-relative+-2": "Позавчера",
-	"dateFormatItem-MMdd": "dd.MM",
+	"field-weekday": "День недели",
 	"days-standAlone-wide": [
 		"Воскресенье",
 		"Понедельник",
@@ -40,14 +36,8 @@ define(
 	],
 	"field-era": "Эра",
 	"field-hour": "Час",
-	"quarters-standAlone-abbr": [
-		"1-й кв.",
-		"2-й кв.",
-		"3-й кв.",
-		"4-й кв."
-	],
-	"dateFormatItem-yyMMMEEEd": "EEE, d MMM yy",
 	"dateFormatItem-y": "y",
+	"dateFormatItem-yyMMMEEEd": "EEE, d MMM yy",
 	"timeFormat-full": "H:mm:ss zzzz",
 	"dateFormatItem-yyyy": "y",
 	"months-standAlone-abbr": [
@@ -66,9 +56,8 @@ define(
 	],
 	"dateFormatItem-Ed": "E, d",
 	"dateFormatItem-yMMM": "LLL y",
-	"field-day-relative+0": "Сегодня",
 	"dateFormatItem-yyyyLLLL": "LLLL y",
-	"field-day-relative+1": "Завтра",
+	"field-day-relative+0": "Сегодня",
 	"days-standAlone-narrow": [
 		"В",
 		"П",
@@ -78,6 +67,7 @@ define(
 		"П",
 		"С"
 	],
+	"field-day-relative+1": "Завтра",
 	"eraAbbr": [
 		"до н.э.",
 		"н.э."
@@ -93,12 +83,6 @@ define(
 	"dateFormatItem-yyMM": "MM.yy",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-yyMMM": "LLL yy",
-	"quarters-standAlone-wide": [
-		"1-й квартал",
-		"2-й квартал",
-		"3-й квартал",
-		"4-й квартал"
-	],
 	"dateFormatItem-ms": "mm:ss",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'.",
 	"field-year": "Год",
@@ -153,32 +137,9 @@ define(
 		"сб"
 	],
 	"dateFormatItem-M": "L",
-	"days-format-narrow": [
-		"В",
-		"П",
-		"В",
-		"С",
-		"Ч",
-		"П",
-		"С"
-	],
 	"field-second": "Секунда",
 	"field-day": "День",
 	"dateFormatItem-MEd": "E, d.M",
-	"months-format-narrow": [
-		"Я",
-		"Ф",
-		"М",
-		"А",
-		"М",
-		"И",
-		"И",
-		"А",
-		"С",
-		"О",
-		"Н",
-		"Д"
-	],
 	"days-standAlone-abbr": [
 		"Вс",
 		"Пн",
@@ -222,10 +183,6 @@ define(
 		"четверг",
 		"пятница",
 		"суббота"
-	],
-	"eraNarrow": [
-		"до н.э.",
-		"н.э."
 	]
 }
 //end v1.x content

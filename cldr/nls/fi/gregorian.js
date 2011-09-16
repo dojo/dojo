@@ -1,28 +1,10 @@
 define(
 //begin v1.x content
 {
-	"months-format-narrow": [
-		"T",
-		"H",
-		"M",
-		"H",
-		"T",
-		"K",
-		"H",
-		"E",
-		"S",
-		"L",
-		"M",
-		"J"
-	],
 	"field-weekday": "viikonpäivä",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "EEE d.M.yyyy",
 	"dateFormatItem-MMMEd": "E d. MMM",
-	"eraNarrow": [
-		"eKr.",
-		"jKr."
-	],
 	"dateFormat-long": "d. MMMM y",
 	"months-format-wide": [
 		"tammikuuta",
@@ -113,12 +95,6 @@ define(
 		"3. nelj.",
 		"4. nelj."
 	],
-	"quarters-standAlone-wide": [
-		"1. neljännes",
-		"2. neljännes",
-		"3. neljännes",
-		"4. neljännes"
-	],
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
 		"sunnuntai",
@@ -132,27 +108,12 @@ define(
 	"dateFormatItem-yyMMM": "LLLL yy",
 	"timeFormat-medium": "H.mm.ss",
 	"dateFormatItem-Hm": "H.mm",
-	"quarters-standAlone-abbr": [
-		"1. nelj.",
-		"2. nelj.",
-		"3. nelj.",
-		"4. nelj."
-	],
 	"eraAbbr": [
 		"eKr.",
 		"jKr."
 	],
 	"field-minute": "minuutti",
 	"field-dayperiod": "ap./ip.",
-	"days-standAlone-abbr": [
-		"su",
-		"ma",
-		"ti",
-		"ke",
-		"to",
-		"pe",
-		"la"
-	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm.ss",
 	"field-day-relative+-1": "eilen",
@@ -201,15 +162,6 @@ define(
 	"eraNames": [
 		"ennen Kristuksen syntymää",
 		"jälkeen Kristuksen syntymän"
-	],
-	"days-format-narrow": [
-		"S",
-		"M",
-		"T",
-		"K",
-		"T",
-		"P",
-		"L"
 	],
 	"field-month": "kuukausi",
 	"days-standAlone-narrow": [

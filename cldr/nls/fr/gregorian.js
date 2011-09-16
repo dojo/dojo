@@ -1,29 +1,11 @@
 define(
 //begin v1.x content
 {
-	"months-format-narrow": [
-		"J",
-		"F",
-		"M",
-		"A",
-		"M",
-		"J",
-		"J",
-		"A",
-		"S",
-		"O",
-		"N",
-		"D"
-	],
 	"field-weekday": "jour de la semaine",
 	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "EEE d/M/yyyy",
 	"dateFormatItem-MMMEd": "E d MMM",
-	"eraNarrow": [
-		"av. J.-C.",
-		"ap. J.-C."
-	],
 	"dayPeriods-format-wide-morning": "matin",
 	"dateFormatItem-MMMdd": "dd MMM",
 	"dateFormat-long": "d MMMM y",
@@ -47,20 +29,6 @@ define(
 	"dayPeriods-format-wide-noon": "midi",
 	"field-era": "ère",
 	"dateFormatItem-yM": "M/yyyy",
-	"months-standAlone-wide": [
-		"janvier",
-		"février",
-		"mars",
-		"avril",
-		"mai",
-		"juin",
-		"juillet",
-		"août",
-		"septembre",
-		"octobre",
-		"novembre",
-		"décembre"
-	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
 		"1er trimestre",
@@ -95,67 +63,23 @@ define(
 	"field-day-relative+1": "demain",
 	"field-day-relative+2": "après-demain",
 	"field-day-relative+3": "après-après-demain",
-	"months-standAlone-abbr": [
-		"janv.",
-		"févr.",
-		"mars",
-		"avr.",
-		"mai",
-		"juin",
-		"juil.",
-		"août",
-		"sept.",
-		"oct.",
-		"nov.",
-		"déc."
-	],
 	"quarters-format-abbr": [
 		"T1",
 		"T2",
 		"T3",
 		"T4"
 	],
-	"quarters-standAlone-wide": [
-		"1er trimestre",
-		"2e trimestre",
-		"3e trimestre",
-		"4e trimestre"
-	],
 	"dateFormatItem-M": "L",
-	"days-standAlone-wide": [
-		"dimanche",
-		"lundi",
-		"mardi",
-		"mercredi",
-		"jeudi",
-		"vendredi",
-		"samedi"
-	],
 	"dateFormatItem-yyMMMEEEd": "EEE d MMM yy",
 	"dateFormatItem-yyMMM": "MMM yy",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
-	"quarters-standAlone-abbr": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
-	],
 	"eraAbbr": [
 		"av. J.-C.",
 		"ap. J.-C."
 	],
 	"field-minute": "minute",
 	"field-dayperiod": "cadran",
-	"days-standAlone-abbr": [
-		"dim.",
-		"lun.",
-		"mar.",
-		"mer.",
-		"jeu.",
-		"ven.",
-		"sam."
-	],
 	"dayPeriods-format-wide-night": "soir",
 	"dateFormatItem-yyMMMd": "d MMM yy",
 	"dateFormatItem-d": "d",
@@ -210,15 +134,6 @@ define(
 	"eraNames": [
 		"avant Jésus-Christ",
 		"après Jésus-Christ"
-	],
-	"days-format-narrow": [
-		"D",
-		"L",
-		"M",
-		"M",
-		"J",
-		"V",
-		"S"
 	],
 	"field-month": "mois",
 	"days-standAlone-narrow": [

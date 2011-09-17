@@ -144,10 +144,11 @@ return ds.Observable = function(store){
 				}
 				inMethod = true;
 				try{
-					return Deferred.when(original.apply(this, arguments), function(results){
+					var results = original.apply(this, arguments);
+					Deferred.when(results, function(results){
 						action((typeof results == "object" && results) || value);
-						return results;
 					});
+					return results;
 				}finally{
 					inMethod = false;
 				}

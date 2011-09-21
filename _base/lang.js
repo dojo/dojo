@@ -267,7 +267,7 @@ define(["./kernel", "../has", "./sniff"], function(dojo, has){
 			replace:replace
 		};
 
-	has("dojo-1x-base") && mixin(dojo, lang);
+	has("extend-dojo") && mixin(dojo, lang);
 	return lang;
 
 	/*=====

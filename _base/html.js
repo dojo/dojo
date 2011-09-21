@@ -2,7 +2,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 	// module:
 	//		dojo/dom
 	// summary:
-	//		This module is a stub fot the core dojo DOM API.
+	//		This module is a stub for the core dojo DOM API.
 
 	// mix-in dom
 	dojo.byId = dom.byId;

@@ -27,7 +27,7 @@ function connect_(obj, event, context, method, dontFix){
 	}
 	if(typeof event == "string" && event.substring(0, 2) == "on"){
 		event = event.substring(2);
-	} 
+	}
 	if(!obj){
 		obj = kernel.global;
 	}
@@ -204,7 +204,7 @@ var connect = {
 };
 connect.unsubscribe = connect.disconnect;
 
-has("dojo-1x-base") && lang.mixin(kernel, connect);
+has("extend-dojo") && lang.mixin(kernel, connect);
 return connect;
 
 /*=====

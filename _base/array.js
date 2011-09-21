@@ -1,4 +1,4 @@
-define(["./kernel", "./lang"], function(dojo, lang){
+define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	// module:
 	//		dojo/_base/array
 	// summary:
@@ -336,7 +336,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 		clearCache:  clearCache
 	};
 
-	lang.mixin(dojo, array);
+	has("extend-dojo") && lang.mixin(dojo, array);
 
 	/*===== return dojo.array; =====*/
 	return array;

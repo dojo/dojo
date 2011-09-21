@@ -1674,7 +1674,6 @@
 			"dojo-sniff":1,
 			"dojo-sync-loader":1,
 			"dojo-test-sniff":1,
-			"dojo-1x-base":1,
 			"config-tlmSiblingOfDojo":1
 		},
 		packages:[{

@@ -1577,7 +1577,7 @@
 	// allow config to override default implemention of named functions; this is useful for
 	// non-browser environments, e.g., overriding injectUrl, getText, log, etc. in node.js, Rhino, etc.
 	// also useful for testing and monkey patching loader
-	mix(req, mix(req, defaultConfig.loaderPatch), userConfig.loaderPatch);
+	mix(mix(req, defaultConfig.loaderPatch), userConfig.loaderPatch);
 
 	// now that req is fully initialized and won't change, we can hook it up to the error signal
 	on(error, function(arg){

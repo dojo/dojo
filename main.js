@@ -5,6 +5,7 @@ define([
 	"./_base/sniff",
 	"./_base/lang",
 	"./_base/array",
+	"./ready",
 	"./_base/declare",
 	//"./_base/connect", // until we decide if connect is going back into non-browser environments
 	"./_base/Deferred",
@@ -12,7 +13,7 @@ define([
 	"./_base/Color",
 	"./has!dojo-firebug?./_firebug/firebug",
 	"./has!host-browser?./_base/browser",
-	"./has!dojo-sync-loader?./_base/loader"], function(dojo, has, require){
+	"./has!dojo-sync-loader?./_base/loader"], function(dojo, has, require, sniff, lang, array, ready){
 	// module:
 	//		dojo/main
 	// summary:
@@ -33,14 +34,14 @@ define([
 		var deps= dojo.config.require;
 		if(deps){
 			// dojo.config.require may be dot notation
-			deps= dojo.map(dojo.isArray(deps) ? deps : [deps], function(item){ return item.replace(/\./g, "/"); });
+			deps= array.map(lang.isArray(deps) ? deps : [deps], function(item){ return item.replace(/\./g, "/"); });
 			if(dojo.isAsync){
 				require(deps);
 			}else{
 				// this is a bit janky; in 1.6- dojo is defined before these requires are applied; but in 1.7+
 				// dojo isn't defined until returning from this module; this is only a problem in sync mode
 				// since we're in sync mode, we know we've got our loader with its priority ready queue
-				dojo.ready(1, function(){require(deps);});
+				ready(1, function(){require(deps);});
 			}
 		}
 	}

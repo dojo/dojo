@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], function(dojo, has, require, domReady, lang) {
+define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "./_base/lang"], function(dojo, has, require, domReady, lang) {
 	// module:
 	//		dojo/ready
 	// summary:
@@ -18,6 +18,14 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 
 		// prevent recursion in onLoad
 		onLoadRecursiveGuard = 0,
+
+		handleDomReady = function(){
+			isDomReady = 1;
+			dojo._postLoad = dojo.config.afterOnLoad = true;
+			if(loadQ.length){
+				requestCompleteSignal(onLoad);
+			}
+		},
 
 		// run the next function queued with dojo.ready
 		onLoad = function(){
@@ -111,14 +119,6 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 		}
 	}
 
-	domReady(function(){
-		isDomReady = 1;
-		dojo._postLoad = dojo.config.afterOnLoad = true;
-		if(loadQ.length){
-			requestCompleteSignal(onLoad);
-		}
-	});
-
 	if(has("dojo-sync-loader") && dojo.config.parseOnLoad && !dojo.isAsync){
 		ready(99, function(){
 			if(!dojo.parser){
@@ -126,6 +126,12 @@ define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], fun
 				require(["dojo/parser"]);
 			}
 		});
+	}
+
+	if(has("host-browser")){
+		domReady(handleDomReady);
+	}else{
+		handleDomReady();
 	}
 
 	return ready;

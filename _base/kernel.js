@@ -163,7 +163,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 	has.add("dojo-debug-messages",
 		// include dojo.deprecated/dojo.experimental implementations
-		1
+		!!config.isDebug
 	);
 	if(has("dojo-debug-messages")){
 		dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
@@ -206,10 +206,13 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			//	| dojo.experimental("dojo.data.Result");
 			//	example:
 			//	| dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
+
 			var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
 			if(extra){ message += " " + extra; }
 			console.warn(message);
 		};
+	}else{
+		dojo.deprecated = dojo.experimental =  function(){};
 	}
 
 	has.add("dojo-modulePaths",

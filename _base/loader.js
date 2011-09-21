@@ -1,4 +1,4 @@
-define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array", "../has!host-browser?./xhr"], function(dojo, has, require, thisModule, json, lang, array, xhr) {
+define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"], function(dojo, has, require, thisModule, json, lang, array) {
 	// module:
 	//		dojo/_base/lader
 	// summary:
@@ -44,11 +44,8 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 
 		dojoRequireSet = {},
 
-		hotDojoRequireResources = {},
-
 		dojoRequirePlugin = function(mid, require, loaded){
-			var referenceModule = require.module,
-				count = 1,
+			var count = 1,
 				arrived = function(){
 					if(--count==0){
 						loaded(1);
@@ -56,7 +53,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 				};
 
 			// if this is a dojo/require! in a deps vector for a define, then annotate the reference module
-			// to help with the checkDojoRequirePlugin() algorithm; if it's in a context requrie in a
+			// to help with the checkDojoRequirePlugin() algorithm; if it's in a context require in a
 			// dojo/loadInit!, then dojoRequireMids is not initialized since that pseudo module is never
 			// seen in checkDojoRequirePlugin
 			var target= "dojo/require!" + require.module.mid + "!" + mid,
@@ -406,9 +403,6 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		xd =
 			loaderVars.xd,
 
-		requested =
-			loaderVars.requested,
-
 		arrived =
 			loaderVars.arrived,
 
@@ -429,9 +423,6 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 
 		execQ =
 			loaderVars.execQ,
-
-		fixupUrl =
-			loaderVars.fixupUrl,
 
 		getModule =
 			loaderVars.getModule,
@@ -613,7 +604,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			return undefined;
 		}
 
-		var result = doRequire(moduleName);
+		var result = doRequire(moduleName, omitModuleCheck);
 		if(has("config-publishRequireResult") && !lang.exists(moduleName) && result!==undefined){
 			lang.setObject(moduleName, result);
 		}

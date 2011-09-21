@@ -218,7 +218,6 @@
 			return {
 				sync:sync,
 				xd:xd,
-				requested:requested,
 				arrived:arrived,
 				nonmodule:nonmodule,
 				executing:executing,
@@ -233,7 +232,6 @@
 				finishExec:finishExec,
 				execModule:execModule,
 				dojoRequirePlugin:dojoRequirePlugin,
-				fixupUrl:fixupUrl,
 				getLegacyMode:function(){return legacyMode;}
 			};
 		};

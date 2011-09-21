@@ -193,12 +193,14 @@
 				}else{
 					xdomainLog.push(11, dojo.getObject("dojo.tests._base.loader.xdomain.local2")===undefined);
 				}
-				xdomainLog.push(16, dojo.getObject("dojo.tests._base.loader.xdomain.local1")===undefined);
-				try{
-					require("dojo/tests/_base/loader/xdomain/local1");
-					xdomainLog.push(19, false);
-				}catch(e){
-					xdomainLog.push(19, true);
+				xdomainLog.push(16,	dojo.getObject("dojo.tests._base.loader.xdomain.local1")===undefined);
+				if(dojo.isIE!=6){
+					try{
+						require("dojo/tests/_base/loader/xdomain/local1");
+						xdomainLog.push(19, false);
+					}catch(e){
+						xdomainLog.push(19, true);
+					}
 				}
 				//>>excludeEnd("srcVersion");
 			}
@@ -209,11 +211,12 @@
 			xdomainLog.push(14, (dojo.hash===undefined));
 			xdomainLog.push(15, (dojo.cookie===undefined));
 			xdomainLog.push(17, dojo.getObject("dojo.tests._base.loader.xdomain.local3")===undefined);
-			try{
-				require("dojo/tests/_base/loader/xdomain/local3");
-				xdomainLog.push(18, false);
-			}catch(e){
-				xdomainLog.push(18, true);
+			if(dojo.isIE!=6){
+				try{
+					xdomainLog.push(18, false);
+				}catch(e){
+					xdomainLog.push(18, true);
+				}
 			}
 
 			doh.register("xdomain", function(t){

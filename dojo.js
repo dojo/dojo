@@ -613,18 +613,18 @@
 			checkCompleteGuard++;
 			forEach(module.deps, injectModule);
 			if(has("dojo-combo-api") && comboPending){
-				comboPending = 0;
-				req.combo.done(function(mids, url) {
-					var onLoadCallback= function(){
-						// defQ is a vector of module definitions 1-to-1, onto mids
-						runDefQ(0, mids);
-						checkComplete();
-					};
-					combosPending.push(mids);
-					injectingModule = mids;
-					req.injectUrl(url, onLoadCallback, mids);
-					injectingModule = 0;
-				}, req);
+					comboPending = 0;
+					req.combo.done(function(mids, url) {
+						var onLoadCallback= function(){
+							// defQ is a vector of module definitions 1-to-1, onto mids
+							runDefQ(0, mids);
+							checkComplete();
+						};
+						combosPending.push(mids);
+						injectingModule = mids;
+						req.injectUrl(url, onLoadCallback, mids);
+						injectingModule = 0;
+					}, req);
 			}
 			checkIdle();
 		},
@@ -731,11 +731,17 @@
 		setRequested = function(module){
 			module.injected = requested;
 			waiting[module.mid] = 1;
+			if(module.url){
+				waiting[module.url] = 1;
+			}
 		},
 
 		setArrived = function(module){
 			module.injected = arrived;
 			delete waiting[module.mid];
+			if(module.url){
+				delete waiting[module.url];
+			}
 			if(isEmpty(waiting)){
 				clearTimer();
 				has("dojo-sync-loader") && legacyMode==xd && (legacyMode = sync);
@@ -870,7 +876,7 @@
 				// name was <plugin-module>!<plugin-resource>
 				plugin = getModule(match[1], referenceModule);
 				plugin.isPlugin = 1;
-				prid = match[2];
+					prid = match[2];
 				mid = plugin.mid + "!" + (referenceModule ? referenceModule.mid + "!" : "") + prid;
 				return modules[mid] || (modules[mid] = {plugin:plugin, mid:mid, req:(referenceModule ? createRequire(referenceModule) : req), prid:prid});
 			}else{
@@ -1111,12 +1117,12 @@
 						plugin.load = function(id, require, callback){
 							plugin.loadQ.push([id, require, callback]);
 						};
-						// the unshift instead of push is important: we don't want plugins to execute as
-						// dependencies of some other module because this may cause circles when the plugin
-						// loadQ is run; also, generally, we want plugins to run early since they may load
-						// several other modules and therefore can potentially unblock many modules
-						execQ.unshift(plugin);
-						injectModule(plugin);
+					// the unshift instead of push is important: we don't want plugins to execute as
+					// dependencies of some other module because this may cause circles when the plugin
+					// loadQ is run; also, generally, we want plugins to run early since they may load
+					// several other modules and therefore can potentially unblock many modules
+					execQ.unshift(plugin);
+					injectModule(plugin);
 					}
 					setRequested(module);
 				}
@@ -1167,16 +1173,16 @@
 
 				var mid = module.mid,
 					url = module.url;
-				if(module.executed || module.injected || waiting[mid]){
+				if(module.executed || module.injected || waiting[mid] || (module.url && waiting[module.url])){
 					return;
 				}
 
 				setRequested(module);
 
 				if(has("dojo-combo-api") && req.combo.add(0, module.mid, module.url, req)){
-					comboPending= 1;
-					return;
-				}
+						comboPending= 1;
+						return;
+					}
 
 				var onLoadCallback = function(){
 					runDefQ(module);

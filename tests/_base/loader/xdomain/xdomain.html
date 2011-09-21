@@ -213,6 +213,7 @@
 			xdomainLog.push(17, dojo.getObject("dojo.tests._base.loader.xdomain.local3")===undefined);
 			if(dojo.isIE!=6){
 				try{
+					require("dojo/tests/_base/loader/xdomain/local3");
 					xdomainLog.push(18, false);
 				}catch(e){
 					xdomainLog.push(18, true);

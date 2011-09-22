@@ -1369,7 +1369,7 @@
 					// the module is a plugin resource loaded by the combo service
 					// note: check for module.plugin should be enough since normal plugin resources should
 					// not follow this path; module.plugin.isCombo is future-proofing belt and suspenders
-					module.result = def;
+					module.result = isFunction(def) ? def() : def;
 					setArrived(module);
 					finishExec(module);
 					return module;

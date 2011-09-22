@@ -481,15 +481,8 @@
 					if(p=="cacheBust"){
 						cacheBust = config[p] ? (isString(config[p]) ? config[p] : (new Date()).getTime() + "") : "";
 					}
-					if(p=="baseUrl"){
+					if(p=="baseUrl" || p=="combo"){
 						req[p] = config[p];
-					}
-					if(has("dojo-combo-api") && p=="combo"){
-						var combo = req[p] = config[p],
-							pluginName;
-						for(pluginName in combo.plugins){
-							mix(mix(getModule(pluginName), combo.plugins[pluginName]), {isCombo:1, executed:"executed", load:1});
-						}
 					}
 					if(has("dojo-sync-loader") && p=="async"){
 						// falsy or "sync" => legacy sync loader
@@ -1719,6 +1712,14 @@
 	}else{
 		global.define = def;
 		global.require = req;
+	}
+
+	if(has("dojo-combo-api") && req.combo && req.combo.plugins){
+		var plugins = req.combo.plugins,
+			pluginName;
+		for(pluginName in plugins){
+			mix(mix(getModule(pluginName), plugins[pluginName]), {isCombo:1, executed:"executed", load:1});
+		}
 	}
 
 	if(has("dojo-config-api")){

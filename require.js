@@ -1,3 +1,7 @@
 define(["./_base/loader"], function(loader){
-	return loader.require;
+	return {
+		dynamic:1,
+		normalize:function(id){return id;},
+		load:loader.require
+	};
 });

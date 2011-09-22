@@ -194,7 +194,8 @@
 	if(has("dojo-combo-api")){
 		req.combo = {add:noop};
 		var	comboPending = 0,
-			combosPending = [];
+			combosPending = [],
+			comboPendingTimer = null;
 	}
 
 	var legacyMode = 0,
@@ -480,8 +481,19 @@
 					if(p=="cacheBust"){
 						cacheBust = config[p] ? (isString(config[p]) ? config[p] : (new Date()).getTime() + "") : "";
 					}
-					if(p=="baseUrl" || p=="combo"){
+					if(p=="baseUrl"){
 						req[p] = config[p];
+						if(p=="combo" && combo.plugins){
+							for(var pluing in combo.plugins){
+							}
+						}
+					}
+					if(has("dojo-combo-api") && p=="combo"){
+						var combo = req[p] = config[p],
+							pluginName;
+						for(pluginName in combo.plugins){
+							mix(mix(getModule(pluginName), combo.plugins[pluginName]), {isCombo:1, executed:"executed", load:1});
+						}
 					}
 					if(has("dojo-sync-loader") && p=="async"){
 						// falsy or "sync" => legacy sync loader
@@ -610,8 +622,10 @@
 			// checkComplete!=0 holds the idle signal; we're not idle if we're injecting dependencies
 			checkCompleteGuard++;
 			forEach(module.deps, injectModule);
-			if(has("dojo-combo-api") && comboPending){
+			if(has("dojo-combo-api") && comboPending && !comboPendingTimer){
+				comboPendingTimer = setTimeout(function() {
 					comboPending = 0;
+					comboPendingTimer = null;
 					req.combo.done(function(mids, url) {
 						var onLoadCallback= function(){
 							// defQ is a vector of module definitions 1-to-1, onto mids
@@ -623,6 +637,7 @@
 						req.injectUrl(url, onLoadCallback, mids);
 						injectingModule = 0;
 					}, req);
+				}, 0);
 			}
 			checkIdle();
 		},
@@ -631,11 +646,8 @@
 			var module, syntheticMid;
 			if(isString(a1)){
 				// signature is (moduleId)
-				module = getModule(a1, referenceModule);
-				if(module.plugin){
-					injectPlugin(module, true);
-				}
-				if(module.executed){
+				module = getModule(a1, referenceModule, true);
+				if(module && module.executed){
 					return module.result;
 				}
 				throw makeError("undefinedModule", a1);
@@ -692,6 +704,9 @@
 		},
 
 		createRequire = function(module){
+			if(!module){
+				return req;
+			}
 			var result = module.require;
 			if(!result){
 				result = function(a1, a2, a3){
@@ -866,24 +881,49 @@
 			return getModuleInfo_(mid, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg);
 		},
 
-		getModule = function(mid, referenceModule){
+		resolvePluginResourceId = function(plugin, prid, referenceModule){
+			return plugin.normalize ? plugin.normalize(prid, function(mid){return toAbsMid(mid, referenceModule);}) : toAbsMid(prid, referenceModule);
+		},
+
+		dynamicPluginUidGenerator = 0,
+
+		getModule = function(mid, referenceModule, immediate){
 			// compute and optionally construct (if necessary) the module implied by the mid with respect to referenceModule
 			var match, plugin, prid, result;
 			match = mid.match(/^(.+?)\!(.*)$/);
 			if(match){
-				// name was <plugin-module>!<plugin-resource>
-				plugin = getModule(match[1], referenceModule);
-				plugin.isPlugin = 1;
+				// name was <plugin-module>!<plugin-resource-id>
+				plugin = getModule(match[1], referenceModule, immediate);
+
+				if(has("dojo-sync-loader") && legacyMode == sync && !plugin.executed){
+					injectModule(plugin);
+					checkCompleteGuard++;
+					execModule(plugin);
+					checkIdle();
+					promoteModuleToPlugin(plugin);
+				}
+
+				if(plugin.executed === executed && !plugin.load){
+					// executed the module not knowing it was a plugin
+					promoteModuleToPlugin(plugin);
+				}
+
+				// if the plugin has not been loaded, then can't resolve the prid and  must assume this plugin is dynamic until we find out otherwise
+				if(plugin.load){
+					prid = resolvePluginResourceId(plugin, match[2], referenceModule);
+					mid = (plugin.mid + "!" + (plugin.dynamic ? ++dynamicPluginUidGenerator + "!" : "") + prid);
+				}else{
 					prid = match[2];
-				mid = plugin.mid + "!" + (referenceModule ? referenceModule.mid + "!" : "") + prid;
-				return modules[mid] || (modules[mid] = {plugin:plugin, mid:mid, req:(referenceModule ? createRequire(referenceModule) : req), prid:prid});
+					mid = plugin.mid + "!" + (++dynamicPluginUidGenerator) + "!waitingForPlugin";
+				}
+				result = {plugin:plugin, mid:mid, req:createRequire(referenceModule), prid:prid};
 			}else{
 				result = getModuleInfo(mid, referenceModule);
-				return modules[result.mid] || (modules[result.mid] = result);
 			}
+			return modules[result.mid] || (!immediate && (modules[result.mid] = result));
 		},
 
-		toAbsMid =	req.toAbsMid = function(mid, referenceModule){
+		toAbsMid = req.toAbsMid = function(mid, referenceModule){
 			return getModuleInfo(mid, referenceModule).mid;
 		},
 
@@ -936,27 +976,64 @@
 
 		defOrder = 0,
 
+		promoteModuleToPlugin = function(pluginModule){
+			var plugin = pluginModule.result;
+			pluginModule.dynamic = plugin.dynamic;
+			pluginModule.normalize = plugin.normalize;
+			pluginModule.load = plugin.load;
+			return pluginModule;
+		},
+
+		resolvePluginLoadQ = function(plugin){
+			// plugins is a newly executed module that has a loadQ waiting to run
+
+			// step 1: traverse the loadQ and fixup the mid and prid; remember the map from original mid to new mid
+			// recall the original mid was created before the plugin was on board and therefore it was impossible to
+			// compute the final mid; accordingly, prid may or may not change, but the mid will definitely change
+			var map = {};
+			forEach(plugin.loadQ, function(pseudoPluginResource){
+				// manufacture and insert the real module in modules
+				var pseudoMid = pseudoPluginResource.mid,
+					prid = resolvePluginResourceId(plugin, pseudoPluginResource.prid, pseudoPluginResource.req.module),
+					mid = plugin.dynamic ? pseudoPluginResource.mid.replace(/waitingForPlugin$/, prid) : (plugin.mid + "!" + prid),
+					pluginResource = mix(mix({}, pseudoPluginResource), {mid:mid, prid:prid, injected:0});
+				if(!modules[mid]){
+					// create a new (the real) plugin resource and inject it normally now that the plugin is on board
+					injectPlugin(modules[mid] = pluginResource);
+				} // else this was a duplicate request for the same (plugin, rid) for a nondynamic plugin
+
+				// pluginResource is really just a placeholder with the wrong mid (because we couldn't calculate it until the plugin was on board)
+				// mark is as arrived and delete it from modules; the real module was requested above
+				map[pseudoPluginResource.mid] = modules[mid];
+				setArrived(pseudoPluginResource);
+				delete modules[pseudoPluginResource.mid];
+			});
+			plugin.loadQ = 0;
+
+			// step2: replace all references to any placeholder modules with real modules
+			var substituteModules = function(module){
+				for(var replacement, deps = module.deps || [], i = 0; i<deps.length; i++){
+					replacement = map[deps[i].mid];
+					if(replacement){
+						deps[i] = replacement;
+					}
+				}
+			};
+			for(var p in modules){
+				substituteModules(modules[p]);
+			}
+			forEach(execQ, substituteModules);
+		},
+
 		finishExec = function(module){
 			req.trace("loader-finish-exec", [module.mid]);
 			module.executed = executed;
 			module.defOrder = defOrder++;
 			has("dojo-sync-loader") && forEach(module.provides, function(cb){ cb(); });
 			if(module.loadQ){
-				// this was a plugin module
-				var	q = module.loadQ,
-					load = module.load = module.result.load;
-				while(q.length){
-					if(has("config-dojo-loader-catches")){
-						try{
-							load.apply(null, q.shift());
-						}catch(e){
-							signal(error, makeError("pluginThrew", [module, e]));
-						}
-					}else{
-						load.apply(null, q.shift());
-					}
-				}
-				module.loadQ = 0;
+				// the module was a plugin
+				promoteModuleToPlugin(module);
+				resolvePluginLoadQ(module);
 			}
 			// remove all occurences of this module from the execQ
 			for(i = 0; i < execQ.length;){
@@ -1077,54 +1154,44 @@
 			},
 
 			injectPlugin = function(
-				module,
-				immediate // this is consequent to a require call like require("text!some/text")
+				module
 			){
 				// injects the plugin module given by module; may have to inject the plugin itself
 				var plugin = module.plugin;
 
-				if(has("dojo-sync-loader") && legacyMode==sync && !plugin.executed){
-					injectModule(plugin);
-					execQ.unshift(plugin);
-					checkCompleteGuard++;
-					execModule(plugin);
-					checkIdle();
-				}
-
 				if(plugin.executed === executed && !plugin.load){
 					// executed the module not knowing it was a plugin
-					plugin.load = plugin.result.load;
+					promoteModuleToPlugin(plugin);
 				}
 
-				if(module.executed){
-					// let the plugin decide if it wants to use the existing value or provide a new value
-					module.executed = 0;
-				}
-
-				var onload = function(def){
+				var onLoad = function(def){
 						module.result = def;
 						setArrived(module);
 						finishExec(module);
 						checkComplete();
 					};
-				if(!immediate){
-					// don't go loading the plugin if were just looking for an immediate
-					// make the client properly demand the module
-					if(!plugin.load){
-						plugin.loadQ = [];
-						plugin.load = function(id, require, callback){
-							plugin.loadQ.push([id, require, callback]);
-						};
+
+				setRequested(module);
+				if(plugin.load){
+					plugin.load(module.prid, module.req, onLoad);
+				}else if(plugin.loadQ){
+					plugin.loadQ.push(module);
+				}else{
 					// the unshift instead of push is important: we don't want plugins to execute as
 					// dependencies of some other module because this may cause circles when the plugin
 					// loadQ is run; also, generally, we want plugins to run early since they may load
 					// several other modules and therefore can potentially unblock many modules
 					execQ.unshift(plugin);
 					injectModule(plugin);
+
+					// maybe the module was cached and is now defined...
+					if(plugin.load){
+						plugin.load(module.prid, module.req, onLoad);
+					}else{
+						// nope; queue up the plugin resource to be loaded after the plugin module is loaded
+						plugin.loadQ = [module];
 					}
-					setRequested(module);
 				}
-				plugin.load && plugin.load(module.prid, module.req, onload);
 			},
 
 			// for IE, injecting a module may result in a recursive execution if the module is in the cache
@@ -1164,23 +1231,36 @@
 				//
 				// If in synchronous mode, then get the module synchronously if it's not xdomainLoading.
 
-				if(module.plugin){
-					injectPlugin(module);
-					return;
-				} // else a normal module (not a plugin)
-
 				var mid = module.mid,
 					url = module.url;
 				if(module.executed || module.injected || waiting[mid] || (module.url && waiting[module.url])){
 					return;
 				}
 
-				setRequested(module);
-
-				if(has("dojo-combo-api") && req.combo.add(0, module.mid, module.url, req)){
+				if(has("dojo-combo-api")){
+					var viaCombo = 1;
+					if(module.plugin && module.plugin.isCombo){
+						// a combo plugin; therefore, must be handled by combo service
+						// the prid should have already been converted to a URL (if required by the plugin) during
+						// the normalze process; in any event, there is no way for the loader to know how to
+						// to the conversion; therefore the third argument is zero
+						req.combo.add(module.plugin.mid, module.prid, 0, req);
+					}else if(!module.plugin){
+						viaCombo = req.combo.add(0, module.mid, module.url, req);
+					}
+					if(viaCombo){
+						setRequested(module);
 						comboPending= 1;
 						return;
 					}
+				}
+
+				if(module.plugin){
+					injectPlugin(module);
+					return;
+				} // else a normal module (not a plugin)
+
+				setRequested(module);
 
 				var onLoadCallback = function(){
 					runDefQ(module);
@@ -1292,6 +1372,16 @@
 
 			defineModule = function(module, deps, def){
 				req.trace("loader-define-module", [module.mid, deps]);
+
+				if(has("dojo-combo-api") && module.plugin && module.plugin.isCombo){
+					// the module is a plugin resource loaded by the combo service
+					// note: check for module.plugin should be enough since normal plugin resources should
+					// not follow this path; module.plugin.isCombo is future-proofing belt and suspenders
+					module.result = def;
+					setArrived(module);
+					finishExec(module);
+					return module;
+				};
 
 				var mid = module.mid;
 				if(module.injected === arrived){
@@ -1530,7 +1620,7 @@
 			defQ.push(args);
 		}else{
 			// IE path: possibly anonymous module and therefore injected; therefore, cannot depend on 1-to-1,
-			// in-order exec of onLoad with script eval (since its IE) and must manually detect here
+			// in-order exec of onLoad with script eval (since it's IE) and must manually detect here
 			targetModule = targetModule || injectingModule;
 			if(!targetModule){
 				for(mid in waiting){

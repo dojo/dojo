@@ -395,7 +395,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			    "define(" + dojo.toJson(names.concat(["dojo/loadInit!"+id])) + ", function(" + names.join(",") + "){\n" + extractResult[0] + "});";
 		},
 
-		loaderVars = require.initSyncLoader({load:dojoRequirePlugin}, checkDojoRequirePlugin, transformToAmd, isXdUrl),
+		loaderVars = require.initSyncLoader(dojoRequirePlugin, checkDojoRequirePlugin, transformToAmd, isXdUrl),
 
 		sync =
 			loaderVars.sync,

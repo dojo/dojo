@@ -7,11 +7,6 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 	//		We choose to include our own plugin to leverage functionality already contained in dojo
 	//		and thereby reduce the size of the plugin compared to various loader implementations. Also, this
 	//		allows foreign AMD loaders to be used without their plugins.
-	//
-	//		CAUTION: this module may return improper results if the AMD loader does not support toAbsMid and client
-	//		code passes relative plugin resource module ids. In that case, you should consider using the i18n! plugin
-	//		that comes with your loader.
-
 	var
 		thisModule= dojo.i18n=
 			// the dojo.i18n module
@@ -84,11 +79,18 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 			});
 		},
 
-		load= function(id, require, load){
+		normalize = function(id, toAbsMid){
 			// note: id may be relative
+			var match= nlsRe.exec(id),
+				bundlePath= match[1];
+			return /^\./.test(bundlePath) ? toAbsMid(bundlePath) + "/" +  id.substring(bundlePath.length) : id;
+		};
+
+		load = function(id, require, load){
+			// note: id is always absolute
 			var
 				match= nlsRe.exec(id),
-				bundlePath= ((require.toAbsMid && require.toAbsMid(match[1])) || match[1]) + "/",
+				bundlePath= match[1] + "/",
 				bundleName= match[5] || match[4],
 				bundlePathAndName= bundlePath + bundleName,
 				localeSpecified = (match[5] && match[4]),
@@ -166,16 +168,10 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 				callback.apply(null, results);
 			};
 
-		syncRequire.toAbsMid= function(mid){
-			return require.toAbsMid(mid);
-		};
-
 		thisModule.getLocalization= function(moduleName, bundleName, locale){
-			var
-				result,
-				l10nName= getL10nName(moduleName, bundleName, locale).substring(10),
-				isXd = require.isXdUrl(require.toUrl(l10nName + ".js"));
-			load(l10nName, isXd ? require : syncRequire, function(result_){ result= result_; });
+			var result,
+				l10nName= getL10nName(moduleName, bundleName, locale).substring(10);
+			load(l10nName, (has("dojo-sync-loader") && !require.isXdUrl(require.toUrl(l10nName + ".js")) ? syncRequire : require), function(result_){ result= result_; });
 			return result;
 		};
 
@@ -188,11 +184,12 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 		};
 	}
 
-	thisModule.load= load;
-
-	thisModule.cache= function(mid, value){
-		cache[mid]= value;
-	};
-
-	return thisModule;
+	return lang.mixin(thisModule, {
+		dynamic:true,
+		normalize:normalize,
+		load:load,
+		cache:function(mid, value){
+			cache[mid] = value;
+		}
+	});
 });

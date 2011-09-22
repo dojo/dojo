@@ -120,28 +120,19 @@ define(["require"], function(require) {
 		return element;
 	};
 
-	has.load = /*===== dojo.has.load= ======*/ function(id, parentRequire, loaded){
+	has.normalize = /*===== dojo.has.normalize= ======*/ function(id, toAbsMid){
 		// summary:
-		//	 Conditional loading of AMD modules based on a has feature test value.
+		//	 Resolves id into a module id based on possibly-nested tenary expression that branches on has feature test value(s).
 		//
-		// id: String
-		//	 Gives the has feature name, a module to load when the feature exists, and optionally a module
-		//	 to load when the feature is false. The string had the format `"feature-name!path/to/module!path/to/other/module"`
-		//
-		// parentRequire: Function
-		//	 The loader require function with respect to the module that contained the plugin resource in it's
-		//	 dependency list.
-		//
-		// loaded: Function
-		//	 Callback to loader that consumes result of plugin demand.
-
+		// toAbsMid: Function
+		//	 Resolves a relative module id into an absolute module id
 		var
 			tokens = id.match(/[\?:]|[^:\?]*/g), i = 0,
 			get = function(skip){
 				var term = tokens[i++];
 				if(term == ":"){
-					// empty string module name, resolves to undefined
-					return undefined;
+					// empty string module name, resolves to 0
+					return 0;
 				}else{
 					// postfixed with a ? means it is a feature to branch on, the term is the name of the feature
 					if(tokens[i++] == "?"){
@@ -155,10 +146,27 @@ define(["require"], function(require) {
 						}
 					}
 					// a module
-					return term;
+					return term || 0;
 				}
 			};
 		id = get();
+		return id && toAbsMid(id);
+	};
+
+	has.load = /*===== dojo.has.load= ======*/ function(id, parentRequire, loaded){
+		// summary:
+		//	 Conditional loading of AMD modules based on a has feature test value.
+		//
+		// id: String
+		//	 Gives the resolved module id to load.
+		//
+		// parentRequire: Function
+		//	 The loader require function with respect to the module that contained the plugin resource in it's
+		//	 dependency list.
+		//
+		// loaded: Function
+		//	 Callback to loader that consumes result of plugin demand.
+
 		if(id){
 			parentRequire([id], loaded);
 		}else{

@@ -483,10 +483,6 @@
 					}
 					if(p=="baseUrl"){
 						req[p] = config[p];
-						if(p=="combo" && combo.plugins){
-							for(var pluing in combo.plugins){
-							}
-						}
 					}
 					if(has("dojo-combo-api") && p=="combo"){
 						var combo = req[p] = config[p],

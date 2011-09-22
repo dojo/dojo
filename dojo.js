@@ -191,13 +191,6 @@
 		executed = "executed";
 	}
 
-	if(has("dojo-combo-api")){
-		req.combo = {add:noop};
-		var	comboPending = 0,
-			combosPending = [],
-			comboPendingTimer = null;
-	}
-
 	var legacyMode = 0,
 		sync = "sync",
 		xd = "xd",
@@ -605,6 +598,15 @@
 		// remember the default config for other processes (e.g., dojo/config)
 		req.rawConfig = defaultConfig;
 	}
+
+
+	if(has("dojo-combo-api") && !req.combo){
+		req.combo = {add:noop};
+		var	comboPending = 0,
+			combosPending = [],
+			comboPendingTimer = null;
+	}
+
 
 	// build the loader machinery iaw configuration, including has feature tests
 	var	injectDependencies = function(module){
@@ -1227,13 +1229,14 @@
 				}
 
 				if(has("dojo-combo-api")){
-					var viaCombo = 1;
+					var viaCombo = 0;
 					if(module.plugin && module.plugin.isCombo){
 						// a combo plugin; therefore, must be handled by combo service
 						// the prid should have already been converted to a URL (if required by the plugin) during
 						// the normalze process; in any event, there is no way for the loader to know how to
 						// to the conversion; therefore the third argument is zero
 						req.combo.add(module.plugin.mid, module.prid, 0, req);
+						viaCombo = 1;
 					}else if(!module.plugin){
 						viaCombo = req.combo.add(0, module.mid, module.url, req);
 					}

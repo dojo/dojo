@@ -600,8 +600,8 @@
 	}
 
 
-	if(has("dojo-combo-api") && !req.combo){
-		req.combo = {add:noop};
+	if(has("dojo-combo-api")){
+		req.combo = req.combo || {add:noop};
 		var	comboPending = 0,
 			combosPending = [],
 			comboPendingTimer = null;

@@ -226,7 +226,9 @@
 				finishExec:finishExec,
 				execModule:execModule,
 				dojoRequirePlugin:dojoRequirePlugin,
-				getLegacyMode:function(){return legacyMode;}
+				getLegacyMode:function(){return legacyMode;},
+				holdIdle:function(){checkCompleteGuard++;},
+				releaseIdle:function(){checkIdle();}
 			};
 		};
 

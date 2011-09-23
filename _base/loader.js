@@ -579,7 +579,9 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			if(module.executed!==executed && module.injected===arrived){
 				// the module was already here before injectModule was called probably finishing up a xdomain
 				// load, but maybe a module given to the loader directly rather than having the loader retrieve it
+				loaderVars.holdIdle();
 				execModule(module);
+				loaderVars.releaseIdle();
 			}
 			if(module.executed){
 				return module.result;

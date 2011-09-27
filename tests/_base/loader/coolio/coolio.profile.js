@@ -8,7 +8,7 @@ dependencies = {
 	mini:0,
 	releaseDir:"../../dojo/tests/_base/loader",
 	releaseName:"coolioBuilt",
-	scopeMap:[["dojo", "cdojo"], ["dijit", "cdijit"]],
+	scopeMap:[["dojo", "cdojo"], ["dijit", "cdijit"], , ["dojox", "dojox"]],
 	layers: [
 		{
 			name: "dojo.js",
@@ -28,6 +28,7 @@ dependencies = {
 	],
 	prefixes: [
 		["dijit", "../dijit"],
+		["dojox", "../dojox"],
 		["coolio", "./tests/_base/loader/coolio"]
 	]
 }

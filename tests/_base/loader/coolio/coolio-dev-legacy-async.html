@@ -20,11 +20,15 @@
 					name:"dijit",
 					location:"../../../../../dijit",
 				},{
+					// the dojox package which is always mapped when rescoping xdomain
+					name:"dojox",
+					location:"../../../../../dojox",
+				},{
 					// sandboxed, separate instance dojo package for coolio use; notice it uses the same code as the non-coolie dojo package
 					// all "dojo*" modules ids are mapped to "cdojo*" within this package
 					name:"cdojo",
 					location:"../../../..",
-					packageMap:{dojo:"cdojo"}
+					packageMap:{dojo:"cdojo", dijit:"cdijit"}
 				},{
 					// sandboxed, separate instance dijit package for coolio use; notice it uses the same code as the non-coolie dijitpackage
 					// all "dojo*" modules ids are mapped to "cdojo*" within this package
@@ -39,9 +43,6 @@
 					location:".",
 					packageMap:{dojo:"cdojo", dijit:"cdijit"}
 				}],
-
-				// relocate the cdojo and cdijit packages to the global vars cdojo and cdijit, respectively
-				cdojoScope:[["dojo", "cdojo"], ["dijit", "cdijit"]]
 			};
 		</script>
 

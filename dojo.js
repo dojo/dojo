@@ -420,7 +420,7 @@
 				pendingCacheInsert = {};
 			},
 
-			computeMapProg = function(map, dest){
+			computeMapProg = function(map, dest, packName){
 				// This routine takes a map target-prefix(string)-->replacement(string) into a vector
 				// of quads (target-prefix, replacement, regex-for-target-prefix, length-of-target-prefix)
 				//
@@ -429,9 +429,12 @@
 				// package names. We can make the mapping and any replacement easier and faster by
 				// replacing the map with a vector of quads and then using this structure in the simple machine runMapProg.
 				dest.splice(0, dest.length);
-				var p, i, item;
+				var p, i, item, reverseName = 0;
 				for(p in map){
 					dest.push([p, map[p]]);
+					if(map[p]==packName){
+						reverseName = p;
+					}
 				}
 				dest.sort(function(lhs, rhs){
 					return rhs[0].length - lhs[0].length;
@@ -441,6 +444,7 @@
 					item[2] = new RegExp("^" + item[0].replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(c){ return "\\" + c; }) + "(\/|$)");
 					item[3] = item[0].length + 1;
 				}
+				return reverseName;
 			},
 
 			fixupPackageInfo = function(packageInfo, baseUrl){
@@ -453,7 +457,7 @@
 				}
 				packageInfo = mix({main:"main", mapProg:[]}, packageInfo);
 				packageInfo.location = (baseUrl || "") + (packageInfo.location ? packageInfo.location : name);
-				computeMapProg(packageInfo.packageMap, packageInfo.mapProg);
+				packageInfo.reverseName = computeMapProg(packageInfo.packageMap, packageInfo.mapProg, name);
 
 				if(!packageInfo.main.indexOf("./")){
 					packageInfo.main = packageInfo.main.substring(2);
@@ -789,19 +793,19 @@
 			return result.join("/");
 		},
 
-		makeModuleInfo = function(pid, mid, pack, url){
+		makeModuleInfo = function(pid, mid, pack, url, cacheId){
 			if(has("dojo-sync-loader")){
 				var xd= req.isXdUrl(url);
-				return {pid:pid, mid:mid, pack:pack, url:url, executed:0, def:0, isXd:xd, isAmd:!!(xd || (packs[pid] && packs[pid].isAmd))};
+				return {pid:pid, mid:mid, pack:pack, url:url, executed:0, def:0, isXd:xd, isAmd:!!(xd || (packs[pid] && packs[pid].isAmd)), cacheId:cacheId};
 			}else{
-				return {pid:pid, mid:mid, pack:pack, url:url, executed:0, def:0};
+				return {pid:pid, mid:mid, pack:pack, url:url, executed:0, def:0, cacheId:cacheId};
 			}
 		},
 
 		getModuleInfo_ = function(mid, referenceModule, packs, modules, baseUrl, packageMapProg, pathsMapProg, alwaysCreate){
 			// arguments are passed instead of using lexical variables so that this function my be used independent of the loader (e.g., the builder)
 			// alwaysCreate is useful in this case so that getModuleInfo never returns references to real modules owned by the loader
-			var pid, pack, midInPackage, mapProg, mapItem, path, url, result, isRelative, requestedMid;
+			var pid, pack, midInPackage, mapProg, mapItem, path, url, result, isRelative, requestedMid, cacheId=0;
 			requestedMid = mid;
 			isRelative = /^\./.test(mid);
 			if(/(^\/)|(\:)|(\.js$)/.test(mid) || (isRelative && !referenceModule)){
@@ -827,6 +831,7 @@
 						mid= pack.main;
 					}
 					midInPackage = mid;
+					cacheId = pack.reverseName + "/" + mid;
 					mid = pid + "/" + mid;
 				}else{
 					pid = "";
@@ -847,7 +852,7 @@
 
 				result = modules[mid];
 				if(result){
-					return alwaysCreate ? makeModuleInfo(result.pid, result.mid, result.pack, result.url) : modules[mid];
+					return alwaysCreate ? makeModuleInfo(result.pid, result.mid, result.pack, result.url, cacheId) : modules[mid];
 				}
 			}
 			// get here iff the sought-after module does not yet exist; therefore, we need to compute the URL given the
@@ -870,7 +875,7 @@
 				}
 				url += ".js";
 			}
-			return makeModuleInfo(pid, mid, pack, compactPath(url));
+			return makeModuleInfo(pid, mid, pack, compactPath(url), cacheId);
 		},
 
 		getModuleInfo = function(mid, referenceModule){
@@ -1192,7 +1197,7 @@
 
 			// for IE, injecting a module may result in a recursive execution if the module is in the cache
 
-			cached = {},
+			cached = 0,
 
 			injectingModule = 0,
 
@@ -1204,7 +1209,7 @@
 				if(has("config-dojo-loader-catches")){
 					try{
 						if(text===cached){
-							cache[module.mid].call(null);
+							cached.call(null);
 						}else{
 							req.eval(text, module.mid);
 						}
@@ -1213,7 +1218,7 @@
 					}
 				}else{
 					if(text===cached){
-						cache[module.mid].call(null);
+						cached.call(null);
 					}else{
 						req.eval(text, module.mid);
 					}
@@ -1279,7 +1284,8 @@
 						checkComplete();
 					}
 				};
-				if(cache[mid]){
+				cached = cache[mid] || cache[module.cacheId];
+				if(cached){
 					req.trace("loader-inject", ["cache", module.mid, url]);
 					evalModuleText(cached, module);
 					onLoadCallback();

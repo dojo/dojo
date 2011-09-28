@@ -19,7 +19,7 @@ var testResourceRe = /^dojo\/tests\//,
 var profile = {
 	resourceTags:{
 		test: function(filename, mid){
-			return testResourceRe.test(mid) || mid=="dojo/tests";
+			return testResourceRe.test(mid) || mid=="dojo/tests" || mid=="dojo/robot" || mid=="dojo/robotx";
 		},
 
 		copyOnly: function(filename, mid){

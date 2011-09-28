@@ -413,7 +413,7 @@
 					var match = p.match(/^url\:(.+)/);
 					if(match){
 						cache[toUrl(match[1], referenceModule)] =  pendingCacheInsert[p];
-					}else{
+					}else if(p!="*noref"){
 						cache[getModuleInfo(p, referenceModule).mid] = pendingCacheInsert[p];
 					}
 				}

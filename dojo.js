@@ -540,6 +540,9 @@
 				if(config.cache){
 					consumePendingCacheInsert();
 					pendingCacheInsert = config.cache;
+					if(config.cache["*noref"]){
+						consumePendingCacheInsert();
+					}
 				}
 
 				signal("config", [config, req.rawConfig]);

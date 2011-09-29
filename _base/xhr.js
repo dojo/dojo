@@ -521,11 +521,11 @@ define([
 				if(dojo.config.debugAtAllCosts){
 					func.call(this);
 				}else{
-					try{
+//					try{
 						func.call(this);
-					}catch(e){
+	/*				}catch(e){
 						dfd.errback(e);
-					}
+					}*/
 				}
 			}
 		}

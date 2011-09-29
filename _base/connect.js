@@ -186,11 +186,11 @@ var connect = {
 	},
 
 	subscribe:function(topic, context, method){
-		return hub.on(topic, lang.hitch(context, method));
+		return hub.subscribe(topic, lang.hitch(context, method));
 	},
 
 	publish:function(topic, args){
-		return hub.emit.apply(hub, [topic].concat(args));
+		return hub.publish.apply(hub, [topic].concat(args));
 	},
 
 	connectPublisher:function(topic, obj, event){

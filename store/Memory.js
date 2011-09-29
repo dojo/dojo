@@ -14,7 +14,6 @@ return declare("dojo.store.Memory", null, {
 		// options:
 		//		This provides any configuration information that will be mixed into the store.
 		// 		This should generally include the data property to provide the starting set of data.
-		this.index = {};
 		for(var i in options){
 			this[i] = options[i];
 		}
@@ -30,7 +29,7 @@ return declare("dojo.store.Memory", null, {
 	idProperty: "id",
 
 	// index: Object
-	//		An index of data by id
+	//		An index of data indices into the data array by id
 	index:null,
 
 	// queryEngine: Function
@@ -43,7 +42,7 @@ return declare("dojo.store.Memory", null, {
 		//		The identity to use to lookup the object
 		//	returns: Object
 		//		The object in the store that matches the given id.
-		return this.index[id];
+		return this.data[this.index[id]];
 	},
 	getIdentity: function(object){
 		// 	summary:
@@ -63,16 +62,20 @@ return declare("dojo.store.Memory", null, {
 		//		property if a specific id is to be used.
 		//	returns: Number
 		var data = this.data,
+			index = this.index,
 			idProperty = this.idProperty;
 		var id = (options && "id" in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
-		this.index[id] = object;
-		for(var i = 0, l = data.length; i < l; i++){
-			if(data[i][idProperty] == id){
-				data[i] = object;
-				return id;
+		if(id in index){
+			// object exists
+			if(options && options.overwrite === false){
+				throw new Error("Object already exists");
 			}
+			// replace the entry in data
+			data[index[id]] = object;
+		}else{
+			// add the new object
+			index[id] = data.push(object) - 1;
 		}
-		this.data.push(object);
 		return id;
 	},
 	add: function(object, options){
@@ -84,9 +87,8 @@ return declare("dojo.store.Memory", null, {
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		//	returns: Number
-		if(this.index[(options && "id" in options) ? options.id : object[this.idProperty]]){
-			throw new Error("Object already exists");
-		}
+		(options = options || {}).overwrite = false;
+		// call put with overwrite being false
 		return this.put(object, options);
 	},
 	remove: function(id){
@@ -94,15 +96,10 @@ return declare("dojo.store.Memory", null, {
 		//		Deletes an object by its identity
 		// 	id: Number
 		//		The identity to use to delete the object
-		delete this.index[id];
-		var data = this.data,
-			idProperty = this.idProperty;
-		for(var i = 0, l = data.length; i < l; i++){
-			if(data[i][idProperty] == id){
-				data.splice(i, 1);
-				return;
-			}
-		}
+		// remove the object from the data
+		this.data.splice(this.index[id], 1);
+		// now we have to reindex
+		this.setData(this.data);
 	},
 	query: function(query, options){
 		// 	summary:
@@ -148,10 +145,9 @@ return declare("dojo.store.Memory", null, {
 		}else{
 			this.data = data;
 		}
-
+		this.index = {};
 		for(var i = 0, l = data.length; i < l; i++){
-			var object = data[i];
-			this.index[object[this.idProperty]] = object;
+			this.index[data[i][this.idProperty]] = i;
 		}
 	}
 });

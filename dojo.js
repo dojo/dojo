@@ -780,7 +780,7 @@
 		compactPath = function(path){
 			var result = [],
 				segment, lastSegment;
-			path = path.split("/");
+			path = path.replace(/\\/g, '/').split('/');
 			while(path.length){
 				segment = path.shift();
 				if(segment==".." && result.length && lastSegment!=".."){

@@ -8,8 +8,9 @@ define([
 	"./dom",
 	"./dom-style",
 	"./dom-geometry",
+	"./ready",
 	"require" // for context sensitive loading of Toggler
-], function(lang, Evented, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, require) {
+], function(lang, Evented, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, ready, require) {
 
 	// module:
 	//		dojo/fx
@@ -25,11 +26,11 @@ define([
 	=====*/
 	
 // For back-compat, remove in 2.0.
-if(dojo && dojo.ready && !dojo.isAsync){
-	dojo.ready(0, function(){
+if(!dojo.isAsync){
+	ready(0, function(){
 		var requires = ["./fx/Toggler"];
 		require(requires);	// use indirection so modules not rolled into a build
-	})
+	});
 }
 
 	var coreFx = {};

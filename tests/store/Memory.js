@@ -73,8 +73,13 @@ dojo.require("dojo.store.Memory");
 				t.t(store.get(7).prime);
 			},
 			function testRemove(t){
-				store.remove(7);
+				t.t(store.remove(7));
 				t.is(store.get(7), undefined);
+			},
+			function testRemoveMissing(t){
+				t.f(store.remove(77));
+				// make sure nothing changed
+				t.is(store.get(1).id, 1);
 			},
 			function testQueryAfterChanges(t){
 				t.is(store.query({prime: true}).length, 3);

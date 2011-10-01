@@ -96,10 +96,16 @@ return declare("dojo.store.Memory", null, {
 		//		Deletes an object by its identity
 		// 	id: Number
 		//		The identity to use to delete the object
-		// remove the object from the data
-		this.data.splice(this.index[id], 1);
-		// now we have to reindex
-		this.setData(this.data);
+		// returns: Boolean
+		// 		Returns true if an object was removed, falsy (undefined) if no object matched the id
+		var index = this.index;
+		var data = this.data;
+		if(id in index){
+			data.splice(index[id], 1);
+			// now we have to reindex
+			this.setData(data);
+			return true;
+		}
 	},
 	query: function(query, options){
 		// 	summary:

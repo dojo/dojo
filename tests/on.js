@@ -206,12 +206,12 @@ doh.register("tests.on",
 		},
 		function pubsub(t){
 			var fooCount = 0;
-			topic.on("/test/foo", function(event, secondArg){
+			topic.subscribe("/test/foo", function(event, secondArg){
 				t.is("value", event.foo);
 				t.is("second", secondArg);
 				fooCount++;
 			});
-			topic.emit("/test/foo", {foo: "value"}, "second");
+			topic.publish("/test/foo", {foo: "value"}, "second");
 			t.is(1, fooCount);
 		},
 		function touch(t){

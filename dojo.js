@@ -200,7 +200,6 @@
 		transformToAmd = noop,
 		getXhr;
 	if(has("dojo-sync-loader")){
-
 		req.isXdUrl = noop;
 		req.initSyncLoader = function(dojoRequirePlugin_, checkDojoRequirePlugin_, transformToAmd_, isXdUrl_){
 			if(!dojoRequirePlugin){
@@ -280,6 +279,8 @@
 				return xhr.responseText;
 			};
 		}
+	}else{
+		req.async = 1;
 	}
 
 	//
@@ -692,7 +693,7 @@
 				// ...but *always* insist on immediate in synch mode
 				var strict = checkCompleteGuard && req.async;
 				checkCompleteGuard++;
-				execModule(module, req.async);
+				execModule(module, strict);
 				checkIdle();
 				if(!module.executed){
 					// some deps weren't on board or circular dependency detected and strict; therefore, push into the execQ

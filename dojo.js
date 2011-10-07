@@ -236,6 +236,8 @@
 			// when dojo/_base/loader pushes the sync loader machinery into the loader (via initSyncLoader), getText is
 			// replaced by dojo.getXhr() which allows for both sync and async op(and other features. It is not a problem
 			// depending on dojo for the sync loader since the sync loader will never be used without dojo.
+
+			// note: to get the file:// protocol to work in FF, you must set security.fileuri.strict_origin_policy to false in about:config
 			has.add("dojo-xhr-factory", 1);
 			has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");
 			has.add("native-xhr", typeof XMLHttpRequest != "undefined");
@@ -859,23 +861,21 @@
 			// get here iff the sought-after module does not yet exist; therefore, we need to compute the URL given the
 			// fully resolved (i.e., all relative indicators and package mapping resolved) module id
 
-			if(!url){
-				mapItem = runMapProg(mid, pathsMapProg);
-				if(mapItem){
-					url = mapItem[1] + mid.substring(mapItem[3] - 1);
-				}else if(pid){
-					url = pack.location + "/" + midInPackage;
-				}else if(has("config-tlmSiblingOfDojo")){
-					url = "../" + mid;
-				}else{
-					url = mid;
-				}
-				// if result is not absolute, add baseUrl
-				if(!(/(^\/)|(\:)/.test(url))){
-					url = baseUrl + url;
-				}
-				url += ".js";
+			mapItem = runMapProg(mid, pathsMapProg);
+			if(mapItem){
+				url = mapItem[1] + mid.substring(mapItem[3] - 1);
+			}else if(pid){
+				url = pack.location + "/" + midInPackage;
+			}else if(has("config-tlmSiblingOfDojo")){
+				url = "../" + mid;
+			}else{
+				url = mid;
 			}
+			// if result is not absolute, add baseUrl
+			if(!(/(^\/)|(\:)/.test(url))){
+				url = baseUrl + url;
+			}
+			url += ".js";
 			return makeModuleInfo(pid, mid, pack, compactPath(url), cacheId);
 		},
 
@@ -1755,7 +1755,7 @@
 		return this.dojoConfig || this.djConfig || this.require || {};
 	})(),
 
-	// default config
+	// defaultConfig
 	{
 		// the default configuration for a browser; this will be modified by other environments
 		hasCache:{

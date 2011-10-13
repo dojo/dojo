@@ -174,7 +174,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 					try{
 						var newResult = func(result);
 						if (newResult && typeof newResult.then === "function"){
-							newResult.then(lang.hitch(listener.deferred, "resolve"), lang.hitch(listener.deferred, "reject"));
+							newResult.then(lang.hitch(listener.deferred, "resolve"), lang.hitch(listener.deferred, "reject"), lang.hitch(listener.deferred, "progress"));
 							continue;
 						}
 						var unchanged = mutated && newResult === undefined;

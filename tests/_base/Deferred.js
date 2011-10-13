@@ -262,6 +262,53 @@ doh.register("tests._base.Deferred",
 			def.errback(new Error);
 
 			t.assertEqual("succeed", retval);
+		},
+		function testDojoPromiseProgressBasic(t) {
+			var a = new dojo.Deferred();
+			var b = new dojo.Deferred();
+			var called = false;
+			
+			a.then(function() {
+				b.then(function(){
+					if (!called) {
+						console.log("Boo. ProgressBasic not called");
+					}
+				}, function(){
+					console.log("Unexpected");
+				}, function(){
+					called = true; 
+					console.log("Yay. ProgressBasic called");
+				});
+			});
+			
+			a.resolve();
+			b.progress();
+			b.resolve();
+			t.t(called);
+		},
+		
+		function testDojoPromiseProgressChain(t) {
+			var a = new dojo.Deferred();
+			var b = new dojo.Deferred();
+			var called = false;
+			
+			a.then(function() {
+				return b;
+			}).then(function(){
+				if (!called) {
+					console.log("Boo. ProgressChain not called");
+				}
+			}, function(){
+				console.log("Unexpected");
+			}, function(){
+				called = true; 
+				console.log("Yay. ProgressChain called");
+			});
+			
+			a.resolve();
+			b.progress();
+			b.resolve();
+			t.t(called);
 		}
  ]
 );

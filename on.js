@@ -263,7 +263,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		}while(event && event.bubbles && (target = target.parentNode));
 		return event && event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
 	};
-	var captures = {};
+	var captures = {}; 
 	if(has("dom-addeventlistener")){
 		// normalize focusin and focusout
 		captures = {
@@ -298,7 +298,6 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		};
 	}else{
 		// no addEventListener, basically old IE event normalization
-		var lastEvent, lastEventId = 1, nextEventId = 2;
 		on._fixEvent = function(evt, sender){
 			// summary:
 			//		normalizes properties on the event object including event
@@ -312,13 +311,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				evt = w.event;
 			}
 			if(!evt){return(evt);}
-			if(!evt.target){// emit-ed events will have target set and so don't need normalization
-				if(evt.data == lastEventId && evt.type != "message"){
-					// it has already been been fixed and is cached
-					return lastEvent;
-				}
-				lastEvent = evt;
-				evt.data = lastEventId = nextEventId++;
+			if(!evt.target){ // check to see if it has been fixed yet
 				evt.target = evt.srcElement;
 				evt.currentTarget = (sender || evt.srcElement);
 				if(evt.type == "mouseover"){

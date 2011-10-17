@@ -899,11 +899,20 @@
 
 				if(has("dojo-sync-loader") && legacyMode == sync && !plugin.executed){
 					injectModule(plugin);
-					checkCompleteGuard++;
-					execModule(plugin);
-					checkIdle();
-					promoteModuleToPlugin(plugin);
+					if(plugin.injected===arrived && !plugin.executed){
+						checkCompleteGuard++;
+						execModule(plugin);
+						checkIdle();
+					}
+					if(plugin.executed){
+						promoteModuleToPlugin(plugin);
+					}else{
+						// we are in xdomain mode for some reason
+						execQ.unshift(plugin);
+					}
 				}
+
+
 
 				if(plugin.executed === executed && !plugin.load){
 					// executed the module not knowing it was a plugin

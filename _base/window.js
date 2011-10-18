@@ -17,7 +17,7 @@ dojo.doc = {
 	//	|	n.appendChild(dojo.doc.createElement('div'));
 }
 =====*/
-dojo.doc = window["document"] || null;
+dojo.doc = this["document"] || null;
 
 dojo.body = function(){
 	// summary:
@@ -85,7 +85,7 @@ dojo.withDoc = function(	/*DocumentElement*/documentObject,
 		dojo.doc = ret.doc = documentObject;
 		// update dojo.isQuirks and the value of the has feature "quirks"
 		dojo.isQuirks = has.add("quirks", dojo.doc.compatMode == "BackCompat", true, true); // no need to check for QuirksMode which was Opera 7 only
-		
+
 		if(has("ie")){
 			if((pwin = documentObject.parentWindow) && pwin.navigator){
 				// re-run IE detection logic and update dojo.isIE / has("ie")

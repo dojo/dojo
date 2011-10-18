@@ -1,10 +1,28 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"1월",
+		"2월",
+		"3월",
+		"4월",
+		"5월",
+		"6월",
+		"7월",
+		"8월",
+		"9월",
+		"10월",
+		"11월",
+		"12월"
+	],
 	"field-weekday": "요일",
 	"dateFormatItem-yQQQ": "y년 QQQ",
 	"dateFormatItem-yMEd": "yyyy. M. d. EEE",
 	"dateFormatItem-MMMEd": "MMM d일 (E)",
+	"eraNarrow": [
+		"기원전",
+		"서기"
+	],
 	"dateFormat-long": "y년 M월 d일",
 	"months-format-wide": [
 		"1월",
@@ -27,6 +45,20 @@ define(
 	"dateFormatItem-Md": "M. d.",
 	"field-era": "연호",
 	"dateFormatItem-yM": "yyyy. M.",
+	"months-standAlone-wide": [
+		"1월",
+		"2월",
+		"3월",
+		"4월",
+		"5월",
+		"6월",
+		"7월",
+		"8월",
+		"9월",
+		"10월",
+		"11월",
+		"12월"
+	],
 	"timeFormat-short": "a h:mm",
 	"quarters-format-wide": [
 		"제 1/4분기",
@@ -40,6 +72,20 @@ define(
 	"dateFormatItem-yQ": "y년 Q분기",
 	"field-hour": "시",
 	"dateFormatItem-MMdd": "MM. dd",
+	"months-format-abbr": [
+		"1월",
+		"2월",
+		"3월",
+		"4월",
+		"5월",
+		"6월",
+		"7월",
+		"8월",
+		"9월",
+		"10월",
+		"11월",
+		"12월"
+	],
 	"dateFormatItem-yyQ": "yy년 Q분기",
 	"timeFormat-full": "a h시 m분 s초 zzzz",
 	"field-day-relative+0": "오늘",
@@ -47,23 +93,67 @@ define(
 	"field-day-relative+2": "모레",
 	"dateFormatItem-H": "H시",
 	"field-day-relative+3": "3일후",
+	"months-standAlone-abbr": [
+		"1월",
+		"2월",
+		"3월",
+		"4월",
+		"5월",
+		"6월",
+		"7월",
+		"8월",
+		"9월",
+		"10월",
+		"11월",
+		"12월"
+	],
 	"quarters-format-abbr": [
 		"1분기",
 		"2분기",
 		"3분기",
 		"4분기"
 	],
+	"quarters-standAlone-wide": [
+		"제 1/4분기",
+		"제 2/4분기",
+		"제 3/4분기",
+		"제 4/4분기"
+	],
 	"dateFormatItem-HHmmss": "HH:mm:ss",
 	"dateFormatItem-M": "M월",
+	"days-standAlone-wide": [
+		"일요일",
+		"월요일",
+		"화요일",
+		"수요일",
+		"목요일",
+		"금요일",
+		"토요일"
+	],
 	"dateFormatItem-yyMMM": "yy년 MMM",
 	"timeFormat-medium": "a h:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
+		"1분기",
+		"2분기",
+		"3분기",
+		"4분기"
+	],
 	"eraAbbr": [
 		"기원전",
 		"서기"
 	],
 	"field-minute": "분",
 	"field-dayperiod": "오전/오후",
+	"days-standAlone-abbr": [
+		"일",
+		"월",
+		"화",
+		"수",
+		"목",
+		"금",
+		"토"
+	],
 	"dateFormatItem-d": "d일",
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+-1": "어제",
@@ -116,6 +206,15 @@ define(
 	"eraNames": [
 		"서력기원전",
 		"서력기원"
+	],
+	"days-format-narrow": [
+		"일",
+		"월",
+		"화",
+		"수",
+		"목",
+		"금",
+		"토"
 	],
 	"field-month": "월",
 	"days-standAlone-narrow": [

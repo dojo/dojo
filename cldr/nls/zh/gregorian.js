@@ -1,10 +1,28 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"1月",
+		"2月",
+		"3月",
+		"4月",
+		"5月",
+		"6月",
+		"7月",
+		"8月",
+		"9月",
+		"10月",
+		"11月",
+		"12月"
+	],
 	"field-weekday": "周天",
 	"dateFormatItem-yQQQ": "y年QQQ",
 	"dateFormatItem-yMEd": "y年M月d日，E",
 	"dateFormatItem-MMMEd": "MMMd日E",
+	"eraNarrow": [
+		"公元前",
+		"公元"
+	],
 	"dayPeriods-format-wide-earlyMorning": "清晨",
 	"dayPeriods-format-wide-morning": "上午",
 	"dateFormat-long": "y年M月d日",
@@ -54,8 +72,8 @@ define(
 	"dateFormatItem-yMMM": "y年MMM",
 	"dateFormatItem-yQ": "y年QQQ",
 	"dateFormatItem-yyyyMMMM": "y年MMMM",
-	"dateFormatItem-MMdd": "MM-dd",
 	"field-hour": "小时",
+	"dateFormatItem-MMdd": "MM-dd",
 	"months-format-abbr": [
 		"1月",
 		"2月",
@@ -96,16 +114,46 @@ define(
 		"3季",
 		"4季"
 	],
+	"quarters-standAlone-wide": [
+		"第1季度",
+		"第2季度",
+		"第3季度",
+		"第4季度"
+	],
 	"dateFormatItem-M": "M月",
+	"days-standAlone-wide": [
+		"星期日",
+		"星期一",
+		"星期二",
+		"星期三",
+		"星期四",
+		"星期五",
+		"星期六"
+	],
 	"dateFormatItem-yyMMM": "yy年MMM",
 	"timeFormat-medium": "ah:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
+	"quarters-standAlone-abbr": [
+		"1季",
+		"2季",
+		"3季",
+		"4季"
+	],
 	"eraAbbr": [
 		"公元前",
 		"公元"
 	],
 	"field-minute": "分钟",
 	"field-dayperiod": "上午/下午",
+	"days-standAlone-abbr": [
+		"周日",
+		"周一",
+		"周二",
+		"周三",
+		"周四",
+		"周五",
+		"周六"
+	],
 	"dayPeriods-format-wide-night": "晚上",
 	"dateFormatItem-d": "d日",
 	"dateFormatItem-ms": "mm:ss",
@@ -155,6 +203,19 @@ define(
 		"周六"
 	],
 	"dateFormatItem-yMMMd": "y年MMMd日",
+	"eraNames": [
+		"公元前",
+		"公元"
+	],
+	"days-format-narrow": [
+		"日",
+		"一",
+		"二",
+		"三",
+		"四",
+		"五",
+		"六"
+	],
 	"field-month": "月",
 	"days-standAlone-narrow": [
 		"日",

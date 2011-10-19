@@ -359,7 +359,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 		if(promiseOrValue && typeof promiseOrValue.then === "function"){
 			return promiseOrValue.then(callback, errback, progressHandler);
 		}
-		return callback(promiseOrValue);	// Promise
+		return callback ? callback(promiseOrValue) : promiseOrValue;	// Promise
 	};
 
 	return dojo.Deferred;

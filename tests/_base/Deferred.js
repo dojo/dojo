@@ -131,6 +131,9 @@ doh.register("tests._base.Deferred",
 			});
 			return td;
 		},
+		function syncWhenWithNoCallback(t){
+			t.is(dojo.when(3), 3);
+		},
 		function progress(t){
 			if(dojo.isBrowser){
 				var td = new doh.Deferred();

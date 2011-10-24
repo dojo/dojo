@@ -13,7 +13,7 @@ var testResourceRe = /^dojo\/tests\//,
 			"dojo/tests/_base/loader/requirejs/relative/relative-tests":1,
 			"dojo/tests/_base/loader/requirejs/exports/exports-tests":1
 		};
-		return (mid in list) ||  /^dojo\/_base\/config\w+$/.test(mid) || /^dojo\/resources\//.test(mid);
+		return (mid in list) || ((/^dojo\/_base\/config\w+$/.test(mid) || /^dojo\/resources\//.test(mid)) && !/\.css$/.test(mid));
 	};
 
 var profile = {

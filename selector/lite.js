@@ -1,15 +1,13 @@
-define(["../has"], 
-		function(has){	
+define(["../has", "../_base/kernel"], function(has, dojo){
 "use strict";
 // summary:
-//		A small lightweight query selector engine
+//		A small lightweight query selector engine that implements CSS2.1 selectors 
+// 		minus pseudo-classes and the sibling combinator, plus CSS3 attribute selectors
 var testDiv = document.createElement("div");
 var matchesSelector = testDiv.matchesSelector || testDiv.webkitMatchesSelector || testDiv.mozMatchesSelector || testDiv.msMatchesSelector || testDiv.oMatchesSelector; // IE9, WebKit, Firefox have this, but not Opera yet
 var querySelectorAll = testDiv.querySelectorAll;
-has.add({
-	"dom-matches-selector": !!matchesSelector,
-	"dom-qsa": !!querySelectorAll 
-});
+has.add("dom-matches-selector", !!matchesSelector);
+has.add("dom-qsa", !!querySelectorAll); 
 
 // this is a simple query engine. It has handles basic selectors, and for simple
 // common selectors is extremely fast
@@ -18,31 +16,44 @@ var liteEngine = function(selector, root){
 		return combine(selector, root);
 	}
 	var match = (querySelectorAll ? 
-		/^#([\w\-]+$)|^(\.)([\w\-\*]+$)|^(\w+$)/ : // this one only matches on simple queries where we can beat qSA with specific methods
-		/^#([\w\-]+)(?:\s+(.*))?$|(?:^|(.+\s+))([\w\-\*]+)(\S*$)/) // this one matches parts of the query that we can use to speed up manual filtering
+		/^([\w]*)#([\w\-]+$)|^(\.)([\w\-\*]+$)|^(\w+$)/ : // this one only matches on simple queries where we can beat qSA with specific methods
+		/^([\w]*)#([\w\-]+)(?:\s+(.*))?$|(?:^|(>|.+\s+))([\w\-\*]+)(\S*$)/) // this one matches parts of the query that we can use to speed up manual filtering
 			.exec(selector);
 	root = root || document;
 	if(match){
 		// fast path regardless of whether or not querySelectorAll exists
-		if(match[1] && root == document){
+		if(match[2]){
 			// an #id
-			root = root.getElementById(match[1]);
-			return root && root.parentNode ? 
-				match[2] ?
-					liteEngine(match[2], root) 
-					: [root] 
-						: [];
+			// use dojo.byId if available as it fixes the id retrieval in IE
+			var found = dojo.byId ? dojo.byId(match[2]) : document.getElementById(match[2]);
+			if(!found || (match[1] && match[1] != found.tagName.toLowerCase())){
+				// if there is a tag qualifer and it doesn't match, no matches
+				return [];
+			}
+			if(root != document){
+				// there is a root element, make sure we are a child of it
+				var parent = found;
+				while(parent != root){
+					parent = parent.parentNode;
+					if(!parent){
+						return [];
+					}
+				}
+			}
+			return match[3] ?
+					liteEngine(match[3], found) 
+					: [found];
 		}
-		if(match[2] && root.getElementsByClassName){
+		if(match[3] && root.getElementsByClassName){
 			// a .class
-			return root.getElementsByClassName(match[3]);
+			return root.getElementsByClassName(match[4]);
 		}
 		var found;
-		if(match[4]){
+		if(match[5]){
 			// a tag
-			found = root.getElementsByTagName(match[4]);
-			if(match[3] || match[5]){
-				selector = (match[3] || "") + match[5];
+			found = root.getElementsByTagName(match[5]);
+			if(match[4] || match[6]){
+				selector = (match[4] || "") + match[6];
 			}else{
 				// that was the entirety of the query, return results
 				return found;
@@ -68,7 +79,7 @@ var liteEngine = function(selector, root){
 	var results = [];
 	for(var i = 0, l = found.length; i < l; i++){
 		var node = found[i];
-		if(jsMatchesSelector(node, selector, root)){
+		if(node.nodeType == 1 && jsMatchesSelector(node, selector, root)){
 			// keep the nodes that match the selector
 			results.push(node);
 		}
@@ -120,23 +131,38 @@ if(!has("dom-matches-selector")){
 				return node.className.indexOf(className) > -1 && (' ' + node.className + ' ').indexOf(classNameSpaced) > -1;
 			}
 		}
+		var attrComparators = {
+			"^=": function(attrValue, value){
+				return attrValue.indexOf(value) == 0;
+			},
+			"*=": function(attrValue, value){
+				return attrValue.indexOf(value) > -1;
+			},
+			"$=": function(attrValue, value){
+				return attrValue.substring(attrValue.length - value.length, attrValue.length) == value;
+			},
+			"~=": function(attrValue, value){
+				return (' ' + attrValue + ' ').indexOf(' ' + value + ' ') > -1;
+			},
+			"|=": function(attrValue, value){
+				return (attrValue + '-').indexOf(value + '-') == 0;
+			},
+			"=": function(attrValue, value){
+				return attrValue == value;
+			},
+			"": function(attrValue, value){
+				return true;
+			}
+		};
 		function attr(name, value, type){
-			value = value.replace(/'|"/g,''); // what are you supposed to do with quotes, do they follow JS rules for escaping?
-			return type == "^=" ? function(node){
-				var thisValue = node.getAttribute(name);
-				return thisValue && thisValue.substring(0, value.length) == value;
-			} :
-			type == "$=" ? function(node){
-				var thisValue = node.getAttribute(name);
-				return thisValue && thisValue.substring(thisValue.length - value.length, thisValue.length) == value;
-			} :
-			type == "=" ? function(node){
-				return node.getAttribute(name) == value;
-			}:
-			!type ? function(node){
-				return node.getAttribute(name);
-			} : function(){
-				throw new Error("Unknown attribute comparison " + type);
+			if(value.match(/['"]/)){
+				// it is quoted, do an eval to parse the string (CSS and JS parsing are close enough)
+				value = eval(value);
+			}
+			var comparator = attrComparators[type || ""];
+			return function(node){
+				var attrValue = node.getAttribute(name);
+				return attrValue && comparator(attrValue, value);
 			}
 		}
 		function ancestor(matcher){
@@ -170,7 +196,7 @@ if(!has("dom-matches-selector")){
 			if(!matcher){
 				// create a matcher function for the given selector
 				// parse the selectors
-				if(selector.replace(/(\s*>\s*)|(\s+)|(.)?([\w-]+)|\[([\w-]+)\s*(.?=)?\s*([^\]]*)\]/g, function(t, desc, space, type, value, attrName, attrType, attrValue){
+				if(selector.replace(/(?:\s*([> ])\s*)|(\.)?([\w-]+)|\[([\w-]+)\s*(.?=)?\s*([^\]]*)\]/g, function(t, combinator, type, value, attrName, attrType, attrValue){
 					if(value){
 						if(type == "."){
 							matcher = and(matcher, className(value));
@@ -179,11 +205,8 @@ if(!has("dom-matches-selector")){
 							matcher = and(matcher, tag(value));
 						}
 					}
-					else if(space){
-						matcher = ancestor(matcher);
-					}
-					else if(desc){
-						matcher = parent(matcher);
+					else if(combinator){
+						matcher = (combinator == " " ? ancestor : parent)(matcher);
 					}
 					else if(attrName){
 						matcher = and(matcher, attr(attrName, attrValue, attrType));
@@ -206,20 +229,21 @@ if(!has("dom-qsa")){
 	var combine = function(selector, root){
 		// combined queries
 		selector = selector.split(/\s*,\s*/);
-		var totalResults = [];
-		var unique = {};
-		// add all results and keep unique ones
+		var indexed = [];
+		// add all results and keep unique ones, this only runs in IE, so we take advantage 
+		// of known IE features, particularly sourceIndex which is unique and allows us to 
+		// order the results 
 		for(var i = 0; i < selector.length; i++){
-			var results = defaultEngine(selector[i], root);
+			var results = liteEngine(selector[i], root);
 			for(var j = 0, l = results.length; j < l; j++){
 				var node = results[j];
-				var id = node.uniqueID;
-				// only add it if unique
-				if(!(id in unique)){
-					totalResults.push(node);
-					unique[id] = true;
-				}
+				indexed[node.sourceIndex] = node;
 			}
+		}
+		// now convert from a sparse array to a dense array
+		var totalResults = [];
+		for(i in indexed){
+			totalResults.push(indexed[i]);
 		}
 		return totalResults;
 	};

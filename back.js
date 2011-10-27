@@ -1,30 +1,28 @@
-define(["./main", "require"], function(dojo, require) {
+define(["./_base/kernel", "./_base/lang", "./_base/sniff", "./dom", "./dom-construct", "./_base/window", "require"], function(dojo, lang, sniff, dom, domConstruct, baseWindow, require) {
 	// module:
 	//		dojo/back
 	// summary:
 	//		TODOC
 
-dojo.getObject("back", true, dojo);
+	lang.getObject("back", true, dojo);
 
 /*=====
 dojo.back = {
 	// summary: Browser history management resources
-}
+};
 =====*/
 
-
-(function(){
 	var back = dojo.back,
 
 	// everyone deals with encoding the hash slightly differently
 
-	getHash= back.getHash= function(){
+	getHash = back.getHash = function(){
 		var h = window.location.hash;
 		if(h.charAt(0) == "#"){ h = h.substring(1); }
-		return dojo.isMozilla ? h : decodeURIComponent(h);
+		return sniff("mozilla") ? h : decodeURIComponent(h);
 	},
 
-	setHash= back.setHash= function(h){
+	setHash = back.setHash = function(h){
 		if(!h){ h = ""; }
 		window.location.hash = encodeURIComponent(h);
 		historyCounter = history.length;
@@ -101,13 +99,13 @@ dojo.back = {
 
 	function loadIframeHistory(){
 		//summary: private method. Do not call this directly.
-		var url = (dojo.config["dojoIframeHistoryUrl"] || require.nameToUrl("./resources/iframe_history.html")) + "?" + (new Date()).getTime();
+		var url = (dojo.config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
-        if(historyIframe){
-		    dojo.isWebKit ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
-        }else{
-            //console.warn("dojo.back: Not initialised. You need to call dojo.back.init() from a <script> block that lives inside the <body> tag.");
-        }
+		if(historyIframe){
+			sniff("webkit") ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
+		}else{
+			//console.warn("dojo.back: Not initialised. You need to call dojo.back.init() from a <script> block that lives inside the <body> tag.");
+		}
 		return url; //String
 	}
 
@@ -138,25 +136,27 @@ dojo.back = {
 			if((hsl >= 2)&&(historyStack[hsl-2])){
 				if(historyStack[hsl-2].urlHash === hash){
 					handleBackButton();
-					return;
 				}
 			}
 		}
-	};
+	}
 
 	back.init = function(){
 		//summary: Initializes the undo stack. This must be called from a <script>
-		//         block that lives inside the <body> tag to prevent bugs on IE.
+		//		   block that lives inside the <body> tag to prevent bugs on IE.
 		// description:
-		// 		Only call this method before the page's DOM is finished loading. Otherwise
-		// 		it will not work. Be careful with xdomain loading or djConfig.debugAtAllCosts scenarios,
-		// 		in order for this method to work, dojo.back will need to be part of a build layer.
-		if(dojo.byId("dj_history")){ return; } // prevent reinit
-		var src = dojo.config["dojoIframeHistoryUrl"] || require.nameToUrl("./resources/iframe_history.html");
+		//		Only call this method before the page's DOM is finished loading. Otherwise
+		//		it will not work. Be careful with xdomain loading or djConfig.debugAtAllCosts scenarios,
+		//		in order for this method to work, dojo.back will need to be part of a build layer.
+
+		// prevent reinit
+		if(dom.byId("dj_history")){ return; } 
+
+		var src = dojo.config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html");
 		if (dojo._postLoad) {
 			console.error("dojo.back.init() must be called before the DOM has loaded. "
-			            + "If using xdomain loading or djConfig.debugAtAllCosts, include dojo.back "
-			            + "in a build layer.");
+						+ "If using xdomain loading or djConfig.debugAtAllCosts, include dojo.back "
+						+ "in a build layer.");
 		} else {
 			document.write('<iframe style="border:0;width:1px;height:1px;position:absolute;visibility:hidden;bottom:0;right:0;" name="dj_history" id="dj_history" src="' + src + '"></iframe>');
 		}
@@ -177,7 +177,7 @@ dojo.back = {
 	//FIXME: Make these doc comments not be awful. At least they're not wrong.
 	//FIXME: Would like to support arbitrary back/forward jumps. Have to rework iframeLoaded among other things.
 	//FIXME: is there a slight race condition in moz using change URL with the timer check and when
-	//       the hash gets set? I think I have seen a back/forward call in quick succession, but not consistent.
+	//		 the hash gets set? I think I have seen a back/forward call in quick succession, but not consistent.
 
 
 	/*=====
@@ -199,6 +199,8 @@ dojo.back = {
 	back.addToHistory = function(/*dojo.__backArgs*/ args){
 		//	summary:
 		//		adds a state object (args) to the history list.
+		//	args: dojo.__backArgs
+		//		The state object that will be added to the history list.
 		//	description:
 		//		To support getting back button notifications, the object
 		//		argument should implement a function called either "back",
@@ -223,7 +225,7 @@ dojo.back = {
 		//		for example). If you want to detect hash changes using semantic fragment IDs, then
 		//		consider using dojo.hash instead (in Dojo 1.4+).
 		//
-	 	//	example:
+		//	example:
 		//		|	dojo.back.addToHistory({
 		//		|		back: function(){ console.log('back pressed'); },
 		//		|		forward: function(){ console.log('forward pressed'); },
@@ -231,7 +233,7 @@ dojo.back = {
 		//		|	});
 
 		//	BROWSER NOTES:
-		//  Safari 1.2:
+		//	Safari 1.2:
 		//	back button "works" fine, however it's not possible to actually
 		//	DETECT that you've moved backwards by inspecting window.location.
 		//	Unless there is some other means of locating.
@@ -273,7 +275,7 @@ dojo.back = {
 			historyIframe = window.frames["dj_history"];
 		}
 		if(!bookmarkAnchor){
-			bookmarkAnchor = dojo.create("a", {style: {display: "none"}}, dojo.body());
+			bookmarkAnchor = domConstruct.create("a", {style: {display: "none"}}, baseWindow.body());
 		}
 		if(args["changeUrl"]){
 			hash = ""+ ((args["changeUrl"]!==true) ? args["changeUrl"] : (new Date()).getTime());
@@ -300,7 +302,7 @@ dojo.back = {
 				}, 1);
 			bookmarkAnchor.href = hash;
 
-			if(dojo.isIE){
+			if(sniff("ie")){
 				url = loadIframeHistory();
 
 				var oldCB = args["back"]||args["backButton"]||args["handle"];
@@ -349,7 +351,7 @@ dojo.back = {
 					args.handle = tfw;
 				}
 
-			}else if(!dojo.isIE){
+			}else if(!sniff("ie")){
 				// start the timer
 				if(!locationTimer){
 					locationTimer = setInterval(checkLocation, 200);
@@ -389,7 +391,7 @@ dojo.back = {
 			handleForwardButton();
 		}
 	};
- })();
 
-return dojo.back;
+	return dojo.back;
+	
 });

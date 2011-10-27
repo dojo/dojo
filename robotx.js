@@ -6,8 +6,6 @@ dojo.experimental("dojo.robotx");
 // to use: set robotURL in djConfig to the URL you want to load
 // dojo.require this file
 
-(function(){
-
 var iframe = null;
 
 var groupStarted=dojo.connect(doh, '_groupStarted', function(){
@@ -38,14 +36,16 @@ var attachIframe = function(){
 var robotReady=false;
 var robotFrame=null;
 var _run=doh.robot._run;
-doh.robot._run=function(frame){
+doh.robot._run = function(frame){
 	// Called from robot when the robot completed its initialization.
 	robotReady = true;
 	robotFrame = frame;
-	doh.robot._run=_run;
+	doh.robot._run = _run;
 	// If initRobot was already called, then attach the iframe.
-	if(iframe.src){ attachIframe(); }
-}
+	if(iframe.src){
+		attachIframe();
+	}
+};
 
 var onIframeLoad=function(){
 	// initial load handler: update the document and start the tests
@@ -94,9 +94,6 @@ if(iframe['attachEvent'] !== undefined){
 }else{
 	dojo.connect(iframe, 'onload', iframeLoad);
 }
-
-
-
 
 dojo.mixin(doh.robot,{
 	_updateDocument: function(){
@@ -159,7 +156,6 @@ dojo.mixin(doh.robot,{
 	}
 
 });
-})();
 
 return doh.robot;
 });

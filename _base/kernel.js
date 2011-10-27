@@ -1,69 +1,76 @@
-define(["../has", "./config", "require"], function(has, config, require){
+define(["../has", "./config", "require", "module"], function(has, config, require, module){
 	// module:
 	//		dojo/_base/kernel
 	// summary:
 	//		This module is the foundational module of the dojo boot sequence; it defines the dojo object.
-
 	var
 		// loop variables for this module
 		i, p,
 
-	    // create dojo, dijit, and dojox; initialize _scopeName and possibly publish to the global
-	    // namespace: three possible cases:
-	    //
-	    //   1. The namespace is not mentioned in config.scopeMap: _scopeName is set to the default
-	    //      name (dojo, dijit, or dojox), and the object is published to the global namespace
-	    //
-	    //   2. The namespace is mentioned with a nonempty name: _scopeName is set to the name given
-	    //      and the object is published to the global namespace under that name
-	    //
-	    //   3. Then namespace is mentioned, but the value is falsy (e.g., ""): _scopeName is set to
-	    //       _(dojo|dijit|dojox)<reasonably-unque-number> and the object is *not* published to the global namespace
-		dojo={
-			config: {},
+		// create dojo, dijit, and dojox
+		// FIXME: in 2.0 remove dijit, dojox being created by dojo
+		dijit = {},
+		dojox = {},
+		dojo = {
+			// notice dojo takes ownership of the value of the config module
+			config:config,
 			global:this,
-			dijit:{},
-			dojox:{}
-		},
-		temp= {dojo:dojo, dijit:dojo.dijit, dojox:dojo.dojox},
-		scopeMap= {dojo:"dojo", dijit:"dijit", dojox:"dojox"},
-		configScopeMap= config.scopeMap || [];
-	for(i= 0; i<configScopeMap.length; i++){
-		scopeMap[configScopeMap[i][0]]= configScopeMap[i][1];
-	}
-	for(p in temp){
-		temp[p]._scopeName= scopeMap[p];
-		if(!config.noGlobals){
-			dojo.global[scopeMap[p]]= temp[p];
+			dijit:dijit,
+			dojox:dojox
+		};
+
+
+	// Configure the scope map. For a 100% AMD application, the scope map is not needed other than to provide
+	// a _scopeName property for the dojo, dijit, and dojox root object so those packages can create
+	// unique names in the global space.
+	//
+	// Built, legacy modules use the scope map to allow those modules to be expressed as if dojo, dijit, and dojox,
+	// where global when in fact they are either global under different names or not global at all. In v1.6-, the
+	// config variable "scopeMap" was used to map names as used within a module to global names. This has been
+	// subsumed by the dojo packageMap configuration variable which relocates packages to different names. See
+	// http://livedocs.dojotoolkit.org/developer/design/loader#legacy-cross-domain-mode for details.
+	//
+	// The following computations contort the packageMap for this dojo instance into a scopeMap.
+	var scopeMap =
+			// a map from a name used in a legacy module to the (global variable name, object addressed by that name)
+			// always map dojo, dijit, and dojox
+			{
+				dojo:["dojo", dojo],
+				dijit:["dijit", dijit],
+				dojox:["dojox", dojox]
+			},
+
+		packageMap =
+			// the package map for this dojo instance; note, a foreign loader or no pacakgeMap results in the above default config
+			(require.packs && require.packs[module.id.match(/[^\/]+/)[0]].packageMap) || {},
+
+		item;
+
+	// process all mapped top-level names for this instance of dojo
+	for(p in packageMap){
+		if(scopeMap[p]){
+			// mapped dojo, dijit, or dojox
+			scopeMap[p][0] = packageMap[p];
+		}else{
+			// some other top-level name
+			scopeMap[p] = [packageMap[p], {}];
 		}
 	}
 
-	// copy the configuration, but only one-level deep; we'll clone it in the main module
-	// after dojo.clone is defined. This technique will allow us to do some clean up on
-	// the passed in config yet ultimately return the config object as we received it. After
-	// the main module is defined and config is cloned, dojo's config object is completely
-	// independend of the passed config object.
-	//
-	// allow the configuration to overwrite existing has feature tests during this bootstrap;
-	// this allows (e.g.) hard-setting a has feature test to force an execution path that may
-	// be different than actually indicated in the environment. However, after bootstrap, config
-	// can't overwrite has tests.
-	dojo.config= {};
-	for(p in config){
-		dojo.config[p]= config[p];
-		has.add(p, config[p], 0, 1);
+	// publish those names to _scopeName and, optionally, the global namespace
+	for(p in scopeMap){
+		item = scopeMap[p];
+		item[1]._scopeName = item[0];
+		if(!config.noGlobals){
+			this[item[0]] = item[1];
+		}
 	}
-	for(p in config.has){
-		has.add(p, config.has[p], 0, 1);
-	}
-	if(has("dojo-loader") && has("dojo-config-api")){
-		require.onConfig(function(config){
-			for(p in config){
-				has.add(p, config[p]);
-			}
-		});
-	}
-	dojo.baseUrl= dojo.config.baseUrl= require.baseUrl;
+	dojo.scopeMap = scopeMap;
+
+	// FIXME: dojo.baseUrl and dojo.config.baseUrl should be deprecated
+	dojo.baseUrl = dojo.config.baseUrl = require.baseUrl;
+	dojo.isAsync = !has("dojo-loader") || require.async;
+	dojo.locale = config.locale;
 
 	/*=====
 		dojo.version = function(){
@@ -87,42 +94,41 @@ define(["../has", "./config", "require"], function(has, config, require){
 		}
 	=====*/
 	var rev = "$Rev: 23930 $".match(/\d+/);
-	dojo.version= {
+	dojo.version = {
 		major: 1, minor: 7, patch: 0, flag: "dev",
 		revision: rev ? +rev[0] : NaN,
 		toString: function(){
-			var v= dojo.version;
+			var v = dojo.version;
 			return v.major + "." + v.minor + "." + v.patch + v.flag + " (" + v.revision + ")";	// String
 		}
 	};
 
-	// notice that modulePaths won't be applied to any require's before the dojo/_base/kernel factory is run;
-	// this is the v1.6- behavior. Going forward from 1.7, consider modulePaths deprecated and
-	// configure the loader directly.
-	if(config.modulePaths){
-		var paths= {};
-		for(p in config.modulePaths){
-			paths[p.replace(/\./g, "/")]= config.modulePaths[p];
-		}
-		require({paths:paths});
+
+	// If has("extend-dojo") is truthy, then as a dojo module is defined it should push it's definitions
+	// into the dojo object, and conversely. In 2.0, it will likely be unusual to augment another object
+	// as a result of defining a module. This has feature gives a way to force 2.0 behavior as the code
+	// is migrated. Absent specific advice otherwise, set extend-dojo to truthy.
+	has.add("extend-dojo", 1);
+
+	if(has("dojo-loader")){
+		dojo.eval = require.eval;
+	}else{
+		var eval_ =
+			// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
+			new Function("__text", "return eval(__text);");
+
+		dojo.eval = function(text, hint){
+			// note: the four forward-slashes make the firebug hint work in ie9
+			return eval_(text + "\r\n////@ sourceURL=" + hint);
+		};
 	}
 
-	config.locale && (dojo.locale = config.locale);
-
-	dojo.isAsync= function() {
-		return !has("dojo-loader") || require.async;
-	};
-
-	// define dojo's eval method so that an almost-pristine environment is provided
-	// (only the variables __scope and __text shadow globals)
-	var dojoEval= new Function("__scope", "__text", "return (__scope.eval || eval)(__text);");
-	dojo.eval= function(text){
-		return dojoEval(dojo.global, text);
-	};
-
-	if (!has("host-rhino")) {
+	if(has("host-rhino")){
 		dojo.exit = function(exitcode){
 			quit(exitcode);
+		};
+	} else{
+		dojo.exit = function(){
 		};
 	}
 
@@ -131,22 +137,22 @@ define(["../has", "./config", "require"], function(has, config, require){
 		1
 	);
 	if(has("dojo-guarantee-console")){
-		// intentional global console
-		typeof console!="undefined" || (console= {});
+		typeof console != "undefined" || (console = {});
 		//	Be careful to leave 'log' always at the end
 		var cn = [
 			"assert", "count", "debug", "dir", "dirxml", "error", "group",
 			"groupEnd", "info", "profile", "profileEnd", "time", "timeEnd",
 			"trace", "warn", "log"
 		];
-		var i = 0, tn;
-		while((tn=cn[i++])){
+		var tn;
+		i = 0;
+		while((tn = cn[i++])){
 			if(!console[tn]){
 				(function(){
-					var tcn = tn+"";
+					var tcn = tn + "";
 					console[tcn] = ('log' in console) ? function(){
 						var a = Array.apply({}, arguments);
-						a.unshift(tcn+":");
+						a.unshift(tcn + ":");
 						console["log"](a.join(" "));
 					} : function(){};
 					console[tcn]._fake = true;
@@ -155,218 +161,11 @@ define(["../has", "./config", "require"], function(has, config, require){
 		}
 	}
 
-	has.add("dojo-register-openAjax",
-		// register dojo with the OpenAjax hub
-		typeof OpenAjax != "undefined"
-	);
-	if (has("dojo-register-openAjax")) {
-		// Register with the OpenAjax hub
-		OpenAjax.hub.registerLibrary(dojo._scopeName, "http://dojotoolkit.org", dojo.version.toString());
-	}
-
-	has.add("bug-for-in-skips-shadowed", function() {
-		// if true, the for-in interator skips object properties that exist in Object's prototype (IE 6 - ?)
-		for(var i in {toString: 1}){
-			return 0;
-		}
-		return 1;
-	});
-	if (has("bug-for-in-skips-shadowed")){
-		var
-			extraNames = dojo._extraNames = "hasOwnProperty.valueOf.isPrototypeOf.propertyIsEnumerable.toLocaleString.toString.constructor".split("."),
-			extraLen= extraNames.length;
-	}
-	var empty= {};
-	dojo._mixin = function(/*Object*/ target, /*Object*/ source){
-		// summary:
-		//		Adds all properties and methods of source to target. This addition
-		//		is "prototype extension safe", so that instances of objects
-		//		will not pass along prototype defaults.
-		var name, s, i;
-		for(name in source){
-			// the "tobj" condition avoid copying properties in "source"
-			// inherited from Object.prototype.	 For example, if target has a custom
-			// toString() method, don't overwrite it with the toString() method
-			// that source inherited from Object.prototype
-			s = source[name];
-			if(!(name in target) || (target[name] !== s && (!(name in empty) || empty[name] !== s))){
-				target[name] = s;
-			}
-		}
-
-		if (has("bug-for-in-skips-shadowed")){
-			if(source){
-				for(i = 0; i < extraLen; ++i){
-					name = extraNames[i];
-					s = source[name];
-					if(!(name in target) || (target[name] !== s && (!(name in empty) || empty[name] !== s))){
-						target[name] = s;
-					}
-				}
-			}
-		}
-
-		return target; // Object
-	};
-
-	dojo.mixin = function(/*Object*/obj, /*Object...*/props){
-		// summary:
-		//		Adds all properties and methods of props to obj and returns the
-		//		(now modified) obj.
-		//	description:
-		//		`dojo.mixin` can mix multiple source objects into a
-		//		destination object which is then returned. Unlike regular
-		//		`for...in` iteration, `dojo.mixin` is also smart about avoiding
-		//		extensions which other toolkits may unwisely add to the root
-		//		object prototype
-		//	obj:
-		//		The object to mix properties into. Also the return value.
-		//	props:
-		//		One or more objects whose values are successively copied into
-		//		obj. If more than one of these objects contain the same value,
-		//		the one specified last in the function call will "win".
-		//	example:
-		//		make a shallow copy of an object
-		//	| var copy = dojo.mixin({}, source);
-		//	example:
-		//		many class constructors often take an object which specifies
-		//		values to be configured on the object. In this case, it is
-		//		often simplest to call `dojo.mixin` on the `this` object:
-		//	| dojo.declare("acme.Base", null, {
-		//	|		constructor: function(properties){
-		//	|			// property configuration:
-		//	|			dojo.mixin(this, properties);
-		//	|
-		//	|			console.log(this.quip);
-		//	|			//	...
-		//	|		},
-		//	|		quip: "I wasn't born yesterday, you know - I've seen movies.",
-		//	|		// ...
-		//	| });
-		//	|
-		//	| // create an instance of the class and configure it
-		//	| var b = new acme.Base({quip: "That's what it does!" });
-		//	example:
-		//		copy in properties from multiple objects
-		//	| var flattened = dojo.mixin(
-		//	|		{
-		//	|			name: "Frylock",
-		//	|			braces: true
-		//	|		},
-		//	|		{
-		//	|			name: "Carl Brutanananadilewski"
-		//	|		}
-		//	| );
-		//	|
-		//	| // will print "Carl Brutanananadilewski"
-		//	| console.log(flattened.name);
-		//	| // will print "true"
-		//	| console.log(flattened.braces);
-		if(!obj){ obj = {}; }
-		for(var i=1, l=arguments.length; i<l; i++){
-			dojo._mixin(obj, arguments[i]);
-		}
-		return obj; // Object
-	};
-
-	var getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
-		var p, amdMid, i = 0, dojoGlobal= dojo.global;
-		if(!context){
-			if(!parts.length){
-				return dojoGlobal;
-			}else{
-				p= parts[i++];
-				try{
-					context= (scopeMap[p] && require(scopeMap[p]));
-				}catch(e){}
-				context= context || (p in dojoGlobal ? dojoGlobal[p] : (create ? dojoGlobal[p] = {} : undefined));
-			}
-		}
-		while(context && (p = parts[i++])){
-			context = (p in context ? context[p] : (create ? context[p] = {} : undefined));
-		}
-		return context; // mixed
-	};
-
-	dojo.setObject = function(/*String*/name, /*Object*/value, /*Object?*/context){
-		// summary:
-		//		Set a property from a dot-separated string, such as "A.B.C"
-		//	description:
-		//		Useful for longer api chains where you have to test each object in
-		//		the chain, or when you have an object reference in string format.
-		//		Objects are created as needed along `path`. Returns the passed
-		//		value if setting is successful or `undefined` if not.
-		//	name:
-		//		Path to a property, in the form "A.B.C".
-		//	context:
-		//		Optional. Object to use as root of path. Defaults to
-		//		`dojo.global`.
-		//	example:
-		//		set the value of `foo.bar.baz`, regardless of whether
-		//		intermediate objects already exist:
-		//	| dojo.setObject("foo.bar.baz", value);
-		//	example:
-		//		without `dojo.setObject`, we often see code like this:
-		//	| // ensure that intermediate objects are available
-		//	| if(!obj["parent"]){ obj.parent = {}; }
-		//	| if(!obj.parent["child"]){ obj.parent.child= {}; }
-		//	| // now we can safely set the property
-		//	| obj.parent.child.prop = "some value";
-		//		wheras with `dojo.setObject`, we can shorten that to:
-		//	| dojo.setObject("parent.child.prop", "some value", obj);
-		var parts=name.split("."), p=parts.pop(), obj=getProp(parts, true, context);
-		return obj && p ? (obj[p]=value) : undefined; // Object
-	};
-
-	dojo.getObject = function(/*String*/name, /*Boolean?*/create, /*Object?*/context){
-		// summary:
-		//		Get a property from a dot-separated string, such as "A.B.C"
-		//	description:
-		//		Useful for longer api chains where you have to test each object in
-		//		the chain, or when you have an object reference in string format.
-		//	name:
-		//		Path to an property, in the form "A.B.C".
-		//	create:
-		//		Optional. Defaults to `false`. If `true`, Objects will be
-		//		created at any point along the 'path' that is undefined.
-		//	context:
-		//		Optional. Object to use as root of path. Defaults to
-		//		'dojo.global'. Null may be passed.
-		return getProp(name.split("."), create, context); // Object
-	};
-
-	dojo.exists = function(/*String*/name, /*Object?*/obj){
-		//	summary:
-		//		determine if an object supports a given method
-		//	description:
-		//		useful for longer api chains where you have to test each object in
-		//		the chain. Useful for object and method detection.
-		//	name:
-		//		Path to an object, in the form "A.B.C".
-		//	obj:
-		//		Object to use as root of path. Defaults to
-		//		'dojo.global'. Null may be passed.
-		//	example:
-		//	| // define an object
-		//	| var foo = {
-		//	|		bar: { }
-		//	| };
-		//	|
-		//	| // search the global scope
-		//	| dojo.exists("foo.bar"); // true
-		//	| dojo.exists("foo.bar.baz"); // false
-		//	|
-		//	| // search from a particular scope
-		//	| dojo.exists("bar", foo); // true
-		//	| dojo.exists("bar.baz", foo); // false
-		return dojo.getObject(name, false, obj) !== undefined; // Boolean
-	};
-
 	has.add("dojo-debug-messages",
 		// include dojo.deprecated/dojo.experimental implementations
-		1
+		!!config.isDebug
 	);
-	if (has("dojo-debug-messages")) {
+	if(has("dojo-debug-messages")){
 		dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
 			//	summary:
 			//		Log a debug message to indicate that a behavior has been
@@ -407,13 +206,81 @@ define(["../has", "./config", "require"], function(has, config, require){
 			//	| dojo.experimental("dojo.data.Result");
 			//	example:
 			//	| dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
+
 			var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
 			if(extra){ message += " " + extra; }
 			console.warn(message);
 		};
-	} else {
-		dojo.deprecated= dojo.experimental= function(){};
+	}else{
+		dojo.deprecated = dojo.experimental =  function(){};
 	}
+
+	has.add("dojo-modulePaths",
+		// consume dojo.modulePaths processing
+		1
+	);
+	if(has("dojo-modulePaths")){
+		// notice that modulePaths won't be applied to any require's before the dojo/_base/kernel factory is run;
+		// this is the v1.6- behavior.
+		if(config.modulePaths){
+			dojo.deprecated("dojo.modulePaths", "use paths configuration");
+			var paths = {};
+			for(p in config.modulePaths){
+				paths[p.replace(/\./g, "/")] = config.modulePaths[p];
+			}
+			require({paths:paths});
+		}
+	}
+
+	has.add("dojo-moduleUrl",
+		// include dojo.moduleUrl
+		1
+	);
+	if(has("dojo-moduleUrl")){
+		dojo.moduleUrl = function(/*String*/module, /*String?*/url){
+			//	summary:
+			//		Returns a URL relative to a module.
+			//	example:
+			//	|	var pngPath = dojo.moduleUrl("acme","images/small.png");
+			//	|	console.dir(pngPath); // list the object properties
+			//	|	// create an image and set it's source to pngPath's value:
+			//	|	var img = document.createElement("img");
+			//	|	img.src = pngPath;
+			//	|	// add our image to the document
+			//	|	dojo.body().appendChild(img);
+			//	example:
+			//		you may de-reference as far as you like down the package
+			//		hierarchy.  This is sometimes handy to avoid lenghty relative
+			//		urls or for building portable sub-packages. In this example,
+			//		the `acme.widget` and `acme.util` directories may be located
+			//		under different roots (see `dojo.registerModulePath`) but the
+			//		the modules which reference them can be unaware of their
+			//		relative locations on the filesystem:
+			//	|	// somewhere in a configuration block
+			//	|	dojo.registerModulePath("acme.widget", "../../acme/widget");
+			//	|	dojo.registerModulePath("acme.util", "../../util");
+			//	|
+			//	|	// ...
+			//	|
+			//	|	// code in a module using acme resources
+			//	|	var tmpltPath = dojo.moduleUrl("acme.widget","templates/template.html");
+			//	|	var dataPath = dojo.moduleUrl("acme.util","resources/data.json");
+
+			dojo.deprecated("dojo.moduleUrl()", "use require.toUrl", "2.0");
+
+			// require.toUrl requires a filetype; therefore, just append the suffix "/*.*" to guarantee a filetype, then
+			// remove the suffix from the result. This way clients can request a url w/out a filetype. This should be
+			// rare, but it maintains backcompat for the v1.x line (note: dojo.moduleUrl will be removed in v2.0).
+			// Notice * is an illegal filename so it won't conflict with any real path map that may exist the paths config.
+			var result = null;
+			if(module){
+				result = require.toUrl(module.replace(/\./g, "/") + (url ? ("/" + url) : "") + "/*.*").replace(/\/\*\.\*/, "") + (url ? "" : "/");
+			}
+			return result;
+		};
+	}
+
+	dojo._hasResource = {}; // for backward compatibility with layers built with 1.6 tooling
 
 	return dojo;
 });

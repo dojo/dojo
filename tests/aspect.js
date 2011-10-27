@@ -1,4 +1,4 @@
-dojo.provide("tests.aspect");
+dojo.provide("dojo.tests.aspect");
 
 var aspect = dojo.require("dojo.aspect");
 
@@ -22,9 +22,9 @@ doh.register("tests.aspect",
 				return [a+1];
 			});
 			obj.method(4);
-			signal.cancel();
+			signal.remove();
 			obj.method(7);
-			signal2.cancel();
+			signal2.remove();
 			obj.method(9);
 			t.is(order, [0,1,2,3,4,5,6,7,8,9]);
 		},
@@ -50,13 +50,13 @@ doh.register("tests.aspect",
 				order.push(3);
 			}, true);
 			obj.method(3);
-			signal2.cancel();
+			signal2.remove();
 			obj.method(6);
-			signal3.cancel();
+			signal3.remove();
 			var signal4 = aspect.after(obj, "method", function(a){
 				order.push(4);
 			}, true);
-			signal.cancel();
+			signal.remove();
 			obj.method(7);
 			t.is(order, [0, 0, 3, 0, 5, 3, 0, 5, 3, 6, 0, 3, 7, 4]);
 		},
@@ -81,6 +81,38 @@ doh.register("tests.aspect",
 			});
 			order.push(obj.method(0));
 			obj.method(4);
+			t.is(order, [0,1,2,3,4,5,6]);
+		},
+		function delegation(t){
+			var order = [];
+			var proto = {
+				foo: function(x){
+					order.push(x);
+					return x;
+				},
+				bar: function(){
+				}
+			};
+			aspect.after(proto, "foo", function(x){
+				order.push(x + 1);
+				return x;
+			});
+			aspect.after(proto, "bar", function(x){
+				t.t(this.isInstance);
+			});
+			proto.foo(0);
+			function Class(){
+			}
+			Class.prototype = proto;
+			var instance = new Class();
+			instance.isInstance = true;
+			aspect.after(instance, "foo", function(x){
+				order.push(x + 2);
+				return x;
+			});
+			instance.bar();
+			instance.foo(2);
+			proto.foo(5);
 			t.is(order, [0,1,2,3,4,5,6]);
 		}
 	]

@@ -1,12 +1,13 @@
-define(["../../_base/kernel", "../../_base/lang", "../../_base/Deferred"], function(dojo) {
+define(["../../_base/kernel", "../../_base/lang", "../../_base/Deferred"
+], function(kernel, lang, Deferred) {
   //  module:
   //    dojo/store/util/QueryResults
   //  summary:
-  //    The module defines a query results wrapper 
+  //    The module defines a query results wrapper
 
-dojo.getObject("store.util", true, dojo);
+var util = lang.getObject("dojo.store.util", true);
 
-dojo.store.util.QueryResults = function(results){
+util.QueryResults = function(results){
 	// summary:
 	//		A function that wraps the results of a store query with additional
 	//		methods.
@@ -35,15 +36,15 @@ dojo.store.util.QueryResults = function(results){
 	}
 	// if it is a promise it may be frozen
 	if(results.then){
-		results = dojo.delegate(results);
+		results = lang.delegate(results);
 	}
 	function addIterativeMethod(method){
 		if(!results[method]){
 			results[method] = function(){
 				var args = arguments;
-				return dojo.when(results, function(results){
+				return Deferred.when(results, function(results){
 					Array.prototype.unshift.call(args, results);
-					return dojo.store.util.QueryResults(dojo[method].apply(dojo, args));
+					return util.QueryResults(dojo[method].apply(dojo, args));
 				});
 			};
 		}
@@ -52,12 +53,12 @@ dojo.store.util.QueryResults = function(results){
 	addIterativeMethod("filter");
 	addIterativeMethod("map");
 	if(!results.total){
-		results.total = dojo.when(results, function(results){
+		results.total = Deferred.when(results, function(results){
 			return results.length;
 		});
 	}
 	return results;
 };
 
-return dojo.store.util.QueryResults;
+return util.QueryResults;
 });

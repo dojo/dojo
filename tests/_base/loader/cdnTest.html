@@ -59,7 +59,7 @@
 			}
 		]);
 		doh.runOnLoad();
-		require.ready(function(){
+		dojo.ready(function(){
 			dojo.byId("done").innerHTML= dojoCdnTestLog.join("<br>");
 
 		});

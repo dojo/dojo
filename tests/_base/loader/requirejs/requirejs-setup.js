@@ -10,16 +10,13 @@ var dojoConfig= {
 	baseUrl:dohArgs.baseUrl || ".",
 	packages:[{
 		name:'dojo',
-		location:requirejsArgs.dojoLocation,
-		lib:'.'
+		location:requirejsArgs.dojoLocation
 	},{
 		name:'doh',
-		location:requirejsArgs.dojoLocation + '/../util/doh',
-		lib:'.'
+		location:requirejsArgs.dojoLocation + '/../util/doh'
 	},{
 		name:'dojox',
-		location:requirejsArgs.dojoLocation + '/../dojox',
-		lib:'.'
+		location:requirejsArgs.dojoLocation + '/../dojox'
 	}],
 	has:{
 		"dojo-requirejs-api":1,

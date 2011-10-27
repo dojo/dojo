@@ -178,12 +178,6 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		this.selection = this.anchor = null;
 	},
 
-	// markup methods
-	markupFactory: function(params, node){
-		params._skipStartup = true;
-		return new dojo.dnd.Selector(node, params);
-	},
-
 	// mouse events
 	onMouseDown: function(e){
 		// summary:
@@ -286,7 +280,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		}
 	},
 	onMouseMove: function(e){
-		// summary
+		// summary:
 		//		event processor for onmousemove
 		// e: Event
 		//		mouse event

@@ -1,4 +1,4 @@
-define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], function(dojo){
+define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "../dom", "../dom-style"], function(dojo, lang, Evented, Color, connect, has, dom, style){
 	// module:
 	//		dojo/_base/fx
 	// summary:
@@ -7,8 +7,7 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 	//		Animation loosely package based on Dan Pupius' work, contributed under CLA; see
 	//		http://pupius.co.uk/js/Toolkit.Drawing.js
 
-	var d = dojo,
-		_mixin = dojo._mixin;
+	var _mixin = lang.mixin;
 
 	dojo._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:
@@ -44,16 +43,16 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		//		animation instance.
 
 		_mixin(this, args);
-		if(d.isArray(this.curve)){
-			this.curve = new d._Line(this.curve[0], this.curve[1]);
+		if(lang.isArray(this.curve)){
+			this.curve = new dojo._Line(this.curve[0], this.curve[1]);
 		}
 
 	};
-
+	dojo.Animation.prototype = new Evented();
 	// Alias to drop come 2.0:
-	d._Animation = d.Animation;
+	dojo._Animation = dojo.Animation;
 
-	d.extend(dojo.Animation, {
+	lang.extend(dojo.Animation, {
 		// duration: Integer
 		//		The time in milliseonds the animation will take to run
 		duration: 350,
@@ -139,7 +138,7 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 			//		The arguments to pass to the event.
 			var a = args||[];
 			if(this[evt]){
-				if(d.config.debugAtAllCosts){
+				if(dojo.config.debugAtAllCosts){
 					this[evt].apply(this, a);
 				}else{
 					try{
@@ -182,14 +181,14 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 			_t._fire("beforeBegin", [_t.node]);
 
 			var de = delay || _t.delay,
-				_p = dojo.hitch(_t, "_play", gotoStart);
+				_p = lang.hitch(_t, "_play", gotoStart);
 
 			if(de > 0){
 				_t._delayTimer = setTimeout(_p, de);
 				return _t;
 			}
 			_p();
-			return _t;
+			return _t;	// dojo.Animation
 		},
 
 		_play: function(gotoStart){
@@ -324,21 +323,21 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 			run: function(){}
 		};
 
-	d.extend(d.Animation, {
+	lang.extend(dojo.Animation, {
 
 		_startTimer: function(){
 			if(!this._timer){
-				this._timer = d.connect(runner, "run", this, "_cycle");
+				this._timer = connect.connect(runner, "run", this, "_cycle");
 				ctr++;
 			}
 			if(!timer){
-				timer = setInterval(d.hitch(runner, "run"), this.rate);
+				timer = setInterval(lang.hitch(runner, "run"), this.rate);
 			}
 		},
 
 		_stopTimer: function(){
 			if(this._timer){
-				d.disconnect(this._timer);
+				connect.disconnect(this._timer);
 				this._timer = null;
 				ctr--;
 			}
@@ -353,13 +352,13 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 
 	var _makeFadeable =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		d.isIE ? function(node){
+		has("ie") ? function(node){
 			// only set the zoom if the "tickle" value would be the same as the
 			// default
 			var ns = node.style;
 			// don't set the width to auto if it didn't already cascade that way.
 			// We don't want to f anyones designs
-			if(!ns.width.length && d.style(node, "width") == "auto"){
+			if(!ns.width.length && style.get(node, "width") == "auto"){
 				ns.width = "auto";
 			}
 		} :
@@ -372,18 +371,18 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		//		args.node from the start to end values passed (args.start
 		//		args.end) (end is mandatory, start is optional)
 
-		args.node = d.byId(args.node);
+		args.node = dom.byId(args.node);
 		var fArgs = _mixin({ properties: {} }, args),
 			props = (fArgs.properties.opacity = {});
 
 		props.start = !("start" in fArgs) ?
 			function(){
-				return +d.style(fArgs.node, "opacity")||0;
+				return +style.get(fArgs.node, "opacity")||0;
 			} : fArgs.start;
 		props.end = fArgs.end;
 
-		var anim = d.animateProperty(fArgs);
-		d.connect(anim, "beforeBegin", d.partial(_makeFadeable, fArgs.node));
+		var anim = dojo.animateProperty(fArgs);
+		connect.connect(anim, "beforeBegin", lang.partial(_makeFadeable, fArgs.node));
 
 		return anim; // dojo.Animation
 	};
@@ -406,19 +405,19 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		// summary:
 		//		Returns an animation that will fade node defined in 'args' from
 		//		its current opacity to fully opaque.
-		return d._fade(_mixin({ end: 1 }, args)); // dojo.Animation
+		return dojo._fade(_mixin({ end: 1 }, args)); // dojo.Animation
 	};
 
 	dojo.fadeOut = function(/*dojo.__FadeArgs*/ args){
 		// summary:
 		//		Returns an animation that will fade node defined in 'args'
 		//		from its current opacity to fully transparent.
-		return d._fade(_mixin({ end: 0 }, args)); // dojo.Animation
+		return dojo._fade(_mixin({ end: 0 }, args)); // dojo.Animation
 	};
 
 	dojo._defaultEasing = function(/*Decimal?*/ n){
 		// summary: The default easing function for dojo.Animation(s)
-		return 0.5 + ((Math.sin((n + 1.5) * Math.PI)) / 2);
+		return 0.5 + ((Math.sin((n + 1.5) * Math.PI)) / 2);	// Decimal
 	};
 
 	var PropLine = function(properties){
@@ -429,9 +428,9 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		this._properties = properties;
 		for(var p in properties){
 			var prop = properties[p];
-			if(prop.start instanceof d.Color){
+			if(prop.start instanceof Color){
 				// create a reusable temp color object to keep intermediate results
-				prop.tempColor = new d.Color();
+				prop.tempColor = new Color();
 			}
 		}
 	};
@@ -441,9 +440,9 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		for(var p in this._properties){
 			var prop = this._properties[p],
 				start = prop.start;
-			if(start instanceof d.Color){
-				ret[p] = d.blendColors(start, prop.end, r, prop.tempColor).toCss();
-			}else if(!d.isArray(start)){
+			if(start instanceof Color){
+				ret[p] = Color.blendColors(start, prop.end, r, prop.tempColor).toCss();
+			}else if(!lang.isArray(start)){
 				ret[p] = ((prop.end - start) * r) + start + (p != "opacity" ? prop.units || "px" : 0);
 			}
 		}
@@ -550,11 +549,11 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		//	|	}).play();
 		//
 
-		var n = args.node = d.byId(args.node);
-		if(!args.easing){ args.easing = d._defaultEasing; }
+		var n = args.node = dom.byId(args.node);
+		if(!args.easing){ args.easing = dojo._defaultEasing; }
 
-		var anim = new d.Animation(args);
-		d.connect(anim, "beforeBegin", anim, function(){
+		var anim = new dojo.Animation(args);
+		connect.connect(anim, "beforeBegin", anim, function(){
 			var pm = {};
 			for(var p in this.properties){
 				// Make shallow copy of properties into pm because we overwrite
@@ -565,15 +564,15 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 					this.node.display = "block";
 				}
 				var prop = this.properties[p];
-				if(d.isFunction(prop)){
+				if(lang.isFunction(prop)){
 					prop = prop(n);
 				}
-				prop = pm[p] = _mixin({}, (d.isObject(prop) ? prop: { end: prop }));
+				prop = pm[p] = _mixin({}, (lang.isObject(prop) ? prop: { end: prop }));
 
-				if(d.isFunction(prop.start)){
+				if(lang.isFunction(prop.start)){
 					prop.start = prop.start(n);
 				}
-				if(d.isFunction(prop.end)){
+				if(lang.isFunction(prop.end)){
 					prop.end = prop.end(n);
 				}
 				var isColor = (p.toLowerCase().indexOf("color") >= 0);
@@ -581,7 +580,7 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 					// dojo.style(node, "height") can return "auto" or "" on IE; this is more reliable:
 					var v = { height: node.offsetHeight, width: node.offsetWidth }[p];
 					if(v !== undefined){ return v; }
-					v = d.style(node, p);
+					v = style.get(node, p);
 					return (p == "opacity") ? +v : (isColor ? v : parseFloat(v));
 				}
 				if(!("end" in prop)){
@@ -591,15 +590,15 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 				}
 
 				if(isColor){
-					prop.start = new d.Color(prop.start);
-					prop.end = new d.Color(prop.end);
+					prop.start = new Color(prop.start);
+					prop.end = new Color(prop.end);
 				}else{
 					prop.start = (p == "opacity") ? +prop.start : parseFloat(prop.start);
 				}
 			}
 			this.curve = new PropLine(pm);
 		});
-		d.connect(anim, "onAnimate", d.hitch(d, "style", anim.node));
+		connect.connect(anim, "onAnimate", lang.hitch(dojo, "style", anim.node));
 		return anim; // dojo.Animation
 	};
 
@@ -647,14 +646,23 @@ define(["./kernel", "./Color", "./connect", "./lang", "./html", "./sniff"], func
 		//	example:
 		//		Fade out a node over a full second
 		//	|	dojo.anim("id", { opacity: 0 }, 1000);
-		return d.animateProperty({ // dojo.Animation
+		return dojo.animateProperty({ // dojo.Animation
 			node: node,
-			duration: duration || d.Animation.prototype.duration,
+			duration: duration || dojo.Animation.prototype.duration,
 			properties: properties,
 			easing: easing,
 			onEnd: onEnd
 		}).play(delay || 0);
 	};
 
-	return dojo.animateProperty;
+	return {
+		_Line: dojo._Line,
+		Animation: dojo.Animation,
+		_fade: dojo._fade,
+		fadeIn: dojo.fadeIn,
+		fadeOut: dojo.fadeOut,
+		_defaultEasing: dojo._defaultEasing,
+		animateProperty: dojo.animateProperty,
+		anim: dojo.anim
+	};
 });

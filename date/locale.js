@@ -1,10 +1,19 @@
-define(["../main", "../date", "../cldr/supplemental", "../regexp", "../string", "../i18n!../cldr/nls/gregorian"], function(dojo) {
+define([
+	"../_base/kernel",
+	"../_base/lang",
+	"../_base/array",
+	"../date",
+	"../cldr/supplemental",
+	"../regexp",
+	"../string",
+	"../i18n!../cldr/nls/gregorian"
+], function(dojo, lang, array, date, cldr, regexp, string, gregorian) {
 	// module:
-	//		dojo/date/local
+	//		dojo/date/locale
 	// summary:
 	//		This modules defines dojo.date.locale, localization methods for Date.
 
-dojo.getObject("date.locale", true, dojo);
+lang.getObject("date.locale", true, dojo);
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
 
@@ -124,8 +133,8 @@ dojo.getObject("date.locale", true, dojo);
 					var offset = dojo.date.locale._getZone(dateObject, false, options);
 					var tz = [
 						(offset<=0 ? "+" : "-"),
-						dojo.string.pad(Math.floor(Math.abs(offset)/60), 2),
-						dojo.string.pad(Math.abs(offset)% 60, 2)
+						string.pad(Math.floor(Math.abs(offset)/60), 2),
+						string.pad(Math.abs(offset)% 60, 2)
 					];
 					if(l==4){
 						tz.splice(0, 0, "GMT");
@@ -138,7 +147,7 @@ dojo.getObject("date.locale", true, dojo);
 				default:
 					throw new Error("dojo.date.locale.format: invalid pattern char: "+pattern);
 			}
-			if(pad){ s = dojo.string.pad(s, l); }
+			if(pad){ s = string.pad(s, l); }
 			return s;
 		});
 	}
@@ -190,7 +199,7 @@ dojo.date.locale._getZone = function(/*Date*/dateObject, /*boolean*/getName, /*d
 	// options:
 	//		The options being used for formatting
 	if(getName){
-		return dojo.date.getTimezoneName(dateObject);
+		return date.getTimezoneName(dateObject);
 	}else{
 		return dateObject.getTimezoneOffset();
 	}
@@ -222,7 +231,7 @@ dojo.date.locale.format = function(/*Date*/dateObject, /*dojo.date.locale.__Form
 		formatLength = options.formatLength || 'short',
 		bundle = dojo.date.locale._getGregorianBundle(locale),
 		str = [],
-		sauce = dojo.hitch(this, formatPattern, dateObject, bundle, options);
+		sauce = lang.hitch(this, formatPattern, dateObject, bundle, options);
 	if(options.selector == "year"){
 		return _processPattern(bundle["dateFormatItem-yyyy"] || "yyyy", sauce);
 	}
@@ -265,7 +274,7 @@ dojo.date.locale._parseInfo = function(/*dojo.date.locale.__FormatOptions?*/opti
 	}
 
 	var tokens = [],
-		re = _processPattern(pattern, dojo.hitch(this, _buildDateTimeRE, tokens, bundle, options));
+		re = _processPattern(pattern, lang.hitch(this, _buildDateTimeRE, tokens, bundle, options));
 	return {regexp: re, tokens: tokens, bundle: bundle};
 };
 
@@ -320,9 +329,8 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 						//of 80 years before and 20 years after present year
 						var year = '' + new Date().getFullYear(),
 							century = year.substring(0, 2) * 100,
-							cutoff = Math.min(Number(year.substring(2, 4)) + 20, 99),
-							num = (v < cutoff) ? century + v : century - 100 + v;
-						result[0] = num;
+							cutoff = Math.min(Number(year.substring(2, 4)) + 20, 99);
+						result[0] = (v < cutoff) ? century + v : century - 100 + v;
 					}else{
 						//we expected 2 digits and got more...
 						if(options.strict){
@@ -461,7 +469,7 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 	// We could compare the timezone offset after the shift and add the difference instead.
 	if((monthToken && dateObject.getMonth() < result[1]) ||
 		(dateToken && dateObject.getDate() < result[2])){
-		dateObject = dojo.date.add(dateObject, "hour", 1);
+		dateObject = date.add(dateObject, "hour", 1);
 	}
 
 	return dateObject; // Date
@@ -493,7 +501,7 @@ function _processPattern(pattern, applyPattern, applyLiteral, applyAll){
 }
 
 function _buildDateTimeRE(tokens, bundle, options, pattern){
-	pattern = dojo.regexp.escapeString(pattern);
+	pattern = regexp.escapeString(pattern);
 	if(!options.strict){ pattern = pattern.replace(" a", " ?a"); } // kludge to tolerate no space before am/pm
 	return pattern.replace(/([a-z])\1*/ig, function(match){
 		// Build a simple regexp.  Avoid captures, which would ruin the tokens list
@@ -515,7 +523,7 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				s = (l>2) ? '\\S+?' : '1[0-2]|'+p2+'[1-9]';
 				break;
 			case 'D':
-				s = '[12][0-9][0-9]|3[0-5][0-9]|36[0-6]|'+p3+'[1-9][0-9]|'+p2+'[1-9]';
+				s = '[12][0-9][0-9]|3[0-5][0-9]|36[0-6]|'+p2+'[1-9][0-9]|'+p3+'[1-9]';
 				break;
 			case 'd':
 				s = '3[01]|[12]\\d|'+p2+'[1-9]';
@@ -590,7 +598,7 @@ dojo.date.locale._getGregorianBundle = function(/*String*/locale){
 	var gregorian = {};
 	dojo.forEach(_customFormats, function(desc){
 		var bundle = dojo.i18n.getLocalization(desc.pkg, desc.name, locale);
-		gregorian = dojo.mixin(gregorian, bundle);
+		gregorian = lang.mixin(gregorian, bundle);
 	}, this);
 	return gregorian; /*Object*/
 };
@@ -629,7 +637,7 @@ dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 	// summary:
 	//	Determines if the date falls on a weekend, according to local custom.
 
-	var weekend = dojo.cldr.supplemental.getWeekend(locale),
+	var weekend = cldr.getWeekend(locale),
 		day = (dateObject || new Date()).getDay();
 	if(weekend.end < weekend.start){
 		weekend.end += 7;
@@ -642,7 +650,7 @@ dojo.date.locale.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 
 dojo.date.locale._getDayOfYear = function(/*Date*/dateObject){
 	// summary: gets the day of the year as represented by dateObject
-	return dojo.date.difference(new Date(dateObject.getFullYear(), 0, 1, dateObject.getHours()), dateObject) + 1; // Number
+	return date.difference(new Date(dateObject.getFullYear(), 0, 1, dateObject.getHours()), dateObject) + 1; // Number
 };
 
 dojo.date.locale._getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDayOfWeek){

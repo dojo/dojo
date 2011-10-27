@@ -1,4 +1,4 @@
-define(["./main", "./regexp"], function(dojo) {
+define(["./_base/kernel", "./regexp"], function(dojo, regexp) {
 	// module:
 	//		dojo/cookie
 	// summary:
@@ -11,7 +11,7 @@ dojo.__cookieProps = function(){
 	//		If a number, the number of days from today at which the cookie
 	//		will expire. If a date, the date past which the cookie will expire.
 	//		If expires is in the past, the cookie will be deleted.
-	//		If expires is omitted or is 0, the cookie will expire when the browser closes. << FIXME: 0 seems to disappear right away? FF3.
+	//		If expires is omitted or is 0, the cookie will expire when the browser closes.
 	//	path: String?
 	//		The path to use for the cookie.
 	//	domain: String?
@@ -50,10 +50,10 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 	//	example:
 	//		delete a cookie:
 	//	|	dojo.cookie("configObj", null, {expires: -1});
-	var c = document.cookie;
+	var c = document.cookie, ret;
 	if(arguments.length == 1){
-		var matches = c.match(new RegExp("(?:^|; )" + dojo.regexp.escapeString(name) + "=([^;]*)"));
-		return matches ? decodeURIComponent(matches[1]) : undefined; // String or undefined
+		var matches = c.match(new RegExp("(?:^|; )" + regexp.escapeString(name) + "=([^;]*)"));
+		ret = matches ? decodeURIComponent(matches[1]) : undefined; 
 	}else{
 		props = props || {};
 // FIXME: expires=0 seems to disappear right away, not on close? (FF3)  Change docs?
@@ -74,6 +74,7 @@ dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/
 		}
 		document.cookie = updatedCookie;
 	}
+	return ret; // String|undefined
 };
 
 dojo.cookie.isSupported = function(){

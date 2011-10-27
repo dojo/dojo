@@ -3,6 +3,7 @@
 <head>
     <title>require.js: urlFetch Mapping Test</title>
     <script type="text/javascript">
+		var dohArgs = {async:0};
 		requirejsArgs= {
 			dojoLocation:"../../../../.."
 		};
@@ -30,7 +31,7 @@
                         var scripts = document.getElementsByTagName("script"),
                             i, counts = {}, url, props, something;
                         for (var i = scripts.length - 1; i > -1; i--) {
-                            url = scripts[i].href;
+                            url = scripts[i].src;
                             if (url) {
                                 if (!(url in counts)) {
                                     counts[url] = 0;
@@ -39,11 +40,11 @@
                             }
                         }
 
-                        //Now that we counted all the modules make sure count
-                        //is always one.
-                        for (prop in counts) {
-                            t.is(1, counts[prop]);
-                        }
+						if(require.async){
+						    for (prop in counts) {
+								t.is(1, counts[prop]);
+	                        }
+						}
 
                         t.is("one", one.name);
                         t.is("one", two.oneName);

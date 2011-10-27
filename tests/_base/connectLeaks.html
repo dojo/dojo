@@ -44,8 +44,9 @@
 		];
 	}
 
-	function func(){console.log('callback triggered')};
-
+	function func(){
+		console.log('callback triggered')
+	}
 	function destroyTest(){
 		var button = dojo.place("<button>test button</button>", dojo.body());
 		dojo.connect(button, "onclick", func);

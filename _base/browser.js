@@ -2,11 +2,10 @@ if(require.has){
 	require.has.add("config-selectorEngine", "acme");
 }
 define([
+	"../ready",
 	"./kernel",
-	"./sniff",
 	"./connect", // until we decide if connect is going back into non-browser environments
 	"./unload",
-	"./url",
 	"./window",
 	"./event",
 	"./html",
@@ -20,5 +19,3 @@ define([
 	//		This module causes the browser-only base modules to be loaded.
 	return dojo;
 });
-
-

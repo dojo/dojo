@@ -12,7 +12,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
 			
 				doh.register("t", 
 					[
@@ -122,7 +122,7 @@
 								return dojo.query("body >").filter(function(n){
 									return !dojo.hasClass(n, "firebug");
 								})
-							}
+							};
 							c().forEach(dojo.destroy);
 
 							// check for deepest embeeded id

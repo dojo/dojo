@@ -5,37 +5,30 @@
 		<title>testing Core _isBodyLtr function</title>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh"], function(dojo, doh){
-			
+			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
 				doh.register("t", 
 					[
 						function testRtl(t){
 							t.is(false, dojo._isBodyLtr());
 						},
 						function testCache(t){
-							dojo.body().setAttribute("dir", "ltr");
 							t.is(false, dojo._isBodyLtr());
-							delete dojo._bodyLtr; // clear cache
+							dojo.body().setAttribute("dir", "ltr");
 							t.is(true, dojo._isBodyLtr());
 						},
 						function testHtmlValue(t){
-							delete dojo._bodyLtr; // clear cache
 							dojo.body().setAttribute("dir", "RTL");
 							t.is(false, dojo._isBodyLtr());
-							delete dojo._bodyLtr; // clear cache
 							dojo.body().removeAttribute("dir");
 							t.is(true, dojo._isBodyLtr());
 						},
 						function testDefaultValue(t){
-							delete dojo._bodyLtr; // clear cache
 							dojo.doc.documentElement.setAttribute("dir", "rtl");
 							t.is(false, dojo._isBodyLtr());
-							delete dojo._bodyLtr; // clear cache
 							dojo.doc.documentElement.removeAttribute("dir");
 							t.is(true, dojo._isBodyLtr());
 						},
 						function testHiddenIframe(t){
-							delete dojo._bodyLtr; // clear cache
 							dojo.doc.documentElement.setAttribute("dir", "rtl");
 							t.is(false, dojo._isBodyLtr());
 							t.is(true, dojo.withGlobal(dojo.byId('iframe').iframeContentWindow, "_isBodyLtr", dojo));
@@ -44,7 +37,6 @@
 					]
 				);
 				doh.runOnLoad();
-
 			});
 		</script>
 	</head>

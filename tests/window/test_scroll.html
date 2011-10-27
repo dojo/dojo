@@ -18,7 +18,7 @@
 			loading = new doh.Deferred();
 		});
 
-		require.ready(["dojo", "doh", "dojo/window"], function(dojo, doh) {
+		require(["dojo", "doh", "dojo/window", "dojo/domReady!"], function(dojo, doh) {
 
 			var usingNative = !(dojo.isMoz || dojo.isIE || dojo.isWebKit || dojo.isOpera);
 			var count = 0;
@@ -126,7 +126,7 @@
 					}else if(dojo.isIE == 7){
 						scroll = 46;
 					}else if(dojo.isIE >= 8 || dojo.isOpera){
-						scroll = "+0";
+						scroll = "0";
 					}else if(dojo.isWebKit){
 						scroll = "-0";
 					}else{
@@ -470,7 +470,20 @@
 			right = n._scrollMaxX - n.scrollLeft,
 			bottom = n._scrollMaxY - n.scrollTop;
 			if(left || top || n._scrollMinX || n._scrollMaxX || n._scrollMinY || n._scrollMaxY){
-				scroll += '('+(left<=right?((left==right?'':'+')+left):(right<0 ? '0' : ('-'+right)))+','+(top<=bottom?((top==bottom?'':'+')+top):(bottom<0 ? '0' : ('-'+bottom)))+')';
+				//scroll += '('+(left<=right?((left==right?'':'+')+left):(right<0 ? '0' : ('-'+right)))+','+(top<=bottom?((top==bottom?'':'+')+top):(bottom<0 ? '0' : ('-'+bottom)))+')';
+				scroll += "(";
+				if(left <= right){
+					scroll += (left != right && left > 0 ? "+" : "") + left;
+				}else{
+					scroll += right < 0 ? '0' : ('-' + right);
+				}
+				scroll += ",";
+				if(top <= bottom){
+					scroll += (top != bottom && top > 0 ? "+" : "") + top;
+				}else{
+					scroll += bottom < 0 ? '0' : ('-' + bottom);
+				}
+				scroll += ")";
 			}
 			n = n.parentNode;
 		}

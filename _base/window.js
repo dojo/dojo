@@ -1,4 +1,4 @@
-define(["./kernel"], function(dojo){
+define(["./kernel", "../has", "./sniff"], function(dojo, has){
 	// module:
 	//		dojo/window
 	// summary:
@@ -17,7 +17,7 @@ dojo.doc = {
 	//	|	n.appendChild(dojo.doc.createElement('div'));
 }
 =====*/
-dojo.doc = window["document"] || null;
+dojo.doc = this["document"] || null;
 
 dojo.body = function(){
 	// summary:
@@ -38,8 +38,8 @@ dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocu
 	//		context (e.g., an iframe). The varibles dojo.global and dojo.doc
 	//		are modified as a result of calling this function and the result of
 	//		`dojo.body()` likewise differs.
-	dojo.global = globalObject;
-	dojo.doc = globalDocument;
+	dojo.global = ret.global = globalObject;
+	dojo.doc = ret.doc = globalDocument;
 };
 
 dojo.withGlobal = function(	/*Object*/globalObject,
@@ -58,10 +58,10 @@ dojo.withGlobal = function(	/*Object*/globalObject,
 
 	var oldGlob = dojo.global;
 	try{
-		dojo.global = globalObject;
+		dojo.global = ret.global = globalObject;
 		return dojo.withDoc.call(null, globalObject.document, callback, thisObject, cbArguments);
 	}finally{
-		dojo.global = oldGlob;
+		dojo.global = ret.global = oldGlob;
 	}
 };
 
@@ -78,13 +78,27 @@ dojo.withDoc = function(	/*DocumentElement*/documentObject,
 	//		be restored to its previous state.
 
 	var oldDoc = dojo.doc,
-		oldLtr = dojo._bodyLtr,
-		oldQ = dojo.isQuirks;
+		oldQ = dojo.isQuirks,
+		oldIE = dojo.isIE, isIE, mode, pwin;
 
 	try{
-		dojo.doc = documentObject;
-		delete dojo._bodyLtr; // uncache
-		dojo.isQuirks = dojo.doc.compatMode == "BackCompat"; // no need to check for QuirksMode which was Opera 7 only
+		dojo.doc = ret.doc = documentObject;
+		// update dojo.isQuirks and the value of the has feature "quirks"
+		dojo.isQuirks = has.add("quirks", dojo.doc.compatMode == "BackCompat", true, true); // no need to check for QuirksMode which was Opera 7 only
+
+		if(has("ie")){
+			if((pwin = documentObject.parentWindow) && pwin.navigator){
+				// re-run IE detection logic and update dojo.isIE / has("ie")
+				// (the only time parentWindow/navigator wouldn't exist is if we were not
+				// passed an actual legitimate document object)
+				isIE = parseFloat(pwin.navigator.appVersion.split("MSIE ")[1]) || undefined;
+				mode = documentObject.documentMode;
+				if(mode && mode != 5 && Math.floor(isIE) != mode){
+					isIE = mode;
+				}
+				dojo.isIE = has.add("ie", isIE, true, true);
+			}
+		}
 
 		if(thisObject && typeof callback == "string"){
 			callback = thisObject[callback];
@@ -92,12 +106,21 @@ dojo.withDoc = function(	/*DocumentElement*/documentObject,
 
 		return callback.apply(thisObject, cbArguments || []);
 	}finally{
-		dojo.doc = oldDoc;
-		delete dojo._bodyLtr; // in case it was undefined originally, and set to true/false by the alternate document
-		if(oldLtr !== undefined){ dojo._bodyLtr = oldLtr; }
-		dojo.isQuirks = oldQ;
+		dojo.doc = ret.doc = oldDoc;
+		dojo.isQuirks = has.add("quirks", oldQ, true, true);
+		dojo.isIE = has.add("ie", oldIE, true, true);
 	}
 };
 
-return dojo;
+var ret = {
+	global: dojo.global,
+	doc: dojo.doc,
+	body: dojo.body,
+	setContext: dojo.setContext,
+	withGlobal: dojo.withGlobal,
+	withDoc: dojo.withDoc
+};
+
+return ret;
+
 });

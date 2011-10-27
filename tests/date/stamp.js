@@ -1,4 +1,4 @@
-dojo.provide("tests.date.stamp");
+dojo.provide("dojo.tests.date.stamp");
 
 dojo.require("dojo.date.stamp");
 

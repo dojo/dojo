@@ -21,12 +21,13 @@
 								t.is(config, expectedConfig2);
 							};
 						var 
-							listenerCount= require.configListeners.length,
-							h1= require.onConfig(configListener1),
-							h2= require.onConfig(configListener2);
-						t.is(require.configListeners.length, listenerCount+2);
-						t.is(require.configListeners[listenerCount], configListener1);
-						t.is(require.configListeners[listenerCount+1], configListener2);
+							configListeners = require.listenerQueues.config;
+							listenerCount= configListeners.length,
+							h1= require.on("config", configListener1),
+							h2= require.on("config", configListener2);
+						t.is(configListeners.length, listenerCount+2);
+						t.is(configListeners[listenerCount], configListener1);
+						t.is(configListeners[listenerCount+1], configListener2);
 						expectedConfig1= expectedConfig2= {
 							someFeature:1
 						};						
@@ -35,9 +36,9 @@
 						t.t(called1);
 						t.t(called2);
 
-						h1();
-						t.is(require.configListeners.length, listenerCount+1);
-						t.is(require.configListeners[listenerCount], configListener2);
+						h1.remove();
+						t.is(configListeners.length, listenerCount+1);
+						t.is(configListeners[listenerCount], configListener2);
 						expectedConfig1= expectedConfig2= {
 							someFeature:0,
 							someOtherFeature:1
@@ -48,6 +49,39 @@
 						t.t(called2);
 						t.is(savedRawConfig.someFeature, 0);
 						t.is(savedRawConfig.someOtherFeature, 1);
+						h2.remove();
+
+						require({async:1});
+						t.is(require.async, true);
+						t.is(require.legacyMode, false);
+
+						require({async:true});
+						t.is(require.async, true);
+						t.is(require.legacyMode, false);
+
+						require({async:2});
+						t.is(require.async, true);
+						t.is(require.legacyMode, false);
+
+						require({async:"nonsense"});
+						t.is(require.async, true);
+						t.is(require.legacyMode, false);
+
+						require({async:0});
+						t.is(require.async, false);
+						t.is(require.legacyMode, "sync");
+
+						require({async:false});
+						t.is(require.async, false);
+						t.is(require.legacyMode, "sync");
+
+						require({async:"sync"});
+						t.is(require.async, false);
+						t.is(require.legacyMode, "sync");
+
+						require({async:"legacyAsync"});
+						t.is(require.async, false);
+						t.is(require.legacyMode, "legacyAsync");
 					}
 				]);
 				doh.runOnLoad();

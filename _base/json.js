@@ -1,7 +1,7 @@
 define(["./kernel", "../json"], function(dojo, json){
-  //  module:
+  // module:
   //    dojo/_base/json
-  //  summary:
+  // summary:
   //    This module defines the dojo JSON API.
 
 dojo.fromJson = function(/*String*/ js){
@@ -22,7 +22,7 @@ dojo.fromJson = function(/*String*/ js){
 
 /*=====
 dojo._escapeString = function(){
-	//summary:
+	// summary:
 	//		Adds escape sequences for non-visual characters, double quote and
 	//		backslash and surrounds with double quotes to form a valid string
 	//		literal.
@@ -31,36 +31,36 @@ dojo._escapeString = function(){
 dojo._escapeString = json.stringify; // just delegate to json.stringify
 
 dojo.toJsonIndentStr = "\t";
-dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _indentStr){
-	//	summary:
+dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint){
+	// summary:
 	//		Returns a [JSON](http://json.org) serialization of an object.
-	//	description:
+	// description:
 	//		Returns a [JSON](http://json.org) serialization of an object.
 	//		Note that this doesn't check for infinite recursion, so don't do that!
 	//		It is recommend that you use dojo/json's stringify function for an lighter
 	//		and faster implementation that matches the native JSON API and uses the
 	//		native JSON serializer when available.
-	//	it:
+	// it:
 	//		an object to be serialized. Objects may define their own
 	//		serialization via a special "__json__" or "json" function
 	//		property. If a specialized serializer has been defined, it will
 	//		be used as a fallback.
 	//		Note that in 1.6, toJson would serialize undefined, but this no longer supported
 	//		since it is not supported by native JSON serializer.
-	//	prettyPrint:
+	// prettyPrint:
 	//		if true, we indent objects and arrays to make the output prettier.
 	//		The variable `dojo.toJsonIndentStr` is used as the indent string --
 	//		to use something other than the default (tab), change that variable
 	//		before calling dojo.toJson().
 	//		Note that if native JSON support is available, it will be used for serialization,
 	//		and native implementations vary on the exact spacing used in pretty printing.
-	//	_indentStr:
-	//		private variable for recursive calls when pretty printing, do not use.
-	//	example:
+	// returns:
+	// 		A JSON string serialization of the passed-in object.
+	// example:
 	//		simple serialization of a trivial object
 	//		|	var jsonStr = dojo.toJson({ howdy: "stranger!", isStrange: true });
 	//		|	doh.is('{"howdy":"stranger!","isStrange":true}', jsonStr);
-	//	example:
+	// example:
 	//		a custom serializer for an objects of a particular class:
 	//		|	dojo.declare("Furby", null, {
 	//		|		furbies: "are strange",
@@ -78,7 +78,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 			}
 		}
 		return value;
-	}, prettyPrint && dojo.toJsonIndentStr);
+	}, prettyPrint && dojo.toJsonIndentStr);	// String
 };
 
 return dojo;

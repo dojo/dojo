@@ -2,7 +2,7 @@
 <head>
 	<script type="text/javascript" src="../../../dojo.js" data-dojo-config="isDebug:1, async:1, trace:{'loader-run-factory':1}"></script>
 	<script type="text/javascript">
-		require.ready(function(){
+		dojo.ready(function(){
 			console.log("in ready");
 			require.trace.set("loader-run-factory", 0);
 			require.trace.set("loader-define", 1);

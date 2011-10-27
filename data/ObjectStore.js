@@ -1,11 +1,13 @@
-define(["../main", "../regexp"], function(dojo) {
+define(["../_base/lang", "../Evented", "../_base/declare", "../_base/Deferred", "../_base/array", 
+	"../_base/connect", "../regexp"
+], function(lang, Evented, declare, Deferred, array, connect, regexp) {
 	// module:
 	//		dojo/data/ObjectStore
 	// summary:
 	//		TODOC
 
 
-dojo.declare("dojo.data.ObjectStore", null,{
+return declare("dojo.data.ObjectStore", [Evented],{
 		objectStore: null,
 		constructor: function(options){
 			// summary:
@@ -15,7 +17,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//		The configuration information to pass into the data store.
 			//	options.objectStore:
 			//		The object store to use as the source provider for this data store
-			dojo.mixin(this, options);
+			lang.mixin(this, options);
 		},
 		labelProperty: "label",
 
@@ -37,7 +39,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		getValues: function(item, property){
 			// summary:
 			//		Gets the value of an item's 'property' and returns
-			//		it.	If this value is an array it is just returned,
+			//		it. If this value is an array it is just returned,
 			//		if not, the value is added to an array and that is returned.
 			//
 			//	item: /* object */
@@ -80,7 +82,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//	item: /* object */
 			//	attribute: /* string */
 			//	value: /* anything */
-			return dojo.indexOf(this.getValues(item,attribute),value) > -1;
+			return array.indexOf(this.getValues(item,attribute),value) > -1;
 		},
 
 
@@ -92,7 +94,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//	attribute: /* string */
 
 			// we have no way of determining if it belongs, we just have object returned from
-			// 	service queries
+			//	service queries
 			return (typeof item == 'object') && item && !(item instanceof Date);
 		},
 
@@ -107,23 +109,23 @@ dojo.declare("dojo.data.ObjectStore", null,{
 
 		loadItem: function(args){
 			// summary:
-			// 		Loads an item and calls the callback handler. Note, that this will call the callback
-			// 		handler even if the item is loaded. Consequently, you can use loadItem to ensure
-			// 		that an item is loaded is situations when the item may or may not be loaded yet.
-			// 		If you access a value directly through property access, you can use this to load
-			// 		a lazy value as well (doesn't need to be an item).
+			//		Loads an item and calls the callback handler. Note, that this will call the callback
+			//		handler even if the item is loaded. Consequently, you can use loadItem to ensure
+			//		that an item is loaded is situations when the item may or may not be loaded yet.
+			//		If you access a value directly through property access, you can use this to load
+			//		a lazy value as well (doesn't need to be an item).
 			//
 			//	example:
 			//		store.loadItem({
 			//			item: item, // this item may or may not be loaded
 			//			onItem: function(item){
-			// 				// do something with the item
+			//				// do something with the item
 			//			}
 			//		});
 
 			var item;
 			if(typeof args.item.load === "function"){
-				dojo.when(args.item.load(), function(result){
+				Deferred.when(args.item.load(), function(result){
 					item = result; // in synchronous mode this can allow loadItem to return the value
 					var func = result instanceof Error ? args.onError : args.onItem;
 					if(func){
@@ -145,17 +147,17 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//		See dojo.data.api.Read.fetch
 			//
 
-			args = dojo.delegate(args, args && args.queryOptions);
+			args = lang.delegate(args, args && args.queryOptions);
 			var self = this;
 			var scope = args.scope || self;
 			var query = args.query;
 			if(typeof query == "object"){ // can be null, but that is ignore by for-in
-				query = dojo.delegate(query); // don't modify the original
+				query = lang.delegate(query); // don't modify the original
 				for(var i in query){
 					// find any strings and convert them to regular expressions for wildcard support
 					var required = query[i];
 					if(typeof required == "string"){
-						query[i] = RegExp("^" + dojo.regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.ignoreCase ? "mi" : "m");
+						query[i] = RegExp("^" + regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.ignoreCase ? "mi" : "m");
 						query[i].toString = (function(original){
 							return function(){
 								return original;
@@ -166,8 +168,8 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			}
 
 			var results = this.objectStore.query(query, args);
-			dojo.when(results.total, function(totalCount){
-				dojo.when(results, function(results){
+			Deferred.when(results.total, function(totalCount){
+				Deferred.when(results, function(results){
 					if(args.onBegin){
 						args.onBegin.call(scope, totalCount || results.length, args);
 					}
@@ -194,8 +196,12 @@ dojo.declare("dojo.data.ObjectStore", null,{
 				}
 			};
 			if(results.observe){
-				results.observe(function(object, removedFrom, insertedInto){
-					if(dojo.indexOf(self._dirtyObjects, object) == -1){
+				if(this.observing){
+					// if we were previously observing, cancel the last time to avoid multiple notifications. Just the best we can do for the impedance mismatch between APIs
+					this.observing.cancel();
+				}
+				this.observing = results.observe(function(object, removedFrom, insertedInto){
+					if(array.indexOf(self._dirtyObjects, object) == -1){
 						if(removedFrom == -1){
 							self.onNew(object);
 						}
@@ -204,13 +210,13 @@ dojo.declare("dojo.data.ObjectStore", null,{
 						}
 						else{
 							for(var i in object){
-								if(i != self.idProperty){
+								if(i != self.objectStore.idProperty){
 									self.onSet(object, i, null, object[i]);
 								}
 							}
 						}
 					}
-				});
+				}, true);
 			}
 			this.onFetch(results);
 			args.store = this;
@@ -218,7 +224,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 		},
 		getFeatures: function(){
 			// summary:
-			// 		return the store feature set
+			//		return the store feature set
 
 			return {
 				"dojo.data.api.Read": !!this.objectStore.get,
@@ -247,7 +253,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 
 
 		getIdentity: function(item){
-			return item.getId ? item.getId() : item[this.objectStore.idProperty || "id"];
+			return this.objectStore.getIdentity ? this.objectStore.getIdentity(item) : item[this.objectStore.idProperty || "id"];
 		},
 
 		getIdentityAttributes: function(item){
@@ -262,7 +268,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			// summary:
 			//		fetch an item by its identity, by looking in our index of what we have loaded
 			var item;
-			dojo.when(this.objectStore.get(args.identity),
+			Deferred.when(this.objectStore.get(args.identity),
 				function(result){
 					item = result;
 					args.onItem.call(args.scope, result);
@@ -279,8 +285,10 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//		adds a new item to the store at the specified point.
 			//		Takes two parameters, data, and options.
 			//
-			//	data: /* object */
+			//	data: Object
 			//		The data to be added in as an item.
+			
+			// TODOC: parentInfo
 			if(parentInfo){
 				// get the previous value or any empty array
 				var values = this.getValue(parentInfo.parent,parentInfo.attribute,[]);
@@ -321,8 +329,7 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//	sets 'attribute' on 'item' to 'value' value
 			//	must be an array.
 
-
-			if(!dojo.isArray(values)){
+			if(!lang.isArray(values)){
 				throw new Error("setValues expects to be passed an Array object as its value");
 			}
 			this.setValue(item,attribute,values);
@@ -377,31 +384,30 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			//
 			//	kwArgs.global:
 			//		This will cause the save to commit the dirty data for all
-			// 		ObjectStores as a single transaction.
+			//		ObjectStores as a single transaction.
 			//
 			//	kwArgs.revertOnError
 			//		This will cause the changes to be reverted if there is an
 			//		error on the save. By default a revert is executed unless
 			//		a value of false is provide for this parameter.
 
+			// TODOC: kwArgs pseudo
 			kwArgs = kwArgs || {};
 			var result, actions = [];
-			var alreadyRecorded = {};
 			var savingObjects = [];
-			var self;
+			var self = this;
 			var dirtyObjects = this._dirtyObjects;
 			var left = dirtyObjects.length;// this is how many changes are remaining to be received from the server
 			try{
-				dojo.connect(kwArgs,"onError",function(){
+				connect.connect(kwArgs,"onError",function(){
 					if(kwArgs.revertOnError !== false){
 						var postCommitDirtyObjects = dirtyObjects;
 						dirtyObjects = savingObjects;
-						var numDirty = 0; // make sure this does't do anything if it is called again
-						jr.revert(); // revert if there was an error
+						self.revert(); // revert if there was an error
 						self._dirtyObjects = postCommitDirtyObjects;
 					}
 					else{
-						self._dirtyObjects = dirtyObject.concat(savingObjects);
+						self._dirtyObjects = dirtyObjects.concat(savingObjects);
 					}
 				});
 				if(this.objectStore.transaction){
@@ -415,12 +421,12 @@ dojo.declare("dojo.data.ObjectStore", null,{
 					if(object){
 						result = this.objectStore.put(object, {overwrite: !!old});
 					}
-					else{
+					else if(typeof old != "undefined"){
 						result = this.objectStore.remove(this.getIdentity(old));
 					}
 					savingObjects.push(dirty);
 					dirtyObjects.splice(i--,1);
-					dojo.when(result, function(value){
+					Deferred.when(result, function(value){
 						if(!(--left)){
 							if(kwArgs.onComplete){
 								kwArgs.onComplete.call(kwArgs.scope, actions);
@@ -440,12 +446,10 @@ dojo.declare("dojo.data.ObjectStore", null,{
 			}catch(e){
 				kwArgs.onError.call(kwArgs.scope, value);
 			}
-
-
 		},
 
 		revert: function(kwArgs){
-			// summary
+			// summary:
 			//		returns any modified data to its original state prior to a save();
 			//
 			var dirtyObjects = this._dirtyObjects;
@@ -479,10 +483,9 @@ dojo.declare("dojo.data.ObjectStore", null,{
 				dirtyObjects.splice(i, 1);
 			}
 
-
 		},
 		isDirty: function(item){
-			// summary
+			// summary:
 			//		returns true if the item is marked as dirty or true if there are any dirty items
 			if(!item){
 				return !!this._dirtyObjects.length;
@@ -493,12 +496,10 @@ dojo.declare("dojo.data.ObjectStore", null,{
 
 		onSet: function(){},
 		onNew: function(){},
-		onDelete: 	function(){},
+		onDelete:	function(){},
 		// an extra to get result sets
 		onFetch: function(results){}
 
 	}
 );
-
-return dojo.data.ObjectStore;
 });

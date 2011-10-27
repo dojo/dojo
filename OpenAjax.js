@@ -47,11 +47,11 @@ if(!window["OpenAjax"]){
 				extraData: extra
 			};
 			this.publish(ooh+"registerLibrary", libs[prefix]);
-		}
+		};
 		h.unregisterLibrary = function(prefix){
 			this.publish(ooh+"unregisterLibrary", libs[prefix]);
 			delete libs[prefix];
-		}
+		};
 
 		h._subscriptions = { c:{}, s:[] };
 		h._cleanup = [];
@@ -67,7 +67,7 @@ if(!window["OpenAjax"]){
 			var path = name.split(".");
 	 		this._subscribe(this._subscriptions, path, 0, sub);
 			return handle;
-		}
+		};
 
 		h.publish = function(name, message){
 			var path = name.split(".");
@@ -81,13 +81,13 @@ if(!window["OpenAjax"]){
 				delete(this._cleanup);
 				this._cleanup = [];
 			}
-		}
+		};
 
 		h.unsubscribe = function(sub){
 			var path = sub.split(".");
 			var sid = path.pop();
 			this._unsubscribe(this._subscriptions, path, 0, sid);
-		}
+		};
 		
 		h._subscribe = function(tree, path, index, sub){
 			var token = path[index];
@@ -95,21 +95,21 @@ if(!window["OpenAjax"]){
 				tree.s.push(sub);
 			}else{
 				if(typeof tree.c == "undefined"){
-					 tree.c = {};
+					tree.c = {};
 				}
 				if(typeof tree.c[token] == "undefined"){
 					tree.c[token] = { c: {}, s: [] };
 					this._subscribe(tree.c[token], path, index + 1, sub);
 				}else{
-					this._subscribe( tree.c[token], path, index + 1, sub);
+					this._subscribe(tree.c[token], path, index + 1, sub);
 				}
 			}
-		}
+		};
 
 		h._publish = function(tree, path, index, name, msg){
 			if(typeof tree != "undefined"){
 				var node;
-				if(index == path.length) {
+				if(index == path.length){
 					node = tree;
 				}else{
 					this._publish(tree.c[path[index]], path, index + 1, name, msg);
@@ -134,33 +134,33 @@ if(!window["OpenAjax"]){
 								fcb = sc[fcb];
 							}
 							if((!fcb) ||
-							   (fcb.call(sc, name, msg, d))) {
+								(fcb.call(sc, name, msg, d))){
 								cb.call(sc, name, msg, d);
 							}
 						}
 					}
 				}
 			}
-		}
+		};
 			
-		h._unsubscribe = function(tree, path, index, sid) {
-			if(typeof tree != "undefined") {
-				if(index < path.length) {
+		h._unsubscribe = function(tree, path, index, sid){
+			if(typeof tree != "undefined"){
+				if(index < path.length){
 					var childNode = tree.c[path[index]];
 					this._unsubscribe(childNode, path, index + 1, sid);
-					if(childNode.s.length == 0) {
+					if(childNode.s.length == 0){
 						for(var x in childNode.c)
-					 		return;
+							return;
 						delete tree.c[path[index]];
 					}
 					return;
 				}
-				else {
+				else{
 					var callbacks = tree.s;
 					var max = callbacks.length;
 					for(var i = 0; i < max; i++)
-						if(sid == callbacks[i].sid) {
-							if(this._pubDepth > 0) {
+						if(sid == callbacks[i].sid){
+							if(this._pubDepth > 0){
 								callbacks[i].cb = null;
 								this._cleanup.push(callbacks[i]);
 							}
@@ -170,7 +170,7 @@ if(!window["OpenAjax"]){
 						}
 				}
 			}
-		}
+		};
 		// The following function is provided for automatic testing purposes.
 		// It is not expected to be deployed in run-time OpenAjax Hub implementations.
 		h.reinit = function()

@@ -11,7 +11,13 @@
     <script type="text/javascript" src="../../../../../dojo.js"></script>
     <script type="text/javascript">
 	  // alias dojo's text module to text!
-	  define("text", ["dojo/text"], function(text){ return text; });
+	  if(dohArgs.aliasTest){
+		require({aliases:[
+			["text", "dojo/text"]
+		]});
+	  }else{
+		define("text", ["dojo/text"], function(text){ return text; });
+	  }
 
 	  require(["doh"], function(doh){
 	    require({

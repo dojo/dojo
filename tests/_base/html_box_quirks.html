@@ -9,7 +9,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
 			
 			var margin = '1px';
 			var border = '3px solid black';
@@ -25,7 +25,7 @@
 				height: '20px',
 				width: '20px',
 				backgroundColor: 'blue'
-			}
+			};
 			
 			var testStyles = [
 				{},
@@ -35,8 +35,8 @@
 				{margin: margin, border: border},
 				{margin: margin, padding: padding},
 				{border: border, padding: padding},
-				{margin: margin, border: border, padding: padding}			
-			]
+				{margin: margin, border: border, padding: padding}
+			];
 			
 			
 			function sameBox(inBox1, inBox2) {
@@ -110,10 +110,10 @@
 				if (inMix.length > 1)
 					args[1] = inMix[1];
 				args[2] = inArgs[2];
-				args[3] = inArgs[3]	
-				return args;	
-			};
-			
+				args[3] = inArgs[3];
+				return args;
+			}
+
 			function createStyledNodes(inArgs, inFunc) {
 				for (var i=0, n; (s=testStyles[i]); i++) {
 					n = createStyledElement.apply(this, mixCreateElementArgs([styleIncTop(s)], inArgs));

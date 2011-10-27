@@ -1,4 +1,4 @@
-define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/event", "../_base/url", "../_base/unload"], function(dojo) {
+define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/event", "../_base/unload"], function(dojo, require) {
 	// module:
 	//		dojo/_firebug/firebug
 	// summary:
@@ -383,7 +383,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 	}
 
 	function createResizeHandler(wn){
-		// summary
+		// summary:
 		//		Creates handle for onresize window. Called from script in popup's body tag (so that it will work with IE).
 		//
 
@@ -456,7 +456,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 		}
 
 		var styleElement = _firebugDoc.createElement("link");
-		styleElement.href = dojo.moduleUrl("dojo._firebug", "firebug.css")+"";
+		styleElement.href = require.toUrl("./firebug.css");
 		styleElement.rel = "stylesheet";
 		styleElement.type = "text/css";
 		var styleParent = _firebugDoc.getElementsByTagName("head");
@@ -1022,7 +1022,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 			d.setMonth(d.getMonth()+1);
 			document.cookie = name + "=" + encodeURIComponent(value) + ((d.toUtcString) ? "; expires=" + d.toUTCString() : "");
 		}
-	};
+	}
 
 	function isArray(it){
 		return it && it instanceof Array || typeof it == "array";
@@ -1062,7 +1062,7 @@ define(["../_base/kernel", "../_base/html", "../_base/sniff", "../_base/array", 
 			cnt++;
 			if(cnt==length){br = "\n";}
 			if(o[nm] === window || o[nm] === document){
-				continue;
+				// do nothing
 			}else if(o[nm] === null){
 				txt += i+nm + " : NULL" + br;
 			}else if(o[nm] && o[nm].nodeType){

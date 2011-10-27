@@ -1,4 +1,4 @@
-define(["../main", "doh", "../i18n"], function(dojo, doh){
+define(["../main", "doh", "require", "../i18n"], function(dojo, doh, require){
 	var
 		getAsyncTest = function(value, locale){
 			return function(){
@@ -46,4 +46,6 @@ define(["../main", "doh", "../i18n"], function(dojo, doh){
 			getFixture("zh-cn", "\u4f60\u597d")
 		];
 	doh.register("tests.i18n", testSet);
+	doh.register("tests.i18n.extra.sync", require.toUrl("./i18n.html"), {async:0});
+	doh.register("tests.i18n.extra.async", require.toUrl("./i18n.html"), {async:1});
 });

@@ -1,11 +1,10 @@
-define(["./_base/kernel", "./_base/declare", "./_base/array"], function(dojo, declare) {
+define(["./_base/kernel", "./_base/declare", "./_base/lang", "./_base/array"], function(dojo, declare, lang, array) {
 	// module:
 	//		dojo/Stateful
 	// summary:
 	//		TODOC
 
-
-return declare("dojo.Stateful", null, {
+return dojo.declare("dojo.Stateful", null, {
 	// summary:
 	//		Base class for objects that provide named properties with optional getter/setter
 	//		control and the ability to watch for property changes
@@ -17,7 +16,7 @@ return declare("dojo.Stateful", null, {
 	//	|	obj.set("foo","bar");
 	postscript: function(mixin){
 		if(mixin){
-			dojo.mixin(this, mixin);
+			lang.mixin(this, mixin);
 		}
 	},
 
@@ -26,6 +25,8 @@ return declare("dojo.Stateful", null, {
 		//		Get a property on a Stateful instance.
 		//	name:
 		//		The property to get.
+		//	returns:
+		//		The property value on this Stateful instance.
 		// description:
 		//		Get a named property on a Stateful object. The property may
 		//		potentially be retrieved via a getter method in subclasses. In the base class
@@ -35,7 +36,7 @@ return declare("dojo.Stateful", null, {
 		//	|	stateful.get("foo") // returns 3
 		//	|	stateful.foo // returns 3
 
-		return this[name];
+		return this[name]; //Any
 	},
 	set: function(/*String*/name, /*Object*/value){
 		// summary:
@@ -44,6 +45,8 @@ return declare("dojo.Stateful", null, {
 		//		The property to set.
 		//	value:
 		//		The value to set in the property.
+		//	returns:
+		//		The function returns this dojo.Stateful instance.
 		// description:
 		//		Sets named properties on a stateful object and notifies any watchers of
 		// 		the property. A programmatic setter may be defined in subclasses.
@@ -71,7 +74,7 @@ return declare("dojo.Stateful", null, {
 		if(this._watchCallbacks){
 			this._watchCallbacks(name, oldValue, value);
 		}
-		return this;
+		return this; //dojo.Stateful
 	},
 	watch: function(/*String?*/name, /*Function*/callback){
 		// summary:
@@ -126,10 +129,11 @@ return declare("dojo.Stateful", null, {
 		propertyCallbacks.push(callback);
 		return {
 			unwatch: function(){
-				propertyCallbacks.splice(dojo.indexOf(propertyCallbacks, callback), 1);
+				propertyCallbacks.splice(array.indexOf(propertyCallbacks, callback), 1);
 			}
-		};
+		}; //Object
 	}
 
 });
+
 });

@@ -1,17 +1,15 @@
-define(["./main", "./parser"], function(dojo) {
+define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", "./dom", "./dom-construct", "./parser"], function(dojo, lang, darray, declare, dom, domConstruct, parser) {
 	// module:
 	//		dojo/html
 	// summary:
 	//		TODOC
 
-dojo.getObject("html", true, dojo);
+	lang.getObject("html", true, dojo);
 
-// the parser might be needed..
-(function(){ // private scope, sort of a namespace
+	// the parser might be needed..
 
 	// idCounter is incremented with each instantiation to allow asignment of a unique id for tracking, logging purposes
-	var idCounter = 0,
-		d = dojo;
+	var idCounter = 0;
 
 	dojo.html._secureForInnerHtml = function(/*String*/ cont){
 		// summary:
@@ -33,7 +31,7 @@ dojo.getObject("html", true, dojo);
 		//		the parent element
 	};
 =====*/
-	dojo.html._emptyNode = dojo.empty;
+	dojo.html._emptyNode = domConstruct.empty;
 
 	dojo.html._setNodeContent = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont){
 		// summary:
@@ -45,20 +43,20 @@ dojo.getObject("html", true, dojo);
 		//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
 
 		// always empty
-		d.empty(node);
+		domConstruct.empty(node);
 
 		if(cont) {
 			if(typeof cont == "string") {
-				cont = d._toDom(cont, node.ownerDocument);
+				cont = domConstruct.toDom(cont, node.ownerDocument);
 			}
-			if(!cont.nodeType && d.isArrayLike(cont)) {
+			if(!cont.nodeType && lang.isArrayLike(cont)) {
 				// handle as enumerable, but it may shrink as we enumerate it
 				for(var startlen=cont.length, i=0; i<cont.length; i=startlen==cont.length ? i+1 : 0) {
-					d.place( cont[i], node, "last");
+					domConstruct.place( cont[i], node, "last");
 				}
 			} else {
 				// pass nodes, documentFragments and unknowns through to dojo.place
-				d.place(cont, node, "last");
+				domConstruct.place(cont, node, "last");
 			}
 		}
 
@@ -67,7 +65,7 @@ dojo.getObject("html", true, dojo);
 	};
 
 	// we wrap up the content-setting operation in a object
-	dojo.declare("dojo.html._ContentSetter", null,
+	declare("dojo.html._ContentSetter", null,
 		{
 			// node: DomNode|String
 			//		An node which will be the parent element that we set content into
@@ -95,14 +93,14 @@ dojo.getObject("html", true, dojo);
 			parseContent: false,
 
 			// parserScope: String
-			//		Flag passed to parser.  Root for attribute names to search for.   If scopeName is dojo,
+			//		Flag passed to parser.	Root for attribute names to search for.	  If scopeName is dojo,
 			//		will search for data-dojo-type (or dojoType).  For backwards compatibility
 			//		reasons defaults to dojo._scopeName (which is "dojo" except when
 			//		multi-version support is used, when it will be something like dojo16, dojo20, etc.)
 			parserScope: dojo._scopeName,
 
 			// startup: Boolean
-			//		Start the child widgets after parsing them.   Only obeyed if parseContent is true.
+			//		Start the child widgets after parsing them.	  Only obeyed if parseContent is true.
 			startup: true,
 
 			// lifecyle methods
@@ -112,11 +110,11 @@ dojo.getObject("html", true, dojo);
 				//		call the set() method to actually set the content..
 
 				// the original params are mixed directly into the instance "this"
-				dojo.mixin(this, params || {});
+				lang.mixin(this, params || {});
 
 				// give precedence to params.node vs. the node argument
 				// and ensure its a node, not an id string
-				node = this.node = dojo.byId( this.node || node );
+				node = this.node = dom.byId( this.node || node );
 
 				if(!this.id){
 					this.id = [
@@ -152,7 +150,7 @@ dojo.getObject("html", true, dojo);
 
 				var node = this.node;
 				if(!node) {
-				    // can't proceed
+					// can't proceed
 					throw new Error(this.declaredClass + ": setContent given no node");
 				}
 				try{
@@ -181,7 +179,7 @@ dojo.getObject("html", true, dojo);
 				// NOTE: if you dont want this you'll need to empty
 				// the parseResults array property yourself to avoid bad things happenning
 				if(this.parseResults && this.parseResults.length) {
-					dojo.forEach(this.parseResults, function(w) {
+					darray.forEach(this.parseResults, function(w) {
 						if(w.destroy){
 							w.destroy();
 						}
@@ -202,7 +200,7 @@ dojo.getObject("html", true, dojo);
 				//		optionally pre-process html string content
 				var cont = this.content;
 
-				if(dojo.isString(cont)){
+				if(lang.isString(cont)){
 					if(this.cleanContent){
 						cont = dojo.html._secureForInnerHtml(cont);
 					}
@@ -270,12 +268,12 @@ dojo.getObject("html", true, dojo);
 				try{
 					// store the results (widgets, whatever) for potential retrieval
 					var inherited = {};
-					dojo.forEach(["dir", "lang", "textDir"], function(name){
+					darray.forEach(["dir", "lang", "textDir"], function(name){
 						if(this[name]){
 							inherited[name] = this[name];
 						}
 					}, this);
-					this.parseResults = dojo.parser.parse({
+					this.parseResults = parser.parse({
 						rootNode: rootNode,
 						noStart: !this.startup,
 						inherited: inherited,
@@ -332,14 +330,13 @@ dojo.getObject("html", true, dojo);
 		}else{
 			// more options but slower
 			// note the arguments are reversed in order, to match the convention for instantiation via the parser
-			var op = new dojo.html._ContentSetter(dojo.mixin(
+			var op = new dojo.html._ContentSetter(lang.mixin(
 					params,
 					{ content: cont, node: node }
 			));
 			return op.set();
 		}
 	};
-})();
 
-return dojo.html;
+	return dojo.html;
 });

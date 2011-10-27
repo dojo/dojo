@@ -1,4 +1,4 @@
-dojo.provide("tests.date.locale");
+dojo.provide("dojo.tests.date.locale");
 
 dojo.require("dojo.date.locale");
 
@@ -12,22 +12,20 @@ tests.register("tests.date.locale",
 			name: "date.locale",
 			runTest: function(t){
 				var partLocaleList = ["en-us", "fr-fr", "es", "de-at", "ja-jp", "zh-cn"];
-        if(dojo.isAsync){
-            var
-              def = new doh.Deferred(),
-              deps = [];
-            dojo.forEach(partLocaleList, function(locale){
-              deps.push(dojo.getL10nName("dojo/cldr", "gregorian", locale));
-            });
-            define(deps, function(){
-							def.callback(true);
-            });
-            return def;
-        }else{ // tests for the v1.x loader/i18n machinery
-  				dojo.forEach(partLocaleList, function(locale){
-	  				dojo.requireLocalization("dojo.cldr", "gregorian", locale);
-		  		});
-        }
+				if(dojo.isAsync){
+					var def = new doh.Deferred(),
+						deps = dojo.map(partLocaleList, function(locale){
+							return dojo.getL10nName("dojo/cldr", "gregorian", locale)
+						});
+					require(deps, function(){
+						def.callback(true);
+					});
+					return def;
+				}else{ // tests for the v1.x loader/i18n machinery
+					dojo.forEach(partLocaleList, function(locale){
+						dojo.requireLocalization("dojo.cldr", "gregorian", locale);
+					});
+				}
 			},
 			tearDown: function(){
 				//Clean up bundles that should not exist if
@@ -249,6 +247,10 @@ tests.register("tests.date.locale",
 	t.is( new Date(2006, 7, 11), dojo.date.locale.parse("11082006", {datePattern:"ddMMyyyy", selector:"date"}));
 
 	t.is( new Date(2006, 7, 31), dojo.date.locale.parse("31Aug2006", {datePattern:"ddMMMyyyy", selector:"date", locale:'en'}));
+
+	t.is(new Date(1970,0,7), dojo.date.locale.parse("007", {datePattern:'DDD',selector:'date'}));
+	t.is(new Date(1970,0,31), dojo.date.locale.parse("031", {datePattern:'DDD',selector:'date'}));
+	t.is(new Date(1970,3,10), dojo.date.locale.parse("100", {datePattern:'DDD',selector:'date'}));
 
 			}
 		},

@@ -1,10 +1,10 @@
-define(["../main"], function(dojo) {
+define(["../_base/kernel", "../_base/lang", "../_base/array"], function(dojo, lang, array) {
 	// module:
 	//		dojo/date/stamp
 	// summary:
 	//		TODOC
 
-dojo.getObject("date.stamp", true, dojo);
+lang.getObject("date.stamp", true, dojo);
 
 // Methods to convert dates to or from a wire (string) format using well-known conventions
 
@@ -58,7 +58,7 @@ dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/d
 		if(defaultTime){
 			// mix in defaultTime.  Relatively expensive, so use || operators for the fast path of defaultTime === 0
 			defaultTime = new Date(defaultTime);
-			dojo.forEach(dojo.map(["FullYear", "Month", "Date", "Hours", "Minutes", "Seconds", "Milliseconds"], function(prop){
+			array.forEach(array.map(["FullYear", "Month", "Date", "Hours", "Minutes", "Seconds", "Milliseconds"], function(prop){
 				return defaultTime["get" + prop]();
 			}), function(value, index){
 				match[index] = match[index] || value;

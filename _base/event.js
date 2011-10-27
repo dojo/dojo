@@ -1,25 +1,15 @@
-define(["./kernel", "../listen", "../has"], function(dojo, listen, has){
+define(["./kernel", "../on", "../has", "../dom-geometry"], function(dojo, on, has, dom){
   //  module:
   //    dojo/_base/event
   //  summary:
   //    This module defines dojo DOM event API.
-	has.add("dom-addeventlistener", !!document.addEventListener); 
-	if(listen._fixEvent){
-		var fixEvent = listen._fixEvent;
-		listen._fixEvent = function(evt, se){
-			// add some additional normalization for back-compat, this isn't in listen.js because it is somewhat more expensive
+	if(on._fixEvent){
+		var fixEvent = on._fixEvent;
+		on._fixEvent = function(evt, se){
+			// add some additional normalization for back-compat, this isn't in on.js because it is somewhat more expensive
 			evt = fixEvent(evt, se);
 			if(evt){
-				// FIXME: scroll position query is duped from dojo.html to
-				// avoid dependency on that entire module. Now that HTML is in
-				// Base, we should convert back to something similar there.
-				var doc = (se && se.ownerDocument) || document;
-				// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
-				// here rather than document.body
-				var docBody = ((dojo.isIE < 6) || (doc["compatMode"] == "BackCompat")) ? doc.body : doc.documentElement;
-				var offset = dojo._getIeDocumentElementOffset();
-				evt.pageX = evt.clientX + dojo._fixIeBiDiScrollLeft(docBody.scrollLeft || 0) - offset.x;
-				evt.pageY = evt.clientY + (docBody.scrollTop || 0) - offset.y;
+				dom.normalizeEvent(evt);
 			}
 			return evt;
 		};		
@@ -32,10 +22,10 @@ define(["./kernel", "../listen", "../has"], function(dojo, listen, has){
 		//		native event object
 		// sender: DOMNode
 		//		node to treat as "currentTarget"
-		if(listen._fixEvent){
-			return listen._fixEvent(evt, sender);
+		if(on._fixEvent){
+			return on._fixEvent(evt, sender);
 		}
-		return evt;
+		return evt;	// Event
 	};
 	
 	dojo.stopEvent = function(/*Event*/ evt){
@@ -50,9 +40,12 @@ define(["./kernel", "../listen", "../has"], function(dojo, listen, has){
 		}else{
 			evt = evt || window.event;
 			evt.cancelBubble = true;
-			listen._preventDefault.call(evt);
+			on._preventDefault.call(evt);
 		}
 	};
 
-return dojo.connect;
+	return {
+		fix: dojo.fixEvent,
+		stop: dojo.stopEvent
+	};
 });

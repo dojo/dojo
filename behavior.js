@@ -1,4 +1,4 @@
-define(["./main"], function(dojo) {
+define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/connect", "./query", "./ready"], function(dojo, lang, darray, connect, query, ready) {
 	// module:
 	//		dojo/behavior
 	// summary:
@@ -45,11 +45,13 @@ dojo.behavior = new function(){
 	// FIXME: need a better test so we don't exclude nightly Safari's!
 	this._behaviors = {};
 	this.add = function(/* Object */behaviorObj){
-		//	summary:
+		// summary:
 		//		Add the specified behavior to the list of behaviors, ignoring existing
 		//		matches.
-		//
-		//	description:
+		// behaviorObj: Object
+		//		The behavior object that will be added to behaviors list. The behaviors
+		//		in the list will be applied the next time apply() is called.
+		// description:
 		//		Add the specified behavior to the list of behaviors which will
 		//		be applied the next time apply() is called. Calls to add() for
 		//		an already existing behavior do not replace the previous rules,
@@ -73,7 +75,7 @@ dojo.behavior = new function(){
 		//
 		//		There are a variety of formats permitted in the behaviorObject
 		//
-		//	example:
+		// example:
 		//		Simple list of properties. "found" is special. "Found" is assumed if
 		//		no property object for a given selector, and property is a function.
 		//
@@ -91,7 +93,7 @@ dojo.behavior = new function(){
 		//	|		}
 		//	|	});
 		//
-		//	example:
+		// example:
 		//		 If property is a string, a dojo.publish will be issued on the channel:
 		//
 		//	|	dojo.behavior.add({
@@ -106,7 +108,7 @@ dojo.behavior = new function(){
 		//	|		// provided a newly matched node is found.
 		//	|	});
 		//
-		//	example:
+		// example:
 		//		Scoping can be accomplished by passing an object as a property to
 		//		a connection handle (on*):
 		//
@@ -118,7 +120,7 @@ dojo.behavior = new function(){
 		//	|			}
 		//	|	});
 		//
-		//	example:
+		// example:
 		//		Bahaviors match on CSS3 Selectors, powered by dojo.query. Example selectors:
 		//
 		//	|	dojo.behavior.add({
@@ -152,7 +154,6 @@ dojo.behavior = new function(){
 		//	|	});
 		//
 
-		var tmpObj = {};
 		forIn(behaviorObj, this, function(behavior, name){
 			var tBehavior = arrIn(this._behaviors, name);
 			if(typeof tBehavior["id"] != "number"){
@@ -160,7 +161,7 @@ dojo.behavior = new function(){
 			}
 			var cversion = [];
 			tBehavior.push(cversion);
-			if((dojo.isString(behavior))||(dojo.isFunction(behavior))){
+			if((lang.isString(behavior))||(lang.isFunction(behavior))){
 				behavior = { found: behavior };
 			}
 			forIn(behavior, function(rule, ruleName){
@@ -170,19 +171,19 @@ dojo.behavior = new function(){
 	};
 
 	var _applyToNode = function(node, action, ruleSetName){
-		if(dojo.isString(action)){
+		if(lang.isString(action)){
 			if(ruleSetName == "found"){
-				dojo.publish(action, [ node ]);
+				connect.publish(action, [ node ]);
 			}else{
-				dojo.connect(node, ruleSetName, function(){
-					dojo.publish(action, arguments);
+				connect.connect(node, ruleSetName, function(){
+					connect.publish(action, arguments);
 				});
 			}
-		}else if(dojo.isFunction(action)){
+		}else if(lang.isFunction(action)){
 			if(ruleSetName == "found"){
 				action(node);
 			}else{
-				dojo.connect(node, ruleSetName, action);
+				connect.connect(node, ruleSetName, action);
 			}
 		}
 	};
@@ -211,7 +212,7 @@ dojo.behavior = new function(){
 		//		the DOM.
 		//
 		forIn(this._behaviors, function(tBehavior, id){
-			dojo.query(id).forEach(
+			query(id).forEach(
 				function(elem){
 					var runFrom = 0;
 					var bid = "_dj_behavior_"+tBehavior.id;
@@ -225,8 +226,8 @@ dojo.behavior = new function(){
 
 					for(var x=runFrom, tver; tver = tBehavior[x]; x++){
 						forIn(tver, function(ruleSet, ruleSetName){
-							if(dojo.isArray(ruleSet)){
-								dojo.forEach(ruleSet, function(action){
+							if(lang.isArray(ruleSet)){
+								darray.forEach(ruleSet, function(action){
 									_applyToNode(elem, action, ruleSetName);
 								});
 							}
@@ -241,7 +242,7 @@ dojo.behavior = new function(){
 	};
 };
 
-dojo.addOnLoad(dojo.behavior, "apply");
+ready(dojo.behavior, "apply"); // FIXME: should this use a priority? before/after parser priority?
 
 return dojo.behavior;
 });

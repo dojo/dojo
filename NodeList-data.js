@@ -1,12 +1,16 @@
-define(["./main"], function(dojo) {
+define([
+	"./_base/kernel", "./query", "./_base/lang", "./_base/array", "./dom-attr"
+], function(dojo, query, lang, array, attr) {
 	// module:
 	//		dojo/NodeList-data
 	// summary:
 	//		TODOC
 
-(function(d){
-
+var NodeList = query.NodeList;
 /*=====
+// doc alias helpers:
+var NodeList = dojo.NodeList;
+
 	dojo.NodeList.prototype.data = function(key, value){
 		// summary: stash or get some arbitrary data on/from these nodes.
 		//
@@ -63,33 +67,42 @@ define(["./main"], function(dojo) {
 		//		If passed, remove the data item found at `key`
 	};
 
-	dojo._nodeDataCache = {
-		// summary: An alias to the private dataCache for NodeList-data. NEVER USE THIS!
-		//		This private is only exposed for the benefit of unit testing, and is
-		//		removed during the build process.
-	};
-
 =====*/
 
-	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid", nl = d.NodeList,
+	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid",
 		dopid = function(node){
 			// summary: Return a uniqueish ID for the passed node reference
-			var pid = d.attr(node, dataattr);
+			var pid = attr.get(node, dataattr);
 			if(!pid){
 				pid = "pid" + (x++);
-				d.attr(node, dataattr, pid);
+				attr.set(node, dataattr, pid);
 			}
 			return pid;
 		}
 	;
 
 	//>>excludeStart("debugging", true);
-	// exposed for unit tests:
-	d._nodeDataCache = dataCache;
+	// An alias to the private dataCache for NodeList-data. NEVER USE THIS!
+	// This private is only exposed for the benefit of unit testing, and is
+	// removed during the build process.
+	dojo._nodeDataCache = dataCache;
 	//>>excludeEnd("debugging");
 
-	var dodata = d._nodeData = function(node, key, value){
-
+	var dodata = dojo._nodeData = function(node, key, value){
+		// summary: Private helper for dojo.NodeList.data for single node data access. Refer to NodeList.data 
+		//		documentation for more information.
+		//
+		// node: String|DomNode
+		//		The node to associate data with
+		//
+		// key: Object?|String?
+		//		If an object, act as a setter and iterate over said object setting data items as defined.
+		//		If a string, and `value` present, set the data for defined `key` to `value`
+		//		If a string, and `value` absent, act as a getter, returning the data associated with said `key`
+		//
+		// value: Anything?
+		//		The value to set for said `key`, provided `key` is a string (and not an object)
+		//
 		var pid = dopid(node), r;
 		if(!dataCache[pid]){ dataCache[pid] = {}; }
 
@@ -105,13 +118,13 @@ define(["./main"], function(dojo) {
 		}else{
 			// must be a setter, mix `value` into data hash
 			// API discrepency: using object as setter works here
-			r = d._mixin(dataCache[pid], key);
+			r = lang.mixin(dataCache[pid], key);
 		}
 
 		return r; // Object|Anything|Nothing
 	};
 
-	var removeData = d._removeNodeData = function(node, key){
+	var removeData = dojo._removeNodeData = function(node, key){
 		// summary: Remove some data from this node
 		// node: String|DomNode
 		//		The node reference to remove data from
@@ -128,7 +141,7 @@ define(["./main"], function(dojo) {
 		}
 	};
 
-	d._gcNodeData = function(){
+	dojo._gcNodeData = function(){
 		// summary: super expensive: GC all data in the data for nodes that no longer exist in the dom.
 		// description:
 		//		super expensive: GC all data in the data for nodes that no longer exist in the dom.
@@ -137,24 +150,24 @@ define(["./main"], function(dojo) {
 		//		content regions (eg: a dijit.layout.ContentPane with replacing data)
 		//		There is NO automatic GC going on. If you dojo.destroy() a node, you should _removeNodeData
 		//		prior to destruction.
-		var livePids = dojo.query("[" + dataattr + "]").map(dopid);
+		var livePids = query("[" + dataattr + "]").map(dopid);
 		for(var i in dataCache){
-			if(dojo.indexOf(livePids, i) < 0){ delete dataCache[i]; }
+			if(array.indexOf(livePids, i) < 0){ delete dataCache[i]; }
 		}
 	};
 
 	// make nodeData and removeNodeData public on dojo.NodeList:
-	d.extend(nl, {
-		data: nl._adaptWithCondition(dodata, function(a){
+	lang.extend(NodeList, {
+		data: NodeList._adaptWithCondition(dodata, function(a){
 			return a.length === 0 || a.length == 1 && (typeof a[0] == "string");
 		}),
-		removeData: nl._adaptAsForEach(removeData)
+		removeData: NodeList._adaptAsForEach(removeData)
 	});
 
 // TODO: this is the basic implemetation of adaptWithCondtionAndWhenMappedConsiderLength, for lack of a better API name
 // it conflicts with the the `dojo.NodeList` way: always always return an arrayLike thinger. Consider for 2.0:
 //
-//	nl.prototype.data = function(key, value){
+//	NodeList.prototype.data = function(key, value){
 //		var a = arguments, r;
 //		if(a.length === 0 || a.length == 1 && (typeof a[0] == "string")){
 //			r = this.map(function(node){
@@ -169,7 +182,6 @@ define(["./main"], function(dojo) {
 //		return r; // dojo.NodeList|Array|SingleItem
 //	};
 
-})(dojo);
+	return NodeList;
 
-return dojo.NodeList;
 });

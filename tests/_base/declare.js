@@ -2,7 +2,7 @@
 tests= typeof tests=="undefined" ? {} : tests;
 
 define(["../..", "doh"], function(dojo, doh){
-	doh.register("doh._base.declare", [
+	doh.register("tests._base.declare", [
 		function smokeTest(t){
 			dojo.declare("tests._base.declare.tmp", null);
 			var tmp = new tests._base.declare.tmp();
@@ -407,7 +407,7 @@ define(["../..", "doh"], function(dojo, doh){
 			// pseudo-constructor function
 			function noNewConstructor(){
 				this.noNew_Value = 'instance value';
-			};
+			}
 
 			var g = dojo.global;
 			// this value will remain unchanged if the code for
@@ -420,7 +420,7 @@ define(["../..", "doh"], function(dojo, doh){
 				var obj = cls('instance value');
 				t.is(obj.noNew_Value, 'instance value');
 				t.is(g.noNew_Value, 'global value');
-			};
+			}
 
 			// There are three different functions that might be
 			// created by dojo.declare(), so I need to test all

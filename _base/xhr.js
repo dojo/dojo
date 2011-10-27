@@ -1,4 +1,6 @@
-define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "./json", "./lang"], function(dojo, has, require, listen){
+define([
+	"./kernel", "./sniff", "require", "../io-query", "../dom", "../dom-form", "./Deferred", "./json", "./lang", "./array", "../on"
+], function(dojo, has, require, ioq, dom, domForm, deferred, json, lang, array, on){
 	//	module:
 	//		dojo/_base.xhr
 	// summary:
@@ -6,7 +8,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 
 	has.add("native-xhr", function() {
 		// if true, the environment has a native XHR implementation
-		return !!XMLHttpRequest;
+		return typeof XMLHttpRequest !== 'undefined';
 	});
 
 	if(has("dojo-xhr-factory")){
@@ -23,7 +25,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		};
 	}else{
 		// PROGIDs are in order of decreasing likelihood; this will change in time.
-		for(var XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'], progid, i = 0; i<3;){
+		for(var XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'], progid, i = 0; i < 3;){
 			try{
 				progid = XMLHTTP_PROGIDS[i++];
 				if (new ActiveXObject(progid)) {
@@ -37,215 +39,19 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 			}
 		}
 		dojo._xhrObj= function() {
-			try{
-				return new ActiveXObject(progid);
-			}catch(e){
-				throw new Error("XMLHTTP not available: "+e);
-			}
+			return new ActiveXObject(progid);
 		};
 	}
 
-	var _d = dojo, cfg = _d.config;
+	var cfg = dojo.config;
 
-	function setValue(/*Object*/obj, /*String*/name, /*String*/value){
-		//summary:
-		//		For the named property in object, set the value. If a value
-		//		already exists and it is a string, convert the value to be an
-		//		array of values.
-
-		//Skip it if there is no value
-		if(value === null){
-			return;
-		}
-
-		var val = obj[name];
-		if(typeof val == "string"){ // inline'd type check
-			obj[name] = [val, value];
-		}else if(_d.isArray(val)){
-			val.push(value);
-		}else{
-			obj[name] = value;
-		}
-	}
-
-	dojo.fieldToObject = function(/*DOMNode||String*/ inputNode){
-		// summary:
-		//		Serialize a form field to a JavaScript object.
-		//
-		// description:
-		//		Returns the value encoded in a form field as
-		//		as a string or an array of strings. Disabled form elements
-		//		and unchecked radio and checkboxes are skipped.	Multi-select
-		//		elements are returned as an array of string values.
-		var ret = null;
-		var item = _d.byId(inputNode);
-		if(item){
-			var _in = item.name;
-			var type = (item.type||"").toLowerCase();
-			if(_in && type && !item.disabled){
-				if(type == "radio" || type == "checkbox"){
-					if(item.checked){ ret = item.value; }
-				}else if(item.multiple){
-					ret = [];
-					var options = item.getElementsByTagName("option");
-					for(var i = 0; i < options.length; i++){
-						var opt = options[i];
-						if(opt.selected){
-							ret.push(opt.value);
-						}
-					}
-				}else{
-					ret = item.value;
-				}
-			}
-		}
-		return ret; // Object
-	};
-
-	dojo.formToObject = function(/*DOMNode||String*/ formNode){
-		// summary:
-		//		Serialize a form node to a JavaScript object.
-		// description:
-		//		Returns the values encoded in an HTML form as
-		//		string properties in an object which it then returns. Disabled form
-		//		elements, buttons, and other non-value form elements are skipped.
-		//		Multi-select elements are returned as an array of string values.
-		//
-		// example:
-		//		This form:
-		//		|	<form id="test_form">
-		//		|		<input type="text" name="blah" value="blah">
-		//		|		<input type="text" name="no_value" value="blah" disabled>
-		//		|		<input type="button" name="no_value2" value="blah">
-		//		|		<select type="select" multiple name="multi" size="5">
-		//		|			<option value="blah">blah</option>
-		//		|			<option value="thud" selected>thud</option>
-		//		|			<option value="thonk" selected>thonk</option>
-		//		|		</select>
-		//		|	</form>
-		//
-		//		yields this object structure as the result of a call to
-		//		formToObject():
-		//
-		//		|	{
-		//		|		blah: "blah",
-		//		|		multi: [
-		//		|			"thud",
-		//		|			"thonk"
-		//		|		]
-		//		|	};
-
-		var ret = {};
-		var exclude = "file|submit|image|reset|button|";
-		_d.forEach(dojo.byId(formNode).elements, function(item){
-			var _in = item.name;
-			var type = (item.type||"").toLowerCase();
-			if(_in && type && exclude.indexOf(type) == -1 && !item.disabled){
-				setValue(ret, _in, _d.fieldToObject(item));
-				if(type == "image"){
-					ret[_in+".x"] = ret[_in+".y"] = ret[_in].x = ret[_in].y = 0;
-				}
-			}
-		});
-		return ret; // Object
-	};
-
-	dojo.objectToQuery = function(/*Object*/ map){
-		//	summary:
-		//		takes a name/value mapping object and returns a string representing
-		//		a URL-encoded version of that object.
-		//	example:
-		//		this object:
-		//
-		//		|	{
-		//		|		blah: "blah",
-		//		|		multi: [
-		//		|			"thud",
-		//		|			"thonk"
-		//		|		]
-		//		|	};
-		//
-		//	yields the following query string:
-		//
-		//	|	"blah=blah&multi=thud&multi=thonk"
-
-		// FIXME: need to implement encodeAscii!!
-		var enc = encodeURIComponent;
-		var pairs = [];
-		var backstop = {};
-		for(var name in map){
-			var value = map[name];
-			if(value != backstop[name]){
-				var assign = enc(name) + "=";
-				if(_d.isArray(value)){
-					for(var i=0; i < value.length; i++){
-						pairs.push(assign + enc(value[i]));
-					}
-				}else{
-					pairs.push(assign + enc(value));
-				}
-			}
-		}
-		return pairs.join("&"); // String
-	};
-
-	dojo.formToQuery = function(/*DOMNode||String*/ formNode){
-		// summary:
-		//		Returns a URL-encoded string representing the form passed as either a
-		//		node or string ID identifying the form to serialize
-		return _d.objectToQuery(_d.formToObject(formNode)); // String
-	};
-
-	dojo.formToJson = function(/*DOMNode||String*/ formNode, /*Boolean?*/prettyPrint){
-		// summary:
-		//		Create a serialized JSON string from a form node or string
-		//		ID identifying the form to serialize
-		return _d.toJson(_d.formToObject(formNode), prettyPrint); // String
-	};
-
-	dojo.queryToObject = function(/*String*/ str){
-		// summary:
-		//		Create an object representing a de-serialized query section of a
-		//		URL. Query keys with multiple values are returned in an array.
-		//
-		// example:
-		//		This string:
-		//
-		//	|		"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
-		//
-		//		results in this object structure:
-		//
-		//	|		{
-		//	|			foo: [ "bar", "baz" ],
-		//	|			thinger: " spaces =blah",
-		//	|			zonk: "blarg"
-		//	|		}
-		//
-		//		Note that spaces and other urlencoded entities are correctly
-		//		handled.
-
-		// FIXME: should we grab the URL string if we're not passed one?
-		var ret = {};
-		var qp = str.split("&");
-		var dec = decodeURIComponent;
-		_d.forEach(qp, function(item){
-			if(item.length){
-				var parts = item.split("=");
-				var name = dec(parts.shift());
-				var val = dec(parts.join("="));
-				if(typeof ret[name] == "string"){ // inline'd type check
-					ret[name] = [ret[name]];
-				}
-
-				if(_d.isArray(ret[name])){
-					ret[name].push(val);
-				}else{
-					ret[name] = val;
-				}
-			}
-		});
-		return ret; // Object
-	};
+	// mix in io-query and dom-form
+	dojo.objectToQuery = ioq.objectToQuery;
+	dojo.queryToObject = ioq.queryToObject;
+	dojo.fieldToObject = domForm.fieldToObject;
+	dojo.formToObject = domForm.toObject;
+	dojo.formToQuery = domForm.toQuery;
+	dojo.formToJson = domForm.toJson;
 
 	// need to block async callbacks from snatching this thread as the result
 	// of an async callback might call another sync XHR, this hangs khtml forever
@@ -254,7 +60,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 	dojo._blockAsync = false;
 
 	// MOW: remove dojo._contentHandlers alias in 2.0
-	var handlers = _d._contentHandlers = dojo.contentHandlers = {
+	var handlers = dojo._contentHandlers = dojo.contentHandlers = {
 		// summary:
 		//		A map of availble XHR transport handle types. Name matches the
 		//		`handleAs` attribute passed to XHR calls.
@@ -284,7 +90,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		},
 		"json": function(xhr){
 			// summary: A contentHandler which returns a JavaScript object created from the response data
-			return _d.fromJson(xhr.responseText || null);
+			return json.fromJson(xhr.responseText || null);
 		},
 		"json-comment-filtered": function(xhr){
 			// summary: A contentHandler which expects comment-filtered JSON.
@@ -313,13 +119,13 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 			if(cStartIdx == -1 || cEndIdx == -1){
 				throw new Error("JSON was not comment filtered");
 			}
-			return _d.fromJson(value.substring(cStartIdx+2, cEndIdx));
+			return json.fromJson(value.substring(cStartIdx+2, cEndIdx));
 		},
 		"javascript": function(xhr){
 			// summary: A contentHandler which evaluates the response data, expecting it to be valid JavaScript
 
 			// FIXME: try Moz and IE specific eval variants?
-			return _d.eval(xhr.responseText);
+			return dojo.eval(xhr.responseText);
 		},
 		"xml": function(xhr){
 			// summary: A contentHandler returning an XML Document parsed from the response data
@@ -331,7 +137,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 					//so be sure to test dojo.io.iframe if making changes below.
 					var ms = function(n){ return "MSXML" + n + ".DOMDocument"; };
 					var dp = ["Microsoft.XMLDOM", ms(6), ms(4), ms(3), ms(2)];
-					_d.some(dp, function(p){
+					array.some(dp, function(p){
 						try{
 							var dom = new ActiveXObject(p);
 							dom.async = false;
@@ -546,12 +352,12 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		//Get values from form if requestd.
 		var formObject = null;
 		if(args.form){
-			var form = _d.byId(args.form);
+			var form = dom.byId(args.form);
 			//IE requires going through getAttributeNode instead of just getAttribute in some form cases,
 			//so use it for all. See #2844
 			var actnNode = form.getAttributeNode("action");
 			ioArgs.url = ioArgs.url || (actnNode ? actnNode.value : null);
-			formObject = _d.formToObject(form);
+			formObject = domForm.toObject(form);
 		}
 
 		// set up the query params
@@ -568,11 +374,11 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		if(args.preventCache){
 			miArgs.push({"dojo.preventCache": new Date().valueOf()});
 		}
-		ioArgs.query = _d.objectToQuery(_d.mixin.apply(null, miArgs));
+		ioArgs.query = ioq.objectToQuery(lang.mixin.apply(null, miArgs));
 
 		// .. and the real work of getting the deferred in order, etc.
 		ioArgs.handleAs = args.handleAs || "text";
-		var d = new _d.Deferred(canceller);
+		var d = new deferred(canceller);
 		d.addCallbacks(okHandler, function(error){
 			return errHandler(error, d);
 		});
@@ -582,38 +388,38 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		//The callbacks will get the deferred result value as the
 		//first argument and the ioArgs object as the second argument.
 		var ld = args.load;
-		if(ld && _d.isFunction(ld)){
+		if(ld && lang.isFunction(ld)){
 			d.addCallback(function(value){
 				return ld.call(args, value, ioArgs);
 			});
 		}
 		var err = args.error;
-		if(err && _d.isFunction(err)){
+		if(err && lang.isFunction(err)){
 			d.addErrback(function(value){
 				return err.call(args, value, ioArgs);
 			});
 		}
 		var handle = args.handle;
-		if(handle && _d.isFunction(handle)){
+		if(handle && lang.isFunction(handle)){
 			d.addBoth(function(value){
 				return handle.call(args, value, ioArgs);
 			});
 		}
 
 		//Plug in topic publishing, if dojo.publish is loaded.
-		if(cfg.ioPublish && _d.publish && ioArgs.args.ioPublish !== false){
+		if(cfg.ioPublish && dojo.publish && ioArgs.args.ioPublish !== false){
 			d.addCallbacks(
 				function(res){
-					_d.publish("/dojo/io/load", [d, res]);
+					dojo.publish("/dojo/io/load", [d, res]);
 					return res;
 				},
 				function(res){
-					_d.publish("/dojo/io/error", [d, res]);
+					dojo.publish("/dojo/io/error", [d, res]);
 					return res;
 				}
 			);
 			d.addBoth(function(res){
-				_d.publish("/dojo/io/done", [d, res]);
+				dojo.publish("/dojo/io/done", [d, res]);
 				return res;
 			});
 		}
@@ -671,8 +477,8 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 	var _checkPubCount = function(dfd){
 		if(_pubCount <= 0){
 			_pubCount = 0;
-			if(cfg.ioPublish && _d.publish && (!dfd || dfd && dfd.ioArgs.args.ioPublish !== false)){
-				_d.publish("/dojo/io/stop");
+			if(cfg.ioPublish && dojo.publish && (!dfd || dfd && dfd.ioArgs.args.ioPublish !== false)){
+				dojo.publish("/dojo/io/stop");
 			}
 		}
 	};
@@ -686,7 +492,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		// make sure sync calls stay thread safe, if this callback is called
 		// during a sync call and this results in another sync call before the
 		// first sync call ends the browser hangs
-		if(!_d._blockAsync){
+		if(!dojo._blockAsync){
 			// we need manual loop because we often modify _inFlight (and therefore 'i') while iterating
 			// note: the second clause is an assigment on purpose, lint may complain
 			for(var i = 0, tif; i < _inFlight.length && (tif = _inFlight[i]); i++){
@@ -715,11 +521,11 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 				if(dojo.config.debugAtAllCosts){
 					func.call(this);
 				}else{
-					try{
+//					try{
 						func.call(this);
-					}catch(e){
+	/*				}catch(e){
 						dfd.errback(e);
-					}
+					}*/
 				}
 			}
 		}
@@ -729,7 +535,6 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		if(!_inFlight.length){
 			clearInterval(_inFlightIntvl);
 			_inFlightIntvl = null;
-			return;
 		}
 	};
 
@@ -737,7 +542,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		//summary: Cancels all pending IO requests, regardless of IO type
 		//(xhr, script, iframe).
 		try{
-			_d.forEach(_inFlight, function(i){
+			array.forEach(_inFlight, function(i){
 				try{
 					i.dfd.cancel();
 				}catch(e){/*squelch*/}
@@ -748,10 +553,10 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 	//Automatically call cancel all io calls on unload
 	//in IE for trac issue #2357.
 	if(has("ie")){
-		listen(window, "unload", _d._ioCancelAll);
+		on(window, "unload", dojo._ioCancelAll);
 	}
 
-	_d._ioNotifyStart = function(/*Deferred*/dfd){
+	dojo._ioNotifyStart = function(/*Deferred*/dfd){
 		// summary:
 		//		If dojo.publish is available, publish topics
 		//		about the start of a request queue and/or the
@@ -759,16 +564,16 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		// description:
 		//		Used by IO transports. An IO transport should
 		//		call this method before making the network connection.
-		if(cfg.ioPublish && _d.publish && dfd.ioArgs.args.ioPublish !== false){
+		if(cfg.ioPublish && dojo.publish && dfd.ioArgs.args.ioPublish !== false){
 			if(!_pubCount){
-				_d.publish("/dojo/io/start");
+				dojo.publish("/dojo/io/start");
 			}
 			_pubCount += 1;
-			_d.publish("/dojo/io/send", [dfd]);
+			dojo.publish("/dojo/io/send", [dfd]);
 		}
 	};
 
-	_d._ioWatch = function(dfd, validCheck, ioCheck, resHandle){
+	dojo._ioWatch = function(dfd, validCheck, ioCheck, resHandle){
 		// summary:
 		//		Watches the io request represented by dfd to see if it completes.
 		// dfd: Deferred
@@ -811,12 +616,13 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 	};
 	var _resHandle = function(/*Deferred*/dfd){
 		var xhr = dfd.ioArgs.xhr;
-		if(_d._isDocumentOk(xhr)){
+		if(dojo._isDocumentOk(xhr)){
 			dfd.callback(dfd);
 		}else{
 			var err = new Error("Unable to load " + dfd.ioArgs.url + " status:" + xhr.status);
 			err.status = xhr.status;
 			err.responseText = xhr.responseText;
+			err.xhr = xhr;
 			dfd.errback(err);
 		}
 	};
@@ -848,6 +654,10 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 			//		false is default. Indicates whether a request should be
 			//		allowed to fail (and therefore no console error message in
 			//		the event of a failure)
+			//	contentType: String|Boolean
+			//		"application/x-www-form-urlencoded" is default. Set to false to
+			//		prevent a Content-Type header from being sent, or to a string
+			//		to send a different Content-Type.
 			this.handleAs = handleAs;
 			this.sync = sync;
 			this.headers = headers;
@@ -870,12 +680,12 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		//		If the request has an HTTP body, then pass true for hasBody.
 
 		//Make the Deferred object for this xhr request.
-		var dfd = _d._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
+		var dfd = dojo._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
 		var ioArgs = dfd.ioArgs;
 
 		//Pass the args to _xhrObj, to allow alternate XHR calls based specific calls, like
 		//the one used for iframe proxies.
-		var xhr = ioArgs.xhr = _d._xhrObj(ioArgs.args);
+		var xhr = ioArgs.xhr = dojo._xhrObj(ioArgs.args);
 		//If XHR factory fails, cancel the deferred.
 		if(!xhr){
 			dfd.cancel();
@@ -892,7 +702,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		}else if((arguments.length > 2 && !hasBody) || "POST|PUT".indexOf(method.toUpperCase()) == -1){
 			//Check for hasBody being passed. If no hasBody,
 			//then only append query string if not a POST or PUT request.
-			_d._ioAddQueryToUrl(ioArgs);
+			dojo._ioAddQueryToUrl(ioArgs);
 		}
 
 		// IE 6 is a steaming pile. It won't let you call apply() on the native function (xhr.open).
@@ -910,12 +720,14 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 			}
 		}
 		// FIXME: is this appropriate for all content types?
-		xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
+		if(args.contentType !== false){
+			xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
+		}
 		if(!args.headers || !("X-Requested-With" in args.headers)){
 			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		}
 		// FIXME: set other headers here!
-		_d._ioNotifyStart(dfd);
+		dojo._ioNotifyStart(dfd);
 		if(dojo.config.debugAtAllCosts){
 			xhr.send(ioArgs.query);
 		}else{
@@ -926,7 +738,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 				dfd.cancel();
 			}
 		}
-		_d._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
+		dojo._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
 		xhr = null;
 		return dfd; // dojo.Deferred
 	};
@@ -934,7 +746,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 	dojo.xhrGet = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP GET request to the server.
-		return _d.xhr("GET", args); // dojo.Deferred
+		return dojo.xhr("GET", args); // dojo.Deferred
 	};
 
 	dojo.rawXhrPost = dojo.xhrPost = function(/*dojo.__XhrArgs*/ args){
@@ -943,7 +755,7 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
 		//	postData:
 		//		String. Send raw data in the body of the POST request.
-		return _d.xhr("POST", args, true); // dojo.Deferred
+		return dojo.xhr("POST", args, true); // dojo.Deferred
 	};
 
 	dojo.rawXhrPut = dojo.xhrPut = function(/*dojo.__XhrArgs*/ args){
@@ -952,13 +764,13 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
 		//	putData:
 		//		String. Send raw data in the body of the PUT request.
-		return _d.xhr("PUT", args, true); // dojo.Deferred
+		return dojo.xhr("PUT", args, true); // dojo.Deferred
 	};
 
 	dojo.xhrDelete = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
 		//		Sends an HTTP DELETE request to the server.
-		return _d.xhr("DELETE", args); //dojo.Deferred
+		return dojo.xhr("DELETE", args); //dojo.Deferred
 	};
 
 	/*
@@ -973,5 +785,46 @@ define(["./kernel", "../has", "require", "../listen", "./sniff", "./Deferred", "
 	}
 	*/
 
-return dojo.xhr;
+	dojo._isDocumentOk = function(http){
+		var stat = http.status || 0;
+		stat =
+			(stat >= 200 && stat < 300) || // allow any 2XX response code
+			stat == 304 ||                 // or, get it out of the cache
+			stat == 1223 ||                // or, Internet Explorer mangled the status code
+			!stat;                         // or, we're Titanium/browser chrome/chrome extension requesting a local file
+		return stat; // Boolean
+	};
+
+	dojo._getText = function(url){
+		var result;
+		dojo.xhrGet({url:url, sync:true, load:function(text){
+			result = text;
+		}});
+		return result;
+	};
+
+	// Add aliases for static functions to dojo.xhr since dojo.xhr is what's returned from this module
+	lang.mixin(dojo.xhr, {
+		_xhrObj: dojo._xhrObj,
+		fieldToObject: domForm.fieldToObject,
+		formToObject: domForm.toObject,
+		objectToQuery: ioq.objectToQuery,
+		formToQuery: domForm.toQuery,
+		formToJson: domForm.toJson,
+		queryToObject: ioq.queryToObject,
+		contentHandlers: handlers,
+		_ioSetArgs: dojo._ioSetArgs,
+		_ioCancelAll: dojo._ioCancelAll,
+		_ioNotifyStart: dojo._ioNotifyStart,
+		_ioWatch: dojo._ioWatch,
+		_ioAddQueryToUrl: dojo._ioAddQueryToUrl,
+		_isDocumentOk: dojo._isDocumentOk,
+		_getText: dojo._getText,
+		get: dojo.xhrGet,
+		post: dojo.xhrPost,
+		put: dojo.xhrPut,
+		del: dojo.xhrDelete	// because "delete" is a reserved word
+	});
+
+	return dojo.xhr;
 });

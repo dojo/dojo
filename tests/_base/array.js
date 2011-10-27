@@ -1,11 +1,11 @@
-dojo.provide("tests._base.array");
+dojo.provide("dojo.tests._base.array");
 
 tests.register("tests._base.array",
 	[
 		function testIndexOf(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];
-			
+
 			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56));
 			t.assertEqual(1, dojo.indexOf([Number, String, Date], String));
 			t.assertEqual(1, dojo.indexOf(foo, foo[1]));
@@ -21,10 +21,10 @@ tests.register("tests._base.array",
 		function testIndexOfFromIndex(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];
-			
+
 			t.assertEqual(-1, dojo.indexOf([45, 56, 85], 56, 2));
 			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, 1));
-			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, -1));
+			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, -3));
 			// Make sure going out of bounds doesn't throw us in an infinite loop
 			t.assertEqual(-1, dojo.indexOf([45, 56, 85], 56, 3));
 		},
@@ -32,7 +32,7 @@ tests.register("tests._base.array",
 		function testLastIndexOf(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "aaa", "ccc"];
-			
+
 			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56));
 			t.assertEqual(1, dojo.indexOf([Number, String, Date], String));
 			t.assertEqual(1, dojo.lastIndexOf(foo, foo[1]));
@@ -45,7 +45,7 @@ tests.register("tests._base.array",
 		function testLastIndexOfFromIndex(t){
 			t.assertEqual(1, dojo.lastIndexOf([45, 56, 85], 56, 1));
 			t.assertEqual(-1, dojo.lastIndexOf([45, 56, 85], 85, 1));
-			t.assertEqual(-1, dojo.lastIndexOf([45, 56, 85], 85, -1));
+			t.assertEqual(-1, dojo.lastIndexOf([45, 56, 85], 85, -2));
 			t.assertEqual(0, dojo.lastIndexOf([45, 56, 45], 45, 0));
 		},
 
@@ -112,7 +112,6 @@ tests.register("tests._base.array",
 				caughtException = true;
 			}
 			t.assertTrue(caughtException);
-			return;
 		},
 
 		// FIXME: test forEach w/ a NodeList()?
@@ -190,8 +189,8 @@ tests.register("tests._base.array",
 
 			t.assertTrue(
 				dojo.some(foo, function(elt, idx, array){
-					if(idx < 1){ return true; }
-					return false;
+					return idx < 1;
+
 				})
 			);
 

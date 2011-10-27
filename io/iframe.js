@@ -66,7 +66,6 @@ dojo.io.iframe = {
 		//		used.
 		if(window[fname]){ return window[fname]; }
 		if(window.frames[fname]){ return window.frames[fname]; }
-		var cframe = null;
 		var turi = uri;
 		if(!turi){
 			if(dojo.config["useXDomain"] && !dojo.config["dojoBlankHtmlUrl"]){
@@ -74,7 +73,7 @@ dojo.io.iframe = {
 					+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
 					+ " to the path on your domain to blank.html");
 			}
-			turi = (dojo.config["dojoBlankHtmlUrl"]||require.nameToUrl("../resources/blank.html"));
+			turi = (dojo.config["dojoBlankHtmlUrl"]||require.toUrl("../resources/blank.html"));
 		}
 		var cframe = dojo.place(
 			'<iframe id="'+fname+'" name="'+fname+'" src="'+turi+'" onload="'+onloadstr+
@@ -113,7 +112,6 @@ dojo.io.iframe = {
 				//use iframe.location and return.
 				if(!idoc){
 					iframe.location = src;
-					return;
 				}else{
 					idoc.location.replace(src);
 				}
@@ -125,7 +123,7 @@ dojo.io.iframe = {
 
 	doc: function(/*DOMNode*/iframeNode){
 		//summary: Returns the document object associated with the iframe DOM Node argument.
-		var doc = iframeNode.contentDocument || // W3
+		return iframeNode.contentDocument || // W3
 			(
 				(
 					(iframeNode.name) && (iframeNode.document) &&
@@ -137,7 +135,6 @@ dojo.io.iframe = {
 				(iframeNode.name)&&(dojo.doc.frames[iframeNode.name])&&
 				(dojo.doc.frames[iframeNode.name].document)
 			) || null;
-		return doc;
 	},
 
 	send: function(/*dojo.io.iframe.__ioArgs*/args){

@@ -1,12 +1,9 @@
-define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/window"], function(dojo, has){
+define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/window"], function(dojo, has, dom){
   //  module:
   //    dojo/selector/acme
   //  summary:
   //    This module defines the Acme selector engine
 
-	var d = dojo;
-
-	var ctr = 0;
 /*
 	acme architectural overview:
 
@@ -48,27 +45,22 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 	// need to provide these methods and properties. No other porting should be
 	// necessary, save for configuring the system to use a class other than
 	// dojo.NodeList as the return instance instantiator
-	var trim = 			d.trim;
-	var each = 			d.forEach;
+	var trim = 			dojo.trim;
+	var each = 			dojo.forEach;
 	// 					d.isIE; // float
 	// 					d.isSafari; // float
 	// 					d.isOpera; // float
 	// 					d.isWebKit; // float
 	// 					d.doc ; // document element
 
-	var getDoc = function(){ return d.doc; };
+	var getDoc = function(){ return dojo.doc; };
 	// NOTE(alex): the spec is idiotic. CSS queries should ALWAYS be case-sensitive, but nooooooo
-	var cssCaseBug = ((d.isWebKit||d.isMozilla) && ((getDoc().compatMode) == "BackCompat"));
+	var cssCaseBug = ((dojo.isWebKit||dojo.isMozilla) && ((getDoc().compatMode) == "BackCompat"));
 
 	////////////////////////////////////////////////////////////////////////
 	// Global utilities
 	////////////////////////////////////////////////////////////////////////
 
-
-	// on browsers that support the "children" collection we can avoid a lot of
-	// iteration on chaff (non-element) nodes.
-	// why.
-	var childNodesName = !!getDoc().firstChild["children"] ? "children" : "childNodes";
 
 	var specials = ">~+";
 
@@ -124,7 +116,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			// take an index to start a string slice from and an end position
 			// and return a trimmed copy of that sub-string
 			return trim(query.slice(s, e));
-		}
+		};
 
 		// the overall data graph of the full query, as represented by queryPart objects
 		var queryParts = [];
@@ -162,7 +154,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 				currentPart[ (specials.indexOf(tv) < 0) ? "tag" : "oper" ] = tv;
 				inTag = -1;
 			}
-		}
+		};
 
 		var endId = function(){
 			// called when the tokenizer might be at the end of an ID portion of a match
@@ -170,27 +162,29 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 				currentPart.id = ts(inId, x).replace(/\\/g, "");
 				inId = -1;
 			}
-		}
+		};
 
 		var endClass = function(){
 			// called when the tokenizer might be at the end of a class name
 			// match. CSS allows for multiple classes, so we augment the
 			// current item with another class in its list
 			if(inClass >= 0){
-				currentPart.classes.push(ts(inClass+1, x).replace(/\\/g, ""));
+				currentPart.classes.push(ts(inClass + 1, x).replace(/\\/g, ""));
 				inClass = -1;
 			}
-		}
+		};
 
 		var endAll = function(){
 			// at the end of a simple fragment, so wall off the matches
-			endId(); endTag(); endClass();
-		}
+			endId();
+			endTag();
+			endClass();
+		};
 
 		var endPart = function(){
 			endAll();
 			if(inPseudo >= 0){
-				currentPart.pseudos.push({ name: ts(inPseudo+1, x) });
+				currentPart.pseudos.push({ name: ts(inPseudo + 1, x) });
 			}
 			// hint to the selector engine to tell it whether or not it
 			// needs to do any iteration. Many simple selectors don't, and
@@ -237,7 +231,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			queryParts.push(currentPart);
 
 			currentPart = null;
-		}
+		};
 
 		// iterate over the query, character by character, building up a
 		// list of query part objects
@@ -368,7 +362,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 					_cp = {
 						name: ts(inPseudo+1, x),
 						value: null
-					}
+					};
 					currentPart.pseudos.push(_cp);
 				}
 				inParens = x;
@@ -448,7 +442,6 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			// E[foo$="bar"]
 			//		an E element whose "foo" attribute value ends exactly
 			//		with the string "bar"
-			var tval = " "+value;
 			return function(elem){
 				var ea = " "+_getAttr(elem, attr);
 				return (ea.lastIndexOf(value)==(ea.length-value.length));
@@ -472,9 +465,9 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			//		an E element whose "hreflang" attribute has a
 			//		hyphen-separated list of values beginning (from the
 			//		left) with "en"
-			var valueDash = " "+value+"-";
+			var valueDash = value+"-";
 			return function(elem){
-				var ea = " "+_getAttr(elem, attr);
+				var ea = _getAttr(elem, attr);
 				return (
 					(ea == value) ||
 					(ea.indexOf(valueDash)==0)
@@ -514,7 +507,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 	var getNodeIndex = function(node){
 		var root = node.parentNode;
 		var i = 0,
-			tret = root[childNodesName],
+			tret = root.children || root.childNodes,
 			ci = (node["_i"]||-1),
 			cl = (root["_l"]||-1);
 
@@ -569,9 +562,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		"last-child": function(){ return _lookRight; },
 		"only-child": function(name, condition){
 			return function(node){
-				if(!_lookLeft(node)){ return false; }
-				if(!_lookRight(node)){ return false; }
-				return true;
+				return _lookLeft(node) && _lookRight(node);
 			};
 		},
 		"empty": function(name, condition){
@@ -659,7 +650,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		}
 	};
 
-	var defaultGetter = (d.isIE && (d.isIE < 9 || dojo.isQuirks)) ? function(cond){
+	var defaultGetter = (dojo.isIE && (dojo.isIE < 9 || dojo.isQuirks)) ? function(cond){
 		var clc = cond.toLowerCase();
 		if(clc == "class"){ cond = "className"; }
 		return function(elem){
@@ -795,7 +786,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		filterFunc = filterFunc||yesman;
 		return function(root, ret, bag){
 			// get an array of child elements, skipping text and comment nodes
-			var te, x = 0, tret = root[childNodesName];
+			var te, x = 0, tret = root.children || root.childNodes;
 			while(te = tret[x++]){
 				if(
 					_simpleNodeTest(te) &&
@@ -911,7 +902,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 					getSimpleFilterFunc(query, { el: 1, id: 1 });
 
 				retFunc = function(root, arr){
-					var te = d.byId(query.id, (root.ownerDocument||root));
+					var te = dom.byId(query.id, (root.ownerDocument||root));
 					if(!te || !filterFunc(te)){ return; }
 					if(9 == root.nodeType){ // if root's a doc, we just return directly
 						return getArr(te, arr);
@@ -1090,7 +1081,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 	// We need te detect the right "internal" webkit version to make this work.
 	var wk = "WebKit/";
 	var is525 = (
-		d.isWebKit &&
+		dojo.isWebKit &&
 		(nua.indexOf(wk) > 0) &&
 		(parseFloat(nua.split(wk)[1]) > 528)
 	);
@@ -1098,13 +1089,13 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 	// IE QSA queries may incorrectly include comment nodes, so we throw the
 	// zipping function into "remove" comments mode instead of the normal "skip
 	// it" which every other QSA-clued browser enjoys
-	var noZip = d.isIE ? "commentStrip" : "nozip";
+	var noZip = dojo.isIE ? "commentStrip" : "nozip";
 
 	var qsa = "querySelectorAll";
 	var qsaAvail = (
 		!!getDoc()[qsa] &&
 		// see #5832
-		(!d.isSafari || (d.isSafari > 3.1) || is525 )
+		(!dojo.isSafari || (dojo.isSafari > 3.1) || is525 )
 	);
 
 	//Don't bother with n+3 type of matches, IE complains if we modify those.
@@ -1151,7 +1142,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			//		http://www.w3.org/TR/css3-selectors/#w3cselgrammar
 			(specials.indexOf(qcz) == -1) &&
 			// IE's QSA impl sucks on pseudos
-			(!d.isIE || (query.indexOf(":") == -1)) &&
+			(!dojo.isIE || (query.indexOf(":") == -1)) &&
 
 			(!(cssCaseBug && (query.indexOf(".") >= 0))) &&
 
@@ -1226,7 +1217,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 	// NOTE:
 	//		this function is Moo inspired, but our own impl to deal correctly
 	//		with XML in IE
-	var _nodeUID = d.isIE ? function(node){
+	var _nodeUID = dojo.isIE ? function(node){
 		if(caseSensitive){
 			// XML docs don't have uniqueID on their nodes
 			return (node.getAttribute("_uid") || node.setAttribute("_uid", ++_zipIdx) || _zipIdx);
@@ -1269,7 +1260,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 
 		// we have to fork here for IE and XML docs because we can't set
 		// expandos on their nodes (apparently). *sigh*
-		if(d.isIE && caseSensitive){
+		if(dojo.isIE && caseSensitive){
 			var szidx = _zipIdx+"";
 			arr[0].setAttribute(_zipIdxName, szidx);
 			for(var x = 1, te; te = arr[x]; x++){
@@ -1278,7 +1269,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 				}
 				te.setAttribute(_zipIdxName, szidx);
 			}
-		}else if(d.isIE && arr.commentStrip){
+		}else if(dojo.isIE && arr.commentStrip){
 			try{
 				for(var x = 1, te; te = arr[x]; x++){
 					if(_isElement(te)){
@@ -1303,7 +1294,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		//	summary:
 		//		Returns nodes which match the given CSS3 selector, searching the
 		//		entire document by default but optionally taking a node to scope
-		//		the search by. Returns an instance of dojo.NodeList.
+		//		the search by. Returns an array.
 		//	description:
 		//		dojo.query() is the swiss army knife of DOM node manipulation in
 		//		Dojo. Much like Prototype's "$$" (bling-bling) function or JQuery's
@@ -1452,9 +1443,9 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 		//		Opera in XHTML mode doesn't detect case-sensitivity correctly
 		//		and it's not clear that there's any way to test for it
 		caseSensitive = (root.contentType && root.contentType=="application/xml") ||
-						(d.isOpera && (root.doctype || od.toString() == "[object XMLDocument]")) ||
+						(dojo.isOpera && (root.doctype || od.toString() == "[object XMLDocument]")) ||
 						(!!od) &&
-						(d.isIE ? od.xml : (root.xmlVersion||od.xmlVersion));
+				(dojo.isIE ? od.xml : (root.xmlVersion || od.xmlVersion));
 
 		// NOTE:
 		//		adding "true" as the 2nd argument to getQueryFunc is useful for
@@ -1468,7 +1459,7 @@ define(["../_base/kernel", "../has", "../_base/sniff", "../_base/array", "../_ba
 			return r;
 		}
 		return _zip(r); // dojo.NodeList
-	}
+	};
 	query.filter = function(/*Node[]*/ nodeList, /*String*/ filter, /*String|DOMNode?*/ root){
 		// summary:
 		// 		function for filtering a NodeList based on a selector, optimized for simple selectors

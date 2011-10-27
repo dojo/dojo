@@ -1,4 +1,4 @@
-dojo.provide("tests._base.json");
+dojo.provide("dojo.tests._base.json");
 
 tests.register("tests._base.json",
 	[
@@ -50,7 +50,7 @@ tests.register("tests._base.json",
 			var testStr = '{func: function(){}, number: Infinity}';
 			var testObj = dojo.fromJson(testStr);
 			t.is("function", typeof testObj.func);
-			t.is("number", typeof testObj.number);			
+			t.is("number", typeof testObj.number);
 		},
 		function toJsonStringObject(t){
 			t.is('"hello"', dojo.toJson(new String("hello")));

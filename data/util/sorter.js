@@ -1,12 +1,12 @@
-define(["../.."], function(dojo) {
+define(["dojo/_base/lang"], function(lang) {
 	// module:
 	//		dojo/data/util/sorter
 	// summary:
 	//		TODOC
 
-dojo.getObject("data.util.sorter", true, dojo);
+var sorter = lang.getObject("dojo.data.util.sorter", true);
 
-dojo.data.util.sorter.basicComparator = function(	/*anything*/ a,
+sorter.basicComparator = function(	/*anything*/ a,
 													/*anything*/ b){
 	//	summary:
 	//		Basic comparision function that compares if an item is greater or less than another item
@@ -34,8 +34,7 @@ dojo.data.util.sorter.basicComparator = function(	/*anything*/ a,
 	return r; //int {-1,0,1}
 };
 
-dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortSpec,
-														/*dojo.data.core.Read*/ store){
+sorter.createSortFunction = function(	/* attributes array */sortSpec, /*dojo.data.core.Read*/ store){
 	//	summary:
 	//		Helper function to generate the sorting function based off the list of sort attributes.
 	//	description:
@@ -67,7 +66,7 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 	}
 	var sortAttribute;
 	var map = store.comparatorMap;
-	var bc = dojo.data.util.sorter.basicComparator;
+	var bc = sorter.basicComparator;
 	for(var i = 0; i < sortSpec.length; i++){
 		sortAttribute = sortSpec[i];
 		var attr = sortAttribute.attribute;
@@ -96,5 +95,5 @@ dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortS
 	}; // Function
 };
 
-return dojo.data.util.sorter;
+return sorter;
 });

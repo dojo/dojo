@@ -1,4 +1,4 @@
-define(["../../_base/array"], function(dojo) {
+define(["../../_base/array"], function(arrayUtil) {
   //  module:
   //    dojo/store/util/SimpleQueryEngine
   //  summary:
@@ -80,7 +80,7 @@ return function(query, options){
 	}
 	function execute(array){
 		// execute the whole query, first we filter
-		var results = dojo.filter(array, query);
+		var results = arrayUtil.filter(array, query);
 		// next we sort
 		if(options && options.sort){
 			results.sort(function(a, b){

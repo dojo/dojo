@@ -1,12 +1,13 @@
-define(["../main"], function(dojo) {
+define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/Deferred", "dojo/_base/array"
+], function(kernel, lang, Deferred, array) {
 	// module:
 	//		dojo/store/Observable
 	// summary:
 	//		TODOC
 
-dojo.getObject("store", true, dojo);
+var ds = lang.getObject("dojo.store", true);
 
-return dojo.store.Observable = function(store){
+return ds.Observable = function(store){
 	// summary:
 	//		The Observable store wrapper takes a store and sets an observe method on query()
 	//		results that can be used to monitor results for changes.
@@ -35,7 +36,7 @@ return dojo.store.Observable = function(store){
 	//
 	//		See the Observable tests for more information.
 
-	var queryUpdaters = [], revision = 0;
+	var undef, queryUpdaters = [], revision = 0;
 	// a Comet driven store could directly call notify to notify observers when data has
 	// changed on the backend
 	store.notify = function(object, existingId){
@@ -50,7 +51,7 @@ return dojo.store.Observable = function(store){
 		options = options || {};
 		var results = originalQuery.apply(this, arguments);
 		if(results && results.forEach){
-			var nonPagedOptions = dojo.mixin({}, options);
+			var nonPagedOptions = lang.mixin({}, options);
 			delete nonPagedOptions.start;
 			delete nonPagedOptions.count;
 
@@ -61,14 +62,14 @@ return dojo.store.Observable = function(store){
 				if(listeners.push(listener) == 1){
 					// first listener was added, create the query checker and updater
 					queryUpdaters.push(queryUpdater = function(changed, existingId){
-						dojo.when(results, function(resultsArray){
+						Deferred.when(results, function(resultsArray){
 							var atEnd = resultsArray.length != options.count;
-							var i;
+							var i, l;
 							if(++queryRevision != revision){
 								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
 							}
 							var removedObject, removedFrom = -1, insertedInto = -1;
-							if(existingId){
+							if(existingId !== undef){
 								// remove the old one
 								for(i = 0, l = resultsArray.length; i < l; i++){
 									var object = resultsArray[i];
@@ -88,13 +89,15 @@ return dojo.store.Observable = function(store){
 										// if a matches function exists, use that (probably more efficient)
 										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){
 
-									if(removedFrom > -1){
-										// put back in the original slot so it doesn't move unless it needs to (relying on a stable sort below)
-										resultsArray.splice(removedFrom, 0, changed);
-									}else{
-										resultsArray.push(changed);
-									}
-									insertedInto = dojo.indexOf(queryExecutor(resultsArray), changed);
+									var firstInsertedInto = removedFrom > -1 ? 
+										removedFrom : // put back in the original slot so it doesn't move unless it needs to (relying on a stable sort below)
+										resultsArray.length;
+									resultsArray.splice(firstInsertedInto, 0, changed); // add the new item
+									insertedInto = array.indexOf(queryExecutor(resultsArray), changed); // sort it
+									// we now need to push the chagne back into the original results array
+									resultsArray.splice(firstInsertedInto, 1); // remove the inserted item from the previous index
+									resultsArray.splice(insertedInto, 0, changed); // and insert into the results array with the correct index
+									
 									if((options.start && insertedInto == 0) ||
 										(!atEnd && insertedInto == resultsArray.length -1)){
 										// if it is at the end of the page, assume it goes into the prev or next page
@@ -119,10 +122,10 @@ return dojo.store.Observable = function(store){
 				return {
 					cancel: function(){
 						// remove this listener
-						listeners.splice(dojo.indexOf(listeners, listener), 1);
+						listeners.splice(array.indexOf(listeners, listener), 1);
 						if(!listeners.length){
 							// no more listeners, remove the query updater too
-							queryUpdaters.splice(dojo.indexOf(queryUpdaters, queryUpdater), 1);
+							queryUpdaters.splice(array.indexOf(queryUpdaters, queryUpdater), 1);
 						}
 					}
 				};
@@ -141,10 +144,11 @@ return dojo.store.Observable = function(store){
 				}
 				inMethod = true;
 				try{
-					return dojo.when(original.apply(this, arguments), function(results){
+					var results = original.apply(this, arguments);
+					Deferred.when(results, function(results){
 						action((typeof results == "object" && results) || value);
-						return results;
 					});
+					return results;
 				}finally{
 					inMethod = false;
 				}

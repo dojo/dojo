@@ -34,8 +34,6 @@ dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 		//	|	var itemId = store.getIdentity(kermit);
 		//	|	assert(kermit === store.findByIdentity(store.getIdentity(kermit)));
 		throw new Error('Unimplemented API: dojo.data.api.Identity.getIdentity');
-		var itemIdentityString = null;
-		return itemIdentityString; // string
 	},
 
 	getIdentityAttributes: function(/* item */ item){
@@ -56,7 +54,6 @@ dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 		//	|	var identifiers = store.getIdentityAttributes(itemId);
 		//	|	assert(typeof identifiers === "array" || identifiers === null);
 		throw new Error('Unimplemented API: dojo.data.api.Identity.getIdentityAttributes');
-		return null; // string
 	},
 
 

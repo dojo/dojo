@@ -1,9 +1,12 @@
-define(["../main", "./Selector", "./Manager"], function(dojo) {
+define(["../main", "./Selector", "./Manager"], function(dojo, Selector, Manager) {
 	// module:
 	//		dojo/dnd/Source
 	// summary:
 	//		TODOC
 
+/*=====
+Selector = dojo.dnd.Selector;
+=====*/
 
 /*
 	Container property:
@@ -64,7 +67,15 @@ dojo.dnd.__SourceArgs = function(){
 }
 =====*/
 
-dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
+// For back-compat, remove in 2.0.
+if(!dojo.isAsync){
+	dojo.ready(0, function(){
+		var requires = ["dojo/dnd/AutoSource", "dojo/dnd/Target"];
+		require(requires);	// use indirection so modules not rolled into a build
+	})
+}
+
+return dojo.declare("dojo.dnd.Source", Selector, {
 	// summary:
 	//		a Source object, which can be used as a DnD source, or a DnD target
 
@@ -164,7 +175,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 
 		if(keyPressed){ return true; }
 		if(arguments.length < 2){
-			self = this == dojo.dnd.manager().target;
+			self = this == Manager.manager().target;
 		}
 		if(self){
 			if(this.copyOnly){
@@ -183,12 +194,6 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this.targetAnchor = null;
 	},
 
-	// markup methods
-	markupFactory: function(params, node){
-		params._skipStartup = true;
-		return new dojo.dnd.Source(node, params);
-	},
-
 	// mouse event processors
 	onMouseMove: function(e){
 		// summary:
@@ -197,7 +202,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		//		mouse event
 		if(this.isDragging && this.targetState == "Disabled"){ return; }
 		dojo.dnd.Source.superclass.onMouseMove.call(this, e);
-		var m = dojo.dnd.manager();
+		var m = Manager.manager();
 		if(!this.isDragging){
 			if(this.mouseDown && this.isSource &&
 					(Math.abs(e.pageX - this._lastX) > this.delay || Math.abs(e.pageY - this._lastY) > this.delay)){
@@ -261,7 +266,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 				this._unmarkTargetAnchor();
 			}
 		}else if(this.isDragging){
-			var m = dojo.dnd.manager();
+			var m = Manager.manager();
 			m.canDrop(this.targetState != "Disabled" && (!this.current || m.source != this || !(this.current.id in this.selection)));
 		}
 	},
@@ -281,7 +286,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		var accepted = this.accept && this.checkAcceptance(source, nodes);
 		this._changeState("Target", accepted ? "" : "Disabled");
 		if(this == source){
-			dojo.dnd.manager().overSource(this);
+			Manager.manager().overSource(this);
 		}
 		this.isDragging = true;
 	},
@@ -441,7 +446,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// summary:
 		//		this function is called once, when mouse is over our container
 		dojo.dnd.Source.superclass.onOverEvent.call(this);
-		dojo.dnd.manager().overSource(this);
+		Manager.manager().overSource(this);
 		if(this.isDragging && this.targetState != "Disabled"){
 			this.onDraggingOver();
 		}
@@ -450,7 +455,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// summary:
 		//		this function is called once, when mouse is out of our container
 		dojo.dnd.Source.superclass.onOutEvent.call(this);
-		dojo.dnd.manager().outSource(this);
+		Manager.manager().outSource(this);
 		if(this.isDragging && this.targetState != "Disabled"){
 			this.onDraggingOut();
 		}
@@ -505,39 +510,4 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	}
 });
 
-dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
-	// summary: a Target object, which can be used as a DnD target
-
-	constructor: function(node, params){
-		// summary:
-		//		a constructor of the Target --- see the `dojo.dnd.Source.constructor` for details
-		this.isSource = false;
-		dojo.removeClass(this.node, "dojoDndSource");
-	},
-
-	// markup methods
-	markupFactory: function(params, node){
-		params._skipStartup = true;
-		return new dojo.dnd.Target(node, params);
-	}
-});
-
-dojo.declare("dojo.dnd.AutoSource", dojo.dnd.Source, {
-	// summary:
-	//		a source that syncs its DnD nodes by default
-
-	constructor: function(node, params){
-		// summary:
-		//		constructor of the AutoSource --- see the Source constructor for details
-		this.autoSync = true;
-	},
-
-	// markup methods
-	markupFactory: function(params, node){
-		params._skipStartup = true;
-		return new dojo.dnd.AutoSource(node, params);
-	}
-});
-
-return dojo.dnd.Source;
 });

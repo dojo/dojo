@@ -1,9 +1,9 @@
 define(
 //begin v1.x content
 {
-	"dateFormat-medium": "dd‏/MM‏/yyyy",
+	"dateFormat-medium": "dd/MM/yyyy",
 	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-yMEd": "EEE، d/‏M/‏yyyy",
+	"dateFormatItem-yMEd": "EEE، d/M/yyyy",
 	"eraNarrow": [
 		"هـ"
 	],
@@ -22,7 +22,7 @@ define(
 		"ذ"
 	],
 	"timeFormat-full": "zzzz h:mm:ss a",
-	"dateFormatItem-Md": "d/‏M",
+	"dateFormatItem-Md": "d/M",
 	"months-standAlone-narrow": [
 		"م",
 		"ص",
@@ -87,7 +87,7 @@ define(
 	],
 	"timeFormat-medium": "h:mm:ss a",
 	"dateFormat-long": "d MMMM، y",
-	"dateFormat-short": "d‏/M‏/yyyy",
+	"dateFormat-short": "d/M/yyyy",
 	"dateFormatItem-yMMMEd": "EEE، d MMMM y",
 	"months-format-wide": [
 		"محرم",
@@ -103,7 +103,7 @@ define(
 		"ذو القعدة",
 		"ذو الحجة"
 	],
-	"dateFormatItem-yM": "M‏/yyyy",
+	"dateFormatItem-yM": "M/yyyy",
 	"timeFormat-short": "h:mm a",
 	"months-format-abbr": [
 		"محرم",

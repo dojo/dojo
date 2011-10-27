@@ -1,4 +1,4 @@
-define(["../main", "doh", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"], function(dojo, doh){
+define(["../main", "doh", "require", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"], function(dojo, doh, require){
 
 	doh.register("tests.rpc", [
 		{
@@ -106,7 +106,7 @@ define(["../main", "doh", "../rpc/RpcService", "../rpc/JsonService", "../rpc/Jso
 			name: "JsonP_test",
 			timeout: 10000,
 			setUp: function(){
-				this.svc = new dojo.rpc.JsonpService(dojo.moduleUrl("dojo.tests.resources","yahoo_smd_v1.smd"), {appid: "foo"});
+				this.svc = new dojo.rpc.JsonpService(require.toUrl("dojo/tests/resources/yahoo_smd_v1.smd"), {appid: "foo"});
 			},
 			runTest: function(){
 				var d = new doh.Deferred();

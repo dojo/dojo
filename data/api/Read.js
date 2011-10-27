@@ -6,7 +6,7 @@ define(["../..", "./Request"], function(dojo) {
 
 
 dojo.declare("dojo.data.api.Read", null, {
-	//	summary:
+	// summary:
 	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines methods signatures and intentionally leaves all the
 	//		methods unimplemented.  For more information on the dojo.data APIs,
@@ -15,7 +15,7 @@ dojo.declare("dojo.data.api.Read", null, {
 	getValue: function(	/* item */ item,
 						/* attribute-name-string */ attribute,
 						/* value? */ defaultValue){
-		//	summary:
+		// summary:
 		//		Returns a single attribute value.
 		//		Returns defaultValue if and only if *item* does not have a value for *attribute*.
 		//		Returns null if and only if null was explicitly set as the attribute value.
@@ -28,26 +28,24 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		or "the item has that attribute but does not have any attribute values".
 		//		If store.hasAttribute(item, attribute) returns false, then
 		//		store.getValue(item, attribute) will return undefined.
-		//
-		//	item:
+		// item:
 		//		The item to access values on.
-		//	attribute:
+		// attribute:
 		//		The attribute to access represented as a string.
-		//	defaultValue:
+		// defaultValue:
 		//		Optional.  A default value to use for the getValue return in the attribute does not exist or has no value.
-		//
-		//	exceptions:
+		// returns:
+		//		a literal, an item, null, or undefined (never an array)
+		// exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	example:
+		// example:
 		//	|	var darthVader = store.getValue(lukeSkywalker, "father");
-		var attributeValue = null;
 		throw new Error('Unimplemented API: dojo.data.api.Read.getValue');
-		return attributeValue; // a literal, an item, null, or undefined (never an array)
 	},
 
 	getValues: function(/* item */ item,
 						/* attribute-name-string */ attribute){
-		//	summary:
+		// summary:
 		// 		This getValues() method works just like the getValue() method, but getValues()
 		//		always returns an array rather than a single attribute value.  The array
 		//		may be empty, may contain a single attribute value, or may contain
@@ -55,114 +53,96 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		If the item does not have a value for the given attribute, then getValues()
 		//		will return an empty array: [].  (So, if store.hasAttribute(item, attribute)
 		//		has a return of false, then store.getValues(item, attribute) will return [].)
-		//
-		//	item:
+		// item:
 		//		The item to access values on.
-		//	attribute:
+		// attribute:
 		//		The attribute to access represented as a string.
-		//
-		//	exceptions:
+		// returns:
+		//		an array that may contain literals and items
+		// exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	example:
+		// example:
 		//	|	var friendsOfLuke = store.getValues(lukeSkywalker, "friends");
-		var array = [];
 		throw new Error('Unimplemented API: dojo.data.api.Read.getValues');
-		return array; // an array that may contain literals and items
 	},
 
 	getAttributes: function(/* item */ item){
-		//	summary:
+		// summary:
 		//		Returns an array with all the attributes that this item has.  This
 		//		method will always return an array; if the item has no attributes
 		//		at all, getAttributes() will return an empty array: [].
-		//
-		//	item:
+		// item:
 		//		The item to access attributes on.
-		//
-		//	exceptions:
+		// exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	example:
+		// example:
 		//	|	var array = store.getAttributes(kermit);
-		var array = [];
 		throw new Error('Unimplemented API: dojo.data.api.Read.getAttributes');
-		return array; // array
 	},
 
 	hasAttribute: function(	/* item */ item,
 							/* attribute-name-string */ attribute){
-		//	summary:
+		// summary:
 		//		Returns true if the given *item* has a value for the given *attribute*.
-		//
-		//	item:
+		// item:
 		//		The item to access attributes on.
-		//	attribute:
+		// attribute:
 		//		The attribute to access represented as a string.
-		//
-		//	exceptions:
+		// exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	example:
+		// example:
 		//	|	var trueOrFalse = store.hasAttribute(kermit, "color");
 		throw new Error('Unimplemented API: dojo.data.api.Read.hasAttribute');
-		return false; // boolean
 	},
 
 	containsValue: function(/* item */ item,
 							/* attribute-name-string */ attribute,
 							/* anything */ value){
-		//	summary:
+		// summary:
 		//		Returns true if the given *value* is one of the values that getValues()
 		//		would return.
-		//
-		//	item:
+		// item:
 		//		The item to access values on.
-		//	attribute:
+		// attribute:
 		//		The attribute to access represented as a string.
-		//	value:
+		// value:
 		//		The value to match as a value for the attribute.
-		//
-		//	exceptions:
+		// exceptions:
 		//		Throws an exception if *item* is not an item, or *attribute* is not a string
-		//	example:
+		// example:
 		//	|	var trueOrFalse = store.containsValue(kermit, "color", "green");
 		throw new Error('Unimplemented API: dojo.data.api.Read.containsValue');
-		return false; // boolean
 	},
 
 	isItem: function(/* anything */ something){
-		//	summary:
+		// summary:
 		//		Returns true if *something* is an item and came from the store instance.
 		//		Returns false if *something* is a literal, an item from another store instance,
 		//		or is any object other than an item.
-		//
-		//	something:
+		// something:
 		//		Can be anything.
-		//
-		//	example:
+		// example:
 		//	|	var yes = store.isItem(store.newItem());
 		//	|	var no  = store.isItem("green");
 		throw new Error('Unimplemented API: dojo.data.api.Read.isItem');
-		return false; // boolean
 	},
 
 	isItemLoaded: function(/* anything */ something){
-		//	summary:
+		// summary:
 		//		Returns false if isItem(something) is false.  Returns false if
 		//		if isItem(something) is true but the the item is not yet loaded
 		//		in local memory (for example, if the item has not yet been read
 		//		from the server).
-		//
-		//	something:
+		// something:
 		//		Can be anything.
-		//
-		//	example:
+		// example:
 		//	|	var yes = store.isItemLoaded(store.newItem());
 		//	|	var no  = store.isItemLoaded("green");
 		throw new Error('Unimplemented API: dojo.data.api.Read.isItemLoaded');
-		return false; // boolean
 	},
 
 	loadItem: function(/* object */ keywordArgs){
-		//	summary:
+		// summary:
 		//		Given an item, this method loads the item so that a subsequent call
 		//		to store.isItemLoaded(item) will return true.  If a call to
 		//		isItemLoaded() returns true before loadItem() is even called,
@@ -181,7 +161,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		//	The *item* parameter.
 		//		The item parameter is an object that represents the item in question that should be
 		//		contained by the store.  This attribute is required.
-
+		//
 		//	The *onItem* parameter.
 		//		Function(item)
 		//		The onItem parameter is the callback to invoke when the item has been loaded.  It takes only one
@@ -206,13 +186,13 @@ dojo.declare("dojo.data.api.Read", null, {
 	},
 
 	fetch: function(/* Object */ keywordArgs){
-		//	summary:
+		// summary:
 		//		Given a query and set of defined options, such as a start and count of items to return,
 		//		this method executes the query and makes the results available as data items.
 		//		The format and expectations of stores is that they operate in a generally asynchronous
 		//		manner, therefore callbacks are always used to return items located by the fetch parameters.
 		//
-		//	description:
+		// description:
 		//		A Request object will always be returned and is returned immediately.
 		//		The basic request is nothing more than the keyword args passed to fetch and
 		//		an additional function attached, abort().  The returned request object may then be used
@@ -223,7 +203,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		returned, only that the API does not require it.  For more info about the Request API,
 		//		see dojo.data.api.Request
 		//
-		//	keywordArgs:
+		// keywordArgs:
 		//		The keywordArgs parameter may either be an instance of
 		//		conforming to dojo.data.api.Request or may be a simple anonymous object
 		//		that may contain any of the following:
@@ -345,7 +325,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		(undefined), then it the default ascending sort logic should push it to the bottom
 		//		of the list.  In the descending order case, it such items should appear at the top of the list.
 		//
-		//	returns:
+		// returns:
 		//		The fetch() method will return a javascript object conforming to the API
 		//		defined in dojo.data.api.Request.  In general, it will be the keywordArgs
 		//		object returned with the required functions in Request.js attached.
@@ -356,39 +336,39 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		such as request.store property, which is a pointer to the datastore object that
 		//		fetch() is a method of.
 		//
-		//	exceptions:
+		// exceptions:
 		//		Throws an exception if the query is not valid, or if the query
 		//		is required but was not supplied.
 		//
-		//	example:
+		// example:
 		//		Fetch all books identified by the query and call 'showBooks' when complete
 		//		|	var request = store.fetch({query:"all books", onComplete: showBooks});
-		//	example:
+		// example:
 		//		Fetch all items in the story and call 'showEverything' when complete.
 		//		|	var request = store.fetch(onComplete: showEverything);
-		//	example:
+		// example:
 		//		Fetch only 10 books that match the query 'all books', starting at the fifth book found during the search.
 		//		This demonstrates how paging can be done for specific queries.
 		//		|	var request = store.fetch({query:"all books", start: 4, count: 10, onComplete: showBooks});
-		//	example:
+		// example:
 		//		Fetch all items that match the query, calling 'callback' each time an item is located.
 		//		|	var request = store.fetch({query:"foo/bar", onItem:callback});
-		//	example:
+		// example:
 		//		Fetch the first 100 books by author King, call showKing when up to 100 items have been located.
 		//		|	var request = store.fetch({query:{author:"King"}, start: 0, count:100, onComplete: showKing});
-		//	example:
+		// example:
 		//		Locate the books written by Author King, sort it on title and publisher, then return the first 100 items from the sorted items.
 		//		|	var request = store.fetch({query:{author:"King"}, sort: [{ attribute: "title", descending: true}, {attribute: "publisher"}], ,start: 0, count:100, onComplete: 'showKing'});
-		//	example:
+		// example:
 		//		Fetch the first 100 books by authors starting with the name King, then call showKing when up to 100 items have been located.
 		//		|	var request = store.fetch({query:{author:"King*"}, start: 0, count:100, onComplete: showKing});
-		//	example:
+		// example:
 		//		Fetch the first 100 books by authors ending with 'ing', but only have one character before it (King, Bing, Ling, Sing, etc.), then call showBooks when up to 100 items have been located.
 		//		|	var request = store.fetch({query:{author:"?ing"}, start: 0, count:100, onComplete: showBooks});
-		//	example:
+		// example:
 		//		Fetch the first 100 books by author King, where the name may appear as King, king, KING, kInG, and so on, then call showKing when up to 100 items have been located.
 		//		|	var request = store.fetch({query:{author:"King"}, queryOptions:(ignoreCase: true}, start: 0, count:100, onComplete: showKing});
-		//	example:
+		// example:
 		//		Paging
 		//		|	var store = new dojo.data.LargeRdbmsStore({url:"jdbc:odbc:foobar"});
 		//		|	var fetchArgs = {
@@ -407,13 +387,11 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		and then when the user presses the "Next Page" button...
 		//		|	fetchArgs.start += 20;
 		//		|	store.fetch(fetchArgs);  // get the next 20 items
-		var request = null;
 		throw new Error('Unimplemented API: dojo.data.api.Read.fetch');
-		return request; // an object conforming to the dojo.data.api.Request API
 	},
 
 	getFeatures: function(){
-		//	summary:
+		// summary:
 		//		The getFeatures() method returns an simple keyword values object
 		//		that specifies what interface features the datastore implements.
 		//		A simple CsvStore may be read-only, and the only feature it
@@ -429,11 +407,11 @@ dojo.declare("dojo.data.api.Read", null, {
 	},
 
 	close: function(/*dojo.data.api.Request || keywordArgs || null */ request){
-		//	summary:
+		// summary:
 		//		The close() method is intended for instructing the store to 'close' out
 		//		any information associated with a particular request.
 		//
-		//	description:
+		// description:
 		//		The close() method is intended for instructing the store to 'close' out
 		//		any information associated with a particular request.  In general, this API
 		//		expects to recieve as a parameter a request object returned from a fetch.
@@ -441,14 +419,14 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		clearing any internal datastore caches and closing any 'open' connections.
 		//		For some store implementations, this call may be a no-op.
 		//
-		//	request:
+		// request:
 		//		An instance of a request for the store to use to identify what to close out.
 		//		If no request is passed, then the store should clear all internal caches (if any)
 		//		and close out all 'open' connections.  It does not render the store unusable from
 		//		there on, it merely cleans out any current data and resets the store to initial
 		//		state.
 		//
-		//	example:
+		// example:
 		//	|	var request = store.fetch({onComplete: doSomething});
 		//	|	...
 		//	|	store.close(request);
@@ -456,11 +434,11 @@ dojo.declare("dojo.data.api.Read", null, {
 	},
 
 	getLabel: function(/* item */ item){
-		//	summary:
+		// summary:
 		//		Method to inspect the item and return a user-readable 'label' for the item
 		//		that provides a general/adequate description of what the item is.
 		//
-		//	description:
+		// description:
 		//		Method to inspect the item and return a user-readable 'label' for the item
 		//		that provides a general/adequate description of what the item is.  In general
 		//		most labels will be a specific attribute value or collection of the attribute
@@ -472,36 +450,34 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		their instance of the store, or extend the store and replace the function in
 		//		the extension class.
 		//
-		//	item:
+		// item:
 		//		The item to return the label for.
 		//
-		//	returns:
+		// returns:
 		//		A user-readable string representing the item or undefined if no user-readable label can
 		//		be generated.
 		throw new Error('Unimplemented API: dojo.data.api.Read.getLabel');
-		return undefined;
 	},
 
 	getLabelAttributes: function(/* item */ item){
-		//	summary:
+		// summary:
 		//		Method to inspect the item and return an array of what attributes of the item were used
 		//		to generate its label, if any.
 		//
-		//	description:
+		// description:
 		//		Method to inspect the item and return an array of what attributes of the item were used
 		//		to generate its label, if any.  This function is to assist UI developers in knowing what
 		//		attributes can be ignored out of the attributes an item has when displaying it, in cases
 		//		where the UI is using the label as an overall identifer should they wish to hide
 		//		redundant information.
 		//
-		//	item:
+		// item:
 		//		The item to return the list of label attributes for.
 		//
-		//	returns:
+		// returns:
 		//		An array of attribute names that were used to generate the label, or null if public attributes
 		//		were not used to generate the label.
 		throw new Error('Unimplemented API: dojo.data.api.Read.getLabelAttributes');
-		return null;
 	}
 });
 

@@ -12,7 +12,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require.ready(["dojo", "doh"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
 
 				function getIframeDocument(/*DOMNode*/iframeNode){
 					//summary: Returns the document object associated with the iframe DOM Node argument.
@@ -168,8 +168,8 @@
 								overflow = 'scroll';
 								border = "10px solid black";
 							}
-							dojo._setMarginBox(s, x, y, 100, 100);
-							dojo._setMarginBox(c, 0, 0, 500, 500);
+							dojo.marginBox(s, {l: x, t: y, w: 100, h: 100});
+							dojo.marginBox(c, {l: 0, t: 0, w: 500, h: 500});
 							s.scrollTop = 200;
 							var pos = dojo.position(s, true);
 							doh.is(x, pos.x);
@@ -209,14 +209,17 @@
 							}
 						},
 						"doh.is(1, dojo.style('sq100nopos', 'opacity'));",
-						"doh.is(0.1, dojo.style('sq100nopos', 'opacity', 0.1));",
-						"doh.is(0.8, dojo.style('sq100nopos', 'opacity', 0.8));",
+
+						// never compare floating numbers directly!
+						"doh.is((0.1).toFixed(4), Number(dojo.style('sq100nopos', 'opacity', 0.1)).toFixed(4));",
+						"doh.is((0.8).toFixed(4), Number(dojo.style('sq100nopos', 'opacity', 0.8)).toFixed(4));",
 						function styleObject(){
 							dojo.style('sq100nopos', { 'opacity': 0.1 });
-							doh.is(0.1, dojo.style('sq100nopos', 'opacity'));
+							doh.is((0.1).toFixed(4), Number(dojo.style('sq100nopos', 'opacity')).toFixed(4));
 							dojo.style('sq100nopos', { 'opacity': 0.8 });
-							doh.is(0.8, dojo.style('sq100nopos', 'opacity'));
+							doh.is((0.8).toFixed(4), Number(dojo.style('sq100nopos', 'opacity')).toFixed(4));
 						},
+
 						"doh.is('static', dojo.style('sq100nopos', 'position'));",
 						function getBgcolor(t){
 							var bgc = dojo.style('sq100nopos', 'backgroundColor');
@@ -292,6 +295,7 @@
 							t.is("b a c", node.className, 
 								"The className is  is 'b a c' after using an empty string in replaceClass");
 							
+							t.f(dojo.hasClass(document, "ab"), "hasClass on document should not throw error");
 						},
 						function testAddRemoveClassMultiple(t){
 							var node = dojo.byId("sq100");
@@ -451,15 +455,14 @@
 							doh.t(dojo.hasClass(input, "blah"), "hasClass of blah");
 							var def = new doh.Deferred();
 							input.focus();
-							setTimeout(function(){
+							setTimeout(def.getTestErrback(function(){
 								doh.is(1, ctr, "onfocus ctr == 1");
 								input.blur();
 								input.focus();
-								setTimeout(function(){
+								setTimeout(def.getTestCallback(function(){
 									doh.is(2, ctr, "onfocus ctr == 2");
-									def.callback(true);
-								}, 10);
-							}, 10);
+								}), 10);
+							}), 10);
 							return def;
 						},
 						function attr_reconnect(t){
@@ -478,15 +481,14 @@
 							doh.is(0, ctr);
 							var def = new doh.Deferred();
 							input.focus();
-							setTimeout(function(){
+							setTimeout(def.getTestErrback(function(){
 								doh.is(1, ctr);
 								input.blur();
 								input.focus();
-								setTimeout(function(){
+								setTimeout(def.getTestCallback(function(){
 									doh.is(2, ctr);
-									def.callback(true);
-								}, 10);
-							}, 10);
+								}), 10);
+							}), 10);
 							return def;
 						},
 						function attrSpecials(){
@@ -593,7 +595,7 @@
 						var id = "scrolling" + doctype + "Iframe" + scroll;
 						doh.register(id, {
 							name: "test_" + id,
-							timeout: 3000,
+							timeout: 4000,
 							runTest: function(t){
 								var d = new doh.Deferred(),
 									s = document.createElement('SPAN');
@@ -810,7 +812,7 @@
 		<script type="text/javascript">
 		var reloaded = false;
 		function iframe10095loaded() {
-			require(["dojo"], function(dojo) {
+			require(["dojo", "dojo/domReady!"], function(dojo) {
 				var iframeWin = dojo.byId('10095_iframe').win;
 				dojo.withGlobal(iframeWin, function(){ dojo.destroy(dojo.byId('10095_textbox')) });
 				if(!reloaded){
@@ -820,7 +822,7 @@
 			});
 		}
 		</script>
-		<iframe id="10095_iframe" style="display:none;" src="javascript:'&lt;html&gt;&lt;head&gt;&lt;script&gt;frameElement.win=window&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;input id=10095_textbox&gt;&lt;/body&gt;&lt;/html&gt;'" onload="require.ready(iframe10095loaded)"></iframe>
+		<iframe id="10095_iframe" style="display:none;" src="javascript:'&lt;html&gt;&lt;head&gt;&lt;script&gt;frameElement.win=window&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;input id=10095_textbox&gt;&lt;/body&gt;&lt;/html&gt;'" onload="iframe10095loaded()"></iframe>
 
 		<div id='iframe_div' style="position:absolute;top:0;left:500px;"></div>
 

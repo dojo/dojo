@@ -1,10 +1,10 @@
-define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
+define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	// module:
 	//		dojo/_base/declare
 	// summary:
 	//		This module defines dojo.declare.
 
-	var d = dojo, mix = d._mixin, op = Object.prototype, opts = op.toString,
+	var mix = lang.mixin, op = Object.prototype, opts = op.toString,
 		xtor = new Function, counter = 0, cname = "constructor";
 
 	function err(msg, cls){ throw new Error("declare" + (cls ? " " + cls : "") + ": " + msg); }
@@ -200,9 +200,9 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 		return this.__inherited(name, true);
 	}
 
-	function inherited__debug(args, a){
-		var f = this.getInherited(args, a);
-		if(f){ return f.apply(this, a || args); }
+	function inherited__debug(args, a1, a2){
+		var f = this.getInherited(args, a1);
+		if(f){ return f.apply(this, a2 || a1 || args); }
 		// intentionally no return if a super method was not found
 	}
 
@@ -227,7 +227,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 			}
 		}
 		if(has("bug-for-in-skips-shadowed")){
-			for(var extraNames= d._extraNames, i= extraNames.length; i;){
+			for(var extraNames= lang._extraNames, i= extraNames.length; i;){
 				name = extraNames[--i];
 				if(name != cname && source.hasOwnProperty(name)){
 					  target[name] = source[name];
@@ -251,7 +251,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 			}
 		}
 		if(has("bug-for-in-skips-shadowed")){
-			for(var extraNames= d._extraNames, i= extraNames.length; i;){
+			for(var extraNames= lang._extraNames, i= extraNames.length; i;){
 				name = extraNames[--i];
 				t = source[name];
 				if((t !== op[name] || !(name in op)) && name != cname){
@@ -267,7 +267,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 	}
 
 	function extend(source){
-		safeMixin(this.prototype, source);
+		declare.safeMixin(this.prototype, source);
 		return this;
 	}
 
@@ -450,7 +450,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 		return t;
 	}
 
-	d.declare = function(className, superclass, props){
+	function declare(className, superclass, props){
 		// crack parameters
 		if(typeof className != "string"){
 			props = superclass;
@@ -501,7 +501,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 			proto = {};
 		}
 		// add all properties
-		safeMixin(proto, props);
+		declare.safeMixin(proto, props);
 		// add constructor
 		t = props.constructor;
 		if(t !== op.constructor){
@@ -542,7 +542,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 		// add name if specified
 		if(className){
 			proto.declaredClass = className;
-			d.setObject(className, ctor);
+			lang.setObject(className, ctor);
 		}
 
 		// build chains and add them to the prototype
@@ -558,9 +558,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 		// no need to chain "invisible" functions
 
 		return ctor;	// Function
-	};
-
-	d.safeMixin = safeMixin;
+	}
 
 	/*=====
 	dojo.declare = function(className, superclass, props){
@@ -792,7 +790,7 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 		//	source: Object
 		//		Source object for new properties.
 		//	description:
-		//		This function is used to mix in properties like dojo._mixin does,
+		//		This function is used to mix in properties like lang.mixin does,
 		//		but it skips a constructor property and decorates functions like
 		//		dojo.declare does.
 		//
@@ -1045,5 +1043,8 @@ define(["./kernel", "../has", "./lang", "./array"], function(dojo, has){
 	};
 	=====*/
 
-	return dojo.declare;
+	dojo.safeMixin = declare.safeMixin = safeMixin;
+	dojo.declare = declare;
+
+	return declare;
 });

@@ -1,4 +1,4 @@
-define(["./main"], function(dojo) {
+define(["./_base/kernel", "./_base/Deferred", "./_base/array"], function(dojo, Deferred, darray) {
 	// module:
 	//		dojo/DeferredList
 	// summary:
@@ -14,24 +14,24 @@ dojo.DeferredList = function(/*Array*/ list, /*Boolean?*/ fireOnOneCallback, /*B
 	//		the given list have fired their own deferreds.  The parameters `fireOnOneCallback` and
 	//		fireOnOneErrback, will fire before all the deferreds as appropriate
 	//
-	//	list:
+	// list:
 	//		The list of deferreds to be synchronizied with this DeferredList
-	//	fireOnOneCallback:
+	// fireOnOneCallback:
 	//		Will cause the DeferredLists callback to be fired as soon as any
 	//		of the deferreds in its list have been fired instead of waiting until
 	//		the entire list has finished
-	//	fireonOneErrback:
+	// fireonOneErrback:
 	//		Will cause the errback to fire upon any of the deferreds errback
-	//	canceller:
+	// canceller:
 	//		A deferred canceller function, see dojo.Deferred
 	var resultList = [];
-	dojo.Deferred.call(this);
+	Deferred.call(this);
 	var self = this;
 	if(list.length === 0 && !fireOnOneCallback){
 		this.resolve([0, []]);
 	}
 	var finished = 0;
-	dojo.forEach(list, function(item, i){
+	darray.forEach(list, function(item, i){
 		item.then(function(result){
 			if(fireOnOneCallback){
 				self.resolve([i, result]);
@@ -59,17 +59,22 @@ dojo.DeferredList = function(/*Array*/ list, /*Boolean?*/ fireOnOneCallback, /*B
 		}
 	});
 };
-dojo.DeferredList.prototype = new dojo.Deferred();
+dojo.DeferredList.prototype = new Deferred();
 
-dojo.DeferredList.prototype.gatherResults= function(deferredList){
+dojo.DeferredList.prototype.gatherResults = function(deferredList){
 	// summary:
-	//	Gathers the results of the deferreds for packaging
-	//	as the parameters to the Deferred Lists' callback
+	//		Gathers the results of the deferreds for packaging
+	//		as the parameters to the Deferred Lists' callback
+	// deferredList: dojo.DeferredList
+	//		The deferred list from which this function gathers results.
+	// returns: dojo.DeferredList
+	//		The newly created deferred list which packs results as
+	//		parameters to its callback.
 
 	var d = new dojo.DeferredList(deferredList, false, true, false);
 	d.addCallback(function(results){
 		var ret = [];
-		dojo.forEach(results, function(result){
+		darray.forEach(results, function(result){
 			ret.push(result[1]);
 		});
 		return ret;

@@ -1,4 +1,4 @@
-dojo.provide("tests._base.Color");
+dojo.provide("dojo.tests._base.Color");
 
 (function(){
 	var white  = dojo.colorFromString("white").toRgba();
@@ -6,8 +6,10 @@ dojo.provide("tests._base.Color");
 	var verifyColor = function(t, source, expected){
 		var color = new dojo.Color(source);
 		t.is(expected, color.toRgba());
-		dojo.forEach(color.toRgba(), function(n){ t.is("number", typeof(n)); });
-	}
+		dojo.forEach(color.toRgba(), function(n){
+			t.is("number", typeof(n));
+		});
+	};
 
 	doh.register("tests._base.Color",
 		[

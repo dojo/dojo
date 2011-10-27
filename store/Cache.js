@@ -1,10 +1,11 @@
-define(["../main"], function(dojo) {
+define(["../_base/lang","../_base/Deferred"
+],function(lang, Deferred) {
 	// module:
 	//		dojo/store/Cache
 	// summary:
 	//		TODOC
 
-dojo.getObject("store", true, dojo);
+var store = lang.getObject("dojo.store", true);
 
 /*=====
 dojo.declare("dojo.store.__CacheArgs", null, {
@@ -19,7 +20,7 @@ dojo.declare("dojo.store.__CacheArgs", null, {
 	}
 });
 =====*/
-dojo.store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*/ options){
+store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*/ options){
 	// summary:
 	//		The Cache store wrapper takes a master store and a caching store,
 	//		caches data from the master into the caching store for faster
@@ -34,7 +35,7 @@ dojo.store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*
 	// options:
 	//		These are additional options for how caching is handled.
 	options = options || {};
-	return dojo.delegate(masterStore, {
+	return lang.delegate(masterStore, {
 		query: function(query, directives){
 			var results = masterStore.query(query, directives);
 			results.forEach(function(object){
@@ -47,8 +48,8 @@ dojo.store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*
 		// look for a queryEngine in either store
 		queryEngine: masterStore.queryEngine || cachingStore.queryEngine,
 		get: function(id, directives){
-			return dojo.when(cachingStore.get(id), function(result){
-				return result || dojo.when(masterStore.get(id, directives), function(result){
+			return Deferred.when(cachingStore.get(id), function(result){
+				return result || Deferred.when(masterStore.get(id, directives), function(result){
 					if(result){
 						cachingStore.put(result, {id: id});
 					}
@@ -57,24 +58,24 @@ dojo.store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*
 			});
 		},
 		add: function(object, directives){
-            return dojo.when(masterStore.add(object, directives), function(result){
-            	// now put result in cache
-                return cachingStore.add(typeof result == "object" ? result : object, directives);
-            });
-        },
+			return Deferred.when(masterStore.add(object, directives), function(result){
+				// now put result in cache
+				return cachingStore.add(typeof result == "object" ? result : object, directives);
+			});
+		},
 		put: function(object, directives){
 			// first remove from the cache, so it is empty until we get a response from the master store
-            cachingStore.remove((directives && directives.id) || this.getIdentity(object));
-            return dojo.when(masterStore.put(object, directives), function(result){
-            	// now put result in cache
-                return cachingStore.put(typeof result == "object" ? result : object, directives);
-            });
-        },
+			cachingStore.remove((directives && directives.id) || this.getIdentity(object));
+			return Deferred.when(masterStore.put(object, directives), function(result){
+				// now put result in cache
+				return cachingStore.put(typeof result == "object" ? result : object, directives);
+			});
+		},
 		remove: function(id, directives){
-            return dojo.when(masterStore.remove(id, directives), function(result){
-                return cachingStore.remove(id, directives);
-            });
-        },
+			return Deferred.when(masterStore.remove(id, directives), function(result){
+				return cachingStore.remove(id, directives);
+			});
+		},
 		evict: function(id){
 			return cachingStore.remove(id);
 		}
@@ -143,5 +144,5 @@ dojo.declare("dojo.store.Cache", null, {
 	}
 });
 =====*/
-return dojo.store.Cache;
+return store.Cache;
 });

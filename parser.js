@@ -129,7 +129,7 @@ dojo.parser = new function(){
 				ctor = _ctorMap[type] || (_ctorMap[type] = dlang.getObject(type)),
 				proto = ctor && ctor.prototype;
 			if(!ctor){
-				throw new Error("Could not load class '" + type);
+				throw new Error("Could not load class '" + type + "'");
 			}
 
 			// Setup hash to hold parameter settings for this widget.	Start with the parameter

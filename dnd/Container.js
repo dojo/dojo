@@ -1,9 +1,24 @@
-define(["../main", "../Evented", "./common", "../parser"], function(dojo, Evented) {
-	// module:
-	//		dojo/dnd/Container
-	// summary:
-	//		TODOC
+define([
+	"../_base/array",
+	"../_base/connect",
+	"../_base/declare",
+	"../_base/event",
+	"../_base/kernel",
+	"../_base/lang",
+	"../dom",
+	"../dom-class",
+	"../dom-construct",
+	"../Evented",
+	"../query",
+	"./common"
+], function(array, connect, declare, event, kernel, lang, dom, domClass, domConstruct, Evented, query, dnd) {
 
+// module:
+//		dojo/dnd/Container
+// summary:
+//		TODOC
+
+/*===== Evented = dojo.Evented; =====*/
 
 /*
 	Container states:
@@ -15,7 +30,7 @@ define(["../main", "../Evented", "./common", "../parser"], function(dojo, Evente
 */
 
 /*=====
-dojo.declare("dojo.dnd.__ContainerArgs", [], {
+declare("dojo.dnd.__ContainerArgs", [], {
 	creator: function(){
 		// summary:
 		//		a creator function, which takes a data item, and returns an object like that:
@@ -54,7 +69,7 @@ dojo.dnd.Item = function(){
 }
 =====*/
 
-dojo.declare("dojo.dnd.Container", Evented, {
+var Container = declare("dojo.dnd.Container", Evented, {
 	// summary:
 	//		a Container object, which knows when mouse hovers over it,
 	//		and over which element it hovers
@@ -80,11 +95,11 @@ dojo.declare("dojo.dnd.Container", Evented, {
 		//		node or node's id to build the container on
 		// params: dojo.dnd.__ContainerArgs
 		//		a dictionary of parameters
-		this.node = dojo.byId(node);
+		this.node = dom.byId(node);
 		if(!params){ params = {}; }
 		this.creator = params.creator || null;
 		this.skipForm = params.skipForm;
-		this.parent = params.dropParent && dojo.byId(params.dropParent);
+		this.parent = params.dropParent && dom.byId(params.dropParent);
 
 		// class-specific variables
 		this.map = {};
@@ -92,7 +107,7 @@ dojo.declare("dojo.dnd.Container", Evented, {
 
 		// states
 		this.containerState = "";
-		dojo.addClass(this.node, "dojoDndContainer");
+		domClass.add(this.node, "dojoDndContainer");
 
 		// mark up children
 		if(!(params && params._skipStartup)){
@@ -101,11 +116,11 @@ dojo.declare("dojo.dnd.Container", Evented, {
 
 		// set up events
 		this.events = [
-			dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
-			dojo.connect(this.node, "onmouseout",  this, "onMouseOut"),
+			connect.connect(this.node, "onmouseover", this, "onMouseOver"),
+			connect.connect(this.node, "onmouseout",  this, "onMouseOut"),
 			// cancel text selection and text dragging
-			dojo.connect(this.node, "ondragstart",   this, "onSelectStart"),
-			dojo.connect(this.node, "onselectstart", this, "onSelectStart")
+			connect.connect(this.node, "ondragstart",   this, "onSelectStart"),
+			connect.connect(this.node, "onselectstart", this, "onSelectStart")
 		];
 	},
 
@@ -135,8 +150,8 @@ dojo.declare("dojo.dnd.Container", Evented, {
 		// summary:
 		//		iterates over a data map skipping members that
 		//		are present in the empty object (IE and/or 3rd-party libraries).
-		o = o || dojo.global;
-		var m = this.map, e = dojo.dnd._empty;
+		o = o || kernel.global;
+		var m = this.map, e = dnd._empty;
 		for(var i in m){
 			if(i in e){ continue; }
 			f.call(o, m[i], i, this);
@@ -153,7 +168,7 @@ dojo.declare("dojo.dnd.Container", Evented, {
 	getAllNodes: function(){
 		// summary:
 		//		returns a list (an array) of all valid child nodes
-		return dojo.query("> .dojoDndItem", this.parent);	// NodeList
+		return query("> .dojoDndItem", this.parent);	// NodeList
 	},
 	sync: function(){
 		// summary:
@@ -167,7 +182,7 @@ dojo.declare("dojo.dnd.Container", Evented, {
 					return;
 				}
 			}else{
-				node.id = dojo.dnd.getUniqueId();
+				node.id = dnd.getUniqueId();
 			}
 			var type = node.getAttribute("dndType"),
 				data = node.getAttribute("dndData");
@@ -199,15 +214,16 @@ dojo.declare("dojo.dnd.Container", Evented, {
 				anchor = anchor.nextSibling;
 			}
 		}
+		var i, t;
 		if(anchor){
-			for(var i = 0; i < data.length; ++i){
-				var t = this._normalizedCreator(data[i]);
+			for(i = 0; i < data.length; ++i){
+				t = this._normalizedCreator(data[i]);
 				this.setItem(t.node.id, {data: t.data, type: t.type});
 				this.parent.insertBefore(t.node, anchor);
 			}
 		}else{
-			for(var i = 0; i < data.length; ++i){
-				var t = this._normalizedCreator(data[i]);
+			for(i = 0; i < data.length; ++i){
+				t = this._normalizedCreator(data[i]);
 				this.setItem(t.node.id, {data: t.data, type: t.type});
 				this.parent.appendChild(t.node);
 			}
@@ -217,7 +233,7 @@ dojo.declare("dojo.dnd.Container", Evented, {
 	destroy: function(){
 		// summary:
 		//		prepares this object to be garbage-collected
-		dojo.forEach(this.events, dojo.disconnect);
+		array.forEach(this.events, connect.disconnect);
 		this.clearItems();
 		this.node = this.parent = this.current = null;
 	},
@@ -240,7 +256,7 @@ dojo.declare("dojo.dnd.Container", Evented, {
 				if(c && c.length){ this.parent = c[0]; }
 			}
 		}
-		this.defaultCreator = dojo.dnd._defaultCreator(this.parent);
+		this.defaultCreator = dnd._defaultCreator(this.parent);
 
 		// process specially marked children
 		this.sync();
@@ -296,8 +312,8 @@ dojo.declare("dojo.dnd.Container", Evented, {
 		//		event processor for onselectevent and ondragevent
 		// e: Event
 		//		mouse event
-		if(!this.skipForm || !dojo.dnd.isFormElement(e)){
-			dojo.stopEvent(e);
+		if(!this.skipForm || !dnd.isFormElement(e)){
+			event.stop(e);
 		}
 	},
 
@@ -319,8 +335,8 @@ dojo.declare("dojo.dnd.Container", Evented, {
 		//		new state
 		var prefix = "dojoDnd" + type;
 		var state  = type.toLowerCase() + "State";
-		//dojo.replaceClass(this.node, prefix + newState, prefix + this[state]);
-		dojo.replaceClass(this.node, prefix + newState, prefix + this[state]);
+		//domClass.replace(this.node, prefix + newState, prefix + this[state]);
+		domClass.replace(this.node, prefix + newState, prefix + this[state]);
 		this[state] = newState;
 	},
 	_addItemClass: function(node, type){
@@ -330,7 +346,7 @@ dojo.declare("dojo.dnd.Container", Evented, {
 		//		a node
 		// type: String
 		//		a variable suffix for a class name
-		dojo.addClass(node, "dojoDndItem" + type);
+		domClass.add(node, "dojoDndItem" + type);
 	},
 	_removeItemClass: function(node, type){
 		// summary:
@@ -339,7 +355,7 @@ dojo.declare("dojo.dnd.Container", Evented, {
 		//		a node
 		// type: String
 		//		a variable suffix for a class name
-		dojo.removeClass(node, "dojoDndItem" + type);
+		domClass.remove(node, "dojoDndItem" + type);
 	},
 	_getChildByEvent: function(e){
 		// summary:
@@ -349,7 +365,7 @@ dojo.declare("dojo.dnd.Container", Evented, {
 		var node = e.target;
 		if(node){
 			for(var parent = node.parentNode; parent; node = parent, parent = node.parentNode){
-				if(parent == this.parent && dojo.hasClass(node, "dojoDndItem")){ return node; }
+				if(parent == this.parent && domClass.contains(node, "dojoDndItem")){ return node; }
 			}
 		}
 		return null;
@@ -358,57 +374,57 @@ dojo.declare("dojo.dnd.Container", Evented, {
 		// summary:
 		//		adds all necessary data to the output of the user-supplied creator function
 		var t = (this.creator || this.defaultCreator).call(this, item, hint);
-		if(!dojo.isArray(t.type)){ t.type = ["text"]; }
-		if(!t.node.id){ t.node.id = dojo.dnd.getUniqueId(); }
-		dojo.addClass(t.node, "dojoDndItem");
+		if(!lang.isArray(t.type)){ t.type = ["text"]; }
+		if(!t.node.id){ t.node.id = dnd.getUniqueId(); }
+		domClass.add(t.node, "dojoDndItem");
 		return t;
 	}
 });
 
-dojo.dnd._createNode = function(tag){
+dnd._createNode = function(tag){
 	// summary:
 	//		returns a function, which creates an element of given tag
 	//		(SPAN by default) and sets its innerHTML to given text
 	// tag: String
 	//		a tag name or empty for SPAN
-	if(!tag){ return dojo.dnd._createSpan; }
+	if(!tag){ return dnd._createSpan; }
 	return function(text){	// Function
-		return dojo.create(tag, {innerHTML: text});	// Node
+		return domConstruct.create(tag, {innerHTML: text});	// Node
 	};
 };
 
-dojo.dnd._createTrTd = function(text){
+dnd._createTrTd = function(text){
 	// summary:
 	//		creates a TR/TD structure with given text as an innerHTML of TD
 	// text: String
 	//		a text for TD
-	var tr = dojo.create("tr");
-	dojo.create("td", {innerHTML: text}, tr);
+	var tr = domConstruct.create("tr");
+	domConstruct.create("td", {innerHTML: text}, tr);
 	return tr;	// Node
 };
 
-dojo.dnd._createSpan = function(text){
+dnd._createSpan = function(text){
 	// summary:
 	//		creates a SPAN element with given text as its innerHTML
 	// text: String
 	//		a text for SPAN
-	return dojo.create("span", {innerHTML: text});	// Node
+	return domConstruct.create("span", {innerHTML: text});	// Node
 };
 
 // dojo.dnd._defaultCreatorNodes: Object
 //		a dictionary that maps container tag names to child tag names
-dojo.dnd._defaultCreatorNodes = {ul: "li", ol: "li", div: "div", p: "div"};
+dnd._defaultCreatorNodes = {ul: "li", ol: "li", div: "div", p: "div"};
 
-dojo.dnd._defaultCreator = function(node){
+dnd._defaultCreator = function(node){
 	// summary:
 	//		takes a parent node, and returns an appropriate creator function
 	// node: Node
 	//		a container node
 	var tag = node.tagName.toLowerCase();
-	var c = tag == "tbody" || tag == "thead" ? dojo.dnd._createTrTd :
-			dojo.dnd._createNode(dojo.dnd._defaultCreatorNodes[tag]);
+	var c = tag == "tbody" || tag == "thead" ? dnd._createTrTd :
+			dnd._createNode(dnd._defaultCreatorNodes[tag]);
 	return function(item, hint){	// Function
-		var isObj = item && dojo.isObject(item), data, type, n;
+		var isObj = item && lang.isObject(item), data, type, n;
 		if(isObj && item.tagName && item.nodeType && item.getAttribute){
 			// process a DOM node
 			data = item.getAttribute("dndData") || item.innerHTML;
@@ -419,14 +435,14 @@ dojo.dnd._defaultCreator = function(node){
 			// process a DnD item object or a string
 			data = (isObj && item.data) ? item.data : item;
 			type = (isObj && item.type) ? item.type : ["text"];
-			n = (hint == "avatar" ? dojo.dnd._createSpan : c)(String(data));
+			n = (hint == "avatar" ? dnd._createSpan : c)(String(data));
 		}
 		if(!n.id){
-			n.id = dojo.dnd.getUniqueId();
+			n.id = dnd.getUniqueId();
 		}
 		return {node: n, data: data, type: type};
 	};
 };
 
-return dojo.dnd.Container;
+return Container;
 });

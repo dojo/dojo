@@ -1,11 +1,21 @@
-define(["../main", "../Evented", "./common", "./autoscroll", "./Avatar"], function(dojo, Evented) {
-	// module:
-	//		dojo/dnd/Manager
-	// summary:
-	//		TODOC
+define([
+	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event", "../_base/window",
+	"../dom-class", "../Evented", "../keys", "../topic",
+	"./common", "./autoscroll", "./Avatar"
+], function(array, connect, declare, event, win, domClass, Evented, keys, topic,
+	dnd, autoscroll, Avatar) {
 
+// module:
+//		dojo/dnd/Manager
+// summary:
+//		TODOC
 
-var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
+/*=====
+dnd = dojo.dnd;
+Evented = dojo.Evented;
+=====*/
+
+var Manager = declare("dojo.dnd.Manager", [Evented], {
 	// summary:
 	//		the manager of DnD operations (usually a singleton)
 	constructor: function(){
@@ -33,7 +43,7 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 			this.canDropFlag = Boolean(this.target);
 			this.avatar.update();
 		}
-		dojo.publish("/dnd/source/over", [source]);
+		topic.publish("/dnd/source/over", source);
 	},
 	outSource: function(source){
 		// summary:
@@ -45,10 +55,10 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 				this.target = null;
 				this.canDropFlag = false;
 				this.avatar.update();
-				dojo.publish("/dnd/source/over", [null]);
+				topic.publish("/dnd/source/over", null);
 			}
 		}else{
-			dojo.publish("/dnd/source/over", [null]);
+			topic.publish("/dnd/source/over", null);
 		}
 	},
 	startDrag: function(source, nodes, copy){
@@ -64,19 +74,19 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 		this.nodes  = nodes;
 		this.copy   = Boolean(copy); // normalizing to true boolean
 		this.avatar = this.makeAvatar();
-		dojo.body().appendChild(this.avatar.node);
-		dojo.publish("/dnd/start", [source, nodes, this.copy]);
+		win.body().appendChild(this.avatar.node);
+		topic.publish("/dnd/start", source, nodes, this.copy);
 		this.events = [
-			dojo.connect(dojo.doc, "onmousemove", this, "onMouseMove"),
-			dojo.connect(dojo.doc, "onmouseup",   this, "onMouseUp"),
-			dojo.connect(dojo.doc, "onkeydown",   this, "onKeyDown"),
-			dojo.connect(dojo.doc, "onkeyup",     this, "onKeyUp"),
+			connect.connect(win.doc, "onmousemove", this, "onMouseMove"),
+			connect.connect(win.doc, "onmouseup",   this, "onMouseUp"),
+			connect.connect(win.doc, "onkeydown",   this, "onKeyDown"),
+			connect.connect(win.doc, "onkeyup",     this, "onKeyUp"),
 			// cancel text selection and text dragging
-			dojo.connect(dojo.doc, "ondragstart",   dojo.stopEvent),
-			dojo.connect(dojo.body(), "onselectstart", dojo.stopEvent)
+			connect.connect(win.doc, "ondragstart",   event.stop),
+			connect.connect(win.body(), "onselectstart", event.stop)
 		];
 		var c = "dojoDnd" + (copy ? "Copy" : "Move");
-		dojo.addClass(dojo.body(), c);
+		domClass.add(win.body(), c);
 	},
 	canDrop: function(flag){
 		// summary:
@@ -90,8 +100,8 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 	stopDrag: function(){
 		// summary:
 		//		stop the DnD in progress
-		dojo.removeClass(dojo.body(), ["dojoDndCopy", "dojoDndMove"]);
-		dojo.forEach(this.events, dojo.disconnect);
+		domClass.remove(win.body(), ["dojoDndCopy", "dojoDndMove"]);
+		array.forEach(this.events, connect.disconnect);
 		this.events = [];
 		this.avatar.destroy();
 		this.avatar = null;
@@ -101,7 +111,7 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 	makeAvatar: function(){
 		// summary:
 		//		makes the avatar; it is separate to be overwritten dynamically, if needed
-		return new dojo.dnd.Avatar(this);
+		return new Avatar(this);
 	},
 	updateAvatar: function(){
 		// summary:
@@ -117,12 +127,12 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 		//		mouse event
 		var a = this.avatar;
 		if(a){
-			dojo.dnd.autoScrollNodes(e);
-			//dojo.dnd.autoScroll(e);
+			autoscroll.autoScrollNodes(e);
+			//autoscroll.autoScroll(e);
 			var s = a.node.style;
 			s.left = (e.pageX + this.OFFSET_X) + "px";
 			s.top  = (e.pageY + this.OFFSET_Y) + "px";
-			var copy = Boolean(this.source.copyState(dojo.isCopyKey(e)));
+			var copy = Boolean(this.source.copyState(connect.isCopyKey(e)));
 			if(this.copy != copy){
 				this._setCopyStatus(copy);
 			}
@@ -135,12 +145,11 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 		//		mouse event
 		if(this.avatar){
 			if(this.target && this.canDropFlag){
-				var copy = Boolean(this.source.copyState(dojo.isCopyKey(e))),
-				params = [this.source, this.nodes, copy, this.target, e];
-				dojo.publish("/dnd/drop/before", params);
-				dojo.publish("/dnd/drop", params);
+				var copy = Boolean(this.source.copyState(dojo.isCopyKey(e)));
+				topic.publish("/dnd/drop/before", this.source, this.nodes, copy, this.target, e);
+				topic.publish("/dnd/drop", this.source, this.nodes, copy, this.target, e);
 			}else{
-				dojo.publish("/dnd/cancel");
+				topic.publish("/dnd/cancel");
 			}
 			this.stopDrag();
 		}
@@ -155,14 +164,14 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 		//		keyboard event
 		if(this.avatar){
 			switch(e.keyCode){
-				case dojo.keys.CTRL:
+				case keys.CTRL:
 					var copy = Boolean(this.source.copyState(true));
 					if(this.copy != copy){
 						this._setCopyStatus(copy);
 					}
 					break;
-				case dojo.keys.ESCAPE:
-					dojo.publish("/dnd/cancel");
+				case keys.ESCAPE:
+					topic.publish("/dnd/cancel");
 					this.stopDrag();
 					break;
 			}
@@ -173,7 +182,7 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 		//		event processor for onkeyup, watching for CTRL for copy/move status
 		// e: Event
 		//		keyboard event
-		if(this.avatar && e.keyCode == dojo.keys.CTRL){
+		if(this.avatar && e.keyCode == keys.CTRL){
 			var copy = Boolean(this.source.copyState(false));
 			if(this.copy != copy){
 				this._setCopyStatus(copy);
@@ -190,7 +199,7 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 		this.copy = copy;
 		this.source._markDndStatus(this.copy);
 		this.updateAvatar();
-		dojo.replaceClass(dojo.body(),
+		domClass.replace(win.body(),
 			"dojoDnd" + (this.copy ? "Copy" : "Move"),
 			"dojoDnd" + (this.copy ? "Move" : "Copy"));
 	}
@@ -198,15 +207,15 @@ var Manager = dojo.declare("dojo.dnd.Manager", [Evented], {
 
 // dojo.dnd._manager:
 //		The manager singleton variable. Can be overwritten if needed.
-dojo.dnd._manager = null;
+dnd._manager = null;
 
-Manager.manager = dojo.dnd.manager = function(){
+Manager.manager = dnd.manager = function(){
 	// summary:
 	//		Returns the current DnD manager.  Creates one if it is not created yet.
-	if(!dojo.dnd._manager){
-		dojo.dnd._manager = new dojo.dnd.Manager();
+	if(!dnd._manager){
+		dnd._manager = new Manager();
 	}
-	return dojo.dnd._manager;	// Object
+	return dnd._manager;	// Object
 };
 
 return Manager;

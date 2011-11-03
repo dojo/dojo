@@ -1,11 +1,15 @@
-define(["../main", "./Moveable"], function(dojo) {
+define(["../_base/declare", "./Moveable"], function(declare, Moveable) {
 	// module:
 	//		dojo/dnd/TimedMoveable
 	// summary:
 	//		TODOC
 
 	/*=====
-	dojo.declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
+	Moveable = dojo.dnd.Moveable;
+	=====*/
+
+	/*=====
+	declare("dojo.dnd.__TimedMoveableArgs", [dojo.dnd.__MoveableArgs], {
 		// timeout: Number
 		//		delay move by this number of ms,
 		//		accumulating position changes during the timeout
@@ -14,9 +18,9 @@ define(["../main", "./Moveable"], function(dojo) {
 	=====*/
 
 	// precalculate long expressions
-	var oldOnMove = dojo.dnd.Moveable.prototype.onMove;
+	var oldOnMove = Moveable.prototype.onMove;
 
-	dojo.declare("dojo.dnd.TimedMoveable", dojo.dnd.Moveable, {
+	return declare("dojo.dnd.TimedMoveable", Moveable, {
 		// summary:
 		//		A specialized version of Moveable to support an FPS throttling.
 		//		This class puts an upper restriction on FPS, which may reduce
@@ -48,7 +52,7 @@ define(["../main", "./Moveable"], function(dojo) {
 				// reflect the last received position
 				oldOnMove.call(this, mover, mover._leftTop)
 			}
-			dojo.dnd.Moveable.prototype.onMoveStop.apply(this, arguments);
+			Moveable.prototype.onMoveStop.apply(this, arguments);
 		},
 		onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
 			mover._leftTop = leftTop;
@@ -63,7 +67,4 @@ define(["../main", "./Moveable"], function(dojo) {
 			}
 		}
 	});
-
-	return dojo.dnd.TimedMoveable;
-	
 });

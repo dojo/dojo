@@ -1,11 +1,16 @@
-define(["../main", "../Evented", "../touch", "./common", "./autoscroll"], function(dojo, Evented, touch) {
-	// module:
-	//		dojo/dnd/Mover
-	// summary:
-	//		TODOC
+define([
+	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event", "../_base/sniff", "../_base/window",
+	"../dom", "../dom-geometry", "../dom-style", "../Evented", "../touch", "./common", "./autoscroll"
+], function(array, connect, declare, event, has, win, dom, domGeom, domStyle, Evented, touch, dnd, autoscroll) {
 
+// module:
+//		dojo/dnd/Mover
+// summary:
+//		TODOC
 
-dojo.declare("dojo.dnd.Mover", [Evented], {
+/*===== Evented = dojo.Evented; =====*/
+
+return declare("dojo.dnd.Mover", [Evented], {
 	constructor: function(node, e, host){
 		// summary:
 		//		an object which makes a node follow the mouse, or touch-drag on touch devices.
@@ -18,24 +23,24 @@ dojo.declare("dojo.dnd.Mover", [Evented], {
 		// host: Object?
 		//		object which implements the functionality of the move,
 		//	 	and defines proper events (onMoveStart and onMoveStop)
-		this.node = dojo.byId(node);
+		this.node = dom.byId(node);
 		this.marginBox = {l: e.pageX, t: e.pageY};
 		this.mouseButton = e.button;
 		var h = (this.host = host), d = node.ownerDocument;
 		this.events = [
 			// At the start of a drag, onFirstMove is called, and then the following two
 			// connects are disconnected
-			dojo.connect(d, touch.move, this, "onFirstMove"),
+			connect.connect(d, touch.move, this, "onFirstMove"),
 
 			// These are called continually during the drag
-			dojo.connect(d, touch.move, this, "onMouseMove"),
+			connect.connect(d, touch.move, this, "onMouseMove"),
 
 			// And these are called at the end of the drag
-			dojo.connect(d, touch.release,   this, "onMouseUp"),
+			connect.connect(d, touch.release,   this, "onMouseUp"),
 
 			// cancel text selection and text dragging
-			dojo.connect(d, "ondragstart",   dojo.stopEvent),
-			dojo.connect(d.body, "onselectstart", dojo.stopEvent)
+			connect.connect(d, "ondragstart",   event.stop),
+			connect.connect(d.body, "onselectstart", event.stop)
 		];
 		// notify that the move has started
 		if(h && h.onMoveStart){
@@ -48,17 +53,17 @@ dojo.declare("dojo.dnd.Mover", [Evented], {
 		//		event processor for onmousemove/ontouchmove
 		// e: Event
 		//		mouse/touch event
-		dojo.dnd.autoScroll(e);
+		autoscroll.autoScroll(e);
 		var m = this.marginBox;
 		this.host.onMove(this, {l: m.l + e.pageX, t: m.t + e.pageY}, e);
-		dojo.stopEvent(e);
+		event.stop(e);
 	},
 	onMouseUp: function(e){
-		if(dojo.isWebKit && dojo.isMac && this.mouseButton == 2 ?
+		if(has("webkit") && has("mac") && this.mouseButton == 2 ?
 				e.button == 0 : this.mouseButton == e.button){ // TODO Should condition be met for touch devices, too?
 			this.destroy();
 		}
-		dojo.stopEvent(e);
+		event.stop(e);
 	},
 	// utilities
 	onFirstMove: function(e){
@@ -75,19 +80,19 @@ dojo.declare("dojo.dnd.Mover", [Evented], {
 				break;
 			default:
 				s.position = "absolute";	// enforcing the absolute mode
-				var m = dojo.marginBox(this.node);
+				var m = domGeom.getMarginBox(this.node);
 				// event.pageX/pageY (which we used to generate the initial
 				// margin box) includes padding and margin set on the body.
 				// However, setting the node's position to absolute and then
-				// doing dojo.marginBox on it *doesn't* take that additional
+				// doing domGeom.marginBox on it *doesn't* take that additional
 				// space into account - so we need to subtract the combined
 				// padding and margin.  We use getComputedStyle and
 				// _getMarginBox/_getContentBox to avoid the extra lookup of
 				// the computed style.
-				var b = dojo.doc.body;
-				var bs = dojo.getComputedStyle(b);
-				var bm = dojo._getMarginBox(b, bs);
-				var bc = dojo._getContentBox(b, bs);
+				var b = win.doc.body;
+				var bs = domStyle.getComputedStyle(b);
+				var bm = domGeom.getMarginBox(b, bs);
+				var bc = domGeom.getContentBox(b, bs);
 				l = m.l - (bc.l - bm.l);
 				t = m.t - (bc.t - bm.t);
 				break;
@@ -99,12 +104,12 @@ dojo.declare("dojo.dnd.Mover", [Evented], {
 		}
 
 		// Disconnect onmousemove and ontouchmove events that call this function
-		dojo.disconnect(this.events.shift());
+		connect.disconnect(this.events.shift());
 	},
 	destroy: function(){
 		// summary:
 		//		stops the move, deletes all references, so the object can be garbage-collected
-		dojo.forEach(this.events, dojo.disconnect);
+		array.forEach(this.events, connect.disconnect);
 		// undo global settings
 		var h = this.host;
 		if(h && h.onMoveStop){
@@ -115,5 +120,4 @@ dojo.declare("dojo.dnd.Mover", [Evented], {
 	}
 });
 
-return dojo.dnd.Mover;
 });

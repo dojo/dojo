@@ -1,4 +1,6 @@
-define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/window"], function(dojo, has, dom){
+define([
+	"../_base/kernel", "../dom", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/window"
+], function(kernel, dom, has, array, lang, win){
   //  module:
   //    dojo/selector/acme
   //  summary:
@@ -45,17 +47,17 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	// need to provide these methods and properties. No other porting should be
 	// necessary, save for configuring the system to use a class other than
 	// dojo.NodeList as the return instance instantiator
-	var trim = 			dojo.trim;
-	var each = 			dojo.forEach;
+	var trim = 			lang.trim;
+	var each = 			array.forEach;
 	// 					d.isIE; // float
 	// 					d.isSafari; // float
 	// 					d.isOpera; // float
 	// 					d.isWebKit; // float
 	// 					d.doc ; // document element
 
-	var getDoc = function(){ return dojo.doc; };
+	var getDoc = function(){ return win.doc; };
 	// NOTE(alex): the spec is idiotic. CSS queries should ALWAYS be case-sensitive, but nooooooo
-	var cssCaseBug = ((dojo.isWebKit||dojo.isMozilla) && ((getDoc().compatMode) == "BackCompat"));
+	var cssCaseBug = ((has("webkit")||has("mozilla")) && ((getDoc().compatMode) == "BackCompat"));
 
 	////////////////////////////////////////////////////////////////////////
 	// Global utilities
@@ -650,7 +652,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 		}
 	};
 
-	var defaultGetter = (dojo.isIE && (dojo.isIE < 9 || dojo.isQuirks)) ? function(cond){
+	var defaultGetter = (has("ie") && (has("ie") < 9 || kernel.isQuirks)) ? function(cond){
 		var clc = cond.toLowerCase();
 		if(clc == "class"){ cond = "className"; }
 		return function(elem){
@@ -1000,7 +1002,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 				// if we have more than one root at this level, provide a new
 				// hash to use for checking group membership but tell the
 				// system not to post-filter us since we will already have been
-				// gauranteed to be unique
+				// guaranteed to be unique
 				bag = {};
 				ret.nozip = true;
 			}
@@ -1029,7 +1031,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	var _queryFuncCacheDOM = {},
 		_queryFuncCacheQSA = {};
 
-	// this is the second level of spliting, from full-length queries (e.g.,
+	// this is the second level of splitting, from full-length queries (e.g.,
 	// "div.foo .bar") into simple query expressions (e.g., ["div.foo",
 	// ".bar"])
 	var getStepQueryFunc = function(query){
@@ -1074,14 +1076,14 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	// we need to determine if we think we can run a given query via
 	// querySelectorAll or if we'll need to fall back on DOM queries to get
 	// there. We need a lot of information about the environment and the query
-	// to make the determiniation (e.g. does it support QSA, does the query in
+	// to make the determination (e.g. does it support QSA, does the query in
 	// question work in the native QSA impl, etc.).
 	var nua = navigator.userAgent;
 	// some versions of Safari provided QSA, but it was buggy and crash-prone.
 	// We need te detect the right "internal" webkit version to make this work.
 	var wk = "WebKit/";
 	var is525 = (
-		dojo.isWebKit &&
+		has("webkit") &&
 		(nua.indexOf(wk) > 0) &&
 		(parseFloat(nua.split(wk)[1]) > 528)
 	);
@@ -1089,13 +1091,13 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	// IE QSA queries may incorrectly include comment nodes, so we throw the
 	// zipping function into "remove" comments mode instead of the normal "skip
 	// it" which every other QSA-clued browser enjoys
-	var noZip = dojo.isIE ? "commentStrip" : "nozip";
+	var noZip = has("ie") ? "commentStrip" : "nozip";
 
 	var qsa = "querySelectorAll";
 	var qsaAvail = (
 		!!getDoc()[qsa] &&
 		// see #5832
-		(!dojo.isSafari || (dojo.isSafari > 3.1) || is525 )
+		(!has("safari") || (has("safari") > 3.1) || is525 )
 	);
 
 	//Don't bother with n+3 type of matches, IE complains if we modify those.
@@ -1142,7 +1144,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 			//		http://www.w3.org/TR/css3-selectors/#w3cselgrammar
 			(specials.indexOf(qcz) == -1) &&
 			// IE's QSA impl sucks on pseudos
-			(!dojo.isIE || (query.indexOf(":") == -1)) &&
+			(!has("ie") || (query.indexOf(":") == -1)) &&
 
 			(!(cssCaseBug && (query.indexOf(".") >= 0))) &&
 
@@ -1217,7 +1219,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	// NOTE:
 	//		this function is Moo inspired, but our own impl to deal correctly
 	//		with XML in IE
-	var _nodeUID = dojo.isIE ? function(node){
+	var _nodeUID = has("ie") ? function(node){
 		if(caseSensitive){
 			// XML docs don't have uniqueID on their nodes
 			return (node.getAttribute("_uid") || node.setAttribute("_uid", ++_zipIdx) || _zipIdx);
@@ -1243,7 +1245,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	};
 
 	// attempt to efficiently determine if an item in a list is a dupe,
-	// returning a list of "uniques", hopefully in doucment order
+	// returning a list of "uniques", hopefully in document order
 	var _zipIdxName = "_zipIdx";
 	var _zip = function(arr){
 		if(arr && arr.nozip){
@@ -1260,18 +1262,19 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 
 		// we have to fork here for IE and XML docs because we can't set
 		// expandos on their nodes (apparently). *sigh*
-		if(dojo.isIE && caseSensitive){
+		var x, te;
+		if(has("ie") && caseSensitive){
 			var szidx = _zipIdx+"";
 			arr[0].setAttribute(_zipIdxName, szidx);
-			for(var x = 1, te; te = arr[x]; x++){
+			for(x = 1; te = arr[x]; x++){
 				if(arr[x].getAttribute(_zipIdxName) != szidx){
 					ret.push(te);
 				}
 				te.setAttribute(_zipIdxName, szidx);
 			}
-		}else if(dojo.isIE && arr.commentStrip){
+		}else if(has("ie") && arr.commentStrip){
 			try{
-				for(var x = 1, te; te = arr[x]; x++){
+				for(x = 1; te = arr[x]; x++){
 					if(_isElement(te)){
 						ret.push(te);
 					}
@@ -1279,7 +1282,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 			}catch(e){ /* squelch */ }
 		}else{
 			if(arr[0]){ arr[0][_zipIdxName] = _zipIdx; }
-			for(var x = 1, te; te = arr[x]; x++){
+			for(x = 1; te = arr[x]; x++){
 				if(arr[x][_zipIdxName] != _zipIdx){
 					ret.push(te);
 				}
@@ -1443,9 +1446,9 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 		//		Opera in XHTML mode doesn't detect case-sensitivity correctly
 		//		and it's not clear that there's any way to test for it
 		caseSensitive = (root.contentType && root.contentType=="application/xml") ||
-						(dojo.isOpera && (root.doctype || od.toString() == "[object XMLDocument]")) ||
+						(has("opera") && (root.doctype || od.toString() == "[object XMLDocument]")) ||
 						(!!od) &&
-				(dojo.isIE ? od.xml : (root.xmlVersion || od.xmlVersion));
+				(has("ie") ? od.xml : (root.xmlVersion || od.xmlVersion));
 
 		// NOTE:
 		//		adding "true" as the 2nd argument to getQueryFunc is useful for
@@ -1469,7 +1472,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 				(parts.length == 1 && !/[^\w#\.]/.test(filter)) ?
 				getSimpleFilterFunc(parts[0]) :
 				function(node){
-					return dojo.query(filter, root).indexOf(node) != -1;
+					return array.indexOf(query(filter, dojo.byId(root)), node) != -1;
 				};
 		for(var x = 0, te; te = nodeList[x]; x++){
 			if(filterFunc(te)){ tmpNodeList.push(te); }

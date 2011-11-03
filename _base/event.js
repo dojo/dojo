@@ -12,7 +12,6 @@ dojo.require("dojo._base.connect");
 			if(!node){return;} 
 			name = del._normalizeEventName(name);
 			fp = del._fixCallback(name, fp);
-			var oname = name;
 			if(
 				//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 				!dojo.isIE && 
@@ -20,7 +19,6 @@ dojo.require("dojo._base.connect");
 				(name == "mouseenter" || name == "mouseleave")
 			){
 				var ofp = fp;
-				//oname = name;
 				name = (name == "mouseenter") ? "mouseover" : "mouseout";
 				fp = function(e){
 					if(!dojo.isDescendant(e.relatedTarget, node)){
@@ -76,7 +74,7 @@ dojo.require("dojo._base.connect");
 			return evt;
 		},
 		_setKeyChar: function(evt){
-			evt.keyChar = evt.charCode ? String.fromCharCode(evt.charCode) : '';
+			evt.keyChar = evt.charCode >= 32 ? String.fromCharCode(evt.charCode) : '';
 			evt.charOrCode = evt.keyChar || evt.keyCode;
 		},
 		// For IE and Safari: some ctrl-key combinations (mostly w/punctuation) do not emit a char code in IE
@@ -276,7 +274,7 @@ dojo.require("dojo._base.connect");
 =====*/
 
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	if(dojo.isIE){
+	if(dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks)){
 		dojo.mouseButtons = {
 			LEFT:   1,
 			MIDDLE: 4,
@@ -425,8 +423,10 @@ dojo.require("dojo._base.connect");
 				if(evt.type == "mouseout"){ 
 					evt.relatedTarget = evt.toElement;
 				}
-				evt.stopPropagation = del._stopPropagation;
-				evt.preventDefault = del._preventDefault;
+				if (dojo.isIE < 9 || dojo.isQuirks) {
+					evt.stopPropagation = del._stopPropagation;
+					evt.preventDefault = del._preventDefault;
+				}
 				return del._fixKeys(evt);
 			},
 			_fixKeys: function(evt){
@@ -460,7 +460,8 @@ dojo.require("dojo._base.connect");
 				var k=evt.keyCode;
 				// These are Windows Virtual Key Codes
 				// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
-				var unprintable = k!=13 && k!=32 && k!=27 && (k<48||k>90) && (k<96||k>111) && (k<186||k>192) && (k<219||k>222);
+				var unprintable = (k!=13 || (dojo.isIE >= 9 && !dojo.isQuirks)) && k!=32 && k!=27 && (k<48||k>90) && (k<96||k>111) && (k<186||k>192) && (k<219||k>222);
+
 				// synthesize keypress for most unprintables and CTRL-keys
 				if(unprintable||evt.ctrlKey){
 					var c = unprintable ? 0 : k;
@@ -478,7 +479,9 @@ dojo.require("dojo._base.connect");
 					// simulate a keypress event
 					var faux = del._synthesizeEvent(evt, {type: 'keypress', faux: true, charCode: c});
 					kp.call(evt.currentTarget, faux);
-					evt.cancelBubble = faux.cancelBubble;
+					if(dojo.isIE < 9 || (dojo.isIE && dojo.isQuirks)){
+						evt.cancelBubble = faux.cancelBubble;
+					}
 					evt.returnValue = faux.returnValue;
 					_trySetKeyCode(evt, faux.keyCode);
 				}
@@ -501,11 +504,11 @@ dojo.require("dojo._base.connect");
 		});
 				
 		// override stopEvent for IE
-		dojo.stopEvent = function(evt){
+		dojo.stopEvent = (dojo.isIE < 9 || dojo.isQuirks) ? function(evt){
 			evt = evt || window.event;
 			del._stopPropagation.call(evt);
 			del._preventDefault.call(evt);
-		}
+		} : dojo.stopEvent;
 	}
 	//>>excludeEnd("webkitMobile");
 

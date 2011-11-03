@@ -472,7 +472,7 @@ if(dojo.isIE || dojo.isOpera){
 	//>>excludeEnd("webkitMobile");
 	dojo._getOpacity =
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		d.isIE ? function(node){
+		d.isIE < 9 || (d.isIE && d.isQuirks) ? function(node){
 			try{
 				return af(node).Opacity / 100; // Number
 			}catch(e){
@@ -501,7 +501,7 @@ if(dojo.isIE || dojo.isOpera){
 
 	dojo._setOpacity =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		d.isIE ? function(/*DomNode*/node, /*Number*/opacity){
+		d.isIE < 9 || (d.isIE && d.isQuirks) ? function(/*DomNode*/node, /*Number*/opacity){
 			var ov = opacity * 100, opaque = opacity == 1;
 			node.style.zoom = opaque ? "" : 1;
 
@@ -802,7 +802,7 @@ if(dojo.isIE || dojo.isOpera){
 					}
 				}
 			}
-		}else if(d.isOpera || (d.isIE > 7 && !d.isQuirks)){
+		}else if(d.isOpera || (d.isIE == 8 && !d.isQuirks)){
 			// On Opera and IE 8, offsetLeft/Top includes the parent's border
 			if(p){
 				be = d._getBorderExtents(p);

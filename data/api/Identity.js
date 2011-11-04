@@ -1,11 +1,14 @@
-define(["../..", "./Read"], function(dojo) {
+define(["../../_base/declare", "./Read"], function(declare, Read) {
 	// module:
 	//		dojo/data/api/Identity
 	// summary:
 	//		TODOC
 
+/*=====
+Read = dojo.data.api.Read;
+=====*/
 
-dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
+return declare("dojo.data.api.Identity", Read, {
 	//	summary:
 	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines methods signatures and intentionally leaves all the
@@ -103,5 +106,4 @@ dojo.declare("dojo.data.api.Identity", dojo.data.api.Read, {
 	}
 });
 
-return dojo.data.api.Identity;
 });

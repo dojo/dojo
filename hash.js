@@ -1,21 +1,16 @@
-define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff"],
-	function(dojo, require, connect, lang, ready, has) {
+define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff"],
+	function(dojo, require, config, connect, lang, ready, has) {
+
 	// module:
 	//		dojo/hash
 	// summary:
-	//		TODOC
-
-
-//TODOC: where does this go?
-// summary:
-//		Methods for monitoring and updating the hash in the browser URL.
-//
-// example:
-//		dojo.subscribe("/dojo/hashchange", context, callback);
-//
-//		function callback (hashValue){
-//			// do something based on the hash value.
-//		}
+	//		Methods for monitoring and updating the hash in the browser URL.
+	// example:
+	//		dojo.subscribe("/dojo/hashchange", context, callback);
+	//
+	//		function callback (hashValue){
+	//			// do something based on the hash value.
+	//		}
 
 	dojo.hash = function(/* String? */ hash, /* Boolean? */ replace){
 		//	summary:
@@ -51,7 +46,7 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 
 	// Global vars
 	var _recentHash, _ieUriMonitor, _connect,
-		_pollFrequency = dojo.config.hashPollFrequency || 100;
+		_pollFrequency = config.hashPollFrequency || 100;
 
 	//Internal functions
 	function _getSegment(str, delimiter){
@@ -142,9 +137,9 @@ define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready
 		// create and append iframe
 		var ifr = document.createElement("iframe"),
 			IFRAME_ID = "dojo-hash-iframe",
-			ifrSrc = dojo.config.dojoBlankHtmlUrl || require.toUrl("./resources/blank.html");
+			ifrSrc = config.dojoBlankHtmlUrl || require.toUrl("./resources/blank.html");
 
-		if(dojo.config.useXDomain && !dojo.config.dojoBlankHtmlUrl){
+		if(config.useXDomain && !config.dojoBlankHtmlUrl){
 			console.warn("dojo.hash: When using cross-domain Dojo builds,"
 				+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
 				+ " to the path on your domain to blank.html");

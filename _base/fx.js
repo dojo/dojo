@@ -1,4 +1,5 @@
-define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "../dom", "../dom-style"], function(dojo, lang, Evented, Color, connect, has, dom, style){
+define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", "./sniff", "../dom", "../dom-style"],
+	function(dojo, config, lang, Evented, Color, connect, has, dom, style){
 	// module:
 	//		dojo/_base/fx
 	// summary:
@@ -54,7 +55,7 @@ define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "
 
 	lang.extend(dojo.Animation, {
 		// duration: Integer
-		//		The time in milliseonds the animation will take to run
+		//		The time in milliseconds the animation will take to run
 		duration: 350,
 
 	/*=====
@@ -138,7 +139,7 @@ define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "
 			//		The arguments to pass to the event.
 			var a = args||[];
 			if(this[evt]){
-				if(dojo.config.debugAtAllCosts){
+				if(config.debugAtAllCosts){
 					this[evt].apply(this, a);
 				}else{
 					try{
@@ -450,7 +451,7 @@ define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "
 	};
 
 	/*=====
-	dojo.declare("dojo.__AnimArgs", [dojo.__FadeArgs], {
+	declare("dojo.__AnimArgs", [dojo.__FadeArgs], {
 		// Properties: Object?
 		//	A hash map of style properties to Objects describing the transition,
 		//	such as the properties of dojo._Line with an additional 'units' property
@@ -481,7 +482,7 @@ define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "
 		//		Dojo figures out the start value for the width and converts the
 		//		integer specified for the width to the more expressive but
 		//		verbose form `{ width: { end: '400', units: 'px' } }` which you
-		//		can also specify directly. Defaults to 'px' if ommitted.
+		//		can also specify directly. Defaults to 'px' if omitted.
 		//
 		// example:
 		//		Animate width, height, and padding over 2 seconds... the
@@ -517,7 +518,7 @@ define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "
 		// example:
 		//		Like all `dojo.Animation`s, animateProperty returns a handle to the
 		//		Animation instance, which fires the events common to Dojo FX. Use `dojo.connect`
-		//		to access these events outside of the Animation definiton:
+		//		to access these events outside of the Animation definition:
 		//	|	var anim = dojo.animateProperty({
 		//	|		node:"someId",
 		//	|		properties:{
@@ -533,7 +534,7 @@ define(["./kernel", "./lang", "../Evented", "./Color", "./connect", "./sniff", "
 		// example:
 		//		Each property can be a function whose return value is substituted along.
 		//		Additionally, each measurement (eg: start, end) can be a function. The node
-		//		reference is passed direcly to callbacks.
+		//		reference is passed directly to callbacks.
 		//	|	dojo.animateProperty({
 		//	|		node:"mine",
 		//	|		properties:{

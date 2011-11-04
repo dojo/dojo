@@ -1,11 +1,15 @@
-define(["../..", "./Read"], function(dojo) {
+define(["../../_base/declare", "./Read"], function(declare, Read) {
 	// module:
 	//		dojo/data/api/Notification
 	// summary:
 	//		TODOC
 
+/*=====
+Read = dojo.data.api.Read;
+=====*/
 
-dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
+
+return declare("dojo.data.api.Notification", Read, {
 	//	summary:
 	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines functions signatures and intentionally leaves all the
@@ -90,7 +94,7 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 		//			attribute:	"attribute-name-string",	//The attribute the new item was assigned to.
 		//			oldValue: something	//Whatever was the previous value for the attribute.
 		//						//If it is a single-value attribute only, then this value will be a single value.
-		//						//If it was a multi-valued attribute, then this will be an array of all the values minues the new one.
+		//						//If it was a multi-valued attribute, then this will be an array of all the values minus the new one.
 		//			newValue: something	//The new value of the attribute.  In the case of single value calls, such as setValue, this value will be
 		//						//generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes,
 		//						//it will be an array.
@@ -118,5 +122,4 @@ dojo.declare("dojo.data.api.Notification", dojo.data.api.Read, {
 	}
 });
 
-return dojo.data.api.Notification;
 });

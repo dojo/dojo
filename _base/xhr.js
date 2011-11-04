@@ -1,6 +1,7 @@
 define([
-	"./kernel", "./sniff", "require", "../io-query", "../dom", "../dom-form", "./Deferred", "./json", "./lang", "./array", "../on"
-], function(dojo, has, require, ioq, dom, domForm, deferred, json, lang, array, on){
+	"./kernel", "./sniff", "require", "../io-query", "../dom", "../dom-form", "./Deferred",
+	"./config", "./json", "./lang", "./array", "../on"
+], function(dojo, has, require, ioq, dom, domForm, deferred, config, json, lang, array, on){
 	//	module:
 	//		dojo/_base.xhr
 	// summary:
@@ -105,7 +106,7 @@ define([
 			//		use the standard `json` contentHandler, and prefix your "JSON" with: {}&&
 			//
 			//		use djConfig.useCommentedJson = true to turn off the notice
-			if(!dojo.config.useCommentedJson){
+			if(!config.useCommentedJson){
 				console.warn("Consider using the standard mimetype:application/json."
 					+ " json-commenting can introduce security issues. To"
 					+ " decrease the chances of hijacking, use the standard the 'json' handler and"
@@ -349,7 +350,7 @@ define([
 
 		var ioArgs = {args: args, url: args.url};
 
-		//Get values from form if requestd.
+		//Get values from form if requested.
 		var formObject = null;
 		if(args.form){
 			var form = dom.byId(args.form);
@@ -427,7 +428,7 @@ define([
 		d.ioArgs = ioArgs;
 
 		// FIXME: need to wire up the xhr object's abort method to something
-		// analagous in the Deferred
+		// analogous in the Deferred
 		return d;
 	};
 
@@ -463,7 +464,7 @@ define([
 	};
 
 	// avoid setting a timer per request. It degrades performance on IE
-	// something fierece if we don't use unified loops.
+	// something fierce if we don't use unified loops.
 	var _inFlightIntvl = null;
 	var _inFlight = [];
 
@@ -494,7 +495,7 @@ define([
 		// first sync call ends the browser hangs
 		if(!dojo._blockAsync){
 			// we need manual loop because we often modify _inFlight (and therefore 'i') while iterating
-			// note: the second clause is an assigment on purpose, lint may complain
+			// note: the second clause is an assignment on purpose, lint may complain
 			for(var i = 0, tif; i < _inFlight.length && (tif = _inFlight[i]); i++){
 				var dfd = tif.dfd;
 				var func = function(){
@@ -518,7 +519,7 @@ define([
 						}
 					}
 				};
-				if(dojo.config.debugAtAllCosts){
+				if(config.debugAtAllCosts){
 					func.call(this);
 				}else{
 //					try{
@@ -637,7 +638,7 @@ define([
 	};
 
 	/*=====
-	dojo.declare("dojo.__XhrArgs", dojo.__IoArgs, {
+	declare("dojo.__XhrArgs", dojo.__IoArgs, {
 		constructor: function(){
 			//	summary:
 			//		In addition to the properties listed for the dojo._IoArgs type,
@@ -713,7 +714,7 @@ define([
 				if(hdr.toLowerCase() === "content-type" && !args.contentType){
 					args.contentType = args.headers[hdr];
 				}else if(args.headers[hdr]){
-					//Only add header if it has a value. This allows for instnace, skipping
+					//Only add header if it has a value. This allows for instance, skipping
 					//insertion of X-Requested-With by specifying empty value.
 					xhr.setRequestHeader(hdr, args.headers[hdr]);
 				}
@@ -728,7 +729,7 @@ define([
 		}
 		// FIXME: set other headers here!
 		dojo._ioNotifyStart(dfd);
-		if(dojo.config.debugAtAllCosts){
+		if(config.debugAtAllCosts){
 			xhr.send(ioArgs.query);
 		}else{
 			try{
@@ -751,7 +752,7 @@ define([
 
 	dojo.rawXhrPost = dojo.xhrPost = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
-		//		Sends an HTTP POST request to the server. In addtion to the properties
+		//		Sends an HTTP POST request to the server. In addition to the properties
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
 		//	postData:
 		//		String. Send raw data in the body of the POST request.
@@ -760,7 +761,7 @@ define([
 
 	dojo.rawXhrPut = dojo.xhrPut = function(/*dojo.__XhrArgs*/ args){
 		//	summary:
-		//		Sends an HTTP PUT request to the server. In addtion to the properties
+		//		Sends an HTTP PUT request to the server. In addition to the properties
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
 		//	putData:
 		//		String. Send raw data in the body of the PUT request.

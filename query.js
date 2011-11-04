@@ -1,4 +1,5 @@
-define(["./_base/kernel", "./has", "./on", "./_base/array", "./_base/lang", "./selector/_loader", "./selector/_loader!default"], function(dojo, has, on, array, lang, loader, defaultEngine){
+define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/lang", "./selector/_loader", "./selector/_loader!default"],
+	function(dojo, has, dom, on, array, lang, loader, defaultEngine){
 "use strict";
 
 	has.add("array-extensible", function(){
@@ -200,7 +201,7 @@ define(["./_base/kernel", "./has", "./on", "./_base/array", "./_base/lang", "./s
 		nodeArray._NodeListCtor = function(array){
 			// call without new operator to preserve back-compat behavior
 			return nl(array);
-		}
+		};
 		return nodeArray;
 	};
 	
@@ -647,7 +648,7 @@ function queryForEngine(engine, NodeList){
 		//		entire document by default but optionally taking a node to scope
 		//		the search by. Returns an instance of dojo.NodeList.
 		if(typeof root == "string"){
-			root = dojo.byId(root);
+			root = dom.byId(root);
 			if(!root){
 				return new NodeList([]);
 			}
@@ -669,7 +670,7 @@ function queryForEngine(engine, NodeList){
 		// summary:
 		//		Filters an array of nodes. Note that this does not guarantee to return a dojo.NodeList, just an array.
 		return query(selector, root).filter(function(node){
-			return dojo.indexOf(nodes, node) > -1;
+			return array.indexOf(nodes, node) > -1;
 		});
 	};
 	if(typeof engine != "function"){

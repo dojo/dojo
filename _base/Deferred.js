@@ -1,4 +1,4 @@
-define(["./kernel", "./lang"], function(dojo, lang){
+define(["./kernel", "./config", "./lang"], function(dojo, config, lang){
 	// module:
 	//		dojo/_base/Deferred
 	// summary:
@@ -213,7 +213,7 @@ define(["./kernel", "./lang"], function(dojo, lang){
 			complete(error);
 			this.results = [null, error];
 			if(!error || error.log !== false){
-				(dojo.config.deferredOnError || function(x){ console.error(x); })(error);
+				(config.deferredOnError || function(x){ console.error(x); })(error);
 			}
 		};
 		// call progress to provide updates on the progress on the completion of the promise

@@ -1,15 +1,19 @@
-define(["../..", "./Read"], function(dojo) {
-	// module:
-	//		dojo/data/api/Write
-	// summary:
-	//		TODOC
+define(["../../_base/declare", "./Read"], function(declare, Read) {
 
+// module:
+//		dojo/data/api/Write
+// summary:
+//		TODOC
 
-dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
+/*=====
+Read = dojo.data.api.Read;
+=====*/
+
+return declare("dojo.data.api.Write", Read, {
 	// summary:
 	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines function signatures and intentionally leaves all the
-	//		functionss unimplemented.
+	//		functions unimplemented.
 
 	getFeatures: function(){
 		// summary:
@@ -29,7 +33,7 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 		//		in the new item.  In addition, for stores that support hierarchical item
 		//		creation, an optional second parameter is accepted that defines what item is the parent
 		//		of the new item and what attribute of that item should the new item be assigned to.
-		//		In general, this will assume that the attribute targetted is multi-valued and a new item
+		//		In general, this will assume that the attribute targeted is multi-valued and a new item
 		//		is appended onto the list of values for that attribute.
 		//
 		// keywordArgs:
@@ -217,5 +221,4 @@ dojo.declare("dojo.data.api.Write", dojo.data.api.Read, {
 	}
 });
 
-return dojo.data.api.Write;
 });

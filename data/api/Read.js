@@ -1,11 +1,11 @@
-define(["../..", "./Request"], function(dojo) {
+define(["../../_base/declare"], function(declare) {
 	// module:
 	//		dojo/data/api/Read
 	// summary:
 	//		TODOC
 
 
-dojo.declare("dojo.data.api.Read", null, {
+return declare("dojo.data.api.Read", null, {
 	// summary:
 	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines methods signatures and intentionally leaves all the
@@ -246,7 +246,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		//		an attribute named attrFoo, with a value that starts with 'value'.
 		//
 		//	The *queryOptions* parameter
-		//		The queryOptions parameter is an optional parameter used to specify optiosn that may modify
+		//		The queryOptions parameter is an optional parameter used to specify options that may modify
 		//		the query in some fashion, such as doing a case insensitive search, or doing a deep search
 		//		where all items in a hierarchical representation of data are scanned instead of just the root
 		//		items.  It currently defines two options that all datastores should attempt to honor if possible:
@@ -414,7 +414,7 @@ dojo.declare("dojo.data.api.Read", null, {
 		// description:
 		//		The close() method is intended for instructing the store to 'close' out
 		//		any information associated with a particular request.  In general, this API
-		//		expects to recieve as a parameter a request object returned from a fetch.
+		//		expects to receive as a parameter a request object returned from a fetch.
 		//		It will then close out anything associated with that request, such as
 		//		clearing any internal datastore caches and closing any 'open' connections.
 		//		For some store implementations, this call may be a no-op.
@@ -481,5 +481,4 @@ dojo.declare("dojo.data.api.Read", null, {
 	}
 });
 
-return dojo.data.api.Read;
 });

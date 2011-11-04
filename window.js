@@ -1,12 +1,22 @@
-define(["./_base/kernel", "./_base/lang", "./_base/sniff", "./_base/window", "./dom", "./dom-geometry", "./dom-style"], function(dojo, lang, has, baseWindow, dom, geom, style) {
-	// module:
-	//		dojo/window
+define(["./_base/lang", "./_base/sniff", "./_base/window", "./dom", "./dom-geometry", "./dom-style"],
+	function(lang, has, baseWindow, dom, geom, style) {
+
+// module:
+//		dojo/window
+// summary:
+//		TODOC
+
+var window = lang.getObject("dojo.window", true);
+
+/*=====
+dojo.window = {
 	// summary:
-	//		TODOC
+	//		TODO
+};
+window = dojo.window;
+=====*/
 
-lang.getObject("window", true, dojo);
-
-dojo.window.getBox = function(){
+window.getBox = function(){
 	// summary:
 	//		Returns the dimensions and scroll position of the viewable area of a browser window
 
@@ -25,7 +35,7 @@ dojo.window.getBox = function(){
 	};
 };
 
-dojo.window.get = function(doc){
+window.get = function(doc){
 	// summary:
 	// 		Get window object associated with document doc
 
@@ -49,7 +59,7 @@ dojo.window.get = function(doc){
 	return doc.parentWindow || doc.defaultView;	//	Window
 };
 
-dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
+window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 	// summary:
 	//		Scroll the passed node into view, if it is not already.
 
@@ -145,5 +155,5 @@ dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 	}
 };
 
-return dojo.window;
+return window;
 });

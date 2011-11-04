@@ -1,22 +1,22 @@
-define(["./_base/kernel", "./_base/lang", "./_base/sniff", "./dom", "./dom-construct", "./_base/window", "require"], function(dojo, lang, sniff, dom, domConstruct, baseWindow, require) {
+define(["./_base/config", "./_base/lang", "./_base/sniff", "./dom", "./dom-construct", "./_base/window", "require"],
+	function(config, lang, sniff, dom, domConstruct, baseWindow, require) {
 	// module:
 	//		dojo/back
 	// summary:
 	//		TODOC
 
-	lang.getObject("back", true, dojo);
+	var back = lang.getObject("dojo.back", true);
 
 /*=====
 dojo.back = {
 	// summary: Browser history management resources
 };
+var back = dojo.back;
 =====*/
-
-	var back = dojo.back,
 
 	// everyone deals with encoding the hash slightly differently
 
-	getHash = back.getHash = function(){
+	var getHash = back.getHash = function(){
 		var h = window.location.hash;
 		if(h.charAt(0) == "#"){ h = h.substring(1); }
 		return sniff("mozilla") ? h : decodeURIComponent(h);
@@ -99,7 +99,7 @@ dojo.back = {
 
 	function loadIframeHistory(){
 		//summary: private method. Do not call this directly.
-		var url = (dojo.config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html")) + "?" + (new Date()).getTime();
+		var url = (config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
 		if(historyIframe){
 			sniff("webkit") ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
@@ -152,8 +152,8 @@ dojo.back = {
 		// prevent reinit
 		if(dom.byId("dj_history")){ return; } 
 
-		var src = dojo.config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html");
-		if (dojo._postLoad) {
+		var src = config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html");
+		if (config.afterOnLoad) {
 			console.error("dojo.back.init() must be called before the DOM has loaded. "
 						+ "If using xdomain loading or djConfig.debugAtAllCosts, include dojo.back "
 						+ "in a build layer.");
@@ -188,7 +188,7 @@ dojo.back = {
 		//	forward: Function?
 		//		Upon return to this state from the "back, forward" combination
 		//		of navigation steps, this function will be called. Somewhat
-		//		analgous to the semantic of an "onRedo" event handler.
+		//		analogous to the semantic of an "onRedo" event handler.
 		//	changeUrl: Boolean?|String?
 		//		Boolean indicating whether or not to create a unique hash for
 		//		this state. If a string is passed instead, it is used as the
@@ -267,7 +267,7 @@ dojo.back = {
 		var hash = null;
 		var url = null;
 		if(!historyIframe){
-			if(dojo.config["useXDomain"] && !dojo.config["dojoIframeHistoryUrl"]){
+			if(config["useXDomain"] && !config["dojoIframeHistoryUrl"]){
 				console.warn("dojo.back: When using cross-domain Dojo builds,"
 					+ " please save iframe_history.html to your domain and set djConfig.dojoIframeHistoryUrl"
 					+ " to the path on your domain to iframe_history.html");
@@ -392,6 +392,6 @@ dojo.back = {
 		}
 	};
 
-	return dojo.back;
+	return back;
 	
 });

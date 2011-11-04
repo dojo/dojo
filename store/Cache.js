@@ -5,10 +5,8 @@ define(["../_base/lang","../_base/Deferred"
 	// summary:
 	//		TODOC
 
-var store = lang.getObject("dojo.store", true);
-
 /*=====
-dojo.declare("dojo.store.__CacheArgs", null, {
+declare("dojo.store.__CacheArgs", null, {
 	constructor: function(){
 		// summary:
 		//		These are additional options for how caching is handled.
@@ -20,7 +18,7 @@ dojo.declare("dojo.store.__CacheArgs", null, {
 	}
 });
 =====*/
-store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*/ options){
+var Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*/ options){
 	// summary:
 	//		The Cache store wrapper takes a master store and a caching store,
 	//		caches data from the master into the caching store for faster
@@ -81,8 +79,10 @@ store.Cache = function(masterStore, cachingStore, /*dojo.store.__CacheArgs*/ opt
 		}
 	});
 };
+lang.setObject("dojo.store.Cache", Cache);
+
 /*=====
-dojo.declare("dojo.store.Cache", null, {
+declare("dojo.store.Cache", null, {
 	// example:
 	//	|	var master = new dojo.store.Memory(data);
 	//	|	var cacher = new dojo.store.Memory();
@@ -144,5 +144,5 @@ dojo.declare("dojo.store.Cache", null, {
 	}
 });
 =====*/
-return store.Cache;
+return Cache;
 });

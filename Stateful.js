@@ -1,10 +1,10 @@
-define(["./_base/kernel", "./_base/declare", "./_base/lang", "./_base/array"], function(dojo, declare, lang, array) {
+define(["./_base/declare", "./_base/lang", "./_base/array"], function(declare, lang, array) {
 	// module:
 	//		dojo/Stateful
 	// summary:
 	//		TODOC
 
-return dojo.declare("dojo.Stateful", null, {
+return declare("dojo.Stateful", null, {
 	// summary:
 	//		Base class for objects that provide named properties with optional getter/setter
 	//		control and the ability to watch for property changes

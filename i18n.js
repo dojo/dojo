@@ -1,4 +1,5 @@
-define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "./_base/xhr"], function(dojo, require, has, array, lang) {
+define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./_base/xhr"],
+	function(dojo, require, has, array, config, lang, xhr) {
 	// module:
 	//		dojo/i18n
 	// summary:
@@ -62,7 +63,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 		},
 
 		doLoad = function(require, bundlePathAndName, bundlePath, bundleName, locale, load){
-			// get the root bundle which instructs which other bundles are required to contruct the localized bundle
+			// get the root bundle which instructs which other bundles are required to construct the localized bundle
 			require([bundlePathAndName], function(root){
 				var
 					current= cache[bundlePathAndName + "/"]= lang.clone(root.root),
@@ -84,7 +85,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 			var match= nlsRe.exec(id),
 				bundlePath= match[1];
 			return /^\./.test(bundlePath) ? toAbsMid(bundlePath) + "/" +  id.substring(bundlePath.length) : id;
-		};
+		},
 
 		load = function(id, require, load){
 			// note: id is always absolute
@@ -106,11 +107,11 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 					doLoad(require, bundlePathAndName, bundlePath, bundleName, targetLocale, load);
 				}
 				return;
-			}// else a non-locale-specific request; therefore always load dojo.locale + dojo.config.extraLocale
+			}// else a non-locale-specific request; therefore always load dojo.locale + config.extraLocale
 
-			// notice the subtle algorithm that loads targeLocal last, which is the only doLoad application that passes a value for the load callback
+			// notice the subtle algorithm that loads targetLocal last, which is the only doLoad application that passes a value for the load callback
 			// this makes the sync loader follow a clean code path that loads extras first and then proceeds with tracing the current deps graph
-			var extra = dojo.config.extraLocale || [];
+			var extra = config.extraLocale || [];
 			extra = lang.isArray(extra) ? extra : [extra];
 			extra.push(targetLocale);
 			array.forEach(extra, function(locale){
@@ -138,7 +139,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 
 			syncRequire= function(deps, callback){
 				var results= [];
-				dojo.forEach(deps, function(mid){
+				array.forEach(deps, function(mid){
 					var url= require.toUrl(mid + ".js");
 					if(cache[url]){
 						results.push(cache[url]);
@@ -152,7 +153,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 							}
 						}catch(e){}
 
-						dojo.xhrGet({
+						xhr.get({
 							url:url,
 							sync:true,
 							load:function(text){

@@ -197,7 +197,7 @@ var Source = declare("dojo.dnd.Source", Selector, {
 		// summary:
 		//		prepares the object to be garbage-collected
 		Source.superclass.destroy.call(this);
-		array.forEach(this.topics, topic.unsubscribe);
+		array.forEach(this.topics, function(t){t.remove();});
 		this.targetAnchor = null;
 	},
 

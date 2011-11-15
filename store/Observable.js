@@ -58,7 +58,7 @@ return ds.Observable = function(store){
 			var queryExecutor = store.queryEngine && store.queryEngine(query, nonPagedOptions);
 			var queryRevision = revision;
 			var listeners = [], queryUpdater;
-			results.observe = function(listener, includeObjectUpdates){
+			results.observe = function(listener, includeObjectUpdates, resultsBefore){
 				if(listeners.push(listener) == 1){
 					// first listener was added, create the query checker and updater
 					queryUpdaters.push(queryUpdater = function(changed, existingId){
@@ -96,15 +96,20 @@ return ds.Observable = function(store){
 									insertedInto = array.indexOf(queryExecutor(resultsArray), changed); // sort it
 									// we now need to push the chagne back into the original results array
 									resultsArray.splice(firstInsertedInto, 1); // remove the inserted item from the previous index
-									resultsArray.splice(insertedInto, 0, changed); // and insert into the results array with the correct index
 									
-									if((options.start && insertedInto == 0) ||
+									if((options.start && insertedInto == 0 && !(resultsBefore && resultsBefore._beyond == changed)) ||
 										(!atEnd && insertedInto == resultsArray.length -1)){
 										// if it is at the end of the page, assume it goes into the prev or next page
+										if(insertedInto){
+											// indicate that we rejected this one
+											resultsArray._beyond = changed;
+										}
 										insertedInto = -1;
+									}else{
+										resultsArray.splice(insertedInto, 0, changed); // and insert into the results array with the correct index
 									}
 								}
-							}else if(changed){
+							}else if(changed && !options.start){
 								// we don't have a queryEngine, so we can't provide any information
 								// about where it was inserted, but we can at least indicate a new object
 								insertedInto = removedFrom >= 0 ? removedFrom : (store.defaultIndex || 0);

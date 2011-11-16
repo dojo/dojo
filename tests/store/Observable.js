@@ -131,7 +131,6 @@ dojo.require("dojo.store.Observable");
 				bigStore.remove(101);
 				t.is(observations.length, 2);
 				t.is(results[0].length, 25);
-				debugger;
 				bigStore.add({id: 102, name: "one oh two", order: 24.5});
 				t.is(results[0].length, 25);
 				t.is(results[1].length, 26);

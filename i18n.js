@@ -114,8 +114,17 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			var extra = config.extraLocale || [];
 			extra = lang.isArray(extra) ? extra : [extra];
 			extra.push(targetLocale);
+			var remaining = extra.length,
+				targetBundle;
 			array.forEach(extra, function(locale){
-				doLoad(require, bundlePathAndName, bundlePath, bundleName, locale, locale==targetLocale && load);
+				doLoad(require, bundlePathAndName, bundlePath, bundleName, locale, function(bundle){
+					if(locale == targetLocale){
+						targetBundle = bundle;
+					}
+					if(!--remaining){
+						load(targetBundle);
+					}
+				});
 			});
 		};
 

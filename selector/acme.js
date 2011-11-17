@@ -1472,7 +1472,7 @@ define([
 				(parts.length == 1 && !/[^\w#\.]/.test(filter)) ?
 				getSimpleFilterFunc(parts[0]) :
 				function(node){
-					return array.indexOf(query(filter, dojo.byId(root)), node) != -1;
+					return array.indexOf(query(filter, root), node) != -1;
 				};
 		for(var x = 0, te; te = nodeList[x]; x++){
 			if(filterFunc(te)){ tmpNodeList.push(te); }

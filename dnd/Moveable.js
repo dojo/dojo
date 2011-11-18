@@ -1,7 +1,7 @@
 define([
 	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event",
-	"../dom", "../dom-class", "../Evented", "../topic", "../touch", "./common", "./Mover"
-], function(array, connect, declare, event, dom, domClass, Evented, topic, touch, dnd, Mover) {
+	"../dom", "../dom-class", "../Evented", "../topic", "../touch", "./common", "./Mover", "../_base/window"
+], function(array, connect, declare, event, dom, domClass, Evented, topic, touch, dnd, Mover, win) {
 
 // module:
 //		dojo/dnd/Moveable
@@ -136,14 +136,14 @@ return declare("dojo.dnd.Moveable", [Evented], {
 		// summary:
 		//		called before every move operation
 		topic.publish("/dnd/move/start", mover);
-		domClass.add(dojo.body(), "dojoMove");
+		domClass.add(win.body(), "dojoMove");
 		domClass.add(this.node, "dojoMoveItem");
 	},
 	onMoveStop: function(/* dojo.dnd.Mover */ mover){
 		// summary:
 		//		called after every move operation
 		topic.publish("/dnd/move/stop", mover);
-		domClass.remove(dojo.body(), "dojoMove");
+		domClass.remove(win.body(), "dojoMove");
 		domClass.remove(this.node, "dojoMoveItem");
 	},
 	onFirstMove: function(/*===== mover, e =====*/){

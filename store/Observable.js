@@ -58,13 +58,13 @@ return ds.Observable = function(store){
 			var queryExecutor = store.queryEngine && store.queryEngine(query, nonPagedOptions);
 			var queryRevision = revision;
 			var listeners = [], queryUpdater;
-			results.observe = function(listener, includeObjectUpdates, resultsBefore){
+			results.observe = function(listener, includeObjectUpdates){
 				if(listeners.push(listener) == 1){
 					// first listener was added, create the query checker and updater
 					queryUpdaters.push(queryUpdater = function(changed, existingId){
 						Deferred.when(results, function(resultsArray){
 							var atEnd = resultsArray.length != options.count;
-							var i, l;
+							var i, l, listener;
 							if(++queryRevision != revision){
 								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
 							}
@@ -97,13 +97,9 @@ return ds.Observable = function(store){
 									// we now need to push the chagne back into the original results array
 									resultsArray.splice(firstInsertedInto, 1); // remove the inserted item from the previous index
 									
-									if((options.start && insertedInto == 0 && !(resultsBefore && resultsBefore._beyond == changed)) ||
-										(!atEnd && insertedInto == resultsArray.length -1)){
+									if((options.start && insertedInto == 0) ||
+										(!atEnd && insertedInto == resultsArray.length)){
 										// if it is at the end of the page, assume it goes into the prev or next page
-										if(insertedInto){
-											// indicate that we rejected this one
-											resultsArray._beyond = changed;
-										}
 										insertedInto = -1;
 									}else{
 										resultsArray.splice(insertedInto, 0, changed); // and insert into the results array with the correct index
@@ -127,11 +123,14 @@ return ds.Observable = function(store){
 				return {
 					cancel: function(){
 						// remove this listener
-						listeners.splice(array.indexOf(listeners, listener), 1);
-						if(!listeners.length){
-							// no more listeners, remove the query updater too
-							queryUpdaters.splice(array.indexOf(queryUpdaters, queryUpdater), 1);
-						}
+						var index = array.indexOf(listeners, listener);
+						if(index > -1){ // check to make sure we haven't already called cancel
+							listeners.splice(index, 1);
+							if(!listeners.length){
+								// no more listeners, remove the query updater too
+								queryUpdaters.splice(array.indexOf(queryUpdaters, queryUpdater), 1);
+							}
+						}						
 					}
 				};
 			};

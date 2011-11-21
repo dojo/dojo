@@ -64,7 +64,7 @@ return declare("dojo.store.Memory", null, {
 		var data = this.data,
 			index = this.index,
 			idProperty = this.idProperty;
-		var id = (options && "id" in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
+		var id = object[idProperty] = (options && "id" in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
 		if(id in index){
 			// object exists
 			if(options && options.overwrite === false){

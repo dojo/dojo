@@ -98,6 +98,13 @@ dojo.require("dojo.store.Memory");
 				});
 				t.is(anotherStore.get("one").name,"one");
 				t.is(anotherStore.query({name:"one"})[0].name,"one");
+			},
+			function testAddNewIdAssignment(t){
+				var object = {
+					random: true
+				};
+				store.add(object);
+				t.t(!!object.id);
 			}
 		]
 	);

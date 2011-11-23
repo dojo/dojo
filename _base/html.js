@@ -14,7 +14,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 	dojo.setAttr = attr.set;
 	dojo.hasAttr = attr.has;
 	dojo.removeAttr = attr.remove;
-	dojo.getPropNode = attr.getNodeProp;
+	dojo.getNodeProp = attr.getNodeProp;
 
 	dojo.attr = function(node, name, value){
 		// summary:

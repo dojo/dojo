@@ -586,6 +586,10 @@
 						function testIframeDestroy10095(t){
 							var iframeWin = dojo.byId('10095_iframe').win;
 							doh.t(!iframeWin.document.getElementById('10095_textbox'), "reloaded iframe element destroyed");
+						},
+						function testGCSsvg(t){
+							var s = dojo.getComputedStyle(dojo.byId("rect1"));
+							doh.t(typeof s != "undefined", "dojo.getComputedStyle succeeded on an svg shape");
 						}
 					]
 				);
@@ -849,5 +853,10 @@
 		</div>
 
 		<div id="iframeContainer"></div>
+
+		<!-- SVG element to test dojo.getComputedStyle on IE9 (#14103) -->
+		<svg id="surface" xmlns="http://www.w3.org/2000/svg" width="100px" height="100px">
+			<rect id="rect1" fill="rgb(255, 0, 0)" x="0" y="0" width="80" height="60" ry="0" rx="0" fill-rule="evenodd"/>
+		</svg>
 	</body>
 </html>

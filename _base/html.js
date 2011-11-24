@@ -391,7 +391,7 @@ if(dojo.isIE || dojo.isOpera){
 			return s || {};
 		};
 	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	}else if(d.isIE){
+	}else if(d.isIE && (d.isIE < 9 || d.isQuirks)){
 		gcs = function(node){
 			// IE (as of 7) doesn't expose Element like sane browsers
 			return node.nodeType == 1 /* ELEMENT_NODE*/ ? node.currentStyle : {};

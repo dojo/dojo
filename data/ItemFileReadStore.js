@@ -222,6 +222,8 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 				if(possibleValue.toString().match(regexp)){
 					return true; // Boolean
 				}
+			}else if(typeof value === "function"){
+				return value(possibleValue);
 			}else if(value === possibleValue){
 				return true; // Boolean
 			}

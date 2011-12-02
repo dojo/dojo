@@ -1,13 +1,16 @@
 define(["./aspect", "./on"], function(aspect, on){
+	// module:
+	//		dojo/Evented
 	// summary:
 	//		The export of this module is a class that can be used as a mixin or base class, 
 	// 		to add on() and emit() methods to a class
-	// 		for listening for events and emiting events:
-	// 		|define(["dojo/Evented"], function(Evented){
-	// 		|	var EventedWidget = dojo.declare([Evented, dijit._Widget], {...});
-	//		|	widget = new EventedWidget();
-	//		|	widget.on("open", function(event){
-	//		|	... do something with event
+	// 		for listening for events and emitting events:
+	//
+	// 		|	define(["dojo/Evented"], function(Evented){
+	// 		|		var EventedWidget = dojo.declare([Evented, dijit._Widget], {...});
+	//		|		widget = new EventedWidget();
+	//		|		widget.on("open", function(event){
+	//		|		... do something with event
 	//		|	 });
 	//		|
 	//		|	widget.emit("open", {name:"some event", ...});

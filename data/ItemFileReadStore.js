@@ -67,17 +67,22 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 		this._reverseRefMap = "_RRM"; // Default attribute for constructing a reverse reference map for use with reference integrity
 		this._loadInProgress = false; //Got to track the initial load to prevent duelling loads of the dataset.
 		this._queuedFetches = [];
-		if(keywordParameters.urlPreventCache !== undefined){
-			this.urlPreventCache = keywordParameters.urlPreventCache?true:false;
-		}
-		if(keywordParameters.hierarchical !== undefined){
-			this.hierarchical = keywordParameters.hierarchical?true:false;
-		}
-		if(keywordParameters.clearOnClose){
-			this.clearOnClose = true;
-		}
-		if("failOk" in keywordParameters){
-			this.failOk = keywordParameters.failOk?true:false;
+		if(keywordParameters){
+			if(keywordParameters.urlPreventCache !== undefined){
+				this.urlPreventCache = keywordParameters.urlPreventCache?true:false;
+			}
+			if(keywordParameters.hierarchical !== undefined){
+				this.hierarchical = keywordParameters.hierarchical?true:false;
+			}
+			if(keywordParameters.clearOnClose){
+				this.clearOnClose = true;
+			}
+			if(keywordParameters.hasOwnProperty("failOk")){
+				this.failOk = keywordParameters.failOk?true:false;
+			}
+			if(keywordParameters.hasOwnProperty("headers")){
+				this.headers = keywordParameters.headers;
+			}
 		}
 	},
 
@@ -111,6 +116,11 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	//as items, all child objects outside of type-mapped objects and those in
 	//specific reference format, are left straight JS data objects.
 	hierarchical: true,
+	
+	// headers: [public] Object
+	//		Any additional headers to pass to the fetch.
+	//		Defaults now to application/json for accepts.
+	headers: { "Accepts": "application/json" },
 
 	_assertIsItem: function(/* item */ item){
 		//	summary:
@@ -361,6 +371,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 							url: self._jsonFileUrl,
 							handleAs: "json-comment-optional",
 							preventCache: this.urlPreventCache,
+							headers: this.headers,
 							failOk: this.failOk
 						};
 					var getHandler = xhr.get(getArgs);

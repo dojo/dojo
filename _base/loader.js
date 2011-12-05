@@ -534,6 +534,16 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 				// the module value synchronously; make sure it gets executed though
 				execQ.push(module);
 			}
+
+			if(has("config-publishRequireResult")){
+				dojo.ready(function(){
+					var result = dojo.require(mid);
+					if(!lang.exists(moduleName) && result!==undefined){
+						lang.setObject(moduleName, result);
+					}
+				});
+			}
+
 			return undefined;
 		}
 

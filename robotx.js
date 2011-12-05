@@ -6,17 +6,25 @@ dojo.experimental("dojo.robotx");
 // to use: set robotURL in djConfig to the URL you want to load
 // dojo.require this file
 
+// The iframe containing the external app
 var iframe = null;
+
+// If initRobot() is called before robot has finished initializing, then this is a flag that
+// when robot finishes initializing it should create the iframe and point it to this URL.
+var iframeUrl;
 
 var groupStarted=dojo.connect(doh, '_groupStarted', function(){
 	dojo.disconnect(groupStarted);
 	iframe.style.visibility="visible";
 });
 
-var attachIframe = function(){
-	dojo.addOnLoad(function(){
+var attachIframe = function(url){
+	// summary:
+	//		Create iframe to load external app at specified url, and call iframeLoad() when that URL finishes loading
+
+	dojo.ready(function(){
 		var emptyStyle = {
-			overflow: dojo.isWebKit? 'hidden' : 'visible',
+			overflow: dojo.isWebKit ? 'hidden' : 'visible',
 			margin: '0px',
 			borderWidth: '0px',
 			height: '100%',
@@ -24,7 +32,32 @@ var attachIframe = function(){
 		};
 		dojo.style(document.documentElement, emptyStyle);
 		dojo.style(document.body, emptyStyle);
+
+		// write the iframe
+		iframe = document.createElement('iframe');
+		iframe.src = url;
+		iframe.setAttribute("ALLOWTRANSPARENCY","true");
+		iframe.scrolling = dojo.isIE? "yes" : "auto";
+		var scrollRoot = (document.compatMode == 'BackCompat')? document.body : document.documentElement;
+		var consoleHeight = document.getElementById('robotconsole').offsetHeight;
+		dojo.style(iframe, {
+			visibility:'hidden',
+			border:'0px none',
+			padding:'0px',
+			margin:'0px',
+			position:'absolute',
+			left:'0px',
+			top:'0px',
+			width:'100%',
+			height: consoleHeight ? (scrollRoot.clientHeight - consoleHeight)+"px" : "100%"
+		});
+		if(iframe['attachEvent'] !== undefined){
+			iframe.attachEvent('onload', iframeLoad);
+		}else{
+			dojo.connect(iframe, 'onload', iframeLoad);
+		}
 		document.body.appendChild(iframe);
+
 		var base=document.createElement('base');
 		base.href=iframe.src;
 		document.getElementsByTagName("head")[0].appendChild(base);
@@ -37,13 +70,14 @@ var robotReady=false;
 var robotFrame=null;
 var _run=doh.robot._run;
 doh.robot._run = function(frame){
-	// Called from robot when the robot completed its initialization.
+	// Called from robot when the robot has completed its initialization.
 	robotReady = true;
 	robotFrame = frame;
 	doh.robot._run = _run;
+
 	// If initRobot was already called, then attach the iframe.
-	if(iframe.src){
-		attachIframe();
+	if(iframeUrl){
+		attachIframe(iframeUrl);
 	}
 };
 
@@ -51,15 +85,11 @@ var onIframeLoad=function(){
 	// initial load handler: update the document and start the tests
 	doh.robot._updateDocument();
 	onIframeLoad = null;
-	var scrollRoot = (document.compatMode == 'BackCompat')? document.body : document.documentElement;
-	var consoleHeight = document.getElementById('robotconsole').offsetHeight;
-	if(consoleHeight){
-		iframe.style.height = (scrollRoot.clientHeight - consoleHeight)+"px";
-	}
+
 	// If dojo is present in the test case, then at least make a best effort to wait for it to load.
 	// The test must handle other race conditions like initial data queries by itself.
 	if(iframe.contentWindow.dojo){
-		iframe.contentWindow.dojo.addOnLoad(function(){
+		iframe.contentWindow.dojo.ready(999, function(){
 			doh.robot._run(robotFrame);
 		});
 	}else{
@@ -67,7 +97,7 @@ var onIframeLoad=function(){
 	}
 };
 
-var iframeLoad=function(){
+var iframeLoad = function(){
 	if(onIframeLoad){
 		onIframeLoad();
 	}
@@ -82,18 +112,6 @@ var iframeLoad=function(){
 dojo.config.debugContainerId = "robotconsole";
 dojo.config.debugHeight = dojo.config.debugHeight || 200;
 document.write('<div id="robotconsole" style="position:absolute;left:0px;bottom:0px;width:100%;"></div>');
-
-// write the iframe
-//document.writeln('<iframe id="robotapplication" style="visibility:hidden; border:0px none; padding:0px; margin:0px; position:absolute; left:0px; top:0px; width:100%; height:100%; z-index: 1;" src="'+dojo.config.robotURL+'" onload="iframeLoad();" ></iframe>');
-iframe = document.createElement('iframe');
-iframe.setAttribute("ALLOWTRANSPARENCY","true");
-iframe.scrolling = dojo.isIE? "yes" : "auto";
-dojo.style(iframe,{visibility:'hidden', border:'0px none', padding:'0px', margin:'0px', position:'absolute', left:'0px', top:'0px', width:'100%', height:'100%'});
-if(iframe['attachEvent'] !== undefined){
-	iframe.attachEvent('onload', iframeLoad);
-}else{
-	dojo.connect(iframe, 'onload', iframeLoad);
-}
 
 dojo.mixin(doh.robot,{
 	_updateDocument: function(){
@@ -111,16 +129,15 @@ dojo.mixin(doh.robot,{
 	initRobot: function(/*String*/ url){
 		// summary:
 		//		Opens the application at the specified URL for testing, redirecting dojo to point to the application environment instead of the test environment.
-		//
 		// url:
 		//		URL to open. Any of the test's dojo.doc calls (e.g. dojo.byId()), and any dijit.registry calls (e.g. dijit.byId()) will point to elements and widgets inside this application.
-		//
 
-		iframe.src=url;
-		// see above note about race conditions
 		if(robotReady){
-			attachIframe();
-
+			// If robot has already finished loading then create iframe pointing to specified URL
+			attachIframe(url);
+		}else{
+			// Otherwise, set flag for robot to call attachIframe() when robot finishes initializing
+			iframeUrl = url;
 		}
 	},
 

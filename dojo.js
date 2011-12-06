@@ -201,12 +201,12 @@
 		getXhr;
 	if(has("dojo-sync-loader")){
 		req.isXdUrl = noop;
-		req.initSyncLoader = function(dojoRequirePlugin_, checkDojoRequirePlugin_, transformToAmd_, isXdUrl_){
+
+		req.initSyncLoader = function(dojoRequirePlugin_, checkDojoRequirePlugin_, transformToAmd_){
 			if(!dojoRequirePlugin){
 				dojoRequirePlugin = dojoRequirePlugin_;
 				checkDojoRequirePlugin = checkDojoRequirePlugin_;
 				transformToAmd = transformToAmd_;
-				req.isXdUrl = isXdUrl_;
 			}
 			return {
 				sync:sync,
@@ -236,6 +236,23 @@
 			// when dojo/_base/loader pushes the sync loader machinery into the loader (via initSyncLoader), getText is
 			// replaced by dojo.getXhr() which allows for both sync and async op(and other features. It is not a problem
 			// depending on dojo for the sync loader since the sync loader will never be used without dojo.
+
+			var locationProtocol = location.protocol,
+				locationHost = location.host,
+				fileProtocol = !locationHost;
+			req.isXdUrl = function(url){
+				if(fileProtocol || /^\./.test(url)){
+					// begins with a dot is always relative to page URL; therefore not xdomain
+					return false;
+				}
+				if(/^\/\//.test(url)){
+					// for v1.6- backcompat, url starting with // indicates xdomain
+					return true;
+				}
+				// get protocol and host
+				var match = url.match(/^([^\/\:]+\:)\/\/([^\/]+)/);
+				return match && (match[1] != locationProtocol || match[2] != locationHost);
+			};
 
 			// note: to get the file:// protocol to work in FF, you must set security.fileuri.strict_origin_policy to false in about:config
 			has.add("dojo-xhr-factory", 1);

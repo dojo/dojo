@@ -1,5 +1,5 @@
 var testResourceRe = /^dojo\/tests\//,
-	copyOnly = function(mid){
+	copyOnly = function(filename, mid){
 		var list = {
 			"dojo/dojo.profile":1,
 			"dojo/package.json":1,
@@ -13,7 +13,7 @@ var testResourceRe = /^dojo\/tests\//,
 			"dojo/tests/_base/loader/requirejs/relative/relative-tests":1,
 			"dojo/tests/_base/loader/requirejs/exports/exports-tests":1
 		};
-		return (mid in list) || ((/^dojo\/_base\/config\w+$/.test(mid) || /^dojo\/resources\//.test(mid)) && !/\.css$/.test(mid));
+		return (mid in list) || /^dojo\/_base\/config\w+$/.test(mid) || (/^dojo\/resources\//.test(mid) && !/\.css$/.test(filename));
 	};
 
 var profile = {
@@ -23,11 +23,11 @@ var profile = {
 		},
 
 		copyOnly: function(filename, mid){
-			return copyOnly(mid);
+			return copyOnly(filename, mid);
 		},
 
 		amd: function(filename, mid){
-			return !testResourceRe.test(mid) && !copyOnly(mid) && /\.js$/.test(filename);
+			return !testResourceRe.test(mid) && !copyOnly(filename, mid) && /\.js$/.test(filename);
 		}
 	},
 

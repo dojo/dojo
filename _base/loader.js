@@ -505,6 +505,8 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			// if the module is a legacy module, this is the same as executing
 			// but if the module is an AMD module, this means defining, not executing
 			injectModule(module);
+			// the inject may have changed the mode
+			currentMode = getLegacyMode();
 
 			// in sync mode to dojo.require is to execute
 			if(module.executed!==executed && module.injected===arrived){
@@ -533,15 +535,6 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 				// the loader wasn't in sync mode on entry; probably async mode; therefore, no expectation of getting
 				// the module value synchronously; make sure it gets executed though
 				execQ.push(module);
-			}
-
-			if(has("config-publishRequireResult")){
-				dojo.ready(function(){
-					var result = dojo.require(mid);
-					if(!lang.exists(moduleName) && result!==undefined){
-						lang.setObject(moduleName, result);
-					}
-				});
 			}
 
 			return undefined;

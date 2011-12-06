@@ -525,6 +525,8 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			// if the module is a legacy module, this is the same as executing
 			// but if the module is an AMD module, this means defining, not executing
 			injectModule(module);
+			// the inject may have changed the mode
+			currentMode = getLegacyMode();
 
 			// in sync mode to dojo.require is to execute
 			if(module.executed!==executed && module.injected===arrived){

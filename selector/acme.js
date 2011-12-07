@@ -105,7 +105,7 @@ define([
 		if(specials.indexOf(query.slice(-1)) >= 0){
 			// if we end with a ">", "+", or "~", that means we're implicitly
 			// searching all children, so make it explicit
-			query += " * "
+			query += " * ";
 		}else{
 			// if you have not provided a terminator, one will be provided for
 			// you...
@@ -395,7 +395,7 @@ define([
 
 		return function(){
 			return first.apply(window, arguments) && second.apply(window, arguments);
-		}
+		};
 	};
 
 	var getArr = function(i, arr){
@@ -430,7 +430,7 @@ define([
 				//		an E element whose "foo" attribute value contains
 				//		the substring "bar"
 				return (_getAttr(elem, attr).indexOf(value)>=0);
-			}
+			};
 		},
 		"^=": function(attr, value){
 			// E[foo^="bar"]
@@ -438,7 +438,7 @@ define([
 			//		with the string "bar"
 			return function(elem){
 				return (_getAttr(elem, attr).indexOf(value)==0);
-			}
+			};
 		},
 		"$=": function(attr, value){
 			// E[foo$="bar"]
@@ -447,7 +447,7 @@ define([
 			return function(elem){
 				var ea = " "+_getAttr(elem, attr);
 				return (ea.lastIndexOf(value)==(ea.length-value.length));
-			}
+			};
 		},
 		"~=": function(attr, value){
 			// E[foo~="bar"]
@@ -460,7 +460,7 @@ define([
 			return function(elem){
 				var ea = " "+_getAttr(elem, attr)+" ";
 				return (ea.indexOf(tval)>=0);
-			}
+			};
 		},
 		"|=": function(attr, value){
 			// E[hreflang|="en"]
@@ -474,12 +474,12 @@ define([
 					(ea == value) ||
 					(ea.indexOf(valueDash)==0)
 				);
-			}
+			};
 		},
 		"=": function(attr, value){
 			return function(elem){
 				return (_getAttr(elem, attr) == value);
-			}
+			};
 		}
 	};
 
@@ -558,7 +558,7 @@ define([
 		"checked": function(name, condition){
 			return function(elem){
 				return !!("checked" in elem ? elem.checked : elem.selected);
-			}
+			};
 		},
 		"first-child": function(){ return _lookLeft; },
 		"last-child": function(){ return _lookRight; },
@@ -579,7 +579,7 @@ define([
 					if((nt === 1)||(nt == 3)){ return false; }
 				}
 				return true;
-			}
+			};
 		},
 		"contains": function(name, condition){
 			var cz = condition.charAt(0);
@@ -588,7 +588,7 @@ define([
 			}
 			return function(elem){
 				return (elem.innerHTML.indexOf(condition) >= 0);
-			}
+			};
 		},
 		"not": function(name, condition){
 			var p = getQueryParts(condition)[0];
@@ -602,7 +602,7 @@ define([
 			var ntf = getSimpleFilterFunc(p, ignores);
 			return function(elem){
 				return (!ntf(elem));
-			}
+			};
 		},
 		"nth-child": function(name, condition){
 			var pi = parseInt;
@@ -640,7 +640,7 @@ define([
 					return function(elem){
 						var i = getNodeIndex(elem);
 						return (i>=lb) && (ub<0 || i<=ub) && ((i % pred) == idx);
-					}
+					};
 				}else{
 					condition = idx;
 				}
@@ -648,7 +648,7 @@ define([
 			var ncount = pi(condition);
 			return function(elem){
 				return (getNodeIndex(elem) == ncount);
-			}
+			};
 		}
 	};
 
@@ -657,11 +657,11 @@ define([
 		if(clc == "class"){ cond = "className"; }
 		return function(elem){
 			return (caseSensitive ? elem.getAttribute(cond) : elem[cond]||elem[clc]);
-		}
+		};
 	} : function(cond){
 		return function(elem){
 			return (elem && elem.getAttribute && elem.hasAttribute(cond));
-		}
+		};
 	};
 
 	var getSimpleFilterFunc = function(query, ignores){
@@ -762,7 +762,7 @@ define([
 				break;
 			}
 			return ret;
-		}
+		};
 	};
 
 	var _nextSiblings = function(filterFunc){
@@ -780,7 +780,7 @@ define([
 				te = te[_ns];
 			}
 			return ret;
-		}
+		};
 	};
 
 	// get an array of child *elements*, skipping text and comment nodes
@@ -913,7 +913,7 @@ define([
 							return getArr(te, arr);
 						}
 					}
-				}
+				};
 			}else if(
 				ecs &&
 				// isAlien check. Workaround for Prototype.js being totally evil/dumb.
@@ -1048,13 +1048,13 @@ define([
 				var r = tef(root, []);
 				if(r){ r.nozip = true; }
 				return r;
-			}
+			};
 		}
 
 		// otherwise, break it up and return a runner that iterates over the parts recursively
 		return function(root){
 			return filterDown(root, qparts);
-		}
+		};
 	};
 
 	// NOTES:
@@ -1191,7 +1191,7 @@ define([
 					// default that way in the future
 					return getQueryFunc(query, true)(root);
 				}
-			}
+			};
 		}else{
 			// DOM branch
 			var parts = query.split(/\s*,\s*/);

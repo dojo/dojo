@@ -213,7 +213,7 @@ define(["./_base/sniff", "./dom"], function(has, dom){
 			s.left = sLeft;
 			rs.left = rsLeft;
 			return avalue;
-		}
+		};
 	}
 	//>>excludeEnd("webkitMobile");
 	style.toPixelValue = toPixel;

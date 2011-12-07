@@ -230,7 +230,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 				}
 			}
 			return every; // Boolean
-		}
+		};
 	}
 	// var every = everyOrSome(false), some = everyOrSome(true);
 
@@ -266,7 +266,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 				}
 			}
 			return -1; // Number
-		}
+		};
 	}
 	// var indexOf = index(true), lastIndexOf = index(false);
 

@@ -161,7 +161,7 @@ return declare("dojo.data.ObjectStore", [Evented],{
 						query[i].toString = (function(original){
 							return function(){
 								return original;
-							}
+							};
 						})(required);
 					}
 				}

@@ -29,5 +29,5 @@ define(["./Evented"], function(Evented){
 			//		A function to call when a message is published to the given topic
 			return hub.on.apply(hub, arguments);
 		}
-	}
+	};
 });

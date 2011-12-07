@@ -77,7 +77,7 @@ doh.register("tests.aspect",
 					a = original(a);
 					order.push(a);
 					return a+1;
-				}
+				};
 			});
 			order.push(obj.method(0));
 			obj.method(4);

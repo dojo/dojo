@@ -138,7 +138,7 @@ tests.register("tests._base.connect",
 		},
 		function args4Test(t){
 			// standard 4 args test
-			var ok, obj = { foo: function(){ok=false;}, bar: function(){ok=true} };
+			var ok, obj = { foo: function(){ok=false;}, bar: function(){ok=true;} };
 			dojo.connect(obj, "foo", obj, "bar");
 			obj.foo();
 			t.is(true, ok);
@@ -180,7 +180,7 @@ tests.register("tests._base.connect",
 		},
 		function scopeTest1(t){
 			var foo = { ok: true, foo: function(){this.ok=false;} };
-			var bar = { ok: false, bar: function(){this.ok=true} };
+			var bar = { ok: false, bar: function(){this.ok=true;} };
 			// link foo.foo to bar.bar with natural scope
 			var link = dojo.connect(foo, "foo", bar, "bar");
 			foo.foo();
@@ -189,7 +189,7 @@ tests.register("tests._base.connect",
 		},
 		function scopeTest2(t){
 			var foo = { ok: true, foo: function(){this.ok=false;} };
-			var bar = { ok: false, bar: function(){this.ok=true} };
+			var bar = { ok: false, bar: function(){this.ok=true;} };
 			// link foo.foo to bar.bar such that scope is always 'foo'
 			var link = dojo.connect(foo, "foo", bar.bar);
 			foo.foo();

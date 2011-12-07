@@ -100,7 +100,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			};
 			return handles;
 		}
-		return addListener(target, type, listener, dontFix, matchesTarget)
+		return addListener(target, type, listener, dontFix, matchesTarget);
 	};
 	var touchEvents = /^touch/;
 	function addListener(target, type, listener, dontFix, matchesTarget){		
@@ -356,8 +356,8 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			return function(evt){
 				evt = on._fixEvent(evt, this);
 				return listener.call(this, evt);
-			}
-		}
+			};
+		};
 		var fixAttach = function(target, type, listener){
 			listener = fixListener(listener);
 			if(((target.ownerDocument ? target.ownerDocument.parentWindow : target.parentWindow || target.window || window) != top || 

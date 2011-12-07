@@ -3060,7 +3060,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					}catch(e){
 						d.errback(e);
 					}
-				}
+				};
 				store.fetch({query: {value: "bar\*foo"}, onComplete: secondComplete, onError: error});
 			};
 			function error(error, request){

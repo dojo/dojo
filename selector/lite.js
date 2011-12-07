@@ -123,13 +123,13 @@ if(!has("dom-matches-selector")){
 			tagName = tagName[caseFix]();
 			return function(node){
 				return node.tagName == tagName;
-			}
+			};
 		}
 		function className(className){
 			var classNameSpaced = ' ' + className + ' ';
 			return function(node){
 				return node.className.indexOf(className) > -1 && (' ' + node.className + ' ').indexOf(classNameSpaced) > -1;
-			}
+			};
 		}
 		var attrComparators = {
 			"^=": function(attrValue, value){
@@ -163,7 +163,7 @@ if(!has("dom-matches-selector")){
 			return function(node){
 				var attrValue = node.getAttribute(name);
 				return attrValue && comparator(attrValue, value);
-			}
+			};
 		}
 		function ancestor(matcher){
 			return function(node, root){

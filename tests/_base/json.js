@@ -33,7 +33,7 @@ tests.register("tests._base.json",
 		},
 		// tricky json, using our JSON extensions
 		function dojoExtendedJson(t){
-			var testObj = {ex1:{b:3, json:function(){return "json" + this.b}}, ex2: {b:4, __json__:function(){return "__json__" + this.b}}};
+			var testObj = {ex1:{b:3, json:function(){return "json" + this.b;}}, ex2: {b:4, __json__:function(){return "__json__" + this.b;}}};
 			var testStr = dojo.toJson(testObj);
 			t.assertEqual('{"ex1":"json3","ex2":"__json__4"}', testStr);
 		},

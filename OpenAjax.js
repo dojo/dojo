@@ -186,7 +186,7 @@ if(!window["OpenAjax"]){
 			OpenAjax._cleanup = [];
 			OpenAjax._subIndex = 0;
 			OpenAjax._pubDepth = 0;
-		}
+		};
 	};
 	// Register the OpenAjax Hub itself as a library.
 	OpenAjax.hub.registerLibrary("OpenAjax", "http://openajax.org/hub", "0.6", {});

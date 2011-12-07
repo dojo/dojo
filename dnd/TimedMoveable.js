@@ -50,7 +50,7 @@ define(["../_base/declare", "./Moveable"], function(declare, Moveable) {
 				// stop timer
 				clearTimeout(mover._timer);
 				// reflect the last received position
-				oldOnMove.call(this, mover, mover._leftTop)
+				oldOnMove.call(this, mover, mover._leftTop);
 			}
 			Moveable.prototype.onMoveStop.apply(this, arguments);
 		},

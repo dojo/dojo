@@ -729,7 +729,7 @@ define(["./_base/sniff", "./_base/window","./dom", "./dom-style"],
 		return {
 			w: (size.right - size.left) + me.w,
 			h: (size.bottom - size.top) + me.h
-		}
+		};
 	};
 
 	geom.normalizeEvent = function(event){

@@ -213,7 +213,7 @@ define(["exports", "./_base/sniff", "./_base/lang", "./dom", "./dom-style", "./d
 			return node; // DomNode
 		}
 		if(forceProp || typeof value == "boolean" || lang.isFunction(value)){
-			return prop.set(node, name, value)
+			return prop.set(node, name, value);
 		}
 		// node's attribute
 		node.setAttribute(attrNames[lc] || name, value);

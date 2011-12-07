@@ -15,7 +15,7 @@ tests.register("tests.date.locale",
 				if(dojo.isAsync){
 					var def = new doh.Deferred(),
 						deps = dojo.map(partLocaleList, function(locale){
-							return dojo.getL10nName("dojo/cldr", "gregorian", locale)
+							return dojo.getL10nName("dojo/cldr", "gregorian", locale);
 						});
 					require(deps, function(){
 						def.callback(true);

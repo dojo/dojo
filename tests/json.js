@@ -11,37 +11,37 @@ define(["../main", "doh", "../json"], function(dojo, doh, JSON){
 
 	doh.register("tests.json", [
 		// all tests below are taken from #4.2 of the CSS3 Color Module
-		function simpleString(t){ t.is("bar", JSON.parse('{"foo":"bar"}').foo)},
-		function simpleTrue(t){ t.is(true, JSON.parse('{"foo":true}').foo)},
-		function simpleFalse(t){ t.is(false, JSON.parse('{"foo":false}').foo)},
-		function simpleNull(t){ t.is(null, JSON.parse('{"foo":null}').foo)},
-		function simpleNumber(t){ t.is(3.3, JSON.parse('{"foo":3.3}', true).foo)},
-		function strictString(t){ t.is("bar", JSON.parse('{"foo":"bar"}', true).foo)},
-		function strictStringEsc(t){ t.is("b\n\t\"ar()", JSON.parse('{"foo":"b\\n\\t\\"ar()"}', true).foo)},
-		function strictTrue(t){ t.is(true, JSON.parse('{"foo":true}', true).foo)},
-		function strictFalse(t){ t.is(false, JSON.parse('{"foo":false}', true).foo)},
-		function strictNull(t){ t.is(null, JSON.parse('{"foo":null}', true).foo)},
-		function strictNumber(t){ t.is(3.3, JSON.parse('{"foo":3.3}', true).foo)},
-		function strictNumberNeg(t){ t.is(-3.3, JSON.parse('{"foo":-3.3}', true).foo)},
-		function exponentNegative(t){ t.is(3.3e-33, JSON.parse('{"foo":3.3e-33}', true).foo)},
-		function exponent(t){ t.is(3.3e33, JSON.parse('{"foo":3.3e33}', true).foo)},
-		function array(t){ t.is(3, JSON.parse('{"foo":[3,true,[]]}', true).foo[0])},
-		function badCall(t){ mustThrow('{"foo":alert()}')},
-		function badMath(t){ mustThrow('{"foo":3+4}')},
-		function badIndex(t){ mustThrow('{"foo":"bar"}[3]')},
-		function badKey(t){ mustThrow('{foo:"bar"}')},
+		function simpleString(t){ t.is("bar", JSON.parse('{"foo":"bar"}').foo); },
+		function simpleTrue(t){ t.is(true, JSON.parse('{"foo":true}').foo); },
+		function simpleFalse(t){ t.is(false, JSON.parse('{"foo":false}').foo); },
+		function simpleNull(t){ t.is(null, JSON.parse('{"foo":null}').foo); },
+		function simpleNumber(t){ t.is(3.3, JSON.parse('{"foo":3.3}', true).foo); },
+		function strictString(t){ t.is("bar", JSON.parse('{"foo":"bar"}', true).foo); },
+		function strictStringEsc(t){ t.is("b\n\t\"ar()", JSON.parse('{"foo":"b\\n\\t\\"ar()"}', true).foo); },
+		function strictTrue(t){ t.is(true, JSON.parse('{"foo":true}', true).foo); },
+		function strictFalse(t){ t.is(false, JSON.parse('{"foo":false}', true).foo); },
+		function strictNull(t){ t.is(null, JSON.parse('{"foo":null}', true).foo); },
+		function strictNumber(t){ t.is(3.3, JSON.parse('{"foo":3.3}', true).foo); },
+		function strictNumberNeg(t){ t.is(-3.3, JSON.parse('{"foo":-3.3}', true).foo); },
+		function exponentNegative(t){ t.is(3.3e-33, JSON.parse('{"foo":3.3e-33}', true).foo); },
+		function exponent(t){ t.is(3.3e33, JSON.parse('{"foo":3.3e33}', true).foo); },
+		function array(t){ t.is(3, JSON.parse('{"foo":[3,true,[]]}', true).foo[0]); },
+		function badCall(t){ mustThrow('{"foo":alert()}'); },
+		function badMath(t){ mustThrow('{"foo":3+4}'); },
+		function badIndex(t){ mustThrow('{"foo":"bar"}[3]'); },
+		function badKey(t){ mustThrow('{foo:"bar"}'); },
 		//function badKey2(t){ mustThrow('{2:"bar"}')},
-		function badUnbalanced(t){ mustThrow('[')},
-		function badUnbalanced2(t){ mustThrow('}')},
-		function badType(t){ mustThrow('["foo":"bar"]')},
-		function badUnbalanced2(t){ mustThrow('}')},
-		function serializeString(t){ t.is('{"foo":"bar"}', JSON.stringify({"foo":"bar"}))},
-		function serializeNull(t){ t.is('{"foo":null}', JSON.stringify({"foo":null}))},
-		function serializeFunction(t){ t.is('{}', JSON.stringify({"foo":function(){}}))},
-		function serializeNaN(t){ t.is('{"foo":null}', JSON.stringify({"foo":NaN}))},
-		function serializeInfinity(t){ t.is('{"foo":null}', JSON.stringify({"foo":Infinity}))},
+		function badUnbalanced(t){ mustThrow('['); },
+		function badUnbalanced2(t){ mustThrow('}'); },
+		function badType(t){ mustThrow('["foo":"bar"]'); },
+		function badUnbalanced2(t){ mustThrow('}'); },
+		function serializeString(t){ t.is('{"foo":"bar"}', JSON.stringify({"foo":"bar"})); },
+		function serializeNull(t){ t.is('{"foo":null}', JSON.stringify({"foo":null})); },
+		function serializeFunction(t){ t.is('{}', JSON.stringify({"foo":function(){}})); },
+		function serializeNaN(t){ t.is('{"foo":null}', JSON.stringify({"foo":NaN})); },
+		function serializeInfinity(t){ t.is('{"foo":null}', JSON.stringify({"foo":Infinity})); },
 		// there is differences in how many decimals of accuracies in seconds in how Dates are serialized between browsers
-		function serializeDate(t){ t.t(/1970-01-01T00:00:00.*Z/.test(JSON.parse(JSON.stringify({"foo":new Date(1)})).foo));},
+		function serializeDate(t){ t.t(/1970-01-01T00:00:00.*Z/.test(JSON.parse(JSON.stringify({"foo":new Date(1)})).foo)); },
 		function serializeCircular(t){
 			try{
 				var a = {};
@@ -54,7 +54,7 @@ define(["../main", "doh", "../json"], function(dojo, doh, JSON){
 
 		},
 		/*Apparently Firefox doesn't pass the key to the toJSON method*/
-		function serializeToJSON(t){ t.is('{"foo":{"name":"value"}}', JSON.stringify({foo:{toJSON:function(key){return {name:"value"};}}}))}
+		function serializeToJSON(t){ t.is('{"foo":{"name":"value"}}', JSON.stringify({foo:{toJSON:function(key){return {name:"value"}; }}})); }
 	]);
 
 var smallDataSet = {

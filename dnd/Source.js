@@ -79,7 +79,7 @@ if(!kernel.isAsync){
 	ready(0, function(){
 		var requires = ["dojo/dnd/AutoSource", "dojo/dnd/Target"];
 		require(requires);	// use indirection so modules not rolled into a build
-	})
+	});
 }
 
 var Source = declare("dojo.dnd.Source", Selector, {

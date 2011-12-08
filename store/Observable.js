@@ -1,4 +1,4 @@
-define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/Deferred", "dojo/_base/array"
+define(["../_base/kernel", "../_base/lang", "../_base/Deferred", "../_base/array"
 ], function(kernel, lang, Deferred, array) {
 	// module:
 	//		dojo/store/Observable

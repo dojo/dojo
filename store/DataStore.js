@@ -49,16 +49,23 @@ return declare("dojo.store.DataStore", null, {
 	_objectConverter: function(callback){
 		var store = this.store;
 		var idProperty = this.idProperty;
-		return function(item){
+		function convert(item){
 			var object = {};
 			var attributes = store.getAttributes(item);
 			for(var i = 0; i < attributes.length; i++){
-				object[attributes[i]] = store.getValue(item, attributes[i]);
+				var value = store.getValue(item, attributes[i]);
+				if(typeof value == 'object' && store.isItem(value)){
+					value = convert(value);
+				}
+				object[attributes[i]] = value;
 			}
 			if(!(idProperty in object)){
 				object[idProperty] = store.getIdentity(item);
 			}
-			return callback(object);
+			return object;
+		}
+		return function(item){
+			return callback(convert(item));
 		};
 	},
 	get: function(id, options){

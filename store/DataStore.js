@@ -53,9 +53,20 @@ return declare("dojo.store.DataStore", null, {
 			var object = {};
 			var attributes = store.getAttributes(item);
 			for(var i = 0; i < attributes.length; i++){
-				var value = store.getValue(item, attributes[i]);
-				if(typeof value == 'object' && store.isItem(value)){
-					value = convert(value);
+				var attribute = attributes[i];
+				var values = store.getValues(item, attribute);
+				if(values.length > 1){
+					for(var j = 0; j < value.length; j++){
+						var value = values[j];
+						if(typeof value == 'object' && store.isItem(value)){
+							values[j] = convert(value);
+						}
+					}
+				}else{
+					var value = store.getValue(item, attribute);
+					if(typeof value == 'object' && store.isItem(value)){
+						value = convert(value);
+					}
 				}
 				object[attributes[i]] = value;
 			}

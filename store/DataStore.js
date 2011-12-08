@@ -56,7 +56,7 @@ return declare("dojo.store.DataStore", null, {
 				var attribute = attributes[i];
 				var values = store.getValues(item, attribute);
 				if(values.length > 1){
-					for(var j = 0; j < value.length; j++){
+					for(var j = 0; j < values.length; j++){
 						var value = values[j];
 						if(typeof value == 'object' && store.isItem(value)){
 							values[j] = convert(value);

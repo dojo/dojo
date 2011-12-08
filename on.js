@@ -373,12 +373,13 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 					var oldListener = emiter;
 					target[type] = emiter = Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = _dojoIEListeners_[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
 					emiter.listeners = [];
+					emiter.global = this;
 					if(oldListener){
 						emiter.listeners.push(_dojoIEListeners_.push(oldListener) - 1);
 					}
 				}
 				var handle;
-				emiter.listeners.push(handle = (_dojoIEListeners_.push(listener) - 1));
+				emiter.listeners.push(handle = (emiter.global._dojoIEListeners_.push(listener) - 1));
 				return new IESignal(handle);
 			}
 			return aspect.after(target, type, listener, true);

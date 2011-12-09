@@ -62,6 +62,7 @@ return declare("dojo.store.DataStore", null, {
 							values[j] = convert(value);
 						}
 					}
+					value = values;
 				}else{
 					var value = store.getValue(item, attribute);
 					if(typeof value == 'object' && store.isItem(value)){

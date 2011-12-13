@@ -25,14 +25,25 @@ window.getBox = function(){
 	// get scroll position
 	var scroll = geom.docScroll(); // scrollRoot.scrollTop/Left should work
 
-	var uiWindow = baseWindow.doc.parentWindow || baseWindow.doc.defaultView;   // use UI window, not dojo.global window
-	// dojo.global.innerWidth||dojo.global.innerHeight is for mobile
-	return {
-		l: scroll.x,
-		t: scroll.y,
-		w: uiWindow.innerWidth || scrollRoot.clientWidth,
-		h: uiWindow.innerHeight || scrollRoot.clientHeight
-	};
+	if(has("touch")){ // if(scrollbars not supported)
+		var uiWindow = baseWindow.doc.parentWindow || baseWindow.doc.defaultView;   // use UI window, not dojo.global window. baseWindow.doc.parentWindow probably not needed since it's not defined for webkit
+		// on mobile, scrollRoot.clientHeight <= uiWindow.innerHeight <= scrollRoot.offsetHeight, return uiWindow.innerHeight
+		return {
+			l: scroll.x,
+			t: scroll.y,
+			w: uiWindow.innerWidth || scrollRoot.clientWidth, // || scrollRoot.clientWidth probably not needed
+			h: uiWindow.innerHeight || scrollRoot.clientHeight
+		};
+	}else{
+		// on desktops, scrollRoot.clientHeight <= scrollRoot.offsetHeight <= uiWindow.innerHeight, return scrollRoot.clientHeight
+		// uiWindow.innerWidth/Height includes the scrollbar which it should not
+		return {
+			l: scroll.x,
+			t: scroll.y,
+			w: scrollRoot.clientWidth,
+			h: scrollRoot.clientHeight
+		};
+	}
 };
 
 window.get = function(doc){

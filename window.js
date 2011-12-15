@@ -20,30 +20,29 @@ window.getBox = function(){
 	// summary:
 	//		Returns the dimensions and scroll position of the viewable area of a browser window
 
-	var scrollRoot = (baseWindow.doc.compatMode == 'BackCompat') ? baseWindow.body() : baseWindow.doc.documentElement;
-
-	// get scroll position
-	var scroll = geom.docScroll(); // scrollRoot.scrollTop/Left should work
+	var
+		scrollRoot = (baseWindow.doc.compatMode == 'BackCompat') ? baseWindow.body() : baseWindow.doc.documentElement,
+		// get scroll position
+		scroll = geom.docScroll(), // scrollRoot.scrollTop/Left should work
+		w, h;
 
 	if(has("touch")){ // if(scrollbars not supported)
 		var uiWindow = baseWindow.doc.parentWindow || baseWindow.doc.defaultView;   // use UI window, not dojo.global window. baseWindow.doc.parentWindow probably not needed since it's not defined for webkit
 		// on mobile, scrollRoot.clientHeight <= uiWindow.innerHeight <= scrollRoot.offsetHeight, return uiWindow.innerHeight
-		return {
-			l: scroll.x,
-			t: scroll.y,
-			w: uiWindow.innerWidth || scrollRoot.clientWidth, // || scrollRoot.clientWidth probably not needed
-			h: uiWindow.innerHeight || scrollRoot.clientHeight
-		};
+		w = uiWindow.innerWidth || scrollRoot.clientWidth; // || scrollRoot.clientXXX probably never evaluated
+		h = uiWindow.innerHeight || scrollRoot.clientHeight;
 	}else{
 		// on desktops, scrollRoot.clientHeight <= scrollRoot.offsetHeight <= uiWindow.innerHeight, return scrollRoot.clientHeight
-		// uiWindow.innerWidth/Height includes the scrollbar which it should not
-		return {
-			l: scroll.x,
-			t: scroll.y,
-			w: scrollRoot.clientWidth,
-			h: scrollRoot.clientHeight
-		};
+		// uiWindow.innerWidth/Height includes the scrollbar and cannot be used
+		w = scrollRoot.clientWidth;
+		h = scrollRoot.clientHeight;
 	}
+	return {
+		l: scroll.x,
+		t: scroll.y,
+		w: w,
+		h: h
+	};
 };
 
 window.get = function(doc){

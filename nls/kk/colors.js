@@ -146,6 +146,7 @@ tan: "сарғыш қоңыр",
 teal: "шүрегей",
 thistle: "артишок",
 tomato: "қызанақ",
+transparent: "мөлдір",
 turquoise: "көгілдір",
 violet: "күлгін",
 wheat: "бидай",
@@ -156,4 +157,3 @@ yellowgreen: "сарғыш жасыл"
 })
 //end v1.x content
 );
-

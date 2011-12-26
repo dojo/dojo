@@ -1,5 +1,4 @@
 define(
-//begin v1.x content
 ({
 	"lightsteelblue":"açıq metal mavi",
 	"orangered" :"narıncı qırmızı",
@@ -149,5 +148,4 @@ define(
 	"darkolivegreen" :"tünd zeytun yaşılı",
 	"yellowgreen" :"sarı-yaşıl"
 })
-//end v1.x content
 );

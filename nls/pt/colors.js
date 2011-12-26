@@ -1,9 +1,7 @@
 define(
-//begin v1.x content
 ({
 // local representation of all CSS3 named colors, companion to dojo.colors.  To be used where descriptive information
 // is required for each color, such as a palette widget, and not for specifying color programatically.
-
 //Note: due to the SVG 1.0 spec additions, some of these are alternate spellings for the same color e.g. gray vs. gray.
 //TODO: should we be using unique rgb values as keys instead and avoid these duplicates, or rely on the caller to do the reverse mapping?
 aliceblue: "azul alice",
@@ -58,12 +56,12 @@ fuchsia: "fúcsia",
 gainsboro: "gainsboro",
 ghostwhite: "branco ghost",
 gold: "dourado",
-goldenrod: "goldenrod",
+goldenrod: "amarelo vara-de-ouro",
 gray: "cinza",
 green: "verde",
 greenyellow: "amarelo esverdeado",
 grey: "cinza", // same as gray
-honeydew: "honeydew",
+honeydew: "melão",
 hotpink: "rosa quente",
 indianred: "vermelho indiano",
 indigo: "índigo",
@@ -105,7 +103,7 @@ mediumvioletred: "vermelho violeta médio",
 midnightblue: "azul meia-noite",
 mintcream: "creme de menta",
 mistyrose: "rosa enevoado",
-moccasin: "moccasin",
+moccasin: "mocassim",
 navajowhite: "branco navajo",
 navy: "marinho",
 oldlace: "cadarço velho",
@@ -132,7 +130,7 @@ saddlebrown: "marrom saddle",
 salmon: "salmão",
 sandybrown: "marrom cor de areia",
 seagreen: "verde marinho",
-seashell: "seashell",
+seashell: "concha",
 sienna: "sienna",
 silver: "prateado",
 skyblue: "azul céu",
@@ -142,10 +140,11 @@ slategrey: "cinza ardósia", // same as slategray
 snow: "branco neve",
 springgreen: "verde primavera",
 steelblue: "azul aço",
-tan: "tan",
+tan: "marrom dourado",
 teal: "azul esverdeado",
-thistle: "thistle",
+thistle: "cardo",
 tomato: "tomate",
+transparent: "transparente",
 turquoise: "turquesa",
 violet: "violeta",
 wheat: "trigo",
@@ -154,5 +153,4 @@ whitesmoke: "fumaça branca",
 yellow: "amarelo",
 yellowgreen: "verde amarelado"
 })
-//end v1.x content
 );

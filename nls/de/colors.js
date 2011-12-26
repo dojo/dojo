@@ -1,9 +1,7 @@
 define(
-//begin v1.x content
 ({
 // local representation of all CSS3 named colors, companion to dojo.colors.  To be used where descriptive information
 // is required for each color, such as a palette widget, and not for specifying color programatically.
-
 //Note: due to the SVG 1.0 spec additions, some of these are alternate spellings for the same color e.g. gray vs. gray.
 //TODO: should we be using unique rgb values as keys instead and avoid these duplicates, or rely on the caller to do the reverse mapping?
 aliceblue: "Alice-blau",
@@ -98,10 +96,10 @@ mediumblue: "Mittelblau",
 mediumorchid: "Mittelorchidee",
 mediumpurple: "Mittelpurpur",
 mediumseagreen: "Mittelmeeresgrün",
-mediumslateblue: "Mittelschieferblau ",
+mediumslateblue: "Mittelschieferblau",
 mediumspringgreen: "Mittelfrühlingsgrün",
-mediumturquoise: "Mitteltürkis ",
-mediumvioletred: "Mittelviolettrot ",
+mediumturquoise: "Mitteltürkis",
+mediumvioletred: "Mittelviolettrot",
 midnightblue: "Mitternachtblau",
 mintcream: "Mintcreme",
 mistyrose: "Blassrose",
@@ -117,7 +115,7 @@ orchid: "Orchidee",
 palegoldenrod: "Blassgoldgelb",
 palegreen: "Blassgrün",
 paleturquoise: "Blasstürkis",
-palevioletred: "Blassviolettrot ",
+palevioletred: "Blassviolettrot",
 papayawhip: "Papayacreme",
 peachpuff: "Pfirsich",
 peru: "Peru",
@@ -146,6 +144,7 @@ tan: "Hautfarben",
 teal: "Smaragdgrün",
 thistle: "Distel",
 tomato: "Tomatenrot",
+transparent: "Transparent",
 turquoise: "Türkis",
 violet: "Violett",
 wheat: "Weizen",
@@ -154,5 +153,4 @@ whitesmoke: "Rauchweiß",
 yellow: "Gelb",
 yellowgreen: "Gelbgrün"
 })
-//end v1.x content
 );

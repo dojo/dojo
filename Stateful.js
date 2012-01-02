@@ -65,12 +65,18 @@ return declare("dojo.Stateful", null, {
 		//	This is equivalent to calling set(foo, "Howdy") and set(bar, 3)
 		if(typeof name === "object"){
 			for(var x in name){
-				this.set(x, name[x]);
+				if(name.hasOwnProperty(x)){
+					this.set(x, name[x]);
+				}
 			}
 			return this;
 		}
 		var oldValue = this[name];
-		this[name] = value;
+		if(value === undefined){
+			delete this[name];
+		}else{
+			this[name] = value;
+		}
 		if(this._watchCallbacks){
 			this._watchCallbacks(name, oldValue, value);
 		}
@@ -101,11 +107,7 @@ return declare("dojo.Stateful", null, {
 					if(propertyCallbacks){
                         propertyCallbacks = propertyCallbacks.slice();
 						for(var i = 0, l = propertyCallbacks.length; i < l; i++){
-							try{
-								propertyCallbacks[i].call(self, name, oldValue, value);
-							}catch(e){
-								console.error(e);
-							}
+							propertyCallbacks[i].call(self, name, oldValue, value);
 						}
 					}
 				};
@@ -132,6 +134,13 @@ return declare("dojo.Stateful", null, {
 				propertyCallbacks.splice(array.indexOf(propertyCallbacks, callback), 1);
 			}
 		}; //Object
+	},
+	forEach: function(callback, thisObject){
+		for(var i in this){
+			if(this.hasOwnProperty(i) && typeof this[i] != "function"){
+				callback.call(thisObject, this[i], i);
+			}
+		}
 	}
 
 });

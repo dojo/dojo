@@ -158,31 +158,34 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		The event to listen for
 		// children:
 		//		Indicates if children elements of the selector should be allowed. This defaults to 
-		// 		true (except in the case of normally non-bubbling events like mouse.enter, in which case it defaults to false).
+		// 		true
 		//	example:
 		//		define(["dojo/on", "dojo/mouse"], function(listen, mouse){
 		//			on(node, on.selector(".my-class", mouse.enter), handlerForMyHover);
 		return function(target, listener){
 			var matchesTarget = this;
-			var bubble = eventType.bubble;
-			if(bubble){
-				// the event type doesn't naturally bubble, but has a bubbling form, use that
-				eventType = bubble;
-			}else if(children !== false){
-				// for normal bubbling events we default to allowing children of the selector
-				children = true;
-			}
-			return on(target, eventType, function(event){
-				var eventTarget = event.target;
+			function select(eventTarget){
 				// see if we have a valid matchesTarget or default to dojo.query
 				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
 				// there is a selector, so make sure it matches
 				while(!matchesTarget.matches(eventTarget, selector, target)){
-					if(eventTarget == target || !children || !(eventTarget = eventTarget.parentNode)){ // intentional assignment
+					if(eventTarget == target || children === false || !(eventTarget = eventTarget.parentNode) || eventTarget.nodeType != 1){ // intentional assignment
 						return;
 					}
 				}
-				return listener.call(eventTarget, event);
+				return eventTarget;
+			}
+			var bubble = eventType.bubble;
+			if(bubble){
+				// the event type doesn't naturally bubble, but has a bubbling form, use that, and give it the selector so it can perform the select itself
+				return on(target, bubble(select), listener);
+			}
+			// standard event delegation
+			return on(target, eventType, function(event){
+				// call select to see if we match
+				var eventTarget = select(event.target);
+				// if it matches we call the listener
+				return eventTarget && listener.call(eventTarget, event);
 			});
 		};
 	};

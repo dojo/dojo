@@ -163,7 +163,7 @@ define([], function(){
 			var existing = target[methodName], dispatcher;
 			if(!existing || existing.target != target){
 				// no dispatcher in place
-				dispatcher = target[methodName] = function(){
+				target[methodName] = dispatcher = function(){
 					// before advice
 					var args = arguments;
 					var before = dispatcher.before;

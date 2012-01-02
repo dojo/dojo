@@ -412,6 +412,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				}catch(e){
 				}
 			}
+			this.defaultPrevented = true;
 			this.returnValue = false;
 		};
 	}

@@ -122,8 +122,10 @@ doh.register("tests.on",
 			}));
 			var button = div.appendChild(document.createElement("button"));
 			// make sure we are propagating natively created events too
-			signal = on(div, "click", function(){
+			signal = on(div, "click", function(event){
 				order.push(7);
+				event.preventDefault();
+				t.t(event.defaultPrevented);
 			});
 			button.click();
 			signal.remove();

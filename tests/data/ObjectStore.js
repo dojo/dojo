@@ -97,6 +97,24 @@ tests.register("tests.data.ObjectStore",
 			}});
 			return d;
 		},
+		function testMemoryQueryWithEscapedWildcard(t){
+			var d = new doh.Deferred();
+			memoryDataStore.fetch({query:{name:"s\\*"}, onComplete: function(results){
+				t.is(results.length, 0);
+			}});
+			var newItem = memoryDataStore.newItem({
+				name: "s*",
+				id: Math.random()
+			});
+			memoryDataStore.save();
+			memoryDataStore.fetch({query:{name:"s\\*"}, onComplete: function(results){
+				var object = results[0];
+				t.is(results.length, 1);
+				t.is(object.name, "s*");
+				d.callback(true);
+			}});
+			return d;
+		},
 		function testMemoryQueryWithWildcardCaseInsensitive(t){
 			var d = new doh.Deferred();
 			memoryDataStore.fetch({query:{name:"F*"}, queryOptions: {ignoreCase: true}, onComplete: function(results){

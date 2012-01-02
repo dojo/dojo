@@ -6,7 +6,9 @@ define(["../_base/lang", "../Evented", "../_base/declare", "../_base/Deferred", 
 	// summary:
 	//		TODOC
 
-
+function convertRegex(character){
+	return character == '*' ? '.*' : character == '?' ? '.' : character; 
+}
 return declare("dojo.data.ObjectStore", [Evented],{
 		objectStore: null,
 		constructor: function(options){
@@ -157,7 +159,7 @@ return declare("dojo.data.ObjectStore", [Evented],{
 					// find any strings and convert them to regular expressions for wildcard support
 					var required = query[i];
 					if(typeof required == "string"){
-						query[i] = RegExp("^" + regexp.escapeString(required, "*?").replace(/\*/g, '.*').replace(/\?/g, '.') + "$", args.ignoreCase ? "mi" : "m");
+						query[i] = RegExp("^" + regexp.escapeString(required, "*?\\").replace(/\\.|\*|\?/g, convertRegex) + "$", args.ignoreCase ? "mi" : "m");
 						query[i].toString = (function(original){
 							return function(){
 								return original;

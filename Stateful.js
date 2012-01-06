@@ -72,11 +72,7 @@ return declare("dojo.Stateful", null, {
 			return this;
 		}
 		var oldValue = this[name];
-		if(value === undefined){
-			delete this[name];
-		}else{
-			this[name] = value;
-		}
+		this[name] = value;
 		if(this._watchCallbacks){
 			this._watchCallbacks(name, oldValue, value);
 		}
@@ -134,13 +130,6 @@ return declare("dojo.Stateful", null, {
 				propertyCallbacks.splice(array.indexOf(propertyCallbacks, callback), 1);
 			}
 		}; //Object
-	},
-	forEach: function(callback, thisObject){
-		for(var i in this){
-			if(this.hasOwnProperty(i) && typeof this[i] != "function"){
-				callback.call(thisObject, this[i], i);
-			}
-		}
 	}
 
 });

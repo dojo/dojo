@@ -135,11 +135,17 @@ doh.register("tests.on",
 				on(div, "button:click", function(){
 					order.push(8);
 				});
-				button.click();
 			}else{//just pass then
 				order.push(8);
 			}
-			t.is(order, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+			// test out event delegation using a custom selector
+			on(div, on.selector(function(node){
+				return node.tagName == "BUTTON" && node;
+			}, "click"), function(){
+					order.push(9);
+				}); 
+			button.click();
+			t.is(order, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 			on(span, "propertychange", function(){}); // make sure it doesn't throw an error
 		},
 /*

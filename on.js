@@ -131,12 +131,13 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		if(target.addEventListener){
 			// the target has addEventListener, which should be used if available (might or might not be a node, non-nodes can implement this method as well)
 			// check for capture conversions
-			var capture = type in captures;
-			target.addEventListener(capture ? captures[type] : type, listener, capture);
+			var capture = type in captures,
+				adjustedType = capture ? captures[type] : type;
+			target.addEventListener(adjustedType, listener, capture);
 			// create and return the signal
 			return {
 				remove: function(){
-					target.removeEventListener(type, listener, capture);
+					target.removeEventListener(adjustedType, listener, capture);
 				}
 			};
 		}

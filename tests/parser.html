@@ -8,8 +8,8 @@
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
 		<script type="text/javascript">
 		require(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/html", "dojo/Stateful", "dojo/Evented",
-				"doh", "dojo/date/stamp", "dojo/aspect", "dojo/parser", "dojo/domReady!"],
-				function(dojo, dlang, darray, declare, dhtml, Stateful, Evented, doh, dstamp, aspect, parser){
+				"doh", "dojo/date/stamp", "dojo/aspect", "./resources/AMDWidget", "dojo/parser", "dojo/domReady!"],
+				function(dojo, dlang, darray, declare, dhtml, Stateful, Evented, doh, dstamp, aspect, AMDWidget, parser){
 
 			var mixin = dojo.mixin,
 				extend = dojo.extend,
@@ -416,6 +416,12 @@
 						objOnWatch.onclick();
 						doh.t(objOnWatch.prototypeOnclick, "ensures original was called");
 						doh.t(objOnWatch.boolProp1, "ensure on executed in scope");
+					},
+					
+					function testMID(){
+						// testing specifying data-dojo-type as mid
+						doh.t(typeof objAMDWidget == "object");
+						doh.is("Value1", objAMDWidget.params.value, "ensure object was properly parsed using MID");
 					}
 				]);
 
@@ -579,6 +585,16 @@
 					doh.is("function", typeof button.onClick, "created as function");
 					doh.t(buttonClicked == button.onClick, "points to specified function");
 				});
+				
+				doh.register("parser.instantiate()",function instantiate1() {
+					var nodes = [dhtml.byId("objId1"),dhtml.byId("objId2"),dhtml.byId("contId1"),dhtml.byId("objId3")];
+					parser.instantiate(nodes);
+					doh.is("object", typeof objI1, "widget 1 created");
+					doh.is("object", typeof objI2, "widget 2 created");
+					doh.t(contI1, "container created");
+					doh.is("object", typeof objI3, "child widget 3 created");
+					doh.f(window.objI4, "child widget 4 not created");
+				});
 				doh.run();
 			})
 		});
@@ -708,6 +724,11 @@
 					</script>
 				</div>
 			</div>
+			
+			<!--  section for testing mid syntax for data-dojo-type -->
+			<div>
+				<div data-dojo-id="objAMDWidget" data-dojo-type="./resources/AMDWidget" data-dojo-props="value: 'Value1'"></div>
+			</div>
 		</div> <!-- end of <div id=main> -->
 
 		<!-- section for testing that dir, lang attribute trickles down from ancestor -->
@@ -783,6 +804,40 @@
 		<!-- tests for function names native to HTML, specifically an issue on IE<8 -->
 		<div id="functions">
 			<button dojoType="tests.parser.Button" onClick="buttonClicked" jsId="button">Click me</button>
+		</div>
+		
+		<!-- section for testing parser.instantiate() -->
+		<div id="instantiate1">
+			<div dojoType="tests.parser.Class1" jsId="objI1" id="objId1"
+				strProp1="text" strProp2=""
+				intProp="5"
+				arrProp="foo, bar, baz"
+				arrProp2=""
+				boolProp1="true" boolProp2="false"
+				dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+				funcProp2="foo" funcProp3="this.func3Called=true;"
+			>
+			</div>
+			<div data-dojo-type="tests.parser.Class1" data-dojo-id="objI2" id="objId2"
+				data-dojo-props="
+					strProp1:'text',
+					strProp2:'',
+					intProp:5,
+					arrProp:['foo', 'bar', 'baz'],
+					arrProp2:[],
+					boolProp1:true,
+					boolProp2:'false',
+					dateProp1:'2006-01-01',
+					dateProp2:'',
+					dateProp3:'now',
+					funcProp2:foo,
+					funcProp3:'this.func3Called=true;'"
+			>
+			</div>
+			<div dojoType="tests.parser.NormalContainer" jsId="contI1" id ="contId1">
+				<div dojoType="tests.parser.Class1" jsId="objI3" id="objId3"></div>
+				<div dojoType="tests.parser.Class1" jsId="objI4" id="objId4"></div>
+			</div>
 		</div>
 
 	</body>

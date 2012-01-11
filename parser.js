@@ -126,11 +126,8 @@ dojo.parser = new function(){
 
 			var node = obj.node || obj,
 				type = dojoType in mixin ? mixin[dojoType] : obj.node ? obj.type : (node.getAttribute(dataDojoType) || node.getAttribute(dojoType)),
-				ctor = _ctorMap[type] || (_ctorMap[type] = dlang.getObject(type)),
+				ctor = _ctorMap[type] || (_ctorMap[type] = (dlang.getObject(type)||require(type))),
 				proto = ctor && ctor.prototype;
-			if(!ctor){
-				throw new Error("Could not load class '" + type + "'");
-			}
 
 			// Setup hash to hold parameter settings for this widget.	Start with the parameter
 			// settings inherited from ancestors ("dir" and "lang").
@@ -556,8 +553,13 @@ dojo.parser = new function(){
 			};
 
 			// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate
-			var ctor = type && (_ctorMap[type] || (_ctorMap[type] = dlang.getObject(type))), // note: won't find classes declared via dojo.Declaration
-				childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
+			// Note: won't find classes declared via dojo.Declaration, so use try/catch to avoid throw from require()
+			var ctor;
+			try{
+				ctor = type && (_ctorMap[type] || (_ctorMap[type] = (dlang.getObject(type) || require(type))));
+			}catch(e){
+			}
+			var childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
 			if(type){
 				list.push({
 					"type": type,

@@ -11,10 +11,11 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 	//		CAUTION: this module is designed to optionally function synchronously to support the dojo v1.x synchronous
 	//		loader. This feature is outside the scope of the CommonJS plugins specification.
 
+
 	var getText;
 	if(has("host-browser")){
 		getText= function(url, sync, load){
-			xhr("GET", {url:url, sync:!!sync, load:load});
+			xhr("GET", {url:url, sync:!!sync, load:load, headers:dojo.config.textPluginHeaders || {}});
 		};
 	}else{
 		// TODOC: only works for dojo AMD loader

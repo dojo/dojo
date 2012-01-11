@@ -142,7 +142,9 @@
 		return now && has(name);
 	};
 
-	has.add("host-node", typeof process == "object" && (/node(\.exe)?$/.test(process.execPath) || (process.versions.node && process.versions.v8)));
+	has.add("host-node", userConfig.has && "host-node" in userConfig.has ?
+		userConfig.has["host-node"] :
+		(typeof process == "object" && process.versions && process.versions.node && process.versions.v8));
 	if(has("host-node")){
 		// fixup the default config for node.js environment
 		require("./_base/configNode.js").config(defaultConfig);
@@ -150,7 +152,9 @@
 		defaultConfig.loaderPatch.nodeRequire = require;
 	}
 
-	has.add("host-rhino", typeof load == "function" && (typeof Packages == "function" || typeof Packages == "object"));
+	has.add("host-rhino", userConfig.has && "host-rhino" in userConfig.has ?
+		userConfig.has["host-rhino"] :
+		(typeof load == "function" && (typeof Packages == "function" || typeof Packages == "object")));
 	if(has("host-rhino")){
 		// owing to rhino's lame feature that hides the source of the script, give the user a way to specify the baseUrl...
 		for(var baseUrl = userConfig.baseUrl || ".", arg, rhinoArgs = this.arguments, i = 0; i < rhinoArgs.length;){

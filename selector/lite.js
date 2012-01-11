@@ -107,7 +107,7 @@ var useRoot = function(context, query, method){
 	}
 
 	try {
-		return method.call(context, "[id='" + nid + "'] " + query );
+		return method.call(context, "[id='" + nid + "'] " + query);
 	} finally {
 		if ( !old ) {
 			oldContext.removeAttribute( "id" );
@@ -250,7 +250,7 @@ if(!has("dom-qsa")){
 }
 
 liteEngine.match = matchesSelector ? function(node, selector, root){
-	if(root){
+	if(root && root != document){
 		// doesn't support three args, use rooted id trick
 		return useRoot(root, selector, function(query){
 			return matchesSelector.call(node, query);

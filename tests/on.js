@@ -135,6 +135,8 @@ doh.register("tests.on",
 				on(div, "button:click", function(){
 					order.push(8);
 				});
+				on(document, "button:click", function(){
+				}); // just make sure this doesn't throw an error
 			}else{//just pass then
 				order.push(8);
 			}

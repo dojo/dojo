@@ -156,6 +156,7 @@
 						"doh.is(1, (dojo.query('[foo$=\"thud\"]')).length);",
 						"doh.is(1, (dojo.query('[foo$=thud]')).length);",
 						"doh.is(1, (dojo.query('[foo$=\"thudish\"]')).length);",
+						"doh.is(1, (dojo.query('[id$=\\'55555\\']')).length);",
 						"doh.is(1, (dojo.query('#t [foo$=thud]')).length);",
 						"doh.is(1, (dojo.query('#t [ title $= thud ]')).length);",
 						"doh.is(0, (dojo.query('#t span[ title $= thud ]')).length);",
@@ -395,6 +396,17 @@
 					<p class="two subP"><a class="subA">two</a></p>
 				</div>
 			</div>
+		</div>
+		<div id='other'>
+		  <div id='abc55555'></div>
+		  <div id='abd55555efg'></div>
+		  <div id='55555abc'</div>
+		  <div id='1'></div>
+		  <div id='2c'></div>
+		  <div id='3ch'></div>
+		  <div id='4chr'></div>
+		  <div id='5char'></div>
+		  <div id='6chars'></div>
 		</div>
 	</body>
 </html>

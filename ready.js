@@ -47,22 +47,12 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 			}
 		};
 
-	// define requireCompleteSignal; impl depends on loader
-	if(has("dojo-loader")){
-		require.on("idle", onLoad);
-		requestCompleteSignal = function(){
-			if(require.idle()){
-				onLoad();
-			} // else do nothing, onLoad will be called with the next idle signal
-		};
-	}else{
-		// RequireJS or similar
-		requestCompleteSignal = function(){
-			// the next function call will fail if you don't have a loader with require.ready
-			// in that case, either fix your loader, use dojo's loader, or don't call dojo.ready;
-			require.ready(onLoad);
-		};
-	}
+	require.on("idle", onLoad);
+	requestCompleteSignal = function(){
+		if(require.idle()){
+			onLoad();
+		} // else do nothing, onLoad will be called with the next idle signal
+	};
 
 	var ready = dojo.ready = dojo.addOnLoad = function(priority, context, callback){
 		// summary: Add a function to execute on DOM content loaded and all requested modules have arrived and been evaluated.

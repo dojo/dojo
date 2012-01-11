@@ -142,7 +142,7 @@
 		return now && has(name);
 	};
 
-	has.add("host-node", typeof process == "object" && /node(\.exe)?$/.test(process.execPath));
+	has.add("host-node", typeof process == "object" && (/node(\.exe)?$/.test(process.execPath) || (process.node && process.v8)));
 	if(has("host-node")){
 		// fixup the default config for node.js environment
 		require("./_base/configNode.js").config(defaultConfig);

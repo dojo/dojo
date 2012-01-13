@@ -16,7 +16,7 @@
 					function(array, has, domConstruct){
 				array.forEach([
 					"khtml", "webkit", "chrome", "safari",
-					"opera",  "mozilla", "ie", "quirks",
+					"opera",  "mozilla", "ie", "ff", "quirks",
 					"ios", "android", "wii", "air", "mac"], function(key){
 					var res = has(key);
 					domConstruct.place("<tr><td>has(\"" + key + "\")</td><td>" +

@@ -98,7 +98,7 @@ define(["./kernel", "../sniff"], function(dojo, has){
 	dojo.isSafari = has("safari");
 	dojo.isMozilla = dojo.isMoz = has("mozilla");
 	dojo.isIE = has("ie");
-	dojo.isFF = has("firefox");
+	dojo.isFF = has("ff");
 	dojo.isQuirks = has("quirks");
 	dojo.isIos = has("ios");
 	dojo.isAndroid = has("android");

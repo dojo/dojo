@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./_base/sniff"], function(dojo, has) {
+define(["./_base/kernel", "./sniff"], function(dojo, has) {
 	// module:
 	//		dojo/keys
 	// summary:

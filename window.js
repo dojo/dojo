@@ -1,4 +1,4 @@
-define(["./_base/lang", "./_base/sniff", "./_base/window", "./dom", "./dom-geometry", "./dom-style"],
+define(["./_base/lang", "./sniff", "./_base/window", "./dom", "./dom-geometry", "./dom-style"],
 	function(lang, has, baseWindow, dom, geom, style) {
 
 // module:

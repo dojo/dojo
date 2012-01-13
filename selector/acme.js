@@ -1,6 +1,6 @@
 define([
-	"../_base/kernel", "../dom", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/window"
-], function(kernel, dom, has, array, lang, win){
+	"../dom", "../sniff", "../_base/array", "../_base/lang", "../_base/window"
+], function(dom, has, array, lang, win){
   //  module:
   //    dojo/selector/acme
   //  summary:
@@ -49,11 +49,6 @@ define([
 	// dojo.NodeList as the return instance instantiator
 	var trim = 			lang.trim;
 	var each = 			array.forEach;
-	// 					d.isIE; // float
-	// 					d.isSafari; // float
-	// 					d.isOpera; // float
-	// 					d.isWebKit; // float
-	// 					d.doc ; // document element
 
 	var getDoc = function(){ return win.doc; };
 	// NOTE(alex): the spec is idiotic. CSS queries should ALWAYS be case-sensitive, but nooooooo
@@ -653,7 +648,7 @@ define([
 		}
 	};
 
-	var defaultGetter = (has("ie") && (has("ie") < 9 || kernel.isQuirks)) ? function(cond){
+	var defaultGetter = (has("ie") && (has("ie") < 9 || has("quirks"))) ? function(cond){
 		var clc = cond.toLowerCase();
 		if(clc == "class"){ cond = "className"; }
 		return function(elem){
@@ -802,15 +797,6 @@ define([
 			return ret;
 		};
 	};
-
-	/*
-	// thanks, Dean!
-	var itemIsAfterRoot = d.isIE ? function(item, root){
-		return (item.sourceIndex > root.sourceIndex);
-	} : function(item, root){
-		return (item.compareDocumentPosition(root) == 2);
-	};
-	*/
 
 	// test to see if node is below root
 	var _isDescendant = function(node, root){

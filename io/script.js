@@ -1,6 +1,6 @@
 define([
 	"../_base/connect", "../_base/kernel", "../_base/lang",
-	"../_base/sniff", "../_base/window","../_base/xhr",
+	"../sniff", "../_base/window","../_base/xhr",
 	"../dom", "../dom-construct"
 ], function(connect, kernel, lang, has, win, xhr, dom, domConstruct) {
 

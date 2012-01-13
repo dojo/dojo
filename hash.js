@@ -1,4 +1,4 @@
-define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff"],
+define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_base/lang", "./ready", "./sniff"],
 	function(dojo, require, config, connect, lang, ready, has) {
 
 	// module:

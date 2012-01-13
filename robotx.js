@@ -1,4 +1,4 @@
-define(["dojo", "dojo/robot"], function(dojo) {
+define(["dojo", "dojo/sniff", "dojo/robot"], function(dojo, has) {
 
 dojo.experimental("dojo.robotx");
 
@@ -24,7 +24,7 @@ var attachIframe = function(url){
 
 	dojo.ready(function(){
 		var emptyStyle = {
-			overflow: dojo.isWebKit ? 'hidden' : 'visible',
+			overflow: has("webkit") ? 'hidden' : 'visible',
 			margin: '0px',
 			borderWidth: '0px',
 			height: '100%',
@@ -37,7 +37,7 @@ var attachIframe = function(url){
 		iframe = document.createElement('iframe');
 		iframe.src = url;
 		iframe.setAttribute("ALLOWTRANSPARENCY","true");
-		iframe.scrolling = dojo.isIE? "yes" : "auto";
+		iframe.scrolling = has("ie") ? "yes" : "auto";
 		var scrollRoot = (document.compatMode == 'BackCompat')? document.body : document.documentElement;
 		var consoleHeight = document.getElementById('robotconsole').offsetHeight;
 		dojo.style(iframe, {

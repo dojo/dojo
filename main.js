@@ -2,7 +2,7 @@ define([
 	"./_base/kernel",	// kernel.isAsync
 	"./has",
 	"require",
-	"./_base/sniff",
+	"./sniff",
 	"./_base/lang",
 	"./_base/array",
 	"./_base/config",

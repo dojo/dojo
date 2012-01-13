@@ -1,19 +1,26 @@
-define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_base/array", "../_base/lang", "../_base/event", "../_base/unload"], function(dojo, require) {
+define([
+	"../_base/kernel",
+	"require",
+	"../_base/html",
+	"../sniff",
+	"../_base/array",
+	"../_base/lang",
+	"../_base/event",
+	"../_base/unload"], function(dojo, require, html, has) {
+
 	// module:
 	//		dojo/_firebug/firebug
 	// summary:
-
-// FIREBUG LITE
-	// summary: Firebug Lite, the baby brother to Joe Hewitt's Firebug for Mozilla Firefox
+	//		Firebug Lite, the baby brother to Joe Hewitt's Firebug for Mozilla Firefox
 	// description:
 	//		Opens a console for logging, debugging, and error messages.
 	//		Contains partial functionality to Firebug. See function list below.
-	//	NOTE:
-	//			Firebug is a Firefox extension created by Joe Hewitt (see license). You do not need Dojo to run Firebug.
-	//			Firebug Lite is included in Dojo by permission from Joe Hewitt
-	//			If you are new to Firebug, or used to the Dojo 0.4 dojo.debug, you can learn Firebug
-	//				functionality by reading the function comments below or visiting http://www.getfirebug.com/docs.html
-	//	NOTE:
+	// NOTE:
+	//		Firebug is a Firefox extension created by Joe Hewitt (see license). You do not need Dojo to run Firebug.
+	//		Firebug Lite is included in Dojo by permission from Joe Hewitt
+	//		If you are new to Firebug, or used to the Dojo 0.4 dojo.debug, you can learn Firebug
+	//		functionality by reading the function comments below or visiting http://www.getfirebug.com/docs.html
+	// NOTE:
 	//		To test Firebug Lite in Firefox:
 	//			FF2: set "console = null" before loading dojo and set djConfig.isDebug=true
 	//			FF3: disable Firebug and set djConfig.isDebug=true
@@ -55,14 +62,14 @@ define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_ba
 	}
 
 	if(
-		dojo.isFF ||								// Firefox has Firebug
-		dojo.isChrome ||							// Chrome 3+ has a console
-		dojo.isSafari ||							// Safari 4 has a console
+		has("ff") ||								// Firefox has Firebug
+		has("chrome") ||							// Chrome 3+ has a console
+		has("safari") ||							// Safari 4 has a console
 		isNewIE ||									// Has the new IE console
 		window.firebug ||							// Testing for mozilla firebug lite
 		(typeof console != "undefined" && console.firebug) || //The firebug console
 		dojo.config.useCustomLogger ||				// Allow custom loggers
-		dojo.isAIR									// isDebug triggers AIRInsector, not Firebug
+		has("air")									// isDebug triggers AIRInsector, not Firebug
 	){
 		return;
 	}
@@ -466,7 +473,7 @@ define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_ba
 		if(!styleParent){
 			styleParent = _firebugDoc.getElementsByTagName("html")[0];
 		}
-		if(dojo.isIE){
+		if(has("ie")){
 			window.setTimeout(function(){ styleParent.appendChild(styleElement); }, 0);
 		}else{
 			styleParent.appendChild(styleElement);
@@ -511,7 +518,7 @@ define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_ba
 		commandLine = _firebugDoc.getElementById("firebugCommandLine");
 		addEvent(commandLine, "keydown", onCommandLineKeyDown);
 
-		addEvent(_firebugDoc, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
+		addEvent(_firebugDoc, has("ie") || has("safari") ? "keydown" : "keypress", onKeyDown);
 
 		consoleBody = _firebugDoc.getElementById("firebugLog");
 		consoleObjectInspector = _firebugDoc.getElementById("objectLog");
@@ -1165,7 +1172,7 @@ define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_ba
 
 	//window.onerror = onError;
 
-	addEvent(document, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
+	addEvent(document, has("ie") || has("safari") ? "keydown" : "keypress", onKeyDown);
 
 	if(	(document.documentElement.getAttribute("debug") == "true")||
 		(dojo.config.isDebug)
@@ -1175,7 +1182,7 @@ define(["../_base/kernel", "require", "../_base/html", "../_base/sniff", "../_ba
 
 	dojo.addOnWindowUnload(function(){
 		// Erase the globals and event handlers I created, to prevent spurious leak warnings
-		removeEvent(document, dojo.isIE || dojo.isSafari ? "keydown" : "keypress", onKeyDown);
+		removeEvent(document, has("ie") || has("safari") ? "keydown" : "keypress", onKeyDown);
 		window.onFirebugResize = null;
 		window.console = null;
 	});

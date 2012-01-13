@@ -9,7 +9,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/sniff", "dojo/domReady!"], function(dojo, doh, has){
 				doh.register("t", 
 					[
 						"t.is(100, dojo.marginBox('sq100').w);",
@@ -66,7 +66,7 @@
 						}
 					]
 				);
-				if(dojo.isIE){ 
+				if(has("ie")){
 					// IE collapses padding in quirks mode. We just report on it.
 					doh.register("t", 
 						[

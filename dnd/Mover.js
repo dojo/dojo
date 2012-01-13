@@ -1,5 +1,5 @@
 define([
-	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event", "../_base/sniff", "../_base/window",
+	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event", "../sniff", "../_base/window",
 	"../dom", "../dom-geometry", "../dom-style", "../Evented", "../touch", "./common", "./autoscroll"
 ], function(array, connect, declare, event, has, win, dom, domGeom, domStyle, Evented, touch, dnd, autoscroll) {
 

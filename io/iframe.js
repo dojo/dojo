@@ -1,6 +1,6 @@
 define([
 	"../_base/config", "../_base/json", "../_base/kernel", "../_base/lang",
-	"../_base/xhr", "../_base/sniff", "../_base/window",
+	"../_base/xhr", "../sniff", "../_base/window",
 	"../dom", "../dom-construct", "../query", "require"
 ], function(config, json, kernel, lang, xhr, has, win, dom, domConstruct, query, require) {
 
@@ -106,7 +106,7 @@ var iframe = {
 				var idoc;
 				if(has("ie") || has("webkit")){
 					idoc = iframe.contentWindow.document;
-				}else{ //  if(d.isMozilla){
+				}else{ //  mozilla
 					idoc = iframe.contentWindow;
 				}
 
@@ -172,7 +172,7 @@ var iframe = {
 						if(handleAs == "xml"){
 							//	FF, Saf 3+ and Opera all seem to be fine with ifd being xml.  We have to
 							//	do it manually for IE6-8.  Refs #6334.
-							if(has("ie") < 9 || (has("ie") && kernel.isQuirks)){
+							if(has("ie") < 9 || (has("ie") && has("quirks"))){
 								query("a", iframe._frame.contentWindow.document.documentElement).orphan();
 								var xmlText=(iframe._frame.contentWindow.document).documentElement.innerText;
 								xmlText=xmlText.replace(/>\s+</g, "><");

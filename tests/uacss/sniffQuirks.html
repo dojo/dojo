@@ -25,13 +25,13 @@
 	</style>
 	<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 	<script type="text/javascript">
-		require(["dojo", "doh", "dojo/uacss", "dojo/domReady!"], function(dojo, doh){
+		require(["dojo", "doh", "dojo/uacss", "dojo/domReady!"], function(dojo, doh, has){
 			var node = dojo.byId("box1");
 			var reportNode = dojo.byId("log");
 			var inner = (reportNode.textContent) ? "textContent": "innerText";
 			reportNode.innerHTML = dojo.toJson({
 				boxModel: dojo.boxModel,
-				isQuirks: dojo.isQuirks,
+				hasQuirks: has("quirks"),
 				width: dojo.style(node, "width"),
 				marginBoxWidth: dojo.marginBox(node).w,
 				htmlClassName: dojo.doc.documentElement.className

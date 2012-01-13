@@ -8,7 +8,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/sniff", "dojo/domReady!"], function(dojo, doh, has){
 			
 				doh.register("rtl", 
 					[
@@ -34,7 +34,7 @@
 							name: "eventClientXY_IE",
 							timeout: 1000,
 							runTest: function(t){
-								if(!dojo.isIE){ return; }
+								if(!has("ie")){ return; }
 
 								var
 								d = new doh.Deferred(),

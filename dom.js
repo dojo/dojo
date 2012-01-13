@@ -1,4 +1,4 @@
-define(["./_base/sniff", "./_base/lang", "./_base/window"],
+define(["./sniff", "./_base/lang", "./_base/window"],
 		function(has, lang, win){
 	// module:
 	//		dojo/dom

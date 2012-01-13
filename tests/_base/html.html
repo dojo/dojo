@@ -12,7 +12,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/sniff", "dojo/domReady!"], function(dojo, doh, has){
 
 				function getIframeDocument(/*DOMNode*/iframeNode){
 					//summary: Returns the document object associated with the iframe DOM Node argument.
@@ -182,9 +182,9 @@
 								var def = new doh.Deferred();
 								setTimeout(function(){ try{
 									var oldLtr = dojo._isBodyLtr();
-									var oldQuirks = dojo.isQuirks;
+									var oldQuirks = has("quirks");
 									dojo.withGlobal(dojo.byId('iframe_quirks').win, function(){
-										doh.t(dojo.isQuirks, "isQuirks == true in quirks/iframe");
+										doh.t(has("quirks"), "has('quirks') == true in quirks/iframe");
 										doh.f(dojo._isBodyLtr(), "isBodyLtr == false in RTL/iframe");
 										var pos = dojo.position('iframe_00_quirks');
 										doh.t(pos.x===0, "quirks iframe element x == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
@@ -193,7 +193,7 @@
 										doh.t(pos.h>0, "quirks iframe element h > 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
 									});
 									dojo.withGlobal(dojo.byId('iframe_strict').win, function(){
-										doh.f(dojo.isQuirks, "isQuirks == false in strict/ifraee");
+										doh.f(has("quirks"), "has('quirks') == false in strict/ifraee");
 										doh.f(dojo._isBodyLtr(), "isBodyLtr == false in RTL/iframe");
 										var pos = dojo.position('iframe_00_strict');
 										doh.t(pos.x===0, "strict iframe element x == 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
@@ -202,7 +202,7 @@
 										doh.t(pos.h>0, "strict iframe element h > 0 (x,y,w,h="+pos.x+","+pos.y+","+pos.w+","+pos.h+")");
 									});
 									doh.t(!oldLtr == !dojo._isBodyLtr(), "isBodyLtr restored after withGlobal");
-									doh.t(!oldQuirks == !dojo.isQuirks, "isQuirks restored after withGlobal");
+									doh.is(oldQuirks, has("quirks"), "has('quirks') restored after withGlobal");
 									def.callback(true);
 								}catch(e){ def.errback(e); } }, 1000);
 								return def;
@@ -354,7 +354,7 @@
 							doh.f(dojo.hasAttr("div-no-tabindex", "tabIndex"));
 							doh.t(dojo.attr("div-no-tabindex", "tabIndex") <= 0);
 							doh.t(dojo.hasAttr("div-tabindex-minus-1", "tabIndex"));
-							if(!dojo.isOpera){
+							if(!has("opera")){
 								// Opera (at least <= 9) does not support tabIndex="-1"
 								doh.is(-1, dojo.attr("div-tabindex-minus-1", "tabIndex"));
 							}
@@ -363,13 +363,13 @@
 							doh.is(1, dojo.attr("div-tabindex-1", "tabIndex"));
 						},
 						function getTabindexInput(t){
-							if(!dojo.isIE || dojo.isIE >= 8){
+							if(!has("ie") || has("ie") >= 8){
 								// IE6/7 always reports tabIndex as defined
 								doh.f(dojo.hasAttr("input-no-tabindex", "tabIndex"));
 								doh.f(dojo.attr("input-no-tabindex", "tabIndex"));
 							}
 							doh.t(dojo.hasAttr("input-tabindex-minus-1", "tabIndex"));
-							if(!dojo.isOpera){
+							if(!has("opera")){
 								// Opera (at least <= 9) does not support tabIndex="-1"
 								doh.is(-1, dojo.attr("input-tabindex-minus-1", "tabIndex"));
 							}
@@ -381,7 +381,7 @@
 							var div = document.createElement("div");
 							doh.is(null, dojo.attr(div, "tabIndex"));
 							dojo.attr(div, "tabIndex", -1);
-							if(!dojo.isOpera){
+							if(!has("opera")){
 								// Opera (at least <= 9) does not support tabIndex="-1"
 								doh.is(-1, dojo.attr(div, "tabIndex"));
 							}
@@ -394,7 +394,7 @@
 							var input = document.createElement("input");
 							doh.t(dojo.attr(input, "tabIndex") <= 0);
 							dojo.attr(input, "tabIndex", -1);
-							if(!dojo.isOpera){
+							if(!has("opera")){
 								// Opera (at least <= 9) does not support tabIndex="-1"
 								doh.is(-1, dojo.attr(input, "tabIndex"));
 							}
@@ -445,7 +445,7 @@
 							});
 							dojo.body().appendChild(input);
 							doh.is(1, dojo.attr(input, "tabIndex"), "tabIndex");
-							if(!dojo.isIE || dojo.isIE > 7){
+							if(!has("ie") || has("ie") > 7){
 								// IE6/7 treats type="text" as missing, even if it was
 								// explicitly specified
 								doh.is("text", dojo.attr(input, "type"), "type");
@@ -473,7 +473,7 @@
 							dojo.attr(input, "onfocus", function(e){ ctr++; });
 							dojo.attr(input, "onfocus", function(e){ ctr++; });
 							dojo.body().appendChild(input);
-							if(!dojo.isIE || dojo.isIE > 7){
+							if(!has("ie") || has("ie") > 7){
 								// IE6/7 treats type="text" as missing, even if it was
 								// explicitly specified
 								doh.is("text", dojo.attr(input, "type"));
@@ -519,7 +519,7 @@
 							// create label with no for attribute make sure requesting
 							// it as for and html for returns null
 							var label = document.createElement("label");
-							if(!dojo.isIE){
+							if(!has("ie")){
 								// IE always assumes that "for" is present
 								doh.f(dojo.attr(label, "for"));
 								doh.f(dojo.attr(label, "htmlFor"));
@@ -538,7 +538,7 @@
 							var labelNoFor = dojo.byId("label-no-for");
 							// make sure testing if has attribute using for or htmlFor 
 							// both return null when no value set
-							if(!dojo.isIE){
+							if(!has("ie")){
 								// IE always assumes that "for" is present
 								doh.f(dojo.hasAttr(labelNoFor, "for"));
 								doh.f(dojo.hasAttr(labelNoFor, "htmlFor"));

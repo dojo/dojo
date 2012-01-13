@@ -11,7 +11,7 @@ iframe {
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="async:1"></script>
 		<script type="text/javascript">
 var frameLoaded; // callback for iframes, defined later
-require(["dojo/_base/kernel", "doh", "dojo/dom-construct", "dojo/has", "dojo/_base/window", "dojo/_base/sniff"],
+require(["dojo/_base/kernel", "doh", "dojo/dom-construct", "dojo/sniff", "dojo/_base/window"],
 function(dojo, doh, domConstruct, has, win){
 	var
 		fStandards, fQuirks, // iframes used for tests
@@ -58,33 +58,34 @@ function(dojo, doh, domConstruct, has, win){
 			t.is(window, dojo.global, "dojo.global should be restored");
 			t.is(document, dojo.doc, "dojo.doc should be restored");
 		},
-		function isQuirks(t){
+		function hasQuirks(t){
 			var origQuirks = has("quirks");
 			win.withGlobal(fQuirks.contentWindow, function(){
-				t.t(true === dojo.isQuirks && true === has("quirks"),
-					"dojo.isQuirks / has('quirks') should be true in withDoc w/ quirks document");
+				t.t(dojo.isQuirks,"dojo.isQuirks should be true in withDoc w/ quirks document");	// remove in 2.0
+				t.t(has("quirks"), "has('quirks') should be true in withDoc w/ quirks document");
 			});
-			t.t(origQuirks === dojo.isQuirks && origQuirks === has("quirks"),
-				"dojo.isQuirks / has('quirks') should be reset to initial value");
+			t.is(origQuirks, dojo.isQuirks, "dojo.isQuirks should be reset to initial value");	// remove in 2.0
+			t.is(origQuirks, has("quirks"), "has('quirks') should be reset to initial value");
 			win.withGlobal(fStandards.contentWindow, function(){
-				t.t(false === dojo.isQuirks && false === has("quirks"),
-					"dojo.isQuirks / has('quirks') should be false in withDoc w/ standards document");
+				t.f(dojo.isQuirks, "dojo.isQuirks should be false in withDoc w/ standards document");	// remove in 2.0
+				t.f(has("quirks"), "has('quirks') should be false in withDoc w/ standards document");
 			});
-			t.t(origQuirks === dojo.isQuirks && origQuirks === has("quirks"),
-				"dojo.isQuirks / has('quirks') should be reset to initial value (again)");
+			t.is(origQuirks, dojo.isQuirks,		// remove in 2.0
+				"dojo.isQuirks should be reset to initial value (again)");
+			t.is(origQuirks, has("quirks"),
+				"has('quirks') should be reset to initial value (again)");
 		}
 	];
 
-	if(has("ie") > 7){ // add isIE test for X-UA-Compatible-triggered switch
-		tests.push(function isIE(t){
+	if(has("ie") > 7){ // add hasIE test for X-UA-Compatible-triggered switch
+		tests.push(function hasIE(t){
 			var origIE = has("ie");
 			win.withGlobal(fStandards.contentWindow, function(){
-				console.log('isIE=' + dojo.isIE + ' / has: ' + has("ie"));
-				t.t(7 === dojo.isIE && 7 === has("ie"),
-					"dojo.isIE / has('ie') should be 7 in withDoc w/ standards document w/ EmulateIE7");
+				t.is(7, dojo.isIE,"dojo.isIE should be 7 in withDoc w/ standards document w/ EmulateIE7");	// remove in 2.0
+				t.is(7, has("ie"), "has('ie') should be 7 in withDoc w/ standards document w/ EmulateIE7");
 			});
-			t.t(origIE === dojo.isIE && origIE === has("ie"),
-				"dojo.isIE / has('ie') should be reset to initial value");
+			t.is(origIE, dojo.isIE, "dojo.isIE should be reset to initial value");	// remove in 2.0
+			t.is(origIE, has("ie"), "has('ie') should be reset to initial value");
 		});
 	}
 

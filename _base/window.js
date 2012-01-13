@@ -1,4 +1,4 @@
-define(["./kernel", "../has", "./sniff"], function(dojo, has){
+define(["./kernel", "../sniff"], function(dojo, has){
 	// module:
 	//		dojo/window
 	// summary:
@@ -78,12 +78,13 @@ dojo.withDoc = function(	/*DocumentElement*/documentObject,
 	//		be restored to its previous state.
 
 	var oldDoc = dojo.doc,
-		oldQ = dojo.isQuirks,
-		oldIE = dojo.isIE, isIE, mode, pwin;
+		oldQ = has("quirks"),
+		oldIE = has("ie"), isIE, mode, pwin;
 
 	try{
 		dojo.doc = ret.doc = documentObject;
-		// update dojo.isQuirks and the value of the has feature "quirks"
+		// update dojo.isQuirks and the value of the has feature "quirks".
+		// remove setting dojo.isQuirks and dojo.isIE for 2.0
 		dojo.isQuirks = has.add("quirks", dojo.doc.compatMode == "BackCompat", true, true); // no need to check for QuirksMode which was Opera 7 only
 
 		if(has("ie")){

@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
 		<script type="text/javascript">
 		require(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/html", "dojo/Stateful", "dojo/Evented",
-				"doh", "dojo/date/stamp", "dojo/aspect", "./resources/AMDWidget", "dojo/parser", "dojo/domReady!"],
+				"doh", "dojo/date/stamp", "dojo/aspect", "dojo/tests/resources/AMDWidget", "dojo/parser", "dojo/domReady!"],
 				function(dojo, dlang, darray, declare, dhtml, Stateful, Evented, doh, dstamp, aspect, AMDWidget, parser){
 
 			var mixin = dojo.mixin,
@@ -727,7 +727,7 @@
 			
 			<!--  section for testing mid syntax for data-dojo-type -->
 			<div>
-				<div data-dojo-id="objAMDWidget" data-dojo-type="./resources/AMDWidget" data-dojo-props="value: 'Value1'"></div>
+				<div data-dojo-id="objAMDWidget" data-dojo-type="dojo/tests/resources/AMDWidget" data-dojo-props="value: 'Value1'"></div>
 			</div>
 		</div> <!-- end of <div id=main> -->
 

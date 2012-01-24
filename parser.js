@@ -1,7 +1,7 @@
 define(
 	["./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./_base/html", "./_base/window", "./_base/url",
-		"./_base/json", "./aspect", "./date/stamp", "./query", "./on", "./ready"],
-	function(dojo, dlang, darray, config, dhtml, dwindow, _Url, djson, aspect, dates, query, don, ready){
+	 	"./_base/json", "./aspect", "./date/stamp", "./has", "./query", "./on", "./ready"],
+	function(dojo, dlang, darray, config, dhtml, dwindow, _Url, djson, aspect, dates, has, query, don, ready){
 
 // module:
 //		dojo/parser
@@ -10,15 +10,9 @@ define(
 
 new Date("X"); // workaround for #11279, new Date("") == NaN
 
-var features = {
-	// Feature detection for when node.attributes only lists the attributes specified in the markup
-	// rather than old IE/quirks behavior where it lists every default value too
-	"dom-attributes-explicit": document.createElement("div").attributes.length < 40
-};
-function has(feature){
-	return features[feature];
+if (has("dom")) {
+	has.add("dom-attributes-explicit", document.createElement("div").attributes.length < 40);
 }
-
 
 dojo.parser = new function(){
 	// summary:
@@ -79,35 +73,70 @@ dojo.parser = new function(){
 		return new Function(preamble+script.innerHTML+suffix);
 	};
 
-	this.instantiate = /*====== dojo.parser.instantiate= ======*/function(nodes, mixin, args){
+	this.instantiate = /*====== dojo.parser.instantiate= ======*/ function(nodes, mixin, options) {
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
 		//		potentially calls a startup method to allow them to connect with
 		//		any children.
 		// nodes: Array
-		//		Array of nodes or objects like
+		//		Array of DOM nodes
+		// mixin: Object?
+		//		An object that will be mixed in with each node in the array.
+		//		Values in the mixin will override values in the node, if they
+		//		exist.
+		// options: Object?
+		//		An object used to hold kwArgs for instantiation.
+		//		See parse.options argument for details.
+
+		mixin = mixin || {};
+		options = options || {};
+
+		var dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
+			attrData = "data-" + (options.scope || dojo._scopeName) + "-",// typically "data-dojo-"
+			dataDojoType = attrData + "type";						// typically "data-dojo-type"
+
+		var list = [];
+		darray.forEach(nodes, function(node){
+			var type = dojoType in mixin ? mixin[dojoType] : node.getAttribute(dataDojoType) || node.getAttribute(dojoType);
+			if(type){
+				list.push({
+					node: node,
+					"type": type
+				});
+			}
+		});
+
+		// Instantiate the nodes and return the objects
+		return this._instantiate(list, mixin, options);
+	};
+
+	this._instantiate = /*====== dojo.parser.instantiate= ======*/ function(nodes, mixin, options){
+		// summary:
+		//		Takes array of objects representing nodes, and turns them into class instances and
+		//		potentially calls a startup method to allow them to connect with
+		//		any children.
+		// nodes: Array
+		//		Array of objects like
 		//	|		{
 		//	|			type: "dijit.form.Button",
 		//	|			node: DOMNode,
 		//	|			scripts: [ ... ],	// array of <script type="dojo/..."> children of node
 		//	|			inherited: { ... }	// settings inherited from ancestors like dir, theme, etc.
 		//	|		}
-		// mixin: Object?
+		// mixin: Object
 		//		An object that will be mixed in with each node in the array.
 		//		Values in the mixin will override values in the node, if they
 		//		exist.
-		// args: Object?
-		//		An object used to hold kwArgs for instantiation.
-		//		See parse.args argument for details.
+		// options: Object
+		//		An options object used to hold kwArgs for instantiation.
+		//		See parse.options argument for details.
 
-		var thelist = [],
-		mixin = mixin||{};
-		args = args||{};
+		var thelist = [];
 
 		// Precompute names of special attributes we are looking for
 		// TODO: for 2.0 default to data-dojo- regardless of scopeName (or maybe scopeName won't exist in 2.0)
-		var dojoType = (args.scope || dojo._scopeName) + "Type",		// typically "dojoType"
-			attrData = "data-" + (args.scope || dojo._scopeName) + "-",// typically "data-dojo-"
+		var dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
+			attrData = "data-" + (options.scope || dojo._scopeName) + "-",// typically "data-dojo-"
 			dataDojoType = attrData + "type",						// typically "data-dojo-type"
 			dataDojoProps = attrData + "props",						// typically "data-dojo-props"
 			dataDojoAttachPoint = attrData + "attach-point",
@@ -118,14 +147,14 @@ dojo.parser = new function(){
 		var specialAttrs = {};
 		darray.forEach([dataDojoProps, dataDojoType, dojoType, dataDojoId, "jsId", dataDojoAttachPoint,
 				dataDojoAttachEvent, "dojoAttachPoint", "dojoAttachEvent", "class", "style"], function(name){
-			specialAttrs[name.toLowerCase()] = name.replace(args.scope, "dojo");
+			specialAttrs[name.toLowerCase()] = name.replace(options.scope, "dojo");
 		});
 
 		darray.forEach(nodes, function(obj){
 			if(!obj){ return; }
 
-			var node = obj.node || obj,
-				type = dojoType in mixin ? mixin[dojoType] : obj.node ? obj.type : (node.getAttribute(dataDojoType) || node.getAttribute(dojoType)),
+			var node = obj.node,
+				type = obj.type,
 				ctor = _ctorMap[type] || (_ctorMap[type] = (dlang.getObject(type)||require(type))),
 				proto = ctor && ctor.prototype;
 
@@ -134,9 +163,9 @@ dojo.parser = new function(){
 			// Inherited setting may later be overridden by explicit settings on node itself.
 			var params = {};
 
-			if(args.defaults){
+			if(options.defaults){
 				// settings for the document itself (or whatever subtree is being parsed)
-				dlang.mixin(params, args.defaults);
+				dlang.mixin(params, options.defaults);
 			}
 			if(obj.inherited){
 				// settings from dir=rtl or lang=... on a node above this node
@@ -263,7 +292,7 @@ dojo.parser = new function(){
 			// Mix things found in data-dojo-props into the params, overriding any direct settings
 			if(extra){
 				try{
-					extra = djson.fromJson.call(args.propsThis, "{" + extra + "}");
+					extra = djson.fromJson.call(options.propsThis, "{" + extra + "}");
 					dlang.mixin(params, extra);
 				}catch(e){
 					// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
@@ -274,7 +303,7 @@ dojo.parser = new function(){
 			// Any parameters specified in "mixin" override everything else.
 			dlang.mixin(params, mixin);
 
-			var scripts = obj.node ? obj.scripts : (ctor && (ctor._noScript || proto._noScript) ? [] :
+			var scripts = obj.scripts || (ctor && (ctor._noScript || proto._noScript) ? [] :
 						query("> script[type^='dojo/']", node));
 
 			// Process <script type="dojo/*"> script tags
@@ -297,17 +326,17 @@ dojo.parser = new function(){
 					// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
 					var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
 						prop = script.getAttribute(attrData + "prop"),
-						type = script.getAttribute("type"),
+						scriptType = script.getAttribute("type"),
 						nf = this._functionFromScript(script, attrData);
 					if(event){
-						if(type == "dojo/connect"){
+						if(scriptType == "dojo/connect"){
 							connects.push({event: event, func: nf});
-						}else if(type == "dojo/on"){
+						}else if(scriptType == "dojo/on"){
 							on.push({event: event, func: nf});
 						}else{
 							params[event] = nf;
 						}
-					}else if(type == "dojo/watch"){
+					}else if(scriptType == "dojo/watch"){
 						watch.push({prop: prop, func: nf});
 					}else{
 						calls.push(nf);
@@ -345,7 +374,7 @@ dojo.parser = new function(){
 		// (non-top level) children
 		if(!mixin._started){
 			darray.forEach(thelist, function(instance){
-				if( !args.noStart && instance  &&
+				if( !options.noStart && instance  &&
 					dlang.isFunction(instance.startup) &&
 					!instance._started
 				){
@@ -356,95 +385,33 @@ dojo.parser = new function(){
 		return thelist;
 	};
 
-	this.parse = /*====== dojo.parser.parse= ======*/ function(rootNode, args){
+	this.scan = /*====== dojo.parser.scan= ======*/ function(root, options){
 		// summary:
-		//		Scan the DOM for class instances, and instantiate them.
-		//
+		//		Scan a DOM tree and return an array of objects representing the DOMNodes
+		//		that need to be turned into widgets.
 		// description:
-		//		Search specified node (or root node) recursively for class instances,
-		//		and instantiate them. Searches for either data-dojo-type="Class" or
-		//		dojoType="Class" where "Class" is a a fully qualified class name,
-		//		like `dijit.form.Button`
+		//		Search specified node (or document root node) recursively for class instances
+		//		and return an array of objects that represent potential widgets to be
+		//		instantiated. Searches for either data-dojo-type="MID" or dojoType="MID" where
+		//		"MID" is a module ID like "dijit/form/Button" or a fully qualified Class name
+		//		like "dijit.form.Button".
 		//
-		//		Using `data-dojo-type`:
-		//		Attributes using can be mixed into the parameters used to instantiate the
-		//		Class by using a `data-dojo-props` attribute on the node being converted.
-		//		`data-dojo-props` should be a string attribute to be converted from JSON.
-		//
-		//		Using `dojoType`:
-		//		Attributes are read from the original domNode and converted to appropriate
-		//		types by looking up the Class prototype values. This is the default behavior
-		//		from Dojo 1.0 to Dojo 1.5. `dojoType` support is deprecated, and will
-		//		go away in Dojo 2.0.
-		//
-		// rootNode: DomNode?
+		//		See parser.parse() for details of markup.
+		// root: DomNode?
 		//		A default starting root node from which to start the parsing. Can be
-		//		omitted, defaulting to the entire document. If omitted, the `args`
-		//		object can be passed in this place. If the `args` object has a
+		//		omitted, defaulting to the entire document. If omitted, the `options`
+		//		object can be passed in this place. If the `options` object has a
 		//		`rootNode` member, that is used.
-		//
-		// args: Object
-		//		a kwArgs object passed along to instantiate()
-		//
-		//			* noStart: Boolean?
-		//				when set will prevent the parser from calling .startup()
-		//				when locating the nodes.
-		//			* rootNode: DomNode?
-		//				identical to the function's `rootNode` argument, though
-		//				allowed to be passed in via this `args object.
-		//			* template: Boolean
-		//				If true, ignores ContentPane's stopParser flag and parses contents inside of
-		//				a ContentPane inside of a template.   This allows dojoAttachPoint on widgets/nodes
-		//				nested inside the ContentPane to work.
-		//			* inherited: Object
-		//				Hash possibly containing dir and lang settings to be applied to
-		//				parsed widgets, unless there's another setting on a sub-node that overrides
-		//			* scope: String
-		//				Root for attribute names to search for.   If scopeName is dojo,
-		//				will search for data-dojo-type (or dojoType).   For backwards compatibility
-		//				reasons defaults to dojo._scopeName (which is "dojo" except when
-		//				multi-version support is used, when it will be something like dojo16, dojo20, etc.)
-		//			* propsThis: Object
-		//				If specified, "this" referenced from data-dojo-props will refer to propsThis.
-		//				Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
-		//
-		// example:
-		//		Parse all widgets on a page:
-		//	|		dojo.parser.parse();
-		//
-		// example:
-		//		Parse all classes within the node with id="foo"
-		//	|		dojo.parser.parse(dojo.byId('foo'));
-		//
-		// example:
-		//		Parse all classes in a page, but do not call .startup() on any
-		//		child
-		//	|		dojo.parser.parse({ noStart: true })
-		//
-		// example:
-		//		Parse all classes in a node, but do not call .startup()
-		//	|		dojo.parser.parse(someNode, { noStart:true });
-		//	|		// or
-		//	|		dojo.parser.parse({ noStart:true, rootNode: someNode });
+		// options: Object
+		//		a kwArgs options object, see parse() for details
 
-		// determine the root node based on the passed arguments.
-		var root;
-		if(!args && rootNode && rootNode.rootNode){
-			args = rootNode;
-			root = args.rootNode;
-		}else{
-			root = rootNode;
-		}
-		root = root ? dhtml.byId(root) : dwindow.body();
-		args = args || {};
+		// Output list
+		var list = [];
 
-		var dojoType = (args.scope || dojo._scopeName) + "Type",		// typically "dojoType"
-			attrData = "data-" + (args.scope || dojo._scopeName) + "-",	// typically "data-dojo-"
+		var dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
+			attrData = "data-" + (options.scope || dojo._scopeName) + "-",	// typically "data-dojo-"
 			dataDojoType = attrData + "type",						// typically "data-dojo-type"
 			dataDojoTextDir = attrData + "textdir";					// typically "data-dojo-textdir"
-
-		// List of all nodes on page w/dojoType specified
-		var list = [];
 
 		// Info on DOMNode currently being processed
 		var node = root.firstChild;
@@ -453,7 +420,7 @@ dojo.parser = new function(){
 		//	- inherited: dir, lang, and textDir setting of parent, or inherited by parent
 		//	- parent: pointer to identical structure for my parent (or null if no parent)
 		//	- scripts: if specified, collects <script type="dojo/..."> type nodes from children
-		var inherited = args && args.inherited;
+		var inherited = options.inherited;
 		if(!inherited){
 			function findAncestorAttr(node, attr){
 				return (node.getAttribute && node.getAttribute(attr)) ||
@@ -574,14 +541,102 @@ dojo.parser = new function(){
 			// When finished with children, go to my next sibling.
 			node = firstChild;
 			scripts = childScripts;
-			scriptsOnly = ctor && ctor.prototype.stopParser && !(args && args.template);
+			scriptsOnly = ctor && ctor.prototype.stopParser && !(options.template);
 			parent = current;
-
 		}
 
+		return list;
+	};
+
+	this.parse = /*====== dojo.parser.parse= ======*/ function(rootNode, options){
+		// summary:
+		//		Scan the DOM for class instances, and instantiate them.
+		//
+		// description:
+		//		Search specified node (or root node) recursively for class instances,
+		//		and instantiate them. Searches for either data-dojo-type="Class" or
+		//		dojoType="Class" where "Class" is a a fully qualified class name,
+		//		like `dijit.form.Button`
+		//
+		//		Using `data-dojo-type`:
+		//		Attributes using can be mixed into the parameters used to instantiate the
+		//		Class by using a `data-dojo-props` attribute on the node being converted.
+		//		`data-dojo-props` should be a string attribute to be converted from JSON.
+		//
+		//		Using `dojoType`:
+		//		Attributes are read from the original domNode and converted to appropriate
+		//		types by looking up the Class prototype values. This is the default behavior
+		//		from Dojo 1.0 to Dojo 1.5. `dojoType` support is deprecated, and will
+		//		go away in Dojo 2.0.
+		//
+		// rootNode: DomNode?
+		//		A default starting root node from which to start the parsing. Can be
+		//		omitted, defaulting to the entire document. If omitted, the `options`
+		//		object can be passed in this place. If the `options` object has a
+		//		`rootNode` member, that is used.
+		//
+		// options: Object?
+		//		A hash of options.
+		//
+		//			* noStart: Boolean?
+		//				when set will prevent the parser from calling .startup()
+		//				when locating the nodes.
+		//			* rootNode: DomNode?
+		//				identical to the function's `rootNode` argument, though
+		//				allowed to be passed in via this `options object.
+		//			* template: Boolean
+		//				If true, ignores ContentPane's stopParser flag and parses contents inside of
+		//				a ContentPane inside of a template.   This allows dojoAttachPoint on widgets/nodes
+		//				nested inside the ContentPane to work.
+		//			* inherited: Object
+		//				Hash possibly containing dir and lang settings to be applied to
+		//				parsed widgets, unless there's another setting on a sub-node that overrides
+		//			* scope: String
+		//				Root for attribute names to search for.   If scopeName is dojo,
+		//				will search for data-dojo-type (or dojoType).   For backwards compatibility
+		//				reasons defaults to dojo._scopeName (which is "dojo" except when
+		//				multi-version support is used, when it will be something like dojo16, dojo20, etc.)
+		//			* propsThis: Object
+		//				If specified, "this" referenced from data-dojo-props will refer to propsThis.
+		//				Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
+		//
+		// example:
+		//		Parse all widgets on a page:
+		//	|		dojo.parser.parse();
+		//
+		// example:
+		//		Parse all classes within the node with id="foo"
+		//	|		dojo.parser.parse(dojo.byId('foo'));
+		//
+		// example:
+		//		Parse all classes in a page, but do not call .startup() on any
+		//		child
+		//	|		dojo.parser.parse({ noStart: true })
+		//
+		// example:
+		//		Parse all classes in a node, but do not call .startup()
+		//	|		dojo.parser.parse(someNode, { noStart:true });
+		//	|		// or
+		//	|		dojo.parser.parse({ noStart:true, rootNode: someNode });
+
+		// determine the root node based on the passed arguments.
+		var root;
+		if(!options && rootNode && rootNode.rootNode){
+			options = rootNode;
+			root = options.rootNode;
+		}else{
+			root = rootNode;
+		}
+		root = root ? dhtml.byId(root) : dwindow.body();
+
+		options = options || {};
+
+		// List of all nodes on page w/dojoType specified
+		var list = this.scan(root, options);
+
 		// go build the object instances
-		var mixin = args && args.template ? {template: true} : null;
-		return this.instantiate(list, mixin, args); // Array
+		var mixin = options.template ? {template: true} : {};
+		return this._instantiate(list, mixin, options); // Array
 	};
 }();
 

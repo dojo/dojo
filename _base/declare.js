@@ -271,6 +271,10 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		return this;
 	}
 
+	function createSubclass(mixins){
+		return declare([this].concat(mixins));
+	}
+
 	// chained constructor compatible with the legacy dojo.declare()
 	function chainedConstructor(bases, ctorSpecial){
 		return function(){
@@ -530,6 +534,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			parents: parents, ctor: props.constructor};
 		ctor.superclass = superclass && superclass.prototype;
 		ctor.extend = extend;
+		ctor.createSubclass = createSubclass;
 		ctor.prototype = proto;
 		proto.constructor = ctor;
 

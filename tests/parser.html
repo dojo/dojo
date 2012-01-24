@@ -7,9 +7,18 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
 		<script type="text/javascript">
+		var MyNonDojoClass = function() {};
+		MyNonDojoClass.extend = function(){
+			var args = arguments;
+			return function() {
+				this.expectedClass = true;
+				this.params = args;
+			};
+		};
+
 		require(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/html", "dojo/Stateful", "dojo/Evented",
-				"doh", "dojo/date/stamp", "dojo/aspect", "dojo/tests/resources/AMDWidget", "dojo/parser", "dojo/domReady!"],
-				function(dojo, dlang, darray, declare, dhtml, Stateful, Evented, doh, dstamp, aspect, AMDWidget, parser){
+				"doh", "dojo/date/stamp", "dojo/aspect", "dojo/tests/resources/AMDWidget", "dojo/tests/resources/AMDMixin", "dojo/parser", "dojo/domReady!"],
+				function(dojo, dlang, darray, declare, dhtml, Stateful, Evented, doh, dstamp, aspect, AMDWidget, AMDMixin, parser){
 
 			var mixin = dojo.mixin,
 				extend = dojo.extend,
@@ -149,6 +158,18 @@
 				boolProp1: false,
 				prototypeOnclick: false,
 				onclick: function() {this.prototypeOnclick=true;}
+			});
+
+			declare("tests.parser.ClassForMixins", null, {
+				classDone: true
+			});
+
+			declare("tests.parser.Mixin1", null, {
+				mixin1Done: true
+			});
+
+			declare("tests.parser.Mixin2", null, {
+				mixin2Done: true
 			});
 
 			deepTestProp = {
@@ -595,6 +616,24 @@
 					doh.is("object", typeof objI3, "child widget 3 created");
 					doh.f(window.objI4, "child widget 4 not created");
 				});
+
+				doh.register("data-dojo-mixins support",function mixins() {
+					parser.parse("mixins");
+					doh.t(resultMixins1, "object using data-dojo-mixins created from an already parsed type");
+					doh.t(resultMixins1.mixin1Done, "mixin1 correctly mixed in");
+					doh.t(resultMixins1.mixin2Done, "mixin2 correctly mixed in");
+					doh.t(resultMixins1.amdMixinDone, "amd mixin correctly mixed in");
+					doh.t(resultMixins2, "object using data-dojo-mixins created from a non parsed type");
+					doh.t(resultMixins2.classDone, "class correctly created");
+					doh.t(resultMixins2.mixin1Done, "mixin1 correctly mixed in");
+					doh.t(resultMixins2.mixin2Done, "mixin2 correctly mixed in");
+					doh.t(resultMixins2.amdMixinDone, "amd mixin correctly mixed in");
+					doh.t(resultNonDojoMixin.expectedClass, "correct class is returned for composeJS mixin");
+					doh.is(resultNonDojoMixin.params.length, 2, "correct # of params were passed to compose JS");
+					doh.is(resultNonDojoMixin.params[0], tests.parser.Mixin1, "correct param 1");
+					doh.is(resultNonDojoMixin.params[1], tests.parser.Mixin2, "correct param 2");
+				});
+				
 				doh.run();
 			})
 		});
@@ -838,6 +877,16 @@
 				<div dojoType="tests.parser.Class1" jsId="objI3" id="objId3"></div>
 				<div dojoType="tests.parser.Class1" jsId="objI4" id="objId4"></div>
 			</div>
+		</div>
+
+		<!-- tests for data-dojo-mixins -->
+		<div id="mixins">
+			<div data-dojo-type="tests.parser.Class1" data-dojo-mixins="tests.parser.Mixin1,tests.parser.Mixin2,dojo/tests/resources/AMDMixin"
+					data-dojo-id="resultMixins1"></div>
+			<div data-dojo-type="tests.parser.ClassForMixins" data-dojo-mixins="tests.parser.Mixin1, tests.parser.Mixin2, dojo/tests/resources/AMDMixin"
+					data-dojo-id="resultMixins2"></div>
+			<div data-dojo-type="MyNonDojoClass" data-dojo-mixins="tests.parser.Mixin1, tests.parser.Mixin2"
+					data-dojo-id="resultNonDojoMixin"></div>
 		</div>
 
 	</body>

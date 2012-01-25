@@ -304,7 +304,6 @@
 					function testSubNodeParse(t){
 						t.f(exists("obj2"));
 						var toParse = dhtml.byId("toParse");
-						toParse.setAttribute("dojoType", toParse.getAttribute("type"));
 						parser.parse(toParse.parentNode);
 						t.t(exists("obj2"));
 						t.is("tests.parser.Class1", obj2.declaredClass);
@@ -669,10 +668,6 @@
 					this.callCount2++;
 				</script>
 			</div>
-			<div>
-				<div type="tests.parser.Class1" jsId="obj2" id="toParse">
-				</div>
-			</div>
 			<div dojoType="tests.parser.Class2" jsId="obj3">
 			</div>
 			<div dojoType="tests.parser.Class3" jsId="obj4">
@@ -769,6 +764,12 @@
 				<div data-dojo-id="objAMDWidget" data-dojo-type="dojo/tests/resources/AMDWidget" data-dojo-props="value: 'Value1'"></div>
 			</div>
 		</div> <!-- end of <div id=main> -->
+
+		<!-- section for testing parse on a subnode -->
+		<div>
+			<div data-dojo-type="tests.parser.Class1" jsId="obj2" id="toParse">
+			</div>
+		</div>
 
 		<!-- section for testing that dir, lang attribute trickles down from ancestor -->
 		<div id="dirSection1">

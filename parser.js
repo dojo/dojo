@@ -642,11 +642,13 @@ dojo.parser = new function(){
 		//	|		// or
 		//	|		dojo.parser.parse({ noStart:true, rootNode: someNode });
 
-		// determine the root node based on the passed arguments.
+		// determine the root node and options based on the passed arguments.
 		var root;
 		if(!options && rootNode && rootNode.rootNode){
 			options = rootNode;
 			root = options.rootNode;
+		}else if(dlang.isObject(rootNode) && !("nodeType" in rootNode)){
+			options = rootNode;
 		}else{
 			root = rootNode;
 		}

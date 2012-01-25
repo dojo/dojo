@@ -3,9 +3,9 @@
 	<head>
 		<title>Parser Unit Test</title>
 		<style type="text/css">     
-			@import "../resources/dojo.css";
+			@import "../../resources/dojo.css";
 		</style>
-		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
+		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
 		<script type="text/javascript">
 		var MyNonDojoClass = function() {};
 		MyNonDojoClass.extend = function(){
@@ -607,7 +607,7 @@
 					doh.t(buttonClicked == button.onClick, "points to specified function");
 				});
 				
-				doh.register("parser.instantiate()",function instantiate1() {
+				doh.register("parser.instantiate()", function instantiate1() {
 					var nodes = [dhtml.byId("objId1"),dhtml.byId("objId2"),dhtml.byId("contId1"),dhtml.byId("objId3")];
 					parser.instantiate(nodes);
 					doh.is("object", typeof objI1, "widget 1 created");
@@ -617,7 +617,7 @@
 					doh.f(window.objI4, "child widget 4 not created");
 				});
 
-				doh.register("data-dojo-mixins support",function mixins() {
+				doh.register("data-dojo-mixins support", function mixins() {
 					parser.parse("mixins");
 					doh.t(resultMixins1, "object using data-dojo-mixins created from an already parsed type");
 					doh.t(resultMixins1.mixin1Done, "mixin1 correctly mixed in");

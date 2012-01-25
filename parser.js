@@ -173,7 +173,13 @@ dojo.parser = new function(){
 				var map = _ctorMap[type];
 				// remove whitespaces
 				mixins = mixins.replace(/ /g, "");
-				ctor = (map && map[mixins]) || (map[mixins] = extend(getCtor(type), darray.map(mixins.split(","), getCtor)));
+				ctor = map && map[mixins];
+				if(!ctor){
+					// first get ctor for raw type (& create _ctorMap[type] if needed (should not be))
+					ctor = getCtor(type);
+					// then do the mixin
+					ctor = _ctorMap[type][mixins] = extend(ctor, darray.map(mixins.split(","), getCtor));
+				}
 			}else{
 				ctor = getCtor(type);
 			}

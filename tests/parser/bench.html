@@ -9,28 +9,26 @@
 		<script type="text/javascript">
 		require([
 			"dojo/_base/declare",
+			"dojo/dom",
 			"dojo/dom-construct",
 			"dojo/_base/lang",
 			"dojo/parser",
 			"doh",
 			"dojo/domReady!"
-		], function(declare, domConstruct, lang, parser, doh){
+		], function(declare, dom, domConstruct, lang, parser, doh){
 
 			var mixin = lang.mixin,
 				extend = lang.extend,
 				exists = lang.exists;
 
 			declare("Class1", null, {
-				constructor: function(args, node){
-					this.params = args;
-					mixin(this, args);
-				},
 				numberProp1: 1,
 				numberProp2: 2,
 				booleanProp1: false,
 				booleanProp2: true,
 				strProp1: "original1",
-				strProp2: "original2"
+				strProp2: "original2",
+				funcProp: function(){}
 			});
 
 			function generateDom(depth, fan){
@@ -59,6 +57,7 @@
 					testType: "perf",
 					trialIterations: 20,
 					setUp: function(){
+						dom.byId("status").innerHTML = "Running scan() test...";
 						domConstruct.place(generateDom(4, 5), "scan");
 					},
 					tearDown: function(){
@@ -73,10 +72,11 @@
 				{
 					name: "instantiate()",
 					testType: "perf",
-					trialIterations: 20,
+					trialIterations: 10,
 					setUp: function(){
+						dom.byId("status").innerHTML = "Running instantiate() test...";
 						for(var i=0; i<100; i++){
-							domConstruct.place("<div data-dojo-type=Class1 numberProp1=1 numberProp2=2 stringProp1=hi booleanProp1=true></div>", "instantiate");
+							domConstruct.place("<div data-dojo-type=Class1 numberProp1=1 numberProp2=2 stringProp1=hi booleanProp1=true funcProp='console.log(12345);'></div>", "instantiate");
 						}
 					},
 					tearDown: function(){
@@ -85,6 +85,10 @@
 					runTest: function(){
 						parser.parse("instantiate");
 					}
+				},
+
+				function results(){
+					dom.byId("status").innerHTML = "";
 				}
 			]);
 
@@ -95,11 +99,14 @@
 	<body>
 		<h1>Parser Performance Test</h1>
 
+		<!-- Display progress messages so test doesn't seem hung -->
+		<h2 id="status"></h2>
+
 		<!-- Test results are displayed here -->
 		<div id="perfTestsBody"></div>
 
 		<!-- for generating markup to scan (no widgets, just nodes) -->
-		<div id="scan"></div>
+		<div id="scan" style="display: none"></div>
 
 		<!-- for testing widget instantiation speed -->
 		<div id="instantiate"></div>

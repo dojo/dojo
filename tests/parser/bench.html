@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Parser scan() Performance Test</title>
+		<style type="text/css">     
+			@import "../../resources/dojo.css";
+		</style>
+		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
+		<script type="text/javascript">
+		require([
+			"dojo/_base/declare",
+			"dojo/dom-construct",
+			"dojo/_base/lang",
+			"dojo/parser",
+			"doh",
+			"dojo/domReady!"
+		], function(declare, domConstruct, lang, parser, doh){
+
+			var mixin = lang.mixin,
+				extend = lang.extend,
+				exists = lang.exists;
+
+			declare("Class1", null, {
+				constructor: function(args, node){
+					this.params = args;
+					mixin(this, args);
+				},
+				numberProp1: 1,
+				numberProp2: 2,
+				booleanProp1: false,
+				booleanProp2: true,
+				strProp1: "original1",
+				strProp2: "original2"
+			});
+
+			function generateDom(depth, fan){
+				// summary:
+				//		Return text for complicated DOM tree depth levels deep with fan nodes at each level
+				var out = [];
+				generateDomHelper(out, depth, fan);
+				return(out.join(""));
+			}
+			function generateDomHelper(out, depth, fan){
+				for(var i=0; i<fan; i++){
+					if(depth){
+						out.push("<div>");
+						generateDomHelper(out, depth-1, fan);
+						out.push("</div>");
+					}else{
+						out.push("<scan>hi</scan>");
+					}
+				}
+			}
+
+			doh.register("parser performance tests", [
+				// Test scan of DOM without any widgets
+				{
+					name: "scan()",
+					testType: "perf",
+					trialIterations: 20,
+					setUp: function(){
+						domConstruct.place(generateDom(4, 5), "scan");
+					},
+					tearDown: function(){
+						domConstruct.empty("scan");
+					},
+					runTest: function(){
+						parser.parse("scan");
+					}
+				},
+
+				// Test scan and instantiate speed of pure-widget DOM
+				{
+					name: "instantiate()",
+					testType: "perf",
+					trialIterations: 20,
+					setUp: function(){
+						for(var i=0; i<100; i++){
+							domConstruct.place("<div data-dojo-type=Class1 numberProp1=1 numberProp2=2 stringProp1=hi booleanProp1=true></div>", "instantiate");
+						}
+					},
+					tearDown: function(){
+						domConstruct.empty("instantiate");
+					},
+					runTest: function(){
+						parser.parse("instantiate");
+					}
+				}
+			]);
+
+			doh.run();
+		});
+		</script>
+	</head>
+	<body>
+		<h1>Parser Performance Test</h1>
+
+		<!-- Test results are displayed here -->
+		<div id="perfTestsBody"></div>
+
+		<!-- for generating markup to scan (no widgets, just nodes) -->
+		<div id="scan"></div>
+
+		<!-- for testing widget instantiation speed -->
+		<div id="instantiate"></div>
+	</body>
+</html>

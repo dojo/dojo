@@ -58,7 +58,8 @@ return function(query, options){
 				for(var key in queryObject){
 					var required = queryObject[key];
 					if(required && required.test){
-						if(!required.test(object[key])){
+						// an object can provide a test method, which makes it work with regex
+						if(!required.test(object[key], object)){
 							return false;
 						}
 					}else if(required != object[key]){

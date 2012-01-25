@@ -31,6 +31,10 @@ dojo.require("dojo.store.Memory");
 				t.is(store.query({name: /^o/}).length, 1);
 				t.is(store.query({name: /o/}).length, 3);
 			},
+			function testQueryWithTestFunction(t){
+				t.is(store.query({id: {test: function(id){ return id < 4;}}}).length, 3);
+				t.is(store.query({even: {test: function(even, object){ return even && object.id > 2;}}}).length, 1);
+			},
 			function testQueryWithSort(t){
 				t.is(store.query({prime: true}, {sort:[{attribute:"name"}]}).length, 3);
 				t.is(store.query({even: true}, {sort:[{attribute:"name"}]})[1].name, "two");

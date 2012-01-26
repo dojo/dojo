@@ -164,21 +164,21 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		define(["dojo/on", "dojo/mouse"], function(listen, mouse){
 		//			on(node, on.selector(".my-class", mouse.enter), handlerForMyHover);
 		return function(target, listener){
-			var matchesTarget = this;
-			var select = typeof selector == "function" ? 
+			var matchesTarget = this,
+				select = typeof selector == "function" ?
 					selector : // if the selector is function, use it to select the node, otherwise use the matches method
 					function select(eventTarget){
-				// see if we have a valid matchesTarget or default to dojo.query
-				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
-				// there is a selector, so make sure it matches
-				while(!matchesTarget.matches(eventTarget, selector, target)){
-					if(eventTarget == target || children === false || !(eventTarget = eventTarget.parentNode) || eventTarget.nodeType != 1){ // intentional assignment
-						return;
-					}
-				}
-				return eventTarget;
-			}
-			var bubble = eventType.bubble;
+						// see if we have a valid matchesTarget or default to dojo.query
+						matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
+						// there is a selector, so make sure it matches
+						while(!matchesTarget.matches(eventTarget, selector, target)){
+							if(eventTarget == target || children === false || !(eventTarget = eventTarget.parentNode) || eventTarget.nodeType != 1){ // intentional assignment
+								return;
+							}
+						}
+						return eventTarget;
+					},
+				bubble = eventType.bubble;
 			if(bubble){
 				// the event type doesn't naturally bubble, but has a bubbling form, use that, and give it the selector so it can perform the select itself
 				return on(target, bubble(select), listener);

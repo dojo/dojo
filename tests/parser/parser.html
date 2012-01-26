@@ -96,7 +96,7 @@
 				checked: false,
 
 				// other attributes native to HTML
-				value: "",
+				value: "default value",
 				title: "default title",
 				tabIndex: "0",		// special because mixed case
 
@@ -502,6 +502,7 @@
 						doh.is("zaz", params.bar, "bar");
 						doh.is("escaped\"dq", params.bob, "bob");
 						doh.is("escaped\'sq", params.frank, "frank");
+						//doh.f("value" in params, "value not specified");	// fails in IE8, thinks value=="on"
 					},
 					function input2(){
 						var widgets = parser.instantiate([dhtml.byId("ieInput2")]);
@@ -513,6 +514,7 @@
 						doh.f("data-dojo-type" in params, "data-dojo-type");
 						doh.f("data-dojo-props" in params, "data-dojo-props");
 						doh.is("hi", params.foo, "foo");
+						doh.f("value" in params, "value not specified");
 					},
 					function input3(){
 						var widgets = parser.instantiate([dhtml.byId("ieInput3")]);

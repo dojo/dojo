@@ -11,7 +11,15 @@ define(
 new Date("X"); // workaround for #11279, new Date("") == NaN
 
 if (has("dom")) {
-	has.add("dom-attributes-explicit", document.createElement("div").attributes.length < 40);
+	var form = document.createElement("form");
+	// Test if DOMNode.attributes only lists the attributes the user specified, not attributes w/default values.
+	has.add("dom-attributes-explicit", form.attributes.length == 0);
+
+	// IE8 will erroneously list a few attributes that weren't specified,
+	// but we know to skip them because they have a specified flag which is false
+	has.add("dom-attributes-specified-flag", form.attributes.length < 40);
+
+	// Otherwise, it's IE6-7 form.attributes will list hundreds of values, need to do outerHTML instead.
 }
 
 dojo.parser = new function(){
@@ -205,8 +213,11 @@ dojo.parser = new function(){
 			if(has("dom-attributes-explicit")){
 				// Standard path to get list of user specified attributes
 				attributes = node.attributes;
+			}else if(has("dom-attributes-specified-flag")){
+				// Special processing needed for IE8, to skip a few faux values in attributes[]
+				attributes = darray.filter(node.attributes, function(a){ return a.specified;});
 			}else{
-				// Special path for IE, avoid (sometimes >100) bogus entries in node.attributes
+				// Special path for IE6-7, avoid (sometimes >100) bogus entries in node.attributes
 				var clone = /^input$|^img$/i.test(node.nodeName) ? node : node.cloneNode(false),
 					attrs = clone.outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g, "").replace(/^\s*<[a-zA-Z0-9]*\s*/, "").replace(/\s*>.*$/, "");
 
@@ -217,8 +228,7 @@ dojo.parser = new function(){
 						// getAttribute() doesn't work for button.value, returns innerHTML of button.
 						// but getAttributeNode().value doesn't work for the form.encType or li.value
 						value: (node.nodeName == "LI" && name == "value") || lcName == "enctype" ?
-								node.getAttribute(lcName) : node.getAttributeNode(lcName).value,
-						specified: true
+								node.getAttribute(lcName) : node.getAttributeNode(lcName).value
 					};
 				});
 			}
@@ -227,10 +237,6 @@ dojo.parser = new function(){
 			// dojoAttachPoint, etc., as well as normal foo=bar attributes.
 			var i=0, item;
 			while(item = attributes[i++]){
-				if(!item || !item.specified){
-					continue;
-				}
-
 				var name = item.name,
 					lcName = name.toLowerCase(),
 					value = item.value;

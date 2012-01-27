@@ -21,7 +21,26 @@
 				extend = lang.extend,
 				exists = lang.exists;
 
-			declare("Class1", null, {
+			declare("TabContainer", null, {
+				numberProp1: 1,
+				numberProp2: 2,
+				booleanProp1: false,
+				booleanProp2: true,
+				strProp1: "original1",
+				strProp2: "original2",
+				funcProp: function(){}
+			});
+			declare("ContentPane", null, {
+				_stopParser: true,
+				numberProp1: 1,
+				numberProp2: 2,
+				booleanProp1: false,
+				booleanProp2: true,
+				strProp1: "original1",
+				strProp2: "original2",
+				funcProp: function(){}
+			});
+			declare("TextBox", null, {
 				numberProp1: 1,
 				numberProp2: 2,
 				booleanProp1: false,
@@ -31,21 +50,14 @@
 				funcProp: function(){}
 			});
 
-			function generateDom(depth, fan){
+			function generateDom(/*String[]*/ nodes, /*Number*/ fan, /*DOMNode*/ parent){
 				// summary:
-				//		Return text for complicated DOM tree depth levels deep with fan nodes at each level
-				var out = [];
-				generateDomHelper(out, depth, fan);
-				return(out.join(""));
-			}
-			function generateDomHelper(out, depth, fan){
+				//		Generate large DOM tree based on nodes in nodes[] array, with fan nodes at each level
+				var markup = nodes.shift();
 				for(var i=0; i<fan; i++){
-					if(depth){
-						out.push("<div>");
-						generateDomHelper(out, depth-1, fan);
-						out.push("</div>");
-					}else{
-						out.push("<scan>hi</scan>");
+					var child = domConstruct.place(markup, parent);
+					if(nodes.length){
+						generateDom([].concat(nodes), fan, child);	// concat() to clone array
 					}
 				}
 			}
@@ -53,12 +65,13 @@
 			doh.register("parser performance tests", [
 				// Test scan of DOM without any widgets
 				{
-					name: "scan()",
+					name: "scan() with no widgets",
 					testType: "perf",
 					trialIterations: 20,
 					setUp: function(){
-						dom.byId("status").innerHTML = "Running scan() test...";
-						domConstruct.place(generateDom(4, 5), "scan");
+						dom.byId("status").innerHTML = "Running pure-DOM scan() test...";
+						generateDom(["<div></div>", "<div></div>", "<div></div>", "<div></div>", "<scan>hi</scan>"],
+								5, "scan");
 					},
 					tearDown: function(){
 						domConstruct.empty("scan");
@@ -68,27 +81,47 @@
 					}
 				},
 
-				// Test scan and instantiate speed of pure-widget DOM
+				{
+					name: "scan() with lots of widgets and _stopParser",
+					testType: "perf",
+					trialIterations: 20,
+					setUp: function(){
+						dom.byId("status").innerHTML = "Running widget-heavy scan() test...";
+						generateDom([
+							"<div data-dojo-type=TabContainer></div>",
+							"<div data-dojo-type=ContentPane></div>",
+							"<div></div>",
+							"<input data-dojo-type=TextBox strProp1=name/>"
+						], 5, "scan");
+					},
+					tearDown: function(){
+						domConstruct.empty("scan");
+					},
+					runTest: function(){
+						parser.parse("scan");
+					}
+				},
 				{
 					name: "instantiate()",
 					testType: "perf",
-					trialIterations: 10,
+					trialIterations: 20,
 					setUp: function(){
 						dom.byId("status").innerHTML = "Running instantiate() test...";
+						nodes = [];
 						for(var i=0; i<100; i++){
-							domConstruct.place("<div data-dojo-type=Class1 numberProp1=1 numberProp2=2 stringProp1=hi booleanProp1=true funcProp='console.log(12345);'></div>", "instantiate");
+							nodes.push(domConstruct.place("<input data-dojo-type=TextBox numberProp1=1 numberProp2=2 stringProp1=hi booleanProp1=true funcProp='console.log(12345);'/>", "instantiate"));
 						}
 					},
 					tearDown: function(){
 						domConstruct.empty("instantiate");
 					},
 					runTest: function(){
-						parser.parse("instantiate");
+						parser.instantiate(nodes);
 					}
 				},
 
 				function results(){
-					dom.byId("status").innerHTML = "";
+					dom.byId("status").innerHTML = "Graphing results...";
 				}
 			]);
 
@@ -109,6 +142,6 @@
 		<div id="scan" style="display: none"></div>
 
 		<!-- for testing widget instantiation speed -->
-		<div id="instantiate"></div>
+		<div id="instantiate" style="display: none"></div>
 	</body>
 </html>

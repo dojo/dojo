@@ -25,12 +25,20 @@
 
 			ready(function(){
 				doh.register("args scope test", [
-					function argsOnly(){
-						// only the args is passed, and it does not contain a rootNode
-						parser.parse({
+					function noArgs(){
+						// Test calling parse() with no arguments.
+						var widgets = parser.parse();
+						doh.is(1, widgets.length, "found 1 widget");
+						doh.is("text", widgets[0].strProp1);
+					},
+					function optionsOnly(){
+						// Test when only the options argument is passed, and it does not contain a rootNode.
+						// For 2.0, if we drop scope parameter, change this test.
+						var widgets = parser.parse({
 							scope: "myscope"
 						});
-						doh.is("text", obj.strProp1);
+						doh.is(1, widgets.length, "found 1 widget");
+						doh.is("text", scopeObj.strProp1);
 					}
 				]);
 				doh.run();
@@ -41,8 +49,11 @@
 	<body>
 		<h1>Parser args Unit Test</h1>
 
-		<div data-myscope-type="tests.parser.Class1" data-myscope-id="obj" id="toParse"
+		<div data-myscope-type="tests.parser.Class1" data-myscope-id="scopeObj"
 			 data-myscope-props="strProp1:'text'">
+		</div>
+		<div data-dojo-type="tests.parser.Class1" data-dojo-id="normalObj"
+			 data-dojo-props="strProp1:'text'">
 		</div>
 	</body>
 </html>

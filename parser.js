@@ -659,7 +659,7 @@ dojo.parser = new function(){
 		if(!options && rootNode && rootNode.rootNode){
 			options = rootNode;
 			root = options.rootNode;
-		}else if(dlang.isObject(rootNode) && !("nodeType" in rootNode)){
+		}else if(rootNode && dlang.isObject(rootNode) && !("nodeType" in rootNode)){
 			options = rootNode;
 		}else{
 			root = rootNode;

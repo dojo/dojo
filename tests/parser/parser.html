@@ -188,13 +188,12 @@
 						// Running the parser here so that failures appear in test log
 							parser.parse(dhtml.byId("main"));
 					},
-
-						function testDataDojoId(t){
+					function testDataDojoId(t){
 						t.t(typeof obj == "object");
 					},
-						function testJsId(t){
-							t.t(typeof obj3 == "object");
-						},
+					function testJsId(t){
+						t.t(typeof obj3 == "object");
+					},
 					// Attribute parsing tests
 					function testStrProp(t){
 						// normal string parameter
@@ -698,7 +697,7 @@
 
 			<div>
 				<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
-					<!-- this script tag should get passed as param to NormalContainer constructor -->
+					<!-- this script tag should get passed as param to ShieldedContainer constructor -->
 					<script type="dojo/method" event="incr" args="x">
 						return x+1;
 					</script>

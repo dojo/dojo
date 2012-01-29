@@ -31,7 +31,7 @@
 				funcProp: function(){}
 			});
 			declare("ContentPane", null, {
-				_stopParser: true,
+				stopParser: true,
 				numberProp1: 1,
 				numberProp2: 2,
 				booleanProp1: false,
@@ -69,9 +69,30 @@
 					testType: "perf",
 					trialIterations: 20,
 					setUp: function(){
-						dom.byId("status").innerHTML = "Running pure-DOM scan() test...";
+						dom.byId("status").innerHTML = "Running scan() with no widgets test...";
 						generateDom(["<div></div>", "<div></div>", "<div></div>", "<div></div>", "<scan>hi</scan>"],
 								5, "scan");
+					},
+					tearDown: function(){
+						domConstruct.empty("scan");
+					},
+					runTest: function(){
+						parser.parse("scan");
+					}
+				},
+
+				{
+					name: "scan() with lots of widgets",
+					testType: "perf",
+					trialIterations: 20,
+					setUp: function(){
+						dom.byId("status").innerHTML = "Running scan() with lots of widgets test...";
+						generateDom([
+							"<div data-dojo-type=TabContainer></div>",
+							"<div data-dojo-type=TabContainer></div>",
+							"<div></div>",
+							"<input data-dojo-type=TextBox strProp1=name/>"
+						], 5, "scan");
 					},
 					tearDown: function(){
 						domConstruct.empty("scan");
@@ -86,7 +107,7 @@
 					testType: "perf",
 					trialIterations: 20,
 					setUp: function(){
-						dom.byId("status").innerHTML = "Running widget-heavy scan() test...";
+						dom.byId("status").innerHTML = "Running scan() with lots of widgets and _stopParser test...";
 						generateDom([
 							"<div data-dojo-type=TabContainer></div>",
 							"<div data-dojo-type=ContentPane></div>",
@@ -101,6 +122,7 @@
 						parser.parse("scan");
 					}
 				},
+
 				{
 					name: "instantiate()",
 					testType: "perf",

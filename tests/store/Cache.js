@@ -77,6 +77,19 @@ dojo.require("dojo.store.Cache");
 				t.t(store.get(7).prime);
 				t.t(cachingStore.get(7).prime);
 				t.t(masterStore.get(7).prime);
+			},
+			function testResultsFromMaster(t){
+				var originalPut = masterStore.put;
+				masterStore.add = function(object){
+					return {
+						test: "value"
+					};
+				};
+				t.is(store.add({
+					id: 7,
+					prop: "doesn't matter"
+				}).test, "value");
+				masterStore.put = originalPut;
 			}
 		]
 	);

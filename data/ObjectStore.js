@@ -19,6 +19,8 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			//		The configuration information to pass into the data store.
 			//	options.objectStore:
 			//		The object store to use as the source provider for this data store
+			
+			this._dirtyObjects = [];
 			lang.mixin(this, options);
 		},
 		labelProperty: "label",
@@ -346,8 +348,6 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			delete item[attribute];
 			this.onSet(item,attribute,old,undefined);
 		},
-
-		_dirtyObjects: [],
 
 		changing: function(object,_deleting){
 			// summary:

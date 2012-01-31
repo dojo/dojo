@@ -79,7 +79,7 @@ dojo.require("dojo.store.Cache");
 				t.t(masterStore.get(7).prime);
 			},
 			function testResultsFromMaster(t){
-				var originalPut = masterStore.put;
+				var originalAdd = masterStore.add;
 				masterStore.add = function(object){
 					return {
 						test: "value"
@@ -89,7 +89,7 @@ dojo.require("dojo.store.Cache");
 					id: 7,
 					prop: "doesn't matter"
 				}).test, "value");
-				masterStore.put = originalPut;
+				masterStore.add = originalAdd;
 			}
 		]
 	);

@@ -13,13 +13,10 @@
 			"dojo/dom-construct",
 			"dojo/_base/lang",
 			"dojo/parser",
+			"dojo/query",
 			"doh",
 			"dojo/domReady!"
-		], function(declare, dom, domConstruct, lang, parser, doh){
-
-			var mixin = lang.mixin,
-				extend = lang.extend,
-				exists = lang.exists;
+		], function(declare, dom, domConstruct, lang, parser, query, doh){
 
 			declare("TabContainer", null, {
 				numberProp1: 1,
@@ -70,8 +67,10 @@
 					trialIterations: 20,
 					setUp: function(){
 						dom.byId("status").innerHTML = "Running scan() with no widgets test...";
-						generateDom(["<div></div>", "<div></div>", "<div></div>", "<div></div>", "<scan>hi</scan>"],
-								5, "scan");
+						var rows = query("tr", "tbody");
+						for(var i=0; i<55; i++){
+							domConstruct.place(rows[i%2 + 1].cloneNode(true), "tbody");
+						}
 					},
 					tearDown: function(){
 						domConstruct.empty("scan");
@@ -92,7 +91,7 @@
 							"<div data-dojo-type=TabContainer></div>",
 							"<div></div>",
 							"<input data-dojo-type=TextBox strProp1=name/>"
-						], 5, "scan");
+						], 4, "scan");
 					},
 					tearDown: function(){
 						domConstruct.empty("scan");
@@ -103,7 +102,7 @@
 				},
 
 				{
-					name: "scan() with lots of widgets and _stopParser",
+					name: "scan() with lots of widgets but _stopParser",
 					testType: "perf",
 					trialIterations: 20,
 					setUp: function(){
@@ -113,7 +112,7 @@
 							"<div data-dojo-type=ContentPane></div>",
 							"<div></div>",
 							"<input data-dojo-type=TextBox strProp1=name/>"
-						], 5, "scan");
+						], 4, "scan");
 					},
 					tearDown: function(){
 						domConstruct.empty("scan");
@@ -161,7 +160,146 @@
 		<div id="perfTestsBody"></div>
 
 		<!-- for generating markup to scan (no widgets, just nodes) -->
-		<div id="scan" style="display: none"></div>
+		<div id="scan" style="display: none">
+ 		<table width="100%" cellspacing="0" cellpadding="0" border="0" class="datatable" id="reportTable">
+	 	<tbody id="tbody">
+			<tr class="hr">
+				<td width="1px" style="display: none;">
+					<input type="checkbox" onclick="" name="cbSelectItem" ignore="true">
+				</td>
+				<td class="left">
+				    <span id="_0">
+						Name
+					</span>
+				</td>
+
+				<td class="left">
+				    <span id="_1">
+                        RIC
+                     </span>
+                </td>
+
+				<td class="right">
+    				<span id="_2">
+                        PE
+                     </span>
+				</td>
+
+				<td class="right">
+					Est. PE
+                </td>
+
+                <td class="right">
+    				<span id="_4">
+                        EPS
+                     </span>
+				</td>
+
+				<td class="normaltext left">
+				    Ccy
+				</td>
+
+				<td class="right">
+    				<span id="_6">
+                        DPS
+                     </span>
+				</td>
+
+				<td class="normaltext left">
+				    Ccy
+				</td>
+
+				<td class="right">
+    				<span id="_8">
+                        Div. Yld (%)
+                     </span>
+				</td>
+
+				<td class="right">
+    				<span id="_9">
+                        ROE (%)
+                     </span>
+				</td>
+
+				<td class="right">
+    				<span id="_10">
+                        P/Book
+                     </span>
+				</td>
+
+				<td class="right">
+    				<span id="_11">
+                        P/Sales
+                     </span>
+				</td>
+
+				<td class="normaltext right">
+					Weight %
+				</td>
+
+				<td class="right">
+    				<span id="_12">
+                        Market Cap (USD)
+                     </span>
+				</td>
+
+			</tr>
+
+
+			<tr headrow="true" class="dr  row-o">
+				<td width="1px" style="display: none;">
+					<input type="checkbox" value="IBM.N" name="cbSelectItem" ignore="">
+				</td>
+    			<td class="normaltext left">
+					    International Business Machines Corp
+				    </td>
+    			<td class="normaltext left"><span style="">
+					<a href="#" class="CCFDATA CCF.Entity[COMP]:RIC=RIC">
+					RIC
+					</a>
+					</span><span style="visibility: hidden; display: none;">-</span></td>
+    			<td class="normaltext right">xx,xx</td>
+    			<td class="normaltext right">xx,xx</td>
+    			<td class="normaltext right">x,xx</td>
+    			<td class="normaltext left nowrap">XXX</td>
+    			<td class="normaltext right">xx.xx,xx</td>
+    			<td class="normaltext left nowrap">XXX</td>
+    			<td class="normaltext right">x,xx</td>
+    			<td class="normaltext right">xx,xx</td>
+    			<td class="normaltext right">x,xx</td>
+    			<td class="normaltext right">x,xx</td>
+    			<td class="normaltext right">-</td>
+    			<td class="normaltext right">xxx,xxx</td>
+			</tr>
+
+
+			<tr headrow="true" class="dr  row-e">
+				<td width="1px" style="display: none;">
+					<input type="checkbox" value="&nbsp;" name="cbSelectItem" ignore="true">
+				</td>
+    			<td class="normaltext left">
+				    Index average (Mean)</td>
+    			<td class="normaltext left"><span style="visibility: hidden; display: none;">
+					<a href="/Explorer/Default.aspx?s=%26nbsp&amp;amp;st=RIC" class="CCFDATA CCF.Entity[COMP]:RIC=&amp;nbsp">
+					&nbsp;
+					</a>
+					</span><span style="">-</span></td>
+    			<td class="normaltext right">xx,xx</td>
+    			<td class="normaltext right">xx,xx</td>
+    			<td class="normaltext right">n/a</td>
+    			<td class="normaltext left nowrap">n/a</td>
+    			<td class="normaltext right">n/a</td>
+    			<td class="normaltext left nowrap">n/a</td>
+    			<td class="normaltext right">xx,xx</td>
+    			<td class="normaltext right">xx,xx</td>
+    			<td class="normaltext right">x,xx</td>
+    			<td class="normaltext right">x,xx</td>
+    			<td class="normaltext right">-</td>
+    			<td class="normaltext right">xx,xxx</td>
+			</tr>
+		</tbody>
+		</table>
+		</div>
 
 		<!-- for testing widget instantiation speed -->
 		<div id="instantiate" style="display: none"></div>

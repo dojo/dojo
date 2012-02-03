@@ -61,6 +61,13 @@ dojo.parser = new function(){
 		return map["__type"] || (map["__type"] = (dlang.getObject(type) || require(type)));
 	}
 
+	this._clearCache = function(){
+		// summary:
+		//		Clear cached data.   Used mainly for benchmarking.
+		_nameMap = {};
+		_ctorMap = {};
+	};
+
 	this._functionFromScript = function(script, attrData){
 		// summary:
 		//		Convert a <script type="dojo/method" args="a, b, c"> ... </script>

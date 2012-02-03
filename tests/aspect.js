@@ -41,24 +41,41 @@ doh.register("tests.aspect",
 				order.push(0);
 				return a+1;
 			});
-			obj.method(0);
+			obj.method(0); // 0, 0
 			var signal2 = aspect.after(obj, "method", function(a){
 				order.push(a);
 			});
-			obj.method(3);
+			obj.method(3); // 3, 0, 5
 			var signal3 = aspect.after(obj, "method", function(a){
 				order.push(3);
 			}, true);
-			obj.method(3);
+			obj.method(3); // 3, 0, 5, 3
 			signal2.remove();
-			obj.method(6);
+			obj.method(6); // 6, 0, 3
 			signal3.remove();
 			var signal4 = aspect.after(obj, "method", function(a){
 				order.push(4);
 			}, true);
 			signal.remove();
-			obj.method(7);
-			t.is(order, [0, 0, 3, 0, 5, 3, 0, 5, 3, 6, 0, 3, 7, 4]);
+			obj.method(7); // 7, 4
+			signal4.remove();
+			var signal5 = aspect.after(obj, "method", function(a){
+				order.push(a);
+				aspect.after(obj, "method", function(a){
+					order.push(a);
+				});
+				aspect.after(obj, "method", function(a){
+					order.push(a);
+				}).remove();
+				return a+1;
+			});
+			var signal6 = aspect.after(obj, "method", function(a){
+				order.push(a);
+				return a+2;
+			});
+			obj.method(8); // 8, 9, 10
+			obj.method(8); // 8, 9, 10, 12
+			t.is([0, 0, 3, 0, 5, 3, 0, 5, 3, 6, 0, 3, 7, 4, 8, 9, 10, 8, 9, 10, 12], order);
 		},
 		function around(t){
 			var order = [];

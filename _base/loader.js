@@ -35,9 +35,34 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			checkDojoRequirePlugin();
 		},
 
+		touched,
+
+		traverse = function(m){
+			if(touched[m.mid] || /loadInit\!/.test(m.mid)){
+				// loadInit plugin modules are dependencies of modules in dojoRequireModuleStack...
+				// which would cause a circular dependency chain that would never be resolved if checked here
+				// notice all dependencies of any particular loadInit plugin module will already
+				// be checked since those are pushed into dojoRequireModuleStack explicitly by the
+				// plugin...so if a particular loadInitPlugin module's dependencies are not really
+				// on board, that *will* be detected elsewhere in the traversal.
+				return true;
+			}
+		    touched[m.mid] = 1;
+			if(m.injected!==arrived && !m.executed){
+				return false;
+			}
+			for(var deps = m.deps || [], i= 0; i<deps.length; i++){
+				if(!traverse(deps[i])){
+					return false;
+				}
+			}
+			return true;
+		},
+
 		checkDojoRequirePlugin = function(){
+			touched = {};
 			dojoRequireModuleStack = array.filter(dojoRequireModuleStack, function(module){
-				return module.injected!==arrived && !module.executed;
+				return !traverse(module);
 			});
 			if(!dojoRequireModuleStack.length){
 				loaderVars.holdIdle();
@@ -499,6 +524,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			}
 			omitModuleCheck && (module.result = nonmodule);
 
+			// rcg...why here and in two lines??
 			var currentMode = getLegacyMode();
 
 			// recall, in sync mode to inject is to *eval* the module text

@@ -13,7 +13,7 @@ require({
                     t.is("one", one.name);
                     t.is("two", one.twoName);
                     t.is("three", one.threeName);
-                    t.is("hello world", one.message);
+                    t.is("hello world", one.message.replace(/\n/g, ""));
                 }
             ]
         );

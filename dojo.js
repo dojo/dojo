@@ -236,10 +236,7 @@
 		};
 
 		if(has("dom")){
-			// in legacy sync mode, the loader needs a minimal XHR library to load dojo/_base/loader and ojo/_base/xhr;
-			// when dojo/_base/loader pushes the sync loader machinery into the loader (via initSyncLoader), getText is
-			// replaced by dojo.getXhr() which allows for both sync and async op(and other features. It is not a problem
-			// depending on dojo for the sync loader since the sync loader will never be used without dojo.
+			// in legacy sync mode, the loader needs a minimal XHR library to load dojo/_base/loader and dojo/_base/xhr
 
 			var locationProtocol = location.protocol,
 				locationHost = location.host,
@@ -513,6 +510,7 @@
 						// "legacyAsync" => permanently in "xd" by choice
 						// "debugAtAllCosts" => trying to load everything via script injection (not implemented)
 						// otherwise, must be truthy => AMD
+						// legacyMode: sync | legacyAsync | xd | false
 						var mode = config[p];
 						req.legacyMode = legacyMode = (isString(mode) && /sync|legacyAsync/.test(mode) ? mode : (!mode ? "sync" : false));
 						req.async = !legacyMode;
@@ -580,11 +578,11 @@
 		// execute the various sniffs
 		//
 
-		if(has("dojo-sniff")){
-			for(var src, match, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
+		if(has("dojo-cdn") || has("dojo-sniff")){
+			for(var dojoDir, src, match, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
 				if((src = scripts[i].getAttribute("src")) && (match = src.match(/(.*)\/?dojo\.js(\W|$)/i))){
 					// if baseUrl wasn't explicitly set, set it here to the dojo directory; this is the 1.6- behavior
-					userConfig.baseUrl = userConfig.baseUrl || defaultConfig.baseUrl || match[1];
+					userConfig.baseUrl = dojoDir = userConfig.baseUrl || defaultConfig.baseUrl || match[1];
 
 					// see if there's a dojo configuration stuffed into the node
 					src = (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
@@ -616,6 +614,13 @@
 		config(defaultConfig, 1);
 		config(userConfig, 1);
 		config(dojoSniffConfig, 1);
+
+		if(has("dojo-cdn")){
+			packs.dojo.location = dojoDir;
+			packs.dijit.location = dojoDir + "../dijit/";
+			packs.dojox.location = dojoDir + "../dojox/";
+		}
+
 	}else{
 		// no config API, assume defaultConfig has everything the loader needs...for the entire lifetime of the application
 		paths = defaultConfig.paths;
@@ -1324,13 +1329,13 @@
 				}
 				if(has("dojo-sync-loader") && legacyMode){
 					if(module.isXd){
-						// switch to async mode temporarily?
+						// switch to async mode temporarily; if current legacyMode!=sync, then is must be one of {legacyAsync, xd, false}
 						legacyMode==sync && (legacyMode = xd);
 						// fall through and load via script injection
 					}else if(module.isAmd && legacyMode!=sync){
 						// fall through and load via script injection
 					}else{
-						// mode may be sync, xd, or async; module may be AMD or legacy; but module is always located on the same domain
+						// mode may be sync, xd/legacyAsync, or async; module may be AMD or legacy; but module is always located on the same domain
 						var xhrCallback = function(text){
 							if(legacyMode==sync){
 								// the top of syncExecStack gives the current synchronously executing module; the loader needs

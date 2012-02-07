@@ -110,18 +110,20 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	// is migrated. Absent specific advice otherwise, set extend-dojo to truthy.
 	has.add("extend-dojo", 1);
 
-	if(has("dojo-loader")){
-		dojo.eval = require.eval;
-	}else{
-		var eval_ =
-			// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
-			new Function("__text", "return eval(__text);");
+	dojo.eval = function(/* scriptText, hint */){
+		//	summary:
+		//		A legacy method created for use exclusively by internal Dojo methods. Do not use this method
+		//		directly unless you understand its possibly-different implications on the platforms your are targeting.
+		//	description:
+		//		Makes an attempt to evaluate arguments[0] in the global scope, including IE. Note that IE is incapable of
+		//		returning a result. A debugger hint (a string) may be provided for arugments[1], and if provided will be appended
+		//		to the end of arguments[0] as required by various debuggers
+		//	returns:
+		//		The result of the evaluation. Often `undefined`; on IE, unconditionally undefined.
 
-		dojo.eval = function(text, hint){
-			// note: the four forward-slashes make the firebug hint work in ie9
-			return eval_(text + "\r\n////@ sourceURL=" + hint);
-		};
-	}
+		// note: the four forward-slashes make the firebug hint work in ie9
+		return ((has("ie") &&  dojo.global.execScript) || dojo.global.eval || eval)(arguments[0] + "\r\n////@ sourceURL=" + arguments[1]); // Object
+	};
 
 	if(has("host-rhino")){
 		dojo.exit = function(exitcode){

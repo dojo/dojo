@@ -1,4 +1,4 @@
-define(["../main", "doh", "require", "../i18n"], function(dojo, doh, require){
+define(["../main", "doh", "../has", "../i18n", "require"], function(dojo, doh, has, i18n, require){
 	var
 		getAsyncTest = function(value, locale){
 			return function(){
@@ -45,6 +45,8 @@ define(["../main", "doh", "require", "../i18n"], function(dojo, doh, require){
 			// A double-byte string. Everything should be read in as UTF-8 and treated as unicode within Javascript.
 			getFixture("zh-cn", "\u4f60\u597d")
 		];
+
+
 	doh.register("tests.i18n", testSet);
 	doh.register("tests.i18n.extra.sync", require.toUrl("./i18n.html"), {async:0});
 	doh.register("tests.i18n.extra.async", require.toUrl("./i18n.html"), {async:1});

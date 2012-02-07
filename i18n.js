@@ -128,6 +128,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			});
 		};
 
+	if(has("dojo-unit-tests")){
+		var unitTests = thisModule.unitTests = [];
+	}
 
 	has.add("dojo-v1x-i18n-Api",
 		// if true, define the v1.x i18n functions
@@ -136,13 +139,27 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 	if(has("dojo-v1x-i18n-Api")){
 		var
+			__evalError = {},
+
 			evalBundle=
-				// keep the minifiers off our define!
+				// use the function ctor to keep the minifiers away and come close to global scope
 				// if bundle is an AMD bundle, then __amdResult will be defined; otherwise it's a pre-amd bundle and the bundle value is returned by eval
-				new Function("bundle", "var __preAmdResult, __amdResult; function define(bundle){__amdResult= bundle;} __preAmdResult= eval(bundle); return [__preAmdResult, __amdResult];"),
+				new Function("bundle, __evalError",
+					"var __amdResult, define = function(x){__amdResult= x;};" +
+					"return [(function(){" +
+								"try{eval(arguments[0]);}catch(e){}" +
+								"if(__amdResult)return 0;" +
+								"try{return eval('('+arguments[0]+')');}" +
+								"catch(e){__evalError.e = e; return __evalError;}" +
+							"})(arguments[0]) , __amdResult];"
+				),
 
 			fixup= function(url, preAmdResult, amdResult){
 				// nls/<locale>/<bundle-name> indicates not the root.
+				if(preAmdResult===__evalError){
+					console.error("failed to evaluate i18n bundle; url=" + url, __evalError.e);
+					return {};
+				}
 				return preAmdResult ? (/nls\/[^\/]+\/[^\/]+$/.test(url) ? preAmdResult : {root:preAmdResult, _v1x:1}) : amdResult;
 			},
 
@@ -166,7 +183,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 							url:url,
 							sync:true,
 							load:function(text){
-								var result = evalBundle(text);
+								var result = evalBundle(text, __evalError);
 								results.push(cache[url]= fixup(url, result[0], result[1]));
 							},
 							error:function(){
@@ -176,7 +193,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					}
 				});
 				callback.apply(null, results);
-			};
+		};
 
 		thisModule.getLocalization= function(moduleName, bundleName, locale){
 			var result,
@@ -192,6 +209,36 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			}
 			return result;
 		};
+
+		if(has("dojo-unit-tests")){
+			unitTests.push(function(doh){
+				doh.register("tests.i18n.unit", function(t){
+					var check;
+
+					check = evalBundle("{prop:1}", __evalError);
+					t.is({prop:1}, check[0]); t.is(undefined, check[1]);
+
+					check = evalBundle("({prop:1})", __evalError);
+					t.is({prop:1}, check[0]); t.is(undefined, check[1]);
+
+					check = evalBundle("{'prop-x':1}", __evalError);
+					t.is({'prop-x':1}, check[0]); t.is(undefined, check[1]);
+
+					check = evalBundle("({'prop-x':1})", __evalError);
+					t.is({'prop-x':1}, check[0]); t.is(undefined, check[1]);
+
+					check = evalBundle("define({'prop-x':1})", __evalError);
+					t.is(0, check[0]); t.is({'prop-x':1}, check[1]);
+
+					check = evalBundle("define({'prop-x':1});", __evalError);
+					t.is(0, check[0]); t.is({'prop-x':1}, check[1]);
+
+					check = evalBundle("this is total nonsense and should throw an error", __evalError);
+					t.is(__evalError, check[0]); t.is(undefined, check[1]);
+					t.is({}, fixup("some/url", check[0], check[1]));
+				});
+			});
+		}
 	}
 
 	return lang.mixin(thisModule, {

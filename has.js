@@ -44,7 +44,7 @@ define(["require"], function(require) {
 			//		Returns the value of the feature named by name. The feature must have been
 			//		previously added to the cache by has.add.
 
-			return cache[name] = typeof cache[name] == "function" ? cache[name](global, doc, element) : cache[name]; // Boolean
+			return typeof cache[name] == "function" ? (cache[name] = cache[name](global, doc, element)) : cache[name]; // Boolean
 		};
 
 		has.cache = cache;

@@ -308,7 +308,7 @@
 	//
 	var eval_ =
 		// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
-		new Function("__text", 'return eval(__text);');
+		new Function('return eval(arguments[0]);');
 
 	req.eval =
 		function(text, hint){
@@ -1479,7 +1479,7 @@
 				forEach(definedModules, injectDependencies);
 			};
 	}
-
+var xx= 0;
 	var timerId = 0,
 		clearTimer = noop,
 		startTimer = noop;
@@ -1492,10 +1492,12 @@
 
 		startTimer = function(){
 			clearTimer();
-			req.waitms && (timerId = setTimeout(function(){
-				clearTimer();
-				signal(error, makeError("timeout", waiting));
-			}, req.waitms));
+			if(req.waitms){
+				timerId = window.setTimeout(function(){
+					clearTimer();
+					signal(error, makeError("timeout", waiting));
+				}, req.waitms);
+			}
 		};
 	}
 
@@ -1541,12 +1543,19 @@
 					onLoad = function(e){
 						e = e || window.event;
 						var node = e.target || e.srcElement;
-						if(e.type === "load" || /complete|loaded/.test(node.readyState)){
-							disconnector();
+						if(e.type === "load" || node.readyState=="complete"){
+							loadDisconnector();
+							errorDisconnector();
 							callback && callback();
 						}
 					},
-					disconnector = domOn(node, "load", "onreadystatechange", onLoad);
+					loadDisconnector = domOn(node, "load", "onreadystatechange", onLoad),
+					errorDisconnector = domOn(node, "error", "onerror", function(e){
+						loadDisconnector();
+						errorDisconnector();
+						signal(error, makeError("scriptError", [url, e]));
+					});
+
 				node.type = "text/javascript";
 				node.charset = "utf-8";
 				node.src = url;
@@ -1844,7 +1853,8 @@
 			"loader-define-module":0,
 			"loader-circular-dependency":0
 		},
-		async:0
+		async:0,
+		waitSeconds:15
 	}
 );
 //>>excludeEnd("replaceLoaderConfig")

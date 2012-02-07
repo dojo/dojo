@@ -203,7 +203,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		};
 
 		thisModule.normalizeLocale= function(locale){
-			var result = locale ? locale.toLowerCase() : dojo.locale;
+			var result = (locale ? locale : dojo.locale).toLowerCase();
 			if(result == "root"){
 				result = "ROOT";
 			}

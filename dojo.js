@@ -1692,7 +1692,7 @@ var xx= 0;
 				}
 			}
 			if(has("dojo-combo-api") && isArray(targetModule)){
-				injectDependencies(defineModule(targetModule.shift(), args[1], args[2]));
+				injectDependencies(defineModule(getModule(targetModule.shift()), args[1], args[2]));
 				if(!targetModule.length){
 					combosPending.splice(i, 1);
 				}

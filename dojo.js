@@ -1546,7 +1546,7 @@
 					onLoad = function(e){
 						e = e || window.event;
 						var node = e.target || e.srcElement;
-						if(e.type === "load" || node.readyState=="complete"){
+						if(e.type === "load" || /complete|loaded/.test(node.readyState)){
 							loadDisconnector();
 							errorDisconnector();
 							callback && callback();

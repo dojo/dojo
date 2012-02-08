@@ -1,4 +1,5 @@
-define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "./_base/xhr"], function(dojo, require, has, array, lang) {
+define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./_base/xhr"],
+	function(dojo, require, has, array, config, lang, xhr) {
 	// module:
 	//		dojo/i18n
 	// summary:
@@ -62,7 +63,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 		},
 
 		doLoad = function(require, bundlePathAndName, bundlePath, bundleName, locale, load){
-			// get the root bundle which instructs which other bundles are required to contruct the localized bundle
+			// get the root bundle which instructs which other bundles are required to construct the localized bundle
 			require([bundlePathAndName], function(root){
 				var
 					current= cache[bundlePathAndName + "/"]= lang.clone(root.root),
@@ -84,7 +85,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 			var match= nlsRe.exec(id),
 				bundlePath= match[1];
 			return /^\./.test(bundlePath) ? toAbsMid(bundlePath) + "/" +  id.substring(bundlePath.length) : id;
-		};
+		},
+
+		checkForLegacyModules = function(){},
 
 		load = function(id, require, load){
 			// note: id is always absolute
@@ -98,6 +101,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 				target= bundlePathAndName + "/" + targetLocale;
 
 			if(localeSpecified){
+				checkForLegacyModules(target);
 				if(cache[target]){
 					// a request for a specific local that has already been loaded; just return it
 					load(cache[target]);
@@ -106,15 +110,24 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 					doLoad(require, bundlePathAndName, bundlePath, bundleName, targetLocale, load);
 				}
 				return;
-			}// else a non-locale-specific request; therefore always load dojo.locale + dojo.config.extraLocale
+			}// else a non-locale-specific request; therefore always load dojo.locale + config.extraLocale
 
-			// notice the subtle algorithm that loads targeLocal last, which is the only doLoad application that passes a value for the load callback
+			// notice the subtle algorithm that loads targetLocal last, which is the only doLoad application that passes a value for the load callback
 			// this makes the sync loader follow a clean code path that loads extras first and then proceeds with tracing the current deps graph
-			var extra = dojo.config.extraLocale || [];
+			var extra = config.extraLocale || [];
 			extra = lang.isArray(extra) ? extra : [extra];
 			extra.push(targetLocale);
+			var remaining = extra.length,
+				targetBundle;
 			array.forEach(extra, function(locale){
-				doLoad(require, bundlePathAndName, bundlePath, bundleName, locale, locale==targetLocale && load);
+				doLoad(require, bundlePathAndName, bundlePath, bundleName, locale, function(bundle){
+					if(locale == targetLocale){
+						targetBundle = bundle;
+					}
+					if(!--remaining){
+						load(targetBundle);
+					}
+				});
 			});
 		};
 
@@ -155,7 +168,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 
 			syncRequire= function(deps, callback){
 				var results= [];
-				dojo.forEach(deps, function(mid){
+				array.forEach(deps, function(mid){
 					var url= require.toUrl(mid + ".js");
 					if(cache[url]){
 						results.push(cache[url]);
@@ -169,7 +182,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 							}
 						}catch(e){}
 
-						dojo.xhrGet({
+						xhr.get({
 							url:url,
 							sync:true,
 							load:function(text){
@@ -183,6 +196,34 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 					}
 				});
 				callback.apply(null, results);
+			},
+
+			normalizeLocale = thisModule.normalizeLocale= function(locale){
+				var result = locale ? locale.toLowerCase() : dojo.locale;
+				if(result == "root"){
+					result = "ROOT";
+				}
+				return result;
+			},
+
+			forEachLocale = function(locale, func){
+				// this function is equivalent to v1.6 dojo.i18n._searchLocalePath with down===true
+				var parts = locale.split("-");
+				while(parts.length){
+					if(func(parts.join("-"))){
+						return true;
+					}
+					parts.pop();
+				}
+				return func("ROOT");
+			};
+
+		checkForLegacyModules = function(target){
+			// legacy code may have already loaded [e.g] the raw bundle x/y/z at x.y.z; when true, push into the cache
+			for(var names = target.split("/"), object = dojo.global[names[0]], i = 1; object && i<names.length; object = object[names[i++]]){}
+			if(object){
+				cache[target] = object;
+			}
 		};
 
 		thisModule.getLocalization= function(moduleName, bundleName, locale){
@@ -192,12 +233,30 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/lang", "
 			return result;
 		};
 
-		thisModule.normalizeLocale= function(locale){
-			var result = (locale ? locale : dojo.locale).toLowerCase();
-			if(result == "root"){
-				result = "ROOT";
+		thisModule._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated){
+			//	summary:
+			//		Load built, flattened resource bundles, if available for all
+			//		locales used in the page. Only called by built layer files.
+			//
+			//  note: this function a direct copy of v1.6 function of same name
+
+			function preload(locale){
+				locale = normalizeLocale(locale);
+				forEachLocale(locale, function(loc){
+					for(var i=0; i<localesGenerated.length;i++){
+						if(localesGenerated[i] == loc){
+							require([bundlePrefix.replace(/\./g, "/")+"_"+loc]);
+							return true; // Boolean
+						}
+					}
+					return false; // Boolean
+				});
 			}
-			return result;
+			preload();
+			var extra = dojo.config.extraLocale||[];
+			for(var i=0; i<extra.length; i++){
+				preload(extra[i]);
+			}
 		};
 
 		if(has("dojo-unit-tests")){

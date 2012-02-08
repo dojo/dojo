@@ -7,7 +7,10 @@
 			var dohArgs= (window.parent.doh && window.parent.doh.dohArgs) || {async:0};
 			var dojoConfig = {
 				async:dohArgs.async,
-				extraLocale:['en-us-hawaii', 'en-us-new_york-brooklyn']
+				extraLocale:['en-us-hawaii', 'en-us-new_york-brooklyn'],
+				has:{
+					"dojo-unit-tests":1
+				}
 			};
 		</script>
 
@@ -15,11 +18,15 @@
 
 		<script type="text/javascript">
 		// the following should load the current locale + 'en-us-hawaii' and 'en-us-new_york-brooklyn
-		require(["dojo", "doh", "dojo/i18n!dojo/tests/nls/salutations"], function(dojo, doh){
+		require(["dojo", "doh", "dojo/has", "dojo/i18n", "dojo/i18n!dojo/tests/nls/salutations"], function(dojo, doh, has, i18n){
 			if(dohArgs.async){
 				doh.register(function extraLocalesAsync(t){
-					t.is(require("dojo/i18n!dojo/tests/nls/en-us-hawaii/salutations").hello, "Aloha");
-					t.is(require("dojo/i18n!dojo/tests/nls/en-us-new_york-brooklyn/salutations").hello, "Yo");
+					// the following should load synchronously...at least with the dojo loader
+					var hawaii, ny;
+					require(["dojo/i18n!dojo/tests/nls/en-us-hawaii/salutations"], function(bundle){ hawaii = bundle;});
+					require(["dojo/i18n!dojo/tests/nls/en-us-new_york-brooklyn/salutations"], function(bundle){ ny = bundle;});
+					t.is(hawaii.hello, "Aloha");
+					t.is(ny.hello, "Yo");
 					try{
 						var result = require("dojo/i18n!dojo/tests/nls/ar/salutations");
 						t.f(true, "should have thrown");
@@ -38,6 +45,14 @@
 					}
 				});
 			}
+
+
+		if(has("dojo-unit-tests")){
+			console.log("here");
+			dojo.forEach(i18n.unitTests, function(item){item(doh);});
+		}
+
+
 			doh.runOnLoad();
 		});
 		if(!require.async){
@@ -48,6 +63,7 @@
 				t.is(dojo.i18n.getLocalization("dojo.tests._base.loader", "amdBundle", "ab-cd-ef").amdBundle, "amdBundle-ab-cd-ef");
 			});
 		}
+
 		</script>
 	</head>
 	<body>

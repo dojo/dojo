@@ -1,4 +1,4 @@
-define(["dojo", "doh", "require"], function(dojo, doh, require){
+define(["dojo", "doh", "../../../_base/sniff", "require"], function(dojo, doh, has, require){
 	doh.register("tests._base._loader.bootstrap", [
 		function hasConsole(t){
 			t.assertTrue("console" in dojo.global);
@@ -96,6 +96,21 @@ define(["dojo", "doh", "require"], function(dojo, doh, require){
 		function evalWorks(t){
 			t.assertTrue(dojo.eval("(true)"));
 			t.assertFalse(dojo.eval("(false)"));
+			if(!has("ie")){
+				// eval truly executes in global scope for non IE
+				t.is(window.rawld, undefined);
+				dojo.eval("var rawld = 3.14;");
+				t.assertEqual(rawld, 3.14);
+				t.assertEqual(window.rawld, 3.14);
+				window.rawld = undefined;
+			}else{
+				// example of how to compensate for IE
+				t.is(window.rawld, undefined);
+				dojo.eval("window.rawld = 3.14;");
+				t.assertEqual(rawld, 3.14);
+				t.assertEqual(window.rawld, 3.14);
+				window.rawld = undefined;
+			}
 		},
 
 		function _mixin(t){

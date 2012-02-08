@@ -87,6 +87,8 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			return /^\./.test(bundlePath) ? toAbsMid(bundlePath) + "/" +  id.substring(bundlePath.length) : id;
 		},
 
+		checkForLegacyModules = function(){},
+
 		load = function(id, require, load){
 			// note: id is always absolute
 			var
@@ -99,6 +101,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				target= bundlePathAndName + "/" + targetLocale;
 
 			if(localeSpecified){
+				checkForLegacyModules(target);
 				if(cache[target]){
 					// a request for a specific local that has already been loaded; just return it
 					load(cache[target]);

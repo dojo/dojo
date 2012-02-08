@@ -1,4 +1,4 @@
-define(["dojo/_base/lang", "dojo/_base/window", "./sorter"], 
+define(["../../_base/lang", "../../_base/window", "./sorter"],
   function(lang, winUtil, sorter) {
 	// module:
 	//		dojo/data/util/simpleFetch

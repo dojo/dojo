@@ -1,4 +1,4 @@
-define(["dojo", "dojo/robot"], function(dojo) {
+define(["./main", "./_base/sniff", "./robot"], function(dojo, has) {
 
 dojo.experimental("dojo.robotx");
 

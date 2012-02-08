@@ -193,6 +193,34 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					}
 				});
 				callback.apply(null, results);
+			},
+
+			normalizeLocale = thisModule.normalizeLocale= function(locale){
+				var result = locale ? locale.toLowerCase() : dojo.locale;
+				if(result == "root"){
+					result = "ROOT";
+				}
+				return result;
+			},
+
+			forEachLocale = function(locale, func){
+				// this function is equivalent to v1.6 dojo.i18n._searchLocalePath with down===true
+				var parts = locale.split("-");
+				while(parts.length){
+					if(func(parts.join("-"))){
+						return true;
+					}
+					parts.pop();
+				}
+				return func("ROOT");
+			};
+
+		checkForLegacyModules = function(target){
+			// legacy code may have already loaded [e.g] the raw bundle x/y/z at x.y.z; when true, push into the cache
+			for(var names = target.split("/"), object = dojo.global[names[0]], i = 1; object && i<names.length; object = object[names[i++]]){}
+			if(object){
+				cache[target] = object;
+			}
 		};
 
 		thisModule.getLocalization= function(moduleName, bundleName, locale){
@@ -202,12 +230,30 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			return result;
 		};
 
-		thisModule.normalizeLocale= function(locale){
-			var result = (locale ? locale : dojo.locale).toLowerCase();
-			if(result == "root"){
-				result = "ROOT";
+		thisModule._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated){
+			//	summary:
+			//		Load built, flattened resource bundles, if available for all
+			//		locales used in the page. Only called by built layer files.
+			//
+			//  note: this function a direct copy of v1.6 function of same name
+
+			function preload(locale){
+				locale = normalizeLocale(locale);
+				forEachLocale(locale, function(loc){
+					for(var i=0; i<localesGenerated.length;i++){
+						if(localesGenerated[i] == loc){
+							require([bundlePrefix.replace(/\./g, "/")+"_"+loc]);
+							return true; // Boolean
+						}
+					}
+					return false; // Boolean
+				});
 			}
-			return result;
+			preload();
+			var extra = dojo.config.extraLocale||[];
+			for(var i=0; i<extra.length; i++){
+				preload(extra[i]);
+			}
 		};
 
 		if(has("dojo-unit-tests")){

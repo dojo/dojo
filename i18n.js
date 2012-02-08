@@ -77,7 +77,7 @@ dojo.i18n.normalizeLocale = function(/*String?*/locale){
 	//		If no locale is specified, the dojo.locale is returned.  dojo.locale is defined by
 	//		the user agent's locale unless overridden by djConfig.
 
-	var result = locale ? locale.toLowerCase() : dojo.locale;
+	var result = (locale ? locale : dojo.locale).toLowerCase();
 	if(result == "root"){
 		result = "ROOT";
 	}

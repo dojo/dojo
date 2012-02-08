@@ -1840,7 +1840,8 @@
 			"loader-define-module":0,
 			"loader-circular-dependency":0
 		},
-		async:0
+		async:0,
+		waitSeconds:15
 	}
 );
 //>>excludeEnd("replaceLoaderConfig")

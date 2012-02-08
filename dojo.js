@@ -132,7 +132,7 @@
 		element = doc && doc.createElement("DiV"),
 
 		has = req.has = function(name){
-			return hasCache[name] = isFunction(hasCache[name]) ? hasCache[name](global, doc, element) : hasCache[name];
+			return isFunction(hasCache[name]) ? (hasCache[name] = hasCache[name](global, doc, element)) : hasCache[name];
 		},
 
 		hasCache = has.cache = defaultConfig.hasCache;

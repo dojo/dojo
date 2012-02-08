@@ -1312,6 +1312,7 @@
 						// therefore, it must not have been a module; adjust state accordingly
 						setArrived(module);
 						mix(module, nonModuleProps);
+						req.trace("loader-define-nonmodule", [module.url]);
 					}
 
 					if(has("dojo-sync-loader") && legacyMode){
@@ -1854,7 +1855,8 @@
 			"loader-run-factory":0,
 			"loader-finish-exec":0,
 			"loader-define-module":0,
-			"loader-circular-dependency":0
+			"loader-circular-dependency":0,
+			"loader-define-nonmodule":0
 		},
 		async:0,
 		waitSeconds:15

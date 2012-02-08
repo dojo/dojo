@@ -1482,7 +1482,7 @@
 				forEach(definedModules, injectDependencies);
 			};
 	}
-var xx= 0;
+
 	var timerId = 0,
 		clearTimer = noop,
 		startTimer = noop;

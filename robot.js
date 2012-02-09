@@ -1,4 +1,4 @@
-define(["dojo", "doh/_browserRunner", "doh/robot", "./window"], function(dojo, doh) {
+define(["./main", "doh/_browserRunner", "doh/robot", "./window"], function(dojo, doh) {
 
 dojo.experimental("dojo.robot");
 

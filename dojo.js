@@ -150,6 +150,9 @@
 		require("./_base/configNode.js").config(defaultConfig);
 		// remember node's require (with respect to baseUrl==dojo's root)
 		defaultConfig.loaderPatch.nodeRequire = require;
+		if(has("dojo-loader-eval-hint-url")===undefined){
+			has.add("dojo-loader-eval-hint-url", 1);
+		}
 	}
 
 	has.add("host-rhino", userConfig.has && "host-rhino" in userConfig.has ?
@@ -1250,7 +1253,7 @@
 						if(text===cached){
 							cached.call(null);
 						}else{
-							req.eval(text, module.mid);
+							req.eval(text, has("dojo-loader-eval-hint-url") ? module.url : module.mid);
 						}
 					}catch(e){
 						signal(error, makeError("evalModuleThrew", module));
@@ -1259,7 +1262,7 @@
 					if(text===cached){
 						cached.call(null);
 					}else{
-						req.eval(text, module.mid);
+						req.eval(text, has("dojo-loader-eval-hint-url") ? module.url : module.mid);
 					}
 				}
 				injectingCachedModule = 0;

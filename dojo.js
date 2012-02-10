@@ -150,9 +150,6 @@
 		require("./_base/configNode.js").config(defaultConfig);
 		// remember node's require (with respect to baseUrl==dojo's root)
 		defaultConfig.loaderPatch.nodeRequire = require;
-		if(has("dojo-loader-eval-hint-url")===undefined){
-			has.add("dojo-loader-eval-hint-url", 1);
-		}
 	}
 
 	has.add("host-rhino", userConfig.has && "host-rhino" in userConfig.has ?
@@ -1191,6 +1188,10 @@
 	}
 
 	if(has("dojo-inject-api")){
+		if(has("dojo-loader-eval-hint-url")===undefined){
+			has.add("dojo-loader-eval-hint-url", 1);
+		}
+
 		var fixupUrl= function(url){
 				url += ""; // make sure url is a Javascript string (some paths may be a Java string)
 				return url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");

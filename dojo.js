@@ -687,7 +687,9 @@
 			}
 			if(isArray(a1)){
 				// signature is (requestList [,callback])
-
+				if(!a1.length){
+					a2 && a2();
+				}else{
 					syntheticMid = "require*" + uid();
 
 					// resolve the request list with respect to the reference module
@@ -725,6 +727,7 @@
 					}
 					checkComplete();
 				}
+			}
 			return contextRequire;
 		},
 

@@ -412,15 +412,6 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), px = style.toPixelValue,
 			l = px(node, s.marginLeft), t = px(node, s.marginTop), r = px(node, s.marginRight), b = px(node, s.marginBottom);
-		if(has("webkit") && (s.position != "absolute")){
-			// FIXME: Safari's version of the computed right margin
-			// is the space between our right edge and the right edge
-			// of our offsetParent.
-			// What we are looking for is the actual margin value as
-			// determined by CSS.
-			// Hack solution is to assume left/right margins are the same.
-			r = l;
-		}
 		return {l: l, t: t, r: r, b: b, w: l + r, h: t + b};
 	};
 

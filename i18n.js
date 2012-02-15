@@ -195,7 +195,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 						});
 					}
 				});
-				callback.apply(null, results);
+				callback && callback.apply(null, results);
 			},
 
 			normalizeLocale = thisModule.normalizeLocale= function(locale){
@@ -245,7 +245,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				forEachLocale(locale, function(loc){
 					for(var i=0; i<localesGenerated.length;i++){
 						if(localesGenerated[i] == loc){
-							require([bundlePrefix.replace(/\./g, "/")+"_"+loc]);
+							syncRequire([bundlePrefix.replace(/\./g, "/")+"_"+loc]);
 							return true; // Boolean
 						}
 					}

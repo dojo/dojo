@@ -103,7 +103,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		return addListener(target, type, listener, dontFix, matchesTarget);
 	};
 	var touchEvents = /^touch/;
-	function addListener(target, type, listener, dontFix, matchesTarget){		
+	function addListener(target, type, listener, dontFix, matchesTarget){
 		// event delegation:
 		var selector = type.match(/(.*):(.*)/);
 		// if we have a selector:event, the last one is interpreted as an event, and we use event delegation
@@ -377,8 +377,9 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				var emiter = target[type];
 				if(!emiter || !emiter.listeners){
 					var oldListener = emiter;
-					target[type] = emiter = Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = _dojoIEListeners_[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
+					emiter = Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = _dojoIEListeners_[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
 					emiter.listeners = [];
+					target[type] = emiter;
 					emiter.global = this;
 					if(oldListener){
 						emiter.listeners.push(_dojoIEListeners_.push(oldListener) - 1);

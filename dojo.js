@@ -1791,7 +1791,7 @@
 
 	if(has("dojo-config-api")){
 		var bootDeps = defaultConfig.deps || userConfig.deps || dojoSniffConfig.deps,
-			bootCallback = defaultConfig.deps || userConfig.callback || dojoSniffConfig.callback;
+			bootCallback = defaultConfig.callback || userConfig.callback || dojoSniffConfig.callback;
 		req.boot = (bootDeps || bootCallback) ? [bootDeps || [], bootCallback] : 0;
 	}
 	if(!has("dojo-built")){

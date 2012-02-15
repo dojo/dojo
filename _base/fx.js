@@ -352,7 +352,6 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 	});
 
 	var _makeFadeable =
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		has("ie") ? function(node){
 			// only set the zoom if the "tickle" value would be the same as the
 			// default
@@ -363,7 +362,6 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 				ns.width = "auto";
 			}
 		} :
-		//>>excludeEnd("webkitMobile");
 		function(){};
 
 	dojo._fade = function(/*Object*/ args){

@@ -25,12 +25,10 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	// IIRC, earlier versions of Opera did in fact use border-box.
 	// Opera guys, this is really confusing. Opera being broken in quirks mode is not our fault.
 
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(has("ie") /*|| has("opera")*/){
 		// client code may have to adjust if compatMode varies across iframes
 		geom.boxModel = document.compatMode == "BackCompat" ? "border-box" : "content-box";
 	}
-	//>>excludeEnd("webkitMobile");
 
 	// =============================
 	// Box Functions
@@ -437,7 +435,6 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), me = geom.getMarginExtents(node, s),
 			l = node.offsetLeft - me.l, t = node.offsetTop - me.t, p = node.parentNode, px = style.toPixelValue, pcs;
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("mozilla")){
 			// Mozilla:
 			// If offsetParent has a computed overflow != visible, the offsetLeft is decreased
@@ -466,7 +463,6 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 				t -= pcs.borderTopStyle != none ? px(node, pcs.borderTopWidth) : 0;
 			}
 		}
-		//>>excludeEnd("webkitMobile");
 		return {l: l, t: t, w: node.offsetWidth + me.w, h: node.offsetHeight + me.h};
 	};
 
@@ -484,12 +480,10 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 			be.w = be.h = 0;
 		}
 		// On Opera, offsetLeft includes the parent's border
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("opera")){
 			pe.l += be.l;
 			pe.t += be.t;
 		}
-		//>>excludeEnd("webkitMobile");
 		return {l: pe.l, t: pe.t, w: w - pe.w - be.w, h: h - pe.h - be.h};
 	};
 
@@ -631,31 +625,31 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 				{x: geom.fixIeBiDiScrollLeft(node.scrollLeft || 0), y: node.scrollTop || 0 });
 	};
 
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	geom.getIeDocumentElementOffset = function getIeDocumentElementOffset(){
-		//NOTE: assumes we're being called in an IE browser
+	if(has("ie")){
+		geom.getIeDocumentElementOffset = function getIeDocumentElementOffset(){
+			//NOTE: assumes we're being called in an IE browser
 
-		var de = win.doc.documentElement; // only deal with HTML element here, position() handles body/quirks
+			var de = win.doc.documentElement; // only deal with HTML element here, position() handles body/quirks
 
-		if(has("ie") < 8){
-			var r = de.getBoundingClientRect(), // works well for IE6+
-				l = r.left, t = r.top;
-			if(has("ie") < 7){
-				l += de.clientLeft;	// scrollbar size in strict/RTL, or,
-				t += de.clientTop;	// HTML border size in strict
+			if(has("ie") < 8){
+				var r = de.getBoundingClientRect(), // works well for IE6+
+					l = r.left, t = r.top;
+				if(has("ie") < 7){
+					l += de.clientLeft;	// scrollbar size in strict/RTL, or,
+					t += de.clientTop;	// HTML border size in strict
+				}
+				return {
+					x: l < 0 ? 0 : l, // FRAME element border size can lead to inaccurate negative values
+					y: t < 0 ? 0 : t
+				};
+			}else{
+				return {
+					x: 0,
+					y: 0
+				};
 			}
-			return {
-				x: l < 0 ? 0 : l, // FRAME element border size can lead to inaccurate negative values
-				y: t < 0 ? 0 : t
-			};
-		}else{
-			return {
-				x: 0,
-				y: 0
-			};
-		}
-	};
-	//>>excludeEnd("webkitMobile");
+		};
+	}
 
 	geom.fixIeBiDiScrollLeft = function fixIeBiDiScrollLeft(/*Integer*/ scrollLeft){
 		// In RTL direction, scrollLeft should be a negative value, but IE
@@ -663,7 +657,6 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
 
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		var ie = has("ie");
 		if(ie && !geom.isBodyLtr()){
 			var qk = has("quirks"),
@@ -673,7 +666,6 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 			}
 			return (ie < 8 || qk) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
 		}
-		//>>excludeEnd("webkitMobile");
 		return scrollLeft; // Integer
 	};
 
@@ -683,7 +675,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 			dh = db.parentNode,
 			ret = node.getBoundingClientRect();
 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+
 		if(has("ie")){
 			// On IE there's a 2px offset that we need to adjust for, see dojo.getIeDocumentElementOffset()
 			var offset = geom.getIeDocumentElementOffset();
@@ -698,7 +690,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 			ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
 			ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);
 		}
-		//>>excludeEnd("webkitMobile");
+
 		// account for document scrolling
 		// if offsetParent is used, ret value already includes scroll position
 		// so we may have to actually remove that value if !includeScroll

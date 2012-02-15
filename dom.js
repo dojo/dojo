@@ -7,13 +7,13 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 
 	// FIXME: need to add unit tests for all the semi-public methods
 
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	try{
-		document.execCommand("BackgroundImageCache", false, true);
-	}catch(e){
-		// sane browsers don't have cache "issues"
+	if(has("ie") <= 7){
+		try{
+			document.execCommand("BackgroundImageCache", false, true);
+		}catch(e){
+			// sane browsers don't have cache "issues"
+		}
 	}
-	//>>excludeEnd("webkitMobile");
 
 	// =============================
 	// DOM Functions
@@ -26,7 +26,7 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 		//		if not found. If `id` is a DomNode, this function is a no-op.
 		//
 		// id: String|DOMNode
-		//	 	A string to match an HTML id attribute or a reference to a DOM Node
+		//		A string to match an HTML id attribute or a reference to a DOM Node
 		//
 		// doc: Document?
 		//		Document to work in. Defaults to the current value of
@@ -87,7 +87,6 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 
 	var dom = {};   // the result object
 
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(has("ie")){
 		dom.byId = function(id, doc){
 			if(typeof id != "string"){
@@ -113,18 +112,12 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 			}
 		};
 	}else{
-	//>>excludeEnd("webkitMobile");
 		dom.byId = function(id, doc){
 			// inline'd type check.
 			// be sure to return null per documentation, to match IE branch.
 			return ((typeof id == "string") ? (doc || win.doc).getElementById(id) : id) || null; // DOMNode
 		};
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}
-	//>>excludeEnd("webkitMobile");
-	/*=====
-	};
-	=====*/
 
 	dom.isDescendant = function(/*DOMNode|String*/node, /*DOMNode|String*/ancestor){
 		try{
@@ -144,13 +137,10 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 
 	dom.setSelectable = function(/*DOMNode|String*/node, /*Boolean*/selectable){
 		node = dom.byId(node);
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("mozilla")){
 			node.style.MozUserSelect = selectable ? "" : "none";
 		}else if(has("khtml") || has("webkit")){
-		//>>excludeEnd("webkitMobile");
 			node.style.KhtmlUserSelect = selectable ? "auto" : "none";
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		}else if(has("ie")){
 			var v = (node.unselectable = selectable ? "" : "on"),
 				cs = node.getElementsByTagName("*"), i = 0, l = cs.length;
@@ -158,7 +148,6 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 				cs.item(i).unselectable = v;
 			}
 		}
-		//>>excludeEnd("webkitMobile");
 		//FIXME: else?  Opera?
 	};
 

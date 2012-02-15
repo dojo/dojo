@@ -149,9 +149,7 @@ define(["./sniff", "./dom"], function(has, dom){
 	// it is frequently sent to this function even
 	// though it is not Element.
 	var getComputedStyle, style = {};
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(has("webkit")){
-	//>>excludeEnd("webkitMobile");
 		getComputedStyle = function(/*DomNode*/node){
 			var s;
 			if(node.nodeType == 1){
@@ -164,7 +162,6 @@ define(["./sniff", "./dom"], function(has, dom){
 			}
 			return s || {};
 		};
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}else if(has("ie") && (has("ie") < 9 || has("quirks"))){
 		getComputedStyle = function(node){
 			// IE (as of 7) doesn't expose Element like sane browsers
@@ -176,19 +173,15 @@ define(["./sniff", "./dom"], function(has, dom){
 				node.ownerDocument.defaultView.getComputedStyle(node, null) : {};
 		};
 	}
-	//>>excludeEnd("webkitMobile");
 	style.getComputedStyle = getComputedStyle;
 
 	var toPixel;
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	if(!has("ie")){
-	//>>excludeEnd("webkitMobile");
 		toPixel = function(element, value){
 			// style values can be floats, client code may want
 			// to round for integer pixels.
 			return parseFloat(value) || 0;
 		};
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	}else{
 		toPixel = function(element, avalue){
 			if(!avalue){ return 0; }
@@ -215,12 +208,10 @@ define(["./sniff", "./dom"], function(has, dom){
 			return avalue;
 		};
 	}
-	//>>excludeEnd("webkitMobile");
 	style.toPixelValue = toPixel;
 
 	// FIXME: there opacity quirks on FF that we haven't ported over. Hrm.
 
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	var astr = "DXImageTransform.Microsoft.Alpha";
 	var af = function(n, f){
 		try{
@@ -230,9 +221,7 @@ define(["./sniff", "./dom"], function(has, dom){
 		}
 	};
 
-	//>>excludeEnd("webkitMobile");
 	var _getOpacity =
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		has("ie") < 9 || (has("ie") && has("quirks")) ? function(node){
 			try{
 				return af(node).Opacity / 100; // Number
@@ -240,13 +229,11 @@ define(["./sniff", "./dom"], function(has, dom){
 				return 1; // Number
 			}
 		} :
-	//>>excludeEnd("webkitMobile");
 		function(node){
 			return getComputedStyle(node).opacity;
 		};
 
 	var _setOpacity =
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		has("ie") < 9 || (has("ie") && has("quirks")) ? function(/*DomNode*/node, /*Number*/opacity){
 			var ov = opacity * 100, opaque = opacity == 1;
 			node.style.zoom = opaque ? "" : 1;
@@ -273,7 +260,6 @@ define(["./sniff", "./dom"], function(has, dom){
 			}
 			return opacity;
 		} :
-		//>>excludeEnd("webkitMobile");
 		function(node, opacity){
 			return node.style.opacity = opacity;
 		};
@@ -285,7 +271,6 @@ define(["./sniff", "./dom"], function(has, dom){
 	function _toStyleValue(node, type, value){
 		//TODO: should we really be doing string case conversion here? Should we cache it? Need to profile!
 		type = type.toLowerCase();
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		if(has("ie")){
 			if(value == "auto"){
 				if(type == "height"){ return node.offsetHeight; }
@@ -299,7 +284,6 @@ define(["./sniff", "./dom"], function(has, dom){
 				}
 			}
 		}
-		//>>excludeEnd("webkitMobile");
 		if(!(type in _pixelNamesCache)){
 			_pixelNamesCache[type] = _pixelRegExp.test(type);
 		}

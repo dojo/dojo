@@ -249,11 +249,9 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 
 	var _destroyContainer = null,
 		_destroyDoc;
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	on(window, "unload", function(){
 		_destroyContainer = null; //prevent IE leak
 	});
-	//>>excludeEnd("webkitMobile");
 
 	exports.toDom = function toDom(frag, doc){
 		doc = doc || win.doc;
@@ -349,14 +347,12 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 	};
 
 	exports.empty =
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 		has("ie") ? function(node){
 			node = dom.byId(node);
 			for(var c; c = node.lastChild;){ // intentional assignment
 				exports.destroy(c);
 			}
 		} :
-		//>>excludeEnd("webkitMobile");
 		function(node){
 			dom.byId(node).innerHTML = "";
 		};

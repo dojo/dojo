@@ -1066,14 +1066,6 @@ define([
 	// to make the determination (e.g. does it support QSA, does the query in
 	// question work in the native QSA impl, etc.).
 	var nua = navigator.userAgent;
-	// some versions of Safari provided QSA, but it was buggy and crash-prone.
-	// We need te detect the right "internal" webkit version to make this work.
-	var wk = "WebKit/";
-	var is525 = (
-		has("webkit") &&
-		(nua.indexOf(wk) > 0) &&
-		(parseFloat(nua.split(wk)[1]) > 528)
-	);
 
 	// IE QSA queries may incorrectly include comment nodes, so we throw the
 	// zipping function into "remove" comments mode instead of the normal "skip
@@ -1081,11 +1073,7 @@ define([
 	var noZip = has("ie") ? "commentStrip" : "nozip";
 
 	var qsa = "querySelectorAll";
-	var qsaAvail = (
-		!!getDoc()[qsa] &&
-		// see #5832
-		(!has("safari") || (has("safari") > 3.1) || is525 )
-	);
+	var qsaAvail = !!getDoc()[qsa];
 
 	//Don't bother with n+3 type of matches, IE complains if we modify those.
 	var infixSpaceRe = /n\+\d|([^ ])?([>~+])([^ =])?/g;

@@ -91,7 +91,7 @@ return declare("dojo.dnd.Avatar", null, {
 	update: function(){
 		// summary:
 		//		updates the avatar to reflect the current DnD state
-		dojo[(this.manager.canDropFlag ? "add" : "remove") + "Class"](this.node, "dojoDndAvatarCanDrop");
+		domClass.toggle(this.node, "dojoDndAvatarCanDrop", this.manager.canDropFlag);
 		if (this.isA11y){
 			var icon = dom.byId("a11yIcon");
 			var text = '+';   // assume canDrop && copy

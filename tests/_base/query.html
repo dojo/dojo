@@ -246,6 +246,14 @@
 						"doh.is(dojo.byId('radio2'), dojo.query('#t2 > input[type=radio]:checked')[0]);",
 						"doh.is(2, dojo.query('#t2select option:checked').length);",
 						
+						// bug 10651
+						"doh.is(1, dojo.query('option[value=a+b]', 't5').length);",
+						"doh.is(1, dojo.query('option[value=a~b]', 't5').length);",
+						"doh.is(1, dojo.query('option[value=a^b]', 't5').length);",
+						"doh.is(1, dojo.query('option[value=\"a+b\"]', 't5').length);",
+						"doh.is(1, dojo.query('option[value=\"a~b\"]', 't5').length);",
+						"doh.is(1, dojo.query('option[value=\"a^b\"]', 't5').length);",
+						
 						// check for correct document order
 						function domOrder() {
 							var inputs = dojo.query(".upperclass .lowerclass input");
@@ -407,6 +415,14 @@
 		  <div id='4chr'></div>
 		  <div id='5char'></div>
 		  <div id='6chars'></div>
+		</div>
+		
+		<div id="t5">
+			<select name="special">
+				<option value="a+b">1</option>
+				<option value="a~b">2</option>
+				<option value="a^b">3</option>
+			</select>
 		</div>
 	</body>
 </html>

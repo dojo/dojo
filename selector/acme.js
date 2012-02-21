@@ -1080,13 +1080,18 @@ define([
 	var infixSpaceFunc = function(match, pre, ch, post){
 		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};
-
+	
+	//Don't apply the infixSpaceRe to attribute value selectors
+	var attRe = /([^[]*)([^\]]*])?/g;
+	var attFunc = function(match, nonAtt, att) {
+		return nonAtt.replace(infixSpaceRe, infixSpaceFunc) + (att||"");
+	};
 	var getQueryFunc = function(query, forceDOM){
 		//Normalize query. The CSS3 selectors spec allows for omitting spaces around
 		//infix operators, >, ~ and +
 		//Do the work here since detection for spaces is used as a simple "not use QSA"
 		//test below.
-		query = query.replace(infixSpaceRe, infixSpaceFunc);
+		query = query.replace(attRe, attFunc);
 
 		if(qsaAvail){
 			// if we've got a cached variant and we think we can do it, run it!

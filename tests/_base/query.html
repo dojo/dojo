@@ -246,14 +246,19 @@
 						"doh.is(dojo.byId('radio2'), dojo.query('#t2 > input[type=radio]:checked')[0]);",
 						"doh.is(2, dojo.query('#t2select option:checked').length);",
 						
-						// bug 10651
+						// special characters in attribute values (bug 10651)
 						"doh.is(1, dojo.query('option[value=a+b]', 't5').length);",
 						"doh.is(1, dojo.query('option[value=a~b]', 't5').length);",
 						"doh.is(1, dojo.query('option[value=a^b]', 't5').length);",
 						"doh.is(1, dojo.query('option[value=\"a+b\"]', 't5').length);",
 						"doh.is(1, dojo.query('option[value=\"a~b\"]', 't5').length);",
 						"doh.is(1, dojo.query('option[value=\"a^b\"]', 't5').length);",
-						
+
+						// selector with substring that contains equals sign (bug7479)
+						function attrWithEquals(){
+							doh.is(1, dojo.query("a[href*='foo=bar']", 't6').length);
+						},
+
 						// check for correct document order
 						function domOrder() {
 							var inputs = dojo.query(".upperclass .lowerclass input");
@@ -408,7 +413,7 @@
 		<div id='other'>
 		  <div id='abc55555'></div>
 		  <div id='abd55555efg'></div>
-		  <div id='55555abc'</div>
+		  <div id='55555abc'></div>
 		  <div id='1'></div>
 		  <div id='2c'></div>
 		  <div id='3ch'></div>
@@ -419,11 +424,16 @@
 		
 		<div id="t5">
 			<select name="special">
+				<!-- tests for special characters in attribute values (characters that are part of query syntax) -->
 				<option value="a+b">1</option>
 				<option value="a~b">2</option>
 				<option value="a^b">3</option>
 			</select>
 		</div>
-	</body>
+		<div id="t6">
+			<!-- tests for quotes in attribute values -->
+			<a href="foo=bar">hi</a>
+		</div>
+	</bo>
 </html>
 

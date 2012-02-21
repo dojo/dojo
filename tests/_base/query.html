@@ -259,6 +259,11 @@
 							doh.is(1, dojo.query("a[href*='foo=bar']", 't6').length);
 						},
 
+						// selector with substring that contains brackets (bug 9193)
+						function attrWithBrackets(){
+							doh.is(1, dojo.query('input[name="data[foo][bar]"]', 't7').length);
+						},
+
 						// check for correct document order
 						function domOrder() {
 							var inputs = dojo.query(".upperclass .lowerclass input");
@@ -434,6 +439,10 @@
 			<!-- tests for quotes in attribute values -->
 			<a href="foo=bar">hi</a>
 		</div>
-	</bo>
+		<div id="t7">
+			<!-- tests for brackets in attribute values -->
+			<input name="data[foo][bar]">
+		</div>
+	</body>
 </html>
 

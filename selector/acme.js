@@ -306,6 +306,12 @@ define([
 							_cp.matchFor = cmf.slice(1, -1);
 						}
 					}
+					// remove backslash escapes from an attribute match, since DOM
+					// querying will get attribute values without backslashes
+					if(_cp.matchFor){
+						_cp.matchFor = _cp.matchFor.replace(/\\([\[\]])/g, "$1");
+					}
+
 					// end the attribute by adding it to the list of attributes.
 					currentPart.attrs.push(_cp);
 					_cp = null; // necessary?

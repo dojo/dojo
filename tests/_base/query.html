@@ -246,7 +246,7 @@
 						"doh.is(dojo.byId('radio2'), dojo.query('#t2 > input[type=radio]:checked')[0]);",
 						"doh.is(2, dojo.query('#t2select option:checked').length);",
 						
-						// special characters in attribute values ()
+						// special characters in attribute values
 						function attrSpecialChars(){
 							// bug 10651
 							doh.is(1, dojo.query('option[value=a+b]', 'attrSpecialChars').length, "value=a+b");
@@ -256,13 +256,15 @@
 							doh.is(1, dojo.query('option[value=\"a~b\"]', 'attrSpecialChars').length, "value=\"a~b\"");
 							doh.is(1, dojo.query('option[value=\"a^b\"]', 'attrSpecialChars').length, "value=\"a^b\"");
 
-							// selector with substring that contains equals sign (bug7479)
-							doh.is(1, dojo.query("a[href*='foo=bar']", 'attrSpecialChars').length);
+							// selector with substring that contains equals sign (bug 7479)
+							doh.is(1, dojo.query("a[href*='foo=bar']", 'attrSpecialChars').length, "a[href*='foo=bar']");
 
-							// selector with substring that contains brackets (bug 9193, 11189)
+							// selector with substring that contains brackets (bug 9193, 11189, 13084)
 							// note: inner quotes don't work in second dojo.query(), not sure why
 							doh.is(1, dojo.query('input[name="data[foo][bar]"]', 'attrSpecialChars').length, "data[foo][bar]");
+							doh.is(1, dojo.query('input[name=data\\[foo\\]\\[bar\\]]', 'attrSpecialChars').length, "data\\[foo\\]\\[bar\\]");
 							doh.is(1, dojo.query('input[name="foo\\[0\\].bar"]', 'attrSpecialChars').length, "foo[0].bar");
+							doh.is(1, dojo.query('input[name="test[0]"]', 'attrSpecialChars').length, "test[0]");
 						},
 
 						// check for correct document order
@@ -442,6 +444,7 @@
 			<input name="data[foo][bar]">
 			<!-- attribute name with a dot, goes down separate code path -->
 			<input name="foo[0].bar">
+			<input name="test[0]">
 		</div>
 	</body>
 </html>

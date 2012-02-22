@@ -2,9 +2,9 @@ define([
 	"../dom", "../sniff", "../_base/array", "../_base/lang", "../_base/window"
 ], function(dom, has, array, lang, win){
   //  module:
-  //    dojo/selector/acme
+  //	dojo/selector/acme
   //  summary:
-  //    This module defines the Acme selector engine
+  //	This module defines the Acme selector engine
 
 /*
 	acme architectural overview:
@@ -121,7 +121,7 @@ define([
 
 		// state keeping vars
 		var inBrackets = -1, inParens = -1, inMatchFor = -1,
-			inPseudo = -1, inClass = -1, inId = -1, inTag = -1,
+			inPseudo = -1, inClass = -1, inId = -1, inTag = -1, currentQuoteChar,
 			lc = "", cc = "", pStart;
 
 		// iteration vars
@@ -282,6 +282,19 @@ define([
 				// might fault a little later on, but we detect that and this
 				// iteration will still be fine.
 				inTag = x;
+			}
+
+			// Skip processing all quoted characters.
+			// If we are inside quoted text then currentQuoteChar stores the character that began the quote,
+			// thus that character that will end it.
+			if(currentQuoteChar){
+				if(cc == currentQuoteChar){
+					currentQuoteChar = null;
+				}
+				continue;
+			}else if (cc == "'" || cc == '"'){
+				currentQuoteChar = cc;
+				continue;
 			}
 
 			if(inBrackets >= 0){

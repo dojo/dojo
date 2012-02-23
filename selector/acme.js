@@ -273,7 +273,7 @@ define([
 					oper: null, // ...or operator per component. Note that these wind up being exclusive.
 					id: null,	// the id component of a rule
 					getTag: function(){
-						return (caseSensitive) ? this.otag : this.tag;
+						return caseSensitive ? this.otag : this.tag;
 					}
 				};
 
@@ -1436,18 +1436,11 @@ define([
 		//	|		});
 		//	|	});
 
-		root = root||getDoc();
-		var od = root.ownerDocument||root.documentElement;
+		root = root || getDoc();
 
 		// throw the big case sensitivity switch
-
-		// NOTE:
-		//		Opera in XHTML mode doesn't detect case-sensitivity correctly
-		//		and it's not clear that there's any way to test for it
-		caseSensitive = (root.contentType && root.contentType=="application/xml") ||
-						(has("opera") && (root.doctype || od.toString() == "[object XMLDocument]")) ||
-						(!!od) &&
-				(has("ie") ? od.xml : (root.xmlVersion || od.xmlVersion));
+		var od = root.ownerDocument || root;	// root is either Document or a node inside the document
+		caseSensitive = (od.createElement("div").tagName === "div");
 
 		// NOTE:
 		//		adding "true" as the 2nd argument to getQueryFunc is useful for

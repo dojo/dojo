@@ -1,13 +1,12 @@
 <html>
 	<head>
-		<title>testing dojo.query()</title>
+		<title>testing dojo/_base/query</title>
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug: true"></script>
 		<script type="text/javascript">
 			require(["dojo", "doh", "dojo/query!lite", "dojo/io/iframe", "dojo/domReady!"], function(dojo, doh, query){
-				queryLite = query; // make a global
 				function createDocument(xml){
 					var fauxXhr = { responseText: xml };
 					if("DOMParser" in dojo.global){
@@ -18,88 +17,10 @@
 					return dojo._contentHandlers["xml"](fauxXhr); // DOMDocument
 				}
 
+				// Legacy tests for dojo/_base/query.  Replaced by dojo/tests/query/query.html.
+				// TODO: remove in 2.0.
 				doh.register("t", 
 					[
-						// basic sanity checks
-						"doh.is(4, (queryLite('h3')).length);",
-						"doh.is(1, (queryLite('#t')).length);",
-						"doh.is(1, (queryLite('#bug')).length);",
-						"doh.is(4, (queryLite('#t h3')).length);",
-						"doh.is(0, (queryLite('span#t')).length);",
-						"doh.is(0, (queryLite('.bogus')).length);",
-						"doh.is(0, (queryLite('.bogus', dojo.byId('container'))).length);",
-						"doh.is(0, (queryLite('#bogus')).length);",
-						"doh.is(0, (queryLite('#bogus', dojo.byId('container'))).length);",
-						"doh.is(1, (queryLite('#t div > h3')).length);",
-						"doh.is(2, (queryLite('.foo')).length);",
-						"doh.is(1, (queryLite('.foo.bar')).length);",
-						"doh.is(2, (queryLite('.baz')).length);",
-						"doh.is(3, (queryLite('#t > h3')).length);",
-
-						"doh.is(2, (queryLite('#baz,#foo,#t')).length);",
-
-						// syntactic equivalents
-						"doh.is(12, (queryLite('#t > *')).length);",
-						"doh.is(3, (queryLite('.foo > *')).length);",
-
-						// with a root, by ID
-						"doh.is(3, (queryLite('> *', 'container')).length);",
-						"doh.is(3, (queryLite('> h3', 't')).length);",
-
-						// compound queries
-						"doh.is(2, (queryLite('.foo, .bar')).length);",
-						"doh.is(2, (queryLite('.foo,.bar')).length);",
-
-						// multiple class attribute
-						"doh.is(1, (queryLite('.foo.bar')).length);",
-						"doh.is(2, (queryLite('.foo')).length);",
-						"doh.is(2, (queryLite('.baz')).length);",
-
-						// case sensitivity
-						"doh.is(1, (queryLite('span.baz')).length);",
-						"doh.is(1, (queryLite('sPaN.baz')).length);",
-						"doh.is(1, (queryLite('SPAN.baz')).length);",
-						"doh.is(2, (queryLite('[foo~=\"bar\"]')).length);",
-
-						"doh.is(3, (queryLite('[foo]')).length);",
-						"doh.is(1, (queryLite('[foo$=\"thud\"]')).length);",
-						"doh.is(1, (queryLite('[foo$=thud]')).length);",
-						"doh.is(1, (queryLite('[foo$=\"thudish\"]')).length);",
-						"doh.is(1, (queryLite('#t [foo$=thud]')).length);",
-						"doh.is(1, (queryLite('#t [title$=thud]')).length);",
-						"doh.is(0, (queryLite('#t span[title$=thud ]')).length);",
-						"doh.is(2, (queryLite('[foo|=\"bar\"]')).length);",
-						"doh.is(1, (queryLite('[foo|=\"bar-baz\"]')).length);",
-						"doh.is(0, (queryLite('[foo|=\"baz\"]')).length);",
-
-						// descendant selectors
-						"doh.is(3, queryLite('> *', 'container').length);",
-						"doh.is(2, queryLite('> [qux]', 'container').length);",
-						"doh.is('child1', queryLite('> [qux]', 'container')[0].id);",
-						"doh.is('child3', queryLite('> [qux]', 'container')[1].id);",
-						"doh.is(3, queryLite('> *', 'container').length);",
-						"doh.is(3, queryLite('>*', 'container').length);",
-						"doh.is('passed', queryLite('#bug')[0].value);",
-
-						// bug 9071
-						"doh.is(2, (queryLite('a', 't4')).length);",
-						"doh.is(2, (queryLite('p a', 't4')).length);",
-						"doh.is(2, (queryLite('div p', 't4')).length);",
-						"doh.is(2, (queryLite('div p a', 't4')).length);",
-						"doh.is(2, (queryLite('.subA', 't4')).length);",
-						"doh.is(2, (queryLite('.subP .subA', 't4')).length);",
-						"doh.is(2, (queryLite('.subDiv .subP', 't4')).length);",
-						"doh.is(2, (queryLite('.subDiv .subP .subA', 't4')).length);",
-
-
-						// failed scope arg
-						"doh.is(0, (queryLite('*', 'thinger')).length);",
-						"doh.is(0, (queryLite('div#foo').length));",
-
-						// "doh.t(false, 'howdy!')",
-						// "doh.f(true, 'howdy!')",
-						// "doh.e(Error, window, function(){ throw new Error(); })",
-
 						// basic sanity checks
 						"doh.is(4, (dojo.query('h3')).length);",
 						"doh.is(1, (dojo.query('h1:first-child')).length);",
@@ -357,11 +278,6 @@
 							var i = dojo.query("div");
 							// smoke test
 							i.sort(function(a,b){ return 1; })
-						},
-						function performanceTest(){
-							for(var i = 0; i < 10000; i++){
-								dojo.query('.foo');
-							}
 						}
 					]
 				);
@@ -370,7 +286,7 @@
 		</script>
 	</head>
 	<body class="upperclass">
-		<h1>testing dojo.query()</h1>
+		<h1>Back-compat tests for dojo.query()</h1>
 		<div id="t" class="lowerclass">
 			<h3>h3 <span>span</span> endh3 </h3>
 			<!-- comment to throw things off -->

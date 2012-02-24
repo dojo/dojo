@@ -386,7 +386,7 @@
 					var minScroll, maxScroll;
 					generateTestXY('tooBig_strict', outerScrollBarSize+10,outerScrollBarSize+20, 1,1);
 					generateTestXY('tooBig_quirks', outerScrollBarSize+10-fudge,outerScrollBarSize+20-fudge, 1,1);
-					if(has("ie") <= 7 || has("mozilla") || has("chrome")){
+					if(has("ie") <= 7 || has("mozilla") || has("webkit")){
 						maxScroll = -1;
 					}else if(has("ie")){
 						maxScroll = +20;
@@ -395,7 +395,7 @@
 					}else{
 						maxScroll = outerScrollBarSize+10;
 					}
-					if(has("ie") <= 7 || has("mozilla") || has("chrome")){
+					if(has("ie") <= 7 || has("mozilla") || has("webkit")){
 						minScroll = -20;
 					}else if(has("opera")){
 						minScroll = 80 + outerScrollBarSize;

@@ -1,10 +1,10 @@
-define(["../main"], function(dojo) {
+define(["../_base/kernel", "../_base/lang"], function(dojo, lang) {
 	// module:
 	//		dojo/cldr/monetary
 	// summary:
 	//		TODOC
 
-var monetary = dojo.getObject("dojo.cldr.monetary", true);
+var monetary = lang.getObject("dojo.cldr.monetary", true);
 /*=====
 monetary = dojo.cldr.monetary;
 =====*/

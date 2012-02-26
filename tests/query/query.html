@@ -11,7 +11,8 @@
 			var specified = window.location.search.substr(1).match(/selector=(.*)/);
 			var selector = specified ? specified[0].split("=")[1] : "acme";
 
-			require(["dojo", "doh", "dojo/query!"+selector, "dojo/io/iframe", "dojo/domReady!"], function(dojo, doh, dq){
+			require(["dojo", "doh", "dojo/query!"+selector, "dojo/sniff", "dojo/io/iframe", "dojo/domReady!"],
+					function(dojo, doh, dq, has){
 				query = dq; // make a global
 
 				function createDocument(xml){
@@ -193,19 +194,21 @@
 						doh.is(0, query("rEsulT", de).length, "no match");
 					},
 					function xml_attrs(){
-						var doc = createDocument([
-							"<ResultSet>",
-							"<RESULT thinger='blah'>ONE</RESULT>",
-							"<RESULT thinger='gadzooks'><CHILD>Two</CHILD></RESULT>",
-							"</ResultSet>"
-						].join(""));
-						var de = doc.documentElement;
+						if(!has("ie")){	// remove if() when #14880 is fixed
+							var doc = createDocument([
+								"<ResultSet>",
+								"<RESULT thinger='blah'>ONE</RESULT>",
+								"<RESULT thinger='gadzooks'><CHILD>Two</CHILD></RESULT>",
+								"</ResultSet>"
+							].join(""));
+							var de = doc.documentElement;
 
-						doh.is(2, query("RESULT", de).length, "result elements");
-						doh.is(0, query("RESULT[THINGER]", de).length, "result elements with attrs (wrong)");
-						doh.is(2, query("RESULT[thinger]", de).length, "result elements with attrs");
-						doh.is(1, query("RESULT[thinger=blah]", de).length, "result elements with attr value");
-						doh.is(1, query("RESULT > CHILD", de).length, "Using child operator");
+							doh.is(2, query("RESULT", de).length, "result elements");
+							doh.is(0, query("RESULT[THINGER]", de).length, "result elements with attrs (wrong)");
+							doh.is(2, query("RESULT[thinger]", de).length, "result elements with attrs");
+							doh.is(1, query("RESULT[thinger=blah]", de).length, "result elements with attr value");
+							doh.is(1, query("RESULT > CHILD", de).length, "Using child operator");
+						} // remove when #14880 is fixed
 					},
 					function sort(){
 						var i = query("div");

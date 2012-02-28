@@ -235,6 +235,32 @@ doh.register("tests.on",
 				});
 				on.emit(div, "touchstart", {changedTouches: [{pageX:100}]});
 			}
+		},
+		function stopImmediatePropagation(t){
+			var button = document.body.appendChild(document.createElement("button"));
+			on(button, "click", function(event){
+				event.stopImmediatePropagation();
+			});
+			var afterStop = false;
+			on(button, "click", function(event){
+				afterStop = true;
+			});
+			button.click();
+			t.f(afterStop);
+		},
+		function eventAugmentation(t){
+			var div = document.body.appendChild(document.createElement("div"));
+			var button = div.appendChild(document.createElement("buton"));
+			on(button, "click", function(event){
+				event.modified = true;
+				event.test = 3;
+			});
+			var testValue;
+			on(div, "click", function(event){
+				testValue = event.test;
+			});
+			button.click();
+			t.is(testValue, 3);
 		}
 	]
 );

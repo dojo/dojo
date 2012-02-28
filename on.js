@@ -35,6 +35,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		var major = window.ScriptEngineMajorVersion;
 		has.add("jscript", major && (major() + ScriptEngineMinorVersion() / 10));
 		has.add("event-orientationchange", has("touch") && !has("android")); // TODO: how do we detect this?
+		has.add("event-stopimmediatepropogation", window.Event && !!window.Event.prototype.stopImmediatePropagation);
 	}
 	var on = function(target, type, listener, dontFix){
 		if(target.on){ 
@@ -126,6 +127,10 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				target = window;
 				listener = fixTouchListener(listener);
 			} 
+		}
+		if(addStopImmediate){
+			// add stopImmediatePropagation if it doesn't exist
+			listener = addStopImmediate(listener);
 		}
 		// normal path, the target is |this|
 		if(target.addEventListener){
@@ -269,7 +274,21 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		}while(event && event.bubbles && (target = target.parentNode));
 		return event && event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
 	};
-	var captures = {}; 
+	var captures = {};
+	if(!has("event-stopimmediatepropogation")){
+		var stopImmediatePropagation =function(){
+			this.immediatelyStopped = true;
+			this.modified = true; // mark it as modified so the event will be cached in IE
+		};
+		var addStopImmediate = function(listener){
+			return function(event){
+				if(!event.immediatelyStopped){// check to make sure it hasn't been stopped immediately
+					event.stopImmediatePropagation = stopImmediatePropagation;
+					return listener.apply(this, arguments);
+				}
+			};
+		}
+	} 
 	if(has("dom-addeventlistener")){
 		// normalize focusin and focusout
 		captures = {
@@ -316,7 +335,11 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				var w = sender && (sender.ownerDocument || sender.document || sender).parentWindow || window;
 				evt = w.event;
 			}
-			if(!evt){return(evt);}
+			if(!evt){return evt;}
+			if(lastEvent && evt.type == lastEvent.type){
+				// should be same event, reuse event object (so it can be augmented)
+				evt = lastEvent;
+			}
 			if(!evt.target){ // check to see if it has been fixed yet
 				evt.target = evt.srcElement;
 				evt.currentTarget = (sender || evt.srcElement);
@@ -351,7 +374,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			}
 			return evt;
 		};
-		var IESignal = function(handle){
+		var lastEvent, IESignal = function(handle){
 			this.handle = handle;
 		};
 		IESignal.prototype.remove = function(){
@@ -361,7 +384,17 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			// this is a minimal function for closing on the previous listener with as few as variables as possible
 			return function(evt){
 				evt = on._fixEvent(evt, this);
-				return listener.call(this, evt);
+				var result = listener.call(this, evt);
+				if(evt.modified){
+					// cache the last event and reuse it if we can
+					if(!lastEvent){
+						setTimeout(function(){
+							lastEvent = null;
+						});
+					}
+					lastEvent = evt;
+				}
+				return result;
 			};
 		};
 		var fixAttach = function(target, type, listener){

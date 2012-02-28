@@ -120,17 +120,19 @@ return declare("dojo.store.JsonRest", null, {
 		options = options || {};
 
 		if(options.start >= 0 || options.count >= 0){
-			headers.Range = "items=" + (options.start || '0') + '-' +
+			headers.Range = headers["X-Range"] //set X-Range for Opera since it blocks "Range" header
+				 = "items=" + (options.start || '0') + '-' +
 				(("count" in options && options.count != Infinity) ?
 					(options.count + (options.start || 0) - 1) : '');
 		}
+		var hasQuestionMark = this.target.indexOf("?") > -1;
 		if(query && typeof query == "object"){
 			query = xhr.objectToQuery(query);
-			query = query ? "?" + query: "";
+			query = query ? (hasQuestionMark ? "&" : "?") + query: "";
 		}
 		if(options && options.sort){
 			var sortParam = this.sortParam;
-			query += (query ? "&" : "?") + (sortParam ? sortParam + '=' : "sort(");
+			query += (query || hasQuestionMark ? "&" : "?") + (sortParam ? sortParam + '=' : "sort(");
 			for(var i = 0; i<options.sort.length; i++){
 				var sort = options.sort[i];
 				query += (i > 0 ? "," : "") + (sort.descending ? '-' : '+') + encodeURIComponent(sort.attribute);

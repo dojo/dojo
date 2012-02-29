@@ -710,7 +710,8 @@
 						injected: arrived,
 						deps: deps,
 						def: a2 || noop,
-						require: referenceModule ? referenceModule.require : req
+						require: referenceModule ? referenceModule.require : req,
+						gc: 1 //garbage collect
 					});
 					modules[module.mid] = module;
 
@@ -1098,6 +1099,10 @@
 					i++;
 				}
 			}
+			// delete references to synthetic modules
+	        if (/^require\*/.test(module.mid)) {
+	            delete modules[module.mid];
+	        }
 		},
 
 		circleTrace = [],

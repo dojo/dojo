@@ -296,8 +296,9 @@
 				// Tests for ACME specific functionality (not part of CSS3)
 				if(selector == "acme"){
 					doh.register("acme", [
-						// CSS Spec denotes class selectors are supposed to be case insensitive (#8775)
-						// TODO: move this test to CSS2 section when #14874 fixed
+						// Case insensitive class selectors (#8775, #14874).
+						// In standards mode documents, querySelectorAll() is case-sensitive about class selectors,
+						// but acme is case-insensitive for backwards compatibility.
 						"doh.is(1, query('.fooBar').length);",
 
 						// sub-selector parsing

@@ -757,6 +757,21 @@
 						req.undef(mid, module);
 					};
 				}
+				if(has("dojo-sync-loader")){
+					result.syncLoadNls = function(mid){
+						var nlsModuleInfo = getModuleInfo(mid, module),
+							nlsModule = modules[nlsModuleInfo.mid];
+						if(!nlsModule || !nlsModule.executed){
+							cached = cache[nlsModuleInfo.mid] || cache[nlsModuleInfo.cacheId];
+							if(cached){
+								evalModuleText(cached);
+								nlsModule = modules[nlsModuleInfo.mid];
+							}
+						}
+						return nlsModule && nlsModule.executed && nlsModule.result;
+					};
+				}
+
 			}
 			return result;
 		},

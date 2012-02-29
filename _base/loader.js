@@ -35,24 +35,54 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			checkDojoRequirePlugin();
 		},
 
+		// checkDojoRequirePlugin inspects all of the modules demanded by a dojo/require!<module-list> dependency
+		// to see if they have arrived. The loader does not release *any* of these modules to be instantiated
+		// until *all* of these modules are on board, thereby preventing the evaluation of a module with dojo.require's
+		// that reference modules that are not available.
+		//
+		// The algorithm works by traversing the dependency graphs (remember, there can be cycles so they are not trees)
+		// of each module in the dojoRequireModuleStack array (which contains the list of modules demanded by dojo/require!).
+		// The moment a single module is discovered that is missing, the algorithm gives up an indicates that not all
+		// modules are on board. dojo/loadInit! and dojo/require! are ignored because there dependencies are inserted
+		// directly in dojoRequireModuleStack. For example, if "your/module" module depends on "dojo/require!my/module", then
+		// *both* "dojo/require!my/module" and "my/module" will be in dojoRequireModuleStack. Obviously, if "dojo/require!my/module"
+		// is on board, then "dojo/require!my/module" is also satisfied, so the algorithm doesn't check for "dojo/require!my/module".
+		//
+		// Note: inserting a dojo/require!<some-module-list> dependency in the dojoRequireModuleStack achieves nothing
+		// with the current algorithm; however, having such modules present makes it possible to optimize the algorithm
+		//
+		// Note: prior versions of this algorithm had an optimization that signaled loaded on dojo/require! dependencies
+		// individually (rather than waiting for them all to be resolved). The implementation proved problematic with cycles
+		// and plugins. However, it is possible to reattach that strategy in the future.
+
+		// a set from module-id to {undefined | 1 | 0}, where...
+		//   undefined => the module has not been inspected
+		//   0 => the module or at least one of its dependencies has not arrived
+		//   1 => the module is a loadInit! or require! plugin resource, or is currently being traversed (therefore, assume
+		//        OK until proven otherwise), or has been completely traversed and all dependencies have arrived
 		touched,
 
 		traverse = function(m){
-			if(touched[m.mid] || /loadInit\!/.test(m.mid)){
-				// loadInit plugin modules are dependencies of modules in dojoRequireModuleStack...
+			if(touched[m.mid]===1 || /loadInit\!/.test(m.mid) || /require\!/.test(m.mid)){
+				// loadInit/require plugin modules are dependencies of modules in dojoRequireModuleStack...
 				// which would cause a circular dependency chain that would never be resolved if checked here
-				// notice all dependencies of any particular loadInit plugin module will already
+				// notice all dependencies of any particular loadInit/require plugin module will already
 				// be checked since those are pushed into dojoRequireModuleStack explicitly by the
 				// plugin...so if a particular loadInitPlugin module's dependencies are not really
 				// on board, that *will* be detected elsewhere in the traversal.
+
+				// short curcuit the regexs to help performance
+				touched[m.mid] = 1;
 				return true;
 			}
-		    touched[m.mid] = 1;
-			if(m.injected!==arrived && !m.executed){
+			if(touched[m.mid]===0 || (m.injected!==arrived && !m.executed)){
+				touched[m.mid] = 0;
 				return false;
 			}
+		    touched[m.mid] = 1;
 			for(var deps = m.deps || [], i= 0; i<deps.length; i++){
 				if(!traverse(deps[i])){
+					touched[m.mid] = 0;
 					return false;
 				}
 			}
@@ -61,16 +91,16 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 
 		checkDojoRequirePlugin = function(){
 			touched = {};
-			dojoRequireModuleStack = array.filter(dojoRequireModuleStack, function(module){
-				return !traverse(module);
-			});
-			if(!dojoRequireModuleStack.length){
-				loaderVars.holdIdle();
-				var oldCallbacks = dojoRequireCallbacks;
-				dojoRequireCallbacks = [];
-				array.forEach(oldCallbacks, function(cb){cb(1);});
-				loaderVars.releaseIdle();
+			for(var i = 0, end = dojoRequireModuleStack.length; i<end; i++){
+				if(!traverse(dojoRequireModuleStack[i])){
+					return;
+				}
 			}
+			loaderVars.holdIdle();
+			var oldCallbacks = dojoRequireCallbacks;
+			dojoRequireCallbacks = [];
+			array.forEach(oldCallbacks, function(cb){cb(1);});
+			loaderVars.releaseIdle();
 		},
 
 		dojoLoadInitPlugin = function(mid, require, loaded){

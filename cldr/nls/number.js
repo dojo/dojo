@@ -12,7 +12,6 @@ define({ root:
 	"decimalFormat-short": "000T",
 	"currencySpacing-afterCurrency-insertBetween": " ",
 	"nan": "NaN",
-	"nativeZeroDigit": "0",
 	"plusSign": "+",
 	"currencySpacing-afterCurrency-surroundingMatch": "[:digit:]",
 	"currencySpacing-beforeCurrency-currencyMatch": "[:letter:]",
@@ -22,7 +21,6 @@ define({ root:
 	"percentFormat": "#,##0%",
 	"decimalFormat": "#,##0.###",
 	"decimal": ".",
-	"patternDigit": "#",
 	"currencySpacing-beforeCurrency-insertBetween": " ",
 	"exponential": "E"
 }
@@ -35,7 +33,6 @@ define({ root:
 	"de": true,
 	"el": true,
 	"en": true,
-	"en-au": true,
 	"en-gb": true,
 	"es": true,
 	"fi": true,
@@ -59,6 +56,5 @@ define({ root:
 	"th": true,
 	"tr": true,
 	"zh": true,
-	"zh-hant": true,
-	"zh-hk": true
+	"zh-hant": true
 });

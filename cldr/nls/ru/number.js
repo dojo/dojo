@@ -8,14 +8,14 @@ define(
 	"percentFormat": "#,##0 %",
 	"list": ";",
 	"infinity": "∞",
-	"patternDigit": "#",
 	"minusSign": "-",
 	"decimal": ",",
-	"nativeZeroDigit": "0",
+	"nan": "не число",
 	"perMille": "‰",
 	"decimalFormat": "#,##0.###",
 	"currencyFormat": "#,##0.00 ¤",
-	"plusSign": "+"
+	"plusSign": "+",
+	"decimalFormat-short": "000 трлн"
 }
 //end v1.x content
 );

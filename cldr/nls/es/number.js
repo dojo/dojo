@@ -11,11 +11,11 @@ define(
 	"minusSign": "-",
 	"decimal": ",",
 	"nan": "NaN",
-	"nativeZeroDigit": "0",
 	"perMille": "‰",
 	"decimalFormat": "#,##0.###",
-	"currencyFormat": "¤ #,##0.00",
-	"plusSign": "+"
+	"currencyFormat": "#,##0.00 ¤",
+	"plusSign": "+",
+	"decimalFormat-short": "000 B"
 }
 //end v1.x content
 );

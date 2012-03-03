@@ -1,29 +1,11 @@
 define(
 //begin v1.x content
 {
-	"months-format-narrow": [
-		"J",
-		"F",
-		"M",
-		"A",
-		"M",
-		"J",
-		"J",
-		"A",
-		"S",
-		"O",
-		"N",
-		"D"
-	],
 	"field-weekday": "Wochentag",
 	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-yMEd": "EEE, d.M.y",
+	"dateFormatItem-yMEd": "E, d.M.y",
 	"dateFormatItem-MMMEd": "E, d. MMM",
-	"eraNarrow": [
-		"v. Chr.",
-		"n. Chr."
-	],
 	"dayPeriods-format-wide-earlyMorning": "morgens",
 	"dayPeriods-format-wide-morning": "vormittags",
 	"dateFormat-long": "d. MMMM y",
@@ -47,22 +29,9 @@ define(
 	"dateFormatItem-Md": "d.M.",
 	"dateFormatItem-yyMMdd": "dd.MM.yy",
 	"dayPeriods-format-wide-noon": "Mittag",
+	"dateFormatItem-yMd": "d.M.y",
 	"field-era": "Epoche",
 	"dateFormatItem-yM": "M.y",
-	"months-standAlone-wide": [
-		"Januar",
-		"Februar",
-		"März",
-		"April",
-		"Mai",
-		"Juni",
-		"Juli",
-		"August",
-		"September",
-		"Oktober",
-		"November",
-		"Dezember"
-	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
 		"1. Quartal",
@@ -75,8 +44,8 @@ define(
 	"dateFormatItem-yMMM": "MMM y",
 	"dateFormatItem-yQ": "Q y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
-	"field-hour": "Stunde",
 	"dateFormatItem-MMdd": "dd.MM.",
+	"field-hour": "Stunde",
 	"months-format-abbr": [
 		"Jan",
 		"Feb",
@@ -93,11 +62,10 @@ define(
 	],
 	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
-	"field-day-relative+0": "heute",
-	"field-day-relative+1": "morgen",
-	"field-day-relative+2": "übermorgen",
+	"field-day-relative+0": "Heute",
+	"field-day-relative+1": "Morgen",
+	"field-day-relative+2": "Übermorgen",
 	"dateFormatItem-H": "HH 'Uhr'",
-	"field-day-relative+3": "überübermorgen",
 	"months-standAlone-abbr": [
 		"Jan",
 		"Feb",
@@ -118,22 +86,7 @@ define(
 		"Q3",
 		"Q4"
 	],
-	"quarters-standAlone-wide": [
-		"1. Quartal",
-		"2. Quartal",
-		"3. Quartal",
-		"4. Quartal"
-	],
 	"dateFormatItem-M": "L",
-	"days-standAlone-wide": [
-		"Sonntag",
-		"Montag",
-		"Dienstag",
-		"Mittwoch",
-		"Donnerstag",
-		"Freitag",
-		"Samstag"
-	],
 	"dateFormatItem-yyMMM": "MMM yy",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
@@ -144,20 +97,25 @@ define(
 	"field-minute": "Minute",
 	"field-dayperiod": "Tageshälfte",
 	"days-standAlone-abbr": [
-		"So.",
-		"Mo.",
-		"Di.",
-		"Mi.",
-		"Do.",
-		"Fr.",
-		"Sa."
+		"So",
+		"Mo",
+		"Di",
+		"Mi",
+		"Do",
+		"Fr",
+		"Sa"
 	],
 	"dayPeriods-format-wide-night": "nachts",
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
-	"field-day-relative+-1": "gestern",
-	"field-day-relative+-2": "vorgestern",
-	"field-day-relative+-3": "vorvorgestern",
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"field-day-relative+-1": "Gestern",
+	"field-day-relative+-2": "Vorgestern",
 	"dateFormatItem-MMMd": "d. MMM",
 	"dateFormatItem-MEd": "E, d.M.",
 	"field-day": "Tag",
@@ -186,7 +144,10 @@ define(
 		"N",
 		"D"
 	],
+	"field-year-relative+-1": "Letztes Jahr",
+	"field-month-relative+-1": "Letzter Monat",
 	"dateFormatItem-yyMM": "MM.yy",
+	"dateFormatItem-hm": "h:mm a",
 	"days-format-abbr": [
 		"So.",
 		"Mo.",
@@ -196,18 +157,10 @@ define(
 		"Fr.",
 		"Sa."
 	],
+	"dateFormatItem-yMMMd": "d. MMM y",
 	"eraNames": [
 		"v. Chr.",
 		"n. Chr."
-	],
-	"days-format-narrow": [
-		"S",
-		"M",
-		"D",
-		"M",
-		"D",
-		"F",
-		"S"
 	],
 	"field-month": "Monat",
 	"days-standAlone-narrow": [
@@ -221,17 +174,26 @@ define(
 	],
 	"dateFormatItem-MMM": "LLL",
 	"dayPeriods-format-wide-am": "vorm.",
+	"dateFormatItem-MMMMEd": "E, d. MMMM",
 	"dateFormatItem-MMMMdd": "dd. MMMM",
 	"dateFormat-short": "dd.MM.yy",
 	"dateFormatItem-MMd": "d.MM.",
 	"dayPeriods-format-wide-afternoon": "nachmittags",
 	"field-second": "Sekunde",
-	"dateFormatItem-yMMMEd": "EEE, d. MMM y",
+	"dateFormatItem-yMMMEd": "E, d. MMM y",
+	"field-month-relative+0": "Dieser Monat",
+	"field-month-relative+1": "Nächster Monat",
 	"dateFormatItem-Ed": "E, d.",
 	"field-week": "Woche",
 	"dateFormat-medium": "dd.MM.yyyy",
+	"field-year-relative+0": "Dieses Jahr",
+	"field-week-relative+-1": "Letzte Woche",
+	"field-year-relative+1": "Nächstes Jahr",
 	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-yyyy": "y"
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-yyyy": "y",
+	"field-week-relative+0": "Diese Woche",
+	"field-week-relative+1": "Nächste Woche"
 }
 //end v1.x content
 );

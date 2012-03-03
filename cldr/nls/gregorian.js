@@ -24,7 +24,7 @@ define({ root:
 	],
 	"field-weekday": "Day of the Week",
 	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yMEd": "EEE, y-M-d",
+	"dateFormatItem-yMEd": "E, y-M-d",
 	"dateFormatItem-MMMEd": "E MMM d",
 	"eraNarrow": [
 		"BCE",
@@ -47,12 +47,12 @@ define({ root:
 		"12"
 	],
 	"dateTimeFormat-medium": "{1} {0}",
-	"dateFormatItem-EEEd": "d EEE",
 	"dayPeriods-format-wide-pm": "PM",
 	"dateFormat-full": "EEEE, y MMMM dd",
 	"dateFormatItem-Md": "M-d",
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
+	"dateFormatItem-yMd": "y-M-d",
 	"field-era": "Era",
 	"dateFormatItem-yM": "y-M",
 	"months-standAlone-wide": [
@@ -215,6 +215,7 @@ define({ root:
 		"6",
 		"7"
 	],
+	"dateFormatItem-yMMMd": "y MMM d",
 	"eraNames": [
 		"BCE",
 		"CE"
@@ -245,7 +246,8 @@ define({ root:
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
 	"dateFormat-short": "yyyy-MM-dd",
 	"field-second": "Second",
-	"dateFormatItem-yMMMEd": "EEE, y MMM d",
+	"dateFormatItem-yMMMEd": "E, y MMM d",
+	"dateFormatItem-Ed": "d E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "Week",
 	"dateFormat-medium": "y MMM d",
@@ -288,7 +290,5 @@ define({ root:
 	"th": true,
 	"tr": true,
 	"zh": true,
-	"zh-hant": true,
-	"zh-hk": true,
-	"zh-tw": true
+	"zh-hant": true
 });

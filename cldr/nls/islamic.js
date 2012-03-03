@@ -23,7 +23,7 @@ define({ root:
 		"4"
 	],
 	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yMEd": "EEE, y-M-d",
+	"dateFormatItem-yMEd": "E, y-M-d",
 	"dateFormatItem-MMMEd": "E MMM d",
 	"eraNarrow": [
 		"AH"
@@ -45,12 +45,12 @@ define({ root:
 		"Dhuʻl-Hijjah"
 	],
 	"dateTimeFormat-medium": "{1} {0}",
-	"dateFormatItem-EEEd": "d EEE",
 	"dayPeriods-format-wide-pm": "PM",
 	"dateFormat-full": "EEEE, y MMMM dd",
 	"dateFormatItem-Md": "M-d",
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
+	"dateFormatItem-yMd": "y-M-d",
 	"dateFormatItem-yM": "y-M",
 	"months-standAlone-wide": [
 		"Muharram",
@@ -202,6 +202,7 @@ define({ root:
 		"6",
 		"7"
 	],
+	"dateFormatItem-yMMMd": "y MMM d",
 	"eraNames": [
 		"AH"
 	],
@@ -229,7 +230,8 @@ define({ root:
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
 	"dateFormat-short": "yyyy-MM-dd",
-	"dateFormatItem-yMMMEd": "EEE, y MMM d",
+	"dateFormatItem-yMMMEd": "E, y MMM d",
+	"dateFormatItem-Ed": "d E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"dateFormat-medium": "y MMM d",
 	"dayPeriods-format-narrow-pm": "PM",
@@ -240,6 +242,7 @@ define({ root:
 //end v1.x content
 ,
 	"ar": true,
+	"cs": true,
 	"da": true,
 	"de": true,
 	"en": true,
@@ -250,11 +253,13 @@ define({ root:
 	"he": true,
 	"hu": true,
 	"it": true,
+	"ja": true,
 	"nb": true,
 	"nl": true,
 	"pl": true,
 	"pt": true,
 	"pt-pt": true,
+	"ro": true,
 	"ru": true,
 	"sv": true,
 	"th": true,

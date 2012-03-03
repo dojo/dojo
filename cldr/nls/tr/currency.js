@@ -5,7 +5,7 @@ define(
 	"CHF_displayName": "İsviçre Frangı",
 	"JPY_symbol": "¥",
 	"CAD_displayName": "Kanada Doları",
-	"CNY_displayName": "Çin Yuanı Renminbi",
+	"CNY_displayName": "Çin Yuanı",
 	"USD_symbol": "$",
 	"AUD_displayName": "Avustralya Doları",
 	"JPY_displayName": "Japon Yeni",

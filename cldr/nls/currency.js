@@ -34,6 +34,7 @@ define({ root:
 	"nl": true,
 	"pl": true,
 	"pt": true,
+	"pt-pt": true,
 	"ro": true,
 	"ru": true,
 	"sk": true,
@@ -42,7 +43,5 @@ define({ root:
 	"th": true,
 	"tr": true,
 	"zh": true,
-	"zh-hant": true,
-	"zh-hk": true,
-	"zh-tw": true
+	"zh-hant": true
 });

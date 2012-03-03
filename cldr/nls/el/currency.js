@@ -5,6 +5,7 @@ define(
 	"CHF_displayName": "Φράγκο Ελβετίας",
 	"CAD_displayName": "Δολάριο Καναδά",
 	"CNY_displayName": "Γιουάν Ρενμίμπι Κίνας",
+	"USD_symbol": "$",
 	"AUD_displayName": "Δολάριο Αυστραλίας",
 	"JPY_displayName": "Γιεν Ιαπωνίας",
 	"USD_displayName": "Δολάριο ΗΠΑ",

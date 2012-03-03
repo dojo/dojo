@@ -3,19 +3,19 @@ define({ root:
 //begin v1.x content
 {
 	"months-format-narrow": [
-		"Tishri",
-		"Heshvan",
-		"Kislev",
-		"Tevet",
-		"Shevat",
-		"Adar I",
-		"Adar",
-		"Nisan",
-		"Iyar",
-		"Sivan",
-		"Tamuz",
-		"Av",
-		"Elul"
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"10",
+		"11",
+		"12",
+		"13"
 	],
 	"quarters-standAlone-narrow": [
 		"1",
@@ -24,8 +24,7 @@ define({ root:
 		"4"
 	],
 	"dateFormatItem-yQQQ": "y QQQ",
-	"months-standAlone-narrow-leap": "Adar II",
-	"dateFormatItem-yMEd": "EEE, y-M-d",
+	"dateFormatItem-yMEd": "E, y-M-d",
 	"dateFormatItem-MMMEd": "E MMM d",
 	"eraNarrow": [
 		"AM"
@@ -48,12 +47,12 @@ define({ root:
 		"Elul"
 	],
 	"dateTimeFormat-medium": "{1} {0}",
-	"dateFormatItem-EEEd": "d EEE",
 	"dayPeriods-format-wide-pm": "PM",
 	"dateFormat-full": "EEEE, y MMMM dd",
 	"dateFormatItem-Md": "M-d",
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
+	"dateFormatItem-yMd": "y-M-d",
 	"dateFormatItem-yM": "y-M",
 	"months-standAlone-wide": [
 		"Tishri",
@@ -146,7 +145,6 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
-	"months-format-narrow-leap": "Adar II",
 	"eraAbbr": [
 		"AM"
 	],
@@ -186,19 +184,19 @@ define({ root:
 	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})",
 	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
-		"Tishri",
-		"Heshvan",
-		"Kislev",
-		"Tevet",
-		"Shevat",
-		"Adar I",
-		"Adar",
-		"Nisan",
-		"Iyar",
-		"Sivan",
-		"Tamuz",
-		"Av",
-		"Elul"
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"10",
+		"11",
+		"12",
+		"13"
 	],
 	"dateFormatItem-hm": "h:mm a",
 	"dateTimeFormats-appendItem-Year": "{0} {1}",
@@ -213,6 +211,7 @@ define({ root:
 		"6",
 		"7"
 	],
+	"dateFormatItem-yMMMd": "y MMM d",
 	"eraNames": [
 		"AM"
 	],
@@ -240,7 +239,8 @@ define({ root:
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
 	"dateFormat-short": "yyyy-MM-dd",
-	"dateFormatItem-yMMMEd": "EEE, y MMM d",
+	"dateFormatItem-yMMMEd": "E, y MMM d",
+	"dateFormatItem-Ed": "d E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"dateFormat-medium": "y MMM d",
 	"dayPeriods-format-narrow-pm": "PM",
@@ -257,9 +257,15 @@ define({ root:
 	"fr": true,
 	"he": true,
 	"hu": true,
+	"ja": true,
 	"nl": true,
+	"pl": true,
+	"pt": true,
+	"ro": true,
 	"ru": true,
 	"sv": true,
 	"th": true,
-	"tr": true
+	"tr": true,
+	"zh": true,
+	"zh-hant": true
 });

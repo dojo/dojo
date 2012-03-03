@@ -8,15 +8,14 @@ define(
 	"percentFormat": "#,##0 %",
 	"list": ";",
 	"infinity": "∞",
-	"patternDigit": "#",
 	"minusSign": "−",
 	"decimal": ",",
 	"nan": "¤¤¤",
-	"nativeZeroDigit": "0",
 	"perMille": "‰",
 	"decimalFormat": "#,##0.###",
 	"currencyFormat": "#,##0.00 ¤",
-	"plusSign": "+"
+	"plusSign": "+",
+	"decimalFormat-short": "000 trl"
 }
 //end v1.x content
 );

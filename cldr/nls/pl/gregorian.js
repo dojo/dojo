@@ -17,12 +17,8 @@ define(
 	],
 	"field-weekday": "Dzień tygodnia",
 	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yMEd": "EEE, d.MM.yyyy",
+	"dateFormatItem-yMEd": "E, d.MM.yyyy",
 	"dateFormatItem-MMMEd": "E, d MMM",
-	"eraNarrow": [
-		"p.n.e.",
-		"n.e."
-	],
 	"dayPeriods-format-wide-earlyMorning": "nad ranem",
 	"dayPeriods-format-wide-morning": "rano",
 	"dateFormat-long": "d MMMM y",
@@ -41,10 +37,12 @@ define(
 		"grudnia"
 	],
 	"dayPeriods-format-wide-evening": "wieczorem",
+	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "PM",
 	"dateFormat-full": "EEEE, d MMMM y",
 	"dateFormatItem-Md": "d.MM",
 	"dayPeriods-format-wide-noon": "w południe",
+	"dateFormatItem-yMd": "d.MM.yyyy",
 	"field-era": "Era",
 	"dateFormatItem-yM": "MM.yyyy",
 	"months-standAlone-wide": [
@@ -69,11 +67,12 @@ define(
 		"IV kwartał"
 	],
 	"timeFormat-long": "HH:mm:ss z",
-	"field-year": "Rok",
+	"dateFormatItem-yMMM": "LLL y",
 	"dateFormatItem-yQ": "yyyy Q",
+	"field-year": "Rok",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
-	"field-hour": "Godzina",
 	"dateFormatItem-MMdd": "d.MM",
+	"field-hour": "Godzina",
 	"months-format-abbr": [
 		"sty",
 		"lut",
@@ -93,7 +92,6 @@ define(
 	"field-day-relative+0": "Dzisiaj",
 	"field-day-relative+1": "Jutro",
 	"field-day-relative+2": "Pojutrze",
-	"field-day-relative+3": "Za trzy dni",
 	"months-standAlone-abbr": [
 		"sty",
 		"lut",
@@ -131,7 +129,7 @@ define(
 		"sobota"
 	],
 	"dateFormatItem-MMMMd": "d MMMM",
-	"dateFormatItem-yyMMM": "MMM yy",
+	"dateFormatItem-yyMMM": "LLL yy",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
 	"quarters-standAlone-abbr": [
@@ -158,13 +156,20 @@ define(
 	"dayPeriods-format-wide-night": "w nocy",
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
 	"field-day-relative+-1": "Wczoraj",
 	"dateFormatItem-h": "hh a",
+	"dateTimeFormat-long": "{1} {0}",
 	"field-day-relative+-2": "Przedwczoraj",
-	"field-day-relative+-3": "Trzy dni temu",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E, d.MM",
 	"dayPeriods-format-wide-lateMorning": "przed południem",
+	"dateTimeFormat-full": "{1} {0}",
 	"dateFormatItem-yMMMM": "LLLL y",
 	"field-day": "Dzień",
 	"days-format-wide": [
@@ -193,6 +198,8 @@ define(
 		"l",
 		"g"
 	],
+	"field-year-relative+-1": "Zeszły rok",
+	"field-month-relative+-1": "Zeszły miesiąc",
 	"dateFormatItem-hm": "hh:mm a",
 	"days-format-abbr": [
 		"niedz.",
@@ -203,6 +210,7 @@ define(
 		"pt.",
 		"sob."
 	],
+	"dateFormatItem-yMMMd": "d MMM y",
 	"eraNames": [
 		"p.n.e.",
 		"n.e."
@@ -216,7 +224,6 @@ define(
 		"P",
 		"S"
 	],
-	"field-month": "Miesiąc",
 	"days-standAlone-narrow": [
 		"N",
 		"P",
@@ -227,16 +234,25 @@ define(
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Miesiąc",
 	"dayPeriods-format-wide-am": "AM",
 	"dateFormat-short": "dd.MM.yyyy",
 	"dayPeriods-format-wide-afternoon": "po południu",
 	"field-second": "Sekunda",
-	"dateFormatItem-yMMMEd": "EEE, d MMM y",
+	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"field-month-relative+0": "Bieżący miesiąc",
+	"field-month-relative+1": "Przyszły miesiąc",
 	"dateFormatItem-Ed": "E, d",
 	"field-week": "Tydzień",
 	"dateFormat-medium": "d MMM y",
+	"field-year-relative+0": "Bieżący rok",
+	"field-week-relative+-1": "Zeszły tydzień",
+	"field-year-relative+1": "Przyszły rok",
+	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-hms": "hh:mm:ss a"
+	"dateFormatItem-hms": "hh:mm:ss a",
+	"field-week-relative+0": "Bieżący tydzień",
+	"field-week-relative+1": "Przyszły tydzień"
 }
 //end v1.x content
 );

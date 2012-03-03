@@ -23,7 +23,7 @@ define(
 	],
 	"field-weekday": "veckodag",
 	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yMEd": "EEE, yyyy-MM-dd",
+	"dateFormatItem-yMEd": "E, yyyy-MM-dd",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"eraNarrow": [
 		"f.Kr.",
@@ -44,11 +44,11 @@ define(
 		"november",
 		"december"
 	],
-	"dateFormatItem-EEEd": "EEE d",
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormat-full": "EEEE'en' 'den' d:'e' MMMM y",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-MMMMEEEd": "EEE d MMMM",
+	"dayPeriods-format-abbr-am": "FM",
+	"dateFormatItem-yMd": "yyyy-MM-dd",
 	"field-era": "era",
 	"dateFormatItem-yM": "yyyy-MM",
 	"months-standAlone-wide": [
@@ -62,8 +62,8 @@ define(
 		"augusti",
 		"september",
 		"oktober",
-		"november",
-		"december"
+		"11",
+		"12"
 	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
@@ -97,7 +97,6 @@ define(
 	"field-day-relative+0": "i dag",
 	"field-day-relative+1": "i morgon",
 	"field-day-relative+2": "i övermorgon",
-	"field-day-relative+3": "i överövermorgon",
 	"months-standAlone-abbr": [
 		"jan",
 		"feb",
@@ -110,7 +109,7 @@ define(
 		"sep",
 		"okt",
 		"nov",
-		"dec"
+		"12"
 	],
 	"quarters-format-abbr": [
 		"K1",
@@ -156,15 +155,15 @@ define(
 		"mån",
 		"tis",
 		"ons",
-		"tors",
+		"tor",
 		"fre",
 		"lör"
 	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+-1": "i går",
+	"dayPeriods-format-narrow-am": "f",
 	"field-day-relative+-2": "i förrgår",
-	"field-day-relative+-3": "i förrförrgår",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E d/M",
 	"field-day": "dag",
@@ -194,8 +193,11 @@ define(
 		"N",
 		"D"
 	],
+	"field-year-relative+-1": "i fjol",
+	"field-month-relative+-1": "förra månaden",
 	"dateFormatItem-yyMM": "yy-MM",
 	"dateFormatItem-hm": "h:mm a",
+	"dayPeriods-format-abbr-pm": "EM",
 	"days-format-abbr": [
 		"sön",
 		"mån",
@@ -205,6 +207,7 @@ define(
 		"fre",
 		"lör"
 	],
+	"dateFormatItem-yMMMd": "d MMM y",
 	"eraNames": [
 		"före Kristus",
 		"efter Kristus"
@@ -234,12 +237,21 @@ define(
 	"dateFormat-short": "yyyy-MM-dd",
 	"dateFormatItem-MMd": "d/M",
 	"field-second": "sekund",
-	"dateFormatItem-yMMMEd": "EEE d MMM y",
+	"dateFormatItem-yMMMEd": "E d MMM y",
+	"field-month-relative+0": "denna månad",
+	"field-month-relative+1": "nästa månad",
+	"dateFormatItem-Ed": "E d",
 	"field-week": "vecka",
 	"dateFormat-medium": "d MMM y",
+	"field-year-relative+0": "i år",
+	"field-week-relative+-1": "förra veckan",
+	"field-year-relative+1": "nästa år",
+	"dayPeriods-format-narrow-pm": "e",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y",
 	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-hms": "h:mm:ss a"
+	"dateFormatItem-hms": "h:mm:ss a",
+	"field-week-relative+0": "denna vecka",
+	"field-week-relative+1": "nästa vecka"
 }
 //end v1.x content
 );

@@ -3,7 +3,6 @@ define(
 {
 	"HKD_displayName": "dollar de Hong Kong",
 	"CHF_displayName": "franc suisse",
-	"CHF_symbol": "CHF",
 	"JPY_symbol": "¥JP",
 	"CAD_displayName": "dollar canadien",
 	"HKD_symbol": "$HK",

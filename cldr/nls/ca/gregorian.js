@@ -2,27 +2,23 @@ define(
 //begin v1.x content
 {
 	"months-format-narrow": [
-		"g",
-		"f",
-		"m",
-		"a",
-		"m",
-		"j",
-		"j",
-		"a",
-		"s",
-		"o",
-		"n",
-		"d"
+		"G",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"G",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
 	],
 	"field-weekday": "dia de la setmana",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d/M/yyyy",
 	"dateFormatItem-MMMEd": "E d MMM",
-	"eraNarrow": [
-		"aC",
-		"dC"
-	],
 	"dateFormat-long": "d MMMM 'de' y",
 	"months-format-wide": [
 		"de gener",
@@ -38,10 +34,10 @@ define(
 		"de novembre",
 		"de desembre"
 	],
-	"dateFormatItem-EEEd": "EEE d",
 	"dayPeriods-format-wide-pm": "p.m.",
 	"dateFormat-full": "EEEE d MMMM 'de' y",
 	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yMd": "d/M/yyyy",
 	"field-era": "era",
 	"dateFormatItem-yM": "M/yyyy",
 	"months-standAlone-wide": [
@@ -90,7 +86,6 @@ define(
 	"field-day-relative+1": "demà",
 	"field-day-relative+2": "demà passat",
 	"dateFormatItem-H": "H",
-	"field-day-relative+3": "d'aquí a tres dies",
 	"months-standAlone-abbr": [
 		"gen.",
 		"febr.",
@@ -119,13 +114,13 @@ define(
 	],
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
-		"diumenge",
-		"dilluns",
-		"dimarts",
-		"dimecres",
-		"dijous",
-		"divendres",
-		"dissabte"
+		"Diumenge",
+		"Dilluns",
+		"Dimarts",
+		"Dimecres",
+		"Dijous",
+		"Divendres",
+		"Dissabte"
 	],
 	"dateFormatItem-MMMMd": "d MMMM",
 	"timeFormat-medium": "H:mm:ss",
@@ -153,12 +148,17 @@ define(
 	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
 	"field-day-relative+-1": "ahir",
 	"field-day-relative+-2": "abans d'ahir",
-	"field-day-relative+-3": "fa tres dies",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E d/M",
-	"dateFormatItem-yMMMM": "LLLL 'del' y",
+	"dateFormatItem-yMMMM": "LLLL 'de' y",
 	"field-day": "dia",
 	"days-format-wide": [
 		"diumenge",
@@ -186,6 +186,8 @@ define(
 		"n",
 		"d"
 	],
+	"field-year-relative+-1": "Última any",
+	"field-month-relative+-1": "Últim mes",
 	"dateFormatItem-hm": "h:mm a",
 	"days-format-abbr": [
 		"dg.",
@@ -196,18 +198,15 @@ define(
 		"dv.",
 		"ds."
 	],
-	"eraNames": [
-		"aC",
-		"dC"
-	],
+	"dateFormatItem-yMMMd": "d MMM y",
 	"days-format-narrow": [
-		"g",
+		"G",
 		"l",
-		"t",
-		"c",
-		"j",
-		"v",
-		"s"
+		"T",
+		"C",
+		"J",
+		"V",
+		"S"
 	],
 	"field-month": "mes",
 	"days-standAlone-narrow": [
@@ -224,12 +223,20 @@ define(
 	"dateFormatItem-MMMMEd": "E d MMMM",
 	"dateFormat-short": "dd/MM/yy",
 	"field-second": "segon",
-	"dateFormatItem-yMMMEd": "EEE d MMM y",
+	"dateFormatItem-yMMMEd": "E d MMM y",
+	"field-month-relative+0": "Aquest mes",
+	"field-month-relative+1": "Mes següent",
+	"dateFormatItem-Ed": "E d",
 	"field-week": "setmana",
 	"dateFormat-medium": "dd/MM/yyyy",
+	"field-year-relative+0": "Aquest any",
+	"field-week-relative+-1": "Última setmana",
+	"field-year-relative+1": "Any següent",
 	"dateFormatItem-mmss": "mm:ss",
 	"dateFormatItem-Hms": "H:mm:ss",
-	"dateFormatItem-hms": "h:mm:ss a"
+	"dateFormatItem-hms": "h:mm:ss a",
+	"field-week-relative+0": "Aquesta setmana",
+	"field-week-relative+1": "Setmana següent"
 }
 //end v1.x content
 );

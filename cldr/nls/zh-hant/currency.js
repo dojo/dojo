@@ -8,6 +8,7 @@ define(
 	"USD_symbol": "$",
 	"AUD_displayName": "澳幣",
 	"JPY_displayName": "日圓",
+	"USD_displayName": "美金",
 	"CNY_symbol": "￥",
 	"GBP_displayName": "英鎊",
 	"EUR_displayName": "歐元"

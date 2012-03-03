@@ -17,14 +17,10 @@ define(
 	],
 	"field-weekday": "Haftanın Günü",
 	"dateFormatItem-yyQQQQ": "QQQQ yy",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-yMEd": "dd.MM.yyyy EEE",
-	"dateFormatItem-MMMEd": "dd MMM E",
-	"eraNarrow": [
-		"MÖ",
-		"MS"
-	],
-	"dateFormat-long": "dd MMMM y",
+	"dateFormatItem-yQQQ": "y-QQQ",
+	"dateFormatItem-yMEd": "dd.MM.yyyy E",
+	"dateFormatItem-MMMEd": "d MMMM E",
+	"dateFormat-long": "d MMMM y",
 	"months-format-wide": [
 		"Ocak",
 		"Şubat",
@@ -39,12 +35,12 @@ define(
 		"Kasım",
 		"Aralık"
 	],
-	"dateFormatItem-EEEd": "d EEE",
 	"dayPeriods-format-wide-pm": "PM",
-	"dateFormat-full": "dd MMMM y EEEE",
-	"dateFormatItem-Md": "dd/MM",
+	"dateFormat-full": "d MMMM y EEEE",
+	"dateFormatItem-Md": "dd.MM",
+	"dateFormatItem-yMd": "dd.MM.yyyy",
 	"field-era": "Miladi Dönem",
-	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yM": "MM.yy",
 	"months-standAlone-wide": [
 		"Ocak",
 		"Şubat",
@@ -69,7 +65,7 @@ define(
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Yıl",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q yyyy",
+	"dateFormatItem-yQ": "y-Q",
 	"field-hour": "Saat",
 	"months-format-abbr": [
 		"Oca",
@@ -91,7 +87,6 @@ define(
 	"field-day-relative+1": "Yarın",
 	"field-day-relative+2": "Yarından sonraki gün",
 	"dateFormatItem-H": "HH",
-	"field-day-relative+3": "Üç gün sonra",
 	"months-standAlone-abbr": [
 		"Oca",
 		"Şub",
@@ -155,11 +150,16 @@ define(
 	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
 	"field-day-relative+-1": "Dün",
 	"field-day-relative+-2": "Evvelsi gün",
-	"field-day-relative+-3": "Üç gün önce",
-	"dateFormatItem-MMMd": "dd MMM",
-	"dateFormatItem-MEd": "dd/MM E",
+	"dateFormatItem-MMMd": "d MMMM",
+	"dateFormatItem-MEd": "dd.MM E",
 	"dateFormatItem-yMMMM": "MMMM y",
 	"field-day": "Gün",
 	"days-format-wide": [
@@ -187,7 +187,9 @@ define(
 		"K",
 		"A"
 	],
-	"dateFormatItem-yyMM": "MM/yy",
+	"field-year-relative+-1": "Geçen yıl",
+	"field-month-relative+-1": "Geçen ay",
+	"dateFormatItem-yyMM": "MM.yy",
 	"dateFormatItem-hm": "h:mm a",
 	"days-format-abbr": [
 		"Paz",
@@ -198,6 +200,7 @@ define(
 		"Cum",
 		"Cmt"
 	],
+	"dateFormatItem-yMMMd": "dd MMM y",
 	"eraNames": [
 		"Milattan Önce",
 		"Milattan Sonra"
@@ -226,14 +229,21 @@ define(
 	"dateFormatItem-MMMMEd": "dd MMMM E",
 	"dateFormat-short": "dd.MM.yyyy",
 	"field-second": "Saniye",
-	"dateFormatItem-yMMMEd": "dd MMM y EEE",
+	"dateFormatItem-yMMMEd": "d MMM y E",
+	"field-month-relative+0": "Bu ay",
+	"field-month-relative+1": "Gelecek ay",
 	"dateFormatItem-Ed": "d E",
 	"field-week": "Hafta",
-	"dateFormat-medium": "dd MMM y",
+	"dateFormat-medium": "d MMM y",
+	"field-year-relative+0": "Bu yıl",
+	"field-week-relative+-1": "Geçen hafta",
+	"field-year-relative+1": "Gelecek yıl",
 	"dateFormatItem-mmss": "mm:ss",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yyyy": "y"
+	"dateFormatItem-yyyy": "y",
+	"field-week-relative+0": "Bu hafta",
+	"field-week-relative+1": "Gelecek hafta"
 }
 //end v1.x content
 );

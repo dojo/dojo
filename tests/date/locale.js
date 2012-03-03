@@ -66,7 +66,7 @@ tests.register("tests.date.locale",
 	t.is("8/11/06", dojo.date.locale.format(date, {formatLength:'short',selector:'date', locale:'en-us'}));
 	t.is("11/08/06", dojo.date.locale.format(date, {formatLength:'short',selector:'date', locale:'fr-fr'}));
 	t.is("11.08.06", dojo.date.locale.format(date, {formatLength:'short',selector:'date', locale:'de-at'}));
-	t.is("06/08/11", dojo.date.locale.format(date, {formatLength:'short',selector:'date', locale:'ja-jp'}));
+	t.is("2006/08/11", dojo.date.locale.format(date, {formatLength:'short',selector:'date', locale:'ja-jp'}));
 
 	t.is("6", dojo.date.locale.format(date, {datePattern:'E', selector:'date'}));
 
@@ -171,11 +171,11 @@ tests.register("tests.date.locale",
 	//...but not in strict mode
 	t.f( Boolean(dojo.date.locale.parse("11 de Agosto de 2006", {formatLength:'long', selector:'date', locale:'es', strict:true})));
 	//es 'full' fmt: EEEE d' de 'MMMM' de 'yyyy
-	t.is( aug_11_2006, dojo.date.locale.parse("viernes 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.locale.parse("viernes, 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es'}));
 	//case-insensitive day-of-week...
-	t.is( aug_11_2006, dojo.date.locale.parse("Viernes 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es'}));
+	t.is( aug_11_2006, dojo.date.locale.parse("Viernes, 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es'}));
 	//...but not in strict mode
-	t.f( Boolean(dojo.date.locale.parse("Viernes 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es', strict:true})));
+	t.f( Boolean(dojo.date.locale.parse("Viernes, 11 de agosto de 2006", {formatLength:'full', selector:'date', locale:'es', strict:true})));
 
 	//Japanese (ja)
 	//note: to avoid garbling from non-utf8-aware editors that may touch this file, using the \uNNNN format

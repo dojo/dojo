@@ -81,16 +81,18 @@ doh.robot._run = function(frame){
 	}
 };
 
-var onIframeLoad=function(){
+var onIframeLoad = function(){
 	// initial load handler: update the document and start the tests
 	doh.robot._updateDocument();
 	onIframeLoad = null;
 
 	// If dojo is present in the test case, then at least make a best effort to wait for it to load.
 	// The test must handle other race conditions like initial data queries by itself.
-	if(iframe.contentWindow.dojo){
-		iframe.contentWindow.dojo.ready(999, function(){
-			doh.robot._run(robotFrame);
+	if(iframe.contentWindow.require){
+		iframe.contentWindow.require(["dojo/ready"], function(ready){
+			ready(999, function(){
+				doh.robot._run(robotFrame);
+			});
 		});
 	}else{
 		doh.robot._run(robotFrame);

@@ -617,6 +617,18 @@
 					doh.f(window.objI4, "child widget 4 not created");
 				});
 
+				doh.register("parser.construct()", function construct1() {
+					var nodes = [dhtml.byId("objC1"),dhtml.byId("objC2")];
+
+					parser.construct(tests.parser.Class1, dhtml.byId("objC1"));
+					doh.is("object", typeof objC1, "widget 1 created");
+					doh.is(5, objC1.intProp, "objC1.intProp");
+
+					parser.construct(tests.parser.Class1, dhtml.byId("objC2"));
+					doh.is("object", typeof objC2, "widget 2 created");
+					doh.is(5, objC2.intProp, "objC2.intProp");
+				});
+
 				doh.register("data-dojo-mixins support", function mixins() {
 					parser.parse("mixins");
 					doh.t(resultMixins1, "object using data-dojo-mixins created from an already parsed type");
@@ -878,6 +890,36 @@
 			<div dojoType="tests.parser.NormalContainer" jsId="contI1" id ="contId1">
 				<div dojoType="tests.parser.Class1" jsId="objI3" id="objId3"></div>
 				<div dojoType="tests.parser.Class1" jsId="objI4" id="objId4"></div>
+			</div>
+		</div>
+
+		<!-- section for testing parser.construct() -->
+		<div id="construct1">
+			<div jsId="objC1" id="objC1"
+				strProp1="text" strProp2=""
+				intProp="5"
+				arrProp="foo, bar, baz"
+				arrProp2=""
+				boolProp1="true" boolProp2="false"
+				dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+				funcProp2="foo" funcProp3="this.func3Called=true;"
+			>
+			</div>
+			<div data-dojo-id="objC2" id="objC2"
+				data-dojo-props="
+					strProp1:'text',
+					strProp2:'',
+					intProp:5,
+					arrProp:['foo', 'bar', 'baz'],
+					arrProp2:[],
+					boolProp1:true,
+					boolProp2:'false',
+					dateProp1:'2006-01-01',
+					dateProp2:'',
+					dateProp3:'now',
+					funcProp2:foo,
+					funcProp3:'this.func3Called=true;'"
+			>
 			</div>
 		</div>
 

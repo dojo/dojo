@@ -26,30 +26,31 @@ dojo.parser = new function(){
 	// summary:
 	//		The Dom/Widget parsing package
 
-	var _nameMap = {
-		// Map from widget name (ex: "dijit.form.Button") to structure mapping
-		// lowercase version of attribute names to the version in the widget ex:
-		//	{
-		//		label: "label",
-		//		onclick: "onClick"
-		//	}
-	};
-	function getNameMap(proto){
-		// summary:
-		//		Returns map from lowercase name to attribute name in class, ex: {onclick: "onClick"}
-		var map = {};
-		for(var name in proto){
-			if(name.charAt(0)=="_"){ continue; }	// skip internal properties
-			map[name.toLowerCase()] = name;
-		}
-		return map;
-	}
 	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
 	// If BorderContainer is loaded after _Widget's parameter list has been cached,
 	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
+	var extendCnt = 0;
 	aspect.after(dlang, "extend", function(){
-		_nameMap = {};
+		extendCnt++;
 	}, true);
+
+	function getNameMap(ctor){
+		// summary:
+		//		Returns map from lowercase name to attribute name in class, ex: {onclick: "onClick"}
+		var map = ctor._nameCaseMap, proto = ctor.prototype;
+
+		// Create the map if it's undefined.
+		// Refresh the map if a superclass was possibly extended with new methods since the map was created.
+		if(!map || map._extendCnt < extendCnt){
+			map = ctor._nameCaseMap = {};
+			for(var name in proto){
+				if(name.charAt(0) === "_"){ continue; }	// skip internal properties
+				map[name.toLowerCase()] = name;
+			}
+			map._extendCnt = extendCnt;
+		}
+		return map;
+	}
 
 	// Map from widget name (ex: "dijit.form.Button") to a map of { "list-of-mixins": ctor }
 	// if "list-of-mixins" is "__type" this is the raw type without mixins
@@ -64,7 +65,7 @@ dojo.parser = new function(){
 	this._clearCache = function(){
 		// summary:
 		//		Clear cached data.   Used mainly for benchmarking.
-		_nameMap = {};
+		extendCnt++;
 		_ctorMap = {};
 	};
 
@@ -286,7 +287,7 @@ dojo.parser = new function(){
 					// Find attribute in widget corresponding to specified name.
 					// May involve case conversion, ex: onclick --> onClick
 					if(!(name in proto)){
-						var map = (_nameMap[type] || (_nameMap[type] = getNameMap(proto)));
+						var map = getNameMap(ctor);
 						name = map[lcName] || name;
 					}
 

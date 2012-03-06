@@ -7,7 +7,7 @@ define([
 	"../regexp",
 	"../string",
 	"../i18n!../cldr/nls/gregorian"
-], function(lang, array, date, cldr, i18n, regexp, string, gregorian) {
+], function(lang, array, date, supplemental, i18n, regexp, string, gregorian) {
 	// module:
 	//		dojo/date/locale
 	// summary:
@@ -68,11 +68,16 @@ exports = dojo.date.locale;
 //					}
 					break;
 				case 'M':
+				case 'L':
 					var m = dateObject.getMonth();
 					if(l<3){
 						s = m+1; pad = true;
 					}else{
-						var propM = ["months", "format", widthList[l-3]].join("-");
+						var propM = [
+							"months",
+							c == 'L' ? "standAlone" : "format",
+							widthList[l-3]
+						].join("-");
 						s = bundle[propM][m];
 					}
 					break;
@@ -86,17 +91,26 @@ exports = dojo.date.locale;
 				case 'D':
 					s = exports._getDayOfYear(dateObject); pad = true;
 					break;
-				case 'E':
+				case 'e':
+				case 'c':
 					var d = dateObject.getDay();
-					if(l<3){
-						s = d+1; pad = true;
-					}else{
-						var propD = ["days", "format", widthList[l-3]].join("-");
-						s = bundle[propD][d];
+					if(l<2){
+						s = (d - supplemental.getFirstDayOfWeek(options.locale) + 8) % 7
+						break;
 					}
+					// fallthrough
+				case 'E':
+					d = dateObject.getDay();
+					if(l<3){ l = 3; }
+					var propD = [
+						"days",
+						c == 'c' ? "standAlone" : "format",
+						widthList[l-3]
+					].join("-");
+					s = bundle[propD][d];
 					break;
 				case 'a':
-					var timePeriod = (dateObject.getHours() < 12) ? 'am' : 'pm';
+					var timePeriod = dateObject.getHours() < 12 ? 'am' : 'pm';
 					s = options[timePeriod] || bundle['dayPeriods-format-wide-' + timePeriod];
 					break;
 				case 'h':
@@ -150,7 +164,7 @@ exports = dojo.date.locale;
 					}
 					s = tz.join("");
 					break;
-//				case 'Y': case 'u': case 'W': case 'F': case 'g': case 'A': case 'e':
+//				case 'Y': case 'u': case 'W': case 'F': case 'g': case 'A':
 //					console.log(match+" modifier unimplemented");
 				default:
 					throw new Error("dojo.date.locale.format: invalid pattern char: "+pattern);
@@ -323,9 +337,10 @@ exports.parse = function(/*String*/value, /*dojo.date.locale.__FormatOptions?*/o
 		amPm = "",
 		valid = array.every(match, function(v, i){
 		if(!i){return true;}
-		var token=tokens[i-1];
-		var l=token.length;
-		switch(token.charAt(0)){
+		var token = tokens[i-1],
+			l = token.length,
+			c = token.charAt(0);
+		switch(c){
 			case 'y':
 				if(l != 2 && options.strict){
 					//interpret year literally, so '5' would be 5 A.D.
@@ -351,8 +366,12 @@ exports.parse = function(/*String*/value, /*dojo.date.locale.__FormatOptions?*/o
 				}
 				break;
 			case 'M':
+			case 'L':
 				if(l>2){
-					var months = bundle['months-format-' + widthList[l-3]].concat();
+debugger
+					var months = bundle['months-' +
+							    c == 'L' ? 'standAlone' : 'format' +
+							    '-' + widthList[l-3]].concat();
 					if(!options.strict){
 						//Tolerate abbreviating period in month part
 						//Case-insensitive comparison
@@ -371,7 +390,10 @@ exports.parse = function(/*String*/value, /*dojo.date.locale.__FormatOptions?*/o
 				break;
 			case 'E':
 			case 'e':
-				var days = bundle['days-format-' + widthList[l-3]].concat();
+			case 'c':
+				var days = bundle['days-' +
+						  c == 'c' ? 'standAlone' : 'format' +
+						  '-' + widthList[l-3]].concat();
 				if(!options.strict){
 					//Case-insensitive comparison
 					v = v.toLowerCase();
@@ -528,6 +550,7 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				s = '\\d{2,4}';
 				break;
 			case 'M':
+			case 'L':
 				s = (l>2) ? '\\S+?' : '1[0-2]|'+p2+'[1-9]';
 				break;
 			case 'D':
@@ -540,6 +563,8 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				s = '[1-4][0-9]|5[0-3]|'+p2+'[1-9]';
 				break;
 			case 'E':
+			case 'e':
+			case 'c':
 				s = '\\S+';
 				break;
 			case 'h': //hour (1-12)
@@ -645,7 +670,7 @@ exports.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 	// summary:
 	//	Determines if the date falls on a weekend, according to local custom.
 
-	var weekend = cldr.getWeekend(locale),
+	var weekend = supplemental.getWeekend(locale),
 		day = (dateObject || new Date()).getDay();
 	if(weekend.end < weekend.start){
 		weekend.end += 7;

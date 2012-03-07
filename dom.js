@@ -48,6 +48,7 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 		//	|		nodeOrId = dojo.byId(nodeOrId);
 		//	|		// ... more stuff
 		//	|	}
+	};
 	=====*/
 
 	/*=====

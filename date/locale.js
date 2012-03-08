@@ -369,7 +369,7 @@ exports.parse = function(/*String*/value, /*dojo.date.locale.__FormatOptions?*/o
 			case 'L':
 				if(l>2){
 					var months = bundle['months-' +
-							    c == 'L' ? 'standAlone' : 'format' +
+							    (c == 'L' ? 'standAlone' : 'format') +
 							    '-' + widthList[l-3]].concat();
 					if(!options.strict){
 						//Tolerate abbreviating period in month part

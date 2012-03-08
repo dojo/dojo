@@ -523,10 +523,11 @@ define([
 
 	var getNodeIndex = function(node){
 		var root = node.parentNode;
+		root = root.nodeType != 7 ? root : root.nextSibling; // PROCESSING_INSTRUCTION_NODE
 		var i = 0,
 			tret = root.children || root.childNodes,
-			ci = (node["_i"]||-1),
-			cl = (root["_l"]||-1);
+			ci = (node["_i"]||node.getAttribute("_i")||-1),
+			cl = (root["_l"]|| (typeof root.getAttribute !== "undefined" ? root.getAttribute("_l") : -1));
 
 		if(!tret){ return -1; }
 		var l = tret.length;
@@ -540,11 +541,19 @@ define([
 		}
 
 		// else re-key things
-		root["_l"] = l;
+		if(has("ie") && typeof root.setAttribute !== "undefined"){
+			root.setAttribute("_l", l);
+		}else{
+			root["_l"] = l;
+		}
 		ci = -1;
 		for(var te = root["firstElementChild"]||root["firstChild"]; te; te = te[_ns]){
 			if(_simpleNodeTest(te)){
-				te["_i"] = ++i;
+				if(has("ie")){
+					te.setAttribute("_i", ++i);
+				}else{
+					te["_i"] = ++i;
+				}
 				if(node === te){
 					// NOTE:
 					//	shortcutting the return at this step in indexing works
@@ -947,7 +956,8 @@ define([
 				// it's tag only. Fast-path it.
 				retFunc = function(root, arr, bag){
 					var ret = getArr(0, arr), te, x=0;
-					var tret = root.getElementsByTagName(query.getTag());
+					var tag = query.getTag(),
+						tret = tag ? root.getElementsByTagName(tag) : [];
 					while((te = tret[x++])){
 						if(_isUnique(te, bag)){
 							ret.push(te);
@@ -964,7 +974,8 @@ define([
 				retFunc = function(root, arr, bag){
 					var ret = getArr(0, arr), te, x=0;
 					// we use getTag() to avoid case sensitivity issues
-					var tret = root.getElementsByTagName(query.getTag());
+					var tag = query.getTag(),
+						tret = tag ? root.getElementsByTagName(tag) : [];
 					while((te = tret[x++])){
 						if(filterFunc(te, root) && _isUnique(te, bag)){
 							ret.push(te);

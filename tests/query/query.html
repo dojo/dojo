@@ -337,6 +337,21 @@
 							doh.is("radio1", inputs[4].id);
 							doh.is("radio2", inputs[5].id);
 							doh.is("radio3", inputs[6].id);
+						},
+
+						// TODO: move to css2 section after #7869 fixed for lite engine (on IE)
+						function xml_nthchild(){
+							var doc = createDocument([
+								"<ResultSet>",
+								"<result>One</result>",
+								"<result>Two</result>",
+								"<result>Three</result>",
+								"<result>Four</result>",
+								"</ResultSet>"
+							].join("")
+							);
+							var de = doc.documentElement;
+							doh.is("Four", query("result:nth-child(4)", de)[0].firstChild.data, "fourth child");
 						}
 					]);
 				}

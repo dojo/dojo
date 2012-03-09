@@ -87,10 +87,18 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			return /^\./.test(bundlePath) ? toAbsMid(bundlePath) + "/" +  id.substring(bundlePath.length) : id;
 		},
 
-		checkForLegacyModules = function(){},
+		noop = function(){},
+
+		checkForLegacyModules = noop,
+
+		waitForPreloads = noop,
 
 		load = function(id, require, load){
 			// note: id is always absolute
+
+			if(waitForPreloads(id, require, load)){
+				return;
+			}
 			var
 				match= nlsRe.exec(id),
 				bundlePath= match[1] + "/",
@@ -250,7 +258,11 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 			isXd = function(mid){
 				return require.isXdUrl(require.toUrl(mid + ".js"));
-			};
+			},
+
+			preloading = 0,
+
+			preloadWaitQueue = [];
 
 		checkForLegacyModules = function(target){
 			// legacy code may have already loaded [e.g] the raw bundle x/y/z at x.y.z; when true, push into the cache
@@ -266,6 +278,13 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				}
 			}
 			return result;
+		};
+
+		waitForPreloads = function(id, require, load){
+			if(preloading){
+				preloadWaitQueue.push([id, require, load]);
+			}
+			return preloading;
 		};
 
 		thisModule.getLocalization= function(moduleName, bundleName, locale){
@@ -285,10 +304,17 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			function preload(locale){
 				locale = normalizeLocale(locale);
 				forEachLocale(locale, function(loc){
-					for(var mid, i=0; i<localesGenerated.length;i++){
+					for(var mid, i=0; i<localesGenerated.length; i++){
 						if(localesGenerated[i] == loc){
 							mid = bundlePrefix.replace(/\./g, "/")+"_"+loc;
-							(isXd(mid) ? require : syncRequire)([mid]);
+							preloading++;
+							(isXd(mid) ? require : syncRequire)([mid], function(){
+								if(!--preloading){
+									while(preloadWaitQueue.length){
+										load.apply(null, preloadWaitQueue.shift());
+									}
+								}
+							});
 							return true; // Boolean
 						}
 					}

@@ -2,7 +2,13 @@ dojo.provide("dojo.tests.store.Observable");
 dojo.require("dojo.store.Memory");
 dojo.require("dojo.store.Observable");
 (function(){
-	var store = dojo.store.Observable(new dojo.store.Memory({
+	var MyStore = dojo.declare([dojo.store.Memory], {
+		get: function(){
+			// need to make sure that this.inherited still works with Observable
+			return this.inherited(arguments);
+		}
+	});
+	var memoryStore, store = new dojo.store.Observable(memoryStore = new MyStore({ /*dojo.store.Memory*/
 		data: [
 			{id: 0, name: "zero", even: true, prime: false},
 			{id: 1, name: "one", prime: false},
@@ -134,6 +140,11 @@ dojo.require("dojo.store.Observable");
 				t.is(results[1].length, 26);
 				t.is(results[2].length, 25);
 				t.is(observations.length, 3);
+            },
+            function testType(t){
+            	t.f(memoryStore == store);
+            	// TODO: I don't believe we can really support this with dojo.declare, would need to upgrade to Compose
+//            	t.t(store instanceof dojo.store.Observable);
             }
 		]
 	);

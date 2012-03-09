@@ -39,6 +39,9 @@ return ds.Observable = function(store){
 	var undef, queryUpdaters = [], revision = 0;
 	// a Comet driven store could directly call notify to notify observers when data has
 	// changed on the backend
+	// create a new instance
+	store = lang.delegate(store);
+	
 	store.notify = function(object, existingId){
 		revision++;
 		var updaters = queryUpdaters.slice();

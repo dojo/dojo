@@ -156,10 +156,11 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					//		instance of Error => could not figure out how to evaluate bundle
 
 					  // used to detect when __bundle calls define
-					  "var define = function(){define.called = 1;};"
+					  "var define = function(){define.called = 1;},"
+					+ "    require = function(){define.called = 1;};"
 
 					+ "try{"
-					+		"defined.called = 0;"
+					+		"define.called = 0;"
 					+		"eval(__bundle);"
 					+		"if(define.called==1)"
 								// bundle called define; therefore signal it's an AMD bundle
@@ -204,6 +205,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 								load:function(text){
 									var result = evalBundle(text, checkForLegacyModules, mid);
 									if(result===1){
+										require.eval(text);
 										require([mid], function(bundle){
 											results.push(cache[url]= bundle);
 										});

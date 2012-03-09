@@ -202,25 +202,18 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 								url:url,
 								sync:true,
 								load:function(text){
-									if(/^\/\/>>built/.test(text)){
-										require.eval(text);
+									var result = evalBundle(text, checkForLegacyModules, mid);
+									if(result===1){
 										require([mid], function(bundle){
 											results.push(cache[url]= bundle);
 										});
 									}else{
-										var result = evalBundle(text, checkForLegacyModules, mid);
-										if(result===1){
-											require([mid], function(bundle){
-												results.push(cache[url]= bundle);
-											});
-										}else{
-											if(result instanceof Error){
-												console.error("failed to evaluate i18n bundle; url=" + url, result);
-												result = {};
-											}
-											// nls/<locale>/<bundle-name> indicates not the root.
-											results.push(cache[url] = (/nls\/[^\/]+\/[^\/]+$/.test(url) ? result : {root:result, _v1x:1}));
+										if(result instanceof Error){
+											console.error("failed to evaluate i18n bundle; url=" + url, result);
+											result = {};
 										}
+										// nls/<locale>/<bundle-name> indicates not the root.
+										results.push(cache[url] = (/nls\/[^\/]+\/[^\/]+$/.test(url) ? result : {root:result, _v1x:1}));
 									}
 								},
 								error:function(){

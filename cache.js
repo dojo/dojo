@@ -1,4 +1,4 @@
-define(["./_base/kernel", "./text"], function(dojo, text){
+define(["./_base/kernel", "./text"], function(dojo){
 	// module:
 	//		dojo/cache
 	// summary:

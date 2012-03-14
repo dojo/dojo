@@ -102,7 +102,7 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Source 3</h3>
-			<div dojoType="dojo.dnd.Source" jsId="c3" class="container">
+			<div dojoType="dojo.dnd.Source" jsId="c3" class="container" allowNested="true">
 				<script type="dojo/method" event="creator" args="item, hint">
 					// this is custom creator, which changes the avatar representation
 					var node = dojo.doc.createElement("div"), s = String(item);
@@ -113,9 +113,11 @@
 					return {node: node, data: item, type: ["text"]};
 				</script>
 				<div class="dojoDndItem">Item <strong>Alpha</strong></div>
-				<div class="dojoDndItem">Item <strong>Beta</strong></div>
-				<div class="dojoDndItem">Item <strong>Gamma</strong></div>
-				<div class="dojoDndItem">Item <strong>Delta</strong></div>
+				<div class="nested">
+					<div class="dojoDndItem">Item <strong>Beta</strong></div>
+					<div class="dojoDndItem">Item <strong>Gamma</strong></div>
+					<div class="dojoDndItem">Item <strong>Delta</strong></div>
+				</div>
 			</div>
 		</div>
 		<div style="float: left; margin: 5px;">

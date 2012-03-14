@@ -76,7 +76,11 @@ var Container = declare("dojo.dnd.Container", Evented, {
 
 	// object attributes (for markup)
 	skipForm: false,
-
+	// allowNested: Boolean
+	//		Indicates whether to allow dnd item nodes to be nested within other elements.
+	//		By default this is false, indicating that only direct children of the container can
+	//		be draggable dnd item nodes
+	allowNested: false,
 	/*=====
 	// current: DomNode
 	//		The DOM node the mouse is currently hovered over
@@ -168,7 +172,7 @@ var Container = declare("dojo.dnd.Container", Evented, {
 	getAllNodes: function(){
 		// summary:
 		//		returns a list (an array) of all valid child nodes
-		return query("> .dojoDndItem", this.parent);	// NodeList
+		return query((this.allowNested ? "" : "> ") + ".dojoDndItem", this.parent);	// NodeList
 	},
 	sync: function(){
 		// summary:
@@ -219,7 +223,7 @@ var Container = declare("dojo.dnd.Container", Evented, {
 			for(i = 0; i < data.length; ++i){
 				t = this._normalizedCreator(data[i]);
 				this.setItem(t.node.id, {data: t.data, type: t.type});
-				this.parent.insertBefore(t.node, anchor);
+				anchor.parentNode.insertBefore(t.node, anchor);
 			}
 		}else{
 			for(i = 0; i < data.length; ++i){
@@ -365,7 +369,7 @@ var Container = declare("dojo.dnd.Container", Evented, {
 		var node = e.target;
 		if(node){
 			for(var parent = node.parentNode; parent; node = parent, parent = node.parentNode){
-				if(parent == this.parent && domClass.contains(node, "dojoDndItem")){ return node; }
+				if((parent == this.parent || this.allowNested) && domClass.contains(node, "dojoDndItem")){ return node; }
 			}
 		}
 		return null;

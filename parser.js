@@ -19,7 +19,7 @@ if (has("dom")) {
 	// but we know to skip them because they have a specified flag which is false
 	has.add("dom-attributes-specified-flag", form.attributes.length < 40);
 
-	// Otherwise, it's IE6-7 form.attributes will list hundreds of values, need to do outerHTML instead.
+	// Otherwise, it's IE6-7. form.attributes will list hundreds of values, so need to do outerHTML instead.
 }
 
 dojo.parser = new function(){
@@ -286,7 +286,7 @@ dojo.parser = new function(){
 
 		// Read in attributes and process them, including data-dojo-props, data-dojo-type,
 		// dojoAttachPoint, etc., as well as normal foo=bar attributes.
-		var i=0, item;
+		var i=0, item, funcAttrs=[];
 		while(item = attributes[i++]){
 			var name = item.name,
 				lcName = name.toLowerCase(),
@@ -354,10 +354,11 @@ dojo.parser = new function(){
 							// The user has specified some text for a function like "return x+5"
 							params[name] = new Function(value);
 						}else{
-							// The user has specified the name of a function like "myOnClick"
+							// The user has specified the name of a global function like "myOnClick"
 							// or a single word function "return"
 							params[name] = dlang.getObject(value, false) || new Function(value);
 						}
+						funcAttrs.push(name);	// prevent "double connect", see #15026
 						break;
 					default:
 						var pVal = proto[name];
@@ -374,6 +375,12 @@ dojo.parser = new function(){
 					params[name] = value;
 				}
 			}
+		}
+
+		// Remove function attributes from DOMNOde to prevent "double connect" problem, see #15026.
+		// Do this as a separate loop since attributes[] is often a live collection (depends on the browser though).
+		for(var i=0; i<funcAttrs.length; i++){
+			node.removeAttribute(funcAttrs[i]);
 		}
 
 		// Mix things found in data-dojo-props into the params, overriding any direct settings

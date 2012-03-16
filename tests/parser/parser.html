@@ -16,13 +16,12 @@
 			};
 		};
 
-		require(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/html", "dojo/Stateful", "dojo/Evented",
-				"doh", "dojo/date/stamp", "dojo/aspect", "dojo/tests/resources/AMDWidget", "dojo/tests/resources/AMDMixin", "dojo/parser", "dojo/domReady!"],
-				function(dojo, dlang, darray, declare, dhtml, Stateful, Evented, doh, dstamp, aspect, AMDWidget, AMDMixin, parser){
-
-			var mixin = dojo.mixin,
-				extend = dojo.extend,
-				exists = dojo.exists;
+		require(["dojo/_base/array", "dojo/aspect", "dojo/_base/declare",
+				"dojo/dom", "dojo/_base/html", "dojo/_base/lang", "dojo/on", "dojo/parser",
+                "dojo/ready", "dojo/date/stamp", "dojo/Stateful", "dojo/Evented",
+				"doh", "dojo/tests/resources/AMDWidget", "dojo/tests/resources/AMDMixin", "dojo/domReady!"],
+				function(array, aspect, declare, dom, dhtml, lang, on, parser, ready, dstamp, Stateful, Evented,
+						 doh, AMDWidget, AMDMixin){
 
 			declare("tests.parser.Widget", null, {
 				constructor: function(args, node){
@@ -33,7 +32,7 @@
 			declare("tests.parser.Class1", null, {
 				constructor: function(args, node){
 					this.params = args;
-					mixin(this, args);
+					lang.mixin(this, args);
 				}, 
 				preambleTestProp: 1,
 				preamble: function(){
@@ -87,7 +86,7 @@
 			declare("tests.parser.InputClass", null, {
 				constructor: function(args, node){
 					this.params = args;
-					mixin(this, args);
+					lang.mixin(this, args);
 				},
 
 				// these attributes are special in HTML, they don't have a value specified
@@ -107,7 +106,7 @@
 
 			// Test that dir, lang, etc. attributes can be inherited from ancestor node
 			declare("tests.parser.BidiClass", tests.parser.Widget, {
-				constructor: function(args, node){ mixin(this, args); },
+				constructor: function(args, node){ lang.mixin(this, args); },
 				dir: "",
 				lang: "",
 				textdir: "",
@@ -117,17 +116,17 @@
 			// For testing that parser recurses correctly, except when the prototype has a
 			// stopParser flag
 			declare("tests.parser.NormalContainer", null, {
-				constructor: function(args, node){ mixin(this, args); }
+				constructor: function(args, node){ lang.mixin(this, args); }
 			});
 			declare("tests.parser.ShieldedContainer", null, {
-				constructor: function(args, node){ mixin(this, args); },
+				constructor: function(args, node){ lang.mixin(this, args); },
 
 				// flag to tell parser not to instantiate nodes inside of me
 				stopParser: true
 			});
 
 			declare("tests.parser.HTML5Props", null, {
-				constructor: function(args, node){ mixin(this, args); },
+				constructor: function(args, node){ lang.mixin(this, args); },
 				simple:false, 
 				a:2, 
 				b:null, c:null, d: null, e:null, f:null,
@@ -142,7 +141,7 @@
 			};
 
 			declare("tests.parser.HTML5withMethod", null, {
-				constructor: function(args, node){ mixin(this, args); },
+				constructor: function(args, node){ lang.mixin(this, args); },
 				baseValue: 10,
 				someMethod: function(a, b){
 					return this.baseValue; 
@@ -182,11 +181,11 @@
 				encType: ""
 			});
 
-			dojo.ready(function(){
+			ready(function(){
 				doh.register("basic tests", [
 					function parse(){
 						// Running the parser here so that failures appear in test log
-							parser.parse(dhtml.byId("main"));
+							parser.parse(dom.byId("main"));
 					},
 					function testDataDojoId(t){
 						t.t(typeof obj == "object");
@@ -197,11 +196,11 @@
 					// Attribute parsing tests
 					function testStrProp(t){
 						// normal string parameter
-						t.t(dlang.isString(obj.strProp1));
+						t.t(typeof obj.strProp1 == "string", "obj.strProp1 is string");
 						t.is("text", obj.strProp1);
 
 						// make sure that you override a string value like "foo" to a blank value
-						t.t(dlang.isString(obj.strProp2));
+						t.t(typeof obj.strProp2 == "string", "obj.strProp2 is string");
 						t.is("", obj.strProp2);
 					},
 					function testIntProp(t){
@@ -252,7 +251,7 @@
 						// widget constructor, especially "toString" or "constructor".
 						// Make exception for dir/lang which parser gleans from document itself.
 						for(var param in obj.params){
-							doh.t(darray.indexOf(
+							doh.t(array.indexOf(
 								["strProp1", "strProp2",
 								"intProp",
 								"arrProp", "arrProp2",
@@ -278,15 +277,15 @@
 						// make sure that unspecified functions (even with common names)
 						// don't get overridden (bug #3074)
 						obj.onclick();
-						t.t(obj.prototypeOnclick);
+						t.t(obj.prototypeOnclick, "prototypeOnClick");
 
 						// funcProp2="foo"
 						obj.funcProp2();
-						t.t(obj.fooCalled);
+						t.t(obj.fooCalled, "fooCalled");
 
 						// funcProp3="this.func3Called=true;"
 						obj.funcProp3();
-						t.t(obj.func3Called);
+						t.t(obj.func3Called, "func3Called");
 					},
 
 					// test script tags inside innerHTML of source node
@@ -301,18 +300,18 @@
 						t.is(1, obj.callCount2);
 					},
 					function testSubNodeParse(t){
-						t.f(exists("obj2"));
-						var toParse = dhtml.byId("toParse");
+						t.f(lang.exists("obj2"), "exists before parse");
+						var toParse = dom.byId("toParse");
 						parser.parse(toParse.parentNode);
-						t.t(exists("obj2"));
+						t.t(lang.exists("obj2"), "exists after parse");
 						t.is("tests.parser.Class1", obj2.declaredClass);
 					},
 					function testMarkupFactory(t){
-						t.t(exists("obj3"));
+						t.t(lang.exists("obj3"), "obj3 exists");
 						t.t(obj3.fromMarkup);
 					},
 					function testMarkupFactoryClass(t){
-						t.t(exists("obj4"));
+						t.t(lang.exists("obj4"), "obj4 exists");
 						t.is(obj4.classCtor, tests.parser.Class3);
 						t.t(obj4 instanceof tests.parser.Class3);
 						t.t(obj4 instanceof tests.parser.Class2);
@@ -329,7 +328,7 @@
 						dhtml.create("div", { dojoType:"SampleThinger" }, "parsertest");
 						parser.parse("parsertest", { noStart:true });
 
-						t.f(started);
+						t.f(started, "first started check");
 
 						dhtml.empty("parsertest");
 
@@ -338,7 +337,7 @@
 						dhtml.create("div", { dojoType:"SampleThinger" }, "parsertest");
 						parser.parse({ noStart:true, rootNode:"parsertest" });
 
-						t.f(started);
+						t.f(started, "second started check");
 					},
 
 					// test the various iterations of parser test
@@ -364,7 +363,7 @@
 						var wrapper = dhtml.place("<div><div dojoType='tests.parser.Class3' newParam=12345>hi</div></div>", dhtml.body(), "last");
 
 						// Modify Class3's superclass widget to have new parameter (thus Class3 inherits it)
-						extend(tests.parser.Class2, {
+						lang.extend(tests.parser.Class2, {
 							newParam: 0
 						});
 
@@ -398,7 +397,7 @@
 						var it = html5simple2;
 						doh.is(1, it.a, "number in param");
 						doh.is("two", it.b, "string in param");
-						doh.t(dlang.isArray(it.c), "array in param");
+						doh.t(it.c instanceof Array, "array in param");
 						doh.is(3, it.c.length, "array sanity");
 						doh.is("g", it.e.f, "nested object with string");
 
@@ -446,7 +445,7 @@
 
 				doh.register("BIDI", [
 					// Test that dir=rtl or dir=ltr setting trickles down from root node
-					function dir(){
+					function dirAttr(){
 						parser.parse("dirSection1");
 						parser.parse("dirSection2");
 						doh.is("rtl", setRtl.dir, "direct setting of dir=rtl works");
@@ -455,13 +454,13 @@
 						doh.is("rtl", inheritRtl2.dir, "inherited rtl works, from grandparent");
 						doh.is("ltr", setLtr.dir, "direct setting of dir=ltr overrides inherited RTL");
 					},
-					function lang(){
+					function langAttr(){
 						parser.parse("langSection");
 						doh.f(lang in noLang.params, "no lang");
 						doh.is("it_it", inheritedLang.lang, "inherited lang works");
 						doh.is("en_us", specifiedLang.lang,"direct setting of lang overrides inherited");
 					},
-					function textdir(){
+					function textdirAttr(){
 						parser.parse("textDirSection");
 						doh.f("textDir" in noTextdir.params, "no textdir");
 						doh.is("rtl", inheritedTextdir.textDir, "inherited textdir works");
@@ -481,7 +480,7 @@
 							doh.is("auto", inheritedFromHtml.params.textDir, "textDir");
 						},
 						tearDown: function(){
-							darray.forEach(["dir", "lang", "data-dojo-textdir"], function(attr){
+							array.forEach(["dir", "lang", "data-dojo-textdir"], function(attr){
 								dhtml.doc.documentElement.removeAttribute(attr);
 							});
 						}
@@ -490,7 +489,7 @@
 
 				doh.register("IE attribute detection", [
 					function input1(){
-						var widgets = parser.instantiate([dhtml.byId("ieInput1")]);
+						var widgets = parser.instantiate([dom.byId("ieInput1")]);
 						var params = widgets[0].params;
 
 						doh.is("checkbox", params.type, "type");
@@ -504,7 +503,7 @@
 						//doh.f("value" in params, "value not specified");	// fails in IE8, thinks value=="on"
 					},
 					function input2(){
-						var widgets = parser.instantiate([dhtml.byId("ieInput2")]);
+						var widgets = parser.instantiate([dom.byId("ieInput2")]);
 						var params = widgets[0].params;
 
 						doh.f("type" in params, "type");
@@ -516,7 +515,7 @@
 						doh.f("value" in params, "value not specified");
 					},
 					function input3(){
-						var widgets = parser.instantiate([dhtml.byId("ieInput3")]);
+						var widgets = parser.instantiate([dom.byId("ieInput3")]);
 						var params = widgets[0].params;
 
 						doh.is("password", params.type, "type");
@@ -527,47 +526,47 @@
 						doh.is("3", params.tabIndex, "tabIndex");
 					},
 					function textarea(){
-						var widgets = parser.instantiate([dhtml.byId("ieTextarea")]);
+						var widgets = parser.instantiate([dom.byId("ieTextarea")]);
 						var params = widgets[0].params;
 
 						doh.is("attrVal", params.value, "value");
 					},
 					function button1(){
-						var widgets = parser.instantiate([dhtml.byId("ieButton1")]);
+						var widgets = parser.instantiate([dom.byId("ieButton1")]);
 						var params = widgets[0].params;
 						doh.t(params.checked, "checked");
 						doh.is("button1val", params.value, "value");
 					},
 					function button2(){
-						var widgets = parser.instantiate([dhtml.byId("ieButton2")]);
+						var widgets = parser.instantiate([dom.byId("ieButton2")]);
 						var params = widgets[0].params;
 						doh.f("checked" in params, "checked");
 						doh.f("value" in params, "value");
 					},
 					function button3(){
-						var widgets = parser.instantiate([dhtml.byId("ieButton3")]);
+						var widgets = parser.instantiate([dom.byId("ieButton3")]);
 						var params = widgets[0].params;
 						doh.t(params.checked, "checked");
 					},
 					function button4(){
-						var widgets = parser.instantiate([dhtml.byId("ieButton4")]);
+						var widgets = parser.instantiate([dom.byId("ieButton4")]);
 						var params = widgets[0].params;
 						doh.f("checked" in params);
 					},
 					function form1(){
-						var widgets = parser.instantiate([dhtml.byId("ieForm1")]);
+						var widgets = parser.instantiate([dom.byId("ieForm1")]);
 						var params = widgets[0].params;
 
 						doh.is("foo", params.encType, "encType is specified");
 					},
 					function form2(){
-						var widgets = parser.instantiate([dhtml.byId("ieForm2")]);
+						var widgets = parser.instantiate([dom.byId("ieForm2")]);
 						var params = widgets[0].params;
 
 						doh.f("encType" in params, "encType not specified")
 					},
 					function li(){
-						var widgets = parser.instantiate([dhtml.byId("li")]);
+						var widgets = parser.instantiate([dom.byId("li")]);
 						var params = widgets[0].params;
 						doh.is("home", params.value);
 
@@ -575,7 +574,7 @@
 				]);
 
 				doh.register("mixed attribute specification", function mixed(){
-					parser.parse(dhtml.byId("mixedContainer"));
+					parser.parse(dom.byId("mixedContainer"));
 					doh.is("object", typeof mixedObj, "widget created");
 					doh.is("mixedValue", mixedObj.value, "native attribute");
 					doh.is(999, mixedObj.custom1, "data-dojo-props attribute");
@@ -589,9 +588,9 @@
 							console.log("prototype click");
 						},
 						constructor: function(args, node){
-							mixin(this, args);
+							lang.mixin(this, args);
 							this.domNode = node;
-							aspect.after(this.domNode, "onclick", dlang.hitch(this, "onClick"));
+							aspect.after(this.domNode, "onclick", lang.hitch(this, "onClick"));
 						}
 					});
 					buttonClicked = function(){
@@ -608,7 +607,7 @@
 				});
 				
 				doh.register("parser.instantiate()", function instantiate1() {
-					var nodes = [dhtml.byId("objId1"),dhtml.byId("objId2"),dhtml.byId("contId1"),dhtml.byId("objId3")];
+					var nodes = [dom.byId("objId1"),dom.byId("objId2"),dom.byId("contId1"),dom.byId("objId3")];
 					parser.instantiate(nodes);
 					doh.is("object", typeof objI1, "widget 1 created");
 					doh.is("object", typeof objI2, "widget 2 created");
@@ -618,13 +617,13 @@
 				});
 
 				doh.register("parser.construct()", function construct1() {
-					var nodes = [dhtml.byId("objC1"),dhtml.byId("objC2")];
+					var nodes = [dom.byId("objC1"),dom.byId("objC2")];
 
-					parser.construct(tests.parser.Class1, dhtml.byId("objC1"));
+					parser.construct(tests.parser.Class1, dom.byId("objC1"));
 					doh.is("object", typeof objC1, "widget 1 created");
 					doh.is(5, objC1.intProp, "objC1.intProp");
 
-					parser.construct(tests.parser.Class1, dhtml.byId("objC2"));
+					parser.construct(tests.parser.Class1, dom.byId("objC2"));
 					doh.is("object", typeof objC2, "widget 2 created");
 					doh.is(5, objC2.intProp, "objC2.intProp");
 				});
@@ -645,7 +644,39 @@
 					doh.is(resultNonDojoMixin.params[0], tests.parser.Mixin1, "correct param 1");
 					doh.is(resultNonDojoMixin.params[1], tests.parser.Mixin2, "correct param 2");
 				});
-				
+
+                // For any special issues with behavioral widgets (as opposed to Templated)
+                doh.register("behavioral", [
+					function doubleConnect(){
+						// Class used in "behavioral" <div>
+						Behavioral1 = declare(null, {
+							constructor: function(params, node){
+								on(node, "click", lang.hitch(this, "onClick"));
+								if(typeof params.onClick != "function"){
+									throw new Error("onClick not passed to constructor");
+								}
+								lang.mixin(this, params);
+							},
+							onClick: function(){
+								console.log("original onnClick handler")
+							},
+							foo: ""
+						});
+
+						parser.parse("behavioral");
+
+						// Setup global accessed by Behavioral1.onclick handler
+						behavioralClickCounter = 0;
+
+						// Trigger click event, and make sure that handler was only called once.
+						on.emit(dom.byId("bh1"), "click", {bubbles: true, cancelable: true});
+
+						doh.is(1, behavioralClickCounter, "one click event processed");
+
+						doh.is("bar", dom.byId("bh1").getAttribute("foo"), "foo attribute not removed from widget DOMNode");
+					}
+                ]);
+
 				doh.run();
 			})
 		});
@@ -933,5 +964,9 @@
 					data-dojo-id="resultNonDojoMixin"></div>
 		</div>
 
+		<!-- tests for behavioral widgets -->
+		<div id="behavioral">
+			<div data-dojo-type="Behavioral1" onClick="behavioralClickCounter++;" id="bh1" foo="bar">click me</div>
+		</div>
 	</body>
 </html>

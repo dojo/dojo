@@ -10,18 +10,6 @@ define(
 
 new Date("X"); // workaround for #11279, new Date("") == NaN
 
-if (has("dom")) {
-	var form = document.createElement("form");
-	// Test if DOMNode.attributes only lists the attributes the user specified, not attributes w/default values.
-	has.add("dom-attributes-explicit", form.attributes.length == 0);
-
-	// IE8 will erroneously list a few attributes that weren't specified,
-	// but we know to skip them because they have a specified flag which is false
-	has.add("dom-attributes-specified-flag", form.attributes.length < 40);
-
-	// Otherwise, it's IE6-7. form.attributes will list hundreds of values, so need to do outerHTML instead.
-}
-
 dojo.parser = new function(){
 	// summary:
 	//		The Dom/Widget parsing package

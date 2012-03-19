@@ -109,6 +109,14 @@ define(["require"], function(require) {
 		has.add("touch", "ontouchstart" in document);
 		// I don't know if any of these tests are really correct, just a rough guess
 		has.add("device-width", screen.availWidth || innerWidth);
+
+		// Tests for DOMNode.attributes[] behavior
+		// dom-attributes-explicit - attributes[] only lists explicitly user specified attributes
+		// dom-attributes-specified-flag (IE8) - need to check attr.specified flag to skip attributes user didn't specify
+		// Otherwise, it's IE6-7. attributes[] will list hundreds of values, so need to do outerHTML to get attrs instead.
+		var form = document.createElement("form");
+		has.add("dom-attributes-explicit", form.attributes.length == 0); // W3C
+		has.add("dom-attributes-specified-flag", form.attributes.length < 40);	// IE8
 	}
 
 	has.clearElement = /*===== dojo.has.clearElement= ======*/ function(element) {

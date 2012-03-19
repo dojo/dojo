@@ -368,7 +368,9 @@ dojo.parser = new function(){
 		// Remove function attributes from DOMNOde to prevent "double connect" problem, see #15026.
 		// Do this as a separate loop since attributes[] is often a live collection (depends on the browser though).
 		for(var i=0; i<funcAttrs.length; i++){
-			node.removeAttribute(funcAttrs[i]);
+			var lcName = funcAttrs[i].toLowerCase();
+			node.removeAttribute(lcName);
+			node[lcName] = null;
 		}
 
 		// Mix things found in data-dojo-props into the params, overriding any direct settings

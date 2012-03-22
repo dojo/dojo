@@ -122,6 +122,7 @@ return declare("dojo.store.DataStore", null, {
 		var idProperty = this.idProperty;
 		if(typeof id == "undefined"){
 			store.newItem(object);
+			store.save();
 		}else{
 			store.fetchItemByIdentity({
 				identity: id,
@@ -136,6 +137,7 @@ return declare("dojo.store.DataStore", null, {
 					}else{
 						store.newItem(object);
 					}
+					store.save();
 				}
 			});
 		}
@@ -150,6 +152,7 @@ return declare("dojo.store.DataStore", null, {
 			identity: id,
 			onItem: function(item){
 				store.deleteItem(item);
+				store.save();
 			}
 		});
 	},

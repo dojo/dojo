@@ -1,5 +1,5 @@
-define(["../_base/lang", "../_base/declare", "../_base/Deferred", "../_base/array", "./util/QueryResults"
-], function(lang,declare,Deferred,array,QueryResults) {
+define(["../_base/lang", "../_base/declare", "../_base/Deferred", "../_base/array", "./util/QueryResults", "./util/SimpleQueryEngine"
+], function(lang,declare,Deferred,array,QueryResults, SimpleQueryEngine) {
 	// module:
 	//		dojo/store/DataStore
 	// summary:
@@ -46,6 +46,10 @@ return declare("dojo.store.DataStore", null, {
 	// store:
 	//		The object store to convert to a data store
 	store: null,
+	// queryEngine: Function
+	//		Defines the query engine to use for querying the data store
+	queryEngine: SimpleQueryEngine,
+	
 	_objectConverter: function(callback){
 		var store = this.store;
 		var idProperty = this.idProperty;
@@ -71,7 +75,7 @@ return declare("dojo.store.DataStore", null, {
 				}
 				object[attributes[i]] = value;
 			}
-			if(!(idProperty in object)){
+			if(!(idProperty in object) && store.getIdentity){
 				object[idProperty] = store.getIdentity(item);
 			}
 			return object;

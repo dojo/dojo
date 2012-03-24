@@ -9,6 +9,7 @@ define([
 	"dojo/tests/_base/json",
 	"dojo/tests/_base/object",
 	"dojo/has!host-browser?dojo/tests/_base/html",
+	"dojo/has!host-browser?dojo/tests/dom-style",
 	"dojo/has!host-browser?dojo/tests/_base/fx",
 	"dojo/has!host-browser?dojo/tests/_base/query",
 	"dojo/has!host-browser?dojo/tests/_base/xhr",

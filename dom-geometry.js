@@ -683,12 +683,6 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 			// fixes the position in IE, quirks mode
 			ret.x -= offset.x + (has("quirks") ? db.clientLeft + db.offsetLeft : 0);
 			ret.y -= offset.y + (has("quirks") ? db.clientTop + db.offsetTop : 0);
-		}else if(has("ff") == 3){
-			// In FF3 you have to subtract the document element margins.
-			// Fixed in FF3.5 though.
-			var cs = style.getComputedStyle(dh), px = style.toPixelValue;
-			ret.x -= px(dh, cs.marginLeft) + px(dh, cs.borderLeftWidth);
-			ret.y -= px(dh, cs.marginTop) + px(dh, cs.borderTopWidth);
 		}
 
 		// account for document scrolling

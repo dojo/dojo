@@ -107,7 +107,7 @@ return declare("dojo.dnd.Avatar", null, {
 		// replace text
 		query(("tr.dojoDndAvatarHeader td span" +(this.isA11y ? " span" : "")), this.node).forEach(
 			function(node){
-				node.innerHTML = this._generateText();
+				node.innerHTML = this.manager.source.generateText ? this._generateText() : "";
 			}, this);
 	},
 	_generateText: function(){

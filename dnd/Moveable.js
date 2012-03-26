@@ -120,7 +120,7 @@ return declare("dojo.dnd.Moveable", [Evented], {
 		//		event processor for onselectevent and ondragevent
 		// e: Event
 		//		mouse event
-		if(!this.skip || !dojo.dnd.isFormElement(e)){
+		if(!this.skip || !dnd.isFormElement(e)){
 			event.stop(e);
 		}
 	},

@@ -1,4 +1,4 @@
-define(["./kernel", "./config", "./lang"], function(dojo, config, lang){
+define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], function(dojo, config, lang, Promise, when){
 	// module:
 	//		dojo/_base/Deferred
 	// summary:
@@ -151,7 +151,7 @@ define(["./kernel", "./config", "./lang"], function(dojo, config, lang){
 		//		handle the asynchronous case.
 
 		var result, finished, isError, head, nextListener;
-		var promise = (this.promise = {});
+		var promise = (this.promise = new Promise);
 
 		function complete(value){
 			if(finished){
@@ -212,9 +212,6 @@ define(["./kernel", "./config", "./lang"], function(dojo, config, lang){
 			this.fired = 1;
 			complete(error);
 			this.results = [null, error];
-			if(!error || error.log !== false){
-				(config.deferredOnError || function(x){ console.error(x); })(error);
-			}
 		};
 		// call progress to provide updates on the progress on the completion of the promise
 		this.progress = function(update){
@@ -329,38 +326,7 @@ define(["./kernel", "./config", "./lang"], function(dojo, config, lang){
 		fired: -1
 	});
 
-	dojo.Deferred.when = dojo.when = function(promiseOrValue, /*Function?*/ callback, /*Function?*/ errback, /*Function?*/ progressHandler){
-		// summary:
-		//		This provides normalization between normal synchronous values and
-		//		asynchronous promises, so you can interact with them in a common way
-		// returns:
-		// 		Returns a new promise that represents the result of the execution of callback 
-		// 		when parameter "promiseOrValue" is promise.
-		// 		Returns the execution result of callback when parameter "promiseOrValue" is value.
-		// example:
-		//		|	function printFirstAndLast(items){
-		//		|		dojo.when(findFirst(items), console.log);
-		//		|		dojo.when(findLast(items), console.log);
-		//		|	}
-		//		|	function findFirst(items){
-		//		|		return dojo.when(items, function(items){
-		//		|			return items[0];
-		//		|		});
-		//		|	}
-		//		|	function findLast(items){
-		//		|		return dojo.when(items, function(items){
-		//		|			return items[items.length - 1];
-		//		|		});
-		//		|	}
-		//		And now all three of his functions can be used sync or async.
-		//		|	printFirstAndLast([1,2,3,4]) will work just as well as
-		//		|	printFirstAndLast(dojo.xhrGet(...));
-
-		if(promiseOrValue && typeof promiseOrValue.then === "function"){
-			return promiseOrValue.then(callback, errback, progressHandler);
-		}
-		return callback ? callback(promiseOrValue) : promiseOrValue;	// Promise
-	};
+	dojo.Deferred.when = dojo.when = when;
 
 	return dojo.Deferred;
 });

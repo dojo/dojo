@@ -1,5 +1,6 @@
 define([
 	"dojo/tests/_base",
+	"dojo/tests/promise",
 	"dojo/tests/cache",
 	"dojo/tests/i18n",
 	"dojo/tests/cldr",

@@ -1530,7 +1530,7 @@
 	}
 
 	if(has("dom")){
-		has.add("ie-event-behavior", (typeof opera === "undefined" || opera.toString() != "[object Opera]") && doc.attachEvent);
+		has.add("ie-event-behavior", (typeof opera === "undefined" || opera.toString() != "[object Opera]") && !!doc.attachEvent);
 	}
 
 	if(has("dom") && (has("dojo-inject-api") || has("dojo-dom-ready-api"))){

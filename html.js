@@ -151,6 +151,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				this.setContent();
 				this.onEnd();
 
+				// dojox.html._ContentSetter.onEnd() can run asynchronously, so for 2.0 considering switching set()
+				// to return a Deferred
 				return this.node;
 			},
 			setContent: function(){
@@ -253,6 +255,10 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 
 			onContentError: function(err){
 				return "Error occurred setting content: " + err;
+			},
+
+			onExecError: function(err){
+				return "Error occurred executing scripts: " + err;
 			},
 
 			_mixin: function(params){

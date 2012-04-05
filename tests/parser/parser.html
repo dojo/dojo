@@ -159,6 +159,21 @@
 				onclick: function() {this.prototypeOnclick=true;}
 			});
 
+			declare("tests.parser.MethodClass", null, {
+			  method1ran: false,
+			  method1after: false,
+			  method2ran: false,
+			  method2before: false,
+			  method2after: false,
+			  method3result: "",
+			  method4ran: false,
+			  method4after: false,
+			  method1: function() { this.method1ran = true },
+			  method2: function() { this.method2ran = true },
+			  method3: function(result) { this.method3result = result; },
+			  method4: function() { this.method4ran = true }
+			});
+
 			declare("tests.parser.ClassForMixins", null, {
 				classDone: true
 			});
@@ -185,7 +200,7 @@
 				doh.register("basic tests", [
 					function parse(){
 						// Running the parser here so that failures appear in test log
-							parser.parse(dom.byId("main"));
+						parser.parse(dom.byId("main"));
 					},
 					function testDataDojoId(t){
 						t.t(typeof obj == "object");
@@ -436,6 +451,29 @@
 						doh.t(objOnWatch.boolProp1, "ensure on executed in scope");
 					},
 					
+      		function testAspect(){
+      		  // testing script-type dojo/aspect
+      		  doh.t(typeof objAspect == "object");
+      		  doh.f(objAspect.method1ran, "ensures method unfired");
+      		  doh.f(objAspect.method2ran, "ensures method unfired");
+      		  doh.is(objAspect.method3result, "", "ensures method unfired");
+      		  doh.f(objAspect.method4ran, "ensures method unfired");
+
+      		  objAspect.method1();
+      		  objAspect.method2();
+      		  objAspect.method3("something");
+      		  objAspect.method4();
+
+      		  doh.t(objAspect.method1ran, "method fired");
+      		  doh.t(objAspect.method1after, "after advice fired");
+      		  doh.t(objAspect.method2ran, "method fired");
+      		  doh.t(objAspect.method2before, "around before advice fired");
+      		  doh.t(objAspect.method2after, "around after advice fired");
+      		  doh.is(objAspect.method3result, "before", "before argument passed");
+      		  doh.t(objAspect.method4ran, "method fired");
+      		  doh.t(objAspect.method4after, "after advice fired");
+      		},
+
 					function testMID(){
 						// testing specifying data-dojo-type as mid
 						doh.t(typeof objAMDWidget == "object");
@@ -787,6 +825,34 @@
 					<script type="dojo/method">
 						this._methodRan = true;
 					</script>
+  				<div data-dojo-id="objAspect" data-dojo-type="tests.parser.MethodClass">
+  				  <script type="dojo/aspect" data-dojo-method="method1" data-dojo-advice="after">
+  				    if(this.method1ran){
+  				      this.method1after = true;
+  				    }
+  				  </script>
+  				  <script type="dojo/aspect" data-dojo-method="method2" data-dojo-advice="around" data-dojo-args="origFn">
+  				    return function(){
+  				      if(!this.method2ran){
+  				        this.method2before = true;
+  				      }
+  				      origFn.call(this);
+  				      if(this.method2ran){
+  				        this.method2after = true;
+  				      }
+  				    }
+  				  </script>
+  				  <script type="dojo/aspect" data-dojo-method="method3" data-dojo-advice="before" data-dojo-args="result">
+  				    if(result == "something"){
+  				      return ["before"];
+  				    }
+  				  </script>
+  				  <script type="dojo/aspect" data-dojo-method="method4">
+  				    if(this.method4ran){
+  				      this.method4after = true;
+  				    }
+  				  </script>
+  				</div>
 				</div>
 			</div>
 			

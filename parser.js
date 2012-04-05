@@ -356,7 +356,7 @@ dojo.parser = new function(){
 									(value == "" ? new Date("") :	// the NaN of dates
 									value == "now" ? new Date() :	// current date
 									dates.fromISOString(value)) :
-							(pVal instanceof dojo._Url) ? (dojo.baseUrl + value) :
+							(pVal instanceof _Url) ? (dojo.baseUrl + value) :
 							djson.fromJson(value);
 					}
 				}else{
@@ -400,10 +400,10 @@ dojo.parser = new function(){
 		// <script type="dojo/watch" data-dojo-prop="foo"> tags are dojo.watch after instantiation
 		// <script type="dojo/on" data-dojo-event="foo"> tags are dojo.on after instantiation
 		// note: dojo/* script tags cannot exist in self closing widgets, like <input />
-		var connects = [],	// functions to connect after instantiation
+		var aspects = [],	// aspects to connect after instantiation
 			calls = [],		// functions to call after instantiation
-			watch = [],  //functions to watch after instantiation
-			on = []; //functions to on after instantiation
+			watches = [],  // functions to watch after instantiation
+			ons = []; // functions to on after instantiation
 
 		if(scripts){
 			for(i=0; i<scripts.length; i++){
@@ -412,18 +412,22 @@ dojo.parser = new function(){
 				// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
 				var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
 					prop = script.getAttribute(attrData + "prop"),
+					method = script.getAttribute(attrData + "method"),
+					advice = script.getAttribute(attrData + "advice"),
 					scriptType = script.getAttribute("type"),
 					nf = this._functionFromScript(script, attrData);
 				if(event){
 					if(scriptType == "dojo/connect"){
-						connects.push({event: event, func: nf});
+						aspects.push({ method: event, func: nf });
 					}else if(scriptType == "dojo/on"){
-						on.push({event: event, func: nf});
+						ons.push({ event: event, func: nf });
 					}else{
 						params[event] = nf;
 					}
+				}else if(scriptType == "dojo/aspect"){
+					aspects.push({ method: method, advice: advice, func: nf });
 				}else if(scriptType == "dojo/watch"){
-					watch.push({prop: prop, func: nf});
+					watches.push({ prop: prop, func: nf });
 				}else{
 					calls.push(nf);
 				}
@@ -440,17 +444,17 @@ dojo.parser = new function(){
 		}
 
 		// process connections and startup functions
-		for(i=0; i<connects.length; i++){
-			aspect.after(instance, connects[i].event, dojo.hitch(instance, connects[i].func), true);
+		for(i=0; i<aspects.length; i++){
+			aspect[aspects[i].advice || "after"](instance, aspects[i].method, dlang.hitch(instance, aspects[i].func), true);
 		}
 		for(i=0; i<calls.length; i++){
 			calls[i].call(instance);
 		}
-		for(i=0; i<watch.length; i++){
-			instance.watch(watch[i].prop, watch[i].func);
+		for(i=0; i<watches.length; i++){
+			instance.watch(watches[i].prop, watches[i].func);
 		}
-		for(i=0; i<on.length; i++){
-			don(instance, on[i].event, on[i].func);
+		for(i=0; i<ons.length; i++){
+			don(instance, ons[i].event, ons[i].func);
 		}
 
 		return instance;

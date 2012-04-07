@@ -72,28 +72,18 @@ define(["./_base/kernel", "./on", "./has", "./mouse"], function(dojo, on, has, m
 	};
 =====*/
 
-	function _handle(/*String*/ type){
+	function _handle(/*String - press | move | release | cancel*/type){
 		return function(node, listener){//called by on(), see dojo.on
 			return on(node, type, listener);
 		};
 	}
 	var touch = has("touch");
 	//device neutral events - dojo.touch.press|move|release|cancel
-	return dojo.touch = {
-		press: _handle("mousedown" + (touch ? ",touchstart" : "")),
-		move: _handle("mousemove" + (touch ? ",touchmove" : "")),
-		release: _handle("mouseup" + (touch ? ",touchend" : "")),
-		cancel: !touch ? mouse.leave : function(node, listener){
-			// If touch is supported, hook up handlers for both touchcancel and
-			// mouse.leave, returning an object with a remove function to unhook both.
-			var mconn = on(node, mouse.leave, listener),
-				tconn = on(node, "touchcancel", listener);
-			return {
-				remove: function(){
-					mconn.remove();
-					tconn.remove();
-				}
-			};
-		}
+	dojo.touch = {
+		press: _handle(touch ? "touchstart": "mousedown"),
+		move: _handle(touch ? "touchmove": "mousemove"),
+		release: _handle(touch ? "touchend": "mouseup"),
+		cancel: touch ? _handle("touchcancel") : mouse.leave
 	};
+	return dojo.touch;
 });

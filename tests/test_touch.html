@@ -55,12 +55,24 @@
 					on(node, touch.move, action);
 					on(node, touch.release, action);
 					on(node, touch.cancel, action);
+
 					
-					//2. we can also isolate mouse/touch handlers
+//					//2. should work well across touch devices
+//					on(node, "touchstart", action);
+//					on(node, "touchmove", action);
+//					on(node, "touchend", action);
+//					on(node, "touchcancel", action);
+//					on(node, "orientationchange", action);
+					
+					//3. we can also isolate mouse/touch handlers
 					on(node, "touchend", function(){alert("isolated touchend handler");});
 					on(node, "mouseup", function(){alert("isolated mouseup handler");});
 				
-					// === DOH tests - currently only testing mouse events ===
+					//================================= DoH tests - only running on desktop ======================
+					if(has("touch")){
+						//FIXME - DoH not supported on touch device
+						return;
+					}
 					var dohDiv = html.byId('dohDiv');
 					domStyle.set(dohDiv, {display: 'block'});
 					
@@ -76,7 +88,8 @@
 					doh.register("dojo.touch", [
 						function press(){
 							var executed, obj = {};
-							on.once(dohDiv, touch.press, function(e){
+							on(dohDiv, touch.press, function(e){
+								//console.log(e.type);
 								executed = true;
 								setObj(obj, e);
 							});
@@ -86,7 +99,8 @@
 						},
 						function move(){
 							var executed, obj = {};
-							on.once(dohDiv, touch.move, function(e){
+							on(dohDiv, touch.move, function(e){
+								//console.log(e.type);
 								executed = true;
 								setObj(obj, e);
 							});
@@ -96,7 +110,8 @@
 						},
 						function release(){
 							var executed, obj = {};
-							on.once(dohDiv, touch.release, function(e){
+							on(dohDiv, touch.release, function(e){
+								//console.log(e.type);
 								executed = true;
 								setObj(obj, e);
 							});
@@ -106,7 +121,7 @@
 						},
 						function cancel(){
 							var executed, obj = {};
-							on.once(dohDiv, touch.cancel, function(e){
+							on(dohDiv, touch.cancel, function(e){
 								executed = true;
 								setObj(obj, e);
 							});

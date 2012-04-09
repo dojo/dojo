@@ -158,6 +158,8 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		Creates a new extension event with event delegation. This is based on
 		// 		the provided event type (can be extension event) that
 		// 		only calls the listener when the CSS selector matches the target of the event.
+		//
+		//		The application must require() an appropriate level of dojo/query to handle the selector.
 		//	selector:
 		//		The CSS selector to use for filter events and determine the |this| of the event listener.
 		//	eventType:
@@ -166,7 +168,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		Indicates if children elements of the selector should be allowed. This defaults to 
 		// 		true
 		//	example:
-		//		define(["dojo/on", "dojo/mouse"], function(listen, mouse){
+		//		define(["dojo/on", "dojo/mouse", "dojo/query!css2"], function(listen, mouse){
 		//			on(node, on.selector(".my-class", mouse.enter), handlerForMyHover);
 		return function(target, listener){
 			var matchesTarget = this,

@@ -43,7 +43,6 @@ dojo.parser = new function(){
 	// Map from widget name (ex: "dijit.form.Button") to a map of { "list-of-mixins": ctor }
 	// if "list-of-mixins" is "__type" this is the raw type without mixins
 	var _ctorMap = {};
-	
 
 	function getCtor(type){
 		var map = _ctorMap[type] || (_ctorMap[type] = {});
@@ -70,10 +69,10 @@ dojo.parser = new function(){
 			suffix = "",
 			argsStr = (script.getAttribute(attrData + "args") || script.getAttribute("args")),
 			withStr = script.getAttribute("with");
-		
+
 		// Convert any arguments supplied in script tag into an array to be passed to the 
 		var fnArgs = (argsStr || "").split(/\s*,\s*/);
-		
+
 		if(withStr && withStr.length){
 			darray.forEach(withStr.split(/\s*,\s*/), function(part){
 				preamble += "with("+part+"){";
@@ -623,7 +622,7 @@ dojo.parser = new function(){
 
 		return list;
 	};
-	
+
 	this.parse = /*====== dojo.parser.parse= ======*/ function(rootNode, options){
 		// summary:
 		//		Scan the DOM for class instances, and instantiate them.
@@ -708,16 +707,15 @@ dojo.parser = new function(){
 		root = root ? dhtml.byId(root) : dwindow.body();
 
 		options = options || {};
-		
+
 		// List of all nodes on page w/dojoType specified
 		var list = this.scan(root, options);
-				
-				// go build the object instances
+
+		// go build the object instances
 		var mixin = options.template ? {template: true} : {};
 		return this._instantiate(list, mixin, options); // Array
 	};
 }();
-
 
 //Register the parser callback. It should be the first callback
 //after the a11y test.

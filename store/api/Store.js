@@ -17,7 +17,7 @@ var Store = declare("dojo.store.api.Store", null, {
 	//		for query() which already defines an async return value).
 
 	// idProperty: String
-	//		If the store has a single primary key, this tndicates the property to use as the
+	//		If the store has a single primary key, this indicates the property to use as the
 	//		identity property. The values of this property should be unique.
 	idProperty: "id",
 

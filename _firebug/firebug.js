@@ -487,6 +487,7 @@ define([
 			_firebugDoc.body.appendChild(consoleFrame);
 		}
 		consoleFrame.className += " firebug";
+		consoleFrame.id = "firebug";
 		consoleFrame.style.height = containerHeight;
 		consoleFrame.style.display = (frameVisible ? "block" : "none");
 

@@ -1,79 +1,94 @@
-define(["./main", "./sniff", "./robot"], function(dojo, has) {
+define([
+	"util/doh/main",
+	"./aspect",
+	"./dom-construct",
+	"./dom-style",
+	"./_base/kernel",
+	"./_base/lang",
+	"./on",
+	"./ready",
+	"./robot",
+	"./sniff",
+	"./_base/window"
+], function(doh, aspect, construct, style, kernel, lang, on, ready, robot, has, win) {
 
-dojo.experimental("dojo.robotx");
+kernel.experimental("dojo.robotx");
 
-// loads an external app into an iframe and points dojo.doc to the iframe document, allowing the robot to control it
-// to use: set robotURL in djConfig to the URL you want to load
-// dojo.require this file
+// module:
+//		dojo.robotx
+// description:
+//		loads an external app into an iframe and points dojo.doc to the iframe document, allowing the robot to control it
+//		to use: set robotURL in djConfig to the URL you want to load
+//		dojo.require this file
 
 // The iframe containing the external app
 var iframe = null;
+
+// On IE6/7, a firebug console will appear.   Scrunch it a bit to leave room for the external test file.
+kernel.config.debugHeight = kernel.config.debugHeight || 200;
 
 // If initRobot() is called before robot has finished initializing, then this is a flag that
 // when robot finishes initializing it should create the iframe and point it to this URL.
 var iframeUrl;
 
-var groupStarted=dojo.connect(doh, '_groupStarted', function(){
-	dojo.disconnect(groupStarted);
-	iframe.style.visibility="visible";
-});
+var groupStarted = aspect.after(doh, "_groupStarted", function(){
+	groupStarted.remove();
+	iframe.style.visibility = "visible";
+	iframe.style.visibility = "visible";
+}, true);
+
+var iframeLoad;
 
 var attachIframe = function(url){
 	// summary:
 	//		Create iframe to load external app at specified url, and call iframeLoad() when that URL finishes loading
 
-	dojo.ready(function(){
+	ready(function(){
 		var emptyStyle = {
-			overflow: has("webkit") ? 'hidden' : 'visible',
-			margin: '0px',
-			borderWidth: '0px',
-			height: '100%',
-			width: '100%'
+			overflow: has("webkit") ? "hidden" : "visible",
+			margin: "0px",
+			borderWidth: "0px",
+			height: "100%",
+			width: "100%"
 		};
-		dojo.style(document.documentElement, emptyStyle);
-		dojo.style(document.body, emptyStyle);
+		style.set(document.documentElement, emptyStyle);
+		style.set(document.body, emptyStyle);
 
-		// write the iframe
-		iframe = document.createElement('iframe');
+		// Create the iframe for the external document.   Put it above the firebug-lite div (if such a div exists).
+		// console.log("creating iframe for external document");
+		iframe = document.createElement("iframe");
 		iframe.src = url;
 		iframe.setAttribute("ALLOWTRANSPARENCY","true");
 		iframe.scrolling = has("ie") ? "yes" : "auto";
-		var scrollRoot = (document.compatMode == 'BackCompat')? document.body : document.documentElement;
-		var consoleHeight = document.getElementById('robotconsole').offsetHeight;
-		dojo.style(iframe, {
-			visibility:'hidden',
-			border:'0px none',
-			padding:'0px',
-			margin:'0px',
-			position:'absolute',
-			left:'0px',
-			top:'0px',
-			width:'100%',
+		var scrollRoot = document.compatMode == "BackCompat" ? document.body : document.documentElement;
+		var consoleHeight = (document.getElementById("firebug") || {}).offsetHeight || 0;
+		style.set(iframe, {
+			visibility: "hidden",
+			border: "0px none",
+			padding: "0px",
+			margin: "0px",
+			width: "100%",
 			height: consoleHeight ? (scrollRoot.clientHeight - consoleHeight)+"px" : "100%"
 		});
-		if(iframe['attachEvent'] !== undefined){
-			iframe.attachEvent('onload', iframeLoad);
+		if(iframe.attachEvent !== undefined){
+			iframe.attachEvent("onload", iframeLoad);
 		}else{
-			dojo.connect(iframe, 'onload', iframeLoad);
+			on(iframe, "load", iframeLoad);
 		}
-		document.body.appendChild(iframe);
-
-		var base=document.createElement('base');
-		base.href=iframe.src;
-		document.getElementsByTagName("head")[0].appendChild(base);
+		construct.place(iframe, win.body(), "first");
 	});
 };
 
 // Prevent race conditions between iframe loading and robot init.
 // If iframe is allowed to load while the robot is typing, sync XHRs can prevent the robot from completing its initialization.
-var robotReady=false;
-var robotFrame=null;
-var _run=doh.robot._run;
-doh.robot._run = function(frame){
+var robotReady = false;
+var robotFrame = null;
+var _run = robot._run;
+robot._run = function(frame){
 	// Called from robot when the robot has completed its initialization.
 	robotReady = true;
 	robotFrame = frame;
-	doh.robot._run = _run;
+	robot._run = _run;
 
 	// If initRobot was already called, then attach the iframe.
 	if(iframeUrl){
@@ -83,7 +98,7 @@ doh.robot._run = function(frame){
 
 var onIframeLoad = function(){
 	// initial load handler: update the document and start the tests
-	doh.robot._updateDocument();
+	robot._updateDocument();
 	onIframeLoad = null;
 
 	// If dojo is present in the test case, then at least make a best effort to wait for it to load.
@@ -91,41 +106,41 @@ var onIframeLoad = function(){
 	if(iframe.contentWindow.require){
 		iframe.contentWindow.require(["dojo/ready"], function(ready){
 			ready(999, function(){
-				doh.robot._run(robotFrame);
+				robot._run(robotFrame);
 			});
 		});
 	}else{
-		doh.robot._run(robotFrame);
+		robot._run(robotFrame);
 	}
 };
 
-var iframeLoad = function(){
+iframeLoad = function(){
 	if(onIframeLoad){
 		onIframeLoad();
 	}
-	var unloadConnect = dojo.connect(dojo.body(), 'onunload', function(){
-		dojo.global = window;
-		dojo.doc = document;
-		dojo.disconnect(unloadConnect);
+	var unloadConnect = on(win.body(), "onunload", function(){
+		kernel.setContext(window, document);
+		unloadConnect.remove();
 	});
 };
 
-// write the firebug console to a place it will fit
-dojo.config.debugContainerId = "robotconsole";
-dojo.config.debugHeight = dojo.config.debugHeight || 200;
-document.write('<div id="robotconsole" style="position:absolute;left:0px;bottom:0px;width:100%;"></div>');
-
-dojo.mixin(doh.robot,{
+lang.mixin(robot, {
 	_updateDocument: function(){
-		dojo.setContext(iframe.contentWindow, iframe.contentWindow.document);
-		var win = dojo.global;
+		// summary:
+		//		Called every time a new page is loaded into the iframe, to setup variables
+		//		Point dojo.global, dojo.publish, etc. to refer to iframe.
+		//		Remove for 2.0?
+
+		kernel.setContext(iframe.contentWindow, iframe.contentWindow.document);
+
+		// TODO: shouldn't this wait until dojo has finished loading in the iframe?  See require code in onIframeLoad().
+		var win = kernel.global;
 		if(win.dojo){
 			// allow the tests to subscribe to topics published by the iframe
-			dojo.publish = win.dojo.publish;
-			dojo.subscribe = win.dojo.subscribe;
-			dojo.connectPublisher = win.dojo.connectPublisher;  
+			kernel.publish = win.dojo.publish;
+			kernel.subscribe = win.dojo.subscribe;
+			kernel.connectPublisher = win.dojo.connectPublisher;
 		}
-
 	},
 
 	initRobot: function(/*String*/ url){
@@ -145,14 +160,14 @@ dojo.mixin(doh.robot,{
 
 	waitForPageToLoad: function(/*Function*/ submitActions){
 		// summary:
-		// 		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
+		//		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
 		//		returning a doh.Deferred object the user should return in their runTest function as part of a DOH test.
 		//
 		// description:
-		// 		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
+		//		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
 		//		returning a doh.Deferred object the user should return in their runTest function as part of a DOH test.
 		//		Example:
-		//			runTest:function(){
+		//			runTest: function(){
 		//				return waitForPageLoad(function(){ doh.robot.keyPress(dojo.keys.ENTER, 500); });
 		//			}
 		//
@@ -167,7 +182,7 @@ dojo.mixin(doh.robot,{
 		onIframeLoad = function(){
 			onIframeLoad = null;
 			// set dojo.doc on every page change to point to the iframe doc so the robot works
-			doh.robot._updateDocument();
+			robot._updateDocument();
 			d.callback(true);
 		};
 		submitActions();
@@ -176,5 +191,5 @@ dojo.mixin(doh.robot,{
 
 });
 
-return doh.robot;
+return robot;
 });

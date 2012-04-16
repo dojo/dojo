@@ -161,20 +161,10 @@ dojo.parser = new function(){
 		//		An options object used to hold kwArgs for instantiation.
 		//		See parse.options argument for details.
 
-		var thelist = [];
-
-		// Precompute names of data-dojo-type and data-dojo-mixin attributes.
-		// TODO: for 2.0 default to data-dojo- regardless of scopeName (or maybe scopeName won't exist in 2.0)
-		var scope = options.scope || dojo._scopeName;
-
-		darray.forEach(nodes, function(obj){
-			if(!obj){ return; }
-
-			var node = obj.node,
-				ctor = obj.ctor || getCtor(obj.types);
-
-			// Call widget constructor
-			thelist.push(this.construct(ctor, node, mixin, options, obj.scripts, obj.inherited));
+		// Call widget constructors
+		var thelist = darray.map(nodes, function(obj){
+			var ctor = obj.ctor || getCtor(obj.types);
+			return this.construct(ctor, obj.node, mixin, options, obj.scripts, obj.inherited);
 		}, this);
 
 		// Call startup on each top level instance if it makes sense (as for
@@ -269,7 +259,7 @@ dojo.parser = new function(){
 
 		// Read in attributes and process them, including data-dojo-props, data-dojo-type,
 		// dojoAttachPoint, etc., as well as normal foo=bar attributes.
-		var i=0, item, funcAttrs=[];
+		var i=0, item, funcAttrs=[], jsname, extra;
 		while(item = attributes[i++]){
 			var name = item.name,
 				lcName = name.toLowerCase(),
@@ -284,13 +274,13 @@ dojo.parser = new function(){
 
 			// Data-dojo-props.   Save for later to make sure it overrides direct foo=bar settings
 			case "data-dojo-props":
-				var extra = value;
+				extra = value;
 				break;
 
 			// data-dojo-id or jsId. TODO: drop jsId in 2.0
 			case "data-dojo-id":
 			case "jsid":
-				var jsname = value;
+				jsname = value;
 				break;
 
 			// For the benefit of _Templated
@@ -361,12 +351,12 @@ dojo.parser = new function(){
 			}
 		}
 
-		// Remove function attributes from DOMNOde to prevent "double connect" problem, see #15026.
+		// Remove function attributes from DOMNode to prevent "double connect" problem, see #15026.
 		// Do this as a separate loop since attributes[] is often a live collection (depends on the browser though).
-		for(var i=0; i<funcAttrs.length; i++){
-			var lcName = funcAttrs[i].toLowerCase();
-			node.removeAttribute(lcName);
-			node[lcName] = null;
+		for(var j=0; j<funcAttrs.length; j++){
+			var lcfname = funcAttrs[j].toLowerCase();
+			node.removeAttribute(lcfname);
+			node[lcfname] = null;
 		}
 
 		// Mix things found in data-dojo-props into the params, overriding any direct settings

@@ -40,13 +40,28 @@ dojo.parser = new function(){
 		return map;
 	}
 
-	// Map from widget name (ex: "dijit.form.Button") to a map of { "list-of-mixins": ctor }
-	// if "list-of-mixins" is "__type" this is the raw type without mixins
+	// Map from widget name or list of widget names(ex: "dijit/form/Button,acme/MyMixin") to a constructor.
 	var _ctorMap = {};
 
-	function getCtor(type){
-		var map = _ctorMap[type] || (_ctorMap[type] = {});
-		return map["__type"] || (map["__type"] = (dlang.getObject(type) || require(type)));
+	function getCtor(/*String[]*/ types){
+		// summary:
+		//		Retrieves a constructor.  If the types array contains more than one class/MID then the
+		//		subsequent classes will be mixed into the first class and a unique constructor will be
+		//		returned for that array.
+
+		var ts = types.join();
+		if(!_ctorMap[ts]){
+			var mixins = [];
+			for(var i = 0, l = types.length; i < l; i++){
+				var t = types[i];
+				// TODO: Consider swapping getObject and require in the future
+				mixins[mixins.length] = (_ctorMap[t] = _ctorMap[t] || (dlang.getObject(t) || (~t.indexOf('/') && require(t))));
+			}
+			var ctor = mixins.shift();
+			_ctorMap[ts] = mixins.length ? (ctor.createSubclass ? ctor.createSubclass(mixins) : ctor.extend.apply(ctor, mixins)) : ctor;
+		}
+
+		return _ctorMap[ts];
 	}
 
 	this._clearCache = function(){
@@ -103,15 +118,19 @@ dojo.parser = new function(){
 
 		var dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
 			attrData = "data-" + (options.scope || dojo._scopeName) + "-",// typically "data-dojo-"
-			dataDojoType = attrData + "type";						// typically "data-dojo-type"
+			dataDojoType = attrData + "type",						// typically "data-dojo-type"
+			dataDojoMixins = attrData + "mixins";					// typically "data-dojo-mixins"
 
 		var list = [];
 		darray.forEach(nodes, function(node){
 			var type = dojoType in mixin ? mixin[dojoType] : node.getAttribute(dataDojoType) || node.getAttribute(dojoType);
 			if(type){
+				var mixinsValue = node.getAttribute(dataDojoMixins),
+					types = mixinsValue ? [type].concat(mixinsValue.split(/\s*,\s*/)) : [type];
+
 				list.push({
 					node: node,
-					"type": type
+					types: types
 				});
 			}
 		});
@@ -128,7 +147,8 @@ dojo.parser = new function(){
 		// nodes: Array
 		//		Array of objects like
 		//	|		{
-		//	|			type: "dijit.form.Button",
+		//	/			ctor: Function (may be null)
+		//	|			types: ["dijit/form/Button", "acme/MyMixin"] (used if ctor not specified)
 		//	|			node: DOMNode,
 		//	|			scripts: [ ... ],	// array of <script type="dojo/..."> children of node
 		//	|			inherited: { ... }	// settings inherited from ancestors like dir, theme, etc.
@@ -145,38 +165,13 @@ dojo.parser = new function(){
 
 		// Precompute names of data-dojo-type and data-dojo-mixin attributes.
 		// TODO: for 2.0 default to data-dojo- regardless of scopeName (or maybe scopeName won't exist in 2.0)
-		var scope = options.scope || dojo._scopeName,
-			attrData = "data-" + scope + "-",						// typically "data-dojo-"
-			dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
-			dataDojoType = attrData + "type",						// typically "data-dojo-type"
-			dataDojoMixins = attrData + "mixins";
-
-		function extend(type, mixins){
-			return type.createSubclass && type.createSubclass(mixins) || type.extend.apply(type, mixins);
-		}
+		var scope = options.scope || dojo._scopeName;
 
 		darray.forEach(nodes, function(obj){
 			if(!obj){ return; }
 
 			var node = obj.node,
-				type = obj.type,
-				mixins = node.getAttribute(dataDojoMixins), ctor;
-
-			// Get or generate the constructor from data-dojo-type and data-dojo-mixins
-			if(mixins){
-				var map = _ctorMap[type];
-				// remove whitespaces
-				mixins = mixins.replace(/ /g, "");
-				ctor = map && map[mixins];
-				if(!ctor){
-					// first get ctor for raw type (& create _ctorMap[type] if needed (should not be))
-					ctor = getCtor(type);
-					// then do the mixin
-					ctor = _ctorMap[type][mixins] = extend(ctor, darray.map(mixins.split(","), getCtor));
-				}
-			}else{
-				ctor = getCtor(type);
-			}
+				ctor = obj.ctor || getCtor(obj.types);
 
 			// Call widget constructor
 			thelist.push(this.construct(ctor, node, mixin, options, obj.scripts, obj.inherited));
@@ -188,7 +183,7 @@ dojo.parser = new function(){
 		if(!mixin._started){
 			darray.forEach(thelist, function(instance){
 				if( !options.noStart && instance  &&
-					dlang.isFunction(instance.startup) &&
+					typeof instance.startup === "function" &&
 					!instance._started
 				){
 					instance.startup();
@@ -267,6 +262,7 @@ dojo.parser = new function(){
 		if(scope !== "dojo"){
 			hash[attrData + "props"] = "data-dojo-props";
 			hash[attrData + "type"] = "data-dojo-type";
+			hash[attrData + "mixins"] = "data-dojo-mixins";
 			hash[scope + "type"] = "dojoType";
 			hash[attrData + "id"] = "data-dojo-id";
 		}
@@ -283,6 +279,7 @@ dojo.parser = new function(){
 			// Already processed, just ignore
 			case "data-dojo-type":
 			case "dojotype":
+			case "data-dojo-mixins":
 				break;
 
 			// Data-dojo-props.   Save for later to make sure it overrides direct foo=bar settings
@@ -458,7 +455,7 @@ dojo.parser = new function(){
 
 		return instance;
 	};
-
+	
 	this.scan = /*====== dojo.parser.scan= ======*/ function(root, options){
 		// summary:
 		//		Scan a DOM tree and return an array of objects representing the DOMNodes
@@ -485,7 +482,8 @@ dojo.parser = new function(){
 		var dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
 			attrData = "data-" + (options.scope || dojo._scopeName) + "-",	// typically "data-dojo-"
 			dataDojoType = attrData + "type",						// typically "data-dojo-type"
-			dataDojoTextDir = attrData + "textdir";					// typically "data-dojo-textdir"
+			dataDojoTextDir = attrData + "textdir",					// typically "data-dojo-textdir"
+			dataDojoMixins = attrData + "mixins";					// typically "data-dojo-mixins"
 
 		// Info on DOMNode currently being processed
 		var node = root.firstChild;
@@ -595,16 +593,22 @@ dojo.parser = new function(){
 
 			// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate
 			// Note: won't find classes declared via dojo.Declaration, so use try/catch to avoid throw from require()
-			// We don't care yet about mixins ctors, we check script stop only on main class
-			var ctor;
-			try{
-				ctor = type && getCtor(type);
-			}catch(e){
+			var ctor = null;
+			if(type){
+				var mixinsValue = node.getAttribute(dataDojoMixins),
+					types = mixinsValue ? [type].concat(mixinsValue.split(/\s*,\s*/)) : [type];
+
+				try{
+					ctor = getCtor(types);
+				}catch(e){
+				}
 			}
+
 			var childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
 			if(type){
 				list.push({
-					"type": type,
+					types: types,
+					ctor: ctor,
 					node: node,
 					scripts: childScripts,
 					inherited: getEffective(current) // dir & lang settings for current node, explicit or inherited
@@ -707,7 +711,7 @@ dojo.parser = new function(){
 		root = root ? dhtml.byId(root) : dwindow.body();
 
 		options = options || {};
-
+		
 		// List of all nodes on page w/dojoType specified
 		var list = this.scan(root, options);
 

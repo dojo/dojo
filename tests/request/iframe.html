@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo/request/iframe</title>
+		<style type="text/css">
+			@import "../../resources/dojo.css";
+		</style>
+		<script>
+			var dojoConfig = {
+				async: true
+			};
+		</script>
+		<script type="text/javascript" src="../../dojo.js"></script>
+		<script type="text/javascript">
+			require(["doh", "dojo/request/iframe", "dojo/domReady!"], function(doh, iframe){
+				doh.register("dojo/request/iframe", [
+					function ioIframeGetText(t){
+						var d = new doh.Deferred();
+						var td = iframe.get("iframeDummyMethod.php?type=text", {
+							preventCache: true
+						});
+						td.then(d.getTestCallback(function(response){
+							t.is("iframe succeeded", response.data);
+						}));
+						return d;
+					},
+
+					function ioIframeGetJson(t){
+						var d = new doh.Deferred();
+						var td = iframe.post("iframeDummyMethod.php?type=json", {
+							preventCache: true,
+							form: "contentArrayTest",
+							data: {
+								color: "blue",
+								size: 42
+							},
+							handleAs: "json"
+						});
+						td.then(d.getTestCallback(function(response){
+							t.is("blue", response.data.post.color);
+						}));
+						return d;
+					},
+
+					function ioIframeGetJavascript(t){
+						var d = new doh.Deferred();
+						var td = iframe.get("iframeDummyMethod.php?type=javascript", {
+							preventCache: true,
+							handleAs: "javascript"
+						});
+						td.then(d.getTestCallback(function(response){
+							t.is(42, window.iframeTestingFunction());
+						}));
+						return d;
+					},
+
+					function ioIframeGetHtml(t){
+						var d = new doh.Deferred();
+						var td = iframe.get("iframeDummyMethod.php?type=html", {
+							preventCache: true,
+							handleAs: "html"
+						});
+						td.then(d.getTestCallback(function(response){
+							t.is("SUCCESSFUL HTML response",
+								response.data.getElementsByTagName("h1")[0].innerHTML);
+						}));
+						return d;
+					},
+
+					function ioIframeGetXml(t){
+						var d = new doh.Deferred();
+						var td = iframe.get("iframeDummyMethod.php?type=xml", {
+							preventCache: true,
+							handleAs: "xml"
+						});
+						td.then(d.getTestCallback(function(response){
+							t.is(4, response.data.documentElement.getElementsByTagName("child").length);
+						}));
+						return d;
+					},
+					function ioIframeDataArray(t){
+						//Tests if an array passed in content causes as an error on cleanup.
+						var d = new doh.Deferred();
+						var td = iframe.post("iframeDummyMethod.php?type=json", {
+							form: "contentArrayTest",
+							data: {"tag": ["value1","value2"]},
+							handleAs: "json"
+						});
+						td.then(d.getTestCallback(function(response){
+							t.is("value2", response.data.post.tag);
+						}));
+						return d;
+					},
+					{
+						name: "iframeQueue",
+						timeout: 10000,
+						runTest: function(t){
+							var d = new doh.Deferred();
+
+							iframe.get("iframeDummyMethod.php",{
+								query: {
+									type: "text",
+									delay: 2,
+									text: "one"
+								}
+							}).then(d.getTestErrback(function(data){
+								t.is("one", data.text);
+							}));
+							iframe.get("iframeDummyMethod.php",{
+								query: {
+									type: "text",
+									text: "two"
+								}
+							}).then(d.getTestErrback(function(data){
+								t.is("two", data.text);
+							}));
+							iframe.get("iframeDummyMethod.php",{
+								query: {
+									type: "text",
+									text: "three"
+								}
+							}).then(d.getTestCallback(function(data){
+								t.is("three", data.text);
+							}));
+
+							t.is(3, iframe._dfdQueue.length);
+
+							return d;
+						}
+					}
+				]);
+				doh.run();
+			});
+
+		</script>
+	</head>
+	<body>
+		<form id="contentArrayTest" method="get" enctype="multipart/form-data"></form>
+	</body>
+</html>

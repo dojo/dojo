@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Registry Test</title>
+
+	<script>
+		var dojoConfig = {
+			baseUrl: '../..',
+			async: true,
+			packages: [
+				'dojo',
+				{ name: 'doh', location: 'util/doh' },
+				'request'
+			],
+			aliases: [
+				[/^dojo\/request\/(.*)$/g, function(mid, end){
+					return 'request/' + end;
+				}],
+				['dojo/request', 'request/main']
+			],
+			requestProvider: 'dojo/request/registry'
+		};
+	</script>
+	<script src="../../dojo/dojo.js"></script>
+	<script>
+		require({
+			requestProvider: 'dojo/request/registry'
+		},[
+			"doh",
+			"dojo/request",
+			"dojo/request/registry",
+			"dojo/request/script",
+			"dojo/domReady!"
+		], function(doh, request, registry, script){
+			doh.register("dojo/request/registry", [
+				function requestEqualsRegistry(t){
+					t.is(registry, request, "request should be the registry function");
+				},
+				{
+					name: "",
+					runTest: function(t){
+					}
+				}
+			]);
+
+			doh.run();
+			/*request.register(/jsonp/, script);
+			request.get('data.json', { handleAs: 'json' }).then(function(responseData){
+				console.log(responseData);
+			}, function(err){
+				console.log(err);
+			});
+			request.get('jsonp.php', { jsonp: 'callback' }).then(function(responseData){
+				console.log(responseData);
+			});*/
+		});
+	</script>
+</head>
+<body>
+</body>
+</html>

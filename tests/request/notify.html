@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>dojo/request/notify test</title>
+	<style>
+		@import "../../dojo/resources/dojo.css";
+	</style>
+	<script>
+		var dojoConfig = {
+			baseUrl: '../..',
+			async: true,
+			packages: [
+				'dojo',
+				{ name: 'doh', location: 'util/doh' },
+				'request'
+			],
+			aliases: [
+				[/^dojo\/request\/(.*)$/g, function(mid, end){
+					return 'request/' + end;
+				}],
+				['dojo/request', 'request/main']
+			]
+		};
+	</script>
+	<script src="../../dojo/dojo.js"></script>
+	<script>
+		require([
+			"doh",
+			"dojo/request/xhr",
+			"dojo/topic",
+			"dojo/_base/lang",
+			"dojo/request/notify",
+			"dojo/domReady!"
+		], function(doh, xhr, topic, lang){
+			function resCounter(count, callback){
+				var resCount = 0;
+
+				return function(){
+					if(++resCount == count){
+						callback.apply(this, arguments);
+					}
+				};
+			}
+
+			function remover(){
+				var args = arguments;
+				return function(){
+					var i = args.length;
+					while(i--){
+						args[i].remove();
+					}
+				};
+			}
+
+			doh.register("dojo/request/notify", [{
+				name: "start/send",
+				runTest: function(t){
+					var d = new doh.Deferred();
+
+					var startCount = 0,
+						sendCount = 0;
+
+					t.remove = remover(
+						topic.subscribe("/dojo/request/start", function(data){
+							startCount++;
+						}),
+						topic.subscribe("/dojo/request/send", function(data){
+							sendCount++;
+						})
+					);
+
+					var counter = resCounter(2, d.getTestCallback(function(){
+						t.is(1, startCount, "/dojo/request/start should have fired once");
+						t.is(2, sendCount, "/dojo/request/send should have fired twice");
+					}));
+					xhr.get("xhrDummyMethod.php?delay=1").then(counter);
+					xhr.get("xhrDummyMethod.php?delay=1").then(counter);
+
+					return d;
+				},
+				tearDown: function(t){
+					t.remove();
+				}
+			},{
+				name: "load",
+				runTest: function(t){
+					var d = new doh.Deferred();
+
+					t.remove = remover(
+						topic.subscribe("/dojo/request/load", d.getTestErrback(function(data){
+							t.is({ foo: "bar" }, data.response.query);
+						})),
+						topic.subscribe("/dojo/request/stop", d.getTestCallback(function(){}))
+					);
+
+					xhr.get("xhrDummyMethod.php?foo=bar", { handleAs: "json" });
+
+					return d;
+				},
+				tearDown: function(t){
+					t.remove();
+				}
+			},{
+				name: "error",
+				runTest: function(t){
+					var d = new doh.Deferred();
+
+					t.remove = remover(
+						topic.subscribe("/dojo/request/error", d.getTestErrback(function(data){
+							t.t(data instanceof Error);
+						})),
+						topic.subscribe("/dojo/request/stop", d.getTestCallback(function(){}))
+					);
+
+					xhr.get("doesntExist.text");
+
+					return d;
+				},
+				tearDown: function(t){
+					t.remove();
+				}
+			},{
+				name: "done/stop",
+				runTest: function(t){
+					var d = new doh.Deferred();
+
+					var doneCount = 0,
+						stopCount = 0;
+
+					t.remove = remover(
+						topic.subscribe("/dojo/request/done", function(data){
+							doneCount++;
+						}),
+						topic.subscribe("/dojo/request/stop", function(data){
+							stopCount++;
+						})
+					);
+
+					var counter = resCounter(2, d.getTestCallback(function(){
+						t.is(2, doneCount, "/dojo/request/done should have fired twice");
+						t.is(1, stopCount, "/dojo/request/stop should have fired once");
+					}));
+
+					xhr.get("xhrDummyMethod.php?delay=1").then(counter);
+					xhr.get("xhrDummyMethod.php?delay=1").then(counter);
+
+					return d;
+				},
+				tearDown: function(t){
+					t.remove();
+				}
+			}]);
+
+			doh.run();
+		});
+	</script>
+</head>
+<body>
+</body>
+</html>

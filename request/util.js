@@ -71,28 +71,13 @@ define([
 
 		try{
 			var notify = require('./notify');
-			promise.then(
-				function(response){
-					notify.load(response);
-					return response;
-				},
-				function(error){
-					notify.error(error);
-					return error;
-				}
-			);
+			promise.then(notify.load, notify.error);
 		}catch(e){}
 
 		if(fnlly){
-			def.then(
-				function(response){
-					fnlly(response);
-				},
-				function(error){
-					fnlly(response, error);
-					throw error;
-				}
-			);
+			def.then(fnlly, function(error){
+				fnlly(response, error);
+			});
 		}
 
 		def.promise = promise;

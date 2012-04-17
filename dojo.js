@@ -1808,8 +1808,8 @@
 	}
 
 	if(has("dojo-config-api")){
-		var bootDeps = defaultConfig.deps || userConfig.deps || dojoSniffConfig.deps,
-			bootCallback = defaultConfig.callback || userConfig.callback || dojoSniffConfig.callback;
+		var bootDeps = dojoSniffConfig.deps ||  userConfig.deps || defaultConfig.deps,
+			bootCallback = dojoSniffConfig.callback || userConfig.callback || defaultConfig.callback;
 		req.boot = (bootDeps || bootCallback) ? [bootDeps || [], bootCallback] : 0;
 	}
 	if(!has("dojo-built")){

@@ -1,17 +1,23 @@
 define([
 	"../_base/array",
-	"../_base/connect",
 	"../_base/declare",
 	"../_base/event",
 	"../_base/kernel",
 	"../_base/lang",
+	"../_base/window",
 	"../dom",
 	"../dom-class",
 	"../dom-construct",
 	"../Evented",
+	"../has",
+	"../on",
 	"../query",
+	"../ready",
+	"../touch",
 	"./common"
-], function(array, connect, declare, event, kernel, lang, dom, domClass, domConstruct, Evented, query, dnd) {
+], function(
+	array, declare, event, kernel, lang, win,
+	dom, domClass, domConstruct, Evented, has, on, query, ready, touch, dnd) {
 
 // module:
 //		dojo/dnd/Container
@@ -69,6 +75,51 @@ dojo.dnd.Item = function(){
 }
 =====*/
 
+// Setup synthetic "touchover" and "touchout" events to handle mouseout/mouseover plus their touch equivalents.
+// The synthetic events work (although are less efficient than the native events) for mouse movement too.
+// Probably this code should eventually be moved to dojo/touch.
+var touchover = "mouseover", touchout = "mouseout";
+if(has("touch")){
+	// Keep track of the currently hovered node
+	var hoveredNode,				// currently hovered node
+		tracker = new Evented();	// emits events when hovered node changes
+	ready(function(){
+		on(win.doc, "touchstart, touchmove, mousemove", function(evt){
+			var newHoverNode = win.doc.elementFromPoint(
+				evt.pageX - win.body().parentNode.scrollLeft,
+				evt.pageY - win.body().parentNode.scrollTop
+			);
+			if(newHoverNode != hoveredNode){
+				console.log("hovered node changed from ", hoveredNode, " to ", newHoverNode);
+				tracker.emit("hoverNode", hoveredNode, hoveredNode = newHoverNode);
+			}
+		});
+	});
+
+	touchover = function(myNode, listener){
+		return tracker.on("hoverNode", function(oldVal, newVal){
+			if(dom.isDescendant(newVal, myNode)){
+				return listener.call(myNode, {
+					type: "touch.over",
+					target: newVal,
+					relatedTarget: oldVal
+				});
+			}
+		});
+	};
+	touchout = function(myNode, listener){
+		return tracker.on("hoverNode", function(oldVal, newVal){
+			if(dom.isDescendant(oldVal, myNode)){
+				return listener.call(myNode, {
+					type: "touch.out",
+					target: oldVal,
+					relatedTarget: newVal
+				});
+			}
+		});
+	};
+}
+
 var Container = declare("dojo.dnd.Container", Evented, {
 	// summary:
 	//		a Container object, which knows when mouse hovers over it,
@@ -120,11 +171,11 @@ var Container = declare("dojo.dnd.Container", Evented, {
 
 		// set up events
 		this.events = [
-			connect.connect(this.node, "onmouseover", this, "onMouseOver"),
-			connect.connect(this.node, "onmouseout",  this, "onMouseOut"),
+			on(this.node, touchover, lang.hitch(this, "onMouseOver")),
+			on(this.node, touchout,  lang.hitch(this, "onMouseOut")),
 			// cancel text selection and text dragging
-			connect.connect(this.node, "ondragstart",   this, "onSelectStart"),
-			connect.connect(this.node, "onselectstart", this, "onSelectStart")
+			on(this.node, "dragstart",   lang.hitch(this, "onSelectStart")),
+			on(this.node, "selectstart", lang.hitch(this, "onSelectStart"))
 		];
 	},
 
@@ -237,15 +288,15 @@ var Container = declare("dojo.dnd.Container", Evented, {
 	destroy: function(){
 		// summary:
 		//		prepares this object to be garbage-collected
-		array.forEach(this.events, connect.disconnect);
+		array.forEach(this.events, function(handle){ handle.remove(); });
 		this.clearItems();
 		this.node = this.parent = this.current = null;
 	},
 
 	// markup methods
-	markupFactory: function(params, node, ctor){
+	markupFactory: function(params, node, Ctor){
 		params._skipStartup = true;
-		return new ctor(node, params);
+		return new Ctor(node, params);
 	},
 	startup: function(){
 		// summary:

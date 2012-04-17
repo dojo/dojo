@@ -1,7 +1,7 @@
 define([
-	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event", "../sniff", "../_base/window",
-	"../dom", "../dom-geometry", "../dom-style", "../Evented", "../touch", "./common", "./autoscroll"
-], function(array, connect, declare, event, has, win, dom, domGeom, domStyle, Evented, touch, dnd, autoscroll) {
+	"../_base/array", "../_base/declare", "../_base/event", "../_base/lang", "../sniff", "../_base/window",
+	"../dom", "../dom-geometry", "../dom-style", "../Evented", "../on", "../touch", "./common", "./autoscroll"
+], function(array, declare, event, lang, has, win, dom, domGeom, domStyle, Evented, on, touch, dnd, autoscroll) {
 
 // module:
 //		dojo/dnd/Mover
@@ -28,19 +28,19 @@ return declare("dojo.dnd.Mover", [Evented], {
 		this.mouseButton = e.button;
 		var h = (this.host = host), d = node.ownerDocument;
 		this.events = [
-			// At the start of a drag, onFirstMove is called, and then the following two
-			// connects are disconnected
-			connect.connect(d, touch.move, this, "onFirstMove"),
+			// At the start of a drag, onFirstMove is called, and then the following
+			// listener is disconnected.
+			on(d, touch.move, lang.hitch(this, "onFirstMove")),
 
 			// These are called continually during the drag
-			connect.connect(d, touch.move, this, "onMouseMove"),
+			on(d, touch.move, lang.hitch(this, "onMouseMove")),
 
 			// And these are called at the end of the drag
-			connect.connect(d, touch.release,   this, "onMouseUp"),
+			on(d, touch.release,  lang.hitch(this, "onMouseUp")),
 
 			// cancel text selection and text dragging
-			connect.connect(d, "ondragstart",   event.stop),
-			connect.connect(d.body, "onselectstart", event.stop)
+			on(d, "dragstart",   event.stop),
+			on(d.body, "selectstart", event.stop)
 		];
 		// notify that the move has started
 		if(h && h.onMoveStart){
@@ -69,7 +69,7 @@ return declare("dojo.dnd.Mover", [Evented], {
 	onFirstMove: function(e){
 		// summary:
 		//		makes the node absolute; it is meant to be called only once.
-		// 		relative and absolutely positioned nodes are assumed to use pixel units
+		//		relative and absolutely positioned nodes are assumed to use pixel units
 		var s = this.node.style, l, t, h = this.host;
 		switch(s.position){
 			case "relative":
@@ -103,13 +103,13 @@ return declare("dojo.dnd.Mover", [Evented], {
 			h.onFirstMove(this, e);
 		}
 
-		// Disconnect onmousemove and ontouchmove events that call this function
-		connect.disconnect(this.events.shift());
+		// Disconnect touch.move that call this function
+		this.events.shift().remove();
 	},
 	destroy: function(){
 		// summary:
 		//		stops the move, deletes all references, so the object can be garbage-collected
-		array.forEach(this.events, connect.disconnect);
+		array.forEach(this.events, function(handle){ handle.remove(); });
 		// undo global settings
 		var h = this.host;
 		if(h && h.onMoveStop){

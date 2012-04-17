@@ -1,7 +1,7 @@
 define([
-	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event",
-	"../dom", "../dom-class", "../Evented", "../topic", "../touch", "./common", "./Mover", "../_base/window"
-], function(array, connect, declare, event, dom, domClass, Evented, topic, touch, dnd, Mover, win) {
+	"../_base/array", "../_base/declare", "../_base/event", "../_base/lang",
+	"../dom", "../dom-class", "../Evented", "../on", "../topic", "../touch", "./common", "./Mover", "../_base/window"
+], function(array, declare, event, lang, dom, domClass, Evented, on, topic, touch, dnd, Mover, win) {
 
 // module:
 //		dojo/dnd/Moveable
@@ -55,23 +55,23 @@ return declare("dojo.dnd.Moveable", [Evented], {
 		this.skip  = params.skip;
 		this.mover = params.mover ? params.mover : Mover;
 		this.events = [
-			connect.connect(this.handle, touch.press, this, "onMouseDown"),
+			on(this.handle, touch.press, lang.hitch(this, "onMouseDown")),
 			// cancel text selection and text dragging
-			connect.connect(this.handle, "ondragstart",   this, "onSelectStart"),
-			connect.connect(this.handle, "onselectstart", this, "onSelectStart")
+			on(this.handle, "dragstart",   lang.hitch(this, "onSelectStart")),
+			on(this.handle, "selectstart",   lang.hitch(this, "onSelectStart"))
 		];
 	},
 
 	// markup methods
-	markupFactory: function(params, node, ctor){
-		return new ctor(node, params);
+	markupFactory: function(params, node, Ctor){
+		return new Ctor(node, params);
 	},
 
 	// methods
 	destroy: function(){
 		// summary:
 		//		stops watching for possible move, deletes all references, so the object can be garbage-collected
-		array.forEach(this.events, connect.disconnect);
+		array.forEach(this.events, function(handle){ handle.remove(); });
 		this.events = this.node = this.handle = null;
 	},
 
@@ -84,8 +84,8 @@ return declare("dojo.dnd.Moveable", [Evented], {
 		if(this.skip && dnd.isFormElement(e)){ return; }
 		if(this.delay){
 			this.events.push(
-				connect.connect(this.handle, touch.move, this, "onMouseMove"),
-				connect.connect(this.handle, touch.release, this, "onMouseUp")
+				on(this.handle, touch.move, lang.hitch(this, "onMouseMove")),
+				on(this.handle, touch.release, lang.hitch(this, "onMouseUp"))
 			);
 			this._lastX = e.pageX;
 			this._lastY = e.pageY;
@@ -111,7 +111,7 @@ return declare("dojo.dnd.Moveable", [Evented], {
 		// e: Event
 		//		mouse event
 		for(var i = 0; i < 2; ++i){
-			connect.disconnect(this.events.pop());
+			this.events.pop().remove();
 		}
 		event.stop(e);
 	},

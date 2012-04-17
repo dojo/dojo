@@ -1,7 +1,7 @@
 define([
-	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event", "../_base/kernel",
-	"../dom", "../dom-construct", "../mouse", "../_base/NodeList", "./common", "./Container"
-], function(array, connect, declare, event, kernel, dom, domConstruct, mouse, NodeList, dnd, Container) {
+	"../_base/array", "../_base/declare", "../_base/event", "../_base/kernel", "../_base/lang",
+	"../dom", "../dom-construct", "../mouse", "../_base/NodeList", "../on", "../touch", "./common", "./Container"
+], function(array, declare, event, kernel, lang, dom, domConstruct, mouse, NodeList, on, touch, dnd, Container) {
 
 // module:
 //		dojo/dnd/Selector
@@ -59,8 +59,9 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 		this.simpleSelection = false;
 		// set up events
 		this.events.push(
-			connect.connect(this.node, "onmousedown", this, "onMouseDown"),
-			connect.connect(this.node, "onmouseup",   this, "onMouseUp"));
+			on(this.node, touch.press, lang.hitch(this, "onMouseDown")),
+			on(this.node, touch.release, lang.hitch(this, "onMouseUp"))
+		);
 	},
 
 	// object attributes (for markup)
@@ -193,7 +194,7 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 		//		mouse event
 		if(this.autoSync){ this.sync(); }
 		if(!this.current){ return; }
-		if(!this.singular && !connect.isCopyKey(e) && !e.shiftKey && (this.current.id in this.selection)){
+		if(!this.singular && !dnd.getCopyKeyState(e) && !e.shiftKey && (this.current.id in this.selection)){
 			this.simpleSelection = true;
 			if(mouse.isLeft(e)){
 				// accept the left button and stop the event
@@ -203,7 +204,7 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 			return;
 		}
 		if(!this.singular && e.shiftKey){
-			if(!connect.isCopyKey(e)){
+			if(!dnd.getCopyKeyState(e)){
 				this._removeSelection();
 			}
 			var c = this.getAllNodes();
@@ -232,7 +233,7 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 		}else{
 			if(this.singular){
 				if(this.anchor == this.current){
-					if(connect.isCopyKey(e)){
+					if(dnd.getCopyKeyState(e)){
 						this.selectNone();
 					}
 				}else{
@@ -242,7 +243,7 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 					this.selection[this.current.id] = 1;
 				}
 			}else{
-				if(connect.isCopyKey(e)){
+				if(dnd.getCopyKeyState(e)){
 					if(this.anchor == this.current){
 						delete this.selection[this.anchor.id];
 						this._removeAnchor();
@@ -298,12 +299,12 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 	onOverEvent: function(){
 		// summary:
 		//		this function is called once, when mouse is over our container
-		this.onmousemoveEvent = connect.connect(this.node, "onmousemove", this, "onMouseMove");
+		this.onmousemoveEvent = on(this.node, touch.move, lang.hitch(this, "onMouseMove"));
 	},
 	onOutEvent: function(){
 		// summary:
 		//		this function is called once, when mouse is out of our container
-		connect.disconnect(this.onmousemoveEvent);
+		this.onmousemoveEvent.remove();
 		delete this.onmousemoveEvent;
 	},
 	_removeSelection: function(){

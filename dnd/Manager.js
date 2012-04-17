@@ -1,8 +1,8 @@
 define([
-	"../_base/array", "../_base/connect", "../_base/declare", "../_base/event", "../_base/window",
-	"../dom-class", "../Evented", "../keys", "../topic",
+	"../_base/array",  "../_base/declare", "../_base/event", "../_base/lang", "../_base/window",
+	"../dom-class", "../Evented", "../keys", "../on", "../topic", "../touch",
 	"./common", "./autoscroll", "./Avatar"
-], function(array, connect, declare, event, win, domClass, Evented, keys, topic,
+], function(array, declare, event, lang, win, domClass, Evented, keys, on, topic, touch,
 	dnd, autoscroll, Avatar) {
 
 // module:
@@ -77,13 +77,13 @@ var Manager = declare("dojo.dnd.Manager", [Evented], {
 		win.body().appendChild(this.avatar.node);
 		topic.publish("/dnd/start", source, nodes, this.copy);
 		this.events = [
-			connect.connect(win.doc, "onmousemove", this, "onMouseMove"),
-			connect.connect(win.doc, "onmouseup",   this, "onMouseUp"),
-			connect.connect(win.doc, "onkeydown",   this, "onKeyDown"),
-			connect.connect(win.doc, "onkeyup",     this, "onKeyUp"),
+			on(win.doc, touch.move, lang.hitch(this, "onMouseMove")),
+			on(win.doc, touch.release,   lang.hitch(this, "onMouseUp")),
+			on(win.doc, "keydown",   lang.hitch(this, "onKeyDown")),
+			on(win.doc, "keyup",     lang.hitch(this, "onKeyUp")),
 			// cancel text selection and text dragging
-			connect.connect(win.doc, "ondragstart",   event.stop),
-			connect.connect(win.body(), "onselectstart", event.stop)
+			on(win.doc, "dragstart",   event.stop),
+			on(win.body(), "selectstart", event.stop)
 		];
 		var c = "dojoDnd" + (copy ? "Copy" : "Move");
 		domClass.add(win.body(), c);
@@ -101,7 +101,7 @@ var Manager = declare("dojo.dnd.Manager", [Evented], {
 		// summary:
 		//		stop the DnD in progress
 		domClass.remove(win.body(), ["dojoDndCopy", "dojoDndMove"]);
-		array.forEach(this.events, connect.disconnect);
+		array.forEach(this.events, function(handle){ handle.remove(); });
 		this.events = [];
 		this.avatar.destroy();
 		this.avatar = null;
@@ -132,7 +132,7 @@ var Manager = declare("dojo.dnd.Manager", [Evented], {
 			var s = a.node.style;
 			s.left = (e.pageX + this.OFFSET_X) + "px";
 			s.top  = (e.pageY + this.OFFSET_Y) + "px";
-			var copy = Boolean(this.source.copyState(connect.isCopyKey(e)));
+			var copy = Boolean(this.source.copyState(dnd.getCopyKeyState(e)));
 			if(this.copy != copy){
 				this._setCopyStatus(copy);
 			}
@@ -145,7 +145,7 @@ var Manager = declare("dojo.dnd.Manager", [Evented], {
 		//		mouse event
 		if(this.avatar){
 			if(this.target && this.canDropFlag){
-				var copy = Boolean(this.source.copyState(dojo.isCopyKey(e)));
+				var copy = Boolean(this.source.copyState(dnd.getCopyKeyState(e)));
 				topic.publish("/dnd/drop/before", this.source, this.nodes, copy, this.target, e);
 				topic.publish("/dnd/drop", this.source, this.nodes, copy, this.target, e);
 			}else{

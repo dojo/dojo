@@ -215,7 +215,7 @@ var Source = declare("dojo.dnd.Source", Selector, {
 					(Math.abs(e.pageX - this._lastX) > this.delay || Math.abs(e.pageY - this._lastY) > this.delay)){
 				var nodes = this.getSelectedNodes();
 				if(nodes.length){
-					m.startDrag(this, nodes, this.copyState(connect.isCopyKey(e), true));
+					m.startDrag(this, nodes, this.copyState(dnd.getCopyKeyState(e), true));
 				}
 			}
 		}

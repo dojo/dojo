@@ -74,7 +74,7 @@ define([
 		var dfd = util.deferred(
 			response,
 			function(dfd, response){
-				// canceller
+				// canceler
 				if(response.canDelete){
 					_addDeadScript(response);
 				}

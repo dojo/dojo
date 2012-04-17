@@ -43,7 +43,7 @@ define([
 			return !dfd._finished;
 		};
 		cancel = function(dfd, response){
-			// summary: Canceller for deferred
+			// summary: Canceler for deferred
 			response.xhr.abort();
 		};
 		addListeners = function(_xhr, dfd, response){

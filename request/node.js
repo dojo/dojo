@@ -25,7 +25,7 @@ define([
 				data.clientRequest.abort();
 				var err = data.error;
 				if(!err){
-					err = new Error('request cancelled');
+					err = new Error('request canceled');
 					err.dojoType = 'cancel';
 				}
 				return err;

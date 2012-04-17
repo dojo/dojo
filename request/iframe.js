@@ -244,7 +244,7 @@ define([
 		var dfd = util.deferred(
 			response,
 			function(dfd, response){
-				// summary: canceller for deferred
+				// summary: canceler for deferred
 			},
 			function(response){
 				// summary: okHandler function for deferred

@@ -43,7 +43,7 @@ define([
 
 			var err = response.error;
 			if(!err){
-				err = new Error('request cancelled');
+				err = new Error('request canceled');
 				err.response = response;
 				err.dojoType='cancel';
 			}

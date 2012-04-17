@@ -19,13 +19,13 @@ define([
 	var freezeObject = Object.freeze || noop;
 	var signalQueue = [];
 
-	function signalWaiting(waiting, type, result){
+	var signalWaiting = function(waiting, type, result){
 		for(var i = 0; i < waiting.length; i++){
 			signalListener(waiting[i], type, result);
 		}
-	}
+	};
 
-	function signalListener(listener, type, result){
+	var signalListener = function(listener, type, result){
 		var func = listener[type];
 		var deferred = listener.deferred;
 		if(func){
@@ -47,15 +47,15 @@ define([
 		}else{
 			signalDeferred(deferred, type, result);
 		}
-	}
+	};
 
-	function makeDeferredSignaler(deferred, type){
+	var makeDeferredSignaler = function(deferred, type){
 		return function(value){
 			signalDeferred(deferred, type, value);
 		};
-	}
+	};
 
-	function signalDeferred(deferred, type, result){
+	var signalDeferred = function(deferred, type, result){
 		signalQueue.push(deferred, type, result);
 		if(signalQueue.length > 3){
 			return;
@@ -77,9 +77,9 @@ define([
 			}
 		}
 		signalQueue = [];
-	}
+	};
 
-	return lang.extend(function Deferred(/*Function?*/ canceler){
+	var Deferred = lang.extend(function(/*Function?*/ canceler){
 		// summary:
 		//		Constructor for a deferred.
 		// description:
@@ -89,7 +89,7 @@ define([
 		//		Will be invoked if the deferred is canceled. The canceler receives the
 		//		reason the deferred was canceled as its argument. The deferred is
 		//		rejected with its return value, if any.
-		var promise = this.promise = new Promise;
+		var promise = this.promise = new Promise();
 		var fulfilled, result;
 		var canceled = false;
 		var waiting = [];
@@ -122,7 +122,7 @@ define([
 			return canceled;
 		};
 
-		var progress = this.progress = function(update, /*Boolean?*/ strict){
+		this.progress = function(update, /*Boolean?*/ strict){
 			// summary:
 			//		Emit a progress update on the deferred.
 			// returns: dojo/promise/Promise
@@ -142,7 +142,7 @@ define([
 			}
 		};
 
-		var resolve = this.resolve = function(value, /*Boolean?*/ strict){
+		this.resolve = function(value, /*Boolean?*/ strict){
 			// summary:
 			//		Resolve the deferred.
 			// returns: dojo/promise/Promise
@@ -165,7 +165,7 @@ define([
 			}
 		};
 
-		var reject = this.reject = function(error, /*Boolean?*/ strict){
+		this.reject = function(error, /*Boolean?*/ strict){
 			// summary:
 			//		Reject the deferred.
 			// returns: dojo/promise/Promise
@@ -192,11 +192,11 @@ define([
 			// returns: dojo/promise/Promise
 			//		Returns a new promise for the result of the callback(s).
 			//
-			// callback: 
+			// callback:
 			//		Callback to be invoked when the promise is resolved.
-			// errback: 
+			// errback:
 			//		Callback to be invoked when the promise is rejected.
-			// progback: 
+			// progback:
 			//		Callback to be invoked when the promise emits a progress update.
 			var listener = [progback, callback, errback];
 			// Ensure we cancel the promise we're waiting for, or if callback/errback
@@ -251,7 +251,7 @@ define([
 				if(!fulfilled){
 					// Allow canceler to provide its own reason, but fall back to a CancelError
 					if(typeof reason === "undefined"){
-						reason = new CancelError;
+						reason = new CancelError();
 					}
 					signalWaiting(waiting, fulfilled = REJECTED, result = reason);
 					waiting = null;
@@ -278,4 +278,6 @@ define([
 		isFulfilled: noop,
 		isCanceled: noop
 	});
+
+	return Deferred;
 });

@@ -25,6 +25,10 @@
 
 .dojoDndItem { 
 	padding: 3px;
+
+	/* Prevent magnifying-glass text selection icon to appear on mobile webkit as it causes a touchout event */
+	-webkit-touch-callout: none;
+	-webkit-user-select: none; /* Disable selection/Copy of UIWebView */
 }
 
 .dj_ff2 .dojoDndItem {

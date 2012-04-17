@@ -1,8 +1,8 @@
 define([
 	"../_base/array",  "../_base/declare", "../_base/event", "../_base/lang", "../_base/window",
-	"../dom-class", "../Evented", "../keys", "../on", "../topic", "../touch",
+	"../dom-class", "../Evented", "../has", "../keys", "../on", "../topic", "../touch",
 	"./common", "./autoscroll", "./Avatar"
-], function(array, declare, event, lang, win, domClass, Evented, keys, on, topic, touch,
+], function(array, declare, event, lang, win, domClass, Evented, has, keys, on, topic, touch,
 	dnd, autoscroll, Avatar) {
 
 // module:
@@ -29,8 +29,8 @@ var Manager = declare("dojo.dnd.Manager", [Evented], {
 	},
 
 	// avatar's offset from the mouse
-	OFFSET_X: 16,
-	OFFSET_Y: 16,
+	OFFSET_X: has("touch") ? 0 : 16,
+	OFFSET_Y: has("touch") ? -64 : 16,
 
 	// methods
 	overSource: function(source){
@@ -136,6 +136,10 @@ var Manager = declare("dojo.dnd.Manager", [Evented], {
 			if(this.copy != copy){
 				this._setCopyStatus(copy);
 			}
+		}
+		if(has("touch")){
+			// Prevent page from scrolling so that user can drag instead.
+			e.preventDefault();
 		}
 	},
 	onMouseUp: function(e){

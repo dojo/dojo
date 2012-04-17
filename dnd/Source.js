@@ -268,7 +268,7 @@ var Source = declare("dojo.dnd.Source", Selector, {
 		//		topic event processor for /dnd/source/over, called when detected a current source
 		// source: Object
 		//		the source which has the mouse over it
-		if(this != source){
+		if(this !== source){
 			this.mouseDown = false;
 			if(this.targetAnchor){
 				this._unmarkTargetAnchor();
@@ -504,8 +504,8 @@ var Source = declare("dojo.dnd.Source", Selector, {
 		// e: Event
 		//		mouse event
 
-		// accept only the left mouse button
-		if(!mouse.isLeft(e)){ return false; }
+		// accept only the left mouse button, or the left finger
+		if(e.type != "touchstart" && !mouse.isLeft(e)){ return false; }
 
 		if(!this.withHandles){ return true; }
 

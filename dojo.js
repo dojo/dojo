@@ -795,6 +795,7 @@
 			if(module.url){
 				waiting[module.url] = module.pack || 1;
 			}
+			startTimer();
 		},
 
 		setArrived = function(module){
@@ -1235,7 +1236,6 @@
 						checkComplete();
 					};
 
-				setRequested(module);
 				if(plugin.load){
 					plugin.load(module.prid, module.req, onLoad);
 				}else if(plugin.loadQ){
@@ -1300,6 +1300,7 @@
 				if(module.executed || module.injected || waiting[mid] || (module.url && ((module.pack && waiting[module.url]===module.pack) || waiting[module.url]==1))){
 					return;
 				}
+				setRequested(module);
 
 				if(has("dojo-combo-api")){
 					var viaCombo = 0;
@@ -1314,7 +1315,6 @@
 						viaCombo = req.combo.add(0, module.mid, module.url, req);
 					}
 					if(viaCombo){
-						setRequested(module);
 						comboPending= 1;
 						return;
 					}
@@ -1325,7 +1325,6 @@
 					return;
 				} // else a normal module (not a plugin)
 
-				setRequested(module);
 
 				var onLoadCallback = function(){
 					runDefQ(module);
@@ -1566,7 +1565,6 @@
 				// insert a script element to the insert-point element with src=url;
 				// apply callback upon detecting the script has loaded.
 
-				startTimer();
 				var node = owner.node = doc.createElement("script"),
 					onLoad = function(e){
 						e = e || window.event;

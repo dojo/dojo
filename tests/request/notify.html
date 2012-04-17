@@ -4,26 +4,14 @@
 	<meta charset="utf-8">
 	<title>dojo/request/notify test</title>
 	<style>
-		@import "../../dojo/resources/dojo.css";
+		@import "../../resources/dojo.css";
 	</style>
 	<script>
 		var dojoConfig = {
-			baseUrl: '../..',
 			async: true,
-			packages: [
-				'dojo',
-				{ name: 'doh', location: 'util/doh' },
-				'request'
-			],
-			aliases: [
-				[/^dojo\/request\/(.*)$/g, function(mid, end){
-					return 'request/' + end;
-				}],
-				['dojo/request', 'request/main']
-			]
 		};
 	</script>
-	<script src="../../dojo/dojo.js"></script>
+	<script src="../../dojo.js"></script>
 	<script>
 		require([
 			"doh",
@@ -55,6 +43,7 @@
 
 			doh.register("dojo/request/notify", [{
 				name: "start/send",
+				timeout: 5000,
 				runTest: function(t){
 					var d = new doh.Deferred();
 
@@ -88,8 +77,8 @@
 					var d = new doh.Deferred();
 
 					t.remove = remover(
-						topic.subscribe("/dojo/request/load", d.getTestErrback(function(data){
-							t.is({ foo: "bar" }, data.response.query);
+						topic.subscribe("/dojo/request/load", d.getTestErrback(function(response){
+							t.is({ foo: "bar" }, response.data.query);
 						})),
 						topic.subscribe("/dojo/request/stop", d.getTestCallback(function(){}))
 					);
@@ -122,6 +111,7 @@
 				}
 			},{
 				name: "done/stop",
+				timeout: 5000,
 				runTest: function(t){
 					var d = new doh.Deferred();
 

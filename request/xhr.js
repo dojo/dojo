@@ -169,11 +169,11 @@ define([
 		}
 
 		var data = options.data,
-			sync = !options.sync,
+			async = !options.sync,
 			method = options.method;
 
 		// IE6 won't let you call apply() on the native function.
-		_xhr.open(method, url, sync, options.user || undefined, options.password || undefined);
+		_xhr.open(method, url, async, options.user || undefined, options.password || undefined);
 
 		var headers = options.headers,
 			contentType;

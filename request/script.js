@@ -124,7 +124,7 @@ define([
 			var notify = require('./notify');
 			notify.send(response);
 		}catch(e){}
-		var node = script._attach(response.scriptId, url, response.frameDoc);
+		var node = script._attach(response.scriptId, url, options.frameDoc);
 
 		if(!options.jsonp && !options.checkString){
 			var handle = on(node, loadEvent, function(evt){

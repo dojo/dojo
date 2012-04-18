@@ -391,7 +391,7 @@ exports.parse = function(/*String*/value, /*dojo.date.locale.__FormatOptions?*/o
 			case 'e':
 			case 'c':
 				var days = bundle['days-' +
-						  c == 'c' ? 'standAlone' : 'format' +
+						  (c == 'c' ? 'standAlone' : 'format') +
 						  '-' + widthList[l-3]].concat();
 				if(!options.strict){
 					//Case-insensitive comparison

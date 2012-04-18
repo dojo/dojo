@@ -53,7 +53,7 @@ define([
 		}
 
 		var deferred = new Deferred();
-		deferred.promise.both(function(){
+		deferred.promise.always(function(){
 			results = keyLookup = null;
 		});
 		var waiting = array.length;

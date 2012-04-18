@@ -13,23 +13,23 @@ define([
 			t.t(failResult === thenResult);
 		},
 
-		"both() will be invoked for resolution and rejection": function(t){
+		"always() will be invoked for resolution and rejection": function(t){
 			var obj = {};
 			var deferred1 = new Deferred();
-			var thenResult, bothResult;
+			var thenResult, alwaysResult;
 			deferred1.promise.then(function(result){ thenResult = result; });
-			deferred1.promise.both(function(result){ bothResult = result; });
+			deferred1.promise.always(function(result){ alwaysResult = result; });
 			deferred1.resolve(obj);
-			t.t(bothResult === obj);
-			t.t(bothResult === thenResult);
+			t.t(alwaysResult === obj);
+			t.t(alwaysResult === thenResult);
 
 			var deferred2 = new Deferred();
-			var thenResult2, bothResult2;
+			var thenResult2, alwaysResult2;
 			deferred2.promise.then(null, function(result){ thenResult2 = result; });
-			deferred2.promise.both(function(result){ bothResult2 = result; });
+			deferred2.promise.always(function(result){ alwaysResult2 = result; });
 			deferred2.reject(obj);
-			t.t(bothResult2 === obj);
-			t.t(bothResult2 === thenResult2);
+			t.t(alwaysResult2 === obj);
+			t.t(alwaysResult2 === thenResult2);
 		},
 
 		"trace() returns the same promise": function(t){

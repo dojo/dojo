@@ -83,7 +83,7 @@ define([
 			return this.then(null, errback);
 		},
 
-		both: function(/*Function?*/ callbackOrErrback){
+		always: function(/*Function?*/ callbackOrErrback){
 			// summary:
 			//		Add a callback to be invoked when the promise is resolved or rejected.
 			// returns: dojo/promise/Promise

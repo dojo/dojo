@@ -257,7 +257,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			},
 
 			isXd = function(mid){
-				return require.isXdUrl(require.toUrl(mid + ".js"));
+				return has("dojo-sync-loader") ? require.isXdUrl(require.toUrl(mid + ".js")) : true;
 			},
 
 			preloading = 0,

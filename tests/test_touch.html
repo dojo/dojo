@@ -11,9 +11,16 @@
 				border: 1px solid #7FB0DB;
 				background-color: #7FB0DB;			
 			}
-			#log {
+			#innertest {
+				border: 1px solid white;
+				width: 100px;
+				heigh: 75px;
+				background-color: white;
+			}
+			#current, #log {
 				width: 300px;
 				height: 200px;
+				float: left;
 			}
 			#dohDiv{
 				display: none;
@@ -22,20 +29,26 @@
 		<script type="text/javascript" src="../dojo.js" djConfig="parseOnLoad: true"></script>
 		<script>
 			require([
-				"dojo/_base/html",
+				"dojo/_base/array",
+				"dojo/dom",
 				"dojo/_base/event",
+				"dojo/_base/lang",
 				"dojo/ready",
 				"dojo/touch",
 				"dojo/on",
 				"dojo/has",
 				"dojo/dom-style",
 				"doh/runner"
-			], function(html, evt, ready, touch, on, has, domStyle, doh){			
+			], function(array, dom, evt, lang, ready, touch, on, has, domStyle, doh){
 				ready(function(){
-					var action = function(e){
-						evt.stop(e);
-						html.byId("log").innerHTML = "";
-						var info = "[Touch Event]: " + e.type + "<br/> ------ Event Properties: ------<br/>";
+					var action = function(comment, e){
+						// summary:
+						//		Callback to display into when events fire
+						// Detailed log of the most recent event:
+
+						dom.byId("current").innerHTML = "Most recent event:";
+						var info = "[Touch Event]: " + e.type + " on " + comment +
+								"<br/> ------ Event Properties: ------<br/>";
 						for(var i in e){
 						  if(i == "touches" || i == "targetTouches" || i == "changedTouches"){
 						    info += i + ": " + e[i].length + "<br/>";
@@ -45,17 +58,30 @@
 						    }
 						  }
 						}
-						html.byId("log").innerHTML += info + "<br/>";
+						dom.byId("current").innerHTML += info + "<br/>";
+
+						// This is a log of all events, most recent first:
+						dom.byId("log").innerHTML = comment + "{type:" +
+								e.type + ", target:" + (e.target.id||e.target.tagName) +
+								"}<br/>" + dom.byId("log").innerHTML;
 					};
 					
-					var node = html.byId("test");
-				
-					//1. should work well on PC and touch devices 
-					on(node, touch.press, action);
-					on(node, touch.move, action);
-					on(node, touch.release, action);
-					on(node, touch.cancel, action);
+					var node = dom.byId("test"),
+						innerNode = dom.byId("innertest");
 
+					//1. should work well on PC and touch devices
+					array.forEach(["test", "innertest"], function(name){
+						for(var event in touch){
+							if(event != "move"){
+								on(dom.byId(name), touch[event], lang.hitch(null, action, "on("+name+", touch."+event+")-->"));
+							}
+						}
+					});
+
+					on(document, "touchmove", function(evt){
+						// Prevent scrolling since it interferes with testing touchover/touchout on "test" and "innertest"
+						evt.preventDefault();
+					});
 					
 //					//2. should work well across touch devices
 //					on(node, "touchstart", action);
@@ -67,13 +93,20 @@
 					//3. we can also isolate mouse/touch handlers
 					on(node, "touchend", function(){alert("isolated touchend handler");});
 					on(node, "mouseup", function(){alert("isolated mouseup handler");});
+					/*
+					on(node, "touchmove", function(e){
+						dom.byId("log").innerHTML = 'on(node,"touchmove")-->{type:' +
+							e.type + ", target:" + (e.target.id||e.target.tagName) +
+							"}<br/>" + dom.byId("log").innerHTML;
+					});
+					*/
 				
 					//================================= DoH tests - only running on desktop ======================
 					if(has("touch")){
 						//FIXME - DoH not supported on touch device
 						return;
 					}
-					var dohDiv = html.byId('dohDiv');
+					var dohDiv = dom.byId('dohDiv');
 					domStyle.set(dohDiv, {display: 'block'});
 					
 					function setObj(obj, e){
@@ -136,9 +169,15 @@
 		</script>
 	</head>
 	<body>
-		<div id="test"></div>
+		<div id="test">
+			test
+			<div id="innertest">
+				inner test
+			</div>
+		</div>
+		<div id="current"></div>
 		<div id="log"></div>
-		<br/>
+		<br style="clear:both"/>
 		<div id="dohDiv">doh</div>
 	</body>
 </html>

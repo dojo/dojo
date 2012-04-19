@@ -128,6 +128,7 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 		return handler;
 	}
 	return {
+		_eventHandler: eventHandler,		// for dojo/touch
 		enter: eventHandler("mouseover"),
 		leave: eventHandler("mouseout"),
 		isLeft: mouseButtons.isLeft,

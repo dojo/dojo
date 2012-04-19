@@ -304,8 +304,10 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 	onOutEvent: function(){
 		// summary:
 		//		this function is called once, when mouse is out of our container
-		this.onmousemoveEvent.remove();
-		delete this.onmousemoveEvent;
+		if(this.onmousemoveEvent){
+			this.onmousemoveEvent.remove();
+			delete this.onmousemoveEvent;
+		}
 	},
 	_removeSelection: function(){
 		// summary:

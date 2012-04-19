@@ -75,52 +75,6 @@ dojo.dnd.Item = function(){
 }
 =====*/
 
-// Setup synthetic "touchover" and "touchout" events to handle mouseout/mouseover plus their touch equivalents.
-// Probably this code should eventually be moved to dojo/touch.
-// TODO: should touchend cause touchout event on the currently "hovered" node?
-var touchover = "mouseover", touchout = "mouseout";
-if(has("touch")){
-	// Keep track of the currently hovered node.  This code tries to fire a touchover event on touchstart,
-	// but that part doesn't work because Selector::onMouseDown() getsc called before this code does,
-	// but expects that there was already a mouseenter (aka touchover) event.   Also, Selector::onMouseDown() calls
-	// evt.stop() preventing this code from even seeing the event.
-	var hoveredNode,				// currently hovered node
-		tracker = new Evented();	// emits events when hovered node changes
-	ready(function(){
-		on(win.doc, "touchstart, touchmove", function(evt){
-			var newHoverNode = win.doc.elementFromPoint(
-				evt.pageX - win.body().parentNode.scrollLeft,
-				evt.pageY - win.body().parentNode.scrollTop
-			);
-			if(newHoverNode != hoveredNode){
-				tracker.emit("hoverNode", hoveredNode, hoveredNode = newHoverNode);
-			}
-		});
-	});
-
-	touchover = function(myNode, listener){
-		return tracker.on("hoverNode", function(oldVal, newVal){
-			if(dom.isDescendant(newVal, myNode)){
-				return listener.call(myNode, {
-					type: "touch.over",
-					target: newVal,
-					relatedTarget: oldVal
-				});
-			}
-		});
-	};
-	touchout = function(myNode, listener){
-		return tracker.on("hoverNode", function(oldVal, newVal){
-			if(dom.isDescendant(oldVal, myNode)){
-				return listener.call(myNode, {
-					type: "touch.out",
-					target: oldVal,
-					relatedTarget: newVal
-				});
-			}
-		});
-	};
-}
 
 var Container = declare("dojo.dnd.Container", Evented, {
 	// summary:
@@ -173,9 +127,8 @@ var Container = declare("dojo.dnd.Container", Evented, {
 
 		// set up events
 		this.events = [
-			on(this.node, touchover, lang.hitch(this, "onMouseOver")),
-			on(this.node, "touchstart", lang.hitch(this, "onMouseOver")),	// because on mobile there's no mouseover equivalent before the touchpress event
-			on(this.node, touchout,  lang.hitch(this, "onMouseOut")),
+			on(this.node, touch.over, lang.hitch(this, "onMouseOver")),
+			on(this.node, touch.out,  lang.hitch(this, "onMouseOut")),
 			// cancel text selection and text dragging
 			on(this.node, "dragstart",   lang.hitch(this, "onSelectStart")),
 			on(this.node, "selectstart", lang.hitch(this, "onSelectStart"))

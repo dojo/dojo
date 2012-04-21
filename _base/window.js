@@ -19,16 +19,16 @@ dojo.doc = {
 =====*/
 dojo.doc = this["document"] || null;
 
-dojo.body = function(){
+dojo.body = function(/*Document?*/ doc){
 	// summary:
-	//		Return the body element of the document
-	//		return the body object associated with dojo.doc
+	//		Return the body element of the specified document or of dojo.doc.
 	// example:
 	//	|	dojo.body().appendChild(dojo.doc.createElement('div'));
 
 	// Note: document.body is not defined for a strict xhtml document
 	// Would like to memoize this, but dojo.doc can change vi dojo.withDoc().
-	return dojo.doc.body || dojo.doc.getElementsByTagName("body")[0]; // Node
+	doc = doc || dojo.doc;
+	return doc.body || doc.getElementsByTagName("body")[0]; // Node
 };
 
 dojo.setContext = function(/*Object*/globalObject, /*DocumentElement*/globalDocument){

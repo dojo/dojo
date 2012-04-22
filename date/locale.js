@@ -101,13 +101,16 @@ exports = dojo.date.locale;
 					// fallthrough
 				case 'E':
 					d = dateObject.getDay();
-					if(l<3){ l = 3; }
-					var propD = [
-						"days",
-						c == 'c' ? "standAlone" : "format",
-						widthList[l-3]
-					].join("-");
-					s = bundle[propD][d];
+					if(l<3){
+						s = d+1; pad = true;
+					} else {
+						var propD = [
+							"days",
+							c == 'c' ? "standAlone" : "format",
+							widthList[l-3]
+						].join("-");
+						s = bundle[propD][d];
+					}
 					break;
 				case 'a':
 					var timePeriod = dateObject.getHours() < 12 ? 'am' : 'pm';

@@ -228,7 +228,7 @@ var Source = declare("dojo.dnd.Source", Selector, {
 				}
 				if(this.horizontal){
 					// In LTR mode, the left part of the object means "before", but in RTL mode it means "after".
-					before = (e.pageX - this.targetBox.x < this.targetBox.w / 2) == domGeom.isBodyLtr();
+					before = (e.pageX - this.targetBox.x < this.targetBox.w / 2) == domGeom.isBodyLtr(this.current.ownerDocument);
 				}else{
 					before = (e.pageY - this.targetBox.y) < (this.targetBox.h / 2);
 				}

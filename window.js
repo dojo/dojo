@@ -16,18 +16,20 @@ dojo.window = {
 window = dojo.window;
 =====*/
 
-window.getBox = function(){
+window.getBox = function(/*Document?*/ doc){
 	// summary:
 	//		Returns the dimensions and scroll position of the viewable area of a browser window
 
+	doc = doc || baseWindow.doc;
+
 	var
-		scrollRoot = (baseWindow.doc.compatMode == 'BackCompat') ? baseWindow.body() : baseWindow.doc.documentElement,
+		scrollRoot = (doc.compatMode == 'BackCompat') ? baseWindow.body(doc) : doc.documentElement,
 		// get scroll position
-		scroll = geom.docScroll(), // scrollRoot.scrollTop/Left should work
+		scroll = geom.docScroll(doc), // scrollRoot.scrollTop/Left should work
 		w, h;
 
 	if(has("touch")){ // if(scrollbars not supported)
-		var uiWindow = baseWindow.doc.parentWindow || baseWindow.doc.defaultView;   // use UI window, not dojo.global window. baseWindow.doc.parentWindow probably not needed since it's not defined for webkit
+		var uiWindow = window.get(doc);   // use UI window, not dojo.global window
 		// on mobile, scrollRoot.clientHeight <= uiWindow.innerHeight <= scrollRoot.offsetHeight, return uiWindow.innerHeight
 		w = uiWindow.innerWidth || scrollRoot.clientWidth; // || scrollRoot.clientXXX probably never evaluated
 		h = uiWindow.innerHeight || scrollRoot.clientHeight;
@@ -47,7 +49,7 @@ window.getBox = function(){
 
 window.get = function(doc){
 	// summary:
-	// 		Get window object associated with document doc
+	//		Get window object associated with document doc
 
 	// In some IE versions (at least 6.0), document.parentWindow does not return a
 	// reference to the real window object (maybe a copy), so we must fix it as well
@@ -77,8 +79,8 @@ window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 
 	try{ // catch unexpected/unrecreatable errors (#7808) since we can recover using a semi-acceptable native method
 		node = dom.byId(node);
-		var doc = node.ownerDocument || baseWindow.doc,
-			body = doc.body || baseWindow.body(),
+		var doc = node.ownerDocument || baseWindow.doc,	// TODO: why baseWindow.doc?  Isn't node.ownerDocument always defined?
+			body = baseWindow.body(doc),
 			html = doc.documentElement || body.parentNode,
 			isIE = has("ie"), isWK = has("webkit");
 		// if an untested browser, then use the native method
@@ -93,7 +95,7 @@ window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 			scrollRoot = isWK ? body : clientAreaRoot,
 			rootWidth = clientAreaRoot.clientWidth,
 			rootHeight = clientAreaRoot.clientHeight,
-			rtl = !geom.isBodyLtr(),
+			rtl = !geom.isBodyLtr(doc),
 			nodePos = pos || geom.position(node),
 			el = node.parentNode,
 			isFixed = function(el){

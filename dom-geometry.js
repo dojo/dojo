@@ -50,8 +50,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		directly, and will use the ...box... functions instead.
 		// node: DOMNode
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -83,8 +83,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		directly, and will use the ...box... functions instead.
 		// node: DOMNode
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -116,8 +116,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		directly, and will use the ...box... functions instead.
 		// node: DOMNode
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -149,8 +149,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		directly, and will use the ...box... functions instead.
 		// node: DOMNode
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -172,8 +172,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		the node's margin box
 		// node: DOMNode|String
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -195,8 +195,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		positions of the node's margin box.
 		// node: DOMNode
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -223,8 +223,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//      hash with optional "l", "t", "w", and "h" properties for "left", "right", "width", and "height"
 		//      respectively. All specified properties should have numeric values in whole pixels.
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -240,8 +240,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		current box model.
 		// node: DOMNode
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -266,8 +266,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//      hash with optional "w", and "h" properties for "width", and "height"
 		//      respectively. All specified properties should have numeric values in whole pixels.
 		// computedStyle: Object?
-		// 		This parameter accepts computed styles object.
-		// 		If this parameter is omitted, the functions will call 
+		//		This parameter accepts computed styles object.
+		//		If this parameter is omitted, the functions will call
 		//		dojo.getComputedStyle to get one. It is a better way, calling 
 		//		dojo.computedStyle once, and then pass the reference to this 
 		//		computedStyle parameter. Wherever possible, reuse the returned 
@@ -276,9 +276,11 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	=====*/
 
 	/*=====
-	dojo.isBodyLtr = function(){
+	dojo.isBodyLtr = function(doc){
 		// summary:
 		//      Returns true if the current language is left-to-right, and false otherwise.
+		// doc: Document?
+		//		Optional document to query.   If unspecified, use win.doc.
 		// returns: Boolean
 	};
 	=====*/
@@ -291,9 +293,11 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	=====*/
 
 	/*=====
-	dojo.docScroll = function(){
+	dojo.docScroll = function(doc){
 		// summary:
 		//      Returns an object with {node, x, y} with corresponding offsets.
+		// doc: Document?
+		//		Optional document to query.   If unspecified, use win.doc.
 		// returns: Object
 	};
 	=====*/
@@ -306,10 +310,12 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	=====*/
 
 	/*=====
-	dojo.getIeDocumentElementOffset = function(){
+	dojo.getIeDocumentElementOffset = function(doc){
 		// summary:
 		//		returns the offset in x and y from the document body to the
 		//		visual edge of the page for IE
+		// doc: Document?
+		//		Optional document to query.   If unspecified, use win.doc.
 		// description:
 		//		The following values in IE contain an offset:
 		//	|		event.clientX
@@ -333,13 +339,15 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	=====*/
 
 	/*=====
-	dojo.fixIeBiDiScrollLeft = function(scrollLeft){
+	dojo.fixIeBiDiScrollLeft = function(scrollLeft, doc){
 		// summary:
 		//      In RTL direction, scrollLeft should be a negative value, but IE
 		//      returns a positive one. All codes using documentElement.scrollLeft
 		//      must call this function to fix this error, otherwise the position
 		//      will offset to right when there is a horizontal scrollbar.
-		// scrollLeft: NUmber
+		// scrollLeft: Number
+		// doc: Document?
+		//		Optional document to query.   If unspecified, use win.doc.
 		// returns: Number
 	};
 	=====*/
@@ -391,7 +399,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		return {l: l, t: t, r: r, b: b, w: l + r, h: t + b};
 	};
 
-	geom.getPadBorderExtents = function getPadBorderExtents(/*DomNode*/node, /*Object*/computedStyle){
+	geom.getPadBorderExtents = function getPadBorderExtents(/*DomNode*/ node, /*Object*/ computedStyle){
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node),
 			p = geom.getPadExtents(node, s),
@@ -428,7 +436,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	// 2. factoring the shared code wastes cycles (function call overhead)
 	// 3. duplicating the shared code wastes bytes
 
-	geom.getMarginBox = function getMarginBox(/*DomNode*/node, /*Object*/computedStyle){
+	geom.getMarginBox = function getMarginBox(/*DomNode*/ node, /*Object*/ computedStyle){
 		// summary:
 		//		returns an object that encodes the width, height, left and top
 		//		positions of the node's margin box.
@@ -443,7 +451,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 			// computed left/top which is more stable.
 			var sl = parseFloat(s.left), st = parseFloat(s.top);
 			if(!isNaN(sl) && !isNaN(st)){
-				l = sl, t = st;
+				l = sl;
+				t = st;
 			}else{
 				// If child's computed left/top are not parseable as a number (e.g. "auto"), we
 				// have no choice but to examine the parent's computed style.
@@ -504,7 +513,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	// In particular, margins on TABLE do not seems to appear
 	// at all in computedStyle on Mozilla.
 
-	function setBox(/*DomNode*/node, /*Number?*/l, /*Number?*/t, /*Number?*/w, /*Number?*/h, /*String?*/u){
+	function setBox(/*DomNode*/ node, /*Number?*/ l, /*Number?*/ t, /*Number?*/ w, /*Number?*/ h, /*String?*/ u){
 		// summary:
 		//		sets width/height/left/top in the current (native) box-model
 		//		dimensions. Uses the unit passed in u.
@@ -537,14 +546,14 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		}
 	}
 
-	function isButtonTag(/*DomNode*/node){
+	function isButtonTag(/*DomNode*/ node){
 		// summary:
 		//		True if the node is BUTTON or INPUT.type="button".
 		return node.tagName.toLowerCase() == "button" ||
 			node.tagName.toLowerCase() == "input" && (node.getAttribute("type") || "").toLowerCase() == "button"; // boolean
 	}
 
-	function usesBorderBox(/*DomNode*/node){
+	function usesBorderBox(/*DomNode*/ node){
 		// summary:
 		//		True if the node uses border-box layout.
 
@@ -558,7 +567,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		return geom.boxModel == "border-box" || node.tagName.toLowerCase() == "table" || isButtonTag(node); // boolean
 	}
 
-	geom.setContentSize = function setContentSize(/*DomNode*/node, /*Object*/box, /*Object*/computedStyle){
+	geom.setContentSize = function setContentSize(/*DomNode*/ node, /*Object*/ box, /*Object*/ computedStyle){
 		// summary:
 		//		Sets the size of the node's contents, irrespective of margins,
 		//		padding, or borders.
@@ -579,7 +588,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 	var nilExtents = {l: 0, t: 0, w: 0, h: 0};
 
-	geom.setMarginBox = function setMarginBox(/*DomNode*/node, /*Object*/box, /*Object*/computedStyle){
+	geom.setMarginBox = function setMarginBox(/*DomNode*/ node, /*Object*/ box, /*Object*/ computedStyle){
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), w = box.w, h = box.h,
 		// Some elements have special padding, margin, and box-model settings.
@@ -614,22 +623,25 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	// Positioning
 	// =============================
 
-	geom.isBodyLtr = function isBodyLtr(){
-		return (win.body().dir || win.doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean
+	geom.isBodyLtr = function isBodyLtr(/*Document?*/ doc){
+		doc = doc || win.doc;
+		return (win.body(doc).dir || doc.documentElement.dir || "ltr").toLowerCase() == "ltr"; // Boolean
 	};
 
-	geom.docScroll = function docScroll(){
-		var node = win.doc.parentWindow || win.doc.defaultView;   // use UI window, not dojo.global window
+	geom.docScroll = function docScroll(/*Document?*/ doc){
+		doc = doc || win.doc;
+		var node = win.doc.parentWindow || win.doc.defaultView;   // use UI window, not dojo.global window.   TODO: use dojo/window::get() except for circular dependency problem
 		return "pageXOffset" in node ? {x: node.pageXOffset, y: node.pageYOffset } :
-			(node = has("quirks") ? win.body() : win.doc.documentElement,
-				{x: geom.fixIeBiDiScrollLeft(node.scrollLeft || 0), y: node.scrollTop || 0 });
+			(node = has("quirks") ? win.body(doc) : doc.documentElement) &&
+				{x: geom.fixIeBiDiScrollLeft(node.scrollLeft || 0, doc), y: node.scrollTop || 0 };
 	};
 
 	if(has("ie")){
-		geom.getIeDocumentElementOffset = function getIeDocumentElementOffset(){
+		geom.getIeDocumentElementOffset = function getIeDocumentElementOffset(/*Document?*/ doc){
 			//NOTE: assumes we're being called in an IE browser
 
-			var de = win.doc.documentElement; // only deal with HTML element here, position() handles body/quirks
+			doc = doc || win.doc;
+			var de = doc.documentElement; // only deal with HTML element here, position() handles body/quirks
 
 			if(has("ie") < 8){
 				var r = de.getBoundingClientRect(), // works well for IE6+
@@ -651,17 +663,19 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		};
 	}
 
-	geom.fixIeBiDiScrollLeft = function fixIeBiDiScrollLeft(/*Integer*/ scrollLeft){
+	geom.fixIeBiDiScrollLeft = function fixIeBiDiScrollLeft(/*Integer*/ scrollLeft, /*Document?*/ doc){
 		// In RTL direction, scrollLeft should be a negative value, but IE
 		// returns a positive one. All codes using documentElement.scrollLeft
 		// must call this function to fix this error, otherwise the position
 		// will offset to right when there is a horizontal scrollbar.
 
+		doc = doc || win.doc;
 		var ie = has("ie");
-		if(ie && !geom.isBodyLtr()){
+		if(ie && !geom.isBodyLtr(doc)){
 			var qk = has("quirks"),
-				de = qk ? win.body() : win.doc.documentElement;
-			if(ie == 6 && !qk && win.global.frameElement && de.scrollHeight > de.clientHeight){
+				de = qk ? win.body(doc) : doc.documentElement,
+				pwin = win.global;	// TODO: use winUtils.get(doc) after resolving circular dependency b/w dom-geometry.js and dojo/window.js
+			if(ie == 6 && !qk && pwin.frameElement && de.scrollHeight > de.clientHeight){
 				scrollLeft += de.clientLeft; // workaround ie6+strict+rtl+iframe+vertical-scrollbar bug where clientWidth is too small by clientLeft pixels
 			}
 			return (ie < 8 || qk) ? (scrollLeft + de.clientWidth - de.scrollWidth) : -scrollLeft; // Integer
@@ -669,16 +683,16 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		return scrollLeft; // Integer
 	};
 
-	geom.position = function(/*DomNode*/node, /*Boolean?*/includeScroll){
+	geom.position = function(/*DomNode*/ node, /*Boolean?*/ includeScroll){
 		node = dom.byId(node);
-		var	db = win.body(),
+		var	db = win.body(node.ownerDocument),
 			dh = db.parentNode,
 			ret = node.getBoundingClientRect();
 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};
 
 		if(has("ie")){
 			// On IE there's a 2px offset that we need to adjust for, see dojo.getIeDocumentElementOffset()
-			var offset = geom.getIeDocumentElementOffset();
+			var offset = geom.getIeDocumentElementOffset(node.ownerDocument);
 
 			// fixes the position in IE, quirks mode
 			ret.x -= offset.x + (has("quirks") ? db.clientLeft + db.offsetLeft : 0);
@@ -689,7 +703,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// if offsetParent is used, ret value already includes scroll position
 		// so we may have to actually remove that value if !includeScroll
 		if(includeScroll){
-			var scroll = geom.docScroll();
+			var scroll = geom.docScroll(node.ownerDocument);
 			ret.x += scroll.x;
 			ret.y += scroll.y;
 		}
@@ -699,7 +713,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 	// random "private" functions wildly used throughout the toolkit
 
-	geom.getMarginSize = function getMarginSize(/*DomNode*/node, /*Object*/computedStyle){
+	geom.getMarginSize = function getMarginSize(/*DomNode*/ node, /*Object*/ computedStyle){
 		node = dom.byId(node);
 		var me = geom.getMarginExtents(node, computedStyle || style.getComputedStyle(node));
 		var size = node.getBoundingClientRect();
@@ -711,8 +725,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 	geom.normalizeEvent = function(event){
 		// summary:
-		// 		Normalizes the geometry of a DOM event, normalizing the pageX, pageY,
-		// 		offsetX, offsetY, layerX, and layerX properties
+		//		Normalizes the geometry of a DOM event, normalizing the pageX, pageY,
+		//		offsetX, offsetY, layerX, and layerX properties
 		// event: Object
 		if(!("layerX" in event)){
 			event.layerX = event.offsetX;
@@ -728,8 +742,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 			// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
 			// here rather than document.body
 			var docBody = has("quirks") ? doc.body : doc.documentElement;
-			var offset = geom.getIeDocumentElementOffset();
-			event.pageX = event.clientX + geom.fixIeBiDiScrollLeft(docBody.scrollLeft || 0) - offset.x;
+			var offset = geom.getIeDocumentElementOffset(doc);
+			event.pageX = event.clientX + geom.fixIeBiDiScrollLeft(docBody.scrollLeft || 0, doc) - offset.x;
 			event.pageY = event.clientY + (docBody.scrollTop || 0) - offset.y;
 		}
 	};

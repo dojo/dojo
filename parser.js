@@ -486,7 +486,7 @@ dojo.parser = new function(){
 		if(!inherited){
 			function findAncestorAttr(node, attr){
 				return (node.getAttribute && node.getAttribute(attr)) ||
-					(node !== dwindow.doc && node !== dwindow.doc.documentElement && node.parentNode ? findAncestorAttr(node.parentNode, attr) : null);
+					(node.parentNode && findAncestorAttr(node.parentNode, attr));
 			}
 			inherited = {
 				dir: findAncestorAttr(root, "dir"),

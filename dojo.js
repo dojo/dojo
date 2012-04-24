@@ -582,7 +582,9 @@
 			for(var dojoDir, src, match, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
 				if((src = scripts[i].getAttribute("src")) && (match = src.match(/(.*)\/?dojo\.js(\W|$)/i))){
 					// if baseUrl wasn't explicitly set, set it here to the dojo directory; this is the 1.6- behavior
-					userConfig.baseUrl = dojoDir = userConfig.baseUrl || defaultConfig.baseUrl || match[1];
+					// set in defaultConfig which allow user config to override
+					dojoDir = match[1];
+					defaultConfig.baseUrl = defaultConfig.baseUrl || dojoDir;
 
 					// see if there's a dojo configuration stuffed into the node
 					src = (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
@@ -612,14 +614,16 @@
 		// configure the loader; let the user override defaults
 		req.rawConfig = {};
 		config(defaultConfig, 1);
-		config(userConfig, 1);
-		config(dojoSniffConfig, 1);
 
+		// do this before setting userConfig to allow userConfig to override
 		if(has("dojo-cdn")){
 			packs.dojo.location = dojoDir;
 			packs.dijit.location = dojoDir + "../dijit/";
 			packs.dojox.location = dojoDir + "../dojox/";
 		}
+
+		config(userConfig, 1);
+		config(dojoSniffConfig, 1);
 
 	}else{
 		// no config API, assume defaultConfig has everything the loader needs...for the entire lifetime of the application
@@ -1672,7 +1676,7 @@
 				});
 				args = [0, defaultDeps.concat(dependencies), mid];
 			}
-		}
+			}
 		if(!args){
 			args = arity == 1 ? [0, defaultDeps, mid] :
 				(arity == 2 ? (isArray(mid) ? [0, mid, dependencies] : (isFunction(dependencies) ? [mid, defaultDeps, dependencies] : [mid, [], dependencies])) :

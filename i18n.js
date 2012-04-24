@@ -213,7 +213,8 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 								load:function(text){
 									var result = evalBundle(text, checkForLegacyModules, mid);
 									if(result===1){
-										require.eval(text);
+										// the bundle was an AMD module; reinject it through the normal AMD path
+										// with browser caching, this should be free
 										require([mid], function(bundle){
 											results.push(cache[url]= bundle);
 										});
@@ -238,22 +239,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 			normalizeLocale = thisModule.normalizeLocale= function(locale){
 				var result = locale ? locale.toLowerCase() : dojo.locale;
-				if(result == "root"){
-					result = "ROOT";
-				}
-				return result;
-			},
-
-			forEachLocale = function(locale, func){
-				// this function is equivalent to v1.6 dojo.i18n._searchLocalePath with down===true
-				var parts = locale.split("-");
-				while(parts.length){
-					if(func(parts.join("-"))){
-						return true;
-					}
-					parts.pop();
-				}
-				return func("ROOT");
+				return result == "root" ? "ROOT" : result;
 			},
 
 			isXd = function(mid){
@@ -290,42 +276,52 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		thisModule.getLocalization= function(moduleName, bundleName, locale){
 			var result,
 				l10nName= getL10nName(moduleName, bundleName, locale).substring(10);
-			load(l10nName, (has("dojo-sync-loader") && !isXd(l10nName) ? syncRequire : require), function(result_){ result= result_; });
+			load(l10nName, (!isXd(l10nName) ? syncRequire : require), function(result_){ result= result_; });
 			return result;
 		};
 
 		thisModule._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated){
 			//	summary:
-			//		Load built, flattened resource bundles, if available for all
-			//		locales used in the page. Only called by built layer files.
+			//		Load built, possibly-flattened resource bundles, if available for all
+			//		locales used in the page.
 			//
-			//  note: this function a direct copy of v1.6 function of same name
+			//  descirption:
+			//		Only called by built layer files. The entire locale hierarchy is loaded. For example,
+			//		if locale=="ab-cd", then ROOT, "ab", and "ab-cd" are loaded. This is different than v1.6-
+			//		in that the v1.6- would lonly load ab-cd...which was *always* flattened.
+
+
+			function forEachLocale(locale, func){
+				// this function is equivalent to v1.6 dojo.i18n._searchLocalePath with down===true
+				var parts = locale.split("-");
+				while(parts.length){
+					if(func(parts.join("-"))){
+						return true;
+					}
+					parts.pop();
+				}
+				return func("ROOT");
+			}
 
 			function preload(locale){
 				locale = normalizeLocale(locale);
 				forEachLocale(locale, function(loc){
-					for(var mid, i=0; i<localesGenerated.length; i++){
-						if(localesGenerated[i] == loc){
-							mid = bundlePrefix.replace(/\./g, "/")+"_"+loc;
-							preloading++;
-							(isXd(mid) ? require : syncRequire)([mid], function(){
-								if(!--preloading){
-									while(preloadWaitQueue.length){
-										load.apply(null, preloadWaitQueue.shift());
-									}
-								}
-							});
-							return true; // Boolean
-						}
+					if(array.indexOf(localesGenerated, loc)>0){
+						var mid = bundlePrefix.replace(/\./g, "/")+"_"+loc;
+						preloading++;
+						(isXd(mid) ? require : syncRequire)([mid], function(){
+							while(!--preloading && preloadWaitQueue.length){
+								load.apply(null, preloadWaitQueue.shift());
+							}
+						});
+						return true; // Boolean
 					}
 					return false; // Boolean
 				});
 			}
+
 			preload();
-			var extra = dojo.config.extraLocale||[];
-			for(var i=0; i<extra.length; i++){
-				preload(extra[i]);
-			}
+			array.forEach(dojo.config.extraLocale, preload);
 		};
 
 		if(has("dojo-unit-tests")){

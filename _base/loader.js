@@ -45,7 +45,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		// The moment a single module is discovered that is missing, the algorithm gives up an indicates that not all
 		// modules are on board. dojo/loadInit! and dojo/require! are ignored because there dependencies are inserted
 		// directly in dojoRequireModuleStack. For example, if "your/module" module depends on "dojo/require!my/module", then
-		// *both* "dojo/require!my/module" and "my/module" will be in dojoRequireModuleStack. Obviously, if "dojo/require!my/module"
+		// *both* "dojo/require!my/module" and "my/module" will be in dojoRequireModuleStack. Obviously, if "my/module"
 		// is on board, then "dojo/require!my/module" is also satisfied, so the algorithm doesn't check for "dojo/require!my/module".
 		//
 		// Note: inserting a dojo/require!<some-module-list> dependency in the dojoRequireModuleStack achieves nothing

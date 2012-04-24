@@ -1533,7 +1533,8 @@
 	}
 
 	if(has("dom")){
-		has.add("ie-event-behavior", (typeof opera === "undefined" || opera.toString() != "[object Opera]") && !!doc.attachEvent);
+		// the typically unnecessary !! in front of doc.attachEvent is due to an opera bug; see	#15096
+		has.add("ie-event-behavior", !!doc.attachEvent && (typeof opera === "undefined" || opera.toString() != "[object Opera]"));
 	}
 
 	if(has("dom") && (has("dojo-inject-api") || has("dojo-dom-ready-api"))){

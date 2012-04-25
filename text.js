@@ -152,6 +152,20 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 	return result;
 
 /*=====
+dojo.text.load = function(id, require, load){
+	// summary:
+	//		AMD plugin; load the string content of resource associated with id
+	//
+	// id: String
+	//		Path to the resource.
+	// require: Function
+	//		Object that include the function toUrl with given id returns a valid URL from which to load the text.
+	// load: Function
+	//		Callback function which will be called, when the loading finished.
+}
+=====*/
+
+/*=====
 dojo.cache = function(module, url, value){
 	// summary:
 	//		A getter and setter for storing the string content associated with the

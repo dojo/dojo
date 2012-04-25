@@ -239,10 +239,9 @@
 			// in legacy sync mode, the loader needs a minimal XHR library to load dojo/_base/loader and dojo/_base/xhr
 
 			var locationProtocol = location.protocol,
-				locationHost = location.host,
-				fileProtocol = !locationHost;
+				locationHost = location.host;
 			req.isXdUrl = function(url){
-				if(fileProtocol || /^\./.test(url)){
+				if(/^\./.test(url)){
 					// begins with a dot is always relative to page URL; therefore not xdomain
 					return false;
 				}
@@ -251,9 +250,12 @@
 					return true;
 				}
 				// get protocol and host
-				var match = url.match(/^([^\/\:]+\:)\/\/([^\/]+)/);
-				return match && (match[1] != locationProtocol || match[2] != locationHost);
+				// \/+ takes care of the typical file protocol that looks like file:///drive/path/to/file
+				// locationHost is falsy if file protocol => if locationProtocol matches and is "file:", || will return false
+				var match = url.match(/^([^\/\:]+\:)\/+([^\/]+)/);
+				return match && (match[1] != locationProtocol || (locationHost && match[2] != locationHost));
 			};
+
 
 			// note: to get the file:// protocol to work in FF, you must set security.fileuri.strict_origin_policy to false in about:config
 			has.add("dojo-xhr-factory", 1);

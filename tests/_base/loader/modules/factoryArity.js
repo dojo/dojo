@@ -1,2 +1,8 @@
-// make sure that module.exports doesn't kill factory result since factory has arity<3
-define(function() { return {i : 5} ; });
+define(function(require, exports, module) {
+	var impliedDep = require("./impliedDep1");
+	return {
+		module:module,
+		id:"factoryArity",
+		impliedDep:impliedDep.id
+	};
+});

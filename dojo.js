@@ -719,10 +719,6 @@
 					// resolve the request list with respect to the reference module
 					for(var mid, deps = [], i = 0; i < a1.length;){
 						mid = a1[i++];
-						// TODO: delete this if...not worth the space it takes...the programmer will find the error when the modules don't load
-						if(mid in {exports:1, module:1}){
-							throw makeError("illegalModuleId", mid);
-						}
 						deps.push(getModule(mid, referenceModule));
 					}
 
@@ -1681,25 +1677,25 @@
 		// CommonJS factory scan courtesy of http://requirejs.org
 
 		var arity = arguments.length,
-			args = 0,
-			defaultDeps = ["require", "exports", "module"];
-
-		if(has("dojo-amd-factory-scan")){
-			if(arity == 1 && isFunction(mid)){
-				dependencies = [];
-				mid.toString()
-					.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg, "")
-					.replace(/require\(["']([\w\!\-_\.\/]+)["']\)/g, function (match, dep){
-					dependencies.push(dep);
-				});
-				args = [0, defaultDeps.concat(dependencies), mid];
-			}
-			}
-		if(!args){
-			args = arity == 1 ? [0, defaultDeps, mid] :
-				(arity == 2 ? (isArray(mid) ? [0, mid, dependencies] : (isFunction(dependencies) ? [mid, defaultDeps, dependencies] : [mid, [], dependencies])) :
-					[mid, dependencies, factory]);
+			defaultDeps = ["require", "exports", "module"],
+			// the predominate signature...
+			args = [0, mid, dependencies];
+		if(arity==1){
+			args = [0, (isFunction(mid) ? defaultDeps : []), mid];
+		}else if(arity==2 && isString(mid)){
+			args = [mid, (isFunction(dependencies) ? defaultDeps : []), dependencies];
+		}else if(arity==3){
+			args = [mid, dependencies, factory];
 		}
+
+		if(has("dojo-amd-factory-scan") && args[1]===defaultDeps){
+			args[2].toString()
+				.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg, "")
+				.replace(/require\(["']([\w\!\-_\.\/]+)["']\)/g, function (match, dep){
+				args[1].push(dep);
+			});
+		}
+
 		req.trace("loader-define", args.slice(0, 2));
 		var targetModule = args[0] && getModule(args[0]),
 			module;

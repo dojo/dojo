@@ -575,28 +575,39 @@
 			};
 
 		//
-		// execute the various sniffs
+		// execute the various sniffs; userConfig can override and value
 		//
 
 		if(has("dojo-cdn") || has("dojo-sniff")){
-			for(var dojoDir, src, match, scripts = doc.getElementsByTagName("script"), i = 0; i < scripts.length && !match; i++){
-				if((src = scripts[i].getAttribute("src")) && (match = src.match(/(.*)\/?dojo\.js(\W|$)/i))){
-					// if baseUrl wasn't explicitly set, set it here to the dojo directory; this is the 1.6- behavior
-					// set in defaultConfig which allow user config to override
-					dojoDir = match[1];
+			// the sniff regex looks for a src attribute ending in dojo.js, optionally preceeded with a path.
+			// match[3] returns the path to dojo.js (if any) without the trailing slash. This is used for the
+			// dojo location on CDN deployments and baseUrl when either/both of these are not provided
+			// explicitly in the config data; this is the 1.6- behavior.
+
+			var scripts = doc.getElementsByTagName("script"),
+				i = 0,
+				script, dojoDir, src, match;
+			while(i < scripts.length){
+				script = scripts[i++];
+				if((src = script.getAttribute("src")) && (match = src.match(/(((.*)\/)|^)dojo\.js(\W|$)/i))){
+					// sniff dojoDir and baseUrl
+					dojoDir = match[3] || "";
 					defaultConfig.baseUrl = defaultConfig.baseUrl || dojoDir;
 
-					// see if there's a dojo configuration stuffed into the node
-					src = (scripts[i].getAttribute("data-dojo-config") || scripts[i].getAttribute("djConfig"));
+					// sniff configuration on attribute in script element
+					src = (script.getAttribute("data-dojo-config") || script.getAttribute("djConfig"));
 					if(src){
 						dojoSniffConfig = req.eval("({ " + src + " })", "data-dojo-config");
 					}
+
+					// sniff requirejs attribute
 					if(has("dojo-requirejs-api")){
-						var dataMain = scripts[i].getAttribute("data-main");
+						var dataMain = script.getAttribute("data-main");
 						if(dataMain){
 							dojoSniffConfig.deps = dojoSniffConfig.deps || [dataMain];
 						}
 					}
+					break;
 				}
 			}
 		}
@@ -615,7 +626,7 @@
 		req.rawConfig = {};
 		config(defaultConfig, 1);
 
-		// do this before setting userConfig to allow userConfig to override
+		// do this before setting userConfig/sniffConfig to allow userConfig/sniff overrides
 		if(has("dojo-cdn")){
 			packs.dojo.location = dojoDir;
 			packs.dijit.location = dojoDir + "../dijit/";

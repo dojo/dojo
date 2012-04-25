@@ -629,6 +629,9 @@
 		// do this before setting userConfig/sniffConfig to allow userConfig/sniff overrides
 		if(has("dojo-cdn")){
 			packs.dojo.location = dojoDir;
+			if(dojoDir){
+				dojoDir += "/";
+			}
 			packs.dijit.location = dojoDir + "../dijit/";
 			packs.dojox.location = dojoDir + "../dojox/";
 		}
@@ -714,6 +717,7 @@
 					// resolve the request list with respect to the reference module
 					for(var mid, deps = [], i = 0; i < a1.length;){
 						mid = a1[i++];
+						// TODO: delete this if...not worth the space it takes...the programmer will find the error when the modules don't load
 						if(mid in {exports:1, module:1}){
 							throw makeError("illegalModuleId", mid);
 						}

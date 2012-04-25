@@ -11,6 +11,6 @@
 .dojoDndHandle {cursor: move;}
 .dojoDndIgnore {cursor: default;}
 
-.dijit_a11y .dojoDndAvatar { font-size: 1em; font-weight:bold;}
-.dijit_a11y .dojoDndAvatarHeader td {padding-left:2px !important;}
-.dijit_a11y .dojoDndAvatarHeader td span {padding-right: 5px;}
+.dj_a11y .dojoDndAvatar { font-size: 1em; font-weight:bold;}
+.dj_a11y .dojoDndAvatarHeader td {padding-left:2px !important;}
+.dj_a11y .dojoDndAvatarHeader td span {padding-right: 5px;}

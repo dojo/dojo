@@ -213,8 +213,11 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 								load:function(text){
 									var result = evalBundle(text, checkForLegacyModules, mid);
 									if(result===1){
-										// the bundle was an AMD module; reinject it through the normal AMD path
-										// with browser caching, this should be free
+										// the bundle was an AMD module; re-inject it through the normal AMD path
+										// we gotta do this since it could be an anonymous module and simply evaluating
+										// the text here won't provide the loader with the context to know what
+										// module is being defined()'d. With browser caching, this should be free; further
+										// this entire code path can be circumvented by using the AMD format to begin with
 										require([mid], function(bundle){
 											results.push(cache[url]= bundle);
 										});
@@ -280,7 +283,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			return result;
 		};
 
-		thisModule._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated){
+		thisModule._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated, /*boolean*/ guaranteedAmdFormat){
 			//	summary:
 			//		Load built, possibly-flattened resource bundles, if available for all
 			//		locales used in the page.
@@ -289,6 +292,10 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			//		Only called by built layer files. The entire locale hierarchy is loaded. For example,
 			//		if locale=="ab-cd", then ROOT, "ab", and "ab-cd" are loaded. This is different than v1.6-
 			//		in that the v1.6- would lonly load ab-cd...which was *always* flattened.
+			//
+			//		If guaranteedAmdFormat is true, then the module can be loaded with require thereby circumventing the detection algorithm
+			//		and the extra possible extra transaction.
+			//
 
 
 			function forEachLocale(locale, func){
@@ -309,8 +316,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					if(array.indexOf(localesGenerated, loc)>0){
 						var mid = bundlePrefix.replace(/\./g, "/")+"_"+loc;
 						preloading++;
-						(isXd(mid) ? require : syncRequire)([mid], function(){
-							while(!--preloading && preloadWaitQueue.length){
+						(isXd(mid) || guaranteedAmdFormat ? require : syncRequire)([mid], function(){
+							--preloading;
+							while(!preloading && preloadWaitQueue.length){
 								load.apply(null, preloadWaitQueue.shift());
 							}
 						});

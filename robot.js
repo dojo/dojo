@@ -25,43 +25,41 @@ lang.mixin(robot, {
 	},
 
 	_scrollIntoView: function(/*Node*/ n){
-		// scrolls the passed node into view, scrolling all ancester frames/windows as well.
+		// scrolls the passed node into view, scrolling all ancestor frames/windows as well.
 		// Assumes parent iframes can be made fully visible given the current browser window size
 		var p = null;
 		array.forEach(robot._getWindowChain(n), function(w){
-			win.withGlobal(w, function(){
-				// get the position of the node wrt its parent window
-				// if it is a parent frame, its padding and border extents will get added in
-				var p2 = geom.position(n, false),
-					b = geom.getPadBorderExtents(n),
-					oldp = null;
-				// if p2 is the position of the original passed node, store the position away as p
-				// otherwise, node is actually an iframe. in this case, add the iframe's position wrt its parent window and also the iframe's padding and border extents
-				if(!p){
-					p = p2;
-				}else{
-					oldp = p;
-					p = {x: p.x+p2.x+b.l,
-						y: p.y+p2.y+b.t,
-						w: p.w,
-						h: p.h};
+			// get the position of the node wrt its parent window
+			// if it is a parent frame, its padding and border extents will get added in
+			var p2 = geom.position(n, false),
+				b = geom.getPadBorderExtents(n),
+				oldp = null;
+			// if p2 is the position of the original passed node, store the position away as p
+			// otherwise, node is actually an iframe. in this case, add the iframe's position wrt its parent window and also the iframe's padding and border extents
+			if(!p){
+				p = p2;
+			}else{
+				oldp = p;
+				p = {x: p.x+p2.x+b.l,
+					y: p.y+p2.y+b.t,
+					w: p.w,
+					h: p.h};
 
-				}
-				// scroll the parent window so that the node translated into the parent window's coordinate space is in view
-				winUtils.scrollIntoView(n,p);
-				// adjust position for the new scroll offsets
-				p2 = geom.position(n, false);
-				if(!oldp){
-					p = p2;
-				}else{
-					p = {x: oldp.x+p2.x+b.l,
-						y: oldp.y+p2.y+b.t,
-						w: p.w,
-						h: p.h};
-				}
-				// get the parent iframe so it can be scrolled too
-				n = w.frameElement;
-			});
+			}
+			// scroll the parent window so that the node translated into the parent window's coordinate space is in view
+			winUtils.scrollIntoView(n,p);
+			// adjust position for the new scroll offsets
+			p2 = geom.position(n, false);
+			if(!oldp){
+				p = p2;
+			}else{
+				p = {x: oldp.x+p2.x+b.l,
+					y: oldp.y+p2.y+b.t,
+					w: p.w,
+					h: p.h};
+			}
+			// get the parent iframe so it can be scrolled too
+			n = w.frameElement;
 		});
 	},
 
@@ -72,32 +70,27 @@ lang.mixin(robot, {
 		var p = null, max = Math.max, min = Math.min;
 		// p: the returned position of the node
 		array.forEach(robot._getWindowChain(n), function(w){
-			win.withGlobal(w, function(){
-				// get the position of the node wrt its parent window
-				// if it is a parent frame, its padding and border extents will get added in
-				var p2 = geom.position(n, false), b = geom.getPadBorderExtents(n);
-				// if p2 is the position of the original passed node, store the position away as p
-				// otherwise, node is actually an iframe. in this case, add the iframe's position wrt its parent window and also the iframe's padding and border extents
-				if(!p){
-					p = p2;
-				}else{
-					var view;
-					win.withGlobal(n.contentWindow, function(){
-						view = winUtils.getBox();
-					});
-					p2.r = p2.x+view.w;
-					p2.b = p2.y+view.h;
-					p = {x: max(p.x+p2.x,p2.x)+b.l, // clip left edge of node wrt the iframe
-						y: max(p.y+p2.y,p2.y)+b.t,	// top edge
-						r: min(p.x+p2.x+p.w,p2.r)+b.l,	// right edge (to compute width)
-						b: min(p.y+p2.y+p.h,p2.b)+b.t}; // bottom edge (to compute height)
-					// save a few bytes by computing width and height from r and b
-					p.w = p.r-p.x;
-					p.h = p.b-p.y;
-				}
-				// the new node is now the old node's parent iframe
-				n=w.frameElement;
-			});
+			// get the position of the node wrt its parent window
+			// if it is a parent frame, its padding and border extents will get added in
+			var p2 = geom.position(n, false), b = geom.getPadBorderExtents(n);
+			// if p2 is the position of the original passed node, store the position away as p
+			// otherwise, node is actually an iframe. in this case, add the iframe's position wrt its parent window and also the iframe's padding and border extents
+			if(!p){
+				p = p2;
+			}else{
+				var view = winUtils.getBox(n.contentWindow.document);
+				p2.r = p2.x+view.w;
+				p2.b = p2.y+view.h;
+				p = {x: max(p.x+p2.x,p2.x)+b.l, // clip left edge of node wrt the iframe
+					y: max(p.y+p2.y,p2.y)+b.t,	// top edge
+					r: min(p.x+p2.x+p.w,p2.r)+b.l,	// right edge (to compute width)
+					b: min(p.y+p2.y+p.h,p2.b)+b.t}; // bottom edge (to compute height)
+				// save a few bytes by computing width and height from r and b
+				p.w = p.r-p.x;
+				p.h = p.b-p.y;
+			}
+			// the new node is now the old node's parent iframe
+			n=w.frameElement;
 		});
 		return p;
 	},
@@ -107,7 +100,7 @@ lang.mixin(robot, {
 		var cW = winUtils.get(n.ownerDocument);
 		var arr = [cW];
 		var f = cW.frameElement;
-		return (cW == kernel.global || !f) ? arr : arr.concat(robot._getWindowChain(f));
+		return (cW == win.global || !f) ? arr : arr.concat(robot._getWindowChain(f));
 	},
 
 	scrollIntoView : function(/*String||DOMNode||Function*/ node, /*Number, optional*/ delay){

@@ -1815,6 +1815,9 @@
 	}else{
 		global.define = def;
 		global.require = req;
+		if(has("host-node")){
+			require= req;
+		}
 	}
 
 	if(has("dojo-combo-api") && req.combo && req.combo.plugins){

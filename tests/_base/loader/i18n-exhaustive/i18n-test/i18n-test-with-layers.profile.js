@@ -1,5 +1,6 @@
 var profile = (function(){
 	return {
+		localeList:0,
 		resourceTags:{
 			ignore: function(filename, mid){
 				return /(profile\.js|html)$/.test(filename);

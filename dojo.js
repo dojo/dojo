@@ -432,13 +432,20 @@
 
 	if(has("dojo-config-api")){
 		var consumePendingCacheInsert = function(referenceModule){
-				for(var p in pendingCacheInsert){
-					var match = p.match(/^url\:(.+)/);
+				var p, item, match, now;
+				for(p in pendingCacheInsert){
+					item = pendingCacheInsert[p];
+					match = p.match(/^url\:(.+)/);
 					if(match){
-						cache[toUrl(match[1], referenceModule)] =  pendingCacheInsert[p];
+						cache[toUrl(match[1], referenceModule)] =  item;
+					}else if(p=="*now"){
+						now = item;
 					}else if(p!="*noref"){
-						cache[getModuleInfo(p, referenceModule).mid] = pendingCacheInsert[p];
+						cache[getModuleInfo(p, referenceModule).mid] = item;
 					}
+				}
+				if(now){
+					now(createRequire(referenceModule));
 				}
 				pendingCacheInsert = {};
 			},
@@ -1262,16 +1269,9 @@
 					// dependencies of some other module because this may cause circles when the plugin
 					// loadQ is run; also, generally, we want plugins to run early since they may load
 					// several other modules and therefore can potentially unblock many modules
+					plugin.loadQ = [module];
 					execQ.unshift(plugin);
 					injectModule(plugin);
-
-					// maybe the module was cached and is now defined...
-					if(plugin.load){
-						plugin.load(module.prid, module.req, onLoad);
-					}else{
-						// nope; queue up the plugin resource to be loaded after the plugin module is loaded
-						plugin.loadQ = [module];
-					}
 				}
 			},
 
@@ -1508,7 +1508,6 @@
 			runDefQ = function(referenceModule, mids){
 				// defQ is an array of [id, dependencies, factory]
 				// mids (if any) is a vector of mids given by a combo service
-				consumePendingCacheInsert(referenceModule);
 				var definedModules = [],
 					module, args;
 				while(defQ.length){
@@ -1517,10 +1516,13 @@
 					// explicit define indicates possible multiple modules in a single file; delay injecting dependencies until defQ fully
 					// processed since modules earlier in the queue depend on already-arrived modules that are later in the queue
 					// TODO: what if no args[0] and no referenceModule
-					module = args[0] && getModule(args[0]) || referenceModule;
-					definedModules.push(defineModule(module, args[1], args[2]));
+					module = (args[0] && getModule(args[0])) || referenceModule;
+					definedModules.push([module, args[1], args[2]]);
 				}
-				forEach(definedModules, injectDependencies);
+				consumePendingCacheInsert(referenceModule);
+				forEach(definedModules, function(args){
+					injectDependencies(defineModule.apply(null, args));
+				});
 			};
 	}
 

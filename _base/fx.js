@@ -271,7 +271,8 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 			var _t = this;
 			if(_t._active){
 				var curr = new Date().valueOf();
-				var step = (curr - _t._startTime) / (_t.duration);
+				// Allow durations of 0 (instant) by setting step to 1 - see #13798
+				var step = _t.duration === 0 ? 1 : (curr - _t._startTime) / (_t.duration);
 
 				if(step >= 1){
 					step = 1;

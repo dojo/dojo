@@ -1,6 +1,6 @@
-define(["../_base/lang", "../_base/declare", "../_base/array", "../_base/json", "../_base/window", 
+define(["../_base/lang", "../_base/declare", "../_base/array", "../_base/json", "../_base/kernel",
 	"./ItemFileReadStore", "../date/stamp"
-], function(lang, declare, arrayUtil, jsonUtil, window, ItemFileReadStore, dateStamp) {
+], function(lang, declare, arrayUtil, jsonUtil, kernel, ItemFileReadStore, dateStamp){
 	// module:
 	//		dojo/data/ItemFileWriteStore
 	// summary:
@@ -630,14 +630,14 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 			self._saveInProgress = false; // must come after this._pending is cleared, but before any callbacks
 			if(keywordArgs && keywordArgs.onComplete){
-				var scope = keywordArgs.scope || window.global;
+				var scope = keywordArgs.scope || kernel.global;
 				keywordArgs.onComplete.call(scope);
 			}
 		};
 		var saveFailedCallback = function(err){
 			self._saveInProgress = false;
 			if(keywordArgs && keywordArgs.onError){
-				var scope = keywordArgs.scope || window.global;
+				var scope = keywordArgs.scope || kernel.global;
 				keywordArgs.onError.call(scope, err);
 			}
 		};

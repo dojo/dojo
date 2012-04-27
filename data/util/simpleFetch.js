@@ -1,5 +1,5 @@
-define(["../../_base/lang", "../../_base/window", "./sorter"],
-  function(lang, winUtil, sorter) {
+define(["../../_base/lang", "../../_base/kernel", "./sorter"],
+  function(lang, kernel, sorter) {
 	// module:
 	//		dojo/data/util/simpleFetch
 	// summary:
@@ -42,7 +42,7 @@ simpleFetch.fetch = function(/* Object? */ request){
 
 	var _errorHandler = function(errorData, requestObject){
 		if(requestObject.onError){
-			var scope = requestObject.scope || winUtil.global;
+			var scope = requestObject.scope || kernel.global;
 			requestObject.onError.call(scope, errorData, requestObject);
 		}
 	};
@@ -61,7 +61,7 @@ simpleFetch.fetch = function(/* Object? */ request){
 			}
 		};
 
-		var scope = requestObject.scope || winUtil.global;
+		var scope = requestObject.scope || kernel.global;
 		if(!requestObject.store){
 			requestObject.store = self;
 		}

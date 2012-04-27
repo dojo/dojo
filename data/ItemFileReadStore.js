@@ -1,6 +1,6 @@
 define(["../_base/kernel", "../_base/lang", "../_base/declare", "../_base/array", "../_base/xhr",
-	"../Evented", "../_base/window", "./util/filter", "./util/simpleFetch", "../date/stamp"
-], function(kernel, lang, declare, array, xhr, Evented, window, filterUtil, simpleFetch, dateStamp) {
+	"../Evented", "./util/filter", "./util/simpleFetch", "../date/stamp"
+], function(kernel, lang, declare, array, xhr, Evented, filterUtil, simpleFetch, dateStamp) {
 // module:
 //		dojo/data/ItemFileReadStore
 // summary:
@@ -792,7 +792,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 					};
 					var getHandler = xhr.get(getArgs);
 					getHandler.addCallback(function(data){
-						var scope = keywordArgs.scope?keywordArgs.scope:window.global;
+						var scope = keywordArgs.scope?keywordArgs.scope:kernel.global;
 						try{
 							self._getItemsFromLoadedData(data);
 							self._loadFinished = true;
@@ -812,7 +812,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 					getHandler.addErrback(function(error){
 						self._loadInProgress = false;
 						if(keywordArgs.onError){
-							var scope = keywordArgs.scope?keywordArgs.scope:window.global;
+							var scope = keywordArgs.scope?keywordArgs.scope:kernel.global;
 							keywordArgs.onError.call(scope, error);
 						}
 					});
@@ -825,7 +825,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 				self._loadFinished = true;
 				item = self._getItemByIdentity(keywordArgs.identity);
 				if(keywordArgs.onItem){
-					scope = keywordArgs.scope?keywordArgs.scope:window.global;
+					scope = keywordArgs.scope?keywordArgs.scope:kernel.global;
 					keywordArgs.onItem.call(scope, item);
 				}
 			}
@@ -833,7 +833,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 			// Already loaded.  We can just look it up and call back.
 			item = this._getItemByIdentity(keywordArgs.identity);
 			if(keywordArgs.onItem){
-				scope = keywordArgs.scope?keywordArgs.scope:window.global;
+				scope = keywordArgs.scope?keywordArgs.scope:kernel.global;
 				keywordArgs.onItem.call(scope, item);
 			}
 		}

@@ -1,5 +1,5 @@
 define([
-	"util/doh/main",
+	"doh/main",
 	"./aspect",
 	"./dom-construct",
 	"./dom-style",

@@ -1135,7 +1135,7 @@
 		execModule = function(module, strict){
 			// run the dependency vector, then run the factory for module
 			if(module.executed === executing){
-				req.trace("loader-circular-dependency", [circleTrace.concat(mid).join("->")]);
+				req.trace("loader-circular-dependency", [circleTrace.concat(module.mid).join("->")]);
 				return (!module.def || strict) ? abortExec :  (module.cjs && module.cjs.exports);
 			}
 			// at this point the module is either not executed or fully executed
@@ -1179,10 +1179,10 @@
 				}
 				runFactory(module, args);
 				finishExec(module);
+				has("dojo-trace-api") && circleTrace.pop();
 			}
 			// at this point the module is guaranteed fully executed
 
-			has("dojo-trace-api") && circleTrace.pop();
 			return module.result;
 		},
 

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Parser Unit Test</title>
-		<style type="text/css">     
+		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
@@ -16,11 +16,12 @@
 			};
 		};
 
-		require(["dojo/_base/array", "dojo/aspect", "dojo/_base/declare",
-				"dojo/dom", "dojo/_base/html", "dojo/_base/lang", "dojo/on", "dojo/parser",
-                "dojo/ready", "dojo/date/stamp", "dojo/Stateful", "dojo/Evented",
-				"doh", "dojo/tests/resources/AMDWidget", "dojo/tests/resources/AMDMixin", "dojo/domReady!"],
-				function(array, aspect, declare, dom, dhtml, lang, on, parser, ready, dstamp, Stateful, Evented,
+		require([
+			"dojo/_base/array", "dojo/aspect", "dojo/_base/declare",
+			"dojo/dom", "dojo/_base/html", "dojo/_base/lang", "dojo/on", "dojo/parser",
+			"dojo/ready", "dojo/date/stamp", "dojo/Stateful", "dojo/Evented",
+			"doh", "dojo/tests/resources/AMDWidget", "dojo/tests/resources/AMDMixin", "dojo/domReady!"
+		], function(array, aspect, declare, dom, dhtml, lang, on, parser, ready, dstamp, Stateful, Evented,
 						 doh, AMDWidget, AMDMixin){
 
 			declare("tests.parser.Widget", null, {
@@ -33,7 +34,7 @@
 				constructor: function(args, node){
 					this.params = args;
 					lang.mixin(this, args);
-				}, 
+				},
 				preambleTestProp: 1,
 				preamble: function(){
 					this.preambleTestProp++;
@@ -64,7 +65,7 @@
 			declare("tests.parser.Class2", null, {
 				constructor: function(){
 					this.fromMarkup = false;
-				}, 
+				},
 				fromMarkup: false,
 				markupFactory: function(args, node, classCtor){
 					var i = new tests.parser.Class2();
@@ -127,8 +128,8 @@
 
 			declare("tests.parser.HTML5Props", null, {
 				constructor: function(args, node){ lang.mixin(this, args); },
-				simple:false, 
-				a:2, 
+				simple:false,
+				a:2,
 				b:null, c:null, d: null, e:null, f:null,
 				afn: function(){
 					return this.a * 2;
@@ -144,13 +145,13 @@
 				constructor: function(args, node){ lang.mixin(this, args); },
 				baseValue: 10,
 				someMethod: function(a, b){
-					return this.baseValue; 
+					return this.baseValue;
 				},
 				diffMethod: function(a){
 					this._ran = true;
 				}
 			});
-			
+
 			declare("tests.parser.StatefulClass", [Evented, Stateful], {
 				strProp1: "",
 				objProp1: {},
@@ -160,18 +161,18 @@
 			});
 
 			declare("tests.parser.MethodClass", null, {
-			  method1ran: false,
-			  method1after: false,
-			  method2ran: false,
-			  method2before: false,
-			  method2after: false,
-			  method3result: "",
-			  method4ran: false,
-			  method4after: false,
-			  method1: function() { this.method1ran = true },
-			  method2: function() { this.method2ran = true },
-			  method3: function(result) { this.method3result = result; },
-			  method4: function() { this.method4ran = true }
+				method1ran: false,
+				method1after: false,
+				method2ran: false,
+				method2before: false,
+				method2after: false,
+				method3result: "",
+				method4ran: false,
+				method4after: false,
+				method1: function() { this.method1ran = true },
+				method2: function() { this.method2ran = true },
+				method3: function(result) { this.method3result = result; },
+				method4: function() { this.method4ran = true }
 			});
 
 			declare("tests.parser.ClassForMixins", null, {
@@ -268,25 +269,25 @@
 						for(var param in obj.params){
 							doh.t(array.indexOf(
 								["strProp1", "strProp2",
-								"intProp",
-								"arrProp", "arrProp2",
-								"boolProp1", "boolProp2",
-								"dateProp1", "dateProp2", "dateProp3",
-								"funcProp2", "funcProp3",
-								"preamble",
+									"intProp",
+									"arrProp", "arrProp2",
+									"boolProp1", "boolProp2",
+									"dateProp1", "dateProp2", "dateProp3",
+									"funcProp2", "funcProp3",
+									"preamble",
 									"callInc1", "callInc2", "dir", "lang", "textDir"],
 								param) >= 0, param);
 						}
 					},
 					function testDisabledFlag(t){
-							t.is("boolean", typeof disabledObj.disabled, "typeof disabled");
-							t.t(disabledObj.disabled, "disabled");
-							t.f(disabledObj.checked, "checked");
+						t.is("boolean", typeof disabledObj.disabled, "typeof disabled");
+						t.t(disabledObj.disabled, "disabled");
+						t.f(disabledObj.checked, "checked");
 					},
 					function testCheckedFlag(t){
-							t.is("boolean", typeof checkedObj.checked, "typeof checked");
-							t.f(checkedObj.disabled, "disabled");
-							t.t(checkedObj.checked, "checked");
+						t.is("boolean", typeof checkedObj.checked, "typeof checked");
+						t.f(checkedObj.disabled, "disabled");
+						t.t(checkedObj.checked, "checked");
 					},
 					function testFunctionProp(t){
 						// make sure that unspecified functions (even with common names)
@@ -439,40 +440,40 @@
 						doh.t(htmldojomethod._ran, "ensures original was called first");
 						doh.is(2, htmldojomethod._fromvalue, "ensures connected was executed in scope");
 					},
-					
+
 					function testOnWatch(){
 						// testing script-type dojo/watch and dojo/on
 						doh.t(typeof objOnWatch == "object");
 						objOnWatch.set("strProp1","newValue1");
 						doh.is("newValue1", objOnWatch.arrProp.newValue, "ensures watch executed");
-						
+
 						objOnWatch.onclick();
 						doh.t(objOnWatch.prototypeOnclick, "ensures original was called");
 						doh.t(objOnWatch.boolProp1, "ensure on executed in scope");
 					},
-					
-      		function testAspect(){
-      		  // testing script-type dojo/aspect
-      		  doh.t(typeof objAspect == "object");
-      		  doh.f(objAspect.method1ran, "ensures method unfired");
-      		  doh.f(objAspect.method2ran, "ensures method unfired");
-      		  doh.is(objAspect.method3result, "", "ensures method unfired");
-      		  doh.f(objAspect.method4ran, "ensures method unfired");
 
-      		  objAspect.method1();
-      		  objAspect.method2();
-      		  objAspect.method3("something");
-      		  objAspect.method4();
+					function testAspect(){
+						// testing script-type dojo/aspect
+						doh.t(typeof objAspect == "object");
+						doh.f(objAspect.method1ran, "ensures method unfired");
+						doh.f(objAspect.method2ran, "ensures method unfired");
+						doh.is(objAspect.method3result, "", "ensures method unfired");
+						doh.f(objAspect.method4ran, "ensures method unfired");
 
-      		  doh.t(objAspect.method1ran, "method fired");
-      		  doh.t(objAspect.method1after, "after advice fired");
-      		  doh.t(objAspect.method2ran, "method fired");
-      		  doh.t(objAspect.method2before, "around before advice fired");
-      		  doh.t(objAspect.method2after, "around after advice fired");
-      		  doh.is(objAspect.method3result, "before", "before argument passed");
-      		  doh.t(objAspect.method4ran, "method fired");
-      		  doh.t(objAspect.method4after, "after advice fired");
-      		},
+						objAspect.method1();
+						objAspect.method2();
+						objAspect.method3("something");
+						objAspect.method4();
+
+						doh.t(objAspect.method1ran, "method fired");
+						doh.t(objAspect.method1after, "after advice fired");
+						doh.t(objAspect.method2ran, "method fired");
+						doh.t(objAspect.method2before, "around before advice fired");
+						doh.t(objAspect.method2after, "around after advice fired");
+						doh.is(objAspect.method3result, "before", "before argument passed");
+						doh.t(objAspect.method4ran, "method fired");
+						doh.t(objAspect.method4after, "after advice fired");
+					},
 
 					function testMID(){
 						// testing specifying data-dojo-type as mid
@@ -643,7 +644,7 @@
 					doh.is("function", typeof button.onClick, "created as function");
 					doh.t(buttonClicked == button.onClick, "points to specified function");
 				});
-				
+
 				doh.register("parser.instantiate()", function instantiate1() {
 					var nodes = [dom.byId("objId1"),dom.byId("objId2"),dom.byId("contId1"),dom.byId("objId3")];
 					parser.instantiate(nodes);
@@ -683,8 +684,8 @@
 					doh.is(resultNonDojoMixin.params[1], tests.parser.Mixin2, "correct param 2");
 				});
 
-                // For any special issues with behavioral widgets (as opposed to Templated)
-                doh.register("behavioral", [
+				// For any special issues with behavioral widgets (as opposed to Templated)
+				doh.register("behavioral", [
 					function doubleConnect(){
 						// Class used in "behavioral" <div>
 						Behavioral1 = declare(null, {
@@ -713,7 +714,7 @@
 
 						doh.is("bar", dom.byId("bh1").getAttribute("foo"), "foo attribute not removed from widget DOMNode");
 					}
-                ]);
+				]);
 
 				doh.run();
 			})
@@ -728,13 +729,13 @@
 				function foo(){ this.fooCalled=true; }
 			</script>
 			<div dojoType="tests.parser.Class1" data-dojo-id="obj"
-				strProp1="text" strProp2=""
-				intProp="5"
-				arrProp="foo, bar, baz"
-				arrProp2=""
-				boolProp1="true" boolProp2="false"
-				dateProp1="2006-01-01" dateProp2="" dateProp3="now"
-				funcProp2="foo" funcProp3="this.func3Called=true;"
+				 strProp1="text" strProp2=""
+				 intProp="5"
+				 arrProp="foo, bar, baz"
+				 arrProp2=""
+				 boolProp1="true" boolProp2="false"
+				 dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+				 funcProp2="foo" funcProp3="this.func3Called=true;"
 			>
 				<script type="dojo/method" event="preamble">
 					this.preambleTestProp = 3;
@@ -795,19 +796,19 @@
 			<div>
 				<div data-dojo-id="html5simple" data-dojo-type="tests.parser.HTML5Props" data-dojo-props="simple:true"></div>
 				<div data-dojo-id="html5simple2" data-dojo-type="tests.parser.HTML5Props"
-					data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
+					 data-dojo-props="simple:false, a:1, b:'two', c:[1,2,3], d:function(){ return this; }, e:{ f:'g' }"
 				></div>
 				<!-- note needing to use a named inherited lookup because we're just mixing in -->
 				<div data-dojo-id="html5simple3" data-dojo-type="tests.parser.HTML5Props"
-					data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
+					 data-dojo-props="afn: function(){ return this.inherited('afn', arguments); }"
 				></div>
 
 				<!-- not used for tests, but thinking out loud: what about a named-resource prop, via getObject -->
 				<div data-dojo-id="html5fromobjectns" data-dojo-type="tests.parser.HTML5Props"
-					data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
+					 data-dojo-obj="tests.parser.HTML5Props._aDefaultObj"
 				></div>
 				<div data-dojo-id="html5fromobjectns2" data-dojo-type="tests.parser.HTML5Props"
-					data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
+					 data-dojo-obj="tests.parser.HTML5Props._aDefaultObj" data-dojo-props="simple:false"
 				></div>
 
 			</div>
@@ -825,37 +826,37 @@
 					<script type="dojo/method">
 						this._methodRan = true;
 					</script>
-  				<div data-dojo-id="objAspect" data-dojo-type="tests.parser.MethodClass">
-  				  <script type="dojo/aspect" data-dojo-method="method1" data-dojo-advice="after">
-  				    if(this.method1ran){
-  				      this.method1after = true;
-  				    }
-  				  </script>
-  				  <script type="dojo/aspect" data-dojo-method="method2" data-dojo-advice="around" data-dojo-args="origFn">
-  				    return function(){
-  				      if(!this.method2ran){
-  				        this.method2before = true;
-  				      }
-  				      origFn.call(this);
-  				      if(this.method2ran){
-  				        this.method2after = true;
-  				      }
-  				    }
-  				  </script>
-  				  <script type="dojo/aspect" data-dojo-method="method3" data-dojo-advice="before" data-dojo-args="result">
-  				    if(result == "something"){
-  				      return ["before"];
-  				    }
-  				  </script>
-  				  <script type="dojo/aspect" data-dojo-method="method4">
-  				    if(this.method4ran){
-  				      this.method4after = true;
-  				    }
-  				  </script>
-  				</div>
+					<div data-dojo-id="objAspect" data-dojo-type="tests.parser.MethodClass">
+						<script type="dojo/aspect" data-dojo-method="method1" data-dojo-advice="after">
+							if(this.method1ran){
+								this.method1after = true;
+							}
+						</script>
+						<script type="dojo/aspect" data-dojo-method="method2" data-dojo-advice="around" data-dojo-args="origFn">
+							return function(){
+								if(!this.method2ran){
+									this.method2before = true;
+								}
+								origFn.call(this);
+								if(this.method2ran){
+									this.method2after = true;
+								}
+							};
+						</script>
+						<script type="dojo/aspect" data-dojo-method="method3" data-dojo-advice="before" data-dojo-args="result">
+							if(result == "something"){
+								return ["before"];
+							}
+						</script>
+						<script type="dojo/aspect" data-dojo-method="method4">
+							if(this.method4ran){
+								this.method4after = true;
+							}
+						</script>
+					</div>
 				</div>
 			</div>
-			
+
 			<!-- section for testing dojo/on and dojo/watch scripts -->
 			<div>
 				<div data-dojo-id="objOnWatch" data-dojo-type="tests.parser.StatefulClass">
@@ -868,8 +869,8 @@
 					</script>
 				</div>
 			</div>
-			
-			<!--  section for testing mid syntax for data-dojo-type -->
+
+			<!-- section for testing mid syntax for data-dojo-type -->
 			<div>
 				<div data-dojo-id="objAMDWidget" data-dojo-type="dojo/tests/resources/AMDWidget" data-dojo-props="value: 'Value1'"></div>
 			</div>
@@ -917,23 +918,23 @@
 		<!-- tests that we can parse parameters correctly on IE6/7, not getting tripped up by escaped quotes etc. -->
 		<div id=ie>
 			<input id="ieInput1" data-dojo-type="tests.parser.InputClass"
-					type=checkbox disabled foo = 'bar' readonly bar=zaz bob='escaped"dq' frank="escaped'sq" checked />
+				   type=checkbox disabled foo = 'bar' readonly bar=zaz bob='escaped"dq' frank="escaped'sq" checked />
 			<input id="ieInput2" data-dojo-type="tests.parser.InputClass"
-					fakeout1="type=submit" fakeout2="name='test'" fakeout3="value='123'" data-dojo-props="foo: 'hi'"/>
+				   fakeout1="type=submit" fakeout2="name='test'" fakeout3="value='123'" data-dojo-props="foo: 'hi'"/>
 			<input id="ieInput3" data-dojo-type="tests.parser.InputClass"
-					type=password name="test" value="123" class="myClass" style="display:block" tabindex="3"/>
+				   type=password name="test" value="123" class="myClass" style="display:block" tabindex="3"/>
 			<textarea id="ieTextarea" data-dojo-type="tests.parser.InputClass" value="attrVal">contentVal</textarea>
 			<button id="ieButton1" data-dojo-type="tests.parser.InputClass" checked value="button1val">
-					checked ToggleButton as button
+				checked ToggleButton as button
 			</button>
 			<button id="ieButton2" data-dojo-type="tests.parser.InputClass">
-					unchecked ToggleButton as button
+				unchecked ToggleButton as button
 			</button>
 			<div id="ieButton3" data-dojo-type="tests.parser.InputClass" checked>
-					checked ToggleButton as div
+				checked ToggleButton as div
 			</div>
 			<div id="ieButton4" data-dojo-type="tests.parser.InputClass">
-					unchecked ToggleButton as div
+				unchecked ToggleButton as div
 			</div>
 			<form id="ieForm1" data-dojo-type="tests.parser.FormClass" encType="foo"></form>
 			<form id="ieForm2" data-dojo-type="tests.parser.FormClass"></form>
@@ -948,28 +949,28 @@
 		<!-- tests for when parameters are specified both natively and in data-dojo-props. -->
 		<div id="mixedContainer">
 			<input data-dojo-type="tests.parser.InputClass" data-dojo-id="mixedObj"
-				  value="mixedValue" title="native title" data-dojo-props="custom1: 999, title: 'custom title'">
+				   value="mixedValue" title="native title" data-dojo-props="custom1: 999, title: 'custom title'">
 		</div>
 
 		<!-- tests for function names native to HTML, specifically an issue on IE<8 -->
 		<div id="functions">
 			<button dojoType="tests.parser.Button" onClick="buttonClicked" jsId="button">Click me</button>
 		</div>
-		
+
 		<!-- section for testing parser.instantiate() -->
 		<div id="instantiate1">
 			<div dojoType="tests.parser.Class1" jsId="objI1" id="objId1"
-				strProp1="text" strProp2=""
-				intProp="5"
-				arrProp="foo, bar, baz"
-				arrProp2=""
-				boolProp1="true" boolProp2="false"
-				dateProp1="2006-01-01" dateProp2="" dateProp3="now"
-				funcProp2="foo" funcProp3="this.func3Called=true;"
+				 strProp1="text" strProp2=""
+				 intProp="5"
+				 arrProp="foo, bar, baz"
+				 arrProp2=""
+				 boolProp1="true" boolProp2="false"
+				 dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+				 funcProp2="foo" funcProp3="this.func3Called=true;"
 			>
 			</div>
 			<div data-dojo-type="tests.parser.Class1" data-dojo-id="objI2" id="objId2"
-				data-dojo-props="
+				 data-dojo-props="
 					strProp1:'text',
 					strProp2:'',
 					intProp:5,
@@ -993,17 +994,17 @@
 		<!-- section for testing parser.construct() -->
 		<div id="construct1">
 			<div jsId="objC1" id="objC1"
-				strProp1="text" strProp2=""
-				intProp="5"
-				arrProp="foo, bar, baz"
-				arrProp2=""
-				boolProp1="true" boolProp2="false"
-				dateProp1="2006-01-01" dateProp2="" dateProp3="now"
-				funcProp2="foo" funcProp3="this.func3Called=true;"
+				 strProp1="text" strProp2=""
+				 intProp="5"
+				 arrProp="foo, bar, baz"
+				 arrProp2=""
+				 boolProp1="true" boolProp2="false"
+				 dateProp1="2006-01-01" dateProp2="" dateProp3="now"
+				 funcProp2="foo" funcProp3="this.func3Called=true;"
 			>
 			</div>
 			<div data-dojo-id="objC2" id="objC2"
-				data-dojo-props="
+				 data-dojo-props="
 					strProp1:'text',
 					strProp2:'',
 					intProp:5,
@@ -1023,11 +1024,11 @@
 		<!-- tests for data-dojo-mixins -->
 		<div id="mixins">
 			<div data-dojo-type="tests.parser.Class1" data-dojo-mixins="tests.parser.Mixin1,tests.parser.Mixin2,dojo/tests/resources/AMDMixin"
-					data-dojo-id="resultMixins1"></div>
+				 data-dojo-id="resultMixins1"></div>
 			<div data-dojo-type="tests.parser.ClassForMixins" data-dojo-mixins="tests.parser.Mixin1, tests.parser.Mixin2, dojo/tests/resources/AMDMixin"
-					data-dojo-id="resultMixins2"></div>
+				 data-dojo-id="resultMixins2"></div>
 			<div data-dojo-type="MyNonDojoClass" data-dojo-mixins="tests.parser.Mixin1, tests.parser.Mixin2"
-					data-dojo-id="resultNonDojoMixin"></div>
+				 data-dojo-id="resultNonDojoMixin"></div>
 		</div>
 
 		<!-- tests for behavioral widgets -->

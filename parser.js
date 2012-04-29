@@ -1,7 +1,7 @@
 define(
 	["./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./_base/html", "./_base/window", "./_base/url",
-		"./_base/json", "./aspect", "./date/stamp", "./has", "./query", "./on", "./ready"],
-	function(dojo, dlang, darray, config, dhtml, dwindow, _Url, djson, aspect, dates, has, query, don, ready){
+		"./_base/json", "./aspect", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./ready"],
+	function(dojo, dlang, darray, config, dhtml, dwindow, _Url, djson, aspect, dates, Deferred, has, query, don, ready){
 
 // module:
 //		dojo/parser
@@ -617,6 +617,64 @@ dojo.parser = new function(){
 		return list;
 	};
 
+	this._require = function(/*DOMNode*/ script){
+		// summary:
+		//		Helper for _scanAMD().  Takes a <script type=dojo/require>bar: "acme/bar", ...</script> node,
+		//		calls require() to load the specified modules and (asynchronously) assign them to the specified global
+		//		variables, and returns a Promise for when that operation completes.
+		//
+		//		In the example above, it is effectively doing a require(["acme/bar", ...], function(a){ bar = a; }).
+
+		var hash = djson.fromJson("{" + script.innerHTML + "}"),
+			vars = [],
+			mids = [],
+			d = new Deferred();
+
+		for(var name in hash){
+			vars.push(name);
+			mids.push(hash[name]);
+		}
+
+		require(mids, function(){
+			for(var i=0; i<vars.length; i++){
+				dojo.global[vars[i]] = arguments[i];
+			}
+			d.resolve(arguments);
+		});
+
+		return d.promise;
+	};
+
+	this._scanAmd = function(root){
+		// summary:
+		//		Scans the DOM for any declarative requires and returns their values.
+		//
+		// description:
+		//		Looks for <script type=dojo/require>bar: "acme/bar", ...</script> node, calls require() to load the
+		//		specified modules and (asynchronously) assign them to the specified global variables,
+		//		 and returns a Promise for when those operations complete.
+		//
+		// root: DomNode
+		//		The node to base the scan from.
+
+		// Promise that resolves when all the <script type=dojo/require> nodes have finished loading.
+		var deferred = new Deferred(),
+			promise = deferred.promise;
+		deferred.resolve(true);
+
+		var self = this;
+		query("script[type='dojo/require']", root).forEach(function(node){
+			// Fire off require() call for specified modules.  Chain this require to fire after
+			// any previous requires complete, so that layers can be loaded before individual module require()'s fire.
+			promise = promise.then(function(){ return self._require(node); });
+
+			// Remove from DOM so it isn't seen again
+			node.parentNode.removeChild(node);
+		});
+		
+		return promise;
+	};
+
 	this.parse = /*====== dojo.parser.parse= ======*/ function(rootNode, options){
 		// summary:
 		//		Scan the DOM for class instances, and instantiate them.
@@ -669,6 +727,12 @@ dojo.parser = new function(){
 		//				If specified, "this" referenced from data-dojo-props will refer to propsThis.
 		//				Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
 		//
+		// returns: Mixed
+		//		Returns a blended object that is an array of the instantiated objects, but also can include
+		//		a promise that is resolved with the instantiated objects.  This is done for backwards
+		//		compatibility.  If the parser auto-requires modules, it will always behave in a promise
+		//		fashion and `parser.parse().then(function(instances){...})` should be used.
+		//
 		// example:
 		//		Parse all widgets on a page:
 		//	|		dojo.parser.parse();
@@ -702,12 +766,27 @@ dojo.parser = new function(){
 
 		options = options || {};
 		
-		// List of all nodes on page w/dojoType specified
-		var list = this.scan(root, options);
+		var mixin = options.template ? { template: true } : {},
+			instances = [],
+			self = this;
+		
+		var d = this._scanAmd(root, options).then(function(){
+			// List of all nodes on the page that are decorated to be instantiated
+			var parsedNodes = self.scan(root, options);
 
-		// go build the object instances
-		var mixin = options.template ? {template: true} : {};
-		return this._instantiate(list, mixin, options); // Array
+			// Build the object instances.  Add list of widgets to already existing (but empty) instances[] array,
+			// which may already have been returned to caller.
+			var mixin = options.template ? {template: true} : {};
+			instances = instances.concat(self._instantiate(parsedNodes, mixin, options));
+			return instances;
+		});
+		
+		// Add promise methods to return array
+		// Note, when not using declarative require in async, the results will behave just like an array,
+		// but if using declarative require in async, then ensure you treat the results like a 
+		// promise (e.g. `parser.parse().then(function(){...}))`)
+		dlang.mixin(instances, d);
+		return instances;
 	};
 }();
 

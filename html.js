@@ -185,6 +185,14 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			empty: function() {
 				// summary
 				//	cleanly empty out existing content
+				
+				// If there is a parse in progress, cancel it.
+				if(this.parseDeferred){
+					if(!this.parseDeferred.isResolved()){
+						this.parseDeferred.cancel();
+					}
+					delete this.parseDeferred;
+				}
 
 				// destroy any widgets from a previous run
 				// NOTE: if you don't want this you'll need to empty
@@ -235,7 +243,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				//		It provides an opportunity for post-processing before handing back the node to the caller
 				//		This default implementation checks a parseContent flag to optionally run the dojo parser over the new content
 				if(this.parseContent){
-					// populates this.parseResults if you need those..
+					// populates this.parseResults and this.parseDeferred if you need those..
 					this._parse();
 				}
 				return this.node; /* DomNode */
@@ -249,6 +257,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				//		In normal use, the Setter instance properties are simply allowed to fall out of scope
 				//		but the tearDown method can be called to explicitly reset this instance.
 				delete this.parseResults;
+				delete this.parseDeferred;
 				delete this.node;
 				delete this.content;
 			},
@@ -277,6 +286,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			_parse: function(){
 				// summary:
 				//		runs the dojo parser over the node contents, storing any results in this.parseResults
+				//		and the parse promise in this.parseDeferred
 				//		Any errors resulting from parsing are passed to _onError for handling
 
 				var rootNode = this.node;
@@ -288,11 +298,14 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 							inherited[name] = this[name];
 						}
 					}, this);
-					this.parseResults = parser.parse({
+					var self = this;
+					this.parseDeferred = parser.parse({
 						rootNode: rootNode,
 						noStart: !this.startup,
 						inherited: inherited,
 						scope: this.parserScope
+					}).then(function(results){
+						return self.parseResults = results;
 					});
 				}catch(e){
 					this._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);

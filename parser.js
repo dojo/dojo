@@ -445,7 +445,7 @@ dojo.parser = new function(){
 
 		return instance;
 	};
-	
+
 	this.scan = /*====== dojo.parser.scan= ======*/ function(root, options){
 		// summary:
 		//		Scan a DOM tree and return an array of objects representing the DOMNodes
@@ -455,7 +455,8 @@ dojo.parser = new function(){
 		//		and return an array of objects that represent potential widgets to be
 		//		instantiated. Searches for either data-dojo-type="MID" or dojoType="MID" where
 		//		"MID" is a module ID like "dijit/form/Button" or a fully qualified Class name
-		//		like "dijit.form.Button".
+		//		like "dijit.form.Button".  If the MID is not currently available, scan will 
+		//		attempt to require() in the module.
 		//
 		//		See parser.parse() for details of markup.
 		// root: DomNode?
@@ -465,9 +466,13 @@ dojo.parser = new function(){
 		//		`rootNode` member, that is used.
 		// options: Object
 		//		a kwArgs options object, see parse() for details
+		//
+		// returns: Promise
+		//		A promise that is resolved with the nodes that have been parsed.
 
-		// Output list
-		var list = [];
+		var list = [],  // Output List
+			mids = [], // An array of modules that are not yet loaded
+			midsHash = {}; // Used to keep the mids array unique
 
 		var dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
 			attrData = "data-" + (options.scope || dojo._scopeName) + "-",	// typically "data-dojo-"
@@ -497,6 +502,8 @@ dojo.parser = new function(){
 				if(!inherited[key]){ delete inherited[key]; }
 			}
 		}
+
+		// Metadata about parent node
 		var parent = {
 			inherited: inherited
 		};
@@ -560,11 +567,14 @@ dojo.parser = new function(){
 				continue;
 			}
 			if(scriptsOnly){
+				// scriptsOnly flag is set, we have already collected scripts if the parent wants them, so now we shouldn't
+				// continue further analysis of the node and will continue to the next sibling
 				node = node.nextSibling;
 				continue;
 			}
 
 			// Check for data-dojo-type attribute, fallback to backward compatible dojoType
+			// TODO: Remove dojoType in 2.0
 			var type = node.getAttribute(dataDojoType) || node.getAttribute(dojoType);
 
 			// Short circuit for leaf nodes containing nothing [but text]
@@ -574,35 +584,51 @@ dojo.parser = new function(){
 				continue;
 			}
 
-			// Setup data structure to save info on current node for when we return from processing descendant nodes
-			var current = {
-				node: node,
-				scripts: scripts,
-				parent: parent
-			};
+			// Meta data about current node
+			var current;
 
-			// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate
-			// Note: won't find classes declared via dojo.Declaration, so use try/catch to avoid throw from require()
 			var ctor = null;
 			if(type){
+				// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate.
 				var mixinsValue = node.getAttribute(dataDojoMixins),
 					types = mixinsValue ? [type].concat(mixinsValue.split(/\s*,\s*/)) : [type];
 
+				// Note: won't find classes declared via dojo/Declaration or any modules that haven't been 
+				// loaded yet so use try/catch to avoid throw from require()
 				try{
 					ctor = getCtor(types);
-				}catch(e){
-				}
-			}
+				}catch(e){}
 
-			var childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
-			if(type){
-				list.push({
+				// If the constructor was not found, check to see if it has modules that can be loaded
+				if(!ctor){
+					darray.forEach(types, function(t){
+						if(~t.indexOf('/') && !midsHash[t]){
+							// If the type looks like a MID and it currently isn't in the array of MIDs to load, add it.
+							midsHash[t] = true;
+							mids[mids.length] = t;
+						}
+					});
+				}
+
+				var childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
+
+				// Setup meta data about this widget node, and save it to list of nodes to instantiate
+				current = {
 					types: types,
 					ctor: ctor,
+					parent: parent,
 					node: node,
-					scripts: childScripts,
-					inherited: getEffective(current) // dir & lang settings for current node, explicit or inherited
-				});
+					scripts: childScripts
+				};
+				current.inherited = getEffective(current); // dir & lang settings for current node, explicit or inherited
+				list.push(current);
+			}else{
+				// Meta data about this non-widget node
+				current = {
+					node: node,
+					scripts: scripts,
+					parent: parent
+				};
 			}
 
 			// Recurse, collecting <script type="dojo/..."> children, and also looking for
@@ -614,7 +640,46 @@ dojo.parser = new function(){
 			parent = current;
 		}
 
-		return list;
+		var d = new Deferred();
+
+		// If there are modules to load then require them in
+		if(mids.length){
+			require(mids, function(){
+				// Go through list of widget nodes, filling in missing constructors, and filtering out nodes that shouldn't
+				// be instantiated due to a stopParser flag on an ancestor that we belatedly learned about due to
+				// auto-require of a module like ContentPane.   Assumes list is in DFS order.
+				d.resolve(darray.filter(list, function(widget){
+					if(!widget.ctor){
+						// Attempt to find the constructor again.   Still won't find classes defined via
+						// dijit/Declaration so need to try/catch.
+						try{
+							widget.ctor = getCtor(widget.types);
+						}catch(e){}
+					}
+
+					// Get the parent widget
+					var parent = widget.parent;
+					while(parent && !parent.types){
+						parent = parent.parent;
+					}
+
+					// Return false if this node should be skipped due to stopParser on an ancestor.
+					// Since list[] is in DFS order, this loop will always set parent.instantiateChildren before
+					// trying to compute widget.instantiate.
+					var proto = widget.ctor && widget.ctor.prototype;
+					widget.instantiateChildren = !(proto && proto.stopParser && !(options.template));
+					widget.instantiate = !parent || (parent.instantiate && parent.instantiateChildren);
+					return widget.instantiate;
+				}));
+			});
+		}else{
+			// There were no modules to load, so just resolve with the parsed nodes.   This separate code path is for
+			// efficiency, to avoid running the require() and the callback code above.
+			d.resolve(list);
+		}
+		
+		// Return the promise
+		return d.promise;
 	};
 
 	this._require = function(/*DOMNode*/ script){
@@ -671,7 +736,7 @@ dojo.parser = new function(){
 			// Remove from DOM so it isn't seen again
 			node.parentNode.removeChild(node);
 		});
-		
+
 		return promise;
 	};
 
@@ -769,23 +834,18 @@ dojo.parser = new function(){
 		var mixin = options.template ? { template: true } : {},
 			instances = [],
 			self = this;
-		
-		var d = this._scanAmd(root, options).then(function(){
-			// List of all nodes on the page that are decorated to be instantiated
-			var parsedNodes = self.scan(root, options);
 
-			// Build the object instances.  Add list of widgets to already existing (but empty) instances[] array,
-			// which may already have been returned to caller.
-			var mixin = options.template ? {template: true} : {};
-			instances = instances.concat(self._instantiate(parsedNodes, mixin, options));
-			return instances;
-		});
-		
-		// Add promise methods to return array
-		// Note, when not using declarative require in async, the results will behave just like an array,
-		// but if using declarative require in async, then ensure you treat the results like a 
-		// promise (e.g. `parser.parse().then(function(){...}))`)
-		dlang.mixin(instances, d);
+		// First scan for any <script type=dojo/require> nodes, and execute.
+		// Then scan for all nodes with data-dojo-type, and load any unloaded modules.
+		// Then build the object instances.  Add instances to already existing (but empty) instances[] array,
+		// which may already have been returned to caller.
+		var p =
+			this._scanAmd(root, options).then(
+			function(){ return self.scan(root, options); }).then(
+			function(parsedNodes){ return instances = instances.concat(self._instantiate(parsedNodes, mixin, options));});
+
+		// Blend the array with the promise
+		dlang.mixin(instances, p);
 		return instances;
 	};
 }();

@@ -1009,15 +1009,14 @@
 		},
 
 		toUrl = req.toUrl = function(name, referenceModule){
-			// name must include a filetype; fault tolerate to allow no filetype (but things like "path/to/version2.13" will assume filetype of ".13")
-			var	match = name.match(/(.+)(\.[^\/\.]+?)$/),
-				root = (match && match[1]) || name,
-				ext = (match && match[2]) || "",
-				moduleInfo = getModuleInfo(root, referenceModule),
-				url= moduleInfo.url;
-			// recall, getModuleInfo always returns a url with a ".js" suffix iff pid; therefore, we've got to trim it
-			url= typeof moduleInfo.pid == "string" ? url.substring(0, url.length - 3) : url;
-			return fixupUrl(url + ext);
+			var moduleInfo = getModuleInfo(name+"/x", referenceModule),
+				url = moduleInfo.url;
+			return fixupUrl(moduleInfo.pid===0 ?
+				// if pid===0, then name had a protocol or absolute path; either way, toUrl is the identify function in such cases
+				name :
+				// "/x.js" since getModuleInfo automatically appends ".js" and we appended "/x" to make name look likde a module id
+				url.substring(0, url.length-5)
+			);
 		},
 
 		nonModuleProps = {

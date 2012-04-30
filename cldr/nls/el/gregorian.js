@@ -20,6 +20,10 @@ define(
 	"dateFormatItem-yQQQ": "y QQQ",
 	"dateFormatItem-yMEd": "E, d/M/yyyy",
 	"dateFormatItem-MMMEd": "E, d MMM",
+	"eraNarrow": [
+		"π.Χ.",
+		"μ.Χ."
+	],
 	"dateFormat-long": "d MMMM y",
 	"months-format-wide": [
 		"Ιανουαρίου",
@@ -67,8 +71,8 @@ define(
 	"dateFormatItem-yMMM": "LLL y",
 	"dateFormatItem-yQ": "y Q",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
-	"dateFormatItem-MMdd": "dd/MM",
 	"field-hour": "Ώρα",
+	"dateFormatItem-MMdd": "dd/MM",
 	"months-format-abbr": [
 		"Ιαν",
 		"Φεβ",
@@ -204,6 +208,10 @@ define(
 		"Σαβ"
 	],
 	"dateFormatItem-yMMMd": "d MMM y",
+	"eraNames": [
+		"π.Χ.",
+		"μ.Χ."
+	],
 	"days-format-narrow": [
 		"Κ",
 		"Δ",

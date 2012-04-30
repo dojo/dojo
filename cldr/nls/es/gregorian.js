@@ -1,6 +1,20 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"E",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
 	"quarters-standAlone-narrow": [
 		"1T",
 		"2T",
@@ -12,6 +26,10 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d/M/y",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"eraNarrow": [
+		"a.C.",
+		"d.C."
+	],
 	"dateFormatItem-MMMdd": "dd-MMM",
 	"dateFormat-long": "d 'de' MMMM 'de' y",
 	"months-format-wide": [
@@ -34,6 +52,20 @@ define(
 	"dateFormatItem-yMd": "d/M/y",
 	"field-era": "era",
 	"dateFormatItem-yM": "M/y",
+	"months-standAlone-wide": [
+		"enero",
+		"febrero",
+		"marzo",
+		"abril",
+		"mayo",
+		"junio",
+		"julio",
+		"agosto",
+		"septiembre",
+		"octubre",
+		"noviembre",
+		"diciembre"
+	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
 		"1er trimestre",
@@ -66,18 +98,18 @@ define(
 	"field-day-relative+1": "mañana",
 	"field-day-relative+2": "pasado mañana",
 	"months-standAlone-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
+		"ene",
+		"feb",
+		"mar",
+		"abr",
 		"mayo",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
+		"jun",
+		"jul",
+		"ago",
+		"sep",
+		"oct",
+		"nov",
+		"dic"
 	],
 	"quarters-format-abbr": [
 		"T1",
@@ -92,16 +124,40 @@ define(
 		"4.º trimestre"
 	],
 	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"domingo",
+		"lunes",
+		"martes",
+		"miércoles",
+		"jueves",
+		"viernes",
+		"sábado"
+	],
 	"dateFormatItem-MMMMd": "d 'de' MMMM",
 	"dateFormatItem-yyMMM": "MMM-yy",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
 	"eraAbbr": [
 		"a.C.",
 		"d.C."
 	],
 	"field-minute": "minuto",
 	"field-dayperiod": "periodo del día",
+	"days-standAlone-abbr": [
+		"dom",
+		"lun",
+		"mar",
+		"mié",
+		"jue",
+		"vie",
+		"sáb"
+	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [
@@ -160,6 +216,15 @@ define(
 	"eraNames": [
 		"antes de Cristo",
 		"anno Dómini"
+	],
+	"days-format-narrow": [
+		"D",
+		"L",
+		"M",
+		"X",
+		"J",
+		"V",
+		"S"
 	],
 	"field-month": "mes",
 	"days-standAlone-narrow": [

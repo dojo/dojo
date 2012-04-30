@@ -25,6 +25,10 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E, dd.MM.yyyy",
 	"dateFormatItem-MMMEd": "E, d MMM",
+	"eraNarrow": [
+		"î.Hr.",
+		"d.Hr."
+	],
 	"dateFormat-long": "d MMMM y",
 	"months-format-wide": [
 		"ianuarie",
@@ -73,8 +77,8 @@ define(
 	"dateFormatItem-yMMM": "MMM y",
 	"dateFormatItem-yQ": "'trimestrul' Q y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
-	"dateFormatItem-MMdd": "dd.MM",
 	"field-hour": "oră",
+	"dateFormatItem-MMdd": "dd.MM",
 	"months-format-abbr": [
 		"ian.",
 		"feb.",

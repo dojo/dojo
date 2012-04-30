@@ -20,6 +20,10 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d.M.yyyy",
 	"dateFormatItem-MMMEd": "E d. MMM",
+	"eraNarrow": [
+		"f.Kr.",
+		"e.Kr."
+	],
 	"dateFormat-long": "d. MMMM y",
 	"months-format-wide": [
 		"januar",
@@ -214,7 +218,7 @@ define(
 		"S",
 		"M",
 		"T",
-		"4",
+		"O",
 		"T",
 		"F",
 		"L"

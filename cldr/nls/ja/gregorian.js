@@ -5,6 +5,10 @@ define(
 	"dateFormatItem-yQQQ": "yQQQ",
 	"dateFormatItem-yMEd": "y/M/d(E)",
 	"dateFormatItem-MMMEd": "M月d日(E)",
+	"eraNarrow": [
+		"BC",
+		"AD"
+	],
 	"dateFormat-long": "y年M月d日",
 	"months-format-wide": [
 		"1月",
@@ -28,6 +32,20 @@ define(
 	"dateFormatItem-yMd": "y/M/d",
 	"field-era": "時代",
 	"dateFormatItem-yM": "y/M",
+	"months-standAlone-wide": [
+		"1月",
+		"2月",
+		"3月",
+		"4月",
+		"5月",
+		"6月",
+		"7月",
+		"8月",
+		"9月",
+		"10月",
+		"11月",
+		"12月"
+	],
 	"timeFormat-short": "H:mm",
 	"quarters-format-wide": [
 		"第1四半期",
@@ -39,21 +57,64 @@ define(
 	"field-year": "年",
 	"dateFormatItem-yMMM": "y年M月",
 	"dateFormatItem-yQ": "y/Q",
-	"dateFormatItem-MMdd": "MM/dd",
 	"field-hour": "時",
+	"dateFormatItem-MMdd": "MM/dd",
+	"months-format-abbr": [
+		"1月",
+		"2月",
+		"3月",
+		"4月",
+		"5月",
+		"6月",
+		"7月",
+		"8月",
+		"9月",
+		"10月",
+		"11月",
+		"12月"
+	],
 	"dateFormatItem-yyQ": "yy/Q",
 	"timeFormat-full": "H時mm分ss秒 zzzz",
 	"field-day-relative+0": "今日",
 	"field-day-relative+1": "明日",
 	"field-day-relative+2": "明後日",
 	"dateFormatItem-H": "H時",
+	"months-standAlone-abbr": [
+		"1月",
+		"2月",
+		"3月",
+		"4月",
+		"5月",
+		"6月",
+		"7月",
+		"8月",
+		"9月",
+		"10月",
+		"11月",
+		"12月"
+	],
 	"quarters-format-abbr": [
 		"Q1",
 		"Q2",
 		"Q3",
 		"Q4"
 	],
+	"quarters-standAlone-wide": [
+		"第1四半期",
+		"第2四半期",
+		"第3四半期",
+		"第4四半期"
+	],
 	"dateFormatItem-M": "M月",
+	"days-standAlone-wide": [
+		"日曜日",
+		"月曜日",
+		"火曜日",
+		"水曜日",
+		"木曜日",
+		"金曜日",
+		"土曜日"
+	],
 	"dateFormatItem-yyMMM": "y年M月",
 	"timeFormat-medium": "H:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
@@ -69,6 +130,15 @@ define(
 	],
 	"field-minute": "分",
 	"field-dayperiod": "午前/午後",
+	"days-standAlone-abbr": [
+		"日",
+		"月",
+		"火",
+		"水",
+		"木",
+		"金",
+		"土"
+	],
 	"dateFormatItem-d": "d日",
 	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [
@@ -128,6 +198,15 @@ define(
 	"eraNames": [
 		"紀元前",
 		"西暦"
+	],
+	"days-format-narrow": [
+		"日",
+		"月",
+		"火",
+		"水",
+		"木",
+		"金",
+		"土"
 	],
 	"field-month": "月",
 	"days-standAlone-narrow": [

@@ -19,6 +19,10 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d/M/yyyy",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"eraNarrow": [
+		"aC",
+		"dC"
+	],
 	"dateFormat-long": "d MMMM 'de' y",
 	"months-format-wide": [
 		"de gener",
@@ -199,6 +203,10 @@ define(
 		"ds."
 	],
 	"dateFormatItem-yMMMd": "d MMM y",
+	"eraNames": [
+		"aC",
+		"dC"
+	],
 	"days-format-narrow": [
 		"G",
 		"l",

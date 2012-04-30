@@ -74,8 +74,8 @@ define(
 	"dateFormatItem-yMMM": "LLL y",
 	"dateFormatItem-yQ": "QQQ y 'г'.",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
-	"dateFormatItem-MMdd": "dd.MM",
 	"field-hour": "Час",
+	"dateFormatItem-MMdd": "dd.MM",
 	"months-format-abbr": [
 		"янв.",
 		"февр.",
@@ -117,6 +117,12 @@ define(
 		"3-й кв.",
 		"4-й кв."
 	],
+	"quarters-standAlone-wide": [
+		"1-й квартал",
+		"2-й квартал",
+		"3-й квартал",
+		"4-й квартал"
+	],
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
 		"Воскресенье",
@@ -130,6 +136,12 @@ define(
 	"dateFormatItem-yyMMM": "LLL yy",
 	"timeFormat-medium": "H:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
+	"quarters-standAlone-abbr": [
+		"1-й кв.",
+		"2-й кв.",
+		"3-й кв.",
+		"4-й кв."
+	],
 	"eraAbbr": [
 		"до н.э.",
 		"н.э."

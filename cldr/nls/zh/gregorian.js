@@ -19,6 +19,10 @@ define(
 	"dateFormatItem-yQQQ": "y年QQQ",
 	"dateFormatItem-yMEd": "y年M月d日，E",
 	"dateFormatItem-MMMEd": "M月d日E",
+	"eraNarrow": [
+		"公元前",
+		"公元"
+	],
 	"dayPeriods-format-wide-earlyMorning": "清晨",
 	"dayPeriods-format-wide-morning": "上午",
 	"dateFormat-long": "y年M月d日",
@@ -42,8 +46,8 @@ define(
 	"dateFormatItem-Md": "M-d",
 	"dayPeriods-format-wide-noon": "中午",
 	"dateFormatItem-yMd": "y年M月d日",
-	"dateFormatItem-yM": "yyyy-M",
 	"field-era": "时期",
+	"dateFormatItem-yM": "yyyy-M",
 	"months-standAlone-wide": [
 		"一月",
 		"二月",
@@ -66,12 +70,12 @@ define(
 		"第4季度"
 	],
 	"timeFormat-long": "zah时mm分ss秒",
+	"field-year": "年",
 	"dateFormatItem-yMMM": "y年M月",
 	"dateFormatItem-yQ": "y年QQQ",
-	"field-year": "年",
 	"dateFormatItem-yyyyMMMM": "y年M月",
-	"dateFormatItem-MMdd": "MM-dd",
 	"field-hour": "小时",
+	"dateFormatItem-MMdd": "MM-dd",
 	"months-format-abbr": [
 		"1月",
 		"2月",
@@ -209,6 +213,10 @@ define(
 		"周六"
 	],
 	"dateFormatItem-yMMMd": "y年M月d日",
+	"eraNames": [
+		"公元前",
+		"公元"
+	],
 	"days-format-narrow": [
 		"日",
 		"一",

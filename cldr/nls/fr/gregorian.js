@@ -1,12 +1,30 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
 	"field-weekday": "jour de la semaine",
 	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yyMMMEd": "E d MMM yy",
 	"dateFormatItem-yMEd": "E d/M/yyyy",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"eraNarrow": [
+		"av. J.-C.",
+		"ap. J.-C."
+	],
 	"dayPeriods-format-wide-morning": "matin",
 	"dateFormatItem-MMMdd": "dd MMM",
 	"dateFormat-long": "d MMMM y",
@@ -32,6 +50,20 @@ define(
 	"dateFormatItem-yMd": "d/M/yyyy",
 	"field-era": "ère",
 	"dateFormatItem-yM": "M/yyyy",
+	"months-standAlone-wide": [
+		"janvier",
+		"février",
+		"mars",
+		"avril",
+		"mai",
+		"juin",
+		"juillet",
+		"août",
+		"septembre",
+		"octobre",
+		"novembre",
+		"décembre"
+	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
 		"1er trimestre",
@@ -70,10 +102,10 @@ define(
 		"févr.",
 		"mars",
 		"avr.",
-		"5",
-		"6",
+		"mai",
+		"juin",
 		"juil.",
-		"8",
+		"août",
 		"sept.",
 		"oct.",
 		"nov.",
@@ -85,10 +117,31 @@ define(
 		"T3",
 		"T4"
 	],
+	"quarters-standAlone-wide": [
+		"1er trimestre",
+		"2e trimestre",
+		"3e trimestre",
+		"4e trimestre"
+	],
 	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"dimanche",
+		"lundi",
+		"mardi",
+		"mercredi",
+		"jeudi",
+		"vendredi",
+		"samedi"
+	],
 	"dateFormatItem-yyMMM": "MMM yy",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
 	"eraAbbr": [
 		"av. J.-C.",
 		"ap. J.-C."
@@ -162,6 +215,15 @@ define(
 	"eraNames": [
 		"avant Jésus-Christ",
 		"après Jésus-Christ"
+	],
+	"days-format-narrow": [
+		"D",
+		"L",
+		"M",
+		"M",
+		"J",
+		"V",
+		"S"
 	],
 	"field-month": "mois",
 	"days-standAlone-narrow": [

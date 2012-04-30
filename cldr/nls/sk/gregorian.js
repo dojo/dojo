@@ -1,11 +1,29 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"j",
+		"f",
+		"m",
+		"a",
+		"m",
+		"j",
+		"j",
+		"a",
+		"s",
+		"o",
+		"n",
+		"d"
+	],
 	"field-weekday": "Deň v týždni",
 	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E, d.M.yyyy",
 	"dateFormatItem-MMMEd": "E, d. MMM",
+	"eraNarrow": [
+		"pred n.l.",
+		"n.l."
+	],
 	"dateFormat-long": "d. MMMM y",
 	"months-format-wide": [
 		"januára",
@@ -74,6 +92,20 @@ define(
 	"field-day-relative+1": "Zajtra",
 	"field-day-relative+2": "Pozajtra",
 	"dateFormatItem-H": "H",
+	"months-standAlone-abbr": [
+		"jan",
+		"feb",
+		"mar",
+		"apr",
+		"máj",
+		"jún",
+		"júl",
+		"aug",
+		"sep",
+		"okt",
+		"nov",
+		"dec"
+	],
 	"quarters-format-abbr": [
 		"Q1",
 		"Q2",
@@ -170,6 +202,10 @@ define(
 		"so"
 	],
 	"dateFormatItem-yMMMd": "d.M.yyyy",
+	"eraNames": [
+		"pred n.l.",
+		"n.l."
+	],
 	"days-format-narrow": [
 		"N",
 		"P",

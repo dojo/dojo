@@ -1,29 +1,20 @@
 define(
 //begin v1.x content
 {
-	"dateFormat-medium": "d MMM، y G",
-	"dateFormatItem-MMMEd": "E، d MMM",
-	"dateFormatItem-MEd": "E، d-M",
-	"dateFormatItem-yMEd": "E، d/‏M/‏yyyy",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-H": "HH",
-	"months-format-narrow": [
-		"١",
-		"٢",
-		"٣",
-		"٤",
-		"٥",
-		"٦",
-		"٧",
-		"٨",
-		"٩",
-		"١٠",
-		"١١",
-		"١٢"
+	"dateFormatItem-yM": "M‏/yyyy",
+	"dateFormatItem-yQ": "yyyy Q",
+	"dayPeriods-format-wide-pm": "م",
+	"eraNames": [
+		"هـ"
 	],
-	"dateFormatItem-y": "y",
-	"dateFormatItem-hm": "h:mm a",
-	"dateFormatItem-Md": "d/‏M",
+	"dateFormatItem-MMMEd": "E، d MMM",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-yQQQ": "y QQQ",
+	"days-standAlone-wide": [
+		"الأحد",
+		"الاثنين"
+	],
+	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"م",
 		"ص",
@@ -38,23 +29,9 @@ define(
 		"ذ",
 		"ذ"
 	],
-	"months-standAlone-wide": [
-		"محرم",
-		null,
-		"ربيع الأول",
-		"ربيع الآخر",
-		"جمادى الأولى",
-		"جمادى الآخرة",
-		null,
-		null,
-		"رمضان",
-		"شوال",
-		"ذو القعدة",
-		"ذو الحجة"
-	],
-	"dateFormatItem-M": "L",
-	"dateFormatItem-MMMMEd": "E، d MMMM",
-	"dateFormatItem-MMMMd": "d MMMM",
+	"dayPeriods-format-wide-am": "ص",
+	"dateFormatItem-y": "y",
+	"timeFormat-full": "zzzz h:mm:ss a",
 	"months-standAlone-abbr": [
 		"محرم",
 		"صفر",
@@ -69,13 +46,35 @@ define(
 		"ذو القعدة",
 		"ذو الحجة"
 	],
-	"dateFormatItem-yQQQ": "y QQQ",
+	"dateFormatItem-Ed": "d E",
+	"dateFormatItem-yMMM": "MMM y",
+	"days-standAlone-narrow": [
+		"ح",
+		"ن",
+		"ث",
+		"ر",
+		"خ",
+		"ج",
+		"س"
+	],
+	"eraAbbr": [
+		"هـ"
+	],
 	"dateFormat-long": "d MMMM y",
+	"timeFormat-medium": "h:mm:ss a",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormat-medium": "d MMM، y G",
 	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-yMd": "d/M/yyyy",
+	"dateFormatItem-yMMMM": "MMMM y",
 	"dateFormatItem-ms": "mm:ss",
-	"dateFormat-short": "d‏/M‏/yyyy",
-	"dateFormatItem-yMMMEd": "E، d MMM y",
-	"months-format-wide": [
+	"quarters-standAlone-narrow": [
+		"١",
+		"٢",
+		"٣",
+		"٤"
+	],
+	"months-standAlone-wide": [
 		"محرم",
 		"صفر",
 		"ربيع الأول",
@@ -89,9 +88,9 @@ define(
 		"ذو القعدة",
 		"ذو الحجة"
 	],
-	"dateFormatItem-yMMMM": "MMMM y",
-	"dateFormatItem-d": "d",
-	"dateFormatItem-yM": "M‏/yyyy",
+	"dateFormatItem-MMMMEd": "E، d MMMM",
+	"dateFormatItem-MMMd": "d MMM",
+	"timeFormat-long": "z h:mm:ss a",
 	"months-format-abbr": [
 		"محرم",
 		"صفر",
@@ -106,16 +105,84 @@ define(
 		"ذو القعدة",
 		"ذو الحجة"
 	],
-	"eraAbbr": [
+	"timeFormat-short": "h:mm a",
+	"dateFormatItem-H": "HH",
+	"dateFormatItem-MMMMd": "d MMMM",
+	"days-format-abbr": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	],
+	"dateFormatItem-M": "L",
+	"dateFormatItem-yMMMd": "d MMM، y",
+	"dateFormatItem-MEd": "E، d-M",
+	"months-format-narrow": [
+		"١",
+		"٢",
+		"٣",
+		"٤",
+		"٥",
+		"٦",
+		"٧",
+		"٨",
+		"٩",
+		"١٠",
+		"١١",
+		"١٢"
+	],
+	"dateFormatItem-hm": "h:mm a",
+	"days-standAlone-abbr": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	],
+	"dateFormat-short": "d‏/M‏/yyyy",
+	"dateFormatItem-yMMMEd": "E، d MMM y",
+	"dateFormat-full": "EEEE، d MMMM y",
+	"dateFormatItem-Md": "d/‏M",
+	"dateFormatItem-yMEd": "E، d/‏M/‏yyyy",
+	"months-format-wide": [
+		"محرم",
+		"صفر",
+		"ربيع الأول",
+		"ربيع الآخر",
+		"جمادى الأولى",
+		"جمادى الآخرة",
+		"رجب",
+		"شعبان",
+		"رمضان",
+		"شوال",
+		"ذو القعدة",
+		"ذو الحجة"
+	],
+	"dateFormatItem-d": "d",
+	"quarters-format-wide": [
+		"الربع الأول",
+		"الربع الثاني",
+		"الربع الثالث",
+		"الربع الرابع"
+	],
+	"eraNarrow": [
 		"هـ"
 	],
-	"dateFormatItem-h": "h a",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-MMM": "LLL",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormat-full": "EEEE، d MMMM y",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-Ed": "d E"
+	"days-format-wide": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	],
+	"dateFormatItem-h": "h a"
 }
 //end v1.x content
 );

@@ -1,6 +1,20 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
 	"quarters-standAlone-narrow": [
 		"1",
 		"2",
@@ -38,6 +52,20 @@ define(
 	"dateFormatItem-yMd": "M/d/y",
 	"field-era": "Era",
 	"dateFormatItem-yM": "M/y",
+	"months-standAlone-wide": [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December"
+	],
 	"timeFormat-short": "h:mm a",
 	"quarters-format-wide": [
 		"1st quarter",
@@ -67,13 +95,42 @@ define(
 	"timeFormat-full": "h:mm:ss a zzzz",
 	"field-day-relative+0": "Today",
 	"field-day-relative+1": "Tomorrow",
+	"months-standAlone-abbr": [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec"
+	],
 	"quarters-format-abbr": [
 		"Q1",
 		"Q2",
 		"Q3",
 		"Q4"
 	],
+	"quarters-standAlone-wide": [
+		"1st quarter",
+		"2nd quarter",
+		"3rd quarter",
+		"4th quarter"
+	],
 	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"Sunday",
+		"Monday",
+		"Tuesday",
+		"Wednesday",
+		"Thursday",
+		"Friday",
+		"Saturday"
+	],
 	"timeFormat-medium": "h:mm:ss a",
 	"dateFormatItem-Hm": "HH:mm",
 	"eraAbbr": [
@@ -82,6 +139,15 @@ define(
 	],
 	"field-minute": "Minute",
 	"field-dayperiod": "AM/PM",
+	"days-standAlone-abbr": [
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
+	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+-1": "Yesterday",
@@ -132,6 +198,15 @@ define(
 	"eraNames": [
 		"Before Christ",
 		"Anno Domini"
+	],
+	"days-format-narrow": [
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
 	],
 	"field-month": "Month",
 	"days-standAlone-narrow": [

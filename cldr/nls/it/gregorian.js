@@ -2,7 +2,7 @@ define(
 //begin v1.x content
 {
 	"months-format-narrow": [
-		"1",
+		"G",
 		"F",
 		"M",
 		"A",
@@ -20,6 +20,10 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E, d/M/y",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"eraNarrow": [
+		"aC",
+		"dC"
+	],
 	"dateFormat-long": "dd MMMM y",
 	"months-format-wide": [
 		"gennaio",
@@ -89,7 +93,7 @@ define(
 	"field-day-relative+1": "domani",
 	"field-day-relative+2": "dopodomani",
 	"months-standAlone-abbr": [
-		"1",
+		"gen",
 		"feb",
 		"mar",
 		"apr",
@@ -128,9 +132,9 @@ define(
 	"dateFormatItem-Hm": "HH:mm",
 	"quarters-standAlone-abbr": [
 		"T1",
-		"Q2",
-		"Q3",
-		"Q4"
+		"T2",
+		"T3",
+		"T4"
 	],
 	"eraAbbr": [
 		"aC",
@@ -138,6 +142,15 @@ define(
 	],
 	"field-minute": "minuto",
 	"field-dayperiod": "periodo del giorno",
+	"days-standAlone-abbr": [
+		"dom",
+		"lun",
+		"mar",
+		"mer",
+		"gio",
+		"ven",
+		"sab"
+	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [
@@ -194,6 +207,15 @@ define(
 	"eraNames": [
 		"a.C.",
 		"d.C"
+	],
+	"days-format-narrow": [
+		"D",
+		"L",
+		"M",
+		"M",
+		"G",
+		"V",
+		"S"
 	],
 	"field-month": "mese",
 	"days-standAlone-narrow": [

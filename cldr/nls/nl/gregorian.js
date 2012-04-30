@@ -1,11 +1,29 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
 	"field-weekday": "Dag van de week",
 	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d-M-y",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"eraNarrow": [
+		"v. Chr.",
+		"n. Chr."
+	],
 	"dateFormat-long": "d MMMM y",
 	"months-format-wide": [
 		"januari",
@@ -28,6 +46,20 @@ define(
 	"dateFormatItem-yMd": "d-M-y",
 	"field-era": "Tijdperk",
 	"dateFormatItem-yM": "M-y",
+	"months-standAlone-wide": [
+		"januari",
+		"februari",
+		"maart",
+		"april",
+		"mei",
+		"juni",
+		"juli",
+		"augustus",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
 		"1e kwartaal",
@@ -66,7 +98,7 @@ define(
 		"feb",
 		"mrt",
 		"apr",
-		"5",
+		"mei",
 		"jun",
 		"jul",
 		"aug",
@@ -81,18 +113,48 @@ define(
 		"K3",
 		"K4"
 	],
+	"quarters-standAlone-wide": [
+		"1e kwartaal",
+		"2e kwartaal",
+		"3e kwartaal",
+		"4e kwartaal"
+	],
 	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"zondag",
+		"maandag",
+		"dinsdag",
+		"woensdag",
+		"donderdag",
+		"vrijdag",
+		"zaterdag"
+	],
 	"dateFormatItem-MMMMd": "d MMMM",
 	"dayPeriods-format-abbr-noon": "12 uur 's middags",
 	"dateFormatItem-yyMMM": "MMM yy",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
 	"eraAbbr": [
 		"v. Chr.",
 		"n. Chr."
 	],
 	"field-minute": "Minuut",
 	"field-dayperiod": "AM/PM",
+	"days-standAlone-abbr": [
+		"zo",
+		"ma",
+		"di",
+		"wo",
+		"do",
+		"vr",
+		"za"
+	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [
@@ -147,6 +209,15 @@ define(
 	"eraNames": [
 		"Voor Christus",
 		"na Christus"
+	],
+	"days-format-narrow": [
+		"Z",
+		"M",
+		"D",
+		"W",
+		"D",
+		"V",
+		"Z"
 	],
 	"field-month": "Maand",
 	"days-standAlone-narrow": [

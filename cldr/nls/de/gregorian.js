@@ -1,11 +1,29 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
 	"field-weekday": "Wochentag",
 	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E, d.M.y",
 	"dateFormatItem-MMMEd": "E, d. MMM",
+	"eraNarrow": [
+		"v. Chr.",
+		"n. Chr."
+	],
 	"dayPeriods-format-wide-earlyMorning": "morgens",
 	"dayPeriods-format-wide-morning": "vormittags",
 	"dateFormat-long": "d. MMMM y",
@@ -32,6 +50,20 @@ define(
 	"dateFormatItem-yMd": "d.M.y",
 	"field-era": "Epoche",
 	"dateFormatItem-yM": "M.y",
+	"months-standAlone-wide": [
+		"Januar",
+		"Februar",
+		"März",
+		"April",
+		"Mai",
+		"Juni",
+		"Juli",
+		"August",
+		"September",
+		"Oktober",
+		"November",
+		"Dezember"
+	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
 		"1. Quartal",
@@ -44,8 +76,8 @@ define(
 	"dateFormatItem-yMMM": "MMM y",
 	"dateFormatItem-yQ": "Q y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
-	"dateFormatItem-MMdd": "dd.MM.",
 	"field-hour": "Stunde",
+	"dateFormatItem-MMdd": "dd.MM.",
 	"months-format-abbr": [
 		"Jan",
 		"Feb",
@@ -86,7 +118,22 @@ define(
 		"Q3",
 		"Q4"
 	],
+	"quarters-standAlone-wide": [
+		"1. Quartal",
+		"2. Quartal",
+		"3. Quartal",
+		"4. Quartal"
+	],
 	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"Sonntag",
+		"Montag",
+		"Dienstag",
+		"Mittwoch",
+		"Donnerstag",
+		"Freitag",
+		"Samstag"
+	],
 	"dateFormatItem-yyMMM": "MMM yy",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
@@ -161,6 +208,15 @@ define(
 	"eraNames": [
 		"v. Chr.",
 		"n. Chr."
+	],
+	"days-format-narrow": [
+		"S",
+		"M",
+		"D",
+		"M",
+		"D",
+		"F",
+		"S"
 	],
 	"field-month": "Monat",
 	"days-standAlone-narrow": [

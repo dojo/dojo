@@ -19,6 +19,10 @@ define(
 	"dateFormatItem-yQQQ": "y QQQ",
 	"dateFormatItem-yMEd": "E, d.M.yyyy",
 	"dateFormatItem-MMMEd": "E, d בMMM",
+	"eraNarrow": [
+		"לפנה״ס",
+		"לסה״נ"
+	],
 	"dateFormat-long": "d בMMMM y",
 	"months-format-wide": [
 		"ינואר",
@@ -40,6 +44,20 @@ define(
 	"dateFormatItem-yMd": "d.M.yyyy",
 	"field-era": "תקופה",
 	"dateFormatItem-yM": "M.yyyy",
+	"months-standAlone-wide": [
+		"ינואר",
+		"פברואר",
+		"מרץ",
+		"אפריל",
+		"מאי",
+		"יוני",
+		"יולי",
+		"אוגוסט",
+		"ספטמבר",
+		"אוקטובר",
+		"נובמבר",
+		"דצמבר"
+	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
 		"רבעון 1",
@@ -52,8 +70,8 @@ define(
 	"dateFormatItem-yMMM": "MMM y",
 	"dateFormatItem-yQ": "yyyy Q",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
-	"dateFormatItem-MMdd": "dd/MM",
 	"field-hour": "שעה",
+	"dateFormatItem-MMdd": "dd/MM",
 	"months-format-abbr": [
 		"ינו",
 		"פבר",
@@ -88,17 +106,53 @@ define(
 		"נוב׳",
 		"דצמ׳"
 	],
+	"quarters-format-abbr": [
+		"רבעון 1",
+		"רבעון 2",
+		"רבעון 3",
+		"רבעון 4"
+	],
+	"quarters-standAlone-wide": [
+		"רבעון 1",
+		"רבעון 2",
+		"רבעון 3",
+		"רבעון 4"
+	],
 	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"יום ראשון",
+		"יום שני",
+		"יום שלישי",
+		"יום רביעי",
+		"יום חמישי",
+		"יום שישי",
+		"יום שבת"
+	],
 	"dateFormatItem-MMMMd": "d בMMMM",
 	"dateFormatItem-yyMMM": "MMM yyyy",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
+		"רבעון 1",
+		"רבעון 2",
+		"רבעון 3",
+		"רבעון 4"
+	],
 	"eraAbbr": [
 		"לפנה״ס",
 		"לסה״נ"
 	],
 	"field-minute": "דקה",
 	"field-dayperiod": "לפה״צ/אחה״צ",
+	"days-standAlone-abbr": [
+		"יום א׳",
+		"יום ב׳",
+		"יום ג׳",
+		"יום ד׳",
+		"יום ה׳",
+		"יום ו׳",
+		"שבת"
+	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [

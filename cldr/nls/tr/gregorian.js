@@ -20,6 +20,10 @@ define(
 	"dateFormatItem-yQQQ": "y-QQQ",
 	"dateFormatItem-yMEd": "dd.MM.yyyy E",
 	"dateFormatItem-MMMEd": "d MMMM E",
+	"eraNarrow": [
+		"MÖ",
+		"MS"
+	],
 	"dateFormat-long": "d MMMM y",
 	"months-format-wide": [
 		"Ocak",

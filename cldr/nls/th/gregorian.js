@@ -45,6 +45,20 @@ define(
 	"dateFormatItem-yMd": "d/M/yyyy",
 	"field-era": "สมัย",
 	"dateFormatItem-yM": "M/yyyy",
+	"months-standAlone-wide": [
+		"มกราคม",
+		"กุมภาพันธ์",
+		"มีนาคม",
+		"เมษายน",
+		"พฤษภาคม",
+		"มิถุนายน",
+		"กรกฎาคม",
+		"สิงหาคม",
+		"กันยายน",
+		"ตุลาคม",
+		"พฤศจิกายน",
+		"ธันวาคม"
+	],
 	"timeFormat-short": "H:mm",
 	"quarters-format-wide": [
 		"ไตรมาส 1",
@@ -78,13 +92,42 @@ define(
 	"field-day-relative+1": "พรุ่งนี้",
 	"field-day-relative+2": "มะรืนนี้",
 	"dateFormatItem-H": "H",
+	"months-standAlone-abbr": [
+		"ม.ค.",
+		"ก.พ.",
+		"มี.ค.",
+		"เม.ย.",
+		"พ.ค.",
+		"มิ.ย.",
+		"ก.ค.",
+		"ส.ค.",
+		"ก.ย.",
+		"ต.ค.",
+		"พ.ย.",
+		"ธ.ค."
+	],
 	"quarters-format-abbr": [
 		"Q1",
 		"Q2",
 		"Q3",
 		"Q4"
 	],
+	"quarters-standAlone-wide": [
+		"ไตรมาส 1",
+		"ไตรมาส 2",
+		"ไตรมาส 3",
+		"ไตรมาส 4"
+	],
 	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"วันอาทิตย์",
+		"วันจันทร์",
+		"วันอังคาร",
+		"วันพุธ",
+		"วันพฤหัสบดี",
+		"วันศุกร์",
+		"วันเสาร์"
+	],
 	"dateFormatItem-MMMMd": "d MMMM",
 	"timeFormat-medium": "H:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
@@ -100,6 +143,15 @@ define(
 	],
 	"field-minute": "นาที",
 	"field-dayperiod": "ช่วงวัน",
+	"days-standAlone-abbr": [
+		"อา.",
+		"จ.",
+		"อ.",
+		"พ.",
+		"พฤ.",
+		"ศ.",
+		"ส."
+	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [
@@ -157,6 +209,15 @@ define(
 	"eraNames": [
 		"ปีก่อนคริสต์ศักราช",
 		"คริสต์ศักราช"
+	],
+	"days-format-narrow": [
+		"อ",
+		"จ",
+		"อ",
+		"พ",
+		"พ",
+		"ศ",
+		"ส"
 	],
 	"field-month": "เดือน",
 	"days-standAlone-narrow": [

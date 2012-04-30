@@ -62,8 +62,8 @@ define(
 		"augusti",
 		"september",
 		"oktober",
-		"11",
-		"12"
+		"november",
+		"december"
 	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
@@ -109,7 +109,7 @@ define(
 		"sep",
 		"okt",
 		"nov",
-		"12"
+		"dec"
 	],
 	"quarters-format-abbr": [
 		"K1",

@@ -1,10 +1,28 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
 	"field-weekday": "ugedag",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E. d/M/y",
 	"dateFormatItem-MMMEd": "E d. MMM",
+	"eraNarrow": [
+		"f.Kr.",
+		"e.Kr."
+	],
 	"dateFormat-long": "d. MMM y",
 	"months-format-wide": [
 		"januar",
@@ -27,6 +45,20 @@ define(
 	"dateFormatItem-yMd": "d/M/y",
 	"field-era": "æra",
 	"dateFormatItem-yM": "M/y",
+	"months-standAlone-wide": [
+		"januar",
+		"februar",
+		"marts",
+		"april",
+		"maj",
+		"juni",
+		"juli",
+		"august",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
 	"timeFormat-short": "HH.mm",
 	"quarters-format-wide": [
 		"1. kvartal",
@@ -38,8 +70,8 @@ define(
 	"field-year": "år",
 	"dateFormatItem-yMMM": "MMM y",
 	"dateFormatItem-yQ": "Q yyyy",
-	"dateFormatItem-MMdd": "dd/MM",
 	"field-hour": "time",
+	"dateFormatItem-MMdd": "dd/MM",
 	"months-format-abbr": [
 		"jan.",
 		"feb.",
@@ -80,18 +112,48 @@ define(
 		"K3",
 		"K4"
 	],
+	"quarters-standAlone-wide": [
+		"1. kvartal",
+		"2. kvartal",
+		"3. kvartal",
+		"4. kvartal"
+	],
 	"dateFormatItem-M": "M",
+	"days-standAlone-wide": [
+		"søndag",
+		"mandag",
+		"tirsdag",
+		"onsdag",
+		"torsdag",
+		"fredag",
+		"lørdag"
+	],
 	"dateFormatItem-yyyyMMM": "MMM y",
 	"dayPeriods-format-abbr-noon": "middag",
 	"dateFormatItem-yyMMM": "MMM yy",
 	"timeFormat-medium": "HH.mm.ss",
 	"dateFormatItem-Hm": "HH.mm",
+	"quarters-standAlone-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
 	"eraAbbr": [
 		"f.Kr.",
 		"e.Kr."
 	],
 	"field-minute": "minut",
 	"field-dayperiod": "dagtid",
+	"days-standAlone-abbr": [
+		"søn",
+		"man",
+		"tir",
+		"ons",
+		"tor",
+		"fre",
+		"lør"
+	],
 	"dateFormatItem-d": "d.",
 	"dateFormatItem-ms": "mm.ss",
 	"quarters-format-narrow": [
@@ -148,6 +210,15 @@ define(
 	"eraNames": [
 		"f.Kr.",
 		"e.Kr."
+	],
+	"days-format-narrow": [
+		"S",
+		"M",
+		"T",
+		"O",
+		"T",
+		"F",
+		"L"
 	],
 	"field-month": "måned",
 	"days-standAlone-narrow": [

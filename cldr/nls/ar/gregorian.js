@@ -1,6 +1,20 @@
 define(
 //begin v1.x content
 {
+	"months-format-narrow": [
+		"ي",
+		"ف",
+		"م",
+		"أ",
+		"و",
+		"ن",
+		"ل",
+		"غ",
+		"س",
+		"ك",
+		"ب",
+		"د"
+	],
 	"quarters-standAlone-narrow": [
 		"١",
 		"٢",
@@ -11,6 +25,10 @@ define(
 	"dateFormatItem-yQQQ": "y QQQ",
 	"dateFormatItem-yMEd": "E، d/‏M/‏yyyy",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"eraNarrow": [
+		"ق.م",
+		"م"
+	],
 	"dateFormat-long": "d MMMM، y",
 	"months-format-wide": [
 		"يناير",
@@ -32,6 +50,20 @@ define(
 	"dateFormatItem-yMd": "d‏/M‏/yyyy",
 	"field-era": "العصر",
 	"dateFormatItem-yM": "M‏/yyyy",
+	"months-standAlone-wide": [
+		"يناير",
+		"فبراير",
+		"مارس",
+		"أبريل",
+		"مايو",
+		"يونيو",
+		"يوليو",
+		"أغسطس",
+		"سبتمبر",
+		"أكتوبر",
+		"نوفمبر",
+		"ديسمبر"
+	],
 	"timeFormat-short": "h:mm a",
 	"quarters-format-wide": [
 		"الربع الأول",
@@ -46,24 +78,70 @@ define(
 	"dateFormatItem-yyyyMMMM": "MMMM، y",
 	"field-hour": "الساعات",
 	"dateFormatItem-MMdd": "dd‏/MM",
+	"months-format-abbr": [
+		"يناير",
+		"فبراير",
+		"مارس",
+		"أبريل",
+		"مايو",
+		"يونيو",
+		"يوليو",
+		"أغسطس",
+		"سبتمبر",
+		"أكتوبر",
+		"نوفمبر",
+		"ديسمبر"
+	],
 	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "zzzz h:mm:ss a",
 	"field-day-relative+0": "اليوم",
 	"field-day-relative+1": "غدًا",
 	"field-day-relative+2": "بعد الغد",
+	"months-standAlone-abbr": [
+		"يناير",
+		"فبراير",
+		"مارس",
+		"أبريل",
+		"مايو",
+		"يونيو",
+		"يوليو",
+		"أغسطس",
+		"سبتمبر",
+		"أكتوبر",
+		"نوفمبر",
+		"ديسمبر"
+	],
+	"quarters-format-abbr": [
+		"الربع الأول",
+		"الربع الثاني",
+		"الربع الثالث",
+		"الربع الرابع"
+	],
+	"quarters-standAlone-wide": [
+		"الربع الأول",
+		"الربع الثاني",
+		"الربع الثالث",
+		"الربع الرابع"
+	],
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
-		"1",
+		"الأحد",
 		"الاثنين",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
 	],
 	"dateFormatItem-MMMMd": "d MMMM",
 	"timeFormat-medium": "h:mm:ss a",
 	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
+		"الربع الأول",
+		"الربع الثاني",
+		"الربع الثالث",
+		"الربع الرابع"
+	],
 	"eraAbbr": [
 		"ق.م",
 		"م"
@@ -81,6 +159,12 @@ define(
 	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
+	"quarters-format-narrow": [
+		"١",
+		"٢",
+		"٣",
+		"٤"
+	],
 	"field-day-relative+-1": "أمس",
 	"field-day-relative+-2": "أول أمس",
 	"dateFormatItem-MMMd": "d MMM",
@@ -129,6 +213,15 @@ define(
 	"eraNames": [
 		"قبل الميلاد",
 		"ميلادي"
+	],
+	"days-format-narrow": [
+		"ح",
+		"ن",
+		"ث",
+		"ر",
+		"خ",
+		"ج",
+		"س"
 	],
 	"field-month": "الشهر",
 	"days-standAlone-narrow": [

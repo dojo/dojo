@@ -19,6 +19,10 @@ define(
 	"dateFormatItem-yQQQ": "y QQQ",
 	"dateFormatItem-yMEd": "E, d.MM.yyyy",
 	"dateFormatItem-MMMEd": "E, d MMM",
+	"eraNarrow": [
+		"p.n.e.",
+		"n.e."
+	],
 	"dayPeriods-format-wide-earlyMorning": "nad ranem",
 	"dayPeriods-format-wide-morning": "rano",
 	"dateFormat-long": "d MMMM y",
@@ -67,12 +71,12 @@ define(
 		"IV kwartał"
 	],
 	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "Rok",
 	"dateFormatItem-yMMM": "LLL y",
 	"dateFormatItem-yQ": "yyyy Q",
-	"field-year": "Rok",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
-	"dateFormatItem-MMdd": "d.MM",
 	"field-hour": "Godzina",
+	"dateFormatItem-MMdd": "d.MM",
 	"months-format-abbr": [
 		"sty",
 		"lut",

@@ -106,7 +106,6 @@ define(
 		"الجمعة",
 		"السبت"
 	],
-	"timeFormat-long": "z h:mm:ss a",
 	"days-format-wide": [
 		"الأحد",
 		"الاثنين",
@@ -116,6 +115,7 @@ define(
 		"الجمعة",
 		"السبت"
 	],
+	"timeFormat-long": "z h:mm:ss a",
 	"dateFormatItem-yQ": "yyyy Q",
 	"dateFormatItem-yMMM": "MMM y",
 	"quarters-format-wide": [

@@ -57,6 +57,7 @@ define(
 	"field-year": "年",
 	"dateFormatItem-yMMM": "y年M月",
 	"dateFormatItem-yQ": "y年QQQ",
+	"dateFormatItem-yyyyMMMM": "y年M月",
 	"field-hour": "小時",
 	"dateFormatItem-MMdd": "MM/dd",
 	"months-format-abbr": [

@@ -31,7 +31,7 @@ define(
 	],
 	"dateFormatItem-y": "Gy年",
 	"timeFormat-full": "zzzzah時mm分ss秒",
-	"dateFormatItem-yyyy": "y年",
+	"dateFormatItem-yyyy": "Gy年",
 	"months-standAlone-abbr": [
 		"1月",
 		"2月",
@@ -166,6 +166,7 @@ define(
 		"11月",
 		"12月"
 	],
+	"dateFormatItem-yyyyMMM": "Gy年M月",
 	"dateFormatItem-d": "d日",
 	"quarters-format-wide": [
 		"第1季",

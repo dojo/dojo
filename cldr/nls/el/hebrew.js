@@ -80,7 +80,6 @@ define(
 	"eraAbbr": [
 		"π.μ."
 	],
-	"timeFormat-long": "h:mm:ss a z",
 	"days-format-wide": [
 		"Κυριακή",
 		"Δευτέρα",
@@ -90,6 +89,7 @@ define(
 		"Παρασκευή",
 		"Σάββατο"
 	],
+	"timeFormat-long": "h:mm:ss a z",
 	"dateFormatItem-yMMM": "LLL y",
 	"quarters-format-wide": [
 		"1ο τρίμηνο",

@@ -10,20 +10,6 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-MMdd": "dd.MM.",
 	"dateFormatItem-MMM": "LLL",
-	"months-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
-	],
 	"dayPeriods-format-wide-am": "vorm.",
 	"dateFormatItem-yyyy": "y G",
 	"dateFormatItem-Ed": "E d.",
@@ -36,9 +22,6 @@ define(
 		"D",
 		"F",
 		"S"
-	],
-	"eraAbbr": [
-		"AH"
 	],
 	"dateFormatItem-yyyyMMMM": "MMMM y G",
 	"dateFormat-long": "d. MMMM y G",
@@ -56,22 +39,7 @@ define(
 	"dateFormatItem-yyyyMEd": "E, d.M.y G",
 	"dateFormatItem-MMMd": "d. MMM",
 	"dateFormatItem-yyQ": "Q y G",
-	"months-format-abbr": [
-		"Muh.",
-		"Saf.",
-		"Rab. I",
-		"Rab. II",
-		"Jum. I",
-		"Jum. II",
-		"Raj.",
-		"Sha.",
-		"Ram.",
-		"Shaw.",
-		"Dhuʻl-Q.",
-		"Dhuʻl-H."
-	],
 	"dateFormatItem-H": "HH 'Uhr'",
-	"dateFormatItem-MMMMdd": "dd. MMMM",
 	"days-format-abbr": [
 		"So.",
 		"Mo.",
@@ -81,10 +49,11 @@ define(
 		"Fr.",
 		"Sa."
 	],
+	"dateFormatItem-MMMMdd": "dd. MMMM",
 	"dateFormatItem-M": "L",
 	"dateFormatItem-yMMMd": "d. MMM y",
-	"dateFormatItem-MEd": "E, d.M.",
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
+	"dateFormatItem-MEd": "E, d.M.",
 	"days-standAlone-abbr": [
 		"So",
 		"Mo",
@@ -101,20 +70,6 @@ define(
 	"dateFormatItem-Md": "d.M.",
 	"dateFormatItem-yyyyQ": "Q y G",
 	"dateFormatItem-yMEd": "E, d.M.y",
-	"months-format-wide": [
-		"Muharram",
-		"Safar",
-		"Rabiʻ I",
-		"Rabiʻ II",
-		"Jumada I",
-		"Jumada II",
-		"Rajab",
-		"Shaʻban",
-		"Ramadan",
-		"Shawwal",
-		"Dhuʻl-Qiʻdah",
-		"Dhuʻl-Hijjah"
-	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
 	"dateFormatItem-d": "d",
 	"quarters-format-wide": [

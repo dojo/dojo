@@ -290,5 +290,7 @@ define({ root:
 	"th": true,
 	"tr": true,
 	"zh": true,
-	"zh-hant": true
+	"zh-hant": true,
+	"zh-hk": true,
+	"zh-tw": true
 });

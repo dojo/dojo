@@ -170,12 +170,9 @@ dojo.parser = new function(){
 		// Call startup on each top level instance if it makes sense (as for
 		// widgets).  Parent widgets will recursively call startup on their
 		// (non-top level) children
-		if(!mixin._started){
+		if(!mixin._started && !options.noStart){
 			darray.forEach(thelist, function(instance){
-				if( !options.noStart && instance  &&
-					typeof instance.startup === "function" &&
-					!instance._started
-				){
+				if(typeof instance.startup === "function" && !instance._started){
 					instance.startup();
 				}
 			});

@@ -1,4 +1,4 @@
-define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./_base/xhr", "./json"],
+define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./has!host-browser?./_base/xhr", "./json"],
 	function(dojo, require, has, array, config, lang, xhr, json) {
 	// module:
 	//		dojo/i18n
@@ -397,6 +397,28 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				var results= [];
 				array.forEach(deps, function(mid){
 					var url= require.toUrl(mid + ".js");
+
+					function load(text){
+						var result = evalBundle(text, checkForLegacyModules, mid);
+						if(result===1){
+							// the bundle was an AMD module; re-inject it through the normal AMD path
+							// we gotta do this since it could be an anonymous module and simply evaluating
+							// the text here won't provide the loader with the context to know what
+							// module is being defined()'d. With browser caching, this should be free; further
+							// this entire code path can be circumvented by using the AMD format to begin with
+							require([mid], function(bundle){
+								results.push(cache[url]= bundle);
+							});
+						}else{
+							if(result instanceof Error){
+								console.error("failed to evaluate i18n bundle; url=" + url, result);
+								result = {};
+							}
+							// nls/<locale>/<bundle-name> indicates not the root.
+							results.push(cache[url] = (/nls\/[^\/]+\/[^\/]+$/.test(url) ? result : {root:result, _v1x:1}));
+						}
+					}
+
 					if(cache[url]){
 						results.push(cache[url]);
 					}else{
@@ -411,33 +433,22 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 						if(bundle){
 							results.push(bundle);
 						}else{
-							xhr.get({
-								url:url,
-								sync:true,
-								load:function(text){
-									var result = evalBundle(text, checkForLegacyModules, mid);
-									if(result===1){
-										// the bundle was an AMD module; re-inject it through the normal AMD path
-										// we gotta do this since it could be an anonymous module and simply evaluating
-										// the text here won't provide the loader with the context to know what
-										// module is being defined()'d. With browser caching, this should be free; further
-										// this entire code path can be circumvented by using the AMD format to begin with
-										require([mid], function(bundle){
-											results.push(cache[url]= bundle);
-										});
-									}else{
-										if(result instanceof Error){
-											console.error("failed to evaluate i18n bundle; url=" + url, result);
-											result = {};
-										}
-										// nls/<locale>/<bundle-name> indicates not the root.
-										results.push(cache[url] = (/nls\/[^\/]+\/[^\/]+$/.test(url) ? result : {root:result, _v1x:1}));
-									}
-								},
-								error:function(){
+							if(!xhr){
+								try{
+									require.getText(url, true, load);
+								}catch(e){
 									results.push(cache[url]= {});
 								}
-							});
+							}else{
+								xhr.get({
+									url:url,
+									sync:true,
+									load:load,
+									error:function(){
+										results.push(cache[url]= {});
+									}
+								});
+							}
 						}
 					}
 				});

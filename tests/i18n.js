@@ -48,6 +48,8 @@ define(["../main", "doh", "../has", "../i18n", "require"], function(dojo, doh, h
 
 
 	doh.register("tests.i18n", testSet);
-	doh.register("tests.i18n.extra.sync", require.toUrl("./i18n.html"), {async:0});
-	doh.register("tests.i18n.extra.async", require.toUrl("./i18n.html"), {async:1});
+	if(has("host-browser")){
+		doh.register("tests.i18n.extra.sync", require.toUrl("./i18n.html"), {async:0});
+		doh.register("tests.i18n.extra.async", require.toUrl("./i18n.html"), {async:1});
+	}
 });

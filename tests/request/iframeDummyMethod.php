@@ -68,8 +68,8 @@ header("Pragma: no-cache");
 
 if($query['type'] == 'xml'){
 	header("Content-type: text/xml");
+	echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
-<?xml version="1.0" encoding="UTF-8"?>
 <Envelope title="Test of dojo.io.iframe xml test">
 	<Children>
 		<child>FOO</child>

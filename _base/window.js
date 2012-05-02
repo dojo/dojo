@@ -15,7 +15,7 @@ dojo.doc = {
 	//		correctly in managed contexts.
 	// example:
 	//	|	n.appendChild(dojo.doc.createElement('div'));
-}
+};
 =====*/
 dojo.doc = this["document"] || null;
 

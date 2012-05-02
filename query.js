@@ -235,7 +235,6 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		nlp[name] = function(){ return f.apply(dojo, [this].concat(aps.call(arguments, 0))); };
 	});
 
-	/*===== var NodeList = dojo.NodeList; =====*/
 	lang.extend(NodeList, {
 		// copy the constructors
 		constructor: nl,

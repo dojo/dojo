@@ -8,11 +8,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 	var html = lang.getObject("dojo.html", true);
 
 	/*=====
-	dojo.html = {
-		// summary:
-		//		TODO
-	};
-	html = dojo.html;
+	html = {};
 	=====*/
 
 	// the parser might be needed..
@@ -32,7 +28,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 		return cont.replace(/(?:\s*<!DOCTYPE\s[^>]+>|<title[^>]*>[\s\S]*?<\/title>)/ig, ""); // String
 	};
 
-/*====
+/*=====
 	dojo.html._emptyNode = function(node){
 		// summary:
 		//		removes all child nodes from the given node

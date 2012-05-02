@@ -1,4 +1,4 @@
-define(["doh", "require"], function(doh, require){
+define(["doh/main", "require"], function(doh, require){
 	if(doh.isBrowser){
 		doh.register("tests._base.html", require.toUrl("./html.html"), 15000);
 		doh.register("tests._base.html_id", require.toUrl("./html_id.html"), 15000);

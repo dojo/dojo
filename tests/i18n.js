@@ -1,4 +1,4 @@
-define(["../main", "doh", "../has", "../i18n", "require"], function(dojo, doh, has, i18n, require){
+define(["../main", "doh/main", "../has", "../i18n", "require"], function(dojo, doh, has, i18n, require){
 	var
 		getAsyncTest = function(value, locale){
 			return function(){

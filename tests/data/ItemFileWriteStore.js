@@ -1,7 +1,7 @@
 // FIXME: this test assumes the existence of the global object "tests"
 define([
-  "dojo",
-  "doh",
+  "dojo/main",
+  "doh/main",
   "require",
   "./readOnlyItemFileTestTemplates",
   "dojo/data/ItemFileWriteStore",

@@ -1,4 +1,4 @@
-define(["..", "doh", "../cldr/supplemental", "../cldr/monetary"], function(dojo, doh){
+define(["..", "doh/main", "../cldr/supplemental", "../cldr/monetary"], function(dojo, doh){
 	doh.register("tests.cldr", [
 		function test_date_getWeekend(t){
 			t.is(6, dojo.cldr.supplemental.getWeekend('en-us').start);

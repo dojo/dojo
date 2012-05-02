@@ -1,4 +1,4 @@
-define(["../main", "doh", "../back"], function(dojo, doh){
+define(["../main", "doh/main", "../back"], function(dojo, doh){
 	doh.register("tests.back.hash", [
 		function getAndSet(t) {
 			var cases = [

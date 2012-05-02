@@ -1,4 +1,4 @@
-define(["../main", "doh", "../colors"], function(dojo, doh){
+define(["../main", "doh/main", "../colors"], function(dojo, doh){
 
 	var verifyColor = function(t, source, expected){
 		source	 = new dojo.Color(source);

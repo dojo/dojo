@@ -1,5 +1,5 @@
 define([
-	"doh",
+	"doh/main",
 	"dojo/Deferred",
 	"dojo/promise/first"
 ], function(doh, Deferred, first){

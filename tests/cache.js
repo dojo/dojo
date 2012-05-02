@@ -1,4 +1,4 @@
-define(["../main", "doh", "require", "../cache", "../_base/url"], function(dojo, doh, require) {
+define(["../main", "doh/main", "require", "../cache", "../_base/url"], function(dojo, doh, require) {
 	doh.register("tests.cache", [{
 			name: "dojo.cache",
 			runTest: function(t){

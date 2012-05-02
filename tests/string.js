@@ -1,4 +1,4 @@
-define(["../main", "doh", "../string"], function(dojo, doh){
+define(["../main", "doh/main", "../string"], function(dojo, doh){
 
 doh.register("tests.string",
 	[

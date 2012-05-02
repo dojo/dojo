@@ -1,4 +1,4 @@
-define(["../main", "doh", "../regexp"], function(dojo, doh){
+define(["../main", "doh/main", "../regexp"], function(dojo, doh){
 
 doh.register("tests.regexp",
 		function test_regexp_escape(t){

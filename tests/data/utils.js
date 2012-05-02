@@ -1,4 +1,4 @@
-define(["dojo", "doh", "dojo/data/util/filter", "dojo/data/util/sorter"], function(dojo, doh){
+define(["dojo/main", "doh/main", "dojo/data/util/filter", "dojo/data/util/sorter"], function(dojo, doh){
 
 doh.register("tests.data.utils",
 	[

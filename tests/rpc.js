@@ -1,4 +1,4 @@
-define(["../main", "doh", "require", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"], function(dojo, doh, require){
+define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"], function(dojo, doh, require){
 
 	doh.register("tests.rpc", [
 		{

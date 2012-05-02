@@ -1,6 +1,6 @@
 define([
-	"dojo",
-	"doh",
+	"../../main",
+	"doh/main",
 	"require"
 ], function(dojo, doh, require){
 	var testParams = [

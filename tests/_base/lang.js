@@ -1,4 +1,4 @@
-define(["dojo", "doh"], function(dojo, doh){
+define(["../../main", "doh/main"], function(dojo, doh){
 
   doh.register("tests._base.lang", [
 		function mixin(t){

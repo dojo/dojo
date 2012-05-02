@@ -1,7 +1,7 @@
 // FIXME: this test assumes the existence of the global object "tests"
 tests= typeof tests=="undefined" ? {} : tests;
 
-define(["../..", "doh"], function(dojo, doh){
+define(["../../main", "doh/main"], function(dojo, doh){
 	doh.register("tests._base.declare", [
 		function smokeTest(t){
 			dojo.declare("tests._base.declare.tmp", null);

@@ -1,9 +1,8 @@
 define([
-	"dojo",
+	"../main",
 	"./data/utils",
 	"./data/ItemFileReadStore",
-	"./data/ItemFileWriteStore",
-	"./data/ObjectStore"], function(dojo) {
+	"./data/ItemFileWriteStore"], function(dojo) {
 		dojo.config.usePlainJson = true;
 });
 

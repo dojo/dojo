@@ -1,4 +1,4 @@
-define(["doh", "dojo/request/handlers", "dojo/_base/kernel", "dojo/json"], function(doh, handlers, kernel, JSON){
+define(["doh/main", "dojo/request/handlers", "dojo/_base/kernel", "dojo/json"], function(doh, handlers, kernel, JSON){
 	doh.register("tests.request.handlers", [
 		function textContentHandler(t){
 			var response = handlers({

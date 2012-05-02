@@ -1,4 +1,4 @@
-define(["../main", "doh", "../number", "../i18n"], function(dojo, doh){
+define(["../main", "doh/main", "../number", "../i18n"], function(dojo, doh){
 var tests= {number:{}};
 /**
  * Refer to ICU4J's NumberFormatTest.expect(...)

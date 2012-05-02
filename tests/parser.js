@@ -1,4 +1,4 @@
-define(["doh", "require"], function(doh, require){
+define(["doh/main", "require"], function(doh, require){
 	if(doh.isBrowser){
 		doh.register("parser", require.toUrl("tests/parser/parser.html"), 30000);
 		doh.register("parseOnLoad-auto-require", require.toUrl("tests/parser/parseOnLoadAutoRequire.html"), 30000);

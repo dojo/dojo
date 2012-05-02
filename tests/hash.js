@@ -1,4 +1,4 @@
-define(["../main", "doh", "../hash"], function(dojo, doh){
+define(["../main", "doh/main", "../hash"], function(dojo, doh){
 
 	// utilities for the tests:
 	function setHash(h){

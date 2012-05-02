@@ -1,5 +1,5 @@
 define([
-	"doh",
+	"doh/main",
 	"dojo/Deferred"
 ], function(doh, Deferred){
 	var tests = {

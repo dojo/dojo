@@ -1,5 +1,5 @@
 define([
-	"doh",
+	"doh/main",
 	"dojo/Deferred",
 	"dojo/promise/Promise",
 	"dojo/promise/CancelError"

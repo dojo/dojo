@@ -1,4 +1,4 @@
-define(["../main", "doh", "require", "../currency"], function(dojo, doh, require){
+define(["../main", "doh/main", "require", "../currency"], function(dojo, doh, require){
 
 	var runTest= function(dojo, t) {
 		t.is("\u20ac123.45", dojo.currency.format(123.45, {currency: "EUR", locale: "en-us"}));

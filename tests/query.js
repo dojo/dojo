@@ -1,4 +1,4 @@
-define(["doh", "dojo/sniff", "require"], function(doh, has, require){
+define(["doh/main", "dojo/sniff", "require"], function(doh, has, require){
 	if(doh.isBrowser){
 		// Test dojo/query with every query engine/CSS level setting, plus with nothing specified
 		doh.register("tests.query-lite", require.toUrl("tests/query/query.html?selector=lite"), 30000);

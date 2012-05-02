@@ -2,11 +2,11 @@ define(
 ({
 // local representation of all CSS3 named colors, companion to dojo.colors.  To be used where descriptive information
 // is required for each color, such as a palette widget, and not for specifying color programatically.
-	//Note: due to the SVG 1.0 spec additions, some of these are alternate spellings for the same color (e.g. gray / grey).
-	//TODO: should we be using unique rgb values as keys instead and avoid these duplicates, or rely on the caller to do the reverse mapping?
+//Note: due to the SVG 1.0 spec additions, some of these are alternate spellings for the same color (e.g. gray / grey).
+//TODO: should we be using unique rgb values as keys instead and avoid these duplicates, or rely on the caller to do the reverse mapping?
 	aliceblue: "alice blue modra",
 	antiquewhite: "antično bela",
-	aqua: "akva",
+	aqua: "svetlo modra",
 	aquamarine: "akvamarin",
 	azure: "azurno modra",
 	beige: "bež",
@@ -52,7 +52,7 @@ define(
 	firebrick: "opečnata",
 	floralwhite: "cvetno bela",
 	forestgreen: "gozdno zelena",
-	fuchsia: "fuksija",
+	fuchsia: "roza",
 	gainsboro: "gainsboro",
 	ghostwhite: "senčnato bela",
 	gold: "zlata",
@@ -86,7 +86,7 @@ define(
 	lightslategrey: "svetlo skrilasto siva", // same as lightslategray
 	lightsteelblue: "svetlo kovinsko modra",
 	lightyellow: "svetlo rumena",
-	lime: "limetasta",
+	lime: "svetlo zelena",
 	limegreen: "apneno zelena",
 	linen: "lanena",
 	magenta: "magenta",
@@ -105,9 +105,9 @@ define(
 	mistyrose: "megleno rožnata",
 	moccasin: "mokasinasta",
 	navajowhite: "navajo bela",
-	navy: "mornarska",
+	navy: "mornarsko modra",
 	oldlace: "stara čipka",
-	olive: "olivna",
+	olive: "olivno zelena",
 	olivedrab: "umazano olivna",
 	orange: "oranžna",
 	orangered: "oranžno-rdeča",

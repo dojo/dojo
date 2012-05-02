@@ -70,7 +70,7 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 			//		Callback function
 			// returns:
 			//		A handle which will be used to remove the listener by handle.remove()
-		}
+		},
 		over: function(node, listener){
 			// summary:
 			//		Register a listener to 'mouseover' or touch equivalent for the given node

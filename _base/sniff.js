@@ -9,7 +9,7 @@ define(["./kernel", "../sniff"], function(dojo, has){
 		return has;
 	}
 
-	dojo.isBrowser = true,
+	dojo.isBrowser = true;
 	dojo._name = "browser";
 
 	/*=====

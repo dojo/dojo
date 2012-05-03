@@ -1,25 +1,63 @@
-define(["./_base/declare", "./_base/lang", "./_base/array"], function(declare, lang, array) {
+define(["./_base/declare", "./_base/lang", "./_base/array", "dojo/when"], function(declare, lang, array, when) {
 	// module:
 	//		dojo/Stateful
 	// summary:
-	//		TODOC
+	//		A module that provides the base class for objects that provide named properties
+	//		with auto-magic accessors and the ability to watch for property changes
 
 return declare("dojo.Stateful", null, {
 	// summary:
 	//		Base class for objects that provide named properties with optional getter/setter
 	//		control and the ability to watch for property changes
+	//
+	//		The class also provides the functionality to auto-magically manage getters
+	//		and setters for object attributes/properties, as well as provides 
+	//		dojo/Stateful watch functionality and dojo/Evented emit/on functionality 
+	//		for the attributes/properties.
+	//		
+	//		Getters and Setters should follow the format of _xxxGetter or _xxxSetter where 
+	//		the xxx is a name of the attribute to handle.  So an attribute of "foo" 
+	//		would have a custom getter of _fooGetter and a custom setter of _fooSetter.
+	//
 	// example:
 	//	|	var obj = new dojo.Stateful();
 	//	|	obj.watch("foo", function(){
 	//	|		console.log("foo changed to " + this.get("foo"));
 	//	|	});
 	//	|	obj.set("foo","bar");
-	postscript: function(mixin){
-		if(mixin){
-			lang.mixin(this, mixin);
-		}
+
+	// _attrPairNames: Hash
+	//		Used across all instances a hash to cache attribute names and their getter 
+	//		and setter names.
+	_attrPairNames: {},
+
+	_getAttrNames: function(name){
+		// summary:
+		//		Helper function for get() and set().
+		//		Caches attribute name values so we don't do the string ops every time.
+		// tags:
+		//		private
+
+		var apn = this._attrPairNames;
+		if(apn[name]){ return apn[name]; }
+		return (apn[name] = {
+			s: "_" + name + "Setter",
+			g: "_" + name + "Getter"
+		});
 	},
 
+	postscript: function(/*Object?*/ params){
+		// Automatic setting of params during construction
+		if (params){ this.set(params); }
+	},
+
+	_get: function(name, names){
+		// summary:
+		//		Private function that does a get based off a hash of names
+		//	names:
+		//		Hash of names of custom attributes
+		return typeof this[names.g] === "function" ? this[names.g]() : this[name];
+	},
 	get: function(/*String*/name){
 		// summary:
 		//		Get a property on a Stateful instance.
@@ -36,7 +74,7 @@ return declare("dojo.Stateful", null, {
 		//	|	stateful.get("foo") // returns 3
 		//	|	stateful.foo // returns 3
 
-		return this[name]; //Any
+		return this._get(name, this._getAttrNames(name)); //Any
 	},
 	set: function(/*String*/name, /*Object*/value){
 		// summary:
@@ -63,15 +101,51 @@ return declare("dojo.Stateful", null, {
 		//	|		bar: 3
 		//	|	})
 		//	This is equivalent to calling set(foo, "Howdy") and set(bar, 3)
+
+		// If an object is used, iterate through object
 		if(typeof name === "object"){
 			for(var x in name){
-				if(name.hasOwnProperty(x)){
-					this.set(x, name[x]);
-				}
+				this.set(x, name[x]);
 			}
 			return this;
 		}
-		var oldValue = this[name];
+
+		var names = this._getAttrNames(name),
+			oldValue = this._get(name, names),
+			setter = this[names.s],
+			result;
+		if(typeof setter === "function"){
+			// use the explicit setter
+			result = setter.apply(this, Array.prototype.slice.call(arguments, 1));
+		}else{
+			// no setter so set attribute directly
+			this[name] = value;
+		}
+		if(this._watchCallbacks){
+			var self = this;
+			// If setter returned a promise, wait for it to complete, otherwise call watches immediatly
+			when(result, function(){
+				self._watchCallbacks(name, oldValue, value);
+			});
+		}
+		return this; //dojo.Stateful
+	},
+	_changeAttrValue: function(name, value){
+		// summary:
+		//		Internal helper for directly changing an attribute value.
+		//
+		//	name: String
+		//		The property to set.
+		//	value: Mixed
+		//		The value to set in the property.
+		//
+		// description:
+		//		Directly change the value of an attribute on an object, bypassing any 
+		//		accessor setter.  Also handles the calling of watch and emitting events. 
+		//		It is designed to be used by descendent class when there are two values 
+		//		of attributes that are linked, but calling .set() is not appropriate.
+
+		var oldValue = this.get(name);
 		this[name] = value;
 		if(this._watchCallbacks){
 			this._watchCallbacks(name, oldValue, value);

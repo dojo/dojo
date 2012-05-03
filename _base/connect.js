@@ -1,4 +1,4 @@
-define(["./kernel", "../on", "../topic", "../aspect", "./event", "../mouse", "./sniff", "./lang", "../keys"], function(kernel, on, hub, aspect, eventModule, mouse, has, lang){
+define(["./kernel", "../on", "../topic", "../aspect", "./event", "../mouse", "./sniff", "./lang", "../keys"], function(dojo, on, hub, aspect, eventModule, mouse, has, lang){
 //  module:
 //    dojo/_base/connect
 //  summary:
@@ -23,13 +23,13 @@ function connect_(obj, event, context, method, dontFix){
 	if(!obj || !(obj.addEventListener || obj.attachEvent)){
 		// it is a not a DOM node and we are using the dojo.connect style of treating a
 		// method like an event, must go right to aspect
-		return aspect.after(obj || kernel.global, event, method, true);
+		return aspect.after(obj || dojo.global, event, method, true);
 	}
 	if(typeof event == "string" && event.substring(0, 2) == "on"){
 		event = event.substring(2);
 	}
 	if(!obj){
-		obj = kernel.global;
+		obj = dojo.global;
 	}
 	if(!dontFix){
 		switch(event){
@@ -204,7 +204,7 @@ var connect = {
 };
 connect.unsubscribe = connect.disconnect;
 
-has("extend-dojo") && lang.mixin(kernel, connect);
+has("extend-dojo") && lang.mixin(dojo, connect);
 return connect;
 
 /*=====

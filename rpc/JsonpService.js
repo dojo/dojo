@@ -7,10 +7,6 @@ define([
 // summary:
 //		TODOC
 
-/*=====
-RpcService = dojo.rpc.RpcService;
-=====*/
-
 return declare("dojo.rpc.JsonpService", RpcService, {
 	// summary:
 	//		Generic JSONP service.  Minimally extends RpcService to allow

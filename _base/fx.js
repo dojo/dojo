@@ -388,7 +388,7 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 	};
 
 	/*=====
-	dojo.__FadeArgs = function(node, duration, easing){
+	var __FadeArgs = function(node, duration, easing){
 		//	node: DOMNode|String
 		//		The node referenced in the animation
 		//	duration: Integer?
@@ -398,7 +398,7 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 		this.node = node;
 		this.duration = duration;
 		this.easing = easing;
-	}
+	};
 	=====*/
 
 	dojo.fadeIn = function(/*dojo.__FadeArgs*/ args){
@@ -450,17 +450,19 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 	};
 
 	/*=====
-	declare("dojo.__AnimArgs", [dojo.__FadeArgs], {
+	var __AnimArgs = function(){};
+	_AnimArgs.prototype = new __FadeArgs();
+	lang.extend(__AnimArgs, {
 		// Properties: Object?
-		//	A hash map of style properties to Objects describing the transition,
-		//	such as the properties of dojo._Line with an additional 'units' property
+		//		A hash map of style properties to Objects describing the transition,
+		//		such as the properties of dojo._Line with an additional 'units' property
 		properties: {}
 
 		//TODOC: add event callbacks
 	});
 	=====*/
 
-	dojo.animateProperty = function(/*dojo.__AnimArgs*/ args){
+	dojo.animateProperty = function(/*__AnimArgs*/ args){
 		// summary:
 		//		Returns an animation that will transition the properties of
 		//		node defined in `args` depending how they are defined in

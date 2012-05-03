@@ -3,16 +3,12 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	// module:
 	//		dojo/back
 	// summary:
-	//		TODOC
+	//		Browser history management resources
 
 	var back = lang.getObject("dojo.back", true);
-
-/*=====
-dojo.back = {
-	// summary: Browser history management resources
-};
-var back = dojo.back;
-=====*/
+	/*=====
+	back = {};
+	=====*/
 
 	// everyone deals with encoding the hash slightly differently
 
@@ -181,27 +177,27 @@ var back = dojo.back;
 
 
 	/*=====
-	dojo.__backArgs = function(kwArgs){
+	var __backArgs = function(kwArgs){
 		// back: Function?
 		//		A function to be called when this state is reached via the user
 		//		clicking the back button.
-		//	forward: Function?
+		// forward: Function?
 		//		Upon return to this state from the "back, forward" combination
 		//		of navigation steps, this function will be called. Somewhat
 		//		analogous to the semantic of an "onRedo" event handler.
-		//	changeUrl: Boolean?|String?
+		// changeUrl: Boolean?|String?
 		//		Boolean indicating whether or not to create a unique hash for
 		//		this state. If a string is passed instead, it is used as the
 		//		hash.
-	}
+	};
 	=====*/
 
-	back.addToHistory = function(/*dojo.__backArgs*/ args){
-		//	summary:
+	back.addToHistory = function(args){
+		// summary:
 		//		adds a state object (args) to the history list.
-		//	args: dojo.__backArgs
+		// args: __backArgs
 		//		The state object that will be added to the history list.
-		//	description:
+		// description:
 		//		To support getting back button notifications, the object
 		//		argument should implement a function called either "back",
 		//		"backButton", or "handle". The string "back" will be passed as

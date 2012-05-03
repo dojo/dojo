@@ -4,11 +4,6 @@ define(["../../_base/declare", "./Read"], function(declare, Read) {
 	// summary:
 	//		TODOC
 
-/*=====
-Read = dojo.data.api.Read;
-=====*/
-
-
 return declare("dojo.data.api.Notification", Read, {
 	//	summary:
 	//		This is an abstract API that data provider implementations conform to.

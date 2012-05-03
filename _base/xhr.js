@@ -2,7 +2,7 @@ define([
 	"./kernel", "./sniff", "require", "../io-query", "../dom", "../dom-form", "./Deferred",
 	"./config", "./json", "./lang", "./array", "../on"
 ], function(dojo, has, require, ioq, dom, domForm, deferred, config, json, lang, array, on){
-	//	module:
+	// module:
 	//		dojo/_base.xhr
 	// summary:
 	//		This modules defines the dojo.xhr* API.
@@ -163,48 +163,52 @@ define([
 	};
 
 	/*=====
+
+	// kwargs function parameter definitions.   Assigning to dojo namespace rather than making them local variables
+	// because they are used by dojo/io modules too
+
 	dojo.__IoArgs = function(){
-		//	url: String
+		// url: String
 		//		URL to server endpoint.
-		//	content: Object?
+		// content: Object?
 		//		Contains properties with string values. These
 		//		properties will be serialized as name1=value2 and
 		//		passed in the request.
-		//	timeout: Integer?
+		// timeout: Integer?
 		//		Milliseconds to wait for the response. If this time
 		//		passes, the then error callbacks are called.
-		//	form: DOMNode?
+		// form: DOMNode?
 		//		DOM node for a form. Used to extract the form values
 		//		and send to the server.
-		//	preventCache: Boolean?
+		// preventCache: Boolean?
 		//		Default is false. If true, then a
 		//		"dojo.preventCache" parameter is sent in the request
 		//		with a value that changes with each request
 		//		(timestamp). Useful only with GET-type requests.
-		//	handleAs: String?
+		// handleAs: String?
 		//		Acceptable values depend on the type of IO
 		//		transport (see specific IO calls for more information).
-		//	rawBody: String?
+		// rawBody: String?
 		//		Sets the raw body for an HTTP request. If this is used, then the content
 		//		property is ignored. This is mostly useful for HTTP methods that have
 		//		a body to their requests, like PUT or POST. This property can be used instead
 		//		of postData and putData for dojo.rawXhrPost and dojo.rawXhrPut respectively.
-		//	ioPublish: Boolean?
+		// ioPublish: Boolean?
 		//		Set this explicitly to false to prevent publishing of topics related to
 		//		IO operations. Otherwise, if djConfig.ioPublish is set to true, topics
 		//		will be published via dojo.publish for different phases of an IO operation.
 		//		See dojo.__IoPublish for a list of topics that are published.
-		//	load: Function?
+		// load: Function?
 		//		This function will be
 		//		called on a successful HTTP response code.
-		//	error: Function?
+		// error: Function?
 		//		This function will
 		//		be called when the request fails due to a network or server error, the url
 		//		is invalid, etc. It will also be called if the load or handle callback throws an
 		//		exception, unless djConfig.debugAtAllCosts is true.	 This allows deployed applications
 		//		to continue to run even when a logic error happens in the callback, while making
 		//		it easier to troubleshoot while in debug mode.
-		//	handle: Function?
+		// handle: Function?
 		//		This function will
 		//		be called at the end of every request, whether or not an error occurs.
 		this.url = url;
@@ -235,38 +239,36 @@ define([
 			// ioArgs: dojo.__IoCallbackArgs
 			//		Provides additional information about the request.
 		}
-	}
-	=====*/
+	};
 
-	/*=====
 	dojo.__IoCallbackArgs = function(args, xhr, url, query, handleAs, id, canDelete, json){
-		//	args: Object
+		// args: Object
 		//		the original object argument to the IO call.
-		//	xhr: XMLHttpRequest
+		// xhr: XMLHttpRequest
 		//		For XMLHttpRequest calls only, the
 		//		XMLHttpRequest object that was used for the
 		//		request.
-		//	url: String
+		// url: String
 		//		The final URL used for the call. Many times it
 		//		will be different than the original args.url
 		//		value.
-		//	query: String
+		// query: String
 		//		For non-GET requests, the
 		//		name1=value1&name2=value2 parameters sent up in
 		//		the request.
-		//	handleAs: String
+		// handleAs: String
 		//		The final indicator on how the response will be
 		//		handled.
-		//	id: String
+		// id: String
 		//		For dojo.io.script calls only, the internal
 		//		script ID used for the request.
-		//	canDelete: Boolean
+		// canDelete: Boolean
 		//		For dojo.io.script calls only, indicates
 		//		whether the script tag that represents the
 		//		request can be deleted after callbacks have
 		//		been called. Used internally to know when
 		//		cleanup can happen on JSONP-type requests.
-		//	json: Object
+		// json: Object
 		//		For dojo.io.script calls only: holds the JSON
 		//		response for JSONP-type requests. Used
 		//		internally to hold on to the JSON responses.
@@ -281,38 +283,35 @@ define([
 		this.id = id;
 		this.canDelete = canDelete;
 		this.json = json;
-	}
-	=====*/
+	};
 
-
-	/*=====
 	dojo.__IoPublish = function(){
-		//	summary:
+		// summary:
 		//		This is a list of IO topics that can be published
 		//		if djConfig.ioPublish is set to true. IO topics can be
 		//		published for any Input/Output, network operation. So,
 		//		dojo.xhr, dojo.io.script and dojo.io.iframe can all
 		//		trigger these topics to be published.
-		//	start: String
+		// start: String
 		//		"/dojo/io/start" is sent when there are no outstanding IO
 		//		requests, and a new IO request is started. No arguments
 		//		are passed with this topic.
-		//	send: String
+		// send: String
 		//		"/dojo/io/send" is sent whenever a new IO request is started.
 		//		It passes the dojo.Deferred for the request with the topic.
-		//	load: String
+		// load: String
 		//		"/dojo/io/load" is sent whenever an IO request has loaded
 		//		successfully. It passes the response and the dojo.Deferred
 		//		for the request with the topic.
-		//	error: String
+		// error: String
 		//		"/dojo/io/error" is sent whenever an IO request has errored.
 		//		It passes the error and the dojo.Deferred
 		//		for the request with the topic.
-		//	done: String
+		// done: String
 		//		"/dojo/io/done" is sent whenever an IO request has completed,
 		//		either by loading or by erroring. It passes the error and
 		//		the dojo.Deferred for the request with the topic.
-		//	stop: String
+		// stop: String
 		//		"/dojo/io/stop" is sent when all outstanding IO requests have
 		//		finished. No arguments are passed with this topic.
 		this.start = "/dojo/io/start";
@@ -321,7 +320,7 @@ define([
 		this.error = "/dojo/io/error";
 		this.done = "/dojo/io/done";
 		this.stop = "/dojo/io/stop";
-	}
+	};
 	=====*/
 
 
@@ -329,21 +328,21 @@ define([
 			/*Function*/canceller,
 			/*Function*/okHandler,
 			/*Function*/errHandler){
-		//	summary:
+		// summary:
 		//		sets up the Deferred and ioArgs property on the Deferred so it
 		//		can be used in an io call.
-		//	args:
+		// args:
 		//		The args object passed into the public io call. Recognized properties on
 		//		the args object are:
-		//	canceller:
+		// canceller:
 		//		The canceller function used for the Deferred object. The function
 		//		will receive one argument, the Deferred object that is related to the
 		//		canceller.
-		//	okHandler:
+		// okHandler:
 		//		The first OK callback to be registered with Deferred. It has the opportunity
 		//		to transform the OK response. It will receive one argument -- the Deferred
 		//		object returned from this function.
-		//	errHandler:
+		// errHandler:
 		//		The first error callback to be registered with Deferred. It has the opportunity
 		//		to do cleanup on an error. It will receive two arguments: error (the
 		//		Error object) and dfd, the Deferred object returned from this function.
@@ -638,46 +637,45 @@ define([
 	};
 
 	/*=====
-	declare("dojo.__XhrArgs", dojo.__IoArgs, {
-		constructor: function(){
-			//	summary:
-			//		In addition to the properties listed for the dojo._IoArgs type,
-			//		the following properties are allowed for dojo.xhr* methods.
-			//	handleAs: String?
-			//		Acceptable values are: text (default), json, json-comment-optional,
-			//		json-comment-filtered, javascript, xml. See `dojo.contentHandlers`
-			//	sync: Boolean?
-			//		false is default. Indicates whether the request should
-			//		be a synchronous (blocking) request.
-			//	headers: Object?
-			//		Additional HTTP headers to send in the request.
-			//	failOk: Boolean?
-			//		false is default. Indicates whether a request should be
-			//		allowed to fail (and therefore no console error message in
-			//		the event of a failure)
-			//	contentType: String|Boolean
-			//		"application/x-www-form-urlencoded" is default. Set to false to
-			//		prevent a Content-Type header from being sent, or to a string
-			//		to send a different Content-Type.
-			this.handleAs = handleAs;
-			this.sync = sync;
-			this.headers = headers;
-			this.failOk = failOk;
-		}
-	});
+	 dojo.__XhrArgs = function(){
+		 // summary:
+		 //		In addition to the properties listed for the dojo._IoArgs type,
+		 //		the following properties are allowed for dojo.xhr* methods.
+		 // handleAs: String?
+		 //		Acceptable values are: text (default), json, json-comment-optional,
+		 //		json-comment-filtered, javascript, xml. See `dojo.contentHandlers`
+		 // sync: Boolean?
+		 //		false is default. Indicates whether the request should
+		 //		be a synchronous (blocking) request.
+		 // headers: Object?
+		 //		Additional HTTP headers to send in the request.
+		 // failOk: Boolean?
+		 //		false is default. Indicates whether a request should be
+		 //		allowed to fail (and therefore no console error message in
+		 //		the event of a failure)
+		 // contentType: String|Boolean
+		 //		"application/x-www-form-urlencoded" is default. Set to false to
+		 //		prevent a Content-Type header from being sent, or to a string
+		 //		to send a different Content-Type.
+		 this.handleAs = handleAs;
+		 this.sync = sync;
+		 this.headers = headers;
+		 this.failOk = failOk;
+	 };
+	 dojo.__XhrArgs.prototype = new dojo.__IoArgs();
 	=====*/
 
 	dojo.xhr = function(/*String*/ method, /*dojo.__XhrArgs*/ args, /*Boolean?*/ hasBody){
-		//	summary:
+		// summary:
 		//		Sends an HTTP request with the given method.
-		//	description:
+		// description:
 		//		Sends an HTTP request with the given method.
 		//		See also dojo.xhrGet(), xhrPost(), xhrPut() and dojo.xhrDelete() for shortcuts
 		//		for those HTTP methods. There are also methods for "raw" PUT and POST methods
 		//		via dojo.rawXhrPut() and dojo.rawXhrPost() respectively.
-		//	method:
+		// method:
 		//		HTTP method to be used, such as GET, POST, PUT, DELETE. Should be uppercase.
-		//	hasBody:
+		// hasBody:
 		//		If the request has an HTTP body, then pass true for hasBody.
 
 		//Make the Deferred object for this xhr request.
@@ -745,38 +743,38 @@ define([
 	};
 
 	dojo.xhrGet = function(/*dojo.__XhrArgs*/ args){
-		//	summary:
+		// summary:
 		//		Sends an HTTP GET request to the server.
 		return dojo.xhr("GET", args); // dojo.Deferred
 	};
 
 	dojo.rawXhrPost = dojo.xhrPost = function(/*dojo.__XhrArgs*/ args){
-		//	summary:
+		// summary:
 		//		Sends an HTTP POST request to the server. In addition to the properties
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
-		//	postData:
+		// postData:
 		//		String. Send raw data in the body of the POST request.
 		return dojo.xhr("POST", args, true); // dojo.Deferred
 	};
 
 	dojo.rawXhrPut = dojo.xhrPut = function(/*dojo.__XhrArgs*/ args){
-		//	summary:
+		// summary:
 		//		Sends an HTTP PUT request to the server. In addition to the properties
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
-		//	putData:
+		// putData:
 		//		String. Send raw data in the body of the PUT request.
 		return dojo.xhr("PUT", args, true); // dojo.Deferred
 	};
 
 	dojo.xhrDelete = function(/*dojo.__XhrArgs*/ args){
-		//	summary:
+		// summary:
 		//		Sends an HTTP DELETE request to the server.
 		return dojo.xhr("DELETE", args); //dojo.Deferred
 	};
 
 	/*
 	dojo.wrapForm = function(formNode){
-		//summary:
+		// summary:
 		//		A replacement for FormBind, but not implemented yet.
 
 		// FIXME: need to think harder about what extensions to this we might

@@ -7,13 +7,8 @@ define(["./_base/lang", "./sniff", "./_base/window", "./dom", "./dom-geometry", 
 //		TODOC
 
 var window = lang.getObject("dojo.window", true);
-
 /*=====
-dojo.window = {
-	// summary:
-	//		TODO
-};
-window = dojo.window;
+window = {};
 =====*/
 
 window.getBox = function(/*Document?*/ doc){

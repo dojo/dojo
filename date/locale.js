@@ -14,13 +14,8 @@ define([
 	//		This modules defines dojo.date.locale, localization methods for Date.
 
 var exports = lang.getObject("dojo.date.locale", true);
-
 /*=====
-dojo.date.locale = {
-	// summary:
-	//		TODO
-};
-exports = dojo.date.locale;
+exports = {};
 =====*/
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
@@ -178,7 +173,7 @@ exports = dojo.date.locale;
 	}
 
 /*=====
-	dojo.date.locale.__FormatOptions = function(){
+	var __FormatOptions = function(){
 	//	selector: String
 	//		choice of 'time','date' (default: date and time)
 	//	formatLength: String
@@ -209,7 +204,7 @@ exports = dojo.date.locale;
 	}
 =====*/
 
-exports._getZone = function(/*Date*/dateObject, /*boolean*/getName, /*dojo.date.locale.__FormatOptions?*/options){
+exports._getZone = function(/*Date*/ dateObject, /*boolean*/ getName, /*__FormatOptions?*/ options){
 	// summary:
 	//		Returns the zone (or offset) for the given date and options.  This
 	//		is broken out into a separate function so that it can be overridden
@@ -231,7 +226,7 @@ exports._getZone = function(/*Date*/dateObject, /*boolean*/getName, /*dojo.date.
 };
 
 
-exports.format = function(/*Date*/dateObject, /*dojo.date.locale.__FormatOptions?*/options){
+exports.format = function(/*Date*/ dateObject, /*__FormatOptions?*/ options){
 	// summary:
 	//		Format a Date object as a String, using locale-specific settings.
 	//
@@ -274,14 +269,14 @@ exports.format = function(/*Date*/dateObject, /*dojo.date.locale.__FormatOptions
 		function(match, key){ return str[key]; }); // String
 };
 
-exports.regexp = function(/*dojo.date.locale.__FormatOptions?*/options){
+exports.regexp = function(/*__FormatOptions?*/ options){
 	// summary:
 	//		Builds the regular needed to parse a localized date
 
 	return exports._parseInfo(options).regexp; // String
 };
 
-exports._parseInfo = function(/*dojo.date.locale.__FormatOptions?*/options){
+exports._parseInfo = function(/*__FormatOptions?*/ options){
 	options = options || {};
 	var locale = i18n.normalizeLocale(options.locale),
 		bundle = exports._getGregorianBundle(locale),
@@ -303,7 +298,7 @@ exports._parseInfo = function(/*dojo.date.locale.__FormatOptions?*/options){
 	return {regexp: re, tokens: tokens, bundle: bundle};
 };
 
-exports.parse = function(/*String*/value, /*dojo.date.locale.__FormatOptions?*/options){
+exports.parse = function(/*String*/ value, /*__FormatOptions?*/ options){
 	// summary:
 	//		Convert a properly formatted string to a primitive Date object,
 	//		using locale-specific settings.
@@ -614,7 +609,7 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 }
 
 var _customFormats = [];
-exports.addCustomFormats = function(/*String*/packageName, /*String*/bundleName){
+exports.addCustomFormats = function(/*String*/ packageName, /*String*/ bundleName){
 	// summary:
 	//		Add a reference to a bundle containing localized custom formats to be
 	//		used by date/time formatting and parsing routines.
@@ -629,7 +624,7 @@ exports.addCustomFormats = function(/*String*/packageName, /*String*/bundleName)
 	_customFormats.push({pkg:packageName,name:bundleName});
 };
 
-exports._getGregorianBundle = function(/*String*/locale){
+exports._getGregorianBundle = function(/*String*/ locale){
 	var gregorian = {};
 	array.forEach(_customFormats, function(desc){
 		var bundle = i18n.getLocalization(desc.pkg, desc.name, locale);
@@ -640,7 +635,7 @@ exports._getGregorianBundle = function(/*String*/locale){
 
 exports.addCustomFormats("dojo.cldr","gregorian");
 
-exports.getNames = function(/*String*/item, /*String*/type, /*String?*/context, /*String?*/locale){
+exports.getNames = function(/*String*/ item, /*String*/ type, /*String?*/ context, /*String?*/ locale){
 	// summary:
 	//		Used to get localized strings from dojo.cldr for day or month names.
 	//
@@ -668,7 +663,7 @@ exports.getNames = function(/*String*/item, /*String*/type, /*String?*/context, 
 	return (label || lookup[props.join('-')]).concat(); /*Array*/
 };
 
-exports.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
+exports.isWeekend = function(/*Date?*/ dateObject, /*String?*/ locale){
 	// summary:
 	//	Determines if the date falls on a weekend, according to local custom.
 
@@ -683,12 +678,12 @@ exports.isWeekend = function(/*Date?*/dateObject, /*String?*/locale){
 
 // These are used only by format and strftime.  Do they need to be public?  Which module should they go in?
 
-exports._getDayOfYear = function(/*Date*/dateObject){
+exports._getDayOfYear = function(/*Date*/ dateObject){
 	// summary: gets the day of the year as represented by dateObject
 	return date.difference(new Date(dateObject.getFullYear(), 0, 1, dateObject.getHours()), dateObject) + 1; // Number
 };
 
-exports._getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDayOfWeek){
+exports._getWeekOfYear = function(/*Date*/ dateObject, /*Number*/ firstDayOfWeek){
 	if(arguments.length == 1){ firstDayOfWeek = 0; } // Sunday
 
 	var firstDayOfYear = new Date(dateObject.getFullYear(), 0, 1).getDay(),

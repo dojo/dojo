@@ -2,18 +2,10 @@ define(["./query", "./_base/lang", "./html"], function(query, lang, html) {
 	// module:
 	//		dojo/NodeList-html
 	// summary:
-	//		TODOC
+	//		Adds a chainable html method to dojo.query() / NodeList instances for setting/replacing node content
 
 var NodeList = query.NodeList;
 
-/*=====
-dojo["NodeList-html"] = {
-	// summary: Adds a chainable html method to dojo.query() / Nodelist instances for setting/replacing node content
-};
-
-// doc helper aliases:
-NodeList = dojo.NodeList;
-=====*/
 
 lang.extend(NodeList, {
 	html: function(/* String|DomNode|NodeList? */ content, /* Object? */params){

@@ -6,7 +6,7 @@ define(["../_base/kernel", "../_base/lang"], function(dojo, lang) {
 
 var monetary = lang.getObject("dojo.cldr.monetary", true);
 /*=====
-monetary = dojo.cldr.monetary;
+monetary = {};
 =====*/
 
 monetary.getData = function(/*String*/code){

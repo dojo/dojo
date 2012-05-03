@@ -37,11 +37,6 @@ var AdapterRegistry = dojo.AdapterRegistry = function(/*Boolean?*/ returnWrapper
 	this.returnWrappers = returnWrappers || false; // Boolean
 };
 
-/*=====
-// doc alias helpers:
-AdapterRegistry = dojo.AdapterRegistry;
-=====*/
-
 lang.extend(AdapterRegistry, {
 	register: function(/*String*/ name, /*Function*/ check, /*Function*/ wrap, /*Boolean?*/ directReturn, /*Boolean?*/ override){
 		//	summary:

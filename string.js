@@ -6,15 +6,11 @@ define([
 // module:
 //		dojo/string
 // summary:
-//		TODOC
+//		String utilities for Dojo
 
 var string = lang.getObject("dojo.string", true);
-
 /*=====
-dojo.string = {
-	// summary: String utilities for Dojo
-};
-string = dojo.string;
+string = {};
 =====*/
 
 string.rep = function(/*String*/str, /*Integer*/num){

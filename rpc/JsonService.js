@@ -8,10 +8,6 @@ define([
 // summary:
 //		TODOC
 
-/*=====
-RpcService = dojo.rpc.RpcService;
-=====*/
-
 return declare("dojo.rpc.JsonService", RpcService, {
 		bustCache: false,
 		contentType: "application/json-rpc",

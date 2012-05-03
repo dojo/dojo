@@ -2,15 +2,11 @@ define(["./_base/kernel", "./_base/lang"], function(dojo, lang) {
 	// module:
 	//		dojo/regexp
 	// summary:
-	//		TODOC
+	//		Regular expressions and Builder resources
 
 var regexp = lang.getObject("dojo.regexp", true);
-
 /*=====
-dojo.regexp = {
-	// summary: Regular expressions and Builder resources
-};
-regexp = dojo.regexp;
+regexp = {};
 =====*/
 
 regexp.escapeString = function(/*String*/str, /*String?*/except){

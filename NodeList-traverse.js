@@ -2,21 +2,12 @@ define(["./query", "./_base/lang", "./_base/array"], function(dquery, lang, arra
 	// module:
 	//		dojo/NodeList-traverse
 	// summary:
-	//		TODOC
+	//		Adds chainable methods to dojo.query() / Nodelist instances for traversing the DOM
 
 var NodeList = dquery.NodeList;
 
-/*=====
-dojo["NodeList-traverse"] = {
-	// summary: Adds a chainable methods to dojo.query() / Nodelist instances for traversing the DOM
-};
-
-// doc alias helpers:
-NodeList = dojo.NodeList;
-=====*/
-
 lang.extend(NodeList, {
-	_buildArrayFromCallback: function(/*Function*/callback){
+	_buildArrayFromCallback: function(/*Function*/ callback){
 		// summary:
 		// 		builds a new array of possibly differing size based on the input list.
 		// 		Since the returned array is likely of different size than the input array,

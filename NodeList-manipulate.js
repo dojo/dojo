@@ -2,21 +2,12 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 	// module:
 	//		dojo/NodeList-manipulate
 	// summary:
-	//		TODOC
+	//		Adds chainable methods to dojo.query() / Nodelist instances for manipulating HTML
+	//		and DOM nodes and their properties.
 
-var NodeList = dquery.NodeList;
+	var NodeList = dquery.NodeList;
 
-/*=====
-dojo["NodeList-manipulate"] = {
-	// summary: Adds a chainable methods to dojo.query() / Nodelist instances for manipulating HTML
-	// and DOM nodes and their properties.
-};
-
-// doc alias helpers:
-NodeList = dojo.NodeList;
-=====*/
-
-//TODO: add a way to parse for widgets in the injected markup?
+	//TODO: add a way to parse for widgets in the injected markup?
 
 	function getText(/*DOMNode*/node){
 		// summary:
@@ -726,5 +717,5 @@ NodeList = dojo.NodeList;
 		NodeList.prototype.html = NodeList.prototype.innerHTML;
 	}
 
-return NodeList;
+	return NodeList;
 });

@@ -6,7 +6,7 @@ define(["../_base/lang", "../i18n"], function(lang, i18n) {
 //		TODOC
 
 var supplemental = lang.getObject("dojo.cldr.supplemental", true);
-/*===== supplemental = dojo.cldr.supplemental =====*/
+/*===== supplemental = {}; =====*/
 
 supplemental.getFirstDayOfWeek = function(/*String?*/locale){
 // summary: Returns a zero-based index for first day of the week

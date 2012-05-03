@@ -6,7 +6,6 @@ define(["../_base/lang", "../_base/declare", "../_base/array", "../_base/json", 
 	// summary:
 	//		TODOC
 
-/*===== var ItemFileReadStore = dojo.data.ItemFileReadStore; =====*/
 return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	constructor: function(/* object */ keywordParameters){
 		//	keywordParameters: {typeMap: object)

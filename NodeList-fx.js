@@ -3,17 +3,9 @@ define(["./_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./
 	// module:
 	//		dojo/NodeList-fx
 	// summary:
-	//		TODOC
-
-/*=====
-dojo["NodeList-fx"] = {
-	// summary: Adds dojo.fx animation support to dojo.query() by extending the NodeList class
+	//		Adds dojo.fx animation support to dojo.query() by extending the NodeList class
 	//		with additional FX functions.  NodeList is the array-like object used to hold query results.
-};
 
-// doc alias helpers:
-NodeList = dojo.NodeList;
-=====*/
 
 lang.extend(NodeList, {
 	_anim: function(obj, method, args){

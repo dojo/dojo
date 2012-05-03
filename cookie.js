@@ -6,7 +6,7 @@ define(["./_base/kernel", "./regexp"], function(dojo, regexp) {
 
 
 /*=====
-dojo.__cookieProps = function(){
+var __cookieProps = function(){
 	//	expires: Date|String|Number?
 	//		If a number, the number of days from today at which the cookie
 	//		will expire. If a date, the date past which the cookie will expire.
@@ -26,28 +26,28 @@ dojo.__cookieProps = function(){
 =====*/
 
 
-dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/props){
-	//	summary:
+dojo.cookie = function(/*String*/name, /*String?*/ value, /*__cookieProps?*/ props){
+	// summary:
 	//		Get or set a cookie.
-	//	description:
+	// description:
 	// 		If one argument is passed, returns the value of the cookie
 	// 		For two or more arguments, acts as a setter.
-	//	name:
+	// name:
 	//		Name of the cookie
-	//	value:
+	// value:
 	//		Value for the cookie
-	//	props:
+	// props:
 	//		Properties for the cookie
-	//	example:
+	// example:
 	//		set a cookie with the JSON-serialized contents of an object which
 	//		will expire 5 days from now:
 	//	|	dojo.cookie("configObj", dojo.toJson(config), { expires: 5 });
 	//
-	//	example:
+	// example:
 	//		de-serialize a cookie back into a JavaScript object:
 	//	|	var config = dojo.fromJson(dojo.cookie("configObj"));
 	//
-	//	example:
+	// example:
 	//		delete a cookie:
 	//	|	dojo.cookie("configObj", null, {expires: -1});
 	var c = document.cookie, ret;

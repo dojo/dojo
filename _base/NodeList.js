@@ -4,48 +4,44 @@ define(["./kernel", "../query", "./array", "./html", "../NodeList-dom"], functio
   //  summary:
   //    This module defines dojo.NodeList.
  
-var NodeList = query.NodeList;
+	var NodeList = query.NodeList;
 
 	/*=====
-	dojo.extend(dojo.NodeList, {
-		connect: function(methodName, objOrFunc, funcName){
-			// summary:
-			//		attach event handlers to every item of the NodeList. Uses dojo.connect()
-			//		so event properties are normalized
-			// methodName: String
-			//		the name of the method to attach to. For DOM events, this should be
-			//		the lower-case name of the event
-			// objOrFunc: Object|Function|String
-			//		if 2 arguments are passed (methodName, objOrFunc), objOrFunc should
-			//		reference a function or be the name of the function in the global
-			//		namespace to attach. If 3 arguments are provided
-			//		(methodName, objOrFunc, funcName), objOrFunc must be the scope to
-			//		locate the bound function in
-			// funcName: String?
-			//		optional. A string naming the function in objOrFunc to bind to the
-			//		event. May also be a function reference.
-			// example:
-			//		add an onclick handler to every button on the page
-			//		|	dojo.query("div:nth-child(odd)").connect("onclick", function(e){
-			//		|		console.log("clicked!");
-			//		|	});
-			// example:
-			//		attach foo.bar() to every odd div's onmouseover
-			//		|	dojo.query("div:nth-child(odd)").connect("onmouseover", foo, "bar");
-		},
-		coords: function(){
-			// summary:
-			//		Deprecated: Use position() for border-box x/y/w/h
-			//		or marginBox() for margin-box w/h/l/t.
-			//		Returns the box objects of all elements in a node list as
-			//		an Array (*not* a NodeList). Acts like `dojo.coords`, though assumes
-			//		the node passed is each node in this list.
+	NodeList.prototype.connect = function(methodName, objOrFunc, funcName){
+		// summary:
+		//		attach event handlers to every item of the NodeList. Uses dojo.connect()
+		//		so event properties are normalized
+		// methodName: String
+		//		the name of the method to attach to. For DOM events, this should be
+		//		the lower-case name of the event
+		// objOrFunc: Object|Function|String
+		//		if 2 arguments are passed (methodName, objOrFunc), objOrFunc should
+		//		reference a function or be the name of the function in the global
+		//		namespace to attach. If 3 arguments are provided
+		//		(methodName, objOrFunc, funcName), objOrFunc must be the scope to
+		//		locate the bound function in
+		// funcName: String?
+		//		optional. A string naming the function in objOrFunc to bind to the
+		//		event. May also be a function reference.
+		// example:
+		//		add an onclick handler to every button on the page
+		//		|	dojo.query("div:nth-child(odd)").connect("onclick", function(e){
+		//		|		console.log("clicked!");
+		//		|	});
+		// example:
+		//		attach foo.bar() to every odd div's onmouseover
+		//		|	dojo.query("div:nth-child(odd)").connect("onmouseover", foo, "bar");
+	};
+	NodeList.prototype.coords = function(){
+		// summary:
+		//		Deprecated: Use position() for border-box x/y/w/h
+		//		or marginBox() for margin-box w/h/l/t.
+		//		Returns the box objects of all elements in a node list as
+		//		an Array (*not* a NodeList). Acts like `dojo.coords`, though assumes
+		//		the node passed is each node in this list.
 
-			return dojo.map(this, dojo.coords); // Array
-		}
-	 });
-
-	 var NodeList = dojo.NodeList;
+		return dojo.map(this, dojo.coords); // Array
+	};
 	=====*/
 	var nlp = NodeList.prototype;
 

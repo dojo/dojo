@@ -6,16 +6,14 @@ define([
 	// summary:
 	//		TODOC
 
-var NodeList = query.NodeList;
+	var NodeList = query.NodeList;
 /*=====
-// doc alias helpers:
-var NodeList = dojo.NodeList;
 
-	dojo.NodeList.prototype.data = function(key, value){
+	NodeList.prototype.data = function(key, value){
 		// summary: stash or get some arbitrary data on/from these nodes.
 		//
 		// description:
-		//		Stash or get some arbirtrary data on/from these nodes. This private _data function is
+		//		Stash or get some arbitrary data on/from these nodes. This private _data function is
 		//		exposed publicly on `dojo.NodeList`, eg: as the result of a `dojo.query` call.
 		//		DIFFERS from jQuery.data in that when used as a getter, the entire list is ALWAYS
 		//		returned. EVEN WHEN THE LIST IS length == 1.
@@ -60,7 +58,7 @@ var NodeList = dojo.NodeList;
 		//		when looking up a node by ID (#foo)
 	};
 
-	dojo.NodeList.prototype.removeData = function(key){
+	NodeList.prototype.removeData = function(key){
 		// summary: Remove the data associated with these nodes.
 		// key: String?
 		//		If ommitted, clean all data for this node.
@@ -164,7 +162,7 @@ var NodeList = dojo.NodeList;
 		removeData: NodeList._adaptAsForEach(removeData)
 	});
 
-// TODO: this is the basic implemetation of adaptWithCondtionAndWhenMappedConsiderLength, for lack of a better API name
+// TODO: this is the basic implementation of adaptWithCondtionAndWhenMappedConsiderLength, for lack of a better API name
 // it conflicts with the the `dojo.NodeList` way: always always return an arrayLike thinger. Consider for 2.0:
 //
 //	NodeList.prototype.data = function(key, value){
@@ -179,7 +177,7 @@ var NodeList = dojo.NodeList;
 //				d._data(node, key, value);
 //			});
 //		}
-//		return r; // dojo.NodeList|Array|SingleItem
+//		return r; // NodeList|Array|SingleItem
 //	};
 
 	return NodeList;

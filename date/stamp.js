@@ -5,18 +5,13 @@ define(["../_base/lang", "../_base/array"], function(lang, array) {
 	//		TODOC
 
 var stamp = lang.getObject("dojo.date.stamp", true);
-
 /*=====
-dojo.stamp = {
-	// summary:
-	//		TODOC
-};
-stamp = dojo.stamp;
+stamp = {};
 =====*/
 
 // Methods to convert dates to or from a wire (string) format using well-known conventions
 
-stamp.fromISOString = function(/*String*/formattedString, /*Number?*/defaultTime){
+stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTime){
 	//	summary:
 	//		Returns a Date object given a string formatted according to a subset of the ISO-8601 standard.
 	//
@@ -95,7 +90,7 @@ stamp.fromISOString = function(/*String*/formattedString, /*Number?*/defaultTime
 };
 
 /*=====
-	dojo.date.stamp.__Options = function(){
+	var __Options = function(){
 		//	selector: String
 		//		"date" or "time" for partial formatting of the Date object.
 		//		Both date and time will be formatted by default.
@@ -106,10 +101,10 @@ stamp.fromISOString = function(/*String*/formattedString, /*Number?*/defaultTime
 		this.selector = selector;
 		this.zulu = zulu;
 		this.milliseconds = milliseconds;
-	}
+	};
 =====*/
 
-stamp.toISOString = function(/*Date*/dateObject, /*dojo.date.stamp.__Options?*/options){
+stamp.toISOString = function(/*Date*/ dateObject, /*__Options?*/ options){
 	//	summary:
 	//		Format a Date object as a string according a subset of the ISO-8601 standard
 	//

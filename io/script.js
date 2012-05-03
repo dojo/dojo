@@ -11,45 +11,44 @@ define([
 
 
 /*=====
-declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
-	constructor: function(){
-		//	summary:
-		//		All the properties described in the dojo.__ioArgs type, apply to this
-		//		type as well, EXCEPT "handleAs". It is not applicable to
-		//		dojo.io.script.get() calls, since it is implied by the usage of
-		//		"jsonp" (response will be a JSONP call returning JSON)
-		//		or the response is pure JavaScript defined in
-		//		the body of the script that was attached.
-		//	callbackParamName: String
-		//		Deprecated as of Dojo 1.4 in favor of "jsonp", but still supported for
-		//		legacy code. See notes for jsonp property.
-		//	jsonp: String
-		//		The URL parameter name that indicates the JSONP callback string.
-		//		For instance, when using Yahoo JSONP calls it is normally,
-		//		jsonp: "callback". For AOL JSONP calls it is normally
-		//		jsonp: "c".
-		//	checkString: String
-		//		A string of JavaScript that when evaluated like so:
-		//		"typeof(" + checkString + ") != 'undefined'"
-		//		being true means that the script fetched has been loaded.
-		//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
-		//	frameDoc: Document
-		//		The Document object for a child iframe. If this is passed in, the script
-		//		will be attached to that document. This can be helpful in some comet long-polling
-		//		scenarios with Firefox and Opera.
-		this.callbackParamName = callbackParamName;
-		this.jsonp = jsonp;
-		this.checkString = checkString;
-		this.frameDoc = frameDoc;
-	}
-});
+var __ioArgs = function(kwargs){
+	//	summary:
+	//		All the properties described in the dojo.__ioArgs type, apply to this
+	//		type as well, EXCEPT "handleAs". It is not applicable to
+	//		dojo.io.script.get() calls, since it is implied by the usage of
+	//		"jsonp" (response will be a JSONP call returning JSON)
+	//		or the response is pure JavaScript defined in
+	//		the body of the script that was attached.
+	//	callbackParamName: String
+	//		Deprecated as of Dojo 1.4 in favor of "jsonp", but still supported for
+	//		legacy code. See notes for jsonp property.
+	//	jsonp: String
+	//		The URL parameter name that indicates the JSONP callback string.
+	//		For instance, when using Yahoo JSONP calls it is normally,
+	//		jsonp: "callback". For AOL JSONP calls it is normally
+	//		jsonp: "c".
+	//	checkString: String
+	//		A string of JavaScript that when evaluated like so:
+	//		"typeof(" + checkString + ") != 'undefined'"
+	//		being true means that the script fetched has been loaded.
+	//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
+	//	frameDoc: Document
+	//		The Document object for a child iframe. If this is passed in, the script
+	//		will be attached to that document. This can be helpful in some comet long-polling
+	//		scenarios with Firefox and Opera.
+	this.callbackParamName = callbackParamName;
+	this.jsonp = jsonp;
+	this.checkString = checkString;
+	this.frameDoc = frameDoc;
+};
+__ioArgs.prototype = new kernel.__IoArgs();
 =====*/
 
 	var loadEvent = has("ie") ? "onreadystatechange" : "load",
 		readyRegExp = /complete|loaded/;
 
-	var script = /*===== dojo.io.script= =====*/ {
-		get: function(/*dojo.io.script.__ioArgs*/args){
+	var script = {
+		get: function(/*__ioArgs*/ args){
 			//	summary:
 			//		sends a get request using a dynamically created script tag.
 			var dfd = this._makeScriptDeferred(args);
@@ -77,7 +76,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			return dfd;
 		},
 
-		attach: function(/*String*/id, /*String*/url, /*Document?*/frameDocument){
+		attach: function(/*String*/ id, /*String*/ url, /*Document?*/ frameDocument){
 			//	summary:
 			//		creates a new <script> tag pointing to the specified URL and
 			//		adds it to the document.
@@ -95,7 +94,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			return doc.getElementsByTagName("head")[0].appendChild(element);
 		},
 
-		remove: function(/*String*/id, /*Document?*/frameDocument){
+		remove: function(/*String*/ id, /*Document?*/ frameDocument){
 			//summary: removes the script element with the given id, from the given frameDocument.
 			//If no frameDocument is passed, the current document is used.
 			domConstruct.destroy(dom.byId(id, frameDocument));
@@ -106,7 +105,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			}
 		},
 
-		_makeScriptDeferred: function(/*Object*/args){
+		_makeScriptDeferred: function(/*Object*/ args){
 			//summary:
 			//		sets up a Deferred object for an IO request.
 			var dfd = xhr._ioSetArgs(args, this._deferredCancel, this._deferredOk, this._deferredError);
@@ -138,7 +137,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			return dfd; // dojo.Deferred
 		},
 
-		_deferredCancel: function(/*Deferred*/dfd){
+		_deferredCancel: function(/*Deferred*/ dfd){
 			//summary: canceller function for xhr._ioSetArgs call.
 
 			//DO NOT use "this" and expect it to be script.
@@ -148,7 +147,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			}
 		},
 
-		_deferredOk: function(/*Deferred*/dfd){
+		_deferredOk: function(/*Deferred*/ dfd){
 			//summary: okHandler function for xhr._ioSetArgs call.
 
 			//DO NOT use "this" and expect it to be script.
@@ -166,7 +165,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			return ioArgs.json || ioArgs.scriptLoaded || ioArgs;
 		},
 
-		_deferredError: function(/*Error*/error, /*Deferred*/dfd){
+		_deferredError: function(/*Error*/ error, /*Deferred*/ dfd){
 			//summary: errHandler function for xhr._ioSetArgs call.
 
 			if(dfd.ioArgs.canDelete){
@@ -186,14 +185,14 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 		_deadScripts: [],
 		_counter: 1,
 
-		_addDeadScript: function(/*Object*/ioArgs){
+		_addDeadScript: function(/*Object*/ ioArgs){
 			//summary: sets up an entry in the deadScripts array.
 			script._deadScripts.push({id: ioArgs.id, frameDoc: ioArgs.frameDoc});
 			//Being extra paranoid about leaks:
 			ioArgs.frameDoc = null;
 		},
 
-		_validCheck: function(/*Deferred*/dfd){
+		_validCheck: function(/*Deferred*/ dfd){
 			// summary:
 			//		inflight check function to see if dfd is still valid.
 
@@ -233,7 +232,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 
 		},
 
-		_resHandle: function(/*Deferred*/dfd){
+		_resHandle: function(/*Deferred*/ dfd){
 			//summary: inflight function to handle a completed response.
 			if(script._ioCheck(dfd)){
 				dfd.callback(dfd);
@@ -244,7 +243,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			}
 		},
 
-		_canAttach: function(/*===== ioArgs =====*/){
+		_canAttach: function(/*===== ioArgs =====*/ ){
 			//summary:
 			//		A method that can be overridden by other modules
 			//		to control when the script attachment occurs.
@@ -252,7 +251,7 @@ declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 			return true;
 		},
 
-		_jsonpCallback: function(/*JSON Object*/json){
+		_jsonpCallback: function(/*JSON Object*/ json){
 			//summary:
 			//		generic handler for jsonp callback. A pointer to this function
 			//		is used for all jsonp callbacks.  NOTE: the "this" in this

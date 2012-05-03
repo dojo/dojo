@@ -338,6 +338,5 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 
 	has("extend-dojo") && lang.mixin(dojo, array);
 
-	/*===== return dojo.array; =====*/
 	return array;
 });

@@ -5,7 +5,7 @@ define(["../_base/lang"], function(lang) {
 // summary:
 //		This module defines standard easing functions that are useful for animations.
 
-var easingFuncs = /*===== dojo.fx.easing= =====*/ {
+var easingFuncs = {
 	// summary:
 	//		Collection of easing functions to use beyond the default
 	//		`dojo._defaultEasing` function.

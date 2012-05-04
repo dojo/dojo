@@ -22,18 +22,12 @@ define(["./kernel", "./lang", "./array", "./config"], function(dojo, lang, Array
 		if(color){ this.setColor(color); }
 	};
 
-	/*=====
-	lang.mixin(dojo.Color,{
-		named:{
-			// summary: Dictionary list of all CSS named colors, by name. Values are 3-item arrays with corresponding RG and B values.
-		}
-	});
-	=====*/
-
 	// FIXME:
 	// there's got to be a more space-efficient way to encode or discover
 	// these!! Use hex?
 	Color.named = {
+		// summary:
+		//		Dictionary list of all CSS named colors, by name. Values are 3-item arrays with corresponding RG and B values.
 		"black":  [0,0,0],
 		"silver": [192,192,192],
 		"gray":	  [128,128,128],

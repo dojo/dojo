@@ -33,7 +33,7 @@ define(["require"], function(require) {
 			element = doc && doc.createElement("DiV"),
 			cache = {};
 
-		has = /*===== dojo.has= =====*/ function(name){
+		has = function(name){
 			//	summary:
 			//		Return the current value of the named feature.
 			//
@@ -49,7 +49,7 @@ define(["require"], function(require) {
 
 		has.cache = cache;
 
-		has.add = /*====== dojo.has.add= ======*/ function(name, test, now, force){
+		has.add = function(name, test, now, force){
 			// summary:
 			//	 Register a new feature test for some named feature.
 			//
@@ -119,14 +119,14 @@ define(["require"], function(require) {
 		has.add("dom-attributes-specified-flag", form.attributes.length > 0 && form.attributes.length < 40);	// IE8
 	}
 
-	has.clearElement = /*===== dojo.has.clearElement= ======*/ function(element) {
+	has.clearElement = function(element) {
 		// summary:
 		//	 Deletes the contents of the element passed to test functions.
 		element.innerHTML= "";
 		return element;
 	};
 
-	has.normalize = /*===== dojo.has.normalize= ======*/ function(id, toAbsMid){
+	has.normalize = function(id, toAbsMid){
 		// summary:
 		//	 Resolves id into a module id based on possibly-nested tenary expression that branches on has feature test value(s).
 		//
@@ -159,7 +159,7 @@ define(["require"], function(require) {
 		return id && toAbsMid(id);
 	};
 
-	has.load = /*===== dojo.has.load= ======*/ function(id, parentRequire, loaded){
+	has.load = function(id, parentRequire, loaded){
 		// summary:
 		//	 Conditional loading of AMD modules based on a has feature test value.
 		//

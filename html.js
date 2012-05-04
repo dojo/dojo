@@ -8,7 +8,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 	var html = lang.getObject("dojo.html", true);
 
 	/*=====
-	html = {};
+	html = dojo.html = {};
 	=====*/
 
 	// the parser might be needed..
@@ -70,7 +70,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 	};
 
 	// we wrap up the content-setting operation in a object
-	declare("dojo.html._ContentSetter", null,
+	html._ContentSetter = declare("dojo.html._ContentSetter", null,
 		{
 			// node: DomNode|String
 			//		An node which will be the parent element that we set content into

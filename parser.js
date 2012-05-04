@@ -10,7 +10,7 @@ define(
 
 new Date("X"); // workaround for #11279, new Date("") == NaN
 
-dojo.parser = new function(){
+var Parser = function(){
 	// summary:
 	//		The Dom/Widget parsing package
 
@@ -98,7 +98,7 @@ dojo.parser = new function(){
 		return new Function(fnArgs, preamble + script.innerHTML + suffix);
 	};
 
-	this.instantiate = /*====== dojo.parser.instantiate= ======*/ function(nodes, mixin, options) {
+	this.instantiate = function(nodes, mixin, options) {
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
 		//		potentially calls a startup method to allow them to connect with
@@ -139,7 +139,7 @@ dojo.parser = new function(){
 		return this._instantiate(list, mixin, options);
 	};
 
-	this._instantiate = /*====== dojo.parser.instantiate= ======*/ function(nodes, mixin, options){
+	this._instantiate = function(nodes, mixin, options){
 		// summary:
 		//		Takes array of objects representing nodes, and turns them into class instances and
 		//		potentially calls a startup method to allow them to connect with
@@ -443,7 +443,7 @@ dojo.parser = new function(){
 		return instance;
 	};
 
-	this.scan = /*====== dojo.parser.scan= ======*/ function(root, options){
+	this.scan = function(root, options){
 		// summary:
 		//		Scan a DOM tree and return an array of objects representing the DOMNodes
 		//		that need to be turned into widgets.
@@ -737,7 +737,7 @@ dojo.parser = new function(){
 		return promise;
 	};
 
-	this.parse = /*====== dojo.parser.parse= ======*/ function(rootNode, options){
+	this.parse = function(rootNode, options){
 		// summary:
 		//		Scan the DOM for class instances, and instantiate them.
 		//
@@ -845,7 +845,9 @@ dojo.parser = new function(){
 		dlang.mixin(instances, p);
 		return instances;
 	};
-}();
+};
+
+dojo.parser = new Parser();
 
 //Register the parser callback. It should be the first callback
 //after the a11y test.

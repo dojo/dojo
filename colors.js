@@ -2,19 +2,11 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 	// module:
 	//		dojo/colors
 	// summary:
-	//		TODOC
+	//		Color utilities, extending Base dojo.Color
 
 	var ColorExt = lang.getObject("dojo.colors", true);
 
 //TODO: this module appears to break naming conventions
-
-/*=====
-	lang.mixin(dojo, {
-		colors: {
-			// summary: Color utilities, extending Base dojo.Color
-		}
-	});
-=====*/
 
 	// this is a standard conversion prescribed by the CSS3 Color Module
 	var hue2rgb = function(m1, m2, h){

@@ -10,8 +10,23 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 	// Element properties Functions
 	// =============================
 
-	/*=====
-	prop.get = function(node, name){
+	// helper to connect events
+	var _evtHdlrMap = {}, _ctr = 0, _attrId = dojo._scopeName + "attrid";
+
+	exports.names = {
+		// properties renamed to avoid clashes with reserved words
+		"class": "className",
+		"for": "htmlFor",
+		// properties written as camelCase
+		tabindex: "tabIndex",
+		readonly: "readOnly",
+		colspan: "colSpan",
+		frameborder: "frameBorder",
+		rowspan: "rowSpan",
+		valuetype: "valueType"
+	};
+
+	exports.get = function getProp(/*DOMNode|String*/ node, /*String*/ name){
 		// summary:
 		//		Gets a property on an HTML element.
 		// description:
@@ -29,11 +44,13 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 		//	|	dojo.getProp(dojo.byId("nodeId"), "foo");
 		//	|	// or we can just pass the id:
 		//	|	dojo.getProp("nodeId", "foo");
-	};
-	=====*/
 
-	/*=====
-	prop.set = function(node, name, value){
+		node = dom.byId(node);
+		var lc = name.toLowerCase(), propName = exports.names[lc] || name;
+		return node[propName];	// Anything
+	};
+
+	exports.set = function setProp(/*DOMNode|String*/ node, /*String|Object*/ name, /*String?*/ value){
 		// summary:
 		//		Sets a property on an HTML element.
 		// description:
@@ -99,32 +116,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 		//	|
 		//	|	// though shorter to use `dojo.style()` in this case:
 		//	|	dojo.style("someNode", obj);
-	};
-	=====*/
 
-	// helper to connect events
-	var _evtHdlrMap = {}, _ctr = 0, _attrId = dojo._scopeName + "attrid";
-
-	exports.names = {
-		// properties renamed to avoid clashes with reserved words
-		"class": "className",
-		"for": "htmlFor",
-		// properties written as camelCase
-		tabindex: "tabIndex",
-		readonly: "readOnly",
-		colspan: "colSpan",
-		frameborder: "frameBorder",
-		rowspan: "rowSpan",
-		valuetype: "valueType"
-	};
-
-	exports.get = function getProp(/*DOMNode|String*/node, /*String*/name){
-		node = dom.byId(node);
-		var lc = name.toLowerCase(), propName = exports.names[lc] || name;
-		return node[propName];	// Anything
-	};
-
-	exports.set = function setProp(/*DOMNode|String*/node, /*String|Object*/name, /*String?*/value){
 		node = dom.byId(node);
 		var l = arguments.length;
 		if(l == 2 && typeof name != "string"){ // inline'd type check

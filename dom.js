@@ -19,72 +19,6 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 	// DOM Functions
 	// =============================
 
-	/*=====
-	dojo.byId = function(id, doc){
-		// summary:
-		//		Returns DOM node with matching `id` attribute or `null`
-		//		if not found. If `id` is a DomNode, this function is a no-op.
-		//
-		// id: String|DOMNode
-		//		A string to match an HTML id attribute or a reference to a DOM Node
-		//
-		// doc: Document?
-		//		Document to work in. Defaults to the current value of
-		//		dojo.doc.  Can be used to retrieve
-		//		node references from other documents.
-		//
-		// example:
-		//		Look up a node by ID:
-		//	|	var n = dojo.byId("foo");
-		//
-		// example:
-		//		Check if a node exists, and use it.
-		//	|	var n = dojo.byId("bar");
-		//	|	if(n){ doStuff() ... }
-		//
-		// example:
-		//		Allow string or DomNode references to be passed to a custom function:
-		//	|	var foo = function(nodeOrId){
-		//	|		nodeOrId = dojo.byId(nodeOrId);
-		//	|		// ... more stuff
-		//	|	}
-	};
-	=====*/
-
-	/*=====
-	dojo.isDescendant = function(node, ancestor){
-		// summary:
-		//		Returns true if node is a descendant of ancestor
-		// node: DOMNode|String
-		//		string id or node reference to test
-		// ancestor: DOMNode|String
-		//		string id or node reference of potential parent to test against
-		//
-		// example:
-		//		Test is node id="bar" is a descendant of node id="foo"
-		//	|	if(dojo.isDescendant("bar", "foo")){ ... }
-	};
-	=====*/
-
-	// TODO: do we need this function in the base?
-
-	/*=====
-	dojo.setSelectable = function(node, selectable){
-		// summary:
-		//		Enable or disable selection on a node
-		// node: DOMNode|String
-		//		id or reference to node
-		// selectable: Boolean
-		//		state to put the node in. false indicates unselectable, true
-		//		allows selection.
-		// example:
-		//		Make the node id="bar" unselectable
-		//	|	dojo.setSelectable("bar");
-		// example:
-		//		Make the node id="bar" selectable
-		//	|	dojo.setSelectable("bar", true);
-	};
-	=====*/
 
 	var dom = {};   // the result object
 
@@ -119,8 +53,50 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 			return ((typeof id == "string") ? (doc || win.doc).getElementById(id) : id) || null; // DOMNode
 		};
 	}
+	/*=====
+	 dom.byId = function(id, doc){
+		 // summary:
+		 //		Returns DOM node with matching `id` attribute or `null`
+		 //		if not found. If `id` is a DomNode, this function is a no-op.
+		 //
+		 // id: String|DOMNode
+		 //		A string to match an HTML id attribute or a reference to a DOM Node
+		 //
+		 // doc: Document?
+		 //		Document to work in. Defaults to the current value of
+		 //		dojo.doc.  Can be used to retrieve
+		 //		node references from other documents.
+		 //
+		 // example:
+		 //		Look up a node by ID:
+		 //	|	var n = dojo.byId("foo");
+		 //
+		 // example:
+		 //		Check if a node exists, and use it.
+		 //	|	var n = dojo.byId("bar");
+		 //	|	if(n){ doStuff() ... }
+		 //
+		 // example:
+		 //		Allow string or DomNode references to be passed to a custom function:
+		 //	|	var foo = function(nodeOrId){
+		 //	|		nodeOrId = dojo.byId(nodeOrId);
+		 //	|		// ... more stuff
+		 //	|	}
+	 };
+	 =====*/
 
-	dom.isDescendant = function(/*DOMNode|String*/node, /*DOMNode|String*/ancestor){
+	dom.isDescendant = function(/*DOMNode|String*/ node, /*DOMNode|String*/ ancestor){
+		// summary:
+		//		Returns true if node is a descendant of ancestor
+		// node: DOMNode|String
+		//		string id or node reference to test
+		// ancestor: DOMNode|String
+		//		string id or node reference of potential parent to test against
+		//
+		// example:
+		//		Test is node id="bar" is a descendant of node id="foo"
+		//	|	if(dojo.isDescendant("bar", "foo")){ ... }
+
 		try{
 			node = dom.byId(node);
 			ancestor = dom.byId(ancestor);
@@ -134,9 +110,24 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 		return false; // Boolean
 	};
 
-	// TODO: do we need this function in the base?
 
-	dom.setSelectable = function(/*DOMNode|String*/node, /*Boolean*/selectable){
+			// TODO: do we need this function in the base?
+
+	dom.setSelectable = function(/*DOMNode|String*/ node, /*Boolean*/ selectable){
+		// summary:
+		//		Enable or disable selection on a node
+		// node: DOMNode|String
+		//		id or reference to node
+		// selectable: Boolean
+		//		state to put the node in. false indicates unselectable, true
+		//		allows selection.
+		// example:
+		//		Make the node id="bar" unselectable
+		//	|	dojo.setSelectable("bar");
+		// example:
+		//		Make the node id="bar" selectable
+		//	|	dojo.setSelectable("bar", true);
+
 		node = dom.byId(node);
 		if(has("mozilla")){
 			node.style.MozUserSelect = selectable ? "" : "none";

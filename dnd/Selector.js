@@ -1,16 +1,12 @@
 define([
 	"../_base/array", "../_base/declare", "../_base/event", "../_base/kernel", "../_base/lang",
 	"../dom", "../dom-construct", "../mouse", "../_base/NodeList", "../on", "../touch", "./common", "./Container"
-], function(array, declare, event, kernel, lang, dom, domConstruct, mouse, NodeList, on, touch, dnd, Container) {
+], function(array, declare, event, kernel, lang, dom, domConstruct, mouse, NodeList, on, touch, dnd, Container){
 
 // module:
 //		dojo/dnd/Selector
 // summary:
 //		TODOC
-
-/*=====
-Container = dojo.dnd.Container;
-=====*/
 
 /*
 	Container item states:
@@ -20,7 +16,7 @@ Container = dojo.dnd.Container;
 */
 
 /*=====
-declare("dojo.dnd.__SelectorArgs", [dojo.dnd.__ContainerArgs], {
+var __SelectorArgs = declare([Container.__ContainerArgs], {
 	//	singular: Boolean
 	//		allows selection of only one element, if true
 	singular: false,
@@ -48,7 +44,7 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 		//		constructor of the Selector
 		// node: Node||String
 		//		node or node's id to build the selector on
-		// params: dojo.dnd.__SelectorArgs?
+		// params: __SelectorArgs?
 		//		a dictionary of parameters
 		if(!params){ params = {}; }
 		this.singular = params.singular;

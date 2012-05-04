@@ -1,19 +1,13 @@
 define(["../_base/connect", "../_base/kernel", "../_base/lang", "../dom"],
-	function(connect, kernel, lang, dom) {
+	function(connect, kernel, lang, dom){
 
 // module:
 //		dojo/dnd/common
 // summary:
 //		TODOC
 
-var exports = lang.getObject("dojo.dnd", true);
-/*=====
-dojo.dnd = {
-	// summary:
-	//		TODOC
-};
-exports = dojo.dnd;
-=====*/
+var exports = {};
+lang.setObject("dojo.dnd.common", exports);
 
 exports.getCopyKeyState = connect.isCopyKey;
 

@@ -1,14 +1,12 @@
 define([
 	"../_base/array", "../_base/declare", "../_base/event", "../_base/lang", "../sniff", "../_base/window",
 	"../dom", "../dom-geometry", "../dom-style", "../Evented", "../on", "../touch", "./common", "./autoscroll"
-], function(array, declare, event, lang, has, win, dom, domGeom, domStyle, Evented, on, touch, dnd, autoscroll) {
+], function(array, declare, event, lang, has, win, dom, domGeom, domStyle, Evented, on, touch, dnd, autoscroll){
 
 // module:
 //		dojo/dnd/Mover
 // summary:
 //		TODOC
-
-/*===== Evented = dojo.Evented; =====*/
 
 return declare("dojo.dnd.Mover", [Evented], {
 	constructor: function(node, e, host){

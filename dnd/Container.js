@@ -17,14 +17,12 @@ define([
 	"./common"
 ], function(
 	array, declare, event, kernel, lang, win,
-	dom, domClass, domConstruct, Evented, has, on, query, ready, touch, dnd) {
+	dom, domClass, domConstruct, Evented, has, on, query, ready, touch, dnd){
 
 // module:
 //		dojo/dnd/Container
 // summary:
 //		TODOC
-
-/*===== Evented = dojo.Evented; =====*/
 
 /*
 	Container states:
@@ -35,45 +33,6 @@ define([
 		"Over"	- mouse over a container item
 */
 
-/*=====
-declare("dojo.dnd.__ContainerArgs", [], {
-	creator: function(){
-		// summary:
-		//		a creator function, which takes a data item, and returns an object like that:
-		//		{node: newNode, data: usedData, type: arrayOfStrings}
-	},
-
-	// skipForm: Boolean
-	//		don't start the drag operation, if clicked on form elements
-	skipForm: false,
-
-	// dropParent: Node||String
-	//		node or node's id to use as the parent node for dropped items
-	//		(must be underneath the 'node' parameter in the DOM)
-	dropParent: null,
-
-	// _skipStartup: Boolean
-	//		skip startup(), which collects children, for deferred initialization
-	//		(this is used in the markup mode)
-	_skipStartup: false
-});
-
-dojo.dnd.Item = function(){
-	// summary:
-	//		Represents (one of) the source node(s) being dragged.
-	//		Contains (at least) the "type" and "data" attributes.
-	// type: String[]
-	//		Type(s) of this item, by default this is ["text"]
-	// data: Object
-	//		Logical representation of the object being dragged.
-	//		If the drag object's type is "text" then data is a String,
-	//		if it's another type then data could be a different Object,
-	//		perhaps a name/value hash.
-
-	this.type = type;
-	this.data = data;
-}
-=====*/
 
 
 var Container = declare("dojo.dnd.Container", Evented, {
@@ -93,9 +52,9 @@ var Container = declare("dojo.dnd.Container", Evented, {
 	//		The DOM node the mouse is currently hovered over
 	current: null,
 
-	// map: Hash<String, dojo.dnd.Item>
+	// map: Hash<String, Container.Item>
 	//		Map from an item's id (which is also the DOMNode's id) to
-	//		the dojo.dnd.Item itself.
+	//		the dojo.dnd.Container.Item itself.
 	map: {},
 	=====*/
 
@@ -104,7 +63,7 @@ var Container = declare("dojo.dnd.Container", Evented, {
 		//		a constructor of the Container
 		// node: Node
 		//		node or node's id to build the container on
-		// params: dojo.dnd.__ContainerArgs
+		// params: Container.__ContainerArgs
 		//		a dictionary of parameters
 		this.node = dom.byId(node);
 		if(!params){ params = {}; }
@@ -145,9 +104,9 @@ var Container = declare("dojo.dnd.Container", Evented, {
 	getItem: function(/*String*/ key){
 		// summary:
 		//		returns a data item by its key (id)
-		return this.map[key];	// dojo.dnd.Item
+		return this.map[key];	// Container.Item
 	},
-	setItem: function(/*String*/ key, /*dojo.dnd.Item*/ data){
+	setItem: function(/*String*/ key, /*Container.Item*/ data){
 		// summary:
 		//		associates a data item with its key (id)
 		this.map[key] = data;
@@ -381,7 +340,7 @@ var Container = declare("dojo.dnd.Container", Evented, {
 		}
 		return null;
 	},
-	_normalizedCreator: function(/*dojo.dnd.Item*/ item, /*String*/ hint){
+	_normalizedCreator: function(/*Container.Item*/ item, /*String*/ hint){
 		// summary:
 		//		adds all necessary data to the output of the user-supplied creator function
 		var t = (this.creator || this.defaultCreator).call(this, item, hint);
@@ -422,7 +381,7 @@ dnd._createSpan = function(text){
 	return domConstruct.create("span", {innerHTML: text});	// Node
 };
 
-// dojo.dnd._defaultCreatorNodes: Object
+// dnd._defaultCreatorNodes: Object
 //		a dictionary that maps container tag names to child tag names
 dnd._defaultCreatorNodes = {ul: "li", ol: "li", div: "div", p: "div"};
 
@@ -454,6 +413,46 @@ dnd._defaultCreator = function(node){
 		return {node: n, data: data, type: type};
 	};
 };
+
+/*=====
+Container.__ContainerArgs = declare([], {
+	creator: function(){
+		// summary:
+		//		a creator function, which takes a data item, and returns an object like that:
+		//		{node: newNode, data: usedData, type: arrayOfStrings}
+	},
+
+	// skipForm: Boolean
+	//		don't start the drag operation, if clicked on form elements
+	skipForm: false,
+
+	// dropParent: Node||String
+	//		node or node's id to use as the parent node for dropped items
+	//		(must be underneath the 'node' parameter in the DOM)
+	dropParent: null,
+
+	// _skipStartup: Boolean
+	//		skip startup(), which collects children, for deferred initialization
+	//		(this is used in the markup mode)
+	_skipStartup: false
+});
+
+Container.Item = function(){
+	// summary:
+	//		Represents (one of) the source node(s) being dragged.
+	//		Contains (at least) the "type" and "data" attributes.
+	// type: String[]
+	//		Type(s) of this item, by default this is ["text"]
+	// data: Object
+	//		Logical representation of the object being dragged.
+	//		If the drag object's type is "text" then data is a String,
+	//		if it's another type then data could be a different Object,
+	//		perhaps a name/value hash.
+
+	this.type = type;
+	this.data = data;
+};
+=====*/
 
 return Container;
 });

@@ -1,13 +1,13 @@
 define(["../_base/lang", "../sniff", "../_base/window", "../dom-geometry", "../dom-style", "../window"],
-	function(lang, has, win, domGeom, domStyle, winUtils) {
+	function(lang, has, win, domGeom, domStyle, winUtils){
 
 // module:
 //		dojo/dnd/autoscroll
 // summary:
 //		TODOC
 
-var exports = lang.getObject("dojo.dnd", true);
-/*===== exports = dojo.dnd; =====*/
+var exports = {};
+lang.setObject("dojo.dnd.autoscroll", exports);
 
 exports.getViewport = winUtils.getBox;
 

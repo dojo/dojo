@@ -7,7 +7,7 @@ define([
 	"../dom-construct",
 	"../hccss",
 	"../query"
-], function(declare, win, dom, domAttr, domClass, domConstruct, has, query) {
+], function(declare, win, dom, domAttr, domClass, domConstruct, has, query){
 
 // module:
 //		dojo/dnd/Avatar
@@ -95,9 +95,9 @@ return declare("dojo.dnd.Avatar", null, {
 		if(has("highcontrast")){
 			var icon = dom.byId("a11yIcon");
 			var text = '+';   // assume canDrop && copy
-			if (this.manager.canDropFlag && !this.manager.copy) {
+			if (this.manager.canDropFlag && !this.manager.copy){
 				text = '< '; // canDrop && move
-			}else if (!this.manager.canDropFlag && !this.manager.copy) {
+			}else if (!this.manager.canDropFlag && !this.manager.copy){
 				text = "o"; //!canDrop && move
 			}else if(!this.manager.canDropFlag){
 				text = 'x';  // !canDrop && copy

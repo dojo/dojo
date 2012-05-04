@@ -1,5 +1,4 @@
 define(["../_base/declare", "./Source"], function(declare, Source){
-	/*===== Source = dojo.dnd.Source =====*/
 	return declare("dojo.dnd.AutoSource", Source, {
 		// summary:
 		//		a source that syncs its DnD nodes by default

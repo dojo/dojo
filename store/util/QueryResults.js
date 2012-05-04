@@ -1,13 +1,12 @@
 define(["../../_base/array", "../../_base/lang", "../../_base/Deferred"
-], function(array, lang, Deferred) {
-  //  module:
-  //    dojo/store/util/QueryResults
-  //  summary:
-  //    The module defines a query results wrapper
+], function(array, lang, Deferred){
 
-var util = lang.getObject("dojo.store.util", true);
+//  module:
+//    dojo/store/util/QueryResults
+//  summary:
+//    The module defines a query results wrapper
 
-util.QueryResults = function(results){
+var QueryResults = function(results){
 	// summary:
 	//		A function that wraps the results of a store query with additional
 	//		methods.
@@ -44,7 +43,7 @@ util.QueryResults = function(results){
 				var args = arguments;
 				return Deferred.when(results, function(results){
 					Array.prototype.unshift.call(args, results);
-					return util.QueryResults(array[method].apply(array, args));
+					return QueryResults(array[method].apply(array, args));
 				});
 			};
 		}
@@ -60,5 +59,8 @@ util.QueryResults = function(results){
 	return results;
 };
 
-return util.QueryResults;
+lang.setObject("dojo.store.util.QueryResults", QueryResults);
+
+return QueryResults;
+
 });

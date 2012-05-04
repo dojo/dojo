@@ -1,8 +1,9 @@
-define(["../../_base/array"], function(arrayUtil) {
-  //  module:
-  //    dojo/store/util/SimpleQueryEngine
-  //  summary:
-  //    The module defines a simple filtering query engine for object stores. 
+define(["../../_base/array" /*=====, "../api/Store" =====*/], function(arrayUtil /*=====, Store =====*/){
+
+//  module:
+//    dojo/store/util/SimpleQueryEngine
+//  summary:
+//    The module defines a simple filtering query engine for object stores.
 
 return function(query, options){
 	// summary:
@@ -29,7 +30,7 @@ return function(query, options){
 	// 		used to match strings by more complex expressions
 	// 		(and then the regex's or object's test() method will be used to match values).
 	//
-	// options: dojo.store.util.SimpleQueryEngine.__queryOptions?
+	// options: Store.QueryOptions?
 	//		An object that contains optional information such as sort, start, and count.
 	//
 	// returns: Function
@@ -106,4 +107,5 @@ return function(query, options){
 	execute.matches = query;
 	return execute;
 };
+
 });

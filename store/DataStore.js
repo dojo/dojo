@@ -1,12 +1,19 @@
-define(["../_base/lang", "../_base/declare", "../_base/Deferred", "../_base/array", "./util/QueryResults", "./util/SimpleQueryEngine"
-], function(lang,declare,Deferred,array,QueryResults, SimpleQueryEngine) {
-	// module:
-	//		dojo/store/DataStore
-	// summary:
-	//		TODOC
+define([
+	"../_base/lang", "../_base/declare", "../_base/Deferred", "../_base/array",
+	"./util/QueryResults", "./util/SimpleQueryEngine" /*=====, "./api/Store" =====*/
+], function(lang, declare, Deferred, array, QueryResults, SimpleQueryEngine /*=====, Store =====*/){
+
+// module:
+//		dojo/store/DataStore
+// summary:
+//		TODOC
 
 
-return declare("dojo.store.DataStore", null, {
+// No base class, but for purposes of documentation, the base class is dojo/store/api/Store
+var base = null;
+/*===== base = Store; =====*/
+
+return declare("dojo.store.DataStore", base, {
 	target: "",
 	constructor: function(options){
 		// summary:
@@ -163,7 +170,7 @@ return declare("dojo.store.DataStore", null, {
 		//		The query to use for retrieving objects from the store
 		// options: Object?
 		//		Optional options object as used by the underlying dojo.data Store.
-		// returns: dojo.store.util.QueryResults
+		// returns: Store.QueryResults
 		//		A query results object that can be used to iterate over results.
 		var fetchHandle;
 		var deferred = new Deferred(function(){ fetchHandle.abort && fetchHandle.abort(); });

@@ -1,11 +1,16 @@
-define(["../_base/xhr", "../json", "../_base/declare", "./util/QueryResults"
-], function(xhr, JSON, declare, QueryResults) {
-  //  module:
-  //    dojo/store/JsonRest
-  //  summary:
-  //    The module defines a JSON/REST based object store 
+define(["../_base/xhr", "../json", "../_base/declare", "./util/QueryResults" /*=====, "./api/Store" =====*/
+], function(xhr, JSON, declare, QueryResults /*=====, Store =====*/){
 
-return declare("dojo.store.JsonRest", null, {
+//  module:
+//    dojo/store/JsonRest
+//  summary:
+//    The module defines a JSON/REST based object store
+
+// No base class, but for purposes of documentation, the base class is dojo/store/api/Store
+var base = null;
+/*===== base = Store; =====*/
+
+return declare("dojo.store.JsonRest", base, {
 	// summary:
 	//		This is a basic store for RESTful communicating with a server through JSON
 	//		formatted data. It implements dojo.store.api.Store.
@@ -38,6 +43,8 @@ return declare("dojo.store.JsonRest", null, {
 		//		the url `this.target + id`.
 		//	id: Number
 		//		The identity to use to lookup the object
+		// options: Object?
+		//		HTTP headers
 		//	returns: Object
 		//		The object in the store that matches the given id.
 		var headers = options || {};
@@ -65,7 +72,7 @@ return declare("dojo.store.JsonRest", null, {
 		//		if the object has an id, otherwise it will trigger a POST request.
 		// object: Object
 		//		The object to store.
-		// options: dojo.store.api.Store.PutDirectives?
+		// options: Store.PutDirectives?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		//	returns: Number
@@ -90,7 +97,7 @@ return declare("dojo.store.JsonRest", null, {
 		//		if the object has an id, otherwise it will trigger a POST request.
 		// object: Object
 		//		The object to store.
-		// options: dojo.store.api.Store.PutDirectives?
+		// options: Store.PutDirectives?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		options = options || {};
@@ -112,9 +119,9 @@ return declare("dojo.store.JsonRest", null, {
 		//		query added as a query string.
 		// query: Object
 		//		The query to use for retrieving objects from the store.
-		//	options: dojo.store.api.Store.QueryOptions?
+		//	options: Store.QueryOptions?
 		//		The optional arguments to apply to the resultset.
-		//	returns: dojo.store.api.Store.QueryResults
+		//	returns: Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		var headers = {Accept: this.accepts};
 		options = options || {};

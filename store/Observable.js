@@ -1,13 +1,12 @@
-define(["../_base/kernel", "../_base/lang", "../_base/Deferred", "../_base/array"
-], function(kernel, lang, Deferred, array) {
-	// module:
-	//		dojo/store/Observable
-	// summary:
-	//		TODOC
+define(["../_base/kernel", "../_base/lang", "../_base/Deferred", "../_base/array" /*=====, "./api/Store" =====*/
+], function(kernel, lang, Deferred, array /*=====, Store =====*/){
 
-var ds = lang.getObject("dojo.store", true);
+// module:
+//		dojo/store/Observable
+// summary:
+//		TODOC
 
-return ds.Observable = function(store){
+var Observable = function(/*Store*/ store){
 	// summary:
 	//		The Observable store wrapper takes a store and sets an observe method on query()
 	//		results that can be used to monitor results for changes.
@@ -175,4 +174,8 @@ return ds.Observable = function(store){
 
 	return store;
 };
+
+lang.setObject("dojo.store.util.Observable", Observable);
+
+return Observable;
 });

@@ -1,11 +1,17 @@
-define(["../_base/declare", "./util/QueryResults", "./util/SimpleQueryEngine"], function(declare, QueryResults, SimpleQueryEngine) {
-  //  module:
-  //    dojo/store/Memory
-  //  summary:
-  //    The module defines an in-memory object store.
+define(["../_base/declare", "./util/QueryResults", "./util/SimpleQueryEngine" /*=====, "./api/Store" =====*/],
+function(declare, QueryResults, SimpleQueryEngine /*=====, Store =====*/) {
+
+//  module:
+//    dojo/store/Memory
+//  summary:
+//    The module defines an in-memory object store.
 
 
-return declare("dojo.store.Memory", null, {
+// No base class, but for purposes of documentation, the base class is dojo/store/api/Store
+var base = null;
+/*===== base = Store; =====*/
+
+return declare("dojo.store.Memory", base, {
 	// summary:
 	//		This is a basic in-memory object store. It implements dojo.store.api.Store.
 	constructor: function(/*dojo.store.Memory*/ options){
@@ -57,7 +63,7 @@ return declare("dojo.store.Memory", null, {
 		//		Stores an object
 		// 	object: Object
 		//		The object to store.
-		// 	options: dojo.store.api.Store.PutDirectives??
+		// 	options: Store.PutDirectives??
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		//	returns: Number
@@ -83,7 +89,7 @@ return declare("dojo.store.Memory", null, {
 		//		Creates an object, throws an error if the object already exists
 		// 	object: Object
 		//		The object to store.
-		// 	options: dojo.store.api.Store.PutDirectives??
+		// 	options: Store.PutDirectives??
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		//	returns: Number
@@ -112,9 +118,9 @@ return declare("dojo.store.Memory", null, {
 		//		Queries the store for objects.
 		// 	query: Object
 		//		The query to use for retrieving objects from the store.
-		//	options: dojo.store.api.Store.QueryOptions?
+		//	options: Store.QueryOptions?
 		//		The optional arguments to apply to the resultset.
-		//	returns: dojo.store.api.Store.QueryResults
+		//	returns: Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		//
 		// 	example:

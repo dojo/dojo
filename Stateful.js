@@ -105,7 +105,9 @@ return declare("dojo.Stateful", null, {
 		// If an object is used, iterate through object
 		if(typeof name === "object"){
 			for(var x in name){
-				this.set(x, name[x]);
+				if(name.hasOwnProperty(x)){
+					this.set(x, name[x]);
+				}
 			}
 			return this;
 		}

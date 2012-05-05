@@ -41,7 +41,7 @@ currency._mixInDefaults = function(options){
 };
 
 /*=====
-var __FormatOptions = declare([dnumber.__FormatOptions], {
+currency.__FormatOptions = declare([dnumber.__FormatOptions], {
 	// type: String?
 	//		Should not be set.  Value is assumed to be "currency".
 	// symbol: String?

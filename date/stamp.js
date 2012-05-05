@@ -4,10 +4,8 @@ define(["../_base/lang", "../_base/array"], function(lang, array) {
 	// summary:
 	//		TODOC
 
-var stamp = lang.getObject("dojo.date.stamp", true);
-/*=====
-stamp = {};
-=====*/
+var stamp = {};
+lang.setObject("dojo.date.stamp", stamp);
 
 // Methods to convert dates to or from a wire (string) format using well-known conventions
 

@@ -5,14 +5,15 @@ define(["../_base/lang", "../i18n"], function(lang, i18n) {
 // summary:
 //		TODOC
 
-var supplemental = lang.getObject("dojo.cldr.supplemental", true);
-/*===== supplemental = {}; =====*/
+var supplemental = {};
+lang.setObject("dojo.cldr.supplemental", supplemental);
 
 supplemental.getFirstDayOfWeek = function(/*String?*/locale){
-// summary: Returns a zero-based index for first day of the week
-// description:
-//		Returns a zero-based index for first day of the week, as used by the local (Gregorian) calendar.
-//		e.g. Sunday (returns 0), or Monday (returns 1)
+	// summary:
+	//		Returns a zero-based index for first day of the week
+	// description:
+	//		Returns a zero-based index for first day of the week, as used by the local (Gregorian) calendar.
+	//		e.g. Sunday (returns 0), or Monday (returns 1)
 
 	// from http://www.unicode.org/cldr/data/common/supplemental/supplementalData.xml:supplementalData/weekData/firstDay
 	var firstDay = {/*default is 1=Monday*/
@@ -49,11 +50,12 @@ supplemental._region = function(/*String?*/locale){
 };
 
 supplemental.getWeekend = function(/*String?*/locale){
-// summary: Returns a hash containing the start and end days of the weekend
-// description:
-//		Returns a hash containing the start and end days of the weekend according to local custom using locale,
-//		or by default in the user's locale.
-//		e.g. {start:6, end:0}
+	// summary:
+	//		Returns a hash containing the start and end days of the weekend
+	// description:
+	//		Returns a hash containing the start and end days of the weekend according to local custom using locale,
+	//		or by default in the user's locale.
+	//		e.g. {start:6, end:0}
 
 	// from http://www.unicode.org/cldr/data/common/supplemental/supplementalData.xml:supplementalData/weekData/weekend{Start,End}
 	var weekendStart = {/*default is 6=Saturday*/

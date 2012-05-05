@@ -5,7 +5,8 @@ define(["../../_base/lang", "../../_base/kernel", "./sorter"],
 	// summary:
 	//		TODOC
 
-var simpleFetch = lang.getObject("dojo.data.util.simpleFetch", true);
+var simpleFetch = {};
+lang.setObject("dojo.data.util.simpleFetch", simpleFetch);
 
 simpleFetch.errorHandler = function(errorData, requestObject){
 	if(requestObject.onError){

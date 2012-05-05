@@ -13,10 +13,8 @@ define([
 	// summary:
 	//		This modules defines dojo.date.locale, localization methods for Date.
 
-var exports = lang.getObject("dojo.date.locale", true);
-/*=====
-exports = {};
-=====*/
+var exports = {};
+lang.setObject("dojo.date.locale", exports);
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
 

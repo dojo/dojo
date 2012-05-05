@@ -4,7 +4,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 	// summary:
 	//		Color utilities, extending Base dojo.Color
 
-	var ColorExt = lang.getObject("dojo.colors", true);
+	var ColorExt = {};
+	lang.setObject("dojo.colors", ColorExt);
 
 //TODO: this module appears to break naming conventions
 

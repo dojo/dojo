@@ -14,10 +14,8 @@ define(["./_base/lang", "./_base/array", "./number", "./i18n", "./i18n!./cldr/nl
 //		on the currency type and is not determined by the 'pattern' argument.  The fractional
 //		portion is optional, by default, and variable length decimals are not supported.
 
-var currency = lang.getObject("dojo.currency", true);
-/*=====
-currency = {};
-=====*/
+var currency = {};
+lang.setObject("dojo.currency", currency);
 
 currency._mixInDefaults = function(options){
 	options = options || {};

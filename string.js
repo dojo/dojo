@@ -8,10 +8,8 @@ define([
 // summary:
 //		String utilities for Dojo
 
-var string = lang.getObject("dojo.string", true);
-/*=====
-string = {};
-=====*/
+var string = {};
+lang.setObject("dojo.string", string);
 
 string.rep = function(/*String*/str, /*Integer*/num){
 	// summary:

@@ -4,7 +4,8 @@ define(["../../_base/lang"], function(lang) {
 	// summary:
 	//		TODOC
 
-var filter = lang.getObject("dojo.data.util.filter", true);
+var filter = {};
+lang.setObject("dojo.data.util.filter", filter);
 
 filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/ ignoreCase){
 	//	summary:

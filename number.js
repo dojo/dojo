@@ -6,11 +6,10 @@ define(["./_base/lang", "./i18n", "./i18n!./cldr/nls/number", "./string", "./reg
 // summary:
 //		localized formatting and parsing routines for Number
 
-var number = lang.getObject("dojo.number", true);
+var number = {};
+lang.setObject("dojo.number", number);
 
 /*=====
-number = {};
-
 number.__FormatOptions = function(){
 	// pattern: String?
 	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)

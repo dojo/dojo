@@ -4,10 +4,8 @@ define(["./_base/kernel", "./_base/lang"], function(dojo, lang) {
 	// summary:
 	//		Regular expressions and Builder resources
 
-var regexp = lang.getObject("dojo.regexp", true);
-/*=====
-regexp = {};
-=====*/
+var regexp = {};
+lang.setObject("dojo.regexp", regexp);
 
 regexp.escapeString = function(/*String*/str, /*String?*/except){
 	//	summary:

@@ -4,10 +4,8 @@ define(["./_base/lang"], function(lang) {
 	// summary:
 	//		Date manipulation utilities
 
-var date = lang.getObject("dojo.date", true);
-/*=====
-date = {};
-=====*/
+var date = {};
+lang.setObject("dojo.date", date);
 
 date.getDaysInMonth = function(/*Date*/dateObject){
 	//	summary:

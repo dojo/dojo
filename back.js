@@ -5,10 +5,8 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	// summary:
 	//		Browser history management resources
 
-	var back = lang.getObject("dojo.back", true);
-	/*=====
-	back = {};
-	=====*/
+	var back = {};
+	lang.setObject("dojo.back", back);
 
 	// everyone deals with encoding the hash slightly differently
 

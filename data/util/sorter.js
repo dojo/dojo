@@ -4,12 +4,13 @@ define(["../../_base/lang"], function(lang) {
 	// summary:
 	//		TODOC
 
-var sorter = lang.getObject("dojo.data.util.sorter", true);
+var sorter = {};
+lang.setObject("dojo.data.util.sorter", sorter);
 
 sorter.basicComparator = function(	/*anything*/ a,
 													/*anything*/ b){
 	//	summary:
-	//		Basic comparision function that compares if an item is greater or less than another item
+	//		Basic comparison function that compares if an item is greater or less than another item
 	//	description:
 	//		returns 1 if a > b, -1 if a < b, 0 if equal.
 	//		'null' values (null, undefined) are treated as larger values so that they're pushed to the end of the list.

@@ -5,11 +5,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 	// summary:
 	//		TODOC
 
-	var html = lang.getObject("dojo.html", true);
-
-	/*=====
-	html = dojo.html = {};
-	=====*/
+	var html = {};
+	lang.setObject("dojo.html", html);
 
 	// the parser might be needed..
 

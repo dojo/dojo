@@ -5,10 +5,8 @@ define(["./_base/lang", "./sniff"], function(lang, has) {
 // summary:
 //		TODOC
 
-var gears = lang.getObject("dojo.gears", true);
-/*=====
-gears = {};
-=====*/
+var gears = {};
+lang.setObject("dojo.gears", gears);
 
 gears._gearsObject = function(){
 	// summary:

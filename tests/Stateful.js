@@ -1,4 +1,5 @@
-define(["../main", "doh/main", "../Stateful", "dojo/_base/declare", "dojo/Deferred"], function(dojo, doh, Stateful, declare, Deferred){
+define(["../main", "doh/main", "../Stateful", "../_base/declare", "../Deferred", "../json"], 
+function(dojo, doh, Stateful, declare, Deferred, JSON){
 
 doh.register("tests.Stateful", [
 	function getSetWatch(t){
@@ -159,6 +160,20 @@ doh.register("tests.Stateful", [
 		attr4.set("bar", 4);
 		t.is(attr4.get("foo"), 4, "value set properly");
 		t.is(output, ["bar", undefined, 3, "foo", undefined, 3, "foo", 3, 4, "bar", 3, 4]);
+	},
+	function serialize(t){
+		var StatefulClass5 = declare([Stateful], {
+			foo: null,
+			_fooSetter: function(value){
+				this.foo = value + "baz";
+			}
+		});
+		
+		var obj = new StatefulClass5({
+			foo: "bar"
+		});
+		
+		t.is(JSON.stringify(obj), '{"foo":"barbaz"}', "object serializes properly");
 	}
 ]);
 

@@ -28,40 +28,53 @@ define([
 	var signalListener = function(listener, type, result){
 		var func = listener[type];
 		var deferred = listener.deferred;
+		var isSync = true;
 		if(func){
 			try{
 				var newResult = func(result);
 				if(newResult && typeof newResult.then === "function"){
 					listener.cancel = newResult.cancel;
+					if(typeof newResult.isFulfilled === "function"){
+						isSync = newResult.isFulfilled();
+					}
 					newResult.then(
 							// Only make resolvers if they're actually going to be used
-							makeDeferredSignaler(deferred, RESOLVED),
-							makeDeferredSignaler(deferred, REJECTED),
-							makeDeferredSignaler(deferred, PROGRESS));
+							makeDeferredSignaler(deferred, RESOLVED, isSync),
+							makeDeferredSignaler(deferred, REJECTED, isSync),
+							makeDeferredSignaler(deferred, PROGRESS, isSync));
 					return;
 				}
-				signalDeferred(deferred, RESOLVED, newResult);
+				signalDeferred(deferred, RESOLVED, isSync, newResult);
 			}catch(error){
-				signalDeferred(deferred, REJECTED, error);
+				signalDeferred(deferred, REJECTED, isSync, error);
 			}
 		}else{
-			signalDeferred(deferred, type, result);
+			signalDeferred(deferred, type, isSync, result);
 		}
 	};
 
-	var makeDeferredSignaler = function(deferred, type){
+	var makeDeferredSignaler = function(deferred, type, isSync){
 		return function(value){
-			signalDeferred(deferred, type, value);
+			signalDeferred(deferred, type, isSync, value);
 		};
 	};
 
-	var signalDeferred = function(deferred, type, result){
+	var signalDeferred = function(deferred, type, isSync, result){
+		// signalQueue is shared between all deferreds. The queue is processed
+		// in a for-loop to prevent stack overflows on (really) long promise
+		// chains.
+		var queueSizeAtStart = signalQueue.length;
 		signalQueue.push(deferred, type, result);
-		if(signalQueue.length > 3){
+
+		// For synchronous returns from a promise (either a non-promise value or a
+		// fulfilled promise) the deferred is signaled immediately. Otherwise if
+		// the queue is non-empty the function can return, since the queue is
+		// already being processed.
+		if(queueSizeAtStart > 0 && !isSync){
 			return;
 		}
 
-		for(var i = 0; i < signalQueue.length; i += 3){
+		for(var i = queueSizeAtStart; i < signalQueue.length; i += 3){
 			if(!signalQueue[i].isCanceled()){
 				switch(signalQueue[i + 1]){
 					case PROGRESS:
@@ -76,7 +89,7 @@ define([
 				}
 			}
 		}
-		signalQueue = [];
+		signalQueue.length = queueSizeAtStart;
 	};
 
 	var Deferred = lang.extend(function(/*Function?*/ canceler){

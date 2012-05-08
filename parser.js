@@ -699,7 +699,7 @@ var Parser = function(){
 
 		require(mids, function(){
 			for(var i=0; i<vars.length; i++){
-				dojo.global[vars[i]] = arguments[i];
+				dlang.setObject(vars[i], arguments[i]);
 			}
 			d.resolve(arguments);
 		});

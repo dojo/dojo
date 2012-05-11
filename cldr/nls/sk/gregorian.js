@@ -1,77 +1,6 @@
 define(
 //begin v1.x content
 {
-	"months-format-narrow": [
-		"j",
-		"f",
-		"m",
-		"a",
-		"m",
-		"j",
-		"j",
-		"a",
-		"s",
-		"o",
-		"n",
-		"d"
-	],
-	"field-weekday": "Deň v týždni",
-	"dateFormatItem-yyQQQQ": "QQQQ yy",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-yMEd": "E, d.M.yyyy",
-	"dateFormatItem-MMMEd": "E, d. MMM",
-	"eraNarrow": [
-		"pred n.l.",
-		"n.l."
-	],
-	"dateFormat-long": "d. MMMM y",
-	"months-format-wide": [
-		"januára",
-		"februára",
-		"marca",
-		"apríla",
-		"mája",
-		"júna",
-		"júla",
-		"augusta",
-		"septembra",
-		"októbra",
-		"novembra",
-		"decembra"
-	],
-	"dayPeriods-format-wide-pm": "popoludní",
-	"dateFormat-full": "EEEE, d. MMMM y",
-	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yMd": "d.M.yyyy",
-	"field-era": "Éra",
-	"dateFormatItem-yM": "M.yyyy",
-	"months-standAlone-wide": [
-		"január",
-		"február",
-		"marec",
-		"apríl",
-		"máj",
-		"jún",
-		"júl",
-		"august",
-		"september",
-		"október",
-		"november",
-		"december"
-	],
-	"timeFormat-short": "H:mm",
-	"quarters-format-wide": [
-		"1. štvrťrok",
-		"2. štvrťrok",
-		"3. štvrťrok",
-		"4. štvrťrok"
-	],
-	"timeFormat-long": "H:mm:ss z",
-	"field-year": "Rok",
-	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "Q yyyy",
-	"dateFormatItem-yyyyMMMM": "LLLL y",
-	"field-hour": "Hodina",
 	"months-format-abbr": [
 		"jan",
 		"feb",
@@ -86,96 +15,20 @@ define(
 		"nov",
 		"dec"
 	],
-	"dateFormatItem-yyQ": "Q yy",
-	"timeFormat-full": "H:mm:ss zzzz",
-	"field-day-relative+0": "Dnes",
-	"field-day-relative+1": "Zajtra",
-	"field-day-relative+2": "Pozajtra",
-	"dateFormatItem-H": "H",
-	"months-standAlone-abbr": [
-		"jan",
-		"feb",
-		"mar",
-		"apr",
-		"máj",
-		"jún",
-		"júl",
-		"aug",
-		"sep",
-		"okt",
-		"nov",
-		"dec"
+	"months-format-wide": [
+		"januára",
+		"februára",
+		"marca",
+		"apríla",
+		"mája",
+		"júna",
+		"júla",
+		"augusta",
+		"septembra",
+		"októbra",
+		"novembra",
+		"decembra"
 	],
-	"quarters-format-abbr": [
-		"Q1",
-		"Q2",
-		"Q3",
-		"Q4"
-	],
-	"quarters-standAlone-wide": [
-		"1. štvrťrok",
-		"2. štvrťrok",
-		"3. štvrťrok",
-		"4. štvrťrok"
-	],
-	"dateFormatItem-M": "L.",
-	"days-standAlone-wide": [
-		"nedeľa",
-		"pondelok",
-		"utorok",
-		"streda",
-		"štvrtok",
-		"piatok",
-		"sobota"
-	],
-	"dateFormatItem-MMMMd": "d. MMMM",
-	"timeFormat-medium": "H:mm:ss",
-	"dateFormatItem-Hm": "H:mm",
-	"quarters-standAlone-abbr": [
-		"1Q",
-		"2Q",
-		"3Q",
-		"4Q"
-	],
-	"eraAbbr": [
-		"pred n.l.",
-		"n.l."
-	],
-	"field-minute": "Minúta",
-	"field-dayperiod": "Časť dňa",
-	"days-standAlone-abbr": [
-		"ne",
-		"po",
-		"ut",
-		"st",
-		"št",
-		"pi",
-		"so"
-	],
-	"dateFormatItem-d": "d.",
-	"dateFormatItem-ms": "mm:ss",
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-day-relative+-1": "Včera",
-	"field-day-relative+-2": "Predvčerom",
-	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-MEd": "E, d.M.",
-	"dateFormatItem-yMMMM": "LLLL y",
-	"field-day": "Deň",
-	"days-format-wide": [
-		"nedeľa",
-		"pondelok",
-		"utorok",
-		"streda",
-		"štvrtok",
-		"piatok",
-		"sobota"
-	],
-	"field-zone": "Pásmo",
 	"months-standAlone-narrow": [
 		"j",
 		"f",
@@ -190,8 +43,20 @@ define(
 		"n",
 		"d"
 	],
-	"field-year-relative+-1": "Minulý rok",
-	"field-month-relative+-1": "Posledný mesiac",
+	"months-standAlone-wide": [
+		"január",
+		"február",
+		"marec",
+		"apríl",
+		"máj",
+		"jún",
+		"júl",
+		"august",
+		"september",
+		"október",
+		"november",
+		"december"
+	],
 	"days-format-abbr": [
 		"ne",
 		"po",
@@ -200,11 +65,6 @@ define(
 		"št",
 		"pi",
 		"so"
-	],
-	"dateFormatItem-yMMMd": "d.M.yyyy",
-	"eraNames": [
-		"pred n.l.",
-		"n.l."
 	],
 	"days-format-narrow": [
 		"N",
@@ -215,7 +75,24 @@ define(
 		"P",
 		"S"
 	],
-	"field-month": "Mesiac",
+	"days-format-wide": [
+		"nedeľa",
+		"pondelok",
+		"utorok",
+		"streda",
+		"štvrtok",
+		"piatok",
+		"sobota"
+	],
+	"days-standAlone-abbr": [
+		"ne",
+		"po",
+		"ut",
+		"st",
+		"št",
+		"pi",
+		"so"
+	],
 	"days-standAlone-narrow": [
 		"N",
 		"P",
@@ -225,25 +102,148 @@ define(
 		"P",
 		"S"
 	],
-	"dateFormatItem-MMM": "LLL",
+	"days-standAlone-wide": [
+		"nedeľa",
+		"pondelok",
+		"utorok",
+		"streda",
+		"štvrtok",
+		"piatok",
+		"sobota"
+	],
+	"quarters-format-abbr": [
+		"Q1",
+		"Q2",
+		"Q3",
+		"Q4"
+	],
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"quarters-format-wide": [
+		"1. štvrťrok",
+		"2. štvrťrok",
+		"3. štvrťrok",
+		"4. štvrťrok"
+	],
+	"quarters-standAlone-abbr": [
+		"1Q",
+		"2Q",
+		"3Q",
+		"4Q"
+	],
+	"quarters-standAlone-wide": [
+		"1. štvrťrok",
+		"2. štvrťrok",
+		"3. štvrťrok",
+		"4. štvrťrok"
+	],
 	"dayPeriods-format-wide-am": "dopoludnia",
-	"dateFormatItem-MMMMEd": "E, d. MMMM",
+	"dayPeriods-format-wide-pm": "popoludní",
+	"eraAbbr": [
+		"pred n.l.",
+		"n.l."
+	],
+	"dateFormat-full": "EEEE, d. MMMM y",
+	"dateFormat-long": "d. MMMM y",
+	"dateFormat-medium": "d.M.yyyy",
 	"dateFormat-short": "d.M.yyyy",
-	"field-second": "Sekunda",
+	"timeFormat-full": "H:mm:ss zzzz",
+	"timeFormat-long": "H:mm:ss z",
+	"timeFormat-medium": "H:mm:ss",
+	"timeFormat-short": "H:mm",
+	"dateFormatItem-d": "d.",
+	"dateFormatItem-Ed": "E, d.",
+	"dateFormatItem-H": "H",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dateFormatItem-M": "L.",
+	"dateFormatItem-Md": "d.M.",
+	"dateFormatItem-MEd": "E, d.M.",
+	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-MMMd": "d. MMM",
+	"dateFormatItem-MMMEd": "E, d. MMM",
+	"dateFormatItem-MMMMd": "d. MMMM",
+	"dateFormatItem-MMMMEd": "E, d. MMMM",
+	"dateFormatItem-mmss": "mm:ss",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yM": "M.yyyy",
+	"dateFormatItem-yMd": "d.M.yyyy",
+	"dateFormatItem-yMEd": "E, d.M.yyyy",
+	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-yMMMd": "d.M.yyyy",
 	"dateFormatItem-yMMMEd": "E, d. MMM y",
+	"dateFormatItem-yMMMM": "LLLL y",
+	"dateFormatItem-yQ": "Q yyyy",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"dateFormatItem-yyQ": "Q yy",
+	"dateFormatItem-yyQQQQ": "QQQQ yy",
+	"dateFormatItem-yyyyM": "M.yyyy",
+	"dateFormatItem-yyyyMMMM": "LLLL y",
+	"field-era": "Éra",
+	"field-year": "Rok",
+	"field-year-relative+-1": "Minulý rok",
+	"field-year-relative+0": "Tento rok",
+	"field-year-relative+1": "Budúci rok",
+	"field-month": "Mesiac",
+	"field-month-relative+-1": "Posledný mesiac",
 	"field-month-relative+0": "Tento mesiac",
 	"field-month-relative+1": "Budúci mesiac",
-	"dateFormatItem-Ed": "E, d.",
 	"field-week": "Týždeň",
-	"dateFormat-medium": "d.M.yyyy",
-	"field-year-relative+0": "Tento rok",
 	"field-week-relative+-1": "Minulý týždeň",
-	"dateFormatItem-yyyyM": "M.yyyy",
-	"field-year-relative+1": "Budúci rok",
-	"dateFormatItem-mmss": "mm:ss",
-	"dateFormatItem-Hms": "H:mm:ss",
 	"field-week-relative+0": "Tento týždeň",
-	"field-week-relative+1": "Budúci týždeň"
+	"field-week-relative+1": "Budúci týždeň",
+	"field-day": "Deň",
+	"field-day-relative+-2": "Predvčerom",
+	"field-day-relative+-1": "Včera",
+	"field-day-relative+0": "Dnes",
+	"field-day-relative+1": "Zajtra",
+	"field-day-relative+2": "Pozajtra",
+	"field-weekday": "Deň v týždni",
+	"field-dayperiod": "Časť dňa",
+	"field-hour": "Hodina",
+	"field-minute": "Minúta",
+	"field-second": "Sekunda",
+	"field-zone": "Pásmo",
+	"months-format-narrow": [
+		"j",
+		"f",
+		"m",
+		"a",
+		"m",
+		"j",
+		"j",
+		"a",
+		"s",
+		"o",
+		"n",
+		"d"
+	],
+	"months-standAlone-abbr": [
+		"jan",
+		"feb",
+		"mar",
+		"apr",
+		"máj",
+		"jún",
+		"júl",
+		"aug",
+		"sep",
+		"okt",
+		"nov",
+		"dec"
+	],
+	"eraNames": [
+		"pred n.l.",
+		"n.l."
+	],
+	"eraNarrow": [
+		"pred n.l.",
+		"n.l."
+	]
 }
 //end v1.x content
 );

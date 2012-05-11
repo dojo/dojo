@@ -1,20 +1,20 @@
 define(
 //begin v1.x content
 {
-	"group": ".",
-	"percentSign": "%",
-	"exponential": "e",
-	"percentFormat": "#,##0%",
-	"list": ",",
-	"infinity": "∞",
-	"minusSign": "-",
 	"decimal": ",",
-	"nan": "NaN",
-	"perMille": "‰",
-	"decimalFormat": "#,##0.###",
-	"currencyFormat": "#,##0.00 ¤",
+	"group": ".",
+	"list": ",",
+	"percentSign": "%",
 	"plusSign": "+",
-	"decimalFormat-short": "000 τρις"
+	"minusSign": "-",
+	"exponential": "e",
+	"perMille": "‰",
+	"infinity": "∞",
+	"nan": "NaN",
+	"decimalFormat": "#,##0.###",
+	"decimalFormat-short": "000 τρις",
+	"percentFormat": "#,##0%",
+	"currencyFormat": "#,##0.00 ¤"
 }
 //end v1.x content
 );

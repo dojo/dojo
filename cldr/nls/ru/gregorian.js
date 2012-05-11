@@ -1,81 +1,6 @@
 define(
 //begin v1.x content
 {
-	"months-format-narrow": [
-		"Я",
-		"Ф",
-		"М",
-		"А",
-		"М",
-		"И",
-		"И",
-		"А",
-		"С",
-		"О",
-		"Н",
-		"Д"
-	],
-	"field-weekday": "День недели",
-	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yyMMMEd": "E, d MMM yy",
-	"dateFormatItem-yMEd": "E, dd.MM.y",
-	"dateFormatItem-yyyyLLLL": "LLLL y",
-	"dateFormatItem-MMMEd": "ccc, d MMM",
-	"eraNarrow": [
-		"до н.э.",
-		"н.э."
-	],
-	"dateFormat-long": "d MMMM y 'г'.",
-	"months-format-wide": [
-		"января",
-		"февраля",
-		"марта",
-		"апреля",
-		"мая",
-		"июня",
-		"июля",
-		"августа",
-		"сентября",
-		"октября",
-		"ноября",
-		"декабря"
-	],
-	"dateTimeFormat-medium": "{1}, {0}",
-	"dayPeriods-format-wide-pm": "после полудня",
-	"dateFormat-full": "EEEE, d MMMM y 'г'.",
-	"dateFormatItem-Md": "dd.MM",
-	"dayPeriods-format-abbr-am": "до полудня",
-	"dateFormatItem-yMd": "dd.MM.y",
-	"field-era": "Эра",
-	"dateFormatItem-yM": "MM.y",
-	"months-standAlone-wide": [
-		"Январь",
-		"Февраль",
-		"Март",
-		"Апрель",
-		"Май",
-		"Июнь",
-		"Июль",
-		"Август",
-		"Сентябрь",
-		"Октябрь",
-		"Ноябрь",
-		"Декабрь"
-	],
-	"timeFormat-short": "H:mm",
-	"quarters-format-wide": [
-		"1-й квартал",
-		"2-й квартал",
-		"3-й квартал",
-		"4-й квартал"
-	],
-	"timeFormat-long": "H:mm:ss z",
-	"field-year": "Год",
-	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "QQQ y 'г'.",
-	"dateFormatItem-yyyyMMMM": "LLLL y",
-	"field-hour": "Час",
-	"dateFormatItem-MMdd": "dd.MM",
 	"months-format-abbr": [
 		"янв.",
 		"февр.",
@@ -90,13 +15,34 @@ define(
 		"нояб.",
 		"дек."
 	],
-	"dateFormatItem-yyQ": "Q yy",
-	"timeFormat-full": "H:mm:ss zzzz",
-	"dateFormatItem-E": "ccc",
-	"field-day-relative+0": "Сегодня",
-	"field-day-relative+1": "Завтра",
-	"field-day-relative+2": "Послезавтра",
-	"dateFormatItem-H": "H",
+	"months-format-narrow": [
+		"Я",
+		"Ф",
+		"М",
+		"А",
+		"М",
+		"И",
+		"И",
+		"А",
+		"С",
+		"О",
+		"Н",
+		"Д"
+	],
+	"months-format-wide": [
+		"января",
+		"февраля",
+		"марта",
+		"апреля",
+		"мая",
+		"июня",
+		"июля",
+		"августа",
+		"сентября",
+		"октября",
+		"ноября",
+		"декабря"
+	],
 	"months-standAlone-abbr": [
 		"Янв.",
 		"Февр.",
@@ -111,80 +57,6 @@ define(
 		"Нояб.",
 		"Дек."
 	],
-	"quarters-format-abbr": [
-		"1-й кв.",
-		"2-й кв.",
-		"3-й кв.",
-		"4-й кв."
-	],
-	"quarters-standAlone-wide": [
-		"1-й квартал",
-		"2-й квартал",
-		"3-й квартал",
-		"4-й квартал"
-	],
-	"dateFormatItem-M": "L",
-	"days-standAlone-wide": [
-		"Воскресенье",
-		"Понедельник",
-		"Вторник",
-		"Среда",
-		"Четверг",
-		"Пятница",
-		"Суббота"
-	],
-	"dateFormatItem-yyMMM": "LLL yy",
-	"timeFormat-medium": "H:mm:ss",
-	"dateFormatItem-Hm": "H:mm",
-	"quarters-standAlone-abbr": [
-		"1-й кв.",
-		"2-й кв.",
-		"3-й кв.",
-		"4-й кв."
-	],
-	"eraAbbr": [
-		"до н.э.",
-		"н.э."
-	],
-	"field-minute": "Минута",
-	"field-dayperiod": "ДП/ПП",
-	"days-standAlone-abbr": [
-		"Вс",
-		"Пн",
-		"Вт",
-		"Ср",
-		"Чт",
-		"Пт",
-		"Сб"
-	],
-	"dateFormatItem-d": "d",
-	"dateFormatItem-ms": "mm:ss",
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-day-relative+-1": "Вчера",
-	"dateTimeFormat-long": "{1}, {0}",
-	"dayPeriods-format-narrow-am": "дп",
-	"field-day-relative+-2": "Позавчера",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MEd": "E, dd.MM",
-	"dateTimeFormat-full": "{1}, {0}",
-	"field-day": "День",
-	"days-format-wide": [
-		"воскресенье",
-		"понедельник",
-		"вторник",
-		"среда",
-		"четверг",
-		"пятница",
-		"суббота"
-	],
-	"field-zone": "Часовой пояс",
-	"dateFormatItem-yyyyMM": "MM.yyyy",
-	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"Я",
 		"Ф",
@@ -199,10 +71,20 @@ define(
 		"Н",
 		"Д"
 	],
-	"field-year-relative+-1": "В прошлом году",
-	"field-month-relative+-1": "В прошлом месяце",
-	"dateFormatItem-yyMM": "MM.yy",
-	"dayPeriods-format-abbr-pm": "после полудня",
+	"months-standAlone-wide": [
+		"Январь",
+		"Февраль",
+		"Март",
+		"Апрель",
+		"Май",
+		"Июнь",
+		"Июль",
+		"Август",
+		"Сентябрь",
+		"Октябрь",
+		"Ноябрь",
+		"Декабрь"
+	],
 	"days-format-abbr": [
 		"вс",
 		"пн",
@@ -211,11 +93,6 @@ define(
 		"чт",
 		"пт",
 		"сб"
-	],
-	"dateFormatItem-yMMMd": "d MMM y 'г'.",
-	"eraNames": [
-		"до н.э.",
-		"н.э."
 	],
 	"days-format-narrow": [
 		"В",
@@ -226,6 +103,24 @@ define(
 		"П",
 		"С"
 	],
+	"days-format-wide": [
+		"воскресенье",
+		"понедельник",
+		"вторник",
+		"среда",
+		"четверг",
+		"пятница",
+		"суббота"
+	],
+	"days-standAlone-abbr": [
+		"Вс",
+		"Пн",
+		"Вт",
+		"Ср",
+		"Чт",
+		"Пт",
+		"Сб"
+	],
 	"days-standAlone-narrow": [
 		"В",
 		"П",
@@ -235,27 +130,132 @@ define(
 		"П",
 		"С"
 	],
-	"dateFormatItem-MMM": "LLL",
-	"field-month": "Месяц",
+	"days-standAlone-wide": [
+		"Воскресенье",
+		"Понедельник",
+		"Вторник",
+		"Среда",
+		"Четверг",
+		"Пятница",
+		"Суббота"
+	],
+	"quarters-format-abbr": [
+		"1-й кв.",
+		"2-й кв.",
+		"3-й кв.",
+		"4-й кв."
+	],
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"quarters-format-wide": [
+		"1-й квартал",
+		"2-й квартал",
+		"3-й квартал",
+		"4-й квартал"
+	],
+	"dayPeriods-format-abbr-am": "до полудня",
+	"dayPeriods-format-abbr-pm": "после полудня",
+	"dayPeriods-format-narrow-am": "дп",
+	"dayPeriods-format-narrow-pm": "пп",
 	"dayPeriods-format-wide-am": "до полудня",
+	"dayPeriods-format-wide-pm": "после полудня",
+	"eraNames": [
+		"до н.э.",
+		"н.э."
+	],
+	"eraAbbr": [
+		"до н.э.",
+		"н.э."
+	],
+	"eraNarrow": [
+		"до н.э.",
+		"н.э."
+	],
+	"dateFormat-full": "EEEE, d MMMM y 'г'.",
+	"dateFormat-long": "d MMMM y 'г'.",
+	"dateFormat-medium": "dd.MM.yyyy",
 	"dateFormat-short": "dd.MM.yy",
-	"field-second": "Секунда",
+	"timeFormat-full": "H:mm:ss zzzz",
+	"timeFormat-long": "H:mm:ss z",
+	"timeFormat-medium": "H:mm:ss",
+	"timeFormat-short": "H:mm",
+	"dateTimeFormat-full": "{1}, {0}",
+	"dateTimeFormat-long": "{1}, {0}",
+	"dateTimeFormat-medium": "{1}, {0}",
+	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-d": "d",
+	"dateFormatItem-E": "ccc",
+	"dateFormatItem-Ed": "ccc, d",
+	"dateFormatItem-H": "H",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dateFormatItem-M": "L",
+	"dateFormatItem-Md": "dd.MM",
+	"dateFormatItem-MEd": "E, dd.MM",
+	"dateFormatItem-MMdd": "dd.MM",
+	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "ccc, d MMM",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-y": "y",
+	"dateFormatItem-yM": "MM.y",
+	"dateFormatItem-yMd": "dd.MM.y",
+	"dateFormatItem-yMEd": "E, dd.MM.y",
+	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-yMMMd": "d MMM y 'г'.",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormatItem-yQ": "QQQ y 'г'.",
+	"dateFormatItem-yQQQ": "y QQQ",
+	"dateFormatItem-yyMM": "MM.yy",
+	"dateFormatItem-yyMMM": "LLL yy",
+	"dateFormatItem-yyMMMEd": "E, d MMM yy",
+	"dateFormatItem-yyQ": "Q yy",
+	"dateFormatItem-yyyy": "y",
+	"dateFormatItem-yyyyLLLL": "LLLL y",
+	"dateFormatItem-yyyyMM": "MM.yyyy",
+	"dateFormatItem-yyyyMMMM": "LLLL y",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'.",
+	"field-era": "Эра",
+	"field-year": "Год",
+	"field-year-relative+-1": "В прошлом году",
+	"field-year-relative+0": "В этом году",
+	"field-year-relative+1": "В следующем году",
+	"field-month": "Месяц",
+	"field-month-relative+-1": "В прошлом месяце",
 	"field-month-relative+0": "В этом месяце",
 	"field-month-relative+1": "В следующем месяце",
-	"dateFormatItem-Ed": "ccc, d",
 	"field-week": "Неделя",
-	"dateFormat-medium": "dd.MM.yyyy",
-	"field-year-relative+0": "В этом году",
 	"field-week-relative+-1": "На прошлой неделе",
-	"field-year-relative+1": "В следующем году",
-	"dayPeriods-format-narrow-pm": "пп",
-	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'.",
-	"dateTimeFormat-short": "{1}, {0}",
-	"dateFormatItem-Hms": "H:mm:ss",
-	"dateFormatItem-yyyy": "y",
 	"field-week-relative+0": "На этой неделе",
-	"field-week-relative+1": "На следующей неделе"
+	"field-week-relative+1": "На следующей неделе",
+	"field-day": "День",
+	"field-day-relative+-2": "Позавчера",
+	"field-day-relative+-1": "Вчера",
+	"field-day-relative+0": "Сегодня",
+	"field-day-relative+1": "Завтра",
+	"field-day-relative+2": "Послезавтра",
+	"field-weekday": "День недели",
+	"field-dayperiod": "ДП/ПП",
+	"field-hour": "Час",
+	"field-minute": "Минута",
+	"field-second": "Секунда",
+	"field-zone": "Часовой пояс",
+	"quarters-standAlone-abbr": [
+		"1-й кв.",
+		"2-й кв.",
+		"3-й кв.",
+		"4-й кв."
+	],
+	"quarters-standAlone-wide": [
+		"1-й квартал",
+		"2-й квартал",
+		"3-й квартал",
+		"4-й квартал"
+	]
 }
 //end v1.x content
 );

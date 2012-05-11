@@ -1,63 +1,78 @@
 define(
 //begin v1.x content
 {
+	"dateFormat-full": "cccc d. MMMM y G",
+	"dateFormat-long": "d. MMMM y G",
+	"dateFormat-medium": "d.M.y G",
+	"dateFormat-short": "d.M.y G",
+	"dateFormatItem-d": "d",
+	"dateFormatItem-Ed": "ccc d.",
+	"dateFormatItem-Gy": "y G",
+	"dateFormatItem-H": "H",
+	"dateFormatItem-hm": "h.mm a",
+	"dateFormatItem-Hm": "H.mm",
+	"dateFormatItem-hms": "h.mm.ss a",
+	"dateFormatItem-Hms": "H.mm.ss",
+	"dateFormatItem-M": "L",
+	"dateFormatItem-Md": "d.M.",
+	"dateFormatItem-MEd": "E d.M.",
+	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-MMMd": "d. MMM",
+	"dateFormatItem-MMMEd": "E d. MMM",
+	"dateFormatItem-ms": "mm.ss",
+	"dateFormatItem-y": "y G",
 	"dateFormatItem-yM": "L.y G",
+	"dateFormatItem-yMd": "d.M.y G",
+	"dateFormatItem-yMEd": "E d.M.y G",
+	"dateFormatItem-yMMM": "LLLL y G",
+	"dateFormatItem-yMMMd": "d. MMM y G",
+	"dateFormatItem-yMMMEd": "E d. MMM y G",
 	"dateFormatItem-yMMMMccccd": "cccc, d. MMMM y G",
 	"dateFormatItem-yQ": "Q/y G",
-	"dayPeriods-format-wide-pm": "ip.",
-	"dateFormatItem-MMMEd": "E d. MMM",
-	"dateFormatItem-hms": "h.mm.ss a",
 	"dateFormatItem-yQQQ": "QQQ y G",
-	"days-standAlone-wide": [
-		"sunnuntai",
-		"maanantai",
-		"tiistai",
-		"keskiviikko",
-		"torstai",
-		"perjantai",
-		"lauantai"
+	"dateFormatItem-yyMM": "M.y G",
+	"dateFormatItem-yyMMM": "LLLL y G",
+	"dateFormatItem-yyQ": "Q/y G",
+	"dateFormatItem-yyyyM": "M.y G",
+	"dateFormatItem-yyyyMEd": "E d.M.y G",
+	"dateFormatItem-yyyyMMMM": "LLLL y G",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
+	"days-format-abbr": [
+		"su",
+		"ma",
+		"ti",
+		"ke",
+		"to",
+		"pe",
+		"la"
 	],
-	"dateFormatItem-MMM": "LLL",
-	"months-standAlone-narrow": [
-		"T",
-		"H",
+	"days-format-narrow": [
+		"S",
 		"M",
-		"H",
 		"T",
 		"K",
-		"H",
-		"E",
-		"S",
-		"L",
-		"M",
-		"J"
+		"T",
+		"P",
+		"L"
 	],
-	"dateFormatItem-Gy": "y G",
-	"dayPeriods-format-wide-am": "ap.",
-	"quarters-standAlone-abbr": [
-		"1. nelj.",
-		"2. nelj.",
-		"3. nelj.",
-		"4. nelj."
+	"days-format-wide": [
+		"sunnuntaina",
+		"maanantaina",
+		"tiistaina",
+		"keskiviikkona",
+		"torstaina",
+		"perjantaina",
+		"lauantaina"
 	],
-	"dateFormatItem-y": "y G",
-	"timeFormat-full": "H.mm.ss zzzz",
-	"months-standAlone-abbr": [
-		"tammi",
-		"helmi",
-		"maalis",
-		"huhti",
-		"touko",
-		"kesä",
-		"heinä",
-		"elo",
-		"syys",
-		"loka",
-		"marras",
-		"joulu"
+	"days-standAlone-abbr": [
+		"su",
+		"ma",
+		"ti",
+		"ke",
+		"to",
+		"pe",
+		"la"
 	],
-	"dateFormatItem-Ed": "ccc d.",
-	"dateFormatItem-yMMM": "LLLL y G",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -67,43 +82,49 @@ define(
 		"P",
 		"L"
 	],
-	"dateFormatItem-yyyyMMMM": "LLLL y G",
-	"dateFormat-long": "d. MMMM y G",
-	"timeFormat-medium": "H.mm.ss",
-	"dateFormatItem-Hm": "H.mm",
-	"dateFormatItem-yyMM": "M.y G",
-	"dateFormat-medium": "d.M.y G",
-	"dateFormatItem-Hms": "H.mm.ss",
-	"dayPeriods-format-narrow-pm": "ip.",
-	"dateFormatItem-yyMMM": "LLLL y G",
-	"dateFormatItem-yMd": "d.M.y G",
+	"days-standAlone-wide": [
+		"sunnuntai",
+		"maanantai",
+		"tiistai",
+		"keskiviikko",
+		"torstai",
+		"perjantai",
+		"lauantai"
+	],
+	"quarters-format-abbr": [
+		"1. nelj.",
+		"2. nelj.",
+		"3. nelj.",
+		"4. nelj."
+	],
+	"quarters-format-wide": [
+		"1. neljännes",
+		"2. neljännes",
+		"3. neljännes",
+		"4. neljännes"
+	],
+	"quarters-standAlone-abbr": [
+		"1. nelj.",
+		"2. nelj.",
+		"3. nelj.",
+		"4. nelj."
+	],
 	"quarters-standAlone-wide": [
 		"1. neljännes",
 		"2. neljännes",
 		"3. neljännes",
 		"4. neljännes"
 	],
-	"dateFormatItem-ms": "mm.ss",
-	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
+	"dayPeriods-format-abbr-am": "ap.",
+	"dayPeriods-format-abbr-pm": "ip.",
 	"dayPeriods-format-narrow-am": "ap.",
-	"months-standAlone-wide": [
-		"tammikuu",
-		"helmikuu",
-		"maaliskuu",
-		"huhtikuu",
-		"toukokuu",
-		"kesäkuu",
-		"heinäkuu",
-		"elokuu",
-		"syyskuu",
-		"lokakuu",
-		"marraskuu",
-		"joulukuu"
-	],
-	"dateFormatItem-yyyyMEd": "E d.M.y G",
-	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-yyQ": "Q/y G",
+	"dayPeriods-format-narrow-pm": "ip.",
+	"dayPeriods-format-wide-am": "ap.",
+	"dayPeriods-format-wide-pm": "ip.",
+	"timeFormat-full": "H.mm.ss zzzz",
 	"timeFormat-long": "H.mm.ss z",
+	"timeFormat-medium": "H.mm.ss",
+	"timeFormat-short": "H.mm",
 	"months-format-abbr": [
 		"tammikuuta",
 		"helmikuuta",
@@ -118,35 +139,6 @@ define(
 		"marraskuuta",
 		"joulukuuta"
 	],
-	"dateFormatItem-H": "H",
-	"timeFormat-short": "H.mm",
-	"quarters-format-abbr": [
-		"1. nelj.",
-		"2. nelj.",
-		"3. nelj.",
-		"4. nelj."
-	],
-	"days-format-abbr": [
-		"su",
-		"ma",
-		"ti",
-		"ke",
-		"to",
-		"pe",
-		"la"
-	],
-	"dateFormatItem-M": "L",
-	"days-format-narrow": [
-		"S",
-		"M",
-		"T",
-		"K",
-		"T",
-		"P",
-		"L"
-	],
-	"dateFormatItem-yMMMd": "d. MMM y G",
-	"dateFormatItem-MEd": "E d.M.",
 	"months-format-narrow": [
 		"T",
 		"H",
@@ -161,23 +153,6 @@ define(
 		"M",
 		"J"
 	],
-	"dateFormatItem-hm": "h.mm a",
-	"days-standAlone-abbr": [
-		"su",
-		"ma",
-		"ti",
-		"ke",
-		"to",
-		"pe",
-		"la"
-	],
-	"dayPeriods-format-abbr-pm": "ip.",
-	"dateFormat-short": "d.M.y G",
-	"dateFormatItem-yyyyM": "M.y G",
-	"dateFormatItem-yMMMEd": "E d. MMM y G",
-	"dateFormat-full": "cccc d. MMMM y G",
-	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yMEd": "E d.M.y G",
 	"months-format-wide": [
 		"tammikuuta",
 		"helmikuuta",
@@ -192,22 +167,47 @@ define(
 		"marraskuuta",
 		"joulukuuta"
 	],
-	"dayPeriods-format-abbr-am": "ap.",
-	"dateFormatItem-d": "d",
-	"quarters-format-wide": [
-		"1. neljännes",
-		"2. neljännes",
-		"3. neljännes",
-		"4. neljännes"
+	"months-standAlone-abbr": [
+		"tammi",
+		"helmi",
+		"maalis",
+		"huhti",
+		"touko",
+		"kesä",
+		"heinä",
+		"elo",
+		"syys",
+		"loka",
+		"marras",
+		"joulu"
 	],
-	"days-format-wide": [
-		"sunnuntaina",
-		"maanantaina",
-		"tiistaina",
-		"keskiviikkona",
-		"torstaina",
-		"perjantaina",
-		"lauantaina"
+	"months-standAlone-narrow": [
+		"T",
+		"H",
+		"M",
+		"H",
+		"T",
+		"K",
+		"H",
+		"E",
+		"S",
+		"L",
+		"M",
+		"J"
+	],
+	"months-standAlone-wide": [
+		"tammikuu",
+		"helmikuu",
+		"maaliskuu",
+		"huhtikuu",
+		"toukokuu",
+		"kesäkuu",
+		"heinäkuu",
+		"elokuu",
+		"syyskuu",
+		"lokakuu",
+		"marraskuu",
+		"joulukuu"
 	]
 }
 //end v1.x content

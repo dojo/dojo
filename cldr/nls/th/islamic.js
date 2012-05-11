@@ -1,102 +1,6 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
-	"dayPeriods-format-wide-pm": "หลังเที่ยง",
-	"eraNames": [
-		"ฮิจเราะห์ศักราช"
-	],
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateTimeFormat-full": "{1}, {0}",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateTimeFormat-short": "{1}, {0}",
-	"dayPeriods-format-wide-am": "ก่อนเที่ยง",
-	"dateTimeFormat-medium": "{1}, {0}",
-	"timeFormat-full": "H นาฬิกา m นาที ss วินาที zzzz",
-	"months-standAlone-abbr": [
-		"มุฮะร์รอม",
-		"ซอฟาร์",
-		"รอบี I",
-		"รอบี II",
-		"จุมาดา I",
-		"จุมาดา II",
-		"รอจับ",
-		"ชะอะบาน",
-		"รอมะดอน",
-		"เชาวัล",
-		"ดฮุุอัลกิดะห์",
-		"ดฮุอัลฮิจจะห์"
-	],
-	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
-	"days-standAlone-narrow": [
-		"อ",
-		"จ",
-		"อ",
-		"พ",
-		"พ",
-		"ศ",
-		"ส"
-	],
-	"eraAbbr": [
-		"ฮ.ศ."
-	],
-	"dateFormat-long": "d MMMM y",
-	"timeFormat-medium": "H:mm:ss",
-	"dateFormatItem-Hm": "H:mm",
-	"dateFormat-medium": "d MMM y",
-	"dateFormatItem-Hms": "H:mm:ss",
-	"dateFormatItem-yMd": "d/M/yyyy",
-	"dateTimeFormat-long": "{1}, {0}",
-	"months-standAlone-wide": [
-		"มุฮะร์รอม",
-		"ซอฟาร์",
-		"รอบี I",
-		"รอบี II",
-		"จุมาดา I",
-		"จุมาดา II",
-		"รอจับ",
-		"ชะอะบาน",
-		"รอมะดอน",
-		"เชาวัล",
-		"ดฮุุอัลกิดะห์",
-		"ดฮุอัลฮิจจะห์"
-	],
-	"dateFormatItem-MMMd": "d MMM",
-	"timeFormat-long": "H นาฬิกา m นาที ss วินาที z",
-	"months-format-abbr": [
-		"มุฮะร์รอม",
-		"ซอฟาร์",
-		"รอบี I",
-		"รอบี II",
-		"จุมาดา I",
-		"จุมาดา II",
-		"รอจับ",
-		"ชะอะบาน",
-		"รอมะดอน",
-		"เชาวัล",
-		"ดฮุุอัลกิดะห์",
-		"ดฮุอัลฮิจจะห์"
-	],
-	"timeFormat-short": "H:mm",
-	"dateFormatItem-H": "H",
-	"days-format-abbr": [
-		"อา.",
-		"จ.",
-		"อ.",
-		"พ.",
-		"พฤ.",
-		"ศ.",
-		"ส."
-	],
-	"dateFormatItem-yMMMd": "d MMM y",
-	"dateFormatItem-MEd": "E, d/M",
-	"dateFormat-short": "d/M/yyyy",
-	"dateFormatItem-yMMMEd": "E d MMM y",
-	"dateFormat-full": "EEEEที่ d MMMM G y",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E d/M/yyyy",
 	"months-format-wide": [
 		"มุฮะร์รอม",
 		"ซอฟาร์",
@@ -111,11 +15,65 @@ define(
 		"ดฮุุอัลกิดะห์",
 		"ดฮุอัลฮิจจะห์"
 	],
-	"quarters-format-wide": [
-		"ไตรมาส 1",
-		"ไตรมาส 2",
-		"ไตรมาส 3",
-		"ไตรมาส 4"
+	"eraNames": [
+		"ฮิจเราะห์ศักราช"
+	],
+	"eraAbbr": [
+		"ฮ.ศ."
+	],
+	"months-format-abbr": [
+		"มุฮะร์รอม",
+		"ซอฟาร์",
+		"รอบี I",
+		"รอบี II",
+		"จุมาดา I",
+		"จุมาดา II",
+		"รอจับ",
+		"ชะอะบาน",
+		"รอมะดอน",
+		"เชาวัล",
+		"ดฮุุอัลกิดะห์",
+		"ดฮุอัลฮิจจะห์"
+	],
+	"months-standAlone-abbr": [
+		"มุฮะร์รอม",
+		"ซอฟาร์",
+		"รอบี I",
+		"รอบี II",
+		"จุมาดา I",
+		"จุมาดา II",
+		"รอจับ",
+		"ชะอะบาน",
+		"รอมะดอน",
+		"เชาวัล",
+		"ดฮุุอัลกิดะห์",
+		"ดฮุอัลฮิจจะห์"
+	],
+	"months-standAlone-wide": [
+		"มุฮะร์รอม",
+		"ซอฟาร์",
+		"รอบี I",
+		"รอบี II",
+		"จุมาดา I",
+		"จุมาดา II",
+		"รอจับ",
+		"ชะอะบาน",
+		"รอมะดอน",
+		"เชาวัล",
+		"ดฮุุอัลกิดะห์",
+		"ดฮุอัลฮิจจะห์"
+	],
+	"eraNarrow": [
+		"ฮ.ศ."
+	],
+	"days-format-abbr": [
+		"อา.",
+		"จ.",
+		"อ.",
+		"พ.",
+		"พฤ.",
+		"ศ.",
+		"ส."
 	],
 	"days-format-wide": [
 		"วันอาทิตย์",
@@ -126,9 +84,51 @@ define(
 		"วันศุกร์",
 		"วันเสาร์"
 	],
-	"eraNarrow": [
-		"ฮ.ศ."
-	]
+	"days-standAlone-narrow": [
+		"อ",
+		"จ",
+		"อ",
+		"พ",
+		"พ",
+		"ศ",
+		"ส"
+	],
+	"quarters-format-wide": [
+		"ไตรมาส 1",
+		"ไตรมาส 2",
+		"ไตรมาส 3",
+		"ไตรมาส 4"
+	],
+	"dayPeriods-format-wide-am": "ก่อนเที่ยง",
+	"dayPeriods-format-wide-pm": "หลังเที่ยง",
+	"dateFormat-full": "EEEEที่ d MMMM G y",
+	"dateFormat-long": "d MMMM y",
+	"dateFormat-medium": "d MMM y",
+	"dateFormat-short": "d/M/yyyy",
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-H": "H",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-MEd": "E, d/M",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "E d MMM",
+	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yMd": "d/M/yyyy",
+	"dateFormatItem-yMEd": "E d/M/yyyy",
+	"dateFormatItem-yMMM": "MMM y",
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-yMMMEd": "E d MMM y",
+	"dateFormatItem-yQ": "Q yyyy",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"timeFormat-full": "H นาฬิกา m นาที ss วินาที zzzz",
+	"timeFormat-long": "H นาฬิกา m นาที ss วินาที z",
+	"timeFormat-medium": "H:mm:ss",
+	"timeFormat-short": "H:mm",
+	"dateTimeFormat-full": "{1}, {0}",
+	"dateTimeFormat-long": "{1}, {0}",
+	"dateTimeFormat-medium": "{1}, {0}",
+	"dateTimeFormat-short": "{1}, {0}"
 }
 //end v1.x content
 );

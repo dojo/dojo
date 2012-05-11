@@ -1,28 +1,7 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "yyyy-MM",
-	"dateFormatItem-yQ": "yyyy Q",
-	"dayPeriods-format-wide-pm": "em",
-	"dateFormatItem-MMMEd": "E d MMM",
-	"days-standAlone-wide": [
-		"söndag",
-		"måndag",
-		"tisdag",
-		"onsdag",
-		"torsdag",
-		"fredag",
-		"lördag"
-	],
-	"dayPeriods-format-wide-am": "fm",
-	"quarters-standAlone-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
-	],
-	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
-	"months-standAlone-abbr": [
+	"months-format-wide": [
 		"tishrí",
 		"heshván",
 		"kislév",
@@ -37,44 +16,7 @@ define(
 		"ab",
 		"elúl"
 	],
-	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
-	"days-standAlone-narrow": [
-		"S",
-		"M",
-		"T",
-		"O",
-		"T",
-		"F",
-		"L"
-	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
-	"dayPeriods-format-narrow-pm": "e",
-	"dateFormatItem-yMd": "yyyy-MM-dd",
-	"quarters-standAlone-wide": [
-		"1:a kvartalet",
-		"2:a kvartalet",
-		"3:e kvartalet",
-		"4:e kvartalet"
-	],
-	"dayPeriods-format-narrow-am": "f",
-	"months-standAlone-wide": [
-		"tishrí",
-		"heshván",
-		"kislév",
-		"tevét",
-		"shevát",
-		"adár I",
-		"adár",
-		"nisán",
-		"ijjár",
-		"siván",
-		"tammúz",
-		"ab",
-		"elúl"
-	],
-	"dateFormatItem-MMMd": "d MMM",
+	"months-format-wide-leap": "adár II",
 	"months-format-abbr": [
 		"tishrí",
 		"heshván",
@@ -90,11 +32,35 @@ define(
 		"ab",
 		"elúl"
 	],
-	"quarters-format-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
+	"months-standAlone-abbr": [
+		"tishrí",
+		"heshván",
+		"kislév",
+		"tevét",
+		"shevát",
+		"adár I",
+		"adár",
+		"nisán",
+		"ijjár",
+		"siván",
+		"tammúz",
+		"ab",
+		"elúl"
+	],
+	"months-standAlone-wide": [
+		"tishrí",
+		"heshván",
+		"kislév",
+		"tevét",
+		"shevát",
+		"adár I",
+		"adár",
+		"nisán",
+		"ijjár",
+		"siván",
+		"tammúz",
+		"ab",
+		"elúl"
 	],
 	"days-format-abbr": [
 		"sön",
@@ -114,8 +80,15 @@ define(
 		"F",
 		"L"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
-	"dateFormatItem-MEd": "E d/M",
+	"days-format-wide": [
+		"söndag",
+		"måndag",
+		"tisdag",
+		"onsdag",
+		"torsdag",
+		"fredag",
+		"lördag"
+	],
 	"days-standAlone-abbr": [
 		"sön",
 		"mån",
@@ -125,35 +98,16 @@ define(
 		"fre",
 		"lör"
 	],
-	"dayPeriods-format-abbr-pm": "EM",
-	"dateFormatItem-yMMMEd": "E d MMM y",
-	"dateFormat-full": "EEEE'en' 'den' d:'e' MMMM y",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E, yyyy-MM-dd",
-	"months-format-wide": [
-		"tishrí",
-		"heshván",
-		"kislév",
-		"tevét",
-		"shevát",
-		"adár I",
-		"adár",
-		"nisán",
-		"ijjár",
-		"siván",
-		"tammúz",
-		"ab",
-		"elúl"
+	"days-standAlone-narrow": [
+		"S",
+		"M",
+		"T",
+		"O",
+		"T",
+		"F",
+		"L"
 	],
-	"dayPeriods-format-abbr-am": "FM",
-	"quarters-format-wide": [
-		"1:a kvartalet",
-		"2:a kvartalet",
-		"3:e kvartalet",
-		"4:e kvartalet"
-	],
-	"months-format-wide-leap": "adár II",
-	"days-format-wide": [
+	"days-standAlone-wide": [
 		"söndag",
 		"måndag",
 		"tisdag",
@@ -161,7 +115,53 @@ define(
 		"torsdag",
 		"fredag",
 		"lördag"
-	]
+	],
+	"quarters-format-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
+	"quarters-format-wide": [
+		"1:a kvartalet",
+		"2:a kvartalet",
+		"3:e kvartalet",
+		"4:e kvartalet"
+	],
+	"quarters-standAlone-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
+	"quarters-standAlone-wide": [
+		"1:a kvartalet",
+		"2:a kvartalet",
+		"3:e kvartalet",
+		"4:e kvartalet"
+	],
+	"dayPeriods-format-abbr-am": "FM",
+	"dayPeriods-format-abbr-pm": "EM",
+	"dayPeriods-format-narrow-am": "f",
+	"dayPeriods-format-narrow-pm": "e",
+	"dayPeriods-format-wide-am": "fm",
+	"dayPeriods-format-wide-pm": "em",
+	"dateFormat-full": "EEEE'en' 'den' d:'e' MMMM y",
+	"dateFormat-long": "d MMMM y",
+	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-MEd": "E d/M",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "E d MMM",
+	"dateFormatItem-yM": "yyyy-MM",
+	"dateFormatItem-yMd": "yyyy-MM-dd",
+	"dateFormatItem-yMEd": "E, yyyy-MM-dd",
+	"dateFormatItem-yMMM": "MMM y",
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-yMMMEd": "E d MMM y",
+	"dateFormatItem-yQ": "yyyy Q",
+	"timeFormat-full": "'kl'. HH:mm:ss zzzz"
 }
 //end v1.x content
 );

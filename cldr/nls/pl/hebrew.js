@@ -1,27 +1,7 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM.yyyy",
-	"dateFormatItem-yQ": "yyyy Q",
-	"dateFormatItem-MMMEd": "E, d MMM",
-	"dateFormatItem-hms": "hh:mm:ss a",
-	"days-standAlone-wide": [
-		"niedziela",
-		"poniedziałek",
-		"wtorek",
-		"środa",
-		"czwartek",
-		"piątek",
-		"sobota"
-	],
-	"months-format-abbr-leap": "Adar II",
-	"quarters-standAlone-abbr": [
-		"1 kw.",
-		"2 kw.",
-		"3 kw.",
-		"4 kw."
-	],
-	"months-standAlone-abbr": [
+	"months-format-abbr": [
 		"Tiszri",
 		"Cheszwan",
 		"Kislew",
@@ -36,25 +16,37 @@ define(
 		"Aw",
 		"Elul"
 	],
-	"dateFormatItem-Ed": "E, d",
-	"dateFormatItem-yMMM": "LLL y",
-	"days-standAlone-narrow": [
-		"N",
-		"P",
-		"W",
-		"Ś",
-		"C",
-		"P",
-		"S"
+	"months-format-abbr-leap": "Adar II",
+	"months-format-wide": [
+		"Tiszri",
+		"Cheszwan",
+		"Kislew",
+		"Tewet",
+		"Szwat",
+		"Adar I",
+		"Adar",
+		"Nisan",
+		"Ijar",
+		"Siwan",
+		"Tamuz",
+		"Aw",
+		"Elul"
 	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
-	"dateFormatItem-yMd": "d.MM.yyyy",
-	"quarters-standAlone-wide": [
-		"I kwartał",
-		"II kwartał",
-		"III kwartał",
-		"IV kwartał"
+	"months-format-wide-leap": "Adar II",
+	"months-standAlone-abbr": [
+		"Tiszri",
+		"Cheszwan",
+		"Kislew",
+		"Tewet",
+		"Szwat",
+		"Adar I",
+		"Adar",
+		"Nisan",
+		"Ijar",
+		"Siwan",
+		"Tamuz",
+		"Aw",
+		"Elul"
 	],
 	"months-standAlone-wide": [
 		"Tiszri",
@@ -71,28 +63,7 @@ define(
 		"Aw",
 		"Elul"
 	],
-	"dateFormatItem-MMMd": "d MMM",
-	"months-format-abbr": [
-		"Tiszri",
-		"Cheszwan",
-		"Kislew",
-		"Tewet",
-		"Szwat",
-		"Adar I",
-		"Adar",
-		"Nisan",
-		"Ijar",
-		"Siwan",
-		"Tamuz",
-		"Aw",
-		"Elul"
-	],
-	"quarters-format-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
-	],
+	"months-standAlone-wide-leap": "Adar II",
 	"days-format-abbr": [
 		"niedz.",
 		"pon.",
@@ -111,46 +82,6 @@ define(
 		"P",
 		"S"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
-	"dateFormatItem-MEd": "E, d.MM",
-	"dateFormatItem-hm": "hh:mm a",
-	"days-standAlone-abbr": [
-		"niedz.",
-		"pon.",
-		"wt.",
-		"śr.",
-		"czw.",
-		"pt.",
-		"sob."
-	],
-	"months-standAlone-wide-leap": "Adar II",
-	"dateFormat-short": "dd.MM.yyyy",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"dateFormat-full": "EEEE, d MMMM y",
-	"dateFormatItem-Md": "d.MM",
-	"dateFormatItem-yMEd": "E, d.MM.yyyy",
-	"months-format-wide": [
-		"Tiszri",
-		"Cheszwan",
-		"Kislew",
-		"Tewet",
-		"Szwat",
-		"Adar I",
-		"Adar",
-		"Nisan",
-		"Ijar",
-		"Siwan",
-		"Tamuz",
-		"Aw",
-		"Elul"
-	],
-	"quarters-format-wide": [
-		"I kwartał",
-		"II kwartał",
-		"III kwartał",
-		"IV kwartał"
-	],
-	"months-format-wide-leap": "Adar II",
 	"days-format-wide": [
 		"niedziela",
 		"poniedziałek",
@@ -160,7 +91,76 @@ define(
 		"piątek",
 		"sobota"
 	],
-	"dateFormatItem-h": "hh a"
+	"days-standAlone-abbr": [
+		"niedz.",
+		"pon.",
+		"wt.",
+		"śr.",
+		"czw.",
+		"pt.",
+		"sob."
+	],
+	"days-standAlone-narrow": [
+		"N",
+		"P",
+		"W",
+		"Ś",
+		"C",
+		"P",
+		"S"
+	],
+	"days-standAlone-wide": [
+		"niedziela",
+		"poniedziałek",
+		"wtorek",
+		"środa",
+		"czwartek",
+		"piątek",
+		"sobota"
+	],
+	"quarters-format-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
+	"quarters-format-wide": [
+		"I kwartał",
+		"II kwartał",
+		"III kwartał",
+		"IV kwartał"
+	],
+	"quarters-standAlone-abbr": [
+		"1 kw.",
+		"2 kw.",
+		"3 kw.",
+		"4 kw."
+	],
+	"quarters-standAlone-wide": [
+		"I kwartał",
+		"II kwartał",
+		"III kwartał",
+		"IV kwartał"
+	],
+	"dateFormat-full": "EEEE, d MMMM y",
+	"dateFormat-long": "d MMMM y",
+	"dateFormat-medium": "d MMM y",
+	"dateFormat-short": "dd.MM.yyyy",
+	"dateFormatItem-Ed": "E, d",
+	"dateFormatItem-h": "hh a",
+	"dateFormatItem-hm": "hh:mm a",
+	"dateFormatItem-hms": "hh:mm:ss a",
+	"dateFormatItem-Md": "d.MM",
+	"dateFormatItem-MEd": "E, d.MM",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "E, d MMM",
+	"dateFormatItem-yM": "MM.yyyy",
+	"dateFormatItem-yMd": "d.MM.yyyy",
+	"dateFormatItem-yMEd": "E, d.MM.yyyy",
+	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormatItem-yQ": "yyyy Q"
 }
 //end v1.x content
 );

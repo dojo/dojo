@@ -1,27 +1,27 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM.yyyy",
-	"dateFormatItem-yQ": "'trimestrul' Q y",
-	"dateFormatItem-MMMEd": "E, d MMM",
-	"dateTimeFormat-full": "{1}, {0}",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"days-standAlone-wide": [
-		"duminică",
-		"luni",
-		"marți",
-		"miercuri",
-		"joi",
-		"vineri",
-		"sâmbătă"
+	"months-format-abbr": [
+		"Tișrei",
+		"Heșvan",
+		"Kislev",
+		"Tevet",
+		"Șevat",
+		null,
+		"Adar",
+		"Nisan",
+		"Iyar",
+		"Sivan",
+		"Tammuz",
+		null,
+		"Elul"
 	],
-	"dateTimeFormat-short": "{1}, {0}",
-	"dateTimeFormat-medium": "{1}, {0}",
-	"quarters-standAlone-abbr": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
+	"months-format-wide": [
+		"Tișrei",
+		"Heșvan",
+		null,
+		null,
+		"Șevat"
 	],
 	"months-standAlone-abbr": [
 		"Tișrei",
@@ -38,33 +38,6 @@ define(
 		null,
 		"Elul"
 	],
-	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
-	"days-standAlone-narrow": [
-		"D",
-		"L",
-		"M",
-		"M",
-		"J",
-		"V",
-		"S"
-	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "dd.MM.yyyy",
-	"dateFormatItem-yMd": "dd.MM.yyyy",
-	"quarters-standAlone-wide": [
-		"trimestrul I",
-		"trimestrul al II-lea",
-		"trimestrul al III-lea",
-		"trimestrul al IV-lea"
-	],
-	"quarters-standAlone-narrow": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
-	],
-	"dateTimeFormat-long": "{1}, {0}",
 	"months-standAlone-wide": [
 		"Tișrei",
 		"Heșvan",
@@ -79,34 +52,6 @@ define(
 		"Tammuz",
 		null,
 		"Elul"
-	],
-	"dateFormatItem-MMMd": "d MMM",
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"T4"
-	],
-	"months-format-abbr": [
-		"Tișrei",
-		"Heșvan",
-		"Kislev",
-		"Tevet",
-		"Șevat",
-		null,
-		"Adar",
-		"Nisan",
-		"Iyar",
-		"Sivan",
-		"Tammuz",
-		null,
-		"Elul"
-	],
-	"quarters-format-abbr": [
-		"trim. I",
-		"trim. II",
-		"trim. III",
-		"trim. IV"
 	],
 	"days-format-abbr": [
 		"Du",
@@ -126,8 +71,15 @@ define(
 		"V",
 		"S"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
-	"dateFormatItem-MEd": "E, dd.MM",
+	"days-format-wide": [
+		"duminică",
+		"luni",
+		"marți",
+		"miercuri",
+		"joi",
+		"vineri",
+		"sâmbătă"
+	],
 	"days-standAlone-abbr": [
 		"Du",
 		"Lu",
@@ -137,25 +89,16 @@ define(
 		"Vi",
 		"Sâ"
 	],
-	"dateFormat-short": "dd.MM.yyyy",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"dateFormat-full": "EEEE, d MMMM y",
-	"dateFormatItem-Md": "dd.MM",
-	"dateFormatItem-yMEd": "E, dd.MM.yyyy",
-	"months-format-wide": [
-		"Tișrei",
-		"Heșvan",
-		null,
-		null,
-		"Șevat"
+	"days-standAlone-narrow": [
+		"D",
+		"L",
+		"M",
+		"M",
+		"J",
+		"V",
+		"S"
 	],
-	"quarters-format-wide": [
-		"trimestrul I",
-		"trimestrul al II-lea",
-		"trimestrul al III-lea",
-		"trimestrul al IV-lea"
-	],
-	"days-format-wide": [
+	"days-standAlone-wide": [
 		"duminică",
 		"luni",
 		"marți",
@@ -163,7 +106,64 @@ define(
 		"joi",
 		"vineri",
 		"sâmbătă"
-	]
+	],
+	"quarters-format-abbr": [
+		"trim. I",
+		"trim. II",
+		"trim. III",
+		"trim. IV"
+	],
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"T4"
+	],
+	"quarters-format-wide": [
+		"trimestrul I",
+		"trimestrul al II-lea",
+		"trimestrul al III-lea",
+		"trimestrul al IV-lea"
+	],
+	"quarters-standAlone-abbr": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	"quarters-standAlone-narrow": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	"quarters-standAlone-wide": [
+		"trimestrul I",
+		"trimestrul al II-lea",
+		"trimestrul al III-lea",
+		"trimestrul al IV-lea"
+	],
+	"dateFormat-full": "EEEE, d MMMM y",
+	"dateFormat-long": "d MMMM y",
+	"dateFormat-medium": "dd.MM.yyyy",
+	"dateFormat-short": "dd.MM.yyyy",
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-Md": "dd.MM",
+	"dateFormatItem-MEd": "E, dd.MM",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "E, d MMM",
+	"dateFormatItem-yM": "MM.yyyy",
+	"dateFormatItem-yMd": "dd.MM.yyyy",
+	"dateFormatItem-yMEd": "E, dd.MM.yyyy",
+	"dateFormatItem-yMMM": "MMM y",
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormatItem-yQ": "'trimestrul' Q y",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"dateTimeFormat-full": "{1}, {0}",
+	"dateTimeFormat-long": "{1}, {0}",
+	"dateTimeFormat-medium": "{1}, {0}",
+	"dateTimeFormat-short": "{1}, {0}"
 }
 //end v1.x content
 );

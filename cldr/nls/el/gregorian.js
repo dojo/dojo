@@ -1,78 +1,6 @@
 define(
 //begin v1.x content
 {
-	"months-format-narrow": [
-		"Ι",
-		"Φ",
-		"Μ",
-		"Α",
-		"Μ",
-		"Ι",
-		"Ι",
-		"Α",
-		"Σ",
-		"Ο",
-		"Ν",
-		"Δ"
-	],
-	"field-weekday": "Ημέρα εβδομάδας",
-	"dateFormatItem-yyQQQQ": "QQQQ yy",
-	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yMEd": "E, d/M/yyyy",
-	"dateFormatItem-MMMEd": "E, d MMM",
-	"eraNarrow": [
-		"π.Χ.",
-		"μ.Χ."
-	],
-	"dateFormat-long": "d MMMM y",
-	"months-format-wide": [
-		"Ιανουαρίου",
-		"Φεβρουαρίου",
-		"Μαρτίου",
-		"Απριλίου",
-		"Μαΐου",
-		"Ιουνίου",
-		"Ιουλίου",
-		"Αυγούστου",
-		"Σεπτεμβρίου",
-		"Οκτωβρίου",
-		"Νοεμβρίου",
-		"Δεκεμβρίου"
-	],
-	"dayPeriods-format-wide-pm": "μ.μ.",
-	"dateFormat-full": "EEEE, d MMMM y",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMd": "d/M/yyyy",
-	"field-era": "Περίοδος",
-	"dateFormatItem-yM": "M/yyyy",
-	"months-standAlone-wide": [
-		"Ιανουάριος",
-		"Φεβρουάριος",
-		"Μάρτιος",
-		"Απρίλιος",
-		"Μάιος",
-		"Ιούνιος",
-		"Ιούλιος",
-		"Αύγουστος",
-		"Σεπτέμβριος",
-		"Οκτώβριος",
-		"Νοέμβριος",
-		"Δεκέμβριος"
-	],
-	"timeFormat-short": "h:mm a",
-	"quarters-format-wide": [
-		"1ο τρίμηνο",
-		"2ο τρίμηνο",
-		"3ο τρίμηνο",
-		"4ο τρίμηνο"
-	],
-	"timeFormat-long": "h:mm:ss a z",
-	"field-year": "Έτος",
-	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "y Q",
-	"dateFormatItem-yyyyMMMM": "LLLL y",
-	"field-hour": "Ώρα",
-	"dateFormatItem-MMdd": "dd/MM",
 	"months-format-abbr": [
 		"Ιαν",
 		"Φεβ",
@@ -87,12 +15,34 @@ define(
 		"Νοε",
 		"Δεκ"
 	],
-	"dateFormatItem-yyQ": "Q yy",
-	"timeFormat-full": "h:mm:ss a zzzz",
-	"field-day-relative+0": "Σήμερα",
-	"field-day-relative+1": "Αύριο",
-	"field-day-relative+2": "Μεθαύριο",
-	"dateFormatItem-H": "HH",
+	"months-format-narrow": [
+		"Ι",
+		"Φ",
+		"Μ",
+		"Α",
+		"Μ",
+		"Ι",
+		"Ι",
+		"Α",
+		"Σ",
+		"Ο",
+		"Ν",
+		"Δ"
+	],
+	"months-format-wide": [
+		"Ιανουαρίου",
+		"Φεβρουαρίου",
+		"Μαρτίου",
+		"Απριλίου",
+		"Μαΐου",
+		"Ιουνίου",
+		"Ιουλίου",
+		"Αυγούστου",
+		"Σεπτεμβρίου",
+		"Οκτωβρίου",
+		"Νοεμβρίου",
+		"Δεκεμβρίου"
+	],
 	"months-standAlone-abbr": [
 		"Ιαν",
 		"Φεβ",
@@ -107,79 +57,6 @@ define(
 		"Νοέ",
 		"Δεκ"
 	],
-	"quarters-format-abbr": [
-		"Τ1",
-		"Τ2",
-		"Τ3",
-		"Τ4"
-	],
-	"quarters-standAlone-wide": [
-		"1ο τρίμηνο",
-		"2ο τρίμηνο",
-		"3ο τρίμηνο",
-		"4ο τρίμηνο"
-	],
-	"dateFormatItem-HHmmss": "HH:mm:ss",
-	"dateFormatItem-M": "L",
-	"days-standAlone-wide": [
-		"Κυριακή",
-		"Δευτέρα",
-		"Τρίτη",
-		"Τετάρτη",
-		"Πέμπτη",
-		"Παρασκευή",
-		"Σάββατο"
-	],
-	"dateFormatItem-MMMMd": "d MMMM",
-	"dateFormatItem-yyMMM": "LLL yy",
-	"timeFormat-medium": "h:mm:ss a",
-	"dateFormatItem-Hm": "HH:mm",
-	"quarters-standAlone-abbr": [
-		"Τ1",
-		"Τ2",
-		"Τ3",
-		"Τ4"
-	],
-	"eraAbbr": [
-		"π.Χ.",
-		"μ.Χ."
-	],
-	"field-minute": "Λεπτό",
-	"field-dayperiod": "π.μ./μ.μ.",
-	"days-standAlone-abbr": [
-		"Κυρ",
-		"Δευ",
-		"Τρί",
-		"Τετ",
-		"Πέμ",
-		"Παρ",
-		"Σάβ"
-	],
-	"dateFormatItem-d": "d",
-	"dateFormatItem-ms": "mm:ss",
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-day-relative+-1": "Χτες",
-	"field-day-relative+-2": "Προχτές",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MEd": "E, d/M",
-	"field-day": "Ημέρα",
-	"days-format-wide": [
-		"Κυριακή",
-		"Δευτέρα",
-		"Τρίτη",
-		"Τετάρτη",
-		"Πέμπτη",
-		"Παρασκευή",
-		"Σάββατο"
-	],
-	"field-zone": "Ζώνη",
-	"dateFormatItem-yyyyMM": "MM/yyyy",
-	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"Ι",
 		"Φ",
@@ -194,10 +71,20 @@ define(
 		"Ν",
 		"Δ"
 	],
-	"field-year-relative+-1": "Προηγούμενο έτος",
-	"field-month-relative+-1": "Προηγούμενος μήνας",
-	"dateFormatItem-yyMM": "MM/yy",
-	"dateFormatItem-hm": "h:mm a",
+	"months-standAlone-wide": [
+		"Ιανουάριος",
+		"Φεβρουάριος",
+		"Μάρτιος",
+		"Απρίλιος",
+		"Μάιος",
+		"Ιούνιος",
+		"Ιούλιος",
+		"Αύγουστος",
+		"Σεπτέμβριος",
+		"Οκτώβριος",
+		"Νοέμβριος",
+		"Δεκέμβριος"
+	],
 	"days-format-abbr": [
 		"Κυρ",
 		"Δευ",
@@ -206,11 +93,6 @@ define(
 		"Πεμ",
 		"Παρ",
 		"Σαβ"
-	],
-	"dateFormatItem-yMMMd": "d MMM y",
-	"eraNames": [
-		"π.Χ.",
-		"μ.Χ."
 	],
 	"days-format-narrow": [
 		"Κ",
@@ -221,7 +103,24 @@ define(
 		"Π",
 		"Σ"
 	],
-	"field-month": "Μήνας",
+	"days-format-wide": [
+		"Κυριακή",
+		"Δευτέρα",
+		"Τρίτη",
+		"Τετάρτη",
+		"Πέμπτη",
+		"Παρασκευή",
+		"Σάββατο"
+	],
+	"days-standAlone-abbr": [
+		"Κυρ",
+		"Δευ",
+		"Τρί",
+		"Τετ",
+		"Πέμ",
+		"Παρ",
+		"Σάβ"
+	],
 	"days-standAlone-narrow": [
 		"Κ",
 		"Δ",
@@ -231,28 +130,129 @@ define(
 		"Π",
 		"Σ"
 	],
-	"dateFormatItem-MMM": "LLL",
-	"dateFormatItem-HHmm": "HH:mm",
+	"days-standAlone-wide": [
+		"Κυριακή",
+		"Δευτέρα",
+		"Τρίτη",
+		"Τετάρτη",
+		"Πέμπτη",
+		"Παρασκευή",
+		"Σάββατο"
+	],
+	"quarters-format-abbr": [
+		"Τ1",
+		"Τ2",
+		"Τ3",
+		"Τ4"
+	],
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"quarters-format-wide": [
+		"1ο τρίμηνο",
+		"2ο τρίμηνο",
+		"3ο τρίμηνο",
+		"4ο τρίμηνο"
+	],
+	"quarters-standAlone-abbr": [
+		"Τ1",
+		"Τ2",
+		"Τ3",
+		"Τ4"
+	],
+	"quarters-standAlone-wide": [
+		"1ο τρίμηνο",
+		"2ο τρίμηνο",
+		"3ο τρίμηνο",
+		"4ο τρίμηνο"
+	],
 	"dayPeriods-format-wide-am": "π.μ.",
-	"dateFormatItem-MMMMEd": "E, d MMMM",
-	"dateFormatItem-MMMMdd": "dd MMMM",
+	"dayPeriods-format-wide-pm": "μ.μ.",
+	"eraAbbr": [
+		"π.Χ.",
+		"μ.Χ."
+	],
+	"dateFormat-full": "EEEE, d MMMM y",
+	"dateFormat-long": "d MMMM y",
+	"dateFormat-medium": "d MMM y",
 	"dateFormat-short": "d/M/yy",
-	"field-second": "Δευτερόλεπτο",
+	"timeFormat-full": "h:mm:ss a zzzz",
+	"timeFormat-long": "h:mm:ss a z",
+	"timeFormat-medium": "h:mm:ss a",
+	"timeFormat-short": "h:mm a",
+	"dateFormatItem-d": "d",
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-H": "HH",
+	"dateFormatItem-HHmm": "HH:mm",
+	"dateFormatItem-HHmmss": "HH:mm:ss",
+	"dateFormatItem-hm": "h:mm a",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-M": "L",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-MEd": "E, d/M",
+	"dateFormatItem-MMdd": "dd/MM",
+	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "E, d MMM",
+	"dateFormatItem-MMMMd": "d MMMM",
+	"dateFormatItem-MMMMdd": "dd MMMM",
+	"dateFormatItem-MMMMEd": "E, d MMMM",
+	"dateFormatItem-mmss": "mm:ss",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-y": "y",
+	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yMd": "d/M/yyyy",
+	"dateFormatItem-yMEd": "E, d/M/yyyy",
+	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-yMMMd": "d MMM y",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormatItem-yQ": "y Q",
+	"dateFormatItem-yQQQ": "y QQQ",
+	"dateFormatItem-yyMM": "MM/yy",
+	"dateFormatItem-yyMMM": "LLL yy",
+	"dateFormatItem-yyQ": "Q yy",
+	"dateFormatItem-yyQQQQ": "QQQQ yy",
+	"dateFormatItem-yyyy": "y",
+	"dateFormatItem-yyyyMM": "MM/yyyy",
+	"dateFormatItem-yyyyMMMM": "LLLL y",
+	"field-era": "Περίοδος",
+	"field-year": "Έτος",
+	"field-year-relative+-1": "Προηγούμενο έτος",
+	"field-year-relative+0": "Φέτος",
+	"field-year-relative+1": "Επόμενο έτος",
+	"field-month": "Μήνας",
+	"field-month-relative+-1": "Προηγούμενος μήνας",
 	"field-month-relative+0": "Τρέχων μήνας",
 	"field-month-relative+1": "Επόμενος μήνας",
-	"dateFormatItem-Ed": "E d",
 	"field-week": "Εβδομάδα",
-	"dateFormat-medium": "d MMM y",
-	"field-year-relative+0": "Φέτος",
 	"field-week-relative+-1": "Προηγούμενη εβδομάδα",
-	"field-year-relative+1": "Επόμενο έτος",
-	"dateFormatItem-mmss": "mm:ss",
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yyyy": "y",
 	"field-week-relative+0": "Αυτήν την εβδομάδα",
-	"field-week-relative+1": "Επόμενη εβδομάδα"
+	"field-week-relative+1": "Επόμενη εβδομάδα",
+	"field-day": "Ημέρα",
+	"field-day-relative+-2": "Προχτές",
+	"field-day-relative+-1": "Χτες",
+	"field-day-relative+0": "Σήμερα",
+	"field-day-relative+1": "Αύριο",
+	"field-day-relative+2": "Μεθαύριο",
+	"field-weekday": "Ημέρα εβδομάδας",
+	"field-dayperiod": "π.μ./μ.μ.",
+	"field-hour": "Ώρα",
+	"field-minute": "Λεπτό",
+	"field-second": "Δευτερόλεπτο",
+	"field-zone": "Ζώνη",
+	"eraNames": [
+		"π.Χ.",
+		"μ.Χ."
+	],
+	"eraNarrow": [
+		"π.Χ.",
+		"μ.Χ."
+	]
 }
 //end v1.x content
 );

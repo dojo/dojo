@@ -1,17 +1,17 @@
 define(
 //begin v1.x content
 {
-	"HKD_displayName": "hongkonški dolar",
-	"CHF_displayName": "švicarski frank",
-	"JPY_symbol": "¥",
-	"CAD_displayName": "kanadski dolar",
-	"CNY_displayName": "kitajski juan renminbi",
-	"USD_symbol": "$",
 	"AUD_displayName": "avstralski dolar",
-	"JPY_displayName": "japonski jen",
-	"USD_displayName": "ameriški dolar",
+	"CAD_displayName": "kanadski dolar",
+	"CHF_displayName": "švicarski frank",
+	"CNY_displayName": "kitajski juan renminbi",
+	"EUR_displayName": "evro",
 	"GBP_displayName": "britanski funt",
-	"EUR_displayName": "evro"
+	"HKD_displayName": "hongkonški dolar",
+	"JPY_displayName": "japonski jen",
+	"JPY_symbol": "¥",
+	"USD_displayName": "ameriški dolar",
+	"USD_symbol": "$"
 }
 //end v1.x content
 );

@@ -1,17 +1,17 @@
 define(
 //begin v1.x content
 {
-	"HKD_displayName": "Hong Kong Doları",
-	"CHF_displayName": "İsviçre Frangı",
-	"JPY_symbol": "¥",
-	"CAD_displayName": "Kanada Doları",
-	"CNY_displayName": "Çin Yuanı",
-	"USD_symbol": "$",
 	"AUD_displayName": "Avustralya Doları",
-	"JPY_displayName": "Japon Yeni",
-	"USD_displayName": "ABD Doları",
+	"CAD_displayName": "Kanada Doları",
+	"CHF_displayName": "İsviçre Frangı",
+	"CNY_displayName": "Çin Yuanı",
+	"EUR_displayName": "Euro",
 	"GBP_displayName": "İngiliz Sterlini",
-	"EUR_displayName": "Euro"
+	"HKD_displayName": "Hong Kong Doları",
+	"JPY_displayName": "Japon Yeni",
+	"JPY_symbol": "¥",
+	"USD_displayName": "ABD Doları",
+	"USD_symbol": "$"
 }
 //end v1.x content
 );

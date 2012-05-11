@@ -1,36 +1,32 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yMd": "d/M/yyyy",
-	"dateFormat-medium": "d MMM y G",
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-MMdd": "dd/MM",
-	"dateFormatItem-MEd": "E, d/M",
-	"dateFormatItem-yMEd": "E, d/M/yyyy",
-	"dateFormatItem-yyMMM": "MMM y G",
-	"dateFormatItem-yMMMd": "d MMM y",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
-	"days-standAlone-narrow": [
-		"S",
-		"M",
-		"T",
-		"W",
-		"T",
-		"F",
-		"S"
-	],
-	"dateFormatItem-yyyyMEd": "E, d/M/y G",
-	"dateFormatItem-yyyyMMMM": "MMMM y G",
-	"dateFormatItem-MMMMd": "d MMMM",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-yyyyMM": "MM/y G",
+	"dateFormat-full": "EEEE, d MMMM y G",
 	"dateFormat-long": "d MMMM y G",
+	"dateFormat-medium": "d MMM y G",
 	"dateFormat-short": "dd/MM/y G",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"dateFormatItem-yM": "M/y",
-	"dayPeriods-format-narrow-pm": "p",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-MEd": "E, d/M",
+	"dateFormatItem-MMdd": "dd/MM",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "E d MMM",
+	"dateFormatItem-MMMMd": "d MMMM",
+	"dateFormatItem-yyMMM": "MMM y G",
+	"dateFormatItem-yyyyMd": "d/M/y G",
+	"dateFormatItem-yyyyMEd": "E, d/M/y G",
+	"dateFormatItem-yyyyMM": "MM/y G",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
+	"dateFormatItem-yyyyMMMM": "MMMM y G",
+	"days-format-abbr": [
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
+	],
 	"days-format-wide": [
 		"Sunday",
 		"Monday",
@@ -40,27 +36,31 @@ define(
 		"Friday",
 		"Saturday"
 	],
-	"dateFormatItem-yQ": "Q y",
-	"dateFormatItem-yMMM": "MMM y",
-	"dayPeriods-format-narrow-am": "a",
+	"days-standAlone-narrow": [
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
+	],
 	"quarters-format-wide": [
 		"1st quarter",
 		"2nd quarter",
 		"3rd quarter",
 		"4th quarter"
 	],
-	"dateFormat-full": "EEEE, d MMMM y G",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyyyMd": "d/M/y G",
-	"days-format-abbr": [
-		"Sun",
-		"Mon",
-		"Tue",
-		"Wed",
-		"Thu",
-		"Fri",
-		"Sat"
-	]
+	"dayPeriods-format-narrow-am": "a",
+	"dayPeriods-format-narrow-pm": "p",
+	"dateFormatItem-yM": "M/y",
+	"dateFormatItem-yMd": "d/M/yyyy",
+	"dateFormatItem-yMEd": "E, d/M/yyyy",
+	"dateFormatItem-yMMM": "MMM y",
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormatItem-yQ": "Q y",
+	"dateFormatItem-yQQQ": "QQQ y"
 }
 //end v1.x content
 );

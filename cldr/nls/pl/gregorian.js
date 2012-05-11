@@ -1,82 +1,6 @@
 define(
 //begin v1.x content
 {
-	"months-format-narrow": [
-		"s",
-		"l",
-		"m",
-		"k",
-		"m",
-		"c",
-		"l",
-		"s",
-		"w",
-		"p",
-		"l",
-		"g"
-	],
-	"field-weekday": "Dzień tygodnia",
-	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yMEd": "E, d.MM.yyyy",
-	"dateFormatItem-MMMEd": "E, d MMM",
-	"eraNarrow": [
-		"p.n.e.",
-		"n.e."
-	],
-	"dayPeriods-format-wide-earlyMorning": "nad ranem",
-	"dayPeriods-format-wide-morning": "rano",
-	"dateFormat-long": "d MMMM y",
-	"months-format-wide": [
-		"stycznia",
-		"lutego",
-		"marca",
-		"kwietnia",
-		"maja",
-		"czerwca",
-		"lipca",
-		"sierpnia",
-		"września",
-		"października",
-		"listopada",
-		"grudnia"
-	],
-	"dayPeriods-format-wide-evening": "wieczorem",
-	"dateTimeFormat-medium": "{1} {0}",
-	"dayPeriods-format-wide-pm": "PM",
-	"dateFormat-full": "EEEE, d MMMM y",
-	"dateFormatItem-Md": "d.MM",
-	"dayPeriods-format-wide-noon": "w południe",
-	"dateFormatItem-yMd": "d.MM.yyyy",
-	"field-era": "Era",
-	"dateFormatItem-yM": "MM.yyyy",
-	"months-standAlone-wide": [
-		"styczeń",
-		"luty",
-		"marzec",
-		"kwiecień",
-		"maj",
-		"czerwiec",
-		"lipiec",
-		"sierpień",
-		"wrzesień",
-		"październik",
-		"listopad",
-		"grudzień"
-	],
-	"timeFormat-short": "HH:mm",
-	"quarters-format-wide": [
-		"I kwartał",
-		"II kwartał",
-		"III kwartał",
-		"IV kwartał"
-	],
-	"timeFormat-long": "HH:mm:ss z",
-	"field-year": "Rok",
-	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "yyyy Q",
-	"dateFormatItem-yyyyMMMM": "LLLL y",
-	"field-hour": "Godzina",
-	"dateFormatItem-MMdd": "d.MM",
 	"months-format-abbr": [
 		"sty",
 		"lut",
@@ -91,11 +15,34 @@ define(
 		"lis",
 		"gru"
 	],
-	"dateFormatItem-yyQ": "Q yy",
-	"timeFormat-full": "HH:mm:ss zzzz",
-	"field-day-relative+0": "Dzisiaj",
-	"field-day-relative+1": "Jutro",
-	"field-day-relative+2": "Pojutrze",
+	"months-format-narrow": [
+		"s",
+		"l",
+		"m",
+		"k",
+		"m",
+		"c",
+		"l",
+		"s",
+		"w",
+		"p",
+		"l",
+		"g"
+	],
+	"months-format-wide": [
+		"stycznia",
+		"lutego",
+		"marca",
+		"kwietnia",
+		"maja",
+		"czerwca",
+		"lipca",
+		"sierpnia",
+		"września",
+		"października",
+		"listopada",
+		"grudnia"
+	],
 	"months-standAlone-abbr": [
 		"sty",
 		"lut",
@@ -110,84 +57,6 @@ define(
 		"lis",
 		"gru"
 	],
-	"quarters-format-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
-	],
-	"quarters-standAlone-wide": [
-		"I kwartał",
-		"II kwartał",
-		"III kwartał",
-		"IV kwartał"
-	],
-	"dateFormatItem-M": "L",
-	"days-standAlone-wide": [
-		"niedziela",
-		"poniedziałek",
-		"wtorek",
-		"środa",
-		"czwartek",
-		"piątek",
-		"sobota"
-	],
-	"dateFormatItem-MMMMd": "d MMMM",
-	"dateFormatItem-yyMMM": "LLL yy",
-	"timeFormat-medium": "HH:mm:ss",
-	"dateFormatItem-Hm": "HH:mm",
-	"quarters-standAlone-abbr": [
-		"1 kw.",
-		"2 kw.",
-		"3 kw.",
-		"4 kw."
-	],
-	"eraAbbr": [
-		"p.n.e.",
-		"n.e."
-	],
-	"field-minute": "Minuta",
-	"field-dayperiod": "Dayperiod",
-	"days-standAlone-abbr": [
-		"niedz.",
-		"pon.",
-		"wt.",
-		"śr.",
-		"czw.",
-		"pt.",
-		"sob."
-	],
-	"dayPeriods-format-wide-night": "w nocy",
-	"dateFormatItem-d": "d",
-	"dateFormatItem-ms": "mm:ss",
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-day-relative+-1": "Wczoraj",
-	"dateFormatItem-h": "hh a",
-	"dateTimeFormat-long": "{1} {0}",
-	"field-day-relative+-2": "Przedwczoraj",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MEd": "E, d.MM",
-	"dayPeriods-format-wide-lateMorning": "przed południem",
-	"dateTimeFormat-full": "{1} {0}",
-	"dateFormatItem-yMMMM": "LLLL y",
-	"field-day": "Dzień",
-	"days-format-wide": [
-		"niedziela",
-		"poniedziałek",
-		"wtorek",
-		"środa",
-		"czwartek",
-		"piątek",
-		"sobota"
-	],
-	"field-zone": "Strefa",
-	"dateFormatItem-yyyyMM": "MM.yyyy",
-	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"s",
 		"l",
@@ -202,9 +71,20 @@ define(
 		"l",
 		"g"
 	],
-	"field-year-relative+-1": "Zeszły rok",
-	"field-month-relative+-1": "Zeszły miesiąc",
-	"dateFormatItem-hm": "hh:mm a",
+	"months-standAlone-wide": [
+		"styczeń",
+		"luty",
+		"marzec",
+		"kwiecień",
+		"maj",
+		"czerwiec",
+		"lipiec",
+		"sierpień",
+		"wrzesień",
+		"październik",
+		"listopad",
+		"grudzień"
+	],
 	"days-format-abbr": [
 		"niedz.",
 		"pon.",
@@ -213,11 +93,6 @@ define(
 		"czw.",
 		"pt.",
 		"sob."
-	],
-	"dateFormatItem-yMMMd": "d MMM y",
-	"eraNames": [
-		"p.n.e.",
-		"n.e."
 	],
 	"days-format-narrow": [
 		"N",
@@ -228,6 +103,24 @@ define(
 		"P",
 		"S"
 	],
+	"days-format-wide": [
+		"niedziela",
+		"poniedziałek",
+		"wtorek",
+		"środa",
+		"czwartek",
+		"piątek",
+		"sobota"
+	],
+	"days-standAlone-abbr": [
+		"niedz.",
+		"pon.",
+		"wt.",
+		"śr.",
+		"czw.",
+		"pt.",
+		"sob."
+	],
 	"days-standAlone-narrow": [
 		"N",
 		"P",
@@ -237,26 +130,133 @@ define(
 		"P",
 		"S"
 	],
-	"dateFormatItem-MMM": "LLL",
-	"field-month": "Miesiąc",
-	"dayPeriods-format-wide-am": "AM",
-	"dateFormat-short": "dd.MM.yyyy",
+	"days-standAlone-wide": [
+		"niedziela",
+		"poniedziałek",
+		"wtorek",
+		"środa",
+		"czwartek",
+		"piątek",
+		"sobota"
+	],
+	"quarters-format-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"quarters-format-wide": [
+		"I kwartał",
+		"II kwartał",
+		"III kwartał",
+		"IV kwartał"
+	],
+	"quarters-standAlone-abbr": [
+		"1 kw.",
+		"2 kw.",
+		"3 kw.",
+		"4 kw."
+	],
+	"quarters-standAlone-wide": [
+		"I kwartał",
+		"II kwartał",
+		"III kwartał",
+		"IV kwartał"
+	],
 	"dayPeriods-format-wide-afternoon": "po południu",
-	"field-second": "Sekunda",
+	"dayPeriods-format-wide-am": "AM",
+	"dayPeriods-format-wide-earlyMorning": "nad ranem",
+	"dayPeriods-format-wide-evening": "wieczorem",
+	"dayPeriods-format-wide-lateMorning": "przed południem",
+	"dayPeriods-format-wide-morning": "rano",
+	"dayPeriods-format-wide-night": "w nocy",
+	"dayPeriods-format-wide-noon": "w południe",
+	"dayPeriods-format-wide-pm": "PM",
+	"eraNames": [
+		"p.n.e.",
+		"n.e."
+	],
+	"eraAbbr": [
+		"p.n.e.",
+		"n.e."
+	],
+	"dateFormat-full": "EEEE, d MMMM y",
+	"dateFormat-long": "d MMMM y",
+	"dateFormat-medium": "d MMM y",
+	"dateFormat-short": "dd.MM.yyyy",
+	"timeFormat-full": "HH:mm:ss zzzz",
+	"timeFormat-long": "HH:mm:ss z",
+	"timeFormat-medium": "HH:mm:ss",
+	"timeFormat-short": "HH:mm",
+	"dateTimeFormat-full": "{1} {0}",
+	"dateTimeFormat-long": "{1} {0}",
+	"dateTimeFormat-medium": "{1} {0}",
+	"dateTimeFormat-short": "{1} {0}",
+	"dateFormatItem-d": "d",
+	"dateFormatItem-Ed": "E, d",
+	"dateFormatItem-h": "hh a",
+	"dateFormatItem-hm": "hh:mm a",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormatItem-hms": "hh:mm:ss a",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-M": "L",
+	"dateFormatItem-Md": "d.MM",
+	"dateFormatItem-MEd": "E, d.MM",
+	"dateFormatItem-MMdd": "d.MM",
+	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "E, d MMM",
+	"dateFormatItem-MMMMd": "d MMMM",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-y": "y",
+	"dateFormatItem-yM": "MM.yyyy",
+	"dateFormatItem-yMd": "d.MM.yyyy",
+	"dateFormatItem-yMEd": "E, d.MM.yyyy",
+	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-yMMMd": "d MMM y",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormatItem-yMMMM": "LLLL y",
+	"dateFormatItem-yQ": "yyyy Q",
+	"dateFormatItem-yQQQ": "y QQQ",
+	"dateFormatItem-yyMMM": "LLL yy",
+	"dateFormatItem-yyQ": "Q yy",
+	"dateFormatItem-yyyyMM": "MM.yyyy",
+	"dateFormatItem-yyyyMMMM": "LLLL y",
+	"field-era": "Era",
+	"field-year": "Rok",
+	"field-year-relative+-1": "Zeszły rok",
+	"field-year-relative+0": "Bieżący rok",
+	"field-year-relative+1": "Przyszły rok",
+	"field-month": "Miesiąc",
+	"field-month-relative+-1": "Zeszły miesiąc",
 	"field-month-relative+0": "Bieżący miesiąc",
 	"field-month-relative+1": "Przyszły miesiąc",
-	"dateFormatItem-Ed": "E, d",
 	"field-week": "Tydzień",
-	"dateFormat-medium": "d MMM y",
-	"field-year-relative+0": "Bieżący rok",
 	"field-week-relative+-1": "Zeszły tydzień",
-	"field-year-relative+1": "Przyszły rok",
-	"dateTimeFormat-short": "{1} {0}",
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-hms": "hh:mm:ss a",
 	"field-week-relative+0": "Bieżący tydzień",
-	"field-week-relative+1": "Przyszły tydzień"
+	"field-week-relative+1": "Przyszły tydzień",
+	"field-day": "Dzień",
+	"field-day-relative+-2": "Przedwczoraj",
+	"field-day-relative+-1": "Wczoraj",
+	"field-day-relative+0": "Dzisiaj",
+	"field-day-relative+1": "Jutro",
+	"field-day-relative+2": "Pojutrze",
+	"field-weekday": "Dzień tygodnia",
+	"field-dayperiod": "Dayperiod",
+	"field-hour": "Godzina",
+	"field-minute": "Minuta",
+	"field-second": "Sekunda",
+	"field-zone": "Strefa",
+	"eraNarrow": [
+		"p.n.e.",
+		"n.e."
+	]
 }
 //end v1.x content
 );

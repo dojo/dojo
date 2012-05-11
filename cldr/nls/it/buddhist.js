@@ -1,62 +1,67 @@
 define(
 //begin v1.x content
 {
+	"eraAbbr": [
+		"EB"
+	],
+	"dateFormat-full": "EEEE d MMMM y G",
+	"dateFormat-long": "dd MMMM y G",
+	"dateFormat-medium": "dd/MMM/y G",
+	"dateFormat-short": "dd/MM/y G",
+	"dateFormatItem-d": "d",
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-Gy": "y G",
+	"dateFormatItem-h": "hh a",
+	"dateFormatItem-hm": "hh:mm a",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormatItem-hms": "hh:mm:ss a",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-M": "L",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-MEd": "E d/M",
+	"dateFormatItem-MMdd": "dd/MM",
+	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMEd": "E d MMM",
+	"dateFormatItem-MMMMdd": "dd MMMM",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-y": "y G",
 	"dateFormatItem-yM": "M/y G",
+	"dateFormatItem-yMd": "d/M/y G",
+	"dateFormatItem-yMEd": "E, d/M/y G",
+	"dateFormatItem-yMMM": "MMM y G",
+	"dateFormatItem-yMMMd": "d MMM y G",
+	"dateFormatItem-yMMMEd": "E d MMM y G",
 	"dateFormatItem-yQ": "Q-y G",
-	"dayPeriods-format-wide-pm": "p.",
+	"dateFormatItem-yQQQ": "QQQ y G",
+	"dateFormatItem-yyMM": "MM/y G",
+	"dateFormatItem-yyQ": "Q y G",
+	"dateFormatItem-yyQQQQ": "QQQQ y G",
+	"dateFormatItem-yyyyMMMM": "MMMM y G",
 	"eraNames": [
 		"EB"
 	],
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-hms": "hh:mm:ss a",
-	"dateFormatItem-yQQQ": "QQQ y G",
-	"dateFormatItem-MMdd": "dd/MM",
-	"days-standAlone-wide": [
-		"Domenica",
-		"Lunedì",
-		"Martedì",
-		"Mercoledì",
-		"Giovedì",
-		"Venerdì",
-		"Sabato"
+	"eraNarrow": [
+		"EB"
 	],
-	"dateFormatItem-MMM": "LLL",
-	"months-standAlone-narrow": [
-		"G",
-		"F",
-		"M",
-		"A",
-		"M",
-		"G",
-		"L",
-		"A",
-		"S",
-		"O",
-		"N",
-		"D"
-	],
-	"dateFormatItem-Gy": "y G",
-	"dayPeriods-format-wide-am": "m.",
-	"quarters-standAlone-abbr": [
-		"T1"
-	],
-	"dateFormatItem-y": "y G",
-	"months-standAlone-abbr": [
-		"gen",
-		"feb",
+	"days-format-abbr": [
+		"dom",
+		"lun",
 		"mar",
-		"apr",
-		"mag",
-		"giu",
-		"lug",
-		"ago",
-		"set",
-		"ott",
-		"nov",
-		"dic"
+		"mer",
+		"gio",
+		"ven",
+		"sab"
 	],
-	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y G",
+	"days-format-wide": [
+		"domenica",
+		"lunedì",
+		"martedì",
+		"mercoledì",
+		"giovedì",
+		"venerdì",
+		"sabato"
+	],
 	"days-standAlone-narrow": [
 		"D",
 		"L",
@@ -66,40 +71,38 @@ define(
 		"V",
 		"S"
 	],
-	"eraAbbr": [
-		"EB"
+	"days-standAlone-wide": [
+		"Domenica",
+		"Lunedì",
+		"Martedì",
+		"Mercoledì",
+		"Giovedì",
+		"Venerdì",
+		"Sabato"
 	],
-	"dateFormatItem-yyyyMMMM": "MMMM y G",
-	"dateFormat-long": "dd MMMM y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-yyMM": "MM/y G",
-	"dateFormat-medium": "dd/MMM/y G",
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-yyQQQQ": "QQQQ y G",
-	"dateFormatItem-yMd": "d/M/y G",
+	"quarters-format-abbr": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	"quarters-format-wide": [
+		"1o trimestre",
+		"2o trimestre",
+		"3o trimestre",
+		"4o trimestre"
+	],
+	"quarters-standAlone-abbr": [
+		"T1"
+	],
 	"quarters-standAlone-wide": [
 		"1º trimestre",
 		"2º trimestre",
 		"3º trimestre",
 		"4º trimestre"
 	],
-	"dateFormatItem-ms": "mm:ss",
-	"months-standAlone-wide": [
-		"Gennaio",
-		"Febbraio",
-		"Marzo",
-		"Aprile",
-		"Maggio",
-		"Giugno",
-		"Luglio",
-		"Agosto",
-		"Settembre",
-		"Ottobre",
-		"Novembre",
-		"Dicembre"
-	],
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyQ": "Q y G",
+	"dayPeriods-format-wide-am": "m.",
+	"dayPeriods-format-wide-pm": "p.",
 	"months-format-abbr": [
 		"gen",
 		"feb",
@@ -114,25 +117,6 @@ define(
 		"nov",
 		"dic"
 	],
-	"quarters-format-abbr": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
-	],
-	"dateFormatItem-MMMMdd": "dd MMMM",
-	"days-format-abbr": [
-		"dom",
-		"lun",
-		"mar",
-		"mer",
-		"gio",
-		"ven",
-		"sab"
-	],
-	"dateFormatItem-M": "L",
-	"dateFormatItem-yMMMd": "d MMM y G",
-	"dateFormatItem-MEd": "E d/M",
 	"months-format-narrow": [
 		"G",
 		"F",
@@ -147,12 +131,6 @@ define(
 		"N",
 		"D"
 	],
-	"dateFormatItem-hm": "hh:mm a",
-	"dateFormat-short": "dd/MM/y G",
-	"dateFormatItem-yMMMEd": "E d MMM y G",
-	"dateFormat-full": "EEEE d MMMM y G",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E, d/M/y G",
 	"months-format-wide": [
 		"gennaio",
 		"febbraio",
@@ -167,26 +145,48 @@ define(
 		"novembre",
 		"dicembre"
 	],
-	"dateFormatItem-d": "d",
-	"quarters-format-wide": [
-		"1o trimestre",
-		"2o trimestre",
-		"3o trimestre",
-		"4o trimestre"
+	"months-standAlone-abbr": [
+		"gen",
+		"feb",
+		"mar",
+		"apr",
+		"mag",
+		"giu",
+		"lug",
+		"ago",
+		"set",
+		"ott",
+		"nov",
+		"dic"
 	],
-	"eraNarrow": [
-		"EB"
+	"months-standAlone-narrow": [
+		"G",
+		"F",
+		"M",
+		"A",
+		"M",
+		"G",
+		"L",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
 	],
-	"days-format-wide": [
-		"domenica",
-		"lunedì",
-		"martedì",
-		"mercoledì",
-		"giovedì",
-		"venerdì",
-		"sabato"
-	],
-	"dateFormatItem-h": "hh a"
+	"months-standAlone-wide": [
+		"Gennaio",
+		"Febbraio",
+		"Marzo",
+		"Aprile",
+		"Maggio",
+		"Giugno",
+		"Luglio",
+		"Agosto",
+		"Settembre",
+		"Ottobre",
+		"Novembre",
+		"Dicembre"
+	]
 }
 //end v1.x content
 );

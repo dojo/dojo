@@ -133,6 +133,10 @@ lang.mixin(robot, {
 
 		kernel.setContext(iframe.contentWindow, iframe.contentWindow.document);
 
+		// Also set pointers inside robot, for easy access via AMD (where there is no dojo variable)
+		robot.window = iframe.contentWindow;
+		robot.doc = iframe.contentWindow.document;
+
 		// TODO: shouldn't this wait until dojo has finished loading in the iframe?  See require code in onIframeLoad().
 		var win = kernel.global;
 		if(win.dojo){

@@ -27,7 +27,7 @@ if(!window["OpenAjax"]){
 		var t = true;
 		var f = false;
 		var g = window;
-		var libs;
+		var libs = {};
 		var ooh = "org.openajax.hub.";
 
 		var h = {};
@@ -36,7 +36,6 @@ if(!window["OpenAjax"]){
 		h.implVersion = "0.6";
 		h.specVersion = "0.6";
 		h.implExtraData = {};
-		var libs = {};
 		h.libraries = libs;
 
 		h.registerLibrary = function(prefix, nsURL, version, extra){
@@ -99,10 +98,8 @@ if(!window["OpenAjax"]){
 				}
 				if(typeof tree.c[token] == "undefined"){
 					tree.c[token] = { c: {}, s: [] };
-					this._subscribe(tree.c[token], path, index + 1, sub);
-				}else{
-					this._subscribe(tree.c[token], path, index + 1, sub);
 				}
+				this._subscribe(tree.c[token], path, index + 1, sub);
 			}
 		};
 
@@ -158,7 +155,7 @@ if(!window["OpenAjax"]){
 				else{
 					var callbacks = tree.s;
 					var max = callbacks.length;
-					for(var i = 0; i < max; i++)
+					for(var i = 0; i < max; i++){
 						if(sid == callbacks[i].sid){
 							if(this._pubDepth > 0){
 								callbacks[i].cb = null;
@@ -168,13 +165,14 @@ if(!window["OpenAjax"]){
 								callbacks.splice(i, 1);
 							return;
 						}
+					}
 				}
 			}
 		};
+
 		// The following function is provided for automatic testing purposes.
 		// It is not expected to be deployed in run-time OpenAjax Hub implementations.
-		h.reinit = function()
-		{
+		h.reinit = function(){
 			for (var lib in OpenAjax.hub.libraries) {
 				delete OpenAjax.hub.libraries[lib];
 			}
@@ -188,6 +186,7 @@ if(!window["OpenAjax"]){
 			OpenAjax._pubDepth = 0;
 		};
 	};
+
 	// Register the OpenAjax Hub itself as a library.
 	OpenAjax.hub.registerLibrary("OpenAjax", "http://openajax.org/hub", "0.6", {});
 

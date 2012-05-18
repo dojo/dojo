@@ -86,7 +86,7 @@ currency.regexp = function(/*dnumber.__RegexpOptions?*/ options){
 
 /*=====
 var __ParseOptions = function(kwargs){};
-lang.extend(_ParseOptions, {
+lang.extend(__ParseOptions, {
 	// type: String?
 	//		Should not be set.  Value is assumed to be currency.
 	// currency: String?

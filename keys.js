@@ -3,7 +3,6 @@ define(["./_base/kernel", "./sniff"], function(dojo, has) {
 	//		dojo/keys
 	// summary:
 	//		key constants
-// Constants
 
 // Public: client code should test
 // keyCode against these named constants, as the

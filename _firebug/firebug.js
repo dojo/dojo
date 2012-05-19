@@ -339,7 +339,6 @@ define([
 			console._closeDomInspector();
 		},
 		recss: function(){
-			// http://turtle.dojotoolkit.org/~david/recss.html
 			// this is placed in dojo since the console is most likely
 			// in another window and dojo is easilly accessible
 			var i,a,s;a=document.getElementsByTagName('link');

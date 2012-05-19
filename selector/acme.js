@@ -2,9 +2,9 @@ define([
 	"../dom", "../sniff", "../_base/array", "../_base/lang", "../_base/window"
 ], function(dom, has, array, lang, win){
   //  module:
-  //	dojo/selector/acme
+  //    dojo/selector/acme
   //  summary:
-  //	This module defines the Acme selector engine
+  //    This module defines the Acme selector engine
 
 /*
 	acme architectural overview:

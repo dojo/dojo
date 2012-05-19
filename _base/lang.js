@@ -299,19 +299,19 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			return it && !lang.isFunction(it) && /\{\s*\[native code\]\s*\}/.test(String(it)); // Boolean
 		},
 
-		extend: function(constructor, props){
+		extend: function(ctor, props){
 			// summary:
 			//		Adds all properties and methods of props to constructor's
 			//		prototype, making them available to all instances created with
 			//		constructor.
-			// constructor: Object
+			// ctor: Object
 			//		Target constructor to extend.
-			// props: Object...
-			//		One or more objects to mix into constructor.prototype
+			// props: Object
+			//		One or more objects to mix into ctor.prototype
 			for(var i=1, l=arguments.length; i<l; i++){
-				lang._mixin(constructor.prototype, arguments[i]);
+				lang._mixin(ctor.prototype, arguments[i]);
 			}
-			return constructor; // Object
+			return ctor; // Object
 		},
 
 		_hitchArgs: function(scope, method){

@@ -1,5 +1,11 @@
-define(["./_base/lang", "./_base/array", "./number", "./i18n", "./i18n!./cldr/nls/currency", "./cldr/monetary"],
-	function(lang, darray, dnumber, i18n, nlsCurrency, cldrMonetary) {
+define([
+	"./_base/array",
+	/*===== "./_base/declare", =====*/
+	"./_base/lang",
+	"./number",
+	"./i18n", "./i18n!./cldr/nls/currency",
+	"./cldr/monetary"
+], function(darray, lang, /*===== declare, =====*/ dnumber, i18n, nlsCurrency, cldrMonetary) {
 
 // module:
 //		dojo/currency

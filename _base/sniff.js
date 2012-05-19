@@ -1,4 +1,4 @@
-define(["./kernel", "../sniff"], function(dojo, has){
+define(["./kernel", "./lang", "../sniff"], function(dojo, lang, has){
 	// module:
 	//		dojo/sniff
 	// summary:
@@ -9,99 +9,81 @@ define(["./kernel", "../sniff"], function(dojo, has){
 		return has;
 	}
 
-	dojo.isBrowser = true;
+	// no idea what this is for, or if it's used
 	dojo._name = "browser";
 
-	/*=====
-	dojo.isBrowser = {
-		//	example:
-		//	| if(dojo.isBrowser){ ... }
-	};
-
-	dojo.isFF = {
-		//	example:
-		//	| if(dojo.isFF > 1){ ... }
-	};
-
-	dojo.isIE = {
-		// example:
-		//	| if(dojo.isIE > 6){
-		//	|		// we are IE7
-		//	| }
-	};
-
-	dojo.isSafari = {
-		//	example:
-		//	| if(dojo.isSafari){ ... }
-		//	example:
-		//		Detect iPhone:
-		//	| if(dojo.isSafari && navigator.userAgent.indexOf("iPhone") != -1){
-		//	|		// we are iPhone. Note, iPod touch reports "iPod" above and fails this test.
-		//	| }
-	};
-
-	dojo.mixin(dojo, {
+	lang.mixin(dojo, {
 		// isBrowser: Boolean
 		//		True if the client is a web-browser
 		isBrowser: true,
-		//	isFF: Number | undefined
+
+		// isFF: Number | undefined
 		//		Version as a Number if client is FireFox. undefined otherwise. Corresponds to
 		//		major detected FireFox version (1.5, 2, 3, etc.)
-		isFF: 2,
-		//	isIE: Number | undefined
+		isFF: has("ff"),
+
+		// isIE: Number | undefined
 		//		Version as a Number if client is MSIE(PC). undefined otherwise. Corresponds to
 		//		major detected IE version (6, 7, 8, etc.)
-		isIE: 6,
-		//	isKhtml: Number | undefined
+		isIE: has("ie"),
+
+		// isKhtml: Number | undefined
 		//		Version as a Number if client is a KHTML browser. undefined otherwise. Corresponds to major
 		//		detected version.
-		isKhtml: 0,
-		//	isWebKit: Number | undefined
+		isKhtml: has("khtml"),
+
+		// isWebKit: Number | undefined
 		//		Version as a Number if client is a WebKit-derived browser (Konqueror,
 		//		Safari, Chrome, etc.). undefined otherwise.
-		isWebKit: 0,
-		//	isMozilla: Number | undefined
+		isWebKit: has("webkit"),
+
+		// isMozilla: Number | undefined
 		//		Version as a Number if client is a Mozilla-based browser (Firefox,
 		//		SeaMonkey). undefined otherwise. Corresponds to major detected version.
-		isMozilla: 0,
-		//	isOpera: Number | undefined
+		isMozilla: has("mozilla"),
+		// isMoz: Number | undefined
+		//		Version as a Number if client is a Mozilla-based browser (Firefox,
+		//		SeaMonkey). undefined otherwise. Corresponds to major detected version.
+		isMoz: has("mozilla"),
+
+		// isOpera: Number | undefined
 		//		Version as a Number if client is Opera. undefined otherwise. Corresponds to
 		//		major detected version.
-		isOpera: 0,
-		//	isSafari: Number | undefined
+		isOpera: has("opera"),
+
+		// isSafari: Number | undefined
 		//		Version as a Number if client is Safari or iPhone. undefined otherwise.
-		isSafari: 0,
-		//	isChrome: Number | undefined
+		isSafari: has("safari"),
+
+		// isChrome: Number | undefined
 		//		Version as a Number if client is Chrome browser. undefined otherwise.
-		isChrome: 0,
-		//	isMac: Boolean
+		isChrome: has("chrome"),
+
+		// isMac: Boolean
 		//		True if the client runs on Mac
-		isMac: 0,
+		isMac: has("mac"),
+
 		// isIos: Boolean
 		//		True if client is iPhone, iPod, or iPad
-		isIos: 0,
+		isIos: has("ios"),
+
 		// isAndroid: Number | undefined
 		//		Version as a Number if client is android browser. undefined otherwise.
-		isAndroid: 0,
+		isAndroid: has("android"),
+
 		// isWii: Boolean
 		//		True if client is Wii
-		isWii: 0
-	});
-	=====*/
+		isWii: has("wii"),
 
-	dojo.isOpera = has("opera");
-	dojo.isAIR = has("air");
-	dojo.isKhtml = has("khtml");
-	dojo.isWebKit = has("webkit");
-	dojo.isChrome = has("chrome");
-	dojo.isMac = has("mac");
-	dojo.isSafari = has("safari");
-	dojo.isMozilla = dojo.isMoz = has("mozilla");
-	dojo.isIE = has("ie");
-	dojo.isFF = has("ff");
-	dojo.isQuirks = has("quirks");
-	dojo.isIos = has("ios");
-	dojo.isAndroid = has("android");
+		// isQuirks: Boolean
+		//		Page is in quirks mode.
+		isQuirks: has("quirks"),
+
+		// isAir: Boolean
+		//		True if client is Adobe Air
+		isAir: has("air")
+	});
+
 
 	dojo.locale = dojo.locale || (dojo.isIE ? navigator.userLanguage : navigator.language).toLowerCase();
 

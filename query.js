@@ -476,7 +476,6 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		see dojo.map(). The primary difference is that the acted-on
 			//		array is implicitly this NodeList and the return is a
 			//		dojo.NodeList (a subclass of Array)
-			///return d.map(this, func, obj, d.NodeList); // dojo.NodeList
 			return this._wrap(array.map(this, func, obj), this); // dojo.NodeList
 		},
 

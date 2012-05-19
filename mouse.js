@@ -17,6 +17,7 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 
     has.add("dom-quirks", win.doc && win.doc.compatMode == "BackCompat");
 	has.add("events-mouseenter", win.doc && "onmouseenter" in win.doc.createElement("div"));
+	has.add("events-mousewheel", 'onmousewheel' in win.global);
 
 	var mouseButtons;
 	if(has("dom-quirks") || !has("dom-addeventlistener")){
@@ -113,6 +114,17 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 		};
 		return handler;
 	}
+	var wheel;
+	if(has("events-mousewheel")){
+		wheel = 'onmousewheel';
+	}else{ //firefox
+		wheel = function(node, listener){
+			return on(node, 'DOMMouseScroll', function(evt){
+				evt.wheelDelta = -evt.detail;
+				listener.call(this, evt);
+			});
+		};
+	}
 	return {
 		_eventHandler: eventHandler,		// for dojo/touch
 
@@ -125,6 +137,11 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 		//		This is an extension event for the mouseleave that IE provides, emulating the
 		//		behavior on other browsers.
 		leave: eventHandler("mouseout"),
+
+		// wheel: Normalized Mouse Wheel Event
+		//		This is an extension event for the mousewheel that non-Mozilla browsers provide,
+		//		emulating the behavior on Mozilla based browsers.
+		wheel: wheel,
 
 		isLeft: mouseButtons.isLeft,
 		/*=====

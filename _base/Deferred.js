@@ -2,17 +2,18 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 	// module:
 	//		dojo/_base/Deferred
 	// summary:
-	//		This module defines dojo.Deferred.
+	//		Deprecated.   This module defines the legacy dojo/_base/Deferred API.
+	//		New code should use dojo/Deferred instead.
 
 	var mutator = function(){};
 	var freeze = Object.freeze || function(){};
 	// A deferred provides an API for creating and resolving a promise.
-	dojo.Deferred = function(/*Function?*/ canceller){
+	var Deferred = dojo.Deferred = function(/*Function?*/ canceller){
 		// summary:
 		//		Deferreds provide a generic means for encapsulating an asynchronous
 		//		operation and notifying users of the completion and result of the operation.
 		// description:
-		//		The dojo.Deferred API is based on the concept of promises that provide a
+		//		The Deferred API is based on the concept of promises that provide a
 		//		generic interface into the eventual completion of an asynchronous action.
 		//		The motivation for promises fundamentally is about creating a
 		//		separation of concerns that allows one to achieve the same type of
@@ -26,7 +27,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 		//		separated from the concerns of asynchronous interaction (which are
 		//		handled by the promise).
 		//
-		//		The dojo.Deferred is a type of promise that provides methods for fulfilling the
+		//		The Deferred is a type of promise that provides methods for fulfilling the
 		//		promise with a successful result or an error. The most important method for
 		//		working with Dojo's promises is the then() method, which follows the
 		//		CommonJS proposed promise API. An example of using a Dojo promise:
@@ -41,7 +42,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 		//		The .then() call returns a new promise that represents the result of the
 		//		execution of the callback. The callbacks will never affect the original promises value.
 		//
-		//		The dojo.Deferred instances also provide the following functions for backwards compatibility:
+		//		The Deferred instances also provide the following functions for backwards compatibility:
 		//
 		//			* addCallback(handler)
 		//			* addErrback(handler)
@@ -59,7 +60,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 		//		another kind of error), so the errbacks should be prepared to
 		//		handle that error for cancellable Deferreds.
 		// example:
-		//	|	var deferred = new dojo.Deferred();
+		//	|	var deferred = new Deferred();
 		//	|	setTimeout(function(){ deferred.callback({success: true}); }, 1000);
 		//	|	return deferred;
 		// example:
@@ -102,7 +103,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 		//
 		//		|	// Deferred style:
 		//		|	function renderLotsOfData(data){
-		//		|		var d = new dojo.Deferred();
+		//		|		var d = new Deferred();
 		//		|		try{
 		//		|			for(var x in data){
 		//		|				renderDataitem(data[x]);
@@ -128,7 +129,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 		//
 		//		|	// Deferred style and async func
 		//		|	function renderLotsOfData(data){
-		//		|		var d = new dojo.Deferred();
+		//		|		var d = new Deferred();
 		//		|		setTimeout(function(){
 		//		|			try{
 		//		|				for(var x in data){
@@ -234,7 +235,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 			// returns:
 			// 		Returns this deferred object.
 			this.then(callback, errback, mutator);
-			return this;	// dojo.Deferred
+			return this;	// Deferred
 		};
 		// provide the implementation of the promise
 		promise.then = this.then = function(/*Function?*/resolvedCallback, /*Function?*/errorCallback, /*Function?*/progressCallback){
@@ -263,7 +264,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 			//		|		then(printResult, onError);
 			//		|	>44
 			//
-			var returnDeferred = progressCallback == mutator ? this : new dojo.Deferred(promise.cancel);
+			var returnDeferred = progressCallback == mutator ? this : new Deferred(promise.cancel);
 			var listener = {
 				resolved: resolvedCallback,
 				error: errorCallback,
@@ -298,13 +299,13 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 		};
 		freeze(promise);
 	};
-	lang.extend(dojo.Deferred, {
+	lang.extend(Deferred, {
 		addCallback: function (/*Function*/ callback){
 			// summary:
 			// 		Adds successful callback for this deferred instance.
 			// returns:
 			// 		Returns this deferred object.
-			return this.addCallbacks(lang.hitch.apply(dojo, arguments));	// dojo.Deferred
+			return this.addCallbacks(lang.hitch.apply(dojo, arguments));	// Deferred
 		},
 
 		addErrback: function (/*Function*/ errback){
@@ -312,7 +313,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 			// 		Adds error callback for this deferred instance.
 			// returns:
 			// 		Returns this deferred object.
-			return this.addCallbacks(null, lang.hitch.apply(dojo, arguments));	// dojo.Deferred
+			return this.addCallbacks(null, lang.hitch.apply(dojo, arguments));	// Deferred
 		},
 
 		addBoth: function (/*Function*/ callback){
@@ -321,12 +322,12 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 			// returns:
 			// 		Returns this deferred object.
 			var enclosed = lang.hitch.apply(dojo, arguments);
-			return this.addCallbacks(enclosed, enclosed);	// dojo.Deferred
+			return this.addCallbacks(enclosed, enclosed);	// Deferred
 		},
 		fired: -1
 	});
 
-	dojo.Deferred.when = dojo.when = when;
+	Deferred.when = dojo.when = when;
 
-	return dojo.Deferred;
+	return Deferred;
 });

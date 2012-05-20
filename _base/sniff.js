@@ -85,7 +85,7 @@ define(["./kernel", "./lang", "../sniff"], function(dojo, lang, has){
 	});
 
 
-	dojo.locale = dojo.locale || (dojo.isIE ? navigator.userLanguage : navigator.language).toLowerCase();
+	dojo.locale = dojo.locale || (has("ie") ? navigator.userLanguage : navigator.language).toLowerCase();
 
 	return has;
 });

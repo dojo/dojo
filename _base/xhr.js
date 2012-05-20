@@ -3,9 +3,9 @@ define([
 	"./config", "./json", "./lang", "./array", "../on"
 ], function(dojo, has, require, ioq, dom, domForm, deferred, config, json, lang, array, on){
 	// module:
-	//		dojo/_base.xhr
+	//		dojo/_base/xhr
 	// summary:
-	//		This modules defines the dojo.xhr* API.
+	//		Deprecated.   Use dojo/request instead.
 
 	has.add("native-xhr", function() {
 		// if true, the environment has a native XHR implementation

@@ -7,21 +7,19 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/connect", ".
 
 dojo.behavior = new function(){
 	// summary:
-	//		Utility for unobtrusive/progressive event binding, DOM traversal,
-	//		and manipulation.
-	//
+	//		Deprecated.   dojo/behavior's functionality can be achieved using event delegation using dojo/on
+	//		and on.selector().
 	// description:
-	//
 	//		A very simple, lightweight mechanism for applying code to
-	//		existing documents, based around `dojo.query` (CSS3 selectors) for node selection,
-	//		and a simple two-command API: `dojo.behavior.add()` and `dojo.behavior.apply()`;
+	//		existing documents, based around `dojo/query` (CSS3 selectors) for node selection,
+	//		and a simple two-command API: `add()` and `apply()`;
 	//
 	//		Behaviors apply to a given page, and are registered following the syntax
-	//		options described by `dojo.behavior.add` to match nodes to actions, or "behaviors".
+	//		options described by `add()` to match nodes to actions, or "behaviors".
 	//
 	//		Added behaviors are applied to the current DOM when .apply() is called,
 	//		matching only new nodes found since .apply() was last called.
-	//
+
 	function arrIn(obj, name){
 		if(!obj[name]){ obj[name] = []; }
 		return obj[name];
@@ -96,7 +94,7 @@ dojo.behavior = new function(){
 		// example:
 		//		 If property is a string, a dojo.publish will be issued on the channel:
 		//
-		//	|	dojo.behavior.add({
+		//	|	behavior.add({
 		//	|		// dojo.publish() whenever class="noclick" found on anchors
 		//	|		"a.noclick": "/got/newAnchor",
 		//	|		"div.wrapper": {
@@ -112,7 +110,7 @@ dojo.behavior = new function(){
 		//		Scoping can be accomplished by passing an object as a property to
 		//		a connection handle (on*):
 		//
-		//	|	dojo.behavior.add({
+		//	|	behavior.add({
 		//	|		 	"#id": {
 		//	|				// like calling dojo.hitch(foo,"bar"). execute foo.bar() in scope of foo
 		//	|				"onmouseenter": { targetObj: foo, targetFunc: "bar" },
@@ -121,9 +119,9 @@ dojo.behavior = new function(){
 		//	|	});
 		//
 		// example:
-		//		Bahaviors match on CSS3 Selectors, powered by dojo.query. Example selectors:
+		//		Behaviors match on CSS3 Selectors, powered by dojo/query. Example selectors:
 		//
-		//	|	dojo.behavior.add({
+		//	|	behavior.add({
 		//	|		// match all direct descendants
 		//	|		"#id4 > *": function(element){
 		//	|			// ...

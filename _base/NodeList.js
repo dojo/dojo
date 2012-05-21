@@ -1,16 +1,26 @@
 define(["./kernel", "../query", "./array", "./html", "../NodeList-dom"], function(dojo, query, array){
-  //  module:
-  //    dojo/_base/NodeList
-  //  summary:
-  //    This module defines dojo.NodeList.
+	// module:
+	//    dojo/_base/NodeList
+	// summary:
+	//		This module extends dojo/query/NodeList with the legacy connect(), coords(),
+	//		blur(), focus(), change(), click(), error(), keydown(), keypress(),
+	//		keyup(), load(), mousedown(), mouseenter(), mouseleave(), mousemove(),
+	//		mouseout(), mouseover(), mouseup(), and submit() methods.
  
-	var NodeList = query.NodeList;
+	var NodeList = query.NodeList,
+		nlp = NodeList.prototype;
 
+	nlp.connect = NodeList._adaptAsForEach(function(){
+		// don't bind early to dojo.connect since we no longer explicitly depend on it
+		return dojo.connect.apply(this, arguments);
+	});
 	/*=====
-	NodeList.prototype.connect = function(methodName, objOrFunc, funcName){
+	nlp.connect = function(methodName, objOrFunc, funcName){
 		// summary:
-		//		attach event handlers to every item of the NodeList. Uses dojo.connect()
-		//		so event properties are normalized
+		//		Attach event handlers to every item of the NodeList. Uses dojo.connect()
+		//		so event properties are normalized.
+		//
+		//		Application must manually require() "dojo/_base/connect" before using this method.
 		// methodName: String
 		//		the name of the method to attach to. For DOM events, this should be
 		//		the lower-case name of the event
@@ -25,31 +35,30 @@ define(["./kernel", "../query", "./array", "./html", "../NodeList-dom"], functio
 		//		event. May also be a function reference.
 		// example:
 		//		add an onclick handler to every button on the page
-		//		|	dojo.query("div:nth-child(odd)").connect("onclick", function(e){
+		//		|	query("div:nth-child(odd)").connect("onclick", function(e){
 		//		|		console.log("clicked!");
 		//		|	});
 		// example:
 		//		attach foo.bar() to every odd div's onmouseover
-		//		|	dojo.query("div:nth-child(odd)").connect("onmouseover", foo, "bar");
+		//		|	query("div:nth-child(odd)").connect("onmouseover", foo, "bar");
+
+		return null;	// NodeList
 	};
-	NodeList.prototype.coords = function(){
+	=====*/
+
+	nlp.coords = NodeList._adaptAsMap(dojo.coords);
+	/*=====
+	nlp.coords = function(){
 		// summary:
 		//		Deprecated: Use position() for border-box x/y/w/h
 		//		or marginBox() for margin-box w/h/l/t.
 		//		Returns the box objects of all elements in a node list as
-		//		an Array (*not* a NodeList). Acts like `dojo.coords`, though assumes
+		//		an Array (*not* a NodeList). Acts like `domGeom.coords`, though assumes
 		//		the node passed is each node in this list.
 
-		return dojo.map(this, dojo.coords); // Array
+		return []; // Array
 	};
 	=====*/
-	var nlp = NodeList.prototype;
-
-	// don't bind early to dojo.connect since we no longer explicitly depend on it
-	nlp.connect = NodeList._adaptAsForEach(function(){
-		return dojo.connect.apply(this, arguments);
-	});
-	nlp.coords = NodeList._adaptAsMap(dojo.coords);
 
 	NodeList.events = [
 		// summary:
@@ -92,5 +101,5 @@ define(["./kernel", "../query", "./array", "./html", "../NodeList-dom"], functio
 	);
 
 	dojo.NodeList = NodeList;
-	return dojo.NodeList;
+	return NodeList;
 });

@@ -238,7 +238,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	function safeMixin(target, source){
 		// summary:
 		//		Mix in properties skipping a constructor and decorating functions
-		//		like it is done by dojo.declare.
+		//		like it is done by declare().
 		// target: Object
 		//		Target object to accept new properties.
 		// source: Object
@@ -246,17 +246,17 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		// description:
 		//		This function is used to mix in properties like lang.mixin does,
 		//		but it skips a constructor property and decorates functions like
-		//		dojo.declare does.
+		//		declare() does.
 		//
 		//		It is meant to be used with classes and objects produced with
-		//		dojo.declare. Functions mixed in with dojo.safeMixin can use
+		//		declare. Functions mixed in with dojo.safeMixin can use
 		//		this.inherited() like normal methods.
 		//
 		//		This function is used to implement extend() method of a constructor
-		//		produced with dojo.declare().
+		//		produced with declare().
 		//
 		// example:
-		//	|	var A = dojo.declare(null, {
+		//	|	var A = declare(null, {
 		//	|		m1: function(){
 		//	|			console.log("A.m1");
 		//	|		},
@@ -264,7 +264,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|			console.log("A.m2");
 		//	|		}
 		//	|	});
-		//	|	var B = dojo.declare(A, {
+		//	|	var B = declare(A, {
 		//	|		m1: function(){
 		//	|			this.inherited(arguments);
 		//	|			console.log("B.m1");
@@ -330,7 +330,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		return declare([this].concat(mixins));
 	}
 
-	// chained constructor compatible with the legacy dojo.declare()
+	// chained constructor compatible with the legacy declare()
 	function chainedConstructor(bases, ctorSpecial){
 		return function(){
 			var a = arguments, args = a, a0 = a[0], f, i, m,
@@ -342,7 +342,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			}
 
 			//this._inherited = {};
-			// perform the shaman's rituals of the original dojo.declare()
+			// perform the shaman's rituals of the original declare()
 			// 1) call two types of the preamble
 			if(ctorSpecial && (a0 && a0.preamble || this.preamble)){
 				// full blown ritual
@@ -393,7 +393,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	}
 
 
-	// chained constructor compatible with the legacy dojo.declare()
+	// chained constructor compatible with the legacy declare()
 	function singleConstructor(ctor, ctorSpecial){
 		return function(){
 			var a = arguments, t = a, a0 = a[0], f;
@@ -404,7 +404,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			}
 
 			//this._inherited = {};
-			// perform the shaman's rituals of the original dojo.declare()
+			// perform the shaman's rituals of the original declare()
 			// 1) call two types of the preamble
 			if(ctorSpecial){
 				// full blown ritual
@@ -449,7 +449,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			}
 
 			//this._inherited = {};
-			// perform the shaman's rituals of the original dojo.declare()
+			// perform the shaman's rituals of the original declare()
 			// 1) do not call the preamble
 			// 2) call the top constructor (it can use this.inherited())
 			for(; f = bases[i]; ++i){ // intentional assignment
@@ -522,7 +522,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		The optional method name. Should be the same as the caller's
 			 //		name. Usually "name" is specified in complex dynamic cases, when
 			 //		the calling method was dynamically added, undecorated by
-			 //		dojo.declare, and it cannot be determined.
+			 //		declare(), and it cannot be determined.
 			 // args: Arguments
 			 //		The caller supply this argument, which should be the original
 			 //		"arguments".
@@ -536,7 +536,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		if "true" was specified as newArgs.
 			 // description:
 			 //		This method is used inside method of classes produced with
-			 //		dojo.declare to call a super method (next in the chain). It is
+			 //		declare() to call a super method (next in the chain). It is
 			 //		used for manually controlled chaining. Consider using the regular
 			 //		chaining, because it is faster. Use "this.inherited()" only in
 			 //		complex cases.
@@ -560,7 +560,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		method (using a methoid property "nom").
 			 //
 			 // example:
-			 //	|	var B = dojo.declare(A, {
+			 //	|	var B = declare(A, {
 			 //	|		method1: function(a, b, c){
 			 //	|			this.inherited(arguments);
 			 //	|		},
@@ -575,7 +575,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //	|		this.inherited("method3", arguments);
 			 //	|	};
 			 // example:
-			 //	|	var B = dojo.declare(A, {
+			 //	|	var B = declare(A, {
 			 //	|		method: function(a, b){
 			 //	|			var super = this.inherited(arguments, true);
 			 //	|			// ...
@@ -596,7 +596,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		The optional method name. Should be the same as the caller's
 			 //		name. Usually "name" is specified in complex dynamic cases, when
 			 //		the calling method was dynamically added, undecorated by
-			 //		dojo.declare, and it cannot be determined.
+			 //		declare(), and it cannot be determined.
 			 // args: Arguments
 			 //		The caller supply this argument, which should be the original
 			 //		"arguments".
@@ -608,7 +608,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		method, it returns it, or "undefined" if not found.
 			 //
 			 // example:
-			 //	|	var B = dojo.declare(A, {
+			 //	|	var B = declare(A, {
 			 //	|		method: function(a, b){
 			 //	|			var super = this.getInherited(arguments);
 			 //	|			// ...
@@ -633,23 +633,23 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		otherwise.
 			 // description:
 			 //		This method is used with instances of classes produced with
-			 //		dojo.declare to determine of they support a certain interface or
+			 //		declare() to determine of they support a certain interface or
 			 //		not. It models "instanceof" operator.
 			 //
 			 // example:
-			 //	|	var A = dojo.declare(null, {
+			 //	|	var A = declare(null, {
 			 //	|		// constructor, properties, and methods go here
 			 //	|		// ...
 			 //	|	});
-			 //	|	var B = dojo.declare(null, {
+			 //	|	var B = declare(null, {
 			 //	|		// constructor, properties, and methods go here
 			 //	|		// ...
 			 //	|	});
-			 //	|	var C = dojo.declare([A, B], {
+			 //	|	var C = declare([A, B], {
 			 //	|		// constructor, properties, and methods go here
 			 //	|		// ...
 			 //	|	});
-			 //	|	var D = dojo.declare(A, {
+			 //	|	var D = declare(A, {
 			 //	|		// constructor, properties, and methods go here
 			 //	|		// ...
 			 //	|	});
@@ -683,7 +683,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		Adds all properties and methods of source to constructor's
 			 //		prototype, making them available to all instances created with
 			 //		constructor. This method is specific to constructors created with
-			 //		dojo.declare.
+			 //		declare().
 			 // source: Object
 			 //		Source object which properties are going to be copied to the
 			 //		constructor's prototype.
@@ -692,12 +692,12 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		override existing properties.
 			 //
 			 //		This method is similar to dojo.extend function, but it is specific
-			 //		to constructors produced by dojo.declare. It is implemented
+			 //		to constructors produced by declare(). It is implemented
 			 //		using dojo.safeMixin, and it skips a constructor property,
 			 //		and properly decorates copied functions.
 			 //
 			 // example:
-			 //	|	var A = dojo.declare(null, {
+			 //	|	var A = declare(null, {
 			 //	|		m1: function(){},
 			 //	|		s1: "Popokatepetl"
 			 //	|	});
@@ -738,7 +738,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//		they have been mixed in.
 		//
 		//		Ancestors can be compound classes created by this version of
-		//		dojo.declare. In complex cases all base classes are going to be
+		//		declare(). In complex cases all base classes are going to be
 		//		linearized according to C3 MRO algorithm
 		//		(see http://www.python.org/download/releases/2.3/mro/ for more
 		//		details).
@@ -755,7 +755,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//		cases.
 		//
 		//		It is possible to use constructors created "manually" (without
-		//		dojo.declare) as bases. They will be called as usual during the
+		//		declare()) as bases. They will be called as usual during the
 		//		creation of an instance, their methods will be chained, and even
 		//		called by "this.inherited()".
 		//
@@ -796,7 +796,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//		return any value: any returned value will be discarded.
 		//
 		// example:
-		//	|	dojo.declare("my.classes.bar", my.classes.foo, {
+		//	|	declare("my.classes.bar", my.classes.foo, {
 		//	|		// properties to be added to the class prototype
 		//	|		someValue: 2,
 		//	|		// initialization function
@@ -810,19 +810,19 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|	});
 		//
 		// example:
-		//	|	var MyBase = dojo.declare(null, {
+		//	|	var MyBase = declare(null, {
 		//	|		// constructor, properties, and methods go here
 		//	|		// ...
 		//	|	});
-		//	|	var MyClass1 = dojo.declare(MyBase, {
+		//	|	var MyClass1 = declare(MyBase, {
 		//	|		// constructor, properties, and methods go here
 		//	|		// ...
 		//	|	});
-		//	|	var MyClass2 = dojo.declare(MyBase, {
+		//	|	var MyClass2 = declare(MyBase, {
 		//	|		// constructor, properties, and methods go here
 		//	|		// ...
 		//	|	});
-		//	|	var MyDiamond = dojo.declare([MyClass1, MyClass2], {
+		//	|	var MyDiamond = declare([MyClass1, MyClass2], {
 		//	|		// constructor, properties, and methods go here
 		//	|		// ...
 		//	|	});
@@ -832,7 +832,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|	F.prototype.method = function(){
 		//	|		console.log("raw method");
 		//	|	};
-		//	|	var A = dojo.declare(F, {
+		//	|	var A = declare(F, {
 		//	|		constructor: function(){
 		//	|			console.log("A.constructor");
 		//	|		},
@@ -851,12 +851,12 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|	// ...back in A
 		//
 		// example:
-		//	|	var A = dojo.declare(null, {
+		//	|	var A = declare(null, {
 		//	|		"-chains-": {
 		//	|			destroy: "before"
 		//	|		}
 		//	|	});
-		//	|	var B = dojo.declare(A, {
+		//	|	var B = declare(A, {
 		//	|		constructor: function(){
 		//	|			console.log("B.constructor");
 		//	|		},
@@ -864,7 +864,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|			console.log("B.destroy");
 		//	|		}
 		//	|	});
-		//	|	var C = dojo.declare(B, {
+		//	|	var C = declare(B, {
 		//	|		constructor: function(){
 		//	|			console.log("C.constructor");
 		//	|		},
@@ -880,12 +880,12 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|	// B.destroy
 		//
 		// example:
-		//	|	var A = dojo.declare(null, {
+		//	|	var A = declare(null, {
 		//	|		"-chains-": {
 		//	|			constructor: "manual"
 		//	|		}
 		//	|	});
-		//	|	var B = dojo.declare(A, {
+		//	|	var B = declare(A, {
 		//	|		constructor: function(){
 		//	|			// ...
 		//	|			// call the base constructor with new parameters
@@ -895,7 +895,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|	});
 		//
 		// example:
-		//	|	var A = dojo.declare(null, {
+		//	|	var A = declare(null, {
 		//	|		"-chains-": {
 		//	|			m1: "before"
 		//	|		},
@@ -906,7 +906,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|			console.log("A.m2");
 		//	|		}
 		//	|	});
-		//	|	var B = dojo.declare(A, {
+		//	|	var B = declare(A, {
 		//	|		"-chains-": {
 		//	|			m2: "after"
 		//	|		},

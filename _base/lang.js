@@ -119,7 +119,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		many class constructors often take an object which specifies
 			//		values to be configured on the object. In this case, it is
 			//		often simplest to call `lang.mixin` on the `this` object:
-			//	| dojo.declare("acme.Base", null, {
+			//	| declare("acme.Base", null, {
 			//	|		constructor: function(properties){
 			//	|			// property configuration:
 			//	|			lang.mixin(this, properties);
@@ -273,7 +273,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 
 		isArrayLike: function(it){
 			// summary:
-			//		similar to dojo.isArray() but more permissive
+			//		similar to isArray() but more permissive
 			// it: anything
 			//		Item to test.
 			// returns:
@@ -282,8 +282,8 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		Doesn't strongly test for "arrayness".  Instead, settles for "isn't
 			//		a string or number and has a length property". Arguments objects
 			//		and DOM collections will return true when passed to
-			//		dojo.isArrayLike(), but will return false when passed to
-			//		dojo.isArray().
+			//		isArrayLike(), but will return false when passed to
+			//		isArray().
 			return it && it !== undefined && // Boolean
 				// keep out built-in constructors (Number, String, ...) which have length
 				// properties
@@ -344,20 +344,20 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		A function to be hitched to scope, or the name of the method in
 			//		scope to be hitched.
 			// example:
-			//	|	dojo.hitch(foo, "bar")();
+			//	|	lang.hitch(foo, "bar")();
 			//		runs foo.bar() in the scope of foo
 			// example:
-			//	|	dojo.hitch(foo, myFunction);
+			//	|	lang.hitch(foo, myFunction);
 			//		returns a function that runs myFunction in the scope of foo
 			// example:
 			//		Expansion on the default positional arguments passed along from
 			//		hitch. Passed args are mixed first, additional args after.
 			//	|	var foo = { bar: function(a, b, c){ console.log(a, b, c); } };
-			//	|	var fn = dojo.hitch(foo, "bar", 1, 2);
+			//	|	var fn = lang.hitch(foo, "bar", 1, 2);
 			//	|	fn(3); // logs "1, 2, 3"
 			// example:
 			//	|	var foo = { bar: 2 };
-			//	|	dojo.hitch(foo, function(){ this.bar = 10; })();
+			//	|	lang.hitch(foo, function(){ this.bar = 10; })();
 			//		execute an anonymous function in scope of foo
 			if(arguments.length > 2){
 				return lang._hitchArgs.apply(dojo, arguments); // Function
@@ -368,7 +368,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			}
 			if(lang.isString(method)){
 				scope = scope || dojo.global;
-				if(!scope[method]){ throw(['dojo.hitch: scope["', method, '"] is null (scope="', scope, '")'].join('')); }
+				if(!scope[method]){ throw(['lang.hitch: scope["', method, '"] is null (scope="', scope, '")'].join('')); }
 				return function(){ return scope[method].apply(scope, arguments || []); }; // Function
 			}
 			return !scope ? method : function(){ return method.apply(scope, arguments || []); }; // Function
@@ -409,7 +409,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		an Object of anonymous type
 			// example:
 			//	|	var foo = { bar: "baz" };
-			//	|	var thinger = dojo.delegate(foo, { thud: "xyzzy"});
+			//	|	var thinger = lang.delegate(foo, { thud: "xyzzy"});
 			//	|	thinger.bar == "baz"; // delegated to foo
 			//	|	foo.thud == undefined; // by definition
 			//	|	thinger.thud == "xyzzy"; // mixed in from props
@@ -455,8 +455,8 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		similar to hitch() except that the scope object is left to be
 			//		whatever the execution context eventually becomes.
 			// description:
-			//		Calling dojo.partial is the functional equivalent of calling:
-			//		|	dojo.hitch(null, funcName, ...);
+			//		Calling lang.partial is the functional equivalent of calling:
+			//		|	lang.hitch(null, funcName, ...);
 			var arr = [ null ];
 			return lang.hitch.apply(dojo, arr.concat(lang._toArray(arguments))); // Function
 		},
@@ -521,7 +521,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			 //		(see [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript)
 			 //		Uses String.prototype.trim instead, if available.
 			 //		The fastest but longest version of this function is located at
-			 //		dojo.string.trim()
+			 //		lang.string.trim()
 		 },
 		 =====*/
 
@@ -546,7 +546,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		Returns the substituted string.
 			// example:
 			//	|	// uses a dictionary for substitutions:
-			//	|	dojo.replace("Hello, {name.first} {name.last} AKA {nick}!",
+			//	|	lang.replace("Hello, {name.first} {name.last} AKA {nick}!",
 			//	|		{
 			//	|			nick: "Bob",
 			//	|			name: {
@@ -558,19 +558,19 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//	|	// returns: Hello, Robert Cringely AKA Bob!
 			// example:
 			//	|	// uses an array for substitutions:
-			//	|	dojo.replace("Hello, {0} {2}!",
+			//	|	lang.replace("Hello, {0} {2}!",
 			//	|		["Robert", "X", "Cringely"]);
 			//	|	// returns: Hello, Robert Cringely!
 			// example:
 			//	|	// uses a function for substitutions:
 			//	|	function sum(a){
 			//	|		var t = 0;
-			//	|		dojo.forEach(a, function(x){ t += x; });
+			//	|		arrayforEach(a, function(x){ t += x; });
 			//	|		return t;
 			//	|	}
-			//	|	dojo.replace(
+			//	|	lang.replace(
 			//	|		"{count} payments averaging {avg} USD per payment.",
-			//	|		dojo.hitch(
+			//	|		lang.hitch(
 			//	|			{ payments: [11, 16, 12] },
 			//	|			function(_, key){
 			//	|				switch(key){
@@ -586,7 +586,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//	|	// prints: 3 payments averaging 13 USD per payment.
 			// example:
 			//	|	// uses an alternative PHP-like pattern for substitutions:
-			//	|	dojo.replace("Hello, ${0} ${2}!",
+			//	|	lang.replace("Hello, ${0} ${2}!",
 			//	|		["Robert", "X", "Cringely"], /\$\{([^\}]+)\}/g);
 			//	|	// returns: Hello, Robert Cringely!
 

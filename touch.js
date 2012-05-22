@@ -16,17 +16,17 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 	//		|		on(node, touch.release, function(e){});
 	//		|		on(node, touch.cancel, function(e){});
 	//
-	//		2. Used with dojo.touch.* directly
-	//		|	dojo.touch.press(node, function(e){});
-	//		|	dojo.touch.move(node, function(e){});
-	//		|	dojo.touch.release(node, function(e){});
-	//		|	dojo.touch.cancel(node, function(e){});
+	//		2. Used with touch.* directly
+	//		|	touch.press(node, function(e){});
+	//		|	touch.move(node, function(e){});
+	//		|	touch.release(node, function(e){});
+	//		|	touch.cancel(node, function(e){});
 
-	var touch = has("touch");
+	var hasTouch = has("touch");
 
 	var touchmove, hoveredNode;
 
-	if(touch){
+	if(hasTouch){
 		ready(function(){
 			// Keep track of currently hovered node
 			hoveredNode = win.body();	// currently hovered node
@@ -92,19 +92,19 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 		};
 	}
 
-	//device neutral events - dojo.touch.press|move|release|cancel/over/out
-	dojo.touch = {
-		press: _handle(touch ? "touchstart": "mousedown"),
-		move: touch ? touchmove :_handle("mousemove"),
-		release: _handle(touch ? "touchend": "mouseup"),
-		cancel: touch ? _handle("touchcancel") : mouse.leave,
-		over: _handle(touch ? "dojotouchover": "mouseover"),
-		out: _handle(touch ? "dojotouchout": "mouseout"),
-		enter: mouse._eventHandler(touch ? "dojotouchover" : "mouseover"),
-		leave: mouse._eventHandler(touch ? "dojotouchout" : "mouseout")
+	//device neutral events - touch.press|move|release|cancel/over/out
+	var touch = {
+		press: _handle(hasTouch ? "touchstart": "mousedown"),
+		move: hasTouch ? touchmove :_handle("mousemove"),
+		release: _handle(hasTouch ? "touchend": "mouseup"),
+		cancel: hasTouch ? _handle("touchcancel") : mouse.leave,
+		over: _handle(hasTouch ? "dojotouchover": "mouseover"),
+		out: _handle(hasTouch ? "dojotouchout": "mouseout"),
+		enter: mouse._eventHandler(hasTouch ? "dojotouchover" : "mouseover"),
+		leave: mouse._eventHandler(hasTouch ? "dojotouchout" : "mouseout")
 	};
 	/*=====
-	dojo.touch = {
+	touch = {
 		press: function(node, listener){
 			// summary:
 			//		Register a listener to 'touchstart'|'mousedown' for the given node
@@ -188,5 +188,7 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 	};
 	=====*/
 
-	return dojo.touch;
+	has("extend-dojo") && (dojo.touch = touch);
+
+	return touch;
 });

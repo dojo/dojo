@@ -6,7 +6,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	//		Browser history management resources
 
 	var back = {};
-	lang.setObject("dojo.back", back);
+	has("extend-dojo") && lang.setObject("dojo.back", back);
 
 	// everyone deals with encoding the hash slightly differently
 
@@ -98,7 +98,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 		if(historyIframe){
 			has("webkit") ? historyIframe.location = url : window.frames[historyIframe.name].location = url;
 		}else{
-			//console.warn("dojo.back: Not initialised. You need to call dojo.back.init() from a <script> block that lives inside the <body> tag.");
+			//console.warn("dojo/back: Not initialised. You need to call back.init() from a <script> block that lives inside the <body> tag.");
 		}
 		return url; //String
 	}
@@ -141,16 +141,15 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 		// description:
 		//		Only call this method before the page's DOM is finished loading. Otherwise
 		//		it will not work. Be careful with xdomain loading or djConfig.debugAtAllCosts scenarios,
-		//		in order for this method to work, dojo.back will need to be part of a build layer.
+		//		in order for this method to work, dojo/back will need to be part of a build layer.
 
 		// prevent reinit
 		if(dom.byId("dj_history")){ return; } 
 
 		var src = config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html");
 		if (config.afterOnLoad) {
-			console.error("dojo.back.init() must be called before the DOM has loaded. "
-						+ "If using xdomain loading or djConfig.debugAtAllCosts, include dojo.back "
-						+ "in a build layer.");
+			console.error("dojo/back::init() must be called before the DOM has loaded. "
+						+ "Include dojo/back in a build layer.");
 		} else {
 			document.write('<iframe style="border:0;width:1px;height:1px;position:absolute;visibility:hidden;bottom:0;right:0;" name="dj_history" id="dj_history" src="' + src + '"></iframe>');
 		}
@@ -162,7 +161,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 		//		that is loaded.
 		//description:
 		//		It is recommended that you call this method as part of an event
-		//		listener that is registered via dojo.addOnLoad().
+		//		listener that is registered via dojo/ready.
 		//args: Object
 		//		See the addToHistory() function for the list of valid args properties.
 		initialState = createState(initialHref, args, initialHash);
@@ -212,15 +211,15 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 		//		not evaluate to false, that value will be used as the fragment identifier. For example,
 		//		if changeUrl: 'page1', then the URL will look like: http://some.domain.com/path#page1
 		//
-		//		There are problems with using dojo.back with semantically-named fragment identifiers
-		//		("hash values" on an URL). In most browsers it will be hard for dojo.back to know
+		//		There are problems with using dojo/back with semantically-named fragment identifiers
+		//		("hash values" on an URL). In most browsers it will be hard for dojo/back to know
 		//		distinguish a back from a forward event in those cases. For back/forward support to
 		//		work best, the fragment ID should always be a unique value (something using new Date().getTime()
 		//		for example). If you want to detect hash changes using semantic fragment IDs, then
-		//		consider using dojo.hash instead (in Dojo 1.4+).
+		//		consider using dojo/hash instead (in Dojo 1.4+).
 		//
 		//	example:
-		//		|	dojo.back.addToHistory({
+		//		|	back.addToHistory({
 		//		|		back: function(){ console.log('back pressed'); },
 		//		|		forward: function(){ console.log('forward pressed'); },
 		//		|		changeUrl: true
@@ -262,7 +261,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 		var url = null;
 		if(!historyIframe){
 			if(config["useXDomain"] && !config["dojoIframeHistoryUrl"]){
-				console.warn("dojo.back: When using cross-domain Dojo builds,"
+				console.warn("dojo/back: When using cross-domain Dojo builds,"
 					+ " please save iframe_history.html to your domain and set djConfig.dojoIframeHistoryUrl"
 					+ " to the path on your domain to iframe_history.html");
 			}
@@ -280,7 +279,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 			//item no matter how many times you click on the same #hash link, at least in Firefox
 			//and Safari, and there is no reliable way in those browsers to know if a #hash link
 			//has been clicked on multiple times. So making this the standard behavior in all browsers
-			//so that dojo.back's behavior is the same in all browsers.
+			//so that dojo/back's behavior is the same in all browsers.
 			if(historyStack.length == 0 && initialState.urlHash == hash){
 				initialState = createState(url, args, hash);
 				return;

@@ -5,14 +5,14 @@ define(["./_base/kernel", "./_base/lang"], function(dojo, lang) {
 	//		TODOC
 
 var AdapterRegistry = dojo.AdapterRegistry = function(/*Boolean?*/ returnWrappers){
-	//	summary:
+	// summary:
 	//		A registry to make contextual calling/searching easier.
-	//	description:
+	// description:
 	//		Objects of this class keep list of arrays in the form [name, check,
 	//		wrap, directReturn] that are used to determine what the contextual
 	//		result of a set of checked arguments is. All check/wrap functions
 	//		in this registry should be of the same arity.
-	//	example:
+	// example:
 	//	|	// create a new registry
 	//	|	var reg = new dojo.AdapterRegistry();
 	//	|	reg.register("handleString",

@@ -847,13 +847,17 @@ var Parser = function(){
 	};
 };
 
-dojo.parser = new Parser();
+var singleton = new Parser();
 
-//Register the parser callback. It should be the first callback
-//after the a11y test.
-if(config.parseOnLoad){
-	ready(100, dojo.parser, "parse");
+if(has("extend-dojo")){
+	dojo.parser  = singleton
 }
 
-return dojo.parser;
+// Register the parser callback. It should be the first callback
+// after the a11y test.
+if(config.parseOnLoad){
+	ready(100, singleton, "parse");
+}
+
+return singleton;
 });

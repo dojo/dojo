@@ -249,8 +249,8 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		private function to hold to a parent NodeList. end() to return the parent NodeList.
 			//
 			// example:
-			// How to make a `dojo.NodeList` method that only returns the third node in
-			// the dojo.NodeList but allows access to the original NodeList by using this._stash:
+			//		How to make a `dojo.NodeList` method that only returns the third node in
+			//		the dojo.NodeList but allows access to the original NodeList by using this._stash:
 			//	|	dojo.extend(dojo.NodeList, {
 			//	|		third: function(){
 			//	|			var newNodeList = dojo.NodeList(this[2]);

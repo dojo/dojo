@@ -21,7 +21,7 @@ define(["./_base/lang"], function(lang){
         //	|		]
         //	|	};
         //
-        // yields the following query string:
+        //		yields the following query string:
         //
         //	|	"blah=blah&multi=thud&multi=thonk"
 

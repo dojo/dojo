@@ -1,6 +1,6 @@
 define(["./kernel", "./lang", "../sniff"], function(dojo, lang, has){
 	// module:
-	//		dojo/sniff
+	//		dojo/_base/sniff
 	// summary:
 	//		Deprecated.   New code should use dojo/sniff.
 	//		This module populates the dojo browser version sniffing properties like dojo.isIE.

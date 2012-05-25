@@ -1,7 +1,7 @@
 define([
 	"./_base/array",
-	/*===== "./_base/declare", =====*/
 	"./_base/lang",
+	/*===== "./_base/declare", =====*/
 	"./number",
 	"./i18n", "./i18n!./cldr/nls/currency",
 	"./cldr/monetary"
@@ -91,7 +91,7 @@ currency.regexp = function(/*dnumber.__RegexpOptions?*/ options){
 };
 
 /*=====
-var __ParseOptions = function(kwargs){};
+var __ParseOptions = currency.__ParseOptions = function(kwargs){};
 lang.extend(__ParseOptions, {
 	// type: String?
 	//		Should not be set.  Value is assumed to be currency.
@@ -113,7 +113,6 @@ lang.extend(__ParseOptions, {
 	places: "",
 	fractional: ""
 });
-__ParseOptions.prototype = new dnumber.__ParseOptions();
 =====*/
 
 currency.parse = function(/*String*/ expression, /*__ParseOptions?*/ options){

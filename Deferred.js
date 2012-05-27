@@ -62,19 +62,20 @@ define([
 	var signalDeferred = function(deferred, type, isSync, result){
 		// signalQueue is shared between all deferreds. The queue is processed
 		// in a for-loop to prevent stack overflows on (really) long promise
-		// chains.
+		// chains. For synchronous returns from a promise (either a non-promise
+		// value or a fulfilled promise) the deferred is signaled immediately, by
+		// inserting it at the next processing index.
 		var queueSizeAtStart = signalQueue.length;
-		signalQueue.push(deferred, type, result);
+		signalQueue.splice(isSync && signalQueue.next || queueSizeAtStart, 0, deferred, type, result);
 
-		// For synchronous returns from a promise (either a non-promise value or a
-		// fulfilled promise) the deferred is signaled immediately. Otherwise if
-		// the queue is non-empty the function can return, since the queue is
-		// already being processed.
-		if(queueSizeAtStart > 0 && !isSync){
+		// If the queue is not empty the function can return, since it's already
+		// being processed.
+		if(queueSizeAtStart > 0){
 			return;
 		}
 
-		for(var i = queueSizeAtStart; i < signalQueue.length; i += 3){
+		for(var i = 0; i < signalQueue.length; i = signalQueue.next){
+			signalQueue.next = i + 3;
 			if(!signalQueue[i].isCanceled()){
 				switch(signalQueue[i + 1]){
 					case PROGRESS:
@@ -89,7 +90,7 @@ define([
 				}
 			}
 		}
-		signalQueue.length = queueSizeAtStart;
+		signalQueue = [];
 	};
 
 	var Deferred = lang.extend(function(/*Function?*/ canceler){

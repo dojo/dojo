@@ -66,6 +66,8 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		}
 	}
 	dojo.scopeMap = scopeMap;
+	
+	/*===== dojo.__docParserConfigureScopeMap(scopeMap); =====*/
 
 	// FIXME: dojo.baseUrl and dojo.config.baseUrl should be deprecated
 	dojo.baseUrl = dojo.config.baseUrl = require.baseUrl;

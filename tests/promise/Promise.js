@@ -3,16 +3,6 @@ define([
 	"dojo/Deferred"
 ], function(doh, Deferred){
 	var tests = {
-		"fail(…) is equivalent to then(null, …)": function(t){
-			var obj = {};
-			var thenResult, failResult;
-			this.deferred.then(null, function(result){ thenResult = result; });
-			this.deferred.promise.fail(function(result){ failResult = result; });
-			this.deferred.reject(obj);
-			t.t(failResult === obj);
-			t.t(failResult === thenResult);
-		},
-
 		"always() will be invoked for resolution and rejection": function(t){
 			var obj = {};
 			var deferred1 = new Deferred();
@@ -30,6 +20,16 @@ define([
 			deferred2.reject(obj);
 			t.t(alwaysResult2 === obj);
 			t.t(alwaysResult2 === thenResult2);
+		},
+
+		"otherwise(…) is equivalent to then(null, …)": function(t){
+			var obj = {};
+			var thenResult, otherwiseResult;
+			this.deferred.then(null, function(result){ thenResult = result; });
+			this.deferred.promise.otherwise(function(result){ otherwiseResult = result; });
+			this.deferred.reject(obj);
+			t.t(otherwiseResult === obj);
+			t.t(otherwiseResult === thenResult);
 		},
 
 		"trace() returns the same promise": function(t){

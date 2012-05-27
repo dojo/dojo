@@ -36,7 +36,7 @@ define([
 
 	Promise.prototype.traceRejected = function(){
 		var args = lang._toArray(arguments);
-		this.fail(function(error){
+		this.otherwise(function(error){
 			emitAsync(["rejected", error].concat(args));
 		});
 		return this;

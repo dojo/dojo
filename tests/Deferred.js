@@ -470,7 +470,7 @@ define([
 			t.t(promise.isFulfilled());
 			promise = promise.then(function(i){ throw i + 1; });
 			t.t(promise.isFulfilled());
-			promise.fail(function(i){ received = i; });
+			promise.otherwise(function(i){ received = i; });
 			t.is(received, 4);
 		}
 	};

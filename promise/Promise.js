@@ -19,11 +19,11 @@ define([
 			// returns: dojo/promise/Promise
 			//		Returns a new promise for the result of the callback(s).
 			//
-			// callback: 
+			// callback:
 			//		Callback to be invoked when the promise is resolved.
-			// errback: 
+			// errback:
 			//		Callback to be invoked when the promise is rejected.
-			// progback: 
+			// progback:
 			//		Callback to be invoked when the promise emits a progress update.
 			throwAbstract();
 		},
@@ -72,17 +72,6 @@ define([
 			throwAbstract();
 		},
 
-		fail: function(/*Function?*/ errback){
-			// summary:
-			//		Add new errbacks to the promise.
-			// returns: dojo/promise/Promise
-			//		Returns a new promise for the result of the errback.
-			//
-			// errback: 
-			//		Callback to be invoked when the promise is rejected.
-			return this.then(null, errback);
-		},
-
 		always: function(/*Function?*/ callbackOrErrback){
 			// summary:
 			//		Add a callback to be invoked when the promise is resolved or rejected.
@@ -92,6 +81,17 @@ define([
 			// callbackOrErrback:
 			//		A function that is used both as a callback and errback.
 			return this.then(callbackOrErrback, callbackOrErrback);
+		},
+
+		otherwise: function(/*Function?*/ errback){
+			// summary:
+			//		Add new errbacks to the promise.
+			// returns: dojo/promise/Promise
+			//		Returns a new promise for the result of the errback.
+			//
+			// errback:
+			//		Callback to be invoked when the promise is rejected.
+			return this.then(null, errback);
 		},
 
 		trace: function(/* ... */){

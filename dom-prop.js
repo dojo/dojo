@@ -129,7 +129,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 		var lc = name.toLowerCase(), propName = exports.names[lc] || name;
 		if(propName == "style" && typeof value != "string"){ // inline'd type check
 			// special case: setting a style
-			style.style(node, value);
+			style.set(node, value);
 			return node; // DomNode
 		}
 		if(propName == "innerHTML"){

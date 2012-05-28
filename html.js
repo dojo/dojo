@@ -10,7 +10,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 
 	// the parser might be needed..
 
-	// idCounter is incremented with each instantiation to allow asignment of a unique id for tracking, logging purposes
+	// idCounter is incremented with each instantiation to allow assignment of a unique id for tracking, logging purposes
 	var idCounter = 0;
 
 	html._secureForInnerHtml = function(/*String*/ cont){
@@ -19,28 +19,28 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 		//
 		//		khtml is picky about dom faults, you can't attach a style or <title> node as child of body
 		//		must go into head, so we need to cut out those tags
-		//	cont:
+		// cont:
 		//		An html string for insertion into the dom
 		//
 		return cont.replace(/(?:\s*<!DOCTYPE\s[^>]+>|<title[^>]*>[\s\S]*?<\/title>)/ig, ""); // String
 	};
 
-/*=====
-	dojo.html._emptyNode = function(node){
-		// summary:
-		//		removes all child nodes from the given node
-		//	node: DOMNode
-		//		the parent element
-	};
-=====*/
 	html._emptyNode = domConstruct.empty;
+	/*=====
+	 dojo.html._emptyNode = function(node){
+		 // summary:
+		 //		removes all child nodes from the given node
+		 // node: DOMNode
+		 //		the parent element
+	 };
+	 =====*/
 
-	html._setNodeContent = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont){
+		html._setNodeContent = function(/*DomNode*/ node, /*String|DomNode|NodeList*/ cont){
 		// summary:
 		//		inserts the given content into the given node
-		//	node:
+		// node:
 		//		the parent element
-		//	content:
+		// content:
 		//		the content to be set on the parent element.
 		//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
 
@@ -105,9 +105,9 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			//		Start the child widgets after parsing them.	  Only obeyed if parseContent is true.
 			startup: true,
 
-			// lifecyle methods
-			constructor: function(/* Object */params, /* String|DomNode */node){
-				//	summary:
+			// lifecycle methods
+			constructor: function(/*Object*/ params, /*String|DomNode*/ node){
+				// summary:
 				//		Provides a configurable, extensible object to wrap the setting on content on a node
 				//		call the set() method to actually set the content..
 
@@ -126,10 +126,10 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 					].join("_");
 				}
 			},
-			set: function(/* String|DomNode|NodeList? */ cont, /* Object? */ params){
+			set: function(/* String|DomNode|NodeList? */ cont, /*Object?*/ params){
 				// summary:
 				//		front-end to the set-content sequence
-				//	cont:
+				// cont:
 				//		An html string, node or enumerable list of nodes for insertion into the dom
 				//		If not provided, the object's content property will be used
 				if(undefined !== cont){
@@ -176,8 +176,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			},
 
 			empty: function() {
-				// summary
-				//	cleanly empty out existing content
+				// summary:
+				//		cleanly empty out existing content
 				
 				// If there is a parse in progress, cancel it.
 				if(this.parseDeferred){
@@ -204,7 +204,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			},
 
 			onBegin: function(){
-				// summary
+				// summary:
 				//		Called after instantiation, but before set();
 				//		It allows modification of any of the object properties
 				//		- including the node and content provided - before the set operation actually takes place
@@ -227,11 +227,11 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				this.empty();
 
 				this.content = cont;
-				return this.node; /* DomNode */
+				return this.node; // DomNode
 			},
 
 			onEnd: function(){
-				// summary
+				// summary:
 				//		Called after set(), when the new content has been pushed into the node
 				//		It provides an opportunity for post-processing before handing back the node to the caller
 				//		This default implementation checks a parseContent flag to optionally run the dojo parser over the new content
@@ -239,13 +239,13 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 					// populates this.parseResults and this.parseDeferred if you need those..
 					this._parse();
 				}
-				return this.node; /* DomNode */
+				return this.node; // DomNode
 			},
 
 			tearDown: function(){
-				// summary
+				// summary:
 				//		manually reset the Setter instance if its being re-used for example for another set()
-				// description
+				// description:
 				//		tearDown() is not called automatically.
 				//		In normal use, the Setter instance properties are simply allowed to fall out of scope
 				//		but the tearDown method can be called to explicitly reset this instance.
@@ -318,7 +318,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			}
 	}); // end declare()
 
-	html.set = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont, /* Object? */ params){
+	html.set = function(/*DomNode*/ node, /*String|DomNode|NodeList*/ cont, /*Object?*/ params){
 			// summary:
 			//		inserts (replaces) the given content into the given node. dojo.place(cont, node, "only")
 			//		may be a better choice for simple HTML insertion.
@@ -328,14 +328,14 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			//		an HTML string into the DOM, but it only handles inserting an HTML string as DOM
 			//		elements, or inserting a DOM node. dojo.place does not handle NodeList insertions
 			//		or the other capabilities as defined by the params object for this method.
-			//	node:
+			// node:
 			//		the parent element that will receive the content
-			//	cont:
+			// cont:
 			//		the content to be set on the parent element.
 			//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
-			//	params:
+			// params:
 			//		Optional flags/properties to configure the content-setting. See dojo.html._ContentSetter
-			//	example:
+			// example:
 			//		A safe string/node/nodelist content replacement/injection with hooks for extension
 			//		Example Usage:
 			//		dojo.html.set(node, "some string");

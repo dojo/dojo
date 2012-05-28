@@ -13,34 +13,43 @@ define([
 	has.add('native-xhr2', function(){
 		if(!has('native-xhr')){ return; }
 		var x = new XMLHttpRequest();
-		return typeof x['addEventListener'] != 'undefined';
+		return typeof x['addEventListener'] !== 'undefined';
 	});
 
-	function _resHandle(dfd, response){
+	function handleResponse(response){
 		var _xhr = response.xhr;
-		if(util.checkStatus(_xhr.status)){
-			dfd.resolve(response);
+		response.status = response.xhr.status;
+		response.text = _xhr.responseText;
+
+		if(response.options.handleAs === 'xml'){
+			response.data = _xhr.responseXML;
+		}
+
+		try{
+			handlers(response);
+		}catch(e){
+			response.error = e;
+		}
+
+		if(response.error){
+			this.reject(response.error);
+		}else if(util.checkStatus(_xhr.status)){
+			this.resolve(response);
 		}else{
 			var err = new Error('Unable to load ' + response.url + ' status: ' + _xhr.status);
 			err.log = false;
 
-			response.status = _xhr.status;
-			if(response.options.handleAs == 'xml'){
-				response.data = _xhr.responseXML;
-			}else{
-				response.text = _xhr.responseText;
-			}
-			dfd.reject(err);
+			this.reject(err);
 		}
 	}
 
-	var validCheck, ioCheck, resHandle, addListeners, cancel;
+	var isValid, isReady, addListeners, cancel;
 	if(has('native-xhr2')){
 		// Any platform with XHR2 will only use the watch mechanism for timeout.
 
-		validCheck = function(dfd, response){
+		isValid = function(response){
 			// summary: Check to see if the request should be taken out of the watch queue
-			return !dfd._finished;
+			return !this._finished;
 		};
 		cancel = function(dfd, response){
 			// summary: Canceler for deferred
@@ -50,22 +59,16 @@ define([
 			// summary: Adds event listeners to the XMLHttpRequest object
 			function onLoad(evt){
 				dfd._finished = 1;
-				_resHandle(dfd, response);
+				dfd.handleResponse(response);
 			}
 			function onError(evt){
 				dfd._finished = 1;
 
-				var _xhr = evt.target,
-					err = new Error('Unable to load ' + response.url + ' status: ' + _xhr.status);
-				err.log = false;
+				var _xhr = evt.target;
+				response.error = new Error('Unable to load ' + response.url + ' status: ' + _xhr.status); 
+				response.error.log = false;
 
-				response.status = _xhr.status;
-				if(response.options.handleAs == 'xml'){
-					response.data = _xhr.responseXML;
-				}else{
-					response.text = _xhr.responseText;
-				}
-				dfd.reject(err);
+				dfd.handleResponse(response);
 			}
 			function onAbort(evt){
 				dfd._finished = 1;
@@ -92,40 +95,20 @@ define([
 			};
 		};
 	}else{
-		validCheck = function(dfd, response){
+		isValid = function(response){
 			return response.xhr.readyState; //boolean
 		};
-		ioCheck = function(dfd, response){
-			return 4 == response.xhr.readyState; //boolean
+		isReady = function(response){
+			return 4 === response.xhr.readyState; //boolean
 		};
-		resHandle = _resHandle;
 		cancel = function(dfd, response){
 			// summary: canceller function for util.deferred call.
 			var xhr = response.xhr;
 			var _at = typeof xhr.abort;
-			if(_at == 'function' || _at == 'object' || _at == 'unknown'){
+			if(_at === 'function' || _at === 'object' || _at === 'unknown'){
 				xhr.abort();
 			}
 		};
-	}
-
-	function resolve(response){
-		// summary: okHandler function for util.deferred call.
-		var _xhr = response.xhr;
-		if(response.options.handleAs == 'xml'){
-			response.data = _xhr.responseXML;
-		}else{
-			response.text = _xhr.responseText;
-		}
-		response.status = response.xhr.status;
-		handlers(response);
-		return response;
-	}
-	function reject(error, response){
-		// summary: errHandler function for util.deferred call.
-		if(!response.options.failOk){
-			console.error(error);
-		}
 	}
 
 	var undefined,
@@ -138,7 +121,7 @@ define([
 				'Content-Type': 'application/x-www-form-urlencoded'
 			}
 		};
-	function xhr(/*String*/ url, /*Object?*/ options){
+	function xhr(/*String*/ url, /*Object?*/ options, /*Boolean?*/ returnDeferred){
 		//	summary:
 		//		Sends an HTTP request with the given URL and options.
 		//	description:
@@ -150,13 +133,20 @@ define([
 		options = response.options;
 
 		var remover,
-			fnlly = function(){
+			last = function(){
 				remover && remover();
 			};
 
 		//Make the Deferred object for this xhr request.
-		var dfd = util.deferred(response, cancel, resolve, reject, fnlly),
-			_xhr = response.xhr = xhr._create();
+		var dfd = util.deferred(
+			response,
+			cancel,
+			isValid,
+			isReady,
+			handleResponse,
+			last
+		);
+		var _xhr = response.xhr = xhr._create();
 
 		//If XHR factory fails, cancel the deferred.
 		if(!_xhr){
@@ -179,7 +169,7 @@ define([
 			contentType;
 		if(headers){
 			for(var hdr in headers){
-				if(hdr.toLowerCase() == 'content-type'){
+				if(hdr.toLowerCase() === 'content-type'){
 					contentType = headers[hdr];
 				}else if(headers[hdr]){
 					//Only add header if it has a value. This allows for instance, skipping
@@ -207,10 +197,10 @@ define([
 			dfd.reject(e);
 		}
 
-		watch(dfd, response, validCheck, ioCheck, resHandle);
+		watch(dfd);
 		_xhr = null;
 
-		return dfd.promise;
+		return returnDeferred ? dfd : dfd.promise;
 	}
 
 	xhr._create = function(){

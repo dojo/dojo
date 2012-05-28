@@ -18,19 +18,19 @@ define([
 
 	if(!win.global[onload]){
 		win.global[onload] = function(){
-			var data = current;
-			if(!data){
+			var dfd = current;
+			if(!dfd){
 				iframe._fireNextRequest();
 				return;
 			}
 
-			var response = data[1],
+			var response = dfd.response,
 				options = response.options,
 				formNode = dom.byId(options.form);
 
 			if(formNode){
 				// remove all the hidden content inputs
-				var toClean = response._contentToClean;
+				var toClean = dfd._contentToClean;
 				for(var i=0; i<toClean.length; i++){
 					var key = toClean[i];
 					//Need to cycle over all nodes since we may have added
@@ -38,7 +38,7 @@ define([
 					//have the same .name value.
 					for(var j=0; j<formNode.childNodes.length; j++){
 						var childNode = formNode.childNodes[j];
-						if(childNode.name == key){
+						if(childNode.name === key){
 							domConstruct.destroy(childNode);
 							break;
 						}
@@ -46,14 +46,14 @@ define([
 				}
 
 				// restore original action + target
-				response._originalAction && formNode.setAttribute('action', response._originalAction);
-				if(response._originalTarget){
-					formNode.setAttribute('target', response._originalTarget);
-					formNode.target = response._originalTarget;
+				dfd._originalAction && formNode.setAttribute('action', dfd._originalAction);
+				if(dfd._originalTarget){
+					formNode.setAttribute('target', dfd._originalTarget);
+					formNode.target = dfd._originalTarget;
 				}
 			}
 
-			response._finished = true;
+			dfd._finished = true;
 		};
 	}
 
@@ -124,20 +124,18 @@ define([
 			if(current || !queue.length){
 				return;
 			}
-			var data;
 			do{
-				data = current = queue.shift();
-			}while(data && data[0].canceled && queue.length);
+				dfd = current = queue.shift();
+			}while(dfd && (dfd.canceled || (dfd.isCanceled && dfd.isCanceled())) && queue.length);
 
-			if(!data || data[0].canceled){
+			if(!dfd || dfd.canceled || (dfd.isCanceled && dfd.isCanceled())){
 				current = null;
 				return;
 			}
 
-			dfd = data[0];
-			var response = data[1],
+			var response = dfd.response,
 				options = response.options,
-				c2c = response._contentToClean = [],
+				c2c = dfd._contentToClean = [],
 				formNode = dom.byId(options.form),
 				notify;
 
@@ -145,7 +143,7 @@ define([
 				notify = require('./notify');
 			}catch(e){}
 
-			data = options.data || null;
+			var data = options.data || null;
 
 			if(formNode){
 				// if we have things in data, we need to add them to the form
@@ -182,7 +180,7 @@ define([
 					targetNode = formNode.getAttributeNode('target');
 
 				if(response.url){
-					response._originalAction = actionNode ? actionNode.value : null;
+					dfd._originalAction = actionNode ? actionNode.value : null;
 					if(actionNode){
 						actionNode.value = response.url;
 					}else{
@@ -195,7 +193,7 @@ define([
 					formNode.setAttribute('method', options.method);
 				}
 
-				response._originalTarget = targetNode ? targetNode.value : null;
+				dfd._originalTarget = targetNode ? targetNode.value : null;
 				if(targetNode){
 					targetNode.value = iframe._iframeName;
 				}else{
@@ -217,23 +215,63 @@ define([
 		}
 	}
 
+	// dojo/request/watch handlers
+	function isValid(response){
+		return !response.error;
+	}
+	function isReady(response){
+		return !!this._finished;
+	}
+	function handleResponse(response){
+		try{
+			var options = response.options,
+				doc = iframe.doc(iframe._frame),
+				handleAs = options.handleAs;
+
+			if(handleAs !== 'html'){
+				if(handleAs === 'xml'){
+					// IE6-8 have to parse the XML manually. See http://bugs.dojotoolkit.org/ticket/6334
+					if(doc.documentElement.tagName.toLowerCase() === 'html'){
+						query('a', doc.documentElement).orphan();
+						var xmlText = doc.documentElement.innerText;
+						xmlText = xmlText.replace(/>\s+</g, '><');
+						response.text = lang.trim(xmlText);
+					}else{
+						response.data = doc;
+					}
+				}else{
+					// 'json' and 'javascript' and 'text'
+					response.text = doc.getElementsByTagName('textarea')[0].value; // text
+				}
+				handlers(response);
+			}else{
+				response.data = doc;
+			}
+		}catch(e){
+			response.error = e;
+		}
+
+		if(response.error){
+			this.reject(response.error);
+		}else if(this._finished){
+			this.resolve(response);
+		}else{
+			this.reject(new Error('Invalid dojo/request/iframe request state'));
+		}
+	}
+	function last(response){
+		this._callNext();
+	}
+
 	var defaultOptions = {
 		method: 'POST'
 	};
-	function iframe(url, options){
+	function iframe(url, options, returnDeferred){
 		var response = util.parseArgs(url, util.deepCreate(defaultOptions, options), true);
 		url = response.url;
 		options = response.options;
 
-		response._callNext = function(){
-			if(!this._calledNext){
-				this._calledNext = true;
-				current = null;
-				iframe._fireNextRequest();
-			}
-		};
-
-		if(options.method != 'GET' && options.method != 'POST'){
+		if(options.method !== 'GET' && options.method !== 'POST'){
 			throw new Error(options.method + ' not supported by dojo/request/iframe');
 		}
 
@@ -241,78 +279,21 @@ define([
 			iframe._frame = iframe.create(iframe._iframeName, onload + '();');
 		}
 
-		var dfd = util.deferred(
-			response,
-			function(dfd, response){
-				// summary: canceler for deferred
-			},
-			function(response){
-				// summary: okHandler function for deferred
-				try{
-					var options = response.options,
-						doc = iframe.doc(iframe._frame),
-						handleAs = options.handleAs;
-
-					if(handleAs != 'html'){
-						if(handleAs == 'xml'){
-							// IE6-8 have to parse the XML manually. See http://bugs.dojotoolkit.org/ticket/6334
-							if(doc.documentElement.tagName.toLowerCase() == 'html'){
-								query('a', doc.documentElement).orphan();
-								var xmlText = doc.documentElement.innerText;
-								xmlText = xmlText.replace(/>\s+</g, '><');
-								response.text = lang.trim(xmlText);
-							}else{
-								response.data = doc;
-							}
-						}else{
-							// 'json' and 'javascript' and 'text'
-							response.text = doc.getElementsByTagName('textarea')[0].value; // text
-						}
-						handlers(response);
-					}else{
-						response.data = doc;
-					}
-
-					return response;
-				}catch(e){
-					throw e;
-				}
-			},
-			function(error, response){
-				// error handler
-				response.error = error;
-			},
-			function(response){
-				// finally
-				response._callNext();
+		var dfd = util.deferred(response, null, isValid, isReady, handleResponse, last);
+		dfd._callNext = function(){
+			if(!this._calledNext){
+				this._calledNext = true;
+				current = null;
+				iframe._fireNextRequest();
 			}
-		);
+		};
 
-		queue.push([dfd, response]);
+		queue.push(dfd);
 		iframe._fireNextRequest();
 
-		watch(
-			dfd,
-			response,
-			function(dfd, response){
-				// validCheck
-				return !response.error;
-			},
-			function(dfd, response){
-				// ioCheck
-				return !!response._finished;
-			},
-			function(dfd, response){
-				// resHandle
-				if(response._finished){
-					dfd.resolve(response);
-				}else{
-					dfd.reject(new Error('Invalid dojo/request/iframe request state'));
-				}
-			}
-		);
+		watch(dfd);
 
-		return dfd.promise;
+		return returnDeferred ? dfd : dfd.promise;
 	}
 
 	try{

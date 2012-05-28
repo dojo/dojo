@@ -63,7 +63,7 @@ define([
 			error.response = response;
 			throw error;
 		}
-		var promise = def.then(okHandler).fail(errHandler);
+		var promise = def.then(okHandler).otherwise(errHandler);
 
 		try{
 			var notify = require('./notify');

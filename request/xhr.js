@@ -151,7 +151,7 @@ define([
 		//If XHR factory fails, cancel the deferred.
 		if(!_xhr){
 			dfd.cancel();
-			return dfd.promise;
+			return returnDeferred ? dfd : dfd.promise;
 		}
 
 		if(addListeners){

@@ -1,48 +1,35 @@
 define([
-	"./kernel", "./sniff", "require", "../io-query", "../dom", "../dom-form", "./Deferred",
-	"./config", "./json", "./lang", "./array", "../on"
-], function(dojo, has, require, ioq, dom, domForm, deferred, config, json, lang, array, on){
+	"./kernel",
+	"./sniff",
+	"require",
+	"../io-query",
+	"../dom",
+	"../dom-form",
+	"./Deferred",
+	"./config",
+	"./json",
+	"./lang",
+	"./array",
+	"../on",
+	"../aspect",
+	"../request/watch",
+	"../request/xhr",
+	"../request/util",
+	"../request/notify"
+], function(dojo, has, require, ioq, dom, domForm, Deferred, config, json, lang, array, on, aspect, watch, _xhr, util){
 	// module:
 	//		dojo/_base/xhr
 	// summary:
 	//		Deprecated.   Use dojo/request instead.
+	dojo.deprecated("dojo/_base/xhr", "Use dojo/request.", "2.0");
 
-	has.add("native-xhr", function() {
-		// if true, the environment has a native XHR implementation
-		return typeof XMLHttpRequest !== 'undefined';
-	});
-
-	if(has("dojo-xhr-factory") && require.getXhr){
-		dojo._xhrObj = require.getXhr;
-	}else if (has("native-xhr")){
-		dojo._xhrObj = function(){
-			// summary:
-			//		does the work of portably generating a new XMLHTTPRequest object.
-			try{
-				return new XMLHttpRequest();
-			}catch(e){
-				throw new Error("XMLHTTP not available: "+e);
-			}
-		};
-	}else{
-		// PROGIDs are in order of decreasing likelihood; this will change in time.
-		for(var XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'], progid, i = 0; i < 3;){
-			try{
-				progid = XMLHTTP_PROGIDS[i++];
-				if (new ActiveXObject(progid)) {
-					// this progid works; therefore, use it from now on
-					break;
-				}
-			}catch(e){
-				// squelch; we're just trying to find a good ActiveX PROGID
-				// if they all fail, then progid ends up as the last attempt and that will signal the error
-				// the first time the client actually tries to exec an xhr
-			}
-		}
-		dojo._xhrObj= function() {
-			return new ActiveXObject(progid);
-		};
-	}
+	/*=====
+	dojo._xhrObj = function(){
+		// summary:
+		//		does the work of portably generating a new XMLHTTPRequest object.
+	};
+	=====*/
+	dojo._xhrObj = _xhr._create;
 
 	var cfg = dojo.config;
 
@@ -148,7 +135,7 @@ define([
 						return true;
 					});
 				}
-		 }
+			}
 			return result; // DOMDocument
 		},
 		"json-comment-optional": function(xhr){
@@ -378,7 +365,18 @@ define([
 
 		// .. and the real work of getting the deferred in order, etc.
 		ioArgs.handleAs = args.handleAs || "text";
-		var d = new deferred(canceller);
+		var d = new Deferred(function(dfd){
+			dfd.canceled = true;
+			canceller && canceller(dfd);
+
+			var err = dfd.ioArgs.error;
+			if(!err){
+				err = new Error("request cancelled");
+				err.dojoType="cancel";
+				dfd.ioArgs.error = err;
+			}
+			return err;
+		});
 		d.addCallbacks(okHandler, function(error){
 			return errHandler(error, d);
 		});
@@ -431,22 +429,6 @@ define([
 		return d;
 	};
 
-	var _deferredCancel = function(/*Deferred*/dfd){
-		// summary: canceller function for dojo._ioSetArgs call.
-
-		dfd.canceled = true;
-		var xhr = dfd.ioArgs.xhr;
-		var _at = typeof xhr.abort;
-		if(_at == "function" || _at == "object" || _at == "unknown"){
-			xhr.abort();
-		}
-		var err = dfd.ioArgs.error;
-		if(!err){
-			err = new Error("xhr cancelled");
-			err.dojoType="cancel";
-		}
-		return err;
-	};
 	var _deferredOk = function(/*Deferred*/dfd){
 		// summary: okHandler function for dojo._ioSetArgs call.
 
@@ -462,18 +444,7 @@ define([
 		return error;
 	};
 
-	// avoid setting a timer per request. It degrades performance on IE
-	// something fierce if we don't use unified loops.
-	var _inFlightIntvl = null;
-	var _inFlight = [];
-
-
 	//Use a separate count for knowing if we are starting/stopping io calls.
-	//Cannot use _inFlight.length since it can change at a different time than
-	//when we want to do this kind of test. We only want to decrement the count
-	//after a callback/errback has finished, since the callback/errback should be
-	//considered as part of finishing a request.
-	var _pubCount = 0;
 	var _checkPubCount = function(dfd){
 		if(_pubCount <= 0){
 			_pubCount = 0;
@@ -483,78 +454,19 @@ define([
 		}
 	};
 
-	var _watchInFlight = function(){
-		//summary:
-		//		internal method that checks each inflight XMLHttpRequest to see
-		//		if it has completed or if the timeout situation applies.
+	var _pubCount = 0;
+	aspect.after(watch, "_onAction", function(){
+		_pubCount -= 1;
+	});
+	aspect.after(watch, "_onInFlight", _checkPubCount);
 
-		var now = (new Date()).getTime();
-		// make sure sync calls stay thread safe, if this callback is called
-		// during a sync call and this results in another sync call before the
-		// first sync call ends the browser hangs
-		if(!dojo._blockAsync){
-			// we need manual loop because we often modify _inFlight (and therefore 'i') while iterating
-			// note: the second clause is an assignment on purpose, lint may complain
-			for(var i = 0, tif; i < _inFlight.length && (tif = _inFlight[i]); i++){
-				var dfd = tif.dfd;
-				var func = function(){
-					if(!dfd || dfd.canceled || !tif.validCheck(dfd)){
-						_inFlight.splice(i--, 1);
-						_pubCount -= 1;
-					}else if(tif.ioCheck(dfd)){
-						_inFlight.splice(i--, 1);
-						tif.resHandle(dfd);
-						_pubCount -= 1;
-					}else if(dfd.startTime){
-						//did we timeout?
-						if(dfd.startTime + (dfd.ioArgs.args.timeout || 0) < now){
-							_inFlight.splice(i--, 1);
-							var err = new Error("timeout exceeded");
-							err.dojoType = "timeout";
-							dfd.errback(err);
-							//Cancel the request so the io module can do appropriate cleanup.
-							dfd.cancel();
-							_pubCount -= 1;
-						}
-					}
-				};
-				if(config.debugAtAllCosts){
-					func.call(this);
-				}else{
-					try{
-						func.call(this);
-					}catch(e){
-						dfd.errback(e);
-					}
-				}
-			}
-		}
-
-		_checkPubCount(dfd);
-
-		if(!_inFlight.length){
-			clearInterval(_inFlightIntvl);
-			_inFlightIntvl = null;
-		}
-	};
-
+	/*=====
 	dojo._ioCancelAll = function(){
 		//summary: Cancels all pending IO requests, regardless of IO type
 		//(xhr, script, iframe).
-		try{
-			array.forEach(_inFlight, function(i){
-				try{
-					i.dfd.cancel();
-				}catch(e){/*squelch*/}
-			});
-		}catch(e){/*squelch*/}
 	};
-
-	//Automatically call cancel all io calls on unload
-	//in IE for trac issue #2357.
-	if(has("ie")){
-		on(window, "unload", dojo._ioCancelAll);
-	}
+	=====*/
+	dojo._ioCancelAll = watch.cancelAll;
 
 	dojo._ioNotifyStart = function(/*Deferred*/dfd){
 		// summary:
@@ -587,45 +499,26 @@ define([
 		// resHandle: Function
 		//		Function used to process response. Gets the dfd
 		//		object as its only argument.
-		var args = dfd.ioArgs.args;
-		if(args.timeout){
-			dfd.startTime = (new Date()).getTime();
-		}
 
-		_inFlight.push({dfd: dfd, validCheck: validCheck, ioCheck: ioCheck, resHandle: resHandle});
-		if(!_inFlightIntvl){
-			_inFlightIntvl = setInterval(_watchInFlight, 50);
-		}
-		// handle sync requests
-		//A weakness: async calls in flight
-		//could have their handlers called as part of the
-		//_watchInFlight call, before the sync's callbacks
-		// are called.
-		if(args.sync){
-			_watchInFlight();
-		}
+		var args = dfd.ioArgs.options = dfd.ioArgs.args;
+		lang.mixin(dfd, {
+			response: dfd.ioArgs,
+			isValid: function(response){
+				return validCheck(dfd);
+			},
+			isReady: function(response){
+				return ioCheck(dfd);
+			},
+			handleResponse: function(response){
+				return resHandle(dfd);
+			}
+		});
+		watch(dfd);
+
+		_checkPubCount(dfd);
 	};
 
 	var _defaultContentType = "application/x-www-form-urlencoded";
-
-	var _validCheck = function(/*Deferred*/dfd){
-		return dfd.ioArgs.xhr.readyState; //boolean
-	};
-	var _ioCheck = function(/*Deferred*/dfd){
-		return 4 == dfd.ioArgs.xhr.readyState; //boolean
-	};
-	var _resHandle = function(/*Deferred*/dfd){
-		var xhr = dfd.ioArgs.xhr;
-		if(dojo._isDocumentOk(xhr)){
-			dfd.callback(dfd);
-		}else{
-			var err = new Error("Unable to load " + dfd.ioArgs.url + " status:" + xhr.status);
-			err.status = xhr.status;
-			err.responseText = xhr.responseText;
-			err.xhr = xhr;
-			dfd.errback(err);
-		}
-	};
 
 	dojo._ioAddQueryToUrl = function(/*dojo.__IoCallbackArgs*/ioArgs){
 		//summary: Adds query params discovered by the io deferred construction to the URL.
@@ -678,18 +571,12 @@ define([
 		// hasBody:
 		//		If the request has an HTTP body, then pass true for hasBody.
 
+		var rDfd;
 		//Make the Deferred object for this xhr request.
-		var dfd = dojo._ioSetArgs(args, _deferredCancel, _deferredOk, _deferError);
+		var dfd = dojo._ioSetArgs(args, function(dfd){
+			rDfd && rDfd.cancel();
+		}, _deferredOk, _deferError);
 		var ioArgs = dfd.ioArgs;
-
-		//Pass the args to _xhrObj, to allow alternate XHR calls based specific calls, like
-		//the one used for iframe proxies.
-		var xhr = ioArgs.xhr = dojo._xhrObj(ioArgs.args);
-		//If XHR factory fails, cancel the deferred.
-		if(!xhr){
-			dfd.cancel();
-			return dfd;
-		}
 
 		//Allow for specifying the HTTP body completely.
 		if("postData" in args){
@@ -698,47 +585,34 @@ define([
 			ioArgs.query = args.putData;
 		}else if("rawBody" in args){
 			ioArgs.query = args.rawBody;
-		}else if((arguments.length > 2 && !hasBody) || "POST|PUT".indexOf(method.toUpperCase()) == -1){
+		}else if((arguments.length > 2 && !hasBody) || "POST|PUT".indexOf(method.toUpperCase()) === -1){
 			//Check for hasBody being passed. If no hasBody,
 			//then only append query string if not a POST or PUT request.
 			dojo._ioAddQueryToUrl(ioArgs);
 		}
 
-		// IE 6 is a steaming pile. It won't let you call apply() on the native function (xhr.open).
-		// workaround for IE6's apply() "issues"
-		xhr.open(method, ioArgs.url, args.sync !== true, args.user || undefined, args.password || undefined);
-		if(args.headers){
-			for(var hdr in args.headers){
-				if(hdr.toLowerCase() === "content-type" && !args.contentType){
-					args.contentType = args.headers[hdr];
-				}else if(args.headers[hdr]){
-					//Only add header if it has a value. This allows for instance, skipping
-					//insertion of X-Requested-With by specifying empty value.
-					xhr.setRequestHeader(hdr, args.headers[hdr]);
-				}
-			}
-		}
-		// FIXME: is this appropriate for all content types?
-		if(args.contentType !== false){
-			xhr.setRequestHeader("Content-Type", args.contentType || _defaultContentType);
-		}
-		if(!args.headers || !("X-Requested-With" in args.headers)){
-			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-		}
-		// FIXME: set other headers here!
+		var options = {
+			method: method,
+			handleAs: "text",
+			headers: args.headers,
+			data: ioArgs.query,
+			timeout: args.timeout,
+			sync: args.sync,
+			ioArgs: ioArgs
+		};
+
 		dojo._ioNotifyStart(dfd);
-		if(config.debugAtAllCosts){
-			xhr.send(ioArgs.query);
-		}else{
-			try{
-				xhr.send(ioArgs.query);
-			}catch(e){
-				ioArgs.error = e;
-				dfd.cancel();
-			}
-		}
-		dojo._ioWatch(dfd, _validCheck, _ioCheck, _resHandle);
-		xhr = null;
+		rDfd = _xhr(ioArgs.url, options, true);
+
+		// sync ioArgs
+		dfd.ioArgs.xhr = rDfd.response.xhr;
+
+		rDfd.then(function(response){
+			dfd.resolve(dfd);
+		}).otherwise(function(error){
+			ioArgs.error = error;
+			dfd.reject(error);
+		});
 		return dfd; // dojo.Deferred
 	};
 
@@ -784,14 +658,8 @@ define([
 	}
 	*/
 
-	dojo._isDocumentOk = function(http){
-		var stat = http.status || 0;
-		stat =
-			(stat >= 200 && stat < 300) || // allow any 2XX response code
-			stat == 304 ||                 // or, get it out of the cache
-			stat == 1223 ||                // or, Internet Explorer mangled the status code
-			!stat;                         // or, we're Titanium/browser chrome/chrome extension requesting a local file
-		return stat; // Boolean
+	dojo._isDocumentOk = function(x){
+		return util.checkStatus(x.status);
 	};
 
 	dojo._getText = function(url){

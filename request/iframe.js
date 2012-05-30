@@ -12,13 +12,11 @@ define([
 	'../_base/window'
 ], function(module, require, watch, util, handlers, lang, query, has, dom, domConstruct, win){
 	var mid = module.id.replace(/[\/\.\-]/g, '_'),
-		onload = mid + '_onload',
-		queue = [],
-		current = null;
+		onload = mid + '_onload';
 
 	if(!win.global[onload]){
 		win.global[onload] = function(){
-			var dfd = current;
+			var dfd = iframe._currentDfd;
 			if(!dfd){
 				iframe._fireNextRequest();
 				return;
@@ -121,15 +119,15 @@ define([
 		// summary: Internal method used to fire the next request in the queue.
 		var dfd;
 		try{
-			if(current || !queue.length){
+			if(iframe._currentDfd || !iframe._dfdQueue.length){
 				return;
 			}
 			do{
-				dfd = current = queue.shift();
-			}while(dfd && (dfd.canceled || (dfd.isCanceled && dfd.isCanceled())) && queue.length);
+				dfd = iframe._currentDfd = iframe._dfdQueue.shift();
+			}while(dfd && (dfd.canceled || (dfd.isCanceled && dfd.isCanceled())) && iframe._dfdQueue.length);
 
 			if(!dfd || dfd.canceled || (dfd.isCanceled && dfd.isCanceled())){
-				current = null;
+				iframe._currentDfd = null;
 				return;
 			}
 
@@ -283,12 +281,12 @@ define([
 		dfd._callNext = function(){
 			if(!this._calledNext){
 				this._calledNext = true;
-				current = null;
+				iframe._currentDfd = null;
 				iframe._fireNextRequest();
 			}
 		};
 
-		queue.push(dfd);
+		iframe._dfdQueue.push(dfd);
 		iframe._fireNextRequest();
 
 		watch(dfd);
@@ -296,15 +294,12 @@ define([
 		return returnDeferred ? dfd : dfd.promise;
 	}
 
-	try{
-		require('doh');
-		iframe._dfdQueue = queue;
-	}catch(e){}
-
 	iframe._iframeName = mid + '_IoIframe';
 	iframe.create = create;
 	iframe.doc = doc;
 	iframe.setSrc = setSrc;
+	iframe._dfdQueue = [];
+	iframe._currentDfd = null;
 	iframe._fireNextRequest = fireNextRequest;
 
 	util.addCommonMethods(iframe, ['GET', 'POST']);

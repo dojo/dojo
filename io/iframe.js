@@ -1,14 +1,15 @@
 define([
 	"../_base/config", "../_base/json", "../_base/kernel", "../_base/lang",
 	"../_base/xhr", "../sniff", "../_base/window",
-	"../dom", "../dom-construct", "../query", "require"
-], function(config, json, kernel, lang, xhr, has, win, dom, domConstruct, query, require) {
+	"../dom", "../dom-construct", "../query", "require", "../request/iframe"
+], function(config, json, kernel, lang, xhr, has, win, dom, domConstruct, query, require, _iframe) {
 
 // module:
 //		dojo/io/iframe
 // summary:
 //		TODOC
 
+	dojo.deprecated("dojo/io/iframe", "Use dojo/request/iframe.", "2.0");
 
 /*=====
 var __ioArgs = function(){
@@ -48,11 +49,9 @@ var __ioArgs = function(){
 __ioArgs.prototype = new kernel.__IoArgs();
 =====*/
 
-var iframe = {
-	// summary:
-	//		Sends an Ajax I/O call using and Iframe (for instance, to upload files)
-
-	create: function(/*String*/fname, /*String*/onloadstr, /*String?*/uri){
+/*=====
+dojo.io.iframe = {
+	create: function(fname, onloadstr, uri){
 		//	summary:
 		//		Creates a hidden iframe in the page. Used mostly for IO
 		//		transports.  You do not need to call this to start a
@@ -67,312 +66,103 @@ var iframe = {
 		//		The value of the src attribute on the iframe element. If a
 		//		value is not given, then dojo/resources/blank.html will be
 		//		used.
-		if(window[fname]){ return window[fname]; }
-		if(window.frames[fname]){ return window.frames[fname]; }
-		var turi = uri;
-		if(!turi){
-			if(config["useXDomain"] && !config["dojoBlankHtmlUrl"]){
-				console.warn("dojo.io.iframe.create: When using cross-domain Dojo builds,"
-					+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
-					+ " to the path on your domain to blank.html");
-			}
-			turi = (config["dojoBlankHtmlUrl"]||require.toUrl("../resources/blank.html"));
-		}
-		var cframe = domConstruct.place(
-			'<iframe id="'+fname+'" name="'+fname+'" src="'+turi+'" onload="'+onloadstr+
-			'" style="position: absolute; left: 1px; top: 1px; height: 1px; width: 1px; visibility: hidden">',
-		win.body());
-
-		window[fname] = cframe;
-
-		return cframe;
 	},
-
-	setSrc: function(/*DOMNode*/iframe, /*String*/src, /*Boolean*/replace){
+	setSrc: function(iframe, src, replace){
 		//summary:
 		//		Sets the URL that is loaded in an IFrame. The replace parameter
 		//		indicates whether location.replace() should be used when
 		//		changing the location of the iframe.
-		try{
-			if(!replace){
-				if(has("webkit")){
-					iframe.location = src;
-				}else{
-					frames[iframe.name].location = src;
-				}
-			}else{
-				// Fun with DOM 0 incompatibilities!
-				var idoc;
-				if(has("ie") || has("webkit")){
-					idoc = iframe.contentWindow.document;
-				}else{ //  mozilla
-					idoc = iframe.contentWindow;
-				}
-
-				//For Safari (at least 2.0.3) and Opera, if the iframe
-				//has just been created but it doesn't have content
-				//yet, then iframe.document may be null. In that case,
-				//use iframe.location and return.
-				if(!idoc){
-					iframe.location = src;
-				}else{
-					idoc.location.replace(src);
-				}
-			}
-		}catch(e){
-			console.log("dojo.io.iframe.setSrc: ", e);
-		}
 	},
-
-	doc: function(/*DOMNode*/iframeNode){
+	doc: function(iframeNode){
 		//summary: Returns the document object associated with the iframe DOM Node argument.
-		return iframeNode.contentDocument || // W3
-			(
-				(
-					(iframeNode.name) && (iframeNode.document) &&
-					(win.doc.getElementsByTagName("iframe")[iframeNode.name].contentWindow) &&
-					(win.doc.getElementsByTagName("iframe")[iframeNode.name].contentWindow.document)
-				)
-			) ||  // IE
-			(
-				(iframeNode.name)&&(win.doc.frames[iframeNode.name])&&
-				(win.doc.frames[iframeNode.name].document)
-			) || null;
+	}
+};
+=====*/
+
+var mid = _iframe._iframeName;
+mid = mid.substring(0, mid.lastIndexOf('_'));
+
+var iframe = lang.delegate(_iframe, {
+	// summary:
+	//		Sends an Ajax I/O call using and Iframe (for instance, to upload files)
+
+	create: function(){
+		return iframe._frame = _iframe.create.apply(_iframe, arguments);
 	},
+
+	// cover up delegated methods
+	get: null,
+	post: null,
 
 	send: function(/*__ioArgs*/args){
 		//summary:
 		//		Function that sends the request to the server.
 		//		This transport can only process one send() request at a time, so if send() is called
 		//multiple times, it will queue up the calls and only process one at a time.
-		if(!this["_frame"]){
-			this._frame = this.create(this._iframeName, kernel._scopeName + ".io.iframe._iframeOnload();");
-		}
+		var rDfd;
 
 		//Set up the deferred.
-		var dfd = xhr._ioSetArgs(
-			args,
+		var dfd = xhr._ioSetArgs(args,
 			function(/*Deferred*/dfd){
 				//summary: canceller function for xhr._ioSetArgs call.
-				dfd.canceled = true;
-				dfd.ioArgs._callNext();
+				rDfd && rDfd.cancel();
 			},
 			function(/*Deferred*/dfd){
 				//summary: okHandler function for xhr._ioSetArgs call.
-				var value = null;
+				var value = null,
+					ioArgs = dfd.ioArgs;
 				try{
-					var ioArgs = dfd.ioArgs;
-					var ifd = iframe.doc(iframe._frame);
 					var handleAs = ioArgs.handleAs;
 
 					//Assign correct value based on handleAs value.
-					value = ifd; //html
-					if(handleAs != "html"){
-						if(handleAs == "xml"){
-							//	FF, Saf 3+ and Opera all seem to be fine with ifd being xml.  We have to
-							//	do it manually for IE6-8.  Refs #6334.
-							if(has("ie") < 9 || (has("ie") && has("quirks"))){
-								query("a", iframe._frame.contentWindow.document.documentElement).orphan();
-								var xmlText=(iframe._frame.contentWindow.document).documentElement.innerText;
-								xmlText=xmlText.replace(/>\s+</g, "><");
-								xmlText=lang.trim(xmlText);
-								//Reusing some code in base dojo for handling XML content.  Simpler and keeps
-								//Core from duplicating the effort needed to locate the XML Parser on IE.
-								var fauxXhr = { responseText: xmlText };
-								value = xhr.contentHandlers["xml"](fauxXhr); // DOMDocument
-							}
-						}else{
-							value = ifd.getElementsByTagName("textarea")[0].value; //text
-							if(handleAs == "json"){
-								value = json.fromJson(value); //json
-							}else if(handleAs == "javascript"){
-								value = kernel.eval(value); //javascript
-							}
+					if(handleAs === "xml" || handleAs === "html"){
+						value = rDfd.response.data;
+					}else{
+						value = rDfd.response.text;
+						if(handleAs === "json"){
+							value = json.fromJson(value);
+						}else if(handleAs === "javascript"){
+							value = kernel.eval(value);
 						}
 					}
 				}catch(e){
 					value = e;
-				}finally{
-					ioArgs._callNext();
 				}
 				return value;
 			},
 			function(/*Error*/error, /*Deferred*/dfd){
 				//summary: errHandler function for xhr._ioSetArgs call.
 				dfd.ioArgs._hasError = true;
-				dfd.ioArgs._callNext();
 				return error;
 			}
 		);
 
-		//Set up a function that will fire the next iframe request. Make sure it only
-		//happens once per deferred.
-		dfd.ioArgs._callNext = function(){
-			if(!this["_calledNext"]){
-				this._calledNext = true;
-				iframe._currentDfd = null;
-				iframe._fireNextRequest();
-			}
+		var ioArgs = dfd.ioArgs;
+
+		var options = {
+			method: args.method || "GET",
+			handleAs: args.handleAs === "json" || args.handleAs === "javascript" ? "text" : args.handleAs,
+			form: args.form,
+			query: args.content,
+			timeout: args.timeout,
+			ioArgs: ioArgs
 		};
+		rDfd = _iframe(ioArgs.url, options, true);
 
-		this._dfdQueue.push(dfd);
-		this._fireNextRequest();
+		ioArgs._callNext = rDfd._callNext;
 
-		//Add it the IO watch queue, to get things like timeout support.
-		xhr._ioWatch(
-			dfd,
-			function(/*Deferred*/dfd){
-				//validCheck
-				return !dfd.ioArgs["_hasError"];
-			},
-			function(dfd){
-				//ioCheck
-				return (!!dfd.ioArgs["_finished"]);
-			},
-			function(dfd){
-				//resHandle
-				if(dfd.ioArgs._finished){
-					dfd.callback(dfd);
-				}else{
-					dfd.errback(new Error("Invalid dojo.io.iframe request state"));
-				}
-			}
-		);
+		rDfd.then(function(response){
+			dfd.resolve(dfd);
+		}).otherwise(function(error){
+			dfd.ioArgs.error = error;
+			dfd.reject(error);
+		});
 
 		return dfd;
 	},
 
-	_currentDfd: null,
-	_dfdQueue: [],
-	_iframeName: kernel._scopeName + "IoIframe",
-
-	_fireNextRequest: function(){
-		//summary: Internal method used to fire the next request in the bind queue.
-		try{
-			if((this._currentDfd)||(this._dfdQueue.length == 0)){ return; }
-			//Find next deferred, skip the canceled ones.
-			do{
-				var dfd = this._currentDfd = this._dfdQueue.shift();
-			} while(dfd && dfd.canceled && this._dfdQueue.length);
-
-			//If no more dfds, cancel.
-			if(!dfd || dfd.canceled){
-				this._currentDfd =  null;
-				return;
-			}
-
-			var ioArgs = dfd.ioArgs;
-			var args = ioArgs.args;
-
-			ioArgs._contentToClean = [];
-			var fn = dom.byId(args["form"]);
-			var content = args["content"] || {};
-			if(fn){
-				if(content){
-					// if we have things in content, we need to add them to the form
-					// before submission
-					var pHandler = function(name, value) {
-						domConstruct.create("input", {type: "hidden", name: name, value: value}, fn);
-						ioArgs._contentToClean.push(name);
-					};
-					for(var x in content){
-						var val = content[x];
-						if(lang.isArray(val) && val.length > 1){
-							var i;
-							for (i = 0; i < val.length; i++) {
-								pHandler(x,val[i]);
-							}
-						}else{
-							if(!fn[x]){
-								pHandler(x,val);
-							}else{
-								fn[x].value = val;
-							}
-						}
-					}
-				}
-				//IE requires going through getAttributeNode instead of just getAttribute in some form cases,
-				//so use it for all.  See #2844
-				var actnNode = fn.getAttributeNode("action");
-				var mthdNode = fn.getAttributeNode("method");
-				var trgtNode = fn.getAttributeNode("target");
-				if(args["url"]){
-					ioArgs._originalAction = actnNode ? actnNode.value : null;
-					if(actnNode){
-						actnNode.value = args.url;
-					}else{
-						fn.setAttribute("action",args.url);
-					}
-				}
-				if(!mthdNode || !mthdNode.value){
-					if(mthdNode){
-						mthdNode.value= (args["method"]) ? args["method"] : "post";
-					}else{
-						fn.setAttribute("method", (args["method"]) ? args["method"] : "post");
-					}
-				}
-				ioArgs._originalTarget = trgtNode ? trgtNode.value: null;
-				if(trgtNode){
-					trgtNode.value = this._iframeName;
-				}else{
-					fn.setAttribute("target", this._iframeName);
-				}
-				fn.target = this._iframeName;
-				xhr._ioNotifyStart(dfd);
-				fn.submit();
-			}else{
-				// otherwise we post a GET string by changing URL location for the
-				// iframe
-				var tmpUrl = args.url + (args.url.indexOf("?") > -1 ? "&" : "?") + ioArgs.query;
-				xhr._ioNotifyStart(dfd);
-				this.setSrc(this._frame, tmpUrl, true);
-			}
-		}catch(e){
-			dfd.errback(e);
-		}
-	},
-
-	_iframeOnload: function(){
-		var dfd = this._currentDfd;
-		if(!dfd){
-			this._fireNextRequest();
-			return;
-		}
-
-		var ioArgs = dfd.ioArgs;
-		var args = ioArgs.args;
-		var fNode = dom.byId(args.form);
-
-		if(fNode){
-			// remove all the hidden content inputs
-			var toClean = ioArgs._contentToClean;
-			for(var i = 0; i < toClean.length; i++) {
-				var key = toClean[i];
-				//Need to cycle over all nodes since we may have added
-				//an array value which means that more than one node could
-				//have the same .name value.
-				for(var j = 0; j < fNode.childNodes.length; j++){
-					var chNode = fNode.childNodes[j];
-					if(chNode.name == key){
-						domConstruct.destroy(chNode);
-						break;
-					}
-				}
-			}
-
-			// restore original action + target
-			if(ioArgs["_originalAction"]){
-				fNode.setAttribute("action", ioArgs._originalAction);
-			}
-			if(ioArgs["_originalTarget"]){
-				fNode.setAttribute("target", ioArgs._originalTarget);
-				fNode.target = ioArgs._originalTarget;
-			}
-		}
-
-		ioArgs._finished = true;
-	}
-};
+	_iframeOnload: win.global[mid + '_onload']
+});
 
 lang.setObject("dojo.io.iframe", iframe);
 

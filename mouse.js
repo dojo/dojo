@@ -17,7 +17,7 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 
     has.add("dom-quirks", win.doc && win.doc.compatMode == "BackCompat");
 	has.add("events-mouseenter", win.doc && "onmouseenter" in win.doc.createElement("div"));
-	has.add("events-mousewheel", 'onmousewheel' in win.doc);
+	has.add("events-mousewheel", win.doc && 'onmousewheel' in win.doc);
 
 	var mouseButtons;
 	if(has("dom-quirks") || !has("dom-addeventlistener")){

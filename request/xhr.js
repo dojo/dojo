@@ -49,7 +49,7 @@ define([
 
 		isValid = function(response){
 			// summary: Check to see if the request should be taken out of the watch queue
-			return !this._finished;
+			return !this.isFulfilled();
 		};
 		cancel = function(dfd, response){
 			// summary: Canceler for deferred
@@ -58,20 +58,14 @@ define([
 		addListeners = function(_xhr, dfd, response){
 			// summary: Adds event listeners to the XMLHttpRequest object
 			function onLoad(evt){
-				dfd._finished = 1;
 				dfd.handleResponse(response);
 			}
 			function onError(evt){
-				dfd._finished = 1;
-
 				var _xhr = evt.target;
 				response.error = new Error('Unable to load ' + response.url + ' status: ' + _xhr.status); 
 				response.error.log = false;
 
 				dfd.handleResponse(response);
-			}
-			function onAbort(evt){
-				dfd._finished = 1;
 			}
 
 			function onProgress(evt){
@@ -84,13 +78,11 @@ define([
 
 			_xhr.addEventListener('load', onLoad, false);
 			_xhr.addEventListener('error', onError, false);
-			_xhr.addEventListener('abort', onAbort, false);
 			_xhr.addEventListener('progress', onProgress, false);
 
 			return function(){
 				_xhr.removeEventListener('load', onLoad, false);
 				_xhr.removeEventListener('error', onError, false);
-				_xhr.removeEventListener('abort', onAbort, false);
 				_xhr.removeEventListener('progress', onProgress, false);
 			};
 		};

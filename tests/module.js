@@ -21,6 +21,7 @@ define([
 	"dojo/tests/colors",
 	"dojo/tests/DeferredList",
 	"dojo/tests/Stateful",
+	"dojo/has!host-node?dojo/tests/node",
 	"dojo/has!host-browser?dojo/tests/request",
 	"dojo/has!host-browser?dojo/tests/behavior",
 	"dojo/has!host-browser?dojo/tests/parser",

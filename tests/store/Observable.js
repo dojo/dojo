@@ -40,7 +40,8 @@ dojo.require("dojo.store.Observable");
 				var secondObserver = results.observe(function(object, previousIndex, newIndex){
 					secondChanges.push({previousIndex:previousIndex, newIndex:newIndex, object:object});
 				});
-				var expectedChanges = [];
+				var expectedChanges = [],
+					expectedSecondChanges = [];
 				var two = results[0];
 				two.prime = false;
 				store.put(two); // should remove it from the array
@@ -55,6 +56,7 @@ dojo.require("dojo.store.Observable");
 							prime: false
 						}
 					});
+				expectedSecondChanges.push(expectedChanges[expectedChanges.length - 1]);
 				secondObserver.cancel();
 				var one = store.get(1);
 				one.prime = true;
@@ -93,10 +95,11 @@ dojo.require("dojo.store.Observable");
 					});
 				t.is(results.length, 3);
 				
-				observer.cancel(); // shouldn't get any more calls
+				observer.remove(); // shouldn't get any more calls
 				store.add({// should not be added
 					id:11, name:"eleven", prime:true
 				});
+				t.is(secondChanges, expectedSecondChanges);
 				t.is(changes, expectedChanges);
 			},
 			function testQueryWithZeroId(t){

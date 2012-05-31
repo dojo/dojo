@@ -177,7 +177,7 @@ return declare("dojo.Stateful", null, {
 			callbacks = this._watchCallbacks = function(name, oldValue, value, ignoreCatchall){
 				var notify = function(propertyCallbacks){
 					if(propertyCallbacks){
-                        propertyCallbacks = propertyCallbacks.slice();
+						propertyCallbacks = propertyCallbacks.slice();
 						for(var i = 0, l = propertyCallbacks.length; i < l; i++){
 							propertyCallbacks[i].call(self, name, oldValue, value);
 						}
@@ -201,11 +201,16 @@ return declare("dojo.Stateful", null, {
 			propertyCallbacks = callbacks[name] = [];
 		}
 		propertyCallbacks.push(callback);
-		return {
-			unwatch: function(){
-				propertyCallbacks.splice(array.indexOf(propertyCallbacks, callback), 1);
+
+		// TODO: Remove unwatch in 2.0
+		var handle = {};
+		handle.unwatch = handle.remove = function(){
+			var index = array.indexOf(propertyCallbacks, callback);
+			if(index > -1){
+				propertyCallbacks.splice(index, 1);
 			}
-		}; //Object
+		};
+		return handle; //Object
 	}
 
 });

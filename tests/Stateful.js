@@ -19,6 +19,39 @@ doh.register("tests.Stateful", [
 		s.set("foo", 5);
 		doh.is(5, s.get("foo"));
 	},
+	function removeWatchHandle(t){
+		var s = new dojo.Stateful({
+				foo: 3
+			}),
+			watched = false;
+
+		var watching = s.watch("foo", function(){
+			t.f(watched);
+			watched = true;
+		});
+		s.set("foo", 4);
+		watching.remove();
+		s.set("foo", 5);
+	},
+	function removeWatchHandleTwice(t){
+		var s = new dojo.Stateful({
+				foo: 3
+			}),
+			assertions = 0;
+
+		var watching = s.watch("foo", function(){
+			assertions++;
+		});
+		var watching2 = s.watch("foo", function(){
+			assertions++;
+		});
+		s.set("foo", 4);
+		watching.remove();
+		watching.remove();
+		s.set("foo", 5);
+		
+		t.t(assertions === 3);
+	},
 	function setHash(t){
 		var s = new dojo.Stateful();
 		s.set({

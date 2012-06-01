@@ -438,40 +438,6 @@ define([
 			then(function(result){ received = result; });
 			this.deferred.resolve(obj);
 			t.t(received === obj);
-		},
-
-		"then() with lots of chaining": function(t){
-			// Test for <http://bugs.dojotoolkit.org/ticket/14685>
-			var obj = {};
-			var received;
-			var promise = this.deferred.promise;
-			var count = 0;
-			function chain(){
-				count++;
-				return obj;
-			}
-			for(var i = 0; i < 5000; i++){
-				promise = promise.then(chain);
-			}
-			this.deferred.resolve();
-			promise.then(function(result){ received = result; });
-			t.t(received === obj);
-			t.is(count, 5000);
-		},
-
-		"then() chained with fulfilled responses": function(t){
-			var received;
-			var promise = this.deferred.promise;
-
-			this.deferred.resolve(1);
-			promise = promise.then(function(i){ return i + 1; });
-			t.t(promise.isFulfilled());
-			promise = promise.then(function(i){ return new Deferred().resolve(i + 1); });
-			t.t(promise.isFulfilled());
-			promise = promise.then(function(i){ throw i + 1; });
-			t.t(promise.isFulfilled());
-			promise.otherwise(function(i){ received = i; });
-			t.is(received, 4);
 		}
 	};
 

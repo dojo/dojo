@@ -21,7 +21,7 @@
 							query: {
 								scriptVar: "scriptLoad"
 							}
-						}).then(d.getTestCallback(function(response){
+						}).then(d.getTestCallback(function(data){
 							t.isNot("undefined", typeof scriptLoad);
 							t.is("loaded", scriptLoad);
 						}), function(error){
@@ -36,7 +36,7 @@
 								checkString: "myTasks"
 							},
 							checkString: "myTasks"
-						}).then(d.getTestCallback(function(response){
+						}).then(d.getTestCallback(function(data){
 							t.isNot("undefined", typeof myTasks);
 							t.is("Do dishes.", myTasks[1]);
 						}), function(error){
@@ -49,11 +49,11 @@
 						script.get("scriptDummyMethod.php", {
 							query: { foo: "bar" },
 							jsonp: "callback"
-							}).then(d.getTestCallback(function(response){
-								t.is("mammal", response.data.animalType);
-							}), function(error){
-								d.errback(error);
-							});
+						}).then(d.getTestCallback(function(data){
+							t.is("mammal", data.animalType);
+						}), function(error){
+							d.errback(error);
+						});
 						return d;							
 					},
 					function jsonpTimeout(t){
@@ -62,7 +62,7 @@
 							query: { delay: 3 },
 							timeout: 500,
 							jsonp: "callback"
-						}).then(function(response){
+						}).then(function(data){
 							d.errback(false);
 						}, d.getTestCallback(function(error){
 							t.t(error instanceof Error);
@@ -75,7 +75,7 @@
 						script.get("scriptDummyMethod.php", {
 							query: { delay: 3 },
 							jsonp: "callback"
-						}).then(function(response){
+						}).then(function(data){
 							d.errback(false);
 						}, d.getTestCallback(function(error){
 							t.t(error instanceof Error);

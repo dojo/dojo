@@ -63,11 +63,18 @@ define([
 			error.response = response;
 			throw error;
 		}
-		var promise = def.then(okHandler).otherwise(errHandler);
+		var responsePromise = def.then(okHandler).otherwise(errHandler),
+			dataPromise = responsePromise.then(function(response){
+				return response.data || response.text;
+			});
+
+		var promise = freeze(lang.delegate(dataPromise, {
+			response: responsePromise
+		}));
 
 		try{
 			var notify = require('./notify');
-			promise.then(notify.load, notify.error);
+			responsePromise.then(notify.load, notify.error);
 		}catch(e){}
 
 		if(last){

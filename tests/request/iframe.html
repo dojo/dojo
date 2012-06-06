@@ -20,8 +20,12 @@
 						var td = iframe.get("iframeDummyMethod.php?type=text", {
 							preventCache: true
 						});
-						td.then(d.getTestCallback(function(response){
-							t.is("iframe succeeded", response.data);
+						td.then(d.getTestErrback(function(data){
+							t.is("iframe succeeded", data);
+
+							return td.response.then(d.getTestCallback(function(response){
+								t.is("iframe succeeded", response.data);
+							}));
 						}));
 						return d;
 					},
@@ -37,8 +41,8 @@
 							},
 							handleAs: "json"
 						});
-						td.then(d.getTestCallback(function(response){
-							t.is("blue", response.data.post.color);
+						td.then(d.getTestCallback(function(data){
+							t.is("blue", data.post.color);
 						}));
 						return d;
 					},
@@ -49,7 +53,7 @@
 							preventCache: true,
 							handleAs: "javascript"
 						});
-						td.then(d.getTestCallback(function(response){
+						td.then(d.getTestCallback(function(){
 							t.is(42, window.iframeTestingFunction());
 						}));
 						return d;
@@ -61,9 +65,9 @@
 							preventCache: true,
 							handleAs: "html"
 						});
-						td.then(d.getTestCallback(function(response){
+						td.then(d.getTestCallback(function(data){
 							t.is("SUCCESSFUL HTML response",
-								response.data.getElementsByTagName("h1")[0].innerHTML);
+								data.getElementsByTagName("h1")[0].innerHTML);
 						}));
 						return d;
 					},
@@ -74,8 +78,8 @@
 							preventCache: true,
 							handleAs: "xml"
 						});
-						td.then(d.getTestCallback(function(response){
-							t.is(4, response.data.documentElement.getElementsByTagName("child").length);
+						td.then(d.getTestCallback(function(data){
+							t.is(4, data.documentElement.getElementsByTagName("child").length);
 						}));
 						return d;
 					},
@@ -87,8 +91,8 @@
 							data: {"tag": ["value1","value2"]},
 							handleAs: "json"
 						});
-						td.then(d.getTestCallback(function(response){
-							t.is("value2", response.data.post.tag);
+						td.then(d.getTestCallback(function(data){
+							t.is("value2", data.post.tag);
 						}));
 						return d;
 					},
@@ -105,7 +109,7 @@
 									text: "one"
 								}
 							}).then(d.getTestErrback(function(data){
-								t.is("one", data.text);
+								t.is("one", data);
 							}));
 							iframe.get("iframeDummyMethod.php",{
 								query: {
@@ -113,7 +117,7 @@
 									text: "two"
 								}
 							}).then(d.getTestErrback(function(data){
-								t.is("two", data.text);
+								t.is("two", data);
 							}));
 							iframe.get("iframeDummyMethod.php",{
 								query: {
@@ -121,7 +125,7 @@
 									text: "three"
 								}
 							}).then(d.getTestCallback(function(data){
-								t.is("three", data.text);
+								t.is("three", data);
 							}));
 
 							t.is(3, iframe._dfdQueue.length);

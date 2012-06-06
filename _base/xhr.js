@@ -607,7 +607,7 @@ define([
 		// sync ioArgs
 		dfd.ioArgs.xhr = rDfd.response.xhr;
 
-		rDfd.then(function(response){
+		rDfd.then(function(){
 			dfd.resolve(dfd);
 		}).otherwise(function(error){
 			ioArgs.error = error;

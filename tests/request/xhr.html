@@ -21,17 +21,18 @@
 							var d = new doh.Deferred();
 							var td = xhr.get("xhr.html", {
 								preventCache: true
-							}).then(function(response){
+							});
+							t.t(!!(td.then && td.cancel));
+							td.response.then(function(response){
 								t.is(4, response.xhr.readyState);
 								return response;
 							});
-							t.t(!!(td.then && td.cancel));
 							td.then(lang.hitch(d, "callback"));
 							return d;
 						},
 						function xhrGet404(t){
 							var d = new doh.Deferred();
-							var td = xhr.get("xhr_blarg.html").then(
+							var td = xhr.get("xhr_blarg.html").response.then(
 								function(response){
 									d.errback(false);
 								},
@@ -51,17 +52,20 @@
 									xyzzy: 3
 								},
 								handleAs: "json"
-							}).then(d.getTestCallback(function(response){
-								t.is("xhrDummyMethod.php?color=blue&foo=bar&foo=baz&thud=thonk&xyzzy=3",
-									response.url);
-
-								var query = response.data.query;
+							});
+							td.then(d.getTestErrback(function(data){
+								var query = data.query;
 
 								t.t(!!(query.color && query.foo && query.foo.length && query.thud && query.xyzzy));
 								t.is("blue", query.color);
 								t.is(2, query.foo.length);
 								t.is("thonk", query.thud);
 								t.is(3, query.xyzzy);
+
+								td.response.then(d.getTestCallback(function(response){
+									t.is("xhrDummyMethod.php?color=blue&foo=bar&foo=baz&thud=thonk&xyzzy=3",
+										response.url);
+								}));
 							}));
 							return d;
 						},
@@ -78,9 +82,8 @@
 							var td = xhr.post("xhrDummyMethod.php", {
 								data: { color: "blue"},
 								handleAs: "json"
-							}).then(d.getTestCallback(function(response){
-								t.t(!!response.data);
-								var post = response.data.post;
+							}).then(d.getTestCallback(function(data){
+								var post = data.post;
 
 								t.t(!!(post && post.color));
 								t.is("blue", post.color);
@@ -100,11 +103,11 @@
 								},
 								data: { color: "blue" },
 								handleAs: "json"
-							}).then(d.getTestCallback(function(response){
-								t.t(!!response.data);
+							}).then(d.getTestCallback(function(data){
+								t.t(!!data);
 
-								var query = response.data.query,
-									post = response.data.post;
+								var query = data.query,
+									post = data.post;
 
 								t.t(!!(query && query.foo && query.foo.length && query.thud && query.xyzzy));
 								t.t(!!(post && post.color));
@@ -123,10 +126,10 @@
 							var td = xhr.post("xhrDummyMethod.php", {
 								data: "foo=bar&color=blue&height=average",
 								handleAs: "json"
-							}).then(d.getTestCallback(function(response){
-								t.t(!!response.data);
+							}).then(d.getTestCallback(function(data){
+								t.t(!!data);
 
-								var post = response.data.post;
+								var post = data.post;
 
 								t.t(!!(post && post.foo && post.color && post.height));
 								t.is("bar", post.foo);
@@ -145,10 +148,10 @@
 								query: { foo: "bar" },
 								data: { color: "blue"},
 								handleAs: "json"
-							}).then(d.getTestCallback(function(response){
-								t.t(!!response.data);
+							}).then(d.getTestCallback(function(data){
+								t.t(!!data);
 
-								var put = response.data.put;
+								var put = data.put;
 
 								t.t(!!(put && put.color));
 								t.is("blue", put.color);
@@ -163,9 +166,9 @@
 							var td = xhr.del("xhrDummyMethod.php", {
 								preventCache: true,
 								handleAs: "json"
-							}).then(d.getTestCallback(function(response){
-								t.t(!!response.data);
-								t.is("DELETE", response.data.method);
+							}).then(d.getTestCallback(function(data){
+								t.t(!!data);
+								t.is("DELETE", data.method);
 							}), function(error){
 								d.errback(error);
 							});
@@ -176,7 +179,7 @@
 							var d = new doh.Deferred();
 							xhr.post("xhrDummyMethod.php?delay=1", {
 								timeout: 100
-							}).then(function(response){
+							}).then(function(data){
 									d.errback(false);
 								}, d.getTestCallback(function(error){
 									t.t(error instanceof Error);
@@ -188,7 +191,7 @@
 						function xhrCancel(t){
 							var d = new doh.Deferred();
 							xhr.post("xhrDummyMethod.php?delay=2")
-								.then(function(response){
+								.then(function(data){
 									d.errback(false);
 								}, d.getTestCallback(function(error){
 									t.t(error instanceof Error);

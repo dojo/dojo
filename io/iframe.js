@@ -151,7 +151,7 @@ var iframe = lang.delegate(_iframe, {
 
 		ioArgs._callNext = rDfd._callNext;
 
-		rDfd.then(function(response){
+		rDfd.then(function(){
 			dfd.resolve(dfd);
 		}).otherwise(function(error){
 			dfd.ioArgs.error = error;

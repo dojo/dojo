@@ -199,6 +199,16 @@
 								})).cancel();
 							// t.t(td instanceof dojo.Deferred);
 							return d;
+						},
+						function xhrSync(t){
+							var called = false;
+							xhr.get("xhr.html", {
+								sync: true
+							}).then(function(){
+								called = true;
+							});
+
+							t.t(called, "'called' should be set to true");
 						}
 					]
 				);

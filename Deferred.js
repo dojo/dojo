@@ -1,6 +1,6 @@
 define([
 	"./_base/lang",
-	"./promise/CancelError",
+	"./errors/CancelError",
 	"./promise/Promise"
 ], function(lang, CancelError, Promise){
 	"use strict";

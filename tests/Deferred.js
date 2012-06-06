@@ -2,7 +2,7 @@ define([
 	"doh/main",
 	"dojo/Deferred",
 	"dojo/promise/Promise",
-	"dojo/promise/CancelError"
+	"dojo/errors/CancelError"
 ], function(doh, Deferred, Promise, CancelError){
 	var tests = {
 		"deferred receives result after resolving": function(t){

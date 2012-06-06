@@ -74,29 +74,18 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	dojo.isAsync = !has("dojo-loader") || require.async;
 	dojo.locale = config.locale;
 
-	/*=====
-		dojo.version = function(){
-			// summary:
-			//		Version number of the Dojo Toolkit
-			// major: Integer
-			//		Major version. If total version is "1.2.0beta1", will be 1
-			// minor: Integer
-			//		Minor version. If total version is "1.2.0beta1", will be 2
-			// patch: Integer
-			//		Patch version. If total version is "1.2.0beta1", will be 0
-			// flag: String
-			//		Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
-			// revision: Number
-			//		The SVN rev from which dojo was pulled
-			this.major = 0;
-			this.minor = 0;
-			this.patch = 0;
-			this.flag = "";
-			this.revision = 0;
-		}
-	=====*/
 	var rev = "$Rev$".match(/\d+/);
 	dojo.version = {
+		// summary:
+		//		Version number of the Dojo Toolkit
+		// description:
+		//		Hash about the version, including
+		//			* major: Integer: Major version. If total version is "1.2.0beta1", will be 1
+		//			* minor: Integer: Minor version. If total version is "1.2.0beta1", will be 2
+		//			* patch: Integer: Patch version. If total version is "1.2.0beta1", will be 0
+		//			* flag: String: Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
+		//			* revision: Number: The SVN rev from which dojo was pulled
+
 		major: 1, minor: 8, patch: 0, flag: "dev",
 		revision: rev ? +rev[0] : NaN,
 		toString: function(){
@@ -105,7 +94,6 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		}
 	};
 
-
 	// If has("extend-dojo") is truthy, then as a dojo module is defined it should push it's definitions
 	// into the dojo object, and conversely. In 2.0, it will likely be unusual to augment another object
 	// as a result of defining a module. This has feature gives a way to force 2.0 behavior as the code
@@ -113,11 +101,13 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	has.add("extend-dojo", 1);
 
 
+	(Function("d", "d.eval = function(){return d.global.eval ? d.global.eval(arguments[0]) : eval(arguments[0]);}"))(dojo);
+	/*=====
 	dojo.eval = function(scriptText){
-		//	summary:
+		// summary:
 		//		A legacy method created for use exclusively by internal Dojo methods. Do not use this method
 		//		directly unless you understand its possibly-different implications on the platforms your are targeting.
-		//	description:
+		// description:
 		//		Makes an attempt to evaluate scriptText in the global scope. The function works correctly for browsers
 		//		that support indirect eval.
 		//
@@ -132,13 +122,12 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		//		to define a global variable using dojo.eval, write something like
 		//
 		//		dojo.eval("window.pi = 3.14;")
-		//	scriptText:
+		// scriptText:
 		//		The text to evaluation.
-		//	returns:
+		// returns:
 		//		The result of the evaluation. Often `undefined`
 	};
-
-	(Function("d", "d.eval = function(){return d.global.eval ? d.global.eval(arguments[0]) : eval(arguments[0]);}"))(dojo);
+	=====*/
 
 
 	if(has("host-rhino")){
@@ -183,22 +172,23 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		// include dojo.deprecated/dojo.experimental implementations
 		!!config.isDebug
 	);
+	dojo.deprecated = dojo.experimental =  function(){};
 	if(has("dojo-debug-messages")){
 		dojo.deprecated = function(/*String*/ behaviour, /*String?*/ extra, /*String?*/ removal){
-			//	summary:
+			// summary:
 			//		Log a debug message to indicate that a behavior has been
 			//		deprecated.
-			//	behaviour: String
+			// behaviour: String
 			//		The API or behavior being deprecated. Usually in the form
 			//		of "myApp.someFunction()".
-			//	extra: String?
+			// extra: String?
 			//		Text to append to the message. Often provides advice on a
 			//		new function or facility to achieve the same goal during
 			//		the deprecation period.
-			//	removal: String?
+			// removal: String?
 			//		Text to indicate when in the future the behavior will be
 			//		removed. Usually a version number.
-			//	example:
+			// example:
 			//	| dojo.deprecated("myApp.getTemp()", "use myApp.getLocaleTemp() instead", "1.0");
 
 			var message = "DEPRECATED: " + behaviour;
@@ -208,29 +198,28 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		};
 
 		dojo.experimental = function(/* String */ moduleName, /* String? */ extra){
-			//	summary: Marks code as experimental.
-			//	description:
+			// summary:
+			//		Marks code as experimental.
+			// description:
 			//		This can be used to mark a function, file, or module as
 			//		experimental.	 Experimental code is not ready to be used, and the
 			//		APIs are subject to change without notice.	Experimental code may be
 			//		completed deleted without going through the normal deprecation
 			//		process.
-			//	moduleName: String
+			// moduleName: String
 			//		The name of a module, or the name of a module file or a specific
 			//		function
-			//	extra: String?
+			// extra: String?
 			//		some additional message for the user
-			//	example:
+			// example:
 			//	| dojo.experimental("dojo.data.Result");
-			//	example:
+			// example:
 			//	| dojo.experimental("dojo.weather.toKelvin()", "PENDING approval from NOAA");
 
 			var message = "EXPERIMENTAL: " + moduleName + " -- APIs subject to change without notice.";
 			if(extra){ message += " " + extra; }
 			console.warn(message);
 		};
-	}else{
-		dojo.deprecated = dojo.experimental =  function(){};
 	}
 
 	has.add("dojo-modulePaths",
@@ -256,9 +245,9 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	);
 	if(has("dojo-moduleUrl")){
 		dojo.moduleUrl = function(/*String*/module, /*String?*/url){
-			//	summary:
+			// summary:
 			//		Returns a URL relative to a module.
-			//	example:
+			// example:
 			//	|	var pngPath = dojo.moduleUrl("acme","images/small.png");
 			//	|	console.dir(pngPath); // list the object properties
 			//	|	// create an image and set it's source to pngPath's value:
@@ -266,7 +255,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			//	|	img.src = pngPath;
 			//	|	// add our image to the document
 			//	|	dojo.body().appendChild(img);
-			//	example:
+			// example:
 			//		you may de-reference as far as you like down the package
 			//		hierarchy.  This is sometimes handy to avoid lenghty relative
 			//		urls or for building portable sub-packages. In this example,

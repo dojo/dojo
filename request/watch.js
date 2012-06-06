@@ -20,7 +20,7 @@ define([
 		for(var i = 0, dfd; i < _inFlight.length && (dfd = _inFlight[i]); i++){
 			var response = dfd.response,
 				options = response.options;
-			if(dfd.canceled || (dfd.isCancelled && dfd.isCanceled()) || (dfd.isValid && !dfd.isValid(response))){
+			if(dfd.canceled || (dfd.isCanceled && dfd.isCanceled()) || (dfd.isValid && !dfd.isValid(response))){
 				_inFlight.splice(i--, 1);
 				watch._onAction && watch._onAction();
 			}else if(dfd.isReady && dfd.isReady(response)){

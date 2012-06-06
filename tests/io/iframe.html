@@ -6,9 +6,9 @@
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
-		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
+		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true, ioPublish: true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/io/iframe"], function(dojo, doh){
+			require(["dojo", "doh", "dojo/topic", "dojo/io/iframe"], function(dojo, doh, topic){
 				doh.register([
 					function ioIframeGetText(t){
 						var d = new doh.Deferred();
@@ -117,13 +117,45 @@
 							url: "iframeResponse.text.html",
 							form: "contentArrayTest",
 							content: {"tag": ["value1","value2"]},
-							handle: function(res, ioArgs){
-								if(!(res instanceof Error)){
-									d.callback(true);
-								} else {
-									d.errback(false);
-								}
-							}
+							handle: d.getTestErrback(function(res, ioArgs){
+								t.f(res instanceof Error);
+							})
+						});
+						var stop = topic.subscribe("/dojo/io/stop", function(){
+							stop.remove();
+							d.callback(true);
+						});
+						return d;
+					},
+					function ioPublish(t){
+						var d = new doh.Deferred();
+
+						var topicCount = 0;
+						topic.subscribe("/dojo/io/start", function(){
+							topicCount++;
+						});
+						topic.subscribe("/dojo/io/send", function(){
+							topicCount++;
+						});
+						topic.subscribe("/dojo/io/load", function(){
+							topicCount++;
+						});
+						topic.subscribe("/dojo/io/error", function(){
+							topicCount--;
+						});
+						topic.subscribe("/dojo/io/done", function(){
+							topicCount++;
+						});
+						topic.subscribe("/dojo/io/stop", d.getTestCallback(function(){
+							topicCount++;
+							t.is(5, topicCount);
+						}));
+
+						dojo.io.iframe.send({
+							url: "iframeResponse.text.html",
+							method: "GET",
+							timeoutSeconds: 5,
+							preventCache: true
 						});
 						return d;
 					}

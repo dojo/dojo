@@ -1,8 +1,8 @@
 define([
 	"../_base/config", "../_base/json", "../_base/kernel", "../_base/lang",
 	"../_base/xhr", "../sniff", "../_base/window",
-	"../dom", "../dom-construct", "../query", "require", "../request/iframe"
-], function(config, json, kernel, lang, xhr, has, win, dom, domConstruct, query, require, _iframe) {
+	"../dom", "../dom-construct", "../query", "require", "../aspect", "../request/iframe"
+], function(config, json, kernel, lang, xhr, has, win, dom, domConstruct, query, require, aspect, _iframe) {
 
 // module:
 //		dojo/io/iframe
@@ -147,6 +147,15 @@ var iframe = lang.delegate(_iframe, {
 			timeout: args.timeout,
 			ioArgs: ioArgs
 		};
+
+		if(config.ioPublish && kernel.publish && ioArgs.args.ioPublish !== false){
+			var start = aspect.after(_iframe, "_notifyStart", function(data){
+				if(data.options.ioArgs === ioArgs){
+					start.remove();
+					xhr._ioNotifyStart(dfd);
+				}
+			}, true);
+		}
 		rDfd = _iframe(ioArgs.url, options, true);
 
 		ioArgs._callNext = rDfd._callNext;

@@ -14,8 +14,7 @@ define([
 	"../aspect",
 	"../request/watch",
 	"../request/xhr",
-	"../request/util",
-	"../request/notify"
+	"../request/util"
 ], function(dojo, has, require, ioq, dom, domForm, Deferred, config, json, lang, array, on, aspect, watch, _xhr, util){
 	// module:
 	//		dojo/_base/xhr

@@ -200,12 +200,14 @@ define([
 				formNode.target = iframe._iframeName;
 
 				notify && notify.send(response);
+				iframe._notifyStart(response);
 				formNode.submit();
 			}else{
 				// otherwise we post a GET string by changing URL location for the
 				// iframe
 
 				notify && notify.send(response);
+				iframe._notifyStart(response);
 				iframe.setSrc(iframe._frame, response.url, true);
 			}
 		}catch(e){
@@ -294,10 +296,13 @@ define([
 		return returnDeferred ? dfd : dfd.promise;
 	}
 
-	iframe._iframeName = mid + '_IoIframe';
 	iframe.create = create;
 	iframe.doc = doc;
 	iframe.setSrc = setSrc;
+
+	// TODO: Make these truly private in 2.0
+	iframe._iframeName = mid + '_IoIframe';
+	iframe._notifyStart = function(){};
 	iframe._dfdQueue = [];
 	iframe._currentDfd = null;
 	iframe._fireNextRequest = fireNextRequest;

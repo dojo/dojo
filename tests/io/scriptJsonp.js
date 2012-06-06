@@ -38,7 +38,7 @@ function getScriptUrls(){
 	var scriptUrls = new Array();
 	for(var i = 0; scripts && i < scripts.length; i++){
 		var scriptTag = scripts[i];
-		if(scriptTag.id.indexOf("dojoIoScript") == 0){
+		if(scriptTag.id.indexOf("dojo_request_script") == 0){
 			scriptUrls.push(scriptTag.src);
 		}
 	}

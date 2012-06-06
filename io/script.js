@@ -1,14 +1,15 @@
 define([
 	"../_base/connect", "../_base/kernel", "../_base/lang",
 	"../sniff", "../_base/window","../_base/xhr",
-	"../dom", "../dom-construct"
-], function(connect, kernel, lang, has, win, xhr, dom, domConstruct) {
+	"../dom", "../dom-construct", "../request/script"
+], function(connect, kernel, lang, has, win, xhr, dom, domConstruct, _script) {
 
 	// module:
 	//		dojo/io/script
 	// summary:
 	//		TODOC
 
+	dojo.deprecated("dojo/io/script", "Use dojo/request/script.", "2.0");
 
 /*=====
 var __ioArgs = function(kwargs){
@@ -51,64 +52,48 @@ __ioArgs.prototype = new kernel.__IoArgs();
 		get: function(/*__ioArgs*/ args){
 			//	summary:
 			//		sends a get request using a dynamically created script tag.
-			var dfd = this._makeScriptDeferred(args);
+			var rDfd;
+			var dfd = this._makeScriptDeferred(args, function(dfd){
+				rDfd && rDfd.cancel();
+			});
 			var ioArgs = dfd.ioArgs;
 			xhr._ioAddQueryToUrl(ioArgs);
 
 			xhr._ioNotifyStart(dfd);
 
-			if(this._canAttach(ioArgs)){
-				var node = this.attach(ioArgs.id, ioArgs.url, args.frameDoc);
+			rDfd = _script.get(ioArgs.url, {
+				timeout: args.timeout,
+				jsonp: ioArgs.jsonp,
+				checkString: args.checkString,
+				ioArgs: ioArgs,
+				frameDoc: args.frameDoc,
+				canAttach: function(rDfd){
+					// sync values
+					ioArgs.requestId = rDfd.id;
+					ioArgs.scriptId = rDfd.scriptId;
+					ioArgs.canDelete = rDfd.canDelete;
 
-				//If not a jsonp callback or a polling checkString case, bind
-				//to load event on the script tag.
-				if(!ioArgs.jsonp && !ioArgs.args.checkString){
-					var handle = connect.connect(node, loadEvent, function(evt){
-						if(evt.type == "load" || readyRegExp.test(node.readyState)){
-							connect.disconnect(handle);
-							ioArgs.scriptLoaded = evt;
-						}
-					});
+					return script._canAttach(ioArgs);
 				}
-			}
+			}, true);
 
-			xhr._ioWatch(dfd, this._validCheck, this._ioCheck, this._resHandle);
+			rDfd.then(function(){
+				dfd.resolve(dfd);
+			}).otherwise(function(error){
+				dfd.ioArgs.error = error;
+				dfd.reject(error);
+			});
+
 			return dfd;
 		},
 
-		attach: function(/*String*/ id, /*String*/ url, /*Document?*/ frameDocument){
-			//	summary:
-			//		creates a new <script> tag pointing to the specified URL and
-			//		adds it to the document.
-			//	description:
-			//		Attaches the script element to the DOM.	 Use this method if you
-			//		just want to attach a script to the DOM and do not care when or
-			//		if it loads.
-			var doc = (frameDocument || win.doc);
-			var element = doc.createElement("script");
-			element.type = "text/javascript";
-			element.src = url;
-			element.id = id;
-			element.async = true;
-			element.charset = "utf-8";
-			return doc.getElementsByTagName("head")[0].appendChild(element);
-		},
+		attach: _script._attach,
+		remove: _script._remove,
 
-		remove: function(/*String*/ id, /*Document?*/ frameDocument){
-			//summary: removes the script element with the given id, from the given frameDocument.
-			//If no frameDocument is passed, the current document is used.
-			domConstruct.destroy(dom.byId(id, frameDocument));
-
-			//Remove the jsonp callback on dojo.io.script, if it exists.
-			if(this["jsonp_" + id]){
-				delete this["jsonp_" + id];
-			}
-		},
-
-		_makeScriptDeferred: function(/*Object*/ args){
+		_makeScriptDeferred: function(/*Object*/ args, /*Function?*/ cancel){
 			//summary:
 			//		sets up a Deferred object for an IO request.
-			var dfd = xhr._ioSetArgs(args, this._deferredCancel, this._deferredOk, this._deferredError);
+			var dfd = xhr._ioSetArgs(args, cancel || this._deferredCancel, this._deferredOk, this._deferredError);
 
 			var ioArgs = dfd.ioArgs;
 			ioArgs.id = kernel._scopeName + "IoScript" + (this._counter++);
@@ -122,10 +107,9 @@ __ioArgs.prototype = new kernel.__IoArgs();
 				if(ioArgs.query.length > 0){
 					ioArgs.query += "&";
 				}
-				ioArgs.query += ioArgs.jsonp
-					+ "="
-					+ (args.frameDoc ? "parent." : "")
-					+ kernel._scopeName + ".io.script.jsonp_" + ioArgs.id + "._jsonpCallback";
+				ioArgs.query += ioArgs.jsonp +
+					"=" + (args.frameDoc ? "parent." : "") +
+					kernel._scopeName + ".io.script.jsonp_" + ioArgs.id + "._jsonpCallback";
 
 				ioArgs.frameDoc = args.frameDoc;
 
@@ -142,9 +126,6 @@ __ioArgs.prototype = new kernel.__IoArgs();
 
 			//DO NOT use "this" and expect it to be script.
 			dfd.canceled = true;
-			if(dfd.ioArgs.canDelete){
-				script._addDeadScript(dfd.ioArgs);
-			}
 		},
 
 		_deferredOk: function(/*Deferred*/ dfd){
@@ -152,11 +133,6 @@ __ioArgs.prototype = new kernel.__IoArgs();
 
 			//DO NOT use "this" and expect it to be script.
 			var ioArgs = dfd.ioArgs;
-
-			//Add script to list of things that can be removed.
-			if(ioArgs.canDelete){
-				script._addDeadScript(ioArgs);
-			}
 
 			//Favor JSONP responses, script load events then lastly ioArgs.
 			//The ioArgs are goofy, but cannot return the dfd since that stops
@@ -168,16 +144,6 @@ __ioArgs.prototype = new kernel.__IoArgs();
 		_deferredError: function(/*Error*/ error, /*Deferred*/ dfd){
 			//summary: errHandler function for xhr._ioSetArgs call.
 
-			if(dfd.ioArgs.canDelete){
-				//DO NOT use "this" and expect it to be script.
-				if(error.dojoType == "timeout"){
-					//For timeouts, remove the script element immediately to
-					//avoid a response from it coming back later and causing trouble.
-					script.remove(dfd.ioArgs.id, dfd.ioArgs.frameDoc);
-				}else{
-					script._addDeadScript(dfd.ioArgs);
-				}
-			}
 			console.log("dojo.io.script error", error);
 			return error;
 		},
@@ -258,10 +224,27 @@ __ioArgs.prototype = new kernel.__IoArgs();
 			//		function will be the Deferred object that represents the script
 			//		request.
 			this.ioArgs.json = json;
+			kernel.global[_script._callbacksProperty][this.ioArgs.requestId](json);
 		}
 	};
 
 	lang.setObject("dojo.io.script", script);
+
+	/*=====
+	script.attach = function(id, url, frameDocument){
+			//	summary:
+			//		creates a new <script> tag pointing to the specified URL and
+			//		adds it to the document.
+			//	description:
+			//		Attaches the script element to the DOM. Use this method if you
+			//		just want to attach a script to the DOM and do not care when or
+			//		if it loads.
+	};
+	script.remove = function(id, frameDocument){
+			//summary: removes the script element with the given id, from the given frameDocument.
+			//If no frameDocument is passed, the current document is used.
+	};
+	=====*/
 
 	return script;
 });

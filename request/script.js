@@ -24,11 +24,6 @@ define([
 		callbacks = this[mid + '_callbacks'] = {},
 		deadScripts = [];
 
-	var noop = { _jsonpCallback: function(){} };
-	function jsonpCallback(json){
-		this.response.data = json;
-	}
-
 	function attach(id, url, frameDoc){
 		var doc = (frameDoc || win.doc),
 			element = doc.createElement('script');
@@ -42,12 +37,17 @@ define([
 		return doc.getElementsByTagName('head')[0].appendChild(element);
 	}
 
-	function remove(id, frameDoc, noopCallback){
-		domConstruct.destroy(dom.byId(mid + id, frameDoc));
+	function remove(id, frameDoc, cleanup){
+		domConstruct.destroy(dom.byId(id, frameDoc));
 
 		if(callbacks[id]){
-			if(noopCallback){
-				callbacks[id] = noop;
+			if(cleanup){
+				// set callback to a function that deletes itself so requests that
+				// are in-flight don't error out when returning and also
+				// clean up after themselves
+				callbacks[id] = function(){
+					delete callbacks[id];
+				};
 			}else{
 				delete callbacks[id];
 			}
@@ -80,10 +80,7 @@ define([
 			deadScripts = [];
 		}
 
-		return true;
-	}
-	function isReadyJsonp(response){
-		return !!response.data;
+		return response.options.jsonp ? !response.data : true;
 	}
 	function isReadyScript(response){
 		return !!this.scriptLoaded;
@@ -113,26 +110,27 @@ define([
 			response,
 			canceler,
 			isValid,
-			options.jsonp ? isReadyJsonp : (options.checkString ? isReadyCheckString : isReadyScript),
+			options.jsonp ? null : (options.checkString ? isReadyCheckString : isReadyScript),
 			handleResponse
 		);
 
 		lang.mixin(dfd, {
-			id: counter++,
+			id: mid + (counter++),
 			canDelete: false
 		});
-		dfd.scriptId = mid + dfd.id;
 
 		if(options.jsonp){
-			url += (~url.indexOf('?') ? '&' : '?') +
-				options.jsonp + '=' +
-				(options.frameDoc ? 'parent.' : '') +
-				mid + '_callbacks[' + dfd.id + ']._jsonpCallback';
+			var queryParameter = (~url.indexOf('?') ? '&' : '?') + options.jsonp + '=';
+			if(url.indexOf(queryParameter) === -1){
+				url += queryParameter +
+					(options.frameDoc ? 'parent.' : '') +
+					mid + '_callbacks.' + dfd.id;
+			}
 
 			dfd.canDelete = true;
-			callbacks[dfd.id] = {
-				_jsonpCallback: jsonpCallback,
-				response: response
+			callbacks[dfd.id] = function(json){
+				response.data = json;
+				dfd.handleResponse(response);
 			};
 		}
 
@@ -140,15 +138,18 @@ define([
 			var notify = require('./notify');
 			notify.send(response);
 		}catch(e){}
-		var node = script._attach(dfd.scriptId, url, options.frameDoc);
 
-		if(!options.jsonp && !options.checkString){
-			var handle = on(node, loadEvent, function(evt){
-				if(evt.type === 'load' || readyRegExp.test(node.readyState)){
-					handle.remove();
-					dfd.scriptLoaded = evt;
-				}
-			});
+		if(!options.canAttach || options.canAttach(dfd)){
+			var node = script._attach(dfd.id, url, options.frameDoc);
+
+			if(!options.jsonp && !options.checkString){
+				var handle = on(node, loadEvent, function(evt){
+					if(evt.type === 'load' || readyRegExp.test(node.readyState)){
+						handle.remove();
+						dfd.scriptLoaded = evt;
+					}
+				});
+			}
 		}
 
 		watch(dfd);
@@ -160,6 +161,7 @@ define([
 	// TODO: Remove in 2.0
 	script._attach = attach;
 	script._remove = remove;
+	script._callbacksProperty = mid + '_callbacks';
 
 	return script;
 });

@@ -13,7 +13,8 @@ define([
 	has.add('native-xhr2', function(){
 		if(!has('native-xhr')){ return; }
 		var x = new XMLHttpRequest();
-		return typeof x['addEventListener'] !== 'undefined';
+		return typeof x['addEventListener'] !== 'undefined' &&
+			(typeof opera === "undefined" || typeof x['upload'] !== 'undefined');
 	});
 
 	function handleResponse(response){

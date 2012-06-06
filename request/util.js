@@ -63,8 +63,16 @@ define([
 			error.response = response;
 			throw error;
 		}
-		var responsePromise = def.then(okHandler).otherwise(errHandler),
-			dataPromise = responsePromise.then(function(response){
+		var responsePromise = def.then(okHandler).otherwise(errHandler);
+
+		try{
+			// Handle notify before data promise so notify always runs
+			// before any chained promise
+			var notify = require('./notify');
+			responsePromise.then(notify.load, notify.error);
+		}catch(e){}
+
+		var dataPromise = responsePromise.then(function(response){
 				return response.data || response.text;
 			});
 
@@ -72,10 +80,6 @@ define([
 			response: responsePromise
 		}));
 
-		try{
-			var notify = require('./notify');
-			responsePromise.then(notify.load, notify.error);
-		}catch(e){}
 
 		if(last){
 			def.then(function(response){

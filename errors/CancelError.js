@@ -4,5 +4,5 @@ define(["./create"], function(create){
 	// summary:
 	//		Default error if a promise is canceled without a reason.
 
-	return create("CancelError");
+	return create("CancelError", null, null, { dojoType: "cancel" });
 });

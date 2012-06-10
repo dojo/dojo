@@ -308,7 +308,7 @@
 	//
 	var eval_ =
 		// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
-		new Function("__text", 'return eval(__text);');
+		new Function('return eval(arguments[0]);');
 
 	req.eval =
 		function(text, hint){
@@ -430,13 +430,20 @@
 
 	if(has("dojo-config-api")){
 		var consumePendingCacheInsert = function(referenceModule){
-				for(var p in pendingCacheInsert){
-					var match = p.match(/^url\:(.+)/);
+				var p, item, match, now;
+				for(p in pendingCacheInsert){
+					item = pendingCacheInsert[p];
+					match = p.match(/^url\:(.+)/);
 					if(match){
-						cache[toUrl(match[1], referenceModule)] =  pendingCacheInsert[p];
+						cache[toUrl(match[1], referenceModule)] =  item;
+					}else if(p=="*now"){
+						now = item;
 					}else if(p!="*noref"){
-						cache[getModuleInfo(p, referenceModule).mid] = pendingCacheInsert[p];
+						cache[getModuleInfo(p, referenceModule).mid] = item;
 					}
+				}
+				if(now){
+					now(createRequire(referenceModule));
 				}
 				pendingCacheInsert = {};
 			},
@@ -983,15 +990,14 @@
 		},
 
 		toUrl = req.toUrl = function(name, referenceModule){
-			// name must include a filetype; fault tolerate to allow no filetype (but things like "path/to/version2.13" will assume filetype of ".13")
-			var	match = name.match(/(.+)(\.[^\/\.]+?)$/),
-				root = (match && match[1]) || name,
-				ext = (match && match[2]) || "",
-				moduleInfo = getModuleInfo(root, referenceModule),
-				url= moduleInfo.url;
-			// recall, getModuleInfo always returns a url with a ".js" suffix iff pid; therefore, we've got to trim it
-			url= typeof moduleInfo.pid == "string" ? url.substring(0, url.length - 3) : url;
-			return fixupUrl(url + ext);
+			var moduleInfo = getModuleInfo(name+"/x", referenceModule),
+				url = moduleInfo.url;
+			return fixupUrl(moduleInfo.pid===0 ?
+				// if pid===0, then name had a protocol or absolute path; either way, toUrl is the identify function in such cases
+				name :
+				// "/x.js" since getModuleInfo automatically appends ".js" and we appended "/x" to make name look likde a module id
+				url.substring(0, url.length-5)
+			);
 		},
 
 		nonModuleProps = {
@@ -1230,7 +1236,6 @@
 						checkComplete();
 					};
 
-				setRequested(module);
 				if(plugin.load){
 					plugin.load(module.prid, module.req, onLoad);
 				}else if(plugin.loadQ){
@@ -1240,16 +1245,9 @@
 					// dependencies of some other module because this may cause circles when the plugin
 					// loadQ is run; also, generally, we want plugins to run early since they may load
 					// several other modules and therefore can potentially unblock many modules
+					plugin.loadQ = [module];
 					execQ.unshift(plugin);
 					injectModule(plugin);
-
-					// maybe the module was cached and is now defined...
-					if(plugin.load){
-						plugin.load(module.prid, module.req, onLoad);
-					}else{
-						// nope; queue up the plugin resource to be loaded after the plugin module is loaded
-						plugin.loadQ = [module];
-					}
 				}
 			},
 
@@ -1295,6 +1293,7 @@
 				if(module.executed || module.injected || waiting[mid] || (module.url && ((module.pack && waiting[module.url]===module.pack) || waiting[module.url]==1))){
 					return;
 				}
+				setRequested(module);
 
 				if(has("dojo-combo-api")){
 					var viaCombo = 0;
@@ -1309,7 +1308,6 @@
 						viaCombo = req.combo.add(0, module.mid, module.url, req);
 					}
 					if(viaCombo){
-						setRequested(module);
 						comboPending= 1;
 						return;
 					}
@@ -1320,7 +1318,6 @@
 					return;
 				} // else a normal module (not a plugin)
 
-				setRequested(module);
 
 				var onLoadCallback = function(){
 					runDefQ(module);
@@ -1486,7 +1483,6 @@
 			runDefQ = function(referenceModule, mids){
 				// defQ is an array of [id, dependencies, factory]
 				// mids (if any) is a vector of mids given by a combo service
-				consumePendingCacheInsert(referenceModule);
 				var definedModules = [],
 					module, args;
 				while(defQ.length){
@@ -1495,10 +1491,13 @@
 					// explicit define indicates possible multiple modules in a single file; delay injecting dependencies until defQ fully
 					// processed since modules earlier in the queue depend on already-arrived modules that are later in the queue
 					// TODO: what if no args[0] and no referenceModule
-					module = args[0] && getModule(args[0]) || referenceModule;
-					definedModules.push(defineModule(module, args[1], args[2]));
+					module = (args[0] && getModule(args[0])) || referenceModule;
+					definedModules.push([module, args[1], args[2]]);
 				}
-				forEach(definedModules, injectDependencies);
+				consumePendingCacheInsert(referenceModule);
+				forEach(definedModules, function(args){
+					injectDependencies(defineModule.apply(null, args));
+				});
 			};
 	}
 
@@ -1653,10 +1652,10 @@
 			if(arity == 1 && isFunction(mid)){
 				dependencies = [];
 				mid.toString()
-					.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg, "")
-					.replace(/require\(["']([\w\!\-_\.\/]+)["']\)/g, function (match, dep){
+				.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg, "")
+				.replace(/require\(["']([\w\!\-_\.\/]+)["']\)/g, function (match, dep){
 					dependencies.push(dep);
-				});
+			});
 				args = [0, defaultDeps.concat(dependencies), mid];
 			}
 		}
@@ -1795,8 +1794,8 @@
 	}
 
 	if(has("dojo-config-api")){
-		var bootDeps = defaultConfig.deps || userConfig.deps || dojoSniffConfig.deps,
-			bootCallback = defaultConfig.callback || userConfig.callback || dojoSniffConfig.callback;
+		var bootDeps = dojoSniffConfig.deps ||  userConfig.deps || defaultConfig.deps,
+			bootCallback = dojoSniffConfig.callback || userConfig.callback || defaultConfig.callback;
 		req.boot = (bootDeps || bootCallback) ? [bootDeps || [], bootCallback] : 0;
 	}
 	if(!has("dojo-built")){

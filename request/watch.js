@@ -68,6 +68,11 @@ define([
 			dfd.startTime = +(new Date);
 		}
 
+		if(dfd.isFulfilled()){
+			// bail out if the deferred is already fulfilled
+			return;
+		}
+
 		_inFlight.push(dfd);
 		if(!_inFlightIntvl){
 			_inFlightIntvl = setInterval(watchInFlight, 50);

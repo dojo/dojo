@@ -156,39 +156,39 @@ define([
 			async = !options.sync,
 			method = options.method;
 
-		// IE6 won't let you call apply() on the native function.
-		_xhr.open(method, url, async, options.user || undefined, options.password || undefined);
+		try{
+			// IE6 won't let you call apply() on the native function.
+			_xhr.open(method, url, async, options.user || undefined, options.password || undefined);
 
-		if(options.withCredentials){
-			_xhr.withCredentials = "true";
-		}
+			if(options.withCredentials){
+				_xhr.withCredentials = options.withCredentials;
+			}
 
-		var headers = options.headers,
-			contentType;
-		if(headers){
-			for(var hdr in headers){
-				if(hdr.toLowerCase() === 'content-type'){
-					contentType = headers[hdr];
-				}else if(headers[hdr]){
-					//Only add header if it has a value. This allows for instance, skipping
-					//insertion of X-Requested-With by specifying empty value.
-					_xhr.setRequestHeader(hdr, headers[hdr]);
+			var headers = options.headers,
+				contentType;
+			if(headers){
+				for(var hdr in headers){
+					if(hdr.toLowerCase() === 'content-type'){
+						contentType = headers[hdr];
+					}else if(headers[hdr]){
+						//Only add header if it has a value. This allows for instance, skipping
+						//insertion of X-Requested-With by specifying empty value.
+						_xhr.setRequestHeader(hdr, headers[hdr]);
+					}
 				}
 			}
-		}
 
-		if(contentType && contentType !== false){
-			_xhr.setRequestHeader('Content-Type', contentType);
-		}
-		if(!headers || !('X-Requested-With' in headers)){
-			_xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-		}
+			if(contentType && contentType !== false){
+				_xhr.setRequestHeader('Content-Type', contentType);
+			}
+			if(!headers || !('X-Requested-With' in headers)){
+				_xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+			}
 
-		try{
-			var notify = require('./notify');
-			notify.send(response);
-		}catch(e){}
-		try{
+			try{
+				var notify = require('./notify');
+				notify.send(response);
+			}catch(e){}
 			_xhr.send(data);
 		}catch(e){
 			dfd.reject(e);

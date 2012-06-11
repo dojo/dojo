@@ -148,6 +148,10 @@ define([
 			return returnDeferred ? dfd : dfd.promise;
 		}
 
+		response.getHeader = function(headerName){
+			return this.xhr.getResponseHeader(headerName);
+		};
+
 		if(addListeners){
 			remover = addListeners(_xhr, dfd, response);
 		}

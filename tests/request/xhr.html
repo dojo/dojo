@@ -207,6 +207,25 @@
 							});
 
 							t.t(called, "'called' should be set to true");
+						},
+						function xhrXDomainFail(t){
+							var d = new doh.Deferred();
+							xhr.get('http://example.com').then(function(){
+								d.errback(true);
+							}, function(error){
+								d.callback(true);
+							});
+
+							return d;
+						},
+						function xhrHeaders(t){
+							var d = new doh.Deferred();
+							xhr.get('xhr.html').response.then(d.getTestCallback(function(response){
+								t.isNot(null, response.getHeader('Content-Type'));
+							}),function(error){
+								d.errback(error);
+							});
+							return d;
 						}
 					]
 				);

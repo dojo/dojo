@@ -131,7 +131,8 @@ define([
 
 		return {
 			url: url,
-			options: options
+			options: options,
+			getHeader: function(headerName){ return null; }
 		};
 	};
 

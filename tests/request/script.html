@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
 			var request, fr;
-			require(["dojo/request/script", "doh", "dojo/request/iframe", "dojo/_base/window", "dojo/domReady!"], function(script, doh, iframe, win){
+			require(["dojo/request/script", "dojo/errors/RequestTimeoutError", "dojo/errors/CancelError", "doh", "dojo/_base/window", "dojo/domReady!"], function(script, RequestTimeoutError, CancelError, doh, win){
 				doh.register("dojo/request/script", [
 					function load(t){
 						//t.is("undefined", typeof(scriptLoad));
@@ -65,8 +65,7 @@
 						}).then(function(data){
 							d.errback(false);
 						}, d.getTestCallback(function(error){
-							t.t(error instanceof Error);
-							t.is("timeout", error.dojoType);
+							t.t(error instanceof RequestTimeoutError);
 						}));
 						return d;
 					},
@@ -78,8 +77,7 @@
 						}).then(function(data){
 							d.errback(false);
 						}, d.getTestCallback(function(error){
-							t.t(error instanceof Error);
-							t.is("cancel", error.dojoType);
+							t.t(error instanceof CancelError);
 						})).cancel();
 						return d;
 					}

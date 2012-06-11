@@ -1,11 +1,13 @@
 define([
 	'exports',
 	'require',
+	'../errors/RequestError',
+	'../errors/CancelError',
 	'../Deferred',
 	'../io-query',
 	'../_base/array',
 	'../_base/lang'
-], function(exports, require, Deferred, ioQuery, array, lang){
+], function(exports, require, RequestError, CancelError, Deferred, ioQuery, array, lang){
 	exports.deepCopy = function deepCopy(target, source){
 		for(var name in source){
 			var tval = target[name],
@@ -45,13 +47,10 @@ define([
 		var def = new Deferred(function(reason){
 			cancel && cancel(def, response);
 
-			var err = response.error;
-			if(!err){
-				err = new Error('request canceled');
-				err.response = response;
-				err.dojoType='cancel';
+			if(!reason || !(reason instanceof RequestError) && !(reason instanceof CancelError)){
+				return new CancelError('Request canceled', response);
 			}
-			return err;
+			return reason;
 		});
 
 		def.response = response;

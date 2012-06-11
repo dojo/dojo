@@ -14,7 +14,7 @@
 		</script>
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			require(["dojo/request/xhr", "dojo/_base/lang", "doh", "dojo/domReady!"], function(xhr, lang, doh){
+			require(["dojo/request/xhr", "dojo/_base/lang", "dojo/errors/RequestTimeoutError", "dojo/errors/CancelError", "doh", "dojo/domReady!"], function(xhr, lang, RequestTimeoutError, CancelError, doh){
 				doh.register("dojo/request/xhr", 
 					[
 						function xhrGet(t){
@@ -182,8 +182,7 @@
 							}).then(function(data){
 									d.errback(false);
 								}, d.getTestCallback(function(error){
-									t.t(error instanceof Error);
-									t.is("timeout", error.dojoType);
+									t.t(error instanceof RequestTimeoutError);
 								}));
 							// t.t(td instanceof dojo.Deferred);
 							return d;
@@ -194,8 +193,7 @@
 								.then(function(data){
 									d.errback(false);
 								}, d.getTestCallback(function(error){
-									t.t(error instanceof Error);
-									t.is("cancel", error.dojoType);
+									t.t(error instanceof CancelError);
 								})).cancel();
 							// t.t(td instanceof dojo.Deferred);
 							return d;

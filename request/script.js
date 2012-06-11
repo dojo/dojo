@@ -90,12 +90,12 @@ define([
 
 		return checkString && eval('typeof(' + checkString + ') !== "undefined"');
 	}
-	function handleResponse(response){
+	function handleResponse(response, error){
 		if(this.canDelete){
 			_addDeadScript(this);
 		}
-		if(response.error){
-			this.reject(response.error);
+		if(error){
+			this.reject(error);
 		}else{
 			this.resolve(response);
 		}

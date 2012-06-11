@@ -1,10 +1,11 @@
 define([
 	'require',
+	'../errors/RequestError',
 	'./watch',
 	'./handlers',
 	'./util',
 	'../has'
-], function(require, watch, handlers, util, has){
+], function(require, RequestError, watch, handlers, util, has){
 	has.add('native-xhr', function() {
 		// if true, the environment has a native XHR implementation
 		return typeof XMLHttpRequest !== 'undefined';
@@ -17,7 +18,7 @@ define([
 			(typeof opera === "undefined" || typeof x['upload'] !== 'undefined');
 	});
 
-	function handleResponse(response){
+	function handleResponse(response, error){
 		var _xhr = response.xhr;
 		response.status = response.xhr.status;
 		response.text = _xhr.responseText;
@@ -26,21 +27,22 @@ define([
 			response.data = _xhr.responseXML;
 		}
 
-		try{
-			handlers(response);
-		}catch(e){
-			response.error = e;
+		if(!error){
+			try{
+				handlers(response);
+			}catch(e){
+				error = e;
+			}
 		}
 
-		if(response.error){
-			this.reject(response.error);
+		if(error){
+			this.reject(error);
 		}else if(util.checkStatus(_xhr.status)){
 			this.resolve(response);
 		}else{
-			var err = new Error('Unable to load ' + response.url + ' status: ' + _xhr.status);
-			err.log = false;
+			error = new RequestError('Unable to load ' + response.url + ' status: ' + _xhr.status, response);
 
-			this.reject(err);
+			this.reject(error);
 		}
 	}
 
@@ -63,10 +65,8 @@ define([
 			}
 			function onError(evt){
 				var _xhr = evt.target;
-				response.error = new Error('Unable to load ' + response.url + ' status: ' + _xhr.status); 
-				response.error.log = false;
-
-				dfd.handleResponse(response);
+				var error = new RequestError('Unable to load ' + response.url + ' status: ' + _xhr.status, response); 
+				dfd.handleResponse(response, error);
 			}
 
 			function onProgress(evt){
@@ -141,9 +141,10 @@ define([
 		);
 		var _xhr = response.xhr = xhr._create();
 
-		//If XHR factory fails, cancel the deferred.
 		if(!_xhr){
-			dfd.cancel();
+			// If XHR factory somehow returns nothings,
+			// cancel the deferred.
+			dfd.cancel(new RequestError("XHR was not created"));
 			return returnDeferred ? dfd : dfd.promise;
 		}
 
@@ -186,7 +187,6 @@ define([
 		try{
 			_xhr.send(data);
 		}catch(e){
-			response.error = e;
 			dfd.reject(e);
 		}
 

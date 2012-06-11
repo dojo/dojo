@@ -217,42 +217,44 @@ define([
 
 	// dojo/request/watch handlers
 	function isValid(response){
-		return !response.error;
+		return !this.isFulfilled();
 	}
 	function isReady(response){
 		return !!this._finished;
 	}
-	function handleResponse(response){
-		try{
-			var options = response.options,
-				doc = iframe.doc(iframe._frame),
-				handleAs = options.handleAs;
+	function handleResponse(response, error){
+		if(!error){
+			try{
+				var options = response.options,
+					doc = iframe.doc(iframe._frame),
+					handleAs = options.handleAs;
 
-			if(handleAs !== 'html'){
-				if(handleAs === 'xml'){
-					// IE6-8 have to parse the XML manually. See http://bugs.dojotoolkit.org/ticket/6334
-					if(doc.documentElement.tagName.toLowerCase() === 'html'){
-						query('a', doc.documentElement).orphan();
-						var xmlText = doc.documentElement.innerText;
-						xmlText = xmlText.replace(/>\s+</g, '><');
-						response.text = lang.trim(xmlText);
+				if(handleAs !== 'html'){
+					if(handleAs === 'xml'){
+						// IE6-8 have to parse the XML manually. See http://bugs.dojotoolkit.org/ticket/6334
+						if(doc.documentElement.tagName.toLowerCase() === 'html'){
+							query('a', doc.documentElement).orphan();
+							var xmlText = doc.documentElement.innerText;
+							xmlText = xmlText.replace(/>\s+</g, '><');
+							response.text = lang.trim(xmlText);
+						}else{
+							response.data = doc;
+						}
 					}else{
-						response.data = doc;
+						// 'json' and 'javascript' and 'text'
+						response.text = doc.getElementsByTagName('textarea')[0].value; // text
 					}
+					handlers(response);
 				}else{
-					// 'json' and 'javascript' and 'text'
-					response.text = doc.getElementsByTagName('textarea')[0].value; // text
+					response.data = doc;
 				}
-				handlers(response);
-			}else{
-				response.data = doc;
+			}catch(e){
+				error = e;
 			}
-		}catch(e){
-			response.error = e;
 		}
 
-		if(response.error){
-			this.reject(response.error);
+		if(error){
+			this.reject(error);
 		}else if(this._finished){
 			this.resolve(response);
 		}else{

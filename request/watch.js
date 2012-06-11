@@ -1,9 +1,11 @@
 define([
 	'./util',
+	'../errors/RequestTimeoutError',
+	'../errors/CancelError',
 	'../_base/array',
 	'../has!host-browser?../_base/window:',
 	'../has!host-browser?dom-addeventlistener?:../on:'
-], function(util, array, win, on){
+], function(util, RequestTimeoutError, CancelError, array, win, on){
 	// avoid setting a timer per request. It degrades performance on IE
 	// something fierece if we don't use unified loops.
 	var _inFlightIntvl = null,
@@ -20,7 +22,7 @@ define([
 		for(var i = 0, dfd; i < _inFlight.length && (dfd = _inFlight[i]); i++){
 			var response = dfd.response,
 				options = response.options;
-			if(dfd.canceled || (dfd.isCanceled && dfd.isCanceled()) || (dfd.isValid && !dfd.isValid(response))){
+			if((dfd.isCanceled && dfd.isCanceled()) || (dfd.isValid && !dfd.isValid(response))){
 				_inFlight.splice(i--, 1);
 				watch._onAction && watch._onAction();
 			}else if(dfd.isReady && dfd.isReady(response)){
@@ -31,10 +33,8 @@ define([
 				// did we timeout?
 				if(dfd.startTime + (options.timeout || 0) < now){
 					_inFlight.splice(i--, 1);
-					response.error = new Error('timeout exceeded');
-					response.error.dojoType = 'timeout';
-					//Cancel the request so the io module can do appropriate cleanup.
-					dfd.cancel();
+					// Cancel the request so the io module can do appropriate cleanup.
+					dfd.cancel(new RequestTimeoutError(response));
 					watch._onAction && watch._onAction();
 				}
 			}
@@ -85,7 +85,7 @@ define([
 		try{
 			array.forEach(_inFlight, function(dfd){
 				try{
-					dfd.cancel();
+					dfd.cancel(new CancelError('All requests canceled.'));
 				}catch(e){}
 			});
 		}catch(e){}

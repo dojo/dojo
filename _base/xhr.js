@@ -612,13 +612,13 @@ define([
 			ioArgs.error = error;
 			dfd.reject(error);
 		});
-		return dfd; // dojo.Deferred
+		return dfd; // dojo/_base/Deferred
 	};
 
 	dojo.xhrGet = function(/*dojo.__XhrArgs*/ args){
 		// summary:
 		//		Sends an HTTP GET request to the server.
-		return dojo.xhr("GET", args); // dojo.Deferred
+		return dojo.xhr("GET", args); // dojo/_base/Deferred
 	};
 
 	dojo.rawXhrPost = dojo.xhrPost = function(/*dojo.__XhrArgs*/ args){
@@ -627,7 +627,7 @@ define([
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
 		// postData:
 		//		String. Send raw data in the body of the POST request.
-		return dojo.xhr("POST", args, true); // dojo.Deferred
+		return dojo.xhr("POST", args, true); // dojo/_base/Deferred
 	};
 
 	dojo.rawXhrPut = dojo.xhrPut = function(/*dojo.__XhrArgs*/ args){
@@ -636,13 +636,13 @@ define([
 		//		listed for the dojo.__XhrArgs type, the following property is allowed:
 		// putData:
 		//		String. Send raw data in the body of the PUT request.
-		return dojo.xhr("PUT", args, true); // dojo.Deferred
+		return dojo.xhr("PUT", args, true); // dojo/_base/Deferred
 	};
 
 	dojo.xhrDelete = function(/*dojo.__XhrArgs*/ args){
 		// summary:
 		//		Sends an HTTP DELETE request to the server.
-		return dojo.xhr("DELETE", args); //dojo.Deferred
+		return dojo.xhr("DELETE", args); // dojo/_base/Deferred
 	};
 
 	/*

@@ -15,11 +15,11 @@ return declare("dojo.store.JsonRest", base, {
 	//		This is a basic store for RESTful communicating with a server through JSON
 	//		formatted data. It implements dojo.store.api.Store.
 
-	constructor: function(/*dojo.store.JsonRest*/ options){
+	constructor: function(options){
 		// summary:
 		//		This is a basic store for RESTful communicating with a server through JSON
 		//		formatted data.
-		// options:
+		// options: dojo/store/JsonRest
 		//		This provides any configuration information that will be mixed into the store
 		declare.safeMixin(this, options);
 	},

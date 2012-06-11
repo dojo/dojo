@@ -38,7 +38,7 @@ return declare("dojo.data.api.Notification", Read, {
 		};
 	},
 
-	onSet: function(/* item */ item,
+	onSet: function(/* dojo/data/api/Item */ item,
 					/* attribute-name-string */ attribute,
 					/* object|array */ oldValue,
 					/* object|array */ newValue){
@@ -68,7 +68,7 @@ return declare("dojo.data.api.Notification", Read, {
 		throw new Error('Unimplemented API: dojo.data.api.Notification.onSet');
 	},
 
-	onNew: function(/* item */ newItem, /*object?*/ parentInfo){
+	onNew: function(/* dojo/data/api/Item */ newItem, /*object?*/ parentInfo){
 		//	summary:
 		//		This function is called any time a new item is created in the store.
 		//		It is called immediately after the store newItem processing has completed.
@@ -100,7 +100,7 @@ return declare("dojo.data.api.Notification", Read, {
 		throw new Error('Unimplemented API: dojo.data.api.Notification.onNew');
 	},
 
-	onDelete: function(/* item */ deletedItem){
+	onDelete: function(/* dojo/data/api/Item */ deletedItem){
 		//	summary:
 		//		This function is called any time an item is deleted from the store.
 		//		It is called immediately after the store deleteItem processing has completed.

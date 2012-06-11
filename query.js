@@ -10,7 +10,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 	
 	var ap = Array.prototype, aps = ap.slice, apc = ap.concat, forEach = array.forEach;
 
-	var tnl = function(/*Array*/ a, /*dojo.NodeList?*/ parent, /*Function?*/ NodeListCtor){
+	var tnl = function(/*Array*/ a, /*dojo/query.NodeList?*/ parent, /*Function?*/ NodeListCtor){
 		// summary:
 		//		decorate an array to make it look like a `dojo.NodeList`.
 		// a:
@@ -267,7 +267,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//	|
 			//
 			this._parent = parent;
-			return this; //dojo.NodeList
+			return this; // dojo/query.NodeList
 		},
 
 		on: function(eventName, listener){
@@ -468,7 +468,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 						(typeof NodeList != "undefined" && a.constructor === NodeList || a.constructor === this._NodeListCtor) ?
 							aps.call(a, 0) : a;
 				});
-			return this._wrap(apc.apply(t, m), this);	// dojo.NodeList
+			return this._wrap(apc.apply(t, m), this);	// dojo/query.NodeList
 		},
 
 		map: function(/*Function*/ func, /*Function?*/ obj){
@@ -476,7 +476,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		see dojo.map(). The primary difference is that the acted-on
 			//		array is implicitly this NodeList and the return is a
 			//		dojo.NodeList (a subclass of Array)
-			return this._wrap(array.map(this, func, obj), this); // dojo.NodeList
+			return this._wrap(array.map(this, func, obj), this); // dojo/query.NodeList
 		},
 
 		forEach: function(callback, thisObj){
@@ -486,7 +486,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		of the forEach loop, use every() or some() instead.
 			forEach(this, callback, thisObj);
 			// non-standard return to allow easier chaining
-			return this; // dojo.NodeList
+			return this; // dojo/query.NodeList
 		},
 		filter: function(/*String|Function*/ filter){
 			// summary:
@@ -511,12 +511,12 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 				items = query._filterResult(this, a[0]);
 				if(a.length == 1){
 					// if we only got a string query, pass back the filtered results
-					return items._stash(this); // dojo.NodeList
+					return items._stash(this); // dojo/query.NodeList
 				}
 				// if we got a callback, run it over the filtered items
 				start = 1;
 			}
-			return this._wrap(array.filter(items, a[start], a[start + 1]), this);	// dojo.NodeList
+			return this._wrap(array.filter(items, a[start], a[start + 1]), this);	// dojo/query.NodeList
 		},
 		instantiate: function(/*String|Object*/ declaredClass, /*Object?*/ properties){
 			// summary:
@@ -530,7 +530,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			properties = properties || {};
 			return this.forEach(function(node){
 				new c(properties, node);
-			});	// dojo.NodeList
+			});	// dojo/query.NodeList
 		},
 		at: function(/*===== index =====*/){
 			// summary:
@@ -564,7 +564,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 				if(i < 0){ i = this.length + i; }
 				if(this[i]){ t.push(this[i]); }
 			}, this);
-			return t._stash(this); // dojo.NodeList
+			return t._stash(this); // dojo/query.NodeList
 		}
 	});
 
@@ -677,7 +677,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		 //		For example:
 		 //		|	<script data-dojo-config="query-selector:'css3'" src="dojo.js"></script>
 		 //
-		 return new dojo.NodeList(); // dojo.NodeList
+		 return new dojo.NodeList(); // dojo/query.NodeList
 	 };
 	 =====*/
 

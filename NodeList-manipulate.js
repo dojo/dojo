@@ -93,7 +93,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 				Array.prototype.splice.apply(this, toAdd);
 			}
 
-			return this; //dojo.NodeList
+			return this; // dojo/query.NodeList
 		},
 
 		innerHTML: function(/*String?||DOMNode?|NodeList?*/value){
@@ -128,7 +128,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		This code returns "<p>Hello Mars</p>":
 			//	|	var message = dojo.query("div").innerHTML();
 			if(arguments.length){
-				return this.addContent(value, "only"); //dojo.NodeList
+				return this.addContent(value, "only"); // dojo/query.NodeList
 			}else{
 				return this[0].innerHTML; //String
 			}
@@ -151,8 +151,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//	returns:
 			//		if no value is passed, the result is String, the innerHTML of the first node.
 			//		If a value is passed, the return is this dojo.NodeList
-			return; // dojo.NodeList
-			return; // String
+			return; // dojo/query.NodeList|String
 		},
 		=====*/
 
@@ -183,7 +182,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 						node.appendChild(node.ownerDocument.createTextNode(value));
 					}
 				}
-				return this; //dojo.NodeList
+				return this; // dojo/query.NodeList
 			}else{
 				var result = "";
 				for(i = 0; node = this[i]; i++){
@@ -241,7 +240,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 						node.value = newValue;
 					}
 				}
-				return this; //dojo.NodeList
+				return this; // dojo/query.NodeList
 			}else{
 				//node already declared above.
 				node = this[0];
@@ -289,7 +288,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<div id="foo"><p>Hello Mars</p><span>append</span></div>
 			//	|	<div id="bar"><p>Hello World</p><span>append</span></div>
-			return this.addContent(content, "last"); //dojo.NodeList
+			return this.addContent(content, "last"); // dojo/query.NodeList
 		},
 
 		appendTo: function(/*String*/query){
@@ -313,7 +312,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<p>Hello Mars<span>append</span></p>
 			//	|	<p>Hello World<span>append</span></p>
-			return this._placeMultiple(query, "last"); //dojo.NodeList
+			return this._placeMultiple(query, "last"); // dojo/query.NodeList
 		},
 
 		prepend: function(/*String||DOMNode||NodeList*/content){
@@ -334,7 +333,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<div id="foo"><span>prepend</span><p>Hello Mars</p></div>
 			//	|	<div id="bar"><span>prepend</span><p>Hello World</p></div>
-			return this.addContent(content, "first"); //dojo.NodeList
+			return this.addContent(content, "first"); // dojo/query.NodeList
 		},
 
 		prependTo: function(/*String*/query){
@@ -358,7 +357,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<p><span>prepend</span>Hello Mars</p>
 			//	|	<p><span>prepend</span>Hello World</p>
-			return this._placeMultiple(query, "first"); //dojo.NodeList
+			return this._placeMultiple(query, "first"); // dojo/query.NodeList
 		},
 
 		after: function(/*String||Element||NodeList*/content){
@@ -380,7 +379,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<div id="foo"><p>Hello Mars</p></div><span>after</span>
 			//	|	<div id="bar"><p>Hello World</p></div><span>after</span>
-			return this.addContent(content, "after"); //dojo.NodeList
+			return this.addContent(content, "after"); // dojo/query.NodeList
 		},
 
 		insertAfter: function(/*String*/query){
@@ -404,7 +403,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<p>Hello Mars</p><span>after</span>
 			//	|	<p>Hello World</p><span>after</span>
-			return this._placeMultiple(query, "after"); //dojo.NodeList
+			return this._placeMultiple(query, "after"); // dojo/query.NodeList
 		},
 
 		before: function(/*String||DOMNode||NodeList*/content){
@@ -426,7 +425,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<span>before</span><div id="foo"><p>Hello Mars</p></div>
 			//	|	<span>before</span><div id="bar"><p>Hello World</p></div>
-			return this.addContent(content, "before"); //dojo.NodeList
+			return this.addContent(content, "before"); // dojo/query.NodeList
 		},
 
 		insertBefore: function(/*String*/query){
@@ -450,7 +449,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<span>before</span><p>Hello Mars</p>
 			//	|	<span>before</span><p>Hello World</p>
-			return this._placeMultiple(query, "before"); //dojo.NodeList
+			return this._placeMultiple(query, "before"); // dojo/query.NodeList
 		},
 
 		/*=====
@@ -466,7 +465,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		can instead be used to test a single node is acceptable.
 			//	returns:
 			//		dojo.NodeList
-			return; // dojo.NodeList
+			return; // dojo/query.NodeList
 		},
 		=====*/
 		remove: NodeList.prototype.orphan,
@@ -507,7 +506,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 					insertion.appendChild(node);
 				}
 			}
-			return this; //dojo.NodeList
+			return this; // dojo/query.NodeList
 		},
 
 		wrapAll: function(/*String||DOMNode*/html){
@@ -549,7 +548,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 					insertion.appendChild(node);
 				}
 			}
-			return this; //dojo.NodeList
+			return this; // dojo/query.NodeList
 		},
 
 		wrapInner: function(/*String||DOMNode*/html){
@@ -592,7 +591,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 					this._wrap(lang._toArray(this[i].childNodes), null, this._NodeListCtor).wrapAll(clone);
 				}
 			}
-			return this; //dojo.NodeList
+			return this; // dojo/query.NodeList
 		},
 
 		replaceWith: function(/*String||DOMNode||NodeList*/content){
@@ -627,7 +626,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 				this._place(content, node, "before", i > 0);
 				node.parentNode.removeChild(node);
 			}
-			return this; //dojo.NodeList
+			return this; // dojo/query.NodeList
 		},
 
 		replaceAll: function(/*String*/query){
@@ -673,7 +672,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 				this._place(content, node, "before", i > 0);
 				node.parentNode.removeChild(node);
 			}
-			return this; //dojo.NodeList
+			return this; // dojo/query.NodeList
 		},
 
 		clone: function(){
@@ -708,7 +707,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			for(var i = 0; i < this.length; i++){
 				ary.push(this._cloneNode(this[i]));
 			}
-			return this._wrap(ary, this, this._NodeListCtor); //dojo.NodeList
+			return this._wrap(ary, this, this._NodeListCtor); // dojo/query.NodeList
 		}
 	});
 

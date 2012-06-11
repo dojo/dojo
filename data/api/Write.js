@@ -55,7 +55,7 @@ return declare("dojo.data.api.Write", Read, {
 		throw new Error('Unimplemented API: dojo.data.api.Write.newItem');
 	},
 
-	deleteItem: function(/* item */ item){
+	deleteItem: function(/* dojo/data/api/Item */ item){
 		// summary:
 		//		Deletes an item from the store.
 		//
@@ -70,7 +70,7 @@ return declare("dojo.data.api.Write", Read, {
 		throw new Error('Unimplemented API: dojo.data.api.Write.deleteItem');
 	},
 
-	setValue: function(	/* item */ item,
+	setValue: function(	/* dojo/data/api/Item */ item,
 						/* string */ attribute,
 						/* almost anything */ value){
 		// summary:
@@ -93,7 +93,7 @@ return declare("dojo.data.api.Write", Read, {
 		throw new Error('Unimplemented API: dojo.data.api.Write.setValue');
 	},
 
-	setValues: function(/* item */ item,
+	setValues: function(/* dojo/data/api/Item */ item,
 						/* string */ attribute,
 						/* array */ values){
 		// summary:
@@ -120,7 +120,7 @@ return declare("dojo.data.api.Write", Read, {
 		throw new Error('Unimplemented API: dojo.data.api.Write.setValues');
 	},
 
-	unsetAttribute: function(	/* item */ item,
+	unsetAttribute: function(	/* dojo/data/api/Item */ item,
 								/* string */ attribute){
 		// summary:
 		//		Deletes all the values of an attribute on an item.

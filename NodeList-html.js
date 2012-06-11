@@ -39,7 +39,7 @@ lang.extend(NodeList, {
 			dhs.set(content);
 			dhs.tearDown();
 		});
-		return this; // dojo.NodeList
+		return this; // dojo/query.NodeList
 	}
 });
 

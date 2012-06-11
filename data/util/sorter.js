@@ -35,7 +35,7 @@ sorter.basicComparator = function(	/*anything*/ a,
 	return r; //int {-1,0,1}
 };
 
-sorter.createSortFunction = function(	/* attributes array */sortSpec, /*dojo.data.core.Read*/ store){
+sorter.createSortFunction = function(	/* attributes[] */sortSpec, /*dojo/data/api/Read*/ store){
 	//	summary:
 	//		Helper function to generate the sorting function based off the list of sort attributes.
 	//	description:

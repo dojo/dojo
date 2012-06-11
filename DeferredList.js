@@ -65,9 +65,9 @@ dojo.DeferredList.prototype.gatherResults = function(deferredList){
 	// summary:
 	//		Gathers the results of the deferreds for packaging
 	//		as the parameters to the Deferred Lists' callback
-	// deferredList: dojo.DeferredList
+	// deferredList: dojo/DeferredList
 	//		The deferred list from which this function gathers results.
-	// returns: dojo.DeferredList
+	// returns: dojo/DeferredList
 	//		The newly created deferred list which packs results as
 	//		parameters to its callback.
 

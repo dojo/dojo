@@ -238,7 +238,7 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			};
 		},
 
-		getLabel: function(/* item */ item){
+		getLabel: function(/* dojo/data/api/Item */ item){
 			//	summary:
 			//		See dojo.data.api.Read.getLabel()
 			if(this.isItem(item)){
@@ -247,7 +247,7 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			return undefined; //undefined
 		},
 
-		getLabelAttributes: function(/* item */ item){
+		getLabelAttributes: function(/* dojo/data/api/Item */ item){
 			//	summary:
 			//		See dojo.data.api.Read.getLabelAttributes()
 			return [this.labelProperty]; //array

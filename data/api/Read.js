@@ -12,7 +12,7 @@ return declare("dojo.data.api.Read", null, {
 	//		methods unimplemented.  For more information on the dojo.data APIs,
 	//		please visit: http://www.dojotoolkit.org/node/98
 
-	getValue: function(	/* item */ item,
+	getValue: function(	/* dojo/data/api/Item */ item,
 						/* attribute-name-string */ attribute,
 						/* value? */ defaultValue){
 		// summary:
@@ -43,7 +43,7 @@ return declare("dojo.data.api.Read", null, {
 		throw new Error('Unimplemented API: dojo.data.api.Read.getValue');
 	},
 
-	getValues: function(/* item */ item,
+	getValues: function(/* dojo/data/api/Item */ item,
 						/* attribute-name-string */ attribute){
 		// summary:
 		// 		This getValues() method works just like the getValue() method, but getValues()
@@ -66,7 +66,7 @@ return declare("dojo.data.api.Read", null, {
 		throw new Error('Unimplemented API: dojo.data.api.Read.getValues');
 	},
 
-	getAttributes: function(/* item */ item){
+	getAttributes: function(/* dojo/data/api/Item */ item){
 		// summary:
 		//		Returns an array with all the attributes that this item has.  This
 		//		method will always return an array; if the item has no attributes
@@ -80,7 +80,7 @@ return declare("dojo.data.api.Read", null, {
 		throw new Error('Unimplemented API: dojo.data.api.Read.getAttributes');
 	},
 
-	hasAttribute: function(	/* item */ item,
+	hasAttribute: function(	/* dojo/data/api/Item */ item,
 							/* attribute-name-string */ attribute){
 		// summary:
 		//		Returns true if the given *item* has a value for the given *attribute*.
@@ -95,7 +95,7 @@ return declare("dojo.data.api.Read", null, {
 		throw new Error('Unimplemented API: dojo.data.api.Read.hasAttribute');
 	},
 
-	containsValue: function(/* item */ item,
+	containsValue: function(/* dojo/data/api/Item */ item,
 							/* attribute-name-string */ attribute,
 							/* anything */ value){
 		// summary:
@@ -406,7 +406,7 @@ return declare("dojo.data.api.Read", null, {
 		};
 	},
 
-	close: function(/*dojo.data.api.Request || keywordArgs || null */ request){
+	close: function(/*dojo/data/api/Request || keywordArgs || null */ request){
 		// summary:
 		//		The close() method is intended for instructing the store to 'close' out
 		//		any information associated with a particular request.
@@ -433,7 +433,7 @@ return declare("dojo.data.api.Read", null, {
 		throw new Error('Unimplemented API: dojo.data.api.Read.close');
 	},
 
-	getLabel: function(/* item */ item){
+	getLabel: function(/* dojo/data/api/Item */ item){
 		// summary:
 		//		Method to inspect the item and return a user-readable 'label' for the item
 		//		that provides a general/adequate description of what the item is.
@@ -459,7 +459,7 @@ return declare("dojo.data.api.Read", null, {
 		throw new Error('Unimplemented API: dojo.data.api.Read.getLabel');
 	},
 
-	getLabelAttributes: function(/* item */ item){
+	getLabelAttributes: function(/* dojo/data/api/Item */ item){
 		// summary:
 		//		Method to inspect the item and return an array of what attributes of the item were used
 		//		to generate its label, if any.

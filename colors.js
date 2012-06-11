@@ -20,7 +20,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		return m1;
 	};
 	// Override base Color.fromRgb with the impl in this module
-	dojo.colorFromRgb = Color.fromRgb = function(/*String*/ color, /*dojo.Color?*/ obj){
+	dojo.colorFromRgb = Color.fromRgb = function(/*String*/ color, /*dojo/_base/Color?*/ obj){
 		// summary:
 		//		get rgb(a) array from css-style color declarations
 		// description:
@@ -37,9 +37,9 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 						return parseFloat(x) * 2.56;
 					});
 					if(l == 4){ a[3] = c[3]; }
-					return Color.fromArray(a, obj); // dojo.Color
+					return Color.fromArray(a, obj); // dojo/_base/Color
 				}
-				return Color.fromArray(c, obj); // dojo.Color
+				return Color.fromArray(c, obj); // dojo/_base/Color
 			}
 			if((t == "hsl" && l == 3) || (t == "hsla" && l == 4)){
 				// normalize hsl values
@@ -57,10 +57,10 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 					1
 				];
 				if(l == 4){ a[3] = c[3]; }
-				return Color.fromArray(a, obj); // dojo.Color
+				return Color.fromArray(a, obj); // dojo/_base/Color
 			}
 		}
-		return null;	// dojo.Color
+		return null;	// dojo/_base/Color
 	};
 
 	var confine = function(c, low, high){
@@ -78,12 +78,12 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		t.g = Math.round(confine(t.g, 0, 255));
 		t.b = Math.round(confine(t.b, 0, 255));
 		t.a = confine(t.a, 0, 1);
-		return this;	// dojo.Color
+		return this;	// dojo/_base/Color
 	};
 
 	ColorExt.makeGrey = Color.makeGrey = function(/*Number*/ g, /*Number?*/ a){
 		// summary: creates a greyscale color with an optional alpha
-		return Color.fromArray([g, g, g, a]);	// dojo.Color
+		return Color.fromArray([g, g, g, a]);	// dojo/_base/Color
 	};
 
 	// mixin all CSS3 named colors not already in _base, along with SVG 1.0 variant spellings

@@ -82,7 +82,7 @@ return declare("dojo.rpc.RpcService", null, {
 		return obj;
 	},
 
-	errorCallback: function(/* dojo.Deferred */ deferredRequestHandler){
+	errorCallback: function(/* dojo/_base/Deferred */ deferredRequestHandler){
 		// summary:
 		//		create callback that calls the Deferred errback method
 		// deferredRequestHandler: Deferred
@@ -92,7 +92,7 @@ return declare("dojo.rpc.RpcService", null, {
 		};
 	},
 
-	resultCallback: function(/* dojo.Deferred */ deferredRequestHandler){
+	resultCallback: function(/* dojo/_base/Deferred */ deferredRequestHandler){
 		// summary:
 		//		create callback that calls the Deferred's callback method
 		// deferredRequestHandler: Deferred

@@ -130,7 +130,7 @@ return declare("dojo.Stateful", null, {
 				self._watchCallbacks(name, oldValue, value);
 			});
 		}
-		return this; //dojo.Stateful
+		return this; // dojo/Stateful
 	},
 	_changeAttrValue: function(name, value){
 		// summary:
@@ -152,7 +152,7 @@ return declare("dojo.Stateful", null, {
 		if(this._watchCallbacks){
 			this._watchCallbacks(name, oldValue, value);
 		}
-		return this; //dojo.Stateful
+		return this; // dojo/Stateful
 	},
 	watch: function(/*String?*/name, /*Function*/callback){
 		// summary:

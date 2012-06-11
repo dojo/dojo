@@ -37,7 +37,7 @@ lang.extend(NodeList, {
 				ary.push(node);
 			}
 		}
-		return this._wrap(ary, null, this._NodeListCtor);	 //dojo.NodeList
+		return this._wrap(ary, null, this._NodeListCtor);	 // dojo/query.NodeList
 	},
 
 	_getUniqueNodeListWithParent: function(/*Array*/ nodes, /*String*/ query){
@@ -46,7 +46,7 @@ lang.extend(NodeList, {
 		// 		with an optional query and then calls _stash to track parent NodeList.
 		var ary = this._getUniqueAsNodeList(nodes);
 		ary = (query ? dquery._filterResult(ary, query) : ary);
-		return ary._stash(this);  //dojo.NodeList
+		return ary._stash(this);  // dojo/query.NodeList
 	},
 
 	_getRelatedUniqueNodes: function(/*String?*/ query, /*Function*/ callback){
@@ -55,7 +55,7 @@ lang.extend(NodeList, {
 		// 		to collect nodes for a possible inclusion in a result.
 		// 		The callback will get two args: callback(node, ary),
 		// 		where ary is the array being used to collect the nodes.
-		return this._getUniqueNodeListWithParent(this._buildArrayFromCallback(callback), query);  //dojo.NodeList
+		return this._getUniqueNodeListWithParent(this._buildArrayFromCallback(callback), query);  // dojo/query.NodeList
 	},
 
 	children: function(/*String?*/ query){
@@ -86,7 +86,7 @@ lang.extend(NodeList, {
 		//		returns the two divs that have the class "red".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			return lang._toArray(node.childNodes);
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	closest: function(/*String*/ query, /*String|DOMNode?*/ root){
@@ -122,7 +122,7 @@ lang.extend(NodeList, {
 				}
 			}while(node != root && (node = node.parentNode) && node.nodeType == 1);
 			return null; //To make rhino strict checking happy.
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	parent: function(/*String?*/ query){
@@ -152,7 +152,7 @@ lang.extend(NodeList, {
 		//		returns the one div with class "blue" and "first".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			return node.parentNode;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	parents: function(/*String?*/ query){
@@ -188,7 +188,7 @@ lang.extend(NodeList, {
 				pary.push(node);
 			}
 			return pary;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	siblings: function(/*String?*/ query){
@@ -227,7 +227,7 @@ lang.extend(NodeList, {
 				}
 			}
 			return pary;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	next: function(/*String?*/ query){
@@ -262,7 +262,7 @@ lang.extend(NodeList, {
 				next = next.nextSibling;
 			}
 			return next;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	nextAll: function(/*String?*/ query){
@@ -300,7 +300,7 @@ lang.extend(NodeList, {
 				}
 			}
 			return pary;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	prev: function(/*String?*/ query){
@@ -335,7 +335,7 @@ lang.extend(NodeList, {
 				prev = prev.previousSibling;
 			}
 			return prev;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	prevAll: function(/*String?*/ query){
@@ -375,7 +375,7 @@ lang.extend(NodeList, {
 				}
 			}
 			return pary;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	andSelf: function(){
@@ -398,7 +398,7 @@ lang.extend(NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".second").prevAll().andSelf();
 		//		returns the two divs with class of "prev", as well as the div with class "second".
-		return this.concat(this._parent);	//dojo.NodeList
+		return this.concat(this._parent);	// dojo/query.NodeList
 	},
 
 	//Alternate methods for the :first/:last/:even/:odd pseudos.
@@ -421,7 +421,7 @@ lang.extend(NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".blue").first();
 		//		returns the div with class "blue" and "first".
-		return this._wrap(((this[0] && [this[0]]) || []), this); //dojo.NodeList
+		return this._wrap(((this[0] && [this[0]]) || []), this); // dojo/query.NodeList
 	},
 
 	last: function(){
@@ -443,7 +443,7 @@ lang.extend(NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".blue").last();
 		//		returns the last div with class "blue",
-		return this._wrap((this.length ? [this[this.length - 1]] : []), this); //dojo.NodeList
+		return this._wrap((this.length ? [this[this.length - 1]] : []), this); // dojo/query.NodeList
 	},
 
 	even: function(){
@@ -467,7 +467,7 @@ lang.extend(NodeList, {
 		//		returns the two divs with class "blue"
 		return this.filter(function(item, i){
 			return i % 2 != 0;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	},
 
 	odd: function(){
@@ -491,7 +491,7 @@ lang.extend(NodeList, {
 		//		returns the two divs with class "red"
 		return this.filter(function(item, i){
 			return i % 2 == 0;
-		}); //dojo.NodeList
+		}); // dojo/query.NodeList
 	}
 });
 

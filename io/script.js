@@ -118,18 +118,20 @@ __ioArgs.prototype = new kernel.__IoArgs();
 				dfd._jsonpCallback = this._jsonpCallback;
 				this["jsonp_" + ioArgs.id] = dfd;
 			}
-			return dfd; // dojo.Deferred
+			return dfd; // dojo/_base/Deferred
 		},
 
 		_deferredCancel: function(/*Deferred*/ dfd){
-			//summary: canceller function for xhr._ioSetArgs call.
+			// summary:
+			//		canceller function for xhr._ioSetArgs call.
 
 			//DO NOT use "this" and expect it to be script.
 			dfd.canceled = true;
 		},
 
 		_deferredOk: function(/*Deferred*/ dfd){
-			//summary: okHandler function for xhr._ioSetArgs call.
+			// summary:
+			//		okHandler function for xhr._ioSetArgs call.
 
 			//DO NOT use "this" and expect it to be script.
 			var ioArgs = dfd.ioArgs;
@@ -142,7 +144,8 @@ __ioArgs.prototype = new kernel.__IoArgs();
 		},
 
 		_deferredError: function(/*Error*/ error, /*Deferred*/ dfd){
-			//summary: errHandler function for xhr._ioSetArgs call.
+			// summary:
+			//		errHandler function for xhr._ioSetArgs call.
 
 			console.log("dojo.io.script error", error);
 			return error;

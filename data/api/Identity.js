@@ -19,7 +19,7 @@ return declare("dojo.data.api.Identity", Read, {
 		};
 	},
 
-	getIdentity: function(/* item */ item){
+	getIdentity: function(/* dojo/data/api/Item */ item){
 		//	summary:
 		//		Returns a unique identifier for an item.  The return value will be
 		//		either a string or something that has a toString() method (such as,
@@ -35,7 +35,7 @@ return declare("dojo.data.api.Identity", Read, {
 		throw new Error('Unimplemented API: dojo.data.api.Identity.getIdentity');
 	},
 
-	getIdentityAttributes: function(/* item */ item){
+	getIdentityAttributes: function(/* dojo/data/api/Item */ item){
 		//	summary:
 		//		Returns an array of attribute names that are used to generate the identity.
 		//		For most stores, this is a single attribute, but for some complex stores

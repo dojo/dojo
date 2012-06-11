@@ -46,7 +46,7 @@ define([
 	// if you are extracting acme for use in your own system, you will
 	// need to provide these methods and properties. No other porting should be
 	// necessary, save for configuring the system to use a class other than
-	// dojo.NodeList as the return instance instantiator
+	// dojo/query.NodeList as the return instance instantiator
 	var trim = 			lang.trim;
 	var each = 			array.forEach;
 
@@ -1464,7 +1464,7 @@ define([
 		if(r && r.nozip){
 			return r;
 		}
-		return _zip(r); // dojo.NodeList
+		return _zip(r); // dojo/query.NodeList
 	};
 	query.filter = function(/*Node[]*/ nodeList, /*String*/ filter, /*String|DOMNode?*/ root){
 		// summary:

@@ -597,11 +597,19 @@ define([
 			data: ioArgs.query,
 			timeout: args.timeout,
 			sync: args.sync,
+			withCredentials: args.withCredentials,
 			ioArgs: ioArgs
 		};
 
 		dojo._ioNotifyStart(dfd);
-		rDfd = _xhr(ioArgs.url, options, true);
+		try{
+			rDfd = _xhr(ioArgs.url, options, true);
+		}catch(e){
+			// If XHR creation fails, dojo/request/xhr throws
+			// When this happens, cancel the deferred
+			dfd.cancel();
+			return dfd;
+		}
 
 		// sync ioArgs
 		dfd.ioArgs.xhr = rDfd.response.xhr;

@@ -159,6 +159,10 @@ define([
 		// IE6 won't let you call apply() on the native function.
 		_xhr.open(method, url, async, options.user || undefined, options.password || undefined);
 
+		if(options.withCredentials){
+			_xhr.withCredentials = "true";
+		}
+
 		var headers = options.headers,
 			contentType;
 		if(headers){

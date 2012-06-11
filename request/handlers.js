@@ -4,14 +4,17 @@ define([
 	'../_base/array',
 	'../has'
 ], function(JSON, kernel, array, has){
-	has.add('activex', typeof ActiveXObject != 'undefined');
+	has.add('activex', typeof ActiveXObject !== 'undefined');
 
 	var handleXML;
 	if(has('activex')){
-		var dp = array.map([6, 4, 3, 2], function(n){
-			return 'MSXML' + n + '.DOMDocument';
-		});
-		dp.unshift('Microsoft.XMLDOM');
+		// GUIDs obtained from http://msdn.microsoft.com/en-us/library/ms757837(VS.85).aspx
+		var dp = [
+			'Msxml2.DOMDocument.6.0',
+			'Msxml2.DOMDocument.4.0',
+			'MSXML2.DOMDocument.3.0',
+			'MSXML.DOMDocument' // 2.0
+		];
 
 		handleXML = function(response){
 			var result = response.data;

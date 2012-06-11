@@ -70,7 +70,7 @@ number._applyPattern = function(/*Number*/ value, /*String*/ pattern, /*number._
 	// pattern:
 	//		a pattern string as described by
 	//		[unicode.org TR35](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
-	// options: dojo.number.__FormatOptions?
+	// options: number.__FormatOptions?
 	//		_applyPattern is usually called via `dojo.number.format()` which
 	//		populates an extra property in the options parameter, "customs".
 	//		The customs object specifies group and decimal parameters if set.

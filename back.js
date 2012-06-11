@@ -36,7 +36,8 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	var historyCounter;
 
 	function handleBackButton(){
-		//summary: private method. Do not call this directly.
+		// summary:
+		//		private method. Do not call this directly.
 
 		//The "current" page is always at the top of the history stack.
 		var current = historyStack.pop();
@@ -76,12 +77,14 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	back.goForward = handleForwardButton;
 
 	function createState(url, args, hash){
-		//summary: private method. Do not call this directly.
+		// summary:
+		//		private method. Do not call this directly.
 		return {"url": url, "kwArgs": args, "urlHash": hash};	//Object
 	}
 
 	function getUrlQuery(url){
-		//summary: private method. Do not call this directly.
+		// summary:
+		//		private method. Do not call this directly.
 		var segments = url.split("?");
 		if(segments.length < 2){
 			return null; //null
@@ -92,7 +95,8 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	}
 
 	function loadIframeHistory(){
-		//summary: private method. Do not call this directly.
+		// summary:
+		//		private method. Do not call this directly.
 		var url = (config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html")) + "?" + (new Date()).getTime();
 		moveForward = true;
 		if(historyIframe){

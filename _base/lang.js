@@ -114,12 +114,12 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		executes a so-called "shallow copy" and aggregate types are copied/added by reference.
 			// example:
 			//		make a shallow copy of an object
-			//	| var copy = lang.mixin({}, source);
+			//	|	var copy = lang.mixin({}, source);
 			// example:
 			//		many class constructors often take an object which specifies
 			//		values to be configured on the object. In this case, it is
 			//		often simplest to call `lang.mixin` on the `this` object:
-			//	| declare("acme.Base", null, {
+			//	|	declare("acme.Base", null, {
 			//	|		constructor: function(properties){
 			//	|			// property configuration:
 			//	|			lang.mixin(this, properties);
@@ -129,13 +129,13 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//	|		},
 			//	|		quip: "I wasn't born yesterday, you know - I've seen movies.",
 			//	|		// ...
-			//	| });
+			//	|	});
 			//	|
-			//	| // create an instance of the class and configure it
-			//	| var b = new acme.Base({quip: "That's what it does!" });
+			//	|	// create an instance of the class and configure it
+			//	|	var b = new acme.Base({quip: "That's what it does!" });
 			// example:
 			//		copy in properties from multiple objects
-			//	| var flattened = lang.mixin(
+			//	|	var flattened = lang.mixin(
 			//	|		{
 			//	|			name: "Frylock",
 			//	|			braces: true
@@ -143,12 +143,12 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//	|		{
 			//	|			name: "Carl Brutanananadilewski"
 			//	|		}
-			//	| );
+			//	|	);
 			//	|
-			//	| // will print "Carl Brutanananadilewski"
-			//	| console.log(flattened.name);
-			//	| // will print "true"
-			//	| console.log(flattened.braces);
+			//	|	// will print "Carl Brutanananadilewski"
+			//	|	console.log(flattened.name);
+			//	|	// will print "true"
+			//	|	console.log(flattened.braces);
 
 			if(!dest){ dest = {}; }
 			for(var i = 1, l = arguments.length; i < l; i++){

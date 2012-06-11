@@ -104,11 +104,13 @@ var iframe = lang.delegate(_iframe, {
 		//Set up the deferred.
 		var dfd = xhr._ioSetArgs(args,
 			function(/*Deferred*/dfd){
-				//summary: canceller function for xhr._ioSetArgs call.
+				// summary:
+				//		canceller function for xhr._ioSetArgs call.
 				rDfd && rDfd.cancel();
 			},
 			function(/*Deferred*/dfd){
-				//summary: okHandler function for xhr._ioSetArgs call.
+				// summary:
+				//		okHandler function for xhr._ioSetArgs call.
 				var value = null,
 					ioArgs = dfd.ioArgs;
 				try{
@@ -131,7 +133,8 @@ var iframe = lang.delegate(_iframe, {
 				return value;
 			},
 			function(/*Error*/error, /*Deferred*/dfd){
-				//summary: errHandler function for xhr._ioSetArgs call.
+				// summary:
+				//		errHandler function for xhr._ioSetArgs call.
 				dfd.ioArgs._hasError = true;
 				return error;
 			}

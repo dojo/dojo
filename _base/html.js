@@ -323,7 +323,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		//		`dojo.contentBox()` or `dojo.position()`.
 		// node: DOMNode|String
 		//		id or reference to node to get/set style for
-		// name: String?|Object?
+		// name: String|Object?
 		//		the style property to set in DOM-accessor format
 		//		("borderWidth", not "border-width") or an object with key/value
 		//		pairs suitable for setting each property.

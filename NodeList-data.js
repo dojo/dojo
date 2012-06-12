@@ -25,7 +25,7 @@ define([
 		// node: String|DomNode
 		//		The node to associate data with
 		//
-		// key: Object?|String?
+		// key: Object|String?
 		//		If an object, act as a setter and iterate over said object setting data items as defined.
 		//		If a string, and `value` present, set the data for defined `key` to `value`
 		//		If a string, and `value` absent, act as a getter, returning the data associated with said `key`
@@ -93,7 +93,7 @@ define([
 		// node: String|DomNode
 		//		The node to associate data with
 		//
-		// key: Object?|String?
+		// key: Object|String?
 		//		If an object, act as a setter and iterate over said object setting data items as defined.
 		//		If a string, and `value` present, set the data for defined `key` to `value`
 		//		If a string, and `value` absent, act as a getter, returning the data associated with said `key`

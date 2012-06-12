@@ -155,7 +155,7 @@ number.__FormatAbsoluteOptions = function(){
 	//		the decimal separator
 	// group: String?
 	//		the group separator
-	// places: Number?|String?
+	// places: Number|String?
 	//		number of decimal places.  the range "n,m" will format to m places.
 	// round: Number?
 	//		5 rounds to nearest .5; 0 rounds to nearest whole (default). -1
@@ -387,7 +387,7 @@ number.__ParseOptions = function(){
 	// strict: Boolean?
 	//		strict parsing, false by default.  Strict parsing requires input as produced by the format() method.
 	//		Non-strict is more permissive, e.g. flexible on white space, omitting thousands separators
-	// fractional: Boolean?|Array?
+	// fractional: Boolean|Array?
 	//		Whether to include the fractional portion, where the number of decimal places are implied by pattern
 	//		or explicit 'places' parameter.  The value [true,false] makes the fractional portion optional.
 	this.pattern = pattern;
@@ -442,14 +442,14 @@ number.__RealNumberRegexpFlags = function(){
 	// decimal: String?
 	//		A string for the character used as the decimal point.  Default
 	//		is ".".
-	// fractional: Boolean?|Array?
+	// fractional: Boolean|Array?
 	//		Whether decimal places are used.  Can be true, false, or [true,
 	//		false].  Default is [true, false] which means optional.
-	// exponent: Boolean?|Array?
+	// exponent: Boolean|Array?
 	//		Express in exponential notation.  Can be true, false, or [true,
 	//		false]. Default is [true, false], (i.e. will match if the
 	//		exponential part is present are not).
-	// eSigned: Boolean?|Array?
+	// eSigned: Boolean|Array?
 	//		The leading plus-or-minus sign on the exponent.  Can be true,
 	//		false, or [true, false].  Default is [true, false], (i.e. will
 	//		match if it is signed or unsigned).  flags in regexp.integer can be

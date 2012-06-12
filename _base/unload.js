@@ -24,7 +24,7 @@ dojo.windowUnloaded = function(){
 
 var unload = {		// module export
 
-	addOnWindowUnload: function(/*Object?|Function?*/ obj, /*String|Function?*/ functionName){
+	addOnWindowUnload: function(/*Object|Function?*/ obj, /*String|Function?*/ functionName){
 		// summary:
 		//		registers a function to be triggered when window.onunload
 		//		fires.

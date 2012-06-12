@@ -103,7 +103,7 @@ lang.extend(__ParseOptions, {
 	//		A [ISO4217](http://en.wikipedia.org/wiki/ISO_4217) currency code will be used if not found.
 	// places: Number?
 	//		fixed number of decimal places to accept.  The default is determined based on which currency is used.
-	// fractional: Boolean?|Array?
+	// fractional: Boolean|Array?
 	//		Whether to include the fractional portion, where the number of decimal places are implied by the currency
 	//		or explicit 'places' parameter.  The value [true,false] makes the fractional portion optional.
 	//		By default for currencies, it the fractional portion is optional.

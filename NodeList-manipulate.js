@@ -96,7 +96,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			return this; // dojo/query.NodeList
 		},
 
-		innerHTML: function(/*String?||DOMNode?|NodeList?*/value){
+		innerHTML: function(/*String|DOMNode|NodeList?*/ value){
 			// summary:
 			// 		allows setting the innerHTML of each node in the NodeList,
 			// 		if there is a value passed in, otherwise, reads the innerHTML value of the first node.
@@ -145,8 +145,8 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			// 		where it is possible that dojo.NodeList-html could have been loaded, since its
 			// 		definition of "html" will take precedence. If you are not sure if dojo.NodeList-html
 			// 		could be loaded, use the "innerHTML" method.
-			//	value: String?||DOMNode?||NodeList?
-			//		optional. The HTML fragment to use as innerHTML. If value is not passed, then the innerHTML
+			//	value: String|DOMNode|NodeList?
+			//		The HTML fragment to use as innerHTML. If value is not passed, then the innerHTML
 			// 		of the first element in this NodeList is returned.
 			//	returns:
 			//		if no value is passed, the result is String, the innerHTML of the first node.

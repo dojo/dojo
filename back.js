@@ -186,7 +186,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 		//		Upon return to this state from the "back, forward" combination
 		//		of navigation steps, this function will be called. Somewhat
 		//		analogous to the semantic of an "onRedo" event handler.
-		// changeUrl: Boolean?|String?
+		// changeUrl: Boolean|String?
 		//		Boolean indicating whether or not to create a unique hash for
 		//		this state. If a string is passed instead, it is used as the
 		//		hash.

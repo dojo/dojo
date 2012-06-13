@@ -1,4 +1,9 @@
-define(["require", "doh/main", "dojo/request", "dojo/tests/request/handlers"], function(require, doh, request){
+define([
+	"require",
+	"doh/main",
+	"./request/handlers",
+	"../has!host-node?./request/node"
+], function(require, doh){
 	if(doh.isBrowser){
 		doh.register("tests.request.xhr", require.toUrl("./request/xhr.html"), 60000);
 		doh.register("tests.request.script", require.toUrl("./request/script.html"), 60000);

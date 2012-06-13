@@ -1,5 +1,11 @@
-define(["doh/main", "dojo/request/handlers", "dojo/_base/kernel", "dojo/json"], function(doh, handlers, kernel, JSON){
-	doh.register("tests.request.handlers", [
+define([
+	"doh/main",
+	"dojo/request/handlers",
+	"dojo/has",
+	"dojo/_base/kernel",
+	"dojo/json"
+], function(doh, handlers, has, kernel, JSON){
+	var tests = [
 		function textContentHandler(t){
 			var response = handlers({
 				text: "foo bar baz ",
@@ -55,21 +61,27 @@ define(["doh/main", "dojo/request/handlers", "dojo/_base/kernel", "dojo/json"], 
 				}
 			});
 			t.f(responseData.data);
-		},
-		function xmlContentHandler(t){
-			var responseData = {
-				text: "<foo><bar baz='thonk'>blarg</bar></foo>",
-				options: {
-					handleAs: "xml"
-				}
-			};
-			if("DOMParser" in kernel.global){
-				var parser = new DOMParser();
-				responseData.data = parser.parseFromString(responseData.text, "text/xml");
-			}
-
-			responseData = handlers(responseData);
-			t.is("foo", responseData.data.documentElement.tagName);
 		}
-	]);
+	];
+
+	if(has("host-browser")){
+		tests.push(
+			function xmlContentHandler(t){
+				var responseData = {
+					text: "<foo><bar baz='thonk'>blarg</bar></foo>",
+					options: {
+						handleAs: "xml"
+					}
+				};
+				if("DOMParser" in kernel.global){
+					var parser = new DOMParser();
+					responseData.data = parser.parseFromString(responseData.text, "text/xml");
+				}
+
+				responseData = handlers(responseData);
+				t.is("foo", responseData.data.documentElement.tagName);
+			}
+		);
+	}
+	doh.register("tests.request.handlers", tests);
 });

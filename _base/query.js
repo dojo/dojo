@@ -736,7 +736,7 @@ if(typeof dojo != "undefined"){
 		}
 	};
 
-	var defaultGetter = (d.isIE) ? function(cond){
+	var defaultGetter = (d.isIE < 9 || (dojo.isIE && dojo.isQuirks)) ? function(cond){
 		var clc = cond.toLowerCase();
 		if(clc == "class"){ cond = "className"; }
 		return function(elem){

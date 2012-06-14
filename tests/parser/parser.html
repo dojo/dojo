@@ -733,6 +733,18 @@
 					return td;
 				});
 
+				doh.register("promise error handling support", function asyncError(){
+					var td = new doh.Deferred();
+
+					parser.parse("errorHandling").then(td.getTestErrback(function(){
+						console.log("shouldn't get here");
+					}), td.getTestCallback(function(e){
+						doh.is(typeof e, "object", "error object returned");
+					}));
+
+					return td;
+				});
+
 				doh.run();
 			})
 		});
@@ -1074,6 +1086,11 @@
 				return [amdmodule(value)];
 			</script>
 			</div>
+		</div>
+		
+		<!-- tests for promise error handling -->
+		<div id="errorHandling">
+			<div data-dojo-type="dojo/tests/resources/AMDWidget" data-dojo-props="foo: bar"></div>
 		</div>
 	</body>
 </html>

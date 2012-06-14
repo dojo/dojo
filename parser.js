@@ -833,11 +833,18 @@ define(
 			// First scan for any <script type=dojo/require> nodes, and execute.
 			// Then scan for all nodes with data-dojo-type, and load any unloaded modules.
 			// Then build the object instances.  Add instances to already existing (but empty) instances[] array,
-			// which may already have been returned to caller.
+			// which may already have been returned to caller.  Also, use otherwise to collect and throw any errors
+			// that occur during the parse().
 			var p =
-				this._scanAmd(root, options).then(
-				function(){ return self.scan(root, options); }).then(
-				function(parsedNodes){ return instances = instances.concat(self._instantiate(parsedNodes, mixin, options));});
+				this._scanAmd(root, options).then(function(){
+					return self.scan(root, options);
+				}).then(function(parsedNodes){
+					return instances = instances.concat(self._instantiate(parsedNodes, mixin, options));
+				}).otherwise(function(e){
+					// TODO Modify to follow better pattern for promise error managment when available
+					console.error("dojo/parser::parse() error", e);
+					throw e;
+				});
 
 			// Blend the array with the promise
 			dlang.mixin(instances, p);

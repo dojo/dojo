@@ -42,7 +42,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//
 		// The algorithm works by traversing the dependency graphs (remember, there can be cycles so they are not trees)
 		// of each module in the dojoRequireModuleStack array (which contains the list of modules demanded by dojo/require!).
-		// The moment a single module is discovered that is missing, the algorithm gives up an indicates that not all
+		// The moment a single module is discovered that is missing, the algorithm gives up and indicates that not all
 		// modules are on board. dojo/loadInit! and dojo/require! are ignored because there dependencies are inserted
 		// directly in dojoRequireModuleStack. For example, if "your/module" module depends on "dojo/require!my/module", then
 		// *both* "dojo/require!my/module" and "my/module" will be in dojoRequireModuleStack. Obviously, if "my/module"
@@ -63,37 +63,54 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		touched,
 
 		traverse = function(m){
-			if(touched[m.mid]===1 || /loadInit\!/.test(m.mid) || /require\!/.test(m.mid)){
-				// loadInit/require plugin modules are dependencies of modules in dojoRequireModuleStack...
-				// which would cause a circular dependency chain that would never be resolved if checked here
-				// notice all dependencies of any particular loadInit/require plugin module will already
-				// be checked since those are pushed into dojoRequireModuleStack explicitly by the
-				// plugin...so if a particular loadInitPlugin module's dependencies are not really
-				// on board, that *will* be detected elsewhere in the traversal.
-
-				// short curcuit the regexs to help performance
-				touched[m.mid] = 1;
-				return true;
-			}
-			if(touched[m.mid]===0 || (m.injected!==arrived && !m.executed)){
-				touched[m.mid] = 0;
-				return false;
-			}
 		    touched[m.mid] = 1;
-			for(var deps = m.deps || [], i= 0; i<deps.length; i++){
-				if(!traverse(deps[i])){
-					touched[m.mid] = 0;
-					return false;
+			for(var t, module, deps = m.deps || [], i= 0; i<deps.length; i++){
+				module = deps[i];
+				if(!(t = touched[module.mid])){
+					if(t===0 || !traverse(module)){
+						touched[m.mid] = 0;
+						return false;
+					}
 				}
 			}
 			return true;
 		},
 
 		checkDojoRequirePlugin = function(){
+			// initialize the touched hash with easy-to-compute values that help short circuit recursive algorithm;
+			// recall loadInit/require plugin modules are dependencies of modules in dojoRequireModuleStack...
+			// which would cause a circular dependency chain that would never be resolved if checked here
+			// notice all dependencies of any particular loadInit/require plugin module will already
+			// be checked since those are pushed into dojoRequireModuleStack explicitly by the
+			// plugin...so if a particular loadInitPlugin module's dependencies are not really
+			// on board, that *will* be detected elsewhere in the traversal.
+			var module, mid;
 			touched = {};
-			for(var i = 0, end = dojoRequireModuleStack.length; i<end; i++){
-				if(!traverse(dojoRequireModuleStack[i])){
-					return;
+			for(mid in modules){
+				module = modules[mid];
+				// this could be improved by remembering the result of the regex tests
+				if(module.executed || module.noReqPluginCheck){
+					touched[mid] = 1;
+				}else{
+					if(module.noReqPluginCheck!==0){
+						// tag the module as either a loadInit or require plugin or not for future reference
+						module.noReqPluginCheck = /loadInit\!/.test(mid) || /require\!/.test(mid) ? 1 : 0;
+					}
+					if(module.noReqPluginCheck){
+						touched[mid] = 1;
+					}else if(module.injected!==arrived){
+						// not executed, has not arrived, and is not a loadInit or require plugin resource
+						touched[mid] = 0;
+					}// else, leave undefined and we'll traverse the dependencies
+				}
+			}
+
+			for(var t, i = 0, end = dojoRequireModuleStack.length; i<end; i++){
+				module = dojoRequireModuleStack[i];
+				if(!(t = touched[module.mid])){
+					if(t===0 || !traverse(module)){
+						return;
+					}
 				}
 			}
 			loaderVars.holdIdle();

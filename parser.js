@@ -145,7 +145,7 @@ define(
 			// nodes: Array
 			//		Array of objects like
 			//	|		{
-			//	/			ctor: Function (may be null)
+			//	|			ctor: Function (may be null)
 			//	|			types: ["dijit/form/Button", "acme/MyMixin"] (used if ctor not specified)
 			//	|			node: DOMNode,
 			//	|			scripts: [ ... ],	// array of <script type="dojo/..."> children of node

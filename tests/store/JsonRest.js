@@ -1,5 +1,18 @@
-define(["dojo/main", "doh/main", "require", "dojo/store/JsonRest"], function(dojo, doh, require){
-	var store = new dojo.store.JsonRest({target: require.toUrl("dojo/tests/store/x.y").match(/(.+)x\.y$/)[1]});
+define(["doh/main", "require", "dojo/_base/lang", "dojo/store/JsonRest"], function(doh, require, lang, JsonRest){
+	var globalHeaders = {
+			"test-global-header-a": true,
+			"test-global-header-b": "yes"
+		},
+		requestHeaders = {
+			"test-local-header-a": true,
+			"test-local-header-b": "yes",
+			"test-override": "overridden"
+		},
+		store = new JsonRest({
+			target: require.toUrl("dojo/tests/store/x.y").match(/(.+)x\.y$/)[1],
+			headers: lang.mixin({ "test-override": false }, globalHeaders)
+		});
+
 	doh.register("tests.store.JsonRest",
 		[
 			function testGet(t){
@@ -31,6 +44,57 @@ define(["dojo/main", "doh/main", "require", "dojo/store/JsonRest"], function(doj
 				}).then(function(){
 					d.callback(true);
 				});
+				return d;
+			},
+			function testHeaders(t){
+				var d = new doh.Deferred(),
+					error,
+					expected = 0,
+					received = 0;
+
+				// NOTE: Because HTTP headers are case-insensitive they should always be provided as all-lowercase
+				// strings to simplify testing.
+				function runTest(method, args){
+					expected++;
+
+					store[method].apply(store, args).then(function(result){
+						received++;
+
+						if(error){
+							return;
+						}
+
+						var k;
+
+						for(k in requestHeaders){
+							if(!result.headers.hasOwnProperty(k) || "" + result.headers[k] !== "" + requestHeaders[k]){
+								error = true;
+								d.errback(new Error("Header mismatch in " + method + ": " + k));
+								return;
+							}
+						}
+
+						for(k in globalHeaders){
+							if(!result.headers.hasOwnProperty(k) || "" + result.headers[k] !== "" + globalHeaders[k]){
+								error = true;
+								d.errback(new Error("Global header mismatch in " + method + ": " + k));
+								return;
+							}
+						}
+
+						if(expected === received){
+							d.callback(true);
+						}
+					});
+				}
+
+				runTest("get", [ "index.php", requestHeaders ]);
+				runTest("get", [ "index.php", { headers: requestHeaders } ]);
+				runTest("remove", [ "index.php", { headers: requestHeaders } ]);
+				runTest("query", [ {}, { headers: requestHeaders, start: 20, count: 42 } ]);
+				runTest("put", [ {}, { headers: requestHeaders } ]);
+				runTest("add", [ {}, { headers: requestHeaders } ]);
+
 				return d;
 			}
 		]

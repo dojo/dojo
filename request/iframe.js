@@ -83,16 +83,19 @@ define([
 		return frame;
 	}
 
-	function setSrc(iframe, src, replace){
-		var frame = win.global.frames[iframe.name];
+	function setSrc(_iframe, src, replace){
+		var frame = win.global.frames[_iframe.name];
+
+		if(frame.contentWindow){
+			// We have an iframe node instead of the window
+			frame = frame.contentWindow;
+		}
 
 		try{
-			if(!frame.contentWindow){
-				frame.src = src;
-			}else if(!replace || !frame.contentWindow.document){
-				frame.contentWindow.location = src;
+			if(!replace){
+				frame.location = src;
 			}else{
-				frame.contentWindow.location.replace(src);
+				frame.location.replace(src);
 			}
 		}catch(e){
 			console.log('dojo/request/iframe.setSrc: ', e);

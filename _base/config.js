@@ -131,17 +131,7 @@ return {
 	// transparentColor: Array
 	//		Array containing the r, g, b components used as transparent color in dojo.Color;
 	//		if undefined, [255,255,255] (white) will be used.
-	transparentColor: undefined,
-
-	// skipIeDomLoaded: Boolean
-	//		For IE only, skip the DOMContentLoaded hack used. Sometimes it can cause an Operation
-	//		Aborted error if the rest of the page triggers script defers before the DOM is ready.
-	//		If this is config value is set to true, then dojo.addOnLoad callbacks will not be
-	//		triggered until the page load event, which is after images and iframes load. If you
-	//		want to trigger the callbacks sooner, you can put a script block in the bottom of
-	//		your HTML that calls dojo._loadInit();. If you are using multiversion support, change
-	//		"dojo." to the appropriate scope name for dojo.
-	skipIeDomLoaded: false
+	transparentColor: undefined
 };
 =====*/
 

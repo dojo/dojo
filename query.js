@@ -380,9 +380,9 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			// summary:
 			//		see dojo.indexOf(). The primary difference is that the acted-on
 			//		array is implicitly this NodeList
-			// value: Object:
+			// value: Object
 			//		The value to search for.
-			// fromIndex: Integer?:
+			// fromIndex: Integer?
 			//		The location to start searching from. Optional. Defaults to 0.
 			// description:
 			//		For more details on the behavior of indexOf, see Mozilla's
@@ -417,8 +417,10 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		Takes the same structure of arguments and returns as
 			//		dojo.every() with the caveat that the passed array is
 			//		implicitly this NodeList
-			// callback: Function: the callback
-			// thisObject: Object?: the context
+			// callback: Function
+			//		the callback
+			// thisObject: Object?
+			//		the context
 			return d.every(this, callback, thisObject); // Boolean
 		},
 
@@ -429,8 +431,10 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		implicitly this NodeList.  See `dojo.some()` and Mozilla's
 			//		(Array.some
 			//		documentation)[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some].
-			// callback: Function: the callback
-			// thisObject: Object?: the context
+			// callback: Function
+			//		the callback
+			// thisObject: Object?
+			//		the context
 			return d.some(this, callback, thisObject); // Boolean
 		},
 		=====*/

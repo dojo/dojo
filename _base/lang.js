@@ -56,11 +56,11 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 		_mixin: function(dest, source, copyFunc){
 			// summary:
 			//		Copies/adds all properties of source to dest; returns dest.
-			// dest: Object:
+			// dest: Object
 			//		The object to which to copy/add all properties contained in source.
-			// source: Object:
+			// source: Object
 			//		The object from which to draw all properties to copy into dest.
-			// copyFunc: Function?:
+			// copyFunc: Function?
 			//		The process used to copy/add a property in source; defaults to the Javascript assignment operator.
 			// returns:
 			//		dest, as modified

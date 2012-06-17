@@ -714,15 +714,15 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	function declare(className, superclass, props){
 		// summary:
 		//		Create a feature-rich constructor from compact notation.
-		// className: String?:
+		// className: String?
 		//		The optional name of the constructor (loosely, a "class")
 		//		stored in the "declaredClass" property in the created prototype.
 		//		It will be used as a global name for a created constructor.
-		// superclass: Function|Function[]:
+		// superclass: Function|Function[]
 		//		May be null, a Function, or an Array of Functions. This argument
 		//		specifies a list of bases (the left-most one is the most deepest
 		//		base).
-		// props: Object:
+		// props: Object
 		//		An object whose properties are copied to the created prototype.
 		//		Add an instance-initialization function by making it a property
 		//		named "constructor".

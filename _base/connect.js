@@ -203,13 +203,13 @@ var connect = {
 		//		The return value is a handle that is needed to
 		//		remove this connection with `dojo.disconnect`.
 		//
-		// obj: Object|null:
+		// obj: Object?
 		//		The source object for the event function.
 		//		Defaults to `kernel.global` if null.
 		//		If obj is a DOM node, the connection is delegated
 		//		to the DOM event manager (unless dontFix is true).
 		//
-		// event: String:
+		// event: String
 		//		String name of the event function in obj.
 		//		I.e. identifies a property `obj[event]`.
 		//
@@ -223,7 +223,7 @@ var connect = {
 		//		object object for method (context[method]). If context is null,
 		//		kernel.global is used.
 		//
-		// method: String|Function:
+		// method: String|Function
 		//		A function reference, or name of a function in context.
 		//		The function identified by method fires after event does.
 		//		method receives the same arguments as the event.
@@ -282,7 +282,7 @@ var connect = {
 		//		Remove a link created by dojo.connect.
 		// description:
 		//		Removes the connection between event and the method referenced by handle.
-		// handle: Handle:
+		// handle: Handle
 		//		the return value of the dojo.connect call that created the connection.
 
 		if(handle){
@@ -295,11 +295,11 @@ var connect = {
 		//		Attach a listener to a named topic. The listener function is invoked whenever the
 		//		named topic is published (see: dojo.publish).
 		//		Returns a handle which is needed to unsubscribe this listener.
-		//	topic: String:
+		//	topic: String
 		//		The topic to which to subscribe.
-		//	context: Object|null:
+		//	context: Object?
 		//		Scope in which method will be invoked, or null for default scope.
-		//	method: String|Function:
+		//	method: String|Function
 		//		The name of a function in context, or a function reference. This is the function that
 		//		is invoked when topic is published.
 		//	example:
@@ -311,7 +311,7 @@ var connect = {
 	publish:function(topic, args){
 		//	summary:
 		//		Invoke all listener method subscribed to topic.
-		// topic: String:
+		// topic: String
 		//		The name of the topic to publish.
 		// args: Array?
 		//		An array of arguments. The arguments will be applied
@@ -328,12 +328,12 @@ var connect = {
 		//		on the topic. Returns a handle which can be passed to
 		//		dojo.disconnect() to disable subsequent automatic publication on
 		//		the topic.
-		// topic: String:
+		// topic: String
 		//		The name of the topic to publish.
-		// obj: Object|null:
+		// obj: Object?
 		//		The source object for the event function. Defaults to kernel.global
 		//		if null.
-		// event: String:
+		// event: String
 		//		The name of the event function in obj.
 		//		I.e. identifies a property obj[event].
 		// example:

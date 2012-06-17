@@ -1,16 +1,14 @@
 define(["../../_base/declare", "./Read"], function(declare, Read) {
-	// module:
-	//		dojo/data/api/Notification
-	// summary:
-	//		TODOC
+
+// module:
+//		dojo/data/api/Notification
 
 return declare("dojo.data.api.Notification", Read, {
-	//	summary:
+	// summary:
 	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines functions signatures and intentionally leaves all the
 	//		functions unimplemented.
-	//
-	//	description:
+	// description:
 	//		This API defines a set of APIs that all datastores that conform to the
 	//		Notifications API must implement.  In general, most stores will implement
 	//		these APIs as no-op functions for users who wish to monitor them to be able
@@ -20,9 +18,7 @@ return declare("dojo.data.api.Notification", Read, {
 	//		this feature.  In the case of a read-only store, this feature makes sense if
 	//		the store itself does internal polling to a back-end server and periodically updates
 	//		its cache of items (deletes, adds, and updates).
-	//
-	//	example:
-	//
+	// example:
 	//	|	function onSet(item, attribute, oldValue, newValue) {
 	//	|		//Do something with the information...
 	//	|	};
@@ -30,7 +26,7 @@ return declare("dojo.data.api.Notification", Read, {
 	//	|	dojo.connect(store, "onSet", onSet);
 
 	getFeatures: function(){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.getFeatures()
 		return {
 			'dojo.data.api.Read': true,
@@ -42,43 +38,40 @@ return declare("dojo.data.api.Notification", Read, {
 					/* attribute-name-string */ attribute,
 					/* object|array */ oldValue,
 					/* object|array */ newValue){
-		//	summary:
+		// summary:
 		//		This function is called any time an item is modified via setValue, setValues, unsetAttribute, etc.
-		//	description:
+		// description:
 		//		This function is called any time an item is modified via setValue, setValues, unsetAttribute, etc.
 		//		Its purpose is to provide a hook point for those who wish to monitor actions on items in the store
 		//		in a simple manner.  The general expected usage is to dojo.connect() to the store's
 		//		implementation and be called after the store function is called.
-		//
-		//	item:
+		// item:
 		//		The item being modified.
-		//	attribute:
+		// attribute:
 		//		The attribute being changed represented as a string name.
-		//	oldValue:
+		// oldValue:
 		//		The old value of the attribute.  In the case of single value calls, such as setValue, unsetAttribute, etc,
 		//		this value will be generally be an atomic value of some sort (string, int, etc, object).  In the case of
 		//		multi-valued attributes, it will be an array.
-		//	newValue:
+		// newValue:
 		//		The new value of the attribute.  In the case of single value calls, such as setValue, this value will be
 		//		generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes,
 		//		it will be an array.  In the case of unsetAttribute, the new value will be 'undefined'.
-		//
-		//	returns:
+		// returns:
 		//		Nothing.
 		throw new Error('Unimplemented API: dojo.data.api.Notification.onSet');
 	},
 
 	onNew: function(/* dojo/data/api/Item */ newItem, /*object?*/ parentInfo){
-		//	summary:
+		// summary:
 		//		This function is called any time a new item is created in the store.
 		//		It is called immediately after the store newItem processing has completed.
-		//	description:
+		// description:
 		//		This function is called any time a new item is created in the store.
 		//		It is called immediately after the store newItem processing has completed.
-		//
-		//	newItem:
+		// newItem:
 		//		The item created.
-		//	parentInfo:
+		// parentInfo:
 		//		An optional javascript object that is passed when the item created was placed in the store
 		//		hierarchy as a value f another item's attribute, instead of a root level item.  Note that if this
 		//		function is invoked with a value for parentInfo, then onSet is not invoked stating the attribute of
@@ -94,24 +87,21 @@ return declare("dojo.data.api.Notification", Read, {
 		//						//generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes,
 		//						//it will be an array.
 		//		}
-		//
-		//	returns:
+		// returns:
 		//		Nothing.
 		throw new Error('Unimplemented API: dojo.data.api.Notification.onNew');
 	},
 
 	onDelete: function(/* dojo/data/api/Item */ deletedItem){
-		//	summary:
+		// summary:
 		//		This function is called any time an item is deleted from the store.
 		//		It is called immediately after the store deleteItem processing has completed.
-		//	description:
+		// description:
 		//		This function is called any time an item is deleted from the store.
 		//		It is called immediately after the store deleteItem processing has completed.
-		//
-		//	deletedItem:
+		// deletedItem:
 		//		The item deleted.
-		//
-		//	returns:
+		// returns:
 		//		Nothing.
 		throw new Error('Unimplemented API: dojo.data.api.Notification.onDelete');
 	}

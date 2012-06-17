@@ -1,14 +1,16 @@
 define(["../_base/lang", "../_base/declare", "../_base/array", "../_base/json", "../_base/kernel",
 	"./ItemFileReadStore", "../date/stamp"
 ], function(lang, declare, arrayUtil, jsonUtil, kernel, ItemFileReadStore, dateStamp){
-	// module:
-	//		dojo/data/ItemFileWriteStore
+
+// module:
+//		dojo/data/ItemFileWriteStore
+
+return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	// summary:
 	//		TODOC
 
-return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	constructor: function(/* object */ keywordParameters){
-		//	keywordParameters: {typeMap: object)
+		// keywordParameters:
 		//		The structure of the typeMap object is as follows:
 		//		{
 		//			type0: function || object,
@@ -68,7 +70,8 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 /* dojo.data.api.Write */
 
 	newItem: function(/* Object? */ keywordArgs, /* Object? */ parentInfo){
-		// summary: See dojo.data.api.Write.newItem()
+		// summary:
+		//		See dojo.data.api.Write.newItem()
 
 		this._assert(!this._saveInProgress);
 
@@ -197,7 +200,8 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	deleteItem: function(/* dojo/data/api/Item */ item){
-		// summary: See dojo.data.api.Write.deleteItem()
+		// summary:
+		//		See dojo.data.api.Write.deleteItem()
 		this._assert(!this._saveInProgress);
 		this._assertIsItem(item);
 
@@ -285,17 +289,20 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	setValue: function(/* dojo/data/api/Item */ item, /* attribute-name-string */ attribute, /* almost anything */ value){
-		// summary: See dojo.data.api.Write.set()
+		// summary:
+		//		See dojo.data.api.Write.set()
 		return this._setValueOrValues(item, attribute, value, true); // boolean
 	},
 
 	setValues: function(/* dojo/data/api/Item */ item, /* attribute-name-string */ attribute, /* array */ values){
-		// summary: See dojo.data.api.Write.setValues()
+		// summary:
+		//		See dojo.data.api.Write.setValues()
 		return this._setValueOrValues(item, attribute, values, true); // boolean
 	},
 
 	unsetAttribute: function(/* dojo/data/api/Item */ item, /* attribute-name-string */ attribute){
-		// summary: See dojo.data.api.Write.unsetAttribute()
+		// summary:
+		//		See dojo.data.api.Write.unsetAttribute()
 		return this._setValueOrValues(item, attribute, [], true);
 	},
 
@@ -439,15 +446,15 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	_addReferenceToMap: function(/* dojo/data/api/Item */ refItem, /* dojo/data/api/Item */ parentItem, /* string */ attribute){
-		//	summary:
+		// summary:
 		//		Method to add an reference map entry for an item and attribute.
-		//	description:
-		//		Method to add an reference map entry for an item and attribute. 		 //
-		//	refItem:
+		// description:
+		//		Method to add an reference map entry for an item and attribute.
+		// refItem:
 		//		The item that is referenced.
-		//	parentItem:
+		// parentItem:
 		//		The item that holds the new reference to refItem.
-		//	attribute:
+		// attribute:
 		//		The attribute on parentItem that contains the new reference.
 
 		var parentId = this.getIdentity(parentItem);
@@ -464,18 +471,17 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	_removeReferenceFromMap: function(/* dojo/data/api/Item */ refItem, /* dojo/data/api/Item */ parentItem, /* string */ attribute){
-		//	summary:
+		// summary:
 		//		Method to remove an reference map entry for an item and attribute.
-		//	description:
+		// description:
 		//		Method to remove an reference map entry for an item and attribute.  This will
 		//		also perform cleanup on the map such that if there are no more references at all to
 		//		the item, its reference object and entry are removed.
-		//
-		//	refItem:
+		// refItem:
 		//		The item that is referenced.
-		//	parentItem:
+		// parentItem:
 		//		The item holding a reference to refItem.
-		//	attribute:
+		// attribute:
 		//		The attribute on parentItem that contains the reference.
 		var identity = this.getIdentity(parentItem);
 		var references = refItem[this._reverseRefMap];
@@ -496,9 +502,9 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	_dumpReferenceMap: function(){
-		//	summary:
+		// summary:
 		//		Function to dump the reverse reference map of all items in the store for debug purposes.
-		//	description:
+		// description:
 		//		Function to dump the reverse reference map of all items in the store for debug purposes.
 		var i;
 		for(i = 0; i < this._arrayOfAllItems.length; i++){
@@ -593,9 +599,9 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	_isEmpty: function(something){
-		//	summary:
+		// summary:
 		//		Function to determine if an array or object has no properties or values.
-		//	something:
+		// something:
 		//		The array or object to examine.
 		var empty = true;
 		if(lang.isObject(something)){
@@ -613,7 +619,8 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	save: function(/* object */ keywordArgs){
-		// summary: See dojo.data.api.Write.save()
+		// summary:
+		//		See dojo.data.api.Write.save()
 		this._assert(!this._saveInProgress);
 
 		// this._saveInProgress is set to true, briefly, from when save is first called to when it completes
@@ -657,7 +664,8 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	revert: function(){
-		// summary: See dojo.data.api.Write.revert()
+		// summary:
+		//		See dojo.data.api.Write.revert()
 		this._assert(!this._saveInProgress);
 
 		var identity;
@@ -739,7 +747,8 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 	isDirty: function(/* item? */ item){
-		// summary: See dojo.data.api.Write.isDirty()
+		// summary:
+		//		See dojo.data.api.Write.isDirty()
 		if(item){
 			// return true if the item is dirty
 			var identity = this.getIdentity(item);
@@ -761,21 +770,24 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 					/*attribute-name-string*/ attribute,
 					/*object|array*/ oldValue,
 					/*object|array*/ newValue){
-		// summary: See dojo.data.api.Notification.onSet()
+		// summary:
+		//		See dojo.data.api.Notification.onSet()
 
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.
 	},
 
 	onNew: function(/* dojo/data/api/Item */ newItem, /*object?*/ parentInfo){
-		// summary: See dojo.data.api.Notification.onNew()
+		// summary:
+		//		See dojo.data.api.Notification.onNew()
 
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.
 	},
 
 	onDelete: function(/* dojo/data/api/Item */ deletedItem){
-		// summary: See dojo.data.api.Notification.onDelete()
+		// summary:
+		//		See dojo.data.api.Notification.onDelete()
 
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.

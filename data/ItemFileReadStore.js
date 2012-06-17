@@ -1,14 +1,12 @@
 define(["../_base/kernel", "../_base/lang", "../_base/declare", "../_base/array", "../_base/xhr",
 	"../Evented", "./util/filter", "./util/simpleFetch", "../date/stamp"
 ], function(kernel, lang, declare, array, xhr, Evented, filterUtil, simpleFetch, dateStamp) {
+
 // module:
 //		dojo/data/ItemFileReadStore
-// summary:
-//		TODOC
-
 
 var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
-	//	summary:
+	// summary:
 	//		The ItemFileReadStore implements the dojo.data.api.Read API and reads
 	//		data from JSON files that have contents in this format --
 	//		{ items: [
@@ -18,12 +16,12 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	//		]}
 	//		Note that it can also contain an 'identifer' property that specified which attribute on the items
 	//		in the array of items that acts as the unique identifier for that item.
-	//
+
 	constructor: function(/* Object */ keywordParameters){
-		//	summary: constructor
-		//	keywordParameters: {url: String}
-		//	keywordParameters: {data: jsonObject}
-		//	keywordParameters: {typeMap: object)
+		// summary:
+		//		constructor
+		// keywordParameters:
+		//		{url: String} {data: jsonObject} {typeMap: object}
 		//		The structure of the typeMap object is as follows:
 		//		{
 		//			type0: function || object,
@@ -91,31 +89,35 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	typeMap: null, //Define so parser can populate.
 
-	//Parameter to allow users to specify if a close call should force a reload or not.
-	//By default, it retains the old behavior of not clearing if close is called.  But
-	//if set true, the store will be reset to default state.  Note that by doing this,
-	//all item handles will become invalid and a new fetch must be issued.
+	// clearOnClose: Boolean
+	//		Parameter to allow users to specify if a close call should force a reload or not.
+	//		By default, it retains the old behavior of not clearing if close is called.  But
+	//		if set true, the store will be reset to default state.  Note that by doing this,
+	//		all item handles will become invalid and a new fetch must be issued.
 	clearOnClose: false,
 
-	//Parameter to allow specifying if preventCache should be passed to the xhrGet call or not when loading data from a url.
-	//Note this does not mean the store calls the server on each fetch, only that the data load has preventCache set as an option.
-	//Added for tracker: #6072
+	// urlPreventCache: Boolean
+	//		Parameter to allow specifying if preventCache should be passed to the xhrGet call or not when loading data from a url.
+	//		Note this does not mean the store calls the server on each fetch, only that the data load has preventCache set as an option.
+	//		Added for tracker: #6072
 	urlPreventCache: false,
 
-	//Parameter for specifying that it is OK for the xhrGet call to fail silently.
+	// failOk: Boolean
+	//		Parameter for specifying that it is OK for the xhrGet call to fail silently.
 	failOk: false,
 
-	//Parameter to indicate to process data from the url as hierarchical
-	//(data items can contain other data items in js form).  Default is true
-	//for backwards compatibility.  False means only root items are processed
-	//as items, all child objects outside of type-mapped objects and those in
-	//specific reference format, are left straight JS data objects.
+	// hierarchical: Boolean
+	//		Parameter to indicate to process data from the url as hierarchical
+	//		(data items can contain other data items in js form).  Default is true
+	//		for backwards compatibility.  False means only root items are processed
+	//		as items, all child objects outside of type-mapped objects and those in
+	//		specific reference format, are left straight JS data objects.
 	hierarchical: true,
 
 	_assertIsItem: function(/* dojo/data/api/Item */ item){
-		//	summary:
+		// summary:
 		//		This function tests whether the item passed in is indeed an item in the store.
-		//	item:
+		// item:
 		//		The item to test for being contained by the store.
 		if(!this.isItem(item)){
 			throw new Error(this.declaredClass + ": Invalid item argument.");
@@ -123,9 +125,9 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	_assertIsAttribute: function(/* attribute-name-string */ attribute){
-		//	summary:
+		// summary:
 		//		This function tests whether the item passed in is indeed a valid 'attribute' like type for the store.
-		//	attribute:
+		// attribute:
 		//		The attribute to test for being contained by the store.
 		if(typeof attribute !== "string"){
 			throw new Error(this.declaredClass + ": Invalid attribute argument.");
@@ -135,7 +137,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	getValue: function(	/* dojo/data/api/Item */ item,
 						   /* attribute-name-string */ attribute,
 						   /* value? */ defaultValue){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.getValue()
 		var values = this.getValues(item, attribute);
 		return (values.length > 0)?values[0]:defaultValue; // mixed
@@ -143,7 +145,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	getValues: function(/* dojo/data/api/Item */ item,
 						/* attribute-name-string */ attribute){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.getValues()
 
 		this._assertIsItem(item);
@@ -153,7 +155,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	getAttributes: function(/* dojo/data/api/Item */ item){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.getAttributes()
 		this._assertIsItem(item);
 		var attributes = [];
@@ -168,7 +170,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	hasAttribute: function(	/* dojo/data/api/Item */ item,
 							   /* attribute-name-string */ attribute){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.hasAttribute()
 		this._assertIsItem(item);
 		this._assertIsAttribute(attribute);
@@ -178,7 +180,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	containsValue: function(/* dojo/data/api/Item */ item,
 							/* attribute-name-string */ attribute,
 							/* anything */ value){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.containsValue()
 		var regexp = undefined;
 		if(typeof value === "string"){
@@ -191,20 +193,19 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 								 /* attribute-name-string */ attribute,
 								 /* anything */ value,
 								 /* RegExp?*/ regexp){
-		//	summary:
+		// summary:
 		//		Internal function for looking at the values contained by the item.
-		//	description:
+		// description:
 		//		Internal function for looking at the values contained by the item.  This
 		//		function allows for denoting if the comparison should be case sensitive for
 		//		strings or not (for handling filtering cases where string case should not matter)
-		//
-		//	item:
+		// item:
 		//		The data item to examine for attribute values.
-		//	attribute:
+		// attribute:
 		//		The attribute to inspect.
-		//	value:
+		// value:
 		//		The value to match.
-		//	regexp:
+		// regexp:
 		//		Optional regular expression generated off value if value was of string type to handle wildcarding.
 		//		If present and attribute values are string, then it can be used for comparison instead of 'value'
 		return array.some(this.getValues(item, attribute), function(possibleValue){
@@ -219,7 +220,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	isItem: function(/* anything */ something){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.isItem()
 		if(something && something[this._storeRefPropName] === this){
 			if(this._arrayOfAllItems[something[this._itemNumPropName]] === something){
@@ -230,25 +231,25 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	isItemLoaded: function(/* anything */ something){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.isItemLoaded()
 		return this.isItem(something); //boolean
 	},
 
 	loadItem: function(/* object */ keywordArgs){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.loadItem()
 		this._assertIsItem(keywordArgs.item);
 	},
 
 	getFeatures: function(){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.getFeatures()
 		return this._features; //Object
 	},
 
 	getLabel: function(/* dojo/data/api/Item */ item){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.getLabel()
 		if(this._labelAttr && this.isItem(item)){
 			return this.getValue(item,this._labelAttr); //String
@@ -257,7 +258,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	getLabelAttributes: function(/* dojo/data/api/Item */ item){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.getLabelAttributes()
 		if(this._labelAttr){
 			return [this._labelAttr]; //array
@@ -323,7 +324,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	_fetchItems: function(	/* Object */ keywordArgs,
 							  /* Function */ findCallback,
 							  /* Function */ errorCallback){
-		//	summary:
+		// summary:
 		//		See dojo.data.util.simpleFetch.fetch()
 		var self = this;
 
@@ -422,7 +423,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	_handleQueuedFetches: function(){
-		//	summary:
+		// summary:
 		//		Internal function to execute delayed request in the store.
 		
 		//Execute any deferred fetches now.
@@ -443,9 +444,9 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	_getItemsArray: function(/*object?*/queryOptions){
-		//	summary:
+		// summary:
 		//		Internal function to determine which list of items to search over.
-		//	queryOptions: The query options parameter, if any.
+		// queryOptions: The query options parameter, if any.
 		if(queryOptions && queryOptions.deep){
 			return this._arrayOfAllItems;
 		}
@@ -453,7 +454,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	close: function(/*dojo/data/api/Request || keywordArgs || null */ request){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Read.close()
 		if(this.clearOnClose &&
 			this._loadFinished &&
@@ -481,14 +482,12 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	_getItemsFromLoadedData: function(/* Object */ dataObject){
-		//	summary:
+		// summary:
 		//		Function to parse the loaded data into item format and build the internal items array.
-		//	description:
+		// description:
 		//		Function to parse the loaded data into item format and build the internal items array.
-		//
-		//	dataObject:
+		// dataObject:
 		//		The JS data object containing the raw data to convery into item format.
-		//
 		// 	returns: array
 		//		Array of items in store item format.
 
@@ -718,22 +717,22 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	_addReferenceToMap: function(/*item*/ refItem, /*item*/ parentItem, /*string*/ attribute){
-		//	summary:
+		// summary:
 		//		Method to add an reference map entry for an item and attribute.
-		//	description:
-		//		Method to add an reference map entry for an item and attribute. 		 //
-		//	refItem:
+		// description:
+		//		Method to add an reference map entry for an item and attribute.
+		// refItem:
 		//		The item that is referenced.
-		//	parentItem:
+		// parentItem:
 		//		The item that holds the new reference to refItem.
-		//	attribute:
+		// attribute:
 		//		The attribute on parentItem that contains the new reference.
 
 		//Stub function, does nothing.  Real processing is in ItemFileWriteStore.
 	},
 
 	getIdentity: function(/* dojo/data/api/Item */ item){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Identity.getIdentity()
 		var identifier = this._features['dojo.data.api.Identity'];
 		if(identifier === Number){
@@ -748,7 +747,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	fetchItemByIdentity: function(/* Object */ keywordArgs){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Identity.fetchItemByIdentity()
 
 		// Hasn't loaded yet, we have to trigger the load.
@@ -841,7 +840,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	_getItemByIdentity: function(/* Object */ identity){
-		//	summary:
+		// summary:
 		//		Internal function to look an item up by its identity map.
 		var item = null;
 		if(this._itemsByIdentity){
@@ -860,7 +859,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	getIdentityAttributes: function(/* dojo/data/api/Item */ item){
-		//	summary:
+		// summary:
 		//		See dojo.data.api.Identity.getIdentityAttributes()
 
 		var identifier = this._features['dojo.data.api.Identity'];
@@ -876,7 +875,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	_forceLoad: function(){
-		//	summary:
+		// summary:
 		//		Internal function to force a load of the store if it hasn't occurred yet.  This is required
 		//		for specific functions to work properly.
 		var self = this;

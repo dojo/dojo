@@ -2,8 +2,6 @@ define(["../../_base/declare", "./Read"], function(declare, Read) {
 
 // module:
 //		dojo/data/api/Write
-// summary:
-//		TODOC
 
 return declare("dojo.data.api.Write", Read, {
 	// summary:
@@ -31,7 +29,6 @@ return declare("dojo.data.api.Write", Read, {
 		//		of the new item and what attribute of that item should the new item be assigned to.
 		//		In general, this will assume that the attribute targeted is multi-valued and a new item
 		//		is appended onto the list of values for that attribute.
-		//
 		// keywordArgs:
 		//		A javascript object defining the initial content of the item as a set of JavaScript 'property name: value' pairs.
 		// parentInfo:
@@ -39,11 +36,10 @@ return declare("dojo.data.api.Write", Read, {
 		//		and what attribute of that parent to assign the new item to.  If this is present, and the attribute specified
 		//		is a multi-valued attribute, it will append this item into the array of values for that attribute.  The structure
 		//		of the object is as follows:
-		//		{
-		//			parent: someItem,
-		//			attribute: "attribute-name-string"
-		//		}
-		//
+		//	|	{
+		//	|		parent: someItem,
+		//	|		attribute: "attribute-name-string"
+		//	|	}
 		// exceptions:
 		//		Throws an exception if *keywordArgs* is a string or a number or
 		//		anything other than a simple anonymous object.
@@ -58,10 +54,8 @@ return declare("dojo.data.api.Write", Read, {
 	deleteItem: function(/* dojo/data/api/Item */ item){
 		// summary:
 		//		Deletes an item from the store.
-		//
 		// item:
 		//		The item to delete.
-		//
 		// exceptions:
 		//		Throws an exception if the argument *item* is not an item
 		//		(if store.isItem(item) returns false).
@@ -76,14 +70,12 @@ return declare("dojo.data.api.Write", Read, {
 		// summary:
 		//		Sets the value of an attribute on an item.
 		//		Replaces any previous value or values.
-		//
 		// item:
 		//		The item to modify.
 		// attribute:
 		//		The attribute of the item to change represented as a string name.
 		// value:
 		//		The value to assign to the item.
-		//
 		// exceptions:
 		//		Throws an exception if *item* is not an item, or if *attribute*
 		//		is neither an attribute object or a string.
@@ -102,14 +94,12 @@ return declare("dojo.data.api.Write", Read, {
 		//		Replaces any previous value or values.
 		//		Calling store.setValues(x, y, []) (with *values* as an empty array) has
 		//		the same effect as calling store.unsetAttribute(x, y).
-		//
 		// item:
 		//		The item to modify.
 		// attribute:
 		//		The attribute of the item to change represented as a string name.
 		// values:
 		//		An array of values to assign to the attribute..
-		//
 		// exceptions:
 		//		Throws an exception if *values* is not an array, if *item* is not an
 		//		item, or if *attribute* is neither an attribute object or a string.
@@ -124,12 +114,10 @@ return declare("dojo.data.api.Write", Read, {
 								/* string */ attribute){
 		// summary:
 		//		Deletes all the values of an attribute on an item.
-		//
 		// item:
 		//		The item to modify.
 		// attribute:
 		//		The attribute of the item to unset represented as a string.
-		//
 		// exceptions:
 		//		Throws an exception if *item* is not an item, or if *attribute*
 		//		is neither an attribute object or a string.
@@ -145,7 +133,6 @@ return declare("dojo.data.api.Write", Read, {
 		//		The save operation may take some time and is generally performed
 		//		in an asynchronous fashion.  The outcome of the save action is
 		//		is passed into the set of supported callbacks for the save.
-		//
 		// keywordArgs:
 		//		{
 		//			onComplete: function
@@ -153,30 +140,29 @@ return declare("dojo.data.api.Write", Read, {
 		//			scope: object
 		//		}
 		//
-		//	The *onComplete* parameter.
-		//		function();
+		//		The *onComplete* parameter.
+		//			function();
 		//
-		//		If an onComplete callback function is provided, the callback function
-		//		will be called just once, after the save has completed.  No parameters
-		//		are generally passed to the onComplete.
+		//			If an onComplete callback function is provided, the callback function
+		//			will be called just once, after the save has completed.  No parameters
+		//			are generally passed to the onComplete.
 		//
-		//	The *onError* parameter.
-		//		function(errorData);
+		//		The *onError* parameter.
+		//			function(errorData);
 		//
-		//		If an onError callback function is provided, the callback function
-		//		will be called if there is any sort of error while attempting to
-		//		execute the save.  The onError function will be based one parameter, the
-		//		error.
+		//			If an onError callback function is provided, the callback function
+		//			will be called if there is any sort of error while attempting to
+		//			execute the save.  The onError function will be based one parameter, the
+		//			error.
 		//
-		//	The *scope* parameter.
-		//		If a scope object is provided, all of the callback function (
-		//		onComplete, onError, etc) will be invoked in the context of the scope
-		//		object.  In the body of the callback function, the value of the "this"
-		//		keyword will be the scope object.   If no scope object is provided,
-		//		the callback functions will be called in the context of dojo.global.
-		//		For example, onComplete.call(scope) vs.
-		//		onComplete.call(dojo.global)
-		//
+		//		The *scope* parameter.
+		//			If a scope object is provided, all of the callback function (
+		//			onComplete, onError, etc) will be invoked in the context of the scope
+		//			object.  In the body of the callback function, the value of the "this"
+		//			keyword will be the scope object.   If no scope object is provided,
+		//			the callback functions will be called in the context of dojo.global.
+		//			For example, onComplete.call(scope) vs.
+		//			onComplete.call(dojo.global)
 		// returns:
 		//		Nothing.  Since the saves are generally asynchronous, there is
 		//		no need to return anything.  All results are passed via callbacks.
@@ -191,7 +177,6 @@ return declare("dojo.data.api.Write", Read, {
 		//		Discards any unsaved changes.
 		// description:
 		//		Discards any unsaved changes.
-		//
 		// example:
 		//	|	var success = store.revert();
 		throw new Error('Unimplemented API: dojo.data.api.Write.revert');
@@ -203,10 +188,8 @@ return declare("dojo.data.api.Write", Read, {
 		//		since the last save().  If isDirty() is called with no *item* argument,
 		//		then this function returns true if any item has been modified since
 		//		the last save().
-		//
 		// item:
 		//		The item to check.
-		//
 		// exceptions:
 		//		Throws an exception if isDirty() is passed an argument and the
 		//		argument is not an item.

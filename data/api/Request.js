@@ -1,12 +1,10 @@
 define(["../../_base/declare"], function(declare) {
-	// module:
-	//		dojo/data/api/Request
-	// summary:
-	//		TODOC
 
+// module:
+//		dojo/data/api/Request
 
 return declare("dojo.data.api.Request", null, {
-	//	summary:
+	// summary:
 	//		This class defines out the semantics of what a 'Request' object looks like
 	//		when returned from a fetch() method.  In general, a request object is
 	//		nothing more than the original keywordArgs from fetch with an abort function
@@ -21,10 +19,10 @@ return declare("dojo.data.api.Request", null, {
 	//		For more details on fetch, see dojo.data.api.Read.fetch().
 
 	abort: function(){
-		//	summary:
+		// summary:
 		//		This function is a hook point for stores to provide as a way for
 		//		a fetch to be halted mid-processing.
-		//	description:
+		// description:
 		//		This function is a hook point for stores to provide as a way for
 		//		a fetch to be halted mid-processing.  For more details on the fetch() api,
 		//		please see dojo.data.api.Read.fetch().

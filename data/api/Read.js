@@ -1,9 +1,7 @@
 define(["../../_base/declare"], function(declare) {
-	// module:
-	//		dojo/data/api/Read
-	// summary:
-	//		TODOC
 
+// module:
+//		dojo/data/api/Read
 
 return declare("dojo.data.api.Read", null, {
 	// summary:
@@ -158,28 +156,29 @@ return declare("dojo.data.api.Read", null, {
 		//			onError: Function,
 		//			scope: object
 		//		}
-		//	The *item* parameter.
-		//		The item parameter is an object that represents the item in question that should be
-		//		contained by the store.  This attribute is required.
 		//
-		//	The *onItem* parameter.
-		//		Function(item)
-		//		The onItem parameter is the callback to invoke when the item has been loaded.  It takes only one
-		//		parameter, the fully loaded item.
+		//		The *item* parameter.
+		//			The item parameter is an object that represents the item in question that should be
+		//			contained by the store.  This attribute is required.
 		//
-		//	The *onError* parameter.
-		//		Function(error)
-		//		The onError parameter is the callback to invoke when the item load encountered an error.  It takes only one
-		//		parameter, the error object
+		//		The *onItem* parameter.
+		//			Function(item)
+		//			The onItem parameter is the callback to invoke when the item has been loaded.  It takes only one
+		//			parameter, the fully loaded item.
 		//
-		//	The *scope* parameter.
-		//		If a scope object is provided, all of the callback functions (onItem,
-		//		onError, etc) will be invoked in the context of the scope object.
-		//		In the body of the callback function, the value of the "this"
-		//		keyword will be the scope object.   If no scope object is provided,
-		//		the callback functions will be called in the context of dojo.global().
-		//		For example, onItem.call(scope, item, request) vs.
-		//		onItem.call(dojo.global(), item, request)
+		//		The *onError* parameter.
+		//			Function(error)
+		//			The onError parameter is the callback to invoke when the item load encountered an error.  It takes only one
+		//			parameter, the error object
+		//
+		//		The *scope* parameter.
+		//			If a scope object is provided, all of the callback functions (onItem,
+		//			onError, etc) will be invoked in the context of the scope object.
+		//			In the body of the callback function, the value of the "this"
+		//			keyword will be the scope object.   If no scope object is provided,
+		//			the callback functions will be called in the context of dojo.global().
+		//			For example, onItem.call(scope, item, request) vs.
+		//			onItem.call(dojo.global(), item, request)
 		if(!this.isItemLoaded(keywordArgs.item)){
 			throw new Error('Unimplemented API: dojo.data.api.Read.loadItem');
 		}
@@ -191,7 +190,6 @@ return declare("dojo.data.api.Read", null, {
 		//		this method executes the query and makes the results available as data items.
 		//		The format and expectations of stores is that they operate in a generally asynchronous
 		//		manner, therefore callbacks are always used to return items located by the fetch parameters.
-		//
 		// description:
 		//		A Request object will always be returned and is returned immediately.
 		//		The basic request is nothing more than the keyword args passed to fetch and
@@ -202,7 +200,6 @@ return declare("dojo.data.api.Read", null, {
 		//		This does not mean that custom stores can not add methods and properties to the request object
 		//		returned, only that the API does not require it.  For more info about the Request API,
 		//		see dojo.data.api.Request
-		//
 		// keywordArgs:
 		//		The keywordArgs parameter may either be an instance of
 		//		conforming to dojo.data.api.Request or may be a simple anonymous object
@@ -225,106 +222,105 @@ return declare("dojo.data.api.Read", null, {
 		//		properties in the keywordArgs object as valid parameters, such as
 		//		{includeOutliers:true}.
 		//
-		//	The *query* parameter.
-		//		The query may be optional in some data store implementations.
-		//		The dojo.data.api.Read API does not specify the syntax or semantics
-		//		of the query itself -- each different data store implementation
-		//		may have its own notion of what a query should look like.
-		//		However, as of dojo 0.9, 1.0, and 1.1, all the provided datastores in dojo.data
-		//		and dojox.data support an object structure query, where the object is a set of
-		//		name/value parameters such as { attrFoo: valueBar, attrFoo1: valueBar1}.  Most of the
-		//		dijit widgets, such as ComboBox assume this to be the case when working with a datastore
-		//		when they dynamically update the query.  Therefore, for maximum compatibility with dijit
-		//		widgets the recommended query parameter is a key/value object.  That does not mean that the
-		//		the datastore may not take alternative query forms, such as a simple string, a Date, a number,
-		//		or a mix of such.  Ultimately, The dojo.data.api.Read API is agnostic about what the query
-		//		format.
-		//		Further note:  In general for query objects that accept strings as attribute
-		//		value matches, the store should also support basic filtering capability, such as *
-		//		(match any character) and ? (match single character).  An example query that is a query object
-		//		would be like: { attrFoo: "value*"}.  Which generally means match all items where they have
-		//		an attribute named attrFoo, with a value that starts with 'value'.
+		//		The *query* parameter.
+		//			The query may be optional in some data store implementations.
+		//			The dojo.data.api.Read API does not specify the syntax or semantics
+		//			of the query itself -- each different data store implementation
+		//			may have its own notion of what a query should look like.
+		//			However, as of dojo 0.9, 1.0, and 1.1, all the provided datastores in dojo.data
+		//			and dojox.data support an object structure query, where the object is a set of
+		//			name/value parameters such as { attrFoo: valueBar, attrFoo1: valueBar1}.  Most of the
+		//			dijit widgets, such as ComboBox assume this to be the case when working with a datastore
+		//			when they dynamically update the query.  Therefore, for maximum compatibility with dijit
+		//			widgets the recommended query parameter is a key/value object.  That does not mean that the
+		//			the datastore may not take alternative query forms, such as a simple string, a Date, a number,
+		//			or a mix of such.  Ultimately, The dojo.data.api.Read API is agnostic about what the query
+		//			format.
+		//			Further note:  In general for query objects that accept strings as attribute
+		//			value matches, the store should also support basic filtering capability, such as *
+		//			(match any character) and ? (match single character).  An example query that is a query object
+		//			would be like: { attrFoo: "value*"}.  Which generally means match all items where they have
+		//			an attribute named attrFoo, with a value that starts with 'value'.
 		//
-		//	The *queryOptions* parameter
-		//		The queryOptions parameter is an optional parameter used to specify options that may modify
-		//		the query in some fashion, such as doing a case insensitive search, or doing a deep search
-		//		where all items in a hierarchical representation of data are scanned instead of just the root
-		//		items.  It currently defines two options that all datastores should attempt to honor if possible:
-		//		{
-		//			ignoreCase: boolean, //Whether or not the query should match case sensitively or not.  Default behaviour is false.
-		//			deep: boolean 	//Whether or not a fetch should do a deep search of items and all child
-		//							//items instead of just root-level items in a datastore.  Default is false.
-		//		}
+		//		The *queryOptions* parameter
+		//			The queryOptions parameter is an optional parameter used to specify options that may modify
+		//			the query in some fashion, such as doing a case insensitive search, or doing a deep search
+		//			where all items in a hierarchical representation of data are scanned instead of just the root
+		//			items.  It currently defines two options that all datastores should attempt to honor if possible:
+		//			{
+		//				ignoreCase: boolean, // Whether or not the query should match case sensitively or not.  Default behaviour is false.
+		//				deep: boolean 	// Whether or not a fetch should do a deep search of items and all child
+		//								// items instead of just root-level items in a datastore.  Default is false.
+		//			}
 		//
-		//	The *onBegin* parameter.
-		//		function(size, request);
-		//		If an onBegin callback function is provided, the callback function
-		//		will be called just once, before the first onItem callback is called.
-		//		The onBegin callback function will be passed two arguments, the
-		//		the total number of items identified and the Request object.  If the total number is
-		//		unknown, then size will be -1.  Note that size is not necessarily the size of the
-		//		collection of items returned from the query, as the request may have specified to return only a
-		//		subset of the total set of items through the use of the start and count parameters.
+		//		The *onBegin* parameter.
+		//			function(size, request);
+		//			If an onBegin callback function is provided, the callback function
+		//			will be called just once, before the first onItem callback is called.
+		//			The onBegin callback function will be passed two arguments, the
+		//			the total number of items identified and the Request object.  If the total number is
+		//			unknown, then size will be -1.  Note that size is not necessarily the size of the
+		//			collection of items returned from the query, as the request may have specified to return only a
+		//			subset of the total set of items through the use of the start and count parameters.
 		//
-		//	The *onItem* parameter.
-		//		function(item, request);
-		//		If an onItem callback function is provided, the callback function
-		//		will be called as each item in the result is received. The callback
-		//		function will be passed two arguments: the item itself, and the
-		//		Request object.
+		//		The *onItem* parameter.
+		//			function(item, request);
+		//			If an onItem callback function is provided, the callback function
+		//			will be called as each item in the result is received. The callback
+		//			function will be passed two arguments: the item itself, and the
+		//			Request object.
 		//
-		//	The *onComplete* parameter.
-		//		function(items, request);
+		//		The *onComplete* parameter.
+		//			function(items, request);
 		//
-		//		If an onComplete callback function is provided, the callback function
-		//		will be called just once, after the last onItem callback is called.
-		//		Note that if the onItem callback is not present, then onComplete will be passed
-		//		an array containing all items which matched the query and the request object.
-		//		If the onItem callback is present, then onComplete is called as:
-		//		onComplete(null, request).
+		//			If an onComplete callback function is provided, the callback function
+		//			will be called just once, after the last onItem callback is called.
+		//			Note that if the onItem callback is not present, then onComplete will be passed
+		//			an array containing all items which matched the query and the request object.
+		//			If the onItem callback is present, then onComplete is called as:
+		//			onComplete(null, request).
 		//
-		//	The *onError* parameter.
-		//		function(errorData, request);
-		//		If an onError callback function is provided, the callback function
-		//		will be called if there is any sort of error while attempting to
-		//		execute the query.
-		//		The onError callback function will be passed two arguments:
-		//		an Error object and the Request object.
+		//		The *onError* parameter.
+		//			function(errorData, request);
+		//			If an onError callback function is provided, the callback function
+		//			will be called if there is any sort of error while attempting to
+		//			execute the query.
+		//			The onError callback function will be passed two arguments:
+		//			an Error object and the Request object.
 		//
-		//	The *scope* parameter.
-		//		If a scope object is provided, all of the callback functions (onItem,
-		//		onComplete, onError, etc) will be invoked in the context of the scope
-		//		object.  In the body of the callback function, the value of the "this"
-		//		keyword will be the scope object.   If no scope object is provided,
-		//		the callback functions will be called in the context of dojo.global().
-		//		For example, onItem.call(scope, item, request) vs.
-		//		onItem.call(dojo.global(), item, request)
+		//		The *scope* parameter.
+		//			If a scope object is provided, all of the callback functions (onItem,
+		//			onComplete, onError, etc) will be invoked in the context of the scope
+		//			object.  In the body of the callback function, the value of the "this"
+		//			keyword will be the scope object.   If no scope object is provided,
+		//			the callback functions will be called in the context of dojo.global().
+		//			For example, onItem.call(scope, item, request) vs.
+		//			onItem.call(dojo.global(), item, request)
 		//
-		//	The *start* parameter.
-		//		If a start parameter is specified, this is a indication to the datastore to
-		//		only start returning items once the start number of items have been located and
-		//		skipped.  When this parameter is paired with 'count', the store should be able
-		//		to page across queries with millions of hits by only returning subsets of the
-		//		hits for each query
+		//		The *start* parameter.
+		//			If a start parameter is specified, this is a indication to the datastore to
+		//			only start returning items once the start number of items have been located and
+		//			skipped.  When this parameter is paired with 'count', the store should be able
+		//			to page across queries with millions of hits by only returning subsets of the
+		//			hits for each query
 		//
-		//	The *count* parameter.
-		//		If a count parameter is specified, this is a indication to the datastore to
-		//		only return up to that many items.  This allows a fetch call that may have
-		//		millions of item matches to be paired down to something reasonable.
+		//		The *count* parameter.
+		//			If a count parameter is specified, this is a indication to the datastore to
+		//			only return up to that many items.  This allows a fetch call that may have
+		//			millions of item matches to be paired down to something reasonable.
 		//
-		//	The *sort* parameter.
-		//		If a sort parameter is specified, this is a indication to the datastore to
-		//		sort the items in some manner before returning the items.  The array is an array of
-		//		javascript objects that must conform to the following format to be applied to the
-		//		fetching of items:
-		//		{
-		//			attribute: attribute || attribute-name-string,
-		//			descending: true|false;   // Optional.  Default is false.
-		//		}
-		//		Note that when comparing attributes, if an item contains no value for the attribute
-		//		(undefined), then it the default ascending sort logic should push it to the bottom
-		//		of the list.  In the descending order case, it such items should appear at the top of the list.
-		//
+		//		The *sort* parameter.
+		//			If a sort parameter is specified, this is a indication to the datastore to
+		//			sort the items in some manner before returning the items.  The array is an array of
+		//			javascript objects that must conform to the following format to be applied to the
+		//			fetching of items:
+		//			{
+		//				attribute: attribute || attribute-name-string,
+		//				descending: true|false;   // Optional.  Default is false.
+		//			}
+		//			Note that when comparing attributes, if an item contains no value for the attribute
+		//			(undefined), then it the default ascending sort logic should push it to the bottom
+		//			of the list.  In the descending order case, it such items should appear at the top of the list.
 		// returns:
 		//		The fetch() method will return a javascript object conforming to the API
 		//		defined in dojo.data.api.Request.  In general, it will be the keywordArgs
@@ -335,11 +331,9 @@ return declare("dojo.data.api.Read", null, {
 		//		The Request object may also have additional properties when it is returned
 		//		such as request.store property, which is a pointer to the datastore object that
 		//		fetch() is a method of.
-		//
 		// exceptions:
 		//		Throws an exception if the query is not valid, or if the query
 		//		is required but was not supplied.
-		//
 		// example:
 		//		Fetch all books identified by the query and call 'showBooks' when complete
 		//		|	var request = store.fetch({query:"all books", onComplete: showBooks});
@@ -410,7 +404,6 @@ return declare("dojo.data.api.Read", null, {
 		// summary:
 		//		The close() method is intended for instructing the store to 'close' out
 		//		any information associated with a particular request.
-		//
 		// description:
 		//		The close() method is intended for instructing the store to 'close' out
 		//		any information associated with a particular request.  In general, this API
@@ -418,14 +411,12 @@ return declare("dojo.data.api.Read", null, {
 		//		It will then close out anything associated with that request, such as
 		//		clearing any internal datastore caches and closing any 'open' connections.
 		//		For some store implementations, this call may be a no-op.
-		//
 		// request:
 		//		An instance of a request for the store to use to identify what to close out.
 		//		If no request is passed, then the store should clear all internal caches (if any)
 		//		and close out all 'open' connections.  It does not render the store unusable from
 		//		there on, it merely cleans out any current data and resets the store to initial
 		//		state.
-		//
 		// example:
 		//	|	var request = store.fetch({onComplete: doSomething});
 		//	|	...
@@ -437,7 +428,6 @@ return declare("dojo.data.api.Read", null, {
 		// summary:
 		//		Method to inspect the item and return a user-readable 'label' for the item
 		//		that provides a general/adequate description of what the item is.
-		//
 		// description:
 		//		Method to inspect the item and return a user-readable 'label' for the item
 		//		that provides a general/adequate description of what the item is.  In general
@@ -449,10 +439,8 @@ return declare("dojo.data.api.Read", null, {
 		//		to customize how a store instance labels items should replace the getLabel() function on
 		//		their instance of the store, or extend the store and replace the function in
 		//		the extension class.
-		//
 		// item:
 		//		The item to return the label for.
-		//
 		// returns:
 		//		A user-readable string representing the item or undefined if no user-readable label can
 		//		be generated.
@@ -463,17 +451,14 @@ return declare("dojo.data.api.Read", null, {
 		// summary:
 		//		Method to inspect the item and return an array of what attributes of the item were used
 		//		to generate its label, if any.
-		//
 		// description:
 		//		Method to inspect the item and return an array of what attributes of the item were used
 		//		to generate its label, if any.  This function is to assist UI developers in knowing what
 		//		attributes can be ignored out of the attributes an item has when displaying it, in cases
 		//		where the UI is using the label as an overall identifer should they wish to hide
 		//		redundant information.
-		//
 		// item:
 		//		The item to return the list of label attributes for.
-		//
 		// returns:
 		//		An array of attribute names that were used to generate the label, or null if public attributes
 		//		were not used to generate the label.

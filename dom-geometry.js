@@ -2,10 +2,12 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		function(has, win, dom, style){
 	// module:
 	//		dojo/dom-geometry
-	// summary:
-	//		This module defines the core dojo DOM geometry API.
 
-	var geom = {};  // the result object
+	// the result object
+	var geom = {
+		// summary:
+		//		This module defines the core dojo DOM geometry API.
+	};
 
 	// Box functions will assume this model.
 	// On IE/Opera, BORDER_BOX will be set if the primary document is in quirks mode.

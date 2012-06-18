@@ -1,14 +1,18 @@
 define(["./Evented"], function(Evented){
-	// summary:
-	//		The export of this module is a pubsub hub
-	//		You can also use listen function itself as a pub/sub hub:
-	//		| 	topic.subscribe("some/topic", function(event){
-	//		|	... do something with event
-	//		|	});
-	//		|	topic.publish("some/topic", {name:"some event", ...});
+
+	// module:
+	//		dojo/topic
 
 	var hub = new Evented;
 	return {
+		// summary:
+		//		Pubsub hub.
+		// example:
+		//		| 	topic.subscribe("some/topic", function(event){
+		//		|	... do something with event
+		//		|	});
+		//		|	topic.publish("some/topic", {name:"some event", ...});
+
 		publish: function(topic, event){
 			// summary:
 			//		Publishes a message to a topic on the pub/sub hub. All arguments after
@@ -20,6 +24,7 @@ define(["./Evented"], function(Evented){
 			//		An event to distribute to the topic listeners
 			return hub.emit.apply(hub, arguments);
 		},
+
 		subscribe: function(topic, listener){
 			// summary:
 			//		Subscribes to a topic on the pub/sub hub

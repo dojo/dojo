@@ -5,8 +5,6 @@ define(
 
 	// module:
 	//		dojo/parser
-	// summary:
-	//		The Dom/Widget parsing package
 
 	new Date("X"); // workaround for #11279, new Date("") == NaN
 
@@ -62,6 +60,9 @@ define(
 	}
 
 	var parser = {
+		// summary:
+		//		The Dom/Widget parsing package
+
 		_clearCache: function(){
 			// summary:
 			//		Clear cached data.   Used mainly for benchmarking.
@@ -96,7 +97,7 @@ define(
 			return new Function(fnArgs, preamble + script.innerHTML + suffix);
 		},
 
-		instantiate: function(nodes, mixin, options) {
+		instantiate: function(nodes, mixin, options){
 			// summary:
 			//		Takes array of nodes, and turns them into class instances and
 			//		potentially calls a startup method to allow them to connect with

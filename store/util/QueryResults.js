@@ -3,8 +3,6 @@ define(["../../_base/array", "../../_base/lang", "../../_base/Deferred"
 
 //  module:
 //    dojo/store/util/QueryResults
-//  summary:
-//    The module defines a query results wrapper
 
 var QueryResults = function(results){
 	// summary:

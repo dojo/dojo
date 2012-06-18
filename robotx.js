@@ -10,7 +10,7 @@ define([
 	"./robot",
 	"./sniff",
 	"./_base/window"
-], function(doh, aspect, construct, style, kernel, lang, on, ready, robot, has, win) {
+], function(doh, aspect, construct, style, kernel, lang, on, ready, robot, has, win){
 
 kernel.experimental("dojo.robotx");
 

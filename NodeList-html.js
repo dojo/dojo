@@ -1,8 +1,14 @@
-define(["./query", "./_base/lang", "./html"], function(query, lang, html) {
-	// module:
-	//		dojo/NodeList-html
+define(["./query", "./_base/lang", "./html"], function(query, lang, html){
+
+// module:
+//		dojo/NodeList-html
+
+/*=====
+return function(){
 	// summary:
 	//		Adds a chainable html method to dojo.query() / NodeList instances for setting/replacing node content
+};
+=====*/
 
 var NodeList = query.NodeList;
 

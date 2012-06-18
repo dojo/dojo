@@ -548,7 +548,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 							}
 							return {_type: type, _value: typeMap.serialize(value)};
 						}
-					} else if(value instanceof typeMap){
+					}else if(value instanceof typeMap){
 						//SImple mapping, therefore, return as a toString serialization.
 						return {_type: type, _value: value.toString()};
 					}

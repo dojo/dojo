@@ -1,8 +1,6 @@
 define(["../has", "../_base/kernel"], function(has, dojo){
 "use strict";
-// summary:
-//		A small lightweight query selector engine that implements CSS2.1 selectors 
-// 		minus pseudo-classes and the sibling combinator, plus CSS3 attribute selectors
+
 var testDiv = document.createElement("div");
 var matchesSelector = testDiv.matchesSelector || testDiv.webkitMatchesSelector || testDiv.mozMatchesSelector || testDiv.msMatchesSelector || testDiv.oMatchesSelector; // IE9, WebKit, Firefox have this, but not Opera yet
 var querySelectorAll = testDiv.querySelectorAll;
@@ -12,6 +10,10 @@ has.add("dom-qsa", !!querySelectorAll);
 // this is a simple query engine. It has handles basic selectors, and for simple
 // common selectors is extremely fast
 var liteEngine = function(selector, root){
+	// summary:
+	//		A small lightweight query selector engine that implements CSS2.1 selectors
+	// 		minus pseudo-classes and the sibling combinator, plus CSS3 attribute selectors
+
 	if(combine && selector.indexOf(',') > -1){
 		return combine(selector, root);
 	}
@@ -109,7 +111,7 @@ var useRoot = function(context, query, method){
 	try {
 		return method.call(context, "[id='" + nid + "'] " + query);
 	} finally {
-		if ( !old ) {
+		if ( !old ){
 			oldContext.removeAttribute( "id" );
 		}
 	}

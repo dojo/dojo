@@ -1,14 +1,15 @@
 define([
 	"../_base/declare", "../_base/Deferred", "../_base/json", "../_base/lang", "../_base/xhr",
 	"./RpcService"
-], function(declare, Deferred, json, lang, xhr, RpcService) {
+], function(declare, Deferred, json, lang, xhr, RpcService){
 
-// module:
-//		dojo/rpc/JsonService
-// summary:
-//		TODOC
+	// module:
+	//		dojo/rpc/JsonService
 
-return declare("dojo.rpc.JsonService", RpcService, {
+	return declare("dojo.rpc.JsonService", RpcService, {
+		// summary:
+		//		TODOC
+
 		bustCache: false,
 		contentType: "application/json-rpc",
 		lastSubmissionId: 0,
@@ -81,7 +82,6 @@ return declare("dojo.rpc.JsonService", RpcService, {
 			}
 			return obj;
 		}
-	}
-);
+	});
 
 });

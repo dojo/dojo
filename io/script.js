@@ -2,55 +2,56 @@ define([
 	"../_base/connect", "../_base/kernel", "../_base/lang",
 	"../sniff", "../_base/window","../_base/xhr",
 	"../dom", "../dom-construct", "../request/script"
-], function(connect, kernel, lang, has, win, xhr, dom, domConstruct, _script) {
+], function(connect, kernel, lang, has, win, xhr, dom, domConstruct, _script){
 
 	// module:
 	//		dojo/io/script
-	// summary:
-	//		TODOC
 
 	dojo.deprecated("dojo/io/script", "Use dojo/request/script.", "2.0");
 
-/*=====
-var __ioArgs = function(kwargs){
-	//	summary:
-	//		All the properties described in the dojo.__ioArgs type, apply to this
-	//		type as well, EXCEPT "handleAs". It is not applicable to
-	//		dojo.io.script.get() calls, since it is implied by the usage of
-	//		"jsonp" (response will be a JSONP call returning JSON)
-	//		or the response is pure JavaScript defined in
-	//		the body of the script that was attached.
-	//	callbackParamName: String
-	//		Deprecated as of Dojo 1.4 in favor of "jsonp", but still supported for
-	//		legacy code. See notes for jsonp property.
-	//	jsonp: String
-	//		The URL parameter name that indicates the JSONP callback string.
-	//		For instance, when using Yahoo JSONP calls it is normally,
-	//		jsonp: "callback". For AOL JSONP calls it is normally
-	//		jsonp: "c".
-	//	checkString: String
-	//		A string of JavaScript that when evaluated like so:
-	//		"typeof(" + checkString + ") != 'undefined'"
-	//		being true means that the script fetched has been loaded.
-	//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
-	//	frameDoc: Document
-	//		The Document object for a child iframe. If this is passed in, the script
-	//		will be attached to that document. This can be helpful in some comet long-polling
-	//		scenarios with Firefox and Opera.
-	this.callbackParamName = callbackParamName;
-	this.jsonp = jsonp;
-	this.checkString = checkString;
-	this.frameDoc = frameDoc;
-};
-__ioArgs.prototype = new kernel.__IoArgs();
-=====*/
+	/*=====
+	var __ioArgs = function(kwargs){
+		// summary:
+		//		All the properties described in the dojo.__ioArgs type, apply to this
+		//		type as well, EXCEPT "handleAs". It is not applicable to
+		//		dojo.io.script.get() calls, since it is implied by the usage of
+		//		"jsonp" (response will be a JSONP call returning JSON)
+		//		or the response is pure JavaScript defined in
+		//		the body of the script that was attached.
+		// callbackParamName: String
+		//		Deprecated as of Dojo 1.4 in favor of "jsonp", but still supported for
+		//		legacy code. See notes for jsonp property.
+		// jsonp: String
+		//		The URL parameter name that indicates the JSONP callback string.
+		//		For instance, when using Yahoo JSONP calls it is normally,
+		//		jsonp: "callback". For AOL JSONP calls it is normally
+		//		jsonp: "c".
+		// checkString: String
+		//		A string of JavaScript that when evaluated like so:
+		//		"typeof(" + checkString + ") != 'undefined'"
+		//		being true means that the script fetched has been loaded.
+		//		Do not use this if doing a JSONP type of call (use callbackParamName instead).
+		// frameDoc: Document
+		//		The Document object for a child iframe. If this is passed in, the script
+		//		will be attached to that document. This can be helpful in some comet long-polling
+		//		scenarios with Firefox and Opera.
+		this.callbackParamName = callbackParamName;
+		this.jsonp = jsonp;
+		this.checkString = checkString;
+		this.frameDoc = frameDoc;
+	};
+	__ioArgs.prototype = new kernel.__IoArgs();
+	=====*/
 
 	var loadEvent = has("ie") ? "onreadystatechange" : "load",
 		readyRegExp = /complete|loaded/;
 
 	var script = {
+		// summary:
+		//		TODOC
+
 		get: function(/*__ioArgs*/ args){
-			//	summary:
+			// summary:
 			//		sends a get request using a dynamically created script tag.
 			var rDfd;
 			var dfd = this._makeScriptDeferred(args, function(dfd){
@@ -235,17 +236,18 @@ __ioArgs.prototype = new kernel.__IoArgs();
 
 	/*=====
 	script.attach = function(id, url, frameDocument){
-			//	summary:
-			//		creates a new <script> tag pointing to the specified URL and
-			//		adds it to the document.
-			//	description:
-			//		Attaches the script element to the DOM. Use this method if you
-			//		just want to attach a script to the DOM and do not care when or
-			//		if it loads.
+		// summary:
+		//		creates a new <script> tag pointing to the specified URL and
+		//		adds it to the document.
+		// description:
+		//		Attaches the script element to the DOM. Use this method if you
+		//		just want to attach a script to the DOM and do not care when or
+		//		if it loads.
 	};
 	script.remove = function(id, frameDocument){
-			//summary: removes the script element with the given id, from the given frameDocument.
-			//If no frameDocument is passed, the current document is used.
+		//summary:
+		//		removes the script element with the given id, from the given frameDocument.
+		//		If no frameDocument is passed, the current document is used.
 	};
 	=====*/
 

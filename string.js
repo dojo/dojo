@@ -1,14 +1,15 @@
 define([
 	"./_base/kernel",	// kernel.global
 	"./_base/lang"
-], function(kernel, lang) {
+], function(kernel, lang){
 
 // module:
 //		dojo/string
-// summary:
-//		String utilities for Dojo
 
-var string = {};
+var string = {
+	// summary:
+	//		String utilities for Dojo
+};
 lang.setObject("dojo.string", string);
 
 string.rep = function(/*String*/str, /*Integer*/num){

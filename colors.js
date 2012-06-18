@@ -1,8 +1,13 @@
-define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], function(dojo, lang, Color, ArrayUtil) {
+define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], function(dojo, lang, Color, ArrayUtil){
 	// module:
 	//		dojo/colors
-	// summary:
-	//		Color utilities, extending Base dojo.Color
+
+	/*=====
+	return {
+		// summary:
+		//		Color utilities, extending Base dojo.Color
+	};
+	=====*/
 
 	var ColorExt = {};
 	lang.setObject("dojo.colors", ColorExt);
@@ -72,7 +77,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 	};
 
 	Color.prototype.sanitize = function(){
-		// summary: makes sure that the object has correct attributes
+		// summary:
+		//		makes sure that the object has correct attributes
 		var t = this;
 		t.r = Math.round(confine(t.r, 0, 255));
 		t.g = Math.round(confine(t.g, 0, 255));
@@ -82,7 +88,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 	};
 
 	ColorExt.makeGrey = Color.makeGrey = function(/*Number*/ g, /*Number?*/ a){
-		// summary: creates a greyscale color with an optional alpha
+		// summary:
+		//		creates a greyscale color with an optional alpha
 		return Color.fromArray([g, g, g, a]);	// dojo/_base/Color
 	};
 
@@ -221,5 +228,5 @@ define(["./_base/kernel", "./_base/lang", "./_base/Color", "./_base/array"], fun
 		"yellowgreen":	[154,205,50]
 	});
 
-	return Color;
+	return Color;	// TODO: return ColorExt, not Color
 });

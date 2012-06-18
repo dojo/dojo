@@ -2,8 +2,6 @@ define(["../../_base/array" /*=====, "../api/Store" =====*/], function(arrayUtil
 
 //  module:
 //    dojo/store/util/SimpleQueryEngine
-//  summary:
-//    The module defines a simple filtering query engine for object stores.
 
 return function(query, options){
 	// summary:
@@ -89,7 +87,7 @@ return function(query, options){
 				for(var sort, i=0; sort = options.sort[i]; i++){
 					var aValue = a[sort.attribute];
 					var bValue = b[sort.attribute];
-					if (aValue != bValue) {
+					if (aValue != bValue){
 						return !!sort.descending == aValue > bValue ? -1 : 1;
 					}
 				}

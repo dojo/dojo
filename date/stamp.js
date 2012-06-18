@@ -1,19 +1,21 @@
-define(["../_base/lang", "../_base/array"], function(lang, array) {
-	// module:
-	//		dojo/date/stamp
+define(["../_base/lang", "../_base/array"], function(lang, array){
+
+// module:
+//		dojo/date/stamp
+
+var stamp = {
 	// summary:
 	//		TODOC
-
-var stamp = {};
+};
 lang.setObject("dojo.date.stamp", stamp);
 
 // Methods to convert dates to or from a wire (string) format using well-known conventions
 
 stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTime){
-	//	summary:
+	// summary:
 	//		Returns a Date object given a string formatted according to a subset of the ISO-8601 standard.
 	//
-	//	description:
+	// description:
 	//		Accepts a string formatted according to a profile of ISO8601 as defined by
 	//		[RFC3339](http://www.ietf.org/rfc/rfc3339.txt), except that partial input is allowed.
 	//		Can also process dates as specified [by the W3C](http://www.w3.org/TR/NOTE-datetime)
@@ -35,10 +37,10 @@ stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTi
 	// 		by the Date constructor (e.g. January 32nd typically gets resolved to February 1st)
 	//		Only years between 100 and 9999 are supported.
 	//
-  	//	formattedString:
+  	// formattedString:
 	//		A string such as 2005-06-30T08:05:00-07:00 or 2005-06-30 or T08:05:00
 	//
-	//	defaultTime:
+	// defaultTime:
 	//		Used for defaults for fields omitted in the formattedString.
 	//		Uses 1970-01-01T00:00:00.0Z by default.
 
@@ -89,12 +91,12 @@ stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTi
 
 /*=====
 	var __Options = function(){
-		//	selector: String
+		// selector: String
 		//		"date" or "time" for partial formatting of the Date object.
 		//		Both date and time will be formatted by default.
-		//	zulu: Boolean
+		// zulu: Boolean
 		//		if true, UTC/GMT is used for a timezone
-		//	milliseconds: Boolean
+		// milliseconds: Boolean
 		//		if true, output milliseconds
 		this.selector = selector;
 		this.zulu = zulu;
@@ -103,15 +105,15 @@ stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTi
 =====*/
 
 stamp.toISOString = function(/*Date*/ dateObject, /*__Options?*/ options){
-	//	summary:
+	// summary:
 	//		Format a Date object as a string according a subset of the ISO-8601 standard
 	//
-	//	description:
+	// description:
 	//		When options.selector is omitted, output follows [RFC3339](http://www.ietf.org/rfc/rfc3339.txt)
 	//		The local time zone is included as an offset from GMT, except when selector=='time' (time without a date)
 	//		Does not check bounds.  Only years between 100 and 9999 are supported.
 	//
-	//	dateObject:
+	// dateObject:
 	//		A Date object
 
 	var _ = function(n){ return (n < 10) ? "0" + n : n; };

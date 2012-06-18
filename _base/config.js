@@ -30,7 +30,7 @@ return {
 	//		|	});
 	//		|
 	//		|	// load and use the new instance of dojo
-	//		|	require(["myDojo"], function(dojo) {
+	//		|	require(["myDojo"], function(dojo){
 	//		|		// dojo is the new instance of dojo
 	//		|		// use as required
 	//		|	});

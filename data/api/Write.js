@@ -1,4 +1,4 @@
-define(["../../_base/declare", "./Read"], function(declare, Read) {
+define(["../../_base/declare", "./Read"], function(declare, Read){
 
 // module:
 //		dojo/data/api/Write
@@ -106,7 +106,7 @@ return declare("dojo.data.api.Write", Read, {
 		// example:
 		//	|	var success = store.setValues(kermit, "color", ["green", "aqua"]);
 		//	|	success = store.setValues(kermit, "color", []);
-		//	|	if (success) {assert(!store.hasAttribute(kermit, "color"));}
+		//	|	if (success){assert(!store.hasAttribute(kermit, "color"));}
 		throw new Error('Unimplemented API: dojo.data.api.Write.setValues');
 	},
 
@@ -123,7 +123,7 @@ return declare("dojo.data.api.Write", Read, {
 		//		is neither an attribute object or a string.
 		// example:
 		//	|	var success = store.unsetAttribute(kermit, "color");
-		//	|	if (success) {assert(!store.hasAttribute(kermit, "color"));}
+		//	|	if (success){assert(!store.hasAttribute(kermit, "color"));}
 		throw new Error('Unimplemented API: dojo.data.api.Write.clear');
 	},
 

@@ -1,11 +1,16 @@
 define(["./kernel", "../query", "./array", "./html", "../NodeList-dom"], function(dojo, query, array){
 	// module:
 	//    dojo/_base/NodeList
-	// summary:
-	//		This module extends dojo/query/NodeList with the legacy connect(), coords(),
-	//		blur(), focus(), change(), click(), error(), keydown(), keypress(),
-	//		keyup(), load(), mousedown(), mouseenter(), mouseleave(), mousemove(),
-	//		mouseout(), mouseover(), mouseup(), and submit() methods.
+
+	/*=====
+	return {
+		// summary:
+		//		This module extends dojo/query/NodeList with the legacy connect(), coords(),
+		//		blur(), focus(), change(), click(), error(), keydown(), keypress(),
+		//		keyup(), load(), mousedown(), mouseenter(), mouseleave(), mousemove(),
+		//		mouseout(), mouseover(), mouseup(), and submit() methods.
+	};
+	=====*/
  
 	var NodeList = query.NodeList,
 		nlp = NodeList.prototype;

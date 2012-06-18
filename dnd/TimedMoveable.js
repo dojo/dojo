@@ -1,8 +1,6 @@
 define(["../_base/declare", "./Moveable" /*=====, "./Mover" =====*/], function(declare, Moveable /*=====, Mover =====*/){
 	// module:
 	//		dojo/dnd/TimedMoveable
-	// summary:
-	//		TODOC
 
 	/*=====
 	var __TimedMoveableArgs = declare([Moveable.__MoveableArgs], {

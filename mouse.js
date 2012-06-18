@@ -2,18 +2,6 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 
 	// module:
 	//		dojo/mouse
-	// summary:
-	//		This module provide mouse event handling utility functions and exports
-	//		mouseenter and mouseleave event emulation.
-	// example:
-	//		To use these events, you register a mouseenter like this:
-	//		|	define(["dojo/on", dojo/mouse"], function(on, mouse){
-	//		|		on(targetNode, mouse.enter, function(event){
-	//		|			dojo.addClass(targetNode, "highlighted");
-	//		|		});
-	//		|		on(targetNode, mouse.leave, function(event){
-	//		|			dojo.removeClass(targetNode, "highlighted");
-	//		|		});
 
     has.add("dom-quirks", win.doc && win.doc.compatMode == "BackCompat");
 	has.add("events-mouseenter", win.doc && "onmouseenter" in win.doc.createElement("div"));
@@ -126,6 +114,19 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 		};
 	}
 	return {
+		// summary:
+		//		This module provide mouse event handling utility functions and exports
+		//		mouseenter and mouseleave event emulation.
+		// example:
+		//		To use these events, you register a mouseenter like this:
+		//		|	define(["dojo/on", dojo/mouse"], function(on, mouse){
+		//		|		on(targetNode, mouse.enter, function(event){
+		//		|			dojo.addClass(targetNode, "highlighted");
+		//		|		});
+		//		|		on(targetNode, mouse.leave, function(event){
+		//		|			dojo.removeClass(targetNode, "highlighted");
+		//		|		});
+
 		_eventHandler: eventHandler,		// for dojo/touch
 
 		// enter: Synthetic Event

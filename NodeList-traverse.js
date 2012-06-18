@@ -1,8 +1,13 @@
-define(["./query", "./_base/lang", "./_base/array"], function(dquery, lang, array) {
+define(["./query", "./_base/lang", "./_base/array"], function(dquery, lang, array){
 	// module:
 	//		dojo/NodeList-traverse
+
+/*=====
+return function(){
 	// summary:
-	//		Adds chainable methods to dojo.query() / Nodelist instances for traversing the DOM
+	//		Adds chainable methods to dojo.query() / NodeList instances for traversing the DOM
+};
+=====*/
 
 var NodeList = dquery.NodeList;
 

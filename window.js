@@ -1,12 +1,13 @@
 define(["./_base/lang", "./sniff", "./_base/window", "./dom", "./dom-geometry", "./dom-style"],
-	function(lang, has, baseWindow, dom, geom, style) {
+	function(lang, has, baseWindow, dom, geom, style){
 
 	// module:
 	//		dojo/window
-	// summary:
-	//		TODOC
 
 	var window = {
+		// summary:
+		//		TODOC
+
 		getBox: function(/*Document?*/ doc){
 			// summary:
 			//		Returns the dimensions and scroll position of the viewable area of a browser window

@@ -1,11 +1,8 @@
 define(["../_base/declare", "./util/QueryResults", "./util/SimpleQueryEngine" /*=====, "./api/Store" =====*/],
-function(declare, QueryResults, SimpleQueryEngine /*=====, Store =====*/) {
+function(declare, QueryResults, SimpleQueryEngine /*=====, Store =====*/){
 
 //  module:
 //    dojo/store/Memory
-//  summary:
-//    The module defines an in-memory object store.
-
 
 // No base class, but for purposes of documentation, the base class is dojo/store/api/Store
 var base = null;

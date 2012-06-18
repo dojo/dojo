@@ -1,10 +1,11 @@
 define(["./kernel", "./lang", "../sniff"], function(dojo, lang, has){
 // module:
 //		dojo/_base/window
-// summary:
-//		This module provides an API to save/set/restore the global/document scope.
 
 var ret = {
+	// summary:
+	//		API to save/set/restore the global/document scope.
+
 	global: dojo.global,
 	/*=====
 	 global: {

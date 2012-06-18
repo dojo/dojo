@@ -1,11 +1,12 @@
-define(["./_base/lang", "./sniff"], function(lang, has) {
+define(["./_base/lang", "./sniff"], function(lang, has){
 
 // module:
 //		dojo/gears
-// summary:
-//		TODOC
 
-var gears = {};
+var gears = {
+	// summary:
+	//		TODOC
+};
 lang.setObject("dojo.gears", gears);
 
 gears._gearsObject = function(){

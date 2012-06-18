@@ -1,16 +1,6 @@
 define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"], function(dojo, require, has, xhr){
 	// module:
 	//		dojo/text
-	// summary:
-	//		This module implements the dojo/text! plugin and the dojo.cache API.
-	// description:
-	//		We choose to include our own plugin to leverage functionality already contained in dojo
-	//		and thereby reduce the size of the plugin compared to various foreign loader implementations.
-	//		Also, this allows foreign AMD loaders to be used without their plugins.
-	//
-	//		CAUTION: this module is designed to optionally function synchronously to support the dojo v1.x synchronous
-	//		loader. This feature is outside the scope of the CommonJS plugins specification.
-
 
 	var getText;
 	if(has("host-browser")){
@@ -27,7 +17,7 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 	}
 
 	var
-		theCache= {},
+		theCache = {},
 
 		strip= function(text){
 			//Strips <?xml ...?> declarations so that external SVG and XML
@@ -149,6 +139,16 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 	};
 
 	return {
+		// summary:
+		//		This module implements the dojo/text! plugin and the dojo.cache API.
+		// description:
+		//		We choose to include our own plugin to leverage functionality already contained in dojo
+		//		and thereby reduce the size of the plugin compared to various foreign loader implementations.
+		//		Also, this allows foreign AMD loaders to be used without their plugins.
+		//
+		//		CAUTION: this module is designed to optionally function synchronously to support the dojo v1.x synchronous
+		//		loader. This feature is outside the scope of the CommonJS plugins specification.
+
 		// the dojo/text caches it's own resources because of dojo.cache
 		dynamic: true,
 

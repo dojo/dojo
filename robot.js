@@ -8,7 +8,7 @@ define([
 	"doh/_browserRunner",
 	"doh/robot",
 	"./window"
-], function(array, dom, geom, kernel, lang, win, doh, robot, winUtils) {
+], function(array, dom, geom, kernel, lang, win, doh, robot, winUtils){
 
 kernel.experimental("dojo.robot");
 

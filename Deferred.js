@@ -7,8 +7,6 @@ define([
 
 	// module:
 	//		dojo/Deferred
-	// summary:
-	//		Deferred base class.
 
 	var PROGRESS = 0,
 			RESOLVED = 1,
@@ -75,7 +73,6 @@ define([
 		//		Constructor for a deferred.
 		// description:
 		//		Creates a new Deferred. This API is preferred over dojo/_base/Deferred.
-		//
 		// canceler:
 		//		Will be invoked if the deferred is canceled. The canceler receives the
 		//		reason the deferred was canceled as its argument. The deferred is
@@ -182,7 +179,6 @@ define([
 			//		Add new callbacks to the deferred.
 			// returns: dojo/promise/Promise
 			//		Returns a new promise for the result of the callback(s).
-			//
 			// callback:
 			//		Callback to be invoked when the promise is resolved.
 			// errback:
@@ -226,7 +222,6 @@ define([
 			//		promise. Can affect other promises that originate with the same
 			//		deferred. Returns the rejection reason if the deferred was canceled
 			//		normally.
-			//
 			// reason:
 			//		A message that may be sent to the deferred's canceler, explaining why
 			//		it's being canceled.

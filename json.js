@@ -17,6 +17,9 @@ define(["./has"], function(has){
 				replace(/[\t]/g, "\\t").replace(/[\r]/g, "\\r"); // string
 		};
 		return {
+			// summary:
+			//		Functions to parse and serialize JSON
+
 			parse: has("json-parse") ? JSON.parse : function(str, strict){
 				// summary:
 				// 		Parses a [JSON](http://json.org) string to return a JavaScript object.

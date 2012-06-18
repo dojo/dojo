@@ -1,8 +1,14 @@
 define(["./kernel", "../json"], function(dojo, json){
-  // module:
-  //    dojo/_base/json
-  // summary:
-  //    This module defines the dojo JSON API.
+
+// module:
+//    dojo/_base/json
+
+/*=====
+return {
+	// summary:
+	//    This module defines the dojo JSON API.
+};
+=====*/
 
 dojo.fromJson = function(/*String*/ js){
 	// summary:

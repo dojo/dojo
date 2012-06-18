@@ -7,13 +7,15 @@ define([
 	"../regexp",
 	"../string",
 	"../i18n!../cldr/nls/gregorian"
-], function(lang, array, date, supplemental, i18n, regexp, string, gregorian) {
-	// module:
-	//		dojo/date/locale
+], function(lang, array, date, supplemental, i18n, regexp, string, gregorian){
+
+// module:
+//		dojo/date/locale
+
+var exports = {
 	// summary:
 	//		This modules defines dojo.date.locale, localization methods for Date.
-
-var exports = {};
+};
 lang.setObject("dojo.date.locale", exports);
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
@@ -96,7 +98,7 @@ lang.setObject("dojo.date.locale", exports);
 					d = dateObject.getDay();
 					if(l<3){
 						s = d+1; pad = true;
-					} else {
+					}else{
 						var propD = [
 							"days",
 							c == 'c' ? "standAlone" : "format",

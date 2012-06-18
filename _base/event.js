@@ -1,9 +1,6 @@
 define(["./kernel", "../on", "../has", "../dom-geometry"], function(dojo, on, has, dom){
 	// module:
 	//		dojo/_base/event
-	// summary:
-	//		This module defines dojo DOM event API.   Usually you should use dojo/on, and evt.stopPropagation() +
-	//		evt.preventDefault(), rather than this module.
 
 	if(on._fixEvent){
 		var fixEvent = on._fixEvent;
@@ -18,6 +15,10 @@ define(["./kernel", "../on", "../has", "../dom-geometry"], function(dojo, on, ha
 	}
 	
 	var ret = {
+		// summary:
+		//		This module defines dojo DOM event API.   Usually you should use dojo/on, and evt.stopPropagation() +
+		//		evt.preventDefault(), rather than this module.
+
 		fix: function(/*Event*/ evt, /*DOMNode*/ sender){
 			// summary:
 			//		normalizes properties on the event object including event

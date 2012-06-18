@@ -1,11 +1,13 @@
-define(["../_base/lang", "../i18n"], function(lang, i18n) {
+define(["../_base/lang", "../i18n"], function(lang, i18n){
 
 // module:
 //		dojo/cldr/supplemental
-// summary:
-//		TODOC
 
-var supplemental = {};
+
+var supplemental = {
+	// summary:
+	//		TODOC
+};
 lang.setObject("dojo.cldr.supplemental", supplemental);
 
 supplemental.getFirstDayOfWeek = function(/*String?*/locale){

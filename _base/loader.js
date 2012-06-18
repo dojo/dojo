@@ -1,8 +1,8 @@
-define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"], function(dojo, has, require, thisModule, json, lang, array) {
+define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"], function(dojo, has, require, thisModule, json, lang, array){
 	// module:
-	//		dojo/_base/lader
-	// summary:
-	//		This module defines the v1.x synchronous loader API.
+	//		dojo/_base/loader
+
+	// This module defines the v1.x synchronous loader API.
 
 	// signal the loader in sync mode...
 	//>>pure-amd
@@ -464,7 +464,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 
 	has.add("config-publishRequireResult", 1, 0, 0);
 
-	dojo.require = function(moduleName, omitModuleCheck) {
+	dojo.require = function(moduleName, omitModuleCheck){
 		//	summary:
 		//		loads a Javascript module from the appropriate URI
 		//
@@ -545,7 +545,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//	example:
 		//		For example, to import all symbols into a local block, you might write:
 		//
-		//		|	with (dojo.require("A.B")) {
+		//		|	with (dojo.require("A.B")){
 		//		|		...
 		//		|	}
 		//
@@ -620,7 +620,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		return result;
 	};
 
-	dojo.loadInit = function(f) {
+	dojo.loadInit = function(f){
 		f();
 	};
 
@@ -713,6 +713,9 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 	};
 
 	return {
+		// summary:
+		//		This module defines the v1.x synchronous loader API.
+
 		extractLegacyApiApplications:extractLegacyApiApplications,
 		require:loaderVars.dojoRequirePlugin,
 		loadInit:dojoLoadInitPlugin

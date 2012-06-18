@@ -6,7 +6,7 @@ define([
 	'./util',
 	'../has'
 ], function(require, RequestError, watch, handlers, util, has){
-	has.add('native-xhr', function() {
+	has.add('native-xhr', function(){
 		// if true, the environment has a native XHR implementation
 		return typeof XMLHttpRequest !== 'undefined';
 	});

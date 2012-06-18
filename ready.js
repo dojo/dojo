@@ -1,11 +1,9 @@
-define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "./_base/lang"], function(dojo, has, require, domReady, lang) {
+define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "./_base/lang"], function(dojo, has, require, domReady, lang){
 	// module:
 	//		dojo/ready
-	// summary:
-	//		This module defines the dojo.ready API.
-	//
 	// note:
 	//		This module should be unnecessary in dojo 2.0
+
 	var
 		// truthy if DOMContentLoaded or better (e.g., window.onload fired) has been achieved
 		isDomReady = 0,
@@ -55,7 +53,8 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 	};
 
 	var ready = dojo.ready = dojo.addOnLoad = function(priority, context, callback){
-		// summary: Add a function to execute on DOM content loaded and all requested modules have arrived and been evaluated.
+		// summary:
+		//		Add a function to execute on DOM content loaded and all requested modules have arrived and been evaluated.
 		// priority: Integer?
 		//		The order in which to exec this callback relative to other callbacks, defaults to 1000
 		// context: Object?|Function

@@ -1,8 +1,9 @@
 define(["../has", "./config", "require", "module"], function(has, config, require, module){
 	// module:
 	//		dojo/_base/kernel
-	// summary:
-	//		This module is the foundational module of the dojo boot sequence; it defines the dojo object.
+
+	// This module is the foundational module of the dojo boot sequence; it defines the dojo object.
+
 	var
 		// loop variables for this module
 		i, p,
@@ -12,6 +13,9 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		dijit = {},
 		dojox = {},
 		dojo = {
+			// summary:
+			//		This module is the foundational module of the dojo boot sequence; it defines the dojo object.
+
 			// notice dojo takes ownership of the value of the config module
 			config:config,
 			global:this,
@@ -134,7 +138,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		dojo.exit = function(exitcode){
 			quit(exitcode);
 		};
-	} else{
+	}else{
 		dojo.exit = function(){
 		};
 	}

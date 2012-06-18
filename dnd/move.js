@@ -6,8 +6,6 @@ define([
 
 // module:
 //		dojo/dnd/move
-// summary:
-//		TODOC
 
 /*=====
 var __constrainedMoveableArgs = declare([Moveable.__MoveableArgs], {
@@ -139,6 +137,8 @@ var parentConstrainedMoveable = declare("dnd.move.parentConstrainedMoveable", co
 
 
 return {
+	// summary:
+	//		TODOC
 	constrainedMoveable: constrainedMoveable,
 	boxConstrainedMoveable: boxConstrainedMoveable,
 	parentConstrainedMoveable: parentConstrainedMoveable

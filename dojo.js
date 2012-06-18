@@ -679,10 +679,10 @@
 			checkCompleteGuard++;
 			forEach(module.deps, injectModule);
 			if(has("dojo-combo-api") && comboPending && !comboPendingTimer){
-				comboPendingTimer = setTimeout(function() {
+				comboPendingTimer = setTimeout(function(){
 					comboPending = 0;
 					comboPendingTimer = null;
-					req.combo.done(function(mids, url) {
+					req.combo.done(function(mids, url){
 						var onLoadCallback= function(){
 							// defQ is a vector of module definitions 1-to-1, onto mids
 							runDefQ(0, mids);
@@ -1124,7 +1124,7 @@
 				}
 			}
 			// delete references to synthetic modules
-	        if (/^require\*/.test(module.mid)) {
+	        if (/^require\*/.test(module.mid)){
 	            delete modules[module.mid];
 	        }
 		},
@@ -1695,7 +1695,7 @@
 		if(has("dojo-amd-factory-scan") && args[1]===defaultDeps){
 			args[2].toString()
 				.replace(/(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg, "")
-				.replace(/require\(["']([\w\!\-_\.\/]+)["']\)/g, function (match, dep){
+				.replace(/require\(["']([\w\!\-_\.\/]+)["']\)/g, function(match, dep){
 				args[1].push(dep);
 			});
 		}

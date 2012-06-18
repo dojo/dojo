@@ -81,6 +81,8 @@ define(['./has'], function(has){
 	}
 
 	function domReady(callback){
+		// summary:
+		//		Plugin to delay require()/define() callback from firing until the DOM has finished loading.
 		if(ready){
 			callback(1);
 		}else{

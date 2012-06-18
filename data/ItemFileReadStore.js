@@ -1,6 +1,6 @@
 define(["../_base/kernel", "../_base/lang", "../_base/declare", "../_base/array", "../_base/xhr",
 	"../Evented", "./util/filter", "./util/simpleFetch", "../date/stamp"
-], function(kernel, lang, declare, array, xhr, Evented, filterUtil, simpleFetch, dateStamp) {
+], function(kernel, lang, declare, array, xhr, Evented, filterUtil, simpleFetch, dateStamp){
 
 // module:
 //		dojo/data/ItemFileReadStore

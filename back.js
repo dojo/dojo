@@ -1,11 +1,12 @@
 define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct", "./_base/window", "require"],
-	function(config, lang, has, dom, domConstruct, baseWindow, require) {
+	function(config, lang, has, dom, domConstruct, baseWindow, require){
 	// module:
 	//		dojo/back
-	// summary:
-	//		Browser history management resources
 
-	var back = {};
+	var back = {
+		// summary:
+		//		Browser history management resources
+	};
 	has("extend-dojo") && lang.setObject("dojo.back", back);
 
 	// everyone deals with encoding the hash slightly differently
@@ -151,10 +152,10 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 		if(dom.byId("dj_history")){ return; } 
 
 		var src = config["dojoIframeHistoryUrl"] || require.toUrl("./resources/iframe_history.html");
-		if (config.afterOnLoad) {
+		if (config.afterOnLoad){
 			console.error("dojo/back::init() must be called before the DOM has loaded. "
 						+ "Include dojo/back in a build layer.");
-		} else {
+		}else{
 			document.write('<iframe style="border:0;width:1px;height:1px;position:absolute;visibility:hidden;bottom:0;right:0;" name="dj_history" id="dj_history" src="' + src + '"></iframe>');
 		}
 	};
@@ -293,7 +294,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 			}
 
 			changingUrl = true;
-			setTimeout(function() {
+			setTimeout(function(){
 					setHash(hash);
 					changingUrl = false;
 				}, 1);
@@ -309,7 +310,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 				//we will need to pass the handle name to handle.
 				var tcb = function(handleName){
 					if(getHash() != ""){
-						setTimeout(function() { setHash(hash); }, 1);
+						setTimeout(function(){ setHash(hash); }, 1);
 					}
 					//Use apply to set "this" to args, and to try to avoid memory leaks.
 					oldCB.apply(this, [handleName]);

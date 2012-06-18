@@ -7,8 +7,6 @@ define([
 
 // module:
 //		dojo/dnd/Manager
-// summary:
-//		TODOC
 
 var Manager = declare("dojo.dnd.Manager", [Evented], {
 	// summary:

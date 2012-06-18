@@ -1,14 +1,6 @@
 define(["./kernel", "../on", "../topic", "../aspect", "./event", "../mouse", "./sniff", "./lang", "../keys"], function(dojo, on, hub, aspect, eventModule, mouse, has, lang){
 //  module:
 //    dojo/_base/connect
-//  summary:
-//		This module defines the dojo.connect API.
-//		This modules also provides keyboard event handling helpers.
-//		This module exports an extension event for emulating Firefox's keypress handling.
-//		However, this extension event exists primarily for backwards compatibility and
-//		is not recommended. WebKit and IE uses an alternate keypress handling (only
-//		firing for printable characters, to distinguish from keydown events), and most
-//		consider the WebKit/IE behavior more desirable.
 
 has.add("events-keypress-typed", function(){ // keypresses should only occur a printable character is hit
 	var testKeyEvent = {charCode: 0};
@@ -165,6 +157,15 @@ if(has("events-keypress-typed")){
 }
 
 var connect = {
+	// summary:
+	//		This module defines the dojo.connect API.
+	//		This modules also provides keyboard event handling helpers.
+	//		This module exports an extension event for emulating Firefox's keypress handling.
+	//		However, this extension event exists primarily for backwards compatibility and
+	//		is not recommended. WebKit and IE uses an alternate keypress handling (only
+	//		firing for printable characters, to distinguish from keydown events), and most
+	//		consider the WebKit/IE behavior more desirable.
+
 	_keypress:keypress,
 
 	connect:function(obj, event, context, method, dontFix){

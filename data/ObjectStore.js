@@ -1,6 +1,6 @@
 define(["../_base/lang", "../Evented", "../_base/declare", "../_base/Deferred", "../_base/array", 
 	"../_base/connect", "../regexp"
-], function(lang, Evented, declare, Deferred, array, connect, regexp) {
+], function(lang, Evented, declare, Deferred, array, connect, regexp){
 
 // module:
 //		dojo/data/ObjectStore

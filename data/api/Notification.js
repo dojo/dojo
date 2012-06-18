@@ -1,4 +1,4 @@
-define(["../../_base/declare", "./Read"], function(declare, Read) {
+define(["../../_base/declare", "./Read"], function(declare, Read){
 
 // module:
 //		dojo/data/api/Notification
@@ -19,7 +19,7 @@ return declare("dojo.data.api.Notification", Read, {
 	//		the store itself does internal polling to a back-end server and periodically updates
 	//		its cache of items (deletes, adds, and updates).
 	// example:
-	//	|	function onSet(item, attribute, oldValue, newValue) {
+	//	|	function onSet(item, attribute, oldValue, newValue){
 	//	|		//Do something with the information...
 	//	|	};
 	//	|	var store = new some.newStore();

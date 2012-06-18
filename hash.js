@@ -1,20 +1,12 @@
 define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_base/lang", "./ready", "./sniff"],
-	function(dojo, require, config, connect, lang, ready, has) {
+	function(dojo, require, config, connect, lang, ready, has){
 
 	// module:
 	//		dojo/hash
-	// summary:
-	//		Methods for monitoring and updating the hash in the browser URL.
-	// example:
-	//		dojo.subscribe("/dojo/hashchange", context, callback);
-	//
-	//		function callback (hashValue){
-	//			// do something based on the hash value.
-	//		}
 
 	dojo.hash = function(/* String? */ hash, /* Boolean? */ replace){
 		//	summary:
-		//		Gets or sets the hash string.
+		//		Gets or sets the hash string in the browser URL.
 		//	description:
 		//		Handles getting and setting of location.hash.
 		//		 - If no arguments are passed, acts as a getter.
@@ -27,6 +19,12 @@ define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_ba
 		//	returns:
 		//		when used as a getter, returns the current hash string.
 		//		when used as a setter, returns the new hash string.
+		// example:
+		//	|	topic.subscribe("/dojo/hashchange", context, callback);
+		//	|
+		//	|	function callback (hashValue){
+		//	|		// do something based on the hash value.
+		//	|	}
 
 		// getter
 		if(!arguments.length){
@@ -166,7 +164,7 @@ define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_ba
 		};
 
 		this.pollLocation = function(){
-			if(!ifrOffline) {
+			if(!ifrOffline){
 				try{
 					//see if we can access the iframe's location without a permission denied error
 					var iframeSearch = _getSegment(iframeLoc.href, "?");

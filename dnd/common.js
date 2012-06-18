@@ -3,10 +3,11 @@ define(["../_base/connect", "../_base/kernel", "../_base/lang", "../dom"],
 
 // module:
 //		dojo/dnd/common
-// summary:
-//		TODOC
 
-var exports = {};
+var exports = {
+	// summary:
+	//		TODOC
+};
 lang.setObject("dojo.dnd.common", exports);
 
 exports.getCopyKeyState = connect.isCopyKey;

@@ -1,13 +1,7 @@
 define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./has!host-browser?./_base/xhr", "./json"],
-	function(dojo, require, has, array, config, lang, xhr, json) {
+	function(dojo, require, has, array, config, lang, xhr, json){
 	// module:
 	//		dojo/i18n
-	// summary:
-	//		This module implements the !dojo/i18n plugin and the v1.6- i18n API
-	// description:
-	//		We choose to include our own plugin to leverage functionality already contained in dojo
-	//		and thereby reduce the size of the plugin compared to various loader implementations. Also, this
-	//		allows foreign AMD loaders to be used without their plugins.
 
 
 	has.add("dojo-preload-i18n-Api",
@@ -21,11 +15,17 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 	);
 
 	var
-		thisModule= dojo.i18n=
-			// the dojo.i18n module
-			{},
+		thisModule = dojo.i18n =
+			{
+				// summary:
+				//		This module implements the dojo/i18n! plugin and the v1.6- i18n API
+				// description:
+				//		We choose to include our own plugin to leverage functionality already contained in dojo
+				//		and thereby reduce the size of the plugin compared to various loader implementations. Also, this
+				//		allows foreign AMD loaders to be used without their plugins.
+			},
 
-		nlsRe=
+		nlsRe =
 			// regexp for reconstructing the master bundle name from parts of the regexp match
 			// nlsRe.exec("foo/bar/baz/nls/en-ca/foo") gives:
 			// ["foo/bar/baz/nls/en-ca/foo", "foo/bar/baz/nls/", "/", "/", "en-ca", "foo"]
@@ -35,7 +35,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			// courtesy of http://requirejs.org
 			/(^.*(^|\/)nls)(\/|$)([^\/]*)\/?([^\/]*)/,
 
-		getAvailableLocales= function(
+		getAvailableLocales = function(
 			root,
 			locale,
 			bundlePath,
@@ -54,8 +54,8 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			// therefore, assume everything is available and get 404 errors that indicate a particular localization is not available
 			//
 
-			for(var result= [bundlePath + bundleName], localeParts= locale.split("-"), current= "", i= 0; i<localeParts.length; i++){
-				current+= (current ? "-" : "") + localeParts[i];
+			for(var result = [bundlePath + bundleName], localeParts = locale.split("-"), current = "", i = 0; i<localeParts.length; i++){
+				current += (current ? "-" : "") + localeParts[i];
 				if(!root || root[current]){
 					result.push(bundlePath + current + "/" + bundleName);
 				}
@@ -63,9 +63,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			return result;
 		},
 
-		cache= {},
+		cache = {},
 
-		getL10nName= dojo.getL10nName = function(moduleName, bundleName, locale){
+		getL10nName = dojo.getL10nName = function(moduleName, bundleName, locale){
 			locale = locale ? locale.toLowerCase() : dojo.locale;
 			moduleName = "dojo/i18n!" + moduleName.replace(/\./g, "/");
 			bundleName = bundleName.replace(/\./g, "/");
@@ -77,15 +77,15 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		doLoad = function(require, bundlePathAndName, bundlePath, bundleName, locale, load){
 			// get the root bundle which instructs which other bundles are required to construct the localized bundle
 			require([bundlePathAndName], function(root){
-				var current= lang.clone(root.root),
-					availableLocales= getAvailableLocales(!root._v1x && root, locale, bundlePath, bundleName);
+				var current = lang.clone(root.root),
+					availableLocales = getAvailableLocales(!root._v1x && root, locale, bundlePath, bundleName);
 				require(availableLocales, function(){
-					for (var i= 1; i<availableLocales.length; i++){
-						current= lang.mixin(lang.clone(current), arguments[i]);
+					for (var i = 1; i<availableLocales.length; i++){
+						current = lang.mixin(lang.clone(current), arguments[i]);
 					}
 					// target may not have been resolve (e.g., maybe only "fr" exists when "fr-ca" was requested)
-					var target= bundlePathAndName + "/" + locale;
-					cache[target]= current;
+					var target = bundlePathAndName + "/" + locale;
+					cache[target] = current;
 					load();
 				});
 			});
@@ -232,7 +232,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			//
 			if(has("dojo-preload-i18n-Api")){
 				var split = id.split("*"),
-					preloadDemand = split[1]=="preload";
+					preloadDemand = split[1] == "preload";
 				if(preloadDemand){
 					if(!cache[id]){
 						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
@@ -248,13 +248,13 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				}
 			}
 
-			var match= nlsRe.exec(id),
-				bundlePath= match[1] + "/",
-				bundleName= match[5] || match[4],
-				bundlePathAndName= bundlePath + bundleName,
+			var match = nlsRe.exec(id),
+				bundlePath = match[1] + "/",
+				bundleName = match[5] || match[4],
+				bundlePathAndName = bundlePath + bundleName,
 				localeSpecified = (match[5] && match[4]),
-				targetLocale=  localeSpecified || dojo.locale,
-				loadTarget= bundlePathAndName + "/" + targetLocale,
+				targetLocale =  localeSpecified || dojo.locale,
+				loadTarget = bundlePathAndName + "/" + targetLocale,
 				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale),
 				remaining = loadList.length,
 				finish = function(){
@@ -280,7 +280,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 	}
 
 	if(has("dojo-preload-i18n-Api") || has("dojo-v1x-i18n-Api")){
-		var normalizeLocale = thisModule.normalizeLocale= function(locale){
+		var normalizeLocale = thisModule.normalizeLocale = function(locale){
 				var result = locale ? locale.toLowerCase() : dojo.locale;
 				return result == "root" ? "ROOT" : result;
 			},
@@ -355,7 +355,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 	if(has("dojo-v1x-i18n-Api")){
 		// this code path assumes the dojo loader and won't work with a standard AMD loader
-		var evalBundle=
+		var evalBundle =
 				// use the function ctor to keep the minifiers away (also come close to global scope, but this is secondary)
 				new Function(
 					"__bundle",                // the bundle to evalutate
@@ -393,10 +393,10 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					+ "}"
 				),
 
-			syncRequire= function(deps, callback){
-				var results= [];
+			syncRequire = function(deps, callback){
+				var results = [];
 				array.forEach(deps, function(mid){
-					var url= require.toUrl(mid + ".js");
+					var url = require.toUrl(mid + ".js");
 
 					function load(text){
 						var result = evalBundle(text, checkForLegacyModules, mid);
@@ -407,7 +407,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 							// module is being defined()'d. With browser caching, this should be free; further
 							// this entire code path can be circumvented by using the AMD format to begin with
 							require([mid], function(bundle){
-								results.push(cache[url]= bundle);
+								results.push(cache[url] = bundle);
 							});
 						}else{
 							if(result instanceof Error){
@@ -422,7 +422,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					if(cache[url]){
 						results.push(cache[url]);
 					}else{
-						var bundle= require.syncLoadNls(mid);
+						var bundle = require.syncLoadNls(mid);
 						// don't need to check for legacy since syncLoadNls returns a module if the module
 						// (1) was already loaded, or (2) was in the cache. In case 1, if syncRequire is called
 						// from getLocalization --> load, then load will have called checkForLegacyModules() before
@@ -437,7 +437,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 								try{
 									require.getText(url, true, load);
 								}catch(e){
-									results.push(cache[url]= {});
+									results.push(cache[url] = {});
 								}
 							}else{
 								xhr.get({
@@ -445,7 +445,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 									sync:true,
 									load:load,
 									error:function(){
-										results.push(cache[url]= {});
+										results.push(cache[url] = {});
 									}
 								});
 							}
@@ -471,10 +471,10 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				return result;
 			};
 
-		thisModule.getLocalization= function(moduleName, bundleName, locale){
+		thisModule.getLocalization = function(moduleName, bundleName, locale){
 			var result,
-				l10nName= getL10nName(moduleName, bundleName, locale).substring(10);
-			load(l10nName, (!isXd(l10nName) ? syncRequire : require), function(result_){ result= result_; });
+				l10nName = getL10nName(moduleName, bundleName, locale).substring(10);
+			load(l10nName, (!isXd(l10nName) ? syncRequire : require), function(result_){ result = result_; });
 			return result;
 		};
 

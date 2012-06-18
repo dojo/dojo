@@ -5,8 +5,6 @@ define([
 
 // module:
 //		dojo/store/DataStore
-// summary:
-//		TODOC
 
 
 // No base class, but for purposes of documentation, the base class is dojo/store/api/Store
@@ -14,12 +12,13 @@ var base = null;
 /*===== base = Store; =====*/
 
 return declare("dojo.store.DataStore", base, {
+	// summary:
+	//		This is an adapter for using Dojo Data stores with an object store consumer.
+	//		You can provide a Dojo data store and use this adapter to interact with it through
+	//		the Dojo object store API
+
 	target: "",
 	constructor: function(options){
-		// summary:
-		//		This is an adapter for using Dojo Data stores with an object store consumer.
-		//		You can provide a Dojo data store and use this adapter to interact with it through
-		//		the Dojo object store API
 		// options: Object?
 		//		This provides any configuration information that will be mixed into the store,
 		//		including a reference to the Dojo data store under the property "store".

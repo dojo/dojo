@@ -1,8 +1,6 @@
-define(["./_base/kernel"], function(dojo) {
+define(["./_base/kernel"], function(dojo){
 	// module:
 	//		dojo/jaxer
-	// summary:
-	//		TODOC
 
 dojo.deprecated("(dojo)/jaxer interface", "Jaxer is no longer supported by the Dojo Toolkit, will be removed with DTK 1.9.");
 if(typeof print == "function"){

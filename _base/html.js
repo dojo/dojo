@@ -1,8 +1,13 @@
 define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../dom-class", "../dom-construct", "../dom-geometry"], function(dojo, dom, style, attr, prop, cls, ctr, geom){
 	// module:
 	//		dojo/dom
-	// summary:
-	//		This module is a stub for the core dojo DOM API.
+
+	/*=====
+	return {
+		// summary:
+		//		This module is a stub for the core dojo DOM API.
+	};
+	=====*/
 
 	// mix-in dom
 	dojo.byId = dom.byId;

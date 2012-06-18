@@ -1,8 +1,6 @@
-define(["./kernel"], function(dojo) {
+define(["./kernel"], function(dojo){
 	// module:
 	//		dojo/url
-	// summary:
-	//		This module contains dojo._Url
 
 	var
 		ore = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$"),

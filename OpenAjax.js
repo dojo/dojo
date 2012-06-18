@@ -173,7 +173,7 @@ if(!window["OpenAjax"]){
 		// The following function is provided for automatic testing purposes.
 		// It is not expected to be deployed in run-time OpenAjax Hub implementations.
 		h.reinit = function(){
-			for (var lib in OpenAjax.hub.libraries) {
+			for (var lib in OpenAjax.hub.libraries){
 				delete OpenAjax.hub.libraries[lib];
 			}
 			OpenAjax.hub.registerLibrary("OpenAjax", "http://openajax.org/hub", "0.6", {});

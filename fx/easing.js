@@ -1,17 +1,13 @@
-define(["../_base/lang"], function(lang) {
+define(["../_base/lang"], function(lang){
 
 // module:
 //		dojo/fx/easing
-// summary:
-//		This module defines standard easing functions that are useful for animations.
 
 var easingFuncs = {
 	// summary:
 	//		Collection of easing functions to use beyond the default
 	//		`dojo._defaultEasing` function.
-	//
 	// description:
-	//
 	//		Easing functions are used to manipulate the iteration through
 	//		an `dojo.Animation`s _Line. _Line being the properties of an Animation,
 	//		and the easing function progresses through that Line determining
@@ -26,8 +22,7 @@ var easingFuncs = {
 	//
 	//		One does not call the easing function directly, it must be passed to
 	//		the `easing` property of an animation.
-	//
-	//	example:
+	// example:
 	//	|	dojo.require("dojo.fx.easing");
 	//	|	var anim = dojo.fadeOut({
 	//	|		node: 'node',
@@ -38,7 +33,8 @@ var easingFuncs = {
 	//
 
 	linear: function(/* Decimal? */n){
-		// summary: A linear easing function
+		// summary:
+		//		A linear easing function
 		return n;
 	},
 
@@ -160,7 +156,6 @@ var easingFuncs = {
 	backOut: function(/* Decimal? */n){
 		// summary:
 		//		An easing function that pops past the range briefly, and slowly comes back.
-		//
 		// description:
 		//		An easing function that pops past the range briefly, and slowly comes back.
 		//
@@ -175,7 +170,6 @@ var easingFuncs = {
 	backInOut: function(/* Decimal? */n){
 		// summary:
 		//		An easing function combining the effects of `backIn` and `backOut`
-		//
 		// description:
 		//		An easing function combining the effects of `backIn` and `backOut`.
 		//		Use caution when the easing will cause values to become negative
@@ -190,7 +184,6 @@ var easingFuncs = {
 	elasticIn: function(/* Decimal? */n){
 		// summary:
 		//		An easing function the elastically snaps from the start value
-		//
 		// description:
 		//		An easing function the elastically snaps from the start value
 		//
@@ -207,7 +200,6 @@ var easingFuncs = {
 		// summary:
 		//		An easing function that elasticly snaps around the target value,
 		//		near the end of the Animation
-		//
 		// description:
 		//		An easing function that elasticly snaps around the target value,
 		//		near the end of the Animation
@@ -224,7 +216,6 @@ var easingFuncs = {
 		// summary:
 		//		An easing function that elasticly snaps around the value, near
 		//		the beginning and end of the Animation.
-		//
 		// description:
 		//		An easing function that elasticly snaps around the value, near
 		//		the beginning and end of the Animation.

@@ -1,4 +1,4 @@
-define(["require"], function(require) {
+define(["require"], function(require){
 	// module:
 	//		dojo/has
 	// summary:
@@ -119,7 +119,7 @@ define(["require"], function(require) {
 		has.add("dom-attributes-specified-flag", form.attributes.length > 0 && form.attributes.length < 40);	// IE8
 	}
 
-	has.clearElement = function(element) {
+	has.clearElement = function(element){
 		// summary:
 		//	 Deletes the contents of the element passed to test functions.
 		element.innerHTML= "";

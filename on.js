@@ -455,7 +455,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		};
 	}
 	if(has("touch")){ 
-		var Event = function (){};
+		var Event = function(){};
 		var windowOrientation = window.orientation; 
 		var fixTouchListener = function(listener){ 
 			return function(originalEvent){ 

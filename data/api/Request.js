@@ -1,4 +1,4 @@
-define(["../../_base/declare"], function(declare) {
+define(["../../_base/declare"], function(declare){
 
 // module:
 //		dojo/data/api/Request

@@ -5,19 +5,18 @@ define([
 
 // module:
 //		dojo/dnd/Moveable
-// summary:
-//		TODOC
 
 
 var Moveable = declare("dojo.dnd.Moveable", [Evented], {
+	// summary:
+	//		an object, which makes a node movable
+
 	// object attributes (for markup)
 	handle: "",
 	delay: 0,
 	skip: false,
 
 	constructor: function(node, params){
-		// summary:
-		//		an object, which makes a node moveable
 		// node: Node
 		//		a node (or node's id) to be moved
 		// params: Moveable.__MoveableArgs?

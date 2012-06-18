@@ -2,8 +2,6 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 	function(dojo, config, lang, Evented, Color, connect, has, dom, style){
 	// module:
 	//		dojo/_base/fx
-	// summary:
-	//		This module defines the base dojo/_base/fx implementation.
 	// notes:
 	//		Animation loosely package based on Dan Pupius' work, contributed under CLA; see
 	//		http://pupius.co.uk/js/Toolkit.Drawing.js
@@ -11,7 +9,10 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 	var _mixin = lang.mixin;
 
 	// Module export
-	var basefx = {};
+	var basefx = {
+		// summary:
+		//		This module defines the base dojo/_base/fx implementation.
+	};
 
 	var _Line = basefx._Line = function(/*int*/ start, /*int*/ end){
 		//	summary:

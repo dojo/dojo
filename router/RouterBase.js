@@ -4,25 +4,8 @@ define([
 	"dojo/topic"
 ], function(declare, hash, topic){
 
-	// module
-	//		dojo/router
-	// summary
-	//		A module that allows one to easily map hash-based structures into
-	//		callbacks. The router module is a singleton, offering one central
-	//		point for all registrations of this type.
-	// example
-	//	|	var router = new RouterBase({});
-	//	|	router.register("/widgets/:id", function(evt) {
-	//	|		// If "/widgets/3" was matched,
-	//	|		// evt.params.id === "3"
-	//	|		xhr.get({
-	//	|			url: "/some/path/" + evt.params.id,
-	//	|			load: function(data) {
-	//	|				// ...
-	//	|			}
-	//	|		});
-	//	|	});
-	//
+	// module:
+	//		dojo/router/RouterBase
 
 	// Creating a basic trim to avoid needing the full dojo/string module
 	// similarly to dojo/_base/lang's trim
@@ -51,7 +34,7 @@ define([
 		};
 
 		for(i=0, l=queue.length; i<l; ++i){
-			if(!isStopped) {
+			if(!isStopped){
 				queue[i](eventObj);
 			}
 		}
@@ -61,6 +44,23 @@ define([
 
 	// Our actual class-like object
 	var RouterBase = declare(null, {
+		// summary:
+		//		A module that allows one to easily map hash-based structures into
+		//		callbacks. The router module is a singleton, offering one central
+		//		point for all registrations of this type.
+		// example:
+		//	|	var router = new RouterBase({});
+		//	|	router.register("/widgets/:id", function(evt){
+		//	|		// If "/widgets/3" was matched,
+		//	|		// evt.params.id === "3"
+		//	|		xhr.get({
+		//	|			url: "/some/path/" + evt.params.id,
+		//	|			load: function(data){
+		//	|				// ...
+		//	|			}
+		//	|		});
+		//	|	});
+
 		_routes: null,
 		_routeIndex: null,
 		_started: false,
@@ -111,7 +111,7 @@ define([
 			//		it like a basic means of globbing the end of a route.
 			//
 			// example
-			//	|	router.register("/foo/:bar/*baz", function(object) {
+			//	|	router.register("/foo/:bar/*baz", function(object){
 			//	|		// If the hash was "/foo/abc/def/ghi",
 			//	|		// object.bar === "abc"
 			//	|		// object.baz === "def/ghi"
@@ -176,7 +176,7 @@ define([
 			path = trim(path);
 			applyChange = this._handlePathChange(path);
 
-			if(applyChange) {
+			if(applyChange){
 				hash(path, replace);
 			}
 
@@ -230,7 +230,7 @@ define([
 				}
 			}
 
-			if(allowChange) {
+			if(allowChange){
 				this._currentPath = newPath;
 			}
 

@@ -7,8 +7,6 @@ define([
 
 // module:
 //		dojo/dnd/Source
-// summary:
-//		TODOC
 
 /*
 	Container property:

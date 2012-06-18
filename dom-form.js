@@ -1,8 +1,6 @@
 define(["./_base/lang", "./dom", "./io-query", "./json"], function(lang, dom, ioq, json){
 	// module:
 	//		dojo/dom-form
-	// summary:
-	//		This module defines form-processing functions.
 
     function setValue(/*Object*/ obj, /*String*/ name, /*String*/ value){
         // summary:
@@ -28,6 +26,9 @@ define(["./_base/lang", "./dom", "./io-query", "./json"], function(lang, dom, io
 	var exclude = "file|submit|image|reset|button";
 
 	var form = {
+		// summary:
+		//		This module defines form-processing functions.
+
 		fieldToObject: function fieldToObject(/*DOMNode|String*/ inputNode){
 			// summary:
 			//		Serialize a form field to a JavaScript object.

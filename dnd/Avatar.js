@@ -11,9 +11,6 @@ define([
 
 // module:
 //		dojo/dnd/Avatar
-// summary:
-//		TODOC
-
 
 return declare("dojo.dnd.Avatar", null, {
 	// summary:

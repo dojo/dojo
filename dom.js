@@ -2,8 +2,6 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 		function(has, lang, win){
 	// module:
 	//		dojo/dom
-	// summary:
-	//		This module defines the core dojo DOM API.
 
 	// FIXME: need to add unit tests for all the semi-public methods
 
@@ -19,8 +17,11 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 	// DOM Functions
 	// =============================
 
-
-	var dom = {};   // the result object
+	// the result object
+	var dom = {
+		// summary:
+		//		This module defines the core dojo DOM API.
+	};
 
 	if(has("ie")){
 		dom.byId = function(id, doc){

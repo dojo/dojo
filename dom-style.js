@@ -1,8 +1,6 @@
 define(["./sniff", "./dom"], function(has, dom){
 	// module:
 	//		dojo/dom-style
-	// summary:
-	//		This module defines the core dojo DOM style API.
 
 	// =============================
 	// Style Functions
@@ -22,7 +20,10 @@ define(["./sniff", "./dom"], function(has, dom){
 	// by testing nodeType, ecause 'document' is the 'parentNode' of 'body'
 	// it is frequently sent to this function even
 	// though it is not Element.
-	var getComputedStyle, style = {};
+	var getComputedStyle, style = {
+		// summary:
+		//		This module defines the core dojo DOM style API.
+	};
 	if(has("webkit")){
 		getComputedStyle = function(/*DomNode*/ node){
 			var s;

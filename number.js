@@ -1,12 +1,13 @@
 define(["./_base/lang", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"],
-	function(lang, i18n, nlsNumber, dstring, dregexp) {
+	function(lang, i18n, nlsNumber, dstring, dregexp){
 
 // module:
 //		dojo/number
-// summary:
-//		localized formatting and parsing routines for Number
 
-var number = {};
+var number = {
+	// summary:
+	//		localized formatting and parsing routines for Number
+};
 lang.setObject("dojo.number", number);
 
 /*=====

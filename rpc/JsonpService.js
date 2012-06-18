@@ -1,11 +1,9 @@
 define([
 	"../_base/array", "../_base/declare", "../_base/lang", "./RpcService", "../io/script"],
-	function(array, declare, lang, RpcService, script) {
+	function(array, declare, lang, RpcService, script){
 
 // module:
 //		dojo/rpc/JsonpService
-// summary:
-//		TODOC
 
 return declare("dojo.rpc.JsonpService", RpcService, {
 	// summary:
@@ -14,7 +12,7 @@ return declare("dojo.rpc.JsonpService", RpcService, {
 	//		SMD files exist in dojox.data
 
 	constructor: function(args, requiredArgs){
-		if(this.required) {
+		if(this.required){
 			if(requiredArgs){
 				lang.mixin(this.required, requiredArgs);
 			}

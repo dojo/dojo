@@ -1,11 +1,9 @@
 define(["./kernel", "../has", "../sniff"], function(dojo, has){
 	// module:
 	//		dojo/_base/lang
-	// summary:
-	//		This module defines Javascript language extensions.
 
 	has.add("bug-for-in-skips-shadowed", function(){
-		// if true, the for-in interator skips object properties that exist in Object's prototype (IE 6 - ?)
+		// if true, the for-in iterator skips object properties that exist in Object's prototype (IE 6 - ?)
 		for(var i in {toString: 1}){
 			return 0;
 		}
@@ -48,6 +46,9 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 
 	// Module export
 	var lang = {
+		// summary:
+		//		This module defines Javascript language extensions.
+
 		// _extraNames: String[]
 		//		Lists property names that must be explicitly processed during for-in iteration
 		//		in environments that have has("bug-for-in-skips-shadowed") true.

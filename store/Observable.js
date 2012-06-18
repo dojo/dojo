@@ -3,8 +3,6 @@ define(["../_base/kernel", "../_base/lang", "../_base/Deferred", "../_base/array
 
 // module:
 //		dojo/store/Observable
-// summary:
-//		TODOC
 
 var Observable = function(/*Store*/ store){
 	// summary:

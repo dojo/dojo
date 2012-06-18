@@ -5,14 +5,13 @@ define([
 
 // module:
 //		dojo/dnd/Mover
-// summary:
-//		TODOC
 
 return declare("dojo.dnd.Mover", [Evented], {
+	// summary:
+	//		an object which makes a node follow the mouse, or touch-drag on touch devices.
+	//		Used as a default mover, and as a base class for custom movers.
+
 	constructor: function(node, e, host){
-		// summary:
-		//		an object which makes a node follow the mouse, or touch-drag on touch devices.
-		//		Used as a default mover, and as a base class for custom movers.
 		// node: Node
 		//		a node (or node's id) to be moved
 		// e: Event

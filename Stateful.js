@@ -1,9 +1,6 @@
-define(["./_base/declare", "./_base/lang", "./_base/array", "dojo/when"], function(declare, lang, array, when) {
+define(["./_base/declare", "./_base/lang", "./_base/array", "dojo/when"], function(declare, lang, array, when){
 	// module:
 	//		dojo/Stateful
-	// summary:
-	//		A module that provides the base class for objects that provide named properties
-	//		with auto-magic accessors and the ability to watch for property changes
 
 return declare("dojo.Stateful", null, {
 	// summary:

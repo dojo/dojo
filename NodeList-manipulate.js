@@ -1,9 +1,14 @@
-define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeList-dom"], function(dquery, lang, array, construct) {
+define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeList-dom"], function(dquery, lang, array, construct){
 	// module:
 	//		dojo/NodeList-manipulate
-	// summary:
-	//		Adds chainable methods to dojo.query() / Nodelist instances for manipulating HTML
-	//		and DOM nodes and their properties.
+
+	/*=====
+	return function(){
+		// summary:
+		//		Adds chainable methods to dojo.query() / NodeList instances for manipulating HTML
+		//		and DOM nodes and their properties.
+	};
+	=====*/
 
 	var NodeList = dquery.NodeList;
 

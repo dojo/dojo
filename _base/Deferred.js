@@ -1,17 +1,14 @@
 define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], function(dojo, config, lang, Promise, when){
 	// module:
 	//		dojo/_base/Deferred
-	// summary:
-	//		Deprecated.   This module defines the legacy dojo/_base/Deferred API.
-	//		New code should use dojo/Deferred instead.
 
 	var mutator = function(){};
 	var freeze = Object.freeze || function(){};
 	// A deferred provides an API for creating and resolving a promise.
 	var Deferred = dojo.Deferred = function(/*Function?*/ canceller){
 		// summary:
-		//		Deferreds provide a generic means for encapsulating an asynchronous
-		//		operation and notifying users of the completion and result of the operation.
+		//		Deprecated.   This module defines the legacy dojo/_base/Deferred API.
+		//		New code should use dojo/Deferred instead.
 		// description:
 		//		The Deferred API is based on the concept of promises that provide a
 		//		generic interface into the eventual completion of an asynchronous action.
@@ -283,7 +280,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 			return returnDeferred.promise; // Promise
 		};
 		var deferred = this;
-		promise.cancel = this.cancel = function (){
+		promise.cancel = this.cancel = function(){
 			// summary:
 			//		Cancels the asynchronous operation
 			if(!finished){
@@ -300,7 +297,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 		freeze(promise);
 	};
 	lang.extend(Deferred, {
-		addCallback: function (/*Function*/ callback){
+		addCallback: function(/*Function*/ callback){
 			// summary:
 			// 		Adds successful callback for this deferred instance.
 			// returns:
@@ -308,7 +305,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 			return this.addCallbacks(lang.hitch.apply(dojo, arguments));	// Deferred
 		},
 
-		addErrback: function (/*Function*/ errback){
+		addErrback: function(/*Function*/ errback){
 			// summary:
 			// 		Adds error callback for this deferred instance.
 			// returns:
@@ -316,7 +313,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 			return this.addCallbacks(null, lang.hitch.apply(dojo, arguments));	// Deferred
 		},
 
-		addBoth: function (/*Function*/ callback){
+		addBoth: function(/*Function*/ callback){
 			// summary:
 			// 		Add handler as both successful callback and error callback for this deferred instance.
 			// returns:

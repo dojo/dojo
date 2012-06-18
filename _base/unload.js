@@ -2,27 +2,12 @@ define(["./kernel", "./lang", "../on"], function(dojo, lang, on){
 
 // module:
 //		dojo/unload
-// summary:
-//		This module contains the document and window unload detection API.
 
 var win = window;
 
-/*=====
-dojo.windowUnloaded = function(){
-	// summary:
-	//		signal fired by impending window destruction. You may use
-	//		dojo.addOnWindowUnload() to register a listener for this
-	//		event. NOTE: if you wish to dojo.connect() to this method
-	//		to perform page/application cleanup, be aware that this
-	//		event WILL NOT fire if no handler has been registered with
-	//		addOnWindowUnload(). This behavior started in Dojo 1.3.
-	//		Previous versions always triggered windowUnloaded(). See
-	//		addOnWindowUnload for more info.
-};
-=====*/
-
-
 var unload = {		// module export
+	// summary:
+	//		This module contains the document and window unload detection API.
 
 	addOnWindowUnload: function(/*Object|Function?*/ obj, /*String|Function?*/ functionName){
 		// summary:
@@ -44,8 +29,18 @@ var unload = {		// module export
 		//	| unload.addOnWindowUnload(object, "functionName");
 		//	| unload.addOnWindowUnload(object, function(){ /* ... */});
 
-		if (!dojo.windowUnloaded) {
-			on(win, "unload", (dojo.windowUnloaded = function(){}));
+		if (!dojo.windowUnloaded){
+			on(win, "unload", (dojo.windowUnloaded = function(){
+				// summary:
+				//		signal fired by impending window destruction. You may use
+				//		dojo.addOnWindowUnload() to register a listener for this
+				//		event. NOTE: if you wish to dojo.connect() to this method
+				//		to perform page/application cleanup, be aware that this
+				//		event WILL NOT fire if no handler has been registered with
+				//		addOnWindowUnload(). This behavior started in Dojo 1.3.
+				//		Previous versions always triggered windowUnloaded(). See
+				//		addOnWindowUnload for more info.
+			}));
 		}
 		on(win, "unload", lang.hitch(obj, functionName));
 	},

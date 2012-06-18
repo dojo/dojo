@@ -10,12 +10,10 @@ define([
 	"./dom-geometry",
 	"./ready",
 	"require" // for context sensitive loading of Toggler
-], function(lang, Evented, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, ready, require) {
+], function(lang, Evented, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, ready, require){
 
 	// module:
 	//		dojo/fx
-	// summary:
-	//		Effects library on top of Base animations
 	
 	// For back-compat, remove in 2.0.
 	if(!dojo.isAsync){
@@ -25,7 +23,10 @@ define([
 		});
 	}
 
-	var coreFx = dojo.fx = {};
+	var coreFx = dojo.fx = {
+		// summary:
+		//		Effects library on top of Base animations
+	};
 
 	var _baseObj = {
 			_fire: function(evt, args){

@@ -3,9 +3,6 @@ function(lang, Deferred /*=====, declare, Store =====*/){
 
 // module:
 //		dojo/store/Cache
-// summary:
-//		TODOC
-
 
 var Cache = function(masterStore, cachingStore, options){
 	return lang.delegate(masterStore, {

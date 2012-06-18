@@ -2,7 +2,7 @@ require({
         baseUrl: "./"
     },
     ["require", "map", "simple", "dimple", "func", "doh"],
-    function(require, map, simple, dimple, func, doh) {
+    function(require, map, simple, dimple, func, doh){
         doh.register(
             "simple",
             [
@@ -16,7 +16,7 @@ require({
         );
 
         //In rhino there is no more simple tests, but in web browser there is.
-        if (typeof moreSimpleTests === 'undefined') {
+        if (typeof moreSimpleTests === 'undefined'){
             doh.run();
         }
     }

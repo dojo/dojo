@@ -1,5 +1,5 @@
 define("simple",
-  function() {
+  function(){
     return {
       color: "blue"
     };

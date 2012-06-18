@@ -6,7 +6,7 @@ define([
 	"../_base/array",
 	"../_base/lang",
 	"../_base/event",
-	"../_base/unload"], function(dojo, require, html, has) {
+	"../_base/unload"], function(dojo, require, html, has){
 
 	// module:
 	//		dojo/_firebug/firebug
@@ -231,7 +231,7 @@ define([
 			for(var i=0;i<stackAmt;i++){
 				var func = f.toString();
 				var args=[];
-				for (var a = 0; a < f.arguments.length; a++) {
+				for (var a = 0; a < f.arguments.length; a++){
 					args.push(f.arguments[a]);
 				}
 				if(f.arguments.length){
@@ -344,7 +344,7 @@ define([
 			var i,a,s;a=document.getElementsByTagName('link');
 			for(i=0;i<a.length;i++){
 				s=a[i];
-				if(s.rel.toLowerCase().indexOf('stylesheet')>=0&&s.href) {
+				if(s.rel.toLowerCase().indexOf('stylesheet')>=0&&s.href){
 					var h=s.href.replace(/(&|%5C?)forceReload=\d+/,'');
 					s.href=h+(h.indexOf('?')>=0?'&':'?')+'forceReload='+new Date().valueOf();
 				}

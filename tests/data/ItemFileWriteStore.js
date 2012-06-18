@@ -8,7 +8,7 @@ define([
   "dojo/data/api/Read",
   "dojo/data/api/Identity",
   "dojo/data/api/Write",
-  "dojo/data/api/Notification"], function(dojo, doh, require) {
+  "dojo/data/api/Notification"], function(dojo, doh, require){
 
 dojo.getObject("data.ItemFileWriteStore", true, tests);
 
@@ -156,7 +156,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
-			function onComplete(items, request) {
+			function onComplete(items, request){
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
@@ -168,7 +168,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				doh.assertTrue(!store.hasAttribute(item, "name"));
 				deferred.callback(true);
 			}
-			function onError(error, request) {
+			function onError(error, request){
 				deferred.errback(error);
 			}
 			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
@@ -356,7 +356,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				store.deleteItem(item);
 				doh.assertTrue(store.isDirty(item));
 				doh.assertTrue(store.isDirty());
-				var onCompleteToo = function(itemsToo, requestToo) {
+				var onCompleteToo = function(itemsToo, requestToo){
 					doh.assertEqual(0, itemsToo.length);
 					deferred.callback(true);
 				};
@@ -373,7 +373,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			var store = new dojo.data.ItemFileWriteStore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var deferred = new doh.Deferred();
-			function onComplete(items, request) {
+			function onComplete(items, request){
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
@@ -382,7 +382,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				doh.assertTrue(store.isDirty(item));
 				deferred.callback(true);
 			}
-			function onError(error, request) {
+			function onError(error, request){
 				deferred.errback(error);
 			}
 			store.fetch({query:{name:"Egypt"}, onComplete: onComplete, onError: onError});
@@ -401,7 +401,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				deferred.errback(error);
 			};
 
-			var onComplete = function(items, request) {
+			var onComplete = function(items, request){
 				doh.assertEqual(1, items.length);
 				var item = items[0];
 				doh.assertTrue(store.containsValue(item, "name", "Egypt"));
@@ -438,7 +438,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			}
 			function onItem(item){
 				store.setValue(item, "capital", "New Cairo");
-				function onComplete() {
+				function onComplete(){
 					deferred.callback(true);
 				}
 				store.save({onComplete:onComplete, onError:onError});
@@ -459,7 +459,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			}
 			function onItem(item){
 				store.setValue(item, "capital", "New Cairo");
-				function onComplete() {
+				function onComplete(){
 					//Check internal state.  Note:  Users should NOT do this, this is a UT verification
 					//of internals in this case.  Ref tracker: #4394
 					doh.assertTrue(!store._saveInProgress);
@@ -501,7 +501,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			};
 			var onItem = function(item){
 				egypt = item;
-				var onComplete = function() {
+				var onComplete = function(){
 					deferred.callback(true);
 				};
 				store.setValue(egypt, "capital", "New Cairo");
@@ -537,7 +537,7 @@ doh.register("tests.data.ItemFileWriteStore",
 			};
 			var onComplete = function(items, request){
 				africa = items[0];
-				var onComplete = function() {
+				var onComplete = function(){
 					deferred.callback(true);
 				};
 				store.setValue(africa, "size", "HUGE!");
@@ -577,7 +577,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				deferred.errback(error);
 			};
 			var onItem = function(item){
-				var onComplete = function() {
+				var onComplete = function(){
 					deferred.callback(true);
 				};
 				store.setValue(item, "independence", new Date(1993,4,24));
@@ -634,7 +634,7 @@ doh.register("tests.data.ItemFileWriteStore",
             var onError = function(error){
 				deferred.errback(error);
 			};
-			var onComplete = function() {
+			var onComplete = function(){
 				deferred.callback(true);
 			};
 
@@ -697,7 +697,7 @@ doh.register("tests.data.ItemFileWriteStore",
             var onError = function(error){
 				deferred.errback(error);
 			};
-			var onComplete = function() {
+			var onComplete = function(){
 				deferred.callback(true);
 			};
 
@@ -1105,15 +1105,15 @@ doh.register("tests.data.ItemFileWriteStore",
 				var item5  = null;
 
 				var i;
-				for (i = 0; i < items.length; i++) {
+				for (i = 0; i < items.length; i++){
 					var ident = store.getIdentity(items[i]);
-					if (ident === 10) {
+					if (ident === 10){
 						item10 = items[i];
-					}else if (ident === 1) {
+					}else if (ident === 1){
 						item1 = items[i];
-					}else if (ident === 3) {
+					}else if (ident === 3){
 						item3 = items[i];
-					}else if (ident === 5) {
+					}else if (ident === 5){
 						item5 = items[i];
 					}
 				}
@@ -1127,18 +1127,18 @@ doh.register("tests.data.ItemFileWriteStore",
 				doh.assertTrue(store.isItem(item5));
 				var found = 0;
 				try{
-					for (i = 0; i < friends.length; i++) {
-						if (i === 0) {
+					for (i = 0; i < friends.length; i++){
+						if (i === 0){
 							doh.assertTrue(store.isItem(friends[i]));
 							doh.assertEqual(friends[i], item1);
 							doh.assertEqual(store.getIdentity(friends[i]), 1);
 							found++;
-						}else if (i === 1) {
+						}else if (i === 1){
 							doh.assertTrue(store.isItem(friends[i]));
 							doh.assertEqual(friends[i], item3);
 							doh.assertEqual(store.getIdentity(friends[i]), 3);
 							found++;
-						}else if (i === 2) {
+						}else if (i === 2){
 							doh.assertTrue(store.isItem(friends[i]));
 							doh.assertEqual(friends[i], item5);
 							doh.assertEqual(store.getIdentity(friends[i]), 5);
@@ -1550,7 +1550,7 @@ doh.register("tests.data.ItemFileWriteStore",
 		function testReadAPI_close_dirty_failure(){
 			//	summary:
 			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
-			if (dojo.isBrowser) {
+			if (dojo.isBrowser){
 				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
 				params.clearOnClose = true;
 				params.urlPreventCache = true;
@@ -1571,7 +1571,7 @@ doh.register("tests.data.ItemFileWriteStore",
 					}catch (e){
 						error = e;
 					}
-					if (error === null) {
+					if (error === null){
 						d.errback(new Error("Store was dirty, should have thrown an error on close!"));
 					}else{
 						d.callback(true);

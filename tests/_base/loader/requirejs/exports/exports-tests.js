@@ -4,7 +4,7 @@ require({
     ["require", "vanilla", "funcSet", "assign", "assign2", "usethis",
      "implicitModule", "simpleReturn", "doh"],
     function(require, vanilla, funcSet, assign, assign2, usethis,
-      implicitModule, simpleReturn, doh) {
+      implicitModule, simpleReturn, doh){
         doh.register(
             "exports",
             [

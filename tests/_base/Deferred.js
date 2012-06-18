@@ -254,14 +254,14 @@ doh.register("tests._base.Deferred",
 
 			t.assertEqual("succeed", retval);
 		},
-		function testDojoPromiseProgressBasic(t) {
+		function testDojoPromiseProgressBasic(t){
 			var a = new dojo.Deferred();
 			var b = new dojo.Deferred();
 			var called = false;
 			
-			a.then(function() {
+			a.then(function(){
 				b.then(function(){
-					if (!called) {
+					if (!called){
 						console.log("Boo. ProgressBasic not called");
 					}
 				}, function(){
@@ -278,15 +278,15 @@ doh.register("tests._base.Deferred",
 			t.t(called);
 		},
 		
-		function testDojoPromiseProgressChain(t) {
+		function testDojoPromiseProgressChain(t){
 			var a = new dojo.Deferred();
 			var b = new dojo.Deferred();
 			var called = false;
 			
-			a.then(function() {
+			a.then(function(){
 				return b;
 			}).then(function(){
-				if (!called) {
+				if (!called){
 					console.log("Boo. ProgressChain not called");
 				}
 			}, function(){

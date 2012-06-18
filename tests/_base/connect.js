@@ -89,16 +89,16 @@ tests.register("tests._base.connect",
 			foo.foo();
 			t.is(true, ok);
 		},
-		function basicTest(t) {
+		function basicTest(t){
 			var out = '';
 			var obj = {
-				foo: function() {
+				foo: function(){
 					out += 'foo';
 				},
-				bar: function() {
+				bar: function(){
 					out += 'bar';
 				},
-				baz: function() {
+				baz: function(){
 					out += 'baz';
 				}
 			};

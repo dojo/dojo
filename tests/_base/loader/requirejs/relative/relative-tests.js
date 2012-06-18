@@ -5,7 +5,7 @@ require({
         }
     },
     ["require", "foo/bar/one", "doh"],
-    function(require, one, doh) {
+    function(require, one, doh){
         doh.register(
             "relative",
             [

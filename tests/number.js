@@ -94,7 +94,7 @@ function runBatchParse(options,dataArray/*array*/,pass/*boolean*/){
 		}
 	}
 
-	if(!pass && (exception == null)) {
+	if(!pass && (exception == null)){
 		throw "runBatchParse() - stric parse failed, no exception when parsing illegal data";
 	}else if(exception != null){
 		if(!pass && i == 0){

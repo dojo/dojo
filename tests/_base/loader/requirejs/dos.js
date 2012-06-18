@@ -1,9 +1,9 @@
 define("dos",
   ["tres"],
-  function(tres) {
+  function(tres){
     return {
       name: "dos",
-      doSomething: function() {
+      doSomething: function(){
         return {
           tresName: tres.name
         };

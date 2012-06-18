@@ -5,7 +5,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 	doh.register("tests.router", [
 		{
 			name: "Router API",
-			runTest: function(t) {
+			runTest: function(t){
 				t.t(router.register, "Router has a register");
 				t.t(router.go, "Router has a go");
 				t.t(router.startup, "Router has a startup");
@@ -13,7 +13,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Registering a route by string",
-			runTest: function(t) {
+			runTest: function(t){
 				handle = router.register("/foo", function(){
 					count++;
 					console.log("/foo fired! New count:", count);
@@ -26,24 +26,24 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Ensuring routes don't fire before startup",
-			setUp: function() {
+			setUp: function(){
 				count = 0;
 			},
-			runTest: function(t) {
+			runTest: function(t){
 				hash("/foo");
 				t.t(count === 0, "Count should have been 0, was " + count);
 			}
 		},
 		{
 			name: "Ensuring routes do fire after startup",
-			runTest: function(t) {
+			runTest: function(t){
 				router.startup();
 				t.t(count === 1, "Count should have been 1, was " + count);
 			}
 		},
 		{
 			name: "Ensuring that hash changes fire routes",
-			runTest: function(t) {
+			runTest: function(t){
 				// Due to the nature of the hashchange event,
 				// this test is going to be async - but we have to nest it,
 				// sadly.
@@ -70,7 +70,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Ensuring that router.go fires changes",
-			runTest: function(t) {
+			runTest: function(t){
 				var d = new doh.Deferred();
 
 				// Since router.go fires off routes immediately, this should
@@ -83,7 +83,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Ensuring route doesn't fire after removal",
-			runTest: function(t) {
+			runTest: function(t){
 				handle.remove();
 				router.go("");
 				router.go("/foo");
@@ -93,8 +93,8 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Registering a route by regexp",
-			runTest: function(t) {
-				router.register(/^\/bar$/, function() {
+			runTest: function(t){
+				router.register(/^\/bar$/, function(){
 					count++;
 				});
 				router.go("/bar");
@@ -104,7 +104,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Checking event object",
-			runTest: function(t) {
+			runTest: function(t){
 				var oldPath, newPath, params, stopImmediatePropagation, preventDefault;
 
 				router.go("");
@@ -131,7 +131,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Registering long routes with placeholders",
-			runTest: function(t) {
+			runTest: function(t){
 				var testObject;
 
 				router.register("/path/:to/:some/:long/*thing", function(e){
@@ -159,10 +159,10 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Using capture groups in a regex route",
-			runTest: function(t) {
+			runTest: function(t){
 				var testObject;
 
-				router.register(/^\/path\/(\w+)\/(\d+)$/, function(e) {
+				router.register(/^\/path\/(\w+)\/(\d+)$/, function(e){
 					testObject = e.params;
 				});
 
@@ -191,7 +191,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Testing registerBefore",
-			runTest: function(t) {
+			runTest: function(t){
 				var test = "";
 
 				router.register("/isBefore", function(){
@@ -221,7 +221,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Stopping propagation",
-			runTest: function(t) {
+			runTest: function(t){
 				var test = "";
 
 				router.register("/stopImmediatePropagation", function(){ test += "A"; });
@@ -242,7 +242,7 @@ define(["doh", "../hash", "../router"], function(doh, hash, router){
 		},
 		{
 			name: "Preventing default (change)",
-			runTest: function(t) {
+			runTest: function(t){
 				var prevented = false, goResult;
 
 				hash("");

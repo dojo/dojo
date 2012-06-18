@@ -27,13 +27,13 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 				var d = new doh.Deferred();
 				var td = this.svc.myecho("RPC TEST");
 
-				if (window.location.protocol=="file:") {
+				if (window.location.protocol=="file:"){
 					var err= new Error("This Test requires a webserver and PHP and will fail intentionally if loaded from file://");
 					d.errback(err);
 					return d;
 				}
 
-				td.addCallbacks(function(result) {
+				td.addCallbacks(function(result){
 					if(result=="<P>RPC TEST</P>"){
 						return true;
 					}else{
@@ -65,7 +65,7 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 				var d = new doh.Deferred();
 				var td = this.svc.contentB();
 
-				if (window.location.protocol=="file:") {
+				if (window.location.protocol=="file:"){
 					var err= new Error("This Test requires a webserver and PHP and will fail intentionally if loaded from file://");
 					d.errback(err);
 					return d;
@@ -94,9 +94,9 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 			},
 			runTest: function(){
 
-				if (this.svc.objectName=="testClass") {
+				if (this.svc.objectName=="testClass"){
 					return true;
-				} else {
+				}else{
 					return new Error("Error loading and/or parsing an smd file");
 				}
 			}
@@ -111,7 +111,7 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 			runTest: function(){
 				var d = new doh.Deferred();
 
-				if (window.location.protocol=="file:") {
+				if (window.location.protocol=="file:"){
 					var err= new Error("This Test requires a webserver and will fail intentionally if loaded from file://");
 					d.errback(err);
 					return d;
@@ -121,7 +121,7 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 
 				td.addCallbacks(function(result){
 					return true;
-					if (result["ResultSet"]["Result"][0]["DisplayUrl"]=="dojotoolkit.org/") {
+					if (result["ResultSet"]["Result"][0]["DisplayUrl"]=="dojotoolkit.org/"){
 						return true;
 					}else{
 						return new Error("JsonRpc_SMD_Loading_Test failed, resultant content didn't match");

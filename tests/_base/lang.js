@@ -172,7 +172,7 @@ define(["../../main", "doh/main"], function(dojo, doh){
 			}
 		},
 		
-		function clone(t) {
+		function clone(t){
 			var obj1 = {
 				foo: 'bar',
 				answer: 42,

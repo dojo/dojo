@@ -15,7 +15,7 @@ exports.config = function(config){
 	var fs = require("fs");
 
 	// make sure global require exists
-	//if (typeof global.require=="undefined") {
+	//if (typeof global.require=="undefined"){
 	//	global.require= {};
 	//}
 

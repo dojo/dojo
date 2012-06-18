@@ -1,6 +1,6 @@
 define(["../main", "doh/main", "require", "../currency"], function(dojo, doh, require){
 
-	var runTest= function(dojo, t) {
+	var runTest= function(dojo, t){
 		t.is("\u20ac123.45", dojo.currency.format(123.45, {currency: "EUR", locale: "en-us"}));
 		t.is("$123.45", dojo.currency.format(123.45, {currency: "USD", locale: "en-us"}));
 		t.is("$1,234.56", dojo.currency.format(1234.56, {currency: "USD", locale: "en-us"}));

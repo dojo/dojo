@@ -1,9 +1,9 @@
 define("one",
   ["require", "two"],
-  function(require) {
+  function(require){
     var one = {
       size: "large",
-      doSomething: function() {
+      doSomething: function(){
         return require("two");
       }
     };

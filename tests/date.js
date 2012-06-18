@@ -52,7 +52,7 @@ function test_date_getTimezoneName(t){
 	function FakeDate(str, strLocale){
 		this.str = str || '';
 		this.strLocale = strLocale || '';
-		this.toString = function() {
+		this.toString = function(){
 			return this.str;
 		};
 		this.toLocaleString = function(){

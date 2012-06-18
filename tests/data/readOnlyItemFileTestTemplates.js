@@ -1,5 +1,5 @@
 // FIXME: this test assumes the existence of the global object "tests"
-define(["dojo/main", "doh/main", "require", "dojo/data/api/Read", "dojo/data/api/Identity", "dojo/date", "dojo/date/stamp"], function(dojo, doh, require) {
+define(["dojo/main", "doh/main", "require", "dojo/data/api/Read", "dojo/data/api/Identity", "dojo/date", "dojo/date/stamp"], function(dojo, doh, require){
 
 dojo.getObject("data.readOnlyItemFileTestTemplates", true, tests);
 
@@ -13,11 +13,11 @@ dojo.declare("tests.data.Wrapper", null, {
 		this._wrapped = obj;
 	},
 
-	getValue: function() {
+	getValue: function(){
 		return this._wrapped;
 	},
 
-	setValue: function(obj) {
+	setValue: function(obj){
 		this._wrapped = obj;
 	},
 
@@ -39,7 +39,7 @@ tests.data.readOnlyItemFileTestTemplates.registerTestsForDatastore = function(/*
 	var makeNewTestFunction = function(template){
 		return function(t){return template.runTest(datastoreClass, t);};
 	};
-	for(var i = 0; i < testTemplates.length; ++i) {
+	for(var i = 0; i < testTemplates.length; ++i){
 		var testTemplate = testTemplates[i];
 		var test = {};
 		test.name = testTemplate.name;
@@ -461,7 +461,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			var data = {identifier: 'id', items: [{id: 'toString', value: 'aha'}]};
 			var store = new datastore({data: data});
 			var d = new doh.Deferred();
-			function onitem(item) {
+			function onitem(item){
 				t.assertTrue(item.value == 'aha');
 				d.callback(true);
 			}
@@ -482,7 +482,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			var data = {identifier: 'id', items: [{id: 'hasOwnProperty', value: 'yep'}]};
 			var store = new datastore({data: data});
 			var d = new doh.Deferred();
-			function onitem(item) {
+			function onitem(item){
 				t.assertTrue(item.value == 'yep');
 				d.callback(true);
 			}
@@ -1569,7 +1569,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries"));
 
 			var d = new doh.Deferred();
-			function completed(items, request) {
+			function completed(items, request){
 				t.assertEqual(items.length, 5);
 				var passed = true;
 				for(var i = 0; i < items.length; i++){
@@ -1586,7 +1586,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					d.errback(new Error("Unexpected abbreviation found, match failure."));
 				}
 			}
-			function error(error, request) {
+			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);
 			}
@@ -1993,7 +1993,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				}
 			}
 
-			function error(error, request) {
+			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);
 			}
@@ -2061,7 +2061,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				}
 			}
 
-			function error(error, request) {
+			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);
 			}
@@ -2278,15 +2278,15 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 
 
 			store.comparatorMap = {};
-			store.comparatorMap["status"] = function(a,b) {
+			store.comparatorMap["status"] = function(a,b){
 				var ret = 0;
 				// We want to map these by what the priority of these items are, not by alphabetical.
 				// So, custom comparator.
 				var enumMap = { OPEN: 3, BLOCKED: 2, PENDING: 1, CLOSED: 0};
-				if (enumMap[a] > enumMap[b]) {
+				if (enumMap[a] > enumMap[b]){
 					ret = 1;
 				}
-				if (enumMap[a] < enumMap[b]) {
+				if (enumMap[a] < enumMap[b]){
 					ret = -1;
 				}
 				return ret;
@@ -2366,7 +2366,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 				}
 			}
 
-			function error(error, request) {
+			function error(error, request){
 				t.assertTrue(false);
 				d.errback(error);
 			}
@@ -2755,7 +2755,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
  		runTest: function(datastore, t){
 			//	summary:
 			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
-			if (dojo.isBrowser) {
+			if (dojo.isBrowser){
 				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
 				params.clearOnClose = true;
 				params.urlPreventCache = true;
@@ -2777,7 +2777,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					}catch (e){
 						error = e;
 					}
-					if (error) {
+					if (error){
 						d.errback(error);
 					}else{
 						d.callback(true);
@@ -2796,7 +2796,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
  		runTest: function(datastore, t){
 			//	summary:
 			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
-			if (dojo.isBrowser) {
+			if (dojo.isBrowser){
 				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
 				params.clearOnClose = true;
 				params.urlPreventCache = true;
@@ -2836,7 +2836,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					}catch (e){
 						error = e;
 					}
-					if (error) {
+					if (error){
 						d.errback(error);
 					}
 				}
@@ -2853,7 +2853,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
  		runTest: function(datastore, t){
 			//	summary:
 			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
-			if (dojo.isBrowser) {
+			if (dojo.isBrowser){
 				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
 				params.clearOnClose = true;
 				params.urlPreventCache = true;
@@ -2895,7 +2895,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					}catch (e){
 						error = e;
 					}
-					if (error) {
+					if (error){
 						d.errback(error);
 					}
 				}
@@ -2912,7 +2912,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
  		runTest: function(datastore, t){
 			//	summary:
 			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
-			if (dojo.isBrowser) {
+			if (dojo.isBrowser){
 				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
 				params.clearOnClose = true;
 				params.urlPreventCache = true;
@@ -2952,7 +2952,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					}catch (e){
 						error = e;
 					}
-					if (error) {
+					if (error){
 						d.errback(error);
 					}
 				}
@@ -2969,7 +2969,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
  		runTest: function(datastore, t){
 			//	summary:
 			//		Function to test the close api properly clears the store for reload when clearOnClose is set.
-			if (dojo.isBrowser) {
+			if (dojo.isBrowser){
 				var params = tests.data.readOnlyItemFileTestTemplates.getTestData("countries");
 				params.urlPreventCache = true;
 				var store = new datastore(params);
@@ -2990,7 +2990,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 					}catch (e){
 						error = e;
 					}
-					if (error) {
+					if (error){
 						d.errback(error);
 					}else{
 						d.callback(true);

@@ -1,6 +1,6 @@
 define(["../main", "doh/main", "../back"], function(dojo, doh){
 	doh.register("tests.back.hash", [
-		function getAndSet(t) {
+		function getAndSet(t){
 			var cases = [
 				"test",
 				"test with spaces",

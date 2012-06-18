@@ -286,8 +286,8 @@ if(typeof window != 'undefined'){
 		};
 		// FIXME: PORT
 		// FIXME: dojo.unloaded requires dojo scope, so using anon function wrapper.
-		_handleNodeEvent("onbeforeunload", function() { dojo.unloaded(); });
-		_handleNodeEvent("onunload", function() { dojo.windowUnloaded(); });
+		_handleNodeEvent("onbeforeunload", function(){ dojo.unloaded(); });
+		_handleNodeEvent("onunload", function(){ dojo.windowUnloaded(); });
 	})();
 	*/
 

@@ -2,7 +2,7 @@
 
 define("alpha",
     ["beta", "gamma"],
-    function (beta, gamma) {
+    function(beta, gamma){
         return {
             name: "alpha",
             betaName: beta.name
@@ -12,7 +12,7 @@ define("alpha",
 
 define("beta",
     ["gamma"],
-    function (gamma) {
+    function(gamma){
         return {
             name: "beta",
             gammaName: gamma.name
@@ -22,7 +22,7 @@ define("beta",
 
 define("gamma",
     ["epsilon"],
-    function (epsilon) {
+    function(epsilon){
         return {
             name: "gamma",
             epsilonName: epsilon.name

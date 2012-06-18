@@ -128,7 +128,7 @@ doh.register("tests.Stateful", [
 		});
 		
 		var attr2 = new StatefulClass2({
-			foo: function() {
+			foo: function(){
 				return "baz";
 			},
 			bar: 4

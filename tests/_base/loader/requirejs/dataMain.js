@@ -2,7 +2,7 @@ require({
         baseUrl: "./"
     },
     ["require", "simple", "doh"],
-    function(require, simple, doh) {
+    function(require, simple, doh){
         doh.register(
             "dataMain",
             [

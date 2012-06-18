@@ -1,5 +1,5 @@
 define("tres",
-  function() {
+  function(){
     return {
       name: "tres"
     };

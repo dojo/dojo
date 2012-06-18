@@ -13,8 +13,7 @@ define([
 			REJECTED = 2;
 	var FULFILLED_ERROR_MESSAGE = "This deferred has already been fulfilled.";
 
-	var noop = function(){};
-	var freezeObject = Object.freeze || noop;
+	var freezeObject = Object.freeze || function(){};
 
 	var signalWaiting = function(waiting, type, result){
 		for(var i = 0; i < waiting.length; i++){
@@ -68,7 +67,7 @@ define([
 		}
 	};
 
-	var Deferred = lang.extend(function(/*Function?*/ canceler){
+	var Deferred = function(/*Function?*/ canceler){
 		// summary:
 		//		Constructor for a deferred.
 		// description:
@@ -77,7 +76,11 @@ define([
 		//		Will be invoked if the deferred is canceled. The canceler receives the
 		//		reason the deferred was canceled as its argument. The deferred is
 		//		rejected with its return value, if any.
+
+		// promise: dojo/promise/Promise
+		//		The readonly promise that tells when this Deferred resolves
 		var promise = this.promise = new Promise();
+
 		var fulfilled, result;
 		var canceled = false;
 		var waiting = [];
@@ -203,16 +206,16 @@ define([
 		};
 
 		/**
-		* promise.Deferred#cancel([reason, strict]) -> Boolean | reason
-		* - reason (?): A message that may be sent to the deferred's canceler, explaining why it's being canceled.
-		* - strict (Boolean): if strict, will throw an error if the deferred has already been fulfilled.
-		*
-		* Signal the deferred that we're no longer interested in the result.
-		* The deferred may subsequently cancel its operation and reject the
-		* promise. Can affect other promises that originate with the same
-		* deferred. Returns the rejection reason if the deferred was canceled
-		* normally.
-		**/
+		 * promise.Deferred#cancel([reason, strict]) -> Boolean | reason
+		 * - reason (?): A message that may be sent to the deferred's canceler, explaining why it's being canceled.
+		 * - strict (Boolean): if strict, will throw an error if the deferred has already been fulfilled.
+		 *
+		 * Signal the deferred that we're no longer interested in the result.
+		 * The deferred may subsequently cancel its operation and reject the
+		 * promise. Can affect other promises that originate with the same
+		 * deferred. Returns the rejection reason if the deferred was canceled
+		 * normally.
+		 **/
 		this.cancel = promise.cancel = function(reason, /*Boolean?*/ strict){
 			// summary:
 			//		Signal the deferred that we're no longer interested in the result.
@@ -251,19 +254,7 @@ define([
 		};
 
 		freezeObject(promise);
-	}, {
-		// Define the shape of Deferred instances
-		promise: null,
-		resolve: noop,
-		reject: noop,
-		progress: noop,
-		then: noop,
-		cancel: noop,
-		isResolved: noop,
-		isRejected: noop,
-		isFulfilled: noop,
-		isCanceled: noop
-	});
+	};
 
 	return Deferred;
 });

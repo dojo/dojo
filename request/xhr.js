@@ -10,6 +10,9 @@ define([
 		// if true, the environment has a native XHR implementation
 		return typeof XMLHttpRequest !== 'undefined';
 	});
+	has.add('dojo-force-activex-xhr', function(){
+		return has('activex') && !document.addEventListener && window.location.protocol === 'file:';
+	});
 
 	has.add('native-xhr2', function(){
 		if(!has('native-xhr')){ return; }
@@ -209,7 +212,7 @@ define([
 		//		does the work of portably generating a new XMLHTTPRequest object.
 		throw new Error('XMLHTTP not available');
 	};
-	if(has('native-xhr')){
+	if(has('native-xhr') && !has('dojo-force-activex-xhr')){
 		xhr._create = function(){
 			return new XMLHttpRequest();
 		};

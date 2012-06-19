@@ -16,7 +16,7 @@ define(["../_base/lang"], function(lang){
 				// Copy own properties from err to |this|
 				for(name in err){
 					if(err.hasOwnProperty(name)){
-						this[name] = tmp[name];
+						this[name] = err[name];
 					}
 				}
 			}else{

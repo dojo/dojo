@@ -11,14 +11,17 @@ define(["../_base/lang"], function(lang){
 				// Error.call() operates on the returned error
 				// object rather than operating on |this|
 				var err = Error.call(this, message),
-					name;
+					prop;
 
 				// Copy own properties from err to |this|
-				for(name in err){
-					if(err.hasOwnProperty(name)){
-						this[name] = err[name];
+				for(prop in err){
+					if(err.hasOwnProperty(prop)){
+						this[prop] = err[prop];
 					}
 				}
+
+				// messsage is non-enumerable in ES5
+				this.message = message;
 			}else{
 				base.apply(this, arguments);
 			}

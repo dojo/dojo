@@ -18,7 +18,12 @@ define([
 		if(!has('native-xhr')){ return; }
 		var x = new XMLHttpRequest();
 		return typeof x['addEventListener'] !== 'undefined' &&
-			(typeof opera === "undefined" || typeof x['upload'] !== 'undefined');
+			(typeof opera === 'undefined' || typeof x['upload'] !== 'undefined');
+	});
+
+	has.add('native-formdata', function(){
+		// if true, the environment has a native FormData implementation
+		return typeof FormData === 'function';
 	});
 
 	function handleResponse(response, error){
@@ -124,7 +129,11 @@ define([
 		//		Sends an HTTP request with the given URL.
 		//	url:
 		//		URL to request
-		var response = util.parseArgs(url, util.deepCreate(defaultOptions, options));
+		var response = util.parseArgs(
+			url,
+			util.deepCreate(defaultOptions, options),
+			has('native-formdata') && options.data && options.data instanceof FormData
+		);
 		url = response.url;
 		options = response.options;
 
@@ -147,7 +156,7 @@ define([
 		if(!_xhr){
 			// If XHR factory somehow returns nothings,
 			// cancel the deferred.
-			dfd.cancel(new RequestError("XHR was not created"));
+			dfd.cancel(new RequestError('XHR was not created'));
 			return returnDeferred ? dfd : dfd.promise;
 		}
 

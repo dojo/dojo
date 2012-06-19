@@ -7,7 +7,18 @@ define(["../_base/lang"], function(lang){
 				if(Error.captureStackTrace){
 					Error.captureStackTrace(this, ErrorCtor);
 				}
-				base.call(this, message);
+
+				// Error.call() operates on the returned error
+				// object rather than operating on |this|
+				var err = Error.call(this, message),
+					name;
+
+				// Copy own properties from err to |this|
+				for(name in err){
+					if(err.hasOwnProperty(name)){
+						this[name] = tmp[name];
+					}
+				}
 			}else{
 				base.apply(this, arguments);
 			}

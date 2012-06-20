@@ -1,8 +1,9 @@
 define([
+	"./has",
 	"./_base/lang",
 	"./errors/CancelError",
 	"./promise/Promise"
-], function(lang, CancelError, Promise){
+], function(has, lang, CancelError, Promise){
 	"use strict";
 
 	// module:
@@ -15,13 +16,19 @@ define([
 
 	var freezeObject = Object.freeze || function(){};
 
-	var signalWaiting = function(waiting, type, result){
+	var signalWaiting = function(waiting, type, result, rejection, deferred){
+		if(has("config-useDeferredInstrumentation")){
+			if(type === REJECTED && Deferred.instrumentRejected && waiting.length === 0){
+				Deferred.instrumentRejected(result, false, rejection, deferred);
+			}
+		}
+
 		for(var i = 0; i < waiting.length; i++){
-			signalListener(waiting[i], type, result);
+			signalListener(waiting[i], type, result, rejection);
 		}
 	};
 
-	var signalListener = function(listener, type, result){
+	var signalListener = function(listener, type, result, rejection){
 		var func = listener[type];
 		var deferred = listener.deferred;
 		if(func){
@@ -42,6 +49,12 @@ define([
 			}
 		}else{
 			signalDeferred(deferred, type, result);
+		}
+
+		if(has("config-useDeferredInstrumentation")){
+			if(type === REJECTED && Deferred.instrumentRejected){
+				Deferred.instrumentRejected(result, !!func, rejection, deferred.promise);
+			}
 		}
 	};
 
@@ -81,9 +94,15 @@ define([
 		//		The readonly promise that tells when this Deferred resolves
 		var promise = this.promise = new Promise();
 
-		var fulfilled, result;
+		var deferred = this;
+		var fulfilled, result, rejection;
 		var canceled = false;
 		var waiting = [];
+
+		if(has("config-useDeferredInstrumentation") && Error.captureStackTrace){
+			Error.captureStackTrace(deferred, Deferred);
+			Error.captureStackTrace(promise, Deferred);
+		}
 
 		this.isResolved = promise.isResolved = function(){
 			// summary:
@@ -124,7 +143,7 @@ define([
 			// strict:
 			//		If strict, will throw an error if the deferred is already fulfilled.
 			if(!fulfilled){
-				signalWaiting(waiting, PROGRESS, update);
+				signalWaiting(waiting, PROGRESS, update, null, deferred);
 				return promise;
 			}else if(strict === true){
 				throw new Error(FULFILLED_ERROR_MESSAGE);
@@ -146,7 +165,7 @@ define([
 			if(!fulfilled){
 				// Set fulfilled, store value. After signaling waiting listeners unset
 				// waiting.
-				signalWaiting(waiting, fulfilled = RESOLVED, result = value);
+				signalWaiting(waiting, fulfilled = RESOLVED, result = value, null, deferred);
 				waiting = null;
 				return promise;
 			}else if(strict === true){
@@ -156,7 +175,7 @@ define([
 			}
 		};
 
-		this.reject = function(error, /*Boolean?*/ strict){
+		var reject = this.reject = function(error, /*Boolean?*/ strict){
 			// summary:
 			//		Reject the deferred.
 			// returns: dojo/promise/Promise
@@ -167,7 +186,10 @@ define([
 			// strict:
 			//		If strict, will throw an error if the deferred is already fulfilled.
 			if(!fulfilled){
-				signalWaiting(waiting, fulfilled = REJECTED, result = error);
+				if(has("config-useDeferredInstrumentation") && Error.captureStackTrace){
+					Error.captureStackTrace(rejection = {}, reject);
+				}
+				signalWaiting(waiting, fulfilled = REJECTED, result = error, rejection, deferred);
 				waiting = null;
 				return promise;
 			}else if(strict === true){
@@ -198,24 +220,13 @@ define([
 				return listener.cancel && listener.cancel(reason);
 			});
 			if(fulfilled && !waiting){
-				signalListener(listener, fulfilled, result);
+				signalListener(listener, fulfilled, result, rejection);
 			}else{
 				waiting.push(listener);
 			}
 			return listener.deferred.promise;
 		};
 
-		/**
-		 * promise.Deferred#cancel([reason, strict]) -> Boolean | reason
-		 * - reason (?): A message that may be sent to the deferred's canceler, explaining why it's being canceled.
-		 * - strict (Boolean): if strict, will throw an error if the deferred has already been fulfilled.
-		 *
-		 * Signal the deferred that we're no longer interested in the result.
-		 * The deferred may subsequently cancel its operation and reject the
-		 * promise. Can affect other promises that originate with the same
-		 * deferred. Returns the rejection reason if the deferred was canceled
-		 * normally.
-		 **/
 		this.cancel = promise.cancel = function(reason, /*Boolean?*/ strict){
 			// summary:
 			//		Signal the deferred that we're no longer interested in the result.
@@ -242,8 +253,7 @@ define([
 					if(typeof reason === "undefined"){
 						reason = new CancelError();
 					}
-					signalWaiting(waiting, fulfilled = REJECTED, result = reason);
-					waiting = null;
+					reject(reason);
 					return reason;
 				}else if(fulfilled === REJECTED && result === reason){
 					return reason;
@@ -254,6 +264,10 @@ define([
 		};
 
 		freezeObject(promise);
+	};
+
+	Deferred.prototype.toString = function(){
+		return "[object Deferred]";
 	};
 
 	return Deferred;

@@ -110,6 +110,10 @@ define([
 			// returns:
 			//		The original promise
 			return this;
+		},
+
+		toString: function(){
+			return "[object Promise]";
 		}
 	});
 });

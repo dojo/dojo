@@ -1,4 +1,11 @@
-define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], function(dojo, config, lang, Promise, when){
+define([
+	"./kernel",
+	"../Deferred",
+	"../promise/Promise",
+	"../has",
+	"./lang",
+	"../when"
+], function(dojo, NewDeferred, Promise, has, lang, when){
 	// module:
 	//		dojo/_base/Deferred
 
@@ -149,7 +156,7 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 		//		handle the asynchronous case.
 
 		var result, finished, isError, head, nextListener;
-		var promise = (this.promise = new Promise);
+		var promise = (this.promise = new Promise());
 
 		function complete(value){
 			if(finished){
@@ -167,7 +174,13 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 				if((mutated = (listener.progress == mutator))){ // assignment and check
 					finished = false;
 				}
+
 				var func = (isError ? listener.error : listener.resolved);
+				if(has("config-useDeferredInstrumentation")){
+					if(isError && NewDeferred.instrumentRejected){
+						NewDeferred.instrumentRejected(result, !!func);
+					}
+				}
 				if(func){
 					try{
 						var newResult = func(result);
@@ -208,6 +221,11 @@ define(["./kernel", "./config", "./lang", "../promise/Promise", "../when"], func
 			//		Fulfills the Deferred instance as an error with the provided error
 			isError = true;
 			this.fired = 1;
+			if(has("config-useDeferredInstrumentation")){
+				if(NewDeferred.instrumentRejected && !nextListener){
+					NewDeferred.instrumentRejected(error, false);
+				}
+			}
 			complete(error);
 			this.results = [null, error];
 		};

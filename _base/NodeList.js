@@ -5,7 +5,7 @@ define(["./kernel", "../query", "./array", "./html", "../NodeList-dom"], functio
 	/*=====
 	return {
 		// summary:
-		//		This module extends dojo/query/NodeList with the legacy connect(), coords(),
+		//		This module extends dojo/query.NodeList with the legacy connect(), coords(),
 		//		blur(), focus(), change(), click(), error(), keydown(), keypress(),
 		//		keyup(), load(), mousedown(), mouseenter(), mouseleave(), mousemove(),
 		//		mouseout(), mouseover(), mouseup(), and submit() methods.

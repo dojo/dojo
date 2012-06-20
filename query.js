@@ -12,7 +12,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 
 	var tnl = function(/*Array*/ a, /*dojo/query.NodeList?*/ parent, /*Function?*/ NodeListCtor){
 		// summary:
-		//		decorate an array to make it look like a `dojo.NodeList`.
+		//		decorate an array to make it look like a `dojo/query.NodeList`.
 		// a:
 		//		Array of nodes to decorate.
 		// parent:
@@ -100,12 +100,12 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 
 	var NodeList = function(array){
 		// summary:
-		//		dojo.NodeList is an of Array-like object which adds syntactic
+		//		Array-like object which adds syntactic
 		//		sugar for chaining, common iteration operations, animation, and
 		//		node manipulation. NodeLists are most often returned as the
 		//		result of dojo.query() calls.
 		// description:
-		//		dojo.NodeList instances provide many utilities that reflect
+		//		NodeList instances provide many utilities that reflect
 		//		core Dojo APIs for Array iteration and manipulation, DOM
 		//		manipulation, and event handling. Instead of needing to dig up
 		//		functions in the dojo.* namespace, NodeLists generally make the
@@ -113,7 +113,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		//		simple, chainable way.
 		// example:
 		//		create a node list from a node
-		//		|	new dojo.NodeList(dojo.byId("foo"));
+		//		|	new query.NodeList(dojo.byId("foo"));
 		// example:
 		//		get a NodeList from a CSS query and iterate on it
 		//		|	var l = dojo.query(".thinger");
@@ -293,11 +293,11 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 
 		end: function(){
 			// summary:
-			//		Ends use of the current `dojo.NodeList` by returning the previous dojo.NodeList
-			//		that generated the current dojo.NodeList.
+			//		Ends use of the current `NodeList` by returning the previous NodeList
+			//		that generated the current NodeList.
 			// description:
-			//		Returns the `dojo.NodeList` that generated the current `dojo.NodeList`. If there
-			//		is no parent dojo.NodeList, an empty dojo.NodeList is returned.
+			//		Returns the `NodeList` that generated the current `NodeList`. If there
+			//		is no parent NodeList, an empty NodeList is returned.
 			// example:
 			//	|	dojo.query("a")
 			//	|		.filter(".disabled")
@@ -445,14 +445,12 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		as well as items passed in as parameters
 			// description:
 			//		This method behaves exactly like the Array.concat method
-			//		with the caveat that it returns a `dojo.NodeList` and not a
+			//		with the caveat that it returns a `NodeList` and not a
 			//		raw Array. For more details, see the (Array.concat
 			//		docs)[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:concat]
 			// item: Object?
 			//		Any number of optional parameters may be passed in to be
 			//		spliced into the NodeList
-			// returns:
-			//		dojo.NodeList
 
 			//return this._wrap(apc.apply(this, arguments));
 			// the line above won't work for the native NodeList :-(
@@ -479,7 +477,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			// summary:
 			//		see dojo.map(). The primary difference is that the acted-on
 			//		array is implicitly this NodeList and the return is a
-			//		dojo.NodeList (a subclass of Array)
+			//		NodeList (a subclass of Array)
 			return this._wrap(array.map(this, func, obj), this); // dojo/query.NodeList
 		},
 
@@ -525,7 +523,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		instantiate: function(/*String|Object*/ declaredClass, /*Object?*/ properties){
 			// summary:
 			//		Create a new instance of a specified class, using the
-			//		specified properties and each node in the nodeList as a
+			//		specified properties and each node in the NodeList as a
 			//		srcNodeRef.
 			// example:
 			//		Grabs all buttons in the page and converts them to diji.form.Buttons.
@@ -560,9 +558,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//	|	dojo.query("a").at(0).onclick(fn).end().forEach(function(n){
 			//	|		console.log(n); // all anchors on the page.
 			//	|	})
-			//
-			// returns:
-			//		dojo.NodeList
+
 			var t = new this._NodeListCtor(0);
 			forEach(arguments, function(i){
 				if(i < 0){ i = this.length + i; }
@@ -577,7 +573,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//	summary:
 			//		Returns nodes which match the given CSS selector, searching the
 			//		entire document by default but optionally taking a node to scope
-			//		the search by. Returns an instance of dojo.NodeList.
+			//		the search by. Returns an instance of NodeList.
 			if(typeof root == "string"){
 				root = dom.byId(root);
 				if(!root){
@@ -599,7 +595,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		// the engine provides a filtering function, use it to for matching
 		query.filter = engine.filter || function(nodes, selector, root){
 			// summary:
-			//		Filters an array of nodes. Note that this does not guarantee to return a dojo.NodeList, just an array.
+			//		Filters an array of nodes. Note that this does not guarantee to return a NodeList, just an array.
 			return query(selector, root).filter(function(node){
 				return array.indexOf(nodes, node) > -1;
 			});
@@ -618,15 +614,13 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 	 query = function(selector, context){
 		 // summary:
 		 //		This modules provides DOM querying functionality. The module export is a function
-		 //		that can be used to query for DOM nodes by CSS selector and returns a dojo.NodeList
+		 //		that can be used to query for DOM nodes by CSS selector and returns a NodeList
 		 //		representing the matching nodes.
-		 //
 		 // selector: String
 		 //		A CSS selector to search for.
 		 // context: String|DomNode?
 		 //		An optional context to limit the searching scope. Only nodes under `context` will be
 		 //		scanned.
-		 //
 		 //	example:
 		 //		add an onclick handler to every submit button in the document
 		 //		which causes the form to be sent via Ajax instead:
@@ -648,7 +642,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		 //
 		 // description:
 		 //		dojo/query is responsible for loading the appropriate query engine and wrapping
-		 //		its results with a `dojo.NodeList`. You can use dojo/query with a specific selector engine
+		 //		its results with a `NodeList`. You can use dojo/query with a specific selector engine
 		 //		by using it as a plugin. For example, if you installed the sizzle package, you could
 		 //		use it as the selector engine with:
 		 //		|	define("dojo/query!sizzle", function(query){
@@ -681,7 +675,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		 //		For example:
 		 //		|	<script data-dojo-config="query-selector:'css3'" src="dojo.js"></script>
 		 //
-		 return new dojo.NodeList(); // dojo/query.NodeList
+		 return new NodeList(); // dojo/query.NodeList
 	 };
 	 =====*/
 

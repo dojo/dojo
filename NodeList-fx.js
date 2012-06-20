@@ -1,7 +1,8 @@
-define(["./_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./fx"],
-  function(NodeList, lang, connectLib, baseFx, coreFx){
-	// module:
-	//		dojo/NodeList-fx
+define(["./query", "./_base/lang", "./_base/connect", "./_base/fx", "./fx"],
+function(query, lang, connectLib, baseFx, coreFx){
+
+// module:
+//		dojo/NodeList-fx
 
 /*=====
 return function(){
@@ -10,6 +11,8 @@ return function(){
 	//		with additional FX functions.  NodeList is the array-like object used to hold query results.
 };
 =====*/
+
+var NodeList = query.NodeList;
 
 lang.extend(NodeList, {
 	_anim: function(obj, method, args){

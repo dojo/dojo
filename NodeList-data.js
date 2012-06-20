@@ -1,15 +1,16 @@
 define([
 	"./_base/kernel", "./query", "./_base/lang", "./_base/array", "./dom-attr"
 ], function(dojo, query, lang, array, attr){
+
 	// module:
 	//		dojo/NodeList-data
 
-/*=====
-return function(){
-	// summary:
-	//		Adds data() and removeData() methods to NodeList, and returns NodeList constructor.
-};
-=====*/
+	/*=====
+	return function(){
+		// summary:
+		//		Adds data() and removeData() methods to NodeList, and returns NodeList constructor.
+	};
+	=====*/
 
 	var NodeList = query.NodeList;
 

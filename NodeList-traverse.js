@@ -1,6 +1,7 @@
 define(["./query", "./_base/lang", "./_base/array"], function(dquery, lang, array){
-	// module:
-	//		dojo/NodeList-traverse
+
+// module:
+//		dojo/NodeList-traverse
 
 /*=====
 return function(){

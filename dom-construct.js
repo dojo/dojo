@@ -3,7 +3,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 	// module:
 	//		dojo/dom-construct
 	// summary:
-	//		This module defines the core dojo DOM construction API.
+	//		This module defines the core dojo DOM construction API. (TODO: make summary appear in API doc)
 
 	// support stuff for toDom()
 	var tagWrap = {
@@ -207,10 +207,10 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//		A DOM Element creation function. A shorthand method for creating a node or
 		//		a fragment, and allowing for a convenient optional attribute setting step,
 		//		as well as an optional DOM placement reference.
-		//|
+		//
 		//		Attributes are set by passing the optional object through `dojo.setAttr`.
 		//		See `dojo.setAttr` for noted caveats and nuances, and API if applicable.
-		//|
+		//
 		//		Placement is done via `dojo.place`, assuming the new node to be the action
 		//		node, passing along the optional reference node and position.
 		//

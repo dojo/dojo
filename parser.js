@@ -194,7 +194,7 @@ define(
 			// options: Object?
 			//		An options object used to hold kwArgs for instantiation.   See parse.options argument for details.
 			// scripts: DomNode[]?
-			//		Array of <script type="dojo/*"> DOMNodes.  If not specified, will search for <script> tags inside node.
+			//		Array of `<script type="dojo/*">` DOMNodes.  If not specified, will search for `<script>` tags inside node.
 			// inherited: Object?
 			//		Settings from dir=rtl or lang=... on a node above this node.   Overrides options.inherited.
 

@@ -141,8 +141,9 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	}
 
 	back.init = function(){
-		//summary: Initializes the undo stack. This must be called from a <script>
-		//		   block that lives inside the <body> tag to prevent bugs on IE.
+		//summary:
+		//		Initializes the undo stack. This must be called from a <script>
+		//		block that lives inside the `<body>` tag to prevent bugs on IE.
 		// description:
 		//		Only call this method before the page's DOM is finished loading. Otherwise
 		//		it will not work. Be careful with xdomain loading or djConfig.debugAtAllCosts scenarios,

@@ -124,13 +124,13 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		assume a DOM created by this markup:
 			//	|	<div id="foo"></div>
 			//	|	<div id="bar"></div>
-			//		This code inserts <p>Hello World</p> into both divs:
+			//		This code inserts `<p>Hello World</p>` into both divs:
 			//	|	dojo.query("div").innerHTML("<p>Hello World</p>");
 			//	example:
 			//		assume a DOM created by this markup:
 			//	|	<div id="foo"><p>Hello Mars</p></div>
 			//	|	<div id="bar"><p>Hello World</p></div>
-			//		This code returns "<p>Hello Mars</p>":
+			//		This code returns `<p>Hello Mars</p>`:
 			//	|	var message = dojo.query("div").innerHTML();
 			if(arguments.length){
 				return this.addContent(value, "only"); // dojo/query.NodeList

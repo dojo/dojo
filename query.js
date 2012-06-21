@@ -277,7 +277,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			// 		This supports event delegation by using selectors as the first argument with the event names as
 			//		pseudo selectors. For example:
 			//		| dojo.query("#my-list").on("li:click", listener);
-			//		This will listen for click events within <li> elements that are inside the #my-list element.
+			//		This will listen for click events within `<li>` elements that are inside the `#my-list` element.
 			//		Because on supports CSS selector syntax, we can use comma-delimited events as well:
 			//		| dojo.query("#my-list").on("li button:mouseover, li:click", listener);
 			var handles = this.map(function(node){
@@ -671,7 +671,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		 //		|	define("dojo/query!css3", function(query){
 		 //		|		query('#t > h3:nth-child(odd)')...
 		 //
-		 //		You can also choose the selector engine/load configuration by setting the <FIXME:what is the configuration setting?>.
+		 //		You can also choose the selector engine/load configuration by setting the query-selector:
 		 //		For example:
 		 //		|	<script data-dojo-config="query-selector:'css3'" src="dojo.js"></script>
 		 //

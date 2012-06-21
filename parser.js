@@ -72,10 +72,10 @@ define(
 
 		_functionFromScript: function(script, attrData){
 			// summary:
-			//		Convert a <script type="dojo/method" args="a, b, c"> ... </script>
+			//		Convert a `<script type="dojo/method" args="a, b, c"> ... </script>`
 			//		into a function
 			// script: DOMNode
-			//		The <script> DOMNode
+			//		The `<script>` DOMNode
 			// attrData: String
 			//		For HTML5 compliance, searches for attrData + "args" (typically
 			//		"data-dojo-args") instead of "args"
@@ -680,7 +680,7 @@ define(
 
 		_require: function(/*DOMNode*/ script){
 			// summary:
-			//		Helper for _scanAMD().  Takes a <script type=dojo/require>bar: "acme/bar", ...</script> node,
+			//		Helper for _scanAMD().  Takes a `<script type=dojo/require>bar: "acme/bar", ...</script>` node,
 			//		calls require() to load the specified modules and (asynchronously) assign them to the specified global
 			//		variables, and returns a Promise for when that operation completes.
 			//
@@ -709,12 +709,10 @@ define(
 		_scanAmd: function(root){
 			// summary:
 			//		Scans the DOM for any declarative requires and returns their values.
-			//
 			// description:
-			//		Looks for <script type=dojo/require>bar: "acme/bar", ...</script> node, calls require() to load the
+			//		Looks for `<script type=dojo/require>bar: "acme/bar", ...</script>` node, calls require() to load the
 			//		specified modules and (asynchronously) assign them to the specified global variables,
 			//		 and returns a Promise for when those operations complete.
-			//
 			// root: DomNode
 			//		The node to base the scan from.
 
@@ -739,7 +737,6 @@ define(
 		parse: function(rootNode, options){
 			// summary:
 			//		Scan the DOM for class instances, and instantiate them.
-			//
 			// description:
 			//		Search specified node (or root node) recursively for class instances,
 			//		and instantiate them. Searches for either data-dojo-type="Class" or
@@ -756,13 +753,11 @@ define(
 			//		types by looking up the Class prototype values. This is the default behavior
 			//		from Dojo 1.0 to Dojo 1.5. `dojoType` support is deprecated, and will
 			//		go away in Dojo 2.0.
-			//
 			// rootNode: DomNode?
 			//		A default starting root node from which to start the parsing. Can be
 			//		omitted, defaulting to the entire document. If omitted, the `options`
 			//		object can be passed in this place. If the `options` object has a
 			//		`rootNode` member, that is used.
-			//
 			// options: Object?
 			//		A hash of options.
 			//
@@ -787,26 +782,21 @@ define(
 			//			* propsThis: Object
 			//				If specified, "this" referenced from data-dojo-props will refer to propsThis.
 			//				Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
-			//
 			// returns: Mixed
 			//		Returns a blended object that is an array of the instantiated objects, but also can include
 			//		a promise that is resolved with the instantiated objects.  This is done for backwards
 			//		compatibility.  If the parser auto-requires modules, it will always behave in a promise
 			//		fashion and `parser.parse().then(function(instances){...})` should be used.
-			//
 			// example:
 			//		Parse all widgets on a page:
 			//	|		dojo.parser.parse();
-			//
 			// example:
 			//		Parse all classes within the node with id="foo"
 			//	|		dojo.parser.parse(dojo.byId('foo'));
-			//
 			// example:
 			//		Parse all classes in a page, but do not call .startup() on any
 			//		child
 			//	|		dojo.parser.parse({ noStart: true })
-			//
 			// example:
 			//		Parse all classes in a node, but do not call .startup()
 			//	|		dojo.parser.parse(someNode, { noStart:true });

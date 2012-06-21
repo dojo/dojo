@@ -237,7 +237,7 @@ define([
 	/*=====
 	script.attach = function(id, url, frameDocument){
 		// summary:
-		//		creates a new <script> tag pointing to the specified URL and
+		//		creates a new `<script>` tag pointing to the specified URL and
 		//		adds it to the document.
 		// description:
 		//		Attaches the script element to the DOM. Use this method if you

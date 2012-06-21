@@ -18,7 +18,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 		// summary:
 		//		removes !DOCTYPE and title elements from the html string.
 		//
-		//		khtml is picky about dom faults, you can't attach a style or <title> node as child of body
+		//		khtml is picky about dom faults, you can't attach a style or `<title>` node as child of body
 		//		must go into head, so we need to cut out those tags
 		// cont:
 		//		An html string for insertion into the dom
@@ -88,7 +88,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			cleanContent: false,
 
 			// extractContent: Boolean
-			//		Should the content be treated as a full html document, and the real content stripped of <html>, <body> wrapper before injection
+			//		Should the content be treated as a full html document,
+			//		and the real content stripped of `<html> <body>` wrapper before injection
 			extractContent: false,
 
 			// parseContent: Boolean

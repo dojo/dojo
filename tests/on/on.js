@@ -250,7 +250,7 @@ doh.register("tests.on",
 		},
 		function eventAugmentation(t){
 			var div = document.body.appendChild(document.createElement("div"));
-			var button = div.appendChild(document.createElement("buton"));
+			var button = div.appendChild(document.createElement("button"));
 			on(button, "click", function(event){
 				event.modified = true;
 				event.test = 3;

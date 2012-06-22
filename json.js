@@ -125,22 +125,24 @@ define(["./has"], function(has){
 					var output = [];
 					for(key in it){
 						var keyStr;
-						if(typeof key == "number"){
-							keyStr = '"' + key + '"';
-						}else if(typeof key == "string"){
-							keyStr = escapeString(key);
-						}else{
-							// skip non-string or number keys
-							continue;
+						if(it.hasOwnProperty(key)){
+							if(typeof key == "number"){
+								keyStr = '"' + key + '"';
+							}else if(typeof key == "string"){
+								keyStr = escapeString(key);
+							}else{
+								// skip non-string or number keys
+								continue;
+							}
+							val = stringify(it[key], nextIndent, key);
+							if(typeof val != "string"){
+								// skip non-serializable values
+								continue;
+							}
+							// At this point, the most non-IE browsers don't get in this branch 
+							// (they have native JSON), so push is definitely the way to
+							output.push(newLine + nextIndent + keyStr + ":" + sep + val);
 						}
-						val = stringify(it[key], nextIndent, key);
-						if(typeof val != "string"){
-							// skip non-serializable values
-							continue;
-						}
-						// At this point, the most non-IE browsers don't get in this branch 
-						// (they have native JSON), so push is definitely the way to
-						output.push(newLine + nextIndent + keyStr + ":" + sep + val);
 					}
 					return "{" + output.join(",") + newLine + indent + "}"; // String
 				}

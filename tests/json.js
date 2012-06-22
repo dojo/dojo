@@ -53,6 +53,11 @@ define(["../main", "doh/main", "../json"], function(dojo, doh, JSON){
 			throw new Error("stringify must throw for circular references");
 
 		},
+		function serializeInherited(t){ 
+ 			function FooBar() { this.foo = "foo"; }
+ 			FooBar.prototype.bar = "bar";
+ 			t.is('{"foo":"foo"}', JSON.stringify(new FooBar())); 
+ 		},
 		/*Apparently Firefox doesn't pass the key to the toJSON method*/
 		function serializeToJSON(t){ t.is('{"foo":{"name":"value"}}', JSON.stringify({foo:{toJSON:function(key){return {name:"value"}; }}})); }
 	]);

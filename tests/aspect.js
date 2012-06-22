@@ -76,6 +76,11 @@ doh.register("tests.aspect",
 			obj.method(8); // 8, 9, 10
 			obj.method(8); // 8, 9, 10, 12
 			t.is([0, 0, 3, 0, 5, 3, 0, 5, 3, 6, 0, 3, 7, 4, 8, 9, 10, 8, 9, 10, 12], order);
+			obj = {method: function(){}};
+			aspect.after(obj, "method", function(){
+				return false;
+			}, true);
+			t.t(obj.method() === false);
 		},
 		function around(t){
 			var order = [];

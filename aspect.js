@@ -4,7 +4,7 @@ define([], function(){
 	//		dojo/aspect
 
 	"use strict";
-	var nextId = 0;
+	var undefined, nextId = 0;
 	function advise(dispatcher, type, advice, receiveArguments){
 		var previous = dispatcher[type];
 		var around = type == "around";
@@ -90,8 +90,13 @@ define([], function(){
 					// after advice
 					var after = dispatcher.after;
 					while(after && after.id < executionId){
-						results = after.receiveArguments ? after.advice.apply(this, args) || results :
-								after.advice.call(this, results);
+						if(after.receiveArguments){
+							var newResults = after.advice.apply(this, args);
+							// change the return value only if a new value was returned
+							results = newResults === undefined ? results : newResults;
+						}else{
+							results = after.advice.call(this, results, args);
+						}
 						after = after.next;
 					}
 					return results;

@@ -160,14 +160,14 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		only calls the listener when the CSS selector matches the target of the event.
 		//
 		//		The application must require() an appropriate level of dojo/query to handle the selector.
-		//	selector:
+		// selector:
 		//		The CSS selector to use for filter events and determine the |this| of the event listener.
-		//	eventType:
+		// eventType:
 		//		The event to listen for
 		// children:
 		//		Indicates if children elements of the selector should be allowed. This defaults to 
 		//		true
-		//	example:
+		// example:
 		//		define(["dojo/on", "dojo/mouse", "dojo/query!css2"], function(listen, mouse){
 		//			on(node, on.selector(".my-class", mouse.enter), handlerForMyHover);
 		return function(target, listener){
@@ -209,14 +209,14 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		syntheticDispatch = on.emit = function(target, type, event){
 		// summary:
 		//		Fires an event on the target object.
-		//	target:
+		// target:
 		//		The target object to fire the event on. This can be a DOM element or a plain 
 		//		JS object. If the target is a DOM element, native event emiting mechanisms
 		//		are used when possible.
-		//	type:
+		// type:
 		//		The event type name. You can emulate standard native events like "click" and 
 		//		"mouseover" or create custom events like "open" or "finish".
-		//	event:
+		// event:
 		//		An object that provides the properties for the event. See https://developer.mozilla.org/en/DOM/event.initEvent 
 		//		for some of the properties. These properties are copied to the event object.
 		//		Of particular importance are the cancelable and bubbles properties. The
@@ -227,11 +227,11 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		on the target and then each parent successively until the top of the tree
 		//		is reached or stopPropagation() is called. Both bubbles and cancelable 
 		//		default to false.
-		//	returns:
+		// returns:
 		//		If the event is cancelable and the event is not cancelled,
 		//		emit will return true. If the event is cancelable and the event is cancelled,
 		//		emit will return false.
-		//	details:
+		// details:
 		//		Note that this is designed to emit events for listeners registered through
 		//		dojo/on. It should actually work with any event listener except those
 		//		added through IE's attachEvent (IE8 and below's non-W3C event emiting
@@ -240,7 +240,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		action, it only returns a value to indicate if the default action should take
 		//		place. For example, emiting a keypress event would not cause a character
 		//		to appear in a textbox.
-		//	example:
+		// example:
 		//		To fire our own click event
 		//	|	on.emit(dojo.byId("button"), "click", {
 		//	|		cancelable: true,

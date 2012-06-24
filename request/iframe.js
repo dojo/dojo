@@ -119,7 +119,8 @@ define([
 	}
 
 	function fireNextRequest(){
-		// summary: Internal method used to fire the next request in the queue.
+		// summary:
+		//		Internal method used to fire the next request in the queue.
 		var dfd;
 		try{
 			if(iframe._currentDfd || !iframe._dfdQueue.length){

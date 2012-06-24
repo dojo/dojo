@@ -2,8 +2,8 @@ define([
 	"../dom", "../sniff", "../_base/array", "../_base/lang", "../_base/window"
 ], function(dom, has, array, lang, win){
 
-	//  module:
-	//    dojo/selector/acme
+	// module:
+	//		dojo/selector/acme
 
 /*
 	acme architectural overview:
@@ -1467,7 +1467,7 @@ define([
 	};
 	query.filter = function(/*Node[]*/ nodeList, /*String*/ filter, /*String|DOMNode?*/ root){
 		// summary:
-		// 		function for filtering a NodeList based on a selector, optimized for simple selectors
+		//		function for filtering a NodeList based on a selector, optimized for simple selectors
 		var tmpNodeList = [],
 			parts = getQueryParts(filter),
 			filterFunc =

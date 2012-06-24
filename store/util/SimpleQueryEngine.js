@@ -1,7 +1,7 @@
 define(["../../_base/array" /*=====, "../api/Store" =====*/], function(arrayUtil /*=====, Store =====*/){
 
-//  module:
-//    dojo/store/util/SimpleQueryEngine
+// module:
+//		dojo/store/util/SimpleQueryEngine
 
 return function(query, options){
 	// summary:
@@ -25,8 +25,8 @@ return function(query, options){
 	//		An object hash with fields that may match fields of items in the store.
 	//		Values in the hash will be compared by normal == operator, but regular expressions
 	//		or any object that provides a test() method are also supported and can be
-	// 		used to match strings by more complex expressions
-	// 		(and then the regex's or object's test() method will be used to match values).
+	//		used to match strings by more complex expressions
+	//		(and then the regex's or object's test() method will be used to match values).
 	//
 	// options: Store.QueryOptions?
 	//		An object that contains optional information such as sort, start, and count.

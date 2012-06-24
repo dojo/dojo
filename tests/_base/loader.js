@@ -34,10 +34,10 @@ define([
 		doh.register("tests._base.loader.xdomin-async-2", require.toUrl("./loader/xdomain/xdomain.html"), {async:"legacyAsync", variation:2});
 		// the requirejs test suite. The following tests are not used:
 		//
-		//   * baseUrl: dojo's baseUrl is different--it defaults to the dojo tree. See TODO
-		//   * layers: dojo's build system does things differently
-		//   * afterload: is not constructed in a way that works with doh
-		//   * plugin/sync: this test seems like it will always fail in async mode; TODO check with James
+		//	 * baseUrl: dojo's baseUrl is different--it defaults to the dojo tree. See TODO
+		//	 * layers: dojo's build system does things differently
+		//	 * afterload: is not constructed in a way that works with doh
+		//	 * plugin/sync: this test seems like it will always fail in async mode; TODO check with James
         //
 		doh.register("tests._base.loader.requirejs-simple-sync", require.toUrl("./loader/requirejs/simple.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-simple-async", require.toUrl("./loader/requirejs/simple.html"), {async:1});

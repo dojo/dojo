@@ -81,7 +81,7 @@ date.compare = function(/*Date*/date1, /*Date?*/date2, /*String?*/portion){
 	// summary:
 	//		Compare two date objects by date, time, or both.
 	// description:
-	//  	Returns 0 if equal, positive if a > b, else negative.
+	//		Returns 0 if equal, positive if a > b, else negative.
 	// date1:
 	//		Date object
 	// date2:

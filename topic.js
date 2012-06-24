@@ -16,8 +16,8 @@ define(["./Evented"], function(Evented){
 		publish: function(topic, event){
 			// summary:
 			//		Publishes a message to a topic on the pub/sub hub. All arguments after
-			// 		the first will be passed to the subscribers, so any number of arguments
-			// 		can be provided (not just event).
+			//		the first will be passed to the subscribers, so any number of arguments
+			//		can be provided (not just event).
 			// topic: String
 			//		The name of the topic to publish to
 			// event: Object
@@ -30,7 +30,7 @@ define(["./Evented"], function(Evented){
 			//		Subscribes to a topic on the pub/sub hub
 			// topic: String
 			//		The topic to subscribe to
-			//	listener: Function
+			// listener: Function
 			//		A function to call when a message is published to the given topic
 			return hub.on.apply(hub, arguments);
 		}

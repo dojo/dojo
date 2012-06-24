@@ -1,12 +1,12 @@
 define(["./kernel", "../json"], function(dojo, json){
 
 // module:
-//    dojo/_base/json
+//		dojo/_base/json
 
 /*=====
 return {
 	// summary:
-	//    This module defines the dojo JSON API.
+	//		This module defines the dojo JSON API.
 };
 =====*/
 
@@ -61,7 +61,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint){
 	//		Note that if native JSON support is available, it will be used for serialization,
 	//		and native implementations vary on the exact spacing used in pretty printing.
 	// returns:
-	// 		A JSON string serialization of the passed-in object.
+	//		A JSON string serialization of the passed-in object.
 	// example:
 	//		simple serialization of a trivial object
 	//		|	var jsonStr = dojo.toJson({ howdy: "stranger!", isStrange: true });

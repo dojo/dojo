@@ -7,7 +7,7 @@ var base = null;
 
 /*=====
 var __HeaderOptions = {
-		//	headers: Object?
+		// headers: Object?
 		//		Additional headers to send along with the request.
 	},
 	__PutDirectives = declare(Store.PutDirectives, __HeaderOptions),
@@ -15,15 +15,15 @@ var __HeaderOptions = {
 =====*/
 
 return declare("dojo.store.JsonRest", base, {
-	//	summary:
+	// summary:
 	//		This is a basic store for RESTful communicating with a server through JSON
 	//		formatted data. It implements dojo/store/api/Store.
 
 	constructor: function(options){
-		//	summary:
+		// summary:
 		//		This is a basic store for RESTful communicating with a server through JSON
 		//		formatted data.
-		//	options: dojo/store/JsonRest
+		// options: dojo/store/JsonRest
 		//		This provides any configuration information that will be mixed into the store
 		this.headers = {};
 		declare.safeMixin(this, options);
@@ -40,26 +40,26 @@ return declare("dojo.store.JsonRest", base, {
 	//		sent to the server
 	target: "",
 
-	//	idProperty: String
+	// idProperty: String
 	//		Indicates the property to use as the identity property. The values of this
 	//		property should be unique.
 	idProperty: "id",
 
-	//	sortParam: String
+	// sortParam: String
 	//		The query parameter to used for holding sort information. If this is omitted, than
 	//		the sort information is included in a functional query token to avoid colliding
 	//		with the set of name/value pairs.
 
 	get: function(id, options){
-		//	summary:
+		// summary:
 		//		Retrieves an object by its identity. This will trigger a GET request to the server using
 		//		the url `this.target + id`.
-		//	id: Number
+		// id: Number
 		//		The identity to use to lookup the object
-		//	options: Object?
+		// options: Object?
 		//		HTTP headers. For consistency with other methods, if a `headers` key exists on this object, it will be
 		//		used to provide HTTP headers instead.
-		//	returns: Object
+		// returns: Object
 		//		The object in the store that matches the given id.
 		options = options || {};
 		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers || options);
@@ -70,29 +70,29 @@ return declare("dojo.store.JsonRest", base, {
 		});
 	},
 
-	//	accepts: String
+	// accepts: String
 	//		Defines the Accept header to use on HTTP requests
 	accepts: "application/javascript, application/json",
 
 	getIdentity: function(object){
-		//	summary:
+		// summary:
 		//		Returns an object's identity
-		//	object: Object
+		// object: Object
 		//		The object to get the identity from
-		//	returns: Number
+		// returns: Number
 		return object[this.idProperty];
 	},
 
 	put: function(object, options){
-		//	summary:
+		// summary:
 		//		Stores an object. This will trigger a PUT request to the server
 		//		if the object has an id, otherwise it will trigger a POST request.
-		//	object: Object
+		// object: Object
 		//		The object to store.
-		//	options: __PutDirectives?
+		// options: __PutDirectives?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
-		//	returns: Number
+		// returns: Number
 		options = options || {};
 		var id = ("id" in options) ? options.id : this.getIdentity(object);
 		var hasId = typeof id != "undefined";
@@ -110,12 +110,12 @@ return declare("dojo.store.JsonRest", base, {
 	},
 
 	add: function(object, options){
-		//	summary:
+		// summary:
 		//		Adds an object. This will trigger a PUT request to the server
 		//		if the object has an id, otherwise it will trigger a POST request.
-		//	object: Object
+		// object: Object
 		//		The object to store.
-		//	options: __PutDirectives?
+		// options: __PutDirectives?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		options = options || {};
@@ -124,11 +124,11 @@ return declare("dojo.store.JsonRest", base, {
 	},
 
 	remove: function(id, options){
-		//	summary:
+		// summary:
 		//		Deletes an object by its identity. This will trigger a DELETE request to the server.
-		//	id: Number
+		// id: Number
 		//		The identity to use to delete the object
-		//	options: __HeaderOptions?
+		// options: __HeaderOptions?
 		//		HTTP headers.
 		options = options || {};
 		return xhr("DELETE", {
@@ -138,14 +138,14 @@ return declare("dojo.store.JsonRest", base, {
 	},
 
 	query: function(query, options){
-		//	summary:
+		// summary:
 		//		Queries the store for objects. This will trigger a GET request to the server, with the
 		//		query added as a query string.
-		//	query: Object
+		// query: Object
 		//		The query to use for retrieving objects from the store.
-		//	options: __QueryOptions?
+		// options: __QueryOptions?
 		//		The optional arguments to apply to the resultset.
-		//	returns: Store.QueryResults
+		// returns: Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		options = options || {};
 

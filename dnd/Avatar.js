@@ -108,7 +108,8 @@ return declare("dojo.dnd.Avatar", null, {
 			}, this);
 	},
 	_generateText: function(){
-		// summary: generates a proper text to reflect copying or moving of items
+		// summary:
+		//		generates a proper text to reflect copying or moving of items
 		return this.manager.nodes.length.toString();
 	}
 });

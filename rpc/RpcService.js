@@ -50,10 +50,10 @@ return declare("dojo.rpc.RpcService", null, {
 			}else{
 				// otherwise we assume it's an arguments object with the following
 				// (optional) properties:
-				//      - serviceUrl
-				//      - strictArgChecks
-				//      - smdStr
-				//      - smdObj
+				//		- serviceUrl
+				//		- strictArgChecks
+				//		- smdStr
+				//		- smdObj
 
 				if(args.serviceUrl){
 					this.serviceUrl = args.serviceUrl;

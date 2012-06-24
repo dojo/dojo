@@ -12,7 +12,7 @@ has.add("dom-qsa", !!querySelectorAll);
 var liteEngine = function(selector, root){
 	// summary:
 	//		A small lightweight query selector engine that implements CSS2.1 selectors
-	// 		minus pseudo-classes and the sibling combinator, plus CSS3 attribute selectors
+	//		minus pseudo-classes and the sibling combinator, plus CSS3 attribute selectors
 
 	if(combine && selector.indexOf(',') > -1){
 		return combine(selector, root);

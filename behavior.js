@@ -67,7 +67,7 @@ var Behavior = function(){
 		//		If the value corresponding to the ID key is a function and not a
 		//		list, it's treated as though it was the value of "found".
 		//
-		// 		dojo.behavior.add() can be called any number of times before
+		//		dojo.behavior.add() can be called any number of times before
 		//		the DOM is ready. `dojo.behavior.apply()` is called automatically
 		//		by `dojo.addOnLoad`, though can be called to re-apply previously added
 		//		behaviors anytime the DOM changes.

@@ -393,14 +393,14 @@
 			// Modules go through several phases in creation:
 			//
 			// 1. Requested: some other module's definition or a require application contained the requested module in
-			//    its dependency vector or executing code explicitly demands a module via req.require.
+			//	  its dependency vector or executing code explicitly demands a module via req.require.
 			//
 			// 2. Injected: a script element has been appended to the insert-point element demanding the resource implied by the URL
 			//
 			// 3. Loaded: the resource injected in [2] has been evalated.
 			//
 			// 4. Defined: the resource contained a define statement that advised the loader about the module. Notice that some
-			//    resources may just contain a bundle of code and never formally define a module via define
+			//	  resources may just contain a bundle of code and never formally define a module via define
 			//
 			// 5. Evaluated: the module was defined via define and the loader has evaluated the factory and computed a result.
 			= {},

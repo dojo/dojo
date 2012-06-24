@@ -1,5 +1,5 @@
 exports.config = function(config){
-	//	summary:
+	// summary:
 	//		This module provides bootstrap configuration for running dojo in node.js
 
 	// any command line arguments with the load flag are pushed into deps

@@ -464,10 +464,10 @@ doh.register("tests.number",
 
 	//!!Failed case
 	//In ICU4J:
-	//        unquoted special characters in the suffix are illegal
-	//        so "000.000|###" is illegal; "000.000'|###'" is legal
+	//		  unquoted special characters in the suffix are illegal
+	//		  so "000.000|###" is illegal; "000.000'|###'" is legal
 	//dojo.number.format:
-	//        when formatting 1.2 with illegal pattern "000.000|###"
+	//		  when formatting 1.2 with illegal pattern "000.000|###"
 	//		  no exception was thrown but got "001.200|###" instead.
 
 	/*

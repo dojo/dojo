@@ -198,7 +198,7 @@ define([
 		time: function(name){
 			// summary:
 			//		Starts timers assigned to name given in argument. Timer stops and displays on timeEnd(title);
-			//	example:
+			// example:
 			//	|	console.time("load");
 			//	|	console.time("myFunction");
 			//	|	console.timeEnd("load");

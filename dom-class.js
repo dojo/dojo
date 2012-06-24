@@ -259,7 +259,7 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			// summary:
 			//		Adds a class to node if not present, or removes if present.
 			//		Pass a boolean condition if you want to explicitly add or remove.
-			//      Returns the condition that was specified directly or indirectly.
+			//		Returns the condition that was specified directly or indirectly.
 			//
 			// node: String|DOMNode
 			//		String ID or DomNode reference to toggle a class string
@@ -270,7 +270,7 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//
 			// condition:
 			//		If passed, true means to add the class, false means to remove.
-			//      Otherwise dojo.hasClass(node, classStr) is used to detect the class presence.
+			//		Otherwise dojo.hasClass(node, classStr) is used to detect the class presence.
 			//
 			// example:
 			//	|	dojo.toggleClass("someNode", "hovered");

@@ -174,23 +174,23 @@ lang.setObject("dojo.date.locale", exports);
 
 /*=====
 var __FormatOptions = exports.__FormatOptions = function(){
-	//	selector: String
+	// selector: String
 	//		choice of 'time','date' (default: date and time)
-	//	formatLength: String
+	// formatLength: String
 	//		choice of long, short, medium or full (plus any custom additions).  Defaults to 'short'
-	//	datePattern:String
+	// datePattern:String
 	//		override pattern with this string
-	//	timePattern:String
+	// timePattern:String
 	//		override pattern with this string
-	//	am: String
+	// am: String
 	//		override strings for am in times
-	//	pm: String
+	// pm: String
 	//		override strings for pm in times
-	//	locale: String
+	// locale: String
 	//		override the locale used to determine formatting rules
-	//	fullYear: Boolean
+	// fullYear: Boolean
 	//		(format only) use 4 digit years whenever 2 digit years are called for
-	//	strict: Boolean
+	// strict: Boolean
 	//		(parse only) strict parsing, off by default
 	this.selector = selector;
 	this.formatLength = formatLength;
@@ -679,7 +679,8 @@ exports.isWeekend = function(/*Date?*/ dateObject, /*String?*/ locale){
 // These are used only by format and strftime.  Do they need to be public?  Which module should they go in?
 
 exports._getDayOfYear = function(/*Date*/ dateObject){
-	// summary: gets the day of the year as represented by dateObject
+	// summary:
+	//		gets the day of the year as represented by dateObject
 	return date.difference(new Date(dateObject.getFullYear(), 0, 1, dateObject.getHours()), dateObject) + 1; // Number
 };
 

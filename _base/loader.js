@@ -56,10 +56,10 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		// and plugins. However, it is possible to reattach that strategy in the future.
 
 		// a set from module-id to {undefined | 1 | 0}, where...
-		//   undefined => the module has not been inspected
-		//   0 => the module or at least one of its dependencies has not arrived
-		//   1 => the module is a loadInit! or require! plugin resource, or is currently being traversed (therefore, assume
-		//        OK until proven otherwise), or has been completely traversed and all dependencies have arrived
+		//	 undefined => the module has not been inspected
+		//	 0 => the module or at least one of its dependencies has not arrived
+		//	 1 => the module is a loadInit! or require! plugin resource, or is currently being traversed (therefore, assume
+		//		  OK until proven otherwise), or has been completely traversed and all dependencies have arrived
 		touched,
 
 		traverse = function(m){
@@ -123,8 +123,8 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		dojoLoadInitPlugin = function(mid, require, loaded){
 			// mid names a module that defines a "dojo load init" bundle, an object with two properties:
 			//
-			//   * names: a vector of module ids that give top-level names to define in the lexical scope of def
-			//   * def: a function that contains some some legacy loader API applications
+			//	 * names: a vector of module ids that give top-level names to define in the lexical scope of def
+			//	 * def: a function that contains some some legacy loader API applications
 			//
 			// The point of def is to possibly cause some modules to be loaded (but not executed) by dojo/require! where the module
 			// ids are possibly-determined at runtime. For example, here is dojox.gfx from v1.6 expressed as an AMD module using the dojo/loadInit
@@ -132,34 +132,34 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			//
 			// // dojox/gfx:
 			//
-			//   define("*loadInit_12, {
-			//     names:["dojo", "dijit", "dojox"],
-			//     def: function(){
-			//       dojo.loadInit(function(){
-			//         var gfx = lang.getObject("dojox.gfx", true);
+			//	define("*loadInit_12, {
+			//		names:["dojo", "dijit", "dojox"],
+			//		def: function(){
+			//			dojo.loadInit(function(){
+			//				var gfx = lang.getObject("dojox.gfx", true);
 			//
-			//         //
-			//         // code required to set gfx properties ommitted...
-			//         //
+			//				//
+			//				// code required to set gfx properties ommitted...
+			//				//
 			//
-			//         // now use the calculations to include the runtime-dependent module
-			//         dojo.require("dojox.gfx." + gfx.renderer);
-			//       });
-			//	   }
-			//   });
+			//				// now use the calculations to include the runtime-dependent module
+			//				dojo.require("dojox.gfx." + gfx.renderer);
+			//			});
+			//		}
+			//	});
 			//
-			//   define(["dojo", "dojo/loadInit!" + id].concat("dojo/require!dojox/gfx/matric,dojox/gfx/_base"), function(dojo){
-			//     // when this AMD factory function is executed, the following modules are guaranteed downloaded but not executed:
-			//     //   "dojox.gfx." + gfx.renderer
-			//     //   dojox.gfx.matrix
-			//     //   dojox.gfx._base
-			//     dojo.provide("dojo.gfx");
-			//     dojo.require("dojox.gfx.matrix");
-			//     dojo.require("dojox.gfx._base");
-			//     dojo.require("dojox.gfx." + gfx.renderer);
-			//     return lang.getObject("dojo.gfx");
-			//   });
-			//  })();
+			//	define(["dojo", "dojo/loadInit!" + id].concat("dojo/require!dojox/gfx/matric,dojox/gfx/_base"), function(dojo){
+			//		// when this AMD factory function is executed, the following modules are guaranteed downloaded but not executed:
+			//		//	"dojox.gfx." + gfx.renderer
+			//		//	dojox.gfx.matrix
+			//		//	dojox.gfx._base
+			//		dojo.provide("dojo.gfx");
+			//		dojo.require("dojox.gfx.matrix");
+			//		dojo.require("dojox.gfx._base");
+			//		dojo.require("dojox.gfx." + gfx.renderer);
+			//		return lang.getObject("dojo.gfx");
+			//	});
+			//	})();
 			//
 			// The idea is to run the legacy loader API with global variables shadowed, which allows these variables to
 			// be relocated. For example, dojox and dojo could be relocated to different names by giving a packageMap and the code above will
@@ -278,7 +278,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		// the following regex is taken from 1.6. It is a very poor technique to remove comments and
 		// will fail in some cases; for example, consider the code...
 		//
-		//    var message = "Category-1 */* Category-2";
+		//	  var message = "Category-1 */* Category-2";
 		//
 		// The regex that follows will see a /* comment and trash the code accordingly. In fact, there are all
 		// kinds of cases like this with strings and regexs that will cause this design to fail miserably.
@@ -299,11 +299,11 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			// to otherApplications string. If no applications were found, return 0, signalling an AMD module. Otherwise, return
 			// loadInitApplications + otherApplications. Fixup text by replacing
 			//
-			//   dojo.loadInit(// etc...
+			//	 dojo.loadInit(// etc...
 			//
 			// with
 			//
-			//   \n 0 && dojo.loadInit(// etc...
+			//	 \n 0 && dojo.loadInit(// etc...
 			//
 			// Which results in the dojo.loadInit from *not* being applied. This design goes a long way towards protecting the
 			// code from an over-agressive removeCommentRe. However...
@@ -351,12 +351,12 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			// module in terms of AMD define instead of creating the dojo proprietary xdomain module expression.
 			// The module could have originated from several sources:
 			//
-			//   * amd require() a module, e.g., require(["my/module"])
-			//   * amd require() a nonmodule, e.g., require(["my/resource.js"')
-			//   * amd define() deps vector (always a module)
-			//   * dojo.require() a module, e.g. dojo.require("my.module")
-			//   * dojo.require() a nonmodule, e.g., dojo.require("my.module", true)
-			//   * dojo.requireIf/requireAfterIf/platformRequire a module
+			//	 * amd require() a module, e.g., require(["my/module"])
+			//	 * amd require() a nonmodule, e.g., require(["my/resource.js"')
+			//	 * amd define() deps vector (always a module)
+			//	 * dojo.require() a module, e.g. dojo.require("my.module")
+			//	 * dojo.require() a nonmodule, e.g., dojo.require("my.module", true)
+			//	 * dojo.requireIf/requireAfterIf/platformRequire a module
 			//
 			// The module is scanned for legacy loader API applications; if none are found, then assume the module is an
 			// AMD module and return 0. Otherwise, a synthetic dojo/loadInit plugin resource is created and the module text
@@ -465,17 +465,17 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 	has.add("config-publishRequireResult", 1, 0, 0);
 
 	dojo.require = function(moduleName, omitModuleCheck){
-		//	summary:
+		// summary:
 		//		loads a Javascript module from the appropriate URI
 		//
-		//	moduleName: String
+		// moduleName: String
 		//		module name to load, using periods for separators,
 		//		 e.g. "dojo.date.locale".  Module paths are de-referenced by dojo's
 		//		internal mapping of locations to names and are disambiguated by
 		//		longest prefix. See `dojo.registerModulePath()` for details on
 		//		registering new modules.
 		//
-		//	omitModuleCheck: Boolean?
+		// omitModuleCheck: Boolean?
 		//		if `true`, omitModuleCheck skips the step of ensuring that the
 		//		loaded file actually defines the symbol it is referenced by.
 		//		For example if it called as `dojo.require("a.b.c")` and the
@@ -483,40 +483,40 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		and exception will be throws whereas no exception is raised
 		//		when called as `dojo.require("a.b.c", true)`
 		//
-		//	description:
-		// 		Modules are loaded via dojo.require by using one of two loaders: the normal loader
-		// 		and the xdomain loader. The xdomain loader is used when dojo was built with a
-		// 		custom build that specified loader=xdomain and the module lives on a modulePath
-		// 		that is a whole URL, with protocol and a domain. The versions of Dojo that are on
-		// 		the Google and AOL CDNs use the xdomain loader.
+		// description:
+		//		Modules are loaded via dojo.require by using one of two loaders: the normal loader
+		//		and the xdomain loader. The xdomain loader is used when dojo was built with a
+		//		custom build that specified loader=xdomain and the module lives on a modulePath
+		//		that is a whole URL, with protocol and a domain. The versions of Dojo that are on
+		//		the Google and AOL CDNs use the xdomain loader.
 		//
-		// 		If the module is loaded via the xdomain loader, it is an asynchronous load, since
-		// 		the module is added via a dynamically created script tag. This
-		// 		means that dojo.require() can return before the module has loaded. However, this
-		// 		should only happen in the case where you do dojo.require calls in the top-level
-		// 		HTML page, or if you purposely avoid the loader checking for dojo.require
-		// 		dependencies in your module by using a syntax like dojo["require"] to load the module.
+		//		If the module is loaded via the xdomain loader, it is an asynchronous load, since
+		//		the module is added via a dynamically created script tag. This
+		//		means that dojo.require() can return before the module has loaded. However, this
+		//		should only happen in the case where you do dojo.require calls in the top-level
+		//		HTML page, or if you purposely avoid the loader checking for dojo.require
+		//		dependencies in your module by using a syntax like dojo["require"] to load the module.
 		//
-		// 		Sometimes it is useful to not have the loader detect the dojo.require calls in the
-		// 		module so that you can dynamically load the modules as a result of an action on the
-		// 		page, instead of right at module load time.
+		//		Sometimes it is useful to not have the loader detect the dojo.require calls in the
+		//		module so that you can dynamically load the modules as a result of an action on the
+		//		page, instead of right at module load time.
 		//
-		// 		Also, for script blocks in an HTML page, the loader does not pre-process them, so
-		// 		it does not know to download the modules before the dojo.require calls occur.
+		//		Also, for script blocks in an HTML page, the loader does not pre-process them, so
+		//		it does not know to download the modules before the dojo.require calls occur.
 		//
-		// 		So, in those two cases, when you want on-the-fly module loading or for script blocks
-		// 		in the HTML page, special care must be taken if the dojo.required code is loaded
-		// 		asynchronously. To make sure you can execute code that depends on the dojo.required
-		// 		modules, be sure to add the code that depends on the modules in a dojo.addOnLoad()
-		// 		callback. dojo.addOnLoad waits for all outstanding modules to finish loading before
-		// 		executing.
+		//		So, in those two cases, when you want on-the-fly module loading or for script blocks
+		//		in the HTML page, special care must be taken if the dojo.required code is loaded
+		//		asynchronously. To make sure you can execute code that depends on the dojo.required
+		//		modules, be sure to add the code that depends on the modules in a dojo.addOnLoad()
+		//		callback. dojo.addOnLoad waits for all outstanding modules to finish loading before
+		//		executing.
 		//
-		// 		This type of syntax works with both xdomain and normal loaders, so it is good
-		// 		practice to always use this idiom for on-the-fly code loading and in HTML script
-		// 		blocks. If at some point you change loaders and where the code is loaded from,
-		// 		it will all still work.
+		//		This type of syntax works with both xdomain and normal loaders, so it is good
+		//		practice to always use this idiom for on-the-fly code loading and in HTML script
+		//		blocks. If at some point you change loaders and where the code is loaded from,
+		//		it will all still work.
 		//
-		// 		More on how dojo.require
+		//		More on how dojo.require
 		//		`dojo.require("A.B")` first checks to see if symbol A.B is
 		//		defined. If it is, it is simply returned (nothing to do).
 		//
@@ -527,14 +527,14 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		to load, or if the symbol `A.B` is not defined after loading.
 		//
 		//		It returns the object `A.B`, but note the caveats above about on-the-fly loading and
-		// 		HTML script blocks when the xdomain loader is loading a module.
+		//		HTML script blocks when the xdomain loader is loading a module.
 		//
 		//		`dojo.require()` does nothing about importing symbols into
 		//		the current namespace.  It is presumed that the caller will
 		//		take care of that.
 		//
-		// 	example:
-		// 		To use dojo.require in conjunction with dojo.ready:
+		// example:
+		//		To use dojo.require in conjunction with dojo.ready:
 		//
 		//		|	dojo.require("foo");
 		//		|	dojo.require("bar");
@@ -542,7 +542,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//	   	|		//you can now safely do something with foo and bar
 		//	   	|	});
 		//
-		//	example:
+		// example:
 		//		For example, to import all symbols into a local block, you might write:
 		//
 		//		|	with (dojo.require("A.B")){
@@ -554,7 +554,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		|	var B = dojo.require("A.B");
 		//	   	|	...
 		//
-		//	returns:
+		// returns:
 		//		the required namespace object
 		function doRequire(mid, omitModuleCheck){
 			var module = getModule(slashName(mid), require.module);
@@ -595,8 +595,8 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 
 			if(currentMode==sync){
 				// the only way to get here is in sync mode and dojo.required a module that
-				//   * was loaded async in the injectModule application a few lines up
-				//   * was an AMD module that had deps that are being loaded async and therefore couldn't execute
+				//	 * was loaded async in the injectModule application a few lines up
+				//	 * was an AMD module that had deps that are being loaded async and therefore couldn't execute
 				if(module.cjs){
 					// the module was an AMD module; unshift, not push, which causes the current traversal to be reattempted from the top
 					execQ.unshift(module);
@@ -625,14 +625,14 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 	};
 
 	dojo.registerModulePath = function(/*String*/moduleName, /*String*/prefix){
-		//	summary:
+		// summary:
 		//		Maps a module name to a path
-		//	description:
+		// description:
 		//		An unregistered module is given the default path of ../[module],
 		//		relative to Dojo root. For example, module acme is mapped to
 		//		../acme.  If you want to use a different module name, use
 		//		dojo.registerModulePath.
-		//	example:
+		// example:
 		//		If your dojo.js is located at this location in the web root:
 		//	|	/myapp/js/dojo/dojo/dojo.js
 		//		and your modules are located at:
@@ -659,10 +659,10 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 	};
 
 	dojo.platformRequire = function(/*Object*/modMap){
-		//	summary:
+		// summary:
 		//		require one or more modules based on which host environment
 		//		Dojo is currently operating in
-		//	description:
+		// description:
 		//		This method takes a "map" of arrays which one can use to
 		//		optionally load dojo modules. The map is indexed by the
 		//		possible dojo.name_ values, with two additional values:
@@ -671,7 +671,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		dojo.name_, set by your host environment. The items in the
 		//		"common" array will *always* be loaded, regardless of which
 		//		list is chosen.
-		//	example:
+		// example:
  		//		|	dojo.platformRequire({
 		//		|		browser: [
 		//		|			"foo.sample", // simple module

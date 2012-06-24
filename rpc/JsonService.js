@@ -16,8 +16,8 @@ define([
 
 		callRemote: function(method, params){
 			// summary:
-			// 		call an arbitrary remote method without requiring it to be
-			// 		predefined with SMD
+			//		call an arbitrary remote method without requiring it to be
+			//		predefined with SMD
 			// method: string
 			//		the name of the remote method you want to call.
 			// params: array

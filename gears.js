@@ -49,15 +49,17 @@ gears._gearsObject = function(){
 	return lang.getObject("google.gears");
 };
 
-/*=====
-gears.available = {
-	// summary: True if client is using Google Gears
-};
-=====*/
+
 // see if we have Google Gears installed, and if
 // so, make it available in the runtime environment
 // and in the Google standard 'google.gears' global object
 gears.available = (!!gears._gearsObject())||0;
+/*=====
+ gears.available = {
+ // summary:
+ //		True if client is using Google Gears
+ };
+ =====*/
 
 return gears;
 });

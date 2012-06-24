@@ -328,8 +328,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		padding, or borders.
 		// node: DOMNode
 		// box: Object
-		//      hash with optional "w", and "h" properties for "width", and "height"
-		//      respectively. All specified properties should have numeric values in whole pixels.
+		//		hash with optional "w", and "h" properties for "width", and "height"
+		//		respectively. All specified properties should have numeric values in whole pixels.
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
@@ -362,8 +362,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		you.
 		// node: DOMNode
 		// box: Object
-		//      hash with optional "l", "t", "w", and "h" properties for "left", "right", "width", and "height"
-		//      respectively. All specified properties should have numeric values in whole pixels.
+		//		hash with optional "l", "t", "w", and "h" properties for "left", "right", "width", and "height"
+		//		respectively. All specified properties should have numeric values in whole pixels.
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
@@ -408,7 +408,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 	geom.isBodyLtr = function isBodyLtr(/*Document?*/ doc){
 		// summary:
-		//      Returns true if the current language is left-to-right, and false otherwise.
+		//		Returns true if the current language is left-to-right, and false otherwise.
 		// doc: Document?
 		//		Optional document to query.   If unspecified, use win.doc.
 		// returns: Boolean
@@ -419,7 +419,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 	geom.docScroll = function docScroll(/*Document?*/ doc){
 		// summary:
-		//      Returns an object with {node, x, y} with corresponding offsets.
+		//		Returns an object with {node, x, y} with corresponding offsets.
 		// doc: Document?
 		//		Optional document to query.   If unspecified, use win.doc.
 		// returns: Object
@@ -478,10 +478,10 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 	geom.fixIeBiDiScrollLeft = function fixIeBiDiScrollLeft(/*Integer*/ scrollLeft, /*Document?*/ doc){
 		// summary:
-		//      In RTL direction, scrollLeft should be a negative value, but IE
-		//      returns a positive one. All codes using documentElement.scrollLeft
-		//      must call this function to fix this error, otherwise the position
-		//      will offset to right when there is a horizontal scrollbar.
+		//		In RTL direction, scrollLeft should be a negative value, but IE
+		//		returns a positive one. All codes using documentElement.scrollLeft
+		//		must call this function to fix this error, otherwise the position
+		//		will offset to right when there is a horizontal scrollbar.
 		// scrollLeft: Number
 		// doc: Document?
 		//		Optional document to query.   If unspecified, use win.doc.

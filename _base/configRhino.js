@@ -1,5 +1,5 @@
 function rhinoDojoConfig(config, baseUrl, rhinoArgs){
-	//	summary:
+	// summary:
 	//		This module provides bootstrap configuration for running dojo in rhino.
 
 	// TODO: v1.6 tries to set dojo.doc and dojo.body in rhino; why?

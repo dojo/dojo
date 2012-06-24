@@ -15,27 +15,29 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 	};
 
 	var _Line = basefx._Line = function(/*int*/ start, /*int*/ end){
-		//	summary:
+		// summary:
 		//		Object used to generate values from a start value to an end value
-		//	start: int
+		// start: int
 		//		Beginning value for range
-		//	end: int
+		// end: int
 		//		Ending value for range
 		this.start = start;
 		this.end = end;
 	};
 
 	_Line.prototype.getValue = function(/*float*/ n){
-		//	summary: Returns the point on the line
-		//	n: a floating point number greater than 0 and less than 1
+		// summary:
+		//		Returns the point on the line
+		// n:
+		//		a floating point number greater than 0 and less than 1
 		return ((this.end - this.start) * n) + this.start; // Decimal
 	};
 
 	var Animation = basefx.Animation = function(args){
-		//	summary:
+		// summary:
 		//		A generic animation class that fires callbacks into its handlers
 		//		object at various states.
-		//	description:
+		// description:
 		//		A generic animation class that fires callbacks into its handlers
 		//		object at various states. Nearly all dojo animation functions
 		//		return an instance of this method, usually without calling the
@@ -126,17 +128,17 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 			return _e ? _e(_p) : _p;
 		},
 		_fire: function(/*Event*/ evt, /*Array?*/ args){
-			//	summary:
+			// summary:
 			//		Convenience function.  Fire event "evt" and pass it the
 			//		arguments specified in "args".
-			//	description:
+			// description:
 			//		Convenience function.  Fire event "evt" and pass it the
 			//		arguments specified in "args".
 			//		Fires the callback in the scope of this Animation
 			//		instance.
-			//	evt:
+			// evt:
 			//		The event to fire.
-			//	args:
+			// args:
 			//		The arguments to pass to the event.
 			var a = args||[];
 			if(this[evt]){
@@ -218,7 +220,8 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 		},
 
 		pause: function(){
-			// summary: Pauses a running animation.
+			// summary:
+			//		Pauses a running animation.
 			var _t = this;
 			if(_t._delayTimer){ _t._clearTimer(); }
 			_t._stopTimer();
@@ -229,11 +232,11 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 		},
 
 		gotoPercent: function(/*Decimal*/ percent, /*Boolean?*/ andPlay){
-			//	summary:
+			// summary:
 			//		Sets the progress of the animation.
-			//	percent:
+			// percent:
 			//		A percentage in decimal notation (between and including 0.0 and 1.0).
-			//	andPlay:
+			// andPlay:
 			//		If true, play the animation after setting the progress.
 			var _t = this;
 			_t._stopTimer();
@@ -244,8 +247,10 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 		},
 
 		stop: function(/*boolean?*/ gotoEnd){
-			// summary: Stops a running animation.
-			// gotoEnd: If true, the animation will end.
+			// summary:
+			//		Stops a running animation.
+			// gotoEnd:
+			//		If true, the animation will end.
 			var _t = this;
 			if(_t._delayTimer){ _t._clearTimer(); }
 			if(!_t._timer){ return _t; /* Animation */ }
@@ -312,7 +317,8 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 		},
 
 		_clearTimer: function(){
-			// summary: Clear the play delay timer
+			// summary:
+			//		Clear the play delay timer
 			clearTimeout(this._delayTimer);
 			delete this._delayTimer;
 		}
@@ -367,7 +373,7 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 		function(){};
 
 	basefx._fade = function(/*Object*/ args){
-		//	summary:
+		// summary:
 		//		Returns an animation that will fade the node defined by
 		//		args.node from the start to end values passed (args.start
 		//		args.end) (end is mandatory, start is optional)
@@ -390,11 +396,11 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 
 	/*=====
 	var __FadeArgs = function(node, duration, easing){
-		//	node: DOMNode|String
+		// node: DOMNode|String
 		//		The node referenced in the animation
-		//	duration: Integer?
+		// duration: Integer?
 		//		Duration of the animation in milliseconds.
-		//	easing: Function?
+		// easing: Function?
 		//		An easing function.
 		this.node = node;
 		this.duration = duration;
@@ -417,7 +423,8 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 	};
 
 	basefx._defaultEasing = function(/*Decimal?*/ n){
-		// summary: The default easing function for Animation(s)
+		// summary:
+		//		The default easing function for Animation(s)
 		return 0.5 + ((Math.sin((n + 1.5) * Math.PI)) / 2);	// Decimal
 	};
 
@@ -454,7 +461,7 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 	var __AnimArgs = function(){};
 	__AnimArgs.prototype = new __FadeArgs();
 	lang.extend(__AnimArgs, {
-		// Properties: Object?
+		// properties: Object?
 		//		A hash map of style properties to Objects describing the transition,
 		//		such as the properties of _Line with an additional 'units' property
 		properties: {}
@@ -611,11 +618,11 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 							/*Function?*/		easing,
 							/*Function?*/		onEnd,
 							/*Integer?*/		delay){
-		//	summary:
+		// summary:
 		//		A simpler interface to `animateProperty()`, also returns
 		//		an instance of `Animation` but begins the animation
 		//		immediately, unlike nearly every other Dojo animation API.
-		//	description:
+		// description:
 		//		Simpler (but somewhat less powerful) version
 		//		of `animateProperty`.  It uses defaults for many basic properties
 		//		and allows for positional parameters to be used in place of the
@@ -624,28 +631,28 @@ define(["./kernel", "./config", "./lang", "../Evented", "./Color", "./connect", 
 		//
 		//		The `Animation` object returned will be already playing, so
 		//		calling play() on it again is (usually) a no-op.
-		//	node:
+		// node:
 		//		a DOM node or the id of a node to animate CSS properties on
-		//	duration:
+		// duration:
 		//		The number of milliseconds over which the animation
 		//		should run. Defaults to the global animation default duration
 		//		(350ms).
-		//	easing:
+		// easing:
 		//		An easing function over which to calculate acceleration
 		//		and deceleration of the animation through its duration.
 		//		A default easing algorithm is provided, but you may
 		//		plug in any you wish. A large selection of easing algorithms
 		//		are available in `dojo/fx/easing`.
-		//	onEnd:
+		// onEnd:
 		//		A function to be called when the animation finishes
 		//		running.
-		//	delay:
+		// delay:
 		//		The number of milliseconds to delay beginning the
 		//		animation by. The default is 0.
-		//	example:
+		// example:
 		//		Fade out a node
 		//	|	basefx.anim("id", { opacity: 0 });
-		//	example:
+		// example:
 		//		Fade out a node over a full second
 		//	|	basefx.anim("id", { opacity: 0 }, 1000);
 		return basefx.animateProperty({ // Animation

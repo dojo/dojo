@@ -224,7 +224,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 		//		for example). If you want to detect hash changes using semantic fragment IDs, then
 		//		consider using dojo/hash instead (in Dojo 1.4+).
 		//
-		//	example:
+		// example:
 		//		|	back.addToHistory({
 		//		|		back: function(){ console.log('back pressed'); },
 		//		|		forward: function(){ console.log('forward pressed'); },

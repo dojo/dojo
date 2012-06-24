@@ -1,6 +1,6 @@
 define(["./kernel", "../on", "../topic", "../aspect", "./event", "../mouse", "./sniff", "./lang", "../keys"], function(dojo, on, hub, aspect, eventModule, mouse, has, lang){
-//  module:
-//    dojo/_base/connect
+// module:
+//		dojo/_base/connect
 
 has.add("events-keypress-typed", function(){ // keypresses should only occur a printable character is hit
 	var testKeyEvent = {charCode: 0};
@@ -292,25 +292,25 @@ var connect = {
 	},
 
 	subscribe:function(topic, context, method){
-		//	summary:
+		// summary:
 		//		Attach a listener to a named topic. The listener function is invoked whenever the
 		//		named topic is published (see: dojo.publish).
 		//		Returns a handle which is needed to unsubscribe this listener.
-		//	topic: String
+		// topic: String
 		//		The topic to which to subscribe.
-		//	context: Object?
+		// context: Object?
 		//		Scope in which method will be invoked, or null for default scope.
-		//	method: String|Function
+		// method: String|Function
 		//		The name of a function in context, or a function reference. This is the function that
 		//		is invoked when topic is published.
-		//	example:
+		// example:
 		//	|	dojo.subscribe("alerts", null, function(caption, message){ alert(caption + "\n" + message); });
 		//	|	dojo.publish("alerts", [ "read this", "hello world" ]);
 		return hub.subscribe(topic, lang.hitch(context, method));
 	},
 
 	publish:function(topic, args){
-		//	summary:
+		// summary:
 		//		Invoke all listener method subscribed to topic.
 		// topic: String
 		//		The name of the topic to publish.

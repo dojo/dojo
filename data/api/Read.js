@@ -44,7 +44,7 @@ return declare("dojo.data.api.Read", null, {
 	getValues: function(/* dojo/data/api/Item */ item,
 						/* attribute-name-string */ attribute){
 		// summary:
-		// 		This getValues() method works just like the getValue() method, but getValues()
+		//		This getValues() method works just like the getValue() method, but getValues()
 		//		always returns an array rather than a single attribute value.  The array
 		//		may be empty, may contain a single attribute value, or may contain
 		//		many attribute values.

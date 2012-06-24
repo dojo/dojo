@@ -26,33 +26,33 @@ define([
 
 /*=====
 var __SourceArgs = function(){
-	//	summary:
+	// summary:
 	//		a dict of parameters for DnD Source configuration. Note that any
 	//		property on Source elements may be configured, but this is the
 	//		short-list
-	//	isSource: Boolean?
+	// isSource: Boolean?
 	//		can be used as a DnD source. Defaults to true.
-	//	accept: Array?
+	// accept: Array?
 	//		list of accepted types (text strings) for a target; defaults to
 	//		["text"]
-	//	autoSync: Boolean
+	// autoSync: Boolean
 	//		if true refreshes the node list on every operation; false by default
-	//	copyOnly: Boolean?
+	// copyOnly: Boolean?
 	//		copy items, if true, use a state of Ctrl key otherwise,
 	//		see selfCopy and selfAccept for more details
-	//	delay: Number
+	// delay: Number
 	//		the move delay in pixels before detecting a drag; 0 by default
-	//	horizontal: Boolean?
+	// horizontal: Boolean?
 	//		a horizontal container, if true, vertical otherwise or when omitted
-	//	selfCopy: Boolean?
+	// selfCopy: Boolean?
 	//		copy items by default when dropping on itself,
 	//		false by default, works only if copyOnly is true
-	//	selfAccept: Boolean?
+	// selfAccept: Boolean?
 	//		accept its own items when copyOnly is true,
 	//		true by default, works only if copyOnly is true
-	//	withHandles: Boolean?
+	// withHandles: Boolean?
 	//		allows dragging only by handles, false by default
-	//  generateText: Boolean?
+	// generateText: Boolean?
 	//		generate text node for drag and drop, true by default
 	this.isSource = isSource;
 	this.accept = accept;

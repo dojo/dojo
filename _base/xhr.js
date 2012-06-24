@@ -72,15 +72,18 @@ define([
 		//	|	});
 
 		"text": function(xhr){
-			// summary: A contentHandler which simply returns the plaintext response data
+			// summary:
+			//		A contentHandler which simply returns the plaintext response data
 			return xhr.responseText;
 		},
 		"json": function(xhr){
-			// summary: A contentHandler which returns a JavaScript object created from the response data
+			// summary:
+			//		A contentHandler which returns a JavaScript object created from the response data
 			return json.fromJson(xhr.responseText || null);
 		},
 		"json-comment-filtered": function(xhr){
-			// summary: A contentHandler which expects comment-filtered JSON.
+			// summary:
+			//		A contentHandler which expects comment-filtered JSON.
 			// description:
 			//		A contentHandler which expects comment-filtered JSON.
 			//		the json-comment-filtered option was implemented to prevent
@@ -109,13 +112,15 @@ define([
 			return json.fromJson(value.substring(cStartIdx+2, cEndIdx));
 		},
 		"javascript": function(xhr){
-			// summary: A contentHandler which evaluates the response data, expecting it to be valid JavaScript
+			// summary:
+			//		A contentHandler which evaluates the response data, expecting it to be valid JavaScript
 
 			// FIXME: try Moz and IE specific eval variants?
 			return dojo.eval(xhr.responseText);
 		},
 		"xml": function(xhr){
-			// summary: A contentHandler returning an XML Document parsed from the response data
+			// summary:
+			//		A contentHandler returning an XML Document parsed from the response data
 			var result = xhr.responseXML;
 
 			if(has("ie")){
@@ -138,7 +143,8 @@ define([
 			return result; // DOMDocument
 		},
 		"json-comment-optional": function(xhr){
-			// summary: A contentHandler which checks the presence of comment-filtered JSON and
+			// summary:
+			//		A contentHandler which checks the presence of comment-filtered JSON and
 			//		alternates between the `json` and `json-comment-filtered` contentHandlers.
 			if(xhr.responseText && /^[^{\[]*\/\*/.test(xhr.responseText)){
 				return handlers["json-comment-filtered"](xhr);
@@ -429,13 +435,15 @@ define([
 	};
 
 	var _deferredOk = function(/*Deferred*/dfd){
-		// summary: okHandler function for dojo._ioSetArgs call.
+		// summary:
+		//		okHandler function for dojo._ioSetArgs call.
 
 		var ret = handlers[dfd.ioArgs.handleAs](dfd.ioArgs.xhr);
 		return ret === undefined ? null : ret;
 	};
 	var _deferError = function(/*Error*/error, /*Deferred*/dfd){
-		// summary: errHandler function for dojo._ioSetArgs call.
+		// summary:
+		//		errHandler function for dojo._ioSetArgs call.
 
 		if(!dfd.ioArgs.args.failOk){
 			console.error(error);

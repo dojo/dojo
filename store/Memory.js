@@ -1,8 +1,8 @@
 define(["../_base/declare", "./util/QueryResults", "./util/SimpleQueryEngine" /*=====, "./api/Store" =====*/],
 function(declare, QueryResults, SimpleQueryEngine /*=====, Store =====*/){
 
-//  module:
-//    dojo/store/Memory
+// module:
+//		dojo/store/Memory
 
 // No base class, but for purposes of documentation, the base class is dojo/store/api/Store
 var base = null;
@@ -16,7 +16,7 @@ return declare("dojo.store.Memory", base, {
 		//		Creates a memory object store.
 		// options: dojo/store/Memory
 		//		This provides any configuration information that will be mixed into the store.
-		// 		This should generally include the data property to provide the starting set of data.
+		//		This should generally include the data property to provide the starting set of data.
 		for(var i in options){
 			this[i] = options[i];
 		}
@@ -39,11 +39,11 @@ return declare("dojo.store.Memory", base, {
 	//		Defines the query engine to use for querying the data store
 	queryEngine: SimpleQueryEngine,
 	get: function(id){
-		//	summary:
+		// summary:
 		//		Retrieves an object by its identity
-		//	id: Number
+		// id: Number
 		//		The identity to use to lookup the object
-		//	returns: Object
+		// returns: Object
 		//		The object in the store that matches the given id.
 		return this.data[this.index[id]];
 	},
@@ -52,7 +52,7 @@ return declare("dojo.store.Memory", base, {
 		//		Returns an object's identity
 		// 	object: Object
 		//		The object to get the identity from
-		//	returns: Number
+		// returns: Number
 		return object[this.idProperty];
 	},
 	put: function(object, options){
@@ -63,7 +63,7 @@ return declare("dojo.store.Memory", base, {
 		// 	options: Store.PutDirectives??
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
-		//	returns: Number
+		// returns: Number
 		var data = this.data,
 			index = this.index,
 			idProperty = this.idProperty;
@@ -89,7 +89,7 @@ return declare("dojo.store.Memory", base, {
 		// 	options: Store.PutDirectives??
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
-		//	returns: Number
+		// returns: Number
 		(options = options || {}).overwrite = false;
 		// call put with overwrite being false
 		return this.put(object, options);
@@ -100,7 +100,7 @@ return declare("dojo.store.Memory", base, {
 		// 	id: Number
 		//		The identity to use to delete the object
 		// returns: Boolean
-		// 		Returns true if an object was removed, falsy (undefined) if no object matched the id
+		//		Returns true if an object was removed, falsy (undefined) if no object matched the id
 		var index = this.index;
 		var data = this.data;
 		if(id in index){
@@ -115,13 +115,13 @@ return declare("dojo.store.Memory", base, {
 		//		Queries the store for objects.
 		// 	query: Object
 		//		The query to use for retrieving objects from the store.
-		//	options: Store.QueryOptions?
+		// options: Store.QueryOptions?
 		//		The optional arguments to apply to the resultset.
-		//	returns: Store.QueryResults
+		// returns: Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		//
 		// 	example:
-		// 		Given the following store:
+		//		Given the following store:
 		//
 		// 	|	var store = new dojo.store.Memory({
 		// 	|		data: [
@@ -145,7 +145,7 @@ return declare("dojo.store.Memory", base, {
 	setData: function(data){
 		// 	summary:
 		//		Sets the given data as the source for this store, and indexes it
-		//	data: Object[]
+		// data: Object[]
 		//		An array of objects to use as the source of data.
 		if(data.items){
 			// just for convenience with the data format IFRS expects

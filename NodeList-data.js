@@ -16,7 +16,8 @@ define([
 
 	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid",
 		dopid = function(node){
-			// summary: Return a uniqueish ID for the passed node reference
+			// summary:
+			//		Return a uniqueish ID for the passed node reference
 			var pid = attr.get(node, dataattr);
 			if(!pid){
 				pid = "pid" + (x++);

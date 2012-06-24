@@ -15,11 +15,11 @@ define([
 
 /*=====
 var __SelectorArgs = declare([Container.__ContainerArgs], {
-	//	singular: Boolean
+	// singular: Boolean
 	//		allows selection of only one element, if true
 	singular: false,
 
-	//	autoSync: Boolean
+	// autoSync: Boolean
 	//		autosynchronizes the source with its list of DnD nodes,
 	autoSync: false
 });

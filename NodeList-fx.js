@@ -163,7 +163,7 @@ lang.extend(NodeList, {
 		//	|		}
 		//	|	}).play();
 		//
-		//	example:
+		// example:
 		//	|	dojo.query(".grue").animateProperty({
 		//	|		auto:true,
 		//	|		properties: {

@@ -166,10 +166,10 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//		1.6's lastIndexOf skips the holes in the sparse array.
 			//		For details on this method, see:
 			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/lastIndexOf
-			//	arr: Array,
-			//	value: Object,
-			//	fromIndex: Integer?
-			//	returns: Number
+			// arr: Array,
+			// value: Object,
+			// fromIndex: Integer?
+			// returns: Number
 		},
 		=====*/
 

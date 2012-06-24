@@ -34,13 +34,13 @@ define(["require"], function(require){
 			cache = {};
 
 		has = function(name){
-			//	summary:
+			// summary:
 			//		Return the current value of the named feature.
 			//
-			//	name: String|Integer
+			// name: String|Integer
 			//		The name (if a string) or identifier (if an integer) of the feature to test.
 			//
-			//	description:
+			// description:
 			//		Returns the value of the feature named by name. The feature must have been
 			//		previously added to the cache by has.add.
 
@@ -111,9 +111,9 @@ define(["require"], function(require){
 		has.add("device-width", screen.availWidth || innerWidth);
 
 		// Tests for DOMNode.attributes[] behavior:
-		//   - dom-attributes-explicit - attributes[] only lists explicitly user specified attributes
-		//   - dom-attributes-specified-flag (IE8) - need to check attr.specified flag to skip attributes user didn't specify
-		//   - Otherwise, in IE6-7. attributes[] will list hundreds of values, so need to do outerHTML to get attrs instead.
+		//	 - dom-attributes-explicit - attributes[] only lists explicitly user specified attributes
+		//	 - dom-attributes-specified-flag (IE8) - need to check attr.specified flag to skip attributes user didn't specify
+		//	 - Otherwise, in IE6-7. attributes[] will list hundreds of values, so need to do outerHTML to get attrs instead.
 		var form = document.createElement("form");
 		has.add("dom-attributes-explicit", form.attributes.length == 0); // W3C
 		has.add("dom-attributes-specified-flag", form.attributes.length > 0 && form.attributes.length < 40);	// IE8

@@ -519,7 +519,7 @@ number.__IntegerRegexpFlags = function(){
 	//		makes ',' optional.
 	// groupSize: Number?
 	//		group size between separators
-	//	groupSize2: Number?
+	// groupSize2: Number?
 	//		second grouping, where separators 2..n have a different interval than the first separator (for India)
 	this.signed = signed;
 	this.separator = separator;

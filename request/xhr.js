@@ -59,15 +59,18 @@ define([
 		// Any platform with XHR2 will only use the watch mechanism for timeout.
 
 		isValid = function(response){
-			// summary: Check to see if the request should be taken out of the watch queue
+			// summary:
+			//		Check to see if the request should be taken out of the watch queue
 			return !this.isFulfilled();
 		};
 		cancel = function(dfd, response){
-			// summary: Canceler for deferred
+			// summary:
+			//		Canceler for deferred
 			response.xhr.abort();
 		};
 		addListeners = function(_xhr, dfd, response){
-			// summary: Adds event listeners to the XMLHttpRequest object
+			// summary:
+			//		Adds event listeners to the XMLHttpRequest object
 			function onLoad(evt){
 				dfd.handleResponse(response);
 			}
@@ -103,7 +106,8 @@ define([
 			return 4 === response.xhr.readyState; //boolean
 		};
 		cancel = function(dfd, response){
-			// summary: canceller function for util.deferred call.
+			// summary:
+			//		canceller function for util.deferred call.
 			var xhr = response.xhr;
 			var _at = typeof xhr.abort;
 			if(_at === 'function' || _at === 'object' || _at === 'unknown'){
@@ -123,11 +127,11 @@ define([
 			}
 		};
 	function xhr(/*String*/ url, /*Object?*/ options, /*Boolean?*/ returnDeferred){
-		//	summary:
+		// summary:
 		//		Sends an HTTP request with the given URL and options.
-		//	description:
+		// description:
 		//		Sends an HTTP request with the given URL.
-		//	url:
+		// url:
 		//		URL to request
 		var response = util.parseArgs(
 			url,

@@ -1,6 +1,6 @@
 define(["./kernel", "../query", "./array", "./html", "../NodeList-dom"], function(dojo, query, array){
 	// module:
-	//    dojo/_base/NodeList
+	//		dojo/_base/NodeList
 
 	/*=====
 	return {

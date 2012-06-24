@@ -274,7 +274,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			// summary:
 			//		Listen for events on the nodes in the NodeList. Basic usage is:
 			//		| query(".my-class").on("click", listener);
-			// 		This supports event delegation by using selectors as the first argument with the event names as
+			//		This supports event delegation by using selectors as the first argument with the event names as
 			//		pseudo selectors. For example:
 			//		| dojo.query("#my-list").on("li:click", listener);
 			//		This will listen for click events within `<li>` elements that are inside the `#my-list` element.
@@ -570,7 +570,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 
 	function queryForEngine(engine, NodeList){
 		var query = function(/*String*/ query, /*String|DOMNode?*/ root){
-			//	summary:
+			// summary:
 			//		Returns nodes which match the given CSS selector, searching the
 			//		entire document by default but optionally taking a node to scope
 			//		the search by. Returns an instance of NodeList.
@@ -621,24 +621,25 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		 // context: String|DomNode?
 		 //		An optional context to limit the searching scope. Only nodes under `context` will be
 		 //		scanned.
-		 //	example:
+		 // example:
 		 //		add an onclick handler to every submit button in the document
 		 //		which causes the form to be sent via Ajax instead:
 		 //	|	define(["dojo/query"], function(query){
-		 // 	|	query("input[type='submit']").on("click", function(e){
-		 //	|		dojo.stopEvent(e); // prevent sending the form
-		 //	|		var btn = e.target;
-		 //	|		dojo.xhrPost({
-		 //	|			form: btn.form,
-		 //	|			load: function(data){
-		 //	|				// replace the form with the response
-		 //	|				var div = dojo.doc.createElement("div");
-		 //	|				dojo.place(div, btn.form, "after");
-		 //	|				div.innerHTML = data;
-		 //	|				dojo.style(btn.form, "display", "none");
-		 //	|			}
+		 // |		query("input[type='submit']").on("click", function(e){
+		 //	|			dojo.stopEvent(e); // prevent sending the form
+		 //	|			var btn = e.target;
+		 //	|			dojo.xhrPost({
+		 //	|				form: btn.form,
+		 //	|				load: function(data){
+		 //	|					// replace the form with the response
+		 //	|					var div = dojo.doc.createElement("div");
+		 //	|					dojo.place(div, btn.form, "after");
+		 //	|					div.innerHTML = data;
+		 //	|					dojo.style(btn.form, "display", "none");
+		 //	|				}
+		 //	|			});
 		 //	|		});
-		 //	|	});
+		 // |	});
 		 //
 		 // description:
 		 //		dojo/query is responsible for loading the appropriate query engine and wrapping
@@ -690,7 +691,8 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 	});
 
 	query.load = /*===== dojo.query.load= ======*/ function(id, parentRequire, loaded, config){
-		// summary: can be used as AMD plugin to conditionally load new query engine
+		// summary:
+		//		can be used as AMD plugin to conditionally load new query engine
 		// example:
 		//	|	define(["dojo/query!custom"], function(qsa){
 		//	|		// loaded selector/custom.js as engine

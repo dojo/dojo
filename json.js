@@ -22,21 +22,21 @@ define(["./has"], function(has){
 
 			parse: has("json-parse") ? JSON.parse : function(str, strict){
 				// summary:
-				// 		Parses a [JSON](http://json.org) string to return a JavaScript object.
+				//		Parses a [JSON](http://json.org) string to return a JavaScript object.
 				// description:
 				//		This function follows [native JSON API](https://developer.mozilla.org/en/JSON)
-				// 		Throws for invalid JSON strings. This delegates to eval() if native JSON
-				// 		support is not available. By default this will evaluate any valid JS expression.
+				//		Throws for invalid JSON strings. This delegates to eval() if native JSON
+				//		support is not available. By default this will evaluate any valid JS expression.
 				//		With the strict parameter set to true, the parser will ensure that only
 				//		valid JSON strings are parsed (otherwise throwing an error). Without the strict
-				// 		parameter, the content passed to this method must come
+				//		parameter, the content passed to this method must come
 				//		from a trusted source.
 				// str:
 				//		a string literal of a JSON item, for instance:
 				//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 				// strict:
 				//		When set to true, this will ensure that only valid, secure JSON is ever parsed.
-				// 		Make sure this is set to true for untrusted content. Note that on browsers/engines
+				//		Make sure this is set to true for untrusted content. Note that on browsers/engines
 				//		without native JSON support, setting this to true will run slower.
 				if(strict && !/^([\s\[\{]*(?:"(?:\\.|[^"])+"|-?\d[\d\.]*(?:[Ee][+-]?\d+)?|null|true|false|)[\s\]\}]*(?:,|:|$))+$/.test(str)){
 					throw new SyntaxError("Invalid characters in JSON");

@@ -8,8 +8,8 @@ return {
 	//		This module defines the user configuration during bootstrap.
 	// description:
 	//		By defining user configuration as a module value, an entire configuration can be specified in a build,
-    //		thereby eliminating the need for sniffing and or explicitly setting in the global variable dojoConfig.
-    //		Also, when multiple instances of dojo exist in a single application, each will necessarily be located
+	//		thereby eliminating the need for sniffing and or explicitly setting in the global variable dojoConfig.
+	//		Also, when multiple instances of dojo exist in a single application, each will necessarily be located
 	//		at an unique absolute module identifier as given by the package configuration. Implementing configuration
 	//		as a module allows for specifying unique, per-instance configurations.
 	// example:
@@ -20,7 +20,7 @@ return {
 	//		|		packages:[{
 	//		|			name:"myDojo",
 	//		|			location:".", //assume baseUrl points to dojo.js
-	//		|	    }]
+	//		|		}]
 	//		|	});
 	//		|
 	//		|	// specify a configuration for the myDojo instance
@@ -118,8 +118,8 @@ return {
 
 	// ioPublish: Boolean?
 	//		Set this to true to enable publishing of topics for the different phases of
-	// 		IO operations. Publishing is done via dojo.publish. See dojo.__IoPublish for a list
-	// 		of topics that are published.
+	//		IO operations. Publishing is done via dojo.publish. See dojo.__IoPublish for a list
+	//		of topics that are published.
 	ioPublish: false,
 
 	// useCustomLogger: Anything?

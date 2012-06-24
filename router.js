@@ -2,15 +2,15 @@ define([
 	"./router/RouterBase"
 ], function(RouterBase){
 
-	//	module:
+	// module:
 	//		dojo/router
 
 /*=====
 return {
-	//	summary:
+	// summary:
 	//		A singleton-style instance of dojo/router/RouterBase. See that
 	//		module for specifics.
-	//	example:
+	// example:
 	//	|	router.register("/widgets/:id", function(evt){
 	//	|		// If "/widgets/3" was matched,
 	//	|		// evt.params.id === "3"

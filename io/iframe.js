@@ -11,16 +11,16 @@ dojo.deprecated("dojo/io/iframe", "Use dojo/request/iframe.", "2.0");
 
 /*=====
 var __ioArgs = function(){
-	//	summary:
+	// summary:
 	//		All the properties described in the dojo.__ioArgs type, apply
 	//		to this type. The following additional properties are allowed
 	//		for dojo.io.iframe.send():
-	//	method: String?
+	// method: String?
 	//		The HTTP method to use. "GET" or "POST" are the only supported
 	//		values.  It will try to read the value from the form node's
 	//		method, then try this argument. If neither one exists, then it
 	//		defaults to POST.
-	//	handleAs: String?
+	// handleAs: String?
 	//		Specifies what format the result data should be given to the
 	//		load/handle callback. Valid values are: text, html, xml, json,
 	//		javascript. IMPORTANT: For all values EXCEPT html and xml, The
@@ -32,7 +32,7 @@ var __ioArgs = function(){
 	//		is now supported with this transport (as of 1.1+); a known issue
 	//		is if the XML document in question is malformed, Internet Explorer
 	//		will throw an uncatchable error.
-	//	content: Object?
+	// content: Object?
 	//		If "form" is one of the other args properties, then the content
 	//		object properties become hidden form form elements. For
 	//		instance, a content object of {name1 : "value1"} is converted

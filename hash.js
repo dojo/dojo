@@ -5,18 +5,18 @@ define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_ba
 	//		dojo/hash
 
 	dojo.hash = function(/* String? */ hash, /* Boolean? */ replace){
-		//	summary:
+		// summary:
 		//		Gets or sets the hash string in the browser URL.
-		//	description:
+		// description:
 		//		Handles getting and setting of location.hash.
 		//		 - If no arguments are passed, acts as a getter.
 		//		 - If a string is passed, acts as a setter.
-		//	hash:
+		// hash:
 		//		the hash is set - #string.
-		//	replace:
+		// replace:
 		//		If true, updates the hash value in the current history
 		//		state instead of creating a new history state.
-		//	returns:
+		// returns:
 		//		when used as a getter, returns the current hash string.
 		//		when used as a setter, returns the new hash string.
 		// example:
@@ -89,7 +89,7 @@ define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_ba
 		//		Determine if the browser's URI has changed or if the user has pressed the
 		//		back or forward button. If so, call _dispatchEvent.
 		//
-		//	description:
+		// description:
 		//		IE doesn't add changes to the URI's hash into the history unless the hash
 		//		value corresponds to an actual named anchor in the document. To get around
 		//		this IE difference, we use a background IFrame to maintain a back-forward

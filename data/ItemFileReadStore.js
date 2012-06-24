@@ -267,8 +267,8 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	},
 
 	filter: function(/* Object */ requestArgs, /* item[] */ arrayOfItems, /* Function */ findCallback){
-		//  summary:
-		//      This method handles the basic filtering needs for ItemFile* based stores.
+		// summary:
+		//		This method handles the basic filtering needs for ItemFile* based stores.
 		var items = [],
 			i, key;
 

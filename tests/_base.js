@@ -17,7 +17,7 @@ define([
 
 	// TODO: platform boot tests
 	//dojo.platformRequire({
-	//	browser: ["tests._base._loader.hostenv_browser"],
-	//	rhino: ["tests._base._loader.hostenv_rhino"],
-	//	spidermonkey: ["tests._base._loader.hostenv_spidermonkey"]
+	// browser: ["tests._base._loader.hostenv_browser"],
+	// rhino: ["tests._base._loader.hostenv_rhino"],
+	// spidermonkey: ["tests._base._loader.hostenv_spidermonkey"]
 	//});

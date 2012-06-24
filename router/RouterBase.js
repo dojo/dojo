@@ -85,10 +85,9 @@ define([
 		},
 
 		register: function(/*String|RegExp*/ route, /*Function*/ callback){
-			// summary
+			// summary:
 			//		Registers a route to a handling callback
-			//
-			// description
+			// description:
 			//		Given either a string or a regular expression, the router
 			//		will monitor the page's hash and respond to changes that
 			//		match the string or regex as provided.
@@ -109,24 +108,21 @@ define([
 			//		anything remaining on the hash will be provided as a
 			//		property on the object passed into the callback. Think of
 			//		it like a basic means of globbing the end of a route.
-			//
-			// example
+			// example:
 			//	|	router.register("/foo/:bar/*baz", function(object){
 			//	|		// If the hash was "/foo/abc/def/ghi",
 			//	|		// object.bar === "abc"
 			//	|		// object.baz === "def/ghi"
 			//	|	});
-			//
-			// returns Object
+			// returns: Object
 			//		A plain JavaScript object to be used as a handle for
 			//		either removing this specific callback's registration, as
 			//		well as to add new callbacks with the same route initially
 			//		used.
-			//
-			// route String | RegExp
+			// route: String | RegExp
 			//		A string or regular expression which will be used when
 			//		monitoring hash changes.
-			// callback Function
+			// callback: Function
 			//		When the hash matches a pattern as described in the route,
 			//		this callback will be executed. It will receive an event
 			//		object that will have several properties:
@@ -150,11 +146,10 @@ define([
 		},
 
 		registerBefore: function(/*String|RegExp*/ route, /*Function*/ callback){
-			// summary
+			// summary:
 			//		Registers a route to a handling callback, except before
 			//		any previously registered callbacks
-			//
-			// description
+			// description:
 			//		Much like the `register` method, `registerBefore` allows
 			//		us to register route callbacks to happen before any
 			//		previously registered callbacks. See the documentation for
@@ -164,11 +159,11 @@ define([
 		},
 
 		go: function(path, replace){
-			// summary
+			// summary:
 			//		A simple pass-through to make changing the hash easy,
 			//		without having to require dojo/hash directly. It also
 			//		synchronously fires off any routes that match.
-			// example
+			// example:
 			//	|	router.go("/foo/bar");
 
 			var applyChange;
@@ -184,7 +179,7 @@ define([
 		},
 
 		startup: function(){
-			// summary
+			// summary:
 			//		This method must be called to activate the router. Until
 			//		startup is called, no hash changes will trigger route
 			//		callbacks.

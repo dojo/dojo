@@ -1,8 +1,8 @@
 define(["../../_base/array", "../../_base/lang", "../../_base/Deferred"
 ], function(array, lang, Deferred){
 
-//  module:
-//    dojo/store/util/QueryResults
+// module:
+//		dojo/store/util/QueryResults
 
 var QueryResults = function(results){
 	// summary:

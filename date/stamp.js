@@ -25,16 +25,16 @@ stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTi
 	//			|	* yyyy
 	//			|	* yyyy-MM
 	//			|	* yyyy-MM-dd
-	// 			* times only, with an optional time zone appended
+	//			* times only, with an optional time zone appended
 	//			|	* THH:mm
 	//			|	* THH:mm:ss
 	//			|	* THH:mm:ss.SSS
-	// 			* and "datetimes" which could be any combination of the above
+	//			* and "datetimes" which could be any combination of the above
 	//
 	//		timezones may be specified as Z (for UTC) or +/- followed by a time expression HH:mm
 	//		Assumes the local time zone if not specified.  Does not validate.  Improperly formatted
 	//		input may return null.  Arguments which are out of bounds will be handled
-	// 		by the Date constructor (e.g. January 32nd typically gets resolved to February 1st)
+	//		by the Date constructor (e.g. January 32nd typically gets resolved to February 1st)
 	//		Only years between 100 and 9999 are supported.
 	//
   	// formattedString:

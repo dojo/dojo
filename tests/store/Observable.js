@@ -147,7 +147,7 @@ dojo.require("dojo.store.Observable");
             function testType(t){
             	t.f(memoryStore == store);
             	// TODO: I don't believe we can really support this with dojo.declare, would need to upgrade to Compose
-//            	t.t(store instanceof dojo.store.Observable);
+//			  	t.t(store instanceof dojo.store.Observable);
             }
 		]
 	);

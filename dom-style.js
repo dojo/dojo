@@ -120,7 +120,7 @@ define(["./sniff", "./dom"], function(has, dom){
 	/*=====
 	style.toPixelValue = function(node, value){
 		// summary:
-		//      converts style value to pixels on IE or return a numeric value.
+		//		converts style value to pixels on IE or return a numeric value.
 		// node: DOMNode
 		// value: String
 		// returns: Number

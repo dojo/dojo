@@ -244,11 +244,11 @@ define([
 			// summary:
 			//		Adds callback and error callback for this deferred instance.
 			// callback: Function?
-			// 		The callback attached to this deferred object.
+			//		The callback attached to this deferred object.
 			// errback: Function?
-			// 		The error callback attached to this deferred object.
+			//		The error callback attached to this deferred object.
 			// returns:
-			// 		Returns this deferred object.
+			//		Returns this deferred object.
 			this.then(callback, errback, mutator);
 			return this;	// Deferred
 		};
@@ -269,7 +269,7 @@ define([
 			//		handler is the fulfillment value for the returned promise. If the callback
 			//		throws an error, the returned promise will be moved to failed state.
 			//
-			// returns: 
+			// returns:
 			//		Returns a new promise that represents the result of the
 			//		execution of the callback. The callbacks will never affect the original promises value.
 			// example:
@@ -317,25 +317,25 @@ define([
 	lang.extend(Deferred, {
 		addCallback: function(/*Function*/ callback){
 			// summary:
-			// 		Adds successful callback for this deferred instance.
+			//		Adds successful callback for this deferred instance.
 			// returns:
-			// 		Returns this deferred object.
+			//		Returns this deferred object.
 			return this.addCallbacks(lang.hitch.apply(dojo, arguments));	// Deferred
 		},
 
 		addErrback: function(/*Function*/ errback){
 			// summary:
-			// 		Adds error callback for this deferred instance.
+			//		Adds error callback for this deferred instance.
 			// returns:
-			// 		Returns this deferred object.
+			//		Returns this deferred object.
 			return this.addCallbacks(null, lang.hitch.apply(dojo, arguments));	// Deferred
 		},
 
 		addBoth: function(/*Function*/ callback){
 			// summary:
-			// 		Add handler as both successful callback and error callback for this deferred instance.
+			//		Add handler as both successful callback and error callback for this deferred instance.
 			// returns:
-			// 		Returns this deferred object.
+			//		Returns this deferred object.
 			var enclosed = lang.hitch.apply(dojo, arguments);
 			return this.addCallbacks(enclosed, enclosed);	// Deferred
 		},

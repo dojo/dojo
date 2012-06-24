@@ -21,8 +21,10 @@
 // prevent re-definition of the OpenAjax object
 if(!window["OpenAjax"]){
 	OpenAjax = new function(){
-		// summary: the OpenAjax hub
-		// description: see http://www.openajax.org/member/wiki/OpenAjax_Hub_Specification
+		// summary:
+		//		the OpenAjax hub
+		// description:
+		//		see http://www.openajax.org/member/wiki/OpenAjax_Hub_Specification
 
 		var t = true;
 		var f = false;

@@ -13,7 +13,7 @@ var unload = {		// module export
 		// summary:
 		//		registers a function to be triggered when window.onunload
 		//		fires.
-		//	description:
+		// description:
 		//		The first time that addOnWindowUnload is called Dojo
 		//		will register a page listener to trigger your unload
 		//		handler with. Note that registering these handlers may
@@ -25,9 +25,9 @@ var unload = {		// module export
 		//		heavy JavaScript work since it fires at the equivalent of
 		//		the page's "onbeforeunload" event.
 		// example:
-		//	| unload.addOnWindowUnload(functionPointer)
-		//	| unload.addOnWindowUnload(object, "functionName");
-		//	| unload.addOnWindowUnload(object, function(){ /* ... */});
+		//	|	unload.addOnWindowUnload(functionPointer)
+		//	|	unload.addOnWindowUnload(object, "functionName");
+		//	|	unload.addOnWindowUnload(object, function(){ /* ... */});
 
 		if (!dojo.windowUnloaded){
 			on(win, "unload", (dojo.windowUnloaded = function(){
@@ -48,7 +48,7 @@ var unload = {		// module export
 	addOnUnload: function(/*Object?|Function?*/ obj, /*String|Function?*/ functionName){
 		// summary:
 		//		registers a function to be triggered when the page unloads.
-		//	description:
+		// description:
 		//		The first time that addOnUnload is called Dojo will
 		//		register a page listener to trigger your unload handler
 		//		with.
@@ -66,9 +66,9 @@ var unload = {		// module export
 		//		browsers from using a "fast back" cache to make page
 		//		loading via back button instantaneous.
 		// example:
-		//	| dojo.addOnUnload(functionPointer)
-		//	| dojo.addOnUnload(object, "functionName")
-		//	| dojo.addOnUnload(object, function(){ /* ... */});
+		//	|	dojo.addOnUnload(functionPointer)
+		//	|	dojo.addOnUnload(object, "functionName")
+		//	|	dojo.addOnUnload(object, function(){ /* ... */});
 
 		on(win, "beforeunload", lang.hitch(obj, functionName));
 	}

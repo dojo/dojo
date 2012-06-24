@@ -37,23 +37,23 @@ var AdapterRegistry = dojo.AdapterRegistry = function(/*Boolean?*/ returnWrapper
 
 lang.extend(AdapterRegistry, {
 	register: function(/*String*/ name, /*Function*/ check, /*Function*/ wrap, /*Boolean?*/ directReturn, /*Boolean?*/ override){
-		//	summary:
+		// summary:
 		//		register a check function to determine if the wrap function or
 		//		object gets selected
-		//	name:
+		// name:
 		//		a way to identify this matcher.
-		//	check:
+		// check:
 		//		a function that arguments are passed to from the adapter's
 		//		match() function.  The check function should return true if the
 		//		given arguments are appropriate for the wrap function.
-		//	directReturn:
+		// directReturn:
 		//		If directReturn is true, the value passed in for wrap will be
 		//		returned instead of being called. Alternately, the
 		//		AdapterRegistry can be set globally to "return not call" using
 		//		the returnWrappers property. Either way, this behavior allows
 		//		the registry to act as a "search" function instead of a
 		//		function interception library.
-		//	override:
+		// override:
 		//		If override is given and true, the check function will be given
 		//		highest priority. Otherwise, it will be the lowest priority
 		//		adapter.

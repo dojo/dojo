@@ -21,6 +21,10 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			//		  The object store to use as the source provider for this data store
 			
 			this._dirtyObjects = [];
+			if(options.labelAttribute){
+				// accept the old labelAttribute to make it easier to switch from old data stores
+				options.labelProperty = options.labelAttribute; 
+			}
 			lang.mixin(this, options);
 		},
 		labelProperty: "label",

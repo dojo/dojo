@@ -601,13 +601,20 @@ define([
 		var options = {
 			method: method,
 			handleAs: "text",
-			headers: args.headers,
-			data: ioArgs.query,
 			timeout: args.timeout,
-			sync: args.sync,
 			withCredentials: args.withCredentials,
 			ioArgs: ioArgs
 		};
+
+		if(typeof args.headers !== 'undefined'){
+			options.headers = args.headers;
+		}
+		if(typeof ioArgs.query !== 'undefined'){
+			options.data = ioArgs.query;
+		}
+		if(typeof args.sync !== 'undefined'){
+			options.sync = args.sync;
+		}
 
 		dojo._ioNotifyStart(dfd);
 		try{

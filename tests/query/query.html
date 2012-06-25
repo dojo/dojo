@@ -48,6 +48,7 @@
 					"doh.is(3, (query('#t > h3')).length);",
 
 					"doh.is(2, (query('#baz,#foo,#t')).length);",
+					"doh.is(0, (query(null)).length);",
 
 					//"doh.is(1, (query('#bug')).length);",
 
@@ -72,7 +73,8 @@
 					"doh.is(1, (query('span.baz')).length);",
 					"doh.is(1, (query('sPaN.baz')).length);",
 					"doh.is(1, (query('SPAN.baz')).length);",
-
+					"doh.is(1, query('.fooBar').length);",
+					
 					// attribute selectors
 					"doh.is(3, (query('[foo]')).length);",
 
@@ -180,7 +182,7 @@
 							"<ResultSet>",
 							"<Result>One</Result>",
 							"<RESULT>Two</RESULT>",
-							"<result>Three</result>",
+							"<result><nested>Three</nested></result>",
 							"<result>Four</result>",
 							"</ResultSet>"
 						].join("")
@@ -188,6 +190,8 @@
 						var de = doc.documentElement;
 
 						doh.is(2, query("result", de).length, "all lower");
+
+						//doh.is(1, query("result>nested", de).length, "nested XML");
 						doh.is(1, query("Result", de).length, "mixed case");
 						doh.is(1, query("RESULT", de).length, "all upper");
 						doh.is(0, query("resulT", de).length, "no match");

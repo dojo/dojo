@@ -580,7 +580,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 					return new NodeList([]);
 				}
 			}
-			var results = typeof query == "string" ? engine(query, root) : query.orphan ? query : [query];
+			var results = typeof query == "string" ? engine(query, root) : query ? query.orphan ? query : [query] : [];
 			if(results.orphan){
 				// already wrapped
 				return results;

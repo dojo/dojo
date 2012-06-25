@@ -53,17 +53,25 @@ doh.register("tests.Stateful", [
 		t.t(assertions === 3);
 	},
 	function setHash(t){
-		var s = new dojo.Stateful();
+		var s = new dojo.Stateful(), 
+			fooCount = 0, 
+			handle = s.watch('foo', function () { 
+				fooCount++; 
+			}); 
 		s.set({
 			foo:3,
 			bar: 5
 		});
 		doh.is(3, s.get("foo"));
 		doh.is(5, s.get("bar"));
+		doh.is(1, fooCount);
 		var s2 = new dojo.Stateful();
 		s2.set(s);
 		doh.is(3, s2.get("foo"));
 		doh.is(5, s2.get("bar"));
+		// s watchers should not be copied to s2 
+		doh.is(1, fooCount); 
+		handle.unwatch(); 
 	},
 	function wildcard(t){
 		var s = new dojo.Stateful();
@@ -192,7 +200,7 @@ doh.register("tests.Stateful", [
 		t.is(attr4.get("bar"), 3, "value set properly");
 		attr4.set("bar", 4);
 		t.is(attr4.get("foo"), 4, "value set properly");
-		t.is(output, ["bar", undefined, 3, "foo", undefined, 3, "foo", 3, 4, "bar", 3, 4]);
+		t.is(output, ["bar", null, 3, "foo", null, 3, "foo", 3, 4, "bar", 3, 4]);
 	},
 	function serialize(t){
 		var StatefulClass5 = declare([Stateful], {

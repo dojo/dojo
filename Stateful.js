@@ -102,7 +102,7 @@ return declare("dojo.Stateful", null, {
 		// If an object is used, iterate through object
 		if(typeof name === "object"){
 			for(var x in name){
-				if(name.hasOwnProperty(x)){
+				if(name.hasOwnProperty(x) && x !="_watchCallbacks"){
 					this.set(x, name[x]);
 				}
 			}

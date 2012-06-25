@@ -289,6 +289,12 @@
 						"doh.is(dojo.byId('radio2'), query('#t2 > input[type=radio]:checked')[0]);",
 						"doh.is(2, query('#t2select option:checked').length);",
 
+						"doh.is(1, query('#radio1:disabled').length);",
+						"doh.is(0, query('#radio1:enabled').length);",
+						"doh.is(0, query('#radio2:disabled').length);",
+						"doh.is(1, query('#radio2:enabled').length);",
+
+
 						// :empty pseudo-selector
 						"doh.is(4, query('#t > span:empty').length);",
 						"doh.is(6, query('#t span:empty').length);",
@@ -394,7 +400,7 @@
 			<input type="checkbox" name="checkbox1" id="checkbox1" value="foo">
 			<input type="checkbox" name="checkbox2" id="checkbox2" value="bar" checked>
 
-			<input type="radio" name="radio" id="radio1" value="thinger">
+			<input type="radio" disabled="true" name="radio" id="radio1" value="thinger">
 			<input type="radio" name="radio" id="radio2" value="stuff" checked>
 			<input type="radio" name="radio" id="radio3" value="blah">
 		</div>

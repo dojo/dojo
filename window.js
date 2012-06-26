@@ -81,7 +81,7 @@ define(["./_base/lang", "./sniff", "./_base/window", "./dom", "./dom-geometry", 
 					return;
 				}
 				var backCompat = doc.compatMode == 'BackCompat',
-					clientAreaRoot = (isIE >= 9 && node.ownerDocument.parentWindow.frameElement)
+					clientAreaRoot = (isIE >= 9 && "frameElement" in node.ownerDocument.parentWindow)
 						? ((html.clientHeight > 0 && html.clientWidth > 0 && (body.clientHeight == 0 || body.clientWidth == 0 || body.clientHeight > html.clientHeight || body.clientWidth > html.clientWidth)) ? html : body)
 						: (backCompat ? body : html),
 					scrollRoot = isWK ? body : clientAreaRoot,

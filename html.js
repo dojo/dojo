@@ -144,12 +144,19 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 
 				this.onBegin();
 				this.setContent();
-				this.onEnd();
 
-				// dojox.html._ContentSetter.onEnd() can run asynchronously, so for 2.0 considering switching set()
-				// to return a Deferred
-				return this.node;
+				var ret = this.onEnd();
+
+				if(ret.then){
+					// Make dojox.html._ContentSetter.set() return a Promise that resolves when load and parse complete.
+					return ret;
+				}else{
+					// Vanilla dojo/html._ContentSetter.set() returns a DOMNode for back compat.   For 2.0, switch it to
+					// return a Deferred like above.
+					return this.node;
+				}
 			},
+
 			setContent: function(){
 				// summary:
 				//		sets the content on the node
@@ -242,6 +249,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 					this._parse();
 				}
 				return this.node; // DomNode
+				// TODO: for 2.0 return a Promise indicating that the parse completed.
 			},
 
 			tearDown: function(){

@@ -39,6 +39,10 @@ return declare("dojo.dnd.Mover", [Evented], {
 			on(d, "dragstart",   event.stop),
 			on(d.body, "selectstart", event.stop)
 		];
+
+		// Tell autoscroll that a drag is starting
+		autoscroll.autoScrollStart(d);
+
 		// notify that the move has started
 		if(h && h.onMoveStart){
 			h.onMoveStart(this);

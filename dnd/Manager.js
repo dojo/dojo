@@ -63,6 +63,10 @@ var Manager = declare("dojo.dnd.Manager", [Evented], {
 		//		the list of transferred items
 		// copy: Boolean
 		//		copy items, if true, move items otherwise
+
+		// Tell autoscroll that a drag is starting
+		autoscroll.autoScrollStart(win.doc);
+
 		this.source = source;
 		this.nodes  = nodes;
 		this.copy   = Boolean(copy); // normalizing to true boolean

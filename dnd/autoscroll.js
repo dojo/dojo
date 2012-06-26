@@ -6,9 +6,13 @@ define(["../_base/lang", "../sniff", "../_base/window", "../dom-geometry", "../d
 
 var exports = {
 	// summary:
-	//		TODOC
+	//		Used by dojo/dnd/Manager to scroll document or internal node when the user
+	//		drags near the edge of the viewport or a scrollable node
 };
 lang.setObject("dojo.dnd.autoscroll", exports);
+
+// TODO: fix for touch events.  Need to use win.doc.elementFromPoint() to get real target.
+
 
 exports.getViewport = winUtils.getBox;
 
@@ -18,6 +22,29 @@ exports.H_TRIGGER_AUTOSCROLL = 32;
 exports.V_AUTOSCROLL_VALUE = 16;
 exports.H_AUTOSCROLL_VALUE = 16;
 
+// These are set by autoScrollStart().
+// Default to Infinity for back-compat, in case autoScrollStart() isn't called.
+var viewport,
+	maxScrollTop = Infinity,
+	maxScrollLeft = Infinity;
+
+exports.autoScrollStart = function(doc){
+	// summary:
+	//		Called at the start of a drag.
+	// doc: Document
+	//		The document of the node being dragged.
+
+	var body = win.body(doc),
+		html = body.parentNode;
+
+
+	// Save height/width of document at start of drag, before it gets distorted by a user dragging an avatar past
+	// the document's edge
+	viewport = winUtils.getBox(doc);
+	maxScrollTop = Math.max(html.scrollHeight - viewport.h, 0);
+	maxScrollLeft = Math.max(html.scrollWidth - viewport.w, 0);	// usually 0
+};
+
 exports.autoScroll = function(e){
 	// summary:
 	//		a handler for onmousemove event, which scrolls the window, if
@@ -26,16 +53,20 @@ exports.autoScroll = function(e){
 	//		onmousemove event
 
 	// FIXME: needs more docs!
-	var v = winUtils.getBox(), dx = 0, dy = 0;
+	var doc = e.target.ownerDocument,
+		v = viewport || winUtils.getBox(doc), // getBox() call for back-compat, in case autoScrollStart() wasn't called
+		body = win.body(doc),
+		html = body.parentNode,
+		dx = 0, dy = 0;
 	if(e.clientX < exports.H_TRIGGER_AUTOSCROLL){
 		dx = -exports.H_AUTOSCROLL_VALUE;
 	}else if(e.clientX > v.w - exports.H_TRIGGER_AUTOSCROLL){
-		dx = exports.H_AUTOSCROLL_VALUE;
+		dx = Math.min(exports.H_AUTOSCROLL_VALUE, maxScrollLeft - html.scrollLeft);	// don't scroll past edge of doc
 	}
 	if(e.clientY < exports.V_TRIGGER_AUTOSCROLL){
 		dy = -exports.V_AUTOSCROLL_VALUE;
 	}else if(e.clientY > v.h - exports.V_TRIGGER_AUTOSCROLL){
-		dy = exports.V_AUTOSCROLL_VALUE;
+		dy = Math.min(exports.V_AUTOSCROLL_VALUE, maxScrollTop - html.scrollTop);	// don't scroll past edge of doc
 	}
 	window.scrollBy(dx, dy);
 };

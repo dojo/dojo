@@ -11,9 +11,6 @@ var exports = {
 };
 lang.setObject("dojo.dnd.autoscroll", exports);
 
-// TODO: fix for touch events.  Need to use win.doc.elementFromPoint() to get real target.
-
-
 exports.getViewport = winUtils.getBox;
 
 exports.V_TRIGGER_AUTOSCROLL = 32;
@@ -23,40 +20,38 @@ exports.V_AUTOSCROLL_VALUE = 16;
 exports.H_AUTOSCROLL_VALUE = 16;
 
 // These are set by autoScrollStart().
-// Default to Infinity for back-compat, in case autoScrollStart() isn't called.
+// Set to default values in case autoScrollStart() isn't called. (back-compat, remove for 2.0)
 var viewport,
+	doc = win.doc,
 	maxScrollTop = Infinity,
 	maxScrollLeft = Infinity;
 
-exports.autoScrollStart = function(doc){
+exports.autoScrollStart = function(d){
 	// summary:
 	//		Called at the start of a drag.
-	// doc: Document
+	// d: Document
 	//		The document of the node being dragged.
 
-	var body = win.body(doc),
-		html = body.parentNode;
-
+	doc = d;
+	viewport = winUtils.getBox(doc);
 
 	// Save height/width of document at start of drag, before it gets distorted by a user dragging an avatar past
 	// the document's edge
-	viewport = winUtils.getBox(doc);
+	var html = win.body(doc).parentNode;
 	maxScrollTop = Math.max(html.scrollHeight - viewport.h, 0);
 	maxScrollLeft = Math.max(html.scrollWidth - viewport.w, 0);	// usually 0
 };
 
 exports.autoScroll = function(e){
 	// summary:
-	//		a handler for onmousemove event, which scrolls the window, if
+	//		a handler for mousemove and touchmove events, which scrolls the window, if
 	//		necessary
 	// e: Event
-	//		onmousemove event
+	//		mousemove/touchmove event
 
 	// FIXME: needs more docs!
-	var doc = e.target.ownerDocument,
-		v = viewport || winUtils.getBox(doc), // getBox() call for back-compat, in case autoScrollStart() wasn't called
-		body = win.body(doc),
-		html = body.parentNode,
+	var v = viewport || winUtils.getBox(doc), // getBox() call for back-compat, in case autoScrollStart() wasn't called
+		html = win.body(doc).parentNode,
 		dx = 0, dy = 0;
 	if(e.clientX < exports.H_TRIGGER_AUTOSCROLL){
 		dx = -exports.H_AUTOSCROLL_VALUE;
@@ -76,10 +71,10 @@ exports._validOverflow = {"auto": 1, "scroll": 1};
 
 exports.autoScrollNodes = function(e){
 	// summary:
-	//		a handler for onmousemove event, which scrolls the first available
+	//		a handler for mousemove and touchmove events, which scrolls the first available
 	//		Dom element, it falls back to exports.autoScroll()
 	// e: Event
-	//		onmousemove event
+	//		mousemove/touchmove event
 
 	// FIXME: needs more docs!
 

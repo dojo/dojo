@@ -238,7 +238,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
 						// who knows what over-aggressive human optimizers may attempt
 						cache[id] = 1;
-						preloadL10n(split[2], json.parse(split[3]), 1);
+						preloadL10n(split[2], json.parse(split[3]), 1, require);
 					}
 					// don't stall the loader!
 					load(1);
@@ -285,9 +285,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				return result == "root" ? "ROOT" : result;
 			},
 
-			isXd = function(mid){
+			isXd = function(mid, contextRequire){
 				return (has("dojo-sync-loader") && has("dojo-v1x-i18n-Api")) ?
-					require.isXdUrl(require.toUrl(mid + ".js")) :
+					contextRequire.isXdUrl(require.toUrl(mid + ".js")) :
 					true;
 			},
 
@@ -295,7 +295,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 			preloadWaitQueue = [],
 
-			preloadL10n = thisModule._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated, /*boolean*/ guaranteedAmdFormat){
+			preloadL10n = thisModule._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated, /*boolean?*/ guaranteedAmdFormat, /*function?*/ contextRequire){
 				// summary:
 				//		Load available flattened resource bundles associated with a particular module for dojo.locale and all dojo.config.extraLocale (if any)
 				//
@@ -306,18 +306,30 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				//
 				//		If guaranteedAmdFormat is true, then the module can be loaded with require thereby circumventing the detection algorithm
 				//		and the extra possible extra transaction.
-				//
+
+				// If this function is called from legacy code, then guaranteedAmdFormat and contextRequire will be undefined. Since the function
+				// needs a require in order to resolve module ids, fall back to the context-require associated with this dojo/i18n module, which
+				// itself may have been mapped.
+				contextRequire = contextRequire || require;
+
+				function doRequire(mid, callback){
+					if(isXd(mid, contextRequire) || guaranteedAmdFormat){
+						contextRequire([mid], callback);
+					}else{
+						syncRequire([mid], callback, contextRequire);
+					}
+				}
 
 				function forEachLocale(locale, func){
 					// given locale= "ab-cd-ef", calls func on "ab-cd-ef", "ab-cd", "ab", "ROOT"; stops calling the first time func returns truthy
 					var parts = locale.split("-");
 					while(parts.length){
 						if(func(parts.join("-"))){
-							return true;
+							return;
 						}
 						parts.pop();
 					}
-					return func("ROOT");
+					func("ROOT");
 				}
 
 				function preload(locale){
@@ -326,7 +338,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 						if(array.indexOf(localesGenerated, loc)>=0){
 							var mid = bundlePrefix.replace(/\./g, "/")+"_"+loc;
 							preloading++;
-							(isXd(mid) || guaranteedAmdFormat ? require : syncRequire)([mid], function(rollup){
+							doRequire(mid, function(rollup){
 								for(var p in rollup){
 									cache[p + "/" + locale] = rollup[p];
 								}
@@ -396,7 +408,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					+ "}"
 				),
 
-			syncRequire = function(deps, callback){
+			syncRequire = function(deps, callback, require){
 				var results = [];
 				array.forEach(deps, function(mid){
 					var url = require.toUrl(mid + ".js");
@@ -477,7 +489,17 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		thisModule.getLocalization = function(moduleName, bundleName, locale){
 			var result,
 				l10nName = getL10nName(moduleName, bundleName, locale).substring(10);
-			load(l10nName, (!isXd(l10nName) ? syncRequire : require), function(result_){ result = result_; });
+
+			load(
+				l10nName,
+
+				// isXd() and syncRequire() need a context-require in order to resolve the mid with respect to a reference module.
+				// Since this legacy function does not have the concept of a reference module, resolve with respect to this
+				// dojo/i18n module, which, itself may have been mapped.
+				(!isXd(l10nName, require) ? function(deps, callback){ syncRequire(deps, callback, require); } : require),
+
+				function(result_){ result = result_; }
+			);
 			return result;
 		};
 

@@ -108,9 +108,14 @@ var Observable = function(/*Store*/ store){
 							}else if(changed){
 								// we don't have a queryEngine, so we can't provide any information
 								// about where it was inserted or moved to. If it is an update, we leave it's position alone, other we at least indicate a new object
-								insertedInto = existingId !== undef ? 
-									removedFrom : //  
-									options.start ? -1 : (store.defaultIndex || 0);
+								if(existingId !== undef){
+									// an update, keep the index the same
+									insertedInto = removedFrom;
+								}else if(!options.start){
+									// a new object
+									insertedInto = store.defaultIndex || 0;
+									resultsArray.splice(insertedInto, 0, changed);
+								}
 							}
 							if((removedFrom > -1 || insertedInto > -1) &&
 									(includeObjectUpdates || !queryExecutor || (removedFrom != insertedInto))){

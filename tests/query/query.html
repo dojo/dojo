@@ -58,6 +58,7 @@
 
 					// with a root, by ID
 					"doh.is(3, (query('> *', 'container')).length);",
+					"doh.is(3, (query('> *, > h3', 'container')).length);",
 					"doh.is(3, (query('> h3', 't')).length);",
 
 					// compound queries

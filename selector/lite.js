@@ -91,10 +91,10 @@ var liteEngine = function(selector, root){
 var useRoot = function(context, query, method){
 	// this function creates a temporary id so we can do rooted qSA queries, this is taken from sizzle
 	var oldContext = context,
-		old = context.getAttribute( "id" ),
+		old = context.getAttribute("id"),
 		nid = old || "__dojo__",
 		hasParent = context.parentNode,
-		relativeHierarchySelector = /^\s*[+~]/.test( query );
+		relativeHierarchySelector = /^\s*[+~]/.test(query);
 
 	if(relativeHierarchySelector && !hasParent){
 		return [];
@@ -107,12 +107,17 @@ var useRoot = function(context, query, method){
 	if(relativeHierarchySelector && hasParent){
 		context = context.parentNode;
 	}
+	var selectors = query.split(/\s*,\s*/);
+	for(var i = 0; i < selectors.length; i++){
+		selectors[i] = "[id='" + nid + "'] " + selectors[i];
+	}
+	query = selectors.join(",");
 
-	try {
-		return method.call(context, "[id='" + nid + "'] " + query);
-	} finally {
-		if ( !old ){
-			oldContext.removeAttribute( "id" );
+	try{
+		return method.call(context, query);
+	}finally{
+		if(!old){
+			oldContext.removeAttribute("id");
 		}
 	}
 };

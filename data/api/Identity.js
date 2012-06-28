@@ -22,7 +22,7 @@ return declare("dojo.data.api.Identity", Read, {
 		// summary:
 		//		Returns a unique identifier for an item.  The return value will be
 		//		either a string or something that has a toString() method (such as,
-		//		for example, a dojox.uuid.Uuid object).
+		//		for example, a dojox/uuid object).
 		// item:
 		//		The item from the store from which to obtain its identifier.
 		// exceptions:

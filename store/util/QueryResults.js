@@ -18,6 +18,9 @@ var QueryResults = function(results){
 	//
 	//		Additional methods include `forEach`, `filter` and `map`.
 	//
+	//	results: Array | dojo/promise
+	//		The result set as an array, or a promise for an array.
+	//
 	// returns: Object
 	//		An array-like object that can be used for iterating over.
 	//

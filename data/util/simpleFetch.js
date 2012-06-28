@@ -77,8 +77,8 @@ simpleFetch.fetch = function(/* Object? */ request){
 	//		The _fetchItems() method needs to correctly handle any other keywordArgs
 	//		parameters, including the query parameter and any optional parameters
 	//		(such as includeChildren).  The _fetchItems() method should create an array of
-	//		result items and pass it to the fetchHandler along with the original request object
-	//		-- or, the _fetchItems() method may, if it wants to, create an new request object
+	//		result items and pass it to the fetchHandler along with the original request object --
+	//		or, the _fetchItems() method may, if it wants to, create an new request object
 	//		with other specifics about the request that are specific to the datastore and pass
 	//		that as the request object to the handler.
 	//

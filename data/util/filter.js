@@ -13,13 +13,16 @@ filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/ ignoreCase){
 	// description:
 	//		Returns a regular expression object that conforms to the defined conversion rules.
 	//		For example:
+	//
 	//			- ca*   -> /^ca.*$/
 	//			- *ca*  -> /^.*ca.*$/
 	//			- *c\*a*  -> /^.*c\*a.*$/
 	//			- *c\*a?*  -> /^.*c\*a..*$/
+	//
 	//			and so on.
 	// pattern: string
 	//		A simple matching pattern to convert that follows basic rules:
+	//
 	//			- * Means match anything, so ca* means match anything starting with ca
 	//			- ? Means match single character.  So, b?b will match to bob and bab, and so on.
 	//			- \ is an escape character.  So for example, \* means do not treat * as a match, but literal character *.

@@ -215,8 +215,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			onBegin: function(){
 				// summary:
 				//		Called after instantiation, but before set();
-				//		It allows modification of any of the object properties
-				//		- including the node and content provided - before the set operation actually takes place
+				//		It allows modification of any of the object properties -
+				//		including the node and content provided - before the set operation actually takes place
 				//		This default implementation checks for cleanContent and extractContent flags to
 				//		optionally pre-process html string content
 				var cont = this.content;

@@ -8,6 +8,7 @@ define(["./dom-geometry", "./_base/lang", "./ready", "./sniff", "./_base/window"
 	return {
 		// summary:
 		//		Applies pre-set CSS classes to the top-level HTML node, based on:
+		//
 		//			- browser (ex: dj_ie)
 		//			- browser version (ex: dj_ie6)
 		//			- box model (ex: dj_contentBox)

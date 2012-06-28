@@ -93,10 +93,12 @@ define([
 			//		match the string or regex as provided.
 			//
 			//		When provided a regex for the route:
+			//
 			//		- Matching is performed, and the resulting capture groups
 			//		are passed through to the callback as an array.
 			//
 			//		When provided a string for the route:
+			//
 			//		- The string is parsed as a URL-like structure, like
 			//		"/foo/bar"
 			//		- If any portions of that URL are prefixed with a colon
@@ -126,6 +128,7 @@ define([
 			//		When the hash matches a pattern as described in the route,
 			//		this callback will be executed. It will receive an event
 			//		object that will have several properties:
+			//
 			//		- params: Either an array or object of properties pulled
 			//		from the new hash
 			//		- oldPath: The hash in its state before the change

@@ -17,8 +17,10 @@ return declare("dojo.data.ObjectStore", [Evented],{
 		constructor: function(options){
 			// options:
 			//		The configuration information to pass into the data store.
+			//
 			//		- options.objectStore:
-			//		  The object store to use as the source provider for this data store
+			//
+			//		The object store to use as the source provider for this data store
 			
 			this._dirtyObjects = [];
 			if(options.labelAttribute){
@@ -376,6 +378,7 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			// summary:
 			//		Saves the dirty data using object store provider. See dojo.data.api.Write for API.
 			// kwArgs:
+			//
 			//		- kwArgs.global:
 			//		  This will cause the save to commit the dirty data for all
 			//		  ObjectStores as a single transaction.

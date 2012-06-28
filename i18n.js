@@ -123,7 +123,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			//		   preloads
 			//
 			// In cases 1 and 2, <path> is always normalized to an absolute module id upon entry; see
-			// normalize. In case 3, it <path> is assumed to be absolue; this is arranged by the builder.
+			// normalize. In case 3, it <path> is assumed to be absolute; this is arranged by the builder.
 			//
 			// To load a bundle means to insert the bundle into the plugin's cache and publish the bundle
 			// value to the loader. Given <path>, <bundle>, and a particular <locale>, the cache key
@@ -253,7 +253,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				bundleName = match[5] || match[4],
 				bundlePathAndName = bundlePath + bundleName,
 				localeSpecified = (match[5] && match[4]),
-				targetLocale =  localeSpecified || dojo.locale,
+				targetLocale =	localeSpecified || dojo.locale,
 				loadTarget = bundlePathAndName + "/" + targetLocale,
 				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale),
 				remaining = loadList.length,
@@ -350,7 +350,10 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					preloadWaitQueue.push([id, require, load]);
 				}
 				return preloading;
-			};
+			},
+
+			checkForLegacyModules = function()
+				{};
 	}
 
 	if(has("dojo-v1x-i18n-Api")){
@@ -358,9 +361,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		var evalBundle =
 				// use the function ctor to keep the minifiers away (also come close to global scope, but this is secondary)
 				new Function(
-					"__bundle",                // the bundle to evalutate
+					"__bundle",				   // the bundle to evalutate
 					"__checkForLegacyModules", // a function that checks if __bundle defined __mid in the global space
-					"__mid",                   // the mid that __bundle is intended to define
+					"__mid",				   // the mid that __bundle is intended to define
 
 					// returns one of:
 					//		1 => the bundle was an AMD bundle
@@ -369,7 +372,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 					  // used to detect when __bundle calls define
 					  "var define = function(){define.called = 1;},"
-					+ "    require = function(){define.called = 1;};"
+					+ "	   require = function(){define.called = 1;};"
 
 					+ "try{"
 					+		"define.called = 0;"
@@ -387,9 +390,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					// either way, re-eval *after* surrounding with parentheses
 
 					+ "try{"
-					+ 		"return eval('('+__bundle+')');"
+					+		"return eval('('+__bundle+')');"
 					+ "}catch(e){"
-					+ 		"return e;"
+					+		"return e;"
 					+ "}"
 				),
 
@@ -453,23 +456,23 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					}
 				});
 				callback && callback.apply(null, results);
-			},
-
-			checkForLegacyModules = function(target){
-				// legacy code may have already loaded [e.g] the raw bundle x/y/z at x.y.z; when true, push into the cache
-				for(var result, names = target.split("/"), object = dojo.global[names[0]], i = 1; object && i<names.length-1; object = object[names[i++]]){}
-				if(object){
-					result = object[names[i]];
-					if(!result){
-						// fallback for incorrect bundle build of 1.6
-						result = object[names[i].replace(/-/g,"_")];
-					}
-					if(result){
-						cache[target] = result;
-					}
-				}
-				return result;
 			};
+
+		checkForLegacyModules = function(target){
+			// legacy code may have already loaded [e.g] the raw bundle x/y/z at x.y.z; when true, push into the cache
+			for(var result, names = target.split("/"), object = dojo.global[names[0]], i = 1; object && i<names.length-1; object = object[names[i++]]){}
+			if(object){
+				result = object[names[i]];
+				if(!result){
+					// fallback for incorrect bundle build of 1.6
+					result = object[names[i].replace(/-/g,"_")];
+				}
+				if(result){
+					cache[target] = result;
+				}
+			}
+			return result;
+		};
 
 		thisModule.getLocalization = function(moduleName, bundleName, locale){
 			var result,

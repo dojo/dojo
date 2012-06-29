@@ -181,7 +181,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			//
 			// Each of these modules is a normal AMD module that contains one or more flattened bundles in a hash.
 			// For example, assume someModule contained the bundles some/bundle/path/someBundle and
-			// some/bundle/path/someOtherBundle, then some/path/nls/someModule_ab would be expressed as folllows:
+			// some/bundle/path/someOtherBundle, then some/path/nls/someModule_ab would be expressed as follows:
 			//
 			// define({
 			//	 some/bundle/path/someBundle:<value of someBundle, flattened with respect to locale ab>,
@@ -340,7 +340,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 							preloading++;
 							doRequire(mid, function(rollup){
 								for(var p in rollup){
-									cache[p + "/" + locale] = rollup[p];
+									cache[require.toAbsMid(p) + "/" + locale] = rollup[p];
 								}
 								--preloading;
 								while(!preloading && preloadWaitQueue.length){

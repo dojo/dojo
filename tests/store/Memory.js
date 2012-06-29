@@ -3,11 +3,11 @@ dojo.require("dojo.store.Memory");
 (function(){
 	var store = new dojo.store.Memory({
 		data: [
-			{id: 1, name: "one", prime: false},
-			{id: 2, name: "two", even: true, prime: true},
-			{id: 3, name: "three", prime: true},
-			{id: 4, name: "four", even: true, prime: false},
-			{id: 5, name: "five", prime: true}
+			{id: 1, name: "one", prime: false, mappedTo: "E"}, 
+			{id: 2, name: "two", even: true, prime: true, mappedTo: "D"}, 
+			{id: 3, name: "three", prime: true, mappedTo: "C"}, 
+			{id: 4, name: "four", even: true, prime: false, mappedTo: null}, 
+			{id: 5, name: "five", prime: true, mappedTo: "A"} 		
 		]
 	});
 	tests.register("dojo.tests.store.Memory",
@@ -38,6 +38,10 @@ dojo.require("dojo.store.Memory");
 			function testQueryWithSort(t){
 				t.is(store.query({prime: true}, {sort:[{attribute:"name"}]}).length, 3);
 				t.is(store.query({even: true}, {sort:[{attribute:"name"}]})[1].name, "two");
+				t.is(store.query({even: true}, {sort:function(a, b){
+						return a > b ? -1 : 1;
+					}})[1].name, "two");
+				t.is(store.query(null, {sort:[{attribute:"mappedTo"}]})[4].name, "four");
 			},
 			function testQueryWithPaging(t){
 				t.is(store.query({prime: true}, {start: 1, count: 1}).length, 1);

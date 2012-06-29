@@ -82,13 +82,14 @@ return function(query, options){
 		// execute the whole query, first we filter
 		var results = arrayUtil.filter(array, query);
 		// next we sort
-		if(options && options.sort){
-			results.sort(function(a, b){
-				for(var sort, i=0; sort = options.sort[i]; i++){
+		var sortSet = options && options.sort;
+		if(sortSet){
+			results.sort(typeof sortSet == "function" ? sortSet : function(a, b){
+				for(var sort, i=0; sort = sortSet[i]; i++){
 					var aValue = a[sort.attribute];
 					var bValue = b[sort.attribute];
 					if (aValue != bValue){
-						return !!sort.descending == aValue > bValue ? -1 : 1;
+						return !!sort.descending == (aValue == null || aValue > bValue) ? -1 : 1;
 					}
 				}
 				return 0;

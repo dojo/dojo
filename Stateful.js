@@ -8,9 +8,7 @@ return declare("dojo.Stateful", null, {
 	//		control and the ability to watch for property changes
 	//
 	//		The class also provides the functionality to auto-magically manage getters
-	//		and setters for object attributes/properties, as well as provides 
-	//		dojo/Stateful watch functionality and dojo/Evented emit/on functionality 
-	//		for the attributes/properties.
+	//		and setters for object attributes/properties.
 	//		
 	//		Getters and Setters should follow the format of _xxxGetter or _xxxSetter where 
 	//		the xxx is a name of the attribute to handle.  So an attribute of "foo" 

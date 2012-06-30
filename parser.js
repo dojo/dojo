@@ -163,6 +163,10 @@ define(
 			// Call widget constructors
 			var thelist = darray.map(nodes, function(obj){
 				var ctor = obj.ctor || getCtor(obj.types);
+				// If we still haven't resolved a ctor, it is fatal now
+				if(!ctor){
+					throw new Error("Unable to resolve constructor for: '" + obj.types.join() + "'");
+				}
 				return this.construct(ctor, obj.node, mixin, options, obj.scripts, obj.inherited);
 			}, this);
 
@@ -844,7 +848,7 @@ define(
 	};
 
 	if(has("extend-dojo")){
-		dojo.parser  = parser
+		dojo.parser  = parser;
 	}
 
 	// Register the parser callback. It should be the first callback

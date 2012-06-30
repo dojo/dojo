@@ -733,17 +733,29 @@
 					return td;
 				});
 
-				doh.register("promise error handling support", function asyncError(){
-					var td = new doh.Deferred();
+				doh.register("promise error handling support", [
+					function asyncError(){
+						var td = new doh.Deferred();
 
-					parser.parse("errorHandling").then(td.getTestErrback(function(){
-						console.log("shouldn't get here");
-					}), td.getTestCallback(function(e){
-						doh.is(typeof e, "object", "error object returned");
-					}));
+						parser.parse("errorHandling").then(td.getTestErrback(function(){
+							console.log("shouldn't get here");
+						}), td.getTestCallback(function(e){
+							doh.is(typeof e, "object", "error object returned");
+						}));
 
-					return td;
-				});
+						return td;
+					},
+					function missingCtor(){
+						var td = new doh.Deferred();
+
+						parser.parse("missingCtor").then(td.getTestErrback(function(){
+							console.log("shouldn't get here");
+						}), td.getTestCallback(function(e){
+							doh.is(typeof e, "object", "error object returned");
+							doh.is(e.toString(), "Error: Unable to resolve constructor for: 'some.type'", "proper error value returned");
+						}));
+					}
+				]);
 
 				doh.run();
 			})
@@ -1091,6 +1103,9 @@
 		<!-- tests for promise error handling -->
 		<div id="errorHandling">
 			<div data-dojo-type="dojo/tests/resources/AMDWidget" data-dojo-props="foo: bar"></div>
+		</div>
+		<div id="missingCtor">
+			<div data-dojo-type="some.type"></div>
 		</div>
 	</body>
 </html>

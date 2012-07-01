@@ -28,6 +28,7 @@ return declare("dojo.dnd.Avatar", null, {
 		// summary:
 		//		constructor function;
 		//		it is separate so it can be (dynamically) overwritten in case of need
+
 		var a = domConstruct.create("table", {
 				"class": "dojoDndAvatar",
 				style: {
@@ -40,14 +41,18 @@ return declare("dojo.dnd.Avatar", null, {
 			b = domConstruct.create("tbody", null, a),
 			tr = domConstruct.create("tr", null, b),
 			td = domConstruct.create("td", null, tr),
-			icon = has("highcontrast") ? domConstruct.create("span", {
-						id : "a11yIcon",
-						innerHTML : this.manager.copy ? '+' : "<"
-					}, td) : null,
-			span = domConstruct.create("span", {
-				innerHTML: source.generateText ? this._generateText() : ""
-			}, td),
 			k = Math.min(5, this.manager.nodes.length), i = 0;
+
+		if(has("highcontrast")){
+			domConstruct.create("span", {
+				id : "a11yIcon",
+				innerHTML : this.manager.copy ? '+' : "<"
+			}, td)
+		}
+		domConstruct.create("span", {
+			innerHTML: source.generateText ? this._generateText() : ""
+		}, td);
+
 		// we have to set the opacity on IE only after the node is live
 		domAttr.set(tr, {
 			"class": "dojoDndAvatarHeader",

@@ -78,9 +78,9 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 		node = dom.byId(node);
 		var lc = name.toLowerCase(),
 			propName = prop.names[lc] || name,
-			forceProp = forcePropNames[propName];
-		// should we access this attribute via a property or via getAttribute()?
-		value = node[propName];
+			forceProp = forcePropNames[propName],
+			value = node[propName];		// should we access this attribute via a property or via getAttribute()?
+
 		if(forceProp && typeof value != "undefined"){
 			// node's property
 			return value;	// Anything
@@ -203,7 +203,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 		// name: String
 		//		the name of the attribute
 		// returns:
-		//      the value of the attribute
+		//		the value of the attribute
 
 		node = dom.byId(node);
 		var lc = name.toLowerCase(), propName = prop.names[lc] || name;

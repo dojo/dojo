@@ -878,7 +878,7 @@
 		getModuleInfo_ = function(mid, referenceModule, packs, modules, baseUrl, packageMapProg, pathsMapProg, alwaysCreate){
 			// arguments are passed instead of using lexical variables so that this function my be used independent of the loader (e.g., the builder)
 			// alwaysCreate is useful in this case so that getModuleInfo never returns references to real modules owned by the loader
-			var pid, pack, midInPackage, mapProg, mapItem, path, url, result, isRelative, requestedMid, cacheId=0;
+			var pid, pack, midInPackage, mapProg, mapItem, url, result, isRelative, requestedMid, cacheId=0;
 			requestedMid = mid;
 			isRelative = /^\./.test(mid);
 			if(/(^\/)|(\:)|(\.js$)/.test(mid) || (isRelative && !referenceModule)){
@@ -1073,8 +1073,7 @@
 			var map = {};
 			forEach(plugin.loadQ, function(pseudoPluginResource){
 				// manufacture and insert the real module in modules
-				var pseudoMid = pseudoPluginResource.mid,
-					prid = resolvePluginResourceId(plugin, pseudoPluginResource.prid, pseudoPluginResource.req.module),
+				var prid = resolvePluginResourceId(plugin, pseudoPluginResource.prid, pseudoPluginResource.req.module),
 					mid = plugin.dynamic ? pseudoPluginResource.mid.replace(/waitingForPlugin$/, prid) : (plugin.mid + "!" + prid),
 					pluginResource = mix(mix({}, pseudoPluginResource), {mid:mid, prid:prid, injected:0});
 				if(!modules[mid]){

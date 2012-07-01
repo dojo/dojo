@@ -1104,7 +1104,6 @@ define([
 	// there. We need a lot of information about the environment and the query
 	// to make the determination (e.g. does it support QSA, does the query in
 	// question work in the native QSA impl, etc.).
-	var nua = navigator.userAgent;
 
 	// IE QSA queries may incorrectly include comment nodes, so we throw the
 	// zipping function into "remove" comments mode instead of the normal "skip

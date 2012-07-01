@@ -43,9 +43,6 @@ define([
 	__ioArgs.prototype = new kernel.__IoArgs();
 	=====*/
 
-	var loadEvent = has("ie") ? "onreadystatechange" : "load",
-		readyRegExp = /complete|loaded/;
-
 	var script = {
 		// summary:
 		//		TODOC

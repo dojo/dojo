@@ -103,7 +103,6 @@ define(["require"], function(require){
 	}
 
 	if(has("host-browser")){
-		var agent = navigator.userAgent;
 		// Common application level tests
 		has.add("dom-addeventlistener", !!document.addEventListener);
 		has.add("touch", "ontouchstart" in document);

@@ -526,7 +526,6 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 		node = dom.byId(node);
 		var	db = win.body(node.ownerDocument),
-			dh = db.parentNode,
 			ret = node.getBoundingClientRect();
 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};
 

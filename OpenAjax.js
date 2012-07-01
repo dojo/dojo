@@ -26,9 +26,6 @@ if(!window["OpenAjax"]){
 		// description:
 		//		see http://www.openajax.org/member/wiki/OpenAjax_Hub_Specification
 
-		var t = true;
-		var f = false;
-		var g = window;
 		var libs = {};
 		var ooh = "org.openajax.hub.";
 

@@ -147,7 +147,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 
 				var ret = this.onEnd();
 
-				if(ret.then){
+				if(ret && ret.then){
 					// Make dojox.html._ContentSetter.set() return a Promise that resolves when load and parse complete.
 					return ret;
 				}else{

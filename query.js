@@ -546,16 +546,16 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//
 			// example:
 			//	Shorten the list to the first, second, and third elements
-			//	|	dojo.query("a").at(0, 1, 2).forEach(fn);
+			//	|	query("a").at(0, 1, 2).forEach(fn);
 			//
 			// example:
 			//	Retrieve the first and last elements of a unordered list:
-			//	|	dojo.query("ul > li").at(0, -1).forEach(cb);
+			//	|	query("ul > li").at(0, -1).forEach(cb);
 			//
 			// example:
 			//	Do something for the first element only, but end() out back to
 			//	the original list and continue chaining:
-			//	|	dojo.query("a").at(0).onclick(fn).end().forEach(function(n){
+			//	|	query("a").at(0).onclick(fn).end().forEach(function(n){
 			//	|		console.log(n); // all anchors on the page.
 			//	|	})
 
@@ -624,7 +624,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		// example:
 		//		add an onclick handler to every submit button in the document
 		//		which causes the form to be sent via Ajax instead:
-		//	|	define(["dojo/query"], function(query){
+		//	|	require(["dojo/query"], function(query){
 		//	|		query("input[type='submit']").on("click", function(e){
 		//	|			dojo.stopEvent(e); // prevent sending the form
 		//	|			var btn = e.target;
@@ -646,7 +646,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		//		its results with a `NodeList`. You can use dojo/query with a specific selector engine
 		//		by using it as a plugin. For example, if you installed the sizzle package, you could
 		//		use it as the selector engine with:
-		//		|	define("dojo/query!sizzle", function(query){
+		//		|	require(["dojo/query!sizzle"], function(query){
 		//		|		query("div")...
 		//
 		//		The id after the ! can be a module id of the selector engine or one of the following values:
@@ -670,7 +670,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		//
 		//		For example, if you are using CSS3 pseudo selectors in module, you can specify that
 		//		you will need support them with:
-		//		|	define("dojo/query!css3", function(query){
+		//		|	require(["dojo/query!css3"], function(query){
 		//		|		query('#t > h3:nth-child(odd)')...
 		//
 		//		You can also choose the selector engine/load configuration by setting the query-selector:
@@ -691,11 +691,11 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		return NodeList(array);
 	});
 
-	query.load = /*===== dojo.query.load= ======*/ function(id, parentRequire, loaded, config){
+	query.load = function(id, parentRequire, loaded){
 		// summary:
 		//		can be used as AMD plugin to conditionally load new query engine
 		// example:
-		//	|	define(["dojo/query!custom"], function(qsa){
+		//	|	require(["dojo/query!custom"], function(qsa){
 		//	|		// loaded selector/custom.js as engine
 		//	|		qsa("#foobar").forEach(...);
 		//	|	});

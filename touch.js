@@ -93,14 +93,14 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 		//		Based on http://dvcs.w3.org/hg/webevents/raw-file/tip/touchevents.html
 		//
 		// example:
-		//		1. Used with dojo.on
+		//		Used with dojo.on
 		//		|	define(["dojo/on", "dojo/touch"], function(on, touch){
 		//		|		on(node, touch.press, function(e){});
 		//		|		on(node, touch.move, function(e){});
 		//		|		on(node, touch.release, function(e){});
 		//		|		on(node, touch.cancel, function(e){});
-		//
-		//		2. Used with touch.* directly
+		// example:
+		//		Used with touch.* directly
 		//		|	touch.press(node, function(e){});
 		//		|	touch.move(node, function(e){});
 		//		|	touch.release(node, function(e){});

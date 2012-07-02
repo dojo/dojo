@@ -3,7 +3,9 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 	// module:
 	//		dojo/dom-construct
 	// summary:
-	//		This module defines the core dojo DOM construction API. (TODO: make summary appear in API doc)
+	//		This module defines the core dojo DOM construction API.
+
+	// TODOC: summary not showing up in output, see https://github.com/csnover/js-doc-parse/issues/42
 
 	// support stuff for toDom()
 	var tagWrap = {

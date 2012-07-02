@@ -5,6 +5,8 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 	// summary:
 	//		This module defines the core dojo DOM attributes API.
 
+	// TODOC: summary not showing up in output see https://github.com/csnover/js-doc-parse/issues/42
+
 	// =============================
 	// Element attribute Functions
 	// =============================

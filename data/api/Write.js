@@ -134,35 +134,38 @@ return declare("dojo.data.api.Write", Read, {
 		//		in an asynchronous fashion.  The outcome of the save action is
 		//		is passed into the set of supported callbacks for the save.
 		// keywordArgs:
-		//		{
-		//			onComplete: function
-		//			onError: function
-		//			scope: object
-		//		}
+		// |	{
+		// |		onComplete: function
+		// |		onError: function
+		// |		scope: object
+		// |	}
 		//
-		//		The *onComplete* parameter.
-		//			function();
+		//		####The *onComplete* parameter.
 		//
-		//			If an onComplete callback function is provided, the callback function
-		//			will be called just once, after the save has completed.  No parameters
-		//			are generally passed to the onComplete.
+		//		function();
 		//
-		//		The *onError* parameter.
-		//			function(errorData);
+		//		If an onComplete callback function is provided, the callback function
+		//		will be called just once, after the save has completed.  No parameters
+		//		are generally passed to the onComplete.
 		//
-		//			If an onError callback function is provided, the callback function
-		//			will be called if there is any sort of error while attempting to
-		//			execute the save.  The onError function will be based one parameter, the
-		//			error.
+		//		####The *onError* parameter.
 		//
-		//		The *scope* parameter.
-		//			If a scope object is provided, all of the callback function (
-		//			onComplete, onError, etc) will be invoked in the context of the scope
-		//			object.  In the body of the callback function, the value of the "this"
-		//			keyword will be the scope object.   If no scope object is provided,
-		//			the callback functions will be called in the context of dojo.global.
-		//			For example, onComplete.call(scope) vs.
-		//			onComplete.call(dojo.global)
+		//		function(errorData);
+		//
+		//		If an onError callback function is provided, the callback function
+		//		will be called if there is any sort of error while attempting to
+		//		execute the save.  The onError function will be based one parameter, the
+		//		error.
+		//
+		//		####The *scope* parameter.
+		//
+		//		If a scope object is provided, all of the callback function (
+		//		onComplete, onError, etc) will be invoked in the context of the scope
+		//		object.  In the body of the callback function, the value of the "this"
+		//		keyword will be the scope object.   If no scope object is provided,
+		//		the callback functions will be called in the context of dojo.global.
+		//		For example, onComplete.call(scope) vs.
+		//		onComplete.call(dojo.global)
 		// returns:
 		//		Nothing.  Since the saves are generally asynchronous, there is
 		//		no need to return anything.  All results are passed via callbacks.

@@ -65,35 +65,41 @@ return declare("dojo.data.api.Identity", Read, {
 		// keywordArgs:
 		//		An anonymous object that defines the item to locate and callbacks to invoke when the
 		//		item has been located and load has completed.  The format of the object is as follows:
-		//		{
-		//			identity: string|object,
-		//			onItem: Function,
-		//			onError: Function,
-		//			scope: object
-		//		}
-		//	 	The *identity* parameter.
-		//			The identity parameter is the identity of the item you wish to locate and load
-		//			This attribute is required.  It should be a string or an object that toString()
-		//			can be called on.
+		// |	{
+		// |		identity: string|object,
+		// |		onItem: Function,
+		// |		onError: Function,
+		// |		scope: object
+		// |	}
 		//
-		//	 	The *onItem* parameter.
-		//			Function(item)
-		//			The onItem parameter is the callback to invoke when the item has been loaded.  It takes only one
-		//			parameter, the item located, or null if none found.
+		//	 	####The *identity* parameter
 		//
-		//	 	The *onError* parameter.
-		//			Function(error)
-		//			The onError parameter is the callback to invoke when the item load encountered an error.  It takes only one
-		//			parameter, the error object
+		//		The identity parameter is the identity of the item you wish to locate and load
+		//		This attribute is required.  It should be a string or an object that toString()
+		//		can be called on.
 		//
-		//	 	The *scope* parameter.
-		//			If a scope object is provided, all of the callback functions (onItem,
-		//			onError, etc) will be invoked in the context of the scope object.
-		//			In the body of the callback function, the value of the "this"
-		//			keyword will be the scope object.   If no scope object is provided,
-		//			the callback functions will be called in the context of dojo.global.
-		//			For example, onItem.call(scope, item, request) vs.
-		//			onItem.call(dojo.global, item, request)
+		//	 	####The *onItem* parameter
+		//
+		//		Function(item)
+		//		The onItem parameter is the callback to invoke when the item has been loaded.  It takes only one
+		//		parameter, the item located, or null if none found.
+		//
+		//	 	####The *onError* parameter
+		//
+		//		Function(error)
+		//		The onError parameter is the callback to invoke when the item load encountered an error.  It takes only one
+		//		parameter, the error object
+		//
+		//	 	####The *scope* parameter
+		//
+		//		If a scope object is provided, all of the callback functions (onItem,
+		//		onError, etc) will be invoked in the context of the scope object.
+		//		In the body of the callback function, the value of the "this"
+		//		keyword will be the scope object.   If no scope object is provided,
+		//		the callback functions will be called in the context of dojo.global.
+		//		For example, onItem.call(scope, item, request) vs.
+		//		onItem.call(dojo.global, item, request)
+
 		if(!this.isItemLoaded(keywordArgs.item)){
 			throw new Error('Unimplemented API: dojo.data.api.Identity.fetchItemByIdentity');
 		}

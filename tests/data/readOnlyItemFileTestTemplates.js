@@ -456,8 +456,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
         name: "Identity API: fetchItemByIdentity() Object.prototype item identifier",
         runTest: function(datastore, t){
 			// summary:
-			//			Simple test of bug where store would raise an error
-			//			if the item identifier was the same as an Object property name.
+			//		Simple test of bug where store would raise an error
+			//		if the item identifier was the same as an Object property name.
 			var data = {identifier: 'id', items: [{id: 'toString', value: 'aha'}]};
 			var store = new datastore({data: data});
 			var d = new doh.Deferred();
@@ -477,8 +477,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
         name: "Identity API: fetchItemByIdentity() Object.prototype item identifier 2",
         runTest: function(datastore, t){
 			// summary:
-			//			Simple test of bug where store would raise an error
-			//			if the item identifier was the same as an Object property name.
+			//		Simple test of bug where store would raise an error
+			//		if the item identifier was the same as an Object property name.
 			var data = {identifier: 'id', items: [{id: 'hasOwnProperty', value: 'yep'}]};
 			var store = new datastore({data: data});
 			var d = new doh.Deferred();
@@ -498,8 +498,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
         name: "Identity API: fetchItemByIdentity() Object.prototype identity",
         runTest: function(datastore, t){
 			// summary:
-			//			Simple test of bug where fetchItemByIdentity would return
-			//			an object property.
+			//		Simple test of bug where fetchItemByIdentity would return
+			//		an object property.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withoutid"));
 			var d = new doh.Deferred();
 			function onItem(item){
@@ -518,8 +518,8 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
         name: "Identity API: fetchItemByIdentity() Object.prototype identity 2",
         runTest: function(datastore, t){
 			// summary:
-			//			Simple test of bug where fetchItemByIdentity would return
-			//			an object property.
+			//		Simple test of bug where fetchItemByIdentity would return
+			//		an object property.
 			var store = new datastore(tests.data.readOnlyItemFileTestTemplates.getTestData("countries_withoutid"));
 			var d = new doh.Deferred();
 			function onItem(item){

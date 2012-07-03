@@ -117,8 +117,8 @@ date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 	//		Date object to start with
 	// interval:
 	//		A string representing the interval.  One of the following:
-	//			"year", "month", "day", "hour", "minute", "second",
-	//			"millisecond", "quarter", "week", "weekday"
+	//		"year", "month", "day", "hour", "minute", "second",
+	//		"millisecond", "quarter", "week", "weekday"
 	// amount:
 	//		How much to add to the date.
 
@@ -214,8 +214,9 @@ date.difference = function(/*Date*/date1, /*Date?*/date2, /*String?*/interval){
 	//		Date object.  If not specified, the current Date is used.
 	// interval:
 	//		A string representing the interval.  One of the following:
-	//			"year", "month", "day", "hour", "minute", "second",
-	//			"millisecond", "quarter", "week", "weekday"
+	//		"year", "month", "day", "hour", "minute", "second",
+	//		"millisecond", "quarter", "week", "weekday"
+	//
 	//		Defaults to "day".
 
 	date2 = date2 || new Date();

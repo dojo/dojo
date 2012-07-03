@@ -145,7 +145,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		//		Getter/setter for the margin-box of node.
 		//		Returns an object in the expected format of box (regardless
 		//		if box is passed). The object might look like:
-		//			`{ l: 50, t: 200, w: 300: h: 150 }`
+		//		`{ l: 50, t: 200, w: 300: h: 150 }`
 		//		for a node offset from its parent 50px to the left, 200px from
 		//		the top with a margin width of 300px and a margin-height of
 		//		150px.
@@ -173,7 +173,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		// description:
 		//		Returns an object in the expected format of box (regardless if box is passed).
 		//		The object might look like:
-		//			`{ l: 50, t: 200, w: 300: h: 150 }`
+		//		`{ l: 50, t: 200, w: 300: h: 150 }`
 		//		for a node offset from its parent 50px to the left, 200px from
 		//		the top with a content width of 300px and a content-height of
 		//		150px. Note that the content box may have a much larger border
@@ -284,7 +284,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		//	|	});
 		//
 		// example:
-		//	Style is s special case: Only set with an object hash of styles
+		//		Style is s special case: Only set with an object hash of styles
 		//	|	dojo.prop("someNode",{
 		//	|		id:"bar",
 		//	|		style:{
@@ -293,7 +293,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		//	|	});
 		//
 		// example:
-		//	Again, only set style as an object hash of styles:
+		//		Again, only set style as an object hash of styles:
 		//	|	var obj = { color:"#fff", backgroundColor:"#000" };
 		//	|	dojo.prop("someNode", "style", obj);
 		//	|

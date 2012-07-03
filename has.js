@@ -51,43 +51,38 @@ define(["require"], function(require){
 
 		has.add = function(name, test, now, force){
 			// summary:
-			//	 Register a new feature test for some named feature.
-			//
+			//	 	Register a new feature test for some named feature.
 			// name: String|Integer
-			//	 The name (if a string) or identifier (if an integer) of the feature to test.
-			//
+			//	 	The name (if a string) or identifier (if an integer) of the feature to test.
 			// test: Function
-			//	 A test function to register. If a function, queued for testing until actually
-			//	 needed. The test function should return a boolean indicating
-			//	 the presence of a feature or bug.
-			//
+			//		 A test function to register. If a function, queued for testing until actually
+			//		 needed. The test function should return a boolean indicating
+			//	 	the presence of a feature or bug.
 			// now: Boolean?
-			//	 Optional. Omit if `test` is not a function. Provides a way to immediately
-			//	 run the test and cache the result.
-			//
+			//		 Optional. Omit if `test` is not a function. Provides a way to immediately
+			//		 run the test and cache the result.
 			// force: Boolean?
-			//	 Optional. If the test already exists and force is truthy, then the existing
-			//	 test will be replaced; otherwise, add does not replace an existing test (that
-			//	 is, by default, the first test advice wins).
+			//	 	Optional. If the test already exists and force is truthy, then the existing
+			//	 	test will be replaced; otherwise, add does not replace an existing test (that
+			//	 	is, by default, the first test advice wins).
+			// example:
+			//		A redundant test, testFn with immediate execution:
+			//	|	has.add("javascript", function(){ return true; }, true);
 			//
 			// example:
-			//			A redundant test, testFn with immediate execution:
-			//	|				has.add("javascript", function(){ return true; }, true);
+			//		Again with the redundantness. You can do this in your tests, but we should
+			//		not be doing this in any internal has.js tests
+			//	|	has.add("javascript", true);
 			//
 			// example:
-			//			Again with the redundantness. You can do this in your tests, but we should
-			//			not be doing this in any internal has.js tests
-			//	|				has.add("javascript", true);
-			//
-			// example:
-			//			Three things are passed to the testFunction. `global`, `document`, and a generic element
-			//			from which to work your test should the need arise.
-			//	|				has.add("bug-byid", function(g, d, el){
-			//	|						// g	== global, typically window, yadda yadda
-			//	|						// d	== document object
-			//	|						// el == the generic element. a `has` element.
-			//	|						return false; // fake test, byid-when-form-has-name-matching-an-id is slightly longer
-			//	|				});
+			//		Three things are passed to the testFunction. `global`, `document`, and a generic element
+			//		from which to work your test should the need arise.
+			//	|	has.add("bug-byid", function(g, d, el){
+			//	|		// g	== global, typically window, yadda yadda
+			//	|		// d	== document object
+			//	|		// el == the generic element. a `has` element.
+			//	|		return false; // fake test, byid-when-form-has-name-matching-an-id is slightly longer
+			//	|	});
 
 			(typeof cache[name]=="undefined" || force) && (cache[name]= test);
 			return now && has(name);
@@ -160,15 +155,12 @@ define(["require"], function(require){
 
 	has.load = function(id, parentRequire, loaded){
 		// summary:
-		//	 Conditional loading of AMD modules based on a has feature test value.
-		//
+		//		Conditional loading of AMD modules based on a has feature test value.
 		// id: String
-		//	 Gives the resolved module id to load.
-		//
+		//		Gives the resolved module id to load.
 		// parentRequire: Function
-		//	 The loader require function with respect to the module that contained the plugin resource in it's
-		//	 dependency list.
-		//
+		//		The loader require function with respect to the module that contained the plugin resource in it's
+		//		dependency list.
 		// loaded: Function
 		//	 Callback to loader that consumes result of plugin demand.
 

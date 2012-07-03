@@ -108,30 +108,49 @@ define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_ba
 		//		This design leads to a somewhat complex state machine, which is
 		//		described below:
 		//
-		//		s1: Stable state - neither the window's location has changed nor
-		//			has the IFrame's location. Note that this is the 99.9% case, so
-		//			we optimize for it.
-		//			Transitions: s1, s2, s3
-		//		s2: Window's location changed - when a user clicks a hyperlink or
-		//			code programmatically changes the window's URI.
-		//			Transitions: s4
-		//		s3: Iframe's location changed as a result of user pressing back or
-		//			forward - when the user presses back or forward, the location of
-		//			the background's iframe changes to the previous or next value in
-		//			its history.
-		//			Transitions: s1
-		//		s4: IEUriMonitor has programmatically changed the location of the
-		//			background iframe, but it's location hasn't yet changed. In this
-		//			case we do nothing because we need to wait for the iframe's
-		//			location to reflect its actual state.
-		//			Transitions: s4, s5
-		//		s5: IEUriMonitor has programmatically changed the location of the
-		//			background iframe, and the iframe's location has caught up with
-		//			reality. In this case we need to transition to s1.
-		//			Transitions: s1
+		//		####s1
+		//
+		//		Stable state - neither the window's location has changed nor
+		//		has the IFrame's location. Note that this is the 99.9% case, so
+		//		we optimize for it.
+		//
+		//		Transitions: s1, s2, s3
+		//
+		//		####s2
+		//
+		//		Window's location changed - when a user clicks a hyperlink or
+		//		code programmatically changes the window's URI.
+		//
+		//		Transitions: s4
+		//
+		//		####s3
+		//
+		//		Iframe's location changed as a result of user pressing back or
+		//		forward - when the user presses back or forward, the location of
+		//		the background's iframe changes to the previous or next value in
+		//		its history.
+		//
+		//		Transitions: s1
+		//
+		//		####s4
+		//
+		//		IEUriMonitor has programmatically changed the location of the
+		//		background iframe, but it's location hasn't yet changed. In this
+		//		case we do nothing because we need to wait for the iframe's
+		//		location to reflect its actual state.
+		//
+		//		Transitions: s4, s5
+		//
+		//		####s5
+		//
+		//		IEUriMonitor has programmatically changed the location of the
+		//		background iframe, and the iframe's location has caught up with
+		//		reality. In this case we need to transition to s1.
+		//
+		//		Transitions: s1
 		//
 		//		The hashchange event is always dispatched on the transition back to s1.
-		//
+
 
 		// create and append iframe
 		var ifr = document.createElement("iframe"),

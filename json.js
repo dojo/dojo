@@ -33,7 +33,7 @@ define(["./has"], function(has){
 				//		from a trusted source.
 				// str:
 				//		a string literal of a JSON item, for instance:
-				//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
+				//		`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 				// strict:
 				//		When set to true, this will ensure that only valid, secure JSON is ever parsed.
 				//		Make sure this is set to true for untrusted content. Note that on browsers/engines
@@ -56,7 +56,6 @@ define(["./has"], function(has){
 				//		A replacer function that is called for each value and can return a replacement
 				// spacer:
 				//		A spacer string to be used for pretty printing of JSON
-				//		
 				// example:
 				//		simple serialization of a trivial object
 				//	|	define(["dojo/json"], function(JSON){

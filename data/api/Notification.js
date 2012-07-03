@@ -77,16 +77,16 @@ return declare("dojo.data.api.Notification", Read, {
 		//		function is invoked with a value for parentInfo, then onSet is not invoked stating the attribute of
 		//		the parent item was modified.  This is to avoid getting two notification  events occurring when a new item
 		//		with a parent is created.  The structure passed in is as follows:
-		//		{
-		//			item: someItem,							//The parent item
-		//			attribute:	"attribute-name-string",	//The attribute the new item was assigned to.
-		//			oldValue: something	//Whatever was the previous value for the attribute.
-		//						//If it is a single-value attribute only, then this value will be a single value.
-		//						//If it was a multi-valued attribute, then this will be an array of all the values minus the new one.
-		//			newValue: something	//The new value of the attribute.  In the case of single value calls, such as setValue, this value will be
-		//						//generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes,
-		//						//it will be an array.
-		//		}
+		// |	{
+		// |		item: someItem,							//The parent item
+		// |		attribute:	"attribute-name-string",	//The attribute the new item was assigned to.
+		// |		oldValue: something	//Whatever was the previous value for the attribute.
+		// |					//If it is a single-value attribute only, then this value will be a single value.
+		// |					//If it was a multi-valued attribute, then this will be an array of all the values minus the new one.
+		// |		newValue: something	//The new value of the attribute.  In the case of single value calls, such as setValue, this value will be
+		// |					//generally be an atomic value of some sort (string, int, etc, object).  In the case of multi-valued attributes,
+		// |					//it will be an array.
+		// |	}
 		// returns:
 		//		Nothing.
 		throw new Error('Unimplemented API: dojo.data.api.Notification.onNew');

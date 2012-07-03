@@ -514,7 +514,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//
 		// description:
 		//		Returns an object of the form:
-		//			{ x: 100, y: 300, w: 20, h: 15 }
+		//		`{ x: 100, y: 300, w: 20, h: 15 }`.
 		//		If includeScroll==true, the x and y values will include any
 		//		document offsets that may affect the position relative to the
 		//		viewport.

@@ -46,10 +46,10 @@ sorter.createSortFunction = function(	/* attributes[] */sortSpec, /*dojo/data/ap
 	// sortSpec:
 	//		A JS object that array that defines out what attribute names to sort on and whether it should be descenting or asending.
 	//		The objects should be formatted as follows:
-	//		{
-	//			attribute: "attributeName-string" || attribute,
-	//			descending: true|false;   // Default is false.
-	//		}
+	// |	{
+	// |		attribute: "attributeName-string" || attribute,
+	// |		descending: true|false;   // Default is false.
+	// |	}
 	// store:
 	//		The datastore object to look up item values from.
 

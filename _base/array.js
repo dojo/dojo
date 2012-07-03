@@ -95,13 +95,13 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 			 //		the callback function with a value of undefined. JavaScript 1.6's every skips the holes in the sparse array.
 			 //		For more details, see:
-			 //			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/every
+			 //		https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/every
 			 // example:
-			 //	| // returns false
-			 //	| array.every([1, 2, 3, 4], function(item){ return item>1; });
+			 //	|	// returns false
+			 //	|	array.every([1, 2, 3, 4], function(item){ return item>1; });
 			 // example:
-			 //	| // returns true
-			 //	| array.every([1, 2, 3, 4], function(item){ return item>0; });
+			 //	|	// returns true
+			 //	|	array.every([1, 2, 3, 4], function(item){ return item>0; });
 		 },
 		 =====*/
 
@@ -124,7 +124,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 			//		the callback function with a value of undefined. JavaScript 1.6's some skips the holes in the sparse array.
 			//		For more details, see:
-			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/some
+			//		https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/some
 			// example:
 			//	| // is true
 			//	| array.some([1, 2, 3, 4], function(item){ return item>1; });
@@ -145,7 +145,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript
 			//		1.6's indexOf skips the holes in the sparse array.
 			//		For details on this method, see:
-			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
+			//		https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
 			// arr: Array
 			// value: Object
 			// fromIndex: Integer?
@@ -165,7 +165,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//		run over sparse arrays, the Dojo function invokes the callback for every index whereas JavaScript
 			//		1.6's lastIndexOf skips the holes in the sparse array.
 			//		For details on this method, see:
-			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/lastIndexOf
+			//		https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/lastIndexOf
 			// arr: Array,
 			// value: Object,
 			// fromIndex: Integer?
@@ -189,7 +189,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 			//		the callback function with a value of undefined. JavaScript 1.6's forEach skips the holes in the sparse array.
 			//		For more details, see:
-			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/forEach
+			//		https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/forEach
 			// example:
 			//	| // log out all members of the array:
 			//	| array.forEach(
@@ -264,7 +264,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 			//		the callback function with a value of undefined. JavaScript 1.6's map skips the holes in the sparse array.
 			//		For more details, see:
-			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
+			//		https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
 			// example:
 			//	| // returns [2, 3, 4, 5]
 			//	| array.map([1, 2, 3, 4], function(item){ return item+1 });
@@ -304,7 +304,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//		run over sparse arrays, this implementation passes the "holes" in the sparse array to
 			//		the callback function with a value of undefined. JavaScript 1.6's filter skips the holes in the sparse array.
 			//		For more details, see:
-			//			https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
+			//		https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
 			// example:
 			//	| // returns [2, 3, 4]
 			//	| array.filter([1, 2, 3, 4], function(item){ return item>1; });

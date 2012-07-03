@@ -12,21 +12,21 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	constructor: function(/* object */ keywordParameters){
 		// keywordParameters:
 		//		The structure of the typeMap object is as follows:
-		//		{
-		//			type0: function || object,
-		//			type1: function || object,
-		//			...
-		//			typeN: function || object
-		//		}
+		// |	{
+		// |		type0: function || object,
+		// |		type1: function || object,
+		// |		...
+		// |		typeN: function || object
+		// |	}
 		//		Where if it is a function, it is assumed to be an object constructor that takes the
 		//		value of _value as the initialization parameters.  It is serialized assuming object.toString()
 		//		serialization.  If it is an object, then it is assumed
 		//		to be an object of general form:
-		//		{
-		//			type: function, //constructor.
-		//			deserialize:	function(value) //The function that parses the value and constructs the object defined by type appropriately.
-		//			serialize:	function(object) //The function that converts the object back into the proper file format form.
-		//		}
+		// |	{
+		// |		type: function, //constructor.
+		// |		deserialize:	function(value) //The function that parses the value and constructs the object defined by type appropriately.
+		// |		serialize:	function(object) //The function that converts the object back into the proper file format form.
+		// |	}
 
 		// ItemFileWriteStore extends ItemFileReadStore to implement these additional dojo.data APIs
 		this._features['dojo.data.api.Write'] = true;

@@ -21,7 +21,7 @@ dojo.fromJson = function(/*String*/ js){
 	//		implementation uses the (faster) native JSON parse when available.
 	// js:
 	//		a string literal of a JavaScript expression, for instance:
-	//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
+	//		`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 
 	return eval("(" + js + ")"); // Object
 };

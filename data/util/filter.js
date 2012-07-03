@@ -19,7 +19,7 @@ filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/ ignoreCase){
 	//		- *c\*a*  -> /^.*c\*a.*$/
 	//		- *c\*a?*  -> /^.*c\*a..*$/
 	//
-	//			and so on.
+	//		and so on.
 	// pattern: string
 	//		A simple matching pattern to convert that follows basic rules:
 	//

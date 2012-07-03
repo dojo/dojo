@@ -435,21 +435,21 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//	|	dojo.query(".note").addContent(dojo.byId("foo"));
 			// example:
 			//		Append nodes from a templatized string.
-			//		dojo.require("dojo.string");
-			//		dojo.query(".note").addContent({
-			//			template: '<b>${id}: </b><span>${name}</span>',
-			//			id: "user332",
-			//			name: "Mr. Anderson"
-			//		});
+			// |	dojo.require("dojo.string");
+			// |	dojo.query(".note").addContent({
+			// |		template: '<b>${id}: </b><span>${name}</span>',
+			// |		id: "user332",
+			// |		name: "Mr. Anderson"
+			// |	});
 			// example:
 			//		Append nodes from a templatized string that also has widgets parsed.
-			//		dojo.require("dojo.string");
-			//		dojo.require("dojo.parser");
-			//		var notes = dojo.query(".note").addContent({
-			//			template: '<button dojoType="dijit.form.Button">${text}</button>',
-			//			parse: true,
-			//			text: "Send"
-			//		});
+			// |	dojo.require("dojo.string");
+			// |	dojo.require("dojo.parser");
+			// |	var notes = dojo.query(".note").addContent({
+			// |		template: '<button dojoType="dijit.form.Button">${text}</button>',
+			// |		parse: true,
+			// |		text: "Send"
+			// |	});
 			content = this._normalize(content, this[0]);
 			for(var i = 0, node; (node = this[i]); i++){
 				this._place(content, node, position, i > 0);

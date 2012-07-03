@@ -717,7 +717,7 @@ define([
 		if(!("tag" in ignores)){
 			if(query.tag != "*"){
 				ff = agree(ff, function(elem){
-					return (elem && (elem.tagName == query.getTag()));
+					return (elem && ((caseSensitive ? elem.tagName : elem.tagName.toUpperCase()) == query.getTag()));
 				});
 			}
 		}

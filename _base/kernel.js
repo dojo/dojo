@@ -85,11 +85,11 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		// description:
 		//		Hash about the version, including
 		//
-		//		* major: Integer: Major version. If total version is "1.2.0beta1", will be 1
-		//		* minor: Integer: Minor version. If total version is "1.2.0beta1", will be 2
-		//		* patch: Integer: Patch version. If total version is "1.2.0beta1", will be 0
-		//		* flag: String: Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
-		//		* revision: Number: The SVN rev from which dojo was pulled
+		//		- major: Integer: Major version. If total version is "1.2.0beta1", will be 1
+		//		- minor: Integer: Minor version. If total version is "1.2.0beta1", will be 2
+		//		- patch: Integer: Patch version. If total version is "1.2.0beta1", will be 0
+		//		- flag: String: Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
+		//		- revision: Number: The SVN rev from which dojo was pulled
 
 		major: 1, minor: 8, patch: 0, flag: "dev",
 		revision: rev ? +rev[0] : NaN,

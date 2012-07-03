@@ -21,15 +21,15 @@ stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTi
 	//		Can also process dates as specified [by the W3C](http://www.w3.org/TR/NOTE-datetime)
 	//		The following combinations are valid:
 	//
-	//		* dates only
-	//			* yyyy
-	//			* yyyy-MM
-	//			* yyyy-MM-dd
-	//		* times only, with an optional time zone appended
-	//			* THH:mm
-	//			* THH:mm:ss
-	//			* THH:mm:ss.SSS
-	//		* and "datetimes" which could be any combination of the above
+	//		- dates only
+	//			- yyyy
+	//			- yyyy-MM
+	//			- yyyy-MM-dd
+	//		- times only, with an optional time zone appended
+	//			- THH:mm
+	//			- THH:mm:ss
+	//			- THH:mm:ss.SSS
+	//		- and "datetimes" which could be any combination of the above
 	//
 	//		timezones may be specified as Z (for UTC) or +/- followed by a time expression HH:mm
 	//		Assumes the local time zone if not specified.  Does not validate.  Improperly formatted

@@ -67,9 +67,9 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		returns an object with properties useful for noting the border
 		//		dimensions.
 		// description:
-		//		* l/t/r/b = the sum of left/top/right/bottom border (respectively)
-		//		* w = the sum of the left and right border
-		//		* h = the sum of the top and bottom border
+		//		- l/t/r/b = the sum of left/top/right/bottom border (respectively)
+		//		- w = the sum of the left and right border
+		//		- h = the sum of the top and bottom border
 		//
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
@@ -97,9 +97,9 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		Returns object with properties useful for box fitting with
 		//		regards to padding.
 		// description:
-		//		* l/t/r/b = the sum of left/top/right/bottom padding and left/top/right/bottom border (respectively)
-		//		* w = the sum of the left and right padding and border
-		//		* h = the sum of the top and bottom padding and border
+		//		- l/t/r/b = the sum of left/top/right/bottom padding and left/top/right/bottom border (respectively)
+		//		- w = the sum of the left and right padding and border
+		//		- h = the sum of the top and bottom padding and border
 		//
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this
@@ -132,9 +132,9 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		returns object with properties useful for box fitting with
 		//		regards to box margins (i.e., the outer-box).
 		//
-		//		* l/t = marginLeft, marginTop, respectively
-		//		* w = total width, margin inclusive
-		//		* h = total height, margin inclusive
+		//		- l/t = marginLeft, marginTop, respectively
+		//		- w = total width, margin inclusive
+		//		- h = total height, margin inclusive
 		//
 		//		The w/h are used for calculating boxes.
 		//		Normally application code will not need to invoke this

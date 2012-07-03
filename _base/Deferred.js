@@ -48,10 +48,10 @@ define([
 		//
 		//		The Deferred instances also provide the following functions for backwards compatibility:
 		//
-		//		* addCallback(handler)
-		//		* addErrback(handler)
-		//		* callback(result)
-		//		* errback(result)
+		//		- addCallback(handler)
+		//		- addErrback(handler)
+		//		- callback(result)
+		//		- errback(result)
 		//
 		//		Callbacks are allowed to return promises themselves, so
 		//		you can build complicated sequences of events with ease.

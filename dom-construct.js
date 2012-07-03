@@ -129,12 +129,12 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//		number indicating the location in the childNodes collection of refNode.
 		//		Accepted string values are:
 		//
-		//		* before
-		//		* after
-		//		* replace
-		//		* only
-		//		* first
-		//		* last
+		//		- before
+		//		- after
+		//		- replace
+		//		- only
+		//		- first
+		//		- last
 		//
 		//		"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,
 		//		"only" replaces all children.  position defaults to "last" if not specified

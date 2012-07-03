@@ -251,12 +251,12 @@ Store.QueryResults = declare("Store.QueryResults", null, {
 		//		arguments:
 		//		| listener(object, removedFrom, insertedInto);
 		//
-		//		* The object parameter indicates the object that was create, modified, or deleted.
-		//		* The removedFrom parameter indicates the index in the result array where
+		//		- The object parameter indicates the object that was create, modified, or deleted.
+		//		- The removedFrom parameter indicates the index in the result array where
 		//		the object used to be. If the value is -1, then the object is an addition to
 		//		this result set (due to a new object being created, or changed such that it
 		//		is a part of the result set).
-		//		* The insertedInto parameter indicates the index in the result array where
+		//		- The insertedInto parameter indicates the index in the result array where
 		//		the object should be now. If the value is -1, then the object is a removal
 		//		from this result set (due to an object being deleted, or changed such that it
 		//		is not a part of the result set).

@@ -17,9 +17,9 @@
 	//
 	//		This loader includes sniffing machinery to determine the environment; the following environments are supported:
 	//
-	//			* browser
-	//			* node.js
-	//			* rhino
+	//		* browser
+	//		* node.js
+	//		* rhino
 	//
 	//		This is the so-called "source loader". As such, it includes many optional features that may be discadred by
 	//		building a customized verion with the build system.

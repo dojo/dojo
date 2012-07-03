@@ -6,9 +6,9 @@ define(["require"], function(require){
 	// description:
 	//		This module defines the has API as described by the project has.js with the following additional features:
 	//
-	//			* the has test cache is exposed at has.cache.
-	//			* the method has.add includes a forth parameter that controls whether or not existing tests are replaced
-	//			* the loader's has cache may be optionally copied into this module's has cahce.
+	//		* the has test cache is exposed at has.cache.
+	//		* the method has.add includes a forth parameter that controls whether or not existing tests are replaced
+	//		* the loader's has cache may be optionally copied into this module's has cahce.
 	//
 	//		This module adopted from https://github.com/phiggins42/has.js; thanks has.js team!
 

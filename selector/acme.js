@@ -1328,27 +1328,27 @@ define([
 		//
 		//		acme supports a rich set of CSS3 selectors, including:
 		//
-		//			* class selectors (e.g., `.foo`)
-		//			* node type selectors like `span`
-		//			* ` ` descendant selectors
-		//			* `>` child element selectors
-		//			* `#foo` style ID selectors
-		//			* `*` universal selector
-		//			* `~`, the preceded-by sibling selector
-		//			* `+`, the immediately preceded-by sibling selector
-		//			* attribute queries:
-		//			|	* `[foo]` attribute presence selector
-		//			|	* `[foo='bar']` attribute value exact match
-		//			|	* `[foo~='bar']` attribute value list item match
-		//			|	* `[foo^='bar']` attribute start match
-		//			|	* `[foo$='bar']` attribute end match
-		//			|	* `[foo*='bar']` attribute substring match
-		//			* `:first-child`, `:last-child`, and `:only-child` positional selectors
-		//			* `:empty` content emtpy selector
-		//			* `:checked` pseudo selector
-		//			* `:nth-child(n)`, `:nth-child(2n+1)` style positional calculations
-		//			* `:nth-child(even)`, `:nth-child(odd)` positional selectors
-		//			* `:not(...)` negation pseudo selectors
+		//		* class selectors (e.g., `.foo`)
+		//		* node type selectors like `span`
+		//		* ` ` descendant selectors
+		//		* `>` child element selectors
+		//		* `#foo` style ID selectors
+		//		* `*` universal selector
+		//		* `~`, the preceded-by sibling selector
+		//		* `+`, the immediately preceded-by sibling selector
+		//		* attribute queries:
+		//			* `[foo]` attribute presence selector
+		//			* `[foo='bar']` attribute value exact match
+		//			* `[foo~='bar']` attribute value list item match
+		//			* `[foo^='bar']` attribute start match
+		//			* `[foo$='bar']` attribute end match
+		//			* `[foo*='bar']` attribute substring match
+		//		* `:first-child`, `:last-child`, and `:only-child` positional selectors
+		//		* `:empty` content emtpy selector
+		//		* `:checked` pseudo selector
+		//		* `:nth-child(n)`, `:nth-child(2n+1)` style positional calculations
+		//		* `:nth-child(even)`, `:nth-child(odd)` positional selectors
+		//		* `:not(...)` negation pseudo selectors
 		//
 		//		Any legal combination of these selectors will work with
 		//		`dojo.query()`, including compound selectors ("," delimited).
@@ -1364,12 +1364,12 @@ define([
 		//		what's reasonable for a programmatic node querying engine to
 		//		handle. Currently unsupported selectors include:
 		//
-		//			* namespace-differentiated selectors of any form
-		//			* all `::` pseduo-element selectors
-		//			* certain pseduo-selectors which don't get a lot of day-to-day use:
-		//			|	* `:root`, `:lang()`, `:target`, `:focus`
-		//			* all visual and state selectors:
-		//			|	* `:root`, `:active`, `:hover`, `:visisted`, `:link`,
+		//		* namespace-differentiated selectors of any form
+		//		* all `::` pseduo-element selectors
+		//		* certain pseudo-selectors which don't get a lot of day-to-day use:
+		//			* `:root`, `:lang()`, `:target`, `:focus`
+		//		* all visual and state selectors:
+		//			* `:root`, `:active`, `:hover`, `:visited`, `:link`,
 		//				  `:enabled`, `:disabled`
 		//			* `:*-of-type` pseudo selectors
 		//

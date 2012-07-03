@@ -120,43 +120,37 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		// summary:
 		//		Attempt to insert node into the DOM, choosing from various positioning options.
 		//		Returns the first argument resolved to a DOM node.
-		//
 		// node: DOMNode|String
 		//		id or node reference, or HTML fragment starting with "<" to place relative to refNode
-		//
 		// refNode: DOMNode|String
 		//		id or node reference to use as basis for placement
-		//
 		// position: String|Number?
 		//		string noting the position of node relative to refNode or a
 		//		number indicating the location in the childNodes collection of refNode.
 		//		Accepted string values are:
-		//	|	* before
-		//	|	* after
-		//	|	* replace
-		//	|	* only
-		//	|	* first
-		//	|	* last
+		//
+		//		* before
+		//		* after
+		//		* replace
+		//		* only
+		//		* first
+		//		* last
+		//
 		//		"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,
 		//		"only" replaces all children.  position defaults to "last" if not specified
-		//
 		// returns: DOMNode
 		//		Returned values is the first argument resolved to a DOM node.
 		//
 		//		.place() is also a method of `dojo.NodeList`, allowing `dojo.query` node lookups.
-		//
 		// example:
 		//		Place a node by string id as the last child of another node by string id:
 		//	|	dojo.place("someNode", "anotherNode");
-		//
 		// example:
 		//		Place a node by string id before another node by string id
 		//	|	dojo.place("someNode", "anotherNode", "before");
-		//
 		// example:
 		//		Create a Node, and place it in the body element (last child):
 		//	|	dojo.place("<div></div>", dojo.body());
-		//
 		// example:
 		//		Put a new LI as the first child of a list by id:
 		//	|	dojo.place("<li></li>", "someUl", "first");

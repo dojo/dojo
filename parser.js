@@ -765,27 +765,27 @@ define(
 			// options: Object?
 			//		A hash of options.
 			//
-			//			* noStart: Boolean?
-			//				when set will prevent the parser from calling .startup()
-			//				when locating the nodes.
-			//			* rootNode: DomNode?
-			//				identical to the function's `rootNode` argument, though
-			//				allowed to be passed in via this `options object.
-			//			* template: Boolean
-			//				If true, ignores ContentPane's stopParser flag and parses contents inside of
-			//				a ContentPane inside of a template.   This allows dojoAttachPoint on widgets/nodes
-			//				nested inside the ContentPane to work.
-			//			* inherited: Object
-			//				Hash possibly containing dir and lang settings to be applied to
-			//				parsed widgets, unless there's another setting on a sub-node that overrides
-			//			* scope: String
-			//				Root for attribute names to search for.   If scopeName is dojo,
-			//				will search for data-dojo-type (or dojoType).   For backwards compatibility
-			//				reasons defaults to dojo._scopeName (which is "dojo" except when
-			//				multi-version support is used, when it will be something like dojo16, dojo20, etc.)
-			//			* propsThis: Object
-			//				If specified, "this" referenced from data-dojo-props will refer to propsThis.
-			//				Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
+			//		* noStart: Boolean?
+			//			when set will prevent the parser from calling .startup()
+			//			when locating the nodes.
+			//		* rootNode: DomNode?
+			//			identical to the function's `rootNode` argument, though
+			//			allowed to be passed in via this `options object.
+			//		* template: Boolean
+			//			If true, ignores ContentPane's stopParser flag and parses contents inside of
+			//			a ContentPane inside of a template.   This allows dojoAttachPoint on widgets/nodes
+			//			nested inside the ContentPane to work.
+			//		* inherited: Object
+			//			Hash possibly containing dir and lang settings to be applied to
+			//			parsed widgets, unless there's another setting on a sub-node that overrides
+			//		* scope: String
+			//			Root for attribute names to search for.   If scopeName is dojo,
+			//			will search for data-dojo-type (or dojoType).   For backwards compatibility
+			//			reasons defaults to dojo._scopeName (which is "dojo" except when
+			//			multi-version support is used, when it will be something like dojo16, dojo20, etc.)
+			//		* propsThis: Object
+			//			If specified, "this" referenced from data-dojo-props will refer to propsThis.
+			//			Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
 			// returns: Mixed
 			//		Returns a blended object that is an array of the instantiated objects, but also can include
 			//		a promise that is resolved with the instantiated objects.  This is done for backwards

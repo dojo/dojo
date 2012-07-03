@@ -21,25 +21,23 @@ stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTi
 	//		Can also process dates as specified [by the W3C](http://www.w3.org/TR/NOTE-datetime)
 	//		The following combinations are valid:
 	//
-	//			* dates only
-	//			|	* yyyy
-	//			|	* yyyy-MM
-	//			|	* yyyy-MM-dd
-	//			* times only, with an optional time zone appended
-	//			|	* THH:mm
-	//			|	* THH:mm:ss
-	//			|	* THH:mm:ss.SSS
-	//			* and "datetimes" which could be any combination of the above
+	//		* dates only
+	//			* yyyy
+	//			* yyyy-MM
+	//			* yyyy-MM-dd
+	//		* times only, with an optional time zone appended
+	//			* THH:mm
+	//			* THH:mm:ss
+	//			* THH:mm:ss.SSS
+	//		* and "datetimes" which could be any combination of the above
 	//
 	//		timezones may be specified as Z (for UTC) or +/- followed by a time expression HH:mm
 	//		Assumes the local time zone if not specified.  Does not validate.  Improperly formatted
 	//		input may return null.  Arguments which are out of bounds will be handled
 	//		by the Date constructor (e.g. January 32nd typically gets resolved to February 1st)
 	//		Only years between 100 and 9999 are supported.
-	//
   	// formattedString:
 	//		A string such as 2005-06-30T08:05:00-07:00 or 2005-06-30 or T08:05:00
-	//
 	// defaultTime:
 	//		Used for defaults for fields omitted in the formattedString.
 	//		Uses 1970-01-01T00:00:00.0Z by default.
@@ -90,7 +88,7 @@ stamp.fromISOString = function(/*String*/ formattedString, /*Number?*/ defaultTi
 };
 
 /*=====
-	var __Options = function(){
+	var __Options = function(selector, zulu, milliseconds){
 		// selector: String
 		//		"date" or "time" for partial formatting of the Date object.
 		//		Both date and time will be formatted by default.

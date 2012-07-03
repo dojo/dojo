@@ -321,7 +321,7 @@ define([
 					// remove backslash escapes from an attribute match, since DOM
 					// querying will get attribute values without backslashes
 					if(_cp.matchFor){
-						_cp.matchFor = _cp.matchFor.replace(/\\([\[\]])/g, "$1");
+						_cp.matchFor = _cp.matchFor.replace(/\\/g, "");
 					}
 
 					// end the attribute by adding it to the list of attributes.
@@ -1212,7 +1212,7 @@ define([
 			};
 		}else{
 			// DOM branch
-			var parts = query.split(/\s*,\s*/);
+			var parts = query.match(/([^\s,](?:"(?:\\.|[^"])+"|'(?:\\.|[^'])+'|[^,])*)/g);
 			return _queryFuncCacheDOM[query] = ((parts.length < 2) ?
 				// if not a compound query (e.g., ".foo, .bar"), cache and return a dispatcher
 				getStepQueryFunc(query) :

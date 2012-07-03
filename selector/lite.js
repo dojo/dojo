@@ -4,6 +4,7 @@ define(["../has", "../_base/kernel"], function(has, dojo){
 var testDiv = document.createElement("div");
 var matchesSelector = testDiv.matchesSelector || testDiv.webkitMatchesSelector || testDiv.mozMatchesSelector || testDiv.msMatchesSelector || testDiv.oMatchesSelector; // IE9, WebKit, Firefox have this, but not Opera yet
 var querySelectorAll = testDiv.querySelectorAll;
+var unionSplit = /([^\s,](?:"(?:\\.|[^"])+"|'(?:\\.|[^'])+'|[^,])*)/g;
 has.add("dom-matches-selector", !!matchesSelector);
 has.add("dom-qsa", !!querySelectorAll); 
 
@@ -107,7 +108,7 @@ var useRoot = function(context, query, method){
 	if(relativeHierarchySelector && hasParent){
 		context = context.parentNode;
 	}
-	var selectors = query.split(/\s*,\s*/);
+	var selectors = query.match(unionSplit);
 	for(var i = 0; i < selectors.length; i++){
 		selectors[i] = "[id='" + nid + "'] " + selectors[i];
 	}
@@ -126,18 +127,25 @@ if(!has("dom-matches-selector")){
 	var jsMatchesSelector = (function(){
 		// a JS implementation of CSS selector matching, first we start with the various handlers
 		var caseFix = testDiv.tagName == "div" ? "toLowerCase" : "toUpperCase";
-		function tag(tagName){
-			tagName = tagName[caseFix]();
-			return function(node){
-				return node.tagName == tagName;
-			};
-		}
-		function className(className){
-			var classNameSpaced = ' ' + className + ' ';
-			return function(node){
-				return node.className.indexOf(className) > -1 && (' ' + node.className + ' ').indexOf(classNameSpaced) > -1;
-			};
-		}
+		var selectorTypes = {
+			"": function(tagName){
+				tagName = tagName[caseFix]();
+				return function(node){
+					return node.tagName == tagName;
+				};
+			},
+			".": function(className){
+				var classNameSpaced = ' ' + className + ' ';
+				return function(node){
+					return node.className.indexOf(className) > -1 && (' ' + node.className + ' ').indexOf(classNameSpaced) > -1;
+				};
+			},
+			"#": function(id){
+				return function(node){
+					return node.id == id;
+				};
+			}
+		};
 		var attrComparators = {
 			"^=": function(attrValue, value){
 				return attrValue.indexOf(value) == 0;
@@ -162,10 +170,12 @@ if(!has("dom-matches-selector")){
 			}
 		};
 		function attr(name, value, type){
-			if(value.match(/['"]/)){
-				// it is quoted, do an eval to parse the string (CSS and JS parsing are close enough)
-				value = eval(value);
+			var firstChar = value.charAt(0);
+			if(firstChar == '"' || firstChar == "'"){
+				// it is quoted, remove the quotes
+				value = value.slice(1, -1);
 			}
+			value = value.replace(/\\/g,'');
 			var comparator = attrComparators[type || ""];
 			return function(node){
 				var attrValue = node.getAttribute(name);
@@ -203,14 +213,9 @@ if(!has("dom-matches-selector")){
 			if(!matcher){
 				// create a matcher function for the given selector
 				// parse the selectors
-				if(selector.replace(/(?:\s*([> ])\s*)|(\.)?([\w-]+)|\[([\w-]+)\s*(.?=)?\s*([^\]]*)\]/g, function(t, combinator, type, value, attrName, attrType, attrValue){
+				if(selector.replace(/(?:\s*([> ])\s*)|(#|\.)?((?:\\.|[\w-])+)|\[\s*([\w-]+)\s*(.?=)?\s*("(?:\\.|[^"])+"|'(?:\\.|[^'])+'|(?:\\.|[^\]])*)\s*\]/g, function(t, combinator, type, value, attrName, attrType, attrValue){
 					if(value){
-						if(type == "."){
-							matcher = and(matcher, className(value));
-						}
-						else{
-							matcher = and(matcher, tag(value));
-						}
+						matcher = and(matcher, selectorTypes[type || ""](value.replace(/\\/g, '')));
 					}
 					else if(combinator){
 						matcher = (combinator == " " ? ancestor : parent)(matcher);
@@ -235,13 +240,15 @@ if(!has("dom-matches-selector")){
 if(!has("dom-qsa")){
 	var combine = function(selector, root){
 		// combined queries
-		selector = selector.split(/\s*,\s*/);
+		var selectors = selector.match(unionSplit);
 		var indexed = [];
 		// add all results and keep unique ones, this only runs in IE, so we take advantage 
 		// of known IE features, particularly sourceIndex which is unique and allows us to 
 		// order the results 
-		for(var i = 0; i < selector.length; i++){
-			var results = liteEngine(selector[i], root);
+		for(var i = 0; i < selectors.length; i++){
+			selector = new String(selectors[i].replace(/\s*$/,''));
+			selector.indexOf = escape; // keep it from recursively entering combine
+			var results = liteEngine(selector, root);
 			for(var j = 0, l = results.length; j < l; j++){
 				var node = results[j];
 				indexed[node.sourceIndex] = node;

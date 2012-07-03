@@ -46,6 +46,9 @@
 					"doh.is(1, (query('.foo.bar')).length);",
 					"doh.is(2, (query('.baz')).length);",
 					"doh.is(3, (query('#t > h3')).length);",
+					
+					// this fails on IE8 because qSA completely fails on unknown elements. not sure how to fix this other than completely disable qSA on IE8, which would be an unacceptable performance regression
+					//"doh.t(query.matches(query('section')[0],'section'));",
 
 					"doh.is(2, (query('#baz,#foo,#t')).length);",
 					"doh.is(0, (query(null)).length);",
@@ -88,8 +91,7 @@
 					"doh.is(0, (query('#t span[title$=thud ]')).length);",
 					"doh.is(1, (query('[id$=\\'55555\\']')).length);",
 					"doh.is(2, (query('[foo~=\"bar\"]')).length);",
-					// TODO: uncomment when #14877 fixed
-					// "doh.is(2, (query('[ foo ~= \"bar\" ]')).length);",
+					"doh.is(2, (query('[ foo ~= \"bar\" ]')).length);",
 					"doh.is(2, (query('[foo|=\"bar\"]')).length);",
 					"doh.is(1, (query('[foo|=\"bar-baz\"]')).length);",
 					"doh.is(0, (query('[foo|=\"baz\"]')).length);",
@@ -123,25 +125,21 @@
 					'doh.is(1, query(\'option[value="a+b"]\', "attrSpecialChars").length);',
 					'doh.is(1, query(\'option[value="a~b"]\', "attrSpecialChars").length);',
 					'doh.is(1, query(\'option[value="a^b"]\', "attrSpecialChars").length);',
-					// TODO: enable when #14877 is fixed on IE
-					// 'doh.is(1, query(\'option[value="a,b"]\', "attrSpecialChars").length);',
+					'doh.is(1, query(\'option[value="a,b"]\', "attrSpecialChars").length);',
 
 					// selector with substring that contains equals sign (bug 7479)
 					"doh.is(1, query(\"a[href*='foo=bar']\", 'attrSpecialChars').length);",
 
 					// selector with substring that contains brackets (bug 9193, 11189, 13084)
-					// TODO: enable when #14877 is fixed on IE
-					// 'doh.is(1, query(\'input[name="data[foo][bar]"]\', "attrSpecialChars").length);',
-					// 'doh.is(1, query(\'input[name="foo[0].bar"]\', "attrSpecialChars").length);',
-					// 'doh.is(1, query(\'input[name="test[0]"]\', "attrSpecialChars").length);',
+					'doh.is(1, query(\'input[name="data[foo][bar]"]\', "attrSpecialChars").length);',
+					'doh.is(1, query(\'input[name="foo[0].bar"]\', "attrSpecialChars").length);',
+					'doh.is(1, query(\'input[name="test[0]"]\', "attrSpecialChars").length);',
 
 					// escaping special characters with backslashes (http://www.w3.org/TR/CSS21/syndata.html#characters)
 					// selector with substring that contains brackets (bug 9193, 11189, 13084)
 					// eval() converts 4 backslashes --> 1 by the time dojo.query() sees the string
-					// TODO: enable when #14877 is fixed on IE
-					// 'doh.is(1, query("input[name=data\\\\[foo\\\\]\\\\[bar\\\\]]", "attrSpecialChars").length);',
-					// TODO: uncomment when #14876 is fixed
-					// 'doh.is(1, query("input[name=foo\\\\[0\\\\]\\\\.bar]", "attrSpecialChars").length);',
+					'doh.is(1, query("input[name=data\\\\[foo\\\\]\\\\[bar\\\\]]", "attrSpecialChars").length);',
+					'doh.is(1, query("input[name=foo\\\\[0\\\\]\\\\.bar]", "attrSpecialChars").length);',
 
 					// cross-document queries
 					{
@@ -171,8 +169,7 @@
 					// escaping of ":" chars inside an ID
 					function silly_IDs1(){
 						doh.t(document.getElementById("silly:id::with:colons"), "getElementById");
-						// TODO: uncomment when #14877 is fixed on Ie
-						// doh.is(1, query("#silly\\:id\\:\\:with\\:colons").length, "query(\"#silly\\:id\\:\\:with\\:colons\")");
+						doh.is(1, query("#silly\\:id\\:\\:with\\:colons").length, "query(\"#silly\\:id\\:\\:with\\:colons\")");
 					},
 					function NodeList_identity(){
 						var foo = new dojo.NodeList([dojo.byId("container")]);
@@ -420,6 +417,7 @@
 				</div>
 			</div>
 		</div>
+		<section></section>
 		<div id='other'>
 		  <div id='abc55555'></div>
 		  <div id='abd55555efg'></div>

@@ -644,6 +644,10 @@ define(
 
 			// If there are modules to load then require them in
 			if(mids.length){
+				// Warn that there are modules being auto-required
+				if(has("dojo-debug-messages")){
+					console.warn("WARNING: Modules being Auto-Required: " + mids.join(", "));
+				}
 				require(mids, function(){
 					// Go through list of widget nodes, filling in missing constructors, and filtering out nodes that shouldn't
 					// be instantiated due to a stopParser flag on an ancestor that we belatedly learned about due to

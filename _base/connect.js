@@ -92,7 +92,7 @@ if(has("events-keypress-typed")){
 			var k=evt.keyCode;
 			// These are Windows Virtual Key Codes
 			// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
-			var unprintable = (k!=13 || (has("ie") >= 9 && !has("quirks"))) && k!=32 && (k!=27||!has("ie")) && (k<48||k>90) && (k<96||k>111) && (k<186||k>192) && (k<219||k>222) && k!=229;
+			var unprintable = (k!=13) && k!=32 && (k!=27||!has("ie")) && (k<48||k>90) && (k<96||k>111) && (k<186||k>192) && (k<219||k>222) && k!=229;
 			// synthesize keypress for most unprintables and CTRL-keys
 			if(unprintable||evt.ctrlKey){
 				var c = unprintable ? 0 : k;

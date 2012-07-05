@@ -19,7 +19,7 @@ define([
 		//		a promise if the initial value is a promise, or the result of the
 		//		callback otherwise.
 		// returns: dojo/promise/Promise
-		//
+		//		Promise, or if a callback is provided, the result of the callback.
 		// valueOrPromise:
 		//		Either a regular value or a promise.
 		// callback: 

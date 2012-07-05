@@ -72,8 +72,8 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		// doc: DocumentNode?
 		//		optional document to use when creating DOM nodes, defaults to
 		//		dojo.doc if not specified.
-		// returns: DocumentFragment
-		//
+		// returns:
+		//		Document fragment, unless it's a single node in which case it returns the node itself
 		// example:
 		//		Create a table row:
 		//	|	var tr = dojo.toDom("<tr><td>First!</td></tr>");
@@ -113,7 +113,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		while(fc = master.firstChild){ // intentional assignment
 			df.appendChild(fc);
 		}
-		return df; // DOMNode
+		return df; // DocumentFragment
 	};
 
 	exports.place = function place(/*DOMNode|String*/ node, /*DOMNode|String*/ refNode, /*String|Number?*/ position){
@@ -198,7 +198,6 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		// summary:
 		//		Create an element, allowing for optional attribute decoration
 		//		and placement.
-		//
 		// description:
 		//		A DOM Element creation function. A shorthand method for creating a node or
 		//		a fragment, and allowing for a convenient optional attribute setting step,
@@ -209,29 +208,22 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//
 		//		Placement is done via `dojo.place`, assuming the new node to be the action
 		//		node, passing along the optional reference node and position.
-		//
 		// tag: DOMNode|String
 		//		A string of the element to create (eg: "div", "a", "p", "li", "script", "br"),
 		//		or an existing DOM node to process.
-		//
 		// attrs: Object
 		//		An object-hash of attributes to set on the newly created node.
 		//		Can be null, if you don't want to set any attributes/styles.
 		//		See: `dojo.setAttr` for a description of available attributes.
-		//
 		// refNode: DOMNode|String?
 		//		Optional reference node. Used by `dojo.place` to place the newly created
 		//		node somewhere in the dom relative to refNode. Can be a DomNode reference
 		//		or String ID of a node.
-		//
 		// pos: String?
 		//		Optional positional reference. Defaults to "last" by way of `dojo.place`,
 		//		though can be set to "first","after","before","last", "replace" or "only"
 		//		to further control the placement of the new node relative to the refNode.
 		//		'refNode' is required if a 'pos' is specified.
-		//
-		// returns: DOMNode
-		//
 		// example:
 		//		Create a DIV:
 		//	|	var n = dojo.create("div");

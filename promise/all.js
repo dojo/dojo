@@ -19,8 +19,6 @@ define([
 		//		when all promises have been fulfilled. If one of the promises is rejected,
 		//		the returned promise is also rejected. Canceling the returned promise will
 		//		*not* cancel any passed promises.
-		// returns: dojo/promise/Promise
-		//
 		// objectOrArray:
 		//		The promise will be fulfilled with a list of results if invoked with an
 		//		array, or an object of results when passed an object (using the same
@@ -71,6 +69,6 @@ define([
 			}, deferred.reject);
 			return deferred.isFulfilled();
 		});
-		return deferred.promise;
+		return deferred.promise;	// dojo/promise/Promise
 	};
 });

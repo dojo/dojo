@@ -178,8 +178,6 @@ define([
 		},
 
 		dirxml: function(node){
-			// summary:
-			//
 			var html = [];
 			appendNode(node, html);
 			logRow(html, "dirxml");

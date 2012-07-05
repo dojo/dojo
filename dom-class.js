@@ -111,15 +111,10 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			// summary:
 			//		Returns whether or not the specified classes are a portion of the
 			//		class list currently applied to the node.
-			//
 			// node: String|DOMNode
 			//		String ID or DomNode reference to check the class for.
-			//
 			// classStr: String
 			//		A string class name to look for.
-			//
-			// returns: Boolean
-			//
 			// example:
 			//		Do something if a node with id="someNode" has class="aSillyClassName" present
 			//	|	if(dojo.hasClass("someNode","aSillyClassName")){ ... }

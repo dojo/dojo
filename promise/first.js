@@ -19,8 +19,6 @@ define([
 		//		when the first of these promises is fulfilled. Canceling the returned
 		//		promise will *not* cancel any passed promises. The promise will be
 		//		fulfilled with the value of the first fulfilled promise.
-		// returns: dojo/promise/Promise
-		//
 		// objectOrArray:
 		//		The promises are taken from the array or object values. If no value
 		//		is passed, the returned promise is resolved with an undefined value.
@@ -44,6 +42,6 @@ define([
 		forEach(array, function(valueOrPromise){
 			when(valueOrPromise, deferred.resolve, deferred.reject);
 		});
-		return deferred.promise;
+		return deferred.promise;	// dojo/promise/Promise
 	};
 });

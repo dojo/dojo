@@ -152,7 +152,7 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//	|	dojo.addClass("someNode", ["firstClass", "secondClass"]);
 			//
 			// example:
-			//		Available in `dojo.NodeList` for multiple additions
+			//		Available in `dojo/NodeList` for multiple additions
 			//	|	dojo.query("ul > li").addClass("firstLevel");
 
 			node = dom.byId(node);
@@ -201,7 +201,7 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//	|	dojo.removeClass("someNode");
 			//
 			// example:
-			//		Available in `dojo.NodeList()` for multiple removal
+			//		Available in `dojo/NodeList` for multiple removal
 			//	|	dojo.query(".foo").removeClass("foo");
 
 			node = dom.byId(node);
@@ -243,7 +243,7 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//	|	dojo.replaceClass("someNode", "addMe");
 			//
 			// example:
-			//	Available in `dojo.NodeList()` for multiple toggles
+			//	Available in `dojo/NodeList` for multiple toggles
 			//	|	dojo.query(".findMe").replaceClass("addMe", "removeMe");
 
 			node = dom.byId(node);
@@ -280,7 +280,7 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//	|	dojo.toggleClass("someNode", "hovered", true);
 			//
 			// example:
-			//		Available in `dojo.NodeList()` for multiple toggles
+			//		Available in `dojo/NodeList` for multiple toggles
 			//	|	dojo.query(".toggleMe").toggleClass("toggleMe");
 
 			node = dom.byId(node);

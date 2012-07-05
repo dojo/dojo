@@ -141,7 +141,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		// returns: DOMNode
 		//		Returned values is the first argument resolved to a DOM node.
 		//
-		//		.place() is also a method of `dojo.NodeList`, allowing `dojo.query` node lookups.
+		//		.place() is also a method of `dojo/NodeList`, allowing `dojo.query` node lookups.
 		// example:
 		//		Place a node by string id as the last child of another node by string id:
 		//	|	dojo.place("someNode", "anotherNode");
@@ -258,7 +258,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//	|	dojo.create("a", { href:"foo.html", title:"Goto FOO!" }, dojo.body());
 		//
 		// example:
-		//		Create a `dojo.NodeList()` from a new element (for syntatic sugar):
+		//		Create a `dojo/NodeList()` from a new element (for syntactic sugar):
 		//	|	dojo.query(dojo.create('div'))
 		//	|		.addClass("newDiv")
 		//	|		.onclick(function(e){ console.log('clicked', e.target) })

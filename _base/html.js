@@ -371,8 +371,8 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		//	|	});
 		//
 		// example:
-		//		dojo.NodeList implements .style() using the same syntax, omitting the "node" parameter, calling
-		//		dojo.style() on every element of the list. See: `dojo.query()` and `dojo.NodeList()`
+		//		dojo/NodeList implements .style() using the same syntax, omitting the "node" parameter, calling
+		//		dojo.style() on every element of the list. See: `dojo/query` and `dojo/NodeList`
 		//	|	dojo.query(".someClassName").style("visibility","hidden");
 		//	|	// or
 		//	|	dojo.query("#baz > div").style({

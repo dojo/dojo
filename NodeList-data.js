@@ -36,7 +36,7 @@ define([
 
 	var dodata = dojo._nodeData = function(node, key, value){
 		// summary:
-		//		Private helper for dojo.NodeList.data for single node data access. Refer to NodeList.data
+		//		Private helper for dojo/NodeList.data for single node data access. Refer to NodeList.data
 		//		documentation for more information.
 		//
 		// node: String|DomNode
@@ -105,7 +105,7 @@ define([
 		}
 	};
 
-	// make nodeData and removeNodeData public on dojo.NodeList:
+	// make nodeData and removeNodeData public on dojo/NodeList:
 	lang.extend(NodeList, {
 		data: NodeList._adaptWithCondition(dodata, function(a){
 			return a.length === 0 || a.length == 1 && (typeof a[0] == "string");
@@ -121,7 +121,7 @@ define([
 			 //
 			 // description:
 			 //		Stash or get some arbitrary data on/from these nodes. This private _data function is
-			 //		exposed publicly on `dojo.NodeList`, eg: as the result of a `dojo.query` call.
+			 //		exposed publicly on `dojo/NodeList`, eg: as the result of a `dojo.query` call.
 			 //		DIFFERS from jQuery.data in that when used as a getter, the entire list is ALWAYS
 			 //		returned. EVEN WHEN THE LIST IS length == 1.
 			 //
@@ -158,8 +158,8 @@ define([
 			 //	|	dojo.query(".foo").data("foo"); // returns [`bar`]
 			 //
 			 // returns: Object|Anything|Nothing
-			 //		When used as a setter via `dojo.NodeList`, a NodeList instance is returned
-			 //		for further chaining. When used as a getter via `dojo.NodeList` an ARRAY
+			 //		When used as a setter via `dojo/NodeList`, a NodeList instance is returned
+			 //		for further chaining. When used as a getter via `dojo/NodeList` an ARRAY
 			 //		of items is returned. The items in the array correspond to the elements
 			 //		in the original list. This is true even when the list length is 1, eg:
 			 //		when looking up a node by ID (#foo)
@@ -176,7 +176,7 @@ define([
 	 =====*/
 
 // TODO: this is the basic implementation of adaptWithCondtionAndWhenMappedConsiderLength, for lack of a better API name
-// it conflicts with the the `dojo.NodeList` way: always always return an arrayLike thinger. Consider for 2.0:
+// it conflicts with the the `dojo/NodeList` way: always always return an arrayLike thinger. Consider for 2.0:
 //
 //	NodeList.prototype.data = function(key, value){
 //		var a = arguments, r;

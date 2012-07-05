@@ -43,7 +43,7 @@ lang.extend(NodeList, {
 				ary.push(node);
 			}
 		}
-		return this._wrap(ary, null, this._NodeListCtor);	 // dojo/query.NodeList
+		return this._wrap(ary, null, this._NodeListCtor);	 // dojo/NodeList
 	},
 
 	_getUniqueNodeListWithParent: function(/*Array*/ nodes, /*String*/ query){
@@ -52,7 +52,7 @@ lang.extend(NodeList, {
 		//		with an optional query and then calls _stash to track parent NodeList.
 		var ary = this._getUniqueAsNodeList(nodes);
 		ary = (query ? dquery._filterResult(ary, query) : ary);
-		return ary._stash(this);  // dojo/query.NodeList
+		return ary._stash(this);  // dojo/NodeList
 	},
 
 	_getRelatedUniqueNodes: function(/*String?*/ query, /*Function*/ callback){
@@ -61,20 +61,20 @@ lang.extend(NodeList, {
 		//		to collect nodes for a possible inclusion in a result.
 		//		The callback will get two args: callback(node, ary),
 		//		where ary is the array being used to collect the nodes.
-		return this._getUniqueNodeListWithParent(this._buildArrayFromCallback(callback), query);  // dojo/query.NodeList
+		return this._getUniqueNodeListWithParent(this._buildArrayFromCallback(callback), query);  // dojo/NodeList
 	},
 
 	children: function(/*String?*/ query){
 		// summary:
-		//		Returns all immediate child elements for nodes in this dojo.NodeList.
+		//		Returns all immediate child elements for nodes in this dojo/NodeList.
 		//		Optionally takes a query to filter the child elements.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// returns:
-		//		dojo.NodeList, all immediate child elements for the nodes in this dojo.NodeList.
+		//		all immediate child elements for the nodes in this dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -92,23 +92,23 @@ lang.extend(NodeList, {
 		//		returns the two divs that have the class "red".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			return lang._toArray(node.childNodes);
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	closest: function(/*String*/ query, /*String|DOMNode?*/ root){
 		// summary:
 		//		Returns closest parent that matches query, including current node in this
-		//		dojo.NodeList if it matches the query.
+		//		dojo/NodeList if it matches the query.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// root:
 		//		If specified, query is relative to "root" rather than document body.
 		// returns:
-		//		dojo.NodeList, the closest parent that matches the query, including the current
-		//		node in this dojo.NodeList if it matches the query.
+		//		the closest parent that matches the query, including the current
+		//		node in this dojo/NodeList if it matches the query.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -128,20 +128,20 @@ lang.extend(NodeList, {
 				}
 			}while(node != root && (node = node.parentNode) && node.nodeType == 1);
 			return null; //To make rhino strict checking happy.
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	parent: function(/*String?*/ query){
 		// summary:
-		//		Returns immediate parent elements for nodes in this dojo.NodeList.
+		//		Returns immediate parent elements for nodes in this dojo/NodeList.
 		//		Optionally takes a query to filter the parent elements.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// returns:
-		//		dojo.NodeList, immediate parent elements for nodes in this dojo.NodeList.
+		//		immediate parent elements for nodes in this dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -158,20 +158,20 @@ lang.extend(NodeList, {
 		//		returns the one div with class "blue" and "first".
 		return this._getRelatedUniqueNodes(query, function(node, ary){
 			return node.parentNode;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	parents: function(/*String?*/ query){
 		// summary:
-		//		Returns all parent elements for nodes in this dojo.NodeList.
+		//		Returns all parent elements for nodes in this dojo/NodeList.
 		//		Optionally takes a query to filter the child elements.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// returns:
-		//		dojo.NodeList, all parent elements for nodes in this dojo.NodeList.
+		//		all parent elements for nodes in this dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -194,20 +194,20 @@ lang.extend(NodeList, {
 				pary.push(node);
 			}
 			return pary;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	siblings: function(/*String?*/ query){
 		// summary:
-		//		Returns all sibling elements for nodes in this dojo.NodeList.
+		//		Returns all sibling elements for nodes in this dojo/NodeList.
 		//		Optionally takes a query to filter the sibling elements.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// returns:
-		//		dojo.NodeList, all sibling elements for nodes in this dojo.NodeList.
+		//		all sibling elements for nodes in this dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -233,20 +233,20 @@ lang.extend(NodeList, {
 				}
 			}
 			return pary;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	next: function(/*String?*/ query){
 		// summary:
-		//		Returns the next element for nodes in this dojo.NodeList.
+		//		Returns the next element for nodes in this dojo/NodeList.
 		//		Optionally takes a query to filter the next elements.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// returns:
-		//		dojo.NodeList, the next element for nodes in this dojo.NodeList.
+		//		the next element for nodes in this dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -268,20 +268,20 @@ lang.extend(NodeList, {
 				next = next.nextSibling;
 			}
 			return next;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	nextAll: function(/*String?*/ query){
 		// summary:
-		//		Returns all sibling elements that come after the nodes in this dojo.NodeList.
+		//		Returns all sibling elements that come after the nodes in this dojo/NodeList.
 		//		Optionally takes a query to filter the sibling elements.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// returns:
-		//		dojo.NodeList, all sibling elements that come after the nodes in this dojo.NodeList.
+		//		all sibling elements that come after the nodes in this dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -306,20 +306,20 @@ lang.extend(NodeList, {
 				}
 			}
 			return pary;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	prev: function(/*String?*/ query){
 		// summary:
-		//		Returns the previous element for nodes in this dojo.NodeList.
+		//		Returns the previous element for nodes in this dojo/NodeList.
 		//		Optionally takes a query to filter the previous elements.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// returns:
-		//		dojo.NodeList, the previous element for nodes in this dojo.NodeList.
+		//		the previous element for nodes in this dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -341,22 +341,22 @@ lang.extend(NodeList, {
 				prev = prev.previousSibling;
 			}
 			return prev;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	prevAll: function(/*String?*/ query){
 		// summary:
-		//		Returns all sibling elements that come before the nodes in this dojo.NodeList.
+		//		Returns all sibling elements that come before the nodes in this dojo/NodeList.
 		//		Optionally takes a query to filter the sibling elements.
 		// description:
 		//		The returned nodes will be in reverse DOM order -- the first node in the list will
 		//		be the node closest to the original node/NodeList.
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// query:
 		//		a CSS selector.
 		// returns:
-		//		dojo.NodeList, all sibling elements that come before the nodes in this dojo.NodeList.
+		//		all sibling elements that come before the nodes in this dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -381,17 +381,15 @@ lang.extend(NodeList, {
 				}
 			}
 			return pary;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	andSelf: function(){
 		// summary:
-		//		Adds the nodes from the previous dojo.NodeList to the current dojo.NodeList.
+		//		Adds the nodes from the previous dojo/NodeList to the current dojo/NodeList.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
-		// returns:
-		//		dojo.NodeList
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -404,18 +402,18 @@ lang.extend(NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".second").prevAll().andSelf();
 		//		returns the two divs with class of "prev", as well as the div with class "second".
-		return this.concat(this._parent);	// dojo/query.NodeList
+		return this.concat(this._parent);	// dojo/NodeList
 	},
 
 	//Alternate methods for the :first/:last/:even/:odd pseudos.
 	first: function(){
 		// summary:
-		//		Returns the first node in this dojo.NodeList as a dojo.NodeList.
+		//		Returns the first node in this dojo/NodeList as a dojo/NodeList.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// returns:
-		//		dojo.NodeList, with the first node in this dojo.NodeList
+		//		the first node in this dojo/NodeList
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -427,17 +425,17 @@ lang.extend(NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".blue").first();
 		//		returns the div with class "blue" and "first".
-		return this._wrap(((this[0] && [this[0]]) || []), this); // dojo/query.NodeList
+		return this._wrap(((this[0] && [this[0]]) || []), this); // dojo/NodeList
 	},
 
 	last: function(){
 		// summary:
-		//		Returns the last node in this dojo.NodeList as a dojo.NodeList.
+		//		Returns the last node in this dojo/NodeList as a dojo/NodeList.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// returns:
-		//		dojo.NodeList, with the last node in this dojo.NodeList
+		//		the last node in this dojo/NodeList
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -449,17 +447,17 @@ lang.extend(NodeList, {
 		//		Running this code:
 		//	|	dojo.query(".blue").last();
 		//		returns the last div with class "blue",
-		return this._wrap((this.length ? [this[this.length - 1]] : []), this); // dojo/query.NodeList
+		return this._wrap((this.length ? [this[this.length - 1]] : []), this); // dojo/NodeList
 	},
 
 	even: function(){
 		// summary:
-		//		Returns the even nodes in this dojo.NodeList as a dojo.NodeList.
+		//		Returns the even nodes in this dojo/NodeList as a dojo/NodeList.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// returns:
-		//		dojo.NodeList, with the even nodes in this dojo.NodeList
+		//		the even nodes in this dojo/NodeList
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -473,17 +471,17 @@ lang.extend(NodeList, {
 		//		returns the two divs with class "blue"
 		return this.filter(function(item, i){
 			return i % 2 != 0;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	},
 
 	odd: function(){
 		// summary:
-		//		Returns the odd nodes in this dojo.NodeList as a dojo.NodeList.
+		//		Returns the odd nodes in this dojo/NodeList as a dojo/NodeList.
 		// description:
-		//		.end() can be used on the returned dojo.NodeList to get back to the
-		//		original dojo.NodeList.
+		//		.end() can be used on the returned dojo/NodeList to get back to the
+		//		original dojo/NodeList.
 		// returns:
-		//		dojo.NodeList, with the odd nodes in this dojo.NodeList
+		//		the odd nodes in this dojo/NodeList
 		// example:
 		//		assume a DOM created by this markup:
 		//	|	<div class="container">
@@ -497,7 +495,7 @@ lang.extend(NodeList, {
 		//		returns the two divs with class "red"
 		return this.filter(function(item, i){
 			return i % 2 == 0;
-		}); // dojo/query.NodeList
+		}); // dojo/NodeList
 	}
 });
 

@@ -98,7 +98,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 				Array.prototype.splice.apply(this, toAdd);
 			}
 
-			return this; // dojo/query.NodeList
+			return this; // dojo/NodeList
 		},
 
 		innerHTML: function(/*String|DOMNode|NodeList?*/ value){
@@ -106,20 +106,20 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		allows setting the innerHTML of each node in the NodeList,
 			//		if there is a value passed in, otherwise, reads the innerHTML value of the first node.
 			// description:
-			//		This method is simpler than the dojo.NodeList.html() method provided by
-			//		`dojo.NodeList-html`. This method just does proper innerHTML insertion of HTML fragments,
+			//		This method is simpler than the dojo/NodeList.html() method provided by
+			//		`dojo/NodeList-html`. This method just does proper innerHTML insertion of HTML fragments,
 			//		and it allows for the innerHTML to be read for the first node in the node list.
-			//		Since dojo.NodeList-html already took the "html" name, this method is called
-			//		"innerHTML". However, if dojo.NodeList-html has not been loaded yet, this
+			//		Since dojo/NodeList-html already took the "html" name, this method is called
+			//		"innerHTML". However, if dojo/NodeList-html has not been loaded yet, this
 			//		module will define an "html" method that can be used instead. Be careful if you
-			//		are working in an environment where it is possible that dojo.NodeList-html could
+			//		are working in an environment where it is possible that dojo/NodeList-html could
 			//		have been loaded, since its definition of "html" will take precedence.
 			//		The nodes represented by the value argument will be cloned if more than one
 			//		node is in this NodeList. The nodes in this NodeList are returned in the "set"
 			//		usage of this method, not the HTML that was inserted.
 			// returns:
 			//		if no value is passed, the result is String, the innerHTML of the first node.
-			//		If a value is passed, the return is this dojo.NodeList
+			//		If a value is passed, the return is this dojo/NodeList
 			// example:
 			//		assume a DOM created by this markup:
 			//	|	<div id="foo"></div>
@@ -133,7 +133,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		This code returns `<p>Hello Mars</p>`:
 			//	|	var message = dojo.query("div").innerHTML();
 			if(arguments.length){
-				return this.addContent(value, "only"); // dojo/query.NodeList
+				return this.addContent(value, "only"); // dojo/NodeList
 			}else{
 				return this[0].innerHTML; //String
 			}
@@ -143,20 +143,20 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 		html: function(value){
 			// summary:
 			//		see the information for "innerHTML". "html" is an alias for "innerHTML", but is
-			//		only defined if dojo.NodeList-html has not been loaded.
+			//		only defined if dojo/NodeList-html has not been loaded.
 			// description:
 			//		An alias for the "innerHTML" method, but only defined if there is not an existing
-			//		"html" method on dojo.NodeList. Be careful if you are working in an environment
-			//		where it is possible that dojo.NodeList-html could have been loaded, since its
-			//		definition of "html" will take precedence. If you are not sure if dojo.NodeList-html
+			//		"html" method on dojo/NodeList. Be careful if you are working in an environment
+			//		where it is possible that dojo/NodeList-html could have been loaded, since its
+			//		definition of "html" will take precedence. If you are not sure if dojo/NodeList-html
 			//		could be loaded, use the "innerHTML" method.
 			// value: String|DOMNode|NodeList?
 			//		The HTML fragment to use as innerHTML. If value is not passed, then the innerHTML
 			//		of the first element in this NodeList is returned.
 			// returns:
 			//		if no value is passed, the result is String, the innerHTML of the first node.
-			//		If a value is passed, the return is this dojo.NodeList
-			return; // dojo/query.NodeList|String
+			//		If a value is passed, the return is this dojo/NodeList
+			return; // dojo/NodeList|String
 		},
 		=====*/
 
@@ -179,7 +179,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//	|	var message = dojo.query("div").text();
 			// returns:
 			//		if no value is passed, the result is String, the text value of the first node.
-			//		If a value is passed, the return is this dojo.NodeList
+			//		If a value is passed, the return is this dojo/NodeList
 			if(arguments.length){
 				for(var i = 0, node; node = this[i]; i++){
 					if(node.nodeType == 1){
@@ -187,7 +187,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 						node.appendChild(node.ownerDocument.createTextNode(value));
 					}
 				}
-				return this; // dojo/query.NodeList
+				return this; // dojo/NodeList
 			}else{
 				var result = "";
 				for(i = 0; node = this[i]; i++){
@@ -206,7 +206,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			// returns:
 			//		if no value is passed, the result is String or an Array, for the value of the
 			//		first node.
-			//		If a value is passed, the return is this dojo.NodeList
+			//		If a value is passed, the return is this dojo/NodeList
 			// example:
 			//		assume a DOM created by this markup:
 			//	|	<input type="text" value="foo">
@@ -245,7 +245,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 						node.value = newValue;
 					}
 				}
-				return this; // dojo/query.NodeList
+				return this; // dojo/NodeList
 			}else{
 				//node already declared above.
 				node = this[0];
@@ -282,7 +282,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		is greater than 1. Only the DOM nodes are cloned, not
 			//		any attached event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes currently in this NodeList will be returned,
+			//		dojo/NodeList, the nodes currently in this NodeList will be returned,
 			//		not the appended content.
 			// example:
 			//		assume a DOM created by this markup:
@@ -293,7 +293,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<div id="foo"><p>Hello Mars</p><span>append</span></div>
 			//	|	<div id="bar"><p>Hello World</p><span>append</span></div>
-			return this.addContent(content, "last"); // dojo/query.NodeList
+			return this.addContent(content, "last"); // dojo/NodeList
 		},
 
 		appendTo: function(/*String*/query){
@@ -305,7 +305,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		matches more than one element. Only the DOM nodes are cloned, not
 			//		any attached event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes currently in this NodeList will be returned,
+			//		dojo/NodeList, the nodes currently in this NodeList will be returned,
 			//		not the matched nodes from the query.
 			// example:
 			//		assume a DOM created by this markup:
@@ -317,7 +317,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<p>Hello Mars<span>append</span></p>
 			//	|	<p>Hello World<span>append</span></p>
-			return this._placeMultiple(query, "last"); // dojo/query.NodeList
+			return this._placeMultiple(query, "last"); // dojo/NodeList
 		},
 
 		prepend: function(/*String||DOMNode||NodeList*/content){
@@ -328,7 +328,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		is greater than 1. Only the DOM nodes are cloned, not
 			//		any attached event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes currently in this NodeList will be returned,
+			//		dojo/NodeList, the nodes currently in this NodeList will be returned,
 			//		not the appended content.
 			//		assume a DOM created by this markup:
 			//	|	<div id="foo"><p>Hello Mars</p></div>
@@ -338,7 +338,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<div id="foo"><span>prepend</span><p>Hello Mars</p></div>
 			//	|	<div id="bar"><span>prepend</span><p>Hello World</p></div>
-			return this.addContent(content, "first"); // dojo/query.NodeList
+			return this.addContent(content, "first"); // dojo/NodeList
 		},
 
 		prependTo: function(/*String*/query){
@@ -350,7 +350,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		matches more than one element. Only the DOM nodes are cloned, not
 			//		any attached event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes currently in this NodeList will be returned,
+			//		dojo/NodeList, the nodes currently in this NodeList will be returned,
 			//		not the matched nodes from the query.
 			// example:
 			//		assume a DOM created by this markup:
@@ -362,7 +362,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<p><span>prepend</span>Hello Mars</p>
 			//	|	<p><span>prepend</span>Hello World</p>
-			return this._placeMultiple(query, "first"); // dojo/query.NodeList
+			return this._placeMultiple(query, "first"); // dojo/NodeList
 		},
 
 		after: function(/*String||Element||NodeList*/content){
@@ -373,7 +373,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		is greater than 1. Only the DOM nodes are cloned, not
 			//		any attached event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes currently in this NodeList will be returned,
+			//		dojo/NodeList, the nodes currently in this NodeList will be returned,
 			//		not the appended content.
 			// example:
 			//		assume a DOM created by this markup:
@@ -384,7 +384,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<div id="foo"><p>Hello Mars</p></div><span>after</span>
 			//	|	<div id="bar"><p>Hello World</p></div><span>after</span>
-			return this.addContent(content, "after"); // dojo/query.NodeList
+			return this.addContent(content, "after"); // dojo/NodeList
 		},
 
 		insertAfter: function(/*String*/query){
@@ -396,7 +396,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		matches more than one element. Only the DOM nodes are cloned, not
 			//		any attached event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes currently in this NodeList will be returned,
+			//		dojo/NodeList, the nodes currently in this NodeList will be returned,
 			//		not the matched nodes from the query.
 			// example:
 			//		assume a DOM created by this markup:
@@ -408,7 +408,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<p>Hello Mars</p><span>after</span>
 			//	|	<p>Hello World</p><span>after</span>
-			return this._placeMultiple(query, "after"); // dojo/query.NodeList
+			return this._placeMultiple(query, "after"); // dojo/NodeList
 		},
 
 		before: function(/*String||DOMNode||NodeList*/content){
@@ -419,7 +419,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		is greater than 1. Only the DOM nodes are cloned, not
 			//		any attached event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes currently in this NodeList will be returned,
+			//		dojo/NodeList, the nodes currently in this NodeList will be returned,
 			//		not the appended content.
 			// example:
 			//		assume a DOM created by this markup:
@@ -430,7 +430,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<span>before</span><div id="foo"><p>Hello Mars</p></div>
 			//	|	<span>before</span><div id="bar"><p>Hello World</p></div>
-			return this.addContent(content, "before"); // dojo/query.NodeList
+			return this.addContent(content, "before"); // dojo/NodeList
 		},
 
 		insertBefore: function(/*String*/query){
@@ -442,7 +442,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		matches more than one element. Only the DOM nodes are cloned, not
 			//		any attached event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes currently in this NodeList will be returned,
+			//		dojo/NodeList, the nodes currently in this NodeList will be returned,
 			//		not the matched nodes from the query.
 			// example:
 			//		assume a DOM created by this markup:
@@ -454,13 +454,13 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Results in this DOM structure:
 			//	|	<span>before</span><p>Hello Mars</p>
 			//	|	<span>before</span><p>Hello World</p>
-			return this._placeMultiple(query, "before"); // dojo/query.NodeList
+			return this._placeMultiple(query, "before"); // dojo/NodeList
 		},
 
 		/*=====
 		remove: function(simpleFilter){
 			// summary:
-			//		alias for dojo.NodeList's orphan method. Removes elements
+			//		alias for dojo/NodeList's orphan method. Removes elements
 			//		in this list that match the simple filter from their parents
 			//		and returns them as a new NodeList.
 			// simpleFilter: String
@@ -468,9 +468,8 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		"#someId[attrName='value']" but not "div > span". In short,
 			//		anything which does not invoke a descent to evaluate but
 			//		can instead be used to test a single node is acceptable.
-			// returns:
-			//		dojo.NodeList
-			return; // dojo/query.NodeList
+
+			return; // dojo/NodeList
 		},
 		=====*/
 		remove: NodeList.prototype.orphan,
@@ -483,7 +482,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		element. Only DOM nodes are cloned, not any attached
 			//		event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes in the current NodeList will be returned,
+			//		the nodes in the current NodeList will be returned,
 			//		not the nodes from html argument.
 			// example:
 			//		assume a DOM created by this markup:
@@ -511,7 +510,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 					insertion.appendChild(node);
 				}
 			}
-			return this; // dojo/query.NodeList
+			return this; // dojo/NodeList
 		},
 
 		wrapAll: function(/*String||DOMNode*/html){
@@ -519,7 +518,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		Insert html where the first node in this NodeList lives, then place all
 			//		nodes in this NodeList as the child of the html.
 			// returns:
-			//		dojo.NodeList, the nodes in the current NodeList will be returned,
+			//		the nodes in the current NodeList will be returned,
 			//		not the nodes from html argument.
 			// example:
 			//		assume a DOM created by this markup:
@@ -553,7 +552,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 					insertion.appendChild(node);
 				}
 			}
-			return this; // dojo/query.NodeList
+			return this; // dojo/NodeList
 		},
 
 		wrapInner: function(/*String||DOMNode*/html){
@@ -564,7 +563,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			//		element. Only DOM nodes are cloned, not any attached
 			//		event handlers.
 			// returns:
-			//		dojo.NodeList, the nodes in the current NodeList will be returned,
+			//		the nodes in the current NodeList will be returned,
 			//		not the nodes from html argument.
 			// example:
 			//		assume a DOM created by this markup:
@@ -596,7 +595,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 					this._wrap(lang._toArray(this[i].childNodes), null, this._NodeListCtor).wrapAll(clone);
 				}
 			}
-			return this; // dojo/query.NodeList
+			return this; // dojo/NodeList
 		},
 
 		replaceWith: function(/*String||DOMNode||NodeList*/content){
@@ -631,7 +630,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 				this._place(content, node, "before", i > 0);
 				node.parentNode.removeChild(node);
 			}
-			return this; // dojo/query.NodeList
+			return this; // dojo/NodeList
 		},
 
 		replaceAll: function(/*String*/query){
@@ -677,7 +676,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 				this._place(content, node, "before", i > 0);
 				node.parentNode.removeChild(node);
 			}
-			return this; // dojo/query.NodeList
+			return this; // dojo/NodeList
 		},
 
 		clone: function(){
@@ -686,7 +685,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			// description:
 			//		Only the DOM nodes are cloned, not any attached event handlers.
 			// returns:
-			//		dojo.NodeList, a cloned set of the original nodes.
+			//		a cloned set of the original nodes.
 			// example:
 			//		assume a DOM created by this markup:
 			//	|	<div class="container">
@@ -712,7 +711,7 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			for(var i = 0; i < this.length; i++){
 				ary.push(this._cloneNode(this[i]));
 			}
-			return this._wrap(ary, this, this._NodeListCtor); // dojo/query.NodeList
+			return this._wrap(ary, this, this._NodeListCtor); // dojo/NodeList
 		}
 	});
 

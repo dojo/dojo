@@ -24,7 +24,7 @@ lang.extend(NodeList, {
 				return obj[method](tmpArgs);
 			})
 		);
-		return args.auto ? a.play() && this : a; // dojo/_base/fx.Animation|dojo/query.NodeList
+		return args.auto ? a.play() && this : a; // dojo/_base/fx.Animation|dojo/NodeList
 	},
 
 	wipeIn: function(args){
@@ -35,9 +35,9 @@ lang.extend(NodeList, {
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		// returns: dojo/_base/fx.Animation|dojo/query.NodeList
+		// returns: dojo/_base/fx.Animation|dojo/NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo/query.NodeList will be returned for further
+		//		If args.auto is present, the original dojo/NodeList will be returned for further
 		//		chaining. Otherwise the dojo/_base/fx.Animation instance is returned and must be .play()'ed
 		//
 		// example:
@@ -48,7 +48,7 @@ lang.extend(NodeList, {
 		//		Utilizing `auto` to get the NodeList back:
 		//		|	dojo.query(".titles").wipeIn({ auto:true }).onclick(someFunction);
 		//
-		return this._anim(coreFx, "wipeIn", args); // dojo/_base/fx.Animation|dojo/query.NodeList
+		return this._anim(coreFx, "wipeIn", args); // dojo/_base/fx.Animation|dojo/NodeList
 	},
 
 	wipeOut: function(args){
@@ -59,15 +59,15 @@ lang.extend(NodeList, {
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		// returns: dojo/_base/fx.Animation|dojo/query.NodeList
+		// returns: dojo/_base/fx.Animation|dojo/NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo/query.NodeList will be returned for further
+		//		If args.auto is present, the original dojo/NodeList will be returned for further
 		//		chaining. Otherwise the dojo/_base/fx.Animation instance is returned and must be .play()'ed
 		//
 		// example:
 		//		Wipe out all tables with class "blah":
 		//		|	dojo.query("table.blah").wipeOut().play();
-		return this._anim(coreFx, "wipeOut", args); // dojo/_base/fx.Animation|dojo/query.NodeList
+		return this._anim(coreFx, "wipeOut", args); // dojo/_base/fx.Animation|dojo/NodeList
 	},
 
 	slideTo: function(args){
@@ -78,9 +78,9 @@ lang.extend(NodeList, {
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		// returns: dojo/_base/fx.Animation|dojo/query.NodeList
+		// returns: dojo/_base/fx.Animation|dojo/NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo/query.NodeList will be returned for further
+		//		If args.auto is present, the original dojo/NodeList will be returned for further
 		//		chaining. Otherwise the dojo/_base/fx.Animation instance is returned and must be .play()'ed
 		//
 		// example:
@@ -89,7 +89,7 @@ lang.extend(NodeList, {
 		//		|		left: 40,
 		//		|		top: 50
 		//		|	}).play();
-		return this._anim(coreFx, "slideTo", args); // dojo/_base/fx.Animation|dojo/query.NodeList
+		return this._anim(coreFx, "slideTo", args); // dojo/_base/fx.Animation|dojo/NodeList
 	},
 
 
@@ -101,15 +101,15 @@ lang.extend(NodeList, {
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		// returns: dojo/_base/fx.Animation|dojo/query.NodeList
+		// returns: dojo/_base/fx.Animation|dojo/NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo/query.NodeList will be returned for further
+		//		If args.auto is present, the original dojo/NodeList will be returned for further
 		//		chaining. Otherwise the dojo/_base/fx.Animation instance is returned and must be .play()'ed
 		//
 		// example:
 		//		Fade in all tables with class "blah":
 		//		|	dojo.query("table.blah").fadeIn().play();
-		return this._anim(baseFx, "fadeIn", args); // dojo/_base/fx.Animation|dojo/query.NodeList
+		return this._anim(baseFx, "fadeIn", args); // dojo/_base/fx.Animation|dojo/NodeList
 	},
 
 	fadeOut: function(args){
@@ -120,9 +120,9 @@ lang.extend(NodeList, {
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		// returns: dojo/_base/fx.Animation|dojo/query.NodeList
+		// returns: dojo/_base/fx.Animation|dojo/NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo/query.NodeList will be returned for further
+		//		If args.auto is present, the original dojo/NodeList will be returned for further
 		//		chaining. Otherwise the dojo/_base/fx.Animation instance is returned and must be .play()'ed
 		//
 		// example:
@@ -137,7 +137,7 @@ lang.extend(NodeList, {
 		//		Using `auto`:
 		//		|	dojo.query("li").fadeOut({ auto:true }).filter(filterFn).forEach(doit);
 		//
-		return this._anim(baseFx, "fadeOut", args); // dojo/_base/fx.Animation|dojo/query.NodeList
+		return this._anim(baseFx, "fadeOut", args); // dojo/_base/fx.Animation|dojo/NodeList
 	},
 
 	animateProperty: function(args){
@@ -149,9 +149,9 @@ lang.extend(NodeList, {
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of
 		//		an `auto` parameter.
 		//
-		// returns: dojo/_base/fx.Animation|dojo/query.NodeList
+		// returns: dojo/_base/fx.Animation|dojo/NodeList
 		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo/query.NodeList will be returned for further
+		//		If args.auto is present, the original dojo/NodeList will be returned for further
 		//		chaining. Otherwise the dojo/_base/fx.Animation instance is returned and must be .play()'ed
 		//
 		// example:
@@ -170,7 +170,7 @@ lang.extend(NodeList, {
 		//	|			height:240
 		//	|		}
 		//	|	}).onclick(handler);
-		return this._anim(baseFx, "animateProperty", args); // dojo/_base/fx.Animation|dojo/query.NodeList
+		return this._anim(baseFx, "animateProperty", args); // dojo/_base/fx.Animation|dojo/NodeList
 	},
 
 	anim: function( /*Object*/			properties,

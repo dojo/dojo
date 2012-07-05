@@ -45,7 +45,7 @@ define([
 	// if you are extracting acme for use in your own system, you will
 	// need to provide these methods and properties. No other porting should be
 	// necessary, save for configuring the system to use a class other than
-	// dojo/query.NodeList as the return instance instantiator
+	// dojo/NodeList as the return instance instantiator
 	var trim = 			lang.trim;
 	var each = 			array.forEach;
 
@@ -1354,7 +1354,7 @@ define([
 		//		`dojo.query()`, including compound selectors ("," delimited).
 		//		Very complex and useful searches can be constructed with this
 		//		palette of selectors and when combined with functions for
-		//		manipulation presented by dojo.NodeList, many types of DOM
+		//		manipulation presented by dojo/NodeList, many types of DOM
 		//		manipulation operations become very straightforward.
 		//
 		//		Unsupported Selectors:
@@ -1390,7 +1390,7 @@ define([
 		//		---------------------
 		//
 		//		If something other than a String is passed for the query,
-		//		`dojo.query` will return a new `dojo.NodeList` instance
+		//		`dojo.query` will return a new `dojo/NodeList` instance
 		//		constructed from that parameter alone and all further
 		//		processing will stop. This means that if you have a reference
 		//		to a node or NodeList, you can quickly construct a new NodeList
@@ -1472,7 +1472,7 @@ define([
 		if(r && r.nozip){
 			return r;
 		}
-		return _zip(r); // dojo/query.NodeList
+		return _zip(r); // dojo/NodeList
 	};
 	query.filter = function(/*Node[]*/ nodeList, /*String*/ filter, /*String|DOMNode?*/ root){
 		// summary:
@@ -1491,4 +1491,4 @@ define([
 		return tmpNodeList;
 	};
 	return query;
-});//end defineQuery
+});

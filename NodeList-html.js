@@ -45,7 +45,7 @@ lang.extend(NodeList, {
 			dhs.set(content);
 			dhs.tearDown();
 		});
-		return this; // dojo/query.NodeList
+		return this; // dojo/NodeList
 	}
 });
 

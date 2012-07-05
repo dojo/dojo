@@ -96,7 +96,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 		_cloneNode: function(/*DOMNode*/ node){
 			// summary:
 			//		private utility to clone a node. Not very interesting in the vanilla
-			//		dojo.NodeList case, but delegates could do interesting things like
+			//		dojo/NodeList case, but delegates could do interesting things like
 			//		clone event handlers if that is derivable from the node.
 			return node.cloneNode(true);
 		},
@@ -175,7 +175,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		innerHTML can be assigned or retrieved as well:
 			//	|	// get the innerHTML (as an array) for each list item
 			//	|	var ih = dojo.query("li.replaceable").attr("innerHTML");
-			return; // dojo/query.NodeList|Array
+			return; // dojo/NodeList|Array
 		},
 
 		style: function(property, value){
@@ -189,7 +189,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			// returns:
 			//		if no value is passed, the result is an array of strings.
 			//		If a value is passed, the return is this NodeList
-			return; // dojo/query.NodeList
+			return; // dojo/NodeList
 			return; // Array
 		},
 
@@ -199,7 +199,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			// className: String|Array
 			//		A String class name to add, or several space-separated class names,
 			//		or an array of class names.
-			return; // dojo/query.NodeList
+			return; // dojo/NodeList
 		},
 
 		removeClass: function(className){
@@ -210,8 +210,8 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		class names, or an array of class names. If omitted, all class names
 			//		will be deleted.
 			// returns:
-			//		dojo.NodeList, this list
-			return; // dojo/query.NodeList
+			//		this list
+			return; // dojo/NodeList
 		},
 
 		toggleClass: function(className, condition){
@@ -222,7 +222,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		If passed, true means to add the class, false means to remove.
 			// className: String
 			//		the CSS class to add
-			return; // dojo/query.NodeList
+			return; // dojo/NodeList
 		},
 
 		empty: function(){
@@ -230,7 +230,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		clears all content from each node in the list. Effectively
 			//		equivalent to removing all child nodes from every item in
 			//		the list.
-			return this.forEach("item.innerHTML='';"); // dojo/query.NodeList
+			return this.forEach("item.innerHTML='';"); // dojo/NodeList
 			// FIXME: should we be checking for and/or disposing of widgets below these nodes?
 		},
 		=====*/
@@ -279,7 +279,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		|	"replace"
 			//		or an offset in the childNodes property
 			var item = query(queryOrNode)[0];
-			return this.forEach(function(node){ domCtr.place(node, item, position); }); // dojo/query.NodeList
+			return this.forEach(function(node){ domCtr.place(node, item, position); }); // dojo/NodeList
 		},
 
 		orphan: function(/*String?*/ filter){
@@ -289,15 +289,15 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			// filter:
 			//		CSS selector like ".foo" or "div > span"
 			// returns:
-			//		`dojo.NodeList` containing the orphaned elements
-			return (filter ? query._filterResult(this, filter) : this).forEach(orphan); // dojo/query.NodeList
+			//		NodeList containing the orphaned elements
+			return (filter ? query._filterResult(this, filter) : this).forEach(orphan); // dojo/NodeList
 		},
 
 		adopt: function(/*String||Array||DomNode*/ queryOrListOrNode, /*String?*/ position){
 			// summary:
 			//		places any/all elements in queryOrListOrNode at a
 			//		position relative to the first element in this list.
-			//		Returns a dojo.NodeList of the adopted elements.
+			//		Returns a dojo/NodeList of the adopted elements.
 			// queryOrListOrNode:
 			//		a DOM node or a query string or a query result.
 			//		Represents the nodes to be adopted relative to the
@@ -311,7 +311,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		|	"only"
 			//		|	"replace"
 			//		or an offset in the childNodes property
-			return query(queryOrListOrNode).place(this[0], position)._stash(this);	// dojo/query.NodeList
+			return query(queryOrListOrNode).place(this[0], position)._stash(this);	// dojo/NodeList
 		},
 
 		// FIXME: do we need this?
@@ -331,7 +331,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//	|		<p>great comedians may not be funny <span>in person</span></p>
 			//	|	</div>
 			//		If we are presented with the following definition for a NodeList:
-			//	|	var l = new dojo.NodeList(dojo.byId("foo"), dojo.byId("bar"));
+			//	|	var l = new NodeList(dojo.byId("foo"), dojo.byId("bar"));
 			//		it's possible to find all span elements under paragraphs
 			//		contained by these elements with this sub-query:
 			//	|	var spans = l.query("p span");
@@ -347,7 +347,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 					}
 				});
 			});
-			return ret._stash(this);	// dojo/query.NodeList
+			return ret._stash(this);	// dojo/NodeList
 		},
 
 		filter: function(/*String|Function*/ filter){
@@ -373,12 +373,12 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 				items = query._filterResult(this, a[0]);
 				if(a.length == 1){
 					// if we only got a string query, pass back the filtered results
-					return items._stash(this); // dojo/query.NodeList
+					return items._stash(this); // dojo/NodeList
 				}
 				// if we got a callback, run it over the filtered items
 				start = 1;
 			}
-			return this._wrap(array.filter(items, a[start], a[start + 1]), this);	// dojo/query.NodeList
+			return this._wrap(array.filter(items, a[start], a[start + 1]), this);	// dojo/NodeList
 		},
 
 		/*
@@ -390,7 +390,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 		},
 		*/
 
-		addContent: function(/*String||DomNode||Object||dojo.NodeList*/ content, /*String||Integer?*/ position){
+		addContent: function(/*String||DomNode||Object||dojo/NodeList*/ content, /*String||Integer?*/ position){
 			// summary:
 			//		add a node, NodeList or some HTML as a string to every item in the
 			//		list.  Returns the original list.
@@ -454,7 +454,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			for(var i = 0, node; (node = this[i]); i++){
 				this._place(content, node, position, i > 0);
 			}
-			return this; // dojo/query.NodeList
+			return this; // dojo/NodeList
 		}
 	});
 

@@ -43,7 +43,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 		//		the parent element
 		// content:
 		//		the content to be set on the parent element.
-		//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
+		//		This can be an html string, a node reference or a NodeList, dojo/NodeList, Array or other enumerable list of nodes
 
 		// always empty
 		domConstruct.empty(node);
@@ -342,7 +342,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			//		the parent element that will receive the content
 			// cont:
 			//		the content to be set on the parent element.
-			//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
+			//		This can be an html string, a node reference or a NodeList, dojo/NodeList, Array or other enumerable list of nodes
 			// params:
 			//		Optional flags/properties to configure the content-setting. See dojo.html._ContentSetter
 			// example:

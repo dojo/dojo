@@ -18,22 +18,27 @@ var liteEngine = function(selector, root){
 	if(combine && selector.indexOf(',') > -1){
 		return combine(selector, root);
 	}
-	var match = (querySelectorAll ? 
-		/^([\w]*)#([\w\-]+$)|^(\.)([\w\-\*]+$)|^(\w+$)/ : // this one only matches on simple queries where we can beat qSA with specific methods
-		/^([\w]*)#([\w\-]+)(?:\s+(.*))?$|(?:^|(>|.+\s+))([\w\-\*]+)(\S*$)/) // this one matches parts of the query that we can use to speed up manual filtering
+	// use the root's ownerDocument if provided, otherwise try to use dojo.doc. Note 
+	// that we don't use dojo/_base/window's doc to reduce dependencies, and 
+	// fallback to plain document if dojo.doc hasn't been defined (by dojo/_base/window).
+	// presumably we will have a better way to do this in 2.0 
+	var doc = root ? root.ownerDocument || root : dojo.doc || document, 
+		match = (querySelectorAll ? 
+			/^([\w]*)#([\w\-]+$)|^(\.)([\w\-\*]+$)|^(\w+$)/ : // this one only matches on simple queries where we can beat qSA with specific methods
+			/^([\w]*)#([\w\-]+)(?:\s+(.*))?$|(?:^|(>|.+\s+))([\w\-\*]+)(\S*$)/) // this one matches parts of the query that we can use to speed up manual filtering
 			.exec(selector);
-	root = root || document;
+	root = root || doc;
 	if(match){
 		// fast path regardless of whether or not querySelectorAll exists
 		if(match[2]){
 			// an #id
-			// use dojo.byId if available as it fixes the id retrieval in IE
-			var found = dojo.byId ? dojo.byId(match[2]) : document.getElementById(match[2]);
+			// use dojo.byId if available as it fixes the id retrieval in IE, note that we can't use the dojo namespace in 2.0, but if there is a conditional module use, we will use that
+			var found = dojo.byId ? dojo.byId(match[2]) : doc.getElementById(match[2]);
 			if(!found || (match[1] && match[1] != found.tagName.toLowerCase())){
 				// if there is a tag qualifer and it doesn't match, no matches
 				return [];
 			}
-			if(root != document){
+			if(root != doc){
 				// there is a root element, make sure we are a child of it
 				var parent = found;
 				while(parent != root){
@@ -264,7 +269,7 @@ if(!has("dom-qsa")){
 }
 
 liteEngine.match = matchesSelector ? function(node, selector, root){
-	if(root && root != document){
+	if(root && root.nodeType != 9){
 		// doesn't support three args, use rooted id trick
 		return useRoot(root, selector, function(query){
 			return matchesSelector.call(node, query);

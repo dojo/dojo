@@ -285,7 +285,8 @@
 						"doh.is(2, query('#t2 > :checked').length);",
 						"doh.is(dojo.byId('checkbox2'), query('#t2 > input[type=checkbox]:checked')[0]);",
 						"doh.is(dojo.byId('radio2'), query('#t2 > input[type=radio]:checked')[0]);",
-						"doh.is(2, query('#t2select option:checked').length);",
+						// This :checked selector is only defined for elements that have the checked property, option elements are not specified by the spec (http://www.w3.org/TR/css3-selectors/#checked) and not universally supported 
+						//"doh.is(2, query('#t2select option:checked').length);",
 
 						"doh.is(1, query('#radio1:disabled').length);",
 						"doh.is(0, query('#radio1:enabled').length);",

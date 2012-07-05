@@ -378,7 +378,10 @@
 							doh.t(typeof NodeList != "undefined" && cat.constructor === dojo.NodeList
 								|| cat.constructor === dojo.NodeList);
 						},
-
+						function concat4(){ 
+							var res = (new dojo.NodeList()).concat([]); 
+							doh.is(0, res.length); 
+						}, 
 						function place(){
 							var ih = "<div><span></span></div><span class='thud'><b>blah</b></span>";
 

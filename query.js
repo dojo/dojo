@@ -451,22 +451,18 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		spliced into the NodeList
 
 			//return this._wrap(apc.apply(this, arguments));
-			// the line above won't work for the native NodeList :-(
+			// the line above won't work for the native NodeList, or for Dojo NodeLists either :-(
 
 			// implementation notes:
-			// 1) Native NodeList is not an array, and cannot be used directly
-			// in concat() --- the latter doesn't recognize it as an array, and
-			// does not inline it, but append as a single entity.
-			// 2) On some browsers (e.g., Safari) the "constructor" property is
-			// read-only and cannot be changed. So we have to test for both
-			// native NodeList and dojo/NodeList in this property to recognize
-			// the node list.
+			// Array.concat() doesn't recognize native NodeLists or Dojo NodeLists
+			// as arrays, and so does not inline them into a unioned array, but
+			// appends them as single entities. Both the original NodeList and the
+			// items passed in as parameters must be converted to raw Arrays
+			// and then the concatenation result may be re-_wrap()ed as a Dojo NodeList.
 
-			var t = lang.isArray(this) ? this : aps.call(this, 0),
+			var t = aps.call(this, 0),
 				m = array.map(arguments, function(a){
-					return a && !lang.isArray(a) &&
-						(typeof NodeList != "undefined" && a.constructor === NodeList || a.constructor === this._NodeListCtor) ?
-							aps.call(a, 0) : a;
+					return aps.call(a, 0);
 				});
 			return this._wrap(apc.apply(t, m), this);	// dojo/NodeList
 		},

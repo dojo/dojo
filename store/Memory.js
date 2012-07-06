@@ -111,16 +111,16 @@ return declare("dojo.store.Memory", base, {
 		}
 	},
 	query: function(query, options){
-		// 	summary:
+		// summary:
 		//		Queries the store for objects.
-		// 	query: Object
+		// query: Object
 		//		The query to use for retrieving objects from the store.
 		// options: Store.QueryOptions?
 		//		The optional arguments to apply to the resultset.
 		// returns: Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		//
-		// 	example:
+		// example:
 		//		Given the following store:
 		//
 		// 	|	var store = new dojo.store.Memory({
@@ -143,7 +143,7 @@ return declare("dojo.store.Memory", base, {
 		return QueryResults(this.queryEngine(query, options)(this.data));
 	},
 	setData: function(data){
-		// 	summary:
+		// summary:
 		//		Sets the given data as the source for this store, and indexes it
 		// data: Object[]
 		//		An array of objects to use as the source of data.

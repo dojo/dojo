@@ -1815,6 +1815,7 @@
 		if(has("dojo-log-api")){
 			signal(error, makeError("defineAlreadyDefined", 0));
 		}
+		return;
 	}else{
 		global.define = def;
 		global.require = req;

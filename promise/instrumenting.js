@@ -1,11 +1,13 @@
 define([
 	"../Deferred",
+	"./tracer",
 	"../has",
 	"../_base/config",
+	"../_base/lang",
 	"../_base/array",
 	"exports",
 	"require"
-], function(Deferred, has, config, arrayUtil, exports, require){
+], function(Deferred, tracer, has, config, lang, arrayUtil, exports, require){
 	function logError(error, rejection, deferred){
 		var stack = "";
 		if(error && error.stack){
@@ -88,6 +90,10 @@ define([
 
 	if(has("config-deferredInstrumentation")){
 		exports.load(has("config-deferredInstrumentation"), require, function(){});
+
+		tracer.on("resolved", lang.hitch(console, "log", "resolved"));
+		tracer.on("rejected", lang.hitch(console, "log", "rejected"));
+		tracer.on("progress", lang.hitch(console, "log", "progress"));
 	}
 
 	return exports;

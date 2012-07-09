@@ -144,6 +144,8 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			}
 		},
 
+
+		position: aam(domGeom.position),
 		/*=====
 		position: function(){
 			// summary:
@@ -153,7 +155,10 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 
 			return dojo.map(this, dojo.position); // Array
 		},
+		=====*/
 
+		attr: awc(getSet(domAttr), magicGuard),
+		/*=====
 		attr: function(property, value){
 			// summary:
 			//		gets or sets the DOM attribute for every element in the
@@ -177,7 +182,10 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//	|	var ih = dojo.query("li.replaceable").attr("innerHTML");
 			return; // dojo/NodeList|Array
 		},
+		=====*/
 
+		style: awc(getSet(domStyle), magicGuard),
+		/*=====
 		style: function(property, value){
 			// summary:
 			//		gets or sets the CSS property for every element in the NodeList
@@ -192,7 +200,10 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			return; // dojo/NodeList
 			return; // Array
 		},
+		=====*/
 
+		addClass: aafe(domCls.add),
+		/*=====
 		addClass: function(className){
 			// summary:
 			//		adds the specified class to every node in the list
@@ -201,7 +212,10 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		or an array of class names.
 			return; // dojo/NodeList
 		},
+		=====*/
 
+		removeClass: aafe(domCls.remove),
+		/*=====
 		removeClass: function(className){
 			// summary:
 			//		removes the specified class from every node in the list
@@ -213,7 +227,10 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		this list
 			return; // dojo/NodeList
 		},
+		=====*/
 
+		toggleClass: aafe(domCls.toggle),
+		/*=====
 		toggleClass: function(className, condition){
 			// summary:
 			//		Adds a class to node if not present, or removes if present.
@@ -224,7 +241,26 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		the CSS class to add
 			return; // dojo/NodeList
 		},
+		=====*/
 
+		replaceClass: aafe(domCls.replace),
+		/*=====
+		replaceClass: function(addClassStr, removeClassStr){
+			// summary:
+			//		Replaces one or more classes on a node if not present.
+			//		Operates more quickly than calling `removeClass()` and `addClass()`
+			// addClassStr: String|Array
+			//		A String class name to add, or several space-separated class names,
+			//		or an array of class names.
+			// removeClassStr: String|Array?
+			//		A String class name to remove, or several space-separated class names,
+			//		or an array of class names.
+			return; // dojo/NodeList
+		 },
+		 =====*/
+
+		empty: aafe(domCtr.empty),
+		/*=====
 		empty: function(){
 			// summary:
 			//		clears all content from each node in the list. Effectively
@@ -235,20 +271,15 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 		},
 		=====*/
 
-		// useful html methods
-		attr: awc(getSet(domAttr), magicGuard),
-		style: awc(getSet(domStyle), magicGuard),
 
-		addClass: aafe(domCls.add),
-		removeClass: aafe(domCls.remove),
-		replaceClass: aafe(domCls.replace),
-		toggleClass: aafe(domCls.toggle),
-
-		empty: aafe(domCtr.empty),
-		removeAttr: aafe(domAttr.remove),
-
-		position: aam(domGeom.position),
 		marginBox: aam(domGeom.getMarginBox),
+		/*=====
+		marginBox: function(){
+			// summary:
+			//		Returns margin-box size of nodes
+		 	return; // dojo/NodeList
+		 },
+		 =====*/
 
 		// FIXME: connectPublisher()? connectRunOnce()?
 
@@ -271,12 +302,14 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		for relative positioning.
 			// position:
 			//		can be one of:
-			//		|	"last" (default)
-			//		|	"first"
-			//		|	"before"
-			//		|	"after"
-			//		|	"only"
-			//		|	"replace"
+			//
+			//		-	"last" (default)
+			//		-	"first"
+			//		-	"before"
+			//		-	"after"
+			//		-	"only"
+			//		-	"replace"
+			//
 			//		or an offset in the childNodes property
 			var item = query(queryOrNode)[0];
 			return this.forEach(function(node){ domCtr.place(node, item, position); }); // dojo/NodeList
@@ -304,12 +337,14 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		first element of this NodeList.
 			// position:
 			//		can be one of:
-			//		|	"last" (default)
-			//		|	"first"
-			//		|	"before"
-			//		|	"after"
-			//		|	"only"
-			//		|	"replace"
+			//
+			//		-	"last" (default)
+			//		-	"first"
+			//		-	"before"
+			//		-	"after"
+			//		-	"only"
+			//		-	"replace"
+			//
 			//		or an offset in the childNodes property
 			return query(queryOrListOrNode).place(this[0], position)._stash(this);	// dojo/NodeList
 		},
@@ -412,12 +447,14 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			//		should be used to transform the "template".
 			// position:
 			//		can be one of:
-			//		|	"last"||"end" (default)
-			//		|	"first||"start"
-			//		|	"before"
-			//		|	"after"
-			//		|	"replace" (replaces nodes in this NodeList with new content)
-			//		|	"only" (removes other children of the nodes so new content is the only child)
+			//
+			//		-	"last"||"end" (default)
+			//		-	"first||"start"
+			//		-	"before"
+			//		-	"after"
+			//		-	"replace" (replaces nodes in this NodeList with new content)
+			//		-	"only" (removes other children of the nodes so new content is the only child)
+			//
 			//		or an offset in the childNodes property
 			// example:
 			//		appends content to the end if the position is omitted

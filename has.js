@@ -1,4 +1,4 @@
-define(["require"], function(require){
+define(["require", "module"], function(require, module){
 	// module:
 	//		dojo/has
 	// summary:
@@ -13,12 +13,10 @@ define(["require"], function(require){
 	//		This module adopted from https://github.com/phiggins42/has.js; thanks has.js team!
 
 	// try to pull the has implementation from the loader; both the dojo loader and bdLoad provide one
+	// if using a foreign loader, then the has cache may be initialized via the config object for this module
 	// WARNING: if a foreign loader defines require.has to be something other than the has.js API, then this implementation fail
 	var has = require.has || function(){};
 	if(!has("dojo-has-api")){
-		// notice the condition is written so that if has("dojo-has-api") is transformed to 1 during a build
-		// the conditional will be (!1 && typeof has=="function") which is statically false and the closure
-		// compiler will discard the block.
 		var
 			isBrowser =
 				// the most fundamental decision: are we in the browser?
@@ -31,7 +29,7 @@ define(["require"], function(require){
 			global = this,
 			doc = isBrowser && document,
 			element = doc && doc.createElement("DiV"),
-			cache = {};
+			cache = (module.config && module.config()) || {};
 
 		has = function(name){
 			// summary:

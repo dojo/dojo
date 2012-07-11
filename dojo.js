@@ -502,7 +502,7 @@
 				packageMap[name] = name;
 			},
 
-			config = function(config, booting){
+			config = function(config, booting, referenceModule){
 				for(var p in config){
 					if(p=="waitSeconds"){
 						req.waitms = (config[p] || 0) * 1000;
@@ -570,6 +570,12 @@
 
 				// mix any packageMap config item and recompute the internal packageMapProg
 				computeMapProg(mix(packageMap, config.packageMap), packageMapProg);
+
+
+				for(p in config.config){
+					var module = getModule(p, referenceModule);
+					module.config = mix(module.config || {}, config.config[p]);
+				}
 
 				// push in any new cache values
 				if(config.cache){
@@ -710,7 +716,7 @@
 			}
 			if(!isArray(a1)){
 				// a1 is a configuration
-				config(a1);
+				config(a1, 0, referenceModule);
 
 				// juggle args; (a2, a3) may be (dependencies, callback)
 				a1 = a2;
@@ -1481,6 +1487,9 @@
 						exports: (module.result = {}),
 						setExports: function(exports){
 							module.cjs.exports = exports;
+						},
+						config:function(){
+							return module.config;
 						}
 					}
 				});

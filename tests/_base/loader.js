@@ -132,5 +132,7 @@ define([
 
 		doh.register("tests._base.loader.requirejs-exports-sync", require.toUrl("./loader/requirejs/exports/exports.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-exports-async", require.toUrl("./loader/requirejs/exports/exports.html"), {async:1});
+
+		doh.register("tests._base.loader.require-config", require.toUrl("./loader/config/test.html"), {async:1});
 	}
 });

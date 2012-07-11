@@ -1,29 +1,60 @@
-define(['../topic'], function(topic){
+define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
+	// module:
+	//		dojo/request/notify
+	// summary:
+	//		Global notification API for dojo/request
+	//
+	//		| require('dojo/request', 'dojo/request/notify',
+	//		|     function(request, notify){
+	//		|         notify('load', function(response){
+	//		|             if(response.url === 'someUrl.html'){
+	//		|                 console.log('Loaded!');
+	//		|             }
+	//		|         });
+	//		|         request.get('someUrl.html');
+	//		|     }
+	//		| );
+
 	var pubCount = 0;
-	var notify = {
-		send: function(data){
+
+	var hub = lang.mixin(new Evented, {
+		onsend: function(data){
 			if(!pubCount){
-				topic.publish('/dojo/request/start');
+				this.emit('start');
 			}
 			pubCount++;
-			topic.publish('/dojo/request/send', data);
 		},
-		load: function(data){
-			topic.publish('/dojo/request/load', data);
-			notify.done(data);
+		_onload: function(data){
+			this.emit('done', data);
 		},
-		error: function(data){
-			topic.publish('/dojo/request/error', data);
-			notify.done(data);
+		_onerror: function(data){
+			this.emit('done', data);
 		},
-		done: function(data){
-			topic.publish('/dojo/request/done', data);
+		_ondone: function(data){
 			if(--pubCount <= 0){
 				pubCount = 0;
-				topic.publish('/dojo/request/stop');
+				this.emit('stop');
 			}
+		},
+		emit: function(type, event){
+			var result = Evented.prototype.emit.apply(this, arguments);
+
+			// After all event handlers have run, run _on* handler
+			if(this['_on' + type]){
+				this['_on' + type].call(this, event);
+			}
+			return result;
 		}
+	});
+
+	function notify(type, listener){
+		return hub.on(type, listener);
+	}
+	notify.emit = function(type, event){
+		return hub.emit(type, event);
 	};
 
-	return notify;
+	// Attach notify to dojo/request/util to avoid
+	// try{ require('./notify'); }catch(e){}
+	return util.notify = notify;
 });

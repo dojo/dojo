@@ -16,11 +16,10 @@
 		require([
 			"doh",
 			"dojo/request/xhr",
-			"dojo/topic",
-			"dojo/_base/lang",
 			"dojo/request/notify",
+			"dojo/_base/lang",
 			"dojo/domReady!"
-		], function(doh, xhr, topic, lang){
+		], function(doh, xhr, notify, lang){
 			function resCounter(count, callback){
 				var resCount = 0;
 
@@ -51,17 +50,17 @@
 						sendCount = 0;
 
 					t.remove = remover(
-						topic.subscribe("/dojo/request/start", function(data){
+						notify('start', function(data){
 							startCount++;
 						}),
-						topic.subscribe("/dojo/request/send", function(data){
+						notify('send', function(data){
 							sendCount++;
 						})
 					);
 
 					var counter = resCounter(2, d.getTestCallback(function(){
-						t.is(1, startCount, "/dojo/request/start should have fired once");
-						t.is(2, sendCount, "/dojo/request/send should have fired twice");
+						t.is(1, startCount, "'start' should have fired once");
+						t.is(2, sendCount, "'send' should have fired twice");
 					}));
 					xhr.get("xhrDummyMethod.php?delay=1").then(counter);
 					xhr.get("xhrDummyMethod.php?delay=1").then(counter);
@@ -76,11 +75,16 @@
 				runTest: function(t){
 					var d = new doh.Deferred();
 
+					var doneFired = 0;
 					t.remove = remover(
-						topic.subscribe("/dojo/request/load", d.getTestErrback(function(response){
+						notify('done', function(response){
+							doneFired = 1;
+						}),
+						notify('load', d.getTestErrback(function(response){
 							t.is({ foo: "bar" }, response.data.query);
+							t.f(doneFired, "'load' should have fired before 'done'");
 						})),
-						topic.subscribe("/dojo/request/stop", d.getTestCallback(function(){}))
+						notify('stop', d.getTestCallback(function(){}))
 					);
 
 					xhr.get("xhrDummyMethod.php?foo=bar", { handleAs: "json" });
@@ -95,11 +99,16 @@
 				runTest: function(t){
 					var d = new doh.Deferred();
 
+					var doneFired = 0;
 					t.remove = remover(
-						topic.subscribe("/dojo/request/error", d.getTestErrback(function(data){
+						notify('done', function(response){
+							doneFired = 1;
+						}),
+						notify('error', d.getTestErrback(function(data){
 							t.t(data instanceof Error);
+							t.f(doneFired, "'error' should have fired before 'done'");
 						})),
-						topic.subscribe("/dojo/request/stop", d.getTestCallback(function(){}))
+						notify("stop", d.getTestCallback(function(){}))
 					);
 
 					xhr.get("doesntExist.text");
@@ -116,20 +125,23 @@
 					var d = new doh.Deferred();
 
 					var doneCount = 0,
-						stopCount = 0;
+						stopCount = 0,
+						stopCalled = 0;
 
 					t.remove = remover(
-						topic.subscribe("/dojo/request/done", function(data){
+						notify("done", function(data){
 							doneCount++;
+							stopCalled = stopCount;
 						}),
-						topic.subscribe("/dojo/request/stop", function(data){
+						notify("stop", function(data){
 							stopCount++;
 						})
 					);
 
 					var counter = resCounter(2, d.getTestCallback(function(){
-						t.is(2, doneCount, "/dojo/request/done should have fired twice");
-						t.is(1, stopCount, "/dojo/request/stop should have fired once");
+						t.f(stopCalled, "'done' should have fired before 'stop'");
+						t.is(2, doneCount, "'done' should have fired twice");
+						t.is(1, stopCount, "'stop' should have fired once");
 					}));
 
 					xhr.get("xhrDummyMethod.php?delay=1").then(counter);

@@ -1,6 +1,5 @@
 define([
 	'module',
-	'require',
 	'./watch',
 	'./util',
 	'../_base/array',
@@ -10,7 +9,7 @@ define([
 	'../dom-construct',
 	'../has',
 	'../_base/window'
-], function(module, require, watch, util, array, lang, on, dom, domConstruct, has, win){
+], function(module, watch, util, array, lang, on, dom, domConstruct, has, win){
 	has.add('script-readystatechange', function(global, document){
 		var script = document.createElement('script');
 		return typeof script['onreadystatechange'] !== 'undefined' &&
@@ -134,10 +133,9 @@ define([
 			};
 		}
 
-		try{
-			var notify = require('./notify');
-			notify.send(response);
-		}catch(e){}
+		if(util.notify){
+			util.notify.emit('send', response);
+		}
 
 		if(!options.canAttach || options.canAttach(dfd)){
 			var node = script._attach(dfd.id, url, options.frameDoc);

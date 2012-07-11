@@ -1,13 +1,12 @@
 define([
 	'exports',
-	'require',
 	'../errors/RequestError',
 	'../errors/CancelError',
 	'../Deferred',
 	'../io-query',
 	'../_base/array',
 	'../_base/lang'
-], function(exports, require, RequestError, CancelError, Deferred, ioQuery, array, lang){
+], function(exports, RequestError, CancelError, Deferred, ioQuery, array, lang){
 	exports.deepCopy = function deepCopy(target, source){
 		for(var name in source){
 			var tval = target[name],
@@ -64,12 +63,12 @@ define([
 		}
 		var responsePromise = def.then(okHandler).otherwise(errHandler);
 
-		try{
-			// Handle notify before data promise so notify always runs
-			// before any chained promise
-			var notify = require('./notify');
-			responsePromise.then(notify.load, notify.error);
-		}catch(e){}
+		if(exports.notify){
+			responsePromise.then(
+				lang.hitch(exports.notify, 'emit', 'load'),
+				lang.hitch(exports.notify, 'emit', 'error')
+			);
+		}
 
 		var dataPromise = responsePromise.then(function(response){
 				return response.data || response.text;

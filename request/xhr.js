@@ -1,11 +1,10 @@
 define([
-	'require',
 	'../errors/RequestError',
 	'./watch',
 	'./handlers',
 	'./util',
 	'../has'
-], function(require, RequestError, watch, handlers, util, has){
+], function(RequestError, watch, handlers, util, has){
 	has.add('native-xhr', function(){
 		// if true, the environment has a native XHR implementation
 		return typeof XMLHttpRequest !== 'undefined';
@@ -205,10 +204,9 @@ define([
 				_xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 			}
 
-			try{
-				var notify = require('./notify');
-				notify.send(response);
-			}catch(e){}
+			if(util.notify){
+				util.notify.emit('send', response);
+			}
 			_xhr.send(data);
 		}catch(e){
 			dfd.reject(e);

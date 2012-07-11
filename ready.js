@@ -55,6 +55,7 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 	var ready = dojo.ready = dojo.addOnLoad = function(priority, context, callback){
 		// summary:
 		//		Add a function to execute on DOM content loaded and all requested modules have arrived and been evaluated.
+		//		In most cases, the `domReady` plug-in should suffice and this method should not be needed.
 		// priority: Integer?
 		//		The order in which to exec this callback relative to other callbacks, defaults to 1000
 		// context: Object?|Function
@@ -64,22 +65,30 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 		//
 		// example:
 		//	Simple DOM and Modules ready syntax
-		//	|	dojo.ready(function(){ alert("Dom ready!"); });
+		//	|	require(["dojo/ready"], function(ready){
+		//	|		ready(function(){ alert("Dom ready!"); });
+		//	|	});
 		//
 		// example:
 		//	Using a priority
-		//	|	dojo.ready(2, function(){ alert("low priority ready!"); })
+		//	|	require(["dojo/ready"], function(ready){
+		//	|		ready(2, function(){ alert("low priority ready!"); })
+		//	|	});
 		//
 		// example:
 		//	Using context
-		//	|	dojo.ready(foo, function(){
-		//	|		// in here, this == foo
-		//	|	})
+		//	|	require(["dojo/ready"], function(ready){
+		//	|		ready(foo, function(){
+		//	|			// in here, this == foo
+		//	|		});
+		//	|	});
 		//
 		// example:
-		//	Using dojo.hitch style args:
-		//	|	var foo = { dojoReady: function(){ console.warn(this, "dojo dom and modules ready."); } };
-		//	|	dojo.ready(foo, "dojoReady");
+		//	Using dojo/hitch style args:
+		//	|	require(["dojo/ready"], function(ready){
+		//	|		var foo = { dojoReady: function(){ console.warn(this, "dojo dom and modules ready."); } };
+		//	|		ready(foo, "dojoReady");
+		//	|	});
 
 		var hitchArgs = lang._toArray(arguments);
 		if(typeof priority != "number"){

@@ -92,7 +92,7 @@ return declare("dojo.store.JsonRest", base, {
 		// options: __PutDirectives?
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
-		// returns: Number
+		// returns: dojo/_base/Deferred
 		options = options || {};
 		var id = ("id" in options) ? options.id : this.getIdentity(object);
 		var hasId = typeof id != "undefined";

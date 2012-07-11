@@ -20,7 +20,6 @@ define([
 	//		dojo/_base/xhr
 	// summary:
 	//		Deprecated.   Use dojo/request instead.
-	dojo.deprecated("dojo/_base/xhr", "Use dojo/request.", "2.0");
 
 	/*=====
 	dojo._xhrObj = function(){

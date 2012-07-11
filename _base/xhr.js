@@ -18,8 +18,6 @@ define([
 ], function(dojo, has, require, ioq, dom, domForm, Deferred, config, json, lang, array, on, aspect, watch, _xhr, util){
 	// module:
 	//		dojo/_base/xhr
-	// summary:
-	//		Deprecated.   Use dojo/request instead.
 
 	/*=====
 	dojo._xhrObj = function(){
@@ -594,7 +592,7 @@ define([
 
 	dojo.xhr = function(/*String*/ method, /*dojo.__XhrArgs*/ args, /*Boolean?*/ hasBody){
 		// summary:
-		//		Sends an HTTP request with the given method.
+		//		Deprecated.   Use dojo/request instead.
 		// description:
 		//		Sends an HTTP request with the given method.
 		//		See also dojo.xhrGet(), xhrPost(), xhrPut() and dojo.xhrDelete() for shortcuts

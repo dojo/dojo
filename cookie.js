@@ -39,15 +39,21 @@ dojo.cookie = function(/*String*/name, /*String?*/ value, /*__cookieProps?*/ pro
 	// example:
 	//		set a cookie with the JSON-serialized contents of an object which
 	//		will expire 5 days from now:
-	//	|	dojo.cookie("configObj", dojo.toJson(config), { expires: 5 });
+	//	|	require(["dojo/cookie", "dojo/json"], function(cookie, json){
+	//	|		cookie("configObj", json.stringify(config, {expires: 5 }));
+	//	|	});
 	//
 	// example:
 	//		de-serialize a cookie back into a JavaScript object:
-	//	|	var config = dojo.fromJson(dojo.cookie("configObj"));
+	//	|	require(["dojo/cookie", "dojo/json"], function(cookie, json){
+	//	|		config = json.parse(cookie("configObj"));
+	//	|	});
 	//
 	// example:
 	//		delete a cookie:
-	//	|	dojo.cookie("configObj", null, {expires: -1});
+	//	|	require(["dojo/cookie"], function(cookie){
+	//	|		cookie("configObj", null, {expires: -1});
+	//	|	});
 	var c = document.cookie, ret;
 	if(arguments.length == 1){
 		var matches = c.match(new RegExp("(?:^|; )" + regexp.escapeString(name) + "=([^;]*)"));

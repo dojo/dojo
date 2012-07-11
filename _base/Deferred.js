@@ -2,10 +2,11 @@ define([
 	"./kernel",
 	"../Deferred",
 	"../promise/Promise",
+	"../errors/CancelError",
 	"../has",
 	"./lang",
 	"../when"
-], function(dojo, NewDeferred, Promise, has, lang, when){
+], function(dojo, NewDeferred, Promise, CancelError, has, lang, when){
 	// module:
 	//		dojo/_base/Deferred
 
@@ -305,7 +306,7 @@ define([
 				var error = canceller && canceller(deferred);
 				if(!finished){
 					if (!(error instanceof Error)){
-						error = new Error(error);
+						error = new CancelError(error);
 					}
 					error.log = false;
 					deferred.reject(error);

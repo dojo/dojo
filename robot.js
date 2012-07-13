@@ -145,19 +145,24 @@ lang.mixin(robot, {
 		//		y offset relative to the node, in pixels, to move the mouse. The default is half the node's height.
 
 		robot._assertRobot();
-		duration = duration||100;
+
+		// Schedule an action to scroll the node into view, then calculate it's center point
+		var point = {};
 		this.sequence(function(){
-			node=robot._resolveNode(node);
+			node = robot._resolveNode(node);
 			robot._scrollIntoView(node);
 			var pos = robot._position(node);
 			if(offsetY === undefined){
 				offsetX = pos.w/2;
 				offsetY = pos.h/2;
 			}
-			var x = pos.x+offsetX;
-			var y = pos.y+offsetY;
-			robot._mouseMove(x, y, false, duration);
-		}, delay, duration);
+			point.x = pos.x+offsetX;
+			point.y = pos.y+offsetY;
+		}, delay);
+
+		// Schedule a bunch of actions to move the mouse from the current position to point.
+		// These actions won't run until after the above callback.
+		this.mouseMoveTo(point, 0, duration, false);
 	}
 });
 

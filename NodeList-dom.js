@@ -271,6 +271,16 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 		},
 		=====*/
 
+		removeAttr: aafe(domAttr.remove),
+		/*=====
+		 removeAttr: function(name){
+			// summary:
+			//		Removes an attribute from each node in the list.
+			// name: String
+			//		the name of the attribute to remove
+			return;		// dojo/NodeList
+		},
+		=====*/
 
 		marginBox: aam(domGeom.getMarginBox),
 		/*=====

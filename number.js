@@ -127,12 +127,12 @@ number.round = function(/*Number*/ value, /*Number?*/ places, /*Number?*/ increm
 	// increment:
 	//		Rounds next place to nearest value of increment/10.  10 by default.
 	// example:
-	//		>>> dojo.number.round(-0.5)
-	//		-1
-	//		>>> dojo.number.round(162.295, 2)
-	//		162.29  // note floating point error.  Should be 162.3
-	//		>>> dojo.number.round(10.71, 0, 2.5)
-	//		10.75
+	// |	>>> dojo.number.round(-0.5)
+	// |	-1
+	// |	>>> dojo.number.round(162.295, 2)
+	// |	162.29  // note floating point error.  Should be 162.3
+	// |	>>> dojo.number.round(10.71, 0, 2.5)
+	// |	10.75
 	var factor = 10 / (increment || 10);
 	return (factor * +value).toFixed(places) / factor; // Number
 };
@@ -148,6 +148,9 @@ if((0.9).toFixed() == 0){
 		}
 		return round(v, p, m) + (v > 0 ? d : -d);
 	};
+
+	// Use "doc hint" so the doc parser ignores this new definition of round(), and uses the one above.
+	/*===== number.round = round; =====*/
 }
 
 /*=====

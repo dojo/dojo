@@ -136,19 +136,27 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//
 			// example:
 			//		Add a class to some node:
-			//	|	dojo.addClass("someNode", "anewClass");
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.add("someNode", "anewClass");
+			//	|	});
 			//
 			// example:
 			//		Add two classes at once:
-			//	|	dojo.addClass("someNode", "firstClass secondClass");
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.add("someNode", "firstClass secondClass");
+			//	|	});
 			//
 			// example:
 			//		Add two classes at once (using array):
-			//	|	dojo.addClass("someNode", ["firstClass", "secondClass"]);
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.add("someNode", ["firstClass", "secondClass"]);
+			//	|	});
 			//
 			// example:
 			//		Available in `dojo/NodeList` for multiple additions
-			//	|	dojo.query("ul > li").addClass("firstLevel");
+			//	|	require(["dojo/query"], function(query){
+			//	|		query("ul > li").addClass("firstLevel");
+			//	|	});
 
 			node = dom.byId(node);
 			classStr = str2array(classStr);
@@ -181,23 +189,33 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//
 			// example:
 			//		Remove a class from some node:
-			//	|	dojo.removeClass("someNode", "firstClass");
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.remove("someNode", "firstClass");
+			//	|	});
 			//
 			// example:
 			//		Remove two classes from some node:
-			//	|	dojo.removeClass("someNode", "firstClass secondClass");
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.remove("someNode", "firstClass secondClass");
+			//	|	});
 			//
 			// example:
 			//		Remove two classes from some node (using array):
-			//	|	dojo.removeClass("someNode", ["firstClass", "secondClass"]);
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.remove("someNode", ["firstClass", "secondClass"]);
+			//	|	});
 			//
 			// example:
 			//		Remove all classes from some node:
-			//	|	dojo.removeClass("someNode");
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.remove("someNode");
+			//	|	});
 			//
 			// example:
 			//		Available in `dojo/NodeList` for multiple removal
-			//	|	dojo.query(".foo").removeClass("foo");
+			//	|	require(["dojo/query"], function(query){
+			//	|		query("ul > li").removeClass("foo");
+			//	|	});
 
 			node = dom.byId(node);
 			var cls;
@@ -231,15 +249,21 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//		or an array of class names.
 			//
 			// example:
-			//	|	dojo.replaceClass("someNode", "add1 add2", "remove1 remove2");
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.replace("someNode", "add1 add2", "remove1 remove2");
+			//	|	});
 			//
 			// example:
 			//	Replace all classes with addMe
-			//	|	dojo.replaceClass("someNode", "addMe");
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.replace("someNode", "addMe");
+			//	|	});
 			//
 			// example:
 			//	Available in `dojo/NodeList` for multiple toggles
-			//	|	dojo.query(".findMe").replaceClass("addMe", "removeMe");
+			//	|	require(["dojo/query"], function(query){
+			//	|		query(".findMe").replaceClass("addMe", "removeMe");
+			//	|	});
 
 			node = dom.byId(node);
 			fakeNode[className] = node[className];
@@ -268,15 +292,21 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 			//		Otherwise dojo.hasClass(node, classStr) is used to detect the class presence.
 			//
 			// example:
-			//	|	dojo.toggleClass("someNode", "hovered");
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.toggle("someNode", "hovered");
+			//	|	});
 			//
 			// example:
 			//		Forcefully add a class
-			//	|	dojo.toggleClass("someNode", "hovered", true);
+			//	|	require(["dojo/dom-class"], function(domClass){
+			//	|		domClass.toggle("someNode", "hovered", true);
+			//	|	});
 			//
 			// example:
 			//		Available in `dojo/NodeList` for multiple toggles
-			//	|	dojo.query(".toggleMe").toggleClass("toggleMe");
+			//	|	require(["dojo/query"], function(query){
+			//	|		query(".toggleMe").toggleClass("toggleMe");
+			//	|	});
 
 			node = dom.byId(node);
 			if(condition === undefined){

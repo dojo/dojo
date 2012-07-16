@@ -415,11 +415,24 @@
 			= "",
 
 		cache
-			// hash:(mid)-->(function)
+			// hash:(mid | url)-->(function | string)
 			//
-			// Gives the contents of a cached resource; function should cause the same actions as if the given mid was downloaded
-			// and evaluated by the host environment
-			 = {},
+			// A cache of resources. The resources arrive via a config.cache object, which is a hash from either mid --> function or
+			// url --> string. The url key is distinguished from the mid key by always containing the prefix "url:". url keys as provided
+			// by config.cache always have a string value that represents the contents of the resource at the given url. mid keys as provided
+			// by configl.cache always have a function value that causes the same code to execute as if the module was script injected.
+			//
+			// Both kinds of key-value pairs are entered into cache via the function consumePendingCache, which may relocate keys as given
+			// by any mappings *iff* the config.cache was received as part of a module resource request.
+			//
+			// Further, for mid keys, the implied url is computed and the value is entered into that key as well. This allows mapped modules
+			// to retrieve cached items that may have arrived consequent to another namespace.
+			//
+			= {},
+
+		urlKeyPrefix
+			// the prefix to prepend to a URL key in the cache.
+			= "url:",
 
 		pendingCacheInsert
 			// hash:(mid)-->(function)
@@ -437,16 +450,17 @@
 
 	if(has("dojo-config-api")){
 		var consumePendingCacheInsert = function(referenceModule){
-				var p, item, match, now;
+				var p, item, match, now, m;
 				for(p in pendingCacheInsert){
 					item = pendingCacheInsert[p];
 					match = p.match(/^url\:(.+)/);
 					if(match){
-						cache[toUrl(match[1], referenceModule)] =  item;
+						cache[urlKeyPrefix + toUrl(match[1], referenceModule)] =  item;
 					}else if(p=="*now"){
 						now = item;
 					}else if(p!="*noref"){
-						cache[getModuleInfo(p, referenceModule).mid] = item;
+						m = getModuleInfo(p, referenceModule);
+						cache[m.mid] = cache[urlKeyPrefix + m.url] = item;
 					}
 				}
 				if(now){
@@ -806,7 +820,7 @@
 						var nlsModuleInfo = getModuleInfo(mid, module),
 							nlsModule = modules[nlsModuleInfo.mid];
 						if(!nlsModule || !nlsModule.executed){
-							cached = cache[nlsModuleInfo.mid] || cache[nlsModuleInfo.cacheId];
+							cached = cache[nlsModuleInfo.mid] || cache[urlKeyPrefix + nlsModuleInfo.url];
 							if(cached){
 								evalModuleText(cached);
 								nlsModule = modules[nlsModuleInfo.mid];
@@ -887,19 +901,19 @@
 			return result.join("/");
 		},
 
-		makeModuleInfo = function(pid, mid, pack, url, cacheId){
+		makeModuleInfo = function(pid, mid, pack, url){
 			if(has("dojo-sync-loader")){
 				var xd= req.isXdUrl(url);
-				return {pid:pid, mid:mid, pack:pack, url:url, executed:0, def:0, isXd:xd, isAmd:!!(xd || (packs[pid] && packs[pid].isAmd)), cacheId:cacheId};
+				return {pid:pid, mid:mid, pack:pack, url:url, executed:0, def:0, isXd:xd, isAmd:!!(xd || (packs[pid] && packs[pid].isAmd))};
 			}else{
-				return {pid:pid, mid:mid, pack:pack, url:url, executed:0, def:0, cacheId:cacheId};
+				return {pid:pid, mid:mid, pack:pack, url:url, executed:0, def:0};
 			}
 		},
 
 		getModuleInfo_ = function(mid, referenceModule, packs, modules, baseUrl, mapProgs, pathsMapProg, alwaysCreate){
 			// arguments are passed instead of using lexical variables so that this function my be used independent of the loader (e.g., the builder)
 			// alwaysCreate is useful in this case so that getModuleInfo never returns references to real modules owned by the loader
-			var pid, pack, midInPackage, mapProg, mapItem, url, result, isRelative, requestedMid, cacheId=0;
+			var pid, pack, midInPackage, mapProg, mapItem, url, result, isRelative, requestedMid;
 			requestedMid = mid;
 			isRelative = /^\./.test(mid);
 			if(/(^\/)|(\:)|(\.js$)/.test(mid) || (isRelative && !referenceModule)){
@@ -946,7 +960,7 @@
 
 				result = modules[mid];
 				if(result){
-					return alwaysCreate ? makeModuleInfo(result.pid, result.mid, result.pack, result.url, cacheId) : modules[mid];
+					return alwaysCreate ? makeModuleInfo(result.pid, result.mid, result.pack, result.url) : modules[mid];
 				}
 			}
 			// get here iff the sought-after module does not yet exist; therefore, we need to compute the URL given the
@@ -968,7 +982,7 @@
 				url = baseUrl + url;
 			}
 			url += ".js";
-			return makeModuleInfo(pid, mid, pack, compactPath(url), cacheId);
+			return makeModuleInfo(pid, mid, pack, compactPath(url));
 		},
 
 		getModuleInfo = function(mid, referenceModule){
@@ -1387,7 +1401,7 @@
 						checkComplete();
 					}
 				};
-				cached = cache[mid] || cache[module.cacheId];
+				cached = cache[mid] || cache[urlKeyPrefix + module.url];
 				if(cached){
 					req.trace("loader-inject", ["cache", module.mid, url]);
 					evalModuleText(cached, module);

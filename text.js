@@ -179,14 +179,15 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 				stripFlag= parts.length>1,
 				absMid= parts[0],
 				url = require.toUrl(parts[0]),
+				requireCacheUrl = "url:" + url,
 				text = notFound,
 				finish = function(text){
 					load(stripFlag ? strip(text) : text);
 				};
 			if(absMid in theCache){
 				text = theCache[absMid];
-			}else if(url in require.cache){
-				text = require.cache[url];
+			}else if(requireCacheUrl in require.cache){
+				text = require.cache[requireCacheUrl];
 			}else if(url in theCache){
 				text = theCache[url];
 			}

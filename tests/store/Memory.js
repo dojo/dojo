@@ -39,7 +39,7 @@ dojo.require("dojo.store.Memory");
 				t.is(store.query({prime: true}, {sort:[{attribute:"name"}]}).length, 3);
 				t.is(store.query({even: true}, {sort:[{attribute:"name"}]})[1].name, "two");
 				t.is(store.query({even: true}, {sort:function(a, b){
-						return a > b ? -1 : 1;
+						return a.name < b.name ? -1 : 1;
 					}})[1].name, "two");
 				t.is(store.query(null, {sort:[{attribute:"mappedTo"}]})[4].name, "four");
 			},

@@ -36,9 +36,7 @@
 		<script type="text/javascript">
 			var coolioCalendarMid = /legacy/.test(location.search) ? "coolio/calendar" : "coolio/calendar-amd";
 			require(["dojo/parser", coolioCalendarMid, "dojo/ready", "dijit/Calendar"], function(parser, calendar, ready){
-			//require(["dojo/parser", "dojo/ready", "dijit/Calendar"], function(parser, ready){
 				ready(function(){
-console.log("running ready");
 					// dojo/main loaded the parser...
 					parser.parse();
 					calendar("c1");

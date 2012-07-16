@@ -162,7 +162,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			//	})();
 			//
 			// The idea is to run the legacy loader API with global variables shadowed, which allows these variables to
-			// be relocated. For example, dojox and dojo could be relocated to different names by giving a packageMap and the code above will
+			// be relocated. For example, dojox and dojo could be relocated to different names by giving a map and the code above will
 			// execute properly (because the plugin below resolves the load init bundle.names module with respect to the module that demanded
 			// the plugin resource).
 			//
@@ -231,16 +231,11 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 						}
 					}
 
-					// requireList is the list of modules that need to be downloaded but not executed before the callingModule can be executed
-					requireList.length && deps.push("dojo/require!" + requireList.join(","));
-
-					dojoRequireCallbacks.push(loaded);
-					array.forEach(requireList, function(mid){
-						var module = getModule(mid, require.module);
-						dojoRequireModuleStack.push(module);
-						injectModule(module);
-					});
-					checkDojoRequirePlugin();
+					if(requireList.length){
+						dojoRequirePlugin(requireList.join(","), require, loaded);
+					}else{
+						loaded();
+					}
 				});
 			});
 		},
@@ -367,6 +362,8 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			// when the dojo/loadInit plugin reports it has been loaded, all modules required by the given module are guaranteed
 			// loaded (but not executed). This then allows the module to execute it's code path without interupts, thereby
 			// following the synchronous code path.
+			//
+			// Notice that this function behaves the same whether or not it happens to be in a mapped dojo/loader module.
 
 			var extractResult, id, names = [], namesAsStrings = [];
 			if(buildDetectRe.test(text) || !(extractResult = extractLegacyApiApplications(text))){
@@ -387,7 +384,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			}
 
 			// rewrite the module as a synthetic dojo/loadInit plugin resource + the module expressed as an AMD module that depends on this synthetic resource
-			return "// xdomain rewrite of " + module.path + "\n" +
+			return "// xdomain rewrite of " + module.mid + "\n" +
 				"define('" + id + "',{\n" +
 				"\tnames:" + dojo.toJson(names) + ",\n" +
 				"\tdef:function(" + names.join(",") + "){" + extractResult[1] + "}" +
@@ -444,6 +441,10 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 
 		getLegacyMode =
 			loaderVars.getLegacyMode;
+
+
+	// there is exactly one dojoRequirePlugin among possibly-many dojo/_base/loader's (owing to mapping)
+	dojoRequirePlugin = loaderVars.dojoRequirePlugin;
 
 	dojo.provide = function(mid){
 		var executingModule = syncExecStack[0],
@@ -717,7 +718,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		This module defines the v1.x synchronous loader API.
 
 		extractLegacyApiApplications:extractLegacyApiApplications,
-		require:loaderVars.dojoRequirePlugin,
+		require:dojoRequirePlugin,
 		loadInit:dojoLoadInitPlugin
 	};
 });

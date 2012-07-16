@@ -1,5 +1,5 @@
-define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./has!host-browser?./_base/xhr", "./json"],
-	function(dojo, require, has, array, config, lang, xhr, json){
+define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./has!host-browser?./_base/xhr", "./json", "module"],
+	function(dojo, require, has, array, config, lang, xhr, json, module){
 
 	// module:
 	//		dojo/i18n
@@ -69,13 +69,17 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 		cache = {},
 
-		getL10nName = dojo.getL10nName = function(moduleName, bundleName, locale){
+		getBundleName = function(moduleName, bundleName, locale){
 			locale = locale ? locale.toLowerCase() : dojo.locale;
-			moduleName = "dojo/i18n!" + moduleName.replace(/\./g, "/");
+			moduleName = moduleName.replace(/\./g, "/");
 			bundleName = bundleName.replace(/\./g, "/");
 			return (/root/i.test(locale)) ?
 				(moduleName + "/nls/" + bundleName) :
 				(moduleName + "/nls/" + locale + "/" + bundleName);
+		},
+
+		getL10nName = dojo.getL10nName = function(moduleName, bundleName, locale){
+			return moduleName = module.id + "!" + getBundleName(moduleName, bundleName, locale);
 		},
 
 		doLoad = function(require, bundlePathAndName, bundlePath, bundleName, locale, load){
@@ -493,8 +497,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 		thisModule.getLocalization = function(moduleName, bundleName, locale){
 			var result,
-				l10nName = getL10nName(moduleName, bundleName, locale).substring(10);
-
+				l10nName = getBundleName(moduleName, bundleName, locale);
 			load(
 				l10nName,
 

@@ -207,11 +207,14 @@
 		req.isXdUrl = noop;
 
 		req.initSyncLoader = function(dojoRequirePlugin_, checkDojoRequirePlugin_, transformToAmd_){
+			// the first dojo/_base/loader loaded gets to define these variables; they are designed to work
+			// in the presense of zero to many mapped dojo/_base/loaders
 			if(!dojoRequirePlugin){
 				dojoRequirePlugin = dojoRequirePlugin_;
 				checkDojoRequirePlugin = checkDojoRequirePlugin_;
 				transformToAmd = transformToAmd_;
 			}
+
 			return {
 				sync:sync,
 				xd:xd,
@@ -236,7 +239,7 @@
 		};
 
 		if(has("dom")){
-			// in legacy sync mode, the loader needs a minimal XHR library to load dojo/_base/loader and dojo/_base/xhr
+			// in legacy sync mode, the loader needs a minimal XHR library
 
 			var locationProtocol = location.protocol,
 				locationHost = location.host;
@@ -367,14 +370,16 @@
 			// a map from packageId to package configuration object; see fixupPackageInfo
 			= {},
 
-		packageMap
-			// map from package name to local-installed package name
+		map
+			// AMD map config variable
 			= {},
 
-		packageMapProg
-			// list of (from-package, to-package, regex, length) derived from packageMap;
-			// a "program" to apply paths; see computeMapProg
-			= [],
+		mapProgs
+			// hash:(mid) --> (list sorted by length of (from-mid-prefix, to-mid-prefix, regex, length) derived from AMD map config))
+			//
+			// the AMD map to apply when solving for dependent module ids of mid, assuming mid is not a member of a package that has
+			// it's own map; the list is a "program" that is run by runMapProg(); see computeMapProg
+			= {},
 
 		modules
 			// A hash:(mid) --> (module-object) the module namespace
@@ -450,56 +455,60 @@
 				pendingCacheInsert = {};
 			},
 
-			computeMapProg = function(map, dest, packName){
-				// This routine takes a map target-prefix(string)-->replacement(string) into a vector
-				// of quads (target-prefix, replacement, regex-for-target-prefix, length-of-target-prefix)
-				//
-				// The loader contains processes that map one string prefix to another. These
-				// are encountered when applying the requirejs paths configuration and when mapping
-				// package names. We can make the mapping and any replacement easier and faster by
-				// replacing the map with a vector of quads and then using this structure in the simple machine runMapProg.
-				dest.splice(0, dest.length);
-				var p, i, item, reverseName = 0;
-				for(p in map){
-					dest.push([p, map[p]]);
-					if(map[p]==packName){
-						reverseName = p;
-					}
-				}
-				dest.sort(function(lhs, rhs){
-					return rhs[0].length - lhs[0].length;
-				});
-				for(i = 0; i < dest.length;){
-					item = dest[i++];
-					item[2] = new RegExp("^" + item[0].replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(c){ return "\\" + c; }) + "(\/|$)");
-					item[3] = item[0].length + 1;
-				}
-				return reverseName;
+			escapeString = function(s){
+				return s.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(c){ return "\\" + c; });
 			},
 
-			fixupPackageInfo = function(packageInfo, baseUrl){
-				// calculate the precise (name, baseUrl, main, mappings) for a package
+			computeMapProg = function(map){
+				// This routine takes an AMD map, hash(target-prefix(string)) --> replacement(string) into a vector
+				// of quads (target-prefix, replacement, regex-for-target-prefix, length-of-target-prefix); further
+				// the vector is sorted from longest to shortest length-of-target-prefix.
+				var p, result = [];
+				for(p in map){
+					result.push([
+						p,
+						map[p],
+						new RegExp("^" + escapeString(p) + "(\/|$)"),
+						p.length]);
+				}
+				result.sort(function(lhs, rhs){ return rhs[3] - lhs[3]; });
+				return result;
+			},
+
+			computeMapProgs = function(map){
+				var dest = {}, p;
+				for(p in map) {
+					dest[p] = computeMapProg(map[p]);
+				}
+				return dest;
+			},
+
+			fixupPackageInfo = function(packageInfo){
+				// calculate the precise (name, location, main, mappings) for a package
 				var name = packageInfo.name;
 				if(!name){
 					// packageInfo must be a string that gives the name
 					name = packageInfo;
 					packageInfo = {name:name};
 				}
-				packageInfo = mix({main:"main", mapProg:[]}, packageInfo);
-				packageInfo.location = (baseUrl || "") + (packageInfo.location ? packageInfo.location : name);
-				packageInfo.reverseName = computeMapProg(packageInfo.packageMap, packageInfo.mapProg, name);
+				packageInfo = mix({main:"main"}, packageInfo);
+				packageInfo.location = packageInfo.location ? packageInfo.location : name;
+
+				// packageMap is depricated in favor of AMD map
+				if(packageInfo.packageMap){
+					packageInfo.map = {"*":packageInfo.packageMap};
+				}
+
+				if(packageInfo.map){
+					packageInfo.mapProgs = computeMapProgs(packageInfo.map);
+				}
 
 				if(!packageInfo.main.indexOf("./")){
 					packageInfo.main = packageInfo.main.substring(2);
 				}
 
-				// allow paths to be specified in the package info
-				// TODO: this is not supported; remove
-				mix(paths, packageInfo.paths);
-
 				// now that we've got a fully-resolved package object, push it into the configuration
 				packs[name] = packageInfo;
-				packageMap[name] = name;
 			},
 
 			config = function(config, booting, referenceModule){
@@ -549,28 +558,33 @@
 				// for each package found in any packages config item, augment the packs map owned by the loader
 				forEach(config.packages, fixupPackageInfo);
 
-				// for each packagePath found in any packagePaths config item, augment the packs map owned by the loader
+				// for each packagePath found in any packagePaths config item, augment the packageConfig
+				// packagePaths is depricated; remove in 2.0
 				for(baseUrl in config.packagePaths){
 					forEach(config.packagePaths[baseUrl], function(packageInfo){
-						fixupPackageInfo(packageInfo, baseUrl + "/");
+						var location = baseUrl + "/" + packageInfo;
+						if(isString(packageInfo)){
+							packageInfo = {name:packageInfo};
+						}
+						packageInfo.location = location;
+						fixupPackageInfo(packageInfo);
 					});
 				}
 
 				// push in any paths and recompute the internal pathmap
-				// warning: this cann't be done until the package config is processed since packages may include path info
-				computeMapProg(mix(paths, config.paths), pathsMapProg);
+				pathsMapProg = computeMapProg(mix(paths, config.paths));
 
 				// aliases
 				forEach(config.aliases, function(pair){
 					if(isString(pair[0])){
-						pair[0] = new RegExp("^" + pair[0].replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(c){return "\\" + c;}) + "$");
+						pair[0] = new RegExp("^" + escapeString(pair[0]) + "$");
 					}
 					aliases.push(pair);
 				});
 
-				// mix any packageMap config item and recompute the internal packageMapProg
-				computeMapProg(mix(packageMap, config.packageMap), packageMapProg);
-
+				for(p in mix(map, config.map)) {
+					mapProgs[p] = computeMapProg(map[p]);
+				}
 
 				for(p in config.config){
 					var module = getModule(p, referenceModule);
@@ -660,8 +674,7 @@
 		pathsMapProg = defaultConfig.pathsMapProg;
 		packs = defaultConfig.packs;
 		aliases = defaultConfig.aliases;
-		packageMap = defaultConfig.packageMap;
-		packageMapProg = defaultConfig.packageMapProg;
+		mapProgs = defaultConfig.mapProgs;
 		modules = defaultConfig.modules;
 		cache = defaultConfig.cache;
 		cacheBust = defaultConfig.cacheBust;
@@ -848,9 +861,11 @@
 
 		runMapProg = function(targetMid, map){
 			// search for targetMid in map; return the map item if found; falsy otherwise
-			for(var i = 0; i < map.length; i++){
-				if(map[i][2].test(targetMid)){
-					return map[i];
+			if(map){
+				for(var i = 0; i < map.length; i++){
+					if(map[i][2].test(targetMid)){
+						return map[i];
+					}
 				}
 			}
 			return 0;
@@ -881,7 +896,7 @@
 			}
 		},
 
-		getModuleInfo_ = function(mid, referenceModule, packs, modules, baseUrl, packageMapProg, pathsMapProg, alwaysCreate){
+		getModuleInfo_ = function(mid, referenceModule, packs, modules, baseUrl, mapProgs, pathsMapProg, alwaysCreate){
 			// arguments are passed instead of using lexical variables so that this function my be used independent of the loader (e.g., the builder)
 			// alwaysCreate is useful in this case so that getModuleInfo never returns references to real modules owned by the loader
 			var pid, pack, midInPackage, mapProg, mapItem, url, result, isRelative, requestedMid, cacheId=0;
@@ -890,6 +905,8 @@
 			if(/(^\/)|(\:)|(\.js$)/.test(mid) || (isRelative && !referenceModule)){
 				// absolute path or protocol of .js filetype, or relative path but no reference module and therefore relative to page
 				// whatever it is, it's not a module but just a URL of some sort
+				// note: pid===0 indicates the routine is returning an unmodified mid
+
 				return makeModuleInfo(0, mid, 0, mid);
 			}else{
 				// relative module ids are relative to the referenceModule; get rid of any dots
@@ -897,21 +914,19 @@
 				if(/^\./.test(mid)){
 					throw makeError("irrationalPath", mid);
 				}
-				// find the package indicated by the mid, if any
-				mapProg = referenceModule && referenceModule.pack && referenceModule.pack.mapProg;
-				mapItem = (mapProg && runMapProg(mid, mapProg)) || runMapProg(mid, packageMapProg);
-				if(mapItem){
-					// mid specified a module that's a member of a package; figure out the package id and module id
-					// notice we expect pack.main to be valid with no pre or post slash
-					pid = mapItem[1];
-					mid = mid.substring(mapItem[3]);
-					pack = packs[pid];
-					if(!mid){
-						mid= pack.main;
+				// at this point, mid is an absolute mid
+
+				if(referenceModule){
+					mapProgs = (referenceModule.pack && referenceModule.pack.mapProgs) || mapProgs;
+					mapItem = runMapProg(mid, mapProgs[referenceModule.mid] || mapProgs["*"]);
+					if(mapItem){
+						mid = mapItem[1] + mid.substring(mapItem[3]);
 					}
-					midInPackage = mid;
-					cacheId = pack.reverseName + "/" + mid;
-					mid = pid + "/" + mid;
+				}
+				match = mid.match(/^([^\/]+)(\/(.+))?$/);
+				pid = match ? match[1] : "";
+				if((pack = packs[pid])){
+					mid = pid + "/" + (midInPackage = (match[3] || pack.main));
 				}else{
 					pid = "";
 				}
@@ -926,7 +941,7 @@
 					}
 				});
 				if(candidate){
-					return getModuleInfo_(candidate, 0, packs, modules, baseUrl, packageMapProg, pathsMapProg, alwaysCreate);
+					return getModuleInfo_(candidate, 0, packs, modules, baseUrl, mapProgs, pathsMapProg, alwaysCreate);
 				}
 
 				result = modules[mid];
@@ -937,9 +952,10 @@
 			// get here iff the sought-after module does not yet exist; therefore, we need to compute the URL given the
 			// fully resolved (i.e., all relative indicators and package mapping resolved) module id
 
+			// note: pid!==0 indicates the routine is returning a url that has .js appended unmodified mid
 			mapItem = runMapProg(mid, pathsMapProg);
 			if(mapItem){
-				url = mapItem[1] + mid.substring(mapItem[3] - 1);
+				url = mapItem[1] + mid.substring(mapItem[3]);
 			}else if(pid){
 				url = pack.location + "/" + midInPackage;
 			}else if(has("config-tlmSiblingOfDojo")){
@@ -956,7 +972,7 @@
 		},
 
 		getModuleInfo = function(mid, referenceModule){
-			return getModuleInfo_(mid, referenceModule, packs, modules, req.baseUrl, packageMapProg, pathsMapProg);
+			return getModuleInfo_(mid, referenceModule, packs, modules, req.baseUrl, mapProgs, pathsMapProg);
 		},
 
 		resolvePluginResourceId = function(plugin, prid, referenceModule){
@@ -1797,7 +1813,6 @@
 			// these may be interesting to look at when debugging
 			paths:paths,
 			aliases:aliases,
-			packageMap:packageMap,
 			modules:modules,
 			legacyMode:legacyMode,
 			execQ:execQ,
@@ -1806,8 +1821,9 @@
 
 			// these are used for testing
 			// TODO: move testing infrastructure to a different has feature
+			packs:packs,
+			mapProgs:mapProgs,
 			pathsMapProg:pathsMapProg,
-			packageMapProg:packageMapProg,
 			listenerQueues:listenerQueues,
 
 			// these are used by the builder (at least)

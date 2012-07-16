@@ -52,7 +52,7 @@ define(["doh", "dojo", "dojo/_base/url"], function(doh, dojo){
 			});
 
 			function get(mid, refmod){
-				return require.getModuleInfo(mid, refmod, require.packs, require.modules, "../../dojo/", require.packageMapProg, require.pathsMapProg, 1);
+				return require.getModuleInfo(mid, refmod, require.packs, require.modules, "../../dojo/", require.mapProgs, require.pathsMapProg, 1);
 			}
 
 			function check(result, expectedPid, expectedMidSansPid, expectedUrl){
@@ -76,13 +76,13 @@ define(["doh", "dojo", "dojo/_base/url"], function(doh, dojo){
 			check(get("pack3/myModule"), "pack3", "myModule", "/pack3Root/myModule");
 
 			// relative module id resolution; relative to module in top-level
-			var refmod= {mid:"pack1/main", pack:require.packageMap.pack1};
+			var refmod= {mid:"pack1/main", pack:require.packs.pack1};
 			check(get(".", refmod), "pack1", "main", pack1Root + "main");
 			check(get("./myModule", refmod), "pack1", "myModule", pack1Root + "myModule");
 			check(get("./myModule/mySubmodule", refmod), "pack1", "myModule/mySubmodule", pack1Root + "myModule/mySubmodule");
 
 			// relative module id resolution; relative to module
-			refmod= {mid:"pack1/sub/publicModule", pack:require.packageMap.pack1};
+			refmod= {mid:"pack1/sub/publicModule", pack:require.packs.pack1};
 			check(get(".", refmod), "pack1", "sub", pack1Root + "sub");
 			check(get("./myModule", refmod), "pack1", "sub/myModule", pack1Root + "sub/myModule");
 			check(get("..", refmod), "pack1", "main", pack1Root + "main");

@@ -31,8 +31,8 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	// Built, legacy modules use the scope map to allow those modules to be expressed as if dojo, dijit, and dojox,
 	// where global when in fact they are either global under different names or not global at all. In v1.6-, the
 	// config variable "scopeMap" was used to map names as used within a module to global names. This has been
-	// subsumed by the dojo packageMap configuration variable which relocates packages to different names. See
-	// http://livedocs.dojotoolkit.org/developer/design/loader#legacy-cross-domain-mode for details.
+	// subsumed by the AMD map configuration variable which can relocate packages to different names. For backcompat,
+	// only the "*" mapping is supported. See http://livedocs.dojotoolkit.org/developer/design/loader#legacy-cross-domain-mode for details.
 	//
 	// The following computations contort the packageMap for this dojo instance into a scopeMap.
 	var scopeMap =
@@ -46,9 +46,12 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 		packageMap =
 			// the package map for this dojo instance; note, a foreign loader or no pacakgeMap results in the above default config
-			(require.packs && require.packs[module.id.match(/[^\/]+/)[0]].packageMap) || {},
+			(require.packs && require.packs[module.id.match(/[^\/]+/)[0]].map),
 
 		item;
+
+
+	packageMap = (packageMap && packageMap["*"]) || {};
 
 	// process all mapped top-level names for this instance of dojo
 	for(p in packageMap){
@@ -70,7 +73,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		}
 	}
 	dojo.scopeMap = scopeMap;
-	
+
 	/*===== dojo.__docParserConfigureScopeMap(scopeMap); =====*/
 
 	// FIXME: dojo.baseUrl and dojo.config.baseUrl should be deprecated

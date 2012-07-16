@@ -136,3 +136,4 @@ define([
 		doh.register("tests._base.loader.require-config", require.toUrl("./loader/config/test.html"), {async:1});
 	}
 });
+

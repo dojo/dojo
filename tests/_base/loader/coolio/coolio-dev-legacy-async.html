@@ -28,20 +28,20 @@
 					// all "dojo*" modules ids are mapped to "cdojo*" within this package
 					name:"cdojo",
 					location:"../../../..",
-					packageMap:{dojo:"cdojo", dijit:"cdijit"}
+					map:{"*":{dojo:"cdojo", dijit:"cdijit"}}
 				},{
 					// sandboxed, separate instance dijit package for coolio use; notice it uses the same code as the non-coolie dijitpackage
 					// all "dojo*" modules ids are mapped to "cdojo*" within this package
 					// all "dijit*" modules ids are mapped to "cdijit*" within this package
 					name:"cdijit",
 					location:"../../../../../dijit",
-					packageMap:{dojo:"cdojo", dijit:"cdijit"}
+					map:{"*":{dojo:"cdojo", dijit:"cdijit"}}
 			    },{
 					// all "dojo*" modules ids are mapped to "cdojo*" within this package
 					// all "dijit*" modules ids are mapped to "cdijit*" within this package
 					name:"coolio",
 					location:".",
-					packageMap:{dojo:"cdojo", dijit:"cdijit"}
+					map:{"*":{dojo:"cdojo", dijit:"cdijit"}}
 				}],
 			};
 		</script>

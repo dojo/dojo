@@ -6,8 +6,9 @@ define([
 	"../i18n",
 	"../regexp",
 	"../string",
-	"../i18n!../cldr/nls/gregorian"
-], function(lang, array, date, supplemental, i18n, regexp, string, gregorian){
+	"../i18n!../cldr/nls/gregorian",
+	"module"
+], function(lang, array, date, supplemental, i18n, regexp, string, gregorian, module){
 
 // module:
 //		dojo/date/locale
@@ -16,7 +17,7 @@ var exports = {
 	// summary:
 	//		This modules defines dojo.date.locale, localization methods for Date.
 };
-lang.setObject("dojo.date.locale", exports);
+lang.setObject(module.id.replace(/\//g, "."), exports);
 
 // Localization methods for Date.   Honor local customs using locale-dependent dojo.cldr data.
 
@@ -633,7 +634,7 @@ exports._getGregorianBundle = function(/*String*/ locale){
 	return gregorian; /*Object*/
 };
 
-exports.addCustomFormats("dojo.cldr","gregorian");
+exports.addCustomFormats(module.id.replace(/\/date\/locale$/, ".cldr"),"gregorian");
 
 exports.getNames = function(/*String*/ item, /*String*/ type, /*String?*/ context, /*String?*/ locale){
 	// summary:

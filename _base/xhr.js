@@ -639,6 +639,12 @@ define([
 		if(typeof args.headers !== 'undefined'){
 			options.headers = args.headers;
 		}
+		if(typeof args.contentType !== 'undefined'){
+			if(!options.headers){
+				options.headers = {};
+			}
+			options.headers['Content-Type'] = args.contentType;
+		}
 		if(typeof ioArgs.query !== 'undefined'){
 			options.data = ioArgs.query;
 		}

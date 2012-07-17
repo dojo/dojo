@@ -401,9 +401,7 @@ define([
 			}
 			return err;
 		});
-		d.addCallbacks(okHandler, function(error){
-			return errHandler(error, d);
-		});
+		d.addCallback(okHandler);
 
 		//Support specifying load, error and handle callback functions from the args.
 		//For those callbacks, the "this" object will be the args object.
@@ -427,6 +425,13 @@ define([
 				return handle.call(args, value, ioArgs);
 			});
 		}
+
+		// Attach error handler last (not including topic publishing)
+		// to catch any errors that may have been generated from load
+		// or handle functions.
+		d.addErrback(function(error){
+			return errHandler(error, d);
+		});
 
 		//Plug in topic publishing, if dojo.publish is loaded.
 		if(cfg.ioPublish && dojo.publish && ioArgs.args.ioPublish !== false){

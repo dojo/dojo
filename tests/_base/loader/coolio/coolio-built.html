@@ -18,17 +18,19 @@
 					location:"../coolioBuilt/dojox",
 				},{
 					name:"cdojo",
-					location:"../coolioBuilt/dojo",
-					packageMap:{dojo:"cdojo", dijit:"cdijit"}
+					location:"../coolioBuilt/dojo"
 				},{
 					name:"cdijit",
-					location:"../coolioBuilt/dijit",
-					packageMap:{dojo:"cdojo", dijit:"cdijit"}
+					location:"../coolioBuilt/dijit"
 			    },{
 					name:"coolio",
-					location:"../coolioBuilt/coolio",
-					packageMap:{dojo:"cdojo", dijit:"cdijit"}
+					location:"../coolioBuilt/coolio"
 				}],
+				map:{
+					cdojo:{dojo:"cdojo", dijit:"cdijit"},
+					cdijit:{dojo:"cdojo", dijit:"cdijit"},
+					coolio:{dojo:"cdojo", dijit:"cdijit"}
+				},
 				deps:["dojo", "cdojo"]
 			};
 		</script>

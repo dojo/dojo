@@ -46,12 +46,10 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 		packageMap =
 			// the package map for this dojo instance; note, a foreign loader or no pacakgeMap results in the above default config
-			(require.packs && require.packs[module.id.match(/[^\/]+/)[0]].map),
+			(require.map && require.map[module.id.match(/[^\/]+/)[0]]),
 
 		item;
 
-
-	packageMap = (packageMap && packageMap["*"]) || {};
 
 	// process all mapped top-level names for this instance of dojo
 	for(p in packageMap){

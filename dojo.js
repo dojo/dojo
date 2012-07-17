@@ -370,16 +370,13 @@
 			// a map from packageId to package configuration object; see fixupPackageInfo
 			= {},
 
-		map
-			// AMD map config variable
+		map = req.map
+			// AMD map config variable; dojo/_base/kernel needs req.map to figure out the scope map
 			= {},
 
 		mapProgs
-			// hash:(mid) --> (list sorted by length of (from-mid-prefix, to-mid-prefix, regex, length) derived from AMD map config))
-			//
-			// the AMD map to apply when solving for dependent module ids of mid, assuming mid is not a member of a package that has
-			// it's own map; the list is a "program" that is run by runMapProg(); see computeMapProg
-			= {},
+			// vector of quads as described by computeMapProg; map-key is AMD map key, map-value is AMD map value
+			= [],
 
 		modules
 			// A hash:(mid) --> (module-object) the module namespace
@@ -473,27 +470,20 @@
 				return s.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(c){ return "\\" + c; });
 			},
 
-			computeMapProg = function(map){
-				// This routine takes an AMD map, hash(target-prefix(string)) --> replacement(string) into a vector
-				// of quads (target-prefix, replacement, regex-for-target-prefix, length-of-target-prefix); further
-				// the vector is sorted from longest to shortest length-of-target-prefix.
-				var p, result = [];
-				for(p in map){
-					result.push([
+			computeMapProg = function(map, dest){
+				// This routine takes a map as represented by a JavaScript object and initializes dest, a vector of
+				// quads of (map-key, map-value, refex-for-map-key, length-of-map-key), sorted decreasing by length-
+				// of-map-key. The regex looks for the map-key followed by either "/" or end-of-string at the beginning
+				// of a the search source. Notice the map-value is irrelevent to the algorithm
+				dest.splice(0, dest.length);
+				for(var p in map){
+					dest.push([
 						p,
 						map[p],
 						new RegExp("^" + escapeString(p) + "(\/|$)"),
 						p.length]);
 				}
-				result.sort(function(lhs, rhs){ return rhs[3] - lhs[3]; });
-				return result;
-			},
-
-			computeMapProgs = function(map){
-				var dest = {}, p;
-				for(p in map) {
-					dest[p] = computeMapProg(map[p]);
-				}
+				dest.sort(function(lhs, rhs){ return rhs[3] - lhs[3]; });
 				return dest;
 			},
 
@@ -510,11 +500,7 @@
 
 				// packageMap is depricated in favor of AMD map
 				if(packageInfo.packageMap){
-					packageInfo.map = {"*":packageInfo.packageMap};
-				}
-
-				if(packageInfo.map){
-					packageInfo.mapProgs = computeMapProgs(packageInfo.map);
+					map[name] = packageInfo.packageMap;
 				}
 
 				if(!packageInfo.main.indexOf("./")){
@@ -585,8 +571,20 @@
 					});
 				}
 
+				// notice that computeMapProg treats the dest as a reference; therefore, if/when that variable
+				// is published (see dojo-publish-privates), the published variable will always hold a valid value.
+
+				// this must come after all package processing since package processing may mutate map
+				computeMapProg(mix(map, config.map), mapProgs);
+				forEach(mapProgs, function(item){
+					item[1] = computeMapProg(item[1], []);
+					if(item[0]=="*"){
+						mapProgs.star = item[1];
+					}
+				});
+
 				// push in any paths and recompute the internal pathmap
-				pathsMapProg = computeMapProg(mix(paths, config.paths));
+				computeMapProg(mix(paths, config.paths), pathsMapProg);
 
 				// aliases
 				forEach(config.aliases, function(pair){
@@ -595,10 +593,6 @@
 					}
 					aliases.push(pair);
 				});
-
-				for(p in mix(map, config.map)) {
-					mapProgs[p] = computeMapProg(map[p]);
-				}
 
 				for(p in config.config){
 					var module = getModule(p, referenceModule);
@@ -930,13 +924,16 @@
 				}
 				// at this point, mid is an absolute mid
 
+				// map the mid
 				if(referenceModule){
-					mapProgs = (referenceModule.pack && referenceModule.pack.mapProgs) || mapProgs;
-					mapItem = runMapProg(mid, mapProgs[referenceModule.mid] || mapProgs["*"]);
-					if(mapItem){
-						mid = mapItem[1] + mid.substring(mapItem[3]);
-					}
+					mapItem = runMapProg(referenceModule.mid, mapProgs);
 				}
+				mapItem = mapItem || mapProgs.star;
+				mapItem = mapItem && runMapProg(mid, mapItem[1]);
+				if(mapItem){
+					mid = mapItem[1] + mid.substring(mapItem[3]);
+				}
+
 				match = mid.match(/^([^\/]+)(\/(.+))?$/);
 				pid = match ? match[1] : "";
 				if((pack = packs[pid])){

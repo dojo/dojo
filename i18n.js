@@ -349,7 +349,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 							preloading++;
 							doRequire(mid, function(rollup){
 								for(var p in rollup){
-									cache[require.toAbsMid(p) + "/" + locale] = rollup[p];
+									cache[require.toAbsMid(p) + "/" + loc] = rollup[p];
 								}
 								--preloading;
 								while(!preloading && preloadWaitQueue.length){

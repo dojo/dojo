@@ -57,8 +57,8 @@ define(["./sniff", "./_base/lang", "./_base/window"],
 	/*=====
 	 dom.byId = function(id, doc){
 		 // summary:
-		 //		Returns DOM node with matching `id` attribute or `null`
-		 //		if not found. If `id` is a DomNode, this function is a no-op.
+		 //		Returns DOM node with matching `id` attribute or falsy value (ex: null or undefined)
+		 //		if not found.  If `id` is a DomNode, this function is a no-op.
 		 //
 		 // id: String|DOMNode
 		 //		A string to match an HTML id attribute or a reference to a DOM Node

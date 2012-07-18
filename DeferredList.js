@@ -5,6 +5,7 @@ define(["./_base/kernel", "./_base/Deferred", "./_base/array"], function(dojo, D
 
 dojo.DeferredList = function(/*Array*/ list, /*Boolean?*/ fireOnOneCallback, /*Boolean?*/ fireOnOneErrback, /*Boolean?*/ consumeErrors, /*Function?*/ canceller){
 	// summary:
+	//		Deprecated, use dojo/promise/all instead.
 	//		Provides event handling for a group of Deferred objects.
 	// description:
 	//		DeferredList takes an array of existing deferreds and returns a new deferred of its own

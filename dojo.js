@@ -1223,10 +1223,9 @@
 			try{
 				checkCompleteGuard++;
 				proc();
-			}catch(e){
-				makeError("unexpected", e);
+			}finally{
+				checkCompleteGuard--;
 			}
-			checkCompleteGuard--;
 			if(execComplete()){
 				signal("idle", []);
 			}

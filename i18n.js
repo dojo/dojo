@@ -328,7 +328,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 							preloading++;
 							(isXd(mid) || guaranteedAmdFormat ? require : syncRequire)([mid], function(rollup){
 								for(var p in rollup){
-									cache[p + "/" + locale] = rollup[p];
+									cache[p + "/" + loc] = rollup[p];
 								}
 								--preloading;
 								while(!preloading && preloadWaitQueue.length){

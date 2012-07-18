@@ -217,7 +217,7 @@
 
 			return {
 				sync:sync,
-				xd:xd,
+				requested:requested,
 				arrived:arrived,
 				nonmodule:nonmodule,
 				executing:executing,
@@ -233,8 +233,7 @@
 				execModule:execModule,
 				dojoRequirePlugin:dojoRequirePlugin,
 				getLegacyMode:function(){return legacyMode;},
-				holdIdle:function(){checkCompleteGuard++;},
-				releaseIdle:function(){checkIdle();}
+				guardCheckComplete:guardCheckComplete
 			};
 		};
 
@@ -389,20 +388,20 @@
 			// deps: the dependency vector for this module (vector of modules objects)
 			// def: the factory for this module
 			// result: the result of the running the factory for this module
-			// injected: (requested | arrived | nonmodule) the status of the module; nonmodule means the resource did not call define
+			// injected: (0 | requested | arrived) the status of the module; nonmodule means the resource did not call define
 			// load: plugin load function; applicable only for plugins
 			//
 			// Modules go through several phases in creation:
 			//
 			// 1. Requested: some other module's definition or a require application contained the requested module in
-			//	  its dependency vector or executing code explicitly demands a module via req.require.
+			//    its dependency vector or executing code explicitly demands a module via req.require.
 			//
 			// 2. Injected: a script element has been appended to the insert-point element demanding the resource implied by the URL
 			//
 			// 3. Loaded: the resource injected in [2] has been evalated.
 			//
 			// 4. Defined: the resource contained a define statement that advised the loader about the module. Notice that some
-			//	  resources may just contain a bundle of code and never formally define a module via define
+			//    resources may just contain a bundle of code and never formally define a module via define
 			//
 			// 5. Evaluated: the module was defined via define and the loader has evaluated the factory and computed a result.
 			= {},
@@ -425,7 +424,7 @@
 			// Further, for mid keys, the implied url is computed and the value is entered into that key as well. This allows mapped modules
 			// to retrieve cached items that may have arrived consequent to another namespace.
 			//
-			= {},
+			 = {},
 
 		urlKeyPrefix
 			// the prefix to prepend to a URL key in the cache.
@@ -703,26 +702,26 @@
 	// build the loader machinery iaw configuration, including has feature tests
 	var	injectDependencies = function(module){
 			// checkComplete!=0 holds the idle signal; we're not idle if we're injecting dependencies
-			checkCompleteGuard++;
-			forEach(module.deps, injectModule);
-			if(has("dojo-combo-api") && comboPending && !comboPendingTimer){
-				comboPendingTimer = setTimeout(function(){
-					comboPending = 0;
-					comboPendingTimer = null;
-					req.combo.done(function(mids, url){
-						var onLoadCallback= function(){
-							// defQ is a vector of module definitions 1-to-1, onto mids
-							runDefQ(0, mids);
-							checkComplete();
-						};
-						combosPending.push(mids);
-						injectingModule = mids;
-						req.injectUrl(url, onLoadCallback, mids);
-						injectingModule = 0;
-					}, req);
-				}, 0);
-			}
-			checkIdle();
+			guardCheckComplete(function(){
+				forEach(module.deps, injectModule);
+				if(has("dojo-combo-api") && comboPending && !comboPendingTimer){
+					comboPendingTimer = setTimeout(function() {
+						comboPending = 0;
+						comboPendingTimer = null;
+						req.combo.done(function(mids, url) {
+							var onLoadCallback= function(){
+								// defQ is a vector of module definitions 1-to-1, onto mids
+								runDefQ(0, mids);
+								checkComplete();
+							};
+							combosPending.push(mids);
+							injectingModule = mids;
+							req.injectUrl(url, onLoadCallback, mids);
+							injectingModule = 0;
+						}, req);
+					}, 0);
+				}
+			});
 		},
 
 		contextRequire = function(a1, a2, a3, referenceModule, contextRequire){
@@ -774,9 +773,9 @@
 					// it's possible to execute this require later after the current traversal completes and avoid the circular dependency.
 					// ...but *always* insist on immediate in synch mode
 					var strict = checkCompleteGuard && req.async;
-					checkCompleteGuard++;
-					execModule(module, strict);
-					checkIdle();
+					guardCheckComplete(function(){
+						execModule(module, strict);
+					});
 					if(!module.executed){
 						// some deps weren't on board or circular dependency detected and strict; therefore, push into the execQ
 						execQ.push(module);
@@ -870,11 +869,11 @@
 		runMapProg = function(targetMid, map){
 			// search for targetMid in map; return the map item if found; falsy otherwise
 			if(map){
-				for(var i = 0; i < map.length; i++){
-					if(map[i][2].test(targetMid)){
-						return map[i];
-					}
+			for(var i = 0; i < map.length; i++){
+				if(map[i][2].test(targetMid)){
+					return map[i];
 				}
+			}
 			}
 			return 0;
 		},
@@ -932,7 +931,7 @@
 				mapItem = mapItem && runMapProg(mid, mapItem[1]);
 				if(mapItem){
 					mid = mapItem[1] + mid.substring(mapItem[3]);
-				}
+					}
 
 				match = mid.match(/^([^\/]+)(\/(.+))?$/);
 				pid = match ? match[1] : "";
@@ -1003,9 +1002,9 @@
 				if(has("dojo-sync-loader") && legacyMode == sync && !plugin.executed){
 					injectModule(plugin);
 					if(plugin.injected===arrived && !plugin.executed){
-						checkCompleteGuard++;
-						execModule(plugin);
-						checkIdle();
+						guardCheckComplete(function(){
+							execModule(plugin);
+						});
 					}
 					if(plugin.executed){
 						promoteModuleToPlugin(plugin);
@@ -1043,7 +1042,7 @@
 
 		toUrl = req.toUrl = function(name, referenceModule){
 			var moduleInfo = getModuleInfo(name+"/x", referenceModule),
-				url = moduleInfo.url;
+				url= moduleInfo.url;
 			return fixupUrl(moduleInfo.pid===0 ?
 				// if pid===0, then name had a protocol or absolute path; either way, toUrl is the identify function in such cases
 				name :
@@ -1156,7 +1155,7 @@
 				}
 			}
 			// delete references to synthetic modules
-	        if (/^require\*/.test(module.mid)){
+	        if (/^require\*/.test(module.mid)) {
 	            delete modules[module.mid];
 	        }
 		},
@@ -1218,7 +1217,20 @@
 		},
 
 
-		checkCompleteGuard =  0,
+		checkCompleteGuard = 0,
+
+		guardCheckComplete = function(proc){
+			try{
+				checkCompleteGuard++;
+				proc();
+			}catch(e){
+				makeError("unexpected", e);
+			}
+			checkCompleteGuard--;
+			if(execComplete()){
+				signal("idle", []);
+			}
+		},
 
 		checkComplete = function(){
 			// keep going through the execQ as long as at least one factory is executed
@@ -1226,30 +1238,23 @@
 			if(checkCompleteGuard){
 				return;
 			}
-			checkCompleteGuard++;
-			checkDojoRequirePlugin();
-			for(var currentDefOrder, module, i = 0; i < execQ.length;){
-				currentDefOrder = defOrder;
-				module = execQ[i];
-				execModule(module);
-				if(currentDefOrder!=defOrder){
-					// defOrder was bumped one or more times indicating something was executed (note, this indicates
-					// the execQ was modified, maybe a lot (for example a later module causes an earlier module to execute)
-					checkDojoRequirePlugin();
-					i = 0;
-				}else{
-					// nothing happened; check the next module in the exec queue
-					i++;
+			guardCheckComplete(function(){
+				checkDojoRequirePlugin();
+				for(var currentDefOrder, module, i = 0; i < execQ.length;){
+					currentDefOrder = defOrder;
+					module = execQ[i];
+					execModule(module);
+					if(currentDefOrder!=defOrder){
+						// defOrder was bumped one or more times indicating something was executed (note, this indicates
+						// the execQ was modified, maybe a lot (for example a later module causes an earlier module to execute)
+						checkDojoRequirePlugin();
+						i = 0;
+					}else{
+						// nothing happened; check the next module in the exec queue
+						i++;
+					}
 				}
-			}
-			checkIdle();
-		},
-
-		checkIdle = function(){
-			checkCompleteGuard--;
-			if(execComplete()){
-				signal("idle", []);
-			}
+			});
 		};
 
 

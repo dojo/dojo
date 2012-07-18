@@ -195,9 +195,7 @@ define(["./kernel", "../dom", "../dom-style", "../dom-attr", "../dom-prop", "../
 		// summary:
 		//		Deprecated: Use position() for border-box x/y/w/h
 		//		or marginBox() for margin-box w/h/l/t.
-		//		Returns an object representing a node's size and position.
 		//
-		// description:
 		//		Returns an object that measures margin-box (w)idth/(h)eight
 		//		and absolute position x/y of the border-box. Also returned
 		//		is computed (l)eft and (t)op values in pixels from the

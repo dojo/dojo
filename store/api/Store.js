@@ -3,7 +3,7 @@ define(["../../_base/declare"], function(declare){
 // module:
 //		dojo/api/Store
 
-var Store = declare("Store", null, {
+var Store = declare(null, {
 	// summary:
 	//		This is an abstract API that data provider implementations conform to.
 	//		This file defines methods signatures and intentionally leaves all the
@@ -132,7 +132,7 @@ var Store = declare("Store", null, {
 	}
 });
 
-Store.PutDirectives = function(id, before, parent, overwrite){
+Store.PutDirectives = declare(null, {
 	// summary:
 	//		Directives passed to put() and add() handlers for guiding the update and
 	//		creation of stored objects.
@@ -153,24 +153,18 @@ Store.PutDirectives = function(id, before, parent, overwrite){
 	//		value of false indicates that an existing object should not be updated, a new
 	//		object should be created (which is the same as an add() operation). When
 	//		this property is not provided, either an update or creation is acceptable.
-	this.id = id;
-	this.before = before;
-	this.parent = parent;
-	this.overwrite = overwrite;
-};
+});
 
-Store.SortInformation = function(attribute, descending){
+Store.SortInformation = declare(null, {
 	// summary:
 	//		An object describing what attribute to sort on, and the direction of the sort.
 	// attribute: String
 	//		The name of the attribute to sort on.
 	// descending: Boolean
 	//		The direction of the sort.  Default is false.
-	this.attribute = attribute;
-	this.descending = descending;
-};
+});
 
-Store.QueryOptions = function(sort, start, count){
+Store.QueryOptions = declare(null, {
 	// summary:
 	//		Optional object with additional parameters for query results.
 	// sort: Store.SortInformation[]?
@@ -183,12 +177,9 @@ Store.QueryOptions = function(sort, start, count){
 	//		The first result to begin iteration on
 	// count: Number?
 	//		The number of how many results should be returned.
-	this.sort = sort;
-	this.start = start;
-	this.count = count;
-};
+});
 
-Store.QueryResults = declare("Store.QueryResults", null, {
+Store.QueryResults = declare(null, {
 	// summary:
 	//		This is an object returned from query() calls that provides access to the results
 	//		of a query. Queries may be executed asynchronously.
@@ -276,7 +267,7 @@ Store.QueryResults = declare("Store.QueryResults", null, {
 	total: 0
 });
 
-Store.Transaction = declare("Store.Transaction", null, {
+Store.Transaction = declare(null, {
 	// summary:
 	//		This is an object returned from transaction() calls that represents the current
 	//		transaction.

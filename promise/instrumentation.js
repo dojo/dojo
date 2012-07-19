@@ -1,13 +1,9 @@
 define([
-	"../Deferred",
 	"./tracer",
 	"../has",
-	"../_base/config",
 	"../_base/lang",
-	"../_base/array",
-	"exports",
-	"require"
-], function(Deferred, tracer, has, config, lang, arrayUtil, exports, require){
+	"../_base/array"
+], function(tracer, has, lang, arrayUtil){
 	function logError(error, rejection, deferred){
 		var stack = "";
 		if(error && error.stack){
@@ -69,32 +65,26 @@ define([
 		}
 	}
 
-	exports.load = function(id, parentRequire, load){
-		var args = id.split(",");
-		var option = args.shift();
-		switch(option){
-			case 0:
-				break;
-			case "report-rejections":
+	return function(Deferred){
+		var usage = has("config-useDeferredInstrumentation");
+		if(usage){
+			tracer.on("resolved", lang.hitch(console, "log", "resolved"));
+			tracer.on("rejected", lang.hitch(console, "log", "rejected"));
+			tracer.on("progress", lang.hitch(console, "log", "progress"));
+
+			var args = [];
+			if(typeof usage === "string"){
+				args = usage.split(",");
+				usage = args.shift();
+			}
+			if(usage === "report-rejections"){
 				Deferred.instrumentRejected = reportRejections;
-				break;
-			case "report-unhandled-rejections":
+			}else if(usage === "report-unhandled-rejections" || usage === true || usage === 1){
 				Deferred.instrumentRejected = trackUnhandledRejections;
 				unhandledWait = parseInt(args[0], 10) || unhandledWait;
-				break;
-			default:
-				throw new Error("Unknown instrumenting option <" + option + ">");
+			}else{
+				throw new Error("Unsupported instrumentation usage <" + usage + ">");
+			}
 		}
-		load();
 	};
-
-	if(has("config-deferredInstrumentation")){
-		exports.load(has("config-deferredInstrumentation"), require, function(){});
-
-		tracer.on("resolved", lang.hitch(console, "log", "resolved"));
-		tracer.on("rejected", lang.hitch(console, "log", "rejected"));
-		tracer.on("progress", lang.hitch(console, "log", "progress"));
-	}
-
-	return exports;
 });

@@ -1909,8 +1909,8 @@
 			"dojo-sniff":1,
 			"dojo-sync-loader":1,
 			"dojo-test-sniff":1,
-			"config-useDeferredInstrumentation":1,
-			"config-deferredInstrumentation":"report-unhandled-rejections",
+			"config-deferredInstrumentation":1,
+			"config-useDeferredInstrumentation":"report-unhandled-rejections",
 			"config-tlmSiblingOfDojo":1
 		},
 		packages:[{

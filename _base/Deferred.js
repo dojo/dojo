@@ -223,8 +223,8 @@ define([
 			isError = true;
 			this.fired = 1;
 			if(has("config-useDeferredInstrumentation")){
-				if(NewDeferred.instrumentRejected && !nextListener){
-					NewDeferred.instrumentRejected(error, false);
+				if(NewDeferred.instrumentRejected){
+					NewDeferred.instrumentRejected(error, !!nextListener);
 				}
 			}
 			complete(error);

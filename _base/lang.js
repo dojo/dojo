@@ -389,7 +389,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			};
 		})(),
 		/*=====
-		delegate: function(){
+		delegate: function(obj, props){
 			// summary:
 			//		Returns a new object which "looks" to obj for properties which it
 			//		does not have a value for. Optionally takes a bag of properties to

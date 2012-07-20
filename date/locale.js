@@ -2,13 +2,14 @@ define([
 	"../_base/lang",
 	"../_base/array",
 	"../date",
+	/*===== "../_base/declare", =====*/
 	"../cldr/supplemental",
 	"../i18n",
 	"../regexp",
 	"../string",
 	"../i18n!../cldr/nls/gregorian",
 	"module"
-], function(lang, array, date, supplemental, i18n, regexp, string, gregorian, module){
+], function(lang, array, date, /*===== declare, =====*/ supplemental, i18n, regexp, string, gregorian, module){
 
 // module:
 //		dojo/date/locale
@@ -174,7 +175,7 @@ lang.setObject(module.id.replace(/\//g, "."), exports);
 	}
 
 /*=====
-var __FormatOptions = exports.__FormatOptions = function(){
+var __FormatOptions = exports.__FormatOptions = declare(null, {
 	// selector: String
 	//		choice of 'time','date' (default: date and time)
 	// formatLength: String
@@ -193,16 +194,7 @@ var __FormatOptions = exports.__FormatOptions = function(){
 	//		(format only) use 4 digit years whenever 2 digit years are called for
 	// strict: Boolean
 	//		(parse only) strict parsing, off by default
-	this.selector = selector;
-	this.formatLength = formatLength;
-	this.datePattern = datePattern;
-	this.timePattern = timePattern;
-	this.am = am;
-	this.pm = pm;
-	this.locale = locale;
-	this.fullYear = fullYear;
-	this.strict = strict;
-};
+});
 =====*/
 
 exports._getZone = function(/*Date*/ dateObject, /*boolean*/ getName, /*__FormatOptions?*/ options){

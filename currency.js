@@ -92,8 +92,7 @@ currency.regexp = function(/*dnumber.__RegexpOptions?*/ options){
 };
 
 /*=====
-var __ParseOptions = currency.__ParseOptions = function(kwargs){};
-lang.extend(__ParseOptions, {
+var __ParseOptions = currency.__ParseOptions = declare(dnumber.__ParseOptions, {
 	// type: String?
 	//		Should not be set.  Value is assumed to be currency.
 	// currency: String?
@@ -108,11 +107,6 @@ lang.extend(__ParseOptions, {
 	//		Whether to include the fractional portion, where the number of decimal places are implied by the currency
 	//		or explicit 'places' parameter.  The value [true,false] makes the fractional portion optional.
 	//		By default for currencies, it the fractional portion is optional.
-	type: "",
-	currency: "",
-	symbol: "",
-	places: "",
-	fractional: ""
 });
 =====*/
 
@@ -121,14 +115,13 @@ currency.parse = function(/*String*/ expression, /*__ParseOptions?*/ options){
 	// summary:
 	//		Convert a properly formatted currency string to a primitive Number,
 	//		using locale-specific settings.
-	//
 	// description:
 	//		Create a Number from a string using a known, localized pattern.
 	//		[Formatting patterns](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
 	//		are chosen appropriate to the locale, as well as the appropriate symbols and delimiters
 	//		and number of decimal places.
-	//
-	// expression: A string representation of a currency value
+	// expression:
+	//		A string representation of a currency value
 
 	return dnumber.parse(expression, currency._mixInDefaults(options));
 };

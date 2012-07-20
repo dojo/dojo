@@ -1,8 +1,8 @@
 define([
-	"../_base/config", "../_base/json", "../_base/kernel", "../_base/lang",
+	"../_base/config", "../_base/json", "../_base/kernel", /*===== "../_base/declare", =====*/ "../_base/lang",
 	"../_base/xhr", "../sniff", "../_base/window",
 	"../dom", "../dom-construct", "../query", "require", "../aspect", "../request/iframe"
-], function(config, json, kernel, lang, xhr, has, win, dom, domConstruct, query, require, aspect, _iframe){
+], function(config, json, kernel, /*===== declare, =====*/ lang, xhr, has, win, dom, domConstruct, query, require, aspect, _iframe){
 
 // module:
 //		dojo/io/iframe
@@ -10,11 +10,7 @@ define([
 dojo.deprecated("dojo/io/iframe", "Use dojo/request/iframe.", "2.0");
 
 /*=====
-var __ioArgs = function(){
-	// summary:
-	//		All the properties described in the dojo.__ioArgs type, apply
-	//		to this type. The following additional properties are allowed
-	//		for dojo.io.iframe.send():
+var __ioArgs = declare(kernel.__IoArgs, {
 	// method: String?
 	//		The HTTP method to use. "GET" or "POST" are the only supported
 	//		values.  It will try to read the value from the form node's
@@ -40,11 +36,7 @@ var __ioArgs = function(){
 	//		"value1". If there is not a "form" property, then the content
 	//		object is converted into a name=value&name=value string, by
 	//		using xhr.objectToQuery().
-	this.method = method;
-	this.handleAs = handleAs;
-	this.content = content;
-};
-__ioArgs.prototype = new kernel.__IoArgs();
+});
 =====*/
 
 /*=====

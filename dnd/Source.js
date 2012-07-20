@@ -25,7 +25,7 @@ define([
 */
 
 /*=====
-var __SourceArgs = function(){
+var __SourceArgs = {
 	// summary:
 	//		a dict of parameters for DnD Source configuration. Note that any
 	//		property on Source elements may be configured, but this is the
@@ -54,16 +54,6 @@ var __SourceArgs = function(){
 	//		allows dragging only by handles, false by default
 	// generateText: Boolean?
 	//		generate text node for drag and drop, true by default
-	this.isSource = isSource;
-	this.accept = accept;
-	this.autoSync = autoSync;
-	this.copyOnly = copyOnly;
-	this.delay = delay;
-	this.horizontal = horizontal;
-	this.selfCopy = selfCopy;
-	this.selfAccept = selfAccept;
-	this.withHandles = withHandles;
-	this.generateText = true;
 };
 =====*/
 

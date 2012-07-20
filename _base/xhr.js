@@ -3,6 +3,7 @@ define([
 	"./sniff",
 	"require",
 	"../io-query",
+	/*===== "./declare", =====*/
 	"../dom",
 	"../dom-form",
 	"./Deferred",
@@ -15,7 +16,7 @@ define([
 	"../request/watch",
 	"../request/xhr",
 	"../request/util"
-], function(dojo, has, require, ioq, dom, domForm, Deferred, config, json, lang, array, on, aspect, watch, _xhr, util){
+], function(dojo, has, require, ioq, /*===== declare, =====*/ dom, domForm, Deferred, config, json, lang, array, on, aspect, watch, _xhr, util){
 	// module:
 	//		dojo/_base/xhr
 
@@ -154,54 +155,39 @@ define([
 	// kwargs function parameter definitions.   Assigning to dojo namespace rather than making them local variables
 	// because they are used by dojo/io modules too
 
-	dojo.__IoArgs = function(url, content, timeout, form, preventCache, handleAs, rawBody, ioPublish){
+	dojo.__IoArgs = declare(null, {
 		// url: String
 		//		URL to server endpoint.
-		this.url = url;
-
 		// content: Object?
 		//		Contains properties with string values. These
 		//		properties will be serialized as name1=value2 and
 		//		passed in the request.
-		this.content = content;
-
 		// timeout: Integer?
 		//		Milliseconds to wait for the response. If this time
 		//		passes, the then error callbacks are called.
-		this.timeout = timeout;
-
 		// form: DOMNode?
 		//		DOM node for a form. Used to extract the form values
 		//		and send to the server.
-		this.form = form;
-
 		// preventCache: Boolean?
 		//		Default is false. If true, then a
 		//		"dojo.preventCache" parameter is sent in the request
 		//		with a value that changes with each request
 		//		(timestamp). Useful only with GET-type requests.
-		this.preventCache = preventCache;
-
 		// handleAs: String?
 		//		Acceptable values depend on the type of IO
 		//		transport (see specific IO calls for more information).
-		this.handleAs = handleAs;
-
 		// rawBody: String?
 		//		Sets the raw body for an HTTP request. If this is used, then the content
 		//		property is ignored. This is mostly useful for HTTP methods that have
 		//		a body to their requests, like PUT or POST. This property can be used instead
 		//		of postData and putData for dojo.rawXhrPost and dojo.rawXhrPut respectively.
-		this.rawBody = rawBody;
-
 		// ioPublish: Boolean?
 		//		Set this explicitly to false to prevent publishing of topics related to
 		//		IO operations. Otherwise, if djConfig.ioPublish is set to true, topics
 		//		will be published via dojo.publish for different phases of an IO operation.
 		//		See dojo.__IoPublish for a list of topics that are published.
-		this.ioPublish = ioPublish;
 
-		this.load = function(response, ioArgs){
+		load: function(response, ioArgs){
 			// summary:
 			//		This function will be
 			//		called on a successful HTTP response code.
@@ -209,9 +195,9 @@ define([
 			//		Provides additional information about the request.
 			// response: Object
 			//		The response in the format as defined with handleAs.
-		};
+		},
 
-		this.error = function(response, ioArgs){
+		error: function(response, ioArgs){
 			// summary:
 			//		This function will
 			//		be called when the request fails due to a network or server error, the url
@@ -223,9 +209,9 @@ define([
 			//		Provides additional information about the request.
 			// response: Object
 			//		The response in the format as defined with handleAs.
-		};
+		},
 
-		this.handle = function(loadOrError, response, ioArgs){
+		handle: function(loadOrError, response, ioArgs){
 			// summary:
 	 		//		This function will
 	 		//		be called at the end of every request, whether or not an error occurs.
@@ -236,50 +222,36 @@ define([
 			//		The response in the format as defined with handleAs.
 			// ioArgs: dojo.__IoCallbackArgs
 			//		Provides additional information about the request.
-		};
-	};
+		}
+	});
 
-	dojo.__IoCallbackArgs = function(args, xhr, url, query, handleAs, id, canDelete, json){
+	dojo.__IoCallbackArgs = declare(null, {
 		// args: Object
 		//		the original object argument to the IO call.
-		this.args = args;
-
 		// xhr: XMLHttpRequest
 		//		For XMLHttpRequest calls only, the
 		//		XMLHttpRequest object that was used for the
 		//		request.
-		this.xhr = xhr;
-
 		// url: String
 		//		The final URL used for the call. Many times it
 		//		will be different than the original args.url
 		//		value.
-		this.url = url;
-
 		// query: String
 		//		For non-GET requests, the
 		//		name1=value1&name2=value2 parameters sent up in
 		//		the request.
-		this.query = query;
-
 		// handleAs: String
 		//		The final indicator on how the response will be
 		//		handled.
-		this.handleAs = handleAs;
-
 		// id: String
 		//		For dojo.io.script calls only, the internal
 		//		script ID used for the request.
-		this.id = id;
-
 		// canDelete: Boolean
 		//		For dojo.io.script calls only, indicates
 		//		whether the script tag that represents the
 		//		request can be deleted after callbacks have
 		//		been called. Used internally to know when
 		//		cleanup can happen on JSONP-type requests.
-		this.canDelete = canDelete;
-
 		// json: Object
 		//		For dojo.io.script calls only: holds the JSON
 		//		response for JSONP-type requests. Used
@@ -287,51 +259,38 @@ define([
 		//		You should not need to access it directly --
 		//		the same object should be passed to the success
 		//		callbacks directly.
-		this.json = json;
-	};
+	});
 
-	dojo.__IoPublish = function(){
+	dojo.__IoPublish = declare(null, {
 		// summary:
 		//		This is a list of IO topics that can be published
 		//		if djConfig.ioPublish is set to true. IO topics can be
 		//		published for any Input/Output, network operation. So,
 		//		dojo.xhr, dojo.io.script and dojo.io.iframe can all
 		//		trigger these topics to be published.
-
 		// start: String
 		//		"/dojo/io/start" is sent when there are no outstanding IO
 		//		requests, and a new IO request is started. No arguments
 		//		are passed with this topic.
-		this.start = "/dojo/io/start";
-
 		// send: String
 		//		"/dojo/io/send" is sent whenever a new IO request is started.
 		//		It passes the dojo.Deferred for the request with the topic.
-		this.send = "/dojo/io/send";
-
 		// load: String
 		//		"/dojo/io/load" is sent whenever an IO request has loaded
 		//		successfully. It passes the response and the dojo.Deferred
 		//		for the request with the topic.
-		this.load = "/dojo/io/load";
-
 		// error: String
 		//		"/dojo/io/error" is sent whenever an IO request has errored.
 		//		It passes the error and the dojo.Deferred
 		//		for the request with the topic.
-		this.error = "/dojo/io/error";
-
 		// done: String
 		//		"/dojo/io/done" is sent whenever an IO request has completed,
 		//		either by loading or by erroring. It passes the error and
 		//		the dojo.Deferred for the request with the topic.
-		this.done = "/dojo/io/done";
-
 		// stop: String
 		//		"/dojo/io/stop" is sent when all outstanding IO requests have
 		//		finished. No arguments are passed with this topic.
-		this.stop = "/dojo/io/stop";
-	};
+	});
 	=====*/
 
 
@@ -491,20 +450,21 @@ define([
 	});
 	aspect.after(watch, "_onInFlight", _checkPubCount);
 
+	dojo._ioCancelAll = watch.cancelAll;
 	/*=====
 	dojo._ioCancelAll = function(){
-		//summary: Cancels all pending IO requests, regardless of IO type
-		//(xhr, script, iframe).
+		//summary:
+		//		Cancels all pending IO requests, regardless of IO type
+		//		(xhr, script, iframe).
 	};
 	=====*/
-	dojo._ioCancelAll = watch.cancelAll;
 
 	dojo._ioNotifyStart = function(/*Deferred*/dfd){
 		// summary:
 		//		If dojo.publish is available, publish topics
 		//		about the start of a request queue and/or the
 		//		the beginning of request.
-		// description:
+		//
 		//		Used by IO transports. An IO transport should
 		//		call this method before making the network connection.
 		if(cfg.ioPublish && dojo.publish && dfd.ioArgs.args.ioPublish !== false){
@@ -561,38 +521,27 @@ define([
 	};
 
 	/*=====
-	dojo.__XhrArgs = function(handleAs, sync, header, failOk, contentType){
+	dojo.__XhrArgs = declare(dojo.__IoArgs, {
 		// summary:
 		//		In addition to the properties listed for the dojo._IoArgs type,
 		//		the following properties are allowed for dojo.xhr* methods.
-
 		// handleAs: String?
 		//		Acceptable values are: text (default), json, json-comment-optional,
 		//		json-comment-filtered, javascript, xml. See `dojo.contentHandlers`
-	 	this.handleAs = handleAs;
-
 	 	// sync: Boolean?
 		//		false is default. Indicates whether the request should
 		//		be a synchronous (blocking) request.
-		this.sync = sync;
-
 		// headers: Object?
 		//		Additional HTTP headers to send in the request.
-		this.headers = headers;
-
 		// failOk: Boolean?
 		//		false is default. Indicates whether a request should be
 		//		allowed to fail (and therefore no console error message in
 		//		the event of a failure)
-		this.failOk = failOk;
-
 		// contentType: String|Boolean
 		//		"application/x-www-form-urlencoded" is default. Set to false to
 		//		prevent a Content-Type header from being sent, or to a string
 		//		to send a different Content-Type.
-		this.contentType = contentType;
-	 };
-	 dojo.__XhrArgs.prototype = new dojo.__IoArgs();
+	 });
 	=====*/
 
 	dojo.xhr = function(/*String*/ method, /*dojo.__XhrArgs*/ args, /*Boolean?*/ hasBody){

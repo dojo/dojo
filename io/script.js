@@ -1,8 +1,8 @@
 define([
-	"../_base/connect", "../_base/kernel", "../_base/lang",
+	"../_base/connect", /*===== "../_base/declare", =====*/ "../_base/kernel", "../_base/lang",
 	"../sniff", "../_base/window","../_base/xhr",
 	"../dom", "../dom-construct", "../request/script"
-], function(connect, kernel, lang, has, win, xhr, dom, domConstruct, _script){
+], function(connect, /*===== declare, =====*/ kernel, lang, has, win, xhr, dom, domConstruct, _script){
 
 	// module:
 	//		dojo/io/script
@@ -10,7 +10,7 @@ define([
 	dojo.deprecated("dojo/io/script", "Use dojo/request/script.", "2.0");
 
 	/*=====
-	var __ioArgs = function(kwargs){
+	var __ioArgs = declare(kernel.__IoArgs, {
 		// summary:
 		//		All the properties described in the dojo.__ioArgs type, apply to this
 		//		type as well, EXCEPT "handleAs". It is not applicable to
@@ -35,12 +35,7 @@ define([
 		//		The Document object for a child iframe. If this is passed in, the script
 		//		will be attached to that document. This can be helpful in some comet long-polling
 		//		scenarios with Firefox and Opera.
-		this.callbackParamName = callbackParamName;
-		this.jsonp = jsonp;
-		this.checkString = checkString;
-		this.frameDoc = frameDoc;
-	};
-	__ioArgs.prototype = new kernel.__IoArgs();
+	});
 	=====*/
 
 	var script = {

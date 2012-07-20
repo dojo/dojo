@@ -180,7 +180,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 
 
 	/*=====
-	var __backArgs = function(kwArgs){
+	var __backArgs = {
 		// back: Function?
 		//		A function to be called when this state is reached via the user
 		//		clicking the back button.

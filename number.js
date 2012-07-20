@@ -1,5 +1,5 @@
-define(["./_base/lang", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"],
-	function(lang, i18n, nlsNumber, dstring, dregexp){
+define([/*===== "./_base/declare", =====*/ "./_base/lang", "./i18n", "./i18n!./cldr/nls/number", "./string", "./regexp"],
+	function(/*===== declare, =====*/ lang, i18n, nlsNumber, dstring, dregexp){
 
 // module:
 //		dojo/number
@@ -11,7 +11,7 @@ var number = {
 lang.setObject("dojo.number", number);
 
 /*=====
-number.__FormatOptions = function(){
+number.__FormatOptions = declare(null, {
 	// pattern: String?
 	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
 	//		with this string.  Default value is based on locale.  Overriding this property will defeat
@@ -29,13 +29,7 @@ number.__FormatOptions = function(){
 	//		override the locale used to determine formatting rules
 	// fractional: Boolean?
 	//		If false, show no decimal places, overriding places and pattern settings.
-	this.pattern = pattern;
-	this.type = type;
-	this.places = places;
-	this.round = round;
-	this.locale = locale;
-	this.fractional = fractional;
-};
+});
 =====*/
 
 number.format = function(/*Number*/ value, /*number.__FormatOptions?*/ options){
@@ -154,7 +148,7 @@ if((0.9).toFixed() == 0){
 }
 
 /*=====
-number.__FormatAbsoluteOptions = function(){
+number.__FormatAbsoluteOptions = declare(null, {
 	// decimal: String?
 	//		the decimal separator
 	// group: String?
@@ -164,11 +158,7 @@ number.__FormatAbsoluteOptions = function(){
 	// round: Number?
 	//		5 rounds to nearest .5; 0 rounds to nearest whole (default). -1
 	//		means don't round.
-	this.decimal = decimal;
-	this.group = group;
-	this.places = places;
-	this.round = round;
-};
+});
 =====*/
 
 number._formatAbsolute = function(/*Number*/ value, /*String*/ pattern, /*number.__FormatAbsoluteOptions?*/ options){
@@ -257,7 +247,7 @@ number._formatAbsolute = function(/*Number*/ value, /*String*/ pattern, /*number
 };
 
 /*=====
-number.__RegexpOptions = function(){
+number.__RegexpOptions = declare(null, {
 	// pattern: String?
 	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
 	//		with this string.  Default value is based on locale.  Overriding this property will defeat
@@ -273,12 +263,7 @@ number.__RegexpOptions = function(){
 	// places: Number|String?
 	//		number of decimal places to accept: Infinity, a positive number, or
 	//		a range "n,m".  Defined by pattern or Infinity if pattern not provided.
-	this.pattern = pattern;
-	this.type = type;
-	this.locale = locale;
-	this.strict = strict;
-	this.places = places;
-};
+});
 =====*/
 number.regexp = function(/*number.__RegexpOptions?*/ options){
 	// summary:
@@ -378,7 +363,7 @@ number._parseInfo = function(/*Object?*/ options){
 };
 
 /*=====
-number.__ParseOptions = function(){
+number.__ParseOptions = declare(null, {
 	// pattern: String?
 	//		override [formatting pattern](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
 	//		with this string.  Default value is based on locale.  Overriding this property will defeat
@@ -394,12 +379,7 @@ number.__ParseOptions = function(){
 	// fractional: Boolean|Array?
 	//		Whether to include the fractional portion, where the number of decimal places are implied by pattern
 	//		or explicit 'places' parameter.  The value [true,false] makes the fractional portion optional.
-	this.pattern = pattern;
-	this.type = type;
-	this.locale = locale;
-	this.strict = strict;
-	this.fractional = fractional;
-};
+});
 =====*/
 number.parse = function(/*String*/ expression, /*number.__ParseOptions?*/ options){
 	// summary:
@@ -438,7 +418,7 @@ number.parse = function(/*String*/ expression, /*number.__ParseOptions?*/ option
 };
 
 /*=====
-number.__RealNumberRegexpFlags = function(){
+number.__RealNumberRegexpFlags = declare(null, {
 	// places: Number?
 	//		The integer number of decimal places or a range given as "n,m".  If
 	//		not given, the decimal part is optional and the number of places is
@@ -458,12 +438,7 @@ number.__RealNumberRegexpFlags = function(){
 	//		false, or [true, false].  Default is [true, false], (i.e. will
 	//		match if it is signed or unsigned).  flags in regexp.integer can be
 	//		applied.
-	this.places = places;
-	this.decimal = decimal;
-	this.fractional = fractional;
-	this.exponent = exponent;
-	this.eSigned = eSigned;
-};
+});
 =====*/
 
 number._realNumberRegexp = function(/*__RealNumberRegexpFlags?*/ flags){
@@ -511,7 +486,7 @@ number._realNumberRegexp = function(/*__RealNumberRegexpFlags?*/ flags){
 };
 
 /*=====
-number.__IntegerRegexpFlags = function(){
+number.__IntegerRegexpFlags = declare(null, {
 	// signed: Boolean?
 	//		The leading plus-or-minus sign. Can be true, false, or `[true,false]`.
 	//		Default is `[true, false]`, (i.e. will match if it is signed
@@ -524,11 +499,7 @@ number.__IntegerRegexpFlags = function(){
 	//		group size between separators
 	// groupSize2: Number?
 	//		second grouping, where separators 2..n have a different interval than the first separator (for India)
-	this.signed = signed;
-	this.separator = separator;
-	this.groupSize = groupSize;
-	this.groupSize2 = groupSize2;
-};
+});
 =====*/
 
 number._integerRegexp = function(/*number.__IntegerRegexpFlags?*/ flags){

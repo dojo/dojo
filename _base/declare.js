@@ -510,11 +510,10 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	}
 
 	/*=====
-	 var __DeclareCreatedObject = function(){
+	 var __DeclareCreatedObject = {
 		 // summary:
 		 //		Description of methods available on Objects created via dojo/declare.
-	 };
-	 lang.extend(__DeclareCreatedObject, {
+
 		 inherited: function(name, args, newArgs){
 			 // summary:
 			 //		Calls a super method.
@@ -708,7 +707,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			 //	|		d1: 42
 			 //	|	});
 		 }
-	 });
+	 };
 	 =====*/
 
 	function declare(className, superclass, props){
@@ -1037,6 +1036,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		return ctor;	// Function
 	}
 
+	// For back-compat, remove for 2.0
 	dojo.safeMixin = declare.safeMixin = safeMixin;
 	dojo.declare = declare;
 

@@ -131,7 +131,21 @@ return {
 	// transparentColor: Array
 	//		Array containing the r, g, b components used as transparent color in dojo.Color;
 	//		if undefined, [255,255,255] (white) will be used.
-	transparentColor: undefined
+	transparentColor: undefined,
+	
+	// deps: Function|Array
+	//		Defines dependencies to be used before the loader has been loaded.
+	//		When provided, they cause the loader to execute require(deps, callback) 
+	//		once it has finished loading. Should be used with callback.
+	deps: undefined,
+	
+	// callback: Function|Array
+	//		Defines a callback to be used when dependencies are defined before 
+	//		the loader has been loaded. When provided, they cause the loader to 
+	//		execute require(deps, callback) once it has finished loading. 
+	//		Should be used with deps.
+	callback: undefined
+	
 };
 =====*/
 

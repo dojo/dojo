@@ -150,8 +150,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 		//		|	// even getting the coordinates of all the items
 		//		|	var coords = dojo.query(".thinger").coords();
 		// example:
-		//		DOM manipulation functions from the dojo.* namespace area also
-		//		available:
+		//		DOM manipulation functions from the dojo.* namespace area also available:
 		//		|	// remove all of the elements in the list from their
 		//		|	// parents (akin to "deleting" them from the document)
 		//		|	dojo.query(".thinger").orphan();

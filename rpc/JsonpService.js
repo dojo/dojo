@@ -28,7 +28,7 @@ return declare("dojo.rpc.JsonpService", RpcService, {
 	strictArgChecks: false,
 
 	bind: function(method, parameters, deferredRequestHandler, url){
-		//summary:
+		// summary:
 		//		JSONP bind method. Takes remote method, parameters,
 		//		deferred, and a url, calls createRequest to make a JSON-RPC
 		//		envelope and passes that off with bind.

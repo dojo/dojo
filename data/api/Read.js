@@ -139,7 +139,7 @@ return declare("dojo.data.api.Read", null, {
 		throw new Error('Unimplemented API: dojo.data.api.Read.isItemLoaded');
 	},
 
-	loadItem: function(/* object */ keywordArgs){
+	loadItem: function(/* Object */ keywordArgs){
 		// summary:
 		//		Given an item, this method loads the item so that a subsequent call
 		//		to store.isItemLoaded(item) will return true.  If a call to
@@ -147,7 +147,7 @@ return declare("dojo.data.api.Read", null, {
 		//		then loadItem() need not do any work at all and will not even invoke
 		//		the callback handlers.  So, before invoking this method, check that
 		//		the item has not already been loaded.
-		// 	keywordArgs:
+		// keywordArgs:
 		//		An anonymous object that defines the item to load and callbacks to invoke when the
 		//		load has completed.  The format of the object is as follows:
 		// |	{

@@ -534,8 +534,8 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		String to be used as a template.
 			// map: Object|Function
 			//		If an object, it is used as a dictionary to look up substitutions.
-			//		If a function, it is called for every substitution with following
-			//		parameters: a whole match, a name, an offset, and the whole template
+			//		If a function, it is called for every substitution with following parameters:
+			//		a whole match, a name, an offset, and the whole template
 			//		string (see https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String/replace
 			//		for more details).
 			// pattern: RegEx?

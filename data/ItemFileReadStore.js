@@ -488,7 +488,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 		//		Function to parse the loaded data into item format and build the internal items array.
 		// dataObject:
 		//		The JS data object containing the raw data to convery into item format.
-		// 	returns: array
+		// returns: Array
 		//		Array of items in store item format.
 
 		// First, we define a couple little utility functions...

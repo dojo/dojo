@@ -84,7 +84,7 @@ define([
 		remove: _script._remove,
 
 		_makeScriptDeferred: function(/*Object*/ args, /*Function?*/ cancel){
-			//summary:
+			// summary:
 			//		sets up a Deferred object for an IO request.
 			var dfd = xhr._ioSetArgs(args, cancel || this._deferredCancel, this._deferredOk, this._deferredError);
 
@@ -148,7 +148,8 @@ define([
 		_counter: 1,
 
 		_addDeadScript: function(/*Object*/ ioArgs){
-			//summary: sets up an entry in the deadScripts array.
+			// summary:
+			//		sets up an entry in the deadScripts array.
 			script._deadScripts.push({id: ioArgs.id, frameDoc: ioArgs.frameDoc});
 			//Being extra paranoid about leaks:
 			ioArgs.frameDoc = null;
@@ -195,7 +196,8 @@ define([
 		},
 
 		_resHandle: function(/*Deferred*/ dfd){
-			//summary: inflight function to handle a completed response.
+			// summary:
+			//		inflight function to handle a completed response.
 			if(script._ioCheck(dfd)){
 				dfd.callback(dfd);
 			}else{
@@ -206,7 +208,7 @@ define([
 		},
 
 		_canAttach: function(/*===== ioArgs =====*/ ){
-			//summary:
+			// summary:
 			//		A method that can be overridden by other modules
 			//		to control when the script attachment occurs.
 			// ioArgs: Object
@@ -214,7 +216,7 @@ define([
 		},
 
 		_jsonpCallback: function(/*JSON Object*/ json){
-			//summary:
+			// summary:
 			//		generic handler for jsonp callback. A pointer to this function
 			//		is used for all jsonp callbacks.  NOTE: the "this" in this
 			//		function will be the Deferred object that represents the script
@@ -237,7 +239,7 @@ define([
 		//		if it loads.
 	};
 	script.remove = function(id, frameDocument){
-		//summary:
+		// summary:
 		//		removes the script element with the given id, from the given frameDocument.
 		//		If no frameDocument is passed, the current document is used.
 	};

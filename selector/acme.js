@@ -247,8 +247,7 @@ define([
 				//	but not:
 				//		thinger > div.howdy[type=thinger]
 				//	the indidual components of the previous query would be
-				//	split into 3 parts that would be represented a structure
-				//	like:
+				//	split into 3 parts that would be represented a structure like:
 				//		[
 				//			{
 				//				query: "thinger",

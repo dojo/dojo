@@ -4,8 +4,7 @@ function(require, uno, doh){
         "depoverlap",
         [
             function depoverlap(t){
-                //First confirm there is only one script tag for each
-                //module:
+                //First confirm there is only one script tag for each module:
                 var scripts = document.getElementsByTagName("script"),
                     i, counts = {}, modName, props, something;
                 for (var i = scripts.length - 1; i > -1; i--){

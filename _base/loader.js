@@ -517,17 +517,17 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 	has.add("config-publishRequireResult", 1, 0, 0);
 
 	dojo.require = function(moduleName, omitModuleCheck) {
-		//	summary:
+		// summary:
 		//		loads a Javascript module from the appropriate URI
 		//
-		//	moduleName: String
+		// moduleName: String
 		//		module name to load, using periods for separators,
 		//		 e.g. "dojo.date.locale".  Module paths are de-referenced by dojo's
 		//		internal mapping of locations to names and are disambiguated by
 		//		longest prefix. See `dojo.registerModulePath()` for details on
 		//		registering new modules.
 		//
-		//	omitModuleCheck: Boolean?
+		// omitModuleCheck: Boolean?
 		//		if `true`, omitModuleCheck skips the step of ensuring that the
 		//		loaded file actually defines the symbol it is referenced by.
 		//		For example if it called as `dojo.require("a.b.c")` and the
@@ -535,7 +535,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		and exception will be throws whereas no exception is raised
 		//		when called as `dojo.require("a.b.c", true)`
 		//
-		//	description:
+		// description:
 		//		Modules are loaded via dojo.require by using one of two loaders: the normal loader
 		//		and the xdomain loader. The xdomain loader is used when dojo was built with a
 		//		custom build that specified loader=xdomain and the module lives on a modulePath
@@ -585,7 +585,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		the current namespace.	It is presumed that the caller will
 		//		take care of that.
 		//
-		//	example:
+		// example:
 		//		To use dojo.require in conjunction with dojo.ready:
 		//
 		//		|	dojo.require("foo");
@@ -594,7 +594,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		|		//you can now safely do something with foo and bar
 		//		|	});
 		//
-		//	example:
+		// example:
 		//		For example, to import all symbols into a local block, you might write:
 		//
 		//		|	with (dojo.require("A.B")) {
@@ -606,7 +606,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		|	var B = dojo.require("A.B");
 		//		|	...
 		//
-		//	returns:
+		// returns:
 		//		the required namespace object
 		function doRequire(mid, omitModuleCheck){
 			var module = getModule(slashName(mid), require.module);
@@ -678,14 +678,14 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 	};
 
 	dojo.registerModulePath = function(/*String*/moduleName, /*String*/prefix){
-		//	summary:
+		// summary:
 		//		Maps a module name to a path
-		//	description:
+		// description:
 		//		An unregistered module is given the default path of ../[module],
 		//		relative to Dojo root. For example, module acme is mapped to
 		//		../acme.  If you want to use a different module name, use
 		//		dojo.registerModulePath.
-		//	example:
+		// example:
 		//		If your dojo.js is located at this location in the web root:
 		//	|	/myapp/js/dojo/dojo/dojo.js
 		//		and your modules are located at:
@@ -712,10 +712,10 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 	};
 
 	dojo.platformRequire = function(/*Object*/modMap){
-		//	summary:
+		// summary:
 		//		require one or more modules based on which host environment
 		//		Dojo is currently operating in
-		//	description:
+		// description:
 		//		This method takes a "map" of arrays which one can use to
 		//		optionally load dojo modules. The map is indexed by the
 		//		possible dojo.name_ values, with two additional values:
@@ -724,7 +724,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 		//		dojo.name_, set by your host environment. The items in the
 		//		"common" array will *always* be loaded, regardless of which
 		//		list is chosen.
-		//	example:
+		// example:
 		//		|	dojo.platformRequire({
 		//		|		browser: [
 		//		|			"foo.sample", // simple module

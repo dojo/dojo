@@ -237,9 +237,7 @@ Store.QueryResults = declare(null, {
 		//		This is an optional method, and is usually provided by dojo.store.Observable.
 		// listener: Function
 		//		The listener function is called when objects in the query results are modified
-		//		to affect the query result. The listener function is called with the following
-		//
-		//		arguments:
+		//		to affect the query result. The listener function is called with the following arguments:
 		//		| listener(object, removedFrom, insertedInto);
 		//
 		//		- The object parameter indicates the object that was create, modified, or deleted.

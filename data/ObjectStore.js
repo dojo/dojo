@@ -123,7 +123,7 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			//		that an item is loaded is situations when the item may or may not be loaded yet.
 			//		If you access a value directly through property access, you can use this to load
 			//		a lazy value as well (doesn't need to be an item).
-			//	args: Object
+			// args: Object
 			//		See dojo.data.api.Read.fetch
 			// example:
 			//	|	store.loadItem({
@@ -150,7 +150,7 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			return item;
 		},
 		close: function(request){
-			//	summary:
+			// summary:
 			// 		See dojo.data.api.Read.close()
 			return request && request.abort && request.abort();
 		},
@@ -367,10 +367,10 @@ return declare("dojo.data.ObjectStore", [Evented],{
 			//		contains a reference to the object itself as well as a
 			//		cloned and trimmed version of old object for use with
 			//		revert.
-			//	object: Object
+			// object: Object
 			//		Indicates that the given object is changing and should be marked as 
 			// 		dirty for the next save
-			// _deleting: [private]
+			// _deleting: [private] Boolean
 			
 			object.__isDirty = true;
 			//if an object is already in the list of dirty objects, don't add it again
@@ -522,20 +522,20 @@ return declare("dojo.data.ObjectStore", [Evented],{
 		// Notification Support
 
 		onSet: function(){
-			//	summary:
+			// summary:
 			// 		See dojo.data.api.Notification.onSet()			
 		},
 		onNew: function(){
-			//	summary:
+			// summary:
 			// 		See dojo.data.api.Notification.onNew()
 		},
 		onDelete:	function(){
-			//	summary:
+			// summary:
 			// 		See dojo.data.api.Notification.onDelete()			
 		},
 		// an extra to get result sets
 		onFetch: function(results){
-			//	summary:
+			// summary:
 			// 		Called when a fetch occurs			
 		}
 

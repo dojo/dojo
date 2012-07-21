@@ -62,7 +62,8 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	back.goBack = handleBackButton;
 
 	function handleForwardButton(){
-		//summary: private method. Do not call this directly.
+		// summary:
+		//		private method. Do not call this directly.
 		var last = forwardStack.pop();
 		if(!last){ return; }
 		if(last.kwArgs["forward"]){
@@ -141,10 +142,10 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	}
 
 	back.init = function(){
-		//summary:
+		// summary:
 		//		Initializes the undo stack. This must be called from a <script>
 		//		block that lives inside the `<body>` tag to prevent bugs on IE.
-		// description:
+		//
 		//		Only call this method before the page's DOM is finished loading. Otherwise
 		//		it will not work. Be careful with xdomain loading or djConfig.debugAtAllCosts scenarios,
 		//		in order for this method to work, dojo/back will need to be part of a build layer.
@@ -162,13 +163,13 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	};
 
 	back.setInitialState = function(/*Object*/args){
-		//summary:
+		// summary:
 		//		Sets the state object and back callback for the very first page
 		//		that is loaded.
-		//description:
+		//
 		//		It is recommended that you call this method as part of an event
 		//		listener that is registered via dojo/ready.
-		//args: Object
+		// args: Object
 		//		See the addToHistory() function for the list of valid args properties.
 		initialState = createState(initialHref, args, initialHash);
 	};
@@ -365,7 +366,7 @@ define(["./_base/config", "./_base/lang", "./sniff", "./dom", "./dom-construct",
 	};
 
 	back._iframeLoaded = function(evt, ifrLoc){
-		//summary:
+		// summary:
 		//		private method. Do not call this directly.
 		var query = getUrlQuery(ifrLoc.href);
 		if(query == null){

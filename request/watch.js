@@ -12,7 +12,7 @@ define([
 		_inFlight = [];
 
 	function watchInFlight(){
-		//summary:
+		// summary:
 		//		internal method that checks each inflight XMLHttpRequest to see
 		//		if it has completed or if the timeout situation applies.
 
@@ -86,7 +86,8 @@ define([
 	}
 
 	watch.cancelAll = function cancelAll(){
-		//summary: Cancels all pending IO requests, regardless of IO type
+		// summary:
+		//		Cancels all pending IO requests, regardless of IO type
 		try{
 			array.forEach(_inFlight, function(dfd){
 				try{

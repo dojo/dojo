@@ -453,7 +453,7 @@ define([
 	dojo._ioCancelAll = watch.cancelAll;
 	/*=====
 	dojo._ioCancelAll = function(){
-		//summary:
+		// summary:
 		//		Cancels all pending IO requests, regardless of IO type
 		//		(xhr, script, iframe).
 	};
@@ -512,8 +512,9 @@ define([
 	var _defaultContentType = "application/x-www-form-urlencoded";
 
 	dojo._ioAddQueryToUrl = function(/*dojo.__IoCallbackArgs*/ioArgs){
-		//summary: Adds query params discovered by the io deferred construction to the URL.
-		//Only use this for operations which are fundamentally GET-type operations.
+		// summary:
+		//		Adds query params discovered by the io deferred construction to the URL.
+		//		Only use this for operations which are fundamentally GET-type operations.
 		if(ioArgs.query.length){
 			ioArgs.url += (ioArgs.url.indexOf("?") == -1 ? "?" : "&") + ioArgs.query;
 			ioArgs.query = null;

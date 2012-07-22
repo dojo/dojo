@@ -144,8 +144,20 @@ return {
 	//		the loader has been loaded. When provided, they cause the loader to 
 	//		execute require(deps, callback) once it has finished loading. 
 	//		Should be used with deps.
-	callback: undefined
+	callback: undefined,
 	
+	// deferredInstrumentation: Boolean
+	//		Whether deferred instrumentation should be loaded or included
+	//		in builds.
+	deferredInstrumentation: true,
+
+	// useDeferredInstrumentation: Boolean | String
+	//		Whether the deferred instrumentation should be used.
+	//
+	//		* `"report-rejections"`: report each rejection as it occurs.
+	//		* `true` or `1` or `"report-unhandled-rejections"`: wait 1 second
+	//			in an attempt to detect unhandled rejections.
+	useDeferredInstrumentation: "report-unhandled-rejections"
 };
 =====*/
 

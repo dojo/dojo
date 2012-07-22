@@ -66,6 +66,19 @@ define([
 	}
 
 	return function(Deferred){
+		// summary:
+		//		Initialize instrumentation for the Deferred class.
+		// description:
+		//		Initialize instrumentation for the Deferred class.
+		//		Done automatically by `dojo/Deferred` if the
+		//		`deferredInstrumentation` and `useDeferredInstrumentation`
+		//		config options are set.
+		//
+		//		Sets up `dojo/promise/tracer` to log to the console.
+		//
+		//		Sets up instrumentation of rejected deferreds so unhandled
+		//		errors are logged to the console.
+
 		var usage = has("config-useDeferredInstrumentation");
 		if(usage){
 			tracer.on("resolved", lang.hitch(console, "log", "resolved"));

@@ -509,207 +509,6 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		return t;
 	}
 
-	/*=====
-	 var __DeclareCreatedObject = {
-		 // summary:
-		 //		Description of methods available on Objects created via dojo/declare.
-
-		 inherited: function(name, args, newArgs){
-			 // summary:
-			 //		Calls a super method.
-			 // name: String?
-			 //		The optional method name. Should be the same as the caller's
-			 //		name. Usually "name" is specified in complex dynamic cases, when
-			 //		the calling method was dynamically added, undecorated by
-			 //		declare(), and it cannot be determined.
-			 // args: Arguments
-			 //		The caller supply this argument, which should be the original
-			 //		"arguments".
-			 // newArgs: Object?
-			 //		If "true", the found function will be returned without
-			 //		executing it.
-			 //		If Array, it will be used to call a super method. Otherwise
-			 //		"args" will be used.
-			 // returns:
-			 //		Whatever is returned by a super method, or a super method itself,
-			 //		if "true" was specified as newArgs.
-			 // description:
-			 //		This method is used inside method of classes produced with
-			 //		declare() to call a super method (next in the chain). It is
-			 //		used for manually controlled chaining. Consider using the regular
-			 //		chaining, because it is faster. Use "this.inherited()" only in
-			 //		complex cases.
-			 //
-			 //		This method cannot me called from automatically chained
-			 //		constructors including the case of a special (legacy)
-			 //		constructor chaining. It cannot be called from chained methods.
-			 //
-			 //		If "this.inherited()" cannot find the next-in-chain method, it
-			 //		does nothing and returns "undefined". The last method in chain
-			 //		can be a default method implemented in Object, which will be
-			 //		called last.
-			 //
-			 //		If "name" is specified, it is assumed that the method that
-			 //		received "args" is the parent method for this call. It is looked
-			 //		up in the chain list and if it is found the next-in-chain method
-			 //		is called. If it is not found, the first-in-chain method is
-			 //		called.
-			 //
-			 //		If "name" is not specified, it will be derived from the calling
-			 //		method (using a methoid property "nom").
-			 //
-			 // example:
-			 //	|	var B = declare(A, {
-			 //	|		method1: function(a, b, c){
-			 //	|			this.inherited(arguments);
-			 //	|		},
-			 //	|		method2: function(a, b){
-			 //	|			return this.inherited(arguments, [a + b]);
-			 //	|		}
-			 //	|	});
-			 //	|	// next method is not in the chain list because it is added
-			 //	|	// manually after the class was created.
-			 //	|	B.prototype.method3 = function(){
-			 //	|		console.log("This is a dynamically-added method.");
-			 //	|		this.inherited("method3", arguments);
-			 //	|	};
-			 // example:
-			 //	|	var B = declare(A, {
-			 //	|		method: function(a, b){
-			 //	|			var super = this.inherited(arguments, true);
-			 //	|			// ...
-			 //	|			if(!super){
-			 //	|				console.log("there is no super method");
-			 //	|				return 0;
-			 //	|			}
-			 //	|			return super.apply(this, arguments);
-			 //	|		}
-			 //	|	});
-	 		return	{};	// Object
-		 },
-
-		 getInherited: function(name, args){
-			 // summary:
-			 //		Returns a super method.
-			 // name: String?
-			 //		The optional method name. Should be the same as the caller's
-			 //		name. Usually "name" is specified in complex dynamic cases, when
-			 //		the calling method was dynamically added, undecorated by
-			 //		declare(), and it cannot be determined.
-			 // args: Arguments
-			 //		The caller supply this argument, which should be the original
-			 //		"arguments".
-			 // returns:
-			 //		Returns a super method (Function) or "undefined".
-			 // description:
-			 //		This method is a convenience method for "this.inherited()".
-			 //		It uses the same algorithm but instead of executing a super
-			 //		method, it returns it, or "undefined" if not found.
-			 //
-			 // example:
-			 //	|	var B = declare(A, {
-			 //	|		method: function(a, b){
-			 //	|			var super = this.getInherited(arguments);
-			 //	|			// ...
-			 //	|			if(!super){
-			 //	|				console.log("there is no super method");
-			 //	|				return 0;
-			 //	|			}
-			 //	|			return super.apply(this, arguments);
-			 //	|		}
-			 //	|	});
-			 return	{};	// Object
-		 },
-
-		 isInstanceOf: function(cls){
-			 // summary:
-			 //		Checks the inheritance chain to see if it is inherited from this
-			 //		class.
-			 // cls: Function
-			 //		Class constructor.
-			 // returns:
-			 //		"true", if this object is inherited from this class, "false"
-			 //		otherwise.
-			 // description:
-			 //		This method is used with instances of classes produced with
-			 //		declare() to determine of they support a certain interface or
-			 //		not. It models "instanceof" operator.
-			 //
-			 // example:
-			 //	|	var A = declare(null, {
-			 //	|		// constructor, properties, and methods go here
-			 //	|		// ...
-			 //	|	});
-			 //	|	var B = declare(null, {
-			 //	|		// constructor, properties, and methods go here
-			 //	|		// ...
-			 //	|	});
-			 //	|	var C = declare([A, B], {
-			 //	|		// constructor, properties, and methods go here
-			 //	|		// ...
-			 //	|	});
-			 //	|	var D = declare(A, {
-			 //	|		// constructor, properties, and methods go here
-			 //	|		// ...
-			 //	|	});
-			 //	|
-			 //	|	var a = new A(), b = new B(), c = new C(), d = new D();
-			 //	|
-			 //	|	console.log(a.isInstanceOf(A)); // true
-			 //	|	console.log(b.isInstanceOf(A)); // false
-			 //	|	console.log(c.isInstanceOf(A)); // true
-			 //	|	console.log(d.isInstanceOf(A)); // true
-			 //	|
-			 //	|	console.log(a.isInstanceOf(B)); // false
-			 //	|	console.log(b.isInstanceOf(B)); // true
-			 //	|	console.log(c.isInstanceOf(B)); // true
-			 //	|	console.log(d.isInstanceOf(B)); // false
-			 //	|
-			 //	|	console.log(a.isInstanceOf(C)); // false
-			 //	|	console.log(b.isInstanceOf(C)); // false
-			 //	|	console.log(c.isInstanceOf(C)); // true
-			 //	|	console.log(d.isInstanceOf(C)); // false
-			 //	|
-			 //	|	console.log(a.isInstanceOf(D)); // false
-			 //	|	console.log(b.isInstanceOf(D)); // false
-			 //	|	console.log(c.isInstanceOf(D)); // false
-			 //	|	console.log(d.isInstanceOf(D)); // true
-			 return	{};	// Object
-		 },
-
-		 extend: function(source){
-			 // summary:
-			 //		Adds all properties and methods of source to constructor's
-			 //		prototype, making them available to all instances created with
-			 //		constructor. This method is specific to constructors created with
-			 //		declare().
-			 // source: Object
-			 //		Source object which properties are going to be copied to the
-			 //		constructor's prototype.
-			 // description:
-			 //		Adds source properties to the constructor's prototype. It can
-			 //		override existing properties.
-			 //
-			 //		This method is similar to dojo.extend function, but it is specific
-			 //		to constructors produced by declare(). It is implemented
-			 //		using dojo.safeMixin, and it skips a constructor property,
-			 //		and properly decorates copied functions.
-			 //
-			 // example:
-			 //	|	var A = declare(null, {
-			 //	|		m1: function(){},
-			 //	|		s1: "Popokatepetl"
-			 //	|	});
-			 //	|	A.extend({
-			 //	|		m1: function(){},
-			 //	|		m2: function(){},
-			 //	|		f1: true,
-			 //	|		d1: 42
-			 //	|	});
-		 }
-	 };
-	 =====*/
-
 	function declare(className, superclass, props){
 		// summary:
 		//		Create a feature-rich constructor from compact notation.
@@ -725,7 +524,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//		An object whose properties are copied to the created prototype.
 		//		Add an instance-initialization function by making it a property
 		//		named "constructor".
-		// returns: __DeclareCreatedObject
+		// returns: dojo/_base/declare.__DeclareCreatedObject
 		//		New constructor function.
 		// description:
 		//		Create a constructor using a compact notation for inheritance and
@@ -1035,6 +834,208 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 
 		return ctor;	// Function
 	}
+
+	/*=====
+	declare.__DeclareCreatedObject = {
+		// summary:
+		//		dojo/_base/declare() returns a constructor `C`.   `new C()` returns an Object with the following
+		//		methods, in addition to the methods and properties specified via the arguments passed to declare().
+
+		inherited: function(name, args, newArgs){
+			// summary:
+			//		Calls a super method.
+			// name: String?
+			//		The optional method name. Should be the same as the caller's
+			//		name. Usually "name" is specified in complex dynamic cases, when
+			//		the calling method was dynamically added, undecorated by
+			//		declare(), and it cannot be determined.
+			// args: Arguments
+			//		The caller supply this argument, which should be the original
+			//		"arguments".
+			// newArgs: Object?
+			//		If "true", the found function will be returned without
+			//		executing it.
+			//		If Array, it will be used to call a super method. Otherwise
+			//		"args" will be used.
+			// returns:
+			//		Whatever is returned by a super method, or a super method itself,
+			//		if "true" was specified as newArgs.
+			// description:
+			//		This method is used inside method of classes produced with
+			//		declare() to call a super method (next in the chain). It is
+			//		used for manually controlled chaining. Consider using the regular
+			//		chaining, because it is faster. Use "this.inherited()" only in
+			//		complex cases.
+			//
+			//		This method cannot me called from automatically chained
+			//		constructors including the case of a special (legacy)
+			//		constructor chaining. It cannot be called from chained methods.
+			//
+			//		If "this.inherited()" cannot find the next-in-chain method, it
+			//		does nothing and returns "undefined". The last method in chain
+			//		can be a default method implemented in Object, which will be
+			//		called last.
+			//
+			//		If "name" is specified, it is assumed that the method that
+			//		received "args" is the parent method for this call. It is looked
+			//		up in the chain list and if it is found the next-in-chain method
+			//		is called. If it is not found, the first-in-chain method is
+			//		called.
+			//
+			//		If "name" is not specified, it will be derived from the calling
+			//		method (using a methoid property "nom").
+			//
+			// example:
+			//	|	var B = declare(A, {
+			//	|		method1: function(a, b, c){
+			//	|			this.inherited(arguments);
+			//	|		},
+			//	|		method2: function(a, b){
+			//	|			return this.inherited(arguments, [a + b]);
+			//	|		}
+			//	|	});
+			//	|	// next method is not in the chain list because it is added
+			//	|	// manually after the class was created.
+			//	|	B.prototype.method3 = function(){
+			//	|		console.log("This is a dynamically-added method.");
+			//	|		this.inherited("method3", arguments);
+			//	|	};
+			// example:
+			//	|	var B = declare(A, {
+			//	|		method: function(a, b){
+			//	|			var super = this.inherited(arguments, true);
+			//	|			// ...
+			//	|			if(!super){
+			//	|				console.log("there is no super method");
+			//	|				return 0;
+			//	|			}
+			//	|			return super.apply(this, arguments);
+			//	|		}
+			//	|	});
+			return	{};	// Object
+		},
+
+		getInherited: function(name, args){
+			// summary:
+			//		Returns a super method.
+			// name: String?
+			//		The optional method name. Should be the same as the caller's
+			//		name. Usually "name" is specified in complex dynamic cases, when
+			//		the calling method was dynamically added, undecorated by
+			//		declare(), and it cannot be determined.
+			// args: Arguments
+			//		The caller supply this argument, which should be the original
+			//		"arguments".
+			// returns:
+			//		Returns a super method (Function) or "undefined".
+			// description:
+			//		This method is a convenience method for "this.inherited()".
+			//		It uses the same algorithm but instead of executing a super
+			//		method, it returns it, or "undefined" if not found.
+			//
+			// example:
+			//	|	var B = declare(A, {
+			//	|		method: function(a, b){
+			//	|			var super = this.getInherited(arguments);
+			//	|			// ...
+			//	|			if(!super){
+			//	|				console.log("there is no super method");
+			//	|				return 0;
+			//	|			}
+			//	|			return super.apply(this, arguments);
+			//	|		}
+			//	|	});
+			return	{};	// Object
+		},
+
+		isInstanceOf: function(cls){
+			// summary:
+			//		Checks the inheritance chain to see if it is inherited from this
+			//		class.
+			// cls: Function
+			//		Class constructor.
+			// returns:
+			//		"true", if this object is inherited from this class, "false"
+			//		otherwise.
+			// description:
+			//		This method is used with instances of classes produced with
+			//		declare() to determine of they support a certain interface or
+			//		not. It models "instanceof" operator.
+			//
+			// example:
+			//	|	var A = declare(null, {
+			//	|		// constructor, properties, and methods go here
+			//	|		// ...
+			//	|	});
+			//	|	var B = declare(null, {
+			//	|		// constructor, properties, and methods go here
+			//	|		// ...
+			//	|	});
+			//	|	var C = declare([A, B], {
+			//	|		// constructor, properties, and methods go here
+			//	|		// ...
+			//	|	});
+			//	|	var D = declare(A, {
+			//	|		// constructor, properties, and methods go here
+			//	|		// ...
+			//	|	});
+			//	|
+			//	|	var a = new A(), b = new B(), c = new C(), d = new D();
+			//	|
+			//	|	console.log(a.isInstanceOf(A)); // true
+			//	|	console.log(b.isInstanceOf(A)); // false
+			//	|	console.log(c.isInstanceOf(A)); // true
+			//	|	console.log(d.isInstanceOf(A)); // true
+			//	|
+			//	|	console.log(a.isInstanceOf(B)); // false
+			//	|	console.log(b.isInstanceOf(B)); // true
+			//	|	console.log(c.isInstanceOf(B)); // true
+			//	|	console.log(d.isInstanceOf(B)); // false
+			//	|
+			//	|	console.log(a.isInstanceOf(C)); // false
+			//	|	console.log(b.isInstanceOf(C)); // false
+			//	|	console.log(c.isInstanceOf(C)); // true
+			//	|	console.log(d.isInstanceOf(C)); // false
+			//	|
+			//	|	console.log(a.isInstanceOf(D)); // false
+			//	|	console.log(b.isInstanceOf(D)); // false
+			//	|	console.log(c.isInstanceOf(D)); // false
+			//	|	console.log(d.isInstanceOf(D)); // true
+			return	{};	// Object
+		},
+
+		extend: function(source){
+			// summary:
+			//		Adds all properties and methods of source to constructor's
+			//		prototype, making them available to all instances created with
+			//		constructor. This method is specific to constructors created with
+			//		declare().
+			// source: Object
+			//		Source object which properties are going to be copied to the
+			//		constructor's prototype.
+			// description:
+			//		Adds source properties to the constructor's prototype. It can
+			//		override existing properties.
+			//
+			//		This method is similar to dojo.extend function, but it is specific
+			//		to constructors produced by declare(). It is implemented
+			//		using dojo.safeMixin, and it skips a constructor property,
+			//		and properly decorates copied functions.
+			//
+			// example:
+			//	|	var A = declare(null, {
+			//	|		m1: function(){},
+			//	|		s1: "Popokatepetl"
+			//	|	});
+			//	|	A.extend({
+			//	|		m1: function(){},
+			//	|		m2: function(){},
+			//	|		f1: true,
+			//	|		d1: 42
+			//	|	});
+		}
+	};
+	=====*/
 
 	// For back-compat, remove for 2.0
 	dojo.safeMixin = declare.safeMixin = safeMixin;

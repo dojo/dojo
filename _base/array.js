@@ -72,7 +72,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		};
 	}
 
-	var array = {						 // the export object
+	var array = {
 		// summary:
 		//		The Javascript v1.6 array extensions.
 

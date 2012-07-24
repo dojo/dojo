@@ -5,7 +5,7 @@ define(["./kernel", "./lang", "../on"], function(dojo, lang, on){
 
 var win = window;
 
-var unload = {		// module export
+var unload = {
 	// summary:
 	//		This module contains the document and window unload detection API.
 

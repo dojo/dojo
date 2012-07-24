@@ -29,7 +29,7 @@ lang.extend(NodeList, {
 
 	wipeIn: function(args){
 		// summary:
-		//		wipe in all elements of this NodeList via `dojo.fx.wipeIn`
+		//		wipe in all elements of this NodeList via `dojo/fx.wipeIn()`
 		//
 		// args: Object?
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of
@@ -53,7 +53,7 @@ lang.extend(NodeList, {
 
 	wipeOut: function(args){
 		// summary:
-		//		wipe out all elements of this NodeList via `dojo.fx.wipeOut`
+		//		wipe out all elements of this NodeList via `dojo/fx.wipeOut()`
 		//
 		// args: Object?
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of
@@ -72,7 +72,7 @@ lang.extend(NodeList, {
 
 	slideTo: function(args){
 		// summary:
-		//		slide all elements of the node list to the specified place via `dojo.fx.slideTo`
+		//		slide all elements of the node list to the specified place via `dojo/fx.slideTo()`
 		//
 		// args: Object?
 		//		Additional dojo/_base/fx.Animation arguments to mix into this set with the addition of

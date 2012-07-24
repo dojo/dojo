@@ -17,7 +17,7 @@ var Observable = function(/*Store*/ store){
 	//		Create a Memory store that returns an observable query, and then log some
 	//		information about that query.
 	//
-	//	|	var store = dojo.store.Observable(new dojo.store.Memory({
+	//	|	var store = Observable(new Memory({
 	//	|		data: [
 	//	|			{id: 1, name: "one", prime: false},
 	//	|			{id: 2, name: "two", even: true, prime: true},

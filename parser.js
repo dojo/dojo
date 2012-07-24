@@ -455,7 +455,7 @@ define(
 			//		and return an array of objects that represent potential widgets to be
 			//		instantiated. Searches for either data-dojo-type="MID" or dojoType="MID" where
 			//		"MID" is a module ID like "dijit/form/Button" or a fully qualified Class name
-			//		like "dijit.form.Button".  If the MID is not currently available, scan will
+			//		like "dijit/form/Button".  If the MID is not currently available, scan will
 			//		attempt to require() in the module.
 			//
 			//		See parser.parse() for details of markup.
@@ -749,7 +749,7 @@ define(
 			//		Search specified node (or root node) recursively for class instances,
 			//		and instantiate them. Searches for either data-dojo-type="Class" or
 			//		dojoType="Class" where "Class" is a a fully qualified class name,
-			//		like `dijit.form.Button`
+			//		like `dijit/form/Button`
 			//
 			//		Using `data-dojo-type`:
 			//		Attributes using can be mixed into the parameters used to instantiate the
@@ -797,19 +797,19 @@ define(
 			//		fashion and `parser.parse().then(function(instances){...})` should be used.
 			// example:
 			//		Parse all widgets on a page:
-			//	|		dojo.parser.parse();
+			//	|		parser.parse();
 			// example:
 			//		Parse all classes within the node with id="foo"
-			//	|		dojo.parser.parse(dojo.byId('foo'));
+			//	|		parser.parse(dojo.byId('foo'));
 			// example:
 			//		Parse all classes in a page, but do not call .startup() on any
 			//		child
-			//	|		dojo.parser.parse({ noStart: true })
+			//	|		parser.parse({ noStart: true })
 			// example:
 			//		Parse all classes in a node, but do not call .startup()
-			//	|		dojo.parser.parse(someNode, { noStart:true });
+			//	|		parser.parse(someNode, { noStart:true });
 			//	|		// or
-			//	|		dojo.parser.parse({ noStart:true, rootNode: someNode });
+			//	|		parser.parse({ noStart:true, rootNode: someNode });
 
 			// determine the root node and options based on the passed arguments.
 			var root;

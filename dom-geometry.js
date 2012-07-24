@@ -52,7 +52,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), px = style.toPixelValue,
@@ -81,7 +81,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		node = dom.byId(node);
 		var px = style.toPixelValue, s = computedStyle || style.getComputedStyle(node),
@@ -111,7 +111,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node),
@@ -146,7 +146,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), px = style.toPixelValue,
@@ -180,7 +180,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), me = geom.getMarginExtents(node, s),
@@ -229,7 +229,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		// clientWidth/Height are important since the automatically account for scrollbars
 		// fallback to offsetWidth/Height for special cases (see #3378)
@@ -254,8 +254,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 	// Box setters depend on box context because interpretation of width/height styles
 	// vary wrt box context.
 	//
-	// The value of dojo.boxModel is used to determine box context.
-	// dojo.boxModel can be set directly to change behavior.
+	// The value of boxModel is used to determine box context.
+	// boxModel can be set directly to change behavior.
 	//
 	// Beware of display: inline objects that have padding styles
 	// because the user agent ignores padding (it's a bogus setup anyway)
@@ -336,7 +336,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		node = dom.byId(node);
 		var w = box.w, h = box.h;
@@ -370,13 +370,13 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), w = box.w, h = box.h,
 		// Some elements have special padding, margin, and box-model settings.
 		// To use box functions you may need to set padding, margin explicitly.
-		// Controlling box-model is harder, in a pinch you might set dojo.boxModel.
+		// Controlling box-model is harder, in a pinch you might set dojo/dom-geometry.boxModel.
 			pb = usesBorderBox(node) ? nilExtents : geom.getPadBorderExtents(node, s),
 			mb = geom.getMarginExtents(node, s);
 		if(has("webkit")){
@@ -563,7 +563,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		dojo.getComputedStyle to get one. It is a better way, calling
 		//		dojo.computedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
-		//		object of dojo.getComputedStyle.
+		//		object of dojo/dom-style.getComputedStyle().
 
 		node = dom.byId(node);
 		var me = geom.getMarginExtents(node, computedStyle || style.getComputedStyle(node));

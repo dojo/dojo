@@ -14,7 +14,7 @@ define([
 		// summary:
 		//		All the properties described in the dojo.__ioArgs type, apply to this
 		//		type as well, EXCEPT "handleAs". It is not applicable to
-		//		dojo.io.script.get() calls, since it is implied by the usage of
+		//		dojo/io/script.get() calls, since it is implied by the usage of
 		//		"jsonp" (response will be a JSONP call returning JSON)
 		//		or the response is pure JavaScript defined in
 		//		the body of the script that was attached.

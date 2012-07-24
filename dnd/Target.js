@@ -5,7 +5,7 @@ define([ "../_base/declare", "../dom-class", "./Source" ], function(declare, dom
 
 		constructor: function(/*===== node, params =====*/){
 			// summary:
-			//		a constructor of the Target --- see the `dojo.dnd.Source.constructor` for details
+			//		a constructor of the Target --- see the `dojo/dnd/Source` constructor for details
 			this.isSource = false;
 			domClass.remove(this.node, "dojoDndSource");
 		}

@@ -203,10 +203,10 @@ return declare("dojo.data.api.Read", null, {
 		//
 		//		This does not mean that custom stores can not add methods and properties to the request object
 		//		returned, only that the API does not require it.  For more info about the Request API,
-		//		see dojo.data.api.Request
+		//		see dojo/data/api/Request
 		// keywordArgs:
 		//		The keywordArgs parameter may either be an instance of
-		//		conforming to dojo.data.api.Request or may be a simple anonymous object
+		//		conforming to dojo/data/api/Request or may be a simple anonymous object
 		//		that may contain any of the following:
 		// |	{
 		// |		query: query-object or query-string,
@@ -229,7 +229,7 @@ return declare("dojo.data.api.Read", null, {
 		//		####The *query* parameter
 		//
 		//		The query may be optional in some data store implementations.
-		//		The dojo.data.api.Read API does not specify the syntax or semantics
+		//		The dojo/data/api/Read API does not specify the syntax or semantics
 		//		of the query itself -- each different data store implementation
 		//		may have its own notion of what a query should look like.
 		//		However, as of dojo 0.9, 1.0, and 1.1, all the provided datastores in dojo.data
@@ -239,7 +239,7 @@ return declare("dojo.data.api.Read", null, {
 		//		when they dynamically update the query.  Therefore, for maximum compatibility with dijit
 		//		widgets the recommended query parameter is a key/value object.  That does not mean that the
 		//		the datastore may not take alternative query forms, such as a simple string, a Date, a number,
-		//		or a mix of such.  Ultimately, The dojo.data.api.Read API is agnostic about what the query
+		//		or a mix of such.  Ultimately, The dojo/data/api/Read API is agnostic about what the query
 		//		format.
 		//
 		//		Further note:  In general for query objects that accept strings as attribute
@@ -340,7 +340,7 @@ return declare("dojo.data.api.Read", null, {
 		//		of the list.  In the descending order case, it such items should appear at the top of the list.
 		// returns:
 		//		The fetch() method will return a javascript object conforming to the API
-		//		defined in dojo.data.api.Request.  In general, it will be the keywordArgs
+		//		defined in dojo/data/api/Request.  In general, it will be the keywordArgs
 		//		object returned with the required functions in Request.js attached.
 		//		Its general purpose is to provide a convenient way for a caller to abort an
 		//		ongoing fetch.
@@ -381,7 +381,7 @@ return declare("dojo.data.api.Read", null, {
 		//		|	var request = store.fetch({query:{author:"King"}, queryOptions:(ignoreCase: true}, start: 0, count:100, onComplete: showKing});
 		// example:
 		//		Paging
-		//		|	var store = new dojo.data.LargeRdbmsStore({url:"jdbc:odbc:foobar"});
+		//		|	var store = new LargeRdbmsStore({url:"jdbc:odbc:foobar"});
 		//		|	var fetchArgs = {
 		//		|		query: {type:"employees", name:"Hillary *"}, // string matching
 		//		|		sort: [{attribute:"department", descending:true}],
@@ -406,12 +406,12 @@ return declare("dojo.data.api.Read", null, {
 		//		The getFeatures() method returns an simple keyword values object
 		//		that specifies what interface features the datastore implements.
 		//		A simple CsvStore may be read-only, and the only feature it
-		//		implements will be the 'dojo.data.api.Read' interface, so the
+		//		implements will be the 'dojo/data/api/Read' interface, so the
 		//		getFeatures() method will return an object like this one:
 		//		{'dojo.data.api.Read': true}.
 		//		A more sophisticated datastore might implement a variety of
-		//		interface features, like 'dojo.data.api.Read', 'dojo.data.api.Write',
-		//		'dojo.data.api.Identity', and 'dojo.data.api.Attribution'.
+		//		interface features, like 'dojo.data.api.Read', 'dojo/data/api/Write',
+		//		'dojo.data.api.Identity', and 'dojo/data/api/Attribution'.
 		return {
 			'dojo.data.api.Read': true
 		};

@@ -171,7 +171,7 @@ lang.mixin(robot, {
 		//		returning a doh.Deferred object the user should return in their runTest function as part of a DOH test.
 		// example:
 		// |	runTest: function(){
-		// |		return waitForPageLoad(function(){ doh.robot.keyPress(dojo.keys.ENTER, 500); });
+		// |		return waitForPageLoad(function(){ doh.robot.keyPress(keys.ENTER, 500); });
 		// |	}
 		// submitActions:
 		//		The doh.robot will execute the actions the test passes into the submitActions argument (like clicking the submit button),

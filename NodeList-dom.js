@@ -48,9 +48,9 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			// description:
 			//		If content is an object, it can have special properties "template" and
 			//		"parse". If "template" is defined, then the template value is run through
-			//		dojo.string.substitute (if dojo.string.substitute has been dojo.required elsewhere),
+			//		dojo.string.substitute (if dojo/string.substitute() has been dojo.required elsewhere),
 			//		or if templateFunc is a function on the content, that function will be used to
-			//		transform the template into a final string to be used for for passing to dojo._toDom.
+			//		transform the template into a final string to be used for for passing to dojo/dom-construct.toDom().
 			//		If content.parse is true, then it is remembered for later, for when the content
 			//		nodes are inserted into the DOM. At that point, the nodes will be parsed for widgets
 			//		(if dojo.parser has been dojo.required elsewhere).
@@ -493,7 +493,7 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			// |	dojo.require("dojo.string");
 			// |	dojo.require("dojo.parser");
 			// |	var notes = dojo.query(".note").addContent({
-			// |		template: '<button dojoType="dijit.form.Button">${text}</button>',
+			// |		template: '<button dojoType="dijit/form/Button">${text}</button>',
 			// |		parse: true,
 			// |		text: "Send"
 			// |	});

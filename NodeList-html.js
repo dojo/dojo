@@ -16,21 +16,21 @@ var NodeList = query.NodeList;
 lang.extend(NodeList, {
 	html: function(/* String|DomNode|NodeList? */ content, /* Object? */params){
 		// summary:
-		//		see `dojo.html.set()`. Set the content of all elements of this NodeList
+		//		see `dojo/html.set()`. Set the content of all elements of this NodeList
 		//
 		// content:
 		//		An html string, node or enumerable list of nodes for insertion into the dom
 		//
 		// params:
-		//		Optional flags/properties to configure the content-setting. See dojo.html._ContentSetter
+		//		Optional flags/properties to configure the content-setting. See dojo/html._ContentSetter
 		//
 		// description:
-		//		Based around `dojo.html.set()`, set the content of the Elements in a
+		//		Based around `dojo/html.set()`, set the content of the Elements in a
 		//		NodeList to the given content (string/node/nodelist), with optional arguments
 		//		to further tune the set content behavior.
 		//
 		// example:
-		//	| dojo.query(".thingList").html("<li dojoType='dojo.dnd.Moveable'>1</li><li dojoType='dojo.dnd.Moveable'>2</li><li dojoType='dojo.dnd.Moveable'>3</li>",
+		//	| query(".thingList").html("<li data-dojo-type='dojo/dnd/Moveable'>1</li><li data-dojo-type='dojo/dnd/Moveable'>2</li><li data-dojo-type='dojo/dnd/Moveable'>3</li>",
 		//	| {
 		//	| 	parseContent: true,
 		//	| 	onBegin: function(){

@@ -519,8 +519,8 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 			//		specified properties and each node in the NodeList as a
 			//		srcNodeRef.
 			// example:
-			//		Grabs all buttons in the page and converts them to diji.form.Buttons.
-			//	|	var buttons = dojo.query("button").instantiate("dijit.form.Button", {showLabel: true});
+			//		Grabs all buttons in the page and converts them to dijit/form/Button's.
+			//	|	var buttons = query("button").instantiate(Button, {showLabel: true});
 			var c = lang.isFunction(declaredClass) ? declaredClass : lang.getObject(declaredClass);
 			properties = properties || {};
 			return this.forEach(function(node){

@@ -96,7 +96,7 @@ define([
 		//		super expensive: GC all data in the data for nodes that no longer exist in the dom.
 		//		MUCH safer to do this yourself, manually, on a per-node basis (via `NodeList.removeData()`)
 		//		provided as a stop-gap for exceptionally large/complex applications with constantly changing
-		//		content regions (eg: a dijit.layout.ContentPane with replacing data)
+		//		content regions (eg: a dijit/layout/ContentPane with replacing data)
 		//		There is NO automatic GC going on. If you dojo.destroy() a node, you should _removeNodeData
 		//		prior to destruction.
 		var livePids = query("[" + dataattr + "]").map(dopid);

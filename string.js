@@ -48,7 +48,7 @@ string.pad = function(/*String*/text, /*Integer*/size, /*String?*/ch, /*Boolean?
 	//		adds padding at the end if true, otherwise pads at start
 	// example:
 	//	|	// Fill the string to length 10 with "+" characters on the right.  Yields "Dojo++++++".
-	//	|	dojo.string.pad("Dojo", 10, "+", true);
+	//	|	string.pad("Dojo", 10, "+", true);
 
 	if(!ch){
 		ch = '0';
@@ -80,7 +80,7 @@ string.substitute = function(	/*String*/		template,
 	//		Substitutes two expressions in a string from an Array or Object
 	//	|	// returns "File 'foo.html' is not found in directory '/temp'."
 	//	|	// by providing substitution data in an Array
-	//	|	dojo.string.substitute(
+	//	|	string.substitute(
 	//	|		"File '${0}' is not found in directory '${1}'.",
 	//	|		["foo.html","/temp"]
 	//	|	);
@@ -88,14 +88,14 @@ string.substitute = function(	/*String*/		template,
 	//	|	// also returns "File 'foo.html' is not found in directory '/temp'."
 	//	|	// but provides substitution data in an Object structure.  Dotted
 	//	|	// notation may be used to traverse the structure.
-	//	|	dojo.string.substitute(
+	//	|	string.substitute(
 	//	|		"File '${name}' is not found in directory '${info.dir}'.",
 	//	|		{ name: "foo.html", info: { dir: "/temp" } }
 	//	|	);
 	// example:
 	//		Use a transform function to modify the values:
 	//	|	// returns "file 'foo.html' is not found in directory '/temp'."
-	//	|	dojo.string.substitute(
+	//	|	string.substitute(
 	//	|		"${0} is not found in ${1}.",
 	//	|		["foo.html","/temp"],
 	//	|		function(str){
@@ -107,7 +107,7 @@ string.substitute = function(	/*String*/		template,
 	// example:
 	//		Use a formatter
 	//	|	// returns "thinger -- howdy"
-	//	|	dojo.string.substitute(
+	//	|	string.substitute(
 	//	|		"${0:postfix}", ["thinger"], null, {
 	//	|			postfix: function(value, key){
 	//	|				return value + " -- howdy";

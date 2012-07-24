@@ -234,7 +234,7 @@ Store.QueryResults = declare(null, {
 	observe: function(listener, includeAllUpdates){
 		// summary:
 		//		This registers a callback for notification of when data is modified in the query results.
-		//		This is an optional method, and is usually provided by dojo.store.Observable.
+		//		This is an optional method, and is usually provided by dojo/store/Observable.
 		// listener: Function
 		//		The listener function is called when objects in the query results are modified
 		//		to affect the query result. The listener function is called with the following arguments:

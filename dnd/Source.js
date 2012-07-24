@@ -89,7 +89,7 @@ var Source = declare("dojo.dnd.Source", Selector, {
 		//		node or node's id to build the source on
 		// params:
 		//		any property of this class may be configured via the params
-		//		object which is mixed-in to the `dojo.dnd.Source` instance
+		//		object which is mixed-in to the `dojo/dnd/Source` instance
 		lang.mixin(this, lang.mixin({}, params));
 		var type = this.accept;
 		if(type.length){

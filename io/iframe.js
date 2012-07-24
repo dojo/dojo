@@ -49,7 +49,7 @@ return kernel.io.iframe = {
 		// summary:
 		//		Creates a hidden iframe in the page. Used mostly for IO
 		//		transports.  You do not need to call this to start a
-		//		dojo.io.iframe request. Just call send().
+		//		dojo/io/iframe request. Just call send().
 		// fname: String
 		//		The name of the iframe. Used for the name attribute on the
 		//		iframe.

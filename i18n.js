@@ -307,7 +307,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 			preloadL10n = thisModule._preloadLocalizations = function(/*String*/bundlePrefix, /*Array*/localesGenerated, /*boolean?*/ guaranteedAmdFormat, /*function?*/ contextRequire){
 				// summary:
-				//		Load available flattened resource bundles associated with a particular module for dojo.locale and all dojo.config.extraLocale (if any)
+				//		Load available flattened resource bundles associated with a particular module for dojo/locale and all dojo/config.extraLocale (if any)
 				// description:
 				//		Only called by built layer files. The entire locale hierarchy is loaded. For example,
 				//		if locale=="ab-cd", then ROOT, "ab", and "ab-cd" are loaded. This is different than v1.6-

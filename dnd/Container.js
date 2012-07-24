@@ -52,7 +52,7 @@ var Container = declare("dojo.dnd.Container", Evented, {
 
 	// map: Hash<String, Container.Item>
 	//		Map from an item's id (which is also the DOMNode's id) to
-	//		the dojo.dnd.Container.Item itself.
+	//		the dojo/dnd/Container.Item itself.
 	map: {},
 	=====*/
 

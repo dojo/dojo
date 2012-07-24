@@ -57,7 +57,7 @@ define([
 		//		functions defined in the original xhr call.
 		// example:
 		//		Creating a custom content-handler:
-		//	|	dojo.contentHandlers.makeCaps = function(xhr){
+		//	|	xhr.contentHandlers.makeCaps = function(xhr){
 		//	|		return xhr.responseText.toUpperCase();
 		//	|	}
 		//	|	// and later:
@@ -180,18 +180,18 @@ define([
 		//		Sets the raw body for an HTTP request. If this is used, then the content
 		//		property is ignored. This is mostly useful for HTTP methods that have
 		//		a body to their requests, like PUT or POST. This property can be used instead
-		//		of postData and putData for dojo.rawXhrPost and dojo.rawXhrPut respectively.
+		//		of postData and putData for dojo/_base/xhr.rawXhrPost and dojo/_base/xhr.rawXhrPut respectively.
 		// ioPublish: Boolean?
 		//		Set this explicitly to false to prevent publishing of topics related to
 		//		IO operations. Otherwise, if djConfig.ioPublish is set to true, topics
-		//		will be published via dojo.publish for different phases of an IO operation.
-		//		See dojo.__IoPublish for a list of topics that are published.
+		//		will be published via dojo/topic.publish() for different phases of an IO operation.
+		//		See dojo/main.__IoPublish for a list of topics that are published.
 
 		load: function(response, ioArgs){
 			// summary:
 			//		This function will be
 			//		called on a successful HTTP response code.
-	 		// ioArgs: dojo.__IoCallbackArgs
+	 		// ioArgs: dojo/main.__IoCallbackArgs
 			//		Provides additional information about the request.
 			// response: Object
 			//		The response in the format as defined with handleAs.
@@ -205,7 +205,7 @@ define([
 			//		exception, unless djConfig.debugAtAllCosts is true.	 This allows deployed applications
 			//		to continue to run even when a logic error happens in the callback, while making
 			//		it easier to troubleshoot while in debug mode.
-			// ioArgs: dojo.__IoCallbackArgs
+			// ioArgs: dojo/main.__IoCallbackArgs
 			//		Provides additional information about the request.
 			// response: Object
 			//		The response in the format as defined with handleAs.
@@ -220,7 +220,7 @@ define([
 			//		was called because of success (load) or failure (error).
 			// response: Object
 			//		The response in the format as defined with handleAs.
-			// ioArgs: dojo.__IoCallbackArgs
+			// ioArgs: dojo/main.__IoCallbackArgs
 			//		Provides additional information about the request.
 		}
 	});
@@ -244,16 +244,16 @@ define([
 		//		The final indicator on how the response will be
 		//		handled.
 		// id: String
-		//		For dojo.io.script calls only, the internal
+		//		For dojo/io/script calls only, the internal
 		//		script ID used for the request.
 		// canDelete: Boolean
-		//		For dojo.io.script calls only, indicates
+		//		For dojo/io/script calls only, indicates
 		//		whether the script tag that represents the
 		//		request can be deleted after callbacks have
 		//		been called. Used internally to know when
 		//		cleanup can happen on JSONP-type requests.
 		// json: Object
-		//		For dojo.io.script calls only: holds the JSON
+		//		For dojo/io/script calls only: holds the JSON
 		//		response for JSONP-type requests. Used
 		//		internally to hold on to the JSON responses.
 		//		You should not need to access it directly --
@@ -294,7 +294,7 @@ define([
 	=====*/
 
 
-	dojo._ioSetArgs = function(/*dojo.__IoArgs*/args,
+	dojo._ioSetArgs = function(/*dojo/main.__IoArgs*/args,
 			/*Function*/canceller,
 			/*Function*/okHandler,
 			/*Function*/errHandler){
@@ -528,7 +528,7 @@ define([
 		//		the following properties are allowed for dojo.xhr* methods.
 		// handleAs: String?
 		//		Acceptable values are: text (default), json, json-comment-optional,
-		//		json-comment-filtered, javascript, xml. See `dojo.contentHandlers`
+		//		json-comment-filtered, javascript, xml. See `dojo/_base/xhr.contentHandlers`
 	 	// sync: Boolean?
 		//		false is default. Indicates whether the request should
 		//		be a synchronous (blocking) request.

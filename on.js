@@ -82,7 +82,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 	on.parse = function(target, type, listener, addListener, dontFix, matchesTarget){
 		if(type.call){
 			// event handler function
-			// on(node, dojo.touch.press, touchListener);
+			// on(node, touch.press, touchListener);
 			return type.call(matchesTarget, target, listener);
 		}
 

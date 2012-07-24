@@ -16,7 +16,7 @@ return declare("dojo.data.api.Request", null, {
 	//		This file defines methods signatures and intentionally leaves all the
 	//		methods unimplemented.
 	//
-	//		For more details on fetch, see dojo.data.api.Read.fetch().
+	//		For more details on fetch, see dojo/data/api/Read.fetch().
 
 	abort: function(){
 		// summary:
@@ -25,7 +25,7 @@ return declare("dojo.data.api.Request", null, {
 		// description:
 		//		This function is a hook point for stores to provide as a way for
 		//		a fetch to be halted mid-processing.  For more details on the fetch() api,
-		//		please see dojo.data.api.Read.fetch().
+		//		please see dojo/data/api/Read.fetch().
 		throw new Error('Unimplemented API: dojo.data.api.Request.abort');
 	}
 });

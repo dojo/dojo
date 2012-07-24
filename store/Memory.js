@@ -10,7 +10,7 @@ var base = null;
 
 return declare("dojo.store.Memory", base, {
 	// summary:
-	//		This is a basic in-memory object store. It implements dojo.store.api.Store.
+	//		This is a basic in-memory object store. It implements dojo/store/api/Store.
 	constructor: function(options){
 		// summary:
 		//		Creates a memory object store.
@@ -123,7 +123,7 @@ return declare("dojo.store.Memory", base, {
 		// example:
 		//		Given the following store:
 		//
-		// 	|	var store = new dojo.store.Memory({
+		// 	|	var store = new Memory({
 		// 	|		data: [
 		// 	|			{id: 1, name: "one", prime: false },
 		//	|			{id: 2, name: "two", even: true, prime: true},

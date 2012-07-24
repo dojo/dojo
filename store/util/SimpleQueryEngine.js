@@ -40,10 +40,10 @@ return function(query, options){
 	//
 	//	|	var myStore = function(options){
 	//	|		//	...more properties here
-	//	|		this.queryEngine = dojo.store.util.SimpleQueryEngine;
+	//	|		this.queryEngine = SimpleQueryEngine;
 	//	|		//	define our query method
 	//	|		this.query = function(query, options){
-	//	|			return dojo.store.util.QueryResults(this.queryEngine(query, options)(this.data));
+	//	|			return QueryResults(this.queryEngine(query, options)(this.data));
 	//	|		};
 	//	|	};
 

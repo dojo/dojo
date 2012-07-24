@@ -90,11 +90,11 @@ simpleFetch.fetch = function(/* Object? */ request){
 	//		with other specifics about the request that are specific to the datastore and pass
 	//		that as the request object to the handler.
 	//
-	//		For more information on this specific function, see dojo.data.api.Read.fetch()
+	//		For more information on this specific function, see dojo/data/api/Read.fetch()
 	//
 	// request:
 	//		The keywordArgs parameter may either be an instance of
-	//		conforming to dojo.data.api.Request or may be a simple anonymous object
+	//		conforming to dojo/data/api/Request or may be a simple anonymous object
 	//		that may contain any of the following:
 	// |	{
 	// |		query: query-object or query-string,
@@ -117,7 +117,7 @@ simpleFetch.fetch = function(/* Object? */ request){
 	//		####The *query* parameter
 	//
 	//		The query may be optional in some data store implementations.
-	//		The dojo.data.api.Read API does not specify the syntax or semantics
+	//		The dojo/data/api/Read API does not specify the syntax or semantics
 	//		of the query itself -- each different data store implementation
 	//		may have its own notion of what a query should look like.
 	//		However, as of dojo 0.9, 1.0, and 1.1, all the provided datastores in dojo.data
@@ -127,7 +127,7 @@ simpleFetch.fetch = function(/* Object? */ request){
 	//		when they dynamically update the query.  Therefore, for maximum compatibility with dijit
 	//		widgets the recommended query parameter is a key/value object.  That does not mean that the
 	//		the datastore may not take alternative query forms, such as a simple string, a Date, a number,
-	//		or a mix of such.  Ultimately, The dojo.data.api.Read API is agnostic about what the query
+	//		or a mix of such.  Ultimately, The dojo/data/api/Read API is agnostic about what the query
 	//		format.
 	//
 	//		Further note:  In general for query objects that accept strings as attribute

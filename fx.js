@@ -159,7 +159,7 @@ define([
 		//
 		// example:
 		//	Once `node` is faded out, fade in `otherNode`
-		//	|	dojo.fx.chain([
+		//	|	fx.chain([
 		//	|		dojo.fadeIn({ node:node }),
 		//	|		dojo.fadeOut({ node:otherNode })
 		//	|	]).play();
@@ -250,14 +250,14 @@ define([
 		//
 		// example:
 		//	Fade out `node` while fading in `otherNode` simultaneously
-		//	|	dojo.fx.combine([
+		//	|	fx.combine([
 		//	|		dojo.fadeIn({ node:node }),
 		//	|		dojo.fadeOut({ node:otherNode })
 		//	|	]).play();
 		//
 		// example:
 		//	When the longest animation ends, execute a function:
-		//	|	var anim = dojo.fx.combine([
+		//	|	var anim = fx.combine([
 		//	|		dojo.fadeIn({ node: n, duration:700 }),
 		//	|		dojo.fadeOut({ node: otherNode, duration: 300 })
 		//	|	]);
@@ -284,7 +284,7 @@ define([
 		//		(such as easing: node: duration: and so on)
 		//
 		// example:
-		//	|	dojo.fx.wipeIn({
+		//	|	fx.wipeIn({
 		//	|		node:"someId"
 		//	|	}).play()
 		var node = args.node = dom.byId(args.node), s = node.style, o;
@@ -338,7 +338,7 @@ define([
 		//		(such as easing: node: duration: and so on)
 		//
 		// example:
-		//	|	dojo.fx.wipeOut({ node:"someId" }).play()
+		//	|	fx.wipeOut({ node:"someId" }).play()
 
 		var node = args.node = dom.byId(args.node), s = node.style, o;
 

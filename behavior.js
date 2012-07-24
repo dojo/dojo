@@ -67,8 +67,8 @@ var Behavior = function(){
 		//		If the value corresponding to the ID key is a function and not a
 		//		list, it's treated as though it was the value of "found".
 		//
-		//		dojo.behavior.add() can be called any number of times before
-		//		the DOM is ready. `dojo.behavior.apply()` is called automatically
+		//		dojo/behavior.add() can be called any number of times before
+		//		the DOM is ready. `dojo/behavior.apply()` is called automatically
 		//		by `dojo.addOnLoad`, though can be called to re-apply previously added
 		//		behaviors anytime the DOM changes.
 		//
@@ -78,7 +78,7 @@ var Behavior = function(){
 		//		Simple list of properties. "found" is special. "Found" is assumed if
 		//		no property object for a given selector, and property is a function.
 		//
-		//	|	dojo.behavior.add({
+		//	|	behavior.add({
 		//	|		"#id": {
 		//	|			"found": function(element){
 		//	|				// node match found
@@ -96,14 +96,14 @@ var Behavior = function(){
 		//		 If property is a string, a dojo.publish will be issued on the channel:
 		//
 		//	|	behavior.add({
-		//	|		// dojo.publish() whenever class="noclick" found on anchors
+		//	|		// topic.publish() whenever class="noclick" found on anchors
 		//	|		"a.noclick": "/got/newAnchor",
 		//	|		"div.wrapper": {
 		//	|			"onclick": "/node/wasClicked"
 		//	|		}
 		//	|	});
-		//	|	dojo.subscribe("/got/newAnchor", function(node){
-		//	|		// handle node finding when dojo.behavior.apply() is called,
+		//	|	topic.subscribe("/got/newAnchor", function(node){
+		//	|		// handle node finding when dojo/behavior.apply() is called,
 		//	|		// provided a newly matched node is found.
 		//	|	});
 		//
@@ -202,7 +202,7 @@ var Behavior = function(){
 		//		will be added to the nodes.
 		//
 		//		apply() is called once automatically by `dojo.addOnLoad`, so
-		//		registering behaviors with `dojo.behavior.add` before the DOM is
+		//		registering behaviors with `dojo/behavior.add()` before the DOM is
 		//		ready is acceptable, provided the dojo.behavior module is ready.
 		//
 		//		Calling appy() manually after manipulating the DOM is required

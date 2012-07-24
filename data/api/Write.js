@@ -11,7 +11,7 @@ return declare("dojo.data.api.Write", Read, {
 
 	getFeatures: function(){
 		// summary:
-		//		See dojo.data.api.Read.getFeatures()
+		//		See dojo/data/api/Read.getFeatures()
 		return {
 			'dojo.data.api.Read': true,
 			'dojo.data.api.Write': true

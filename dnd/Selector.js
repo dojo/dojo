@@ -104,7 +104,7 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 	forInSelectedItems: function(/*Function*/ f, /*Object?*/ o){
 		// summary:
 		//		iterates over selected items;
-		//		see `dojo.dnd.Container.forInItems()` for details
+		//		see `dojo/dnd/Container.forInItems()` for details
 		o = o || kernel.global;
 		var s = this.selection, e = dnd._empty;
 		for(var i in s){
@@ -141,7 +141,7 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 	},
 	insertNodes: function(addSelected, data, before, anchor){
 		// summary:
-		//		inserts new data items (see `dojo.dnd.Container.insertNodes()` method for details)
+		//		inserts new data items (see `dojo/dnd/Container.insertNodes()` method for details)
 		// addSelected: Boolean
 		//		all new nodes will be added to selected items, if true, no selection change otherwise
 		// data: Array

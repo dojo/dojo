@@ -66,7 +66,7 @@ number._applyPattern = function(/*Number*/ value, /*String*/ pattern, /*number._
 	//		a pattern string as described by
 	//		[unicode.org TR35](http://www.unicode.org/reports/tr35/#Number_Format_Patterns)
 	// options: number.__FormatOptions?
-	//		_applyPattern is usually called via `dojo.number.format()` which
+	//		_applyPattern is usually called via `dojo/number.format()` which
 	//		populates an extra property in the options parameter, "customs".
 	//		The customs object specifies group and decimal parameters if set.
 
@@ -112,7 +112,7 @@ number.round = function(/*Number*/ value, /*Number?*/ places, /*Number?*/ increm
 	//		Rounds to the nearest value with the given number of decimal places, away from zero if equal.
 	//		Similar to Number.toFixed(), but compensates for browser quirks. Rounding can be done by
 	//		fractional increments also, such as the nearest quarter.
-	//		NOTE: Subject to floating point errors.  See dojox.math.round for experimental workaround.
+	//		NOTE: Subject to floating point errors.  See dojox/math/round for experimental workaround.
 	// value:
 	//		The number to round
 	// places:
@@ -121,11 +121,11 @@ number.round = function(/*Number*/ value, /*Number?*/ places, /*Number?*/ increm
 	// increment:
 	//		Rounds next place to nearest value of increment/10.  10 by default.
 	// example:
-	// |	>>> dojo.number.round(-0.5)
+	// |	>>> number.round(-0.5)
 	// |	-1
-	// |	>>> dojo.number.round(162.295, 2)
+	// |	>>> number.round(162.295, 2)
 	// |	162.29  // note floating point error.  Should be 162.3
-	// |	>>> dojo.number.round(10.71, 0, 2.5)
+	// |	>>> number.round(10.71, 0, 2.5)
 	// |	10.75
 	var factor = 10 / (increment || 10);
 	return (factor * +value).toFixed(places) / factor; // Number

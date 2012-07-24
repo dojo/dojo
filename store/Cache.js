@@ -72,9 +72,9 @@ Cache = declare(Store, {
 	//		lookup. Normally one would use a memory store for the caching
 	//		store and a server store like JsonRest for the master store.
 	// example:
-	//	|	var master = new dojo.store.Memory(data);
-	//	|	var cacher = new dojo.store.Memory();
-	//	|	var store = new dojo.store.Cache(master, cacher);
+	//	|	var master = new Memory(data);
+	//	|	var cacher = new Memory();
+	//	|	var store = new Cache(master, cacher);
 	//
 	constructor: function(masterStore, cachingStore, options){
 		// masterStore:

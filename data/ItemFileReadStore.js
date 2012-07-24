@@ -7,7 +7,7 @@ define(["../_base/kernel", "../_base/lang", "../_base/declare", "../_base/array"
 
 var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	// summary:
-	//		The ItemFileReadStore implements the dojo.data.api.Read API and reads
+	//		The ItemFileReadStore implements the dojo/data/api/Read API and reads
 	//		data from JSON files that have contents in this format --
 	// |	{ items: [
 	// |		{ name:'Kermit', color:'green', age:12, friends:['Gonzo', {_reference:{name:'Fozzie Bear'}}]},
@@ -48,7 +48,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 		this._datatypeMap = keywordParameters.typeMap || {};
 		if(!this._datatypeMap['Date']){
 			//If no default mapping for dates, then set this as default.
-			//We use the dojo.date.stamp here because the ISO format is the 'dojo way'
+			//We use the dojo/date/stamp here because the ISO format is the 'dojo way'
 			//of generically representing dates.
 			this._datatypeMap['Date'] = {
 				type: Date,
@@ -138,7 +138,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 						   /* attribute-name-string */ attribute,
 						   /* value? */ defaultValue){
 		// summary:
-		//		See dojo.data.api.Read.getValue()
+		//		See dojo/data/api/Read.getValue()
 		var values = this.getValues(item, attribute);
 		return (values.length > 0)?values[0]:defaultValue; // mixed
 	},
@@ -146,7 +146,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	getValues: function(/* dojo/data/api/Item */ item,
 						/* attribute-name-string */ attribute){
 		// summary:
-		//		See dojo.data.api.Read.getValues()
+		//		See dojo/data/api/Read.getValues()
 
 		this._assertIsItem(item);
 		this._assertIsAttribute(attribute);
@@ -156,7 +156,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	getAttributes: function(/* dojo/data/api/Item */ item){
 		// summary:
-		//		See dojo.data.api.Read.getAttributes()
+		//		See dojo/data/api/Read.getAttributes()
 		this._assertIsItem(item);
 		var attributes = [];
 		for(var key in item){
@@ -171,7 +171,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 	hasAttribute: function(	/* dojo/data/api/Item */ item,
 							   /* attribute-name-string */ attribute){
 		// summary:
-		//		See dojo.data.api.Read.hasAttribute()
+		//		See dojo/data/api/Read.hasAttribute()
 		this._assertIsItem(item);
 		this._assertIsAttribute(attribute);
 		return (attribute in item);
@@ -181,7 +181,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 							/* attribute-name-string */ attribute,
 							/* anything */ value){
 		// summary:
-		//		See dojo.data.api.Read.containsValue()
+		//		See dojo/data/api/Read.containsValue()
 		var regexp = undefined;
 		if(typeof value === "string"){
 			regexp = filterUtil.patternToRegExp(value, false);
@@ -221,7 +221,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	isItem: function(/* anything */ something){
 		// summary:
-		//		See dojo.data.api.Read.isItem()
+		//		See dojo/data/api/Read.isItem()
 		if(something && something[this._storeRefPropName] === this){
 			if(this._arrayOfAllItems[something[this._itemNumPropName]] === something){
 				return true;
@@ -232,25 +232,25 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	isItemLoaded: function(/* anything */ something){
 		// summary:
-		//		See dojo.data.api.Read.isItemLoaded()
+		//		See dojo/data/api/Read.isItemLoaded()
 		return this.isItem(something); //boolean
 	},
 
 	loadItem: function(/* object */ keywordArgs){
 		// summary:
-		//		See dojo.data.api.Read.loadItem()
+		//		See dojo/data/api/Read.loadItem()
 		this._assertIsItem(keywordArgs.item);
 	},
 
 	getFeatures: function(){
 		// summary:
-		//		See dojo.data.api.Read.getFeatures()
+		//		See dojo/data/api/Read.getFeatures()
 		return this._features; //Object
 	},
 
 	getLabel: function(/* dojo/data/api/Item */ item){
 		// summary:
-		//		See dojo.data.api.Read.getLabel()
+		//		See dojo/data/api/Read.getLabel()
 		if(this._labelAttr && this.isItem(item)){
 			return this.getValue(item,this._labelAttr); //String
 		}
@@ -259,7 +259,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	getLabelAttributes: function(/* dojo/data/api/Item */ item){
 		// summary:
-		//		See dojo.data.api.Read.getLabelAttributes()
+		//		See dojo/data/api/Read.getLabelAttributes()
 		if(this._labelAttr){
 			return [this._labelAttr]; //array
 		}
@@ -325,7 +325,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 							  /* Function */ findCallback,
 							  /* Function */ errorCallback){
 		// summary:
-		//		See dojo.data.util.simpleFetch.fetch()
+		//		See dojo/data/util.simpleFetch.fetch()
 		var self = this;
 
 		if(this._loadFinished){
@@ -455,7 +455,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	close: function(/*dojo/data/api/Request || keywordArgs || null */ request){
 		// summary:
-		//		See dojo.data.api.Read.close()
+		//		See dojo/data/api/Read.close()
 		if(this.clearOnClose &&
 			this._loadFinished &&
 			!this._loadInProgress){
@@ -733,7 +733,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	getIdentity: function(/* dojo/data/api/Item */ item){
 		// summary:
-		//		See dojo.data.api.Identity.getIdentity()
+		//		See dojo/data/api/Identity.getIdentity()
 		var identifier = this._features['dojo.data.api.Identity'];
 		if(identifier === Number){
 			return item[this._itemNumPropName]; // Number
@@ -748,7 +748,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	fetchItemByIdentity: function(/* Object */ keywordArgs){
 		// summary:
-		//		See dojo.data.api.Identity.fetchItemByIdentity()
+		//		See dojo/data/api/Identity.fetchItemByIdentity()
 
 		// Hasn't loaded yet, we have to trigger the load.
 		var item,
@@ -860,12 +860,12 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 
 	getIdentityAttributes: function(/* dojo/data/api/Item */ item){
 		// summary:
-		//		See dojo.data.api.Identity.getIdentityAttributes()
+		//		See dojo/data/api/Identity.getIdentityAttributes()
 
 		var identifier = this._features['dojo.data.api.Identity'];
 		if(identifier === Number){
 			// If (identifier === Number) it means getIdentity() just returns
-			// an integer item-number for each item.  The dojo.data.api.Identity
+			// an integer item-number for each item.  The dojo/data/api/Identity
 			// spec says we need to return null if the identity is not composed
 			// of attributes
 			return null; // null

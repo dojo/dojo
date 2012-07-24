@@ -148,7 +148,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				var ret = this.onEnd();
 
 				if(ret && ret.then){
-					// Make dojox.html._ContentSetter.set() return a Promise that resolves when load and parse complete.
+					// Make dojox/html/_ContentSetter.set() return a Promise that resolves when load and parse complete.
 					return ret;
 				}else{
 					// Vanilla dojo/html._ContentSetter.set() returns a DOMNode for back compat.   For 2.0, switch it to
@@ -344,13 +344,13 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			//		the content to be set on the parent element.
 			//		This can be an html string, a node reference or a NodeList, dojo/NodeList, Array or other enumerable list of nodes
 			// params:
-			//		Optional flags/properties to configure the content-setting. See dojo.html._ContentSetter
+			//		Optional flags/properties to configure the content-setting. See dojo/html/_ContentSetter
 			// example:
 			//		A safe string/node/nodelist content replacement/injection with hooks for extension
 			//		Example Usage:
-			//		dojo.html.set(node, "some string");
-			//		dojo.html.set(node, contentNode, {options});
-			//		dojo.html.set(node, myNode.childNodes, {options});
+			//	|	html.set(node, "some string");
+			//	|	html.set(node, contentNode, {options});
+			//	|	html.set(node, myNode.childNodes, {options});
 		if(undefined == cont){
 			console.warn("dojo.html.set: no cont argument provided, using empty string");
 			cont = "";

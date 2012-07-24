@@ -130,7 +130,7 @@ date.add = function(/*Date*/date, /*String*/interval, /*int*/amount){
 		case "day":
 			break;
 		case "weekday":
-			//i18n FIXME: assumes Saturday/Sunday weekend, but this is not always true.  see dojo.cldr.supplemental
+			//i18n FIXME: assumes Saturday/Sunday weekend, but this is not always true.  see dojo/cldr/supplemental
 
 			// Divide the increment time span into weekspans plus leftover days
 			// e.g., 8 days is one 5-day weekspan / and two leftover days
@@ -339,7 +339,7 @@ date.difference = function(/*Date*/date1, /*Date?*/date2, /*String?*/interval){
 	return Math.round(delta); // Number (integer)
 };
 
-// Don't use setObject() because it may overwrite dojo.date.steamp (if that has already been loaded)
+// Don't use setObject() because it may overwrite dojo/date/stamp (if that has already been loaded)
 has("extend-dojo") && lang.mixin(lang.getObject("dojo.date", true), date);
 
 return date;

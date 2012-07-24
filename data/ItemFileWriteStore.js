@@ -71,7 +71,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 	newItem: function(/* Object? */ keywordArgs, /* Object? */ parentInfo){
 		// summary:
-		//		See dojo.data.api.Write.newItem()
+		//		See dojo/data/api/Write.newItem()
 
 		this._assert(!this._saveInProgress);
 
@@ -201,7 +201,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 	deleteItem: function(/* dojo/data/api/Item */ item){
 		// summary:
-		//		See dojo.data.api.Write.deleteItem()
+		//		See dojo/data/api/Write.deleteItem()
 		this._assert(!this._saveInProgress);
 		this._assertIsItem(item);
 
@@ -290,19 +290,19 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 	setValue: function(/* dojo/data/api/Item */ item, /* attribute-name-string */ attribute, /* almost anything */ value){
 		// summary:
-		//		See dojo.data.api.Write.set()
+		//		See dojo/data/api/Write.set()
 		return this._setValueOrValues(item, attribute, value, true); // boolean
 	},
 
 	setValues: function(/* dojo/data/api/Item */ item, /* attribute-name-string */ attribute, /* array */ values){
 		// summary:
-		//		See dojo.data.api.Write.setValues()
+		//		See dojo/data/api/Write.setValues()
 		return this._setValueOrValues(item, attribute, values, true); // boolean
 	},
 
 	unsetAttribute: function(/* dojo/data/api/Item */ item, /* attribute-name-string */ attribute){
 		// summary:
-		//		See dojo.data.api.Write.unsetAttribute()
+		//		See dojo/data/api/Write.unsetAttribute()
 		return this._setValueOrValues(item, attribute, [], true);
 	},
 
@@ -438,7 +438,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 			success = true;
 		}
 
-		// Now we make the dojo.data.api.Notification call
+		// Now we make the dojo/data/api/Notification call
 		if(callOnSet){
 			this.onSet(item, attribute, oldValueOrValues, newValueOrValues);
 		}
@@ -620,7 +620,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 	save: function(/* object */ keywordArgs){
 		// summary:
-		//		See dojo.data.api.Write.save()
+		//		See dojo/data/api/Write.save()
 		this._assert(!this._saveInProgress);
 
 		// this._saveInProgress is set to true, briefly, from when save is first called to when it completes
@@ -665,7 +665,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 	revert: function(){
 		// summary:
-		//		See dojo.data.api.Write.revert()
+		//		See dojo/data/api/Write.revert()
 		this._assert(!this._saveInProgress);
 
 		var identity;
@@ -748,7 +748,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 	isDirty: function(/* item? */ item){
 		// summary:
-		//		See dojo.data.api.Write.isDirty()
+		//		See dojo/data/api/Write.isDirty()
 		if(item){
 			// return true if the item is dirty
 			var identity = this.getIdentity(item);
@@ -771,7 +771,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 					/*object|array*/ oldValue,
 					/*object|array*/ newValue){
 		// summary:
-		//		See dojo.data.api.Notification.onSet()
+		//		See dojo/data/api/Notification.onSet()
 
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.
@@ -779,7 +779,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 	onNew: function(/* dojo/data/api/Item */ newItem, /*object?*/ parentInfo){
 		// summary:
-		//		See dojo.data.api.Notification.onNew()
+		//		See dojo/data/api/Notification.onNew()
 
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.
@@ -787,7 +787,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 	onDelete: function(/* dojo/data/api/Item */ deletedItem){
 		// summary:
-		//		See dojo.data.api.Notification.onDelete()
+		//		See dojo/data/api/Notification.onDelete()
 
 		// No need to do anything. This method is here just so that the
 		// client code can connect observers to it.

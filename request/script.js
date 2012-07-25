@@ -134,7 +134,7 @@ define([
 		}
 
 		if(util.notify){
-			util.notify.emit('send', response);
+			util.notify.emit('send', response, dfd.promise.cancel);
 		}
 
 		if(!options.canAttach || options.canAttach(dfd)){

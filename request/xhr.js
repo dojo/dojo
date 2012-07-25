@@ -205,7 +205,7 @@ define([
 			}
 
 			if(util.notify){
-				util.notify.emit('send', response);
+				util.notify.emit('send', response, dfd.promise.cancel);
 			}
 			_xhr.send(data);
 		}catch(e){

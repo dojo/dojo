@@ -41,7 +41,7 @@ define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
 
 			// After all event handlers have run, run _on* handler
 			if(this['_on' + type]){
-				this['_on' + type].call(this, event);
+				this['_on' + type].apply(this, arguments);
 			}
 			return result;
 		}
@@ -50,8 +50,8 @@ define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
 	function notify(type, listener){
 		return hub.on(type, listener);
 	}
-	notify.emit = function(type, event){
-		return hub.emit(type, event);
+	notify.emit = function(type, event, cancel){
+		return hub.emit(type, event, cancel);
 	};
 
 	// Attach notify to dojo/request/util to avoid

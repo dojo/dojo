@@ -17,9 +17,10 @@
 			"doh",
 			"dojo/request/xhr",
 			"dojo/request/notify",
+            "dojo/errors/CancelError",
 			"dojo/_base/lang",
 			"dojo/domReady!"
-		], function(doh, xhr, notify, lang){
+		], function(doh, xhr, notify, CancelError, lang){
 			function resCounter(count, callback){
 				var resCount = 0;
 
@@ -152,7 +153,33 @@
 				tearDown: function(t){
 					t.remove();
 				}
-			}]);
+            },{
+                name: "cancel",
+                timeout: 5000,
+                runTest: function(t){
+                    var d = new doh.Deferred();
+
+                    t.remove = remover(
+                        notify("send", function(response, cancel){
+                            cancel();
+                        })
+                    );
+
+                    xhr.get("xhrDummyMethod.php").then(
+                        function(response){
+                            d.errback(1);
+                        },
+                        d.getTestCallback(function(error){
+                            t.t(error instanceof CancelError);
+                        })
+                    );
+
+                    return d;
+                },
+                tearDown: function(t){
+                    t.remove();
+                }
+            }]);
 
 			doh.run();
 		});

@@ -199,14 +199,14 @@ define([
 				}
 				formNode.target = iframe._iframeName;
 
-				notify && notify.emit('send', response);
+				notify && notify.emit('send', response, dfd.promise.cancel);
 				iframe._notifyStart(response);
 				formNode.submit();
 			}else{
 				// otherwise we post a GET string by changing URL location for the
 				// iframe
 
-				notify && notify.emit('send', response);
+				notify && notify.emit('send', response, dfd.promise.cancel);
 				iframe._notifyStart(response);
 				iframe.setSrc(iframe._frame, response.url, true);
 			}

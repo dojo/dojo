@@ -135,7 +135,7 @@ define([
 		var response = util.parseArgs(
 			url,
 			util.deepCreate(defaultOptions, options),
-			has('native-formdata') && options.data && options.data instanceof FormData
+			has('native-formdata') && options && options.data && options.data instanceof FormData
 		);
 		url = response.url;
 		options = response.options;

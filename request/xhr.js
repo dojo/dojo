@@ -128,8 +128,6 @@ define([
 	function xhr(/*String*/ url, /*Object?*/ options, /*Boolean?*/ returnDeferred){
 		// summary:
 		//		Sends an HTTP request with the given URL and options.
-		// description:
-		//		Sends an HTTP request with the given URL.
 		// url:
 		//		URL to request
 		var response = util.parseArgs(

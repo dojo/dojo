@@ -458,6 +458,8 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			// description:
 			//		Calling lang.partial is the functional equivalent of calling:
 			//		|	lang.hitch(null, funcName, ...);
+			// method:
+			//		The function to "wrap"
 			var arr = [ null ];
 			return lang.hitch.apply(dojo, arr.concat(lang._toArray(arguments))); // Function
 		},

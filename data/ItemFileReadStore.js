@@ -453,7 +453,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 		return this._arrayOfTopLevelItems;
 	},
 
-	close: function(/*dojo/data/api/Request || keywordArgs || null */ request){
+	close: function(/*dojo/data/api/Request|Object?*/ request){
 		// summary:
 		//		See dojo/data/api/Read.close()
 		if(this.clearOnClose &&
@@ -740,7 +740,7 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 		}else{
 			var arrayOfValues = item[identifier];
 			if(arrayOfValues){
-				return arrayOfValues[0]; // Object || String
+				return arrayOfValues[0]; // Object|String
 			}
 		}
 		return null; // null

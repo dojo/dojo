@@ -417,7 +417,7 @@ return declare("dojo.data.api.Read", null, {
 		};
 	},
 
-	close: function(/*dojo/data/api/Request || keywordArgs || null */ request){
+	close: function(/*dojo/data/api/Request|Object?*/ request){
 		// summary:
 		//		The close() method is intended for instructing the store to 'close' out
 		//		any information associated with a particular request.

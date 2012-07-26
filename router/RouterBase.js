@@ -121,7 +121,7 @@ define([
 			//		either removing this specific callback's registration, as
 			//		well as to add new callbacks with the same route initially
 			//		used.
-			// route: String | RegExp
+			// route: String|RegExp
 			//		A string or regular expression which will be used when
 			//		monitoring hash changes.
 			// callback: Function

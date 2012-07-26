@@ -151,7 +151,7 @@ return {
 	//		in builds.
 	deferredInstrumentation: true,
 
-	// useDeferredInstrumentation: Boolean | String
+	// useDeferredInstrumentation: Boolean|String
 	//		Whether the deferred instrumentation should be used.
 	//
 	//		* `"report-rejections"`: report each rejection as it occurs.

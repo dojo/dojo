@@ -67,7 +67,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 	},
 
 
-/* dojo.data.api.Write */
+/* dojo/data/api/Write */
 
 	newItem: function(/* Object? */ keywordArgs, /* Object? */ parentInfo){
 		// summary:
@@ -764,7 +764,7 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 		}
 	},
 
-/* dojo.data.api.Notification */
+/* dojo/data/api/Notification */
 
 	onSet: function(/* dojo/data/api/Item */ item,
 					/*attribute-name-string*/ attribute,

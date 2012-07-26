@@ -68,7 +68,10 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 	}
 
 
-	function _handle(/*String - press | move | release | cancel*/type){
+	function _handle(type){
+		// type: String
+		//		press | move | release | cancel
+
 		return function(node, listener){//called by on(), see dojo.on
 			return on(node, type, listener);
 		};

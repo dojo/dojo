@@ -22,45 +22,45 @@ define(["./kernel", "./lang", "../sniff"], function(dojo, lang, has){
 		//		True if the client is a web-browser
 		isBrowser: true,
 
-		// isFF: Number | undefined
+		// isFF: Number|undefined
 		//		Version as a Number if client is FireFox. undefined otherwise. Corresponds to
 		//		major detected FireFox version (1.5, 2, 3, etc.)
 		isFF: has("ff"),
 
-		// isIE: Number | undefined
+		// isIE: Number|undefined
 		//		Version as a Number if client is MSIE(PC). undefined otherwise. Corresponds to
 		//		major detected IE version (6, 7, 8, etc.)
 		isIE: has("ie"),
 
-		// isKhtml: Number | undefined
+		// isKhtml: Number|undefined
 		//		Version as a Number if client is a KHTML browser. undefined otherwise. Corresponds to major
 		//		detected version.
 		isKhtml: has("khtml"),
 
-		// isWebKit: Number | undefined
+		// isWebKit: Number|undefined
 		//		Version as a Number if client is a WebKit-derived browser (Konqueror,
 		//		Safari, Chrome, etc.). undefined otherwise.
 		isWebKit: has("webkit"),
 
-		// isMozilla: Number | undefined
+		// isMozilla: Number|undefined
 		//		Version as a Number if client is a Mozilla-based browser (Firefox,
 		//		SeaMonkey). undefined otherwise. Corresponds to major detected version.
 		isMozilla: has("mozilla"),
-		// isMoz: Number | undefined
+		// isMoz: Number|undefined
 		//		Version as a Number if client is a Mozilla-based browser (Firefox,
 		//		SeaMonkey). undefined otherwise. Corresponds to major detected version.
 		isMoz: has("mozilla"),
 
-		// isOpera: Number | undefined
+		// isOpera: Number|undefined
 		//		Version as a Number if client is Opera. undefined otherwise. Corresponds to
 		//		major detected version.
 		isOpera: has("opera"),
 
-		// isSafari: Number | undefined
+		// isSafari: Number|undefined
 		//		Version as a Number if client is Safari or iPhone. undefined otherwise.
 		isSafari: has("safari"),
 
-		// isChrome: Number | undefined
+		// isChrome: Number|undefined
 		//		Version as a Number if client is Chrome browser. undefined otherwise.
 		isChrome: has("chrome"),
 
@@ -72,7 +72,7 @@ define(["./kernel", "./lang", "../sniff"], function(dojo, lang, has){
 		//		True if client is iPhone, iPod, or iPad
 		isIos: has("ios"),
 
-		// isAndroid: Number | undefined
+		// isAndroid: Number|undefined
 		//		Version as a Number if client is android browser. undefined otherwise.
 		isAndroid: has("android"),
 

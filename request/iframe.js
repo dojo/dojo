@@ -5,12 +5,13 @@ define([
 	'./util',
 	'./handlers',
 	'../_base/lang',
+	'../io-query',
 	'../query',
 	'../has',
 	'../dom',
 	'../dom-construct',
 	'../_base/window'
-], function(module, require, watch, util, handlers, lang, query, has, dom, domConstruct, win){
+], function(module, require, watch, util, handlers, lang, ioQuery, query, has, dom, domConstruct, win){
 	var mid = module.id.replace(/[\/\.\-]/g, '_'),
 		onload = mid + '_onload';
 
@@ -206,9 +207,10 @@ define([
 				// otherwise we post a GET string by changing URL location for the
 				// iframe
 
+				var tmpUrl = response.url + (response.url.indexOf("?") > -1 ? "&" : "?") + ioQuery.objectToQuery(response.options.data);
 				notify && notify.emit('send', response, dfd.promise.cancel);
 				iframe._notifyStart(response);
-				iframe.setSrc(iframe._frame, response.url, true);
+				iframe.setSrc(iframe._frame, tmpUrl, true);
 			}
 		}catch(e){
 			dfd.reject(e);

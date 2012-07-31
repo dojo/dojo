@@ -13,7 +13,7 @@
 					function ioIframeGetText(t){
 						var d = new doh.Deferred();
 						var td = dojo.io.iframe.send({
-							url: "iframeResponse.text.html",
+							url: "../request/iframeDummyMethod.php?type=text",
 							method: "GET",
 							timeoutSeconds: 5,
 							preventCache: true,
@@ -29,17 +29,46 @@
 						return d;
 					},
 
-					function ioIframeGetJson(t){
+					function ioIframeGetFormJson(t){
 						var d = new doh.Deferred();
 						var td = dojo.io.iframe.send({
-							url: "iframeResponse.json.html",
-							method: "GET",
+							url: "../request/iframeDummyMethod.php",
+							form: "contentArrayTest",
+							content: {
+								type: "json",
+								color: "blue",
+								size: 42
+							},
 							timeoutSeconds: 5,
 							preventCache: true,
 							handleAs: "json",
 							handle: function(res, ioArgs){
 								if(!(res instanceof Error) &&
-									t.is("blue", res.color)){
+									t.is("blue", res.query.color)){
+									d.callback(true);
+								}else{
+									d.errback(false);
+								}
+							}
+						});
+						return d;
+					},
+
+					function ioIframeGetJson(t){
+						var d = new doh.Deferred();
+						var td = dojo.io.iframe.send({
+							url: "../request/iframeDummyMethod.php",
+							content: {
+								type: "json",
+								color: "blue",
+								size: 42
+							},
+							timeoutSeconds: 5,
+							preventCache: true,
+							handleAs: "json",
+							handle: function(res, ioArgs){
+								if(!(res instanceof Error) &&
+									t.is("blue", res.query.color)){
 									d.callback(true);
 								}else{
 									d.errback(false);

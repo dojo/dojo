@@ -30,7 +30,7 @@
 						return d;
 					},
 
-					function ioIframeGetJson(t){
+					function ioIframePostJson(t){
 						var d = new doh.Deferred();
 						var td = iframe.post("iframeDummyMethod.php?type=json", {
 							preventCache: true,
@@ -43,6 +43,22 @@
 						});
 						td.then(d.getTestCallback(function(data){
 							t.is("blue", data.post.color);
+						}));
+						return d;
+					},
+
+					function ioIframeGetJson(t){
+						var d = new doh.Deferred();
+						var td = iframe.post("iframeDummyMethod.php?type=json", {
+							preventCache: true,
+							data: {
+								color: "blue",
+								size: 42
+							},
+							handleAs: "json"
+						});
+						td.then(d.getTestCallback(function(data){
+							t.is("blue", data.query.color);
 						}));
 						return d;
 					},

@@ -143,7 +143,8 @@ var iframe = lang.delegate(_iframe, {
 			method: args.method || "GET",
 			handleAs: args.handleAs === "json" || args.handleAs === "javascript" ? "text" : args.handleAs,
 			form: args.form,
-			query: args.content,
+			query: args.form ? null : args.content,
+            data: args.form ? args.content : null,
 			timeout: args.timeout,
 			ioArgs: ioArgs
 		};

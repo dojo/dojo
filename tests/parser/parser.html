@@ -738,7 +738,7 @@
 						var td = new doh.Deferred();
 
 						parser.parse("errorHandling").then(td.getTestErrback(function(){
-							console.log("shouldn't get here");
+							throw new Error("shouldn't get here");
 						}), td.getTestCallback(function(e){
 							doh.is(typeof e, "object", "error object returned");
 						}));
@@ -749,11 +749,13 @@
 						var td = new doh.Deferred();
 
 						parser.parse("missingCtor").then(td.getTestErrback(function(){
-							console.log("shouldn't get here");
+							throw new Error("shouldn't get here");
 						}), td.getTestCallback(function(e){
 							doh.is(typeof e, "object", "error object returned");
 							doh.is(e.toString(), "Error: Unable to resolve constructor for: 'some.type'", "proper error value returned");
 						}));
+
+						return td;
 					}
 				]);
 

@@ -3,9 +3,9 @@ define([
 	"doh",
 	"require",
 	"dojo/sniff",
-	"./loader/core",
+	"dojo/has!dojo-publish-privates?./loader/core",
 	"dojo/has!dojo-amd-factory-scan?./loader/modules",
-	"./loader/moduleIds",
+	"dojo/has!dojo-publish-privates?./loader/moduleIds",
 	"./loader/bootstrap"], function(dojo, doh, require, has){
 	if(doh.isBrowser){
 		doh.register("tests._base.loader.asyncWithDojoRequire", require.toUrl("./loader/asyncWithDojoRequire.html"));
@@ -17,7 +17,9 @@ define([
 		doh.register("tests._base.loader.config?djConfig-require", require.toUrl("./loader/config.html")+"?djConfig-require");
 		doh.register("tests._base.loader.config?djConfig", require.toUrl("./loader/config.html")+"?djConfig");
 		doh.register("tests._base.loader.config?require", require.toUrl("./loader/config.html")+"?require");
-		doh.register("tests._base.loader.config?configApi.html", require.toUrl("./loader/configApi.html"));
+		if(has("dojo-publish-privates")){
+			doh.register("tests._base.loader.config?configApi.html", require.toUrl("./loader/configApi.html"));
+		}
 		doh.register("tests._base.loader.config?config-sniff.html", require.toUrl("./loader/config-sniff.html"));
 		doh.register("tests._base.loader.config?config-sniff-djConfig.html", require.toUrl("./loader/config-sniff-djConfig.html"));
 		doh.register("tests._base.loader.config?config-has.html", require.toUrl("./loader/config-has.html"));
@@ -45,9 +47,10 @@ define([
 		doh.register("tests._base.loader.requirejs-config-sync", require.toUrl("./loader/requirejs/config.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-config-async", require.toUrl("./loader/requirejs/config.html"), {async:1});
 
-		doh.register("tests._base.loader.requirejs-dataMain-sync", require.toUrl("./loader/requirejs/dataMain.html"), {async:0});
-		doh.register("tests._base.loader.requirejs-dataMain-async", require.toUrl("./loader/requirejs/dataMain.html"), {async:1});
-
+		if(has("dojo-requirejs-api")){
+			doh.register("tests._base.loader.requirejs-dataMain-sync", require.toUrl("./loader/requirejs/dataMain.html"), {async:0});
+			doh.register("tests._base.loader.requirejs-dataMain-async", require.toUrl("./loader/requirejs/dataMain.html"), {async:1});
+		}
 		doh.register("tests._base.loader.requirejs-simple-nohead-sync", require.toUrl("./loader/requirejs/simple-nohead.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-simple-nohead-async", require.toUrl("./loader/requirejs/simple-nohead.html"), {async:1});
 
@@ -89,15 +92,19 @@ define([
 		//doh.register("tests._base.loader.requirejs-circular-sync", require.toUrl("./loader/requirejs/circular.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-circular-async", require.toUrl("./loader/requirejs/circular.html"), {async:1});
 
-		doh.register("tests._base.loader.requirejs-depoverlap-sync", require.toUrl("./loader/requirejs/depoverlap.html"), {async:0});
-		doh.register("tests._base.loader.requirejs-depoverlap-async", require.toUrl("./loader/requirejs/depoverlap.html"), {async:1});
+		if(has("dojo-requirejs-api")){
+			doh.register("tests._base.loader.requirejs-depoverlap-sync", require.toUrl("./loader/requirejs/depoverlap.html"), {async:0});
+			doh.register("tests._base.loader.requirejs-depoverlap-async", require.toUrl("./loader/requirejs/depoverlap.html"), {async:1});
+		}
 
 		doh.register("tests._base.loader.requirejs-urlfetch-sync", require.toUrl("./loader/requirejs/urlfetch/urlfetch.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-urlfetch-async", require.toUrl("./loader/requirejs/urlfetch/urlfetch.html"), {async:1});
 
-		doh.register("tests._base.loader.requirejs-uniques-sync", require.toUrl("./loader/requirejs/uniques/uniques.html"), {async:0});
-		doh.register("tests._base.loader.requirejs-uniques-async", require.toUrl("./loader/requirejs/uniques/uniques.html"), {async:1});
-
+		if(has("dojo-amd-factory-scan")){
+			doh.register("tests._base.loader.requirejs-uniques-sync", require.toUrl("./loader/requirejs/uniques/uniques.html"), {async:0});
+			doh.register("tests._base.loader.requirejs-uniques-async", require.toUrl("./loader/requirejs/uniques/uniques.html"), {async:1});
+		}
+//>>excludeStart("requireJSI18nTests", kwArgs.insertAbsMids);
 		doh.register("tests._base.loader.requirejs-i18nlocaleunknown-sync", require.toUrl("./loader/requirejs/i18n/i18n.html")+"?bundle=i18n!nls/fr-fr/colors", {async:0});
 		doh.register("tests._base.loader.requirejs-i18nlocaleunknown-async", require.toUrl("./loader/requirejs/i18n/i18n.html")+"?bundle=i18n!nls/fr-fr/colors", {async:1});
 
@@ -115,7 +122,7 @@ define([
 
 		doh.register("tests._base.loader.requirejs-i18ncommonlocale-sync", require.toUrl("./loader/requirejs/i18n/common.html")+"?locale=en-us-surfer", {async:0});
 		doh.register("tests._base.loader.requirejs-i18ncommonlocale-async", require.toUrl("./loader/requirejs/i18n/common.html")+"?locale=en-us-surfer", {async:1});
-
+//>>excludeEnd("requireJSI18nTests");
 		doh.register("tests._base.loader.requirejs-paths-sync", require.toUrl("./loader/requirejs/paths/paths.html"), {async:0});
 		doh.register("tests._base.loader.requirejs-paths-async", require.toUrl("./loader/requirejs/paths/paths.html"), {async:1});
 

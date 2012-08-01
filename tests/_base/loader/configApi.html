@@ -20,8 +20,7 @@
 								savedRawConfig= rawConfig;
 								t.is(config, expectedConfig2);
 							};
-						var 
-							configListeners = require.listenerQueues.config;
+						var configListeners = require.listenerQueues.config || (require.listenerQueues.config = []);
 							listenerCount= configListeners.length,
 							h1= require.on("config", configListener1),
 							h2= require.on("config", configListener2);

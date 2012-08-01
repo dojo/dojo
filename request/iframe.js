@@ -25,7 +25,7 @@ define([
 
 			var response = dfd.response,
 				options = response.options,
-				formNode = dom.byId(options.form);
+				formNode = dom.byId(options.form) || dfd._tmpForm;
 
 			if(formNode){
 				// remove all the hidden content inputs
@@ -46,10 +46,19 @@ define([
 
 				// restore original action + target
 				dfd._originalAction && formNode.setAttribute('action', dfd._originalAction);
+				if(dfd._originalMethod){
+					formNode.setAttribute('method', dfd._originalMethod);
+					formNode.method = dfd._originalMethod;
+				}
 				if(dfd._originalTarget){
 					formNode.setAttribute('target', dfd._originalTarget);
 					formNode.target = dfd._originalTarget;
 				}
+			}
+
+			if(dfd._tmpForm){
+				domConstruct.destroy(dfd._tmpForm);
+				delete dfd._tmpForm;
 			}
 
 			dfd._finished = true;
@@ -119,6 +128,17 @@ define([
 		return null;
 	}
 
+	function createForm(){
+		return domConstruct.create('form', {
+			name: mid + '_form',
+			style: {
+				position: 'absolute',
+				top: '-1000px',
+				left: '-1000px'
+			}
+		}, win.body());
+	}
+
 	function fireNextRequest(){
 		// summary:
 		//		Internal method used to fire the next request in the queue.
@@ -140,11 +160,35 @@ define([
 				options = response.options,
 				c2c = dfd._contentToClean = [],
 				formNode = dom.byId(options.form),
-				notify = util.notify;
+				notify = util.notify,
+				data = options.data || null,
+				queryStr;
 
-			var data = options.data || null;
+			if(!dfd._legacy && options.method === 'POST' && !formNode){
+				formNode = dfd._tmpForm = createForm();
+			}else if(options.method === 'GET' && formNode && response.url.indexOf('?') > -1){
+				queryStr = response.url.slice(response.url.indexOf('?') + 1);
+				data = lang.mixin(ioQuery.queryToObject(queryStr), data);
+			}
 
 			if(formNode){
+				if(!dfd._legacy){
+					var parentNode = formNode;
+					while(parentNode = parentNode.parentNode && parentNode !== win.doc.documentElement){}
+
+					// Append the form node or some browsers won't work
+					if(!parentNode){
+						formNode.style.position = 'absolute';
+						formNode.style.left = '-1000px';
+						formNode.style.top = '-1000px';
+						win.body().appendChild(formNode);
+					}
+
+					if(!formNode.name){
+						formNode.name = mid + '_form';
+					}
+				}
+
 				// if we have things in data, we need to add them to the form
 				// before submission
 				if(data){
@@ -186,10 +230,22 @@ define([
 						formNode.setAttribute('action', response.url);
 					}
 				}
-				if(methodNode){
-					methodNode.value = options.method;
+
+				if(!dfd._legacy){
+					dfd._originalMethod = methodNode ? methodNode.value : null;
+					if(methodNode){
+						methodNode.value = options.method;
+					}else{
+						formNode.setAttribute('method', options.method);
+					}
 				}else{
-					formNode.setAttribute('method', options.method);
+					if(!methodNode || !methodNode.value){
+						if(mthdNode){
+							mthdNode.value = options.method;
+						}else{
+							fn.setAttribute("method", options.method);
+						}
+					}
 				}
 
 				dfd._originalTarget = targetNode ? targetNode.value : null;
@@ -207,7 +263,7 @@ define([
 				// otherwise we post a GET string by changing URL location for the
 				// iframe
 
-				var tmpUrl = response.url + (response.url.indexOf("?") > -1 ? "&" : "?") + ioQuery.objectToQuery(response.options.data);
+				var tmpUrl = response.url + (response.url.indexOf('?') > -1 ? '&' : '?') + ioQuery.objectToQuery(response.options.data);
 				notify && notify.emit('send', response, dfd.promise.cancel);
 				iframe._notifyStart(response);
 				iframe.setSrc(iframe._frame, tmpUrl, true);
@@ -291,6 +347,7 @@ define([
 				iframe._fireNextRequest();
 			}
 		};
+		dfd._legacy = returnDeferred;
 
 		iframe._dfdQueue.push(dfd);
 		iframe._fireNextRequest();

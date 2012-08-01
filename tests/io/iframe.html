@@ -57,9 +57,8 @@
 					function ioIframeGetJson(t){
 						var d = new doh.Deferred();
 						var td = dojo.io.iframe.send({
-							url: "../request/iframeDummyMethod.php",
+							url: "../request/iframeDummyMethod.php?type=json",
 							content: {
-								type: "json",
 								color: "blue",
 								size: 42
 							},
@@ -78,8 +77,61 @@
 						return d;
 					},
 
+					function ioIframeNotPostJson(t){
+						var d = new doh.Deferred();
+						var td = dojo.io.iframe.send({
+							method: "post",
+							url: "../request/iframeDummyMethod.php?type=json",
+							content: {
+								color: "blue",
+								size: 42
+							},
+							timeoutSeconds: 5,
+							preventCache: true,
+							handleAs: "json",
+							handle: function(res, ioArgs){
+								if(!(res instanceof Error) &&
+									t.is("blue", res.query.color)){
+									d.callback(true);
+								}else{
+									d.errback(false);
+								}
+							}
+						});
+						return d;
+					},
+
+					function ioIframePostFormJson(t){
+						var d = new doh.Deferred();
+						var form = dojo.byId("contentArrayTest");
+						form.getAttributeNode("method").value = "post";
+						var td = dojo.io.iframe.send({
+							method: "post",
+							url: "../request/iframeDummyMethod.php?type=json",
+							form: "contentArrayTest",
+							content: {
+								color: "blue",
+								size: 42
+							},
+							timeoutSeconds: 5,
+							preventCache: true,
+							handleAs: "json",
+							handle: function(res, ioArgs){
+								if(!(res instanceof Error) &&
+									t.is("blue", res.post.color)){
+									d.callback(true);
+								}else{
+									d.errback(false);
+								}
+							}
+						});
+						return d;
+					},
+
 					function ioIframeGetJavascript(t){
 						var d = new doh.Deferred();
+						var form = dojo.byId("contentArrayTest");
+						form.getAttributeNode("method").value = "get";
 						var td = dojo.io.iframe.send({
 							url: "iframeResponse.js.html",
 							method: "GET",

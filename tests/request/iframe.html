@@ -36,12 +36,29 @@
 							preventCache: true,
 							form: "contentArrayTest",
 							data: {
-								color: "blue",
-								size: 42
+								color: "blue"
 							},
 							handleAs: "json"
 						});
 						td.then(d.getTestCallback(function(data){
+							t.is("json", data.query.type);
+							t.is("blue", data.post.color);
+							t.is("42", data.post.size);
+						}));
+						return d;
+					},
+
+					function ioIframePostWithoutForm(t){
+						var d = new doh.Deferred();
+						var td = iframe.post("iframeDummyMethod.php?type=json", {
+							preventCache: true,
+							data: {
+								color: "blue"
+							},
+							handleAs: "json"
+						});
+						td.then(d.getTestCallback(function(data){
+							t.is("json", data.query.type);
 							t.is("blue", data.post.color);
 						}));
 						return d;
@@ -49,16 +66,34 @@
 
 					function ioIframeGetJson(t){
 						var d = new doh.Deferred();
-						var td = iframe.post("iframeDummyMethod.php?type=json", {
+						var td = iframe.get("iframeDummyMethod.php?type=json", {
 							preventCache: true,
 							data: {
-								color: "blue",
-								size: 42
+								color: "blue"
 							},
 							handleAs: "json"
 						});
 						td.then(d.getTestCallback(function(data){
+							t.is("json", data.query.type);
 							t.is("blue", data.query.color);
+						}));
+						return d;
+					},
+
+					function ioIframeGetWithForm(t){
+						var d = new doh.Deferred();
+						var td = iframe.get("iframeDummyMethod.php?type=json", {
+							preventCache: true,
+							form: "contentArrayTest",
+							data: {
+								color: "blue"
+							},
+							handleAs: "json"
+						});
+						td.then(d.getTestCallback(function(data){
+							t.is("json", data.query.type);
+							t.is("blue", data.query.color);
+							t.is("42", data.query.size);
 						}));
 						return d;
 					},
@@ -108,7 +143,9 @@
 							handleAs: "json"
 						});
 						td.then(d.getTestCallback(function(data){
+							t.is("json", data.query.type);
 							t.is("value2", data.post.tag);
+							t.is("42", data.post.size);
 						}));
 						return d;
 					},
@@ -156,6 +193,8 @@
 		</script>
 	</head>
 	<body>
-		<form id="contentArrayTest" method="get" enctype="multipart/form-data"></form>
+		<form id="contentArrayTest" method="get" enctype="multipart/form-data">
+			<input type="hidden" name="size" value="42"/>
+		</form>
 	</body>
 </html>

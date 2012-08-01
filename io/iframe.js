@@ -139,15 +139,25 @@ var iframe = lang.delegate(_iframe, {
 
 		var ioArgs = dfd.ioArgs;
 
+		var method = "GET",
+			form = dojo.byId(args.form);
+		if(args.method && args.method.toUpperCase() === "POST" && form){
+			method = "POST";
+		}
+
 		var options = {
-			method: args.method || "GET",
+			method: method,
 			handleAs: args.handleAs === "json" || args.handleAs === "javascript" ? "text" : args.handleAs,
 			form: args.form,
-			query: args.form ? null : args.content,
-            data: args.form ? args.content : null,
+			query: form ? null : args.content,
+			data: form ? args.content : null,
 			timeout: args.timeout,
 			ioArgs: ioArgs
 		};
+
+		if(options.method){
+			options.method = options.method.toUpperCase();
+		}
 
 		if(config.ioPublish && kernel.publish && ioArgs.args.ioPublish !== false){
 			var start = aspect.after(_iframe, "_notifyStart", function(data){

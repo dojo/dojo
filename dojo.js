@@ -772,7 +772,7 @@
 					// if already traversing a factory tree, then strict causes circular dependency to abort the execution; maybe
 					// it's possible to execute this require later after the current traversal completes and avoid the circular dependency.
 					// ...but *always* insist on immediate in synch mode
-					var strict = checkCompleteGuard && req.async;
+					var strict = checkCompleteGuard && legacyMode!="sync";
 					guardCheckComplete(function(){
 						execModule(module, strict);
 					});

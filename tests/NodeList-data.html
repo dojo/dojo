@@ -134,7 +134,7 @@
 					function cleanData(t){
 
 						if(!dojo._nodeDataCache){
-							t.t("We must be testing a built Dojo. No access to dataCache");
+							doh.debug("We must be testing a built Dojo. No access to dataCache");
 							return;
 						}
 
@@ -173,7 +173,7 @@
 					function clearall(t){
 
 						if(!dojo._nodeDataCache){
-							t.t("We must be testing a built Dojo. No access to dataCache");
+							doh.debug("We must be testing a built Dojo. No access to dataCache");
 							return;
 						}
 

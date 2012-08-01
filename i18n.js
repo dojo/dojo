@@ -379,12 +379,14 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 	if(has("dojo-v1x-i18n-Api")){
 		// this code path assumes the dojo loader and won't work with a standard AMD loader
-		var evalBundle =
+		var amdValue = {},
+			evalBundle =
 				// use the function ctor to keep the minifiers away (also come close to global scope, but this is secondary)
 				new Function(
 					"__bundle",				   // the bundle to evalutate
 					"__checkForLegacyModules", // a function that checks if __bundle defined __mid in the global space
 					"__mid",				   // the mid that __bundle is intended to define
+					"__amdValue",
 
 					// returns one of:
 					//		1 => the bundle was an AMD bundle
@@ -392,7 +394,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					//		instance of Error => could not figure out how to evaluate bundle
 
 					  // used to detect when __bundle calls define
-					  "var define = function(){define.called = 1;},"
+					  "var define = function(mid, factory){define.called = 1; __amdValue.result = factory || mid;},"
 					+ "	   require = function(){define.called = 1;};"
 
 					+ "try{"
@@ -400,7 +402,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					+		"eval(__bundle);"
 					+		"if(define.called==1)"
 								// bundle called define; therefore signal it's an AMD bundle
-					+			"return 1;"
+					+			"return __amdValue;"
 
 					+		"if((__checkForLegacyModules = __checkForLegacyModules(__mid)))"
 								// bundle was probably a v1.6- built NLS flattened NLS bundle that defined __mid in the global space
@@ -423,16 +425,14 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					var url = require.toUrl(mid + ".js");
 
 					function load(text){
-						var result = evalBundle(text, checkForLegacyModules, mid);
-						if(result===1){
+						var result = evalBundle(text, checkForLegacyModules, mid, amdValue);
+						if(result===amdValue){
 							// the bundle was an AMD module; re-inject it through the normal AMD path
 							// we gotta do this since it could be an anonymous module and simply evaluating
 							// the text here won't provide the loader with the context to know what
 							// module is being defined()'d. With browser caching, this should be free; further
 							// this entire code path can be circumvented by using the AMD format to begin with
-							require([mid], function(bundle){
-								results.push(cache[url] = bundle);
-							});
+							results.push(cache[url] = amdValue.result);
 						}else{
 							if(result instanceof Error){
 								console.error("failed to evaluate i18n bundle; url=" + url, result);

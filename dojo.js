@@ -529,7 +529,7 @@
 						// otherwise, must be truthy => AMD
 						// legacyMode: sync | legacyAsync | xd | false
 						var mode = config[p];
-						req.legacyMode = legacyMode = (isString(mode) && /sync|legacyAsync/.test(mode) ? mode : (!mode ? "sync" : false));
+						req.legacyMode = legacyMode = (isString(mode) && /sync|legacyAsync/.test(mode) ? mode : (!mode ? sync : false));
 						req.async = !legacyMode;
 					}
 					if(config[p]!==hasCache){
@@ -772,7 +772,7 @@
 					// if already traversing a factory tree, then strict causes circular dependency to abort the execution; maybe
 					// it's possible to execute this require later after the current traversal completes and avoid the circular dependency.
 					// ...but *always* insist on immediate in synch mode
-					var strict = checkCompleteGuard && legacyMode!="sync";
+					var strict = checkCompleteGuard && legacyMode!=sync;
 					guardCheckComplete(function(){
 						execModule(module, strict);
 					});

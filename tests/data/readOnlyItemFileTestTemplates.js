@@ -57,7 +57,7 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 	var data = null;
 	if(name === "countries"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/countries.json")};
+			data = {url: require.toUrl("./countries.json")};
 		}else{
 			data = {data: {
 				identifier:"abbr",
@@ -75,7 +75,7 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 		}
 	}else if(name === "countries_withNull"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/countries_withNull.json")};
+			data = {url: require.toUrl("./countries_withNull.json")};
 		}else{
 			data = {data: {
 				identifier:"abbr",
@@ -92,7 +92,7 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 		}
 	}else if(name === "countries_withoutid"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/countries_withoutid.json")};
+			data = {url: require.toUrl("./countries_withoutid.json")};
 		}else{
 			data = {data: {
 				label: "name",
@@ -109,7 +109,7 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 		}
 	}else if (name === "countries_withBoolean"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/countries_withBoolean.json")};
+			data = {url: require.toUrl("./countries_withBoolean.json")};
 		}else{
 			data = {data: {
 				identifier:"abbr",
@@ -127,7 +127,7 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 		}
 	}else if (name === "countries_withDates"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/countries_withDates.json")};
+			data = {url: require.toUrl("./countries_withDates.json")};
 		}else{
 			data = {data: {
 				identifier:"abbr",
@@ -144,7 +144,7 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 		}
 	}else if (name === "geography_hierarchy_small"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/geography_hierarchy_small.json")};
+			data = {url: require.toUrl("./geography_hierarchy_small.json")};
 		}else{
 			data = {data: {
 				items:[
@@ -168,7 +168,7 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 		}
 	}else if (name === "data_multitype"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/data_multitype.json")};
+			data = {url: require.toUrl("./data_multitype.json")};
 		}else{
 			data = {data: {
 							"identifier": "count",
@@ -192,7 +192,7 @@ tests.data.readOnlyItemFileTestTemplates.getTestData = function(name){
 		}
 	}else if (name === "countries_references"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/countries_references.json")};
+			data = {url: require.toUrl("./countries_references.json")};
 		}else{
 			data = {data: { identifier: 'name',
 							label: 'name',
@@ -358,7 +358,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		paper.
 
 			if(dojo.isBrowser){
-                var store = new datastore({url: require.toUrl("tests/data/countries_commentFiltered.json")});
+                var store = new datastore({url: require.toUrl("./countries_commentFiltered.json")});
 
 				var d = new doh.Deferred();
 				function onItem(item){
@@ -1017,7 +1017,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		data with this store can bypass the JavaSceipt hijack noted in Fortify's
 			//		paper.
 			if(dojo.isBrowser){
-                var store = new datastore({url: require.toUrl("tests/data/countries_commentFiltered.json")});
+                var store = new datastore({url: require.toUrl("./countries_commentFiltered.json")});
 
 				var d = new doh.Deferred();
 				function onComplete(items, request){
@@ -2421,7 +2421,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 			//		Added because of tracker: #2546
 
 			if(dojo.isBrowser){
-				var store = new datastore({url: require.toUrl("tests/data/countries_idcollision.json")});
+				var store = new datastore({url: require.toUrl("./countries_idcollision.json")});
 				var d = new doh.Deferred();
 				function onComplete(items, request){
 					//This is bad if this fires, this case should fail and not call onComplete.
@@ -2816,7 +2816,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 						t.assertTrue(store._arrayOfAllItems.length === 0);
 						t.assertTrue(store._loadFinished === false);
 
-						store.url = require.toUrl("tests/data/countries_withNull.json");
+						store.url = require.toUrl("./countries_withNull.json");
 						function onItem2 (item){
 							var err;
 							try{
@@ -2873,7 +2873,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 						t.assertTrue(store._arrayOfAllItems.length === 0);
 						t.assertTrue(store._loadFinished === false);
 
-						store.url = require.toUrl("tests/data/countries_withNull.json");
+						store.url = require.toUrl("./countries_withNull.json");
 						function onComplete (items){
                             var err;
 							try{
@@ -2932,7 +2932,7 @@ tests.data.readOnlyItemFileTestTemplates.testTemplates = [
 						t.assertTrue(store._arrayOfAllItems.length === 0);
 						t.assertTrue(store._loadFinished === false);
 
-						store._jsonFileUrl = require.toUrl("tests/data/countries_withNull.json");
+						store._jsonFileUrl = require.toUrl("./countries_withNull.json");
 						function onItem2 (item){
 							var err;
 							try{

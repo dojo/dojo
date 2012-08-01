@@ -20,7 +20,7 @@ tests.data.ItemFileWriteStore.getTestData = function(name){
 	var data = {};
 	if(name === "reference_integrity"){
 		if(dojo.isBrowser){
-			data = {url: require.toUrl("tests/data/reference_integrity.json")};
+			data = {url: require.toUrl("./reference_integrity.json")};
 		}else{
 			data =
 				{ data: {

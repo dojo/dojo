@@ -47,10 +47,9 @@
 			}
 
 
-		if(has("dojo-unit-tests")){
-			console.log("here");
-			dojo.forEach(i18n.unitTests, function(item){item(doh);});
-		}
+			if(has("dojo-unit-tests")){
+				dojo.forEach(i18n.unitTests, function(item){item(doh);});
+			}
 
 
 			doh.runOnLoad();

@@ -516,22 +516,25 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				doh.register("tests.i18n.unit", function(t){
 					var check;
 
-					check = evalBundle("{prop:1}");
+					check = evalBundle("{prop:1}", checkForLegacyModules, "nonsense", amdValue);
 					t.is({prop:1}, check); t.is(undefined, check[1]);
 
-					check = evalBundle("({prop:1})");
+					check = evalBundle("({prop:1})", checkForLegacyModules, "nonsense", amdValue);
 					t.is({prop:1}, check); t.is(undefined, check[1]);
 
-					check = evalBundle("{'prop-x':1}");
+					check = evalBundle("{'prop-x':1}", checkForLegacyModules, "nonsense", amdValue);
 					t.is({'prop-x':1}, check); t.is(undefined, check[1]);
 
-					check = evalBundle("({'prop-x':1})");
+					check = evalBundle("({'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
 					t.is({'prop-x':1}, check); t.is(undefined, check[1]);
 
-					check = evalBundle("define({'prop-x':1})");
-					t.is(1, check);
+					check = evalBundle("define({'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
+					t.is(amdValue, check); t.is({'prop-x':1}, amdValue.result);
 
-					check = evalBundle("this is total nonsense and should throw an error");
+					check = evalBundle("define('some/module', {'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
+					t.is(amdValue, check); t.is({'prop-x':1}, amdValue.result);
+
+					check = evalBundle("this is total nonsense and should throw an error", checkForLegacyModules, "nonsense", amdValue);
 					t.is(check instanceof Error, true);
 				});
 			});

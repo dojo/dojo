@@ -35,8 +35,8 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 			on(win.doc, "touchmove", function(evt){
 				var oldNode = hoveredNode;
 				hoveredNode = win.doc.elementFromPoint(
-					evt.pageX - win.body().parentNode.scrollLeft,
-					evt.pageY - win.body().parentNode.scrollTop
+					evt.pageX - win.global.pageXOffset,
+					evt.pageY - win.global.pageYOffset
 				);
 				if(oldNode !== hoveredNode){
 					on.emit(oldNode, "dojotouchout", {

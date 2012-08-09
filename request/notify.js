@@ -2,7 +2,8 @@ define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
 	// module:
 	//		dojo/request/notify
 	// summary:
-	//		Global notification API for dojo/request
+	//		Global notification API for dojo/request. Notifications will
+	//		only be emitted if this module is required.
 	//
 	//		| require('dojo/request', 'dojo/request/notify',
 	//		|     function(request, notify){
@@ -48,6 +49,18 @@ define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
 	});
 
 	function notify(type, listener){
+		//	summary:
+		//		Register a listener to be notified when an event
+		//		in dojo/request happens.
+		//	type: String?
+		//		The event to listen for. Events emitted: "start", "send",
+		//		"load", "error", "done", "stop".
+		//	listener: Function?
+		//		A callback to be run when an event happens.
+		//	returns:
+		//		A signal object that can be used to cancel the listener.
+		//		If remove() is called on this signal object, it will
+		//		stop the listener from being executed.
 		return hub.on(type, listener);
 	}
 	notify.emit = function(type, event, cancel){

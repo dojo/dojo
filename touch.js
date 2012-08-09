@@ -33,23 +33,26 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 
 			// Fire synthetic touchover and touchout events on nodes since the browser won't do it natively.
 			on(win.doc, "touchmove", function(evt){
-				var oldNode = hoveredNode;
-				hoveredNode = win.doc.elementFromPoint(
+				var newNode = win.doc.elementFromPoint(
 					evt.pageX - win.global.pageXOffset,
 					evt.pageY - win.global.pageYOffset
 				);
-				if(oldNode !== hoveredNode){
-					on.emit(oldNode, "dojotouchout", {
-						target: oldNode,
+				if(newNode && hoveredNode !== newNode){
+					// touch out on the old node
+					on.emit(hoveredNode, "dojotouchout", {
+						target: hoveredNode,
+						relatedTarget: newNode,
+						bubbles: true
+					});
+
+					// touchover on the new node
+					on.emit(newNode, "dojotouchover", {
+						target: newNode,
 						relatedTarget: hoveredNode,
 						bubbles: true
 					});
 
-					on.emit(hoveredNode, "dojotouchover", {
-						target: hoveredNode,
-						relatedTarget: oldNode,
-						bubbles: true
-					});
+					hoveredNode = newNode;
 				}
 			});
 		});

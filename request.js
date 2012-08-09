@@ -4,75 +4,75 @@ define([
 ], function(request/*=====, declare =====*/){
 	/*=====
 	request = function(url, options){
-		//	summary:
+		// summary:
 		//		Send a request using the default transport for the current platform.
-		//	url: String
+		// url: String
 		//		The URL to request.
-		//	options: request.__Options?
+		// options: dojo/request.__Options?
 		//		Options for the request.
-		//	returns:
+		// returns:
 		//		dojo/promise/Promise
 	};
 	request.__BaseOptions = declare(null, {
-		//	query: String|Object?
+		// query: String|Object?
 		//		Query parameters to append to the URL.
-		//	data: String|Object?
-		//		Data to transfer. This is ignored for GET and DELETE
+		// data: String|Object?
+		//		Data to transfer.  This is ignored for GET and DELETE
 		//		requests.
-		//	preventCache: Boolean?
+		// preventCache: Boolean?
 		//		Whether to append a cache-busting parameter to the URL.
-		//	timeout: Integer?
-		//		Milliseconds to wait for the response. If this time
+		// timeout: Integer?
+		//		Milliseconds to wait for the response.  If this time
 		//		passes, the then the promise is rejected.
-		//	handleAs: String?
-		//		How to handle the resopnse from the server. Default is
-		//		'text'. Other values are 'json', 'javascript', and 'xml'.
+		// handleAs: String?
+		//		How to handle the response from the server.  Default is
+		//		'text'.  Other values are 'json', 'javascript', and 'xml'.
 	});
 	request.__MethodOptions = declare(null, {
-		//	method: String?
-		//		The HTTP method to use to make the request. Must be
+		// method: String?
+		//		The HTTP method to use to make the request.  Must be
 		//		uppercase.
 	});
 	request.__Options = declare([request.__BaseOptions, request.__MethodOptions]);
 
 	request.get = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP GET request using the default transport for the current platform.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: request.__BaseOptions?
+		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		//	returns:
+		// returns:
 		//		dojo/promise/Promise
 	};
 	request.post = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP POST request using the default transport for the current platform.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: request.__BaseOptions?
+		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		//	returns:
+		// returns:
 		//		dojo/promise/Promise
 	};
 	request.put = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP POST request using the default transport for the current platform.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: request.__BaseOptions?
+		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		//	returns:
+		// returns:
 		//		dojo/promise/Promise
 	};
 	request.del = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP POST request using the default transport for the current platform.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: request.__BaseOptions?
+		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		//	returns:
+		// returns:
 		//		dojo/promise/Promise
 	};
 	=====*/

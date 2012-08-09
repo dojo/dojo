@@ -54,7 +54,7 @@ var Store = declare(null, {
 		//		Stores an object
 		// object: Object
 		//		The object to store.
-		// directives: Store.PutDirectives?
+		// directives: dojo/store/api/Store.PutDirectives?
 		//		Additional directives for storing objects.
 		// returns: Number|String
 	},
@@ -63,7 +63,7 @@ var Store = declare(null, {
 		//		Creates an object, throws an error if the object already exists
 		// object: Object
 		//		The object to store.
-		// directives: Store.PutDirectives?
+		// directives: dojo/store/api/Store.PutDirectives?
 		//		Additional directives for creating objects.
 		// returns: Number|String
 	},
@@ -88,9 +88,9 @@ var Store = declare(null, {
 		//		set of data from the store.
 		// query: String|Object|Function
 		//		The query to use for retrieving objects from the store.
-		// options: Store.QueryOptions
+		// options: dojo/store/api/Store.QueryOptions
 		//		The optional arguments to apply to the resultset.
-		// returns: Store.QueryResults
+		// returns: dojo/store/api/Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		//
 		// example:
@@ -108,7 +108,7 @@ var Store = declare(null, {
 		//		Note that a store user might not call transaction() prior to using put,
 		//		delete, etc. in which case these operations effectively could be thought of
 		//		as "auto-commit" style actions.
-		// returns: Store.Transaction
+		// returns: dojo/store/api/Store.Transaction
 		//		This represents the new current transaction.
 	},
 	getChildren: function(parent, options){
@@ -116,9 +116,9 @@ var Store = declare(null, {
 		//		Retrieves the children of an object.
 		// parent: Object
 		//		The object to find the children of.
-		// options: Store.QueryOptions?
+		// options: dojo/store/api/Store.QueryOptions?
 		//		Additional options to apply to the retrieval of the children.
-		// returns: Store.QueryResults
+		// returns: dojo/store/api/Store.QueryResults
 		//		A result set of the children of the parent object.
 	},
 	getMetadata: function(object){
@@ -167,7 +167,7 @@ Store.SortInformation = declare(null, {
 Store.QueryOptions = declare(null, {
 	// summary:
 	//		Optional object with additional parameters for query results.
-	// sort: Store.SortInformation[]?
+	// sort: dojo/store/api/Store.SortInformation[]?
 	//		A list of attributes to sort on, as well as direction
 	//		For example:
 	//		| [{attribute:"price, descending: true}].
@@ -206,7 +206,7 @@ Store.QueryResults = declare(null, {
 		//		Function that is called for each object in the query results
 		// thisObject:
 		//		The object to use as |this| in the callback.
-		// returns: Store.QueryResults
+		// returns: dojo/store/api/Store.QueryResults
 	},
 	map: function(callback, thisObject){
 		// summary:
@@ -218,7 +218,7 @@ Store.QueryResults = declare(null, {
 		//		Function that is called for each object in the query results
 		// thisObject:
 		//		The object to use as |this| in the callback.
-		// returns: Store.QueryResults
+		// returns: dojo/store/api/Store.QueryResults
 	},
 	then: function(callback, errorHandler){
 		// summary:

@@ -145,7 +145,7 @@ return declare("dojo.store.JsonRest", base, {
 		//		The query to use for retrieving objects from the store.
 		// options: __QueryOptions?
 		//		The optional arguments to apply to the resultset.
-		// returns: Store.QueryResults
+		// returns: dojo/store/api/Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		options = options || {};
 

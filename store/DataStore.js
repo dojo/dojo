@@ -169,7 +169,7 @@ return declare("dojo.store.DataStore", base, {
 		//		The query to use for retrieving objects from the store
 		// options: Object?
 		//		Optional options object as used by the underlying dojo.data Store.
-		// returns: Store.QueryResults
+		// returns: dojo/store/api/Store.QueryResults
 		//		A query results object that can be used to iterate over results.
 		var fetchHandle;
 		var deferred = new Deferred(function(){ fetchHandle.abort && fetchHandle.abort(); });

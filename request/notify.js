@@ -49,15 +49,15 @@ define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
 	});
 
 	function notify(type, listener){
-		//	summary:
+		// summary:
 		//		Register a listener to be notified when an event
 		//		in dojo/request happens.
-		//	type: String?
+		// type: String?
 		//		The event to listen for. Events emitted: "start", "send",
 		//		"load", "error", "done", "stop".
-		//	listener: Function?
+		// listener: Function?
 		//		A callback to be run when an event happens.
-		//	returns:
+		// returns:
 		//		A signal object that can be used to cancel the listener.
 		//		If remove() is called on this signal object, it will
 		//		stop the listener from being executed.

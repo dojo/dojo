@@ -103,14 +103,16 @@ define([
 	}
 
 	function script(url, options, returnDeferred){
-		//	summary:
+		// summary:
 		//		Sends a request using a script element with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: script.__Options?
+		// options: dojo/request/script.__Options?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returnDeferred: Boolean
+		//		Return a dojo/Deferred rather than a dojo/promise/Promise
+		// returns: dojo/promise/Promise|dojo/Deferred
+
 		var response = util.parseArgs(url, util.deepCopy({}, options));
 		url = response.url;
 		options = response.options;
@@ -167,37 +169,36 @@ define([
 	script.get = script;
 	/*=====
 	script.__BaseOptions = declare(request.__BaseOptions, {
-		//	jsonp: String?
+		// jsonp: String?
 		//		The URL parameter name that indicates the JSONP callback string.
 		//		For instance, when using Yahoo JSONP calls it is normally,
 		//		jsonp: "callback". For AOL JSONP calls it is normally
 		//		jsonp: "c".
-		//	checkString: String?
+		// checkString: String?
 		//		A string of JavaScript that when evaluated like so:
 		//		"typeof(" + checkString + ") != 'undefined'"
 		//		being true means that the script fetched has been loaded.
 		//		Do not use this if doing a JSONP type of call (use `jsonp` instead).
-		//	frameDoc: Document?
+		// frameDoc: Document?
 		//		The Document object of a child iframe. If this is passed in, the script
 		//		will be attached to that document. This can be helpful in some comet long-polling
 		//		scenarios with Firefox and Opera.
 	});
 	script.__MethodOptions = declare(null, {
-		//	method: String?
+		// method: String?
 		//		This option is ignored. All requests using this transport are
 		//		GET requests.
 	});
 	script.__Options = declare([script.__BaseOptions, script.__MethodOptions]);
 
 	script.get = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP GET request using a script element with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: script.__BaseOptions?
+		// options: dojo/request/script.__BaseOptions?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	=====*/
 

@@ -128,14 +128,16 @@ define([
 			}
 		};
 	function xhr(url, options, returnDeferred){
-		//	summary:
+		// summary:
 		//		Sends a request using XMLHttpRequest with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: xhr.__Options?
+		// options: dojo/request/xhr.__Options?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returnDeferred: Boolean
+		//		Return a dojo/Deferred rather than a dojo/promise/Promise
+		// returns: dojo/promise/Promise|dojo/Deferred
+
 		var response = util.parseArgs(
 			url,
 			util.deepCreate(defaultOptions, options),
@@ -224,68 +226,64 @@ define([
 
 	/*=====
 	xhr.__BaseOptions = declare(request.__BaseOptions, {
-		//	sync: Boolean?
+		// sync: Boolean?
 		//		Whether to make a synchronous request or not. Default
 		//		is `false` (asynchronous).
-		//	data: String|Object|FormData?
+		// data: String|Object|FormData?
 		//		Data to transfer. This is ignored for GET and DELETE
 		//		requests.
-		//	headers: Object?
+		// headers: Object?
 		//		Headers to use for the request.
-		//	user: String?
+		// user: String?
 		//		Username to use during the request.
-		//	password: String?
+		// password: String?
 		//		Password to use during the request.
-		//	withCredentials: Boolean?
+		// withCredentials: Boolean?
 		//		For cross-site requests, whether to send credentials
 		//		or not.
 	});
 	xhr.__MethodOptions = declare(null, {
-		//	method: String?
+		// method: String?
 		//		The HTTP method to use to make the request. Must be
 		//		uppercase. Default is `"GET"`.
 	});
 	xhr.__Options = declare([xhr.__BaseOptions, xhr.__MethodOptions]);
 
 	xhr.get = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP GET request using XMLHttpRequest with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: xhr.__BaseOptions?
+		// options: dojo/request/xhr.__BaseOptions?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	xhr.post = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP POST request using XMLHttpRequest with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: xhr.__BaseOptions?
+		// options: dojo/request/xhr.__BaseOptions?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	xhr.put = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP PUT request using XMLHttpRequest with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: xhr.__BaseOptions?
+		// options: dojo/request/xhr.__BaseOptions?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	xhr.del = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP DELETE request using XMLHttpRequest with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: xhr.__BaseOptions?
+		// options: dojo/request/xhr.__BaseOptions?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	=====*/
 	xhr._create = function(){

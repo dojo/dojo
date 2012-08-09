@@ -336,14 +336,16 @@ define([
 		method: 'POST'
 	};
 	function iframe(url, options, returnDeferred){
-		//	summary:
+		// summary:
 		//		Sends a request using an iframe element with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: iframe.__Options?
+		// options: dojo/request/iframe.__Options?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returnDeferred: Boolean
+		//		Return a dojo/Deferred rather than a dojo/promise/Promise
+		// returns: dojo/promise/Promise|dojo/Deferred
+
 		var response = util.parseArgs(url, util.deepCreate(defaultOptions, options), true);
 		url = response.url;
 		options = response.options;
@@ -376,15 +378,15 @@ define([
 
 	/*=====
 	iframe.__BaseOptions = declare(request.__BaseOptions, {
-		//	form: DOMNode?
+		// form: DOMNode?
 		//		A form node to use to submit data to the server.
-		//	data: String|Object?
+		// data: String|Object?
 		//		Data to transfer. When making a GET request, this will
 		//		be converted to key=value parameters and appended to the
 		//		URL.
 	});
 	iframe.__MethodOptions = declare(null, {
-		//	method: String?
+		// method: String?
 		//		The HTTP method to use to make the request. Must be
 		//		uppercase. Only `"GET"` and `"POST"` are accepted.
 		//		Default is `"POST"`.
@@ -392,24 +394,22 @@ define([
 	iframe.__Options = declare([iframe.__BaseOptions, iframe.__MethodOptions]);
 
 	iframe.get = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP GET request using an iframe element with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: iframe.__BaseOptions?
+		// options: dojo/request/iframe.__BaseOptions?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	iframe.post = function(url, options){
-		//	summary:
+		// summary:
 		//		Send an HTTP POST request using an iframe element with the given URL and options.
-		//	url: String
+		// url: String
 		//		URL to request
-		//	options: iframe.__BaseOptions?
+		// options: dojo/request/iframe.__BaseOptions?
 		//		Options for the request.
-		//	returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	=====*/
 	iframe.create = create;

@@ -10,8 +10,7 @@ define([
 		//		The URL to request.
 		// options: dojo/request.__Options?
 		//		Options for the request.
-		// returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	request.__BaseOptions = declare(null, {
 		// query: String|Object?
@@ -42,8 +41,7 @@ define([
 		//		URL to request
 		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		// returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	request.post = function(url, options){
 		// summary:
@@ -52,8 +50,7 @@ define([
 		//		URL to request
 		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		// returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	request.put = function(url, options){
 		// summary:
@@ -62,8 +59,7 @@ define([
 		//		URL to request
 		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		// returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	request.del = function(url, options){
 		// summary:
@@ -72,8 +68,7 @@ define([
 		//		URL to request
 		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		// returns:
-		//		dojo/promise/Promise
+		// returns: dojo/promise/Promise
 	};
 	=====*/
 	return request;

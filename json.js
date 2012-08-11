@@ -3,7 +3,54 @@ define(["./has"], function(has){
 	var hasJSON = typeof JSON != "undefined";
 	has.add("json-parse", hasJSON); // all the parsers work fine
 		// Firefox 3.5/Gecko 1.9 fails to use replacer in stringify properly https://bugzilla.mozilla.org/show_bug.cgi?id=509184
-	has.add("json-stringify", hasJSON && JSON.stringify({a:0}, function(k,v){return v||1;}) == '{"a":1}'); 
+	has.add("json-stringify", hasJSON && JSON.stringify({a:0}, function(k,v){return v||1;}) == '{"a":1}');
+
+	/*=====
+	return {
+		// summary:
+		//		Functions to parse and serialize JSON
+
+		parse: function(str, strict){
+			// summary:
+			//		Parses a [JSON](http://json.org) string to return a JavaScript object.
+			// description:
+			//		This function follows [native JSON API](https://developer.mozilla.org/en/JSON)
+			//		Throws for invalid JSON strings. This delegates to eval() if native JSON
+			//		support is not available. By default this will evaluate any valid JS expression.
+			//		With the strict parameter set to true, the parser will ensure that only
+			//		valid JSON strings are parsed (otherwise throwing an error). Without the strict
+			//		parameter, the content passed to this method must come
+			//		from a trusted source.
+			// str:
+			//		a string literal of a JSON item, for instance:
+			//		`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
+			// strict:
+			//		When set to true, this will ensure that only valid, secure JSON is ever parsed.
+			//		Make sure this is set to true for untrusted content. Note that on browsers/engines
+			//		without native JSON support, setting this to true will run slower.
+		},
+		stringify: function(value, replacer, spacer){
+			// summary:
+			//		Returns a [JSON](http://json.org) serialization of an object.
+			// description:
+			//		Returns a [JSON](http://json.org) serialization of an object.
+			//		This function follows [native JSON API](https://developer.mozilla.org/en/JSON)
+			//		Note that this doesn't check for infinite recursion, so don't do that!
+			// value:
+			//		A value to be serialized.
+			// replacer:
+			//		A replacer function that is called for each value and can return a replacement
+			// spacer:
+			//		A spacer string to be used for pretty printing of JSON
+			// example:
+			//		simple serialization of a trivial object
+			//	|	define(["dojo/json"], function(JSON){
+			// 	|		var jsonStr = JSON.stringify({ howdy: "stranger!", isStrange: true });
+			//	|		doh.is('{"howdy":"stranger!","isStrange":true}', jsonStr);
+		}
+	};
+	=====*/
+
 	if(has("json-stringify")){
 		return JSON;
 	}else{
@@ -17,50 +64,13 @@ define(["./has"], function(has){
 				replace(/[\t]/g, "\\t").replace(/[\r]/g, "\\r"); // string
 		};
 		return {
-			// summary:
-			//		Functions to parse and serialize JSON
-
 			parse: has("json-parse") ? JSON.parse : function(str, strict){
-				// summary:
-				//		Parses a [JSON](http://json.org) string to return a JavaScript object.
-				// description:
-				//		This function follows [native JSON API](https://developer.mozilla.org/en/JSON)
-				//		Throws for invalid JSON strings. This delegates to eval() if native JSON
-				//		support is not available. By default this will evaluate any valid JS expression.
-				//		With the strict parameter set to true, the parser will ensure that only
-				//		valid JSON strings are parsed (otherwise throwing an error). Without the strict
-				//		parameter, the content passed to this method must come
-				//		from a trusted source.
-				// str:
-				//		a string literal of a JSON item, for instance:
-				//		`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
-				// strict:
-				//		When set to true, this will ensure that only valid, secure JSON is ever parsed.
-				//		Make sure this is set to true for untrusted content. Note that on browsers/engines
-				//		without native JSON support, setting this to true will run slower.
 				if(strict && !/^([\s\[\{]*(?:"(?:\\.|[^"])+"|-?\d[\d\.]*(?:[Ee][+-]?\d+)?|null|true|false|)[\s\]\}]*(?:,|:|$))+$/.test(str)){
 					throw new SyntaxError("Invalid characters in JSON");
 				}
 				return eval('(' + str + ')');
 			},
 			stringify: function(value, replacer, spacer){
-				// summary:
-				//		Returns a [JSON](http://json.org) serialization of an object.
-				// description:
-				//		Returns a [JSON](http://json.org) serialization of an object.
-				//		This function follows [native JSON API](https://developer.mozilla.org/en/JSON)
-				//		Note that this doesn't check for infinite recursion, so don't do that!
-				// value:
-				//		A value to be serialized. 
-				// replacer:
-				//		A replacer function that is called for each value and can return a replacement
-				// spacer:
-				//		A spacer string to be used for pretty printing of JSON
-				// example:
-				//		simple serialization of a trivial object
-				//	|	define(["dojo/json"], function(JSON){
-				// 	|		var jsonStr = JSON.stringify({ howdy: "stranger!", isStrange: true });
-				//	|		doh.is('{"howdy":"stranger!","isStrange":true}', jsonStr);
 				var undef;
 				if(typeof replacer == "string"){
 					spacer = replacer;

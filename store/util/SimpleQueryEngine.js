@@ -28,7 +28,7 @@ return function(query, options){
 	//		used to match strings by more complex expressions
 	//		(and then the regex's or object's test() method will be used to match values).
 	//
-	// options: Store.QueryOptions?
+	// options: dojo/store/api/Store.QueryOptions?
 	//		An object that contains optional information such as sort, start, and count.
 	//
 	// returns: Function

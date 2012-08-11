@@ -6,6 +6,15 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 
 	var hasTouch = has("touch");
 
+	// TODO for 2.0: detection of IOS version should be moved from mobile/sniff to dojo/sniff
+	var ios4 = false;
+	if(has("ios")){
+		var ua = navigator.userAgent;
+		var v = ua.match(/OS ([\d_]+)/) ? RegExp.$1 : "1";
+		var os = parseFloat(v.replace(/_/, '.').replace(/_/g, ''));
+		ios4 = os < 5;
+	}
+
 	var touchmove, hoveredNode;
 
 	if(hasTouch){
@@ -34,8 +43,8 @@ function(dojo, lang, aspect, dom, on, has, mouse, ready, win){
 			// Fire synthetic touchover and touchout events on nodes since the browser won't do it natively.
 			on(win.doc, "touchmove", function(evt){
 				var newNode = win.doc.elementFromPoint(
-					evt.pageX - win.global.pageXOffset,
-					evt.pageY - win.global.pageYOffset
+					evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
+					evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
 				);
 				if(newNode && hoveredNode !== newNode){
 					// touch out on the old node

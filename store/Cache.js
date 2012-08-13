@@ -5,6 +5,7 @@ function(lang, Deferred /*=====, declare, Store =====*/){
 //		dojo/store/Cache
 
 var Cache = function(masterStore, cachingStore, options){
+	options = options || {};
 	return lang.delegate(masterStore, {
 		query: function(query, directives){
 			var results = masterStore.query(query, directives);
@@ -83,7 +84,7 @@ Cache = declare(Store, {
 		// cachingStore:
 		//		This is the caching store that will be used to store responses for quick access.
 		//		Typically this should be a local store.
-		// options: __CacheArgs
+		// options: __CacheArgs?
 		//		These are additional options for how caching is handled.
 	},
 	query: function(query, directives){

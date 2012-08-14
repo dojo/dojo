@@ -336,16 +336,6 @@ define([
 		method: 'POST'
 	};
 	function iframe(url, options, returnDeferred){
-		// summary:
-		//		Sends a request using an iframe element with the given URL and options.
-		// url: String
-		//		URL to request
-		// options: dojo/request/iframe.__Options?
-		//		Options for the request.
-		// returnDeferred: Boolean
-		//		Return a dojo/Deferred rather than a dojo/promise/Promise
-		// returns: dojo/promise/Promise|dojo/Deferred
-
 		var response = util.parseArgs(url, util.deepCreate(defaultOptions, options), true);
 		url = response.url;
 		options = response.options;
@@ -377,6 +367,15 @@ define([
 	}
 
 	/*=====
+	iframe = function(url, options){
+		// summary:
+		//		Sends a request using an iframe element with the given URL and options.
+		// url: String
+		//		URL to request
+		// options: dojo/request/iframe.__Options?
+		//		Options for the request.
+		// returns: dojo/request.__Promise
+	};
 	iframe.__BaseOptions = declare(request.__BaseOptions, {
 		// form: DOMNode?
 		//		A form node to use to submit data to the server.
@@ -400,7 +399,7 @@ define([
 		//		URL to request
 		// options: dojo/request/iframe.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	iframe.post = function(url, options){
 		// summary:
@@ -409,7 +408,7 @@ define([
 		//		URL to request
 		// options: dojo/request/iframe.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	=====*/
 	iframe.create = create;

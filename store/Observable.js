@@ -181,7 +181,7 @@ var Observable = function(/*Store*/ store){
 	return store;
 };
 
-lang.setObject("dojo.store.util.Observable", Observable);
+lang.setObject("dojo.store.Observable", Observable);
 
 return Observable;
 });

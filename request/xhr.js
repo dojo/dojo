@@ -128,16 +128,6 @@ define([
 			}
 		};
 	function xhr(url, options, returnDeferred){
-		// summary:
-		//		Sends a request using XMLHttpRequest with the given URL and options.
-		// url: String
-		//		URL to request
-		// options: dojo/request/xhr.__Options?
-		//		Options for the request.
-		// returnDeferred: Boolean
-		//		Return a dojo/Deferred rather than a dojo/promise/Promise
-		// returns: dojo/promise/Promise|dojo/Deferred
-
 		var response = util.parseArgs(
 			url,
 			util.deepCreate(defaultOptions, options),
@@ -225,6 +215,15 @@ define([
 	}
 
 	/*=====
+	xhr = function(url, options){
+		// summary:
+		//		Sends a request using XMLHttpRequest with the given URL and options.
+		// url: String
+		//		URL to request
+		// options: dojo/request/xhr.__Options?
+		//		Options for the request.
+		// returns: dojo/request.__Promise
+	};
 	xhr.__BaseOptions = declare(request.__BaseOptions, {
 		// sync: Boolean?
 		//		Whether to make a synchronous request or not. Default
@@ -256,7 +255,7 @@ define([
 		//		URL to request
 		// options: dojo/request/xhr.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	xhr.post = function(url, options){
 		// summary:
@@ -265,7 +264,7 @@ define([
 		//		URL to request
 		// options: dojo/request/xhr.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	xhr.put = function(url, options){
 		// summary:
@@ -274,7 +273,7 @@ define([
 		//		URL to request
 		// options: dojo/request/xhr.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	xhr.del = function(url, options){
 		// summary:
@@ -283,7 +282,7 @@ define([
 		//		URL to request
 		// options: dojo/request/xhr.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	=====*/
 	xhr._create = function(){

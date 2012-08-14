@@ -1,7 +1,8 @@
 define([
 	'./request/default!'/*=====,
-	'./_base/declare' =====*/
-], function(request/*=====, declare =====*/){
+	'./_base/declare',
+	'./promise/Promise' =====*/
+], function(request/*=====, declare, Promise =====*/){
 	/*=====
 	request = function(url, options){
 		// summary:
@@ -10,8 +11,13 @@ define([
 		//		The URL to request.
 		// options: dojo/request.__Options?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
+	request.__Promise = declare(Promise, {
+		// response: dojo/promise/Promise
+		//		A promise resolving to an object representing
+		//		the response from the server.
+	});
 	request.__BaseOptions = declare(null, {
 		// query: String|Object?
 		//		Query parameters to append to the URL.
@@ -41,7 +47,7 @@ define([
 		//		URL to request
 		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	request.post = function(url, options){
 		// summary:
@@ -50,7 +56,7 @@ define([
 		//		URL to request
 		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	request.put = function(url, options){
 		// summary:
@@ -59,7 +65,7 @@ define([
 		//		URL to request
 		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	request.del = function(url, options){
 		// summary:
@@ -68,7 +74,7 @@ define([
 		//		URL to request
 		// options: dojo/request.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	=====*/
 	return request;

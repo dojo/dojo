@@ -103,16 +103,6 @@ define([
 	}
 
 	function script(url, options, returnDeferred){
-		// summary:
-		//		Sends a request using a script element with the given URL and options.
-		// url: String
-		//		URL to request
-		// options: dojo/request/script.__Options?
-		//		Options for the request.
-		// returnDeferred: Boolean
-		//		Return a dojo/Deferred rather than a dojo/promise/Promise
-		// returns: dojo/promise/Promise|dojo/Deferred
-
 		var response = util.parseArgs(url, util.deepCopy({}, options));
 		url = response.url;
 		options = response.options;
@@ -168,6 +158,15 @@ define([
 	}
 	script.get = script;
 	/*=====
+	script = function(url, options){
+		// summary:
+		//		Sends a request using a script element with the given URL and options.
+		// url: String
+		//		URL to request
+		// options: dojo/request/script.__Options?
+		//		Options for the request.
+		// returns: dojo/request.__Promise
+	};
 	script.__BaseOptions = declare(request.__BaseOptions, {
 		// jsonp: String?
 		//		The URL parameter name that indicates the JSONP callback string.
@@ -198,7 +197,7 @@ define([
 		//		URL to request
 		// options: dojo/request/script.__BaseOptions?
 		//		Options for the request.
-		// returns: dojo/promise/Promise
+		// returns: dojo/request.__Promise
 	};
 	=====*/
 

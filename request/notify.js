@@ -16,7 +16,8 @@ define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
 	//		|     }
 	//		| );
 
-	var pubCount = 0;
+	var pubCount = 0,
+		slice = [].slice;
 
 	var hub = lang.mixin(new Evented, {
 		onsend: function(data){
@@ -42,7 +43,7 @@ define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
 
 			// After all event handlers have run, run _on* handler
 			if(this['_on' + type]){
-				this['_on' + type].apply(this, arguments);
+				this['_on' + type].apply(this, slice.call(arguments, 1));
 			}
 			return result;
 		}

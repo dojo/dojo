@@ -102,9 +102,10 @@
 
 					var doneFired = 0;
 					t.remove = remover(
-						notify('done', function(response){
+						notify('done', d.getTestErrback(function(data){
 							doneFired = 1;
-						}),
+							t.t(data instanceof Error);
+						})),
 						notify('error', d.getTestErrback(function(data){
 							t.t(data instanceof Error);
 							t.f(doneFired, "'error' should have fired before 'done'");

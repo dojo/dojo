@@ -1,5 +1,5 @@
-define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_base/lang", "./ready", "./sniff"],
-	function(dojo, require, config, connect, lang, ready, has){
+define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_base/lang", "./sniff"],
+	function(dojo, require, config, connect, lang, has){
 
 	// module:
 	//		dojo/hash
@@ -236,7 +236,8 @@ define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_ba
 		resetState(); // initialize state (transition to s1)
 		setTimeout(lang.hitch(this,this.pollLocation), _pollFrequency);
 	}
-	ready(function(){
+
+	require(["./domReady!"], function(){
 		if("onhashchange" in dojo.global && (!has("ie") || (has("ie") >= 8 && document.compatMode != "BackCompat"))){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
 			_connect = connect.connect(dojo.global,"onhashchange",_dispatchEvent);
 		}else{

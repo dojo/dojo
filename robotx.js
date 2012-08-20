@@ -1,4 +1,5 @@
 define([
+	"require",
 	"doh/main",
 	"./aspect",
 	"./dom-construct",
@@ -6,11 +7,10 @@ define([
 	"./_base/kernel",
 	"./_base/lang",
 	"./on",
-	"./ready",
 	"./robot",
 	"./sniff",
 	"./_base/window"
-], function(doh, aspect, construct, style, kernel, lang, on, ready, robot, has, win){
+], function(require, doh, aspect, construct, style, kernel, lang, on, robot, has, win){
 
 kernel.experimental("dojo.robotx");
 
@@ -34,7 +34,6 @@ var iframeUrl;
 var groupStarted = aspect.after(doh, "_groupStarted", function(){
 	groupStarted.remove();
 	iframe.style.visibility = "visible";
-	iframe.style.visibility = "visible";
 }, true);
 
 var iframeLoad;
@@ -43,9 +42,9 @@ var attachIframe = function(url){
 	// summary:
 	//		Create iframe to load external app at specified url, and call iframeLoad() when that URL finishes loading
 
-	ready(function(){
+	require(["./domReady!"], function(){
 		var emptyStyle = {
-			overflow: has("webkit") ? "hidden" : "visible",
+			overflow: "hidden",
 			margin: "0px",
 			borderWidth: "0px",
 			height: "100%",
@@ -57,7 +56,6 @@ var attachIframe = function(url){
 		// Create the iframe for the external document.   Put it above the firebug-lite div (if such a div exists).
 		// console.log("creating iframe for external document");
 		iframe = document.createElement("iframe");
-		iframe.src = url;
 		iframe.setAttribute("ALLOWTRANSPARENCY","true");
 		iframe.scrolling = has("ie") ? "yes" : "auto";
 		var scrollRoot = document.compatMode == "BackCompat" ? document.body : document.documentElement;
@@ -70,6 +68,7 @@ var attachIframe = function(url){
 			width: "100%",
 			height: consoleHeight ? (scrollRoot.clientHeight - consoleHeight)+"px" : "100%"
 		});
+		iframe.src = url;
 		if(iframe.attachEvent !== undefined){
 			iframe.attachEvent("onload", iframeLoad);
 		}else{

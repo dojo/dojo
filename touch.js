@@ -1,5 +1,5 @@
-define(["require", "./_base/kernel", "./_base/lang", "./aspect", "./dom", "./on", "./has", "./mouse", "./_base/window"],
-function(require, dojo, lang, aspect, dom, on, has, mouse, win){
+define(["./_base/kernel", "./_base/lang", "./aspect", "./dom", "./on", "./has", "./mouse", "./domReady", "./_base/window"],
+function(dojo, lang, aspect, dom, on, has, mouse, domReady, win){
 
 	// module:
 	//		dojo/touch
@@ -18,7 +18,7 @@ function(require, dojo, lang, aspect, dom, on, has, mouse, win){
 	var touchmove, hoveredNode;
 
 	if(hasTouch){
-		require(["./domReady!"], function(){
+		domReady(function(){
 			// Keep track of currently hovered node
 			hoveredNode = win.body();	// currently hovered node
 

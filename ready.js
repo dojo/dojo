@@ -31,13 +31,17 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 				//guard against recursions into this function
 				onLoadRecursiveGuard = 1;
 				var f = loadQ.shift();
-					try{
-						f();
-					}
-						// FIXME: signal the error via require.on
-					finally{
-						onLoadRecursiveGuard = 0;
-					}
+				try{
+					// Call domReady() again to yield to any tasks registered directly via domReady().
+					// This is necessary so that a user defined dojo.ready() callback is delayed until after the
+					// domReady() calls inside of dojo.   Failure can be seen on dijit/tests/Dialog.html because the
+					// dijit/focus.js domReady() callback doesn't execute until after the test starts running.
+					domReady(f);
+				}
+				// FIXME: signal the error via require.on
+				finally{
+					onLoadRecursiveGuard = 0;
+				}
 				onLoadRecursiveGuard = 0;
 				if(loadQ.length){
 					requestCompleteSignal(onLoad);

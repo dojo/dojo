@@ -1,5 +1,5 @@
-define(["require", "./_base/kernel", "./_base/lang", "./_base/array", "./_base/connect", "./query"],
-function(require, dojo, lang, darray, connect, query){
+define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/connect", "./query", "./domReady"],
+function(dojo, lang, darray, connect, query, domReady){
 
 // module:
 //		dojo/behavior
@@ -243,7 +243,7 @@ var Behavior = function(){
 
 dojo.behavior = new Behavior();
 
-require(["./domReady!"], function(){ dojo.behavior.apply(); });
+domReady( function(){ dojo.behavior.apply(); } );
 
 return dojo.behavior;
 });

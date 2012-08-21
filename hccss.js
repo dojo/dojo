@@ -5,8 +5,9 @@ define([
 	"./dom-construct", // domConstruct.destroy
 	"./dom-style", // domStyle.getComputedStyle
 	"./has",
+	"./domReady",
 	"./_base/window" // win.body
-], function(require, config, domClass, domConstruct, domStyle, has, win){
+], function(require, config, domClass, domConstruct, domStyle, has, domReady, win){
 
 	// module:
 	//		dojo/hccss
@@ -38,7 +39,7 @@ define([
 		return hc;
 	});
 
-	require(["./domReady!"], function(){
+	domReady(function(){
 		if(has("highcontrast")){
 			domClass.add(win.body(), "dj_a11y");
 		}

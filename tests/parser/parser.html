@@ -452,6 +452,14 @@
 						doh.t(objOnWatch.boolProp1, "ensure on executed in scope");
 					},
 
+					function testOn2(){
+						// testing script-type dojo/on, when script comes after another element
+						parser.parse("on");
+						doh.t("on_form" in window, "widget created");
+						on_form.emit("click");
+						doh.t(on_form.clicked, "on callback fired");
+					},
+
 					function testAspect(){
 						// testing script-type dojo/aspect
 						doh.t(typeof objAspect == "object");
@@ -918,6 +926,16 @@
 				<div data-dojo-id="objAMDWidget" data-dojo-type="dojo/tests/resources/AMDWidget" data-dojo-props="value: 'Value1'"></div>
 			</div>
 		</div> <!-- end of <div id=main> -->
+
+		<!-- more dojo/on tests -->
+		<div id="on">
+			<form action="/SomeUrl" data-dojo-type="tests.parser.StatefulClass" data-dojo-id="on_form">
+				<input data-dojo-type="tests.parser.InputClass" name="ACheckBox" />
+				<script type="dojo/on" data-dojo-event="click">
+					this.clicked = true;
+				</script>
+			</form>
+		</div>
 
 		<!-- section for testing parse on a subnode -->
 		<div>

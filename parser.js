@@ -545,9 +545,9 @@ define(
 						break;
 					}
 					node = parent.node.nextSibling;
-					scripts = parent.scripts;
 					scriptsOnly = false;
 					parent = parent.parent;
+					scripts = parent.scripts;
 					continue;
 				}
 

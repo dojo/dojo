@@ -34,7 +34,7 @@ define([
 				if(dfd.startTime + (options.timeout || 0) < now){
 					_inFlight.splice(i--, 1);
 					// Cancel the request so the io module can do appropriate cleanup.
-					dfd.cancel(new RequestTimeoutError(response));
+					dfd.cancel(new RequestTimeoutError('Timeout exceeded', response));
 					watch._onAction && watch._onAction();
 				}
 			}

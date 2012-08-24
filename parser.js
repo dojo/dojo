@@ -1,7 +1,7 @@
 define(
-	["./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./_base/html", "./_base/window", "./_base/url",
-		"./_base/json", "./aspect", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./ready"],
-	function(dojo, dlang, darray, config, dhtml, dwindow, _Url, djson, aspect, dates, Deferred, has, query, don, ready){
+	["require", "./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./_base/html", "./_base/window",
+		"./_base/url", "./_base/json", "./aspect", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./ready"],
+	function(require, dojo, dlang, darray, config, dhtml, dwindow, _Url, djson, aspect, dates, Deferred, has, query, don, ready){
 
 	// module:
 	//		dojo/parser

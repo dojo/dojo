@@ -69,7 +69,7 @@ define([
 	};
 	request.del = function(url, options){
 		// summary:
-		//		Send an HTTP POST request using the default transport for the current platform.
+		//		Send an HTTP DELETE request using the default transport for the current platform.
 		// url: String
 		//		URL to request
 		// options: dojo/request.__BaseOptions?

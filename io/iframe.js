@@ -140,7 +140,7 @@ var iframe = lang.delegate(_iframe, {
 		var ioArgs = dfd.ioArgs;
 
 		var method = "GET",
-			form = dojo.byId(args.form);
+			form = dom.byId(args.form);
 		if(args.method && args.method.toUpperCase() === "POST" && form){
 			method = "POST";
 		}

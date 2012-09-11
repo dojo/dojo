@@ -7,7 +7,7 @@ define([
 // module:
 //		dojo/io/iframe
 
-dojo.deprecated("dojo/io/iframe", "Use dojo/request/iframe.", "2.0");
+kernel.deprecated("dojo/io/iframe", "Use dojo/request/iframe.", "2.0");
 
 /*=====
 var __ioArgs = declare(kernel.__IoArgs, {

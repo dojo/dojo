@@ -7,7 +7,7 @@ define([
 	// module:
 	//		dojo/io/script
 
-	dojo.deprecated("dojo/io/script", "Use dojo/request/script.", "2.0");
+	kernel.deprecated("dojo/io/script", "Use dojo/request/script.", "2.0");
 
 	/*=====
 	var __ioArgs = declare(kernel.__IoArgs, {

@@ -71,7 +71,7 @@ function(dojo, lang, aspect, dom, on, has, mouse, domReady, win){
 		touchmove = function(node, listener){
 			return on(win.doc, "touchmove", function(evt){
 				if(node === win.doc || dom.isDescendant(hoveredNode, node)){
-					listener.call(this, lang.mixin({}, evt, {
+					listener.call(this, lang.delegate(evt, {
 						target: hoveredNode
 					}));
 				}

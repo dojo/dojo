@@ -176,7 +176,9 @@ define([
 			if(formNode){
 				if(!dfd._legacy){
 					var parentNode = formNode;
-					while(parentNode = parentNode.parentNode && parentNode !== win.doc.documentElement){}
+					do{
+						parentNode = parentNode.parentNode;
+					}while(parentNode !== win.doc.documentElement);
 
 					// Append the form node or some browsers won't work
 					if(!parentNode){

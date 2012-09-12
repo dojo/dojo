@@ -13,7 +13,7 @@
 		</script>
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			require(["doh", "dojo/request/iframe", "dojo/domReady!"], function(doh, iframe){
+			require(["doh", "dojo/request/iframe", "dojo/dom", "dojo/domReady!"], function(doh, iframe, dom){
 				doh.register("dojo/request/iframe", [
 					function ioIframeGetText(t){
 						var d = new doh.Deferred();
@@ -146,6 +146,11 @@
 							t.is("json", data.query.type);
 							t.is("value2", data.post.tag);
 							t.is("42", data.post.size);
+
+							/* Test to make sure the form still exists and it hasn't moved */
+							var form = dom.byId("contentArrayTest");
+							t.t(form);
+							t.isNot("absolute", dom.byId("contentArrayTest").style.position);
 						}));
 						return d;
 					},

@@ -117,9 +117,9 @@
 
 		// this will be the global require function; define it immediately so we can start hanging things off of it
 		req = function(
-			config,       //(object, optional) hash of configuration properties
+			config,		  //(object, optional) hash of configuration properties
 			dependencies, //(array of commonjs.moduleId, optional) list of modules to be loaded before applying callback
-			callback      //(function, optional) lamda expression to apply to module values implied by dependencies
+			callback	  //(function, optional) lamda expression to apply to module values implied by dependencies
 		){
 			return contextRequire(config, dependencies, callback, 0, req);
 		},
@@ -394,14 +394,14 @@
 			// Modules go through several phases in creation:
 			//
 			// 1. Requested: some other module's definition or a require application contained the requested module in
-			//    its dependency vector or executing code explicitly demands a module via req.require.
+			//	  its dependency vector or executing code explicitly demands a module via req.require.
 			//
 			// 2. Injected: a script element has been appended to the insert-point element demanding the resource implied by the URL
 			//
 			// 3. Loaded: the resource injected in [2] has been evalated.
 			//
 			// 4. Defined: the resource contained a define statement that advised the loader about the module. Notice that some
-			//    resources may just contain a bundle of code and never formally define a module via define
+			//	  resources may just contain a bundle of code and never formally define a module via define
 			//
 			// 5. Evaluated: the module was defined via define and the loader has evaluated the factory and computed a result.
 			= {},
@@ -510,6 +510,14 @@
 				packs[name] = packageInfo;
 			},
 
+			delayedModuleConfig
+				// module config cannot be consummed until the loader is completely initialized; therefore, all
+				// module config detected during booting is memorized and applied at the end of loader initialization
+				// TODO: this is a bit of a kludge; all config should be moved to end of loader initialization, but
+				// we'll delay this chore and do it with a final loader 1.x cleanup after the 2.x loader prototyping is complete
+				= [],
+
+
 			config = function(config, booting, referenceModule){
 				for(var p in config){
 					if(p=="waitSeconds"){
@@ -593,9 +601,13 @@
 					aliases.push(pair);
 				});
 
-				for(p in config.config){
-					var module = getModule(p, referenceModule);
-					module.config = mix(module.config || {}, config.config[p]);
+				if(booting){
+					delayedModuleConfig.push({config:config.config});
+				}else{
+					for(p in config.config){
+						var module = getModule(p, referenceModule);
+						module.config = mix(module.config || {}, config.config[p]);
+					}
 				}
 
 				// push in any new cache values
@@ -929,6 +941,7 @@
 				}
 				mapItem = mapItem || mapProgs.star;
 				mapItem = mapItem && runMapProg(mid, mapItem[1]);
+
 				if(mapItem){
 					mid = mapItem[1] + mid.substring(mapItem[3]);
 					}
@@ -1155,9 +1168,9 @@
 				}
 			}
 			// delete references to synthetic modules
-	        if (/^require\*/.test(module.mid)) {
-	            delete modules[module.mid];
-	        }
+			if (/^require\*/.test(module.mid)) {
+				delete modules[module.mid];
+			}
 		},
 
 		circleTrace = [],
@@ -1873,7 +1886,8 @@
 	}
 
 	if(has("dojo-config-api")){
-		var bootDeps = dojoSniffConfig.deps ||  userConfig.deps || defaultConfig.deps,
+		forEach(delayedModuleConfig, function(c){ config(c); });
+		var bootDeps = dojoSniffConfig.deps ||	userConfig.deps || defaultConfig.deps,
 			bootCallback = dojoSniffConfig.callback || userConfig.callback || defaultConfig.callback;
 		req.boot = (bootDeps || bootCallback) ? [bootDeps || [], bootCallback] : 0;
 	}

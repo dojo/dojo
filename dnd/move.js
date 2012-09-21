@@ -98,7 +98,7 @@ var __parentConstrainedMoveableArgs = declare( [__constrainedMoveableArgs], {
 });
 =====*/
 
-var parentConstrainedMoveable = declare("dnd.move.parentConstrainedMoveable", constrainedMoveable, {
+var parentConstrainedMoveable = declare("dojo.dnd.move.parentConstrainedMoveable", constrainedMoveable, {
 	// area:
 	//		object attributes (for markup)
 	area: "content",

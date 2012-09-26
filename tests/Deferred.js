@@ -182,11 +182,12 @@ define([
 
 		"progress() results are not cached": function(t){
 			var obj1 = {}, obj2 = {};
-			var received;
+			var received = [];
 			this.deferred.progress(obj1);
-			this.deferred.then(null, null, function(result){ received = result; });
+			this.deferred.then(null, null, function(result){ received.push(result); });
 			this.deferred.progress(obj2);
-			t.t(received === obj2);
+			t.t(received[0] === obj2);
+			t.is(1, received.length);
 		},
 
 		"progress() with chaining": function(t){
@@ -197,6 +198,14 @@ define([
 			this.deferred.resolve();
 			inner.progress(obj);
 			t.t(received === obj);
+		},
+
+		"after progress(), the progback return value is emitted on the returned promise": function(t){
+			var received;
+			var promise = this.deferred.then(null, null, function(n){ return n * n; });
+			promise.then(null, null, function(n){ received = n; });
+			this.deferred.progress(2);
+			t.is(4, received);
 		},
 
 		"progress() is already bound to the deferred": function(t){
@@ -438,6 +447,14 @@ define([
 			then(function(result){ received = result; });
 			this.deferred.resolve(obj);
 			t.t(received === obj);
+		},
+
+		"then() with progback: returned promise is not fulfilled when progress is emitted": function(t){
+			var progressed = false;
+			var promise = this.deferred.then(null, null, function(){ progressed = true; });
+			this.deferred.progress();
+			t.t(progressed, "Progress was received.");
+			t.f(promise.isFulfilled(), "Promise is not fulfilled.");
 		}
 	};
 

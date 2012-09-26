@@ -35,16 +35,22 @@ define([
 		if(func){
 			try{
 				var newResult = func(result);
-				if(newResult && typeof newResult.then === "function"){
-					listener.cancel = newResult.cancel;
-					newResult.then(
-							// Only make resolvers if they're actually going to be used
-							makeDeferredSignaler(deferred, RESOLVED),
-							makeDeferredSignaler(deferred, REJECTED),
-							makeDeferredSignaler(deferred, PROGRESS));
-					return;
+				if(type === PROGRESS){
+					if(typeof newResult !== "undefined"){
+						signalDeferred(deferred, type, newResult);
+					}
+				}else{
+					if(newResult && typeof newResult.then === "function"){
+						listener.cancel = newResult.cancel;
+						newResult.then(
+								// Only make resolvers if they're actually going to be used
+								makeDeferredSignaler(deferred, RESOLVED),
+								makeDeferredSignaler(deferred, REJECTED),
+								makeDeferredSignaler(deferred, PROGRESS));
+						return;
+					}
+					signalDeferred(deferred, RESOLVED, newResult);
 				}
-				signalDeferred(deferred, RESOLVED, newResult);
 			}catch(error){
 				signalDeferred(deferred, REJECTED, error);
 			}

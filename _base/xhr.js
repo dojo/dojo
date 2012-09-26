@@ -619,6 +619,11 @@ define([
 			dfd.resolve(dfd);
 		}).otherwise(function(error){
 			ioArgs.error = error;
+			if(error.response){
+				error.status = error.response.status;
+				error.responseText = error.response.text;
+				error.xhr = error.response.xhr;
+			}
 			dfd.reject(error);
 		});
 		return dfd; // dojo/_base/Deferred

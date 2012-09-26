@@ -33,7 +33,7 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
  	has.add("events-mouseenter", win.doc && "onmouseenter" in win.doc.createElement("div"));
 
 	var mouseButtons;
-	if(has("dom-quirks") || !has("dom-addeventlistener")){
+	if((has("dom-quirks") && has("ie")) || !has("dom-addeventlistener")){
 		mouseButtons = {
 			LEFT:   1,
 			MIDDLE: 4,

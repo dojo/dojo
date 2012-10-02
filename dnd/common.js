@@ -4,10 +4,14 @@ define(["../_base/connect", "../_base/kernel", "../_base/lang", "../dom"],
 // module:
 //		dojo/dnd/common
 
+var exports = lang.getObject("dojo.dnd", true);
+/*=====
+// TODO: for 2.0, replace line above with this code.
 var exports = {
 	// summary:
 	//		TODOC
 };
+=====*/
 
 exports.getCopyKeyState = connect.isCopyKey;
 
@@ -33,9 +37,6 @@ exports.isFormElement = function(/*Event*/ e){
 	}
 	return " button textarea input select option ".indexOf(" " + t.tagName.toLowerCase() + " ") >= 0;	// Boolean
 };
-
-// For back-compat, remove for 2.0.
-lang.mixin(lang.getObject("dojo.dnd", true), exports);
 
 return exports;
 });

@@ -219,5 +219,7 @@ Manager.manager = dnd.manager = function(){
 	return dnd._manager;	// Object
 };
 
+// TODO: for 2.0, store _manager and manager in Manager only.   Don't access dnd or dojo.dnd.
+
 return Manager;
 });

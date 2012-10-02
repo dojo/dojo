@@ -73,6 +73,13 @@ function(dojo, lang, aspect, dom, on, has, mouse, domReady, win){
 				if(node === win.doc || dom.isDescendant(hoveredNode, node)){
 					listener.call(this, lang.mixin({}, evt, {
 						target: hoveredNode,
+						// forcing the copy of the "touches" property is needed for iOS6:
+						// differently than in iOS 4 and 5, the code used by lang.mixin
+						// to iterate over the properties of the source object:
+						//   for(name in source){ ... }
+						// does not hit anymore the "touches" property... Apparently it 
+						// became a "non-enumerable" property.
+						touches: evt.touches, 
 						preventDefault: function(){evt.preventDefault();},
 						stopPropagation: function(){evt.stopPropagation();}
 					}));

@@ -499,7 +499,12 @@ define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-cla
 			// |	});
 			content = this._normalize(content, this[0]);
 			for(var i = 0, node; (node = this[i]); i++){
-				this._place(content, node, position, i > 0);
+				if(content.length){
+					this._place(content, node, position, i > 0);
+				}else{
+					// if it is an empty array, we empty the target node
+					domCtr.empty(node);
+				}
 			}
 			return this; // dojo/NodeList
 		}

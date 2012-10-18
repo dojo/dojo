@@ -29,6 +29,8 @@
 						});
 
 						doh.is("<ul><li>test</li></ul>", divs.innerHTML().toLowerCase().replace(/[\r\n]/g, ""));
+						divs.innerHTML("");
+						doh.is("", divs.innerHTML().toLowerCase().replace(/[\r\n]/g, ""));
 					},
 
 					function html(t){

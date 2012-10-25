@@ -129,8 +129,8 @@ define([
 		});
 
 		if(options.jsonp){
-			var queryParameter = (~url.indexOf('?') ? '&' : '?') + options.jsonp + '=';
-			if(url.indexOf(queryParameter) === -1){
+			var queryParameter = new RegExp('[?&]' + options.jsonp + '=');
+			if(!queryParameter.test(url)){
 				url += queryParameter +
 					(options.frameDoc ? 'parent.' : '') +
 					mid + '_callbacks.' + dfd.id;

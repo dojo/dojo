@@ -1,4 +1,4 @@
-define(["../main", "doh/main", "../json"], function(dojo, doh, JSON){
+define(["../main", "doh/main", "../json", "dojo/has"], function(dojo, doh, JSON, has){
 
 	var mustThrow = function(json){
 		try{
@@ -42,25 +42,30 @@ define(["../main", "doh/main", "../json"], function(dojo, doh, JSON){
 		function serializeInfinity(t){ t.is('{"foo":null}', JSON.stringify({"foo":Infinity})); },
 		// there is differences in how many decimals of accuracies in seconds in how Dates are serialized between browsers
 		function serializeDate(t){ t.t(/1970-01-01T00:00:00.*Z/.test(JSON.parse(JSON.stringify({"foo":new Date(1)})).foo)); },
-		function serializeCircular(t){
-			try{
-				var a = {};
-				a.a = a;
-				console.log("circular: " + JSON.stringify(a));
-			}catch(e){
-				return;
-			}
-			throw new Error("stringify must throw for circular references");
-
+		function serializeInherited(t){
+			function FooBar() { this.foo = "foo"; }
+			FooBar.prototype.bar = "bar";
+			t.is('{"foo":"foo"}', JSON.stringify(new FooBar()));
 		},
-		function serializeInherited(t){ 
- 			function FooBar() { this.foo = "foo"; }
- 			FooBar.prototype.bar = "bar";
- 			t.is('{"foo":"foo"}', JSON.stringify(new FooBar())); 
- 		},
 		/*Apparently Firefox doesn't pass the key to the toJSON method*/
 		function serializeToJSON(t){ t.is('{"foo":{"name":"value"}}', JSON.stringify({foo:{toJSON:function(key){return {name:"value"}; }}})); }
 	]);
+
+	if(!has("host-rhino")){
+		doh.register("tests.json.circular", [
+			function serializeCircular(t){
+				try{
+					var a = {};
+					a.a = a;
+					console.log("circular: " + JSON.stringify(a));
+				}catch(e){
+					return;
+				}
+				throw new Error("stringify must throw for circular references");
+
+			}
+		]);
+	}
 
 var smallDataSet = {
 	prop1: null,

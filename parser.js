@@ -379,10 +379,11 @@ define(
 			}
 
 			// Process <script type="dojo/*"> script tags
-			// <script type="dojo/method" event="foo"> tags are added to params, and passed to
+			// <script type="dojo/method" data-dojo-event="foo"> tags are added to params, and passed to
 			// the widget on instantiation.
 			// <script type="dojo/method"> tags (with no event) are executed after instantiation
-			// <script type="dojo/connect" data-dojo-event="foo"> tags are dojo.connected after instantiation
+			// <script type="dojo/connect" data-dojo-event="foo"> tags are dojo.connected after instantiation,
+			// and likewise with <script type="dojo/aspect" data-dojo-method="foo">
 			// <script type="dojo/watch" data-dojo-prop="foo"> tags are dojo.watch after instantiation
 			// <script type="dojo/on" data-dojo-event="foo"> tags are dojo.on after instantiation
 			// note: dojo/* script tags cannot exist in self closing widgets, like <input />
@@ -408,6 +409,8 @@ define(
 						}else if(scriptType == "dojo/on"){
 							ons.push({ event: event, func: nf });
 						}else{
+							// <script type="dojo/method" data-dojo-event="foo">
+							// TODO for 2.0: use data-dojo-method="foo" instead (also affects dijit/Declaration)
 							params[event] = nf;
 						}
 					}else if(scriptType == "dojo/aspect"){

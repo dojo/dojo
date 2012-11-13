@@ -191,12 +191,10 @@ var Selector = declare("dojo.dnd.Selector", Container, {
 		if(!this.singular && !dnd.getCopyKeyState(e) && !e.shiftKey && (this.current.id in this.selection)){
 			this.simpleSelection = true;
 			if(mouse.isLeft(e)){
-				// accept the left button and stop the event
-				// for IE we don't stop event when multiple buttons are pressed
-				// TODO: remove this if() completely for 2.0, because event.stop() is useless and dangerous:
-				// on mobile, it prevents a click event, and also prevents scroll (see #15838).   Of course,
-				// drag-scroll should be disabled while dragging, and that is handled by Source::onMouseMove(),
-				// but Selector.js itself shouldn't interfere with scroll.
+				// Accept the left button and stop the event.   Stopping the event prevents text selection while
+				// dragging.   However, don't stop the event on mobile because that prevents a click event,
+				// and also prevents scroll (see #15838).
+				// For IE we don't stop event when multiple buttons are pressed.
 				event.stop(e);
 			}
 			return;

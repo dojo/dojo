@@ -339,9 +339,14 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				evt = w.event;
 			}
 			if(!evt){return evt;}
-			if(lastEvent && evt.type == lastEvent.type){
-				// should be same event, reuse event object (so it can be augmented)
-				evt = lastEvent;
+			try{
+				if(lastEvent && evt.type == lastEvent.type){
+					// should be same event, reuse event object (so it can be augmented)
+					evt = lastEvent;
+				}
+			}catch(e){
+				// will occur on IE on lastEvent.type reference if lastEvent points to a previous event that already
+				// finished bubbling, but the setTimeout() to clear lastEvent hasn't fired yet
 			}
 			if(!evt.target){ // check to see if it has been fixed yet
 				evt.target = evt.srcElement;
@@ -454,6 +459,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			}
 			this.defaultPrevented = true;
 			this.returnValue = false;
+			this.modified = true; // mark it as modified so the event will be cached in IE
 		};
 	}
 	if(has("touch")){ 

@@ -120,32 +120,38 @@ doh.register("tests.on",
 				bubbles: true,
 				cancelable: true
 			}));
-			var button = div.appendChild(document.createElement("button"));
-			// make sure we are propagating natively created events too
-			signal = on(div, "click", function(event){
-				order.push(7);
+
+			// make sure we are propagating natively created events too, and that defaultPrevented works
+			var button = span.appendChild(document.createElement("button")),
+				defaultPrevented = false,
+				signal2Fired = false;
+			signal = on(span, "click", function(event){
 				event.preventDefault();
-				t.t(event.defaultPrevented);
+			});
+			signal2 = on(div, "click", function(event){
+				order.push(7);
+				signal2Fired = true;
+				defaultPrevented = event.defaultPrevented;
 			});
 			button.click();
+			t.t(signal2Fired, "bubbled click event on div");
+			t.t(defaultPrevented, "defaultPrevented for click event");
 			signal.remove();
+			signal2.remove();
 
-			// make sure that evt.defaultPrevented gets set for synthetic events
-			var span2 = div.appendChild(document.createElement("span")),
-				button2 = span2.appendChild(document.createElement("button")),
-				signal2Fired,
-				defaultPrevented,
-				signal1 = on(span2, "click", function(event){
-					event.preventDefault();
-				}),
-				signal2 = on(div, "click", function(event){
-					signal2Fired = true;
-					defaultPrevented = event.defaultPrevented;
-				});
-			on.emit(button2, "click", {bubbles: true, cancelable: true});
-			t.t(signal2Fired, "got synthetic event on div");
+			// make sure that evt.defaultPrevented gets set for synthetic events too
+			signal = on(span, "click", function(event){
+				event.preventDefault();
+			});
+			signal2 = on(div, "click", function(event){
+				signal2Fired = true;
+				defaultPrevented = event.defaultPrevented;
+			});
+			signal2Fired = false;
+			on.emit(button, "click", {bubbles: true, cancelable: true});
+			t.t(signal2Fired, "bubbled synthetic event on div");
 			t.t(defaultPrevented, "defaultPrevented set for synthetic event on div");
-			signal1.remove();
+			signal.remove();
 			signal2.remove();
 
 			// test out event delegation

@@ -202,6 +202,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 
 	function syntheticPreventDefault(){
 		this.cancelable = false;
+		this.defaultPrevented = true;
 	}
 	function syntheticStopPropagation(){
 		this.bubbles = false;

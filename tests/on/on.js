@@ -129,6 +129,25 @@ doh.register("tests.on",
 			});
 			button.click();
 			signal.remove();
+
+			// make sure that evt.defaultPrevented gets set for synthetic events
+			var span2 = div.appendChild(document.createElement("span")),
+				button2 = span2.appendChild(document.createElement("button")),
+				signal2Fired,
+				defaultPrevented,
+				signal1 = on(span2, "click", function(event){
+					event.preventDefault();
+				}),
+				signal2 = on(div, "click", function(event){
+					signal2Fired = true;
+					defaultPrevented = event.defaultPrevented;
+				});
+			on.emit(button2, "click", {bubbles: true, cancelable: true});
+			t.t(signal2Fired, "got synthetic event on div");
+			t.t(defaultPrevented, "defaultPrevented set for synthetic event on div");
+			signal1.remove();
+			signal2.remove();
+
 			// test out event delegation
 			if(dojo.query){
 				// if dojo.query is loaded, test event delegation

@@ -459,7 +459,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			}
 			this.defaultPrevented = true;
 			this.returnValue = false;
-			this.modified = true; // mark it as modified so the event will be cached in IE
+			this.modified = true; // mark it as modified  (for defaultPrevented flag) so the event will be cached in IE
 		};
 	}
 	if(has("touch")){ 

@@ -583,7 +583,17 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 					if((nt === 1)||(nt == 3)){ return false; }
 				}
 				return true;
-			}
+			};
+		},
+		"disabled": function(name, condition){
+			return function(elem){
+				return elem.disabled;
+			};
+		},
+		"enabled": function(name, condition){
+			return function(elem){
+				return !elem.disabled;
+			};
 		},
 		"contains": function(name, condition){
 			var cz = condition.charAt(0);
@@ -1359,8 +1369,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 		//			* certain pseduo-selectors which don't get a lot of day-to-day use:
 		//			|	* `:root`, `:lang()`, `:target`, `:focus`
 		//			* all visual and state selectors:
-		//			|	* `:root`, `:active`, `:hover`, `:visisted`, `:link`,
-		//				  `:enabled`, `:disabled`
+		//			|	* `:root`, `:active`, `:hover`, `:visisted`, `:link`
 		//			* `:*-of-type` pseudo selectors
 		//
 		//		dojo.query and XML Documents:

@@ -139,7 +139,7 @@ define(["./sniff", "./dom"], function(has, dom){
 	};
 
 	var _getOpacity =
-		has("ie") < 9 || (has("ie") && has("quirks")) ? function(node){
+		has("ie") < 9 || (has("ie") < 10 && has("quirks")) ? function(node){
 			try{
 				return af(node).Opacity / 100; // Number
 			}catch(e){
@@ -151,7 +151,7 @@ define(["./sniff", "./dom"], function(has, dom){
 		};
 
 	var _setOpacity =
-		has("ie") < 9 || (has("ie") && has("quirks")) ? function(/*DomNode*/ node, /*Number*/ opacity){
+		has("ie") < 9 || (has("ie") < 10 && has("quirks")) ? function(/*DomNode*/ node, /*Number*/ opacity){
 			var ov = opacity * 100, opaque = opacity == 1;
 			node.style.zoom = opaque ? "" : 1;
 

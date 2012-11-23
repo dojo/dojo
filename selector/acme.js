@@ -450,7 +450,8 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 			//		with the string "bar"
 			return function(elem){
 				var ea = " "+_getAttr(elem, attr);
-				return (ea.lastIndexOf(value)==(ea.length-value.length));
+				var lastIndex = ea.lastIndexOf(value);
+				return lastIndex > -1 && (lastIndex==(ea.length-value.length));
 			}
 		},
 		"~=": function(attr, value){

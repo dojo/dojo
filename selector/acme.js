@@ -309,6 +309,12 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 							_cp.matchFor = cmf.slice(1, -1);
 						}
 					}
+					// remove backslash escapes from an attribute match, since DOM
+					// querying will get attribute values without backslashes
+					if(_cp.matchFor){
+						_cp.matchFor = _cp.matchFor.replace(/\\/g, "");
+					}
+
 					// end the attribute by adding it to the list of attributes.
 					currentPart.attrs.push(_cp);
 					_cp = null; // necessary?
@@ -1103,13 +1109,18 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	var infixSpaceFunc = function(match, pre, ch, post){
 		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};
-
+	
+	//Don't apply the infixSpaceRe to attribute value selectors
+	var attRe = /([^[]*)([^\]]*])?/g;
+	var attFunc = function(match, nonAtt, att) {
+		return nonAtt.replace(infixSpaceRe, infixSpaceFunc) + (att||"");
+	};
 	var getQueryFunc = function(query, forceDOM){
 		//Normalize query. The CSS3 selectors spec allows for omitting spaces around
 		//infix operators, >, ~ and +
 		//Do the work here since detection for spaces is used as a simple "not use QSA"
 		//test below.
-		query = query.replace(infixSpaceRe, infixSpaceFunc);
+		query = query.replace(attRe, attFunc);
 
 		if(qsaAvail){
 			// if we've got a cached variant and we think we can do it, run it!
@@ -1192,7 +1203,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 			}
 		}else{
 			// DOM branch
-			var parts = query.split(/\s*,\s*/);
+			var parts = query.match(/([^\s,](?:"(?:\\.|[^"])+"|'(?:\\.|[^'])+'|[^,])*)/g);
 			return _queryFuncCacheDOM[query] = ((parts.length < 2) ?
 				// if not a compound query (e.g., ".foo, .bar"), cache and return a dispatcher
 				getStepQueryFunc(query) :

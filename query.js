@@ -653,7 +653,7 @@ function queryForEngine(engine, NodeList){
 				return new NodeList([]);
 			}
 		}
-		var results = typeof query == "string" ? engine(query, root) : query.orphan ? query : [query];
+		var results = typeof query == "string" ? engine(query, root) : query ? query.orphan ? query : [query] : [];
 		if(results.orphan){
 			// already wrapped
 			return results; 

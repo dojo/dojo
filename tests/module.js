@@ -12,6 +12,7 @@ define([
 	"dojo/tests/number",
 	"dojo/tests/currency",
 	"dojo/tests/AdapterRegistry",
+	"dojo/_base/query",
 	"dojo/tests/regexp",
 	"dojo/tests/store",
 	"dojo/tests/string",

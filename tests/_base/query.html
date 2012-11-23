@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>testing dojo/_base/query</title>
@@ -6,7 +7,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug: true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/query!lite", "dojo/io/iframe", "dojo/domReady!"], function(dojo, doh, query){
+			require(["dojo", "doh", "dojo/io/iframe", "dojo/domReady!"], function(dojo, doh){
 				function createDocument(xml){
 					var fauxXhr = { responseText: xml };
 					if("DOMParser" in dojo.global){

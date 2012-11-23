@@ -170,7 +170,7 @@
 					function silly_IDs1(){
 						doh.t(document.getElementById("silly:id::with:colons"), "getElementById");
 						doh.is(1, query("#silly\\:id\\:\\:with\\:colons").length, "query(\"#silly\\:id\\:\\:with\\:colons\")");
-						doh.is(1, dojo.query("#silly\\~id").length);
+						doh.is(1, query("#silly\\~id").length, "query(\"#silly\\~id\")");
 					},
 					function NodeList_identity(){
 						var foo = new dojo.NodeList([dojo.byId("container")]);

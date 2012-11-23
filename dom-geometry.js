@@ -529,7 +529,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 			ret = node.getBoundingClientRect();
 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};
 
-		if(has("ie") && has("ie") < 9){
+		if(has("ie") < 9){
 			// On IE<9 there's a 2px offset that we need to adjust for, see dojo.getIeDocumentElementOffset()
 			var offset = geom.getIeDocumentElementOffset(node.ownerDocument);
 

@@ -693,7 +693,7 @@ define(["./_base/sniff", "./_base/window","./dom", "./dom-style"],
 			ret = node.getBoundingClientRect();
 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(has("ie")){
+		if(has("ie") && has("ie") < 9){
 			// On IE there's a 2px offset that we need to adjust for, see dojo.getIeDocumentElementOffset()
 			var offset = geom.getIeDocumentElementOffset();
 

@@ -1115,7 +1115,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	);
 
 	//Don't bother with n+3 type of matches, IE complains if we modify those.
-	var infixSpaceRe = /n\+\d|([^ ])?([>~+])([^ =])?/g;
+	var infixSpaceRe = /\\[>~+]|n\+\d|([^ \\])?([>~+])([^ =])?/g;
 	var infixSpaceFunc = function(match, pre, ch, post){
 		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};

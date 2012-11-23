@@ -124,20 +124,27 @@ var useRoot = function(context, query, method){
 
 if(!has("dom-matches-selector")){
 	var jsMatchesSelector = (function(){
-		// a JS implementation of CSS selector matching, first we start with the various handlers
-		var caseFix = testDiv.tagName == "div" ? "toLowerCase" : "toUpperCase";
-		function tag(tagName){
-			tagName = tagName[caseFix]();
-			return function(node){
-				return node.tagName == tagName;
+ 		// a JS implementation of CSS selector matching, first we start with the various handlers
+ 		var caseFix = testDiv.tagName == "div" ? "toLowerCase" : "toUpperCase";
+		var selectorTypes = {
+			"": function(tagName){
+				tagName = tagName[caseFix]();
+				return function(node){
+					return node.tagName == tagName;
+				};
+			},
+			".": function(className){
+				var classNameSpaced = ' ' + className + ' ';
+				return function(node){
+					return node.className.indexOf(className) > -1 && (' ' + node.className + ' ').indexOf(classNameSpaced) > -1;
+				};
+			},
+			"#": function(id){
+				return function(node){
+					return node.id == id;
+				};
 			}
-		}
-		function className(className){
-			var classNameSpaced = ' ' + className + ' ';
-			return function(node){
-				return node.className.indexOf(className) > -1 && (' ' + node.className + ' ').indexOf(classNameSpaced) > -1;
-			}
-		}
+		};
 		var attrComparators = {
 			"^=": function(attrValue, value){
 				return attrValue.indexOf(value) == 0;

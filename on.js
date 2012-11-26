@@ -340,7 +340,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			}
 			if(!evt){return evt;}
 			try{
-				if(lastEvent && evt.type == lastEvent.type){
+				if(lastEvent && evt.type == lastEvent.type  && evt.target == lastEvent.target){
 					// should be same event, reuse event object (so it can be augmented)
 					evt = lastEvent;
 				}

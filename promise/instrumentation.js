@@ -62,6 +62,8 @@ define([
 
 		if(errors.length){
 			activeTimeout = setTimeout(logRejected, errors[0].timestamp + unhandledWait - now);
+		}else{
+			activeTimeout = false;
 		}
 	}
 

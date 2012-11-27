@@ -27,20 +27,16 @@ var iframe = null;
 // On IE6/7, a firebug console will appear.   Scrunch it a bit to leave room for the external test file.
 kernel.config.debugHeight = kernel.config.debugHeight || 200;
 
-// If initRobot() is called before robot has finished initializing, then this is a flag that
-// when robot finishes initializing it should create the iframe and point it to this URL.
-var iframeUrl;
 
-var groupStarted = aspect.after(doh, "_groupStarted", function(){
-	groupStarted.remove();
-	iframe.style.visibility = "visible";
-}, true);
+// urlLoaded is a Deferred that will be resolved whenever the iframe passed to initRobot() finishes loading, or reloads
+var urlLoaded;
 
-var iframeLoad;
-
-var attachIframe = function(url){
+function attachIframe(url){
 	// summary:
-	//		Create iframe to load external app at specified url, and call iframeLoad() when that URL finishes loading
+	//		Create iframe to load external app at specified url.   Iframe gets onload handler to  call onIframeLoad()
+	//		when specified URL finishes loading, and also if the iframe loads a different URL in the future.
+	// returns:
+	//		A Deferred that fires when everything has finished initializing
 
 	require(["./domReady!"], function(){
 		var emptyStyle = {
@@ -61,7 +57,6 @@ var attachIframe = function(url){
 		var scrollRoot = document.compatMode == "BackCompat" ? document.body : document.documentElement;
 		var consoleHeight = (document.getElementById("firebug") || {}).offsetHeight || 0;
 		style.set(iframe, {
-			visibility: "hidden",
 			border: "0px none",
 			padding: "0px",
 			margin: "0px",
@@ -69,59 +64,40 @@ var attachIframe = function(url){
 			height: consoleHeight ? (scrollRoot.clientHeight - consoleHeight)+"px" : "100%"
 		});
 		iframe.src = url;
+
+		// Code to handle load event on iframe.  Seems like this should happen before setting iframe src on line above?
+		// Also, can't we use on() in all cases, even for old IE?
 		if(iframe.attachEvent !== undefined){
-			iframe.attachEvent("onload", iframeLoad);
+			iframe.attachEvent("onload", onIframeLoad);
 		}else{
-			on(iframe, "load", iframeLoad);
+			on(iframe, "load", onIframeLoad);
 		}
+
 		construct.place(iframe, win.body(), "first");
 	});
-};
+}
 
-// Prevent race conditions between iframe loading and robot init.
-// If iframe is allowed to load while the robot is typing, sync XHRs can prevent the robot from completing its initialization.
-var robotReady = false;
-var robotFrame = null;
-var _run = robot._run;
-robot._run = function(frame){
-	// Called from robot when the robot has completed its initialization.
-	robotReady = true;
-	robotFrame = frame;
-	robot._run = _run;
+function onIframeLoad(){
+	// summary:
+	//		Load handler when iframe specified to initRobot() finishes loading, or when it reloads.
+	//		It resolves the urlLoaded Deferred to make the rests of the tests runs.
 
-	// If initRobot was already called, then attach the iframe.
-	if(iframeUrl){
-		attachIframe(iframeUrl);
-	}
-};
-
-var onIframeLoad = function(){
-	// initial load handler: update the document and start the tests
 	robot._updateDocument();
-	onIframeLoad = null;
 
 	// If dojo is present in the test case, then at least make a best effort to wait for it to load.
-	// The test must handle other race conditions like initial data queries by itself.
+	// The test must handle other race conditions like initial data queries or asynchronous parses by itself.
 	if(iframe.contentWindow.require){
 		iframe.contentWindow.require(["dojo/ready"], function(ready){
-			ready(999, function(){
-				robot._run(robotFrame);
+			ready(Infinity, function(){
+				setTimeout(function(){
+					urlLoaded.callback(true);
+				}, 500);	// 500ms fudge factor; otherwise focus doesn't work on IE8, see ValidationTextBox.js, TimeTextBox.js, etc.
 			});
 		});
 	}else{
-		robot._run(robotFrame);
+		urlLoaded.callback(true);
 	}
-};
-
-iframeLoad = function(){
-	if(onIframeLoad){
-		onIframeLoad();
-	}
-	var unloadConnect = on(win.body(), "onunload", function(){
-		kernel.setContext(window, document);
-		unloadConnect.remove();
-	});
-};
+}
 
 lang.mixin(robot, {
 	_updateDocument: function(){
@@ -148,24 +124,34 @@ lang.mixin(robot, {
 
 	initRobot: function(/*String*/ url){
 		// summary:
-		//		Opens the application at the specified URL for testing, redirecting dojo to point to the application environment instead of the test environment.
+		//		Opens the application at the specified URL for testing, redirecting dojo to point to the application
+		//		environment instead of the test environment.
 		// url:
-		//		URL to open. Any of the test's dojo.doc calls (e.g. dojo.byId()), and any dijit.registry calls (e.g. dijit.byId()) will point to elements and widgets inside this application.
+		//		URL to open. Any of the test's dojo.doc calls (e.g. dojo.byId()), and any dijit.registry calls
+		//		(e.g. dijit.byId()) will point to elements and widgets inside this application.
 
-		if(robotReady){
-			// If robot has already finished loading then create iframe pointing to specified URL
-			attachIframe(url);
-		}else{
-			// Otherwise, set flag for robot to call attachIframe() when robot finishes initializing
-			iframeUrl = url;
-		}
+		doh.registerGroup("initRobot", {
+			name: "load " + url,
+			timeout: 100000,	// could take more than 10s so setting to 100s
+			runTest: function(){
+				// Setup module level urlLoaded Deferred that will be resolved by onIframeLoad(), after the iframe
+				// has finished loading
+				urlLoaded = new doh.Deferred();
+
+				// Wait for keyboard to be ready to prevent race conditions between iframe loading and robot init.
+				// If iframe is allowed to load while the robot is typing, sync XHRs can prevent the robot from
+				// completing its initialization.
+				robot._keyboardReady.then(function(){
+					attachIframe(url);
+				});
+
+				return urlLoaded;
+			}
+		});
 	},
 
 	waitForPageToLoad: function(/*Function*/ submitActions){
 		// summary:
-		//		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
-		//		returning a doh.Deferred object the user should return in their runTest function as part of a DOH test.
-		// description:
 		//		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
 		//		returning a doh.Deferred object the user should return in their runTest function as part of a DOH test.
 		// example:
@@ -177,16 +163,12 @@ lang.mixin(robot, {
 		//		expecting these actions to create a page change (like a form submit).
 		//		After these actions execute and the resulting page loads, the next test will start.
 
-		var d = new doh.Deferred();
-		// create iframe event handler to track submit progress
-		onIframeLoad = function(){
-			onIframeLoad = null;
-			// set dojo.doc on every page change to point to the iframe doc so the robot works
-			robot._updateDocument();
-			d.callback(true);
-		};
+		// Setup a new Deferred that onIframeLoad() will resolve when the iframe finishes loading
+		urlLoaded = new doh.Deferred();
+
 		submitActions();
-		return d;
+
+		return urlLoaded;
 	}
 
 });

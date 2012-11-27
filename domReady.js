@@ -3,24 +3,41 @@ define(['./has'], function(has){
 		doc = document,
 		readyStates = { 'loaded': 1, 'complete': 1 },
 		fixReadyState = typeof doc.readyState != "string",
-		ready = !!readyStates[doc.readyState];
+		ready = !!readyStates[doc.readyState],
+		readyQ = [],
+		recursiveGuard;
 
 	// For FF <= 3.5
 	if(fixReadyState){ doc.readyState = "loading"; }
 
+	function processQ(){
+		// Calls all functions in the queue in order, unless processQ() is already running, in which case just return
+
+		if(recursiveGuard){ return; }
+		recursiveGuard = true;
+
+		while(readyQ.length){
+			try{
+				(readyQ.shift())(doc);
+			}catch(err){
+				console.log("Error on domReady callback: " + err);
+			}
+		}
+
+		recursiveGuard = false;
+	}
+
 	if(!ready){
-		var readyQ = [], tests = [],
+		var tests = [],
 			detectReady = function(evt){
 				evt = evt || global.event;
 				if(ready || (evt.type == "readystatechange" && !readyStates[doc.readyState])){ return; }
-				ready = 1;
 
 				// For FF <= 3.5
 				if(fixReadyState){ doc.readyState = "complete"; }
 
-				while(readyQ.length){
-					(readyQ.shift())(doc);
-				}
+				processQ();
+				ready = 1;
 			},
 			on = function(node, event){
 				node.addEventListener(event, detectReady, false);
@@ -83,11 +100,8 @@ define(['./has'], function(has){
 	function domReady(callback){
 		// summary:
 		//		Plugin to delay require()/define() callback from firing until the DOM has finished loading.
-		if(ready && (!readyQ || !readyQ.length)){
-			callback(doc);
-		}else{
-			readyQ.push(callback);
-		}
+		readyQ.push(callback);
+		if(ready){ processQ(); }
 	}
 	domReady.load = function(id, req, load){
 		domReady(load);

@@ -3,24 +3,64 @@ define(['./has'], function(has){
 		doc = document,
 		readyStates = { 'loaded': 1, 'complete': 1 },
 		fixReadyState = typeof doc.readyState != "string",
-		ready = !!readyStates[doc.readyState];
+		ready = !!readyStates[doc.readyState],
+		readyQ = [],
+		recursiveGuard;
+
+	function domReady(callback){
+		// summary:
+		//		Plugin to delay require()/define() callback from firing until the DOM has finished loading.
+		readyQ.push(callback);
+		if(ready){ processQ(); }
+	}
+	domReady.load = function(id, req, load){
+		domReady(load);
+	};
+
+	// Export queue so that ready() can check if it's empty or not.
+	domReady._Q = readyQ;
+	domReady._onQEmpty = function(){
+		// summary:
+		//		Private method overridden by dojo/ready, to notify when everything in the
+		//		domReady queue has been processed.  Do not use directly.
+		//		Will be removed in 2.0, along with domReady._Q.
+	};
 
 	// For FF <= 3.5
 	if(fixReadyState){ doc.readyState = "loading"; }
 
+	function processQ(){
+		// Calls all functions in the queue in order, unless processQ() is already running, in which case just return
+
+		if(recursiveGuard){ return; }
+		recursiveGuard = true;
+
+		while(readyQ.length){
+			try{
+				(readyQ.shift())(doc);
+			}catch(err){
+				console.log("Error on domReady callback: " + err);
+			}
+		}
+
+		recursiveGuard = false;
+
+		// Notification for dojo/ready.  Remove for 2.0.
+		// Note that this could add more tasks to the ready queue.
+		domReady._onQEmpty();
+	}
+
 	if(!ready){
-		var readyQ = [], tests = [],
+		var tests = [],
 			detectReady = function(evt){
 				evt = evt || global.event;
 				if(ready || (evt.type == "readystatechange" && !readyStates[doc.readyState])){ return; }
-				ready = 1;
 
 				// For FF <= 3.5
 				if(fixReadyState){ doc.readyState = "complete"; }
 
-				while(readyQ.length){
-					(readyQ.shift())(doc);
-				}
+				ready = 1;
+				processQ();
 			},
 			on = function(node, event){
 				node.addEventListener(event, detectReady, false);
@@ -79,19 +119,6 @@ define(['./has'], function(has){
 			poller();
 		}
 	}
-
-	function domReady(callback){
-		// summary:
-		//		Plugin to delay require()/define() callback from firing until the DOM has finished loading.
-		if(ready){
-			callback(doc);
-		}else{
-			readyQ.push(callback);
-		}
-	}
-	domReady.load = function(id, req, load){
-		domReady(load);
-	};
 
 	return domReady;
 });

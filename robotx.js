@@ -90,12 +90,12 @@ function onIframeLoad(){
 		iframe.contentWindow.require(["dojo/ready"], function(ready){
 			ready(Infinity, function(){
 				setTimeout(function(){
-					urlLoaded.callback(true);
+					urlLoaded.resolve(true);
 				}, 500);	// 500ms fudge factor; otherwise focus doesn't work on IE8, see ValidationTextBox.js, TimeTextBox.js, etc.
 			});
 		});
 	}else{
-		urlLoaded.callback(true);
+		urlLoaded.resolve(true);
 	}
 }
 
@@ -130,20 +130,14 @@ lang.mixin(robot, {
 		//		URL to open. Any of the test's dojo.doc calls (e.g. dojo.byId()), and any dijit.registry calls
 		//		(e.g. dijit.byId()) will point to elements and widgets inside this application.
 
-		doh.registerGroup("initRobot", {
+		doh.registerGroup("initialize robot", {
 			name: "load " + url,
 			timeout: 100000,	// could take more than 10s so setting to 100s
 			runTest: function(){
 				// Setup module level urlLoaded Deferred that will be resolved by onIframeLoad(), after the iframe
 				// has finished loading
 				urlLoaded = new doh.Deferred();
-
-				// Wait for keyboard to be ready to prevent race conditions between iframe loading and robot init.
-				// If iframe is allowed to load while the robot is typing, sync XHRs can prevent the robot from
-				// completing its initialization.
-				robot._keyboardReady.then(function(){
-					attachIframe(url);
-				});
+				attachIframe(url);
 
 				return urlLoaded;
 			}

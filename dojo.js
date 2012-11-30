@@ -21,8 +21,8 @@
 	//		- node.js
 	//		- rhino
 	//
-	//		This is the so-called "source loader". As such, it includes many optional features that may be discadred by
-	//		building a customized verion with the build system.
+	//		This is the so-called "source loader". As such, it includes many optional features that may be discarded by
+	//		building a customized version with the build system.
 
 	// Design and Implementation Notes
 	//
@@ -109,7 +109,7 @@
 		uidSeed = 1,
 
 		uid = function(){
-			// Returns a unique indentifier (within the lifetime of the document) of the form /_d+/.
+			// Returns a unique identifier (within the lifetime of the document) of the form /_d+/.
 			return "_" + uidSeed++;
 		},
 
@@ -119,7 +119,7 @@
 		req = function(
 			config,		  //(object, optional) hash of configuration properties
 			dependencies, //(array of commonjs.moduleId, optional) list of modules to be loaded before applying callback
-			callback	  //(function, optional) lamda expression to apply to module values implied by dependencies
+			callback	  //(function, optional) lambda expression to apply to module values implied by dependencies
 		){
 			return contextRequire(config, dependencies, callback, 0, req);
 		},
@@ -208,7 +208,7 @@
 
 		req.initSyncLoader = function(dojoRequirePlugin_, checkDojoRequirePlugin_, transformToAmd_){
 			// the first dojo/_base/loader loaded gets to define these variables; they are designed to work
-			// in the presense of zero to many mapped dojo/_base/loaders
+			// in the presence of zero to many mapped dojo/_base/loaders
 			if(!dojoRequirePlugin){
 				dojoRequirePlugin = dojoRequirePlugin_;
 				checkDojoRequirePlugin = checkDojoRequirePlugin_;
@@ -384,7 +384,7 @@
 			// mid: the fully-resolved (i.e., mappings have been applied) module identifier without the package identifier (e.g., "dojo/io/script")
 			// url: the URL from which the module was retrieved
 			// pack: the package object of the package to which the module belongs
-			// executed: 0 => not executed; executing => in the process of tranversing deps and running factory; executed => factory has been executed
+			// executed: 0 => not executed; executing => in the process of traversing deps and running factory; executed => factory has been executed
 			// deps: the dependency vector for this module (vector of modules objects)
 			// def: the factory for this module
 			// result: the result of the running the factory for this module
@@ -398,7 +398,7 @@
 			//
 			// 2. Injected: a script element has been appended to the insert-point element demanding the resource implied by the URL
 			//
-			// 3. Loaded: the resource injected in [2] has been evalated.
+			// 3. Loaded: the resource injected in [2] has been evaluated.
 			//
 			// 4. Defined: the resource contained a define statement that advised the loader about the module. Notice that some
 			//	  resources may just contain a bundle of code and never formally define a module via define
@@ -473,7 +473,7 @@
 				// This routine takes a map as represented by a JavaScript object and initializes dest, a vector of
 				// quads of (map-key, map-value, refex-for-map-key, length-of-map-key), sorted decreasing by length-
 				// of-map-key. The regex looks for the map-key followed by either "/" or end-of-string at the beginning
-				// of a the search source. Notice the map-value is irrelevent to the algorithm
+				// of a the search source. Notice the map-value is irrelevant to the algorithm
 				dest.splice(0, dest.length);
 				for(var p in map){
 					dest.push([
@@ -497,7 +497,7 @@
 				packageInfo = mix({main:"main"}, packageInfo);
 				packageInfo.location = packageInfo.location ? packageInfo.location : name;
 
-				// packageMap is depricated in favor of AMD map
+				// packageMap is deprecated in favor of AMD map
 				if(packageInfo.packageMap){
 					map[name] = packageInfo.packageMap;
 				}
@@ -511,7 +511,7 @@
 			},
 
 			delayedModuleConfig
-				// module config cannot be consummed until the loader is completely initialized; therefore, all
+				// module config cannot be consumed until the loader is completely initialized; therefore, all
 				// module config detected during booting is memorized and applied at the end of loader initialization
 				// TODO: this is a bit of a kludge; all config should be moved to end of loader initialization, but
 				// we'll delay this chore and do it with a final loader 1.x cleanup after the 2.x loader prototyping is complete
@@ -566,7 +566,7 @@
 				forEach(config.packages, fixupPackageInfo);
 
 				// for each packagePath found in any packagePaths config item, augment the packageConfig
-				// packagePaths is depricated; remove in 2.0
+				// packagePaths is deprecated; remove in 2.0
 				for(baseUrl in config.packagePaths){
 					forEach(config.packagePaths[baseUrl], function(packageInfo){
 						var location = baseUrl + "/" + packageInfo;
@@ -627,7 +627,7 @@
 		//
 
 		if(has("dojo-cdn") || has("dojo-sniff")){
-			// the sniff regex looks for a src attribute ending in dojo.js, optionally preceeded with a path.
+			// the sniff regex looks for a src attribute ending in dojo.js, optionally preceded with a path.
 			// match[3] returns the path to dojo.js (if any) without the trailing slash. This is used for the
 			// dojo location on CDN deployments and baseUrl when either/both of these are not provided
 			// explicitly in the config data; this is the 1.6- behavior.
@@ -918,7 +918,7 @@
 		getModuleInfo_ = function(mid, referenceModule, packs, modules, baseUrl, mapProgs, pathsMapProg, alwaysCreate){
 			// arguments are passed instead of using lexical variables so that this function my be used independent of the loader (e.g., the builder)
 			// alwaysCreate is useful in this case so that getModuleInfo never returns references to real modules owned by the loader
-			var pid, pack, midInPackage, mapProg, mapItem, url, result, isRelative, requestedMid;
+			var pid, pack, midInPackage, mapItem, url, result, isRelative, requestedMid;
 			requestedMid = mid;
 			isRelative = /^\./.test(mid);
 			if(/(^\/)|(\:)|(\.js$)/.test(mid) || (isRelative && !referenceModule)){
@@ -1059,7 +1059,7 @@
 			return fixupUrl(moduleInfo.pid===0 ?
 				// if pid===0, then name had a protocol or absolute path; either way, toUrl is the identify function in such cases
 				name :
-				// "/x.js" since getModuleInfo automatically appends ".js" and we appended "/x" to make name look likde a module id
+				// "/x.js" since getModuleInfo automatically appends ".js" and we appended "/x" to make name look like a module id
 				url.substring(0, url.length-5)
 			);
 		},
@@ -1159,7 +1159,7 @@
 				promoteModuleToPlugin(module);
 				resolvePluginLoadQ(module);
 			}
-			// remove all occurences of this module from the execQ
+			// remove all occurrences of this module from the execQ
 			for(i = 0; i < execQ.length;){
 				if(execQ[i] === module){
 					execQ.splice(i, 1);
@@ -1201,7 +1201,7 @@
 
 				// for circular dependencies, assume the first module encountered was executed OK
 				// modules that circularly depend on a module that has not run its factory will get
-				// the premade cjs.exports===module.result. They can take a reference to this object and/or
+				// the pre-made cjs.exports===module.result. They can take a reference to this object and/or
 				// add properties to it. When the module finally runs its factory, the factory can
 				// read/write/replace this object. Notice that so long as the object isn't replaced, any
 				// reference taken earlier while walking the deps list is still valid.
@@ -1332,7 +1332,7 @@
 			injectingCachedModule = 0,
 
 			evalModuleText = function(text, module){
-				// see def() for the injectingCachedModule bracket; it simply causes a short, safe curcuit
+				// see def() for the injectingCachedModule bracket; it simply causes a short, safe circuit
 				if(has("config-stripStrict")){
 					text = text.replace(/"use strict"/g, '');
 				}
@@ -1375,7 +1375,7 @@
 					if(module.plugin && module.plugin.isCombo){
 						// a combo plugin; therefore, must be handled by combo service
 						// the prid should have already been converted to a URL (if required by the plugin) during
-						// the normalze process; in any event, there is no way for the loader to know how to
+						// the normalize process; in any event, there is no way for the loader to know how to
 						// to the conversion; therefore the third argument is zero
 						req.combo.add(module.plugin.mid, module.prid, 0, req);
 						viaCombo = 1;
@@ -1457,7 +1457,7 @@
 									// the list of dojo.requires that must be re-applied once all target modules are available;
 									// make a synthetic module to execute the dojo.require's in the correct order
 
-									// compute a guarnateed-unique mid for the synthetic finish module; remember the finish vector; remove it from the reference module
+									// compute a guaranteed-unique mid for the synthetic finish module; remember the finish vector; remove it from the reference module
 									// TODO: can we just leave the module.finish...what's it hurting?
 									var finishMid = mid + "*finish",
 										finish = module.finish;
@@ -1515,7 +1515,7 @@
 					setArrived(module);
 					finishExec(module);
 					return module;
-				};
+				}
 
 				var mid = module.mid;
 				if(module.injected === arrived){
@@ -1588,7 +1588,7 @@
 		clearTimer = function(){
 			timerId && clearTimeout(timerId);
 			timerId = 0;
-		},
+		};
 
 		startTimer = function(){
 			clearTimer();
@@ -1810,7 +1810,7 @@
 		req.def = def;
 	}
 
-	// allow config to override default implemention of named functions; this is useful for
+	// allow config to override default implementation of named functions; this is useful for
 	// non-browser environments, e.g., overriding injectUrl, getText, log, etc. in node.js, Rhino, etc.
 	// also useful for testing and monkey patching loader
 	mix(mix(req, defaultConfig.loaderPatch), userConfig.loaderPatch);
@@ -1873,7 +1873,7 @@
 		global.define = def;
 		global.require = req;
 		if(has("host-node")){
-			require= req;
+			require = req;
 		}
 	}
 

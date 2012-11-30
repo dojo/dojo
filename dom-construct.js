@@ -247,14 +247,6 @@ define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom",
 		}
 	}
 
-	var _destroyContainer = null,
-		_destroyDoc;
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	on(window, "unload", function(){
-		_destroyContainer = null; //prevent IE leak
-	});
-	//>>excludeEnd("webkitMobile");
-
 	exports.toDom = function toDom(frag, doc){
 		doc = doc || win.doc;
 		var masterId = doc[masterName];
@@ -288,7 +280,7 @@ define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom",
 
 		// return multiple nodes as a document fragment
 		df = doc.createDocumentFragment();
-		while(fc = master.firstChild){ // intentional assignment
+		while((fc = master.firstChild)){ // intentional assignment
 			df.appendChild(fc);
 		}
 		return df; // DOMNode
@@ -348,33 +340,39 @@ define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom",
 		return tag; // DomNode
 	};
 
-	exports.empty =
+	var _empty =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		has("ie") ? function(node){
-			node = dom.byId(node);
-			for(var c; c = node.lastChild;){ // intentional assignment
-				exports.destroy(c);
+		has("ie") ?
+		function(/*DomNode*/ node){
+			try{
+				node.innerHTML = ""; // really fast when it works
+			}catch(e){ // IE can generate Unknown Error
+				for(var c; c = node.lastChild;){ // intentional assignment
+					_destroy(c, node); // destroy is better than removeChild so TABLE elements are removed in proper order
+				}
 			}
 		} :
 		//>>excludeEnd("webkitMobile");
-		function(node){
-			dom.byId(node).innerHTML = "";
+		function(/*DomNode*/ node){
+			node.innerHTML = "";
 		};
 
-	exports.destroy = function destroy(/*DOMNode|String*/node){
-		node = dom.byId(node);
-		try{
-			var doc = node.ownerDocument;
-			// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
-			if(!_destroyContainer || _destroyDoc != doc){
-				_destroyContainer = doc.createElement("div");
-				_destroyDoc = doc;
-			}
-			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
-			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
-			_destroyContainer.innerHTML = "";
-		}catch(e){
-			/* squelch */
+	exports.empty = function empty(/*DOMNode|String*/ node){
+		_empty(dom.byId(node));
+	};
+
+
+	function _destroy(/*DomNode*/ node, /*DomNode*/ parent){
+		if(node.firstChild){
+			_empty(node);
 		}
+		if(parent){
+			parent.removeChild(node);
+		}
+	}
+	exports.destroy = function destroy(/*DOMNode|String*/ node){
+		node = dom.byId(node);
+		if(!node){ return; }
+		_destroy(node, node.parentNode);
 	};
 });

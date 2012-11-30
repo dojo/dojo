@@ -171,6 +171,11 @@ doh.register("tests.number",
 				t.is(1, dojo.number.round(0.5));
 				t.is(-1, dojo.number.round(-0.5));
 				t.is(0.1, dojo.number.round(0.05, 1));
+				t.is(0.1, dojo.number.round(0.09, 1));
+				t.is(0.0, dojo.number.round(0.04999999, 1));
+				t.is(0.1, dojo.number.round(0.09499999, 1));
+				t.is(0.1, dojo.number.round(0.095, 1));
+				t.is(0.1, dojo.number.round(0.09999999, 1));
 				t.is(-0.1, dojo.number.round(-0.05, 1));
 				t.is(1.1, dojo.number.round(1.05, 1));
 				t.is(-1.1, dojo.number.round(-1.05, 1));

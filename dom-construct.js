@@ -58,12 +58,6 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		}
 	}
 
-	var _destroyContainer = null,
-		_destroyDoc;
-	on(window, "unload", function(){
-		_destroyContainer = null; //prevent IE leak
-	});
-
 	exports.toDom = function toDom(frag, doc){
 		// summary:
 		//		instantiates an HTML fragment returning the corresponding DOM.
@@ -110,7 +104,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 
 		// return multiple nodes as a document fragment
 		df = doc.createDocumentFragment();
-		while(fc = master.firstChild){ // intentional assignment
+		while((fc = master.firstChild)){ // intentional assignment
 			df.appendChild(fc);
 		}
 		return df; // DocumentFragment
@@ -269,18 +263,21 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		return tag; // DomNode
 	};
 
-	exports.empty =
-		has("ie") ? function(node){
-			node = dom.byId(node);
-			for(var c; c = node.lastChild;){ // intentional assignment
-				exports.destroy(c);
+	var _empty = has("ie") ?
+		function(/*DomNode*/ node){
+			try{
+				node.innerHTML = ""; // really fast when it works
+			}catch(e){ // IE can generate Unknown Error
+				for(var c; c = node.lastChild;){ // intentional assignment
+					_destroy(c, node); // destroy is better than removeChild so TABLE elements are removed in proper order
+				}
 			}
 		} :
-		function(node){
-			dom.byId(node).innerHTML = "";
+		function(/*DomNode*/ node){
+			node.innerHTML = "";
 		};
-	/*=====
-	 exports.empty = function(node){
+
+	exports.empty = function empty(/*DOMNode|String*/ node){
 		 // summary:
 		 //		safely removes all children of the node.
 		 // node: DOMNode|String
@@ -292,9 +289,19 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		 // example:
 		 //		Destroy all nodes' children in a list by reference:
 		 //	|	dojo.query(".someNode").forEach(dojo.empty);
-	 };
-	 =====*/
 
+		_empty(dom.byId(node));
+	};
+
+
+	function _destroy(/*DomNode*/ node, /*DomNode*/ parent){
+		if(node.firstChild){
+			_empty(node);
+		}
+		if(parent){
+			parent.removeChild(node);
+		}
+	}
 	exports.destroy = function destroy(/*DOMNode|String*/ node){
 		// summary:
 		//		Removes a node from its parent, clobbering it and all of its
@@ -316,18 +323,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//	|	dojo.query(".someNode").forEach(dojo.destroy);
 
 		node = dom.byId(node);
-		try{
-			var doc = node.ownerDocument;
-			// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
-			if(!_destroyContainer || _destroyDoc != doc){
-				_destroyContainer = doc.createElement("div");
-				_destroyDoc = doc;
-			}
-			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
-			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
-			_destroyContainer.innerHTML = "";
-		}catch(e){
-			/* squelch */
-		}
+		if(!node){ return; }
+		_destroy(node, node.parentNode);
 	};
 });

@@ -1,4 +1,4 @@
-define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
+define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], function(aspect, dojo, has){
 
 	"use strict";
 	if(has("dom")){ // check to make sure we are in a browser, this module should work anywhere
@@ -213,7 +213,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		Fires an event on the target object.
 		// target:
 		//		The target object to fire the event on. This can be a DOM element or a plain 
-		//		JS object. If the target is a DOM element, native event emiting mechanisms
+		//		JS object. If the target is a DOM element, native event emitting mechanisms
 		//		are used when possible.
 		// type:
 		//		The event type name. You can emulate standard native events like "click" and 
@@ -236,11 +236,11 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		// details:
 		//		Note that this is designed to emit events for listeners registered through
 		//		dojo/on. It should actually work with any event listener except those
-		//		added through IE's attachEvent (IE8 and below's non-W3C event emiting
+		//		added through IE's attachEvent (IE8 and below's non-W3C event emitting
 		//		doesn't support custom event types). It should work with all events registered
 		//		through dojo/on. Also note that the emit method does do any default
 		//		action, it only returns a value to indicate if the default action should take
-		//		place. For example, emiting a keypress event would not cause a character
+		//		place. For example, emitting a keypress event would not cause a character
 		//		to appear in a textbox.
 		// example:
 		//		To fire our own click event
@@ -298,14 +298,11 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			focusin: "focus",
 			focusout: "blur"
 		};
-		if(has("opera")){
-			captures.keydown = "keypress"; // this one needs to be transformed because Opera doesn't support repeating keys on keydown (and keypress works because it incorrectly fires on all keydown events)
-		}
 
-		// emiter that works with native event handling
+		// emitter that works with native event handling
 		on.emit = function(target, type, event){
 			if(target.dispatchEvent && document.createEvent){
-				// use the native event emiting mechanism if it is available on the target object
+				// use the native event emitting mechanism if it is available on the target object
 				// create a generic event				
 				// we could create branch into the different types of event constructors, but 
 				// that would be a lot of extra code, with little benefit that I can see, seems 
@@ -415,19 +412,19 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				if(typeof _dojoIEListeners_ == "undefined"){
 					_dojoIEListeners_ = [];
 				}
-				var emiter = target[type];
-				if(!emiter || !emiter.listeners){
-					var oldListener = emiter;
-					emiter = Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = _dojoIEListeners_[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
-					emiter.listeners = [];
-					target[type] = emiter;
-					emiter.global = this;
+				var emitter = target[type];
+				if(!emitter || !emitter.listeners){
+					var oldListener = emitter;
+					emitter = Function('event', 'var callee = arguments.callee; for(var i = 0; i<callee.listeners.length; i++){var listener = _dojoIEListeners_[callee.listeners[i]]; if(listener){listener.call(this,event);}}');
+					emitter.listeners = [];
+					target[type] = emitter;
+					emitter.global = this;
 					if(oldListener){
-						emiter.listeners.push(_dojoIEListeners_.push(oldListener) - 1);
+						emitter.listeners.push(_dojoIEListeners_.push(oldListener) - 1);
 					}
 				}
 				var handle;
-				emiter.listeners.push(handle = (emiter.global._dojoIEListeners_.push(listener) - 1));
+				emitter.listeners.push(handle = (emitter.global._dojoIEListeners_.push(listener) - 1));
 				return new IESignal(handle);
 			}
 			return aspect.after(target, type, listener, true);
@@ -469,7 +466,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 			return function(originalEvent){ 
 				//Event normalization(for ontouchxxx and resize): 
 				//1.incorrect e.pageX|pageY in iOS 
-				//2.there are no "e.rotation", "e.scale" and "onorientationchange" in Andriod
+				//2.there are no "e.rotation", "e.scale" and "onorientationchange" in Android
 				//3.More TBD e.g. force | screenX | screenX | clientX | clientY | radiusX | radiusY
 
 				// see if it has already been corrected
@@ -498,7 +495,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 					originalEvent.corrected = event;
 					if(type == 'resize'){
 						if(windowOrientation == window.orientation){ 
-							return null;//double tap causes an unexpected 'resize' in Andriod 
+							return null;//double tap causes an unexpected 'resize' in Android
 						} 
 						windowOrientation = window.orientation;
 						event.type = "orientationchange"; 

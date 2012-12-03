@@ -76,7 +76,10 @@
 					"doh.is(1, (query('span.baz')).length);",
 					"doh.is(1, (query('sPaN.baz')).length);",
 					"doh.is(1, (query('SPAN.baz')).length);",
-					"doh.is(1, query('.fooBar').length);",
+
+					// For quirks mode, case sensitivity is browser dependent, so querying .fooBar
+					//  may return 1 or 2 entries.   See #8775 and #14874 for details.
+					// "doh.is(1, query('.fooBar').length);",
 					
 					// attribute selectors
 					"doh.is(3, (query('[foo]')).length);",
@@ -306,8 +309,7 @@
 				if(selector == "acme"){
 					doh.register("acme", [
 						// Case insensitive class selectors (#8775, #14874).
-						// In standards mode documents, querySelectorAll() is case-sensitive about class selectors,
-						// but acme is case-insensitive for backwards compatibility.
+						// Acme is case-insensitive for backwards compatibility.
 						"doh.is(1, query('.fooBar').length);",
 
 						// sub-selector parsing

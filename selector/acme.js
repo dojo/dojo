@@ -684,7 +684,7 @@ define([
 		}
 	};
 
-	var defaultGetter = (has("ie") && (has("ie") < 9 || has("quirks"))) ? function(cond){
+	var defaultGetter = (has("ie") < 9 || has("ie") == 9 && has("quirks")) ? function(cond){
 		var clc = cond.toLowerCase();
 		if(clc == "class"){ cond = "className"; }
 		return function(elem){

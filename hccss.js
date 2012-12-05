@@ -33,7 +33,7 @@ define([
 			hc = (cs.borderTopColor == cs.borderRightColor) ||
 				(bkImg && (bkImg == "none" || bkImg == "url(invalid-url:)" ));
 
-		if(has("ie") < 8){
+		if(has("ie") <= 8){
 			div.outerHTML = "";		// prevent mixed-content warning, see http://support.microsoft.com/kb/925014
 		}else{
 			win.body().removeChild(div);

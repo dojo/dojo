@@ -586,7 +586,7 @@
 				forEach(mapProgs, function(item){
 					item[1] = computeMapProg(item[1], []);
 					if(item[0]=="*"){
-						mapProgs.star = item[1];
+						mapProgs.star = item;
 					}
 				});
 

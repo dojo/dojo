@@ -50,11 +50,8 @@ define([], function(){
 		if(previous && !around){
 			if(type == "after"){
 				// add the listener to the end of the list
-				var next = previous;
-				while(next){
-					previous = next;
-					next = next.next;
-				}
+				// note that we had to change this loop a little bit to workaround a bizarre IE10 JIT bug 
+				while(previous.next && (previous = previous.next)){}
 				previous.next = signal;
 				signal.previous = previous;
 			}else if(type == "before"){

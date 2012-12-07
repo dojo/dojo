@@ -1,9 +1,9 @@
 define(
 //begin v1.x content
 {
-	"decimal": ".",
+	"currencyFormat": "¤ #,##0.00;¤-#,##0.00",
 	"group": "'",
-	"currencyFormat": "¤ #,##0.00;¤-#,##0.00"
+	"decimal": "."
 }
 //end v1.x content
 );

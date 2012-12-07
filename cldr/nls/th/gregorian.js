@@ -1,19 +1,14 @@
 define(
 //begin v1.x content
 {
-	"months-format-abbr": [
-		"ม.ค.",
-		"ก.พ.",
-		"มี.ค.",
-		"เม.ย.",
-		"พ.ค.",
-		"มิ.ย.",
-		"ก.ค.",
-		"ส.ค.",
-		"ก.ย.",
-		"ต.ค.",
-		"พ.ย.",
-		"ธ.ค."
+	"days-standAlone-short": [
+		"อา.",
+		"จ.",
+		"อ.",
+		"พ.",
+		"พฤ.",
+		"ศ.",
+		"ส."
 	],
 	"months-format-narrow": [
 		"ม.ค.",
@@ -29,6 +24,30 @@ define(
 		"พ.ย.",
 		"ธ.ค."
 	],
+	"quarters-standAlone-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"field-weekday": "วันในสัปดาห์",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"dateFormatItem-yMEd": "E d/M/yyyy",
+	"dateFormatItem-MMMEd": "E d MMM",
+	"eraNarrow": [
+		"ก่อน ค.ศ.",
+		"ค.ศ."
+	],
+	"days-format-short": [
+		"อา.",
+		"จ.",
+		"อ.",
+		"พ.",
+		"พฤ.",
+		"ศ.",
+		"ส."
+	],
+	"dateFormat-long": "d MMMM y",
 	"months-format-wide": [
 		"มกราคม",
 		"กุมภาพันธ์",
@@ -43,166 +62,13 @@ define(
 		"พฤศจิกายน",
 		"ธันวาคม"
 	],
-	"months-standAlone-narrow": [
-		"ม.ค.",
-		"ก.พ.",
-		"มี.ค.",
-		"เม.ย.",
-		"พ.ค.",
-		"มิ.ย.",
-		"ก.ค.",
-		"ส.ค.",
-		"ก.ย.",
-		"ต.ค.",
-		"พ.ย.",
-		"ธ.ค."
-	],
-	"days-format-abbr": [
-		"อา.",
-		"จ.",
-		"อ.",
-		"พ.",
-		"พฤ.",
-		"ศ.",
-		"ส."
-	],
-	"days-format-wide": [
-		"วันอาทิตย์",
-		"วันจันทร์",
-		"วันอังคาร",
-		"วันพุธ",
-		"วันพฤหัสบดี",
-		"วันศุกร์",
-		"วันเสาร์"
-	],
-	"days-standAlone-narrow": [
-		"อ",
-		"จ",
-		"อ",
-		"พ",
-		"พ",
-		"ศ",
-		"ส"
-	],
-	"quarters-format-abbr": [
-		"Q1",
-		"Q2",
-		"Q3",
-		"Q4"
-	],
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"quarters-format-wide": [
-		"ไตรมาส 1",
-		"ไตรมาส 2",
-		"ไตรมาส 3",
-		"ไตรมาส 4"
-	],
-	"quarters-standAlone-abbr": [
-		"Q1",
-		"Q2",
-		"Q3",
-		"Q4"
-	],
-	"dayPeriods-format-wide-am": "ก่อนเที่ยง",
-	"dayPeriods-format-wide-pm": "หลังเที่ยง",
-	"eraNames": [
-		"ปีก่อนคริสต์ศักราช",
-		"คริสต์ศักราช"
-	],
-	"eraAbbr": [
-		"ปีก่อน ค.ศ.",
-		"ค.ศ."
-	],
-	"eraNarrow": [
-		"ก่อน ค.ศ.",
-		"ค.ศ."
-	],
-	"dateFormat-full": "EEEEที่ d MMMM G y",
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
-	"dateFormat-short": "d/M/yyyy",
-	"timeFormat-full": "H นาฬิกา m นาที ss วินาที zzzz",
-	"timeFormat-long": "H นาฬิกา m นาที ss วินาที z",
-	"timeFormat-medium": "H:mm:ss",
-	"timeFormat-short": "H:mm",
-	"dateTimeFormat-full": "{1}, {0}",
-	"dateTimeFormat-long": "{1}, {0}",
 	"dateTimeFormat-medium": "{1}, {0}",
-	"dateTimeFormat-short": "{1}, {0}",
-	"dateFormatItem-d": "d",
-	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-H": "H",
-	"dateFormatItem-hm": "h:mm a",
-	"dateFormatItem-Hm": "H:mm",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-Hms": "H:mm:ss",
-	"dateFormatItem-M": "L",
+	"dayPeriods-format-wide-pm": "หลังเที่ยง",
+	"dateFormat-full": "EEEEที่ d MMMM G y",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-MEd": "E, d/M",
-	"dateFormatItem-MMM": "LLL",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-MMMMd": "d MMMM",
-	"dateFormatItem-MMMMEd": "E d MMMM",
-	"dateFormatItem-mmss": "mm:ss",
-	"dateFormatItem-ms": "mm:ss",
-	"dateFormatItem-y": "y",
-	"dateFormatItem-yM": "M/yyyy",
 	"dateFormatItem-yMd": "d/M/yyyy",
-	"dateFormatItem-yMEd": "E d/M/yyyy",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yMMMd": "d MMM y",
-	"dateFormatItem-yMMMEd": "E d MMM y",
-	"dateFormatItem-yMMMM": "MMMM y",
-	"dateFormatItem-yQ": "Q yyyy",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-yyQ": "Q yy",
-	"dateFormatItem-yyyyM": "M/yyyy",
-	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-era": "สมัย",
-	"field-year": "ปี",
-	"field-year-relative+-1": "ปีที่แล้ว",
-	"field-year-relative+0": "ปีนี้",
-	"field-year-relative+1": "ปีหน้า",
-	"field-month": "เดือน",
-	"field-month-relative+-1": "เดือนที่แล้ว",
-	"field-month-relative+0": "เดือนนี้",
-	"field-month-relative+1": "เดือนหน้า",
-	"field-week": "สัปดาห์",
-	"field-week-relative+-1": "สัปดาห์ที่แล้ว",
-	"field-week-relative+0": "สัปดาห์นี้",
-	"field-week-relative+1": "สัปดาห์หน้า",
-	"field-day": "วัน",
-	"field-day-relative+-2": "เมื่อวานซืน",
-	"field-day-relative+-1": "เมื่อวาน",
-	"field-day-relative+0": "วันนี้",
-	"field-day-relative+1": "พรุ่งนี้",
-	"field-day-relative+2": "มะรืนนี้",
-	"field-weekday": "วันในสัปดาห์",
-	"field-dayperiod": "ช่วงวัน",
-	"field-hour": "ชั่วโมง",
-	"field-minute": "นาที",
-	"field-second": "วินาที",
-	"field-zone": "เขต",
-	"months-standAlone-abbr": [
-		"ม.ค.",
-		"ก.พ.",
-		"มี.ค.",
-		"เม.ย.",
-		"พ.ค.",
-		"มิ.ย.",
-		"ก.ค.",
-		"ส.ค.",
-		"ก.ย.",
-		"ต.ค.",
-		"พ.ย.",
-		"ธ.ค."
-	],
+	"dateFormatItem-yM": "M/yyyy",
 	"months-standAlone-wide": [
 		"มกราคม",
 		"กุมภาพันธ์",
@@ -217,24 +83,66 @@ define(
 		"พฤศจิกายน",
 		"ธันวาคม"
 	],
-	"days-format-narrow": [
-		"อ",
-		"จ",
-		"อ",
-		"พ",
-		"พ",
-		"ศ",
-		"ส"
+	"timeFormat-short": "HH:mm",
+	"quarters-format-wide": [
+		"ไตรมาส 1",
+		"ไตรมาส 2",
+		"ไตรมาส 3",
+		"ไตรมาส 4"
 	],
-	"days-standAlone-abbr": [
-		"อา.",
-		"จ.",
-		"อ.",
-		"พ.",
-		"พฤ.",
-		"ศ.",
-		"ส."
+	"timeFormat-long": "H นาฬิกา mm นาที ss วินาที z",
+	"dateFormatItem-yMMM": "MMM y",
+	"dateFormatItem-yQ": "Q yyyy",
+	"field-year": "ปี",
+	"dateFormatItem-yyyyMMMM": "MMMM y",
+	"field-hour": "ชั่วโมง",
+	"months-format-abbr": [
+		"ม.ค.",
+		"ก.พ.",
+		"มี.ค.",
+		"เม.ย.",
+		"พ.ค.",
+		"มิ.ย.",
+		"ก.ค.",
+		"ส.ค.",
+		"ก.ย.",
+		"ต.ค.",
+		"พ.ย.",
+		"ธ.ค."
 	],
+	"dateFormatItem-yyQ": "Q yy",
+	"timeFormat-full": "H นาฬิกา mm นาที ss วินาที zzzz",
+	"field-day-relative+0": "วันนี้",
+	"field-day-relative+1": "พรุ่งนี้",
+	"field-day-relative+2": "มะรืนนี้",
+	"dateFormatItem-H": "HH",
+	"months-standAlone-abbr": [
+		"ม.ค.",
+		"ก.พ.",
+		"มี.ค.",
+		"เม.ย.",
+		"พ.ค.",
+		"มิ.ย.",
+		"ก.ค.",
+		"ส.ค.",
+		"ก.ย.",
+		"ต.ค.",
+		"พ.ย.",
+		"ธ.ค."
+	],
+	"quarters-format-abbr": [
+		"ไตรมาส 1",
+		"ไตรมาส 2",
+		"ไตรมาส 3",
+		"ไตรมาส 4"
+	],
+	"quarters-standAlone-wide": [
+		"ไตรมาส 1",
+		"ไตรมาส 2",
+		"ไตรมาส 3",
+		"ไตรมาส 4"
+	],
+	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
 		"วันอาทิตย์",
 		"วันจันทร์",
@@ -244,12 +152,131 @@ define(
 		"วันศุกร์",
 		"วันเสาร์"
 	],
-	"quarters-standAlone-wide": [
+	"dateFormatItem-MMMMd": "d MMMM",
+	"timeFormat-medium": "HH:mm:ss",
+	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
 		"ไตรมาส 3",
 		"ไตรมาส 4"
-	]
+	],
+	"eraAbbr": [
+		"ปีก่อน ค.ศ.",
+		"ค.ศ."
+	],
+	"field-minute": "นาที",
+	"field-dayperiod": "ช่วงวัน",
+	"days-standAlone-abbr": [
+		"อา.",
+		"จ.",
+		"อ.",
+		"พ.",
+		"พฤ.",
+		"ศ.",
+		"ส."
+	],
+	"dateFormatItem-d": "d",
+	"dateFormatItem-ms": "mm:ss",
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"field-day-relative+-1": "เมื่อวาน",
+	"dateFormatItem-h": "h a",
+	"dateTimeFormat-long": "{1}, {0}",
+	"dayPeriods-format-narrow-am": "ก่อนเที่ยง",
+	"field-day-relative+-2": "เมื่อวานซืน",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MEd": "E, d/M",
+	"dateTimeFormat-full": "{1}, {0}",
+	"dateFormatItem-yMMMM": "MMMM y",
+	"field-day": "วัน",
+	"days-format-wide": [
+		"วันอาทิตย์",
+		"วันจันทร์",
+		"วันอังคาร",
+		"วันพุธ",
+		"วันพฤหัสบดี",
+		"วันศุกร์",
+		"วันเสาร์"
+	],
+	"field-zone": "เขต",
+	"dateFormatItem-y": "y",
+	"months-standAlone-narrow": [
+		"ม.ค.",
+		"ก.พ.",
+		"มี.ค.",
+		"เม.ย.",
+		"พ.ค.",
+		"มิ.ย.",
+		"ก.ค.",
+		"ส.ค.",
+		"ก.ย.",
+		"ต.ค.",
+		"พ.ย.",
+		"ธ.ค."
+	],
+	"field-year-relative+-1": "ปีที่แล้ว",
+	"field-month-relative+-1": "เดือนที่แล้ว",
+	"dateFormatItem-hm": "h:mm a",
+	"days-format-abbr": [
+		"อา.",
+		"จ.",
+		"อ.",
+		"พ.",
+		"พฤ.",
+		"ศ.",
+		"ส."
+	],
+	"dateFormatItem-yMMMd": "d MMM y",
+	"eraNames": [
+		"ปีก่อนคริสต์ศักราช",
+		"คริสต์ศักราช"
+	],
+	"days-format-narrow": [
+		"อา.",
+		"จ.",
+		"อ.",
+		"พ.",
+		"พฤ.",
+		"ศ.",
+		"ส."
+	],
+	"days-standAlone-narrow": [
+		"อา.",
+		"จ.",
+		"อ.",
+		"พ.",
+		"พฤ.",
+		"ศ.",
+		"ส."
+	],
+	"dateFormatItem-MMM": "LLL",
+	"field-month": "เดือน",
+	"dayPeriods-format-wide-am": "ก่อนเที่ยง",
+	"dateFormatItem-MMMMEd": "E d MMMM",
+	"dateFormat-short": "d/M/yy",
+	"field-second": "วินาที",
+	"dateFormatItem-yMMMEd": "E d MMM y",
+	"field-month-relative+0": "เดือนนี้",
+	"field-month-relative+1": "เดือนหน้า",
+	"dateFormatItem-Ed": "E d",
+	"field-week": "สัปดาห์",
+	"dateFormat-medium": "d MMM y",
+	"field-year-relative+0": "ปีนี้",
+	"field-week-relative+-1": "สัปดาห์ที่แล้ว",
+	"dateFormatItem-yyyyM": "M/yyyy",
+	"field-year-relative+1": "ปีหน้า",
+	"dateFormatItem-mmss": "mm:ss",
+	"dayPeriods-format-narrow-pm": "หลังเที่ยง",
+	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"field-week-relative+0": "สัปดาห์นี้",
+	"field-week-relative+1": "สัปดาห์หน้า"
 }
 //end v1.x content
 );

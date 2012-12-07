@@ -1,18 +1,132 @@
 define(
 //begin v1.x content
 {
-	"eraAbbr": [
-		"BK"
-	],
-	"dateFormatItem-h": "a h",
-	"dateFormatItem-hm": "a h:mm",
-	"dateFormatItem-hms": "a h:mm:ss",
-	"dateFormatItem-Md": "M.d.",
+	"dateFormatItem-yM": "y.M.",
+	"dateFormatItem-yQ": "y. Q",
+	"dayPeriods-format-wide-pm": "du.",
 	"eraNames": [
 		"BK"
 	],
-	"eraNarrow": [
+	"dateFormatItem-MMMEd": "MMM d., E",
+	"dateFormatItem-hms": "a h:mm:ss",
+	"dateFormatItem-yQQQ": "y. QQQ",
+	"days-standAlone-wide": [
+		"vasárnap",
+		"hétfő",
+		"kedd",
+		"szerda",
+		"csütörtök",
+		"péntek",
+		"szombat"
+	],
+	"months-standAlone-narrow": [
+		"J",
+		"F",
+		"M",
+		"Á",
+		"M",
+		"J",
+		"J",
+		"A",
+		"Sz",
+		"O",
+		"N",
+		"D"
+	],
+	"dayPeriods-format-wide-am": "de.",
+	"quarters-standAlone-abbr": [
+		"N1",
+		"N2",
+		"N3",
+		"N4"
+	],
+	"dateFormatItem-y": "y",
+	"timeFormat-full": "H:mm:ss zzzz",
+	"months-standAlone-abbr": [
+		"jan.",
+		"febr.",
+		"márc.",
+		"ápr.",
+		"máj.",
+		"jún.",
+		"júl.",
+		"aug.",
+		"szept.",
+		"okt.",
+		"nov.",
+		"dec."
+	],
+	"dateFormatItem-Ed": "d., E",
+	"dateFormatItem-yMMM": "y. MMM",
+	"days-standAlone-narrow": [
+		"V",
+		"H",
+		"K",
+		"Sz",
+		"Cs",
+		"P",
+		"Sz"
+	],
+	"eraAbbr": [
 		"BK"
+	],
+	"dateFormat-long": "y. MMMM d.",
+	"timeFormat-medium": "H:mm:ss",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormat-medium": "yyyy.MM.dd.",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dayPeriods-format-narrow-pm": "du.",
+	"dateFormatItem-yMd": "yyyy.MM.dd.",
+	"quarters-standAlone-wide": [
+		"1. negyedév",
+		"2. negyedév",
+		"3. negyedév",
+		"4. negyedév"
+	],
+	"dayPeriods-format-narrow-am": "de.",
+	"quarters-standAlone-narrow": [
+		"1.",
+		"2.",
+		"3.",
+		"4."
+	],
+	"months-standAlone-wide": [
+		"január",
+		"február",
+		"március",
+		"április",
+		"május",
+		"június",
+		"július",
+		"augusztus",
+		"szeptember",
+		"október",
+		"november",
+		"december"
+	],
+	"dateFormatItem-MMMd": "MMM d.",
+	"timeFormat-long": "H:mm:ss z",
+	"months-format-abbr": [
+		"jan.",
+		"febr.",
+		"márc.",
+		"ápr.",
+		"máj.",
+		"jún.",
+		"júl.",
+		"aug.",
+		"szept.",
+		"okt.",
+		"nov.",
+		"dec."
+	],
+	"timeFormat-short": "H:mm",
+	"dateFormatItem-H": "H",
+	"quarters-format-abbr": [
+		"N1",
+		"N2",
+		"N3",
+		"N4"
 	],
 	"days-format-abbr": [
 		"V",
@@ -32,108 +146,8 @@ define(
 		"P",
 		"Sz"
 	],
-	"days-format-wide": [
-		"vasárnap",
-		"hétfő",
-		"kedd",
-		"szerda",
-		"csütörtök",
-		"péntek",
-		"szombat"
-	],
-	"days-standAlone-abbr": [
-		"V",
-		"H",
-		"K",
-		"Sze",
-		"Cs",
-		"P",
-		"Szo"
-	],
-	"days-standAlone-narrow": [
-		"V",
-		"H",
-		"K",
-		"Sz",
-		"Cs",
-		"P",
-		"Sz"
-	],
-	"days-standAlone-wide": [
-		"vasárnap",
-		"hétfő",
-		"kedd",
-		"szerda",
-		"csütörtök",
-		"péntek",
-		"szombat"
-	],
-	"quarters-format-abbr": [
-		"N1",
-		"N2",
-		"N3",
-		"N4"
-	],
-	"quarters-format-wide": [
-		"I. negyedév",
-		"II. negyedév",
-		"III. negyedév",
-		"IV. negyedév"
-	],
-	"quarters-standAlone-abbr": [
-		"N1",
-		"N2",
-		"N3",
-		"N4"
-	],
-	"quarters-standAlone-wide": [
-		"1. negyedév",
-		"2. negyedév",
-		"3. negyedév",
-		"4. negyedév"
-	],
-	"dayPeriods-format-narrow-am": "de.",
-	"dayPeriods-format-narrow-pm": "du.",
-	"dayPeriods-format-wide-am": "de.",
-	"dayPeriods-format-wide-pm": "du.",
-	"dateFormat-full": "y. MMMM d., EEEE",
-	"dateFormat-long": "y. MMMM d.",
-	"dateFormat-medium": "yyyy.MM.dd.",
-	"dateFormat-short": "yyyy.MM.dd.",
-	"dateFormatItem-Ed": "d., E",
-	"dateFormatItem-H": "H",
-	"dateFormatItem-Hm": "H:mm",
-	"dateFormatItem-Hms": "H:mm:ss",
-	"dateFormatItem-MEd": "M. d., E",
-	"dateFormatItem-MMMd": "MMM d.",
-	"dateFormatItem-MMMEd": "MMM d., E",
-	"dateFormatItem-y": "y",
-	"dateFormatItem-yM": "y.M.",
-	"dateFormatItem-yMd": "yyyy.MM.dd.",
-	"dateFormatItem-yMEd": "yyyy.MM.dd., E",
-	"dateFormatItem-yMMM": "y. MMM",
 	"dateFormatItem-yMMMd": "y. MMM d.",
-	"dateFormatItem-yMMMEd": "y. MMM d., E",
-	"dateFormatItem-yQ": "y Q",
-	"dateFormatItem-yQQQ": "y. QQQ",
-	"timeFormat-full": "H:mm:ss zzzz",
-	"timeFormat-long": "H:mm:ss z",
-	"timeFormat-medium": "H:mm:ss",
-	"timeFormat-short": "H:mm",
-	"months-format-abbr": [
-		"jan.",
-		"febr.",
-		"márc.",
-		"ápr.",
-		"máj.",
-		"jún.",
-		"júl.",
-		"aug.",
-		"szept.",
-		"okt.",
-		"nov.",
-		"dec."
-	],
+	"dateFormatItem-MEd": "M. d., E",
 	"months-format-narrow": [
 		"J",
 		"F",
@@ -148,6 +162,30 @@ define(
 		"N",
 		"D"
 	],
+	"days-standAlone-short": [
+		"V",
+		"H",
+		"K",
+		"Sze",
+		"Cs",
+		"P",
+		"Szo"
+	],
+	"dateFormatItem-hm": "a h:mm",
+	"days-standAlone-abbr": [
+		"V",
+		"H",
+		"K",
+		"Sze",
+		"Cs",
+		"P",
+		"Szo"
+	],
+	"dateFormat-short": "yyyy.MM.dd.",
+	"dateFormatItem-yMMMEd": "y. MMM d., E",
+	"dateFormat-full": "y. MMMM d., EEEE",
+	"dateFormatItem-Md": "M.d.",
+	"dateFormatItem-yMEd": "yyyy.MM.dd., E",
 	"months-format-wide": [
 		"január",
 		"február",
@@ -162,48 +200,25 @@ define(
 		"november",
 		"december"
 	],
-	"months-standAlone-abbr": [
-		"jan.",
-		"febr.",
-		"márc.",
-		"ápr.",
-		"máj.",
-		"jún.",
-		"júl.",
-		"aug.",
-		"szept.",
-		"okt.",
-		"nov.",
-		"dec."
+	"quarters-format-wide": [
+		"I. negyedév",
+		"II. negyedév",
+		"III. negyedév",
+		"IV. negyedév"
 	],
-	"months-standAlone-narrow": [
-		"J",
-		"F",
-		"M",
-		"Á",
-		"M",
-		"J",
-		"J",
-		"A",
-		"Sz",
-		"O",
-		"N",
-		"D"
+	"eraNarrow": [
+		"BK"
 	],
-	"months-standAlone-wide": [
-		"január",
-		"február",
-		"március",
-		"április",
-		"május",
-		"június",
-		"július",
-		"augusztus",
-		"szeptember",
-		"október",
-		"november",
-		"december"
-	]
+	"days-format-wide": [
+		"vasárnap",
+		"hétfő",
+		"kedd",
+		"szerda",
+		"csütörtök",
+		"péntek",
+		"szombat"
+	],
+	"dateFormatItem-h": "a h"
 }
 //end v1.x content
 );

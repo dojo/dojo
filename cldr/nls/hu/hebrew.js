@@ -1,38 +1,34 @@
 define(
 //begin v1.x content
 {
-	"months-format-abbr": [
-		"Tisri",
-		"Hesván",
-		"Kiszlév",
-		"Tévész",
-		"Svát",
-		"Ádár I",
-		"Ádár",
-		"Niszán",
-		"Ijár",
-		"Sziván",
-		"Tamuz",
-		"Áv",
-		"Elul"
+	"dateFormatItem-yM": "y.M.",
+	"dateFormatItem-yQ": "y. Q",
+	"months-standAlone-abbr-leap": "Ádár II",
+	"dayPeriods-format-wide-pm": "du.",
+	"eraNames": [
+		"TÉ"
 	],
+	"dateFormatItem-MMMEd": "MMM d., E",
+	"dateFormatItem-hms": "a h:mm:ss",
+	"dateFormatItem-yQQQ": "y. QQQ",
+	"days-standAlone-wide": [
+		"vasárnap",
+		"hétfő",
+		"kedd",
+		"szerda",
+		"csütörtök",
+		"péntek",
+		"szombat"
+	],
+	"dayPeriods-format-wide-am": "de.",
 	"months-format-abbr-leap": "Ádár II",
-	"months-format-wide": [
-		"Tisri",
-		"Hesván",
-		"Kiszlév",
-		"Tévész",
-		"Svát",
-		"Ádár risón",
-		"Ádár",
-		"Niszán",
-		"Ijár",
-		"Sziván",
-		"Tamuz",
-		"Áv",
-		"Elul"
+	"quarters-standAlone-abbr": [
+		"N1",
+		"N2",
+		"N3",
+		"N4"
 	],
-	"months-format-wide-leap": "Ádár séni",
+	"timeFormat-full": "H:mm:ss zzzz",
 	"months-standAlone-abbr": [
 		"Tisri",
 		"Hesván",
@@ -48,7 +44,40 @@ define(
 		"Áv",
 		"Elul"
 	],
-	"months-standAlone-abbr-leap": "Ádár II",
+	"dateFormatItem-Ed": "d., E",
+	"dateFormatItem-yMMM": "y. MMM",
+	"days-standAlone-narrow": [
+		"V",
+		"H",
+		"K",
+		"Sz",
+		"Cs",
+		"P",
+		"Sz"
+	],
+	"eraAbbr": [
+		"TÉ"
+	],
+	"dateFormat-long": "y. MMMM d.",
+	"timeFormat-medium": "H:mm:ss",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormat-medium": "yyyy.MM.dd.",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dayPeriods-format-narrow-pm": "du.",
+	"dateFormatItem-yMd": "yyyy.MM.dd.",
+	"quarters-standAlone-wide": [
+		"1. negyedév",
+		"2. negyedév",
+		"3. negyedév",
+		"4. negyedév"
+	],
+	"dayPeriods-format-narrow-am": "de.",
+	"quarters-standAlone-narrow": [
+		"1.",
+		"2.",
+		"3.",
+		"4."
+	],
 	"months-standAlone-wide": [
 		"Tisri",
 		"Hesván",
@@ -64,15 +93,30 @@ define(
 		"Áv",
 		"Elul"
 	],
-	"months-standAlone-wide-leap": "Ádár II",
-	"eraAbbr": [
-		"TÉ"
+	"dateFormatItem-MMMd": "MMM d.",
+	"timeFormat-long": "H:mm:ss z",
+	"months-format-abbr": [
+		"Tisri",
+		"Hesván",
+		"Kiszlév",
+		"Tévész",
+		"Svát",
+		"Ádár I",
+		"Ádár",
+		"Niszán",
+		"Ijár",
+		"Sziván",
+		"Tamuz",
+		"Áv",
+		"Elul"
 	],
-	"eraNames": [
-		"TÉ"
-	],
-	"eraNarrow": [
-		"TÉ"
+	"timeFormat-short": "H:mm",
+	"dateFormatItem-H": "H",
+	"quarters-format-abbr": [
+		"N1",
+		"N2",
+		"N3",
+		"N4"
 	],
 	"days-format-abbr": [
 		"V",
@@ -92,15 +136,18 @@ define(
 		"P",
 		"Sz"
 	],
-	"days-format-wide": [
-		"vasárnap",
-		"hétfő",
-		"kedd",
-		"szerda",
-		"csütörtök",
-		"péntek",
-		"szombat"
+	"dateFormatItem-yMMMd": "y. MMM d.",
+	"dateFormatItem-MEd": "M. d., E",
+	"days-standAlone-short": [
+		"V",
+		"H",
+		"K",
+		"Sze",
+		"Cs",
+		"P",
+		"Szo"
 	],
+	"dateFormatItem-hm": "a h:mm",
 	"days-standAlone-abbr": [
 		"V",
 		"H",
@@ -110,16 +157,38 @@ define(
 		"P",
 		"Szo"
 	],
-	"days-standAlone-narrow": [
-		"V",
-		"H",
-		"K",
-		"Sz",
-		"Cs",
-		"P",
-		"Sz"
+	"months-standAlone-wide-leap": "Ádár II",
+	"dateFormat-short": "yyyy.MM.dd.",
+	"dateFormatItem-yMMMEd": "y. MMM d., E",
+	"dateFormat-full": "y. MMMM d., EEEE",
+	"dateFormatItem-Md": "M. d.",
+	"dateFormatItem-yMEd": "yyyy.MM.dd., E",
+	"months-format-wide": [
+		"Tisri",
+		"Hesván",
+		"Kiszlév",
+		"Tévész",
+		"Svát",
+		"Ádár risón",
+		"Ádár",
+		"Niszán",
+		"Ijár",
+		"Sziván",
+		"Tamuz",
+		"Áv",
+		"Elul"
 	],
-	"days-standAlone-wide": [
+	"quarters-format-wide": [
+		"I. negyedév",
+		"II. negyedév",
+		"III. negyedév",
+		"IV. negyedév"
+	],
+	"months-format-wide-leap": "Ádár séni",
+	"eraNarrow": [
+		"TÉ"
+	],
+	"days-format-wide": [
 		"vasárnap",
 		"hétfő",
 		"kedd",
@@ -128,60 +197,7 @@ define(
 		"péntek",
 		"szombat"
 	],
-	"quarters-format-abbr": [
-		"N1",
-		"N2",
-		"N3",
-		"N4"
-	],
-	"quarters-format-wide": [
-		"I. negyedév",
-		"II. negyedév",
-		"III. negyedév",
-		"IV. negyedév"
-	],
-	"quarters-standAlone-abbr": [
-		"N1",
-		"N2",
-		"N3",
-		"N4"
-	],
-	"quarters-standAlone-wide": [
-		"1. negyedév",
-		"2. negyedév",
-		"3. negyedév",
-		"4. negyedév"
-	],
-	"dayPeriods-format-narrow-am": "de.",
-	"dayPeriods-format-narrow-pm": "du.",
-	"dayPeriods-format-wide-am": "de.",
-	"dayPeriods-format-wide-pm": "du.",
-	"dateFormat-full": "y. MMMM d., EEEE",
-	"dateFormat-long": "y. MMMM d.",
-	"dateFormat-medium": "yyyy.MM.dd.",
-	"dateFormat-short": "yyyy.MM.dd.",
-	"dateFormatItem-Ed": "d., E",
-	"dateFormatItem-h": "a h",
-	"dateFormatItem-H": "H",
-	"dateFormatItem-hm": "a h:mm",
-	"dateFormatItem-Hm": "H:mm",
-	"dateFormatItem-hms": "a h:mm:ss",
-	"dateFormatItem-Hms": "H:mm:ss",
-	"dateFormatItem-Md": "M. d.",
-	"dateFormatItem-MEd": "M. d., E",
-	"dateFormatItem-MMMd": "MMM d.",
-	"dateFormatItem-MMMEd": "MMM d., E",
-	"dateFormatItem-yM": "y.M.",
-	"dateFormatItem-yMd": "yyyy.MM.dd.",
-	"dateFormatItem-yMEd": "yyyy.MM.dd., E",
-	"dateFormatItem-yMMM": "y. MMM",
-	"dateFormatItem-yMMMd": "y. MMM d.",
-	"dateFormatItem-yMMMEd": "y. MMM d., E",
-	"dateFormatItem-yQQQ": "y. QQQ",
-	"timeFormat-full": "H:mm:ss zzzz",
-	"timeFormat-long": "H:mm:ss z",
-	"timeFormat-medium": "H:mm:ss",
-	"timeFormat-short": "H:mm"
+	"dateFormatItem-h": "a h"
 }
 //end v1.x content
 );

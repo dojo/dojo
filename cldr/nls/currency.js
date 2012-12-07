@@ -2,14 +2,14 @@ define({ root:
 
 //begin v1.x content
 {
-	"AUD_symbol": "AU$",
+	"USD_symbol": "US$",
 	"CAD_symbol": "CA$",
-	"CNY_symbol": "CN¥",
-	"EUR_symbol": "€",
 	"GBP_symbol": "£",
 	"HKD_symbol": "HK$",
 	"JPY_symbol": "JP¥",
-	"USD_symbol": "US$"
+	"AUD_symbol": "A$",
+	"CNY_symbol": "CN¥",
+	"EUR_symbol": "€"
 }
 //end v1.x content
 ,
@@ -22,6 +22,7 @@ define({ root:
 	"en": true,
 	"en-au": true,
 	"en-ca": true,
+	"en-gb": true,
 	"es": true,
 	"fi": true,
 	"fr": true,

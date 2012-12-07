@@ -1,21 +1,22 @@
 define(
 //begin v1.x content
 {
-	"decimal": ",",
 	"group": " ",
-	"list": ";",
 	"percentSign": "%",
-	"plusSign": "+",
-	"minusSign": "-",
 	"exponential": "E",
-	"perMille": "‰",
-	"infinity": "∞",
-	"nan": "не число",
-	"decimalFormat": "#,##0.###",
-	"decimalFormat-short": "000 трлн",
 	"scientificFormat": "#E0",
 	"percentFormat": "#,##0 %",
-	"currencyFormat": "#,##0.00 ¤"
+	"list": ";",
+	"infinity": "∞",
+	"minusSign": "-",
+	"decimal": ",",
+	"nan": "не число",
+	"perMille": "‰",
+	"decimalFormat": "#,##0.###",
+	"currencyFormat": "#,##0.00 ¤",
+	"plusSign": "+",
+	"decimalFormat-long": "000 триллиона",
+	"decimalFormat-short": "000 трлн"
 }
 //end v1.x content
 );

@@ -1,23 +1,74 @@
 define(
 //begin v1.x content
 {
-	"eraAbbr": [
-		"π.μ."
-	],
+	"dateFormatItem-yM": "M/yyyy",
+	"dayPeriods-format-wide-pm": "μ.μ.",
 	"eraNames": [
 		"π.μ."
 	],
-	"eraNarrow": [
+	"dateFormatItem-MMMEd": "E, d MMM",
+	"dateTimeFormat-full": "{1} - {0}",
+	"days-standAlone-wide": [
+		"Κυριακή",
+		"Δευτέρα",
+		"Τρίτη",
+		"Τετάρτη",
+		"Πέμπτη",
+		"Παρασκευή",
+		"Σάββατο"
+	],
+	"dateTimeFormat-short": "{1} - {0}",
+	"dayPeriods-format-wide-am": "π.μ.",
+	"dateTimeFormat-medium": "{1} - {0}",
+	"quarters-standAlone-abbr": [
+		"Τ1",
+		"Τ2",
+		"Τ3",
+		"Τ4"
+	],
+	"timeFormat-full": "h:mm:ss a zzzz",
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-yMMM": "LLL y",
+	"days-standAlone-narrow": [
+		"Κ",
+		"Δ",
+		"Τ",
+		"Τ",
+		"Π",
+		"Π",
+		"Σ"
+	],
+	"eraAbbr": [
 		"π.μ."
+	],
+	"dateFormat-long": "d MMMM y",
+	"timeFormat-medium": "h:mm:ss a",
+	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-yMd": "d/M/yyyy",
+	"quarters-standAlone-wide": [
+		"1ο τρίμηνο",
+		"2ο τρίμηνο",
+		"3ο τρίμηνο",
+		"4ο τρίμηνο"
+	],
+	"dateTimeFormat-long": "{1} - {0}",
+	"dateFormatItem-MMMd": "d MMM",
+	"timeFormat-long": "h:mm:ss a z",
+	"timeFormat-short": "h:mm a",
+	"quarters-format-abbr": [
+		"Τ1",
+		"Τ2",
+		"Τ3",
+		"Τ4"
 	],
 	"days-format-abbr": [
 		"Κυρ",
 		"Δευ",
-		"Τρι",
+		"Τρί",
 		"Τετ",
-		"Πεμ",
+		"Πέμ",
 		"Παρ",
-		"Σαβ"
+		"Σάβ"
 	],
 	"days-format-narrow": [
 		"Κ",
@@ -28,14 +79,16 @@ define(
 		"Π",
 		"Σ"
 	],
-	"days-format-wide": [
-		"Κυριακή",
-		"Δευτέρα",
-		"Τρίτη",
-		"Τετάρτη",
-		"Πέμπτη",
-		"Παρασκευή",
-		"Σάββατο"
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-MEd": "E, d/M",
+	"days-standAlone-short": [
+		"Κυ",
+		"Δε",
+		"Τρ",
+		"Τε",
+		"Πε",
+		"Πα",
+		"Σα"
 	],
 	"days-standAlone-abbr": [
 		"Κυρ",
@@ -46,16 +99,27 @@ define(
 		"Παρ",
 		"Σάβ"
 	],
-	"days-standAlone-narrow": [
-		"Κ",
-		"Δ",
-		"Τ",
-		"Τ",
-		"Π",
-		"Π",
-		"Σ"
+	"dateFormat-short": "d/M/yy",
+	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormat-full": "EEEE, d MMMM y",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yMEd": "E, d/M/yyyy",
+	"days-format-short": [
+		"Κυ",
+		"Δε",
+		"Τρ",
+		"Τε",
+		"Πε",
+		"Πα",
+		"Σα"
 	],
-	"days-standAlone-wide": [
+	"quarters-format-wide": [
+		"1ο τρίμηνο",
+		"2ο τρίμηνο",
+		"3ο τρίμηνο",
+		"4ο τρίμηνο"
+	],
+	"days-format-wide": [
 		"Κυριακή",
 		"Δευτέρα",
 		"Τρίτη",
@@ -64,51 +128,9 @@ define(
 		"Παρασκευή",
 		"Σάββατο"
 	],
-	"quarters-format-abbr": [
-		"Τ1",
-		"Τ2",
-		"Τ3",
-		"Τ4"
-	],
-	"quarters-format-wide": [
-		"1ο τρίμηνο",
-		"2ο τρίμηνο",
-		"3ο τρίμηνο",
-		"4ο τρίμηνο"
-	],
-	"quarters-standAlone-abbr": [
-		"Τ1",
-		"Τ2",
-		"Τ3",
-		"Τ4"
-	],
-	"quarters-standAlone-wide": [
-		"1ο τρίμηνο",
-		"2ο τρίμηνο",
-		"3ο τρίμηνο",
-		"4ο τρίμηνο"
-	],
-	"dayPeriods-format-wide-am": "π.μ.",
-	"dayPeriods-format-wide-pm": "μ.μ.",
-	"dateFormat-full": "EEEE, d MMMM y",
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
-	"dateFormat-short": "d/M/yy",
-	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-MEd": "E, d/M",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MMMEd": "E, d MMM",
-	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yMd": "d/M/yyyy",
-	"dateFormatItem-yMEd": "E, d/M/yyyy",
-	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yMMMd": "d MMM y",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"timeFormat-full": "h:mm:ss a zzzz",
-	"timeFormat-long": "h:mm:ss a z",
-	"timeFormat-medium": "h:mm:ss a",
-	"timeFormat-short": "h:mm a"
+	"eraNarrow": [
+		"π.μ."
+	]
 }
 //end v1.x content
 );

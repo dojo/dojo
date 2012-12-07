@@ -1,35 +1,7 @@
 define(
 //begin v1.x content
 {
-	"months-format-wide": [
-		"يناير",
-		"فبراير",
-		"مارس",
-		"أبريل",
-		"مايو",
-		"يونيو",
-		"يوليو",
-		"أغسطس",
-		"سبتمبر",
-		"أكتوبر",
-		"نوفمبر",
-		"ديسمبر"
-	],
-	"months-standAlone-narrow": [
-		"ي",
-		"ف",
-		"م",
-		"أ",
-		"و",
-		"ن",
-		"ل",
-		"غ",
-		"س",
-		"ك",
-		"ب",
-		"د"
-	],
-	"days-format-abbr": [
+	"days-standAlone-short": [
 		"الأحد",
 		"الاثنين",
 		"الثلاثاء",
@@ -37,140 +9,6 @@ define(
 		"الخميس",
 		"الجمعة",
 		"السبت"
-	],
-	"days-format-wide": [
-		"الأحد",
-		"الاثنين",
-		"الثلاثاء",
-		"الأربعاء",
-		"الخميس",
-		"الجمعة",
-		"السبت"
-	],
-	"days-standAlone-abbr": [
-		"الأحد",
-		"الاثنين",
-		"الثلاثاء",
-		"الأربعاء",
-		"الخميس",
-		"الجمعة",
-		"السبت"
-	],
-	"days-standAlone-narrow": [
-		"ح",
-		"ن",
-		"ث",
-		"ر",
-		"خ",
-		"ج",
-		"س"
-	],
-	"days-standAlone-wide": [
-		"الأحد",
-		"الاثنين",
-		"الثلاثاء",
-		"الأربعاء",
-		"الخميس",
-		"الجمعة",
-		"السبت"
-	],
-	"quarters-format-wide": [
-		"الربع الأول",
-		"الربع الثاني",
-		"الربع الثالث",
-		"الربع الرابع"
-	],
-	"quarters-standAlone-narrow": [
-		"١",
-		"٢",
-		"٣",
-		"٤"
-	],
-	"dayPeriods-format-wide-am": "ص",
-	"dayPeriods-format-wide-pm": "م",
-	"eraNames": [
-		"قبل الميلاد",
-		"ميلادي"
-	],
-	"eraAbbr": [
-		"ق.م",
-		"م"
-	],
-	"dateFormat-full": "EEEE، d MMMM، y",
-	"dateFormat-long": "d MMMM، y",
-	"dateFormat-medium": "dd‏/MM‏/yyyy",
-	"dateFormat-short": "d‏/M‏/yyyy",
-	"timeFormat-full": "zzzz h:mm:ss a",
-	"timeFormat-long": "z h:mm:ss a",
-	"timeFormat-medium": "h:mm:ss a",
-	"timeFormat-short": "h:mm a",
-	"dateFormatItem-d": "d",
-	"dateFormatItem-Ed": "E، d",
-	"dateFormatItem-hm": "h:mm a",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-M": "L",
-	"dateFormatItem-Md": "d/‏M",
-	"dateFormatItem-MEd": "E، d/M",
-	"dateFormatItem-MMdd": "dd‏/MM",
-	"dateFormatItem-MMM": "LLL",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-MMMMd": "d MMMM",
-	"dateFormatItem-MMMMEd": "E d MMMM",
-	"dateFormatItem-ms": "mm:ss",
-	"dateFormatItem-y": "y",
-	"dateFormatItem-yM": "M‏/yyyy",
-	"dateFormatItem-yMd": "d‏/M‏/yyyy",
-	"dateFormatItem-yMEd": "E، d/‏M/‏yyyy",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yMMMd": "d MMM، y",
-	"dateFormatItem-yMMMEd": "E، d MMM، y",
-	"dateFormatItem-yMMMM": "MMMM y",
-	"dateFormatItem-yQ": "yyyy Q",
-	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yyQ": "Q yy",
-	"dateFormatItem-yyyyMM": "MM‏/yyyy",
-	"dateFormatItem-yyyyMMMM": "MMMM، y",
-	"field-era": "العصر",
-	"field-year": "السنة",
-	"field-year-relative+-1": "السنة الماضية",
-	"field-year-relative+0": "هذه السنة",
-	"field-year-relative+1": "السنة التالية",
-	"field-month": "الشهر",
-	"field-month-relative+-1": "الشهر الماضي",
-	"field-month-relative+0": "هذا الشهر",
-	"field-month-relative+1": "الشهر التالي",
-	"field-week": "الأسبوع",
-	"field-week-relative+-1": "الأسبوع الماضي",
-	"field-week-relative+0": "هذا الأسبوع",
-	"field-week-relative+1": "الأسبوع التالي",
-	"field-day": "يوم",
-	"field-day-relative+-2": "أول أمس",
-	"field-day-relative+-1": "أمس",
-	"field-day-relative+0": "اليوم",
-	"field-day-relative+1": "غدًا",
-	"field-day-relative+2": "بعد الغد",
-	"field-weekday": "اليوم",
-	"field-dayperiod": "ص/م",
-	"field-hour": "الساعات",
-	"field-minute": "الدقائق",
-	"field-second": "الثواني",
-	"field-zone": "التوقيت",
-	"months-format-abbr": [
-		"يناير",
-		"فبراير",
-		"مارس",
-		"أبريل",
-		"مايو",
-		"يونيو",
-		"يوليو",
-		"أغسطس",
-		"سبتمبر",
-		"أكتوبر",
-		"نوفمبر",
-		"ديسمبر"
 	],
 	"months-format-narrow": [
 		"ي",
@@ -186,7 +24,31 @@ define(
 		"ب",
 		"د"
 	],
-	"months-standAlone-abbr": [
+	"quarters-standAlone-narrow": [
+		"١",
+		"٢",
+		"٣",
+		"٤"
+	],
+	"field-weekday": "اليوم",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"dateFormatItem-yMEd": "E، d/‏M/‏yyyy",
+	"dateFormatItem-MMMEd": "E، d MMM",
+	"eraNarrow": [
+		"ق.م",
+		"م"
+	],
+	"days-format-short": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	],
+	"dateFormat-long": "d MMMM، y",
+	"months-format-wide": [
 		"يناير",
 		"فبراير",
 		"مارس",
@@ -200,6 +62,13 @@ define(
 		"نوفمبر",
 		"ديسمبر"
 	],
+	"dateTimeFormat-medium": "{1} {0}",
+	"dayPeriods-format-wide-pm": "م",
+	"dateFormat-full": "EEEE، d MMMM، y",
+	"dateFormatItem-Md": "d/‏M",
+	"dateFormatItem-yMd": "d‏/M‏/yyyy",
+	"field-era": "العصر",
+	"dateFormatItem-yM": "M‏/yyyy",
 	"months-standAlone-wide": [
 		"يناير",
 		"فبراير",
@@ -214,28 +83,55 @@ define(
 		"نوفمبر",
 		"ديسمبر"
 	],
-	"days-format-narrow": [
-		"ح",
-		"ن",
-		"ث",
-		"ر",
-		"خ",
-		"ج",
-		"س"
-	],
-	"quarters-format-abbr": [
+	"timeFormat-short": "h:mm a",
+	"quarters-format-wide": [
 		"الربع الأول",
 		"الربع الثاني",
 		"الربع الثالث",
 		"الربع الرابع"
 	],
-	"quarters-format-narrow": [
-		"١",
-		"٢",
-		"٣",
-		"٤"
+	"timeFormat-long": "h:mm:ss a z",
+	"field-year": "السنة",
+	"dateFormatItem-yMMM": "MMM y",
+	"dateFormatItem-yQ": "Q yyyy",
+	"dateFormatItem-yyyyMMMM": "MMMM، y",
+	"field-hour": "الساعات",
+	"dateFormatItem-MMdd": "dd‏/MM",
+	"months-format-abbr": [
+		"يناير",
+		"فبراير",
+		"مارس",
+		"أبريل",
+		"مايو",
+		"يونيو",
+		"يوليو",
+		"أغسطس",
+		"سبتمبر",
+		"أكتوبر",
+		"نوفمبر",
+		"ديسمبر"
 	],
-	"quarters-standAlone-abbr": [
+	"dateFormatItem-yyQ": "Q yy",
+	"timeFormat-full": "h:mm:ss a zzzz",
+	"field-day-relative+0": "اليوم",
+	"field-day-relative+1": "غدًا",
+	"field-day-relative+2": "بعد الغد",
+	"dateFormatItem-H": "HH",
+	"months-standAlone-abbr": [
+		"يناير",
+		"فبراير",
+		"مارس",
+		"أبريل",
+		"مايو",
+		"يونيو",
+		"يوليو",
+		"أغسطس",
+		"سبتمبر",
+		"أكتوبر",
+		"نوفمبر",
+		"ديسمبر"
+	],
+	"quarters-format-abbr": [
 		"الربع الأول",
 		"الربع الثاني",
 		"الربع الثالث",
@@ -247,10 +143,138 @@ define(
 		"الربع الثالث",
 		"الربع الرابع"
 	],
-	"eraNarrow": [
+	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	],
+	"dateFormatItem-MMMMd": "d MMMM",
+	"timeFormat-medium": "h:mm:ss a",
+	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
+		"الربع الأول",
+		"الربع الثاني",
+		"الربع الثالث",
+		"الربع الرابع"
+	],
+	"eraAbbr": [
 		"ق.م",
 		"م"
-	]
+	],
+	"field-minute": "الدقائق",
+	"field-dayperiod": "ص/م",
+	"days-standAlone-abbr": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	],
+	"dateFormatItem-d": "d",
+	"dateFormatItem-ms": "mm:ss",
+	"quarters-format-narrow": [
+		"١",
+		"٢",
+		"٣",
+		"٤"
+	],
+	"field-day-relative+-1": "أمس",
+	"dateFormatItem-h": "h a",
+	"dateTimeFormat-long": "{1} {0}",
+	"field-day-relative+-2": "أول أمس",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MEd": "E، d/M",
+	"dateTimeFormat-full": "{1} {0}",
+	"dateFormatItem-yMMMM": "MMMM y",
+	"field-day": "يوم",
+	"days-format-wide": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	],
+	"field-zone": "التوقيت",
+	"dateFormatItem-yyyyMM": "MM‏/yyyy",
+	"dateFormatItem-y": "y",
+	"months-standAlone-narrow": [
+		"ي",
+		"ف",
+		"م",
+		"أ",
+		"و",
+		"ن",
+		"ل",
+		"غ",
+		"س",
+		"ك",
+		"ب",
+		"د"
+	],
+	"field-year-relative+-1": "السنة الماضية",
+	"field-month-relative+-1": "الشهر الماضي",
+	"dateFormatItem-hm": "h:mm a",
+	"days-format-abbr": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	],
+	"dateFormatItem-yMMMd": "d MMM، y",
+	"eraNames": [
+		"قبل الميلاد",
+		"ميلادي"
+	],
+	"days-format-narrow": [
+		"ح",
+		"ن",
+		"ث",
+		"ر",
+		"خ",
+		"ج",
+		"س"
+	],
+	"field-month": "الشهر",
+	"days-standAlone-narrow": [
+		"ح",
+		"ن",
+		"ث",
+		"ر",
+		"خ",
+		"ج",
+		"س"
+	],
+	"dateFormatItem-MMM": "LLL",
+	"dayPeriods-format-wide-am": "ص",
+	"dateFormatItem-MMMMEd": "E، d MMMM",
+	"dateFormat-short": "d‏/M‏/yyyy",
+	"field-second": "الثواني",
+	"dateFormatItem-yMMMEd": "E، d MMM، y",
+	"field-month-relative+0": "هذا الشهر",
+	"field-month-relative+1": "الشهر التالي",
+	"dateFormatItem-Ed": "E، d",
+	"field-week": "الأسبوع",
+	"dateFormat-medium": "dd‏/MM‏/yyyy",
+	"field-year-relative+0": "هذه السنة",
+	"field-week-relative+-1": "الأسبوع الماضي",
+	"field-year-relative+1": "السنة التالية",
+	"dateTimeFormat-short": "{1} {0}",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"field-week-relative+0": "هذا الأسبوع",
+	"field-week-relative+1": "الأسبوع التالي"
 }
 //end v1.x content
 );

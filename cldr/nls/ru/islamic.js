@@ -1,19 +1,14 @@
 define(
 //begin v1.x content
 {
-	"months-format-abbr": [
-		"Мухаррам",
-		"Сафар",
-		"Раби-уль-авваль",
-		"Раби-уль-ахир",
-		"Джумад-уль-авваль",
-		"Джумад-уль-ахир",
-		"Раджаб",
-		"Шаабан",
-		"Рамадан",
-		"Шавваль",
-		"Зуль-Каада",
-		"Зуль-Хиджжа"
+	"days-standAlone-short": [
+		"вс",
+		"пн",
+		"вт",
+		"ср",
+		"чт",
+		"пт",
+		"сб"
 	],
 	"months-format-narrow": [
 		"1",
@@ -29,6 +24,20 @@ define(
 		"11",
 		"12"
 	],
+	"dateFormatItem-yyMMMEd": "E, d MMM yy G",
+	"dateFormatItem-yMEd": "ccc, d.MM.y 'г'.",
+	"dateFormatItem-yyyyLLLL": "LLLL y G",
+	"dateFormatItem-MMMEd": "ccc, d MMM",
+	"days-format-short": [
+		"вс",
+		"пн",
+		"вт",
+		"ср",
+		"чт",
+		"пт",
+		"сб"
+	],
+	"dateFormat-long": "d MMMM y 'г'. G",
 	"months-format-wide": [
 		"Мухаррам",
 		"Сафар",
@@ -43,20 +52,15 @@ define(
 		"Зуль-Каада",
 		"Зуль-Хиджжа"
 	],
-	"months-standAlone-abbr": [
-		"Мухаррам",
-		"Сафар",
-		"Раби-уль-авваль",
-		"Раби-уль-ахир",
-		"Джумад-уль-авваль",
-		"Джумад-уль-ахир",
-		"Раджаб",
-		"Шаабан",
-		"Рамадан",
-		"Шавваль",
-		"Зуль-Каада",
-		"Зуль-Хиджжа"
-	],
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
+	"dateTimeFormat-medium": "{1}, {0}",
+	"dayPeriods-format-wide-pm": "после полудня",
+	"dateFormat-full": "EEEE, d MMMM y 'г'. G",
+	"dateFormatItem-yyyyMEd": "E, dd.MM.y G",
+	"dateFormatItem-Md": "dd.MM",
+	"dayPeriods-format-abbr-am": "до полудня",
+	"dateFormatItem-yMd": "dd.MM.y",
+	"dateFormatItem-yM": "MM.y",
 	"months-standAlone-wide": [
 		"Мухаррам",
 		"Сафар",
@@ -71,66 +75,83 @@ define(
 		"Зуль-Каада",
 		"Зуль-Хиджжа"
 	],
-	"dateFormat-full": "EEEE, d MMMM y 'г'. G",
-	"dateFormat-long": "d MMMM y 'г'. G",
-	"dateFormat-medium": "dd.MM.yyyy G",
-	"dateFormat-short": "dd.MM.yy G",
-	"dateFormatItem-d": "d",
-	"dateFormatItem-E": "ccc",
-	"dateFormatItem-Ed": "E, d",
-	"dateFormatItem-H": "H",
-	"dateFormatItem-Hm": "H:mm",
-	"dateFormatItem-Hms": "H:mm:ss",
-	"dateFormatItem-M": "L",
-	"dateFormatItem-Md": "dd.MM",
-	"dateFormatItem-MEd": "E, dd.MM",
+	"timeFormat-short": "H:mm",
+	"quarters-format-wide": [
+		"1-й квартал",
+		"2-й квартал",
+		"3-й квартал",
+		"4-й квартал"
+	],
+	"timeFormat-long": "H:mm:ss z",
+	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-yQ": "QQQ y 'г'.",
+	"dateFormatItem-yyyyMMMM": "LLLL y G",
 	"dateFormatItem-MMdd": "dd.MM",
-	"dateFormatItem-MMM": "LLL",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MMMEd": "ccc, d MMM",
-	"dateFormatItem-ms": "mm:ss",
-	"dateFormatItem-yyMM": "MM.yy G",
-	"dateFormatItem-yyMMM": "LLL yy G",
-	"dateFormatItem-yyMMMEd": "E, d MMM yy G",
+	"months-format-abbr": [
+		"Мухаррам",
+		"Сафар",
+		"Раби-уль-авваль",
+		"Раби-уль-ахир",
+		"Джумад-уль-авваль",
+		"Джумад-уль-ахир",
+		"Раджаб",
+		"Шаабан",
+		"Рамадан",
+		"Шавваль",
+		"Зуль-Каада",
+		"Зуль-Хиджжа"
+	],
 	"dateFormatItem-yyQ": "Q yy G",
-	"dateFormatItem-yyyy": "y G",
-	"dateFormatItem-yyyyLLLL": "LLLL y G",
-	"dateFormatItem-yyyyM": "MM.y G",
-	"dateFormatItem-yyyyMd": "dd.MM.y G",
-	"dateFormatItem-yyyyMEd": "E, dd.MM.y G",
-	"dateFormatItem-yyyyMM": "MM.yyyy G",
+	"timeFormat-full": "H:mm:ss zzzz",
+	"dateFormatItem-E": "ccc",
+	"dateFormatItem-H": "H",
+	"months-standAlone-abbr": [
+		"Мухаррам",
+		"Сафар",
+		"Раби-уль-авваль",
+		"Раби-уль-ахир",
+		"Джумад-уль-авваль",
+		"Джумад-уль-ахир",
+		"Раджаб",
+		"Шаабан",
+		"Рамадан",
+		"Шавваль",
+		"Зуль-Каада",
+		"Зуль-Хиджжа"
+	],
+	"quarters-format-abbr": [
+		"1-й кв.",
+		"2-й кв.",
+		"3-й кв.",
+		"4-й кв."
+	],
+	"quarters-standAlone-wide": [
+		"1-й квартал",
+		"2-й квартал",
+		"3-й квартал",
+		"4-й квартал"
+	],
+	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
+	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"Воскресенье",
+		"Понедельник",
+		"Вторник",
+		"Среда",
+		"Четверг",
+		"Пятница",
+		"Суббота"
+	],
 	"dateFormatItem-yyyyMMM": "LLL y G",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
-	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
-	"dateFormatItem-yyyyMMMM": "LLLL y G",
-	"dateFormatItem-yyyyQQQ": "QQQ y G",
-	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'. G",
-	"days-format-abbr": [
-		"вс",
-		"пн",
-		"вт",
-		"ср",
-		"чт",
-		"пт",
-		"сб"
-	],
-	"days-format-narrow": [
-		"В",
-		"Пн",
-		"Вт",
-		"С",
-		"Ч",
-		"П",
-		"С"
-	],
-	"days-format-wide": [
-		"воскресенье",
-		"понедельник",
-		"вторник",
-		"среда",
-		"четверг",
-		"пятница",
-		"суббота"
+	"dateFormatItem-yyMMM": "LLL yy G",
+	"timeFormat-medium": "H:mm:ss",
+	"dateFormatItem-Hm": "H:mm",
+	"quarters-standAlone-abbr": [
+		"1-й кв.",
+		"2-й кв.",
+		"3-й кв.",
+		"4-й кв."
 	],
 	"days-standAlone-abbr": [
 		"Вс",
@@ -141,6 +162,45 @@ define(
 		"Пт",
 		"Сб"
 	],
+	"dateFormatItem-d": "d",
+	"dateFormatItem-ms": "mm:ss",
+	"dateTimeFormat-long": "{1}, {0}",
+	"dayPeriods-format-narrow-am": "дп",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MEd": "E, dd.MM",
+	"dateTimeFormat-full": "{1}, {0}",
+	"days-format-wide": [
+		"воскресенье",
+		"понедельник",
+		"вторник",
+		"среда",
+		"четверг",
+		"пятница",
+		"суббота"
+	],
+	"dateFormatItem-yyyyMM": "MM.yyyy G",
+	"dateFormatItem-yyMM": "MM.yy G",
+	"dayPeriods-format-abbr-pm": "после полудня",
+	"days-format-abbr": [
+		"вс",
+		"пн",
+		"вт",
+		"ср",
+		"чт",
+		"пт",
+		"сб"
+	],
+	"dateFormatItem-yMMMd": "d MMM y 'г'.",
+	"days-format-narrow": [
+		"вс",
+		"пн",
+		"вт",
+		"ср",
+		"чт",
+		"пт",
+		"сб"
+	],
+	"dateFormatItem-yyyyMd": "dd.MM.y G",
 	"days-standAlone-narrow": [
 		"В",
 		"П",
@@ -150,48 +210,18 @@ define(
 		"П",
 		"С"
 	],
-	"days-standAlone-wide": [
-		"Воскресенье",
-		"Понедельник",
-		"Вторник",
-		"Среда",
-		"Четверг",
-		"Пятница",
-		"Суббота"
-	],
-	"quarters-format-abbr": [
-		"1-й кв.",
-		"2-й кв.",
-		"3-й кв.",
-		"4-й кв."
-	],
-	"quarters-format-wide": [
-		"1-й квартал",
-		"2-й квартал",
-		"3-й квартал",
-		"4-й квартал"
-	],
-	"dayPeriods-format-abbr-am": "до полудня",
-	"dayPeriods-format-abbr-pm": "после полудня",
-	"dayPeriods-format-narrow-am": "дп",
-	"dayPeriods-format-narrow-pm": "пп",
+	"dateFormatItem-MMM": "LLL",
 	"dayPeriods-format-wide-am": "до полудня",
-	"dayPeriods-format-wide-pm": "после полудня",
-	"dateFormatItem-yM": "MM.y",
-	"dateFormatItem-yMd": "dd.MM.y",
-	"dateFormatItem-yMEd": "E, dd.MM.y",
-	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yMMMd": "d MMM y 'г'.",
+	"dateFormat-short": "dd.MM.yy G",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"dateFormatItem-yQ": "QQQ y 'г'.",
-	"timeFormat-full": "H:mm:ss zzzz",
-	"timeFormat-long": "H:mm:ss z",
-	"timeFormat-medium": "H:mm:ss",
-	"timeFormat-short": "H:mm",
-	"dateTimeFormat-full": "{1}, {0}",
-	"dateTimeFormat-long": "{1}, {0}",
-	"dateTimeFormat-medium": "{1}, {0}",
-	"dateTimeFormat-short": "{1}, {0}"
+	"dateFormatItem-Ed": "E, d",
+	"dateFormat-medium": "dd.MM.yyyy G",
+	"dateFormatItem-yyyyM": "MM.y G",
+	"dayPeriods-format-narrow-pm": "пп",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'. G",
+	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dateFormatItem-yyyy": "y G"
 }
 //end v1.x content
 );

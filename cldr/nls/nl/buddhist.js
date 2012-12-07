@@ -1,48 +1,12 @@
 define(
 //begin v1.x content
 {
-	"dateFormat-full": "EEEE d MMMM y G",
-	"dateFormat-long": "d MMMM y G",
-	"dateFormat-medium": "d MMM y G",
-	"dateFormat-short": "dd-MM-yy G",
-	"dateFormatItem-d": "d",
-	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-Gy": "y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-M": "L",
-	"dateFormatItem-Md": "d-M",
-	"dateFormatItem-MEd": "E d-M",
-	"dateFormatItem-MMd": "d-MM",
-	"dateFormatItem-MMdd": "dd-MM",
-	"dateFormatItem-MMM": "LLL",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-MMMMd": "d MMMM",
-	"dateFormatItem-ms": "mm:ss",
-	"dateFormatItem-y": "y G",
 	"dateFormatItem-yM": "M-y G",
-	"dateFormatItem-yMd": "d-M-y G",
-	"dateFormatItem-yMEd": "E d-M-y G",
-	"dateFormatItem-yMMM": "MMM y G",
-	"dateFormatItem-yMMMd": "d MMM y G",
-	"dateFormatItem-yMMMEd": "E d MMM y G",
 	"dateFormatItem-yQ": "Q y G",
+	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-yQQQ": "QQQ y G",
-	"dateFormatItem-yyMM": "MM-yy G",
-	"dateFormatItem-yyMMM": "MMM yy G",
-	"dateFormatItem-yyQ": "Q yy G",
-	"dateFormatItem-yyQQQQ": "QQQQ yy G",
-	"dateFormatItem-yyyyMMMM": "MMMM y G",
-	"days-format-abbr": [
-		"zo",
-		"ma",
-		"di",
-		"wo",
-		"do",
-		"vr",
-		"za"
-	],
-	"days-format-wide": [
+	"dateFormatItem-MMdd": "dd-MM",
+	"days-standAlone-wide": [
 		"zondag",
 		"maandag",
 		"dinsdag",
@@ -51,55 +15,29 @@ define(
 		"vrijdag",
 		"zaterdag"
 	],
-	"days-standAlone-narrow": [
-		"Z",
+	"dateFormatItem-MMM": "LLL",
+	"months-standAlone-narrow": [
+		"J",
+		"F",
 		"M",
-		"D",
-		"W",
-		"D",
-		"V",
-		"Z"
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
 	],
-	"quarters-format-abbr": [
+	"dateFormatItem-Gy": "y G",
+	"quarters-standAlone-abbr": [
 		"K1",
 		"K2",
 		"K3",
 		"K4"
 	],
-	"quarters-format-wide": [
-		"1e kwartaal",
-		"2e kwartaal",
-		"3e kwartaal",
-		"4e kwartaal"
-	],
-	"months-format-abbr": [
-		"jan.",
-		"feb.",
-		"mrt.",
-		"apr.",
-		"mei",
-		"jun.",
-		"jul.",
-		"aug.",
-		"sep.",
-		"okt.",
-		"nov.",
-		"dec."
-	],
-	"months-format-wide": [
-		"januari",
-		"februari",
-		"maart",
-		"april",
-		"mei",
-		"juni",
-		"juli",
-		"augustus",
-		"september",
-		"oktober",
-		"november",
-		"december"
-	],
+	"dateFormatItem-y": "y G",
 	"months-standAlone-abbr": [
 		"jan",
 		"feb",
@@ -114,7 +52,92 @@ define(
 		"nov",
 		"dec"
 	],
-	"months-standAlone-narrow": [
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-yMMM": "MMM y G",
+	"days-standAlone-narrow": [
+		"Z",
+		"M",
+		"D",
+		"W",
+		"D",
+		"V",
+		"Z"
+	],
+	"dateFormatItem-yyyyMMMM": "MMMM y G",
+	"dateFormat-long": "d MMMM y G",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormatItem-MMd": "d-MM",
+	"dateFormatItem-yyMM": "MM-yy G",
+	"dateFormat-medium": "d MMM y G",
+	"dateFormatItem-yyMMM": "MMM yy G",
+	"dateFormatItem-yyQQQQ": "QQQQ yy G",
+	"dateFormatItem-yMd": "d-M-y G",
+	"quarters-standAlone-wide": [
+		"1e kwartaal",
+		"2e kwartaal",
+		"3e kwartaal",
+		"4e kwartaal"
+	],
+	"dateFormatItem-ms": "mm:ss",
+	"months-standAlone-wide": [
+		"januari",
+		"februari",
+		"maart",
+		"april",
+		"mei",
+		"juni",
+		"juli",
+		"augustus",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-yyQ": "Q yy G",
+	"months-format-abbr": [
+		"jan.",
+		"feb.",
+		"mrt.",
+		"apr.",
+		"mei",
+		"jun.",
+		"jul.",
+		"aug.",
+		"sep.",
+		"okt.",
+		"nov.",
+		"dec."
+	],
+	"dateFormatItem-MMMMd": "d MMMM",
+	"quarters-format-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
+	"days-format-abbr": [
+		"zo",
+		"ma",
+		"di",
+		"wo",
+		"do",
+		"vr",
+		"za"
+	],
+	"days-format-narrow": [
+		"Z",
+		"M",
+		"D",
+		"W",
+		"D",
+		"V",
+		"Z"
+	],
+	"dateFormatItem-M": "L",
+	"dateFormatItem-yMMMd": "d MMM y G",
+	"dateFormatItem-MEd": "E d-M",
+	"months-format-narrow": [
 		"J",
 		"F",
 		"M",
@@ -127,6 +150,68 @@ define(
 		"O",
 		"N",
 		"D"
+	],
+	"days-standAlone-short": [
+		"zo",
+		"ma",
+		"di",
+		"wo",
+		"do",
+		"vr",
+		"za"
+	],
+	"days-standAlone-abbr": [
+		"zo",
+		"ma",
+		"di",
+		"wo",
+		"do",
+		"vr",
+		"za"
+	],
+	"dateFormat-short": "dd-MM-yy G",
+	"dateFormatItem-yMMMEd": "E d MMM y G",
+	"dateFormat-full": "EEEE d MMMM y G",
+	"dateFormatItem-Md": "d-M",
+	"dateFormatItem-yMEd": "E d-M-y G",
+	"months-format-wide": [
+		"januari",
+		"februari",
+		"maart",
+		"april",
+		"mei",
+		"juni",
+		"juli",
+		"augustus",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
+	"days-format-short": [
+		"zo",
+		"ma",
+		"di",
+		"wo",
+		"do",
+		"vr",
+		"za"
+	],
+	"dateFormatItem-d": "d",
+	"quarters-format-wide": [
+		"1e kwartaal",
+		"2e kwartaal",
+		"3e kwartaal",
+		"4e kwartaal"
+	],
+	"days-format-wide": [
+		"zondag",
+		"maandag",
+		"dinsdag",
+		"woensdag",
+		"donderdag",
+		"vrijdag",
+		"zaterdag"
 	]
 }
 //end v1.x content

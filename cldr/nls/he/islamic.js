@@ -1,81 +1,102 @@
 define(
 //begin v1.x content
 {
-	"months-format-wide": [
+	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yQ": "Q yyyy",
+	"dayPeriods-format-wide-pm": "אחה״צ",
+	"eraNames": [
+		"שנת היג׳רה"
+	],
+	"dateFormatItem-MMMEd": "E, d בMMM",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"months-standAlone-narrow": [
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"10",
+		"11",
+		"12"
+	],
+	"dateTimeFormat-short": "{1}, {0}",
+	"dayPeriods-format-wide-am": "לפנה״צ",
+	"dateTimeFormat-medium": "{1}, {0}",
+	"months-standAlone-abbr": [
 		"מוחרם",
-		"ספר",
-		"רביע אל-אוואל",
-		"רביע אל-תני",
-		"ג׳ומדה אל-אוואל",
-		"ג׳ומדה אל-תני",
-		"רג׳אב",
+		"צפר",
+		"רביע א׳",
+		"רביע ב׳",
+		"ג׳ומאדא א׳",
+		"ג׳ומאדא ב׳",
+		"רג׳ב",
 		"שעבאן",
-		"ראמדן",
+		"רמדאן",
 		"שוואל",
-		"זו אל-QI'DAH",
-		"זו אל-חיג׳ה"
+		"ד׳ו אל-קעדה",
+		"ד׳ו אל-חיג׳ה"
+	],
+	"dateFormatItem-Ed": "E ה-d",
+	"dateFormatItem-yMMM": "MMM y",
+	"days-standAlone-narrow": [
+		"א׳",
+		"ב׳",
+		"ג׳",
+		"ד׳",
+		"ה׳",
+		"ו",
+		"ש"
 	],
 	"eraAbbr": [
 		"שנת היג׳רה"
 	],
-	"dateFormat-medium": "d בMMM yyyy",
-	"dateFormatItem-h": "h a",
+	"dateFormat-long": "d בMMMM y",
 	"dateFormatItem-Hm": "HH:mm",
+	"dateFormat-medium": "d בMMM yyyy",
 	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-MEd": "E, d/M",
-	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yMEd": "E, d.M.yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"months-format-abbr": [
-		"מוחרם",
-		"ספר",
-		"רביע אל-אוואל",
-		"רביע אל-תני",
-		"ג׳ומדה אל-אוואל",
-		"ג׳ומדה אל-תני",
-		"רג׳אב",
-		"שעבאן",
-		"ראמדן",
-		"שוואל",
-		"זו אל-QI'DAH",
-		"זו אל-חיג׳ה"
-	],
-	"months-standAlone-abbr": [
-		"מוחרם",
-		"ספר",
-		"רביע אל-אוואל",
-		"רביע אל-תני",
-		"ג׳ומדה אל-אוואל",
-		"ג׳ומדה אל-תני",
-		"רג׳אב",
-		"שעבאן",
-		"ראמדן",
-		"שוואל",
-		"זו אל-QI'DAH",
-		"זו אל-חיג׳ה"
+	"dateFormatItem-yMd": "d.M.yyyy",
+	"quarters-standAlone-narrow": [
+		"ר1",
+		"ר2",
+		"ר3",
+		"ר4"
 	],
 	"months-standAlone-wide": [
 		"מוחרם",
-		"ספר",
-		"רביע אל-אוואל",
-		"רביע אל-תני",
-		"ג׳ומדה אל-אוואל",
-		"ג׳ומדה אל-תני",
-		"רג׳אב",
+		"צפר",
+		"רביע אל-אוול",
+		"רביע א-ת׳אני",
+		"ג׳ומאדא אל-אולא",
+		"ג׳ומאדא א-ת׳אניה",
+		"רג׳ב",
 		"שעבאן",
-		"ראמדן",
+		"רמדאן",
 		"שוואל",
-		"זו אל-QI'DAH",
-		"זו אל-חיג׳ה"
+		"ד׳ו אל-קעדה",
+		"ד׳ו אל-חיג׳ה"
 	],
-	"eraNames": [
-		"שנת היג׳רה"
+	"dateFormatItem-MMMMEd": "E, d בMMMM",
+	"dateFormatItem-MMMd": "d בMMM",
+	"months-format-abbr": [
+		"מוחרם",
+		"צפר",
+		"רביע א׳",
+		"רביע ב׳",
+		"ג׳ומאדא א׳",
+		"ג׳ומאדא ב׳",
+		"רג׳ב",
+		"שעבאן",
+		"רמדאן",
+		"שוואל",
+		"ד׳ו אל-קעדה",
+		"ד׳ו אל-חיג׳ה"
 	],
-	"eraNarrow": [
-		"שנת היג׳רה"
-	],
+	"dateFormatItem-MMMMd": "d בMMMM",
 	"days-format-abbr": [
 		"יום א׳",
 		"יום ב׳",
@@ -86,13 +107,62 @@ define(
 		"שבת"
 	],
 	"days-format-narrow": [
-		"א",
-		"ב",
-		"ג",
-		"ד",
-		"ה",
-		"ו",
-		"ש"
+		"א'",
+		"ב'",
+		"ג'",
+		"ד'",
+		"ה'",
+		"ו׳",
+		"ש׳"
+	],
+	"dateFormatItem-yMMMd": "d בMMM y",
+	"dateFormatItem-MEd": "E, d/M",
+	"days-standAlone-short": [
+		"א'",
+		"ב'",
+		"ג'",
+		"ד'",
+		"ה'",
+		"ו'",
+		"ש'"
+	],
+	"dateFormatItem-hm": "h:mm a",
+	"dateFormat-short": "dd/MM/yy",
+	"dateFormatItem-yMMMEd": "E, d בMMM y",
+	"dateFormat-full": "EEEE, d בMMMM y",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yMEd": "E, d.M.yyyy",
+	"months-format-wide": [
+		"מוחרם",
+		"צפר",
+		"רביע אל-אוול",
+		"רביע א-ת׳אני",
+		"ג׳ומאדא אל-אולא",
+		"ג׳ומאדא א-ת׳אניה",
+		"רג׳ב",
+		"שעבאן",
+		"רמדאן",
+		"שוואל",
+		"ד׳ו אל-קעדה",
+		"ד׳ו אל-חיג׳ה"
+	],
+	"days-format-short": [
+		"א'",
+		"ב'",
+		"ג'",
+		"ד'",
+		"ה'",
+		"ו'",
+		"ש'"
+	],
+	"quarters-format-wide": [
+		"רבעון 1",
+		"רבעון 2",
+		"רבעון 3",
+		"רבעון 4"
+	],
+	"eraNarrow": [
+		"שנת היג׳רה"
 	],
 	"days-format-wide": [
 		"יום ראשון",
@@ -103,33 +173,7 @@ define(
 		"יום שישי",
 		"יום שבת"
 	],
-	"days-standAlone-narrow": [
-		"א",
-		"ב",
-		"ג",
-		"ד",
-		"ה",
-		"ו",
-		"ש"
-	],
-	"quarters-format-wide": [
-		"רבעון 1",
-		"רבעון 2",
-		"רבעון 3",
-		"רבעון 4"
-	],
-	"dayPeriods-format-wide-am": "לפנה״צ",
-	"dayPeriods-format-wide-pm": "אחה״צ",
-	"dateFormat-full": "EEEE, d בMMMM y",
-	"dateFormat-long": "d בMMMM y",
-	"dateFormat-short": "dd/MM/yy",
-	"dateFormatItem-Ed": "E ה-d",
-	"dateFormatItem-MMMd": "d בMMM",
-	"dateFormatItem-MMMEd": "E, d בMMM",
-	"dateFormatItem-yMd": "d.M.yyyy",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yMMMd": "d בMMM y",
-	"dateFormatItem-yMMMEd": "E, d בMMM y"
+	"dateFormatItem-h": "h a"
 }
 //end v1.x content
 );

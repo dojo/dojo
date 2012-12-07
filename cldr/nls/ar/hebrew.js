@@ -1,37 +1,25 @@
 define(
 //begin v1.x content
 {
-	"months-format-wide": [
-		"تشري",
-		"مرحشوان",
-		"كيسلو",
-		"طيفت",
-		"شباط",
-		"آذار الأول",
-		"آذار",
-		"نيسان",
-		"أيار",
-		"سيفان",
-		"تموز",
-		"آب",
-		"أيلول"
+	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yQ": "Q yyyy",
+	"dayPeriods-format-wide-pm": "م",
+	"eraNames": [
+		"ص"
 	],
-	"months-format-wide-leap": "آذار الثاني",
-	"months-format-abbr": [
-		"تشري",
-		"مرحشوان",
-		"كيسلو",
-		"طيفت",
-		"شباط",
-		"آذار الأول",
-		"آذار",
-		"نيسان",
-		"أيار",
-		"سيفان",
-		"تموز",
-		"آب",
-		"أيلول"
+	"dateFormatItem-MMMEd": "E، d MMM",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"days-standAlone-wide": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
 	],
+	"dayPeriods-format-wide-am": "ص",
+	"timeFormat-full": "h:mm:ss a zzzz",
 	"months-standAlone-abbr": [
 		"تشري",
 		"مرحشوان",
@@ -46,6 +34,30 @@ define(
 		"تموز",
 		"آب",
 		"أيلول"
+	],
+	"dateFormatItem-Ed": "E، d",
+	"dateFormatItem-yMMM": "MMM y",
+	"days-standAlone-narrow": [
+		"ح",
+		"ن",
+		"ث",
+		"ر",
+		"خ",
+		"ج",
+		"س"
+	],
+	"eraAbbr": [
+		"ص"
+	],
+	"dateFormat-long": "d MMMM، y",
+	"timeFormat-medium": "h:mm:ss a",
+	"dateFormat-medium": "dd/MM/yyyy",
+	"dateFormatItem-yMd": "d/M/yyyy",
+	"quarters-standAlone-narrow": [
+		"١",
+		"٢",
+		"٣",
+		"٤"
 	],
 	"months-standAlone-wide": [
 		"تشري",
@@ -62,6 +74,30 @@ define(
 		"آب",
 		"أيلول"
 	],
+	"dateFormatItem-MMMd": "d MMM",
+	"quarters-format-narrow": [
+		"١",
+		"٢",
+		"٣",
+		"٤"
+	],
+	"timeFormat-long": "h:mm:ss a z",
+	"months-format-abbr": [
+		"تشري",
+		"مرحشوان",
+		"كيسلو",
+		"طيفت",
+		"شباط",
+		"آذار الأول",
+		"آذار",
+		"نيسان",
+		"أيار",
+		"سيفان",
+		"تموز",
+		"آب",
+		"أيلول"
+	],
+	"timeFormat-short": "h:mm a",
 	"days-format-abbr": [
 		"الأحد",
 		"الاثنين",
@@ -71,7 +107,9 @@ define(
 		"الجمعة",
 		"السبت"
 	],
-	"days-format-wide": [
+	"dateFormatItem-yMMMd": "d MMM، y",
+	"dateFormatItem-MEd": "E، d/M",
+	"days-standAlone-short": [
 		"الأحد",
 		"الاثنين",
 		"الثلاثاء",
@@ -89,18 +127,34 @@ define(
 		"الجمعة",
 		"السبت"
 	],
-	"days-standAlone-narrow": [
-		"ح",
-		"ن",
-		"ث",
-		"ر",
-		"خ",
-		"ج",
-		"س"
+	"dateFormat-short": "d/M/yyyy",
+	"dateFormatItem-yMMMEd": "E، d MMM، y",
+	"dateFormat-full": "EEEE، d MMMM، y",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yMEd": "E، d/M/yyyy",
+	"months-format-wide": [
+		"تشري",
+		"مرحشوان",
+		"كيسلو",
+		"طيفت",
+		"شباط",
+		"آذار الأول",
+		"آذار",
+		"نيسان",
+		"أيار",
+		"سيفان",
+		"تموز",
+		"آب",
+		"أيلول"
 	],
-	"days-standAlone-wide": [
+	"days-format-short": [
 		"الأحد",
-		"الاثنين"
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
 	],
 	"quarters-format-wide": [
 		"الربع الأول",
@@ -108,34 +162,19 @@ define(
 		"الربع الثالث",
 		"الربع الرابع"
 	],
-	"quarters-standAlone-narrow": [
-		"١",
-		"٢",
-		"٣",
-		"٤"
+	"months-format-wide-leap": "آذار الثاني",
+	"eraNarrow": [
+		"ص"
 	],
-	"dayPeriods-format-wide-am": "ص",
-	"dayPeriods-format-wide-pm": "م",
-	"dateFormat-full": "EEEE، d MMMM، y",
-	"dateFormat-long": "d MMMM، y",
-	"dateFormat-medium": "dd/MM/yyyy",
-	"dateFormat-short": "d/M/yyyy",
-	"dateFormatItem-Ed": "E، d",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-MEd": "E، d/M",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yMd": "d/M/yyyy",
-	"dateFormatItem-yMEd": "E، d/M/yyyy",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yMMMd": "d MMM، y",
-	"dateFormatItem-yMMMEd": "E، d MMM، y",
-	"dateFormatItem-yQ": "yyyy Q",
-	"timeFormat-full": "zzzz h:mm:ss a",
-	"timeFormat-long": "z h:mm:ss a",
-	"timeFormat-medium": "h:mm:ss a",
-	"timeFormat-short": "h:mm a"
+	"days-format-wide": [
+		"الأحد",
+		"الاثنين",
+		"الثلاثاء",
+		"الأربعاء",
+		"الخميس",
+		"الجمعة",
+		"السبت"
+	]
 }
 //end v1.x content
 );

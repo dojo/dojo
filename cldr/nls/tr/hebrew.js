@@ -1,36 +1,26 @@
 define(
 //begin v1.x content
 {
-	"months-format-wide": [
-		"Tişri",
-		"Heşvan",
-		"Kislev",
-		"Tevet",
-		"Şevat",
-		"Veadar",
-		"Adar",
-		"Nisan",
-		"İyar",
-		"Sivan",
-		"Tamuz",
-		"Av",
-		"Elul"
+	"dateFormatItem-yM": "MM/y",
+	"dateFormatItem-yQ": "y/Q",
+	"dayPeriods-format-wide-pm": "ÖS",
+	"dateFormatItem-MMMEd": "d MMMM E",
+	"dateFormatItem-yQQQ": "y/QQQ",
+	"days-standAlone-wide": [
+		"Pazar",
+		"Pazartesi",
+		"Salı",
+		"Çarşamba",
+		"Perşembe",
+		"Cuma",
+		"Cumartesi"
 	],
-	"months-format-wide-leap": "Adar II",
-	"months-format-abbr": [
-		"Tişri",
-		"Heşvan",
-		"Kislev",
-		"Tevet",
-		"Şevat",
-		"Veadar",
-		"Adar",
-		"Nisan",
-		"İyar",
-		"Sivan",
-		"Tamuz",
-		"Av",
-		"Elul"
+	"dayPeriods-format-wide-am": "ÖÖ",
+	"quarters-standAlone-abbr": [
+		"Ç1",
+		"Ç2",
+		"Ç3",
+		"Ç4"
 	],
 	"months-standAlone-abbr": [
 		"Tişri",
@@ -47,6 +37,31 @@ define(
 		"Av",
 		"Elul"
 	],
+	"dateFormatItem-yMMM": "MMM y",
+	"days-standAlone-narrow": [
+		"P",
+		"P",
+		"S",
+		"Ç",
+		"P",
+		"C",
+		"C"
+	],
+	"dateFormat-long": "d MMMM y",
+	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-yMd": "dd.MM.yyyy",
+	"quarters-standAlone-wide": [
+		"1. çeyrek",
+		"2. çeyrek",
+		"3. çeyrek",
+		"4. çeyrek"
+	],
+	"quarters-standAlone-narrow": [
+		"1.",
+		"2.",
+		"3.",
+		"4."
+	],
 	"months-standAlone-wide": [
 		"Tişri",
 		"Heşvan",
@@ -61,6 +76,34 @@ define(
 		"Tamuz",
 		"Av",
 		"Elul"
+	],
+	"dateFormatItem-MMMd": "d MMMM",
+	"quarters-format-narrow": [
+		"1.",
+		"2.",
+		"3.",
+		"4."
+	],
+	"months-format-abbr": [
+		"Tişri",
+		"Heşvan",
+		"Kislev",
+		"Tevet",
+		"Şevat",
+		"Veadar",
+		"Adar",
+		"Nisan",
+		"İyar",
+		"Sivan",
+		"Tamuz",
+		"Av",
+		"Elul"
+	],
+	"quarters-format-abbr": [
+		"Ç1",
+		"Ç2",
+		"Ç3",
+		"Ç4"
 	],
 	"days-format-abbr": [
 		"Paz",
@@ -80,14 +123,16 @@ define(
 		"C",
 		"C"
 	],
-	"days-format-wide": [
-		"Pazar",
-		"Pazartesi",
-		"Salı",
-		"Çarşamba",
-		"Perşembe",
-		"Cuma",
-		"Cumartesi"
+	"dateFormatItem-yMMMd": "dd MMM y",
+	"dateFormatItem-MEd": "dd/MM E",
+	"days-standAlone-short": [
+		"Pa",
+		"Pt",
+		"Sa",
+		"Ça",
+		"Pe",
+		"Cu",
+		"Ct"
 	],
 	"days-standAlone-abbr": [
 		"Paz",
@@ -98,29 +143,34 @@ define(
 		"Cum",
 		"Cmt"
 	],
-	"days-standAlone-narrow": [
-		"P",
-		"P",
-		"S",
-		"Ç",
-		"P",
-		"C",
-		"C"
+	"dateFormat-short": "dd.MM.yyyy",
+	"dateFormatItem-yMMMEd": "d MMM y E",
+	"dateFormat-full": "d MMMM y EEEE",
+	"dateFormatItem-Md": "dd/MM",
+	"dateFormatItem-yMEd": "dd.MM.yyyy E",
+	"months-format-wide": [
+		"Tişri",
+		"Heşvan",
+		"Kislev",
+		"Tevet",
+		"Şevat",
+		"Veadar",
+		"Adar",
+		"Nisan",
+		"İyar",
+		"Sivan",
+		"Tamuz",
+		"Av",
+		"Elul"
 	],
-	"days-standAlone-wide": [
-		"Pazar",
-		"Pazartesi",
-		"Salı",
-		"Çarşamba",
-		"Perşembe",
-		"Cuma",
-		"Cumartesi"
-	],
-	"quarters-format-abbr": [
-		"Ç1",
-		"Ç2",
-		"Ç3",
-		"Ç4"
+	"days-format-short": [
+		"Pa",
+		"Pt",
+		"Sa",
+		"Ça",
+		"Pe",
+		"Cu",
+		"Ct"
 	],
 	"quarters-format-wide": [
 		"1. çeyrek",
@@ -128,34 +178,16 @@ define(
 		"3. çeyrek",
 		"4. çeyrek"
 	],
-	"quarters-standAlone-abbr": [
-		"Ç1",
-		"Ç2",
-		"Ç3",
-		"Ç4"
-	],
-	"quarters-standAlone-wide": [
-		"1. çeyrek",
-		"2. çeyrek",
-		"3. çeyrek",
-		"4. çeyrek"
-	],
-	"dateFormat-full": "d MMMM y EEEE",
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
-	"dateFormat-short": "dd.MM.yyyy",
-	"dateFormatItem-Md": "dd.MM",
-	"dateFormatItem-MEd": "dd.MM E",
-	"dateFormatItem-MMMd": "d MMMM",
-	"dateFormatItem-MMMEd": "d MMMM E",
-	"dateFormatItem-yM": "MM.yy",
-	"dateFormatItem-yMd": "dd.MM.yyyy",
-	"dateFormatItem-yMEd": "dd.MM.yyyy E",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yMMMd": "dd MMM y",
-	"dateFormatItem-yMMMEd": "d MMM y E",
-	"dateFormatItem-yQ": "y-Q",
-	"dateFormatItem-yQQQ": "y-QQQ"
+	"months-format-wide-leap": "Adar II",
+	"days-format-wide": [
+		"Pazar",
+		"Pazartesi",
+		"Salı",
+		"Çarşamba",
+		"Perşembe",
+		"Cuma",
+		"Cumartesi"
+	]
 }
 //end v1.x content
 );

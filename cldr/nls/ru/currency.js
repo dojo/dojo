@@ -1,17 +1,17 @@
 define(
 //begin v1.x content
 {
-	"AUD_displayName": "Австралийский доллар",
-	"CAD_displayName": "Канадский доллар",
-	"CHF_displayName": "Швейцарский франк",
-	"CNY_displayName": "Юань Ренминби",
-	"EUR_displayName": "Евро",
-	"GBP_displayName": "Английский фунт стерлингов",
 	"HKD_displayName": "Гонконгский доллар",
-	"JPY_displayName": "Японская иена",
+	"CHF_displayName": "Швейцарский франк",
 	"JPY_symbol": "¥",
+	"CAD_displayName": "Канадский доллар",
+	"CNY_displayName": "Юань Ренминби",
+	"USD_symbol": "$",
+	"AUD_displayName": "Австралийский доллар",
+	"JPY_displayName": "Японская иена",
 	"USD_displayName": "Доллар США",
-	"USD_symbol": "$"
+	"GBP_displayName": "Английский фунт стерлингов",
+	"EUR_displayName": "Евро"
 }
 //end v1.x content
 );

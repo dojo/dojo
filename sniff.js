@@ -16,7 +16,8 @@ define(["./has"], function(has){
 			dav = n.appVersion,
 			tv = parseFloat(dav);
 
-		has.add("air", dua.indexOf("AdobeAIR") >= 0),
+		has.add("air", dua.indexOf("AdobeAIR") >= 0);
+		has.add("win8app", typeof Windows !== "undefined");	// Windows 8 Store App
 		has.add("khtml", dav.indexOf("Konqueror") >= 0 ? tv : undefined);
 		has.add("webkit", parseFloat(dua.split("WebKit/")[1]) || undefined);
 		has.add("chrome", parseFloat(dua.split("Chrome/")[1]) || undefined);

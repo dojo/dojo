@@ -1601,9 +1601,15 @@
 		};
 	}
 
-	if(has("dom")){
-		// the typically unnecessary !! in front of doc.attachEvent is due to an opera bug; see	#15096
-		has.add("ie-event-behavior", !!doc.attachEvent && (typeof opera === "undefined" || opera.toString() != "[object Opera]"));
+	if (has("dom")) {
+		// Test for IE's different way of signaling when scripts finish loading.  Note that according to
+		// http://bugs.dojotoolkit.org/ticket/15096#comment:14, IE9 also needs to follow the
+		// IE specific code path even though it has an addEventListener() method.
+		// Unknown if special path needed on IE10+, which also has a document.attachEvent() method.
+		// Should evaluate to false for Opera and Windows 8 apps, even though they document.attachEvent()
+		//  is defined in both those environments.
+		has.add("ie-event-behavior", doc.attachEvent && typeof Windows === "undefined" &&
+			(typeof opera === "undefined" || opera.toString() != "[object Opera]"));
 	}
 
 	if(has("dom") && (has("dojo-inject-api") || has("dojo-dom-ready-api"))){
@@ -1658,6 +1664,7 @@
 
 				node.type = "text/javascript";
 				node.charset = "utf-8";
+				node.lang = "ja";
 				node.src = url;
 				insertPoint.insertBefore(node, sibling);
 				return node;
@@ -1722,8 +1729,8 @@
 	}
 
 	var def = function(
-		mid,		  //(commonjs.moduleId, optional) list of modules to be loaded before running factory
-		dependencies, //(array of commonjs.moduleId, optional)
+		mid,		  //(commonjs.moduleId, optional)
+		dependencies, //(array of commonjs.moduleId, optional) list of modules to be loaded before running factory
 		factory		  //(any)
 	){
 		///

@@ -6,36 +6,39 @@
 
 	<script src='../../dojo.js' djConfig='isDebug:true, parseOnLoad:false'></script>
 	<script>
-		require(["dojo", "doh", "dojo/html", "dojo/NodeList-html"], function(dojo, doh){
+		require([
+			"doh",
+			"dojo/_base/declare", "dojo/dom-construct", "dojo/html",
+			"dojo",			// TODO: finish conversion of this file to baseless, and remove this dependency
+			"dojo/NodeList-html",
+			"dojo/domReady!"
+		], function(doh, declare, domConstruct, html, dojo){
 
-		/* test goals
-		 * injecting content as string, node, nodelist. 
-		 * injecting exotic nodes/markup e.g. table rows, lists
-		 * injecting whole html documents (extractContent option)
-		 * parsing resulting content
-		 
-		 * cleanup when setting content
-		*/
-		dojo.declare("dojo.html.test.SimpleThing", null, {
-			constructor: function(params, node) {
-				node.setAttribute("test", "ok");
-			}
-		});
-		
-		dojo.declare("dojo.html.test.ParserInstantiateTester", null, {
-			constructor: function(params, node) {
-				node.setAttribute("test", "ok");
-			}
-		});
-		dojo.declare("dojo.html.test.DeclarativeContentSetter", dojo.html._ContentSetter, {
-			postscript: function() {
-				this.set();
-			}
-		});
-		
-		
-		dojo.addOnLoad(function(){
-
+			/* test goals
+			 * injecting content as string, node, nodelist. 
+			 * injecting exotic nodes/markup e.g. table rows, lists
+			 * injecting whole html documents (extractContent option)
+			 * parsing resulting content
+			 
+			 * cleanup when setting content
+			*/
+			declare("SimpleThing", null, {
+				constructor: function(params, node) {
+					node.setAttribute("test", "ok");
+				}
+			});
+			
+			declare("ParserInstantiateTester", null, {
+				constructor: function(params, node) {
+					node.setAttribute("test", "ok");
+				}
+			});
+			declare("DeclarativeContentSetter", html._ContentSetter, {
+				postscript: function() {
+					this.set();
+				}
+			});
+	
 			function ieTrimSpaceBetweenTags(str){
 				return str.replace(/(<[a-z]*[^>]*>)\s*/ig, "$1");
 			}
@@ -52,7 +55,7 @@
 						var msg = "Simple No-params Test";
 						console.log("targetNode has content: ", targetNode.innerHTML);
 						var result = "";
-						dojo.html.set(
+						html.set(
 							targetNode,
 							msg
 						);
@@ -67,7 +70,7 @@
 						targetNode = dojo.byId("pane1");
 						var msg = "setContentWithOnEnd Test";
 						var result = false;
-						dojo.html.set(
+						html.set(
 							targetNode,
 							msg,
 							{
@@ -85,15 +88,15 @@
 					name: 'setContent_with_parsing',
 					runTest: function(t){
 						console.log("basicChecks: " + this.name);
-						var cont = '<div dojoType="dojo.html.test.SimpleThing" jsId="ifrs" data="{}"></div>';
-						dojo.html.set(
+						var cont = '<div dojoType="SimpleThing" jsId="ifrs" data="{}"></div>';
+						html.set(
 							dojo.byId("pane1"),
 							cont,
 							{
 								postscript: function() {
 									this.set();
 
-									doh.t(typeof ifrs != "undefined" && ifrs.declaredClass=="dojo.html.test.SimpleThing");
+									doh.t(typeof ifrs != "undefined" && ifrs.declaredClass=="SimpleThing");
 									doh.t(this.parseResults.length > 0);
 								},
 								parseContent: true
@@ -104,37 +107,36 @@
 				{
 					name: 'emptyElement',
 					runTest: function(t){
+						// Test of deprecated _emptyNode() method
 						console.log("basicChecks: " + this.name);
 						var msg = "setContentWithOnEnd Test";
 						var node = dojo.byId("pane1");
 						node.innerHTML = '<div><span>just</span>some test<br/></div>text';
 						var cNodes = node.childNodes.length;
 
-						dojo.html._emptyNode(dojo.byId("pane1"));
+						html._emptyNode(dojo.byId("pane1"));
 						doh.t(node.childNodes.length == 0 && node.innerHTML == "");
 					}
 				},
-				// the following tests use the _emptyNode function, so ensure it passes before
-				// head-scratching over any failures that follow
 				{
 					name: 'changeContentTRHead',
 					runTest: function(t){
 						console.log("basicChecks: " + this.name);
 						targetNode = dojo.query('table#tableTest > thead > tr')[0];
 
-						var html = "<td><div>This</div>Should<u>Work</u></td>";
-						dojo.html.set(
+						var markup = "<td><div>This</div>Should<u>Work</u></td>";
+						html.set(
 							targetNode,
-							html,
+								markup,
 							{
 								"testname": "basicChecks changeContentTRHead"
 							}
 						);
 						var res = ieTrimSpaceBetweenTags(targetNode.innerHTML.toLowerCase());
-						doh.is(html.toLowerCase(), res);
+						doh.is(markup.toLowerCase(), res);
 					},
 					tearDown: function(){
-						dojo.html._emptyNode(targetNode);
+						domConstruct.empty(targetNode);
 					}
 				},
 				{
@@ -143,19 +145,19 @@
 						console.log("basicChecks: " + this.name);
 						targetNode = dojo.query('table#tableTest > thead')[0];
 
-						var html = "<tr><td><div>This</div>Should<u>Work</u></td></tr>";
-						dojo.html.set(
+						var markup = "<tr><td><div>This</div>Should<u>Work</u></td></tr>";
+						html.set(
 							targetNode,
-							html,
+								markup,
 							{
 								"testname": "basicChecks changeContentTHead"
 							}
 						);
 						var res = ieTrimSpaceBetweenTags(targetNode.innerHTML.toLowerCase());
-						doh.is(html.toLowerCase(), res);
+						doh.is(markup.toLowerCase(), res);
 					},
 					tearDown: function(){
-						dojo.html._emptyNode(targetNode);
+						domConstruct.empty(targetNode);
 					}
 				},
 				{
@@ -163,18 +165,18 @@
 					runTest: function(t){
 						console.log("basicChecks: " + this.name);
 						targetNode = dojo.query('table#tableTest > tbody > tr')[0];
-						var html = "<td><div>This</div>Should<u>Work</u></td>";
-						dojo.html.set(
+						var markup = "<td><div>This</div>Should<u>Work</u></td>";
+						html.set(
 							targetNode,
-							html,
+								markup,
 							{
 								"testname": "basicChecks changeContentTRBody"
 							});
 						var res = ieTrimSpaceBetweenTags(targetNode.innerHTML.toLowerCase());
-						doh.is(html.toLowerCase(), res);
+						doh.is(markup.toLowerCase(), res);
 					},
 					tearDown: function(){
-						dojo.html._emptyNode(targetNode);
+						domConstruct.empty(targetNode);
 					}
 				},
 				{
@@ -182,17 +184,17 @@
 					runTest: function(t){
 						console.log("basicChecks: " + this.name);
 						targetNode = dojo.query('table#tableTest > tbody')[0];
-						var html = "<tr><td><div>This</div>Should<u>Work</u></td></tr>";
-						dojo.html.set(
-							targetNode, html,
+						var markup = "<tr><td><div>This</div>Should<u>Work</u></td></tr>";
+						html.set(
+							targetNode, markup,
 							{
 								"testname": "basicChecks changeContentTBody"
 							});
 						var res = ieTrimSpaceBetweenTags(targetNode.innerHTML.toLowerCase());
-						doh.is(html.toLowerCase(), res);
+						doh.is(markup.toLowerCase(), res);
 					},
 					tearDown: function(){
-						dojo.html._emptyNode(targetNode);
+						domConstruct.empty(targetNode);
 					}
 				},
 				{
@@ -200,17 +202,17 @@
 					runTest: function(t){
 						console.log("basicChecks: " + this.name);
 						targetNode = dojo.query('table#tableTest')[0];
-						var html = "<tbody><tr><td><div>This</div>Should<u>Work</u></td></tr></tbody>";
-						dojo.html.set(
-							targetNode, html,
+						var markup = "<tbody><tr><td><div>This</div>Should<u>Work</u></td></tr></tbody>";
+						html.set(
+							targetNode, markup,
 							{
 								"testname": "basicChecks changeContentTable"
 							});
 						var res = ieTrimSpaceBetweenTags(targetNode.innerHTML.toLowerCase());
-						doh.is(html.toLowerCase(), res);
+						doh.is(markup.toLowerCase(), res);
 					},
 					tearDown: function(){
-						dojo.html._emptyNode(targetNode);
+						domConstruct.empty(targetNode);
 					}
 				},
 				{
@@ -222,7 +224,7 @@
 						dojo.create("li", { innerHTML: "item 2" }, tmpUL);
 						console.log("ul content: ", tmpUL.innerHTML, tmpUL.childNodes.length);
 						targetNode = dojo.byId("pane1");
-						dojo.html.set(
+						html.set(
 							targetNode, tmpUL.childNodes,
 							{
 								"testname": "basicChecks setNodeList"
@@ -231,7 +233,7 @@
 						doh.is(2, res);
 					},
 					tearDown: function(){
-						dojo.html._emptyNode(targetNode);
+						domConstruct.empty(targetNode);
 					}
 				},
 				{
@@ -240,18 +242,18 @@
 						console.log("basicChecks: " + this.name);
 
 						targetNode = dojo.byId("pane1");
-						var html = '<h4>See Jane</h4>'
+						var markup = '<h4>See Jane</h4>'
 						 + 'Look at her <span>Run</span>!';
-						dojo.html.set(
-							targetNode, html,
+						html.set(
+							targetNode, markup,
 							{
 								"testname": "basicChecks setMixedContent"
 							});
 						var res = ieTrimSpaceBetweenTags(targetNode.innerHTML.toLowerCase());
-						doh.is(html.toLowerCase(), res);
+						doh.is(markup.toLowerCase(), res);
 					},
 					tearDown: function(){
-						dojo.html._emptyNode(targetNode);
+						domConstruct.empty(targetNode);
 					}
 				},
 				{
@@ -259,7 +261,7 @@
 					runTest: function(t){
 						console.log("basicChecks: " + this.name);
 						targetNode = dojo.byId("pane1");
-						var html = ''
+						var markup = ''
 						+'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">'
 						+'<html>											'
 						+'	<head>											'
@@ -274,8 +276,8 @@
 						+'	</body>											'
 						+'</html>											';
 
-						dojo.html.set(
-							targetNode, html,
+						html.set(
+							targetNode, markup,
 							{
 								"testname": "basicChecks changeContentTable",
 								extractContent: true
@@ -284,7 +286,7 @@
 						doh.t(dojo.query("*", targetNode).length == 3);
 					},
 					tearDown: function(){
-						dojo.html._emptyNode(targetNode);
+						domConstruct.empty(targetNode);
 					}
 				}
 			]);
@@ -294,7 +296,7 @@
 					runTest: function(t){
 						console.log("nodelistExtension: " + this.name);
 
-						dojo.query(".zork").html("<li dojoType='dojo.html.test.ParserInstantiateTester'>1</li><li dojoType='dojo.html.test.ParserInstantiateTester'>2</li><li dojoType='dojo.html.test.ParserInstantiateTester'>3</li>",
+						dojo.query(".zork").html("<li dojoType='ParserInstantiateTester'>1</li><li dojoType='ParserInstantiateTester'>2</li><li dojoType='ParserInstantiateTester'>3</li>",
 						{
 							parseContent: true,
 							onBegin: function() {
@@ -323,7 +325,7 @@
 
 					},
 					tearDown: function(){
-						// dojo.html._emptyNode(targetNode);
+						// domConstruct.empty(targetNode);
 					}
 				},
 				{
@@ -381,19 +383,19 @@
 								"simple"
 							],
 							[
-								'<div dojoType="dojo.html.test.SimpleThing" jsId="id00">parsed content</div>',
+								'<div dojoType="SimpleThing" jsId="id00">parsed content</div>',
 								{
 									parseContent: true
 								}
 							],
 							[
-								'<div dojoType="dojo.html.test.SimpleThing" jsId="id01">parsed content</div>',
+								'<div dojoType="SimpleThing" jsId="id01">parsed content</div>',
 								{
 									parseContent: true
 								}
 							]
 						];
-						var setter = new dojo.html._ContentSetter({
+						var setter = new html._ContentSetter({
 							node: targetNode
 						});
 						dojo.forEach(args, function(applyArgs) {
@@ -417,7 +419,7 @@
 				{
 					name: 'unspecified',
 					runTest: function(t){
-						var cont = '<div dojoType="dojo.html.test.SimpleThing" jsId="ifrs" data="{}"></div>';
+						var cont = '<div dojoType="SimpleThing" jsId="ifrs" data="{}"></div>';
 
 						var parserCalled, inherited;
 						handle = dojo.connect(dojo.parser, "parse", function(args){
@@ -425,7 +427,7 @@
 							inherited = args.inherited;
 						});
 
-						dojo.html.set(
+						html.set(
 							dojo.byId("pane1"),
 							cont,
 							{
@@ -443,7 +445,7 @@
 				{
 					name: 'specified',
 					runTest: function(t){
-						var cont = '<div dojoType="dojo.html.test.SimpleThing" jsId="ifrs" data="{}"></div>';
+						var cont = '<div dojoType="SimpleThing" jsId="ifrs" data="{}"></div>';
 
 						var parserCalled, inherited;
 						handle = dojo.connect(dojo.parser, "parse", function(args){
@@ -451,7 +453,7 @@
 							inherited = args.inherited;
 						});
 
-						dojo.html.set(
+						html.set(
 							dojo.byId("pane1"),
 							cont,
 							{
@@ -474,7 +476,6 @@
 			]);
 
 			doh.run();
-		});
 		});
 	</script>
 	<style>
@@ -530,10 +531,10 @@
 
 	<div id="markupPane">initial content</div>
 	<div id="markupSetContentOp">
-		<div dojoType="dojo.html.test.DeclarativeContentSetter" node="markupPane" content="markupSetContentOp: new node content"></div>
+		<div dojoType="DeclarativeContentSetter" node="markupPane" content="markupSetContentOp: new node content"></div>
 	</div>
 	<div id="markupSetContentOpX">
-		<div dojoType="dojo.html.test.DeclarativeContentSetter" jsId="markupSetContentOpX_setter" node="markupPane" content="markupSetContentOpX: new node content">
+		<div dojoType="DeclarativeContentSetter" jsId="markupSetContentOpX_setter" node="markupPane" content="markupSetContentOpX: new node content">
 		<script type="dojo/method" event="onBegin">
 			this.content = this.content.toUpperCase();
 			console.log(this.id + ", made my content look like this:" + this.content);
@@ -545,7 +546,7 @@
 		</div>
 	</div>
 	<div id="another">
-		<div id="myTest9" dojoType="dojo.html.test.DeclarativeContentSetter">
+		<div id="myTest9" dojoType="DeclarativeContentSetter">
 			Some content
 			<script type="dojo/method">
 				console.log("parsed me!");

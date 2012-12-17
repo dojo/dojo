@@ -30,7 +30,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 	/*=====
 	 dojo.html._emptyNode = function(node){
 		 // summary:
-		 //		removes all child nodes from the given node
+		 //		Removes all child nodes from the given node.   Deprecated, should use dojo/dom-constuct.empty() directly
+		 //		instead.
 		 // node: DOMNode
 		 //		the parent element
 	 };
@@ -209,7 +210,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				}
 				// this is fast, but if you know its already empty or safe, you could
 				// override empty to skip this step
-				html._emptyNode(this.node);
+				domConstruct.empty(this.node);
 			},
 
 			onBegin: function(){

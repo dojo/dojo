@@ -20,13 +20,7 @@ define("dojo/uacss", ["dojo"], function(dojo) {
 		boxModel = d.boxModel.replace(/-/,''),
 
 		classes = {
-			dj_ie: ie,
-			dj_ie6: maj(ie) == 6,
-			dj_ie7: maj(ie) == 7,
-			dj_ie8: maj(ie) == 8,
-			dj_ie9: maj(ie) == 9,
 			dj_quirks: d.isQuirks,
-			dj_iequirks: ie && d.isQuirks,
 
 			// NOTE: Opera not supported by dijit
 			dj_opera: opera,
@@ -37,9 +31,17 @@ define("dojo/uacss", ["dojo"], function(dojo) {
 			dj_safari: d.isSafari,
 			dj_chrome: d.isChrome,
 
-			dj_gecko: d.isMozilla,
-			dj_ff3: maj(ff) == 3
+			dj_gecko: d.isMozilla
 		}; // no dojo unsupported browsers
+
+	if(ie){
+		classes["dj_ie"] = true;
+		classes["dj_ie" + maj(ie)] = true;
+		classes["dj_iequirks"] = d.isQuirks;
+	}
+	if(ff){
+		classes["dj_ff" + maj(ff)] = true;
+	}
 
 	classes["dj_" + boxModel] = true;
 

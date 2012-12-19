@@ -258,7 +258,7 @@ exports.format = function(/*Date*/ dateObject, /*__FormatOptions?*/ options){
 		if(pattern){str.push(_processPattern(pattern, sauce));}
 	}
 
-	return str.length == 1 ? str[0] : bundle["dateTimeFormat-"+formatLength].replace(/\{(\d+)\}/g,
+	return str.length == 1 ? str[0] : bundle["dateTimeFormat-"+formatLength].replace(/\'/g,'').replace(/\{(\d+)\}/g,
 		function(match, key){ return str[key]; }); // String
 };
 

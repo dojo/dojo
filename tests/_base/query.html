@@ -53,7 +53,8 @@
 
 						"doh.is(2, (dojo.query('#baz,#foo,#t')).length);",
 
-						"doh.is(1, dojo.query('.fooBar').length);",
+						// case sensitivity behavior is different on IE10, and not worth normalizing
+						"dojo.isIE >= 10 || doh.is(1, dojo.query('.fooBar').length);",
 
 						// syntactic equivalents
 						"doh.is(12, (dojo.query('#t > *')).length);",

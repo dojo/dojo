@@ -680,7 +680,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 		}
 	};
 
-	var defaultGetter = (dojo.isIE && (dojo.isIE < 9 || dojo.isQuirks)) ? function(cond){
+	var defaultGetter = (dojo.isIE < 9 || dojo.isIE == 9 && dojo.isQuirks) ? function(cond){
 		var clc = cond.toLowerCase();
 		if(clc == "class"){ cond = "className"; }
 		return function(elem){

@@ -27,18 +27,22 @@ define([], function(){
 			// create the remove handler
 			signal = {
 				remove: function(){
-					var previous = signal.previous;
-					var next = signal.next;
-					if(!next && !previous){
-						delete dispatcher[type];
-					}else{
-						if(previous){
-							previous.next = next;
+					if(this.advice){
+						// remove the advice to signal that this signal has been removed
+						this.advice = null;
+						var previous = signal.previous;
+						var next = signal.next;
+						if(!next && !previous){
+							delete dispatcher[type];
 						}else{
-							dispatcher[type] = next;
-						}
-						if(next){
-							next.previous = previous;
+							if(previous){
+								previous.next = next;
+							}else{
+								dispatcher[type] = next;
+							}
+							if(next){
+								next.previous = previous;
+							}
 						}
 					}
 				},

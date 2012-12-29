@@ -6,7 +6,7 @@ doh.register("tests.Stateful", [
 		var s = new dojo.Stateful({
 			foo: 3
 		});
-		doh.is(s.get("foo"), 3);
+		doh.is(3, s.get("foo"));
 		var watching = s.watch("foo", function(name, oldValue, value){
 			doh.is("foo", name);
 			doh.is(3, oldValue);
@@ -50,7 +50,7 @@ doh.register("tests.Stateful", [
 		watching.remove();
 		s.set("foo", 5);
 		
-		t.t(assertions === 3);
+		t.is(3, assertions, "assertions");
 	},
 	function setHash(t){
 		var s = new dojo.Stateful(), 
@@ -76,7 +76,7 @@ doh.register("tests.Stateful", [
 	function wildcard(t){
 		var s = new dojo.Stateful();
 		s.set({
-			foo:3,
+			foo: 3,
 			bar: 5
 		});
 		var wildcard = 0;
@@ -115,12 +115,12 @@ doh.register("tests.Stateful", [
 		attr1.set("bar", 2);
 		attr1.set("baz", "bar");
 		
-		t.is(attr1.foo, "nothing", "attribute set properly");
-		t.is(attr1.get("foo"), "bar", "getter working properly");
-		t.is(attr1.bar, 2, "attribute set properly");
-		t.is(attr1.get("bar"), 2, "getter working properly");
-		t.is(attr1.get("baz"), "bar", "getter working properly");
-		t.is(attr1.baz, "bar", "properly set properly");
+		t.is("nothing", attr1.foo, "attribute set properly");
+		t.is("bar", attr1.get("foo"), "getter working properly");
+		t.is(2, attr1.bar, "attribute set properly");
+		t.is( 2, attr1.get("bar"), "getter working properly");
+		t.is("bar", attr1.get("baz"), "getter working properly");
+		t.is("bar", attr1.baz, "properly set properly");
 	},
 	function paramHandling(t){
 		var StatefulClass2 = declare([Stateful], {
@@ -142,9 +142,9 @@ doh.register("tests.Stateful", [
 			bar: 4
 		});
 		
-		t.is(typeof attr2.foo, "function", "function attribute set");
-		t.is(attr2.foo(), "baz", "function has proper return value");
-		t.is(attr2.get("bar"), 4, "attribute has proper value");
+		t.is("function", typeof attr2.foo, "function attribute set");
+		t.is("baz", attr2.foo(), "function has proper return value");
+		t.is(4, attr2.get("bar"), "attribute has proper value");
 	},
 	function deferredSetting(t){
 		var td = new doh.Deferred();
@@ -164,9 +164,9 @@ doh.register("tests.Stateful", [
 		
 		var attr3 = new StatefulClass3();
 		attr3.watch("foo", function(name, oldValue, value){
-			t.is(name, "foo", "right attribute");
+			t.is("foo", name, "right attribute");
 			t.f(oldValue, "no value previously");
-			t.is(value, 3, "new value set");
+			t.is(3, value, "new value set");
 			td.callback(true);
 		});
 		attr3.set("foo", 3);
@@ -197,10 +197,10 @@ doh.register("tests.Stateful", [
 			output.push(name, oldValue, value);
 		});
 		attr4.set("foo", 3);
-		t.is(attr4.get("bar"), 3, "value set properly");
+		t.is(3, attr4.get("bar"), "value set properly");
 		attr4.set("bar", 4);
-		t.is(attr4.get("foo"), 4, "value set properly");
-		t.is(output, ["bar", null, 3, "foo", null, 3, "foo", 3, 4, "bar", 3, 4]);
+		t.is(4, attr4.get("foo"), "value set properly");
+		t.is(["bar", null, 3, "foo", null, 3, "foo", 3, 4, "bar", 3, 4], output);
 	},
 	function serialize(t){
 		var StatefulClass5 = declare([Stateful], {
@@ -214,7 +214,7 @@ doh.register("tests.Stateful", [
 			foo: "bar"
 		});
 		
-		t.is(JSON.stringify(obj), '{"foo":"barbaz"}', "object serializes properly");
+		t.is('{"foo":"barbaz"}', JSON.stringify(obj), "object serializes properly");
 	}
 ]);
 

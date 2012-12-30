@@ -1664,7 +1664,6 @@
 
 				node.type = "text/javascript";
 				node.charset = "utf-8";
-				node.lang = "ja";
 				node.src = url;
 				insertPoint.insertBefore(node, sibling);
 				return node;

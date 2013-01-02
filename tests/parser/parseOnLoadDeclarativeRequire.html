@@ -10,14 +10,14 @@
 			require(["doh", "dojo/ready"], function(doh, ready){
 				ready(function(){
 					doh.register("parseOnLoad declarative-require", function parseOnLoad(){
-						doh.is(typeof dr1, "object", "object using MID mapped to return var");
-						doh.is(dr1.params.foo, "bar", "parameters set on instantiation");
-						doh.is(typeof dr2, "object", "object using MID mapped to return var");
-						doh.is(dr2.params.foo, "bar", "parameters set on instantiation");
-						doh.is(typeof dr3, "object", "object using fully required");
-						doh.is(dr3.params.foo, "bar", "parameters set on instantiation");
-						doh.is(dr4.params.foo, 2, "module loaded and executed");
-						doh.is(dr5.method1(1), 3, "declarative script has access to parser scope");
+						doh.is("object", typeof dr1, "dr1 created");
+						doh.is("bar", dr1.params.foo, "dr1 parameters set on instantiation");
+						doh.is("object", typeof dr2, "dr2 created");
+						doh.is("bar", dr2.params.foo, "dr2 parameters set on instantiation");
+						doh.is("object", typeof dr3, "dr3 created");
+						doh.is("bar", dr3.params.foo, "dr3 parameters set on instantiation");
+						doh.is(2, dr4.params.foo, "module loaded and executed");
+						doh.is(3, dr5.method1(1), "declarative script has access to parser scope");
 					});
 
 					doh.run();

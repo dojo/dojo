@@ -337,8 +337,9 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			}
 			if(!evt){return evt;}
 			try{
-				if(lastEvent && evt.type == lastEvent.type  && evt.target == lastEvent.target){
-					// should be same event, reuse event object (so it can be augmented)
+				if(lastEvent && evt.type == lastEvent.type  && evt.srcElement == lastEvent.target){
+					// should be same event, reuse event object (so it can be augmented);
+					// accessing evt.srcElement rather than evt.target since evt.target not set on IE until fixup below
 					evt = lastEvent;
 				}
 			}catch(e){

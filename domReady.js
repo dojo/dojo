@@ -7,6 +7,25 @@ define(['./has'], function(has){
 		readyQ = [],
 		recursiveGuard;
 
+	function domReady(callback){
+		// summary:
+		//		Plugin to delay require()/define() callback from firing until the DOM has finished loading.
+		readyQ.push(callback);
+		if(ready){ processQ(); }
+	}
+	domReady.load = function(id, req, load){
+		domReady(load);
+	};
+
+	// Export queue so that ready() can check if it's empty or not.
+	domReady._Q = readyQ;
+	domReady._onQEmpty = function(){
+		// summary:
+		//		Private method overridden by dojo/ready, to notify when everything in the
+		//		domReady queue has been processed.  Do not use directly.
+		//		Will be removed in 2.0, along with domReady._Q.
+	};
+
 	// For FF <= 3.5
 	if(fixReadyState){ doc.readyState = "loading"; }
 
@@ -25,6 +44,10 @@ define(['./has'], function(has){
 		}
 
 		recursiveGuard = false;
+
+		// Notification for dojo/ready.  Remove for 2.0.
+		// Note that this could add more tasks to the ready queue.
+		domReady._onQEmpty();
 	}
 
 	if(!ready){
@@ -36,8 +59,8 @@ define(['./has'], function(has){
 				// For FF <= 3.5
 				if(fixReadyState){ doc.readyState = "complete"; }
 
-				processQ();
 				ready = 1;
+				processQ();
 			},
 			on = function(node, event){
 				node.addEventListener(event, detectReady, false);
@@ -96,16 +119,6 @@ define(['./has'], function(has){
 			poller();
 		}
 	}
-
-	function domReady(callback){
-		// summary:
-		//		Plugin to delay require()/define() callback from firing until the DOM has finished loading.
-		readyQ.push(callback);
-		if(ready){ processQ(); }
-	}
-	domReady.load = function(id, req, load){
-		domReady(load);
-	};
 
 	return domReady;
 });

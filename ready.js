@@ -36,12 +36,12 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 			}
 			onLoadRecursiveGuard = 1;
 
-			// Run tasks in queue if require() is finished loading modules, athedom is ready, and there are no
+			// Run tasks in queue if require() is finished loading modules, the dom is ready, and there are no
 			// pending tasks registered via domReady().
 			// The last step is necessary so that a user defined dojo.ready() callback is delayed until after the
 			// domReady() calls inside of dojo.   Failure can be seen on dijit/tests/robot/Dialog_ally.html on IE8
 			// because the dijit/focus.js domReady() callback doesn't execute until after the test starts running.
-			while(isDomReady && domReady._Q.length == 0 && require.idle() && loadQ.length){
+			while(isDomReady && (!domReady || domReady._Q.length == 0) && require.idle() && loadQ.length){
 				var f = loadQ.shift();
 				try{
 					f();
@@ -56,12 +56,17 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 	// Check if we should run the next queue operation whenever require() finishes loading modules or domReady
 	// finishes processing it's queue.
 	require.on("idle", onEvent);
-	domReady._onQEmpty = onEvent;
+	if(domReady){
+		domReady._onQEmpty = onEvent;
+	}
 
 	var ready = dojo.ready = dojo.addOnLoad = function(priority, context, callback){
 		// summary:
 		//		Add a function to execute on DOM content loaded and all requested modules have arrived and been evaluated.
 		//		In most cases, the `domReady` plug-in should suffice and this method should not be needed.
+		//
+		//		When called in a non-browser environment, just checks that all requested modules have arrived and been
+		//		evaluated.
 		// priority: Integer?
 		//		The order in which to exec this callback relative to other callbacks, defaults to 1000
 		// context: Object?|Function
@@ -132,7 +137,7 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 		});
 	}
 
-	if(has("host-browser")){
+	if(domReady){
 		domReady(handleDomReady);
 	}else{
 		handleDomReady();

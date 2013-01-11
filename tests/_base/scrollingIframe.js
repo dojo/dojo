@@ -9,7 +9,6 @@ function runScrollingTest(resultNode){
 		dojo = win.dojo;
 	}
 	var isLtr = dojo.hitch(dojo, "withGlobal")(window, "_isBodyLtr", dojo, []);
-	document.getElementById("mode").innerHTML = (isQuirks ? "quirks " : "strict ") + (isLtr ? "ltr" : "rtl");
 	var root = isQuirks? document.body : document.documentElement;
 	var control = document.getElementById("control");
 	var clientWidth = document.getElementById("clientWidth");
@@ -25,7 +24,7 @@ function runScrollingTest(resultNode){
 		abs1.style.top = p.y + "px";
 		setTimeout(function(){
 			cw = dojo.hitch(dojo, "withGlobal")(window, "position", dojo, [clientWidth, false]);
-			if(cw.x == 0 || (cw.x < 0 && root.clientWidth - cw.w == cw.x)){
+			if(cw.x >= 0 || (cw.x < 0 && root.clientWidth - cw.w == cw.x)){
 				if(abs1.offsetLeft == control.offsetLeft){
 					if(abs1.offsetTop == control.offsetTop){
 						resultNode.testResult = "EQUAL";
@@ -36,7 +35,7 @@ function runScrollingTest(resultNode){
 					resultNode.testResult = "abs1.offsetLeft="+abs1.offsetLeft + " control.offsetLeft="+control.offsetLeft;
 				}
 			}else{
-				resultNode.testResult = "100% width element start/size=" + cw.x+'/'+cw.w + " frame client width="+root.clientWidth;
+				resultNode.testResult = "100% width element start/size=" + cw.x+'/'+cw.w + " frame client left/width="+root.clientLeft+'/'+root.clientWidth;
 			}
 			if(resultNode.resultReady){ resultNode.resultReady(); }
 		}, 100);
@@ -45,9 +44,7 @@ function runScrollingTest(resultNode){
 
 function genScrollingTestNodes(hScroll, vScroll, large){
 	document.write(
-		'<DIV id="clientWidth" style="background-color:black;">&nbsp;</DIV>' +
 		'<DIV id="abs1" style="position:absolute;background-color:red;left:0;top:0;width:1em;font-family:monospace;font-size:16px;">&nbsp;</DIV>' +
-		'<CENTER id="mode"></CENTER>' +
 		'<DIV id="control" style="width:2em;height:2em;font-family:monospace;font-size:16px;background-color:cyan;margin:0 1em;border:0;padding:0;">&nbsp;&nbsp;</DIV>' +
 		( large
 			? (
@@ -91,7 +88,8 @@ function genScrollingTestBody(){
 	}else if(!isQuirks && !options.large){
 		html.style.overflowY = scroll;
 	}
-	document.write('<BODY style="position:relative;margin:0;padding:0;border:0;background-color:white;overflow-x:' + (options.horz ? (isQuirks ? scroll : '') : 'hidden') + ';overflow-y:' + (isQuirks ? (options.vert ? scroll : 'hidden') : '') + ';">');
+	document.write('<BODY style="height:100%;margin:0;padding:0;border:0;background-color:white;overflow-x:' + (options.horz ? (isQuirks ? scroll : '') : 'hidden') + ';overflow-y:' + (isQuirks ? (options.vert ? scroll : 'hidden') : '') + ';">');
+	document.write('<DIV id="clientWidth"><CENTER>'+(isQuirks?'quirks ':'strict ')+(options.horz?'horiz ':'')+(options.vert?'vert ':'')+(options.large?'scrolling ':'')+options.dir+'</CENTER></DIV>');
 	genScrollingTestNodes(options.horz, options.vert, options.large);
 	document.write('</BODY>');
 }
@@ -100,5 +98,6 @@ if(!document.body){
 	frameElement.runScrollingTest = runScrollingTest;
 	genScrollingTestBody();
 }else{
+	document.write('<DIV id="clientWidth" style="background-color:transparent;">&nbsp;</DIV>');
 	genScrollingTestNodes();
 }

@@ -91,14 +91,6 @@ if(dojo.isIE){
 //>>excludeEnd("webkitMobile");
 	var byId = d.byId;
 
-	var _destroyContainer = null,
-		_destroyDoc;
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-	d.addOnWindowUnload(function(){
-		_destroyContainer = null; //prevent IE leak
-	});
-	//>>excludeEnd("webkitMobile");
-
 /*=====
 	dojo._destroyElement = function(node){
 		// summary:
@@ -106,6 +98,15 @@ if(dojo.isIE){
 		// 		in 2.0
 	}
 =====*/
+	function _destroy(/*DomNode*/ node, /*DomNode*/ parent){
+		if(node.firstChild){
+			_empty(node);
+		}
+		if(parent){
+			parent.removeChild(node);
+		}
+	}
+
 	dojo._destroyElement = dojo.destroy = function(/*String|DomNode*/node){
 		//	summary:
 		//		Removes a node from its parent, clobbering it and all of its
@@ -127,19 +128,8 @@ if(dojo.isIE){
 		//	|	dojo.query(".someNode").forEach(dojo.destroy);
 
 		node = byId(node);
-		try{
-			var doc = node.ownerDocument;
-			// cannot use _destroyContainer.ownerDocument since this can throw an exception on IE
-			if(!_destroyContainer || _destroyDoc != doc){
-				_destroyContainer = doc.createElement("div");
-				_destroyDoc = doc;
-			}
-			_destroyContainer.appendChild(node.parentNode ? node.parentNode.removeChild(node) : node);
-			// NOTE: see http://trac.dojotoolkit.org/ticket/2931. This may be a bug and not a feature
-			_destroyContainer.innerHTML = "";
-		}catch(e){
-			/* squelch */
-		}
+		if(!node){ return; }
+		_destroy(node, node.parentNode);
 	};
 
 	dojo.isDescendant = function(/*DomNode|String*/node, /*DomNode|String*/ancestor){
@@ -854,7 +844,7 @@ if(dojo.isIE){
 		}
 		// On Opera, offsetLeft includes the parent's border
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		if(d.isOpera){ pe.l += be.l; pe.t += be.t; };
+		if(d.isOpera){ pe.l += be.l; pe.t += be.t; }
 		//>>excludeEnd("webkitMobile");
 		return {
 			l: pe.l,
@@ -1167,7 +1157,7 @@ if(dojo.isIE){
 			ret = node.getBoundingClientRect();
 			ret = { x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top };
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-			if(d.isIE){
+			if(d.isIE < 9){
 				// On IE there's a 2px offset that we need to adjust for, see _getIeDocumentElementOffset()
 				var offset = d._getIeDocumentElementOffset();
 
@@ -1578,18 +1568,25 @@ if(dojo.isIE){
 	}
 	=====*/
 
-	d.empty =
+	var _empty =
 		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		d.isIE ?  function(node){
-			node = byId(node);
-			for(var c; c = node.lastChild;){ // intentional assignment
-				d.destroy(c);
+		d.isIE ? function(/*DomNode*/ node){
+			try{
+				node.innerHTML = ""; // really fast when it works
+			}catch(e){ // IE can generate Unknown Error
+				for(var c; c = node.lastChild;){ // intentional assignment
+					_destroy(c, node); // destroy is better than removeChild so TABLE elements are removed in proper order
+				}
 			}
 		} :
 		//>>excludeEnd("webkitMobile");
-		function(node){
-			byId(node).innerHTML = "";
+		function(/*DomNode*/ node){
+			node.innerHTML = "";
 		};
+
+	d.empty = function(node){
+		_empty(byId(node));
+	};
 
 	/*=====
 	dojo._toDom = function(frag, doc){
@@ -1675,7 +1672,7 @@ if(dojo.isIE){
 
 		// return multiple nodes as a document fragment
 		df = doc.createDocumentFragment();
-		while(fc = master.firstChild){ // intentional assignment
+		while((fc = master.firstChild)){ // intentional assignment
 			df.appendChild(fc);
 		}
 		return df; // DOMNode

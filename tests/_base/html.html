@@ -467,13 +467,15 @@
 							return def;
 						},
 						function attr_reconnect(t){
-							var input = document.createElement("input");
+							var input = document.createElement("input"),
+								input2 = document.createElement("input");
 							var ctr = 0;
 							dojo.attr(input, "type", "text");
 							dojo.attr(input, "onfocus", function(e){ ctr++; });
 							dojo.attr(input, "onfocus", function(e){ ctr++; });
 							dojo.attr(input, "onfocus", function(e){ ctr++; });
 							dojo.body().appendChild(input);
+							dojo.body().appendChild(input2);
 							if(!dojo.isIE || dojo.isIE > 7){
 								// IE6/7 treats type="text" as missing, even if it was
 								// explicitly specified
@@ -482,15 +484,16 @@
 							doh.is(0, ctr);
 							var def = new doh.Deferred();
 							input.focus();
-							setTimeout(function(){
-								doh.is(1, ctr);
-								input.blur();
-								input.focus();
-								setTimeout(function(){
-									doh.is(2, ctr);
-									def.callback(true);
-								}, 10);
-							}, 10);
+							setTimeout(def.getTestErrback(function(){
+								doh.is(1, ctr, "onfocus ctr == 1");
+								input2.focus();
+								setTimeout(def.getTestErrback(function(){
+									input.focus();
+									setTimeout(def.getTestCallback(function(){
+										doh.is(2, ctr, "onfocus ctr == 2");
+									}), 10);
+								}), 10);
+							}), 10);
 							return def;
 						},
 						function attrSpecials(){

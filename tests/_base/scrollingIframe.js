@@ -24,7 +24,7 @@ function runScrollingTest(resultNode){
 		abs1.style.top = p.y + "px";
 		setTimeout(function(){
 			cw = dojo.hitch(dojo, "withGlobal")(window, "position", dojo, [clientWidth, false]);
-			if(cw.x >= 0 || (cw.x < 0 && root.clientWidth - cw.w == cw.x)){
+			if(cw.x >= 0 || (cw.x < 0 && Math.round(root.clientWidth - cw.w - cw.x) == 0)){
 				if(abs1.offsetLeft == control.offsetLeft){
 					if(abs1.offsetTop == control.offsetTop){
 						resultNode.testResult = "EQUAL";

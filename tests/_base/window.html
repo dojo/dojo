@@ -75,7 +75,7 @@ function(dojo, doh, domConstruct, has, win){
 		}
 	];
 
-	if(has("ie") > 7){ // add isIE test for X-UA-Compatible-triggered switch
+	if(has("ie") == 8){ // add isIE test for X-UA-Compatible-triggered switch
 		tests.push(function isIE(t){
 			var origIE = has("ie");
 			win.withGlobal(fStandards.contentWindow, function(){

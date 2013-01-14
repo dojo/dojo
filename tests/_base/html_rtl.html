@@ -8,7 +8,7 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/sniff", "dojo/domReady!"], function(dojo, doh, has){
+			require(["dojo", "doh", "dojo/domReady!"], function(dojo, doh){
 			
 				doh.register("rtl", 
 					[
@@ -18,8 +18,8 @@
 							runTest: function(t){
 								var d = new doh.Deferred();
 								setTimeout(d.getTestErrback(function(){ // allow browsers time to return the scroll point back to the last position
-									scrollTo(100, 50); // scroll a little
-									scrollBy(-50, 0); // net 50px horizontal movement: back-n-forth scrolling helps with different browsers
+									scrollTo(100, 100); // scroll a little
+									scrollBy(-50, -50); // net 50px horizontal movement: back-n-forth scrolling helps with different browsers
 									setTimeout(d.getTestCallback(function(){ // time to scroll
 										var pos = dojo.position('rect100', true);
 										t.is(100, pos.y, "y pos should be 100 after vertical scroll");
@@ -32,10 +32,8 @@
 
 						{
 							name: "eventClientXY_IE",
-							timeout: 1000,
+							timeout: 2000,
 							runTest: function(t){
-								if(!has("ie")){ return; }
-
 								var
 								d = new doh.Deferred(),
 								rect = dojo.byId("rect100"),
@@ -43,36 +41,28 @@
 									d.getTestErrback(function(e){
 										// move the rectangle to the mouse point
 										dojo.disconnect(handler);
-										rect.style.left = e.pageX + "px";
-										rect.style.top = e.pageY + "px";
-										handler = dojo.connect(rect, 'ondblclick', null,
-											d.getTestCallback(function(e){
-												var offsetX = (event||e).offsetX,
-													offsetY = (event||e).offsetY;
-												dojo.disconnect(handler);
-												t.is(0, offsetX);
-												t.is(0, offsetY);
-											}));
-										setTimeout(d.getTestErrback(function(){
-											if(!document.createEvent){
-												rect.fireEvent('ondblclick');
-											}else{
-												var clickEvent = document.createEvent("MouseEvent");
-												clickEvent.initMouseEvent("dblclick", true, true, window, 0,0,0,0,0,0,0,0,0,0,null);
-												rect.dispatchEvent(clickEvent);
-											}
-										}), 100); // time to move rect to cursor position
-									}));
+										var	scroll = dojo.docScroll(),
+											pageX = (e.pageX || e.pageY) ? e.pageX : ((e.clientX || 0) + scroll.x),
+											pageY = (e.pageX || e.pageY) ? e.pageY : ((e.clientY || 0) + scroll.y);
+										rect.style.left = pageX + "px";
+										rect.style.top = pageY + "px";
+										setTimeout(d.getTestCallback(function(){
+											var rectPos = dojo.position(rect, true);
+											t.is(pageX, rectPos.x, "pageX");
+											t.is(pageY, rectPos.y, "pageY");
+										}), 500); // time to move rect to cursor position
+									})
+								);
+								rect.scrollIntoView();
 								setTimeout(d.getTestErrback(function(){
-									if(!document.createEvent){
-										rect.offsetParent.fireEvent('onclick');
+									if(!("dispatchEvent" in rect.offsetParent)){
+										rect.offsetParent.fireEvent('onclick'); // IE < 9
 									}else{
-										var clickEvent = document.createEvent("MouseEvent");
-										clickEvent.initMouseEvent("click", true, true, window, 0,0,0,0,0,0,0,0,0,0,null);
+										var clickEvent = rect.offsetParent.ownerDocument.createEvent("MouseEvent");
+										clickEvent.initMouseEvent("click", false, false, window, 0,0,0,60,60,0,0,0,0,0,null);
 										rect.offsetParent.dispatchEvent(clickEvent);
 									}
-
-								}), 100); // time to finish any pre-scrolling
+								}), 500); // time to finish any pre-scrolling
 								return d;
 							}
 						},
@@ -143,14 +133,14 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body style="min-height:2000px;min-width:2000px;">
 		<h1>testing Core HTML/DOM/CSS/Style utils</h1>
 		<div id="rect100">
 			100px rect, abs, 
 			mouse point is at top-left after the test "eventClientXY"
 		</div>
-		<div id="rect_vert" style="height:1600px;">show vertical scrollbar</div>
-		<div id="rect_horz" style="width:1600px;position:relative;right:-200px;">show horizonal scrollbar</div>
+		<div id="rect_vert" style="padding:100px;visibility:hidden;"><input disabled value="show vertical scrollbar" style="display:block;height:100%;"></div>
+		<div id="rect_horz" style="padding:100px;visibility:hidden;"><input disabled value="show horizonal scrollbar" style="display:block;width:100%;"></div>
 		<br>
 		<script type="text/javascript" src="scrollingIframe.js"></script>
 		<div id="iframeContainer"></div>

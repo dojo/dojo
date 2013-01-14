@@ -138,6 +138,7 @@ doh.register("tests.on",
 				order.push(8);
 			}
 			t.is(order, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+			on(span, "propertychange", function(){}); // make sure it doesn't throw an error
 		},
 /*
  This only works if the test page has the focus, so you can enable if you want to test focus functionality and allow the test page to have focus  

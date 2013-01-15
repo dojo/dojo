@@ -55,7 +55,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 
 	var getDoc = function(){ return dojo.doc; };
 	// NOTE(alex): the spec is idiotic. CSS queries should ALWAYS be case-sensitive, but nooooooo
-	var cssCaseBug = ((dojo.isWebKit||dojo.isMozilla) && ((getDoc().compatMode) == "BackCompat"));
+	var cssCaseBug = (getDoc().compatMode) == "BackCompat";
 
 	////////////////////////////////////////////////////////////////////////
 	// Global utilities

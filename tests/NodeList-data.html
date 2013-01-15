@@ -5,8 +5,8 @@
 		<title>Testing dojo._data / NodeList.data</title>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/NodeList-data", "dojo/domReady!"], function(dojo, doh){
-				var $ = dojo.query;
+			require(["doh", "dojo/dom-construct", "dojo/query", "dojo/NodeList-data", "dojo/domReady!"],
+					function(doh, domConstruct, $, NodeList){
 				var len = function(obj){
 					var x = 0;
 					for(var i in obj){ x++ }
@@ -83,24 +83,24 @@
 					},
 
 					function plaindata(t){
-						dojo.query("#bar li").data("bar", 42)
+						$("#bar li").data("bar", 42)
 							.forEach(function(n){
 								t.is(42, dojo._nodeData(n, "bar"));
 							});
 					},
 
 					function removeData(t){
-						dojo.query("#bar li").removeData("bar");
-						dojo.query("#bar li").forEach(function(n){
+						$("#bar li").removeData("bar");
+						$("#bar li").forEach(function(n){
 							t.t(!dojo._nodeData(n, "bar"));
 						});
 
-						dojo.query("#bar li").data({
+						$("#bar li").data({
 							a:"b", c:"d", e:"f"
 						});
 
-						dojo.query("#bar li").removeData();
-						var data = dojo.query("#bar li").data()[0];
+						$("#bar li").removeData();
+						var data = $("#bar li").data()[0];
 
 						t.f(data.a);
 						t.f(data.c);
@@ -109,16 +109,16 @@
 
 					function multidata(t){
 
-						var ret = dojo.query("#bar li");
+						var ret = $("#bar li");
 						t.is(2, ret.length, "sanity: 2 (0..1) li's in query");
 						ret = ret.data("bar", "baz").data();
 
 						t.is(ret[0].bar, "baz", "item 0 was set");
 						t.is(ret[1].bar, "baz", "item 1 was set");
 
-						dojo.query("li").at(0).removeData();
+						$("li").at(0).removeData();
 
-						var ret2 = dojo.query("#bar li").data();
+						var ret2 = $("#bar li").data();
 						t.is(ret.length, 2, "sanity: 2 (0..1) li's in query");
 						t.f(ret2[0].bar, "at(0) was removed");
 						t.is(ret2[1].bar, "baz", "at(1) was untouched");
@@ -126,19 +126,19 @@
 					},
 
 					function obj(t){
-						var x = dojo.query("#foo").data({ bar: { baz:"bam" }}).data("bar");
+						var x = $("#foo").data({ bar: { baz:"bam" }}).data("bar");
 						t.is("bam", x[0].baz);
 
 					},
 
 					function cleanData(t){
 
-						if(!dojo._nodeDataCache){
+						if(!NodeList._nodeDataCache){
 							doh.debug("We must be testing a built Dojo. No access to dataCache");
 							return;
 						}
 
-						var me = dojo.query("#bar li").data("die", "yes");
+						var me = $("#bar li").data("die", "yes");
 						me.at(0).attr("id", "killme");
 						var data = me.data();
 
@@ -146,13 +146,13 @@
 						t.is("yes", me.data("die")[0]);
 						t.is("yes", me.data("die")[1]);
 
-						var l = len(dojo._nodeDataCache);
+						var l = len(NodeList._nodeDataCache);
 
-						dojo.destroy("killme");
-						dojo._gcNodeData();
+						domConstruct.destroy("killme");
+						NodeList._gcNodeData();
 
-						t.is(l - 1, len(dojo._nodeDataCache), "one item removed because destroyed");
-						me = dojo.query("#bar li");
+						t.is(l - 1, len(NodeList._nodeDataCache), "one item removed because destroyed");
+						me = $("#bar li");
 						t.is(1, me.length);
 
 					},
@@ -162,27 +162,27 @@
 						// but doesn't mean you should use them.
 						var x = { a:1 };
 
-						var one = dojo.query("#lit span").data("literal", x);
+						var one = $("#lit span").data("literal", x);
 						x.a++;
 
-						t.is(2, dojo.query("#lit span").data("literal")[0].a);
-						t.is(2, dojo.query("#lit span").data("literal")[1].a);
+						t.is(2, $("#lit span").data("literal")[0].a);
+						t.is(2, $("#lit span").data("literal")[1].a);
 
 					},
 
 					function clearall(t){
 
-						if(!dojo._nodeDataCache){
+						if(!NodeList._nodeDataCache){
 							doh.debug("We must be testing a built Dojo. No access to dataCache");
 							return;
 						}
 
-						var l = len(dojo._nodeDataCache);
+						var l = len(NodeList._nodeDataCache);
 						t.t(l, "there is stuff in the cache");
 
-						dojo.query("#b > *").forEach(dojo.destroy);
+						$("#b > *").forEach(domConstruct.destroy);
 						dojo._gcNodeData();
-						t.is(0, len(dojo._nodeDataCache), "no longer stuff in the cache");
+						t.is(0, len(NodeList._nodeDataCache), "no longer stuff in the cache");
 					}
 				]);
 				doh.runOnLoad();

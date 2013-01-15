@@ -1,4 +1,5 @@
-define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"], function(dojo, doh, require){
+define(["doh/main", "require", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"],
+	function(doh, require, RpcService, JsonService, JsonpService){
 
 	doh.register("tests.rpc", [
 		{
@@ -21,7 +22,7 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 					]
 				};
 
-				this.svc = new dojo.rpc.JsonService(testSmd);
+				this.svc = new JsonService(testSmd);
 			},
 			runTest: function(){
 				var d = new doh.Deferred();
@@ -59,7 +60,7 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 					methods:[ { name:"contentB" } ]
 				};
 
-				this.svc = new dojo.rpc.JsonService(testSmd);
+				this.svc = new JsonService(testSmd);
 			},
 			runTest: function(){
 				var d = new doh.Deferred();
@@ -90,7 +91,7 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 		{
 			name: "JsonRPC_SMD_Loading_test",
 			setUp: function(){
-				this.svc = new dojo.rpc.JsonService("../../dojo/tests/resources/testClass.smd");
+				this.svc = new JsonService("../../dojo/tests/resources/testClass.smd");
 			},
 			runTest: function(){
 
@@ -106,7 +107,7 @@ define(["../main", "doh/main", "require", "../rpc/RpcService", "../rpc/JsonServi
 			name: "JsonP_test",
 			timeout: 10000,
 			setUp: function(){
-				this.svc = new dojo.rpc.JsonpService(require.toUrl("dojo/tests/resources/yahoo_smd_v1.smd"), {appid: "foo"});
+				this.svc = new JsonpService(require.toUrl("dojo/tests/resources/yahoo_smd_v1.smd"), {appid: "foo"});
 			},
 			runTest: function(){
 				var d = new doh.Deferred();

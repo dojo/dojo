@@ -43,36 +43,36 @@
 
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/fx", "dojo/domReady!"], function(dojo, doh){
-				dojo.byId("foo").style.height = "0px";
-				var w1 = dojo.fx.wipeIn({
+			require(["doh", "dojo/aspect", "dojo/dom", "dojo/_base/fx", "dojo/fx", "dojo/domReady!"], function(doh, aspect, dom, baseFx, fx){
+				dom.byId("foo").style.height = "0px";
+				var w1 = fx.wipeIn({
 					node: "foo",
 					duration: 500
 				});
-				var f1 = dojo.fadeOut({
+				var f1 = baseFx.fadeOut({
 					node: "foo",
 					duration: 500
 				});
-				var a1 = dojo.fx.chain([w1, f1]);
+				var a1 = fx.chain([w1, f1]);
 
-				dojo.byId("foo").style.height = "0px";
-				var w2 = dojo.fx.wipeIn({
+				dom.byId("foo").style.height = "0px";
+				var w2 = fx.wipeIn({
 					node: "foo",
 					duration: 500
 				});
-				var f2 = dojo.fadeIn({
+				var f2 = baseFx.fadeIn({
 					node: "foo",
 					duration: 1000
 				});
-				var a2 = dojo.fx.combine([w2, f2]);
+				var a2 = fx.combine([w2, f2]);
 				
-				dojo.connect(a1, "onEnd", function(){
+				aspect.after(a1, "onEnd", function(){
 					console.log("finish1");
 					a2.play();
-				});
-				dojo.connect(a2, "onEnd", function(){
+				}, true);
+				aspect.after(a2, "onEnd", function(){
 					console.log("finish2");
-				});
+				}, true);
 				a1.play();
 			});
 		</script>

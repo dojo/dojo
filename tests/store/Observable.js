@@ -25,7 +25,7 @@ define([
         data.push({id: i, name: "item " + i, order: i});
     }
 	var bigStore = Observable(new Memory({data:data}));
-	tests.register("dojo.tests.store.Observable",
+	doh.register("dojo.tests.store.Observable",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");

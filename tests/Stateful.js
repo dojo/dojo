@@ -1,9 +1,9 @@
-define(["../main", "doh/main", "../Stateful", "../_base/declare", "../Deferred", "../json"], 
-function(dojo, doh, Stateful, declare, Deferred, JSON){
+define(["doh/main", "../Stateful", "../_base/declare", "../Deferred", "../json"],
+function(doh, Stateful, declare, Deferred, JSON){
 
 doh.register("tests.Stateful", [
 	function getSetWatch(t){
-		var s = new dojo.Stateful({
+		var s = new Stateful({
 			foo: 3
 		});
 		doh.is(3, s.get("foo"));
@@ -20,7 +20,7 @@ doh.register("tests.Stateful", [
 		doh.is(5, s.get("foo"));
 	},
 	function removeWatchHandle(t){
-		var s = new dojo.Stateful({
+		var s = new Stateful({
 				foo: 3
 			}),
 			watched = false;
@@ -34,7 +34,7 @@ doh.register("tests.Stateful", [
 		s.set("foo", 5);
 	},
 	function removeWatchHandleTwice(t){
-		var s = new dojo.Stateful({
+		var s = new Stateful({
 				foo: 3
 			}),
 			assertions = 0;
@@ -53,7 +53,7 @@ doh.register("tests.Stateful", [
 		t.is(3, assertions, "assertions");
 	},
 	function setHash(t){
-		var s = new dojo.Stateful(), 
+		var s = new Stateful(),
 			fooCount = 0, 
 			handle = s.watch('foo', function () { 
 				fooCount++; 
@@ -65,7 +65,7 @@ doh.register("tests.Stateful", [
 		doh.is(3, s.get("foo"));
 		doh.is(5, s.get("bar"));
 		doh.is(1, fooCount);
-		var s2 = new dojo.Stateful();
+		var s2 = new Stateful();
 		s2.set(s);
 		doh.is(3, s2.get("foo"));
 		doh.is(5, s2.get("bar"));
@@ -74,7 +74,7 @@ doh.register("tests.Stateful", [
 		handle.unwatch(); 
 	},
 	function wildcard(t){
-		var s = new dojo.Stateful();
+		var s = new Stateful();
 		s.set({
 			foo: 3,
 			bar: 5

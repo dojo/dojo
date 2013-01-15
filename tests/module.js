@@ -7,6 +7,8 @@ define([
 	"dojo/tests/store",
 	"dojo/tests/data",
 	"dojo/tests/date",
+	"dojo/tests/date/locale",
+	"dojo/tests/date/stamp",
 	"dojo/tests/on",
 	"dojo/tests/mouse",
 	"dojo/tests/json",

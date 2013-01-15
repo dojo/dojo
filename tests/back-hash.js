@@ -1,4 +1,4 @@
-define(["../main", "doh/main", "../back"], function(dojo, doh){
+define(["doh/main", "../back", "dojo/_base/array"], function(doh, back, array){
 	doh.register("tests.back.hash", [
 		function getAndSet(t){
 			var cases = [
@@ -14,12 +14,11 @@ define(["../main", "doh/main", "../back"], function(dojo, doh){
 				"extra&instring",
 				"#leadinghash"
 			];
-			var b = dojo.back;
 			function verify(s){
-				dojo.back.setHash(s);
-				t.is(s, dojo.back.getHash(s));
+				back.setHash(s);
+				t.is(s, back.getHash(s));
 			}
-			dojo.forEach(cases, verify);
+			array.forEach(cases, verify);
 		}
 	]);
 });

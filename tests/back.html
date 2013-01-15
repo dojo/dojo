@@ -12,7 +12,7 @@
 					djConfig="isDebug:true, dojoIframeHistoryUrl: '../resources/iframe_history.html'"></script>
 	<!--script type="text/javascript" src="../back.js"></script-->
 	<script type="text/javascript">
-		require(["dojo/main","dojo/back"], function(dojo, back){	
+		require(["dojo/_base/lang", "dojo/_base/kernel", "dojo/back", "dojo/dom", "dojo/ready"], function(lang, kernel, back, dom, ready){
 		ApplicationState = function(stateData, outputDivId, backForwardOutputDivId, bookmarkValue){
 			this.stateData = stateData;
 			this.outputDivId = outputDivId;
@@ -20,7 +20,7 @@
 			this.changeUrl = bookmarkValue || false;
 		};
 	
-		dojo.extend(ApplicationState, {
+		lang.extend(ApplicationState, {
 			back: function(){
 				this.showBackForwardMessage("BACK for State Data: " + this.stateData);
 				this.showStateData();
@@ -30,10 +30,10 @@
 				this.showStateData();
 			},
 			showStateData: function(){
-				dojo.byId(this.outputDivId).innerHTML += this.stateData + '<br />';
+				dom.byId(this.outputDivId).innerHTML += this.stateData + '<br />';
 			},
 			showBackForwardMessage: function(message){
-				dojo.byId(this.backForwardOutputDivId).innerHTML += message + '<br />';
+				dom.byId(this.backForwardOutputDivId).innerHTML += message + '<br />';
 			}
 		});
 		
@@ -51,16 +51,16 @@
 			link7: "This is data for link 7"
 		};
 
-		dojo.global.goNav = function goNav(id){
+		kernel.global.goNav = function goNav(id){
 			var appState = new ApplicationState(data[id], "output", "dataOutput", id);
 			appState.showStateData();
-			dojo.back.addToHistory(appState);
-		}
+			back.addToHistory(appState);
+		};
 
-		dojo.addOnLoad(function(){
+		ready(function(){
 			var appState = new ApplicationState(data["link0"], "output", "dataOutput");
 			appState.showStateData();
-			dojo.back.setInitialState(appState);
+			back.setInitialState(appState);
 		});
 		});
 	</script>

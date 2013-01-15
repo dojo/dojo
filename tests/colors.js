@@ -1,10 +1,10 @@
-define(["../main", "doh/main", "../colors"], function(dojo, doh){
+define(["doh/main", "../_base/array", "../_base/Color", "../colors"], function(doh, array, Color, colors){
 
 	var verifyColor = function(t, source, expected){
-		source	 = new dojo.Color(source);
-		expected = new dojo.Color(expected);
+		source	 = new Color(source);
+		expected = new Color(expected);
 		t.is(expected.toRgba(), source.toRgba());
-		dojo.forEach(source.toRgba(), function(n){ t.is("number", typeof(n)); });
+		array.forEach(source.toRgba(), function(n){ t.is("number", typeof(n)); });
 	};
 
 	doh.register("tests.colors", [
@@ -34,8 +34,8 @@ define(["../main", "doh/main", "../colors"], function(dojo, doh){
 		function testColorEx23(t){ verifyColor(t, "hsla(30, 100%, 50%, 0.1)", [255, 128, 0, 0.1]); },
 		function testColorEx24(t){ verifyColor(t, "transparent", [0, 0, 0, 0]); },
 		// all tests below test greyscale colors
-		function testColorEx25(t){ verifyColor(t, dojo.colors.makeGrey(5), [5, 5, 5, 1]); },
-		function testColorEx26(t){ verifyColor(t, dojo.colors.makeGrey(2, 0.3), [2, 2, 2, 0.3]); }
+		function testColorEx25(t){ verifyColor(t, colors.makeGrey(5), [5, 5, 5, 1]); },
+		function testColorEx26(t){ verifyColor(t, colors.makeGrey(2, 0.3), [2, 2, 2, 0.3]); }
 	]);
 
 });

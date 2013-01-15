@@ -8,95 +8,96 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug: true, popup: true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/NodeList-fx", "dojo/domReady!"], function(dojo, doh){
+			require(["doh", "dojo/aspect", "dojo/dom-style", "dojo/query", "dojo/NodeList-fx", "dojo/domReady!"],
+					function(doh, aspect, domStyle, query){
 				doh.register("NodeList-fx", 
 					[
 						function fadeOut(){
-							dojo.query("p").style("opacity", 1);
-							var anim = dojo.query("p").fadeOut();
+							query("p").style("opacity", 1);
+							var anim = query("p").fadeOut();
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
-								dojo.query("p").forEach(function(item){ 
-									doh.is(0, dojo.style(item, "opacity"), "opacity for " + item);
+							aspect.after(anim, "onEnd", d.getTestCallback(function(){
+								query("p").forEach(function(item){ 
+									doh.is(0, domStyle.get(item, "opacity"), "opacity for " + item);
 								});
-							}));
+							}), true);
 							anim.play();
 							return d;
 						},
 						function fadeIn(){
-							dojo.query("p").style("opacity", 0);
-							var anim = dojo.query("p").fadeIn();
+							query("p").style("opacity", 0);
+							var anim = query("p").fadeIn();
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
-								dojo.query("p").forEach(function(item){ 
-									doh.is(1, dojo.style(item, "opacity"), "opacity for " + item);
+							aspect.after(anim, "onEnd", d.getTestCallback(function(){
+								query("p").forEach(function(item){ 
+									doh.is(1, domStyle.get(item, "opacity"), "opacity for " + item);
 								});
-							}));
+							}), true);
 							anim.play();
 							return d;
 						},
 						function wipeOut(){
-							dojo.query("p").style("height", "");
-							var anim = dojo.query("p").wipeOut();
+							query("p").style("height", "");
+							var anim = query("p").wipeOut();
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
-								dojo.query("p").forEach(function(item){ 
-									doh.is(0, dojo.style(item, "height"), "height for " + item);
+							aspect.after(anim, "onEnd", d.getTestCallback(function(){
+								query("p").forEach(function(item){ 
+									doh.is(0, domStyle.get(item, "height"), "height for " + item);
 								});
-							}));
+							}), true);
 							anim.play();
 							return d;
 						},
 						function wipeIn(){
-							dojo.query("p").style("height", 0);
-							var anim = dojo.query("p").wipeIn();
+							query("p").style("height", 0);
+							var anim = query("p").wipeIn();
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
-								dojo.query("p").forEach(function(item){ 
+							aspect.after(anim, "onEnd", d.getTestCallback(function(){
+								query("p").forEach(function(item){ 
 									// FIXME: need a more robust test for "have wiped all the way in"
-									doh.isNot(0, dojo.style(item, "height"), "height for " + item);
+									doh.isNot(0, domStyle.get(item, "height"), "height for " + item);
 								});
-							}));
+							}), true);
 							anim.play();
 							return d;
 						},
 						function slideTo(){
-							var anim = dojo.query("p").slideTo({
+							var anim = query("p").slideTo({
 								left: 500
 							});
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
-								dojo.query("p").forEach(function(item){ 
+							aspect.after(anim, "onEnd", d.getTestCallback(function(){
+								query("p").forEach(function(item){ 
 									// FIXME: need a more robust test for "have wiped all the way in"
-									doh.is(500, dojo.style(item, "left"), "left for " + item);
+									doh.is(500, domStyle.get(item, "left"), "left for " + item);
 								});
-							}));
+							}), true);
 							anim.play();
 							return d;
 						},
 						function anim(){
-							dojo.query("p").style("position", "");
-							dojo.query("p").style("left", "");
-							var anim = dojo.query("p").anim({
+							query("p").style("position", "");
+							query("p").style("left", "");
+							var anim = query("p").anim({
 								width: 500
 							});
 							console.debug(anim);
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", d.getTestCallback(function(){
+							aspect.after(anim, "onEnd", d.getTestCallback(function(){
 								/*
-								dojo.query("p").forEach(function(item){ 
+								query("p").forEach(function(item){ 
 									// FIXME: need a more robust test for "have wiped all the way in"
-									doh.is(500, dojo.style(item, "width"), "width for" + item);
+									doh.is(500, domStyle.get(item, "width"), "width for" + item);
 								}));
 								*/
-							}));
+							}), true);
 							return d;
 						},
 						
 						function auto(){
 							
 							var d = new doh.Deferred(), x = 0;
-							var nl = dojo.query("p")
+							var nl = query("p")
 								.fadeOut({ 
 									auto:true,
 									onEnd:function(){
@@ -114,7 +115,7 @@
 								}))
 							;
 							
-							doh.t(nl.length, "dojo.query() found some nodes"); // ensure we actually will do _something_ 
+							doh.t(nl.length, "query() found some nodes"); // ensure we actually will do _something_ 
 							
 							return d;
 						}

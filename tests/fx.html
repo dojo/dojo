@@ -2,39 +2,44 @@
 	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title>Testing dojo.fx</title>
+		<title>Testing fx</title>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/fx", "dojo/fx/easing", "dojo/domReady!"], function(dojo, doh){
+			require([
+				"doh",
+				"dojo/_base/array", "dojo/aspect", "dojo/dom", "dojo/dom-style",
+				"dojo/_base/fx", "dojo/fx", "dojo/fx/easing", "dojo/_base/lang",
+				"dojo/domReady!"
+			], function(doh, array, aspect, dom, domStyle, baseFx, fx, easing, lang){
 				doh.register("t", 
 					[
 						function slideTo(t){
-							var s = dojo.fx.slideTo({
+							var s = fx.slideTo({
 								node: "foo",
 								duration: 500,
 								left: 500,
 								top: 50
 							}).play();
 							var d = new doh.Deferred();
-							dojo.connect(s, "onEnd", function(){
-								doh.is(dojo.style("foo", "left"), 500);
-								doh.is(dojo.style("foo", "top"), 50);
-								with(dojo.byId("foo").style){
+							aspect.after(s, "onEnd", function(){
+								doh.is(domStyle.get("foo", "left"), 500);
+								doh.is(domStyle.get("foo", "top"), 50);
+								with(dom.byId("foo").style){
 									position = left = top = "";
 								}
 								d.callback(true);
-							});
+							}, true);
 							s.play();
 							return d;
 						},
 
 						function wipeOut(t){
-							dojo.byId("foo").style.height = "";
+							dom.byId("foo").style.height = "";
 							var d = new doh.Deferred();
-							var s = dojo.fx.wipeOut({
+							var s = fx.wipeOut({
 								node: "foo",
 								onEnd: function(){
-									doh.t(dojo.style("foo", "height") < 5);
+									doh.t(domStyle.get("foo", "height") < 5);
 									d.callback(true);
 								}
 							}).play();
@@ -44,11 +49,11 @@
 						function wipeIn(t){
 							var d = new doh.Deferred();
 							setTimeout(function(){
-								dojo.fx.wipeIn({
+								fx.wipeIn({
 									node: "foo", 
 									onEnd: function(){
-										console.debug(dojo.style("foo", "height"));
-										doh.t(dojo.style("foo", "height") > 10);
+										console.debug(domStyle.get("foo", "height"));
+										doh.t(domStyle.get("foo", "height") > 10);
 										d.callback(true);
 									}
 								}).play();
@@ -60,18 +65,18 @@
 							name: "chain",
 							timeout: 1500,
 							runTest: function(t){
-								dojo.byId("foo").style.height = "0px";
+								dom.byId("foo").style.height = "0px";
 								var d = new doh.Deferred();
-								var w = dojo.fx.wipeIn({
+								var w = fx.wipeIn({
 									node: "foo",
 									duration: 500
 								});
-								var f = dojo.fadeOut({
+								var f = baseFx.fadeOut({
 									node: "foo",
 									duration: 500
 								});
-								var a = dojo.fx.chain([w,f]);
-								dojo.connect(a, "onEnd", function(){
+								var a = fx.chain([w,f]);
+								aspect.after(a, "onEnd", function(){
 									doh.t((w.status()=="stopped"&&f.status()=="stopped"));
 									d.callback(true);
 								});
@@ -84,21 +89,21 @@
 							name: "combine",
 							timeout: 1500,
 							runTest: function(t){
-								dojo.byId("foo").style.height = "0px";
+								dom.byId("foo").style.height = "0px";
 								var d = new doh.Deferred();
-								var w = dojo.fx.wipeIn({
+								var w = fx.wipeIn({
 									node: "foo",
 									duration: 500
 								});
-								var f = dojo.fadeIn({
+								var f = baseFx.fadeIn({
 									node: "foo",
 									duration: 1000
 								});
-								var a = dojo.fx.combine([w,f]);
-								dojo.connect(a, "onEnd", function(){
+								var a = fx.combine([w,f]);
+								aspect.after(a, "onEnd", function(){
 									doh.t((w.status()=="stopped"&&f.status()=="stopped"));
 									d.callback(true);
-								});
+								}, true);
 								a.play();
 								return d;
 							}
@@ -108,10 +113,10 @@
 							timeout:1500,
 							runTest: function(t){
 								var d = new doh.Deferred();
-								var a = dojo.fadeOut({ node:"foo2", duration:400 });
-								var b = dojo.fadeIn({ node:"foo2", duration:400 });
-								var chain = dojo.fx.combine([a,b]);
-								dojo.connect(chain,"beforeBegin",dojo.hitch(d,"callback",true));
+								var a = baseFx.fadeOut({ node:"foo2", duration:400 });
+								var b = baseFx.fadeIn({ node:"foo2", duration:400 });
+								var chain = fx.combine([a,b]);
+								aspect.after(chain,"beforeBegin",lang.hitch(d,"callback",true), true);
 								chain.play();
 								return d;
 							}
@@ -125,15 +130,15 @@
 								var delay = 100;
 								var _anims = [];
 								var nodes = ["a","b","c","d"];
-								dojo.forEach(nodes,function(n){
-									_anims.push(dojo.fadeOut({ node:n, duration:100, delay: delay += 100 }));
+								array.forEach(nodes,function(n){
+									_anims.push(baseFx.fadeOut({ node:n, duration:100, delay: delay += 100 }));
 								});
-								var a = dojo.fx.combine(_anims);
+								var a = fx.combine(_anims);
 								var timer = (new Date()).getTime();
-								dojo.connect(a,"onEnd",function(){
+								aspect.after(a,"onEnd",function(){
 									console.warn("delayTest running time:", (new Date()).getTime() - timer, "ms, expected:", a.duration, "ms");
 									d.callback(true);
-								});
+								}, true);
 								a.play();
 								return d;	
 							}
@@ -146,15 +151,15 @@
 								var delay = 100;
 								var _anims = [];
 								var nodes = ["a","b","c","d"];
-								dojo.forEach(nodes,function(n){
-									_anims.push(dojo.fadeIn({ node:n, duration:100, delay: delay += 100 }));
+								array.forEach(nodes,function(n){
+									_anims.push(baseFx.fadeIn({ node:n, duration:100, delay: delay += 100 }));
 								});
-								var a = dojo.fx.chain(_anims);
+								var a = fx.chain(_anims);
 								var timer = (new Date()).getTime();
-								dojo.connect(a,"onEnd",function(){
+								aspect.after(a,"onEnd",function(){
 									console.warn("delayTestChain running time:", (new Date()).getTime() - timer, "ms, expected:", a.duration, "ms");
 									d.callback(true);
-								});
+								}, true);
 								a.play();
 								return d;
 							}
@@ -164,10 +169,10 @@
 							timeout:1500,
 							runTest: function(t){
 								var d = new doh.Deferred();
-								var a = dojo.fadeOut({ node:"foo2", duration:400 });
-								var b = dojo.fadeIn({ node:"foo2", duration:400 });
-								var combine = dojo.fx.combine([a,b]);
-								dojo.connect(combine,"onEnd",dojo.hitch(d,"callback",true));
+								var a = baseFx.fadeOut({ node:"foo2", duration:400 });
+								var b = baseFx.fadeIn({ node:"foo2", duration:400 });
+								var combine = fx.combine([a,b]);
+								aspect.after(combine,"onEnd",lang.hitch(d,"callback",true), true);
 								combine.play();
 								return d;
 							}
@@ -178,10 +183,10 @@
 							timeout:1500,
 							runTest: function(t){
 								var d = new doh.Deferred();
-								var a = dojo.fadeOut({ node:"foo2", duration:400 });
-								var b = dojo.fadeIn({ node:"foo2", duration:400 });
-								var combine = dojo.fx.combine([a,b]);
-								dojo.connect(combine,"onPlay",dojo.hitch(d,"callback",true));
+								var a = baseFx.fadeOut({ node:"foo2", duration:400 });
+								var b = baseFx.fadeIn({ node:"foo2", duration:400 });
+								var combine = fx.combine([a,b]);
+								aspect.after(combine,"onPlay",lang.hitch(d,"callback",true), true);
 								combine.play();
 								return d;
 							}
@@ -192,10 +197,10 @@
 							timeout:1500,
 							runTest: function(t){
 								var d = new doh.Deferred();
-								var a = dojo.fadeOut({ node:"foo2", duration:400 });
-								var b = dojo.fadeIn({ node:"foo2", duration:400 });
-								var chain = dojo.fx.chain([a,b]);
-								dojo.connect(chain,"onEnd",dojo.hitch(d,"callback",true));
+								var a = baseFx.fadeOut({ node:"foo2", duration:400 });
+								var b = baseFx.fadeIn({ node:"foo2", duration:400 });
+								var chain = fx.chain([a,b]);
+								aspect.after(chain,"onEnd",lang.hitch(d,"callback",true), true);
 								chain.play();
 								return d;
 							}
@@ -207,10 +212,10 @@
 							runTest: function(t){
 
 								var d = new doh.Deferred();
-								var a = dojo.fadeOut({ node:"foo2", duration:200 });
-								var b = dojo.fadeIn({ node:"foo2", duration:200 });
-								var chain = dojo.fx.chain([a,b]);
-								dojo.connect(chain,"onPlay",dojo.hitch(d,"callback",true));
+								var a = baseFx.fadeOut({ node:"foo2", duration:200 });
+								var b = baseFx.fadeIn({ node:"foo2", duration:200 });
+								var chain = fx.chain([a,b]);
+								aspect.after(chain,"onPlay",lang.hitch(d,"callback",true), true);
 								chain.play();
 								return d;
 							}
@@ -223,8 +228,8 @@
 							runTest: function(t){
 								
 								var d = new doh.Deferred();
-								var a = dojo.fadeOut({ node: "foo2", delay:400 });
-								dojo.connect(a, "onPlay", dojo.hitch(d, "errback", true));
+								var a = baseFx.fadeOut({ node: "foo2", delay:400 });
+								aspect.after(a, "onPlay", lang.hitch(d, "errback", true), true);
 								a.play(); 
 								a.stop();
 								setTimeout(function(){
@@ -240,8 +245,8 @@
 							runTest: function(t){
 							
 								var d = new doh.Deferred();
-								var b = dojo.fadeIn({ node: "foo2" });
-								dojo.connect(b, "onPlay", dojo.hitch(d, "errback", true));
+								var b = baseFx.fadeIn({ node: "foo2" });
+								aspect.after(b, "onPlay", lang.hitch(d, "errback", true), true);
 								b.play(400); 
 								b.stop();
 								setTimeout(function(){
@@ -254,66 +259,66 @@
 						
 						function Toggler(){
 							var d = new doh.Deferred();
-							var t = new dojo.fx.Toggler({
+							var t = new fx.Toggler({
 								node: "foo",
 								hideDuration: 100,
-								hideFunc: dojo.fx.wipeOut,
-								showFunc: dojo.fx.wipeIn 
+								hideFunc: fx.wipeOut,
+								showFunc: fx.wipeIn 
 							});
 							t.hide();
 							setTimeout(function(){
 								var sa = t.show();
-								dojo.connect(sa, "onEnd", dojo.hitch(d, "callback", true));
+								aspect.after(sa, "onEnd", lang.hitch(d, "callback", true), true);
 							}, 50);
 							return d;
 						},
 						
 						function combineChain(t){
 							// test combining two chained() animations
-							var anim1 = dojo.fx.chain([
-								dojo.fadeIn({ node:"chained" }),
-								dojo.fadeOut({ node:"chained" })
+							var anim1 = fx.chain([
+								baseFx.fadeIn({ node:"chained" }),
+								baseFx.fadeOut({ node:"chained" })
 							]);
-							var anim2 = dojo.fx.chain([
-								dojo.fadeOut({ node:"chainedtoo" }),
-								dojo.fadeIn({ node:"chainedtoo" })
+							var anim2 = fx.chain([
+								baseFx.fadeOut({ node:"chainedtoo" }),
+								baseFx.fadeIn({ node:"chainedtoo" })
 							]);
 							
-							var anim = dojo.fx.combine([anim1, anim2]);
+							var anim = fx.combine([anim1, anim2]);
 
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", dojo.hitch(d, "callback", true));
+							aspect.after(anim, "onEnd", lang.hitch(d, "callback", true), true);
 							anim.play();
 						},
 						
 						function chainCombine(t){
 							// test chaining two combined() animations
-							var anim1 = dojo.fx.combine([
-								dojo.fadeIn({ node:"chained" }),
-								dojo.fadeOut({ node:"chainedtoo" })
+							var anim1 = fx.combine([
+								baseFx.fadeIn({ node:"chained" }),
+								baseFx.fadeOut({ node:"chainedtoo" })
 							]);
-							var anim2 = dojo.fx.combine([
-								dojo.fadeOut({ node:"chained" }),
-								dojo.fadeIn({ node:"chainedtoo" })
+							var anim2 = fx.combine([
+								baseFx.fadeOut({ node:"chained" }),
+								baseFx.fadeIn({ node:"chainedtoo" })
 							]);
 							
-							var anim = dojo.fx.chain([anim1, anim2]);
+							var anim = fx.chain([anim1, anim2]);
 
 							var d = new doh.Deferred();
-							dojo.connect(anim, "onEnd", dojo.hitch(d, "callback", true));
+							aspect.after(anim, "onEnd", lang.hitch(d, "callback", true), true);
 							anim.play();
 
 						},
 						
 						function easingNames(t){
-							for(var i in dojo.fx.easing){
-								t.assertTrue(dojo.isFunction(dojo.fx.easing[i]));
+							for(var i in easing){
+								t.assertTrue(lang.isFunction(easing[i]));
 							}
 						},
 						
 						function easingReturns(t){
-							for(var i in dojo.fx.easing){
-								t.assertTrue(!isNaN(dojo.fx.easing[i](0.5)));
+							for(var i in easing){
+								t.assertTrue(!isNaN(easing[i](0.5)));
 							}
 						},
 						
@@ -323,16 +328,16 @@
 							runTest: function(t){
 								var d = new doh.Deferred;
 								
-								var a1 = dojo.fadeOut({ node:"a1" });
-								var a2 = dojo.fadeOut({ node:"a2" });
+								var a1 = baseFx.fadeOut({ node:"a1" });
+								var a2 = baseFx.fadeOut({ node:"a2" });
 								
-								var anim = dojo.fx.chain([a1, a2]);
-								dojo.connect(anim, "onEnd", function(){
+								var anim = fx.chain([a1, a2]);
+								aspect.after(anim, "onEnd", function(){
 									t.is("stopped", a1.status());
 									t.is("stopped", a2.status());
 									t.is("stopped", anim.status());
 									d.callback(true);
-								});
+								}, true);
 								
 								anim.play();
 								
@@ -345,18 +350,18 @@
 							runTest: function(t){
 								var d = new doh.Deferred;
 
-								var a1 = dojo.fadeOut({ node:"a1" });
-								var a2 = dojo.fadeOut({ node:"a2" });
+								var a1 = baseFx.fadeOut({ node:"a1" });
+								var a2 = baseFx.fadeOut({ node:"a2" });
 
-								var anim = dojo.fx.combine([a1, a2]);
-								dojo.connect(anim, "onEnd", function(){
+								var anim = fx.combine([a1, a2]);
+								aspect.after(anim, "onEnd", function(){
 									t.is("stopped", a1.status());
 									t.is("stopped", a2.status());
 									setTimeout(function(){
 										t.is("stopped", anim.status());
 										d.callback(true);	
 									}, 10);
-								});
+								}, true);
 
 								anim.play();
 								return d;
@@ -366,17 +371,17 @@
 							name: "wipeOut onStop",
 							timeout: 1500,
 							runTest: function(t){
-								dojo.byId("foo").style.height = "auto";
-								dojo.byId("foo").style.overflow = "visible";
+								dom.byId("foo").style.height = "auto";
+								dom.byId("foo").style.overflow = "visible";
 								var d = new doh.Deferred();
-								var w = dojo.fx.wipeOut({
+								var w = fx.wipeOut({
 									node: "foo",
 									duration: 1000
 								});
-								dojo.connect(w, "onStop", function(){
-									doh.t(dojo.byId("foo").style.overflow == "visible");
+								aspect.after(w, "onStop", function(){
+									doh.t(dom.byId("foo").style.overflow == "visible");
 									d.callback(true);
-								});
+								}, true);
 								w.play();
 								setTimeout(function(){ w.stop(); }, 100);
 								return d;
@@ -386,17 +391,17 @@
 							name: "wipeIn onStop",
 							timeout: 1500,
 							runTest: function(t){
-								dojo.byId("foo").style.height = "0px";
-								dojo.byId("foo").style.overflow = "visible";
+								dom.byId("foo").style.height = "0px";
+								dom.byId("foo").style.overflow = "visible";
 								var d = new doh.Deferred();
-								var w = dojo.fx.wipeIn({
+								var w = fx.wipeIn({
 									node: "foo",
 									duration: 1000
 								});
-								dojo.connect(w, "onStop", function(){
-									doh.t(dojo.byId("foo").style.overflow == "visible");
+								aspect.after(w, "onStop", function(){
+									doh.t(dom.byId("foo").style.overflow == "visible");
 									d.callback(true);
-								});
+								}, true);
 								w.play();
 								setTimeout(function(){ w.stop(); }, 100);
 								return d;

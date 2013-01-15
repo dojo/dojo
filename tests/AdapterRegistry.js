@@ -1,18 +1,18 @@
-define(["../main", "doh/main", "../AdapterRegistry"], function(dojo, doh){
+define(["doh/main", "../AdapterRegistry"], function(doh, AdapterRegistry){
 
 doh.register("tests.AdapterRegistry",
 	[
 		function ctor(t){
-			var taa = new dojo.AdapterRegistry();
+			var taa = new AdapterRegistry();
 			t.is(0, taa.pairs.length);
 			t.f(taa.returnWrappers);
 
-			var taa = new dojo.AdapterRegistry(true);
+			var taa = new AdapterRegistry(true);
 			t.t(taa.returnWrappers);
 		},
 
 		function register(t){
-			var taa = new dojo.AdapterRegistry();
+			var taa = new AdapterRegistry();
 			taa.register("blah",
 				function(str){ return str == "blah"; },
 				function(){ return "blah"; }
@@ -32,7 +32,7 @@ doh.register("tests.AdapterRegistry",
 		*/
 
 		function noMatch(t){
-			var taa = new dojo.AdapterRegistry();
+			var taa = new AdapterRegistry();
 			var threw = false;
 			try{
 				taa.match("blah");
@@ -43,7 +43,7 @@ doh.register("tests.AdapterRegistry",
 		},
 
 		function returnWrappers(t){
-			var taa = new dojo.AdapterRegistry();
+			var taa = new AdapterRegistry();
 			taa.register("blah",
 				function(str){ return str == "blah"; },
 				function(){ return "blah"; }
@@ -55,7 +55,7 @@ doh.register("tests.AdapterRegistry",
 		},
 
 		function unregister(t){
-			var taa = new dojo.AdapterRegistry();
+			var taa = new AdapterRegistry();
 			taa.register("blah",
 				function(str){ return str == "blah"; },
 				function(){ return "blah"; }

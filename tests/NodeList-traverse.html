@@ -8,7 +8,7 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug: true, popup: true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/NodeList-traverse", "dojo/domReady!"], function(dojo, doh){
+			require(["doh", "dojo/query", "dojo/NodeList-traverse", "dojo/domReady!"], function(doh, query){
 
 				function verify(/*dojo.NodeList*/nl, /*Array*/ids, /*String*/ comment){
 					comment = comment || "verify";
@@ -19,7 +19,7 @@
 					doh.is(ids.length, i, comment + " length");
 				}
 
-				var divs = dojo.query("div.testDiv");
+				var divs = query("div.testDiv");
 
 				doh.register([
 					function children(t){
@@ -28,13 +28,13 @@
 
 					function closest(t){
 						// test simple selector
-						var classy = dojo.query("#classy");
+						var classy = query("#classy");
 						var closestDiv = classy.closest("div");
 						verify(closestDiv, ["third"], "closest('div')");
 						verify(closestDiv.end().closest(".classy"), ["classy"], "closestDiv.end().closest('.classy')");
 
 						// test descendant selector
-						var bang = dojo.query(".bang");
+						var bang = query(".bang");
 						var closestFooBar = bang.closest(".foo > .bar");
 						verify(closestFooBar, ["level4"], ".foo > .bar");
 
@@ -58,49 +58,49 @@
 						verify(closestFooBar, [], ".foo > .bar query relative to level3");
 
 						// complex test of multiple elements in NodeList
-						// Only some of the elements in dojo.query("div") have a ".foo" ancestor,
+						// Only some of the elements in query("div") have a ".foo" ancestor,
 						// and three of those elements have the *same* .foo ancestor, so
 						// closest(".foo") should result in list of just two elements
-						var closestFoo = dojo.query("div").closest(".foo");
+						var closestFoo = query("div").closest(".foo");
 						verify(closestFoo, ["level1", "level3"], ".foo from div");
 					 
 					},
 
 					function parent(t){
-						verify(dojo.query("#classy").parent(), ["third"]);
+						verify(query("#classy").parent(), ["third"]);
 					},
 
 					function parents(t){
-						var classy = dojo.query("#classy");
+						var classy = query("#classy");
 						verify(classy.parents(), ["third", "body", "html"]);
 						verify(classy.parents(".third"), ["third"]);
 						verify(classy.parents("body"), ["body"]);
 					},
 
 					function siblings(t){
-						verify(dojo.query("#classy").siblings(), ["crass", "yeah"]);
+						verify(query("#classy").siblings(), ["crass", "yeah"]);
 					},
 
 					function next(t){
-						verify(dojo.query("#crass").next(), ["classy"]);
+						verify(query("#crass").next(), ["classy"]);
 					},
 
 					function nextAll(t){
-						verify(dojo.query("#crass").nextAll(), ["classy", "yeah"]);
-						verify(dojo.query("#crass").nextAll("#yeah"), ["yeah"]);
+						verify(query("#crass").nextAll(), ["classy", "yeah"]);
+						verify(query("#crass").nextAll("#yeah"), ["yeah"]);
 					},
 
 					function prev(t){
-						verify(dojo.query("#classy").prev(), ["crass"]);
+						verify(query("#classy").prev(), ["crass"]);
 					},
 
 					function prevAll(t){
-						verify(dojo.query("#yeah").prevAll(), ["classy", "crass"]);
-						verify(dojo.query("#yeah").prevAll("#crass"), ["crass"]);
+						verify(query("#yeah").prevAll(), ["classy", "crass"]);
+						verify(query("#yeah").prevAll("#crass"), ["crass"]);
 					},
 
 					function andSelf(t){
-						verify(dojo.query("#yeah").prevAll().andSelf(), ["classy", "crass", "yeah"]);
+						verify(query("#yeah").prevAll().andSelf(), ["classy", "crass", "yeah"]);
 					},
 
 					function first(t){
@@ -123,7 +123,8 @@
 						verify(odd.end(), ["sq100", "t", "third"]);
 					}
 				]);
-				doh.runOnLoad();
+
+				doh.run();
 			});
 		</script>
 	</head>

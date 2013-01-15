@@ -31,7 +31,7 @@ define([
 	// An alias to the private dataCache for NodeList-data. NEVER USE THIS!
 	// This private is only exposed for the benefit of unit testing, and is
 	// removed during the build process.
-	dojo._nodeDataCache = dataCache;
+	NodeList._nodeDataCache = dojo._nodeDataCache = dataCache;
 	//>>excludeEnd("debugging");
 
 	var dodata = dojo._nodeData = function(node, key, value){
@@ -89,7 +89,7 @@ define([
 		}
 	};
 
-	dojo._gcNodeData = function(){
+	NodeList._gcNodeData = dojo._gcNodeData = function(){
 		// summary:
 		//		super expensive: GC all data in the data for nodes that no longer exist in the dom.
 		// description:
@@ -175,7 +175,7 @@ define([
 	 });
 	 =====*/
 
-// TODO: this is the basic implementation of adaptWithCondtionAndWhenMappedConsiderLength, for lack of a better API name
+// TODO: this is the basic implementation of adaptWithConditionAndWhenMappedConsiderLength, for lack of a better API name
 // it conflicts with the the `dojo/NodeList` way: always always return an arrayLike thinger. Consider for 2.0:
 //
 //	NodeList.prototype.data = function(key, value){

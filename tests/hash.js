@@ -1,4 +1,4 @@
-define(["../main", "doh/main", "../hash"], function(dojo, doh){
+define(["doh/main", "../hash", "../topic"], function(doh, hash, topic){
 
 	// utilities for the tests:
 	function setHash(h){
@@ -19,13 +19,13 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash();
 			},
 			runTest: function(t){
-				t.is('', dojo.hash());
+				t.is('', hash());
 			}
 		},
 		{
 			name: "Setting an empty hash",
 			setUp: function(){
-				dojo.hash('');
+				hash('');
 			},
 			runTest: function(t){
 				t.is('', getHash());
@@ -38,7 +38,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('test');
 			},
 			runTest: function(t){
-				t.is('test', dojo.hash());
+				t.is('test', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -47,7 +47,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash to 'test'",
 			setUp: function(){
-				dojo.hash('test');
+				hash('test');
 			},
 			runTest: function(t){
 				t.is('test', getHash());
@@ -63,7 +63,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('test%20with%20spaces');
 			},
 			runTest: function(t){
-				t.is('test%20with%20spaces', dojo.hash());
+				t.is('test%20with%20spaces', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -88,7 +88,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('test%23with%23encoded%23hashes');
 			},
 			runTest: function(t){
-				t.is('test%23with%23encoded%23hashes', dojo.hash());
+				t.is('test%23with%23encoded%23hashes', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -113,7 +113,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('test+with+pluses');
 			},
 			runTest: function(t){
-				t.is('test+with+pluses', dojo.hash());
+				t.is('test+with+pluses', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -122,7 +122,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash to 'test+with+pluses'",
 			setUp: function(){
-				dojo.hash('test+with+pluses');
+				hash('test+with+pluses');
 			},
 			runTest: function(t){
 				t.is('test+with+pluses', getHash());
@@ -138,7 +138,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('%20leadingSpace');
 			},
 			runTest: function(t){
-				t.is('%20leadingSpace', dojo.hash());
+				t.is('%20leadingSpace', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -147,7 +147,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash to '%20leadingSpace'",
 			setUp: function(){
-				dojo.hash('%20leadingSpace');
+				hash('%20leadingSpace');
 			},
 			runTest: function(t){
 				t.is('%20leadingSpace', getHash());
@@ -164,7 +164,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('trailingSpace%20');
 			},
 			runTest: function(t){
-				t.is('trailingSpace%20', dojo.hash());
+				t.is('trailingSpace%20', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -173,7 +173,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash to 'trailingSpace%20'",
 			setUp: function(){
-				dojo.hash('trailingSpace%20');
+				hash('trailingSpace%20');
 			},
 			runTest: function(t){
 				t.is('trailingSpace%20', getHash());
@@ -189,7 +189,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('under_score');
 			},
 			runTest: function(t){
-				t.is('under_score', dojo.hash());
+				t.is('under_score', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -198,7 +198,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash to 'under_score'",
 			setUp: function(){
-				dojo.hash('under_score');
+				hash('under_score');
 			},
 			runTest: function(t){
 				t.is('under_score', getHash());
@@ -213,7 +213,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash("extra&instring");
 			},
 			runTest: function(t){
-				t.is("extra&instring", dojo.hash());
+				t.is("extra&instring", hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -222,7 +222,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash to 'extra&instring'",
 			setUp: function(){
-				dojo.hash('extra&instring');
+				hash('extra&instring');
 			},
 			runTest: function(t){
 				t.is('extra&instring', getHash());
@@ -237,7 +237,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('extra?instring');
 			},
 			runTest: function(t){
-				t.is('extra?instring', dojo.hash());
+				t.is('extra?instring', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -246,7 +246,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash of 'extra?instring'",
 			setUp: function(){
-				dojo.hash('extra?instring');
+				hash('extra?instring');
 			},
 			runTest: function(t){
 				t.is('extra?instring', getHash());
@@ -261,7 +261,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 				setHash('?testa=3&testb=test');
 			},
 			runTest: function(t){
-				t.is('?testa=3&testb=test', dojo.hash());
+				t.is('?testa=3&testb=test', hash());
 			},
 			tearDown: function(){
 				setHash();
@@ -270,7 +270,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash resembling a query parameter ('?testa=3&testb=test')",
 			setUp: function(){
-				dojo.hash('?testa=3&testb=test');
+				hash('?testa=3&testb=test');
 			},
 			runTest: function(t){
 				t.is('?testa=3&testb=test', getHash());
@@ -282,7 +282,7 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 		{
 			name: "Setting the hash to '#leadingHash' should result in the hash being 'leadingHash'",
 			setUp: function(){
-				dojo.hash('#leadingHash');
+				hash('#leadingHash');
 			},
 			runTest: function(t){
 				t.is('leadingHash', getHash());
@@ -300,20 +300,15 @@ define(["../main", "doh/main", "../hash"], function(dojo, doh){
 			},
 			runTest: function(t){
 				var d = new doh.Deferred();
-				this._s = dojo.subscribe('/dojo/hashchange', null, function(value){
-					try {
-						doh.assertEqual('test', value);
-						d.callback(true);
-					} catch(e){
-						d.errback(e);
-					}
-				});
+				this._s = topic.subscribe('/dojo/hashchange', d.getTestCallback(function(value){
+					doh.assertEqual('test', value);
+				}));
 
-				dojo.hash('test');
+				hash('test');
 				return d;
 			},
 			tearDown: function(){
-				dojo.unsubscribe(this._s);
+				this._s.remove();
 				setHash();
 			}
 		}

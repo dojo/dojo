@@ -6,7 +6,7 @@
 		</style>
 		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true"></script>
 		<script type="text/javascript">
-			require(["dojo", "doh", "dojo/cookie", "dojo/domReady!"], function(dojo, doh){
+			require(["doh", "dojo/cookie", "dojo/domReady!"], function(doh, cookie){
 				doh.register([
 					{
 						name: "basicSet",
@@ -19,7 +19,7 @@
 							// set the new one
 							var n = "dojo_test";
 							var v = "test value";
-							dojo.cookie(n, v);
+							cookie(n, v);
 							t.t(document.cookie.indexOf(n+"=") >= 0);
 							var start = document.cookie.indexOf(n+"=") + n.length + 1;
 							var end = document.cookie.indexOf(";", start);
@@ -35,37 +35,37 @@
 							var v = "foofoo";
 							document.cookie = n + "=" + v;
 							
-							t.is(v, dojo.cookie(n));
+							t.is(v, cookie(n));
 						}
 					},
 					{
 						name: "daysAsNumber",
 						runTest: function(t){
 							// set a cookie with a numerical expires
-							dojo.cookie("dojo_num", "foo", { expires: 10 });
-							t.is("foo", dojo.cookie("dojo_num"));
+							cookie("dojo_num", "foo", { expires: 10 });
+							t.is("foo", cookie("dojo_num"));
 							
 							// remove the cookie by setting it with a negative
 							// numerical expires. value doesn't really matter here
-							dojo.cookie("dojo_num", "-deleted-", { expires: -10 });
-							t.is(null, dojo.cookie("dojo_num"));
+							cookie("dojo_num", "-deleted-", { expires: -10 });
+							t.is(null, cookie("dojo_num"));
 						}
 					},
 					{
 						name: "nameSuffix",
 						runTest: function(t){
 							// set two cookies with the same suffix
-							dojo.cookie("user", "123", { expires: 10 });
-							dojo.cookie("xuser", "abc", { expires: 10 });
-							t.is("123", dojo.cookie("user"));
-							t.is("abc", dojo.cookie("xuser"));
+							cookie("user", "123", { expires: 10 });
+							cookie("xuser", "abc", { expires: 10 });
+							t.is("123", cookie("user"));
+							t.is("abc", cookie("xuser"));
 
 							// remove the cookie by setting it with a negative
 							// numerical expires. value doesn't really matter here
-							dojo.cookie("user", "-deleted-", { expires: -10 });
-							t.is(null, dojo.cookie("user"));
-							dojo.cookie("xuser", "-deleted-", { expires: -10 });
-							t.is(null, dojo.cookie("xuser"));
+							cookie("user", "-deleted-", { expires: -10 });
+							t.is(null, cookie("user"));
+							cookie("xuser", "-deleted-", { expires: -10 });
+							t.is(null, cookie("xuser"));
 						}
 					}
 				]);

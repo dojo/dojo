@@ -18,7 +18,7 @@
 
 		<script type="text/javascript">
 		// the following should load the current locale + 'en-us-hawaii' and 'en-us-new_york-brooklyn
-		require(["dojo", "doh", "dojo/has", "dojo/i18n", "dojo/i18n!dojo/tests/nls/salutations"], function(dojo, doh, has, i18n){
+		require(["doh", "dojo/has", "dojo/i18n", "dojo/i18n!dojo/tests/nls/salutations"], function(doh, has, i18n){
 			if(dohArgs.async){
 				doh.register(function extraLocalesAsync(t){
 					// the following should load synchronously...at least with the dojo loader
@@ -36,10 +36,10 @@
 				});
 			}else{
 				doh.register(function extraLocalesSync(t){
-					t.is(dojo.i18n.getLocalization("dojo/tests", "salutations", "en-us-hawaii").hello, "Aloha");
-					t.is(dojo.i18n.getLocalization("dojo/tests", "salutations", "en-us-new_york-brooklyn").hello, "Yo");
+					t.is(i18n.getLocalization("dojo/tests", "salutations", "en-us-hawaii").hello, "Aloha");
+					t.is(i18n.getLocalization("dojo/tests", "salutations", "en-us-new_york-brooklyn").hello, "Yo");
 					try{
-						t.is(dojo.i18n.getLocalization("dojo/tests", "salutations", "en-au").hello, "G'day");
+						t.is(i18n.getLocalization("dojo/tests", "salutations", "en-au").hello, "G'day");
 					}catch(e){
 						t.f("synchronous get should work if not xdomain");
 					}

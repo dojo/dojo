@@ -1,9 +1,9 @@
-define(["../main", "doh/main", "../has", "../i18n", "require"], function(dojo, doh, has, i18n, require){
+define(["doh/main", "../has", "../i18n", "require"], function(doh, has, i18n, require){
 	var
 		getAsyncTest = function(value, locale){
 			return function(){
 				var def = new doh.Deferred();
-				require([dojo.getL10nName("dojo/tests", "salutations", locale)], function(bundle){
+				require([i18n.getL10nName("dojo/tests", "salutations", locale)], function(bundle){
 					doh.assertEqual(value, bundle.hello);
 					def.callback(true);
 				});
@@ -13,7 +13,7 @@ define(["../main", "doh/main", "../has", "../i18n", "require"], function(dojo, d
 
 		getSyncTest = function(value, locale){
 			return function(){
-				doh.assertEqual(value, dojo.i18n.getLocalization("dojo/tests", "salutations", locale).hello);
+				doh.assertEqual(value, i18n.getLocalization("dojo/tests", "salutations", locale).hello);
 			};
 		},
 

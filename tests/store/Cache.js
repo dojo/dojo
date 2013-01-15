@@ -1,8 +1,6 @@
-dojo.provide("dojo.tests.store.Cache");
-dojo.require("dojo.store.Memory");
-dojo.require("dojo.store.Cache");
-(function(){
-	var masterStore = new dojo.store.Memory({
+define(["doh", "dojo/store/Memory", "dojo/store/Cache"], function(doh, Memory, Cache){
+
+	var masterStore = new Memory({
 		data: [
 			{id: 1, name: "one", prime: false},
 			{id: 2, name: "two", even: true, prime: true},
@@ -11,10 +9,10 @@ dojo.require("dojo.store.Cache");
 			{id: 5, name: "five", prime: true}
 		]
 	});
-	var cachingStore = new dojo.store.Memory();
+	var cachingStore = new Memory();
 	var options = {};
-	var store = dojo.store.Cache(masterStore, cachingStore, options);
-	tests.register("dojo.tests.store.Cache",
+	var store = Cache(masterStore, cachingStore, options);
+	doh.register("dojo.tests.store.Cache",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");
@@ -93,4 +91,4 @@ dojo.require("dojo.store.Cache");
 			}
 		]
 	);
-})();
+});

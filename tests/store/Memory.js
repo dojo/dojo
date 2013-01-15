@@ -1,7 +1,5 @@
-dojo.provide("dojo.tests.store.Memory");
-dojo.require("dojo.store.Memory");
-(function(){
-	var store = new dojo.store.Memory({
+define(["doh", "dojo/store/Memory"], function(doh, Memory){
+	var store = new Memory({
 		data: [
 			{id: 1, name: "one", prime: false, mappedTo: "E"}, 
 			{id: 2, name: "two", even: true, prime: true, mappedTo: "D"}, 
@@ -10,7 +8,7 @@ dojo.require("dojo.store.Memory");
 			{id: 5, name: "five", prime: true, mappedTo: "A"} 		
 		]
 	});
-	tests.register("dojo.tests.store.Memory",
+	doh.register("dojo.tests.store.Memory",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");
@@ -94,7 +92,7 @@ dojo.require("dojo.store.Memory");
 				t.is(store.query({perfect: true}).length, 1);
 			},
 			function testIFRSStyleData(t){
-				var anotherStore = new dojo.store.Memory({
+				var anotherStore = new Memory({
 					data: {
 						items:[
 							{name: "one", prime: false},

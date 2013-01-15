@@ -1,57 +1,56 @@
-dojo.provide("dojo.tests._base.array");
+define(["doh", "dojo/_base/array", "dojo/_base/lang"], function(doh, array, lang){
 
-tests.register("tests._base.array",
-	[
+	doh.register("tests._base.array", [
 		function testIndexOf(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];
 
-			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56));
-			t.assertEqual(1, dojo.indexOf([Number, String, Date], String));
-			t.assertEqual(1, dojo.indexOf(foo, foo[1]));
-			t.assertEqual(2, dojo.indexOf(foo, foo[2]));
-			t.assertEqual(1, dojo.indexOf(bar, bar[1]));
-			t.assertEqual(2, dojo.indexOf(bar, bar[2]));
-			t.assertEqual(-1, dojo.indexOf({a:1}, "a"));
+			t.assertEqual(1, array.indexOf([45, 56, 85], 56));
+			t.assertEqual(1, array.indexOf([Number, String, Date], String));
+			t.assertEqual(1, array.indexOf(foo, foo[1]));
+			t.assertEqual(2, array.indexOf(foo, foo[2]));
+			t.assertEqual(1, array.indexOf(bar, bar[1]));
+			t.assertEqual(2, array.indexOf(bar, bar[2]));
+			t.assertEqual(-1, array.indexOf({a:1}, "a"));
 
 			foo.push(bar);
-			t.assertEqual(3, dojo.indexOf(foo, bar));
+			t.assertEqual(3, array.indexOf(foo, bar));
 		},
 
 		function testIndexOfFromIndex(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];
 
-			t.assertEqual(-1, dojo.indexOf([45, 56, 85], 56, 2));
-			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, 1));
-			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56, -3));
+			t.assertEqual(-1, array.indexOf([45, 56, 85], 56, 2));
+			t.assertEqual(1, array.indexOf([45, 56, 85], 56, 1));
+			t.assertEqual(1, array.indexOf([45, 56, 85], 56, -3));
 			// Make sure going out of bounds doesn't throw us in an infinite loop
-			t.assertEqual(-1, dojo.indexOf([45, 56, 85], 56, 3));
+			t.assertEqual(-1, array.indexOf([45, 56, 85], 56, 3));
 		},
 
 		function testLastIndexOf(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "aaa", "ccc"];
 
-			t.assertEqual(1, dojo.indexOf([45, 56, 85], 56));
-			t.assertEqual(1, dojo.indexOf([Number, String, Date], String));
-			t.assertEqual(1, dojo.lastIndexOf(foo, foo[1]));
-			t.assertEqual(2, dojo.lastIndexOf(foo, foo[2]));
-			t.assertEqual(1, dojo.lastIndexOf(bar, bar[1]));
-			t.assertEqual(2, dojo.lastIndexOf(bar, bar[2]));
-			t.assertEqual(2, dojo.lastIndexOf(bar, bar[0]));
+			t.assertEqual(1, array.indexOf([45, 56, 85], 56));
+			t.assertEqual(1, array.indexOf([Number, String, Date], String));
+			t.assertEqual(1, array.lastIndexOf(foo, foo[1]));
+			t.assertEqual(2, array.lastIndexOf(foo, foo[2]));
+			t.assertEqual(1, array.lastIndexOf(bar, bar[1]));
+			t.assertEqual(2, array.lastIndexOf(bar, bar[2]));
+			t.assertEqual(2, array.lastIndexOf(bar, bar[0]));
 		},
 
 		function testLastIndexOfFromIndex(t){
-			t.assertEqual(1, dojo.lastIndexOf([45, 56, 85], 56, 1));
-			t.assertEqual(-1, dojo.lastIndexOf([45, 56, 85], 85, 1));
-			t.assertEqual(-1, dojo.lastIndexOf([45, 56, 85], 85, -2));
-			t.assertEqual(0, dojo.lastIndexOf([45, 56, 45], 45, 0));
+			t.assertEqual(1, array.lastIndexOf([45, 56, 85], 56, 1));
+			t.assertEqual(-1, array.lastIndexOf([45, 56, 85], 85, 1));
+			t.assertEqual(-1, array.lastIndexOf([45, 56, 85], 85, -2));
+			t.assertEqual(0, array.lastIndexOf([45, 56, 45], 45, 0));
 		},
 
 		function testForEach(t){
 			var foo = [128, "bbb", 512];
-			dojo.forEach(foo, function(elt, idx, array){
+			array.forEach(foo, function(elt, idx, array){
 				switch(idx){
 					case 0: t.assertEqual(128, elt); break;
 					case 1: t.assertEqual("bbb", elt); break;
@@ -62,7 +61,7 @@ tests.register("tests._base.array",
 
 			var noException = true;
 			try{
-				dojo.forEach(undefined, function(){});
+				array.forEach(undefined, function(){});
 			}catch(e){
 				noException = false;
 			}
@@ -71,7 +70,7 @@ tests.register("tests._base.array",
 
 		function testForEach_str(t){
 			var bar = 'abc';
-			dojo.forEach(bar, function(elt, idx, array){
+			array.forEach(bar, function(elt, idx, array){
 				switch(idx){
 					case 0: t.assertEqual("a", elt); break;
 					case 1: t.assertEqual("b", elt); break;
@@ -90,15 +89,15 @@ tests.register("tests._base.array",
 			var obj = {
 				_res: ""
 			};
-			dojo.forEach(foo, "this._res += item", obj);
+			array.forEach(foo, "this._res += item", obj);
 			t.assertEqual(obj._res, "128bbb512");
 			// Test that the variable "index" contains each index.
 			obj._res = [];
-			dojo.forEach(foo, "this._res.push(index)", obj);
+			array.forEach(foo, "this._res.push(index)", obj);
 			t.assertEqual(obj._res, [0,1,2]);
 			// Test that the variable "array" always contains the entire array.
 			obj._res = [];
-			dojo.forEach(foo, "this._res.push(array)", obj);
+			array.forEach(foo, "this._res.push(array)", obj);
 			t.assertEqual(obj._res, [
 				[128, "bbb", 512],
 				[128, "bbb", 512],
@@ -107,7 +106,7 @@ tests.register("tests._base.array",
 			// Catch undefined variable usage (I used to use "i" :-)).
 			var caughtException = false;
 			try{
-				dojo.forEach(foo, "this._res += arr[i];", obj);
+				array.forEach(foo, "this._res += arr[i];", obj);
 			}catch(e){
 				caughtException = true;
 			}
@@ -119,9 +118,9 @@ tests.register("tests._base.array",
 			var foo = [128, "bbb", 512];
 
 			t.assertTrue(
-				dojo.every(foo, function(elt, idx, array){
+				array.every(foo, function(elt, idx, array){
 					t.assertEqual(Array, array.constructor);
-					t.assertTrue(dojo.isArray(array));
+					t.assertTrue(lang.isArray(array));
 					t.assertTrue(typeof idx == "number");
 					if(idx == 1){ t.assertEqual("bbb" , elt); }
 					return true;
@@ -129,7 +128,7 @@ tests.register("tests._base.array",
 			);
 
 			t.assertTrue(
-				dojo.every(foo, function(elt, idx, array){
+				array.every(foo, function(elt, idx, array){
 					switch(idx){
 						case 0: t.assertEqual(128, elt); return true;
 						case 1: t.assertEqual("bbb", elt); return true;
@@ -140,7 +139,7 @@ tests.register("tests._base.array",
 			);
 
 			t.assertFalse(
-				dojo.every(foo, function(elt, idx, array){
+				array.every(foo, function(elt, idx, array){
 					switch(idx){
 						case 0: t.assertEqual(128, elt); return true;
 						case 1: t.assertEqual("bbb", elt); return true;
@@ -155,7 +154,7 @@ tests.register("tests._base.array",
 		function testEvery_str(t){
 			var bar = 'abc';
 			t.assertTrue(
-				dojo.every(bar, function(elt, idx, array){
+				array.every(bar, function(elt, idx, array){
 					switch(idx){
 						case 0: t.assertEqual("a", elt); return true;
 						case 1: t.assertEqual("b", elt); return true;
@@ -166,7 +165,7 @@ tests.register("tests._base.array",
 			);
 
 			t.assertFalse(
-				dojo.every(bar, function(elt, idx, array){
+				array.every(bar, function(elt, idx, array){
 					switch(idx){
 						case 0: t.assertEqual("a", elt); return true;
 						case 1: t.assertEqual("b", elt); return true;
@@ -181,29 +180,29 @@ tests.register("tests._base.array",
 		function testSome(t){
 			var foo = [128, "bbb", 512];
 			t.assertTrue(
-				dojo.some(foo, function(elt, idx, array){
+				array.some(foo, function(elt, idx, array){
 					t.assertEqual(3, array.length);
 					return true;
 				})
 			);
 
 			t.assertTrue(
-				dojo.some(foo, function(elt, idx, array){
+				array.some(foo, function(elt, idx, array){
 					return idx < 1;
 
 				})
 			);
 
 			t.assertFalse(
-				dojo.some(foo, function(elt, idx, array){
+				array.some(foo, function(elt, idx, array){
 					return false;
 				})
 			);
 
 			t.assertTrue(
-				dojo.some(foo, function(elt, idx, array){
+				array.some(foo, function(elt, idx, array){
 					t.assertEqual(Array, array.constructor);
-					t.assertTrue(dojo.isArray(array));
+					t.assertTrue(lang.isArray(array));
 					t.assertTrue(typeof idx == "number");
 					if(idx == 1){ t.assertEqual("bbb" , elt); }
 					return true;
@@ -214,7 +213,7 @@ tests.register("tests._base.array",
 		function testSome_str(t){
 			var bar = 'abc';
 			t.assertTrue(
-				dojo.some(bar, function(elt, idx, array){
+				array.some(bar, function(elt, idx, array){
 					t.assertEqual(3, array.length);
 					switch(idx){
 						case 0: t.assertEqual("a", elt); return true;
@@ -226,7 +225,7 @@ tests.register("tests._base.array",
 			);
 
 			t.assertTrue(
-				dojo.some(bar, function(elt, idx, array){
+				array.some(bar, function(elt, idx, array){
 					switch(idx){
 						case 0: t.assertEqual("a", elt); return true;
 						case 1: t.assertEqual("b", elt); return true;
@@ -237,7 +236,7 @@ tests.register("tests._base.array",
 			);
 
 			t.assertFalse(
-				dojo.some(bar, function(elt, idx, array){
+				array.some(bar, function(elt, idx, array){
 					return false;
 				})
 			);
@@ -248,25 +247,25 @@ tests.register("tests._base.array",
 			var foo = ["foo", "bar", 10];
 
 			t.assertEqual(["foo"],
-				dojo.filter(foo, function(elt, idx, array){
+				array.filter(foo, function(elt, idx, array){
 					return idx < 1;
 				})
 			);
 
 			t.assertEqual(["foo"],
-				dojo.filter(foo, function(elt, idx, array){
+				array.filter(foo, function(elt, idx, array){
 					return elt == "foo";
 				})
 			);
 
 			t.assertEqual([],
-				dojo.filter(foo, function(elt, idx, array){
+				array.filter(foo, function(elt, idx, array){
 					return false;
 				})
 			);
 
 			t.assertEqual([10],
-				dojo.filter(foo, function(elt, idx, array){
+				array.filter(foo, function(elt, idx, array){
 					return typeof elt == "number";
 				})
 			);
@@ -275,13 +274,13 @@ tests.register("tests._base.array",
 		function testFilter_str(t){
 			var foo = "thinger blah blah blah";
 			t.assertEqual(["t", "h", "i"],
-				dojo.filter(foo, function(elt, idx, array){
+				array.filter(foo, function(elt, idx, array){
 					return idx < 3;
 				})
 			);
 
 			t.assertEqual([],
-				dojo.filter(foo, function(elt, idx, array){
+				array.filter(foo, function(elt, idx, array){
 					return false;
 				})
 			);
@@ -289,15 +288,15 @@ tests.register("tests._base.array",
 
 		function testMap(t){
 			t.assertEqual([],
-				dojo.map([], function(){ return true; })
+				array.map([], function(){ return true; })
 			);
 
 			t.assertEqual([1, 2, 3],
-				dojo.map(["cat", "dog", "mouse"], function(elt, idx, array){
+				array.map(["cat", "dog", "mouse"], function(elt, idx, array){
 					return idx+1;
 				})
 			);
 		}
-	]
-);
+	]);
+});
 

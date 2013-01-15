@@ -1,6 +1,4 @@
-dojo.provide("dojo.tests.aspect");
-
-var aspect = dojo.require("dojo.aspect");
+define(["dojo/aspect"], function(aspect){
 
 doh.register("tests.aspect",
 	[
@@ -180,3 +178,5 @@ doh.register("tests.aspect",
 		}
 	]
 );
+
+});

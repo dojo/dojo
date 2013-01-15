@@ -545,6 +545,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		dynamic:true,
 		normalize:normalize,
 		load:load,
-		cache:cache
+		cache:cache,
+		getL10nName: getL10nName
 	});
 });

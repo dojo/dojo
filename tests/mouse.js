@@ -1,9 +1,6 @@
-dojo.provide("dojo.tests.mouse");
+define(["doh", "dojo/mouse", "dojo/on"], function(doh, on, mouse){
 
-var on = dojo.require("dojo.on");
-var mouse = dojo.require("dojo.mouse");
-doh.register("tests.on",
-	[
+	doh.register("tests.on", [
 		function mouseenter(t){
 			var order = [];
 			var div = document.body.appendChild(document.createElement("div"));
@@ -16,7 +13,7 @@ doh.register("tests.on",
 			div4 = div2.appendChild(document.createElement("div"));
 			on(div, on.selector(".item", mouse.enter), function(){
 				order.push(this.id);
-			})
+			});
 			on.emit(div, "mouseover", {
 				bubbles: true,
 				relatedTarget: document.body
@@ -52,5 +49,5 @@ doh.register("tests.on",
 			t.is(order, [3, 2, 2]);
 			
 		}
-	]
-);
+	]);
+});

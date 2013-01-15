@@ -1,14 +1,16 @@
-dojo.provide("dojo.tests.store.Observable");
-dojo.require("dojo.store.Memory");
-dojo.require("dojo.store.Observable");
-(function(){
-	var MyStore = dojo.declare([dojo.store.Memory], {
+define([
+	"doh",
+	"dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
+	"dojo/store/Memory", "dojo/store/Observable"
+], function(doh, array, declare, lang, Memory, Observable){
+
+	var MyStore = declare([Memory], {
 		get: function(){
 			// need to make sure that this.inherited still works with Observable
 			return this.inherited(arguments);
 		}
 	});
-	var memoryStore, store = new dojo.store.Observable(memoryStore = new MyStore({ /*dojo.store.Memory*/
+	var memoryStore, store = new Observable(memoryStore = new MyStore({ /*dojo.store.Memory*/
 		data: [
 			{id: 0, name: "zero", even: true, prime: false},
 			{id: 1, name: "one", prime: false},
@@ -22,7 +24,7 @@ dojo.require("dojo.store.Observable");
     for(i = 1; i <= 100; i++){
         data.push({id: i, name: "item " + i, order: i});
     }
-	var bigStore = dojo.store.Observable(new dojo.store.Memory({data:data}));
+	var bigStore = Observable(new Memory({data:data}));
 	tests.register("dojo.tests.store.Observable",
 		[
 			function testGet(t){
@@ -117,13 +119,13 @@ dojo.require("dojo.store.Observable");
             function testPaging(t){
 				var results, opts = {count: 25, sort: [{attribute: "order"}]};
 				results = window.results = [
-				    bigStore.query({}, dojo.delegate(opts, {start: 0})),
-				    bigStore.query({}, dojo.delegate(opts, {start: 25})),
-				    bigStore.query({}, dojo.delegate(opts, {start: 50})),
-				    bigStore.query({}, dojo.delegate(opts, {start: 75}))
+				    bigStore.query({}, lang.delegate(opts, {start: 0})),
+				    bigStore.query({}, lang.delegate(opts, {start: 25})),
+				    bigStore.query({}, lang.delegate(opts, {start: 50})),
+				    bigStore.query({}, lang.delegate(opts, {start: 75}))
 				];
 				var observations = [];
-				dojo.forEach(results, function(r, i){
+				array.forEach(results, function(r, i){
 				    r.observe(function(obj, from, to){
 				    	observations.push({from: from, to: to});
 				        console.log(i, " observed: ", obj, from, to);
@@ -146,8 +148,8 @@ dojo.require("dojo.store.Observable");
             },
             function testType(t){
             	t.f(memoryStore == store);
-            	// TODO: I don't believe we can really support this with dojo.declare, would need to upgrade to Compose
-//			  	t.t(store instanceof dojo.store.Observable);
+            	// TODO: use store.instanceOf()
+//			  	t.t(store instanceof Observable);
             }
 		]
 	);

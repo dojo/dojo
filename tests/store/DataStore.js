@@ -1,11 +1,9 @@
-dojo.provide("dojo.tests.store.DataStore");
-dojo.require("dojo.store.DataStore");
-dojo.require("dojo.data.ItemFileWriteStore");
-var temp = function(){
+define(["doh", "dojo/store/DataStore", "dojo/data/ItemFileWriteStore"], function(doh, DataStore, ItemFileWriteStore){
+
 	var two = {id: 2, name: "two", even: true, prime: true},
 			four = {id: 4, name: "four", even: true, prime: false};
 	
-	var dataStore = new dojo.data.ItemFileWriteStore({data:{
+	var dataStore = new ItemFileWriteStore({data:{
 		items: [
 			{id: 1, name: "one", prime: false},
 			{id: 2, name: "two", even: true, prime: true},
@@ -17,8 +15,8 @@ var temp = function(){
 		identifier:"id"
 	}});
 	dataStore.fetchItemByIdentity({identity:null});
-	var store = new dojo.store.DataStore({store:dataStore});
-	tests.register("dojo.tests.store.DataStore",
+	var store = new DataStore({store:dataStore});
+	doh.register("dojo.tests.store.DataStore",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");
@@ -62,10 +60,9 @@ var temp = function(){
 				t.t(store.get(6).perfect);
 			},
 			function testNoWriteFeature(t){
-				var readOnlyStore = new dojo.store.DataStore({store:new dojo.data.ItemFileReadStore({})});
+				var readOnlyStore = new DataStore({store:new ItemFileReadStore({})});
 				t.f(readOnlyStore.put);
 			}
 		]
 	);
-};
-temp();
+});

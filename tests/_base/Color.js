@@ -1,13 +1,12 @@
-dojo.provide("dojo.tests._base.Color");
+define(["doh", "dojo/_base/array", "dojo/_base/Color"], function(doh, array, Color){
 
-(function(){
-	var white  = dojo.colorFromString("white").toRgba();
-	var maroon = dojo.colorFromString("maroon").toRgba();
+	var white  = Color.fromString("white").toRgba();
+	var maroon = Color.fromString("maroon").toRgba();
 	var verifyColor = function(t, source, expected){
-		var color = new dojo.Color(source);
+		var color = new Color(source);
 		t.is(expected, color.toRgba());
-		dojo.forEach(color.toRgba(), function(n){
-			t.is("number", typeof(n));
+		array.forEach(color.toRgba(), function(n){
+			doh.is("number", typeof(n));
 		});
 	};
 
@@ -24,7 +23,7 @@ dojo.provide("dojo.tests._base.Color");
 			function testColor9(t){ verifyColor(t, maroon, maroon); },
 			function testColor10(t){ verifyColor(t, [1, 2, 3], [1, 2, 3, 1]); },
 			function testColor11(t){ verifyColor(t, [1, 2, 3, 0.5], [1, 2, 3, 0.5]); },
-			function testColor12(t){ verifyColor(t, dojo.blendColors(new dojo.Color("black"), new dojo.Color("white"), 0.5), [128, 128, 128, 1]); }
+			function testColor12(t){ verifyColor(t, Color.blendColors(new dojo.Color("black"), new Color("white"), 0.5), [128, 128, 128, 1]); }
 		]
 	);
-})();
+});

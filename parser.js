@@ -1,7 +1,7 @@
 define(
-	["require", "./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./_base/html", "./_base/window",
+	["require", "./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./dom", "./_base/window",
 		"./_base/url", "./_base/json", "./aspect", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./ready"],
-	function(require, dojo, dlang, darray, config, dhtml, dwindow, _Url, djson, aspect, dates, Deferred, has, query, don, ready){
+	function(require, dojo, dlang, darray, config, dom, dwindow, _Url, djson, aspect, dates, Deferred, has, query, don, ready){
 
 	// module:
 	//		dojo/parser
@@ -824,7 +824,7 @@ define(
 			}else{
 				root = rootNode;
 			}
-			root = root ? dhtml.byId(root) : dwindow.body();
+			root = root ? dom.byId(root) : dwindow.body();
 
 			options = options || {};
 

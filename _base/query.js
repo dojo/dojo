@@ -56,7 +56,7 @@ var defineQuery= function(d){
 
 	var getDoc = function(){ return d.doc; };
 	// NOTE(alex): the spec is idiotic. CSS queries should ALWAYS be case-sensitive, but nooooooo
-	var cssCaseBug = ((d.isWebKit||d.isMozilla) && ((getDoc().compatMode) == "BackCompat"));
+	var cssCaseBug = (getDoc().compatMode) == "BackCompat";
 
 	////////////////////////////////////////////////////////////////////////
 	// Global utilities

@@ -1,4 +1,4 @@
-define(["doh", "dojo/mouse", "dojo/on"], function(doh, on, mouse){
+define(["doh", "dojo/mouse", "dojo/on"], function(doh, mouse, on){
 
 	doh.register("tests.on", [
 		function mouseenter(t){

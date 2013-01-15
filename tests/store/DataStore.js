@@ -1,4 +1,5 @@
-define(["doh", "dojo/store/DataStore", "dojo/data/ItemFileWriteStore"], function(doh, DataStore, ItemFileWriteStore){
+define(["doh", "dojo/store/DataStore", "dojo/data/ItemFileReadStore", "dojo/data/ItemFileWriteStore"],
+	function(doh, DataStore, ItemFileReadStore, ItemFileWriteStore){
 
 	var two = {id: 2, name: "two", even: true, prime: true},
 			four = {id: 4, name: "four", even: true, prime: false};

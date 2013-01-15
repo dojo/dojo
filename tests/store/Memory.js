@@ -114,4 +114,4 @@ define(["doh", "dojo/store/Memory"], function(doh, Memory){
 			}
 		]
 	);
-})();
+});

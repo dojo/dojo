@@ -24,17 +24,21 @@
 	</style>
 	<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
 	<script type="text/javascript">
-		require(["dojo", "doh", "dojo/uacss", "dojo/domReady!"], function(dojo, doh, has){
-			var node = dojo.byId("box1");
-			var reportNode = dojo.byId("log");
+		require([
+			"doh",
+			"dojo/dom", "dojo/dom-geometry", "dojo/dom-style",
+			"dojo/json", "dojo/uacss", "dojo/domReady!"
+		], function(doh, dom, domGeom, domStyle, json, has){
+			var node = dom.byId("box1");
+			var reportNode = dom.byId("log");
 			var inner = (reportNode.textContent) ? "textContent": "innerText";
-			reportNode.innerHTML = dojo.toJson({
-				boxModel: dojo.boxModel,
+			reportNode.innerHTML = json.stringify({
+				boxModel: domGeom.boxModel,
 				hasQuirks: has("quirks"),
 				width: dojo.style(node, "width"),
-				marginBoxWidth: dojo.marginBox(node).w,
-				htmlClassName: dojo.doc.documentElement.className
-			}, 1);
+				marginBoxWidth: domGeom.getMarginBox(node).w,
+				htmlClassName: document.documentElement.className
+			}, null, "    ");
 			doh.register("tests.window.sniffStandards", [
 				function test_boxModel(t) {
 					// ensure the box-model correction in the stylesheet have been correctly applied

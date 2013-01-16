@@ -88,14 +88,6 @@
 			}
 			return scroll || '(0,0)';
 		}
-		function _scrollIntoView(win){
-			var n = _findInput(win);
-			dojo.withGlobal(win, 'scrollIntoView', dojo.window, [n]);
-		}
-		function _onClick(win){
-			_scrollIntoView(win);
-			alert(_getScroll(win));
-		}
 		var loaded = {};
 		function iframeLoaded(id){
 			if(!loaded[id]){	// ignore duplicate notifications
@@ -104,7 +96,21 @@
 			}
 		}
 
-		require(["dojo", "doh", "dojo/sniff", "dojo/window", "dojo/domReady!"], function(dojo, doh, has) {
+		require([
+			"doh",
+			"dojo/dom", "dojo/dom-attr", "dojo/dom-geometry", "dojo/dom-style",
+			"dojo/query", "dojo/sniff", "dojo/_base/window", "dojo/window", "dojo/domReady!"
+		], function(doh, dom, domAttr, domGeom, domStyle, query, has, win, winUtils) {
+
+			// More global methods accessed by iframes
+			_scrollIntoView = function(w){
+				var n = _findInput(w);
+				win.withGlobal(w, 'scrollIntoView', winUtils, [n]);
+			};
+			_onClick = function(w){
+				_scrollIntoView(w);
+				alert(_getScroll(w));
+			};
 
 			// Below is the magic code that creates the iframes from the given template.
 			// This should be generalized for other files to include.
@@ -181,7 +187,7 @@
 				var text = (doctype=="strict"? 'strict': (doctype=="loose"? 'loose' : 'quirks')) + (rtl? ' RTL' : '');
 				var color = (rtl? 'medium': '') + (doctype=="strict"? 'SpringGreen': (doctype=="loose"? 'Turquoise' : 'Aquamarine'));
 				var idSuffix = (doctype=="strict"? '_strict': (doctype=="loose"? '_loose': '_quirks')) + (rtl? '_rtl' : '');
-				dojo.style(container, "cssText", "display:inline;border:1px ridge gray;padding:0px;margin:0px;background-color:"+color+";text-align:"+(rtl?"right;":"left;"));
+				domStyle.set(container, "cssText", "display:inline;border:1px ridge gray;padding:0px;margin:0px;background-color:"+color+";text-align:"+(rtl?"right;":"left;"));
 				container.appendChild(document.createTextNode(text));
 				var iframe = document.createElement('iframe');
 				iframe.setAttribute('src', iframeSrc);
@@ -191,7 +197,7 @@
 				iframe.setAttribute('id', id + idSuffix);
 				iframe.setAttribute('name', id + idSuffix);
 				iframe.className = className;
-				dojo.style(iframe, "cssText", "visibility:hidden;display:block;border:2px solid "+color+";background-color:transparent;margin:0px;padding:3px;"+style);
+				domStyle.set(iframe, "cssText", "visibility:hidden;display:block;border:2px solid "+color+";background-color:transparent;margin:0px;padding:3px;"+style);
 				container.appendChild(iframe);
 				srcNode.appendChild(container);
 				var src = iframe.getAttribute("src");
@@ -203,9 +209,9 @@
 
 			var usingNative = !(has("mozilla") || has("ie") || has("webkit") || has("opera"));
 
-			innerScrollBarSize = dojo.byId("nonscroll").clientWidth - dojo.byId("withscroll").clientWidth;
+			innerScrollBarSize = dom.byId("nonscroll").clientWidth - dom.byId("withscroll").clientWidth;
 			console.debug('inner scrollbar size = ' + innerScrollBarSize);
-			outerScrollBarSize = (has("ie") >= 9) ? ((dojo.position(document.documentElement).w - document.documentElement.clientWidth) || innerScrollBarSize) : innerScrollBarSize;
+			outerScrollBarSize = (has("ie") >= 9) ? ((domGeom.position(document.documentElement).w - document.documentElement.clientWidth) || innerScrollBarSize) : innerScrollBarSize;
 			console.debug('outer scrollbar size = ' + outerScrollBarSize);
 
 			doh.register("dojo.window.scroll",[
@@ -214,7 +220,7 @@
 					timeout: 20000,
 					runTest: function(){
 						loading = new doh.Deferred();
-						var testIframes = dojo.query('DIV[type="testIframe"]');
+						var testIframes = query('DIV[type="testIframe"]');
 						count = testIframes.length * 4;
 						console.log("count is " + count);
 						for(var i=0; i < testIframes.length; i++){
@@ -239,10 +245,10 @@
 					}
 				},
 				function checkAttrs(){
-					var body = dojo.body();
-					dojo.window.scrollIntoView(body);
-					doh.f(dojo.hasAttr(body,'_offsetParent'));
-					doh.f(dojo.hasAttr(body,'_parent'));
+					var body = win.body();
+					winUtils.scrollIntoView(body);
+					doh.f(domAttr.has(body,'_offsetParent'));
+					doh.f(domAttr.has(body,'_parent'));
 				},
 				function test_8249(){
 					generateTest('8249_strict', '(0,-10)', '(0,+10)');
@@ -255,7 +261,7 @@
 					if(has("ie") <= 8){
 						minScroll = maxScroll = 11;
 						if(has("ie") <= 6){
-							fudge = dojo.byId('8284_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
+							fudge = dom.byId('8284_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
 						}
 					}else{
 						minScroll = maxScroll = 10;
@@ -354,7 +360,7 @@
 					generateTest('table_strict', maxScroll, minScroll);
 					generateTest('table_loose_rtl', maxScroll, minScroll);
 					if(has("ie") <= 6){
-						var fudge = dojo.byId('table_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
+						var fudge = dom.byId('table_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
 						maxScroll = "(0,-"+(15-fudge)+")";
 						minScroll = "(0,+"+(15-fudge)+")";
 					}
@@ -371,7 +377,7 @@
 				function test_8542(){
 					var fudge = 0;
 					if(has("ie") <= 6){
-						fudge = dojo.byId('8542_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
+						fudge = dom.byId('8542_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
 					}
 					generateTest('8542_strict', "(0,-10)", "(0,+20)");
 					generateTest('8542_quirks', "(0,-"+(10-fudge)+")", "(0,+"+(20-fudge)+")");
@@ -381,7 +387,7 @@
 				function test_tooBig(){
 					var fudge = 0;
 					if(has("ie") <= 6){
-						fudge = dojo.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+innerScrollBarSize; // needed for running inside DOH runner
+						fudge = dom.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+innerScrollBarSize; // needed for running inside DOH runner
 					}
 					var minScroll, maxScroll;
 					generateTestXY('tooBig_strict', outerScrollBarSize+10,outerScrollBarSize+20, 1,1);
@@ -414,7 +420,7 @@
 				function test_htmlPadding(){
 					var fudge = 0;
 					if(has("ie") <= 6){
-						fudge = dojo.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+innerScrollBarSize; // needed for running inside DOH runner
+						fudge = dom.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+innerScrollBarSize; // needed for running inside DOH runner
 					}
 					var minScroll, maxScroll;
 					if(has("ie") <= 7){
@@ -433,7 +439,7 @@
 			]);
 			function generateTest(id, maxVal, minVal){
 				var compare = usingNative? "isNot" : "is";
-				with(dojo.byId(id)){
+				with(dom.byId(id)){
 					scrollMin();
 					scrollMax();
 					scrollIntoView();
@@ -445,7 +451,7 @@
 					scrollIntoView();
 					var minActualScroll = getScroll();
 					var minExpectedScroll = usingNative? "(+1,+1)" : minVal;
-					dojo.byId(id).style.visibility = 'visible';
+					dom.byId(id).style.visibility = 'visible';
 					doh[compare](maxExpectedScroll, maxActualScroll, id+" max failed");
 					doh[compare](maxExpectedScroll, repMaxActualScroll, id+" repeat max failed");
 					doh[compare](minExpectedScroll, minActualScroll, id+" min failed");

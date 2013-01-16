@@ -14,13 +14,13 @@
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 
 	<script type="text/javascript">
-		require(["dojo/dnd/Container", "dojo/domReady!"], function(Container){
+		require(["dojo/dnd/Container", "dojo/dom", "dojo/domReady!"], function(Container, dom){
 			var c1, c2, c3, c4, c5;
-			c1 = new Container(dojo.byId("container1"));
-			c2 = new Container(dojo.byId("container2"));
-			c3 = new Container(dojo.byId("container3"));
-			c4 = new Container(dojo.byId("container4"));
-			c5 = new Container(dojo.byId("container5"));
+			c1 = new Container(dom.byId("container1"));
+			c2 = new Container(dom.byId("container2"));
+			c3 = new Container(dom.byId("container3"));
+			c4 = new Container(dom.byId("container4"));
+			c5 = new Container(dom.byId("container5"));
 		});
 	</script>
 </head>

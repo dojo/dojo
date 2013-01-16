@@ -11,13 +11,13 @@
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 
 	<script type="text/javascript">
-		require(["dojo/dnd/Selector", "dojo/domReady!"], function(Selector){
+		require(["dojo/dnd/Selector", "dojo/dom", "dojo/domReady!"], function(Selector, dom){
 			var c1, c2, c3, c4, c5;
-			c1 = new Selector(dojo.byId("container1"), {singular: true});
-			c2 = new Selector(dojo.byId("container2"));
-			c3 = new Selector(dojo.byId("container3"));
-			c4 = new Selector(dojo.byId("container4"));
-			c5 = new Selector(dojo.byId("container5"));
+			c1 = new Selector(dom.byId("container1"), {singular: true});
+			c2 = new Selector(dom.byId("container2"));
+			c3 = new Selector(dom.byId("container3"));
+			c4 = new Selector(dom.byId("container4"));
+			c5 = new Selector(dom.byId("container5"));
 		});
 	</script>
 </head>

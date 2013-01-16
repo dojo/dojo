@@ -92,11 +92,14 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Source 3</h3>
+			<script type="dojo/require">
+				dnd: "dojo/dnd/common"
+			</script>
 			<div data-dojo-type="dojo/dnd/Source" jsId="c3" class="container" allowNested="true">
 				<script type="dojo/method" event="creator" args="item, hint">
 					// this is custom creator, which changes the avatar representation
-					var node = dojo.doc.createElement("div"), s = String(item);
-					node.id = dojo.dnd.getUniqueId();
+					var node = document.createElement("div"), s = String(item);
+					node.id = dnd.getUniqueId();
 					node.className = "dojoDndItem";
 					node.innerHTML = (hint != "avatar" || s.indexOf("Item") < 0) ?
 						s : "<strong style='color: darkred'>Special</strong> " + s;

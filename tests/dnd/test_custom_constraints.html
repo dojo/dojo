@@ -21,7 +21,7 @@
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 
 	<script type="text/javascript">
-		require(["dojo/aspect", "dojo/dnd/Moveable", "dojo/domReady!"], function(aspect, Moveable){
+		require(["dojo/aspect", "dojo/dom-geometry", "dojo/dnd/Moveable", "dojo/domReady!"], function(aspect, domGeom, Moveable){
 			var STEP = 50;
 		
 			// 1st way
@@ -29,7 +29,7 @@
 			m1.onMove = function(mover, leftTop){
 				leftTop.l -= leftTop.l % STEP;
 				leftTop.t -= leftTop.t % STEP;
-				dojo.marginBox(mover.node, leftTop);
+				domGeom.setMarginBox(mover.node, leftTop);
 			};
 			// 2nd way
 			var m2 = new Moveable("moveable2");

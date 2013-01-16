@@ -27,19 +27,15 @@
 		}
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
-	<!--
-	<script type="text/javascript" src="../../dnd/move.js"></script>
-	-->
+
 	<script type="text/javascript">
-		dojo.require("dojo.dnd.move");
-		var m1, m2, m3, m4;
-		var init = function(){
-			m1 = new dojo.dnd.move.parentConstrainedMoveable("moveable1", {area: "margin", within: true});
-			m2 = new dojo.dnd.move.parentConstrainedMoveable("moveable2", {area: "border", within: true});
-			m3 = new dojo.dnd.move.parentConstrainedMoveable("moveable3", {area: "padding", within: true});
-			m4 = new dojo.dnd.move.parentConstrainedMoveable("moveable4", {area: "content", within: true});
-		};
-		dojo.addOnLoad(init);
+		require(["dojo/dnd/move", "dojo/domReady!"], function(move){
+			var m1, m2, m3, m4;
+			m1 = new move.parentConstrainedMoveable("moveable1", {area: "margin", within: true});
+			m2 = new move.parentConstrainedMoveable("moveable2", {area: "border", within: true});
+			m3 = new move.parentConstrainedMoveable("moveable3", {area: "padding", within: true});
+			m4 = new move.parentConstrainedMoveable("moveable4", {area: "content", within: true});
+		});
 	</script>
 </head>
 <body>

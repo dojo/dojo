@@ -14,17 +14,12 @@
 		.clear { clear: both; }
 	</style>
 
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
-<!--
-	<script type="text/javascript" src="../../dnd/Container.js"></script>
-	<script type="text/javascript" src="../../dnd/Selector.js"></script>
-	<script type="text/javascript" src="../../dnd/Source.js"></script>
-	<script type="text/javascript" src="../../dnd/Avatar.js"></script>
-	<script type="text/javascript" src="../../dnd/Manager.js"></script>
--->
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+
 	<script type="text/javascript">
-		dojo.require("dojo.parser");
-		dojo.require("dojo.dnd.Source");
+		require(["dojo/parser", "dojo/dnd/Source", "dojo/domReady!"], function(parser){
+			parser.parse();
+		});
 	</script>
 </head>
 <body>
@@ -44,7 +39,7 @@
 	</ul>
 	
 	<p>Source with handles. Items should be draggable by the "em" of the word "Item" (and also see a 'move' cursor on it).</p>
-	<div dojoType="dojo.dnd.Source" jsId="c1" withHandles="true" class="container handles">
+	<div data-dojo-type="dojo/dnd/Source" jsId="c1" withHandles="true" class="container handles">
 		<div class="dojoDndItem"><span class="dojoDndHandle"><span class="dojoDndIgnore">It</span>em</span> <strong>Alpha</strong></div>
 		<div class="dojoDndItem"><span class="dojoDndHandle"><span class="dojoDndIgnore">It</span>em</span> <strong>Beta</strong></div>
 		<div class="dojoDndItem"><span class="dojoDndHandle"><span class="dojoDndIgnore">It</span>em</span> <strong>Gamma</strong></div>
@@ -52,7 +47,7 @@
 	</div>
 
 	<p>Source without handles.</p>
-	<div dojoType="dojo.dnd.Source" jsId="c2" class="container">
+	<div data-dojo-type="dojo/dnd/Source" jsId="c2" class="container">
 		<div class="dojoDndItem"><span class="dojoDndHandle">Item</span> <strong>Epsilon</strong></div>
 		<div class="dojoDndItem"><span class="dojoDndHandle">Item</span> <strong>Zeta</strong></div>
 		<div class="dojoDndItem"><span class="dojoDndHandle">Item</span> <strong>Eta</strong></div>

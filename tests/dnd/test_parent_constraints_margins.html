@@ -28,17 +28,13 @@
 		}
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
-	<!--
-	<script type="text/javascript" src="../../dnd/move.js"></script>
-	-->
+
 	<script type="text/javascript">
-		dojo.require("dojo.dnd.move");
-		var m7, m8;
-		var init = function(){
-			m7 = new dojo.dnd.move.parentConstrainedMoveable("moveable7", {area: "margin"});
-			m8 = new dojo.dnd.move.parentConstrainedMoveable("moveable8", {area: "margin", within: true});
-		};
-		dojo.addOnLoad(init);
+		require(["dojo/dnd/move", "dojo/domReady!"], function(move){
+			var m7, m8;
+			m7 = new move.parentConstrainedMoveable("moveable7", {area: "margin"});
+			m8 = new move.parentConstrainedMoveable("moveable8", {area: "margin", within: true});
+		});
 	</script>
 </head>
 <body>

@@ -54,35 +54,29 @@
 		}
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
-	<!--
-	<script type="text/javascript" src="../../dnd/Mover.js"></script>
-	<script type="text/javascript" src="../../dnd/Moveable.js"></script>
-	<script type="text/javascript" src="../../dnd/TimedMoveable.js"></script>
-	<script type="text/javascript" src="../../dnd/move.js"></script>
-	-->
-	<script type="text/javascript">
-		dojo.require("dojo.dnd.TimedMoveable");
-		var m1, m2;
-		var init = function(){
-			m1 = new dojo.dnd.TimedMoveable("moveable1", {handle: "handle1"});
-			m2 = new dojo.dnd.TimedMoveable("moveable2");
-			m3 = new dojo.dnd.TimedMoveable("moveable3", {timeout: 500});
 
-			dojo.subscribe("/dnd/move/start", function(mover){ 
+	<script type="text/javascript">
+		require(["dojo/aspect", "dojo/dnd/TimedMoveable", "dojo/topic", "dojo/domReady!"], function(aspect, TimedMoveable, topic){
+			var m1, m2, m3;
+
+			m1 = new TimedMoveable("moveable1", {handle: "handle1"});
+			m2 = new TimedMoveable("moveable2");
+			m3 = new TimedMoveable("moveable3", {timeout: 500});
+
+			topic.subscribe("/dnd/move/start", function(mover){ 
 				console.debug("Start move", mover); 	
 			});
-			dojo.subscribe("/dnd/move/stop", function(mover){ 
+			topic.subscribe("/dnd/move/stop", function(mover){ 
 				console.debug("Stop move", mover); 	
 			});
 			
-			dojo.connect(m1, "onMoveStart", function(mover){
+			aspect.after(m1, "onMoveStart", function(mover){
 				console.debug("Start moving m1", mover); 	
-			});
-			dojo.connect(m1, "onMoveStop", function(mover){
+			}, true);
+			aspect.after(m1, "onMoveStop", function(mover){
 				console.debug("Stop moving m1", mover); 	
-			});
-		};
-		dojo.addOnLoad(init);
+			}, true);
+		});
 	</script>
 </head>
 <body>

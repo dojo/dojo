@@ -39,20 +39,17 @@
 			-moz-border-radius:8pt 8pt; 
 		}
 	</style>
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
-	<!--
-	<script type="text/javascript" src="../../dnd/move.js"></script>
-	-->
-	<script type="text/javascript">
-		dojo.require("dojo.parser");
-		dojo.require("dojo.dnd.move");
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
 
-		dojo.addOnLoad(function(){
-			dojo.subscribe("/dnd/move/start", function(node){ 
+	<script type="text/javascript">
+		require(["dojo/parser", "dojo/topic", "dojo/dnd/Moveable", "dojo/domReady!"], function(parser, topic){
+			parser.parse();
+
+			topic.subscribe("/dnd/move/start", function(node){ 
 				console.debug("Start move", node); 	
 			});
 
-			dojo.subscribe("/dnd/move/stop", function(node){ 
+			topic.subscribe("/dnd/move/stop", function(node){ 
 				console.debug("Stop move", node); 	
 			});
 		});
@@ -66,7 +63,7 @@
 	<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec est. Cras semper nunc ut metus. Pellentesque blandit pede at erat. Quisque nonummy leo id metus. Donec mi mi, viverra id, adipiscing vitae, consectetuer ut, elit. In lectus augue, porttitor quis, viverra id, dignissim id, leo. Maecenas sapien. Nam adipiscing sem. Aenean ligula. Etiam vel velit. In mollis cursus dolor. Suspendisse ac nibh id leo tempor posuere. Aliquam sapien tellus, elementum non, aliquam sed, luctus eu, augue. Aliquam elementum leo nec enim. Donec ornare sagittis magna. Mauris ac tellus.</p>
 	<p>Duis ac augue rhoncus neque adipiscing feugiat. Donec pulvinar sem vitae neque. Donec commodo metus at ipsum. Cras vel magna vehicula lorem varius consequat. Morbi at enim vitae lectus mollis sodales. Sed tincidunt quam ut mi varius hendrerit. Sed porta arcu non libero. Quisque et wisi. Pellentesque lobortis. Ut enim felis, varius vitae, ornare quis, auctor ut, risus. Ut porta lorem vel quam. Etiam nunc purus, consectetuer non, lobortis eu, fermentum eu, magna. Aenean ultrices ante. Aliquam erat volutpat. Morbi quis velit eu mi sollicitudin lacinia. Suspendisse potenti. Donec lectus.</p>
 	<p>Quisque egestas turpis. Sed id ipsum id libero euismod nonummy. Nam sed dolor. Mauris in turpis. Duis nec wisi eget ante ultrices varius. Ut eget neque. Suspendisse sagittis iaculis tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus at justo. Donec imperdiet, elit et commodo bibendum, leo augue pellentesque arcu, ac dapibus lorem nulla eget erat. In viverra, tellus eu luctus eleifend, urna nibh lobortis sapien, ac pulvinar massa enim vel turpis. Sed orci neque, sagittis eu, mattis vitae, rutrum condimentum, leo. Fusce wisi odio, convallis at, condimentum vel, imperdiet id, mi. Mauris semper, magna pretium consectetuer sollicitudin, eros enim vehicula risus, eu ultrices turpis quam at wisi. Nam mollis.</p>
-	<table id="moveable1" dojoType="dojo.dnd.Moveable" handle="handle1">
+	<table id="moveable1" data-dojo-type="dojo/dnd/Moveable" handle="handle1">
 		<tr><td id="handle1" colspan="2">You can drag the table using this handle.</td></tr>
 		<tr><td>1</td><td>Lorem ipsum dolor sit amet...</td></tr>
 		<tr><td>2</td><td>Mauris vulputate elit a risus...</td></tr>
@@ -80,6 +77,6 @@
 	<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec est. Cras semper nunc ut metus. Pellentesque blandit pede at erat. Quisque nonummy leo id metus. Donec mi mi, viverra id, adipiscing vitae, consectetuer ut, elit. In lectus augue, porttitor quis, viverra id, dignissim id, leo. Maecenas sapien. Nam adipiscing sem. Aenean ligula. Etiam vel velit. In mollis cursus dolor. Suspendisse ac nibh id leo tempor posuere. Aliquam sapien tellus, elementum non, aliquam sed, luctus eu, augue. Aliquam elementum leo nec enim. Donec ornare sagittis magna. Mauris ac tellus.</p>
 	<p>Duis ac augue rhoncus neque adipiscing feugiat. Donec pulvinar sem vitae neque. Donec commodo metus at ipsum. Cras vel magna vehicula lorem varius consequat. Morbi at enim vitae lectus mollis sodales. Sed tincidunt quam ut mi varius hendrerit. Sed porta arcu non libero. Quisque et wisi. Pellentesque lobortis. Ut enim felis, varius vitae, ornare quis, auctor ut, risus. Ut porta lorem vel quam. Etiam nunc purus, consectetuer non, lobortis eu, fermentum eu, magna. Aenean ultrices ante. Aliquam erat volutpat. Morbi quis velit eu mi sollicitudin lacinia. Suspendisse potenti. Donec lectus.</p>
 	<p>Quisque egestas turpis. Sed id ipsum id libero euismod nonummy. Nam sed dolor. Mauris in turpis. Duis nec wisi eget ante ultrices varius. Ut eget neque. Suspendisse sagittis iaculis tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus at justo. Donec imperdiet, elit et commodo bibendum, leo augue pellentesque arcu, ac dapibus lorem nulla eget erat. In viverra, tellus eu luctus eleifend, urna nibh lobortis sapien, ac pulvinar massa enim vel turpis. Sed orci neque, sagittis eu, mattis vitae, rutrum condimentum, leo. Fusce wisi odio, convallis at, condimentum vel, imperdiet id, mi. Mauris semper, magna pretium consectetuer sollicitudin, eros enim vehicula risus, eu ultrices turpis quam at wisi. Nam mollis.</p>
-	<div id="moveable2" dojoType="dojo.dnd.Moveable">You can drag this whole paragraph around.</div>	
+	<div id="moveable2" data-dojo-type="dojo/dnd/Moveable">You can drag this whole paragraph around.</div>
 </body>
 </html>

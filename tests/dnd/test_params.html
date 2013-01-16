@@ -22,15 +22,13 @@
 	<script type="text/javascript" src="../../dnd/move.js"></script>
 	-->
 	<script type="text/javascript">
-		dojo.require("dojo.dnd.move");
-		var m1, m2, m3, m4;
-		var init = function(){
-			m1 = new dojo.dnd.Moveable("moveable1");
-			m2 = new dojo.dnd.Moveable("moveable2", {delay: 10});
-			m3 = new dojo.dnd.Moveable("moveable3");
-			m4 = new dojo.dnd.Moveable("moveable4", {skip: true});
-		};
-		dojo.addOnLoad(init);
+		require(["dojo/dnd/Moveable", "dojo/domReady!"], function(Moveable){
+			var m1, m2, m3, m4;
+			m1 = new Moveable("moveable1");
+			m2 = new Moveable("moveable2", {delay: 10});
+			m3 = new Moveable("moveable3");
+			m4 = new Moveable("moveable4", {skip: true});
+		});
 	</script>
 </head>
 <body>

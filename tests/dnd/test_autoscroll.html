@@ -26,21 +26,14 @@
 
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 	<script type="text/javascript">
-		dojo.require("dojo.parser");
-		dojo.require("dojo.dnd.Source");
+		require(["dojo/dnd/Source", "dojo/domReady!"], function(Source){
 
-		var c1;
-
-		function init(){
-			c1 = new dojo.dnd.Source("container1");
+			var c1 = new Source("container1");
 			c1.insertNodes(false, ["A", "B", "C", "D", "E", "F", "G"]);
 
-			c2 = new dojo.dnd.Source("container2");
+			var c2 = new Source("container2");
 			c2.insertNodes(false, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-		}
-
-		dojo.addOnLoad(init);
-
+		});
 	</script>
 </head>
 <body>

@@ -12,20 +12,16 @@
 
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
-	<!--
-	<script type="text/javascript" src="../../dnd/Container.js"></script>
-	-->
+
 	<script type="text/javascript">
-		dojo.require("dojo.dnd.Container");
-		var c1, c2, c3, c4, c5;
-		var init = function(){
-			c1 = new dojo.dnd.Container(dojo.byId("container1"));
-			c2 = new dojo.dnd.Container(dojo.byId("container2"));
-			c3 = new dojo.dnd.Container(dojo.byId("container3"));
-			c4 = new dojo.dnd.Container(dojo.byId("container4"));
-			c5 = new dojo.dnd.Container(dojo.byId("container5"));
-		};
-		dojo.addOnLoad(init);
+		require(["dojo/dnd/Container", "dojo/domReady!"], function(Container){
+			var c1, c2, c3, c4, c5;
+			c1 = new Container(dojo.byId("container1"));
+			c2 = new Container(dojo.byId("container2"));
+			c3 = new Container(dojo.byId("container3"));
+			c4 = new Container(dojo.byId("container4"));
+			c5 = new Container(dojo.byId("container5"));
+		});
 	</script>
 </head>
 <body>

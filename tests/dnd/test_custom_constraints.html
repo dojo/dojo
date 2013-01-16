@@ -19,30 +19,25 @@
 		}
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
-	<!--
-	<script type="text/javascript" src="../../dnd/move.js"></script>
-	-->
+
 	<script type="text/javascript">
-		dojo.require("dojo.dnd.move");
+		require(["dojo/aspect", "dojo/dnd/Moveable", "dojo/domReady!"], function(aspect, Moveable){
+			var STEP = 50;
 		
-		var STEP = 50;
-		
-		var init = function(){
 			// 1st way
-			var m1 = new dojo.dnd.Moveable("moveable1");
+			var m1 = new Moveable("moveable1");
 			m1.onMove = function(mover, leftTop){
 				leftTop.l -= leftTop.l % STEP;
 				leftTop.t -= leftTop.t % STEP;
 				dojo.marginBox(mover.node, leftTop);
 			};
 			// 2nd way
-			var m2 = new dojo.dnd.Moveable("moveable2");
-			dojo.connect(m2, "onMoving", function(mover, leftTop){
+			var m2 = new Moveable("moveable2");
+			aspect.after(m2, "onMoving", function(mover, leftTop){
 				leftTop.l -= leftTop.l % STEP;
 				leftTop.t -= leftTop.t % STEP;
-			});
-		};
-		dojo.addOnLoad(init);
+			}, true);
+		});
 	</script>
 </head>
 <body>

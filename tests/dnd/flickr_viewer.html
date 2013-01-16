@@ -40,95 +40,86 @@
 		.dojoDndHorizontal .dojoDndItemAfter img	{border-right: 3px solid red;}
 	</style>
 	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
-	<!--
-	<script type="text/javascript" src="../../dnd/common.js"></script>
-	<script type="text/javascript" src="../../dnd/autoscroll.js"></script>
-	<script type="text/javascript" src="../../dnd/Container.js"></script>
-	<script type="text/javascript" src="../../dnd/Selector.js"></script>
-	<script type="text/javascript" src="../../dnd/Source.js"></script>
-	<script type="text/javascript" src="../../dnd/Avatar.js"></script>
-	<script type="text/javascript" src="../../dnd/Manager.js"></script>
-	-->
+
 	<script type="text/javascript">
-		dojo.require("dojo.parser");
-		dojo.require("dojo.io.script");
-		dojo.require("dojo.dnd.Source");
+		require([
+			"dojo/dom", "dojo/parser", "dojo/request/script",
+			"dojo/dnd/common", "dojo/dnd/Avatar", "dojo/dnd/Source", "dojo/domReady!"
+		], function(dom, parser, script, dnd, Avatar, Source){
 		
-		// The main image container creator
-		var main_creator = function(item, hint){
-			var type = [];
-			if(item.tags.search(/cat/i) >= 0){ type.push("cat"); }
-			if(item.tags.search(/dog/i) >= 0){ type.push("dog"); }
-			var node;
-			if(hint == "avatar"){
-				node = dojo.doc.createElement("span");
-				node.innerHTML = "<img src='" + item.media.m.replace(/_m\./, "_s.") + "'/>";
-			}else{
-				var t = ["<table border='0' cellpadding='0' cellspacing='0' width='250'>"];
-				t.push("<tr><td colspan='2' class='image' align='center' width='250'><img src='" + 
-					item.media.m + "'/></td></tr>");
-				t.push("<tr><td class='name' valign='top'>Title:</td><td class='value'><a href='" + 
-					item.link + "' target='_blank'>" + 
-					(item.title ? item.title : "<em>untitled</em>") + "</a></td></tr>");
-				t.push("<tr><td class='name' valign='top'>Author:</td><td class='value'>" + 
-					item.author + "</td></tr>");
-				t.push("<tr><td class='name' valign='top'>Tags:</td><td class='value'>" + 
-					item.tags + "</td></tr>");
-				t.push("</table>");
-				node = dojo.doc.createElement("div");
-				node.innerHTML = t.join("");
-			}
-			node.id = dojo.dnd.getUniqueId();
-			return {node: node, data: item, type: type};
-		};
-		
-		// The band image container creator
-		var band_creator = function(item, hint){
-			var type = [];
-			if(item.tags.search(/cat/i) >= 0){ type.push("cat"); }
-			if(item.tags.search(/dog/i) >= 0){ type.push("dog"); }
-			var src = item.media.m.replace(/_m\./, "_s.");
-			var node = dojo.doc.createElement("span");
-			node.innerHTML = "<img src='" + src + "'/>";
-			node.id = dojo.dnd.getUniqueId();
-			return {node: node, data: item, type: type};
-		};
-		
-		// Flickr's JSONP function
-		var jsonFlickrFeed = function(data){
-			if(!data.items || !data.items.length){
-				dojo.byId("status").innerHTML = "Flickr didn't return any images";
-				return;
-			}
-			dojo.byId("status").innerHTML = data.items.length + " images were retrieved";
-			// initialize sources
-			c1.selectAll().deleteSelectedNodes();
-			c2.selectAll().deleteSelectedNodes();
-			c3.selectAll().deleteSelectedNodes();
-			// populate the main source
-			c1.insertNodes(false, data.items);
-		};
-		
-		var init = function(){
+			// The main image container creator
+			main_creator = function(item, hint){
+				var type = [];
+				if(item.tags.search(/cat/i) >= 0){ type.push("cat"); }
+				if(item.tags.search(/dog/i) >= 0){ type.push("dog"); }
+				var node;
+				if(hint == "avatar"){
+					node = document.createElement("span");
+					node.innerHTML = "<img src='" + item.media.m.replace(/_m\./, "_s.") + "'/>";
+				}else{
+					var t = ["<table border='0' cellpadding='0' cellspacing='0' width='250'>"];
+					t.push("<tr><td colspan='2' class='image' align='center' width='250'><img src='" + 
+						item.media.m + "'/></td></tr>");
+					t.push("<tr><td class='name' valign='top'>Title:</td><td class='value'><a href='" + 
+						item.link + "' target='_blank'>" + 
+						(item.title ? item.title : "<em>untitled</em>") + "</a></td></tr>");
+					t.push("<tr><td class='name' valign='top'>Author:</td><td class='value'>" + 
+						item.author + "</td></tr>");
+					t.push("<tr><td class='name' valign='top'>Tags:</td><td class='value'>" + 
+						item.tags + "</td></tr>");
+					t.push("</table>");
+					node = document.createElement("div");
+					node.innerHTML = t.join("");
+				}
+				node.id = dnd.getUniqueId();
+				return {node: node, data: item, type: type};
+			};
+			
+			// The band image container creator
+			band_creator = function(item, hint){
+				var type = [];
+				if(item.tags.search(/cat/i) >= 0){ type.push("cat"); }
+				if(item.tags.search(/dog/i) >= 0){ type.push("dog"); }
+				var src = item.media.m.replace(/_m\./, "_s.");
+				var node = document.createElement("span");
+				node.innerHTML = "<img src='" + src + "'/>";
+				node.id = dnd.getUniqueId();
+				return {node: node, data: item, type: type};
+			};
+			
+			// Flickr's JSONP function.
+			jsonFlickrFeed = function(data){
+				if(!data.items || !data.items.length){
+					dom.byId("status").innerHTML = "Flickr didn't return any images";
+					return;
+				}
+				dom.byId("status").innerHTML = data.items.length + " images were retrieved";
+				// initialize sources
+				c1.selectAll().deleteSelectedNodes();
+				c2.selectAll().deleteSelectedNodes();
+				c3.selectAll().deleteSelectedNodes();
+				// populate the main source
+				c1.insertNodes(false, data.items);
+			};
+
 			// replace the avatar string to make it more human readable
-			dojo.dnd.Avatar.prototype._generateText = function(){
+			Avatar.prototype._generateText = function(){
 				return (this.manager.copy ? "copy" : "mov") + 
 					"ing " + this.manager.nodes.length + " item" + 
 					(this.manager.nodes.length != 1 ? "s" : "");
 			};
-			// ask Flickr for images
-			var td = dojo.io.script.get({
-				url: "http://api.flickr.com/services/feeds/photos_public.gne",
-				content: {tags: "cat,dog,cow", tagmode: "any", format: "json"},
+
+			// Ask Flickr for images.   This calls jsonFlickrFeed rather than coming in the promise result, not sure why.
+			script.get("http://api.flickr.com/services/feeds/photos_public.gne", {
+				query: {tags: "cat,dog,cow", tagmode: "any", format: "json"},
 				handleAs: "text/javascript",
 				preventCache: true
-			});
-			td.addErrback(function(){
-				dojo.byId("status").innerHTML = "Flickr failed to return images";
-			});
-		};
-		
-		dojo.addOnLoad(init);
+			}).otherwise(
+				function(){
+					dom.byId("status").innerHTML = "Flickr failed to return images";
+				}
+			);
+		});
 	</script>
 </head>
 <body>
@@ -150,19 +141,19 @@
 	<p>Now scroll down and start dragging and dropping, rearrange images using DnD, copy and move them back!</p>
 	<p>Status: <span id="status">retrieving a list of Flickr images...</span></p>
 	<div class="wrap1">
-		<div dojoType="dojo.dnd.Source" jsId="c1" accept="cat, dog, cow" class="container">
+		<div data-dojo-type="dojo/dnd/Source" jsId="c1" accept="cat, dog, cow" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return main_creator(item, hint);</script>
 		</div>
 	</div>
 	<p>Tag: cat</p>
 	<div class="wrap2">
-		<div dojoType="dojo.dnd.Source" jsId="c2" accept="cat" horizontal="true" class="container">
+		<div data-dojo-type="dojo/dnd/Source" jsId="c2" accept="cat" horizontal="true" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return band_creator(item, hint);</script>
 		</div>
 	</div>
 	<p>Tag: dog</p>
 	<div class="wrap2">
-		<div dojoType="dojo.dnd.Source" jsId="c3" accept="dog" horizontal="true" class="container">
+		<div data-dojo-type="dojo/dnd/Source" jsId="c3" accept="dog" horizontal="true" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return band_creator(item, hint);</script>
 		</div>
 	</div>

@@ -23,50 +23,40 @@
 		}
 	</style>
 
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
-<!--
-	<script type="text/javascript" src="../../dnd/Container.js"></script>
-	<script type="text/javascript" src="../../dnd/Selector.js"></script>
-	<script type="text/javascript" src="../../dnd/Source.js"></script>
-	<script type="text/javascript" src="../../dnd/Avatar.js"></script>
-	<script type="text/javascript" src="../../dnd/Manager.js"></script>
-	<script type="text/javascript" src="../../../dijit/_base/wai.js"></script>
--->
+	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+
 	<script type="text/javascript">
-		dojo.require("dojo.parser");
-		dojo.require("dojo.dnd.Source");
+		require([
+			"dojo/aspect", "dojo/parser", "dojo/topic", "dojo/dnd/Source", "dojo/domReady!"
+		], function(aspect, parser, topic, Source){
+			parser.parse();
 
-		var c1;
-
-		function init(){
-			c1 = new dojo.dnd.Source("container1");
+			var c1 = new Source("container1");
 			c1.insertNodes(false, [1, "A", [1, 2, 3],
 				function(x){ return x + x; },
 				{toString: function(){ return "CUSTOM!"; }},
 				null]);
 
 			// example subscribe to events
-			dojo.subscribe("/dnd/start", function(source){
+			topic.subscribe("/dnd/start", function(source){
 				console.debug("Starting the drop", source);
 			});
-			dojo.subscribe("/dnd/drop/before", function(source, nodes, copy, target){
+			topic.subscribe("/dnd/drop/before", function(source, nodes, copy, target){
 				if(target == c1){
 					console.debug(copy ? "Copying from" : "Moving from", source, "to", target, "before", target.before);
 				}
 			});
-			dojo.subscribe("/dnd/drop", function(source, nodes, copy, target){
+			topic.subscribe("/dnd/drop", function(source, nodes, copy, target){
 				if(target == c1){
 					console.debug(copy ? "Copying from" : "Moving from", source, "to", target, "before", target.before);
 				}
 			});
-			dojo.connect(c4, "onDndDrop", function(source, nodes, copy, target){
+			aspect.after(c4, "onDndDrop", function(source, nodes, copy, target){
 				if(target == c4){
 					console.debug(copy ? "Copying from" : "Moving from", source);
 				}
-			});
-		}
-
-		dojo.addOnLoad(init);
+			}, true);
+		});
 
 	</script>
 </head>
@@ -94,7 +84,7 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Source 2 (copyOnly)</h3>
-			<div dojoType="dojo.dnd.Source" jsId="c2" class="container" copyOnly="true">
+			<div data-dojo-type="dojo/dnd/Source" jsId="c2" class="container" copyOnly="true">
 				<div class="dojoDndItem">Item <strong>X</strong></div>
 				<div class="dojoDndItem">Item <strong>Y</strong></div>
 				<div class="dojoDndItem">Item <strong>Z</strong></div>
@@ -102,7 +92,7 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Source 3</h3>
-			<div dojoType="dojo.dnd.Source" jsId="c3" class="container" allowNested="true">
+			<div data-dojo-type="dojo/dnd/Source" jsId="c3" class="container" allowNested="true">
 				<script type="dojo/method" event="creator" args="item, hint">
 					// this is custom creator, which changes the avatar representation
 					var node = dojo.doc.createElement("div"), s = String(item);
@@ -122,7 +112,7 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Source 4 (copyOnly, selfAccept, delay=8)</h3>
-			<div dojoType="dojo.dnd.Source" jsId="c4" class="container" copyOnly="true" selfAccept="false" delay="8">
+			<div data-dojo-type="dojo/dnd/Source" jsId="c4" class="container" copyOnly="true" selfAccept="false" delay="8">
 				<div class="dojoDndItem">Item 1</div>
 				<div class="dojoDndItem">Item 2</div>
 				<div class="dojoDndItem">Item 3</div>
@@ -130,7 +120,7 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Pure Target 5</h3>
-			<div dojoType="dojo.dnd.Target" jsId="c5" class="container">
+			<div data-dojo-type="dojo/dnd/Target" jsId="c5" class="container">
 				<div class="dojoDndItem">One item</div>
 			</div>
 		</div>

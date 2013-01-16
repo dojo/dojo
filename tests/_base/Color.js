@@ -23,7 +23,7 @@ define(["doh", "dojo/_base/array", "dojo/_base/Color"], function(doh, array, Col
 			function testColor9(t){ verifyColor(t, maroon, maroon); },
 			function testColor10(t){ verifyColor(t, [1, 2, 3], [1, 2, 3, 1]); },
 			function testColor11(t){ verifyColor(t, [1, 2, 3, 0.5], [1, 2, 3, 0.5]); },
-			function testColor12(t){ verifyColor(t, Color.blendColors(new dojo.Color("black"), new Color("white"), 0.5), [128, 128, 128, 1]); }
+			function testColor12(t){ verifyColor(t, Color.blendColors(new Color("black"), new Color("white"), 0.5), [128, 128, 128, 1]); }
 		]
 	);
 });

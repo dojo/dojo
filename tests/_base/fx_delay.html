@@ -5,13 +5,11 @@
 </style>
 <script type="text/javascript" src="../../dojo.js"></script>
 <script type="text/javascript">
-dojo.require("dojo._base.fx");
-dojo.require("dojo._base.html");
-dojo.addOnLoad(function(){
-	var box = dojo.byId("box");
-	dojo.connect(box, "onclick", function(){
-		dojo.style(box, "opacity", "0");
-		dojo.fadeIn({node:box, delay:1}).play();
+require(["dojo/dom", "dojo/_base/fx", "dojo/on", "dojo/dom-style", "dojo/domReady!"], function(dom, baseFx, on, domStyle){
+	var box = dom.byId("box");
+	on(box, "click", function(){
+		domStyle.set(box, "opacity", "0");
+		baseFx.fadeIn({node:box, delay:1}).play();
 	});
 });
 </script>

@@ -30,33 +30,33 @@ function(dojo, doh, domConstruct, has, win){
 			var d = fQuirks.contentWindow.document, finished,
 				thisObj = {test: "myThis"};
 			
-			dojo.withDoc(d, function(a1, a2){
+			win.withDoc(d, function(a1, a2){
 				t.is(1, a1, "first passed argument should be 1");
 				t.is(2, a2, "second passed argument should be 2");
 				t.is(this.test, "myThis", "context should be re-hitched");
-				t.is(d, dojo.doc, "dojo.doc should be reassigned");
+				t.is(d, win.doc, "win.doc should be reassigned");
 				finished = true;
 			}, thisObj, [1, 2]);
 			
 			t.t(finished, "Did withDoc test function complete?");
-			t.is(document, dojo.doc, "dojo.doc should be restored");
+			t.is(document, win.doc, "win.doc should be restored");
 		},
 		function withGlobal(t){
 			var w = fQuirks.contentWindow, finished,
 				thisObj = {test: "myThis"};
 			
-			dojo.withGlobal(w, function(a1, a2){
+			win.withGlobal(w, function(a1, a2){
 				t.is(1, a1, "first passed argument should be 1");
 				t.is(2, a2, "second passed argument should be 2");
 				t.is(this.test, "myThis", "context should be re-hitched");
-				t.is(42, dojo.global.answer, "dojo.global should be reassigned");
-				t.is(w.document, dojo.doc, "dojo.doc should be reassigned");
+				t.is(42, win.global.answer, "win.global should be reassigned");
+				t.is(w.document, win.doc, "win.doc should be reassigned");
 				finished = true;
 			}, thisObj, [1, 2]);
 			
 			t.t(finished, "Did withGlobal test function complete?");
-			t.is(window, dojo.global, "dojo.global should be restored");
-			t.is(document, dojo.doc, "dojo.doc should be restored");
+			t.is(window, win.global, "win.global should be restored");
+			t.is(document, win.doc, "win.doc should be restored");
 		},
 		function hasQuirks(t){
 			var origQuirks = has("quirks");

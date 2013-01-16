@@ -1,10 +1,10 @@
-define(["../../main", "doh/main"], function(dojo, doh){
+define(["doh/main", "dojo/_base/array", "dojo/_base/lang"], function(doh, array, lang){
 
   doh.register("tests._base.lang", [
 		function mixin(t){
-			t.assertEqual("object", typeof dojo.mixin());
-			t.assertEqual("object", typeof dojo.mixin(undefined));
-			t.assertEqual("object", typeof dojo.mixin(null));
+			t.assertEqual("object", typeof lang.mixin());
+			t.assertEqual("object", typeof lang.mixin(undefined));
+			t.assertEqual("object", typeof lang.mixin(null));
 			var src = {
 				foo: function(){
 					t.debug("foo");
@@ -12,7 +12,7 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				bar: "bar"
 			};
 			var dest = {};
-			dojo.mixin(dest, src);
+			lang.mixin(dest, src);
 			t.assertEqual("function", typeof dest["foo"]);
 			t.assertEqual("string", typeof dest["bar"]);
 		},
@@ -25,53 +25,53 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				bar: "bar"
 			};
 			function dest(){}
-			dojo.extend(dest, src);
+			lang.extend(dest, src);
 			var test = new dest();
 			t.assertEqual("function", typeof test["foo"]);
 			t.assertEqual("string", typeof test["bar"]);
 		},
 
 		function isFunction(t){
-			t.assertTrue(dojo.isFunction(new Function()));
-			t.assertTrue(dojo.isFunction(isFunction));
-			if(dojo.isBrowser){ // test the Safari workaround for NodeList
-				t.assertFalse(dojo.isFunction(dojo.doc.getElementsByName("html")));
-				t.assertFalse(dojo.isFunction(dojo.doc.createElement("object")));
+			t.assertTrue(lang.isFunction(new Function()));
+			t.assertTrue(lang.isFunction(isFunction));
+			if(lang.isBrowser){ // test the Safari workaround for NodeList
+				t.assertFalse(lang.isFunction(lang.doc.getElementsByName("html")));
+				t.assertFalse(lang.isFunction(lang.doc.createElement("object")));
 			}
 		},
 
 		function isObject(t){
-			t.assertFalse(dojo.isObject(true));
-			t.assertFalse(dojo.isObject(false));
-			t.assertFalse(dojo.isObject("foo"));
-			t.assertTrue(dojo.isObject(new String("foo")));
-			t.assertTrue(dojo.isObject(null));
-			t.assertTrue(dojo.isObject({}));
-			t.assertTrue(dojo.isObject([]));
-			t.assertTrue(dojo.isObject(new Array()));
+			t.assertFalse(lang.isObject(true));
+			t.assertFalse(lang.isObject(false));
+			t.assertFalse(lang.isObject("foo"));
+			t.assertTrue(lang.isObject(new String("foo")));
+			t.assertTrue(lang.isObject(null));
+			t.assertTrue(lang.isObject({}));
+			t.assertTrue(lang.isObject([]));
+			t.assertTrue(lang.isObject(new Array()));
 		},
 
 		function isArray(t){
-			t.assertTrue(dojo.isArray([]));
-			t.assertTrue(dojo.isArray(new Array()));
-			t.assertFalse(dojo.isArray({}));
+			t.assertTrue(lang.isArray([]));
+			t.assertTrue(lang.isArray(new Array()));
+			t.assertFalse(lang.isArray({}));
 		},
 
 		function isArrayLike(t){
-			t.assertFalse(dojo.isArrayLike("thinger"));
-			t.assertTrue(dojo.isArrayLike(new Array()));
-			t.assertFalse(dojo.isArrayLike({}));
-			t.assertTrue(dojo.isArrayLike(arguments));
+			t.assertFalse(lang.isArrayLike("thinger"));
+			t.assertTrue(lang.isArrayLike(new Array()));
+			t.assertFalse(lang.isArrayLike({}));
+			t.assertTrue(lang.isArrayLike(arguments));
 		},
 
 		function isString(t){
-			t.assertFalse(dojo.isString(true));
-			t.assertFalse(dojo.isString(false));
-			t.assertTrue(dojo.isString("foo"));
-			t.assertTrue(dojo.isString(new String("foo")));
-			t.assertFalse(dojo.isString(null));
-			t.assertFalse(dojo.isString({}));
-			t.assertFalse(dojo.isString([]));
+			t.assertFalse(lang.isString(true));
+			t.assertFalse(lang.isString(false));
+			t.assertTrue(lang.isString("foo"));
+			t.assertTrue(lang.isString(new String("foo")));
+			t.assertFalse(lang.isString(null));
+			t.assertFalse(lang.isString({}));
+			t.assertFalse(lang.isString([]));
 		},
 
 		function partial(t){
@@ -81,12 +81,12 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				return [this.foo, arg1, arg2];
 			}
 			
-			var st1 = dojo.partial(thinger);
+			var st1 = lang.partial(thinger);
 			t.assertEqual("bar", st1.call(scope)[0]);
 			t.assertEqual(undefined, st1()[0]);
-			var st2 = dojo.partial(thinger, "foo", "bar");
+			var st2 = lang.partial(thinger, "foo", "bar");
 			t.assertEqual("bar", st2()[2]);
-			var st3 = dojo.partial(thinger, "foo", "bar");
+			var st3 = lang.partial(thinger, "foo", "bar");
 		},
 
 		function nestedPartial(t){
@@ -94,12 +94,12 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				return [arg1, arg2];
 			}
 			
-			var st1 = dojo.partial(thinger, "foo");
+			var st1 = lang.partial(thinger, "foo");
 			t.assertEqual(undefined, st1()[1]);
 			t.assertEqual("bar", st1("bar")[1]);
 
 			// partials can accumulate
-			var st2 = dojo.partial(st1, "thud");
+			var st2 = lang.partial(st1, "thud");
 			t.assertEqual("foo", st2()[0]);
 			t.assertEqual("thud", st2()[1]);
 		},
@@ -111,11 +111,11 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				return [this.foo, arguments.length];
 			}
 			
-			var st1 = dojo.hitch(scope, thinger);
+			var st1 = lang.hitch(scope, thinger);
 			t.assertEqual("bar", st1()[0]);
 			t.assertEqual(0, st1()[1]);
 
-			var st2 = dojo.hitch(scope2, thinger);
+			var st2 = lang.hitch(scope2, thinger);
 			t.assertEqual("baz", st2()[0]);
 			t.assertEqual(0, st1()[1]);
 			t.assertEqual(1, st1("blah")[1]);
@@ -131,10 +131,10 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				return [this.foo, arguments.length];
 			}
 			
-			var st1 = dojo.hitch(scope, thinger, "foo", "bar");
+			var st1 = lang.hitch(scope, thinger, "foo", "bar");
 			t.assertEqual("bar", st1()[0]);
 			t.assertEqual(2, st1()[1]);
-			var st2 = dojo.hitch(scope2, thinger, "foo", "bar");
+			var st2 = lang.hitch(scope2, thinger, "foo", "bar");
 			t.assertEqual("baz", st2()[0]);
 			t.assertEqual(2, st2()[1]);
 		},
@@ -146,28 +146,28 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				return [this.foo, arg1, arg2];
 			}
 			
-			var st1 = dojo.hitch(null, thinger);
+			var st1 = lang.hitch(null, thinger);
 			t.assertEqual("bar", st1.call(scope)[0]);
 			t.assertEqual(undefined, st1()[0]);
-			var st2 = dojo.hitch(null, thinger, "foo", "bar");
+			var st2 = lang.hitch(null, thinger, "foo", "bar");
 			t.assertEqual("bar", st2()[2]);
-			var st3 = dojo.hitch(null, thinger, "foo", "bar");
+			var st3 = lang.hitch(null, thinger, "foo", "bar");
 		},
 
 		function _toArray(t){
 			var obj1 = [ 'foo', 'bar', 'spam', 'ham' ];
 
 			function thinger(){
-				return dojo._toArray(arguments);
+				return lang._toArray(arguments);
 			}
 			var obj2 = thinger.apply(this, obj1);
 			t.assertEqual(obj1[0], obj2[0]);
 
-			if(dojo.isBrowser){
+			if(lang.isBrowser){
 				//test DomCollection
 				var div = document.createElement('div');
 				div.innerHTML="<a href='#'>link</a>text";
-				var r=dojo._toArray(div.childNodes);
+				var r=lang._toArray(div.childNodes);
 				t.is(2,r.length);
 			}
 		},
@@ -189,7 +189,7 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				},
 				toString: function(){ return "meow"; }
 			};
-			var obj2 = dojo.clone(obj1);
+			var obj2 = lang.clone(obj1);
 			t.assertEqual(obj1.foo, obj2.foo);
 			t.assertEqual(obj1.answer, obj2.answer);
 			t.assertEqual(obj1.jan102007, obj2.jan102007);
@@ -222,7 +222,7 @@ define(["../../main", "doh/main"], function(dojo, doh){
 			t.is(1, a.x);
 			t.is(2, a.y());
 			t.is(99, a.z1);
-			var c = dojo.delegate(a, b);
+			var c = lang.delegate(a, b);
 			t.is(1, a.x);
 			t.is(2, a.y());
 			t.is(99, a.z1);
@@ -235,7 +235,7 @@ define(["../../main", "doh/main"], function(dojo, doh){
 		},
 
 		function replace(t){
-			var s1 = dojo.replace("Hello, {name.first} {name.last} AKA {nick}!",
+			var s1 = lang.replace("Hello, {name.first} {name.last} AKA {nick}!",
 				{
 					nick: "Bob",
 					name: {
@@ -246,17 +246,17 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				});
 			t.is("Hello, Robert Cringely AKA Bob!", s1);
 
-			var s2 = dojo.replace("Hello, {0} {2}!", ["Robert", "X", "Cringely"]);
+			var s2 = lang.replace("Hello, {0} {2}!", ["Robert", "X", "Cringely"]);
 			t.is("Hello, Robert Cringely!", s2);
 
 			function sum(a){
 				var t = 0;
-				dojo.forEach(a, function(x){ t += x; });
+				array.forEach(a, function(x){ t += x; });
 				return t;
 			}
-			var s3 = dojo.replace(
+			var s3 = lang.replace(
 				"{count} payments averaging {avg} USD per payment.",
-				dojo.hitch(
+				lang.hitch(
 					{ payments: [11, 16, 12] },
 					function(_, key){
 						switch(key){
@@ -271,7 +271,7 @@ define(["../../main", "doh/main"], function(dojo, doh){
 				));
 			t.is("3 payments averaging 13 USD per payment.", s3);
 
-			var s4 = dojo.replace("Hello, ${0} ${2}!", ["Robert", "X", "Cringely"], /\$\{([^\}]+)\}/g);
+			var s4 = lang.replace("Hello, ${0} ${2}!", ["Robert", "X", "Cringely"], /\$\{([^\}]+)\}/g);
 			t.is("Hello, Robert Cringely!", s4);
 		}
 	]

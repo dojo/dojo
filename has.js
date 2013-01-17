@@ -98,7 +98,7 @@ define(["require", "module"], function(require, module){
 	if(has("host-browser")){
 		// Common application level tests
 		has.add("dom-addeventlistener", !!document.addEventListener);
-		has.add("touch", "ontouchstart" in document);
+		has.add("touch", "ontouchstart" in document || window.navigator.msMaxTouchPoints > 0);
 		// I don't know if any of these tests are really correct, just a rough guess
 		has.add("device-width", screen.availWidth || innerWidth);
 

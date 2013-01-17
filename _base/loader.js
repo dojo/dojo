@@ -1,4 +1,4 @@
-define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"], function(dojo, has, require, thisModule, json, lang, array) {
+define(["./kernel", "../has", "require", "module", "../json", "./lang", "./array"], function(dojo, has, require, thisModule, json, lang, array) {
 	// module:
 	//		dojo/_base/loader
 
@@ -435,10 +435,10 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 			// don't have to map dojo/init since that will occur when the dependency is resolved
 			return "// xdomain rewrite of " + module.mid + "\n" +
 				"define('" + id + "',{\n" +
-				"\tnames:" + dojo.toJson(names) + ",\n" +
+				"\tnames:" + json.stringify(names) + ",\n" +
 				"\tdef:function(" + names.join(",") + "){" + extractResult[1] + "}" +
 				"});\n\n" +
-				"define(" + dojo.toJson(names.concat(["dojo/loadInit!"+id])) + ", function(" + names.join(",") + "){\n" + extractResult[0] + "});";
+				"define(" + json.stringify(names.concat(["dojo/loadInit!"+id])) + ", function(" + names.join(",") + "){\n" + extractResult[0] + "});";
 		},
 
 		loaderVars = require.initSyncLoader(dojoRequirePlugin, checkDojoRequirePlugin, transformToAmd),

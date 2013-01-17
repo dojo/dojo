@@ -87,7 +87,7 @@
 					name: 'setContent_with_parsing',
 					runTest: function(t){
 						console.log("basicChecks: " + this.name);
-						var cont = '<div dojoType="SimpleThing" jsId="ifrs" data="{}"></div>';
+						var cont = '<div data-dojo-type="SimpleThing" data-dojo-id="ifrs" data="{}"></div>';
 						html.set(
 							dom.byId("pane1"),
 							cont,
@@ -295,7 +295,7 @@
 					runTest: function(t){
 						console.log("nodelistExtension: " + this.name);
 
-						query(".zork").html("<li dojoType='ParserInstantiateTester'>1</li><li dojoType='ParserInstantiateTester'>2</li><li dojoType='ParserInstantiateTester'>3</li>",
+						query(".zork").html("<li data-dojo-type='ParserInstantiateTester'>1</li><li data-dojo-type='ParserInstantiateTester'>2</li><li data-dojo-type='ParserInstantiateTester'>3</li>",
 						{
 							parseContent: true,
 							onBegin: function() {
@@ -382,13 +382,13 @@
 								"simple"
 							],
 							[
-								'<div dojoType="SimpleThing" jsId="id00">parsed content</div>',
+								'<div data-dojo-type="SimpleThing" data-dojo-id="id00">parsed content</div>',
 								{
 									parseContent: true
 								}
 							],
 							[
-								'<div dojoType="SimpleThing" jsId="id01">parsed content</div>',
+								'<div data-dojo-type="SimpleThing" data-dojo-id="id01">parsed content</div>',
 								{
 									parseContent: true
 								}
@@ -418,7 +418,7 @@
 				{
 					name: 'unspecified',
 					runTest: function(t){
-						var cont = '<div dojoType="SimpleThing" jsId="ifrs" data="{}"></div>';
+						var cont = '<div data-dojo-type="SimpleThing" data-dojo-id="ifrs" data="{}"></div>';
 
 						var parserCalled, inherited;
 						handle = aspect.after(parser, "parse", function(args){
@@ -444,7 +444,7 @@
 				{
 					name: 'specified',
 					runTest: function(t){
-						var cont = '<div dojoType="SimpleThing" jsId="ifrs" data="{}"></div>';
+						var cont = '<div data-dojo-type="SimpleThing" data-dojo-id="ifrs" data="{}"></div>';
 
 						var parserCalled, inherited;
 						handle = aspect.after(parser, "parse", function(args){
@@ -530,10 +530,10 @@
 
 	<div id="markupPane">initial content</div>
 	<div id="markupSetContentOp">
-		<div dojoType="DeclarativeContentSetter" node="markupPane" content="markupSetContentOp: new node content"></div>
+		<div data-dojo-type="DeclarativeContentSetter" node="markupPane" content="markupSetContentOp: new node content"></div>
 	</div>
 	<div id="markupSetContentOpX">
-		<div dojoType="DeclarativeContentSetter" jsId="markupSetContentOpX_setter" node="markupPane" content="markupSetContentOpX: new node content">
+		<div data-dojo-type="DeclarativeContentSetter" data-dojo-id="markupSetContentOpX_setter" node="markupPane" content="markupSetContentOpX: new node content">
 		<script type="dojo/method" event="onBegin">
 			this.content = this.content.toUpperCase();
 			console.log(this.id + ", made my content look like this:" + this.content);
@@ -545,7 +545,7 @@
 		</div>
 	</div>
 	<div id="another">
-		<div id="myTest9" dojoType="DeclarativeContentSetter">
+		<div id="myTest9" data-dojo-type="DeclarativeContentSetter">
 			Some content
 			<script type="dojo/method">
 				console.log("parsed me!");

@@ -11,22 +11,20 @@
 		djConfig="isDebug: true"></script>
 
 	<script type="text/javascript">
-		dojo.require("doh.runner");
-		dojo.require("dojo.window");
-
-		dojo.addOnLoad(function(){
+		require(["doh", "dojo/dom", "dojo/dom-geometry", "dojo/sniff", "dojo/window", "dojo/domReady!"],
+				function(doh, dom, domGeom, has, winUtils){
 			doh.register("dojo.window.scroll",
 				function scrollIntoView(){
-					dojo.global.scrollTo(100,100);
-					var s2 = dojo.byId('s2');
+					scrollTo(100,100);
+					var s2 = dom.byId('s2');
 					s2.scrollTop = s2.scrollLeft = 10;
-					dojo.window.scrollIntoView('q2');
-					doh.is((dojo.isMoz && !dojo._isBodyLtr())? -87 : 87, s2.scrollLeft);
+					winUtils.scrollIntoView('q2');
+					doh.is((has("mozilla") && !domGeom.isBodyLtr())? -87 : 87, s2.scrollLeft);
 					doh.is(113, s2.scrollTop);
 					doh.f(dojo.hasAttr(s2,'_offsetParent'));
 					doh.f(dojo.hasAttr(s2,'_parent'));
 					doh.f(dojo.hasAttr(s2,'_child'));
-					dojo.global.scrollTo(!dojo._isBodyLtr() ? 4000 : 0, 4000);
+					scrollTo(!domGeom.isBodyLtr() ? 4000 : 0, 4000);
 				}
 			);
 			doh.run();

@@ -131,7 +131,8 @@ define([
 		if(options.jsonp){
 			var queryParameter = new RegExp('[?&]' + options.jsonp + '=');
 			if(!queryParameter.test(url)){
-				url += queryParameter +
+				url += (~url.indexOf('?') ? '&' : '?') +
+					options.jsonp + '=' +
 					(options.frameDoc ? 'parent.' : '') +
 					mid + '_callbacks.' + dfd.id;
 			}

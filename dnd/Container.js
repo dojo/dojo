@@ -1,7 +1,6 @@
 define([
 	"../_base/array",
 	"../_base/declare",
-	"../_base/event",
 	"../_base/kernel",
 	"../_base/lang",
 	"../_base/window",
@@ -16,7 +15,7 @@ define([
 	"../touch",
 	"./common"
 ], function(
-	array, declare, event, kernel, lang, win,
+	array, declare, kernel, lang, win,
 	dom, domClass, domConstruct, Evented, has, on, query, ready, touch, dnd){
 
 // module:
@@ -281,7 +280,8 @@ var Container = declare("dojo.dnd.Container", Evented, {
 		// e: Event
 		//		mouse event
 		if(!this.skipForm || !dnd.isFormElement(e)){
-			event.stop(e);
+			e.stopPropagation();
+			e.preventDefault();
 		}
 	},
 

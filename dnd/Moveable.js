@@ -1,7 +1,7 @@
 define([
-	"../_base/array", "../_base/declare", "../_base/event", "../_base/lang",
+	"../_base/array", "../_base/declare", "../_base/lang",
 	"../dom", "../dom-class", "../Evented", "../on", "../topic", "../touch", "./common", "./Mover", "../_base/window"
-], function(array, declare, event, lang, dom, domClass, Evented, on, topic, touch, dnd, Mover, win){
+], function(array, declare, lang, dom, domClass, Evented, on, topic, touch, dnd, Mover, win){
 
 // module:
 //		dojo/dnd/Moveable
@@ -66,7 +66,8 @@ var Moveable = declare("dojo.dnd.Moveable", [Evented], {
 		}else{
 			this.onDragDetected(e);
 		}
-		event.stop(e);
+		e.stopPropagation();
+		e.preventDefault();
 	},
 	onMouseMove: function(e){
 		// summary:
@@ -77,7 +78,8 @@ var Moveable = declare("dojo.dnd.Moveable", [Evented], {
 			this.onMouseUp(e);
 			this.onDragDetected(e);
 		}
-		event.stop(e);
+		e.stopPropagation();
+		e.preventDefault();
 	},
 	onMouseUp: function(e){
 		// summary:
@@ -87,7 +89,8 @@ var Moveable = declare("dojo.dnd.Moveable", [Evented], {
 		for(var i = 0; i < 2; ++i){
 			this.events.pop().remove();
 		}
-		event.stop(e);
+		e.stopPropagation();
+		e.preventDefault();
 	},
 	onSelectStart: function(e){
 		// summary:
@@ -95,7 +98,8 @@ var Moveable = declare("dojo.dnd.Moveable", [Evented], {
 		// e: Event
 		//		mouse event
 		if(!this.skip || !dnd.isFormElement(e)){
-			event.stop(e);
+			e.stopPropagation();
+			e.preventDefault();
 		}
 	},
 

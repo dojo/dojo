@@ -8,9 +8,9 @@
 			require([
 				"doh",
 				"dojo/_base/array", "dojo/aspect", "dojo/dom", "dojo/dom-style",
-				"dojo/_base/fx", "dojo/fx", "dojo/fx/easing", "dojo/_base/lang",
+				"dojo/_base/fx", "dojo/fx", "dojo/fx/easing", "dojo/fx/Toggler", "dojo/_base/lang",
 				"dojo/domReady!"
-			], function(doh, array, aspect, dom, domStyle, baseFx, fx, easing, lang){
+			], function(doh, array, aspect, dom, domStyle, baseFx, fx, easing, Toggler, lang){
 				doh.register("t", 
 					[
 						function slideTo(t){
@@ -257,9 +257,10 @@
 							
 						},
 						
-						function Toggler(){
+						function testToggler(){
 							var d = new doh.Deferred();
-							var t = new fx.Toggler({
+							debugger;
+							var t = new Toggler({
 								node: "foo",
 								hideDuration: 100,
 								hideFunc: fx.wipeOut,

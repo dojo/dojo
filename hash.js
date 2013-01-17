@@ -1,5 +1,5 @@
-define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_base/lang", "./domReady", "./sniff"],
-	function(dojo, require, config, connect, lang, domReady, has){
+define(["./_base/kernel", "require", "./_base/config", "./aspect", "./_base/lang", "./topic", "./domReady", "./sniff"],
+	function(dojo, require, config, aspect, lang, topic, domReady, has){
 
 	// module:
 	//		dojo/hash
@@ -58,7 +58,7 @@ define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_ba
 	}
 
 	function _dispatchEvent(){
-		connect.publish("/dojo/hashchange", [_getHash()]);
+		topic.publish("/dojo/hashchange", _getHash());
 	}
 
 	function _pollLocation(){
@@ -238,7 +238,7 @@ define(["./_base/kernel", "require", "./_base/config", "./_base/connect", "./_ba
 	}
 	domReady(function(){
 		if("onhashchange" in dojo.global && (!has("ie") || (has("ie") >= 8 && document.compatMode != "BackCompat"))){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
-			_connect = connect.connect(dojo.global,"onhashchange",_dispatchEvent);
+			_connect = aspect.after(dojo.global,"onhashchange",_dispatchEvent, true);
 		}else{
 			if(document.addEventListener){ // Non-IE
 				_recentHash = _getHash();

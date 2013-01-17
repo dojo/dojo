@@ -1,5 +1,5 @@
-define(["../_base/connect", "../_base/kernel", "../_base/lang", "../dom"],
-	function(connect, kernel, lang, dom){
+define(["../sniff", "../_base/kernel", "../_base/lang", "../dom"],
+	function(has, kernel, lang, dom){
 
 // module:
 //		dojo/dnd/common
@@ -13,7 +13,9 @@ var exports = {
 };
 =====*/
 
-exports.getCopyKeyState = connect.isCopyKey;
+exports.getCopyKeyState = function(evt){
+	return evt[has("mac") ? "metaKey" : "ctrlKey"]
+};
 
 exports._uniqueId = 0;
 exports.getUniqueId = function(){

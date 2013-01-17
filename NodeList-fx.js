@@ -1,5 +1,5 @@
-define(["./query", "./_base/lang", "./_base/connect", "./_base/fx", "./fx"],
-function(query, lang, connectLib, baseFx, coreFx){
+define(["./query", "./_base/lang", "./aspect", "./_base/fx", "./fx"],
+function(query, lang, aspect, baseFx, coreFx){
 
 // module:
 //		dojo/NodeList-fx
@@ -131,7 +131,7 @@ lang.extend(NodeList, {
 		// example:
 		//		Fade them on a delay and do something at the end:
 		//		|	var fo = dojo.query(".zork").fadeOut();
-		//		|	dojo.connect(fo, "onEnd", function(){ /*...*/ });
+		//		|	aspect.after(fo, "onEnd", function(){ /*...*/ }, true);
 		//		|	fo.play();
 		// example:
 		//		Using `auto`:
@@ -211,7 +211,7 @@ lang.extend(NodeList, {
 			})
 		);
 		if(onEnd){
-			connectLib.connect(canim, "onEnd", onEnd);
+			aspect.after(canim, "onEnd", onEnd, true);
 		}
 		return canim.play(delay||0); // dojo/_base/fx.Animation
 	}

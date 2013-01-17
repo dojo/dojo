@@ -1,5 +1,5 @@
-define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Evented", "./Color", "./connect", "./sniff", "../dom", "../dom-style"],
-	function(dojo, config, /*===== declare, =====*/ lang, Evented, Color, connect, has, dom, style){
+define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Evented", "./Color", "../aspect", "./sniff", "../dom", "../dom-style"],
+	function(dojo, config, /*===== declare, =====*/ lang, Evented, Color, aspect, has, dom, style){
 	// module:
 	//		dojo/_base/fx
 	// notes:
@@ -336,7 +336,7 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 
 		_startTimer: function(){
 			if(!this._timer){
-				this._timer = connect.connect(runner, "run", this, "_cycle");
+				this._timer = aspect.after(runner, "run", lang.hitch(this, "_cycle"), true);
 				ctr++;
 			}
 			if(!timer){
@@ -346,7 +346,7 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 
 		_stopTimer: function(){
 			if(this._timer){
-				connect.disconnect(this._timer);
+				this._timer.remove();
 				this._timer = null;
 				ctr--;
 			}
@@ -389,7 +389,7 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 		props.end = fArgs.end;
 
 		var anim = basefx.animateProperty(fArgs);
-		connect.connect(anim, "beforeBegin", lang.partial(_makeFadeable, fArgs.node));
+		aspect.after(anim, "beforeBegin", lang.partial(_makeFadeable, fArgs.node), true);
 
 		return anim; // Animation
 	};
@@ -558,7 +558,7 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 		if(!args.easing){ args.easing = dojo._defaultEasing; }
 
 		var anim = new Animation(args);
-		connect.connect(anim, "beforeBegin", anim, function(){
+		aspect.after(anim, "beforeBegin", lang.hitch(anim, function(){
 			var pm = {};
 			for(var p in this.properties){
 				// Make shallow copy of properties into pm because we overwrite
@@ -602,8 +602,8 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 				}
 			}
 			this.curve = new PropLine(pm);
-		});
-		connect.connect(anim, "onAnimate", lang.hitch(style, "set", anim.node));
+		}), true);
+		aspect.after(anim, "onAnimate", lang.hitch(style, "set", anim.node), true);
 		return anim; // Animation
 	};
 

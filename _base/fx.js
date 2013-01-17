@@ -1,4 +1,4 @@
-define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Evented", "./Color", "../aspect", "./sniff", "../dom", "../dom-style"],
+define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Evented", "./Color", "../aspect", "../sniff", "../dom", "../dom-style"],
 	function(dojo, config, /*===== declare, =====*/ lang, Evented, Color, aspect, has, dom, style){
 	// module:
 	//		dojo/_base/fx

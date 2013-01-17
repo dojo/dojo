@@ -25,6 +25,7 @@
 					// kludge: code from dojo.xhr contentHandler to create doc on IE
 					var result = fauxXhr.responseXML;
 					if(has("ie")){
+						// Needed for IE6-8
 						if((!result || !result.documentElement)){
 							var ms = function(n){ return "MSXML" + n + ".DOMDocument"; };
 							var dp = ["Microsoft.XMLDOM", ms(6), ms(4), ms(3), ms(2)];
@@ -32,7 +33,7 @@
 								try{
 									var dom = new ActiveXObject(p);
 									dom.async = false;
-									dom.loadXML(xhr.responseText);
+									dom.loadXML(fauxXhr.responseText);
 									result = dom;
 								}catch(e){ return false; }
 								return true;

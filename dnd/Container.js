@@ -11,12 +11,11 @@ define([
 	"../has",
 	"../on",
 	"../query",
-	"../ready",
 	"../touch",
 	"./common"
 ], function(
 	array, declare, kernel, lang, win,
-	dom, domClass, domConstruct, Evented, has, on, query, ready, touch, dnd){
+	dom, domClass, domConstruct, Evented, has, on, query, touch, dnd){
 
 // module:
 //		dojo/dnd/Container

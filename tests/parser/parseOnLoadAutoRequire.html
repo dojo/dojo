@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>parseOnLoad:true, async: true, auto-require unit test</title>
+		<title>parser auto-require unit test</title>
 		<style type="text/css">
 			@import "../../resources/dojo.css";
 		</style>
 		<script type="text/javascript" src="../../dojo.js"
-				data-dojo-config="isDebug:true, async:true, parseOnLoad: true"></script>
+				data-dojo-config="isDebug:true, async:true"></script>
 		<script type="text/javascript">
-			require(["doh", "dojo/ready", "dojo/parser"], function(doh, ready){
-				ready(function(){
+			require(["doh", "dojo/parser", "dojo/domReady!"], function(doh, parser){
+				parser.parse().then(function(){
 					doh.register("parseOnLoad auto-require", function parseOnLoad(){
 						doh.is(typeof dr1, "object", "object using MID mapped to return var");
 						doh.is(dr1.params.foo, "bar", "parameters set on instantiation");

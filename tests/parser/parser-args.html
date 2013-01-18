@@ -7,8 +7,8 @@
 		</style>
 		<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
 		<script type="text/javascript">
-		require(["dojo/ready", "dojo/_base/lang", "dojo/_base/declare", "doh", "dojo/parser", "dojo/domReady!"],
-				function(ready, dlang, declare, doh, parser){
+		require(["dojo/_base/lang", "dojo/_base/declare", "doh", "dojo/parser", "dojo/domReady!"],
+				function(dlang, declare, doh, parser){
 
 			var mixin = dlang.mixin,
 				extend = dlang.extend,
@@ -23,26 +23,25 @@
 				strProp2: "original2"
 			});
 
-			ready(function(){
-				doh.register("args scope test", [
-					function noArgs(){
-						// Test calling parse() with no arguments.
-						var widgets = parser.parse();
-						doh.is(1, widgets.length, "found 1 widget");
-						doh.is("text", widgets[0].strProp1);
-					},
-					function optionsOnly(){
-						// Test when only the options argument is passed, and it does not contain a rootNode.
-						// For 2.0, if we drop scope parameter, change this test.
-						var widgets = parser.parse({
-							scope: "myscope"
-						});
-						doh.is(1, widgets.length, "found 1 widget");
-						doh.is("text", scopeObj.strProp1);
-					}
-				]);
-				doh.run();
-			});
+			doh.register("args scope test", [
+				function noArgs(){
+					// Test calling parse() with no arguments.
+					var widgets = parser.parse();
+					doh.is(1, widgets.length, "found 1 widget");
+					doh.is("text", widgets[0].strProp1);
+				},
+				function optionsOnly(){
+					// Test when only the options argument is passed, and it does not contain a rootNode.
+					// For 2.0, if we drop scope parameter, change this test.
+					var widgets = parser.parse({
+						scope: "myscope"
+					});
+					doh.is(1, widgets.length, "found 1 widget");
+					doh.is("text", scopeObj.strProp1);
+				}
+			]);
+
+			doh.run();
 		});
 		</script>
 	</head>

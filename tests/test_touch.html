@@ -32,138 +32,137 @@
 				"dojo/_base/array",
 				"dojo/dom",
 				"dojo/_base/lang",
-				"dojo/ready",
 				"dojo/touch",
 				"dojo/on",
 				"dojo/has",
 				"dojo/dom-style",
-				"doh/runner"
-			], function(array, dom, lang, ready, touch, on, has, domStyle, doh){
-				ready(function(){
-					var action = function(comment, e){
-						// summary:
-						//		Callback to display into when events fire
-						// Detailed log of the most recent event:
+				"doh/runner",
+				"dojo/domReady!"
+			], function(array, dom, lang, touch, on, has, domStyle, doh){
+				var action = function(comment, e){
+					// summary:
+					//		Callback to display into when events fire
+					// Detailed log of the most recent event:
 
-						dom.byId("current").innerHTML = "Most recent event:";
-						var info = "[Touch Event]: " + e.type + " on " + comment +
-								"<br/> ------ Event Properties: ------<br/>";
-						for(var i in e){
-						  if(i == "touches" || i == "targetTouches" || i == "changedTouches"){
-						    info += i + ": " + e[i].length + "<br/>";
-						  }else{
-						    if(typeof e[i] != "function"){
-						      info += " " + i + ": " + e[i] + "<br/>";
-						    }
-						  }
+					dom.byId("current").innerHTML = "Most recent event:";
+					var info = "[Touch Event]: " + e.type + " on " + comment +
+							"<br/> ------ Event Properties: ------<br/>";
+					for(var i in e){
+					  if(i == "touches" || i == "targetTouches" || i == "changedTouches"){
+						info += i + ": " + e[i].length + "<br/>";
+					  }else{
+						if(typeof e[i] != "function"){
+						  info += " " + i + ": " + e[i] + "<br/>";
 						}
-						dom.byId("current").innerHTML += info + "<br/>";
+					  }
+					}
+					dom.byId("current").innerHTML += info + "<br/>";
 
-						// This is a log of all events, most recent first:
-						dom.byId("log").innerHTML = comment + "{type:" +
-								e.type + ", target:" + (e.target.id||e.target.tagName) +
-								"}<br/>" + dom.byId("log").innerHTML;
-					};
-					
-					var node = dom.byId("test"),
-						innerNode = dom.byId("innertest");
+					// This is a log of all events, most recent first:
+					dom.byId("log").innerHTML = comment + "{type:" +
+							e.type + ", target:" + (e.target.id||e.target.tagName) +
+							"}<br/>" + dom.byId("log").innerHTML;
+				};
 
-					//1. should work well on PC and touch devices
-					array.forEach(["test", "innertest"], function(name){
-						for(var event in touch){
-							if(event != "move"){
-								on(dom.byId(name), touch[event], lang.hitch(null, action, "on("+name+", touch."+event+")-->"));
-							}
+				var node = dom.byId("test"),
+					innerNode = dom.byId("innertest");
+
+				//1. should work well on PC and touch devices
+				array.forEach(["test", "innertest"], function(name){
+					for(var event in touch){
+						if(event != "move"){
+							on(dom.byId(name), touch[event], lang.hitch(null, action, "on("+name+", touch."+event+")-->"));
 						}
-					});
+					}
+				});
 
-					on(document, "touchmove", function(evt){
-						// Prevent scrolling since it interferes with testing touchover/touchout on "test" and "innertest"
-						evt.preventDefault();
-					});
-					
+				on(document, "touchmove", function(evt){
+					// Prevent scrolling since it interferes with testing touchover/touchout on "test" and "innertest"
+					evt.preventDefault();
+				});
+
 //					//2. should work well across touch devices
 //					on(node, "touchstart", action);
 //					on(node, "touchmove", action);
 //					on(node, "touchend", action);
 //					on(node, "touchcancel", action);
 //					on(node, "orientationchange", action);
-					
-					//3. we can also isolate mouse/touch handlers
-					on(node, "touchend", function(){alert("isolated touchend handler");});
-					on(node, "mouseup", function(){alert("isolated mouseup handler");});
-					/*
-					on(node, "touchmove", function(e){
-						dom.byId("log").innerHTML = 'on(node,"touchmove")-->{type:' +
-							e.type + ", target:" + (e.target.id||e.target.tagName) +
-							"}<br/>" + dom.byId("log").innerHTML;
-					});
-					*/
-				
-					//================================= DoH tests - only running on desktop ======================
-					if(has("touch")){
-						//FIXME - DoH not supported on touch device
-						return;
-					}
-					var dohDiv = dom.byId('dohDiv');
-					domStyle.set(dohDiv, {display: 'block'});
-					
-					function setObj(obj, e){
-						obj.type = e.type;
-						obj.target = e.target;
-					}
-					function assert(obj, type, target){
-						doh.assertEqual(type, obj.type);
-						doh.assertEqual(target, obj.target);
-					}
 
-					doh.register("dojo.touch", [
-						function press(){
-							var executed, obj = {};
-							on(dohDiv, touch.press, function(e){
-								//console.log(e.type);
-								executed = true;
-								setObj(obj, e);
-							});
-							on.emit(dohDiv, 'mousedown', {});
-							doh.assertTrue(executed, 'dojo.touch.press not fired');
-							assert(obj, 'mousedown', dohDiv);							
-						},
-						function move(){
-							var executed, obj = {};
-							on(dohDiv, touch.move, function(e){
-								//console.log(e.type);
-								executed = true;
-								setObj(obj, e);
-							});
-							on.emit(dohDiv, 'mousemove', {});
-							doh.assertTrue(executed, 'dojo.touch.move not fired');
-							assert(obj, 'mousemove', dohDiv);
-						},
-						function release(){
-							var executed, obj = {};
-							on(dohDiv, touch.release, function(e){
-								//console.log(e.type);
-								executed = true;
-								setObj(obj, e);
-							});
-							on.emit(dohDiv, 'mouseup',  {screenX: 0, screenY: 50});
-							doh.assertTrue(executed, 'dojo.touch.release not fired');
-							assert(obj, 'mouseup', dohDiv);
-						},
-						function cancel(){
-							var executed, obj = {};
-							on(dohDiv, touch.cancel, function(e){
-								executed = true;
-								setObj(obj, e);
-							});
-							on.emit(dohDiv, 'mouseout',  {screenX: 0, screenY: 50});
-							doh.assertTrue(executed, 'dojo.touch.cancel not fired');
-							assert(obj, 'mouseout', dohDiv);
-						}
-					]);
-					doh.run();
+				//3. we can also isolate mouse/touch handlers
+				on(node, "touchend", function(){alert("isolated touchend handler");});
+				on(node, "mouseup", function(){alert("isolated mouseup handler");});
+				/*
+				on(node, "touchmove", function(e){
+					dom.byId("log").innerHTML = 'on(node,"touchmove")-->{type:' +
+						e.type + ", target:" + (e.target.id||e.target.tagName) +
+						"}<br/>" + dom.byId("log").innerHTML;
 				});
+				*/
+
+				//================================= DoH tests - only running on desktop ======================
+				if(has("touch")){
+					//FIXME - DoH not supported on touch device
+					return;
+				}
+				var dohDiv = dom.byId('dohDiv');
+				domStyle.set(dohDiv, {display: 'block'});
+
+				function setObj(obj, e){
+					obj.type = e.type;
+					obj.target = e.target;
+				}
+				function assert(obj, type, target){
+					doh.assertEqual(type, obj.type);
+					doh.assertEqual(target, obj.target);
+				}
+
+				doh.register("dojo.touch", [
+					function press(){
+						var executed, obj = {};
+						on(dohDiv, touch.press, function(e){
+							//console.log(e.type);
+							executed = true;
+							setObj(obj, e);
+						});
+						on.emit(dohDiv, 'mousedown', {});
+						doh.assertTrue(executed, 'dojo.touch.press not fired');
+						assert(obj, 'mousedown', dohDiv);
+					},
+					function move(){
+						var executed, obj = {};
+						on(dohDiv, touch.move, function(e){
+							//console.log(e.type);
+							executed = true;
+							setObj(obj, e);
+						});
+						on.emit(dohDiv, 'mousemove', {});
+						doh.assertTrue(executed, 'dojo.touch.move not fired');
+						assert(obj, 'mousemove', dohDiv);
+					},
+					function release(){
+						var executed, obj = {};
+						on(dohDiv, touch.release, function(e){
+							//console.log(e.type);
+							executed = true;
+							setObj(obj, e);
+						});
+						on.emit(dohDiv, 'mouseup',  {screenX: 0, screenY: 50});
+						doh.assertTrue(executed, 'dojo.touch.release not fired');
+						assert(obj, 'mouseup', dohDiv);
+					},
+					function cancel(){
+						var executed, obj = {};
+						on(dohDiv, touch.cancel, function(e){
+							executed = true;
+							setObj(obj, e);
+						});
+						on.emit(dohDiv, 'mouseout',  {screenX: 0, screenY: 50});
+						doh.assertTrue(executed, 'dojo.touch.cancel not fired');
+						assert(obj, 'mouseout', dohDiv);
+					}
+				]);
+
+				doh.run();
 			});
 		</script>
 	</head>

@@ -18,7 +18,8 @@
 
 		<script type="text/javascript">
 		// the following should load the current locale + 'en-us-hawaii' and 'en-us-new_york-brooklyn
-		require(["doh", "dojo/has", "dojo/i18n", "dojo/i18n!dojo/tests/nls/salutations"], function(doh, has, i18n){
+		require(["doh", "dojo/_base/array", "dojo/has", "dojo/i18n", "dojo/i18n!dojo/tests/nls/salutations", "dojo/domReady!"],
+				function(doh, array, has, i18n){
 			if(dohArgs.async){
 				doh.register(function extraLocalesAsync(t){
 					// the following should load synchronously...at least with the dojo loader
@@ -48,11 +49,10 @@
 
 
 			if(has("dojo-unit-tests")){
-				dojo.forEach(i18n.unitTests, function(item){item(doh);});
+				array.forEach(i18n.unitTests, function(item){item(doh);});
 			}
 
-
-			doh.runOnLoad();
+			doh.run();
 		});
 		if(!require.async){
 			dojo.requireLocalization("dojo.tests._base.loader", "syncBundle", "ab-cd-ef");

@@ -4,7 +4,6 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 	//		dojo/dom-prop
 	// summary:
 	//		This module defines the core dojo DOM properties API.
-	//		Indirectly depends on dojo.empty() and dojo.toDom().
 
 	// TODOC: summary not showing up in output, see https://github.com/csnover/js-doc-parse/issues/42
 

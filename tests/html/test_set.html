@@ -534,11 +534,11 @@
 	</div>
 	<div id="markupSetContentOpX">
 		<div data-dojo-type="DeclarativeContentSetter" data-dojo-id="markupSetContentOpX_setter" node="markupPane" content="markupSetContentOpX: new node content">
-		<script type="dojo/method" event="onBegin">
+		<script type="dojo/method" data-dojo-event="onBegin">
 			this.content = this.content.toUpperCase();
 			console.log(this.id + ", made my content look like this:" + this.content);
 		</script>
-		<script type="dojo/method" event="onFoo">
+		<script type="dojo/method" data-dojo-event="onFoo">
 			console.log("dojo/method supplied onBegin");
 			this.content = this.content.toUpperCase();
 		</script>

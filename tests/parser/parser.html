@@ -787,17 +787,17 @@
 				 dateProp1="2006-01-01" dateProp2="" dateProp3="now"
 				 funcProp2="foo" funcProp3="this.func3Called=true;"
 			>
-				<script type="dojo/method" event="preamble">
+				<script type="dojo/method" data-dojo-event="preamble">
 					this.preambleTestProp = 3;
 				</script>
 				<script type="dojo/method">
 					// this should be run immediately
 					this.deepProp = deepTestProp;
 				</script>
-				<script type="dojo/connect" event="callInc">
+				<script type="dojo/connect" data-dojo-event="callInc">
 					this.callCount++;
 				</script>
-				<script type="dojo/method" event="callInc2">
+				<script type="dojo/method" data-dojo-event="callInc2">
 					this.callCount2++;
 				</script>
 			</div>
@@ -815,7 +815,7 @@
 			<div>
 				<div dojoType="tests.parser.NormalContainer" data-dojo-id="container1">
 					<!-- this script tag should get passed as param to NormalContainer constructor -->
-					<script type="dojo/method" event="incr" args="x">
+					<script type="dojo/method" data-dojo-event="incr" data-dojo-args="x">
 						return x+1;
 					</script>
 
@@ -830,7 +830,7 @@
 			<div>
 				<div dojoType="tests.parser.ShieldedContainer" data-dojo-id="container2">
 					<!-- this script tag should get passed as param to ShieldedContainer constructor -->
-					<script type="dojo/method" event="incr" args="x">
+					<script type="dojo/method" data-dojo-event="incr" data-dojo-args="x">
 						return x+1;
 					</script>
 

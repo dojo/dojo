@@ -96,7 +96,7 @@
 				dnd: "dojo/dnd/common"
 			</script>
 			<div data-dojo-type="dojo/dnd/Source" data-dojo-id="c3" class="container" allowNested="true">
-				<script type="dojo/method" event="creator" args="item, hint">
+				<script type="dojo/method" data-dojo-event="creator" data-dojo-args="item, hint">
 					// this is custom creator, which changes the avatar representation
 					var node = document.createElement("div"), s = String(item);
 					node.id = dnd.getUniqueId();

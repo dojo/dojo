@@ -1,4 +1,4 @@
-define(["../main", "doh/main", "../json", "dojo/has"], function(dojo, doh, JSON, has){
+define(["doh/main", "../json", "../has"], function(doh, JSON, has){
 
 	var mustThrow = function(json){
 		try{

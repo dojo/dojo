@@ -29,33 +29,33 @@
 		require([
 			"dojo/aspect", "dojo/parser", "dojo/topic", "dojo/dnd/Source", "dojo/domReady!"
 		], function(aspect, parser, topic, Source){
-			parser.parse();
+			parser.parse().then(function(){
+				var c1 = new Source("container1");
+				c1.insertNodes(false, [1, "A", [1, 2, 3],
+					function(x){ return x + x; },
+					{toString: function(){ return "CUSTOM!"; }},
+					null]);
 
-			var c1 = new Source("container1");
-			c1.insertNodes(false, [1, "A", [1, 2, 3],
-				function(x){ return x + x; },
-				{toString: function(){ return "CUSTOM!"; }},
-				null]);
-
-			// example subscribe to events
-			topic.subscribe("/dnd/start", function(source){
-				console.debug("Starting the drop", source);
+				// example subscribe to events
+				topic.subscribe("/dnd/start", function(source){
+					console.debug("Starting the drop", source);
+				});
+				topic.subscribe("/dnd/drop/before", function(source, nodes, copy, target){
+					if(target == c1){
+						console.debug(copy ? "Copying from" : "Moving from", source, "to", target, "before", target.before);
+					}
+				});
+				topic.subscribe("/dnd/drop", function(source, nodes, copy, target){
+					if(target == c1){
+						console.debug(copy ? "Copying from" : "Moving from", source, "to", target, "before", target.before);
+					}
+				});
+				aspect.after(c4, "onDndDrop", function(source, nodes, copy, target){
+					if(target == c4){
+						console.debug(copy ? "Copying from" : "Moving from", source);
+					}
+				}, true);
 			});
-			topic.subscribe("/dnd/drop/before", function(source, nodes, copy, target){
-				if(target == c1){
-					console.debug(copy ? "Copying from" : "Moving from", source, "to", target, "before", target.before);
-				}
-			});
-			topic.subscribe("/dnd/drop", function(source, nodes, copy, target){
-				if(target == c1){
-					console.debug(copy ? "Copying from" : "Moving from", source, "to", target, "before", target.before);
-				}
-			});
-			aspect.after(c4, "onDndDrop", function(source, nodes, copy, target){
-				if(target == c4){
-					console.debug(copy ? "Copying from" : "Moving from", source);
-				}
-			}, true);
 		});
 
 	</script>

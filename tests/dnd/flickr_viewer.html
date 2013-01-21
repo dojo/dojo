@@ -39,7 +39,7 @@
 		.dojoDndHorizontal .dojoDndItemBefore img	{border-left:  3px solid red;}
 		.dojoDndHorizontal .dojoDndItemAfter img	{border-right: 3px solid red;}
 	</style>
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
+	<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug: true, parseOnLoad: true"></script>
 
 	<script type="text/javascript">
 		require([
@@ -141,19 +141,19 @@
 	<p>Now scroll down and start dragging and dropping, rearrange images using DnD, copy and move them back!</p>
 	<p>Status: <span id="status">retrieving a list of Flickr images...</span></p>
 	<div class="wrap1">
-		<div data-dojo-type="dojo/dnd/Source" jsId="c1" accept="cat, dog, cow" class="container">
+		<div data-dojo-type="dojo/dnd/Source" data-dojo-id="c1" accept="cat, dog, cow" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return main_creator(item, hint);</script>
 		</div>
 	</div>
 	<p>Tag: cat</p>
 	<div class="wrap2">
-		<div data-dojo-type="dojo/dnd/Source" jsId="c2" accept="cat" horizontal="true" class="container">
+		<div data-dojo-type="dojo/dnd/Source" data-dojo-id="c2" accept="cat" horizontal="true" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return band_creator(item, hint);</script>
 		</div>
 	</div>
 	<p>Tag: dog</p>
 	<div class="wrap2">
-		<div data-dojo-type="dojo/dnd/Source" jsId="c3" accept="dog" horizontal="true" class="container">
+		<div data-dojo-type="dojo/dnd/Source" data-dojo-id="c3" accept="dog" horizontal="true" class="container">
 			<script type="dojo/method" event="creator" args="item, hint">return band_creator(item, hint);</script>
 		</div>
 	</div>

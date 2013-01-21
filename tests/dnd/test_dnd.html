@@ -23,7 +23,7 @@
 		}
 	</style>
 
-	<script type="text/javascript" src="../../dojo.js" djConfig="isDebug: true"></script>
+	<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug: true"></script>
 
 	<script type="text/javascript">
 		require([
@@ -84,7 +84,7 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Source 2 (copyOnly)</h3>
-			<div data-dojo-type="dojo/dnd/Source" jsId="c2" class="container" copyOnly="true">
+			<div data-dojo-type="dojo/dnd/Source" data-dojo-id="c2" class="container" copyOnly="true">
 				<div class="dojoDndItem">Item <strong>X</strong></div>
 				<div class="dojoDndItem">Item <strong>Y</strong></div>
 				<div class="dojoDndItem">Item <strong>Z</strong></div>
@@ -95,7 +95,7 @@
 			<script type="dojo/require">
 				dnd: "dojo/dnd/common"
 			</script>
-			<div data-dojo-type="dojo/dnd/Source" jsId="c3" class="container" allowNested="true">
+			<div data-dojo-type="dojo/dnd/Source" data-dojo-id="c3" class="container" allowNested="true">
 				<script type="dojo/method" event="creator" args="item, hint">
 					// this is custom creator, which changes the avatar representation
 					var node = document.createElement("div"), s = String(item);
@@ -115,7 +115,7 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Source 4 (copyOnly, selfAccept, delay=8)</h3>
-			<div data-dojo-type="dojo/dnd/Source" jsId="c4" class="container" copyOnly="true" selfAccept="false" delay="8">
+			<div data-dojo-type="dojo/dnd/Source" data-dojo-id="c4" class="container" copyOnly="true" selfAccept="false" delay="8">
 				<div class="dojoDndItem">Item 1</div>
 				<div class="dojoDndItem">Item 2</div>
 				<div class="dojoDndItem">Item 3</div>
@@ -123,7 +123,7 @@
 		</div>
 		<div style="float: left; margin: 5px;">
 			<h3>Pure Target 5</h3>
-			<div data-dojo-type="dojo/dnd/Target" jsId="c5" class="container">
+			<div data-dojo-type="dojo/dnd/Target" data-dojo-id="c5" class="container">
 				<div class="dojoDndItem">One item</div>
 			</div>
 		</div>

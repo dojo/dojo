@@ -10,7 +10,7 @@
 
 	<!-- required: dojo.js -->
 	<script type="text/javascript" src="../../../../dojo/dojo.js"
-		djConfig="isDebug: true"></script>
+		data-dojo-config="isDebug: true"></script>
 	<script type="text/javascript">
 		require(["doh", "dojo/dom", "dojo/query", "dojo/robotx", "dojo/domReady!"], function(doh, dom, query, robot){
 
@@ -27,10 +27,10 @@
 				timeout: 10000,
 				setUp: function(){
 					container1=dom.byId('container1', robot.doc);
-					container2=query("div[jsid='c2']", robot.doc)[0];
-					container3=query("div[jsid='c3']", robot.doc)[0];
-					container4=query("div[jsid='c4']", robot.doc)[0];
-					container5=query("div[jsid='c5']", robot.doc)[0];
+					container2=query("div[data-dojo-id='c2']", robot.doc)[0];
+					container3=query("div[data-dojo-id='c3']", robot.doc)[0];
+					container4=query("div[data-dojo-id='c4']", robot.doc)[0];
+					container5=query("div[data-dojo-id='c5']", robot.doc)[0];
 				},
 				runTest: function(){
 					var count1=query("div", container1).length;

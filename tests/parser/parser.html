@@ -206,6 +206,7 @@
 					t.is("object", typeof obj);
 				},
 				function testJsId(t){
+					// Back-compat test, remove for 2.0
 					t.is("object", typeof obj3);
 				},
 				// Attribute parsing tests
@@ -802,41 +803,41 @@
 			</div>
 			<div dojoType="tests.parser.Class2" jsId="obj3">
 			</div>
-			<div dojoType="tests.parser.Class3" jsId="obj4">
+			<div dojoType="tests.parser.Class3" data-dojo-id="obj4">
 			</div>
-			<input dojoType="tests.parser.InputClass" jsId="checkedObj" checked type="checkbox">
-			<button dojoType="tests.parser.InputClass" jsId="disabledObj" disabled>hi</button>
+			<input dojoType="tests.parser.InputClass" data-dojo-id="checkedObj" checked type="checkbox">
+			<button dojoType="tests.parser.InputClass" data-dojo-id="disabledObj" disabled>hi</button>
 
 			<div id="parsertest"></div>
 			<div id="parsertest2"></div>
 
 			<!-- section for testing parser recursion -->
 			<div>
-				<div dojoType="tests.parser.NormalContainer" jsId="container1">
+				<div dojoType="tests.parser.NormalContainer" data-dojo-id="container1">
 					<!-- this script tag should get passed as param to NormalContainer constructor -->
 					<script type="dojo/method" event="incr" args="x">
 						return x+1;
 					</script>
 
 					<!-- and these contained widgets should get instantiated -->
-					<div dojoType="tests.parser.Class1" jsId="contained1"></div>
+					<div dojoType="tests.parser.Class1" data-dojo-id="contained1"></div>
 					<div>
-						<div dojoType="tests.parser.Class1" jsId="contained2"></div>
+						<div dojoType="tests.parser.Class1" data-dojo-id="contained2"></div>
 					</div>
 				</div>
 			</div>
 
 			<div>
-				<div dojoType="tests.parser.ShieldedContainer" jsId="container2">
+				<div dojoType="tests.parser.ShieldedContainer" data-dojo-id="container2">
 					<!-- this script tag should get passed as param to ShieldedContainer constructor -->
 					<script type="dojo/method" event="incr" args="x">
 						return x+1;
 					</script>
 
 					<!-- but these contained widgets should *not* get instantiated -->
-					<div dojoType="tests.parser.Class1" jsId="contained3"></div>
+					<div dojoType="tests.parser.Class1" data-dojo-id="contained3"></div>
 					<div>
-						<div dojoType="tests.parser.Class1" jsId="contained4"></div>
+						<div dojoType="tests.parser.Class1" data-dojo-id="contained4"></div>
 					</div>
 				</div>
 			</div>
@@ -937,41 +938,41 @@
 
 		<!-- section for testing parse on a subnode -->
 		<div>
-			<div data-dojo-type="tests.parser.Class1" jsId="obj2" id="toParse">
+			<div data-dojo-type="tests.parser.Class1" data-dojo-id="obj2" id="toParse">
 			</div>
 		</div>
 
 		<!-- section for testing that dir, lang attribute trickles down from ancestor -->
 		<div id="dirSection1">
-			<div dojoType="tests.parser.BidiClass" jsId="setRtl" dir="rtl" name="RTL setting"></div>
-			<div dojoType="tests.parser.BidiClass" jsId="noDir" name="dir not inherited or set"></div>
+			<div dojoType="tests.parser.BidiClass" data-dojo-id="setRtl" dir="rtl" name="RTL setting"></div>
+			<div dojoType="tests.parser.BidiClass" data-dojo-id="noDir" name="dir not inherited or set"></div>
 		</div>
 		<div id="dirSection2" dir="rtl">
-			<div dojoType="tests.parser.BidiClass" jsId="inheritRtl" name="inherited RTL from parent"></div>
+			<div dojoType="tests.parser.BidiClass" data-dojo-id="inheritRtl" name="inherited RTL from parent"></div>
 			<div dir="ltr">
-				<div dojoType="tests.parser.BidiClass" jsId="inheritLtr" name="inherited LTR from parent"></div>
+				<div dojoType="tests.parser.BidiClass" data-dojo-id="inheritLtr" name="inherited LTR from parent"></div>
 			</div>
 			<div>
-				<div dojoType="tests.parser.BidiClass" jsId="inheritRtl2" name="inherited RTL from grandparent"></div>
+				<div dojoType="tests.parser.BidiClass" data-dojo-id="inheritRtl2" name="inherited RTL from grandparent"></div>
 			</div>
-			<div dojoType="tests.parser.BidiClass" jsId="setLtr" dir="ltr" name="LTR setting overrides inherited RTL"></div>
+			<div dojoType="tests.parser.BidiClass" data-dojo-id="setLtr" dir="ltr" name="LTR setting overrides inherited RTL"></div>
 		</div>
 		<div id="langSection">
-			<div dojoType="tests.parser.BidiClass" jsId="noLang" name="shouldn't get lang"></div>
+			<div dojoType="tests.parser.BidiClass" data-dojo-id="noLang" name="shouldn't get lang"></div>
 			<div lang="it_it">
-				<div dojoType="tests.parser.BidiClass" jsId="inheritedLang" name="inherited lang from parent"></div>
-				<div dojoType="tests.parser.BidiClass" jsId="specifiedLang" lang="en_us" name="specified lang overrides parent"></div>
+				<div dojoType="tests.parser.BidiClass" data-dojo-id="inheritedLang" name="inherited lang from parent"></div>
+				<div dojoType="tests.parser.BidiClass" data-dojo-id="specifiedLang" lang="en_us" name="specified lang overrides parent"></div>
 			</div>
 		</div>
 		<div id="textDirSection">
-			<div dojoType="tests.parser.BidiClass" jsId="noTextdir" name="shouldn't get textdir"></div>
+			<div dojoType="tests.parser.BidiClass" data-dojo-id="noTextdir" name="shouldn't get textdir"></div>
 			<div data-dojo-textdir="rtl">
-				<div dojoType="tests.parser.BidiClass" jsId="inheritedTextdir" name="inherited textdir from parent"></div>
-				<div dojoType="tests.parser.BidiClass" jsId="specifiedTextdir" data-dojo-textdir="ltr" name="specified textdir overrides parent"></div>
+				<div dojoType="tests.parser.BidiClass" data-dojo-id="inheritedTextdir" name="inherited textdir from parent"></div>
+				<div dojoType="tests.parser.BidiClass" data-dojo-id="specifiedTextdir" data-dojo-textdir="ltr" name="specified textdir overrides parent"></div>
 			</div>
 		</div>
 		<div id="bidiInheritanceFromHtml">
-			<div dojoType="tests.parser.BidiClass" jsId="inheritedFromHtml" name="should get dir/lang/textDir from HTML tag"></div>
+			<div dojoType="tests.parser.BidiClass" data-dojo-id="inheritedFromHtml" name="should get dir/lang/textDir from HTML tag"></div>
 		</div>
 
 		<!-- tests that we can parse parameters correctly on IE6/7, not getting tripped up by escaped quotes etc. -->
@@ -1013,12 +1014,12 @@
 
 		<!-- tests for function names native to HTML, specifically an issue on IE<8 -->
 		<div id="functions">
-			<button dojoType="tests.parser.Button" onClick="buttonClicked" jsId="button">Click me</button>
+			<button dojoType="tests.parser.Button" onClick="buttonClicked" data-dojo-id="button">Click me</button>
 		</div>
 
 		<!-- section for testing parser.instantiate() -->
 		<div id="instantiate1">
-			<div dojoType="tests.parser.Class1" jsId="objI1" id="objId1"
+			<div dojoType="tests.parser.Class1" data-dojo-id="objI1" id="objId1"
 				 strProp1="text" strProp2=""
 				 intProp="5"
 				 arrProp="foo, bar, baz"
@@ -1044,15 +1045,15 @@
 					funcProp3:'this.func3Called=true;'"
 			>
 			</div>
-			<div dojoType="tests.parser.NormalContainer" jsId="contI1" id ="contId1">
-				<div dojoType="tests.parser.Class1" jsId="objI3" id="objId3"></div>
-				<div dojoType="tests.parser.Class1" jsId="objI4" id="objId4"></div>
+			<div dojoType="tests.parser.NormalContainer" data-dojo-id="contI1" id ="contId1">
+				<div dojoType="tests.parser.Class1" data-dojo-id="objI3" id="objId3"></div>
+				<div dojoType="tests.parser.Class1" data-dojo-id="objI4" id="objId4"></div>
 			</div>
 		</div>
 
 		<!-- section for testing parser.construct() -->
 		<div id="construct1">
-			<div jsId="objC1" id="objC1"
+			<div data-dojo-id="objC1" id="objC1"
 				 strProp1="text" strProp2=""
 				 intProp="5"
 				 arrProp="foo, bar, baz"

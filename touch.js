@@ -25,7 +25,7 @@ function(dojo, aspect, dom, on, has, mouse, domReady, win){
 			return function(node, listener){
 				var handle1 = on(node, touchType, listener),
 					handle2 = on(node, mouseType, function(evt){
-						if(!lastTouch || (new Date()).getTime() > lastTouch + 30){
+						if(!lastTouch || (new Date()).getTime() > lastTouch + 1000){
 							listener.call(this, evt);
 						}
 					});

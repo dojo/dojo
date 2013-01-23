@@ -326,8 +326,8 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		return this;
 	}
 
-	function createSubclass(mixins){
-		return declare([this].concat(mixins));
+	function createSubclass(mixins, props){
+		return declare([this].concat(mixins), props || {});
 	}
 
 	// chained constructor compatible with the legacy declare()
@@ -1033,6 +1033,51 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//	|		f1: true,
 			//	|		d1: 42
 			//	|	});
+		}
+	};
+
+	createSubclass: function(mixins, props){
+			// summary:
+			//		Create a subclass of the declared class from a list of base classes.
+			// mixins: Function[]
+			//		Specifies a list of bases (the left-most one is the most deepest
+			//		base).
+			// props: Object?
+			//		An optional object whose properties are copied to the created prototype.
+			// returns: dojo/_base/declare.__DeclareCreatedObject
+			//		New constructor function.
+			// description:
+			//		Create a constructor using a compact notation for inheritance and
+			//		prototype extension.
+			//
+			//		Mixin ancestors provide a type of multiple inheritance.
+			//		Prototypes of mixin ancestors are copied to the new class:
+			//		changes to mixin prototypes will not affect classes to which
+			//		they have been mixed in.
+			//
+			// example:
+			//	|	var A = declare(null, {
+			//	|		m1: function(){},
+			//	|		s1: "bar"
+			//	|	});
+			//	|	var B = declare(null, {
+			//	|		m2: function(){},
+			//	|		s2: "foo"
+			//	|	});
+			//	|	var C = declare(null, {
+			//	|	});
+			//	|	var D1 = A.createSubclass([B, C], {
+			//	|		m1: function(){},
+			//	|		d1: 42
+			//	|	});
+			//	|	var d1 = new D1();
+			//	|
+			//	|	// this is equivalent to:
+			//	|	var D2 = declare([A, B, C], {
+			//	|		m1: function(){},
+			//	|		d1: 42
+			//	|	});
+			//	|	var d2 = new D2();
 		}
 	};
 	=====*/

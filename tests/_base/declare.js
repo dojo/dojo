@@ -464,6 +464,29 @@ define([
 			var obj = noNewClasses.D();
 			t.is(obj.noNew_Value, 'instance value');
 			t.is(noNewClasses.noNew_Value, 'unchanged');
+		},
+
+		function createSubclass(t){
+			var A = dojo.declare(null, {
+				foo: "thonk"
+			});
+			var B = dojo.declare(null, {
+			});
+			var C = dojo.declare(null, {
+				bar: "thonk"
+			});
+			var D1 = A.createSubclass([B, C], {
+				constructor: function(){
+					this.foo = "blah";
+				}
+			});
+			var D2 = A.createSubclass([B, C]);
+			var d1 = new D1();
+			var d2 = new D2();
+			t.is("blah", d1.foo);
+			t.is("thonk", d2.foo);
+			t.is("thonk", d1.bar);
+			t.is("thonk", d2.bar);
 		}
 
 		// FIXME: there are still some permutations to test like:

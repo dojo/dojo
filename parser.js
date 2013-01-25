@@ -40,7 +40,7 @@ define(
 	// Map from widget name or list of widget names(ex: "dijit/form/Button,acme/MyMixin") to a constructor.
 	var _ctorMap = {};
 
-	function getCtor(/*String[]*/ types){
+	function getCtor(/*String[]*/ types, /*Function?*/ contextRequire){
 		// summary:
 		//		Retrieves a constructor.  If the types array contains more than one class/MID then the
 		//		subsequent classes will be mixed into the first class and a unique constructor will be
@@ -52,7 +52,8 @@ define(
 			for(var i = 0, l = types.length; i < l; i++){
 				var t = types[i];
 				// TODO: Consider swapping getObject and require in the future
-				mixins[mixins.length] = (_ctorMap[t] = _ctorMap[t] || (dlang.getObject(t) || (~t.indexOf('/') && require(t))));
+				mixins[mixins.length] = (_ctorMap[t] = _ctorMap[t] || (dlang.getObject(t) || (~t.indexOf('/') &&
+					(contextRequire ? contextRequire(t) : require(t)))));
 			}
 			var ctor = mixins.shift();
 			_ctorMap[ts] = mixins.length ? (ctor.createSubclass ? ctor.createSubclass(mixins) : ctor.extend.apply(ctor, mixins)) : ctor;
@@ -171,7 +172,7 @@ define(
 
 			// Call widget constructors.   Some may be asynchronous and return promises.
 			var thelist = darray.map(nodes, function(obj){
-				var ctor = obj.ctor || getCtor(obj.types);
+				var ctor = obj.ctor || getCtor(obj.types, options.contextRequire);
 				// If we still haven't resolved a ctor, it is fatal now
 				if(!ctor){
 					throw new Error("Unable to resolve constructor for: '" + obj.types.join() + "'");
@@ -629,7 +630,7 @@ define(
 					// Note: won't find classes declared via dojo/Declaration or any modules that haven't been
 					// loaded yet so use try/catch to avoid throw from require()
 					try{
-						ctor = getCtor(types);
+						ctor = getCtor(types, options.contextRequire);
 					}catch(e){}
 
 					// If the constructor was not found, check to see if it has modules that can be loaded
@@ -681,7 +682,8 @@ define(
 				if(has("dojo-debug-messages")){
 					console.warn("WARNING: Modules being Auto-Required: " + mids.join(", "));
 				}
-				require(mids, function(){
+				var r = options.contextRequire || require;
+				r(mids, function(){
 					// Go through list of widget nodes, filling in missing constructors, and filtering out nodes that shouldn't
 					// be instantiated due to a stopParser flag on an ancestor that we belatedly learned about due to
 					// auto-require of a module like ContentPane.   Assumes list is in DFS order.
@@ -690,7 +692,7 @@ define(
 							// Attempt to find the constructor again.   Still won't find classes defined via
 							// dijit/Declaration so need to try/catch.
 							try{
-								widget.ctor = getCtor(widget.types);
+								widget.ctor = getCtor(widget.types, options.contextRequire);
 							}catch(e){}
 						}
 
@@ -719,7 +721,7 @@ define(
 			return d.promise;
 		},
 
-		_require: function(/*DOMNode*/ script){
+		_require: function(/*DOMNode*/ script, /*Object?*/ options){
 			// summary:
 			//		Helper for _scanAMD().  Takes a `<script type=dojo/require>bar: "acme/bar", ...</script>` node,
 			//		calls require() to load the specified modules and (asynchronously) assign them to the specified global
@@ -732,12 +734,14 @@ define(
 				mids = [],
 				d = new Deferred();
 
+			var contextRequire = (options && options.contextRequire) || require;
+
 			for(var name in hash){
 				vars.push(name);
 				mids.push(hash[name]);
 			}
 
-			require(mids, function(){
+			contextRequire(mids, function(){
 				for(var i=0; i<vars.length; i++){
 					dlang.setObject(vars[i], arguments[i]);
 				}
@@ -747,15 +751,17 @@ define(
 			return d.promise;
 		},
 
-		_scanAmd: function(root){
+		_scanAmd: function(root, options){
 			// summary:
 			//		Scans the DOM for any declarative requires and returns their values.
 			// description:
 			//		Looks for `<script type=dojo/require>bar: "acme/bar", ...</script>` node, calls require() to load the
 			//		specified modules and (asynchronously) assign them to the specified global variables,
-			//		 and returns a Promise for when those operations complete.
+			//		and returns a Promise for when those operations complete.
 			// root: DomNode
 			//		The node to base the scan from.
+			// options: Object?
+			//		a kwArgs options object, see parse() for details
 
 			// Promise that resolves when all the <script type=dojo/require> nodes have finished loading.
 			var deferred = new Deferred(),
@@ -766,7 +772,7 @@ define(
 			query("script[type='dojo/require']", root).forEach(function(node){
 				// Fire off require() call for specified modules.  Chain this require to fire after
 				// any previous requires complete, so that layers can be loaded before individual module require()'s fire.
-				promise = promise.then(function(){ return self._require(node); });
+				promise = promise.then(function(){ return self._require(node, options); });
 
 				// Remove from DOM so it isn't seen again
 				node.parentNode.removeChild(node);
@@ -823,6 +829,10 @@ define(
 			//		- propsThis: Object:
 			//			If specified, "this" referenced from data-dojo-props will refer to propsThis.
 			//			Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
+			//		- contextRequire: Function:
+			//			If specified, this require is utilised for looking resolving modules instead of the
+			//			`dojo/parser` context `require()`.  Intended for use from the widgets-in-template feature of
+			//			`dijit._WidgetsInTemplateMixin`.
 			// returns: Mixed
 			//		Returns a blended object that is an array of the instantiated objects, but also can include
 			//		a promise that is resolved with the instantiated objects.  This is done for backwards

@@ -17,12 +17,12 @@
 		};
 
 		require([
-			"dojo/_base/array", "dojo/aspect", "dojo/_base/declare",
+			"require", "dojo/_base/array", "dojo/aspect", "dojo/_base/declare",
 			"dojo/dom", "dojo/dom-attr", "dojo/dom-construct", "dojo/_base/lang", "dojo/on", "dojo/parser",
 			"dojo/_base/window", "dojo/date/stamp", "dojo/Stateful", "dojo/Evented",
 			"doh", "dojo/tests/resources/AMDWidget", "dojo/tests/resources/AMDMixin", "dojo/domReady!"
-		], function(array, aspect, declare, dom, domAttr, domConstruct, lang, on, parser, win, dstamp, Stateful, Evented,
-						 doh, AMDWidget, AMDMixin){
+		], function(require, array, aspect, declare, dom, domAttr, domConstruct, lang, on, parser, win, dstamp,
+						Stateful, Evented, doh, AMDWidget, AMDMixin){
 
 			declare("tests.parser.Widget", null, {
 				constructor: function(args, node){
@@ -741,6 +741,25 @@
 				return td;
 			});
 
+			doh.register("context require support", function contextRequire(){
+				var td = new doh.Deferred();
+
+				parser.parse("contextRequire", {
+					contextRequire: require
+				}).then(td.getTestCallback(function(){
+					doh.is(typeof cr1, "object", "object using relative MID mapped to return var");
+					doh.is(cr1.params.foo, "bar", "parameters set on instantiation");
+					doh.is(typeof cr2, "object", "object using relative MID mapped to return var");
+					doh.is(cr2.params.foo, "bar", "parameters set on instantiation");
+					doh.is(typeof cr3, "object", "object using relative MID mapped to return var");
+					doh.is(cr3.params.foo, "bar", "parameters set on instantiation");
+					doh.is(typeof cr4, "object", "object using relative MID mapped to return var");
+					doh.is(cr4.params.foo, "bar", "parameters set on instantiation");
+				}));
+
+				return td;
+			});
+
 			doh.register("promise error handling support", [
 				function asyncError(){
 					var td = new doh.Deferred();
@@ -1117,6 +1136,21 @@
 				return [amdmodule(value)];
 			</script>
 			</div>
+		</div>
+
+		<!-- tests for context require -->
+		<!-- The relative MIDs, because they are "up", the loader thinks they are not necessarily modules, in the 
+				real world, they would most likely be in sibling paths and the need for the .js would not be
+				necessary -->
+		<div id="contextRequire">
+			<script type="dojo/require">
+				"context.AMDWidget": "../resources/AMDWidget.js",
+				"context.AMDWidget2": "../resources/AMDWidget2.js"
+			</script>
+			<div data-dojo-id="cr1" data-dojo-type="context.AMDWidget" data-dojo-props="foo: 'bar'"></div>
+			<div data-dojo-id="cr2" data-dojo-type="context.AMDWidget2" data-dojo-props="foo: 'bar'"></div>
+			<div data-dojo-id="cr3" data-dojo-type="../resources/AMDWidget.js" data-dojo-props="foo: 'bar'"></div>
+			<div data-dojo-id="cr4" data-dojo-type="../resources/AMDWidget3.js" data-dojo-props="foo: 'bar'"></div>
 		</div>
 		
 		<!-- tests for promise error handling -->

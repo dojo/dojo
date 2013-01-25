@@ -16,78 +16,35 @@
 		// Global methods accessed by iframes
 		var count, loading;
 		function initIframeMethods(iframeWin, parentWin){
-			iframeWin.frameElement.findInput = function(){ return parentWin._findInput(iframeWin) };
-			iframeWin.frameElement.scrollMin = function(){ parentWin._scrollMin(iframeWin) };
-			iframeWin.frameElement.scrollMax = function(){ parentWin._scrollMax(iframeWin) };
-			iframeWin.frameElement.getScroll = function(){ return parentWin._getScroll(iframeWin) };
-			iframeWin.frameElement.scrollIntoView = function(){ parentWin._scrollIntoView(iframeWin) };
-			iframeWin.frameElement.onClick = function(){ parentWin._onClick(iframeWin) };
+			iframeWin.frameElement.findInput = function(){ return parentWin._findInput(iframeWin); };
+			iframeWin.frameElement.scrollMin = function(n){ parentWin._scroll(iframeWin,true,n); };
+			iframeWin.frameElement.scrollMax = function(n){ parentWin._scroll(iframeWin,false,n); };
+			iframeWin.frameElement.getBoundingRect = function(n){ return parentWin._getBoundingRect(iframeWin, n); };
+			iframeWin.frameElement.getVisibleSize = function(n){ return parentWin._getVisibleSize(iframeWin, n); };
+			iframeWin.frameElement.scrollIntoView = function(x,y,w,h){ parentWin._scrollIntoView(iframeWin,x,y,w,h); };
+			iframeWin.frameElement.onClick = function(e){ parentWin._onClick(iframeWin);return false; };
 		}
+
 		function _findInput(win){
 			return win.document.getElementById('it');
 		}
-		function _scrollMin(win){
-			var n = _findInput(win);
-			while(n && n.tagName){
-				n.scrollTop = -9999;
-				n.scrollLeft = -9999;
-				n._scrollMinY = n.scrollTop;
-				n._scrollMinX = n.scrollLeft;
-				n.scrollTop++;
-				if(((n._scrollMaxX||0)-n._scrollMinX) == innerScrollBarSize && (n.scrollWidth <= n.clientWidth || n.scrollWidth <= n.offsetWidth)){ // ignore fake scrolls
-				}else if((n._scrollMaxX||0) > n._scrollMinX){
-					n.scrollLeft++;
-				}
-				if(n.tagName == "BODY" && (n.scrollLeft || n.scrollTop)){ break; }
-				n = n.parentNode;
-			}
+
+		function _getBoundingRect(win, n){
+			var r = n.getBoundingClientRect();
+			return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, w: Math.round(r.right - r.left), h: Math.round(r.bottom - r.top) };
 		}
-		function _scrollMax(win){
-			var n = _findInput(win);
+
+		function _scroll(win,isMin,n){
 			while(n && n.tagName){
-				n.scrollTop = 9999;
-				n.scrollLeft = 9999;
-				n._scrollMaxY = n.scrollTop;
-				n._scrollMaxX = n.scrollLeft;
-				n.scrollTop--;
-				if((n._scrollMaxX-(n._scrollMinX||0)) == innerScrollBarSize && (n.scrollWidth <= n.clientWidth || n.scrollWidth <= n.offsetWidth)){
-					n._scrollMaxX = n.scrollLeft = (n._scrollMinX || 0); // ignore fake scrolls
-				}else{
-					n.scrollLeft--;
-				}
-				if(n.tagName == "BODY" && (n.scrollLeft || n.scrollTop || n._scrollMaxY || n._scrollMaxX)){
+				n.scrollTop = isMin ? -9999 : 9999;
+				n.scrollLeft = isMin ? -9999 : 9999;
+				if(n.tagName == "BODY" && (n.scrollLeft || n.scrollTop)){
 					break; // skip HTML
 				}
 				n = n.parentNode;
 			}
 		}
-		function _getScroll(win){
-			var n = _findInput(win), scroll = '';
-			while(n && n.tagName){
-				var left = n.scrollLeft - n._scrollMinX,
-				top = n.scrollTop - n._scrollMinY,
-				right = n._scrollMaxX - n.scrollLeft,
-				bottom = n._scrollMaxY - n.scrollTop;
-				if(left || top || n._scrollMinX || n._scrollMaxX || n._scrollMinY || n._scrollMaxY){
-					//scroll += '('+(left<=right?((left==right?'':'+')+left):(right<0 ? '0' : ('-'+right)))+','+(top<=bottom?((top==bottom?'':'+')+top):(bottom<0 ? '0' : ('-'+bottom)))+')';
-					scroll += "(";
-					if(left <= right){
-						scroll += (left != right && left > 0 ? "+" : "") + left;
-					}else{
-						scroll += right < 0 ? '0' : ('-' + right);
-					}
-					scroll += ",";
-					if(top <= bottom){
-						scroll += (top != bottom && top > 0 ? "+" : "") + top;
-					}else{
-						scroll += bottom < 0 ? '0' : ('-' + bottom);
-					}
-					scroll += ")";
-				}
-				n = n.parentNode;
-			}
-			return scroll || '(0,0)';
-		}
+
 		var loaded = {};
 		function iframeLoaded(id){
 			if(!loaded[id]){	// ignore duplicate notifications
@@ -99,24 +56,56 @@
 		require([
 			"doh",
 			"dojo/dom", "dojo/dom-attr", "dojo/dom-geometry", "dojo/dom-style",
-			"dojo/query", "dojo/sniff", "dojo/_base/window", "dojo/window", "dojo/domReady!"
-		], function(doh, dom, domAttr, domGeom, domStyle, query, has, win, winUtils) {
+			"dojo/query", "dojo/sniff", "dojo/_base/window", "dojo/window", "dojo/_base/array", "dojo/domReady!"
+		], function(doh, dom, domAttr, domGeom, domStyle, query, has, baseWin, winUtils, array) {
 
 			// More global methods accessed by iframes
-			_scrollIntoView = function(w){
-				var n = _findInput(w);
-				win.withGlobal(w, 'scrollIntoView', winUtils, [n]);
+			_scrollIntoView = function(win,x,y,w,h){
+				var n = _findInput(win);
+				var pos;
+				if(typeof x == "number" && typeof y == "number"){
+					var p = baseWin.withGlobal(win, 'position', domGeom, [ n ]);
+					pos = { x: p.x + x, y: p.y + y, w: isNaN(w) ? 1 : w, h: isNaN(h) ? 1 : h };
+				}
+				baseWin.withGlobal(win, 'scrollIntoView', winUtils, [ n, pos ]);
 			};
-			_onClick = function(w){
-				_scrollIntoView(w);
-				alert(_getScroll(w));
+			_onClick = function(win){
+				_scrollIntoView(win);
 			};
+
+			_getVisibleSize = function(win,n){
+				var	html = win.document.documentElement,
+					body = win.document.body,
+					rect = n.getBoundingClientRect(),
+					width = Math.min(body.clientWidth || html.clientWidth, html.clientWidth || body.clientWidth),
+					height = Math.min(body.clientHeight || html.clientHeight, html.clientHeight || body.clientHeight),
+					pos = baseWin.withGlobal(win, 'position', domGeom, [ n ]);
+				// adjust width and height for IE nonsense
+				width += Math.round(rect.left - pos.x);
+				height += Math.round(rect.top - pos.y);
+				if(has('ie')){ width += outerScrollBarSize; } // IE10 bug
+				for(y = 0; y < height; y++){
+					for(x = 0; x < width; x++){
+						var pointElement = win.document.elementFromPoint(x,y);
+						if(pointElement == n){
+							// work around browser bugs
+							// Opera 12.12 says the element is showing beyond the browser edge
+							// IE 10 says`
+							for(var w = 1; (x+w) < width && win.document.elementFromPoint(x+w,y) == n; w++);
+							for(var h = 1; (y+h) < height && win.document.elementFromPoint(x,y+h) == n; h++);
+							return { w: w, h: h };
+						}
+					}
+				}
+				return { w: 0, h: 0 };
+			};
+			
 
 			// Below is the magic code that creates the iframes from the given template.
 			// This should be generalized for other files to include.
 
 			function getIframeSrc(id, content, doctype, rtl){
-				content = content.replace(/"/g/*balance"*/,"'").replace(/iframe.javascript/g,"text/javascript").replace(/<input\b/ig,"<INPUT readOnly ");
+				content = content.replace(/"/g/*balance"*/,"'").replace(/iframe.javascript/g,"text/javascript").replace(/<input\b/ig,"<INPUT disabled ");
 				var iframeSrc = 'javascript:"';
 				// find browser specific CSS attributes
 				if(has("ie")){
@@ -161,7 +150,7 @@
 				'<HEAD>'+
 					'<STYLE>'+
 						'* { border:0px solid white;padding:0px;margin:0px;font-style:normal;font-family:monospace;font-size:0px;line-height:normal; }\n'+
-						'INPUT { display:block;background-color:#ff0000;font-size:0px;line-height:0px;overflow:hidden;width:20px;height:20px; }\n'+
+						'INPUT { display:block;background-color:red;font-size:0px;line-height:0px;overflow:hidden;width:20px;height:20px; }\n'+
 						'UL { list-style-type: none;line-height:0px;width:45px;overflow:auto; }\n'+
 						'LI { list-style-type: none;line-height:20px;overflow:visible;max-width:20px;max-height:20px;height:20px;width:20px;float:left; }\n'+
 						'HR { width:120px;height:1px;visibility:hidden;display:block; }\n'+
@@ -207,11 +196,9 @@
 				}
 			}
 
-			var usingNative = !(has("mozilla") || has("ie") || has("webkit") || has("opera"));
-
-			innerScrollBarSize = dom.byId("nonscroll").clientWidth - dom.byId("withscroll").clientWidth;
+			var innerScrollBarSize = Math.ceil(dom.byId("nonscroll").clientWidth - dom.byId("withscroll").clientWidth);
 			console.debug('inner scrollbar size = ' + innerScrollBarSize);
-			outerScrollBarSize = (has("ie") >= 9) ? ((domGeom.position(document.documentElement).w - document.documentElement.clientWidth) || innerScrollBarSize) : innerScrollBarSize;
+			var outerScrollBarSize = Math.ceil((has("ie") >= 9) ? ((domGeom.position(document.documentElement).w - document.documentElement.clientWidth) || innerScrollBarSize) : innerScrollBarSize);
 			console.debug('outer scrollbar size = ' + outerScrollBarSize);
 
 			doh.register("dojo.window.scroll",[
@@ -223,6 +210,7 @@
 						var testIframes = query('DIV[type="testIframe"]');
 						count = testIframes.length * 4;
 						console.log("count is " + count);
+						// have to do all the iframes at once so the iPad doesn't resize and cause problems
 						for(var i=0; i < testIframes.length; i++){
 							var srcNode = testIframes[i];
 							var content = srcNode.innerHTML || '';
@@ -245,225 +233,333 @@
 					}
 				},
 				function checkAttrs(){
-					var body = win.body();
+					var body = baseWin.body();
 					winUtils.scrollIntoView(body);
 					doh.f(domAttr.has(body,'_offsetParent'));
 					doh.f(domAttr.has(body,'_parent'));
-				},
-				function test_8249(){
-					generateTest('8249_strict', '(0,-10)', '(0,+10)');
-					generateTest('8249_quirks', '(0,-10)', '(0,+10)');
-					generateTest('8249_loose_rtl', '(0,-10)', '(0,+10)');
-					generateTest('8249_quirks_rtl', '(0,-10)', '(0,+10)');
-				},
-				function test_8284(){
-					var minScroll, maxScroll, fudge=0;
-					if(has("ie") <= 8){
-						minScroll = maxScroll = 11;
-						if(has("ie") <= 6){
-							fudge = dom.byId('8284_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
-						}
-					}else{
-						minScroll = maxScroll = 10;
-					}
-					generateTestXY('8284_quirks', "0", -maxScroll+fudge, "0", minScroll-fudge);
-					generateTestXY('8284_quirks_rtl', "0", -maxScroll+fudge, "0", minScroll-fudge);
-					if(has("ie") == 8){
-						minScroll = maxScroll = 10;
-					}
-					generateTestXY('8284_strict', "0", -maxScroll, "0", minScroll);
-					generateTestXY('8284_loose_rtl', "0", -maxScroll, "0", minScroll);
-				},
-				function test_absContent(){
-					generateTestXY('absContent_strict', 0, -10, 0, 10);
-					generateTestXY('absContent_loose_rtl', 0, -10, 0, 10);
-					generateTestXY('absContent_quirks', 0, -10, 0, 10);
-					generateTestXY('absContent_quirks_rtl', 0, -10, 0, 10);
-				},
-				function test_fixedNode(){
-					if(!(has("ie") <= 6)){
-						generateTest('fixedNode_strict', "(-1,-1)", "(+1,+1)");
-						generateTest('fixedNode_loose_rtl', "(-1,-1)", "(+1,+1)");
-					}
-					if(!has("ie")){
-						generateTest('fixedNode_quirks', "(-1,-1)", "(+1,+1)");
-						generateTest('fixedNode_quirks_rtl', "(-1,-1)", "(+1,+1)");
-					}
-				},
-				function test_fixedScrollable(){
-					if(!(has("ie") <= 6)){
-						generateTest('fixedScrollable_strict', has("ie") == 7? "(0,-54)(0,-1)" : "(0,-39)(0,-1)", has("ie") == 7? "(0,+39)(0,+1)" : "(0,+38)(0,+1)");
-						generateTest('fixedScrollable_loose_rtl', has("ie") == 7? "(0,-54)(0,-1)" : "(0,-39)(0,-1)", has("ie") == 7? "(0,+39)(0,+1)" : "(0,+38)(0,+1)");
-					}
-					if(!has("ie")){
-						generateTest('fixedScrollable_quirks', "(0,-39)(0,-1)", "(0,+38)(0,+1)");
-						generateTest('fixedScrollable_quirks_rtl', "(0,-39)(0,-1)", "(0,+38)(0,+1)");
-					}
-				},
-				function test_7036_8665(){
-					var maxScroll = 39;
-					var minScroll = 38;
-					if(has("ie") <= 7){
-						maxScroll = 54;
-						minScroll = 39;
-					}
-					generateTest('7036_8665_strict', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
-					generateTest('7036_8665_loose_rtl', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
-					if(has("ie") == 8){
-						maxScroll = 54;
-						minScroll = 39;
-					}
-					generateTest('7036_8665_quirks', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
-					generateTest('7036_8665_quirks_rtl', "(0,-"+maxScroll+")(0,-1)", "(0,+"+minScroll+")(0,+1)");
-				},
-				function test_innerNoScrollBars(){
-					var scroll;
-					if(has("ie") <= 6){
-						scroll = 53;
-					}else if(has("ie") == 7){
-						scroll = 46;
-					}else{
-						scroll = 39;
-					}
-					generateTestXY('innerNoScrollBars_strict', scroll, -29, scroll, -29);
-					if(has("ie") <= 8){
-						scroll = -38;
-					}
-					generateTestXY('innerNoScrollBars_quirks', scroll, -29, scroll, -29);
-					if(has("ie") <= 6){
-						scroll = 53;
-					}else if(has("ie") == 7){
-						scroll = 46;
-					}else if(has("ie") >= 8 || has("opera")){
-						scroll = "0";
-					}else if(has("webkit")){
-						scroll = "-0";
-					}else{
-						scroll = 39;
-					}
-					generateTestXY('innerNoScrollBars_loose_rtl', scroll, -29, scroll, -29);
-					if(has("ie") <= 8){
-						scroll = -38;
-					}
-					generateTestXY('innerNoScrollBars_quirks_rtl', scroll, -29, scroll, -29);
-				},
-				function test_noScrollBars(){
-					generateTest('noScrollBars_strict', "(0,0)", "(0,0)");
-					generateTest('noScrollBars_quirks', "(0,0)", "(0,0)");
-					generateTest('noScrollBars_loose_rtl', "(0,0)", "(0,0)");
-					generateTest('noScrollBars_quirks_rtl', "(0,0)", "(0,0)");
-				},
-				function test_table(){
-					var minScroll, maxScroll;
-					minScroll = "(0,+15)";
-					maxScroll = "(0,-15)";
-					generateTest('table_strict', maxScroll, minScroll);
-					generateTest('table_loose_rtl', maxScroll, minScroll);
-					if(has("ie") <= 6){
-						var fudge = dom.byId('table_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
-						maxScroll = "(0,-"+(15-fudge)+")";
-						minScroll = "(0,+"+(15-fudge)+")";
-					}
-					generateTest('table_quirks', maxScroll, minScroll);
-					generateTest('table_quirks_rtl', maxScroll, minScroll);
-				},
-				function test_innerScrollbars(){
-					var scroll = innerScrollBarSize - 5;
-					generateTestXY('innerScrollbars_strict', -scroll, -scroll, scroll, scroll);
-					generateTestXY('innerScrollbars_loose_rtl', -scroll, -scroll, has("ie") == 7 ? -25 : scroll, scroll);
-					generateTestXY('innerScrollbars_quirks', -scroll, -scroll, scroll, scroll);
-					generateTestXY('innerScrollbars_quirks_rtl', -scroll, -scroll, scroll, scroll);
-				},
-				function test_8542(){
-					var fudge = 0;
-					if(has("ie") <= 6){
-						fudge = dom.byId('8542_quirks').contentWindow.document.body.clientHeight-100; // needed for running inside DOH runner
-					}
-					generateTest('8542_strict', "(0,-10)", "(0,+20)");
-					generateTest('8542_quirks', "(0,-"+(10-fudge)+")", "(0,+"+(20-fudge)+")");
-					generateTest('8542_loose_rtl', "(0,-10)", "(0,+20)");
-					generateTest('8542_quirks_rtl', "(0,-"+(10-fudge)+")", "(0,+"+(20-fudge)+")");
-				},
-				function test_tooBig(){
-					var fudge = 0;
-					if(has("ie") <= 6){
-						fudge = dom.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+innerScrollBarSize; // needed for running inside DOH runner
-					}
-					var minScroll, maxScroll;
-					generateTestXY('tooBig_strict', outerScrollBarSize+10,outerScrollBarSize+20, 1,1);
-					generateTestXY('tooBig_quirks', outerScrollBarSize+10-fudge,outerScrollBarSize+20-fudge, 1,1);
-					if(has("ie") <= 7 || has("mozilla") || has("webkit")){
-						maxScroll = -1;
-					}else if(has("ie")){
-						maxScroll = +20;
-					}else if(has("opera")){
-						maxScroll = -90;
-					}else{
-						maxScroll = outerScrollBarSize+10;
-					}
-					if(has("ie") <= 7 || has("mozilla") || has("webkit")){
-						minScroll = -20;
-					}else if(has("opera")){
-						minScroll = 80 + outerScrollBarSize;
-					}else{
-						minScroll = 1;
-					}
-					generateTestXY('tooBig_loose_rtl', maxScroll,outerScrollBarSize+20, minScroll,1);
-					if(has("ie") >= 8){
-						maxScroll = -1;
-					}
-					if(has("ie") == 8){
-						minScroll = -20;
-					}
-					generateTestXY('tooBig_quirks_rtl', maxScroll,outerScrollBarSize+20-fudge, minScroll,1);
-				},
-				function test_htmlPadding(){
-					var fudge = 0;
-					if(has("ie") <= 6){
-						fudge = dom.byId('tooBig_quirks').contentWindow.document.body.clientHeight-100+innerScrollBarSize; // needed for running inside DOH runner
-					}
-					var minScroll, maxScroll;
-					if(has("ie") <= 7){
-						maxScroll = minScroll = 84;
-					}else{
-						maxScroll = minScroll = 70;
-					}
-					generateTest('htmlPadding_strict', "(0,-"+maxScroll+")", "(0,+"+minScroll+")");
-					generateTest('htmlPadding_loose_rtl', "(0,-"+maxScroll+")", "(0,+"+minScroll+")");
-					if(has("ie") <= 8){
-						maxScroll = minScroll = 34;
-					}
-					generateTest('htmlPadding_quirks', "(0,-"+(maxScroll-fudge)+")", "(0,+"+(minScroll-fudge)+")");
-					generateTest('htmlPadding_quirks_rtl', "(0,-"+(maxScroll-fudge)+")", "(0,+"+(minScroll-fudge)+")");
 				}
 			]);
-			function generateTest(id, maxVal, minVal){
-				var compare = usingNative? "isNot" : "is";
-				with(dom.byId(id)){
-					scrollMin();
-					scrollMax();
-					scrollIntoView();
-					var maxActualScroll = getScroll();
-					var maxExpectedScroll = usingNative? "(-1,-1)" : maxVal;
-					scrollIntoView(); // make sure the value sticks
-					var repMaxActualScroll = getScroll();
-					scrollMin();
-					scrollIntoView();
-					var minActualScroll = getScroll();
-					var minExpectedScroll = usingNative? "(+1,+1)" : minVal;
-					dom.byId(id).style.visibility = 'visible';
-					doh[compare](maxExpectedScroll, maxActualScroll, id+" max failed");
-					doh[compare](maxExpectedScroll, repMaxActualScroll, id+" repeat max failed");
-					doh[compare](minExpectedScroll, minActualScroll, id+" min failed");
-				}
-			}
-			function generateTestXY(id, maxScrollX, maxScrollY, minScrollX, minScrollY){
-				if(typeof maxScrollX == "number" && maxScrollX > 0){ maxScrollX = "+" + maxScrollX; }
-				if(typeof maxScrollY == "number" && maxScrollY > 0){ maxScrollY = "+" + maxScrollY; }
-				if(typeof minScrollX == "number" && minScrollX > 0){ minScrollX = "+" + minScrollX; }
-				if(typeof minScrollY == "number" && minScrollY > 0){ minScrollY = "+" + minScrollY; }
-				generateTest(id, "("+maxScrollX+","+maxScrollY+")", "("+minScrollX+","+minScrollY+")");
-			}
+                        array.forEach([	'8249',
+					'8284',
+					'absContent',
+					'fixedNode',
+					'fixedScrollable',
+					'7036_8665',
+					'innerNoScrollBars',
+					'noScrollBars',
+					'table',
+					'innerScrollbars',
+					'8542',
+					'tooBig',
+					'htmlPadding' ],
+				function(test){
+                        		array.forEach([	"_strict", "_quirks", "_loose_rtl", "_quirks_rtl" ],
+						function(mode){
+							var	id = test+mode,
+								n, maxWidth, maxHeight, nodeWidth, nodeHeight, rAfterScroll, vAfterScroll, rBeforeScroll, vBeforeScroll;
+							doh.register(id, [
+							{
+								timeout: 4000,
+								name: "compare to native",
+								runTest: function(){ with(dom.byId(id)){
+									n = findInput();
+									scrollMin(n);
+									var d = new doh.Deferred();
+									setTimeout(function(){
+										rBeforeScroll = getBoundingRect(n);
+										vBeforeScroll = getVisibleSize(n);
+										nodeWidth = rBeforeScroll.w;
+										nodeHeight = rBeforeScroll.h;
+										dom.byId(id).style.visibility = 'visible';
+										n.scrollIntoView(true);
+										setTimeout(function(){
+											var vAfterNativeScroll = getVisibleSize(n);
+											scrollIntoView();
+											setTimeout(d.getTestCallback(function(){
+												vAfterScroll = getVisibleSize(n);
+												doh.t(vAfterScroll.w > 0, "min width " + vAfterScroll.w);
+												doh.t(vAfterScroll.h > 0, "min height " + vAfterScroll.h);
+												doh.t(vAfterScroll.w >= vAfterNativeScroll.w, "width compare " + vAfterNativeScroll.w + " to " + vAfterScroll.w);
+												doh.t(vAfterScroll.h >= vAfterNativeScroll.h, "height compare " + vAfterNativeScroll.h + " to " + vAfterScroll.h);
+												maxWidth = Math.max(vAfterNativeScroll.w, vAfterScroll.w);
+												maxHeight = Math.max(vAfterNativeScroll.h, vAfterScroll.h);
+											}), 0);
+										}, 0);
+									}, 0);
+									return d;
+								}}
+							},
+							{
+								timeout: 4000,
+								name: "min start horizontal",
+								runTest: function(){ with(dom.byId(id)){
+									scrollMin(n);
+									var d = new doh.Deferred();
+									setTimeout(function(){
+										scrollIntoView(1,0);
+										setTimeout(function(){
+											rAfterScroll = getBoundingRect(n);
+											vAfterScroll = getVisibleSize(n);
+											if(rAfterScroll.left > rBeforeScroll.left){ // shifted right so all but leftmost pixel on first row is showing
+												doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "min: start: shift right partial width");
+												scrollIntoView(0,0);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "min: start: shift right full width");
+												}), 0);
+											}else if(rAfterScroll.left < rBeforeScroll.left){ // shifted left so only 2 leftmost pixels on first row are showing
+												doh.is(2, vAfterScroll.w, "min: start: shift left width");
+												scrollIntoView(nodeWidth-1,0);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "min: start: shift left full width");
+												}), 0);
+											}else{ // no horizontal scrolling
+												scrollIntoView(0,0,nodeWidth);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(maxWidth, vAfterScroll.w, "min: start: no shift full width");
+												}), 0);
+											}
+										}, 0);
+									}, 0);
+									return d;
+								}}
+							},
+							{
+								timeout: 2000,
+								name: "min start vertical",
+								runTest: function(){ with(dom.byId(id)){
+									var d = new doh.Deferred();
+									if(rAfterScroll.top > rBeforeScroll.top){ // shifted down so all rows are showing
+										doh.is(vAfterScroll.h, maxHeight, "min: start: shift down height");
+										scrollIntoView(1,nodeHeight-1);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "min: start: shift down full height");
+										}), 0);
+									}else if(rAfterScroll.top < rBeforeScroll.top){ // shifted up so only the first row is showing
+										doh.is(1, vAfterScroll.h, "min: start: shift up height");
+										scrollIntoView(0,nodeHeight-1);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "min: start: shift up full height");
+										}), 0);
+									}else{ // no vertical scrolling
+										scrollIntoView(0,nodeHeight-1);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "min: start: no shift full height");
+										}), 0);
+									}
+									return d;
+								}}
+							},
+							{
+								timeout: 4000,
+								name: "min end horizontal",
+								runTest: function(){ with(dom.byId(id)){
+									scrollMin(n);
+									var d = new doh.Deferred();
+									setTimeout(function(){
+										scrollIntoView(nodeWidth-2,nodeHeight-1);
+										setTimeout(function(){
+											rAfterScroll = getBoundingRect(n);
+											vAfterScroll = getVisibleSize(n);
+											if(rAfterScroll.left < rBeforeScroll.left){ // shifted left so all but rightmost pixel on first row is showing
+												doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "min: end: shift left partial width");
+												scrollIntoView(nodeWidth-1,nodeHeight-1);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "min: end: shift left full width");
+												}), 0);
+											}else if(rAfterScroll.left > rBeforeScroll.left){ // shifted right so only 2 rightmost pixels on first row are showing
+												doh.is(2, vAfterScroll.w, "min: end: shift right width");
+												scrollIntoView(0,nodeHeight-1);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "min: end: shift right full width");
+												}), 0);
+											}else{ // no horizontal scrolling
+												scrollIntoView(0,nodeHeight-1,nodeWidth);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "min: end: no shift full width");
+												}), 0);
+											}
+										}, 0);
+									}, 0);
+									return d;
+								}}
+							},
+							{
+								timeout: 2000,
+								name: "min end vertical",
+								runTest: function(){ with(dom.byId(id)){
+									var d = new doh.Deferred();
+									if(rAfterScroll.top < rBeforeScroll.top){ // shifted up so all rows are showing
+										doh.is(vAfterScroll.h, maxHeight, "min: end: shift up height");
+										scrollIntoView(nodeWidth-1,0);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "min: end: shift up full height");
+										}), 0);
+									}else if(rAfterScroll.top > rBeforeScroll.top){ // shifted down so only the last row is showing
+										doh.is(1, vAfterScroll.h, "min: end: shift down height");
+										scrollIntoView(0,0);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "min: end: shift down full height");
+										}), 0);
+									}else{ // no vertical scrolling
+										scrollIntoView(0,nodeHeight-1);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "min: end: no shift full height");
+										}), 0);
+									}
+									return d;
+								}}
+							},
+							{
+								timeout: 4000,
+								name: "max start horizontal",
+								runTest: function(){ with(dom.byId(id)){
+									scrollMax(n);
+									var d = new doh.Deferred();
+									setTimeout(function(){
+										rBeforeScroll = getBoundingRect(n);
+										vBeforeScroll = getVisibleSize(n);
+										scrollIntoView(1,0);
+										setTimeout(function(){
+											rAfterScroll = getBoundingRect(n);
+											vAfterScroll = getVisibleSize(n);
+											if(rAfterScroll.left > rBeforeScroll.left){ // shifted right so all but leftmost pixel on first row is showing
+												doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "max: start: shift right partial width");
+												scrollIntoView(0,0);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "max: start: shift right full width");
+												}), 0);
+											}else if(rAfterScroll.left < rBeforeScroll.left){ // shifted left so only 2 leftmost pixels on first row are showing
+												doh.is(2, vAfterScroll.w, "max: start: shift left width");
+												scrollIntoView(nodeWidth-1,0);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "max: start: shift left full width");
+												}), 0);
+											}else{ // no horizontal scrolling
+												scrollIntoView(0,0,nodeWidth);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "max: start: no shift full width");
+												}), 0);
+											}
+										}, 0);
+									}, 0);
+									return d;
+								}}
+							},
+							{
+								timeout: 2000,
+								name: "max start vertical",
+								runTest: function(){ with(dom.byId(id)){
+									var d = new doh.Deferred();
+									if(rAfterScroll.top > rBeforeScroll.top){ // shifted down so all rows are showing
+										doh.is(vAfterScroll.h, maxHeight, "max: start: shift down height");
+										scrollIntoView(1,nodeHeight-1);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "max: start: shift down full height");
+										}), 0);
+									}else if(rAfterScroll.top < rBeforeScroll.top){ // shifted up so only the first row is showing
+										doh.is(1, vAfterScroll.h, "max: start: shift up height");
+										scrollIntoView(0,nodeHeight-1);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "max: start: shift up full height");
+										}), 0);
+									}else{ // no vertical scrolling
+										scrollIntoView(0,nodeHeight-1);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "max: start: no shift full height");
+										}), 0);
+									}
+									return d;
+								}}
+							},
+							{
+								timeout: 4000,
+								name: "max end horizontal",
+								runTest: function(){ with(dom.byId(id)){
+									scrollMax(n);
+									var d = new doh.Deferred();
+									setTimeout(function(){
+										scrollIntoView(nodeWidth-2,nodeHeight-1);
+										setTimeout(function(){
+											rAfterScroll = getBoundingRect(n);
+											vAfterScroll = getVisibleSize(n);
+											if(rAfterScroll.left < rBeforeScroll.left){ // shifted left so all but rightmost pixel on first row is showing
+												doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "max: end: shift left partial width");
+												scrollIntoView(nodeWidth-1,nodeHeight-1);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "max: end: shift left full width");
+												}), 0);
+											}else if(rAfterScroll.left > rBeforeScroll.left){ // shifted right so only 2 rightmost pixels on first row are showing
+												doh.is(2, vAfterScroll.w, "max: end: shift right width");
+												scrollIntoView(0,nodeHeight-1);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "max: end: shift right full width");
+												}), 0);
+											}else{ // no horizontal scrolling
+												scrollIntoView(0,nodeHeight-1,nodeWidth);
+												setTimeout(d.getTestCallback(function(){
+													vAfterScroll = getVisibleSize(n);
+													doh.is(vAfterScroll.w, maxWidth, "max: end: no shift full width");
+												}), 0);
+											}
+										}, 0);
+									}, 0);
+									return d;
+								}}
+							},
+							{
+								timeout: 2000,
+								name: "max end vertical",
+								runTest: function(){ with(dom.byId(id)){
+									var d = new doh.Deferred();
+									if(rAfterScroll.top < rBeforeScroll.top){ // shifted up so all rows are showing
+										doh.is(vAfterScroll.h, maxHeight, "max: end: shift up height");
+										scrollIntoView(nodeWidth-1,0);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "max: end: shift up full height");
+										}), 0);
+									}else if(rAfterScroll.top > rBeforeScroll.top){ // shifted down so only the last row is showing
+										doh.is(1, vAfterScroll.h, "max: end: shift down height");
+										scrollIntoView(0,0);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "max: end: shift down full height");
+										}), 0);
+									}else{ // no vertical scrolling
+										scrollIntoView(0,0);
+										setTimeout(d.getTestCallback(function(){
+											vAfterScroll = getVisibleSize(n);
+											doh.is(vAfterScroll.h, maxHeight, "max: end: no shift full height");
+										}), 0);
+									}
+									return d;
+								}}
+							}]);
+						}
+					);
+				} 
+			);
+
 			doh.run();
 		});
 	</script>
@@ -479,17 +575,19 @@
 <fieldset>
 <label for="8249">Scrollable parent != offsetParent:</label>
 <div type="testIframe" id="8249">
-	<iframestyle>INPUT { float:left; }</iframestyle>
-	<div style="border-width:13px;"
-		><ul style="height:70px;"
-			><li><input style="background-color:white;"></li
-			><li><input style="background-color:white;"></li
-			><li><input style="background-color:white;"></li
-			><li><input id=it></li
-			><li><input style="background-color:white;"></li
-			><li><input style="background-color:white;"></li
-			><li><input style="background-color:white;"></li
-		></ul
+	<iframestyle>INPUT { float:left; }
+		HTML, BODY { overflow: hidden; }
+	</iframestyle>
+	<div style="height:61px;width:50px;overflow-y:scroll;margin:11px 20px"
+		><p style="display:inline;"
+		><li><input style="visibility:hidden;"></li
+		><li><input style="visibility:hidden;"></li
+		><li><input style="visibility:hidden;"></li
+		><li><input id=it></li
+		><li><input style="visibility:hidden;"></li
+		><li><input style="visibility:hidden;"></li
+		><li><input style="visibility:hidden;"></li
+		></p
 	></div>
 </div>
 </fieldset>
@@ -522,10 +620,10 @@
 <fieldset>
 <label for="fixedScrollable">Fixed-positioned scrollable content:</label>
 <div type="testIframe" id="fixedScrollable">
-	<iframestyle>HTML { overflow-x:hidden !important; /*IE6*/ }
-		INPUT { height:20px; MZT_MZQ_WKT_WKQ_IEQ_OPQ_OPT_height:28px; width:20px; MZT_MZQ_WKT_WKQ_IEQ_OPQ_OPT_width:28px; }</iframestyle>
-	<div style="height:120px;width:70px;overflow-y:scroll;position:fixed;margin:-10px 0px 0px 0px;">
-		<input id=it style="margin:120px 0px;border:1px solid red;padding:3px;">
+	<iframestyle>HTML { overflow:hidden !important; /*IE6*/ }
+		INPUT { height:20px; width:20px; }</iframestyle>
+	<div style="height:100px;width:70px;overflow-y:scroll;position:fixed;top:0px;left:0;">
+		<input id=it style="margin:120px 0px;">
 		<hr style="width:10px;">
 	</div>
 	<hr style="height:200px;width:20px;"/>
@@ -534,9 +632,9 @@
 <fieldset>
 <label for="7036_8665">Double scrollbars with absolute positioned content:</label>
 <div type="testIframe" id="7036_8665">
-	<iframestyle>INPUT { height:20px; MZT_MZQ_WKT_WKQ_IEQ_OPQ_OPT_height:28px; width:20px; MZT_MZQ_WKT_WKQ_IEQ_OPQ_OPT_width:28px; }</iframestyle>
+	<iframestyle>INPUT { height:28px; width:28px; }</iframestyle>
 	<div style="height:70px;width:70px;overflow-y:scroll;position:absolute;top:26px;left:5px;"
-		><input id=it style="margin:80px 0px 80px 0px;border:1px solid red;padding:3px;"
+		><input id=it style="margin:80px 0px 80px 0px;"
 		><hr style="width:10px;"
 	></div>
 	<div style="height:26px;width:10px;position:absolute;top:96px;left:10px;"></div>
@@ -550,9 +648,9 @@
 	><div style="overflow:hidden; width:20px;height:20px;"
 		><fieldset style="width:59px;overflow:visible;"
 			><input style="background-color:green;height:15px;float:left;"
-			><nobr style="margin:7px;padding:3px;border:5px solid pink;overflow:visible;display:block;width:90px;float:left;"
+			><nobr style="margin:7px;padding:3px;border:5px solid black;overflow:visible;display:block;width:90px;float:left;"
 				><input style="background-color:black;display:inline;width:24px;height:24px;float:left;"
-				><input id=it style="background-color:red;display:inline;float:left;"
+				><input id=it style="display:inline;float:left;"
 				><input style="background-color:blue;display:inline;width:16px;height:16px;float:left;"
 			></nobr
 			><input style="background-color:cyan;height:10px;float:left;"
@@ -589,9 +687,9 @@
 		TABLE { OPR_float:left; }
 	</iframestyle>
 	<div style="overflow:scroll;height:80px;width:80px;"
-		><fieldset
-			><table cellspacing="25" cellpadding="0" border="0"
-				><tr><td><input id=it style="width:50px;height:50px;float:left;"></td></tr
+		><fieldset style="visibility:hidden;"
+			><table cellspacing="65" cellpadding="0" border="0"
+				><tr><td><input id=it style="width:50px;height:50px;clear:both;float:left;visibility:visible;"></td></tr
 			></table
 		></fieldset
 	></div>

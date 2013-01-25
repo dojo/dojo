@@ -1,7 +1,7 @@
 define(
 	["require", "./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./dom", "./_base/window",
-		"./_base/url", "./aspect", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./ready"],
-	function(require, dojo, dlang, darray, config, dom, dwindow, _Url, aspect, dates, Deferred, has, query, don, ready){
+		"./_base/url", "./aspect", "./promise/all", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./when", "./ready"],
+	function(require, dojo, dlang, darray, config, dom, dwindow, _Url, aspect, all, dates, Deferred, has, query, don, when, ready){
 
 	// module:
 	//		dojo/parser
@@ -113,6 +113,8 @@ define(
 			// options: Object?
 			//		An object used to hold kwArgs for instantiation.
 			//		See parse.options argument for details.
+			// returns:
+			//		Array of instances.
 
 			mixin = mixin || {};
 			options = options || {};
@@ -136,11 +138,11 @@ define(
 				}
 			});
 
-			// Instantiate the nodes and return the objects
+			// Instantiate the nodes and return the list of instances.
 			return this._instantiate(list, mixin, options);
 		},
 
-		_instantiate: function(nodes, mixin, options){
+		_instantiate: function(nodes, mixin, options, returnPromise){
 			// summary:
 			//		Takes array of objects representing nodes, and turns them into class instances and
 			//		potentially calls a startup method to allow them to connect with
@@ -161,35 +163,47 @@ define(
 			// options: Object
 			//		An options object used to hold kwArgs for instantiation.
 			//		See parse.options argument for details.
+			// returnPromise: Boolean
+			//		Return a Promise rather than the instance; supports asynchronous widget creation.
+			// returns:
+			//		Array of instances, or if returnPromise is true, a promise for array of instances
+			//		that resolves when instances have finished initializing.
 
-			// Call widget constructors
+			// Call widget constructors.   Some may be asynchronous and return promises.
 			var thelist = darray.map(nodes, function(obj){
 				var ctor = obj.ctor || getCtor(obj.types);
 				// If we still haven't resolved a ctor, it is fatal now
 				if(!ctor){
 					throw new Error("Unable to resolve constructor for: '" + obj.types.join() + "'");
 				}
-				return this.construct(ctor, obj.node, mixin, options, obj.scripts, obj.inherited);
+				return this.construct(ctor, obj.node, mixin, options, obj.scripts, obj.inherited, returnPromise);
 			}, this);
 
-			// Call startup on each top level instance if it makes sense (as for
-			// widgets).  Parent widgets will recursively call startup on their
-			// (non-top level) children
-			if(!mixin._started && !options.noStart){
-				darray.forEach(thelist, function(instance){
-					if(typeof instance.startup === "function" && !instance._started){
-						instance.startup();
-					}
-				});
-			}
+			// After all widget construction finishes, call startup on each top level instance if it makes sense (as for
+			// widgets).  Parent widgets will recursively call startup on their (non-top level) children
+			function onConstruct(thelist){
+				if(!mixin._started && !options.noStart){
+					darray.forEach(thelist, function(instance){
+						if(typeof instance.startup === "function" && !instance._started){
+							instance.startup();
+						}
+					});
+				}
 
-			return thelist;
+				return thelist;
+			}
+			if(returnPromise){
+				return all(thelist).then(onConstruct);
+			}else{
+				// Back-compat path, remove for 2.0
+				return onConstruct(thelist);
+			}
 		},
 
-		construct: function(ctor, node, mixin, options, scripts, inherited){
+		construct: function(ctor, node, mixin, options, scripts, inherited, returnPromise){
 			// summary:
 			//		Calls new ctor(params, node), where params is the hash of parameters specified on the node,
-			//		excluding data-dojo-type and data-dojo-mixins.   Does not call startup().   Returns the widget.
+			//		excluding data-dojo-type and data-dojo-mixins.   Does not call startup().
 			// ctor: Function
 			//		Widget constructor.
 			// node: DOMNode
@@ -203,6 +217,11 @@ define(
 			//		Array of `<script type="dojo/*">` DOMNodes.  If not specified, will search for `<script>` tags inside node.
 			// inherited: Object?
 			//		Settings from dir=rtl or lang=... on a node above this node.   Overrides options.inherited.
+			// returnPromise: Boolean
+			//		Return a Promise rather than the instance if the instance instantiation is asynchronous.
+			// returns:
+			//		Instance, or if returnPromise is true, a promise for the instance,
+			//		that resolves when the instance has finished initializing.
 
 			var proto = ctor && ctor.prototype;
 			options = options || {};
@@ -427,28 +446,37 @@ define(
 
 			// create the instance
 			var markupFactory = ctor.markupFactory || proto.markupFactory;
-			var instance = markupFactory ? markupFactory(params, node, ctor) : new ctor(params, node);
+			var instance = markupFactory ? markupFactory(params, node, ctor, returnPromise) : new ctor(params, node);
 
-			// map it to the JS namespace if that makes sense
-			if(jsname){
-				dlang.setObject(jsname, instance);
+			function onInstantiate(instance){
+				// map it to the JS namespace if that makes sense
+				if(jsname){
+					dlang.setObject(jsname, instance);
+				}
+
+				// process connections and startup functions
+				for(i=0; i<aspects.length; i++){
+					aspect[aspects[i].advice || "after"](instance, aspects[i].method, dlang.hitch(instance, aspects[i].func), true);
+				}
+				for(i=0; i<calls.length; i++){
+					calls[i].call(instance);
+				}
+				for(i=0; i<watches.length; i++){
+					instance.watch(watches[i].prop, watches[i].func);
+				}
+				for(i=0; i<ons.length; i++){
+					don(instance, ons[i].event, ons[i].func);
+				}
+
+				return instance;
 			}
 
-			// process connections and startup functions
-			for(i=0; i<aspects.length; i++){
-				aspect[aspects[i].advice || "after"](instance, aspects[i].method, dlang.hitch(instance, aspects[i].func), true);
+			if(returnPromise){
+				return when(instance).then(onInstantiate);
+			}else{
+				// Back-compat path, remove for 2.0
+				return onInstantiate(instance);
 			}
-			for(i=0; i<calls.length; i++){
-				calls[i].call(instance);
-			}
-			for(i=0; i<watches.length; i++){
-				instance.watch(watches[i].prop, watches[i].func);
-			}
-			for(i=0; i<ons.length; i++){
-				don(instance, ons[i].event, ons[i].func);
-			}
-
-			return instance;
 		},
 
 		scan: function(root, options){
@@ -843,9 +871,13 @@ define(
 				this._scanAmd(root, options).then(function(){
 					return self.scan(root, options);
 				}).then(function(parsedNodes){
-					return instances = instances.concat(self._instantiate(parsedNodes, mixin, options));
+					return self._instantiate(parsedNodes, mixin, options, true);
+				}).then(function(_instances){
+					// Copy the instances into the instances[] array we declared above, and are accessing as
+					// our return value.
+					return instances = instances.concat(_instances);
 				}).otherwise(function(e){
-					// TODO Modify to follow better pattern for promise error managment when available
+					// TODO Modify to follow better pattern for promise error management when available
 					console.error("dojo/parser::parse() error", e);
 					throw e;
 				});

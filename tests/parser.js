@@ -4,5 +4,6 @@ define(["doh/main", "require"], function(doh, require){
 		doh.register("parseOnLoad-auto-require", require.toUrl("./parser/parseOnLoadAutoRequire.html"), 30000);
 		doh.register("parseOnLoad-declarative-require", require.toUrl("./parser/parseOnLoadDeclarativeRequire.html"), 30000);
 		doh.register("parser-args", require.toUrl("./parser/parser-args.html"), 30000);
+		doh.register("parser-async", require.toUrl("./parser/parserAsync.html"), 30000);
 	}
 });

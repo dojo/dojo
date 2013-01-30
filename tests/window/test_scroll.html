@@ -301,16 +301,16 @@
 											rAfterScroll = getBoundingRect(n);
 											vAfterScroll = getVisibleSize(n);
 											if(rAfterScroll.left > rBeforeScroll.left){ // shifted right so all but leftmost pixel on first row is showing
-												doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "min: start: shift right partial width");
 												scrollIntoView(0,0);
 												setTimeout(d.getTestCallback(function(){
+													doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "min: start: shift right partial width");
 													vAfterScroll = getVisibleSize(n);
 													doh.is(vAfterScroll.w, maxWidth, "min: start: shift right full width");
 												}), 0);
 											}else if(rAfterScroll.left < rBeforeScroll.left){ // shifted left so only 2 leftmost pixels on first row are showing
-												doh.is(2, vAfterScroll.w, "min: start: shift left width");
 												scrollIntoView(nodeWidth-1,0);
 												setTimeout(d.getTestCallback(function(){
+													doh.is(2, vAfterScroll.w, "min: start: shift left width");
 													vAfterScroll = getVisibleSize(n);
 													doh.is(vAfterScroll.w, maxWidth, "min: start: shift left full width");
 												}), 0);
@@ -332,16 +332,16 @@
 								runTest: function(){ with(dom.byId(id)){
 									var d = new doh.Deferred();
 									if(rAfterScroll.top > rBeforeScroll.top){ // shifted down so all rows are showing
-										doh.is(vAfterScroll.h, maxHeight, "min: start: shift down height");
 										scrollIntoView(1,nodeHeight-1);
 										setTimeout(d.getTestCallback(function(){
+											doh.is(vAfterScroll.h, maxHeight, "min: start: shift down height");
 											vAfterScroll = getVisibleSize(n);
 											doh.is(vAfterScroll.h, maxHeight, "min: start: shift down full height");
 										}), 0);
 									}else if(rAfterScroll.top < rBeforeScroll.top){ // shifted up so only the first row is showing
-										doh.is(1, vAfterScroll.h, "min: start: shift up height");
 										scrollIntoView(0,nodeHeight-1);
 										setTimeout(d.getTestCallback(function(){
+											doh.is(1, vAfterScroll.h, "min: start: shift up height");
 											vAfterScroll = getVisibleSize(n);
 											doh.is(vAfterScroll.h, maxHeight, "min: start: shift up full height");
 										}), 0);
@@ -367,16 +367,16 @@
 											rAfterScroll = getBoundingRect(n);
 											vAfterScroll = getVisibleSize(n);
 											if(rAfterScroll.left < rBeforeScroll.left){ // shifted left so all but rightmost pixel on first row is showing
-												doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "min: end: shift left partial width");
 												scrollIntoView(nodeWidth-1,nodeHeight-1);
 												setTimeout(d.getTestCallback(function(){
+													doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "min: end: shift left partial width");
 													vAfterScroll = getVisibleSize(n);
 													doh.is(vAfterScroll.w, maxWidth, "min: end: shift left full width");
 												}), 0);
 											}else if(rAfterScroll.left > rBeforeScroll.left){ // shifted right so only 2 rightmost pixels on first row are showing
-												doh.is(2, vAfterScroll.w, "min: end: shift right width");
 												scrollIntoView(0,nodeHeight-1);
 												setTimeout(d.getTestCallback(function(){
+													doh.is(2, vAfterScroll.w, "min: end: shift right width");
 													vAfterScroll = getVisibleSize(n);
 													doh.is(vAfterScroll.w, maxWidth, "min: end: shift right full width");
 												}), 0);
@@ -398,16 +398,16 @@
 								runTest: function(){ with(dom.byId(id)){
 									var d = new doh.Deferred();
 									if(rAfterScroll.top < rBeforeScroll.top){ // shifted up so all rows are showing
-										doh.is(vAfterScroll.h, maxHeight, "min: end: shift up height");
 										scrollIntoView(nodeWidth-1,0);
 										setTimeout(d.getTestCallback(function(){
+											doh.is(vAfterScroll.h, maxHeight, "min: end: shift up height");
 											vAfterScroll = getVisibleSize(n);
 											doh.is(vAfterScroll.h, maxHeight, "min: end: shift up full height");
 										}), 0);
 									}else if(rAfterScroll.top > rBeforeScroll.top){ // shifted down so only the last row is showing
-										doh.is(1, vAfterScroll.h, "min: end: shift down height");
 										scrollIntoView(0,0);
 										setTimeout(d.getTestCallback(function(){
+											doh.is(1, vAfterScroll.h, "min: end: shift down height");
 											vAfterScroll = getVisibleSize(n);
 											doh.is(vAfterScroll.h, maxHeight, "min: end: shift down full height");
 										}), 0);
@@ -435,16 +435,16 @@
 											rAfterScroll = getBoundingRect(n);
 											vAfterScroll = getVisibleSize(n);
 											if(rAfterScroll.left > rBeforeScroll.left){ // shifted right so all but leftmost pixel on first row is showing
-												doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "max: start: shift right partial width");
 												scrollIntoView(0,0);
 												setTimeout(d.getTestCallback(function(){
+													doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "max: start: shift right partial width");
 													vAfterScroll = getVisibleSize(n);
 													doh.is(vAfterScroll.w, maxWidth, "max: start: shift right full width");
 												}), 0);
 											}else if(rAfterScroll.left < rBeforeScroll.left){ // shifted left so only 2 leftmost pixels on first row are showing
-												doh.is(2, vAfterScroll.w, "max: start: shift left width");
 												scrollIntoView(nodeWidth-1,0);
 												setTimeout(d.getTestCallback(function(){
+													doh.is(2, vAfterScroll.w, "max: start: shift left width");
 													vAfterScroll = getVisibleSize(n);
 													doh.is(vAfterScroll.w, maxWidth, "max: start: shift left full width");
 												}), 0);
@@ -466,16 +466,16 @@
 								runTest: function(){ with(dom.byId(id)){
 									var d = new doh.Deferred();
 									if(rAfterScroll.top > rBeforeScroll.top){ // shifted down so all rows are showing
-										doh.is(vAfterScroll.h, maxHeight, "max: start: shift down height");
 										scrollIntoView(1,nodeHeight-1);
 										setTimeout(d.getTestCallback(function(){
+											doh.is(vAfterScroll.h, maxHeight, "max: start: shift down height");
 											vAfterScroll = getVisibleSize(n);
 											doh.is(vAfterScroll.h, maxHeight, "max: start: shift down full height");
 										}), 0);
 									}else if(rAfterScroll.top < rBeforeScroll.top){ // shifted up so only the first row is showing
-										doh.is(1, vAfterScroll.h, "max: start: shift up height");
 										scrollIntoView(0,nodeHeight-1);
 										setTimeout(d.getTestCallback(function(){
+											doh.is(1, vAfterScroll.h, "max: start: shift up height");
 											vAfterScroll = getVisibleSize(n);
 											doh.is(vAfterScroll.h, maxHeight, "max: start: shift up full height");
 										}), 0);
@@ -501,16 +501,16 @@
 											rAfterScroll = getBoundingRect(n);
 											vAfterScroll = getVisibleSize(n);
 											if(rAfterScroll.left < rBeforeScroll.left){ // shifted left so all but rightmost pixel on first row is showing
-												doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "max: end: shift left partial width");
 												scrollIntoView(nodeWidth-1,nodeHeight-1);
 												setTimeout(d.getTestCallback(function(){
+													doh.is(nodeWidth > maxWidth ? maxWidth : (maxWidth-1), vAfterScroll.w, "max: end: shift left partial width");
 													vAfterScroll = getVisibleSize(n);
 													doh.is(vAfterScroll.w, maxWidth, "max: end: shift left full width");
 												}), 0);
 											}else if(rAfterScroll.left > rBeforeScroll.left){ // shifted right so only 2 rightmost pixels on first row are showing
-												doh.is(2, vAfterScroll.w, "max: end: shift right width");
 												scrollIntoView(0,nodeHeight-1);
 												setTimeout(d.getTestCallback(function(){
+													doh.is(2, vAfterScroll.w, "max: end: shift right width");
 													vAfterScroll = getVisibleSize(n);
 													doh.is(vAfterScroll.w, maxWidth, "max: end: shift right full width");
 												}), 0);
@@ -532,16 +532,16 @@
 								runTest: function(){ with(dom.byId(id)){
 									var d = new doh.Deferred();
 									if(rAfterScroll.top < rBeforeScroll.top){ // shifted up so all rows are showing
-										doh.is(vAfterScroll.h, maxHeight, "max: end: shift up height");
 										scrollIntoView(nodeWidth-1,0);
 										setTimeout(d.getTestCallback(function(){
+											doh.is(vAfterScroll.h, maxHeight, "max: end: shift up height");
 											vAfterScroll = getVisibleSize(n);
 											doh.is(vAfterScroll.h, maxHeight, "max: end: shift up full height");
 										}), 0);
 									}else if(rAfterScroll.top > rBeforeScroll.top){ // shifted down so only the last row is showing
-										doh.is(1, vAfterScroll.h, "max: end: shift down height");
 										scrollIntoView(0,0);
 										setTimeout(d.getTestCallback(function(){
+											doh.is(1, vAfterScroll.h, "max: end: shift down height");
 											vAfterScroll = getVisibleSize(n);
 											doh.is(vAfterScroll.h, maxHeight, "max: end: shift down full height");
 										}), 0);

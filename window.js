@@ -38,54 +38,88 @@ dojo.window.get = function(doc){
 
 dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 	// summary:
-	//		Scroll the passed node into view, if it is not already.
-	
-	// don't rely on node.scrollIntoView working just because the function is there
+	//		Scroll the passed node into view using minimal movement, if it is not already.
+
+	// Don't rely on node.scrollIntoView working just because the function is there since
+	// it forces the node to the page's bottom or top (and left or right in IE) without consideration for the minimal movement.
+	// WebKit's node.scrollIntoViewIfNeeded doesn't work either for inner scrollbars in right-to-left mode
+	// and when there's a fixed position scrollable element
+
+	node = dojo.byId(node);
+	var body, doc = node.ownerDocument || dojo.doc;
+
+	// has() functions but without has() support
+	if(!("rtl_adjust_position_for_verticalScrollBar" in dojo.window)){
+		body = dojo.body();
+		var	scrollable = dojo.create('div', {
+				style: {overflow:'scroll', overflowX:'visible', direction:'rtl', visibility:'hidden', position:'absolute', left:'0', top:'0', width:'64px', height:'64px'}
+			}, body, "last"),
+			div = dojo.create('div', {
+				style: {overflow:'hidden', direction:'ltr'}
+			}, scrollable, "last");
+		dojo.window.rtl_adjust_position_for_verticalScrollBar = dojo.position(div).x != 0;
+		scrollable.removeChild(div);
+		body.removeChild(scrollable);
+	}
+
+	if(!("position_fixed_support" in dojo.window)){
+		// IE6, IE7+quirks, and some older mobile browsers don't support position:fixed
+		body = dojo.body();
+		var	outer = dojo.create('span', {
+				style: {visibility:'hidden', position:'fixed', left:'1px', top:'1px'}
+			}, body, "last"),
+			inner = dojo.create('span', {
+				style: {position:'fixed', left:'0', top:'0'}
+			}, outer, "last");
+		dojo.window.position_fixed_support = dojo.position(inner).x != dojo.position(outer).x;
+		outer.removeChild(inner);
+		body.removeChild(outer);
+	}
 
 	try{ // catch unexpected/unrecreatable errors (#7808) since we can recover using a semi-acceptable native method
-		node = dojo.byId(node);
-		var doc = node.ownerDocument || dojo.doc,
-			body = doc.body || dojo.body(),
-			html = doc.documentElement || body.parentNode,
-			isIE = dojo.isIE, isWK = dojo.isWebKit;
+		body = doc.body || doc.getElementsByTagName("body")[0];
+		var	html = doc.documentElement || body.parentNode,
+			isIE = dojo.isIE,
+			isWK = dojo.isWebKit;
 		// if an untested browser, then use the native method
-		if((!(dojo.isMoz || isIE || isWK || dojo.isOpera) || node == body || node == html) && (typeof node.scrollIntoView != "undefined")){
+		if(node == body || node == html){ return; }
+		if(!(dojo.isMozilla || isIE || isWK || dojo.isOpera) && ("scrollIntoView" in node)){
 			node.scrollIntoView(false); // short-circuit to native if possible
 			return;
 		}
-		var backCompat = doc.compatMode == 'BackCompat',
-			clientAreaRoot = (isIE >= 9 && "frameElement" in node.ownerDocument.parentWindow)
-				? ((html.clientHeight > 0 && html.clientWidth > 0 && (body.clientHeight == 0 || body.clientWidth == 0 || body.clientHeight > html.clientHeight || body.clientWidth > html.clientWidth)) ? html : body)
-				: (backCompat ? body : html),
-			scrollRoot = isWK ? body : clientAreaRoot,
-			rootWidth = clientAreaRoot.clientWidth,
-			rootHeight = clientAreaRoot.clientHeight,
-			rtl = !dojo._isBodyLtr(),
+		var	backCompat = doc.compatMode == 'BackCompat',
+			rootWidth = Math.min(body.clientWidth || html.clientWidth, html.clientWidth || body.clientWidth),
+			rootHeight = Math.min(body.clientHeight || html.clientHeight, html.clientHeight || body.clientHeight),
+			scrollRoot = (isWK || backCompat) ? body : html,
 			nodePos = pos || dojo.position(node),
 			el = node.parentNode,
 			isFixed = function(el){
-				return ((isIE <= 6 || (isIE && backCompat))? false : (dojo.style(el, 'position').toLowerCase() == "fixed"));
+				return (isIE <= 6 || (isIE == 7 && backCompat))
+					? false
+					: (dojo.window.position_fixed_support && (dojo.style(el, 'position').toLowerCase() == "fixed"));
 			};
 		if(isFixed(node)){ return; } // nothing to do
-
 		while(el){
 			if(el == body){ el = scrollRoot; }
-			var elPos = dojo.position(el),
-				fixedPos = isFixed(el);
-	
+			var	elPos = dojo.position(el),
+				fixedPos = isFixed(el),
+				rtl = dojo.getComputedStyle(el).direction.toLowerCase() == "rtl";
+
 			if(el == scrollRoot){
 				elPos.w = rootWidth; elPos.h = rootHeight;
 				if(scrollRoot == html && isIE && rtl){ elPos.x += scrollRoot.offsetWidth-elPos.w; } // IE workaround where scrollbar causes negative x
-				if(elPos.x < 0 || !isIE){ elPos.x = 0; } // IE can have values > 0
-				if(elPos.y < 0 || !isIE){ elPos.y = 0; }
+				if(elPos.x < 0 || !isIE || isIE >= 9){ elPos.x = 0; } // older IE can have values > 0
+				if(elPos.y < 0 || !isIE || isIE >= 9){ elPos.y = 0; }
 			}else{
 				var pb = dojo._getPadBorderExtents(el);
 				elPos.w -= pb.w; elPos.h -= pb.h; elPos.x += pb.l; elPos.y += pb.t;
 				var clientSize = el.clientWidth,
 					scrollBarSize = elPos.w - clientSize;
 				if(clientSize > 0 && scrollBarSize > 0){
+					if(rtl && dojo.window.rtl_adjust_position_for_verticalScrollBar){
+						elPos.x += scrollBarSize;
+					}
 					elPos.w = clientSize;
-					elPos.x += (rtl && (isIE || el.clientLeft > pb.l/*Chrome*/)) ? scrollBarSize : 0;
 				}
 				clientSize = el.clientHeight;
 				scrollBarSize = elPos.h - clientSize;
@@ -108,21 +142,26 @@ dojo.window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 				}
 			}
 			// calculate overflow in all 4 directions
-			var l = nodePos.x - elPos.x, // beyond left: < 0
-				t = nodePos.y - Math.max(elPos.y, 0), // beyond top: < 0
+			var	l = nodePos.x - elPos.x, // beyond left: < 0
+//						t = nodePos.y - Math.max(elPos.y, 0), // beyond top: < 0
+				t = nodePos.y - elPos.y, // beyond top: < 0
 				r = l + nodePos.w - elPos.w, // beyond right: > 0
 				bot = t + nodePos.h - elPos.h; // beyond bottom: > 0
-			if(r * l > 0){
-				var s = Math[l < 0? "max" : "min"](l, r);
+			var s, old;
+			if(r * l > 0 && (!!el.scrollLeft || el == scrollRoot || el.scrollWidth > el.offsetHeight)){
+				s = Math[l < 0? "max" : "min"](l, r);
 				if(rtl && ((isIE == 8 && !backCompat) || isIE >= 9)){ s = -s; }
-				nodePos.x += el.scrollLeft;
+				old = el.scrollLeft;
 				el.scrollLeft += s;
-				nodePos.x -= el.scrollLeft;
+				s = el.scrollLeft - old;
+				nodePos.x -= s;
 			}
-			if(bot * t > 0){
-				nodePos.y += el.scrollTop;
-				el.scrollTop += Math[t < 0? "max" : "min"](t, bot);
-				nodePos.y -= el.scrollTop;
+			if(bot * t > 0 && (!!el.scrollTop || el == scrollRoot || el.scrollHeight > el.offsetHeight)){
+				s = Math.ceil(Math[t < 0? "max" : "min"](t, bot));
+				old = el.scrollTop;
+				el.scrollTop += s;
+				s = el.scrollTop - old;
+				nodePos.y -= s;
 			}
 			el = (el != scrollRoot) && !fixedPos && el.parentNode;
 		}

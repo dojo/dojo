@@ -1,5 +1,5 @@
-define(["../../_base/array", "../../_base/lang", "../../_base/Deferred"
-], function(array, lang, Deferred){
+define(["../../_base/array", "../../_base/lang", "../../when"
+], function(array, lang, when){
 
 // module:
 //		dojo/store/util/QueryResults
@@ -38,7 +38,7 @@ var QueryResults = function(results){
 		if(!results[method]){
 			results[method] = function(){
 				var args = arguments;
-				return Deferred.when(results, function(results){
+				return when(results, function(results){
 					Array.prototype.unshift.call(args, results);
 					return QueryResults(array[method].apply(array, args));
 				});
@@ -49,7 +49,7 @@ var QueryResults = function(results){
 	addIterativeMethod("filter");
 	addIterativeMethod("map");
 	if(!results.total){
-		results.total = Deferred.when(results, function(results){
+		results.total = when(results, function(results){
 			return results.length;
 		});
 	}

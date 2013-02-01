@@ -1,5 +1,5 @@
-define(["../_base/kernel", "../_base/lang", "../_base/Deferred", "../_base/array" /*=====, "./api/Store" =====*/
-], function(kernel, lang, Deferred, array /*=====, Store =====*/){
+define(["../_base/kernel", "../_base/lang", "../when", "../_base/array" /*=====, "./api/Store" =====*/
+], function(kernel, lang, when, array /*=====, Store =====*/){
 
 // module:
 //		dojo/store/Observable
@@ -62,7 +62,7 @@ var Observable = function(/*Store*/ store){
 				if(listeners.push(listener) == 1){
 					// first listener was added, create the query checker and updater
 					queryUpdaters.push(queryUpdater = function(changed, existingId){
-						Deferred.when(results, function(resultsArray){
+						when(results, function(resultsArray){
 							var atEnd = resultsArray.length != options.count;
 							var i, l, listener;
 							if(++queryRevision != revision){
@@ -157,7 +157,7 @@ var Observable = function(/*Store*/ store){
 				inMethod = true;
 				try{
 					var results = original.apply(this, arguments);
-					Deferred.when(results, function(results){
+					when(results, function(results){
 						action((typeof results == "object" && results) || value);
 					});
 					return results;

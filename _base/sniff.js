@@ -89,8 +89,5 @@ define(["./kernel", "./lang", "../sniff"], function(dojo, lang, has){
 		isAir: has("air")
 	});
 
-
-	dojo.locale = dojo.locale || (has("ie") ? navigator.userLanguage : navigator.language).toLowerCase();
-
 	return has;
 });

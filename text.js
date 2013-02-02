@@ -1,14 +1,14 @@
-define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"], function(dojo, require, has, xhr){
+define(["./_base/kernel", "require", "./has", "./request"], function(dojo, require, has, request){
 	// module:
 	//		dojo/text
 
 	var getText;
-	if(has("host-browser")){
+	if(has("host-browser") || has("host-node")){
 		getText= function(url, sync, load){
-			xhr("GET", {url: url, sync:!!sync, load: load, headers: dojo.config.textPluginHeaders || {}});
+			request(url, {sync:!!sync}).then(load);
 		};
 	}else{
-		// TODOC: only works for dojo AMD loader
+		// Fallback for cases dojo/request doesn't handle.  Only works for dojo AMD loader.  Remove for 2.0.
 		if(require.getText){
 			getText= require.getText;
 		}else{
@@ -186,7 +186,7 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./_base/xhr"],
 				};
 			if(absMid in theCache){
 				text = theCache[absMid];
-			}else if(requireCacheUrl in require.cache){
+			}else if(require.cache && requireCacheUrl in require.cache){
 				text = require.cache[requireCacheUrl];
 			}else if(url in theCache){
 				text = theCache[url];

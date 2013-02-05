@@ -3,12 +3,13 @@ define(["./_base/kernel", "require", "./has", "./request"], function(dojo, requi
 	//		dojo/text
 
 	var getText;
-	if(has("host-browser") || has("host-node")){
+	if(has("host-browser")){
 		getText= function(url, sync, load){
 			request(url, {sync:!!sync}).then(load);
 		};
 	}else{
-		// Fallback for cases dojo/request doesn't handle.  Only works for dojo AMD loader.  Remove for 2.0.
+		// Path for node.js and rhino, to load from local file system.
+		// TODO: use node.js native methods rather than depending on a require.getText() method to exist.
 		if(require.getText){
 			getText= require.getText;
 		}else{

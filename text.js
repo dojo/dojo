@@ -1,4 +1,4 @@
-define(["./_base/kernel", "require", "./has", "./request"], function(dojo, require, has, request){
+define(["./_base/kernel", "require", "./has", "./has!host-browser?./request"], function(dojo, require, has, request){
 	// module:
 	//		dojo/text
 

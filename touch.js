@@ -1,5 +1,5 @@
-define(["./_base/kernel", "./aspect", "./dom", "./on", "./has", "./mouse", "./domReady", "./_base/window"],
-function(dojo, aspect, dom, on, has, mouse, domReady, win){
+define(["./_base/kernel", "./aspect", "./dom", "./_base/lang", "./on", "./has", "./mouse", "./domReady", "./_base/window"],
+function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 
 	// module:
 	//		dojo/touch
@@ -14,14 +14,22 @@ function(dojo, aspect, dom, on, has, mouse, domReady, win){
 		var os = parseFloat(v.replace(/_/, '.').replace(/_/g, ''));
 		ios4 = os < 5;
 	}
+	
+	var msPointer = navigator.msPointerEnabled;
 
 	// Time of most recent touchstart or touchmove event
 	var lastTouch;
 
-	function dualEvent(mouseType, touchType){
+	function dualEvent(mouseType, touchType, msPointerType){
 		// Returns synthetic event that listens for both the specified mouse event and specified touch event.
 		// But ignore fake mouse events that were generated due to the user touching the screen.
-		if(hasTouch){
+		if(msPointer && msPointerType){
+			// IE10+: MSPointer* events are designed to handle both mouse and touch in a uniform way,
+			// so just use that regardless of hasTouch.
+			return function(node, listener){
+				return on(node, msPointerType, listener);
+			}
+		}else if(hasTouch){
 			return function(node, listener){
 				var handle1 = on(node, touchType, listener),
 					handle2 = on(node, mouseType, function(evt){
@@ -46,7 +54,7 @@ function(dojo, aspect, dom, on, has, mouse, domReady, win){
 
 	var touchmove, hoveredNode;
 
-	if(hasTouch){
+	if(hasTouch && !msPointer){ // MSPointer (IE10+) already has support for over and out
 		domReady(function(){
 			// Keep track of currently hovered node
 			hoveredNode = win.body();	// currently hovered node
@@ -79,49 +87,44 @@ function(dojo, aspect, dom, on, has, mouse, domReady, win){
 					evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
 					evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
 				);
-				if(newNode && hoveredNode !== newNode){
-					// touch out on the old node
-					on.emit(hoveredNode, "dojotouchout", {
-						target: hoveredNode,
-						relatedTarget: newNode,
-						bubbles: true
-					});
+				if(newNode){
+					if(hoveredNode !== newNode){
+						// touch out on the old node
+						on.emit(hoveredNode, "dojotouchout", {
+							target: hoveredNode,
+							relatedTarget: newNode,
+							bubbles: true
+						});
 
-					// touchover on the new node
-					on.emit(newNode, "dojotouchover", {
+						// touchover on the new node
+						on.emit(newNode, "dojotouchover", {
+							target: newNode,
+							relatedTarget: hoveredNode,
+							bubbles: true
+						});
+
+						hoveredNode = newNode;
+					}
+					on.emit(newNode, "dojotouchmove", lang.delegate(evt, {
 						target: newNode,
-						relatedTarget: hoveredNode,
 						bubbles: true
-					});
-
-					hoveredNode = newNode;
+					}));
 				}
 			});
 		});
-
-		// Define synthetic touch.move event that unlike the native touchmove, fires for the node the finger is
-		// currently dragging over rather than the node where the touch started.
-		touchmove = function(node, listener){
-			return on(win.doc, "touchmove", function(evt){
-				if(node === win.doc || dom.isDescendant(hoveredNode, node)){
-					evt.target = hoveredNode;
-					listener.call(this, evt);
-				}
-			});
-		};
 	}
 
 
 	//device neutral events - touch.press|move|release|cancel/over/out
 	var touch = {
-		press: dualEvent("mousedown", "touchstart"),
-		move: dualEvent("mousemove", touchmove),
-		release: dualEvent("mouseup", "touchend"),
-		cancel: dualEvent(mouse.leave, "touchcancel"),
-		over: dualEvent("mouseover", "dojotouchover"),
-		out: dualEvent("mouseout", "dojotouchout"),
-		enter: mouse._eventHandler(dualEvent("mouseover","dojotouchover")),
-		leave: mouse._eventHandler(dualEvent("mouseout", "dojotouchout"))
+		press: dualEvent("mousedown", "touchstart", "MSPointerDown"),
+		move: dualEvent("mousemove", "dojotouchmove", "MSPointerMove"),
+		release: dualEvent("mouseup", "touchend", "MSPointerUp"),
+		cancel: dualEvent(mouse.leave, "touchcancel", hasTouch?"MSPointerCancel":null),
+		over: dualEvent("mouseover", "dojotouchover", "MSPointerOver"),
+		out: dualEvent("mouseout", "dojotouchout", "MSPointerOut"),
+		enter: mouse._eventHandler(dualEvent("mouseover","dojotouchover", "MSPointerOver")),
+		leave: mouse._eventHandler(dualEvent("mouseout", "dojotouchout", "MSPointerOut"))
 	};
 
 	/*=====
@@ -157,7 +160,13 @@ function(dojo, aspect, dom, on, has, mouse, domReady, win){
 		},
 		move: function(node, listener){
 			// summary:
-			//		Register a listener to 'touchmove'|'mousemove' for the given node
+			//		Register a listener that fires when the mouse cursor or a finger is dragged over the given node.
+			//
+			//		Calling evt.stopPropagation() will stop ancestor nodes from receiving this touch.move
+			//		synthetic event, but won't have any effect w.r.t. bubbling of the native "touchmove" event.
+			//
+			//		Also, evt.preventDefault() on this synthetic event does not stop the screen from scrolling,
+			//		so an app should call evt.preventDefault() on the touchstart event instead.
 			// node: Dom
 			//		Target node to listen to
 			// listener: Function
@@ -167,7 +176,8 @@ function(dojo, aspect, dom, on, has, mouse, domReady, win){
 		},
 		release: function(node, listener){
 			// summary:
-			//		Register a listener to 'touchend'|'mouseup' for the given node
+			//		Register a listener to releasing the mouse button while the cursor is over the given node
+			//		(i.e. "mouseup") or for removing the finger from the screen while touching the given node.
 			// node: Dom
 			//		Target node to listen to
 			// listener: Function

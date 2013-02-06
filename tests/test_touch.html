@@ -17,6 +17,13 @@
 				heigh: 75px;
 				background-color: white;
 			}
+			#test2 {
+				/* for testing touch.move */
+				width: 200px;
+				height: 50px;
+				border: 1px solid yellow;
+				background-color: yellow;
+			}
 			#current, #log {
 				width: 300px;
 				height: 200px;
@@ -39,12 +46,15 @@
 				"doh/runner",
 				"dojo/domReady!"
 			], function(array, dom, lang, touch, on, has, domStyle, doh){
+				
+				var mspointer = navigator.msPointerEnabled; // IE10+ PSPointer events?
+				
 				var action = function(comment, e){
 					// summary:
 					//		Callback to display into when events fire
 					// Detailed log of the most recent event:
 
-					dom.byId("current").innerHTML = "Most recent event:";
+					dom.byId("current").innerHTML = "Most recent non touch.move event:";
 					var info = "[Touch Event]: " + e.type + " on " + comment +
 							"<br/> ------ Event Properties: ------<br/>";
 					for(var i in e){
@@ -62,6 +72,8 @@
 					dom.byId("log").innerHTML = comment + "{type:" +
 							e.type + ", target:" + (e.target.id||e.target.tagName) +
 							"}<br/>" + dom.byId("log").innerHTML;
+
+					e.preventDefault();
 				};
 
 				var node = dom.byId("test"),
@@ -75,8 +87,14 @@
 						}
 					}
 				});
+				on(dom.byId("test2"), touch.move, function(e){
+					dom.byId("log").innerHTML = "on(touch2, touch.move)--> {type:" +
+							e.type + ", target:" + (e.target.id||e.target.tagName) +
+							", pageX = " + e.pageX + ", pageY = " + e.pageY +
+							"}<br/>" + dom.byId("log").innerHTML;
+				});
 
-				on(document, "touchmove", function(evt){
+				on(document, mspointer ? "MSPointerMove" : "touchmove", function(evt){
 					// Prevent scrolling since it interferes with testing touchover/touchout on "test" and "innertest"
 					evt.preventDefault();
 				});
@@ -89,8 +107,12 @@
 //					on(node, "orientationchange", action);
 
 				//3. we can also isolate mouse/touch handlers
-				on(node, "touchend", function(){alert("isolated touchend handler");});
-				on(node, "mouseup", function(){alert("isolated mouseup handler");});
+				if(mspointer){
+					on(node, "MSPointerUp", function(){alert("isolated MSPointerUp handler");});
+				}else{
+					on(node, "touchend", function(){alert("isolated touchend handler");});
+					on(node, "mouseup", function(){alert("isolated mouseup handler");});
+				}
 				/*
 				on(node, "touchmove", function(e){
 					dom.byId("log").innerHTML = 'on(node,"touchmove")-->{type:' +
@@ -124,9 +146,9 @@
 							executed = true;
 							setObj(obj, e);
 						});
-						on.emit(dohDiv, 'mousedown', {});
+						on.emit(dohDiv, mspointer?'MSPointerDown':'mousedown', {});
 						doh.assertTrue(executed, 'dojo.touch.press not fired');
-						assert(obj, 'mousedown', dohDiv);
+						assert(obj, mspointer?'MSPointerDown':'mousedown', dohDiv);
 					},
 					function move(){
 						var executed, obj = {};
@@ -135,9 +157,9 @@
 							executed = true;
 							setObj(obj, e);
 						});
-						on.emit(dohDiv, 'mousemove', {});
+						on.emit(dohDiv, mspointer?'MSPointerMove':'mousemove', {});
 						doh.assertTrue(executed, 'dojo.touch.move not fired');
-						assert(obj, 'mousemove', dohDiv);
+						assert(obj, mspointer?'MSPointerMove':'mousemove', dohDiv);
 					},
 					function release(){
 						var executed, obj = {};
@@ -146,9 +168,9 @@
 							executed = true;
 							setObj(obj, e);
 						});
-						on.emit(dohDiv, 'mouseup',  {screenX: 0, screenY: 50});
+						on.emit(dohDiv, mspointer?'MSPointerUp':'mouseup',  {screenX: 0, screenY: 50});
 						doh.assertTrue(executed, 'dojo.touch.release not fired');
-						assert(obj, 'mouseup', dohDiv);
+						assert(obj, mspointer?'MSPointerUp':'mouseup', dohDiv);
 					},
 					function cancel(){
 						var executed, obj = {};
@@ -172,6 +194,9 @@
 			<div id="innertest">
 				inner test
 			</div>
+		</div>
+		<div id="test2">
+			touch.move
 		</div>
 		<div id="current"></div>
 		<div id="log"></div>

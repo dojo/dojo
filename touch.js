@@ -116,7 +116,22 @@ function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 					});
 				}
 			});
+
+			// Fire a dojotouchend event on the node where the finger was before it was removed from the screen.
+			// This is different than the native touchend, which fires on the node where the drag started.
+			on(win.doc, "touchend", function(evt){
+				var node = win.doc.elementFromPoint(
+					evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
+					evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
+				);
+
+				on.emit(node, "dojotouchend", lang.delegate(evt, {
+					target: node,
+					bubbles: true
+				}));
+			});
 		});
+
 
 		// Unlike a listener on "touchmove", on(node, dojotouchmove, listener) fires when the finger
 		// drags over the specified node, regardless of which node the touch started on.
@@ -140,7 +155,7 @@ function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 	var touch = {
 		press: dualEvent("mousedown", "touchstart", "MSPointerDown"),
 		move: dualEvent("mousemove", dojotouchmove, "MSPointerMove"),
-		release: dualEvent("mouseup", "touchend", "MSPointerUp"),
+		release: dualEvent("mouseup", "dojotouchend", "MSPointerUp"),
 		cancel: dualEvent(mouse.leave, "touchcancel", hasTouch?"MSPointerCancel":null),
 		over: dualEvent("mouseover", "dojotouchover", "MSPointerOver"),
 		out: dualEvent("mouseout", "dojotouchout", "MSPointerOut"),

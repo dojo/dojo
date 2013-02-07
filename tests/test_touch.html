@@ -33,7 +33,7 @@
 				display: none;
 			}			
 		</style>
-		<script type="text/javascript" src="../dojo.js" data-dojo-config="parseOnLoad: true"></script>
+		<script type="text/javascript" src="../dojo.js" data-dojo-config="async: true"></script>
 		<script>
 			require([
 				"dojo/_base/array",
@@ -42,11 +42,9 @@
 				"dojo/touch",
 				"dojo/on",
 				"dojo/has",
-				"dojo/dom-style",
-				"doh/runner",
 				"dojo/domReady!"
-			], function(array, dom, lang, touch, on, has, domStyle, doh){
-				
+			], function(array, dom, lang, touch, on, has){
+
 				var mspointer = navigator.msPointerEnabled; // IE10+ PSPointer events?
 				
 				var action = function(comment, e){
@@ -87,16 +85,19 @@
 						}
 					}
 				});
+
 				on(dom.byId("test2"), touch.move, function(e){
 					dom.byId("log").innerHTML = "on(touch2, touch.move)--> {type:" +
 							e.type + ", target:" + (e.target.id||e.target.tagName) +
 							", pageX = " + e.pageX + ", pageY = " + e.pageY +
 							"}<br/>" + dom.byId("log").innerHTML;
-				});
 
-				on(document, mspointer ? "MSPointerMove" : "touchmove", function(evt){
-					// Prevent scrolling since it interferes with testing touchover/touchout on "test" and "innertest"
-					evt.preventDefault();
+
+					// this should stop scrolling
+					e.preventDefault();
+
+					// stopPropagation() should work too
+					e.stopPropagation();
 				});
 
 //					//2. should work well across touch devices
@@ -106,85 +107,74 @@
 //					on(node, "touchcancel", action);
 //					on(node, "orientationchange", action);
 
-				//3. we can also isolate mouse/touch handlers
-				if(mspointer){
-					on(node, "MSPointerUp", function(){alert("isolated MSPointerUp handler");});
-				}else{
-					on(node, "touchend", function(){alert("isolated touchend handler");});
-					on(node, "mouseup", function(){alert("isolated mouseup handler");});
-				}
-				/*
-				on(node, "touchmove", function(e){
-					dom.byId("log").innerHTML = 'on(node,"touchmove")-->{type:' +
-						e.type + ", target:" + (e.target.id||e.target.tagName) +
-						"}<br/>" + dom.byId("log").innerHTML;
-				});
-				*/
 
 				//================================= DoH tests - only running on desktop ======================
 				if(has("touch")){
 					//FIXME - DoH not supported on touch device
 					return;
 				}
-				var dohDiv = dom.byId('dohDiv');
-				domStyle.set(dohDiv, {display: 'block'});
 
-				function setObj(obj, e){
-					obj.type = e.type;
-					obj.target = e.target;
-				}
-				function assert(obj, type, target){
-					doh.assertEqual(type, obj.type);
-					doh.assertEqual(target, obj.target);
-				}
+				require(["doh/runner", "dojo/dom-style"], function(doh, domStyle){
+					var dohDiv = dom.byId('dohDiv');
+					domStyle.set(dohDiv, {display: 'block'});
 
-				doh.register("dojo.touch", [
-					function press(){
-						var executed, obj = {};
-						on(dohDiv, touch.press, function(e){
-							//console.log(e.type);
-							executed = true;
-							setObj(obj, e);
-						});
-						on.emit(dohDiv, mspointer?'MSPointerDown':'mousedown', {});
-						doh.assertTrue(executed, 'dojo.touch.press not fired');
-						assert(obj, mspointer?'MSPointerDown':'mousedown', dohDiv);
-					},
-					function move(){
-						var executed, obj = {};
-						on(dohDiv, touch.move, function(e){
-							//console.log(e.type);
-							executed = true;
-							setObj(obj, e);
-						});
-						on.emit(dohDiv, mspointer?'MSPointerMove':'mousemove', {});
-						doh.assertTrue(executed, 'dojo.touch.move not fired');
-						assert(obj, mspointer?'MSPointerMove':'mousemove', dohDiv);
-					},
-					function release(){
-						var executed, obj = {};
-						on(dohDiv, touch.release, function(e){
-							//console.log(e.type);
-							executed = true;
-							setObj(obj, e);
-						});
-						on.emit(dohDiv, mspointer?'MSPointerUp':'mouseup',  {screenX: 0, screenY: 50});
-						doh.assertTrue(executed, 'dojo.touch.release not fired');
-						assert(obj, mspointer?'MSPointerUp':'mouseup', dohDiv);
-					},
-					function cancel(){
-						var executed, obj = {};
-						on(dohDiv, touch.cancel, function(e){
-							executed = true;
-							setObj(obj, e);
-						});
-						on.emit(dohDiv, 'mouseout',  {screenX: 0, screenY: 50});
-						doh.assertTrue(executed, 'dojo.touch.cancel not fired');
-						assert(obj, 'mouseout', dohDiv);
+					function setObj(obj, e){
+						obj.type = e.type;
+						obj.target = e.target;
 					}
-				]);
+					function assert(obj, type, target){
+						doh.assertEqual(type, obj.type);
+						doh.assertEqual(target, obj.target);
+					}
 
-				doh.run();
+					doh.register("dojo.touch", [
+						function press(){
+							var executed, obj = {};
+							on(dohDiv, touch.press, function(e){
+								//console.log(e.type);
+								executed = true;
+								setObj(obj, e);
+							});
+							on.emit(dohDiv, mspointer?'MSPointerDown':'mousedown', {});
+							doh.assertTrue(executed, 'dojo.touch.press not fired');
+							assert(obj, mspointer?'MSPointerDown':'mousedown', dohDiv);
+						},
+						function move(){
+							var executed, obj = {};
+							on(dohDiv, touch.move, function(e){
+								//console.log(e.type);
+								executed = true;
+								setObj(obj, e);
+							});
+							on.emit(dohDiv, mspointer?'MSPointerMove':'mousemove', {});
+							doh.assertTrue(executed, 'dojo.touch.move not fired');
+							assert(obj, mspointer?'MSPointerMove':'mousemove', dohDiv);
+						},
+						function release(){
+							var executed, obj = {};
+							on(dohDiv, touch.release, function(e){
+								//console.log(e.type);
+								executed = true;
+								setObj(obj, e);
+							});
+							on.emit(dohDiv, mspointer?'MSPointerUp':'mouseup',  {screenX: 0, screenY: 50});
+							doh.assertTrue(executed, 'dojo.touch.release not fired');
+							assert(obj, mspointer?'MSPointerUp':'mouseup', dohDiv);
+						},
+						function cancel(){
+							var executed, obj = {};
+							on(dohDiv, touch.cancel, function(e){
+								executed = true;
+								setObj(obj, e);
+							});
+							on.emit(dohDiv, 'mouseout',  {screenX: 0, screenY: 50});
+							doh.assertTrue(executed, 'dojo.touch.cancel not fired');
+							assert(obj, 'mouseout', dohDiv);
+						}
+					]);
+
+					doh.run();
+				});
 			});
 		</script>
 	</head>

@@ -52,7 +52,7 @@ function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 		}
 	}
 
-	var touchmove, hoveredNode;
+	var dojotouchmove, nativeTouchMoveEvent, hoveredNode;
 
 	if(hasTouch && !msPointer){ // MSPointer (IE10+) already has support for over and out
 		domReady(function(){
@@ -79,15 +79,17 @@ function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 				});
 			}, true);
 
-			// Fire synthetic touchover and touchout events on nodes since the browser won't do it natively.
 			on(win.doc, "touchmove", function(evt){
 				lastTouch = (new Date()).getTime();
+				nativeTouchMoveEvent = evt;
 
 				var newNode = win.doc.elementFromPoint(
 					evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
 					evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
 				);
+
 				if(newNode){
+					// Fire synthetic touchover and touchout events on nodes since the browser won't do it natively.
 					if(hoveredNode !== newNode){
 						// touch out on the old node
 						on.emit(hoveredNode, "dojotouchout", {
@@ -105,20 +107,39 @@ function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 
 						hoveredNode = newNode;
 					}
-					on.emit(newNode, "dojotouchmove", lang.delegate(evt, {
+
+					// Emit synthetic "dojotouchmove" as a way of triggering listeners to synthetic dojotouchmove event
+					// defined below.
+					on.emit(newNode, "dojotouchmove", {
 						target: newNode,
 						bubbles: true
-					}));
+					});
 				}
 			});
 		});
+
+		// Unlike a listener on "touchmove", on(node, dojotouchmove, listener) fires when the finger
+		// drags over the specified node, regardless of which node the touch started on.
+		// The listener is called with the native touchmove event object, so that evt.preventDefault() works,
+		// but target is set to the node currently being dragged over, and stopPropagation() refers to the synthetic
+		// event.
+		dojotouchmove = function(node, listener){
+			return on(node, "dojotouchmove", function(syntheticEvent){
+				listener(lang.delegate(nativeTouchMoveEvent, {
+					target: syntheticEvent.target,
+					stopPropagation: function(){
+						syntheticEvent.stopPropagation();
+					}
+				}));
+			});
+		};
 	}
 
 
 	//device neutral events - touch.press|move|release|cancel/over/out
 	var touch = {
 		press: dualEvent("mousedown", "touchstart", "MSPointerDown"),
-		move: dualEvent("mousemove", "dojotouchmove", "MSPointerMove"),
+		move: dualEvent("mousemove", dojotouchmove, "MSPointerMove"),
 		release: dualEvent("mouseup", "touchend", "MSPointerUp"),
 		cancel: dualEvent(mouse.leave, "touchcancel", hasTouch?"MSPointerCancel":null),
 		over: dualEvent("mouseover", "dojotouchover", "MSPointerOver"),
@@ -161,12 +182,6 @@ function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 		move: function(node, listener){
 			// summary:
 			//		Register a listener that fires when the mouse cursor or a finger is dragged over the given node.
-			//
-			//		Calling evt.stopPropagation() will stop ancestor nodes from receiving this touch.move
-			//		synthetic event, but won't have any effect w.r.t. bubbling of the native "touchmove" event.
-			//
-			//		Also, evt.preventDefault() on this synthetic event does not stop the screen from scrolling,
-			//		so an app should call evt.preventDefault() on the touchstart event instead.
 			// node: Dom
 			//		Target node to listen to
 			// listener: Function

@@ -68,8 +68,8 @@ define(["./kernel", "./lang", "../sniff"], function(dojo, lang, has){
 		//		True if the client runs on Mac
 		isMac: has("mac"),
 
-		// isIos: Boolean
-		//		True if client is iPhone, iPod, or iPad
+		// isIos: Number|undefined
+		//		Version as a Number if client is iPhone, iPod, or iPad. undefined otherwise.
 		isIos: has("ios"),
 
 		// isAndroid: Number|undefined

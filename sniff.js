@@ -24,8 +24,17 @@ define(["./has"], function(has){
 		has.add("safari", dav.indexOf("Safari")>=0 && !has("chrome") ? parseFloat(dav.split("Version/")[1]) : undefined);
 		has.add("mac", dav.indexOf("Macintosh") >= 0);
 		has.add("quirks", document.compatMode == "BackCompat");
-		has.add("ios", /iPhone|iPod|iPad/.test(dua));
+		if(dua.match(/(iPhone|iPod|iPad)/)){
+			var p = RegExp.$1.replace(/P/, "p");
+			var v = dua.match(/OS ([\d_]+)/) ? RegExp.$1 : "1";
+			var os = parseFloat(v.replace(/_/, ".").replace(/_/g, ""));
+			has.add(p, os);		// "iphone", "ipad" or "ipod"
+			has.add("ios", os);
+		}
 		has.add("android", parseFloat(dua.split("Android ")[1]) || undefined);
+		has.add("bb", (dua.indexOf("BlackBerry") >= 0 || dua.indexOf("BB10")) && parseFloat(dua.split("Version/")[1]) || undefined);
+
+		has.add("svg", typeof SVGAngle !== "undefined");
 
 		if(!has("webkit")){
 			// Opera

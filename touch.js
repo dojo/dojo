@@ -6,14 +6,7 @@ function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 
 	var hasTouch = has("touch");
 
-	// TODO: get iOS version from dojo/sniff after #15827 is fixed
-	var ios4 = false;
-	if(has("ios")){
-		var ua = navigator.userAgent;
-		var v = ua.match(/OS ([\d_]+)/) ? RegExp.$1 : "1";
-		var os = parseFloat(v.replace(/_/, '.').replace(/_/g, ''));
-		ios4 = os < 5;
-	}
+	var ios4 = has("ios") && has("ios") < 5;
 	
 	var msPointer = navigator.msPointerEnabled;
 

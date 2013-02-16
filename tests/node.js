@@ -42,6 +42,14 @@ define([ "doh/main" ], function(doh){
 				t.is(nodemod.test, "value", "object has expected value");
 			}));
 			return td;
+		},
+
+		function testRequireCommonJSAMD(t){
+			var td = new doh.Deferred();
+			require(["dojo/node!./tests/resources/noderequireamd"], td.getTestCallback(function(noderequireamd){
+				t.t(noderequireamd.nodeamd.test === "foo", "module loaded");
+			}));
+			return td;
 		}
 	]);
 });

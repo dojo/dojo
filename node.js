@@ -21,7 +21,30 @@ define(["dojo/has"], function(has){
 				throw new Error("Cannot find native require function");
 			}
 
-			load(require.nodeRequire(id));
+			load((function(id, require){
+				var oldDefine = define,
+					result;
+
+				// Some modules may attempt to detect an AMD loader via define and define.amd.  This can cause issues
+				// when other CommonJS modules attempt to load them via the standard node require().  If define is
+				// temporarily moved into another variable, it will prevent modules from detecting AMD in this fashion.
+				define = undefined;
+
+				try {
+					result = require(id);
+				} finally {
+					define = oldDefine;
+				}
+				return result;
+			})(id, require.nodeRequire));
+		},
+
+		normalize: function (/**string*/ id) {
+			if (id.charAt(0) === '.') {
+				id = require.baseUrl + id;
+			}
+
+			return id;
 		}
 	};
 });

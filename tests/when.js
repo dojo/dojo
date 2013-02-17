@@ -14,6 +14,12 @@ define([
 			t.t(this.deferred.promise === promise2);
 		},
 
+		"when() doesn't convert to promise if errback is passed but no callback": function(t){
+			var obj = {};
+			var result = when(obj, null, function(){});
+			t.t(result === obj);
+		},
+
 		"when() with a result value": function(t){
 			var obj = {};
 			var received;

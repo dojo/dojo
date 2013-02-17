@@ -36,8 +36,8 @@ define([
 		var nativePromise = receivedPromise && valueOrPromise instanceof Promise;
 
 		if(!receivedPromise){
-			if(callback){
-				return callback(valueOrPromise);
+			if(arguments.length > 1){
+				return callback ? callback(valueOrPromise) : valueOrPromise;
 			}else{
 				return new Deferred().resolve(valueOrPromise);
 			}

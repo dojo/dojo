@@ -116,7 +116,7 @@ function(dojo, aspect, dom, lang, on, has, mouse, domReady, win){
 				var node = win.doc.elementFromPoint(
 					evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
 					evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
-				);
+				) || win.body(); // if out of the screen
 
 				on.emit(node, "dojotouchend", lang.delegate(evt, {
 					target: node,

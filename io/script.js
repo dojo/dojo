@@ -1,8 +1,8 @@
 define([
 	"../_base/connect", /*===== "../_base/declare", =====*/ "../_base/kernel", "../_base/lang",
 	"../sniff", "../_base/window","../_base/xhr",
-	"../dom", "../dom-construct", "../request/script"
-], function(connect, /*===== declare, =====*/ kernel, lang, has, win, xhr, dom, domConstruct, _script){
+	"../dom", "../dom-construct", "../request/script", "../aspect"
+], function(connect, /*===== declare, =====*/ kernel, lang, has, win, xhr, dom, domConstruct, _script, aspect){
 
 	// module:
 	//		dojo/io/script
@@ -70,6 +70,15 @@ define([
 				}
 			}, true);
 
+			// Run _validCheck at the same time dojo/request/watch runs the
+			// rDfd.isValid function
+			aspect.around(rDfd, "isValid", function(isValid){
+				return function(response){
+					script._validCheck(dfd);
+					return isValid.call(this, response);
+				};
+			});
+
 			rDfd.then(function(){
 				dfd.resolve(dfd);
 			}).otherwise(function(error){
@@ -111,6 +120,24 @@ define([
 				dfd._jsonpCallback = this._jsonpCallback;
 				this["jsonp_" + ioArgs.id] = dfd;
 			}
+			// Make sure this runs no matter what happens to clean things up if need be
+			dfd.addBoth(function(value){
+				if(ioArgs.canDelete){
+					if(value instanceof Error){
+						// Set up a callback that will clean things up for timeouts and cancels
+						script["jsonp_" + ioArgs.id]._jsonpCallback = function(){
+							// Delete the cached deferred
+							delete script["jsonp_" + ioArgs.id];
+							if(ioArgs.requestId){
+								// Call the dojo/request/script callback to clean itself up as well
+								kernel.global[_script._callbacksProperty][ioArgs.requestId]();
+							}
+						};
+					}else{
+						script._addDeadScript(ioArgs);
+					}
+				}
+			});
 			return dfd; // dojo/_base/Deferred
 		},
 
@@ -170,6 +197,8 @@ define([
 				for(var i = 0; i < deadScripts.length; i++){
 					//Remove the script tag
 					script.remove(deadScripts[i].id, deadScripts[i].frameDoc);
+					//Clean up the deferreds
+					delete script["jsonp_" + deadScripts[i].id];
 					deadScripts[i].frameDoc = null;
 				}
 				script._deadScripts = [];
@@ -222,7 +251,9 @@ define([
 			//		function will be the Deferred object that represents the script
 			//		request.
 			this.ioArgs.json = json;
-			kernel.global[_script._callbacksProperty][this.ioArgs.requestId](json);
+			if(this.ioArgs.requestId){
+				kernel.global[_script._callbacksProperty][this.ioArgs.requestId](json);
+			}
 		}
 	};
 

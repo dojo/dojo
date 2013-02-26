@@ -56,9 +56,9 @@
 					"doh.is(4, (query('div#t h3')).length);",
 					"doh.is(0, (query('span#t')).length);",
 					"doh.is(0, (query('.bogus')).length);",
-					function(){ doh.is(0, (query('.bogus', dom.byId('container'))).length); },
+					function dotBogus(){ doh.is(0, (query('.bogus', dom.byId('container'))).length); },
 					"doh.is(0, (query('#bogus')).length);",
-					function(){ doh.is(0, (query('#bogus', dom.byId('container'))).length); },
+					function poundBogus(){ doh.is(0, (query('#bogus', dom.byId('container'))).length); },
 					"doh.is(1, (query('#t div > h3')).length);",
 					"doh.is(2, (query('.foo')).length);",
 					"doh.is(1, (query('.foo.bar')).length);",
@@ -68,7 +68,13 @@
 					// this fails on IE8 because qSA completely fails on unknown elements. not sure how to fix this other than completely disable qSA on IE8, which would be an unacceptable performance regression
 					//"doh.t(query.matches(query('section')[0],'section'));",
 
-					"doh.is(2, (query('#baz,#foo,#t')).length);",
+					function comma1(){
+						doh.is(2, (query('#baz,#foo,#t')).length);
+					},
+					function comma2(){
+						// uncomment when #14803 fixed
+						// doh.is(2, (query('#foo,#baz,#t')).length);
+					},
 					"doh.is(0, (query(null)).length);",
 
 					//"doh.is(1, (query('#bug')).length);",

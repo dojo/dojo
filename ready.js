@@ -46,7 +46,9 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 				try{
 					f();
 				}catch(e){
-					// FIXME: signal the error via require.on
+	                // force the dojo.js on("error") handler do display the message
+ 		            e.info = e.message;
+ 		            require.signal("error", e);
 				}
 			}
 

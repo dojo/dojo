@@ -39,16 +39,16 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 			// Run tasks in queue if require() is finished loading modules, the dom is ready, and there are no
 			// pending tasks registered via domReady().
 			// The last step is necessary so that a user defined dojo.ready() callback is delayed until after the
-			// domReady() calls inside of dojo.   Failure can be seen on dijit/tests/robot/Dialog_ally.html on IE8
+			// domReady() calls inside of dojo.	  Failure can be seen on dijit/tests/robot/Dialog_ally.html on IE8
 			// because the dijit/focus.js domReady() callback doesn't execute until after the test starts running.
 			while(isDomReady && (!domReady || domReady._Q.length == 0) && require.idle() && loadQ.length){
 				var f = loadQ.shift();
 				try{
 					f();
 				}catch(e){
-	                // force the dojo.js on("error") handler do display the message
- 		            e.info = e.message;
- 		            require.signal("error", e);
+					// force the dojo.js on("error") handler do display the message
+					e.info = e.message;
+					require.signal("error", e);
 				}
 			}
 

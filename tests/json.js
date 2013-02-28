@@ -17,6 +17,7 @@ define(["doh/main", "../json", "../has"], function(doh, JSON, has){
 		function simpleNull(t){ t.is(null, JSON.parse('{"foo":null}').foo); },
 		function simpleNumber(t){ t.is(3.3, JSON.parse('{"foo":3.3}', true).foo); },
 		function strictString(t){ t.is("bar", JSON.parse('{"foo":"bar"}', true).foo); },
+		function strictEmptyString(t){ t.is("", JSON.parse('{"foo":""}', true).foo); },
 		function strictStringEsc(t){ t.is("b\n\t\"ar()", JSON.parse('{"foo":"b\\n\\t\\"ar()"}', true).foo); },
 		function strictTrue(t){ t.is(true, JSON.parse('{"foo":true}', true).foo); },
 		function strictFalse(t){ t.is(false, JSON.parse('{"foo":false}', true).foo); },

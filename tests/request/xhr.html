@@ -17,12 +17,13 @@
 			require([
 				"dojo/request/xhr",
 				"dojo/_base/lang",
+				"dojo/promise/all",
 				"dojo/errors/RequestTimeoutError",
 				"dojo/errors/CancelError",
 				"dojo/has",
 				"doh",
 				"dojo/domReady!"
-			], function(xhr, lang, RequestTimeoutError, CancelError, has, doh){
+			], function(xhr, lang, all, RequestTimeoutError, CancelError, has, doh){
 				var tests = [
 					function xhrGet(t){
 						var d = new doh.Deferred();
@@ -237,6 +238,34 @@
 						}),function(error){
 							d.errback(error);
 						});
+						return d;
+					},
+
+					function xhrCustomContentType(t){
+						var d = new doh.Deferred();
+
+						function postWithHeaders(headers){
+							return xhr.post("xhrEchoContentTypeHeader.php",{
+								headers: headers,
+								data: "",
+								handleAs: "text"
+							});
+						}
+
+						var expectedContentType = "application/x-test-xhr";
+
+						// Test uppercase and lowercase header names to demonstrate case insensitivity
+						all({
+							lowercaseContentType: postWithHeaders({ "content-type": expectedContentType }),
+							uppercaseContentType: postWithHeaders({ "CONTENT-TYPE": expectedContentType })
+						}).then(d.getTestCallback(function(results){
+							// Strip any header parameters added by browser for the request.
+							t.is(expectedContentType, results.lowercaseContentType.split(";")[0]);
+							t.is(expectedContentType, results.uppercaseContentType.split(";")[0]);
+						}), function(error){
+							d.errback(error);
+						});
+
 						return d;
 					}
 				];

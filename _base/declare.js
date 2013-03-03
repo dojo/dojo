@@ -1033,10 +1033,9 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			//	|		f1: true,
 			//	|		d1: 42
 			//	|	});
-		}
-	};
-
-	createSubclass: function(mixins, props){
+		},
+		
+		createSubclass: function(mixins, props){
 			// summary:
 			//		Create a subclass of the declared class from a list of base classes.
 			// mixins: Function[]

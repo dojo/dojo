@@ -92,15 +92,19 @@ define([
 					clearTimeout(timeout);
 				}
 				response.text = body.join('');
-				handlers(response);
-				def.resolve(response);
+				try{
+					handlers(response);
+					def.resolve(response);
+				}catch(error){
+					def.reject(error);
+				}
 			});
 		});
 
 		req.on('error', def.reject);
 
 		if(options.data){
-			if(typeof options.data === "string"){
+			if(typeof options.data === 'string'){
 				req.end(options.data);
 			}else{
 				options.data.pipe(req);

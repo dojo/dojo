@@ -122,10 +122,7 @@ define([
 			data: null,
 			query: null,
 			sync: false,
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			}
+			method: 'GET'
 		};
 	function xhr(url, options, returnDeferred){
 		var response = util.parseArgs(
@@ -180,7 +177,7 @@ define([
 			}
 
 			var headers = options.headers,
-				contentType;
+				contentType = 'application/x-www-form-urlencoded';
 			if(headers){
 				for(var hdr in headers){
 					if(hdr.toLowerCase() === 'content-type'){

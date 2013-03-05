@@ -48,6 +48,7 @@ define(
 	"timeFormat-medium": "H:mm:ss",
 	"dateFormat-long": "d. MMMM y",
 	"dateFormatItem-Hms": "H:mm:ss",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormat-short": "dd.MM.yy. G",
 	"dateFormatItem-yMMMEd": "E, d. MMM y",
 	"days-standAlone-wide": [
@@ -90,7 +91,6 @@ define(
 		"pátek",
 		"sobota"
 	],
-	"dateFormatItem-yQ": "Q yyyy",
 	"dateFormatItem-yMMM": "LLL y",
 	"quarters-format-wide": [
 		"1. čtvrtletí",

@@ -65,6 +65,7 @@ define(
 	"dateTimeFormat-medium": "{1}, {0}",
 	"dayPeriods-format-wide-pm": "אחה״צ",
 	"dateFormat-full": "EEEE, d בMMMM y",
+	"dateFormatItem-yyQQQ": "QQQ yy",
 	"dateFormatItem-Md": "d/M",
 	"dateFormatItem-yMd": "d.M.yyyy",
 	"field-era": "תקופה",
@@ -90,10 +91,10 @@ define(
 		"רבעון 3",
 		"רבעון 4"
 	],
+	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "שנה",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "yyyy Q",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-hour": "שעה",
 	"dateFormatItem-MMdd": "dd/MM",
@@ -111,7 +112,6 @@ define(
 		"נוב",
 		"דצמ"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "היום",
 	"field-day-relative+1": "מחר",

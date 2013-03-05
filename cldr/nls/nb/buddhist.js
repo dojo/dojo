@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M y G",
-	"dateFormatItem-yQ": "Q y G",
 	"dateFormatItem-MMMEd": "E d. MMM",
 	"dateFormatItem-hms": "h:mm:ss a",
 	"dateFormatItem-yQQQ": "QQQ y G",
@@ -40,6 +39,7 @@ define(
 	],
 	"dateFormatItem-y": "y G",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"months-standAlone-abbr": [
 		"jan",
 		"feb",
@@ -81,7 +81,7 @@ define(
 		"3. kvartal",
 		"4. kvartal"
 	],
-	"dateFormatItem-ms": "mm.ss",
+	"dateFormatItem-ms": "mm:ss",
 	"dayPeriods-format-narrow-am": "a",
 	"months-standAlone-wide": [
 		"januar",
@@ -98,7 +98,6 @@ define(
 		"desember"
 	],
 	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-yyQ": "Q y G",
 	"months-format-abbr": [
 		"jan.",
 		"feb.",
@@ -113,6 +112,7 @@ define(
 		"nov.",
 		"des."
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",

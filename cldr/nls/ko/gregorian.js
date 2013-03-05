@@ -91,10 +91,10 @@ define(
 		"제 4/4분기"
 	],
 	"dateFormatItem-MEEEEd": "M. d. EEEE",
+	"dateFormatItem-yQQQQ": "y년 QQQQ",
 	"timeFormat-long": "a h시 m분 s초 z",
 	"field-year": "년",
 	"dateFormatItem-yMMM": "y년 MMM",
-	"dateFormatItem-yQ": "y년 Q분기",
 	"field-hour": "시",
 	"dateFormatItem-MMdd": "MM. dd",
 	"months-format-abbr": [
@@ -111,7 +111,6 @@ define(
 		"11월",
 		"12월"
 	],
-	"dateFormatItem-yyQ": "yy년 Q분기",
 	"timeFormat-full": "a h시 m분 s초 zzzz",
 	"field-day-relative+0": "오늘",
 	"field-day-relative+1": "내일",

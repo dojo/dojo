@@ -2,11 +2,10 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y/M",
-	"dateFormatItem-yQ": "y/Q",
 	"dayPeriods-format-wide-pm": "午後",
 	"dateFormatItem-MMMEd": "M月d日(E)",
 	"dateFormatItem-hms": "aK:mm:ss",
-	"dateFormatItem-yQQQ": "yQQQ",
+	"dateFormatItem-yQQQ": "y/QQQ",
 	"dateFormatItem-MMM": "M月",
 	"months-standAlone-narrow": [
 		"1",
@@ -89,6 +88,7 @@ define(
 		"ズル・カイダ",
 		"ズル・ヒッジャ"
 	],
+	"dateFormatItem-yQQQQ": "yQQQQ",
 	"timeFormat-short": "H:mm",
 	"dateFormatItem-H": "H時",
 	"quarters-format-abbr": [

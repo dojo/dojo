@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "م",
 	"eraNames": [
 		"ص"
@@ -97,6 +96,7 @@ define(
 		"آب",
 		"أيلول"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-short": "h:mm a",
 	"days-format-abbr": [
 		"الأحد",
@@ -156,13 +156,13 @@ define(
 		"الجمعة",
 		"السبت"
 	],
+	"months-format-wide-leap": "آذار الثاني",
 	"quarters-format-wide": [
 		"الربع الأول",
 		"الربع الثاني",
 		"الربع الثالث",
 		"الربع الرابع"
 	],
-	"months-format-wide-leap": "آذار الثاني",
 	"eraNarrow": [
 		"ص"
 	],

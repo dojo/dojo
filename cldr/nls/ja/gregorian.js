@@ -17,7 +17,7 @@ define(
 		"4"
 	],
 	"field-weekday": "曜日",
-	"dateFormatItem-yQQQ": "yQQQ",
+	"dateFormatItem-yQQQ": "y/QQQ",
 	"dateFormatItem-yMEd": "y/M/d(E)",
 	"dateFormatItem-MMMEd": "M月d日(E)",
 	"eraNarrow": [
@@ -77,10 +77,10 @@ define(
 		"第3四半期",
 		"第4四半期"
 	],
+	"dateFormatItem-yQQQQ": "yQQQQ",
 	"timeFormat-long": "H:mm:ss z",
 	"field-year": "年",
 	"dateFormatItem-yMMM": "y年M月",
-	"dateFormatItem-yQ": "y/Q",
 	"field-hour": "時",
 	"dateFormatItem-MMdd": "MM/dd",
 	"months-format-abbr": [
@@ -97,7 +97,6 @@ define(
 		"11月",
 		"12月"
 	],
-	"dateFormatItem-yyQ": "yy/Q",
 	"timeFormat-full": "H時mm分ss秒 zzzz",
 	"field-day-relative+0": "今日",
 	"field-day-relative+1": "明日",

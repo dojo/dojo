@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "yyyy-MM",
-	"dateFormatItem-yQ": "yyyy Q",
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"days-standAlone-wide": [

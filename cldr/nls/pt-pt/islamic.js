@@ -1,10 +1,9 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yQ": "QQQ 'de' y G",
 	"dateFormatItem-MMMEd": "E, d/MM",
 	"dateTimeFormat-full": "{1} às {0}",
-	"dateFormatItem-yQQQ": "QQQ 'de' y G",
+	"dateFormatItem-yQQQ": "QQQQ 'de' y G",
 	"days-standAlone-wide": [
 		"Domingo",
 		"Segunda-feira",
@@ -22,6 +21,8 @@ define(
 		"T3",
 		"T4"
 	],
+	"dateFormatItem-y": "y",
+	"dateFormatItem-yyQQQ": "QQQ yy",
 	"dateFormatItem-yMMM": "MM/y",
 	"days-standAlone-narrow": [
 		"D",
@@ -46,7 +47,6 @@ define(
 		"3º trimestre",
 		"4º trimestre"
 	],
-	"dateFormatItem-ms": "mm:ss",
 	"dayPeriods-format-narrow-am": "a.m.",
 	"dateTimeFormat-long": "{1} às {0}",
 	"dateFormatItem-HHmmss": "HH:mm:ss",
@@ -54,7 +54,7 @@ define(
 	"dateFormatItem-MMMd": "d/MM",
 	"dateFormatItem-HHmm": "HH:mm",
 	"dateFormatItem-yyMMMEd": "E, d/MM/yy",
-	"dateFormatItem-yyQ": "QQQ 'de' yy G",
+	"dateFormatItem-yQQQQ": "QQQQ 'de' y G",
 	"quarters-format-abbr": [
 		"T1",
 		"T2",

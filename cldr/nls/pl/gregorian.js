@@ -94,10 +94,10 @@ define(
 		"III kwartał",
 		"IV kwartał"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Rok",
 	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "QQQ y",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
 	"field-hour": "Godzina",
 	"dateFormatItem-MMdd": "d.MM",
@@ -115,7 +115,6 @@ define(
 		"lis",
 		"gru"
 	],
-	"dateFormatItem-yyQ": "QQQ yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "Dzisiaj",
 	"field-day-relative+1": "Jutro",

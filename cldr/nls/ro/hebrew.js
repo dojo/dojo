@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM.yyyy",
-	"dateFormatItem-yQ": "'trimestrul' Q y",
 	"months-standAlone-abbr-leap": "Adar II",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateTimeFormat-full": "{1}, {0}",
@@ -104,6 +103,7 @@ define(
 		"Av",
 		"Elul"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"trim. I",
 		"trim. II",
@@ -178,13 +178,13 @@ define(
 		"Vi",
 		"Sâ"
 	],
+	"months-format-wide-leap": "Adar II",
 	"quarters-format-wide": [
 		"trimestrul I",
 		"trimestrul al II-lea",
 		"trimestrul al III-lea",
 		"trimestrul al IV-lea"
 	],
-	"months-format-wide-leap": "Adar II",
 	"days-format-wide": [
 		"duminică",
 		"luni",

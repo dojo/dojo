@@ -67,6 +67,7 @@ define(
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "PM",
 	"dateFormat-full": "EEEE, d 'de' MMMM 'de' y",
+	"dateFormatItem-yyQQQ": "QQQ yy",
 	"dateFormatItem-Md": "d/M",
 	"dayPeriods-format-abbr-am": "AM",
 	"dayPeriods-format-wide-noon": "meio-dia",
@@ -94,10 +95,10 @@ define(
 		"3º trimestre",
 		"4º trimestre"
 	],
+	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Ano",
 	"dateFormatItem-yMMM": "MMM 'de' y",
-	"dateFormatItem-yQ": "yyyy Q",
 	"field-hour": "Hora",
 	"dateFormatItem-MMdd": "dd/MM",
 	"months-format-abbr": [
@@ -114,7 +115,6 @@ define(
 		"nov",
 		"dez"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "Hoje",
 	"field-day-relative+1": "Amanhã",

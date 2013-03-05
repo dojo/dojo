@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/y G",
-	"dateFormatItem-yQ": "'T'Q y G",
 	"eraNames": [
 		"ère bouddhiste"
 	],
@@ -42,6 +41,7 @@ define(
 	],
 	"dateFormatItem-y": "y G",
 	"dateFormatItem-MMMdd": "dd MMM",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"months-standAlone-abbr": [
 		"janv.",
 		"févr.",
@@ -106,7 +106,6 @@ define(
 	"dateFormatItem-MMMMEd": "E d MMMM",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-yyMMMEd": "E d MMM y G",
-	"dateFormatItem-yyQ": "'T'Q y G",
 	"months-format-abbr": [
 		"janv.",
 		"févr.",
@@ -121,6 +120,7 @@ define(
 		"nov.",
 		"déc."
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"quarters-format-abbr": [
 		"T1",
 		"T2",

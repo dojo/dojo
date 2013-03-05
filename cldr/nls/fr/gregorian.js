@@ -31,7 +31,6 @@ define(
 		"4"
 	],
 	"field-weekday": "jour de la semaine",
-	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yyMMMEd": "E d MMM yy",
 	"dateFormatItem-yMEd": "E d/M/yyyy",
@@ -96,10 +95,10 @@ define(
 		"3e trimestre",
 		"4e trimestre"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "année",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "'T'Q y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-hour": "heure",
 	"dateFormatItem-MMdd": "dd/MM",
@@ -117,7 +116,6 @@ define(
 		"nov.",
 		"déc."
 	],
-	"dateFormatItem-yyQ": "'T'Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dayPeriods-format-narrow-morning": "matin",
 	"field-day-relative+0": "aujourd’hui",

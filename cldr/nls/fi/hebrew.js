@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "L.yyyy",
-	"dateFormatItem-yQ": "Q/yyyy",
 	"months-standAlone-abbr-leap": "adár II",
 	"dayPeriods-format-wide-pm": "ip.",
 	"dateFormatItem-MMMEd": "ccc d. MMM",
@@ -114,6 +113,7 @@ define(
 		"abkuuta",
 		"elúlkuuta"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-short": "H.mm",
 	"dateFormatItem-H": "H",
 	"quarters-format-abbr": [
@@ -208,13 +208,13 @@ define(
 		"pe",
 		"la"
 	],
+	"months-format-wide-leap": "adárkuuta II",
 	"quarters-format-wide": [
 		"1. neljännes",
 		"2. neljännes",
 		"3. neljännes",
 		"4. neljännes"
 	],
-	"months-format-wide-leap": "adárkuuta II",
 	"days-format-wide": [
 		"sunnuntaina",
 		"maanantaina",

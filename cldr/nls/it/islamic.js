@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "M/y",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
-	"dateFormatItem-yQ": "Q-y G",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
 	"dateFormatItem-yQQQ": "QQQ y G",
@@ -18,13 +17,16 @@ define(
 		"Sabato"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-Gy": "y G",
 	"quarters-standAlone-abbr": [
 		"T1",
 		"T2",
 		"T3",
 		"T4"
 	],
+	"dateFormatItem-y": "y G",
 	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"dateFormatItem-Ed": "E d",
 	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
@@ -57,13 +59,14 @@ define(
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
 	"dateFormatItem-yyyyMEd": "E, d/M/y G",
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyQ": "Q y G",
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"quarters-format-abbr": [
 		"T1",
 		"T2",
 		"T3",
 		"T4"
 	],
+	"dateFormatItem-MMMMdd": "dd MMMM",
 	"days-format-abbr": [
 		"dom",
 		"lun",
@@ -73,7 +76,6 @@ define(
 		"ven",
 		"sab"
 	],
-	"dateFormatItem-MMMMdd": "dd MMMM",
 	"dateFormatItem-M": "L",
 	"dateFormatItem-yMMMd": "d MMM y",
 	"dateFormatItem-MEd": "E d/M",

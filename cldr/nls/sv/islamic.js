@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "yyyy-MM",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
-	"dateFormatItem-yQ": "yyyy Q",
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-hms": "h:mm:ss a",
@@ -18,6 +17,7 @@ define(
 		"lördag"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "fm",
 	"quarters-standAlone-abbr": [
 		"K1",
@@ -25,8 +25,10 @@ define(
 		"K3",
 		"K4"
 	],
+	"dateFormatItem-y": "y G",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
 	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yyQQQ": "QQQ yy G",
 	"months-standAlone-abbr": [
 		"muharram",
 		"safar",
@@ -93,7 +95,6 @@ define(
 	"dateFormatItem-MMMMEd": "E d:'e' MMMM",
 	"dateFormatItem-yyyyMEd": "E, G y-MM-dd",
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyQ": "Q yy G",
 	"months-format-abbr": [
 		"muharram",
 		"safar",
@@ -136,7 +137,7 @@ define(
 	],
 	"dateFormatItem-yMMMd": "d MMM y",
 	"dateFormatItem-MEd": "E d/M",
-	"dateFormatItem-yyyyQQQ": "G y QQQ",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"days-standAlone-short": [
 		"sö",
 		"må",
@@ -162,7 +163,6 @@ define(
 	"dateFormatItem-yMMMEd": "E d MMM y",
 	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yyyyQ": "G y Q",
 	"dateFormatItem-yMEd": "E, yyyy-MM-dd",
 	"months-format-wide": [
 		"muharram",

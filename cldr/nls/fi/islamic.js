@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "L.yyyy",
 	"dateFormatItem-yyyyMMMEd": "E d. MMM y G",
-	"dateFormatItem-yQ": "Q/yyyy",
 	"dayPeriods-format-wide-pm": "ip.",
 	"dateFormatItem-MMMEd": "E d. MMM",
 	"dateFormatItem-hms": "h.mm.ss a",
@@ -106,6 +105,7 @@ define(
 		"dhu-l-hiddža"
 	],
 	"timeFormat-long": "H.mm.ss z",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-H": "H",
 	"timeFormat-short": "H.mm",
 	"quarters-format-abbr": [
@@ -161,7 +161,6 @@ define(
 	"dateFormatItem-yMMMEd": "E d. MMM y",
 	"dateFormat-full": "cccc d. MMMM y G",
 	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yyyyQ": "Q/y G",
 	"dateFormatItem-yMEd": "E d.M.yyyy",
 	"months-format-wide": [
 		"muharram",

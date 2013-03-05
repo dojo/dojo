@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM.yyyy",
-	"dateFormatItem-yQ": "QQQ y",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
 	"dateFormatItem-yQQQ": "QQQ y",
@@ -96,6 +95,7 @@ define(
 		"Aw",
 		"Elul"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -171,13 +171,13 @@ define(
 		"pt.",
 		"sob."
 	],
+	"months-format-wide-leap": "Adar II",
 	"quarters-format-wide": [
 		"I kwartał",
 		"II kwartał",
 		"III kwartał",
 		"IV kwartał"
 	],
-	"months-format-wide-leap": "Adar II",
 	"days-format-wide": [
 		"niedziela",
 		"poniedziałek",

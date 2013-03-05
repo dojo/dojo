@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/y G",
-	"dateFormatItem-yQ": "Q y G",
 	"dayPeriods-format-wide-pm": "p.m.",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
@@ -26,6 +25,7 @@ define(
 	"dayPeriods-format-wide-am": "a.m.",
 	"dateFormatItem-y": "y G",
 	"dateFormatItem-MMMdd": "dd-MMM",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"months-standAlone-abbr": [
 		"ene",
 		"feb",
@@ -82,7 +82,6 @@ define(
 		"3T",
 		"4T"
 	],
-	"dateFormatItem-yyQ": "Q y G",
 	"months-format-abbr": [
 		"ene",
 		"feb",
@@ -97,6 +96,7 @@ define(
 		"nov",
 		"dic"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ 'de' y G",
 	"dateFormatItem-MMMMd": "d 'de' MMMM",
 	"quarters-format-abbr": [
 		"T1",

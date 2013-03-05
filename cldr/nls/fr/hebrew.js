@@ -86,6 +86,7 @@ define(
 		"sam."
 	],
 	"dateFormat-long": "d MMMM y",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormat-short": "dd/MM/yy",
 	"dateFormatItem-yMMMEd": "E d MMM y",
 	"months-format-wide": [
@@ -156,7 +157,6 @@ define(
 		"vendredi",
 		"samedi"
 	],
-	"dateFormatItem-yQ": "'T'Q y",
 	"dateFormatItem-yMMM": "MMM y",
 	"quarters-format-wide": [
 		"1er trimestre",

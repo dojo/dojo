@@ -1,13 +1,13 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yQ": "y年QQQ",
 	"field-minute": "分鐘",
 	"eraNames": [
 		"西元前",
 		"西元"
 	],
 	"field-weekday": "週天",
+	"dateFormatItem-yQQQ": "y年QQQ",
 	"field-era": "年代",
 	"field-hour": "小時",
 	"quarters-standAlone-abbr": [

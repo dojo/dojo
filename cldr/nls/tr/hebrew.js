@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM/y",
-	"dateFormatItem-yQ": "y/Q",
 	"dayPeriods-format-wide-pm": "ÖS",
 	"dateFormatItem-MMMEd": "d MMMM E",
 	"dateFormatItem-yQQQ": "y/QQQ",
@@ -99,6 +98,7 @@ define(
 		"Av",
 		"Elul"
 	],
+	"dateFormatItem-yQQQQ": "y/QQQQ",
 	"quarters-format-abbr": [
 		"Ç1",
 		"Ç2",
@@ -143,7 +143,7 @@ define(
 		"Cum",
 		"Cmt"
 	],
-	"dateFormat-short": "dd.MM.yyyy",
+	"dateFormat-short": "d.MM.yyyy",
 	"dateFormatItem-yMMMEd": "d MMM y E",
 	"dateFormat-full": "d MMMM y EEEE",
 	"dateFormatItem-Md": "dd/MM",

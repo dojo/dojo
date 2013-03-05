@@ -31,7 +31,6 @@ define(
 		"4"
 	],
 	"field-weekday": "ukedag",
-	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d.MM.y",
 	"dateFormatItem-MMMEd": "E d. MMM",
@@ -69,8 +68,8 @@ define(
 	"dateFormatItem-Md": "d.M.",
 	"dayPeriods-format-abbr-am": "a.m.",
 	"dateFormatItem-yMd": "d.M.yyyy",
-	"dateFormatItem-yM": "M y",
 	"field-era": "tidsalder",
+	"dateFormatItem-yM": "M y",
 	"months-standAlone-wide": [
 		"januar",
 		"februar",
@@ -92,10 +91,10 @@ define(
 		"3. kvartal",
 		"4. kvartal"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q yyyy",
 	"field-year": "år",
+	"dateFormatItem-yMMM": "MMM y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"dateFormatItem-MMdd": "d.M.",
 	"field-hour": "time",
@@ -113,7 +112,6 @@ define(
 		"nov.",
 		"des."
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
 	"field-day-relative+0": "i dag",
 	"field-day-relative+1": "i morgen",
@@ -180,7 +178,7 @@ define(
 		"lø."
 	],
 	"dateFormatItem-d": "d.",
-	"dateFormatItem-ms": "mm.ss",
+	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [
 		"1",
 		"2",

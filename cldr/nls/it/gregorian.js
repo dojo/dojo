@@ -91,10 +91,10 @@ define(
 		"3o trimestre",
 		"4o trimestre"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "anno",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q-yyyy",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-hour": "ora",
 	"dateFormatItem-MMdd": "dd/MM",
@@ -112,7 +112,6 @@ define(
 		"nov",
 		"dic"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "oggi",
 	"field-day-relative+1": "domani",
@@ -246,6 +245,7 @@ define(
 		"V",
 		"S"
 	],
+	"field-month": "mese",
 	"days-standAlone-narrow": [
 		"D",
 		"L",
@@ -256,7 +256,6 @@ define(
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
-	"field-month": "mese",
 	"dayPeriods-format-wide-am": "AM",
 	"dateFormatItem-MMMMdd": "dd MMMM",
 	"dateFormat-short": "dd/MM/yy",

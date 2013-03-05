@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MMMM y",
-	"dateFormatItem-yQ": "yyyy Q",
 	"months-standAlone-abbr-leap": "אדר ב׳",
 	"dayPeriods-format-wide-pm": "אחה״צ",
 	"eraNames": [

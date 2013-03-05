@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "y/M",
 	"dateFormatItem-yyyyMMMEd": "Gy年M月d日E",
-	"dateFormatItem-yQ": "y年QQQ",
 	"dayPeriods-format-wide-pm": "下午",
 	"eraNames": [
 		"伊斯蘭曆"
@@ -45,7 +44,7 @@ define(
 		"3季度",
 		"4季度"
 	],
-	"dateFormatItem-y": "y年",
+	"dateFormatItem-y": "Gy年",
 	"timeFormat-full": "zzzzah時mm分ss秒",
 	"dateFormatItem-yyyy": "Gy年",
 	"months-standAlone-abbr": [
@@ -124,6 +123,7 @@ define(
 		"都爾黑哲月"
 	],
 	"timeFormat-long": "zah時mm分ss秒",
+	"dateFormatItem-yQQQQ": "y年QQQQ",
 	"dateFormatItem-H": "H時",
 	"timeFormat-short": "ah:mm",
 	"quarters-format-abbr": [
@@ -154,6 +154,7 @@ define(
 	],
 	"dateFormatItem-yMMMd": "Gy年M月d日",
 	"dateFormatItem-MEd": "M/d（E）",
+	"dateFormatItem-yyyyQQQ": "Gy年QQQ",
 	"months-format-narrow": [
 		"1",
 		"2",
@@ -193,7 +194,6 @@ define(
 	"dateFormat-full": "Gy年M月d日EEEE",
 	"dateFormatItem-Md": "M/d",
 	"dateFormatItem-yMEd": "y/M/d（E）",
-	"dateFormatItem-yyyyQ": "Gy年QQQ",
 	"months-format-wide": [
 		"穆哈蘭姆月",
 		"色法爾月",

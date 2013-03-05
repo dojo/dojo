@@ -2,9 +2,8 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "LLLL y GGGGG",
-	"dateFormatItem-yQ": "Q., y GGGGG",
 	"dateFormatItem-MMMEd": "E, d. M.",
-	"dateFormatItem-yQQQ": "QQQ, y G",
+	"dateFormatItem-yQQQ": "QQQ, y GGGGG",
 	"days-standAlone-wide": [
 		"neděle",
 		"pondělí",
@@ -97,6 +96,7 @@ define(
 		"lis",
 		"pro"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ, y G",
 	"timeFormat-short": "H:mm",
 	"dateFormatItem-H": "H",
 	"days-format-abbr": [

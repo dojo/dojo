@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "אחה״צ",
 	"eraNames": [
 		"שנת היג׳רה"
@@ -96,6 +95,7 @@ define(
 		"ד׳ו אל-קעדה",
 		"ד׳ו אל-חיג׳ה"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-MMMMd": "d בMMMM",
 	"days-format-abbr": [
 		"יום א׳",

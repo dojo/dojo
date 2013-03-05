@@ -90,10 +90,10 @@ define(
 		"الربع الثالث",
 		"الربع الرابع"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "h:mm:ss a z",
 	"field-year": "السنة",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dateFormatItem-yyyyMMMM": "MMMM، y",
 	"field-hour": "الساعات",
 	"dateFormatItem-MMdd": "dd‏/MM",
@@ -111,7 +111,6 @@ define(
 		"نوفمبر",
 		"ديسمبر"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "h:mm:ss a zzzz",
 	"field-day-relative+0": "اليوم",
 	"field-day-relative+1": "غدًا",

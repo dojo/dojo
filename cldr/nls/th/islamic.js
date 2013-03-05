@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "หลังเที่ยง",
 	"eraNames": [
 		"ฮิจเราะห์ศักราช"
@@ -121,6 +120,7 @@ define(
 		"ซุลหิจ."
 	],
 	"timeFormat-long": "H นาฬิกา mm นาที ss วินาที z",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-H": "H",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"quarters-format-abbr": [

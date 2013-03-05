@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "L.y G",
 	"dateFormatItem-yMMMMccccd": "cccc, d. MMMM y G",
-	"dateFormatItem-yQ": "Q/y G",
 	"dayPeriods-format-wide-pm": "ip.",
 	"dateFormatItem-MMMEd": "E d. MMM",
 	"dateFormatItem-hms": "h.mm.ss a",
@@ -42,6 +41,7 @@ define(
 	],
 	"dateFormatItem-y": "y G",
 	"timeFormat-full": "H.mm.ss zzzz",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"months-standAlone-abbr": [
 		"tammi",
 		"helmi",
@@ -102,7 +102,6 @@ define(
 	],
 	"dateFormatItem-yyyyMEd": "E d.M.y G",
 	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-yyQ": "Q/y G",
 	"timeFormat-long": "H.mm.ss z",
 	"months-format-abbr": [
 		"tammikuuta",
@@ -118,6 +117,7 @@ define(
 		"marraskuuta",
 		"joulukuuta"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"dateFormatItem-H": "H",
 	"timeFormat-short": "H.mm",
 	"quarters-format-abbr": [

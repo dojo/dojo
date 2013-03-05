@@ -92,10 +92,10 @@ define(
 		"3rd quarter",
 		"4th quarter"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "h:mm:ss a z",
 	"field-year": "Year",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q y",
 	"field-hour": "Hour",
 	"months-format-abbr": [
 		"Jan",
@@ -140,6 +140,7 @@ define(
 		"3rd quarter",
 		"4th quarter"
 	],
+	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
 		"Sunday",

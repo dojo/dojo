@@ -4,7 +4,6 @@ define(
 	"dateFormatItem-yM": "M.y",
 	"dateFormatItem-yyyyMMMEd": "E, d. MMM y G",
 	"dateFormatItem-yyMMdd": "dd.MM.y G",
-	"dateFormatItem-yQ": "Q y",
 	"dayPeriods-format-wide-pm": "nachm.",
 	"dateFormatItem-MMMEd": "E, d. MMM",
 	"dateFormatItem-yQQQ": "QQQ y",
@@ -19,8 +18,11 @@ define(
 		"Samstag"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "vorm.",
+	"dateFormatItem-y": "y G",
 	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"dateFormatItem-Ed": "E d.",
 	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
@@ -49,12 +51,14 @@ define(
 		"4. Quartal"
 	],
 	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dateFormatItem-yyyyMd": "d.M.y G",
 	"dateFormatItem-yyyyMMMd": "d. MMM y G",
 	"dateFormatItem-yyyyMEd": "E, d.M.y G",
 	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-yyQ": "Q y G",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-H": "HH 'Uhr'",
+	"dateFormatItem-MMMMdd": "dd. MMMM",
 	"days-format-abbr": [
 		"So.",
 		"Mo.",
@@ -64,7 +68,6 @@ define(
 		"Fr.",
 		"Sa."
 	],
-	"dateFormatItem-MMMMdd": "dd. MMMM",
 	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"S",
@@ -101,7 +104,6 @@ define(
 	"dateFormatItem-yMMMEd": "E, d. MMM y",
 	"dateFormat-full": "EEEE d. MMMM y G",
 	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yyyyQ": "Q y G",
 	"dateFormatItem-yMEd": "E, d.M.y",
 	"days-format-short": [
 		"So.",

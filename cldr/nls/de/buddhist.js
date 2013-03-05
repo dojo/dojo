@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "M.y G",
 	"dateFormatItem-yyMMdd": "dd.MM.y G",
-	"dateFormatItem-yQ": "Q y G",
 	"dayPeriods-format-wide-pm": "nachm.",
 	"dateFormatItem-MMMEd": "E, d. MMM",
 	"dateFormatItem-yQQQ": "QQQ y G",
@@ -36,6 +35,7 @@ define(
 	"dayPeriods-format-wide-am": "vorm.",
 	"dateFormatItem-y": "y G",
 	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"months-standAlone-abbr": [
 		"Jan",
 		"Feb",
@@ -93,7 +93,6 @@ define(
 		"Dezember"
 	],
 	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-yyQ": "Q y G",
 	"months-format-abbr": [
 		"Jan.",
 		"Feb.",
@@ -108,6 +107,7 @@ define(
 		"Nov.",
 		"Dez."
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"dateFormatItem-H": "HH 'Uhr'",
 	"dateFormatItem-MMMMdd": "dd. MMMM",
 	"days-format-abbr": [

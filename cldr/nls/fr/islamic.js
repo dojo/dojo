@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "M/yyyy",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
-	"dateFormatItem-yQ": "'T'Q y",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-hms": "h:mm:ss a",
 	"dateFormatItem-yQQQ": "QQQ y",
@@ -32,15 +31,17 @@ define(
 		"11",
 		"12"
 	],
+	"dateFormatItem-Gy": "y G",
 	"quarters-standAlone-abbr": [
 		"T1",
 		"T2",
 		"T3",
 		"T4"
 	],
-	"dateFormatItem-y": "y",
+	"dateFormatItem-y": "y G",
 	"dateFormatItem-MMMdd": "dd MMM",
 	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"months-standAlone-abbr": [
 		"mouh.",
 		"saf.",
@@ -87,6 +88,7 @@ define(
 		"4e trimestre"
 	],
 	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dateFormatItem-yyMMMd": "d MMM y G",
 	"months-standAlone-wide": [
 		"mouharram",
@@ -108,7 +110,6 @@ define(
 	"dateFormatItem-yyyyMEd": "E d/M/y G",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-yyMMMEd": "E d MMM y G",
-	"dateFormatItem-yyQ": "'T'Q y G",
 	"months-format-abbr": [
 		"mouh.",
 		"saf.",
@@ -123,6 +124,7 @@ define(
 		"dhou.q.",
 		"dhou.h."
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-H": "HH",
 	"quarters-format-abbr": [
 		"T1",
@@ -151,7 +153,7 @@ define(
 	],
 	"dateFormatItem-yMMMd": "d MMM y",
 	"dateFormatItem-MEd": "E d/M",
-	"dateFormatItem-yyyyQQQ": "QQQ y G",
+	"dateFormatItem-yyyyQQQ": "'T'QQQ y G",
 	"months-format-narrow": [
 		"1",
 		"2",
@@ -191,7 +193,6 @@ define(
 	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-Md": "d/M",
 	"dateFormatItem-yMEd": "E d/M/yyyy",
-	"dateFormatItem-yyyyQ": "'T'Q y G",
 	"months-format-wide": [
 		"mouharram",
 		"safar",

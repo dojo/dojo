@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y-M",
-	"dateFormatItem-yQ": "y Q",
 	"dayPeriods-format-wide-pm": "du.",
 	"eraNames": [
 		"MF"
@@ -121,6 +120,7 @@ define(
 		"Dsül k.",
 		"Dsül h."
 	],
+	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-short": "H:mm",
 	"dateFormatItem-H": "HH",
 	"dateFormatItem-MMMMd": "MMMM d.",

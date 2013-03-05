@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "M y",
 	"dateFormatItem-yyyyMMMEd": "E d. MMM y G",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dateFormatItem-MMMEd": "E d. MMM",
 	"dateTimeFormat-full": "{0} {1}",
 	"dateFormatItem-hms": "h:mm:ss a",
@@ -20,6 +19,7 @@ define(
 	],
 	"dateFormatItem-MMM": "LLL",
 	"dateTimeFormat-short": "{0} {1}",
+	"dateFormatItem-Gy": "y G",
 	"dateTimeFormat-medium": "{0} {1}",
 	"quarters-standAlone-abbr": [
 		"K1",
@@ -27,8 +27,10 @@ define(
 		"K3",
 		"K4"
 	],
+	"dateFormatItem-y": "y G",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
 	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"dateFormatItem-Ed": "E d.",
 	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
@@ -56,14 +58,15 @@ define(
 		"3. kvartal",
 		"4. kvartal"
 	],
-	"dateFormatItem-ms": "mm.ss",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dayPeriods-format-narrow-am": "a",
 	"dateTimeFormat-long": "{0} {1}",
 	"dateFormatItem-yyyyMd": "d.M.y G",
 	"dateFormatItem-yyyyMMMd": "d. MMM y G",
 	"dateFormatItem-yyyyMEd": "E d.M.y G",
 	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-yyQ": "Q y G",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -117,7 +120,6 @@ define(
 	"dateFormatItem-yMMMEd": "E d. MMM y",
 	"dateFormat-full": "EEEE d. MMMM y G",
 	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yyyyQ": "Q y G",
 	"dateFormatItem-yMEd": "E d.MM.y",
 	"dayPeriods-format-abbr-am": "a.m.",
 	"days-format-short": [

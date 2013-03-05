@@ -7,7 +7,7 @@ define(
 	"list": ";",
 	"percentSign": "%",
 	"minusSign": "−",
-	"decimalFormat-short": "000 bn",
+	"decimalFormat-short": "000 bn",
 	"nan": "¤¤¤",
 	"plusSign": "+",
 	"currencyFormat": "#,##0.00 ¤",

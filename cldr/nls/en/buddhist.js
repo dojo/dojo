@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/y GGGGG",
-	"dateFormatItem-yQ": "Q y G",
 	"dateFormatItem-MMMEd": "E, MMM d",
 	"dateFormatItem-hms": "h:mm:ss a",
 	"dateFormatItem-yQQQ": "QQQ y G",
@@ -60,6 +59,7 @@ define(
 		"Nov",
 		"Dec"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"timeFormat-short": "h:mm a",
 	"days-format-abbr": [
 		"Sun",

@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM.y G",
-	"dateFormatItem-yQ": "Q y G",
 	"dayPeriods-format-wide-pm": "ÖS",
 	"dateFormatItem-MMMEd": "dd MMM E",
 	"dateFormatItem-hms": "h:mm:ss a",
@@ -72,7 +71,6 @@ define(
 	"dateFormat-medium": "dd MMM y G",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-yyMMM": "MMM yy G",
-	"dateFormatItem-yyQQQQ": "QQQQ yy G",
 	"dateFormatItem-yMd": "dd.MM.y G",
 	"quarters-standAlone-wide": [
 		"1. çeyrek",
@@ -109,7 +107,6 @@ define(
 		"3.",
 		"4."
 	],
-	"dateFormatItem-yyQ": "Q yy G",
 	"months-format-abbr": [
 		"Oca",
 		"Şub",
@@ -124,6 +121,7 @@ define(
 		"Kas",
 		"Ara"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"dateFormatItem-H": "HH",
 	"quarters-format-abbr": [
 		"Ç1",
@@ -186,7 +184,7 @@ define(
 		"Cum",
 		"Cmt"
 	],
-	"dateFormat-short": "dd.MM.yyyy G",
+	"dateFormat-short": "d.MM.yyyy G",
 	"dateFormatItem-yMMMEd": "dd MMM y G E",
 	"dateFormat-full": "dd MMMM y G EEEE",
 	"dateFormatItem-Md": "dd.MM",

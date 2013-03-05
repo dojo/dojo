@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y/M",
-	"dateFormatItem-yQ": "y年QQQ",
 	"dayPeriods-format-wide-pm": "下午",
 	"eraNames": [
 		"伊朗曆"
@@ -116,6 +115,7 @@ define(
 		"11月",
 		"12月"
 	],
+	"dateFormatItem-yQQQQ": "y年QQQQ",
 	"timeFormat-short": "ah:mm",
 	"dateFormatItem-H": "H時",
 	"quarters-format-abbr": [

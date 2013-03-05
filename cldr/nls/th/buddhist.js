@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "หลังเที่ยง",
 	"eraNames": [
 		"พุทธศักราช"
@@ -103,7 +102,6 @@ define(
 	],
 	"dateFormatItem-MMMMEd": "E d MMMM",
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-long": "H นาฬิกา mm นาที ss วินาที z",
 	"months-format-abbr": [
 		"ม.ค.",
@@ -119,6 +117,7 @@ define(
 		"พ.ย.",
 		"ธ.ค."
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-H": "HH",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"quarters-format-abbr": [

@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
 	"months-standAlone-abbr-leap": "อาดาร์ II",
 	"dayPeriods-format-wide-pm": "หลังเที่ยง",
 	"eraNames": [
@@ -104,6 +103,7 @@ define(
 		"อัฟ",
 		"เอลอุล"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
@@ -178,13 +178,13 @@ define(
 		"ศ.",
 		"ส."
 	],
+	"months-format-wide-leap": "อาดาร์ II",
 	"quarters-format-wide": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
 		"ไตรมาส 3",
 		"ไตรมาส 4"
 	],
-	"months-format-wide-leap": "อาดาร์ II",
 	"eraNarrow": [
 		"ย.ศ."
 	],

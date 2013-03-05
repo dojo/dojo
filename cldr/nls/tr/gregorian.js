@@ -66,6 +66,7 @@ define(
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "ÖS",
 	"dateFormat-full": "d MMMM y EEEE",
+	"dateFormatItem-yyQQQ": "QQQ yy",
 	"dateFormatItem-Md": "dd/MM",
 	"dateFormatItem-yMd": "dd.MM.yyyy",
 	"field-era": "Miladi Dönem",
@@ -91,10 +92,10 @@ define(
 		"3. çeyrek",
 		"4. çeyrek"
 	],
+	"dateFormatItem-yQQQQ": "y/QQQQ",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Yıl",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "y/Q",
 	"field-hour": "Saat",
 	"months-format-abbr": [
 		"Oca",
@@ -110,7 +111,6 @@ define(
 		"Kas",
 		"Ara"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "Bugün",
 	"field-day-relative+1": "Yarın",
@@ -259,7 +259,7 @@ define(
 	"field-month": "Ay",
 	"dayPeriods-format-wide-am": "ÖÖ",
 	"dateFormatItem-MMMMEd": "dd MMMM E",
-	"dateFormat-short": "dd.MM.yyyy",
+	"dateFormat-short": "d.MM.yyyy",
 	"field-second": "Saniye",
 	"dateFormatItem-yMMMEd": "d MMM y E",
 	"field-month-relative+0": "Bu ay",

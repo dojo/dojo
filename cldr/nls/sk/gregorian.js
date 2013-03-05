@@ -31,7 +31,6 @@ define(
 		"4"
 	],
 	"field-weekday": "Deň v týždni",
-	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d. M. y",
 	"dateFormatItem-MMMEd": "E, d. MMM.",
@@ -91,10 +90,10 @@ define(
 		"3. štvrťrok",
 		"4. štvrťrok"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "H:mm:ss z",
 	"field-year": "Rok",
 	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
 	"field-hour": "Hodina",
 	"months-format-abbr": [
@@ -111,7 +110,6 @@ define(
 		"nov",
 		"dec"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "H:mm:ss zzzz",
 	"field-day-relative+0": "Dnes",
 	"field-day-relative+1": "Zajtra",
@@ -245,6 +243,7 @@ define(
 		"P",
 		"S"
 	],
+	"field-month": "Mesiac",
 	"days-standAlone-narrow": [
 		"N",
 		"P",
@@ -255,7 +254,6 @@ define(
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
-	"field-month": "Mesiac",
 	"dayPeriods-format-wide-am": "dopoludnia",
 	"dateFormatItem-MMMMEd": "E, d. MMMM",
 	"dateFormat-short": "d.M.yyyy",

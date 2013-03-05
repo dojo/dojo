@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y/M",
-	"dateFormatItem-yQ": "y年QQQ",
 	"months-standAlone-abbr-leap": "亞達月 II",
 	"dayPeriods-format-wide-pm": "下午",
 	"eraNames": [
@@ -107,6 +106,7 @@ define(
 		"埃波月",
 		"以祿月"
 	],
+	"dateFormatItem-yQQQQ": "y年QQQQ",
 	"dateFormatItem-H": "H時",
 	"timeFormat-short": "ah:mm",
 	"quarters-format-abbr": [
@@ -186,13 +186,13 @@ define(
 		"六"
 	],
 	"dateFormatItem-d": "d日",
+	"months-format-wide-leap": "亞達月 II",
 	"quarters-format-wide": [
 		"第1季",
 		"第2季",
 		"第3季",
 		"第4季"
 	],
-	"months-format-wide-leap": "亞達月 II",
 	"eraNarrow": [
 		"創世紀元"
 	],

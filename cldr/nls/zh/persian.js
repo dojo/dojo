@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y/M",
-	"dateFormatItem-yQ": "y年第Q季度",
 	"dayPeriods-format-wide-pm": "下午",
 	"eraNames": [
 		"波斯历"
@@ -10,7 +9,7 @@ define(
 	"dateFormatItem-MMMEd": "M月d日E",
 	"dateTimeFormat-full": "{1}{0}",
 	"dateFormatItem-hms": "ah:mm:ss",
-	"dateFormatItem-yQQQ": "y年QQQ",
+	"dateFormatItem-yQQQ": "y年第Q季度",
 	"days-standAlone-wide": [
 		"星期日",
 		"星期一",
@@ -114,6 +113,7 @@ define(
 		"11月",
 		"12月"
 	],
+	"dateFormatItem-yQQQQ": "y年QQQQ",
 	"timeFormat-short": "ah:mm",
 	"dateFormatItem-H": "H时",
 	"quarters-format-abbr": [

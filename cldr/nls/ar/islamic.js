@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M‏/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "م",
 	"eraNames": [
 		"هـ"
@@ -116,6 +115,7 @@ define(
 		"ذو القعدة",
 		"ذو الحجة"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-short": "h:mm a",
 	"dateFormatItem-H": "HH",
 	"dateFormatItem-MMMMd": "d MMMM",

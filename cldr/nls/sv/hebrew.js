@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "yyyy-MM",
-	"dateFormatItem-yQ": "yyyy Q",
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"days-standAlone-wide": [
@@ -167,13 +166,13 @@ define(
 		"fr",
 		"lö"
 	],
+	"months-format-wide-leap": "adár II",
 	"quarters-format-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",
 		"3:e kvartalet",
 		"4:e kvartalet"
 	],
-	"months-format-wide-leap": "adár II",
 	"days-format-wide": [
 		"söndag",
 		"måndag",

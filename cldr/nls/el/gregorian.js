@@ -31,7 +31,6 @@ define(
 		"4"
 	],
 	"field-weekday": "Ημέρα εβδομάδας",
-	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "y QQQ",
 	"dateFormatItem-yMEd": "E, d/M/yyyy",
 	"dateFormatItem-MMMEd": "E, d MMM",
@@ -91,10 +90,10 @@ define(
 		"3ο τρίμηνο",
 		"4ο τρίμηνο"
 	],
+	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-long": "h:mm:ss a z",
 	"field-year": "Έτος",
 	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "y Q",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
 	"field-hour": "Ώρα",
 	"dateFormatItem-MMdd": "dd/MM",
@@ -112,7 +111,6 @@ define(
 		"Νοε",
 		"Δεκ"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "h:mm:ss a zzzz",
 	"field-day-relative+0": "Σήμερα",
 	"field-day-relative+1": "Αύριο",

@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "G y. M.",
-	"dateFormatItem-yQ": "G y년 Q분기",
 	"dayPeriods-format-wide-pm": "오후",
 	"eraNames": [
 		"불기"
@@ -30,6 +29,7 @@ define(
 	"dayPeriods-format-wide-am": "오전",
 	"dateFormatItem-y": "G y년",
 	"timeFormat-full": "a h시 m분 s초 zzzz",
+	"dateFormatItem-yyQQQ": "G y년 QQQ",
 	"dateFormatItem-EEEEd": "d일 EEEE",
 	"dateFormatItem-Ed": "d일 (E)",
 	"dateFormatItem-yMMM": "G y년 MMM",
@@ -58,8 +58,8 @@ define(
 	"dateFormatItem-ms": "mm:ss",
 	"dateFormatItem-HHmmss": "HH:mm:ss",
 	"dateFormatItem-MMMd": "MMM d일",
-	"dateFormatItem-yyQ": "G y년 Q분기",
 	"timeFormat-long": "a h시 m분 s초 z",
+	"dateFormatItem-yQQQQ": "G y년 QQQQ",
 	"dateFormatItem-H": "H시",
 	"timeFormat-short": "a h:mm",
 	"quarters-format-abbr": [

@@ -31,7 +31,7 @@ define({ root:
 		"3",
 		"4"
 	],
-	"dateFormatItem-yQQQ": "G y QQQ",
+	"dateFormatItem-yQQQ": "GGGGG y QQQ",
 	"dateFormatItem-yMEd": "E, GGGGG yyyy-MM-dd",
 	"dateFormatItem-MMMEd": "E MMM d",
 	"eraNarrow": [
@@ -91,9 +91,9 @@ define({ root:
 		"Q4"
 	],
 	"dateTimeFormat": "{1} {0}",
+	"dateFormatItem-yQQQQ": "G y QQQQ",
 	"timeFormat-long": "HH:mm:ss z",
 	"dateFormatItem-yMMM": "G y MMM",
-	"dateFormatItem-yQ": "GGGGG yyyy Q",
 	"dateTimeFormats-appendItem-Era": "{0} {1}",
 	"months-format-abbr": [
 		"1",

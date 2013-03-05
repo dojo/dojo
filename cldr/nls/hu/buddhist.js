@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y.M.",
-	"dateFormatItem-yQ": "y. Q",
 	"dayPeriods-format-wide-pm": "du.",
 	"eraNames": [
 		"BK"
@@ -120,6 +119,7 @@ define(
 		"nov.",
 		"dec."
 	],
+	"dateFormatItem-yQQQQ": "y. QQQQ",
 	"timeFormat-short": "H:mm",
 	"dateFormatItem-H": "H",
 	"quarters-format-abbr": [

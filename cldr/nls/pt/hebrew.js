@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM/yyyy",
-	"dateFormatItem-yQ": "yyyy Q",
 	"months-standAlone-abbr-leap": "Adar II",
 	"dateFormatItem-MMMEd": "E, d 'de' MMM",
 	"days-standAlone-wide": [

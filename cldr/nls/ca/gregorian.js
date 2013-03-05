@@ -90,10 +90,10 @@ define(
 		"3r trimestre",
 		"4t trimestre"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "H.mm.ss z",
 	"field-year": "any",
 	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "Q yyyy",
 	"field-hour": "hora",
 	"months-format-abbr": [
 		"de gen.",
@@ -109,7 +109,6 @@ define(
 		"de nov.",
 		"de des."
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "H.mm.ss zzzz",
 	"field-day-relative+0": "avui",
 	"field-day-relative+1": "demà",

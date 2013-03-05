@@ -31,7 +31,7 @@ define(
 		"4"
 	],
 	"field-weekday": "星期",
-	"dateFormatItem-yQQQ": "y年QQQ",
+	"dateFormatItem-yQQQ": "y年第Q季度",
 	"dateFormatItem-yMEd": "y/M/dEEE",
 	"dateFormatItem-MMMEd": "M月d日E",
 	"eraNarrow": [
@@ -67,6 +67,7 @@ define(
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "下午",
 	"dateFormat-full": "y年M月d日EEEE",
+	"dateFormatItem-yyQQQ": "yy年第Q季度",
 	"dateFormatItem-Md": "M/d",
 	"dayPeriods-format-narrow-midDay": "中午",
 	"dayPeriods-format-wide-noon": "中午",
@@ -96,7 +97,7 @@ define(
 	],
 	"timeFormat-long": "zah:mm:ss",
 	"dateFormatItem-yMMM": "y年M月",
-	"dateFormatItem-yQ": "y年第Q季度",
+	"dateFormatItem-yQQQQ": "y年QQQQ",
 	"field-year": "年",
 	"dateFormatItem-MMdd": "MM/dd",
 	"dateFormatItem-yyyyMMMM": "yyyy年M月",
@@ -115,7 +116,6 @@ define(
 		"11月",
 		"12月"
 	],
-	"dateFormatItem-yyQ": "yy年第Q季度",
 	"timeFormat-full": "zzzzah:mm:ss",
 	"dayPeriods-format-narrow-morning": "上午",
 	"field-day-relative+0": "今天",

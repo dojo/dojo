@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y/M",
-	"dateFormatItem-yQ": "y年第Q季度",
 	"months-standAlone-abbr-leap": "闰7月",
 	"dayPeriods-format-wide-pm": "下午",
 	"eraNames": [
@@ -11,7 +10,7 @@ define(
 	"dateFormatItem-MMMEd": "M月d日E",
 	"dateTimeFormat-full": "{1}{0}",
 	"dateFormatItem-hms": "ah:mm:ss",
-	"dateFormatItem-yQQQ": "y年QQQ",
+	"dateFormatItem-yQQQ": "y年第Q季度",
 	"days-standAlone-wide": [
 		"星期日",
 		"星期一",
@@ -105,6 +104,7 @@ define(
 		"12月",
 		"13月"
 	],
+	"dateFormatItem-yQQQQ": "y年QQQQ",
 	"timeFormat-short": "ah:mm",
 	"dateFormatItem-H": "H时",
 	"quarters-format-abbr": [
@@ -184,13 +184,13 @@ define(
 		"周六"
 	],
 	"dateFormatItem-d": "d日",
+	"months-format-wide-leap": "闰七月",
 	"quarters-format-wide": [
 		"第一季度",
 		"第二季度",
 		"第三季度",
 		"第四季度"
 	],
-	"months-format-wide-leap": "闰七月",
 	"eraNarrow": [
 		"希伯来历"
 	],

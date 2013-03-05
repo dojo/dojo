@@ -90,10 +90,10 @@ define(
 		"3. četrtletje",
 		"4. četrtletje"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Leto",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-hour": "Ura",
 	"months-format-abbr": [
@@ -110,7 +110,6 @@ define(
 		"nov.",
 		"dec."
 	],
-	"dateFormatItem-yyQ": "Q/yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "Danes",
 	"field-day-relative+1": "Jutri",
@@ -222,7 +221,7 @@ define(
 		"pet.",
 		"sob."
 	],
-	"dateFormatItem-yMMMd": "MMM d, y",
+	"dateFormatItem-yMMMd": "d. MMM y",
 	"eraNames": [
 		"pred našim štetjem",
 		"naše štetje"

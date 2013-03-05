@@ -2,10 +2,10 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM.y",
-	"dateFormatItem-yQ": "QQQ y 'г'.",
 	"dayPeriods-format-wide-pm": "после полудня",
 	"dateFormatItem-MMMEd": "ccc, d MMM",
 	"dateTimeFormat-full": "{1}, {0}",
+	"dateFormatItem-yQQQ": "QQQ y 'г'.",
 	"days-standAlone-wide": [
 		"Воскресенье",
 		"Понедельник",
@@ -64,7 +64,7 @@ define(
 		"П",
 		"С"
 	],
-	"dateFormat-long": "d MMMM y 'г'.",
+	"dateFormat-long": "d MMMM y 'г'.",
 	"timeFormat-medium": "H:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
 	"dateFormat-medium": "dd MMM y 'г'.",
@@ -135,7 +135,7 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormatItem-yMMMd": "d MMM y 'г'.",
+	"dateFormatItem-yMMMd": "d MMM y 'г'.",
 	"dateFormatItem-MEd": "E, dd.MM",
 	"months-format-narrow": [
 		"1",
@@ -172,7 +172,7 @@ define(
 	"dayPeriods-format-abbr-pm": "после полудня",
 	"dateFormat-short": "dd.MM.yy",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"dateFormat-full": "EEEE, d MMMM y 'г'.",
+	"dateFormat-full": "EEEE, d MMMM y 'г'.",
 	"dateFormatItem-Md": "dd.MM",
 	"dateFormatItem-yMEd": "ccc, d.MM.y 'г'.",
 	"months-format-wide": [

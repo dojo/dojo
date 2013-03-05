@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M‏/y G",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "م",
 	"eraNames": [
 		"التقويم البوذي"
@@ -117,6 +116,7 @@ define(
 		"نوفمبر",
 		"ديسمبر"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-short": "h:mm a",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"days-format-abbr": [

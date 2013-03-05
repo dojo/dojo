@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM/y",
-	"dateFormatItem-yQ": "Q y",
 	"dayPeriods-format-wide-pm": "pm",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-yQQQ": "QQQ y",
@@ -58,6 +57,7 @@ define(
 		"Nov",
 		"Dec"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"days-format-abbr": [
 		"Sun",

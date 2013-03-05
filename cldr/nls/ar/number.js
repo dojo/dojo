@@ -16,7 +16,7 @@ define(
 	"currencyFormat": "¤ #,##0.00;¤ #,##0.00-",
 	"plusSign": "+",
 	"decimalFormat-long": "000 تريليون",
-	"decimalFormat-short": "000 ترليو"
+	"decimalFormat-short": "000 ترليو"
 }
 //end v1.x content
 );

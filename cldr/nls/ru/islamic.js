@@ -24,6 +24,7 @@ define(
 		"11",
 		"12"
 	],
+	"dateFormatItem-yQQQ": "QQQ y 'г'.",
 	"dateFormatItem-yyMMMEd": "E, d MMM yy G",
 	"dateFormatItem-yMEd": "ccc, d.MM.y 'г'.",
 	"dateFormatItem-yyyyLLLL": "LLLL y G",
@@ -37,7 +38,7 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormat-long": "d MMMM y 'г'. G",
+	"dateFormat-long": "d MMMM y 'г'. G",
 	"months-format-wide": [
 		"Мухаррам",
 		"Сафар",
@@ -55,8 +56,9 @@ define(
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateTimeFormat-medium": "{1}, {0}",
 	"dayPeriods-format-wide-pm": "после полудня",
-	"dateFormat-full": "EEEE, d MMMM y 'г'. G",
+	"dateFormat-full": "EEEE, d MMMM y 'г'. G",
 	"dateFormatItem-yyyyMEd": "E, dd.MM.y G",
+	"dateFormatItem-yyQQQ": "QQQ yy G",
 	"dateFormatItem-Md": "dd.MM",
 	"dayPeriods-format-abbr-am": "до полудня",
 	"dateFormatItem-yMd": "dd.MM.y",
@@ -84,7 +86,6 @@ define(
 	],
 	"timeFormat-long": "H:mm:ss z",
 	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "QQQ y 'г'.",
 	"dateFormatItem-yyyyMMMM": "LLLL y G",
 	"dateFormatItem-MMdd": "dd.MM",
 	"months-format-abbr": [
@@ -101,7 +102,6 @@ define(
 		"Зуль-Каада",
 		"Зуль-Хиджжа"
 	],
-	"dateFormatItem-yyQ": "Q yy G",
 	"timeFormat-full": "H:mm:ss zzzz",
 	"dateFormatItem-E": "ccc",
 	"dateFormatItem-H": "H",
@@ -131,6 +131,7 @@ define(
 		"3-й квартал",
 		"4-й квартал"
 	],
+	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
@@ -179,6 +180,7 @@ define(
 		"суббота"
 	],
 	"dateFormatItem-yyyyMM": "MM.yyyy G",
+	"dateFormatItem-y": "y G",
 	"dateFormatItem-yyMM": "MM.yy G",
 	"dayPeriods-format-abbr-pm": "после полудня",
 	"days-format-abbr": [
@@ -190,7 +192,7 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormatItem-yMMMd": "d MMM y 'г'.",
+	"dateFormatItem-yMMMd": "d MMM y 'г'.",
 	"days-format-narrow": [
 		"вс",
 		"пн",
@@ -218,7 +220,7 @@ define(
 	"dateFormat-medium": "dd.MM.yyyy G",
 	"dateFormatItem-yyyyM": "MM.y G",
 	"dayPeriods-format-narrow-pm": "пп",
-	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'. G",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'. G",
 	"dateTimeFormat-short": "{1}, {0}",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-yyyy": "y G"

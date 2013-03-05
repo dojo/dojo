@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM/y G",
-	"dateFormatItem-yQ": "G y Q",
 	"dateFormatItem-MMMEd": "E, d 'de' MMM",
 	"dateFormatItem-yQQQ": "G y QQQ",
 	"dateFormatItem-MMdd": "dd/MM",
@@ -37,6 +36,7 @@ define(
 		"T4"
 	],
 	"dateFormatItem-y": "y G",
+	"dateFormatItem-yyQQQ": "QQQ yy G",
 	"months-standAlone-abbr": [
 		"jan",
 		"fev",
@@ -64,7 +64,7 @@ define(
 	],
 	"dateFormatItem-yyyyMM": "MM/y G",
 	"dateFormat-long": "d 'de' MMMM 'de' y G",
-	"dateFormatItem-Hm": "HH'h'mm",
+	"dateFormatItem-Hm": "HH:mm",
 	"dateFormatItem-yyMM": "MM/yy G",
 	"dateFormat-medium": "dd/MM/yyyy G",
 	"dayPeriods-format-narrow-pm": "p",
@@ -76,9 +76,9 @@ define(
 		"3º trimestre",
 		"4º trimestre"
 	],
-	"dateFormatItem-ms": "mm'min'ss's'",
+	"dateFormatItem-ms": "mm:ss",
 	"dayPeriods-format-narrow-am": "a",
-	"dateFormatItem-HHmmss": "HH'h'mm'min'ss's'",
+	"dateFormatItem-HHmmss": "HH:mm:ss",
 	"dateFormatItem-yyMMMd": "d 'de' MMM 'de' yy G",
 	"months-standAlone-wide": [
 		"janeiro",
@@ -95,9 +95,8 @@ define(
 		"dezembro"
 	],
 	"dateFormatItem-MMMd": "d 'de' MMM",
-	"dateFormatItem-HHmm": "HH'h'mm",
+	"dateFormatItem-HHmm": "HH:mm",
 	"dateFormatItem-yyMMMEd": "E, d 'de' MMM 'de' yy G",
-	"dateFormatItem-yyQ": "Q yy G",
 	"months-format-abbr": [
 		"jan",
 		"fev",
@@ -112,6 +111,7 @@ define(
 		"nov",
 		"dez"
 	],
+	"dateFormatItem-yQQQQ": "G y QQQQ",
 	"quarters-format-abbr": [
 		"T1",
 		"T2",

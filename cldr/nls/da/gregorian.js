@@ -91,10 +91,10 @@ define(
 		"3. kvartal",
 		"4. kvartal"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH.mm.ss z",
 	"field-year": "år",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q yyyy",
 	"field-hour": "time",
 	"dateFormatItem-MMdd": "dd/MM",
 	"months-format-abbr": [
@@ -111,7 +111,6 @@ define(
 		"nov.",
 		"dec."
 	],
-	"dateFormatItem-yyQ": "Q. 'kvartal' yy",
 	"timeFormat-full": "HH.mm.ss zzzz",
 	"field-day-relative+0": "i dag",
 	"field-day-relative+1": "i morgen",

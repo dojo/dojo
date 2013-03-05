@@ -3,12 +3,12 @@ define(
 {
 	"dateFormatItem-yM": "MM/y",
 	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
-	"dateFormatItem-yQ": "Q y",
 	"dayPeriods-format-wide-pm": "pm",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-MMdd": "dd/MM",
 	"dayPeriods-format-wide-am": "am",
+	"dateFormatItem-y": "y",
 	"dateFormatItem-Ed": "E d",
 	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
@@ -32,6 +32,7 @@ define(
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
 	"dateFormatItem-yyyyMEd": "E, d/M/y G",
 	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"days-format-abbr": [
 		"Sun",

@@ -69,6 +69,7 @@ define(
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "nachm.",
 	"dateFormat-full": "EEEE, d. MMMM y",
+	"dateFormatItem-yyQQQ": "QQQ yy",
 	"dateFormatItem-Md": "d.M.",
 	"dateFormatItem-yyMMdd": "dd.MM.yy",
 	"dayPeriods-format-wide-noon": "Mittag",
@@ -96,10 +97,10 @@ define(
 		"3. Quartal",
 		"4. Quartal"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Jahr",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-hour": "Stunde",
 	"dateFormatItem-MMdd": "dd.MM.",
@@ -117,7 +118,6 @@ define(
 		"Nov.",
 		"Dez."
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "Heute",
 	"field-day-relative+1": "Morgen",

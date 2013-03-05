@@ -90,10 +90,10 @@ define(
 		"3. čtvrtletí",
 		"4. čtvrtletí"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "H:mm:ss z",
 	"field-year": "Rok",
 	"dateFormatItem-yMMM": "LLLL y",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
 	"field-hour": "Hodina",
 	"months-format-abbr": [
@@ -110,7 +110,6 @@ define(
 		"lis",
 		"pro"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "H:mm:ss zzzz",
 	"field-day-relative+0": "Dnes",
 	"field-day-relative+1": "Zítra",

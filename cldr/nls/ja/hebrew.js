@@ -2,12 +2,11 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y/M",
-	"dateFormatItem-yQ": "y/Q",
 	"months-standAlone-abbr-leap": "アダル II",
 	"dayPeriods-format-wide-pm": "午後",
 	"dateFormatItem-MMMEd": "M月d日(E)",
 	"dateFormatItem-hms": "aK:mm:ss",
-	"dateFormatItem-yQQQ": "yQQQ",
+	"dateFormatItem-yQQQ": "y/QQQ",
 	"dateFormatItem-MMM": "M月",
 	"months-standAlone-narrow": [
 		"1",
@@ -97,6 +96,7 @@ define(
 		"アヴ",
 		"エルル"
 	],
+	"dateFormatItem-yQQQQ": "yQQQQ",
 	"timeFormat-short": "H:mm",
 	"dateFormatItem-H": "H時",
 	"quarters-format-abbr": [
@@ -173,13 +173,13 @@ define(
 		"土"
 	],
 	"dateFormatItem-d": "d日",
+	"months-format-wide-leap": "アダル II",
 	"quarters-format-wide": [
 		"第1四半期",
 		"第2四半期",
 		"第3四半期",
 		"第4四半期"
 	],
-	"months-format-wide-leap": "アダル II",
 	"days-format-wide": [
 		"日曜日",
 		"月曜日",

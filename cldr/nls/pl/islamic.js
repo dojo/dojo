@@ -3,10 +3,9 @@ define(
 {
 	"dateFormatItem-yM": "MM.yyyy",
 	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
-	"dateFormatItem-yQ": "yyyy Q",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
-	"dateFormatItem-yQQQ": "y QQQ",
+	"dateFormatItem-yQQQ": "G y QQQ",
 	"dateFormatItem-MMdd": "d.MM",
 	"days-standAlone-wide": [
 		"niedziela",
@@ -19,6 +18,7 @@ define(
 	],
 	"dateFormatItem-MMM": "LLL",
 	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Gy": "y G",
 	"dateTimeFormat-medium": "{1}, {0}",
 	"quarters-standAlone-abbr": [
 		"1 kw.",
@@ -26,7 +26,7 @@ define(
 		"3 kw.",
 		"4 kw."
 	],
-	"dateFormatItem-y": "y",
+	"dateFormatItem-y": "y G",
 	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"Muh.",
@@ -69,6 +69,7 @@ define(
 	],
 	"dateFormatItem-yMMMM": "LLLL y",
 	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "G y QQQQ",
 	"quarters-standAlone-narrow": [
 		"K1",
 		"K2",
@@ -93,7 +94,6 @@ define(
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
 	"dateFormatItem-yyyyMEd": "E, dd.MM.yyyy G",
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyQ": "Q y G",
 	"months-format-abbr": [
 		"Muh.",
 		"Saf.",
@@ -108,6 +108,7 @@ define(
 		"Zu al-k.",
 		"Zu al-h."
 	],
+	"dateFormatItem-yQQQQ": "G y QQQQ",
 	"dateFormatItem-H": "HH",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"quarters-format-abbr": [
@@ -176,7 +177,6 @@ define(
 	"dateFormat-full": "EEEE, d MMMM, y G",
 	"dateFormatItem-Md": "d.MM",
 	"dateFormatItem-yMEd": "E, d.MM.yyyy",
-	"dateFormatItem-yyyyQ": "G y Q",
 	"months-format-wide": [
 		"Muharram",
 		"Safar",

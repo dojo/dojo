@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "M-y",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
-	"dateFormatItem-yQ": "Q yyyy",
 	"eraNames": [
 		"Saʻna Hizjria"
 	],
@@ -41,6 +40,7 @@ define(
 		"K4"
 	],
 	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yyQQQ": "QQQ yy G",
 	"months-standAlone-abbr": [
 		"Moeh.",
 		"Saf.",
@@ -85,6 +85,7 @@ define(
 		"4e kwartaal"
 	],
 	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"months-standAlone-wide": [
 		"Moeharram",
 		"Safar",
@@ -103,7 +104,6 @@ define(
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
 	"dateFormatItem-yyyyMEd": "E d-M-y G",
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyQ": "Q yy G",
 	"months-format-abbr": [
 		"Moeh.",
 		"Saf.",
@@ -118,6 +118,7 @@ define(
 		"Doe al k.",
 		"Doe al h."
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"quarters-format-abbr": [
 		"K1",
@@ -170,7 +171,6 @@ define(
 	"dateFormatItem-yMMMEd": "E d MMM y",
 	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-Md": "d-M",
-	"dateFormatItem-yyyyQ": "Q y G",
 	"dateFormatItem-yMEd": "E d-M-y",
 	"months-format-wide": [
 		"Moeharram",

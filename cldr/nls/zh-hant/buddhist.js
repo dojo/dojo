@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "Gy/M",
-	"dateFormatItem-yQ": "Gy年QQQ",
 	"dayPeriods-format-wide-pm": "下午",
 	"eraNames": [
 		"佛曆"
@@ -32,6 +31,7 @@ define(
 	"dateFormatItem-y": "Gy年",
 	"timeFormat-full": "zzzzah時mm分ss秒",
 	"dateFormatItem-yyyy": "Gy年",
+	"dateFormatItem-yyQQQ": "Gyy年第Q季度",
 	"months-standAlone-abbr": [
 		"1月",
 		"2月",
@@ -92,7 +92,6 @@ define(
 		"十二月"
 	],
 	"dateFormatItem-MMMd": "M月d日",
-	"dateFormatItem-yyQ": "Gyy年第Q季度",
 	"timeFormat-long": "zah時mm分ss秒",
 	"months-format-abbr": [
 		"1月",
@@ -108,6 +107,7 @@ define(
 		"11月",
 		"12月"
 	],
+	"dateFormatItem-yQQQQ": "Gy年QQQQ",
 	"dateFormatItem-H": "H時",
 	"timeFormat-short": "ah:mm",
 	"quarters-format-abbr": [

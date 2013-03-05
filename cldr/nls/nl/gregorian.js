@@ -31,7 +31,6 @@ define(
 		"4"
 	],
 	"field-weekday": "Dag van de week",
-	"dateFormatItem-yyQQQQ": "QQQQ yy",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d-M-y",
 	"dateFormatItem-MMMEd": "E d MMM",
@@ -92,10 +91,10 @@ define(
 		"3e kwartaal",
 		"4e kwartaal"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Jaar",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-hour": "Uur",
 	"dateFormatItem-MMdd": "dd-MM",
@@ -113,7 +112,6 @@ define(
 		"nov.",
 		"dec."
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "Vandaag",
 	"field-day-relative+1": "Morgen",
@@ -193,7 +191,7 @@ define(
 	"dateFormatItem-h": "h a",
 	"dateTimeFormat-long": "{1} {0}",
 	"field-day-relative+-2": "Eergisteren",
-	"dateFormatItem-MMMd": "d-MMM",
+	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E d-M",
 	"dateTimeFormat-full": "{1} {0}",
 	"field-day": "Dag",

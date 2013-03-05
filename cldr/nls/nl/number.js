@@ -16,7 +16,7 @@ define(
 	"currencyFormat": "¤ #,##0.00;¤ #,##0.00-",
 	"plusSign": "+",
 	"decimalFormat-long": "000 biljoen",
-	"decimalFormat-short": "000 bln'.'"
+	"decimalFormat-short": "000 bln'.'"
 }
 //end v1.x content
 );

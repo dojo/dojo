@@ -90,10 +90,10 @@ define(
 		"trimestrul al III-lea",
 		"trimestrul al IV-lea"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "an",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "'trimestrul' Q y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-hour": "oră",
 	"dateFormatItem-MMdd": "dd.MM",
@@ -111,7 +111,6 @@ define(
 		"nov.",
 		"dec."
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"field-day-relative+0": "azi",
 	"field-day-relative+1": "mâine",

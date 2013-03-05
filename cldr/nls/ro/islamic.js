@@ -69,6 +69,7 @@ define(
 		"T4"
 	],
 	"dateFormat-long": "d MMMM y",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormat-short": "dd.MM.yyyy",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
 	"days-standAlone-wide": [
@@ -110,7 +111,6 @@ define(
 		"vineri",
 		"sâmbătă"
 	],
-	"dateFormatItem-yQ": "'trimestrul' Q y",
 	"dateFormatItem-yMMM": "MMM y",
 	"quarters-format-wide": [
 		"trimestrul I",

@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/y G",
-	"dateFormatItem-yQ": "Q-y G",
 	"eraNames": [
 		"EB"
 	],
@@ -42,6 +41,7 @@ define(
 		"T4"
 	],
 	"dateFormatItem-y": "y G",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"months-standAlone-abbr": [
 		"gen",
 		"feb",
@@ -102,7 +102,6 @@ define(
 		"Dicembre"
 	],
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyQ": "Q y G",
 	"months-format-abbr": [
 		"gen",
 		"feb",
@@ -117,6 +116,7 @@ define(
 		"nov",
 		"dic"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"quarters-format-abbr": [
 		"T1",
 		"T2",

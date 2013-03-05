@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/y G",
-	"dateFormatItem-yQ": "Q y G",
 	"dateFormatItem-MMMEd": "E d. MMM",
 	"dateFormatItem-hms": "h.mm.ss a",
 	"dateFormatItem-yQQQ": "QQQ y G",
@@ -98,7 +97,6 @@ define(
 	],
 	"dateFormatItem-MMMMEd": "E d. MMMM",
 	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-yyQ": "Q. 'kvartal' y G",
 	"timeFormat-long": "HH.mm.ss z",
 	"months-format-abbr": [
 		"jan.",
@@ -114,6 +112,7 @@ define(
 		"nov.",
 		"dec."
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"dateFormatItem-H": "HH",
 	"timeFormat-short": "HH.mm",
 	"quarters-format-abbr": [

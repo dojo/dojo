@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "GGGGy年M月",
 	"dateFormatItem-yyyyMMMEd": "GGGGy年M月d日(E)",
-	"dateFormatItem-yQ": "GGGGy QQQ",
 	"dayPeriods-format-wide-pm": "午後",
 	"dateFormatItem-GGGGyMd": "GGGGy年M月d日",
 	"eraNames": [
@@ -11,7 +10,7 @@ define(
 	],
 	"dateFormatItem-MMMEd": "M月d日(E)",
 	"dateFormatItem-hms": "aK:mm:ss",
-	"dateFormatItem-yQQQ": "GGGGy第Q四半期",
+	"dateFormatItem-yQQQ": "GGGGy QQQ",
 	"dateFormatItem-MMdd": "MM/dd",
 	"dateFormatItem-MMM": "M月",
 	"dateFormatItem-Gy": "Gy年",
@@ -50,6 +49,7 @@ define(
 	"dateFormatItem-yyyyMEd": "Gy/M/d(E)",
 	"dateFormatItem-MMMd": "M月d日",
 	"timeFormat-long": "H:mm:ss z",
+	"dateFormatItem-yQQQQ": "GGGGy第Q四半期",
 	"dateFormatItem-H": "H時",
 	"timeFormat-short": "H:mm",
 	"quarters-format-abbr": [
@@ -70,6 +70,7 @@ define(
 	"dateFormatItem-M": "M月",
 	"dateFormatItem-yMMMd": "y年M月d日",
 	"dateFormatItem-MEd": "M/d(E)",
+	"dateFormatItem-yyyyQQQ": "Gy/QQQ",
 	"days-standAlone-short": [
 		"日",
 		"月",
@@ -85,7 +86,6 @@ define(
 	"dateFormat-full": "GGGGy年M月d日EEEE",
 	"dateFormatItem-Md": "M/d",
 	"dateFormatItem-yMEd": "GGGGy年M/d(E)",
-	"dateFormatItem-yyyyQ": "Gy/Q",
 	"months-format-wide": [
 		"1月",
 		"2月",

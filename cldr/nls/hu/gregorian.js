@@ -64,6 +64,7 @@ define(
 	],
 	"dayPeriods-format-wide-pm": "du.",
 	"dateFormat-full": "y. MMMM d., EEEE",
+	"dateFormatItem-yyQQQ": "yy/QQQ",
 	"dateFormatItem-Md": "M. d.",
 	"dateFormatItem-yMd": "yyyy.MM.dd.",
 	"field-era": "éra",
@@ -89,10 +90,10 @@ define(
 		"III. negyedév",
 		"IV. negyedév"
 	],
+	"dateFormatItem-yQQQQ": "y. QQQQ",
 	"timeFormat-long": "H:mm:ss z",
 	"field-year": "év",
 	"dateFormatItem-yMMM": "y. MMM",
-	"dateFormatItem-yQ": "y. Q",
 	"dateFormatItem-yyyyMMMM": "y. MMMM",
 	"field-hour": "óra",
 	"dateFormatItem-MMdd": "MM.dd.",
@@ -110,7 +111,6 @@ define(
 		"nov.",
 		"dec."
 	],
-	"dateFormatItem-yyQ": "yy/Q",
 	"timeFormat-full": "H:mm:ss zzzz",
 	"field-day-relative+0": "ma",
 	"field-day-relative+1": "holnap",

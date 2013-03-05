@@ -1,18 +1,54 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM/yyyy",
-	"dateFormatItem-yQ": "yyyy Q",
-	"dateFormatItem-MMMEd": "E, d 'de' MMM",
-	"days-standAlone-wide": [
-		"domingo",
-		"segunda-feira",
-		"terça-feira",
-		"quarta-feira",
-		"quinta-feira",
-		"sexta-feira",
-		"sábado"
+	"quarters-standAlone-wide": [
+		"1º trimestre",
+		"2º trimestre",
+		"3º trimestre",
+		"4º trimestre"
 	],
+	"quarters-format-abbr": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	"dateFormatItem-yMd": "dd/MM/yyyy",
+	"dateFormat-medium": "dd/MM/yyyy",
+	"dateFormatItem-MMMEd": "E, d 'de' MMM",
+	"quarters-standAlone-abbr": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	"dateFormatItem-MEd": "E, dd/MM",
+	"dateFormatItem-yMEd": "E, dd/MM/yyyy",
+	"months-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"10",
+		"11",
+		"12"
+	],
+	"dateFormatItem-yMMMd": "d 'de' MMM 'de' y",
+	"days-format-short": [
+		"dom",
+		"seg",
+		"ter",
+		"qua",
+		"qui",
+		"sex",
+		"sáb"
+	],
+	"dateFormatItem-Md": "d/M",
 	"months-standAlone-narrow": [
 		"J",
 		"F",
@@ -27,11 +63,28 @@ define(
 		"N",
 		"D"
 	],
-	"quarters-standAlone-abbr": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
+	"months-standAlone-wide": [
+		"Farvardin",
+		"Ordibehesht",
+		"Khordad",
+		"Tir",
+		"Mordad",
+		"Shahrivar",
+		"Mehr",
+		"Aban",
+		"Azar",
+		"Dey",
+		"Bahman",
+		"Esfand"
+	],
+	"days-standAlone-narrow": [
+		"D",
+		"S",
+		"T",
+		"Q",
+		"Q",
+		"S",
+		"S"
 	],
 	"months-standAlone-abbr": [
 		"Farvardin",
@@ -47,97 +100,6 @@ define(
 		"Bahman",
 		"Esfand"
 	],
-	"dateFormatItem-Ed": "E, d",
-	"dateFormatItem-yMMM": "MMM 'de' y",
-	"days-standAlone-narrow": [
-		"D",
-		"S",
-		"T",
-		"Q",
-		"Q",
-		"S",
-		"S"
-	],
-	"dateFormat-long": "d 'de' MMMM 'de' y",
-	"dateFormat-medium": "dd/MM/yyyy",
-	"dayPeriods-format-narrow-pm": "p",
-	"dateFormatItem-yMd": "dd/MM/yyyy",
-	"quarters-standAlone-wide": [
-		"1º trimestre",
-		"2º trimestre",
-		"3º trimestre",
-		"4º trimestre"
-	],
-	"dayPeriods-format-narrow-am": "a",
-	"months-standAlone-wide": [
-		"Farvardin",
-		"Ordibehesht",
-		"Khordad",
-		"Tir",
-		"Mordad",
-		"Shahrivar",
-		"Mehr",
-		"Aban",
-		"Azar",
-		"Dey",
-		"Bahman",
-		"Esfand"
-	],
-	"dateFormatItem-MMMd": "d 'de' MMM",
-	"months-format-abbr": [
-		"Farvardin",
-		"Ordibehesht",
-		"Khordad",
-		"Tir",
-		"Mordad",
-		"Shahrivar",
-		"Mehr",
-		"Aban",
-		"Azar",
-		"Dey",
-		"Bahman",
-		"Esfand"
-	],
-	"quarters-format-abbr": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
-	],
-	"days-format-abbr": [
-		"dom",
-		"seg",
-		"ter",
-		"qua",
-		"qui",
-		"sex",
-		"sáb"
-	],
-	"days-format-narrow": [
-		"D",
-		"S",
-		"T",
-		"Q",
-		"Q",
-		"S",
-		"S"
-	],
-	"dateFormatItem-yMMMd": "d 'de' MMM 'de' y",
-	"dateFormatItem-MEd": "E, dd/MM",
-	"months-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
-	],
 	"days-standAlone-short": [
 		"dom",
 		"seg",
@@ -147,20 +109,18 @@ define(
 		"sex",
 		"sáb"
 	],
-	"days-standAlone-abbr": [
-		"dom",
-		"seg",
-		"ter",
-		"qua",
-		"qui",
-		"sex",
-		"sáb"
-	],
+	"dateFormat-long": "d 'de' MMMM 'de' y",
 	"dateFormat-short": "dd/MM/yy",
 	"dateFormatItem-yMMMEd": "E, d 'de' MMM 'de' y",
-	"dateFormat-full": "EEEE, d 'de' MMMM 'de' y",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E, dd/MM/yyyy",
+	"days-standAlone-wide": [
+		"domingo",
+		"segunda-feira",
+		"terça-feira",
+		"quarta-feira",
+		"quinta-feira",
+		"sexta-feira",
+		"sábado"
+	],
 	"months-format-wide": [
 		"janeiro",
 		"fevereiro",
@@ -175,7 +135,32 @@ define(
 		"novembro",
 		"dezembro"
 	],
-	"days-format-short": [
+	"days-format-narrow": [
+		"D",
+		"S",
+		"T",
+		"Q",
+		"Q",
+		"S",
+		"S"
+	],
+	"dateFormatItem-yM": "MM/yyyy",
+	"dayPeriods-format-narrow-pm": "p",
+	"months-format-abbr": [
+		"Farvardin",
+		"Ordibehesht",
+		"Khordad",
+		"Tir",
+		"Mordad",
+		"Shahrivar",
+		"Mehr",
+		"Aban",
+		"Azar",
+		"Dey",
+		"Bahman",
+		"Esfand"
+	],
+	"days-standAlone-abbr": [
 		"dom",
 		"seg",
 		"ter",
@@ -183,12 +168,6 @@ define(
 		"qui",
 		"sex",
 		"sáb"
-	],
-	"quarters-format-wide": [
-		"1º trimestre",
-		"2º trimestre",
-		"3º trimestre",
-		"4º trimestre"
 	],
 	"days-format-wide": [
 		"domingo",
@@ -198,7 +177,27 @@ define(
 		"quinta-feira",
 		"sexta-feira",
 		"sábado"
-	]
+	],
+	"dateFormatItem-yMMM": "MMM 'de' y",
+	"dayPeriods-format-narrow-am": "a",
+	"quarters-format-wide": [
+		"1º trimestre",
+		"2º trimestre",
+		"3º trimestre",
+		"4º trimestre"
+	],
+	"dateFormat-full": "EEEE, d 'de' MMMM 'de' y",
+	"dateFormatItem-MMMd": "d 'de' MMM",
+	"days-format-abbr": [
+		"dom",
+		"seg",
+		"ter",
+		"qua",
+		"qui",
+		"sex",
+		"sáb"
+	],
+	"dateFormatItem-Ed": "E, d"
 }
 //end v1.x content
 );

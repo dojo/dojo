@@ -94,10 +94,10 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
+	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Year",
 	"dateFormatItem-yMMM": "y MMM",
-	"dateFormatItem-yQ": "y Q",
 	"dateTimeFormats-appendItem-Era": "{0} {1}",
 	"field-hour": "Hour",
 	"months-format-abbr": [

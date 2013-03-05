@@ -65,6 +65,7 @@ define(
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormat-full": "EEEE'en' 'den' d:'e' MMMM y",
+	"dateFormatItem-yyQQQ": "QQQ yy",
 	"dateFormatItem-Md": "d/M",
 	"dayPeriods-format-abbr-am": "FM",
 	"dateFormatItem-yMd": "yyyy-MM-dd",
@@ -91,9 +92,9 @@ define(
 		"3:e kvartalet",
 		"4:e kvartalet"
 	],
+	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-long": "HH:mm:ss z",
 	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "yyyy Q",
 	"field-year": "år",
 	"dateFormatItem-MMdd": "dd/MM",
 	"field-hour": "timme",
@@ -111,7 +112,6 @@ define(
 		"nov",
 		"dec"
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
 	"field-day-relative+0": "i dag",
 	"field-day-relative+1": "i morgon",

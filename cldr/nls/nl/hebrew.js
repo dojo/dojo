@@ -86,6 +86,7 @@ define(
 		"za"
 	],
 	"dateFormat-long": "d MMMM y",
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormat-short": "dd-MM-yy",
 	"dateFormatItem-yMMMEd": "E d MMM y",
 	"months-format-wide": [
@@ -155,7 +156,6 @@ define(
 		"vrijdag",
 		"zaterdag"
 	],
-	"dateFormatItem-yQ": "Q yyyy",
 	"dateFormatItem-yMMM": "MMM y",
 	"quarters-format-wide": [
 		"1e kwartaal",
@@ -164,7 +164,7 @@ define(
 		"4e kwartaal"
 	],
 	"dateFormat-full": "EEEE d MMMM y",
-	"dateFormatItem-MMMd": "d-MMM",
+	"dateFormatItem-MMMd": "d MMM",
 	"days-format-abbr": [
 		"zo",
 		"ma",

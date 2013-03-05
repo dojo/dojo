@@ -3,7 +3,6 @@ define(
 {
 	"dateFormatItem-yM": "M/y",
 	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
-	"dateFormatItem-yQ": "Q y",
 	"dayPeriods-format-wide-pm": "p.m.",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
@@ -12,6 +11,7 @@ define(
 	"dayPeriods-format-wide-am": "a.m.",
 	"dateFormatItem-MMMdd": "dd-MMM",
 	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yyQQQ": "QQQ y G",
 	"dateFormatItem-Ed": "E d",
 	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
@@ -40,6 +40,7 @@ define(
 		"4.º trimestre"
 	],
 	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ 'de' y G",
 	"quarters-standAlone-narrow": [
 		"1T",
 		"2T",
@@ -56,7 +57,7 @@ define(
 		"3T",
 		"4T"
 	],
-	"dateFormatItem-yyQ": "Q y G",
+	"dateFormatItem-yQQQQ": "QQQQ 'de' y",
 	"dateFormatItem-MMMMd": "d 'de' MMMM",
 	"quarters-format-abbr": [
 		"T1",
@@ -75,8 +76,8 @@ define(
 	],
 	"dateFormatItem-M": "L",
 	"dateFormatItem-yMMMd": "d MMM y",
-	"dateFormatItem-MEd": "E, d/M",
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
+	"dateFormatItem-MEd": "E, d/M",
 	"days-standAlone-short": [
 		"D",
 		"L",
@@ -92,7 +93,6 @@ define(
 	"dateFormatItem-yMMMEd": "E d MMM y",
 	"dateFormat-full": "EEEE, d 'de' MMMM 'de' y G",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yyyyQ": "Q y G",
 	"dateFormatItem-yMEd": "EEE, d/M/y",
 	"days-format-short": [
 		"D",

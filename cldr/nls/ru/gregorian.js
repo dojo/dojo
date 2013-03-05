@@ -25,7 +25,7 @@ define(
 		"Д"
 	],
 	"field-weekday": "День недели",
-	"dateFormatItem-yQQQ": "y QQQ",
+	"dateFormatItem-yQQQ": "QQQ y 'г'.",
 	"dateFormatItem-yyMMMEd": "E, d MMM yy",
 	"dateFormatItem-yMEd": "ccc, d.MM.y 'г'.",
 	"dateFormatItem-yyyyLLLL": "LLLL y",
@@ -43,7 +43,7 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormat-long": "d MMMM y 'г'.",
+	"dateFormat-long": "d MMMM y 'г'.",
 	"months-format-wide": [
 		"января",
 		"февраля",
@@ -60,7 +60,8 @@ define(
 	],
 	"dateTimeFormat-medium": "{1}, {0}",
 	"dayPeriods-format-wide-pm": "после полудня",
-	"dateFormat-full": "EEEE, d MMMM y 'г'.",
+	"dateFormat-full": "EEEE, d MMMM y 'г'.",
+	"dateFormatItem-yyQQQ": "QQQ yy",
 	"dateFormatItem-Md": "dd.MM",
 	"dayPeriods-format-abbr-am": "до полудня",
 	"dateFormatItem-yMd": "dd.MM.y",
@@ -89,7 +90,6 @@ define(
 	],
 	"timeFormat-long": "H:mm:ss z",
 	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "QQQ y 'г'.",
 	"field-year": "Год",
 	"dateFormatItem-MMdd": "dd.MM",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
@@ -108,7 +108,6 @@ define(
 		"нояб.",
 		"дек."
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "H:mm:ss zzzz",
 	"dateFormatItem-E": "ccc",
 	"field-day-relative+0": "Сегодня",
@@ -232,7 +231,7 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormatItem-yMMMd": "d MMM y 'г'.",
+	"dateFormatItem-yMMMd": "d MMM y 'г'.",
 	"eraNames": [
 		"до н.э.",
 		"н.э."
@@ -270,7 +269,7 @@ define(
 	"field-week-relative+-1": "На прошлой неделе",
 	"field-year-relative+1": "В следующем году",
 	"dayPeriods-format-narrow-pm": "пп",
-	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'.",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'.",
 	"dateTimeFormat-short": "{1}, {0}",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",

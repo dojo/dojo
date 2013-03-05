@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM.yyyy G",
-	"dateFormatItem-yQ": "G y Q",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
 	"dateFormatItem-yQQQ": "G y QQQ",
@@ -101,7 +100,6 @@ define(
 		"grudzień"
 	],
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyQ": "Q y G",
 	"months-format-abbr": [
 		"sty",
 		"lut",
@@ -116,6 +114,7 @@ define(
 		"lis",
 		"gru"
 	],
+	"dateFormatItem-yQQQQ": "G y QQQQ",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"quarters-format-abbr": [
 		"K1",

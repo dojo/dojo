@@ -93,9 +93,9 @@ define(
 		"3. neljännes",
 		"4. neljännes"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "H.mm.ss z",
 	"dateFormatItem-yMMM": "LLL y",
-	"dateFormatItem-yQ": "Q/yyyy",
 	"field-year": "vuosi",
 	"dateFormatItem-yyyyMMMM": "LLLL y",
 	"field-hour": "tunti",
@@ -113,7 +113,6 @@ define(
 		"marraskuuta",
 		"joulukuuta"
 	],
-	"dateFormatItem-yyQ": "Q/yy",
 	"timeFormat-full": "H.mm.ss zzzz",
 	"field-day-relative+0": "tänään",
 	"field-day-relative+1": "huomenna",

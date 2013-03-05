@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/y",
-	"dateFormatItem-yQ": "y Q",
 	"dayPeriods-format-wide-pm": "μ.μ.",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateFormatItem-yQQQ": "y QQQ",
@@ -105,6 +104,7 @@ define(
 		"Νοε",
 		"Δεκ"
 	],
+	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-short": "h:mm a",
 	"quarters-format-abbr": [
 		"Τ1",

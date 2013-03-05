@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM.yyyy",
-	"dateFormatItem-yQ": "QQQ y",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
 	"dateFormatItem-yQQQ": "QQQ y",
@@ -106,6 +105,7 @@ define(
 		"Bahman",
 		"Esfand"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",

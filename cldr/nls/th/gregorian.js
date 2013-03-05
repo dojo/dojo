@@ -90,10 +90,10 @@ define(
 		"ไตรมาส 3",
 		"ไตรมาส 4"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "H นาฬิกา mm นาที ss วินาที z",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yQ": "Q yyyy",
 	"field-year": "ปี",
+	"dateFormatItem-yMMM": "MMM y",
 	"dateFormatItem-yyyyMMMM": "MMMM y",
 	"field-hour": "ชั่วโมง",
 	"months-format-abbr": [
@@ -110,7 +110,6 @@ define(
 		"พ.ย.",
 		"ธ.ค."
 	],
-	"dateFormatItem-yyQ": "Q yy",
 	"timeFormat-full": "H นาฬิกา mm นาที ss วินาที zzzz",
 	"field-day-relative+0": "วันนี้",
 	"field-day-relative+1": "พรุ่งนี้",

@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "م",
 	"eraNames": [
 		"ه.ش"
@@ -108,6 +107,7 @@ define(
 		"بهمن",
 		"اسفندار"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-short": "h:mm a",
 	"days-format-abbr": [
 		"الأحد",
@@ -172,9 +172,6 @@ define(
 		"الربع الثالث",
 		"الربع الرابع"
 	],
-	"eraNarrow": [
-		"ه.ش"
-	],
 	"days-format-wide": [
 		"الأحد",
 		"الاثنين",
@@ -183,6 +180,9 @@ define(
 		"الخميس",
 		"الجمعة",
 		"السبت"
+	],
+	"eraNarrow": [
+		"ه.ش"
 	]
 }
 //end v1.x content

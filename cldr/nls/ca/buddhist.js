@@ -2,14 +2,13 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM/yyyy GGGGG",
-	"dateFormatItem-yQ": "Q yyyy GGGGG",
 	"dayPeriods-format-wide-pm": "p.m.",
 	"eraNames": [
 		"eB"
 	],
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yQQQ": "QQQ y G",
+	"dateFormatItem-yQQQ": "QQQ y GGGGG",
 	"days-standAlone-wide": [
 		"Diumenge",
 		"Dilluns",
@@ -116,6 +115,7 @@ define(
 		"de nov.",
 		"de des."
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"timeFormat-short": "H.mm",
 	"dateFormatItem-H": "HH",
 	"quarters-format-abbr": [

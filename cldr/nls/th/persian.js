@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "M/yyyy",
-	"dateFormatItem-yQ": "Q yyyy",
 	"dayPeriods-format-wide-pm": "หลังเที่ยง",
 	"eraNames": [
 		"ปีเปอร์เซีย"
@@ -113,6 +112,7 @@ define(
 		"บาฮ์มาน",
 		"เอสฟานด์"
 	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",

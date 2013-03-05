@@ -2,7 +2,6 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "y.M.",
-	"dateFormatItem-yQ": "y. Q",
 	"months-standAlone-abbr-leap": "Ádár II",
 	"dayPeriods-format-wide-pm": "du.",
 	"eraNames": [
@@ -110,6 +109,7 @@ define(
 		"Áv",
 		"Elul"
 	],
+	"dateFormatItem-yQQQQ": "y. QQQQ",
 	"timeFormat-short": "H:mm",
 	"dateFormatItem-H": "H",
 	"quarters-format-abbr": [
@@ -178,13 +178,13 @@ define(
 		"Áv",
 		"Elul"
 	],
+	"months-format-wide-leap": "Ádár séni",
 	"quarters-format-wide": [
 		"I. negyedév",
 		"II. negyedév",
 		"III. negyedév",
 		"IV. negyedév"
 	],
-	"months-format-wide-leap": "Ádár séni",
 	"eraNarrow": [
 		"TÉ"
 	],

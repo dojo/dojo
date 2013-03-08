@@ -674,10 +674,10 @@ define([
 				// Recurse, collecting <script type="dojo/..."> children, and also looking for
 				// descendant nodes with dojoType specified (unless the widget has the stopParser flag).
 				// When finished with children, go to my next sibling.
-				node = firstChild;
 				scripts = childScripts;
-				scriptsOnly = ctor && ctor.prototype.stopParser && !(options.template);
+				scriptsOnly = node.stopParser || (ctor && ctor.prototype.stopParser && !(options.template));
 				parent = current;
+				node = firstChild;
 			}
 
 			var d = new Deferred();

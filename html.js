@@ -310,6 +310,8 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 						scope: this.parserScope
 					}).then(function(results){
 						return self.parseResults = results;
+					}, function(e){
+						self._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);
 					});
 				}catch(e){
 					this._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);

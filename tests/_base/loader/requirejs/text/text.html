@@ -33,7 +33,7 @@
 	                [
 	                    function text(t){
 							function check(expected, actual){
-								t.is(expected, actual.replace(/\r\n|\r|\n/g, ""));
+								t.is(expected, actual.replace(/\r|\n/g, ""));
 							}
 	                        check("<span>Hello World!</span>", sampleText);
 	                        check('<div data-type="widget"><h1>This is a widget!</h1><p>I am in a widget</p></div>', widget.template);

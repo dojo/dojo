@@ -8,10 +8,10 @@ define(["dojo", "doh", "../../../_base/sniff", "require"], function(dojo, doh, h
 
 		function getText(t){
 			if(require.getText){
-				var text = require.getText(require.toUrl("dojo/tests/_base/loader/getText.txt")).replace(/\n/g, "");
+				var text = require.getText(require.toUrl("dojo/tests/_base/loader/getText.txt")).replace(/\r|\n/g, "");
 				t.assertEqual("dojo._getText() test data", text);
 				if(dojo._getText){
-					text = dojo._getText(require.toUrl("dojo/tests/_base/loader/getText.txt")).replace(/\n/g, "");
+					text = dojo._getText(require.toUrl("dojo/tests/_base/loader/getText.txt")).replace(/\r|\n/g, "");
 					t.assertEqual("dojo._getText() test data", text);
 				}
 			}

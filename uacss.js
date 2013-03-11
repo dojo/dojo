@@ -41,7 +41,10 @@ define(["./dom-geometry", "./_base/lang", "./domReady", "./sniff", "./_base/wind
 			"dj_safari": has("safari"),
 			"dj_chrome": has("chrome"),
 
-			"dj_gecko": has("mozilla")
+			"dj_gecko": has("mozilla"),
+
+			"dj_ios": has("ios"),
+			"dj_android": has("android")
 		}; // no dojo unsupported browsers
 
 	if(ie){

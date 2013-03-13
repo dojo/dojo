@@ -112,7 +112,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 								((new Date()).getTime() <= clickTime + 1000 &&
 									!(e.target.tagName == "INPUT" && domClass.contains(e.target, "dijitOffScreen"))))){
 							e.stopImmediatePropagation();
-							e.preventDefault();
+							//e.preventDefault();	preventDefault() breaks <input> on android, keyboard doesn't popup
 						}
 					}, true);
 				}

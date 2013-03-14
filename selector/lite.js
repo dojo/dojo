@@ -33,7 +33,7 @@ var liteEngine = function(selector, root){
 		if(match[2]){
 			// an #id
 			// use dojo.byId if available as it fixes the id retrieval in IE, note that we can't use the dojo namespace in 2.0, but if there is a conditional module use, we will use that
-			var found = dojo.byId ? dojo.byId(match[2]) : doc.getElementById(match[2]);
+			var found = dojo.byId ? dojo.byId(match[2], doc) : doc.getElementById(match[2]);
 			if(!found || (match[1] && match[1] != found.tagName.toLowerCase())){
 				// if there is a tag qualifer and it doesn't match, no matches
 				return [];

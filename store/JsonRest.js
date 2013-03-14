@@ -50,6 +50,15 @@ return declare("dojo.store.JsonRest", base, {
 	//		the sort information is included in a functional query token to avoid colliding
 	//		with the set of name/value pairs.
 
+	// ascendingPrefix: String
+	//		The prefix to apply to sort attribute names that are ascending
+	ascendingPrefix: "+",
+
+	// descendingPrefix: String
+	//		The prefix to apply to sort attribute names that are ascending
+	descendingPrefix: "-",
+	 
+
 	get: function(id, options){
 		// summary:
 		//		Retrieves an object by its identity. This will trigger a GET request to the server using
@@ -167,7 +176,7 @@ return declare("dojo.store.JsonRest", base, {
 			query += (query || hasQuestionMark ? "&" : "?") + (sortParam ? sortParam + '=' : "sort(");
 			for(var i = 0; i<options.sort.length; i++){
 				var sort = options.sort[i];
-				query += (i > 0 ? "," : "") + (sort.descending ? '-' : '+') + encodeURIComponent(sort.attribute);
+				query += (i > 0 ? "," : "") + (sort.descending ? this.descendingPrefix : this.ascendingPrefix) + encodeURIComponent(sort.attribute);
 			}
 			if(!sortParam){
 				query += ")";

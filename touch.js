@@ -6,7 +6,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 	var hasTouch = has("touch");
 
-	var ios4 = has("ios") && has("ios") < 5;
+	var ios4 = has("ios") < 5;
 	
 	var msPointer = navigator.msPointerEnabled;
 

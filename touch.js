@@ -11,7 +11,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 	var msPointer = navigator.msPointerEnabled;
 
 	// Click generation variables
-	var clicksInited, clicked, clickTarget, clickX, clickY, clickDx, clickDy, clickTime;
+	var clicksInited, clickTracker, clickTarget, clickX, clickY, clickDx, clickDy, clickTime;
 
 	// Time of most recent touchstart, touchmove, or touchend event
 	var lastTouch;
@@ -62,14 +62,13 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		//		was called in an event listener. Synthetic clicks are generated only if a node or one of its ancestors has
 		//		its dojoClick property set to truthy.
 		
-		clicked  = marked(e.target); // click threshold = true, number or x/y object
-		if(clicked){
-			
+		clickTracker  = !e.target.disabled && marked(e.target); // click threshold = true, number or x/y object
+		if(clickTracker){
 			clickTarget = e.target;
 			clickX = e.touches ? e.touches[0].pageX : e.clientX;
 			clickY = e.touches ? e.touches[0].pageY : e.clientY;
-			clickDx = (typeof clicked == "object" ? clicked.x : (typeof clicked == "number" ? clicked : 0)) || 4;
-			clickDy = (typeof clicked == "object" ? clicked.y : (typeof clicked == "number" ? clicked : 0)) || 4;
+			clickDx = (typeof clickTracker == "object" ? clickTracker.x : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
+			clickDy = (typeof clickTracker == "object" ? clickTracker.y : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
 
 			// add move/end handlers only the first time a node with dojoClick is seen,
 			// so we don't add too much overhead when dojoClick is never set.
@@ -77,14 +76,14 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				clicksInited = true;
 
 				win.doc.addEventListener(moveType, function(e){
-					clicked = clicked &&
+					clickTracker = clickTracker &&
 						e.target == clickTarget &&
 						Math.abs((e.touches ? e.touches[0].pageX : e.clientX) - clickX) <= clickDx &&
 						Math.abs((e.touches ? e.touches[0].pageY : e.clientY) - clickY) <= clickDy;
 				}, true);
 
 				win.doc.addEventListener(endType, function(e){
-					if(clicked){
+					if(clickTracker){
 						clickTime = (new Date()).getTime();
 						setTimeout(function(){
 							on.emit(e.target, "click", {

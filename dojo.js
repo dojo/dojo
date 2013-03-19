@@ -1275,7 +1275,7 @@
 			// This is useful for testing frameworks (at least).
 			var module = getModule(moduleId, referenceModule);
 			setArrived(module);
-			delete modules[module.mid];
+			mix(module, {def:0, executed:0, injected:0, node:0, url:0});
 		};
 	}
 
@@ -1400,6 +1400,10 @@
 						// nothing was added to the defQ (so it wasn't an AMD module) and the module
 						// wasn't marked as arrived by dojo.provide (so it wasn't a v1.6- module);
 						// therefore, it must not have been a module; adjust state accordingly
+						if(has("dojo-enforceDefine")){
+							signal(error, makeError("noDefine", module));
+							return;
+						}
 						setArrived(module);
 						mix(module, nonModuleProps);
 						req.trace("loader-define-nonmodule", [module.url]);

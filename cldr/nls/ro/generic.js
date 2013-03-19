@@ -1,0 +1,42 @@
+define(
+//begin v1.x content
+{
+	"dateFormatItem-yM": "MM.y",
+	"dateFormatItem-MMMEd": "E, d MMM",
+	"dateTimeFormat-full": "{1}, {0}",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"dateFormatItem-MMdd": "dd.MM",
+	"dateFormatItem-MMM": "LLL",
+	"dateTimeFormat-short": "{1}, {0}",
+	"dateTimeFormat-medium": "{1}, {0}",
+	"dateFormatItem-y": "y",
+	"dateFormatItem-yMM": "MM.y",
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-yMMM": "MMM y",
+	"dateFormat-long": "d MMMM y G",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormat-medium": "dd.MM.y G",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-yMd": "dd.MM.y",
+	"dateFormatItem-yMMMM": "MMMM y",
+	"dateFormatItem-ms": "mm:ss",
+	"dateTimeFormat-long": "{1}, {0}",
+	"dateFormatItem-MMMMEd": "E, d MMMM",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-yQQQQ": "QQQQ y",
+	"dateFormatItem-H": "HH",
+	"dateFormatItem-MMMMd": "d MMMM",
+	"dateFormatItem-M": "L",
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-MEd": "E, dd.MM",
+	"dateFormatItem-hm": "h:mm a",
+	"dateFormat-short": "dd.MM.y GGGGG",
+	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormat-full": "EEEE, d MMMM y G",
+	"dateFormatItem-Md": "dd.MM",
+	"dateFormatItem-yMEd": "E, dd.MM.y",
+	"dateFormatItem-d": "d"
+}
+//end v1.x content
+);

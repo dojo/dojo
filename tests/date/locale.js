@@ -62,7 +62,7 @@ define(["doh", "dojo/_base/array", "dojo/i18n", "dojo/_base/kernel", "dojo/date"
 	t.is("2006\u5E748\u670811\u65E5\u91D1\u66DC\u65E5", locale.format(date, {formatLength:'full',selector:'date', locale:'ja-jp'}));
 
 	t.is("8/11/06", locale.format(date, {formatLength:'short',selector:'date', locale:'en-us'}));
-	t.is("11/08/06", locale.format(date, {formatLength:'short',selector:'date', locale:'fr-fr'}));
+	t.is("11/08/2006", locale.format(date, {formatLength:'short',selector:'date', locale:'fr-fr'}));
 	t.is("11.08.06", locale.format(date, {formatLength:'short',selector:'date', locale:'de-at'}));
 	t.is("2006/08/11", locale.format(date, {formatLength:'short',selector:'date', locale:'ja-jp'}));
 
@@ -79,10 +79,10 @@ define(["doh", "dojo/_base/array", "dojo/i18n", "dojo/_base/kernel", "dojo/date"
 
 	t.is("12 o'clock AM", locale.format(date, {datePattern:"hh 'o''clock' a", selector:"date", locale: 'en'}));
 
-	t.is("11/08/2006 12:55am", locale.format(date, {datePattern:"dd/MM/yyyy", timePattern:"hh:mma", locale: 'en', am:"am", pm:"pm"}));
+	t.is("11/08/2006, 12:55am", locale.format(date, {datePattern:"dd/MM/yyyy", timePattern:"hh:mma", locale: 'en', am:"am", pm:"pm"}));
 
 	// compare without timezone
-	t.is("\u4e0a\u534812\u65f655\u520612\u79d2", locale.format(date, {formatLength:'full',selector:'time', locale:'zh-cn'}).replace(/^.*(\u4e0a\u5348.*)/,"$1"));
+	t.is("\u4e0a\u534812:55:12", locale.format(date, {formatLength:'full',selector:'time', locale:'zh-cn'}).replace(/^.*(\u4e0a\u5348.*)/,"$1"));
 			}
 		},
 		{
@@ -234,13 +234,14 @@ define(["doh", "dojo/_base/array", "dojo/i18n", "dojo/_base/kernel", "dojo/date"
 	//en: 'short' datetime fmt: M/d/yy h:mm a
 	//note: this is concatenation of dateFormat-short and timeFormat-short,
 	//cldr provisionally defines datetime fmts as well, but we're not using them at the moment
-	t.is( aug_11_2006_12_30_pm, locale.parse("08/11/06 12:30 PM", {formatLength:'short', locale:'en'}));
+	t.is( aug_11_2006_12_30_pm, locale.parse("08/11/06, 12:30 PM", {formatLength:'short', locale:'en'}), 'PM');
 	//case-insensitive
-	t.is( aug_11_2006_12_30_pm, locale.parse("08/11/06 12:30 pm", {formatLength:'short', locale:'en'}));
+	t.is( aug_11_2006_12_30_pm, locale.parse("08/11/06, 12:30 pm", {formatLength:'short', locale:'en'}), 'pm');
 	//...but not in strict mode
-	t.f( Boolean(locale.parse("08/11/06 12:30 pm", {formatLength:'short', locale:'en', strict:true})));
+	t.f( Boolean(locale.parse("8/11/06, 12:30 pm", {formatLength:'short', locale:'en', strict:true})), 'strict fail');
+	t.t( Boolean(locale.parse("8/11/06, 12:30 PM", {formatLength:'short', locale:'en', strict:true})), 'strict pass');
 
-	t.is( aug_11_2006_12_30_am, locale.parse("08/11/06 12:30 AM", {formatLength:'short', locale:'en'}));
+	t.is( aug_11_2006_12_30_am, locale.parse("08/11/06, 12:30 AM", {formatLength:'short', locale:'en'}), 'AM');
 
 	t.is( new Date(2006, 7, 11), locale.parse("11082006", {datePattern:"ddMMyyyy", selector:"date"}));
 

@@ -1,11 +1,9 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM.yyyy G",
+	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
-	"dateFormatItem-yQQQ": "G y QQQ",
-	"dateFormatItem-MMdd": "d.MM",
 	"days-standAlone-wide": [
 		"niedziela",
 		"poniedziałek",
@@ -15,7 +13,6 @@ define(
 		"piątek",
 		"sobota"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"s",
 		"l",
@@ -30,7 +27,9 @@ define(
 		"l",
 		"g"
 	],
+	"dateTimeFormat-short": "{1}, {0}",
 	"dateFormatItem-Gy": "y G",
+	"dateTimeFormat-medium": "{1}, {0}",
 	"quarters-standAlone-abbr": [
 		"1 kw.",
 		"2 kw.",
@@ -38,6 +37,7 @@ define(
 		"4 kw."
 	],
 	"dateFormatItem-y": "y G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"sty",
 		"lut",
@@ -53,7 +53,6 @@ define(
 		"gru"
 	],
 	"dateFormatItem-Ed": "E, d",
-	"dateFormatItem-yMMM": "LLL y G",
 	"days-standAlone-narrow": [
 		"N",
 		"P",
@@ -63,22 +62,19 @@ define(
 		"P",
 		"S"
 	],
-	"dateFormatItem-yyyyMM": "MM.yyyy G",
-	"dateFormatItem-yyyyMMMM": "LLLL y G",
-	"dateFormat-long": "d MMMM, y G",
-	"dateFormatItem-Hm": "HH:mm",
+	"eraAbbr": [
+		"BE"
+	],
+	"dateFormatItem-GyMMMd": "d MMM y G",
+	"dateFormat-long": "d MMMM y G",
 	"dateFormat-medium": "d MMM y G",
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-yyMMM": "LLL y G",
-	"dateFormatItem-yMd": "d.MM.yyyy G",
 	"quarters-standAlone-wide": [
 		"I kwartał",
 		"II kwartał",
 		"III kwartał",
 		"IV kwartał"
 	],
-	"dateFormatItem-yMMMM": "LLLL y G",
-	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"quarters-standAlone-narrow": [
 		"K1",
 		"K2",
@@ -99,6 +95,9 @@ define(
 		"listopad",
 		"grudzień"
 	],
+	"dateFormatItem-yyyyMd": "d.MM.y G",
+	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMEd": "E, d.MM.y G",
 	"dateFormatItem-MMMd": "d MMM",
 	"months-format-abbr": [
 		"sty",
@@ -114,8 +113,6 @@ define(
 		"lis",
 		"gru"
 	],
-	"dateFormatItem-yQQQQ": "G y QQQQ",
-	"dateFormatItem-MMMMd": "d MMMM",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -131,7 +128,6 @@ define(
 		"pt.",
 		"sob."
 	],
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"N",
 		"P",
@@ -141,7 +137,9 @@ define(
 		"P",
 		"S"
 	],
-	"dateFormatItem-yMMMd": "d MMM y G",
+	"dateFormatItem-GyMMMEd": "E, d MMM y G",
+	"dateFormatItem-GyMMM": "LLL y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E, d.MM",
 	"months-format-narrow": [
 		"s",
@@ -176,11 +174,10 @@ define(
 		"pt.",
 		"sob."
 	],
-	"dateFormat-short": "dd.MM.yyyy G",
-	"dateFormatItem-yMMMEd": "E, d MMM y G",
-	"dateFormat-full": "EEEE, d MMMM, y G",
+	"dateFormat-short": "dd.MM.y G",
+	"dateFormatItem-yyyyM": "MM.y G",
+	"dateFormat-full": "EEEE, d MMMM y G",
 	"dateFormatItem-Md": "d.MM",
-	"dateFormatItem-yMEd": "E, d.MM.yyyy G",
 	"months-format-wide": [
 		"stycznia",
 		"lutego",
@@ -204,7 +201,7 @@ define(
 		"pt.",
 		"sob."
 	],
-	"dateFormatItem-d": "d",
+	"dateFormatItem-yyyyMMM": "LLL y G",
 	"quarters-format-wide": [
 		"I kwartał",
 		"II kwartał",

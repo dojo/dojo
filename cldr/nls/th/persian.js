@@ -1,14 +1,13 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yyyyMMMEd": "E d MMM G y",
 	"dayPeriods-format-wide-pm": "หลังเที่ยง",
 	"eraNames": [
 		"ปีเปอร์เซีย"
 	],
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateTimeFormat-full": "{1}, {0}",
-	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-wide": [
 		"วันอาทิตย์",
 		"วันจันทร์",
@@ -57,7 +56,6 @@ define(
 		"เอสฟานด์"
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"อา.",
 		"จ.",
@@ -70,16 +68,17 @@ define(
 	"eraAbbr": [
 		"ปีเปอร์เซีย"
 	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-GyMMMd": "d MMM G y",
+	"dateFormat-long": "d MMMM G y",
+	"dateFormat-medium": "d MMM G y",
 	"dayPeriods-format-narrow-pm": "หลังเที่ยง",
-	"dateFormatItem-yMd": "d/M/yyyy",
 	"quarters-standAlone-wide": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
 		"ไตรมาส 3",
 		"ไตรมาส 4"
 	],
+	"dateFormatItem-yyyyQQQQ": "QQQQ G y",
 	"dayPeriods-format-narrow-am": "ก่อนเที่ยง",
 	"dateTimeFormat-long": "{1}, {0}",
 	"months-standAlone-wide": [
@@ -96,6 +95,9 @@ define(
 		"บาฮ์มาน",
 		"เอสฟานด์"
 	],
+	"dateFormatItem-yyyyMd": "d/M/y G",
+	"dateFormatItem-yyyyMMMd": "d MMM G y",
+	"dateFormatItem-yyyyMEd": "E d/M/y G",
 	"dateFormatItem-MMMd": "d MMM",
 	"timeFormat-long": "H นาฬิกา mm นาที ss วินาที z",
 	"months-format-abbr": [
@@ -112,7 +114,6 @@ define(
 		"บาฮ์มาน",
 		"เอสฟานด์"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
@@ -137,7 +138,9 @@ define(
 		"ศ.",
 		"ส."
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-GyMMMEd": "E d MMM G y",
+	"dateFormatItem-GyMMM": "MMM G y",
+	"dateFormatItem-yyyyQQQ": "QQQ G y",
 	"dateFormatItem-MEd": "E, d/M",
 	"months-format-narrow": [
 		"1",
@@ -171,11 +174,10 @@ define(
 		"ศ.",
 		"ส."
 	],
-	"dateFormat-short": "d/M/yy",
-	"dateFormatItem-yMMMEd": "E d MMM y",
+	"dateFormat-short": "d/M/y G",
+	"dateFormatItem-yyyyM": "M/y G",
 	"dateFormat-full": "EEEEที่ d MMMM G y",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E d/M/yyyy",
 	"months-format-wide": [
 		"ฟาร์วาร์ดิน",
 		"ออร์ดิเบเฮชต์",
@@ -199,14 +201,12 @@ define(
 		"ศ.",
 		"ส."
 	],
+	"dateFormatItem-yyyyMMM": "MMM G y",
 	"quarters-format-wide": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
 		"ไตรมาส 3",
 		"ไตรมาส 4"
-	],
-	"eraNarrow": [
-		"ปีเปอร์เซีย"
 	],
 	"days-format-wide": [
 		"วันอาทิตย์",
@@ -216,6 +216,9 @@ define(
 		"วันพฤหัสบดี",
 		"วันศุกร์",
 		"วันเสาร์"
+	],
+	"eraNarrow": [
+		"ปีเปอร์เซีย"
 	]
 }
 //end v1.x content

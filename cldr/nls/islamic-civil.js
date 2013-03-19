@@ -3,13 +3,13 @@ define({ root:
 //begin v1.x content
 {
 	"days-standAlone-short": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"months-format-narrow": [
 		"1",
@@ -31,23 +31,22 @@ define({ root:
 		"3",
 		"4"
 	],
-	"dateFormatItem-yQQQ": "y QQQ",
-	"dateFormatItem-yMEd": "E, y-M-d",
-	"dateFormatItem-MMMEd": "E MMM d",
+	"dateFormatItem-GyMMMEd": "G y MMM d, E",
+	"dateFormatItem-MMMEd": "MMM d, E",
 	"eraNarrow": [
 		"AH"
 	],
 	"days-format-short": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}",
-	"dateFormat-long": "y MMMM d",
+	"dateFormat-long": "G y MMMM d",
 	"months-format-wide": [
 		"Muharram",
 		"Safar",
@@ -62,14 +61,14 @@ define({ root:
 		"Dhuʻl-Qiʻdah",
 		"Dhuʻl-Hijjah"
 	],
+	"dateFormatItem-yyyyQQQ": "G y QQQ",
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "PM",
-	"dateFormat-full": "EEEE, y MMMM dd",
-	"dateFormatItem-Md": "M-d",
+	"dateFormat-full": "G y MMMM d, EEEE",
+	"dateFormatItem-yyyyMEd": "GGGGG y-MM-dd, E",
+	"dateFormatItem-Md": "MM-dd",
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
-	"dateFormatItem-yMd": "y-M-d",
-	"dateFormatItem-yM": "y-M",
 	"months-standAlone-wide": [
 		"Muharram",
 		"Safar",
@@ -91,10 +90,8 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
-	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-long": "HH:mm:ss z",
-	"dateFormatItem-yMMM": "y MMM",
-	"dateTimeFormats-appendItem-Era": "{0} {1}",
+	"dateTimeFormats-appendItem-Era": "{1} {0}",
 	"months-format-abbr": [
 		"Muh.",
 		"Saf.",
@@ -111,6 +108,7 @@ define({ root:
 	],
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"dateFormatItem-GyMMMd": "G y MMM d",
 	"dateFormatItem-H": "HH",
 	"months-standAlone-abbr": [
 		"Muh.",
@@ -138,16 +136,20 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
+	"dateFormatItem-Gy": "G y",
+	"dateFormatItem-yyyyMMMEd": "G y MMM d, E",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
+	"dateFormatItem-yyyyMMM": "G y MMM",
+	"dateFormatItem-yyyyMMMd": "G y MMM d",
 	"timeFormat-medium": "HH:mm:ss",
 	"dateFormatItem-Hm": "HH:mm",
 	"quarters-standAlone-abbr": [
@@ -160,13 +162,13 @@ define({ root:
 		"AH"
 	],
 	"days-standAlone-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
@@ -180,19 +182,19 @@ define({ root:
 	"dateTimeFormat-long": "{1} {0}",
 	"dayPeriods-format-narrow-am": "AM",
 	"dateFormatItem-MMMd": "MMM d",
-	"dateFormatItem-MEd": "E, M-d",
+	"dateFormatItem-MEd": "MM-dd, E",
 	"dateTimeFormat-full": "{1} {0}",
 	"days-format-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})",
-	"dateFormatItem-y": "y",
+	"dateFormatItem-y": "G y",
 	"months-standAlone-narrow": [
 		"1",
 		"2",
@@ -208,54 +210,57 @@ define({ root:
 		"12"
 	],
 	"dateFormatItem-hm": "h:mm a",
-	"dateTimeFormats-appendItem-Year": "{0} {1}",
+	"dateTimeFormats-appendItem-Year": "{1} {0}",
 	"dateTimeFormats-appendItem-Hour": "{0} ({2}: {1})",
 	"dayPeriods-format-abbr-pm": "PM",
 	"days-format-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
-	"dateFormatItem-yMMMd": "y MMM d",
 	"eraNames": [
 		"AH"
 	],
 	"days-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
 	],
+	"dateFormatItem-yyyyMd": "GGGGG y-MM-dd",
 	"days-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-am": "AM",
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
-	"dateFormat-short": "yyyy-MM-dd",
-	"dateFormatItem-yMMMEd": "E, y MMM d",
-	"dateFormatItem-Ed": "d E",
+	"dateFormat-short": "GGGGG y-MM-dd",
+	"dateFormatItem-Ed": "d, E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
-	"dateFormat-medium": "y MMM d",
+	"dateFormat-medium": "G y MMM d",
+	"dateFormatItem-yyyyM": "GGGGG y-MM",
 	"dayPeriods-format-narrow-pm": "PM",
+	"dateFormatItem-yyyyQQQQ": "G y QQQQ",
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-hms": "h:mm:ss a"
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-GyMMM": "G y MMM",
+	"dateFormatItem-yyyy": "G y"
 }
 //end v1.x content
 });

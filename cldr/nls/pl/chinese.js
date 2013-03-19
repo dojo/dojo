@@ -29,6 +29,9 @@ define(
 		"11",
 		"12"
 	],
+	"dateFormat-short": "dd.MM.y",
+	"dateFormat-medium": "d MMM U",
+	"dateFormat-long": "d MMMM U",
 	"months-standAlone-abbr": [
 		"1",
 		"2",
@@ -56,7 +59,8 @@ define(
 		"10",
 		"11",
 		"12"
-	]
+	],
+	"dateFormat-full": "EEEE, d MMMM U"
 }
 //end v1.x content
 );

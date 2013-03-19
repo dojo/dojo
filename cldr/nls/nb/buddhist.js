@@ -1,11 +1,9 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M y G",
+	"dateFormatItem-yyyyMMMEd": "E d. MMM y G",
 	"dateFormatItem-MMMEd": "E d. MMM",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yQQQ": "QQQ y G",
-	"dateFormatItem-MMdd": "dd.MM",
+	"dateTimeFormat-full": "{0} {1}",
 	"days-standAlone-wide": [
 		"søndag",
 		"mandag",
@@ -15,7 +13,6 @@ define(
 		"fredag",
 		"lørdag"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"J",
 		"F",
@@ -30,7 +27,9 @@ define(
 		"N",
 		"D"
 	],
+	"dateTimeFormat-short": "{0} {1}",
 	"dateFormatItem-Gy": "y G",
+	"dateTimeFormat-medium": "{0} {1}",
 	"quarters-standAlone-abbr": [
 		"K1",
 		"K2",
@@ -39,7 +38,7 @@ define(
 	],
 	"dateFormatItem-y": "y G",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
-	"dateFormatItem-yyQQQ": "QQQ y G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"jan",
 		"feb",
@@ -55,7 +54,6 @@ define(
 		"des"
 	],
 	"dateFormatItem-Ed": "E d.",
-	"dateFormatItem-yMMM": "MMM y G",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -65,24 +63,22 @@ define(
 		"F",
 		"L"
 	],
-	"dateFormatItem-yyyyMMMM": "MMMM y G",
+	"eraAbbr": [
+		"BE"
+	],
+	"dateFormatItem-GyMMMd": "d. MMM y G",
 	"dateFormat-long": "d. MMMM y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-yyMM": "MM.y G",
 	"dateFormat-medium": "d. MMM y G",
-	"dateFormatItem-Hms": "HH:mm:ss",
 	"dayPeriods-format-narrow-pm": "p",
-	"dateFormatItem-yyMMM": "MMM y G",
-	"dateFormatItem-yyQQQQ": "QQQQ y G",
-	"dateFormatItem-yMd": "d.M.y G",
 	"quarters-standAlone-wide": [
 		"1. kvartal",
 		"2. kvartal",
 		"3. kvartal",
 		"4. kvartal"
 	],
-	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dayPeriods-format-narrow-am": "a",
+	"dateTimeFormat-long": "{0} {1}",
 	"months-standAlone-wide": [
 		"januar",
 		"februar",
@@ -97,6 +93,9 @@ define(
 		"november",
 		"desember"
 	],
+	"dateFormatItem-yyyyMd": "d.M.y G",
+	"dateFormatItem-yyyyMMMd": "d. MMM y G",
+	"dateFormatItem-yyyyMEd": "E d.MM.y G",
 	"dateFormatItem-MMMd": "d. MMM",
 	"months-format-abbr": [
 		"jan.",
@@ -112,7 +111,6 @@ define(
 		"nov.",
 		"des."
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -128,7 +126,6 @@ define(
 		"fre.",
 		"lør."
 	],
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"S",
 		"M",
@@ -138,7 +135,9 @@ define(
 		"F",
 		"L"
 	],
-	"dateFormatItem-yMMMd": "d. MMM y G",
+	"dateFormatItem-GyMMMEd": "E d. MMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E d.M",
 	"months-format-narrow": [
 		"J",
@@ -163,7 +162,6 @@ define(
 		"fr.",
 		"lø."
 	],
-	"dateFormatItem-hm": "h:mm a",
 	"days-standAlone-abbr": [
 		"sø.",
 		"ma.",
@@ -174,11 +172,10 @@ define(
 		"lø."
 	],
 	"dayPeriods-format-abbr-pm": "p.m.",
-	"dateFormat-short": "d.M yyyy",
-	"dateFormatItem-yMMMEd": "E d. MMM y G",
+	"dateFormat-short": "d.M y G",
+	"dateFormatItem-yyyyM": "M y G",
 	"dateFormat-full": "EEEE d. MMMM y G",
 	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yMEd": "E d.M.y G",
 	"months-format-wide": [
 		"januar",
 		"februar",
@@ -203,6 +200,7 @@ define(
 		"fr.",
 		"lø."
 	],
+	"dateFormatItem-yyyyMMM": "MMM y G",
 	"dateFormatItem-d": "d.",
 	"quarters-format-wide": [
 		"1. kvartal",

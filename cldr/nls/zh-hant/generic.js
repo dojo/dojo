@@ -1,0 +1,43 @@
+define(
+//begin v1.x content
+{
+	"dateFormatItem-yyyyMMMEd": "Gy年M月d日E",
+	"dateFormatItem-MMMEd": "M月d日E",
+	"dateTimeFormat-full": "{1}{0}",
+	"dateFormatItem-hms": "ah:mm:ss",
+	"dateFormatItem-MMM": "LLL",
+	"dateTimeFormat-short": "{1} {0}",
+	"dateFormatItem-Gy": "Gy年",
+	"dateTimeFormat-medium": "{1} {0}",
+	"dateFormatItem-y": "Gy年",
+	"dateFormatItem-yyyy": "Gy年",
+	"dateFormatItem-Ed": "d日（E）",
+	"dateFormatItem-GyMMMd": "Gy年M月d日",
+	"dateFormat-long": "Gy年M月d日",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormat-medium": "Gy/M/d",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "Gy年QQQQ",
+	"dateTimeFormat-long": "{1}{0}",
+	"dateFormatItem-yyyyMd": "Gy/M/d",
+	"dateFormatItem-yyyyMMMd": "Gy年M月d日",
+	"dateFormatItem-yyyyMEd": "Gy/M/d（E）",
+	"dateFormatItem-MMMd": "M月d日",
+	"dateFormatItem-H": "H時",
+	"dateFormatItem-M": "M月",
+	"dateFormatItem-GyMMMEd": "Gy年M月d日E",
+	"dateFormatItem-GyMMM": "Gy年M月",
+	"dateFormatItem-MEd": "M/d（E）",
+	"dateFormatItem-yyyyQQQ": "Gy年QQQ",
+	"dateFormatItem-hm": "ah:mm",
+	"dateFormat-short": "Gy/M/d",
+	"dateFormatItem-yyyyM": "Gy/M",
+	"dateFormat-full": "Gy年M月d日EEEE",
+	"dateFormatItem-Md": "M/d",
+	"dateFormatItem-yyyyMMM": "Gy年M月",
+	"dateFormatItem-d": "d日",
+	"dateFormatItem-h": "ah時"
+}
+//end v1.x content
+);

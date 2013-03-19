@@ -1,11 +1,9 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM.y G",
+	"dateFormatItem-yyyyMMMEd": "d MMM y G E",
 	"dayPeriods-format-wide-pm": "ÖS",
-	"dateFormatItem-MMMEd": "dd MMM E",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yQQQ": "QQQ y G",
+	"dateFormatItem-MMMEd": "d MMMM E",
 	"days-standAlone-wide": [
 		"Pazar",
 		"Pazartesi",
@@ -15,7 +13,6 @@ define(
 		"Cuma",
 		"Cumartesi"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"O",
 		"Ş",
@@ -55,7 +52,6 @@ define(
 		"Ara"
 	],
 	"dateFormatItem-Ed": "d E",
-	"dateFormatItem-yMMM": "MMM y G",
 	"days-standAlone-narrow": [
 		"P",
 		"P",
@@ -65,21 +61,19 @@ define(
 		"C",
 		"C"
 	],
-	"dateFormat-long": "dd MMMM y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-yyMM": "MM.yy G",
-	"dateFormat-medium": "dd MMM y G",
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-yyMMM": "MMM yy G",
-	"dateFormatItem-yMd": "dd.MM.y G",
+	"eraAbbr": [
+		"BE"
+	],
+	"dateFormatItem-GyMMMd": "dd MMM y G",
+	"dateFormat-long": "d MMMM y G",
+	"dateFormat-medium": "d MMM y G",
 	"quarters-standAlone-wide": [
 		"1. çeyrek",
 		"2. çeyrek",
 		"3. çeyrek",
 		"4. çeyrek"
 	],
-	"dateFormatItem-yMMMM": "MMMM y G",
-	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "G y/QQQQ",
 	"quarters-standAlone-narrow": [
 		"1.",
 		"2.",
@@ -100,7 +94,10 @@ define(
 		"Kasım",
 		"Aralık"
 	],
-	"dateFormatItem-MMMd": "dd MMM",
+	"dateFormatItem-yyyyMd": "dd.MM.y G",
+	"dateFormatItem-yyyyMMMd": "dd MMM y G",
+	"dateFormatItem-yyyyMEd": "dd.MM.y G E",
+	"dateFormatItem-MMMd": "d MMMM",
 	"quarters-format-narrow": [
 		"1.",
 		"2.",
@@ -121,8 +118,6 @@ define(
 		"Kas",
 		"Ara"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y G",
-	"dateFormatItem-H": "HH",
 	"quarters-format-abbr": [
 		"Ç1",
 		"Ç2",
@@ -138,8 +133,6 @@ define(
 		"Cum",
 		"Cmt"
 	],
-	"dateFormatItem-mmss": "mm:ss",
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"P",
 		"P",
@@ -149,7 +142,9 @@ define(
 		"C",
 		"C"
 	],
-	"dateFormatItem-yMMMd": "dd MMM y G",
+	"dateFormatItem-GyMMMEd": "d MMM y G E",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-yyyyQQQ": "G y/QQQ",
 	"dateFormatItem-MEd": "dd.MM E",
 	"months-format-narrow": [
 		"O",
@@ -174,7 +169,6 @@ define(
 		"Cu",
 		"Ct"
 	],
-	"dateFormatItem-hm": "h:mm a",
 	"days-standAlone-abbr": [
 		"Paz",
 		"Pzt",
@@ -184,11 +178,10 @@ define(
 		"Cum",
 		"Cmt"
 	],
-	"dateFormat-short": "d.MM.yyyy G",
-	"dateFormatItem-yMMMEd": "dd MMM y G E",
-	"dateFormat-full": "dd MMMM y G EEEE",
+	"dateFormat-short": "d.MM.y G",
+	"dateFormatItem-yyyyM": "MM.y G",
+	"dateFormat-full": "d MMMM y G EEEE",
 	"dateFormatItem-Md": "dd.MM",
-	"dateFormatItem-yMEd": "dd.MM.y G E",
 	"months-format-wide": [
 		"Ocak",
 		"Şubat",
@@ -212,7 +205,7 @@ define(
 		"Cu",
 		"Ct"
 	],
-	"dateFormatItem-d": "d",
+	"dateFormatItem-yyyyMMM": "MMM y G",
 	"quarters-format-wide": [
 		"1. çeyrek",
 		"2. çeyrek",

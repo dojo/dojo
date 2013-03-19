@@ -5,7 +5,7 @@ define(
 	"timeFormat-full": "h:mm:ss a zzzz",
 	"timeFormat-medium": "h:mm:ss a",
 	"dateFormatItem-MEd": "E, d/M",
-	"dateFormat-medium": "dd/MM/yyyy",
+	"dateFormat-medium": "dd/MM/y",
 	"dateFormatItem-yMd": "d/M/y",
 	"dateFormat-full": "EEEE, d MMMM y",
 	"timeFormat-long": "h:mm:ss a z",

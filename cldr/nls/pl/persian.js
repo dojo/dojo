@@ -1,10 +1,9 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM.yyyy",
+	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
-	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-wide": [
 		"niedziela",
 		"poniedziałek",
@@ -29,6 +28,7 @@ define(
 		"g"
 	],
 	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Gy": "y G",
 	"dateTimeFormat-medium": "{1}, {0}",
 	"quarters-standAlone-abbr": [
 		"1 kw.",
@@ -36,6 +36,8 @@ define(
 		"3 kw.",
 		"4 kw."
 	],
+	"dateFormatItem-y": "y G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"Farwardin",
 		"Ordibeheszt",
@@ -51,7 +53,6 @@ define(
 		"Esfand"
 	],
 	"dateFormatItem-Ed": "E, d",
-	"dateFormatItem-yMMM": "LLL y",
 	"days-standAlone-narrow": [
 		"N",
 		"P",
@@ -61,15 +62,16 @@ define(
 		"P",
 		"S"
 	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
-	"dateFormatItem-yMd": "d.MM.yyyy",
+	"dateFormatItem-GyMMMd": "d MMM y G",
+	"dateFormat-long": "d MMMM y G",
+	"dateFormat-medium": "d MMM y G",
 	"quarters-standAlone-wide": [
 		"I kwartał",
 		"II kwartał",
 		"III kwartał",
 		"IV kwartał"
 	],
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"quarters-standAlone-narrow": [
 		"K1",
 		"K2",
@@ -90,6 +92,9 @@ define(
 		"Bahman",
 		"Esfand"
 	],
+	"dateFormatItem-yyyyMd": "d.MM.y G",
+	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMEd": "E, d.MM.y G",
 	"dateFormatItem-MMMd": "d MMM",
 	"months-format-abbr": [
 		"Farwardin",
@@ -105,7 +110,6 @@ define(
 		"Bahman",
 		"Esfand"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -130,7 +134,9 @@ define(
 		"P",
 		"S"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-GyMMMEd": "E, d MMM y G",
+	"dateFormatItem-GyMMM": "LLL y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E, d.MM",
 	"months-format-narrow": [
 		"1",
@@ -165,11 +171,10 @@ define(
 		"pt.",
 		"sob."
 	],
-	"dateFormat-short": "dd.MM.yyyy",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"dateFormat-full": "EEEE, d MMMM y",
+	"dateFormat-short": "dd.MM.y G",
+	"dateFormatItem-yyyyM": "MM.y G",
+	"dateFormat-full": "EEEE, d MMMM y G",
 	"dateFormatItem-Md": "d.MM",
-	"dateFormatItem-yMEd": "E, d.MM.yyyy",
 	"months-format-wide": [
 		"Farwardin",
 		"Ordibeheszt",
@@ -193,6 +198,7 @@ define(
 		"pt.",
 		"sob."
 	],
+	"dateFormatItem-yyyyMMM": "LLL y G",
 	"quarters-format-wide": [
 		"I kwartał",
 		"II kwartał",

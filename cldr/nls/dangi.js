@@ -3,13 +3,13 @@ define({ root:
 //begin v1.x content
 {
 	"days-standAlone-short": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"months-format-narrow": [
 		"1",
@@ -25,96 +25,77 @@ define({ root:
 		"11",
 		"12"
 	],
-	"months-standAlone-abbr@localeAlias109": {
-		"bundle": "chinese",
-		"target": "months-format-abbr"
-	},
 	"quarters-standAlone-narrow": [
 		"1",
 		"2",
 		"3",
 		"4"
 	],
-	"months-format-abbr@localeAlias107": {
-		"bundle": "chinese",
-		"target": "months-format-wide"
-	},
-	"dateFormatItem-yQQQ": "U QQQ",
-	"dateTime@localeAlias142": {
-		"bundle": "chinese",
-		"target": "dateTime"
-	},
-	"dateFormatItem-yMEd": "E, y-M-d",
-	"dayPeriods-format-abbr@localeAlias133": {
+	"dayPeriods-format-abbr@localeAlias130": {
 		"bundle": "gregorian",
 		"target": "dayPeriods-format-wide"
 	},
-	"dateFormatItem-MMMEd": "E MMM d",
-	"dayPeriods-format-abbr@localeAlias136": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
+	"quarters@localeAlias118": {
+		"bundle": "chinese",
+		"target": "quarters"
 	},
+	"quarters@localeAlias119": {
+		"bundle": "gregorian",
+		"target": "quarters"
+	},
+	"dateFormatItem-GyMMMEd": "U MMM d, E",
+	"dateFormatItem-MMMEd": "MMM d, E",
 	"days-format-short": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}",
 	"dateFormat-long": "U MMMM d",
-	"months-standAlone-abbr@localeAlias110": {
-		"bundle": "chinese",
-		"target": "months-format-wide"
-	},
 	"months-format-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
+		"Month1",
+		"Month2",
+		"Month3",
+		"Month4",
+		"Month5",
+		"Month6",
+		"Month7",
+		"Month8",
+		"Month9",
+		"Month10",
+		"Month11",
+		"Month12"
 	],
-	"dayPeriods-format-wide-pm": "PM",
-	"dateFormat-full": "EEEE, U MMMM dd",
-	"dateFormatItem-Md": "M-d",
-	"months-format-narrow@localeAlias108": {
+	"dateFormatItem-yyyyQQQ": "U QQQ",
+	"dateTimeFormat-medium": "{1} {0}",
+	"months-format-narrow@localeAlias102": {
 		"bundle": "chinese",
 		"target": "months-standAlone-narrow"
 	},
+	"dayPeriods-format-wide-pm": "PM",
+	"dateFormat-full": "U MMMM d, EEEE",
+	"dateFormatItem-yyyyMEd": "y-MM-dd, E",
+	"dateFormatItem-Md": "MM-dd",
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
-	"quarters@localeAlias124": {
-		"bundle": "chinese",
-		"target": "quarters"
-	},
-	"dateFormatItem-yMd": "y-M-d",
-	"quarters@localeAlias125": {
-		"bundle": "gregorian",
-		"target": "quarters"
-	},
-	"dateFormatItem-yM": "y-M",
+	"dateFormatItem-yMd": "y-MM-dd",
 	"months-standAlone-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
+		"Month1",
+		"Month2",
+		"Month3",
+		"Month4",
+		"Month5",
+		"Month6",
+		"Month7",
+		"Month8",
+		"Month9",
+		"Month10",
+		"Month11",
+		"Month12"
 	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
@@ -123,40 +104,38 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
-	"dateTimeFormat": "{1} {0}",
 	"timeFormat-long": "HH:mm:ss z",
-	"dateFormatItem-yMMM": "U MMM",
-	"dateFormatItem-yQQQQ": "U QQQQ",
-	"dateTimeFormats-appendItem-Era": "{0} {1}",
+	"dateTimeFormats-appendItem-Era": "{1} {0}",
 	"months-format-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
+		"Month1",
+		"Month2",
+		"Month3",
+		"Month4",
+		"Month5",
+		"Month6",
+		"Month7",
+		"Month8",
+		"Month9",
+		"Month10",
+		"Month11",
+		"Month12"
 	],
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"dateFormatItem-GyMMMd": "U MMM d",
 	"months-standAlone-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
+		"Month1",
+		"Month2",
+		"Month3",
+		"Month4",
+		"Month5",
+		"Month6",
+		"Month7",
+		"Month8",
+		"Month9",
+		"Month10",
+		"Month11",
+		"Month12"
 	],
 	"dateFormatItem-H": "HH",
 	"quarters-format-abbr": [
@@ -171,28 +150,44 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
-	"dateFormatItem-M": "L",
-	"days-standAlone-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
-	],
-	"days-format-short@localeAlias116": {
-		"bundle": "gregorian",
-		"target": "days-format-abbr"
-	},
-	"timeFormat-medium": "HH:mm:ss",
-	"days-format-short@localeAlias117": {
+	"dateFormatItem-Gy": "U",
+	"days-standAlone-wide@localeAlias117": {
 		"bundle": "gregorian",
 		"target": "days-format-wide"
 	},
-	"dateFormat@localeAlias139": {
+	"dateFormatItem-yyyyMMMEd": "U MMM d, E",
+	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
+	],
+	"dateFormatItem-yyyyMMM": "U MMM",
+	"dateFormatItem-yyyyMMMd": "U MMM d",
+	"days-format-short@localeAlias110": {
+		"bundle": "gregorian",
+		"target": "days-format-abbr"
+	},
+	"days-format-short@localeAlias111": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"dateFormat@localeAlias133": {
 		"bundle": "chinese",
 		"target": "dateFormat"
+	},
+	"timeFormat-medium": "HH:mm:ss",
+	"dayPeriods-format-narrow@localeAlias128": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
+	},
+	"dayPeriods-format-narrow@localeAlias129": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
 	},
 	"quarters-standAlone-abbr": [
 		"Q1",
@@ -202,62 +197,92 @@ define({ root:
 	],
 	"dateFormatItem-Hm": "HH:mm",
 	"days-standAlone-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
+	"timeFormat@localeAlias134": {
+		"bundle": "chinese",
+		"target": "timeFormat"
+	},
 	"quarters-format-narrow": [
 		"1",
 		"2",
 		"3",
 		"4"
 	],
-	"days-standAlone-wide@localeAlias123": {
+	"timeFormat@localeAlias135": {
 		"bundle": "gregorian",
-		"target": "days-format-wide"
+		"target": "timeFormat"
 	},
-	"dayPeriods-format-narrow-am": "AM",
-	"dateFormatItem-h": "h a",
-	"dateFormatItem-MMMd": "MMM d",
-	"days-standAlone-abbr@localeAlias118": {
+	"days-standAlone-abbr@localeAlias112": {
 		"bundle": "gregorian",
 		"target": "days-format-abbr"
 	},
-	"days-standAlone-abbr@localeAlias119": {
+	"dayPeriods-format-narrow-am": "AM",
+	"dateTimeFormat-long": "{1} {0}",
+	"dateFormatItem-h": "h a",
+	"days-standAlone-abbr@localeAlias113": {
 		"bundle": "gregorian",
 		"target": "days-format-wide"
 	},
-	"dateFormatItem-MEd": "E, M-d",
-	"dayPeriods-format-narrow@localeAlias134": {
+	"days-standAlone-short@localeAlias114": {
+		"bundle": "gregorian",
+		"target": "days-format-short"
+	},
+	"days-standAlone-short@localeAlias115": {
+		"bundle": "gregorian",
+		"target": "days-format-abbr"
+	},
+	"days-standAlone-short@localeAlias116": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"days-format-abbr@localeAlias108": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"dateFormatItem-MMMd": "MMM d",
+	"dayPeriods-format-narrow@localeAlias131": {
 		"bundle": "gregorian",
 		"target": "dayPeriods-format-abbr"
 	},
-	"dayPeriods-format-narrow@localeAlias135": {
+	"dateFormatItem-MEd": "MM-dd, E",
+	"dayPeriods-format-narrow@localeAlias132": {
 		"bundle": "gregorian",
 		"target": "dayPeriods-format-wide"
 	},
+	"dateTimeFormat-full": "{1} {0}",
 	"days-format-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
-	"dayPeriods-format-narrow@localeAlias137": {
+	"days-format-narrow@localeAlias109": {
 		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
+		"target": "days-standAlone-narrow"
 	},
-	"dayPeriods-format-narrow@localeAlias138": {
+	"dayPeriods@localeAlias125": {
+		"bundle": "chinese",
+		"target": "dayPeriods"
+	},
+	"dayPeriods@localeAlias126": {
 		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
+		"target": "dayPeriods"
+	},
+	"days@localeAlias106": {
+		"bundle": "chinese",
+		"target": "days"
 	},
 	"months-standAlone-narrow": [
 		"1",
@@ -275,136 +300,104 @@ define({ root:
 	],
 	"dateFormatItem-y": "U",
 	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})",
-	"timeFormat@localeAlias140": {
-		"bundle": "chinese",
-		"target": "timeFormat"
-	},
-	"timeFormat@localeAlias141": {
+	"days@localeAlias107": {
 		"bundle": "gregorian",
-		"target": "timeFormat"
+		"target": "days"
+	},
+	"quarters-standAlone-wide@localeAlias124": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
 	},
 	"dateFormatItem-hm": "h:mm a",
-	"dateTimeFormats-appendItem-Year": "{0} {1}",
+	"dateTimeFormats-appendItem-Year": "{1} {0}",
 	"dateTimeFormats-appendItem-Hour": "{0} ({2}: {1})",
-	"days-standAlone-short@localeAlias120": {
-		"bundle": "gregorian",
-		"target": "days-format-short"
-	},
 	"dayPeriods-format-abbr-pm": "PM",
-	"days-standAlone-short@localeAlias121": {
-		"bundle": "gregorian",
-		"target": "days-format-abbr"
-	},
-	"days-format-abbr@localeAlias114": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
-	"days-standAlone-short@localeAlias122": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
 	"days-format-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
-	"dateFormatItem-yMMMd": "U MMM d",
-	"days-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
-	],
-	"months@localeAlias106": {
+	"months@localeAlias100": {
 		"bundle": "chinese",
 		"target": "months"
 	},
-	"days-format-narrow@localeAlias115": {
-		"bundle": "gregorian",
-		"target": "days-standAlone-narrow"
-	},
-	"dayPeriods@localeAlias131": {
-		"bundle": "chinese",
-		"target": "dayPeriods"
-	},
+	"days-format-narrow": [
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
+	],
+	"dateFormatItem-yyyyMd": "y-MM-dd",
 	"days-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
-	"dayPeriods@localeAlias132": {
-		"bundle": "gregorian",
-		"target": "dayPeriods"
-	},
-	"days@localeAlias112": {
-		"bundle": "chinese",
-		"target": "days"
-	},
-	"days@localeAlias113": {
-		"bundle": "gregorian",
-		"target": "days"
-	},
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-am": "AM",
-	"quarters-standAlone-wide@localeAlias130": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
-	},
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
-	"dateTimeFormat@localeAlias143": {
-		"bundle": "gregorian",
-		"target": "dateTimeFormat"
-	},
-	"dateTimeFormat@localeAlias144": {
-		"bundle": "gregorian",
-		"target": "dateTimeFormat"
-	},
-	"dateTimeFormat@localeAlias145": {
-		"bundle": "gregorian",
-		"target": "dateTimeFormat"
-	},
-	"dateTimeFormat@localeAlias146": {
-		"bundle": "gregorian",
-		"target": "dateTimeFormat"
-	},
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
-	"dateFormat-short": "y-M-d",
-	"dateFormatItem-yMMMEd": "E, U MMM d",
-	"dateFormatItem-Ed": "d E",
-	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
-	"dateFormat-medium": "U MMM d",
-	"quarters-standAlone-abbr@localeAlias128": {
+	"dateFormat-short": "y-MM-dd",
+	"months-standAlone-wide@localeAlias105": {
+		"bundle": "chinese",
+		"target": "months-format-wide"
+	},
+	"quarters-standAlone-abbr@localeAlias122": {
 		"bundle": "gregorian",
 		"target": "quarters-format-abbr"
 	},
-	"dayPeriods-format-narrow-pm": "PM",
-	"quarters-standAlone-abbr@localeAlias129": {
+	"quarters-standAlone-abbr@localeAlias123": {
 		"bundle": "gregorian",
 		"target": "quarters-format-wide"
 	},
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"quarters-format-narrow@localeAlias127": {
+	"dateFormatItem-Ed": "d, E",
+	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
+	"dateTime@localeAlias136": {
+		"bundle": "chinese",
+		"target": "dateTime"
+	},
+	"dateFormat-medium": "U MMM d",
+	"quarters-format-narrow@localeAlias121": {
 		"bundle": "gregorian",
 		"target": "quarters-standAlone-narrow"
 	},
-	"quarters-format-abbr@localeAlias126": {
+	"quarters-format-abbr@localeAlias120": {
 		"bundle": "gregorian",
 		"target": "quarters-format-wide"
 	},
+	"dateFormatItem-yyyyM": "y-MM",
+	"dayPeriods-format-narrow-pm": "PM",
+	"dayPeriods-format-abbr@localeAlias127": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
+	},
+	"dateFormatItem-yyyyQQQQ": "U QQQQ",
+	"dateTimeFormat-short": "{1} {0}",
+	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"months-standAlone-wide@localeAlias111": {
+	"dateFormatItem-GyMMM": "U MMM",
+	"months-standAlone-abbr@localeAlias103": {
+		"bundle": "chinese",
+		"target": "months-format-abbr"
+	},
+	"dateFormatItem-yyyy": "U",
+	"months-standAlone-abbr@localeAlias104": {
+		"bundle": "chinese",
+		"target": "months-format-wide"
+	},
+	"months-format-abbr@localeAlias101": {
 		"bundle": "chinese",
 		"target": "months-format-wide"
 	}

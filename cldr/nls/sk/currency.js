@@ -12,7 +12,6 @@ define(
 	"JPY_displayName": "Japonský jen",
 	"CAD_symbol": "CAD",
 	"USD_displayName": "Americký dolár",
-	"EUR_symbol": "EUR",
 	"CNY_symbol": "CNY",
 	"GBP_displayName": "Britská libra",
 	"GBP_symbol": "GBP",

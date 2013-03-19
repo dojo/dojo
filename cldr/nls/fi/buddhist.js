@@ -1,12 +1,10 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "L.y G",
-	"dateFormatItem-yMMMMccccd": "cccc, d. MMMM y G",
+	"dateFormatItem-yyyyMMMEd": "E d. MMM y G",
 	"dayPeriods-format-wide-pm": "ip.",
-	"dateFormatItem-MMMEd": "E d. MMM",
+	"dateFormatItem-MMMEd": "ccc d. MMM",
 	"dateFormatItem-hms": "h.mm.ss a",
-	"dateFormatItem-yQQQ": "QQQ y G",
 	"days-standAlone-wide": [
 		"sunnuntai",
 		"maanantai",
@@ -16,7 +14,6 @@ define(
 		"perjantai",
 		"lauantai"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"T",
 		"H",
@@ -41,7 +38,7 @@ define(
 	],
 	"dateFormatItem-y": "y G",
 	"timeFormat-full": "H.mm.ss zzzz",
-	"dateFormatItem-yyQQQ": "QQQ y G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"tammi",
 		"helmi",
@@ -56,8 +53,7 @@ define(
 		"marras",
 		"joulu"
 	],
-	"dateFormatItem-Ed": "ccc d.",
-	"dateFormatItem-yMMM": "LLLL y G",
+	"dateFormatItem-Ed": "E d.",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -67,16 +63,16 @@ define(
 		"P",
 		"L"
 	],
-	"dateFormatItem-yyyyMMMM": "LLLL y G",
+	"eraAbbr": [
+		"BE"
+	],
+	"dateFormatItem-GyMMMd": "d. MMM y G",
 	"dateFormat-long": "d. MMMM y G",
 	"timeFormat-medium": "H.mm.ss",
 	"dateFormatItem-Hm": "H.mm",
-	"dateFormatItem-yyMM": "M.y G",
 	"dateFormat-medium": "d.M.y G",
 	"dateFormatItem-Hms": "H.mm.ss",
 	"dayPeriods-format-narrow-pm": "ip.",
-	"dateFormatItem-yyMMM": "LLLL y G",
-	"dateFormatItem-yMd": "d.M.y G",
 	"quarters-standAlone-wide": [
 		"1. neljännes",
 		"2. neljännes",
@@ -100,6 +96,8 @@ define(
 		"marraskuu",
 		"joulukuu"
 	],
+	"dateFormatItem-yyyyMd": "d.M.y G",
+	"dateFormatItem-yyyyMMMd": "d. MMM y G",
 	"dateFormatItem-yyyyMEd": "E d.M.y G",
 	"dateFormatItem-MMMd": "d. MMM",
 	"timeFormat-long": "H.mm.ss z",
@@ -117,9 +115,8 @@ define(
 		"marraskuuta",
 		"joulukuuta"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y G",
-	"dateFormatItem-H": "H",
 	"timeFormat-short": "H.mm",
+	"dateFormatItem-H": "H",
 	"quarters-format-abbr": [
 		"1. nelj.",
 		"2. nelj.",
@@ -135,7 +132,6 @@ define(
 		"pe",
 		"la"
 	],
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"S",
 		"M",
@@ -145,7 +141,9 @@ define(
 		"P",
 		"L"
 	],
-	"dateFormatItem-yMMMd": "d. MMM y G",
+	"dateFormatItem-GyMMMEd": "E d. MMM y G",
+	"dateFormatItem-GyMMM": "LLL y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E d.M.",
 	"months-format-narrow": [
 		"T",
@@ -181,12 +179,10 @@ define(
 		"la"
 	],
 	"dayPeriods-format-abbr-pm": "ip.",
-	"dateFormat-short": "d.M.y G",
-	"dateFormatItem-yyyyM": "M.y G",
-	"dateFormatItem-yMMMEd": "E d. MMM y G",
+	"dateFormat-short": "d.M.y GGGGG",
+	"dateFormatItem-yyyyM": "L.y G",
 	"dateFormat-full": "cccc d. MMMM y G",
 	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yMEd": "E d.M.y G",
 	"months-format-wide": [
 		"tammikuuta",
 		"helmikuuta",
@@ -211,7 +207,7 @@ define(
 		"pe",
 		"la"
 	],
-	"dateFormatItem-d": "d",
+	"dateFormatItem-yyyyMMM": "LLL y G",
 	"quarters-format-wide": [
 		"1. neljännes",
 		"2. neljännes",

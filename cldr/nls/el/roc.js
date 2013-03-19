@@ -1,30 +1,29 @@
 define(
 //begin v1.x content
 {
+	"dateFormatItem-yMd": "d/M/y G",
 	"dateFormat-medium": "d MMM, y G",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateFormatItem-MEd": "E, d/M",
-	"dateFormatItem-yyyyMMM": "LLL, y G",
+	"dateFormatItem-yMEd": "E, d/M/y G",
 	"dateFormatItem-y": "y G",
+	"dateFormatItem-yMMMd": "d MMM, y G",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
-	"dateFormatItem-yyyyMMMEd": "E, d MMM, y G",
-	"dateFormatItem-yyyyMEd": "E, d/M/y G",
-	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-yQQQ": "y G QQQ",
 	"dateFormat-long": "d MMMM, y G",
-	"dateFormatItem-yyyyQQQ": "y G QQQ",
+	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"dateFormat-short": "d/M/y G",
+	"dateFormatItem-yMMMEd": "E, d MMM, y G",
 	"dateFormatItem-Gy": "y G",
-	"dateFormatItem-yyyyMMMd": "d MMM, y G",
-	"dateFormatItem-yyyyM": "M/y G",
+	"dateFormatItem-yM": "M/y G",
 	"eraAbbr": [
 		"Πριν R.O.C.",
 		"R.O.C."
 	],
 	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-yMMM": "LLL, y G",
 	"dateFormat-full": "EEEE, d MMMM, y G",
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyyyMd": "d/M/y G",
 	"dateFormatItem-Ed": "E d"
 }
 //end v1.x content

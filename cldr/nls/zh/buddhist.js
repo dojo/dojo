@@ -1,15 +1,14 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "Gy年M月",
 	"dateFormatItem-yyyyMMMEd": "Gy年M月d日E",
 	"dayPeriods-format-wide-pm": "下午",
 	"eraNames": [
 		"佛历"
 	],
 	"dateFormatItem-MMMEd": "M月d日E",
+	"dateTimeFormat-full": "{1}{0}",
 	"dateFormatItem-hms": "ah:mm:ss",
-	"dateFormatItem-yQQQ": "Gy年第Q季度",
 	"days-standAlone-wide": [
 		"星期日",
 		"星期一",
@@ -19,7 +18,6 @@ define(
 		"星期五",
 		"星期六"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"dateFormatItem-Gy": "Gy年",
 	"dayPeriods-format-wide-am": "上午",
 	"quarters-standAlone-abbr": [
@@ -46,7 +44,6 @@ define(
 		"12月"
 	],
 	"dateFormatItem-Ed": "d日E",
-	"dateFormatItem-yMMM": "Gy年M月",
 	"days-standAlone-narrow": [
 		"日",
 		"一",
@@ -59,22 +56,20 @@ define(
 	"eraAbbr": [
 		"佛历"
 	],
+	"dateFormatItem-GyMMMd": "Gy年M月d日",
 	"dateFormat-long": "Gy年M月d日",
 	"timeFormat-medium": "ah:mm:ss",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormat-medium": "Gyyyy-M-d",
-	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormat-medium": "Gy年M月d日",
 	"dayPeriods-format-narrow-pm": "下午",
-	"dateFormatItem-yMd": "y/M/d",
 	"quarters-standAlone-wide": [
 		"第一季度",
 		"第二季度",
 		"第三季度",
 		"第四季度"
 	],
-	"dateFormatItem-ms": "mm:ss",
 	"dateFormatItem-yyyyQQQQ": "Gy年QQQQ",
 	"dayPeriods-format-narrow-am": "上午",
+	"dateTimeFormat-long": "{1}{0}",
 	"months-standAlone-wide": [
 		"一月",
 		"二月",
@@ -91,7 +86,7 @@ define(
 	],
 	"dateFormatItem-yyyyMd": "Gy-M-d",
 	"dateFormatItem-yyyyMMMd": "Gy年M月d日",
-	"dateFormatItem-yyyyMEd": "Gy-M-dE",
+	"dateFormatItem-yyyyMEd": "Gy-M-d（E）",
 	"dateFormatItem-MMMd": "M月d日",
 	"timeFormat-long": "zah:mm:ss",
 	"months-format-abbr": [
@@ -108,9 +103,8 @@ define(
 		"11月",
 		"12月"
 	],
-	"dateFormatItem-yQQQQ": "Gy年QQQQ",
-	"dateFormatItem-H": "H时",
 	"timeFormat-short": "ah:mm",
+	"dateFormatItem-H": "H时",
 	"quarters-format-abbr": [
 		"1季度",
 		"2季度",
@@ -126,7 +120,6 @@ define(
 		"周五",
 		"周六"
 	],
-	"dateFormatItem-M": "M月",
 	"days-format-narrow": [
 		"日",
 		"一",
@@ -136,9 +129,11 @@ define(
 		"五",
 		"六"
 	],
-	"dateFormatItem-yMMMd": "y年M月d日",
-	"dateFormatItem-MEd": "M-dE",
+	"dateFormatItem-M": "M月",
+	"dateFormatItem-GyMMMEd": "Gy年M月d日E",
+	"dateFormatItem-GyMMM": "Gy年M月",
 	"dateFormatItem-yyyyQQQ": "Gy年第Q季度",
+	"dateFormatItem-MEd": "M-dE",
 	"days-standAlone-short": [
 		"周日",
 		"周一",
@@ -160,10 +155,8 @@ define(
 	],
 	"dateFormat-short": "Gy-M-d",
 	"dateFormatItem-yyyyM": "Gy-M",
-	"dateFormatItem-yMMMEd": "Gy年M月d日E",
 	"dateFormat-full": "Gy年M月d日EEEE",
 	"dateFormatItem-Md": "M-d",
-	"dateFormatItem-yMEd": "Gy年M月d日，E",
 	"months-format-wide": [
 		"一月",
 		"二月",
@@ -195,9 +188,6 @@ define(
 		"第三季度",
 		"第四季度"
 	],
-	"eraNarrow": [
-		"佛历"
-	],
 	"days-format-wide": [
 		"星期日",
 		"星期一",
@@ -206,6 +196,9 @@ define(
 		"星期四",
 		"星期五",
 		"星期六"
+	],
+	"eraNarrow": [
+		"佛历"
 	],
 	"dateFormatItem-h": "ah时"
 }

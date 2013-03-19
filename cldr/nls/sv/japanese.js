@@ -1,19 +1,6 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateTimeFormat-full": "{1} {0}",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-MMdd": "dd/MM",
-	"dateFormatItem-MMM": "LLL",
-	"dateTimeFormat-short": "{1} {0}",
-	"dateFormatItem-Gy": "y G",
-	"dateTimeFormat-medium": "{1} {0}",
-	"dateFormatItem-y": "y G",
-	"dateFormatItem-yyyy": "y G",
-	"dateFormatItem-yyQQQ": "QQQ yy G",
-	"dateFormatItem-Ed": "E d",
 	"eraAbbr": [
 		"Taika (645–650)",
 		"Hakuchi (650–671)",
@@ -37,7 +24,7 @@ define(
 		"Daidō (806–810)",
 		"Kōnin (810–824)",
 		"Tenchō (824–834)",
-		"Shōwa (834–848)",
+		"Jōwa (834–848)",
 		"Kajō (848–851)",
 		"Ninju (851–854)",
 		"Saiko (854–857)",
@@ -251,34 +238,7 @@ define(
 		"Taishō",
 		"Shōwa",
 		"Heisei"
-	],
-	"dateFormatItem-yyyyMM": "G y-MM",
-	"dateFormat-long": "d MMMM y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-MMd": "d/M",
-	"dateFormatItem-yyMM": "G yy-MM",
-	"dateFormat-medium": "d MMM y G",
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-yyMMM": "MMM -yy G",
-	"dateFormatItem-ms": "mm:ss",
-	"dateFormatItem-yyyyQQQQ": "G y QQQQ",
-	"dateTimeFormat-long": "{1} {0}",
-	"dateFormatItem-yyyyMd": "G y-MM-dd",
-	"dateFormatItem-yyyyMMMd": "d MMM y G",
-	"dateFormatItem-MMMMEd": "E d:'e' MMMM",
-	"dateFormatItem-yyyyMEd": "E, G y-MM-dd",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MMMMd": "d:'e' MMMM",
-	"dateFormatItem-M": "L",
-	"dateFormatItem-MEd": "E d/M",
-	"dateFormatItem-yyyyQQQ": "G y QQQ",
-	"dateFormatItem-hm": "h:mm a",
-	"dateFormat-short": "G y-MM-dd",
-	"dateFormatItem-yyyyM": "G y-MM",
-	"dateFormat-full": "EEEE d MMMM y G",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yyyyMMM": "MMM y G",
-	"dateFormatItem-d": "d"
+	]
 }
 //end v1.x content
 );

@@ -1,17 +1,17 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "yyyy-MM",
+	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"days-standAlone-wide": [
-		"söndag",
-		"måndag",
-		"tisdag",
-		"onsdag",
-		"torsdag",
-		"fredag",
-		"lördag"
+		"Söndag",
+		"Måndag",
+		"Tisdag",
+		"Onsdag",
+		"Torsdag",
+		"Fredag",
+		"Lördag"
 	],
 	"months-standAlone-narrow": [
 		"J",
@@ -27,6 +27,7 @@ define(
 		"N",
 		"D"
 	],
+	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "fm",
 	"quarters-standAlone-abbr": [
 		"K1",
@@ -34,23 +35,24 @@ define(
 		"K3",
 		"K4"
 	],
+	"dateFormatItem-y": "y G",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
-		"farvardin",
-		"ordibehesht",
-		"khordād",
-		"tir",
-		"mordād",
-		"shahrivar",
-		"mehr",
-		"ābān",
-		"āzar",
-		"dey",
-		"bahman",
-		"esfand"
+		"Farvardin",
+		"Ordibehesht",
+		"Khordād",
+		"Tir",
+		"Mordād",
+		"Shahrivar",
+		"Mehr",
+		"Ābān",
+		"Āzar",
+		"Dey",
+		"Bahman",
+		"Esfand"
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -63,10 +65,10 @@ define(
 	"eraAbbr": [
 		"AP"
 	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-GyMMMd": "d MMM y G",
+	"dateFormat-long": "d MMMM y G",
+	"dateFormat-medium": "d MMM y G",
 	"dayPeriods-format-narrow-pm": "e",
-	"dateFormatItem-yMd": "yyyy-MM-dd",
 	"quarters-standAlone-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",
@@ -75,19 +77,22 @@ define(
 	],
 	"dayPeriods-format-narrow-am": "f",
 	"months-standAlone-wide": [
-		"farvardin",
-		"ordibehesht",
-		"khordād",
-		"tir",
-		"mordād",
-		"shahrivar",
-		"mehr",
-		"ābān",
-		"āzar",
-		"dey",
-		"bahman",
-		"esfand"
+		"Farvardin",
+		"Ordibehesht",
+		"Khordād",
+		"Tir",
+		"Mordād",
+		"Shahrivar",
+		"Mehr",
+		"Ābān",
+		"Āzar",
+		"Dey",
+		"Bahman",
+		"Esfand"
 	],
+	"dateFormatItem-yyyyMd": "G y-MM-dd",
+	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMEd": "E, y-MM-dd G",
 	"dateFormatItem-MMMd": "d MMM",
 	"months-format-abbr": [
 		"farvardin",
@@ -127,7 +132,8 @@ define(
 		"F",
 		"L"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-GyMMMEd": "E d MMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
 	"dateFormatItem-MEd": "E d/M",
 	"months-format-narrow": [
 		"J",
@@ -144,28 +150,28 @@ define(
 		"D"
 	],
 	"days-standAlone-short": [
-		"sö",
-		"må",
-		"ti",
-		"on",
-		"to",
-		"fr",
-		"lö"
+		"Sö",
+		"Må",
+		"Ti",
+		"On",
+		"To",
+		"Fr",
+		"Lö"
 	],
 	"days-standAlone-abbr": [
-		"sön",
-		"mån",
-		"tis",
-		"ons",
-		"tor",
-		"fre",
-		"lör"
+		"Sön",
+		"Mån",
+		"Tis",
+		"Ons",
+		"Tor",
+		"Fre",
+		"Lör"
 	],
 	"dayPeriods-format-abbr-pm": "EM",
-	"dateFormatItem-yMMMEd": "E d MMM y",
-	"dateFormat-full": "EEEE'en' 'den' d:'e' MMMM y",
+	"dateFormat-short": "G y-MM-dd",
+	"dateFormatItem-yyyyM": "G y-MM",
+	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E, yyyy-MM-dd",
 	"months-format-wide": [
 		"farvardin",
 		"ordibehesht",
@@ -190,6 +196,7 @@ define(
 		"fr",
 		"lö"
 	],
+	"dateFormatItem-yyyyMMM": "MMM y G",
 	"quarters-format-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",

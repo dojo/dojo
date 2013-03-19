@@ -1,22 +1,26 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-hms": "h.mm.ss a",
-	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yMEd": "E d.M.y",
-	"dateFormatItem-MEd": "E d.M.",
 	"dateFormat-medium": "d.M.y",
-	"dateFormatItem-MMMd": "d.M.",
-	"dateFormatItem-yMd": "d.M.y",
-	"dateFormat-full": "cccc d.M.y",
+	"dateFormatItem-MMMEd": "E d.M.",
+	"dateFormatItem-MEd": "E d.M.",
 	"dateFormatItem-Hm": "H.mm",
-	"dateFormat-short": "d.M.y",
 	"dateFormatItem-H": "H",
+	"dateFormatItem-y": "y",
 	"dateFormatItem-hm": "h.mm a",
-	"dateFormatItem-ms": "mm.ss",
-	"dateFormat-long": "d.M.y",
+	"dateFormatItem-Md": "d.M.",
+	"dateFormatItem-yyyyMMMEd": "E d.M.y",
+	"dateFormatItem-yyyyMEd": "E d.M.y",
+	"dateFormatItem-yyyy": "y",
 	"dateFormatItem-Hms": "H.mm.ss",
-	"dateFormatItem-MMMEd": "E d.M."
+	"dateFormat-long": "d.M.y",
+	"dateFormatItem-ms": "mm.ss",
+	"dateFormat-short": "d.M.y",
+	"dateFormatItem-yyyyMMMd": "d.M.y",
+	"dateFormatItem-hms": "h.mm.ss a",
+	"dateFormat-full": "cccc d.M.y",
+	"dateFormatItem-MMMd": "d.M.",
+	"dateFormatItem-yyyyMd": "d.M.y"
 }
 //end v1.x content
 );

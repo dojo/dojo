@@ -1,11 +1,10 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "y.M.",
+	"dateFormatItem-yyyyMMMEd": "G y. MMM d., E",
 	"dayPeriods-format-wide-pm": "du.",
 	"dateFormatItem-MMMEd": "MMM d., E",
 	"dateFormatItem-hms": "a h:mm:ss",
-	"dateFormatItem-yQQQ": "y. QQQ",
 	"days-standAlone-wide": [
 		"vasárnap",
 		"hétfő",
@@ -52,7 +51,6 @@ define(
 		"Esfand"
 	],
 	"dateFormatItem-Ed": "d., E",
-	"dateFormatItem-yMMM": "y. MMM",
 	"days-standAlone-narrow": [
 		"V",
 		"H",
@@ -62,19 +60,20 @@ define(
 		"P",
 		"Sz"
 	],
-	"dateFormat-long": "y. MMMM d.",
+	"dateFormatItem-GyMMMd": "G y. MMM d.",
+	"dateFormat-long": "G y. MMMM d.",
 	"timeFormat-medium": "H:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
-	"dateFormat-medium": "yyyy.MM.dd.",
+	"dateFormat-medium": "G y.MM.dd.",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dayPeriods-format-narrow-pm": "du.",
-	"dateFormatItem-yMd": "yyyy.MM.dd.",
 	"quarters-standAlone-wide": [
 		"1. negyedév",
 		"2. negyedév",
 		"3. negyedév",
 		"4. negyedév"
 	],
+	"dateFormatItem-yyyyQQQQ": "G y. QQQQ",
 	"dayPeriods-format-narrow-am": "de.",
 	"quarters-standAlone-narrow": [
 		"1.",
@@ -96,6 +95,9 @@ define(
 		"Bahman",
 		"Esfand"
 	],
+	"dateFormatItem-yyyyMd": "G y.MM.dd.",
+	"dateFormatItem-yyyyMMMd": "G y. MMM d.",
+	"dateFormatItem-yyyyMEd": "G y.MM.dd., E",
 	"dateFormatItem-MMMd": "MMM d.",
 	"timeFormat-long": "H:mm:ss z",
 	"months-format-abbr": [
@@ -112,7 +114,6 @@ define(
 		"Bahman",
 		"Esfand"
 	],
-	"dateFormatItem-yQQQQ": "y. QQQQ",
 	"timeFormat-short": "H:mm",
 	"dateFormatItem-H": "H",
 	"quarters-format-abbr": [
@@ -139,7 +140,9 @@ define(
 		"P",
 		"Sz"
 	],
-	"dateFormatItem-yMMMd": "y. MMM d.",
+	"dateFormatItem-GyMMMEd": "G y. MMM d., E",
+	"dateFormatItem-GyMMM": "G y. MMM",
+	"dateFormatItem-yyyyQQQ": "G y. QQQ",
 	"dateFormatItem-MEd": "M. d., E",
 	"months-format-narrow": [
 		"1",
@@ -174,11 +177,10 @@ define(
 		"P",
 		"Szo"
 	],
-	"dateFormat-short": "yyyy.MM.dd.",
-	"dateFormatItem-yMMMEd": "y. MMM d., E",
-	"dateFormat-full": "y. MMMM d., EEEE",
+	"dateFormat-short": "GGGGG y.MM.dd.",
+	"dateFormatItem-yyyyM": "G y.M.",
+	"dateFormat-full": "G y. MMMM d., EEEE",
 	"dateFormatItem-Md": "M. d.",
-	"dateFormatItem-yMEd": "yyyy.MM.dd., E",
 	"months-format-wide": [
 		"január",
 		"február",
@@ -193,6 +195,7 @@ define(
 		"november",
 		"december"
 	],
+	"dateFormatItem-yyyyMMM": "G y. MMM",
 	"quarters-format-wide": [
 		"I. negyedév",
 		"II. negyedév",

@@ -1,42 +1,34 @@
 define(
 //begin v1.x content
 {
-	"field-minute": "分鐘",
-	"eraNames": [
-		"西元前",
-		"西元"
-	],
-	"field-weekday": "週天",
-	"dateFormatItem-yQQQ": "y年QQQ",
-	"field-era": "年代",
-	"field-hour": "小時",
-	"quarters-standAlone-abbr": [
-		"第1季",
-		"第2季",
-		"第3季",
-		"第4季"
-	],
-	"timeFormat-full": "zzzzah時mm分ss秒",
-	"dateFormatItem-yyyy": "y年",
-	"dateFormatItem-Ed": "d日（E）",
-	"eraAbbr": [
-		"西元前",
-		"西元"
-	],
-	"field-day-relative+2": "後天",
-	"dateFormatItem-yyyyMMMM": "y年M月",
-	"field-zone": "時區",
-	"dateFormatItem-Hm": "H:mm",
-	"field-week-relative+-1": "上週",
-	"dateFormatItem-yyMM": "yy-MM",
-	"dateFormat-medium": "yyyy/M/d",
-	"dateFormatItem-Hms": "H:mm:ss",
 	"quarters-standAlone-wide": [
 		"第1季",
 		"第2季",
 		"第3季",
 		"第4季"
 	],
+	"quarters-format-abbr": [
+		"第1季",
+		"第2季",
+		"第3季",
+		"第4季"
+	],
+	"dateFormat-medium": "y/M/d",
+	"quarters-standAlone-abbr": [
+		"第1季",
+		"第2季",
+		"第3季",
+		"第4季"
+	],
+	"dateFormatItem-MEd": "M/d（E）",
+	"dateFormatItem-yMEd": "y/M/d（E）",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormatItem-H": "H時",
+	"eraNarrow": [
+		"西元前",
+		"西元"
+	],
+	"timeFormat-full": "zzzzah時mm分ss秒",
 	"months-standAlone-wide": [
 		"1月",
 		"2月",
@@ -51,23 +43,14 @@ define(
 		"11月",
 		"12月"
 	],
-	"field-week": "週",
-	"field-week-relative+0": "本週",
-	"field-week-relative+1": "下週",
-	"timeFormat-long": "zah時mm分ss秒",
-	"field-month-relative+1": "下個月",
-	"dateFormatItem-H": "H時",
-	"quarters-format-abbr": [
-		"第1季",
-		"第2季",
-		"第3季",
-		"第4季"
+	"eraNames": [
+		"西元前",
+		"西元"
 	],
-	"field-second": "秒",
-	"dateFormatItem-MEd": "M/d（E）",
+	"dateFormatItem-yQQQ": "y年QQQ",
+	"dateFormatItem-yMM": "y-MM",
+	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormat-short": "y/M/d",
-	"dateFormatItem-yyyyM": "y年M月",
-	"dateFormatItem-yMEd": "y/M/d（E）",
 	"months-format-wide": [
 		"1月",
 		"2月",
@@ -82,18 +65,19 @@ define(
 		"11月",
 		"12月"
 	],
+	"timeFormat-long": "zah時mm分ss秒",
+	"eraAbbr": [
+		"西元前",
+		"西元"
+	],
+	"dateFormatItem-h": "ah時",
 	"quarters-format-wide": [
 		"第1季",
 		"第2季",
 		"第3季",
 		"第4季"
 	],
-	"field-month-relative+-1": "上個月",
-	"eraNarrow": [
-		"西元前",
-		"西元"
-	],
-	"dateFormatItem-h": "ah時"
+	"dateFormatItem-Ed": "d日（E）"
 }
 //end v1.x content
 );

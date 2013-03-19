@@ -1,10 +1,9 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM/y",
+	"dateFormatItem-yyyyMMMEd": "d MMM y G E",
 	"dayPeriods-format-wide-pm": "ÖS",
 	"dateFormatItem-MMMEd": "d MMMM E",
-	"dateFormatItem-yQQQ": "y/QQQ",
 	"days-standAlone-wide": [
 		"Pazar",
 		"Pazartesi",
@@ -28,6 +27,7 @@ define(
 		"K",
 		"A"
 	],
+	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "ÖÖ",
 	"quarters-standAlone-abbr": [
 		"Ç1",
@@ -35,6 +35,8 @@ define(
 		"Ç3",
 		"Ç4"
 	],
+	"dateFormatItem-y": "y G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"Ferverdin",
 		"Ordibeheşt",
@@ -49,7 +51,7 @@ define(
 		"Behmen",
 		"Esfend"
 	],
-	"dateFormatItem-yMMM": "MMM y",
+	"dateFormatItem-Ed": "d E",
 	"days-standAlone-narrow": [
 		"P",
 		"P",
@@ -59,15 +61,16 @@ define(
 		"C",
 		"C"
 	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
-	"dateFormatItem-yMd": "dd.MM.yyyy",
+	"dateFormatItem-GyMMMd": "dd MMM y G",
+	"dateFormat-long": "d MMMM y G",
+	"dateFormat-medium": "d MMM y G",
 	"quarters-standAlone-wide": [
 		"1. çeyrek",
 		"2. çeyrek",
 		"3. çeyrek",
 		"4. çeyrek"
 	],
+	"dateFormatItem-yyyyQQQQ": "G y/QQQQ",
 	"quarters-standAlone-narrow": [
 		"1.",
 		"2.",
@@ -88,6 +91,9 @@ define(
 		"Behmen",
 		"Esfend"
 	],
+	"dateFormatItem-yyyyMd": "dd.MM.y G",
+	"dateFormatItem-yyyyMMMd": "dd MMM y G",
+	"dateFormatItem-yyyyMEd": "dd.MM.y G E",
 	"dateFormatItem-MMMd": "d MMMM",
 	"quarters-format-narrow": [
 		"1.",
@@ -109,7 +115,6 @@ define(
 		"Behmen",
 		"Esfend"
 	],
-	"dateFormatItem-yQQQQ": "y/QQQQ",
 	"quarters-format-abbr": [
 		"Ç1",
 		"Ç2",
@@ -134,8 +139,10 @@ define(
 		"C",
 		"C"
 	],
-	"dateFormatItem-yMMMd": "dd MMM y",
-	"dateFormatItem-MEd": "dd/MM E",
+	"dateFormatItem-GyMMMEd": "d MMM y G E",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-yyyyQQQ": "G y/QQQ",
+	"dateFormatItem-MEd": "dd.MM E",
 	"months-format-narrow": [
 		"O",
 		"Ş",
@@ -168,11 +175,10 @@ define(
 		"Cum",
 		"Cmt"
 	],
-	"dateFormat-short": "d.MM.yyyy",
-	"dateFormatItem-yMMMEd": "d MMM y E",
-	"dateFormat-full": "d MMMM y EEEE",
-	"dateFormatItem-Md": "dd/MM",
-	"dateFormatItem-yMEd": "dd.MM.yyyy E",
+	"dateFormat-short": "d.MM.y G",
+	"dateFormatItem-yyyyM": "MM.y G",
+	"dateFormat-full": "d MMMM y G EEEE",
+	"dateFormatItem-Md": "dd.MM",
 	"months-format-wide": [
 		"Ferverdin",
 		"Ordibeheşt",
@@ -196,6 +202,7 @@ define(
 		"Cu",
 		"Ct"
 	],
+	"dateFormatItem-yyyyMMM": "MMM y G",
 	"quarters-format-wide": [
 		"1. çeyrek",
 		"2. çeyrek",

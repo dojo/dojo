@@ -1,7 +1,7 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "y/M",
+	"dateFormatItem-yyyyMMMEd": "Gy年M月d日E",
 	"months-standAlone-abbr-leap": "亞達月 II",
 	"dayPeriods-format-wide-pm": "下午",
 	"eraNames": [
@@ -10,7 +10,6 @@ define(
 	"dateFormatItem-MMMEd": "M月d日E",
 	"dateTimeFormat-full": "{1}{0}",
 	"dateFormatItem-hms": "ah:mm:ss",
-	"dateFormatItem-yQQQ": "y年QQQ",
 	"days-standAlone-wide": [
 		"星期日",
 		"星期一",
@@ -20,6 +19,7 @@ define(
 		"星期五",
 		"星期六"
 	],
+	"dateFormatItem-Gy": "Gy年",
 	"dayPeriods-format-wide-am": "上午",
 	"months-format-abbr-leap": "亞達月 II",
 	"quarters-standAlone-abbr": [
@@ -28,8 +28,9 @@ define(
 		"3季度",
 		"4季度"
 	],
-	"dateFormatItem-y": "y年",
+	"dateFormatItem-y": "Gy年",
 	"timeFormat-full": "zzzzah時mm分ss秒",
+	"dateFormatItem-yyyy": "Gy年",
 	"months-standAlone-abbr": [
 		"提斯利月",
 		"瑪西班月",
@@ -46,7 +47,6 @@ define(
 		"以祿月"
 	],
 	"dateFormatItem-Ed": "d日（E）",
-	"dateFormatItem-yMMM": "y年M月",
 	"days-standAlone-narrow": [
 		"日",
 		"一",
@@ -59,19 +59,20 @@ define(
 	"eraAbbr": [
 		"創世紀元"
 	],
-	"dateFormat-long": "y年M月d日",
+	"dateFormatItem-GyMMMd": "Gy年M月d日",
+	"dateFormat-long": "Gy年M月d日",
 	"timeFormat-medium": "ah:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
-	"dateFormat-medium": "yyyy/M/d",
+	"dateFormat-medium": "Gy/M/d",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dayPeriods-format-narrow-pm": "下午",
-	"dateFormatItem-yMd": "y/M/d",
 	"quarters-standAlone-wide": [
 		"第一季度",
 		"第二季度",
 		"第三季度",
 		"第四季度"
 	],
+	"dateFormatItem-yyyyQQQQ": "Gy年QQQQ",
 	"dayPeriods-format-narrow-am": "上午",
 	"dateTimeFormat-long": "{1}{0}",
 	"months-standAlone-wide": [
@@ -89,6 +90,9 @@ define(
 		"埃波月",
 		"以祿月"
 	],
+	"dateFormatItem-yyyyMd": "Gy/M/d",
+	"dateFormatItem-yyyyMMMd": "Gy年M月d日",
+	"dateFormatItem-yyyyMEd": "Gy/M/d（E）",
 	"dateFormatItem-MMMd": "M月d日",
 	"timeFormat-long": "zah時mm分ss秒",
 	"months-format-abbr": [
@@ -106,9 +110,8 @@ define(
 		"埃波月",
 		"以祿月"
 	],
-	"dateFormatItem-yQQQQ": "y年QQQQ",
-	"dateFormatItem-H": "H時",
 	"timeFormat-short": "ah:mm",
+	"dateFormatItem-H": "H時",
 	"quarters-format-abbr": [
 		"1季",
 		"2季",
@@ -124,7 +127,6 @@ define(
 		"週五",
 		"週六"
 	],
-	"dateFormatItem-M": "M月",
 	"days-format-narrow": [
 		"日",
 		"一",
@@ -134,7 +136,10 @@ define(
 		"五",
 		"六"
 	],
-	"dateFormatItem-yMMMd": "y年M月d日",
+	"dateFormatItem-M": "M月",
+	"dateFormatItem-GyMMMEd": "Gy年M月d日E",
+	"dateFormatItem-GyMMM": "Gy年M月",
+	"dateFormatItem-yyyyQQQ": "Gy年QQQ",
 	"dateFormatItem-MEd": "M/d（E）",
 	"days-standAlone-short": [
 		"日",
@@ -156,11 +161,10 @@ define(
 		"周六"
 	],
 	"months-standAlone-wide-leap": "亞達月 II",
-	"dateFormat-short": "y/M/d",
-	"dateFormatItem-yMMMEd": "y年M月d日E",
-	"dateFormat-full": "y年M月d日EEEE",
+	"dateFormat-short": "Gy/M/d",
+	"dateFormatItem-yyyyM": "Gy/M",
+	"dateFormat-full": "Gy年M月d日EEEE",
 	"dateFormatItem-Md": "M/d",
-	"dateFormatItem-yMEd": "y/M/d（E）",
 	"months-format-wide": [
 		"提斯利月",
 		"瑪西班月",
@@ -185,17 +189,15 @@ define(
 		"五",
 		"六"
 	],
+	"dateFormatItem-yyyyMMM": "Gy年M月",
 	"dateFormatItem-d": "d日",
-	"months-format-wide-leap": "亞達月 II",
 	"quarters-format-wide": [
 		"第1季",
 		"第2季",
 		"第3季",
 		"第4季"
 	],
-	"eraNarrow": [
-		"創世紀元"
-	],
+	"months-format-wide-leap": "亞達月 II",
 	"days-format-wide": [
 		"星期日",
 		"星期一",
@@ -204,6 +206,9 @@ define(
 		"星期四",
 		"星期五",
 		"星期六"
+	],
+	"eraNarrow": [
+		"創世紀元"
 	],
 	"dateFormatItem-h": "ah時"
 }

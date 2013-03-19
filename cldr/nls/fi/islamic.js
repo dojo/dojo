@@ -1,12 +1,10 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "L.yyyy",
 	"dateFormatItem-yyyyMMMEd": "E d. MMM y G",
 	"dayPeriods-format-wide-pm": "ip.",
-	"dateFormatItem-MMMEd": "E d. MMM",
+	"dateFormatItem-MMMEd": "ccc d. MMM",
 	"dateFormatItem-hms": "h.mm.ss a",
-	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-wide": [
 		"sunnuntai",
 		"maanantai",
@@ -16,7 +14,6 @@ define(
 		"perjantai",
 		"lauantai"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "ap.",
 	"quarters-standAlone-abbr": [
@@ -42,8 +39,7 @@ define(
 		"dhu-l-qa’da",
 		"dhu-l-hiddža"
 	],
-	"dateFormatItem-Ed": "ccc d.",
-	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-Ed": "E d.",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -53,16 +49,13 @@ define(
 		"P",
 		"L"
 	],
-	"dateFormatItem-yyyyMMMMccccd": "cccc, d. MMMM y G",
-	"dateFormatItem-yyyyMM": "M.y G",
-	"dateFormatItem-yyyyMMMM": "LLLL y G",
+	"dateFormatItem-GyMMMd": "d. MMM y G",
 	"dateFormat-long": "d. MMMM y G",
 	"timeFormat-medium": "H.mm.ss",
 	"dateFormatItem-Hm": "H.mm",
 	"dateFormat-medium": "d.M.y G",
 	"dateFormatItem-Hms": "H.mm.ss",
 	"dayPeriods-format-narrow-pm": "ip.",
-	"dateFormatItem-yMd": "d.M.yyyy",
 	"quarters-standAlone-wide": [
 		"1. neljännes",
 		"2. neljännes",
@@ -90,6 +83,7 @@ define(
 	"dateFormatItem-yyyyMMMd": "d. MMM y G",
 	"dateFormatItem-yyyyMEd": "E d.M.y G",
 	"dateFormatItem-MMMd": "d. MMM",
+	"timeFormat-long": "H.mm.ss z",
 	"months-format-abbr": [
 		"muharram",
 		"safar",
@@ -104,10 +98,8 @@ define(
 		"dhu-l-qa’da",
 		"dhu-l-hiddža"
 	],
-	"timeFormat-long": "H.mm.ss z",
-	"dateFormatItem-yQQQQ": "QQQQ y",
-	"dateFormatItem-H": "H",
 	"timeFormat-short": "H.mm",
+	"dateFormatItem-H": "H",
 	"quarters-format-abbr": [
 		"1. nelj.",
 		"2. nelj.",
@@ -123,7 +115,6 @@ define(
 		"pe",
 		"la"
 	],
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"S",
 		"M",
@@ -133,7 +124,8 @@ define(
 		"P",
 		"L"
 	],
-	"dateFormatItem-yMMMd": "d. MMM y",
+	"dateFormatItem-GyMMMEd": "E d. MMM y G",
+	"dateFormatItem-GyMMM": "LLL y G",
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E d.M.",
 	"days-standAlone-short": [
@@ -156,12 +148,10 @@ define(
 		"la"
 	],
 	"dayPeriods-format-abbr-pm": "ip.",
-	"dateFormat-short": "d.M.y G",
-	"dateFormatItem-yyyyM": "M.y G",
-	"dateFormatItem-yMMMEd": "E d. MMM y",
+	"dateFormat-short": "d.M.y GGGGG",
+	"dateFormatItem-yyyyM": "L.y G",
 	"dateFormat-full": "cccc d. MMMM y G",
 	"dateFormatItem-Md": "d.M.",
-	"dateFormatItem-yMEd": "E d.M.yyyy",
 	"months-format-wide": [
 		"muharram",
 		"safar",
@@ -186,8 +176,7 @@ define(
 		"pe",
 		"la"
 	],
-	"dateFormatItem-yyyyMMM": "LLLL y G",
-	"dateFormatItem-d": "d",
+	"dateFormatItem-yyyyMMM": "LLL y G",
 	"quarters-format-wide": [
 		"1. neljännes",
 		"2. neljännes",

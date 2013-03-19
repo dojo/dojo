@@ -1,148 +1,17 @@
 define(
 //begin v1.x content
 {
-	"days-standAlone-short": [
-		"sø",
-		"ma",
-		"ti",
-		"on",
-		"to",
-		"fr",
-		"lø"
-	],
-	"months-format-narrow": [
-		"J",
-		"F",
-		"M",
-		"A",
-		"M",
-		"J",
-		"J",
-		"A",
-		"S",
-		"O",
-		"N",
-		"D"
-	],
-	"quarters-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-weekday": "ugedag",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-yMEd": "E d/M/y",
-	"dateFormatItem-MMMEd": "E d. MMM",
-	"eraNarrow": [
+	"dateFormatItem-yM": "M/y",
+	"dayPeriods-format-wide-pm": "PM",
+	"eraNames": [
 		"f.Kr.",
 		"e.Kr."
 	],
-	"days-format-short": [
-		"sø",
-		"ma",
-		"ti",
-		"on",
-		"to",
-		"fr",
-		"lø"
-	],
-	"dateFormat-long": "d. MMM y",
-	"months-format-wide": [
-		"januar",
-		"februar",
-		"marts",
-		"april",
-		"maj",
-		"juni",
-		"juli",
-		"august",
-		"september",
-		"oktober",
-		"november",
-		"december"
-	],
-	"dateTimeFormat-medium": "{1} {0}",
-	"dayPeriods-format-wide-pm": "PM",
-	"dateFormat-full": "EEEE 'den' d. MMMM y",
-	"dateFormatItem-Md": "d/M",
-	"dayPeriods-format-wide-noon": "middag",
-	"dateFormatItem-yMd": "d/M/y",
-	"field-era": "æra",
-	"dateFormatItem-yM": "M/y",
-	"months-standAlone-wide": [
-		"januar",
-		"februar",
-		"marts",
-		"april",
-		"maj",
-		"juni",
-		"juli",
-		"august",
-		"september",
-		"oktober",
-		"november",
-		"december"
-	],
-	"timeFormat-short": "HH.mm",
-	"quarters-format-wide": [
-		"1. kvartal",
-		"2. kvartal",
-		"3. kvartal",
-		"4. kvartal"
-	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
-	"timeFormat-long": "HH.mm.ss z",
-	"field-year": "år",
-	"dateFormatItem-yMMM": "MMM y",
-	"field-hour": "time",
+	"dateFormatItem-MMMEd": "E d. MMM",
+	"dateTimeFormat-full": "{1} {0}",
+	"dateFormatItem-hms": "h.mm.ss a",
+	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-MMdd": "dd/MM",
-	"months-format-abbr": [
-		"jan.",
-		"feb.",
-		"mar.",
-		"apr.",
-		"maj",
-		"jun.",
-		"jul.",
-		"aug.",
-		"sep.",
-		"okt.",
-		"nov.",
-		"dec."
-	],
-	"timeFormat-full": "HH.mm.ss zzzz",
-	"field-day-relative+0": "i dag",
-	"field-day-relative+1": "i morgen",
-	"field-day-relative+2": "i overmorgen",
-	"dateFormatItem-H": "HH",
-	"months-standAlone-abbr": [
-		"jan",
-		"feb",
-		"mar",
-		"apr",
-		"maj",
-		"jun",
-		"jul",
-		"aug",
-		"sep",
-		"okt",
-		"nov",
-		"dec"
-	],
-	"quarters-format-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
-	],
-	"quarters-standAlone-wide": [
-		"1. kvartal",
-		"2. kvartal",
-		"3. kvartal",
-		"4. kvartal"
-	],
-	"dateFormatItem-M": "M",
 	"days-standAlone-wide": [
 		"søndag",
 		"mandag",
@@ -152,60 +21,7 @@ define(
 		"fredag",
 		"lørdag"
 	],
-	"dateFormatItem-yyyyMMM": "MMM y",
-	"dayPeriods-format-abbr-noon": "middag",
-	"dateFormatItem-yyMMM": "MMM yy",
-	"timeFormat-medium": "HH.mm.ss",
-	"dateFormatItem-Hm": "HH.mm",
-	"quarters-standAlone-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
-	],
-	"eraAbbr": [
-		"f.Kr.",
-		"e.Kr."
-	],
-	"field-minute": "minut",
-	"field-dayperiod": "dagtid",
-	"days-standAlone-abbr": [
-		"søn",
-		"man",
-		"tir",
-		"ons",
-		"tor",
-		"fre",
-		"lør"
-	],
-	"dateFormatItem-d": "d.",
-	"dateFormatItem-ms": "mm.ss",
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-day-relative+-1": "i går",
-	"dateFormatItem-h": "h a",
-	"dateTimeFormat-long": "{1} {0}",
-	"field-day-relative+-2": "i forgårs",
-	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-MEd": "E d/M",
-	"dateTimeFormat-full": "{1} {0}",
-	"field-day": "dag",
-	"days-format-wide": [
-		"søndag",
-		"mandag",
-		"tirsdag",
-		"onsdag",
-		"torsdag",
-		"fredag",
-		"lørdag"
-	],
-	"field-zone": "tidszone",
-	"dateFormatItem-yyyyMM": "MM/yyyy",
-	"dateFormatItem-y": "y",
+	"dateFormatItem-MMM": "MMM",
 	"months-standAlone-narrow": [
 		"J",
 		"F",
@@ -220,10 +36,117 @@ define(
 		"N",
 		"D"
 	],
-	"field-year-relative+-1": "sidste år",
-	"field-month-relative+-1": "sidste måned",
-	"dateFormatItem-yyMM": "MM/yy",
-	"dateFormatItem-hm": "h.mm a",
+	"dateTimeFormat-short": "{1} {0}",
+	"dayPeriods-format-narrow-noon": "middag",
+	"dateFormatItem-Gy": "y G",
+	"dayPeriods-format-wide-am": "AM",
+	"dateTimeFormat-medium": "{1} {0}",
+	"quarters-standAlone-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
+	"dateFormatItem-y": "y",
+	"timeFormat-full": "HH.mm.ss zzzz",
+	"dateFormatItem-yMM": "MM/y",
+	"months-standAlone-abbr": [
+		"jan",
+		"feb",
+		"mar",
+		"apr",
+		"maj",
+		"jun",
+		"jul",
+		"aug",
+		"sep",
+		"okt",
+		"nov",
+		"dec"
+	],
+	"dateFormatItem-Ed": "E 'd'. d.",
+	"dateFormatItem-yMMM": "MMM y",
+	"days-standAlone-narrow": [
+		"S",
+		"M",
+		"T",
+		"O",
+		"T",
+		"F",
+		"L"
+	],
+	"eraAbbr": [
+		"f.Kr.",
+		"e.Kr."
+	],
+	"dateFormatItem-GyMMMd": "d. MMM y G",
+	"dateFormat-long": "d. MMM y",
+	"timeFormat-medium": "HH.mm.ss",
+	"dateFormatItem-Hm": "HH.mm",
+	"dateFormat-medium": "dd/MM/y",
+	"dateFormatItem-Hms": "HH.mm.ss",
+	"dateFormatItem-yMd": "d/M/y",
+	"quarters-standAlone-wide": [
+		"1. kvartal",
+		"2. kvartal",
+		"3. kvartal",
+		"4. kvartal"
+	],
+	"dateFormatItem-ms": "mm.ss",
+	"quarters-standAlone-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"dateTimeFormat-long": "{1} {0}",
+	"months-standAlone-wide": [
+		"januar",
+		"februar",
+		"marts",
+		"april",
+		"maj",
+		"juni",
+		"juli",
+		"august",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
+	"dateFormatItem-MMMMEd": "E d. MMMM",
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"dateFormatItem-MMMd": "d. MMM",
+	"timeFormat-long": "HH.mm.ss z",
+	"months-format-abbr": [
+		"jan.",
+		"feb.",
+		"mar.",
+		"apr.",
+		"maj",
+		"jun.",
+		"jul.",
+		"aug.",
+		"sep.",
+		"okt.",
+		"nov.",
+		"dec."
+	],
+	"dayPeriods-format-wide-noon": "middag",
+	"dateFormatItem-yQQQQ": "QQQQ y",
+	"timeFormat-short": "HH.mm",
+	"dateFormatItem-H": "HH",
+	"quarters-format-abbr": [
+		"K1",
+		"K2",
+		"K3",
+		"K4"
+	],
 	"days-format-abbr": [
 		"søn.",
 		"man.",
@@ -232,11 +155,6 @@ define(
 		"tor.",
 		"fre.",
 		"lør."
-	],
-	"dateFormatItem-yMMMd": "d. MMM y",
-	"eraNames": [
-		"f.Kr.",
-		"e.Kr."
 	],
 	"days-format-narrow": [
 		"S",
@@ -247,37 +165,94 @@ define(
 		"F",
 		"L"
 	],
-	"days-standAlone-narrow": [
-		"S",
-		"M",
-		"T",
-		"O",
-		"T",
+	"dateFormatItem-M": "M",
+	"dateFormatItem-yMMMd": "d. MMM y",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-GyMMMEd": "E d. MMM y G",
+	"dateFormatItem-MEd": "E d/M",
+	"months-format-narrow": [
+		"J",
 		"F",
-		"L"
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
 	],
-	"dateFormatItem-MMM": "MMM",
-	"field-month": "måned",
-	"dayPeriods-format-wide-am": "AM",
-	"dateFormatItem-MMMMEd": "E d. MMMM",
+	"days-standAlone-short": [
+		"sø",
+		"ma",
+		"ti",
+		"on",
+		"to",
+		"fr",
+		"lø"
+	],
+	"dateFormatItem-hm": "h.mm a",
+	"days-standAlone-abbr": [
+		"søn",
+		"man",
+		"tir",
+		"ons",
+		"tor",
+		"fre",
+		"lør"
+	],
 	"dateFormat-short": "dd/MM/yy",
-	"dayPeriods-format-narrow-noon": "middag",
-	"field-second": "sekund",
+	"dayPeriods-format-abbr-noon": "middag",
 	"dateFormatItem-yMMMEd": "E d. MMM y",
-	"field-month-relative+0": "denne måned",
-	"field-month-relative+1": "næste måned",
-	"dateFormatItem-Ed": "E 'd'. d.",
-	"field-week": "uge",
-	"dateFormat-medium": "dd/MM/yyyy",
-	"field-year-relative+0": "i år",
-	"field-week-relative+-1": "sidste uge",
-	"field-year-relative+1": "næste år",
-	"dateTimeFormat-short": "{1} {0}",
-	"dateFormatItem-Hms": "HH.mm.ss",
-	"dateFormatItem-hms": "h.mm.ss a",
-	"dateFormatItem-yyyy": "y",
-	"field-week-relative+0": "denne uge",
-	"field-week-relative+1": "næste uge"
+	"dateFormat-full": "EEEE 'den' d. MMMM y",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yMEd": "E d/M/y",
+	"months-format-wide": [
+		"januar",
+		"februar",
+		"marts",
+		"april",
+		"maj",
+		"juni",
+		"juli",
+		"august",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
+	"days-format-short": [
+		"sø",
+		"ma",
+		"ti",
+		"on",
+		"to",
+		"fr",
+		"lø"
+	],
+	"dateFormatItem-d": "d.",
+	"quarters-format-wide": [
+		"1. kvartal",
+		"2. kvartal",
+		"3. kvartal",
+		"4. kvartal"
+	],
+	"days-format-wide": [
+		"søndag",
+		"mandag",
+		"tirsdag",
+		"onsdag",
+		"torsdag",
+		"fredag",
+		"lørdag"
+	],
+	"eraNarrow": [
+		"f.Kr.",
+		"e.Kr."
+	],
+	"dateFormatItem-h": "h a"
 }
 //end v1.x content
 );

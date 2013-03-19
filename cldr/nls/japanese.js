@@ -3,13 +3,13 @@ define({ root:
 //begin v1.x content
 {
 	"days-standAlone-short": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"months-format-narrow": [
 		"1",
@@ -31,19 +31,8 @@ define({ root:
 		"3",
 		"4"
 	],
-	"months@localeAlias384": {
-		"bundle": "gregorian",
-		"target": "months"
-	},
-	"days-format-narrow@localeAlias392": {
-		"bundle": "gregorian",
-		"target": "days-standAlone-narrow"
-	},
-	"days@localeAlias390": {
-		"bundle": "gregorian",
-		"target": "days"
-	},
-	"dateFormatItem-MMMEd": "E MMM d",
+	"dateFormatItem-GyMMMEd": "G y MMM d, E",
+	"dateFormatItem-MMMEd": "MMM d, E",
 	"eraNarrow": [
 		"Taika (645-650)",
 		"Hakuchi (650-671)",
@@ -67,7 +56,7 @@ define({ root:
 		"Daidō (806-810)",
 		"Kōnin (810-824)",
 		"Tenchō (824-834)",
-		"Shōwa (834-848)",
+		"Jōwa (834-848)",
 		"Kajō (848-851)",
 		"Ninju (851-854)",
 		"Saiko (854-857)",
@@ -282,64 +271,84 @@ define({ root:
 		"S",
 		"H"
 	],
-	"days-format-short": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
-	],
-	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}",
-	"dateFormat-long": "G y MMMM d",
-	"months-format-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
-	],
-	"dateFormatItem-yyyyQQQ": "GGGGG y QQQ",
-	"dateTimeFormat-medium": "{1} {0}",
-	"eraNames@localeAlias414": {
-		"bundle": "japanese",
-		"target": "eraAbbr"
-	},
-	"dayPeriods-format-wide-pm": "PM",
-	"dayPeriods-format-narrow@localeAlias409": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
-	},
-	"dateFormat-full": "EEEE, G y MMMM dd",
-	"dateFormatItem-yyyyMEd": "E, GGGGG yy-MM-dd",
-	"dateFormatItem-Md": "M-d",
-	"dayPeriods-format-abbr-am": "AM",
-	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
-	"months-standAlone-wide@localeAlias389": {
+	"months-standAlone-wide@localeAlias417": {
 		"bundle": "gregorian",
 		"target": "months-format-wide"
 	},
+	"days-format-short": [
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
+	],
+	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}",
+	"dateFormat-long": "G y MMMM d",
+	"quarters-standAlone-abbr@localeAlias432": {
+		"bundle": "gregorian",
+		"target": "quarters-format-abbr"
+	},
+	"months-format-wide": [
+		"Month1",
+		"Month2",
+		"Month3",
+		"Month4",
+		"Month5",
+		"Month6",
+		"Month7",
+		"Month8",
+		"Month9",
+		"Month10",
+		"Month11",
+		"Month12"
+	],
+	"quarters-standAlone-abbr@localeAlias433": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
+	},
+	"dateTime@localeAlias445": {
+		"bundle": "generic",
+		"target": "dateTime"
+	},
+	"dateFormatItem-yyyyQQQ": "G y QQQ",
+	"dateTimeFormat-medium": "{1} {0}",
+	"quarters-format-abbr@localeAlias430": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
+	},
+	"quarters-format-narrow@localeAlias431": {
+		"bundle": "gregorian",
+		"target": "quarters-standAlone-narrow"
+	},
+	"dayPeriods-format-wide-pm": "PM",
+	"dayPeriods-format-abbr@localeAlias436": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
+	},
+	"dateFormat-full": "G y MMMM d, EEEE",
+	"dateFormatItem-yyyyMEd": "GGGGG y-MM-dd, E",
+	"dayPeriods-format-abbr@localeAlias439": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
+	},
+	"dateFormatItem-Md": "MM-dd",
+	"dayPeriods-format-abbr-am": "AM",
+	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
 	"months-standAlone-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
+		"Month1",
+		"Month2",
+		"Month3",
+		"Month4",
+		"Month5",
+		"Month6",
+		"Month7",
+		"Month8",
+		"Month9",
+		"Month10",
+		"Month11",
+		"Month12"
 	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
@@ -348,57 +357,50 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
-	"days-standAlone-wide@localeAlias400": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
 	"timeFormat-long": "HH:mm:ss z",
-	"dateTimeFormats-appendItem-Era": "{0} {1}",
-	"timeFormat@localeAlias415": {
-		"bundle": "gregorian",
-		"target": "timeFormat"
-	},
+	"dateTimeFormats-appendItem-Era": "{1} {0}",
 	"months-format-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
+		"Month1",
+		"Month2",
+		"Month3",
+		"Month4",
+		"Month5",
+		"Month6",
+		"Month7",
+		"Month8",
+		"Month9",
+		"Month10",
+		"Month11",
+		"Month12"
 	],
+	"months-standAlone-abbr@localeAlias415": {
+		"bundle": "gregorian",
+		"target": "months-format-abbr"
+	},
+	"months-standAlone-abbr@localeAlias416": {
+		"bundle": "gregorian",
+		"target": "months-format-wide"
+	},
+	"months-format-abbr@localeAlias413": {
+		"bundle": "gregorian",
+		"target": "months-format-wide"
+	},
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
-	"dayPeriods-format-narrow@localeAlias410": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
-	},
-	"dayPeriods-format-narrow@localeAlias412": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
-	},
-	"dayPeriods-format-narrow@localeAlias413": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
-	},
+	"dateFormatItem-GyMMMd": "G y MMM d",
 	"months-standAlone-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
+		"Month1",
+		"Month2",
+		"Month3",
+		"Month4",
+		"Month5",
+		"Month6",
+		"Month7",
+		"Month8",
+		"Month9",
+		"Month10",
+		"Month11",
+		"Month12"
 	],
 	"dateFormatItem-H": "HH",
 	"quarters-format-abbr": [
@@ -413,40 +415,24 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
-	"dateFormatItem-Gy": "G y",
-	"dateFormatItem-yyyyMMMEd": "E, G y MMM d",
-	"dayPeriods@localeAlias407": {
+	"quarters@localeAlias429": {
 		"bundle": "gregorian",
-		"target": "dayPeriods"
+		"target": "quarters"
 	},
+	"dateFormatItem-Gy": "G y",
+	"dateFormatItem-yyyyMMMEd": "G y MMM d, E",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"dateFormatItem-yyyyMMM": "G y MMM",
 	"dateFormatItem-yyyyMMMd": "G y MMM d",
-	"months-standAlone-abbr@localeAlias387": {
-		"bundle": "gregorian",
-		"target": "months-format-abbr"
-	},
-	"months-standAlone-abbr@localeAlias388": {
-		"bundle": "gregorian",
-		"target": "months-format-wide"
-	},
-	"months-format-abbr@localeAlias385": {
-		"bundle": "gregorian",
-		"target": "months-format-wide"
-	},
-	"quarters-standAlone-wide@localeAlias406": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
-	},
 	"timeFormat-medium": "HH:mm:ss",
 	"quarters-standAlone-abbr": [
 		"Q1",
@@ -455,6 +441,10 @@ define({ root:
 		"Q4"
 	],
 	"dateFormatItem-Hm": "HH:mm",
+	"months-format-narrow@localeAlias414": {
+		"bundle": "gregorian",
+		"target": "months-standAlone-narrow"
+	},
 	"eraAbbr": [
 		"Taika (645-650)",
 		"Hakuchi (650-671)",
@@ -478,7 +468,7 @@ define({ root:
 		"Daidō (806-810)",
 		"Kōnin (810-824)",
 		"Tenchō (824-834)",
-		"Shōwa (834-848)",
+		"Jōwa (834-848)",
 		"Kajō (848-851)",
 		"Ninju (851-854)",
 		"Saiko (854-857)",
@@ -694,13 +684,13 @@ define({ root:
 		"Heisei"
 	],
 	"days-standAlone-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
@@ -710,24 +700,20 @@ define({ root:
 		"3",
 		"4"
 	],
-	"dateTimeFormat-long": "{1} {0}",
 	"dayPeriods-format-narrow-am": "AM",
+	"dateTimeFormat-long": "{1} {0}",
 	"dateFormatItem-h": "h a",
 	"dateFormatItem-MMMd": "MMM d",
-	"dateFormatItem-MEd": "E, M-d",
+	"dateFormatItem-MEd": "MM-dd, E",
 	"dateTimeFormat-full": "{1} {0}",
-	"months-format-narrow@localeAlias386": {
-		"bundle": "gregorian",
-		"target": "months-standAlone-narrow"
-	},
 	"days-format-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"months-standAlone-narrow": [
 		"1",
@@ -745,19 +731,47 @@ define({ root:
 	],
 	"dateFormatItem-y": "G y",
 	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})",
+	"days-standAlone-wide@localeAlias428": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
 	"dateFormatItem-hm": "h:mm a",
-	"dateTimeFormats-appendItem-Year": "{0} {1}",
+	"dateTimeFormats-appendItem-Year": "{1} {0}",
+	"days-format-short@localeAlias421": {
+		"bundle": "gregorian",
+		"target": "days-format-abbr"
+	},
 	"dateTimeFormats-appendItem-Hour": "{0} ({2}: {1})",
+	"days-format-short@localeAlias422": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
 	"dayPeriods-format-abbr-pm": "PM",
+	"eraNames@localeAlias442": {
+		"bundle": "japanese",
+		"target": "eraAbbr"
+	},
+	"dateFormat@localeAlias443": {
+		"bundle": "generic",
+		"target": "dateFormat"
+	},
+	"dayPeriods-format-narrow@localeAlias437": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
+	},
 	"days-format-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
+	"dayPeriods-format-narrow@localeAlias438": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
+	},
 	"eraNames": [
 		"Taika (645-650)",
 		"Hakuchi (650-671)",
@@ -781,7 +795,7 @@ define({ root:
 		"Daidō (806-810)",
 		"Kōnin (810-824)",
 		"Tenchō (824-834)",
-		"Shōwa (834-848)",
+		"Jōwa (834-848)",
 		"Kajō (848-851)",
 		"Ninju (851-854)",
 		"Saiko (854-857)",
@@ -996,100 +1010,97 @@ define({ root:
 		"Shōwa",
 		"Heisei"
 	],
-	"quarters-standAlone-abbr@localeAlias404": {
-		"bundle": "gregorian",
-		"target": "quarters-format-abbr"
-	},
-	"quarters-standAlone-abbr@localeAlias405": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
-	},
 	"days-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
 	],
-	"dateFormatItem-yyyyMd": "GGGGG yy-MM-dd",
-	"quarters-format-abbr@localeAlias402": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
-	},
-	"quarters-format-narrow@localeAlias403": {
-		"bundle": "gregorian",
-		"target": "quarters-standAlone-narrow"
-	},
-	"dayPeriods-format-abbr@localeAlias408": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
-	},
+	"dateFormatItem-yyyyMd": "GGGGG y-MM-dd",
 	"days-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"timeFormat@localeAlias444": {
+		"bundle": "gregorian",
+		"target": "timeFormat"
+	},
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-am": "AM",
-	"days-format-short@localeAlias393": {
+	"days-standAlone-abbr@localeAlias423": {
 		"bundle": "gregorian",
 		"target": "days-format-abbr"
 	},
-	"days-format-short@localeAlias394": {
+	"days-standAlone-abbr@localeAlias424": {
 		"bundle": "gregorian",
 		"target": "days-format-wide"
 	},
-	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
-	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
-	"dayPeriods-format-abbr@localeAlias411": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
-	},
-	"dateFormat-short": "GGGGG yy-MM-dd",
-	"days-standAlone-abbr@localeAlias395": {
-		"bundle": "gregorian",
-		"target": "days-format-abbr"
-	},
-	"days-standAlone-abbr@localeAlias396": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
-	"days-standAlone-short@localeAlias397": {
+	"days-standAlone-short@localeAlias425": {
 		"bundle": "gregorian",
 		"target": "days-format-short"
 	},
-	"days-standAlone-short@localeAlias398": {
+	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
+	"days-standAlone-short@localeAlias426": {
 		"bundle": "gregorian",
 		"target": "days-format-abbr"
 	},
-	"days-standAlone-short@localeAlias399": {
+	"days-standAlone-short@localeAlias427": {
 		"bundle": "gregorian",
 		"target": "days-format-wide"
 	},
-	"dateFormatItem-Ed": "d E",
+	"days-format-abbr@localeAlias419": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"dayPeriods-format-narrow@localeAlias440": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
+	},
+	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
+	"dayPeriods-format-narrow@localeAlias441": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
+	},
+	"dayPeriods@localeAlias435": {
+		"bundle": "gregorian",
+		"target": "dayPeriods"
+	},
+	"dateFormat-short": "GGGGG y-MM-dd",
+	"days@localeAlias418": {
+		"bundle": "gregorian",
+		"target": "days"
+	},
+	"quarters-standAlone-wide@localeAlias434": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
+	},
+	"dateFormatItem-Ed": "d, E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"dateFormat-medium": "G y MMM d",
-	"dateFormatItem-yyyyM": "GGGGG yy-MM",
+	"dateFormatItem-yyyyM": "GGGGG y-MM",
 	"dayPeriods-format-narrow-pm": "PM",
+	"months@localeAlias412": {
+		"bundle": "gregorian",
+		"target": "months"
+	},
+	"days-format-narrow@localeAlias420": {
+		"bundle": "gregorian",
+		"target": "days-standAlone-narrow"
+	},
 	"dateFormatItem-yyyyQQQQ": "G y QQQQ",
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"quarters@localeAlias401": {
-		"bundle": "gregorian",
-		"target": "quarters"
-	},
-	"days-format-abbr@localeAlias391": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
+	"dateFormatItem-GyMMM": "G y MMM",
 	"dateFormatItem-yyyy": "G y"
 }
 //end v1.x content
@@ -1100,6 +1111,7 @@ define({ root:
 	"de": true,
 	"el": true,
 	"en": true,
+	"en-au": true,
 	"en-gb": true,
 	"es": true,
 	"fi": true,

@@ -1,0 +1,42 @@
+define(
+//begin v1.x content
+{
+	"dateFormatItem-yyyyMMMEd": "E, d בMMM y G",
+	"dateFormatItem-MMMEd": "E, d בMMM",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-MMM": "LLL",
+	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Gy": "y G",
+	"dateTimeFormat-medium": "{1}, {0}",
+	"dateFormatItem-y": "y G",
+	"dateFormatItem-yyyy": "y G",
+	"dateFormatItem-Ed": "E ה-d",
+	"dateFormatItem-yyyyMM": "MM/y G",
+	"dateFormatItem-GyMMMd": "d בMMM y G",
+	"dateFormat-long": "d בMMMM y G",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormat-medium": "d בMMM y G",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "G y QQQQ",
+	"dateFormatItem-yyyyMd": "d.M.y G",
+	"dateFormatItem-yyyyMMMd": "d בMMM y G",
+	"dateFormatItem-yyyyMEd": "E, d/M/y G",
+	"dateFormatItem-MMMd": "d בMMM",
+	"dateFormatItem-H": "HH",
+	"dateFormatItem-M": "L",
+	"dateFormatItem-GyMMMEd": "E, d בMMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-yyyyQQQ": "G y QQQ",
+	"dateFormatItem-MEd": "E, d/M",
+	"dateFormatItem-hm": "h:mm a",
+	"dateFormat-short": "dd/MM/yy GGGGG",
+	"dateFormatItem-yyyyM": "M.y G",
+	"dateFormat-full": "EEEE, d בMMMM y G",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yyyyMMM": "MMM y G",
+	"dateFormatItem-d": "d",
+	"dateFormatItem-h": "‏h a"
+}
+//end v1.x content
+);

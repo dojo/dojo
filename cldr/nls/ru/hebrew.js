@@ -1,12 +1,11 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM.y",
+	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
 	"months-standAlone-abbr-leap": "Адар II",
 	"dayPeriods-format-wide-pm": "после полудня",
 	"dateFormatItem-MMMEd": "ccc, d MMM",
 	"dateTimeFormat-full": "{1}, {0}",
-	"dateFormatItem-yQQQ": "QQQ y 'г'.",
 	"days-standAlone-wide": [
 		"Воскресенье",
 		"Понедельник",
@@ -17,6 +16,7 @@ define(
 		"Суббота"
 	],
 	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "до полудня",
 	"dateTimeFormat-medium": "{1}, {0}",
 	"months-format-abbr-leap": "Адар II",
@@ -26,7 +26,9 @@ define(
 		"3-й кв.",
 		"4-й кв."
 	],
+	"dateFormatItem-y": "y G",
 	"timeFormat-full": "H:mm:ss zzzz",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"Тишрей",
 		"Хешван",
@@ -42,8 +44,7 @@ define(
 		"Ав",
 		"Элул"
 	],
-	"dateFormatItem-Ed": "ccc, d",
-	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-Ed": "E, d",
 	"days-standAlone-narrow": [
 		"В",
 		"П",
@@ -53,19 +54,20 @@ define(
 		"П",
 		"С"
 	],
-	"dateFormat-long": "d MMMM y 'г'.",
+	"dateFormatItem-GyMMMd": "d MMM y G",
+	"dateFormat-long": "d MMMM y 'г'. G",
 	"timeFormat-medium": "H:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
-	"dateFormat-medium": "dd MMM y 'г'.",
+	"dateFormat-medium": "dd.MM.y G",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dayPeriods-format-narrow-pm": "пп",
-	"dateFormatItem-yMd": "dd.MM.y",
 	"quarters-standAlone-wide": [
 		"1-й квартал",
 		"2-й квартал",
 		"3-й квартал",
 		"4-й квартал"
 	],
+	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'. G",
 	"dayPeriods-format-narrow-am": "дп",
 	"dateTimeFormat-long": "{1}, {0}",
 	"months-standAlone-wide": [
@@ -83,6 +85,9 @@ define(
 		"Ав",
 		"Элул"
 	],
+	"dateFormatItem-yyyyMd": "dd.MM.y G",
+	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMEd": "E, dd.MM.y G",
 	"dateFormatItem-MMMd": "d MMM",
 	"timeFormat-long": "H:mm:ss z",
 	"months-format-abbr": [
@@ -126,7 +131,9 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormatItem-yMMMd": "d MMM y 'г'.",
+	"dateFormatItem-GyMMMEd": "E, d MMM y G",
+	"dateFormatItem-GyMMM": "LLL y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E, dd.MM",
 	"days-standAlone-short": [
 		"вс",
@@ -148,11 +155,10 @@ define(
 	],
 	"months-standAlone-wide-leap": "Адар II",
 	"dayPeriods-format-abbr-pm": "после полудня",
-	"dateFormat-short": "dd.MM.yy",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"dateFormat-full": "EEEE, d MMMM y 'г'.",
+	"dateFormat-short": "dd.MM.y G",
+	"dateFormatItem-yyyyM": "MM.y G",
+	"dateFormat-full": "EEEE, d MMMM y 'г'. G",
 	"dateFormatItem-Md": "dd.MM",
-	"dateFormatItem-yMEd": "ccc, d.MM.y 'г'.",
 	"months-format-wide": [
 		"Тишрей",
 		"Хешван",
@@ -178,13 +184,14 @@ define(
 		"пт",
 		"сб"
 	],
-	"months-format-wide-leap": "Адар II",
+	"dateFormatItem-yyyyMMM": "LLL y G",
 	"quarters-format-wide": [
 		"1-й квартал",
 		"2-й квартал",
 		"3-й квартал",
 		"4-й квартал"
 	],
+	"months-format-wide-leap": "Адар II",
 	"days-format-wide": [
 		"воскресенье",
 		"понедельник",

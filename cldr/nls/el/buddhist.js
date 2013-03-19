@@ -4,7 +4,7 @@ define(
 	"dateFormatItem-yM": "M/y",
 	"dayPeriods-format-wide-pm": "μ.μ.",
 	"dateFormatItem-MMMEd": "E, d MMM",
-	"dateFormatItem-yQQQ": "y QQQ",
+	"dateTimeFormat-full": "{1} - {0}",
 	"days-standAlone-wide": [
 		"Κυριακή",
 		"Δευτέρα",
@@ -29,8 +29,10 @@ define(
 		"Ν",
 		"Δ"
 	],
+	"dateTimeFormat-short": "{1} - {0}",
 	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "π.μ.",
+	"dateTimeFormat-medium": "{1} - {0}",
 	"quarters-standAlone-abbr": [
 		"Τ1",
 		"Τ2",
@@ -74,6 +76,7 @@ define(
 		"3ο τρίμηνο",
 		"4ο τρίμηνο"
 	],
+	"dateTimeFormat-long": "{1} - {0}",
 	"months-standAlone-wide": [
 		"Ιανουάριος",
 		"Φεβρουάριος",
@@ -104,7 +107,6 @@ define(
 		"Νοε",
 		"Δεκ"
 	],
-	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-short": "h:mm a",
 	"quarters-format-abbr": [
 		"Τ1",
@@ -164,7 +166,7 @@ define(
 		"Παρ",
 		"Σάβ"
 	],
-	"dateFormat-short": "d/M/yyyy",
+	"dateFormat-short": "d/M/y",
 	"dateFormatItem-yMMMEd": "E, d MMM, y G",
 	"dateFormat-full": "EEEE, d MMMM, y G",
 	"dateFormatItem-Md": "d/M",

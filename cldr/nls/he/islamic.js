@@ -1,14 +1,13 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yyyyMMMEd": "E, d בMMM y",
 	"dayPeriods-format-wide-pm": "אחה״צ",
 	"eraNames": [
 		"שנת היג׳רה"
 	],
 	"dateFormatItem-MMMEd": "E, d בMMM",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yQQQ": "QQQ y",
 	"months-standAlone-narrow": [
 		"1",
 		"2",
@@ -24,8 +23,11 @@ define(
 		"12"
 	],
 	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "לפנה״צ",
 	"dateTimeFormat-medium": "{1}, {0}",
+	"dateFormatItem-y": "y G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"מוחרם",
 		"צפר",
@@ -41,7 +43,6 @@ define(
 		"ד׳ו אל-חיג׳ה"
 	],
 	"dateFormatItem-Ed": "E ה-d",
-	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"א׳",
 		"ב׳",
@@ -54,11 +55,12 @@ define(
 	"eraAbbr": [
 		"שנת היג׳רה"
 	],
-	"dateFormat-long": "d בMMMM y",
+	"dateFormatItem-GyMMMd": "d בMMM y G",
+	"dateFormat-long": "d בMMMM y G",
 	"dateFormatItem-Hm": "HH:mm",
-	"dateFormat-medium": "d בMMM yyyy",
+	"dateFormat-medium": "d בMMM y G",
 	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-yMd": "d.M.yyyy",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y",
 	"quarters-standAlone-narrow": [
 		"ר1",
 		"ר2",
@@ -79,7 +81,9 @@ define(
 		"ד׳ו אל-קעדה",
 		"ד׳ו אל-חיג׳ה"
 	],
-	"dateFormatItem-MMMMEd": "E, d בMMMM",
+	"dateFormatItem-yyyyMd": "d.M.y G",
+	"dateFormatItem-yyyyMMMd": "d בMMM y",
+	"dateFormatItem-yyyyMEd": "E, d.M.y",
 	"dateFormatItem-MMMd": "d בMMM",
 	"months-format-abbr": [
 		"מוחרם",
@@ -95,8 +99,6 @@ define(
 		"ד׳ו אל-קעדה",
 		"ד׳ו אל-חיג׳ה"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
-	"dateFormatItem-MMMMd": "d בMMMM",
 	"days-format-abbr": [
 		"יום א׳",
 		"יום ב׳",
@@ -115,7 +117,9 @@ define(
 		"ו׳",
 		"ש׳"
 	],
-	"dateFormatItem-yMMMd": "d בMMM y",
+	"dateFormatItem-GyMMMEd": "E, d בMMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y",
 	"dateFormatItem-MEd": "E, d/M",
 	"days-standAlone-short": [
 		"א'",
@@ -127,11 +131,10 @@ define(
 		"ש'"
 	],
 	"dateFormatItem-hm": "h:mm a",
-	"dateFormat-short": "dd/MM/yy",
-	"dateFormatItem-yMMMEd": "E, d בMMM y",
-	"dateFormat-full": "EEEE, d בMMMM y",
+	"dateFormat-short": "dd/MM/yy GGGGG",
+	"dateFormatItem-yyyyM": "M/y",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E, d.M.yyyy",
+	"dateFormat-full": "EEEE, d בMMMM y G",
 	"months-format-wide": [
 		"מוחרם",
 		"צפר",
@@ -155,6 +158,8 @@ define(
 		"ו'",
 		"ש'"
 	],
+	"dateFormatItem-yyyyMMM": "MMM y",
+	"dateFormatItem-d": "d",
 	"quarters-format-wide": [
 		"רבעון 1",
 		"רבעון 2",

@@ -1,34 +1,13 @@
 define(
 //begin v1.x content
 {
-	"months-format-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
-	],
-	"months-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
-	],
+	"dateFormatItem-yyyyMMMEd": "E, d MMM U",
+	"dateFormatItem-MMMEd": "ccc, d MMM",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-Gy": "U",
+	"dateFormatItem-y": "U",
+	"dateFormatItem-yyyy": "U",
 	"months-standAlone-abbr": [
 		"1",
 		"2",
@@ -43,6 +22,15 @@ define(
 		"11",
 		"12"
 	],
+	"dateFormatItem-Ed": "E, d",
+	"dateFormatItem-GyMMMd": "d MMM U",
+	"dateFormatItem-yyyyMMMM": "LLLL U",
+	"dateFormat-long": "d MMMM U",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormat-medium": "dd.MM U",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ U",
 	"months-standAlone-wide": [
 		"1",
 		"2",
@@ -56,7 +44,54 @@ define(
 		"10",
 		"11",
 		"12"
-	]
+	],
+	"dateFormatItem-yyyyMd": "dd.MM.y",
+	"dateFormatItem-yyyyMMMd": "d MMM U",
+	"dateFormatItem-yyyyMEd": "E, dd.MM.y",
+	"dateFormatItem-MMMd": "d MMM",
+	"months-format-abbr": [
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"10",
+		"11",
+		"12"
+	],
+	"dateFormatItem-E": "ccc",
+	"dateFormatItem-H": "H",
+	"dateFormatItem-M": "L",
+	"dateFormatItem-GyMMMEd": "E, d MMM U",
+	"dateFormatItem-GyMMM": "LLL U",
+	"dateFormatItem-MEd": "E, dd.MM",
+	"dateFormatItem-yyyyQQQ": "QQQ U",
+	"months-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"10",
+		"11",
+		"12"
+	],
+	"dateFormatItem-hm": "h:mm a",
+	"dateFormat-short": "dd.MM.y",
+	"dateFormatItem-yyyyM": "MM.y",
+	"dateFormat-full": "EEEE, d MMMM U",
+	"dateFormatItem-Md": "dd.MM",
+	"dateFormatItem-yyyyMMM": "LLL U",
+	"dateFormatItem-d": "d",
+	"dateFormatItem-h": "h a"
 }
 //end v1.x content
 );

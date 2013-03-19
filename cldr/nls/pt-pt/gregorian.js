@@ -4,7 +4,7 @@ define(
 	"dayPeriods-format-wide-pm": "PM",
 	"dayPeriods-standAlone-abbr-pm": "p.m.",
 	"dateFormatItem-MMMEd": "E, d/MM",
-	"dateTimeFormat-full": "{1} às {0}",
+	"dateTimeFormat-full": "{1} 'às' {0}",
 	"dateFormatItem-yQQQ": "QQQQ 'de' y",
 	"days-standAlone-wide": [
 		"Domingo",
@@ -42,10 +42,9 @@ define(
 	"dayPeriods-standAlone-wide-pm": "p.m.",
 	"dateFormatItem-yMMM": "MM/y",
 	"dateFormatItem-yMMMMEd": "E, d 'de' MMMM 'de' y",
-	"field-zone": "Fuso horário",
 	"dayPeriods-standAlone-wide-am": "a.m.",
 	"dayPeriods-format-narrow-pm": "p.m.",
-	"dateFormatItem-yyMMM": "MM/yy",
+	"dateFormatItem-yMMMEEEEd": "EEEE, d/MM/y",
 	"quarters-standAlone-wide": [
 		"1.º trimestre",
 		"2.º trimestre",
@@ -55,8 +54,7 @@ define(
 	"dateFormatItem-yMMMM": "MMMM 'de' y",
 	"dateFormatItem-yMMMMd": "d 'de' MMMM 'de' y",
 	"dayPeriods-format-narrow-am": "a.m.",
-	"dateTimeFormat-long": "{1} às {0}",
-	"dateFormatItem-yyMMMd": "d/MM/yy",
+	"dateTimeFormat-long": "{1} 'às' {0}",
 	"months-standAlone-wide": [
 		"Janeiro",
 		"Fevereiro",
@@ -73,7 +71,6 @@ define(
 	],
 	"dateFormatItem-MMMMEd": "E, d 'de' MMMM",
 	"dateFormatItem-MMMd": "d/MM",
-	"dateFormatItem-yyMMMEd": "E, d/MM/yy",
 	"months-format-abbr": [
 		"Jan",
 		"Fev",

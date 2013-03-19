@@ -1,14 +1,11 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M-y",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"eraNames": [
 		"Saʻna Hizjria"
 	],
 	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-MMdd": "dd-MM",
 	"days-standAlone-wide": [
 		"zondag",
 		"maandag",
@@ -18,7 +15,6 @@ define(
 		"vrijdag",
 		"zaterdag"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"1",
 		"2",
@@ -33,14 +29,15 @@ define(
 		"11",
 		"12"
 	],
+	"dateFormatItem-Gy": "y G",
 	"quarters-standAlone-abbr": [
 		"K1",
 		"K2",
 		"K3",
 		"K4"
 	],
+	"dateFormatItem-y": "y G",
 	"dateFormatItem-yyyy": "y G",
-	"dateFormatItem-yyQQQ": "QQQ yy G",
 	"months-standAlone-abbr": [
 		"Moeh.",
 		"Saf.",
@@ -56,7 +53,6 @@ define(
 		"Doe al h."
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"Z",
 		"M",
@@ -69,22 +65,15 @@ define(
 	"eraAbbr": [
 		"Saʻna Hizjria"
 	],
-	"dateFormatItem-yyyyMMMM": "MMMM y G",
+	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "d MMMM y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-MMd": "d-MM",
-	"dateFormatItem-yyMM": "MM-yy G",
 	"dateFormat-medium": "d MMM y G",
-	"dateFormatItem-yyMMM": "MMM yy G",
-	"dateFormatItem-yyQQQQ": "QQQQ yy G",
-	"dateFormatItem-yMd": "d-M-y",
 	"quarters-standAlone-wide": [
 		"1e kwartaal",
 		"2e kwartaal",
 		"3e kwartaal",
 		"4e kwartaal"
 	],
-	"dateFormatItem-ms": "mm:ss",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"months-standAlone-wide": [
 		"Moeharram",
@@ -100,9 +89,9 @@ define(
 		"Doe al kaʻaba",
 		"Doe al hizja"
 	],
-	"dateFormatItem-yyyyMd": "d-M-y G",
+	"dateFormatItem-yyyyMd": "d-M-y GGGGG",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
-	"dateFormatItem-yyyyMEd": "E d-M-y G",
+	"dateFormatItem-yyyyMEd": "E d-M-y GGGGG",
 	"dateFormatItem-MMMd": "d MMM",
 	"months-format-abbr": [
 		"Moeh.",
@@ -118,8 +107,6 @@ define(
 		"Doe al k.",
 		"Doe al h."
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
-	"dateFormatItem-MMMMd": "d MMMM",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -135,7 +122,6 @@ define(
 		"vr",
 		"za"
 	],
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"Z",
 		"M",
@@ -145,7 +131,8 @@ define(
 		"V",
 		"Z"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-GyMMMEd": "E d MMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E d-M",
 	"days-standAlone-short": [
@@ -166,12 +153,10 @@ define(
 		"vr",
 		"za"
 	],
-	"dateFormat-short": "dd-MM-yy G",
-	"dateFormatItem-yyyyM": "M-y G",
-	"dateFormatItem-yMMMEd": "E d MMM y",
+	"dateFormat-short": "dd-MM-yy GGGGG",
+	"dateFormatItem-yyyyM": "M-y GGGGG",
 	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-Md": "d-M",
-	"dateFormatItem-yMEd": "E d-M-y",
 	"months-format-wide": [
 		"Moeharram",
 		"Safar",
@@ -196,15 +181,11 @@ define(
 		"za"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
-	"dateFormatItem-d": "d",
 	"quarters-format-wide": [
 		"1e kwartaal",
 		"2e kwartaal",
 		"3e kwartaal",
 		"4e kwartaal"
-	],
-	"eraNarrow": [
-		"Saʻna Hizjria"
 	],
 	"days-format-wide": [
 		"zondag",
@@ -214,6 +195,9 @@ define(
 		"donderdag",
 		"vrijdag",
 		"zaterdag"
+	],
+	"eraNarrow": [
+		"Saʻna Hizjria"
 	]
 }
 //end v1.x content

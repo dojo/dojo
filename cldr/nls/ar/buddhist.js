@@ -1,14 +1,12 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M‏/y G",
+	"dateFormatItem-yyyyMMMEd": "E، d MMM، y G",
 	"dayPeriods-format-wide-pm": "م",
 	"eraNames": [
 		"التقويم البوذي"
 	],
-	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-MMdd": "dd‏/MM",
+	"dateFormatItem-MMMEd": "E، d MMM",
 	"days-standAlone-wide": [
 		"الأحد",
 		"الاثنين",
@@ -18,7 +16,6 @@ define(
 		"الجمعة",
 		"السبت"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"ي",
 		"ف",
@@ -33,9 +30,11 @@ define(
 		"ب",
 		"د"
 	],
+	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "ص",
 	"dateFormatItem-y": "y G",
 	"timeFormat-full": "h:mm:ss a zzzz",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"يناير",
 		"فبراير",
@@ -51,7 +50,6 @@ define(
 		"ديسمبر"
 	],
 	"dateFormatItem-Ed": "E، d",
-	"dateFormatItem-yMMM": "MMM y G",
 	"days-standAlone-narrow": [
 		"ح",
 		"ن",
@@ -64,15 +62,11 @@ define(
 	"eraAbbr": [
 		"التقويم البوذي"
 	],
-	"dateFormatItem-yyyyMM": "MM‏/y G",
-	"dateFormatItem-yyyyMMMM": "MMMM، y G",
+	"dateFormatItem-GyMMMd": "d MMM، y G",
 	"dateFormat-long": "d MMMM، y G",
 	"timeFormat-medium": "h:mm:ss a",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormat-medium": "dd‏/MM‏/y G",
-	"dateFormatItem-yMd": "d/‏M/‏y G",
-	"dateFormatItem-yMMMM": "MMMM y G",
-	"dateFormatItem-ms": "mm:ss",
+	"dateFormat-medium": "dd/MM/y G",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"quarters-standAlone-narrow": [
 		"١",
 		"٢",
@@ -93,7 +87,9 @@ define(
 		"نوفمبر",
 		"ديسمبر"
 	],
-	"dateFormatItem-MMMMEd": "E d MMMM",
+	"dateFormatItem-yyyyMd": "d/M/y G",
+	"dateFormatItem-yyyyMMMd": "d MMM، y G",
+	"dateFormatItem-yyyyMEd": "E، d/M/y G",
 	"dateFormatItem-MMMd": "d MMM",
 	"quarters-format-narrow": [
 		"١",
@@ -116,9 +112,7 @@ define(
 		"نوفمبر",
 		"ديسمبر"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-short": "h:mm a",
-	"dateFormatItem-MMMMd": "d MMMM",
 	"days-format-abbr": [
 		"الأحد",
 		"الاثنين",
@@ -128,8 +122,9 @@ define(
 		"الجمعة",
 		"السبت"
 	],
-	"dateFormatItem-M": "L",
-	"dateFormatItem-yMMMd": "d MMM، y G",
+	"dateFormatItem-GyMMMEd": "E، d MMM، y G",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E، d/M",
 	"days-standAlone-short": [
 		"الأحد",
@@ -149,11 +144,10 @@ define(
 		"الجمعة",
 		"السبت"
 	],
-	"dateFormat-short": "d‏/M‏/y G",
-	"dateFormatItem-yMMMEd": "E، d MMM، y G",
+	"dateFormat-short": "d/M/y GGGGG",
+	"dateFormatItem-yyyyM": "M/y G",
 	"dateFormat-full": "EEEE، d MMMM، y G",
-	"dateFormatItem-Md": "d/‏M",
-	"dateFormatItem-yMEd": "E، d/‏M/‏y G",
+	"dateFormatItem-Md": "d/M",
 	"months-format-wide": [
 		"يناير",
 		"فبراير",
@@ -177,15 +171,12 @@ define(
 		"الجمعة",
 		"السبت"
 	],
-	"dateFormatItem-d": "d",
+	"dateFormatItem-yyyyMMM": "MMM y G",
 	"quarters-format-wide": [
 		"الربع الأول",
 		"الربع الثاني",
 		"الربع الثالث",
 		"الربع الرابع"
-	],
-	"eraNarrow": [
-		"التقويم البوذي"
 	],
 	"days-format-wide": [
 		"الأحد",
@@ -195,6 +186,9 @@ define(
 		"الخميس",
 		"الجمعة",
 		"السبت"
+	],
+	"eraNarrow": [
+		"التقويم البوذي"
 	]
 }
 //end v1.x content

@@ -1,14 +1,14 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yyyyMMMEd": "E d MMM y",
 	"dayPeriods-format-wide-pm": "หลังเที่ยง",
 	"eraNames": [
 		"พุทธศักราช"
 	],
 	"dateFormatItem-MMMEd": "E d MMM",
+	"dateTimeFormat-full": "{1}, {0}",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-wide": [
 		"วันอาทิตย์",
 		"วันจันทร์",
@@ -33,7 +33,10 @@ define(
 		"พ.ย.",
 		"ธ.ค."
 	],
+	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Gy": "G y",
 	"dayPeriods-format-wide-am": "ก่อนเที่ยง",
+	"dateTimeFormat-medium": "{1}, {0}",
 	"quarters-standAlone-abbr": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
@@ -42,6 +45,7 @@ define(
 	],
 	"dateFormatItem-y": "G y",
 	"timeFormat-full": "H นาฬิกา mm นาที ss วินาที zzzz",
+	"dateFormatItem-yyyy": "G y",
 	"months-standAlone-abbr": [
 		"ม.ค.",
 		"ก.พ.",
@@ -57,7 +61,6 @@ define(
 		"ธ.ค."
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"อา.",
 		"จ.",
@@ -71,21 +74,22 @@ define(
 		"พ.ศ."
 	],
 	"dateFormatItem-yyyyMMMM": "MMMM y",
+	"dateFormatItem-GyMMMd": "d MMM G y",
 	"dateFormat-long": "d MMMM y",
 	"dateFormatItem-Hm": "HH:mm",
 	"dateFormat-medium": "d MMM y",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dayPeriods-format-narrow-pm": "หลังเที่ยง",
-	"dateFormatItem-yMd": "d/M/yyyy",
 	"quarters-standAlone-wide": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
 		"ไตรมาส 3",
 		"ไตรมาส 4"
 	],
-	"dateFormatItem-yMMMM": "MMMM y",
 	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y",
 	"dayPeriods-format-narrow-am": "ก่อนเที่ยง",
+	"dateTimeFormat-long": "{1}, {0}",
 	"months-standAlone-wide": [
 		"มกราคม",
 		"กุมภาพันธ์",
@@ -100,7 +104,10 @@ define(
 		"พฤศจิกายน",
 		"ธันวาคม"
 	],
+	"dateFormatItem-yyyyMd": "d/M/y",
+	"dateFormatItem-yyyyMMMd": "d MMM y",
 	"dateFormatItem-MMMMEd": "E d MMMM",
+	"dateFormatItem-yyyyMEd": "E d/M/y",
 	"dateFormatItem-MMMd": "d MMM",
 	"timeFormat-long": "H นาฬิกา mm นาที ss วินาที z",
 	"months-format-abbr": [
@@ -117,7 +124,6 @@ define(
 		"พ.ย.",
 		"ธ.ค."
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
 	"dateFormatItem-H": "HH",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"quarters-format-abbr": [
@@ -146,8 +152,10 @@ define(
 		"ศ.",
 		"ส."
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-GyMMMEd": "E d MMM G y",
+	"dateFormatItem-GyMMM": "MMM G y",
 	"dateFormatItem-MEd": "E, d/M",
+	"dateFormatItem-yyyyQQQ": "QQQ y",
 	"months-format-narrow": [
 		"ม.ค.",
 		"ก.พ.",
@@ -182,11 +190,9 @@ define(
 		"ส."
 	],
 	"dateFormat-short": "d/M/yy",
-	"dateFormatItem-yyyyM": "M/yyyy",
-	"dateFormatItem-yMMMEd": "E d MMM y",
+	"dateFormatItem-yyyyM": "M/y",
 	"dateFormat-full": "EEEEที่ d MMMM G y",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E d/M/yyyy",
 	"months-format-wide": [
 		"มกราคม",
 		"กุมภาพันธ์",
@@ -210,6 +216,7 @@ define(
 		"ศ.",
 		"ส."
 	],
+	"dateFormatItem-yyyyMMM": "MMM y",
 	"dateFormatItem-d": "d",
 	"quarters-format-wide": [
 		"ไตรมาส 1",

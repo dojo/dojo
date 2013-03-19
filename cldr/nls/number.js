@@ -3,7 +3,7 @@ define({ root:
 //begin v1.x content
 {
 	"scientificFormat": "#E0",
-	"currencySpacing-afterCurrency-currencyMatch": "[:letter:]",
+	"currencySpacing-afterCurrency-currencyMatch": "[:^S:]",
 	"infinity": "∞",
 	"list": ";",
 	"percentSign": "%",
@@ -14,7 +14,7 @@ define({ root:
 	"nan": "NaN",
 	"plusSign": "+",
 	"currencySpacing-afterCurrency-surroundingMatch": "[:digit:]",
-	"currencySpacing-beforeCurrency-currencyMatch": "[:letter:]",
+	"currencySpacing-beforeCurrency-currencyMatch": "[:^S:]",
 	"currencyFormat": "¤ #,##0.00",
 	"perMille": "‰",
 	"group": ",",

@@ -1,148 +1,16 @@
 define(
 //begin v1.x content
 {
-	"days-standAlone-short": [
-		"Pa",
-		"Pt",
-		"Sa",
-		"Ça",
-		"Pe",
-		"Cu",
-		"Ct"
-	],
-	"months-format-narrow": [
-		"O",
-		"Ş",
-		"M",
-		"N",
-		"M",
-		"H",
-		"T",
-		"A",
-		"E",
-		"E",
-		"K",
-		"A"
-	],
-	"quarters-standAlone-narrow": [
-		"1.",
-		"2.",
-		"3.",
-		"4."
-	],
-	"field-weekday": "Haftanın Günü",
-	"dateFormatItem-yyQQQQ": "QQQQ yy",
-	"dateFormatItem-yQQQ": "y/QQQ",
-	"dateFormatItem-yMEd": "dd.MM.yyyy E",
-	"dateFormatItem-MMMEd": "d MMMM E",
-	"eraNarrow": [
-		"MÖ",
-		"MS"
-	],
-	"days-format-short": [
-		"Pa",
-		"Pt",
-		"Sa",
-		"Ça",
-		"Pe",
-		"Cu",
-		"Ct"
-	],
-	"dateFormat-long": "d MMMM y",
-	"months-format-wide": [
-		"Ocak",
-		"Şubat",
-		"Mart",
-		"Nisan",
-		"Mayıs",
-		"Haziran",
-		"Temmuz",
-		"Ağustos",
-		"Eylül",
-		"Ekim",
-		"Kasım",
-		"Aralık"
-	],
-	"dateTimeFormat-medium": "{1} {0}",
-	"dayPeriods-format-wide-pm": "ÖS",
-	"dateFormat-full": "d MMMM y EEEE",
-	"dateFormatItem-yyQQQ": "QQQ yy",
-	"dateFormatItem-Md": "dd/MM",
-	"dateFormatItem-yMd": "dd.MM.yyyy",
-	"field-era": "Miladi Dönem",
 	"dateFormatItem-yM": "MM/y",
-	"months-standAlone-wide": [
-		"Ocak",
-		"Şubat",
-		"Mart",
-		"Nisan",
-		"Mayıs",
-		"Haziran",
-		"Temmuz",
-		"Ağustos",
-		"Eylül",
-		"Ekim",
-		"Kasım",
-		"Aralık"
+	"dayPeriods-format-wide-pm": "ÖS",
+	"eraNames": [
+		"Milattan Önce",
+		"Milattan Sonra"
 	],
-	"timeFormat-short": "HH:mm",
-	"quarters-format-wide": [
-		"1. çeyrek",
-		"2. çeyrek",
-		"3. çeyrek",
-		"4. çeyrek"
-	],
-	"dateFormatItem-yQQQQ": "y/QQQQ",
-	"timeFormat-long": "HH:mm:ss z",
-	"field-year": "Yıl",
-	"dateFormatItem-yMMM": "MMM y",
-	"field-hour": "Saat",
-	"months-format-abbr": [
-		"Oca",
-		"Şub",
-		"Mar",
-		"Nis",
-		"May",
-		"Haz",
-		"Tem",
-		"Ağu",
-		"Eyl",
-		"Eki",
-		"Kas",
-		"Ara"
-	],
-	"timeFormat-full": "HH:mm:ss zzzz",
-	"field-day-relative+0": "Bugün",
-	"field-day-relative+1": "Yarın",
-	"field-day-relative+2": "Öbür gün",
-	"dateFormatItem-H": "HH",
-	"months-standAlone-abbr": [
-		"Oca",
-		"Şub",
-		"Mar",
-		"Nis",
-		"May",
-		"Haz",
-		"Tem",
-		"Ağu",
-		"Eyl",
-		"Eki",
-		"Kas",
-		"Ara"
-	],
-	"quarters-format-abbr": [
-		"Ç1",
-		"Ç2",
-		"Ç3",
-		"Ç4"
-	],
-	"quarters-standAlone-wide": [
-		"1. çeyrek",
-		"2. çeyrek",
-		"3. çeyrek",
-		"4. çeyrek"
-	],
-	"dateFormatItem-M": "L",
+	"dateFormatItem-MMMEd": "d MMMM E",
+	"dateTimeFormat-full": "{1} {0}",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-yQQQ": "y/QQQ",
 	"days-standAlone-wide": [
 		"Pazar",
 		"Pazartesi",
@@ -152,59 +20,7 @@ define(
 		"Cuma",
 		"Cumartesi"
 	],
-	"dateFormatItem-MMMMd": "dd MMMM",
-	"dateFormatItem-yyMMM": "MMM yy",
-	"timeFormat-medium": "HH:mm:ss",
-	"dateFormatItem-Hm": "HH:mm",
-	"quarters-standAlone-abbr": [
-		"Ç1",
-		"Ç2",
-		"Ç3",
-		"Ç4"
-	],
-	"eraAbbr": [
-		"MÖ",
-		"MS"
-	],
-	"field-minute": "Dakika",
-	"field-dayperiod": "ÖÖ/ÖS",
-	"days-standAlone-abbr": [
-		"Paz",
-		"Pzt",
-		"Sal",
-		"Çar",
-		"Per",
-		"Cum",
-		"Cmt"
-	],
-	"dateFormatItem-d": "d",
-	"dateFormatItem-ms": "mm:ss",
-	"quarters-format-narrow": [
-		"1.",
-		"2.",
-		"3.",
-		"4."
-	],
-	"field-day-relative+-1": "Dün",
-	"dateFormatItem-h": "h a",
-	"dateTimeFormat-long": "{1} {0}",
-	"field-day-relative+-2": "Evvelsi gün",
-	"dateFormatItem-MMMd": "d MMMM",
-	"dateFormatItem-MEd": "dd/MM E",
-	"dateTimeFormat-full": "{1} {0}",
-	"dateFormatItem-yMMMM": "MMMM y",
-	"field-day": "Gün",
-	"days-format-wide": [
-		"Pazar",
-		"Pazartesi",
-		"Salı",
-		"Çarşamba",
-		"Perşembe",
-		"Cuma",
-		"Cumartesi"
-	],
-	"field-zone": "Saat Dilimi",
-	"dateFormatItem-y": "y",
+	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"O",
 		"Ş",
@@ -219,10 +35,117 @@ define(
 		"K",
 		"A"
 	],
-	"field-year-relative+-1": "Geçen yıl",
-	"field-month-relative+-1": "Geçen ay",
-	"dateFormatItem-yyMM": "MM.yy",
-	"dateFormatItem-hm": "h:mm a",
+	"dateTimeFormat-short": "{1} {0}",
+	"dateFormatItem-Gy": "y G",
+	"dayPeriods-format-wide-am": "ÖÖ",
+	"dateTimeFormat-medium": "{1} {0}",
+	"quarters-standAlone-abbr": [
+		"Ç1",
+		"Ç2",
+		"Ç3",
+		"Ç4"
+	],
+	"dateFormatItem-y": "y",
+	"timeFormat-full": "HH:mm:ss zzzz",
+	"dateFormatItem-yMM": "MM.y",
+	"months-standAlone-abbr": [
+		"Oca",
+		"Şub",
+		"Mar",
+		"Nis",
+		"May",
+		"Haz",
+		"Tem",
+		"Ağu",
+		"Eyl",
+		"Eki",
+		"Kas",
+		"Ara"
+	],
+	"dateFormatItem-Ed": "d E",
+	"dateFormatItem-yMMM": "MMM y",
+	"days-standAlone-narrow": [
+		"P",
+		"P",
+		"S",
+		"Ç",
+		"P",
+		"C",
+		"C"
+	],
+	"eraAbbr": [
+		"MÖ",
+		"MS"
+	],
+	"dateFormatItem-GyMMMd": "dd MMM y G",
+	"dateFormat-long": "d MMMM y",
+	"timeFormat-medium": "HH:mm:ss",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-yMd": "dd.MM.y",
+	"quarters-standAlone-wide": [
+		"1. çeyrek",
+		"2. çeyrek",
+		"3. çeyrek",
+		"4. çeyrek"
+	],
+	"dateFormatItem-yMMMM": "MMMM y",
+	"dateFormatItem-ms": "mm:ss",
+	"quarters-standAlone-narrow": [
+		"1.",
+		"2.",
+		"3.",
+		"4."
+	],
+	"dateTimeFormat-long": "{1} {0}",
+	"months-standAlone-wide": [
+		"Ocak",
+		"Şubat",
+		"Mart",
+		"Nisan",
+		"Mayıs",
+		"Haziran",
+		"Temmuz",
+		"Ağustos",
+		"Eylül",
+		"Ekim",
+		"Kasım",
+		"Aralık"
+	],
+	"dateFormatItem-MMMMEd": "dd MMMM E",
+	"quarters-format-narrow": [
+		"1.",
+		"2.",
+		"3.",
+		"4."
+	],
+	"dateFormatItem-MMMd": "d MMMM",
+	"timeFormat-long": "HH:mm:ss z",
+	"months-format-abbr": [
+		"Oca",
+		"Şub",
+		"Mar",
+		"Nis",
+		"May",
+		"Haz",
+		"Tem",
+		"Ağu",
+		"Eyl",
+		"Eki",
+		"Kas",
+		"Ara"
+	],
+	"dateFormatItem-yQQQQ": "y/QQQQ",
+	"timeFormat-short": "HH:mm",
+	"dateFormatItem-H": "HH",
+	"quarters-format-abbr": [
+		"Ç1",
+		"Ç2",
+		"Ç3",
+		"Ç4"
+	],
+	"dateFormatItem-MMMMd": "dd MMMM",
 	"days-format-abbr": [
 		"Paz",
 		"Pzt",
@@ -231,11 +154,6 @@ define(
 		"Per",
 		"Cum",
 		"Cmt"
-	],
-	"dateFormatItem-yMMMd": "dd MMM y",
-	"eraNames": [
-		"Milattan Önce",
-		"Milattan Sonra"
 	],
 	"days-format-narrow": [
 		"P",
@@ -246,37 +164,94 @@ define(
 		"C",
 		"C"
 	],
-	"days-standAlone-narrow": [
-		"P",
-		"P",
-		"S",
-		"Ç",
-		"P",
-		"C",
-		"C"
-	],
-	"dateFormatItem-MMM": "LLL",
-	"field-month": "Ay",
-	"dayPeriods-format-wide-am": "ÖÖ",
-	"dateFormatItem-MMMMEd": "dd MMMM E",
-	"dateFormat-short": "d.MM.yyyy",
-	"field-second": "Saniye",
-	"dateFormatItem-yMMMEd": "d MMM y E",
-	"field-month-relative+0": "Bu ay",
-	"field-month-relative+1": "Gelecek ay",
-	"dateFormatItem-Ed": "d E",
-	"field-week": "Hafta",
-	"dateFormat-medium": "d MMM y",
-	"field-year-relative+0": "Bu yıl",
-	"field-week-relative+-1": "Geçen hafta",
-	"field-year-relative+1": "Gelecek yıl",
+	"dateFormatItem-M": "L",
 	"dateFormatItem-mmss": "mm:ss",
-	"dateTimeFormat-short": "{1} {0}",
-	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yyyy": "y",
-	"field-week-relative+0": "Bu hafta",
-	"field-week-relative+1": "Gelecek hafta"
+	"dateFormatItem-yMMMd": "dd MMM y",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-GyMMMEd": "d MMM y G E",
+	"dateFormatItem-MEd": "dd/MM E",
+	"months-format-narrow": [
+		"O",
+		"Ş",
+		"M",
+		"N",
+		"M",
+		"H",
+		"T",
+		"A",
+		"E",
+		"E",
+		"K",
+		"A"
+	],
+	"days-standAlone-short": [
+		"Pa",
+		"Pt",
+		"Sa",
+		"Ça",
+		"Pe",
+		"Cu",
+		"Ct"
+	],
+	"dateFormatItem-hm": "h:mm a",
+	"days-standAlone-abbr": [
+		"Paz",
+		"Pzt",
+		"Sal",
+		"Çar",
+		"Per",
+		"Cum",
+		"Cmt"
+	],
+	"dateFormat-short": "d.MM.y",
+	"dateFormatItem-yMMMEd": "d MMM y E",
+	"dateFormat-full": "d MMMM y EEEE",
+	"dateFormatItem-Md": "dd/MM",
+	"dateFormatItem-yMEd": "dd.MM.y E",
+	"months-format-wide": [
+		"Ocak",
+		"Şubat",
+		"Mart",
+		"Nisan",
+		"Mayıs",
+		"Haziran",
+		"Temmuz",
+		"Ağustos",
+		"Eylül",
+		"Ekim",
+		"Kasım",
+		"Aralık"
+	],
+	"days-format-short": [
+		"Pa",
+		"Pt",
+		"Sa",
+		"Ça",
+		"Pe",
+		"Cu",
+		"Ct"
+	],
+	"dateFormatItem-d": "d",
+	"quarters-format-wide": [
+		"1. çeyrek",
+		"2. çeyrek",
+		"3. çeyrek",
+		"4. çeyrek"
+	],
+	"days-format-wide": [
+		"Pazar",
+		"Pazartesi",
+		"Salı",
+		"Çarşamba",
+		"Perşembe",
+		"Cuma",
+		"Cumartesi"
+	],
+	"eraNarrow": [
+		"MÖ",
+		"MS"
+	],
+	"dateFormatItem-h": "h a"
 }
 //end v1.x content
 );

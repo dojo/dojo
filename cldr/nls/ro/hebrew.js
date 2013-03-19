@@ -1,11 +1,9 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM.yyyy",
 	"months-standAlone-abbr-leap": "Adar II",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"dateTimeFormat-full": "{1}, {0}",
-	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-wide": [
 		"duminică",
 		"luni",
@@ -24,6 +22,7 @@ define(
 		"T3",
 		"T4"
 	],
+	"dateFormatItem-y": "y",
 	"months-standAlone-abbr": [
 		"Tișrei",
 		"Heșvan",
@@ -40,7 +39,6 @@ define(
 		"Elul"
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"D",
 		"L",
@@ -50,9 +48,8 @@ define(
 		"V",
 		"S"
 	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "dd.MM.yyyy",
-	"dateFormatItem-yMd": "dd.MM.yyyy",
+	"dateFormat-long": "d MMMM y G",
+	"dateFormat-medium": "dd.MM.y G",
 	"quarters-standAlone-wide": [
 		"trimestrul I",
 		"trimestrul al II-lea",
@@ -103,7 +100,6 @@ define(
 		"Av",
 		"Elul"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"trim. I",
 		"trim. II",
@@ -128,7 +124,6 @@ define(
 		"V",
 		"S"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
 	"dateFormatItem-MEd": "E, dd.MM",
 	"days-standAlone-short": [
 		"Du",
@@ -149,11 +144,9 @@ define(
 		"Sâ"
 	],
 	"months-standAlone-wide-leap": "Adar II",
-	"dateFormat-short": "dd.MM.yyyy",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"dateFormat-full": "EEEE, d MMMM y",
+	"dateFormat-short": "dd.MM.y GGGGG",
+	"dateFormat-full": "EEEE, d MMMM y G",
 	"dateFormatItem-Md": "dd.MM",
-	"dateFormatItem-yMEd": "E, dd.MM.yyyy",
 	"months-format-wide": [
 		"Tișrei",
 		"Heșvan",
@@ -178,13 +171,13 @@ define(
 		"Vi",
 		"Sâ"
 	],
-	"months-format-wide-leap": "Adar II",
 	"quarters-format-wide": [
 		"trimestrul I",
 		"trimestrul al II-lea",
 		"trimestrul al III-lea",
 		"trimestrul al IV-lea"
 	],
+	"months-format-wide-leap": "Adar II",
 	"days-format-wide": [
 		"duminică",
 		"luni",

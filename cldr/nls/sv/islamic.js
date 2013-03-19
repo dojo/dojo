@@ -1,22 +1,18 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "yyyy-MM",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-MMdd": "dd/MM",
 	"days-standAlone-wide": [
-		"söndag",
-		"måndag",
-		"tisdag",
-		"onsdag",
-		"torsdag",
-		"fredag",
-		"lördag"
+		"Söndag",
+		"Måndag",
+		"Tisdag",
+		"Onsdag",
+		"Torsdag",
+		"Fredag",
+		"Lördag"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "fm",
 	"quarters-standAlone-abbr": [
@@ -28,7 +24,6 @@ define(
 	"dateFormatItem-y": "y G",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
 	"dateFormatItem-yyyy": "y G",
-	"dateFormatItem-yyQQQ": "QQQ yy G",
 	"months-standAlone-abbr": [
 		"muharram",
 		"safar",
@@ -44,7 +39,6 @@ define(
 		"dhu-l-hijja"
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -57,43 +51,34 @@ define(
 	"eraAbbr": [
 		"AH"
 	],
-	"dateFormatItem-yyyyMM": "G y-MM",
+	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "d MMMM y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-MMd": "d/M",
-	"dateFormatItem-yyMM": "G yy-MM",
 	"dateFormat-medium": "d MMM y G",
-	"dateFormatItem-Hms": "HH:mm:ss",
 	"dayPeriods-format-narrow-pm": "e",
-	"dateFormatItem-yyMMM": "MMM -yy G",
-	"dateFormatItem-yMd": "yyyy-MM-dd",
 	"quarters-standAlone-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",
 		"3:e kvartalet",
 		"4:e kvartalet"
 	],
-	"dateFormatItem-ms": "mm:ss",
-	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dayPeriods-format-narrow-am": "f",
 	"months-standAlone-wide": [
-		"muharram",
-		"safar",
-		"rabi’ al-awwal",
-		"rabi’ al-akhir",
-		"jumada-l-ula",
-		"jumada-l-akhira",
-		"rajab",
-		"sha’ban",
-		"ramadan",
-		"shawwal",
-		"dhu-l-ga’da",
-		"dhu-l-hijja"
+		"Muharram",
+		"Safar",
+		"Rabi’ al-awwal",
+		"Rabi’ al-akhir",
+		"Jumada-l-ula",
+		"Jumada-l-akhira",
+		"Rajab",
+		"Sha’ban",
+		"Ramadan",
+		"Shawwal",
+		"Dhu-l-ga’da",
+		"Dhu-l-hijja"
 	],
 	"dateFormatItem-yyyyMd": "G y-MM-dd",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
-	"dateFormatItem-MMMMEd": "E d:'e' MMMM",
-	"dateFormatItem-yyyyMEd": "E, G y-MM-dd",
+	"dateFormatItem-yyyyMEd": "E, y-MM-dd G",
 	"dateFormatItem-MMMd": "d MMM",
 	"months-format-abbr": [
 		"muharram",
@@ -109,7 +94,6 @@ define(
 		"dhu-l-ga’da",
 		"dhu-l-hijja"
 	],
-	"dateFormatItem-MMMMd": "d:'e' MMMM",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -125,7 +109,6 @@ define(
 		"fre",
 		"lör"
 	],
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"S",
 		"M",
@@ -135,35 +118,32 @@ define(
 		"F",
 		"L"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-GyMMMEd": "E d MMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
 	"dateFormatItem-MEd": "E d/M",
-	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"days-standAlone-short": [
-		"sö",
-		"må",
-		"ti",
-		"on",
-		"to",
-		"fr",
-		"lö"
+		"Sö",
+		"Må",
+		"Ti",
+		"On",
+		"To",
+		"Fr",
+		"Lö"
 	],
-	"dateFormatItem-hm": "h:mm a",
 	"days-standAlone-abbr": [
-		"sön",
-		"mån",
-		"tis",
-		"ons",
-		"tor",
-		"fre",
-		"lör"
+		"Sön",
+		"Mån",
+		"Tis",
+		"Ons",
+		"Tor",
+		"Fre",
+		"Lör"
 	],
 	"dayPeriods-format-abbr-pm": "EM",
 	"dateFormat-short": "G y-MM-dd",
 	"dateFormatItem-yyyyM": "G y-MM",
-	"dateFormatItem-yMMMEd": "E d MMM y",
 	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E, yyyy-MM-dd",
 	"months-format-wide": [
 		"muharram",
 		"safar",
@@ -189,7 +169,6 @@ define(
 		"lö"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
-	"dateFormatItem-d": "d",
 	"quarters-format-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",

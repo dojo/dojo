@@ -1,7 +1,7 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MMMM y",
+	"dateFormatItem-yyyyMMMEd": "E, d בMMMM y",
 	"months-standAlone-abbr-leap": "אדר ב׳",
 	"dayPeriods-format-wide-pm": "אחה״צ",
 	"eraNames": [
@@ -25,10 +25,13 @@ define(
 		"אל"
 	],
 	"dateTimeFormat-short": "{1}, {0}",
+	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "לפנה״צ",
 	"months-format-narrow-leap": "א2",
 	"dateTimeFormat-medium": "{1}, {0}",
 	"months-format-abbr-leap": "אדר ב׳",
+	"dateFormatItem-y": "y G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-narrow-leap": "א2",
 	"months-standAlone-abbr": [
 		"תשרי",
@@ -46,7 +49,6 @@ define(
 		"אלול"
 	],
 	"dateFormatItem-Ed": "E ה-d",
-	"dateFormatItem-yMMM": "MMMM y",
 	"days-standAlone-narrow": [
 		"א׳",
 		"ב׳",
@@ -59,10 +61,10 @@ define(
 	"eraAbbr": [
 		"לבה״ע"
 	],
+	"dateFormatItem-yyyyMMMM": "MMMM y",
+	"dateFormatItem-GyMMMd": "d MMMM y G",
 	"dateFormat-long": "d בMMMM y",
 	"dateFormat-medium": "d בMMMM y",
-	"dateFormatItem-yMd": "d בMMMM y",
-	"dateFormatItem-yMMMM": "MMMM y",
 	"quarters-standAlone-narrow": [
 		"ר1",
 		"ר2",
@@ -84,7 +86,10 @@ define(
 		"אב",
 		"אלול"
 	],
+	"dateFormatItem-yyyyMd": "d בMMMM y",
+	"dateFormatItem-yyyyMMMd": "d בMMMM y",
 	"dateFormatItem-MMMMEd": "E, d בMMMM",
+	"dateFormatItem-yyyyMEd": "E, d בMMMM y",
 	"dateFormatItem-MMMd": "d בMMMM",
 	"months-format-abbr": [
 		"תשרי",
@@ -111,6 +116,7 @@ define(
 		"יום ו׳",
 		"שבת"
 	],
+	"dateFormatItem-M": "MMMM",
 	"days-format-narrow": [
 		"א'",
 		"ב'",
@@ -120,8 +126,8 @@ define(
 		"ו׳",
 		"ש׳"
 	],
-	"dateFormatItem-M": "MMMM",
-	"dateFormatItem-yMMMd": "d בMMMM y",
+	"dateFormatItem-GyMMMEd": "E, d MMMM y G",
+	"dateFormatItem-GyMMM": "MMMM y G",
 	"dateFormatItem-MEd": "E, d בMMMM",
 	"months-format-narrow": [
 		"תש",
@@ -149,10 +155,9 @@ define(
 	],
 	"months-standAlone-wide-leap": "אדר ב׳",
 	"dateFormat-short": "d בMMMM y",
-	"dateFormatItem-yMMMEd": "E, d בMMMM y",
+	"dateFormatItem-yyyyM": "MMMM y",
 	"dateFormat-full": "EEEE, d בMMMM y",
 	"dateFormatItem-Md": "d בMMMM",
-	"dateFormatItem-yMEd": "E, d בMMMM y",
 	"months-format-wide": [
 		"תשרי",
 		"חשוון",
@@ -177,6 +182,7 @@ define(
 		"ו'",
 		"ש'"
 	],
+	"dateFormatItem-yyyyMMM": "MMMM y",
 	"months-format-wide-leap": "אדר ב׳",
 	"quarters-format-wide": [
 		"רבעון 1",

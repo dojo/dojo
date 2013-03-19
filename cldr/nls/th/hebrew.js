@@ -1,7 +1,7 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M/yyyy",
+	"dateFormatItem-yyyyMMMEd": "E d MMM G y",
 	"months-standAlone-abbr-leap": "อาดาร์ II",
 	"dayPeriods-format-wide-pm": "หลังเที่ยง",
 	"eraNames": [
@@ -9,7 +9,6 @@ define(
 	],
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateTimeFormat-full": "{1}, {0}",
-	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-wide": [
 		"วันอาทิตย์",
 		"วันจันทร์",
@@ -46,7 +45,6 @@ define(
 		"เอลอุล"
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"อา.",
 		"จ.",
@@ -59,16 +57,17 @@ define(
 	"eraAbbr": [
 		"ย.ศ."
 	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-GyMMMd": "d MMM G y",
+	"dateFormat-long": "d MMMM G y",
+	"dateFormat-medium": "d MMM G y",
 	"dayPeriods-format-narrow-pm": "หลังเที่ยง",
-	"dateFormatItem-yMd": "d/M/yyyy",
 	"quarters-standAlone-wide": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
 		"ไตรมาส 3",
 		"ไตรมาส 4"
 	],
+	"dateFormatItem-yyyyQQQQ": "QQQQ G y",
 	"dayPeriods-format-narrow-am": "ก่อนเที่ยง",
 	"dateTimeFormat-long": "{1}, {0}",
 	"months-standAlone-wide": [
@@ -86,6 +85,9 @@ define(
 		"อัฟ",
 		"เอลอุล"
 	],
+	"dateFormatItem-yyyyMd": "d/M/y G",
+	"dateFormatItem-yyyyMMMd": "d MMM G y",
+	"dateFormatItem-yyyyMEd": "E d/M/y G",
 	"dateFormatItem-MMMd": "d MMM",
 	"timeFormat-long": "H นาฬิกา mm นาที ss วินาที z",
 	"months-format-abbr": [
@@ -103,7 +105,6 @@ define(
 		"อัฟ",
 		"เอลอุล"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
 	"quarters-format-abbr": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
@@ -128,7 +129,9 @@ define(
 		"ศ.",
 		"ส."
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-GyMMMEd": "E d MMM G y",
+	"dateFormatItem-GyMMM": "MMM G y",
+	"dateFormatItem-yyyyQQQ": "QQQ G y",
 	"dateFormatItem-MEd": "E, d/M",
 	"days-standAlone-short": [
 		"อา.",
@@ -149,11 +152,10 @@ define(
 		"ส."
 	],
 	"months-standAlone-wide-leap": "อาดาร์ II",
-	"dateFormat-short": "d/M/yy",
-	"dateFormatItem-yMMMEd": "E d MMM y",
+	"dateFormat-short": "d/M/y G",
+	"dateFormatItem-yyyyM": "M/y G",
 	"dateFormat-full": "EEEEที่ d MMMM G y",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E d/M/yyyy",
 	"months-format-wide": [
 		"ทิชรี",
 		"เฮวาน",
@@ -178,16 +180,14 @@ define(
 		"ศ.",
 		"ส."
 	],
-	"months-format-wide-leap": "อาดาร์ II",
+	"dateFormatItem-yyyyMMM": "MMM G y",
 	"quarters-format-wide": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
 		"ไตรมาส 3",
 		"ไตรมาส 4"
 	],
-	"eraNarrow": [
-		"ย.ศ."
-	],
+	"months-format-wide-leap": "อาดาร์ II",
 	"days-format-wide": [
 		"วันอาทิตย์",
 		"วันจันทร์",
@@ -196,6 +196,9 @@ define(
 		"วันพฤหัสบดี",
 		"วันศุกร์",
 		"วันเสาร์"
+	],
+	"eraNarrow": [
+		"ย.ศ."
 	]
 }
 //end v1.x content

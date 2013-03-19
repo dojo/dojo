@@ -2,14 +2,22 @@ define({ root:
 
 //begin v1.x content
 {
+	"days-standAlone-abbr@localeAlias148": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"days-standAlone-short@localeAlias149": {
+		"bundle": "gregorian",
+		"target": "days-format-short"
+	},
 	"days-standAlone-short": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"months-format-narrow": [
 		"1",
@@ -26,54 +34,65 @@ define({ root:
 		"12",
 		"13"
 	],
+	"dayPeriods-format-narrow@localeAlias161": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
+	},
+	"dayPeriods-format-narrow@localeAlias162": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
+	},
 	"quarters-standAlone-narrow": [
 		"1",
 		"2",
 		"3",
 		"4"
 	],
-	"dateFormatItem-yQQQ": "y QQQ",
-	"days-format-short@localeAlias155": {
+	"dayPeriods-format-narrow@localeAlias164": {
 		"bundle": "gregorian",
-		"target": "days-format-abbr"
+		"target": "dayPeriods-format-abbr"
 	},
-	"days-format-short@localeAlias156": {
+	"dayPeriods-format-narrow@localeAlias165": {
 		"bundle": "gregorian",
-		"target": "days-format-wide"
+		"target": "dayPeriods-format-wide"
 	},
-	"eraNames@localeAlias176": {
-		"bundle": "ethiopic",
-		"target": "eraAbbr"
-	},
-	"dateFormatItem-yMEd": "E, y-M-d",
-	"dateFormat@localeAlias178": {
+	"dayPeriods@localeAlias159": {
 		"bundle": "gregorian",
-		"target": "dateFormat"
+		"target": "dayPeriods"
 	},
-	"dateFormatItem-MMMEd": "E MMM d",
+	"dateFormatItem-GyMMMEd": "G y MMM d, E",
+	"dateFormatItem-MMMEd": "MMM d, E",
 	"eraNarrow": [
 		"ERA0",
 		"ERA1"
 	],
 	"days-format-short": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}",
-	"days-standAlone-wide@localeAlias162": {
+	"days-standAlone-short@localeAlias150": {
+		"bundle": "gregorian",
+		"target": "days-format-abbr"
+	},
+	"quarters-standAlone-wide@localeAlias158": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
+	},
+	"days-standAlone-short@localeAlias151": {
 		"bundle": "gregorian",
 		"target": "days-format-wide"
 	},
-	"dateFormat-long": "y MMMM d",
-	"timeFormat@localeAlias179": {
+	"days-format-abbr@localeAlias143": {
 		"bundle": "gregorian",
-		"target": "timeFormat"
+		"target": "days-format-wide"
 	},
+	"dateFormat-long": "G y MMMM d",
 	"months-format-wide": [
 		"Meskerem",
 		"Tekemt",
@@ -89,42 +108,22 @@ define({ root:
 		"Nehasse",
 		"Pagumen"
 	],
-	"days-standAlone-abbr@localeAlias157": {
-		"bundle": "gregorian",
-		"target": "days-format-abbr"
-	},
+	"dateFormatItem-yyyyQQQ": "G y QQQ",
 	"dateTimeFormat-medium": "{1} {0}",
-	"days-standAlone-abbr@localeAlias158": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
-	"days-standAlone-short@localeAlias159": {
-		"bundle": "gregorian",
-		"target": "days-format-short"
-	},
 	"dayPeriods-format-wide-pm": "PM",
-	"dateFormat-full": "EEEE, y MMMM dd",
-	"dayPeriods-format-narrow@localeAlias171": {
+	"dateFormat-full": "G y MMMM d, EEEE",
+	"dateFormatItem-yyyyMEd": "GGGGG y-MM-dd, E",
+	"days-format-narrow@localeAlias144": {
 		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
+		"target": "days-standAlone-narrow"
 	},
-	"dayPeriods-format-narrow@localeAlias172": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
-	},
-	"dayPeriods-format-narrow@localeAlias174": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
-	},
-	"dateFormatItem-Md": "M-d",
-	"dayPeriods-format-narrow@localeAlias175": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
-	},
+	"dateFormatItem-Md": "MM-dd",
 	"dayPeriods-format-abbr-am": "AM",
+	"days@localeAlias142": {
+		"bundle": "gregorian",
+		"target": "days"
+	},
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
-	"dateFormatItem-yMd": "y-M-d",
-	"dateFormatItem-yM": "y-M",
 	"months-standAlone-wide": [
 		"Meskerem",
 		"Tekemt",
@@ -148,13 +147,7 @@ define({ root:
 		"Q4"
 	],
 	"timeFormat-long": "HH:mm:ss z",
-	"dayPeriods@localeAlias169": {
-		"bundle": "gregorian",
-		"target": "dayPeriods"
-	},
-	"dateFormatItem-yMMM": "y MMM",
-	"dateFormatItem-yQQQQ": "y QQQQ",
-	"dateTimeFormats-appendItem-Era": "{0} {1}",
+	"dateTimeFormats-appendItem-Era": "{1} {0}",
 	"months-format-abbr": [
 		"Meskerem",
 		"Tekemt",
@@ -170,24 +163,9 @@ define({ root:
 		"Nehasse",
 		"Pagumen"
 	],
-	"quarters-standAlone-wide@localeAlias168": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
-	},
-	"days-standAlone-short@localeAlias160": {
-		"bundle": "gregorian",
-		"target": "days-format-abbr"
-	},
 	"timeFormat-full": "HH:mm:ss zzzz",
-	"days-standAlone-short@localeAlias161": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
-	"days-format-abbr@localeAlias153": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"dateFormatItem-GyMMMd": "G y MMM d",
 	"months-standAlone-abbr": [
 		"Meskerem",
 		"Tekemt",
@@ -216,25 +194,37 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
-	"days-format-narrow@localeAlias154": {
-		"bundle": "gregorian",
-		"target": "days-standAlone-narrow"
-	},
+	"dateFormatItem-Gy": "G y",
+	"dateFormatItem-yyyyMMMEd": "G y MMM d, E",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
-	"days@localeAlias152": {
+	"dateFormatItem-yyyyMMM": "G y MMM",
+	"dateFormatItem-yyyyMMMd": "G y MMM d",
+	"quarters-standAlone-abbr@localeAlias156": {
 		"bundle": "gregorian",
-		"target": "days"
+		"target": "quarters-format-abbr"
 	},
 	"timeFormat-medium": "HH:mm:ss",
+	"quarters-standAlone-abbr@localeAlias157": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
+	},
+	"quarters-format-narrow@localeAlias155": {
+		"bundle": "gregorian",
+		"target": "quarters-standAlone-narrow"
+	},
+	"quarters-format-abbr@localeAlias154": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
+	},
 	"quarters-standAlone-abbr": [
 		"Q1",
 		"Q2",
@@ -242,19 +232,27 @@ define({ root:
 		"Q4"
 	],
 	"dateFormatItem-Hm": "HH:mm",
+	"eraNarrow@localeAlias167": {
+		"bundle": "ethiopic",
+		"target": "eraAbbr"
+	},
 	"eraAbbr": [
 		"ERA0",
 		"ERA1"
 	],
 	"days-standAlone-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
+	"months-standAlone-wide@localeAlias141": {
+		"bundle": "ethiopic",
+		"target": "months-format-wide"
+	},
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [
@@ -266,26 +264,38 @@ define({ root:
 	"dayPeriods-format-narrow-am": "AM",
 	"dateTimeFormat-long": "{1} {0}",
 	"dateFormatItem-h": "h a",
+	"months-standAlone-abbr@localeAlias139": {
+		"bundle": "ethiopic",
+		"target": "months-format-abbr"
+	},
 	"dateFormatItem-MMMd": "MMM d",
-	"dateFormatItem-MEd": "E, M-d",
+	"dateTime@localeAlias170": {
+		"bundle": "generic",
+		"target": "dateTime"
+	},
+	"months-format-abbr@localeAlias137": {
+		"bundle": "ethiopic",
+		"target": "months-format-wide"
+	},
+	"dateFormatItem-MEd": "MM-dd, E",
+	"dayPeriods-format-abbr@localeAlias160": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
+	},
 	"dateTimeFormat-full": "{1} {0}",
+	"dayPeriods-format-abbr@localeAlias163": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-wide"
+	},
 	"days-format-wide": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
-	"quarters-standAlone-abbr@localeAlias166": {
-		"bundle": "gregorian",
-		"target": "quarters-format-abbr"
-	},
-	"quarters-standAlone-abbr@localeAlias167": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
-	},
 	"months-standAlone-narrow": [
 		"1",
 		"2",
@@ -301,106 +311,101 @@ define({ root:
 		"12",
 		"13"
 	],
-	"dateFormatItem-y": "y",
+	"dateFormatItem-y": "G y",
 	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})",
-	"quarters-format-abbr@localeAlias164": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
-	},
-	"quarters-format-narrow@localeAlias165": {
-		"bundle": "gregorian",
-		"target": "quarters-standAlone-narrow"
-	},
-	"eraNarrow@localeAlias177": {
-		"bundle": "ethiopic",
-		"target": "eraAbbr"
-	},
-	"months-standAlone-wide@localeAlias151": {
+	"months-standAlone-abbr@localeAlias140": {
 		"bundle": "ethiopic",
 		"target": "months-format-wide"
 	},
 	"dateFormatItem-hm": "h:mm a",
-	"dateTimeFormats-appendItem-Year": "{0} {1}",
+	"dateTimeFormats-appendItem-Year": "{1} {0}",
 	"dateTimeFormats-appendItem-Hour": "{0} ({2}: {1})",
 	"dayPeriods-format-abbr-pm": "PM",
 	"days-format-abbr": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
 	],
 	"eraNames": [
 		"ERA0",
 		"ERA1"
 	],
-	"dateFormatItem-yMMMd": "y MMM d",
-	"months-standAlone-abbr@localeAlias149": {
-		"bundle": "ethiopic",
-		"target": "months-format-abbr"
-	},
 	"days-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
 	],
-	"dateTime@localeAlias180": {
-		"bundle": "gregorian",
-		"target": "dateTime"
-	},
-	"months-format-abbr@localeAlias147": {
+	"months-format-narrow@localeAlias138": {
 		"bundle": "ethiopic",
-		"target": "months-format-wide"
+		"target": "months-standAlone-narrow"
 	},
-	"dayPeriods-format-abbr@localeAlias170": {
+	"quarters@localeAlias153": {
 		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
+		"target": "quarters"
 	},
+	"dateFormatItem-yyyyMd": "GGGGG y-MM-dd",
 	"days-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7"
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
-	"dayPeriods-format-abbr@localeAlias173": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-wide"
-	},
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-am": "AM",
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
-	"months-standAlone-abbr@localeAlias150": {
-		"bundle": "ethiopic",
-		"target": "months-format-wide"
-	},
-	"dateFormat-short": "yyyy-MM-dd",
-	"months-format-narrow@localeAlias148": {
-		"bundle": "ethiopic",
-		"target": "months-standAlone-narrow"
-	},
-	"quarters@localeAlias163": {
+	"dateFormat-short": "GGGGG y-MM-dd",
+	"days-format-short@localeAlias145": {
 		"bundle": "gregorian",
-		"target": "quarters"
+		"target": "days-format-abbr"
 	},
-	"dateFormatItem-yMMMEd": "E, y MMM d",
-	"dateFormatItem-Ed": "d E",
+	"days-format-short@localeAlias146": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"eraNames@localeAlias166": {
+		"bundle": "ethiopic",
+		"target": "eraAbbr"
+	},
+	"dateFormatItem-Ed": "d, E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
-	"dateFormat-medium": "y MMM d",
+	"dateFormat@localeAlias168": {
+		"bundle": "generic",
+		"target": "dateFormat"
+	},
+	"dateFormat-medium": "G y MMM d",
+	"dateFormatItem-yyyyM": "GGGGG y-MM",
 	"dayPeriods-format-narrow-pm": "PM",
+	"dateFormatItem-yyyyQQQQ": "G y QQQQ",
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-hms": "h:mm:ss a"
+	"dateFormatItem-hms": "h:mm:ss a",
+	"days-standAlone-wide@localeAlias152": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"dateFormatItem-GyMMM": "G y MMM",
+	"timeFormat@localeAlias169": {
+		"bundle": "gregorian",
+		"target": "timeFormat"
+	},
+	"dateFormatItem-yyyy": "G y",
+	"days-standAlone-abbr@localeAlias147": {
+		"bundle": "gregorian",
+		"target": "days-format-abbr"
+	}
 }
 //end v1.x content
 ,

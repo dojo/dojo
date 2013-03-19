@@ -1,147 +1,16 @@
 define(
 //begin v1.x content
 {
-	"days-standAlone-short": [
-		"ned.",
-		"pon.",
-		"tor.",
-		"sre.",
-		"čet.",
-		"pet.",
-		"sob."
-	],
-	"months-format-narrow": [
-		"j",
-		"f",
-		"m",
-		"a",
-		"m",
-		"j",
-		"j",
-		"a",
-		"s",
-		"o",
-		"n",
-		"d"
-	],
-	"quarters-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-weekday": "Dan v tednu",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-yMEd": "E, d. M. y",
-	"dateFormatItem-MMMEd": "E, d. MMM",
-	"eraNarrow": [
-		"pr. n. št.",
-		"po Kr."
-	],
-	"days-format-short": [
-		"ned.",
-		"pon.",
-		"tor.",
-		"sre.",
-		"čet.",
-		"pet.",
-		"sob."
-	],
-	"dateFormat-long": "dd. MMMM y",
-	"months-format-wide": [
-		"januar",
-		"februar",
-		"marec",
-		"april",
-		"maj",
-		"junij",
-		"julij",
-		"avgust",
-		"september",
-		"oktober",
-		"november",
-		"december"
-	],
-	"dateTimeFormat-medium": "{1} {0}",
-	"dayPeriods-format-wide-pm": "pop.",
-	"dateFormat-full": "EEEE, dd. MMMM y",
-	"dateFormatItem-Md": "d. M.",
-	"dateFormatItem-yMd": "d. M. y",
-	"field-era": "Doba",
 	"dateFormatItem-yM": "M/y",
-	"months-standAlone-wide": [
-		"januar",
-		"februar",
-		"marec",
-		"april",
-		"maj",
-		"junij",
-		"julij",
-		"avgust",
-		"september",
-		"oktober",
-		"november",
-		"december"
+	"dayPeriods-format-wide-pm": "pop.",
+	"eraNames": [
+		"pred našim štetjem",
+		"naše štetje"
 	],
-	"timeFormat-short": "HH:mm",
-	"quarters-format-wide": [
-		"1. četrtletje",
-		"2. četrtletje",
-		"3. četrtletje",
-		"4. četrtletje"
-	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
-	"timeFormat-long": "HH:mm:ss z",
-	"field-year": "Leto",
-	"dateFormatItem-yMMM": "MMM y",
-	"dateFormatItem-yyyyMMMM": "MMMM y",
-	"field-hour": "Ura",
-	"months-format-abbr": [
-		"jan.",
-		"feb.",
-		"mar.",
-		"apr.",
-		"maj",
-		"jun.",
-		"jul.",
-		"avg.",
-		"sep.",
-		"okt.",
-		"nov.",
-		"dec."
-	],
-	"timeFormat-full": "HH:mm:ss zzzz",
-	"field-day-relative+0": "Danes",
-	"field-day-relative+1": "Jutri",
-	"field-day-relative+2": "Pojutrišnjem",
-	"dateFormatItem-H": "HH",
-	"months-standAlone-abbr": [
-		"jan",
-		"feb",
-		"mar",
-		"apr",
-		"maj",
-		"jun",
-		"jul",
-		"avg",
-		"sep",
-		"okt",
-		"nov",
-		"dec"
-	],
-	"quarters-format-abbr": [
-		"Q1",
-		"Q2",
-		"Q3",
-		"Q4"
-	],
-	"quarters-standAlone-wide": [
-		"1. četrtletje",
-		"2. četrtletje",
-		"3. četrtletje",
-		"4. četrtletje"
-	],
-	"dateFormatItem-M": "L",
+	"dateFormatItem-MMMEd": "E, d. MMM",
+	"dateTimeFormat-full": "{1} {0}",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-wide": [
 		"nedelja",
 		"ponedeljek",
@@ -151,50 +20,7 @@ define(
 		"petek",
 		"sobota"
 	],
-	"timeFormat-medium": "HH:mm:ss",
-	"dateFormatItem-Hm": "HH:mm",
-	"eraAbbr": [
-		"pr. n. št.",
-		"po Kr."
-	],
-	"field-minute": "Minuta",
-	"field-dayperiod": "Čas dneva",
-	"days-standAlone-abbr": [
-		"ned",
-		"pon",
-		"tor",
-		"sre",
-		"čet",
-		"pet",
-		"sob"
-	],
-	"dateFormatItem-d": "d",
-	"dateFormatItem-ms": "mm:ss",
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-day-relative+-1": "Včeraj",
-	"dateFormatItem-h": "h a",
-	"dateTimeFormat-long": "{1} {0}",
-	"field-day-relative+-2": "Predvčerajšnjim",
-	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-MEd": "E, d. MM.",
-	"dateTimeFormat-full": "{1} {0}",
-	"field-day": "Dan",
-	"days-format-wide": [
-		"nedelja",
-		"ponedeljek",
-		"torek",
-		"sreda",
-		"četrtek",
-		"petek",
-		"sobota"
-	],
-	"field-zone": "Območje",
-	"dateFormatItem-y": "y",
+	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"j",
 		"f",
@@ -209,33 +35,27 @@ define(
 		"n",
 		"d"
 	],
-	"field-year-relative+-1": "Lani",
-	"field-month-relative+-1": "Prejšnji mesec",
-	"dateFormatItem-hm": "h:mm a",
-	"days-format-abbr": [
-		"ned.",
-		"pon.",
-		"tor.",
-		"sre.",
-		"čet.",
-		"pet.",
-		"sob."
+	"dateTimeFormat-short": "{1} {0}",
+	"dayPeriods-format-wide-am": "dop.",
+	"dateTimeFormat-medium": "{1} {0}",
+	"dateFormatItem-y": "y",
+	"timeFormat-full": "HH:mm:ss zzzz",
+	"months-standAlone-abbr": [
+		"jan",
+		"feb",
+		"mar",
+		"apr",
+		"maj",
+		"jun",
+		"jul",
+		"avg",
+		"sep",
+		"okt",
+		"nov",
+		"dec"
 	],
-	"dateFormatItem-yMMMd": "d. MMM y",
-	"eraNames": [
-		"pred našim štetjem",
-		"naše štetje"
-	],
-	"days-format-narrow": [
-		"n",
-		"p",
-		"t",
-		"s",
-		"č",
-		"p",
-		"s"
-	],
-	"field-month": "Mesec",
+	"dateFormatItem-Ed": "E, d.",
+	"dateFormatItem-yMMM": "MMM y",
 	"days-standAlone-narrow": [
 		"n",
 		"p",
@@ -245,26 +65,180 @@ define(
 		"p",
 		"s"
 	],
-	"dateFormatItem-MMM": "LLL",
-	"dayPeriods-format-wide-am": "dop.",
-	"dateFormat-short": "d. MM. yy",
-	"field-second": "Sekunda",
-	"dateFormatItem-yMMMEd": "E, d. MMM y",
-	"field-month-relative+0": "Ta mesec",
-	"field-month-relative+1": "Naslednji mesec",
-	"dateFormatItem-Ed": "E, d.",
-	"field-week": "Teden",
-	"dateFormat-medium": "d. MMM yyyy",
-	"field-year-relative+0": "Letos",
-	"field-week-relative+-1": "Prejšnji teden",
-	"dateFormatItem-yyyyM": "M/yyyy",
-	"field-year-relative+1": "Naslednje leto",
-	"dateFormatItem-mmss": "mm:ss",
-	"dateTimeFormat-short": "{1} {0}",
+	"eraAbbr": [
+		"pr. n. št.",
+		"po Kr."
+	],
+	"dateFormat-long": "dd. MMMM y",
+	"timeFormat-medium": "HH:mm:ss",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormat-medium": "d. MMM y",
 	"dateFormatItem-Hms": "HH:mm:ss",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"field-week-relative+0": "Ta teden",
-	"field-week-relative+1": "Naslednji teden"
+	"dateFormatItem-yMd": "d. M. y",
+	"quarters-standAlone-wide": [
+		"1. četrtletje",
+		"2. četrtletje",
+		"3. četrtletje",
+		"4. četrtletje"
+	],
+	"dateFormatItem-yMMMM": "MMMM y",
+	"dateFormatItem-ms": "mm:ss",
+	"quarters-standAlone-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"dateTimeFormat-long": "{1} {0}",
+	"months-standAlone-wide": [
+		"januar",
+		"februar",
+		"marec",
+		"april",
+		"maj",
+		"junij",
+		"julij",
+		"avgust",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
+	"dateFormatItem-MMMd": "d. MMM",
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"timeFormat-long": "HH:mm:ss z",
+	"months-format-abbr": [
+		"jan.",
+		"feb.",
+		"mar.",
+		"apr.",
+		"maj",
+		"jun.",
+		"jul.",
+		"avg.",
+		"sep.",
+		"okt.",
+		"nov.",
+		"dec."
+	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
+	"timeFormat-short": "HH:mm",
+	"dateFormatItem-H": "HH",
+	"quarters-format-abbr": [
+		"Q1",
+		"Q2",
+		"Q3",
+		"Q4"
+	],
+	"days-format-abbr": [
+		"ned.",
+		"pon.",
+		"tor.",
+		"sre.",
+		"čet.",
+		"pet.",
+		"sob."
+	],
+	"dateFormatItem-M": "L",
+	"dateFormatItem-mmss": "mm:ss",
+	"days-format-narrow": [
+		"n",
+		"p",
+		"t",
+		"s",
+		"č",
+		"p",
+		"s"
+	],
+	"dateFormatItem-yMMMd": "d. MMM y",
+	"dateFormatItem-MEd": "E, d. MM.",
+	"months-format-narrow": [
+		"j",
+		"f",
+		"m",
+		"a",
+		"m",
+		"j",
+		"j",
+		"a",
+		"s",
+		"o",
+		"n",
+		"d"
+	],
+	"days-standAlone-short": [
+		"ned.",
+		"pon.",
+		"tor.",
+		"sre.",
+		"čet.",
+		"pet.",
+		"sob."
+	],
+	"dateFormatItem-hm": "h:mm a",
+	"days-standAlone-abbr": [
+		"ned",
+		"pon",
+		"tor",
+		"sre",
+		"čet",
+		"pet",
+		"sob"
+	],
+	"dateFormat-short": "d. MM. yy",
+	"dateFormatItem-yMMMEd": "E, d. MMM y",
+	"dateFormat-full": "EEEE, dd. MMMM y",
+	"dateFormatItem-Md": "d. M.",
+	"dateFormatItem-yMEd": "E, d. M. y",
+	"months-format-wide": [
+		"januar",
+		"februar",
+		"marec",
+		"april",
+		"maj",
+		"junij",
+		"julij",
+		"avgust",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
+	"days-format-short": [
+		"ned.",
+		"pon.",
+		"tor.",
+		"sre.",
+		"čet.",
+		"pet.",
+		"sob."
+	],
+	"dateFormatItem-d": "d",
+	"quarters-format-wide": [
+		"1. četrtletje",
+		"2. četrtletje",
+		"3. četrtletje",
+		"4. četrtletje"
+	],
+	"days-format-wide": [
+		"nedelja",
+		"ponedeljek",
+		"torek",
+		"sreda",
+		"četrtek",
+		"petek",
+		"sobota"
+	],
+	"eraNarrow": [
+		"pr. n. št.",
+		"po Kr."
+	],
+	"dateFormatItem-h": "h a"
 }
 //end v1.x content
 );

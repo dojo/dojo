@@ -13,8 +13,7 @@ define(
 		"trim. III",
 		"trim. IV"
 	],
-	"dateFormatItem-yMd": "dd.MM.yyyy",
-	"dateFormat-medium": "dd.MM.yyyy",
+	"dateFormat-medium": "dd.MM.y G",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"quarters-standAlone-abbr": [
 		"T1",
@@ -23,9 +22,9 @@ define(
 		"T4"
 	],
 	"dateFormatItem-MEd": "E, dd.MM",
-	"dateFormatItem-yMEd": "E, dd.MM.yyyy",
+	"dateFormatItem-yMEd": "E, dd.MM.y",
 	"dateTimeFormat-medium": "{1}, {0}",
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-y": "y",
 	"quarters-format-narrow": [
 		"1",
 		"2",
@@ -52,7 +51,6 @@ define(
 		"S"
 	],
 	"dateTimeFormat-long": "{1}, {0}",
-	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-short": [
 		"Du",
 		"Lu",
@@ -68,10 +66,9 @@ define(
 		"T3",
 		"T4"
 	],
-	"dateFormat-long": "d MMMM y",
-	"dateFormatItem-yQQQQ": "QQQQ y",
-	"dateFormat-short": "dd.MM.yyyy",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormat-long": "d MMMM y G",
+	"dateFormat-short": "dd.MM.y GGGGG",
+	"dateTimeFormat-short": "{1}, {0}",
 	"days-standAlone-wide": [
 		"duminică",
 		"luni",
@@ -81,7 +78,6 @@ define(
 		"vineri",
 		"sâmbătă"
 	],
-	"dateTimeFormat-short": "{1}, {0}",
 	"dateTimeFormat-full": "{1}, {0}",
 	"days-format-narrow": [
 		"D",
@@ -92,7 +88,6 @@ define(
 		"V",
 		"S"
 	],
-	"dateFormatItem-yM": "MM.yyyy",
 	"days-standAlone-abbr": [
 		"Du",
 		"Lu",
@@ -111,14 +106,13 @@ define(
 		"vineri",
 		"sâmbătă"
 	],
-	"dateFormatItem-yMMM": "MMM y",
 	"quarters-format-wide": [
 		"trimestrul I",
 		"trimestrul al II-lea",
 		"trimestrul al III-lea",
 		"trimestrul al IV-lea"
 	],
-	"dateFormat-full": "EEEE, d MMMM y",
+	"dateFormat-full": "EEEE, d MMMM y G",
 	"dateFormatItem-MMMd": "d MMM",
 	"days-format-abbr": [
 		"Du",

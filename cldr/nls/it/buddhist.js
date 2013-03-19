@@ -1,14 +1,12 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "M/y G",
+	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"eraNames": [
 		"EB"
 	],
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-hms": "hh:mm:ss a",
-	"dateFormatItem-yQQQ": "QQQ y G",
-	"dateFormatItem-MMdd": "dd/MM",
 	"days-standAlone-wide": [
 		"Domenica",
 		"Lunedì",
@@ -18,7 +16,6 @@ define(
 		"Venerdì",
 		"Sabato"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"G",
 		"F",
@@ -41,7 +38,7 @@ define(
 		"T4"
 	],
 	"dateFormatItem-y": "y G",
-	"dateFormatItem-yyQQQ": "QQQ y G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
 		"gen",
 		"feb",
@@ -57,7 +54,6 @@ define(
 		"dic"
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y G",
 	"days-standAlone-narrow": [
 		"D",
 		"L",
@@ -70,22 +66,17 @@ define(
 	"eraAbbr": [
 		"EB"
 	],
-	"dateFormatItem-yyyyMMMM": "MMMM y G",
+	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "dd MMMM y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-yyMM": "MM/y G",
 	"dateFormat-medium": "dd/MMM/y G",
-	"dateFormatItem-Hms": "HH:mm:ss",
 	"dayPeriods-format-narrow-pm": "p.",
-	"dateFormatItem-yyQQQQ": "QQQQ y G",
-	"dateFormatItem-yMd": "d/M/y G",
 	"quarters-standAlone-wide": [
 		"Primo trimestre",
 		"Secondo trimestre",
 		"Terzo trimestre",
 		"Quarto trimestre"
 	],
-	"dateFormatItem-ms": "mm:ss",
+	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dayPeriods-format-narrow-am": "m.",
 	"months-standAlone-wide": [
 		"Gennaio",
@@ -101,6 +92,9 @@ define(
 		"Novembre",
 		"Dicembre"
 	],
+	"dateFormatItem-yyyyMd": "d/M/y GGGGG",
+	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMEd": "E d/M/y GGGGG",
 	"dateFormatItem-MMMd": "d MMM",
 	"months-format-abbr": [
 		"gen",
@@ -116,14 +110,12 @@ define(
 		"nov",
 		"dic"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y G",
 	"quarters-format-abbr": [
 		"T1",
 		"T2",
 		"T3",
 		"T4"
 	],
-	"dateFormatItem-MMMMdd": "dd MMMM",
 	"days-format-abbr": [
 		"dom",
 		"lun",
@@ -133,8 +125,9 @@ define(
 		"ven",
 		"sab"
 	],
-	"dateFormatItem-M": "L",
-	"dateFormatItem-yMMMd": "d MMM y G",
+	"dateFormatItem-GyMMMEd": "E d MMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E d/M",
 	"months-format-narrow": [
 		"G",
@@ -160,11 +153,10 @@ define(
 		"sab"
 	],
 	"dateFormatItem-hm": "hh:mm a",
-	"dateFormat-short": "dd/MM/y G",
-	"dateFormatItem-yMMMEd": "E d MMM y G",
+	"dateFormat-short": "dd/MM/yy GGGGG",
+	"dateFormatItem-yyyyM": "M/y GGGGG",
 	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E, d/M/y G",
 	"months-format-wide": [
 		"gennaio",
 		"febbraio",
@@ -188,15 +180,12 @@ define(
 		"ven",
 		"sab"
 	],
-	"dateFormatItem-d": "d",
+	"dateFormatItem-yyyyMMM": "MMM y G",
 	"quarters-format-wide": [
 		"1o trimestre",
 		"2o trimestre",
 		"3o trimestre",
 		"4o trimestre"
-	],
-	"eraNarrow": [
-		"EB"
 	],
 	"days-format-wide": [
 		"domenica",
@@ -206,6 +195,9 @@ define(
 		"giovedì",
 		"venerdì",
 		"sabato"
+	],
+	"eraNarrow": [
+		"EB"
 	],
 	"dateFormatItem-h": "hh a"
 }

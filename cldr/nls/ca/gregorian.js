@@ -1,146 +1,16 @@
 define(
 //begin v1.x content
 {
-	"days-standAlone-short": [
-		"dg.",
-		"dl.",
-		"dm.",
-		"dc.",
-		"dj.",
-		"dv.",
-		"ds."
-	],
-	"months-format-narrow": [
-		"G",
-		"F",
-		"M",
-		"A",
-		"M",
-		"J",
-		"J",
-		"A",
-		"S",
-		"O",
-		"N",
-		"D"
-	],
-	"quarters-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-weekday": "dia de la setmana",
-	"dateFormatItem-yQQQ": "QQQ y",
-	"dateFormatItem-yMEd": "E, d.M.y",
-	"dateFormatItem-MMMEd": "E d MMM",
-	"eraNarrow": [
-		"aC",
-		"dC"
-	],
-	"days-format-short": [
-		"dg.",
-		"dl.",
-		"dt.",
-		"dc.",
-		"dj.",
-		"dv.",
-		"ds."
-	],
-	"dateFormat-long": "d MMMM 'de' y",
-	"months-format-wide": [
-		"de gener",
-		"de febrer",
-		"de març",
-		"d’abril",
-		"de maig",
-		"de juny",
-		"de juliol",
-		"d’agost",
-		"de setembre",
-		"d’octubre",
-		"de novembre",
-		"de desembre"
-	],
-	"dateTimeFormat-medium": "{1} {0}",
+	"dateFormatItem-yM": "M/y",
 	"dayPeriods-format-wide-pm": "p.m.",
-	"dateFormat-full": "EEEE d MMMM 'de' y",
-	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMd": "d/M/yyyy",
-	"field-era": "era",
-	"dateFormatItem-yM": "M/yyyy",
-	"months-standAlone-wide": [
-		"gener",
-		"febrer",
-		"març",
-		"abril",
-		"maig",
-		"juny",
-		"juliol",
-		"agost",
-		"setembre",
-		"octubre",
-		"novembre",
-		"desembre"
+	"eraNames": [
+		"abans de Crist",
+		"després de Crist"
 	],
-	"timeFormat-short": "H.mm",
-	"quarters-format-wide": [
-		"1r trimestre",
-		"2n trimestre",
-		"3r trimestre",
-		"4t trimestre"
-	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
-	"timeFormat-long": "H.mm.ss z",
-	"field-year": "any",
-	"dateFormatItem-yMMM": "LLL y",
-	"field-hour": "hora",
-	"months-format-abbr": [
-		"de gen.",
-		"de febr.",
-		"de març",
-		"d’abr.",
-		"de maig",
-		"de juny",
-		"de jul.",
-		"d’ag.",
-		"de set.",
-		"d’oct.",
-		"de nov.",
-		"de des."
-	],
-	"timeFormat-full": "H.mm.ss zzzz",
-	"field-day-relative+0": "avui",
-	"field-day-relative+1": "demà",
-	"field-day-relative+2": "demà passat",
-	"dateFormatItem-H": "H",
-	"months-standAlone-abbr": [
-		"gen.",
-		"febr.",
-		"març",
-		"abr.",
-		"maig",
-		"juny",
-		"jul.",
-		"ag.",
-		"set.",
-		"oct.",
-		"nov.",
-		"des."
-	],
-	"quarters-format-abbr": [
-		"1T",
-		"2T",
-		"3T",
-		"4T"
-	],
-	"quarters-standAlone-wide": [
-		"1r trimestre",
-		"2n trimestre",
-		"3r trimestre",
-		"4t trimestre"
-	],
-	"dateFormatItem-M": "L",
+	"dateFormatItem-MMMEd": "E d MMM",
+	"dateTimeFormat-full": "{1} {0}",
+	"dateFormatItem-hms": "h.mm.ss a",
+	"dateFormatItem-yQQQ": "QQQ y",
 	"days-standAlone-wide": [
 		"Diumenge",
 		"Dilluns",
@@ -150,60 +20,7 @@ define(
 		"Divendres",
 		"Dissabte"
 	],
-	"dateFormatItem-MMMMd": "d MMMM",
-	"timeFormat-medium": "H.mm.ss",
-	"dateFormatItem-Hm": "H.mm",
-	"quarters-standAlone-abbr": [
-		"1T",
-		"2T",
-		"3T",
-		"4T"
-	],
-	"eraAbbr": [
-		"aC",
-		"dC"
-	],
-	"field-minute": "minut",
-	"field-dayperiod": "a.m./p.m.",
-	"days-standAlone-abbr": [
-		"dg",
-		"dl",
-		"dt",
-		"dc",
-		"dj",
-		"dv",
-		"ds"
-	],
-	"dateFormatItem-d": "d",
-	"dateFormatItem-ms": "mm.ss",
-	"quarters-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	"field-day-relative+-1": "ahir",
-	"dateFormatItem-h": "h a",
-	"dateTimeFormat-long": "{1} {0}",
-	"dayPeriods-format-narrow-am": "a.m.",
-	"field-day-relative+-2": "abans d'ahir",
-	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MEd": "E d/M",
-	"dateTimeFormat-full": "{1} {0}",
-	"dateFormatItem-yMMMM": "LLLL 'de' y",
-	"field-day": "dia",
-	"days-format-wide": [
-		"diumenge",
-		"dilluns",
-		"dimarts",
-		"dimecres",
-		"dijous",
-		"divendres",
-		"dissabte"
-	],
-	"field-zone": "zona",
-	"dateFormatItem-yyyyMM": "MM/yyyy",
-	"dateFormatItem-y": "y",
+	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"g",
 		"f",
@@ -218,9 +35,117 @@ define(
 		"n",
 		"d"
 	],
-	"field-year-relative+-1": "Últim any",
-	"field-month-relative+-1": "Últim mes",
-	"dateFormatItem-hm": "h.mm a",
+	"dateTimeFormat-short": "{1} {0}",
+	"dayPeriods-format-wide-am": "a.m.",
+	"dateTimeFormat-medium": "{1} {0}",
+	"quarters-standAlone-abbr": [
+		"1T",
+		"2T",
+		"3T",
+		"4T"
+	],
+	"dateFormatItem-y": "y",
+	"timeFormat-full": "H.mm.ss zzzz",
+	"dateFormatItem-yMM": "MM/y",
+	"months-standAlone-abbr": [
+		"gen.",
+		"febr.",
+		"març",
+		"abr.",
+		"maig",
+		"juny",
+		"jul.",
+		"ag.",
+		"set.",
+		"oct.",
+		"nov.",
+		"des."
+	],
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-yMMM": "LLL y",
+	"days-standAlone-narrow": [
+		"dg",
+		"dl",
+		"dt",
+		"dc",
+		"dj",
+		"dv",
+		"ds"
+	],
+	"eraAbbr": [
+		"aC",
+		"dC"
+	],
+	"dateFormat-long": "d MMMM 'de' y",
+	"timeFormat-medium": "H.mm.ss",
+	"dateFormatItem-Hm": "H.mm",
+	"dateFormat-medium": "dd/MM/y",
+	"dateFormatItem-Hms": "H.mm.ss",
+	"dayPeriods-format-narrow-pm": "p.m.",
+	"quarters-standAlone-wide": [
+		"1r trimestre",
+		"2n trimestre",
+		"3r trimestre",
+		"4t trimestre"
+	],
+	"dateFormatItem-yMd": "d/M/y",
+	"dateFormatItem-yMMMM": "LLLL 'de' y",
+	"dateFormatItem-ms": "mm.ss",
+	"dayPeriods-format-narrow-am": "a.m.",
+	"quarters-standAlone-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"dateTimeFormat-long": "{1} {0}",
+	"months-standAlone-wide": [
+		"gener",
+		"febrer",
+		"març",
+		"abril",
+		"maig",
+		"juny",
+		"juliol",
+		"agost",
+		"setembre",
+		"octubre",
+		"novembre",
+		"desembre"
+	],
+	"dateFormatItem-MMMMEd": "E d MMMM",
+	"quarters-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	"dateFormatItem-MMMd": "d MMM",
+	"timeFormat-long": "H.mm.ss z",
+	"months-format-abbr": [
+		"de gen.",
+		"de febr.",
+		"de març",
+		"d’abr.",
+		"de maig",
+		"de juny",
+		"de jul.",
+		"d’ag.",
+		"de set.",
+		"d’oct.",
+		"de nov.",
+		"de des."
+	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
+	"timeFormat-short": "H.mm",
+	"dateFormatItem-H": "H",
+	"quarters-format-abbr": [
+		"1T",
+		"2T",
+		"3T",
+		"4T"
+	],
+	"dateFormatItem-MMMMd": "d MMMM",
 	"days-format-abbr": [
 		"dg.",
 		"dl.",
@@ -229,11 +154,6 @@ define(
 		"dj.",
 		"dv.",
 		"ds."
-	],
-	"dateFormatItem-yMMMd": "d MMM y",
-	"eraNames": [
-		"abans de Crist",
-		"després de Crist"
 	],
 	"days-format-narrow": [
 		"dg",
@@ -244,7 +164,35 @@ define(
 		"dv",
 		"ds"
 	],
-	"days-standAlone-narrow": [
+	"dateFormatItem-M": "L",
+	"dateFormatItem-mmss": "mm:ss",
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-MEd": "E d/M",
+	"months-format-narrow": [
+		"G",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	"days-standAlone-short": [
+		"dg.",
+		"dl.",
+		"dm.",
+		"dc.",
+		"dj.",
+		"dv.",
+		"ds."
+	],
+	"dateFormatItem-hm": "h.mm a",
+	"days-standAlone-abbr": [
 		"dg",
 		"dl",
 		"dt",
@@ -253,28 +201,55 @@ define(
 		"dv",
 		"ds"
 	],
-	"dateFormatItem-MMM": "LLL",
-	"field-month": "mes",
-	"dayPeriods-format-wide-am": "a.m.",
-	"dateFormatItem-MMMMEd": "E d MMMM",
 	"dateFormat-short": "dd/MM/yy",
-	"field-second": "segon",
 	"dateFormatItem-yMMMEd": "E, d MMM, y",
-	"field-month-relative+0": "Aquest mes",
-	"field-month-relative+1": "Mes següent",
-	"dateFormatItem-Ed": "E d",
-	"field-week": "setmana",
-	"dateFormat-medium": "dd/MM/yyyy",
-	"field-year-relative+0": "Aquest any",
-	"field-week-relative+-1": "Última setmana",
-	"field-year-relative+1": "Any següent",
-	"dateFormatItem-mmss": "mm:ss",
-	"dayPeriods-format-narrow-pm": "p.m.",
-	"dateTimeFormat-short": "{1} {0}",
-	"dateFormatItem-Hms": "H.mm.ss",
-	"dateFormatItem-hms": "h.mm.ss a",
-	"field-week-relative+0": "Aquesta setmana",
-	"field-week-relative+1": "Setmana següent"
+	"dateFormat-full": "EEEE d MMMM 'de' y",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yMEd": "E, d.M.y",
+	"months-format-wide": [
+		"de gener",
+		"de febrer",
+		"de març",
+		"d’abril",
+		"de maig",
+		"de juny",
+		"de juliol",
+		"d’agost",
+		"de setembre",
+		"d’octubre",
+		"de novembre",
+		"de desembre"
+	],
+	"days-format-short": [
+		"dg.",
+		"dl.",
+		"dt.",
+		"dc.",
+		"dj.",
+		"dv.",
+		"ds."
+	],
+	"dateFormatItem-d": "d",
+	"quarters-format-wide": [
+		"1r trimestre",
+		"2n trimestre",
+		"3r trimestre",
+		"4t trimestre"
+	],
+	"days-format-wide": [
+		"diumenge",
+		"dilluns",
+		"dimarts",
+		"dimecres",
+		"dijous",
+		"divendres",
+		"dissabte"
+	],
+	"eraNarrow": [
+		"aC",
+		"dC"
+	],
+	"dateFormatItem-h": "h a"
 }
 //end v1.x content
 );

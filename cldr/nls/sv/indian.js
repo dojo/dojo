@@ -33,32 +33,32 @@ define(
 		"SAKA"
 	],
 	"months-standAlone-abbr": [
-		"chaitra",
-		"vaishākh",
-		"jyaishtha",
-		"āshādha",
-		"shrāvana",
-		"bhādrapad",
-		"āshwin",
-		"kārtik",
-		"mārgashīrsha",
-		"paush",
-		"māgh",
-		"phālgun"
+		"Chaitra",
+		"Vaishākh",
+		"Jyaishtha",
+		"Āshādha",
+		"Shrāvana",
+		"Bhādrapad",
+		"Āshwin",
+		"Kārtik",
+		"Mārgashīrsha",
+		"Paush",
+		"Māgh",
+		"Phālgun"
 	],
 	"months-standAlone-wide": [
-		"chaitra",
-		"vaishākh",
-		"jyaishtha",
-		"āshādha",
-		"shrāvana",
-		"bhādrapad",
-		"āshwin",
-		"kārtik",
-		"mārgashīrsha",
-		"paush",
-		"māgh",
-		"phālgun"
+		"Chaitra",
+		"Vaishākh",
+		"Jyaishtha",
+		"Āshādha",
+		"Shrāvana",
+		"Bhādrapad",
+		"Āshwin",
+		"Kārtik",
+		"Mārgashīrsha",
+		"Paush",
+		"Māgh",
+		"Phālgun"
 	]
 }
 //end v1.x content

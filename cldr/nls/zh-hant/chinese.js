@@ -1,14 +1,16 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yMd": "U年M月d日",
+	"dateFormatItem-GyMMM": "U年MMM",
 	"dateFormat-medium": "U年MMMd日",
+	"dateFormatItem-yMd": "U年M月d日",
 	"dateFormatItem-MMMEd": "MMMd日E",
 	"dateFormatItem-MEd": "M/dE",
-	"dateFormatItem-yMEd": "U年M月d日，E",
+	"dateFormatItem-yyyyMMM": "U年MMM",
+	"dateFormatItem-GyMMMd": "U年MMMd日",
 	"dateFormatItem-y": "U年",
-	"dateFormatItem-yMMMd": "U年MMMd日",
 	"dateFormatItem-Md": "M/d",
+	"dateFormatItem-yyyyQQQQ": "U年QQQQ",
 	"months-standAlone-narrow": [
 		"正",
 		"二",
@@ -23,12 +25,14 @@ define(
 		"十一",
 		"十二"
 	],
+	"dateFormatItem-GyMMMEd": "U年MMMd日E",
 	"dateFormatItem-M": "MMM",
-	"dateFormatItem-yQQQ": "U年QQQQ",
+	"dateFormatItem-yyyyMMMEd": "U年MMMd日E",
+	"dateFormatItem-yyyyMEd": "U年M月d日，E",
+	"dateFormatItem-yyyy": "U年",
 	"dateFormat-long": "U年MMMd日",
-	"dateFormatItem-yQQQQ": "U年QQQQ",
+	"dateFormatItem-yyyyQQQ": "U年QQQQ",
 	"dateFormat-short": "U/M/d",
-	"dateFormatItem-yMMMEd": "U年MMMd日E",
 	"months-format-wide": [
 		"正月",
 		"二月",
@@ -43,11 +47,13 @@ define(
 		"十一月",
 		"十二月"
 	],
+	"dateFormatItem-Gy": "U年",
 	"dateFormatItem-d": "d日",
-	"dateFormatItem-yM": "U年M月",
-	"dateFormatItem-yMMM": "U年MMM",
+	"dateFormatItem-yyyyMMMd": "U年MMMd日",
+	"dateFormatItem-yyyyM": "U年M月",
 	"dateFormat-full": "U年MMMd日EEEE",
 	"dateFormatItem-MMMd": "MMMd日",
+	"dateFormatItem-yyyyMd": "U年M月d日",
 	"dateFormatItem-Ed": "d日E"
 }
 //end v1.x content

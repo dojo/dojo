@@ -1,11 +1,10 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "MM.y G",
+	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
 	"dayPeriods-format-wide-pm": "после полудня",
 	"dateFormatItem-MMMEd": "ccc, d MMM",
-	"dateFormatItem-yQQQ": "QQQ y G",
-	"dateFormatItem-MMdd": "dd.MM",
+	"dateTimeFormat-full": "{1}, {0}",
 	"days-standAlone-wide": [
 		"Воскресенье",
 		"Понедельник",
@@ -15,7 +14,6 @@ define(
 		"Пятница",
 		"Суббота"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"Я",
 		"Ф",
@@ -30,8 +28,10 @@ define(
 		"Н",
 		"Д"
 	],
+	"dateTimeFormat-short": "{1}, {0}",
 	"dateFormatItem-Gy": "y G",
 	"dayPeriods-format-wide-am": "до полудня",
+	"dateTimeFormat-medium": "{1}, {0}",
 	"quarters-standAlone-abbr": [
 		"1-й кв.",
 		"2-й кв.",
@@ -56,8 +56,6 @@ define(
 		"Дек."
 	],
 	"dateFormatItem-Ed": "E, d",
-	"dateFormatItem-yMMM": "LLL y G",
-	"dateFormatItem-yyyyLLLL": "LLLL y G",
 	"days-standAlone-narrow": [
 		"В",
 		"П",
@@ -67,26 +65,25 @@ define(
 		"П",
 		"С"
 	],
-	"dateFormatItem-yyyyMM": "MM.yyyy G",
-	"dateFormatItem-yyyyMMMM": "LLLL y G",
+	"eraAbbr": [
+		"BE"
+	],
+	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "d MMMM y 'г'. G",
 	"timeFormat-medium": "H:mm:ss",
 	"dateFormatItem-Hm": "H:mm",
-	"dateFormatItem-yyMM": "MM.yy G",
-	"dateFormat-medium": "dd.MM.yyyy G",
+	"dateFormat-medium": "dd.MM.y G",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dayPeriods-format-narrow-pm": "пп",
-	"dateFormatItem-yyMMM": "LLL yy G",
-	"dateFormatItem-yMd": "dd.MM.y G",
 	"quarters-standAlone-wide": [
 		"1-й квартал",
 		"2-й квартал",
 		"3-й квартал",
 		"4-й квартал"
 	],
-	"dateFormatItem-ms": "mm:ss",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y 'г'. G",
 	"dayPeriods-format-narrow-am": "дп",
+	"dateTimeFormat-long": "{1}, {0}",
 	"months-standAlone-wide": [
 		"Январь",
 		"Февраль",
@@ -101,9 +98,10 @@ define(
 		"Ноябрь",
 		"Декабрь"
 	],
+	"dateFormatItem-yyyyMd": "dd.MM.y G",
+	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMEd": "E, dd.MM.y G",
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-yyMMMEd": "E, d MMM yy G",
-	"dateFormatItem-E": "ccc",
 	"timeFormat-long": "H:mm:ss z",
 	"months-format-abbr": [
 		"янв.",
@@ -119,9 +117,8 @@ define(
 		"нояб.",
 		"дек."
 	],
-	"dateFormatItem-yQQQQ": "y QQQQ",
-	"dateFormatItem-H": "H",
 	"timeFormat-short": "H:mm",
+	"dateFormatItem-H": "H",
 	"quarters-format-abbr": [
 		"1-й кв.",
 		"2-й кв.",
@@ -137,7 +134,6 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"вс",
 		"пн",
@@ -147,7 +143,9 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormatItem-yMMMd": "d MMM y G",
+	"dateFormatItem-GyMMMEd": "E, d MMM y G",
+	"dateFormatItem-GyMMM": "LLL y G",
+	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E, dd.MM",
 	"months-format-narrow": [
 		"Я",
@@ -182,11 +180,10 @@ define(
 		"Сб"
 	],
 	"dayPeriods-format-abbr-pm": "после полудня",
-	"dateFormat-short": "dd.MM.yy G",
-	"dateFormatItem-yMMMEd": "E, d MMM y G",
+	"dateFormat-short": "dd.MM.y G",
+	"dateFormatItem-yyyyM": "MM.y G",
 	"dateFormat-full": "EEEE, d MMMM y 'г'. G",
 	"dateFormatItem-Md": "dd.MM",
-	"dateFormatItem-yMEd": "E, dd.MM.y G",
 	"months-format-wide": [
 		"января",
 		"февраля",
@@ -211,7 +208,7 @@ define(
 		"пт",
 		"сб"
 	],
-	"dateFormatItem-d": "d",
+	"dateFormatItem-yyyyMMM": "LLL y G",
 	"quarters-format-wide": [
 		"1-й квартал",
 		"2-й квартал",

@@ -1,21 +1,25 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yMd": "d/M/y",
+	"dateFormatItem-GyMMM": "MMM U",
 	"dateFormat-medium": "d MMM U",
+	"dateFormatItem-yMd": "d/M/y",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateFormatItem-MEd": "E d/M",
-	"dateFormatItem-yMEd": "E d/M/y",
+	"dateFormatItem-yyyyMMM": "MMM U",
+	"dateFormatItem-GyMMMd": "d MMM U",
 	"dateFormatItem-y": "U",
-	"dateFormatItem-yMMMd": "d MMM U",
 	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yyyyQQQQ": "QQQQ U",
+	"dateFormatItem-GyMMMEd": "E d MMM U",
 	"dateFormatItem-M": "L",
-	"dateFormatItem-yQQQ": "QQQ U",
+	"dateFormatItem-yyyyMMMEd": "E d MMM U",
+	"dateFormatItem-yyyyMEd": "E d/M/y",
+	"dateFormatItem-yyyy": "U",
 	"dateFormat-long": "d MMMM U",
-	"dateFormatItem-yQQQQ": "QQQQ U",
+	"dateFormatItem-yyyyQQQ": "QQQ U",
 	"dateFormatItem-ms": "mm:ss",
 	"dateFormat-short": "d/M/y",
-	"dateFormatItem-yMMMEd": "E d MMM U",
 	"months-format-wide": [
 		"zhēngyuè",
 		"èryuè",
@@ -30,7 +34,7 @@ define(
 		"shíyīyuè",
 		"shí’èryuè"
 	],
-	"dateFormatItem-yM": "M/y",
+	"dateFormatItem-Gy": "U",
 	"months-format-abbr": [
 		"1yuè",
 		"2yuè",
@@ -45,10 +49,12 @@ define(
 		"11yuè",
 		"12yuè"
 	],
+	"dateFormatItem-yyyyMMMd": "d MMM U",
+	"dateFormatItem-yyyyM": "M/y",
 	"dateFormatItem-MMM": "LLL",
-	"dateFormatItem-yMMM": "MMM U",
 	"dateFormat-full": "EEEE d MMMM U",
-	"dateFormatItem-MMMd": "d MMM"
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-yyyyMd": "d/M/y"
 }
 //end v1.x content
 );

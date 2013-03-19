@@ -1,22 +1,18 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-yM": "G yyyy-MM",
+	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormatItem-MMMEd": "E d MMM",
-	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-yQQQ": "G y QQQ",
-	"dateFormatItem-MMdd": "dd/MM",
 	"days-standAlone-wide": [
-		"söndag",
-		"måndag",
-		"tisdag",
-		"onsdag",
-		"torsdag",
-		"fredag",
-		"lördag"
+		"Söndag",
+		"Måndag",
+		"Tisdag",
+		"Onsdag",
+		"Torsdag",
+		"Fredag",
+		"Lördag"
 	],
-	"dateFormatItem-MMM": "LLL",
 	"months-standAlone-narrow": [
 		"J",
 		"F",
@@ -41,23 +37,22 @@ define(
 	],
 	"dateFormatItem-y": "y G",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
-	"dateFormatItem-yyQQQ": "QQQ yy G",
+	"dateFormatItem-yyyy": "y G",
 	"months-standAlone-abbr": [
-		"jan",
-		"feb",
-		"mar",
-		"apr",
-		"maj",
-		"jun",
-		"jul",
-		"aug",
-		"sep",
-		"okt",
-		"nov",
-		"dec"
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"Maj",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Okt",
+		"Nov",
+		"Dec"
 	],
 	"dateFormatItem-Ed": "E d",
-	"dateFormatItem-yMMM": "MMM y G",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -70,40 +65,34 @@ define(
 	"eraAbbr": [
 		"BE"
 	],
-	"dateFormatItem-yyyyMM": "G yyyy-MM",
+	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "d MMMM y G",
-	"dateFormatItem-Hm": "HH:mm",
-	"dateFormatItem-MMd": "d/M",
-	"dateFormatItem-yyMM": "G yy-MM",
 	"dateFormat-medium": "d MMM y G",
-	"dateFormatItem-Hms": "HH:mm:ss",
 	"dayPeriods-format-narrow-pm": "e",
-	"dateFormatItem-yyMMM": "MMM -yy G",
-	"dateFormatItem-yMd": "G yyyy-MM-dd",
 	"quarters-standAlone-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",
 		"3:e kvartalet",
 		"4:e kvartalet"
 	],
-	"dateFormatItem-ms": "mm:ss",
-	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dayPeriods-format-narrow-am": "f",
 	"months-standAlone-wide": [
-		"januari",
-		"februari",
-		"mars",
-		"april",
-		"maj",
-		"juni",
-		"juli",
-		"augusti",
-		"september",
-		"oktober",
-		"november",
-		"december"
+		"Januari",
+		"Februari",
+		"Mars",
+		"April",
+		"Maj",
+		"Juni",
+		"Juli",
+		"Augusti",
+		"September",
+		"Oktober",
+		"November",
+		"December"
 	],
-	"dateFormatItem-MMMMEd": "E d:'e' MMMM",
+	"dateFormatItem-yyyyMd": "G y-MM-dd",
+	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMEd": "E, y-MM-dd G",
 	"dateFormatItem-MMMd": "d MMM",
 	"months-format-abbr": [
 		"jan",
@@ -119,8 +108,6 @@ define(
 		"nov",
 		"dec"
 	],
-	"dateFormatItem-yQQQQ": "G y QQQQ",
-	"dateFormatItem-MMMMd": "d:'e' MMMM",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -136,7 +123,6 @@ define(
 		"fre",
 		"lör"
 	],
-	"dateFormatItem-M": "L",
 	"days-format-narrow": [
 		"S",
 		"M",
@@ -146,7 +132,8 @@ define(
 		"F",
 		"L"
 	],
-	"dateFormatItem-yMMMd": "d MMM y G",
+	"dateFormatItem-GyMMMEd": "E d MMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
 	"dateFormatItem-MEd": "E d/M",
 	"months-format-narrow": [
 		"J",
@@ -163,30 +150,28 @@ define(
 		"D"
 	],
 	"days-standAlone-short": [
-		"sö",
-		"må",
-		"ti",
-		"on",
-		"to",
-		"fr",
-		"lö"
+		"Sö",
+		"Må",
+		"Ti",
+		"On",
+		"To",
+		"Fr",
+		"Lö"
 	],
-	"dateFormatItem-hm": "h:mm a",
 	"days-standAlone-abbr": [
-		"sön",
-		"mån",
-		"tis",
-		"ons",
-		"tor",
-		"fre",
-		"lör"
+		"Sön",
+		"Mån",
+		"Tis",
+		"Ons",
+		"Tor",
+		"Fre",
+		"Lör"
 	],
 	"dayPeriods-format-abbr-pm": "EM",
-	"dateFormat-short": "G yyyy-MM-dd",
-	"dateFormatItem-yMMMEd": "E d MMM y G",
+	"dateFormat-short": "G y-MM-dd",
+	"dateFormatItem-yyyyM": "G y-MM",
 	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-Md": "d/M",
-	"dateFormatItem-yMEd": "E, G yyyy-MM-dd",
 	"months-format-wide": [
 		"januari",
 		"februari",
@@ -212,7 +197,6 @@ define(
 		"lö"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
-	"dateFormatItem-d": "d",
 	"quarters-format-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",

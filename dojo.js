@@ -89,7 +89,7 @@
 
 		forEach = function(vector, callback){
 			if(vector){
-				for(var i = 0; i < vector.length;){
+				for(var i = 0; vector[i];){
 					callback(vector[i++]);
 				}
 			}
@@ -1206,8 +1206,7 @@
 				// read/write/replace this object. Notice that so long as the object isn't replaced, any
 				// reference taken earlier while walking the deps list is still valid.
 				module.executed = executing;
-				while(i < deps.length){
-					arg = deps[i++];
+				while((arg = deps[i++])){
 					argResult = ((arg === cjsRequireModule) ? createRequire(module) :
 									((arg === cjsExportsModule) ? module.cjs.exports :
 										((arg === cjsModuleModule) ? module.cjs :
@@ -1539,7 +1538,7 @@
 				});
 
 				// resolve deps with respect to this module
-				for(var i = 0; i < deps.length; i++){
+				for(var i = 0; deps[i]; i++){
 					deps[i] = getModule(deps[i], module);
 				}
 

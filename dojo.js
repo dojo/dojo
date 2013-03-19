@@ -1639,8 +1639,14 @@
 			// getting its parent and then doing insertBefore solves the "Operation Aborted"
 			// error in IE from appending to a node that isn't properly closed; see
 			// dojo/tests/_base/loader/requirejs/simple-badbase.html for an example
-			var sibling = doc.getElementsByTagName("script")[0],
-				insertPoint= sibling.parentNode;
+			// don't use scripts with type dojo/... since these may be removed; see #15809
+			var scripts = doc.getElementsByTagName("script"), i = 0, sibling, insertPoint;
+			while(1){
+				if(!/^dojo/.test((sibling = scripts[i++]) && sibling.type)){
+					insertPoint= sibling.parentNode;
+					break;
+				}
+			}
 			req.injectUrl = function(url, callback, owner){
 				// insert a script element to the insert-point element with src=url;
 				// apply callback upon detecting the script has loaded.

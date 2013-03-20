@@ -85,9 +85,13 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				win.doc.addEventListener(endType, function(e){
 					if(clickTracker){
 						clickTime = (new Date()).getTime();
+						var target = e.target;
+						if(target.tagName === "LABEL"){
+							// when clicking on a label, forward click to its associated input if any
+							target = dom.byId(target.getAttribute("for")) || target;
+						}
 						setTimeout(function(){
-							on.emit(e.target, "click", {
-								target: e.target,
+							on.emit(target, "click", {
 								bubbles : true,
 								cancelable : true,
 								_dojo_click : true
@@ -111,7 +115,12 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 								((new Date()).getTime() <= clickTime + 1000 &&
 									!(e.target.tagName == "INPUT" && domClass.contains(e.target, "dijitOffScreen"))))){
 							e.stopImmediatePropagation();
-							//e.preventDefault();	preventDefault() breaks <input> on android, keyboard doesn't popup
+							if(e.target.tagName != "INPUT" || e.target.type == "radio" || e.target.type == "checkbox"){
+								 // preventDefault() breaks textual <input>s on android, keyboard doesn't popup,
+								 // but it is still needed for checkboxes and radio buttons, otherwise in some cases
+								 // the checked state becomes inconsistent with the widget's state
+								e.preventDefault();
+							}
 						}
 					}, true);
 				}
@@ -150,12 +159,10 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 					var oldNode = hoveredNode;
 					hoveredNode = evt.target;
 					on.emit(oldNode, "dojotouchout", {
-						target: oldNode,
 						relatedTarget: hoveredNode,
 						bubbles: true
 					});
 					on.emit(hoveredNode, "dojotouchover", {
-						target: hoveredNode,
 						relatedTarget: oldNode,
 						bubbles: true
 					});
@@ -177,14 +184,12 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						if(hoveredNode !== newNode){
 							// touch out on the old node
 							on.emit(hoveredNode, "dojotouchout", {
-								target: hoveredNode,
 								relatedTarget: newNode,
 								bubbles: true
 							});
 
 							// touchover on the new node
 							on.emit(newNode, "dojotouchover", {
-								target: newNode,
 								relatedTarget: hoveredNode,
 								bubbles: true
 							});
@@ -195,7 +200,6 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						// Emit synthetic "dojotouchmove" as a way of triggering listeners to synthetic dojotouchmove event
 						// defined below.
 						on.emit(newNode, "dojotouchmove", {
-							target: newNode,
 							bubbles: true
 						});
 					}
@@ -211,7 +215,6 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 					) || win.body(); // if out of the screen
 
 					on.emit(node, "dojotouchend", lang.delegate(evt, {
-						target: node,
 						bubbles: true
 					}));
 				});

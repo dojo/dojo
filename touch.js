@@ -102,18 +102,16 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 				function stopNativeEvents(type){
 					win.doc.addEventListener(type, function(e){
-						// Stop native events when we emitted our own click event.
-						// The time test is for cases when we clicked on a marked widget like a menu item,
-						// which caused the menu to disappear, and then (~300ms later) the browser sends a click
-						// event which could be dispatched to a non-marked widget underneath the menu.
-						// To avoid this we also stop all native events sent shortly after ours, similar to
-						// what is done in dualEvent.
+						// Stop native events when we emitted our own click event.  Note that the native click may occur
+						// on a different node than the synthetic click event was generated on.  For example,
+						// click on a menu item, causing the menu to disappear, and then (~300ms later) the browser
+						// sends a click event to the node that was *underneath* the menu.  So stop all native events
+						// sent shortly after ours, similar to what is done in dualEvent.
 						// The INPUT.dijitOffScreen test is for offscreen inputs used in dijit/form/Button, on which
 						// we call click() explicitly, we don't want to stop this event.
 						if(!e._dojo_click &&
-							(marked(e.target) ||
-								((new Date()).getTime() <= clickTime + 1000 &&
-									!(e.target.tagName == "INPUT" && domClass.contains(e.target, "dijitOffScreen"))))){
+								(new Date()).getTime() <= clickTime + 1000 &&
+								!(e.target.tagName == "INPUT" && domClass.contains(e.target, "dijitOffScreen"))){
 							e.stopImmediatePropagation();
 							if((e.target.tagName != "INPUT" || e.target.type == "radio" || e.target.type == "checkbox")
 								&& e.target.tagName != "TEXTAREA"){

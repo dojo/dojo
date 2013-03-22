@@ -38,6 +38,21 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		}
 	}
 
+	var tested, html5domfix;
+	if(has("ie") <= 8){
+		html5domfix = function(){
+			if(tested){ return; }
+			tested = true;
+			var div = d.create('div', { innerHTML:"<nav>a</nav>"});
+			if(div.childNodes.length !== 1){
+				'abbr article aside audio canvas details figcaption figure footer header ' +
+				'hgroup mark meter nav output progress section summary time video'.replace(/\b\w+\b/g,function(n){
+					d.createElement(n);
+				});
+			}
+		}
+	}
+
 	function _insertBefore(/*DomNode*/ node, /*DomNode*/ ref){
 		var parent = ref.parentNode;
 		if(parent){
@@ -77,6 +92,10 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		if(!masterId){
 			doc[masterName] = masterId = ++masterNum + "";
 			masterNode[masterId] = doc.createElement("div");
+		}
+
+		if(has("ie") <= 8){
+			if(!tested){ html5domfix(); }
 		}
 
 		// make sure the frag is a string.

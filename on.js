@@ -39,8 +39,10 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		//		|	obj.onfoo({key:"value"});
 		//		If you use on.emit on a DOM node, it will use native event dispatching when possible.
 
-		if(typeof target.on == "function" && typeof type != "function"){
-			// delegate to the target's on() method, so it can handle it's own listening if it wants
+		if(typeof target.on == "function" && typeof type != "function" && !target.nodeType){
+			// delegate to the target's on() method, so it can handle it's own listening if it wants (unless it 
+			// is DOM node and we may be dealing with jQuery or Prototype's incompatible addition to the
+			// Element prototype 
 			return target.on(type, listener);
 		}
 		// delegate to main listener code

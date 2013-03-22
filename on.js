@@ -312,7 +312,6 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 				nativeEvent.initEvent(type, !!event.bubbles, !!event.cancelable);
 				// and copy all our properties over
 				for(var i in event){
-					var value = event[i];
 					if(!(i in nativeEvent)){
 						nativeEvent[i] = event[i];
 					}

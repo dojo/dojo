@@ -198,9 +198,9 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 						// Emit synthetic "dojotouchmove" as a way of triggering listeners to synthetic dojotouchmove event
 						// defined below.
-						on.emit(newNode, "dojotouchmove", {
+						on.emit(newNode, "dojotouchmove", lang.delegate(evt, {
 							bubbles: true
-						});
+						}));
 					}
 				});
 
@@ -222,15 +222,12 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 			// Unlike a listener on "touchmove", on(node, dojotouchmove, listener) fires when the finger
 			// drags over the specified node, regardless of which node the touch started on.
-			// The listener is called with the native touchmove event object, so that evt.preventDefault() works,
-			// but target is set to the node currently being dragged over, and stopPropagation() refers to the synthetic
-			// event.
+			// preventDefault() though maps to the native touchmove event, so caller can use it to prevent page scrolling.
 			dojotouchmove = function(node, listener){
 				return on(node, "dojotouchmove", function(syntheticEvent){
-					listener(lang.delegate(nativeTouchMoveEvent, {
-						target: syntheticEvent.target,
-						stopPropagation: function(){
-							syntheticEvent.stopPropagation();
+					listener(lang.delegate(syntheticEvent, {
+						preventDefault: function(){
+							nativeTouchMoveEvent.preventDefault();
 						}
 					}));
 				});

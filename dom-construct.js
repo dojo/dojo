@@ -367,7 +367,11 @@ define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom",
 			_empty(node);
 		}
 		if(parent){
-			parent.removeChild(node);
+			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
+			// removeNode(false) doesn't leak in IE 6+, but removeChild() and removeNode(true) are known to leak under IE 8- while 9+ is TBD
+			has("ie") ? node.removeNode(false) :
+			//>>excludeEnd("webkitMobile");
+				parent.removeChild(node);
 		}
 	}
 	exports.destroy = function destroy(/*DOMNode|String*/ node){

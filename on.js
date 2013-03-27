@@ -37,7 +37,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		has.add("event-orientationchange", has("touch") && !has("android")); // TODO: how do we detect this?
 	}
 	var on = function(target, type, listener, dontFix){
-		if(target.on){ 
+		if(typeof target.on == "function" && typeof type != "function" && !target.nodeType){
 			// delegate to the target's on() method, so it can handle it's own listening if it wants
 			return target.on(type, listener);
 		}

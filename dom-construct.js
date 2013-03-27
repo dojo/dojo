@@ -322,7 +322,8 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 			_empty(node);
 		}
 		if(parent){
-			parent.removeChild(node);
+			// removeNode(false) doesn't leak in IE 6+, but removeChild() and removeNode(true) are known to leak under IE 8- while 9+ is TBD
+			has("ie") ? node.removeNode(false) : parent.removeChild(node);
 		}
 	}
 	var destroy = exports.destroy = function destroy(/*DOMNode|String*/ node){

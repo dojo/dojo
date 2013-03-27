@@ -39,7 +39,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		//		|	obj.onfoo({key:"value"});
 		//		If you use on.emit on a DOM node, it will use native event dispatching when possible.
 
-		if(typeof target.on == "function" && typeof type != "function"){
+		if(typeof target.on == "function" && typeof type != "function" && !target.nodeType){
 			// delegate to the target's on() method, so it can handle it's own listening if it wants
 			return target.on(type, listener);
 		}

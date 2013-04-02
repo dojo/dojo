@@ -134,7 +134,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		}
 	}
 
-	var dojotouchmove, nativeTouchMoveEvent, hoveredNode;
+	var hoveredNode;
 
 	if(hasTouch){
 		if(msPointer){
@@ -169,9 +169,29 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 					doClicks(evt, "touchmove", "touchend"); // init click generation
 				}, true);
 
+				function copyEventProps(evt){
+					// Make copy of event object and also set bubbles:true.  Used when calling on.emit().
+					var props = lang.delegate(evt, {
+						bubbles: true
+					});
+
+					if(has("ios") >= 6){
+						// On iOS6 "touches" became a non-enumerable property, which 
+						// is not hit by for...in.  Ditto for the other properties below.
+						props.touches = evt.touches;
+						props.altKey = evt.altKey;
+						props.changedTouches = evt.changedTouches;
+						props.ctrlKey = evt.ctrlKey;
+						props.metaKey = evt.metaKey;
+						props.shiftKey = evt.shiftKey;
+						props.targetTouches = evt.targetTouches;
+					}
+
+					return props;
+				}
+				
 				on(win.doc, "touchmove", function(evt){
 					lastTouch = (new Date()).getTime();
-					nativeTouchMoveEvent = evt;
 
 					var newNode = win.doc.elementFromPoint(
 						evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
@@ -196,11 +216,9 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 							hoveredNode = newNode;
 						}
 
-						// Emit synthetic "dojotouchmove" as a way of triggering listeners to synthetic dojotouchmove event
-						// defined below.
-						on.emit(newNode, "dojotouchmove", lang.delegate(evt, {
-							bubbles: true
-						}));
+						// Unlike a listener on "touchmove", on(node, "dojotouchmove", listener) fires when the finger
+						// drags over the specified node, regardless of which node the touch started on.
+						on.emit(newNode, "dojotouchmove", copyEventProps(evt));
 					}
 				});
 
@@ -213,32 +231,16 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
 					) || win.body(); // if out of the screen
 
-					on.emit(node, "dojotouchend", lang.delegate(evt, {
-						bubbles: true
-					}));
+					on.emit(node, "dojotouchend", copyEventProps(evt));
 				});
 			});
-
-
-			// Unlike a listener on "touchmove", on(node, dojotouchmove, listener) fires when the finger
-			// drags over the specified node, regardless of which node the touch started on.
-			// preventDefault() though maps to the native touchmove event, so caller can use it to prevent page scrolling.
-			dojotouchmove = function(node, listener){
-				return on(node, "dojotouchmove", function(syntheticEvent){
-					listener(lang.delegate(syntheticEvent, {
-						preventDefault: function(){
-							nativeTouchMoveEvent.preventDefault();
-						}
-					}));
-				});
-			};
 		}
 	}
 
 	//device neutral events - touch.press|move|release|cancel/over/out
 	var touch = {
 		press: dualEvent("mousedown", "touchstart", "MSPointerDown"),
-		move: dualEvent("mousemove", dojotouchmove, "MSPointerMove"),
+		move: dualEvent("mousemove", "dojotouchmove", "MSPointerMove"),
 		release: dualEvent("mouseup", "dojotouchend", "MSPointerUp"),
 		cancel: dualEvent(mouse.leave, "touchcancel", hasTouch?"MSPointerCancel":null),
 		over: dualEvent("mouseover", "dojotouchover", "MSPointerOver"),

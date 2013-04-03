@@ -32,7 +32,7 @@ define(["./has"], function(has){
 			has.add("ios", os);
 		}
 		has.add("android", parseFloat(dua.split("Android ")[1]) || undefined);
-		has.add("bb", (dua.indexOf("BlackBerry") >= 0 || dua.indexOf("BB10")) && parseFloat(dua.split("Version/")[1]) || undefined);
+		has.add("bb", (dua.indexOf("BlackBerry") >= 0 || dua.indexOf("BB10") >= 0) && parseFloat(dua.split("Version/")[1]) || undefined);
 
 		has.add("svg", typeof SVGAngle !== "undefined");
 

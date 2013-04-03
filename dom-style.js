@@ -207,8 +207,7 @@ define(["./sniff", "./dom"], function(has, dom){
 		return _pixelNamesCache[type] ? toPixel(node, value) : value;
 	}
 
-	var _floatStyle = has("ie") ? "styleFloat" : "cssFloat",
-		_floatAliases = {"cssFloat": _floatStyle, "styleFloat": _floatStyle, "float": _floatStyle};
+	var _floatAliases = {cssFloat: 1, styleFloat: 1, "float": 1};
 
 	// public API
 
@@ -240,7 +239,7 @@ define(["./sniff", "./dom"], function(has, dom){
 		if(l == 2 && op){
 			return _getOpacity(n);
 		}
-		name = _floatAliases[name] || name;
+		name = (_floatAliases[name] && "cssFloat" in n.style ? "cssFloat" : "styleFloat") || name;
 		var s = style.getComputedStyle(n);
 		return (l == 1) ? s : _toStyleValue(n, name, s[name] || n.style[name]); /* CSS2Properties||String||Number */
 	};
@@ -292,7 +291,7 @@ define(["./sniff", "./dom"], function(has, dom){
 		//	|	});
 
 		var n = dom.byId(node), l = arguments.length, op = (name == "opacity");
-		name = _floatAliases[name] || name;
+		name = (_floatAliases[name] && "cssFloat" in n.style ? "cssFloat" : "styleFloat") || name;
 		if(l == 3){
 			return op ? _setOpacity(n, value) : n.style[name] = value; // Number
 		}

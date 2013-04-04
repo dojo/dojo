@@ -181,7 +181,7 @@ define([
 			return applyChange;
 		},
 
-		startup: function(){
+		startup: function(defaultPath){
 			// summary:
 			//		This method must be called to activate the router. Until
 			//		startup is called, no hash changes will trigger route
@@ -189,14 +189,28 @@ define([
 
 			if(this._started){ return; }
 
-			var self = this;
+			var self = this,
+				startingPath = hash();
 
 			this._started = true;
-			this._handlePathChange(hash());
-			topic.subscribe("/dojo/hashchange", function(){
-				// No need to load all of lang for just this
+			this._hashchangeHandle = topic.subscribe("/dojo/hashchange", function(){
 				self._handlePathChange.apply(self, arguments);
 			});
+
+			if(!startingPath){
+				// If there is no initial starting point, push our defaultPath into our
+				// history as the starting point
+				this.go(defaultPath, true);
+			}else{
+				// Handle the starting path
+				this._handlePathChange(startingPath);
+			}
+		},
+
+		destroy: function(){
+			this._hashchangeHandle.remove();
+			this._routes = null;
+			this._routeIndex = null;
 		},
 
 		_handlePathChange: function(newPath){

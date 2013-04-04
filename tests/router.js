@@ -1,10 +1,13 @@
 define([
 	"../_base/array",
 	"../hash",
-	"../router",
+	"../router/RouterBase",
 	"doh"
-], function(arrayUtil, hash, router, doh){
+], function(arrayUtil, hash, RouterBase, doh){
+	// This test uses RouterBase so that I can test a few different behaviors of the router
+	// which require re-initializing a new router
 	var count = 0,
+		router = new RouterBase(),
 		handle, foo;
 
 	// Simple helper to make tearDown simpler
@@ -25,6 +28,7 @@ define([
 				t.t(router.register, "Router has a register");
 				t.t(router.go, "Router has a go");
 				t.t(router.startup, "Router has a startup");
+				t.t(router.destroy, "Router has a destroy");
 			}
 		},
 		{
@@ -306,6 +310,31 @@ define([
 			},
 			tearDown: function(){
 				removeAll(handle);
+			}
+		},
+		{
+			name: "Default router path",
+			setUp: function(){
+				// Set up a new router for use in this test
+				router.destroy();
+				router = new RouterBase();
+
+				// Start with a clean hash
+				hash("");
+			},
+			runTest: function(t){
+				var routeHit = false;
+
+				handle = router.register("/default", function(event){
+					routeHit = true;
+				});
+
+				router.startup("/default");
+
+				t.t(routeHit, "Our route was not hit, but should have been");
+			},
+			tearDown: function(){
+				handle.remove();
 			}
 		}
 	]);

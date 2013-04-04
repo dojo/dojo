@@ -239,7 +239,7 @@ define(["./sniff", "./dom"], function(has, dom){
 		if(l == 2 && op){
 			return _getOpacity(n);
 		}
-		name = (_floatAliases[name] && "cssFloat" in n.style ? "cssFloat" : "styleFloat") || name;
+		name = _floatAliases[name] ? "cssFloat" in n.style ? "cssFloat" : "styleFloat" : name;
 		var s = style.getComputedStyle(n);
 		return (l == 1) ? s : _toStyleValue(n, name, s[name] || n.style[name]); /* CSS2Properties||String||Number */
 	};
@@ -291,7 +291,7 @@ define(["./sniff", "./dom"], function(has, dom){
 		//	|	});
 
 		var n = dom.byId(node), l = arguments.length, op = (name == "opacity");
-		name = (_floatAliases[name] && "cssFloat" in n.style ? "cssFloat" : "styleFloat") || name;
+		name = _floatAliases[name] ? "cssFloat" in n.style ? "cssFloat" : "styleFloat" : name;
 		if(l == 3){
 			return op ? _setOpacity(n, value) : n.style[name] = value; // Number
 		}

@@ -132,12 +132,12 @@ define([
 
 				router.go("");
 
-				handle = router.register("/checkEventObject/:foo", function(e){
-					oldPath = e.oldPath;
-					newPath = e.newPath;
-					params = e.params;
-					stopImmediatePropagation = typeof e.stopImmediatePropagation;
-					preventDefault = typeof e.preventDefault;
+				handle = router.register("/checkEventObject/:foo", function(event){
+					oldPath = event.oldPath;
+					newPath = event.newPath;
+					params = event.params;
+					stopImmediatePropagation = typeof event.stopImmediatePropagation;
+					preventDefault = typeof event.preventDefault;
 				});
 
 				router.go("/checkEventObject/bar");
@@ -155,12 +155,50 @@ define([
 			}
 		},
 		{
+			name: "Checking extra arguments - string route",
+			runTest: function(t){
+				var a, b;
+
+				handle = router.register("/stringtest/:applied/:arg", function(event, applied, arg){
+					a = applied;
+					b = arg;
+				});
+
+				router.go("/stringtest/extra/args");
+
+				t.t(a === "extra", "a should have been 'extra', was " + a);
+				t.t(b === "args", "b should have been 'args', was " + b);
+			},
+			tearDown: function(){
+				handle.remove();
+			}
+		},
+		{
+			name: "Checking extra arguments - regex route",
+			runTest: function(t){
+				var a, b;
+				
+				handle = router.register(/\/regextest\/(\w+)\/(\w+)/, function(event, applied, arg){
+					a = applied;
+					b = arg;
+				});
+
+				router.go("/regextest/extra/args");
+
+				t.t(a === "extra", "a should have been 'extra', was " + a);
+				t.t(b === "args", "b should have been 'args', was " + b);
+			},
+			tearDown: function(){
+				handle.remove();
+			}
+		},
+		{
 			name: "Registering long routes with placeholders",
 			runTest: function(t){
 				var testObject;
 
-				handle = router.register("/path/:to/:some/:long/*thing", function(e){
-					testObject = e.params;
+				handle = router.register("/path/:to/:some/:long/*thing", function(event){
+					testObject = event.params;
 				});
 
 				router.go("/path/to/some/long/thing/this/is/in/splat");
@@ -190,8 +228,8 @@ define([
 			runTest: function(t){
 				var testObject;
 
-				handle = router.register(/^\/path\/(\w+)\/(\d+)$/, function(e){
-					testObject = e.params;
+				handle = router.register(/^\/path\/(\w+)\/(\d+)$/, function(event){
+					testObject = event.params;
 				});
 
 				router.go("/path/abcdef/1234");
@@ -265,8 +303,8 @@ define([
 				handle.push(router.register("/stopImmediatePropagation", function(){ test += "A"; }));
 				handle.push(router.register("/stopImmediatePropagation", function(){ test += "B"; }));
 
-				handle.push(router.register("/stopImmediatePropagation", function(e){
-					e.stopImmediatePropagation();
+				handle.push(router.register("/stopImmediatePropagation", function(event){
+					event.stopImmediatePropagation();
 					test += "C";
 				}));
 
@@ -290,8 +328,8 @@ define([
 
 				t.t(hash() === "", "hash should be empty");
 
-				handle.push(router.register("/preventDefault", function(e){
-					e.preventDefault();
+				handle.push(router.register("/preventDefault", function(event){
+					event.preventDefault();
 				}));
 
 				goResult = router.go("/preventDefault");
@@ -304,7 +342,7 @@ define([
 				t.t(hash() === "/someOtherPath", "hash should be '/someOtherPath'");
 				t.t(goResult === true, "goResult should be true");
 
-				handle.push(router.register("/allowDefault", function(e){
+				handle.push(router.register("/allowDefault", function(event){
 					console.log("Doing something here without explicitly stopping");
 				}));
 			},

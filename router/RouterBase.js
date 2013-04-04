@@ -20,7 +20,7 @@ define([
 	// no clean way to expose this on the prototype since it's for the
 	// internal router objects.
 	function fireRoute(params, currentPath, newPath){
-		var queue, isStopped, isPrevented, eventObj, i, l;
+		var queue, isStopped, isPrevented, eventObj, callbackArgs, i, l;
 
 		queue = this.callbackQueue;
 		isStopped = false;
@@ -33,9 +33,19 @@ define([
 			params: params
 		};
 
+		callbackArgs = [eventObj];
+
+		if(params instanceof Array){
+			callbackArgs = callbackArgs.concat(params);
+		}else{
+			for(var key in params){
+				callbackArgs.push(params[key]);
+			}
+		}
+
 		for(i=0, l=queue.length; i<l; ++i){
 			if(!isStopped){
-				queue[i](eventObj);
+				queue[i].apply(null, callbackArgs);
 			}
 		}
 
@@ -170,6 +180,8 @@ define([
 			//	|	router.go("/foo/bar");
 
 			var applyChange;
+
+			if(typeof path !== "string"){return false;}
 
 			path = trim(path);
 			applyChange = this._handlePathChange(path);

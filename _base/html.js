@@ -105,7 +105,7 @@ if(dojo.isIE){
 		if(parent){
 //>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			// removeNode(false) doesn't leak in IE 6+, but removeChild() and removeNode(true) are known to leak under IE 8- while 9+ is TBD
-			d.isIE && 'removeNode' in node ? node.removeNode(false) :
+			d.isIE && parent.canHaveChildren && 'removeNode' in node ? node.removeNode(false) :
 //>>excludeEnd("webkitMobile");
 				parent.removeChild(node);
 		}
@@ -1572,21 +1572,22 @@ if(dojo.isIE){
 	}
 	=====*/
 
-	var _empty =
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		d.isIE ? function(/*DomNode*/ node){
+	function _empty(/*DomNode*/ node){
+		if(node.canHaveChildren){
 			try{
-				node.innerHTML = ""; // really fast when it works
-			}catch(e){ // IE can generate Unknown Error
-				for(var c; c = node.lastChild;){ // intentional assignment
-					_destroy(c, node); // destroy is better than removeChild so TABLE elements are removed in proper order
-				}
+				// fast path
+				node.innerHTML = "";
+				return;
+			}catch(e){
+				// innerHTML is readOnly (e.g. TABLE (sub)elements in quirks mode)
+				// Fall through (saves bytes)
 			}
-		} :
-		//>>excludeEnd("webkitMobile");
-		function(/*DomNode*/ node){
-			node.innerHTML = "";
-		};
+		}
+		// SVG/strict elements don't support innerHTML/canHaveChildren, and OBJECT/APPLET elements in quirks node have canHaveChildren=false
+		for(var c; c = node.lastChild;){ // intentional assignment
+			_destroy(c, node); // destroy is better than removeChild so TABLE subelements are removed in proper order
+		}
+	}
 
 	d.empty = function(node){
 		_empty(byId(node));

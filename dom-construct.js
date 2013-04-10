@@ -340,22 +340,22 @@ define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom",
 		return tag; // DomNode
 	};
 
-	var _empty =
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		has("ie") ?
-		function(/*DomNode*/ node){
+	function _empty(/*DomNode*/ node){
+		if(node.canHaveChildren){
 			try{
-				node.innerHTML = ""; // really fast when it works
-			}catch(e){ // IE can generate Unknown Error
-				for(var c; c = node.lastChild;){ // intentional assignment
-					_destroy(c, node); // destroy is better than removeChild so TABLE elements are removed in proper order
-				}
+				// fast path
+				node.innerHTML = "";
+				return;
+			}catch(e){
+				// innerHTML is readOnly (e.g. TABLE (sub)elements in quirks mode)
+				// Fall through (saves bytes)
 			}
-		} :
-		//>>excludeEnd("webkitMobile");
-		function(/*DomNode*/ node){
-			node.innerHTML = "";
-		};
+		}
+		// SVG/strict elements don't support innerHTML/canHaveChildren, and OBJECT/APPLET elements in quirks node have canHaveChildren=false
+		for(var c; c = node.lastChild;){ // intentional assignment
+			_destroy(c, node); // destroy is better than removeChild so TABLE subelements are removed in proper order
+		}
+	}
 
 	exports.empty = function empty(/*DOMNode|String*/ node){
 		_empty(dom.byId(node));
@@ -369,7 +369,7 @@ define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom",
 		if(parent){
 			//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 			// removeNode(false) doesn't leak in IE 6+, but removeChild() and removeNode(true) are known to leak under IE 8- while 9+ is TBD
-			has("ie") && 'removeNode' in node ? node.removeNode(false) :
+			has("ie") && parent.canHaveChildren && 'removeNode' in node ? node.removeNode(false) :
 			//>>excludeEnd("webkitMobile");
 				parent.removeChild(node);
 		}

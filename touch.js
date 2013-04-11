@@ -113,7 +113,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 								(new Date()).getTime() <= clickTime + 1000 &&
 								!(e.target.tagName == "INPUT" && domClass.contains(e.target, "dijitOffScreen"))){
 							e.stopPropagation();
-							e.stopImmediatePropagation();
+							e.stopImmediatePropagation && e.stopImmediatePropagation();
 							if(type == "click" && (e.target.tagName != "INPUT" || e.target.type == "radio" || e.target.type == "checkbox")
 								&& e.target.tagName != "TEXTAREA"){
 								 // preventDefault() breaks textual <input>s on android, keyboard doesn't popup,

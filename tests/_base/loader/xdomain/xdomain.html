@@ -11,7 +11,7 @@
 
 	  var dojoConfig = {
 		async:dohArgs.async
-	  }
+	  };
 	  var expectedSequence;
 	  
 	  var built = 1;
@@ -163,7 +163,7 @@
 
 			// pretend that everything except the stuff in dojo/tests/_base/loader/xdomain is xdomain
 			require.isXdUrl = function(url){
-				return !/loader\/xdomain/.test(url);
+				return !/loader\/xdomain/.test(url) && !/syncBundle/.test(url);
 			};
 
 			// each of these dojo.requires a xdomain module which puts the loader in xdomain loading mode,

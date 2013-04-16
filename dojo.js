@@ -1275,7 +1275,7 @@
 			// This is useful for testing frameworks (at least).
 			var module = getModule(moduleId, referenceModule);
 			setArrived(module);
-			mix(module, {def:0, executed:0, injected:0, node:0, url:0});
+			mix(module, {def:0, executed:0, injected:0, node:0});
 		};
 	}
 

@@ -442,7 +442,11 @@
 		dojoSniffConfig
 			// map of configuration variables
 			// give the data-dojo-config as sniffed from the document (if any)
-			= {};
+			= {},
+
+		insertPoint
+			// the script node that contained the loader; optionally used for the insert point
+			= 0;
 
 	if(has("dojo-config-api")){
 		var consumePendingCacheInsert = function(referenceModule){
@@ -642,20 +646,23 @@
 					dojoDir = match[3] || "";
 					defaultConfig.baseUrl = defaultConfig.baseUrl || dojoDir;
 
-					// sniff configuration on attribute in script element
-					src = (script.getAttribute("data-dojo-config") || script.getAttribute("djConfig"));
-					if(src){
-						dojoSniffConfig = req.eval("({ " + src + " })", "data-dojo-config");
-					}
+					// compute an insertPoint
+					insertPoint = script.parentNode;
+				}
 
-					// sniff requirejs attribute
-					if(has("dojo-requirejs-api")){
-						var dataMain = script.getAttribute("data-main");
-						if(dataMain){
-							dojoSniffConfig.deps = dojoSniffConfig.deps || [dataMain];
-						}
+				// sniff configuration on attribute in script element
+				if((src = (script.getAttribute("data-dojo-config") || script.getAttribute("djConfig")))){
+					dojoSniffConfig = req.eval("({ " + src + " })", "data-dojo-config");
+
+					// compute an insertPoint
+					insertPoint = script.parentNode;
+				}
+
+				// sniff requirejs attribute
+				if(has("dojo-requirejs-api")){
+					if((src = script.getAttribute("data-main"))){
+						dojoSniffConfig.deps = dojoSniffConfig.deps || [src];
 					}
-					break;
 				}
 			}
 		}
@@ -1643,13 +1650,14 @@
 			// error in IE from appending to a node that isn't properly closed; see
 			// dojo/tests/_base/loader/requirejs/simple-badbase.html for an example
 			// don't use scripts with type dojo/... since these may be removed; see #15809
-			var scripts = doc.getElementsByTagName("script"), i = 0, sibling, insertPoint;
-			while(1){
+			// prefer to use the insertPoint computed during the config sniff in case a script is removed; see #16958
+			var scripts = doc.getElementsByTagName("script"), i = 0, sibling;
+			while(!insertPoint){
 				if(!/^dojo/.test((sibling = scripts[i++]) && sibling.type)){
 					insertPoint= sibling.parentNode;
-					break;
 				}
 			}
+
 			req.injectUrl = function(url, callback, owner){
 				// insert a script element to the insert-point element with src=url;
 				// apply callback upon detecting the script has loaded.

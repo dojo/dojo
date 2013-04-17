@@ -444,8 +444,8 @@
 			// give the data-dojo-config as sniffed from the document (if any)
 			= {},
 
-		insertPoint
-			// the script node that contained the loader; optionally used for the insert point
+		insertPointSibling
+			// the nodes used to locate where scripts are injected into the document
 			= 0;
 
 	if(has("dojo-config-api")){
@@ -646,16 +646,16 @@
 					dojoDir = match[3] || "";
 					defaultConfig.baseUrl = defaultConfig.baseUrl || dojoDir;
 
-					// compute an insertPoint
-					insertPoint = script.parentNode;
+					// remember an insertPointSibling
+					insertPointSibling = script;
 				}
 
 				// sniff configuration on attribute in script element
 				if((src = (script.getAttribute("data-dojo-config") || script.getAttribute("djConfig")))){
 					dojoSniffConfig = req.eval("({ " + src + " })", "data-dojo-config");
 
-					// compute an insertPoint
-					insertPoint = script.parentNode;
+					// remember an insertPointSibling
+					insertPointSibling = script;
 				}
 
 				// sniff requirejs attribute
@@ -1651,10 +1651,12 @@
 			// dojo/tests/_base/loader/requirejs/simple-badbase.html for an example
 			// don't use scripts with type dojo/... since these may be removed; see #15809
 			// prefer to use the insertPoint computed during the config sniff in case a script is removed; see #16958
-			var scripts = doc.getElementsByTagName("script"), i = 0, sibling;
-			while(!insertPoint){
-				if(!/^dojo/.test((sibling = scripts[i++]) && sibling.type)){
-					insertPoint= sibling.parentNode;
+			var scripts = doc.getElementsByTagName("script"),
+				i = 0,
+				script;
+			while(!insertPointSibling){
+				if(!/^dojo/.test((script = scripts[i++]) && script.type)){
+					insertPointSibling= script;
 				}
 			}
 
@@ -1682,7 +1684,7 @@
 				node.type = "text/javascript";
 				node.charset = "utf-8";
 				node.src = url;
-				insertPoint.insertBefore(node, sibling);
+				insertPointSibling.parentNode.insertBefore(node, insertPointSibling);
 				return node;
 			};
 		}

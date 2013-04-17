@@ -1265,15 +1265,12 @@ define([
 	// returning a list of "uniques", hopefully in document order
 	var _zipIdxName = "_zipIdx";
 	var _zip = function(arr){
-		if(arr && arr.nozip){
-			return arr;
-		}
+		if(arr && arr.nozip){ return arr; }
+
+		if(!arr || !arr.length){ return []; }
+		if(arr.length < 2){ return [arr[0]]; }
+
 		var ret = [];
-		if(!arr || !arr.length){ return ret; }
-		if(arr[0]){
-			ret.push(arr[0]);
-		}
-		if(arr.length < 2){ return ret; }
 
 		_zipIdx++;
 
@@ -1282,28 +1279,26 @@ define([
 		var x, te;
 		if(has("ie") && caseSensitive){
 			var szidx = _zipIdx+"";
-			arr[0].setAttribute(_zipIdxName, szidx);
-			for(x = 1; te = arr[x]; x++){
-				if(arr[x].getAttribute(_zipIdxName) != szidx){
+			for(x = 0; x < arr.length; x++){
+				if((te = arr[x]) && te.getAttribute(_zipIdxName) != szidx){
 					ret.push(te);
+					te.setAttribute(_zipIdxName, szidx);
 				}
-				te.setAttribute(_zipIdxName, szidx);
 			}
 		}else if(has("ie") && arr.commentStrip){
 			try{
-				for(x = 1; te = arr[x]; x++){
-					if(_isElement(te)){
+				for(x = 0; x < arr.length; x++){
+					if((te = arr[x]) && _isElement(te)){
 						ret.push(te);
 					}
 				}
 			}catch(e){ /* squelch */ }
 		}else{
-			if(arr[0]){ arr[0][_zipIdxName] = _zipIdx; }
-			for(x = 1; te = arr[x]; x++){
-				if(arr[x][_zipIdxName] != _zipIdx){
+			for(x = 0; x < arr.length; x++){
+				if((te = arr[x]) && te[_zipIdxName] != _zipIdx){
 					ret.push(te);
+					te[_zipIdxName] = _zipIdx;
 				}
-				te[_zipIdxName] = _zipIdx;
 			}
 		}
 		return ret;

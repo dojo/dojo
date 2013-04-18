@@ -13,7 +13,7 @@
 		</script>
 		<script type="text/javascript" src="../../dojo.js"></script>
 		<script type="text/javascript">
-			require(["doh", "dojo/request/iframe", "dojo/dom", "dojo/domReady!"], function(doh, iframe, dom){
+			require(["doh", "dojo/request/iframe", "dojo/_base/lang", "dojo/dom", "dojo/domReady!"], function(doh, iframe, lang, dom){
 				doh.register("dojo/request/iframe", [
 					function ioIframeGetText(t){
 						var d = new doh.Deferred();
@@ -131,7 +131,7 @@
 						});
 						td.then(d.getTestCallback(function(data){
 							t.is(4, data.documentElement.getElementsByTagName("child").length);
-						}));
+						}), lang.hitch(d, "errback"));
 						return d;
 					},
 					function ioIframeDataArray(t){

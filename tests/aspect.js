@@ -82,6 +82,17 @@ doh.register("tests.aspect",
 			}, true);
 			t.t(obj.method() === false);
 		},
+		function afterMultiple(t){
+			var order = [];
+			obj = {
+				foo: function(){}
+			};
+			aspect.after(obj, "foo", function(){order.push(1)});
+			aspect.after(obj, "foo", function(){order.push(2)});
+			aspect.after(obj, "foo", function(){order.push(3)});
+			obj.foo();
+			t.is([1,2,3], order);
+		},
 		function around(t){
 			var order = [];
 			var obj = {
@@ -104,6 +115,36 @@ doh.register("tests.aspect",
 			order.push(obj.method(0));
 			obj.method(4);
 			t.is(order, [0,1,2,3,4,5,6]);
+		},
+		function multipleRemove(t){
+			var foo = {bar: function(){}};
+			var order = [];
+			var signal1 = aspect.after(foo, "bar", function() {
+	    		order.push(1);
+			});
+
+			var signal2 = aspect.after(foo, "bar", function() {
+				order.push(2);
+			});
+
+			var signal3 = aspect.after(foo, "bar", function() {
+				order.push(3);
+			});
+
+			// This should execute all 3 callbacks
+			foo.bar();
+			
+			signal2.remove();
+			signal3.remove();
+
+			// Ideally signal2 should not be removed again, but can happen if the app
+			// fails to clear its state.
+			signal2.remove();
+			
+			// This should execute only the first callback, but notice that the third callback
+			// is executed as well
+			foo.bar();
+			t.is(order, [1,2,3,1]);
 		},
 		function delegation(t){
 			var order = [];

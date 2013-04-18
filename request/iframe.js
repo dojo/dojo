@@ -10,10 +10,11 @@ define([
 	'../has',
 	'../dom',
 	'../dom-construct',
-	'../_base/window'/*=====,
+	'../_base/window',
+	'../NodeList-dom'/*=====,
 	'../request',
 	'../_base/declare' =====*/
-], function(module, require, watch, util, handlers, lang, ioQuery, query, has, dom, domConstruct, win/*=====, request, declare =====*/){
+], function(module, require, watch, util, handlers, lang, ioQuery, query, has, dom, domConstruct, win/*=====, NodeList, request, declare =====*/){
 	var mid = module.id.replace(/[\/\.\-]/g, '_'),
 		onload = mid + '_onload';
 
@@ -247,7 +248,7 @@ define([
 						if(methodNode){
 							methodNode.value = options.method;
 						}else{
-							formNode.setAttribute("method", options.method);
+							formNode.setAttribute('method', options.method);
 						}
 					}
 				}

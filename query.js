@@ -574,7 +574,7 @@ define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/la
 				}
 			}
 			var results = typeof query == "string" ? engine(query, root) : query ? query.orphan ? query : [query] : [];
-			if(results.orphan){
+			if(results.end && results.on){
 				// already wrapped
 				return results;
 			}

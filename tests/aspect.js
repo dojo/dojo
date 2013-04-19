@@ -114,6 +114,35 @@ doh.register("tests.aspect",
 			obj.method(4);
 			t.is(order, [0,1,2,3,4,5,6]);
 		},
+		function around2(t){
+			var order = [];
+			var obj = {
+				method: function(a){
+					order.push(1);
+				}
+			};
+			var signal1 = aspect.around(obj, "method", function(original){
+				return function(a){
+					original();
+					order.push(2);
+				};
+			});
+			var signal2 = aspect.around(obj, "method", function(original){
+				return function(a){
+					original();
+					order.push(3);
+				};
+			});
+			var signal3 = aspect.around(obj, "method", function(original){
+				return function(a){
+					original();
+					order.push(4);
+				};
+			});
+			signal2.remove();
+			obj.method();
+			t.is(order, [1,2,4]);
+		},
 		function multipleRemove(t){
 			var foo = {bar: function(){}};
 			var order = [];

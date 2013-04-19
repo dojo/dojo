@@ -107,7 +107,6 @@ define([], function(){
 			signal = {
 				remove: function(){
 					if(advised){
-						advised.remove();
 						advised = dispatcher = advice = null;
 					}
 				},

@@ -22,8 +22,9 @@
 				"dojo/errors/CancelError",
 				"dojo/has",
 				"doh",
+				"dojo/query",
 				"dojo/domReady!"
-			], function(xhr, lang, all, RequestTimeoutError, CancelError, has, doh){
+			], function(xhr, lang, all, RequestTimeoutError, CancelError, has, doh, query){
 				var tests = [
 					function xhrGet(t){
 						var d = new doh.Deferred();
@@ -266,6 +267,17 @@
 							d.errback(error);
 						});
 
+						return d;
+					},
+					function xhrXMLQueryable(t){
+						var d = new doh.Deferred();
+
+						xhr.get('xhrXml.php', {
+							handleAs: 'xml'
+						}).then(d.getTestCallback(function(xmlDoc){
+							var results = query('bar', xmlDoc);
+							t.is(2, results.length);
+						}), lang.hitch(d, 'errback'));
 						return d;
 					}
 				];

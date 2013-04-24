@@ -451,6 +451,30 @@
 							// t.t(td instanceof dojo.Deferred);
 							return d;
 						},
+						function xhrXMLQueryable(t){
+							var d = new doh.Deferred();
+
+							dojo.xhrGet({
+								url: "../request/xhrXml.php",
+								handleAs: "xml",
+								handle: function(res, ioArgs){
+									if(res instanceof Error){
+										d.errback(res);
+										return;
+									}
+									try{
+										var results = dojo.query('bar', res);
+										t.is(2, results.length);
+									}catch(e){
+										d.errback(e);
+										return;
+									}
+									d.callback(true);
+								}
+							});
+
+							return d;
+						},
 
 						function ioPublish(t){
 							// TODO: this test needs to be rewritten as it is unreliable with the

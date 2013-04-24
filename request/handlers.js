@@ -2,9 +2,13 @@ define([
 	'../json',
 	'../_base/kernel',
 	'../_base/array',
-	'../has'
+	'../has',
+	'../selector/_loader' // only included for has() qsa tests
 ], function(JSON, kernel, array, has){
 	has.add('activex', typeof ActiveXObject !== 'undefined');
+	has.add('dom-parser', function(global){
+		return 'DOMParser' in global;
+	});
 
 	var handleXML;
 	if(has('activex')){
@@ -18,6 +22,14 @@ define([
 
 		handleXML = function(response){
 			var result = response.data;
+
+			if(result && has('dom-qsa2.1') && !result.querySelectorAll && has('dom-parser')){
+				// http://bugs.dojotoolkit.org/ticket/15631
+				// IE9 supports a CSS3 querySelectorAll implementation, but the DOM implementation 
+				// returned by IE9 xhr.responseXML does not. Manually create the XML DOM to gain 
+				// the fuller-featured implementation and avoid bugs caused by the inconsistency
+				result = new DOMParser().parseFromString(response.text, 'application/xml');
+			}
 
 			if(!result || !result.documentElement){
 				var text = response.text;

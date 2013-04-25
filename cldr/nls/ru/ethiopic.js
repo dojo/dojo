@@ -1,36 +1,11 @@
 define(
 //begin v1.x content
 {
-	"months-format-abbr": [
-		"Мескерем",
-		"Текемт",
-		"Хедар",
-		"Тахсас",
-		"Тер",
-		"Якатит",
-		"Магабит",
-		"Миазия",
-		"Генбот",
-		"Сэнэ",
-		"Хамлэ",
-		"Нахасэ",
-		"Эпагомен"
-	],
-	"months-format-wide": [
-		"Мескерем",
-		"Текемт",
-		"Хедар",
-		"Тахсас",
-		"Тер",
-		"Якатит",
-		"Магабит",
-		"Миазия",
-		"Генбот",
-		"Сэнэ",
-		"Хамлэ",
-		"Нахасэ",
-		"Эпагомен"
-	],
+	"field-second": "Секунда",
+	"field-year-relative+-1": "В прошлом году",
+	"field-week": "Неделя",
+	"field-month-relative+-1": "В прошлом месяце",
+	"field-day-relative+-1": "Вчера",
 	"months-format-narrow": [
 		"1",
 		"2",
@@ -46,6 +21,24 @@ define(
 		"12",
 		"13"
 	],
+	"field-day-relative+-2": "Позавчера",
+	"months-standAlone-wide": [
+		"Мескерем",
+		"Текемт",
+		"Хедар",
+		"Тахсас",
+		"Тер",
+		"Якатит",
+		"Магабит",
+		"Миазия",
+		"Генбот",
+		"Сэнэ",
+		"Хамлэ",
+		"Нахасэ",
+		"Эпагомен"
+	],
+	"field-year": "Год",
+	"field-week-relative+0": "На этой неделе",
 	"months-standAlone-abbr": [
 		"Мескерем",
 		"Текемт",
@@ -61,7 +54,19 @@ define(
 		"Нахасэ",
 		"Эпагомен"
 	],
-	"months-standAlone-wide": [
+	"field-week-relative+1": "На следующей неделе",
+	"field-minute": "Минута",
+	"field-week-relative+-1": "На прошлой неделе",
+	"field-day-relative+0": "Сегодня",
+	"field-hour": "Час",
+	"field-day-relative+1": "Завтра",
+	"field-day-relative+2": "Послезавтра",
+	"field-day": "День",
+	"field-month-relative+0": "В этом месяце",
+	"field-month-relative+1": "В следующем месяце",
+	"field-dayperiod": "ДП/ПП",
+	"field-month": "Месяц",
+	"months-format-wide": [
 		"Мескерем",
 		"Текемт",
 		"Хедар",
@@ -75,7 +80,27 @@ define(
 		"Хамлэ",
 		"Нахасэ",
 		"Эпагомен"
-	]
+	],
+	"field-era": "Эра",
+	"field-year-relative+0": "В этом году",
+	"field-year-relative+1": "В следующем году",
+	"months-format-abbr": [
+		"Мескерем",
+		"Текемт",
+		"Хедар",
+		"Тахсас",
+		"Тер",
+		"Якатит",
+		"Магабит",
+		"Миазия",
+		"Генбот",
+		"Сэнэ",
+		"Хамлэ",
+		"Нахасэ",
+		"Эпагомен"
+	],
+	"field-weekday": "День недели",
+	"field-zone": "Часовой пояс"
 }
 //end v1.x content
 );

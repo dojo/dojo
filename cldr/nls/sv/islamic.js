@@ -1,9 +1,14 @@
 define(
 //begin v1.x content
 {
+	"field-dayperiod": "fm/em",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"dayPeriods-format-wide-pm": "em",
+	"field-minute": "minut",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"field-day-relative+-1": "i går",
+	"field-weekday": "veckodag",
+	"field-day-relative+-2": "i förrgår",
 	"days-standAlone-wide": [
 		"Söndag",
 		"Måndag",
@@ -13,7 +18,9 @@ define(
 		"Fredag",
 		"Lördag"
 	],
+	"field-era": "era",
 	"dateFormatItem-Gy": "y G",
+	"field-hour": "timme",
 	"dayPeriods-format-wide-am": "fm",
 	"quarters-standAlone-abbr": [
 		"K1",
@@ -39,6 +46,8 @@ define(
 		"dhu-l-hijja"
 	],
 	"dateFormatItem-Ed": "E d",
+	"field-day-relative+0": "i dag",
+	"field-day-relative+1": "i morgon",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -51,16 +60,23 @@ define(
 	"eraAbbr": [
 		"AH"
 	],
+	"field-day-relative+2": "i övermorgon",
 	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "d MMMM y G",
+	"field-zone": "tidszon",
+	"field-week-relative+-1": "förra veckan",
 	"dateFormat-medium": "d MMM y G",
 	"dayPeriods-format-narrow-pm": "e",
+	"field-year-relative+0": "i år",
+	"field-year-relative+1": "nästa år",
 	"quarters-standAlone-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",
 		"3:e kvartalet",
 		"4:e kvartalet"
 	],
+	"field-year-relative+-1": "i fjol",
+	"field-year": "år",
 	"dayPeriods-format-narrow-am": "f",
 	"months-standAlone-wide": [
 		"Muharram",
@@ -76,10 +92,13 @@ define(
 		"Dhu-l-ga’da",
 		"Dhu-l-hijja"
 	],
-	"dateFormatItem-yyyyMd": "G y-MM-dd",
+	"field-week": "vecka",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMd": "G y-MM-dd",
 	"dateFormatItem-yyyyMEd": "E, y-MM-dd G",
+	"field-week-relative+0": "denna vecka",
 	"dateFormatItem-MMMd": "d MMM",
+	"field-week-relative+1": "nästa vecka",
 	"months-format-abbr": [
 		"muharram",
 		"safar",
@@ -94,6 +113,9 @@ define(
 		"dhu-l-ga’da",
 		"dhu-l-hijja"
 	],
+	"field-month-relative+0": "denna månad",
+	"field-month": "månad",
+	"field-month-relative+1": "nästa månad",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -118,8 +140,10 @@ define(
 		"F",
 		"L"
 	],
+	"field-second": "sekund",
 	"dateFormatItem-GyMMMEd": "E d MMM y G",
 	"dateFormatItem-GyMMM": "MMM y G",
+	"field-day": "dag",
 	"dateFormatItem-MEd": "E d/M",
 	"days-standAlone-short": [
 		"Sö",
@@ -169,6 +193,7 @@ define(
 		"lö"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
+	"field-month-relative+-1": "förra månaden",
 	"quarters-format-wide": [
 		"1:a kvartalet",
 		"2:a kvartalet",

@@ -24,6 +24,7 @@ define(
 		"Н",
 		"Д"
 	],
+	"field-weekday": "День недели",
 	"dateFormatItem-yQQQ": "QQQ y 'г'.",
 	"dateFormatItem-yMEd": "ccc, d.MM.y 'г'.",
 	"dateFormatItem-GyMMMEd": "E, d MMM y G",
@@ -64,6 +65,7 @@ define(
 	"dayPeriods-format-abbr-am": "до полудня",
 	"dateFormatItem-yMd": "dd.MM.y",
 	"dateFormatItem-yM": "MM.y",
+	"field-era": "Эра",
 	"months-standAlone-wide": [
 		"Январь",
 		"Февраль",
@@ -88,7 +90,9 @@ define(
 	"timeFormat-long": "H:mm:ss z",
 	"dateFormatItem-yMMM": "LLL y",
 	"dateFormatItem-yQQQQ": "QQQQ y 'г'.",
+	"field-year": "Год",
 	"dateFormatItem-MMdd": "dd.MM",
+	"field-hour": "Час",
 	"months-format-abbr": [
 		"янв.",
 		"февр.",
@@ -105,7 +109,10 @@ define(
 	],
 	"timeFormat-full": "H:mm:ss zzzz",
 	"dateFormatItem-E": "ccc",
+	"field-day-relative+0": "Сегодня",
+	"field-day-relative+1": "Завтра",
 	"dateFormatItem-GyMMMd": "d MMM y 'г'. G",
+	"field-day-relative+2": "Послезавтра",
 	"dateFormatItem-H": "H",
 	"months-standAlone-abbr": [
 		"Янв.",
@@ -157,6 +164,8 @@ define(
 		"до н.э.",
 		"н.э."
 	],
+	"field-minute": "Минута",
+	"field-dayperiod": "ДП/ПП",
 	"days-standAlone-abbr": [
 		"Вс",
 		"Пн",
@@ -174,13 +183,16 @@ define(
 		"3",
 		"4"
 	],
+	"field-day-relative+-1": "Вчера",
 	"dateFormatItem-h": "h a",
 	"dateTimeFormat-long": "{1}, {0}",
 	"dayPeriods-format-narrow-am": "дп",
+	"field-day-relative+-2": "Позавчера",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E, dd.MM",
 	"dateTimeFormat-full": "{1}, {0}",
 	"dateFormatItem-yMMMM": "LLLL y",
+	"field-day": "День",
 	"days-format-wide": [
 		"воскресенье",
 		"понедельник",
@@ -190,6 +202,7 @@ define(
 		"пятница",
 		"суббота"
 	],
+	"field-zone": "Часовой пояс",
 	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"Я",
@@ -205,6 +218,8 @@ define(
 		"Н",
 		"Д"
 	],
+	"field-year-relative+-1": "В прошлом году",
+	"field-month-relative+-1": "В прошлом месяце",
 	"dateFormatItem-hm": "h:mm a",
 	"dayPeriods-format-abbr-pm": "после полудня",
 	"days-format-abbr": [
@@ -240,16 +255,26 @@ define(
 		"С"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Месяц",
 	"dayPeriods-format-wide-am": "до полудня",
 	"dateFormat-short": "dd.MM.yy",
+	"field-second": "Секунда",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"field-month-relative+0": "В этом месяце",
+	"field-month-relative+1": "В следующем месяце",
 	"dateFormatItem-Ed": "ccc, d",
+	"field-week": "Неделя",
 	"dateFormat-medium": "dd MMM y 'г'.",
+	"field-year-relative+0": "В этом году",
+	"field-week-relative+-1": "На прошлой неделе",
+	"field-year-relative+1": "В следующем году",
 	"dayPeriods-format-narrow-pm": "пп",
 	"dateTimeFormat-short": "{1}, {0}",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-GyMMM": "LLL y G"
+	"dateFormatItem-GyMMM": "LLL y G",
+	"field-week-relative+0": "На этой неделе",
+	"field-week-relative+1": "На следующей неделе"
 }
 //end v1.x content
 );

@@ -16,6 +16,7 @@ define(
 		"3",
 		"4"
 	],
+	"field-weekday": "週天",
 	"dateFormatItem-yQQQ": "y年QQQ",
 	"dateFormatItem-yMEd": "y/M/d（E）",
 	"dateFormatItem-GyMMMEd": "Gy年M月d日E",
@@ -58,6 +59,7 @@ define(
 	"dayPeriods-format-narrow-midDay": "中午",
 	"dayPeriods-format-wide-noon": "中午",
 	"dateFormatItem-yMd": "y/M/d",
+	"field-era": "年代",
 	"dateFormatItem-yM": "y/M",
 	"months-standAlone-wide": [
 		"1月",
@@ -82,7 +84,9 @@ define(
 	],
 	"dateFormatItem-yQQQQ": "y年QQQQ",
 	"timeFormat-long": "zah時mm分ss秒",
+	"field-year": "年",
 	"dateFormatItem-yMMM": "y年M月",
+	"field-hour": "小時",
 	"dateFormatItem-MMdd": "MM/dd",
 	"months-format-abbr": [
 		"1月",
@@ -100,7 +104,10 @@ define(
 	],
 	"timeFormat-full": "zzzzah時mm分ss秒",
 	"dayPeriods-format-narrow-morning": "上午",
+	"field-day-relative+0": "今天",
+	"field-day-relative+1": "明天",
 	"dateFormatItem-GyMMMd": "Gy年M月d日",
+	"field-day-relative+2": "後天",
 	"dateFormatItem-H": "H時",
 	"months-standAlone-abbr": [
 		"1月",
@@ -142,6 +149,8 @@ define(
 		"西元前",
 		"西元"
 	],
+	"field-minute": "分鐘",
+	"field-dayperiod": "上午/下午",
 	"days-standAlone-abbr": [
 		"週日",
 		"週一",
@@ -160,14 +169,17 @@ define(
 		"3",
 		"4"
 	],
+	"field-day-relative+-1": "昨天",
 	"dateFormatItem-h": "ah時",
 	"dateTimeFormat-long": "{1}{0}",
 	"dayPeriods-format-narrow-am": "上午",
+	"field-day-relative+-2": "前天",
 	"dateFormatItem-MMMd": "M月d日",
 	"dayPeriods-format-wide-midDay": "中午",
 	"dateFormatItem-MEd": "M/d（E）",
 	"dateTimeFormat-full": "{1}{0}",
 	"dateFormatItem-yMMMM": "y年M月",
+	"field-day": "日",
 	"days-format-wide": [
 		"星期日",
 		"星期一",
@@ -177,6 +189,7 @@ define(
 		"星期五",
 		"星期六"
 	],
+	"field-zone": "時區",
 	"dateFormatItem-y": "y年",
 	"months-standAlone-narrow": [
 		"1",
@@ -192,7 +205,9 @@ define(
 		"11",
 		"12"
 	],
+	"field-year-relative+-1": "去年",
 	"dayPeriods-format-narrow-night": "晚上",
+	"field-month-relative+-1": "上個月",
 	"dateFormatItem-hm": "ah:mm",
 	"dayPeriods-format-narrow-weeHours": "凌晨",
 	"days-format-abbr": [
@@ -220,6 +235,7 @@ define(
 		"六"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "月",
 	"dayPeriods-format-wide-am": "上午",
 	"dateFormatItem-MMMMdd": "M月dd日",
 	"dayPeriods-format-wide-weeHours": "凌晨",
@@ -227,14 +243,23 @@ define(
 	"dayPeriods-format-wide-afternoon": "下午",
 	"dayPeriods-format-narrow-afternoon": "下午",
 	"dayPeriods-format-narrow-noon": "中午",
+	"field-second": "秒",
 	"dateFormatItem-yMMMEd": "y年M月d日E",
+	"field-month-relative+0": "本月",
+	"field-month-relative+1": "下個月",
 	"dateFormatItem-Ed": "d日（E）",
+	"field-week": "週",
 	"dateFormat-medium": "y/M/d",
+	"field-year-relative+0": "今年",
+	"field-week-relative+-1": "上週",
+	"field-year-relative+1": "明年",
 	"dayPeriods-format-narrow-pm": "下午",
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-hms": "ah:mm:ss",
-	"dateFormatItem-GyMMM": "Gy年M月"
+	"dateFormatItem-GyMMM": "Gy年M月",
+	"field-week-relative+0": "本週",
+	"field-week-relative+1": "下週"
 }
 //end v1.x content
 );

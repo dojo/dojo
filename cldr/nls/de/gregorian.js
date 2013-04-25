@@ -30,6 +30,7 @@ define(
 		"3",
 		"4"
 	],
+	"field-weekday": "Wochentag",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E, d.M.y",
 	"dateFormatItem-GyMMMEd": "E, d. MMM y G",
@@ -72,6 +73,7 @@ define(
 	"dateFormatItem-Md": "d.M.",
 	"dayPeriods-format-wide-noon": "Mittag",
 	"dateFormatItem-yMd": "d.M.y",
+	"field-era": "Epoche",
 	"dateFormatItem-yM": "M.y",
 	"months-standAlone-wide": [
 		"Januar",
@@ -96,7 +98,9 @@ define(
 	],
 	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "Jahr",
 	"dateFormatItem-yMMM": "MMM y",
+	"field-hour": "Stunde",
 	"dateFormatItem-MMdd": "dd.MM.",
 	"months-format-abbr": [
 		"Jan.",
@@ -113,7 +117,10 @@ define(
 		"Dez."
 	],
 	"timeFormat-full": "HH:mm:ss zzzz",
+	"field-day-relative+0": "Heute",
+	"field-day-relative+1": "Morgen",
 	"dateFormatItem-GyMMMd": "d. MMM y G",
+	"field-day-relative+2": "Übermorgen",
 	"dateFormatItem-H": "HH 'Uhr'",
 	"months-standAlone-abbr": [
 		"Jan",
@@ -165,6 +172,8 @@ define(
 		"v. Chr.",
 		"n. Chr."
 	],
+	"field-minute": "Minute",
+	"field-dayperiod": "Tageshälfte",
 	"days-standAlone-abbr": [
 		"So",
 		"Mo",
@@ -183,12 +192,15 @@ define(
 		"3",
 		"4"
 	],
+	"field-day-relative+-1": "Gestern",
 	"dateFormatItem-h": "h a",
 	"dateTimeFormat-long": "{1} {0}",
+	"field-day-relative+-2": "Vorgestern",
 	"dateFormatItem-MMMd": "d. MMM",
 	"dateFormatItem-MEd": "E, d.M.",
 	"dateTimeFormat-full": "{1} {0}",
 	"dateFormatItem-yMMMM": "MMMM y",
+	"field-day": "Tag",
 	"days-format-wide": [
 		"Sonntag",
 		"Montag",
@@ -198,6 +210,7 @@ define(
 		"Freitag",
 		"Samstag"
 	],
+	"field-zone": "Zone",
 	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"J",
@@ -213,6 +226,8 @@ define(
 		"N",
 		"D"
 	],
+	"field-year-relative+-1": "Letztes Jahr",
+	"field-month-relative+-1": "Letzter Monat",
 	"dateFormatItem-hm": "h:mm a",
 	"days-format-abbr": [
 		"So.",
@@ -223,11 +238,11 @@ define(
 		"Fr.",
 		"Sa."
 	],
-	"dateFormatItem-yMMMd": "d. MMM y",
 	"eraNames": [
 		"v. Chr.",
 		"n. Chr."
 	],
+	"dateFormatItem-yMMMd": "d. MMM y",
 	"days-format-narrow": [
 		"S",
 		"M",
@@ -247,19 +262,29 @@ define(
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Monat",
 	"dayPeriods-format-wide-am": "vorm.",
 	"dateFormatItem-MMMMEd": "E, d. MMMM",
 	"dateFormatItem-MMMMdd": "dd. MMMM",
 	"dateFormat-short": "dd.MM.yy",
 	"dateFormatItem-MMd": "d.MM.",
 	"dayPeriods-format-wide-afternoon": "nachmittags",
+	"field-second": "Sekunde",
 	"dateFormatItem-yMMMEd": "E, d. MMM y",
+	"field-month-relative+0": "Dieser Monat",
+	"field-month-relative+1": "Nächster Monat",
 	"dateFormatItem-Ed": "E, d.",
+	"field-week": "Woche",
 	"dateFormat-medium": "dd.MM.y",
+	"field-year-relative+0": "Dieses Jahr",
+	"field-week-relative+-1": "Letzte Woche",
+	"field-year-relative+1": "Nächstes Jahr",
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-GyMMM": "MMM y G"
+	"dateFormatItem-GyMMM": "MMM y G",
+	"field-week-relative+0": "Diese Woche",
+	"field-week-relative+1": "Nächste Woche"
 }
 //end v1.x content
 );

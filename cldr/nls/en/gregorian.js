@@ -31,6 +31,7 @@ define(
 		"3",
 		"4"
 	],
+	"field-weekday": "Day of the Week",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E, M/d/y",
 	"dateFormatItem-GyMMMEd": "E, MMM d, y G",
@@ -71,6 +72,7 @@ define(
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-noon": "noon",
 	"dateFormatItem-yMd": "M/d/y",
+	"field-era": "Era",
 	"dateFormatItem-yM": "M/y",
 	"months-standAlone-wide": [
 		"January",
@@ -95,8 +97,10 @@ define(
 	],
 	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "h:mm:ss a z",
+	"field-year": "Year",
 	"dateFormatItem-yMMM": "MMM y",
 	"dateTimeFormats-appendItem-Era": "{0} {1}",
+	"field-hour": "Hour",
 	"months-format-abbr": [
 		"Jan",
 		"Feb",
@@ -113,6 +117,8 @@ define(
 	],
 	"timeFormat-full": "h:mm:ss a zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"field-day-relative+0": "Today",
+	"field-day-relative+1": "Tomorrow",
 	"dateFormatItem-GyMMMd": "MMM d, y G",
 	"dateFormatItem-H": "HH",
 	"months-standAlone-abbr": [
@@ -158,14 +164,18 @@ define(
 		"BC",
 		"AD"
 	],
+	"field-minute": "Minute",
+	"field-dayperiod": "AM/PM",
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
+	"field-day-relative+-1": "Yesterday",
 	"dateFormatItem-h": "h a",
 	"dateTimeFormat-long": "{1} 'at' {0}",
 	"dayPeriods-format-narrow-am": "a",
 	"dateFormatItem-MMMd": "MMM d",
 	"dateFormatItem-MEd": "E, M/d",
 	"dateTimeFormat-full": "{1} 'at' {0}",
+	"field-day": "Day",
 	"days-format-wide": [
 		"Sunday",
 		"Monday",
@@ -175,6 +185,7 @@ define(
 		"Friday",
 		"Saturday"
 	],
+	"field-zone": "Time Zone",
 	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})",
 	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
@@ -191,6 +202,8 @@ define(
 		"N",
 		"D"
 	],
+	"field-year-relative+-1": "Last year",
+	"field-month-relative+-1": "Last month",
 	"dateFormatItem-hm": "h:mm a",
 	"dateTimeFormats-appendItem-Year": "{0} {1}",
 	"dateTimeFormats-appendItem-Hour": "{0} ({2}: {1})",
@@ -218,6 +231,7 @@ define(
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Month",
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-am": "AM",
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
@@ -227,15 +241,24 @@ define(
 	"dateFormatItem-EHms": "E HH:mm:ss",
 	"dateFormatItem-Ehms": "E h:mm:ss a",
 	"dayPeriods-format-narrow-noon": "n",
+	"field-second": "Second",
 	"dateFormatItem-yMMMEd": "E, MMM d, y",
+	"field-month-relative+0": "This month",
+	"field-month-relative+1": "Next month",
 	"dateFormatItem-Ed": "d E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
+	"field-week": "Week",
 	"dateFormat-medium": "MMM d, y",
+	"field-year-relative+0": "This year",
+	"field-week-relative+-1": "Last week",
+	"field-year-relative+1": "Next year",
 	"dayPeriods-format-narrow-pm": "p",
 	"dateTimeFormat-short": "{1}, {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-GyMMM": "MMM y G"
+	"dateFormatItem-GyMMM": "MMM y G",
+	"field-week-relative+0": "This week",
+	"field-week-relative+1": "Next week"
 }
 //end v1.x content
 );

@@ -1,8 +1,13 @@
 define(
 //begin v1.x content
 {
+	"field-dayperiod": "cadran",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
+	"field-minute": "minute",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"field-day-relative+-1": "hier",
+	"field-weekday": "jour de la semaine",
+	"field-day-relative+-2": "avant-hier",
 	"days-standAlone-wide": [
 		"dimanche",
 		"lundi",
@@ -26,7 +31,9 @@ define(
 		"11",
 		"12"
 	],
+	"field-era": "ère",
 	"dateFormatItem-Gy": "y G",
+	"field-hour": "heure",
 	"quarters-standAlone-abbr": [
 		"T1",
 		"T2",
@@ -50,6 +57,8 @@ define(
 		"dhou.hi."
 	],
 	"dateFormatItem-Ed": "E d",
+	"field-day-relative+0": "aujourd’hui",
+	"field-day-relative+1": "demain",
 	"days-standAlone-narrow": [
 		"D",
 		"L",
@@ -62,16 +71,23 @@ define(
 	"eraAbbr": [
 		"AH"
 	],
+	"field-day-relative+2": "après-demain",
 	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "d MMMM y G",
+	"field-zone": "fuseau horaire",
+	"field-week-relative+-1": "la semaine dernière",
 	"dateFormat-medium": "d MMM y G",
 	"dayPeriods-format-narrow-pm": "p",
+	"field-year-relative+0": "cette année",
+	"field-year-relative+1": "l’année prochaine",
 	"quarters-standAlone-wide": [
 		"1er trimestre",
 		"2e trimestre",
 		"3e trimestre",
 		"4e trimestre"
 	],
+	"field-year-relative+-1": "l’année dernière",
+	"field-year": "année",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"months-standAlone-wide": [
 		"mouharram",
@@ -87,10 +103,13 @@ define(
 		"dhou al qi`da",
 		"dhou al-hijja"
 	],
-	"dateFormatItem-yyyyMd": "d/M/y GGGGG",
+	"field-week": "semaine",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMd": "d/M/y GGGGG",
 	"dateFormatItem-yyyyMEd": "E d/M/y GGGGG",
+	"field-week-relative+0": "cette semaine",
 	"dateFormatItem-MMMd": "d MMM",
+	"field-week-relative+1": "la semaine prochaine",
 	"months-format-abbr": [
 		"mouh.",
 		"saf.",
@@ -105,6 +124,9 @@ define(
 		"dhou.q.",
 		"dhou.h."
 	],
+	"field-month-relative+0": "ce mois-ci",
+	"field-month": "mois",
+	"field-month-relative+1": "le mois prochain",
 	"quarters-format-abbr": [
 		"T1",
 		"T2",
@@ -129,8 +151,10 @@ define(
 		"V",
 		"S"
 	],
+	"field-second": "seconde",
 	"dateFormatItem-GyMMMEd": "E d MMM y G",
 	"dateFormatItem-GyMMM": "MMM y G",
+	"field-day": "jour",
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E d/M",
 	"months-format-narrow": [
@@ -193,6 +217,7 @@ define(
 		"sa"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
+	"field-month-relative+-1": "le mois dernier",
 	"quarters-format-wide": [
 		"1er trimestre",
 		"2e trimestre",

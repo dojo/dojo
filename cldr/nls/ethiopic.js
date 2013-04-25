@@ -48,6 +48,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-weekday": "Day of the Week",
 	"dayPeriods-format-narrow@localeAlias164": {
 		"bundle": "gregorian",
 		"target": "dayPeriods-format-abbr"
@@ -124,6 +125,7 @@ define({ root:
 		"target": "days"
 	},
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
+	"field-era": "Era",
 	"months-standAlone-wide": [
 		"Meskerem",
 		"Tekemt",
@@ -147,7 +149,9 @@ define({ root:
 		"Q4"
 	],
 	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "Year",
 	"dateTimeFormats-appendItem-Era": "{1} {0}",
+	"field-hour": "Hour",
 	"months-format-abbr": [
 		"Meskerem",
 		"Tekemt",
@@ -165,6 +169,8 @@ define({ root:
 	],
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"field-day-relative+0": "Today",
+	"field-day-relative+1": "Tomorrow",
 	"dateFormatItem-GyMMMd": "G y MMM d",
 	"months-standAlone-abbr": [
 		"Meskerem",
@@ -240,6 +246,8 @@ define({ root:
 		"ERA0",
 		"ERA1"
 	],
+	"field-minute": "Minute",
+	"field-dayperiod": "Dayperiod",
 	"days-standAlone-abbr": [
 		"Sun",
 		"Mon",
@@ -261,6 +269,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-day-relative+-1": "Yesterday",
 	"dayPeriods-format-narrow-am": "AM",
 	"dateTimeFormat-long": "{1} {0}",
 	"dateFormatItem-h": "h a",
@@ -287,6 +296,7 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "dayPeriods-format-wide"
 	},
+	"field-day": "Day",
 	"days-format-wide": [
 		"Sun",
 		"Mon",
@@ -296,6 +306,7 @@ define({ root:
 		"Fri",
 		"Sat"
 	],
+	"field-zone": "Zone",
 	"months-standAlone-narrow": [
 		"1",
 		"2",
@@ -362,11 +373,13 @@ define({ root:
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Month",
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-am": "AM",
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
 	"dateFormat-short": "GGGGG y-MM-dd",
+	"field-second": "Second",
 	"days-format-short@localeAlias145": {
 		"bundle": "gregorian",
 		"target": "days-format-abbr"
@@ -385,6 +398,7 @@ define({ root:
 		"bundle": "generic",
 		"target": "dateFormat"
 	},
+	"field-week": "Week",
 	"dateFormat-medium": "G y MMM d",
 	"dateFormatItem-yyyyM": "GGGGG y-MM",
 	"dayPeriods-format-narrow-pm": "PM",
@@ -410,10 +424,12 @@ define({ root:
 //end v1.x content
 ,
 	"ar": true,
+	"fr": true,
 	"hu": true,
 	"ja": true,
 	"pl": true,
 	"pt": true,
+	"ro": true,
 	"ru": true,
 	"sv": true,
 	"th": true,

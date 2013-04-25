@@ -39,6 +39,7 @@ define({ root:
 		"bundle": "indian",
 		"target": "months-format-wide"
 	},
+	"field-weekday": "Day of the Week",
 	"dateFormatItem-GyMMMEd": "G y MMM d, E",
 	"dateFormatItem-MMMEd": "MMM d, E",
 	"months-standAlone-abbr@localeAlias308": {
@@ -93,6 +94,7 @@ define({ root:
 	"dateFormatItem-Md": "MM-dd",
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
+	"field-era": "Era",
 	"months-standAlone-wide": [
 		"Chaitra",
 		"Vaisakha",
@@ -115,7 +117,9 @@ define({ root:
 		"Q4"
 	],
 	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "Year",
 	"dateTimeFormats-appendItem-Era": "{1} {0}",
+	"field-hour": "Hour",
 	"months-format-abbr": [
 		"Chaitra",
 		"Vaisakha",
@@ -140,6 +144,8 @@ define({ root:
 	},
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"field-day-relative+0": "Today",
+	"field-day-relative+1": "Tomorrow",
 	"dateFormatItem-GyMMMd": "G y MMM d",
 	"months-standAlone-abbr": [
 		"Chaitra",
@@ -193,6 +199,8 @@ define({ root:
 	"eraAbbr": [
 		"SAKA"
 	],
+	"field-minute": "Minute",
+	"field-dayperiod": "Dayperiod",
 	"days-standAlone-abbr": [
 		"Sun",
 		"Mon",
@@ -226,6 +234,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-day-relative+-1": "Yesterday",
 	"dayPeriods-format-narrow-am": "AM",
 	"dateTimeFormat-long": "{1} {0}",
 	"dateFormatItem-h": "h a",
@@ -236,6 +245,7 @@ define({ root:
 		"target": "days-format-wide"
 	},
 	"dateTimeFormat-full": "{1} {0}",
+	"field-day": "Day",
 	"days-format-wide": [
 		"Sun",
 		"Mon",
@@ -249,6 +259,7 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "timeFormat"
 	},
+	"field-zone": "Zone",
 	"days-standAlone-abbr@localeAlias316": {
 		"bundle": "gregorian",
 		"target": "days-format-abbr"
@@ -349,6 +360,7 @@ define({ root:
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Month",
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-am": "AM",
 	"days-format-narrow@localeAlias313": {
@@ -362,8 +374,10 @@ define({ root:
 	},
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
 	"dateFormat-short": "GGGGG y-MM-dd",
+	"field-second": "Second",
 	"dateFormatItem-Ed": "d, E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
+	"field-week": "Week",
 	"dateFormat-medium": "G y MMM d",
 	"dateFormatItem-yyyyM": "GGGGG y-MM",
 	"dayPeriods-format-narrow-pm": "PM",
@@ -401,6 +415,7 @@ define({ root:
 //end v1.x content
 ,
 	"en-gb": true,
+	"fr": true,
 	"hu": true,
 	"ja": true,
 	"pl": true,

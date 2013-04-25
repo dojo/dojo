@@ -31,6 +31,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-weekday": "Day of the Week",
 	"dateFormatItem-GyMMMEd": "U MMM d, E",
 	"dateFormatItem-MMMEd": "MMM d, E",
 	"months-standAlone-wide@localeAlias40": {
@@ -79,6 +80,7 @@ define({ root:
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
 	"dateFormatItem-yMd": "y-MM-dd",
+	"field-era": "Era",
 	"months-standAlone-wide": [
 		"Month1",
 		"Month2",
@@ -101,7 +103,9 @@ define({ root:
 		"Q4"
 	],
 	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "Year",
 	"dateTimeFormats-appendItem-Era": "{1} {0}",
+	"field-hour": "Hour",
 	"months-format-abbr": [
 		"Month1",
 		"Month2",
@@ -122,6 +126,8 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "days-format-wide"
 	},
+	"field-day-relative+0": "Today",
+	"field-day-relative+1": "Tomorrow",
 	"dateFormatItem-GyMMMd": "U MMM d",
 	"months-standAlone-abbr": [
 		"Month1",
@@ -196,6 +202,8 @@ define({ root:
 		"Q4"
 	],
 	"dateFormatItem-Hm": "HH:mm",
+	"field-minute": "Minute",
+	"field-dayperiod": "Dayperiod",
 	"days-standAlone-abbr": [
 		"Sun",
 		"Mon",
@@ -213,6 +221,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-day-relative+-1": "Yesterday",
 	"dateTimeFormat-long": "{1} {0}",
 	"dayPeriods-format-narrow-am": "AM",
 	"quarters-standAlone-wide@localeAlias57": {
@@ -231,6 +240,7 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "quarters"
 	},
+	"field-day": "Day",
 	"days-format-wide": [
 		"Sun",
 		"Mon",
@@ -240,6 +250,7 @@ define({ root:
 		"Fri",
 		"Sat"
 	],
+	"field-zone": "Zone",
 	"months-standAlone-narrow": [
 		"1",
 		"2",
@@ -321,6 +332,7 @@ define({ root:
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Month",
 	"days-format-abbr@localeAlias42": {
 		"bundle": "gregorian",
 		"target": "days-format-wide"
@@ -354,6 +366,7 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "quarters-format-wide"
 	},
+	"field-second": "Second",
 	"dayPeriods@localeAlias58": {
 		"bundle": "gregorian",
 		"target": "dayPeriods"
@@ -364,6 +377,7 @@ define({ root:
 	},
 	"dateFormatItem-Ed": "d, E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
+	"field-week": "Week",
 	"dateFormat-medium": "U MMM d",
 	"dateFormatItem-yyyyM": "y-MM",
 	"dayPeriods-format-narrow-pm": "PM",

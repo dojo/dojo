@@ -31,6 +31,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-weekday": "Day of the Week",
 	"dateFormatItem-GyMMMEd": "G y MMM d, E",
 	"dateFormatItem-MMMEd": "MMM d, E",
 	"eraNarrow": [
@@ -336,6 +337,7 @@ define({ root:
 	"dateFormatItem-Md": "MM-dd",
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
+	"field-era": "Era",
 	"months-standAlone-wide": [
 		"Month1",
 		"Month2",
@@ -358,7 +360,9 @@ define({ root:
 		"Q4"
 	],
 	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "Year",
 	"dateTimeFormats-appendItem-Era": "{1} {0}",
+	"field-hour": "Hour",
 	"months-format-abbr": [
 		"Month1",
 		"Month2",
@@ -387,6 +391,8 @@ define({ root:
 	},
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"field-day-relative+0": "Today",
+	"field-day-relative+1": "Tomorrow",
 	"dateFormatItem-GyMMMd": "G y MMM d",
 	"months-standAlone-abbr": [
 		"Month1",
@@ -683,6 +689,8 @@ define({ root:
 		"Shōwa",
 		"Heisei"
 	],
+	"field-minute": "Minute",
+	"field-dayperiod": "Dayperiod",
 	"days-standAlone-abbr": [
 		"Sun",
 		"Mon",
@@ -700,12 +708,14 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-day-relative+-1": "Yesterday",
 	"dayPeriods-format-narrow-am": "AM",
 	"dateTimeFormat-long": "{1} {0}",
 	"dateFormatItem-h": "h a",
 	"dateFormatItem-MMMd": "MMM d",
 	"dateFormatItem-MEd": "MM-dd, E",
 	"dateTimeFormat-full": "{1} {0}",
+	"field-day": "Day",
 	"days-format-wide": [
 		"Sun",
 		"Mon",
@@ -715,6 +725,7 @@ define({ root:
 		"Fri",
 		"Sat"
 	],
+	"field-zone": "Zone",
 	"months-standAlone-narrow": [
 		"1",
 		"2",
@@ -1030,6 +1041,7 @@ define({ root:
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Month",
 	"timeFormat@localeAlias444": {
 		"bundle": "gregorian",
 		"target": "timeFormat"
@@ -1079,12 +1091,14 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "days"
 	},
+	"field-second": "Second",
 	"quarters-standAlone-wide@localeAlias434": {
 		"bundle": "gregorian",
 		"target": "quarters-format-wide"
 	},
 	"dateFormatItem-Ed": "d, E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
+	"field-week": "Week",
 	"dateFormat-medium": "G y MMM d",
 	"dateFormatItem-yyyyM": "GGGGG y-MM",
 	"dayPeriods-format-narrow-pm": "PM",

@@ -1,10 +1,15 @@
 define(
 //begin v1.x content
 {
+	"field-dayperiod": "periodo del día",
 	"dateFormatItem-yyyyMMMEd": "E, d 'de' MMMM 'de' y G",
 	"dayPeriods-format-wide-pm": "p.m.",
+	"field-minute": "minuto",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"field-day-relative+-1": "ayer",
+	"field-weekday": "día de la semana",
 	"dateFormatItem-hms": "hh:mm:ss a",
+	"field-day-relative+-2": "antes de ayer",
 	"months-standAlone-narrow": [
 		"E",
 		"F",
@@ -19,7 +24,9 @@ define(
 		"N",
 		"D"
 	],
+	"field-era": "era",
 	"dateFormatItem-Gy": "y G",
+	"field-hour": "hora",
 	"dayPeriods-format-wide-am": "a.m.",
 	"dateFormatItem-y": "y G",
 	"dateFormatItem-yyyy": "y G",
@@ -38,6 +45,8 @@ define(
 		"dic"
 	],
 	"dateFormatItem-Ed": "E d",
+	"field-day-relative+0": "hoy",
+	"field-day-relative+1": "mañana",
 	"days-standAlone-narrow": [
 		"D",
 		"L",
@@ -50,15 +59,22 @@ define(
 	"eraAbbr": [
 		"BE"
 	],
+	"field-day-relative+2": "pasado mañana",
 	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "d 'de' MMMM 'de' y G",
+	"field-zone": "zona",
+	"field-week-relative+-1": "la semana pasada",
 	"dateFormat-medium": "dd/MM/y G",
+	"field-year-relative+0": "este año",
+	"field-year-relative+1": "el próximo año",
 	"quarters-standAlone-wide": [
 		"1.er trimestre",
 		"2.º trimestre",
 		"3.er trimestre",
 		"4.º trimestre"
 	],
+	"field-year-relative+-1": "el año pasado",
+	"field-year": "año",
 	"dateFormatItem-yyyyQQQQ": "QQQQ 'de' y G",
 	"quarters-standAlone-narrow": [
 		"1T",
@@ -66,9 +82,11 @@ define(
 		"3T",
 		"4T"
 	],
-	"dateFormatItem-yyyyMd": "d/M/y GGGGG",
+	"field-week": "semana",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMd": "d/M/y GGGGG",
 	"dateFormatItem-yyyyMEd": "E, d/M/y GGGGG",
+	"field-week-relative+0": "esta semana",
 	"dateFormatItem-MMMd": "d MMM",
 	"quarters-format-narrow": [
 		"1T",
@@ -76,6 +94,7 @@ define(
 		"3T",
 		"4T"
 	],
+	"field-week-relative+1": "la próxima semana",
 	"months-format-abbr": [
 		"ene",
 		"feb",
@@ -90,6 +109,9 @@ define(
 		"nov",
 		"dic"
 	],
+	"field-month-relative+0": "este mes",
+	"field-month": "mes",
+	"field-month-relative+1": "el próximo mes",
 	"quarters-format-abbr": [
 		"T1",
 		"T2",
@@ -105,8 +127,10 @@ define(
 		"vie",
 		"sáb"
 	],
+	"field-second": "segundo",
 	"dateFormatItem-GyMMMEd": "E, d 'de' MMMM 'de' y G",
 	"dateFormatItem-GyMMM": "MMM y G",
+	"field-day": "día",
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E, d/M",
 	"days-standAlone-short": [
@@ -147,6 +171,7 @@ define(
 		"S"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
+	"field-month-relative+-1": "el mes pasado",
 	"quarters-format-wide": [
 		"1er trimestre",
 		"2º trimestre",

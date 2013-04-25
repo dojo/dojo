@@ -31,6 +31,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-weekday": "Day of the Week",
 	"dayPeriods-format-abbr@localeAlias130": {
 		"bundle": "gregorian",
 		"target": "dayPeriods-format-wide"
@@ -83,6 +84,7 @@ define({ root:
 	"dayPeriods-format-abbr-am": "AM",
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
 	"dateFormatItem-yMd": "y-MM-dd",
+	"field-era": "Era",
 	"months-standAlone-wide": [
 		"Month1",
 		"Month2",
@@ -105,7 +107,9 @@ define({ root:
 		"Q4"
 	],
 	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "Year",
 	"dateTimeFormats-appendItem-Era": "{1} {0}",
+	"field-hour": "Hour",
 	"months-format-abbr": [
 		"Month1",
 		"Month2",
@@ -122,6 +126,8 @@ define({ root:
 	],
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"field-day-relative+0": "Today",
+	"field-day-relative+1": "Tomorrow",
 	"dateFormatItem-GyMMMd": "U MMM d",
 	"months-standAlone-abbr": [
 		"Month1",
@@ -196,6 +202,8 @@ define({ root:
 		"Q4"
 	],
 	"dateFormatItem-Hm": "HH:mm",
+	"field-minute": "Minute",
+	"field-dayperiod": "Dayperiod",
 	"days-standAlone-abbr": [
 		"Sun",
 		"Mon",
@@ -221,6 +229,7 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "timeFormat"
 	},
+	"field-day-relative+-1": "Yesterday",
 	"days-standAlone-abbr@localeAlias112": {
 		"bundle": "gregorian",
 		"target": "days-format-abbr"
@@ -259,6 +268,7 @@ define({ root:
 		"target": "dayPeriods-format-wide"
 	},
 	"dateTimeFormat-full": "{1} {0}",
+	"field-day": "Day",
 	"days-format-wide": [
 		"Sun",
 		"Mon",
@@ -276,6 +286,7 @@ define({ root:
 		"bundle": "chinese",
 		"target": "dayPeriods"
 	},
+	"field-zone": "Zone",
 	"dayPeriods@localeAlias126": {
 		"bundle": "gregorian",
 		"target": "dayPeriods"
@@ -345,6 +356,7 @@ define({ root:
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Month",
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
 	"dayPeriods-format-wide-am": "AM",
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
@@ -354,6 +366,7 @@ define({ root:
 		"bundle": "chinese",
 		"target": "months-format-wide"
 	},
+	"field-second": "Second",
 	"quarters-standAlone-abbr@localeAlias122": {
 		"bundle": "gregorian",
 		"target": "quarters-format-abbr"
@@ -368,6 +381,7 @@ define({ root:
 		"bundle": "chinese",
 		"target": "dateTime"
 	},
+	"field-week": "Week",
 	"dateFormat-medium": "U MMM d",
 	"quarters-format-narrow@localeAlias121": {
 		"bundle": "gregorian",

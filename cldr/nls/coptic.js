@@ -32,6 +32,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-weekday": "Day of the Week",
 	"quarters@localeAlias82": {
 		"bundle": "gregorian",
 		"target": "quarters"
@@ -112,6 +113,7 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "days-format-wide"
 	},
+	"field-era": "Era",
 	"months-standAlone-wide": [
 		"Tout",
 		"Baba",
@@ -151,7 +153,9 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "days-format-wide"
 	},
+	"field-year": "Year",
 	"dateTimeFormats-appendItem-Era": "{1} {0}",
+	"field-hour": "Hour",
 	"months-format-abbr": [
 		"Tout",
 		"Baba",
@@ -169,6 +173,8 @@ define({ root:
 	],
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
+	"field-day-relative+0": "Today",
+	"field-day-relative+1": "Tomorrow",
 	"dateFormatItem-GyMMMd": "G y MMM d",
 	"months-standAlone-abbr": [
 		"Tout",
@@ -248,6 +254,8 @@ define({ root:
 		"ERA0",
 		"ERA1"
 	],
+	"field-minute": "Minute",
+	"field-dayperiod": "Dayperiod",
 	"days-standAlone-abbr": [
 		"Sun",
 		"Mon",
@@ -265,6 +273,7 @@ define({ root:
 		"3",
 		"4"
 	],
+	"field-day-relative+-1": "Yesterday",
 	"dayPeriods-format-narrow-am": "AM",
 	"dateTimeFormat-long": "{1} {0}",
 	"dateFormatItem-h": "h a",
@@ -275,6 +284,7 @@ define({ root:
 		"bundle": "generic",
 		"target": "dateTime"
 	},
+	"field-day": "Day",
 	"days-format-wide": [
 		"Sun",
 		"Mon",
@@ -284,6 +294,7 @@ define({ root:
 		"Fri",
 		"Sat"
 	],
+	"field-zone": "Zone",
 	"months-standAlone-narrow": [
 		"1",
 		"2",
@@ -350,6 +361,7 @@ define({ root:
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
+	"field-month": "Month",
 	"eraNames@localeAlias95": {
 		"bundle": "coptic",
 		"target": "eraAbbr"
@@ -375,12 +387,14 @@ define({ root:
 		"bundle": "gregorian",
 		"target": "dayPeriods-format-wide"
 	},
+	"field-second": "Second",
 	"months-format-narrow@localeAlias67": {
 		"bundle": "coptic",
 		"target": "months-standAlone-narrow"
 	},
 	"dateFormatItem-Ed": "d, E",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
+	"field-week": "Week",
 	"dateFormat-medium": "G y MMM d",
 	"days-standAlone-abbr@localeAlias76": {
 		"bundle": "gregorian",
@@ -410,10 +424,12 @@ define({ root:
 //end v1.x content
 ,
 	"ar": true,
+	"fr": true,
 	"hu": true,
 	"ja": true,
 	"pl": true,
 	"pt": true,
+	"ro": true,
 	"ru": true,
 	"sv": true,
 	"th": true,

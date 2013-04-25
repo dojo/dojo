@@ -2,6 +2,7 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM/y",
+	"field-dayperiod": "am/pm",
 	"dayPeriods-format-wide-pm": "pm",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"dateTimeFormat-full": "{1} {0}",

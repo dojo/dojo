@@ -74,6 +74,7 @@ define(
 		"Magha",
 		"Phalguna"
 	],
+	"field-dayperiod": "am/pm",
 	"months-standAlone-narrow": [
 		"1",
 		"2",

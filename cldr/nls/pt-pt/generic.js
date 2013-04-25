@@ -18,7 +18,8 @@ define(
 	"dateTimeFormat-short": "{1}, {0}",
 	"dateTimeFormat-full": "{1} 'às' {0}",
 	"dateFormatItem-yyyyMMMd": "d/MM/y G",
-	"dateFormatItem-MMMd": "d/MM"
+	"dateFormatItem-MMMd": "d/MM",
+	"field-zone": "Fuso horário"
 }
 //end v1.x content
 );

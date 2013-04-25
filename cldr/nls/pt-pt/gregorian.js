@@ -42,6 +42,7 @@ define(
 	"dayPeriods-standAlone-wide-pm": "p.m.",
 	"dateFormatItem-yMMM": "MM/y",
 	"dateFormatItem-yMMMMEd": "E, d 'de' MMMM 'de' y",
+	"field-zone": "Fuso horário",
 	"dayPeriods-standAlone-wide-am": "a.m.",
 	"dayPeriods-format-narrow-pm": "p.m.",
 	"dateFormatItem-yMMMEEEEd": "EEEE, d/MM/y",

@@ -36,6 +36,7 @@ define(
 	],
 	"dateFormatItem-GyMMMd": "d 'de' MMM 'de' y G",
 	"dateFormat-long": "d 'de' MMMM 'de' y G",
+	"field-zone": "Fuso horário",
 	"dateFormat-medium": "dd/MM/y G",
 	"dayPeriods-format-narrow-pm": "p.m.",
 	"quarters-standAlone-wide": [

@@ -1,11 +1,16 @@
 define(
 //begin v1.x content
 {
+	"field-dayperiod": "AM/PM",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
+	"field-minute": "Minuut",
 	"eraNames": [
 		"Saʻna Hizjria"
 	],
 	"dateFormatItem-MMMEd": "E d MMM",
+	"field-day-relative+-1": "Gisteren",
+	"field-weekday": "Dag van de week",
+	"field-day-relative+-2": "Eergisteren",
 	"days-standAlone-wide": [
 		"zondag",
 		"maandag",
@@ -29,7 +34,9 @@ define(
 		"11",
 		"12"
 	],
+	"field-era": "Tijdperk",
 	"dateFormatItem-Gy": "y G",
+	"field-hour": "Uur",
 	"quarters-standAlone-abbr": [
 		"K1",
 		"K2",
@@ -53,6 +60,8 @@ define(
 		"Doe al h."
 	],
 	"dateFormatItem-Ed": "E d",
+	"field-day-relative+0": "Vandaag",
+	"field-day-relative+1": "Morgen",
 	"days-standAlone-narrow": [
 		"Z",
 		"M",
@@ -65,15 +74,22 @@ define(
 	"eraAbbr": [
 		"Saʻna Hizjria"
 	],
+	"field-day-relative+2": "Overmorgen",
 	"dateFormatItem-GyMMMd": "d MMM y G",
 	"dateFormat-long": "d MMMM y G",
+	"field-zone": "Zone",
+	"field-week-relative+-1": "Vorige week",
 	"dateFormat-medium": "d MMM y G",
+	"field-year-relative+0": "Dit jaar",
+	"field-year-relative+1": "Volgend jaar",
 	"quarters-standAlone-wide": [
 		"1e kwartaal",
 		"2e kwartaal",
 		"3e kwartaal",
 		"4e kwartaal"
 	],
+	"field-year-relative+-1": "Vorig jaar",
+	"field-year": "Jaar",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"months-standAlone-wide": [
 		"Moeharram",
@@ -89,10 +105,13 @@ define(
 		"Doe al kaʻaba",
 		"Doe al hizja"
 	],
-	"dateFormatItem-yyyyMd": "d-M-y GGGGG",
+	"field-week": "week",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"dateFormatItem-yyyyMd": "d-M-y GGGGG",
 	"dateFormatItem-yyyyMEd": "E d-M-y GGGGG",
+	"field-week-relative+0": "Deze week",
 	"dateFormatItem-MMMd": "d MMM",
+	"field-week-relative+1": "Volgende week",
 	"months-format-abbr": [
 		"Moeh.",
 		"Saf.",
@@ -107,6 +126,9 @@ define(
 		"Doe al k.",
 		"Doe al h."
 	],
+	"field-month-relative+0": "Deze maand",
+	"field-month": "Maand",
+	"field-month-relative+1": "Volgende maand",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -131,8 +153,10 @@ define(
 		"V",
 		"Z"
 	],
+	"field-second": "Seconde",
 	"dateFormatItem-GyMMMEd": "E d MMM y G",
 	"dateFormatItem-GyMMM": "MMM y G",
+	"field-day": "Dag",
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateFormatItem-MEd": "E d-M",
 	"days-standAlone-short": [
@@ -181,11 +205,15 @@ define(
 		"za"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
+	"field-month-relative+-1": "Vorige maand",
 	"quarters-format-wide": [
 		"1e kwartaal",
 		"2e kwartaal",
 		"3e kwartaal",
 		"4e kwartaal"
+	],
+	"eraNarrow": [
+		"Saʻna Hizjria"
 	],
 	"days-format-wide": [
 		"zondag",
@@ -195,9 +223,6 @@ define(
 		"donderdag",
 		"vrijdag",
 		"zaterdag"
-	],
-	"eraNarrow": [
-		"Saʻna Hizjria"
 	]
 }
 //end v1.x content

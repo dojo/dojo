@@ -14,6 +14,7 @@ define(
 		"第4季"
 	],
 	"dateFormat-medium": "y/M/d",
+	"$locale": "zh-hant-tw",
 	"quarters-standAlone-abbr": [
 		"第1季",
 		"第2季",

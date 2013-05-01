@@ -44,8 +44,8 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 			doc.__dojo_html5_tested = "yes";
 			var div = create('div', {innerHTML: "<nav>a</nav>", style: {visibility: "hidden"}}, doc.body);
 			if(div.childNodes.length !== 1){
-				'abbr article aside audio canvas details figcaption figure footer header ' +
-				'hgroup mark meter nav output progress section summary time video'.replace(
+				('abbr article aside audio canvas details figcaption figure footer header ' +
+				'hgroup mark meter nav output progress section summary time video').replace(
 					/\b\w+\b/g, function(n){
 						doc.createElement(n);
 					}

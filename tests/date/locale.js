@@ -251,6 +251,8 @@ define(["doh", "dojo/_base/array", "dojo/i18n", "dojo/_base/kernel", "dojo/date"
 	t.is(new Date(1970,0,31), locale.parse("031", {datePattern:'DDD',selector:'date'}));
 	t.is(new Date(1970,3,10), locale.parse("100", {datePattern:'DDD',selector:'date'}));
 
+				t.isNot(null, locale.parse(locale.format(new Date(), {locale:'he', formatLength:'full', selector:'date'}), {locale:'he', formatLength:'full', selector:'date'}), "Hebrew parse");
+
 			}
 		},
 		{

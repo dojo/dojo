@@ -115,7 +115,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 							e.stopPropagation();
 							e.stopImmediatePropagation && e.stopImmediatePropagation();
 							if(type == "click" && (e.target.tagName != "INPUT" || e.target.type == "radio" || e.target.type == "checkbox")
-								&& e.target.tagName != "TEXTAREA"){
+								&& e.target.tagName != "TEXTAREA" && e.target.tagName != "AUDIO" && e.target.tagName != "VIDEO"){
 								 // preventDefault() breaks textual <input>s on android, keyboard doesn't popup,
 								 // but it is still needed for checkboxes and radio buttons, otherwise in some cases
 								 // the checked state becomes inconsistent with the widget's state

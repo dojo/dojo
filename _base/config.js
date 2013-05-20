@@ -183,7 +183,7 @@ return {
 		adviseHas(result.has, "", 1);
 	}
 
-	if(!result.locale){
+	if(!result.locale && typeof navigator != "undefined"){
 		// Default locale for browsers.
 		result.locale = (navigator.language || navigator.userLanguage).toLowerCase();
 	}

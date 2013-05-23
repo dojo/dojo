@@ -55,7 +55,7 @@ return {
 	//		for details on loading localized resources. If no locale is specified,
 	//		Dojo assumes the locale of the user agent, according to `navigator.userLanguage`
 	//		or `navigator.language` properties.
-	locale: "",
+	locale: undefined,
 
 	// extraLocale: Array
 	//		No default value. Specifies additional locales whose
@@ -183,10 +183,9 @@ return {
 		adviseHas(result.has, "", 1);
 	}
 
-	// Default locale for browsers, or "" as default for non-browser environments.
-	if(!result.locale){
-		result.locale = typeof navigator == "undefined" ? "" :
-			(navigator.language || navigator.userLanguage).toLowerCase();
+	if(!result.locale && typeof navigator != "undefined"){
+		// Default locale for browsers.
+		result.locale = (navigator.language || navigator.userLanguage).toLowerCase();
 	}
 
 	return result;

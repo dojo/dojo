@@ -11,8 +11,8 @@ provided by GitHub.
 
 ## Is It Really a Support Issue
 
-If you aren't sure if your contribution is a defect or an enhancement, please visit the [support forum][] before
-attempting to submit a pull request.
+If you aren't sure if your contribution is needed or necessary, please visit the [support forum][] before attempting to
+submit a pull request or a ticket.
 
 ## Search Dojo Toolkit's Bug Database
 
@@ -27,15 +27,17 @@ If your desired contribution is more than a non-trivial fix, you should discuss 
 
 ## Contributor License Agreement
 
-We require all contributions, no matter how small, to be covered under the Dojo Foundation's
-[Contributor License Agreement][cla].  This can be done electronically and essentially ensure that you are making it
-clear that your contributions are your contributions and you have the legal right to contribute.
+We require all contributions, to be covered under the Dojo Foundation's [Contributor License Agreement][cla].  This can
+be done electronically and essentially ensures that you are making it clear that your contributions are your
+contributions, you have the legal right to contribute and you are transferring the copyright of your works to the Dojo 
+Foundation.
 
 If you are an unfamiliar contributor to the committer assessing your pull request, it is best to make it clear how
 you are covered by a CLA in the notes of the pull request.  The committer will [verify][claCheck] your status.
 
-If your GitHub user id you are submitting your pull request from differs from the Dojo Community ID which you have
-signed your CLA under, you should specifically note that as well.
+If your GitHub user id you are submitting your pull request from differs from the Dojo Community ID or e-mail address
+which you have signed your CLA under, you should specifically note what you have your CLA filed under (and for CCLA
+that you are listed under your companies authorised contributors).
 
 # Submitting a Pull Request
 
@@ -47,7 +49,7 @@ to follow step 3 and beyond:
 3. Create a "feature" branch in your local repository
 4. Make your changes and commit them to your local repository
 5. Rebase and push your commits to your GitHub remote fork/repository
-6. Issue a Pull Request to the "upstream" repository
+6. Issue a Pull Request to the official repository
 7. Your Pull Request is reviewed by a committer and merged into the repository
 
 *Note* While there are other ways to accomplish the steps using other tools, the examples here will assume the most
@@ -68,38 +70,32 @@ layer of structure of how repositories can relate to each other.
 Once you have successfully forked your repository, you will need to clone it locally to your machine:
 
 ```bash
-$ git clone --recursive https://github.com/username/dojo.git
+$ git clone --recursive git@github.com:username/dojo.git
 ```
 
 This will clone your fork to your current path in a directory named `dojo`.
 
-You can also use the SSH URI for your repository (e.g. `git@github.com:username/dojo.git`) if you have configured
-SSH properly with your command line git.  It is important that you clone recursively for ``dojox``, ``demos`` or
-``util``because some of the code is contained in submodules.  You won't be able to submit your changes to the
-repositories that way though.  If you are working on any of these sub-projects, you should contact those project leads
-to see if their workflow differs.
+It is important that you clone recursively for ``dojox``, ``demos`` or ``util``because some of the code is contained in
+submodules.  You won't be able to submit your changes to the repositories that way though.  If you are working on any of
+these sub-projects, you should contact those project leads to see if their workflow differs.
 
 You should also setup the `upstream` repository.  This will allow you to take changes from the "master" repository
 and merge them into your local clone and then push them to your GitHub fork:
 
 ```bash
 $ cd dojo
-$ git remote add upstream https://github.com/dojo/dojo.git
+$ git remote add upstream git@github.com:dojo/dojo.git
 $ git fetch upstream
 ```
 
-Then you can retrieve upstream changes and merge them into your code like this:
+Then you can retrieve upstream changes and rebase on them into your code like this:
 
 ```bash
-$ git fetch upstream
-$ git merge upstream/master
+$ git pull --rebase upstream master
 ```
 
-Please be aware though, that often times, if you have made changes that make it impossible to cleanly apply the upstream
-changes this will result in a new commit to merge these.  If you provide a pull request that contains these unnecessary
-commits it may get rejected.
-
-For more information on maintaining a for, please see the GitHub Help article [Fork a Repo][].
+For more information on maintaining a fork, please see the GitHub Help article [Fork a Repo][] and information on
+[rebasing][] from git.
 
 ## 3. Create a Branch
 
@@ -119,14 +115,6 @@ You will then be on the feature branch.  You can verify what branch you are on l
 $ git status
 # On branch t12345
 nothing to commit, working directory clean
-```
-
-Or alternatively:
-
-```bash
-$ git branch
-  master
-* t12345
 ```
 
 ## 4. Make Changes and Commit
@@ -149,25 +137,24 @@ $ git commit -m "Corrects some defect, fixes #12345, refs #12346"
 
 ## 5. Rebase and Push Changes
 
-Ideally, all of your changes should be "squashed" into a single commit and rebased off the current master branch.  You
-should use `git rebase --interactive` and `git add --patch` as appropriate ensure your changes are as atomic as
-possible. There is available documentation on [interactive rebase][] available.
-
-When you are ready to push your commit to your GitHub repository, you would then:
+If you have been working on your contribution for a while, the upstream repository may have changed.  You may want to
+ensure your work is on top of the latest changes so your pull request can be applied cleanly:
 
 ```bash
-$ git push
+$ git pull --rebase upstream master
 ```
 
-But if you are using pushing a branch for the first time, you might get something like the following, where you need to
-identify how you want the remote branch named:
+When you are ready to push your commit to your GitHub repository for the first time on this branch you would do the
+following:
+
+```bash
+$ git push -u origin t12345
+```
+
+After the first time, you simply need to do:
 
 ```bash
 $ git push
-fatal: The current branch t12345 has no upstream branch.
-To push the current branch and set the remote as upstream, use
-
-    git push --set-upstream t12345 t12345
 ```
 
 ## 6. Issue a Pull Request
@@ -191,8 +178,8 @@ request.
 
 # What Makes a Successful Pull Request?
 
-There are several things that need to be considered for your pull request to be accepted.  The following sections will
-cover some of these off.
+Having your contribution accepted is more than just the mechanics of getting your contribution into a pull request,
+there are several other things that are expected when contributing to the Dojo Toolkit which are covered below.
 
 ## Coding Style and Linting
 
@@ -212,20 +199,15 @@ cases.  Dojo utilises its own test harness called [D.O.H.][] and is available as
 It is expected that you will have tested your changes against the existing test cases and appropriate platforms prior to
 submitting your pull request.
 
-## Pull Request to Backport into Other Branches
-
-You should ensure that if it makes sense to issue a Pull Request into the other version branches that your change is
-applicable for.
-
 ## Licensing
 
 All of your submissions are licensed under a dual "New" BSD/AFL license.
 
 ## Expect Discussion and Rework
 
-Unless you have been working with contributing to Dojo for a while, expect a robust amount of feedback on your pull
-requests.  We are a very passionate community and even the committers often will provide robust feedback to each other
-about their code.  Don't be offended by such robust feedback or feel that your contributions aren't welcome, it is just
+Unless you have been working with contributing to Dojo for a while, expect a a significant amount of feedback on your
+pull requests.  We are a very passionate community and even the committers often will provide robust feedback to each
+other about their code.  Don't be offended by such feedback or feel that your contributions aren't welcome, it is just
 that we are quite passionate and Dojo has a long history with many things that are the "Dojo-way" which may be
 unfamiliar to those who are just starting to contribute.
 
@@ -242,3 +224,4 @@ unfamiliar to those who are just starting to contribute.
 [D.O.H.]: http://dojotoolkit.org/reference-guide/util/doh.html
 [dojo/util]: https://github.com/dojo/util
 [interactive rebase]: http://git-scm.com/book/en/Git-Tools-Rewriting-History#Changing-Multiple-Commit-Messages
+[rebasing]: http://git-scm.com/book/en/Git-Branching-Rebasing

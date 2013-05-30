@@ -3,6 +3,13 @@ define(["./has"], function(has){
 		throw new Error("node plugin failed to load because environment is not Node.js");
 	}
 
+	var pathUtil;
+	if(require.nodeRequire){
+		pathUtil = require.nodeRequire("path");
+	}else{
+		throw new Error("node plugin failed to load because it cannot find the original Node.js require");
+	}
+
 	return {
 		// summary:
 		//		This AMD plugin module allows native Node.js modules to be loaded by AMD modules using the Dojo
@@ -30,18 +37,28 @@ define(["./has"], function(has){
 				// temporarily moved into another variable, it will prevent modules from detecting AMD in this fashion.
 				define = undefined;
 
-				try {
+				try{
 					result = require(id);
-				} finally {
+				}finally{
 					define = oldDefine;
 				}
 				return result;
 			})(id, require.nodeRequire));
 		},
 
-		normalize: function (/**string*/ id) {
-			if (id.charAt(0) === '.') {
-				id = require.baseUrl + id;
+		normalize: function (/**string*/ id, /*Function*/ normalize){
+			// summary:
+			//		Produces a normalized id to be used by node.  Relative ids are resolved relative to the requesting
+			//		module's location in the file system and will return an id with path separators appropriate for the
+			//		local file system.
+
+			if(id.charAt(0) === "."){
+				// dirname of the reference module - normalized to match the local file system
+				var referenceModuleDirname = require.toUrl(normalize(".")).replace("/", pathUtil.sep),
+					segments = id.split("/");
+				segments.unshift(referenceModuleDirname);
+				// this will produce an absolute path normalized to the semantics of the underlying file system.
+				id = pathUtil.join.apply(pathUtil, segments);
 			}
 
 			return id;

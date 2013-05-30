@@ -1,4 +1,4 @@
-define([ "doh/main" ], function(doh){
+define([ "require", "doh/main" ], function(require, doh){
 	doh.register("tests.node", [
 		function testRequireBuiltIn(t){
 			var td = new doh.Deferred();
@@ -19,7 +19,7 @@ define([ "doh/main" ], function(doh){
 
 		function testRequireSimpleModule(t){
 			var td = new doh.Deferred();
-			require(["dojo/node!./tests/resources/nodemodule"], td.getTestCallback(function(nodemodule){
+			require(["dojo/node!./resources/nodemodule"], td.getTestCallback(function(nodemodule){
 				t.t("test" in nodemodule, "module loaded");
 				t.is(nodemodule.test, "value", "object has expected value");
 			}));
@@ -28,7 +28,7 @@ define([ "doh/main" ], function(doh){
 
 		function testRequireRequire(t){
 			var td = new doh.Deferred();
-			require(["dojo/node!./tests/resources/noderequire"], td.getTestCallback(function(noderequire){
+			require(["dojo/node!./resources/noderequire"], td.getTestCallback(function(noderequire){
 				t.t("test" in noderequire, "module loaded");
 				t.is(noderequire.test, "value", "object has expected value");
 			}));
@@ -37,7 +37,7 @@ define([ "doh/main" ], function(doh){
 
 		function testRequirePackageJson(t){
 			var td = new doh.Deferred();
-			require(["dojo/node!./tests/resources/nodemod"], td.getTestCallback(function(nodemod){
+			require(["dojo/node!./resources/nodemod"], td.getTestCallback(function(nodemod){
 				t.t("test" in nodemod, "module loaded");
 				t.is(nodemod.test, "value", "object has expected value");
 			}));
@@ -46,7 +46,7 @@ define([ "doh/main" ], function(doh){
 
 		function testRequireCommonJSAMD(t){
 			var td = new doh.Deferred();
-			require(["dojo/node!./tests/resources/noderequireamd"], td.getTestCallback(function(noderequireamd){
+			require(["dojo/node!./resources/noderequireamd"], td.getTestCallback(function(noderequireamd){
 				t.t(noderequireamd.nodeamd.test === "foo", "module loaded");
 			}));
 			return td;

@@ -51,7 +51,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 	function marked(/*DOMNode*/ node){
 		// Test if a node or its ancestor has been marked with the dojoClick property to indicate special processing,
 		do{
-			if(node.dojoClick){ return node.dojoClick; }
+			if(node.dojoClick !== undefined){ return node.dojoClick; }
 		}while(node = node.parentNode);
 	}
 	

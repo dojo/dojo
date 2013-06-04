@@ -25,7 +25,7 @@ define([
 		// note: if multiple documents, doesn't matter which one we use
 		var div = win.doc.createElement("div");
 		div.style.cssText = "border: 1px solid; border-color:red green; position: absolute; height: 5px; top: -999px;" +
-			"background-image: url(" + (config.blankGif || require.toUrl("./resources/blank.gif")) + ");";
+			"background-image: url(\"" + (config.blankGif || require.toUrl("./resources/blank.gif")) + "\");";
 		win.body().appendChild(div);
 
 		var cs = domStyle.getComputedStyle(div),

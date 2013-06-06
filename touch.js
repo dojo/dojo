@@ -62,9 +62,10 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		//		was called in an event listener. Synthetic clicks are generated only if a node or one of its ancestors has
 		//		its dojoClick property set to truthy.
 		
-		clickTracker  = !e.target.disabled && marked(e.target); // click threshold = true, number or x/y object
+		clickTracker  = !e.target.disabled && marked(e.target); // click threshold = true, number, x/y object, or "useTarget"
 		if(clickTracker){
 			clickTarget = e.target;
+			var useTarget = (clickTracker == "useTarget");
 			clickX = e.touches ? e.touches[0].pageX : e.clientX;
 			clickY = e.touches ? e.touches[0].pageY : e.clientY;
 			clickDx = (typeof clickTracker == "object" ? clickTracker.x : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
@@ -76,10 +77,14 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				clicksInited = true;
 
 				win.doc.addEventListener(moveType, function(e){
-					clickTracker = clickTracker &&
+					if(useTarget){
+						clickTracker = (clickTarget == win.doc.elementFromPoint((e.touches ? e.touches[0].pageX : e.clientX),(e.touches ? e.touches[0].pageY : e.clientY))) ;
+					}else{
+						clickTracker = clickTracker &&
 						e.target == clickTarget &&
 						Math.abs((e.touches ? e.touches[0].pageX : e.clientX) - clickX) <= clickDx &&
 						Math.abs((e.touches ? e.touches[0].pageY : e.clientY) - clickY) <= clickDy;
+					}
 				}, true);
 
 				win.doc.addEventListener(endType, function(e){

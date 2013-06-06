@@ -205,7 +205,7 @@ All of your submissions are licensed under a dual "New" BSD/AFL license.
 
 ## Expect Discussion and Rework
 
-Unless you have been working with contributing to Dojo for a while, expect a a significant amount of feedback on your
+Unless you have been working with contributing to Dojo for a while, expect a significant amount of feedback on your
 pull requests.  We are a very passionate community and even the committers often will provide robust feedback to each
 other about their code.  Don't be offended by such feedback or feel that your contributions aren't welcome, it is just
 that we are quite passionate and Dojo has a long history with many things that are the "Dojo-way" which may be

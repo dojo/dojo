@@ -3,7 +3,7 @@ define([
 	'../_base/kernel',
 	'../_base/array',
 	'../has',
-	'../selector/_loader' // only included for has() qsa tests
+	'../has!dom?../selector/_loader' // only included for has() qsa tests
 ], function(JSON, kernel, array, has){
 	has.add('activex', typeof ActiveXObject !== 'undefined');
 	has.add('dom-parser', function(global){

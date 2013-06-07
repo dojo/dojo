@@ -78,7 +78,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 				win.doc.addEventListener(moveType, function(e){
 					if(useTarget){
-						clickTracker = (clickTarget == win.doc.elementFromPoint((e.touches ? e.touches[0].pageX : e.clientX),(e.touches ? e.touches[0].pageY : e.clientY))) ;
+						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.touches ? e.touches[0].pageX : e.clientX),(e.touches ? e.touches[0].pageY : e.clientY)),clickTarget);
 					}else{
 						clickTracker = clickTracker &&
 						e.target == clickTarget &&

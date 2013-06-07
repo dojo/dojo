@@ -12,10 +12,10 @@ Installation instructions are available at [dojotoolkit.org/download][download].
 
 If you are starting out with Dojo, the following resources are available to you:
 
-* [Tutorials][]
-* [Reference Guide][]
-* [API Documentation][]
-* [Community Forum][]
+* [Tutorials]
+* [Reference Guide]
+* [API Documentation]
+* [Community Forum]
 
 ## License and Copyright
 

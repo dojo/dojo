@@ -51,7 +51,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 	function marked(/*DOMNode*/ node){
 		// Test if a node or its ancestor has been marked with the dojoClick property to indicate special processing,
 		do{
-			if(node.dojoClick){ return node.dojoClick; }
+			if(node.dojoClick){ return node; }
 		}while(node = node.parentNode);
 	}
 	
@@ -62,10 +62,16 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		//		was called in an event listener. Synthetic clicks are generated only if a node or one of its ancestors has
 		//		its dojoClick property set to truthy.
 		
-		clickTracker  = !e.target.disabled && marked(e.target); // click threshold = true, number, x/y object, or "useTarget"
+		markedNode = marked(e.target);
+		clickTracker  = !e.target.disabled && markedNode && markedNode.dojoClick; // click threshold = true, number, x/y object, or "useTarget"
 		if(clickTracker){
-			clickTarget = e.target;
 			var useTarget = (clickTracker == "useTarget");
+			clickTarget = (useTarget?markedNode:e.target);
+			if(useTarget){
+				// We except a click, so prevent any other 
+				// defaut action on "touchpress"
+				e.preventDefault();
+			}
 			clickX = e.touches ? e.touches[0].pageX : e.clientX;
 			clickY = e.touches ? e.touches[0].pageY : e.clientY;
 			clickDx = (typeof clickTracker == "object" ? clickTracker.x : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
@@ -79,6 +85,9 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				win.doc.addEventListener(moveType, function(e){
 					if(useTarget){
 						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.touches ? e.touches[0].pageX : e.clientX),(e.touches ? e.touches[0].pageY : e.clientY)),clickTarget);
+						// prevent native scroll event and ensure touchend is 
+						// fire afer touch moves between press and release.
+						e.preventDefault(); 
 					}else{
 						clickTracker = clickTracker &&
 						e.target == clickTarget &&
@@ -90,7 +99,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				win.doc.addEventListener(endType, function(e){
 					if(clickTracker){
 						clickTime = (new Date()).getTime();
-						var target = e.target;
+						var target = (useTarget?clickTarget:e.target);
 						if(target.tagName === "LABEL"){
 							// when clicking on a label, forward click to its associated input if any
 							target = dom.byId(target.getAttribute("for")) || target;

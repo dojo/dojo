@@ -62,13 +62,13 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		//		was called in an event listener. Synthetic clicks are generated only if a node or one of its ancestors has
 		//		its dojoClick property set to truthy.
 		
-		markedNode = marked(e.target);
+		var markedNode = marked(e.target);
 		clickTracker  = !e.target.disabled && markedNode && markedNode.dojoClick; // click threshold = true, number, x/y object, or "useTarget"
 		if(clickTracker){
 			var useTarget = (clickTracker == "useTarget");
 			clickTarget = (useTarget?markedNode:e.target);
 			if(useTarget){
-				// We except a click, so prevent any other 
+				// We expect a click, so prevent any other 
 				// defaut action on "touchpress"
 				e.preventDefault();
 			}

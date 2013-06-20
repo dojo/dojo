@@ -123,8 +123,8 @@
 						obj.target = e.target;
 					}
 					function assert(obj, type, target){
-						doh.assertEqual(type, obj.type);
-						doh.assertEqual(target, obj.target);
+						doh.is(type, obj.type, "type");
+						doh.is(target, obj.target, "target");
 					}
 
 					doh.register("dojo.touch", [
@@ -136,7 +136,7 @@
 								setObj(obj, e);
 							});
 							on.emit(dohDiv, mspointer?'MSPointerDown':'mousedown', {});
-							doh.assertTrue(executed, 'dojo.touch.press not fired');
+							doh.t(executed, 'dojo.touch.press fired');
 							assert(obj, mspointer?'MSPointerDown':'mousedown', dohDiv);
 						},
 						function move(){
@@ -147,7 +147,7 @@
 								setObj(obj, e);
 							});
 							on.emit(dohDiv, mspointer?'MSPointerMove':'mousemove', {});
-							doh.assertTrue(executed, 'dojo.touch.move not fired');
+							doh.t(executed, 'dojo.touch.move fired');
 							assert(obj, mspointer?'MSPointerMove':'mousemove', dohDiv);
 						},
 						function release(){
@@ -158,7 +158,7 @@
 								setObj(obj, e);
 							});
 							on.emit(dohDiv, mspointer?'MSPointerUp':'mouseup',  {screenX: 0, screenY: 50});
-							doh.assertTrue(executed, 'dojo.touch.release not fired');
+							doh.t(executed, 'dojo.touch.release fired');
 							assert(obj, mspointer?'MSPointerUp':'mouseup', dohDiv);
 						},
 						function cancel(){
@@ -168,7 +168,7 @@
 								setObj(obj, e);
 							});
 							on.emit(dohDiv, 'mouseout',  {screenX: 0, screenY: 50});
-							doh.assertTrue(executed, 'dojo.touch.cancel not fired');
+							doh.t(executed, 'dojo.touch.cancel fired');
 							assert(obj, 'mouseout', dohDiv);
 						}
 					]);

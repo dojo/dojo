@@ -219,7 +219,9 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 						// Unlike a listener on "touchmove", on(node, "dojotouchmove", listener) fires when the finger
 						// drags over the specified node, regardless of which node the touch started on.
-						on.emit(newNode, "dojotouchmove", copyEventProps(evt));
+						if(!on.emit(newNode, "dojotouchmove", copyEventProps(evt))){
+							evt.preventDefault();
+						}
 					}
 				});
 

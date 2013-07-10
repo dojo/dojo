@@ -53,10 +53,15 @@ define(["./has"], function(has){
 				has.add("ff", parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1]) || undefined);
 			}
 
-			// IE
+			var isIE = 0;
 			if(document.all && !has("opera")){
-				var isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
-
+				// IE < 11
+				isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
+			}else if(dav.indexOf("Trident")){
+				// IE >= 9
+				isIE = parseFloat(dav.split("rv:")[1]) || undefined;
+			}
+			if(isIE){
 				//In cases where the page has an HTTP header or META tag with
 				//X-UA-Compatible, then it is in emulation mode.
 				//Make sure isIE reflects the desired version.

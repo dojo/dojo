@@ -62,8 +62,31 @@ return declare("dojo.store.JsonRest", base, {
 	//		The prefix to apply to sort attribute names that are ascending
 	descendingPrefix: "-",
 	 
-
-	get: function(id, options){
+  // allowNoTrailingSlash: Boolean
+  //    If true, respect whether target ends with '/' or not.
+  allowNoTrailingSlash: false,
+  
+  getTarget: function(id, options) {
+    // summary:
+    //    If the target has no trailing '/', then append it.
+    // id: Number
+    //    The identity of the requested target
+    // options: Object
+    //    Options to the target URL generation. Supported is 'before'.
+    options = options || {};
+    var target = new String(this.target);
+    if (target.match(/\/$/)) {
+       target += id;
+    } else {
+      target += '/' + id;
+    }
+    if (options.before && options.before.id) {
+      target += '/' + options.before.id;
+    }
+    return target;
+  },
+          
+  get: function(id, options){
 		// summary:
 		//		Retrieves an object by its identity. This will trigger a GET request to the server using
 		//		the url `this.target + id`.
@@ -77,7 +100,7 @@ return declare("dojo.store.JsonRest", base, {
 		options = options || {};
 		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers || options);
 		return xhr("GET", {
-			url: this.target + id,
+			url: this.allowNoTrailingSlash ? this.getTarget(id, options) : this.target + id,
 			handleAs: "json",
 			headers: headers
 		});
@@ -110,7 +133,9 @@ return declare("dojo.store.JsonRest", base, {
 		var id = ("id" in options) ? options.id : this.getIdentity(object);
 		var hasId = typeof id != "undefined";
 		return xhr(hasId && !options.incremental ? "PUT" : "POST", {
-				url: hasId ? this.target + id : this.target,
+				url: hasId 
+          ? (this.allowNoTrailingSlash ? this.getTarget(id, options) : this.target + id)
+          : this.target,
 				postData: JSON.stringify(object),
 				handleAs: "json",
 				headers: lang.mixin({
@@ -145,7 +170,7 @@ return declare("dojo.store.JsonRest", base, {
 		//		HTTP headers.
 		options = options || {};
 		return xhr("DELETE", {
-			url: this.target + id,
+			url: this.allowNoTrailingSlash ? this.getTarget(id, options) :this.target + id,
 			headers: lang.mixin({}, this.headers, options.headers)
 		});
 	},

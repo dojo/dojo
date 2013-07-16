@@ -60,6 +60,7 @@ define([
 		function dom(t){
 			var div = document.body.appendChild(document.createElement("div"));
 			var span = div.appendChild(document.createElement("span"));
+
 			var order = [];
 			var signal = on(div,"custom", function(event){
 				order.push(event.a);
@@ -155,22 +156,32 @@ define([
 			// test out event delegation
 			if(query){
 				// if dojo.query is loaded, test event delegation
-				on(div, "button:click", function(){
+
+				// check text node target is properly handled by event delegation
+				var textnodespan = div.appendChild(document.createElement("span"));
+				textnodespan.className = "textnode";
+				textnodespan.innerHTML = "text";
+				on(document.body, ".textnode:click", function(){
 					order.push(8);
+				});
+				on.emit(textnodespan.firstChild, "click", {bubbles: true, cancelable: true});
+
+				on(div, "button:click", function(){
+					order.push(9);
 				});
 				on(document, "button:click", function(){
 				}); // just make sure this doesn't throw an error
 			}else{//just pass then
-				order.push(8);
+				order.push(8, 9);
 			}
 			// test out event delegation using a custom selector
 			on(div, on.selector(function(node){
 				return node.tagName == "BUTTON";
 			}, "click"), function(){
-				order.push(9);
+				order.push(10);
 			});
 			button.click();
-			t.is(order, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+			t.is([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], order);
 			on(span, "propertychange", function(){}); // make sure it doesn't throw an error
 		},
 		/*

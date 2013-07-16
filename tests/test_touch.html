@@ -44,10 +44,11 @@
 				"dojo/on",
 				"dojo/has",
 				"doh/runner",
+				"dojo/dom-geometry",
 				"dojo/dom-style",
 				"dojo/domReady",
 				"dojo/touch"
-			], function(array, dom, lang, on, has, doh, domStyle, domReady, touch){
+			], function(array, dom, lang, on, has, doh, domGeom, domStyle, domReady, touch){
 
 				var action = function(comment, e){
 					// summary:
@@ -109,71 +110,128 @@
 //					on(node, "touchcancel", action);
 //					on(node, "orientationchange", action);
 
-				function setObj(obj, e){
-					obj.type = e.type;
-					obj.target = e.target;
-				}
-				function assert(obj, type, target){
-					doh.is(type, obj.type, "type");
-					doh.is(target, obj.target, "target");
-				}
+
 				/**
-				 * Create a touch event. All coordinates are defaulted to zero.
-				 * @param eventType must be touchstart, touchmove or touchend.
+				 * Fires an event.  All coordinates are defaulted to zero.
 				 * @param target the target element.
-				 * @returns {Event}
+				 * @param eventType touchstart, touchmove or touchend, or mouse or MSPointer equivalents.
 				 */
-				function createTouchEvent(eventType, target){
-					var touch = {
-						identifier: (new Date()).getTime(),
-						target: target,
-						screenX: 0,
-						screenY: 0,
-						clientX: 0,
-						clientY: 0,
-						pageX: 0,
-						pageY: 0
-					};
-					var touchEvent = document.createEvent("MouseEvent");
-					touchEvent.initMouseEvent(
-							eventType,
-							true,
-							true,
-							target.ownerDocument.defaultView,
-							0,
-							0,
-							0,
-							0,
-							0,
-							false,
-							false,
-							false,
-							false,
-							0,
-							target
-					);
-					touchEvent['touches'] = [touch];
-					touchEvent['targetTouches'] = [touch];
-					touchEvent['changedTouches'] = [touch];
-					return touchEvent;
+				function emit(target, eventType, options){
+					var targetPos = domGeom.position(target);
+
+					options = lang.mixin({
+						pageX: targetPos.x + targetPos.w / 2,
+						pageY: targetPos.y + targetPos.h / 2
+					}, options || {});
+
+					if(document.createEvent && target.dispatchEvent){
+						var touch = {
+							identifier: (new Date()).getTime(),
+							target: target,
+							screenX: 0,
+							screenY: 0,
+							clientX: 0,
+							clientY: 0,
+							pageX: 0,
+							pageY: 0
+						};
+						lang.mixin(touch, options || {});
+
+						var mouseEvent = document.createEvent("MouseEvent");
+						mouseEvent.initMouseEvent(
+								eventType,
+								true,
+								true,
+								target.ownerDocument.defaultView,
+								0,
+								0,
+								0,
+								0,
+								0,
+								false,
+								false,
+								false,
+								false,
+								0,
+								document.body	// relatedTarget, for mouseout events
+						);
+
+						if(/touch/.test(eventType)){
+							mouseEvent['touches'] = [touch];
+							mouseEvent['targetTouches'] = [touch];
+							mouseEvent['changedTouches'] = [touch];
+						}
+
+						target.dispatchEvent(mouseEvent);
+					}else{
+						options.bubbles = true;
+						options.cancelable = true;
+						on.emit(target, eventType, options);
+					}
 				}
+
 				// if we declare "dojo/domReady!" touch.js will register its handler *after* the test execution
 				// so here we explicitly call domReady.
 				domReady(function(){
 					var dohDiv = dom.byId('dohDiv');
-					var testCases;
-					var mspointer = (window.navigator.mspointerEnabled);
 					domStyle.set(dohDiv, {display: 'block'});
-					if(has("touch")){
-						/**
-						 * test cases for TouchEvent devices.
-						 * @type {Array}
-						 */
-						testCases = [
+
+					// Function to register tests on mouse events, touch events, or Microsoft's pointer-ish events
+					function register(testName, downEvent, moveEvent, upEvent, cancelEvent){
+						doh.register(testName, [
+							function press(){
+								var executed, target;
+								on.once(dohDiv, touch.press, function(e){
+									//console.log(e.type);
+									executed = true;
+									target = e.target;
+								});
+								emit(dohDiv, downEvent);
+								doh.t(executed, 'dojo.touch.press fired');
+								doh.is(dohDiv, target, "target");
+							},
+							function move(){
+								var executed, target;
+								on.once(dohDiv, touch.move, function(e){
+									//console.log(e.type);
+									executed = true;
+									target = e.target;
+								});
+								emit(dohDiv, moveEvent);
+								doh.t(executed, 'dojo.touch.move fired');
+								doh.is(dohDiv, target, "target");
+							},
+							function release(){
+								var executed, target;
+								on.once(dohDiv, touch.release, function(e){
+									//console.log(e.type);
+									executed = true;
+									target = e.target;
+								});
+								emit(dohDiv, upEvent, {screenX: 0, screenY: 50});
+								doh.t(executed, 'dojo.touch.release fired');
+								doh.is(dohDiv, target, "target");
+							},
+							function cancel(){
+								var executed, target;
+								on.once(dohDiv, touch.cancel, function(e){
+									executed = true;
+									target = e.target;
+								});
+								emit(dohDiv, cancelEvent, {
+									relatedTarget: document.body,	// needed for mouseout event
+									screenX: 0,
+									screenY: 50,
+									pageX: 0,
+									pageY: 0
+								});
+								doh.t(executed, 'dojo.touch.cancel fired');
+								doh.is(dohDiv, target, "target");
+							},
 							function movePreventDefault(){
 								/**
 								 * checks that calling preventDefault() on dojo "touch.move" event
-								 * prevents default behavior on the underlying native event "touchmove".
+								 * prevents default behavior on the underlying native event
 								 * Ref. #17220
 								 * window
 								 *    |    =>    (1) listen and prevent default on dojo "touch.move" event
@@ -182,75 +240,52 @@
 								 *    +--dohDiv    =>    (3) dispatch native "touchmove" event
 								 **/
 								var prevented = false;
+
 								// (1) register dojo "touch.move" listener
-								onResult = on(window, touch.move, function(e){
+								on.once(dohDiv, touch.move, function(e){
 									e.preventDefault();
-									//console.log("test: [dojo touch.move] prevent default");
+									//console.log("prevent default on event " + e.type);
 								});
-								// (2) register native "touchmove" listener
-								window.addEventListener("touchmove", function(e){
+
+								// (2) register listener for native event (touchmove, mousemove, or MSPointerMove)
+								// Call addEventListener() except on IE6-8 where that's not supported
+								function listener(e){
 									prevented = e.defaultPrevented;
-									//console.log("test: [touchmove] received on [" + (e.target.id) + "] prevented default (" + (prevented) + ")");
-								}, false);
-								// (3) dispatch native "touchmove" event
-								var evt = createTouchEvent("touchmove", dohDiv);
-								//console.log("test: [touchmove] dispatch...");
-								dohDiv.dispatchEvent(evt);
-								doh.assertTrue((prevented === true), 'default "touchmove" not prevented');
+									//console.log("native listener, prevented = " + prevented);
+								}
+								if(window.addEventListener){
+									window.addEventListener(moveEvent, listener);
+								}else{
+									// IE6-8 code path
+									on.once(document.body, moveEvent, listener);
+								}
+
+								// (3) dispatch native touchmove/mousemove/MSPointerMove event
+								emit(dohDiv, moveEvent);
+								doh.t(prevented, 'prevented');
+
+								if(window.addEventListener){
+									window.removeEventListener(moveEvent, listener);
+								}
 							}
-						];
-					}else{
-						/**
-						 * test cases for non TouchEvent devices.
-						 * @type {Array}
-						 */
-						testCases = [
-							function press(){
-								var executed, obj = {};
-								on(dohDiv, touch.press, function(e){
-									//console.log(e.type);
-									executed = true;
-									setObj(obj, e);
-								});
-								on.emit(dohDiv, mspointer ? 'MSPointerDown' : 'mousedown', {});
-								doh.t(executed, 'dojo.touch.press fired');
-								assert(obj, mspointer ? 'MSPointerDown' : 'mousedown', dohDiv);
-							},
-							function move(){
-								var executed, obj = {};
-								on(dohDiv, touch.move, function(e){
-									//console.log(e.type);
-									executed = true;
-									setObj(obj, e);
-								});
-								on.emit(dohDiv, mspointer ? 'MSPointerMove' : 'mousemove', {});
-								doh.t(executed, 'dojo.touch.move fired');
-								assert(obj, mspointer ? 'MSPointerMove' : 'mousemove', dohDiv);
-							},
-							function release(){
-								var executed, obj = {};
-								on(dohDiv, touch.release, function(e){
-									//console.log(e.type);
-									executed = true;
-									setObj(obj, e);
-								});
-								on.emit(dohDiv, mspointer ? 'MSPointerUp' : 'mouseup', {screenX: 0, screenY: 50});
-								doh.t(executed, 'dojo.touch.release fired');
-								assert(obj, mspointer ? 'MSPointerUp' : 'mouseup', dohDiv);
-							},
-							function cancel(){
-								var executed, obj = {};
-								on(dohDiv, touch.cancel, function(e){
-									executed = true;
-									setObj(obj, e);
-								});
-								on.emit(dohDiv, 'mouseout', {screenX: 0, screenY: 50});
-								doh.t(executed, 'dojo.touch.cancel fired');
-								assert(obj, 'mouseout', dohDiv);
-							}
-						];
+						]);
 					}
-					doh.register("dojo.touch", testCases);
+
+					// Setup tests relevant for this platform
+					if(navigator.msPointerEnabled){
+						register('MSPointer events', 'MSPointerDown', 'MSPointerMove', 'MSPointerUp',
+								has('touch') ? 'MSPointerCancel' : 'mouseout');
+					}else{
+						// Mouse is always supported, even on devices with touch capability.
+						// Test mouse first because once we start emitting touch events, dojo/touch ignores mouse events
+						// for 1000ms.
+						register('mouse events', 'mousedown', 'mousemove', 'mouseup', 'mouseout');
+
+						if(has("touch")){
+							register('touch events', 'touchstart', 'touchmove', 'touchend', 'touchcancel');
+						}
+					}
+
 					doh.run();
 				});
 			});
@@ -266,9 +301,9 @@
 		<div id="test2">
 			touch.move
 		</div>
+		<div id="dohDiv">doh</div>
 		<div id="current"></div>
 		<div id="log"></div>
 		<br style="clear:both"/>
-		<div id="dohDiv">doh</div>
 	</body>
 </html>

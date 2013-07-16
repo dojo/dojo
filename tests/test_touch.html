@@ -24,6 +24,18 @@
 				border: 1px solid yellow;
 				background-color: yellow;
 			}
+			#test3 {
+				width: 300px;
+				height: 150px;
+				border: 1px solid red;
+				background-color: red;			
+			}
+			#innertest3 {
+				border: 1px solid white;
+				width: 250px;
+				heigh: 75px;
+				background-color: white;
+			}
 			#current, #log {
 				width: 300px;
 				height: 200px;
@@ -99,6 +111,24 @@
 					e.preventDefault();
 
 					// stopPropagation() should work too
+					e.stopPropagation();
+				});
+
+				dom.byId("test3").dojoClick = true;
+				on(dom.byId("test3"), "click", function(e){
+					if(has("touch")){
+						// click should be a synthetic click
+						dom.byId("log").innerHTML = (e._dojo_click ? "Synthetic click received in test3" : "ERROR: native click received in test3") + "<br/>" + dom.byId("log").innerHTML;
+					}else{
+						// click should be a native click
+						dom.byId("log").innerHTML = (e._dojo_click ? "ERROR: Synthetic click received in test3 (non touch device)" : "Native click received in test3  (non touch device)") + "<br/>" + dom.byId("log").innerHTML;
+					}
+				});
+
+				dom.byId("innertest3").dojoClick = false;
+				on(dom.byId("innertest3"), "click", function(e){
+					// click should be a native click
+					dom.byId("log").innerHTML = (e._dojo_click ? "ERROR: Synthetic click received in innertest3" : "Native click received in innertest3") + "<br/>" + dom.byId("log").innerHTML;;
 					e.stopPropagation();
 				});
 
@@ -265,6 +295,12 @@
 		</div>
 		<div id="test2">
 			touch.move
+		</div>
+		<div id="test3">
+			On touch devices, synthetic clicks are enabled in this area.
+			<div id="innertest3">
+				On touch devices, synthetic clicks disabled in this area.
+			</div>
 		</div>
 		<div id="current"></div>
 		<div id="log"></div>

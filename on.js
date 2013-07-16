@@ -186,6 +186,10 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 				// see if we have a valid matchesTarget or default to dojo.query
 				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
 				// there is a selector, so make sure it matches
+				if(eventTarget.nodeType != 1){
+					// text node will fail in native match selector
+					eventTarget = eventTarget.parentNode;
+				}
 				while(!matchesTarget.matches(eventTarget, selector, target)){
 					if(eventTarget == target || children === false || !(eventTarget = eventTarget.parentNode) || eventTarget.nodeType != 1){ // intentional assignment
 						return;

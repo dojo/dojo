@@ -152,6 +152,18 @@ define([
 			signal.remove();
 			signal2.remove();
 
+			// make sure 'document' and 'window' can also emit events
+			var eventEmitted;
+			var globalObjects = [document, window];
+			for(var i = 0, len = globalObjects.length; i < len; i++) {
+				eventEmitted = false;
+				on(globalObjects[i], 'custom-test-event', function () {
+					eventEmitted = true;
+				});
+				on.emit(globalObjects[i], 'custom-test-event', {});
+				t.is(true, eventEmitted);
+			}
+
 			// test out event delegation
 			if(query){
 				// if dojo.query is loaded, test event delegation

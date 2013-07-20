@@ -283,7 +283,8 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				// that would be a lot of extra code, with little benefit that I can see, seems 
 				// best to use the generic constructor and copy properties over, making it 
 				// easy to have events look like the ones created with specific initializers
-				var nativeEvent = document.createEvent("HTMLEvents");
+				var ownerDocument = target.ownerDocument || document;
+				var nativeEvent = ownerDocument.createEvent("HTMLEvents");
 				nativeEvent.initEvent(type, !!event.bubbles, !!event.cancelable);
 				// and copy all our properties over
 				for(var i in event){

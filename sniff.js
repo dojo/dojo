@@ -44,19 +44,15 @@ define(["./has"], function(has){
 				has.add("opera", tv >= 9.8 ? parseFloat(dua.split("Version/")[1]) || tv : tv);
 			}
 
-			// Mozilla and firefox
-			if(dua.indexOf("Gecko") >= 0 && !has("khtml") && !has("webkit")){
-				has.add("mozilla", tv);
-			}
-			if(has("mozilla")){
-				//We really need to get away from this. Consider a sane isGecko approach for the future.
-				has.add("ff", parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1]) || undefined);
-			}
-
-			// IE
+			var isIE = 0;
 			if(document.all && !has("opera")){
-				var isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
-
+				// IE < 11
+				isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
+			}else if(dav.indexOf("Trident")){
+				// IE >= 9
+				isIE = parseFloat(dav.split("rv:")[1]) || undefined;
+			}
+			if(isIE){
 				//In cases where the page has an HTTP header or META tag with
 				//X-UA-Compatible, then it is in emulation mode.
 				//Make sure isIE reflects the desired version.
@@ -69,6 +65,15 @@ define(["./has"], function(has){
 				}
 
 				has.add("ie", isIE);
+			}
+			
+			// Mozilla and firefox
+			if(!has("ie") && dua.indexOf("Gecko") >= 0 && !has("khtml") && !has("webkit")){
+				has.add("mozilla", tv);
+			}
+			if(has("mozilla")){
+				//We really need to get away from this. Consider a sane isGecko approach for the future.
+				has.add("ff", parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1]) || undefined);
 			}
 
 			// Wii

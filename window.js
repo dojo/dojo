@@ -100,7 +100,7 @@ define(["./_base/lang", "./sniff", "./_base/window", "./dom", "./dom-geometry", 
 			// reference to the real window object (maybe a copy), so we must fix it as well
 			// We use IE specific execScript to attach the real window reference to
 			// document._parentWindow for later use
-			if(has("ie") && window !== document.parentWindow){
+			if(has("ie") < 9 && window !== document.parentWindow){
 				/*
 				In IE 6, only the variable "window" can be used to connect events (others
 				may be only copies).

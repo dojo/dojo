@@ -143,15 +143,15 @@ define(["./kernel", "../has"], function(dojo, has){
 			}
 		}
 
-		if(dua.indexOf("Gecko") >= 0 && !isKhtml && !isWebKit){
-			isMozilla = isMoz = tv;
-		}
-		if(isMoz){
-			//We really need to get away from this. Consider a sane isGecko approach for the future.
-			isFF = parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1]) || undefined;
+		isIE = 0;
+		if(document.all && !has("opera")){
+			// IE < 11
+			isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
+		}else if(dav.indexOf("Trident")){
+			// IE >= 9
+			isIE = parseFloat(dav.split("rv:")[1]) || undefined;
 		}
 		if(document.all && !isOpera){
-			isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
 			//In cases where the page has an HTTP header or META tag with
 			//X-UA-Compatible, then it is in emulation mode.
 			//Make sure isIE reflects the desired version.
@@ -162,6 +162,15 @@ define(["./kernel", "../has"], function(dojo, has){
 			if(mode && mode != 5 && Math.floor(isIE) != mode){
 				isIE = mode;
 			}
+		}
+		
+		// Mozilla and firefox
+		if(!isIE && dua.indexOf("Gecko") >= 0 && !isKhtml && !isWebKit){
+			isMozilla = isMoz = tv;
+		}
+		if(isMoz){
+			//We really need to get away from this. Consider a sane isGecko approach for the future.
+			isFF = parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1]) || undefined;
 		}
 	}
 

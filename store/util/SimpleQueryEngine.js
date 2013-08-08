@@ -1,4 +1,4 @@
-define(["../../_base/array" /*=====, "../api/Store" =====*/], function(arrayUtil /*=====, Store =====*/){
+define(["../../_base/array", "../../_base/lang" /*=====, "../api/Store" =====*/], function(arrayUtil, lang /*=====, Store =====*/){
 
 // module:
 //		dojo/store/util/SimpleQueryEngine
@@ -55,14 +55,19 @@ return function(query, options){
 			var queryObject = query;
 			query = function(object){
 				for(var key in queryObject){
+					if(!queryObject.hasOwnProperty(key)) continue;
 					var required = queryObject[key];
+
 					if(required && required.test){
 						// an object can provide a test method, which makes it work with regex
-						if(!required.test(object[key], object)){
+						if(!required.test(lang.getObject(key, false, object), object)){
 							return false;
 						}
-					}else if(required != object[key]){
-						return false;
+					}else {
+						var res = lang.getObject(key, false, object);
+						if(res == undefined || (required != res && !(res.constructor == Boolean && res.toString() == required))){
+							return false;
+						}
 					}
 				}
 				return true;
@@ -86,8 +91,8 @@ return function(query, options){
 		if(sortSet){
 			results.sort(typeof sortSet == "function" ? sortSet : function(a, b){
 				for(var sort, i=0; sort = sortSet[i]; i++){
-					var aValue = a[sort.attribute];
-					var bValue = b[sort.attribute];
+					var aValue = lang.getObject(sort.attribute, false, a);
+					var bValue = lang.getObject(sort.attribute, false, b);
 					if (aValue != bValue){
 						return !!sort.descending == (aValue == null || aValue > bValue) ? -1 : 1;
 					}

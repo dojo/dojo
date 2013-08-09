@@ -437,7 +437,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 
 		var _setKeyChar = function(evt){
 			evt.keyChar = evt.charCode ? String.fromCharCode(evt.charCode) : '';
-			evt.charOrCode = evt.keyChar || evt.keyCode;
+			evt.charOrCode = evt.keyChar || evt.keyCode;	// TODO: remove for 2.0
 		};
 		// Called in Event scope
 		var stopPropagation = function(){

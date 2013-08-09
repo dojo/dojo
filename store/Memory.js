@@ -55,6 +55,15 @@ return declare("dojo.store.Memory", base, {
 		// returns: Number
 		return lang.getObject(this.idProperty, false, object);
 	},
+	setIdentity: function(object, value){
+		// summary:
+		//		Sets an object's identity
+		// object: Object
+		//		The object to get the identity from
+		// value: anything
+		//		Value or object to place at location given by name
+		lang.setObject(this.idProperty, value, object);
+	},
 	put: function(object, options){
 		// summary:
 		//		Stores an object
@@ -68,6 +77,7 @@ return declare("dojo.store.Memory", base, {
 			index = this.index,
 			idProperty = this.idProperty;
 		var id = (options && "id" in options) ? options.id : idProperty in object ? this.getIdentity(object) : Math.random();
+		this.setIdentity(object, id);
 		if(id in index){
 			// object exists
 			if(options && options.overwrite === false){

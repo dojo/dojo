@@ -55,7 +55,6 @@ return function(query, options){
 			var queryObject = query;
 			query = function(object){
 				for(var key in queryObject){
-					if(!queryObject.hasOwnProperty(key)) continue;
 					var required = queryObject[key];
 
 					if(required && required.test){
@@ -64,8 +63,7 @@ return function(query, options){
 							return false;
 						}
 					}else {
-						var res = lang.getObject(key, false, object);
-						if(res == undefined || (required != res && !(res.constructor == Boolean && res.toString() == required))){
+						if(required != lang.getObject(key, false, object)){
 							return false;
 						}
 					}

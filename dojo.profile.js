@@ -34,7 +34,11 @@ var profile = (function(){
 
 			amd: function(filename, mid){
 				return !testResourceRe.test(mid) && !copyOnly(filename, mid) && /\.js$/.test(filename);
-			}
+			},
+
+            ignore: function(filename, mid){
+                return mid == "dojo/composer.json";
+            }
 		}
 	};
 })();

@@ -165,7 +165,7 @@ this can be found in the GitHub Help Article [Creating a Pull Request][].  Essen
 1. Go to the site for your repository.
 2. Click the Pull Request button.
 3. Select the feature branch from your repository.
-4. Enter a title and description of your pull request.
+4. Enter a title and description of your pull request mentioning the corresponding [bug database][] ticket in the description.
 5. Review the commit and files changed tabs.
 6. Click `Send Pull Request`
 

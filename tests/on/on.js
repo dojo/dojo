@@ -1,7 +1,7 @@
 define([
 	"doh",
-	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic"
-], function(doh, declare, Evented, has, on, query, topic){
+	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic", "dojo/dom-construct"
+], function(doh, declare, Evented, has, on, query, topic, domConstruct){
 
 	doh.register("tests.on", [
 		function object(t){
@@ -155,7 +155,8 @@ define([
 
 			// make sure 'document' and 'window' can also emit events
 			var eventEmitted;
-			var globalObjects = [document, window];
+			var iframe = domConstruct.place('<iframe></iframe>', document.body);
+			var globalObjects = [document, window, iframe.contentWindow, iframe.contentDocument || iframe.contentWindow.document];
 			for(var i = 0, len = globalObjects.length; i < len; i++) {
 				eventEmitted = false;
 				on(globalObjects[i], 'custom-test-event', function () {

@@ -94,7 +94,7 @@ var Observable = function(/*Store*/ store){
 										resultsArray.length;
 									resultsArray.splice(firstInsertedInto, 0, changed); // add the new item
 									insertedInto = array.indexOf(queryExecutor(resultsArray), changed); // sort it
-									// we now need to push the chagne back into the original results array
+									// we now need to push the change back into the original results array
 									resultsArray.splice(firstInsertedInto, 1); // remove the inserted item from the previous index
 									
 									if((options.start && insertedInto == 0) ||

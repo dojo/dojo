@@ -62,7 +62,7 @@ return declare("dojo.store.JsonRest", base, {
   //    If true, respect whether target ends with '/' or not.
   allowNoTrailingSlash: false,
   
-  getTarget: function(id, options) {
+  getTarget: function(id, options){
     // summary:
     //    If the target has no trailing '/', then append it.
     // id: Number
@@ -70,14 +70,11 @@ return declare("dojo.store.JsonRest", base, {
     // options: Object
     //    Options to the target URL generation. Supported is 'before'.
     options = options || {};
-    var target = new String(this.target);
-    if (target.match(/\/$/)) {
+    var target = this.target;
+    if (target.match(/\/$/)){
        target += id;
-    } else {
+    }else {
       target += '/' + id;
-    }
-    if (options.before && options.before.id) {
-      target += '/' + options.before.id;
     }
     return target;
   },

@@ -62,10 +62,6 @@ return declare("dojo.store.JsonRest", base, {
 	//		The prefix to apply to sort attribute names that are ascending
 	descendingPrefix: "-",
 	 
-  // allowNoTrailingSlash: Boolean
-  //    If true, respect whether target ends with '/' or not.
-  allowNoTrailingSlash: false,
-  
   getTarget: function(id, options){
     // summary:
     //    If the target has no trailing '/', then append it.
@@ -75,10 +71,12 @@ return declare("dojo.store.JsonRest", base, {
     //    Options to the target URL generation. Supported is 'before'.
     options = options || {};
     var target = this.target;
-    if (target.match(/\/$/)){
-       target += id;
-    }else {
-      target += '/' + id;
+    if (typeof id != "undefined"){
+      if (target.match(/\/$/)){
+         target += id;
+      }else{
+        target += '/' + id;
+      }
     }
     return target;
   },
@@ -97,7 +95,7 @@ return declare("dojo.store.JsonRest", base, {
 		options = options || {};
 		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers || options);
 		return xhr("GET", {
-			url: this.allowNoTrailingSlash ? this.getTarget(id, options) : this.target + id,
+			url: this.getTarget(id, options),
 			handleAs: "json",
 			headers: headers
 		});
@@ -130,9 +128,7 @@ return declare("dojo.store.JsonRest", base, {
 		var id = ("id" in options) ? options.id : this.getIdentity(object);
 		var hasId = typeof id != "undefined";
 		return xhr(hasId && !options.incremental ? "PUT" : "POST", {
-				url: hasId 
-          ? (this.allowNoTrailingSlash ? this.getTarget(id, options) : this.target + id)
-          : this.target,
+				url: this.getTarget(id, options),
 				postData: JSON.stringify(object),
 				handleAs: "json",
 				headers: lang.mixin({
@@ -167,7 +163,7 @@ return declare("dojo.store.JsonRest", base, {
 		//		HTTP headers.
 		options = options || {};
 		return xhr("DELETE", {
-			url: this.allowNoTrailingSlash ? this.getTarget(id, options) :this.target + id,
+			url: this.getTarget(id, options),
 			headers: lang.mixin({}, this.headers, options.headers)
 		});
 	},

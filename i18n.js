@@ -87,7 +87,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			// summary:
 			//		get the root bundle which instructs which other bundles are required to construct the localized bundle
 			require([bundlePathAndName], function(root){
-				var current = lang.clone(root.root),
+				var current = lang.clone(root.root || root.ROOT),// 1.6 built bundle defined ROOT
 					availableLocales = getAvailableLocales(!root._v1x && root, locale, bundlePath, bundleName);
 				require(availableLocales, function(){
 					for (var i = 1; i<availableLocales.length; i++){

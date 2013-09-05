@@ -86,7 +86,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 					if(useTarget){
 						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.touches ? e.touches[0].pageX : e.clientX),(e.touches ? e.touches[0].pageY : e.clientY)),clickTarget);
 						// prevent native scroll event and ensure touchend is 
-						// fire afer touch moves between press and release.
+						// fire after touch moves between press and release.
 						e.preventDefault(); 
 					}else{
 						clickTracker = clickTracker &&
@@ -233,7 +233,11 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 						// Unlike a listener on "touchmove", on(node, "dojotouchmove", listener) fires when the finger
 						// drags over the specified node, regardless of which node the touch started on.
-						on.emit(newNode, "dojotouchmove", copyEventProps(evt));
+						if(!on.emit(newNode, "dojotouchmove", copyEventProps(evt))){
+							// emit returns false when synthetic event "dojotouchmove" is cancelled, so we prevent the
+							// default behavior of the underlying native event "touchmove".
+							evt.preventDefault();
+						}
 					}
 				});
 

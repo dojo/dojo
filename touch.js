@@ -82,21 +82,26 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 			if(!clicksInited){
 				clicksInited = true;
 
-				win.doc.addEventListener(moveType, function(e){
+				function updateClickTracker(e){
 					if(useTarget){
 						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.touches ? e.touches[0].pageX : e.clientX),(e.touches ? e.touches[0].pageY : e.clientY)),clickTarget);
-						// prevent native scroll event and ensure touchend is 
+						// prevent native scroll event and ensure touchend is
 						// fire after touch moves between press and release.
-						e.preventDefault(); 
+						e.preventDefault();
 					}else{
 						clickTracker = clickTracker &&
-						e.target == clickTarget &&
-						Math.abs((e.touches ? e.touches[0].pageX : e.clientX) - clickX) <= clickDx &&
-						Math.abs((e.touches ? e.touches[0].pageY : e.clientY) - clickY) <= clickDy;
+							e.target == clickTarget &&
+							Math.abs((e.touches ? e.touches[0].pageX : e.clientX) - clickX) <= clickDx &&
+							Math.abs((e.touches ? e.touches[0].pageY : e.clientY) - clickY) <= clickDy;
 					}
+				}
+
+				win.doc.addEventListener(moveType, function(e){
+					updateClickTracker(e);
 				}, true);
 
 				win.doc.addEventListener(endType, function(e){
+					updateClickTracker(e);
 					if(clickTracker){
 						clickTime = (new Date()).getTime();
 						var target = (useTarget?clickTarget:e.target);

@@ -84,20 +84,22 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 				function updateClickTracker(e){
 					if(useTarget){
-						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.touches ? e.touches[0].pageX : e.clientX),(e.touches ? e.touches[0].pageY : e.clientY)),clickTarget);
-						// prevent native scroll event and ensure touchend is
-						// fire after touch moves between press and release.
-						e.preventDefault();
+						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.changedTouches ? e.changedTouches[0].pageX : e.clientX),(e.changedTouches ? e.changedTouches[0].pageY : e.clientY)),clickTarget);
 					}else{
 						clickTracker = clickTracker &&
 							e.target == clickTarget &&
-							Math.abs((e.touches ? e.touches[0].pageX : e.clientX) - clickX) <= clickDx &&
-							Math.abs((e.touches ? e.touches[0].pageY : e.clientY) - clickY) <= clickDy;
+							Math.abs((e.changedTouches ? e.changedTouches[0].pageX : e.clientX) - clickX) <= clickDx &&
+							Math.abs((e.changedTouches ? e.changedTouches[0].pageY : e.clientY) - clickY) <= clickDy;
 					}
 				}
 
 				win.doc.addEventListener(moveType, function(e){
 					updateClickTracker(e);
+					if(useTarget){
+						// prevent native scroll event and ensure touchend is
+						// fire after touch moves between press and release.
+						e.preventDefault();
+					}
 				}, true);
 
 				win.doc.addEventListener(endType, function(e){
@@ -115,7 +117,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 								cancelable : true,
 								_dojo_click : true
 							});
-						});
+						},0);
 					}
 				}, true);
 

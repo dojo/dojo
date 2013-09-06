@@ -283,6 +283,71 @@
 
 						if(has("touch")){
 							register('touch events', 'touchstart', 'touchmove', 'touchend', 'touchcancel');
+
+							var domElt = dom.byId("innertest");
+							domElt.dojoClick = "useTarget";
+							var outsideElt = dom.byId("dohDiv");
+							var box = domElt.getBoundingClientRect(); // position in viewport coordinates
+							var coordInsideElt = {x: box.right - box.left, y:box.bottom - box.top};
+							var coordOutsideElt = {x: box.right + 100, y:box.bottom + 100};
+
+							doh.register("dojoClick.useTarget", [{
+								name: "Click inside",
+								timeout: 1000,
+								runTest: function(){
+									/**
+									 * check that synthetic click is fired as expected when dojoClick value is set
+									 * to "useTarget" on a dom element and touchstart/touchend are on that element,
+									 * even if a touchmove happens outside the element.
+									 * Note that synthetic click is fired ONLY on touch enabled devices (touch or MSPointer).
+									 */
+									var clicked = false;
+									// register the click handler
+									function listener(e){
+										clicked = true;
+									}
+									domElt.addEventListener("click", listener);
+									// emit "touchstart" then "up" event inside the element
+									emit(domElt, "touchstart", {screenX: coordInsideElt.x, screenY: coordInsideElt.y});
+									emit(outsideElt, "touchmove",{screenX: coordOutsideElt.x, screenY: coordOutsideElt.y});
+									emit(domElt, "touchend", {screenX: coordInsideElt.x, screenY: coordInsideElt.y});
+									var deferred = new doh.Deferred();
+									// without deferred the click handler is called after the doh method ends.
+									setTimeout(deferred.getTestCallback(function(){
+										doh.t(clicked, 'synthetic click fired');
+									}), 0);
+									return deferred;
+								}
+							},{
+								name: "Click outside",
+								timeout: 1000,
+								runTest: function(){
+									/**
+									 * check that synthetic click is NOT fired when dojoClick value is set
+									 * to "useTarget" on a dom element and touch is released outside the element.
+									 * Note that synthetic click is fired ONLY on touch enabled devices (touch or MSPointer).
+									 */
+									var clicked = false;
+									// register the click handler
+									function listener(e){
+										alert("click fired ??");
+										clicked = true;
+									}
+									domElt.addEventListener("click", listener);
+									// emit "touchstart" inside, then "touchend" event outside the element
+									emit(domElt, "touchstart", {screenX: coordInsideElt.x, screenY: coordInsideElt.y});
+									emit(outsideElt, "touchmove", {screenX: coordOutsideElt.x, screenY: coordOutsideElt.y});
+									emit(outsideElt, "touchend", {screenX: coordOutsideElt.x, screenY: coordOutsideElt.y});
+									var deferred = new doh.Deferred();
+									// without deferred the click handler is called after the doh method ends.
+									setTimeout(deferred.getTestCallback(function(){
+										doh.t(!clicked, 'synthetic click fired');
+									}), 0);
+									return deferred;
+								}
+							}
+
+							]);
 						}
 					}
 

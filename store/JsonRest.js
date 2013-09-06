@@ -72,7 +72,7 @@ return declare("dojo.store.JsonRest", base, {
     options = options || {};
     var target = this.target;
     if (typeof id != "undefined"){
-      if (target.match(/\/$/)){
+      if (target.charAt(target.length-1) == '/'){
          target += id;
       }else{
         target += '/' + id;

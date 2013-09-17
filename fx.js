@@ -105,19 +105,22 @@ define([
 		},
 		gotoPercent: function(/*Decimal*/percent, /*Boolean?*/ andPlay){
 			this.pause();
-			var offset = this.duration * percent;
+			var offset = this.duration * percent,
+				self = this;
 			this._current = null;
-			arrayUtil.some(this._animations, function(a){
-				if(a.duration <= offset){
-					this._current = a;
+			arrayUtil.some(this._animations, function(a, index){
+				if(offset <= a.duration){
+					self._current = a;
+					self._index = index;
 					return true;
 				}
 				offset -= a.duration;
 				return false;
 			});
 			if(this._current){
-				this._current.gotoPercent(offset / this._current.duration, andPlay);
+				this._current.gotoPercent(offset / this._current.duration);
 			}
+			if (andPlay) { this.play(); }
 			return this;
 		},
 		stop: function(/*boolean?*/ gotoEnd){

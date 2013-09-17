@@ -45,6 +45,10 @@ return declare("dojo.store.JsonRest", base, {
 	//		property should be unique.
 	idProperty: "id",
 
+	// rangeParam: String
+	//		Use a query parameter for the requested range. If this is omitted, than the
+	//		Range header will be used. Independent of this, the X-Range header is always set.
+
 	// sortParam: String
 	//		The query parameter to used for holding sort information. If this is omitted, than
 	//		the sort information is included in a functional query token to avoid colliding
@@ -160,16 +164,21 @@ return declare("dojo.store.JsonRest", base, {
 
 		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers);
 
-		if(options.start >= 0 || options.count >= 0){
-			headers.Range = headers["X-Range"] //set X-Range for Opera since it blocks "Range" header
-				 = "items=" + (options.start || '0') + '-' +
-				(("count" in options && options.count != Infinity) ?
-					(options.count + (options.start || 0) - 1) : '');
-		}
 		var hasQuestionMark = this.target.indexOf("?") > -1;
 		if(query && typeof query == "object"){
 			query = xhr.objectToQuery(query);
 			query = query ? (hasQuestionMark ? "&" : "?") + query: "";
+		}
+		if(options.start >= 0 || options.count >= 0){
+			headers["X-Range"] = "items=" + (options.start || '0') + '-' +
+				(("count" in options && options.count != Infinity) ?
+					(options.count + (options.start || 0) - 1) : '');
+			if(this.rangeParam){
+				query += (query || hasQuestionMark ? "&" : "?") + this.rangeParam + "=" + headers["X-Range"];
+				hasQuestionMark = true;
+			}else{
+				headers.Range = headers["X-Range"];
+			}
 		}
 		if(options && options.sort){
 			var sortParam = this.sortParam;
@@ -189,6 +198,10 @@ return declare("dojo.store.JsonRest", base, {
 		});
 		results.total = results.then(function(){
 			var range = results.ioArgs.xhr.getResponseHeader("Content-Range");
+			if (!range){
+				// At least Chrome drops the Content-Range header from cached replies.
+				range = results.ioArgs.xhr.getResponseHeader("X-Content-Range");
+			}
 			return range && (range = range.match(/\/(.*)/)) && +range[1];
 		});
 		return QueryResults(results);

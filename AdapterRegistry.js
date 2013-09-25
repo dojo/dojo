@@ -10,6 +10,31 @@ var AdapterRegistry = dojo.AdapterRegistry = function(/*Boolean?*/ returnWrapper
 	//		wrap, directReturn] that are used to determine what the contextual
 	//		result of a set of checked arguments is. All check/wrap functions
 	//		in this registry should be of the same arity.
+	// example:
+	//	|	// create a new registry
+	//	|	require(["dojo/AdapterRegistry"],
+	//	|	function(AdapterRegistry){
+	//	|		var reg = new AdapterRegistry();
+	//	|		reg.register("handleString",
+	//	|			function(str){
+	//	|				return typeof val == "string"
+	//	|			},
+	//	|			function(str){
+	//	|				// do something with the string here
+	//	|			}
+	//	|		);
+	//	|		reg.register("handleArr",
+	//	|			dojo.isArray,
+	//	|		function(arr){
+	//	|			// do something with the array here
+	//	|		}
+	//	|	);
+	//	|
+	//	|	// now we can pass reg.match() *either* an array or a string and
+	//	|	// the value we pass will get handled by the right function
+	//	|	reg.match("someValue"); // will call the first function
+	//	|	reg.match(["someValue"]); // will call the second
+	//	|	});
 
 	this.pairs = [];
 	this.returnWrappers = returnWrappers || false; // Boolean

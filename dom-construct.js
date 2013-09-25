@@ -82,7 +82,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//		the HTML fragment
 		// doc: DocumentNode?
 		//		optional document to use when creating DOM nodes, defaults to
-		//		dojo/_base/window.body if not specified.
+		//		dojo/_base/window.doc if not specified.
 		// returns:
 		//		Document fragment, unless it's a single node in which case it returns the node itself
 		// example:

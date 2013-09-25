@@ -13,7 +13,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 
 	// This module will be obsolete soon. Use dojo/prop instead.
 
-	// dojo/dom-attr() should conform to http://www.w3.org/TR/DOM-Level-2-Core/
+	// dojo/dom-attr.get() should conform to http://www.w3.org/TR/DOM-Level-2-Core/
 
 	// attribute-related functions (to be obsolete soon)
 

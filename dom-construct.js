@@ -173,8 +173,9 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//	|	});
 		// example:
 		//		Create a Node, and place it in the body element (last child):
-		//	|	require(["dojo/dom-construct"], function(domConstruct){
-		//	|		domConstruct.place("<div></div>", dojo.body());
+		//	|	require(["dojo/dom-construct", "dojo/_base/window"
+		//	|	], function(domConstruct, win){
+		//	|		domConstruct.place("<div></div>", win.body());
 		//	|	});
 		// example:
 		//		Put a new LI as the first child of a list by id:

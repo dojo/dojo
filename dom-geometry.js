@@ -50,7 +50,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -79,7 +79,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -109,7 +109,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -144,7 +144,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -178,7 +178,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -227,7 +227,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -334,7 +334,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -368,7 +368,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -561,7 +561,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
 		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
-		//		dojo/dom-style.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 

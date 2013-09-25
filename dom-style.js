@@ -231,8 +231,8 @@ define(["./sniff", "./dom"], function(has, dom){
 		//		Also when getting values, use specific style names,
 		//		like "borderBottomWidth" instead of "border" since compound values like
 		//		"border" are not necessarily reflected as expected.
-		//		If you want to get node dimensions, use `dojo/dom-geometry.marginBox()`,
-		//		`dojo/dom-geometry.contentBox()` or `dojo/dom-geometry.position()`.
+		//		If you want to get node dimensions, use `dojo/dom-geometry.getMarginBox()`,
+		//		`dojo/dom-geometry.getContentBox()` or `dojo/dom-geometry.getPosition()`.
 		// node: DOMNode|String
 		//		id or reference to node to get style for
 		// name: String?

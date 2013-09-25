@@ -333,13 +333,13 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 
 	html.set = function(/*DomNode*/ node, /*String|DomNode|NodeList*/ cont, /*Object?*/ params){
 			// summary:
-			//		inserts (replaces) the given content into the given node. dojo.place(cont, node, "only")
+			//		inserts (replaces) the given content into the given node. dojo/dom-construct.place(cont, node, "only")
 			//		may be a better choice for simple HTML insertion.
 			// description:
 			//		Unless you need to use the params capabilities of this method, you should use
-			//		dojo.place(cont, node, "only"). dojo.place() has more robust support for injecting
+			//		dojo/dom-construct.place(cont, node, "only"). dojo/dom-construct.place() has more robust support for injecting
 			//		an HTML string into the DOM, but it only handles inserting an HTML string as DOM
-			//		elements, or inserting a DOM node. dojo.place does not handle NodeList insertions
+			//		elements, or inserting a DOM node. dojo/dom-construct.place does not handle NodeList insertions
 			//		or the other capabilities as defined by the params object for this method.
 			// node:
 			//		the parent element that will receive the content

@@ -10,8 +10,9 @@ define(["./aspect", "./on"], function(aspect, on){
 		//		to add on() and emit() methods to a class
 		//		for listening for events and emitting events:
 		//
-		//		|	define(["dojo/Evented"], function(Evented){
-		//		|		var EventedWidget = dojo.declare([Evented, dijit._Widget], {...});
+		//		|	define(["dojo/Evented", "dojo/_base/declare"],
+		//		|	function(Evented, declare){
+		//		|		var EventedWidget = declare([Evented, dijit._Widget], {...});
 		//		|		widget = new EventedWidget();
 		//		|		widget.on("open", function(event){
 		//		|		... do something with event

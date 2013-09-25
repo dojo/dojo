@@ -25,15 +25,15 @@ var AdapterRegistry = dojo.AdapterRegistry = function(/*Boolean?*/ returnWrapper
 	//	|		);
 	//	|		reg.register("handleArr",
 	//	|			dojo.isArray,
-	//	|		function(arr){
-	//	|			// do something with the array here
-	//	|		}
-	//	|	);
+	//	|			function(arr){
+	//	|				// do something with the array here
+	//	|			}
+	//	|		);
 	//	|
-	//	|	// now we can pass reg.match() *either* an array or a string and
-	//	|	// the value we pass will get handled by the right function
-	//	|	reg.match("someValue"); // will call the first function
-	//	|	reg.match(["someValue"]); // will call the second
+	//	|		// now we can pass reg.match() *either* an array or a string and
+	//	|		// the value we pass will get handled by the right function
+	//	|		reg.match("someValue"); // will call the first function
+	//	|		reg.match(["someValue"]); // will call the second
 	//	|	});
 
 	this.pairs = [];

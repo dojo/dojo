@@ -81,7 +81,7 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 		//		the time in milliseconds to wait before advancing to next frame
 		//		(used as a fps timer: 1000/rate = fps)
 		rate: 20 /* 50 fps */,
-
+		_startTimeWithDelay:0,
 	/*=====
 		// delay: Integer?
 		//		The time in milliseconds to wait before starting animation after it
@@ -173,6 +173,19 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 			//		The instance to allow chaining.
 
 			var _t = this;
+			if (gotoStart) {
+				_t._startTimeWithDelay = 0;
+				_t._pauseTime = 0;
+				_t.triggered = false;
+			}
+			_t._triggered = true;
+			if (_t._startTimeWithDelay == 0) {
+				_t._startTimeWithDelay = new Date().valueOf();
+			} else {
+				// This is to ensure we adjust the start time for multiple pauses in between.
+				var tempTime = new Date().valueOf();
+				_t._startTimeWithDelay = (tempTime - _t._pauseTime) + _t._startTimeWithDelay;
+			}
 			if(_t._delayTimer){ _t._clearTimer(); }
 			if(gotoStart){
 				_t._stopTimer();
@@ -204,6 +217,7 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 			}
 
 			_t._active = true;
+			_t._triggered = false;
 			_t._paused = false;
 			var value = _t.curve.getValue(_t._getStep());
 			if(!_t._percent){
@@ -223,6 +237,7 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 			// summary:
 			//		Pauses a running animation.
 			var _t = this;
+			_t._pauseTime = new Date().valueOf();
 			if(_t._delayTimer){ _t._clearTimer(); }
 			_t._stopTimer();
 			if(!_t._active){ return _t; /*Animation*/ }
@@ -231,6 +246,62 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 			return _t; // Animation
 		},
 
+
+		resume: function() {
+			var animationStatus = "";
+			var _t = this;
+			var delayTime = 0;
+			var durationTime = parseInt(_t.duration);
+			var runTime = 0;
+			if ((_t._startTimeWithDelay == undefined) || (!_t._startTimeWithDelay) || (_t._startTimeWithDelay == 0)) {
+				runTime = 0;
+			} else {
+				runTime = _t._pauseTime - _t._startTimeWithDelay;
+			}
+			var pausedTime = new Date().valueOf() - _t._pauseTime;
+			var new_delay;
+			if (_t.delay) {
+				delayTime = parseInt(_t.delay);
+				new_delay = delayTime - runTime;
+				if (new_delay < 0) {
+					new_delay = 0;
+				}
+			} else {
+				new_delay = 0;
+			}
+			if (_t._active) {
+				animationStatus = "AnimationRunning";
+			} else {
+				if ((!_t._triggered) && (!_t._percent)) {
+					animationStatus = "AnimationToBeTriggered";
+				} else if ((!_t._triggered) && (_t._percent)) {
+					animationStatus = "AnimationCompleted";
+				} else if (_t._triggered) {
+				animationStatus = "AnimationToBeStarted";
+				}
+			}
+			
+			if ((animationStatus == "AnimationToBeTriggered") || (animationStatus == "AnimationCompleted")) {
+				// This means this animation is triggered by some other animation and it is not yet triggered.
+				// or the animation has already completed.
+				// So we need not do anything.
+				return _t;
+			}
+			
+			if (new_delay != 0) {
+				_t.play(new_delay, false);
+			} else {
+				if (_t._startTimeWithDelay == 0) {
+					_t._startTimeWithDelay = new Date().valueOf();
+				} else {
+					// This is to ensure we adjust the start time for multiple pauses in between.
+					var tempTime = new Date().valueOf();
+					_t._startTimeWithDelay = (tempTime - _t._pauseTime) + _t._startTimeWithDelay;
+				}
+				_t._play(false);
+			}
+			return _t;
+		},
 		gotoPercent: function(/*Decimal*/ percent, /*Boolean?*/ andPlay){
 			// summary:
 			//		Sets the progress of the animation.
@@ -240,8 +311,13 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 			//		If true, play the animation after setting the progress.
 			var _t = this;
 			_t._stopTimer();
-			_t._active = _t._paused = true;
+			//_t._active = _t._paused = true;
 			_t._percent = percent;
+			if (percent == 0) {
+				_t._startTimeWithDelay = 0;
+				_t._pauseTime = 0;
+				_t.triggered = false;
+			}
 			if(andPlay){ _t.play(); }
 			return _t; // Animation
 		},

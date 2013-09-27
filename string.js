@@ -152,7 +152,7 @@ string.trim = String.prototype.trim ?
 	 //		Returns the trimmed string
 	 // description:
 	 //		This version of trim() was taken from [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript).
-	 //		The short yet performant version of this function is dojo.trim(),
+	 //		The short yet performant version of this function is dojo/_base/lang.trim(),
 	 //		which is part of Dojo base.  Uses String.prototype.trim instead, if available.
 	 return "";	// String
  };

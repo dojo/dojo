@@ -79,6 +79,7 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./request"], f
 		//		"dojo.cache" style of call):
 		//		| //If template.html contains "<h1>Hello</h1>" that will be
 		//		| //the value for the text variable.
+		//		| //Note: This is pre-AMD, deprecated syntax
 		//		| var text = dojo["cache"]("my.module", "template.html");
 		// example:
 		//		To ask dojo.cache to fetch content and store it in the cache, and sanitize the input
@@ -87,12 +88,14 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./request"], f
 		//		dojo.cache calls, use the "dojo.cache" style of call):
 		//		| //If template.html contains "<html><body><h1>Hello</h1></body></html>", the
 		//		| //text variable will contain just "<h1>Hello</h1>".
+		//		| //Note: This is pre-AMD, deprecated syntax
 		//		| var text = dojo["cache"]("my.module", "template.html", {sanitize: true});
 		// example:
 		//		Same example as previous, but demonstrates how an object can be passed in as
 		//		the first argument, then the value argument can then be the second argument.
 		//		| //If template.html contains "<html><body><h1>Hello</h1></body></html>", the
 		//		| //text variable will contain just "<h1>Hello</h1>".
+		//		| //Note: This is pre-AMD, deprecated syntax
 		//		| var text = dojo["cache"](new dojo._Url("my/module/template.html"), {sanitize: true});
 
 		//	 * (string string [value]) => (module, url, value)

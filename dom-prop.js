@@ -42,9 +42,11 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 		//
 		// example:
 		//	|	// get the current value of the "foo" property on a node
-		//	|	dojo.getProp(dojo.byId("nodeId"), "foo");
-		//	|	// or we can just pass the id:
-		//	|	dojo.getProp("nodeId", "foo");
+		//	|	require(["dojo/dom-prop", "dojo/dom"], function(domProp, dom){
+		//	|		domProp.get(dom.byId("nodeId"), "foo");
+		//	|		// or we can just pass the id:
+		//	|		domProp.get("nodeId", "foo");
+		//	|	});
 
 		node = dom.byId(node);
 		var lc = name.toLowerCase(), propName = exports.names[lc] || name;
@@ -78,45 +80,19 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 		//
 		// example:
 		//	|	// use prop() to set the tab index
-		//	|	dojo.setProp("nodeId", "tabIndex", 3);
-		//	|
+		//	|	require(["dojo/dom-prop"], function(domProp){
+		//	|		domProp.set("nodeId", "tabIndex", 3);
+		//	|	});
 		//
 		// example:
 		//	Set multiple values at once, including event handlers:
-		//	|	dojo.setProp("formId", {
-		//	|		"foo": "bar",
-		//	|		"tabIndex": -1,
-		//	|		"method": "POST",
-		//	|		"onsubmit": function(e){
-		//	|			// stop submitting the form. Note that the IE behavior
-		//	|			// of returning true or false will have no effect here
-		//	|			// since our handler is connect()ed to the built-in
-		//	|			// onsubmit behavior and so we need to use
-		//	|			// dojo.stopEvent() to ensure that the submission
-		//	|			// doesn't proceed.
-		//	|			dojo.stopEvent(e);
-		//	|
-		//	|			// submit the form with Ajax
-		//	|			dojo.xhrPost({ form: "formId" });
-		//	|		}
+		//	|	require(["dojo/dom-prop"], function(domProp){
+		//	|		domProp.set("formId", {
+		//	|			"foo": "bar",
+		//	|			"tabIndex": -1,
+		//	|			"method": "POST",
+		//	|		});
 		//	|	});
-		//
-		// example:
-		//	Style is s special case: Only set with an object hash of styles
-		//	|	dojo.setProp("someNode",{
-		//	|		id:"bar",
-		//	|		style:{
-		//	|			width:"200px", height:"100px", color:"#000"
-		//	|		}
-		//	|	});
-		//
-		// example:
-		//	Again, only set style as an object hash of styles:
-		//	|	var obj = { color:"#fff", backgroundColor:"#000" };
-		//	|	dojo.setProp("someNode", "style", obj);
-		//	|
-		//	|	// though shorter to use `dojo.style()` in this case:
-		//	|	dojo.style("someNode", obj);
 
 		node = dom.byId(node);
 		var l = arguments.length;

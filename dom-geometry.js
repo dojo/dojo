@@ -49,8 +49,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -78,8 +78,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -108,8 +108,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -143,8 +143,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -177,8 +177,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -226,8 +226,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -333,8 +333,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -367,8 +367,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -560,8 +560,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// computedStyle: Object?
 		//		This parameter accepts computed styles object.
 		//		If this parameter is omitted, the functions will call
-		//		dojo.getComputedStyle to get one. It is a better way, calling
-		//		dojo.computedStyle once, and then pass the reference to this
+		//		dojo/dom-style.getComputedStyle to get one. It is a better way, calling
+		//		dojo/dom-style.getComputedStyle once, and then pass the reference to this
 		//		computedStyle parameter. Wherever possible, reuse the returned
 		//		object of dojo/dom-style.getComputedStyle().
 
@@ -585,12 +585,12 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		}
 		if(!has("dom-addeventlistener")){
 			// old IE version
-			// FIXME: scroll position query is duped from dojo.html to
+			// FIXME: scroll position query is duped from dojo/_base/html to
 			// avoid dependency on that entire module. Now that HTML is in
 			// Base, we should convert back to something similar there.
 			var se = event.target;
 			var doc = (se && se.ownerDocument) || document;
-			// DO NOT replace the following to use dojo.body(), in IE, document.documentElement should be used
+			// DO NOT replace the following to use dojo/_base/window.body(), in IE, document.documentElement should be used
 			// here rather than document.body
 			var docBody = has("quirks") ? doc.body : doc.documentElement;
 			var offset = geom.getIeDocumentElementOffset(doc);

@@ -56,33 +56,39 @@ define(["./sniff", "./_base/window"],
 	}
 	/*=====
 	 dom.byId = function(id, doc){
-		 // summary:
-		 //		Returns DOM node with matching `id` attribute or falsy value (ex: null or undefined)
-		 //		if not found.  If `id` is a DomNode, this function is a no-op.
-		 //
-		 // id: String|DOMNode
-		 //		A string to match an HTML id attribute or a reference to a DOM Node
-		 //
-		 // doc: Document?
-		 //		Document to work in. Defaults to the current value of
-		 //		dojo.doc.  Can be used to retrieve
-		 //		node references from other documents.
-		 //
-		 // example:
-		 //		Look up a node by ID:
-		 //	|	var n = dojo.byId("foo");
-		 //
-		 // example:
-		 //		Check if a node exists, and use it.
-		 //	|	var n = dojo.byId("bar");
-		 //	|	if(n){ doStuff() ... }
-		 //
-		 // example:
-		 //		Allow string or DomNode references to be passed to a custom function:
-		 //	|	var foo = function(nodeOrId){
-		 //	|		nodeOrId = dojo.byId(nodeOrId);
-		 //	|		// ... more stuff
-		 //	|	}
+		// summary:
+		//		Returns DOM node with matching `id` attribute or falsy value (ex: null or undefined)
+		//		if not found.  If `id` is a DomNode, this function is a no-op.
+		//
+		// id: String|DOMNode
+		//		A string to match an HTML id attribute or a reference to a DOM Node
+		//
+		// doc: Document?
+		//		Document to work in. Defaults to the current value of
+		//		dojo/_base/window.doc.  Can be used to retrieve
+		//		node references from other documents.
+		//
+		// example:
+		//		Look up a node by ID:
+		//	|	require(["dojo/dom"], function(dom){
+		//	|		var n = dom.byId("foo");
+		//	|	});
+		//
+		// example:
+		//		Check if a node exists, and use it.
+		//	|	require(["dojo/dom"], function(dom){
+		//	|		var n = dom.byId("bar");
+		//	|		if(n){ doStuff() ... }
+		//	|	});
+		//
+		// example:
+		//		Allow string or DomNode references to be passed to a custom function:
+		//	|	require(["dojo/dom"], function(dom){
+		//	|		var foo = function(nodeOrId){
+		//	|			nodeOrId = dom.byId(nodeOrId);
+		//	|			// ... more stuff
+		//	|		}
+		//	|	});
 	 };
 	 =====*/
 
@@ -96,7 +102,9 @@ define(["./sniff", "./_base/window"],
 		//
 		// example:
 		//		Test is node id="bar" is a descendant of node id="foo"
-		//	|	if(dojo.isDescendant("bar", "foo")){ ... }
+		//	|	require(["dojo/dom"], function(dom){
+		//	|		if(dom.isDescendant("bar", "foo")){ ... }
+		//	|	});
 
 		try{
 			node = dom.byId(node);
@@ -149,10 +157,14 @@ define(["./sniff", "./_base/window"],
 		//		allows selection.
 		// example:
 		//		Make the node id="bar" unselectable
-		//	|	dojo.setSelectable("bar");
+		//	|	require(["dojo/dom"], function(dom){
+		//	|		dom.setSelectable("bar");
+		//	|	});
 		// example:
 		//		Make the node id="bar" selectable
-		//	|	dojo.setSelectable("bar", true);
+		//	|	require(["dojo/dom"], function(dom){
+		//	|		dom.setSelectable("bar", true);
+		//	|	});
 	};
 	=====*/
 

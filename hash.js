@@ -158,7 +158,7 @@ define(["./_base/kernel", "require", "./_base/config", "./aspect", "./_base/lang
 			ifrSrc = config.dojoBlankHtmlUrl || require.toUrl("./resources/blank.html");
 
 		if(config.useXDomain && !config.dojoBlankHtmlUrl){
-			console.warn("dojo.hash: When using cross-domain Dojo builds,"
+			console.warn("dojo/hash: When using cross-domain Dojo builds,"
 				+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
 				+ " to the path on your domain to blank.html");
 		}
@@ -195,7 +195,7 @@ define(["./_base/kernel", "require", "./_base/config", "./aspect", "./_base/lang
 				}catch(e){
 					//permission denied - server cannot be reached.
 					ifrOffline = true;
-					console.error("dojo.hash: Error adding history entry. Server unreachable.");
+					console.error("dojo/hash: Error adding history entry. Server unreachable.");
 				}
 			}
 			var hash = _getHash();

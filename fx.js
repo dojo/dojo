@@ -148,21 +148,23 @@ define([
 
 	coreFx.chain = function(/*dojo/_base/fx.Animation[]*/ animations){
 		// summary:
-		//		Chain a list of `dojo.Animation`s to run in sequence
+		//		Chain a list of `dojo/_base/fx.Animation`s to run in sequence
 		//
 		// description:
-		//		Return a `dojo.Animation` which will play all passed
-		//		`dojo.Animation` instances in sequence, firing its own
+		//		Return a `dojo/_base/fx.Animation` which will play all passed
+		//		`dojo/_base/fx.Animation` instances in sequence, firing its own
 		//		synthesized events simulating a single animation. (eg:
 		//		onEnd of this animation means the end of the chain,
 		//		not the individual animations within)
 		//
 		// example:
 		//	Once `node` is faded out, fade in `otherNode`
-		//	|	fx.chain([
-		//	|		dojo.fadeIn({ node:node }),
-		//	|		dojo.fadeOut({ node:otherNode })
-		//	|	]).play();
+		//	|	require(["dojo/fx"], function(fx){
+		//	|		fx.chain([
+		//	|			fx.fadeIn({ node:node }),
+		//	|			fx.fadeOut({ node:otherNode })
+		//	|		]).play();
+		//	|	});
 		//
 		return new _chain(animations); // dojo/_base/fx.Animation
 	};
@@ -243,30 +245,34 @@ define([
 
 	coreFx.combine = function(/*dojo/_base/fx.Animation[]*/ animations){
 		// summary:
-		//		Combine a list of `dojo.Animation`s to run in parallel
+		//		Combine a list of `dojo/_base/fx.Animation`s to run in parallel
 		//
 		// description:
-		//		Combine an array of `dojo.Animation`s to run in parallel,
-		//		providing a new `dojo.Animation` instance encompasing each
+		//		Combine an array of `dojo/_base/fx.Animation`s to run in parallel,
+		//		providing a new `dojo/_base/fx.Animation` instance encompasing each
 		//		animation, firing standard animation events.
 		//
 		// example:
 		//	Fade out `node` while fading in `otherNode` simultaneously
-		//	|	fx.combine([
-		//	|		dojo.fadeIn({ node:node }),
-		//	|		dojo.fadeOut({ node:otherNode })
-		//	|	]).play();
+		//	|	require(["dojo/fx"], function(fx){
+		//	|		fx.combine([
+		//	|			fx.fadeIn({ node:node }),
+		//	|			fx.fadeOut({ node:otherNode })
+		//	|		]).play();
+		//	|	});
 		//
 		// example:
 		//	When the longest animation ends, execute a function:
-		//	|	var anim = fx.combine([
-		//	|		dojo.fadeIn({ node: n, duration:700 }),
-		//	|		dojo.fadeOut({ node: otherNode, duration: 300 })
-		//	|	]);
-		//	|	aspect.after(anim, "onEnd", function(){
-		//	|		// overall animation is done.
-		//	|	}, true);
-		//	|	anim.play(); // play the animation
+		//	|	require(["dojo/fx"], function(fx){
+		//	|		var anim = fx.combine([
+		//	|			fx.fadeIn({ node: n, duration:700 }),
+		//	|			fx.fadeOut({ node: otherNode, duration: 300 })
+		//	|		]);
+		//	|		aspect.after(anim, "onEnd", function(){
+		//	|			// overall animation is done.
+		//	|		}, true);
+		//	|		anim.play(); // play the animation
+		//	|	});
 		//
 		return new _combine(animations); // dojo/_base/fx.Animation
 	};
@@ -282,13 +288,16 @@ define([
 		//		Node must have no margin/border/padding.
 		//
 		// args: Object
-		//		A hash-map of standard `dojo.Animation` constructor properties
+		//		A hash-map of standard `dojo/_base/fx.Animation` constructor properties
 		//		(such as easing: node: duration: and so on)
 		//
 		// example:
-		//	|	fx.wipeIn({
-		//	|		node:"someId"
-		//	|	}).play()
+		//	|	require(["dojo/fx"], function(fx){
+		//	|		fx.wipeIn({
+		//	|			node:"someId"
+		//	|		}).play()
+		//	|	});
+
 		var node = args.node = dom.byId(args.node), s = node.style, o;
 
 		var anim = baseFx.animateProperty(lang.mixin({
@@ -336,11 +345,13 @@ define([
 		//		from it's current height to 1px, and then hide it.
 		//
 		// args: Object
-		//		A hash-map of standard `dojo.Animation` constructor properties
+		//		A hash-map of standard `dojo/_base/fx.Animation` constructor properties
 		//		(such as easing: node: duration: and so on)
 		//
 		// example:
-		//	|	fx.wipeOut({ node:"someId" }).play()
+		//	|	require(["dojo/fx"], function(fx){
+		//	|		fx.wipeOut({ node:"someId" }).play()
+		//	|	});
 
 		var node = args.node = dom.byId(args.node), s = node.style, o;
 
@@ -378,7 +389,7 @@ define([
 		//		the position defined by (args.left, args.top).
 		//
 		// args: Object
-		//		A hash-map of standard `dojo.Animation` constructor properties
+		//		A hash-map of standard `dojo/_base/fx.Animation` constructor properties
 		//		(such as easing: node: duration: and so on). Special args members
 		//		are `top` and `left`, which indicate the new position to slide to.
 		//

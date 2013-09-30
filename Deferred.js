@@ -49,7 +49,7 @@ define([
 								makeDeferredSignaler(deferred, PROGRESS));
 						return;
 					}
-					signalDeferred(deferred, RESOLVED, newResult);
+					signalDeferred(deferred, type, newResult);
 				}
 			}catch(error){
 				signalDeferred(deferred, REJECTED, error);

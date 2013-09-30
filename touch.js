@@ -266,7 +266,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		//		was called in a touch.press event listener.
 		//
 		// example:
-		//		Used with dojo.on
+		//		Used with dojo/on
 		//		|	define(["dojo/on", "dojo/touch"], function(on, touch){
 		//		|		on(node, touch.press, function(e){});
 		//		|		on(node, touch.move, function(e){});

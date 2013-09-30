@@ -326,9 +326,12 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			//		may be a better choice for simple HTML insertion.
 			// description:
 			//		Unless you need to use the params capabilities of this method, you should use
-			//		dojo/dom-construct..place(cont, node, "only"). dojo/dom-construct..place() has more robust support for injecting
+			//		dojo/dom-construct.place(cont, node, "only"). dojo/dom-construct..place() has more robust support for injecting
 			//		an HTML string into the DOM, but it only handles inserting an HTML string as DOM
 			//		elements, or inserting a DOM node. dojo/dom-construct..place does not handle NodeList insertions
+			//		dojo/dom-construct.place(cont, node, "only"). dojo/dom-construct.place() has more robust support for injecting
+			//		an HTML string into the DOM, but it only handles inserting an HTML string as DOM
+			//		elements, or inserting a DOM node. dojo/dom-construct.place does not handle NodeList insertions
 			//		or the other capabilities as defined by the params object for this method.
 			// node:
 			//		the parent element that will receive the content

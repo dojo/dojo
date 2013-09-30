@@ -13,7 +13,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 
 	// This module will be obsolete soon. Use dojo/prop instead.
 
-	// dojo.attr() should conform to http://www.w3.org/TR/DOM-Level-2-Core/
+	// dojo/dom-attr.get() should conform to http://www.w3.org/TR/DOM-Level-2-Core/
 
 	// attribute-related functions (to be obsolete soon)
 
@@ -73,9 +73,12 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 		//
 		// example:
 		//	|	// get the current value of the "foo" attribute on a node
-		//	|	dojo.getAttr(dojo.byId("nodeId"), "foo");
-		//	|	// or we can just pass the id:
-		//	|	dojo.getAttr("nodeId", "foo");
+		//	|	require(["dojo/dom-attr", "dojo/dom"], function(domAttr, dom){
+		//	|		domAttr.get(dom.byId("nodeId"), "foo");
+		//	|		// or we can just pass the id:
+		//	|		domAttr.get("nodeId", "foo");
+		//	|	});	
+		//	|	
 
 		node = dom.byId(node);
 		var lc = name.toLowerCase(),
@@ -123,44 +126,20 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 		//
 		// example:
 		//	|	// use attr() to set the tab index
-		//	|	dojo.setAttr("nodeId", "tabIndex", 3);
+		//	|	require(["dojo/dom-attr"], function(domAttr){
+		//	|		domAttr.set("nodeId", "tabIndex", 3);
+		//	|	});
 		//
 		// example:
 		//	Set multiple values at once, including event handlers:
-		//	|	dojo.setAttr("formId", {
-		//	|		"foo": "bar",
-		//	|		"tabIndex": -1,
-		//	|		"method": "POST",
-		//	|		"onsubmit": function(e){
-		//	|			// stop submitting the form. Note that the IE behavior
-		//	|			// of returning true or false will have no effect here
-		//	|			// since our handler is connect()ed to the built-in
-		//	|			// onsubmit behavior and so we need to use
-		//	|			// dojo.stopEvent() to ensure that the submission
-		//	|			// doesn't proceed.
-		//	|			dojo.stopEvent(e);
-		//	|
-		//	|			// submit the form with Ajax
-		//	|			dojo.xhrPost({ form: "formId" });
+		//	|	require(["dojo/dom-attr"],
+		//	|	function(domAttr){
+		//	|		domAttr.set("formId", {
+		//	|			"foo": "bar",
+		//	|			"tabIndex": -1,
+		//	|			"method": "POST"
 		//	|		}
 		//	|	});
-		//
-		// example:
-		//	Style is s special case: Only set with an object hash of styles
-		//	|	dojo.setAttr("someNode",{
-		//	|		id:"bar",
-		//	|		style:{
-		//	|			width:"200px", height:"100px", color:"#000"
-		//	|		}
-		//	|	});
-		//
-		// example:
-		//	Again, only set style as an object hash of styles:
-		//	|	var obj = { color:"#fff", backgroundColor:"#000" };
-		//	|	dojo.setAttr("someNode", "style", obj);
-		//	|
-		//	|	// though shorter to use `dojo.style()` in this case:
-		//	|	dojo.setStyle("someNode", obj);
 
 		node = dom.byId(node);
 		if(arguments.length == 2){ // inline'd type check

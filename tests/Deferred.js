@@ -75,6 +75,21 @@ define([
 			t.t(received === obj);
 		},
 
+                "listening deferreds are properly rejected": function(t) {
+                    var d = new Deferred();
+                    var result;
+                    d.then( function() {}, function() {} )
+                     .then( function() {
+                                result = 'resolved';
+                            },
+                            function() {
+                                result = 'rejected';
+                            }
+                          );
+                    d.reject();
+                    t.t( result == 'rejected' );
+                },
+
 		"promise receives result after rejecting": function(t){
 			var obj = {};
 			var received;

@@ -1,5 +1,5 @@
-define(["../_base/declare", "./util/QueryResults", "./util/SimpleQueryEngine" /*=====, "./api/Store" =====*/],
-function(declare, QueryResults, SimpleQueryEngine /*=====, Store =====*/){
+define(["../_base/declare", "./util/QueryResults", "./util/SimpleQueryEngine", "../_base/lang" /*=====, "./api/Store" =====*/],
+function(declare, QueryResults, SimpleQueryEngine, lang /*=====, Store =====*/){
 
 // module:
 //		dojo/store/Memory
@@ -53,7 +53,16 @@ return declare("dojo.store.Memory", base, {
 		// object: Object
 		//		The object to get the identity from
 		// returns: Number
-		return object[this.idProperty];
+		return lang.getObject(this.idProperty, false, object);
+	},
+	setIdentity: function(object, value){
+		// summary:
+		//		Sets an object's identity
+		// object: Object
+		//		The object to get the identity from
+		// value: anything
+		//		Value or object to place at location given by name
+		lang.setObject(this.idProperty, value, object);
 	},
 	put: function(object, options){
 		// summary:
@@ -67,7 +76,8 @@ return declare("dojo.store.Memory", base, {
 		var data = this.data,
 			index = this.index,
 			idProperty = this.idProperty;
-		var id = object[idProperty] = (options && "id" in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
+		var id = (options && "id" in options) ? options.id : idProperty in object ? this.getIdentity(object) : Math.random();
+		this.setIdentity(object, id);
 		if(id in index){
 			// object exists
 			if(options && options.overwrite === false){
@@ -156,7 +166,7 @@ return declare("dojo.store.Memory", base, {
 		}
 		this.index = {};
 		for(var i = 0, l = data.length; i < l; i++){
-			this.index[data[i][this.idProperty]] = i;
+			this.index[this.getIdentity(data[i])] = i;
 		}
 	}
 });

@@ -25,9 +25,14 @@ var unload = {
 		//		heavy JavaScript work since it fires at the equivalent of
 		//		the page's "onbeforeunload" event.
 		// example:
-		//	|	unload.addOnWindowUnload(functionPointer)
-		//	|	unload.addOnWindowUnload(object, "functionName");
-		//	|	unload.addOnWindowUnload(object, function(){ /* ... */});
+		//	|	var afunc = function() {console.log("global function");};
+		//	|	require(["dojo/_base/unload"], function(unload) {
+		//	|		var foo = {bar: function(){ console.log("bar unloading...");}, 
+		//	|		           data: "mydata"};
+		//	|		unload.addOnWindowUnload(afunc);
+		//	|		unload.addOnWindowUnload(foo, "bar");
+		//	|		unload.addOnWindowUnload(foo, function(){console.log("", this.data);});
+		//	|	});
 
 		if (!dojo.windowUnloaded){
 			on(win, "unload", (dojo.windowUnloaded = function(){
@@ -68,9 +73,10 @@ var unload = {
 		// example:
 		//	|	var afunc = function() {console.log("global function");};
 		//	|	require(["dojo/_base/unload"], function(unload) {
-		//	|		var foo = {unload: function(){ console.log("unloading...");}, data: "mydata"};
+		//	|		var foo = {bar: function(){ console.log("bar unloading...");}, 
+		//	|		           data: "mydata"};
 		//	|		unload.addOnUnload(afunc);
-		//	|		unload.addOnUnload(foo, "unload");
+		//	|		unload.addOnUnload(foo, "bar");
 		//	|		unload.addOnUnload(foo, function(){console.log("", this.data);});
 		//	|	});
 

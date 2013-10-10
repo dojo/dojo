@@ -35,6 +35,13 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			// courtesy of http://requirejs.org
 			/(^.*(^|\/)nls)(\/|$)([^\/]*)\/?([^\/]*)/,
 
+		localesMap = 
+			// used in preload flow to store all the locales available from all layers.
+			{}, 
+		preloadLocale = 
+			// used in preload flow to store the best matching locale from localesMap.
+			"",
+			
 		getAvailableLocales = function(
 			root,
 			locale,
@@ -243,6 +250,28 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			if(has("dojo-preload-i18n-Api")){
 				var split = id.split("*"),
 					preloadDemand = split[1] == "preload";
+				if(preloadDemand && allLocales){
+					var localesTable = json.parse(allLocales);
+					array.forEach(localesTable, function(i){
+						localesMap[i] = 1;
+					});
+					
+					function forEachLocale(locale, func){
+						// given locale= "ab-cd-ef", calls func on "ab-cd-ef", "ab-cd", "ab", "ROOT"; stops calling the first time func returns truthy
+						var parts = locale.split("-");
+						while(parts.length){
+							if(func(parts.join("-"))){
+								return parts.join("-");
+							}
+							parts.pop();
+						}
+						if(func("ROOT")){return "ROOT"};
+					}
+					
+					preloadLocale = forEachLocale(normalizeLocale(), function(loc){
+						return localesMap[loc];
+					});
+				}
 				if(preloadDemand){
 					if(!cache[id]){
 						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
@@ -263,7 +292,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				bundleName = match[5] || match[4],
 				bundlePathAndName = bundlePath + bundleName,
 				localeSpecified = (match[5] && match[4]),
-				targetLocale =	localeSpecified || dojo.locale,
+				targetLocale =	localeSpecified || preloadLocale || dojo.locale,
 				loadTarget = bundlePathAndName + "/" + targetLocale,
 				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale),
 				remaining = loadList.length,

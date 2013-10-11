@@ -251,7 +251,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 			if(has("dojo-preload-i18n-Api")){
 				var split = id.split("*"),
-					preloadDemand = split[1] == "preload";
+					preloadDemand = split[1] == "preload",
+					flattenedLocales = split[3],
+					allLocales = split[4];
 				if(preloadDemand && allLocales){
 					var localesTable = json.parse(allLocales);
 					array.forEach(localesTable, function(i){
@@ -279,7 +281,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
 						// who knows what over-aggressive human optimizers may attempt
 						cache[id] = 1;
-						preloadL10n(split[2], json.parse(split[3]), 1, require);
+						preloadL10n(split[2], json.parse(flattenedLocales), 1, require);
 					}
 					// don't stall the loader!
 					load(1);

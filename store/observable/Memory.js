@@ -1,5 +1,5 @@
-define(["../../_base/declare", "../../_base/array", "../../_base/lang", "../../io-query", "../Memory", "../util/QueryResults" /*=====, "./api/Store" =====*/],
-function(declare, array, lang, ioq, _Memory, QueryResults /*=====, Store =====*/){
+define(["../../_base/declare", "../../_base/array", "../../_base/lang", "../Memory", "../util/QueryResults" /*=====, "./api/Store" =====*/],
+function(declare, array, lang, _Memory, QueryResults /*=====, Store =====*/){
 
 // module:
 //		dojo/store/observable/Memory
@@ -59,8 +59,6 @@ return declare("dojo.store.observable.Memory", [_Memory], {
 		mQuery.subscriptions.push(qsub);
 
 		return {
-			_results: mQuery.results,
-
 			unsubscribe: function(){
 				mQuery.subscriptions = array.filter(mQuery.subscriptions, function(s){
 					return s.id !== sId;

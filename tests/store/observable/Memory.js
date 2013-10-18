@@ -1885,7 +1885,7 @@ function(doh, array, lang, Memory){
 				// In each case, verify that the page contents match the
 				// corresponding slice in the master results array. Note
 				// that this does not verify that the generated events are
-				// accurate, only that the page data is updated accurately
+				// accurate, only that the page data is updated correctly
 				// in all cases. Events are assumed to be accurate based on
 				// the scenarios tested above.
 
@@ -1897,7 +1897,7 @@ function(doh, array, lang, Memory){
 					var start = 0,
 						pages = [],
 						lastPage = null,
-						query;
+						query, results;
 					store.setData(lang.clone(data));
 					store.queries = {};
 					query = store.materialize(null, {sort: [{attribute: "value"}]});
@@ -1910,9 +1910,10 @@ function(doh, array, lang, Memory){
 						}
 					}
 					test(position, moveTo);
+					results = store.query(null, {sort: [{attribute: "value"}]});
 					array.forEach(pages, function(page){
 						var end = (page.count === null) ? undefined : page.start + page.count,
-							slice = query._results.slice(page.start, end);
+							slice = results.slice(page.start, end);
 						t.assertEqual(slice, page); // ensure the page is still accurate
 					});
 				};

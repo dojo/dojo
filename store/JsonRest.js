@@ -146,26 +146,18 @@ return declare("dojo.store.JsonRest", base, {
 		});
 	},
 
-	query: function(query, options){
+	_queryToURLQuery: function(query, options){
 		// summary:
-		//		Queries the store for objects. This will trigger a GET request to the server, with the
-		//		query added as a query string.
+		//		Convert a query object and options to a suitable URL query.
 		// query: Object
-		//		The query to use for retrieving objects from the store.
+		//		The query to convert.
 		// options: __QueryOptions?
-		//		The optional arguments to apply to the resultset.
-		// returns: dojo/store/api/Store.QueryResults
-		//		The results of the query, extended with iterative methods.
+		//		The optional arguments to convert.
+		// returns: String
+		//		A URL representing the query.
+		query = query || {};
 		options = options || {};
 
-		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers);
-
-		if(options.start >= 0 || options.count >= 0){
-			headers.Range = headers["X-Range"] //set X-Range for Opera since it blocks "Range" header
-				 = "items=" + (options.start || '0') + '-' +
-				(("count" in options && options.count != Infinity) ?
-					(options.count + (options.start || 0) - 1) : '');
-		}
 		var hasQuestionMark = this.target.indexOf("?") > -1;
 		if(query && typeof query == "object"){
 			query = xhr.objectToQuery(query);
@@ -182,8 +174,31 @@ return declare("dojo.store.JsonRest", base, {
 				query += ")";
 			}
 		}
+		return query;
+	},
+
+	query: function(query, options){
+		// summary:
+		//		Queries the store for objects. This will trigger a GET request to the server, with the
+		//		query added as a query string.
+		// query: Object
+		//		The query to use for retrieving objects from the store.
+		// options: __QueryOptions?
+		//		The optional arguments to apply to the resultset.
+		// returns: dojo/store/api/Store.QueryResults
+		//		The results of the query, extended with iterative methods.
+		options = options || {};
+
+		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers);
+		if(options.start >= 0 || options.count >= 0){
+			headers.Range = headers["X-Range"] //set X-Range for Opera since it blocks "Range" header
+				 = "items=" + (options.start || '0') + '-' +
+				(("count" in options && options.count != Infinity) ?
+					(options.count + (options.start || 0) - 1) : '');
+		}
+
 		var results = xhr("GET", {
-			url: this.target + (query || ""),
+			url: this.target + this._queryToURLQuery(query, options),
 			handleAs: "json",
 			headers: headers
 		});

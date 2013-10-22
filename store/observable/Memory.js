@@ -1,10 +1,8 @@
-define(["../../_base/declare", "../../_base/array", "../../_base/lang", "../Memory", "../util/QueryResults" /*=====, "./api/Store" =====*/],
-function(declare, array, lang, _Memory, QueryResults /*=====, Store =====*/){
+define(["../../_base/declare", "../../_base/array", "../Memory", "./_Observable", "../util/QueryResults" /*=====, "./api/Store" =====*/],
+function(declare, array, _Memory, _Observable, QueryResults /*=====, Store =====*/){
 
 // module:
 //		dojo/store/observable/Memory
-
-var inAdd = false;
 
 // XXX: There may be a better way to do this. Essentially we just want to
 // be able to key off a dictionary using the combination of a query object and
@@ -28,7 +26,7 @@ var toStr = function(item){
 	return String(item);
 };
 
-return declare("dojo.store.observable.Memory", [_Memory], {
+return declare("dojo.store.observable.Memory", [_Memory, _Observable], {
 	// summary:
 	//		This is an observable in-memory object store. It implements
 	//		dojo/store/observable/api/Store.
@@ -59,6 +57,8 @@ return declare("dojo.store.observable.Memory", [_Memory], {
 		mQuery.subscriptions.push(qsub);
 
 		return {
+			total: mQuery.results.length,
+
 			unsubscribe: function(){
 				mQuery.subscriptions = array.filter(mQuery.subscriptions, function(s){
 					return s.id !== sId;
@@ -154,122 +154,10 @@ return declare("dojo.store.observable.Memory", [_Memory], {
 		if(removedFrom > -1 || insertedInto > -1){
 			array.forEach(mQuery.subscriptions, function(sub){
 				array.forEach(sub.pages, function(page){
-					self._notifyPage(page, object || removedObject, removedFrom, insertedInto);
+					self._notifyPage(page, page.query.results, object || removedObject, removedFrom, insertedInto);
 				});
 			});
 		}
-	},
-
-	_notifyPage: function(page, object, removedFrom, insertedInto){
-		var self = this,
-			events = [],
-			mResults = page.query.results;
-
-		if(removedFrom === insertedInto){
-			//updated
-			if(insertedInto >= page.start && (page.count === null || insertedInto < page.start + page.count)){
-				//in our page
-				events.push([object, removedFrom - page.start, insertedInto - page.start]);
-			}else{
-				//before or after our page, do nothing
-			}
-		}else if(removedFrom === -1 || (page.count !== null && removedFrom >= page.start + page.count && insertedInto !== -1)){
-			//added (from our perspective)
-			if(insertedInto < page.start){
-				//before our page, shift in new top element
-				if(mResults.length > page.start){
-					page.results.unshift(mResults[page.start]);
-					events.push([page.results[0], -1, 0]);
-				}
-			}else if(page.count === null || insertedInto < page.start + page.count){
-				//in our page, insert object
-				page.results.splice(insertedInto - page.start, 0, object);
-				events.push([object, -1, insertedInto - page.start]);
-			}else{
-				//after our page, do nothing
-			}
-			if(page.count !== null && page.results.length > page.count){
-				//page count set, shift out bottom element
-				events.push([page.results.pop(), page.count, -1]);
-			}
-		}else if(insertedInto === -1 || (page.count !== null && insertedInto >= page.start + page.count)){
-			//removed (from our perspective)
-			if(removedFrom < page.start){
-				//before our page, shift out top element
-				if(page.results.length){
-					events.push([page.results.shift(), 0, -1]);
-				}
-			}else if(page.count === null || removedFrom < page.start + page.count){
-				//in our page, remove object
-				events.push([object, removedFrom - page.start, -1]);
-				page.results.splice(removedFrom - page.start, 1);
-			}else{
-				//after our page, do nothing
-			}
-			if(page.count !== null && page.results.length < page.count && mResults.length > page.start + page.count - 1){
-				//page count set, shift in new bottom element
-				page.results.push(mResults[page.start + page.count - 1]);
-				events.push([page.results[page.count - 1], -1, page.count - 1]);
-			}
-		}else{
-			//moved
-			if(removedFrom < page.start && insertedInto >= page.start){
-				//into our page from before our page
-				events.push([page.results.shift(), 0, -1])
-				page.results.splice(insertedInto - page.start, 0, object);
-				events.push([object, -1, insertedInto - page.start])
-			}else if(removedFrom >= page.start && insertedInto < page.start){
-				//before our page from in our page
-				page.results.splice(removedFrom - page.start, 1);
-				events.push([object, removedFrom - page.start, -1]);
-				page.results.unshift(mResults[page.start]);
-				events.push([page.results[0], -1, 0]);
-			}else if(removedFrom >= page.start && insertedInto >= page.start){
-				//within our page
-				page.results.splice(removedFrom - page.start, 1);
-				page.results.splice(insertedInto - page.start, 0, object);
-				events.push([object, removedFrom - page.start, insertedInto - page.start])
-			}else{
-				//from before our page to before our page, do nothing
-			}
-		}
-
-		if(!events.length){return;}
-		array.forEach(page.listeners, function(listener){
-			array.forEach(events, function(ev){
-				self._notifyListener(listener, ev[0], ev[1], ev[2]);
-			});
-		});
-	},
-
-	_notifyListener: function(listener, obj, from, to){
-		var listenerFn = listener[1],
-			includeObjectUpdates = listener[2];
-		if(from === to && !includeObjectUpdates){return;}
-		try{
-			listenerFn(obj, from, to);
-		}catch(e){
-			console.error("page listener error:", e);
-		}
-	},
-
-	put: function(object, options){
-		this.inherited(arguments);
-		if(!inAdd){
-			this._notify(object, this.getIdentity(object));
-		}
-	},
-
-	add: function(object, options){
-		inAdd = true;
-		this.inherited(arguments);
-		this._notify(object);
-		inAdd = false;
-	},
-
-	remove: function(id){
-		this.inherited(arguments);
-		this._notify(undefined, id);
 	}
 });
 

@@ -4,5 +4,6 @@ define([
 	"dojo/tests/store/Observable", 
 	"dojo/tests/store/Cache",
 	"dojo/has!host-browser?dojo/tests/store/JsonRest",
-	"dojo/tests/store/observable/Memory"], 1);
+	"dojo/tests/store/observable/Memory",
+	"dojo/tests/store/observable/JsonRest"], 1);
 

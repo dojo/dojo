@@ -67,7 +67,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			// so, if match[5] is blank, it means this is the top bundle definition.
 			// courtesy of http://requirejs.org
 			/(^.*(^|\/)nls)(\/|$)([^\/]*)\/?([^\/]*)/,
-			
+
 		getAvailableLocales = function(
 			root,
 			locale,

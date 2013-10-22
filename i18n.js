@@ -57,7 +57,6 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				return locale;
 			}
 		},
-
 			
 		nlsRe =
 			// regexp for reconstructing the master bundle name from parts of the regexp match

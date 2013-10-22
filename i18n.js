@@ -25,12 +25,34 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				//		allows foreign AMD loaders to be used without their plugins.
 			},
 
-		localesMap = 
-			// used in preload flow to store all the locales available from all layers.
-			{}, 
-		preloadLocale = 
-			// used in preload flow to store the best matching locale from localesMap.
-			"",
+		localesMap,
+			// used in preload flow to store all the locales available from all layers and all root bundles.
+			
+		getBestMatchedLocale = function(
+			locale
+		){
+			var loc = locale || normalizeLocale(),
+				forEachLocale = function (locale, func){
+					// given locale= "ab-cd-ef", calls func on "ab-cd-ef", "ab-cd", "ab", "ROOT"; stops calling the first time func returns truthy
+					var parts = locale.split("-");
+					while(parts.length){
+						if(func(parts.join("-"))){
+							return parts.join("-");
+						}
+						parts.pop();
+					}
+					if(func("ROOT")){return "ROOT"};
+				}
+			
+			if(localesMap){
+				return forEachLocale(loc, function(loc){
+					return localesMap[loc];
+				});
+			}else{
+				return loc;
+			}
+		},
+
 			
 		nlsRe =
 			// regexp for reconstructing the master bundle name from parts of the regexp match
@@ -256,24 +278,9 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					allLocales = split[4];
 				if(preloadDemand && allLocales){
 					var localesTable = json.parse(allLocales);
+					if (!localesMap){localesMap = {}};
 					array.forEach(localesTable, function(i){
 						localesMap[i] = 1;
-					});
-					
-					function forEachLocale(locale, func){
-						// given locale= "ab-cd-ef", calls func on "ab-cd-ef", "ab-cd", "ab", "ROOT"; stops calling the first time func returns truthy
-						var parts = locale.split("-");
-						while(parts.length){
-							if(func(parts.join("-"))){
-								return parts.join("-");
-							}
-							parts.pop();
-						}
-						if(func("ROOT")){return "ROOT"};
-					}
-					
-					preloadLocale = forEachLocale(normalizeLocale(), function(loc){
-						return localesMap[loc];
 					});
 				}
 				if(preloadDemand){
@@ -296,7 +303,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				bundleName = match[5] || match[4],
 				bundlePathAndName = bundlePath + bundleName,
 				localeSpecified = (match[5] && match[4]),
-				targetLocale =	localeSpecified || preloadLocale || dojo.locale || "",
+				targetLocale =	getBestMatchedLocale(localeSpecified || dojo.locale || ""),
 				loadTarget = bundlePathAndName + "/" + targetLocale,
 				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale),
 				remaining = loadList.length,

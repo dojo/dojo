@@ -146,6 +146,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		getLocalesToLoad = function(targetLocale){
 			var list = config.extraLocale || [];
 			list = lang.isArray(list) ? list : [list];
+			list = array.map(list, getMatchedLocale);
 			list.push(targetLocale);
 			return list;
 		},

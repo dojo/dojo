@@ -26,14 +26,19 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			},
 
 		localesMap,
-			// used in preload flow to store all the locales available from all layers and all root bundles.
+			// initialized during preload flow with all the locales available from all flatten bundles and all root bundles.
 			
-		getBestMatchedLocale = function(
+		getMatchedLocale = function(
 			locale
 		){
-			var loc = locale || normalizeLocale(),
+			// summary:
+			//		return the most specific fallback locale from localesMap
+			// description:
+			//		If a built application with i18n preload statements is running, this function return the
+			//		most specific locale available in localesMap. Otherwise it's no-op.
+			var loc = normalizeLocale(locale),
 				forEachLocale = function (locale, func){
-					// given locale= "ab-cd-ef", calls func on "ab-cd-ef", "ab-cd", "ab", "ROOT"; stops calling the first time func returns truthy
+					// given locale= "ab-cd-ef", calls func on "ab-cd-ef", "ab-cd", "ab", "ROOT"; stops calling the first time func returns truthy and return the truthy locale.
 					var parts = locale.split("-");
 					while(parts.length){
 						if(func(parts.join("-"))){
@@ -49,7 +54,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					return localesMap[loc];
 				});
 			}else{
-				return loc;
+				return locale;
 			}
 		},
 
@@ -303,7 +308,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				bundleName = match[5] || match[4],
 				bundlePathAndName = bundlePath + bundleName,
 				localeSpecified = (match[5] && match[4]),
-				targetLocale =	getBestMatchedLocale(localeSpecified || dojo.locale || ""),
+				targetLocale =	getMatchedLocale(localeSpecified || dojo.locale || ""),
 				loadTarget = bundlePathAndName + "/" + targetLocale,
 				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale),
 				remaining = loadList.length,

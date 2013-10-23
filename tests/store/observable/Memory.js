@@ -21,7 +21,7 @@ function(doh, array, lang, Memory){
 			var events = [],
 				q = store.materialize(null, {sort: [{attribute: "value"}]}),
 				p = q.page(start, count),
-				l = p.observe(function(){
+				l = p.on("update", function(){
 					// Convert it to an actual array so that the assertion
 					// code can properly display its contents on a failure
 					events.push(Array.prototype.slice.call(arguments));
@@ -56,8 +56,8 @@ function(doh, array, lang, Memory){
 					p2 = q2.page(),
 					e1 = [],
 					e2 = [],
-					l1 = p1.observe(function(){e1.push(arguments);}, true),
-					l2 = p2.observe(function(){e2.push(arguments);}, true),
+					l1 = p1.on("update", function(){e1.push(arguments);}, true),
+					l2 = p2.on("update", function(){e2.push(arguments);}, true),
 					obj = store.get(1);
 
 				// Should have an active query
@@ -88,8 +88,8 @@ function(doh, array, lang, Memory){
 					p2 = q1.page(),
 					e1 = [],
 					e2 = [],
-					l1 = p1.observe(function(){e1.push(arguments);}, true),
-					l2 = p2.observe(function(){e2.push(arguments);}, true),
+					l1 = p1.on("update", function(){e1.push(arguments);}, true),
+					l2 = p2.on("update", function(){e2.push(arguments);}, true),
 					obj = store.get(1);
 
 				// Should have an active query
@@ -119,8 +119,8 @@ function(doh, array, lang, Memory){
 					p1 = q1.page(),
 					e1 = [],
 					e2 = [],
-					l1 = p1.observe(function(){e1.push(arguments);}, true),
-					l2 = p1.observe(function(){e2.push(arguments);}, true),
+					l1 = p1.on("update", function(){e1.push(arguments);}, true),
+					l2 = p1.on("update", function(){e2.push(arguments);}, true),
 					obj = store.get(1);
 
 				// Should have an active query

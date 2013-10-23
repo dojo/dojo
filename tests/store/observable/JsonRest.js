@@ -32,9 +32,7 @@ function(doh, require, JsonRest){
 						t.assertEqual(2, results.start);
 						t.assertEqual(5, results.count);
 						t.assertTrue(results.unsubscribe);
-						t.assertTrue(results.observe);
 						t.assertTrue(results.refresh);
-						t.assertTrue(results.onRefresh);
 						t.assertTrue(results.map);
 						t.assertTrue(results.forEach);
 						t.assertTrue(results.filter);
@@ -93,7 +91,7 @@ function(doh, require, JsonRest){
 					return query.page(2, 5).then(function(results){
 						var events = [],
 							calls = 0,
-							listener = results.observe(function(){
+							listener = results.on("update", function(){
 								events.push(Array.prototype.slice.call(arguments));
 								calls++;
 							});
@@ -135,11 +133,11 @@ function(doh, require, JsonRest){
 					});
 				});
 			},
-			function testPageOnRefresh(t){
+			function testPageRefreshEvent(t){
 				return store.materialize(null, {sort: [{attribute: "id"}]}).then(function(query){
 					return query.page(2, 5).then(function(results){
 						var calls = [],
-							callback = results.onRefresh(function(){
+							callback = results.on("refresh", function(){
 								calls.push(arguments);
 							});
 						return results.refresh().then(function(){

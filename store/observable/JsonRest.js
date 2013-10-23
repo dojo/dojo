@@ -42,9 +42,24 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 				total: response.length
 			});
 
-			sub.fetch = function(){
-				return self._fetch(sub);
-			};
+			// Set up our fetch() method and, if configured, enable the
+			// automated polling mechanism
+			if(self._fetch){
+				sub.fetch = function(){
+					if(sub.fetchTimeout){
+						clearTimeout(sub.fetchTimeout);
+					}
+					return self._fetch(sub).then(function(){
+						if(self.pollInterval){
+							sub.fetchTimeout = setTimeout(sub.fetch, self.pollInterval * 1000);
+						}
+					});
+				};
+
+				if(self.pollInterval){
+					sub.fetchTimeout = setTimeout(sub.fetch, self.pollInterval * 1000);
+				}
+			}
 
 			self.subscriptions.push(sub);
 			return sub;
@@ -90,8 +105,11 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 	},
 
 	_notify: function(object, existingId){
-		if(this._fetch){
-			array.forEach(this.subscriptions, this._fetch);
+		var self = this;
+		if(self._fetch){
+			array.forEach(this.subscriptions, function(sub){
+				sub.fetch();
+			});
 		}
 	},
 
@@ -123,7 +141,13 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 				url: self.target + "query/" + subId
 			}).then(function(){
 				self.subscriptions = array.filter(self.subscriptions, function(s){
-					return s.id !== subId;
+					if(s.id === subId){
+						if(s.fetchTimeout){
+							clearTimeout(s.fetchTimeout);
+						}
+						return false;
+					}
+					return true;
 				});
 			});
 		}

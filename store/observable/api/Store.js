@@ -1,4 +1,5 @@
-define(["../../../_base/declare", "../../api/Store"], function(declare, _Store){
+define(["../../../_base/declare", "../../api/Store", "../../../Evented"],
+function(declare, _Store, Evented){
 
 // module:
 //		dojo/api/observable/Store
@@ -29,11 +30,10 @@ Store.MaterializedQuery = declare(null, {
 	//		A materialized query handler. This handler represents a query in the
 	//		store and can be used to materialized individual pages of data.
 
-	unsubscribe: function(){
-		// summary:
-		//		Unsubscribe from the materialized query. Once all users have unsubscribed
-		//		from the query, it should be destroyed. Calling multiple times is a no-op.
-	},
+	// total: Integer
+	//		The total number of items in the query. This number should be updated
+	//		as updated are applied from the store.
+	total: 0,
 
 	page: function(start, count){
 		// summary:
@@ -47,13 +47,20 @@ Store.MaterializedQuery = declare(null, {
 		//		The number of items to request
 		// returns: dojo/store/observable/api/Store.MaterializedPage
 		//		The materialized page handler.
+	},
+
+	unsubscribe: function(){
+		// summary:
+		//		Unsubscribe from the materialized query. Once all users have unsubscribed
+		//		from the query, it should be destroyed. Calling multiple times is a no-op.
 	}
 });
 
-Store.MaterializedPage = declare([_Store.QueryResults], {
+Store.MaterializedPage = declare([_Store.QueryResults, Evented], {
 	// summary:
 	//		A materialized page handler. This handler represents a page of data
 	//		for the parent query, and will be updated as the query changes.
+	//		Each update to the page should fire an "update" event.
 
 	// start: Integer
 	//		The starting index of the page relative to the parent query.
@@ -62,6 +69,11 @@ Store.MaterializedPage = declare([_Store.QueryResults], {
 	// count: Integer
 	//		The number of items requested in the page.
 	count: null,
+
+	refresh: function(){
+		// summary:
+		//		Refresh the contents of this page and fire a "refresh" event.
+	},
 
 	unsubscribe: function(){
 		// summary:

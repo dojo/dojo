@@ -73,6 +73,7 @@ return declare("dojo.store.observable.util.MaterializedQuery", null, {
 	},
 
 	_notify: function(object, removedFrom, insertedInto, supplementaryData, revision){
+		this.total = supplementaryData.length; // Keep the total updated
 		array.forEach(this.pages, function(page){
 			// Support revisioned stores
 			if(revision !== undefined){

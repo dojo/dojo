@@ -45,6 +45,16 @@ function(doh, require, JsonRest){
 					});
 				});
 			},
+			function testQueryPage410(t){
+				setStore("errors.php");
+				return store.materialize(null, {sort: [{attribute: "id"}]}).then(function(query){
+					return query.page(2, 4).then(function(){
+						throw "Page should not have been loaded.";
+					}, function(err){
+						t.assertEqual("Could not retrieve page after 5 attempts.", err);
+					});
+				});
+			},
 			function testQueryFetch(t){
 				// The first fetch should bring in 3 separate updates
 				// The second fetch should bring in 1 additional update

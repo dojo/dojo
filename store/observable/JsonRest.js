@@ -14,6 +14,12 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 	//		to update the store.
 	pollInterval: null,
 
+	// maxAttempts: Integer
+	//		The maximum number of attempts allowed while trying to
+	//		rematerialize and refresh a set of pages after the server returns
+	//		a 410 response.
+	maxAttempts: 5,
+
 	// subscriptions: Array
 	//		Internal tracking for all active subscriptions in this client
 	subscriptions: [],
@@ -129,11 +135,14 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		}
 	},
 
-	_refresh: function(sub, resubscribe){
+	_refresh: function(sub, resubscribe, context){
 		resubscribe = resubscribe === true;
+		context = context || {};
+		context.attempts = context.attempts || 1;
+
 		var self = this;
 		return new DeferredList(array.map(sub.pages, function(page){
-			return self._slice(sub, page.start, page.count, !resubscribe).then(function(results){
+			return self.__slice(sub, page.start, page.count, !resubscribe).then(function(results){
 				if(resubscribe){
 					page.id = results.id;
 				}
@@ -142,45 +151,64 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 				}
 			});
 		}), false, true).then(null, function(err){
-			throw "Unable to refresh all pages: " + err;
+			if(++context.attempts > self.maxAttempts){
+				throw "Could not refresh query after " + self.maxAttempts + " attempts.";
+			}
+
+			if(err.response.status === 410){
+				return self._rematerialize(sub, context);
+			}else{
+				throw "Unable to refresh all pages: " + err;
+			}
 		});
 	},
 
-	_rematerialize: function(sub){
+	_rematerialize: function(sub, context){
 		var self = this;
 		return self._materialize(sub.query).then(function(response){
 			sub.id = response.querySubscriptionId;
 			sub.total = response.length;
-			return self._refresh(sub, true);
+			return self._refresh(sub, true, context);
 		});
 	},
 
-	_slice: function(sub, start, count, refresh){
-		var self = this,
-			query = xhr.objectToQuery({ start: start, count: count }),
-			headers = lang.mixin({ Accept: self.accepts }, self.headers),
-			method = (refresh === true) ? "GET" : "POST";
-		return xhr(method, {
-			url: self.target + "query/" + sub.id + (query ? "?" + query : ""),
+	__slice: function(sub, start, count, refresh){
+		var query = xhr.objectToQuery({ start: start, count: count });
+		return xhr((refresh === true) ? "GET" : "POST", {
+			url: this.target + "query/" + sub.id + (query ? "?" + query : ""),
 			handleAs: "json",
-			headers: headers
+			headers: lang.mixin({ Accept: this.accepts }, this.headers)
 		}).then(function(page){
 			var results = page.results;
 			results.id = page.pageId;
 			results.revision = page.revision;
 			return results;
-		}, function(err){
+		});
+	},
+
+	_slice: function(sub, start, count, refresh, context){
+		context = context || {};
+		context.attempts = context.attempts || 1;
+
+		var self = this;
+		return self.__slice(sub, start, count, refresh).then(null, function(err){
+			if(++context.attempts > self.maxAttempts){
+				throw "Could not retrieve page after " + self.maxAttempts + " attempts.";
+			}
 			if(err.response.status === 410){
 				// Query expired, rematerialize it and refresh all pages
 				return self._rematerialize(sub).then(function(){
-					if(method === "POST"){
-						// Proceed with creating the page
-						return self._slice(sub, start, count, refresh);
+					if(!refresh){
+						// Make another attempt at creating the page
+						return self._slice(sub, start, count, refresh, context);
 					}
+					// If this was a GET, the page has already been refreshed
+					// in _rematerialize(). Return nothing here so that the
+					// parent page.refresh() call does not emit a second
+					// `refresh` event.
 				});
-			}else{
-				throw err;
 			}
+			throw err;
 		});
 	},
 

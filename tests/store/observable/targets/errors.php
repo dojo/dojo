@@ -54,4 +54,7 @@ if($method === "POST" and $path === "/query?sort(+id)"){
 		"results" => array_slice($objects, 5, 5),
 		"revision" => 38
 	));
+}elseif($method === "POST" and $path === "/query/sub0?start=2&count=4"){
+	// page(2, 4)
+	header("HTTP/1.0 410 Gone");
 }

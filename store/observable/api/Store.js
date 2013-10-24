@@ -32,7 +32,7 @@ Store.MaterializedQuery = declare(null, {
 
 	// total: Integer
 	//		The total number of items in the query. This number should be updated
-	//		as updated are applied from the store.
+	//		as updates are applied from the store.
 	total: 0,
 
 	page: function(start, count){

@@ -31,6 +31,11 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		var self = this,
 			query = self._queryToURLQuery(query, options),
 			headers = lang.mixin({ Accept: self.accepts }, self.headers);
+
+		if(options && options.expire){
+			query = (query ? query + "&" : "?") + "expire=" + options.expire;
+		}
+
 		return xhr("POST", {
 			url: self.target + "query" + (query || ""),
 			handleAs: "json",

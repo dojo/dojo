@@ -105,6 +105,8 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 			});
 		}, function(err){
 			// TODO: Smarter error handling
+			// handle 410
+			// handle 404
 			throw err;
 		});
 	},
@@ -132,6 +134,9 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 			results.pageId = page.pageId;
 			results.revision = page.revision;
 			return results;
+		}, function(err){
+			// TODO: handle 410
+			throw err;
 		});
 	},
 

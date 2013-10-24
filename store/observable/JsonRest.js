@@ -1,5 +1,5 @@
-define(["../../_base/declare", "../../_base/xhr", "../../_base/array", "../../_base/lang", "../../_base/Deferred", "../JsonRest", "./_Observable", "./util/MaterializedQuery"],
-function(declare, xhr, array, lang, Deferred, _JsonRest, _Observable, MaterializedQuery){
+define(["../../_base/declare", "../../_base/xhr", "../../_base/array", "../../_base/lang", "../../Deferred", "../../DeferredList", "../JsonRest", "./_Observable", "./util/MaterializedQuery"],
+function(declare, xhr, array, lang, Deferred, DeferredList, _JsonRest, _Observable, MaterializedQuery){
 
 // module:
 //		dojo/store/observable/JsonRest
@@ -28,23 +28,19 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		//		The optional arguments to apply to the results
 		// returns: dojo/store/observable/api/Store.MaterializedQuery
 		//		A materialized query interface
-		var self = this,
-			query = self._queryToURLQuery(query, options),
-			headers = lang.mixin({ Accept: self.accepts }, self.headers);
+		var self = this, query;
 
+		query = self._queryToURLQuery(query, options) || "";
 		if(options && options.expire){
 			query = (query ? query + "&" : "?") + "expire=" + options.expire;
 		}
 
-		return xhr("POST", {
-			url: self.target + "query" + (query || ""),
-			handleAs: "json",
-			headers: headers
-		}).then(function(response){
+		return self._materialize(query).then(function(response){
 			var sub = new MaterializedQuery({
 				store: self,
 				id: response.querySubscriptionId,
-				total: response.length
+				total: response.length,
+				query: query
 			});
 
 			// Set up our fetch() method and, if configured, enable the
@@ -104,10 +100,23 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 				sub._notify(object, removedFrom, insertedInto, supplementaryData, revision);
 			});
 		}, function(err){
-			// TODO: Smarter error handling
-			// handle 410
-			// handle 404
-			throw err;
+			if(err.response.status === 410){
+				// Query expired, rematerialize it and refresh all pages
+				return self._rematerialize(sub);
+			}else if(err.response.status === 404){
+				// Updates not available, refresh all pages
+				return self._refresh(sub);
+			}else{
+				throw err;
+			}
+		});
+	},
+
+	_materialize: function(query){
+		return xhr("POST", {
+			url: this.target + "query" + query,
+			handleAs: "json",
+			headers: lang.mixin({ Accept: this.accepts }, this.headers)
 		});
 	},
 
@@ -120,38 +129,73 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		}
 	},
 
-	_slice: function(subId, start, count, refresh){
+	_refresh: function(sub, resubscribe){
+		resubscribe = resubscribe === true;
+		var self = this;
+		return new DeferredList(array.map(sub.pages, function(page){
+			return self._slice(sub, page.start, page.count, !resubscribe).then(function(results){
+				if(resubscribe){
+					page.id = results.id;
+				}
+				if(page.revision !== results.revision){
+					page.refresh(results);
+				}
+			});
+		}), false, true).then(null, function(err){
+			throw "Unable to refresh all pages: " + err;
+		});
+	},
+
+	_rematerialize: function(sub){
+		var self = this;
+		return self._materialize(sub.query).then(function(response){
+			sub.id = response.querySubscriptionId;
+			sub.total = response.length;
+			return self._refresh(sub, true);
+		});
+	},
+
+	_slice: function(sub, start, count, refresh){
 		var self = this,
 			query = xhr.objectToQuery({ start: start, count: count }),
 			headers = lang.mixin({ Accept: self.accepts }, self.headers),
 			method = (refresh === true) ? "GET" : "POST";
 		return xhr(method, {
-			url: self.target + "query/" + subId + (query ? "?" + query : ""),
+			url: self.target + "query/" + sub.id + (query ? "?" + query : ""),
 			handleAs: "json",
 			headers: headers
 		}).then(function(page){
 			var results = page.results;
-			results.pageId = page.pageId;
+			results.id = page.pageId;
 			results.revision = page.revision;
 			return results;
 		}, function(err){
-			// TODO: handle 410
-			throw err;
+			if(err.response.status === 410){
+				// Query expired, rematerialize it and refresh all pages
+				return self._rematerialize(sub).then(function(){
+					if(method === "POST"){
+						// Proceed with creating the page
+						return self._slice(sub, start, count, refresh);
+					}
+				});
+			}else{
+				throw err;
+			}
 		});
 	},
 
-	_unsubscribe: function(subId, pageId){
+	_unsubscribe: function(sub, page){
 		var self = this;
-		if(subId !== undefined && pageId !== undefined){
+		if(sub !== undefined && page !== undefined){
 			return xhr("DELETE", {
-				url: self.target + "query/" + subId + "/" + pageId
+				url: self.target + "query/" + sub.id + "/" + page.id
 			});
-		}else if(subId !== undefined){
+		}else if(sub !== undefined){
 			return xhr("DELETE", {
-				url: self.target + "query/" + subId
+				url: self.target + "query/" + sub.id
 			}).then(function(){
 				self.subscriptions = array.filter(self.subscriptions, function(s){
-					if(s.id === subId){
+					if(s.id === sub.id){
 						if(s.fetchTimeout){
 							clearTimeout(s.fetchTimeout);
 						}

@@ -23,23 +23,32 @@ var MaterializedPage = function(results, config){
 		//		updates from the master query.
 		// returns: undefined|Promise
 		//		Returns a promise if this is a remote store.
-		return when(self.query.store._unsubscribe(self.query.id, self.id), function(){
+		return when(self.query.store._unsubscribe(self.query, self), function(){
 			self.query.pages = array.filter(self.query.pages, function(p){
 				return p.id !== self.id;
 			});
 		});
 	};
 
-	self.refresh = function(){
+	self.refresh = function(results){
 		// summary:
 		//		Refresh this page, causing it to completely replace its
 		//		contents with the most recent slice from the master query.
-		//	returns: undefined|Promise
+		// results: Array?
+		//		The contents to refresh this page with. If not specified, the
+		//		page contents are fetched from the store.
+		// returns: undefined|Promise
 		//		Return a promise if this is a remote store.
-		return when(self.query._slice(self.start, self.count), function(results){
-			self.splice(0);
-			self.push.apply(self, results);
-			self.emit("refresh");
+		results = results || self.query.store._slice(self.query, self.start, self.count, true);
+		return when(results, function(results){
+			// If the query is expired, the refresh will be handled elsewhere
+			// and this call should not duplicate the 'refresh' event.
+			if(results !== undefined){
+				self.revision = results.revision; // may or may not be defined
+				self.splice(0);
+				self.push.apply(self, results);
+				self.emit("refresh");
+			}
 		});
 	};
 

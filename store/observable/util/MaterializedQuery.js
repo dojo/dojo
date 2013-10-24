@@ -51,10 +51,10 @@ return declare("dojo.store.observable.util.MaterializedQuery", null, {
 		start = start || 0;
 		count = count || null;
 		var self = this;
-		return when(self.store._slice(self.id, start, count), function(results){
+		return when(self.store._slice(self, start, count), function(results){
 			var page = MaterializedPage(results, {
 				query: self,
-				id: self.nextPageId++,
+				id: results.id || self.nextPageId++,
 				start: start,
 				count: count
 			});
@@ -69,7 +69,7 @@ return declare("dojo.store.observable.util.MaterializedQuery", null, {
 		//		underlying subscribed pages.
 		// returns: undefined|Promise
 		//		Returns a promise for remote stores.
-		return this.store._unsubscribe(this.id);
+		return this.store._unsubscribe(this);
 	},
 
 	_notify: function(object, removedFrom, insertedInto, supplementaryData, revision){
@@ -89,10 +89,6 @@ return declare("dojo.store.observable.util.MaterializedQuery", null, {
 				page.revision = revision;
 			}
 		});
-	},
-
-	_slice: function(start, count){
-		return this.store._slice(this.id, start, count, true);
 	}
 });
 

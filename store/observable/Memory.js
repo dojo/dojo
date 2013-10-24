@@ -117,23 +117,23 @@ return declare("dojo.store.observable.Memory", [_Memory, _Observable], {
 		}
 	},
 
-	_slice: function(subId, start, count){
+	_slice: function(sub, start, count){
 		var end = (count === null) ? undefined : start + count,
-			master = this.queries[subId.queryHash];
+			master = this.queries[sub.id.queryHash];
 		return master.results.slice(start, end);
 	},
 
-	_unsubscribe: function(subId, pageId){
+	_unsubscribe: function(sub, page){
 		var self = this, master;
-		if(subId !== undefined && pageId !== undefined){
+		if(sub !== undefined && page !== undefined){
 			// We don't need to do anything here for pages
-		}else if(subId !== undefined){
-			master = self.queries[subId.queryHash];
+		}else if(sub !== undefined){
+			master = self.queries[sub.id.queryHash];
 			master.subscriptions = array.filter(master.subscriptions, function(s){
-				return s.id.queryId !== subId.queryId;
+				return s.id.queryId !== sub.id.queryId;
 			});
 			if(master.subscriptions.length === 0){
-				delete self.queries[subId.queryHash];
+				delete self.queries[sub.id.queryHash];
 			}
 		}
 	}

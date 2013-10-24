@@ -194,6 +194,17 @@ function(doh, require, JsonRest){
 						});
 					});
 				});
+			},
+			function testIncompleteSupplementaryData(t){
+				return store.materialize(null, {sort: [{attribute: "id"}]}).then(function(query){
+					return query.page(1, 7).then(function(results){
+						return query.fetch().then(function(){
+							throw "Incomplete supplementary data was not caught";
+						}, function(e){
+							t.assertEqual("Supplementary data incomplete, required index: 7", e);
+						});
+					});
+				});
 			}
 		]
 	);

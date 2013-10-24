@@ -60,6 +60,14 @@ var MaterializedPage = function(results, config){
 		//		The generated events for this change
 		var events = [];
 
+		var getSupplemental = function(index){
+			var obj = supplementaryData[index];
+			if(obj === undefined){
+				throw "Supplementary data incomplete, required index: " + index;
+			}
+			return obj
+		};
+
 		if(removedFrom === insertedInto){
 			//updated
 			if(insertedInto >= self.start && (self.count === null || insertedInto < self.start + self.count)){
@@ -73,7 +81,7 @@ var MaterializedPage = function(results, config){
 			if(insertedInto < self.start){
 				//before our page, shift in new top element
 				if(supplementaryData.length > self.start){
-					self.unshift(supplementaryData[self.start]);
+					self.unshift(getSupplemental(self.start));
 					events.push([self[0], -1, 0]);
 				}
 			}else if(self.count === null || insertedInto < self.start + self.count){
@@ -103,7 +111,7 @@ var MaterializedPage = function(results, config){
 			}
 			if(self.count !== null && self.length < self.count && supplementaryData.length > self.start + self.count - 1){
 				//page count set, shift in new bottom element
-				self.push(supplementaryData[self.start + self.count - 1]);
+				self.push(getSupplemental(self.start + self.count - 1));
 				events.push([self[self.count - 1], -1, self.count - 1]);
 			}
 		}else{
@@ -117,7 +125,7 @@ var MaterializedPage = function(results, config){
 				//before our page from in our page
 				self.splice(removedFrom - self.start, 1);
 				events.push([object, removedFrom - self.start, -1]);
-				self.unshift(supplementaryData[self.start]);
+				self.unshift(getSupplemental(self.start));
 				events.push([self[0], -1, 0]);
 			}else if(removedFrom >= self.start && insertedInto >= self.start){
 				//within our page

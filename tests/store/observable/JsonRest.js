@@ -4,6 +4,7 @@ function(doh, require, JsonRest){
 	var baseURL = require.toUrl("dojo/tests/store/observable/x.y").match(/(.+)x\.y$/)[1] + "targets/";
 	var setStore = function(target){
 		store.target = baseURL + target + "/";
+		store.retryInterval = 10;
 		store.subscriptions = [];
 	};
 

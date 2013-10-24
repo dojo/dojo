@@ -4,15 +4,33 @@ function(declare, xhr, array, lang, Deferred, DeferredList, _JsonRest, _Observab
 // module:
 //		dojo/store/observable/JsonRest
 
+// Is there a better way to do this?
+var delay = function(fn, delay){
+	var d = new Deferred();
+	setTimeout(function(){
+		fn().then(function(val){
+			d.resolve(val);
+		}, function(err){
+			d.reject(err);
+		});
+	}, delay);
+	return d.promise;
+};
+
 return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 	// summary:
 	//		This is an observable remote object store. It implements
 	//		dojo/store/observable/api/Store.
 
 	// pollInterval: Integer
-	//		The rate at which (in seconds) the fetch() method will be called
+	//		The rate at which (in milliseconds) the fetch() method will be called
 	//		to update the store.
 	pollInterval: null,
+
+	// retryInterval: Integer
+	//		The rate at which (in milliseconds) the store will attempt to refresh
+	//		or rematerialize a query.
+	retryInterval: 1000,
 
 	// maxAttempts: Integer
 	//		The maximum number of attempts allowed while trying to
@@ -58,13 +76,13 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 					}
 					return self._fetch(sub).then(function(){
 						if(self.pollInterval){
-							sub.fetchTimeout = setTimeout(sub.fetch, self.pollInterval * 1000);
+							sub.fetchTimeout = setTimeout(sub.fetch, self.pollInterval);
 						}
 					});
 				};
 
 				if(self.pollInterval){
-					sub.fetchTimeout = setTimeout(sub.fetch, self.pollInterval * 1000);
+					sub.fetchTimeout = setTimeout(sub.fetch, self.pollInterval);
 				}
 			}
 
@@ -138,7 +156,7 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 	_refresh: function(sub, resubscribe, context){
 		resubscribe = resubscribe === true;
 		context = context || {};
-		context.attempts = context.attempts || 1;
+		context.attempts = context.attempts || 0;
 
 		var self = this;
 		return new DeferredList(array.map(sub.pages, function(page){
@@ -151,12 +169,14 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 				}
 			});
 		}), false, true).then(null, function(err){
-			if(++context.attempts > self.maxAttempts){
-				throw "Could not refresh query after " + self.maxAttempts + " attempts.";
+			if(++context.attempts >= self.maxAttempts){
+				throw "Could not refresh query after " + context.attempts + " attempts.";
 			}
 
 			if(err.response.status === 410){
-				return self._rematerialize(sub, context);
+				return delay(function(){
+					return self._rematerialize(sub, context);
+				}, self.retryInterval);
 			}else{
 				throw "Unable to refresh all pages: " + err;
 			}
@@ -173,6 +193,8 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 	},
 
 	__slice: function(sub, start, count, refresh){
+		// Internal slice method, not to be called from outside of this file
+		// as it skips the 410 processing and allows errors to propagate up.
 		var query = xhr.objectToQuery({ start: start, count: count });
 		return xhr((refresh === true) ? "GET" : "POST", {
 			url: this.target + "query/" + sub.id + (query ? "?" + query : ""),
@@ -188,25 +210,27 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 
 	_slice: function(sub, start, count, refresh, context){
 		context = context || {};
-		context.attempts = context.attempts || 1;
+		context.attempts = context.attempts || 0;
 
 		var self = this;
 		return self.__slice(sub, start, count, refresh).then(null, function(err){
-			if(++context.attempts > self.maxAttempts){
-				throw "Could not retrieve page after " + self.maxAttempts + " attempts.";
+			if(++context.attempts >= self.maxAttempts){
+				throw "Could not retrieve page after " + context.attempts + " attempts.";
 			}
 			if(err.response.status === 410){
 				// Query expired, rematerialize it and refresh all pages
-				return self._rematerialize(sub).then(function(){
-					if(!refresh){
-						// Make another attempt at creating the page
-						return self._slice(sub, start, count, refresh, context);
-					}
-					// If this was a GET, the page has already been refreshed
-					// in _rematerialize(). Return nothing here so that the
-					// parent page.refresh() call does not emit a second
-					// `refresh` event.
-				});
+				return delay(function(){
+					return self._rematerialize(sub).then(function(){
+						if(!refresh){
+							// Make another attempt at creating the page
+							return self._slice(sub, start, count, refresh, context);
+						}
+						// If this was a GET, the page has already been refreshed
+						// in _rematerialize(). Return nothing here so that the
+						// parent page.refresh() call does not emit a second
+						// `refresh` event.
+					});
+				}, self.retryInterval);
 			}
 			throw err;
 		});

@@ -18,8 +18,13 @@ var toStr = function(item){
 	}
 	if(type === "[object Object]"){
 		var attrs = [];
+		var keys = [];
 		for(var i in item){
-			attrs.push(i + "=" + toStr(item[i]));
+			keys.push(i);
+		}
+		keys.sort(); // Keep it consistent
+		for(var i in keys){
+			attrs.push(keys[i] + "=" + toStr(item[keys[i]]));
 		}
 		return "{" + attrs.join(",") + "}";
 	}
@@ -46,7 +51,7 @@ return declare("dojo.store.observable.Memory", [_Memory, _Observable], {
 		// returns: dojo/store/observable/api/Store.MaterializedQuery
 		//		A materialized query interface
 		var self = this, sub,
-			qHash = toStr(query) + toStr(options),
+			qHash = toStr(query) + ":" + toStr(options),
 			master = self.queries[qHash];
 
 		if(master === undefined){

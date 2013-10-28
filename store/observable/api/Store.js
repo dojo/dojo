@@ -2,7 +2,7 @@ define(["../../../_base/declare", "../../api/Store", "../../../Evented"],
 function(declare, _Store, Evented){
 
 // module:
-//		dojo/api/observable/Store
+//		dojo/store/observable/api/Store
 
 var Store = declare([_Store], {
 	// summary:

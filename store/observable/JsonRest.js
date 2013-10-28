@@ -4,19 +4,6 @@ function(declare, xhr, array, lang, Deferred, DeferredList, _JsonRest, _Observab
 // module:
 //		dojo/store/observable/JsonRest
 
-// Is there a better way to do this?
-var delay = function(fn, delay){
-	var d = new Deferred();
-	setTimeout(function(){
-		fn().then(function(val){
-			d.resolve(val);
-		}, function(err){
-			d.reject(err);
-		});
-	}, delay);
-	return d.promise;
-};
-
 return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 	// summary:
 	//		This is an observable remote object store. It implements
@@ -26,17 +13,6 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 	//		The rate at which (in milliseconds) the fetch() method will be called
 	//		to update the store.
 	pollInterval: null,
-
-	// retryInterval: Integer
-	//		The rate at which (in milliseconds) the store will attempt to refresh
-	//		or rematerialize a query.
-	retryInterval: 1000,
-
-	// maxAttempts: Integer
-	//		The maximum number of attempts allowed while trying to
-	//		rematerialize and refresh a set of pages after the server returns
-	//		a 410 response.
-	maxAttempts: 5,
 
 	// subscriptions: Array
 	//		Internal tracking for all active subscriptions in this client
@@ -153,11 +129,8 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		}
 	},
 
-	_refresh: function(sub, resubscribe, context){
+	_refresh: function(sub, resubscribe){
 		resubscribe = resubscribe === true;
-		context = context || {};
-		context.attempts = context.attempts || 0;
-
 		var self = this;
 		return new DeferredList(array.map(sub.pages, function(page){
 			return self.__slice(sub, page.start, page.count, !resubscribe).then(function(results){
@@ -168,27 +141,15 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 					page.refresh(results);
 				}
 			});
-		}), false, true).then(null, function(err){
-			if(++context.attempts >= self.maxAttempts){
-				throw "Could not refresh query after " + context.attempts + " attempts.";
-			}
-
-			if(err.response.status === 410){
-				return delay(function(){
-					return self._rematerialize(sub, context);
-				}, self.retryInterval);
-			}else{
-				throw "Unable to refresh all pages: " + err;
-			}
-		});
+		}), false, true);
 	},
 
-	_rematerialize: function(sub, context){
+	_rematerialize: function(sub){
 		var self = this;
 		return self._materialize(sub.query).then(function(response){
 			sub.id = response.querySubscriptionId;
 			sub.total = response.length;
-			return self._refresh(sub, true, context);
+			return self._refresh(sub, true);
 		});
 	},
 
@@ -208,29 +169,21 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		});
 	},
 
-	_slice: function(sub, start, count, refresh, context){
-		context = context || {};
-		context.attempts = context.attempts || 0;
-
+	_slice: function(sub, start, count, refresh){
 		var self = this;
 		return self.__slice(sub, start, count, refresh).then(null, function(err){
-			if(++context.attempts >= self.maxAttempts){
-				throw "Could not retrieve page after " + context.attempts + " attempts.";
-			}
 			if(err.response.status === 410){
 				// Query expired, rematerialize it and refresh all pages
-				return delay(function(){
-					return self._rematerialize(sub).then(function(){
-						if(!refresh){
-							// Make another attempt at creating the page
-							return self._slice(sub, start, count, refresh, context);
-						}
-						// If this was a GET, the page has already been refreshed
-						// in _rematerialize(). Return nothing here so that the
-						// parent page.refresh() call does not emit a second
-						// `refresh` event.
-					});
-				}, self.retryInterval);
+				return self._rematerialize(sub).then(function(){
+					if(!refresh){
+						// Make another attempt at creating the page
+						return self.__slice(sub, start, count, refresh);
+					}
+					// If this was a GET, the page has already been refreshed
+					// in _rematerialize(). Return nothing here so that the
+					// parent page.refresh() call does not emit a second
+					// `refresh` event.
+				});
 			}
 			throw err;
 		});

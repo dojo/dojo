@@ -52,7 +52,7 @@ function(doh, require, JsonRest){
 					return query.page(2, 4).then(function(){
 						throw "Page should not have been loaded.";
 					}, function(err){
-						t.assertEqual("Could not retrieve page after 5 attempts.", err);
+						t.assertEqual(410, err.response.status);
 					});
 				});
 			},

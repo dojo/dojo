@@ -39,7 +39,7 @@ var MaterializedPage = function(results, config){
 		//		page contents are fetched from the store.
 		// returns: undefined|Promise
 		//		Return a promise if this is a remote store.
-		results = results || self.query.store._slice(self.query, self.start, self.count, true);
+		results = results || self.query.store._slice(self.query, self.start, self.count);
 		return when(results, function(results){
 			// If the query is expired, the refresh will be handled elsewhere
 			// and this call should not duplicate the 'refresh' event.

@@ -51,7 +51,7 @@ return declare("dojo.store.observable.util.MaterializedQuery", null, {
 		start = start || 0;
 		count = count || null;
 		var self = this;
-		return when(self.store._slice(self, start, count), function(results){
+		return when(self.store._slice(self, start, count, true), function(results){
 			var page = MaterializedPage(results, {
 				query: self,
 				id: results.id || self.nextPageId++,

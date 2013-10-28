@@ -129,12 +129,11 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		}
 	},
 
-	_refresh: function(sub, resubscribe){
-		resubscribe = resubscribe === true;
+	_refresh: function(sub, subscribe){
 		var self = this;
 		return new DeferredList(array.map(sub.pages, function(page){
-			return self.__slice(sub, page.start, page.count, !resubscribe).then(function(results){
-				if(resubscribe){
+			return self.__slice(sub, page.start, page.count, subscribe).then(function(results){
+				if(subscribe){
 					page.id = results.id;
 				}
 				if(page.revision !== results.revision){
@@ -153,11 +152,11 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		});
 	},
 
-	__slice: function(sub, start, count, refresh){
+	__slice: function(sub, start, count, subscribe){
 		// Internal slice method, not to be called from outside of this file
 		// as it skips the 410 processing and allows errors to propagate up.
 		var query = xhr.objectToQuery({ start: start, count: count });
-		return xhr((refresh === true) ? "GET" : "POST", {
+		return xhr((subscribe === true) ? "POST" : "GET", {
 			url: this.target + "query/" + sub.id + (query ? "?" + query : ""),
 			handleAs: "json",
 			headers: lang.mixin({ Accept: this.accepts }, this.headers)
@@ -169,15 +168,15 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		});
 	},
 
-	_slice: function(sub, start, count, refresh){
+	_slice: function(sub, start, count, subscribe){
 		var self = this;
-		return self.__slice(sub, start, count, refresh).then(null, function(err){
+		return self.__slice(sub, start, count, subscribe).then(null, function(err){
 			if(err.response.status === 410){
 				// Query expired, rematerialize it and refresh all pages
 				return self._rematerialize(sub).then(function(){
-					if(!refresh){
+					if(subscribe){
 						// Make another attempt at creating the page
-						return self.__slice(sub, start, count, refresh);
+						return self.__slice(sub, start, count, subscribe);
 					}
 					// If this was a GET, the page has already been refreshed
 					// in _rematerialize(). Return nothing here so that the

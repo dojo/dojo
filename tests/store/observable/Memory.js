@@ -61,7 +61,7 @@ function(doh, array, lang, Memory){
 					obj = store.get(1);
 
 				// Should have an active query
-				t.assertNotEqual(store.queries, {});
+				t.assertNotEqual(store.queries, []);
 
 				store.put(obj);
 				t.assertEqual(1, e1.length);
@@ -78,7 +78,7 @@ function(doh, array, lang, Memory){
 				t.assertEqual(2, e2.length);
 
 				// Should have no active queries
-				t.assertEqual(store.queries, {});
+				t.assertEqual(store.queries, []);
 			},
 			function testPageUnsubscribe(t){
 				store.setData(lang.clone(smallData));
@@ -93,7 +93,7 @@ function(doh, array, lang, Memory){
 					obj = store.get(1);
 
 				// Should have an active query
-				t.assertNotEqual(store.queries, {});
+				t.assertNotEqual(store.queries, []);
 
 				store.put(obj);
 				t.assertEqual(1, e1.length);
@@ -110,7 +110,7 @@ function(doh, array, lang, Memory){
 				t.assertEqual(2, e2.length);
 
 				// Should have an active query
-				t.assertNotEqual(store.queries, {});
+				t.assertNotEqual(store.queries, []);
 			},
 			function testListenerRemove(t){
 				store.setData(lang.clone(smallData));
@@ -124,7 +124,7 @@ function(doh, array, lang, Memory){
 					obj = store.get(1);
 
 				// Should have an active query
-				t.assertNotEqual(store.queries, {});
+				t.assertNotEqual(store.queries, []);
 
 				store.put(obj);
 				t.assertEqual(1, e1.length);
@@ -141,7 +141,7 @@ function(doh, array, lang, Memory){
 				t.assertEqual(2, e2.length);
 
 				// Should have an active query
-				t.assertNotEqual(store.queries, {});
+				t.assertNotEqual(store.queries, []);
 			},
 			function testUnboundPage(t){
 				// Scenarios concerning a page that has no start or count

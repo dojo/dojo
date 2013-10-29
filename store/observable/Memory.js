@@ -20,7 +20,9 @@ var toStr = function(item){
 		var attrs = [];
 		var keys = [];
 		for(var i in item){
-			keys.push(i);
+			if(item.hasOwnProperty(i)){
+				keys.push(i);
+			}
 		}
 		keys.sort(); // Keep it consistent
 		for(var i in keys){

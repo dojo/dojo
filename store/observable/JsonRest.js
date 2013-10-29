@@ -28,6 +28,7 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 		//		The optional arguments to apply to the results
 		// returns: dojo/store/observable/api/Store.MaterializedQuery
 		//		A materialized query interface
+		this.inherited(arguments);
 		var self = this, query;
 
 		query = self._queryToURLQuery(query, options) || "";

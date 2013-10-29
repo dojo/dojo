@@ -21,10 +21,6 @@ return declare("dojo.store.observable.util.MaterializedQuery", null, {
 	//		The total number of items in the query
 	total: 0,
 
-	// results: Array|Object
-	//		A results array or interface supporting slice()
-	results: null,
-
 	// pages: Array
 	//		Active page subscriptions for this query
 	pages: null,

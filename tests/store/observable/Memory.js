@@ -17,7 +17,7 @@ function(doh, array, lang, Memory){
 	function runPageScenarios(scenarios, start, count){
 		array.forEach(scenarios, function(scenario){
 			store.setData(lang.clone(scenarioData));
-			store.queries = {};
+			store.queries = [];
 			var events = [],
 				q = store.materialize(null, {sort: [{attribute: "value"}]}),
 				p = q.page(start, count),
@@ -34,7 +34,7 @@ function(doh, array, lang, Memory){
 		[
 			function testMaterialize(t){
 				store.setData(lang.clone(smallData));
-				store.queries = {};
+				store.queries = [];
 				var q1 = store.materialize({name: /o/}),
 					q2 = store.materialize({name: /o/}),
 					q3 = store.materialize({name: /t/}),
@@ -49,7 +49,7 @@ function(doh, array, lang, Memory){
 			},
 			function testQueryUnsubscribe(t){
 				store.setData(lang.clone(smallData));
-				store.queries = {};
+				store.queries = [];
 				var q1 = store.materialize({name: /o/}),
 					q2 = store.materialize({name: /o/}),
 					p1 = q1.page(),
@@ -82,7 +82,7 @@ function(doh, array, lang, Memory){
 			},
 			function testPageUnsubscribe(t){
 				store.setData(lang.clone(smallData));
-				store.queries = {};
+				store.queries = [];
 				var q1 = store.materialize({name: /o/}),
 					p1 = q1.page(),
 					p2 = q1.page(),
@@ -114,7 +114,7 @@ function(doh, array, lang, Memory){
 			},
 			function testListenerRemove(t){
 				store.setData(lang.clone(smallData));
-				store.queries = {};
+				store.queries = [];
 				var q1 = store.materialize({name: /o/}),
 					p1 = q1.page(),
 					e1 = [],
@@ -1899,7 +1899,7 @@ function(doh, array, lang, Memory){
 						lastPage = null,
 						query, results;
 					store.setData(lang.clone(data));
-					store.queries = {};
+					store.queries = [];
 					query = store.materialize(null, {sort: [{attribute: "value"}]});
 					while(lastPage === null){
 						pages.push(query.page(start, count));

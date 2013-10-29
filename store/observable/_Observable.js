@@ -8,6 +8,16 @@ return declare("dojo.store.observable._Observable", null, {
 	//		This is a collection of common methods used across all observable
 	//		data stores.
 
+	materialize: function(query, options){
+		// summary:
+		//		Base materialize method for all stores. Accept all of the same
+		//		options as `query()` except for `start` and `count`.
+		if(options){
+			delete options.start;
+			delete options.count;
+		}
+	},
+
 	_notify: function(object, existingId){
 		// summary:
 		//		Handle the change by either processing it locally or

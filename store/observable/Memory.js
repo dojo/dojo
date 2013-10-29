@@ -8,7 +8,7 @@ function(declare, array, _Memory, _Observable, MaterializedQuery){
 // be able to key off a dictionary using the combination of a query object and
 // query options. This requires us to convert them into a unique string.
 var toStr = function(item){
-	var type = toString.call(item);
+	var type = Object.prototype.toString.call(item);
 	if(type === "[object Array]"){
 		var vals = [];
 		for(var i in item){

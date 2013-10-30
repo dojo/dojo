@@ -1,5 +1,5 @@
-define(["../../_base/declare", "../../_base/xhr", "../../_base/array", "../../_base/lang", "../../Deferred", "../../DeferredList", "../JsonRest", "./_Observable", "./util/MaterializedQuery"],
-function(declare, xhr, array, lang, Deferred, DeferredList, _JsonRest, _Observable, MaterializedQuery){
+define(["../../_base/declare", "../../_base/xhr", "../../_base/array", "../../_base/lang", "../../promise/all", "../../Deferred", "../JsonRest", "./_Observable", "./util/MaterializedQuery"],
+function(declare, xhr, array, lang, all, Deferred, _JsonRest, _Observable, MaterializedQuery){
 
 // module:
 //		dojo/store/observable/JsonRest
@@ -132,7 +132,7 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 
 	_refresh: function(sub, subscribe){
 		var self = this;
-		return new DeferredList(array.map(sub.pages, function(page){
+		return all(array.map(sub.pages, function(page){
 			return self.__slice(sub, page.start, page.count, subscribe).then(function(results){
 				if(subscribe){
 					page.id = results.id;
@@ -141,7 +141,7 @@ return declare("dojo.store.observable.JsonRest", [_JsonRest, _Observable], {
 					page.refresh(results);
 				}
 			});
-		}), false, true);
+		}));
 	},
 
 	_rematerialize: function(sub){

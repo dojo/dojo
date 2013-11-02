@@ -86,6 +86,41 @@
 						},
 						
 						{
+							name: "gotoPercent Chain",
+							timeout: 2000,
+							runTest: function (t) {
+								var d = new doh.Deferred(),
+									node = dom.byId('baz'),
+									anims = [
+										baseFx.fadeOut({node:node}),
+										baseFx.fadeIn({node:node}),
+										fx.wipeOut({node:node}),
+										fx.wipeIn({node:node}),
+										fx.slideTo({node:node,top:200,left:300})
+									],
+									chain = fx.chain(anims),
+									len = anims.length,
+									percent = 0.34,
+									totalActive = len - Math.floor(percent * len),
+									numRun = 0;
+
+								array.forEach(anims, function (anim, index) {
+									aspect.before(anim, 'onEnd', function () {
+										numRun++;
+									});
+								});
+
+								aspect.after(chain, 'onEnd', function () {
+									doh.t(totalActive === numRun);
+									d.callback(true);
+								});
+
+								chain.gotoPercent(percent, true);
+								return d;
+							}
+						},
+
+						{
 							name: "combine",
 							timeout: 1500,
 							runTest: function(t){
@@ -484,6 +519,7 @@
 		</div>
 		
 		<p id="a1">p</p><p id="a2">p</p>
+		<div id="baz">baz</div>
 		
 	</body>
 </html>

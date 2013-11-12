@@ -459,7 +459,7 @@
 					}else if(p=="*now"){
 						now = item;
 					}else if(p!="*noref"){
-						m = getModuleInfo(p, referenceModule);
+						m = getModuleInfo(p, referenceModule, true);
 						cache[m.mid] = cache[urlKeyPrefix + m.url] = item;
 					}
 				}
@@ -1004,8 +1004,8 @@
 			return makeModuleInfo(pid, mid, pack, compactPath(url));
 		},
 
-		getModuleInfo = function(mid, referenceModule){
-			return getModuleInfo_(mid, referenceModule, packs, modules, req.baseUrl, mapProgs, pathsMapProg, aliases);
+		getModuleInfo = function(mid, referenceModule, fromPendingCache){
+			return getModuleInfo_(mid, referenceModule, packs, modules, req.baseUrl, fromPendingCache ? [] : mapProgs, fromPendingCache ? [] : pathsMapProg, fromPendingCache ? [] : aliases);
 		},
 
 		resolvePluginResourceId = function(plugin, prid, referenceModule){

@@ -141,6 +141,16 @@ define([
 		doh.register("tests._base.loader.requirejs-exports-async", require.toUrl("./loader/requirejs/exports/exports.html"), {async:1});
 
 		doh.register("tests._base.loader.require-config", require.toUrl("./loader/config/test.html"), {async:1});
+		
+		(function (){
+			var i, j, 
+				locales = ["fr-fr", "fr", "en"];
+			for(i=0; i<locales.length; i++){
+				for (j=0; j<2; j++){
+					doh.register("tests._base.loader.17155-sync"+j+"-"+locales[i], require.toUrl("./loader/17155.html?"+locales[i]), {async:j});
+				}
+			}
+		})();
 	}
 });
 

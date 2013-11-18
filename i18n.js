@@ -42,28 +42,47 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			bundleName
 		){
 			// summary:
-			//		return a vector of module ids containing all available locales with respect to the target locale
+			//		return a vector of module ids containing all available locales with respect to the target locale,
+			// 		stopping when one module is found in cache.
+			//
 			//		For example, assuming:
 			//
 			//		- the root bundle indicates specific bundles for "fr" and "fr-ca",
-			//		-  bundlePath is "myPackage/nls"
+			//		- bundlePath is "myPackage/nls"
 			//		- bundleName is "myBundle"
+			//		- the cache is not containing any of those bundle
 			//
 			//		Then a locale argument of "fr-ca" would return
 			//
 			//			["myPackage/nls/myBundle", "myPackage/nls/fr/myBundle", "myPackage/nls/fr-ca/myBundle"]
+			//		
+			//		- if the module "myPackage/nls/fr/myBundle" was in cache, a locale argument of "fr-ca" would return
+			//
+			//			["myPackage/nls/fr/myBundle", "myPackage/nls/fr-ca/myBundle"]
+			// 			This table will have the "cacheId" property set to the cache id of the module found in cache.
 			//
 			//		Notice that bundles are returned least-specific to most-specific, starting with the root.
 			//
 			//		If root===false indicates we're working with a pre-AMD i18n bundle that doesn't tell about the available locales;
 			//		therefore, assume everything is available and get 404 errors that indicate a particular localization is not available
 
-			for(var result = [bundlePath + bundleName], localeParts = locale.split("-"), current = "", i = 0; i<localeParts.length; i++){
-				current += (current ? "-" : "") + localeParts[i];
-				if(!root || root[current]){
-					result.push(bundlePath + current + "/" + bundleName);
-					result.specificity = current;
+			var result = [],
+				localeParts = locale.split("-"),
+				current = "";
+			while(localeParts.length){
+				current = localeParts.join("-");
+				if(cache[bundlePath + bundleName + "/" + current]){
+					// this bundle is in cache, there is no need to continue
+					result.specificity = result.specificity || current;
+					result.unshift(bundlePath + current + "/" + bundleName);
+					result.cacheId = bundlePath + bundleName + "/" + current;
+					return result;
 				}
+				if(!root || root[current]){
+					result.specificity = result.specificity || current;
+					result.unshift(bundlePath + current + "/" + bundleName);
+				}
+				localeParts.pop();
 			}
 			return result;
 		},
@@ -86,11 +105,24 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		doLoad = function(require, bundlePathAndName, bundlePath, bundleName, locale, load){
 			// summary:
 			//		get the root bundle which instructs which other bundles are required to construct the localized bundle
+			var defineI18n = function (mid, cacheId){
+				// summary:
+				//		define an i18n bundle if it is in cache
+				cacheId = cacheId || mid;
+				if(cache[cacheId] && !cache[cacheId]._defined){
+					define(mid, cache[cacheId]);
+					//avoid multiple defines for root bundle when using extraLocale
+					cache[cacheId]._defined = true;
+				}
+			};
+			
+			defineI18n(bundlePathAndName);
 			require([bundlePathAndName], function(root){
 				var current = lang.clone(root.root || root.ROOT),// 1.6 built bundle defined ROOT
 					availableLocales = getAvailableLocales(!root._v1x && root, locale, bundlePath, bundleName);
+					defineI18n(availableLocales[0], availableLocales.cacheId);
 				require(availableLocales, function(){
-					for (var i = 1; i<availableLocales.length; i++){
+					for (var i = 0; i<availableLocales.length; i++){
 						current = lang.mixin(lang.clone(current), arguments[i]);
 					}
 					// target may not have been resolve (e.g., maybe only "fr" exists when "fr-ca" was requested)
@@ -111,7 +143,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		},
 
 		getLocalesToLoad = function(targetLocale){
-			var list = config.extraLocale || [];
+			var list = lang.clone(config.extraLocale) || [];
 			list = lang.isArray(list) ? list : [list];
 			list.push(targetLocale);
 			return list;
@@ -316,7 +348,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				//		in that the v1.6- would only load ab-cd...which was *always* flattened.
 				//
 				//		If guaranteedAmdFormat is true, then the module can be loaded with require thereby circumventing the detection algorithm
-				//		and the extra possible extra transaction.
+				//		and the possible extra transaction.
 
 				// If this function is called from legacy code, then guaranteedAmdFormat and contextRequire will be undefined. Since the function
 				// needs a require in order to resolve module ids, fall back to the context-require associated with this dojo/i18n module, which
@@ -344,6 +376,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				}
 
 				function preload(locale){
+					var localePreloaded = '';
 					locale = normalizeLocale(locale);
 					forEachLocale(locale, function(loc){
 						if(array.indexOf(localesGenerated, loc)>=0){
@@ -351,21 +384,37 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 							preloading++;
 							doRequire(mid, function(rollup){
 								for(var p in rollup){
-									cache[require.toAbsMid(p) + "/" + loc] = rollup[p];
+									var bundle = cache[require.toAbsMid(p) + "/" + loc] = rollup[p];
+									if(loc==="ROOT"){
+										var root = bundle._localized;
+										delete bundle._localized;
+										root.root = bundle;
+										cache[require.toAbsMid(p)] = root;
+									}
 								}
 								--preloading;
 								while(!preloading && preloadWaitQueue.length){
 									load.apply(null, preloadWaitQueue.shift());
 								}
 							});
+							localePreloaded = loc;
 							return true;
 						}
 						return false;
 					});
+					return localePreloaded;
 				}
 
-				preload();
-				array.forEach(dojo.config.extraLocale, preload);
+				var localesToPreload = getLocalesToLoad(""),
+					localesPreloaded = array.map(localesToPreload, preload),
+					isRootLoaded = array.indexOf(localesPreloaded, "ROOT")>=0;
+				
+				for(var i = 0; i<localesToPreload.length && !isRootLoaded; i++){
+					if(localesPreloaded[i] !== normalizeLocale(localesToPreload[i])){
+						preload('ROOT');
+						isRootLoaded = true;
+					}
+				}
 			},
 
 			waitForPreloads = function(id, require, load){

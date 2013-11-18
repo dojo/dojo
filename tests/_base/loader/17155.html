@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Ticket 17155 verification</title>
+</head>
+<body>
+	<script>
+		var locale = location.search.substring(1) || "",
+			dojoConfig = {
+			locale: locale,
+			packages: [
+				{
+					name: "17155",
+					location: "./tests/_base/loader/17155"
+				}
+			]
+		};
+	</script>
+	<script src="../../../dojo.js"></script>
+	<script>
+		// simulate a built layer, this is added to dojo.js by the builder
+		require({
+			cache: {
+				'*now':function(r){r(['dojo/i18n!*preload*17155/nls/src*["fr","ROOT"]']);}
+			}
+		});
+		// consume pending cache, the following are added at the end of a built dojo.js in a closure
+		require({ cache: {} });
+		!require.async && require(['dojo']);
+		require.boot && require.apply(null, require.boot);
+
+		require([ 'doh', 'dojo/i18n!17155/nls/greetings' ], function (doh, greetings) {
+			// begin test:
+			doh.register('17155', [
+				{
+					name: 'Ticket 17155: '+locale+' verification',
+					runTest: function () {
+						switch(locale){
+							case "fr-fr":
+								doh.assertEqual("Salut", greetings.GREETING);
+								doh.assertEqual("Monsieur (from layer)", greetings.PERSON);
+								doh.assertFalse(greetings.ROOT);
+								break;
+							case "fr":
+								doh.assertEqual("Bonjour (from layer)", greetings.GREETING);
+								doh.assertEqual("Monsieur (from layer)", greetings.PERSON);
+								doh.assertFalse(greetings.ROOT);
+								break;						
+							case "en":
+								doh.assertEqual("Hello (from layer)", greetings.GREETING);
+								doh.assertEqual("Mister (from layer)", greetings.PERSON);
+								doh.assertFalse(greetings.ROOT);
+								break;
+						}
+					}
+				}
+			]);
+			doh.runOnLoad();
+		});
+	</script>
+</body>
+</html>

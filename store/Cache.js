@@ -31,7 +31,7 @@ var Cache = function(masterStore, cachingStore, options){
 		add: function(object, directives){
 			return when(masterStore.add(object, directives), function(result){
 				// now put result in cache
-				cachingStore.add(object && typeof result == "object" ? result : object, directives);
+				cachingStore.add(result && typeof result == "object" ? result : object, directives);
 				return result; // the result from the add should be dictated by the masterStore and be unaffected by the cachingStore
 			});
 		},
@@ -40,7 +40,7 @@ var Cache = function(masterStore, cachingStore, options){
 			cachingStore.remove((directives && directives.id) || this.getIdentity(object));
 			return when(masterStore.put(object, directives), function(result){
 				// now put result in cache
-				cachingStore.put(object && typeof result == "object" ? result : object, directives);
+				cachingStore.put(result && typeof result == "object" ? result : object, directives);
 				return result; // the result from the put should be dictated by the masterStore and be unaffected by the cachingStore
 			});
 		},

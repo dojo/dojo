@@ -3,11 +3,11 @@ dojo.require("dojo.store.Memory");
 (function(){
 	var store = new dojo.store.Memory({
 		data: [
-			{id: 1, name: "one", prime: false},
-			{id: 2, name: "two", even: true, prime: true},
-			{id: 3, name: "three", prime: true},
-			{id: 4, name: "four", even: true, prime: false},
-			{id: 5, name: "five", prime: true}
+			{id: 1, name: "one", prime: false, date: new Date(1970, 0, 1) },
+			{id: 2, name: "two", even: true, prime: true, date: new Date(1980, 1, 2) },
+			{id: 3, name: "three", prime: true, date: new Date(1990, 2, 3) },
+			{id: 4, name: "four", even: true, prime: false, date: new Date(1972, 3, 6, 12, 1) },
+			{id: 5, name: "five", prime: true, date: new Date(1972, 3, 6, 6, 2) }
 		]
 	});
 	tests.register("dojo.tests.store.Memory",
@@ -34,6 +34,10 @@ dojo.require("dojo.store.Memory");
 			function testQueryWithSort(t){
 				t.is(store.query({prime: true}, {sort:[{attribute:"name"}]}).length, 3);
 				t.is(store.query({even: true}, {sort:[{attribute:"name"}]})[1].name, "two");
+
+				t.is([ 1, 5, 4, 2, 3 ], store.query({}, { sort: [ { attribute: "date", descending: false } ] }).map(function (item) {
+					return item.id;
+				}));
 			},
 			function testQueryWithPaging(t){
 				t.is(store.query({prime: true}, {start: 1, count: 1}).length, 1);

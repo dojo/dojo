@@ -88,6 +88,9 @@ return function(query, options){
 				for(var sort, i=0; sort = sortSet[i]; i++){
 					var aValue = a[sort.attribute];
 					var bValue = b[sort.attribute];
+					// valueOf enables proper comparison of dates
+					aValue = aValue != null ? aValue.valueOf() : aValue;
+					bValue = bValue != null ? bValue.valueOf() : bValue;
 					if (aValue != bValue){
 						return !!sort.descending == (aValue == null || aValue > bValue) ? -1 : 1;
 					}

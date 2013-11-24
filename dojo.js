@@ -168,6 +168,26 @@
 		rhinoDojoConfig(defaultConfig, baseUrl, rhinoArgs);
 	}
 
+	has.add("host-webworker", ((typeof importScripts !== 'undefined') && (typeof document === 'undefined')));
+	if(has("host-webworker")){
+		var dojoPath = global.dojoConfig.baseUrl;
+		
+		for(var i = 0; i < global.dojoConfig.packages.length; i++){
+			var cPackage = global.dojoConfig.packages[i];
+			if(cPackage.name == "dojo"){
+				dojoPath += cPackage.location.replace(/^\.\//,"") + "/";
+			}
+		}
+		
+		// TODO: Can we load the config with AMD, or not so much?
+		// require("./_base/configWebWorker").config(defaultConfig, global, has);
+		importScripts(
+			dojoPath+"_base/configWebworker.js"+
+				((global.dojoConfig.cacheBust === true) ? "?" + new Date() : "")
+		);
+		webworkerDojoConfig(defaultConfig, global);
+	}
+
 	// userConfig has tests override defaultConfig has tests; do this after the environment detection because
 	// the environment detection usually sets some has feature values in the hasCache.
 	for(var p in userConfig.has){

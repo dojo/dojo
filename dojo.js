@@ -179,8 +179,6 @@
 			}
 		}
 		
-		// TODO: Can we load the config with AMD, or not so much?
-		// require("./_base/configWebWorker").config(defaultConfig, global, has);
 		importScripts(
 			dojoPath+"_base/configWebworker.js"+
 				((global.dojoConfig.cacheBust === true) ? "?" + new Date() : "")

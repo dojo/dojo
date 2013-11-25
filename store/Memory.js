@@ -146,7 +146,7 @@ return declare("dojo.store.Memory", null, {
 		//		An array of objects to use as the source of data.
 		if(data.items){
 			// just for convenience with the data format IFRS expects
-			this.idProperty = data.identifier;
+			this.idProperty = data.identifier || this.idProperty;
 			data = this.data = data.items;
 		}else{
 			this.data = data;

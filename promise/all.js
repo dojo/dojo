@@ -13,12 +13,12 @@ define([
 	return function all(objectOrArray){
 		// summary:
 		//		Takes multiple promises and returns a new promise that is fulfilled
-		//		when all promises have been fulfilled.
+		//		when all promises have been resolved or one has been rejected.
 		// description:
 		//		Takes multiple promises and returns a new promise that is fulfilled
-		//		when all promises have been fulfilled. If one of the promises is rejected,
-		//		the returned promise is also rejected. Canceling the returned promise will
-		//		*not* cancel any passed promises.
+		//		when all promises have been resolved or one has been rejected. If one of
+		//		the promises is rejected, the returned promise is also rejected. Canceling
+		//		the returned promise will *not* cancel any passed promises.
 		// objectOrArray: Object|Array?
 		//		The promise will be fulfilled with a list of results if invoked with an
 		//		array, or an object of results when passed an object (using the same

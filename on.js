@@ -1,8 +1,25 @@
 define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		has.add("event-focusin", function(global, doc, element){
-			// All browsers except firefox support focusin, but too hard to feature test webkit since element.onfocusin
-			// is undefined.  Just return true for IE and use fallback path for other browsers.
-			return !!element.attachEvent;
+			return 'onfocusin' in element || (element.addEventListener && (function () {
+				var hasFocusInEvent = false;
+				function testFocus() {
+					hasFocusInEvent = true;
+				}
+
+				try {
+					var element = doc.createElement('input'),
+						style = element.style;
+					style.position = 'absolute';
+					style.top = element.style.left = '0';
+					element.addEventListener('focusin', testFocus, false);
+					doc.body.appendChild(element);
+					element.focus();
+					doc.body.removeChild(element);
+					element.removeEventListener('focusin', testFocus, false);
+				} catch (e) {}
+
+				return hasFocusInEvent;
+			})());
 		});
 	// summary:
 	//		The export of this module is a function that provides core event listening functionality. With this function

@@ -33,6 +33,7 @@ define(["./has"], function(has){
 		}
 		has.add("android", parseFloat(dua.split("Android ")[1]) || undefined);
 		has.add("bb", (dua.indexOf("BlackBerry") >= 0 || dua.indexOf("BB10") >= 0) && parseFloat(dua.split("Version/")[1]) || undefined);
+		has.add("trident", parseFloat(dav.split("Trident/")[1]) || undefined);
 
 		has.add("svg", typeof SVGAngle !== "undefined");
 
@@ -45,7 +46,7 @@ define(["./has"], function(has){
 			}
 
 			// Mozilla and firefox
-			if(dua.indexOf("Gecko") >= 0 && !has("khtml") && !has("webkit")){
+			if(dua.indexOf("Gecko") >= 0 && !has("khtml") && !has("webkit") && !has("trident")){
 				has.add("mozilla", tv);
 			}
 			if(has("mozilla")){

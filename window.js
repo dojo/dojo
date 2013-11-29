@@ -138,7 +138,7 @@ window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 			isWK = has("webkit");
 		// if an untested browser, then use the native method
 		if(node == body || node == html){ return; }
-		if(!(has("mozilla") || isIE || isWK || has("opera")) && ("scrollIntoView" in node)){
+			if(!(has("mozilla") || isIE || isWK || has("opera") || has("trident")) && ("scrollIntoView" in node)){
 			node.scrollIntoView(false); // short-circuit to native if possible
 			return;
 		}

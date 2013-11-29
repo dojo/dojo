@@ -8,7 +8,16 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 	var ios4 = has("ios") < 5;
 	
-	var msPointer = navigator.msPointerEnabled;
+	var msPointer = navigator.pointerEnabled || navigator.msPointerEnabled,
+		pointer = (function () {
+			var pointer = {};
+			for (var type in { down: 1, move: 1, up: 1, cancel: 1, over: 1, out: 1 }) {
+				pointer[type] = !navigator.pointerEnabled ?
+					"MSPointer" + type.charAt(0).toUpperCase() + type.slice(1) :
+					"pointer" + type;
+			}
+			return pointer;
+		})();
 
 	// Click generation variables
 	var clicksInited, clickTracker, clickTarget, clickX, clickY, clickDx, clickDy, clickTime;
@@ -143,8 +152,8 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		if(msPointer){
 			 // MSPointer (IE10+) already has support for over and out, so we just need to init click support
 			domReady(function(){
-				win.doc.addEventListener("MSPointerDown", function(evt){
-					doClicks(evt, "MSPointerMove", "MSPointerUp");
+				win.doc.addEventListener(pointer.down, function(evt){
+					doClicks(evt, pointer.move, pointer.up);
 				}, true);
 			});		
 		}else{
@@ -246,14 +255,14 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 	//device neutral events - touch.press|move|release|cancel/over/out
 	var touch = {
-		press: dualEvent("mousedown", "touchstart", "MSPointerDown"),
-		move: dualEvent("mousemove", "dojotouchmove", "MSPointerMove"),
-		release: dualEvent("mouseup", "dojotouchend", "MSPointerUp"),
-		cancel: dualEvent(mouse.leave, "touchcancel", hasTouch?"MSPointerCancel":null),
-		over: dualEvent("mouseover", "dojotouchover", "MSPointerOver"),
-		out: dualEvent("mouseout", "dojotouchout", "MSPointerOut"),
-		enter: mouse._eventHandler(dualEvent("mouseover","dojotouchover", "MSPointerOver")),
-		leave: mouse._eventHandler(dualEvent("mouseout", "dojotouchout", "MSPointerOut"))
+		press: dualEvent("mousedown", "touchstart", pointer.down),
+		move: dualEvent("mousemove", "dojotouchmove", pointer.move),
+		release: dualEvent("mouseup", "dojotouchend", pointer.up),
+		cancel: dualEvent(mouse.leave, "touchcancel", hasTouch ? pointer.cancel : null),
+		over: dualEvent("mouseover", "dojotouchover", pointer.over),
+		out: dualEvent("mouseout", "dojotouchout", pointer.out),
+		enter: mouse._eventHandler(dualEvent("mouseover","dojotouchover", pointer.over)),
+		leave: mouse._eventHandler(dualEvent("mouseout", "dojotouchout", pointer.out))
 	};
 
 	/*=====

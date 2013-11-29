@@ -300,7 +300,10 @@
 					}
 
 					// Setup tests relevant for this platform
-					if(navigator.msPointerEnabled){
+					if(navigator.pointerEnabled){
+						register('Pointer events', 'pointerdown', 'pointermove', 'pointerup',
+								has('touch') ? 'pointercancel' : 'mouseout');
+					}else if(navigator.msPointerEnabled){
 						register('MSPointer events', 'MSPointerDown', 'MSPointerMove', 'MSPointerUp',
 								has('touch') ? 'MSPointerCancel' : 'mouseout');
 					}else{

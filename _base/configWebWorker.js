@@ -22,7 +22,7 @@ function webworkerDojoConfig(config, global, has){
     if(has("config-cacheBust")){
         var fixupUrl= function(url){
             url += ""; // make sure url is a Javascript string (some paths may be a Java string)
-            return url + ((/\?/.test(url) ? "&" : "?") + cacheBust);
+            return url + ((/\?/.test(url) ? "&" : "?") + new Date());
         }
     }else{
         var fixupUrl= function(url){

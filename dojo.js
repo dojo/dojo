@@ -168,12 +168,13 @@
 		rhinoDojoConfig(defaultConfig, baseUrl, rhinoArgs);
 	}
 
+	has.add("config-cacheBust", (userConfig.cacheBust || defaultConfig.cacheBust) !== undefined);
 	has.add("host-webworker", ((typeof importScripts !== 'undefined') && (typeof document === 'undefined')));
 	if(has("host-webworker")){
-		var dojoPath = global.dojoConfig.baseUrl;
+		var dojoPath = userConfig.baseUrl;
 		
-		for(var i = 0; i < global.dojoConfig.packages.length; i++){
-			var cPackage = global.dojoConfig.packages[i];
+		for(var i = 0; i < userConfig.packages.length; i++){
+			var cPackage = userConfig.packages[i];
 			if(cPackage.name == "dojo"){
 				dojoPath += cPackage.location.replace(/^\.\//,"") + "/";
 			}
@@ -181,9 +182,9 @@
 		
 		importScripts(
 			dojoPath+"_base/configWebworker.js"+
-				((global.dojoConfig.cacheBust === true) ? "?" + new Date() : "")
+				(has("config-cacheBust") ? "?" + new Date() : "")
 		);
-		webworkerDojoConfig(defaultConfig, global);
+		webworkerDojoConfig(defaultConfig, global, has);
 	}
 
 	// userConfig has tests override defaultConfig has tests; do this after the environment detection because

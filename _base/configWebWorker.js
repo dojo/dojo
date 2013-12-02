@@ -1,6 +1,4 @@
-function webworkerDojoConfig(config, global){ 
-// TODO, why can we not do the following:
-// exports.config = function(config, global){
+function webworkerDojoConfig(config, global, has){ 
 	// summary:
 	//		This module provides bootstrap support for WebWorkers
 	
@@ -19,13 +17,15 @@ function webworkerDojoConfig(config, global){
 	
 	global.window = global;
 
-	// TODO, because dojo/_base/config has a dependency on has,
-	// couldn't we include a reference to has and wrap this in a
-	// if(has("config-cacheBust") ?
-	var cacheBust = global.dojoConfig.cacheBust;
 	var fixupUrl= function(url){
 		url += ""; // make sure url is a Javascript string (some paths may be a Java string)
-		return url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");
+		if(has("config-cacheBust")){
+			// TODO: Where should cacheBust be read from?
+			// We're passing in the defaultConfig rather than userConfig
+			var cacheBust = global.dojoConfig.cacheBust;
+			url += ((/\?/.test(url) ? "&" : "?") + cacheBust);
+		}
+		return url;
 	}
 
 	// reset some configuration switches with webworker-appropriate values

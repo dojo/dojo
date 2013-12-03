@@ -19,15 +19,12 @@ function webworkerDojoConfig(config, global, has){
 
 	global.window = global;
 
-    if(has("config-cacheBust")){
-        var fixupUrl= function(url){
-            url += ""; // make sure url is a Javascript string (some paths may be a Java string)
-            return url + ((/\?/.test(url) ? "&" : "?") + new Date());
+    var fixupUrl= function(url){
+        url += ""; // make sure url is a Javascript string (some paths may be a Java string)
+        if(has("config-cacheBust")){
+            url + ((/\?/.test(url) ? "&" : "?") + new Date().getTime().toString());
         }
-    }else{
-        var fixupUrl= function(url){
-            return url;
-        }
+        return url;
     }
 
 	// reset some configuration switches with webworker-appropriate values

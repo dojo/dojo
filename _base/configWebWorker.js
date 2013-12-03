@@ -9,24 +9,25 @@ function webworkerDojoConfig(config, global, has){
 		"dojo-sniff": 0,
 		"dojo-inject-api": 1,
 		"host-webworker": 1
-	};
+	},
+		p;
 
-	for(var p in hasCache){
+	for(p in hasCache){
 		config.hasCache[p] = hasCache[p];
 	}
 	
 	global.window = global;
+	if(has("config-cacheBust")){
+		var cacheBust = new Date().getTime().toString();
+	}
 
 	var fixupUrl= function(url){
 		url += ""; // make sure url is a Javascript string (some paths may be a Java string)
 		if(has("config-cacheBust")){
-			// TODO: Where should cacheBust be read from?
-			// We're passing in the defaultConfig rather than userConfig
-			var cacheBust = global.dojoConfig.cacheBust;
 			url += ((/\?/.test(url) ? "&" : "?") + cacheBust);
 		}
 		return url;
-	}
+	};
 
 	// reset some configuration switches with webworker-appropriate values
 	var webworkerConfig = {
@@ -54,7 +55,8 @@ function webworkerDojoConfig(config, global, has){
 				return xhr.responseText;
 			}
 		}
-	}
+	};
+
 	for(p in webworkerConfig){
 		config[p] = webworkerConfig[p];
 	}

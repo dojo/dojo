@@ -19,10 +19,12 @@ function webworkerDojoConfig(config, global, has){
 
 	global.window = global;
 
+    var cacheBust = new Date().getTime().toString());
+
     var fixupUrl= function(url){
         url += ""; // make sure url is a Javascript string (some paths may be a Java string)
         if(has("config-cacheBust")){
-            url + ((/\?/.test(url) ? "&" : "?") + new Date().getTime().toString());
+            url + ((/\?/.test(url) ? "&" : "?") + cacheBust;
         }
         return url;
     }
@@ -54,6 +56,7 @@ function webworkerDojoConfig(config, global, has){
 			}
 		}
 	}
+
 	for(p in webworkerConfig){
 		config[p] = webworkerConfig[p];
 	}

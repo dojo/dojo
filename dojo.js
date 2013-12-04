@@ -182,7 +182,7 @@
 		
 		importScripts(
 			dojoPath+"_base/configWebworker.js"+
-				(has("config-cacheBust") ? "?" + new Date() : "")
+				(has("config-cacheBust") ? "?" + new Date().getTime().toString() : "")
 		);
 		webworkerDojoConfig(defaultConfig, global, has);
 	}

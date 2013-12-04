@@ -75,5 +75,27 @@ define([
 
 			return this.deferred;
 		}
+	}, {
+		"name": "Load a dojo script via require",
+		"setUp": fixtures.deferred,
+		"tearDown": tearDowns.blank,
+		"timeout": 5000,
+		"runTest": function(){
+			// summary:
+			// Test whether require works in the worker when in async mode.
+
+			var self = this;
+			var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker3.js");
+
+			worker.addEventListener("message", function(e) {
+				if(e.data.value){
+					self.deferred.resolve();
+				}else{
+					self.deferred.reject();
+				}
+			}, false);
+
+			return this.deferred;
+		}
 	}]);
 });

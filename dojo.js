@@ -171,6 +171,10 @@
     has.add("config-cacheBust", (userConfig.cacheBust || defaultConfig.cacheBust) !== undefined);
 	has.add("host-webworker", ((typeof importScripts !== 'undefined') && (typeof document === 'undefined')));
 	if(has("host-webworker")){
+        // importsScripts sets relative paths as being relative to the parent page or worker (if sub-worker).
+        // There is no way to discover the path of the current executing script in a worker, which means we
+        // need to calculate where dojo was loaded from before we try to import _base/configWebworker.js.
+
         var dojoPath = userConfig.baseUrl;
         for(var i = 0; i < userConfig.packages.length; i++){
             var cPackage = userConfig.packages[i];

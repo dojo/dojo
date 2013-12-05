@@ -172,7 +172,6 @@
 	has.add("host-webworker", ((typeof importScripts !== 'undefined') && (typeof document === 'undefined')));
 	if(has("host-webworker")){
         var dojoPath = userConfig.baseUrl;
-
         for(var i = 0; i < userConfig.packages.length; i++){
             var cPackage = userConfig.packages[i];
             if(cPackage.name == "dojo"){
@@ -180,10 +179,18 @@
             }
         }
 
-        importScripts(
-            dojoPath+"_base/configWebworker.js"+
-                (has("config-cacheBust") ? "?" + new Date().getTime().toString() : "")
-        );
+        if(has("config-cacheBust")){
+            // TODO:
+            //      Maybe we could have one universal cacheBust producing function that sets somewhere near the top
+            //      of dojo.js rather than having two code similar fragments?
+
+            var importScriptsCacheBust = ((userConfig.cacheBust !== undefined) ? userConfig.cacheBust : defaultConfig.cacheBust);
+            importScriptsCacheBust = ((isString(importScriptsCacheBust)) ? importScriptsCacheBust : new Date().getTime() + "");
+            importScripts(dojoPath+"_base/configWebworker.js?"+importScriptsCacheBust);
+        }else{
+            importScripts(dojoPath+"_base/configWebworker.js");
+        }
+
         webworkerDojoConfig(defaultConfig, global, has);
 	}
 

@@ -7,6 +7,8 @@ define([
 
     has.add("webworkers", (typeof Worker === 'function'));
     if(has("webworkers")){
+        // Tests will still pass when workers not available but warning issued.
+
         var fixtures = {
             deferred: function(){
                 this.deferred = new doh.Deferred();
@@ -104,7 +106,13 @@ define([
             timeout: 5000,
             runTest: function(){
                 // summary:
-                //      Test whether require works in the worker when in async mode.
+                //      Test whether Dojo will load in a subworker.
+                // description:
+                //      This is more complex as two workers are created. The first acts as a
+                //      middleman between this function and the subworker.  Some browsers do not
+                //      support subworkers at writing (eg. Chrome - see:
+                //      https://code.google.com/p/chromium/issues/detail?id=31666 for current status).
+                //      Test issues a warning if subworks not available but passes the test.
 
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker4.js");

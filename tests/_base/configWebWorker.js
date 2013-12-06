@@ -30,6 +30,7 @@ define([
                     }else{
                         self.deferred.reject();
                     }
+                    worker.terminate();
                 }, false);
 
                 return this.deferred;
@@ -51,6 +52,7 @@ define([
                     }else{
                         self.deferred.reject();
                     }
+                    worker.terminate();
                 }, false);
 
                 return this.deferred;
@@ -72,6 +74,7 @@ define([
                     }else{
                         self.deferred.reject();
                     }
+                    worker.terminate();
                 }, false);
 
                 return this.deferred;

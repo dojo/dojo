@@ -105,17 +105,17 @@ define([
                         'var dojoConfig = {' +
                             '"baseUrl":"' + getBaseAbsoluteUrl() + '",' +
                             '"packages":[{"name":"dojo", "location":"dojo"}]' +
-                            '};' +
+                        '};' +
 
-                            'importScripts(dojoConfig.baseUrl+"dojo/dojo.js");' +
+                        'importScripts(dojoConfig.baseUrl+"dojo/dojo.js");' +
 
-                            'try{'+
+                        'try{'+
                             'require(["dojo/_base/configWebWorker"], function(config){' +
-                            'this.postMessage({"test":"require is working", "value":true});' +
+                                'this.postMessage({"test":"require is working", "value":true});' +
                             '});' +
-                            '}catch(e){' +
+                        '}catch(e){' +
                             'this.postMessage({' +
-                            '"test":"require is working", "value":false' +
+                                '"test":"require is working", "value":false' +
                             '});' +
                         '}'
                     ]);

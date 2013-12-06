@@ -98,6 +98,31 @@ define([
                 return this.deferred;
             }
         }, {
+            name: "Load a dojo script via require in a subworker",
+            setUp: fixtures.deferred,
+            tearDown: tearDowns.killWorker,
+            timeout: 5000,
+            runTest: function(){
+                // summary:
+                //      Test whether require works in the worker when in async mode.
+
+                var self = this;
+                var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker4.js");
+
+                worker.addEventListener("message", function(message) {
+                    if(message.data.value){
+                        if(message.data.warn !== ""){
+                            console.warn(message.data.warn);
+                        }
+                        self.deferred.resolve();
+                    }else{
+                        self.deferred.reject();
+                    }
+                }, false);
+
+                return this.deferred;
+            }
+        }, {
             name: "Test for loading in a blob worker",
             setUp: fixtures.deferred,
             tearDown: tearDowns.killBlobWorker,

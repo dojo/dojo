@@ -87,53 +87,56 @@ define([
                 // summary:
                 //      Test for loading dojo and using require in a blob worker
 
-                function getBaseAbsoluteUrl(){
-                    // TODO:
-                    //      Is there a better way of calculating the absolute url base path?
+                has.add("blobs", (typeof Blob === 'function'));
+                if(has("blobs")){
+                    function getBaseAbsoluteUrl(){
+                        // TODO:
+                        //      Is there a better way of calculating the absolute url base path?
 
-                    var baseUrl = require.rawConfig.baseUrl.split("/");
-                    var absoluteUrl = location.pathname.split("/");
-                    absoluteUrl.pop();
-                    baseUrl.pop();
+                        var baseUrl = require.rawConfig.baseUrl.split("/");
+                        var absoluteUrl = location.pathname.split("/");
+                        absoluteUrl.pop();
+                        baseUrl.pop();
 
-                    console.log(location.protocol+"//"+location.host+absoluteUrl.join("/")+"/"+baseUrl.join("/")+"/");
-
-                    return location.protocol+"//"+location.host+absoluteUrl.join("/")+"/"+baseUrl.join("/")+"/";
-                }
-
-                var blob = new Blob([
-                    'var dojoConfig = {' +
-                        '"baseUrl":"' + getBaseAbsoluteUrl() + '",' +
-                        '"packages":[{"name":"dojo", "location":"dojo"}]' +
-                    '};' +
-
-                    'importScripts(dojoConfig.baseUrl+"dojo/dojo.js");' +
-
-                    'try{'+
-                        'require(["dojo/_base/configWebWorker"], function(config){' +
-                            'this.postMessage({"test":"require is working", "value":true});' +
-                        '});' +
-                    '}catch(e){' +
-                        'this.postMessage({' +
-                            '"test":"require is working", "value":false' +
-                        '});' +
-                    '}'
-                ]);
-
-                var self = this;
-                var blobURL = window.URL.createObjectURL(blob);
-                var worker = new Worker(blobURL);
-
-                worker.addEventListener("message", function(e) {
-                    if(e.data.value){
-                        self.deferred.resolve();
-                    }else{
-                        self.deferred.reject();
+                        return location.protocol+"//"+location.host+absoluteUrl.join("/")+"/"+baseUrl.join("/")+"/";
                     }
-                    worker.terminate();
-                }, false);
 
-                return this.deferred;
+                    var workerBlob = new Blob([
+                        'var dojoConfig = {' +
+                            '"baseUrl":"' + getBaseAbsoluteUrl() + '",' +
+                            '"packages":[{"name":"dojo", "location":"dojo"}]' +
+                            '};' +
+
+                            'importScripts(dojoConfig.baseUrl+"dojo/dojo.js");' +
+
+                            'try{'+
+                            'require(["dojo/_base/configWebWorker"], function(config){' +
+                            'this.postMessage({"test":"require is working", "value":true});' +
+                            '});' +
+                            '}catch(e){' +
+                            'this.postMessage({' +
+                            '"test":"require is working", "value":false' +
+                            '});' +
+                        '}'
+                    ]);
+
+                    var self = this;
+                    var workerBlobURL = window.URL.createObjectURL(workerBlob);
+                    var worker = new Worker(workerBlobURL);
+
+                    worker.addEventListener("message", function(e) {
+                        if(e.data.value){
+                            self.deferred.resolve();
+                        }else{
+                            self.deferred.reject();
+                        }
+                        worker.terminate();
+                    }, false);
+
+                    return this.deferred;
+                }else{
+                    console.warn("Platform does not support Blobs");
+                }
             }
         }]);
     }else{

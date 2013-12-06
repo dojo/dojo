@@ -92,7 +92,7 @@ define([
                 worker.addEventListener("message", function(e) {
                     if(e.data.value){
                         if(e.data.info){
-                            console.info(e.data.test)
+                            console.warn(e.data.test)
                         }
                         self.deferred.resolve();
                     }else{
@@ -105,6 +105,6 @@ define([
             }
         }]);
     }else{
-        console.info("Platform does not support webworkers")
+        console.warno("Platform does not support webworkers")
     }
 });

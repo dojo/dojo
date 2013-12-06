@@ -183,19 +183,20 @@
             }
         }
 
+        var importScriptsCacheBust = "";
         if(has("config-cacheBust")){
             // TODO:
             //      Maybe we could have one universal cacheBust producing function that sets somewhere near the top
             //      of dojo.js rather than having two code similar fragments?
 
-            var importScriptsCacheBust = ((userConfig.cacheBust !== undefined) ? userConfig.cacheBust : defaultConfig.cacheBust);
+            importScriptsCacheBust = ((userConfig.cacheBust !== undefined) ? userConfig.cacheBust : defaultConfig.cacheBust);
             importScriptsCacheBust = ((isString(importScriptsCacheBust)) ? importScriptsCacheBust : new Date().getTime() + "");
             importScripts(dojoPath+"_base/configWebworker.js?"+importScriptsCacheBust);
         }else{
             importScripts(dojoPath+"_base/configWebworker.js");
         }
 
-        webworkerDojoConfig(defaultConfig, global, has);
+        webworkerDojoConfig(defaultConfig, has, importScriptsCacheBust);
 	}
 
 	// userConfig has tests override defaultConfig has tests; do this after the environment detection because
@@ -1636,7 +1637,7 @@
 		startTimer = function(){
 			clearTimer();
 			if(req.waitms){
-				timerId = window.setTimeout(function(){
+				timerId = global.setTimeout(function(){
 					clearTimer();
 					signal(error, makeError("timeout", waiting));
 				}, req.waitms);

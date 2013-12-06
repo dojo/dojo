@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>dojo/on focusin feature detection</title>
+	</head>
+	<body>
+		<script src="../../dojo.js" data-dojo-config="async:1"></script>
+		<div style="padding: 4000px 0 0 4000px;"><input id="a"></div>
+		<script>
+require([ "doh" ], function(doh){
+	doh.register(function focusInTest(t){
+		function getScrollPosition() {
+			var docElement = document.documentElement,
+				body = document.body;
+
+			return {
+				x: docElement.scrollLeft || body.scrollLeft,
+				y: docElement.scrollTop || body.scrollTop
+			};
+		}
+
+		var dfd = new doh.Deferred(),
+			input = document.getElementById("a");
+
+		input.focus();
+
+		var lastScroll = getScrollPosition();
+
+		t.t(lastScroll.x > 0 && lastScroll.y > 0, "Focus on element should scroll viewport");
+
+		require([ "dojo/has", "dojo/on" ], dfd.getTestCallback(function(has){
+			var newScroll = getScrollPosition();
+			t.is("boolean", typeof has("event-focusin"), "focusin feature detection should have executed");
+			t.is(lastScroll.x, newScroll.x, "Horizontal scroll should not have changed");
+			t.is(lastScroll.y, newScroll.y, "Vertical scroll should not have changed");
+			t.is(input, document.activeElement, "Focus should still be set on the originally focused input");
+		}));
+
+		return dfd;
+	});
+
+	doh.run();
+});
+		</script>
+	</body>
+</html>

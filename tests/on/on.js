@@ -1,7 +1,7 @@
 define([
-	"doh",
+	"doh", "require",
 	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic"
-], function(doh, declare, Evented, has, on, query, topic){
+], function(doh, require, declare, Evented, has, on, query, topic){
 
 	doh.register("tests.on", [
 		function object(t){
@@ -286,4 +286,8 @@ define([
 			t.is(testValue, 3);
 		}
 	]);
+
+	if(has("host-browser")){
+		doh.registerUrl("tests.on.event-focusin", require.toUrl("./event-focusin.html"), 30000);
+	}
 });

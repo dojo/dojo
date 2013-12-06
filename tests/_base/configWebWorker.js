@@ -134,6 +134,9 @@ define([
                 has.add("blobs", (typeof Blob === 'function'));
                 if(has("blobs")){
                     function getBaseAbsoluteUrl(){
+                        // summary:
+                        //      Blobs need absolute urls to be used within them as relative is relative
+                        //      to blob://<object>.
                         // TODO:
                         //      Is there a better way of calculating the absolute url base path?
 
@@ -180,6 +183,63 @@ define([
                 }else{
                     console.warn("Platform does not support Blobs");
                 }
+            }
+        }, {
+            name: "Test making a XHR request inside a worker using dojo/request",
+            setUp: fixtures.deferred,
+            tearDown: tearDowns.killWorker,
+            timeout: 5000,
+            runTest: function(){
+                // summary:
+                //      Test using dojo/request in a worker
+                // description:
+                //      This is a more advanced test to ensure Dojo's implementation of
+                //      XHR works in the webworker.  It is also a general test of loading
+                //      components via require and then using them.
+
+                var self = this;
+                var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker5.js");
+
+                worker.addEventListener("message", function(message) {
+                    if(message.data.value){
+                        self.deferred.resolve();
+                    }else{
+                        self.deferred.reject();
+                    }
+                }, false);
+
+                return this.deferred;
+            }
+        }, {
+            name: "Test using dojo/on in a worker",
+            setUp: fixtures.deferred,
+            tearDown: tearDowns.killWorker,
+            timeout: 5000,
+            runTest: function(){
+                // summary:
+                //      Test using dojo/on in a worker.
+                // description:
+                //      Another advanced test to see if dojo/on works in workers where there is no DOM.
+                //      Test waits for the worker to request a message and then send one. Worker uses
+                //      dojo/on to listen for messages on the worker global.  It responds with a
+                //      pass for the test if it receives it correctly.
+
+                var self = this;
+                var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker6.js");
+
+                worker.addEventListener("message", function(message) {
+                    if(message.data.type === "testResult"){
+                        if(message.data.value){
+                            self.deferred.resolve();
+                        }else{
+                            self.deferred.reject();
+                        }
+                    }else if(message.data.type === "requestMessage"){
+                        worker.postMessage({type:"gotMessage"})
+                    }
+                }, false);
+
+                return this.deferred;
             }
         }]);
     }else{

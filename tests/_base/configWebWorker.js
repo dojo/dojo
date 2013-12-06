@@ -79,6 +79,27 @@ define([
 
                 return this.deferred;
             }
+        }, {
+            name: "Test for loading in a subworker",
+            setUp: fixtures.deferred,
+            timeout: 5000,
+            runTest: function(){
+                // summary:
+                //      Test whether require works in the worker when in async mode.
+
+                var self = this;
+                var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker4.js");
+                worker.addEventListener("message", function(e) {
+                    if(e.data.value){
+                        self.deferred.resolve();
+                    }else{
+                        self.deferred.reject();
+                    }
+                    worker.terminate();
+                }, false);
+
+                return this.deferred;
+            }
         }]);
     }else{
         console.info("Platform does not support webworkers")

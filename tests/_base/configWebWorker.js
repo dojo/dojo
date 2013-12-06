@@ -137,7 +137,7 @@ define([
                                 '"test":"require is working", "value":false' +
                             '});' +
                         '}'
-                    ]);
+                    ], {type:"text/javascript"});
 
                     var self = this;
                     var workerBlobURL = window.URL.createObjectURL(workerBlob);

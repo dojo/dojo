@@ -24,8 +24,8 @@ define([
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker1.js");
 
-                worker.addEventListener("message", function(e) {
-                    if(e.data.value){
+                worker.addEventListener("message", function(message) {
+                    if(message.data.value){
                         self.deferred.resolve();
                     }else{
                         self.deferred.reject();
@@ -46,8 +46,8 @@ define([
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker2.js");
 
-                worker.addEventListener("message", function(e) {
-                    if(e.data.value){
+                worker.addEventListener("message", function(message) {
+                    if(message.data.value){
                         self.deferred.resolve();
                     }else{
                         self.deferred.reject();
@@ -68,8 +68,8 @@ define([
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker3.js");
 
-                worker.addEventListener("message", function(e) {
-                    if(e.data.value){
+                worker.addEventListener("message", function(message) {
+                    if(message.data.value){
                         self.deferred.resolve();
                     }else{
                         self.deferred.reject();
@@ -124,8 +124,8 @@ define([
                     var workerBlobURL = window.URL.createObjectURL(workerBlob);
                     var worker = new Worker(workerBlobURL);
 
-                    worker.addEventListener("message", function(e) {
-                        if(e.data.value){
+                    worker.addEventListener("message", function(message) {
+                        if(message.data.value){
                             self.deferred.resolve();
                         }else{
                             self.deferred.reject();

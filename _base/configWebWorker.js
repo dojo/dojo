@@ -13,7 +13,6 @@ function webworkerDojoConfig(config, has, cacheBust){
     }
 
     var fixupUrl= function(url){
-        url += ""; // make sure url is a Javascript string (some paths may be a Java string)
         if(has("config-cacheBust")){
             url += (/\?/.test(url) ? "&" : "?") + cacheBust;
         }

@@ -131,6 +131,7 @@ define([
                             self.deferred.reject();
                         }
                         worker.terminate();
+                        window.URL.revokeObjectURL(workerBlobURL);
                     }, false);
 
                     return this.deferred;

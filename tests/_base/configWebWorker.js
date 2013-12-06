@@ -13,9 +13,28 @@ define([
             }
         };
 
+        var tearDowns = {
+            killWorker: function(){
+                var self = this;
+                this.deferred.then(function(){
+                    self.worker.terminate();
+                });
+
+            },
+            killBlobWorker: function(){
+                var self = this;
+                this.deferred.then(function(){
+                    self.worker.terminate();
+                    window.URL.revokeObjectURL(self.workerBlobURL);
+                });
+
+            }
+        };
+
         doh.register("tests._base.configWebWorker", [{
             name: "Loading Dojo core inside worker",
             setUp: fixtures.deferred,
+            tearDown: tearDowns.killWorker,
             timeout: 5000,
             runTest: function(){
                 // summary:
@@ -30,7 +49,6 @@ define([
                     }else{
                         self.deferred.reject();
                     }
-                    worker.terminate();
                 }, false);
 
                 return this.deferred;
@@ -38,6 +56,7 @@ define([
         }, {
             name: "Load a dojo script via require",
             setUp: fixtures.deferred,
+            tearDown: tearDowns.killWorker,
             timeout: 5000,
             runTest: function(){
                 // summary:
@@ -52,7 +71,6 @@ define([
                     }else{
                         self.deferred.reject();
                     }
-                    worker.terminate();
                 }, false);
 
                 return this.deferred;
@@ -60,6 +78,7 @@ define([
         }, {
             name: "Load a dojo script via require in async mode",
             setUp: fixtures.deferred,
+            tearDown: tearDowns.killWorker,
             timeout: 5000,
             runTest: function(){
                 // summary:
@@ -74,7 +93,6 @@ define([
                     }else{
                         self.deferred.reject();
                     }
-                    worker.terminate();
                 }, false);
 
                 return this.deferred;
@@ -82,6 +100,7 @@ define([
         }, {
             name: "Test for loading in a blob worker",
             setUp: fixtures.deferred,
+            tearDown: tearDowns.killBlobWorker,
             timeout: 5000,
             runTest: function(){
                 // summary:
@@ -130,8 +149,6 @@ define([
                         }else{
                             self.deferred.reject();
                         }
-                        worker.terminate();
-                        window.URL.revokeObjectURL(workerBlobURL);
                     }, false);
 
                     return this.deferred;

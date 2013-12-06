@@ -58,7 +58,7 @@ define([
                 return this.deferred;
             }
         }, {
-            name: "Load a dojo script via require",
+            name: "Load a dojo script via require in async mode",
             setUp: fixtures.deferred,
             timeout: 5000,
             runTest: function(){

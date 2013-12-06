@@ -91,8 +91,8 @@ define([
                 var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker4.js");
                 worker.addEventListener("message", function(e) {
                     if(e.data.value){
-                        if(e.data.info){
-                            console.warn(e.data.test)
+                        if(e.data.warn !== ""){
+                            console.warn(e.data.warn)
                         }
                         self.deferred.resolve();
                     }else{

@@ -24,10 +24,13 @@ require(["dojo/has"], function(has){
             worker.terminate();
         }, false);
     }else{
+        // Chrome does not support webworkers of writing this test
+        // (see: http://code.google.com/p/chromium/issues/detail?id=31666)
+
         this.postMessage({
-            "test":"Platform does not support subworkers",
+            "test":"subworkers are working",
             "value":true,
-            "info":true
+            "warn":"Platform does not support subworkers"
         });
     }
 });

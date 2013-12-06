@@ -14,15 +14,15 @@ importScripts("../../../dojo.js");
 try{
     require(["dojo/_base/configWebWorker"], function(config){
         this.postMessage({
-            "test":"require is working",
+            "test":"subworkers are working",
             "value":true,
-            "info":false
+            "warn":""
         });
     });
 }catch(e){
     this.postMessage({
-        "test":"require is working",
+        "test":"subworkers are working",
         "value":false,
-        "info":false
+        "warn":""
     });
 }

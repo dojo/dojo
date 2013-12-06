@@ -10,33 +10,24 @@ define([
     }
 
     var fixtures = {
-        "blank": function(){},
-        "deferred": function(){
+        deferred: function(){
             this.deferred = new doh.Deferred();
         }
     };
 
-    var tearDowns = {
-        "blank":function(){}
-    };
-
-
     doh.register("tests._base.configWebWorker", [{
-        "name": "Platform has WebWorkers",
-        "setUp": fixtures.blank,
-        "tearDown": tearDowns.blank,
-        "runTest": function(){
+        name: "Platform has WebWorkers",
+        runTest: function(){
             // summary:
             //      This test will fail on older browsers, without workers.
 
             doh.assertTrue(isFunction(Worker));
         }
     }, {
-        "name": "Loading Dojo core inside worker",
-        "setUp": fixtures.deferred,
-        "tearDown": tearDowns.blank,
-        "timeout": 5000,
-        "runTest": function(){
+        name: "Loading Dojo core inside worker",
+        setUp: fixtures.deferred,
+        timeout: 5000,
+        runTest: function(){
             // summary:
             //      Test whether dojo can be loaded in the worker
 
@@ -54,11 +45,10 @@ define([
             return this.deferred;
         }
     }, {
-        "name": "Load a dojo script via require",
-        "setUp": fixtures.deferred,
-        "tearDown": tearDowns.blank,
-        "timeout": 5000,
-        "runTest": function(){
+        name: "Load a dojo script via require",
+        setUp: fixtures.deferred,
+        timeout: 5000,
+        runTest: function(){
             // summary:
             //      Test whether require works in the worker.
 
@@ -76,11 +66,10 @@ define([
             return this.deferred;
         }
     }, {
-        "name": "Load a dojo script via require",
-        "setUp": fixtures.deferred,
-        "tearDown": tearDowns.blank,
-        "timeout": 5000,
-        "runTest": function(){
+        name: "Load a dojo script via require",
+        setUp: fixtures.deferred,
+        timeout: 5000,
+        runTest: function(){
             // summary:
             //      Test whether require works in the worker when in async mode.
 

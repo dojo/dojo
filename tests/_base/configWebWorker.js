@@ -91,6 +91,9 @@ define([
                 var worker = new Worker("../../dojo/tests/_base/configWebWorker/worker4.js");
                 worker.addEventListener("message", function(e) {
                     if(e.data.value){
+                        if(e.data.info){
+                            console.info(e.data.test)
+                        }
                         self.deferred.resolve();
                     }else{
                         self.deferred.reject();

@@ -23,6 +23,15 @@ function webworkerDojoConfig(config, has, cacheBust){
     var webworkerConfig = {
         "loaderPatch": {
             injectUrl: function(url, callback){
+                // TODO:
+                //      Use of importScripts means that this is actually running synchronously.  There is
+                //      good or obvious way around this but since workers are normally long-running this is
+                //      unlikely to cause too many problems.  A good half-way fix on this would be to pass the
+                //      entire define/require array array into importScripts as it can take an array as an
+                //      argument.  This is still blocking but all of the scripts are loaded at once, which will
+                //      achieve a loading benefit.  It would probably require a reworking of dojo.js to achieve
+                //      this and is not urgent due normal use of workers being long-running scripts.
+
                 try{
                     importScripts(url);
                     callback();

@@ -5,10 +5,10 @@
 var gloabl = this;
 
 var dojoConfig = {
-    "baseUrl":"../../../../",
-    "async": true,
-    "packages":[
-        {"name":"dojo", "location":"dojo"}
+    baseUrl:"../../../../",
+    async: true,
+    packages:[
+        {name:"dojo", location:"dojo"}
     ]
 }
 
@@ -28,9 +28,9 @@ require(["dojo/has"], function(has){
         // (see: http://code.google.com/p/chromium/issues/detail?id=31666)
 
         this.postMessage({
-            "test":"subworkers are working",
-            "value":true,
-            "warn":"Platform does not support subworkers"
+            test:"subworkers are working",
+            value:true,
+            warn:"Platform does not support subworkers"
         });
     }
 });

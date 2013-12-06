@@ -1,4 +1,4 @@
-function webworkerDojoConfig(config, global, has){
+function webworkerDojoConfig(config, global, has, cacheBust){
     var hasCache = {
         "host-browser": 0,
         "dom": 0,
@@ -13,10 +13,6 @@ function webworkerDojoConfig(config, global, has){
     }
 
     global.window = global;
-
-    if(has("config-cacheBust")){
-        var cacheBust = new Date().getTime().toString();
-    }
 
     var fixupUrl= function(url){
         url += ""; // make sure url is a Javascript string (some paths may be a Java string)

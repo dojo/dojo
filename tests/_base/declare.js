@@ -475,18 +475,37 @@ define([
 			var C = dojo.declare(null, {
 				bar: "thonk"
 			});
+
+			// Both 'mixins' and 'props' parameters are provided
 			var D1 = A.createSubclass([B, C], {
 				constructor: function(){
 					this.foo = "blah";
 				}
 			});
+
+			// Only 'mixins' parameters is provided
 			var D2 = A.createSubclass([B, C]);
+
+			// The 'props' parameter is provided as first instead of second parameter
+			var D3 = A.createSubclass({
+			   constructor: function(){
+				this.foo = "blah";
+				}
+			});
+
+			// No arguments at all provided
+			var D4 = A.createSubclass();
+
 			var d1 = new D1();
 			var d2 = new D2();
+			var d3 = new D3();
+			var d4 = new D4();
 			t.is("blah", d1.foo);
 			t.is("thonk", d2.foo);
 			t.is("thonk", d1.bar);
 			t.is("thonk", d2.bar);
+			t.is("blah", d3.foo);
+			t.is("thonk", d4.foo);
 		}
 
 		// FIXME: there are still some permutations to test like:

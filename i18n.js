@@ -343,26 +343,104 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					func("ROOT");
 				}
 
-				function preload(locale){
-					locale = normalizeLocale(locale);
-					forEachLocale(locale, function(loc){
-						if(array.indexOf(localesGenerated, loc)>=0){
-							var mid = bundlePrefix.replace(/\./g, "/")+"_"+loc;
-							preloading++;
-							doRequire(mid, function(rollup){
-								for(var p in rollup){
-									cache[require.toAbsMid(p) + "/" + loc] = rollup[p];
-								}
-								--preloading;
-								while(!preloading && preloadWaitQueue.length){
-									load.apply(null, preloadWaitQueue.shift());
-								}
-							});
-							return true;
+					function preloadingAddLock(){
+						preloading++;
+					}
+
+					function preloadingRelLock(){
+						--preloading;
+						while(!preloading && preloadWaitQueue.length){
+							load.apply(null, preloadWaitQueue.shift());
 						}
-						return false;
-					});
-				}
+					}
+
+					function cacheId(path, name, loc, require){
+						// path is assumed to have a trailing "/"
+						return require.toAbsMid(path + name + "/" + loc)
+					}
+
+					function preload(locale){
+						locale = normalizeLocale(locale);
+						forEachLocale(locale, function(loc){
+							if(array.indexOf(localesGenerated, loc) >= 0){
+								var mid = bundlePrefix.replace(/\./g, "/") + "_" + loc;
+								preloadingAddLock();
+								doRequire(mid, function(rollup){
+									for(var p in rollup){
+										var bundle = rollup[p],
+											match = p.match(/(.+)\/([^\/]+)$/),
+											bundleName = match[2],
+											bundlePath = match[1] + "/";
+
+										// backcompat
+										bundle._localized = bundle._localized || {};
+
+										var localized;
+										if(loc === "ROOT"){
+											var root = localized = bundle._localized;
+											delete bundle._localized;
+											root.root = bundle;
+											cache[require.toAbsMid(p)] = root;
+										}else{
+											localized = bundle._localized;
+											cache[cacheId(bundlePath, bundleName, loc, require)] = bundle;
+										}
+
+										if(loc !== locale){
+											// capture some locale variables
+											function improveBundle(bundlePath, bundleName, bundle, localized){
+												// locale was not flattened and we've fallen back to a less-specific locale that was flattened
+												// for example, we had a flattened 'fr', a 'fr-ca' is available for at least this bundle, and
+												// locale==='fr-ca'; therefore, we must improve the bundle as retrieved from the rollup by
+												// manually loading the fr-ca version of the bundle and mixing this into the already-retrieved 'fr'
+												// version of the bundle.
+												//
+												// Remember, different bundles may have different sets of locales available.
+												//
+												// we are really falling back on the regular algorithm here, but--hopefully--starting with most
+												// of the required bundles already on board as given by the rollup and we need to "manually" load
+												// only one locale from a few bundles...or even better...we won't find anything better to load.
+												// This algorithm ensures there is nothing better to load even when we can only load a less-specific rollup.
+												//
+												// note: this feature is only available in async mode
+
+												// inspect the loaded bundle that came from the rollup to see if something better is available
+												// for any bundle in a rollup, more-specific available locales are given at localized.
+												var requiredBundles = [],
+													cacheIds = [];
+												forEachLocale(locale, function(loc){
+													if(localized[loc]){
+														requiredBundles.push(require.toAbsMid(bundlePath + loc + "/" + bundleName));
+														cacheIds.push(cacheId(bundlePath, bundleName, loc, require));
+													}
+												});
+
+												if(requiredBundles.length){
+													preloadingAddLock();
+													contextRequire(requiredBundles, function(){
+														for(var i = 0; i < requiredBundles.length; i++){
+															bundle = lang.mixin(lang.clone(bundle), arguments[i]);
+															cache[cacheIds[i]] = bundle;
+														}
+														// this is the best possible (maybe a perfect match, maybe not), accept it
+														cache[cacheId(bundlePath, bundleName, locale, require)] = lang.clone(bundle);
+														preloadingRelLock();
+													});
+												}else{
+													// this is the best possible (definitely not a perfect match), accept it
+													cache[cacheId(bundlePath, bundleName, locale, require)] = bundle;
+												}
+											}
+											improveBundle(bundlePath, bundleName, bundle, localized);
+										}
+									}
+									preloadingRelLock();
+								});
+								return true;
+							}
+							return false;
+						});
+					}
 
 				preload();
 				array.forEach(dojo.config.extraLocale, preload);

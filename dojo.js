@@ -207,7 +207,7 @@
                 return xhr.responseText;
             }
         };
-	}
+    }
 
 	// userConfig has tests override defaultConfig has tests; do this after the environment detection because
 	// the environment detection usually sets some has feature values in the hasCache.

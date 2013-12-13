@@ -12,7 +12,7 @@ var dojoConfig = {
 importScripts("../../../dojo.js");
 
 try{
-    require(["dojo/_base/configWebWorker"], function(config){
+    require(["dojo/tests/_base/configWebWorker/strings"], function(config){
         this.postMessage({
             test:"subworkers are working",
             value:true,

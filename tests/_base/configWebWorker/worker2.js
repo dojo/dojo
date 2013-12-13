@@ -11,7 +11,7 @@ var dojoConfig = {
 importScripts("../../../dojo.js");
 
 try{
-    require(["dojo/tests/_base/configWebWorker/strings"], function(config){
+    require(["dojo/tests/_base/configWebWorker/strings"], function(strings){
         this.postMessage({
             test:"require is working",
             value:true

@@ -180,6 +180,10 @@
         });
 
         defaultConfig.loaderPatch = {
+            // TODO:
+            //      It would be nice to remove getText() as this is a duplication.  However, tests
+            //      fails when it is removed.
+
             injectUrl: function(url, callback){
                 try{
                     importScripts(url);

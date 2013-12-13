@@ -168,35 +168,41 @@
 		rhinoDojoConfig(defaultConfig, baseUrl, rhinoArgs);
 	}
 
-    has.add("config-cacheBust", (userConfig.cacheBust || defaultConfig.cacheBust) !== undefined);
 	has.add("host-webworker", ((typeof importScripts !== 'undefined') && (typeof document === 'undefined')));
 	if(has("host-webworker")){
-        // importsScripts sets relative paths as being relative to the parent page or worker (if sub-worker).
-        // There is no way to discover the path of the current executing script in a worker, which means we
-        // need to calculate where dojo was loaded from before we try to import _base/configWebworker.js.
+        mix(defaultConfig.hasCache, {
+            "host-browser": 0,
+            "dom": 0,
+            "dojo-dom-ready-api": 0,
+            "dojo-sniff": 0,
+            "dojo-inject-api": 1,
+            "host-webworker": 1
+        });
 
-        var dojoPath = userConfig.baseUrl;
-        for(var i = 0; i < userConfig.packages.length; i++){
-            var cPackage = userConfig.packages[i];
-            if(cPackage.name == "dojo"){
-                dojoPath += cPackage.location.replace(/^\.\//,"") + "/";
+        defaultConfig.loaderPatch = {
+            injectUrl: function(url, callback){
+                try{
+                    importScripts(url);
+                    callback();
+                }catch(e){
+                    console.info("failed to load resource (" + url + ")");
+                    console.error(e);
+                }
+            },
+            getText: function(url, async, onLoad){
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', fixupUrl(url), false);
+                xhr.send(null);
+                if(xhr.status == 200 || (!location.host && !xhr.status)){
+                    if(onLoad){
+                        onLoad(xhr.responseText, async);
+                    }
+                }else{
+                    console.error("xhrFailed", xhr.status);
+                }
+                return xhr.responseText;
             }
-        }
-
-        var importScriptsCacheBust = "";
-        if(has("config-cacheBust")){
-            // TODO:
-            //      Maybe we could have one universal cacheBust producing function that sets somewhere near the top
-            //      of dojo.js rather than having two code similar fragments?
-
-            importScriptsCacheBust = ((userConfig.cacheBust !== undefined) ? userConfig.cacheBust : defaultConfig.cacheBust);
-            importScriptsCacheBust = ((isString(importScriptsCacheBust)) ? importScriptsCacheBust : new Date().getTime() + "");
-            importScripts(dojoPath+"_base/configWebworker.js?"+importScriptsCacheBust);
-        }else{
-            importScripts(dojoPath+"_base/configWebworker.js");
-        }
-
-        webworkerDojoConfig(defaultConfig, has, importScriptsCacheBust);
+        };
 	}
 
 	// userConfig has tests override defaultConfig has tests; do this after the environment detection because

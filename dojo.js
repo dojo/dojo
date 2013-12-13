@@ -180,10 +180,6 @@
         });
 
         defaultConfig.loaderPatch = {
-            // TODO:
-            //      It would be nice to remove getText() as this is a duplication.  However, tests
-            //      fails when it is removed.
-
             injectUrl: function(url, callback){
                 try{
                     importScripts(url);
@@ -192,19 +188,6 @@
                     console.info("failed to load resource (" + url + ")");
                     console.error(e);
                 }
-            },
-            getText: function(url, async, onLoad){
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', fixupUrl(url), false);
-                xhr.send(null);
-                if(xhr.status == 200 || (!location.host && !xhr.status)){
-                    if(onLoad){
-                        onLoad(xhr.responseText, async);
-                    }
-                }else{
-                    console.error("xhrFailed", xhr.status);
-                }
-                return xhr.responseText;
             }
         };
     }
@@ -278,7 +261,7 @@
 			};
 		};
 
-		if(has("dom")){
+		if(has("dom") || has("host-webworker")){
 			// in legacy sync mode, the loader needs a minimal XHR library
 
 			var locationProtocol = location.protocol,

@@ -140,7 +140,16 @@ define([
                 //      Test for loading dojo and using require in a blob worker
 
                 has.add("blobs", (typeof Blob === 'function'));
-                if(has("blobs")){
+                has.add("convertObjectUrl", function(){
+                    var URL = window.URL || window.webkitURL;
+                    if(URL !== undefined){
+                        return (typeof URL.createObjectURL === 'function');
+                    }
+
+                    return false;
+                });
+
+                if(has("blobs") && has("convertObjectUrl")){
                     function getBaseAbsoluteUrl(){
                         // summary:
                         //      Blobs need absolute urls to be used within them as relative is relative
@@ -176,7 +185,8 @@ define([
                     ], {type:"text/javascript"});
 
                     var self = this;
-                    var workerBlobURL = window.URL.createObjectURL(workerBlob);
+                    var URL = window.URL || window.webkitURL;
+                    var workerBlobURL = URL.createObjectURL(workerBlob);
                     var worker = new Worker(workerBlobURL);
 
                     worker.addEventListener("message", function(message) {
@@ -189,7 +199,7 @@ define([
 
                     return this.deferred;
                 }else{
-                    console.warn("Platform does not support Blobs");
+                    console.log("Platform does not support Blobs");
                 }
             }
         }, {

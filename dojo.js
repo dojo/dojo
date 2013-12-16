@@ -168,7 +168,7 @@
 		rhinoDojoConfig(defaultConfig, baseUrl, rhinoArgs);
 	}
 
-	has.add("host-webworker", ((typeof importScripts !== 'undefined') && (typeof document === 'undefined')));
+	has.add("host-webworker", ((typeof WorkerGlobalScope !== 'undefined') && (self instanceof WorkerGlobalScope)));
 	if(has("host-webworker")){
         mix(defaultConfig.hasCache, {
             "host-browser": 0,
@@ -285,7 +285,9 @@
 
 			// note: to get the file:// protocol to work in FF, you must set security.fileuri.strict_origin_policy to false in about:config
 			has.add("dojo-xhr-factory", 1);
-			has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");
+            if(doc !== undefined){
+                has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");
+            }
 			has.add("native-xhr", typeof XMLHttpRequest != "undefined");
 			if(has("native-xhr") && !has("dojo-force-activex-xhr")){
 				getXhr = function(){

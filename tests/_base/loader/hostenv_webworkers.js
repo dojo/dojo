@@ -218,7 +218,7 @@ define([
 
                 return this.deferred;
             }
-        }/*, {
+        }, {
             name: "Test using dojo/on in a worker",
             setUp: fixtures.deferred,
             tearDown: tearDowns.killWorker,
@@ -249,7 +249,7 @@ define([
 
                 return this.deferred;
             }
-        }*/]);
+        }]);
     }else{
         console.warno("Platform does not support webworkers")
     }

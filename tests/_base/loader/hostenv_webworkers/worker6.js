@@ -9,8 +9,7 @@ var dojoConfig = {
     ]
 }
 
-importScripts("../../../../dojo.js");
-importScripts("console.js");
+importScripts("../../../../dojo.js", "console.js");
 
 var self = this;
 try{

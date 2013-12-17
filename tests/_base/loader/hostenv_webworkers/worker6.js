@@ -11,18 +11,17 @@ var dojoConfig = {
 
 importScripts("../../../../dojo.js", "console.js");
 
-var self = this;
 try{
     require(["dojo/on"], function(on){
         on(self, "message", function(message){
             if(message.data.type === "gotMessage"){
-                this.postMessage({
+                self.postMessage({
                     type:"testResult",
                     test:"dojo/on in a worker is working",
                     value:true
                 });
             }else{
-                this.postMessage({
+                self.postMessage({
                     type:"testResult",
                     test:"dojo/on in a worker is working",
                     value:false
@@ -30,12 +29,12 @@ try{
             }
         });
 
-        this.postMessage({
+        self.postMessage({
             type:"requestMessage"
         });
     });
 }catch(e){
-    this.postMessage({
+    self.postMessage({
         type:"testResult",
         test:"dojo/on in a worker is working",
         value:false

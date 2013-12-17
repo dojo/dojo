@@ -5,9 +5,7 @@
 //      the console by passing messages back to the browser window for it to reflect to the console.
 //      This should make debugging of test failure a bit easier.
 
-var self = this;
-
-if(!this.console){
+if(!self.console){
     console = {
         _sendMessage: function(type, message){
             self.postMessage({

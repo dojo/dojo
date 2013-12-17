@@ -9,8 +9,7 @@ var dojoConfig = {
 }
 
 try{
-    importScripts("../../../../dojo.js");
-    importScripts("console.js");
+    importScripts("../../../../dojo.js", "console.js");
 
     this.postMessage({
         type:"testResult",

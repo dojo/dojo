@@ -37,9 +37,17 @@ define([
 
         function reflectConsole(message){
             if(message.data.consoleType in console){
-                console[message.data.consoleType](message.data.value);
+                if(window.opera){
+                    opera.postError(message.data.consoleType.toUpperCase() + ": Platform does not support Blobs");
+                }else{
+                    console[message.data.consoleType](message.data.value);
+                }
             }else{
-                console.error("Could not reflect console message type: " + message.data.consoleType);
+                if(window.opera){
+                    opera.postError("ERROR: Could not reflect console message type: " + message.data.consoleType);
+                }else{
+                    console.error("Could not reflect console message type: " + message.data.consoleType);
+                }
             }
         }
 
@@ -229,7 +237,11 @@ define([
 
                     return this.deferred;
                 }else{
-                    console.log("Platform does not support Blobs");
+                    if(window.opera){
+                        opera.postError("WARN: Platform does not support Blobs");
+                    }else{
+                        console.log("Platform does not support Blobs");
+                    }
                 }
             }
         }, {

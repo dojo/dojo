@@ -6,7 +6,7 @@ var dojoConfig = {
 	packages: [{
 		name: "dojo", location: "dojo"
 	}]
-}
+};
 
 try{
 	importScripts("../../../../dojo.js", "console.js");

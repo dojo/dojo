@@ -8,7 +8,7 @@ var dojoConfig = {
 	packages: [{
 		name: "dojo", location: "dojo"
 	}]
-}
+};
 
 importScripts("../../../../dojo.js", "console.js");
 
@@ -30,7 +30,7 @@ require(["dojo/has"], function(has){
 		self.postMessage({
 			type: "testResult",
 			test: "subworkers are working",
-			value: true,
+			value: true
 		});
 	}
 });

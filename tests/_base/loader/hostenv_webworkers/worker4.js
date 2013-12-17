@@ -28,9 +28,14 @@ require(["dojo/has"], function(has){
         // (see: http://code.google.com/p/chromium/issues/detail?id=31666)
 
         this.postMessage({
+            type:"console",
+            consoleType:"warn",
+            value:"Platform does not support subworkers2"
+        });
+        this.postMessage({
+            type:"testResult",
             test:"subworkers are working",
             value:true,
-            warn:"Platform does not support subworkers"
         });
     }
 });

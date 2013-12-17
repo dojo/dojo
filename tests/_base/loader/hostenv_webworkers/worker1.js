@@ -11,11 +11,13 @@ var dojoConfig = {
 try{
     importScripts("../../../../dojo.js");
     this.postMessage({
+        type:"testResult",
         test:"dojo loaded",
         value:true
     });
 }catch(e){
     this.postMessage({
+        type:"testResult",
         test:"dojo loaded",
         value:false
     });

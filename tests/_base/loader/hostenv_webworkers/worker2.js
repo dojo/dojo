@@ -12,12 +12,14 @@ importScripts("../../../../dojo.js");
 try{
     require(["dojo/tests/_base/loader/hostenv_webworkers/strings"], function(strings){
         this.postMessage({
+            type:"testResult",
             test:"require is working",
             value:true
         });
     });
 }catch(e){
     this.postMessage({
+        type:"testResult",
         test:"require is working",
         value:false
     });

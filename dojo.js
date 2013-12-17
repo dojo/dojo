@@ -261,7 +261,7 @@
 			};
 		};
 
-		if(has("dom") || has("host-webworker")){
+		if(has("dom")){
 			// in legacy sync mode, the loader needs a minimal XHR library
 
 			var locationProtocol = location.protocol,
@@ -282,13 +282,13 @@
 				return match && (match[1] != locationProtocol || (locationHost && match[2] != locationHost));
 			};
 
+            // note: to get the file:// protocol to work in FF, you must set security.fileuri.strict_origin_policy to false in about:config
+            has.add("dojo-xhr-factory", 1);
+            has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");
+        }
 
-			// note: to get the file:// protocol to work in FF, you must set security.fileuri.strict_origin_policy to false in about:config
-			has.add("dojo-xhr-factory", 1);
-            if(doc !== undefined){
-                has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");
-            }
-			has.add("native-xhr", typeof XMLHttpRequest != "undefined");
+        if(has("dom") || has("host-webworker")){
+            has.add("native-xhr", typeof XMLHttpRequest != "undefined");
 			if(has("native-xhr") && !has("dojo-force-activex-xhr")){
 				getXhr = function(){
 					return new XMLHttpRequest();

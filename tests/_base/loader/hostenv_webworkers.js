@@ -33,6 +33,14 @@ define([
             }
         };
 
+        function reflectConsole(message){
+            if(message.data.consoleType in console){
+                console[message.data.consoleType](message.data.value);
+            }else{
+                console.error("Could not reflect console message type: " + message.data.consoleType);
+            }
+        }
+
         doh.register("tests._base.hostenv_webworkers", [{
             name: "Loading Dojo core inside worker",
             setUp: fixtures.deferred,
@@ -45,11 +53,13 @@ define([
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker1.js");
 
-                worker.addEventListener("message", function(message) {
-                    if(message.data.value){
-                        self.deferred.resolve();
-                    }else{
-                        self.deferred.reject();
+                worker.addEventListener("message", function(message){
+                    if(message.data.type === "testResult"){
+                        if(message.data.value){
+                            self.deferred.resolve();
+                        }else{
+                            self.deferred.reject();
+                        }
                     }
                 }, false);
 
@@ -67,11 +77,13 @@ define([
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker2.js");
 
-                worker.addEventListener("message", function(message) {
-                    if(message.data.value){
-                        self.deferred.resolve();
-                    }else{
-                        self.deferred.reject();
+                worker.addEventListener("message", function(message){
+                    if(message.data.type === "testResult"){
+                        if(message.data.value){
+                            self.deferred.resolve();
+                        }else{
+                            self.deferred.reject();
+                        }
                     }
                 }, false);
 
@@ -89,11 +101,13 @@ define([
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker3.js");
 
-                worker.addEventListener("message", function(message) {
-                    if(message.data.value){
-                        self.deferred.resolve();
-                    }else{
-                        self.deferred.reject();
+                worker.addEventListener("message", function(message){
+                    if(message.data.type === "testResult"){
+                        if(message.data.value){
+                            self.deferred.resolve();
+                        }else{
+                            self.deferred.reject();
+                        }
                     }
                 }, false);
 
@@ -117,14 +131,15 @@ define([
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker4.js");
 
-                worker.addEventListener("message", function(message) {
-                    if(message.data.value){
-                        if(message.data.warn !== ""){
-                            console.warn(message.data.warn);
+                worker.addEventListener("message", function(message){
+                    if(message.data.type === "testResult"){
+                        if(message.data.value){
+                            self.deferred.resolve();
+                        }else{
+                            self.deferred.reject();
                         }
-                        self.deferred.resolve();
-                    }else{
-                        self.deferred.reject();
+                    }else if(message.data.type === "console"){
+                        reflectConsole(message);
                     }
                 }, false);
 
@@ -175,11 +190,11 @@ define([
 
                         'try{'+
                             'require(["dojo/tests/_base/loader/hostenv_webworkers/strings"], function(strings){' +
-                                'this.postMessage({"test":"require is working", "value":true});' +
+                                'this.postMessage({type:"testResult", "test":"require is working", "value":true});' +
                             '});' +
                         '}catch(e){' +
                             'this.postMessage({' +
-                                '"test":"require is working", "value":false' +
+                                'type:"testResult", "test":"require is working", "value":false' +
                             '});' +
                         '}'
                     ], {type:"text/javascript"});
@@ -189,11 +204,13 @@ define([
                     var workerBlobURL = URL.createObjectURL(workerBlob);
                     var worker = new Worker(workerBlobURL);
 
-                    worker.addEventListener("message", function(message) {
-                        if(message.data.value){
-                            self.deferred.resolve();
-                        }else{
-                            self.deferred.reject();
+                    worker.addEventListener("message", function(message){
+                        if(message.data.type === "testResult"){
+                            if(message.data.value){
+                                self.deferred.resolve();
+                            }else{
+                                self.deferred.reject();
+                            }
                         }
                     }, false);
 
@@ -218,11 +235,13 @@ define([
                 var self = this;
                 var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker5.js");
 
-                worker.addEventListener("message", function(message) {
-                    if(message.data.value){
-                        self.deferred.resolve();
-                    }else{
-                        self.deferred.reject();
+                worker.addEventListener("message", function(message){
+                    if(message.data.type === "testResult"){
+                        if(message.data.value){
+                            self.deferred.resolve();
+                        }else{
+                            self.deferred.reject();
+                        }
                     }
                 }, false);
 

@@ -20,14 +20,16 @@ define([
                 var self = this;
                 this.deferred.then(function(){
                     self.worker.terminate();
-                });
+               });
 
             },
             killBlobWorker: function(){
                 var self = this;
                 this.deferred.then(function(){
-                    self.worker.terminate();
-                    window.URL.revokeObjectURL(self.workerBlobURL);
+                    if(has("blobs") && has("convertObjectUrl")){
+                        self.worker.terminate();
+                        window.URL.revokeObjectURL(self.workerBlobURL);
+                    }
                 });
 
             }
@@ -51,9 +53,9 @@ define([
                 //      Test whether dojo can be loaded in the worker
 
                 var self = this;
-                var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker1.js");
+                this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker1.js");
 
-                worker.addEventListener("message", function(message){
+                this.worker.addEventListener("message", function(message){
                     if(message.data.type === "testResult"){
                         if(message.data.value){
                             self.deferred.resolve();
@@ -77,9 +79,9 @@ define([
                 //      Test whether require works in the worker.
 
                 var self = this;
-                var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker2.js");
+                this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker2.js");
 
-                worker.addEventListener("message", function(message){
+                this.worker.addEventListener("message", function(message){
                     if(message.data.type === "testResult"){
                         if(message.data.value){
                             self.deferred.resolve();
@@ -103,9 +105,9 @@ define([
                 //      Test whether require works in the worker when in async mode.
 
                 var self = this;
-                var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker3.js");
+                this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker3.js");
 
-                worker.addEventListener("message", function(message){
+                this.worker.addEventListener("message", function(message){
                     if(message.data.type === "testResult"){
                         if(message.data.value){
                             self.deferred.resolve();
@@ -135,9 +137,9 @@ define([
                 //      Test issues a warning if subworks not available but passes the test.
 
                 var self = this;
-                var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker4.js");
+                this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker4.js");
 
-                worker.addEventListener("message", function(message){
+                this.worker.addEventListener("message", function(message){
                     if(message.data.type === "testResult"){
                         if(message.data.value){
                             self.deferred.resolve();
@@ -210,10 +212,10 @@ define([
 
                     var self = this;
                     var URL = window.URL || window.webkitURL;
-                    var workerBlobURL = URL.createObjectURL(workerBlob);
-                    var worker = new Worker(workerBlobURL);
+                    self.workerBlobURL = URL.createObjectURL(workerBlob);
+                    this.worker = new Worker(self.workerBlobURL);
 
-                    worker.addEventListener("message", function(message){
+                    this.worker.addEventListener("message", function(message){
                         if(message.data.type === "testResult"){
                             if(message.data.value){
                                 self.deferred.resolve();
@@ -244,9 +246,9 @@ define([
                 //      components via require and then using them.
 
                 var self = this;
-                var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker5.js?v=4");
+                this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker5.js?v=4");
 
-                worker.addEventListener("message", function(message){
+                this.worker.addEventListener("message", function(message){
                     if(message.data.type === "testResult"){
                         if(message.data.value){
                             self.deferred.resolve();
@@ -275,9 +277,9 @@ define([
                 //      pass for the test if it receives it correctly.
 
                 var self = this;
-                var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker6.js");
+                this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker6.js");
 
-                worker.addEventListener("message", function(message) {
+                this.worker.addEventListener("message", function(message) {
                     if(message.data.type === "testResult"){
                         if(message.data.value){
                             self.deferred.resolve();
@@ -285,7 +287,7 @@ define([
                             self.deferred.reject();
                         }
                     }else if(message.data.type === "requestMessage"){
-                        worker.postMessage({type:"gotMessage"})
+                        self.worker.postMessage({type:"gotMessage"})
                     }else if(message.data.type === "console"){
                         reflectConsole(message);
                     }

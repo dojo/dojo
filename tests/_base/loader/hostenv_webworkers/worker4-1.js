@@ -13,15 +13,15 @@ importScripts("../../../../dojo.js");
 try{
     require(["dojo/tests/_base/loader/hostenv_webworkers/strings"], function(strings){
         this.postMessage({
+            type:"testResult",
             test:"subworkers are working",
             value:true,
-            warn:""
         });
     });
 }catch(e){
     this.postMessage({
+        type:"testResult",
         test:"subworkers are working",
         value:false,
-        warn:""
     });
 }

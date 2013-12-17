@@ -10,7 +10,6 @@ var dojoConfig = {
 }
 
 importScripts("../../../../dojo.js");
-
 try{
     require(["dojo/request"], function(request){
         request("../../../../tests/_base/loader/hostenv_webworkers/worker5.json",{
@@ -18,17 +17,20 @@ try{
         }).then(function(data){
             if(data.foo && !data.bar){
                 this.postMessage({
+                    type:"testResult",
                     test:data,
                     value:true
                 });
             }else{
                 this.postMessage({
+                    type:"testResult",
                     test:"require is working",
                     value:false
                 });
             }
         }, function(){
             this.postMessage({
+                type:"testResult",
                 test:"request in a worker is working",
                 value:false
             });
@@ -36,6 +38,7 @@ try{
     });
 }catch(e){
     this.postMessage({
+        type:"testResult",
         test:"request in a worker is working",
         value:false
     });

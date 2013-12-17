@@ -17,20 +17,20 @@ try{
             handleAs:"json"
         }).then(function(data){
             if(data.foo && !data.bar){
-                this.postMessage({
+                self.postMessage({
                     type:"testResult",
                     test:data,
                     value:true
                 });
             }else{
-                this.postMessage({
+                self.postMessage({
                     type:"testResult",
                     test:"require is working",
                     value:false
                 });
             }
         }, function(){
-            this.postMessage({
+                self.postMessage({
                 type:"testResult",
                 test:"request in a worker is working",
                 value:false
@@ -38,7 +38,7 @@ try{
         });
     });
 }catch(e){
-    this.postMessage({
+    self.postMessage({
         type:"testResult",
         test:"request in a worker is working",
         value:false

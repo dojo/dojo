@@ -13,14 +13,14 @@ importScripts("../../../../dojo.js", "console.js");
 
 try{
     require(["dojo/tests/_base/loader/hostenv_webworkers/strings"], function(strings){
-        this.postMessage({
+        self.postMessage({
             type:"testResult",
             test:"require is working",
             value:true
         });
     });
 }catch(e){
-    this.postMessage({
+    self.postMessage({
         type:"testResult",
         test:"require is working",
         value:false

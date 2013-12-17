@@ -60,6 +60,8 @@ define([
                         }else{
                             self.deferred.reject();
                         }
+                    }else if(message.data.type === "console"){
+                        reflectConsole(message);
                     }
                 }, false);
 
@@ -84,6 +86,8 @@ define([
                         }else{
                             self.deferred.reject();
                         }
+                    }else if(message.data.type === "console"){
+                        reflectConsole(message);
                     }
                 }, false);
 
@@ -108,6 +112,8 @@ define([
                         }else{
                             self.deferred.reject();
                         }
+                    }else if(message.data.type === "console"){
+                        reflectConsole(message);
                     }
                 }, false);
 
@@ -211,6 +217,8 @@ define([
                             }else{
                                 self.deferred.reject();
                             }
+                        }else if(message.data.type === "console"){
+                            reflectConsole(message);
                         }
                     }, false);
 
@@ -233,7 +241,7 @@ define([
                 //      components via require and then using them.
 
                 var self = this;
-                var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker5.js");
+                var worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker5.js?v=4");
 
                 worker.addEventListener("message", function(message){
                     if(message.data.type === "testResult"){
@@ -242,6 +250,8 @@ define([
                         }else{
                             self.deferred.reject();
                         }
+                    }else if(message.data.type === "console"){
+                        reflectConsole(message);
                     }
                 }, false);
 
@@ -273,6 +283,8 @@ define([
                         }
                     }else if(message.data.type === "requestMessage"){
                         worker.postMessage({type:"gotMessage"})
+                    }else if(message.data.type === "console"){
+                        reflectConsole(message);
                     }
                 }, false);
 

@@ -10,6 +10,8 @@ var dojoConfig = {
 
 try{
     importScripts("../../../../dojo.js");
+    importScripts("console.js");
+
     this.postMessage({
         type:"testResult",
         test:"dojo loaded",

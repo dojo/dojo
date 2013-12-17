@@ -10,6 +10,8 @@ var dojoConfig = {
 }
 
 importScripts("../../../../dojo.js");
+importScripts("console.js");
+
 try{
     require(["dojo/request"], function(request){
         request("../../../../tests/_base/loader/hostenv_webworkers/worker5.json",{

@@ -9,6 +9,8 @@ var dojoConfig = {
 }
 
 importScripts("../../../../dojo.js");
+importScripts("console.js");
+
 try{
     require(["dojo/tests/_base/loader/hostenv_webworkers/strings"], function(strings){
         this.postMessage({

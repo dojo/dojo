@@ -7,7 +7,7 @@ var dojoConfig = {
 	packages: [{
 		name: "dojo", location: "dojo"
 	}]
-}
+};
 
 importScripts("../../../../dojo.js", "console.js");
 
@@ -16,13 +16,13 @@ try{
 		self.postMessage({
 			type: "testResult",
 			test: "subworkers are working",
-			value: true,
+			value: true
 		});
 	});
 }catch(e){
 	self.postMessage({
 		type: "testResult",
 		test: "subworkers are working",
-		value: false,
+		value: false
 	});
 }

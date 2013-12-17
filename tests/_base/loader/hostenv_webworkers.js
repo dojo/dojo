@@ -192,7 +192,10 @@ define([
                             '"packages":[{"name":"dojo", "location":"dojo"}]' +
                         '};' +
 
-                        'importScripts(dojoConfig.baseUrl+"dojo/dojo.js");' +
+                        'importScripts(' +
+                            'dojoConfig.baseUrl+"dojo/dojo.js",' +
+                            'dojoConfig.baseUrl+"dojo/tests/_base/loader/hostenv_webworkers/console.js"' +
+                        ');' +
 
                         'try{'+
                             'require(["dojo/tests/_base/loader/hostenv_webworkers/strings"], function(strings){' +

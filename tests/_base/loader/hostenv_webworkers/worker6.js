@@ -10,6 +10,7 @@ var dojoConfig = {
 }
 
 importScripts("../../../../dojo.js");
+importScripts("console.js");
 
 var self = this;
 try{

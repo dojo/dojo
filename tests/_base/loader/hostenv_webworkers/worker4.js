@@ -13,6 +13,8 @@ var dojoConfig = {
 }
 
 importScripts("../../../../dojo.js");
+importScripts("console.js");
+
 require(["dojo/has"], function(has){
     // Test for workers, currently chrome does not support subworkers.
 
@@ -27,11 +29,7 @@ require(["dojo/has"], function(has){
         // Chrome does not support webworkers of writing this test
         // (see: http://code.google.com/p/chromium/issues/detail?id=31666)
 
-        this.postMessage({
-            type:"console",
-            consoleType:"warn",
-            value:"Platform does not support subworkers2"
-        });
+        console.warn("Platform does not support subworkers");
         this.postMessage({
             type:"testResult",
             test:"subworkers are working",

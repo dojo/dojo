@@ -1,5 +1,5 @@
 define({
-    root: ({
-        foo: "bar"
-    })
+	root: ({
+		foo: "bar"
+	})
 });

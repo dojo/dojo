@@ -170,27 +170,27 @@
 
 	has.add("host-webworker", ((typeof WorkerGlobalScope !== 'undefined') && (self instanceof WorkerGlobalScope)));
 	if(has("host-webworker")){
-        mix(defaultConfig.hasCache, {
-            "host-browser": 0,
-            "dom": 0,
-            "dojo-dom-ready-api": 0,
-            "dojo-sniff": 0,
-            "dojo-inject-api": 1,
-            "host-webworker": 1
-        });
+		mix(defaultConfig.hasCache, {
+			"host-browser": 0,
+			"dom": 0,
+			"dojo-dom-ready-api": 0,
+			"dojo-sniff": 0,
+			"dojo-inject-api": 1,
+			"host-webworker": 1
+		});
 
-        defaultConfig.loaderPatch = {
-            injectUrl: function(url, callback){
-                try{
-                    importScripts(url);
-                    callback();
-                }catch(e){
-                    console.info("failed to load resource (" + url + ")");
-                    console.error(e);
-                }
-            }
-        };
-    }
+		defaultConfig.loaderPatch = {
+			injectUrl: function(url, callback){
+				try{
+					importScripts(url);
+					callback();
+				}catch(e){
+					console.info("failed to load resource (" + url + ")");
+					console.error(e);
+				}
+			}
+		};
+	}
 
 	// userConfig has tests override defaultConfig has tests; do this after the environment detection because
 	// the environment detection usually sets some has feature values in the hasCache.

@@ -196,7 +196,6 @@ define([
 						return location.protocol + "//" + location.host + absoluteUrl.join("/") + "/" + baseUrl.join("/") + "/";
 					}
 
-					console.log(getBaseAbsoluteUrl());
 					var workerBlob = new Blob([
 						'var dojoConfig = {' +
 							'"baseUrl":"' + getBaseAbsoluteUrl() + '",' +

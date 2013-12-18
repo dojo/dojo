@@ -1,7 +1,8 @@
 define([
 	"doh/main",
-	"dojo/has"
-], function(doh, has){
+	"dojo/has",
+	"dojo/sniff"
+], function(doh, has, sniff){
 	// summary:
 	//		Test the loading of Dojo in the WebWorker environment.
 
@@ -37,13 +38,13 @@ define([
 
 		function reflectConsole(message){
 			if(message.data.consoleType in console){
-				if(window.opera){
+				if(has("opera") && opera.postError){
 					opera.postError(message.data.consoleType.toUpperCase() + ": Platform does not support Blobs");
 				}else{
 					console[message.data.consoleType](message.data.value);
 				}
 			}else{
-				if(window.opera){
+				if(has("opera") && opera.postError){
 					opera.postError("ERROR: Could not reflect console message type: " + message.data.consoleType);
 				}else{
 					console.error("Could not reflect console message type: " + message.data.consoleType);

@@ -190,11 +190,13 @@ define([
 						var baseUrl = require.rawConfig.baseUrl.split("/");
 						var absoluteUrl = location.pathname.split("/");
 						absoluteUrl.pop();
+						absoluteUrl.pop();
 						baseUrl.pop();
 
 						return location.protocol + "//" + location.host + absoluteUrl.join("/") + "/" + baseUrl.join("/") + "/";
 					}
 
+					console.log(getBaseAbsoluteUrl());
 					var workerBlob = new Blob([
 						'var dojoConfig = {' +
 							'"baseUrl":"' + getBaseAbsoluteUrl() + '",' +

@@ -288,6 +288,7 @@
 				return match && (match[1] != locationProtocol || (locationHost && match[2] != locationHost));
 			};
 
+
 			// note: to get the file:// protocol to work in FF, you must set security.fileuri.strict_origin_policy to false in about:config
 			has.add("dojo-xhr-factory", 1);
 			has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");

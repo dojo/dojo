@@ -5,7 +5,7 @@ define([
 ], function(doh, has, sniff){
 	// summary:
 	//		Test the loading of Dojo in the WebWorker environment.
-
+	
 	has.add("webworkers", (typeof Worker === 'function'));
 	if(has("webworkers")){
 		// Tests will still pass when workers not available but warning issued.
@@ -221,19 +221,30 @@ define([
 					var self = this;
 					var URL = window.URL || window.webkitURL;
 					self.workerBlobURL = URL.createObjectURL(workerBlob);
-					this.worker = new Worker(self.workerBlobURL);
-
-					this.worker.addEventListener("message", function(message){
-						if(message.data.type === "testResult"){
-							if(message.data.value){
-								self.deferred.resolve();
-							}else{
-								self.deferred.reject();
-							}
-						}else if(message.data.type === "console"){
+					
+					try{
+						this.worker = new Worker(self.workerBlobURL);
+						this.worker.addEventListener("message", function(message){
+							if(message.data.type === "testResult"){
+								if(message.data.value){
+									self.deferred.resolve();
+								}else{
+									self.deferred.reject();
+								}
+							}else if(message.data.type === "console"){
 								reflectConsole(message);
+							}
+						}, false);
+					}catch(e){
+						if(e.message.toLowerCase() === "securityerror"){
+							// IE does not support Webworkers from Blobs at present
+							
+							console.warn("Blob workers are not supported");
+							self.deferred.resolve();
+						}else{
+							throw e;
 						}
-					}, false);
+					}
 
 					return this.deferred;
 				}else{

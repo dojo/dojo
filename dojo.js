@@ -289,10 +289,10 @@
 			};
 
             // note: to get the file:// protocol to work in FF, you must set security.fileuri.strict_origin_policy to false in about:config
-            has.add("dojo-xhr-factory", 1);
-            has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");
+			has.add("dojo-xhr-factory", 1);
+			has.add("dojo-force-activex-xhr", has("host-browser") && !doc.addEventListener && window.location.protocol == "file:");
+    		has.add("native-xhr", typeof XMLHttpRequest != "undefined");
 
-            has.add("native-xhr", typeof XMLHttpRequest != "undefined");
 			if(has("native-xhr") && !has("dojo-force-activex-xhr")){
 				getXhr = function(){
 					return new XMLHttpRequest();

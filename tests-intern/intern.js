@@ -6,7 +6,7 @@ define({
 	proxyPort: 9000,
 
 	// A fully qualified URL to the Intern proxy
-	proxyUrl: 'http://localhost:9000/',
+	proxyUrl: 'http://localhost:9001/',
 
 	// Default desired capabilities for all environments. Individual capabilities can be overridden by any of the
 	// specified browser environments in the `environments` array below as well. See
@@ -48,7 +48,7 @@ define({
 	// The desired AMD loader to use when running unit tests (client.html/client.js). Omit to use the default Dojo
 	// loader
 	useLoader: {
-		'host-node': '../../dojo',
+		'host-node': '../../../../dojo',
 		'host-browser': '../../dojo.js'
 	},
 
@@ -56,20 +56,20 @@ define({
 	// can be used here
 	loader: {
 		// Packages that should be registered with the loader in each testing environment
-		packages: [ { name: 'dojo-tested', location: '.' } ],
+		packages: [ { name: 'dojo-testing', location: '.' } ],
 		map: {
-			'dojo-tested': {
-				'dojo': 'dojo-tested'
+			'dojo-testing': {
+				'dojo': 'dojo-testing'
 			}
 		}
 	},
 
 	// Non-functional test suite(s) to run in each browser
-	suites: [ 'dojo-tested/tests-intern/suites' ],
+	suites: [ 'dojo-testing/tests-intern/suites' ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed
 	functionalSuites: [ /* 'myPackage/tests/functional' */ ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
-	excludeInstrumentation: /^(?:node_modules|tests-intern)\//
+	excludeInstrumentation: /^(?:node_modules|tests-intern|tests)\//
 });

@@ -1296,7 +1296,9 @@
 
 		var fixupUrl= function(url){
 				url += ""; // make sure url is a Javascript string (some paths may be a Java string)
-				return url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");
+				return userConfig.fixupUrl
+					? userConfig.fixupUrl(url, cacheBust)
+					: url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");
 			},
 
 			injectPlugin = function(

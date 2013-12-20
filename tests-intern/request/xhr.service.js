@@ -69,9 +69,6 @@ module.exports = function (request) {
 		_promise = deferred.promise;
 
 	function respond(data) {
-		if (request.query['header-test']) {
-			console.log('HEADERS:', request.headers);
-		}
 		deferred.resolve({
 			status: 200,
 			headers: {

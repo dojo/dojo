@@ -243,7 +243,7 @@ define([
 						'header-test': 'true'
 					},
 					headers: headers,
-					data: '',
+					data: 'testing',
 					handleAs: 'json'
 				});
 			}

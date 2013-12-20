@@ -29,89 +29,6 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			})());
 		});
 	}
-	var throttle = function(cb, wait, thisObj){
-		// summary:
-		//					  Create a function that will only execute once per `wait` periods.
-		// description:
-		//					  Create a function that will only execute once per `wait` periods
-		//					  from last execution when called repeatedly. Useful for preventing excessive
-		//					  calculations in rapidly firing events, such as window.resize, node.mousemove
-		//					  and so on.
-		// cb: Function
-		//					  The callback to fire.
-		// wait: Integer
-		//					  time to delay before allowing cb to call again.
-		// thisObj: Object?
-		//					  Optional execution context
-		var canrun = true;
-		return function() {
-			if(!canrun) {return; }
-			canrun = false;
-			cb.apply(thisObj || cb, arguments);
-			setTimeout(function() {
-					canrun = true;
-			}, wait);
-		};
-	};
-	var debounce = function(cb, wait, thisObj) {
-		// summary:
-		//					  Create a function that will only execute after `wait` milliseconds
-		// description:
-		//					  Create a function that will only execute after `wait` milliseconds
-		//					  of repeated execution. Useful for delaying some event action slightly to allow
-		//					  for rapidly-firing events such as window.resize, node.mousemove and so on.
-		// cb: Function
-		//					  A callback to fire. Like hitch() and partial(), arguments passed to the
-		//					  returned function curry along to the original callback.
-		// wait: Integer
-		//					  Time to spend caching executions before actually executing.
-		// thisObj: Object?
-		//					  Optional execution context.
-		var timer;
-		return function() {
-			if(timer) {clearTimeout(timer); }
-			var ieCopy = function(arg) {
-				//ie loose the real event in a timeout so we need to copy it
-				var argCopy = {};
-				for(var i in arg){
-					argCopy[i] = arg[i];
-				}
-				return [argCopy];
-			},
-			a = has("ie") < 10 ? ieCopy(arguments[0]) : arguments,
-			then = function() {
-				cb.apply(thisObj || cb, a);
-			};
-			timer = setTimeout(then, wait);
-		};
-	};
-	var setDebounceThrottle = function(listener, type, wait){
-		delete listener.customListener;
-		if(wait){
-			listener[type] = wait;
-		}else{
-			delete listener[type];
-		}
-		return listener;
-	};
-	var prepareListener = function(listener){
-		var initialListener = listener,
-			listener = function() {
-				if(listener.debounce && !listener.customListener) {
-					listener.customListener = debounce(initialListener, listener.debounce);
-				}
-				if(listener.throttle && !listener.customListener) {
-					listener.customListener = throttle(initialListener, listener.throttle);
-				}
-				
-				if(listener.customListener) {
-					listener.customListener.apply(this, arguments);
-				}else{
-					initialListener.apply(this, arguments);
-				}
-			};
-		return listener;
-	};
 	var on = function(target, type, listener, dontFix){
 		// summary:
 		//		A function that provides core event listening functionality. With this function
@@ -207,23 +124,12 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 					handles[i].remove();
 				}
 			};
-			handles.debounce = function(wait){
-				for(var i = 0; i < handles.length; i++){
-					handles[i].debounce(wait);
-				}
-			};
-			handles.throttle = function(wait){
-				for(var i = 0; i < handles.length; i++){
-					handles[i].throttle(wait);
-				}
-			};
 			return handles;
 		}
 		return addListener(target, type, listener, dontFix, matchesTarget);
 	};
 	var touchEvents = /^touch/;
 	function addListener(target, type, listener, dontFix, matchesTarget){
-		listener = prepareListener(listener);
 		// event delegation:
 		var selector = type.match(/(.*):(.*)/);
 		// if we have a selector:event, the last one is interpreted as an event, and we use event delegation
@@ -262,12 +168,6 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			return {
 				remove: function(){
 					target.removeEventListener(adjustedType, listener, capture);
-				},
-				debounce: function(wait){
-					listener = setDebounceThrottle(listener, 'debounce', wait);
-				},
-				throttle: function(wait){
-					listener = setDebounceThrottle(listener, 'throttle', wait);
 				}
 			};
 		}
@@ -511,28 +411,10 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		IESignal.prototype.remove = function(){
 			delete _dojoIEListeners_[this.handle];
 		};
-		IESignal.prototype.debounce = function(wait){
-			delete _dojoIEListeners_[this.handle].customListener;
-			if(wait){
-				_dojoIEListeners_[this.handle].debounce = wait;
-			}else{
-				delete _dojoIEListeners_[this.handle].debounce;
-			}
-		};
-		IESignal.prototype.throttle = function(wait){
-			delete _dojoIEListeners_[this.handle].customListener;
-			if(wait){
-				_dojoIEListeners_[this.handle].throttle = wait;
-			}else{
-				delete _dojoIEListeners_[this.handle].throttle;
-			}
-		};
 		var fixListener = function(listener){
 			// this is a minimal function for closing on the previous listener with as few as variables as possible
-			 var fixed = function(evt){
+			return function(evt){
 				evt = on._fixEvent(evt, this);
-				listener.debounce = fixed.debounce;
-				listener.throttle = fixed.throttle;
 				var result = listener.call(this, evt);
 				if(evt.modified){
 					// cache the last event and reuse it if we can
@@ -545,7 +427,6 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 				}
 				return result;
 			};
-			return fixed;
 		};
 		var fixAttach = function(target, type, listener){
 			listener = fixListener(listener);
@@ -572,16 +453,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 				emitter.listeners.push(handle = (emitter.global._dojoIEListeners_.push(listener) - 1));
 				return new IESignal(handle);
 			}
-			return {
-				remove: aspect.after(target, type, listener, true).remove,
-				debounce: function(wait){
-					debugger;
-					listener = setDebounceThrottle(listener, 'debounce', wait);
-				},
-				throttle: function(wait){
-					listener = setDebounceThrottle(listener, 'throttle', wait);
-				}
-			}
+			return aspect.after(target, type, listener, true);
 		};
 
 		var _setKeyChar = function(evt){

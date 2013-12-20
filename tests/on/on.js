@@ -43,8 +43,6 @@ define([
 				a: 7
 			});
 			t.is(order, [0,0,3,0,3,3,3,3,6,0,3,7,4]);
-			
-			
 		},
 		function once(t){
 			var order = [];
@@ -198,46 +196,6 @@ define([
 			button.click();
 			t.is([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], order);
 			on(span, "propertychange", function(){}); // make sure it doesn't throw an error
-			
-			
-			var debounceCount = 0;
-			var emitCount = 0;
-			var delay = 200;
-			var signalDebounce = on(div, "mousemove", function(a){
-				debounceCount++;
-			});
-			signalDebounce.debounce(200);
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			t.is(debounceCount, 0);
-			t.is(emitCount, 5);
-			setTimeout(function() {
-				t.is(debounceCount, 1);
-			}, delay + 10);
-			
-			
-			var throttleCount = 0;
-			var delay = 200;
-			var emitCount = 0;
-			var signalThrottle = on(div, "mousemove", function(a){
-				throttleCount++;
-			});
-			signalThrottle.throttle(200);
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			setTimeout(function() {
-				on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			}, delay / 2);
-			setTimeout(function() {
-				on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			}, delay);
-			setTimeout(function() {
-				t.is(emitCount, 3);
-				t.is(throttleCount, 2);
-			}, delay + 10);
-			
 		},
 		/*
 		 This only works if the test page has the focus, so you can enable if you want to test focus functionality and allow the test page to have focus

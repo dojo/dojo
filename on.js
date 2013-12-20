@@ -17,6 +17,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 					var element = doc.createElement('input'),
 						activeElement = doc.activeElement;
 					element.style.position = 'fixed';
+					element.style.top = element.style.left = '0';
 					element.addEventListener('focusin', testFocus, false);
 					doc.body.appendChild(element);
 					element.focus();

@@ -4,8 +4,8 @@
 		<title>dojo/on focusin feature detection</title>
 	</head>
 	<body>
-		<script src="../../dojo.js" data-dojo-config="async:1"></script>
-		<div style="padding: 4000px 0 0 4000px;"><input id="a"></div>
+		<script src="../../dojo.js" data-dojo-config="async:1,has:{'dojo-undef-api':1}"></script>
+		<div style="padding: 4000px;"><input id="a"></div>
 		<script>
 require([ "doh" ], function(doh){
 	doh.register(function focusInTest(t){
@@ -34,6 +34,18 @@ require([ "doh" ], function(doh){
 			t.is(lastScroll.x, newScroll.x, "Horizontal scroll should not have changed");
 			t.is(lastScroll.y, newScroll.y, "Vertical scroll should not have changed");
 			t.is(input, document.activeElement, "Focus should still be set on the originally focused input");
+
+			input.blur();
+			window.scrollTo(0, 0);
+			delete has.cache["event-focusin"];
+			require.undef("dojo/on");
+			require([ "dojo/on" ], function () {
+				t.is("boolean", typeof has("event-focusin"), "focusin feature detection should have executed (2)");
+
+				var scrollPosition = getScrollPosition();
+				t.is(0, scrollPosition.x, "Horizontal scroll should not have changed (2)");
+				t.is(0, scrollPosition.y, "Vertical scroll should not have changed (2)");
+			});
 		}));
 
 		return dfd;

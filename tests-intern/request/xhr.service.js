@@ -1,7 +1,5 @@
 var qs = require('querystring'),
-	promise = require('jsgi-node/promise'),
-	nodeWrapper = require('jsgi-node/jsgi/node').Node,
-	formidable = require('formidable');
+	promise = require('jsgi-node/promise');
 
 function wait(delay) {
 	//	summary:
@@ -31,38 +29,23 @@ function xml(request) {
 	};
 }
 
-function multipart(request) {
-	var parser = new formidable.IncomingForm(),
-		deferred = promise.defer();
-
-	nodeWrapper(function (request) {
-		parser.parse(request, function (err, fields, files) {
-			if (err) {
-				deferred.reject(err);
-			}
-			var incoming = {};
-			deferred.resolve({
-				status: 200,
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: [
-					JSON.stringify(fields)
-				]
-			});
-		});
-	})(request);
-
-	return deferred.promise;
-}
-
 module.exports = function (request) {
 	if (request.serviceURL.indexOf('/xml') > -1) {
 		return xml(request);
 	}
 
-	if (request.serviceURL.indexOf('/multipart') > -1) {
-		return multipart(request);
+	if (request.data) {
+		return request.data.then(function (data) {
+			return {
+				status: 200,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: [
+					JSON.stringify(data)
+				]
+			};
+		});
 	}
 
 	var deferred = promise.defer(),
@@ -92,10 +75,7 @@ module.exports = function (request) {
 	}
 
 	if (request.method !== 'GET') {
-		var data = '';
-		request.body.forEach(function (chunk) {
-			data += chunk;
-		}).then(function () {
+		request.body.join().then(function (data) {
 			respond(qs.parse(data));
 		});
 	}

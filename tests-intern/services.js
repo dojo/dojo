@@ -3,9 +3,39 @@ var http = require('http'),
 	qs = require('querystring'),
 	glob = require('glob'),
 	httpProxy = require('http-proxy'),
-	jsgi = require('jsgi-node');
+	jsgi = require('jsgi-node'),
+	promise = require('jsgi-node/promise'),
+	nodeWrapper = require('jsgi-node/jsgi/node').Node,
+	formidable = require('formidable');
 
 var proxy = new httpProxy.RoutingProxy();
+
+function Multipart(nextApp) {
+	var multipartRE = /^multipart\/form-data;/;
+	return function (request) {
+		var headers = request.headers;
+		if (headers['content-type'] && multipartRE.test(headers['content-type'])) {
+			var parser = new formidable.IncomingForm(),
+				deferred = promise.defer();
+
+			request.data = deferred.promise;
+
+			nodeWrapper(function (nodeRequest) {
+				parser.parse(nodeRequest, function (err, fields, files) {
+					if (err) {
+						deferred.reject(err);
+					}
+					for (var key in files) {
+						fields[key] = files[key];
+					}
+					deferred.resolve(fields);
+				});
+			})(request);
+		}
+
+		return nextApp(request);
+	};
+}
 
 exports.start = function (port, callback) {
 	glob('**/*.service.js', {
@@ -26,7 +56,7 @@ exports.start = function (port, callback) {
 		});
 
 		var serviceRE = /^\/__services(\/.*)$/,
-			jsgiListener = new jsgi.Listener(function (request) {
+			jsgiListener = new jsgi.Listener(new Multipart(function (request) {
 				var urlInfo = url.parse(request.pathInfo, true),
 					query = qs.parse(request.queryString),
 					pathInfo = urlInfo.pathname.match(serviceRE),
@@ -58,7 +88,7 @@ exports.start = function (port, callback) {
 					};
 				}
 				return response;
-			});
+			}));
 		var server = http.createServer(function (request, response) {
 			var urlInfo = url.parse(request.url, true),
 				pathInfo = urlInfo.pathname.match(serviceRE);

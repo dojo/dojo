@@ -1,8 +1,86 @@
 define([
 	"doh", "require",
-	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic", "dojo/dom-construct"
-], function(doh, require, declare, Evented, has, on, query, topic, domConstruct){
+	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic", "dojo/dom-construct", "dojo/debounce", "dojo/throttle"
+], function(doh, require, declare, Evented, has, on, query, topic, domConstruct, dojoDebounce, dojoThrottle){
+	doh.register("tests.on.delegate", [
+		function matches(){
+			var eDiv = document.body.appendChild(document.createElement("div")),
+				eDiv2 = eDiv.appendChild(document.createElement("div")),
+				eSpan = eDiv2.appendChild(document.createElement("span")),
+				matchResult = [];
+				handle = on(eDiv, "click", function(e){
+					matchResult.push(!!on.matches(e.target, 'span:click', this));
+					matchResult.push(!!on.matches(e.target, 'div:click', this));
+					matchResult.push(!!on.matches(e.target, 'div:click', this, false));
+					matchResult.push(!!on.matches(e.target, 'body:click', this));
+				});
 
+			eSpan.click();
+			handle.remove();
+			handle = on(eDiv, "click", function(e){
+				matchResult.push(!!on.matches(e.target, 'span:click', this));
+				matchResult.push(!!on.matches(e.target, 'div:click', this));
+			});
+			eDiv2.click();
+			doh.is([true, true, false, false, false, true], matchResult);
+		},
+		function debounce(){
+			var eDiv = document.body.appendChild(document.createElement("div")),
+				eDiv2 = eDiv.appendChild(document.createElement("div")),
+				eA = eDiv2.appendChild(document.createElement("a")),
+				eSpan2 = eA.appendChild(document.createElement("span")),
+				debouncedCount = 0,
+				clickCount = 0;
+
+			on(eDiv, dojoDebounce.delegate("a:click", 100), function(){
+				debouncedCount++
+			});
+			on(eDiv, "a:click", function(){
+				clickCount++
+			});
+			eSpan2.click();
+			eSpan2.click();
+			eSpan2.click();
+			eSpan2.click();
+			
+			var deferred = new doh.Deferred();
+			setTimeout(deferred.getTestCallback(function(){
+				doh.is(1, debouncedCount);
+				doh.is(4, clickCount);
+			}), 110);
+			return deferred;
+
+		},
+		function throttle(){
+			var eDiv = document.body.appendChild(document.createElement("div")),
+				eDiv2 = eDiv.appendChild(document.createElement("div")),
+				eA = eDiv2.appendChild(document.createElement("a")),
+				eSpan2 = eA.appendChild(document.createElement("span")),
+				throttleCount = 0,
+				clickCount = 0;
+
+			on(eDiv, dojoThrottle.delegate("a:click", 100), function(){
+				throttleCount++
+			});
+			on(eDiv, "a:click", function(){
+				clickCount++
+			});
+			var interv = setInterval(function() {
+				eSpan2.click();
+				if(clickCount === 4) {
+					clearInterval(interv);
+				}
+			}, 45);
+			
+			var deferred = new doh.Deferred();
+			setTimeout(deferred.getTestCallback(function(){
+				doh.is(4, clickCount);
+				doh.is(2, throttleCount);
+			}), 210);
+			return deferred;
+
+		}
+	]);
 	doh.register("tests.on", [
 		function object(t){
 			var order = [];
@@ -43,8 +121,6 @@ define([
 				a: 7
 			});
 			t.is(order, [0,0,3,0,3,3,3,3,6,0,3,7,4]);
-			
-			
 		},
 		function once(t){
 			var order = [];
@@ -186,6 +262,7 @@ define([
 				});
 				on(document, "button:click", function(){
 				}); // just make sure this doesn't throw an error
+				
 			}else{//just pass then
 				order.push(8, 9);
 			}
@@ -198,46 +275,6 @@ define([
 			button.click();
 			t.is([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], order);
 			on(span, "propertychange", function(){}); // make sure it doesn't throw an error
-			
-			
-			var debounceCount = 0;
-			var emitCount = 0;
-			var delay = 200;
-			var signalDebounce = on(div, "mousemove", function(a){
-				debounceCount++;
-			});
-			signalDebounce.debounce(200);
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			t.is(debounceCount, 0);
-			t.is(emitCount, 5);
-			setTimeout(function() {
-				t.is(debounceCount, 1);
-			}, delay + 10);
-			
-			
-			var throttleCount = 0;
-			var delay = 200;
-			var emitCount = 0;
-			var signalThrottle = on(div, "mousemove", function(a){
-				throttleCount++;
-			});
-			signalThrottle.throttle(200);
-			on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			setTimeout(function() {
-				on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			}, delay / 2);
-			setTimeout(function() {
-				on.emit(div, "mousemove", {bubbles: true, cancelable: true}); emitCount++;
-			}, delay);
-			setTimeout(function() {
-				t.is(emitCount, 3);
-				t.is(throttleCount, 2);
-			}, delay + 10);
-			
 		},
 		/*
 		 This only works if the test page has the focus, so you can enable if you want to test focus functionality and allow the test page to have focus

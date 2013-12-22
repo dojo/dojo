@@ -30,10 +30,18 @@ define([
 				eA = eDiv2.appendChild(document.createElement("a")),
 				eSpan2 = eA.appendChild(document.createElement("span")),
 				debouncedCount = 0,
+				debouncedCount2 = 0,
+				debouncedCount3 = 0,
 				clickCount = 0;
 
-			on(eDiv, dojoDebounce.delegate("a:click", 100), function(){
+			on(eDiv, dojoDebounce.event("a:click", 100), function(){
 				debouncedCount++
+			});
+			on(eDiv2, dojoDebounce.event("click", 100), function(){
+				debouncedCount2++
+			});
+			on(eDiv, dojoDebounce.event("click,a:click", 100), function(){
+				debouncedCount3++
 			});
 			on(eDiv, "a:click", function(){
 				clickCount++
@@ -46,6 +54,8 @@ define([
 			var deferred = new doh.Deferred();
 			setTimeout(deferred.getTestCallback(function(){
 				doh.is(1, debouncedCount);
+				doh.is(1, debouncedCount2);
+				doh.is(1, debouncedCount3);
 				doh.is(4, clickCount);
 			}), 110);
 			return deferred;
@@ -59,7 +69,7 @@ define([
 				throttleCount = 0,
 				clickCount = 0;
 
-			on(eDiv, dojoThrottle.delegate("a:click", 100), function(){
+			on(eDiv, dojoThrottle.event("a:click", 100), function(){
 				throttleCount++
 			});
 			on(eDiv, "a:click", function(){

@@ -190,9 +190,9 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		//		Indicates if children elements of the selector should be allowed. This defaults to
 		//		true
 		// matchesTarget:
-		//		read only, do not use
+		//		internal, not for end user
 		// return:
-		//		the matching node, if any. Else you get undefined
+		//		the matching node, if any. Else you get false
 
 		// see if we have a valid matchesTarget or default to dojo/query
 		matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;

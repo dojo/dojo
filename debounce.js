@@ -1,4 +1,9 @@
 define(['dojo/has', 'dojo/on'], function(has, on) {
+	// module:
+	//		dojo/debounce
+	// summary:
+	//		This module provide a generic debounce method, and an event debouncer to use with dojo/on
+
 	var debounce = function(cb, wait, thisObj) {
 		// summary:
 		//		Create a function that will only execute after `wait` milliseconds
@@ -32,22 +37,27 @@ define(['dojo/has', 'dojo/on'], function(has, on) {
 		};
 	};
 	
-	debounce.delegate = function(selector, delay){
+	debounce.event = function(selector, delay){
+		// summary:
+		//		a debounced event to use with dojo/on
 		return function(node, listener) {
-			var events = selector.split(/\s*,\s*/),
+			var events = ~selector.indexOf(",") ? selector.split(/\s*,\s*/): [selector],
 				i = 0,
 				eventName,
 				eventType
-				eventTypes = [];
+				eventTypes = [],
+				sel = new RegExp(/(.*):(.*)/);
 
 			while(eventName = events[i++]){
-				eventType = eventName.split(/\s*:\s*/);
-				eventTypes.push(eventType[1]);
+				eventType = eventName.match(sel);
+				eventTypes.push(eventType ? eventType[2] : eventName)
 			}
 			return on(node, eventTypes.join(','), debounce(function(e) {
-				var i = 0;
+				var i = 0,
+					match;
 				while(eventName = events[i++]){
-					if(on.matches(e.target, eventName, node)) {
+					match = eventName.match(sel);
+					if(!match || (match && on.matches(e.target, eventName, node))) {
 						listener.apply(this, arguments);
 						break;
 					}

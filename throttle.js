@@ -1,10 +1,10 @@
-define(["dojo/on"], function(on) {
+define(["dojo/on", "dojo/debounce"], function(on, debounce) {
 	// module:
 	//		dojo/throttle
 	// summary:
 	//		This module provide a generic throttle method, and an event throttler to use with dojo/on
 	
-	var throttle = function(cb, wait, thisObj){
+	var module = function(cb, wait, thisObj){
 		// summary:
 		//		Create a function that will only execute once per `wait` periods.
 		// description:
@@ -28,34 +28,6 @@ define(["dojo/on"], function(on) {
 			}, wait);
 		};
 	};
-	
-	throttle.event = function(selector, delay){
-		// summary:
-		//		a throttled event to use with dojo/on
-		return function(node, listener) {
-			var events = ~selector.indexOf(",") ? selector.split(/\s*,\s*/): [selector],
-				i = 0,
-				eventName,
-				eventType
-				eventTypes = [],
-				sel = new RegExp(/(.*):(.*)/);
-
-			while(eventName = events[i++]){
-				eventType = eventName.match(sel);
-				eventTypes.push(eventType ? eventType[2] : eventName)
-			}
-			return on(node, eventTypes.join(','), throttle(function(e) {
-				var i = 0,
-					match;
-				while(eventName = events[i++]){
-					match = eventName.match(sel);
-					if(!match || (match && on.matches(e.target, eventName, node))) {
-						listener.apply(this, arguments);
-						break;
-					}
-				}
-			}, delay));
-		}
-	}
-	return throttle;
+	module.event = debounce.event;
+	return module;
 });

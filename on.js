@@ -177,7 +177,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		}
 		throw new Error("Target must be an event emitter");
 	}
-	on.matches = function(node, selector, context, children, matchesTarget) {
+	on.matchesSelector = function(node, selector, context, children, matchesTarget) {
 		// summary:
 		//		Check if a node match the current selector within the constraint of a context
 		// node:
@@ -231,7 +231,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			var matchesTarget = typeof selector == "function" ? {matches: selector} : this,
 				bubble = eventType.bubble;
 			function select(eventTarget){
-				return on.matches(eventTarget, selector, target, children, matchesTarget);
+				return on.matchesSelector(eventTarget, selector, target, children, matchesTarget);
 			}
 			if(bubble){
 				// the event type doesn't naturally bubble, but has a bubbling form, use that, and give it the selector so it can perform the select itself

@@ -1,4 +1,4 @@
-define(["dojo/on", "dojo/debounce"], function(on, debounce) {
+define(["dojo/debounce"], function(debounce) {
 	// module:
 	//		dojo/throttle
 	// summary:

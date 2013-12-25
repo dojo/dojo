@@ -1,21 +1,49 @@
-#!/usr/bin/env node
-var path = require('path'),
-	services = require('./services');
+if (typeof process !== 'undefined' && typeof define === 'undefined') {
+	(function () {
+		var path = require('path');
+		process.chdir(path.resolve(__dirname, '..'));
+		this.dojoConfig = {
+			async: true,
+			baseUrl: path.resolve(__dirname, '..'),
+			deps: [ 'tests-intern/runner' ],
+			packages: [
+				{ name: 'intern', location: 'node_modules/intern-geezer' },
+				{ name: 'when', location: 'node_modules/when', main: 'when' }
+			],
+			map: {
+				intern: {
+					dojo: 'intern/node_modules/dojo',
+					chai: 'intern/node_modules/chai/chai'
+				},
+				'*': {
+					'intern/dojo': 'intern/node_modules/dojo'
+				}
+			},
+			tlmSiblingOfDojo: false,
+			useDeferredInstrumentation: false
+		};
 
-process.chdir(path.resolve(__dirname, '..'));
+		require('intern-geezer/node_modules/dojo/dojo');
+	})();
+}
+else {
+	define([
+		'./services'
+	], function (services) {
+		services.start(9001).then(function (server) {
+			var configRE = /^config=/;
+			if (!process.argv.some(function (arg) {
+				return configRE.test(arg);
+			})) {
+				process.argv.push('config=tests-intern/intern');
+			}
+			require(['intern/dojo/topic'], function (topic) {
+				topic.subscribe('/runner/end', function () {
+					server.close();
+				});
 
-services.start(9001, function (server) {
-	var configRE = /^config=/;
-	if (!process.argv.some(function (arg) {
-		return configRE.test(arg);
-	})) {
-		process.argv.push('config=tests-intern/intern');
-	}
-	require('intern-geezer/runner');
-
-	global.require(['intern/node_modules/dojo/topic'], function (topic) {
-		topic.subscribe('/runner/end', function () {
-			server.close();
+				require(['intern/runner']);
+			});
 		});
 	});
-});
+}

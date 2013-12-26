@@ -2,6 +2,7 @@ define([
 	'require',
 	'exports',
 	'when',
+	'when/callbacks',
 	'when/node/function',
 	'intern/dojo/node!http',
 	'intern/dojo/node!url',
@@ -11,22 +12,22 @@ define([
 	'intern/dojo/node!jsgi-node',
 	'intern/dojo/node!jsgi-node/jsgi/node',
 	'intern/dojo/node!formidable'
-], function (require, exports, when, nodefn, http, url, qs, glob, httpProxy, jsgi, node, formidable) {
+], function (require, exports, when, callbacks, nodefn, http, url, qs, glob, httpProxy, jsgi, node, formidable) {
 	var nodeWrapper = node.Node,
 		proxy = new httpProxy.RoutingProxy();
 
-	var slice = Array.prototype.slice;
 	require = (function (require) {
-		return function (deps) {
-			return when.promise(function (resolve) {
-				require(deps, function () {
-					resolve(slice.call(arguments, 0));
-				});
-			});
-		};
+		return callbacks.lift(function (dep, callback) {
+			require([dep], callback);
+		});
 	})(require);
 
 	function Multipart(nextApp) {
+		//	summary:
+		//		Returns JSGI middleware for handling multi-part forms.
+		//		If a multi-part request is detected, a promise will be added
+		//		to the request object at the "data" property. It will resolve
+		//		to the fields sent in the multi-part request.
 		var multipartRE = /^multipart\/form-data;/;
 
 		return function (request) {
@@ -56,21 +57,18 @@ define([
 		return nodefn.call(glob, '**/*.service.js', {
 			cwd: './tests-intern',
 		}).then(function (files) {
-			var moduleIds = files.map(function (filename) {
-				return './' + filename.slice(0, -3);
-			});
-			return require(moduleIds).then(function (modules) {
-				return modules.map(function (module, index) {
-					var name = moduleIds[index].slice(2, -8);
+			return when.map(files, function (filename) {
+				return require('./' + filename.slice(0, -3)).then(function (module) {
+					var name = filename.slice(0, -11);
 					return {
-						regexp: new RegExp('^\/' + name.replace('/', '\\/') + '(\\/.*)?$'),
+						regexp: new RegExp('^\/' + name.replace(/\//g, '\\/') + '(\\/.*)?$'),
 						module: module
 					};
 				});
 			});
 		}).then(function (services) {
 			var serviceRE = /^\/__services(\/.*)$/,
-				jsgiListener = new jsgi.Listener(new Multipart(function (request) {
+				servicesHandler = new jsgi.Listener(new Multipart(function (request) {
 					var urlInfo = url.parse(request.pathInfo, true),
 						query = qs.parse(request.queryString),
 						pathInfo = urlInfo.pathname.match(serviceRE),
@@ -104,11 +102,8 @@ define([
 					return response;
 				}));
 			var server = http.createServer(function (request, response) {
-				var urlInfo = url.parse(request.url, true),
-					pathInfo = urlInfo.pathname.match(serviceRE);
-
 				if (request.url.indexOf('/__services/') === 0) {
-					jsgiListener(request, response);
+					servicesHandler(request, response);
 				}
 				else {
 					proxy.proxyRequest(request, response, {

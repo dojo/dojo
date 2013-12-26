@@ -30,7 +30,7 @@ else {
 	define([
 		'./services'
 	], function (services) {
-		services.start(9001).then(function (server) {
+		services.start(9001).done(function (server) {
 			var configRE = /^config=/;
 			if (!process.argv.some(function (arg) {
 				return configRE.test(arg);

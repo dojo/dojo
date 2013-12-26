@@ -13,6 +13,9 @@
 		"when": "~2.7.0"
 	},
 	"main": "main",
+	"scripts": {
+		"test": "node tests-intern/runner.js"
+	},
 	"description": "Dojo core is a powerful, lightweight library that makes common tasks quicker and easier. Animate elements, manipulate the DOM, and query with easy CSS syntax, all without sacrificing performance.",
 	"licenses": [
 		 {

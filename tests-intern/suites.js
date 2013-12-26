@@ -1,3 +1,4 @@
 define([
+	'./string',
 	'./request'
 ], function(){});

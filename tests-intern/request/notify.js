@@ -5,7 +5,7 @@ define([
 	'dojo/request/xhr',
 	'dojo/request/notify',
 	'dojo/errors/CancelError'
-], function (createSuite, assert, all, xhr, notify, CancelError) {
+], function (registerSuite, assert, all, xhr, notify, CancelError) {
 	function remover() {
 		var args = arguments;
 
@@ -17,7 +17,7 @@ define([
 		};
 	}
 	var handle;
-	createSuite({
+	registerSuite({
 		name: 'dojo/request/notify',
 
 		afterEach: function () {

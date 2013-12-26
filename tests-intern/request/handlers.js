@@ -5,9 +5,9 @@ define([
 	'dojo/has',
 	'dojo/json',
 	'dojo/has!host-browser?dojo/domReady!:'
-], function (createSuite, assert, handlers, has, JSON) {
+], function (registerSuite, assert, handlers, has, JSON) {
 	var handle;
-	createSuite({
+	registerSuite({
 		name: 'dojo/request/handlers',
 
 		'text': function () {

@@ -1,10 +1,11 @@
 if (typeof process !== 'undefined' && typeof define === 'undefined') {
 	(function () {
-		var path = require('path');
-		process.chdir(path.resolve(__dirname, '..'));
+		var path = require('path'),
+			dojoDir = path.resolve(__dirname, '..');
+		process.chdir(dojoDir);
 		this.dojoConfig = {
 			async: true,
-			baseUrl: path.resolve(__dirname, '..'),
+			baseUrl: dojoDir,
 			deps: [ 'tests-intern/runner' ],
 			packages: [
 				{ name: 'intern', location: 'node_modules/intern-geezer' },

@@ -9,8 +9,3 @@ env:
     - SAUCE_ACCESS_KEY: e92610e3-834e-4bec-a3b5-6f7b9d874601
 before_script:
   - "npm install -g grunt-cli"
-  - "npm install coveralls"
-script:
-  - "grunt test:lcov"
-after_success:
-  - "cat ./lcov.info | ./node_modules/coveralls/bin/coveralls.js"

@@ -59,16 +59,19 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask('test', function (target) {
-		if (!target || target === 'coverage') {
+		if (!target || target === 'coverage' || target === 'lcov') {
 			target = 'remote';
 		}
 
+		var property = 'intern.' + target + '.options.reporters',
+			value = grunt.config.get(property);
 		if (this.flags.coverage) {
-			var property = 'intern.' + target + '.options.reporters',
-				value = grunt.config.get(property);
 			value.push('lcovhtml');
-			grunt.config.set(property, value);
 		}
+		if (this.flags.lcov) {
+			value.push('lcov');
+		}
+		grunt.config.set(property, value);
 
 		grunt.task.run('proxy');
 		grunt.task.run('intern:' + target);

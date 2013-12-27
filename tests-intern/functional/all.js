@@ -1,3 +1,3 @@
 define([
-	/* functional suites module IDs go here */
+	'./behavior'
 ], function(){});

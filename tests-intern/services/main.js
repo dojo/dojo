@@ -55,7 +55,7 @@ define([
 
 	exports.start = function (port) {
 		return nodefn.call(glob, '**/*.service.js', {
-			cwd: './tests-intern',
+			cwd: './tests-intern/services',
 		}).then(function (files) {
 			return when.map(files, function (filename) {
 				return require('./' + filename.slice(0, -3)).then(function (module) {

@@ -29,7 +29,7 @@ if (typeof process !== 'undefined' && typeof define === 'undefined') {
 }
 else {
 	define([
-		'./services'
+		'./services/main'
 	], function (services) {
 		services.start(9001).done(function (server) {
 			var configRE = /^config=/;

@@ -6,6 +6,7 @@
 	},
 	"devDependencies": {
 		"intern-geezer": "git://github.com/theintern/intern#32566758db41d707f4f6243a56ec22eb64571943",
+		"grunt": "~0.4.2",
 		"http-proxy": "~0.10.3",
 		"glob": "~3.2.7",
 		"jsgi-node": "~0.3.1",
@@ -14,7 +15,7 @@
 	},
 	"main": "main",
 	"scripts": {
-		"test": "node tests-intern/runner.js"
+		"test": "grunt test"
 	},
 	"description": "Dojo core is a powerful, lightweight library that makes common tasks quicker and easier. Animate elements, manipulate the DOM, and query with easy CSS syntax, all without sacrificing performance.",
 	"licenses": [

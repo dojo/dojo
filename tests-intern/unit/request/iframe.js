@@ -2,9 +2,9 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/request/iframe',
-	'dojo/dom-construct',
-	'dojo/dom',
-	'dojo/domReady!'
+	'intern/dojo/dom-construct',
+	'intern/dojo/dom',
+	'intern/dojo/domReady!'
 ], function (registerSuite, assert, iframe, domConstruct, dom) {
 	var form;
 	registerSuite({

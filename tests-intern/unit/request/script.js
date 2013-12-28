@@ -4,8 +4,9 @@ define([
 	'dojo/request/script',
 	'dojo/errors/RequestTimeoutError',
 	'dojo/errors/CancelError',
-	'dojo/domReady!'
+	'intern/dojo/domReady!'
 ], function (registerSuite, assert, script, RequestTimeoutError, CancelError) {
+	/* global scriptLoad, myTasks */
 	registerSuite({
 		name: 'dojo/request/script',
 

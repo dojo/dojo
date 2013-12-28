@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/promise/all',
+	'intern/dojo/promise/all',
 	'dojo/request/xhr',
 	'dojo/request/notify',
 	'dojo/errors/CancelError'

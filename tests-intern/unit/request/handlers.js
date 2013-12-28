@@ -2,11 +2,12 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/request/handlers',
-	'dojo/has',
-	'dojo/json',
-	'dojo/has!host-browser?dojo/domReady!:'
+	'intern/dojo/has',
+	'intern/dojo/json',
+	'intern/dojo/has!host-browser?intern/dojo/domReady!:'
 ], function (registerSuite, assert, handlers, has, JSON) {
-	var handle;
+	var global = this,
+		handle;
 	registerSuite({
 		name: 'dojo/request/handlers',
 
@@ -81,7 +82,7 @@ define([
 					handleAs: 'xml'
 				}
 			};
-			if (has('dom-parser')) {
+			if ('DOMParser' in global) {
 				var parser = new DOMParser();
 				response.data = parser.parseFromString(response.text, 'text/xml');
 			}

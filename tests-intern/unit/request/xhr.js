@@ -2,14 +2,12 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/request/xhr',
-	'dojo/_base/lang',
 	'dojo/errors/RequestTimeoutError',
 	'dojo/errors/CancelError',
-	'dojo/promise/all',
-	'dojo/query',
-	'dojo/has',
+	'intern/dojo/promise/all',
+	'intern/dojo/query',
 	'require'
-], function(registerSuite, assert, xhr, lang, RequestTimeoutError, CancelError, all, query, has, require){
+], function(registerSuite, assert, xhr, RequestTimeoutError, CancelError, all, query, require){
 	var suite = {
 		name: 'dojo/request/xhr',
 
@@ -38,7 +36,7 @@ define([
 				});
 
 			promise.response.then(
-				lang.hitch(def, 'reject'),
+				def.reject,
 				def.callback(function(error){
 					assert.strictEqual(error.response.status, 404);
 				})
@@ -286,7 +284,7 @@ define([
 	};
 
 	var formData;
-	if (has('native-formdata')) {
+	if ('FormData' in this && typeof FormData === 'function') {
 		suite['form data'] = {
 			setup: function(){
 				formData = new FormData();

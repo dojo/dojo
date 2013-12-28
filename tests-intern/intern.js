@@ -60,7 +60,8 @@ define({
 		packages: [ { name: 'dojo-testing', location: '.' } ],
 		map: {
 			'dojo-testing': {
-				'dojo': 'dojo-testing'
+				'dojo': 'dojo-testing',
+				'intern/dojo': 'intern/node_modules/dojo'
 			}
 		}
 	},

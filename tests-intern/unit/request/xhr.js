@@ -8,7 +8,10 @@ define([
 	'intern/dojo/query',
 	'require'
 ], function(registerSuite, assert, xhr, RequestTimeoutError, CancelError, all, query, require){
-	var suite = {
+	var hasFormData = 'FormData' in this && typeof FormData === 'function',
+		formData;
+
+	registerSuite({
 		name: 'dojo/request/xhr',
 
 		'.get': function(){
@@ -280,19 +283,20 @@ define([
 				}),
 				def.reject
 			);
-		}
-	};
+		},
 
-	var formData;
-	if ('FormData' in this && typeof FormData === 'function') {
-		suite['form data'] = {
+		'form data': {
 			setup: function(){
+				if(!hasFormData){ return; }
+
 				formData = new FormData();
 				formData.append('foo', 'bar');
 				formData.append('baz', 'blah');
 			},
 
 			post: function(){
+				if(!hasFormData){ return; }
+
 				var def = this.async();
 
 				xhr.post('/__services/request/xhr/multipart', {
@@ -312,8 +316,6 @@ define([
 			teardown: function(){
 				formData = null;
 			}
-		};
-	}
-
-	registerSuite(suite);
+		}
+	});
 });

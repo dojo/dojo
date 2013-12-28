@@ -1,5 +1,7 @@
 define([
 	'./_base',
 	'./string',
-	'./request'
+	'./io-query',
+	'./request',
+	'./dom-form'
 ], function(){});

@@ -3,5 +3,6 @@ define([
 	'./string',
 	'./io-query',
 	'./request',
-	'./dom-form'
+	'./dom-form',
+	'./io/iframe'
 ], function(){});

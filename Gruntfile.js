@@ -40,7 +40,7 @@ module.exports = function (grunt) {
 				options: {
 					runType: 'runner',
 					proxyOnly: true,
-					config: 'tests-intern/intern',
+					config: 'tests-intern/intern.proxy',
 					reporters: ['runner']
 				}
 			}

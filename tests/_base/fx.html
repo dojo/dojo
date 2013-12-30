@@ -54,6 +54,19 @@
 						}
 					},
 					{
+						name: "destroy",
+						timeout: timeout,
+						runTest: function(){
+							var anim = baseFx.fadeOut({ node: 'foo', duration: duration });
+							var stopCalled = false;
+							aspect.after(anim, "stop", function () {
+								stopCalled = true;
+							});
+							anim.destroy();
+							doh.t(stopCalled);
+						}
+					},
+					{
 						name: "animateColor",
 						timeout: timeout,
 						runTest: function(){

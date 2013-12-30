@@ -263,6 +263,12 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 			return _t; // Animation
 		},
 
+		destroy: function(){
+			// summary:
+			//		cleanup the animation
+			this.stop();
+		},
+
 		status: function(){
 			// summary:
 			//		Returns a string token representation of the status of

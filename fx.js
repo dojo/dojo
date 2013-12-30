@@ -143,6 +143,7 @@ define([
 			return this._current ? this._current.status() : "stopped";
 		},
 		destroy: function(){
+			this.stop();
 			if(this._onAnimateCtx){ this._onAnimateCtx.remove(); }
 			if(this._onEndCtx){ this._onEndCtx.remove(); }
 		}
@@ -239,6 +240,7 @@ define([
 			return this._pseudoAnimation.status();
 		},
 		destroy: function(){
+			this.stop();
 			arrayUtil.forEach(this._connects, function(handle){
 				handle.remove();
 			});

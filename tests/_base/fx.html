@@ -54,6 +54,25 @@
 						}
 					},
 					{
+						name: "destroy",
+						timeout: timeout,
+						runTest: function(){
+							var opacity = domStyle.get('foo', 'opacity');
+							doh.is(1, opacity);
+							var anim = baseFx.fadeOut({ node: 'foo', duration: duration });
+							var d = new doh.Deferred();
+							setTimeout(function() {
+								anim.destroy();
+								d.getTestCallback(function(){
+									var opacity = domStyle.get('foo', 'opacity');
+									doh.t(opacity > 0);
+								})();
+							}, duration);
+							anim.play();
+							return d;
+						}
+					},
+					{
 						name: "animateColor",
 						timeout: timeout,
 						runTest: function(){

@@ -7,9 +7,26 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		has.add("event-orientationchange", has("touch") && !has("android")); // TODO: how do we detect this?
 		has.add("event-stopimmediatepropagation", window.Event && !!window.Event.prototype && !!window.Event.prototype.stopImmediatePropagation);
 		has.add("event-focusin", function(global, doc, element){
-			// All browsers except firefox support focusin, but too hard to feature test webkit since element.onfocusin
-			// is undefined.  Just return true for IE and use fallback path for other browsers.
-			return !!element.attachEvent;
+			return 'onfocusin' in element || (element.addEventListener && (function () {
+				var hasFocusInEvent = false;
+				function testFocus() {
+					hasFocusInEvent = true;
+				}
+
+				try {
+					var element = doc.createElement('input'),
+						style = element.style;
+					style.position = 'absolute';
+					style.top = element.style.left = '0';
+					element.addEventListener('focusin', testFocus, false);
+					doc.body.appendChild(element);
+					element.focus();
+					doc.body.removeChild(element);
+					element.removeEventListener('focusin', testFocus, false);
+				} catch (e) {}
+
+				return hasFocusInEvent;
+			})());
 		});
 	}
 	var on = function(target, type, listener, dontFix){

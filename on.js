@@ -1,4 +1,9 @@
 define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
+		has.add("event-focusin", function(global, doc, element){
+			// All browsers except firefox support focusin, but too hard to feature test webkit since element.onfocusin
+			// is undefined.  Just return true for IE and use fallback path for other browsers.
+			return !!element.attachEvent;
+		});
 	// summary:
 	//		The export of this module is a function that provides core event listening functionality. With this function
 	//		you can provide a target, event type, and listener to be notified of
@@ -263,17 +268,11 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		}while(event && event.bubbles && (target = target.parentNode));
 		return event && event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
 	};
-	var captures = {}; 
+	var captures = has("event-focusin") ? {} : {focusin: "focus", focusout: "blur"};
 	if(has("dom-addeventlistener")){
-		// normalize focusin and focusout
-		captures = {
-			focusin: "focus",
-			focusout: "blur"
-		};
 		if(has("opera")){
 			captures.keydown = "keypress"; // this one needs to be transformed because Opera doesn't support repeating keys on keydown (and keypress works because it incorrectly fires on all keydown events)
 		}
-
 		// emiter that works with native event handling
 		on.emit = function(target, type, event){
 			if(target.dispatchEvent && document.createEvent){

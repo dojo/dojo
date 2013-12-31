@@ -6,6 +6,11 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		has.add("jscript", major && (major() + ScriptEngineMinorVersion() / 10));
 		has.add("event-orientationchange", has("touch") && !has("android")); // TODO: how do we detect this?
 		has.add("event-stopimmediatepropagation", window.Event && !!window.Event.prototype && !!window.Event.prototype.stopImmediatePropagation);
+		has.add("event-focusin", function(global, doc, element){
+			// All browsers except firefox support focusin, but too hard to feature test webkit since element.onfocusin
+			// is undefined.  Just return true for IE and use fallback path for other browsers.
+			return !!element.attachEvent;
+		});
 	}
 	var on = function(target, type, listener, dontFix){
 		// summary:
@@ -276,7 +281,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		}while(event && event.bubbles && (target = target.parentNode));
 		return event && event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
 	};
-	var captures = {};
+	var captures = has("event-focusin") ? {} : {focusin: "focus", focusout: "blur"};
 	if(!has("event-stopimmediatepropagation")){
 		var stopImmediatePropagation =function(){
 			this.immediatelyStopped = true;
@@ -292,12 +297,6 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		}
 	} 
 	if(has("dom-addeventlistener")){
-		// normalize focusin and focusout
-		captures = {
-			focusin: "focus",
-			focusout: "blur"
-		};
-
 		// emiter that works with native event handling
 		on.emit = function(target, type, event){
 			if(target.dispatchEvent && document.createEvent){

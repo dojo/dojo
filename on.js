@@ -15,14 +15,14 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 
 				try {
 					var element = doc.createElement('input'),
-						style = element.style;
-					style.position = 'absolute';
-					style.top = element.style.left = '0';
+						activeElement = doc.activeElement;
+					element.style.position = 'fixed';
 					element.addEventListener('focusin', testFocus, false);
 					doc.body.appendChild(element);
 					element.focus();
 					doc.body.removeChild(element);
 					element.removeEventListener('focusin', testFocus, false);
+					activeElement.focus();
 				} catch (e) {}
 
 				return hasFocusInEvent;

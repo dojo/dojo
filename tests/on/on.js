@@ -1,14 +1,12 @@
-dojo.provide("dojo.tests.on");
+define([
+	"doh", "require",
+	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic"
+], function(doh, require, declare, Evented, has, on, query, topic){
 
-var on = dojo.require("dojo.on");
-var has = dojo.require("dojo.has");
-var topic = dojo.require("dojo.topic");
-var Evented = dojo.require("dojo.Evented");
-doh.register("tests.on",
-	[
+	doh.register("tests.on", [
 		function object(t){
 			var order = [];
-			var obj = new dojo.Evented();
+			var obj = new Evented();
 			obj.oncustom = function(event){
 				order.push(event.a);
 				return event.a+1;
@@ -48,7 +46,7 @@ doh.register("tests.on",
 		},
 		function once(t){
 			var order = [];
-			var obj = new dojo.Evented();
+			var obj = new Evented();
 			obj.on("custom", function(event){
 				order.push(event.a);
 			});
@@ -120,31 +118,42 @@ doh.register("tests.on",
 				bubbles: true,
 				cancelable: true
 			}));
-			var button = div.appendChild(document.createElement("button"));
-			// make sure we are propagating natively created events too
-			signal = on(div, "click", function(event){
-				order.push(7);
+
+			// make sure we are propagating natively created events too, and that defaultPrevented works
+			var button = span.appendChild(document.createElement("button")),
+				defaultPrevented = false,
+				signal2Fired = false;
+			signal = on(span, "click", function(event){
 				event.preventDefault();
-				t.t(event.defaultPrevented);
+			});
+			signal2 = on(div, "click", function(event){
+				order.push(7);
+				signal2Fired = true;
+				defaultPrevented = event.defaultPrevented;
 			});
 			button.click();
+			t.t(signal2Fired, "bubbled click event on div");
+			t.t(defaultPrevented, "defaultPrevented for click event");
 			signal.remove();
 			signal2.remove();
 
-			// make sure 'document' and 'window' can also emit events
-			var eventEmitted;
-			var globalObjects = [document, window];
-			for(var i = 0, len = globalObjects.length; i < len; i++) {
-				eventEmitted = false;
-				on(globalObjects[i], 'custom-test-event', function () {
-					eventEmitted = true;
-				});
-				on.emit(globalObjects[i], 'custom-test-event', {});
-				t.is(true, eventEmitted);
-			}
+			// make sure that evt.defaultPrevented gets set for synthetic events too
+			signal = on(span, "click", function(event){
+				event.preventDefault();
+			});
+			signal2 = on(div, "click", function(event){
+				signal2Fired = true;
+				defaultPrevented = event.defaultPrevented;
+			});
+			signal2Fired = false;
+			on.emit(button, "click", {bubbles: true, cancelable: true});
+			t.t(signal2Fired, "bubbled synthetic event on div");
+			t.t(defaultPrevented, "defaultPrevented set for synthetic event on div");
+			signal.remove();
+			signal2.remove();
 
 			// test out event delegation
-			if(dojo.query){
+			if(query){
 				// if dojo.query is loaded, test event delegation
 				on(div, "button:click", function(){
 					order.push(8);
@@ -164,8 +173,8 @@ doh.register("tests.on",
 			t.is(order, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 			on(span, "propertychange", function(){}); // make sure it doesn't throw an error
 		},
-/*
- This only works if the test page has the focus, so you can enable if you want to test focus functionality and allow the test page to have focus  
+		/*
+		 This only works if the test page has the focus, so you can enable if you want to test focus functionality and allow the test page to have focus
  		function focus(t){
 			var div = document.body.appendChild(document.createElement("div"));
 			var input = div.appendChild(document.createElement("input"));
@@ -194,10 +203,10 @@ doh.register("tests.on",
 			var customEvent = function(target, listener){
 				return on(target, "custom", listener);
 			};
-			var signal = on(div, customEvent, function(event){
+			on(div, customEvent, function(event){
 				order.push(event.a);
 			});
-			var signal = on(div, on.selector("span", customEvent), function(event){
+			on(div, on.selector("span", customEvent), function(event){
 				order.push(+this.getAttribute("foo"));
 			});
 			on.emit(div, "custom", {
@@ -218,7 +227,7 @@ doh.register("tests.on",
 			t.is(order, [0, 1, 2, 3]);
 		},
 		function testEvented(t){
-			var MyClass = dojo.declare([Evented],{
+			var MyClass = declare([Evented],{
 
 			});
 			var order = [];
@@ -276,5 +285,9 @@ doh.register("tests.on",
 			button.click();
 			t.is(testValue, 3);
 		}
-	]
-);
+	]);
+
+	if(has("host-browser")){
+		doh.registerUrl("tests.on.event-focusin", require.toUrl("./event-focusin.html"), 30000);
+	}
+});

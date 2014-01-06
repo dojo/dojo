@@ -81,10 +81,10 @@ tests.register("tests.date.locale",
 
 	t.is("12 o'clock AM", dojo.date.locale.format(date, {datePattern:"hh 'o''clock' a", selector:"date", locale: 'en'}));
 
-	t.is("11/08/2006 12:55am", dojo.date.locale.format(date, {datePattern:"dd/MM/yyyy", timePattern:"hh:mma", locale: 'en', am:"am", pm:"pm"}));
+	t.is("11/08/2006, 12:55am", dojo.date.locale.format(date, {datePattern:"dd/MM/yyyy", timePattern:"hh:mma", locale: 'en', am:"am", pm:"pm"}));
 
 	// compare without timezone
-	t.is("\u4e0a\u534812\u65f655\u520612\u79d2", dojo.date.locale.format(date, {formatLength:'full',selector:'time', locale:'zh-cn'}).replace(/^.*(\u4e0a\u5348.*)/,"$1"));
+	t.is("\u4e0a\u534812:55:12", dojo.date.locale.format(date, {formatLength:'full',selector:'time', locale:'zh-cn'}).replace(/^.*(\u4e0a\u5348.*)/,"$1"));
 			}
 		},
 		{
@@ -236,13 +236,14 @@ tests.register("tests.date.locale",
 	//en: 'short' datetime fmt: M/d/yy h:mm a
 	//note: this is concatenation of dateFormat-short and timeFormat-short,
 	//cldr provisionally defines datetime fmts as well, but we're not using them at the moment
-	t.is( aug_11_2006_12_30_pm, dojo.date.locale.parse("08/11/06 12:30 PM", {formatLength:'short', locale:'en'}));
+	t.is( aug_11_2006_12_30_pm, dojo.date.locale.parse("08/11/06, 12:30 PM", {formatLength:'short', locale:'en'}));
 	//case-insensitive
-	t.is( aug_11_2006_12_30_pm, dojo.date.locale.parse("08/11/06 12:30 pm", {formatLength:'short', locale:'en'}));
+	t.is( aug_11_2006_12_30_pm, dojo.date.locale.parse("08/11/06, 12:30 pm", {formatLength:'short', locale:'en'}));
 	//...but not in strict mode
-	t.f( Boolean(dojo.date.locale.parse("08/11/06 12:30 pm", {formatLength:'short', locale:'en', strict:true})));
+	t.f( Boolean(dojo.date.locale.parse("8/11/06 12:30 pm", {formatLength:'short', locale:'en', strict:true})), 'strict fail');
+	t.f( Boolean(dojo.date.locale.parse("8/11/06 12:30 PM", {formatLength:'short', locale:'en', strict:true})), 'strict pass');
 
-	t.is( aug_11_2006_12_30_am, dojo.date.locale.parse("08/11/06 12:30 AM", {formatLength:'short', locale:'en'}));
+	t.is( aug_11_2006_12_30_am, dojo.date.locale.parse("08/11/06, 12:30 AM", {formatLength:'short', locale:'en'}), 'AM');
 
 	t.is( new Date(2006, 7, 11), dojo.date.locale.parse("11082006", {datePattern:"ddMMyyyy", selector:"date"}));
 

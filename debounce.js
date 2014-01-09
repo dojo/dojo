@@ -1,10 +1,10 @@
-define(['dojo/has', 'dojo/on'], function(has, on) {
+define(['dojo/has'], function(has) {
 	// module:
 	//		dojo/debounce
 	// summary:
 	//		This module provide a generic debounce method, and an event debouncer to use with dojo/on
 
-	var module = function(cb, wait, thisObj) {
+	return function(cb, wait) {
 		// summary:
 		//		Create a function that will only execute after `wait` milliseconds
 		// description:
@@ -16,55 +16,13 @@ define(['dojo/has', 'dojo/on'], function(has, on) {
 		//		returned function curry along to the original callback.
 		// wait: Integer
 		//		Time to spend caching executions before actually executing.
-		// thisObj: Object?
-		//		Optional execution context.
 		var timer;
 		return function() {
 			if(timer) {clearTimeout(timer); }
-			var ieCopy = function(arg) {
-				//ie loose the real event (comming from a node) in a timeout so we need to copy it
-				var argCopy = {};
-				for(var i in arg){
-					argCopy[i] = arg[i];
-				}
-				return [argCopy];
-			},
-			a = has("ie") < 10 ? ieCopy(arguments[0]) : arguments,
-			then = function() {
-				cb.apply(thisObj || cb, a);
-			};
-			timer = setTimeout(then, wait);
+			var a = arguments;
+			timer = setTimeout(function() {
+				cb.apply(this, a);
+			}, wait);
 		};
 	};
-
-	module.event = function(selector, delay){
-		// summary:
-		//		a debounced event to use with dojo/on
-		var fnc = this //refer to the current closure
-		return function(node, listener) {
-			var events = ~selector.indexOf(",") ? selector.split(/\s*,\s*/): [selector],
-				i = 0,
-				eventName,
-				eventType
-				eventTypes = [],
-				sel = new RegExp(/(.*):(.*)/);
-
-			while(eventName = events[i++]){
-				eventType = eventName.match(sel);
-				eventTypes.push(eventType ? eventType[2] : eventName)
-			}
-			return on(node, eventTypes.join(','), fnc(function(e) {
-				var i = 0,
-					match;
-				while(eventName = events[i++]){
-					match = eventName.match(sel);
-					if(!match || (match && on.matchesSelector(e.target, eventName, node))) {
-						listener.apply(this, arguments);
-						break;
-					}
-				}
-			}, delay));
-		}
-	}
-	return module;
 });

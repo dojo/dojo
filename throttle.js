@@ -1,10 +1,10 @@
-define(["dojo/debounce"], function(debounce) {
+define([], function() {
 	// module:
 	//		dojo/throttle
 	// summary:
 	//		This module provide a generic throttle method, and an event throttler to use with dojo/on
-	
-	var module = function(cb, wait, thisObj){
+
+	return function(cb, wait){
 		// summary:
 		//		Create a function that will only execute once per `wait` periods.
 		// description:
@@ -16,18 +16,14 @@ define(["dojo/debounce"], function(debounce) {
 		//		The callback to fire.
 		// wait: Integer
 		//		time to delay before allowing cb to call again.
-		// thisObj: Object?
-		//		Optional execution context
 		var canrun = true;
 		return function() {
 			if(!canrun) {return; }
 			canrun = false;
-			cb.apply(thisObj || cb, arguments);
+			cb.apply(this, arguments);
 			setTimeout(function() {
 				canrun = true;
 			}, wait);
 		};
 	};
-	module.event = debounce.event;
-	return module;
 });

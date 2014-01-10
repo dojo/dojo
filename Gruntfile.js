@@ -63,11 +63,18 @@ module.exports = function (grunt) {
 			target = 'remote';
 		}
 
-		if (this.flags.coverage) {
+		function addReporter(reporter) {
 			var property = 'intern.' + target + '.options.reporters',
 				value = grunt.config.get(property);
-			value.push('lcovhtml');
+			value.push(reporter);
 			grunt.config.set(property, value);
+		}
+		if (this.flags.coverage) {
+			addReporter('lcovhtml');
+		}
+
+		if (this.flags.console) {
+			addReporter('console');
 		}
 
 		grunt.task.run('proxy');

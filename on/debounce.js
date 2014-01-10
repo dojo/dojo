@@ -15,7 +15,7 @@ define(['dojo/debounce', 'dojo/has', 'dojo/on'], function(debounce, has, on) {
 		for(i in arg){
 			argCopy[i] = arg[i];
 		}
-		return [argCopy];
+		return argCopy;
 	}
 	function customEvent(fnc, cloneArguments) {
 		// summary:
@@ -42,7 +42,7 @@ define(['dojo/debounce', 'dojo/has', 'dojo/on'], function(debounce, has, on) {
 				if(cloneArguments) {
 					cloneHandler = function(e) {
 						//lang.clone fail to clone events, so we use a custom clone
-						eventFnc.apply(this, clone(e));
+						eventFnc.call(this, clone(e));
 					};
 				}
 

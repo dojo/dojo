@@ -89,7 +89,7 @@ define([
 			setTimeout(deferred.getTestCallback(function(){
 				doh.is(4, clickCount);
 				doh.is(2, throttleCount);
-			}), 210);
+			}), 300);
 			return deferred;
 
 		}

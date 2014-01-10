@@ -1,6 +1,7 @@
 define([
 	'./_base',
 	'./hash',
+	'./router',
 	'./string',
 	'./io-query',
 	'./request',

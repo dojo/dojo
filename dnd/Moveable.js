@@ -59,7 +59,7 @@ var Moveable = declare("dojo.dnd.Moveable", [Evented], {
 		if(this.delay){
 			this.events.push(
 				on(this.handle, touch.move, lang.hitch(this, "onMouseMove")),
-				on(this.handle, touch.release, lang.hitch(this, "onMouseUp"))
+				on(this.handle.ownerDocument, touch.release, lang.hitch(this, "onMouseUp"))
 			);
 			this._lastX = e.pageX;
 			this._lastY = e.pageY;

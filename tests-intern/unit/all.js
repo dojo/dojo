@@ -7,5 +7,6 @@ define([
 	'./request',
 	'./dom-form',
 	'./io/iframe',
+	'./store/Memory',
 	'./when'
 ], function(){});

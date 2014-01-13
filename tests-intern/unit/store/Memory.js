@@ -1,9 +1,10 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
+	'intern/dojo/_base/array',
 	'dojo/store/Memory',
 	'dojo/store/util/QueryResults'
-], function (registerSuite, assert, MemoryStore, QueryResults) {
+], function (registerSuite, assert, array, MemoryStore, QueryResults) {
 	var data = [
 		{ id: 1, name: 'one',	even: false,	prime: false,	mappedTo: 'E', date: new Date(1970, 0, 1) },
 		{ id: 2, name: 'two',	even: true,		prime: true,	mappedTo: 'D', date: new Date(1980, 1, 2) },
@@ -93,9 +94,12 @@ define([
 
 				queryDeepEqual(store.query(null, { sort: [ { attribute: 'mappedTo' } ] }), sortedByMappedTo);
 
-				queryDeepEqual(store.query({}, { sort: [ { attribute: 'date', descending: false } ] }).map(function (item) {
+				var mapResult = store.query({}, { sort: [ { attribute: 'date', descending: false } ] }).map(function (item) {
 					return item.id;
-				}), new QueryResults([ 1, 5, 4, 2, 3 ]));
+				});
+				// TODO: Currently, .map and .filter return an array in newer browsers and a QueryResults
+				// in old IE. This discrepancy needs to be fixed.
+				store.query(array.map(mapResult, function (item) { return item; }), [ 1, 5, 4, 2, 3 ]);
 			},
 
 			'with paging': function () {

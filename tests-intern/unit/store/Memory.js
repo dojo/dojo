@@ -1,8 +1,9 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/store/Memory'
-], function (registerSuite, assert, MemoryStore) {
+	'dojo/store/Memory',
+	'dojo/store/util/QueryResults'
+], function (registerSuite, assert, MemoryStore, QueryResults) {
 	var data = [
 		{ id: 1, name: 'one',	even: false,	prime: false,	mappedTo: 'E', date: new Date(1970, 0, 1) },
 		{ id: 2, name: 'two',	even: true,		prime: true,	mappedTo: 'D', date: new Date(1980, 1, 2) },
@@ -63,26 +64,38 @@ define([
 			},
 
 			'with sort': function () {
-				var sortedByMappedTo = [data[4], data[2], data[1], data[0], data[3]];
-				// Must add "total" property to match store query result
-				sortedByMappedTo.total = 5;
+				function queryDeepEqual(actual, expected) {
+					if (!actual.hasOwnProperty('map')) {
+						assert.deepEqual(actual, expected);
+						return;
+					}
+					// When there's no native forEach, map, or filter
+					// it gets added to the object and the functions are
+					// not equal to each other, so we can't test directly
+					// for deep equality :(
 
-				var evenSortedByName = [data[3], data[1]];
-				// Must add "total" property to match store query result
-				evenSortedByName.total = 2;
+					assert.strictEqual(actual.length, expected.length, 'Length of query should be ' + expected.length);
+					assert.strictEqual(actual.total, expected.total, 'Total of query should be ' + expected.total);
+
+					for (var i = 0, l = expected.length; i < l; i++) {
+						assert.deepEqual(actual[i], expected[i]);
+					}
+				}
+				var sortedByMappedTo = new QueryResults([data[4], data[2], data[1], data[0], data[3]]),
+					evenSortedByName = new QueryResults([data[3], data[1]]);
 
 				assert.strictEqual(store.query({ prime: true }, { sort: [ { attribute: 'name' } ] }).length, 3);
-				assert.deepEqual(store.query({ even: true }, { sort: [ { attribute: 'name' } ] }), evenSortedByName);
+				queryDeepEqual(store.query({ even: true }, { sort: [ { attribute: 'name' } ] }), evenSortedByName);
 
-				assert.deepEqual(store.query({ even: true }, { sort: function (a, b) {
+				queryDeepEqual(store.query({ even: true }, { sort: function (a, b) {
 					return a.name < b.name ? -1 : 1;
 				}}), evenSortedByName);
 
-				assert.deepEqual(store.query(null, { sort: [ { attribute: 'mappedTo' } ] }), sortedByMappedTo);
+				queryDeepEqual(store.query(null, { sort: [ { attribute: 'mappedTo' } ] }), sortedByMappedTo);
 
-				assert.deepEqual(store.query({}, { sort: [ { attribute: 'date', descending: false } ] }).map(function (item) {
+				queryDeepEqual(store.query({}, { sort: [ { attribute: 'date', descending: false } ] }).map(function (item) {
 					return item.id;
-				}), [ 1, 5, 4, 2, 3 ]);
+				}), new QueryResults([ 1, 5, 4, 2, 3 ]));
 			},
 
 			'with paging': function () {

@@ -8,5 +8,6 @@ define([
 	'./dom-form',
 	'./io/iframe',
 	'./store/Memory',
+	'./regexp',
 	'./when'
 ], function(){});

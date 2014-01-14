@@ -1,8 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/io-query',
-	'intern/dojo/domReady!'
+	'dojo/io-query'
 ], function (registerSuite, assert, ioQuery) {
 	var object1 = {
 		'blah': 'blah'

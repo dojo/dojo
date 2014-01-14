@@ -1,13 +1,15 @@
 define([
 	'./_base',
-	'./hash',
-	'./router',
-	'./string',
 	'./io-query',
 	'./request',
-	'./dom-form',
-	'./io/iframe',
 	'./store/Memory',
+	'./string',
 	'./regexp',
-	'./when'
+	'./when',
+
+	// host-specific tests
+	'intern/dojo/has!host-browser?./dom-form',
+	'intern/dojo/has!host-browser?./hash',
+	'intern/dojo/has!host-browser?./io/iframe',
+	'intern/dojo/has!host-browser?./router'
 ], function(){});

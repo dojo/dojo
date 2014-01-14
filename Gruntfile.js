@@ -43,6 +43,13 @@ module.exports = function (grunt) {
 					config: 'tests-intern/intern.proxy',
 					reporters: ['runner']
 				}
+			},
+			node: {
+				options: {
+					runType: 'client',
+					config: 'tests-intern/intern',
+					reporters: ['console']
+				}
 			}
 		}
 	});
@@ -66,6 +73,11 @@ module.exports = function (grunt) {
 		function addReporter(reporter) {
 			var property = 'intern.' + target + '.options.reporters',
 				value = grunt.config.get(property);
+
+			if (value.indexOf(reporter) !== -1) {
+				return;
+			}
+
 			value.push(reporter);
 			grunt.config.set(property, value);
 		}
@@ -77,7 +89,9 @@ module.exports = function (grunt) {
 			addReporter('console');
 		}
 
-		grunt.task.run('proxy');
+		if (target !== 'node') {
+			grunt.task.run('proxy');
+		}
 		grunt.task.run('intern:' + target);
 	});
 };

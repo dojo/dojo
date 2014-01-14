@@ -46,13 +46,6 @@ define({
 		port: 4444
 	},
 
-	// The desired AMD loader to use when running unit tests (client.html/client.js). Omit to use the default Dojo
-	// loader
-	useLoader: {
-		'host-node': '../../../../dojo',
-		'host-browser': '../../dojo.js'
-	},
-
 	// Configuration options for the module loader; any AMD configuration options supported by the specified AMD loader
 	// can be used here
 	loader: {

@@ -1,5 +1,6 @@
 define([
 	'./_base',
+	'./AdapterRegistry',
 	'./io-query',
 	'./request',
 	'./store/Memory',

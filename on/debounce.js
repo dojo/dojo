@@ -24,7 +24,20 @@ define(['dojo/debounce', 'dojo/has', 'dojo/on'], function(debounce, has, on) {
 			// summary:
 			//		event parser for custom events
 			var events = selector.split(/\s*,\s*/);
+
 			return function(node, listener) {
+				var eventName,
+					eventType,
+					eventTypes = [],
+					i = 0;
+					
+				//to avoid executing matcheSelector (from dojo/on) at every event we
+				//re-arange the seletor in order to remove the event delegation
+				//Then we execute manually matchesSelector, but only after the debounce fired the callback
+				while(eventName = events[i++]){
+					eventType = eventName.match(SELECTOR);
+					eventTypes.push(eventType ? eventType[2] : eventName); //retrive the event type (click, mouseover, etc...)
+				}
 				var cloneHandler = null,
 					handler = function(e) {
 						var i = 0,
@@ -46,7 +59,7 @@ define(['dojo/debounce', 'dojo/has', 'dojo/on'], function(debounce, has, on) {
 					};
 				}
 
-				return on(node, selector, cloneHandler || eventFnc);
+				return on(node, eventTypes.join(','), cloneHandler || eventFnc);
 			};
 		};
 	}

@@ -30,25 +30,33 @@ var QueryResults = function(results){
 	if(!results){
 		return results;
 	}
+
+	var isPromise = !!results.then;
 	// if it is a promise it may be frozen
-	if(results.then){
+	if(isPromise){
 		results = lang.delegate(results);
 	}
 	function addIterativeMethod(method){
-		if(!results[method]){
-			results[method] = function(){
-				var args = arguments;
-				return when(results, function(results){
-					Array.prototype.unshift.call(args, results);
-					return QueryResults(array[method].apply(array, args));
-				});
-			};
-		}
+		// Always add the iterative methods so a QueryResults is
+		// returned whether the environment is ES3 or ES5
+		results[method] = function(){
+			var args = arguments;
+			var result = when(results, function(results){
+				Array.prototype.unshift.call(args, results);
+				return QueryResults(array[method].apply(array, args));
+			});
+			// forEach should only return the result of when()
+			// when we're wrapping a promise
+			if(method !== "forEach" || isPromise){
+				return result;
+			}
+		};
 	}
+
 	addIterativeMethod("forEach");
 	addIterativeMethod("filter");
 	addIterativeMethod("map");
-	if(!results.total){
+	if(results.total == null){
 		results.total = when(results, function(results){
 			return results.length;
 		});

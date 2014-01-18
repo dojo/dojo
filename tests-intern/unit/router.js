@@ -28,6 +28,11 @@ define([
 	registerSuite({
 		name: 'dojo/router',
 
+		after: function () {
+			// reset the hash when everything is done
+			hash('');
+		},
+
 		'existence': {
 			before: function () {
 				hash('', true);

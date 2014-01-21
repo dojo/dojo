@@ -28,8 +28,8 @@ define({
 		{ browserName: 'internet explorer', version: [ '6', '7', '8' ], platform: 'Windows XP', 'prerun': 'http://localhost:9001/tests-intern/support/prerun.bat' },
 		{ browserName: 'firefox', version: '25', platform: [ 'OS X 10.6', 'Windows 7', 'Windows XP', 'Linux' ] },
 		{ browserName: 'chrome', version: '', platform: [ 'Linux', 'OS X 10.8', 'OS X 10.9', 'Windows XP', 'Windows 7', 'Windows 8', 'Windows 8.1' ] },
-		{ browserName: 'safari', version: '6', platform: 'OS X 10.8' }/*,
-		{ browserName: 'safari', version: '7', platform: 'OS X 10.9' }*/
+		{ browserName: 'safari', version: '6', platform: 'OS X 10.8' },
+		{ browserName: 'safari', version: '7', platform: 'OS X 10.9' }
 	],
 
 	// Maximum number of simultaneous integration tests that should be executed on the remote WebDriver service

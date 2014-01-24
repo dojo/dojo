@@ -1,0 +1,11 @@
+{
+    "name": "dojo/dojo",
+    "description": "instantly better web apps",
+    "license": "BSD",
+    "keywords": [
+        "dojo",
+        "javascript",
+        "framework"
+    ],
+    "homepage": "http://dojotoolkit.org/"
+}

@@ -369,7 +369,12 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 									for(var p in rollup){
 										var bundle = rollup[p],
 											match = p.match(/(.+)\/([^\/]+)$/),
-											bundleName = match[2],
+											bundleName, bundlePath;
+											
+											// Skip this bundle if there is no match. This is likely to be a 1.6 layer.
+											if (!match){continue;}
+
+											bundleName = match[2];
 											bundlePath = match[1] + "/";
 
 										// backcompat

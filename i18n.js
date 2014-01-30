@@ -371,7 +371,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 											match = p.match(/(.+)\/([^\/]+)$/),
 											bundleName, bundlePath;
 											
-											// Skip this bundle if there is no match. This is likely to be a 1.6 layer.
+											// If there is no match, the bundle is not a regular bundle from an AMD layer.
 											if (!match){continue;}
 
 											bundleName = match[2];

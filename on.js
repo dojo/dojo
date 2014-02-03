@@ -1,4 +1,4 @@
-define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has", "./domReady!"], function(aspect, dojo, has){
+define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 
 	"use strict";
 	if(has("dom")){ // check to make sure we are in a browser, this module should work anywhere

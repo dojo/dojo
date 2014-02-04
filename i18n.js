@@ -369,7 +369,12 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 									for(var p in rollup){
 										var bundle = rollup[p],
 											match = p.match(/(.+)\/([^\/]+)$/),
-											bundleName = match[2],
+											bundleName, bundlePath;
+											
+											// If there is no match, the bundle is not a regular bundle from an AMD layer.
+											if (!match){continue;}
+
+											bundleName = match[2];
 											bundlePath = match[1] + "/";
 
 										// backcompat

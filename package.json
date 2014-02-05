@@ -5,7 +5,7 @@
 		"lib": "."
 	},
 	"devDependencies": {
-		"intern-geezer": "git://github.com/theintern/intern#32566758db41d707f4f6243a56ec22eb64571943",
+		"intern-geezer": "~1.4.0",
 		"grunt": "~0.4.2",
 		"http-proxy": "~0.10.3",
 		"glob": "~3.2.7",

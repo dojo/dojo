@@ -118,6 +118,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	isIos = /iPhone|iPod|iPad/.test(dua);
 	isAndroid = parseFloat(dua.split("Android ")[1]) || undefined;
 	isWii = typeof opera != "undefined" && opera.wiiremote;
+	isTrident = parseFloat(dav.split("Trident/")[1]) || undefined;
 
 	// safari detection derived from:
 	//		http://developer.apple.com/internet/safari/faq.html#anchor2
@@ -143,7 +144,7 @@ define(["./kernel", "../has"], function(dojo, has){
 			}
 		}
 
-		if(dua.indexOf("Gecko") >= 0 && !isKhtml && !isWebKit){
+		if(dua.indexOf("Gecko") >= 0 && !isKhtml && !isWebKit && !isTrident){
 			isMozilla = isMoz = tv;
 		}
 		if(isMoz){
@@ -180,6 +181,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	hasAdd("quirks", dojo.isQuirks = isQuirks);
 	hasAdd("ios", dojo.isIos = isIos);
 	hasAdd("android", dojo.isAndroid = isAndroid);
+	hasAdd("trident", dojo.isTrident = isTrident);
 
 	dojo.locale = dojo.locale || (isIE ? n.userLanguage : n.language).toLowerCase();
 

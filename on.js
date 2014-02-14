@@ -1,26 +1,6 @@
 define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
 		has.add("event-focusin", function(global, doc, element){
-			return 'onfocusin' in element || (element.addEventListener && (function () {
-				var hasFocusInEvent = false;
-				function testFocus() {
-					hasFocusInEvent = true;
-				}
-
-				try {
-					var element = doc.createElement('input'),
-						activeElement = doc.activeElement;
-					element.style.position = 'fixed';
-					element.style.top = element.style.left = '0';
-					element.addEventListener('focusin', testFocus, false);
-					doc.body.appendChild(element);
-					element.focus();
-					doc.body.removeChild(element);
-					element.removeEventListener('focusin', testFocus, false);
-					activeElement.focus();
-				} catch (e) {}
-
-				return hasFocusInEvent;
-			})());
+			return 'onfocusin' in element;
 		});
 	// summary:
 	//		The export of this module is a function that provides core event listening functionality. With this function

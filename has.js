@@ -90,6 +90,8 @@ define(["require", "module"], function(require, module){
 		// has as it would have otherwise been initialized by the dojo loader; use has.add to the builder
 		// can optimize these away iff desired
 		has.add("host-browser", isBrowser);
+		has.add("host-node", (typeof process == "object" && process.versions && process.versions.node && process.versions.v8));
+		has.add("host-rhino", (typeof load == "function" && (typeof Packages == "function" || typeof Packages == "object")));
 		has.add("dom", isBrowser);
 		has.add("dojo-dom-ready-api", 1);
 		has.add("dojo-sniff", 1);

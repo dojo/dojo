@@ -65,14 +65,21 @@ define(["./dom-geometry", "./_base/lang", "./domReady", "./sniff", "./_base/wind
 			classStr += clz + " ";
 		}
 	}
-	html.className = lang.trim(html.className + " " + classStr);
+	//apply the class only once
+	if(html.className.indexOf(classStr) === -1){
+		html.className = lang.trim(html.className + " " + classStr);
+	}
 
 	// If RTL mode, then add dj_rtl flag plus repeat existing classes with -rtl extension.
 	// We can't run the code below until the <body> tag has loaded (so we can check for dir=rtl).
 	domReady(function(){
 		if(!geometry.isBodyLtr()){
-			var rtlClassStr = "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl ");
-			html.className = lang.trim(html.className + " " + rtlClassStr + "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl "));
+			var rtlClassStr = "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl "),
+				allClassStr = rtlClassStr + "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl ");
+			//apply the class only once
+			if(html.className.indexOf(classStr) === -1){
+				html.className = lang.trim(html.className + " " + allClassStr);
+			}
 		}
 	});
 	return has;
